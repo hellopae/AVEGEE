@@ -18,6 +18,7 @@ from PIL import Image
 import os, sys
 
 SIZE = 512
+TILE = 32          # ต้องตรงกับ TILE ใน src/data.js
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
@@ -31,6 +32,11 @@ def prep(path, name):
     if name == 'tileset':                    # atlas ห้ามยืด ปล่อยผ่าน
         im.save(os.path.join(OUT, name + '.png'))
         return im.size
+
+    if name.startswith('tile-'):             # พื้น: ย่อเป็นช่องเดียวขนาด TILE ตรง ๆ
+        im = im.resize((TILE, TILE), Image.LANCZOS).convert('RGB')
+        im.quantize(colors=COLORS, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
+        return (TILE, TILE)
 
     scale = min(SIZE / im.width, SIZE / im.height)
     im = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
