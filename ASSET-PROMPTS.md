@@ -76,8 +76,8 @@ molten orange lava glow, antique temple gold trim
 | `crew-kan` | a calm scholarly demon, deep indigo skin, long dark hair tied back, round spectacle-less eyes, simple dark robe with gold trim, holding a Thai amulet with a blue eye motif, thoughtful expression |
 | `crew-boon` | a gentle demon monk-attendant, pale jade skin, soft round face, small blunt horns, plain ochre wrap-robe, holding a single pink lotus with both hands, serene sad smile |
 | `crew-dam` | a small scruffy bat-winged imp, charcoal skin, oversized ears, patched black shorts, carrying a bucket of coal, sleepy half-lidded eyes |
-| `hero-yama` | a young prince of the underworld, the player character: tall slim demon youth with dark red skin, a small gold five-tiered crown, black and crimson Thai royal robe with gold trim, one hand resting on a ledger, unsure but determined expression |
-| `hero-boss` | the King of Death seated on a tall black throne, huge imposing crowned demon king, dark maroon skin, elaborate Thai royal regalia in gold and black, holding a long staff, face half in shadow — **ภาพนี้เป็นฉาก ไม่ต้องพื้นใส วาดเป็นภาพจัตุรัสเต็มใบได้** |
+| `hero-yama` | **(แก้ใหม่ 5 ก.ย. — ของเดิมโตเกินและสัดส่วนไม่เข้าชุดกับยมทูต)** the player character, a *child* prince of the underworld: chibi demon boy who looks about twelve, **2.5 heads tall exactly like the crew sprites**, big round expressive eyes, soft round cheeks, small blunt horns, dark red skin, a gold five-tiered crown **slightly too big for his head so it tips forward**, black and crimson Thai royal robe with gold trim whose sleeves are a little too long for his arms, hugging a thick ledger against his chest with both arms, nervous but trying-hard expression |
+| `hero-boss` | ✅ **ผ่านแล้ว ไม่ต้อง gen ใหม่** — the King of Death seated on a tall black throne, huge imposing crowned demon king, dark maroon skin, elaborate Thai royal regalia in gold and black, holding a long staff, face half in shadow — **ภาพนี้เป็นฉาก ไม่ต้องพื้นใส วาดเป็นภาพจัตุรัสเต็มใบได้** |
 
 ---
 
