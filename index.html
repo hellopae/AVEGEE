@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>อเวจี — นรกโซนสุวรรณภูมิ</title>
+<meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Trirong:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- token: ธีมมืด ตั้งชื่อตาม DESIGN.md ---------- */
+:root{
+  --background:#140a0e;      --foreground:#f2e6dd;
+  --card:#1e1015;            --card-foreground:#f2e6dd;
+  --muted:#2a171d;           --muted-foreground:#b09a92;
+  --secondary:#33202a;       --secondary-foreground:#f2e6dd;
+  --accent:#3d2029;          --accent-foreground:#ffd9b0;
+  --primary:#c2381f;         --primary-foreground:#fff4ee;
+  --gold:#d4a355;            --gold-foreground:#1a0d10;
+  --success:#4a9d6a;         --warning:#e0a132;  --destructive:#e04a2f;
+  --border:#3a222a;          --input:#54353f;    --ring:#d4a355;
+
+  --radius:0.75rem; --radius-sm:calc(var(--radius)*.5); --radius-md:calc(var(--radius)*.75);
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.5rem;
+  --font-sans:"IBM Plex Sans Thai","Noto Sans Thai",-apple-system,sans-serif;
+  --font-display:"Trirong",Georgia,serif;
+  --text-xs:.8125rem; --text-sm:.9375rem; --text-base:1rem;
+  --leading-body:1.7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:radial-gradient(1200px 700px at 50% -10%,#2a1016 0%,var(--background) 60%);
+  color:var(--foreground); font-family:var(--font-sans); font-size:var(--text-base);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1240px;margin:0 auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);min-height:100%}
+
+/* ---------- แถบทรัพยากร ---------- */
+header{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
+h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
+.res{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-left:auto}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:6px 10px;font-size:var(--text-sm);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.chip b{font-variant-numeric:tabular-nums}
+.bar{width:70px;height:6px;background:var(--muted);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold)}
+.bar.karma i{background:var(--destructive)}
+
+/* ---------- เลย์เอาต์หลัก ---------- */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:var(--space-3);align-items:start}
+@media(max-width:980px){.main{grid-template-columns:1fr}}
+.stage{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--space-2);position:relative;overflow:hidden}
+canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
+.ctrl{display:flex;gap:var(--space-2);margin-top:var(--space-2);flex-wrap:wrap;align-items:center}
+
+button{font:inherit;font-size:var(--text-sm);cursor:pointer;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--secondary);color:var(--secondary-foreground);
+  padding:8px 12px;min-height:38px;transition:.15s}
+button:hover:not(:disabled){border-color:var(--ring);background:var(--accent)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.pri{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+button.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground);font-weight:600}
+button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
+
+/* ---------- แผงข้าง ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tabs button{flex:1;border:0;border-radius:0;background:transparent;color:var(--muted-foreground);padding:10px 4px}
+.tabs button[aria-selected=true]{color:var(--gold);box-shadow:inset 0 -2px 0 var(--gold);background:var(--muted)}
+.tabbody{padding:var(--space-3);max-height:430px;overflow:auto}
+.empty{color:var(--muted-foreground);font-size:var(--text-sm);text-align:center;padding:var(--space-5) 0}
+
+.soul{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.soul:hover{border-color:var(--ring)}
+.soul .top{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:var(--text-sm)}
+.soul .id{color:var(--muted-foreground);font-size:var(--text-xs);font-variant-numeric:tabular-nums}
+.deed{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:5px;line-height:1.5}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:99px;margin-right:4px;
+  background:var(--accent);color:var(--accent-foreground)}
+.wait{color:var(--warning)}
+
+.crew{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:8px}
+.crew .g{font-size:1.4rem}
+.crew .n{flex:1;min-width:0}
+.crew .n b{font-size:var(--text-sm)}
+.crew .st{font-size:11px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+
+/* ---------- บันทึก ---------- */
+.log{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--space-3);height:150px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body)}
+.log div{padding:1px 0;color:var(--muted-foreground)}
+.log .good{color:var(--success)} .log .bad{color:var(--destructive)}
+.log .act{color:var(--foreground)} .log .event{color:var(--gold)}
+.log .boss{color:var(--gold);font-family:var(--font-display)}
+
+/* ---------- โมดัล ---------- */
+dialog{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);
+  color:var(--card-foreground);max-width:520px;width:calc(100% - 32px);padding:var(--space-5);font:inherit}
+dialog::backdrop{background:rgba(10,4,6,.78)}
+dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
+.field{margin-bottom:var(--space-4)}
+.field>label{display:block;font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hint{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.6;margin-top:6px}
+.warn{color:var(--warning)}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:var(--space-4)}
+.shop{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:9px 10px;margin-bottom:8px}
+.shop .n{flex:1;min-width:0}
+.shop .n b{font-size:var(--text-sm)} .shop .n div{font-size:11px;color:var(--muted-foreground);line-height:1.45}
+footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;padding:var(--space-2) 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
+    <div class="res" id="res"></div>
+  </header>
+
+  <div class="main">
+    <div>
+      <div class="stage">
+        <canvas id="cv" width="704" height="480"></canvas>
+      </div>
+      <div class="ctrl">
+        <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
+        <button id="spd" class="sm">ความเร็ว ×1</button>
+        <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
+        <button id="help" class="sm" style="margin-left:auto">วิธีเล่น</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="queue" aria-selected="true">คิววิญญาณ</button>
+        <button role="tab" data-tab="crew" aria-selected="false">ยมทูต</button>
+        <button role="tab" data-tab="build" aria-selected="false">ก่อสร้าง</button>
+      </div>
+      <div class="tabbody" id="tabbody"></div>
+    </div>
+  </div>
+
+  <div class="log" id="log"></div>
+  <footer>เกมทดลอง M0 · ภาพทั้งหมดยังเป็น placeholder ที่โค้ดวาดเอง</footer>
+</div>
+
+<dialog id="dlg"></dialog>
+<script type="module" src="src/ui.js"></script>
+</body>
+</html>
