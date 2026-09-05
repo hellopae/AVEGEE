@@ -18,7 +18,7 @@ from PIL import Image
 import os, sys
 
 SIZE = 512
-TILE = 32          # ต้องตรงกับ TILE ใน src/data.js
+PAT  = 256         # ขนาดผืน pattern ของพื้น (ต้องตรงกับ PAT ใน src/art.js)
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
@@ -33,10 +33,12 @@ def prep(path, name):
         im.save(os.path.join(OUT, name + '.png'))
         return im.size
 
-    if name.startswith('tile-'):             # พื้น: ย่อเป็นช่องเดียวขนาด TILE ตรง ๆ
-        im = im.resize((TILE, TILE), Image.LANCZOS).convert('RGB')
-        im.quantize(colors=COLORS, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
-        return (TILE, TILE)
+    if name.startswith('tile-'):             # พื้น: ย่อเป็นผืน pattern ขนาด PAT
+        # ห้ามย่อลงเหลือ 32px — ลายก้อนหินจะเละเป็นสีเดียว
+        # เกมเอาไปใช้เป็น repeating pattern ทับทั้งแผนที่ ไม่ได้ยัดลงช่องละใบ
+        im = im.resize((PAT, PAT), Image.LANCZOS).convert('RGB')
+        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
+        return (PAT, PAT)
 
     scale = min(SIZE / im.width, SIZE / im.height)
     im = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)

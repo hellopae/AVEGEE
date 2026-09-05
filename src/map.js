@@ -1,6 +1,6 @@
 // map.js — แผนที่ tile + วาดฉาก
 import { TILE, MAP_W, MAP_H, SLOTS } from './data.js';
-import { drawTile, drawEdges, drawLavaGlow, drawStation, drawSoul, drawCrew,
+import { drawGround, drawEdges, drawLavaGlow, drawStation, drawSoul, drawCrew,
          drawProp, drawEmbers, drawVignette, hash, rr } from './art.js';
 
 export const ST_SIZE = TILE * 3;
@@ -48,8 +48,7 @@ export function buildMap() {
 export function render(ctx, g, world, t, hover) {
   const { map, decor } = world;
   ctx.imageSmoothingEnabled = false;
-  for (let y = 0; y < MAP_H; y++)
-    for (let x = 0; x < MAP_W; x++) drawTile(ctx, map[y][x], x, y, t);
+  drawGround(ctx, map, MAP_W, MAP_H, t);
   drawEdges(ctx, map, MAP_W, MAP_H);
   drawLavaGlow(ctx, map, MAP_W, MAP_H, t);
 
@@ -79,7 +78,7 @@ export function render(ctx, g, world, t, hover) {
     }
     if (st.crewK) {
       const c = g.crewOf(st.crewK);
-      if (c) drawCrew(ctx, c, px + ST_SIZE - 14, py + ST_SIZE - 4, 22, t);
+      if (c) drawCrew(ctx, c, px + ST_SIZE - 16, py + ST_SIZE + 2, 34, t);
     }
     if (st.soul) {
       drawSoul(ctx, px + 18, py + ST_SIZE - 16, 5, t);

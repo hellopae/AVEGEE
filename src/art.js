@@ -90,6 +90,52 @@ function tileLava(ctx, px, py, tx, ty, t) {
   ctx.fillRect(px, py, TILE, TILE);
 }
 
+/** ขนาดผืน pattern ของพื้น — ต้องตรงกับ PAT ใน scripts/prep-art.py */
+export const PAT = 256;
+const PATS = new Map();
+
+/** ทำ repeating pattern จาก img/tile-<type>.png (คืน null ถ้ายังไม่มีรูป/ยังโหลดไม่เสร็จ) */
+function patternFor(ctx, type) {
+  if (PATS.has(type)) return PATS.get(type);
+  const im = img('tile-' + type);
+  if (!im) return null;
+  const off = document.createElement('canvas');
+  off.width = off.height = PAT;
+  const oc = off.getContext('2d');
+  oc.imageSmoothingEnabled = false;
+  oc.drawImage(im, 0, 0, PAT, PAT);
+  const pat = ctx.createPattern(off, 'repeat');
+  PATS.set(type, pat);
+  return pat;
+}
+
+/** วาดพื้นทั้งผืน
+ *  รูปพื้นที่ gen มาลายละเอียดใหญ่กว่าช่อง 32px มาก ถ้ายัดลงช่องละใบลายจะเละเป็นสีเดียว
+ *  จึงปูเป็น repeating pattern ทับทั้งแผนที่แทน แล้วค่อยเอาถนน/ลาวาทับเป็นช่อง ๆ */
+export function drawGround(ctx, map, W, H, t) {
+  const rock = patternFor(ctx, 'rock');
+  if (rock) {
+    ctx.fillStyle = rock; ctx.fillRect(0, 0, W * TILE, H * TILE);
+    // กดพื้นให้จมลงนิดหนึ่ง ตัวละคร/อาคารจะได้ลอยขึ้นมาอ่านง่าย
+    ctx.fillStyle = 'rgba(18,7,13,.20)'; ctx.fillRect(0, 0, W * TILE, H * TILE);
+  }
+
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const type = map[y][x], px = x * TILE, py = y * TILE;
+    if (type === 'rock') { if (!rock) tileRock(ctx, px, py, x, y); continue; }
+    const pat = patternFor(ctx, type);
+    if (pat) {
+      ctx.fillStyle = pat; ctx.fillRect(px, py, TILE, TILE);
+      if (type === 'lava') {   // รูปนิ่ง — ให้โค้ดใส่จังหวะเต้นของไฟเอง
+        const p = 0.5 + 0.5 * Math.sin(t / 900 + x * 1.7 + y * 2.3);
+        ctx.fillStyle = `rgba(255,140,50,${0.08 + p * 0.20})`;
+        ctx.fillRect(px, py, TILE, TILE);
+      }
+    } else if (type === 'lava') tileLava(ctx, px, py, x, y, t);
+    else tilePath(ctx, px, py, x, y);
+  }
+}
+
 export function drawTile(ctx, type, tx, ty, t) {
   const px = tx * TILE, py = ty * TILE;
   // รูปจริง: ไฟล์เดี่ยว img/tile-<type>.png (texture ต่อขอบได้) — gen ง่ายกว่า atlas
