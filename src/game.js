@@ -1,5 +1,6 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
-import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS } from './data.js';
+import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS,
+         POWERS, DENIALS, CONFESS, PANIC } from './data.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -8,7 +9,8 @@ let SEQ = 1;
 export function createGame() {
   const g = {
     tick: 0, coin: BAL.startCoin, fuel: BAL.startFuel,
-    order: 72, karma: 0,
+    order: 72, karma: 0, hp: BAL.startHp,
+    powers: POWERS.map(p => ({ ...p, cd: 0 })),
     queue: [], logs: [], over: null,
     paused: true, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
@@ -38,21 +40,48 @@ function mkStation(k) {
 
 // ---------- สร้างสำนวนคดี ----------
 function mkSoul() {
-  const n = 1 + (Math.random() < 0.45 ? 1 : 0) + (Math.random() < 0.15 ? 1 : 0);
+  const n = 1 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.2 ? 1 : 0);
   const deeds = [];
   while (deeds.length < n) {
     const d = pick(DEEDS);
-    if (!deeds.some(x => x.t === d.t)) deeds.push(d);
+    if (!deeds.some(x => x.t === d.t)) deeds.push({ ...d, known: true });
   }
-  const merits = Math.random() < 0.55 ? [pick(MERITS)] : [];
-  const ws = deeds.map(d => d.w).sort((a, b) => b - a);
-  const raw = ws[0] + ws.slice(1).reduce((s, w) => s + w * 0.4, 0);
-  const meritSum = merits.reduce((s, m) => s + m.v, 0);
-  return {
-    id: SEQ++, who: pick(WHO), deeds, merits,
-    deserved: clamp(Math.round(raw - meritSum), 1, 5),
-    waited: 0,
+  // เรื่องที่สำนวนไม่ได้เขียนไว้ — ต้องใช้พลังถึงจะเจอ
+  if (Math.random() < BAL.hiddenChance) {
+    const h = pick(DEEDS);
+    if (!deeds.some(x => x.t === h.t)) deeds.push({ ...h, known: false });
+  }
+  // บุญ: บางอันเป็นของจริง บางอันเขากุขึ้นเอง
+  const merits = [];
+  if (Math.random() < 0.65) merits.push({ ...pick(MERITS), fake: false });
+  if (Math.random() < BAL.fakeMeritChance) {
+    const f = pick(MERITS);
+    if (!merits.some(m => m.t === f.t)) merits.push({ ...f, fake: true });
+  }
+
+  const soul = {
+    id: SEQ++, who: pick(WHO), deeds, merits, waited: 0,
+    said: [],          // สิ่งที่ปรากฏบนโต๊ะแล้ว (คำแก้ตัว/คำสารภาพ/ผลของพลัง)
+    denied: null,      // เรื่องที่เขาปฏิเสธ
   };
+  soul.deserved = deservedOf(soul);
+
+  // คำแก้ตัวตั้งต้น — ปฏิเสธเรื่องที่หนักที่สุดในสำนวน
+  const worst = [...deeds].filter(d => d.known).sort((a, b) => b.w - a.w)[0];
+  if (worst && Math.random() < 0.6) {
+    soul.denied = worst.t;
+    soul.said.push({ kind: 'deny', text: `"${pick(DENIALS)}" — เรื่อง${worst.t}` });
+  }
+  for (const m of merits) soul.said.push({ kind: 'claim', text: `"${m.t}" (เขาอ้างเอง ยังไม่มีใครยืนยัน)` });
+  return soul;
+}
+
+/** วาระที่สมควรได้รับ คิดจาก "ความจริงทั้งหมด" ไม่ใช่จากที่ผู้เล่นเห็น */
+function deservedOf(soul) {
+  const ws = soul.deeds.map(d => d.w).sort((a, b) => b - a);
+  const raw = ws[0] + ws.slice(1).reduce((s, w) => s + w * 0.4, 0);
+  const merit = soul.merits.filter(m => !m.fake).reduce((s, m) => s + m.v, 0);
+  return clamp(Math.round(raw - merit), 1, 5);
 }
 
 const API = {
@@ -69,6 +98,58 @@ const API = {
   },
 
   crewOf(k) { return this.crew.find(c => c.k === k); },
+
+  powerOf(k) { return this.powers.find(p => p.k === k); },
+  powerReady(k) {
+    const p = this.powerOf(k);
+    return p && p.cd === 0 && this.casesDone >= p.unlock;
+  },
+
+  /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
+  usePower(k, soul) {
+    if (!this.powerReady(k) || !soul) return null;
+    const p = this.powerOf(k);
+    p.cd = p.cd0 ?? p.cd;                       // เริ่มนับ cooldown
+    p.cd = POWERS.find(x => x.k === k).cd;
+    this.karma = clamp(this.karma + p.karma, 0, 100);
+
+    const hidden = soul.deeds.filter(d => !d.known);
+    const fakes = soul.merits.filter(m => m.fake && !m.exposed);
+    let out = [];
+
+    if (k === 'mirror') {                        // ความจริงเสมอ ทีละเรื่อง
+      if (hidden.length) {
+        hidden[0].known = true;
+        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: ${hidden[0].t}` });
+      } else if (fakes.length) {
+        fakes[0].exposed = true;
+        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: "${fakes[0].t}" ไม่เคยเกิดขึ้นเลย` });
+      } else if (soul.denied) {
+        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: ที่เขาปฏิเสธเรื่อง${soul.denied} — เขาทำจริง` });
+      } else {
+        out.push({ kind: 'truth', text: '🪞 กระจกส่องแล้วไม่พบอะไรที่ยังไม่รู้ สำนวนนี้ตรงไปตรงมา' });
+      }
+
+    } else if (k === 'roar') {                   // เร็วกว่า แต่คนกลัวพูดมั่วได้
+      if (Math.random() < 0.65 && hidden.length) {
+        hidden[0].known = true;
+        out.push({ kind: 'confess', text: `💢 "${pick(CONFESS)}" — ${hidden[0].t}` });
+      } else {
+        const f = pick(DEEDS);
+        out.push({ kind: 'false', text: `💢 "${pick(PANIC)}" — เขาสารภาพว่า${f.t}` });
+        out.push({ kind: 'hint', text: 'คำสารภาพนี้ออกมาตอนกำลังกลัว จะเชื่อหรือไม่เชื่อก็ได้' });
+      }
+
+    } else if (k === 'hypno') {                  // เห็นหมด แต่กรรมตกที่เรา
+      hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `🌀 ในใจเขามี: ${d.t}` }); });
+      fakes.forEach(m => { m.exposed = true; out.push({ kind: 'truth', text: `🌀 "${m.t}" เป็นเรื่องที่เขาแต่งขึ้น` }); });
+      if (!out.length) out.push({ kind: 'truth', text: '🌀 ในใจเขาไม่มีอะไรมากไปกว่าที่พูดออกมาแล้ว' });
+      out.push({ kind: 'hint', text: `การรื้อใจคนเป็นกรรมของเราด้วย — กรรมท่าน +${p.karma}` });
+    }
+
+    soul.said.push(...out);
+    return out;
+  },
   freeCrew() { return this.crew.filter(c => !c.at); },
 
   // ---------- มอบหมายคดี ----------
@@ -85,6 +166,8 @@ const API = {
     st.need = 18 + soul.deserved * 8 + st.intensity * 7;
     c.at = st.def.k;
     this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${st.intensity}`, 'act');
+    st.verdict = this.judge(st);        // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
+    this.applyVerdict(st.verdict, soul);
     return true;
   },
 
@@ -99,7 +182,9 @@ const API = {
 
     const short = Math.max(0, soul.deserved - st.intensity);
     const over = Math.max(0, st.intensity - soul.deserved);
-    const ked = clamp(100 - short * 30 - over * 4, 0, 100);
+    // เบาไปกับหนักเกิน ต้องเจ็บพอ ๆ กัน ไม่งั้นซัดวาระ 5 ทุกคดีจะเป็นวิธีเล่นที่ดีที่สุด
+    // ซึ่งขัดกับแกนของเกมทั้งเกม
+    const ked = clamp(100 - short * 26 - over * 17, 0, 100);
     const rab = clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
 
     const score = Math.round(0.50 * tham + 0.33 * ked + 0.17 * rab);
@@ -117,23 +202,39 @@ const API = {
     return { tham, ked, rab, score, karma, coin, short, over };
   },
 
-  finish(st) {
-    const soul = st.soul, c = this.crewOf(st.crewK);
-    const r = this.judge(st);
-    this.coin += r.coin;
+  /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
+  applyVerdict(r, soul) {
     this.karma = clamp(this.karma + r.karma, 0, 100);
     this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; this.scoreSum += r.score;
+    this.powers.forEach(p => { if (p.cd > 0) p.cd--; });
 
     const tag = r.score >= 78 ? 'good' : r.score >= 50 ? '' : 'bad';
-    this.log(`สำนวน #${String(soul.id).padStart(3, '0')} จบ — ธรรม ${r.tham} · เข็ด ${r.ked} · รวม ${r.score} · +${r.coin} เบี้ย`, tag);
+    this.log(`คำตัดสิน #${String(soul.id).padStart(3, '0')} — ธรรม ${r.tham} · เข็ด ${r.ked} · รวม ${r.score}`, tag);
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
     if (r.short > 0) this.log('  ↳ เบาไป วิญญาณยังไม่สำนึก จดไว้ในทะเบียนกลับมาใหม่', 'bad');
-    if (r.tham < 40) this.log(`  ↳ ${st.def.name} ไม่ตรงกรรมของเขา`, 'bad');
+    if (r.tham < 40) this.log('  ↳ ทัณฑ์ไม่ตรงชนิดกรรมของเขา', 'bad');
 
-    st.soul = null; st.progress = 0; st.crewK = null;
+    // ลงทัณฑ์เกินกรรมตั้งแต่สองวาระขึ้นไป = พ่อหักบารมีเสมอ ต่อให้คะแนนรวมยังสวย
+    // นี่คือข้อเดียวที่ท่านสั่งไว้ตั้งแต่วันแรก
+    if (r.over >= 2 && r.score >= 50) { this.hp -= BAL.hpBad; r.boss = 'cruel'; }
+    else if (r.score < 35)      { this.hp -= BAL.hpTerrible; r.boss = 'terrible'; }
+    else if (r.score < 50) { this.hp -= BAL.hpBad;      r.boss = 'bad'; }
+    else if (r.score >= 82){ this.hp = Math.min(BAL.startHp, this.hp + BAL.hpGoodHeal);
+                             this.coin += 40; r.boss = 'great'; }
+    else                   { r.boss = 'ok'; }
+    this.hp = clamp(this.hp, 0, BAL.startHp);
+    this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
+    this.checkEnd();
+  },
+
+  finish(st) {
+    const soul = st.soul, c = this.crewOf(st.crewK);
+    const r = st.verdict || this.judge(st);
+    this.coin += r.coin;
+    this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
+    st.soul = null; st.progress = 0; st.crewK = null; st.verdict = null;
     if (c) c.at = null;
-    this.lastResult = { ...r, who: soul.who, id: soul.id };
   },
 
   // ---------- หนึ่งวาระ ----------
@@ -212,7 +313,11 @@ const API = {
   },
 
   checkEnd() {
-    if (this.karma >= 100) this.over = {
+    if (this.hp <= 0) this.over = {
+      k: 'hp', title: 'พ่อไม่ให้โอกาสอีกแล้ว',
+      text: 'คำตัดสินที่พลาดสะสมจนพญายมไม่เหลืออะไรจะพูด ท่านเรียกนิรามารับตราคืนจากมือเจ้าต่อหน้าทุกคน โดยไม่มองหน้าเจ้าเลยสักครั้ง',
+    };
+    else if (this.karma >= 100) this.over = {
       k: 'karma', title: 'บาปตกที่ยมบาท',
       text: 'กรรมที่ท่านลงเกินไปทีละนิด สะสมจนเต็มบัญชีของท่านเอง เช้าวันหนึ่งชื่อของท่านไปโผล่อยู่ในคิว — สำนวนที่หนาที่สุดที่โซนนี้เคยรับ',
     };

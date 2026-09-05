@@ -1,5 +1,5 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
-import { SINS, STATIONS, CREW, BAL } from './data.js';
+import { SINS, STATIONS, CREW, BAL, POWERS } from './data.js';
 import { createGame } from './game.js';
 import { render, toScene, hitStation } from './scene.js';
 
@@ -32,6 +32,7 @@ function drawRes() {
   $('#res').innerHTML = `
     <span class="chip">🪙 <b>${g.coin}</b></span>
     <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
+    <span class="chip">❤️ บารมี ${bar(100 * g.hp / BAL.startHp, 'hp')} <b>${Math.round(g.hp)}</b></span>
     <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
     <span class="chip">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
     <span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>`;
@@ -114,57 +115,138 @@ function modal(html, onOpen) {
   if (onOpen) onOpen(dlg);
 }
 
+const SAID_STYLE = {
+  deny:    { icon: '🗣️', color: 'var(--muted-foreground)' },
+  claim:   { icon: '🪷', color: 'var(--muted-foreground)' },
+  truth:   { icon: '',   color: 'var(--gold)' },
+  confess: { icon: '',   color: 'var(--warning)' },
+  false:   { icon: '',   color: 'var(--destructive)' },
+  hint:    { icon: '↳',  color: 'var(--muted-foreground)' },
+};
+
+/** ฉากไต่สวน — วิญญาณยืนหน้าแท่น นิราอ่านสำนวน เราใช้พลังแล้วตัดสิน */
 function openAssign(soulId, preferStation = null) {
   const s = g.queue.find(x => x.id === soulId);
   if (!s) return;
   const wasPaused = g.paused; g.paused = true; updatePlay();
   let stK = preferStation, crK = null, inten = 3;
 
-  const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
-  const idle = g.crew.filter(c => !c.at);
+  const draw = d => {
+    const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
+    const idle = g.crew.filter(c => !c.at);
+    d.querySelector('#record').innerHTML = s.deeds.filter(x => x.known)
+      .map(x => `<div class="deed">${deedLine(x)}</div>`).join('')
+      || '<div class="hint">สำนวนว่างเปล่า — นิราเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
+    d.querySelector('#said').innerHTML = s.said.map(x => {
+      const st = SAID_STYLE[x.kind] || SAID_STYLE.hint;
+      return `<div class="deed" style="color:${st.color}">${st.icon} ${esc(x.text)}</div>`;
+    }).join('') || '<div class="hint">เขายังไม่พูดอะไรเลย</div>';
+    d.querySelector('#powers').innerHTML = POWERS.map(p => {
+      const ready = g.powerReady(p.k), pw = g.powerOf(p.k);
+      const why = g.casesDone < p.unlock ? `ปลดล็อกที่ ${p.unlock} คดี`
+                : pw.cd > 0 ? `รออีก ${pw.cd} คดี` : p.desc;
+      return `<button data-pw="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">
+        ${p.glyph} ${p.name}<br><span style="font-size:10px;opacity:.7">${esc(why)}</span></button>`;
+    }).join('');
+    d.querySelector('#opt-st').innerHTML = free.length ? free.map(x =>
+      `<button data-k="${x.def.k}" ${x.def.k === stK ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<br>
+        <span style="font-size:10px;opacity:.7">${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
+      : '<span class="hint">ไม่มีสถานีว่าง — รอคดีที่ทำอยู่ให้จบ หรือไปสร้างเพิ่มที่แท็บก่อสร้าง</span>';
+    d.querySelector('#opt-cr').innerHTML = idle.length ? idle.map(c =>
+      `<button data-k="${c.k}" ${c.k === crK ? 'aria-pressed="true"' : ''}>${c.glyph} ${c.name}<br>
+        <span style="font-size:10px;opacity:.7">กำลังใจ ${Math.round(c.morale)}</span></button>`).join('')
+      : '<span class="hint">ยมทูตไม่ว่างสักคน</span>';
+    d.querySelectorAll('#opt-in button').forEach(b =>
+      b.setAttribute('aria-pressed', String(+b.dataset.v === inten)));
+
+    d.querySelectorAll('[data-pw]').forEach(b => b.onclick = () => {
+      g.usePower(b.dataset.pw, s); draw(d); drawRes();
+    });
+    const sel = (wrap, cb) => d.querySelectorAll(`${wrap} button`).forEach(b =>
+      b.onclick = () => { cb(b.dataset.k ?? b.dataset.v); draw(d); });
+    sel('#opt-st', v => stK = v);
+    sel('#opt-cr', v => crK = v);
+    sel('#opt-in', v => inten = +v);
+    d.querySelector('#go').disabled = !(stK && crK);
+  };
 
   modal(`
-    <h2>สำนวน #${String(s.id).padStart(3, '0')} — ${esc(s.who)}</h2>
-    <div class="field">
-      <label>กรรมที่ทำมา</label>
-      ${s.deeds.map(d => `<div class="deed" style="margin-bottom:4px">${deedLine(d)}</div>`).join('')}
-      ${s.merits.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}${m.v ? '' : ' <i>(ไม่นับเป็นบุญ)</i>'}</div>`).join('')}
+    <h2>แท่นพิพากษา — สำนวน #${String(s.id).padStart(3, '0')}</h2>
+    <div class="boss" style="gap:var(--space-3);margin-bottom:var(--space-4)">
+      <img src="img/crew-nira.png" alt="" style="width:84px;height:84px" onerror="this.remove()">
+      <div style="min-width:0">
+        <div style="font-size:var(--text-sm)"><b>นิรา</b> อ่านสำนวน: ผู้ตายเป็น<b>${esc(s.who)}</b></div>
+        <div id="record" style="margin-top:4px"></div>
+      </div>
     </div>
+
+    <div class="field">
+      <label>เขาพูดว่าอะไร — คำพูดของวิญญาณเชื่อไม่ได้ทั้งหมด</label>
+      <div id="said"></div>
+    </div>
+
+    <div class="field">
+      <label>พลังของท่าน — ใช้แล้วต้องรอหลายคดีกว่าจะใช้ซ้ำได้</label>
+      <div class="opts" id="powers"></div>
+    </div>
+
     <div class="field">
       <label>สถานีทัณฑ์ — เลือกให้ตรงชนิดกรรม</label>
-      <div class="opts" id="opt-st">${free.length ? free.map(x =>
-        `<button data-k="${x.def.k}" ${x.def.k === preferStation ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<br><span style="font-size:10px;opacity:.7">${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
-        : '<span class="hint">ไม่มีสถานีว่าง — รอให้คดีที่ทำอยู่จบก่อน หรือไปสร้างเพิ่มที่แท็บก่อสร้าง</span>'}</div>
+      <div class="opts" id="opt-st"></div>
     </div>
     <div class="field">
       <label>ยมทูตผู้คุม</label>
-      <div class="opts" id="opt-cr">${idle.length ? idle.map(c =>
-        `<button data-k="${c.k}">${c.glyph} ${c.name}<br><span style="font-size:10px;opacity:.7">กำลังใจ ${Math.round(c.morale)}</span></button>`).join('')
-        : '<span class="hint">ยมทูตไม่ว่างสักคน</span>'}</div>
+      <div class="opts" id="opt-cr"></div>
     </div>
     <div class="field">
       <label>ระดับวาระ — หนักเกินกรรม ส่วนเกินจะตกเป็นกรรมของท่านเอง</label>
       <div class="opts" id="opt-in">${[1, 2, 3, 4, 5].map(i =>
-        `<button data-v="${i}" ${i === 3 ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div>
-      <div class="hint warn">อ่านน้ำหนักกรรมข้างบนแล้วประเมินเอง — เกมไม่บอกคำตอบ</div>
+        `<button data-v="${i}">${i} ${INTENSITY[i]}</button>`).join('')}</div>
     </div>
-    <div class="row"><button data-close>ยกเลิก</button><button class="gold" id="go" disabled>ออกหมาย</button></div>
+    <div class="row"><button data-close>พักคดีไว้ก่อน</button><button class="gold" id="go" disabled>ออกหมาย</button></div>
   `, d => {
-    const sel = (wrap, attr, cb) => d.querySelectorAll(`${wrap} button`).forEach(b => b.onclick = () => {
-      d.querySelectorAll(`${wrap} button`).forEach(x => x.removeAttribute('aria-pressed'));
-      b.setAttribute('aria-pressed', 'true'); cb(b.dataset[attr]); check();
-    });
-    const check = () => { d.querySelector('#go').disabled = !(stK && crK); };
-    check();
-    sel('#opt-st', 'k', v => stK = v);
-    sel('#opt-cr', 'k', v => crK = v);
-    sel('#opt-in', 'v', v => inten = +v);
+    draw(d);
     d.querySelector('#go').onclick = () => {
       g.assign(soulId, stK, crK, inten);
-      dlg.close(); g.paused = wasPaused; updatePlay(); refresh();
+      dlg.close();
+      refresh();
+      if (g.pendingVerdict) openVerdict(g.pendingVerdict);
+      else { g.paused = wasPaused; updatePlay(); }
     };
+    dlg.addEventListener('close', () => { refresh(); }, { once: true });
   });
-  dlg.addEventListener('close', () => { g.paused = wasPaused; updatePlay(); refresh(); }, { once: true });
+}
+
+const BOSS_LINE = {
+  great:    ['พญายมพยักหน้า', '"นี่แหละที่เรียกว่าตรงกรรม" ท่านคืนบารมีให้ส่วนหนึ่ง และสั่งจ่ายเบี้ยพิเศษให้ 40'],
+  ok:       ['พญายมไม่พูดอะไร', 'ท่านอ่านคำตัดสินจนจบ วางลง แล้วมองไปทางอื่น — แปลว่าใช้ได้ ไม่ถึงกับดี'],
+  cruel:    ['พญายมมองหน้าเจ้าตรง ๆ', '"คำตัดสินถูกฝาถูกตัว แต่เจ้าใส่เกินไปสองวาระ ส่วนเกินนั้นไม่ได้หายไปไหน มันมาอยู่ที่เจ้า" — บารมีถูกหัก'],
+  bad:      ['พญายมเงียบไปนาน', '"เจ้าอ่านสำนวนหรือเจ้าเดา" ท่านหักบารมีของเจ้าไปต่อหน้าทุกคน'],
+  terrible: ['พญายมลุกจากบัลลังก์', '"คำตัดสินแบบนี้ ทำให้คนที่เขาเจ็บมาแล้ว เจ็บซ้ำอีกครั้ง" — บารมีถูกหักหนัก'],
+};
+
+function openVerdict(v) {
+  g.pendingVerdict = null;
+  const [head, body] = BOSS_LINE[v.boss] || BOSS_LINE.ok;
+  const row = (k, val) => `<div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:2px 0">
+    <span style="color:var(--muted-foreground)">${k}</span><b>${val}</b></div>`;
+  modal(`<h2>คำตัดสิน — ${esc(v.who)}</h2>
+    <div class="boss">
+      <img src="img/hero-boss.png" alt="" onerror="this.remove()">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:2.4rem;font-family:var(--font-display);color:${v.score >= 78 ? 'var(--success)' : v.score >= 50 ? 'var(--gold)' : 'var(--destructive)'};line-height:1">${v.score}<span style="font-size:1rem;opacity:.6"> / 100</span></div>
+        ${row('ตรงกรรม (ธรรม)', v.tham)}
+        ${row('สาสมพอดี (เข็ด)', v.ked)}
+        ${row('งานเป็นระเบียบ', v.rab)}
+        ${v.karma ? row('กรรมที่ตกใส่ท่าน', '+' + v.karma) : ''}
+      </div>
+    </div>
+    <p style="line-height:var(--leading-body);margin-top:var(--space-4)"><b>${esc(head)}</b><br>${esc(body)}</p>
+    <div class="row"><button class="gold" data-close>รับทราบ</button></div>`);
+  dlg.addEventListener('close', () => {
+    refresh();
+    if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); }
+  }, { once: true });
 }
 
 function openEnding(o) {
