@@ -47,9 +47,12 @@ export function render(ctx, g, t, hover) {
 
   // ---- เรือข้ามธารลาวา (โค้ดล้วน ไม่ใช้ไฟล์รูป) ----
   const f = SPOTS.ferry;
-  const trip = (Math.sin(t / 5200) + 1) / 2;                 // ไป-กลับช้า ๆ
+  const ph = t / 5200;
+  const trip = (Math.sin(ph) + 1) / 2;                       // ไป-กลับช้า ๆ
   const fx = f.from[0] + (f.to[0] - f.from[0]) * trip;
-  drawBoat(ctx, fx, f.from[1], t, Math.min(3, Math.max(0, g.queue.length - QUEUE_LINE.length)));
+  // ขามาบรรทุกวิญญาณ ขากลับเรือเปล่า — อ่านออกว่ากำลังรับคนข้ามฟากอยู่
+  const inbound = Math.cos(ph) > 0;
+  drawBoat(ctx, fx, f.from[1], t, inbound ? Math.min(2, g.queue.length) : 0, inbound);
 
   // ---- คิววิญญาณ ยืนเรียงขึ้นสะพานมาที่แท่นพิพากษา ----
   g.queue.forEach((s, i) => {

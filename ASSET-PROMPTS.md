@@ -49,29 +49,52 @@ molten orange lava glow, antique temple gold trim
 
 ## ชุดที่ 0 — ฉาก (สำคัญที่สุดตอนนี้) 🔥
 
-ตอนนี้เกมใช้ draft `Exam/Scene-test.jpg` เป็นฉากไปพลางก่อน **แต่มีตัวละครวาดติดมาในภาพ**
-ทำให้เห็นตัวซ้อนกัน (ตัวที่วาดติดฉาก + ตัวที่โค้ดวางทับ) ต้อง gen ใหม่เป็น **ฉากเปล่า**
+**ใช้โหมดแก้ภาพ (edit/inpaint) กับฉากเดิม อย่า gen ใหม่ทั้งใบ** — gen ใหม่จะได้เลย์เอาต์ที่เพี้ยนไป
+และพิกัดทุกจุดในโค้ดอ้างเลย์เอาต์ปัจจุบันอยู่ ถ้าเลย์เอาต์ยังเดิม ผมไม่ต้องวัดพิกัดใหม่เลย
 
-| key | ต้องมีอะไร |
-|---|---|
-| `scene` | ฉากเดิมเป๊ะ ๆ **แต่เอาตัวละครทุกตัวออก** ทั้งยมทูตหกคน ตัวเรา วิญญาณ และองค์พญายมบนบัลลังก์ — เหลือเฉพาะสถานที่ พื้น ลาวา สะพาน อาคาร ของประดับ **บัลลังก์ต้องว่าง** |
+### 0.1 `scene` — ลบตัวละคร + เพิ่มสามอย่าง
 
 ```
-top-down 3/4 pixel art game map of a Thai buddhist hell, same layout and same style
-as the reference, but COMPLETELY EMPTY OF CHARACTERS — no demons, no guards, no ghosts,
-no king on the throne, the throne is empty. Only the environment: purple obsidian ground,
-molten lava rivers, a frozen ice prison in the top left, a field of blades, a yard of
-hanging hooks, a stone judgment platform in the centre, a long rope bridge leading down
-to the bottom edge, a golden royal pavilion with an empty throne, a large red-and-gold
-Thai temple, three bronze cauldrons on fire, a giant stone monster-mouth cave.
-No text, no letters, no numbers, no UI, no characters of any kind.
+Edit this image. Keep the layout, buildings, lava rivers and colors exactly as they are.
+
+REMOVE: every character in the picture — the guards, the ghosts, the boy with the gold
+crown, the monk, the fire demon, the bat imp, and the king sitting on the golden throne.
+Fill each removed area with the surrounding ground so it looks untouched. The throne must
+be completely empty.
+
+ADD three things, drawn in the same pixel art style:
+1. Along the bottom edge, a wide dark river of souls flowing left to right, with a small
+   wooden ferry dock on each bank. The existing rope bridge crosses over it.
+2. In the empty ground on the middle right, a grove of tall bare thorn trees with huge
+   black iron spikes on their trunks, standing on cracked red-lit soil.
+3. Where the small walled alcove on the middle left is, a cosy little Thai sala pavilion
+   with a red tiled roof, gold trim, open wooden sides and two glowing paper lanterns.
+
+No text, no letters, no numbers, no characters of any kind.
 ```
 
-**ทำไมต้องเปล่า** — ตัวละครทุกตัวต้องขยับตามเวร (ผู้คุมย้ายไปสถานีที่มีคดี วิญญาณเดินขึ้นสะพาน
-ตัวเรายืนที่แท่นพิพากษา) ถ้าวาดติดฉากมาก็ขยับไม่ได้ ต้องเป็นไฟล์แยกให้โค้ดวางเอง
+**ทำไมสามอย่างนี้** — ในเกมมีสถานี **ต้นงิ้ว** กับ **ศาลาน้ำชา** อยู่แล้วแต่ยังไม่มีที่ยืนบนฉาก
+ส่วนแม่น้ำกับท่าเรือคือของที่เป้ขอ (เรือข้ามฟาก) ตอนนี้เรือแล่นอยู่บนธารลาวาซึ่งดูไม่เข้าท่านัก
 
-**ถ้าจะเพิ่มทีหลัง** — `prop-boat` เรือข้ามธารลาวา (ตอนนี้โค้ดวาดเองอยู่ พอใช้ได้แต่หยาบ)
-ท่าเรือสองฝั่งธารลาวาก็ควรมีในฉากด้วย
+### 0.2 `prop-boat` — เรือจ้างพร้อมยมทูตพายเรือ
+
+เป็นไฟล์แยก **ไม่ใช่วาดติดฉาก** เพราะเรือต้องแล่นไป-กลับ (โค้ดพลิกกระจกให้เองตอนขากลับ)
+
+```
+top-down 3/4 pixel art game asset, high-detail modern pixel art, chunky readable
+silhouette, soft dithered shading with warm rim light, transparent background, square
+canvas, no text, no letters, no watermark
+COLOR THEME: Thai buddhist underworld — obsidian black-purple, blood-red lacquer,
+molten orange glow, antique temple gold
+
+A long narrow wooden ferry boat seen from a 3/4 angle, facing right, its prow carved as
+a naga serpent head with peeling gold leaf. Standing at the stern is a lean old demon
+ferryman with grey-blue skin, a wide conical straw hat, a ragged dark robe and a rope
+belt, both hands on a long bamboo pole pushing the boat forward, calm blank expression
+like someone who has done this for a thousand years. The boat is empty of passengers.
+```
+
+> ผู้โดยสารเป็นวิญญาณที่โค้ดวาดทับลงบนเรือเอง เรือจึงต้อง **ว่าง** ในไฟล์
 
 ---
 

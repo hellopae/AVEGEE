@@ -89,10 +89,16 @@ export function drawSoul(ctx, x, y, r, t, tint = '#bfe9ff') {
 }
 
 /** เรือข้ามธารลาวา — วิญญาณที่มาไม่ทันคิวนั่งมากับลำนี้ */
-export function drawBoat(ctx, x, y, t, riders = 0) {
+export function drawBoat(ctx, x, y, t, riders = 0, inbound = true) {
   const bob = Math.sin(t / 620) * 5;
   const im = img('prop-boat');
-  if (im) ctx.drawImage(im, x - 90, y - 120 + bob, 180, 180);
+  if (im) {                                  // รูปจริงวาดหันไปทางขวา ขากลับให้พลิกกระจก
+    ctx.save();
+    ctx.translate(x, y - 120 + bob);
+    if (!inbound) ctx.scale(-1, 1);
+    ctx.drawImage(im, -90, 0, 180, 180);
+    ctx.restore();
+  }
   else {
     ctx.fillStyle = 'rgba(0,0,0,.35)';
     ctx.beginPath(); ctx.ellipse(x, y + 14 + bob, 86, 15, 0, 0, 7); ctx.fill();

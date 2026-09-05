@@ -35,7 +35,7 @@ body{
   color:var(--foreground); font-family:var(--font-sans); font-size:var(--text-base);
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1240px;margin:0 auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);min-height:100%}
+.wrap{max-width:1480px;margin:0 auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);min-height:100%}
 
 /* ---------- แถบทรัพยากร ---------- */
 header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
@@ -52,9 +52,11 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 .bar.karma i{background:var(--destructive)}
 .bar.hp i{background:var(--success)}
 
-/* ---------- เลย์เอาต์หลัก ---------- */
-.main{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:var(--space-3);align-items:start}
-@media(max-width:980px){.main{grid-template-columns:1fr}}
+/* ---------- เลย์เอาต์หลัก ----------
+   ฉากกินเต็มความกว้าง แผงควบคุมกับบันทึกอยู่ใต้ฉาก
+   (เดิมแผงอยู่ข้าง ๆ ทำให้ฉากเหลือความกว้างไม่ถึงสองในสาม) */
+.below{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--space-3);align-items:start}
+@media(max-width:900px){.below{grid-template-columns:1fr}}
 .stage{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
   padding:var(--space-2);position:relative;overflow:hidden}
 canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
@@ -74,7 +76,7 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 .tabs{display:flex;border-bottom:1px solid var(--border)}
 .tabs button{flex:1;border:0;border-radius:0;background:transparent;color:var(--muted-foreground);padding:10px 4px}
 .tabs button[aria-selected=true]{color:var(--gold);box-shadow:inset 0 -2px 0 var(--gold);background:var(--muted)}
-.tabbody{padding:var(--space-3);max-height:430px;overflow:auto}
+.tabbody{padding:var(--space-3);height:294px;overflow:auto}
 .empty{color:var(--muted-foreground);font-size:var(--text-sm);text-align:center;padding:var(--space-5) 0}
 
 .soul{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
@@ -96,7 +98,7 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 
 /* ---------- บันทึก ---------- */
 .log{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:var(--space-3);height:150px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body)}
+  padding:var(--space-3);height:340px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body)}
 .log div{padding:1px 0;color:var(--muted-foreground)}
 .log .good{color:var(--success)} .log .bad{color:var(--destructive)}
 .log .act{color:var(--foreground)} .log .event{color:var(--gold)}
@@ -132,19 +134,17 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     <div class="res" id="res"></div>
   </header>
 
-  <div class="main">
-    <div>
-      <div class="stage">
-        <canvas id="cv" width="1200" height="553"></canvas>
-      </div>
-      <div class="ctrl">
-        <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
-        <button id="spd" class="sm">ความเร็ว ×1</button>
-        <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
-        <button id="help" class="sm" style="margin-left:auto">วิธีเล่น</button>
-      </div>
-    </div>
+  <div class="stage">
+    <canvas id="cv" width="1500" height="691"></canvas>
+  </div>
+  <div class="ctrl">
+    <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
+    <button id="spd" class="sm">ความเร็ว ×1</button>
+    <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
+    <button id="help" class="sm" style="margin-left:auto">วิธีเล่น</button>
+  </div>
 
+  <div class="below">
     <div class="panel">
       <div class="tabs" role="tablist">
         <button role="tab" data-tab="queue" aria-selected="true">คิววิญญาณ</button>
@@ -153,10 +153,10 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
       </div>
       <div class="tabbody" id="tabbody"></div>
     </div>
+    <div class="log" id="log"></div>
   </div>
 
-  <div class="log" id="log"></div>
-  <footer>เกมทดลอง M0 · ภาพทั้งหมดยังเป็น placeholder ที่โค้ดวาดเอง</footer>
+  <footer>อเวจี — เกมทดลอง · ฉากยังเป็นภาพ draft ที่มีตัวละครวาดติดมา ตัวจึงซ้อนกันชั่วคราว</footer>
 </div>
 
 <dialog id="dlg"></dialog>
