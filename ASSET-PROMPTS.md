@@ -47,71 +47,68 @@ molten orange lava glow, antique temple gold trim
 
 ---
 
-## ชุดที่ 0 — ฉาก (สำคัญที่สุดตอนนี้) 🔥
+## ชุดที่ 0 — ฉากฐาน "ที่โล่ง" 🔥
 
-**ใช้โหมดแก้ภาพ (edit/inpaint) กับฉากเดิม อย่า gen ใหม่ทั้งใบ** — gen ใหม่จะได้เลย์เอาต์ที่เพี้ยนไป
-และพิกัดทุกจุดในโค้ดอ้างเลย์เอาต์ปัจจุบันอยู่ ถ้าเลย์เอาต์ยังเดิม ผมไม่ต้องวัดพิกัดใหม่เลย
+ตอนนี้สถานีทุกหลังวาดติดมาในฉาก เลยเห็นครบตั้งแต่วินาทีแรกทั้งที่ยังไม่ได้สร้าง
+ต้องแยกเป็น **ฉากฐานที่โล่ง** + **อาคารไฟล์ละหลัง** เพื่อให้ "ขยายนรก" มีน้ำหนักจริง
 
-### 0.1 `scene` — ลบตัวละคร + เพิ่มสามอย่าง
+**ใช้โหมดแก้ภาพ (edit) กับฉากปัจจุบัน** เพื่อรักษาเลย์เอาต์และพิกัดในโค้ดไว้
 
-```
-Edit this image. Keep the layout, buildings, lava rivers and colors exactly as they are.
-
-REMOVE: every character in the picture — the guards, the ghosts, the boy with the gold
-crown, the monk, the fire demon, the bat imp, and the king sitting on the golden throne.
-Fill each removed area with the surrounding ground so it looks untouched. The throne must
-be completely empty.
-
-ADD three things, drawn in the same pixel art style:
-1. Along the bottom edge, a wide dark river of souls flowing left to right, with a small
-   wooden ferry dock on each bank. The existing rope bridge crosses over it.
-2. In the empty ground on the middle right, a grove of tall bare thorn trees with huge
-   black iron spikes on their trunks, standing on cracked red-lit soil.
-3. Where the small walled alcove on the middle left is, a cosy little Thai sala pavilion
-   with a red tiled roof, gold trim, open wooden sides and two glowing paper lanterns.
-
-No text, no letters, no numbers, no characters of any kind.
-```
-
-**ทำไมสามอย่างนี้** — ในเกมมีสถานี **ต้นงิ้ว** กับ **ศาลาน้ำชา** อยู่แล้วแต่ยังไม่มีที่ยืนบนฉาก
-ส่วนแม่น้ำกับท่าเรือคือของที่เป้ขอ (เรือข้ามฟาก) ตอนนี้เรือแล่นอยู่บนธารลาวาซึ่งดูไม่เข้าท่านัก
-
-### 0.2 `prop-boat` — เรือจ้างพร้อมยมทูตพายเรือ
-
-เป็นไฟล์แยก **ไม่ใช่วาดติดฉาก** เพราะเรือต้องแล่นไป-กลับ (โค้ดพลิกกระจกให้เองตอนขากลับ)
+| key | prompt |
+|---|---|
+| `scene` | ดูข้างล่าง |
 
 ```
-top-down 3/4 pixel art game asset, high-detail modern pixel art, chunky readable
-silhouette, soft dithered shading with warm rim light, transparent background, square
-canvas, no text, no letters, no watermark
-COLOR THEME: Thai buddhist underworld — obsidian black-purple, blood-red lacquer,
-molten orange glow, antique temple gold
+Edit this image. Keep the exact same layout, camera angle, palette and pixel art style.
 
-A long narrow wooden ferry boat seen from a 3/4 angle, facing right, its prow carved as
-a naga serpent head with peeling gold leaf. Standing at the stern is a lean old demon
-ferryman with grey-blue skin, a wide conical straw hat, a ragged dark robe and a rope
-belt, both hands on a long bamboo pole pushing the boat forward, calm blank expression
-like someone who has done this for a thousand years. The boat is empty of passengers.
+REMOVE these seven structures and replace each with plain empty ground that matches the
+area around it, as if nothing was ever built there:
+1. the whole frozen ice prison in the top left
+2. the field of upright blades on the left
+3. the wooden Thai pavilion with the red roof on the lower left
+4. the big red-and-gold Thai temple in the top right
+5. the three bronze cauldrons on the right
+6. the grove of bare thorn trees on the right
+7. the small stone pit on the lower middle
+
+KEEP exactly as they are: the border of dark mountains, all the lava rivers, the river of
+souls along the bottom with its two wooden docks, the rope bridge, the central stone
+judgment platform with the gold throne, and the small golden pavilion at the top middle.
+
+The cleared areas should read as flat open ground — cracked purple obsidian rock with a
+little ash, some small stones and bones, nothing man-made.
+No text, no letters, no numbers, no characters.
 ```
-
-> ผู้โดยสารเป็นวิญญาณที่โค้ดวาดทับลงบนเรือเอง เรือจึงต้อง **ว่าง** ในไฟล์
 
 ---
 
-## ชุดที่ 1 — สถานีทัณฑ์ (8 ชิ้น) 🔥 **gen ชุดนี้ก่อน — เปลี่ยนหน้าตาเกมมากที่สุด**
+## ชุดที่ 1 — อาคารสถานีทัณฑ์ แยกไฟล์ละหลัง
 
-ทุกชิ้นเป็น "อาคาร/สิ่งปลูกสร้าง" ขนาดพอ ๆ กัน มองจากมุมเดียวกัน ฐานอยู่ล่างสุดของภาพ
+**แปะบล็อกนี้นำหน้าทุกอัน:**
 
-| key | prompt (ต่อท้ายบล็อกสไตล์) |
-|---|---|
-| `st-sala` | a small ornate Thai temple pavilion used as a courthouse, multi-tiered red tile roof with gold chofa finials, carved gold gable, naga serpent balustrade on the front steps, a large brass balance scale and a thick rolled ledger on a black stone pedestal inside |
-| `st-krata` | a giant bronze cauldron wok set on a black stone furnace, thick orange flames licking underneath, dark liquid bubbling inside, ornate Thai lotus motifs embossed on the bronze rim, cracked obsidian base |
-| `st-ngiw` | a tall bare thorn tree with a thick crooked trunk covered in huge black iron-like spikes, twisted leafless branches, red glowing cracks in the ash ground around its roots |
-| `st-raeng` | a circular cracked bone-white stone platform ringed with rusted iron perches, three large black vultures perched and watching, faint ember glow between the stones |
-| `st-lin` | a small dark stone pavilion of silence, rows of hanging bronze temple bells with no clappers, a low black stone table with a pair of bronze tongs, dim purple light — ominous but not gory |
-| `st-lohak` | a round sunken stone pit filled with boiling dark liquid, thick copper rim, heavy iron chains coiled around the edge, rising steam lit orange from below |
-| `st-lan` | a hard-labor quarry yard, a raised black stone platform with huge rough boulders, an iron pushcart, pickaxes and shoulder poles leaning against a low wall |
-| `st-tea` | a cozy small Thai sala rest pavilion, red tiled roof with gold trim, open wooden sides, a low table with a clay teapot and cups, two paper lanterns glowing warm |
+```
+top-down 3/4 view pixel art game asset, high-detail modern pixel art in the style of a
+beautifully drawn Pokemon-style overworld map, chunky readable silhouette, soft dithered
+shading with warm rim light, clean crisp pixel edges, single structure centered on a fully
+transparent background, square canvas, viewed from the same angle as a top-down game map,
+no ground plate under it beyond its own footprint,
+no text, no letters, no numbers, no watermark, no characters, no people, no creatures
+COLOR THEME: Thai buddhist underworld — obsidian black-purple stone, blood-red lacquer,
+molten orange lava glow, antique temple gold
+```
+
+| key | prompt ต่อท้าย | สัดส่วนที่ต้องได้ |
+|---|---|---|
+| `st-lokan` | a frozen prison of the cold hell: a pale blue ice temple with a dark doorway, standing on a thick floating slab of ice, heavy frost chains draped across its front, a huge ice cube beside it, icicles hanging from every edge | **กว้างกว่าสูง** — เตี้ยและกว้างมาก |
+| `st-dab` | the blade forest of Asipattana: a row of eight huge curved swords and spears standing upright driven into cracked dark soil, blades stained dark red near the tips, a low broken stone fence behind them | **กว้างมาก เตี้ยมาก** (แถวเดียว) |
+| `st-tea` | a cosy small Thai sala rest pavilion built on a raised wooden deck, red clay tiled roof with gold trim and a chofa finial, open wooden sides with carved railings, two glowing orange paper lanterns hanging at the front corners | **เกือบจัตุรัส** |
+| `st-sala` | a grand Thai temple hall used as a hall of records, deep red walls with gold window frames, a tall multi-tiered roof with gold chofa finials, a wide staircase at the front with naga balustrades, closed gold double doors | **กว้างกว่าสูงเล็กน้อย** |
+| `st-krata` | three huge bronze cauldrons of different sizes on black stone furnaces, thick orange flames underneath, dark liquid bubbling and steaming inside, Thai lotus patterns embossed on the bronze rims | **กว้างมาก เตี้ย** (เรียงสามใบ) |
+| `st-ngiw` | a grove of four tall bare thorn trees, thick crooked trunks completely covered in huge black iron spikes, twisted leafless branches, cracked red-glowing soil around the roots | **สูงกว่ากว้าง** |
+| `st-lan` | a small hard-labour yard: a sunken square stone pit with two heavy rough boulders inside, a shoulder pole and a pickaxe leaning on the rim, scattered bone fragments | **เล็ก เกือบจัตุรัส** |
+
+> **สัดส่วนสำคัญกว่าที่คิด** — โค้ดวางอาคารโดยยึด **ฐานกลางล่าง** แล้วขยายให้เต็มความกว้างของโซน
+> ถ้าอันไหน gen ออกมาสูงเกินไป มันจะทะลุขึ้นไปทับโซนข้างบน บอกสัดส่วนไว้ใน prompt แล้วทุกอัน
 
 ---
 

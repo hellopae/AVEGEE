@@ -56,6 +56,14 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
   }
 }
 
+/** อาคารสถานี — ไฟล์ img/st-<k>.png วางกึ่งกลาง-ฐานที่ (bx,by) กว้าง bw
+ *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
+export function drawBuilding(ctx, def, t) {
+  const im = img('st-' + def.k);
+  if (!im || def.bx == null) return;
+  ctx.drawImage(im, def.bx - def.bw / 2, def.by - def.bw, def.bw, def.bw);
+}
+
 // ---------- ตัวละคร ----------
 /** วางตัวละครแบบ standee: เท้าอยู่ที่ (x,y) สูง h ในพิกัดฉาก
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */

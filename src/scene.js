@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE } from './data.js';
-import { img, drawFallbackGround, drawStandee, drawSoul, drawBoat,
+import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawEmbers, drawVignette, rr } from './art.js';
 
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
@@ -35,6 +35,11 @@ export function render(ctx, g, t, hover) {
     ctx.setLineDash([]);
     label(ctx, `${def.glyph} ${def.name} — ${def.cost}`, (x1 + x2) / 2, (y1 + y2) / 2, 17, 'rgba(255,220,180,.9)');
   }
+
+  // ---- อาคารที่สร้างแล้ว (วาดก่อนตัวละคร ตัวละครจะได้ยืนหน้าอาคาร) ----
+  // ฉากฐานเป็นที่โล่ง สถานีทุกหลังเป็นไฟล์แยก โผล่ขึ้นมาตอนสร้างเสร็จ
+  [...g.stations].sort((a, b) => a.def.by - b.def.by)
+    .forEach(st => drawBuilding(ctx, st.def, t));
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {
