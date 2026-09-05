@@ -59,6 +59,38 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 @media(max-width:900px){.below{grid-template-columns:1fr}}
 .stage{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
   padding:var(--space-2);position:relative;overflow:hidden}
+
+/* ---------- ชั้นซ้อนบนฉาก: บับเบิลคำพูด + เมนูพลัง ----------
+   ทุกตำแหน่งคิดเป็น % ของภาพฉาก จึงเลื่อนตามขนาดจอเองโดยไม่ต้องคำนวณใหม่ */
+#ov{position:absolute;inset:var(--space-2);pointer-events:none;font-size:var(--text-xs)}
+#ov>*{position:absolute}
+.bub{pointer-events:auto;width:min(30vw,340px);background:rgba(24,11,17,.95);
+  border:1px solid var(--border);border-radius:var(--radius-md);padding:8px 11px;
+  line-height:1.6;box-shadow:var(--shadow-lg)}
+.bub:after{content:'';position:absolute;bottom:-8px;border:8px solid transparent;
+  border-top-color:rgba(24,11,17,.95);border-bottom:0}
+.bub.r:after{right:22px} .bub.l:after{left:22px}
+.bub .who{color:var(--gold);font-weight:600;display:block;margin-bottom:3px}
+.bub.soul{background:rgba(18,26,38,.95);border-color:#33455c}
+.bub.soul:after{border-top-color:rgba(18,26,38,.95)}
+.bub.boss{background:rgba(38,12,10,.96);border-color:var(--primary);width:min(34vw,400px)}
+.bub.boss:after{border-top-color:rgba(38,12,10,.96)}
+.bub .line{color:var(--muted-foreground);padding:1px 0}
+.bub .line.truth{color:var(--gold)} .bub .line.confess{color:var(--warning)}
+.bub .line.false{color:var(--destructive)}
+
+.deck{pointer-events:auto;transform:translate(-50%,0);width:min(52vw,620px);
+  background:rgba(24,11,17,.96);border:1px solid var(--ring);border-radius:var(--radius-md);
+  padding:9px 11px;box-shadow:var(--shadow-lg)}
+.deck .lb{color:var(--muted-foreground);font-size:11px;margin:5px 0 3px}
+.deck .lb:first-child{margin-top:0}
+.deck .row2{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.deck button{padding:4px 8px;min-height:0;font-size:11px;line-height:1.35}
+.deck button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.deck .go{margin-left:auto}
+.score{transform:translate(-50%,-100%);font-family:var(--font-display);font-size:2.6rem;
+  font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.75);pointer-events:none}
+.score small{display:block;font-family:var(--font-sans);font-size:.75rem;font-weight:400;text-align:center}
 canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
 .ctrl{display:flex;gap:var(--space-2);margin-top:var(--space-2);flex-wrap:wrap;align-items:center}
 
@@ -135,7 +167,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   </header>
 
   <div class="stage">
-    <canvas id="cv" width="1500" height="691"></canvas>
+    <canvas id="cv" width="1527" height="704"></canvas>
+    <div id="ov"></div>
   </div>
   <div class="ctrl">
     <button id="play" class="pri">▶ เริ่มเดินวาระ</button>

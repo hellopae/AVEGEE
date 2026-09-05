@@ -70,12 +70,27 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓') {
   ctx.fillText(glyph, x, y - h * 0.1 + bob);
 }
 
-/** วิญญาณ — ดวงเรืองแสงลอย (โค้ดล้วน 0 เฟรม) */
-export function drawSoul(ctx, x, y, r, t, tint = '#bfe9ff') {
-  const bob = Math.sin(t / 400 + x) * (r * 0.32);
+/** วิญญาณ — ใช้สไปรท์ spirit1..3 ถ้ามี ไม่มีก็วาดดวงเรืองแสงเอง
+ *  h = ความสูงบนฉาก · เท้า(ปลายหาง)อยู่ที่ y */
+export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', variant = 0) {
+  const bob = Math.sin(t / 520 + x) * (h * 0.05);
+  const im = img('spirit' + (variant % 3 + 1));
+  ctx.fillStyle = 'rgba(0,0,0,.28)';
+  ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
+  if (im) {
+    ctx.save();
+    ctx.globalAlpha = 0.93;
+    ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
+    ctx.restore();
+    if (tint !== '#bfe9ff') {          // รอนานแล้ว — ย้อมแดงเตือน
+      ctx.save(); ctx.globalAlpha = 0.28; ctx.globalCompositeOperation = 'source-atop';
+      ctx.restore();
+    }
+    return;
+  }
+  const r = h * 0.24;
   ctx.fillStyle = 'rgba(140,200,255,.14)';
   ctx.beginPath(); ctx.arc(x, y + bob - r, r * 2.0, 0, 7); ctx.fill();
-  // ตัวเป็นหยดน้ำ หัวกลม หางเรียว
   ctx.fillStyle = tint;
   ctx.beginPath();
   ctx.moveTo(x, y + bob);
@@ -91,12 +106,13 @@ export function drawSoul(ctx, x, y, r, t, tint = '#bfe9ff') {
 /** เรือข้ามธารลาวา — วิญญาณที่มาไม่ทันคิวนั่งมากับลำนี้ */
 export function drawBoat(ctx, x, y, t, riders = 0, inbound = true) {
   const bob = Math.sin(t / 620) * 5;
+  const W = 132;
   const im = img('prop-boat');
-  if (im) {                                  // รูปจริงวาดหันไปทางขวา ขากลับให้พลิกกระจก
+  if (im) {                                  // รูปจริงหัวนาคอยู่ซ้าย = หันซ้าย · ขามาให้พลิกกระจก
     ctx.save();
-    ctx.translate(x, y - 120 + bob);
-    if (!inbound) ctx.scale(-1, 1);
-    ctx.drawImage(im, -90, 0, 180, 180);
+    ctx.translate(x, y - W * 0.78 + bob);
+    if (inbound) ctx.scale(-1, 1);
+    ctx.drawImage(im, -W / 2, 0, W, W);
     ctx.restore();
   }
   else {
@@ -117,7 +133,7 @@ export function drawBoat(ctx, x, y, t, riders = 0, inbound = true) {
     ctx.beginPath(); ctx.arc(x + 40, y - 74 + bob, 13, 0, 7); ctx.fill();
   }
   for (let i = 0; i < riders; i++)
-    drawSoul(ctx, x - 46 + i * 30, y - 18 + bob, 15, t + i * 500);
+    drawSoul(ctx, x - 22 + i * 30, y - 14 + bob, 38, t + i * 500, '#bfe9ff', i + 1);
 }
 
 // ---------- บรรยากาศ ----------

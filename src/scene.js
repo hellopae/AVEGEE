@@ -6,8 +6,9 @@ import { SCENE, STATIONS, SPOTS, QUEUE_LINE } from './data.js';
 import { img, drawFallbackGround, drawStandee, drawSoul, drawBoat,
          drawEmbers, drawVignette, rr } from './art.js';
 
-const CREW_H = 150;      // ความสูงตัวละครในพิกัดฉาก (ให้เท่าที่เป้วาดไว้)
-const HERO_H = 165;
+const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
+const HERO_H = 92;
+const SOUL_H = 64;
 
 /** ย่อฉากให้พอดีความกว้าง canvas — คืนอัตราส่วนไว้ใช้แปลงพิกัดเมาส์ */
 export const scaleFor = cv => cv.width / SCENE.w;
@@ -28,11 +29,11 @@ export function render(ctx, g, t, hover) {
     if (g.stations.some(s => s.def.k === def.k)) continue;
     const [x1, y1, x2, y2] = def.hit;
     ctx.fillStyle = 'rgba(12,4,8,.50)';
-    rr(ctx, x1, y1, x2 - x1, y2 - y1, 14); ctx.fill();
-    ctx.setLineDash([16, 12]);
-    ctx.strokeStyle = 'rgba(240,190,120,.45)'; ctx.lineWidth = 4; ctx.stroke();
+    rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.fill();
+    ctx.setLineDash([8, 6]);
+    ctx.strokeStyle = 'rgba(240,190,120,.45)'; ctx.lineWidth = 2; ctx.stroke();
     ctx.setLineDash([]);
-    label(ctx, `${def.glyph} ${def.name} — ${def.cost}`, (x1 + x2) / 2, (y1 + y2) / 2, 34, 'rgba(255,220,180,.85)');
+    label(ctx, `${def.glyph} ${def.name} — ${def.cost}`, (x1 + x2) / 2, (y1 + y2) / 2, 17, 'rgba(255,220,180,.9)');
   }
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
@@ -40,8 +41,8 @@ export function render(ctx, g, t, hover) {
     const def = STATIONS.find(d => d.k === hover);
     if (def) {
       const [x1, y1, x2, y2] = def.hit;
-      ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 5;
-      rr(ctx, x1, y1, x2 - x1, y2 - y1, 14); ctx.stroke();
+      ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 2.5;
+      rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.stroke();
     }
   }
 
@@ -58,7 +59,8 @@ export function render(ctx, g, t, hover) {
   g.queue.forEach((s, i) => {
     const p = QUEUE_LINE[i];
     if (!p) return;
-    drawSoul(ctx, p[0], p[1], 26, t + s.id * 300, s.waited > 40 ? '#ffb0b0' : '#bfe9ff');
+    drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, t + s.id * 300,
+             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.id);
   });
 
   // ---- ตัวเรา ยืนที่แท่นพิพากษา ----
@@ -70,24 +72,24 @@ export function render(ctx, g, t, hover) {
     const x = st ? st.x : c.hx, y = st ? st.y : c.hy;
     if (x == null) continue;
     drawStandee(ctx, 'crew-' + c.k, x, y, CREW_H, t + c.k.length * 400, c.glyph);
-    if (c.morale < 35) label(ctx, '😩', x, y - CREW_H - 14, 40);
+    if (c.morale < 35) label(ctx, '😩', x, y - CREW_H - 8, 20);
   }
 
   // ---- สถานีที่กำลังลงทัณฑ์: วิญญาณ + หลอดคืบหน้า + ระดับวาระ ----
   for (const st of g.stations) {
     if (!st.soul) continue;
     const d = st.def;
-    drawSoul(ctx, d.x - 70, d.y - 30, 24, t + st.soul.id * 200, '#ffd9c0');
-    const p = Math.min(1, st.progress / st.need), W = 190;
-    ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, d.x - W / 2, d.y + 16, W, 20, 10); ctx.fill();
-    ctx.fillStyle = '#ff9d3a';        rr(ctx, d.x - W / 2, d.y + 16, W * p, 20, 10); ctx.fill();
+    drawSoul(ctx, d.x - 40, d.y - 4, SOUL_H * 0.85, t + st.soul.id * 200, '#ffd9c0', st.soul.id);
+    const p = Math.min(1, st.progress / st.need), W = 96;
+    ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, d.x - W / 2, d.y + 8, W, 10, 5); ctx.fill();
+    ctx.fillStyle = '#ff9d3a';        rr(ctx, d.x - W / 2, d.y + 8, W * p, 10, 5); ctx.fill();
     for (let i = 0; i < 5; i++) {
       ctx.fillStyle = i < st.intensity ? '#ff6a4a' : 'rgba(255,255,255,.22)';
-      ctx.beginPath(); ctx.arc(d.x - 68 + i * 34, d.y + 56, 9, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(d.x - 34 + i * 17, d.y + 27, 4.5, 0, 7); ctx.fill();
     }
     const glow = 0.5 + 0.5 * Math.sin(t / 300);
     ctx.fillStyle = `rgba(255,130,40,${0.06 + glow * 0.10})`;
-    ctx.beginPath(); ctx.arc(d.x, d.y - 60, 190, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(d.x, d.y - 30, 96, 0, 7); ctx.fill();
   }
 
   drawEmbers(ctx, SCENE.w, SCENE.h, t);
