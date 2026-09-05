@@ -26,9 +26,15 @@ OUT = os.path.join(ROOT, 'img')
 
 def prep(path, name):
     im = Image.open(path).convert('RGBA')
-    box = im.getbbox()                       # 1. ตัดขอบใส
-    if box:
-        im = im.crop(box)
+    # 1. ตัดขอบใส — ต้องใช้ threshold ไม่ใช่ getbbox() ตรง ๆ
+    #    generator ทิ้ง alpha จาง ๆ (1-10) กระจายทั่วผืน getbbox() เลยคืนภาพเต็มใบ
+    #    ผลคือตัวละครถูกย่อจนเหลือครึ่งเดียวของที่ควรเป็น
+    if im.mode == 'RGBA':
+        alpha = im.getchannel('A')
+        box = alpha.point(lambda v: 255 if v >= 16 else 0).getbbox()
+        if box:
+            im = im.crop(box)
+        im.putalpha(im.getchannel('A').point(lambda v: 0 if v < 16 else v))
     if name == 'tileset':                    # atlas ห้ามยืด ปล่อยผ่าน
         im.save(os.path.join(OUT, name + '.png'))
         return im.size

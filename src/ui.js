@@ -175,6 +175,18 @@ function openEnding(o) {
     <div class="row"><button class="gold" onclick="location.reload()">เริ่มใหม่</button></div>`);
 }
 
+/** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
+function bossModal(title, text, btn = 'รับทราบ') {
+  const was = g.paused; g.paused = true; updatePlay();
+  modal(`<h2>${esc(title)}</h2>
+    <div class="boss">
+      <img src="img/hero-boss.png" alt="" onerror="this.remove()">
+      <p style="line-height:var(--leading-body);margin:0">${esc(text)}</p>
+    </div>
+    <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
+  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+}
+
 function openHelp() {
   modal(`<h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
@@ -233,6 +245,14 @@ cv.onclick = e => {
 g.onChange = () => {
   refresh();
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  if (g.pendingKpi) {
+    const k = g.pendingKpi; g.pendingKpi = null;
+    bossModal(k.pass ? 'ตรวจการ — ผ่าน' : 'ตรวจการ — ไม่ผ่าน',
+      k.pass
+        ? `"ระเบียบ ${Math.round(g.order)} คะแนนเฉลี่ย ${k.avg} ... พอใช้ได้" ท่านพูดแค่นั้นแล้วก็เงียบ — ผ่านแล้ว ${g.kpiPassed} จาก 3 รอบ`
+        : `"ระเบียบ ${Math.round(g.order)} คะแนนเฉลี่ย ${k.avg}" ท่านอ่านตัวเลขออกเสียงช้า ๆ ทีละตัว แล้วไม่พูดอะไรต่อ`);
+    return;
+  }
   if (g.pendingEvent) {
     const ev = g.pendingEvent; g.pendingEvent = null;
     const was = g.paused; g.paused = true; updatePlay();
@@ -243,3 +263,8 @@ g.onChange = () => {
 };
 
 updatePlay(); refresh(); requestAnimationFrame(frame);
+
+bossModal('โซนสุวรรณภูมิ',
+  '"สามร้อยปีที่แล้วโซนนี้มีผู้คุมสิบสองคน ตอนนี้เหลือสามคนกับกองสำนวนสูงเท่าตัวเจ้า ' +
+  'ข้าไม่สนว่าเจ้าจะทำยังไง แต่จำไว้ข้อเดียว — ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"',
+  'เริ่มงาน');

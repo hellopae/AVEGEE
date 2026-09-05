@@ -38,7 +38,9 @@ body{
 .wrap{max-width:1240px;margin:0 auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);min-height:100%}
 
 /* ---------- แถบทรัพยากร ---------- */
-header{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+#ava{image-rendering:pixelated;object-fit:contain;object-position:bottom;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px}
 h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
 h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
 .res{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-left:auto}
@@ -104,6 +106,9 @@ dialog{border:1px solid var(--border);border-radius:var(--radius);background:var
   color:var(--card-foreground);max-width:520px;width:calc(100% - 32px);padding:var(--space-5);font:inherit}
 dialog::backdrop{background:rgba(10,4,6,.78)}
 dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
+.boss{display:flex;gap:var(--space-4);align-items:flex-start}
+.boss img{image-rendering:pixelated;width:132px;height:132px;object-fit:contain;object-position:bottom;flex:none}
+@media(max-width:520px){.boss{flex-direction:column;align-items:center;text-align:center}}
 .field{margin-bottom:var(--space-4)}
 .field>label{display:block;font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px}
 .opts{display:flex;gap:6px;flex-wrap:wrap}
@@ -121,6 +126,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 <body>
 <div class="wrap">
   <header>
+    <img id="ava" src="img/hero-yama.png" alt="" width="52" height="52" onerror="this.remove()">
     <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
     <div class="res" id="res"></div>
   </header>
