@@ -24,8 +24,53 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
 OUT = os.path.join(ROOT, 'img')
 
+
+def strip_flat_bg(im):
+    """ลอกพื้นหลังทึบออกให้เป็น alpha
+
+    เจอกับ Gemini บ่อย: มัน **วาดลายตารางหมากรุก** (ลายที่โปรแกรมใช้แทน "พื้นใส")
+    ลงไปเป็นพิกเซลจริง ๆ แล้วเซฟเป็น jpeg ไฟล์เลยไม่มี alpha สักนิด
+    ถ้าเอาเข้าเกมตรง ๆ ตัวละครจะมีแผ่นตารางเทาติดมาเต็มกรอบ
+
+    วิธีลอก: flood fill จากขอบภาพเข้ามา เก็บเฉพาะพิกเซลที่ "เทา ๆ" (r≈g≈b)
+    ตัวละครในเกมนี้สีจัดทุกตัว เลยไม่โดนกินไปด้วย
+    """
+    from collections import deque
+    im = im.convert('RGBA')
+    w, h = im.size
+    px = im.load()
+
+    def greyish(p):
+        r, g, b, _ = p
+        return abs(r - g) < 16 and abs(g - b) < 16 and abs(r - b) < 16 and 60 <= r <= 215
+
+    seen = bytearray(w * h)
+    q = deque()
+    for x in range(w):
+        for y in (0, h - 1):
+            if greyish(px[x, y]): q.append((x, y)); seen[y * w + x] = 1
+    for y in range(h):
+        for x in (0, w - 1):
+            if greyish(px[x, y]) and not seen[y * w + x]: q.append((x, y)); seen[y * w + x] = 1
+    if len(q) < (w + h):          # ขอบไม่ได้เป็นพื้นเรียบ — ไม่ใช่เคสนี้ ปล่อยผ่าน
+        return im, 0
+
+    n = 0
+    while q:
+        x, y = q.popleft()
+        px[x, y] = (0, 0, 0, 0); n += 1
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < w and 0 <= ny < h and not seen[ny * w + nx] and greyish(px[nx, ny]):
+                seen[ny * w + nx] = 1; q.append((nx, ny))
+    return im, n
+
 def prep(path, name):
-    im = Image.open(path).convert('RGBA')
+    im = Image.open(path)
+    stripped = 0
+    if im.mode != 'RGBA' and not name.startswith('tile-'):
+        im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
+    im = im.convert('RGBA')
     # 1. ตัดขอบใส — ต้องใช้ threshold ไม่ใช่ getbbox() ตรง ๆ
     #    generator ทิ้ง alpha จาง ๆ (1-10) กระจายทั่วผืน getbbox() เลยคืนภาพเต็มใบ
     #    ผลคือตัวละครถูกย่อจนเหลือครึ่งเดียวของที่ควรเป็น
@@ -61,7 +106,9 @@ def prep(path, name):
 def main():
     if not os.path.isdir(RAW):
         sys.exit('ไม่พบโฟลเดอร์ ' + RAW)
-    files = sorted(f for f in os.listdir(RAW) if f.lower().endswith('.png'))
+    # ไฟล์ที่ขึ้นต้นด้วย _ = เก็บไว้อ้างอิง ไม่ต้องเอาเข้าเกม
+    files = sorted(f for f in os.listdir(RAW)
+                   if f.lower().endswith('.png') and not f.startswith('_'))
     if not files:
         sys.exit('ยังไม่มีไฟล์ใน img/raw/ — วาง <key>.png ไว้ก่อน')
     for f in files:

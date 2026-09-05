@@ -76,8 +76,18 @@ molten orange lava glow, antique temple gold trim
 | `crew-kan` | a calm scholarly demon, deep indigo skin, long dark hair tied back, round spectacle-less eyes, simple dark robe with gold trim, holding a Thai amulet with a blue eye motif, thoughtful expression |
 | `crew-boon` | a gentle demon monk-attendant, pale jade skin, soft round face, small blunt horns, plain ochre wrap-robe, holding a single pink lotus with both hands, serene sad smile |
 | `crew-dam` | a small scruffy bat-winged imp, charcoal skin, oversized ears, patched black shorts, carrying a bucket of coal, sleepy half-lidded eyes |
-| `hero-yama` | **(แก้ใหม่ 5 ก.ย. — ของเดิมโตเกินและสัดส่วนไม่เข้าชุดกับยมทูต)** the player character, a *child* prince of the underworld: chibi demon boy who looks about twelve, **2.5 heads tall exactly like the crew sprites**, big round expressive eyes, soft round cheeks, small blunt horns, dark red skin, a gold five-tiered crown **slightly too big for his head so it tips forward**, black and crimson Thai royal robe with gold trim whose sleeves are a little too long for his arms, hugging a thick ledger against his chest with both arms, nervous but trying-hard expression |
+| `hero-yama` | **(รอบ 3 — ผสมสองเวอร์ชัน ดูหมายเหตุใต้ตาราง)** the player character, a boy prince of the underworld: chibi demon boy about twelve, **the same height and build as the crew sprites, roughly 3 heads tall, with a slightly wide sturdy stance — not a narrow vertical figure**, big round eyes with soft worried eyebrows and faint blush on the cheeks, small blunt horns, dark red skin, **a neat compact Thai gold mongkut crown, only slightly too big so it tips a little forward — NOT a tall pointed cone**, black and crimson Thai royal robe with clean gold trim and slightly over-long sleeves, hugging a thick ledger against his chest with both arms, nervous but trying-hard expression, **outline weight matching the other crew sprites — not a heavy black cartoon outline** |
 | `hero-boss` | ✅ **ผ่านแล้ว ไม่ต้อง gen ใหม่** — the King of Death seated on a tall black throne, huge imposing crowned demon king, dark maroon skin, elaborate Thai royal regalia in gold and black, holding a long staff, face half in shadow — **ภาพนี้เป็นฉาก ไม่ต้องพื้นใส วาดเป็นภาพจัตุรัสเต็มใบได้** |
+
+> **ทำไมต้อง gen รอบ 3** — เวอร์ชัน "น่ารัก" (Gemini) กับเวอร์ชัน "สุขุม" เก็บไว้ที่
+> `img/raw/hero-yama.png` และ `img/raw/_hero-yama-calm.png` ตามลำดับ
+> เอาจากน่ารัก: หน้ากลม ตาโต คิ้วกังวล แก้มแดง ท่ากอดแฟ้มด้วยสองแขน
+> เอาจากสุขุม: ทรงมงกุฎไทยที่ถูกต้อง การตัดเย็บเสื้อคลุมและตำแหน่งขลิบทอง น้ำหนักเส้นขอบ
+> ทิ้งทั้งคู่: มงกุฎทรงกรวยสูงเกินครึ่งหัว (จากน่ารัก) · หน้าผู้ใหญ่ไร้อารมณ์และตัวผอมสูง (จากสุขุม)
+>
+> **เหตุผลเรื่องรูปทรงตัว** — ย่อทั้งสองเวอร์ชันลงขนาดจริงในเกม (34px) เทียบกับทัณฑ์แล้ว
+> ทัณฑ์อ่านออกชัดเพราะเงาตัวกว้างและมีชิ้นส่วนใหญ่ ๆ ส่วน hero ทั้งสองเวอร์ชันเป็นแท่งแคบ ๆ
+> เลยจมหายทั้งคู่ — เวอร์ชันใหม่ต้อง**ยืนกว้างขึ้น** ไม่ใช่แค่เตี้ยลง
 
 ---
 
