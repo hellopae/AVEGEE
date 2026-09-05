@@ -1,8 +1,9 @@
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
 
-export const TILE = 32;
-export const MAP_W = 22, MAP_H = 15;
+// ฉากเป็นภาพวาดใบเดียว โค้ดวางพิกัดทับ (เลิกใช้ tile grid ตั้งแต่ 6 ก.ย. 2569)
+// พิกัดทุกค่าในไฟล์นี้อ้างระบบพิกัดของภาพฉากขนาดเต็ม แล้วค่อยย่อลงตอนวาด
+export const SCENE = { w: 3000, h: 1383 };
 
 // ---------- ชนิดบาป ----------
 export const SINS = {
@@ -62,37 +63,60 @@ export const WHO = [
 
 // ---------- สถานีทัณฑ์ ----------
 // tags = ชนิดบาปที่สถานีนี้ "ตรงกรรม" · pow = แรงงานต่อวาระ · fuel = ฟืนต่อวาระ
+// x,y = จุดยืนของผู้คุมบนฉาก · hit = กรอบคลิก [x1,y1,x2,y2]  (พิกัดฉากเต็ม 3000x1383)
 export const STATIONS = [
-  { k:'sala',  name:'ศาลาพิพากษา',  glyph:'⚖️', tags:[],                       cost:0,   pow:2, fuel:0,   slots:1, desc:'อ่านสำนวน ออกหมาย ค่าระเบียบขึ้นเอง' },
-  { k:'krata', name:'กระทะทองแดง',  glyph:'🍳', tags:['kong','mao'],           cost:180, pow:4, fuel:1.4, slots:1, desc:'ทัณฑ์คลาสสิกของคนโลภ ทอดจนกว่าจะรู้สึกตัว' },
-  { k:'ngiw',  name:'ต้นงิ้ว',       glyph:'🌵', tags:['kam'],                  cost:160, pow:3, fuel:0.6, slots:1, desc:'ปีนขึ้นปีนลง หนามทุกก้าวคือคนที่เคยเจ็บ' },
-  { k:'raeng', name:'ลานแร้งกา',    glyph:'🦅', tags:['kha'],                  cost:220, pow:5, fuel:0.4, slots:1, desc:'ให้รู้ว่าการเป็นฝ่ายถูกทำมันรู้สึกยังไง' },
-  { k:'lin',   name:'โรงตัดลิ้น',    glyph:'👅', tags:['pak'],                  cost:200, pow:4, fuel:0.8, slots:1, desc:'คำที่เคยพูดจะถูกอ่านซ้ำให้ฟังทุกวาระ' },
-  { k:'lohak', name:'บ่อโลหกุมภี',   glyph:'🫖', tags:['mao','kong'],           cost:240, pow:5, fuel:1.8, slots:1, desc:'บ่อน้ำเดือด สำหรับคนที่เมาจนลืมคนข้างหลัง' },
-  { k:'lan',   name:'ลานตรากตรำ',   glyph:'⛏️', tags:['bian','akata'],         cost:150, pow:3, fuel:0.3, slots:1, desc:'แบกหินก้อนเท่าที่เคยทิ้งไว้ให้คนอื่นแบก' },
-  { k:'tea',   name:'ศาลาน้ำชา',    glyph:'🍵', tags:[],                       cost:120, pow:0, fuel:0.2, slots:2, desc:'ที่พักยมทูต กำลังใจฟื้นเร็วขึ้น' },
+  { k:'sala',  name:'หอทะเบียนกรรม', glyph:'📜', tags:[],               cost:0,   pow:2, fuel:0,
+    x:2560, y:500,  hit:[2230,40,2900,540],
+    desc:'ที่เก็บสำนวนทั้งโซน เดินเอกสารเร็วขึ้น ระเบียบขึ้นเอง' },
+  { k:'krata', name:'กระทะทองแดง',   glyph:'🍳', tags:['kong','mao'],   cost:180, pow:4, fuel:1.4,
+    x:2560, y:790,  hit:[2290,600,2820,810],
+    desc:'ทัณฑ์ของคนโลภ ทอดจนกว่าจะรู้สึกตัว' },
+  { k:'dab',   name:'ป่าดาบอสิปัตตะ', glyph:'🗡️', tags:['kha'],          cost:220, pow:5, fuel:0.3,
+    x:470,  y:830,  hit:[200,520,720,860],
+    desc:'ป่าที่ใบไม้ทุกใบเป็นดาบ ให้รู้ว่าการเป็นฝ่ายถูกทำรู้สึกยังไง' },
+  { k:'khor',  name:'ลานตะขอ',       glyph:'⛓️', tags:['pak'],          cost:200, pow:4, fuel:0.6,
+    x:380,  y:1120, hit:[220,910,540,1160],
+    desc:'คำที่เคยพูดถูกเกี่ยวกลับมาอ่านให้ฟังทุกวาระ' },
+  { k:'lokan', name:'โลกันตนรก',      glyph:'🧊', tags:['akata'],        cost:260, pow:3, fuel:0,
+    x:560,  y:500,  hit:[150,90,1010,600],
+    desc:'นรกน้ำแข็ง ไม่ใช้ฟืนเลย — สำหรับคนที่เย็นชากับคนที่ควรอบอุ่นที่สุด' },
+  { k:'tham',  name:'ถ้ำอสูรกลืนกรรม', glyph:'🦷', tags:['bian'],        cost:240, pow:5, fuel:0.8,
+    x:2540, y:1240, hit:[2180,860,2980,1330],
+    desc:'ถูกกลืนแล้วคายออกมาทุกวาระ เท่าที่เคยกลืนของส่วนรวมไป' },
+  { k:'ngiw',  name:'ต้นงิ้ว',        glyph:'🌵', tags:['kam'],          cost:160, pow:3, fuel:0.4,
+    x:2010, y:760,  hit:[1870,560,2170,790],
+    desc:'ปีนขึ้นปีนลง หนามทุกก้าวคือคนที่เคยเจ็บ' },
+  { k:'tea',   name:'ศาลาน้ำชา',      glyph:'🍵', tags:[],               cost:120, pow:0, fuel:0.2,
+    x:1090, y:1000, hit:[960,800,1230,1020],
+    desc:'ที่พักยมทูต กำลังใจฟื้นเร็วขึ้น' },
 ];
 
-// จุดวางสถานีบนแผนที่ (tile)
-export const SLOTS = [
-  { x: 2, y: 2 }, { x: 7, y: 2 }, { x: 12, y: 2 }, { x: 17, y: 2 },
-  { x: 2, y: 9 }, { x: 7, y: 9 }, { x: 12, y: 9 }, { x: 17, y: 9 },
+/** จุดสำคัญบนฉากที่ไม่ใช่สถานี */
+export const SPOTS = {
+  bench:  { x:1600, y:700 },                    // แท่นพิพากษา — ที่ hero-yama ยืน
+  throne: { x:1845, y:415 },                    // บัลลังก์พญายม
+  ferry:  { from:[900,1010], to:[1430,1010] },  // เรือข้ามธารลาวา
+};
+
+/** แถวคิววิญญาณ ไล่จากแท่นพิพากษาลงไปตามสะพาน */
+export const QUEUE_LINE = [
+  [1500,790],[1500,880],[1498,960],[1500,1040],[1500,1120],[1500,1200],[1500,1280],[1500,1360],
 ];
 
 // ---------- ยมทูต ----------
 // raeng แรง · rabiab ระเบียบ · panya ปัญญา · metta เมตตา  (1-10)
 export const CREW = [
-  { k:'taan',  name:'ทัณฑ์',  glyph:'👺', raeng:8, rabiab:5, panya:4, metta:2, pay:14, hire:0,
+  { k:'taan', hx:380, hy:1120,  name:'ทัณฑ์',  glyph:'👺', raeng:8, rabiab:5, panya:4, metta:2, pay:14, hire:0,
     line:'"ผมคุมกระทะนี้มาตั้งแต่รุ่นปู่ท่าน อย่าเพิ่งมาสอน"' },
-  { k:'nira',  name:'นิรา',   glyph:'👩‍💼', raeng:3, rabiab:9, panya:7, metta:5, pay:12, hire:0,
+  { k:'nira', hx:1440, hy:500,  name:'นิรา',   glyph:'👩‍💼', raeng:3, rabiab:9, panya:7, metta:5, pay:12, hire:0,
     line:'"สำนวนไม่ครบ ดิฉันไม่ออกหมายให้นะคะ"' },
-  { k:'plerng',name:'เพลิง',  glyph:'🔥', raeng:9, rabiab:2, panya:3, metta:1, pay:16, hire:0,
+  { k:'plerng', hx:2580, hy:790,name:'เพลิง',  glyph:'🔥', raeng:9, rabiab:2, panya:3, metta:1, pay:16, hire:0,
     line:'"สั่งมาเลยว่ากี่วาระ ผมบวกให้อีกนิดหน่อยเอง"' },
-  { k:'kan',   name:'กานต์',  glyph:'🧿', raeng:4, rabiab:6, panya:9, metta:6, pay:18, hire:260,
+  { k:'kan', hx:2545, hy:480,   name:'กานต์',  glyph:'🧿', raeng:4, rabiab:6, panya:9, metta:6, pay:18, hire:260,
     line:'"สำนวนนี้มีอะไรที่ยังไม่ได้เขียนลงไป ผมขอเวลาอ่านก่อน"' },
-  { k:'boon',  name:'บุญ',    glyph:'🪷', raeng:2, rabiab:6, panya:6, metta:10, pay:15, hire:300,
+  { k:'boon', hx:1095, hy:1000,  name:'บุญ',    glyph:'🪷', raeng:2, rabiab:6, panya:6, metta:10, pay:15, hire:300,
     line:'"ท่านครับ... วาระที่เกินมา มันไม่ได้หายไปไหนนะครับ"' },
-  { k:'dam',   name:'ดำ',     glyph:'🦇', raeng:6, rabiab:4, panya:4, metta:4, pay:9,  hire:120,
+  { k:'dam', hx:555, hy:430,   name:'ดำ',     glyph:'🦇', raeng:6, rabiab:4, panya:4, metta:4, pay:9,  hire:120,
     line:'"สั่งอะไรก็ทำครับ ขอแค่ได้พักบ้าง"' },
 ];
 

@@ -19,6 +19,7 @@ import os, sys
 
 SIZE = 512
 PAT  = 256         # ขนาดผืน pattern ของพื้น (ต้องตรงกับ PAT ใน src/art.js)
+SCENE_W = 2000     # ความกว้างสูงสุดของภาพฉาก
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
@@ -68,7 +69,7 @@ def strip_flat_bg(im):
 def prep(path, name):
     im = Image.open(path)
     stripped = 0
-    if im.mode != 'RGBA' and not name.startswith('tile-'):
+    if im.mode != 'RGBA' and not name.startswith('tile-') and name != 'scene':
         im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
     im = im.convert('RGBA')
     # 1. ตัดขอบใส — ต้องใช้ threshold ไม่ใช่ getbbox() ตรง ๆ
@@ -82,6 +83,12 @@ def prep(path, name):
         im.putalpha(im.getchannel('A').point(lambda v: 0 if v < 16 else v))
     if name == 'tileset':                    # atlas ห้ามยืด ปล่อยผ่าน
         im.save(os.path.join(OUT, name + '.png'))
+        return im.size
+
+    if name == 'scene':                      # ฉากเต็มใบ — ย่อพอให้ไฟล์ไม่อ้วน ห้ามตัด ห้ามลอกพื้น
+        if im.width > SCENE_W:
+            im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
+        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
         return im.size
 
     if name.startswith('tile-'):             # พื้น: ย่อเป็นผืน pattern ขนาด PAT

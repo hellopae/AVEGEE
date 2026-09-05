@@ -1,7 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
-import { SINS, STATIONS, CREW, BAL, TILE } from './data.js';
+import { SINS, STATIONS, CREW, BAL } from './data.js';
 import { createGame } from './game.js';
-import { buildMap, render, hitStation, hitSlot, ST_SIZE } from './map.js';
+import { render, toScene, hitStation } from './scene.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -9,7 +9,6 @@ const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หน
 const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'สาสม'];
 
 const g = createGame();
-const map = buildMap();
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
@@ -21,7 +20,7 @@ function frame(now) {
     const step = BAL.tickMs / g.speed;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
-  render(ctx, g, map, now, hover);
+  render(ctx, g, now, hover);
   requestAnimationFrame(frame);
 }
 
@@ -115,11 +114,11 @@ function modal(html, onOpen) {
   if (onOpen) onOpen(dlg);
 }
 
-function openAssign(soulId) {
+function openAssign(soulId, preferStation = null) {
   const s = g.queue.find(x => x.id === soulId);
   if (!s) return;
   const wasPaused = g.paused; g.paused = true; updatePlay();
-  let stK = null, crK = null, inten = 3;
+  let stK = preferStation, crK = null, inten = 3;
 
   const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
   const idle = g.crew.filter(c => !c.at);
@@ -134,7 +133,7 @@ function openAssign(soulId) {
     <div class="field">
       <label>สถานีทัณฑ์ — เลือกให้ตรงชนิดกรรม</label>
       <div class="opts" id="opt-st">${free.length ? free.map(x =>
-        `<button data-k="${x.def.k}">${x.def.glyph} ${x.def.name}<br><span style="font-size:10px;opacity:.7">${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
+        `<button data-k="${x.def.k}" ${x.def.k === preferStation ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<br><span style="font-size:10px;opacity:.7">${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
         : '<span class="hint">ไม่มีสถานีว่าง — รอให้คดีที่ทำอยู่จบก่อน หรือไปสร้างเพิ่มที่แท็บก่อสร้าง</span>'}</div>
     </div>
     <div class="field">
@@ -156,6 +155,7 @@ function openAssign(soulId) {
       b.setAttribute('aria-pressed', 'true'); cb(b.dataset[attr]); check();
     });
     const check = () => { d.querySelector('#go').disabled = !(stK && crK); };
+    check();
     sel('#opt-st', 'k', v => stK = v);
     sel('#opt-cr', 'k', v => crK = v);
     sel('#opt-in', 'v', v => inten = +v);
@@ -216,30 +216,53 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
   drawTab();
 });
 
-// คลิกบนแผนที่
+// คลิกบนฉาก
 cv.onmousemove = e => {
-  const r = cv.getBoundingClientRect(), sc = cv.width / r.width;
-  const st = hitStation(g, (e.clientX - r.left) * sc, (e.clientY - r.top) * sc);
-  hover = st ? st.def.k : null;
-  cv.style.cursor = hover || hitSlot(g, (e.clientX - r.left) * sc, (e.clientY - r.top) * sc) >= 0 ? 'pointer' : 'default';
+  const [sx, sy] = toScene(cv, e);
+  const def = hitStation(sx, sy);
+  hover = def ? def.k : null;
+  cv.style.cursor = def ? 'pointer' : 'default';
 };
+cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
-  const r = cv.getBoundingClientRect(), sc = cv.width / r.width;
-  const mx = (e.clientX - r.left) * sc, my = (e.clientY - r.top) * sc;
-  const st = hitStation(g, mx, my);
-  if (st) {
-    if (st.soul) modal(`<h2>${st.def.glyph} ${st.def.name}</h2>
+  const [sx, sy] = toScene(cv, e);
+  const def = hitStation(sx, sy);
+  if (!def) return;
+  const st = g.stations.find(x => x.def.k === def.k);
+
+  if (!st) return openBuild(def);          // ยังไม่ได้สร้าง
+  if (st.soul) {                            // กำลังลงทัณฑ์อยู่
+    const c = g.crewOf(st.crewK);
+    return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
       <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
         กำลังคุม <b>${esc(st.soul.who)}</b> สำนวน #${String(st.soul.id).padStart(3, '0')}<br>
-        ผู้คุม: ${esc(g.crewOf(st.crewK)?.name || '—')} · ระดับวาระ ${st.intensity} ${INTENSITY[st.intensity]}<br>
+        ผู้คุม: ${esc(c?.name || '—')} · ระดับวาระ ${st.intensity} ${INTENSITY[st.intensity]}<br>
         คืบหน้า ${Math.round(100 * st.progress / st.need)}%</p>
       <div class="row"><button data-close>ปิด</button></div>`);
-    else if (g.queue.length) openAssign(g.queue[0].id);
-    return;
   }
-  const slot = hitSlot(g, mx, my);
-  if (slot >= 0) { tab = 'build'; document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', x.dataset.tab === 'build')); drawTab(); }
+  if (def.pow === 0) {                      // ศาลาน้ำชา — ไม่ใช่ที่ลงทัณฑ์
+    return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
+      <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
+      <div class="row"><button data-close>ปิด</button></div>`);
+  }
+  if (!g.queue.length) {
+    return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
+      <p style="font-size:var(--text-sm)">ว่างอยู่ แต่ยังไม่มีวิญญาณในคิว</p>
+      <div class="row"><button data-close>ปิด</button></div>`);
+  }
+  openAssign(g.queue[0].id, def.k);         // ว่าง + มีคิว → ออกหมายเลย
 };
+
+function openBuild(def) {
+  const afford = g.coin >= def.cost;
+  modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
+    <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
+      · ฟืน ${def.fuel}/วาระ · แรง ${def.pow}</div>
+    <div class="row"><button data-close>ยังไม่สร้าง</button>
+      <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
+    d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
+}
 
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {

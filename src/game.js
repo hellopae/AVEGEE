@@ -1,5 +1,5 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
-import { SINS, DEEDS, MERITS, WHO, STATIONS, SLOTS, CREW, BAL, EVENTS } from './data.js';
+import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS } from './data.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -18,8 +18,8 @@ export function createGame() {
     onChange: () => {},
   };
 
-  // สถานีตั้งต้น: ศาลาพิพากษา + กระทะทองแดง
-  g.stations = [mkStation('sala', 0), mkStation('krata', 1)];
+  // สถานีตั้งต้น: หอทะเบียน + กระทะทองแดง (ที่เหลือสร้างเอาเอง)
+  g.stations = [mkStation('sala'), mkStation('krata')];
 
   Object.assign(g, API);
   g.log('พญายม: "โซนนี้เละมาสามร้อยปีแล้ว จัดการซะ" แล้วท่านก็หายไป', 'boss');
@@ -31,9 +31,9 @@ function mkCrew(def) {
   return { ...def, morale: 92, at: null, tired: false };
 }
 
-function mkStation(k, slotIdx) {
+function mkStation(k) {
   const def = STATIONS.find(s => s.k === k);
-  return { def, slot: SLOTS[slotIdx], slotIdx, soul: null, crewK: null, intensity: 3, progress: 0, need: 0 };
+  return { def, soul: null, crewK: null, intensity: 3, progress: 0, need: 0 };
 }
 
 // ---------- สร้างสำนวนคดี ----------
@@ -252,11 +252,8 @@ const API = {
     const def = STATIONS.find(s => s.k === k);
     if (!def || this.coin < def.cost) return false;
     if (this.stations.some(s => s.def.k === k)) return false;
-    const used = new Set(this.stations.map(s => s.slotIdx));
-    const idx = SLOTS.findIndex((_, i) => !used.has(i));
-    if (idx < 0) return false;
     this.coin -= def.cost;
-    this.stations.push(mkStation(k, idx));
+    this.stations.push(mkStation(k));
     this.log(`🏗️ สร้าง${def.name}เสร็จ`, 'good');
     return true;
   },

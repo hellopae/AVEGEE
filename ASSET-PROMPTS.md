@@ -47,6 +47,34 @@ molten orange lava glow, antique temple gold trim
 
 ---
 
+## ชุดที่ 0 — ฉาก (สำคัญที่สุดตอนนี้) 🔥
+
+ตอนนี้เกมใช้ draft `Exam/Scene-test.jpg` เป็นฉากไปพลางก่อน **แต่มีตัวละครวาดติดมาในภาพ**
+ทำให้เห็นตัวซ้อนกัน (ตัวที่วาดติดฉาก + ตัวที่โค้ดวางทับ) ต้อง gen ใหม่เป็น **ฉากเปล่า**
+
+| key | ต้องมีอะไร |
+|---|---|
+| `scene` | ฉากเดิมเป๊ะ ๆ **แต่เอาตัวละครทุกตัวออก** ทั้งยมทูตหกคน ตัวเรา วิญญาณ และองค์พญายมบนบัลลังก์ — เหลือเฉพาะสถานที่ พื้น ลาวา สะพาน อาคาร ของประดับ **บัลลังก์ต้องว่าง** |
+
+```
+top-down 3/4 pixel art game map of a Thai buddhist hell, same layout and same style
+as the reference, but COMPLETELY EMPTY OF CHARACTERS — no demons, no guards, no ghosts,
+no king on the throne, the throne is empty. Only the environment: purple obsidian ground,
+molten lava rivers, a frozen ice prison in the top left, a field of blades, a yard of
+hanging hooks, a stone judgment platform in the centre, a long rope bridge leading down
+to the bottom edge, a golden royal pavilion with an empty throne, a large red-and-gold
+Thai temple, three bronze cauldrons on fire, a giant stone monster-mouth cave.
+No text, no letters, no numbers, no UI, no characters of any kind.
+```
+
+**ทำไมต้องเปล่า** — ตัวละครทุกตัวต้องขยับตามเวร (ผู้คุมย้ายไปสถานีที่มีคดี วิญญาณเดินขึ้นสะพาน
+ตัวเรายืนที่แท่นพิพากษา) ถ้าวาดติดฉากมาก็ขยับไม่ได้ ต้องเป็นไฟล์แยกให้โค้ดวางเอง
+
+**ถ้าจะเพิ่มทีหลัง** — `prop-boat` เรือข้ามธารลาวา (ตอนนี้โค้ดวาดเองอยู่ พอใช้ได้แต่หยาบ)
+ท่าเรือสองฝั่งธารลาวาก็ควรมีในฉากด้วย
+
+---
+
 ## ชุดที่ 1 — สถานีทัณฑ์ (8 ชิ้น) 🔥 **gen ชุดนี้ก่อน — เปลี่ยนหน้าตาเกมมากที่สุด**
 
 ทุกชิ้นเป็น "อาคาร/สิ่งปลูกสร้าง" ขนาดพอ ๆ กัน มองจากมุมเดียวกัน ฐานอยู่ล่างสุดของภาพ
