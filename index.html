@@ -64,12 +64,27 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
    ทุกตำแหน่งคิดเป็น % ของภาพฉาก จึงเลื่อนตามขนาดจอเองโดยไม่ต้องคำนวณใหม่ */
 #ov{position:absolute;inset:var(--space-2);pointer-events:none;font-size:var(--text-xs)}
 #ov>*{position:absolute}
-.bub{pointer-events:auto;width:min(30vw,340px);background:rgba(24,11,17,.95);
+
+/* หมุดเหนือหัวตัวละคร — เอาเมาส์ไปชี้ถึงจะกางบับเบิลออกมา
+   (บับเบิลกางค้างไว้ตลอดบังฉากจนมองไม่เห็นแผนที่) */
+.mark{transform:translate(-50%,-100%);pointer-events:auto;cursor:help}
+.mark .pin{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  font-size:14px;background:rgba(24,11,17,.92);border:1.5px solid var(--gold);
+  box-shadow:0 2px 8px rgba(0,0,0,.6);animation:pin 2.2s ease-in-out infinite}
+.mark.soul .pin{border-color:#7fb2e0} .mark.boss .pin{border-color:var(--primary)}
+@keyframes pin{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.mark .bub{display:none;position:absolute;bottom:34px;left:50%;transform:translateX(-50%)}
+.mark.aL .bub{left:-8px;transform:none}
+.mark.aR .bub{left:auto;right:-8px;transform:none}
+.mark:hover .bub,.mark.show .bub{display:block}
+.mark:hover{z-index:9}
+
+.bub{width:min(30vw,340px);background:rgba(24,11,17,.96);
   border:1px solid var(--border);border-radius:var(--radius-md);padding:8px 11px;
   line-height:1.6;box-shadow:var(--shadow-lg)}
-.bub:after{content:'';position:absolute;bottom:-8px;border:8px solid transparent;
-  border-top-color:rgba(24,11,17,.95);border-bottom:0}
-.bub.r:after{right:22px} .bub.l:after{left:22px}
+.bub:after{content:'';position:absolute;bottom:-8px;left:50%;margin-left:-8px;
+  border:8px solid transparent;border-top-color:rgba(24,11,17,.96);border-bottom:0}
+.mark.aL .bub:after{left:20px;margin:0} .mark.aR .bub:after{left:auto;right:20px;margin:0}
 .bub .who{color:var(--gold);font-weight:600;display:block;margin-bottom:3px}
 .bub.soul{background:rgba(18,26,38,.95);border-color:#33455c}
 .bub.soul:after{border-top-color:rgba(18,26,38,.95)}
@@ -79,15 +94,18 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 .bub .line.truth{color:var(--gold)} .bub .line.confess{color:var(--warning)}
 .bub .line.false{color:var(--destructive)}
 
-.deck{pointer-events:auto;transform:translate(-50%,0);width:min(52vw,620px);
-  background:rgba(24,11,17,.96);border:1px solid var(--ring);border-radius:var(--radius-md);
-  padding:9px 11px;box-shadow:var(--shadow-lg)}
-.deck .lb{color:var(--muted-foreground);font-size:11px;margin:5px 0 3px}
-.deck .lb:first-child{margin-top:0}
-.deck .row2{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.deck button{padding:4px 8px;min-height:0;font-size:11px;line-height:1.35}
-.deck button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
-.deck .go{margin-left:auto}
+/* ---------- แถบบัญชาการเหนือฉาก ----------
+   เดิมแผงนี้ลอยทับกลางฉากจนมองแผนที่ไม่เห็น ย้ายมาอยู่เหนือฉากเป็นแถบเต็มความกว้าง */
+.deckbar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--space-2) var(--space-3);display:flex;gap:var(--space-4);
+  flex-wrap:wrap;align-items:flex-end}
+.deckbar .grp{display:flex;flex-direction:column;gap:4px;min-width:0}
+.deckbar .lb{color:var(--muted-foreground);font-size:11px}
+.deckbar .row2{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.deckbar button{padding:5px 9px;min-height:0;font-size:var(--text-xs);line-height:1.35}
+.deckbar button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.deckbar .go{margin-left:auto;align-self:flex-end}
+.deckbar .idle{color:var(--muted-foreground);font-size:var(--text-sm);padding:6px 0}
 .score{transform:translate(-50%,-100%);font-family:var(--font-display);font-size:2.6rem;
   font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.75);pointer-events:none}
 .score small{display:block;font-family:var(--font-sans);font-size:.75rem;font-weight:400;text-align:center}
@@ -165,6 +183,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
     <div class="res" id="res"></div>
   </header>
+
+  <div class="deckbar" id="deck"></div>
 
   <div class="stage">
     <canvas id="cv" width="1527" height="704"></canvas>

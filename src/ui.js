@@ -1,5 +1,5 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
-import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS } from './data.js';
+import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE } from './data.js';
 import { createGame } from './game.js';
 import { render, toScene, hitStation } from './scene.js';
 
@@ -109,7 +109,7 @@ function drawLog() {
     `<div class="${l.kind}"><span style="opacity:.45">[${String(l.t).padStart(3, '0')}]</span> ${esc(l.text)}</div>`).join('');
 }
 
-function refresh() { drawRes(); drawTab(); drawLog(); drawOverlay(); }
+function refresh() { drawRes(); drawTab(); drawLog(); drawOverlay(); drawDeck(); }
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
@@ -123,25 +123,26 @@ function modal(html, onOpen) {
 const SAID_STYLE = { deny:'', claim:'', truth:'truth', confess:'confess', false:'false', hint:'' };
 const SAID_ICON  = { deny:'🗣️', claim:'🪷', truth:'', confess:'', false:'', hint:'↳' };
 
-// ---------- ชั้นซ้อนบนฉาก ----------
-const ov = $('#ov');
+// ---------- ชั้นซ้อนบนฉาก + แถบบัญชาการ ----------
+const ov = $('#ov'), deckBar = $('#deck');
 let pick = { st: null, cr: null, inten: 3 };   // สิ่งที่เลือกไว้สำหรับคดีที่อยู่หน้าแท่น
 let fx = null;                                  // คะแนน + เสียงพญายม (โชว์ชั่วคราว)
 
+const CH = 82;                                  // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
 const pctX = x => (x / SCENE.w * 100) + '%';
 const pctY = y => (y / SCENE.h * 100) + '%';
 
-function el(cls, x, y, html, extra = '') {
+/** หมุดเหนือหัวตัวละคร — ชี้เมาส์ถึงจะกางบับเบิล */
+function mark(cls, x, y, pin, html, show = false) {
+  const side = x < SCENE.w * 0.26 ? 'aL' : x > SCENE.w * 0.74 ? 'aR' : '';
   const d = document.createElement('div');
-  d.className = cls;
+  d.className = `mark ${cls} ${side} ${show ? 'show' : ''}`;
   d.style.left = pctX(x); d.style.top = pctY(y);
-  d.style.cssText += extra;
-  d.innerHTML = html;
+  d.innerHTML = `<div class="pin">${pin}</div><div class="bub">${html}</div>`;
   ov.appendChild(d);
   return d;
 }
 
-/** วาดบับเบิล/เมนูใหม่ทั้งชั้น — เรียกทุกครั้งที่สถานะเปลี่ยน ไม่ได้เรียกทุกเฟรม */
 function drawOverlay() {
   ov.innerHTML = '';
   if (g.over) return;
@@ -149,65 +150,78 @@ function drawOverlay() {
 
   if (fx) {
     const col = fx.score >= 78 ? 'var(--success)' : fx.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
-    el('score', SPOTS.bench.x, SPOTS.bench.y - 100,
-      `<span style="color:${col}">${fx.score}</span><small style="color:${col}">ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`);
-    el('bub boss l', SPOTS.throne.x - 30, SPOTS.throne.y - 40,
-      `<span class="who">พญายม</span>${esc(fx.line)}`, 'transform:translate(-14%,-100%);');
+    const d = document.createElement('div');
+    d.className = 'score';
+    d.style.left = pctX(SPOTS.bench.x); d.style.top = pctY(SPOTS.bench.y - 104);
+    d.innerHTML = `<span style="color:${col}">${fx.score}</span><small style="color:${col}">ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
+    ov.appendChild(d);
+    mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
+      `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
+  if (!s) return;
 
-  if (!s) {
-    if (!fx) el('bub l', 640, 380, '<span class="who">นิรา</span>คิวว่างค่ะท่าน — โซนนี้สงบผิดปกติ',
-      'transform:translate(-100%,-100%);');
-    return;
-  }
-
-  // นิราอ่านสำนวน (ซ้ายของแท่น)
   const rec = s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
-  el('bub r', 646, 300, `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>
-    ผู้ตายเป็น<b>${esc(s.who)}</b>${rec}`, 'transform:translate(-100%,-100%);');
+  // หมุดของนิราต้องตามตัวจริงไปด้วย ถ้าเธอไปรับเวรที่สถานี
+  const nira = g.crewOf('nira');
+  const post = nira && nira.at ? STATIONS.find(d => d.k === nira.at) : null;
+  const nx = post ? post.x : (nira ? nira.hx : 660);
+  const ny = post ? post.y : (nira ? nira.hy : 400);
+  mark('', nx, ny - CH - 8, '📜',
+    `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.who)}</b>${rec}`);
 
-  // วิญญาณพูดเอง (ขวาของแท่น)
-  const said = s.said.slice(-5).map(x =>
+  const said = s.said.slice(-6).map(x =>
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
     || '<div class="line">...เขาก้มหน้าไม่พูดอะไร</div>';
-  el('bub soul l', 896, 300, `<span class="who">${esc(s.who)}</span>${said}`,
-    'transform:translate(0,-100%);');
+  const hasNew = s.said.some(x => x.kind === 'truth' || x.kind === 'confess' || x.kind === 'false');
+  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - CH - 8, hasNew ? '❗' : '💬',
+    `<span class="who">${esc(s.who)}</span>${said}`);
+}
 
-  // เมนูพลัง + คำตัดสิน (ใต้แท่น)
+/** แถบบัญชาการเหนือฉาก — พลัง · ปลายทาง · ผู้คุม · ระดับวาระ · ออกหมาย */
+function drawDeck() {
+  const s = g.queue[0];
+  if (!s || g.over) {
+    deckBar.innerHTML = '<div class="idle">ยังไม่มีวิญญาณยืนอยู่หน้าแท่น — กดเดินวาระให้เรือพาคนข้ามมา</div>';
+    return;
+  }
   const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
   const idle = g.crew.filter(c => !c.at);
   if (pick.st && !free.some(x => x.def.k === pick.st)) pick.st = null;
   if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
 
-  const deck = el('deck', 770, 424, `
-    <div class="lb">พลังของท่าน</div>
-    <div class="row2" id="d-pw">${POWERS.map(p => {
-      const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
-      const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี` : pw.cd > 0 ? `รอ ${pw.cd} คดี` : 'พร้อม';
-      return `<button data-k="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">${p.glyph} ${p.name} <span style="opacity:.6">${why}</span></button>`;
-    }).join('')}</div>
-    <div class="lb">ส่งไปที่ไหน</div>
-    <div class="row2" id="d-st">${free.length ? free.map(x =>
-      `<button data-k="${x.def.k}" ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
-      : '<span style="color:var(--muted-foreground)">ไม่มีสถานีว่าง — รอคดีที่ทำอยู่ให้จบ</span>'}</div>
-    <div class="lb">ใครคุม</div>
-    <div class="row2" id="d-cr">${idle.length ? idle.map(c =>
-      `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}>${c.glyph} ${c.name}<span style="opacity:.55"> ${Math.round(c.morale)}</span></button>`).join('')
-      : '<span style="color:var(--muted-foreground)">ยมทูตไม่ว่างสักคน</span>'}</div>
-    <div class="lb">หนักแค่ไหน</div>
-    <div class="row2" id="d-in">${[1, 2, 3, 4, 5].map(i =>
-      `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}
-      <button class="gold go" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button></div>`);
+  deckBar.innerHTML = `
+    <div class="grp"><span class="lb">พลังของท่าน</span>
+      <div class="row2" id="d-pw">${POWERS.map(p => {
+        const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
+        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี` : pw.cd > 0 ? `รอ ${pw.cd} คดี` : 'พร้อม';
+        return `<button data-k="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
+      }).join('')}</div></div>
 
-  deck.querySelectorAll('#d-pw button').forEach(b => b.onclick = () => {
-    g.usePower(b.dataset.k, s); drawRes(); drawLog(); drawOverlay();
+    <div class="grp"><span class="lb">ส่งไปที่ไหน</span>
+      <div class="row2" id="d-st">${free.length ? free.map(x =>
+        `<button data-k="${x.def.k}" ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
+        : '<span class="idle">ไม่มีสถานีว่าง</span>'}</div></div>
+
+    <div class="grp"><span class="lb">ใครคุม</span>
+      <div class="row2" id="d-cr">${idle.length ? idle.map(c =>
+        `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}>${c.glyph} ${c.name}<span style="opacity:.55"> ${Math.round(c.morale)}</span></button>`).join('')
+        : '<span class="idle">ยมทูตไม่ว่าง</span>'}</div></div>
+
+    <div class="grp"><span class="lb">หนักแค่ไหน</span>
+      <div class="row2" id="d-in">${[1, 2, 3, 4, 5].map(i =>
+        `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div></div>
+
+    <button class="gold go" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>`;
+
+  deckBar.querySelectorAll('#d-pw button').forEach(b => b.onclick = () => {
+    g.usePower(b.dataset.k, s); drawRes(); drawLog(); drawOverlay(); drawDeck();
   });
-  const sel = (id, key) => deck.querySelectorAll(`${id} button`).forEach(b =>
-    b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawOverlay(); });
+  const sel = (id, key) => deckBar.querySelectorAll(`${id} button`).forEach(b =>
+    b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
   sel('#d-st', 'st'); sel('#d-cr', 'cr'); sel('#d-in', 'inten');
-  const go = deck.querySelector('#d-go');
+  const go = deckBar.querySelector('#d-go');
   if (go) go.onclick = () => {
     if (!g.assign(s.id, pick.st, pick.cr, pick.inten)) return;
     pick = { st: null, cr: null, inten: 3 };
@@ -227,6 +241,7 @@ const BOSS_LINE = {
 function showVerdict(v) {
   g.pendingVerdict = null;
   fx = { ...v, line: BOSS_LINE[v.boss] || BOSS_LINE.ok };
+  g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
   showVerdict.t = setTimeout(() => {
     fx = null; drawOverlay();
@@ -317,7 +332,7 @@ cv.onclick = e => {
       <p style="font-size:var(--text-sm)">ว่างอยู่ แต่ยังไม่มีวิญญาณในคิว</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  pick.st = def.k; drawOverlay();           // ว่าง + มีคิว → เลือกเป็นปลายทาง
+  pick.st = def.k; drawDeck();              // ว่าง + มีคิว → เลือกเป็นปลายทาง
 };
 
 function openBuild(def) {

@@ -66,6 +66,10 @@ export function render(ctx, g, t, hover) {
   // ---- ตัวเรา ยืนที่แท่นพิพากษา ----
   drawStandee(ctx, 'hero-yama', SPOTS.bench.x, SPOTS.bench.y, HERO_H, t, '👑');
 
+  // ---- พญายมมาปรากฏที่ศาลาทองตอนออกความเห็น แล้วหายไป ----
+  if (g.bossUntil && t < g.bossUntil)
+    drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.25, t, '👹');
+
   // ---- ยมทูต: ถ้ามีเวรอยู่ยืนที่สถานี ไม่มีก็ยืนที่ประจำของตัวเอง ----
   for (const c of g.crew) {
     const st = c.at ? STATIONS.find(d => d.k === c.at) : null;
