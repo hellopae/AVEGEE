@@ -31,13 +31,14 @@ function tex(url) {
 }
 
 export function init(canvas) {
-  R = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+  R = new THREE.WebGLRenderer({ canvas, antialias: false });
+  R.setClearColor(0x0d0509, 1);
   R.setPixelRatio(Math.min(2, devicePixelRatio));
   R.shadowMap.enabled = true;
   R.shadowMap.type = THREE.PCFSoftShadowMap;
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x1a0a10, 60, 130);
+  scene.fog = new THREE.Fog(0x0d0509, 78, 165);
 
   cam = new THREE.PerspectiveCamera(38, canvas.width / canvas.height, 0.5, 400);
 
@@ -47,7 +48,26 @@ export function init(canvas) {
     new THREE.MeshStandardMaterial({ map: tex('img/scene.png'), roughness: 1, metalness: 0 }));
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
+  ground.position.y = 0.01;                  // ลอยเหนือฝาฐานนิดเดียว กัน z-fighting
   scene.add(ground);
+
+  // ฐานไดโอรามา — แผ่นหินหนาใต้แผนที่
+  // ถ้าไม่มีอันนี้ พอหมุนกล้องแล้วจะเห็นแผนที่บางเป็นแผ่นกระดาษ และเห็นพื้นหลังโล่ง ๆ เป็นขอบเทา
+  const SLAB = 6;
+  const slab = new THREE.Mesh(
+    new THREE.BoxGeometry(W, SLAB, H),
+    new THREE.MeshStandardMaterial({ color: 0x2a1620, roughness: 1 }));
+  slab.position.y = -SLAB / 2;
+  slab.castShadow = true; slab.receiveShadow = true;
+  scene.add(slab);
+
+  // ความมืดรอบ ๆ ให้สายตาจบที่ขอบแผนที่ ไม่ใช่จบที่ขอบจอ
+  const void_ = new THREE.Mesh(
+    new THREE.PlaneGeometry(W * 6, H * 8),
+    new THREE.MeshBasicMaterial({ color: 0x0d0509 }));
+  void_.rotation.x = -Math.PI / 2;
+  void_.position.y = -SLAB - 0.2;
+  scene.add(void_);
 
   scene.add(new THREE.AmbientLight(0x5a3040, 1.15));
   const moon = new THREE.DirectionalLight(0xffd0b0, 0.75);

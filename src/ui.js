@@ -142,6 +142,13 @@ function mark(cls, x, y, pin, html, show = false) {
   d.className = `mark ${cls} ${side} ${show ? 'show' : ''}`;
   d.dataset.sx = x; d.dataset.sy = y;
   d.innerHTML = `<div class="pin">${pin}</div><div class="bub">${html}</div>`;
+  // มือถือไม่มี hover — แตะหมุดเพื่อเปิด/ปิด และปิดอันอื่นที่ค้างอยู่
+  d.querySelector('.pin').onclick = ev => {
+    ev.stopPropagation();
+    const on = d.classList.contains('show');
+    ov.querySelectorAll('.mark.show').forEach(m => m.classList.remove('show'));
+    if (!on) d.classList.add('show');
+  };
   ov.appendChild(d);
   place(d);
   return d;
@@ -425,6 +432,10 @@ g.onChange = () => {
     dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
   }
 };
+
+addEventListener('pointerdown', e => {          // แตะที่อื่นแล้วปิดบับเบิลที่กางอยู่
+  if (!e.target.closest('.mark')) ov.querySelectorAll('.mark.show').forEach(m => m.classList.remove('show'));
+}, true);
 
 updatePlay(); refresh(); requestAnimationFrame(frame);
 
