@@ -30,7 +30,7 @@ function frame(now) {
   }
   if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
   else render(ctx, g, now, hover);
-  followMarks();
+  followMarks(); drawAtk();
   requestAnimationFrame(frame);
 }
 
@@ -75,6 +75,7 @@ function drawTab() {
       });
 
   } else if (tab === 'crew') {
+    const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k));
     b.innerHTML = g.crew.map(c => `
       <div class="crew">
         <span class="g">${c.glyph}</span>
@@ -83,17 +84,31 @@ function drawTab() {
           <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง'} · ค่าแรง ${c.pay}</div>
         </span>
       </div>`).join('')
-      + '<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยังจ้างได้</div>'
-      + CREW.filter(c => !g.crew.some(x => x.k === c.k)).map(c => `
+      + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
+           ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${g.coin}</div>`
+      + (canHire.length ? canHire.map(c => `
       <div class="crew">
         <span class="g">${c.glyph}</span>
-        <span class="n"><b>${c.name}</b>
-          <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
+        <span class="n"><b>${c.name}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
+          <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta} · ค่าแรง ${c.pay}</div>
           <div class="st">${esc(c.line)}</div></span>
         <button class="sm" data-hire="${c.k}" ${g.coin < c.hire ? 'disabled' : ''}>จ้าง ${c.hire}</button>
-      </div>`).join('');
+      </div>`).join('') : '<div class="empty">จ้างครบทุกคนแล้ว</div>')
+      // ยักษ์ทวารบาลอยู่ในแท็บนี้ด้วย — เป็นคน ไม่ใช่สิ่งก่อสร้าง
+      // (เดิมตัวจัดการปุ่มไปรออยู่แท็บก่อสร้าง แต่ไม่เคยมีใครวาดปุ่มให้ เลยจ้างไม่ได้เลย)
+      + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
+      <div class="crew">
+        <span class="g">🛡️</span>
+        <span class="n"><b>${GUARD.name}</b>
+          <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
+          <div class="st">${esc(GUARD.line)}</div></span>
+        ${g.guard ? '<button class="sm" disabled>จ้างแล้ว</button>'
+                  : `<button class="sm" id="hireg" ${g.coin < GUARD.hire ? 'disabled' : ''}>จ้าง ${GUARD.hire}</button>`}
+      </div>`;
     b.querySelectorAll('[data-hire]').forEach(el =>
       el.onclick = () => { g.hire(el.dataset.hire); refresh(); });
+    const hg2 = b.querySelector('#hireg');
+    if (hg2) hg2.onclick = () => { g.hireGuard(); refresh(); };
 
   } else {
     b.innerHTML = `
@@ -111,7 +126,6 @@ function drawTab() {
         </div>`;
       }).join('');
     const bf = $('#buyfuel'); if (bf) bf.onclick = () => { g.buy('fuel', 1); refresh(); };
-    const hg = $('#hireg'); if (hg) hg.onclick = () => { g.hireGuard(); refresh(); };
     b.querySelectorAll('[data-build]').forEach(el =>
       el.onclick = () => { g.build(el.dataset.build); refresh(); });
   }
@@ -122,7 +136,38 @@ function drawLog() {
     `<div class="${l.kind}"><span style="opacity:.45">[${String(l.t).padStart(3, '0')}]</span> ${esc(l.text)}</div>`).join('');
 }
 
-function refresh() { drawRes(); drawTab(); drawLog(); drawOverlay(); drawDeck(); }
+/** ป้ายบนหัวแท็บ — บอกว่ามีอะไรให้กดบ้าง ไม่ต้องเปิดดูเอง */
+function drawTabHeads() {
+  const hire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).length + (g.guard ? 0 : 1);
+  const build = STATIONS.filter(s => s.cost > 0 && !g.stations.some(x => x.def.k === s.k)).length;
+  $('#tab-queue').textContent = `คิววิญญาณ${g.queue.length ? ` (${g.queue.length})` : ''}`;
+  $('#tab-crew').textContent  = `ยมทูต${hire ? ` · จ้างได้ ${hire}` : ''}`;
+  $('#tab-build').textContent = `ก่อสร้าง${build ? ` · สร้างได้ ${build}` : ''}`;
+  for (const el of document.querySelectorAll('.tabs [data-tab]'))
+    el.setAttribute('aria-selected', el.dataset.tab === tab ? 'true' : 'false');
+}
+
+/** ปุ่มฟาดเปรต — โผล่เฉพาะตอนมีเปรตในโซน และบอกตรง ๆ ว่าลูกไฟเหลือเท่าไหร่ */
+let atkSig = '';
+function drawAtk() {
+  const btn = $('#atk'), fire = g.powerOf('roar');
+  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}`;
+  if (sig === atkSig) return;                  // เรียกได้ทุกเฟรม แต่แตะ DOM เฉพาะตอนเปลี่ยนจริง
+  atkSig = sig;
+  btn.hidden = !g.mobs.length || !!g.over;
+  if (btn.hidden) return;
+  btn.textContent = fire.ammo > 0
+    ? `⚔️ ฟาดเปรต (${g.mobs.length}) · ลูกไฟ ×${fire.ammo}`
+    : '⚔️ ลูกไฟหมด — เดินไปเก็บบนแผนที่';
+  btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
+}
+
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawLog(); drawOverlay(); drawDeck(); drawAtk(); }
+
+document.querySelectorAll('.tabs [data-tab]').forEach(el =>
+  el.onclick = () => { tab = el.dataset.tab; refresh(); });   // เดิมไม่มีตัวจัดการเลย กดแท็บไม่ติดทั้งเกม
+
+$('#atk').onclick = () => { g.attack(); refresh(); };
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
@@ -335,8 +380,11 @@ function openHelp() {
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ได้พลังและเงินเพิ่ม</li>
       <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
           เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
-      <li>ทุก 5 คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน ปล่อยไว้ระเบียบตกเรื่อย ๆ —
-          เดินเข้าไปชนเพื่อฟาดด้วยลูกไฟ หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+      <li>ทุก 5 คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน ปล่อยไว้ระเบียบตกเรื่อย ๆ — ฟาดได้ 3 ทาง:
+          กดปุ่ม <b>⚔️ ฟาดเปรต</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมันบนฉาก
+          (ใช้ <b>ลูกไฟ</b> ลูกละครั้ง หมดแล้วเดินไปเก็บบนแผนที่) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+      <li><b>จ้างยมทูตเพิ่ม</b>อยู่ที่แท็บ <b>ยมทูต</b> ใต้ฉาก (ยักษ์ทวารบาลก็อยู่แท็บนั้น) ·
+          สร้างสถานีเพิ่มอยู่ที่แท็บ <b>ก่อสร้าง</b></li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
@@ -370,10 +418,14 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
+  // คลิกโดนเปรต = เดินเข้าไปฟาดมัน (เช็คก่อนสถานี เพราะมันเดินไปยืนทับกรอบสถานีได้)
+  const mi = g.mobs.findIndex(m => Math.hypot(m.x - sx, m.y - sy) < 46);
+  if (mi >= 0) { g.attack(); refresh(); return; }
+
   const def = hitStation(sx, sy);
   if (!def) {                                  // คลิกที่โล่ง = สั่งให้เดินไปตรงนั้น
-    const p = nearestWalk(sx, sy);             // คลิกลงลาวา/ลงน้ำ → ไปยืนขอบที่ใกล้ที่สุดแทน
-    if (p) { g.player.tx = p[0]; g.player.ty = p[1]; }
+    if (!g.walkTo(sx, sy))                     // อ้อมลาวาให้เอง · ไปไม่ได้จริงค่อยบอก
+      g.log('ตรงนั้นเดินไปไม่ถึง — ต้องข้ามลาวาหรือแม่น้ำวิญญาณ', 'bad');
     return;
   }
   const st = g.stations.find(x => x.def.k === def.k);
@@ -402,6 +454,7 @@ addEventListener('keydown', e => {
   if (dlg.open || /input|textarea/i.test(e.target.tagName)) return;
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
+  if (e.key === ' ' && !g.over) { g.attack(); refresh(); }   // เว้นวรรค = ฟาดเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 
@@ -415,7 +468,7 @@ function keyWalk(dt) {
   if (!dx && !dy) return;
   const d = Math.hypot(dx, dy);
   stepTo(P, dx / d * sp, dy / d * sp);          // ลาวา/แม่น้ำกันไว้ ชนแล้วไถลไปตามขอบ
-  P.tx = null;                                  // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้
+  P.tx = null; P.path = null;                   // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้
   if (dx) P.face = dx < 0 ? -1 : 1;
 }
 

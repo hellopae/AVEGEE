@@ -2,7 +2,7 @@
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, starsOf } from './data.js';
-import { canWalk, stepTo, nearestWalk } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -14,7 +14,7 @@ export function createGame() {
     order: 72, karma: 0, hp: BAL.startHp,
     powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'roar' ? 3 : p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2 })),
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
-    player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1 },
+    player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [],
     queue: [], logs: [], over: null,
     paused: true, speed: 1,
@@ -418,15 +418,21 @@ const API = {
     // เซฟเก่า (หรือฉากที่วาดใหม่) อาจทำให้ยืนค้างกลางลาวา — ดันขึ้นฝั่งให้เอง
     if (!canWalk(P.x, P.y)) {
       const p = nearestWalk(P.x, P.y);
-      if (p) { P.x = p[0]; P.y = p[1]; P.tx = null; }
+      if (p) { P.x = p[0]; P.y = p[1]; P.tx = null; P.path = null; }
     }
-    if (P.tx != null) {
-      const dx = P.tx - P.x, dy = P.ty - P.y, d = Math.hypot(dx, dy);
-      if (d < 4) P.tx = null;
-      else {
-        if (!stepTo(P, dx / d * SP, dy / d * SP)) P.tx = null;   // ไปต่อไม่ได้ = ทิ้งจุดหมาย
+    // เดินตามเส้นทางที่ findPath วางไว้ — อ้อมลาวาเองได้ ไม่ไปยืนจ่อกำแพงแล้วค้าง
+    if (P.path && P.path.length) {
+      const w = P.path[0];
+      const dx = w[0] - P.x, dy = w[1] - P.y, d = Math.hypot(dx, dy);
+      if (d < 5) {
+        P.path.shift();
+        if (!P.path.length) { P.path = null; P.tx = null; }
+      } else {
+        if (!stepTo(P, dx / d * SP, dy / d * SP)) { P.path = null; P.tx = null; }
         P.face = dx < 0 ? -1 : 1;
       }
+    } else if (P.tx != null) {
+      P.tx = null;
     }
     P.x = clamp(P.x, 40, SCENE.w - 40);
     P.y = clamp(P.y, 60, SCENE.h - 40);
@@ -482,7 +488,7 @@ const API = {
       const dx = m.wx - m.x, dy = m.wy - m.y, d = Math.hypot(dx, dy) || 1;
       if (!stepTo(m, dx / d * 0.035 * dt, dy / d * 0.035 * dt)) m.wx = null;
 
-      if (Math.hypot(m.x - P.x, m.y - P.y) < 46) this.strike(i, 'ท่าน');
+      if (Math.hypot(m.x - P.x, m.y - P.y) < MOB.reach) this.strike(i, 'ท่าน');
     }
 
     // ยักษ์ทวารบาลไล่ปราบเอง
@@ -490,30 +496,74 @@ const API = {
       const G = this.guard, m = this.mobs[0];
       const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
       stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
-      if (d < 44) this.strike(0, GUARD.name);
+      if (d < MOB.reach) this.strike(0, GUARD.name);
     } else if (this.guard) {
       const G = this.guard;                     // ว่างงาน → เดินกลับไปเฝ้าท่าเรือฝั่งขวา
       stepTo(G, (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt, (SPOTS.ferry.to[1] - 90 - G.y) * 0.0008 * dt);
     }
   },
 
-  /** ฟาดเปรตตนที่ i */
+  /** สั่งเดินไปที่จุดหนึ่ง — วางเส้นทางอ้อมลาวา/แม่น้ำให้เอง */
+  walkTo(x, y) {
+    const P = this.player;
+    const t = canWalk(x, y) ? [x, y] : nearestWalk(x, y);
+    if (!t) return false;
+    const path = findPath(P.x, P.y, t[0], t[1]);
+    if (!path || !path.length) return false;
+    P.tx = t[0]; P.ty = t[1]; P.path = path;
+    return true;
+  },
+
+  /** เปรตที่อยู่ใกล้ตัวเราที่สุด */
+  nearestMob() {
+    const P = this.player;
+    let bi = -1, bd = Infinity;
+    this.mobs.forEach((m, i) => {
+      const d = Math.hypot(m.x - P.x, m.y - P.y);
+      if (d < bd) { bd = d; bi = i; }
+    });
+    return bi < 0 ? null : { i: bi, m: this.mobs[bi], d: bd };
+  },
+
+  /** ปุ่มฟาด (และปุ่มเว้นวรรค) — อยู่ในระยะก็ฟาดเลย ไกลก็เดินเข้าไปหาก่อน */
+  attack() {
+    const n = this.nearestMob();
+    if (!n) { this.log('ยังไม่มีเปรตในโซนตอนนี้', 'event'); return false; }
+    if (n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');
+    if (this.walkTo(n.m.x, n.m.y)) {
+      this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
+      return true;
+    }
+    this.log('เปรตตนนั้นอยู่ฝั่งที่เดินไปไม่ถึง — รอให้มันเดินเข้ามาก่อน', 'bad');
+    return false;
+  },
+
+  /** ฟาดเปรตตนที่ i — คืน true เมื่อฟาดออกจริง */
   strike(i, by) {
     const m = this.mobs[i];
-    if (m.cool && Date.now() < m.cool) return;
+    if (!m) return false;
+    if (m.cool && Date.now() < m.cool) return false;
     const fire = this.powerOf('roar');
-    if (by === 'ท่าน' && fire.ammo <= 0) {
-      if (!m.warned) { m.warned = true; this.log('เปรตเข้ามาประชิด แต่ลูกไฟหมด — เดินไปเก็บลูกไฟก่อน', 'bad'); }
-      return;
+    if (by === 'ท่าน') {
+      if (fire.ammo <= 0) {
+        // เตือนซ้ำได้ทุก 4 วินาที — เดิมเตือนครั้งเดียวต่อเปรตหนึ่งตน เลยดูเหมือนเกมไม่ตอบสนอง
+        if (!this.noAmmoAt || Date.now() - this.noAmmoAt > 4000) {
+          this.noAmmoAt = Date.now();
+          this.log('🔥 ลูกไฟหมด ฟาดไม่ออก — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน', 'bad');
+        }
+        return false;
+      }
+      fire.ammo--;
     }
-    if (by === 'ท่าน') fire.ammo--;
     m.hp--; m.cool = Date.now() + 600;
+    if (by === 'ท่าน') this.swingUntil = Date.now() + 480;   // ให้ scene.js สลับไปท่าฟาด
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
-    if (m.hp > 0) return;
+    if (m.hp > 0) { this.log(`⚔️ ${by}ฟาดเปรตเข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
     this.mobs.splice(i, 1);
     this.coin += MOB.bounty;
     this.order = clamp(this.order + 3, 0, 100);
     this.log(`💥 ${by}ปราบเปรตได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3`, 'good');
+    return true;
   },
 
   dropItem(k) {

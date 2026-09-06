@@ -226,6 +226,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   <div class="ctrl">
     <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
     <button id="spd" class="sm">ความเร็ว ×1</button>
+    <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
     <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
     <button id="help" class="sm" style="margin-left:auto">วิธีเล่น</button>
   </div>
@@ -233,9 +234,9 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   <div class="below">
     <div class="panel">
       <div class="tabs" role="tablist">
-        <button role="tab" data-tab="queue" aria-selected="true">คิววิญญาณ</button>
-        <button role="tab" data-tab="crew" aria-selected="false">ยมทูต</button>
-        <button role="tab" data-tab="build" aria-selected="false">ก่อสร้าง</button>
+        <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
+        <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
+        <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
       </div>
       <div class="tabbody" id="tabbody"></div>
     </div>

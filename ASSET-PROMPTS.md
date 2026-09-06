@@ -164,6 +164,35 @@ molten orange lava glow, antique temple gold
 
 ---
 
+## ชุดที่ 4 — ท่าทางที่โค้ดรออยู่แล้ว (6 ก.ย. 2569) ⭐ ทำชุดนี้ก่อน
+
+เป้ถามว่า "ควร gen อะไรต่อ" — คำตอบคือ **ท่าที่สองของตัวละครที่มีอยู่แล้ว** ไม่ใช่ตัวละครใหม่
+เพราะโค้ดมองหาไฟล์พวกนี้อยู่แล้ว **ดรอปลง `img/raw/` แล้วรัน prep-art เห็นผลทันที ไม่ต้องแก้โค้ด**
+(ยังไม่มีไฟล์ = ใช้ท่ายืนเดิม เกมไม่พัง)
+
+> ⚠️ นี่ไม่ใช่เฟรมอนิเมชัน — เป็น **ท่าที่สองแบบภาพนิ่ง 1 ไฟล์** โค้ดสลับรูปตอนเกิดเหตุการณ์
+> ยังอยู่ในกฎ "0 เฟรมอนิเมชัน" · ทุกท่าต้องยืนบนพื้นระดับเดียวกับท่ายืนเดิม (ฐานชิดขอบล่าง)
+
+| ลำดับ | key | โผล่ตอนไหน | prompt (ต่อท้ายบล็อกสไตล์) |
+|---|---|---|---|
+| 1 | `hero-yama-atk` | ตอนกดฟาดเปรต (0.5 วิ) | young yama king judge of hell in red-gold Thai lacquer armor, mid-swing attack pose, arm thrown forward hurling a molten fireball, body twisted with weight behind the throw, cape flaring back, fierce glare, same character and palette as the standing yama sprite |
+| 2 | `crew-taan-work` | ทัณฑ์ประจำสถานี | stocky red-skinned oni jailer of Thai hell, working pose, both hands gripping a long iron poker jabbing downward into a fire pit, leaning into the push, sweat and ember sparks, same character as the standing taan sprite |
+| 3 | `crew-plerng-work` | เพลิงประจำสถานี | small fire-headed hell imp, working pose, crouching low and fanning flames under a cauldron with a bamboo fan, flame hair streaming sideways, same character as the standing plerng sprite |
+| 4 | `crew-dam-work` | ดำประจำสถานี | tired chubby bat-eared hell servant, working pose, hauling a heavy bucket of black coal with both hands, back bent, knees buckling, same character as the standing dam sprite |
+| 5 | `crew-nira-work` | นิราประจำสถานี | slender purple-skinned hell clerk with horns and a hair bun, working pose, pressing a wooden seal stamp down onto an open scroll on a low desk, other hand steadying the paper, same character as the standing nira sprite |
+| 6 | `mob-pret2` | เปรตแบบที่สอง | emaciated Thai hungry ghost (pret), extremely tall and thin with pinhole mouth and swollen belly, hunched forward reaching with long clawed fingers, pale grey-green skin, tattered loincloth |
+| 7 | `item-fuel` | กองฟืนตกบนแผนที่ | bundle of dark charcoal logs tied with rough rope, faint orange embers glowing between the pieces, small pile resting on the ground |
+| 8 | `fx-ice` | ทัณฑ์โลกันตนรก | burst of jagged pale-blue ice shards radiating outward from a center point, frost mist, cold rim light, no ground, effect only |
+| 9 | `spirit4` `spirit5` | วิญญาณในคิว (ตอนนี้มี 3 แบบ) | translucent pale ghost of a dead Thai commoner standing with head bowed and hands together in a wai, lower body fading into wisps |
+
+**ที่ยังไม่ต้องทำ** — ยมทูตท่าอื่น (กานต์/บุญ ไม่ได้คุมสถานีบ่อย) · พญายมท่าอื่น (โผล่แค่ 7 วิ ต่อคดี) ·
+ตัวละครใหม่ทั้งตัว (จ้างครบแล้วยังไม่มีที่ใช้)
+
+**ถ้าอยากได้ผลเยอะที่สุดด้วยชิ้นเดียว: `hero-yama-atk`** — เป็นชิ้นที่ผู้เล่นเห็นบ่อยที่สุด
+และแก้ปัญหาที่ตอนนี้กดฟาดแล้วตัวเราไม่ขยับเลย เห็นแค่ลูกไฟเด้ง
+
+---
+
 ## เช็กก่อนส่งเข้าเกม
 
 - [ ] พื้นหลังใสจริง (ไม่ใช่สีขาว/เช็กเกอร์บอร์ดที่ gen ติดมา)
@@ -179,8 +208,9 @@ molten orange lava glow, antique temple gold
 ชุด 1 สถานี      8
 ชุด 2 ตัวละคร     8
 ชุด 3 พื้น+ของ    9
+ชุด 4 ท่าที่สอง   10
 --------------------
-รวม             25   (เพดานทั้งเกม 40 · เหลือ 15 ไว้ให้ขุมต่อ ๆ ไป)
+รวม             35   (เพดานทั้งเกม 40 · เหลือ 5 ไว้ให้ขุมต่อ ๆ ไป)
 เฟรมอนิเมชัน      0
 ตัวอักษรในรูป     0
 ```

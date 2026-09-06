@@ -11,6 +11,10 @@ const CREW_H = 82;       // ความสูงตัวละครในพ�
 const HERO_H = 92;
 const SOUL_H = 64;
 
+/** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
+ *  => ดรอป img/hero-yama-atk.png หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
+const poseOr = (alt, base) => img(alt) ? alt : base;
+
 /** ย่อฉากให้พอดีความกว้าง canvas — คืนอัตราส่วนไว้ใช้แปลงพิกัดเมาส์ */
 export const scaleFor = cv => cv.width / SCENE.w;
 
@@ -89,7 +93,8 @@ export function render(ctx, g, t, hover) {
   const now0 = Date.now();
   for (const c of g.crew) {
     if (c.x == null) continue;
-    drawStandee(ctx, 'crew-' + c.k, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
+    const base = 'crew-' + c.k;
+    drawStandee(ctx, c.at ? poseOr(base + '-work', base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
     label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
     if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
   }
@@ -105,7 +110,9 @@ export function render(ctx, g, t, hover) {
     ctx.strokeStyle = `rgba(255,210,140,${0.35 + q * 0.35})`; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(P.tx, P.ty, 10 + q * 5, 0, 7); ctx.stroke();
   }
-  drawStandee(ctx, 'hero-yama', P.x, P.y, HERO_H, t, '👑', P.face);
+  const swinging = g.swingUntil && Date.now() < g.swingUntil;
+  drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
+              P.x, P.y, HERO_H, t, '👑', P.face);
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
   if (g.bossUntil && t < g.bossUntil)

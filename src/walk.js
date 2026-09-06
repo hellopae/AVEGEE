@@ -43,6 +43,110 @@ export function buildWalk(im) {
       mask[ry * COLS + rx] = hit;
     }
   }
+  okGrid = null;                                  // ตารางหาเส้นทางต้องสร้างใหม่
+  sealIslands();
+}
+
+/** อุดเกาะเล็ก ๆ ที่เดินไปไม่ถึง — ก้อนหินกลางธารลาวาอ่านสีแล้วเป็น "เดินได้"
+ *  ปล่อยไว้ของที่ตก/เปรตจะไปโผล่บนนั้นแล้วเอาไม่ได้ตลอดเกม
+ *  เก็บไว้เฉพาะผืนใหญ่ที่สุดผืนเดียว ที่เหลือถือว่าห้ามเข้า */
+function sealIslands() {
+  const G = grid();
+  const comp = new Int32Array(COLS * ROWS).fill(-1);
+  let bestId = -1, bestN = 0, id = 0;
+  for (let s = 0; s < G.length; s++) {
+    if (!G[s] || comp[s] >= 0) continue;
+    const q = [s]; comp[s] = id;
+    for (let h = 0; h < q.length; h++) {
+      const cur = q[h], cx = cur % COLS, cy = cur / COLS | 0;
+      for (const [dx, dy] of DIRS) {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue;
+        const nk = ny * COLS + nx;
+        if (!G[nk] || comp[nk] >= 0) continue;
+        comp[nk] = id; q.push(nk);
+      }
+    }
+    if (q.length > bestN) { bestN = q.length; bestId = id; }
+    id++;
+  }
+  for (let i = 0; i < G.length; i++) if (G[i] && comp[i] !== bestId) mask[i] = 1;
+  okGrid = null;
+}
+
+// ---------- หาเส้นทาง ----------
+let okGrid = null;
+const DIRS = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+
+/** ตารางเดินได้แบบแบน — cache ไว้เพราะ BFS ถามช่องเดิมซ้ำหลายรอบ */
+function grid() {
+  if (okGrid) return okGrid;
+  okGrid = new Uint8Array(COLS * ROWS);
+  for (let cy = 0; cy < ROWS; cy++)
+    for (let cx = 0; cx < COLS; cx++)
+      okGrid[cy * COLS + cx] = canWalk(cx * CELL + CELL / 2, cy * CELL + CELL / 2) ? 1 : 0;
+  return okGrid;
+}
+
+/** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
+function clearLine(a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1];
+  const n = Math.ceil(Math.hypot(dx, dy) / (CELL / 2));
+  for (let i = 1; i <= n; i++)
+    if (!canWalk(a[0] + dx * i / n, a[1] + dy * i / n)) return false;
+  return true;
+}
+
+/** เส้นทางเดินจาก (fx,fy) ไป (tx,ty) — BFS บนตารางเดียวกับ canWalk
+ *  คืนลิสต์จุดแวะ (ไม่รวมจุดเริ่ม) · null ถ้าขยับไม่ได้เลย
+ *  ไปไม่ถึงจริง ๆ จะพาไปช่องที่เดินถึงและใกล้ปลายทางที่สุดแทน — ดีกว่ายืนนิ่งเฉย
+ *  ใช้ BFS เพราะแผนที่แค่ 191×88 ช่อง ไม่ต้องถึง A* */
+export function findPath(fx, fy, tx, ty) {
+  const G = grid();
+  const cell = (x, lim) => Math.max(0, Math.min(lim - 1, x / CELL | 0));
+  const sx = cell(fx, COLS), sy = cell(fy, ROWS);
+  const gx = cell(tx, COLS), gy = cell(ty, ROWS);
+  const start = sy * COLS + sx, goal = gy * COLS + gx;
+  if (start === goal) return [[tx, ty]];
+
+  const prev = new Int32Array(COLS * ROWS).fill(-2);
+  prev[start] = -1;
+  const q = [start];
+  let best = start, bestD = (sx - gx) ** 2 + (sy - gy) ** 2, found = -1;
+
+  for (let h = 0; h < q.length; h++) {
+    const cur = q[h], cx = cur % COLS, cy = cur / COLS | 0;
+    if (cur === goal) { found = cur; break; }
+    const d = (cx - gx) ** 2 + (cy - gy) ** 2;
+    if (d < bestD) { bestD = d; best = cur; }
+    for (const [dx, dy] of DIRS) {
+      const nx = cx + dx, ny = cy + dy;
+      if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue;
+      const nk = ny * COLS + nx;
+      if (prev[nk] !== -2 || !G[nk]) continue;
+      // ห้ามตัดมุมทะแยงลอดกำแพง
+      if (dx && dy && (!G[cy * COLS + nx] || !G[ny * COLS + cx])) continue;
+      prev[nk] = cur; q.push(nk);
+    }
+  }
+
+  let node = found >= 0 ? found : best;
+  if (node === start) return null;
+  const cells = [];
+  while (node !== start && node >= 0) { cells.push(node); node = prev[node]; }
+  cells.reverse();
+  const pts = cells.map(k => [(k % COLS) * CELL + CELL / 2, (k / COLS | 0) * CELL + CELL / 2]);
+  if (found >= 0) pts[pts.length - 1] = [tx, ty];        // ปลายทางใช้พิกัดที่คลิกจริง
+
+  // ดัดเส้นทาง: มองข้ามจุดแวะที่เดินตรงข้ามไปได้เลย (มองไกลสุด 40 ช่อง กันช้า)
+  const all = [[fx, fy], ...pts], out = [];
+  let i = 0;
+  while (i < all.length - 1) {
+    let j = Math.min(all.length - 1, i + 40);
+    while (j > i + 1 && !clearLine(all[i], all[j])) j--;
+    out.push(all[j]); i = j;
+  }
+  return out;
 }
 
 /** จุดนี้เหยียบได้ไหม */
