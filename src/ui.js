@@ -10,6 +10,8 @@ const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกล
 
 const g = createGame();
 const cv = $('#cv'), ctx = cv.getContext('2d');
+const cv3 = $('#cv3');
+let V3 = null, mode = '2d';        // มุมมอง 3D โหลดแบบ lazy ตอนกดสลับครั้งแรก
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
 // ---------- ลูป ----------
@@ -20,7 +22,8 @@ function frame(now) {
     const step = BAL.tickMs / g.speed;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
-  render(ctx, g, now, hover);
+  if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
+  else render(ctx, g, now, hover);
   requestAnimationFrame(frame);
 }
 
@@ -137,11 +140,26 @@ function mark(cls, x, y, pin, html, show = false) {
   const side = x < SCENE.w * 0.26 ? 'aL' : x > SCENE.w * 0.74 ? 'aR' : '';
   const d = document.createElement('div');
   d.className = `mark ${cls} ${side} ${show ? 'show' : ''}`;
-  d.style.left = pctX(x); d.style.top = pctY(y);
+  d.dataset.sx = x; d.dataset.sy = y;
   d.innerHTML = `<div class="pin">${pin}</div><div class="bub">${html}</div>`;
   ov.appendChild(d);
+  place(d);
   return d;
 }
+
+/** วางตำแหน่ง element ที่ผูกพิกัดฉากไว้ — โหมด 2D ใช้ % ตรง ๆ โหมด 3D ต้องฉายจากกล้อง */
+function place(d) {
+  const sx = +d.dataset.sx, sy = +d.dataset.sy;
+  if (mode === '3d' && V3) {
+    const [lx, ly, front] = V3.project(sx, sy, +(d.dataset.sh || 0));
+    d.style.left = lx + '%'; d.style.top = ly + '%';
+    d.style.visibility = front ? '' : 'hidden';
+  } else {
+    d.style.left = pctX(sx); d.style.top = pctY(sy);
+    d.style.visibility = '';
+  }
+}
+function placeMarks() { for (const d of ov.children) if (d.dataset.sx) place(d); }
 
 function drawOverlay() {
   ov.innerHTML = '';
@@ -152,9 +170,9 @@ function drawOverlay() {
     const col = fx.score >= 78 ? 'var(--success)' : fx.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
     const d = document.createElement('div');
     d.className = 'score';
-    d.style.left = pctX(SPOTS.bench.x); d.style.top = pctY(SPOTS.bench.y - 104);
+    d.dataset.sx = SPOTS.bench.x; d.dataset.sy = SPOTS.bench.y - 104;
     d.innerHTML = `<span style="color:${col}">${fx.score}</span><small style="color:${col}">ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
-    ov.appendChild(d);
+    ov.appendChild(d); place(d);
     mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
@@ -292,6 +310,43 @@ function updatePlay() {
 $('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
+
+$('#view').onclick = async () => {
+  const b = $('#view');
+  if (mode === '2d') {
+    b.disabled = true; b.textContent = '⏳ กำลังโหลด three.js…';
+    try {
+      if (!V3) {
+        V3 = await import('./view3d.js');
+        V3.init(cv3);
+        V3.bindControls(cv3);
+        fit3d();
+        addEventListener('resize', fit3d);
+      }
+    } catch (err) {
+      b.disabled = false; b.textContent = '🎥 มุมมอง 3D';
+      g.log('โหลดมุมมอง 3D ไม่สำเร็จ — ' + err.message, 'bad'); drawLog();
+      return;
+    }
+    mode = '3d'; cv.hidden = true; cv3.hidden = false;
+    g.log('มุมมอง 3D — ลากเมาส์เพื่อหมุนกล้อง หมุนล้อเพื่อซูม', 'event'); drawLog();
+    b.disabled = false; b.textContent = '🗺️ มุมมอง 2D';
+    fit3d();
+  } else {
+    mode = '2d'; cv3.hidden = true; cv.hidden = false;
+    b.textContent = '🎥 มุมมอง 3D';
+  }
+  drawOverlay();
+};
+
+function fit3d() {
+  const w = cv3.clientWidth || cv.clientWidth;
+  if (!w || !V3) return;
+  const h = Math.round(w * 704 / 1527);
+  cv3.width = Math.round(w * Math.min(2, devicePixelRatio));
+  cv3.height = Math.round(h * Math.min(2, devicePixelRatio));
+  V3.resize(cv3.width, cv3.height);
+}
 document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
   tab = b.dataset.tab;
   document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', x === b));
@@ -299,6 +354,10 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
 });
 
 // คลิกบนฉาก
+cv3.onclick = e => {
+  const p = V3 && V3.unproject(cv3, e);
+  if (p) onSceneClick(p[0], p[1]);
+};
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
   const def = hitStation(sx, sy);
@@ -308,12 +367,17 @@ cv.onmousemove = e => {
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
   const [sx, sy] = toScene(cv, e);
+  onSceneClick(sx, sy);
+};
+
+/** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
+function onSceneClick(sx, sy) {
   const def = hitStation(sx, sy);
   if (!def) return;
   const st = g.stations.find(x => x.def.k === def.k);
 
-  if (!st) return openBuild(def);          // ยังไม่ได้สร้าง
-  if (st.soul) {                            // กำลังลงทัณฑ์อยู่
+  if (!st) return openBuild(def);            // ยังไม่ได้สร้าง
+  if (st.soul) {                              // กำลังลงทัณฑ์อยู่
     const c = g.crewOf(st.crewK);
     return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
       <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
@@ -322,18 +386,13 @@ cv.onclick = e => {
         คืบหน้า ${Math.round(100 * st.progress / st.need)}%</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  if (def.pow === 0) {                      // ศาลาน้ำชา — ไม่ใช่ที่ลงทัณฑ์
+  if (def.pow === 0 || !g.queue.length) {
     return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
       <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  if (!g.queue.length) {
-    return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
-      <p style="font-size:var(--text-sm)">ว่างอยู่ แต่ยังไม่มีวิญญาณในคิว</p>
-      <div class="row"><button data-close>ปิด</button></div>`);
-  }
-  pick.st = def.k; drawDeck();              // ว่าง + มีคิว → เลือกเป็นปลายทาง
-};
+  pick.st = def.k; drawDeck();                // ว่าง + มีคิว → เลือกเป็นปลายทาง
+}
 
 function openBuild(def) {
   const afford = g.coin >= def.cost;
