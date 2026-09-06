@@ -295,7 +295,7 @@ function sideBody() {
         || '<div class="row-truth">สำนวนว่างเปล่า</div>';
       const said = q.said.map(x => `<div class="row-truth ${SAID_STYLE[x.kind] || ''}">${esc(x.text)}</div>`).join('')
         || '<div class="row-truth">...เขาก้มหน้าไม่พูดอะไร</div>';
-      return profile('spirit1', q.who, `สำนวน #${String(q.id).padStart(3, '0')} · รอคิว ${q.waited} วาระ`,
+      return profile('spirit' + (q.sp || 7), q.who, `สำนวน #${String(q.id).padStart(3, '0')} · รอคิว ${q.waited} วาระ`,
           q.hard ? 'สำนวนหนาผิดปกติ — คดีนี้ถูกกับผิดปนกัน' : 'รอขึ้นแท่นพิพากษา')
         + `<div class="sec">สำนวนที่นิราอ่านได้</div>${rec}
            <div class="sec">เขาพูดว่า</div>${said}
@@ -303,7 +303,7 @@ function sideBody() {
              เฉลยจะขึ้นตรงนี้หลังปิดคดีแล้ว</div>`;
     }
     const st = g.stations.find(s => s.soul && s.soul.id === sel.key);
-    if (st) return profile('spirit1', st.soul.who, `สำนวน #${String(st.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
+    if (st) return profile('spirit' + (st.soul.sp || 7), st.soul.who, `สำนวน #${String(st.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
         `${esc(st.def.name)} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`)
       + verdictCard(st.soul, st.verdict || g.judge(st), st.def.k, st.crewK, st.intensity, false);
     const cl = g.closed.find(x => x.soul.id === sel.key);
@@ -326,7 +326,7 @@ function sideBody() {
 
 function closedCard(cl) {
   const r = cl.verdict;
-  return profile('spirit1', cl.soul.who, `สำนวน #${String(cl.soul.id).padStart(3, '0')} · ปิดคดีแล้ว`,
+  return profile('spirit' + (cl.soul.sp || 7), cl.soul.who, `สำนวน #${String(cl.soul.id).padStart(3, '0')} · ปิดคดีแล้ว`,
       `ปิดที่วาระ ${cl.tick} · พญายมให้ ${'★'.repeat(r.stars ?? 0)}${'☆'.repeat(5 - (r.stars ?? 0))}`)
     + verdictCard(cl.soul, r, cl.stK, cl.crewK, cl.intensity, true);
 }

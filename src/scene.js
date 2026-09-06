@@ -4,7 +4,7 @@
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD } from './data.js';
 import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
-         drawEmbers, drawVignette, rr } from './art.js';
+         drawFire, drawEmbers, drawVignette, rr } from './art.js';
 import { buildWalk } from './walk.js';
 
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
@@ -72,7 +72,7 @@ export function render(ctx, g, t, hover, sel) {
     if (!p) return;
     if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
     drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, t + s.id * 300,
-             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.id);
+             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7);
   });
 
   // ---- ของที่ตกอยู่บนพื้น ----
@@ -142,8 +142,32 @@ export function render(ctx, g, t, hover, sel) {
   for (const st of g.stations) {
     if (!st.soul) continue;
     const d = st.def;
-    if (sel && sel.kind === 'soul' && sel.key === st.soul.id) ring(ctx, d.x - 40, d.y - 4, t, 24);
-    drawSoul(ctx, d.x - 40, d.y - 4, SOUL_H * 0.85, t + st.soul.id * 200, '#ffd9c0', st.soul.id);
+    // วิญญาณไปอยู่ "ในตัวสถานี" จริง ๆ ไม่ใช่ยืนข้างผู้คุม (7 ก.ย. 2569)
+    // sink = ตัดส่วนล่างของสไปรท์ออก ให้ดูเหมือนจมอยู่ในกระทะ/หลุม
+    const sx = d.sx ?? (d.x - 40), sy = d.sy ?? (d.y - 4), sink = d.sink || 0;
+    const SH = SOUL_H * 0.85;
+    if (sel && sel.kind === 'soul' && sel.key === st.soul.id) ring(ctx, sx, sy, t, 24);
+    ctx.save();
+    if (sink) { ctx.beginPath(); ctx.rect(sx - SH, sy - SH - 12, SH * 2, SH + 12 - sink); ctx.clip(); }
+    drawSoul(ctx, sx, sy, SH, t + st.soul.id * 200, '#ffd9c0', st.soul.sp || 7);
+    ctx.restore();
+    if (d.fire) drawFire(ctx, sx, sy - 4, 42, t, 3);                // ไฟลุกจากปากกระทะ
+    if (d.fx) {                                                     // เอฟเฟกต์เฉพาะสถานี
+      const k = (t % 2600) / 2600;
+      if (k < 0.42) {
+        ctx.save(); ctx.globalAlpha = Math.sin(k / 0.42 * Math.PI) * 0.85;
+        drawStandee(ctx, d.fx, sx, sy - SH * 0.45, 74, t, '❄️');
+        ctx.restore();
+      }
+    }
+    // ประกายลอยขึ้นจากตัววิญญาณ — บอกว่าทัณฑ์กำลังเดินอยู่ ใช้ได้กับทุกสถานี
+    for (let i = 0; i < 5; i++) {
+      const ph = (t / 900 + i * 0.37) % 1;
+      ctx.fillStyle = d.fx === 'fx-ice'
+        ? `rgba(170,225,255,${(1 - ph) * 0.55})` : `rgba(255,170,70,${(1 - ph) * 0.55})`;
+      const px = sx + Math.sin(t / 420 + i * 2.3) * 16;
+      ctx.beginPath(); ctx.arc(px, sy - 10 - ph * 52, 2.2, 0, 7); ctx.fill();
+    }
     const p = Math.min(1, st.progress / st.need), W = 96;
     ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, d.x - W / 2, d.y + 8, W, 10, 5); ctx.fill();
     ctx.fillStyle = '#ff9d3a';        rr(ctx, d.x - W / 2, d.y + 8, W * p, 10, 5); ctx.fill();
@@ -156,15 +180,6 @@ export function render(ctx, g, t, hover, sel) {
     ctx.fillStyle = cold ? `rgba(120,205,255,${0.06 + glow * 0.10})`
                          : `rgba(255,130,40,${0.06 + glow * 0.10})`;
     ctx.beginPath(); ctx.arc(d.x, d.y - 30, 96, 0, 7); ctx.fill();
-    // เอฟเฟกต์เฉพาะสถานี วาบขึ้นเป็นจังหวะเหนือหัววิญญาณ
-    if (d.fx) {
-      const k = (t % 2600) / 2600;
-      if (k < 0.42) {
-        ctx.save(); ctx.globalAlpha = Math.sin(k / 0.42 * Math.PI) * 0.85;
-        drawStandee(ctx, d.fx, d.x - 40, d.y - 26 - k * 14, 74, t, '❄️');
-        ctx.restore();
-      }
-    }
   }
 
   if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);

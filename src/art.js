@@ -90,9 +90,10 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1) {
 /** จำนวนแบบวิญญาณที่มีไฟล์อยู่ — เพิ่มไฟล์ img/spiritN.png แล้วบวกเลขนี้ */
 export const SPIRIT_KINDS = 7;
 
-export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', variant = 0) {
+/** sp = เลขรูปวิญญาณ 1..SPIRIT_KINDS (มาจาก SPIRIT_OF ตามสำนวน) */
+export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   const bob = Math.sin(t / 520 + x) * (h * 0.05);
-  const im = img('spirit' + (variant % SPIRIT_KINDS + 1));
+  const im = img('spirit' + ((sp - 1) % SPIRIT_KINDS + 1));
   ctx.fillStyle = 'rgba(0,0,0,.28)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {
@@ -119,6 +120,28 @@ export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', variant = 0) {
   ctx.fillStyle = 'rgba(20,10,26,.65)';
   ctx.beginPath(); ctx.arc(x - r * 0.30, y + bob - r * 2.05, r * 0.13, 0, 7); ctx.fill();
   ctx.beginPath(); ctx.arc(x + r * 0.30, y + bob - r * 2.05, r * 0.13, 0, 7); ctx.fill();
+}
+
+/** ไฟลุกรอบตัว — ใช้สไปรท์ลูกไฟซ้อนกันหลายใบ ไม่มีไฟล์ก็วาดเปลวด้วยโค้ดแทน */
+export function drawFire(ctx, x, y, w, t, n = 3) {
+  const im = img('fx-fireball');
+  for (let i = 0; i < n; i++) {
+    const ph = t / (300 + i * 70) + i * 2.1;
+    const dx = (i - (n - 1) / 2) * w * 0.42 + Math.sin(ph) * w * 0.06;
+    const h = w * (0.55 + 0.22 * (0.5 + 0.5 * Math.sin(ph * 1.7)));
+    ctx.save();
+    ctx.globalAlpha = 0.55 + 0.35 * (0.5 + 0.5 * Math.sin(ph * 2.3));
+    if (im) ctx.drawImage(im, x + dx - h / 2, y - h, h, h);
+    else {
+      ctx.fillStyle = '#ff8a2a';
+      ctx.beginPath();
+      ctx.moveTo(x + dx, y - h);
+      ctx.quadraticCurveTo(x + dx + h * 0.36, y - h * 0.35, x + dx, y);
+      ctx.quadraticCurveTo(x + dx - h * 0.36, y - h * 0.35, x + dx, y - h);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
 }
 
 /** เรือข้ามธารลาวา — วิญญาณที่มาไม่ทันคิวนั่งมากับลำนี้ */

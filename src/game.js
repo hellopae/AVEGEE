@@ -1,7 +1,7 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
-         MOB, GUARD, LEVELS, starsOf } from './data.js';
+         MOB, GUARD, LEVELS, SPIRIT_OF, starsOf } from './data.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -54,6 +54,7 @@ function mkHardSoul() {
     denied: null,
   };
   soul.deserved = deservedOf(soul);
+  soul.sp = SPIRIT_OF[soul.who] || 7;          // หน้าตาต้องตรงกับสำนวน
   soul.said.push({ kind: 'deny', text: c.line });
   return soul;
 }
@@ -84,6 +85,7 @@ function mkSoul() {
     denied: null,      // เรื่องที่เขาปฏิเสธ
   };
   soul.deserved = deservedOf(soul);
+  soul.sp = SPIRIT_OF[soul.who] || 7;          // หน้าตาต้องตรงกับสำนวน
 
   // คำแก้ตัวตั้งต้น — ปฏิเสธเรื่องที่หนักที่สุดในสำนวน
   const worst = [...deeds].filter(d => d.known).sort((a, b) => b.w - a.w)[0];
