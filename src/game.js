@@ -2,6 +2,7 @@
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, starsOf } from './data.js';
+import { canWalk, stepTo, nearestWalk } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -412,11 +413,20 @@ const API = {
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    // เดินได้เฉพาะพื้นที่เหยียบได้ — ลาวากับแม่น้ำวิญญาณกันไว้ที่ src/walk.js
     const P = this.player, SP = 0.19 * dt;
+    // เซฟเก่า (หรือฉากที่วาดใหม่) อาจทำให้ยืนค้างกลางลาวา — ดันขึ้นฝั่งให้เอง
+    if (!canWalk(P.x, P.y)) {
+      const p = nearestWalk(P.x, P.y);
+      if (p) { P.x = p[0]; P.y = p[1]; P.tx = null; }
+    }
     if (P.tx != null) {
       const dx = P.tx - P.x, dy = P.ty - P.y, d = Math.hypot(dx, dy);
-      if (d < 4) { P.tx = null; }
-      else { P.x += dx / d * SP; P.y += dy / d * SP; P.face = dx < 0 ? -1 : 1; }
+      if (d < 4) P.tx = null;
+      else {
+        if (!stepTo(P, dx / d * SP, dy / d * SP)) P.tx = null;   // ไปต่อไม่ได้ = ทิ้งจุดหมาย
+        P.face = dx < 0 ? -1 : 1;
+      }
     }
     P.x = clamp(P.x, 40, SCENE.w - 40);
     P.y = clamp(P.y, 60, SCENE.h - 40);
@@ -425,16 +435,19 @@ const API = {
     for (const c of this.crew) {
       const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
       const hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
-      if (c.x == null) { c.x = hx; c.y = hy; }
+      if (c.x == null) { c.x = hx; c.y = hy; c.face = 1; }
       if (c.wx == null || Math.hypot(c.wx - c.x, c.wy - c.y) < 5) {
-        c.wx = hx + (Math.random() - 0.5) * 90;
-        c.wy = hy + (Math.random() - 0.5) * 44;
+        // เล็งจุดเดินเล่นใหม่ — ถ้าสุ่มไปโดนลาวา ดึงกลับมาที่จุดใกล้ที่สุดที่เหยียบได้
+        const tx = hx + (Math.random() - 0.5) * 90, ty = hy + (Math.random() - 0.5) * 44;
+        const ok = canWalk(tx, ty) ? [tx, ty] : nearestWalk(tx, ty);
+        c.wx = ok ? ok[0] : c.x; c.wy = ok ? ok[1] : c.y;
         c.wait = 400 + Math.random() * 2200;
       }
       if (c.wait > 0) { c.wait -= dt; }
       else {
         const dx = c.wx - c.x, dy = c.wy - c.y, d = Math.hypot(dx, dy) || 1;
-        c.x += dx / d * 0.05 * dt; c.y += dy / d * 0.05 * dt;
+        if (!stepTo(c, dx / d * 0.05 * dt, dy / d * 0.05 * dt)) c.wx = null;
+        if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
       }
       if (!c.sayUntil || Date.now() > c.sayUntil + 9000) {
         if (Math.random() < 0.0006 * dt) {
@@ -461,11 +474,13 @@ const API = {
     for (let i = this.mobs.length - 1; i >= 0; i--) {
       const m = this.mobs[i];
       if (m.wx == null || Math.hypot(m.wx - m.x, m.wy - m.y) < 6) {
-        m.wx = clamp(m.x + (Math.random() - 0.5) * 300, 60, SCENE.w - 60);
-        m.wy = clamp(m.y + (Math.random() - 0.5) * 200, 90, SCENE.h - 60);
+        const tx = clamp(m.x + (Math.random() - 0.5) * 300, 60, SCENE.w - 60);
+        const ty = clamp(m.y + (Math.random() - 0.5) * 200, 90, SCENE.h - 60);
+        const ok = canWalk(tx, ty) ? [tx, ty] : nearestWalk(tx, ty);
+        m.wx = ok ? ok[0] : m.x; m.wy = ok ? ok[1] : m.y;
       }
       const dx = m.wx - m.x, dy = m.wy - m.y, d = Math.hypot(dx, dy) || 1;
-      m.x += dx / d * 0.035 * dt; m.y += dy / d * 0.035 * dt;
+      if (!stepTo(m, dx / d * 0.035 * dt, dy / d * 0.035 * dt)) m.wx = null;
 
       if (Math.hypot(m.x - P.x, m.y - P.y) < 46) this.strike(i, 'ท่าน');
     }
@@ -474,12 +489,11 @@ const API = {
     if (this.guard && this.mobs.length) {
       const G = this.guard, m = this.mobs[0];
       const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
-      G.x += dx / d * 0.075 * dt; G.y += dy / d * 0.075 * dt;
+      stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
       if (d < 44) this.strike(0, GUARD.name);
     } else if (this.guard) {
-      const G = this.guard;
-      G.x += (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt;
-      G.y += (SPOTS.ferry.to[1] - 60 - G.y) * 0.0008 * dt;
+      const G = this.guard;                     // ว่างงาน → เดินกลับไปเฝ้าท่าเรือฝั่งขวา
+      stepTo(G, (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt, (SPOTS.ferry.to[1] - 90 - G.y) * 0.0008 * dt);
     }
   },
 
@@ -509,15 +523,18 @@ const API = {
   },
 
   spawnMob() {
-    const side = Math.random() < 0.5 ? 90 : SCENE.w - 90;
-    this.mobs.push({ x: side, y: 200 + Math.random() * 300, hp: MOB.hp });
+    const side = Math.random() < 0.5 ? 130 : SCENE.w - 130;
+    const y = 200 + Math.random() * 300;
+    // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปฟาดไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
+    const p = nearestWalk(side, y) || [side, y];
+    this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp });
     this.log(`👹 เปรตขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
   },
 
   hireGuard() {
     if (this.guard || this.coin < GUARD.hire) return false;
     this.coin -= GUARD.hire;
-    this.guard = { x: SPOTS.ferry.to[0], y: SPOTS.ferry.to[1] - 60 };
+    this.guard = { x: SPOTS.ferry.to[0], y: SPOTS.ferry.to[1] - 90 };
     this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
     return true;
   },

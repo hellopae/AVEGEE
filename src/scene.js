@@ -5,6 +5,7 @@
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD } from './data.js';
 import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawEmbers, drawVignette, rr } from './art.js';
+import { buildWalk } from './walk.js';
 
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
 const HERO_H = 92;
@@ -21,7 +22,7 @@ export function render(ctx, g, t, hover) {
   ctx.imageSmoothingEnabled = false;
 
   const bg = img('scene');
-  if (bg) ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
+  if (bg) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); buildWalk(bg); }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
   // ---- สถานีที่ยังไม่ได้สร้าง: กรอบประ ----
@@ -82,6 +83,20 @@ export function render(ctx, g, t, hover) {
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   if (g.guard) drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+
+  // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
+  // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
+  const now0 = Date.now();
+  for (const c of g.crew) {
+    if (c.x == null) continue;
+    drawStandee(ctx, 'crew-' + c.k, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
+    label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
+    if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
+  }
+  // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
+  // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
+  for (const c of g.crew)
+    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - 34);
 
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;

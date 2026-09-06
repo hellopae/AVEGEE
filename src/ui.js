@@ -3,6 +3,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB } from './data.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation } from './scene.js';
+import { stepTo, nearestWalk } from './walk.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -29,6 +30,7 @@ function frame(now) {
   }
   if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
   else render(ctx, g, now, hover);
+  followMarks();
   requestAnimationFrame(frame);
 }
 
@@ -176,6 +178,17 @@ function place(d) {
 }
 function placeMarks() { for (const d of ov.children) if (d.dataset.sx) place(d); }
 
+/** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
+function followMarks() {
+  for (const d of ov.children) {
+    if (!d.dataset.follow) continue;
+    const c = g.crewOf(d.dataset.follow);
+    if (!c || c.x == null) continue;
+    d.dataset.sx = c.x; d.dataset.sy = c.y - CH - 8;
+    place(d);
+  }
+}
+
 function drawOverlay() {
   ov.innerHTML = '';
   if (g.over) return;
@@ -198,13 +211,14 @@ function drawOverlay() {
   const rec = s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
-  // หมุดของนิราต้องตามตัวจริงไปด้วย ถ้าเธอไปรับเวรที่สถานี
+  // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
   const nira = g.crewOf('nira');
   const post = nira && nira.at ? STATIONS.find(d => d.k === nira.at) : null;
-  const nx = post ? post.x : (nira ? nira.hx : 660);
-  const ny = post ? post.y : (nira ? nira.hy : 400);
-  mark('', nx, ny - CH - 8, '📜',
+  const nx = nira?.x ?? (post ? post.x : (nira ? nira.hx : 660));
+  const ny = nira?.y ?? (post ? post.y : (nira ? nira.hy : 400));
+  const nm = mark('', nx, ny - CH - 8, '📜',
     `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.who)}</b>${rec}`);
+  if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
 
   const said = s.said.slice(-6).map(x =>
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
@@ -312,8 +326,10 @@ function openHelp() {
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
     ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด</p>
     <ol style="line-height:var(--leading-body);font-size:var(--text-sm);padding-left:1.2em">
-      <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร</li>
-      <li>อ่านสำนวนจากหมุด 📜 เหนือหัวนิรา และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
+      <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
+          เดินได้เฉพาะ<b>พื้นดิน ทางเดิน สะพาน และแท่นพิพากษา</b> — ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
+      <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> (เธอยืนอยู่ซ้ายแท่นตั้งแต่เริ่มเกม)
+          และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
       <li>ใช้พลังขุดความจริง — <b>พลังมีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
       <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ได้พลังและเงินเพิ่ม</li>
@@ -356,7 +372,8 @@ cv.onclick = e => {
 function onSceneClick(sx, sy) {
   const def = hitStation(sx, sy);
   if (!def) {                                  // คลิกที่โล่ง = สั่งให้เดินไปตรงนั้น
-    g.player.tx = sx; g.player.ty = sy;
+    const p = nearestWalk(sx, sy);             // คลิกลงลาวา/ลงน้ำ → ไปยืนขอบที่ใกล้ที่สุดแทน
+    if (p) { g.player.tx = p[0]; g.player.ty = p[1]; }
     return;
   }
   const st = g.stations.find(x => x.def.k === def.k);
@@ -397,7 +414,7 @@ function keyWalk(dt) {
   if (KEY.s || KEY.arrowdown) dy += 1;
   if (!dx && !dy) return;
   const d = Math.hypot(dx, dy);
-  P.x += dx / d * sp; P.y += dy / d * sp;
+  stepTo(P, dx / d * sp, dy / d * sp);          // ลาวา/แม่น้ำกันไว้ ชนแล้วไถลไปตามขอบ
   P.tx = null;                                  // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้
   if (dx) P.face = dx < 0 ? -1 : 1;
 }
