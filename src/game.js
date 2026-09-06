@@ -551,17 +551,65 @@ const API = {
     return bi < 0 ? null : { i: bi, m: this.mobs[bi], d: bd };
   },
 
-  /** ปุ่มฟาด (และปุ่มเว้นวรรค) — อยู่ในระยะก็ฟาดเลย ไกลก็เดินเข้าไปหาก่อน */
+  /** สถานีที่กำลังลงทัณฑ์และเรายืนอยู่ใกล้พอจะลงมือเอง */
+  stationInReach() {
+    const P = this.player;
+    let best = null, bd = BAL.smiteReach;
+    for (const st of this.stations) {
+      if (!st.soul) continue;
+      const d = Math.hypot((st.def.sx ?? st.def.x) - P.x, (st.def.sy ?? st.def.y) - P.y);
+      if (d < bd) { bd = d; best = st; }
+    }
+    return best;
+  },
+
+  /** ปุ่มฟาด (และปุ่มเว้นวรรค) — ทำอะไรขึ้นกับว่ายืนอยู่ตรงไหน
+   *  เปรตประชิด → ฟาดเปรต · ยืนที่สถานีที่กำลังลงทัณฑ์ → ซัดไฟเร่งทัณฑ์ · ไกล → เดินไปหาเปรต */
   attack() {
     const n = this.nearestMob();
-    if (!n) { this.log('ยังไม่มีเปรตในโซนตอนนี้', 'event'); return false; }
-    if (n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');
-    if (this.walkTo(n.m.x, n.m.y)) {
-      this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
-      return true;
+    if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');
+    const st = this.stationInReach();
+    if (st) return this.smite(st);
+    if (n) {
+      if (this.walkTo(n.m.x, n.m.y)) {
+        this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
+        return true;
+      }
+      this.log('เปรตตนนั้นอยู่ฝั่งที่เดินไปไม่ถึง — รอให้มันเดินเข้ามาก่อน', 'bad');
+      return false;
     }
-    this.log('เปรตตนนั้นอยู่ฝั่งที่เดินไปไม่ถึง — รอให้มันเดินเข้ามาก่อน', 'bad');
+    this.log('ไม่มีอะไรให้ลงมือตรงนี้ — ไปยืนที่สถานีที่กำลังลงทัณฑ์แล้วกดใหม่', 'event');
     return false;
+  },
+
+  /** ซัดไฟใส่วิญญาณที่กำลังรับทัณฑ์ — เร่งให้จบเร็วขึ้น แต่ลงมือเองก็เป็นกรรมของเรา
+   *  (แกนของเกมคือ "ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ผู้ตัดสิน" — ปุ่มนี้ต้องมีราคาเสมอ) */
+  smite(st) {
+    const fire = this.powerOf('roar');
+    if (fire.ammo <= 0) {
+      if (!this.noAmmoAt || Date.now() - this.noAmmoAt > 4000) {
+        this.noAmmoAt = Date.now();
+        this.log('🔥 ลูกไฟหมด ซัดไม่ออก — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน', 'bad');
+      }
+      return false;
+    }
+    if (this.smiteAt && Date.now() - this.smiteAt < 420) return false;   // กันรัวเกินไป
+    this.smiteAt = Date.now();
+    fire.ammo--;
+
+    const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
+    st.progress += BAL.smiteGain;
+    this.swingUntil = Date.now() + 480;
+    this.player.face = sx < this.player.x ? -1 : 1;
+    this.fxHits.push({ t: Date.now(), x: sx, y: sy });
+
+    const c = this.crewOf(st.crewK);
+    const k = Math.round(BAL.smiteKarma * (c && c.metta >= 8 ? 0.5 : 1) * 10) / 10;
+    this.karma = clamp(this.karma + k, 0, 100);
+    this.log(`🔥 ท่านซัดไฟใส่${st.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
+    if (st.progress >= st.need) this.finish(st);
+    this.onChange();
+    return true;
   },
 
   /** ฟาดเปรตตนที่ i — คืน true เมื่อฟาดออกจริง */

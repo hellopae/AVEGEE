@@ -231,6 +231,7 @@ molten orange lava glow, antique temple gold
 | 5 | `crew-nira-work` | นิราประจำสถานี | **แนบ `img/crew-nira.png`** · working pose: pressing her wooden seal stamp down onto an open scroll, other hand steadying the paper, leaning forward slightly · same black long-sleeve jacket, same dark red gold-trimmed long skirt, same hair bun |
 | 6 | `mob-pret2` | เปรตแบบที่สอง | emaciated Thai hungry ghost (pret), extremely tall and thin with pinhole mouth and swollen belly, hunched forward reaching with long clawed fingers, pale grey-green skin, tattered loincloth |
 | 7 | `item-fuel` | กองฟืนตกบนแผนที่ | bundle of dark charcoal logs tied with rough rope, faint orange embers glowing between the pieces, small pile resting on the ground |
+| 7.5 | `fx-flame` | ไฟที่กระทะทองแดง (ทางเลือก) | ตอนนี้โค้ดเอา `fx-fireball` (ทรงลูกอุกกาบาตพุ่งนอน) มาใช้แทนไปก่อน ดูโอเคแต่ไม่พอดีนัก · ถ้าอยากให้สวยขึ้น gen ทรงไฟลุกตั้งขึ้น: a single tall vertical tongue of orange fire licking upward, narrow base widening then tapering to a wisp at the top, bright yellow-white core, no fuel or logs, no ground, effect only |
 | 8 | `fx-ice` | ทัณฑ์โลกันตนรก | burst of jagged pale-blue ice shards radiating outward from a center point, frost mist, cold rim light, no ground, effect only |
 | 9 | `spirit4` `spirit5` | วิญญาณในคิว (ตอนนี้มี 3 แบบ) | translucent pale ghost of a dead Thai commoner standing with head bowed and hands together in a wai, lower body fading into wisps |
 

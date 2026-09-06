@@ -1,0 +1,31 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#111">
+<canvas id="c" width="1527" height="704" style="width:1527px;display:block"></canvas>
+<div id="o" style="font:14px monospace;color:#0f0;background:#000;padding:6px;white-space:pre"></div>
+<script type="module">
+import { SCENE, STATIONS, CREW, ITEM_SPOTS, SPOTS } from './src/data.js';
+import { buildWalk, canWalk, findPath } from './src/walk.js';
+const im = new Image(); im.src = 'img/scene.png';
+im.onload = () => {
+  buildWalk(im);
+  const cx = document.getElementById('c').getContext('2d');
+  cx.drawImage(im, 0, 0, SCENE.w, SCENE.h);
+  cx.fillStyle = 'rgba(0,255,120,.34)';
+  let n = 0;
+  for (let y = 0; y < SCENE.h; y += 8) for (let x = 0; x < SCENE.w; x += 8)
+    if (canWalk(x + 4, y + 4)) { cx.fillRect(x, y, 8, 8); n++; }
+  const P = [SPOTS.bench.x + 60, SPOTS.bench.y];
+  const bad = [...STATIONS.map(s => ['สถานี ' + s.name, s.x, s.y]),
+               ...CREW.map(c => ['ยมทูต ' + c.name, c.hx, c.hy]),
+               ...ITEM_SPOTS.map((s, i) => ['ของ#' + i, s[0], s[1]])]
+    .filter(([nm, x, y]) => !canWalk(x, y) || !findPath(P[0], P[1], x, y)?.length);
+  const cross = findPath(460, 356, 660, 356);
+  let len = 0, px = 460, py = 356;
+  (cross || []).forEach(q => { len += Math.hypot(q[0]-px, q[1]-py); px=q[0]; py=q[1]; });
+  cx.strokeStyle = '#ff0'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(460,356);
+  (cross||[]).forEach(q => cx.lineTo(q[0], q[1])); cx.stroke();
+  document.getElementById('o').textContent =
+    `ช่องเดินได้ ${n}\nข้ามสะพานไม้: ยาว ${len.toFixed(0)} px (เส้นตรง 200)\n` +
+    (bad.length ? 'เดินไปไม่ถึง: ' + bad.map(b => b[0]).join(', ') : 'ทุกจุดสำคัญเดินไปถึงหมด');
+  document.title='done';
+};
+</script></body>
