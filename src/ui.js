@@ -2,7 +2,7 @@
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB } from './data.js';
 import { createGame, loadSave, clearSave } from './game.js';
-import { render, toScene, hitStation, hitActor } from './scene.js';
+import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { stepTo, nearestWalk } from './walk.js';
 
 const $ = s => document.querySelector(s);
@@ -605,6 +605,9 @@ function openHelp() {
           และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
       <li>ใช้พลังขุดความจริง — <b>พลังมีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
       <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
+      <li><b>สร้างสถานีเพิ่ม</b> — เดินไปยืนในที่ว่างที่สร้างได้ ป้าย <b>⚒ กดตรงนี้เพื่อสร้าง</b>
+          จะโผล่ขึ้นมาเอง (คลิกที่ว่างนั้นจากไกล ๆ ตัวเราจะเดินไปให้)
+          หรือสั่งจากแท็บ <b>ก่อสร้าง</b> ก็ได้</li>
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ได้พลังและเงินเพิ่ม</li>
       <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
           เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
@@ -650,7 +653,14 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
-  // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (เช็คก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
+  const def = hitStation(sx, sy);
+  const st = def && g.stations.find(x => x.def.k === def.k);
+
+  // ป้าย "กดเพื่อสร้าง" มาก่อนทุกอย่าง — ตอนนั้นเรายืนอยู่ตรงจุดพอดี
+  // ถ้าไปเช็คตัวละครก่อน คลิกยังไงก็โดนตัวเราเองเสมอ แล้วจะไม่มีทางกดสร้างได้เลย
+  if (def && !st && nearBuild(g, g.player.x, g.player.y)?.k === def.k) return openBuild(def);
+
+  // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
   if (a) {
     select(a);
@@ -659,15 +669,15 @@ function onSceneClick(sx, sy) {
     return;
   }
 
-  const def = hitStation(sx, sy);
   if (!def) {                                  // คลิกที่โล่ง = สั่งให้เดินไปตรงนั้น
     if (!g.walkTo(sx, sy))                     // อ้อมลาวาให้เอง · ไปไม่ได้จริงค่อยบอก
       g.log('ตรงนั้นเดินไปไม่ถึง — ต้องข้ามลาวาหรือแม่น้ำวิญญาณ', 'bad');
     return;
   }
-  const st = g.stations.find(x => x.def.k === def.k);
-
-  if (!st) return openBuild(def);            // ยังไม่ได้สร้าง
+  if (!st) {                                   // ยังไม่ได้สร้าง และยังยืนไม่ถึงจุด → เดินไปก่อน
+    if (!g.walkTo(def.x, def.y)) g.log('ตรงนั้นเดินไปไม่ถึง', 'bad');
+    return;
+  }
   if (st.soul) {                              // กำลังลงทัณฑ์อยู่
     const c = g.crewOf(st.crewK);
     return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>

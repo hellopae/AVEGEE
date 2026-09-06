@@ -36,17 +36,10 @@ export function render(ctx, g, t, hover, sel) {
   if (bg) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); buildWalk(bg); }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
-  // ---- สถานีที่ยังไม่ได้สร้าง: กรอบประ ----
-  for (const def of STATIONS) {
-    if (g.stations.some(s => s.def.k === def.k)) continue;
-    const [x1, y1, x2, y2] = def.hit;
-    ctx.fillStyle = 'rgba(12,4,8,.50)';
-    rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.fill();
-    ctx.setLineDash([8, 6]);
-    ctx.strokeStyle = 'rgba(240,190,120,.45)'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.setLineDash([]);
-    label(ctx, `${def.glyph} ${def.name} — ${def.cost}`, (x1 + x2) / 2, (y1 + y2) / 2, 17, 'rgba(255,220,180,.9)');
-  }
+  // ---- จุดที่สร้างสถานีได้ ----
+  // เดิมเป็นกรอบประ + ป้ายชื่อ-ราคา ลอยค้างเต็มแผนที่ตลอดเวลา เจ้าของบอกว่ารก (6 ก.ย. 2569)
+  // ตอนนี้เงียบสนิทจนกว่ายมบาทจะเดินเข้าไปในเขตนั้น แล้วป้าย "กดเพื่อสร้าง" ค่อยโผล่
+  const spot = nearBuild(g, g.player.x, g.player.y);
 
   // ---- อาคารที่สร้างแล้ว (วาดก่อนตัวละคร ตัวละครจะได้ยืนหน้าอาคาร) ----
   // ฉากฐานเป็นที่โล่ง สถานีทุกหลังเป็นไฟล์แยก โผล่ขึ้นมาตอนสร้างเสร็จ
@@ -56,7 +49,8 @@ export function render(ctx, g, t, hover, sel) {
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {
     const def = STATIONS.find(d => d.k === hover);
-    if (def) {
+    const shown = def && (g.stations.some(x => x.def.k === def.k) || spot?.k === def.k);
+    if (shown) {
       const [x1, y1, x2, y2] = def.hit;
       ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 2.5;
       rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.stroke();
@@ -162,9 +156,55 @@ export function render(ctx, g, t, hover, sel) {
     ctx.beginPath(); ctx.arc(d.x, d.y - 30, 96, 0, 7); ctx.fill();
   }
 
+  if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
+
   drawEmbers(ctx, SCENE.w, SCENE.h, t);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+/** สถานีที่ยังไม่ได้สร้าง ซึ่งยมบาทยืนอยู่ใกล้พอจะสร้างได้
+ *  วัดจาก "จุดยืนของผู้คุม" (def.x,def.y) ไม่ใช่กรอบ hit — เพราะบางกรอบ (ลานตรากตรำ)
+ *  พื้นข้างในเป็นหลุมลาวาที่เหยียบไม่ได้ ถ้าใช้กรอบจะเข้าไปยืนสร้างไม่ได้เลย
+ *  ใกล้หลายอันพร้อมกันก็เอาอันที่ใกล้ที่สุด */
+export const BUILD_REACH = 150;
+export function nearBuild(g, x, y) {
+  let best = null, bd = BUILD_REACH;
+  for (const d of STATIONS) {
+    if (g.stations.some(s => s.def.k === d.k)) continue;
+    const dist = Math.hypot(d.x - x, d.y - y);
+    if (dist < bd) { bd = dist; best = d; }
+  }
+  return best;
+}
+
+/** ป้าย "กดเพื่อสร้าง" ที่โผล่เฉพาะตอนยมบาทยืนอยู่ในเขตนั้น */
+function buildPrompt(ctx, def, t, afford) {
+  const [x1, y1, x2, y2] = def.hit;
+  const cx = def.x, cy = Math.max(46, def.y - 122);   // ลอยเหนือหัวตัวเรา ไม่บังตัวละคร
+  const q = 0.5 + 0.5 * Math.sin(t / 420);
+
+  // เส้นประวิ่งรอบเขต บอกว่าอาคารจะลงตรงไหน
+  ctx.save();
+  ctx.strokeStyle = `rgba(255,205,120,${0.28 + q * 0.30})`;
+  ctx.lineWidth = 2.5; ctx.setLineDash([11, 9]); ctx.lineDashOffset = -t / 55;
+  rr(ctx, x1 + 6, y1 + 6, x2 - x1 - 12, y2 - y1 - 12, 10); ctx.stroke();
+  ctx.restore();
+
+  const l1 = `${def.glyph} ${def.name}`;
+  const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
+  ctx.font = '700 20px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  const w1 = ctx.measureText(l1).width;
+  ctx.font = '600 15px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  const w2 = ctx.measureText(l2).width;
+  const w = Math.max(w1, w2) + 30, h = 58;
+  const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
+
+  ctx.fillStyle = 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
+  ctx.strokeStyle = afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
+  ctx.lineWidth = 2; ctx.stroke();
+  label(ctx, l1, bx + w / 2, by + 19, 20, '#ffe7c4');
+  label(ctx, l2, bx + w / 2, by + 41, 15, afford ? '#d4a355' : '#b09a92');
 }
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
