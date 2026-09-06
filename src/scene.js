@@ -2,7 +2,7 @@
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD } from './data.js';
 import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawEmbers, drawVignette, rr } from './art.js';
 
@@ -68,20 +68,42 @@ export function render(ctx, g, t, hover) {
              s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.id);
   });
 
-  // ---- ตัวเรา ยืนที่แท่นพิพากษา ----
-  drawStandee(ctx, 'hero-yama', SPOTS.bench.x, SPOTS.bench.y, HERO_H, t, '👑');
+  // ---- ของที่ตกอยู่บนพื้น ----
+  for (const it of g.items) {
+    const def = ITEMS[it.k];
+    const p = 0.5 + 0.5 * Math.sin(t / 480 + it.x);
+    ctx.fillStyle = `rgba(255,210,120,${0.10 + p * 0.14})`;
+    ctx.beginPath(); ctx.arc(it.x, it.y - def.h * 0.35, def.h * 0.75, 0, 7); ctx.fill();
+    drawStandee(ctx, def.img, it.x, it.y + Math.sin(t / 480 + it.x) * 3, def.h, t, '🎁');
+  }
 
-  // ---- พญายมมาปรากฏที่ศาลาทองตอนออกความเห็น แล้วหายไป ----
+  // ---- เปรตที่มาก่อกวน ----
+  for (const m of g.mobs) drawStandee(ctx, MOB.img, m.x, m.y, MOB.h, t, '👹');
+
+  // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
+  if (g.guard) drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+
+  // ---- ตัวเรา — เดินไปไหนก็ได้ ----
+  const P = g.player;
+  if (P.tx != null) {                          // จุดหมายที่คลิกไว้
+    const q = 0.5 + 0.5 * Math.sin(t / 200);
+    ctx.strokeStyle = `rgba(255,210,140,${0.35 + q * 0.35})`; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(P.tx, P.ty, 10 + q * 5, 0, 7); ctx.stroke();
+  }
+  drawStandee(ctx, 'hero-yama', P.x, P.y, HERO_H, t, '👑', P.face);
+
+  // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
   if (g.bossUntil && t < g.bossUntil)
-    drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.25, t, '👹');
+    drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.2, t, '👹');
 
-  // ---- ยมทูต: ถ้ามีเวรอยู่ยืนที่สถานี ไม่มีก็ยืนที่ประจำของตัวเอง ----
-  for (const c of g.crew) {
-    const st = c.at ? STATIONS.find(d => d.k === c.at) : null;
-    const x = st ? st.x : c.hx, y = st ? st.y : c.hy;
-    if (x == null) continue;
-    drawStandee(ctx, 'crew-' + c.k, x, y, CREW_H, t + c.k.length * 400, c.glyph);
-    if (c.morale < 35) label(ctx, '😩', x, y - CREW_H - 8, 20);
+  // ---- ลูกไฟที่เพิ่งฟาด ----
+  const now = Date.now();
+  g.fxHits = g.fxHits.filter(f => now - f.t < 620);
+  for (const f of g.fxHits) {
+    const k = (now - f.t) / 620;
+    ctx.save(); ctx.globalAlpha = 1 - k;
+    drawStandee(ctx, 'fx-fireball', f.x, f.y - 30 - k * 26, 54 + k * 40, t, '🔥');
+    ctx.restore();
   }
 
   // ---- สถานีที่กำลังลงทัณฑ์: วิญญาณ + หลอดคืบหน้า + ระดับวาระ ----
@@ -104,6 +126,19 @@ export function render(ctx, g, t, hover) {
   drawEmbers(ctx, SCENE.w, SCENE.h, t);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+/** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
+function bubble(ctx, text, x, y) {
+  ctx.font = '600 15px "IBM Plex Sans Thai",sans-serif';
+  const w = Math.min(300, ctx.measureText(text).width + 20), h = 26;
+  const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
+  ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
+  ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 7);
+  ctx.fillStyle = 'rgba(20,9,14,.92)'; ctx.fill();
+  ctx.fillStyle = '#f2e6dd'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(text, bx + w / 2, y - h / 2 + 1);
 }
 
 function label(ctx, text, x, y, size, color = '#fff') {

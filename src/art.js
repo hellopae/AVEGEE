@@ -67,12 +67,19 @@ export function drawBuilding(ctx, def, t) {
 // ---------- ตัวละคร ----------
 /** วางตัวละครแบบ standee: เท้าอยู่ที่ (x,y) สูง h ในพิกัดฉาก
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */
-export function drawStandee(ctx, key, x, y, h, t, glyph = '❓') {
+export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1) {
   const bob = Math.sin(t / 700 + x) * (h * 0.012);
   ctx.fillStyle = 'rgba(0,0,0,.42)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
   const im = img(key);
-  if (im) { ctx.drawImage(im, x - h / 2, y - h + bob, h, h); return; }
+  if (im) {
+    if (face < 0) {                       // เดินไปทางซ้าย — พลิกกระจก
+      ctx.save(); ctx.translate(x, 0); ctx.scale(-1, 1);
+      ctx.drawImage(im, -h / 2, y - h + bob, h, h);
+      ctx.restore();
+    } else ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
+    return;
+  }
   ctx.font = `${Math.round(h * 0.62)}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.fillText(glyph, x, y - h * 0.1 + bob);

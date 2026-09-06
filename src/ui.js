@@ -1,6 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
-import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE } from './data.js';
-import { createGame } from './game.js';
+import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
+         GUARD, LEVELS, MOB } from './data.js';
+import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation } from './scene.js';
 
 const $ = s => document.querySelector(s);
@@ -9,14 +10,18 @@ const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หน
 const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'สาสม'];
 
 const g = createGame();
+const SAVED = loadSave();
+if (SAVED) g.restore(SAVED);
 const cv = $('#cv'), ctx = cv.getContext('2d');
-const cv3 = $('#cv3');
-let V3 = null, mode = '2d';        // มุมมอง 3D โหลดแบบ lazy ตอนกดสลับครั้งแรก
+let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
 // ---------- ลูป ----------
+let saveAt = 0;
 function frame(now) {
   const dt = Math.min(120, now - last); last = now;
+  if (!g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
+  if (now > saveAt) { saveAt = now + 4000; g.save(); }
   if (!g.paused && !g.over) {
     acc += dt;
     const step = BAL.tickMs / g.speed;
@@ -38,8 +43,10 @@ function drawRes() {
     <span class="chip">❤️ บารมี ${bar(100 * g.hp / BAL.startHp, 'hp')} <b>${Math.round(g.hp)}</b></span>
     <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
     <span class="chip">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
-    <span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>`;
-  $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/3`;
+    <span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>
+    <span class="chip">🎖️ ${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</span>
+    ${g.mobs.length ? `<span class="chip" style="color:var(--destructive)">👹 เปรต ${g.mobs.length} ตน</span>` : ''}`;
+  $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
 }
 
 // ---------- แผงข้าง ----------
@@ -102,6 +109,7 @@ function drawTab() {
         </div>`;
       }).join('');
     const bf = $('#buyfuel'); if (bf) bf.onclick = () => { g.buy('fuel', 1); refresh(); };
+    const hg = $('#hireg'); if (hg) hg.onclick = () => { g.hireGuard(); refresh(); };
     b.querySelectorAll('[data-build]').forEach(el =>
       el.onclick = () => { g.build(el.dataset.build); refresh(); });
   }
@@ -178,7 +186,9 @@ function drawOverlay() {
     const d = document.createElement('div');
     d.className = 'score';
     d.dataset.sx = SPOTS.bench.x; d.dataset.sy = SPOTS.bench.y - 104;
-    d.innerHTML = `<span style="color:${col}">${fx.score}</span><small style="color:${col}">ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
+    const st = '★'.repeat(fx.stars) + '☆'.repeat(5 - fx.stars);
+    d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
+      `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
     ov.appendChild(d); place(d);
     mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
@@ -220,7 +230,9 @@ function drawDeck() {
     <div class="grp"><span class="lb">พลังของท่าน</span>
       <div class="row2" id="d-pw">${POWERS.map(p => {
         const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
-        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี` : pw.cd > 0 ? `รอ ${pw.cd} คดี` : 'พร้อม';
+        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี`
+                  : pw.ammo <= 0 ? 'หมด — เดินไปเก็บ'
+                  : pw.cd > 0 ? `รอ ${pw.cd} คดี` : `×${pw.ammo}`;
         return `<button data-k="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
       }).join('')}</div></div>
 
@@ -279,7 +291,8 @@ function openEnding(o) {
     <p style="line-height:var(--leading-body)">${esc(o.text)}</p>
     <div class="hint">ปิดคดีทั้งหมด ${g.casesDone} เรื่อง · คะแนนเฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0} ·
       กรรมที่ท่านสะสมเอง ${g.karma.toFixed(1)}</div>
-    <div class="row"><button class="gold" onclick="location.reload()">เริ่มใหม่</button></div>`);
+    <div class="row"><button class="gold" id="again">เริ่มใหม่</button></div>`,
+    d => { d.querySelector('#again').onclick = () => { clearSave(); location.reload(); }; });
 }
 
 /** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
@@ -299,13 +312,18 @@ function openHelp() {
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
     ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด</p>
     <ol style="line-height:var(--leading-body);font-size:var(--text-sm);padding-left:1.2em">
-      <li>กดวิญญาณในคิว อ่านสำนวนว่าเขาทำอะไรมา หนักแค่ไหน มีบุญถ่วงไหม</li>
-      <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> (คนโกงลงกระทะทองแดง ไม่ใช่ต้นงิ้ว) → ได้คะแนน <b>ธรรม</b></li>
-      <li>เลือก <b>ระดับวาระ</b> ให้พอดีกรรม → ได้คะแนน <b>เข็ด</b><br>
-          เบาไป เขาไม่สำนึก · <span class="warn">หนักเกิน ส่วนเกินกลายเป็นกรรมของท่านเอง</span></li>
-      <li>อย่าให้คิวล้น ระเบียบจะตก · ระเบียบถึง 0 พ่อเรียกกลับ</li>
-      <li>ผ่านตรวจการ 3 รอบแล้วจบเกม — ตอนจบขึ้นกับ<b>กรรมที่ท่านสะสมเอง</b></li>
+      <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร</li>
+      <li>อ่านสำนวนจากหมุด 📜 เหนือหัวนิรา และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
+      <li>ใช้พลังขุดความจริง — <b>พลังมีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
+      <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
+      <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ได้พลังและเงินเพิ่ม</li>
+      <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
+          เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
+      <li>ทุก 5 คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน ปล่อยไว้ระเบียบตกเรื่อย ๆ —
+          เดินเข้าไปชนเพื่อฟาดด้วยลูกไฟ หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+      <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
     </ol>
+    <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 }
 
@@ -318,53 +336,10 @@ $('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); 
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 
-$('#view').onclick = async () => {
-  const b = $('#view');
-  if (mode === '2d') {
-    b.disabled = true; b.textContent = '⏳ กำลังโหลด three.js…';
-    try {
-      if (!V3) {
-        V3 = await import('./view3d.js');
-        V3.init(cv3);
-        V3.bindControls(cv3);
-        fit3d();
-        addEventListener('resize', fit3d);
-      }
-    } catch (err) {
-      b.disabled = false; b.textContent = '🎥 มุมมอง 3D';
-      g.log('โหลดมุมมอง 3D ไม่สำเร็จ — ' + err.message, 'bad'); drawLog();
-      return;
-    }
-    mode = '3d'; cv.hidden = true; cv3.hidden = false;
-    g.log('มุมมอง 3D — ลากเมาส์เพื่อหมุนกล้อง หมุนล้อเพื่อซูม', 'event'); drawLog();
-    b.disabled = false; b.textContent = '🗺️ มุมมอง 2D';
-    fit3d();
-  } else {
-    mode = '2d'; cv3.hidden = true; cv.hidden = false;
-    b.textContent = '🎥 มุมมอง 3D';
-  }
-  drawOverlay();
-};
+// มุมมอง 3D ปิดไว้ 6 ก.ย. 2569 — เจ้าของบอกว่า "ยังดูแปลก ๆ เอาออกดีกว่า"
+// โค้ดยังอยู่ครบที่ src/view3d.js เปิดกลับได้โดยเอาปุ่ม #view กับ canvas #cv3 ใน index.html คืนมา
+// แล้วกู้บล็อกตัวโหลดจาก git ที่ commit "เพิ่มมุมมอง 3D แบบ billboard"
 
-function fit3d() {
-  const w = cv3.clientWidth || cv.clientWidth;
-  if (!w || !V3) return;
-  const h = Math.round(w * 704 / 1527);
-  cv3.width = Math.round(w * Math.min(2, devicePixelRatio));
-  cv3.height = Math.round(h * Math.min(2, devicePixelRatio));
-  V3.resize(cv3.width, cv3.height);
-}
-document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
-  tab = b.dataset.tab;
-  document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', x === b));
-  drawTab();
-});
-
-// คลิกบนฉาก
-cv3.onclick = e => {
-  const p = V3 && V3.unproject(cv3, e);
-  if (p) onSceneClick(p[0], p[1]);
-};
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
   const def = hitStation(sx, sy);
@@ -380,7 +355,10 @@ cv.onclick = e => {
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
   const def = hitStation(sx, sy);
-  if (!def) return;
+  if (!def) {                                  // คลิกที่โล่ง = สั่งให้เดินไปตรงนั้น
+    g.player.tx = sx; g.player.ty = sy;
+    return;
+  }
   const st = g.stations.find(x => x.def.k === def.k);
 
   if (!st) return openBuild(def);            // ยังไม่ได้สร้าง
@@ -399,6 +377,29 @@ function onSceneClick(sx, sy) {
       <div class="row"><button data-close>ปิด</button></div>`);
   }
   pick.st = def.k; drawDeck();                // ว่าง + มีคิว → เลือกเป็นปลายทาง
+}
+
+// เดินด้วยคีย์บอร์ดด้วยก็ได้
+const KEY = {};
+addEventListener('keydown', e => {
+  if (dlg.open || /input|textarea/i.test(e.target.tagName)) return;
+  KEY[e.key.toLowerCase()] = true;
+  if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
+});
+addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
+
+function keyWalk(dt) {
+  const P = g.player, sp = 0.32 * dt;
+  let dx = 0, dy = 0;
+  if (KEY.a || KEY.arrowleft) dx -= 1;
+  if (KEY.d || KEY.arrowright) dx += 1;
+  if (KEY.w || KEY.arrowup) dy -= 1;
+  if (KEY.s || KEY.arrowdown) dy += 1;
+  if (!dx && !dy) return;
+  const d = Math.hypot(dx, dy);
+  P.x += dx / d * sp; P.y += dy / d * sp;
+  P.tx = null;                                  // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้
+  if (dx) P.face = dx < 0 ? -1 : 1;
 }
 
 function openBuild(def) {
@@ -422,6 +423,12 @@ g.onChange = () => {
       k.pass
         ? `"ระเบียบ ${Math.round(g.order)} คะแนนเฉลี่ย ${k.avg} ... พอใช้ได้" ท่านพูดแค่นั้นแล้วก็เงียบ — ผ่านแล้ว ${g.kpiPassed} จาก 3 รอบ`
         : `"ระเบียบ ${Math.round(g.order)} คะแนนเฉลี่ย ${k.avg}" ท่านอ่านตัวเลขออกเสียงช้า ๆ ทีละตัว แล้วไม่พูดอะไรต่อ`);
+    return;
+  }
+  if (g.pendingLevel) {
+    const lv = g.pendingLevel; g.pendingLevel = null;
+    bossModal(`เลื่อนขั้น — ${lv.name}`,
+      `"ห้าดาวห้าครั้ง ข้าเห็นแล้ว" พญายมยื่นของบางอย่างให้โดยไม่อธิบาย — ${lv.bonus}`, 'รับไว้');
     return;
   }
   if (g.pendingEvent) {

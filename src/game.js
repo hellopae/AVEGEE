@@ -1,6 +1,7 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
-import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS,
-         POWERS, DENIALS, CONFESS, PANIC } from './data.js';
+import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
+         POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
+         MOB, GUARD, LEVELS, starsOf } from './data.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -10,7 +11,10 @@ export function createGame() {
   const g = {
     tick: 0, coin: BAL.startCoin, fuel: BAL.startFuel,
     order: 72, karma: 0, hp: BAL.startHp,
-    powers: POWERS.map(p => ({ ...p, cd: 0 })),
+    powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'roar' ? 3 : p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2 })),
+    star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
+    player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1 },
+    items: [], mobs: [], guard: null, fxHits: [],
     queue: [], logs: [], over: null,
     paused: true, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
@@ -39,6 +43,20 @@ function mkStation(k) {
 }
 
 // ---------- สร้างสำนวนคดี ----------
+/** คดีที่ถูกกับผิดปนกัน — ด้านที่ทำให้เห็นใจถูกซ่อนไว้ ต้องใช้พลังถึงจะเจอ */
+function mkHardSoul() {
+  const c = pick(HARD_CASES);
+  const soul = {
+    id: SEQ++, who: c.who, hard: true, waited: 0, said: [],
+    deeds: [{ ...c.seen, known: true }, { ...c.hidden, known: false }],
+    merits: [{ ...c.merit, fake: false, hiddenMerit: true }],
+    denied: null,
+  };
+  soul.deserved = deservedOf(soul);
+  soul.said.push({ kind: 'deny', text: c.line });
+  return soul;
+}
+
 function mkSoul() {
   const n = 1 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.2 ? 1 : 0);
   const deeds = [];
@@ -92,9 +110,11 @@ const API = {
 
   spawnSoul() {
     if (this.queue.length >= 14) return;
-    const s = mkSoul();
+    // ทุก ๆ ราวหนึ่งในห้า จะเป็นคดีที่ตัดสินยาก
+    const s = (this.casesDone >= 2 && Math.random() < 0.22) ? mkHardSoul() : mkSoul();
+    if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
     this.queue.push(s);
-    this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
+    if (!s.hard) this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
   },
 
   crewOf(k) { return this.crew.find(c => c.k === k); },
@@ -102,15 +122,15 @@ const API = {
   powerOf(k) { return this.powers.find(p => p.k === k); },
   powerReady(k) {
     const p = this.powerOf(k);
-    return p && p.cd === 0 && this.casesDone >= p.unlock;
+    return p && p.cd === 0 && p.ammo > 0 && this.casesDone >= p.unlock;
   },
 
   /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
   usePower(k, soul) {
     if (!this.powerReady(k) || !soul) return null;
     const p = this.powerOf(k);
-    p.cd = p.cd0 ?? p.cd;                       // เริ่มนับ cooldown
-    p.cd = POWERS.find(x => x.k === k).cd;
+    p.cd = POWERS.find(x => x.k === k).cd;      // เริ่มนับ cooldown
+    p.ammo--;                                    // และกินกระสุนไปหนึ่ง — เดินไปเก็บของมาเติมได้
     this.karma = clamp(this.karma + p.karma, 0, 100);
 
     const hidden = soul.deeds.filter(d => !d.known);
@@ -207,6 +227,7 @@ const API = {
     this.karma = clamp(this.karma + r.karma, 0, 100);
     this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; this.scoreSum += r.score;
+    if (this.casesDone % MOB.spawnEvery === 0) this.spawnMob();
     this.powers.forEach(p => { if (p.cd > 0) p.cd--; });
 
     const tag = r.score >= 78 ? 'good' : r.score >= 50 ? '' : 'bad';
@@ -217,13 +238,26 @@ const API = {
 
     // ลงทัณฑ์เกินกรรมตั้งแต่สองวาระขึ้นไป = พ่อหักบารมีเสมอ ต่อให้คะแนนรวมยังสวย
     // นี่คือข้อเดียวที่ท่านสั่งไว้ตั้งแต่วันแรก
-    if (r.over >= 2 && r.score >= 50) { this.hp -= BAL.hpBad; r.boss = 'cruel'; }
-    else if (r.score < 35)      { this.hp -= BAL.hpTerrible; r.boss = 'terrible'; }
-    else if (r.score < 50) { this.hp -= BAL.hpBad;      r.boss = 'bad'; }
-    else if (r.score >= 82){ this.hp = Math.min(BAL.startHp, this.hp + BAL.hpGoodHeal);
-                             this.coin += 40; r.boss = 'great'; }
-    else                   { r.boss = 'ok'; }
-    this.hp = clamp(this.hp, 0, BAL.startHp);
+    r.stars = starsOf(r.score);
+    // ลงทัณฑ์เกินกรรมตั้งแต่สองวาระ = พ่อหักบารมีเสมอ ต่อให้คะแนนรวมยังสวย
+    if (r.over >= 2 && r.score >= 50) { r.boss = 'cruel'; r.stars = Math.min(r.stars, 2); }
+    else if (r.score < 35)  r.boss = 'terrible';
+    else if (r.score < 50)  r.boss = 'bad';
+    else if (r.score >= 82) r.boss = 'great';
+    else                    r.boss = 'ok';
+
+    if (r.stars === 0) this.fireball('คำตัดสินนี้ไม่มีดาวสักดวง');
+    else if (r.boss === 'cruel') this.fireball('เกินกรรมไปสองวาระ');
+    else if (r.stars <= 1) { this.hp -= 10; this.log('พญายมส่ายหน้า — บารมีหายไป 10', 'bad'); }
+    else if (r.stars === 5) {
+      this.star5++;
+      this.hp = Math.min(this.hpMax, this.hp + BAL.hpGoodHeal);
+      this.coin += 60;
+      this.log(`⭐⭐⭐⭐⭐ ห้าดาว! (${this.star5} ครั้งแล้ว) +60 เบี้ยกรรม`, 'good');
+      this.checkLevel();
+    } else if (r.stars === 4) this.coin += 25;
+
+    this.hp = clamp(this.hp, 0, this.hpMax);
     this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
     this.checkEnd();
   },
@@ -269,6 +303,16 @@ const API = {
       if (!c.at) c.morale = Math.min(100, c.morale + (tea ? BAL.moraleRest * 1.0 + BAL.moraleRestTea * 0.5 : BAL.moraleRest));
     }
 
+    // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
+    if (this.mobs.length) this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
+
+    // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
+    if (this.tick % 18 === 0 && this.items.length < 3) {
+      const need = this.hp < this.hpMax * 0.55 ? 'health'
+                 : pick(['fire', 'fire', 'mirror', 'health', this.powerOf('hypno').max ? 'hypno' : 'fire']);
+      this.dropItem(need);
+    }
+
     // ระเบียบ
     const over = Math.max(0, this.queue.length - BAL.queueMax);
     if (over > 0) this.order = clamp(this.order - BAL.orderDrainPerOver * over, 0, 100);
@@ -276,7 +320,7 @@ const API = {
 
     // ค่าแรง
     if (--this.nextPay <= 0) {
-      const total = this.crew.reduce((s, c) => s + c.pay, 0);
+      const total = this.crew.reduce((s, c) => s + c.pay, 0) + (this.guard ? GUARD.pay : 0);
       this.coin -= total;
       this.log(`💸 จ่ายค่าแรงยมทูต ${this.crew.length} คน — ${total} เบี้ยกรรม`);
       this.nextPay = BAL.payEvery;
@@ -329,7 +373,9 @@ const API = {
       k: 'coin', title: 'นรกล้มละลาย',
       text: 'ยมทูตไม่ได้ค่าแรงสามวาระติด ทุกคนวางเครื่องมือแล้วเดินออกไปพร้อมกัน',
     };
-    else if (this.kpiPassed >= 3) this.over =
+    // เดิมจบที่ 3 รอบ ซึ่งสั้นเกินกว่าที่ระบบเลเวล/เปรต/ของสะสมจะได้ทำงาน
+    // (จำลองแล้วผู้เล่นเก่งจบเกมที่เลเวล 1.4 โดยแทบไม่ได้เลื่อนขั้นเลย)
+    else if (this.kpiPassed >= BAL.kpiWin) this.over =
       this.karma < 25 ? {
         k: 'win', title: 'ทายาทบัลลังก์',
         text: 'สามรอบตรวจผ่านหมด กรรมของท่านยังใส พญายมยื่นตราประจำตำแหน่งให้แล้วพูดสั้น ๆ ว่า "ทำต่อไป"',
@@ -340,6 +386,140 @@ const API = {
         k: 'win3', title: 'ผู้พิพากษาที่มีสำนวนของตัวเอง',
         text: 'ท่านผ่านการตรวจทุกรอบ โซนนี้เดินได้เองแล้ว — คืนนั้นนิราวางแฟ้มบางเล่มหนึ่งไว้บนโต๊ะโดยไม่พูดอะไร ชื่อบนปกคือชื่อของท่าน และมันหนากว่าที่คิดไว้มาก',
       };
+  },
+
+  /** ลูกไฟจากพญายม — โดนห้าครั้งบารมีหมด */
+  fireball(why) {
+    this.hits++;
+    this.hp -= this.hpMax / 5;
+    this.fxHits.push({ t: Date.now(), x: this.player.x, y: this.player.y });
+    this.log(`🔥 ลูกไฟจากบัลลังก์ — ${why} · บารมีเหลือ ${Math.max(0, Math.round(this.hp))} (โดนแล้ว ${this.hits}/5)`, 'bad');
+    this.checkEnd();
+  },
+
+  checkLevel() {
+    const nx = LEVELS[this.level];              // เลเวลถัดไป (index = level เพราะ level เริ่มที่ 1)
+    if (!nx || this.star5 < nx.star5) return;
+    this.level++;
+    if (this.level >= 2) this.powers.forEach(p => { p.max++; p.ammo = p.max; });
+    if (this.level >= 3) this.coin += 300;
+    if (this.level >= 4) { this.hpMax = 120; this.hp = this.hpMax; this.coin += 500; }
+    if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
+    this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
+    this.pendingLevel = nx;
+  },
+
+  // ---------- โลกที่เดินได้ ----------
+  /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
+  stepWorld(dt) {
+    const P = this.player, SP = 0.19 * dt;
+    if (P.tx != null) {
+      const dx = P.tx - P.x, dy = P.ty - P.y, d = Math.hypot(dx, dy);
+      if (d < 4) { P.tx = null; }
+      else { P.x += dx / d * SP; P.y += dy / d * SP; P.face = dx < 0 ? -1 : 1; }
+    }
+    P.x = clamp(P.x, 40, SCENE.w - 40);
+    P.y = clamp(P.y, 60, SCENE.h - 40);
+
+    // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
+    for (const c of this.crew) {
+      const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
+      const hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
+      if (c.x == null) { c.x = hx; c.y = hy; }
+      if (c.wx == null || Math.hypot(c.wx - c.x, c.wy - c.y) < 5) {
+        c.wx = hx + (Math.random() - 0.5) * 90;
+        c.wy = hy + (Math.random() - 0.5) * 44;
+        c.wait = 400 + Math.random() * 2200;
+      }
+      if (c.wait > 0) { c.wait -= dt; }
+      else {
+        const dx = c.wx - c.x, dy = c.wy - c.y, d = Math.hypot(dx, dy) || 1;
+        c.x += dx / d * 0.05 * dt; c.y += dy / d * 0.05 * dt;
+      }
+      if (!c.sayUntil || Date.now() > c.sayUntil + 9000) {
+        if (Math.random() < 0.0006 * dt) {
+          c.say = pick(c.says); c.sayUntil = Date.now() + 4200;
+        }
+      }
+    }
+
+    // ของบนพื้น — เดินทับแล้วเก็บ
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      const it = this.items[i];
+      if (Math.hypot(it.x - P.x, it.y - P.y) > 42) continue;
+      const def = ITEMS[it.k];
+      if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
+      if (def.power) {
+        const p = this.powerOf(def.power);
+        p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
+      }
+      this.log(`🎁 เก็บ${def.name} — ${def.say}`, 'good');
+      this.items.splice(i, 1);
+    }
+
+    // เปรต — เดินเข้าไปใกล้แล้วปราบด้วยลูกไฟ (ต้องมีกระสุนตวาด)
+    for (let i = this.mobs.length - 1; i >= 0; i--) {
+      const m = this.mobs[i];
+      if (m.wx == null || Math.hypot(m.wx - m.x, m.wy - m.y) < 6) {
+        m.wx = clamp(m.x + (Math.random() - 0.5) * 300, 60, SCENE.w - 60);
+        m.wy = clamp(m.y + (Math.random() - 0.5) * 200, 90, SCENE.h - 60);
+      }
+      const dx = m.wx - m.x, dy = m.wy - m.y, d = Math.hypot(dx, dy) || 1;
+      m.x += dx / d * 0.035 * dt; m.y += dy / d * 0.035 * dt;
+
+      if (Math.hypot(m.x - P.x, m.y - P.y) < 46) this.strike(i, 'ท่าน');
+    }
+
+    // ยักษ์ทวารบาลไล่ปราบเอง
+    if (this.guard && this.mobs.length) {
+      const G = this.guard, m = this.mobs[0];
+      const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
+      G.x += dx / d * 0.075 * dt; G.y += dy / d * 0.075 * dt;
+      if (d < 44) this.strike(0, GUARD.name);
+    } else if (this.guard) {
+      const G = this.guard;
+      G.x += (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt;
+      G.y += (SPOTS.ferry.to[1] - 60 - G.y) * 0.0008 * dt;
+    }
+  },
+
+  /** ฟาดเปรตตนที่ i */
+  strike(i, by) {
+    const m = this.mobs[i];
+    if (m.cool && Date.now() < m.cool) return;
+    const fire = this.powerOf('roar');
+    if (by === 'ท่าน' && fire.ammo <= 0) {
+      if (!m.warned) { m.warned = true; this.log('เปรตเข้ามาประชิด แต่ลูกไฟหมด — เดินไปเก็บลูกไฟก่อน', 'bad'); }
+      return;
+    }
+    if (by === 'ท่าน') fire.ammo--;
+    m.hp--; m.cool = Date.now() + 600;
+    this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
+    if (m.hp > 0) return;
+    this.mobs.splice(i, 1);
+    this.coin += MOB.bounty;
+    this.order = clamp(this.order + 3, 0, 100);
+    this.log(`💥 ${by}ปราบเปรตได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3`, 'good');
+  },
+
+  dropItem(k) {
+    const spot = pick(ITEM_SPOTS);
+    if (this.items.some(it => it.x === spot[0] && it.y === spot[1])) return;
+    this.items.push({ k, x: spot[0], y: spot[1] });
+  },
+
+  spawnMob() {
+    const side = Math.random() < 0.5 ? 90 : SCENE.w - 90;
+    this.mobs.push({ x: side, y: 200 + Math.random() * 300, hp: MOB.hp });
+    this.log(`👹 เปรตขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
+  },
+
+  hireGuard() {
+    if (this.guard || this.coin < GUARD.hire) return false;
+    this.coin -= GUARD.hire;
+    this.guard = { x: SPOTS.ferry.to[0], y: SPOTS.ferry.to[1] - 60 };
+    this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
+    return true;
   },
 
   buy(kind, n = 1) {
@@ -372,5 +552,76 @@ const API = {
     return true;
   },
 };
+
+/** ---------- เซฟลงเครื่อง ----------
+ *  เก็บเฉพาะ "สิ่งที่เปลี่ยนได้" ไม่เก็บค่านิยามจาก data.js
+ *  ตอนโหลดจึงเอาค่านิยามล่าสุดมาประกอบใหม่ — แก้สมดุลใน data.js แล้วเซฟเก่ายังใช้ได้ */
+const SAVE_KEY = 'avegee.save.v1';
+
+API.snapshot = function () {
+  return {
+    v: 1, at: Date.now(),
+    tick: this.tick, coin: this.coin, fuel: this.fuel, order: this.order,
+    karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
+    star5: this.star5, level: this.level, casesDone: this.casesDone, scoreSum: this.scoreSum,
+    kpiPassed: this.kpiPassed, nextArrive: this.nextArrive, nextEvent: this.nextEvent,
+    nextPay: this.nextPay, nextKpi: this.nextKpi,
+    seq: SEQ,
+    powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max })),
+    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y })),
+    stations: this.stations.map(st => ({
+      k: st.def.k, crewK: st.crewK, intensity: st.intensity,
+      progress: st.progress, need: st.need, soul: st.soul, verdict: st.verdict,
+    })),
+    queue: this.queue, items: this.items, mobs: this.mobs,
+    guard: this.guard, player: this.player,
+    logs: this.logs.slice(0, 40),
+  };
+};
+
+API.save = function () {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.snapshot())); return true; }
+  catch { return false; }
+};
+
+API.restore = function (d) {
+  if (!d || d.v !== 1) return false;
+  const keep = ['tick','coin','fuel','order','karma','hp','hpMax','hits','star5','level',
+                'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi'];
+  keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
+  SEQ = d.seq || SEQ;
+
+  this.powers = POWERS.map(p => {
+    const sv = (d.powers || []).find(x => x.k === p.k) || {};
+    return { ...p, cd: sv.cd || 0, ammo: sv.ammo ?? 0, max: sv.max ?? 2 };
+  });
+  this.crew = (d.crew || []).map(sv => {
+    const def = CREW.find(c => c.k === sv.k);
+    return def ? { ...mkCrew(def), ...sv } : null;
+  }).filter(Boolean);
+  this.stations = (d.stations || []).map(sv => {
+    const st = mkStation(sv.k);
+    if (!st.def) return null;
+    Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity, progress: sv.progress,
+                        need: sv.need, soul: sv.soul, verdict: sv.verdict });
+    return st;
+  }).filter(Boolean);
+  this.queue = d.queue || [];
+  this.items = d.items || [];
+  this.mobs = d.mobs || [];
+  this.guard = d.guard || null;
+  if (d.player) this.player = d.player;
+  this.logs = d.logs || [];
+  this.over = null;
+  this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
+  return true;
+};
+
+export function loadSave() {
+  try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }
+}
+export function clearSave() {
+  try { localStorage.removeItem(SAVE_KEY); } catch {}
+}
 
 export { SINS, clamp };
