@@ -563,7 +563,23 @@ function openEnding(o) {
     <div class="hint">ปิดคดีทั้งหมด ${g.casesDone} เรื่อง · คะแนนเฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0} ·
       กรรมที่ท่านสะสมเอง ${g.karma.toFixed(1)}</div>
     <div class="row"><button class="gold" id="again">เริ่มใหม่</button></div>`,
-    d => { d.querySelector('#again').onclick = () => { clearSave(); location.reload(); }; });
+    d => { d.querySelector('#again').onclick = restart; });
+}
+
+/** เริ่มใหม่จริง ๆ — หยุดบันทึกอัตโนมัติก่อน ไม่งั้นลูปเฟรมอาจเขียนเซฟทับตอนกำลังรีโหลด */
+function restart() { saveAt = Infinity; clearSave(); location.reload(); }
+
+function openNewGame() {
+  const was = g.paused; g.paused = true; updatePlay();
+  modal(`<h2>เริ่มเกมใหม่</h2>
+    <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
+      เริ่มใหม่แล้ว<b>ความคืบหน้าที่บันทึกไว้จะหายทั้งหมด</b> —
+      ตอนนี้อยู่วาระที่ ${g.tick} · ปิดคดีแล้ว ${g.casesDone} เรื่อง ·
+      ${esc(LEVELS[g.level - 1].name)} ⭐${g.star5}</p>
+    <div class="row"><button data-close>เล่นต่อ</button>
+      <button class="gold" id="ngo">เริ่มใหม่</button></div>`,
+    d => { d.querySelector('#ngo').onclick = restart; });
+  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
 }
 
 /** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
@@ -614,6 +630,7 @@ function updatePlay() {
 $('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
+$('#newgame').onclick = openNewGame;
 
 // มุมมอง 3D ปิดไว้ 6 ก.ย. 2569 — เจ้าของบอกว่า "ยังดูแปลก ๆ เอาออกดีกว่า"
 // โค้ดยังอยู่ครบที่ src/view3d.js เปิดกลับได้โดยเอาปุ่ม #view กับ canvas #cv3 ใน index.html คืนมา

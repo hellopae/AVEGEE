@@ -183,6 +183,7 @@ const API = {
     st.soul = soul;
     st.crewK = crewK;
     st.intensity = clamp(intensity, 1, 5);
+    c.path = null;                       // ทิ้งเส้นทางเดินเล่นเดิม แล้วเดินไปประจำสถานีใหม่
     st.progress = 0;
     st.need = 18 + soul.deserved * 8 + st.intensity * 7;
     c.at = st.def.k;
@@ -273,7 +274,7 @@ const API = {
                           intensity: st.intensity, tick: this.tick });
     if (this.closed.length > 12) this.closed.pop();
     st.soul = null; st.progress = 0; st.crewK = null; st.verdict = null;
-    if (c) c.at = null;
+    if (c) { c.at = null; c.path = null; }   // ออกเวรแล้วกลับไปเดินเล่นที่จุดประจำของตัวเอง
   },
 
   // ---------- หนึ่งวาระ ----------
@@ -450,18 +451,31 @@ const API = {
       const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
       const hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       if (c.x == null) { c.x = hx; c.y = hy; c.face = 1; }
-      if (c.wx == null || Math.hypot(c.wx - c.x, c.wy - c.y) < 5) {
-        // เล็งจุดเดินเล่นใหม่ — ถ้าสุ่มไปโดนลาวา ดึงกลับมาที่จุดใกล้ที่สุดที่เหยียบได้
-        const tx = hx + (Math.random() - 0.5) * 90, ty = hy + (Math.random() - 0.5) * 44;
+
+      // เดินตามเส้นทางเหมือนตัวเรา — เดิมเดินตรงเข้าหาจุดหมาย พอมีลาวาขวางก็ค้างอยู่ขอบไฟ
+      // (เห็นชัดตอนสั่งไปประจำสถานีที่อยู่คนละฝั่งแผนที่ — ยืนนิ่งกันเป็นกอง)
+      const onDuty = !!post;
+      const roam = onDuty ? 46 : (c.roam ?? 140);       // ว่างงานเดินเล่นกว้าง · เข้าเวรอยู่ติดที่
+      const far = Math.hypot(hx - c.x, hy - c.y) > roam * 1.6;
+      const sp = (far ? 0.11 : 0.05) * dt;              // กลับเข้าที่เร็วกว่าเดินเล่น
+
+      if (c.path && c.path.length) {
+        const w = c.path[0];
+        const dx = w[0] - c.x, dy = w[1] - c.y, d = Math.hypot(dx, dy);
+        if (d < 5) c.path.shift();
+        else {
+          if (!stepTo(c, dx / d * sp, dy / d * sp)) c.path = null;
+          if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
+        }
+      } else if (c.wait > 0) {
+        c.wait -= dt;
+      } else {
+        // อยู่ไกลบ้าน = กลับเข้าที่ก่อน · อยู่แถวบ้านแล้ว = เดินเล่นรอบ ๆ
+        const tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
+        const ty = far ? hy : hy + (Math.random() - 0.5) * roam;
         const ok = canWalk(tx, ty) ? [tx, ty] : nearestWalk(tx, ty);
-        c.wx = ok ? ok[0] : c.x; c.wy = ok ? ok[1] : c.y;
-        c.wait = 400 + Math.random() * 2200;
-      }
-      if (c.wait > 0) { c.wait -= dt; }
-      else {
-        const dx = c.wx - c.x, dy = c.wy - c.y, d = Math.hypot(dx, dy) || 1;
-        if (!stepTo(c, dx / d * 0.05 * dt, dy / d * 0.05 * dt)) c.wx = null;
-        if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
+        if (ok) c.path = findPath(c.x, c.y, ok[0], ok[1]);
+        c.wait = far ? 200 : 700 + Math.random() * 2600;
       }
       if (!c.sayUntil || Date.now() > c.sayUntil + 9000) {
         if (Math.random() < 0.0006 * dt) {
