@@ -147,9 +147,33 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 .crew .n b{font-size:var(--text-sm)}
 .crew .st{font-size:11px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
 
+/* ---------- แผงข้อมูล (dashboard) ---------- */
+.sidebody{padding:var(--space-3);height:294px;overflow:auto}
+.prof{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.prof img{width:74px;height:74px;image-rendering:pixelated;object-fit:contain;object-position:bottom;
+  background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);flex:none}
+.prof .hd{min-width:0}
+.prof .hd b{font-size:1.05rem;font-family:var(--font-display)}
+.prof .hd .duty{font-size:var(--text-xs);color:var(--gold);margin-top:2px}
+.prof .hd .now{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:4px;line-height:1.5}
+.think{background:var(--muted);border-left:2px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:7px 10px;margin:8px 0;font-size:var(--text-sm);color:var(--foreground);line-height:var(--leading-body)}
+.kv{display:flex;flex-wrap:wrap;gap:4px 6px;margin:8px 0}
+.kv span{font-size:11px;background:var(--muted);border:1px solid var(--border);border-radius:99px;
+  padding:2px 8px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+.sec{font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 5px;
+  border-top:1px solid var(--border);padding-top:8px}
+.row-truth{font-size:var(--text-xs);line-height:1.6;margin-top:4px}
+.row-truth.hid{color:var(--warning)}
+.row-truth.fake{color:var(--destructive);text-decoration:line-through}
+.picker{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.picker button{padding:3px 9px;min-height:0;font-size:11px}
+.picker button[aria-pressed=true]{border-color:var(--gold);color:var(--gold)}
+.hintline{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:10px;line-height:1.6}
+
 /* ---------- บันทึก ---------- */
-.log{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:var(--space-3);height:340px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body)}
+.log{height:294px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body);
+  padding:var(--space-3)}
 .log div{padding:1px 0;color:var(--muted-foreground)}
 .log .good{color:var(--success)} .log .bad{color:var(--destructive)}
 .log .act{color:var(--foreground)} .log .event{color:var(--gold)}
@@ -205,7 +229,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   .score{font-size:1.8rem}
 
   .ctrl{gap:5px} .ctrl button{flex:1 1 auto}
-  .tabbody{height:230px} .log{height:210px}
+  .tabbody,.sidebody,.log{height:230px}
 }
 </style>
 </head>
@@ -240,7 +264,13 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
       </div>
       <div class="tabbody" id="tabbody"></div>
     </div>
-    <div class="log" id="log"></div>
+    <div class="panel">
+      <div class="tabs" role="tablist">
+        <button role="tab" data-side="info" aria-selected="true" id="side-info">ข้อมูล</button>
+        <button role="tab" data-side="log" aria-selected="false" id="side-log">บันทึก</button>
+      </div>
+      <div id="side" class="sidebody"></div>
+    </div>
   </div>
 
   <footer>อเวจี — เกมทดลอง · คลิกพื้นหรือกด WASD เพื่อเดิน · บันทึกอัตโนมัติลงเครื่อง</footer>

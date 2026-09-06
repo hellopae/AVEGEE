@@ -18,7 +18,14 @@ const poseOr = (alt, base) => img(alt) ? alt : base;
 /** ย่อฉากให้พอดีความกว้าง canvas — คืนอัตราส่วนไว้ใช้แปลงพิกัดเมาส์ */
 export const scaleFor = cv => cv.width / SCENE.w;
 
-export function render(ctx, g, t, hover) {
+/** วงแหวนใต้เท้าตัวที่เลือกอยู่ในแผงข้อมูล */
+function ring(ctx, x, y, t, w = 30) {
+  const q = 0.5 + 0.5 * Math.sin(t / 260);
+  ctx.strokeStyle = `rgba(255,210,140,${0.5 + q * 0.4})`; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.ellipse(x, y, w, w * 0.34, 0, 0, 7); ctx.stroke();
+}
+
+export function render(ctx, g, t, hover, sel) {
   const cv = ctx.canvas, sc = scaleFor(cv);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, cv.width, cv.height);
@@ -69,6 +76,7 @@ export function render(ctx, g, t, hover) {
   g.queue.forEach((s, i) => {
     const p = QUEUE_LINE[i];
     if (!p) return;
+    if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
     drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, t + s.id * 300,
              s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.id);
   });
@@ -83,10 +91,16 @@ export function render(ctx, g, t, hover) {
   }
 
   // ---- เปรตที่มาก่อกวน ----
-  for (const m of g.mobs) drawStandee(ctx, MOB.img, m.x, m.y, MOB.h, t, '👹');
+  g.mobs.forEach((m, i) => {
+    if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
+    drawStandee(ctx, MOB.img, m.x, m.y, MOB.h, t, '👹');
+  });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
-  if (g.guard) drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+  if (g.guard) {
+    if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
+    drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+  }
 
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
@@ -94,6 +108,7 @@ export function render(ctx, g, t, hover) {
   for (const c of g.crew) {
     if (c.x == null) continue;
     const base = 'crew-' + c.k;
+    if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
     drawStandee(ctx, c.at ? poseOr(base + '-work', base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
     label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
     if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
@@ -110,6 +125,7 @@ export function render(ctx, g, t, hover) {
     ctx.strokeStyle = `rgba(255,210,140,${0.35 + q * 0.35})`; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(P.tx, P.ty, 10 + q * 5, 0, 7); ctx.stroke();
   }
+  if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
   const swinging = g.swingUntil && Date.now() < g.swingUntil;
   drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
               P.x, P.y, HERO_H, t, '👑', P.face);
@@ -132,6 +148,7 @@ export function render(ctx, g, t, hover) {
   for (const st of g.stations) {
     if (!st.soul) continue;
     const d = st.def;
+    if (sel && sel.kind === 'soul' && sel.key === st.soul.id) ring(ctx, d.x - 40, d.y - 4, t, 24);
     drawSoul(ctx, d.x - 40, d.y - 4, SOUL_H * 0.85, t + st.soul.id * 200, '#ffd9c0', st.soul.id);
     const p = Math.min(1, st.progress / st.need), W = 96;
     ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, d.x - W / 2, d.y + 8, W, 10, 5); ctx.fill();
@@ -185,3 +202,22 @@ export function hitStation(sx, sy) {
     .find(d => sx >= d.hit[0] && sx <= d.hit[2] && sy >= d.hit[1] && sy <= d.hit[3]) || null;
 }
 const area = h => (h[2] - h[0]) * (h[3] - h[1]);
+
+/** คลิกโดนตัวไหนบนฉาก — คืน {kind,key} ที่แผงข้อมูลเอาไปแสดงต่อ
+ *  ไล่จากตัวที่ผู้เล่นตั้งใจกดมากที่สุดไปหาน้อยที่สุด (เปรต > วิญญาณ > ยมทูต > ตัวเรา) */
+export function hitActor(g, sx, sy) {
+  const near = (x, y, r = 44) => Math.hypot(x - sx, y - sy) < r && sy < y + 16;
+  for (let i = 0; i < g.mobs.length; i++)
+    if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };
+  for (const st of g.stations)
+    if (st.soul && near(st.def.x - 40, st.def.y - 4, 34)) return { kind: 'soul', key: st.soul.id };
+  for (let i = 0; i < g.queue.length; i++) {
+    const p = QUEUE_LINE[i];
+    if (p && near(p[0], p[1], 34)) return { kind: 'soul', key: g.queue[i].id };
+  }
+  for (const c of g.crew)
+    if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
+  if (g.guard && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
+  if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
+  return null;
+}

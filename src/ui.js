@@ -2,7 +2,7 @@
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB } from './data.js';
 import { createGame, loadSave, clearSave } from './game.js';
-import { render, toScene, hitStation } from './scene.js';
+import { render, toScene, hitStation, hitActor } from './scene.js';
 import { stepTo, nearestWalk } from './walk.js';
 
 const $ = s => document.querySelector(s);
@@ -29,7 +29,7 @@ function frame(now) {
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
-  else render(ctx, g, now, hover);
+  else render(ctx, g, now, hover, sel);
   followMarks(); drawAtk();
   requestAnimationFrame(frame);
 }
@@ -131,9 +131,218 @@ function drawTab() {
   }
 }
 
-function drawLog() {
-  $('#log').innerHTML = g.logs.map(l =>
-    `<div class="${l.kind}"><span style="opacity:.45">[${String(l.t).padStart(3, '0')}]</span> ${esc(l.text)}</div>`).join('');
+// ---------- แผงข้อมูล (dashboard) ----------
+// แทนที่แถบบันทึกเดิม — กดตัวละคร/วิญญาณบนฉากแล้วดูรายละเอียดตรงนี้
+// บันทึกยังอยู่ ย้ายไปเป็นแท็บที่สองของแผงเดียวกัน
+let side = 'info';                  // 'info' | 'log'
+let sel = { kind: 'me', key: 0 };   // ตัวที่กำลังดูอยู่
+
+/** ตั้งตัวที่กำลังดู แล้ววาดใหม่ทันที (สลับมาแท็บข้อมูลให้ด้วย) */
+function select(s) { sel = s; side = 'info'; refresh(); }
+
+const nameOfSt = k => STATIONS.find(d => d.k === k)?.name ?? '—';
+
+/** หัวโปรไฟล์: รูป + ชื่อ + หน้าที่ + กำลังทำอะไรอยู่ */
+function profile(imgKey, name, duty, now) {
+  return `<div class="prof">
+    <img src="img/${imgKey}.png" alt="" onerror="this.style.visibility='hidden'">
+    <div class="hd"><b>${esc(name)}</b>
+      <div class="duty">${esc(duty)}</div>
+      <div class="now">${now}</div></div></div>`;
+}
+const think = t => `<div class="think">${esc(t)}</div>`;
+const kv = arr => `<div class="kv">${arr.map(x => `<span>${x}</span>`).join('')}</div>`;
+
+/** ความคิดของยมบาท — เปลี่ยนตามสถานะจริง ไม่ใช่ประโยคตายตัว */
+function meThought() {
+  if (g.hp <= g.hpMax * 0.35) return '"บารมีเหลือเท่านี้ ถ้าพลาดอีกครั้งสองครั้งพ่อคงเรียกกลับ"';
+  if (g.karma >= 45) return '"บัญชีของข้าหนาขึ้นทุกคดี... ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ข้าจริง ๆ"';
+  if (g.queue.length > BAL.queueMax) return '"คิวล้นขนาดนี้ ระเบียบไม่มีทางขึ้น ต้องรีบปิดคดี"';
+  if (g.mobs.length) return '"เปรตขึ้นมาอีกแล้ว ปล่อยไว้ระเบียบตกไปเรื่อย ๆ"';
+  if (g.fuel < 12) return '"ฟืนใกล้หมด ไฟใต้กระทะดับเมื่อไหร่ทุกอย่างหยุด"';
+  if (g.star5 >= 3) return '"ห้าดาวมาสามครั้งแล้ว อีกสองครั้งก็เลื่อนขั้น"';
+  return '"พิพากษาให้ตรงกรรม ไม่ใช่ให้แรงที่สุด — พ่อพูดไว้แบบนั้น"';
+}
+
+/** เฉลยคดี: ความจริงทั้งหมด vs สิ่งที่เราสั่งไป */
+function verdictCard(soul, r, stK, crewK, intensity, closed) {
+  const st = STATIONS.find(d => d.k === stK);
+  const hit = st && soul.deeds.some(d => st.tags.includes(d.s));
+  const truth = soul.deeds.map(d =>
+    `<div class="row-truth ${d.known ? '' : 'hid'}">${SINS[d.s].name} · ${esc(d.t)} (น้ำหนัก ${d.w})${d.known ? '' : ' ← เรื่องที่สำนวนไม่ได้เขียนไว้'}</div>`).join('');
+  const merit = soul.merits.map(m =>
+    `<div class="row-truth ${m.fake ? 'fake' : ''}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
+    || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
+
+  const diff = intensity - soul.deserved;
+  const judgement = diff === 0 ? '<b style="color:var(--success)">พอดีกรรมเป๊ะ</b>'
+    : diff > 0 ? `<b style="color:var(--destructive)">หนักเกินไป ${diff} วาระ</b> — ส่วนเกินกลายเป็นกรรมของท่าน +${r.karma}`
+               : `<b style="color:var(--warning)">เบาไป ${-diff} วาระ</b> — เขายังไม่สำนึก`;
+
+  return `<div class="sec">ความจริงทั้งหมด (ตอนนี้เห็นได้แล้ว)</div>${truth}
+    <div class="sec">บุญที่อ้าง</div>${merit}
+    <div class="sec">${closed ? 'ท่านตัดสินไปว่า' : 'ท่านสั่งไปว่า'}</div>
+    <div class="row-truth">ส่ง<b>${esc(st?.name ?? '—')}</b> ${hit ? '<span style="color:var(--success)">ตรงชนิดกรรม</span>' : '<span style="color:var(--destructive)">ไม่ตรงชนิดกรรม</span>'}
+      · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? CREW.find(c => c.k === crewK)?.name ?? '—')}</div>
+    <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · สมควรได้รับ <b>${soul.deserved}</b> → ${judgement}</div>
+    ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `ระเบียบ ${r.rab}`, `รวม ${r.score}`,
+          '★'.repeat(r.stars ?? 0) + '☆'.repeat(5 - (r.stars ?? 0))])}`;
+}
+
+function drawSide() {
+  const box = $('#side');
+  $('#side-info').setAttribute('aria-selected', side === 'info' ? 'true' : 'false');
+  $('#side-log').setAttribute('aria-selected', side === 'log' ? 'true' : 'false');
+
+  if (side === 'log') {
+    box.className = 'log';
+    box.innerHTML = g.logs.map(l =>
+      `<div class="${l.kind}"><span style="opacity:.45">[${String(l.t).padStart(3, '0')}]</span> ${esc(l.text)}</div>`).join('');
+    return;
+  }
+  box.className = 'sidebody';
+
+  // แถวปุ่มเลือกตัว — กดบนฉากก็ได้ กดตรงนี้ก็ได้
+  const chips = [`<button data-sel="me:0" ${sel.kind === 'me' ? 'aria-pressed="true"' : ''}>👑 ตัวท่าน</button>`]
+    .concat(g.crew.map(c => `<button data-sel="crew:${c.k}" ${sel.kind === 'crew' && sel.key === c.k ? 'aria-pressed="true"' : ''}>${c.glyph} ${esc(c.name)}</button>`))
+    .concat(g.guard ? [`<button data-sel="guard:0" ${sel.kind === 'guard' ? 'aria-pressed="true"' : ''}>🛡️ ยักษ์</button>`] : [])
+    .concat(g.mobs.map((m, i) => `<button data-sel="mob:${i}" ${sel.kind === 'mob' && sel.key === i ? 'aria-pressed="true"' : ''}>👹 เปรต</button>`))
+    .concat(g.closed.length ? [`<button data-sel="closed:0" ${sel.kind === 'closed' ? 'aria-pressed="true"' : ''}>📁 คดีที่ปิดแล้ว</button>`] : []);
+  let html = `<div class="picker">${chips.join('')}</div>`;
+
+  html += sideBody();
+  box.innerHTML = html;
+  box.querySelectorAll('[data-sel]').forEach(el => el.onclick = () => {
+    const [kind, key] = el.dataset.sel.split(':');
+    select({ kind, key: /^\d+$/.test(key) ? +key : key });
+  });
+}
+
+/** เนื้อของแผงข้อมูลตามตัวที่เลือก */
+function sideBody() {
+  // ---- ตัวเรา ----
+  if (sel.kind === 'me') {
+    const pw = POWERS.map(p => {
+      const q = g.powerOf(p.k);
+      const state = g.casesDone < p.unlock ? `ล็อก (${p.unlock} คดี)` : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
+      return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
+    }).join('');
+    return profile('hero-yama', 'ยมบาท (ตัวท่าน)', LEVELS[g.level - 1].name,
+        `ลูกของพญายม ถูกส่งมาคุมโซนสุวรรณภูมิ · ปิดคดีแล้ว ${g.casesDone} เรื่อง`)
+      + think(meThought())
+      + kv([`❤️ บารมี ${Math.round(g.hp)}/${g.hpMax}`, `☠️ กรรม ${g.karma.toFixed(1)}`,
+            `⭐ ห้าดาว ${g.star5}`, `📁 เฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0}`,
+            `🪙 ${g.coin}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.powerOf('roar').ammo}`])
+      + `<div class="sec">หน้าที่</div>
+         <div class="row-truth">พิพากษาให้ <b>ตรงกรรม</b> — ตรงชนิดบาป และหนักพอดี ไม่ใช่หนักที่สุด</div>
+         <div class="sec">ความสามารถ</div>${pw}
+         <div class="hintline">กดตัวละครหรือวิญญาณบนฉากเพื่อดูข้อมูลของเขา</div>`;
+  }
+
+  // ---- ยมทูต ----
+  if (sel.kind === 'crew') {
+    const c = g.crewOf(sel.key);
+    if (!c) return '<div class="empty">ยมทูตคนนี้ไม่ได้อยู่ในสังกัดแล้ว</div>';
+    const st = c.at ? g.stations.find(s => s.def.k === c.at) : null;
+    const now = st && st.soul
+      ? `กำลังคุม <b>${esc(st.soul.who)}</b> สำนวน #${String(st.soul.id).padStart(3, '0')} ที่${esc(st.def.name)}
+         · ระดับวาระ ${st.intensity} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`
+      : c.at ? `ประจำ${esc(nameOfSt(c.at))} รอสำนวนถัดไป` : 'ว่าง — รอรับเวร';
+    const strong = [['แรง', c.raeng], ['ระเบียบ', c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
+      .sort((a, b) => b[1] - a[1]);
+    return profile('crew-' + c.k, c.name, c.duty, now)
+      + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
+      + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
+            `กำลังใจ ${Math.round(c.morale)}`, `ค่าแรง ${c.pay}`])
+      + `<div class="sec">ถนัดอะไร</div>
+         <div class="row-truth">เด่นที่ <b>${strong[0][0]} ${strong[0][1]}</b> · อ่อนที่ ${strong[3][0]} ${strong[3][1]}</div>
+         <div class="row-truth">${crewNote(c)}</div>
+         ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}`;
+  }
+
+  // ---- ยักษ์ทวารบาล ----
+  if (sel.kind === 'guard') {
+    if (!g.guard) return '<div class="empty">ยังไม่ได้จ้างยักษ์ทวารบาล</div>';
+    return profile(GUARD.img, GUARD.name, 'ยามประจำโซน',
+        g.mobs.length ? `กำลังไล่เปรต ${g.mobs.length} ตน` : 'ไม่มีเปรต — เฝ้าท่าเรือฝั่งขวาอยู่')
+      + think(GUARD.line)
+      + kv([`ค่าแรง ${GUARD.pay}/งวด`])
+      + `<div class="sec">หน้าที่</div><div class="row-truth">${esc(GUARD.desc)}</div>`;
+  }
+
+  // ---- เปรต ----
+  if (sel.kind === 'mob') {
+    const m = g.mobs[sel.key];
+    if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
+    const fire = g.powerOf('roar');
+    return profile(MOB.img, MOB.name, 'วิญญาณที่หลุดออกมาก่อกวน',
+        `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
+      + think('"หิว... หิว..."')
+      + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
+      + `<div class="sec">ปราบยังไง</div>
+         <div class="row-truth">กดปุ่ม ⚔️ ที่แถบล่าง · กดเว้นวรรค · หรือคลิกที่ตัวมันบนฉาก —
+           ใช้<b>ลูกไฟ</b>หนึ่งลูก ตอนนี้มี <b>×${fire.ammo}</b></div>
+         ${fire.ammo ? '' : '<div class="row-truth hid">ลูกไฟหมด — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน</div>'}`;
+  }
+
+  // ---- วิญญาณ ----
+  if (sel.kind === 'soul') {
+    const q = g.queue.find(s => s.id === sel.key);
+    if (q) {                                        // ยังไม่ลงทัณฑ์ — เห็นแค่ที่เขาพูด
+      const rec = q.deeds.filter(d => d.known)
+        .map(d => `<div class="row-truth">${SINS[d.s].name} · ${esc(d.t)} · ${WEIGHT[d.w]}</div>`).join('')
+        || '<div class="row-truth">สำนวนว่างเปล่า</div>';
+      const said = q.said.map(x => `<div class="row-truth ${SAID_STYLE[x.kind] || ''}">${esc(x.text)}</div>`).join('')
+        || '<div class="row-truth">...เขาก้มหน้าไม่พูดอะไร</div>';
+      return profile('spirit1', q.who, `สำนวน #${String(q.id).padStart(3, '0')} · รอคิว ${q.waited} วาระ`,
+          q.hard ? 'สำนวนหนาผิดปกติ — คดีนี้ถูกกับผิดปนกัน' : 'รอขึ้นแท่นพิพากษา')
+        + `<div class="sec">สำนวนที่นิราอ่านได้</div>${rec}
+           <div class="sec">เขาพูดว่า</div>${said}
+           <div class="hintline">ยังไม่ลงทัณฑ์ — ความจริงที่เหลือต้องใช้พลังขุดเอา
+             เฉลยจะขึ้นตรงนี้หลังปิดคดีแล้ว</div>`;
+    }
+    const st = g.stations.find(s => s.soul && s.soul.id === sel.key);
+    if (st) return profile('spirit1', st.soul.who, `สำนวน #${String(st.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
+        `${esc(st.def.name)} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`)
+      + verdictCard(st.soul, st.verdict || g.judge(st), st.def.k, st.crewK, st.intensity, false);
+    const cl = g.closed.find(x => x.soul.id === sel.key);
+    if (cl) return closedCard(cl);
+    return '<div class="empty">ไม่พบวิญญาณดวงนี้แล้ว</div>';
+  }
+
+  // ---- รายการคดีที่ปิดแล้ว ----
+  if (sel.kind === 'closed') {
+    if (!g.closed.length) return '<div class="empty">ยังไม่มีคดีที่ปิดครบวาระ</div>';
+    return `<div class="sec" style="border:0;margin-top:0">คดีที่ปิดแล้ว — กดเพื่อดูเฉลย</div>`
+      + g.closed.map(x => `<div class="soul" data-sel="soul:${x.soul.id}">
+          <div class="top"><b>${esc(x.soul.who)}</b>
+            <span class="id">#${String(x.soul.id).padStart(3, '0')} · ${'★'.repeat(x.verdict.stars ?? 0)}${'☆'.repeat(5 - (x.verdict.stars ?? 0))}</span></div>
+          <div class="deed">${esc(nameOfSt(x.stK))} · วาระ ${x.intensity} · รวม ${x.verdict.score} คะแนน</div>
+        </div>`).join('');
+  }
+  return '<div class="empty">เลือกตัวละครหรือวิญญาณเพื่อดูข้อมูล</div>';
+}
+
+function closedCard(cl) {
+  const r = cl.verdict;
+  return profile('spirit1', cl.soul.who, `สำนวน #${String(cl.soul.id).padStart(3, '0')} · ปิดคดีแล้ว`,
+      `ปิดที่วาระ ${cl.tick} · พญายมให้ ${'★'.repeat(r.stars ?? 0)}${'☆'.repeat(5 - (r.stars ?? 0))}`)
+    + verdictCard(cl.soul, r, cl.stK, cl.crewK, cl.intensity, true);
+}
+
+/** ประโยคประจำตัว — เลือกแบบคงที่ต่อคน จะได้ไม่กระพริบเปลี่ยนทุกครั้งที่ refresh */
+function pickStable(arr, key) {
+  let h = 0; for (const ch of String(key)) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return arr[Math.abs(h) % arr.length];
+}
+
+/** ข้อสังเกตว่าคนนี้เหมาะกับงานแบบไหน — อ่านจากสเตตัสจริง */
+function crewNote(c) {
+  if (c.panya >= 8) return 'ปัญญาสูง — ส่งไปคุมคดีที่สำนวนคลุมเครือ จะได้คะแนนธรรมเพิ่ม';
+  if (c.metta >= 8) return 'เมตตาสูง — ถึงเผลอสั่งเกินกรรม กรรมที่ตกใส่ท่านก็เบากว่าคนอื่น';
+  if (c.raeng >= 8) return 'แรงเยอะ — ทัณฑ์เสร็จเร็ว แต่เมตตาต่ำ เผลอสั่งเกินแล้วกรรมตกหนัก';
+  if (c.rabiab >= 8) return 'ระเบียบสูง — คะแนนแกนระเบียบดีขึ้นทุกคดีที่เขาคุม';
+  return 'สเตตัสกลาง ๆ ใช้ได้ทั่วไป';
 }
 
 /** ป้ายบนหัวแท็บ — บอกว่ามีอะไรให้กดบ้าง ไม่ต้องเปิดดูเอง */
@@ -162,7 +371,10 @@ function drawAtk() {
   btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawLog(); drawOverlay(); drawDeck(); drawAtk(); }
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); }
+
+document.querySelectorAll('.tabs [data-side]').forEach(el =>
+  el.onclick = () => { side = el.dataset.side; drawSide(); });
 
 document.querySelectorAll('.tabs [data-tab]').forEach(el =>
   el.onclick = () => { tab = el.dataset.tab; refresh(); });   // เดิมไม่มีตัวจัดการเลย กดแท็บไม่ติดทั้งเกม
@@ -312,7 +524,7 @@ function drawDeck() {
     <button class="gold go" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>`;
 
   deckBar.querySelectorAll('#d-pw button').forEach(b => b.onclick = () => {
-    g.usePower(b.dataset.k, s); drawRes(); drawLog(); drawOverlay(); drawDeck();
+    g.usePower(b.dataset.k, s); drawRes(); drawSide(); drawOverlay(); drawDeck();
   });
   const sel = (id, key) => deckBar.querySelectorAll(`${id} button`).forEach(b =>
     b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
@@ -385,6 +597,9 @@ function openHelp() {
           (ใช้ <b>ลูกไฟ</b> ลูกละครั้ง หมดแล้วเดินไปเก็บบนแผนที่) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
       <li><b>จ้างยมทูตเพิ่ม</b>อยู่ที่แท็บ <b>ยมทูต</b> ใต้ฉาก (ยักษ์ทวารบาลก็อยู่แท็บนั้น) ·
           สร้างสถานีเพิ่มอยู่ที่แท็บ <b>ก่อสร้าง</b></li>
+      <li><b>กดตัวละครหรือวิญญาณบนฉาก</b> แล้วดูรายละเอียดที่แผง <b>ข้อมูล</b> ด้านขวา —
+          ยมทูตแต่ละคนถนัดอะไร กำลังคุมสำนวนไหน · วิญญาณที่ยังไม่ตัดสินจะเห็นแค่ที่เขาพูด
+          แต่<b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
@@ -418,9 +633,14 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
-  // คลิกโดนเปรต = เดินเข้าไปฟาดมัน (เช็คก่อนสถานี เพราะมันเดินไปยืนทับกรอบสถานีได้)
-  const mi = g.mobs.findIndex(m => Math.hypot(m.x - sx, m.y - sy) < 46);
-  if (mi >= 0) { g.attack(); refresh(); return; }
+  // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (เช็คก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
+  const a = hitActor(g, sx, sy);
+  if (a) {
+    select(a);
+    if (a.kind === 'mob') g.attack();      // เปรตนอกจากดูข้อมูลแล้วก็ฟาดเลย
+    refresh();
+    return;
+  }
 
   const def = hitStation(sx, sy);
   if (!def) {                                  // คลิกที่โล่ง = สั่งให้เดินไปตรงนั้น

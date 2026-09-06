@@ -16,7 +16,7 @@ export function createGame() {
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [],
-    queue: [], logs: [], over: null,
+    queue: [], logs: [], closed: [], over: null,
     paused: true, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
@@ -268,6 +268,10 @@ const API = {
     const r = st.verdict || this.judge(st);
     this.coin += r.coin;
     this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
+    // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
+    this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
+                          intensity: st.intensity, tick: this.tick });
+    if (this.closed.length > 12) this.closed.pop();
     st.soul = null; st.progress = 0; st.crewK = null; st.verdict = null;
     if (c) c.at = null;
   },
@@ -305,7 +309,11 @@ const API = {
     }
 
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
-    if (this.mobs.length) this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
+    if (this.mobs.length) {
+      this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
+      // วาล์วกันตาย: มีเปรตอยู่ · ลูกไฟหมด · บนแผนที่ก็ไม่มี → หย่อนให้หนึ่งลูก
+      if (this.powerOf('roar').ammo === 0 && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
+    }
 
     // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
     if (this.tick % 18 === 0 && this.items.length < 3) {
@@ -578,6 +586,8 @@ const API = {
     // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปฟาดไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
     const p = nearestWalk(side, y) || [side, y];
     this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp });
+    // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
+    if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     this.log(`👹 เปรตขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
   },
 
@@ -641,7 +651,7 @@ API.snapshot = function () {
       progress: st.progress, need: st.need, soul: st.soul, verdict: st.verdict,
     })),
     queue: this.queue, items: this.items, mobs: this.mobs,
-    guard: this.guard, player: this.player,
+    guard: this.guard, player: this.player, closed: this.closed,
     logs: this.logs.slice(0, 40),
   };
 };
@@ -679,6 +689,7 @@ API.restore = function (d) {
   this.guard = d.guard || null;
   if (d.player) this.player = d.player;
   this.logs = d.logs || [];
+  this.closed = d.closed || [];
   this.over = null;
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
