@@ -87,9 +87,12 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1) {
 
 /** วิญญาณ — ใช้สไปรท์ spirit1..3 ถ้ามี ไม่มีก็วาดดวงเรืองแสงเอง
  *  h = ความสูงบนฉาก · เท้า(ปลายหาง)อยู่ที่ y */
+/** จำนวนแบบวิญญาณที่มีไฟล์อยู่ — เพิ่มไฟล์ img/spiritN.png แล้วบวกเลขนี้ */
+export const SPIRIT_KINDS = 7;
+
 export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', variant = 0) {
   const bob = Math.sin(t / 520 + x) * (h * 0.05);
-  const im = img('spirit' + (variant % 3 + 1));
+  const im = img('spirit' + (variant % SPIRIT_KINDS + 1));
   ctx.fillStyle = 'rgba(0,0,0,.28)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {

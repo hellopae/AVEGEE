@@ -319,7 +319,8 @@ const API = {
     // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
     if (this.tick % 18 === 0 && this.items.length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
-                 : pick(['fire', 'fire', 'mirror', 'health', this.powerOf('hypno').max ? 'hypno' : 'fire']);
+                 : this.fuel < 18 ? 'fuel'
+                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', this.powerOf('hypno').max ? 'hypno' : 'fire']);
       this.dropItem(need);
     }
 
@@ -490,6 +491,7 @@ const API = {
       if (Math.hypot(it.x - P.x, it.y - P.y) > 42) continue;
       const def = ITEMS[it.k];
       if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
+      if (def.fuel) this.fuel += def.fuel;
       if (def.power) {
         const p = this.powerOf(def.power);
         p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
@@ -578,13 +580,16 @@ const API = {
       fire.ammo--;
     }
     m.hp--; m.cool = Date.now() + 600;
-    if (by === 'ท่าน') this.swingUntil = Date.now() + 480;   // ให้ scene.js สลับไปท่าฟาด
+    if (by === 'ท่าน') {
+      this.swingUntil = Date.now() + 480;                   // ให้ scene.js สลับไปท่าฟาด
+      this.player.face = m.x < this.player.x ? -1 : 1;      // หันหน้าไปทางที่ขว้าง
+    }
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
     if (m.hp > 0) { this.log(`⚔️ ${by}ฟาดเปรตเข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
     this.mobs.splice(i, 1);
     this.coin += MOB.bounty;
     this.order = clamp(this.order + 3, 0, 100);
-    this.log(`💥 ${by}ปราบเปรตได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3`, 'good');
+    this.log(`💥 ${by}ปราบ${MOB.kinds[m.kind ?? 0].name}ได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3`, 'good');
     return true;
   },
 
@@ -599,10 +604,11 @@ const API = {
     const y = 200 + Math.random() * 300;
     // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปฟาดไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
     const p = nearestWalk(side, y) || [side, y];
-    this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp });
+    const kind = Math.floor(Math.random() * MOB.kinds.length);
+    this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp, kind });
     // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
-    this.log(`👹 เปรตขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
+    this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
   },
 
   hireGuard() {

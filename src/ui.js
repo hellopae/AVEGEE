@@ -275,9 +275,10 @@ function sideBody() {
     const m = g.mobs[sel.key];
     if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
     const fire = g.powerOf('roar');
-    return profile(MOB.img, MOB.name, 'วิญญาณที่หลุดออกมาก่อกวน',
+    const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
+    return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
         `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
-      + think('"หิว... หิว..."')
+      + think(kd.line)
       + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
       + `<div class="sec">ปราบยังไง</div>
          <div class="row-truth">กดปุ่ม ⚔️ ที่แถบล่าง · กดเว้นวรรค · หรือคลิกที่ตัวมันบนฉาก —

@@ -87,7 +87,7 @@ export function render(ctx, g, t, hover, sel) {
   // ---- เปรตที่มาก่อกวน ----
   g.mobs.forEach((m, i) => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
-    drawStandee(ctx, MOB.img, m.x, m.y, MOB.h, t, '👹');
+    drawStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
@@ -152,8 +152,19 @@ export function render(ctx, g, t, hover, sel) {
       ctx.beginPath(); ctx.arc(d.x - 34 + i * 17, d.y + 27, 4.5, 0, 7); ctx.fill();
     }
     const glow = 0.5 + 0.5 * Math.sin(t / 300);
-    ctx.fillStyle = `rgba(255,130,40,${0.06 + glow * 0.10})`;
+    const cold = d.fx === 'fx-ice';
+    ctx.fillStyle = cold ? `rgba(120,205,255,${0.06 + glow * 0.10})`
+                         : `rgba(255,130,40,${0.06 + glow * 0.10})`;
     ctx.beginPath(); ctx.arc(d.x, d.y - 30, 96, 0, 7); ctx.fill();
+    // เอฟเฟกต์เฉพาะสถานี วาบขึ้นเป็นจังหวะเหนือหัววิญญาณ
+    if (d.fx) {
+      const k = (t % 2600) / 2600;
+      if (k < 0.42) {
+        ctx.save(); ctx.globalAlpha = Math.sin(k / 0.42 * Math.PI) * 0.85;
+        drawStandee(ctx, d.fx, d.x - 40, d.y - 26 - k * 14, 74, t, '❄️');
+        ctx.restore();
+      }
+    }
   }
 
   if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
