@@ -173,13 +173,40 @@ molten orange lava glow, antique temple gold
 > ⚠️ นี่ไม่ใช่เฟรมอนิเมชัน — เป็น **ท่าที่สองแบบภาพนิ่ง 1 ไฟล์** โค้ดสลับรูปตอนเกิดเหตุการณ์
 > ยังอยู่ในกฎ "0 เฟรมอนิเมชัน" · ทุกท่าต้องยืนบนพื้นระดับเดียวกับท่ายืนเดิม (ฐานชิดขอบล่าง)
 
+### 🚨 กฎเหล็กของชุดนี้ — gen จาก prompt เปล่า ๆ ไม่ได้
+
+รอบแรกที่ลอง `hero-yama-atk` ท่าออกมาดีมาก แต่ **ชุดกับสัดส่วนเป็นคนละตัว** —
+ได้เกราะทองเต็มตัว + ผ้าคลุมแดง + หัวเล็กลงเป็นสัดส่วนผู้ใหญ่ ทั้งที่ตัวเดิมเป็นชิบิใส่ชุดคลุมยาว
+พอโค้ดสลับรูปตอนฟาด มันจะเหมือน**ตัวละครเปลี่ยนคนไปเลย** ซึ่งแย่กว่าไม่มีท่าฟาด
+
+**วิธีที่ต้องใช้กับทุกชิ้นในชุดนี้:**
+
+1. เปิด**โหมดแก้ภาพ (edit / image-to-image)** แล้วแนบไฟล์ตัวเดิม `img/<key>.png` เข้าไปด้วยเสมอ
+   — อย่า gen จาก prompt เปล่า
+2. ขึ้นต้น prompt ด้วยประโยคล็อกตัวละคร:
+   `keep the exact same character, same outfit, same colors and the same chibi head-to-body
+   proportions as the reference image — change ONLY the pose`
+3. แล้วค่อยต่อด้วยคำอธิบายท่าจากตารางข้างล่าง
+4. ได้มาแล้ว **วางเทียบกับตัวเดิมก่อนเสมอ** — หัวต้องโตเท่ากัน ชุดต้องชิ้นเดียวกัน
+   ถ้าชุดเพี้ยนแม้แต่นิดเดียว gen ใหม่ อย่าใช้
+
+### สเปกหน้าตาตัวละคร (ของจริงในไฟล์ปัจจุบัน — ใช้เช็กว่าที่ gen มาตรงไหม)
+
+| key | หน้าตาที่ถูกต้อง |
+|---|---|
+| `hero-yama` | ชิบิหัวโต สูงราว 2.5 หัว · ผิวแดงอมน้ำตาล · เขาสั้นสีแดงเข้ม 2 อัน · หูแหลมยาว · **ชฎาทองยอดแหลมสูง** · **ชุดคลุมยาวสีกรม-ดำ แผงหน้าอกสีแดงเลือดหมู ขลิบทองเส้นบาง** แขนยาว · **เท้าเปล่า** · สีหน้ากังวลอ่อนโยน · **ไม่มีผ้าคลุมหลัง ไม่มีเกราะแผ่น ไม่มีลายทองเต็มตัว** |
+| `crew-taan` | ยักษ์อ้วนล่ำ ผิวแดงเข้ม · มวยผมสีเทา · เขี้ยวล่างยื่น · **เปลือยอก** มีสร้อยคอทองแบน · **เกราะไหล่หนังสีแทนข้างเดียว** · กางเกงน้ำตาลพันผ้าคาดเอว · ถือกระบองเหล็กพาดบ่า · เท้าเปล่า |
+| `crew-nira` | ร่างบาง ผิวม่วงอ่อน · เขาเล็ก · ผมมวยกลม · **เสื้อแจ็กเก็ตดำแขนยาว** · **ผ้าถุงยาวสีแดงเลือดหมูขลิบทอง** · รองเท้าเทาเข้ม · ถือปึกสำนวนกับตราประทับไม้ |
+| `crew-plerng` | ชิบิ ผิวส้มแดง มี**รอยแตกเรืองแสงเหมือนลาวาที่แขน** · **ผมเป็นเปลวไฟจริง ๆ** · ตาทอง ยิ้มเห็นเขี้ยว · เสื้อผ้าคาดเฉียงบ่าเดียวสีแดงเข้มขลิบทอง · กางเกงม่วงเข้ม · เท้าเปล่ามีเปลวไฟเล็ก ๆ |
+| `crew-dam` | ชิบิอ้วนกลม ผิวเทาอมม่วง · **หูค้างคาวใหญ่มาก** · ปีกเล็กที่หลัง · ตาปรือง่วง · **เปลือยอก** · กางเกงขาสั้นดำมีแป๊ะปะ · หิ้วถังถ่าน |
+
 | ลำดับ | key | โผล่ตอนไหน | prompt (ต่อท้ายบล็อกสไตล์) |
 |---|---|---|---|
-| 1 | `hero-yama-atk` | ตอนกดฟาดเปรต (0.5 วิ) | young yama king judge of hell in red-gold Thai lacquer armor, mid-swing attack pose, arm thrown forward hurling a molten fireball, body twisted with weight behind the throw, cape flaring back, fierce glare, same character and palette as the standing yama sprite |
-| 2 | `crew-taan-work` | ทัณฑ์ประจำสถานี | stocky red-skinned oni jailer of Thai hell, working pose, both hands gripping a long iron poker jabbing downward into a fire pit, leaning into the push, sweat and ember sparks, same character as the standing taan sprite |
-| 3 | `crew-plerng-work` | เพลิงประจำสถานี | small fire-headed hell imp, working pose, crouching low and fanning flames under a cauldron with a bamboo fan, flame hair streaming sideways, same character as the standing plerng sprite |
-| 4 | `crew-dam-work` | ดำประจำสถานี | tired chubby bat-eared hell servant, working pose, hauling a heavy bucket of black coal with both hands, back bent, knees buckling, same character as the standing dam sprite |
-| 5 | `crew-nira-work` | นิราประจำสถานี | slender purple-skinned hell clerk with horns and a hair bun, working pose, pressing a wooden seal stamp down onto an open scroll on a low desk, other hand steadying the paper, same character as the standing nira sprite |
+| 1 | `hero-yama-atk` | ตอนกดฟาดเปรต (0.5 วิ) | **แนบ `img/hero-yama.png`** · mid-throw attack pose: one arm thrown forward hurling a small molten fireball, the other arm pulled back, torso twisted with weight behind the throw, one foot forward, **his tall gold Thai crown, dark navy-black long robe with crimson front panel and thin gold trim, and bare feet all stay exactly as in the reference**, expression turns from worried to determined, **no cape, no armor plates, no full-body gold ornament** |
+| 2 | `crew-taan-work` | ทัณฑ์ประจำสถานี | **แนบ `img/crew-taan.png`** · working pose: both hands gripping his iron club and jabbing it downward into a fire pit, leaning into the push, ember sparks around it · same bare chest, same single tan shoulder plate, same grey topknot, same brown wrap trousers |
+| 3 | `crew-plerng-work` | เพลิงประจำสถานี | **แนบ `img/crew-plerng.png`** · working pose: crouching low, fanning flames under a cauldron with a bamboo fan, flame hair streaming sideways · same glowing lava cracks on the arms, same one-shoulder dark red wrap, same purple trousers, same bare feet |
+| 4 | `crew-dam-work` | ดำประจำสถานี | **แนบ `img/crew-dam.png`** · working pose: hauling the coal bucket with both hands, back bent, knees buckling, tongue out from the effort · same oversized bat ears, same small wings, same bare torso and patched black shorts |
+| 5 | `crew-nira-work` | นิราประจำสถานี | **แนบ `img/crew-nira.png`** · working pose: pressing her wooden seal stamp down onto an open scroll, other hand steadying the paper, leaning forward slightly · same black long-sleeve jacket, same dark red gold-trimmed long skirt, same hair bun |
 | 6 | `mob-pret2` | เปรตแบบที่สอง | emaciated Thai hungry ghost (pret), extremely tall and thin with pinhole mouth and swollen belly, hunched forward reaching with long clawed fingers, pale grey-green skin, tattered loincloth |
 | 7 | `item-fuel` | กองฟืนตกบนแผนที่ | bundle of dark charcoal logs tied with rough rope, faint orange embers glowing between the pieces, small pile resting on the ground |
 | 8 | `fx-ice` | ทัณฑ์โลกันตนรก | burst of jagged pale-blue ice shards radiating outward from a center point, frost mist, cold rim light, no ground, effect only |
@@ -187,6 +214,9 @@ molten orange lava glow, antique temple gold
 
 **ที่ยังไม่ต้องทำ** — ยมทูตท่าอื่น (กานต์/บุญ ไม่ได้คุมสถานีบ่อย) · พญายมท่าอื่น (โผล่แค่ 7 วิ ต่อคดี) ·
 ตัวละครใหม่ทั้งตัว (จ้างครบแล้วยังไม่มีที่ใช้)
+
+> ชิ้นที่ 6-9 (เปรตแบบสอง · กองฟืน · เอฟเฟกต์น้ำแข็ง · วิญญาณเพิ่ม) เป็นของใหม่ ไม่ใช่ท่าที่สอง
+> gen จาก prompt เปล่าได้ตามปกติ ไม่ต้องแนบไฟล์อ้างอิง
 
 **ถ้าอยากได้ผลเยอะที่สุดด้วยชิ้นเดียว: `hero-yama-atk`** — เป็นชิ้นที่ผู้เล่นเห็นบ่อยที่สุด
 และแก้ปัญหาที่ตอนนี้กดฟาดแล้วตัวเราไม่ขยับเลย เห็นแค่ลูกไฟเด้ง
