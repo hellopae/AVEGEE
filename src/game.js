@@ -20,7 +20,7 @@ export function createGame() {
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [],
-    queue: [], logs: [], closed: [], over: null,
+    queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
     paused: true, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
@@ -245,8 +245,52 @@ const API = {
 
   has(k) { return this.stations.some(st => st.def.k === k); },
 
-  /** คิวรับได้กี่ดวงก่อนระเบียบจะเริ่มตก — ตะรางขังส่วนเกินไว้ให้ */
-  queueCap() { return BAL.queueMax + (this.has('tarang') ? TARANG.hold : 0); },
+  /** คิวรับได้กี่ดวงก่อนระเบียบจะเริ่มตก
+   *  ตะรางเปลี่ยนบทตั้งแต่ 8 ก.ย. 2569 — เดิมเป็นแค่ตัวเลขที่ดันเพดานคิวขึ้นเฉย ๆ
+   *  ตอนนี้เป็น "ที่ขังจริง" ที่ผู้เล่นสั่งย้ายดวงไหนเข้าไปก็ได้ (ดู jail/release)
+   *  ดวงที่ถูกขังจึงไม่นับอยู่ในคิวเลย ไม่ต้องบวกเพดานให้อีก */
+  queueCap() { return BAL.queueMax; },
+
+  /** ตะรางยังรับได้อีกกี่ดวง */
+  jailFree() { return this.has('tarang') ? TARANG.hold - this.held.length : 0; },
+
+  /** ขังไว้ก่อน — ทางออกตอน "สถานีที่ตรงกรรมไม่ว่าง แต่คิวกำลังล้น"
+   *  ไม่นับเป็นคำตัดสิน ไม่ได้คะแนน ไม่เสียคะแนน แค่ซื้อเวลา แลกกับค่าข้าวทุกวาระ */
+  jail(soulId) {
+    if (this.jailFree() <= 0) return false;
+    const i = this.queue.findIndex(x => x.id === soulId);
+    if (i < 0) return false;
+    const soul = this.queue.splice(i, 1)[0];
+    this.held.push(soul);
+    this.log(`🔒 ขัง${soul.name || soul.who} (สำนวน #${String(soul.id).padStart(3, '0')}) ไว้ในตะรางก่อน — ` +
+             `ค่าข้าว ${TARANG.feed} เบี้ยต่อวาระ`, 'act');
+    this.onChange();
+    return true;
+  },
+
+  /** เรียกออกจากตะรางมาขึ้นแท่น */
+  release(soulId) {
+    const i = this.held.findIndex(x => x.id === soulId);
+    if (i < 0) return false;
+    const soul = this.held.splice(i, 1)[0];
+    this.queue.unshift(soul);
+    this.log(`🔓 เบิกตัว${soul.name || soul.who}ออกจากตะรางมาขึ้นแท่น`, 'act');
+    this.onChange();
+    return true;
+  },
+
+  /** เลื่อนคดีที่ยืนอยู่หน้าแท่นไปท้ายคิว — ฟรี ไม่มีโทษ
+   *  มีไว้แก้ทางตันที่เจ้าของเจอ 8 ก.ย. 2569: สำนวนเป็นฉ้อโกง แต่กระทะทองแดงไม่ว่าง
+   *  ตัดสินให้ตรงกรรมไม่ได้เลย และไม่มีปุ่มอะไรให้กดนอกจากตัดสินผิด ๆ ไปก่อน */
+  defer() {
+    if (this.queue.length < 2) return false;
+    const soul = this.queue.shift();
+    this.queue.push(soul);
+    this.log(`⏭️ ให้${this.queue[0].name || this.queue[0].who}ขึ้นแทน — ` +
+             `สำนวน #${String(soul.id).padStart(3, '0')} เลื่อนไปท้ายคิว`, 'act');
+    this.onChange();
+    return true;
+  },
 
   /** ชนิดกรรมที่โซนนี้ "มีที่ลง" ตอนนี้ — คิวจะส่งมาแต่แนวนี้ */
   activeTags() {
@@ -643,13 +687,11 @@ const API = {
     else if (hasSala) this.order = clamp(this.order + BAL.orderGainSala, 0, 100);
 
     // ตะราง: ส่วนที่ขังไว้ต้องเลี้ยงข้าวทุกวาระ — ไม่งั้นมันจะเป็นของฟรีที่ไม่มีข้อเสีย
-    if (this.has('tarang')) {
-      const held = Math.max(0, Math.min(TARANG.hold, this.queue.length - BAL.queueMax));
-      if (held > 0) {
-        this.coin -= TARANG.feed * held;
-        if (this.tick % 20 === 0)
-          this.log(`🔒 ตะรางขังอยู่ ${held} ดวง — ค่าข้าว ${(TARANG.feed * held).toFixed(1)} เบี้ยต่อวาระ`);
-      }
+    if (this.held.length) {
+      this.coin -= TARANG.feed * this.held.length;
+      this.held.forEach(x => x.waited++);
+      if (this.tick % 20 === 0)
+        this.log(`🔒 ตะรางขังอยู่ ${this.held.length} ดวง — ค่าข้าว ${(TARANG.feed * this.held.length).toFixed(1)} เบี้ยต่อวาระ`);
     }
 
     // หอส่องกรรม: เติมพลังให้เองเป็นระยะ จะได้ไม่มีวันตันเพราะของหมด
@@ -1239,7 +1281,7 @@ API.snapshot = function () {
       k: st.def.k, crewK: st.crewK, intensity: st.intensity,
       progress: st.progress, need: st.need, soul: st.soul, verdict: st.verdict,
     })),
-    queue: this.queue, items: this.items, mobs: this.mobs,
+    queue: this.queue, held: this.held, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     zone: this.zone, usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -1276,6 +1318,7 @@ API.restore = function (d) {
     return st;
   }).filter(Boolean);
   this.queue = d.queue || [];
+  this.held = d.held || [];
   this.items = d.items || [];
   this.mobs = d.mobs || [];
   this.guard = d.guard || null;

@@ -1,7 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
-         KARMA_RELIEF, BATTLE, ZONES } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES, TARANG } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
@@ -18,6 +18,18 @@ if (SAVED) g.restore(SAVED);
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
 let tab = 'quiz', hover = null, acc = 0, last = performance.now();
+
+/** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
+ *  ลูปเฟรมใช้ตัวนี้เปิดกล่องกลับให้ ถ้าฉากยังไม่จบแต่กล่องหายไป
+ *  (มี close หลุดเข้ามาได้หลายทาง — โมดัลอื่นมาแทรก, Esc, เบราว์เซอร์เอง)
+ *  ผู้เล่นต้องไม่มีทาง "ค้างอยู่กับฉากต่อสู้ที่มองไม่เห็น" เด็ดขาด */
+let battleUI = null;
+
+// เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
+// (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
+setInterval(() => {
+  if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
+}, 400);
 
 // ---------- ลูป ----------
 let saveAt = 0;
@@ -179,17 +191,31 @@ function drawTab() {
   const b = $('#tabbody');
   if (tab === 'quiz') return drawQuiz(b);
   if (tab === 'queue') {
-    if (!g.queue.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
+    if (!g.queue.length && !g.held.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
     const cap = g.queueCap(), over = g.queue.length - cap;
     b.innerHTML = `<div style="font-size:var(--text-xs);margin-bottom:8px;color:${over > 0 ? 'var(--destructive)' : 'var(--muted-foreground)'}">
         คิว ${g.queue.length}/${cap} ดวง${over > 0 ? ` · <b>ล้น ${over} ดวง ระเบียบกำลังตก</b>`
-          : g.has('tarang') ? ' · ตะรางยังรับไหว' : ' · เกินความจุแล้วระเบียบจะเริ่มตก'}</div>`;
+          : ' · เกินความจุแล้วระเบียบจะเริ่มตก'}${g.has('tarang')
+            ? ` · 🔒 ตะราง ${g.held.length}/${TARANG.hold}` : ''}</div>`;
     b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
         <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.deeds.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
         ${s.merits.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}${m.v ? '' : ' <i>(ไม่นับเป็นบุญ)</i>'}</div>`).join('')}
       </div>`).join('');
+    // คนที่ถูกขังอยู่ — ไม่นับในคิว ไม่กัดระเบียบ แต่กินค่าข้าวทุกวาระ เบิกตัวขึ้นแท่นได้ตลอด
+    if (g.held.length) {
+      b.innerHTML += `<div class="sec">🔒 อยู่ในตะราง — ค่าข้าว ${(TARANG.feed * g.held.length).toFixed(1)} เบี้ยต่อวาระ</div>`
+        + g.held.map(s => `
+        <div class="soul" style="border-color:var(--input)">
+          <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}</b>
+            <span class="id">#${String(s.id).padStart(3, '0')} · ขังมา ${s.waited} วาระ</span></div>
+          ${s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
+          <button class="sm" data-free="${s.id}" style="margin-top:6px">🔓 เบิกตัวขึ้นแท่น</button>
+        </div>`).join('');
+      b.querySelectorAll('[data-free]').forEach(x =>
+        x.onclick = e => { e.stopPropagation(); g.release(+x.dataset.free); refresh(); });
+    }
     b.querySelectorAll('[data-soul]').forEach(x =>
       x.onclick = () => {                       // เรียกคดีนี้ขึ้นมาที่แท่นก่อน
         const i = g.queue.findIndex(s => s.id === +x.dataset.soul);
@@ -496,7 +522,8 @@ function drawTabHeads() {
   const build = STATIONS.filter(s => s.cost > 0 && !g.stations.some(x => x.def.k === s.k)).length;
   const s0 = g.queue[0];
   $('#tab-quiz').textContent  = `ไต่สวน${s0 && s0.presses > 0 ? ` · จี้ได้ ${s0.presses}` : ''}`;
-  $('#tab-queue').textContent = `คิววิญญาณ${g.queue.length ? ` (${g.queue.length})` : ''}`;
+  $('#tab-queue').textContent = `คิววิญญาณ${g.queue.length ? ` (${g.queue.length})` : ''}`
+    + (g.held.length ? ` · 🔒${g.held.length}` : '');
   $('#tab-crew').textContent  = `ยมทูต${hire ? ` · จ้างได้ ${hire}` : ''}`;
   $('#tab-build').textContent = `ก่อสร้าง${build ? ` · สร้างได้ ${build}` : ''}`;
   for (const el of document.querySelectorAll('.tabs [data-tab]'))
@@ -543,7 +570,7 @@ $('#atk').onclick = () => { g.attack(); refresh(); };
 const dlg = $('#dlg');
 function modal(html, onOpen) {
   dlg.innerHTML = html;
-  dlg.showModal();
+  openDlg(dlg.className);
   dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
   if (onOpen) onOpen(dlg);
 }
@@ -650,7 +677,11 @@ function drawDeck() {
     deckBar.innerHTML = '<div class="idle">ยังไม่มีวิญญาณยืนอยู่หน้าแท่น — กดเดินวาระให้เรือพาคนข้ามมา</div>';
     return;
   }
-  const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
+  // เดิมซ่อนสถานีที่ไม่ว่างทิ้งไปเลย — ผู้เล่นจึงเห็นแค่ "ไม่มีที่ให้ส่ง" โดยไม่รู้ว่าเพราะอะไร
+  // (เจ้าของเจอ 8 ก.ย. 2569: สำนวนฉ้อโกง แต่กระทะทองแดงหายไปจากรายการเพราะกำลังใช้อยู่)
+  // ตอนนี้โชว์ทุกหลังที่สร้างแล้ว หลังที่ติดงานเป็นปุ่มกดไม่ได้ + บอกว่าเหลืออีกกี่ %
+  const dests = g.stations.filter(x => x.def.pow > 0);
+  const free = dests.filter(x => !x.soul);
   // นิราไม่อยู่ในลิสต์ (เธออ่านสำนวน ไม่ลงทัณฑ์) · ท่านเองต่อท้ายเสมอ เผื่อคนไม่พอ
   // ท่านคุมได้ทีละสถานีเท่านั้น — ยืนอยู่สองที่พร้อมกันไม่ได้
   const meBusy = g.stations.some(x => x.crewK === 'me' && x.soul);
@@ -670,9 +701,15 @@ function drawDeck() {
       }).join('')}</div></div>
 
     <div class="grp"><span class="lb">ส่งไปที่ไหน</span>
-      <div class="row2" id="d-st">${free.length ? free.map(x =>
-        `<button data-k="${x.def.k}" ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}>${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}</span></button>`).join('')
-        : '<span class="idle">ไม่มีสถานีว่าง</span>'}</div></div>
+      <div class="row2" id="d-st">${dests.length ? dests.map(x => {
+        const busy = !!x.soul;
+        const pct = busy ? Math.round(100 * x.progress / x.need) : 0;
+        return `<button data-k="${x.def.k}" ${busy ? 'disabled' : ''}
+           ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
+           title="${busy ? 'กำลังลงทัณฑ์อยู่ — รอให้ว่างก่อน หรือกดพักคดีนี้ไว้' : esc(x.def.desc)}"
+          >${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${busy ? `ไม่ว่าง ${pct}%`
+            : (x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป')}</span></button>`;
+      }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง — ไปที่แท็บก่อสร้าง</span>'}</div></div>
 
     <div class="grp"><span class="lb">ใครคุม</span>
       <div class="row2" id="d-cr">${!idle.length ? '<span class="idle">ไม่มีใครว่าง — รอผู้คุมออกเวร หรือจ้างเพิ่มที่แท็บยมทูต</span>' : idle.map(c =>
@@ -686,7 +723,18 @@ function drawDeck() {
         : [1, 2, 3, 4, 5].map(i =>
         `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div></div>
 
-    <button class="gold go" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>`;
+    <div class="grp go" style="align-items:flex-end">
+      <div class="row2">
+        <button id="d-skip" ${g.queue.length > 1 ? '' : 'disabled'}
+          title="เลื่อนคดีนี้ไปท้ายคิว ให้คนถัดไปขึ้นแทน — ฟรี ไม่มีโทษ">⏭️ พักคดีนี้ไว้</button>
+        ${g.has('tarang')
+          ? `<button id="d-jail" ${g.jailFree() > 0 ? '' : 'disabled'}
+               title="ขังไว้ในตะรางก่อน ออกจากคิวเลย แลกกับค่าข้าวทุกวาระ"
+               >🔒 ขังไว้ก่อน <span style="opacity:.55">${g.held.length}/${g.jailFree() + g.held.length}</span></button>`
+          : `<button disabled title="ต้องสร้างตะรางรอวาระก่อน (แท็บก่อสร้าง)">🔒 ขังไว้ก่อน <span style="opacity:.55">ยังไม่มีตะราง</span></button>`}
+        <button class="gold" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>
+      </div>
+    </div>`;
 
   deckBar.querySelectorAll('#d-pw button').forEach(b => b.onclick = () => {
     g.usePower(b.dataset.k, s); drawRes(); drawSide(); drawOverlay(); drawDeck();
@@ -694,6 +742,10 @@ function drawDeck() {
   const sel = (id, key) => deckBar.querySelectorAll(`${id} button`).forEach(b =>
     b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
   sel('#d-st', 'st'); sel('#d-cr', 'cr'); sel('#d-in', 'inten');
+  const sk = deckBar.querySelector('#d-skip');
+  if (sk) sk.onclick = () => { if (g.defer()) { pick = { st: null, cr: null, inten: 3 }; sfx('deny'); refresh(); } };
+  const jl = deckBar.querySelector('#d-jail');
+  if (jl) jl.onclick = () => { if (g.jail(s.id)) { pick = { st: null, cr: null, inten: 3 }; sfx('stamp'); refresh(); } };
   const go = deckBar.querySelector('#d-go');
   const doAssign = () => {
     const heaven = !!STATIONS.find(d => d.k === pick.st)?.heaven;
@@ -888,6 +940,17 @@ function openHelp() {
 // เหมือนเกม Turn-based RPG มีโปรไฟล์ทั้งสองฝ่าย และมีตัว SD ยืนอยู่"
 // สองหน้าต่างจึงใช้แถบ .duel ตัวเดียวกัน ต่างกันแค่ของที่อยู่ข้างล่าง
 
+/** เปิดกล่องโมดัลแบบ "ชนกับของเดิมไม่ได้"
+ *  <dialog>.showModal() บนกล่องที่เปิดอยู่แล้วจะโยน InvalidStateError แล้วเงียบไปเลย
+ *  ผลคือหน้าต่างมินิเกมเปิดไม่ติดและปุ่มข้างในไม่ผูก handler — ตัวที่ชนบ่อยที่สุดคือ
+ *  โมดัลบทเรียนของพญายม ซึ่งเด้งพอดีตอน g.fights ขยับจาก 0 เป็น 1 (เจอ 8 ก.ย. 2569) */
+function openDlg(cls = '') {
+  if (dlg.open) dlg.close();
+  dlg.className = cls;
+  try { dlg.showModal(); return true; }
+  catch (e) { console.error('[อเวจี] เปิดกล่องไม่ได้', e); return false; }
+}
+
 /** ไฟล์รูปของฝ่ายตรงข้าม — สำนวนที่มีชื่อใช้ img/soul-<k>.png · สำนวนสุ่มใช้ spiritN */
 const foeImg = sp => typeof sp === 'string' ? sp : 'spirit' + sp;
 
@@ -979,9 +1042,8 @@ function openTrial() {
     dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
   };
 
-  dlg.className = 'wide';
   paint();
-  dlg.showModal();
+  openDlg('wide');
   dlg.addEventListener('close', () => {
     dlg.className = ''; g.paused = was; updatePlay(); bgm('bgm-zone'); refresh();
   }, { once: true });
@@ -1032,24 +1094,42 @@ function openBattle(after) {
       paint();
     });
     const fin = dlg.querySelector('[data-fin]');
-    if (fin) fin.onclick = () => { dlg.close(); };
+    if (fin) fin.onclick = finish;      // เรียกตรง ๆ ไม่ผ่าน event close (ดูเหตุผลข้างล่าง)
   };
 
-  dlg.className = 'wide';
-  paint();
-  dlg.showModal();
-  // กด Esc หนีกลางฉากต่อสู้ไม่ได้ — ไม่งั้นจะกดหนีทุกครั้งที่กำลังจะแพ้
-  const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
-  dlg.addEventListener('cancel', noEsc);
-  dlg.addEventListener('close', () => {
+  // ---- ฉากต่อสู้ "ปิดไม่ได้จนกว่าจะจบ" ----
+  // พบ 8 ก.ย. 2569 ว่ามี event close หลุดเข้ามาได้โดยไม่มี cancel นำหน้าและไม่มีใครกดอะไร
+  // ผลคือผู้เล่น "แพ้ฟรี" กลางฉาก เลยไม่ผูกการจบฉากไว้กับ event close อีกต่อไป:
+  //   · ปุ่มจบฉากเรียก finish() ตรง ๆ  → จบถูกทางเสมอ ต่อให้กล่องถูกปิดไปก่อนแล้ว
+  //   · close ที่ยังไม่จบฉาก → เปิดกล่องกลับให้ (ต้องรอ dispatch จบก่อนถึงจะ showModal ได้)
+  let reopen = 0, finished = false;
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    battleUI = null;
     dlg.removeEventListener('cancel', noEsc);
+    dlg.removeEventListener('close', onClose);
+    if (dlg.open) dlg.close();
     dlg.className = '';
     const done = g.endBattle();
     bgm('bgm-zone');
     updatePlay();
     refresh();
     if (after) after(done ? done.over : null);
-  }, { once: true });
+  }
+
+  const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
+  const onClose = () => {
+    // ฉากยังไม่จบ = ไม่นับว่าปิด · ลูปเฟรมจะเปิดกล่องกลับให้เองในเฟรมถัดไป
+    if (g.battle && !g.battle.over && reopen++ < 200) return;
+    finish();
+  };
+
+  battleUI = () => { paint(); openDlg('wide'); };
+  battleUI();
+  dlg.addEventListener('cancel', noEsc);
+  dlg.addEventListener('close', onClose);
 }
 
 // ---------- ย้ายโซน ----------
@@ -1099,6 +1179,9 @@ function markTaught(k) {
 function drawCoach() {
   // ยังอยู่หน้าปก — ห้ามสอนอะไรทั้งนั้น ไม่งั้นโมดัลบทที่ 1 จะเด้งทับปกตั้งแต่ยังไม่ได้กดเริ่ม
   if (!$('#title')?.classList.contains('gone')) { coachEl.hidden = true; return; }
+  // มีฉากต่อสู้ค้างอยู่ = ห้ามสอนอะไรทั้งนั้น ไม่งั้นโมดัลบทเรียนจะไปเปิดชนกับฉากต่อสู้
+  // แล้ว showModal ของฉากต่อสู้จะพังเงียบ ๆ (ปุ่มข้างในไม่ผูก handler)
+  if (g.battle) { coachEl.hidden = true; return; }
   if (g.over) { coachEl.hidden = true; return; }
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
