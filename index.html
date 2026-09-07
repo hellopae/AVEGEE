@@ -302,8 +302,11 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   gap:var(--space-3);padding:var(--space-5) clamp(20px,4vw,44px);min-width:0}
 #title .brand{font-family:var(--font-display);font-size:clamp(3rem,7vw,5.5rem);line-height:.95;
   color:var(--gold);margin:0 0 var(--space-2);letter-spacing:2px;text-shadow:0 4px 24px rgba(0,0,0,.8)}
-#title .tag{color:var(--muted-foreground);font-size:var(--text-sm);line-height:1.7;margin:0 0 var(--space-4)}
-#title .tag b{color:var(--accent-foreground);font-weight:500}
+/* ห้ามใช้ชื่อ .tag ตรงนี้ — ชนกับป้ายชนิดบาปในสำนวนที่มีพื้นหลังกับมุมมนอยู่แล้ว
+   (เจ้าของเห็นเป็นแถบสีน้ำตาลคาดหลังข้อความบนหน้าปก 8 ก.ย. 2569) */
+#title .lead{color:var(--muted-foreground);font-size:var(--text-sm);line-height:1.75;
+  margin:0 0 var(--space-4);background:none;padding:0;text-shadow:0 2px 10px rgba(0,0,0,.85)}
+#title .lead b{color:var(--accent-foreground);font-weight:500}
 #title button{width:100%;justify-content:flex-start;text-align:left;padding:13px 18px;min-height:52px;
   font-size:1.05rem;background:rgba(30,16,21,.82);border-color:var(--border);backdrop-filter:blur(2px)}
 #title button:hover:not(:disabled){border-color:var(--gold);background:rgba(61,32,41,.9);transform:translateX(4px)}
@@ -429,7 +432,7 @@ dialog.rpg .pad{padding:var(--space-4);max-height:min(86vh,900px);overflow:auto}
   <div class="scrim"></div>
   <div class="menu">
     <h1 class="brand">อเวจี</h1>
-    <p class="tag">นรกโซนสุวรรณภูมิ<br>
+    <p class="lead">นรกโซนสุวรรณภูมิ<br>
       <b>ท่านคือยมบาทมือใหม่</b> ลูกของพญายม<br>
       งานของท่านคือ <b>พิพากษาให้ตรงกรรม</b> — ไม่ใช่ลงโทษให้แรงที่สุด</p>
     <button id="t-resume" hidden><b>▶ เล่นต่อ</b><small id="t-resume-info"></small></button>

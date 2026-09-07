@@ -79,8 +79,38 @@ export function sfx(name) {
 }
 
 // ---------- เพลง ----------
-// ไฟล์อยู่ที่ audio/<key>.ogg — ยังไม่มีไฟล์ = เงียบเฉย ๆ ไม่ขึ้น error ให้ผู้เล่นเห็น
+// ไฟล์อยู่ที่ audio/<key>.<ext> — ยังไม่มีไฟล์ = เงียบเฉย ๆ ไม่ขึ้น error ให้ผู้เล่นเห็น
+//
+// รับได้ทั้ง mp3 และ ogg (แก้ 8 ก.ย. 2569) — เดิมบังคับ .ogg อย่างเดียว
+// แล้วเจ้าของต้องไปแปลงไฟล์ที่ Suno ส่งมาเองทุกครั้ง ซึ่งไม่จำเป็น:
+// mp3 เล่นได้ทุกเบราว์เซอร์ และไฟล์ใหญ่กว่า ogg ไม่กี่สิบเปอร์เซ็นต์เท่านั้น
+// ลองไล่ทีละนามสกุล ตัวไหนเล่นได้ก็ใช้ตัวนั้น
+const EXT = ['ogg', 'mp3', 'm4a'];
 let el = null, cur = null, pendingBgm = null;
+const srcCache = new Map();       // key → path ที่มีจริง (หรือ null ถ้าไม่มีสักนามสกุล)
+
+/** หาไฟล์ที่มีอยู่จริง — ถามเซิร์ฟเวอร์ตรง ๆ ด้วย HEAD
+ *  เดิมอาศัย el.onerror ของ <audio> ไล่ทีละนามสกุล ซึ่งพึ่งไม่ได้:
+ *  เบราว์เซอร์เลื่อนการโหลดสื่อในแท็บที่ไม่ได้อยู่หน้าจอ error เลยไม่ยิงสักที
+ *  แล้วเพลงก็ค้างอยู่ที่นามสกุลแรกที่ไม่มีไฟล์ (เจอ 8 ก.ย. 2569) */
+async function findSrc(key) {
+  if (srcCache.has(key)) return srcCache.get(key);
+  let found = null;
+  for (const ext of EXT) {
+    const url = `audio/${key}.${ext}`;
+    try {
+      const r = await fetch(url, { method: 'HEAD', cache: 'force-cache' });
+      if (r.ok) { found = url; break; }
+    } catch { /* ออฟไลน์หรือ HEAD ไม่ผ่าน — ลองนามสกุลถัดไป */ }
+  }
+  srcCache.set(key, found);
+  return found;
+}
+
+/** เพลงที่ใช้แทนได้ถ้าเพลงที่ขอยังไม่มีไฟล์
+ *  ทำให้ "มีเพลงเดียวก็ฟังได้ทั้งเกม" แล้วพอเติมไฟล์ทีละเพลง เกมจะเปลี่ยนไปใช้ของจริงเอง
+ *  โดยไม่ต้องแก้โค้ดสักบรรทัด — ตรงกับวิธีที่ทำกับรูปทั้งเกม */
+const FALLBACK = ['bgm-zone', 'bgm-title'];
 
 export function bgm(key) {
   if (!key) return stopBgm();
@@ -89,9 +119,20 @@ export function bgm(key) {
   if (cur === key && el && !el.paused) return;
   cur = key;
   if (!el) { el = new Audio(); el.loop = true; el.preload = 'auto'; }
-  el.src = `audio/${key}.ogg`;
   el.volume = AUDIO.on ? AUDIO.bgm : 0;
-  el.play().catch(() => {});          // ไม่มีไฟล์/ยังไม่ได้แตะจอ — เงียบไว้ ไม่ต้องบอกใคร
+
+  (async () => {
+    let url = null;
+    for (const k of [key, ...FALLBACK]) {
+      url = await findSrc(k);
+      if (url) break;
+    }
+    if (cur !== key) return;                 // เปลี่ยนเพลงไปแล้วระหว่างรอ
+    if (!url) return;                        // ยังไม่มีไฟล์เพลงสักไฟล์ — เงียบไว้ ไม่ต้องบอกใคร
+    if (el.src.endsWith(url) && !el.paused) return;   // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
+    if (!el.src.endsWith(url)) el.src = url;
+    el.play().catch(() => {});               // ถูกนโยบาย autoplay ห้ามไว้ก็ปล่อยไป ไม่ใช่ความผิดของไฟล์
+  })();
 }
 
 export function stopBgm() { cur = null; if (el) { el.pause(); } }

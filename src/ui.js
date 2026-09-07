@@ -1497,6 +1497,10 @@ function startPlay(fresh) {
 }
 
 function buildTitle() {
+  // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ปลุกเพลงหน้าปกตอนแตะครั้งแรกที่ไหนก็ได้บนปก
+  const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
+  titleEl.addEventListener('pointerdown', wake);
+
   const art = $('#cover-art');
   const probe = new Image();                 // มีไฟล์หน้าปกค่อยใช้ ไม่มีก็อยู่กับไล่สีไปก่อน
   probe.onload = () => art.classList.add('has');

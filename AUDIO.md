@@ -39,20 +39,27 @@ slow ritual pulse, deep sub bass, temple gong accents, no vocals, instrumental o
 seamless loop, clean mix with space for dialogue on top
 ```
 
-| ไฟล์ | ใช้ตอนไหน | prompt ต่อท้ายบล็อกสไตล์ | ความยาว |
+| ไฟล์ (นามสกุลอะไรก็ได้) | ใช้ตอนไหน | prompt ต่อท้ายบล็อกสไตล์ | ความยาว |
 |---|---|---|---|
-| `bgm-title.ogg` | **หน้าปก** ⭐ ทำก่อน | grand and ominous main theme, opens with a single struck temple gong and a long ranat tremolo, slow build into a proud dark melody carried by saw u over sustained low strings, feels like a heavy door opening, ends able to loop back to the gong | 60–80 วิ |
-| `bgm-zone.ogg` | **ลูปหลักตอนเล่น** ⭐ ทำก่อน | calm patient work loop, quiet repeating khim ostinato, soft klong that heartbeat every four bars, minimal melody so it never competes with reading, warm ember hum underneath, hypnotic and unhurried | 90–120 วิ |
-| `bgm-trial.ogg` | เปิดหน้าต่างไต่สวน | tense interrogation cue, sparse ticking ching, muted plucked khim on off-beats, low drone rising very slowly, one dissonant saw u note held far too long, restrained and cold, no drums | 45–60 วิ |
-| `bgm-battle.ogg` | ฉากต่อสู้กับวิญญาณที่ขัดขืน | fast aggressive battle theme, driving klong that toms, ranat ek playing rapid angular runs, distorted low brass stabs, urgent but still ritual and Thai, turn-based RPG energy | 60–75 วิ |
-| `bgm-yama.ogg` | โดนพญายมลงโทษ (แพ้แน่นอน) | overwhelming dread, enormous slow gong hits with long decay, choir-like low drone, everything else stripped away, one ranat phrase far in the distance like a memory, crushing and final | 30–40 วิ |
-| `bgm-heaven.ogg` | ส่งวิญญาณขึ้นประตูสวรรค์ | brief radiant release, bright khim arpeggio rising, high shimmering bells, warm major shift after all the minor, soft and short, feels like exhaling | 20–25 วิ (ไม่ลูป) |
+| `bgm-title` ✅ **มีแล้ว** | **หน้าปก** ⭐ ทำก่อน | grand and ominous main theme, opens with a single struck temple gong and a long ranat tremolo, slow build into a proud dark melody carried by saw u over sustained low strings, feels like a heavy door opening, ends able to loop back to the gong | 60–80 วิ |
+| `bgm-zone` | **ลูปหลักตอนเล่น** ⭐ ทำก่อน | calm patient work loop, quiet repeating khim ostinato, soft klong that heartbeat every four bars, minimal melody so it never competes with reading, warm ember hum underneath, hypnotic and unhurried | 90–120 วิ |
+| `bgm-trial` | เปิดหน้าต่างไต่สวน | tense interrogation cue, sparse ticking ching, muted plucked khim on off-beats, low drone rising very slowly, one dissonant saw u note held far too long, restrained and cold, no drums | 45–60 วิ |
+| `bgm-battle` | ฉากต่อสู้กับวิญญาณที่ขัดขืน | fast aggressive battle theme, driving klong that toms, ranat ek playing rapid angular runs, distorted low brass stabs, urgent but still ritual and Thai, turn-based RPG energy | 60–75 วิ |
+| `bgm-yama` | โดนพญายมลงโทษ (แพ้แน่นอน) | overwhelming dread, enormous slow gong hits with long decay, choir-like low drone, everything else stripped away, one ranat phrase far in the distance like a memory, crushing and final | 30–40 วิ |
+| `bgm-heaven` | ส่งวิญญาณขึ้นประตูสวรรค์ | brief radiant release, bright khim arpeggio rising, high shimmering bells, warm major shift after all the minor, soft and short, feels like exhaling | 20–25 วิ (ไม่ลูป) |
 
-> **หลังได้ไฟล์:** แปลงเป็น `.ogg` 96 kbps mono สำหรับคิว/เอฟเฟกต์ · 128 kbps stereo สำหรับ 2 เพลงหลัก
-> ```
-> ffmpeg -i bgm-title.mp3 -c:a libvorbis -b:a 128k -ac 2 audio/bgm-title.ogg
-> ```
-> วางที่ `audio/` แล้วโค้ดจะหยิบเอง — ไม่มีไฟล์ = เกมเงียบ ไม่พัง
+### หลังได้ไฟล์จาก Suno — **ไม่ต้องแปลงอะไรเลย**
+
+ลากไฟล์ `.mp3` ที่โหลดมา ไปวางที่ `audio/` แล้วตั้งชื่อตามตารางข้างบน จบ
+โค้ดไล่หาให้เองทั้ง `.ogg` `.mp3` `.m4a` ตัวไหนมีก็เล่นตัวนั้น · ไม่มีไฟล์ = เกมเงียบ ไม่พัง
+
+**ถ้าอยากให้ไฟล์เล็กลง** (Suno ส่งมาราว 190 kbps · ลดเหลือ 128 kbps หูแทบไม่ต่าง ไฟล์หายไป 1 ใน 3)
+```
+ffmpeg -y -i ~/Downloads/เพลงที่โหลดมา.mp3 -vn -c:a libmp3lame -b:a 128k audio/bgm-title.mp3
+```
+> `-vn` สำคัญ — ไฟล์จาก Suno มีภาพปกฝังมาด้วย ถ้าไม่ตัดทิ้ง ffmpeg จะ error
+>
+> ffmpeg บนเครื่องนี้**ไม่มีตัวเข้ารหัส Vorbis** เลยแปลงเป็น `.ogg` ไม่ได้ — ใช้ `.mp3` ตามเดิมได้เลย
 
 ---
 
