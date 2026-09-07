@@ -216,10 +216,17 @@ function select(s) { sel = s; side = 'info'; refresh(); }
 
 const nameOfSt = k => STATIONS.find(d => d.k === k)?.name ?? '—';
 
-/** หัวโปรไฟล์: รูป + ชื่อ + หน้าที่ + กำลังทำอะไรอยู่ */
+/** หัวโปรไฟล์: รูป + ชื่อ + หน้าที่ + กำลังทำอะไรอยู่
+ *  ลองรูปโปรไฟล์เต็มใบก่อน (img/<key>-profile.png) ไม่มีค่อยถอยไปใช้รูป standee เดิม
+ *  → gen รูปโปรไฟล์ตัวไหนมาใหม่ ก็แค่วางไว้ img/raw/<key>-profile.jpeg แล้วรัน scripts/prep-art.py
+ *    ไม่ต้องแตะโค้ดสักบรรทัด (7 ก.ย. 2569) */
 function profile(imgKey, name, duty, now) {
+  // ไม่มีทั้งรูปโปรไฟล์และรูป standee ก็ซ่อนกรอบไปเลย อย่าปล่อยไอคอนรูปแตกไว้
+  const fallback = `this.onerror=function(){this.style.visibility='hidden'};`
+                 + `this.src='img/${imgKey}.png';this.classList.remove('full')`;
   return `<div class="prof">
-    <img src="img/${imgKey}.png" alt="" onerror="this.style.visibility='hidden'">
+    <img class="full" src="img/${imgKey}-profile.png" alt=""
+         onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">
     <div class="hd"><b>${esc(name)}</b>
       <div class="duty">${esc(duty)}</div>
       <div class="now">${now}</div></div></div>`;
@@ -321,6 +328,7 @@ function sideBody() {
     const now = st && st.soul
       ? `กำลังคุม <b>${esc(st.soul.who)}</b> สำนวน #${String(st.soul.id).padStart(3, '0')} ที่${esc(st.def.name)}
          · ระดับวาระ ${st.intensity} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`
+      : c.reader ? `ยืนอ่านสำนวนอยู่ข้างแท่นพิพากษา — คิวตอนนี้ ${g.queue.length} ดวง`
       : c.at ? `ประจำ${esc(nameOfSt(c.at))} รอสำนวนถัดไป` : 'ว่าง — รอรับเวร';
     const strong = [['แรง', c.raeng], ['ระเบียบ', c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
       .sort((a, b) => b[1] - a[1]);

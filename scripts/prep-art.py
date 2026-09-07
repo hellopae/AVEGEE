@@ -13,6 +13,10 @@
 key ที่เกมมองหา:
   tileset · st-krata st-ngiw st-raeng st-lin st-lohak st-lan st-tea st-sala
   crew-taan crew-nira crew-plerng crew-kan crew-boon crew-dam
+
+รูปโปรไฟล์สำหรับแผงข้อมูลขวาล่าง: ตั้งชื่อ <key>-profile (เช่น hero-yama-profile,
+crew-nira-profile) จะถูกครอปเป็นจัตุรัสให้เอง ไม่ต้องเป็นพื้นใส ไฟล์ jpeg ก็ได้
+ไม่มีไฟล์โปรไฟล์ เกมจะถอยไปใช้รูป standee เดิมอัตโนมัติ
 """
 from PIL import Image
 import os, sys
@@ -20,6 +24,7 @@ import os, sys
 SIZE = 512
 PAT  = 256         # ขนาดผืน pattern ของพื้น (ต้องตรงกับ PAT ใน src/art.js)
 SCENE_W = 2000     # ความกว้างสูงสุดของภาพฉาก
+PROFILE = 512      # ด้านของรูปโปรไฟล์ในแผงข้อมูล (<key>-profile)
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
@@ -69,6 +74,22 @@ def strip_flat_bg(im):
 def prep(path, name):
     im = Image.open(path)
     stripped = 0
+
+    # รูปโปรไฟล์ (<key>-profile) — ภาพเต็มใบสำหรับแผงข้อมูล ไม่ใช่ standee
+    # ห้ามลอกพื้นหลัง ห้ามชิดขอบล่าง แค่ครอปเป็นจัตุรัสตรงกลางแล้วย่อ
+    if name.endswith('-profile'):
+        im = im.convert('RGB')
+        w, h = im.size
+        side = min(w, h)
+        # ครอปจากกลางแนวนอน แต่ค่อนไปทางบนแนวตั้ง — หน้าคนอยู่ครึ่งบนเสมอ
+        left, top = (w - side) // 2, (h - side) // 4
+        im = im.crop((left, top, left + side, top + side))
+        if im.width > PROFILE:
+            im = im.resize((PROFILE, PROFILE), Image.LANCZOS)
+        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(
+            os.path.join(OUT, name + '.png'))
+        return im.size
+
     if im.mode != 'RGBA' and not name.startswith('tile-') and name != 'scene':
         im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
     im = im.convert('RGBA')
@@ -114,8 +135,9 @@ def main():
     if not os.path.isdir(RAW):
         sys.exit('ไม่พบโฟลเดอร์ ' + RAW)
     # ไฟล์ที่ขึ้นต้นด้วย _ = เก็บไว้อ้างอิง ไม่ต้องเอาเข้าเกม
+    # รับ jpeg ด้วย — รูปโปรไฟล์ที่ gen มามักเป็น jpeg และไม่ต้องใช้ alpha อยู่แล้ว
     files = sorted(f for f in os.listdir(RAW)
-                   if f.lower().endswith('.png') and not f.startswith('_'))
+                   if f.lower().endswith(('.png', '.jpg', '.jpeg')) and not f.startswith('_'))
     if not files:
         sys.exit('ยังไม่มีไฟล์ใน img/raw/ — วาง <key>.png ไว้ก่อน')
     for f in files:

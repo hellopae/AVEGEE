@@ -176,9 +176,13 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 
 /* ---------- แผงข้อมูล (dashboard) ---------- */
 .sidebody{padding:var(--space-3);height:294px;overflow:auto}
-.prof{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
-.prof img{width:74px;height:74px;image-rendering:pixelated;object-fit:contain;object-position:bottom;
+/* หัวโปรไฟล์ในแผงข้อมูล — ขยายจาก 74px เป็น 132px ตอนเจ้าของเริ่ม gen รูปโปรไฟล์เอง
+   .full = รูปโปรไฟล์เต็มใบ (เต็มกรอบ) · ไม่มี .full = รูป standee ตัวยืน (วางชิดล่าง ไม่ครอป) */
+.prof{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.prof img{width:132px;height:132px;image-rendering:pixelated;object-fit:contain;object-position:bottom;
   background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);flex:none}
+.prof img.full{object-fit:cover;object-position:center top;border-color:var(--gold);image-rendering:auto}
+@media(max-width:640px){.prof img{width:96px;height:96px}}
 .prof .hd{min-width:0}
 .prof .hd b{font-size:1.05rem;font-family:var(--font-display)}
 .prof .hd .duty{font-size:var(--text-xs);color:var(--gold);margin-top:2px}
