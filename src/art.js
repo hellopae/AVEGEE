@@ -112,7 +112,11 @@ export const SPIRIT_KINDS = 7;
 /** sp = เลขรูปวิญญาณ 1..SPIRIT_KINDS (มาจาก SPIRIT_OF ตามสำนวน) */
 export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   const bob = Math.sin(t / 520 + x) * (h * 0.05);
-  const im = img('spirit' + ((sp - 1) % SPIRIT_KINDS + 1));
+  // sp เป็นเลข = วิญญาณสุ่ม (spirit1-7) · เป็นข้อความ = สำนวนที่มีชื่อ (img/soul-<k>.png)
+  // ยังไม่มีไฟล์ของสำนวนที่มีชื่อ ก็ถอยไปใช้ผีสามัญ ไม่ปล่อยให้เป็นช่องว่าง
+  const im = typeof sp === 'string'
+    ? (img(sp) || img('spirit7'))
+    : img('spirit' + ((sp - 1) % SPIRIT_KINDS + 1));
   ctx.fillStyle = 'rgba(0,0,0,.28)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {

@@ -269,3 +269,173 @@ molten orange lava glow, antique temple gold
 เฟรมอนิเมชัน      0
 ตัวอักษรในรูป     0
 ```
+
+---
+
+## ชุดที่ 5 — หน้าปก · ตัวละครในสำนวน · ผีไทย · ด่าน 2-3 (7 ก.ย. 2569)
+
+### 5.0 หน้าปกเกม ⭐ ทำก่อนทั้งชุด
+
+`img/cover.png` — ภาพเดียวที่ **ไม่ใช้บล็อกสไตล์พิกเซล** เพราะเป็นภาพโปสเตอร์ ไม่ใช่ asset ในเกม
+ต้องเป็น **แนวนอน 16:9** และ **เว้นที่ว่างครึ่งขวาไว้ให้ปุ่มเมนู** (New Game / Resume / ตั้งค่า)
+
+```
+Cinematic game cover key art, painted in the style of a high-end 2D Thai animated film,
+rich hand-painted illustration with crisp linework and glowing atmospheric lighting,
+16:9 wide landscape composition.
+
+SUBJECT: a small boy prince of the Thai underworld standing at the very front of a colossal
+black stone judgment platform, seen from behind and slightly to the side, three quarters view.
+He is tiny against the scene — chibi proportions, about 3 heads tall, dark red skin, small
+blunt horns, a neat Thai gold mongkut crown slightly too big for him, a black and crimson
+Thai royal robe with thin gold trim and over-long sleeves, hugging a thick ledger against his
+chest with both arms, bare feet. His posture is nervous but planted.
+
+BEHIND HIM, towering and mostly in shadow: the enormous silhouette of the King of Death
+seated on a black throne, only his gold crown, one huge hand and the glint of his eyes
+catching light. He fills the upper background. He is looking down at the boy.
+
+BELOW AND IN FRONT: an endless queue of translucent pale ghosts winding up a stone bridge
+out of a river of souls, heads bowed, hands together in a wai, their lower bodies fading
+into wisps. Rivers of molten lava thread between black obsidian cliffs. Bronze cauldrons,
+a grove of black iron thorn trees and a frozen blue ice temple are visible far off in the haze.
+
+COMPOSITION: the boy and the throne occupy the LEFT and CENTER of the frame.
+The RIGHT THIRD of the image must stay visually calm and uncluttered — just lava haze,
+drifting embers and dark sky — so menu buttons can sit on top of it and stay readable.
+
+LIGHTING: deep obsidian black-purple base, molten orange lava glow from below lighting the
+boy's face and the ghosts' edges, cold pale blue rim light from the river of souls,
+antique temple gold accents, thick volumetric haze, floating ash and embers.
+
+MOOD: heavy, sacred, lonely, a child given a job far too large for him. Not gory, not evil —
+solemn and beautiful.
+
+NEGATIVE: no text, no letters, no numbers, no title, no logo, no watermark, no UI elements,
+no signature, no borders, no frame, no blood, no gore.
+```
+
+> **เช็กก่อนใช้:** ครึ่งขวา "ว่างจริง" ไหม (เอาสี่เหลี่ยมทึบทาบดูว่ายังอ่านปุ่มออก) ·
+> ตัวเด็กต้องเล็กเมื่อเทียบกับบัลลังก์ ถ้า gen มาแล้วเด็กใหญ่เท่าพญายม = ผิดอารมณ์ทั้งภาพ gen ใหม่
+>
+> **ถ้าอยากได้เวอร์ชันมือถือด้วย** gen ซ้ำอีกใบเป็น 9:16 แล้วเซฟเป็น `img/cover-tall.png`
+> ย้าย "ที่ว่าง" จากครึ่งขวาไปเป็น **ครึ่งล่าง** แทน (แก้แค่ย่อหน้า COMPOSITION)
+
+---
+
+### 5.1 วิญญาณในสำนวนที่มีชื่อ — 10 ชิ้น
+
+**ใช้บล็อกสไตล์พิกเซลปกติ** + เพิ่มท้ายทุกอัน:
+
+```
+translucent pale ghost of a dead Thai person, feet and lower body fading away into soft
+wisps of mist, faint cold blue-white inner glow, hollow tired eyes,
+cute chibi proportions about 3 heads tall, standing facing slightly toward the viewer,
+full body, clothing and silhouette must read instantly at very small size
+```
+
+> ⚠️ **เพศกับวัยต้องตรงกับสำนวน** — โค้ดเลือกสรรพนามจากเพศในไฟล์ `src/cases.js`
+> ถ้า gen ผิดเพศ ตัวละครจะพูด "ผม" ทั้งที่เป็นผู้หญิง ซึ่งเป็นบั๊กที่เจ้าของเจอมาแล้ว
+
+| key | ใคร | prompt ต่อท้าย |
+|---|---|---|
+| `soul-pol` | นักการเมืองชายชรา | elderly Thai man, heavy jowls, slicked grey hair, expensive dark suit with a wide silk tie and a gold lapel pin, one hand raised in a practiced politician's wai, oily confident smile that does not reach the eyes |
+| `soul-gen` | นายพลแก่อ้วน | fat elderly Thai man, buzz-cut grey hair, thick neck, olive-green military dress uniform heavy with medal ribbons and gold braid on the shoulders, arms folded, chin up, blank stubborn stare |
+| `soul-nun` | หญิงสาวสวยเข้าวัด | beautiful young Thai woman, long straight black hair, pristine white lay-devotee outfit (white blouse and white long skirt), a string of prayer beads wound around one wrist, hands together in a perfect demure wai, eyes lowered too modestly |
+| `soul-recruit` | พลทหารหนุ่ม | young Thai man barely twenty, shaved head, plain olive army fatigues with the sleeves rolled, dark bruises on both forearms, standing rigidly at attention, thousand-yard stare |
+| `soul-star` | ดาราหนุ่มหล่อ | very handsome young Thai man, styled hair, crisp white designer shirt half unbuttoned, a thin gold chain, hand lifted in a charming wave, camera-ready smile |
+| `soul-lord` | ชายแก่ชนชั้นสูงร่ำรวย | imposing elderly Thai aristocrat, silver hair swept back, heavy gold rings on every finger, formal white Thai royal-court jacket with a high collar and gold buttons, a jade-topped cane, cold amused expression |
+| `soul-girl` | เด็กสาวฆ่าพ่อเลี้ยง | thin Thai girl about sixteen, school uniform white blouse and navy pleated skirt, hair in a short ponytail, both hands hanging limp at her sides, one sleeve darker than the other, hollow exhausted eyes with no tears left |
+| `soul-boy` | เด็กหนุ่มยิงกราดโรงเรียน | Thai boy about fifteen, oversized school uniform shirt untucked, thick glasses with one cracked lens, backpack hanging off one shoulder, shoulders hunched inward, eyes darting to the side, not looking at the viewer |
+| `soul-deva` | เทวดาปลอมตัวเป็นขอทาน | frail old Thai beggar in a patched brown wrap-cloth holding a chipped alms bowl — **but** a very faint gold halo ring and two almost-invisible gold celestial ribbons trail behind him, so subtle you only notice on a second look, serene knowing eyes |
+| `soul-nurse` | พยาบาลสาวที่ถูกคัดกรรมผิด | young Thai nurse, neat white uniform and folded white cap, a small watch pinned to the chest, hands clasped in front of her, confused and frightened but standing politely, no guilt in her face at all |
+
+---
+
+### 5.2 ประตูสวรรค์ — สถานีใหม่ 1 ชิ้น
+
+ใช้บล็อกสไตล์ **อาคารสถานี** (ชุดที่ 1)
+
+| key | prompt ต่อท้าย | สัดส่วน |
+|---|---|---|
+| `st-sawan` | a gate back to the heavens standing at the edge of hell: a tall white-and-gold Thai temple archway with a multi-tiered roof and gold chofa finials, warm white light pouring out of the opening instead of darkness, a short flight of pale marble steps up to it, lotus carvings on the posts, thin gold ribbons drifting upward from the top, **it must look clean and bright — the only structure in the zone that is not black or burning** | **สูงกว่ากว้างเล็กน้อย** |
+
+---
+
+### 5.3 ผีไทยด่าน 1 — เพิ่มพันธุ์ตัวก่อกวน 4 ชิ้น
+
+โค้ดสุ่มจากลิสต์ `MOB.kinds` อยู่แล้ว **ดรอปไฟล์ลง `img/` แล้วเพิ่มบรรทัดใน data.js อันเดียว**
+
+| key | prompt (ต่อท้ายบล็อกสไตล์ ไม่ต้องใส่ chibi) |
+|---|---|
+| `mob-krasue` | Thai krasue ghost: a floating severed woman's head with long black hair and a beautiful pale face, glowing internal organs — heart, lungs and a long trailing intestine — hanging beneath the neck, the whole mass lit from inside with a sickly green-orange glow, floating above the ground, **no body, no legs** |
+| `mob-krahang` | Thai krahang ghost: a shirtless dark-skinned man in a red loincloth crouched low in a flying posture, arms spread wide gripping two enormous woven bamboo winnowing baskets used as wings, a wooden rice pestle held between his knees, wild matted hair, mad grin |
+| `mob-pop` | Thai phi pop: a gaunt villager possessed by a spirit, dull grey skin stretched tight over the ribs, mouth smeared dark, crouched on all fours like an animal, head twisted up toward the viewer, eyes solid white with no pupils, torn farmer's clothes |
+| `mob-tanee` | Thai phi tani: a beautiful pale woman in a traditional green-and-gold Thai sabai dress standing half-merged with the trunk of a banana tree, long black hair, green ghostly glow, her lower half becoming the trunk and roots, banana leaves framing her |
+
+---
+
+### 5.4 ด่าน 2-3 — ฉากโซนใหม่ (ทำทีหลัง ไม่รีบ)
+
+เกมจะเปิด "ย้ายโซน" ให้ตอนเลื่อนขั้นถึงระดับที่กำหนด **ยังไม่มีไฟล์ = เล่นด่าน 2-3 ด้วยฉากเดิมไปก่อน**
+(โค้ดถอยไปใช้ `img/scene.png` เอง เกมไม่พัง)
+
+ทั้งสองใบต้องเป็น **ภาพฉากเต็มใบ 1527×704 พื้นทึบ** และ **วางผังให้เหมือนโซนไทยเป๊ะ ๆ**
+— แท่นพิพากษากลางจอ · แม่น้ำวิญญาณขอบล่าง · ท่าเรือสองฝั่ง · ที่ว่างตรงตำแหน่งเดิมทุกจุด
+เพราะพิกัดทุกค่าใน `src/data.js` อ้างผังนี้ ถ้าผังเปลี่ยน ตัวละครจะไปยืนกลางลาวา
+
+| key | prompt |
+|---|---|
+| `scene-asia` | ดูข้างล่าง |
+| `scene-west` | ดูข้างล่าง |
+
+```
+[scene-asia]
+Edit this image. Keep the EXACT same layout, camera angle, composition and pixel art style —
+same central stone judgment platform with the gold throne, same rope bridge, same river of
+souls along the bottom with two wooden docks, same lava rivers in the same places, same
+empty build plots in the same positions.
+
+CHANGE ONLY THE CULTURAL DRESSING of the surrounding architecture and rock, from Thai to a
+blend of East and South Asian underworlds: Chinese Diyu with red lacquer pillars and curved
+green-tiled eaves and hanging red paper lanterns, Japanese Jigoku with weathered stone jizo
+statues and a torii gate half-swallowed by lava, Korean roof tiles with painted dancheong
+patterns, Indian Naraka with carved sandstone pillars and a many-armed stone guardian relief.
+The mountains become jagged snow-dusted peaks instead of thorn ridges.
+Palette shifts from black-purple to deep jade green, cinnabar red and cold iron grey,
+lava stays molten orange.
+No text, no letters, no numbers, no characters, no people.
+```
+
+```
+[scene-west]
+Edit this image. Keep the EXACT same layout, camera angle, composition and pixel art style —
+same central stone judgment platform with the gold throne, same rope bridge, same river of
+souls along the bottom with two wooden docks, same lava rivers in the same places, same
+empty build plots in the same positions.
+
+CHANGE ONLY THE CULTURAL DRESSING of the surrounding architecture and rock, from Thai to a
+blend of European and Slavic underworlds: gothic cathedral ribs and pointed arches in
+blackened stone, broken flying buttresses, Greek marble columns cracked and toppled, an
+Orthodox onion dome with tarnished copper, wrought-iron fences and gargoyles on the ledges,
+a frozen Russian birch grove at the far edge. The river of souls becomes the Styx with an
+empty wooden ferry boat.
+Palette shifts from black-purple to charcoal grey, verdigris copper green and bone white,
+lava stays molten orange.
+No text, no letters, no numbers, no characters, no people.
+```
+
+---
+
+### 5.5 งบรูปหลังชุดนี้
+
+```
+เดิม (ในเกม)         43 ไฟล์  7.9 MB
++ หน้าปก              1        ~1.2 MB   (ภาพวาดเต็มใบ ไม่ใช่พิกเซล)
++ วิญญาณมีชื่อ        10       ~0.9 MB
++ ประตูสวรรค์          1       ~0.1 MB
++ ผีไทย                4       ~0.4 MB
++ ฉากด่าน 2-3          2       ~1.6 MB
+------------------------------------------
+รวม                  61 ไฟล์  ~12.1 MB   (เพดาน 50 MB — ยังเหลือเยอะ)
+```

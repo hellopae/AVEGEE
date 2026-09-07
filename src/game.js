@@ -3,7 +3,9 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
-         DENY_BY_SIN, SOLID_LINES, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN } from './data.js';
+         DENY_BY_SIN, SOLID_LINES, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
+         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES } from './data.js';
+import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -30,6 +32,11 @@ export function createGame() {
     returning: [],                    // คดีที่ตัดสินเบาไป รอกลับมาใหม่
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
+    zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
+    usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
+    fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
+    spawns: 0,                        // วิญญาณที่ส่งมาแล้วทั้งหมด — ใช้จับจังหวะสำนวนที่เขียนมือ
+    battle: null,                     // ฉากต่อสู้ที่กำลังเปิดอยู่ (null = ไม่มี)
     onChange: () => {},
   };
 
@@ -58,7 +65,7 @@ function mkHardSoul(tags) {
            : HARD_CASES.filter(h => tags.includes(h.seen.s));
   const c = pick(ok.length ? ok : HARD_CASES);
   const soul = {
-    id: SEQ++, who: c.who, hard: true, waited: 0, said: [],
+    id: SEQ++, who: c.who, sex: SEX_OF[c.who] || 'm', hard: true, waited: 0, said: [],
     deeds: [{ ...c.seen, known: true }, { ...c.hidden, known: false }],
     merits: [{ ...c.merit, fake: false, hiddenMerit: true }],
     denied: null,
@@ -104,8 +111,9 @@ function mkSoul(tags, hiddenBonus = 0) {
     if (!merits.some(m => m.t === f.t)) merits.push({ ...f, fake: true });
   }
 
+  const who = pick(WHO);
   const soul = {
-    id: SEQ++, who: pick(WHO), deeds, merits, waited: 0,
+    id: SEQ++, who, sex: SEX_OF[who] || 'm', deeds, merits, waited: 0,
     said: [],          // สิ่งที่ปรากฏบนโต๊ะแล้ว (คำแก้ตัว/คำสารภาพ/ผลของพลัง)
     denied: null,      // เรื่องที่เขาปฏิเสธ
   };
@@ -116,10 +124,31 @@ function mkSoul(tags, hiddenBonus = 0) {
   const worst = [...deeds].filter(d => d.known).sort((a, b) => b.w - a.w)[0];
   if (worst && Math.random() < 0.6) {
     soul.denied = worst.t;
-    soul.said.push({ kind: 'deny', text: `"${pick(DENIALS)}" — เรื่อง${worst.t}` });
+    soul.said.push({ kind: 'deny', text: `"${voice(pick(DENIALS), soul.sex)}" — เรื่อง${worst.t}` });
   }
   for (const m of merits) soul.said.push({ kind: 'claim', text: `"${m.t}" (เขาอ้างเอง ยังไม่มีใครยืนยัน)` });
   soul.lines = mkLines(soul);
+  soul.presses = BAL.presses;
+  return soul;
+}
+
+/** สำนวนที่มีชื่อ มีหน้า มีเรื่อง — เขียนมือไว้ที่ src/cases.js
+ *  ต่างจาก mkSoul ตรงที่ทุกบรรทัดถูกเขียนให้ตรงกับ "คนคนนั้น" ไม่ใช่ประกอบจากตาราง
+ *  รูป (sp) เพศ (sex) และเนื้อสำนวน จึงตรงกันเสมอโดยไม่ต้องพึ่งการสุ่ม */
+function mkCaseSoul(c) {
+  const soul = {
+    id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex, sp: c.sp,
+    face: c.face, waited: 0, said: [], denied: null, resist: !!c.resist,
+    pure: isPure(c),
+    secret: c.secret || null, reward: c.reward || null, fail: c.fail || null,
+    deeds:  [...c.seen.map(d => ({ ...d, known: true })),
+             ...(c.hidden || []).map(d => ({ ...d, known: false }))],
+    merits: (c.merits || []).map(m => ({ ...m })),
+  };
+  // คนบริสุทธิ์กับเทวดา "ไม่มีวาระที่สมควรได้รับ" — ทางเดียวที่ถูกคือส่งประตูสวรรค์
+  soul.deserved = soul.pure ? 0 : deservedOf(soul);
+  soul.said.push({ kind: 'deny', text: c.line });
+  soul.lines = (c.claims || []).map((l, i) => ({ ...l, t: voice(l.t, c.sex), i, used: false }));
   soul.presses = BAL.presses;
   return soul;
 }
@@ -138,20 +167,20 @@ function mkLines(soul) {
   const out = [];
   if (soul.hard) {
     const plea = soul.said.find(x => x.kind === 'deny');
-    out.push({ kind: 'plea', t: (plea ? plea.text : '"ผมขอพูดอะไรสักอย่างได้ไหมครับท่าน"').replace(/^"|"$/g, '') });
+    out.push({ kind: 'plea', t: (plea ? plea.text : voice('"{i}ขอพูดอะไรสักอย่างได้ไหม{p}ท่าน"', soul.sex)).replace(/^"|"$/g, '') });
   } else {
     // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
     const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
     if (known.length && DENY_BY_SIN[known[0].s])
-      out.push({ kind: 'deny', t: DENY_BY_SIN[known[0].s], sin: known[0].s });
+      out.push({ kind: 'deny', t: voice(DENY_BY_SIN[known[0].s], soul.sex), sin: known[0].s });
   }
   const fake = soul.merits.find(m => m.fake);
-  if (fake) out.push({ kind: 'boast', t: `ท่านดูบุญของผมด้วยนะครับ — ${fake.t}`, merit: fake.t });
+  if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วยนะ{p} — ${fake.t}`, soul.sex), merit: fake.t });
 
   const pool = [...SOLID_LINES];
   while (out.length < 4) {
     const i = Math.floor(Math.random() * pool.length);
-    out.push({ kind: 'solid', t: pool.splice(i, 1)[0] });
+    out.push({ kind: 'solid', t: voice(pool.splice(i, 1)[0], soul.sex) });
   }
   // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
   for (let i = out.length - 1; i > 0; i--) {
@@ -177,14 +206,36 @@ const API = {
 
   spawnSoul() {
     if (this.queue.length >= 14) return;
+    this.spawns = (this.spawns || 0) + 1;
     const tags = this.activeTags();
-    // ทุก ๆ ราวหนึ่งในห้า จะเป็นคดีที่ตัดสินยาก
-    const s = (this.casesDone >= 2 && Math.random() < 0.22)
-      ? mkHardSoul(tags)
-      : mkSoul(tags, this.orderTier().hidden);
-    if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
+    const s = this.nextNamedCase(tags)
+      || ((this.casesDone >= 2 && Math.random() < 0.22)
+            ? mkHardSoul(tags)
+            : mkSoul(tags, this.orderTier().hidden));
+    if (s.case) this.log(`📁 สำนวนมีชื่อเข้าคิว — ${s.name} (${s.who})`, 'event');
+    else if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
+    else this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
     this.queue.push(s);
-    if (!s.hard) this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
+  },
+
+  /** ถึงคิวของสำนวนที่เขียนมือหรือยัง — คืน null ถ้ายังไม่ถึง หรือไม่มีเรื่องไหนที่โซนนี้รับได้
+   *  กติกาสองข้อที่ทำให้ไม่มีทางเจอคดีที่ "ตัดสินให้ถูกไม่ได้เลย":
+   *    · คดีปกติต้องมีสถานีที่รับชนิดกรรมของเขาอยู่แล้วอย่างน้อยหนึ่งหลัง
+   *    · คดีคนบริสุทธิ์/เทวดา ส่งมาก็ต่อเมื่อสร้างประตูสวรรค์แล้วเท่านั้น */
+  nextNamedCase(tags) {
+    if (this.casesDone < 1) return null;
+    if (this.spawns % CASE_EVERY !== 0) return null;
+    const left = CASES.filter(c => !this.usedCases.includes(c.k));
+    if (!left.length) return null;
+    const ok = left.filter(c => {
+      if (isPure(c)) return this.has('sawan');
+      if (!tags.length) return true;
+      return c.seen.some(d => tags.includes(d.s));
+    });
+    if (!ok.length) return null;
+    const c = pick(ok);
+    this.usedCases.push(c.k);
+    return mkCaseSoul(c);
   },
 
   crewOf(k) {
@@ -228,7 +279,12 @@ const API = {
     let out = [];
 
     if (k === 'mirror') {                        // ความจริงเสมอ ทีละเรื่อง
-      if (hidden.length) {
+      // สำนวนที่เขียนมือบางเรื่องมีความลับที่ "จี้เอาเองไม่ได้" — เห็นได้ทางกระจกทางเดียว
+      // (เทวดาปลอมตัว กับคนที่ฝ่ายคัดกรรมส่งมาผิด) นี่คือเหตุผลที่ต้องเก็บกระจกไว้ใช้บ้าง
+      if (soul.secret && !soul.secretSeen) {
+        soul.secretSeen = true;
+        out.push({ kind: 'truth', text: soul.secret });
+      } else if (hidden.length) {
         hidden[0].known = true;
         out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: ${hidden[0].t}` });
       } else if (fakes.length) {
@@ -275,28 +331,32 @@ const API = {
       // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง
       const hidden = soul.deeds.find(d => !d.known);
       out.push({ kind: 'confess', text: `⚖️ ${pick(CRACK_LINES)}` });
+      // สำนวนที่เขียนมือมีบทของตัวเอง — ใช้บทนั้นแทนบทกลาง
+      if (L.reveal) out.push({ kind: 'truth', text: L.reveal });
       if (hidden) {
         hidden.known = true;
-        out.push({ kind: 'truth', text: `"...จริง ๆ แล้วยังมีอีกเรื่องหนึ่งครับ" — ${hidden.t}` });
+        if (!L.reveal) out.push({ kind: 'truth', text: `"${voice('...จริง ๆ แล้วยังมีอีกเรื่องหนึ่ง{p}', soul.sex)}" — ${hidden.t}` });
+        else out.push({ kind: 'truth', text: `เปิดเพิ่มในสำนวน — ${hidden.t}` });
       } else if (soul.denied) {
-        out.push({ kind: 'truth', text: `"ที่ผมปฏิเสธเรื่อง${soul.denied} — ผมทำจริงครับ"` });
+        out.push({ kind: 'truth', text: `"${voice(`ที่{i}ปฏิเสธเรื่อง${soul.denied} — {i}ทำจริง{p}`, soul.sex)}"` });
         soul.denied = null;
       } else {
-        out.push({ kind: 'truth', text: '"ผมพูดเกินไปเองครับ ในสำนวนนั้นถูกทั้งหมดแล้ว"' });
+        out.push({ kind: 'truth', text: `"${voice('{i}พูดเกินไปเอง{p} ในสำนวนนั้นถูกทั้งหมดแล้ว', soul.sex)}"` });
       }
 
     } else if (L.kind === 'boast') {
       const m = soul.merits.find(x => x.t === L.merit);
       if (m) m.exposed = true;
-      out.push({ kind: 'truth', text: `⚖️ ท่านถามกลับสองคำ เขาก็ตอบไม่ได้ — "${L.merit}" ไม่เคยเกิดขึ้น` });
+      out.push({ kind: 'truth', text: L.reveal || `⚖️ ท่านถามกลับสองคำ เขาก็ตอบไม่ได้ — "${L.merit}" ไม่เคยเกิดขึ้น` });
       out.push({ kind: 'hint', text: 'บุญปลอมถูกลบออกจากสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });
 
     } else if (L.kind === 'plea') {
       // คดีที่ถูกกับผิดปนกัน — จี้แล้วเจอด้านที่ทำให้เห็นใจ
       const hidden = soul.deeds.filter(d => !d.known);
+      if (L.reveal) out.push({ kind: 'confess', text: `⚖️ ${L.reveal}` });
       if (hidden.length) {
         hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `⚖️ เขาเล่าต่อจนจบ — ${d.t}` }); });
-      } else {
+      } else if (!L.reveal) {
         out.push({ kind: 'truth', text: '⚖️ เขาเล่าซ้ำอีกรอบ ไม่มีอะไรเพิ่มจากที่พูดไปแล้ว' });
       }
 
@@ -338,6 +398,23 @@ const API = {
   judge(st) {
     const soul = st.soul, c = this.crewOf(st.crewK);
     const tags = st.def.tags;
+    const rabOf = () => clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
+
+    // ---- ประตูสวรรค์: สูตรกลับด้านทั้งหมด ----
+    // คนบริสุทธิ์กับเทวดา "ไม่มีวาระ" — วัดกันแค่ว่าท่านส่งเขาไปถูกทางไหม
+    // นี่คือทางเดียวที่เกมยอมให้ตอบว่า "ไม่ต้องลงทัณฑ์"
+    if (st.def.heaven || soul.pure) {
+      const right = !!st.def.heaven && !!soul.pure;
+      const rab = rabOf();
+      const tham = right ? 100 : 0;
+      const ked  = right ? 100 : 0;
+      const score = Math.round(0.50 * tham + 0.33 * ked + 0.17 * rab);
+      // ลงทัณฑ์คนที่ไม่มีกรรม = กรรมทั้งก้อนตกที่ผู้ตัดสิน ไม่มีส่วนลดจากเมตตาของผู้คุม
+      const karma = soul.pure && !st.def.heaven ? 14
+                  : st.def.heaven && !soul.pure ? 8 : 0;
+      const coin = right ? Math.round(BAL.coinPerCase * 1.4 * this.orderTier().coin) : 0;
+      return { tham, ked, rab, score, karma, coin, short: 0, over: 0, heaven: true, right };
+    }
     const totalW = soul.deeds.reduce((s, d) => s + d.w, 0);
     const hitW = soul.deeds.filter(d => tags.includes(d.s)).reduce((s, d) => s + d.w, 0);
     let tham = tags.length === 0 ? 42 : Math.round(100 * hitW / totalW);
@@ -377,6 +454,12 @@ const API = {
     if (this.casesDone % every === 0) this.spawnMob();
     this.powers.forEach(p => { if (p.cd > 0) p.cd--; });
 
+    // สำนวนที่เขียนมือมีบทเฉลยของตัวเอง — พูดทันทีที่หมายถูกประทับ
+    if (soul.pure) {
+      if (r.right) { if (soul.reward) this.log(`🕊️ ${soul.reward}`, 'good'); }
+      else if (soul.fail) this.log(`🕊️ ${soul.fail}`, 'bad');
+    }
+
     const tag = r.score >= 78 ? 'good' : r.score >= 50 ? '' : 'bad';
     this.log(`คำตัดสิน #${String(soul.id).padStart(3, '0')} — ธรรม ${r.tham} · เข็ด ${r.ked} · รวม ${r.score}`, tag);
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
@@ -387,7 +470,9 @@ const API = {
     // นี่คือข้อเดียวที่ท่านสั่งไว้ตั้งแต่วันแรก
     r.stars = starsOf(r.score);
     // ลงทัณฑ์เกินกรรมตั้งแต่สองวาระ = พ่อหักบารมีเสมอ ต่อให้คะแนนรวมยังสวย
-    if (r.over >= 2 && r.score >= 50) { r.boss = 'cruel'; r.stars = Math.min(r.stars, 2); }
+    if (r.heaven && !r.right) { r.boss = 'terrible'; r.stars = 0; }
+    else if (r.heaven && r.right) r.boss = 'great';
+    else if (r.over >= 2 && r.score >= 50) { r.boss = 'cruel'; r.stars = Math.min(r.stars, 2); }
     else if (r.score < 35)  r.boss = 'terrible';
     else if (r.score < 50)  r.boss = 'bad';
     else if (r.score >= 82) r.boss = 'great';
@@ -617,6 +702,13 @@ const API = {
   },
 
   checkEnd() {
+    // บารมีหมด = พ่อลงมาลงโทษเอง ไม่ใช่จอจบเกมโผล่เฉย ๆ
+    // ฉากนั้นไม่มีทางชนะ (ตั้งใจ) — จบแล้วค่อยไปหน้าจอจบเกมตามเดิม
+    if (this.hp <= 0 && !this.yamaDone && !this.battle) {
+      this.yamaDone = true;
+      this.startYamaFight();
+      return;
+    }
     if (this.hp <= 0) this.over = {
       k: 'hp', title: 'พ่อไม่ให้โอกาสอีกแล้ว',
       text: 'คำตัดสินที่พลาดสะสมจนพญายมไม่เหลืออะไรจะพูด ท่านเรียกนิรามารับตราคืนจากมือเจ้าต่อหน้าทุกคน โดยไม่มองหน้าเจ้าเลยสักครั้ง',
@@ -893,12 +985,178 @@ const API = {
     this.items.push({ k, x: spot[0], y: spot[1] });
   },
 
+  // ---------- Phase 3 · ฉากต่อสู้ ----------
+  // "วิญญาณที่โทษหนัก ๆ ร้ายกาจ จะขัดขืน ต้องสู้" — เจ้าของสั่ง 7 ก.ย. 2569
+  // ตัวเกมยังเป็นเกมบริหารเหมือนเดิม ฉากต่อสู้เป็น "ด่านกั้น" ก่อนออกหมาย ไม่ใช่ระบบแยก
+  // แพ้ = เขาหลุดกลับเข้าคิว ท่านเสียบารมี · ชนะ = ออกหมายได้ตามปกติ
+
+  /** คดีนี้ต้องสู้ก่อนไหม — เฉพาะดวงที่สำนวนระบุว่าขัดขืน และยังไม่เคยถูกปราบ
+   *  คนบริสุทธิ์กับเทวดาไม่มีทางเข้าเงื่อนไขนี้ (เขาไม่ขัดขืนอะไรทั้งนั้น) */
+  needBattle(soul) {
+    return !!soul && !!soul.resist && !soul.beaten && !soul.pure;
+  },
+
+  startBattle(soul) {
+    if (this.battle) return this.battle;
+    const hp = Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv));
+    this.fights++;
+    this.battle = {
+      kind: 'soul', soulId: soul.id,
+      who: soul.name || soul.who, sub: soul.who, sp: soul.sp || 7,
+      foeHp: hp, foeMax: hp,
+      youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
+      stun: 0, turn: 1, over: null,
+      log: [`${soul.name || soul.who}ไม่ยอมลงจากแท่น — "ท่านจะลากข้าไปได้ก็ต่อเมื่อข้าล้มเท่านั้น"`],
+    };
+    this.paused = true;
+    this.onChange();
+    return this.battle;
+  },
+
+  /** ฉากที่ไม่มีทางชนะ — บารมีหมดแล้วพ่อลงมาเอง (แทนหน้าจอจบเกมแบบเดิม) */
+  startYamaFight() {
+    if (this.battle) return this.battle;
+    this.battle = {
+      kind: 'yama', who: 'พญายม', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
+      foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
+      youHp: 1, youMax: this.hpMax, stun: 0, turn: 1, over: null,
+      log: [YAMA_FIGHT.line1],
+    };
+    this.paused = true;
+    this.onChange();
+    return this.battle;
+  },
+
+  /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | ชื่อของใน BATTLE.items
+   *  คืน false ถ้ากดไม่ได้ (ของไม่พอ / จบไปแล้ว) */
+  battleAct(what) {
+    const B = this.battle;
+    if (!B || B.over) return false;
+    const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
+    const say = t => { B.log.push(t); if (B.log.length > 7) B.log.shift(); };
+
+    // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
+    if (B.kind === 'yama') {
+      say(pick(YAMA_FIGHT.taunt));
+      say(YAMA_FIGHT.line2);
+      B.youHp = 0; B.over = 'lose';
+      say(YAMA_FIGHT.line3);
+      this.onChange();
+      return true;
+    }
+
+    let dmg = 0, stunFoe = 0;
+    if (what === 'atk') {
+      dmg = roll(BATTLE.atk);
+      const crit = Math.random() < BATTLE.crit;
+      if (crit) dmg = Math.round(dmg * 1.7);
+      say(`⚔️ ท่านฟาดเข้าเต็มแรง — ${dmg} หน่วย${crit ? ' (เข้าเต็ม ๆ)' : ''}`);
+
+    } else if (what === 'fire') {
+      const p = this.powerOf('roar');
+      if (!p || p.ammo <= 0) return false;
+      p.ammo--;
+      dmg = roll(BATTLE.fireDmg);
+      say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (เหลือลูกไฟ ${p.ammo})`);
+
+    } else {
+      const it = BATTLE.items.find(x => x.k === what);
+      if (!it) return false;
+      if (it.coin != null) {
+        if (this.coin < it.coin) return false;
+        this.coin -= it.coin;
+      }
+      if (it.power) {
+        const p = this.powerOf(it.power);
+        if (!p || p.ammo <= 0) return false;
+        p.ammo--;
+      }
+      if (it.karma) this.karma = clamp(this.karma + it.karma, 0, 100);
+      say(`${it.glyph} ${it.say}`);
+      if (it.heal) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
+      if (it.dmg)  { dmg = roll(it.dmg); say(`   ↳ ${dmg} หน่วย`); }
+      if (it.stun) stunFoe = it.stun;
+    }
+
+    B.foeHp = Math.max(0, B.foeHp - dmg);
+    if (stunFoe) B.stun += stunFoe;
+
+    if (B.foeHp <= 0) {
+      B.over = 'win';
+      this.coin += BATTLE.winCoin;
+      const soul = this.queue.find(x => x.id === B.soulId);
+      if (soul) soul.beaten = true;
+      say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
+      this.hp = clamp(B.youHp, 1, this.hpMax);
+      this.onChange();
+      return true;
+    }
+
+    // ---- ตาของเขา ----
+    if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
+    else {
+      const d = roll(BATTLE.foeAtk);
+      B.youHp = Math.max(0, B.youHp - d);
+      say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
+    }
+    B.turn++;
+
+    if (B.youHp <= 0) {
+      B.over = 'lose';
+      this.hp = Math.max(1, this.hp - BATTLE.loseHp);
+      this.order = clamp(this.order - 6, 0, 100);
+      say(`ท่านคุกเข่าลง — เขาหลุดกลับเข้าคิว · บารมีหาย ${BATTLE.loseHp} · ระเบียบตก 6`);
+    }
+    this.onChange();
+    return true;
+  },
+
+  /** ปิดฉากต่อสู้ — คืนค่าบารมีตามที่เหลือจริง แล้วปล่อยเกมเดินต่อ */
+  endBattle() {
+    const B = this.battle;
+    if (!B) return null;
+    this.battle = null;
+    if (B.kind === 'yama') { this.checkEnd(); this.onChange(); return B; }
+    if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+    this.log(B.over === 'win'
+      ? `⚔️ ปราบ${B.who}ลงได้ — ลากเข้าสถานีได้แล้ว`
+      : `⚔️ ${B.who}สลัดหลุดไปได้ — กลับเข้าคิวไปยืนรออีกครั้ง`, B.over === 'win' ? 'good' : 'bad');
+    this.checkEnd();
+    this.onChange();
+    return B;
+  },
+
+  // ---------- Phase 3 · ย้ายโซน ----------
+  zoneDef() { return ZONES.find(z => z.k === this.zone) || ZONES[0]; },
+
+  /** โซนที่ย้ายไปได้ตอนนี้ — ปลดล็อกตามเลเวลของยมบาท */
+  zonesOpen() { return ZONES.filter(z => this.level >= z.level && z.k !== this.zone); },
+
+  /** ย้ายโซน — คนกับของติดตัวไป แต่ "สถานีต้องสร้างใหม่ทั้งโซน"
+   *  ถ้ายกสถานีไปด้วย ด่าน 2 จะไม่มีอะไรให้ทำเลยนอกจากกดเดินวาระ */
+  moveZone(k) {
+    const z = ZONES.find(x => x.k === k);
+    if (!z || this.level < z.level || z.k === this.zone) return false;
+    this.zone = k;
+    this.queue = []; this.mobs = []; this.items = [];
+    this.stations = [mkStation('sala')];
+    this.crew.forEach(c => { c.at = null; c.path = null; });
+    this.coin += z.coin;
+    this.log(`🗺️ ย้ายมา${z.name} — ${z.sub} · งบตั้งต้น +${z.coin} เบี้ยกรรม`, 'event');
+    this.pendingZone = z;
+    this.spawnSoul();
+    this.onChange();
+    return true;
+  },
+
   spawnMob() {
     const side = Math.random() < 0.5 ? 130 : SCENE.w - 130;
     const y = 200 + Math.random() * 300;
     // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปฟาดไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
     const p = nearestWalk(side, y) || [side, y];
-    const kind = Math.floor(Math.random() * MOB.kinds.length);
+    // แต่ละโซนมีผีคนละชุด — ไทยครบทุกพันธุ์ · โซนอื่นเหลือพันธุ์กลางที่ใช้รูปเดิมได้
+    const pool = (this.zoneDef().mobs || []).filter(i => MOB.kinds[i]);
+    const kind = pool.length ? pick(pool) : Math.floor(Math.random() * MOB.kinds.length);
     this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp, kind });
     // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
@@ -984,6 +1242,8 @@ API.snapshot = function () {
     queue: this.queue, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
+    zone: this.zone, usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
+    spawns: this.spawns,
     logs: this.logs.slice(0, 40),
   };
 };
@@ -1026,6 +1286,12 @@ API.restore = function (d) {
   this.ledger = d.ledger || [];
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
+  this.zone = d.zone || 'th';
+  this.usedCases = d.usedCases || [];
+  this.fights = d.fights || 0;
+  this.spawns = d.spawns || 0;
+  this.yamaDone = !!d.yamaDone;
+  this.battle = null;                 // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
   this.over = null;
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;

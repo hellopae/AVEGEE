@@ -1,7 +1,8 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
-         KARMA_RELIEF } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES } from './data.js';
+import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -136,13 +137,17 @@ function drawQuiz(b) {
   b.innerHTML = `<div class="quiz">
     ${s.back ? `<div class="back">↩️ <b>คนนี้เคยผ่านมือท่านมาแล้ว</b> — สำนวน #${String(s.back.id).padStart(3, '0')}
         ท่านให้ไป <b>${s.back.gave} วาระ</b> แล้วปล่อยกลับไป</div>` : ''}
-    <div class="head"><b>${esc(s.who)} · สำนวน #${String(s.id).padStart(3, '0')}</b>
+    <div class="head"><b>${s.name ? esc(s.name) + ' <span style="opacity:.6;font-weight:400">· ' + esc(s.who) + '</span>' : esc(s.who)}
+        <span class="id">#${String(s.id).padStart(3, '0')}</span></b>
       <span class="press">จี้ได้อีก <b>${s.presses}</b> ครั้ง</span></div>
+    <button class="gold" id="q-trial" style="width:100%;margin-bottom:9px">🔍 เริ่มการสอบสวน</button>
+    ${s.face ? `<div class="dossier${s.pure ? ' pure' : ''}"><b>ภาพลักษณ์</b> — ${esc(s.face)}</div>` : ''}
 
     <div class="sec" style="margin-top:0">สำนวนที่นิราอ่านให้ฟัง</div>
     ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
     ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
-        <i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i></div>`).join('')}
+        ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>`
+                 : '<i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i>'}</div>`).join('')}
 
     <div class="sec">คำให้การของเขา — <b style="color:var(--gold)">จี้บรรทัดที่ขัดกับสำนวน</b></div>
     ${s.lines.map(l => {
@@ -161,8 +166,11 @@ function drawQuiz(b) {
       ถ้าอ่านไม่ออกจริง ๆ ยังใช้ <b>พลังของท่าน</b> ที่แถบบนได้เหมือนเดิม แต่ของมีจำกัด
     </div></div>`;
 
+  const qt = b.querySelector('#q-trial');
+  if (qt) qt.onclick = openTrial;
   b.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
-    g.press(s, +el.dataset.line);
+    const r = g.press(s, +el.dataset.line);
+    if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
     refresh();
   });
 }
@@ -178,7 +186,7 @@ function drawTab() {
           : g.has('tarang') ? ' · ตะรางยังรับไหว' : ' · เกินความจุแล้วระเบียบจะเริ่มตก'}</div>`;
     b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
-        <div class="top"><b>${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
+        <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.deeds.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
         ${s.merits.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}${m.v ? '' : ' <i>(ไม่นับเป็นบุญ)</i>'}</div>`).join('')}
       </div>`).join('');
@@ -648,6 +656,7 @@ function drawDeck() {
   const meBusy = g.stations.some(x => x.crewK === 'me' && x.soul);
   const idle = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
   if (pick.st && !free.some(x => x.def.k === pick.st)) pick.st = null;
+  const heavenPick = !!(pick.st && STATIONS.find(d => d.k === pick.st)?.heaven);
   if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
 
   deckBar.innerHTML = `
@@ -671,8 +680,10 @@ function drawDeck() {
            title="${esc(c.self ? 'สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น และช้ากว่ายมทูต' : c.duty || '')}"
           >${c.glyph} ${c.name}<span style="opacity:.55"> ${c.self ? 'ช้า · ต้องไปยืนเอง' : Math.round(c.morale)}</span></button>`).join('')}</div></div>
 
-    <div class="grp"><span class="lb">หนักแค่ไหน</span>
-      <div class="row2" id="d-in">${[1, 2, 3, 4, 5].map(i =>
+    <div class="grp"><span class="lb">${heavenPick ? 'ส่งกลับชั้นฟ้า' : 'หนักแค่ไหน'}</span>
+      <div class="row2" id="d-in">${heavenPick
+        ? '<span class="idle">ไม่มีวาระให้เลือก — ประตูสวรรค์ไม่ใช่ที่ลงทัณฑ์</span>'
+        : [1, 2, 3, 4, 5].map(i =>
         `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div></div>
 
     <button class="gold go" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>`;
@@ -684,11 +695,22 @@ function drawDeck() {
     b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
   sel('#d-st', 'st'); sel('#d-cr', 'cr'); sel('#d-in', 'inten');
   const go = deckBar.querySelector('#d-go');
-  if (go) go.onclick = () => {
-    if (!g.assign(s.id, pick.st, pick.cr, pick.inten)) return;
+  const doAssign = () => {
+    const heaven = !!STATIONS.find(d => d.k === pick.st)?.heaven;
+    if (!g.assign(s.id, pick.st, pick.cr, heaven ? 1 : pick.inten)) return;
+    sfx(heaven ? 'heaven' : 'stamp');
     pick = { st: null, cr: null, inten: 3 };
     if (g.pendingVerdict) showVerdict(g.pendingVerdict);
     refresh();
+  };
+  if (go) go.onclick = () => {
+    // ดวงที่ขัดขืนต้องปราบก่อนถึงจะลากเข้าสถานีได้ — แพ้แล้วเขากลับเข้าคิวไปยืนรอใหม่
+    if (g.needBattle(s)) {
+      g.startBattle(s);
+      openBattle(res => { if (res === 'win') doAssign(); else refresh(); });
+      return;
+    }
+    doAssign();
   };
 }
 
@@ -702,6 +724,7 @@ const BOSS_LINE = {
 
 function showVerdict(v) {
   g.pendingVerdict = null;
+  sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
   fx = { ...v, line: BOSS_LINE[v.boss] || BOSS_LINE.ok };
   g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
@@ -773,7 +796,11 @@ function openLedger(o) {
 }
 
 /** เริ่มใหม่จริง ๆ — หยุดบันทึกอัตโนมัติก่อน ไม่งั้นลูปเฟรมอาจเขียนเซฟทับตอนกำลังรีโหลด */
-function restart() { saveAt = Infinity; clearSave(); location.reload(); }
+function restart() {
+  saveAt = Infinity; clearSave();
+  sessionStorage.setItem('avegee.fresh', '1');   // เริ่มใหม่แล้วเข้าเกมเลย ไม่ต้องผ่านหน้าปกอีกรอบ
+  location.reload();
+}
 
 function openNewGame() {
   const was = g.paused; g.paused = true; updatePlay();
@@ -856,6 +883,205 @@ function openHelp() {
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 }
 
+// ---------- Phase 3 · หน้าต่างมินิเกม ----------
+// เจ้าของสั่งไว้ 7 ก.ย. 2569 ว่าทั้งไต่สวนและต่อสู้ต้องเป็น "หน้าต่างเด้งขึ้นมา
+// เหมือนเกม Turn-based RPG มีโปรไฟล์ทั้งสองฝ่าย และมีตัว SD ยืนอยู่"
+// สองหน้าต่างจึงใช้แถบ .duel ตัวเดียวกัน ต่างกันแค่ของที่อยู่ข้างล่าง
+
+/** ไฟล์รูปของฝ่ายตรงข้าม — สำนวนที่มีชื่อใช้ img/soul-<k>.png · สำนวนสุ่มใช้ spiritN */
+const foeImg = sp => typeof sp === 'string' ? sp : 'spirit' + sp;
+
+/** แถบโปรไฟล์สองฝั่ง + หลอดเลือด — ใส่ hp = null ถ้าหน้าต่างนั้นไม่ได้สู้กัน (ห้องสอบสวน) */
+function duelBar(foe, hp) {
+  const hpRow = (v, max, cls) => hp === null ? '' : `
+    <span class="hpbar ${cls}"><i style="width:${Math.max(0, 100 * v / max)}%"></i></span>
+    <span class="hpn">${cls === 'foe' ? 'กำลังใจ' : 'บารมี'} ${Math.round(v)} / ${max}</span>`;
+  return `<div class="duel">
+    <div class="side you">
+      <img class="pic" src="img/hero-yama-profile.png" alt=""
+           onerror="this.onerror=null;this.src='img/hero-yama.png'">
+      <span class="nm">ท่าน</span>
+      <span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
+      ${hpRow(hp ? hp.youHp : 0, hp ? hp.youMax : 1, 'you')}
+    </div>
+    <div class="vs">${hp ? '⚔' : '⚖'}</div>
+    <div class="side foe">
+      <img class="pic" src="img/${esc(foeImg(foe.sp))}.png" alt=""
+           onerror="this.onerror=null;this.src='img/spirit7.png'">
+      <span class="nm">${esc(foe.name)}</span>
+      <span class="sub">${esc(foe.sub || '')}</span>
+      ${hpRow(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe')}
+    </div>
+  </div>`;
+}
+
+// ---------- ห้องสอบสวน ----------
+// เดิมการไต่สวนอยู่ในแท็บเล็ก ๆ ใต้ฉาก อ่านยากและไม่รู้ว่ากำลังคุยกับใครอยู่
+// ของใหม่: กางเต็มจอ เห็นหน้าเขา เห็นสำนวน เห็นข้ออ้างทีละข้อ และใช้ของบีบได้ตรงนั้นเลย
+function openTrial() {
+  const s = g.queue[0];
+  if (!s) return;
+  const was = g.paused; g.paused = true; updatePlay();
+  bgm('bgm-trial');
+
+  const paint = () => {
+    const known = s.deeds.filter(d => d.known);
+    const claimed = s.merits.filter(m => !m.exposed);
+    dlg.innerHTML = `<h2>🔍 ห้องสอบสวน — สำนวน #${String(s.id).padStart(3, '0')}</h2>
+      ${duelBar({ name: s.name || s.who, sub: s.name ? s.who : 'ผู้ตาย', sp: s.sp || 7 }, null)}
+
+      ${s.face ? `<div class="dossier"><b>ภาพลักษณ์ที่สำนวนเขียนไว้</b><br>${esc(s.face)}</div>` : ''}
+      ${s.back ? `<div class="back">↩️ คนนี้เคยผ่านมือท่านมาแล้ว — สำนวน #${String(s.back.id).padStart(3, '0')}
+          ท่านให้ไป <b>${s.back.gave} วาระ</b> แล้วปล่อยกลับไป</div>` : ''}
+
+      <div class="sec" style="margin-top:0">สิ่งที่สำนวนเขียนไว้</div>
+      ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
+      ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
+          ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>`
+                   : '<i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i>'}</div>`).join('')}
+
+      <div class="sec">ข้ออ้างของเขา — <b style="color:var(--gold)">เลือกข้อที่ขัดกับสำนวน</b>
+        <span class="press" style="float:right">จี้ได้อีก <b>${s.presses}</b> ครั้ง</span></div>
+      <div class="claims">${s.lines.map(l => {
+        const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
+        return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
+          >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}<span class="q">“</span>${esc(l.t)}<span class="q">”</span></button>`;
+      }).join('')}</div>
+
+      <div class="sec">ของที่ใช้บีบให้สารภาพ / ส่องความจริง</div>
+      <div class="tools">${POWERS.map(p => {
+        const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
+        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี`
+                  : pw.ammo <= 0 ? 'หมด' : pw.cd > 0 ? `รอ ${pw.cd} คดี` : `×${pw.ammo}`;
+        return `<button data-pw="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}"
+          >${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
+      }).join('')}</div>
+
+      <div class="sec">บันทึกการสอบสวน</div>
+      <div class="blog">${s.said.slice(-8).map(x =>
+        `<div class="${x.kind === 'truth' || x.kind === 'confess' ? 'hid' : ''}"
+              style="${x.kind === 'truth' ? 'color:var(--gold)' : x.kind === 'confess' ? 'color:var(--warning)' :
+                      x.kind === 'false' ? 'color:var(--destructive)' : ''}">${esc(x.text)}</div>`).join('')
+        || '<div>ยังไม่มีอะไร — เขายืนก้มหน้าอยู่เฉย ๆ</div>'}</div>
+
+      <div class="row"><button class="gold" data-close>ปิดห้องสอบสวน</button></div>`;
+
+    dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
+      const before = s.said.length;
+      const r = g.press(s, +el.dataset.line);
+      if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
+      if (s.said.length !== before || r) paint();
+      refresh();
+    });
+    dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
+      g.usePower(el.dataset.pw, s); sfx('crack'); paint(); refresh();
+    });
+    dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
+  };
+
+  dlg.className = 'wide';
+  paint();
+  dlg.showModal();
+  dlg.addEventListener('close', () => {
+    dlg.className = ''; g.paused = was; updatePlay(); bgm('bgm-zone'); refresh();
+  }, { once: true });
+}
+
+// ---------- ฉากต่อสู้ ----------
+// ใช้ทั้งกับวิญญาณที่ขัดขืน และกับพญายมตอนบารมีหมด (ฉากหลังไม่มีทางชนะ ตั้งใจให้แพ้)
+function openBattle(after) {
+  const B = g.battle;
+  if (!B) return;
+  bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
+  sfx('gong');
+
+  const paint = () => {
+    const b = g.battle;
+    if (!b) return;
+    const fireAmmo = g.powerOf('roar').ammo;
+    const acts = b.over ? '' : `<div class="acts">
+      <button data-act="atk">⚔️ ฟาด</button>
+      <button data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'}>🔥 ลูกไฟ <span style="opacity:.55">×${fireAmmo}</span></button>
+      ${BATTLE.items.map(it => {
+        const pw = it.power ? g.powerOf(it.power) : null;
+        const ok = it.coin != null ? g.coin >= it.coin : (pw && pw.ammo > 0);
+        const note = it.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
+        return `<button data-act="${it.k}" ${ok ? '' : 'disabled'}
+          >${it.glyph} ${it.name} <span style="opacity:.55">${note}</span></button>`;
+      }).join('')}
+    </div>`;
+
+    const done = b.over === 'win'
+      ? `<div class="row"><button class="gold" data-fin>ลากเข้าสถานี</button></div>`
+      : b.over === 'lose' && b.kind === 'yama'
+      ? `<div class="row"><button class="gold" data-fin>...</button></div>`
+      : b.over === 'lose'
+      ? `<div class="row"><button data-fin>ปล่อยเขากลับเข้าคิว</button></div>` : '';
+
+    dlg.innerHTML = `<h2>${b.kind === 'yama' ? '👑 พญายมลงมาเอง' : '⚔️ วิญญาณขัดขืน'}</h2>
+      ${duelBar({ name: b.who, sub: b.sub, sp: b.sp }, b)}
+      <div class="blog">${b.log.map(l => `<div>${esc(l)}</div>`).join('')}</div>
+      ${acts}${done}`;
+
+    dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
+      const k = el.dataset.act;
+      if (!g.battleAct(k)) return;
+      sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
+      const nb = g.battle;
+      if (nb && nb.over) sfx(nb.over === 'win' ? 'win' : 'lose');
+      paint();
+    });
+    const fin = dlg.querySelector('[data-fin]');
+    if (fin) fin.onclick = () => { dlg.close(); };
+  };
+
+  dlg.className = 'wide';
+  paint();
+  dlg.showModal();
+  // กด Esc หนีกลางฉากต่อสู้ไม่ได้ — ไม่งั้นจะกดหนีทุกครั้งที่กำลังจะแพ้
+  const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
+  dlg.addEventListener('cancel', noEsc);
+  dlg.addEventListener('close', () => {
+    dlg.removeEventListener('cancel', noEsc);
+    dlg.className = '';
+    const done = g.endBattle();
+    bgm('bgm-zone');
+    updatePlay();
+    refresh();
+    if (after) after(done ? done.over : null);
+  }, { once: true });
+}
+
+// ---------- ย้ายโซน ----------
+function openZone() {
+  const open = g.zonesOpen();
+  const cur = g.zoneDef();
+  const was = g.paused; g.paused = true; updatePlay();
+  modal(`<h2>🗺️ ย้ายโซน</h2>
+    <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}</div>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      ย้ายแล้ว <b>ยมทูต เบี้ยกรรม พลัง บารมี และกรรมของท่านติดตัวไปทั้งหมด</b> —
+      แต่ <b style="color:var(--warning)">สถานีทัณฑ์ต้องสร้างใหม่ทั้งโซน</b> และคิวเดิมถูกโอนให้สาขาอื่นรับช่วง</p>
+    ${ZONES.map(z => {
+      const here = z.k === g.zone;
+      const lock = g.level < z.level;
+      return `<div class="shop"><span class="g">${here ? '📍' : lock ? '🔒' : '🗺️'}</span>
+        <span class="n"><b>${esc(z.name)}</b><div>${esc(z.sub)}</div>
+          <div style="color:var(--muted-foreground)">${lock ? `ปลดล็อกที่ ${LEVELS[z.level - 1].name}`
+            : `งบตั้งต้น ${z.coin} เบี้ยกรรม`}</div></span>
+        ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
+               : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
+      </div>`;
+    }).join('')}
+    ${open.length ? '' : '<div class="hint">ยังไม่มีโซนอื่นที่เปิดให้ท่าน — เลื่อนขั้นให้ถึงก่อน</div>'}
+    <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`,
+    d => d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
+      if (!g.moveZone(b.dataset.zone)) return;
+      sfx('gong'); dlg.close(); refresh();
+    }));
+  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+}
+
 // ---------- บทเรียนทีละขั้น ----------
 // เจ้าของบอก 7 ก.ย. 2569 ว่า "ดูยากไป ต้องค่อยสอนทีละอย่าง"
 // กติกา: ทีละขั้นเท่านั้น และขั้นจะโผล่ตอนที่เรื่องนั้นเพิ่งมีความหมายจริง (เงื่อนไข when อยู่ใน data.js)
@@ -871,6 +1097,8 @@ function markTaught(k) {
 }
 
 function drawCoach() {
+  // ยังอยู่หน้าปก — ห้ามสอนอะไรทั้งนั้น ไม่งั้นโมดัลบทที่ 1 จะเด้งทับปกตั้งแต่ยังไม่ได้กดเริ่ม
+  if (!$('#title')?.classList.contains('gone')) { coachEl.hidden = true; return; }
   if (g.over) { coachEl.hidden = true; return; }
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
@@ -904,11 +1132,18 @@ function drawCoach() {
 function updatePlay() {
   $('#play').textContent = g.paused ? '▶ เดินวาระ' : '⏸ พัก';
   $('#spd').textContent = `ความเร็ว ×${g.speed}`;
+  // ปุ่มย้ายโซนโผล่เมื่อมีโซนอื่นเปิดให้จริง ๆ เท่านั้น — ไม่งั้นกดแล้วเจอแต่กุญแจ
+  const z = $('#zone');
+  if (z) {
+    z.hidden = !g.zonesOpen().length;
+    z.textContent = `🗺️ ย้ายโซน (${g.zoneDef().name})`;
+  }
 }
 $('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#newgame').onclick = openNewGame;
+$('#zone').onclick = openZone;
 
 // มุมมอง 3D ปิดไว้ 6 ก.ย. 2569 — เจ้าของบอกว่า "ยังดูแปลก ๆ เอาออกดีกว่า"
 // โค้ดยังอยู่ครบที่ src/view3d.js เปิดกลับได้โดยเอาปุ่ม #view กับ canvas #cv3 ใน index.html คืนมา
@@ -976,7 +1211,7 @@ addEventListener('keydown', e => {
   if (dlg.open || /input|textarea/i.test(e.target.tagName)) return;
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
-  if (e.key === ' ' && !g.over) { g.attack(); refresh(); }   // เว้นวรรค = ฟาดเปรตตนที่ใกล้ที่สุด
+  if (e.key === ' ' && !g.over) { g.attack(); sfx('hit'); refresh(); }   // เว้นวรรค = ฟาดเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 
@@ -1008,7 +1243,15 @@ function openBuild(def) {
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
   refresh();
+  // ฉากพญายมลงมาเอง (บารมีหมด) เปิดอัตโนมัติ — ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมายเท่านั้น
+  if (g.battle && g.battle.kind === 'yama' && !dlg.open) { openBattle(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  if (g.pendingZone) {
+    const z = g.pendingZone; g.pendingZone = null;
+    bossModal(`ย้ายมา${z.name}`, `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง — ` +
+      'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
+    return;
+  }
   if (g.pendingKpi) {
     const k = g.pendingKpi; g.pendingKpi = null;
     bossModal(k.pass ? 'ตรวจการ — ผ่าน' : 'ตรวจการ — ไม่ผ่าน',
@@ -1038,10 +1281,107 @@ addEventListener('pointerdown', e => {          // แตะที่อื่�
   if (!e.target.closest('.mark')) ov.querySelectorAll('.mark.show').forEach(m => m.classList.remove('show'));
 }, true);
 
+// ---------- หน้าปก ----------
+// เกมไม่เริ่มเดินจนกว่าจะกดจากหน้าปก — ลูปเฟรมจึงต้องรอ ไม่งั้นบันทึกอัตโนมัติ
+// จะเขียนทับเซฟเก่าตั้งแต่ก่อนผู้เล่นจะได้เลือกว่าจะเล่นต่อหรือเริ่มใหม่
+const titleEl = $('#title');
+let started = false;
+
+/** เริ่มเล่นจริง — เรียกได้ครั้งเดียว */
+function startPlay(fresh) {
+  if (started) return;
+  started = true;
+  unlock();                                  // เบราว์เซอร์ยอมให้เล่นเสียงได้หลังการกดครั้งแรกเท่านั้น
+  titleEl.classList.add('gone');
+  bgm('bgm-zone');
+  updatePlay();
+  if (fresh) openIntro();
+  refresh();
+  last = performance.now();
+  requestAnimationFrame(frame);
+}
+
+function buildTitle() {
+  const art = $('#cover-art');
+  const probe = new Image();                 // มีไฟล์หน้าปกค่อยใช้ ไม่มีก็อยู่กับไล่สีไปก่อน
+  probe.onload = () => art.classList.add('has');
+  probe.src = 'img/cover.png';
+
+  const rs = $('#t-resume');
+  if (SAVED) {
+    rs.hidden = false;
+    const lv = LEVELS[Math.max(0, (SAVED.level || 1) - 1)];
+    const z = ZONES.find(x => x.k === (SAVED.zone || 'th')) || ZONES[0];
+    $('#t-resume-info').textContent =
+      `${z.name} · วาระที่ ${SAVED.tick || 0} · ปิดคดีแล้ว ${SAVED.casesDone || 0} · ${lv.name} ⭐${SAVED.star5 || 0}`;
+    rs.onclick = () => { sfx('gong'); startPlay(false); };
+  }
+  $('#t-new').onclick = () => {
+    unlock(); sfx('gong');
+    if (!SAVED) return startPlay(true);
+    modal(`<h2>เริ่มเกมใหม่</h2>
+      <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
+        มีเกมที่บันทึกไว้อยู่ — เริ่มใหม่แล้ว<b>ความคืบหน้าทั้งหมดจะหายไป</b></p>
+      <div class="row"><button data-close>ยกเลิก</button>
+        <button class="gold" id="ngo">เริ่มใหม่</button></div>`,
+      d => d.querySelector('#ngo').onclick = () => {
+        clearSave();
+        sessionStorage.setItem('avegee.fresh', '1');   // โหลดใหม่แล้วข้ามหน้าปกไปเลย
+        location.reload();
+      });
+  };
+  $('#t-set').onclick = () => { unlock(); openSettings(); };
+}
+
+// ---------- ตั้งค่า ----------
+function openSettings() {
+  modal(`<h2>⚙ ตั้งค่า</h2>
+    <div class="setrow"><label>เปิดเสียงทั้งหมด</label>
+      <input type="checkbox" id="s-on" ${AUDIO.on ? 'checked' : ''}></div>
+    <div class="setrow"><label>เสียงเพลง</label>
+      <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
+      <b id="s-bgm-v" style="width:34px;text-align:right;font-variant-numeric:tabular-nums">${Math.round(AUDIO.bgm * 100)}</b></div>
+    <div class="setrow"><label>เสียงเอฟเฟกต์</label>
+      <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
+      <b id="s-sfx-v" style="width:34px;text-align:right;font-variant-numeric:tabular-nums">${Math.round(AUDIO.sfx * 100)}</b></div>
+    <div class="setrow"><label>ความเร็วเดินวาระ</label>
+      <span class="opts" id="s-spd">${[1, 2, 4].map(v =>
+        `<button data-v="${v}" ${g.speed === v ? 'aria-pressed="true"' : ''}>×${v}</button>`).join('')}</span></div>
+    <div class="hint">เสียงเอฟเฟกต์ทั้งหมดสังเคราะห์ในโค้ด ไม่มีไฟล์ให้โหลด ·
+      เพลงอ่านจาก <b>audio/</b> ยังไม่มีไฟล์ก็เล่นได้ตามปกติ เงียบเฉย ๆ</div>
+    <div class="sec">ข้อมูลที่บันทึกไว้</div>
+    <div class="hint">${SAVED ? `มีเกมที่บันทึกไว้ — วาระที่ ${SAVED.tick || 0} · ปิดคดีแล้ว ${SAVED.casesDone || 0}`
+                              : 'ยังไม่มีเกมที่บันทึกไว้'}</div>
+    <div class="row"><button id="s-wipe" ${SAVED ? '' : 'disabled'}
+        style="border-color:var(--destructive);color:var(--destructive)">ลบข้อมูลที่บันทึกไว้</button>
+      <button class="gold" data-close>เสร็จแล้ว</button></div>`,
+    d => {
+      const on = d.querySelector('#s-on');
+      on.onchange = () => { AUDIO.on = on.checked; syncBgm(); saveAudio(); if (AUDIO.on) sfx('crack'); };
+      const bind = (id, key) => {
+        const r = d.querySelector(id), out = d.querySelector(id + '-v');
+        r.oninput = () => { AUDIO[key] = r.value / 100; out.textContent = r.value; syncBgm(); };
+        r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
+      };
+      bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
+      d.querySelectorAll('#s-spd button').forEach(b => b.onclick = () => {
+        g.speed = +b.dataset.v; updatePlay();
+        d.querySelectorAll('#s-spd button').forEach(x =>
+          x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+      });
+      d.querySelector('#s-wipe').onclick = () => {
+        clearSave(); sessionStorage.setItem('avegee.fresh', '1'); location.reload();
+      };
+    });
+}
+
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
+const FRESH = sessionStorage.getItem('avegee.fresh');
+sessionStorage.removeItem('avegee.fresh');
 updatePlay();
-if (!SAVED) openIntro();
-refresh(); requestAnimationFrame(frame);
+buildTitle();
+if (FRESH) startPlay(true);              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
+else refresh();                          // วาดแผงไว้ใต้หน้าปก จะได้ไม่กระพริบตอนกดเริ่ม
 
 /** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
  *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
