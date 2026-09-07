@@ -19,6 +19,21 @@ const poseOr = (alt, base) => img(alt) ? alt : base;
 export const scaleFor = cv => cv.width / SCENE.w;
 
 /** วงแหวนใต้เท้าตัวที่เลือกอยู่ในแผงข้อมูล */
+/** ป้ายลอยเหนือหัว — พื้นทึบ + ขอบสี อ่านออกบนฉากมืด ๆ ได้ทุกจุด
+ *  ใช้กับเปรตเป็นหลัก แต่เขียนให้ทั่วไปไว้ เผื่อของอย่างอื่นต้องบอกว่า "กดได้" */
+function tag(ctx, x, y, t, [text, color]) {
+  const bob = Math.sin(t / 420) * 2;
+  ctx.save();
+  ctx.font = '600 13px "IBM Plex Sans Thai", system-ui, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(text).width + 16, h = 21, yy = y + bob;
+  ctx.fillStyle = 'rgba(20,10,14,.88)';
+  rr(ctx, x - w / 2, yy - h / 2, w, h, 7); ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = color; ctx.fillText(text, x, yy + 0.5);
+  ctx.restore();
+}
+
 function ring(ctx, x, y, t, w = 30) {
   const q = 0.5 + 0.5 * Math.sin(t / 260);
   ctx.strokeStyle = `rgba(255,210,140,${0.5 + q * 0.4})`; ctx.lineWidth = 2.5;
@@ -85,9 +100,24 @@ export function render(ctx, g, t, hover, sel) {
   }
 
   // ---- เปรตที่มาก่อกวน ----
+  // เจ้าของยืนติดตัวเปรตแล้วไม่รู้ว่ากดฟาดได้ (7 ก.ย. 2569) — ต้องมีป้ายบอกเสมอ
+  //   ประชิดแล้ว  → วงแดงใต้ตีน + ป้าย "⚔ กดเว้นวรรค"  (ฟาดฟรี)
+  //   ยังไกลอยู่   → ป้าย "🔥 ขว้างได้" ถ้ามีลูกไฟ · ไม่มีก็บอกให้เดินเข้าไป
+  const PA = g.powerOf('roar').ammo;
   g.mobs.forEach((m, i) => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
+    const d = Math.hypot(m.x - g.player.x, m.y - g.player.y);
+    const near = d <= MOB.reach, canThrow = !near && d <= MOB.throw && PA > 0;
+    if (near) {                                       // วงแดงเต้น ๆ บอกว่าเอื้อมถึงแล้ว
+      const q = 0.5 + 0.5 * Math.sin(t / 170);
+      ctx.strokeStyle = `rgba(224,74,47,${0.55 + q * 0.45})`; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
+    }
     drawStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
+    tag(ctx, m.x, m.y - MOB.h - 8, t,
+        near      ? ['⚔️ กดเพื่อฟาด (เว้นวรรค)', '#ff6a4a']
+      : canThrow  ? [`🔥 กดขว้างลูกไฟ ×${PA}`, '#d4a355']
+                  : ['👹 เดินเข้าไปฟาด', '#c8b0a8']);
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----

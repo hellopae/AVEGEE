@@ -449,23 +449,26 @@ function drawTabHeads() {
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fire = g.powerOf('roar');
-  // ปุ่มเปลี่ยนความหมายตามที่ยืน — ที่สถานีคือซัดไฟเร่งทัณฑ์ ไม่ใช่ฟาดเปรต
+  // ปุ่มต้องบอกให้ตรงกับสิ่งที่ attack() จะทำจริงตอนกด — ลำดับเดียวกันเป๊ะ
+  //   เปรตประชิด → ฟาดฟรี · ยืนที่สถานี → ซัดไฟเร่งทัณฑ์ · เปรตในระยะขว้าง+มีลูกไฟ → ขว้าง · ไกล → เดินไปหา
+  const n = g.over ? null : g.nearestMob();
   const st = g.over ? null : g.stationInReach();
-  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}/${st ? st.def.k : ''}`;
+  const near = n && n.d <= MOB.reach;
+  const canThrow = n && !near && n.d <= MOB.throw && fire.ammo > 0;
+  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}/${st ? st.def.k : ''}/${near ? 1 : canThrow ? 2 : 0}`;
   if (sig === atkSig) return;                  // เรียกได้ทุกเฟรม แต่แตะ DOM เฉพาะตอนเปลี่ยนจริง
   atkSig = sig;
   btn.hidden = !!g.over || (!g.mobs.length && !st);
   if (btn.hidden) return;
-  // ซัดไฟเร่งทัณฑ์ไม่ใช้ลูกไฟแล้ว — ปุ่มจึงกดได้เสมอตอนยืนที่สถานี
-  // ลูกไฟยังจำเป็นเฉพาะตอนฟาดเปรต
-  if (st) {
-    btn.textContent = `🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`;
-    btn.style.color = 'var(--gold)';
-  } else {
-    btn.textContent = fire.ammo > 0 ? `⚔️ ฟาดเปรต (${g.mobs.length}) · ลูกไฟ ×${fire.ammo}`
-                                    : '⚔️ ลูกไฟหมด — เดินไปเก็บบนแผนที่ก่อนฟาดเปรต';
-    btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
-  }
+
+  const [label, color] =
+      near     ? [`⚔️ ฟาดเปรต (${g.mobs.length})`, 'var(--destructive)']
+    : st       ? [`🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`, 'var(--gold)']
+    : canThrow ? [`🔥 ขว้างลูกไฟใส่เปรต · ×${fire.ammo}`, 'var(--gold)']
+    : n        ? [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วฟาด`, 'var(--muted-foreground)']
+                : ['⚔️ ฟาด', 'var(--gold)'];
+  btn.textContent = label;
+  btn.style.color = color;
 }
 
 function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); }
@@ -728,8 +731,9 @@ function openHelp() {
       <li><b>กรรมท่านลดได้</b> — ห้าดาว · เก็บ<b>ดอกบัว</b>ที่ตกบนแผนที่ตอนกรรมเกิน 40 ·
           หรือสร้าง<b>ศาลาน้ำชา</b>แล้วบูชาดอกบัวที่แท็บก่อสร้าง (${KARMA_RELIEF.lotusCost} เบี้ย ลด ${KARMA_RELIEF.lotusCut})</li>
       <li>ทุก ๆ ไม่กี่คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน (กรรมท่านยิ่งสูงยิ่งมาถี่) ปล่อยไว้ระเบียบตกเรื่อย ๆ —
-          ฟาดได้ 3 ทาง: ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน
-          (ใช้ <b>ลูกไฟ</b> ลูกละครั้ง) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+          <b>เดินเข้าไปใกล้แล้วฟาดได้ฟรี ไม่ต้องใช้ลูกไฟ</b> ป้ายเหนือหัวมันจะบอกเองว่ากดได้แล้ว ·
+          กดได้ 3 ทาง: ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน<br>
+          มี<b>ลูกไฟ</b>อยู่ก็<b>ขว้างจากไกลได้เลย</b>ไม่ต้องเดินไป (ลูกละตน) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
       <li><b>เร่งทัณฑ์เอง</b> — ไปยืนที่สถานีที่กำลังลงทัณฑ์ แล้วกด <b>เว้นวรรค</b>
           — แต่<b>ลงมือเองก็เป็นกรรมของท่าน</b> ครั้งละนิดหน่อย
           ส่งคนเมตตาสูงอย่างบุญไปคุม กรรมจะตกใส่ท่านครึ่งเดียว</li>
@@ -875,7 +879,7 @@ function keyWalk(dt) {
   if (!dx && !dy) return;
   const d = Math.hypot(dx, dy);
   stepTo(P, dx / d * sp, dy / d * sp);          // ลาวา/แม่น้ำกันไว้ ชนแล้วไถลไปตามขอบ
-  P.tx = null; P.path = null;                   // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้
+  P.tx = null; P.path = null; g.huntMob = false; // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้ (รวมคำสั่งไล่เปรต)
   if (dx) P.face = dx < 0 ? -1 : 1;
 }
 

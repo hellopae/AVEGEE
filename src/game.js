@@ -383,7 +383,8 @@ const API = {
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
     if (this.mobs.length) {
       this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
-      // วาล์วกันตาย: มีเปรตอยู่ · ลูกไฟหมด · บนแผนที่ก็ไม่มี → หย่อนให้หนึ่งลูก
+      // ลูกไฟไม่ใช่ทางเดียวที่จะปราบเปรตแล้ว (ฟาดประชิดฟรี) แต่ยังหย่อนให้อยู่
+      // เพราะขว้างจากไกลสะดวกกว่ามากเวลาเปรตอยู่คนละฝั่งกับที่เรายืน
       if (this.powerOf('roar').ammo === 0 && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     }
 
@@ -589,7 +590,10 @@ const API = {
       const dx = m.wx - m.x, dy = m.wy - m.y, d = Math.hypot(dx, dy) || 1;
       if (!stepTo(m, dx / d * 0.035 * dt, dy / d * 0.035 * dt)) m.wx = null;
 
-      if (Math.hypot(m.x - P.x, m.y - P.y) < MOB.reach) this.strike(i, 'ท่าน');
+      if (this.huntMob && Math.hypot(m.x - P.x, m.y - P.y) < MOB.reach) {
+        this.huntMob = false;
+        this.strike(i, 'ท่าน');
+      }
     }
 
     // ยักษ์ทวารบาลไล่ปราบเอง
@@ -605,7 +609,8 @@ const API = {
   },
 
   /** สั่งเดินไปที่จุดหนึ่ง — วางเส้นทางอ้อมลาวา/แม่น้ำให้เอง */
-  walkTo(x, y) {
+  walkTo(x, y, hunt = false) {
+    if (!hunt) this.huntMob = false;
     const P = this.player;
     const t = canWalk(x, y) ? [x, y] : nearestWalk(x, y);
     if (!t) return false;
@@ -642,11 +647,14 @@ const API = {
    *  เปรตประชิด → ฟาดเปรต · ยืนที่สถานีที่กำลังลงทัณฑ์ → ซัดไฟเร่งทัณฑ์ · ไกล → เดินไปหาเปรต */
   attack() {
     const n = this.nearestMob();
-    if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');
+    if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');       // ประชิด = ฟรี
     const st = this.stationInReach();
     if (st) return this.smite(st);
     if (n) {
-      if (this.walkTo(n.m.x, n.m.y)) {
+      // ไกลเกินมือเอื้อม แต่ยังอยู่ในระยะขว้าง และมีลูกไฟ → ขว้างเลย ไม่ต้องเดิน
+      if (n.d <= MOB.throw && this.powerOf('roar').ammo > 0) return this.strike(n.i, 'ท่าน', true);
+      if (this.walkTo(n.m.x, n.m.y, true)) {
+        this.huntMob = true;                 // ถึงตัวแล้วค่อยฟาดให้เอง (ดู stepWorld)
         this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
         return true;
       }
@@ -682,21 +690,16 @@ const API = {
   },
 
   /** ฟาดเปรตตนที่ i — คืน true เมื่อฟาดออกจริง */
-  strike(i, by) {
+  /** ฟาดเปรตตนที่ i — ranged = ขว้างลูกไฟจากไกล (กินลูกไฟ) · ไม่ใส่ = ฟาดประชิด ฟรี */
+  strike(i, by, ranged = false) {
     const m = this.mobs[i];
     if (!m) return false;
     if (m.cool && Date.now() < m.cool) return false;
-    const fire = this.powerOf('roar');
-    if (by === 'ท่าน') {
-      if (fire.ammo <= 0) {
-        // เตือนซ้ำได้ทุก 4 วินาที — เดิมเตือนครั้งเดียวต่อเปรตหนึ่งตน เลยดูเหมือนเกมไม่ตอบสนอง
-        if (!this.noAmmoAt || Date.now() - this.noAmmoAt > 4000) {
-          this.noAmmoAt = Date.now();
-          this.log('🔥 ลูกไฟหมด ฟาดไม่ออก — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน', 'bad');
-        }
-        return false;
-      }
+    if (ranged && by === 'ท่าน') {
+      const fire = this.powerOf('roar');
+      if (fire.ammo <= 0) return false;
       fire.ammo--;
+      this.log('🔥 ท่านขว้างลูกไฟใส่เปรตจากระยะไกล', 'act');
     }
     m.hp--; m.cool = Date.now() + 600;
     if (by === 'ท่าน') {
@@ -704,7 +707,7 @@ const API = {
       this.player.face = m.x < this.player.x ? -1 : 1;      // หันหน้าไปทางที่ขว้าง
     }
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
-    if (m.hp > 0) { this.log(`⚔️ ${by}ฟาดเปรตเข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
+    if (m.hp > 0) { this.log(`⚔️ ${by}ฟาด${MOB.kinds[m.kind ?? 0].name}เข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
     this.mobs.splice(i, 1);
     this.coin += MOB.bounty;
     this.order = clamp(this.order + 3, 0, 100);
