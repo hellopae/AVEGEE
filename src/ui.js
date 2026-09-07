@@ -16,7 +16,7 @@ const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
-let tab = 'queue', hover = null, acc = 0, last = performance.now();
+let tab = 'quiz', hover = null, acc = 0, last = performance.now();
 
 // ---------- ลูป ----------
 let saveAt = 0;
@@ -124,8 +124,52 @@ function face(key, glyph) {
     onerror="this.parentNode.textContent='${glyph}'"></span>`;
 }
 
+/** แผงไต่สวน — มินิเกมหลักของ Phase 2
+ *  ซ้ายมือคือสิ่งที่สำนวนเขียนไว้ · ล่างคือคำให้การของเขา
+ *  ผู้เล่นต้องเทียบเองว่าบรรทัดไหน "ขัดกับสำนวน" แล้วจี้บรรทัดนั้น */
+function drawQuiz(b) {
+  const s = g.queue[0];
+  if (!s) { b.innerHTML = '<div class="empty">ยังไม่มีใครยืนอยู่หน้าแท่น — กดเดินวาระให้เรือพาคนข้ามมา</div>'; return; }
+
+  const known = s.deeds.filter(d => d.known);
+  const claimed = s.merits.filter(m => !m.exposed);
+  b.innerHTML = `<div class="quiz">
+    ${s.back ? `<div class="back">↩️ <b>คนนี้เคยผ่านมือท่านมาแล้ว</b> — สำนวน #${String(s.back.id).padStart(3, '0')}
+        ท่านให้ไป <b>${s.back.gave} วาระ</b> แล้วปล่อยกลับไป</div>` : ''}
+    <div class="head"><b>${esc(s.who)} · สำนวน #${String(s.id).padStart(3, '0')}</b>
+      <span class="press">จี้ได้อีก <b>${s.presses}</b> ครั้ง</span></div>
+
+    <div class="sec" style="margin-top:0">สำนวนที่นิราอ่านให้ฟัง</div>
+    ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
+    ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
+        <i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i></div>`).join('')}
+
+    <div class="sec">คำให้การของเขา — <b style="color:var(--gold)">จี้บรรทัดที่ขัดกับสำนวน</b></div>
+    ${s.lines.map(l => {
+      const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
+      return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}>
+        <span class="q">“</span>${esc(l.t)}<span class="q">”</span></button>`;
+    }).join('')}
+
+    <div class="sec">สิ่งที่ปรากฏบนโต๊ะแล้ว</div>
+    ${s.said.slice(-7).map(x =>
+      `<div class="row-truth ${x.kind === 'truth' || x.kind === 'confess' ? 'hid' : ''}">${esc(x.text)}</div>`).join('')
+      || '<div class="row-truth">ยังไม่มีอะไร</div>'}
+    <div class="sec"></div>
+    <div style="font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.7">
+      จี้ถูก = ได้ความจริงมา<b>ฟรี</b> ไม่ต้องเสียพลังสักอย่าง · จี้ผิด = เสียจังหวะไปเปล่า ๆ<br>
+      ถ้าอ่านไม่ออกจริง ๆ ยังใช้ <b>พลังของท่าน</b> ที่แถบบนได้เหมือนเดิม แต่ของมีจำกัด
+    </div></div>`;
+
+  b.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
+    g.press(s, +el.dataset.line);
+    refresh();
+  });
+}
+
 function drawTab() {
   const b = $('#tabbody');
+  if (tab === 'quiz') return drawQuiz(b);
   if (tab === 'queue') {
     if (!g.queue.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
     const cap = g.queueCap(), over = g.queue.length - cap;
@@ -134,7 +178,7 @@ function drawTab() {
           : g.has('tarang') ? ' · ตะรางยังรับไหว' : ' · เกินความจุแล้วระเบียบจะเริ่มตก'}</div>`;
     b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
-        <div class="top"><b>${esc(s.who)}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
+        <div class="top"><b>${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.deeds.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
         ${s.merits.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}${m.v ? '' : ' <i>(ไม่นับเป็นบุญ)</i>'}</div>`).join('')}
       </div>`).join('');
@@ -442,6 +486,8 @@ function crewNote(c) {
 function drawTabHeads() {
   const hire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).length + (g.guard ? 0 : 1);
   const build = STATIONS.filter(s => s.cost > 0 && !g.stations.some(x => x.def.k === s.k)).length;
+  const s0 = g.queue[0];
+  $('#tab-quiz').textContent  = `ไต่สวน${s0 && s0.presses > 0 ? ` · จี้ได้ ${s0.presses}` : ''}`;
   $('#tab-queue').textContent = `คิววิญญาณ${g.queue.length ? ` (${g.queue.length})` : ''}`;
   $('#tab-crew').textContent  = `ยมทูต${hire ? ` · จ้างได้ ${hire}` : ''}`;
   $('#tab-build').textContent = `ก่อสร้าง${build ? ` · สร้างได้ ${build}` : ''}`;
@@ -670,8 +716,60 @@ function openEnding(o) {
     <p style="line-height:var(--leading-body)">${esc(o.text)}</p>
     <div class="hint">ปิดคดีทั้งหมด ${g.casesDone} เรื่อง · คะแนนเฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0} ·
       กรรมที่ท่านสะสมเอง ${g.karma.toFixed(1)}</div>
-    <div class="row"><button class="gold" id="again">เริ่มใหม่</button></div>`,
-    d => { d.querySelector('#again').onclick = restart; });
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body);color:var(--muted-foreground)">
+      คืนนั้นนิราวางแฟ้มเล่มหนึ่งไว้บนโต๊ะโดยไม่พูดอะไร ชื่อบนปกคือชื่อของท่าน</p>
+    <div class="row"><button id="mine">📕 เปิดแฟ้มของท่าน</button>
+      <button class="gold" id="again">เริ่มใหม่</button></div>`,
+    d => {
+      d.querySelector('#again').onclick = restart;
+      d.querySelector('#mine').onclick = () => openLedger(o);
+    });
+}
+
+/** แฟ้มของท่านเอง — ทุกคดีที่ลงเกินกรรม กับทุกคดีที่ปล่อยเบาจนเขากลับมา
+ *  นี่คือ "คำตัดสินของเกมที่มีต่อผู้เล่น" ตัวเลขทุกตัวมาจากที่ผู้เล่นทำเองจริง ๆ */
+function openLedger(o) {
+  const L = g.ledger;
+  const over  = L.filter(x => x.over > 0).sort((a, b) => b.over - a.over || b.karma - a.karma);
+  const short = L.filter(x => x.short > 0);
+  const wrong = L.filter(x => x.tham < 40);
+  const five  = L.filter(x => x.stars === 5).length;
+  const sumK  = Math.round(over.reduce((s, x) => s + x.karma, 0) * 10) / 10;
+
+  const row = x => `<div class="row-truth">
+    #${String(x.id).padStart(3, '0')} · ${esc(x.who)}${x.back ? ' <span style="color:var(--destructive)">(กลับมารอบสอง)</span>' : ''}
+    — สมควร ${x.deserved} วาระ แต่ท่านให้ไป ${x.deserved + x.over}
+    <b style="color:var(--destructive)">เกิน ${x.over}</b> · กรรมตกมา +${x.karma}</div>`;
+
+  const verdict =
+      !L.length            ? 'แฟ้มยังว่างเปล่า ท่านยังไม่ได้ตัดสินอะไรเลย'
+    : !over.length         ? 'ทั้งเล่มไม่มีคดีไหนที่ท่านลงเกินกรรมเลยสักคดี — หน้าสุดท้ายว่างเปล่า และนั่นคือคำชมที่พ่อไม่เคยพูดออกมา'
+    : sumK >= 40           ? 'แฟ้มของท่านหนากว่าสำนวนของคนส่วนใหญ่ที่ท่านตัดสินไปทั้งวัน'
+                           : 'ไม่หนามาก แต่ก็ไม่ใช่แฟ้มเปล่า — ทุกบรรทัดในนี้ท่านเขียนเอง';
+
+  modal(`<h2>📕 สำนวนของ ${esc('ยมบาทประจำโซนสุวรรณภูมิ')}</h2>
+    <div class="hint">ปิดคดี ${g.casesDone} เรื่อง · ห้าดาว ${five} ครั้ง ·
+      ลงเกินกรรม ${over.length} คดี · เบาไป ${short.length} คดี · ส่งผิดที่ ${wrong.length} คดี ·
+      คดีที่เขากลับมาเพราะท่านปล่อยเบา ${g.returned} คดี</div>
+
+    <div class="sec">คดีที่ท่านลงเกินกรรม — กรรมส่วนเกินรวม ${sumK}</div>
+    ${over.length ? over.slice(0, 14).map(row).join('') +
+      (over.length > 14 ? `<div class="row-truth" style="color:var(--muted-foreground)">…และอีก ${over.length - 14} คดี</div>` : '')
+      : '<div class="row-truth" style="color:var(--success)">ไม่มีเลยสักคดี</div>'}
+
+    <div class="sec">คดีที่ท่านปล่อยเบาไป</div>
+    ${short.length ? `<div class="row-truth">${short.length} คดี — ในนั้น <b>${g.returned} คน</b>กลับมายืนหน้าแท่นอีกครั้ง
+        พร้อมเรื่องที่เขาไปทำต่อหลังท่านปล่อยไป</div>`
+      : '<div class="row-truth" style="color:var(--success)">ไม่มีเลยสักคดี</div>'}
+
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body);border-top:1px solid var(--border);padding-top:10px;margin-top:14px">
+      <b style="color:var(--gold)">นิรา:</b> "${esc(verdict)}ค่ะ"</p>
+    <div class="row"><button id="backend">ย้อนกลับ</button>
+      <button class="gold" id="again2">เริ่มใหม่</button></div>`,
+    d => {
+      d.querySelector('#again2').onclick = restart;
+      d.querySelector('#backend').onclick = () => openEnding(o);
+    });
 }
 
 /** เริ่มใหม่จริง ๆ — หยุดบันทึกอัตโนมัติก่อน ไม่งั้นลูปเฟรมอาจเขียนเซฟทับตอนกำลังรีโหลด */
@@ -723,7 +821,16 @@ function openHelp() {
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
           ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
       <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
-      <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
+      <li><b>ไต่สวนก่อนตัดสิน</b> (แท็บ <b>ไต่สวน</b>) — เขาให้การ 4 บรรทัด
+          บรรทัดไหน<b>ขัดกับสำนวนที่นิราเพิ่งอ่าน</b> ให้จี้บรรทัดนั้น
+          จี้ถูก = เขาสารภาพเรื่องที่สำนวนไม่ได้เขียนไว้ให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
+          (จี้ได้ 2 ครั้งต่อคดี)</li>
+      <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม
+          (หรือสร้าง<b>หอส่องกรรม</b>ให้เติมเอง)</li>
+      <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ตัดสินเบาไป เขาไม่เข็ด ปล่อยไปแล้วไปก่อเรื่องต่อ
+          แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
+      <li>จบเกมแล้วนิราจะวาง<b>แฟ้มชื่อของท่านเอง</b>ไว้ — เปิดอ่านได้จริง
+          ข้างในคือทุกคดีที่ท่านลงเกินกรรม และทุกคนที่กลับมาเพราะท่านปล่อยเบา</li>
       <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
       <li><b>สถานีที่มี = สำนวนที่จะได้รับ</b> — โซนนี้รับได้เฉพาะกรรมที่ท่านมีที่ลง
           มีแต่กระทะทองแดง ก็มีแต่คดีฉ้อโกงกับมัวเมา · สร้างป่าดาบเพิ่ม คดีฆ่า/ทำร้ายกับวจีทุจริตถึงจะเริ่มเข้าคิว

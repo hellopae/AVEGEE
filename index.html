@@ -113,6 +113,22 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 .chip.tap:hover{border-color:var(--gold)}
 .chip.tap::after{content:'?';font-size:10px;color:var(--muted-foreground);margin-left:2px}
 
+/* ---------- แผงไต่สวน (Phase 2) ----------
+   คำให้การเป็นปุ่มกดได้ · จี้ถูกบรรทัดที่ขัดกับสำนวน = ได้ความจริงฟรี */
+.quiz .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.quiz .press{font-size:var(--text-xs);color:var(--gold);white-space:nowrap}
+.quiz .press b{font-variant-numeric:tabular-nums}
+.say{display:block;width:100%;text-align:left;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:9px 11px;margin-bottom:7px;font-size:var(--text-sm);
+  line-height:var(--leading-body);color:var(--foreground);cursor:pointer;min-height:0}
+.say:hover:not(:disabled){border-color:var(--gold);background:var(--accent)}
+.say:disabled{cursor:default;opacity:.5}
+.say.hit{border-color:var(--success);background:rgba(74,157,106,.14);opacity:1}
+.say.miss{border-color:var(--border);opacity:.45;text-decoration:line-through}
+.say .q{color:var(--muted-foreground);margin-right:4px}
+.back{background:rgba(224,74,47,.12);border:1px solid var(--destructive);border-radius:var(--radius-sm);
+  padding:7px 10px;margin-bottom:8px;font-size:var(--text-xs);line-height:1.6;color:var(--foreground)}
+
 /* บรรทัดอธิบายในโมดัล "แถบนี้มีไว้ทำอะไร" — ขั้นที่กำลังอยู่จะไฮไลต์ */
 .tline{border-left:3px solid var(--border);padding:6px 0 6px 10px;margin:6px 0;font-size:var(--text-sm)}
 .tline b{color:var(--foreground)}
@@ -296,7 +312,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   <div class="below">
     <div class="panel">
       <div class="tabs" role="tablist">
-        <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
+        <button role="tab" data-tab="quiz" aria-selected="true" id="tab-quiz">ไต่สวน</button>
+        <button role="tab" data-tab="queue" aria-selected="false" id="tab-queue">คิววิญญาณ</button>
         <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
         <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
       </div>

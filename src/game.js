@@ -2,7 +2,8 @@
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
-         SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK } from './data.js';
+         SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
+         DENY_BY_SIN, SOLID_LINES, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN } from './data.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -25,6 +26,9 @@ export function createGame() {
     crew: CREW.filter(c => c.hire === 0).map(mkCrew),
     self: { ...SELF, morale: 100 },   // ท่านเองตอนลงไปคุมสถานีแทนยมทูต
     taught: [],                       // ขั้นบทเรียนที่สอนไปแล้ว (ดู TUTOR ใน data.js)
+    ledger: [],                       // ทุกคำตัดสินที่เคยออก — ใช้เปิด "แฟ้มของท่าน" ตอนจบ
+    returning: [],                    // คดีที่ตัดสินเบาไป รอกลับมาใหม่
+    returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     onChange: () => {},
   };
@@ -62,6 +66,8 @@ function mkHardSoul(tags) {
   soul.deserved = deservedOf(soul);
   soul.sp = SPIRIT_OF[soul.who] || 7;          // หน้าตาต้องตรงกับสำนวน
   soul.said.push({ kind: 'deny', text: c.line });
+  soul.lines = mkLines(soul);
+  soul.presses = BAL.presses;
   return soul;
 }
 
@@ -113,7 +119,46 @@ function mkSoul(tags, hiddenBonus = 0) {
     soul.said.push({ kind: 'deny', text: `"${pick(DENIALS)}" — เรื่อง${worst.t}` });
   }
   for (const m of merits) soul.said.push({ kind: 'claim', text: `"${m.t}" (เขาอ้างเอง ยังไม่มีใครยืนยัน)` });
+  soul.lines = mkLines(soul);
+  soul.presses = BAL.presses;
   return soul;
+}
+
+/** คำให้การ 4 บรรทัดของวิญญาณ — หัวใจของมินิเกมไต่สวน
+ *
+ *  กติกาที่ทำให้มัน "อ่านออก" ไม่ใช่เดา:
+ *    weak = บรรทัดที่ขัดกับสิ่งที่อยู่ในสำนวนตรงหน้าอยู่แล้ว ผู้เล่นเทียบเองได้
+ *      · deny  — ปฏิเสธชนิดบาปที่สำนวนเขียนไว้ชัด ๆ  → จี้แล้วจนมุม สารภาพเรื่องที่ซ่อนไว้
+ *      · boast — อวดบุญที่เป็นบุญปลอม               → จี้แล้วบุญนั้นถูกลบทิ้ง
+ *      · plea  — คดีที่ตัดสินยาก คำขอร้องของเขาเอง    → จี้แล้วเจอด้านที่ทำให้เห็นใจ
+ *    solid = ยอมรับทุกอย่างตรงกับสำนวน จี้ไปก็ไม่ได้อะไร
+ *  จี้ได้ 2 ครั้งต่อคดี = พลาดได้หนึ่งครั้ง
+ */
+function mkLines(soul) {
+  const out = [];
+  if (soul.hard) {
+    const plea = soul.said.find(x => x.kind === 'deny');
+    out.push({ kind: 'plea', t: (plea ? plea.text : '"ผมขอพูดอะไรสักอย่างได้ไหมครับท่าน"').replace(/^"|"$/g, '') });
+  } else {
+    // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
+    const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
+    if (known.length && DENY_BY_SIN[known[0].s])
+      out.push({ kind: 'deny', t: DENY_BY_SIN[known[0].s], sin: known[0].s });
+  }
+  const fake = soul.merits.find(m => m.fake);
+  if (fake) out.push({ kind: 'boast', t: `ท่านดูบุญของผมด้วยนะครับ — ${fake.t}`, merit: fake.t });
+
+  const pool = [...SOLID_LINES];
+  while (out.length < 4) {
+    const i = Math.floor(Math.random() * pool.length);
+    out.push({ kind: 'solid', t: pool.splice(i, 1)[0] });
+  }
+  // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out.map((l, i) => ({ ...l, i, used: false }));
 }
 
 /** วาระที่สมควรได้รับ คิดจาก "ความจริงทั้งหมด" ไม่ใช่จากที่ผู้เล่นเห็น */
@@ -216,6 +261,54 @@ const API = {
     return out;
   },
   // นิราเป็นคนอ่านสำนวน ไม่ใช่ผู้คุม — เธอไม่โผล่ในช่อง "ใครคุม" อีกแล้ว (7 ก.ย. 2569)
+  /** จี้คำให้การบรรทัดที่ i — หัวใจของมินิเกมไต่สวน
+   *  คืนข้อความที่จะขึ้นบนโต๊ะ (หรือ null ถ้ากดไม่ได้) */
+  press(soul, i) {
+    if (!soul || !soul.lines) return null;
+    const L = soul.lines[i];
+    if (!L || L.used || soul.presses <= 0) return null;
+    L.used = true;
+    soul.presses--;
+    const out = [];
+
+    if (L.kind === 'deny') {
+      // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง
+      const hidden = soul.deeds.find(d => !d.known);
+      out.push({ kind: 'confess', text: `⚖️ ${pick(CRACK_LINES)}` });
+      if (hidden) {
+        hidden.known = true;
+        out.push({ kind: 'truth', text: `"...จริง ๆ แล้วยังมีอีกเรื่องหนึ่งครับ" — ${hidden.t}` });
+      } else if (soul.denied) {
+        out.push({ kind: 'truth', text: `"ที่ผมปฏิเสธเรื่อง${soul.denied} — ผมทำจริงครับ"` });
+        soul.denied = null;
+      } else {
+        out.push({ kind: 'truth', text: '"ผมพูดเกินไปเองครับ ในสำนวนนั้นถูกทั้งหมดแล้ว"' });
+      }
+
+    } else if (L.kind === 'boast') {
+      const m = soul.merits.find(x => x.t === L.merit);
+      if (m) m.exposed = true;
+      out.push({ kind: 'truth', text: `⚖️ ท่านถามกลับสองคำ เขาก็ตอบไม่ได้ — "${L.merit}" ไม่เคยเกิดขึ้น` });
+      out.push({ kind: 'hint', text: 'บุญปลอมถูกลบออกจากสำนวนแล้ว วาระที่สมควรได้รับจะไม่ถูกลดลงเพราะมันอีก' });
+
+    } else if (L.kind === 'plea') {
+      // คดีที่ถูกกับผิดปนกัน — จี้แล้วเจอด้านที่ทำให้เห็นใจ
+      const hidden = soul.deeds.filter(d => !d.known);
+      if (hidden.length) {
+        hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `⚖️ เขาเล่าต่อจนจบ — ${d.t}` }); });
+      } else {
+        out.push({ kind: 'truth', text: '⚖️ เขาเล่าซ้ำอีกรอบ ไม่มีอะไรเพิ่มจากที่พูดไปแล้ว' });
+      }
+
+    } else {
+      out.push({ kind: 'hint', text: `↳ ${pick(HOLD_LINES)}` });
+    }
+
+    soul.said.push(...out);
+    this.onChange();
+    return out;
+  },
+
   freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
 
   // ---------- มอบหมายคดี ----------
@@ -319,6 +412,12 @@ const API = {
     } else if (r.stars === 4) this.coin += 25;
 
     this.hp = clamp(this.hp, 0, this.hpMax);
+    // จดทุกคำตัดสินไว้ — ตอนจบเกมนิราจะวางแฟ้มชื่อของท่านเอง แล้วเปิดอ่านได้จริง
+    this.ledger.push({ id: soul.id, who: soul.who, tick: this.tick,
+                       over: r.over, short: r.short, karma: r.karma,
+                       stars: r.stars, score: r.score, tham: r.tham,
+                       deserved: soul.deserved, back: !!soul.back });
+    if (this.ledger.length > 300) this.ledger.shift();
     this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
     this.checkEnd();
   },
@@ -326,6 +425,7 @@ const API = {
   finish(st) {
     const soul = st.soul, c = this.crewOf(st.crewK);
     const r = st.verdict || this.judge(st);
+    this.scheduleReturn(soul, r, st.intensity);
     this.coin += r.coin;
     this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
@@ -336,10 +436,56 @@ const API = {
     if (c) { c.at = null; c.path = null; }   // ออกเวรแล้วกลับไปเดินเล่นที่จุดประจำของตัวเอง
   },
 
+  /** ตัดสินเบาไป = เขายังไม่สำนึก ปล่อยไปแล้วไปก่อเรื่องต่อ แล้วกลับมาใหม่
+   *  นี่คือสิ่งที่ทำให้คำตัดสินมีผลระยะยาว ไม่ใช่จบเป็นคดี ๆ ไป */
+  scheduleReturn(soul, r, intensity) {
+    if (r.short <= 0 || soul.hard) return;
+    if (Math.random() > RETURN.chance) return;
+    this.returning.push({
+      at: this.tick + RETURN.after, fromId: soul.id, gave: intensity,
+      who: soul.who, sp: soul.sp,
+      deeds: soul.deeds.map(d => ({ ...d, known: true })),
+      merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
+    });
+  },
+
+  /** สร้างวิญญาณที่กลับมา — สำนวนเดิมเปิดหมดแล้ว บวกเรื่องที่เขาไปทำต่อ */
+  mkReturnSoul(R) {
+    const worst = [...R.deeds].sort((a, b) => b.w - a.w)[0] || { s: 'kong', w: 2 };
+    // เรื่องที่เขาไปทำต่อหลังถูกปล่อย — ส่วนใหญ่ปิดไว้ก่อน ให้ผู้เล่นต้องไต่สวนเอา
+    // (ถ้าเปิดหมดตั้งแต่แรก คดีที่กลับมาจะไม่มีอะไรให้จี้เลย มินิเกมไต่สวนก็ตายไปด้วย)
+    const secret = Math.random() < 0.65;
+    const after = { t: AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
+                    s: worst.s, w: Math.min(5, worst.w + RETURN.addWeight), known: !secret };
+    const soul = {
+      id: SEQ++, who: R.who, sp: R.sp, waited: 0, said: [],
+      deeds: [...R.deeds, after], merits: R.merits, denied: null,
+      back: { id: R.fromId, gave: R.gave },
+    };
+    soul.deserved = deservedOf(soul);
+    soul.said.push({ kind: 'confess', text: secret
+      ? `"ท่านให้ผมไปแค่ ${R.gave} วาระ... แล้วผมก็ไม่ได้อยู่เฉย ๆ นะครับ"`
+      : `"ท่านให้ผมไปแค่ ${R.gave} วาระ ผมออกไปแล้วก็${after.t}ครับ"` });
+    soul.lines = mkLines(soul);
+    soul.presses = BAL.presses;
+    return soul;
+  },
+
   // ---------- หนึ่งวาระ ----------
   step() {
     if (this.over) return;
     this.tick++;
+
+    // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วกลับมาพร้อมเรื่องใหม่
+    for (let i = this.returning.length - 1; i >= 0; i--) {
+      if (this.tick < this.returning[i].at) continue;
+      const R = this.returning.splice(i, 1)[0];
+      const soul = this.mkReturnSoul(R);
+      this.queue.push(soul);
+      this.returned++;
+      this.log(`↩️ ${soul.who}กลับมาอีกครั้ง — สำนวน #${String(soul.id).padStart(3, '0')} ` +
+               `(เคยเป็นสำนวน #${String(R.fromId).padStart(3, '0')} ที่ท่านให้ไป ${R.gave} วาระ)`, 'bad');
+    }
 
     // วิญญาณมาใหม่
     if (--this.nextArrive <= 0) {
@@ -837,6 +983,7 @@ API.snapshot = function () {
     })),
     queue: this.queue, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
+    ledger: this.ledger, returning: this.returning, returned: this.returned,
     logs: this.logs.slice(0, 40),
   };
 };
@@ -876,6 +1023,9 @@ API.restore = function (d) {
   this.logs = d.logs || [];
   this.closed = d.closed || [];
   this.taught = d.taught || [];
+  this.ledger = d.ledger || [];
+  this.returning = d.returning || [];
+  this.returned = d.returned || 0;
   this.over = null;
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
