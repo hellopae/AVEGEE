@@ -118,6 +118,12 @@ function deedLine(d) {
   return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span>${esc(d.t)} <b style="color:var(--warning)">· ${WEIGHT[d.w]}</b>`;
 }
 
+/** รูปหน้าเล็กในรายชื่อ — ไม่มีไฟล์โปรไฟล์ก็ถอยไปเป็นอีโมจิตัวเดิม */
+function face(key, glyph) {
+  return `<span class="g"><img src="img/${key}-profile.png" alt=""
+    onerror="this.parentNode.textContent='${glyph}'"></span>`;
+}
+
 function drawTab() {
   const b = $('#tabbody');
   if (tab === 'queue') {
@@ -140,7 +146,7 @@ function drawTab() {
     const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k));
     b.innerHTML = g.crew.map(c => `
       <div class="crew">
-        <span class="g">${c.glyph}</span>
+        ${face('crew-' + c.k, c.glyph)}
         <span class="n"><b>${c.name}</b>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'} · ค่าแรง ${c.pay}</div>
@@ -150,7 +156,7 @@ function drawTab() {
            ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${g.coin}</div>`
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
-        <span class="g">${c.glyph}</span>
+        ${face('crew-' + c.k, c.glyph)}
         <span class="n"><b>${c.name}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta} · ค่าแรง ${c.pay}</div>
           <div class="st">${esc(c.line)}</div></span>
@@ -160,7 +166,7 @@ function drawTab() {
       // (เดิมตัวจัดการปุ่มไปรออยู่แท็บก่อสร้าง แต่ไม่เคยมีใครวาดปุ่มให้ เลยจ้างไม่ได้เลย)
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
-        <span class="g">🛡️</span>
+        ${face(GUARD.img, '🛡️')}
         <span class="n"><b>${GUARD.name}</b>
           <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
           <div class="st">${esc(GUARD.line)}</div></span>
@@ -682,7 +688,8 @@ function bossModal(title, text, btn = 'รับทราบ') {
   const was = g.paused; g.paused = true; updatePlay();
   modal(`<h2>${esc(title)}</h2>
     <div class="boss">
-      <img src="img/hero-boss.png" alt="" onerror="this.remove()">
+      <img src="img/hero-boss-profile.png" alt=""
+           onerror="this.onerror=function(){this.remove()};this.src='img/hero-boss.png';this.classList.add('standee')">
       <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(text)}</p>
     </div>
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);

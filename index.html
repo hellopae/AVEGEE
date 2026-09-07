@@ -39,7 +39,7 @@ body{
 
 /* ---------- แถบทรัพยากร ---------- */
 header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
-#ava{image-rendering:pixelated;object-fit:contain;object-position:bottom;
+#ava{object-fit:cover;object-position:center top;
   background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px}
 h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
 h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
@@ -169,7 +169,9 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 
 .crew{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);
   border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:8px}
-.crew .g{font-size:1.4rem}
+.crew .g{font-size:1.4rem;width:46px;height:46px;flex:none;display:grid;place-items:center}
+.crew .g img{width:46px;height:46px;object-fit:cover;object-position:center top;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
 .crew .n{flex:1;min-width:0}
 .crew .n b{font-size:var(--text-sm)}
 .crew .st{font-size:11px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
@@ -216,7 +218,9 @@ dialog{border:1px solid var(--border);border-radius:var(--radius);background:var
 dialog::backdrop{background:rgba(10,4,6,.78)}
 dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
 .boss{display:flex;gap:var(--space-4);align-items:flex-start}
-.boss img{image-rendering:pixelated;width:132px;height:132px;object-fit:contain;object-position:bottom;flex:none}
+.boss img{width:150px;height:150px;object-fit:cover;object-position:center top;flex:none;
+  border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.boss img.standee{image-rendering:pixelated;object-fit:contain;object-position:bottom;border-color:var(--border)}
 @media(max-width:520px){.boss{flex-direction:column;align-items:center;text-align:center}}
 .field{margin-bottom:var(--space-4)}
 .field>label{display:block;font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px}
@@ -267,7 +271,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 <body>
 <div class="wrap">
   <header>
-    <img id="ava" src="img/hero-yama.png" alt="" width="52" height="52" onerror="this.remove()">
+    <img id="ava" src="img/hero-yama-profile.png" alt="" width="52" height="52"
+         onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
     <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
     <div class="res" id="res"></div>
   </header>
