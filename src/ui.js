@@ -76,7 +76,7 @@ function explainBar(k) {
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       โซนนี้เดินเป็นระบบแค่ไหน <b>เป็นตัวคูณรายได้ของท่านทุกคดี</b> และเป็นตัวเลขที่พญายมใช้ตรวจการ</p>
     <div class="tline"><b>ขึ้นเมื่อ</b><div>ปิดคดีได้คะแนนดี · ปราบเปรต (+3) · มีหอทะเบียนกรรม (+${BAL.orderGainSala}/วาระ)</div></div>
-    <div class="tline"><b>ลงเมื่อ</b><div>คิวเกิน ${BAL.queueMax} ดวง (ยิ่งล้นยิ่งตกเร็ว) · ปล่อยเปรตไว้ · คำตัดสินคะแนนต่ำ ·
+    <div class="tline"><b>ลงเมื่อ</b><div>คิวเกิน ${g.queueCap()} ดวง (ยิ่งล้นยิ่งตกเร็ว${g.has('tarang') ? ' · ตะรางขยายให้แล้ว' : ' — สร้างตะรางรอวาระขยายได้'}) · ปล่อยเปรตไว้ · คำตัดสินคะแนนต่ำ ·
       ตรวจการไม่ผ่าน (−10) · กรรมท่านสูงเกิน 75</div></div>
     ${tiers(ORDER_TIERS, g.orderTier(), t => t.min + '+')}
     <div class="tline bad"><b>ถ้าหมด (0)</b><div>จบเกม — คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมส่งคนมารับตำแหน่งคืน</div></div>
@@ -128,7 +128,11 @@ function drawTab() {
   const b = $('#tabbody');
   if (tab === 'queue') {
     if (!g.queue.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
-    b.innerHTML = g.queue.map(s => `
+    const cap = g.queueCap(), over = g.queue.length - cap;
+    b.innerHTML = `<div style="font-size:var(--text-xs);margin-bottom:8px;color:${over > 0 ? 'var(--destructive)' : 'var(--muted-foreground)'}">
+        คิว ${g.queue.length}/${cap} ดวง${over > 0 ? ` · <b>ล้น ${over} ดวง ระเบียบกำลังตก</b>`
+          : g.has('tarang') ? ' · ตะรางยังรับไหว' : ' · เกินความจุแล้วระเบียบจะเริ่มตก'}</div>`;
+    b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
         <div class="top"><b>${esc(s.who)}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.deeds.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
@@ -244,7 +248,7 @@ const kv = arr => `<div class="kv">${arr.map(x => `<span>${x}</span>`).join('')}
 function meThought() {
   if (g.hp <= g.hpMax * 0.35) return '"บารมีเหลือเท่านี้ ถ้าพลาดอีกครั้งสองครั้งพ่อคงเรียกกลับ"';
   if (g.karma >= 45) return '"บัญชีของข้าหนาขึ้นทุกคดี... ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ข้าจริง ๆ"';
-  if (g.queue.length > BAL.queueMax) return '"คิวล้นขนาดนี้ ระเบียบไม่มีทางขึ้น ต้องรีบปิดคดี"';
+  if (g.queue.length > g.queueCap()) return '"คิวล้นขนาดนี้ ระเบียบไม่มีทางขึ้น ต้องรีบปิดคดี"';
   if (g.mobs.length) return '"เปรตขึ้นมาอีกแล้ว ปล่อยไว้ระเบียบตกไปเรื่อย ๆ"';
   if (g.fuel < 12) return '"ฟืนใกล้หมด ไฟใต้กระทะดับเมื่อไหร่ทุกอย่างหยุด"';
   if (g.star5 >= 3) return '"ห้าดาวมาสามครั้งแล้ว อีกสองครั้งก็เลื่อนขั้น"';

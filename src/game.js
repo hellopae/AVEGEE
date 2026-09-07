@@ -2,7 +2,7 @@
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
-         SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF } from './data.js';
+         SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK } from './data.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -146,6 +146,11 @@ const API = {
     if (k === 'me') return this.self;        // ท่านลงไปคุมเอง — ไม่มีค่าแรง ไม่ต้องจ้าง
     return this.crew.find(c => c.k === k);
   },
+
+  has(k) { return this.stations.some(st => st.def.k === k); },
+
+  /** คิวรับได้กี่ดวงก่อนระเบียบจะเริ่มตก — ตะรางขังส่วนเกินไว้ให้ */
+  queueCap() { return BAL.queueMax + (this.has('tarang') ? TARANG.hold : 0); },
 
   /** ชนิดกรรมที่โซนนี้ "มีที่ลง" ตอนนี้ — คิวจะส่งมาแต่แนวนี้ */
   activeTags() {
@@ -402,9 +407,30 @@ const API = {
     if (kt.drain) this.order = clamp(this.order - kt.drain, 0, 100);
 
     // ระเบียบ
-    const over = Math.max(0, this.queue.length - BAL.queueMax);
+    const over = Math.max(0, this.queue.length - this.queueCap());
     if (over > 0) this.order = clamp(this.order - BAL.orderDrainPerOver * over, 0, 100);
     else if (hasSala) this.order = clamp(this.order + BAL.orderGainSala, 0, 100);
+
+    // ตะราง: ส่วนที่ขังไว้ต้องเลี้ยงข้าวทุกวาระ — ไม่งั้นมันจะเป็นของฟรีที่ไม่มีข้อเสีย
+    if (this.has('tarang')) {
+      const held = Math.max(0, Math.min(TARANG.hold, this.queue.length - BAL.queueMax));
+      if (held > 0) {
+        this.coin -= TARANG.feed * held;
+        if (this.tick % 20 === 0)
+          this.log(`🔒 ตะรางขังอยู่ ${held} ดวง — ค่าข้าว ${(TARANG.feed * held).toFixed(1)} เบี้ยต่อวาระ`);
+      }
+    }
+
+    // หอส่องกรรม: เติมพลังให้เองเป็นระยะ จะได้ไม่มีวันตันเพราะของหมด
+    if (this.has('krajok') && this.tick % KRAJOK.every === 0) {
+      const got = [];
+      for (const p of this.powers) {
+        if (p.ammo >= p.max) continue;
+        p.ammo = Math.min(p.max, p.ammo + KRAJOK.gain);
+        got.push(p.name);
+      }
+      if (got.length) this.log(`🪞 หอส่องกรรมส่องแสงขึ้นมา — เติม${got.join(' · ')}ให้แล้ว`, 'good');
+    }
 
     // ค่าแรง
     if (--this.nextPay <= 0) {
@@ -770,8 +796,10 @@ const API = {
     this.coin -= def.cost;
     this.stations.push(mkStation(k));
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
-    this.log(`🏗️ สร้าง${def.name}เสร็จ`
-             + (opened.length ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : ''), 'good');
+    const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
+                : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
+                : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
+    this.log(`🏗️ สร้าง${def.name}เสร็จ${extra}`, 'good');
     return true;
   },
 

@@ -59,9 +59,28 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
 /** อาคารสถานี — ไฟล์ img/st-<k>.png วางกึ่งกลาง-ฐานที่ (bx,by) กว้าง bw
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
 export function drawBuilding(ctx, def, t) {
+  if (def.bx == null) return;
   const im = img('st-' + def.k);
-  if (!im || def.bx == null) return;
-  ctx.drawImage(im, def.bx - def.bw / 2, def.by - def.bw, def.bw, def.bw);
+  if (im) { ctx.drawImage(im, def.bx - def.bw / 2, def.by - def.bw, def.bw, def.bw); return; }
+
+  // ยังไม่มีไฟล์ img/st-<k>.png — วาดกล่องหินแทนไว้ก่อน
+  // 7 ก.ย. 2569: ดงต้นงิ้วชื่อไฟล์ผิดกติกาแล้ว "สร้างเสร็จแต่จอว่างเปล่า" อยู่หลายวัน
+  // โดยไม่มีอะไรบอกเลย — ต่อจากนี้อย่างน้อยต้องเห็นว่ามันมีอยู่ตรงนั้น
+  const w = def.bw * 0.72, h = def.bw * 0.52;
+  const x = def.bx - w / 2, y = def.by - h;
+  ctx.save();
+  ctx.fillStyle = 'rgba(42,24,32,.94)';
+  rr(ctx, x, y, w, h, 10); ctx.fill();
+  ctx.strokeStyle = 'rgba(212,163,85,.85)'; ctx.lineWidth = 2;
+  ctx.setLineDash([7, 5]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.textAlign = 'center';
+  ctx.font = `${Math.round(h * 0.34)}px system-ui, sans-serif`;
+  ctx.fillStyle = '#ffd9b0';
+  ctx.fillText(def.glyph, def.bx, y + h * 0.46);
+  ctx.font = '600 12px "IBM Plex Sans Thai", system-ui, sans-serif';
+  ctx.fillStyle = '#d4a355';
+  ctx.fillText(def.name, def.bx, y + h * 0.78);
+  ctx.restore();
 }
 
 // ---------- ตัวละคร ----------

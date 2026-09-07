@@ -106,6 +106,8 @@ molten orange lava glow, antique temple gold
 | `st-krata` | three huge bronze cauldrons of different sizes on black stone furnaces, thick orange flames underneath, dark liquid bubbling and steaming inside, Thai lotus patterns embossed on the bronze rims | **กว้างมาก เตี้ย** (เรียงสามใบ) |
 | `st-ngiw` | a grove of four tall bare thorn trees, thick crooked trunks completely covered in huge black iron spikes, twisted leafless branches, cracked red-glowing soil around the roots | **สูงกว่ากว้าง** |
 | `st-lan` | a small hard-labour yard: a sunken square stone pit with two heavy rough boulders inside, a shoulder pole and a pickaxe leaning on the rim, scattered bone fragments | **เล็ก เกือบจัตุรัส** |
+| `st-tarang` | a holding gaol for waiting souls: a low dark stone blockhouse with three barred iron cage doors across the front, thick rusted iron bars, a heavy padlock and chains on the middle door, faint pale ghost light leaking between the bars, a small tiled Thai roof with a plain gold ridge trim | **กว้างกว่าสูงราวสองเท่า** — เตี้ย ทรงยาวแนวนอน |
+| `st-krajok` | a tall narrow shrine tower of mirrors beside a river of souls: dark carved teak frame in Thai style, seven tall oval mirrors set into its faces catching cold silver light, a gold multi-tiered spire on top, a low stone base with a small offering tray and burning incense sticks | **สูงกว่ากว้างราวสองเท่า** — ทรงสูงชะลูด |
 
 > **สัดส่วนสำคัญกว่าที่คิด** — โค้ดวางอาคารโดยยึด **ฐานกลางล่าง** แล้วขยายให้เต็มความกว้างของโซน
 > ถ้าอันไหน gen ออกมาสูงเกินไป มันจะทะลุขึ้นไปทับโซนข้างบน บอกสัดส่วนไว้ใน prompt แล้วทุกอัน
