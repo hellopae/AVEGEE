@@ -98,9 +98,12 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
    เดิมแผงนี้ลอยทับกลางฉากจนมองแผนที่ไม่เห็น ย้ายมาอยู่เหนือฉากเป็นแถบเต็มความกว้าง */
 /* ---------- แถบโค้ช: สอนทีละเรื่อง ----------
    เดิมมีแต่โมดัล "วิธีเล่น" ที่เทสิบสามข้อพร้อมกัน เจ้าของบอกว่าดูยากไป (7 ก.ย. 2569) */
+/* ย้ายมาอยู่ล่างสุดของหน้า 8 ก.ย. 2569 — เดิมอยู่ใต้หัวเรื่อง
+   ทุกครั้งที่มีบทใหม่ มันดันแถบบัญชาการกับฉากเลื่อนลงไปทั้งแผง จนคลิกผิดที่ */
 .coach{background:linear-gradient(90deg,var(--accent),var(--card));
   border:1px solid var(--gold);border-left-width:4px;border-radius:var(--radius);
-  padding:var(--space-3) var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start}
+  padding:var(--space-3) var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start;
+  margin-top:auto}
 .coach .txt{min-width:0;flex:1}
 .coach b{color:var(--gold);font-family:var(--font-display);font-size:1.05rem;display:block;margin-bottom:2px}
 .coach p{margin:0;font-size:var(--text-sm);line-height:var(--leading-body)}
@@ -457,7 +460,6 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
     <div class="res" id="res"></div>
   </header>
 
-  <div class="coach" id="coach" hidden></div>
   <div class="deckbar" id="deck"></div>
 
   <div class="stage">
@@ -492,6 +494,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
       <div id="side" class="sidebody"></div>
     </div>
   </div>
+
+  <div class="coach" id="coach" hidden></div>
 
   <footer>อเวจี — เกมทดลอง · คลิกพื้นหรือกด WASD เพื่อเดิน · บันทึกอัตโนมัติลงเครื่อง</footer>
 </div>

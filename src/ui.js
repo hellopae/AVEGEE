@@ -2,7 +2,7 @@
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -1489,9 +1489,17 @@ function startPlay(fresh) {
   started = true;
   unlock();                                  // เบราว์เซอร์ยอมให้เล่นเสียงได้หลังการกดครั้งแรกเท่านั้น
   titleEl.classList.add('gone');
-  bgm('bgm-zone');
   updatePlay();
-  if (fresh) openIntro();
+  if (fresh) {
+    // เพลงหน้าปกแทบไม่มีใครได้ยิน — ปกอยู่บนจอไม่กี่วินาที และเบราว์เซอร์ห้ามเล่นเสียง
+    // ก่อนผู้ใช้กดอะไรสักอย่าง ซึ่งการกดครั้งแรกก็คือปุ่ม "เริ่มเกม" พอดี
+    // เลยให้เพลงหน้าปกเล่นคลุมฉากเปิดของพญายมไปเลย แล้วค่อยสลับเป็นเพลงโซนตอนท่านพูดจบ
+    bgm('bgm-title');
+    openIntro();
+    onDlgClose(() => bgm('bgm-zone'));
+  } else {
+    bgm('bgm-zone');
+  }
   refresh();
   last = performance.now();
   requestAnimationFrame(frame);
@@ -1576,6 +1584,7 @@ function openSettings() {
 }
 
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
+primeAudio();                            // รู้ path เพลงไว้ก่อน (ดูเหตุผลใน sfx.js — Brave ไม่ปล่อยให้ play() ช้า)
 const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
 updatePlay();

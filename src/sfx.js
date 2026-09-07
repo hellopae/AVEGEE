@@ -6,7 +6,9 @@
 // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ทุกอย่างจึงเริ่มที่ unlock() ตอนกดปุ่มแรก
 
 const LS = 'avegee.audio';
-export const AUDIO = { sfx: 0.55, bgm: 0.40, on: true };
+// bgm 0.22 ตั้งแต่ 8 ก.ย. 2569 — เดิม 0.40 เจ้าของบอกว่าดังเกิน
+// เพลงเป็นฉากหลังของการอ่านสำนวน ต้องเบากว่าที่คิดไว้มาก · ปรับเพิ่มได้ที่หน้าตั้งค่า
+export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true };
 try { Object.assign(AUDIO, JSON.parse(localStorage.getItem(LS) || '{}')); } catch {}
 export function saveAudio() { try { localStorage.setItem(LS, JSON.stringify(AUDIO)); } catch {} }
 
@@ -107,10 +109,55 @@ async function findSrc(key) {
   return found;
 }
 
+/** ถามหาไฟล์ล่วงหน้าตั้งแต่หน้าเว็บโหลด — **นี่คือหัวใจที่ทำให้เพลงเล่นติด**
+ *
+ *  เบราว์เซอร์ยอมให้ play() ก็ต่อเมื่อมันถูกเรียก "ในจังหวะเดียวกับที่ผู้ใช้กด" เท่านั้น
+ *  ของเดิมเรียก play() หลัง await fetch คือหลุดจังหวะไปแล้วหนึ่งรอบ
+ *  Chrome ปล่อยผ่านเพราะนับ sticky activation แต่ **Brave ไม่ปล่อย** — เพลงเลยไม่มาเลย
+ *  (เจ้าของเจอ 8 ก.ย. 2569: Chrome ได้ยินเพลงโซน แต่ Brave เงียบสนิท)
+ *
+ *  รู้ path ไว้ก่อนตั้งแต่ยังไม่มีใครกด → พอถึงจังหวะกดจริง bgm() สั่ง play() ได้ทันที ไม่ต้องรออะไร */
+export function primeAudio(keys = ['bgm-title', 'bgm-zone']) {
+  keys.forEach(k => { findSrc(k); });
+}
+
 /** เพลงที่ใช้แทนได้ถ้าเพลงที่ขอยังไม่มีไฟล์
  *  ทำให้ "มีเพลงเดียวก็ฟังได้ทั้งเกม" แล้วพอเติมไฟล์ทีละเพลง เกมจะเปลี่ยนไปใช้ของจริงเอง
  *  โดยไม่ต้องแก้โค้ดสักบรรทัด — ตรงกับวิธีที่ทำกับรูปทั้งเกม */
 const FALLBACK = ['bgm-zone', 'bgm-title'];
+
+/** path ที่รู้แล้วโดยไม่ต้อง await — คืน undefined ถ้ายังไม่เคยถาม */
+function knownSrc(key) {
+  for (const k of [key, ...FALLBACK]) {
+    if (!srcCache.has(k)) return undefined;      // ยังไม่รู้ ต้องไปถามก่อน
+    const u = srcCache.get(k);
+    if (u) return u;
+  }
+  return null;                                   // ถามครบแล้ว ไม่มีไฟล์สักไฟล์
+}
+
+/** ถูกเบราว์เซอร์ปฏิเสธ — รอกดครั้งถัดไปแล้วลองใหม่ ไม่ปล่อยให้เงียบไปตลอดกาล */
+let retryArmed = false;
+function armRetry() {
+  if (retryArmed) return;
+  retryArmed = true;
+  const again = () => {
+    document.removeEventListener('pointerdown', again, true);
+    document.removeEventListener('keydown', again, true);
+    retryArmed = false;
+    if (el && el.paused && cur && AUDIO.on) el.play().catch(armRetry);
+  };
+  document.addEventListener('pointerdown', again, true);
+  document.addEventListener('keydown', again, true);
+}
+
+function startEl(url) {
+  if (!el) { el = new Audio(); el.loop = true; el.preload = 'auto'; }
+  el.volume = AUDIO.on ? AUDIO.bgm : 0;
+  if (!el.src.endsWith(url)) el.src = url;
+  else if (!el.paused) return;                   // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
+  el.play().catch(armRetry);
+}
 
 export function bgm(key) {
   if (!key) return stopBgm();
@@ -118,20 +165,18 @@ export function bgm(key) {
   pendingBgm = null;
   if (cur === key && el && !el.paused) return;
   cur = key;
-  if (!el) { el = new Audio(); el.loop = true; el.preload = 'auto'; }
-  el.volume = AUDIO.on ? AUDIO.bgm : 0;
 
+  const known = knownSrc(key);
+  if (known !== undefined) {                     // รู้อยู่แล้ว → สั่งเล่นทันทีในจังหวะที่ผู้ใช้กด
+    if (known) startEl(known);
+    return;
+  }
+  // ยังไม่เคยถามไฟล์ชุดนี้ — ต้องรอ แล้วค่อยเล่น (จังหวะอาจหลุด จึงมี armRetry รองรับ)
   (async () => {
     let url = null;
-    for (const k of [key, ...FALLBACK]) {
-      url = await findSrc(k);
-      if (url) break;
-    }
-    if (cur !== key) return;                 // เปลี่ยนเพลงไปแล้วระหว่างรอ
-    if (!url) return;                        // ยังไม่มีไฟล์เพลงสักไฟล์ — เงียบไว้ ไม่ต้องบอกใคร
-    if (el.src.endsWith(url) && !el.paused) return;   // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
-    if (!el.src.endsWith(url)) el.src = url;
-    el.play().catch(() => {});               // ถูกนโยบาย autoplay ห้ามไว้ก็ปล่อยไป ไม่ใช่ความผิดของไฟล์
+    for (const k of [key, ...FALLBACK]) { url = await findSrc(k); if (url) break; }
+    if (cur !== key || !url) return;
+    startEl(url);
   })();
 }
 
