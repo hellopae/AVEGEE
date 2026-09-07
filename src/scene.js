@@ -81,7 +81,7 @@ export function render(ctx, g, t, hover, sel) {
     const p = 0.5 + 0.5 * Math.sin(t / 480 + it.x);
     ctx.fillStyle = `rgba(255,210,120,${0.10 + p * 0.14})`;
     ctx.beginPath(); ctx.arc(it.x, it.y - def.h * 0.35, def.h * 0.75, 0, 7); ctx.fill();
-    drawStandee(ctx, def.img, it.x, it.y + Math.sin(t / 480 + it.x) * 3, def.h, t, '🎁');
+    drawStandee(ctx, def.img, it.x, it.y + Math.sin(t / 480 + it.x) * 3, def.h, t, def.glyph || '🎁');
   }
 
   // ---- เปรตที่มาก่อกวน ----

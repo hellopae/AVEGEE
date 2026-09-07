@@ -1,7 +1,8 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
-         MOB, GUARD, LEVELS, SPIRIT_OF, starsOf } from './data.js';
+         MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
+         SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF } from './data.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -20,7 +21,10 @@ export function createGame() {
     paused: true, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
+    // ตอนเริ่มเกมมีสามคน: ท่าน · นิรา (อ่านสำนวน) · ทัณฑ์ (ลงทัณฑ์) — คนอื่นต้องจ้างเอง
     crew: CREW.filter(c => c.hire === 0).map(mkCrew),
+    self: { ...SELF, morale: 100 },   // ท่านเองตอนลงไปคุมสถานีแทนยมทูต
+    taught: [],                       // ขั้นบทเรียนที่สอนไปแล้ว (ดู TUTOR ใน data.js)
     stations: [],
     onChange: () => {},
   };
@@ -29,7 +33,7 @@ export function createGame() {
   g.stations = [mkStation('sala'), mkStation('krata')];
 
   Object.assign(g, API);
-  g.log('พญายม: "โซนนี้เละมาสามร้อยปีแล้ว จัดการซะ" แล้วท่านก็หายไป', 'boss');
+  g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
   g.spawnSoul();
   return g;
 }
@@ -45,8 +49,10 @@ function mkStation(k) {
 
 // ---------- สร้างสำนวนคดี ----------
 /** คดีที่ถูกกับผิดปนกัน — ด้านที่ทำให้เห็นใจถูกซ่อนไว้ ต้องใช้พลังถึงจะเจอ */
-function mkHardSoul() {
-  const c = pick(HARD_CASES);
+function mkHardSoul(tags) {
+  const ok = (!tags || !tags.length) ? HARD_CASES
+           : HARD_CASES.filter(h => tags.includes(h.seen.s));
+  const c = pick(ok.length ? ok : HARD_CASES);
   const soul = {
     id: SEQ++, who: c.who, hard: true, waited: 0, said: [],
     deeds: [{ ...c.seen, known: true }, { ...c.hidden, known: false }],
@@ -59,16 +65,29 @@ function mkHardSoul() {
   return soul;
 }
 
-function mkSoul() {
+/** สำนวนที่ส่งมาต้องเป็นกรรมที่โซนนี้ "มีที่ลง" อยู่จริง
+ *  เจ้าของบอก 7 ก.ย. 2569 ว่าคดีที่มาไม่ตรงกับสถานีที่มี ทำให้ลงทัณฑ์ให้ตรงกรรมไม่ได้เลย
+ *  ตอนนี้จึงกรองด้วย tags ของสถานีที่สร้างแล้ว — สร้างสถานีเพิ่ม = เปิดสำนวนแนวนั้นเข้ามา
+ *  (ถ้าไม่มีสถานีลงทัณฑ์สักหลัง ค่อยปล่อยทุกแนวตามเดิม ไม่งั้นคิวจะว่างเปล่า) */
+function poolOf(tags) {
+  if (!tags || !tags.length) return DEEDS;
+  const pool = DEEDS.filter(d => tags.includes(d.s));
+  return pool.length ? pool : DEEDS;
+}
+
+function mkSoul(tags, hiddenBonus = 0) {
+  const POOL = poolOf(tags);
   const n = 1 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.2 ? 1 : 0);
   const deeds = [];
-  while (deeds.length < n) {
-    const d = pick(DEEDS);
+  let guard = 0;
+  while (deeds.length < n && guard++ < 40) {
+    const d = pick(POOL);
     if (!deeds.some(x => x.t === d.t)) deeds.push({ ...d, known: true });
   }
-  // เรื่องที่สำนวนไม่ได้เขียนไว้ — ต้องใช้พลังถึงจะเจอ
-  if (Math.random() < BAL.hiddenChance) {
-    const h = pick(DEEDS);
+  // เรื่องที่สำนวนไม่ได้เขียนไว้ — ต้องใช้พลังถึงจะเจอ (ยังอยู่ในแนวที่โซนนี้รับได้เหมือนกัน
+  // ไม่งั้นความจริงที่ขุดขึ้นมาจะกลายเป็นกรรมที่ไม่มีสถานีไหนรับ = ตัดสินยังไงก็ธรรมตก)
+  if (Math.random() < clamp(BAL.hiddenChance + hiddenBonus, 0, 1)) {
+    const h = pick(POOL);
     if (!deeds.some(x => x.t === h.t)) deeds.push({ ...h, known: false });
   }
   // บุญ: บางอันเป็นของจริง บางอันเขากุขึ้นเอง
@@ -113,14 +132,32 @@ const API = {
 
   spawnSoul() {
     if (this.queue.length >= 14) return;
+    const tags = this.activeTags();
     // ทุก ๆ ราวหนึ่งในห้า จะเป็นคดีที่ตัดสินยาก
-    const s = (this.casesDone >= 2 && Math.random() < 0.22) ? mkHardSoul() : mkSoul();
+    const s = (this.casesDone >= 2 && Math.random() < 0.22)
+      ? mkHardSoul(tags)
+      : mkSoul(tags, this.orderTier().hidden);
     if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
     this.queue.push(s);
     if (!s.hard) this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
   },
 
-  crewOf(k) { return this.crew.find(c => c.k === k); },
+  crewOf(k) {
+    if (k === 'me') return this.self;        // ท่านลงไปคุมเอง — ไม่มีค่าแรง ไม่ต้องจ้าง
+    return this.crew.find(c => c.k === k);
+  },
+
+  /** ชนิดกรรมที่โซนนี้ "มีที่ลง" ตอนนี้ — คิวจะส่งมาแต่แนวนี้ */
+  activeTags() {
+    const t = new Set();
+    for (const st of this.stations) for (const tag of st.def.tags) t.add(tag);
+    return [...t];
+  },
+
+  /** ขั้นของระเบียบ/กรรมตอนนี้ — ทั้งผลจริงในเกมและข้อความอธิบายอยู่ใน data.js ที่เดียว */
+  orderTier() { return ORDER_TIERS.find(t => this.order >= t.min) || ORDER_TIERS[ORDER_TIERS.length - 1]; },
+  karmaTier() { return KARMA_TIERS.find(t => this.karma <= t.max) || KARMA_TIERS[KARMA_TIERS.length - 1]; },
+
 
   powerOf(k) { return this.powers.find(p => p.k === k); },
   powerReady(k) {
@@ -173,14 +210,17 @@ const API = {
     soul.said.push(...out);
     return out;
   },
-  freeCrew() { return this.crew.filter(c => !c.at); },
+  // นิราเป็นคนอ่านสำนวน ไม่ใช่ผู้คุม — เธอไม่โผล่ในช่อง "ใครคุม" อีกแล้ว (7 ก.ย. 2569)
+  freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
 
   // ---------- มอบหมายคดี ----------
   assign(soulId, stKey, crewK, intensity) {
     const st = this.stations.find(s => s.def.k === stKey);
     const c = this.crewOf(crewK);
     const si = this.queue.findIndex(s => s.id === soulId);
-    if (!st || !c || si < 0 || st.soul || c.at) return false;
+    if (!st || !c || si < 0 || st.soul) return false;
+    if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
+    if (!c.self && c.at) return false;       // ยมทูตคนอื่นติดเวรอยู่
     const soul = this.queue.splice(si, 1)[0];
     st.soul = soul;
     st.crewK = crewK;
@@ -188,7 +228,8 @@ const API = {
     c.path = null;                       // ทิ้งเส้นทางเดินเล่นเดิม แล้วเดินไปประจำสถานีใหม่
     st.progress = 0;
     st.need = 18 + soul.deserved * 8 + st.intensity * 7;
-    c.at = st.def.k;
+    if (c.self) this.log('ท่านลงไปคุมเอง — สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น', 'act');
+    else c.at = st.def.k;
     this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${st.intensity}`, 'act');
     st.verdict = this.judge(st);        // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
     this.applyVerdict(st.verdict, soul);
@@ -222,7 +263,9 @@ const API = {
     }
     karma = Math.round(karma * 10) / 10;
 
-    const coin = Math.round(BAL.coinPerCase * (score / 100) * (0.7 + soul.deserved * 0.12));
+    // ระเบียบของโซนคูณเข้ากับรายได้ — นี่คือเหตุผลที่ต้องแคร์แถบระเบียบทุกวาระ
+    const coin = Math.round(BAL.coinPerCase * (score / 100) * (0.7 + soul.deserved * 0.12)
+                            * this.orderTier().coin);
     return { tham, ked, rab, score, karma, coin, short, over };
   },
 
@@ -231,7 +274,9 @@ const API = {
     this.karma = clamp(this.karma + r.karma, 0, 100);
     this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; this.scoreSum += r.score;
-    if (this.casesDone % MOB.spawnEvery === 0) this.spawnMob();
+    // กรรมของท่านยิ่งหนา เปรตยิ่งขึ้นถี่ — มันตามกลิ่นกรรมมา
+    const every = Math.max(2, Math.round(MOB.spawnEvery * this.karmaTier().mob));
+    if (this.casesDone % every === 0) this.spawnMob();
     this.powers.forEach(p => { if (p.cd > 0) p.cd--; });
 
     const tag = r.score >= 78 ? 'good' : r.score >= 50 ? '' : 'bad';
@@ -255,9 +300,16 @@ const API = {
     else if (r.stars <= 1) { this.hp -= 10; this.log('พญายมส่ายหน้า — บารมีหายไป 10', 'bad'); }
     else if (r.stars === 5) {
       this.star5++;
-      this.hp = Math.min(this.hpMax, this.hp + BAL.hpGoodHeal);
+      // กรรมของท่านเองสูงเท่าไหร่ พ่อก็ยิ่งไม่อยากคืนบารมีให้ (ดู KARMA_TIERS)
+      const heal = BAL.hpGoodHeal * this.karmaTier().heal;
+      if (heal > 0) this.hp = Math.min(this.hpMax, this.hp + heal);
       this.coin += 60;
-      this.log(`⭐⭐⭐⭐⭐ ห้าดาว! (${this.star5} ครั้งแล้ว) +60 เบี้ยกรรม`, 'good');
+      // ห้าดาวคือทางลดกรรมที่ไม่ต้องจ่ายเงิน — ตัดสินให้ตรงกรรมคือการล้างกรรมของตัวเอง
+      const cut = Math.min(this.karma, KARMA_RELIEF.star5);
+      if (cut > 0) this.karma = Math.round((this.karma - cut) * 10) / 10;
+      this.log(`⭐⭐⭐⭐⭐ ห้าดาว! (${this.star5} ครั้งแล้ว) +60 เบี้ยกรรม`
+               + (cut > 0 ? ` · กรรมท่าน −${cut}` : '')
+               + (heal > 0 ? '' : ' · กรรมท่านสูงเกินกว่าที่พ่อจะคืนบารมีให้'), 'good');
       this.checkLevel();
     } else if (r.stars === 4) this.coin += 25;
 
@@ -285,7 +337,11 @@ const API = {
     this.tick++;
 
     // วิญญาณมาใหม่
-    if (--this.nextArrive <= 0) { this.spawnSoul(); this.nextArrive = BAL.arriveEvery; }
+    if (--this.nextArrive <= 0) {
+      this.spawnSoul();
+      // ระเบียบเละ = ข้างบนไม่สนใจว่าโซนนี้รับไหวไหม ส่งลงมาถี่ขึ้น
+      this.nextArrive = Math.max(5, Math.round(BAL.arriveEvery * this.orderTier().arrive));
+    }
     this.queue.forEach(s => s.waited++);
 
     // สถานีทำงาน
@@ -298,10 +354,23 @@ const API = {
         if (this.tick % 6 === 0) this.log(`🔥 ฟืนหมด ${st.def.name} หยุดทำงาน`, 'bad');
         continue;
       }
+      // สถานีที่ท่านคุมเอง เดินช้ากว่ามาก และเดินเฉพาะตอนท่านยืนอยู่ตรงนั้นจริง ๆ
+      // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย)
+      if (c.self) {
+        const d = Math.hypot((st.def.sx ?? st.def.x) - this.player.x, (st.def.sy ?? st.def.y) - this.player.y);
+        if (d > BAL.smiteReach) {
+          if (this.tick % 10 === 0) this.log(`${st.def.name} หยุดรอ — ท่านคุมเองแต่ไม่ได้ยืนอยู่ตรงนั้น`, 'bad');
+          continue;
+        }
+        this.fuel = Math.max(0, this.fuel - st.def.fuel);
+        st.progress += st.def.pow * 0.7;
+        if (st.progress >= st.need) this.finish(st);
+        continue;
+      }
       this.fuel = Math.max(0, this.fuel - st.def.fuel);
       const mf = 0.55 + 0.45 * (c.morale / 100);
       st.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf;
-      c.morale = Math.max(0, c.morale - BAL.moraleDrain);
+      c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
       if (st.progress >= st.need) this.finish(st);
     }
 
@@ -322,9 +391,14 @@ const API = {
     if (this.tick % 18 === 0 && this.items.length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
                  : this.fuel < 18 ? 'fuel'
+                 : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
                  : pick(['fire', 'fire', 'mirror', 'health', 'fuel', this.powerOf('hypno').max ? 'hypno' : 'fire']);
       this.dropItem(need);
     }
+
+    // กรรมของท่านเองที่สูงเกินไป กัดระเบียบของโซนไปด้วย
+    const kt = this.karmaTier();
+    if (kt.drain) this.order = clamp(this.order - kt.drain, 0, 100);
 
     // ระเบียบ
     const over = Math.max(0, this.queue.length - BAL.queueMax);
@@ -494,6 +568,7 @@ const API = {
       const def = ITEMS[it.k];
       if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
       if (def.fuel) this.fuel += def.fuel;
+      if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
       if (def.power) {
         const p = this.powerOf(def.power);
         p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
@@ -677,6 +752,16 @@ const API = {
       this.log(`ซื้อฟืน ${n * 10} ดุ้น — ${cost} เบี้ยกรรม`);
       return true;
     }
+    // บูชาดอกบัวที่ศาลาน้ำชา — ทางลดกรรมที่ซื้อได้ แต่ต้องมีศาลาก่อน และไม่ถูก
+    if (kind === 'lotus') {
+      if (!this.stations.some(st => st.def.k === 'tea')) return false;
+      if (this.karma <= 0 || this.coin < KARMA_RELIEF.lotusCost) return false;
+      this.coin -= KARMA_RELIEF.lotusCost;
+      const cut = Math.min(this.karma, KARMA_RELIEF.lotusCut);
+      this.karma = Math.round((this.karma - cut) * 10) / 10;
+      this.log(`🪷 บูชาดอกบัวที่ศาลาน้ำชา — กรรมท่าน −${cut} (เหลือ ${this.karma.toFixed(1)})`, 'good');
+      return true;
+    }
     return false;
   },
 
@@ -684,9 +769,12 @@ const API = {
     const def = STATIONS.find(s => s.k === k);
     if (!def || this.coin < def.cost) return false;
     if (this.stations.some(s => s.def.k === k)) return false;
+    const before = this.activeTags();
     this.coin -= def.cost;
     this.stations.push(mkStation(k));
-    this.log(`🏗️ สร้าง${def.name}เสร็จ`, 'good');
+    const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
+    this.log(`🏗️ สร้าง${def.name}เสร็จ`
+             + (opened.length ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : ''), 'good');
     return true;
   },
 
@@ -703,11 +791,13 @@ const API = {
 /** ---------- เซฟลงเครื่อง ----------
  *  เก็บเฉพาะ "สิ่งที่เปลี่ยนได้" ไม่เก็บค่านิยามจาก data.js
  *  ตอนโหลดจึงเอาค่านิยามล่าสุดมาประกอบใหม่ — แก้สมดุลใน data.js แล้วเซฟเก่ายังใช้ได้ */
-const SAVE_KEY = 'avegee.save.v1';
+// v2 ตั้งแต่ 7 ก.ย. 2569 — กติกาเปลี่ยนเยอะ (เงินตั้งต้น ผู้คุมตั้งต้น สำนวนตามสถานี)
+// เซฟเก่าเอามาต่อแล้วจะได้เกมที่ครึ่ง ๆ กลาง ๆ ปล่อยให้เริ่มใหม่ดีกว่า
+const SAVE_KEY = 'avegee.save.v2';
 
 API.snapshot = function () {
   return {
-    v: 1, at: Date.now(),
+    v: 2, at: Date.now(),
     tick: this.tick, coin: this.coin, fuel: this.fuel, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, casesDone: this.casesDone, scoreSum: this.scoreSum,
@@ -721,7 +811,7 @@ API.snapshot = function () {
       progress: st.progress, need: st.need, soul: st.soul, verdict: st.verdict,
     })),
     queue: this.queue, items: this.items, mobs: this.mobs,
-    guard: this.guard, player: this.player, closed: this.closed,
+    guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     logs: this.logs.slice(0, 40),
   };
 };
@@ -732,7 +822,7 @@ API.save = function () {
 };
 
 API.restore = function (d) {
-  if (!d || d.v !== 1) return false;
+  if (!d || d.v !== 2) return false;
   const keep = ['tick','coin','fuel','order','karma','hp','hpMax','hits','star5','level',
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
@@ -760,6 +850,7 @@ API.restore = function (d) {
   if (d.player) this.player = d.player;
   this.logs = d.logs || [];
   this.closed = d.closed || [];
+  this.taught = d.taught || [];
   this.over = null;
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;

@@ -96,6 +96,33 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 
 /* ---------- แถบบัญชาการเหนือฉาก ----------
    เดิมแผงนี้ลอยทับกลางฉากจนมองแผนที่ไม่เห็น ย้ายมาอยู่เหนือฉากเป็นแถบเต็มความกว้าง */
+/* ---------- แถบโค้ช: สอนทีละเรื่อง ----------
+   เดิมมีแต่โมดัล "วิธีเล่น" ที่เทสิบสามข้อพร้อมกัน เจ้าของบอกว่าดูยากไป (7 ก.ย. 2569) */
+.coach{background:linear-gradient(90deg,var(--accent),var(--card));
+  border:1px solid var(--gold);border-left-width:4px;border-radius:var(--radius);
+  padding:var(--space-3) var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start}
+.coach .txt{min-width:0;flex:1}
+.coach b{color:var(--gold);font-family:var(--font-display);font-size:1.05rem;display:block;margin-bottom:2px}
+.coach p{margin:0;font-size:var(--text-sm);line-height:var(--leading-body)}
+.coach .tip{margin-top:6px;font-size:var(--text-xs);color:var(--accent-foreground)}
+.coach .step{font-size:var(--text-xs);color:var(--muted-foreground);white-space:nowrap}
+.coach button{flex-shrink:0}
+
+/* ชิปทรัพยากรกดได้ทุกอัน — กดแล้วบอกว่าแถบนั้นมีไว้ทำอะไร หมดแล้วเกิดอะไร */
+.chip.tap{cursor:pointer;border-color:var(--input)}
+.chip.tap:hover{border-color:var(--gold)}
+.chip.tap::after{content:'?';font-size:10px;color:var(--muted-foreground);margin-left:2px}
+
+/* บรรทัดอธิบายในโมดัล "แถบนี้มีไว้ทำอะไร" — ขั้นที่กำลังอยู่จะไฮไลต์ */
+.tline{border-left:3px solid var(--border);padding:6px 0 6px 10px;margin:6px 0;font-size:var(--text-sm)}
+.tline b{color:var(--foreground)}
+.tline div{color:var(--muted-foreground);font-size:var(--text-xs);line-height:1.6;margin-top:2px}
+.tline.on{border-left-color:var(--gold);background:var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding-right:8px}
+.tline.on b{color:var(--gold)}
+.tline.good{border-left-color:var(--success)}
+.tline.bad{border-left-color:var(--destructive)}
+.tline.bad b{color:var(--destructive)}
+
 .deckbar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
   padding:var(--space-2) var(--space-3);display:flex;gap:var(--space-4);
   flex-wrap:wrap;align-items:flex-end}
@@ -241,6 +268,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     <div class="res" id="res"></div>
   </header>
 
+  <div class="coach" id="coach" hidden></div>
   <div class="deckbar" id="deck"></div>
 
   <div class="stage">

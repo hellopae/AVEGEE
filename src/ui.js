@@ -1,6 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
-         GUARD, LEVELS, MOB } from './data.js';
+         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
+         KARMA_RELIEF } from './data.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -39,16 +40,77 @@ function bar(v, cls = '') { return `<span class="bar ${cls}"><i style="width:${M
 
 function drawRes() {
   const avg = g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0;
+  const ot = g.orderTier(), kt = g.karmaTier();
   $('#res').innerHTML = `
-    <span class="chip">🪙 <b>${g.coin}</b></span>
-    <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
-    <span class="chip">❤️ บารมี ${bar(100 * g.hp / BAL.startHp, 'hp')} <b>${Math.round(g.hp)}</b></span>
-    <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
-    <span class="chip">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
+    <span class="chip tap" data-ex="coin">🪙 <b>${g.coin}</b></span>
+    <span class="chip tap" data-ex="fuel">🔥 <b>${Math.round(g.fuel)}</b></span>
+    <span class="chip tap" data-ex="hp">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
+    <span class="chip tap" data-ex="order">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b>
+      <i style="font-style:normal;opacity:.6">${esc(ot.name)}</i></span>
+    <span class="chip tap" data-ex="karma">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b>
+      <i style="font-style:normal;opacity:.6">${esc(kt.name)}</i></span>
     <span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>
     <span class="chip">🎖️ ${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</span>
     ${g.mobs.length ? `<span class="chip" style="color:var(--destructive)">👹 เปรต ${g.mobs.length} ตน</span>` : ''}`;
+  $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
   $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
+}
+
+/** กดที่แถบไหนก็บอกได้ว่ามันมีไว้ทำอะไร ตอนนี้อยู่ขั้นไหน และหมด/เต็มแล้วเกิดอะไร
+ *  (เจ้าของอ่านแล้วไม่รู้ว่าระเบียบกับกรรมท่านมีไว้ทำไม — 7 ก.ย. 2569) */
+function explainBar(k) {
+  const tiers = (list, now, fmt) => list.map(t =>
+    `<div class="tline${t === now ? ' on' : ''}"><b>${esc(fmt(t))}</b> · ${esc(t.name)}<div>${esc(t.eff)}</div></div>`).join('');
+
+  if (k === 'hp') return modal(`<h2>❤️ บารมี — ${Math.round(g.hp)}/${g.hpMax}</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      ความน่าเชื่อถือที่พญายมมีให้ท่าน <b>คือชีวิตของท่านในเกมนี้</b></p>
+    <div class="tline"><b>หายเมื่อไหร่</b><div>คำตัดสินได้ 0 ดาว หรือลงทัณฑ์เกินกรรมสองวาระขึ้นไป = โดนลูกไฟ บารมีหาย 1 ใน 5 ·
+      ได้ 1 ดาว = หาย 10</div></div>
+    <div class="tline"><b>ได้คืนเมื่อไหร่</b><div>ตัดสินได้ห้าดาว (พ่อคืนให้นิดหน่อย — และคืนน้อยลงถ้ากรรมท่านสูง) ·
+      เดินไปเก็บ<b>หีบยาอายุวัฒนะ</b>ที่ตกอยู่บนแผนที่ +20</div></div>
+    <div class="tline bad"><b>ถ้าหมด</b><div>จบเกมทันที — พญายมเรียกตราคืนจากมือท่านต่อหน้าทุกคน</div></div>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+
+  if (k === 'order') return modal(`<h2>⚖️ ระเบียบ — ${Math.round(g.order)} (${esc(g.orderTier().name)})</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      โซนนี้เดินเป็นระบบแค่ไหน <b>เป็นตัวคูณรายได้ของท่านทุกคดี</b> และเป็นตัวเลขที่พญายมใช้ตรวจการ</p>
+    <div class="tline"><b>ขึ้นเมื่อ</b><div>ปิดคดีได้คะแนนดี · ปราบเปรต (+3) · มีหอทะเบียนกรรม (+${BAL.orderGainSala}/วาระ)</div></div>
+    <div class="tline"><b>ลงเมื่อ</b><div>คิวเกิน ${BAL.queueMax} ดวง (ยิ่งล้นยิ่งตกเร็ว) · ปล่อยเปรตไว้ · คำตัดสินคะแนนต่ำ ·
+      ตรวจการไม่ผ่าน (−10) · กรรมท่านสูงเกิน 75</div></div>
+    ${tiers(ORDER_TIERS, g.orderTier(), t => t.min + '+')}
+    <div class="tline bad"><b>ถ้าหมด (0)</b><div>จบเกม — คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมส่งคนมารับตำแหน่งคืน</div></div>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+
+  if (k === 'karma') return modal(`<h2>☠️ กรรมท่าน — ${g.karma.toFixed(1)} (${esc(g.karmaTier().name)})</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      บาปที่ <b>ตกใส่ตัวท่านเอง</b> ไม่ใช่ของวิญญาณ — แกนของเกมทั้งเกมคือ
+      "ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"</p>
+    <div class="tline"><b>ขึ้นเมื่อ</b><div>ลงทัณฑ์เกินกรรมที่เขาก่อ (ยิ่งเกินยิ่งหนัก) · ส่งผิดชนิดกรรม (+4) ·
+      ซัดไฟเร่งทัณฑ์เอง (+${BAL.smiteKarma}) · ใช้สะกดจิต (+4) · ตวาดข่มขู่ (+0.5)</div></div>
+    <div class="tline good"><b>ลดได้ยังไง</b><div>ตัดสินได้ห้าดาว −${KARMA_RELIEF.star5} ·
+      เก็บ<b>ดอกบัวบูชา</b>ที่ตกบนแผนที่ (ตกให้เมื่อกรรมเกิน 40) −4 ·
+      บูชาดอกบัวที่<b>ศาลาน้ำชา</b> ${KARMA_RELIEF.lotusCost} เบี้ย −${KARMA_RELIEF.lotusCut} (แท็บก่อสร้าง)</div></div>
+    ${tiers(KARMA_TIERS, g.karmaTier(), t => '≤' + t.max)}
+    <div class="tline bad"><b>ถ้าเต็ม (100)</b><div>จบเกม — ชื่อของท่านไปโผล่อยู่ในคิวเอง เป็นสำนวนที่หนาที่สุดที่โซนนี้เคยรับ</div></div>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+
+  if (k === 'fuel') return modal(`<h2>🔥 ฟืน — ${Math.round(g.fuel)} ดุ้น</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      เชื้อไฟใต้สถานี แต่ละสถานีกินไม่เท่ากัน (กระทะทองแดงกินหนักสุด · โลกันตนรกไม่กินเลย)</p>
+    <div class="tline bad"><b>ถ้าหมด</b><div>สถานีที่ต้องใช้ไฟ<b>หยุดทำงานทันที</b> คดีค้าง คิวล้น ระเบียบตกตามไปด้วย —
+      ไม่จบเกมทันที แต่พาไปจบทางระเบียบได้</div></div>
+    <div class="tline"><b>เติมยังไง</b><div>ซื้อที่แท็บก่อสร้าง (${BAL.fuelPrice * 10} เบี้ย/10 ดุ้น) หรือเดินไปเก็บ<b>มัดฟืน</b>บนแผนที่</div></div>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+
+  return modal(`<h2>🪙 เบี้ยกรรม — ${g.coin}</h2>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
+      เงินของโซน ใช้สร้างสถานี จ้างยมทูต ซื้อฟืน และบูชาดอกบัว</p>
+    <div class="tline"><b>ได้จาก</b><div>ปิดคดี (คูณด้วยระเบียบของโซน) · สี่ดาว +25 · ห้าดาว +60 ·
+      ปราบเปรต +${MOB.bounty} · ตรวจการผ่าน +150</div></div>
+    <div class="tline"><b>เสียไปกับ</b><div>ค่าแรงยมทูตทุก ${BAL.payEvery} วาระ · ค่าสร้าง · ค่าจ้าง · ค่าฟืน</div></div>
+    <div class="tline bad"><b>ถ้าติดลบถึง −300</b><div>จบเกม — ยมทูตวางเครื่องมือแล้วเดินออกไปพร้อมกัน</div></div>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 }
 
 // ---------- แผงข้าง ----------
@@ -81,7 +143,7 @@ function drawTab() {
         <span class="g">${c.glyph}</span>
         <span class="n"><b>${c.name}</b>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
-          <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง'} · ค่าแรง ${c.pay}</div>
+          <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'} · ค่าแรง ${c.pay}</div>
         </span>
       </div>`).join('')
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
@@ -116,16 +178,28 @@ function drawTab() {
         <span class="n"><b>ฟืน 10 ดุ้น</b><div>เชื้อไฟใต้สถานี หมดแล้วทุกอย่างหยุด</div></span>
         <button class="sm" id="buyfuel" ${g.coin < BAL.fuelPrice * 10 ? 'disabled' : ''}>ซื้อ ${BAL.fuelPrice * 10}</button>
       </div>
-      <div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">สถานีทัณฑ์</div>`
+      `
+      + (g.stations.some(x => x.def.k === 'tea') ? `
+      <div class="shop"><span class="g">🪷</span>
+        <span class="n"><b>ดอกบัวบูชา</b><div>วางที่ศาลาน้ำชา — ลดกรรมของท่านเอง ${KARMA_RELIEF.lotusCut}
+          (ตอนนี้กรรมท่าน ${g.karma.toFixed(1)})</div></span>
+        <button class="sm" id="buylotus" ${g.karma <= 0 || g.coin < KARMA_RELIEF.lotusCost ? 'disabled' : ''}>บูชา ${KARMA_RELIEF.lotusCost}</button>
+      </div>` : '')
+      + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
+           สถานีทัณฑ์ — <b>สร้างแนวไหน สำนวนแนวนั้นถึงจะถูกส่งเข้าคิว</b><br>
+           ตอนนี้โซนนี้รับได้: ${g.activeTags().map(t => `<span class="tag" style="background:${SINS[t].color}22;color:${SINS[t].color}">${SINS[t].name}</span>`).join(' ') || 'ยังไม่มีเลย'}</div>`
       + STATIONS.filter(s => s.cost > 0).map(s => {
         const built = g.stations.some(x => x.def.k === s.k);
+        const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop"><span class="g">${s.glyph}</span>
           <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
-            <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'} · ฟืน ${s.fuel}/วาระ</div></span>
+            <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'} · ฟืน ${s.fuel}/วาระ</div>
+            ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost ? 'disabled' : ''}>${built ? 'สร้างแล้ว' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
     const bf = $('#buyfuel'); if (bf) bf.onclick = () => { g.buy('fuel', 1); refresh(); };
+    const bl = $('#buylotus'); if (bl) bl.onclick = () => { g.buy('lotus'); refresh(); };
     b.querySelectorAll('[data-build]').forEach(el =>
       el.onclick = () => { g.build(el.dataset.build); refresh(); });
   }
@@ -374,7 +448,7 @@ function drawAtk() {
   btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); }
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); }
 
 document.querySelectorAll('.tabs [data-side]').forEach(el =>
   el.onclick = () => { side = el.dataset.side; drawSide(); });
@@ -496,7 +570,10 @@ function drawDeck() {
     return;
   }
   const free = g.stations.filter(x => !x.soul && x.def.pow > 0);
-  const idle = g.crew.filter(c => !c.at);
+  // นิราไม่อยู่ในลิสต์ (เธออ่านสำนวน ไม่ลงทัณฑ์) · ท่านเองต่อท้ายเสมอ เผื่อคนไม่พอ
+  // ท่านคุมได้ทีละสถานีเท่านั้น — ยืนอยู่สองที่พร้อมกันไม่ได้
+  const meBusy = g.stations.some(x => x.crewK === 'me' && x.soul);
+  const idle = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
   if (pick.st && !free.some(x => x.def.k === pick.st)) pick.st = null;
   if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
 
@@ -516,9 +593,10 @@ function drawDeck() {
         : '<span class="idle">ไม่มีสถานีว่าง</span>'}</div></div>
 
     <div class="grp"><span class="lb">ใครคุม</span>
-      <div class="row2" id="d-cr">${idle.length ? idle.map(c =>
-        `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}>${c.glyph} ${c.name}<span style="opacity:.55"> ${Math.round(c.morale)}</span></button>`).join('')
-        : '<span class="idle">ยมทูตไม่ว่าง</span>'}</div></div>
+      <div class="row2" id="d-cr">${!idle.length ? '<span class="idle">ไม่มีใครว่าง — รอผู้คุมออกเวร หรือจ้างเพิ่มที่แท็บยมทูต</span>' : idle.map(c =>
+        `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+           title="${esc(c.self ? 'สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น และช้ากว่ายมทูต' : c.duty || '')}"
+          >${c.glyph} ${c.name}<span style="opacity:.55"> ${c.self ? 'ช้า · ต้องไปยืนเอง' : Math.round(c.morale)}</span></button>`).join('')}</div></div>
 
     <div class="grp"><span class="lb">หนักแค่ไหน</span>
       <div class="row2" id="d-in">${[1, 2, 3, 4, 5].map(i =>
@@ -591,7 +669,7 @@ function bossModal(title, text, btn = 'รับทราบ') {
   modal(`<h2>${esc(title)}</h2>
     <div class="boss">
       <img src="img/hero-boss.png" alt="" onerror="this.remove()">
-      <p style="line-height:var(--leading-body);margin:0">${esc(text)}</p>
+      <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(text)}</p>
     </div>
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
   dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
@@ -600,36 +678,90 @@ function bossModal(title, text, btn = 'รับทราบ') {
 function openHelp() {
   modal(`<h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
-    ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด</p>
+    ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด<br>
+    <span style="color:var(--muted-foreground);font-size:var(--text-xs)">
+    เกมจะค่อย ๆ สอนทีละเรื่องเองผ่านแถบสีทองใต้หัวเรื่อง — หน้านี้ไว้เปิดย้อนดูตอนลืม</span></p>
+
+    <div class="tline"><b>สามแถบที่ต้องดูตลอด</b><div>
+      ❤️ <b>บารมี</b> = ชีวิตของท่าน หมดแล้วจบเกม ·
+      ⚖️ <b>ระเบียบ</b> = คูณรายได้ทุกคดี แตะ 0 แล้วโดนเรียกกลับ ·
+      ☠️ <b>กรรมท่าน</b> = บาปที่ตกใส่ตัวเอง เต็ม 100 แล้วชื่อท่านไปอยู่ในคิว<br>
+      <b>กดที่แถบไหนก็ได้บนหัวเรื่อง</b> เพื่อดูว่ามันขึ้นลงเพราะอะไร และหมดแล้วเกิดอะไร</div></div>
+
     <ol style="line-height:var(--leading-body);font-size:var(--text-sm);padding-left:1.2em">
+      <li><b>ทีมของท่าน</b> — <b>นิรา</b> อ่านสำนวนให้ฟังอย่างเดียว (ไม่รับเวรลงทัณฑ์) ·
+          <b>ทัณฑ์</b> คือผู้คุมคนเดียวที่มีตอนเริ่ม · ถ้าคนไม่พอ เลือก <b>⚖️ ท่านเอง</b> ลงไปคุมได้
+          แต่สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น และช้ากว่ายมทูต</li>
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
-          เดินได้เฉพาะ<b>พื้นดิน ทางเดิน สะพาน และแท่นพิพากษา</b> — ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
-      <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> (เธอยืนอยู่ซ้ายแท่นตั้งแต่เริ่มเกม)
-          และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
-      <li>ใช้พลังขุดความจริง — <b>พลังมีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
+          ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
+      <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
+      <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม</li>
       <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
-      <li><b>สร้างสถานีเพิ่ม</b> — เดินไปยืนในที่ว่างที่สร้างได้ ป้าย <b>⚒ กดตรงนี้เพื่อสร้าง</b>
-          จะโผล่ขึ้นมาเอง (คลิกที่ว่างนั้นจากไกล ๆ ตัวเราจะเดินไปให้)
-          หรือสั่งจากแท็บ <b>ก่อสร้าง</b> ก็ได้</li>
-      <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ได้พลังและเงินเพิ่ม</li>
+      <li><b>สถานีที่มี = สำนวนที่จะได้รับ</b> — โซนนี้รับได้เฉพาะกรรมที่ท่านมีที่ลง
+          มีแต่กระทะทองแดง ก็มีแต่คดีฉ้อโกงกับมัวเมา · สร้างป่าดาบเพิ่ม คดีฆ่า/ทำร้ายกับวจีทุจริตถึงจะเริ่มเข้าคิว
+          (แท็บ <b>ก่อสร้าง</b> บอกไว้ทุกหลังว่าสร้างแล้วเปิดแนวไหน)</li>
+      <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ·
+          ห้าดาวยัง<b>ลดกรรมของท่าน</b>ให้ด้วยครั้งละ ${KARMA_RELIEF.star5}</li>
       <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
           เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
-      <li>ทุก 5 คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน ปล่อยไว้ระเบียบตกเรื่อย ๆ — ฟาดได้ 3 ทาง:
-          กดปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมันบนฉาก
-          (ใช้ <b>ลูกไฟ</b> ลูกละครั้ง หมดแล้วเดินไปเก็บบนแผนที่) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
-      <li><b>ลงมือลงทัณฑ์เอง</b> — เดินไปยืนที่สถานีที่กำลังลงทัณฑ์อยู่ แล้วกด <b>เว้นวรรค</b>
-          (หรือปุ่มเดียวกัน มันจะเปลี่ยนเป็น 🔥 ซัดไฟเร่งทัณฑ์) ทัณฑ์จะเดินเร็วขึ้นทันที
-          — แต่<b>ลงมือเองก็เป็นกรรมของท่านเหมือนกัน</b> ครั้งละนิดหน่อย
+      <li><b>กรรมท่านลดได้</b> — ห้าดาว · เก็บ<b>ดอกบัว</b>ที่ตกบนแผนที่ตอนกรรมเกิน 40 ·
+          หรือสร้าง<b>ศาลาน้ำชา</b>แล้วบูชาดอกบัวที่แท็บก่อสร้าง (${KARMA_RELIEF.lotusCost} เบี้ย ลด ${KARMA_RELIEF.lotusCut})</li>
+      <li>ทุก ๆ ไม่กี่คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน (กรรมท่านยิ่งสูงยิ่งมาถี่) ปล่อยไว้ระเบียบตกเรื่อย ๆ —
+          ฟาดได้ 3 ทาง: ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน
+          (ใช้ <b>ลูกไฟ</b> ลูกละครั้ง) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+      <li><b>เร่งทัณฑ์เอง</b> — ไปยืนที่สถานีที่กำลังลงทัณฑ์ แล้วกด <b>เว้นวรรค</b>
+          — แต่<b>ลงมือเองก็เป็นกรรมของท่าน</b> ครั้งละนิดหน่อย
           ส่งคนเมตตาสูงอย่างบุญไปคุม กรรมจะตกใส่ท่านครึ่งเดียว</li>
-      <li><b>จ้างยมทูตเพิ่ม</b>อยู่ที่แท็บ <b>ยมทูต</b> ใต้ฉาก (ยักษ์ทวารบาลก็อยู่แท็บนั้น) ·
-          สร้างสถานีเพิ่มอยู่ที่แท็บ <b>ก่อสร้าง</b></li>
       <li><b>กดตัวละครหรือวิญญาณบนฉาก</b> แล้วดูรายละเอียดที่แผง <b>ข้อมูล</b> ด้านขวา —
-          ยมทูตแต่ละคนถนัดอะไร กำลังคุมสำนวนไหน · วิญญาณที่ยังไม่ตัดสินจะเห็นแค่ที่เขาพูด
-          แต่<b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
+          <b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+}
+
+// ---------- บทเรียนทีละขั้น ----------
+// เจ้าของบอก 7 ก.ย. 2569 ว่า "ดูยากไป ต้องค่อยสอนทีละอย่าง"
+// กติกา: ทีละขั้นเท่านั้น และขั้นจะโผล่ตอนที่เรื่องนั้นเพิ่งมีความหมายจริง (เงื่อนไข when อยู่ใน data.js)
+// ขั้นที่ boss:true พญายมมาพูดเองแล้วหยุดเกม · ที่เหลือขึ้นเป็นแถบโค้ชโดยไม่ขัดจังหวะ
+const coachEl = $('#coach');
+let coachStep = null;
+
+function markTaught(k) {
+  if (!g.taught.includes(k)) g.taught.push(k);
+  coachStep = null;
+  g.save();
+  drawCoach();
+}
+
+function drawCoach() {
+  if (g.over) { coachEl.hidden = true; return; }
+  if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
+  if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
+  if (!coachStep) { coachEl.hidden = true; return; }
+
+  // ขั้นของพญายมต้องเป็นโมดัล — ท่านพูดเองแล้วเกมหยุดฟัง
+  if (coachStep.boss) {
+    const st = coachStep;
+    coachEl.hidden = true;
+    // ปิดขั้นนี้ตรงนี้เลย แล้วปล่อยให้ตัวจับ close ของ dlg เป็นคนเรียกขั้นถัดไป
+    // (ห้ามเรียก markTaught ที่วน drawCoach ต่อ ไม่งั้นโมดัลของพญายมจะซ้อนกันแล้ว showModal พัง)
+    if (!g.taught.includes(st.k)) g.taught.push(st.k);
+    coachStep = null;
+    g.save();
+    bossModal(st.title, st.text + (st.hint ? `\n\n▸ ${st.hint}` : ''), 'รับทราบ');
+    return;
+  }
+  const n = TUTOR.indexOf(coachStep) + 1;
+  coachEl.hidden = false;
+  coachEl.innerHTML = `
+    <div class="txt"><b>${esc(coachStep.title)}</b>
+      <p>${esc(coachStep.text)}</p>
+      ${coachStep.hint ? `<div class="tip">▸ ${esc(coachStep.hint)}</div>` : ''}</div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+      <span class="step">${n}/${TUTOR.length}</span>
+      <button class="sm" id="coach-ok">เข้าใจแล้ว</button></div>`;
+  $('#coach-ok').onclick = () => markTaught(coachStep.k);
 }
 
 // ---------- ปุ่ม ----------
@@ -764,15 +896,30 @@ g.onChange = () => {
   }
 };
 
+dlg.addEventListener('close', () => setTimeout(drawCoach, 0));   // ปิดโมดัลแล้วค่อยต่อบทเรียนขั้นถัดไป
+
 addEventListener('pointerdown', e => {          // แตะที่อื่นแล้วปิดบับเบิลที่กางอยู่
   if (!e.target.closest('.mark')) ov.querySelectorAll('.mark.show').forEach(m => m.classList.remove('show'));
 }, true);
 
-updatePlay(); refresh(); requestAnimationFrame(frame);
+// ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
+updatePlay();
+if (!SAVED) openIntro();
+refresh(); requestAnimationFrame(frame);
 
-bossModal('โซนสุวรรณภูมิ',
-  '"สามร้อยปีที่แล้วโซนนี้มีผู้คุมสิบสองคน ตอนนี้เหลือสามคนกับกองสำนวนสูงเท่าตัวเจ้า ' +
-  'ข้าไม่สนว่าเจ้าจะทำยังไง แต่จำไว้ข้อเดียว — ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"',
-  'เริ่มงาน');
+/** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
+ *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
+function openIntro() {
+  bossModal('พญายมเรียกพบ',
+    '"สามร้อยปีที่แล้วโซนนี้มีผู้คุมสิบสองคน ตอนนี้เหลือสองคนกับกองสำนวนสูงเท่าตัวเจ้า — ' +
+    'นิรา คนที่ถือแฟ้ม เธออ่านสำนวนให้เจ้าฟังอย่างเดียว อย่าสั่งเธอไปลงทัณฑ์ · ' +
+    'ทัณฑ์ คนที่ยืนอยู่ข้างกระทะ นั่นคือมือเดียวที่เจ้ามีตอนนี้ ' +
+    'ถ้าไม่พอก็ลงไปคุมเองซะ ข้าไม่ได้ห้าม\n\n' +
+    `นี่ ${BAL.startCoin} เบี้ยกรรม ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง — จำไว้ว่าโซนนี้รับได้เฉพาะกรรม` +
+    'ที่เจ้ามีที่ลงเท่านั้น สร้างอะไรไว้ สำนวนแนวนั้นถึงจะถูกส่งลงมา\n\n' +
+    'แล้วจำข้อเดียวนี้ให้ขึ้นใจ — ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"',
+    'รับงาน');
+}
+
 
 window.G = g;
