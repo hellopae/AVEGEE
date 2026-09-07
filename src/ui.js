@@ -450,10 +450,16 @@ function drawAtk() {
   atkSig = sig;
   btn.hidden = !!g.over || (!g.mobs.length && !st);
   if (btn.hidden) return;
-  const label = st ? `🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}` : `⚔️ ฟาดเปรต (${g.mobs.length})`;
-  btn.textContent = fire.ammo > 0 ? `${label} · ลูกไฟ ×${fire.ammo}`
-                                  : '⚔️ ลูกไฟหมด — เดินไปเก็บบนแผนที่';
-  btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
+  // ซัดไฟเร่งทัณฑ์ไม่ใช้ลูกไฟแล้ว — ปุ่มจึงกดได้เสมอตอนยืนที่สถานี
+  // ลูกไฟยังจำเป็นเฉพาะตอนฟาดเปรต
+  if (st) {
+    btn.textContent = `🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`;
+    btn.style.color = 'var(--gold)';
+  } else {
+    btn.textContent = fire.ammo > 0 ? `⚔️ ฟาดเปรต (${g.mobs.length}) · ลูกไฟ ×${fire.ammo}`
+                                    : '⚔️ ลูกไฟหมด — เดินไปเก็บบนแผนที่ก่อนฟาดเปรต';
+    btn.style.color = fire.ammo > 0 ? 'var(--gold)' : 'var(--destructive)';
+  }
 }
 
 function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); }
