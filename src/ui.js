@@ -967,13 +967,14 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.jpeg (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-function arena(title, foe, hp, shake) {
+function arena(title, foe, hp, shake, closable) {
   const bar = (v, max, cls, label) => hp === null ? '' : `
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
   const youImg = 'img/hero-yama.png';
   const foeSrc = typeof foe.sp === 'string' ? `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.jpeg')">
+    ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
     <div class="fig you${shake === 'you' ? ' hit' : ''}">
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
@@ -1073,7 +1074,7 @@ function openTrial() {
 
     dlg.innerHTML = `
       ${arena(`สำนวน #${String(s.id).padStart(3, '0')}`,
-              { name: s.name || s.who, sub: s.name ? s.who : 'ผู้ตาย', sp: s.sp || 7 }, null)}
+              { name: s.name || s.who, sub: s.name ? s.who : 'ผู้ตาย', sp: s.sp || 7 }, null, null, true)}
       <div class="pad">
         ${s.face ? `<div class="dossier${s.pure ? ' pure' : ''}"><b>ภาพลักษณ์</b> — ${esc(s.face)}</div>` : ''}
         ${s.back ? `<div class="back">↩️ คนนี้เคยผ่านมือท่านมาแล้ว — สำนวน #${String(s.back.id).padStart(3, '0')}

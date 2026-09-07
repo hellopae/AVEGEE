@@ -1,7 +1,7 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
-         MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
+         MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES } from './data.js';
@@ -71,7 +71,7 @@ function mkHardSoul(tags) {
     denied: null,
   };
   soul.deserved = deservedOf(soul);
-  soul.sp = SPIRIT_OF[soul.who] || 7;          // หน้าตาต้องตรงกับสำนวน
+  soul.sp = spiritFor(soul.who, soul.sex);     // หน้าตาต้องตรงกับสำนวน — รวมถึงเพศด้วย
   soul.said.push({ kind: 'deny', text: c.line });
   soul.lines = mkLines(soul);
   soul.presses = BAL.presses;
@@ -118,7 +118,7 @@ function mkSoul(tags, hiddenBonus = 0) {
     denied: null,      // เรื่องที่เขาปฏิเสธ
   };
   soul.deserved = deservedOf(soul);
-  soul.sp = SPIRIT_OF[soul.who] || 7;          // หน้าตาต้องตรงกับสำนวน
+  soul.sp = spiritFor(soul.who, soul.sex);     // หน้าตาต้องตรงกับสำนวน — รวมถึงเพศด้วย
 
   // คำแก้ตัวตั้งต้น — ปฏิเสธเรื่องที่หนักที่สุดในสำนวน
   const worst = [...deeds].filter(d => d.known).sort((a, b) => b.w - a.w)[0];

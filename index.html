@@ -369,15 +369,22 @@ dialog.wide{max-width:860px}
    ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้ (เจ้าของสั่ง 8 ก.ย. 2569 พร้อมส่งฉากหลังมาให้)
    ฉากหลัง img/BG-Turn-Base.jpeg เป็นลานหินมองจากมุมสูง มีบัลลังก์อยู่กลางบน
    ตัวละครจึงยืน "ริมล่าง" ของลาน ซ้าย-ขวา แล้วเว้นกลางไว้ให้เห็นลวดลายพื้น */
-dialog.rpg{max-width:940px;padding:0;overflow:hidden;background:var(--card)}
-dialog.rpg .pad{padding:var(--space-4);max-height:min(86vh,900px);overflow:auto}
+dialog.rpg{max-width:940px;padding:0;overflow:hidden;background:var(--card);
+  max-height:92dvh;display:flex;flex-direction:column}
+dialog.rpg .arena{flex:0 0 auto}
+dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:var(--space-4);overscroll-behavior:contain}
 .arena{position:relative;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;
   background:#221324 center 38%/cover no-repeat;aspect-ratio:16/6.6;min-height:180px;
   border-bottom:1px solid var(--border)}
 .arena:before{content:'';position:absolute;inset:0;
   background:radial-gradient(120% 80% at 50% 120%,rgba(0,0,0,.55),transparent 60%),
              linear-gradient(180deg,rgba(11,5,8,.55),transparent 38%,rgba(11,5,8,.72))}
-.arena .ttl{position:absolute;top:10px;left:0;right:0;text-align:center;
+.arena .x{position:absolute;top:8px;right:8px;z-index:4;width:34px;height:34px;min-height:0;
+  padding:0;border-radius:50%;font-size:17px;line-height:1;
+  background:rgba(12,6,9,.86);border:1px solid var(--border);backdrop-filter:blur(3px)}
+.arena .x:hover:not(:disabled){border-color:var(--gold);background:rgba(61,32,41,.95)}
+.arena .ttl{position:absolute;top:10px;left:44px;right:44px;text-align:center;
   font-family:var(--font-display);font-size:1.15rem;color:var(--gold);
   text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
 .arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;

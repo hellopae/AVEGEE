@@ -42,7 +42,7 @@ seamless loop, clean mix with space for dialogue on top
 | ไฟล์ (นามสกุลอะไรก็ได้) | ใช้ตอนไหน | prompt ต่อท้ายบล็อกสไตล์ | ความยาว |
 |---|---|---|---|
 | `bgm-title` ✅ **มีแล้ว** | **หน้าปก** ⭐ ทำก่อน | grand and ominous main theme, opens with a single struck temple gong and a long ranat tremolo, slow build into a proud dark melody carried by saw u over sustained low strings, feels like a heavy door opening, ends able to loop back to the gong | 60–80 วิ |
-| `bgm-zone` | **ลูปหลักตอนเล่น** ⭐ ทำก่อน | calm patient work loop, quiet repeating khim ostinato, soft klong that heartbeat every four bars, minimal melody so it never competes with reading, warm ember hum underneath, hypnotic and unhurried | 90–120 วิ |
+| `bgm-zone` ✅ **มีแล้ว** | **ลูปหลักตอนเล่น** | calm patient work loop, quiet repeating khim ostinato, soft klong that heartbeat every four bars, minimal melody so it never competes with reading, warm ember hum underneath, hypnotic and unhurried | 90–120 วิ |
 | `bgm-trial` | เปิดหน้าต่างไต่สวน | tense interrogation cue, sparse ticking ching, muted plucked khim on off-beats, low drone rising very slowly, one dissonant saw u note held far too long, restrained and cold, no drums | 45–60 วิ |
 | `bgm-battle` | ฉากต่อสู้กับวิญญาณที่ขัดขืน | fast aggressive battle theme, driving klong that toms, ranat ek playing rapid angular runs, distorted low brass stabs, urgent but still ritual and Thai, turn-based RPG energy | 60–75 วิ |
 | `bgm-yama` | โดนพญายมลงโทษ (แพ้แน่นอน) | overwhelming dread, enormous slow gong hits with long decay, choir-like low drone, everything else stripped away, one ranat phrase far in the distance like a memory, crushing and final | 30–40 วิ |
