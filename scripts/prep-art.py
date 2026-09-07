@@ -156,7 +156,8 @@ def check_stations():
     """
     import re
     try:
-        src = io.open(os.path.join(ROOT, 'src', 'data.js'), encoding='utf-8').read()
+        with open(os.path.join(ROOT, 'src', 'data.js'), encoding='utf-8') as f:
+            src = f.read()
     except OSError:
         return
     block = src.split('export const STATIONS')[1].split('\n];')[0]
