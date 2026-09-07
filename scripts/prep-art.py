@@ -145,6 +145,30 @@ def main():
         w, h = prep(os.path.join(RAW, f), name)
         print(f'  ✓ {f:28s} → img/{name}.png  {w}×{h}')
     print(f'เสร็จ {len(files)} ไฟล์ — รีเฟรชหน้าเกมได้เลย')
+    check_stations()
+
+
+def check_stations():
+    """เตือนถ้าสถานีไหนยังไม่มีรูป
+
+    7 ก.ย. 2569: ไฟล์ดงต้นงิ้วชื่อ ngiw.png (ไม่มี st-) เกมเลยหาไม่เจอมาหลายวัน
+    ในจอเห็นแต่กรอบเปล่า ไม่มี error ไม่มีอะไรบอกเลย — เช็คให้ตรงนี้ทีเดียวจบ
+    """
+    import re
+    try:
+        src = io.open(os.path.join(ROOT, 'src', 'data.js'), encoding='utf-8').read()
+    except OSError:
+        return
+    block = src.split('export const STATIONS')[1].split('\n];')[0]
+    keys = re.findall(r"\{\s*k:'([a-z]+)'", block)
+    missing = [k for k in keys if not os.path.exists(os.path.join(OUT, f'st-{k}.png'))]
+    if missing:
+        print('\n⚠️  สถานีที่ยังไม่มีรูป (เกมจะวาดกรอบเปล่า):')
+        for k in missing:
+            stray = [f for f in os.listdir(RAW) if os.path.splitext(f)[0] == k]
+            hint = f'  ← เจอ img/raw/{stray[0]} เปลี่ยนชื่อเป็น st-{k}.png' if stray else ''
+            print(f'   · img/st-{k}.png{hint}')
+        print('   (ชื่อไฟล์สถานีต้องขึ้นต้นด้วย st- เสมอ)')
 
 if __name__ == '__main__':
     main()
