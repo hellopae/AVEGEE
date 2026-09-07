@@ -361,6 +361,66 @@ dialog.wide{max-width:860px}
 .setrow{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:var(--text-sm)}
 .setrow label{flex:1;min-width:0}
 .setrow input[type=range]{width:150px;accent-color:var(--gold)}
+
+/* ---------- เวทีแบบเกม Turn-based RPG ----------
+   ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้ (เจ้าของสั่ง 8 ก.ย. 2569 พร้อมส่งฉากหลังมาให้)
+   ฉากหลัง img/BG-Turn-Base.jpeg เป็นลานหินมองจากมุมสูง มีบัลลังก์อยู่กลางบน
+   ตัวละครจึงยืน "ริมล่าง" ของลาน ซ้าย-ขวา แล้วเว้นกลางไว้ให้เห็นลวดลายพื้น */
+dialog.rpg{max-width:940px;padding:0;overflow:hidden;background:var(--card)}
+dialog.rpg .pad{padding:var(--space-4);max-height:min(86vh,900px);overflow:auto}
+.arena{position:relative;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;
+  background:#221324 center 38%/cover no-repeat;aspect-ratio:16/6.6;min-height:180px;
+  border-bottom:1px solid var(--border)}
+.arena:before{content:'';position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 50% 120%,rgba(0,0,0,.55),transparent 60%),
+             linear-gradient(180deg,rgba(11,5,8,.55),transparent 38%,rgba(11,5,8,.72))}
+.arena .ttl{position:absolute;top:10px;left:0;right:0;text-align:center;
+  font-family:var(--font-display);font-size:1.15rem;color:var(--gold);
+  text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
+.arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
+  align-items:center;gap:5px;width:min(34%,240px)}
+.arena .fig.you{left:4%} .arena .fig.foe{right:4%}
+.arena .fig img{height:clamp(78px,17vh,148px);width:auto;max-width:100%;object-fit:contain;
+  object-position:bottom;image-rendering:pixelated;
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
+.arena .fig.foe img{transform:scaleX(-1)}      /* สไปรท์ทุกตัวหันขวาเป็นค่าตั้งต้น ฝั่งขวาต้องพลิก */
+.arena .fig.hit img{animation:hitshake .28s}
+@keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.arena .fig.foe.hit img{animation:hitshakeF .28s}
+@keyframes hitshakeF{0%,100%{transform:scaleX(-1) translateX(0)}25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
+.plate{background:rgba(12,6,9,.86);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:5px 9px;width:100%;text-align:center;backdrop-filter:blur(3px)}
+.plate b{display:block;font-size:var(--text-sm);color:var(--gold);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plate .sub{font-size:10px;color:var(--muted-foreground)}
+.plate .hpbar{margin-top:4px;height:9px;background:#2a171d;border:1px solid var(--border);
+  border-radius:99px;overflow:hidden}
+.plate .hpbar i{display:block;height:100%;background:var(--success);transition:width .3s}
+.plate .hpbar.foe i{background:var(--destructive)}
+.plate .hpn{font-size:10px;color:var(--muted-foreground);font-variant-numeric:tabular-nums;margin-top:1px}
+@media(max-width:600px){
+  .arena{aspect-ratio:16/8}
+  .arena .fig{width:42%} .arena .fig.you{left:1%} .arena .fig.foe{right:1%}
+  .arena .ttl{font-size:.95rem}
+}
+
+/* เมนูคำสั่งแบบ RPG — แถบปุ่มใหญ่ ๆ กดสลับหน้าที่อยู่ข้างล่าง */
+.cmd{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:var(--space-3) 0}
+.cmd button{min-height:46px;font-size:var(--text-sm);font-weight:600;
+  background:var(--secondary);border:1px solid var(--input)}
+.cmd button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);
+  color:var(--primary-foreground)}
+.cmd button small{display:block;font-weight:400;font-size:10px;opacity:.72}
+.panelbox{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:var(--space-3);min-height:132px}
+.resist{background:rgba(224,74,47,.14);border:1px solid var(--destructive);
+  border-radius:var(--radius-sm);padding:7px 10px;margin-bottom:var(--space-3);
+  font-size:var(--text-xs);line-height:1.6;color:var(--foreground)}
+.verdictgrid{display:grid;gap:var(--space-3)}
+.verdictgrid .lb{font-size:11px;color:var(--muted-foreground);margin-bottom:4px;display:block}
+.verdictgrid .row2{display:flex;gap:5px;flex-wrap:wrap}
+.verdictgrid .row2 button{padding:6px 10px;min-height:0;font-size:var(--text-xs)}
+.verdictgrid .row2 button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
 </style>
 </head>
 <body>

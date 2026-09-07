@@ -3,7 +3,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
-         DENY_BY_SIN, SOLID_LINES, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
+         DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
@@ -177,10 +177,27 @@ function mkLines(soul) {
   const fake = soul.merits.find(m => m.fake);
   if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วยนะ{p} — ${fake.t}`, soul.sex), merit: fake.t });
 
-  const pool = [...SOLID_LINES];
-  while (out.length < 4) {
+  // ---- บรรทัดที่ "ตรงกับสำนวน" ----
+  // เจ้าของทัก 8 ก.ย. 2569 ว่าสี่บรรทัดนี้ดูซ้ำทุกคดี เพราะเดิมสุ่มจากกองกลางกองเดียว 5 บรรทัด
+  // ของใหม่ต่อกันสามชั้น ชั้นแรกผูกกับ "ข้อความในสำนวนจริง" จึงไม่มีทางซ้ำข้ามคดีได้เลย
+  const pool = [];
+  const known = soul.deeds.filter(d => d.known);
+  if (known.length) {
+    const d = pick(known);
+    pool.push(pick(ADMIT_TPL).replace(/\{d\}/g, d.t));           // 1. อ้างสำนวนตรง ๆ
+  }
+  for (const d of known) pool.push(...(SOLID_BY_SIN[d.s] || []));  // 2. ตามชนิดบาปในคดีนี้
+  pool.push(...SOLID_LINES);                                        // 3. กองกลางเป็นตัวเติม
+
+  const used = new Set();
+  let guard2 = 0;
+  while (out.length < 4 && guard2++ < 60) {
+    if (!pool.length) break;
     const i = Math.floor(Math.random() * pool.length);
-    out.push({ kind: 'solid', t: voice(pool.splice(i, 1)[0], soul.sex) });
+    const t = pool.splice(i, 1)[0];
+    if (used.has(t)) continue;
+    used.add(t);
+    out.push({ kind: 'solid', t: voice(t, soul.sex) });
   }
   // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
   for (let i = out.length - 1; i > 0; i--) {

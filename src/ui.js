@@ -570,7 +570,7 @@ $('#atk').onclick = () => { g.attack(); refresh(); };
 const dlg = $('#dlg');
 function modal(html, onOpen) {
   dlg.innerHTML = html;
-  openDlg(dlg.className);
+  openDlg('');
   dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
   if (onOpen) onOpen(dlg);
 }
@@ -732,7 +732,8 @@ function drawDeck() {
                title="ขังไว้ในตะรางก่อน ออกจากคิวเลย แลกกับค่าข้าวทุกวาระ"
                >🔒 ขังไว้ก่อน <span style="opacity:.55">${g.held.length}/${g.jailFree() + g.held.length}</span></button>`
           : `<button disabled title="ต้องสร้างตะรางรอวาระก่อน (แท็บก่อสร้าง)">🔒 ขังไว้ก่อน <span style="opacity:.55">ยังไม่มีตะราง</span></button>`}
-        <button class="gold" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}>⚖️ ออกหมาย</button>
+        <button class="gold" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}
+          >${g.needBattle(s) ? '⚔️ ประทับตรา (เขาจะสู้)' : '⚖️ ออกหมาย'}</button>
       </div>
     </div>`;
 
@@ -747,22 +748,16 @@ function drawDeck() {
   const jl = deckBar.querySelector('#d-jail');
   if (jl) jl.onclick = () => { if (g.jail(s.id)) { pick = { st: null, cr: null, inten: 3 }; sfx('stamp'); refresh(); } };
   const go = deckBar.querySelector('#d-go');
-  const doAssign = () => {
-    const heaven = !!STATIONS.find(d => d.k === pick.st)?.heaven;
-    if (!g.assign(s.id, pick.st, pick.cr, heaven ? 1 : pick.inten)) return;
-    sfx(heaven ? 'heaven' : 'stamp');
-    pick = { st: null, cr: null, inten: 3 };
-    if (g.pendingVerdict) showVerdict(g.pendingVerdict);
-    refresh();
-  };
   if (go) go.onclick = () => {
     // ดวงที่ขัดขืนต้องปราบก่อนถึงจะลากเข้าสถานีได้ — แพ้แล้วเขากลับเข้าคิวไปยืนรอใหม่
+    // (เส้นทางเดียวกับปุ่มออกหมายในห้องสอบสวน — ตัดสินจริงอยู่ที่ doVerdict ที่เดียว)
+    const st = pick.st, cr = pick.cr, inten = pick.inten;
     if (g.needBattle(s)) {
       g.startBattle(s);
-      openBattle(res => { if (res === 'win') doAssign(); else refresh(); });
+      openBattle(res => { if (res === 'win') doVerdict(s, st, cr, inten); else refresh(); });
       return;
     }
-    doAssign();
+    doVerdict(s, st, cr, inten);
   };
 }
 
@@ -864,7 +859,7 @@ function openNewGame() {
     <div class="row"><button data-close>เล่นต่อ</button>
       <button class="gold" id="ngo">เริ่มใหม่</button></div>`,
     d => { d.querySelector('#ngo').onclick = restart; });
-  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+  onDlgClose(() => { g.paused = was; updatePlay(); });
 }
 
 /** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
@@ -877,7 +872,7 @@ function bossModal(title, text, btn = 'รับทราบ') {
       <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(text)}</p>
     </div>
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
-  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+  onDlgClose(() => { g.paused = was; updatePlay(); });
 }
 
 function openHelp() {
@@ -944,109 +939,222 @@ function openHelp() {
  *  <dialog>.showModal() บนกล่องที่เปิดอยู่แล้วจะโยน InvalidStateError แล้วเงียบไปเลย
  *  ผลคือหน้าต่างมินิเกมเปิดไม่ติดและปุ่มข้างในไม่ผูก handler — ตัวที่ชนบ่อยที่สุดคือ
  *  โมดัลบทเรียนของพญายม ซึ่งเด้งพอดีตอน g.fights ขยับจาก 0 เป็น 1 (เจอ 8 ก.ย. 2569) */
+let dlgGen = 0;
 function openDlg(cls = '') {
+  // event 'close' ของ <dialog> ยิงแบบ async — ปิดกล่องเก่าแล้วเปิดกล่องใหม่ทันที
+  // ตัว handler ของกล่องเก่าจะมาทำงาน "หลัง" กล่องใหม่เปิดไปแล้ว แล้วไปลบ class
+  // และคืนค่า paused ของกล่องใหม่ทิ้ง (เจอ 8 ก.ย. 2569: ห้องสอบสวนเปิดมาแต่หน้าตาเป็นกล่องธรรมดา)
+  // ตัวนับรุ่นแก้ตรงนี้ — handler เก่าเช็คแล้วรู้ว่าไม่ใช่รุ่นตัวเอง ก็ถอยออกไปเงียบ ๆ
+  dlgGen++;
   if (dlg.open) dlg.close();
   dlg.className = cls;
   try { dlg.showModal(); return true; }
   catch (e) { console.error('[อเวจี] เปิดกล่องไม่ได้', e); return false; }
 }
 
-/** ไฟล์รูปของฝ่ายตรงข้าม — สำนวนที่มีชื่อใช้ img/soul-<k>.png · สำนวนสุ่มใช้ spiritN */
-const foeImg = sp => typeof sp === 'string' ? sp : 'spirit' + sp;
+/** ผูก handler ตอนปิด ที่จะทำงานเฉพาะกล่อง "รุ่นปัจจุบัน" เท่านั้น */
+function onDlgClose(fn) {
+  const gen = dlgGen;
+  const h = () => {
+    dlg.removeEventListener('close', h);
+    if (gen !== dlgGen) return;         // กล่องถูกแทนที่ไปแล้ว — ไม่ใช่เรื่องของ handler ตัวนี้
+    fn();
+  };
+  dlg.addEventListener('close', h);
+}
 
-/** แถบโปรไฟล์สองฝั่ง + หลอดเลือด — ใส่ hp = null ถ้าหน้าต่างนั้นไม่ได้สู้กัน (ห้องสอบสวน) */
-function duelBar(foe, hp) {
-  const hpRow = (v, max, cls) => hp === null ? '' : `
-    <span class="hpbar ${cls}"><i style="width:${Math.max(0, 100 * v / max)}%"></i></span>
-    <span class="hpn">${cls === 'foe' ? 'กำลังใจ' : 'บารมี'} ${Math.round(v)} / ${max}</span>`;
-  return `<div class="duel">
-    <div class="side you">
-      <img class="pic" src="img/hero-yama-profile.png" alt=""
-           onerror="this.onerror=null;this.src='img/hero-yama.png'">
-      <span class="nm">ท่าน</span>
-      <span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
-      ${hpRow(hp ? hp.youHp : 0, hp ? hp.youMax : 1, 'you')}
+/** เวที Turn-based RPG — ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้
+ *  ฉากหลังคือ img/BG-Turn-Base.jpeg (เจ้าของวาดมาให้ 8 ก.ย. 2569)
+ *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
+ *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
+function arena(title, foe, hp, shake) {
+  const bar = (v, max, cls, label) => hp === null ? '' : `
+    <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
+    <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
+  const youImg = 'img/hero-yama.png';
+  const foeSrc = typeof foe.sp === 'string' ? `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
+  return `<div class="arena" style="background-image:url('img/BG-Turn-Base.jpeg')">
+    <div class="ttl">${esc(title)}</div>
+    <div class="fig you${shake === 'you' ? ' hit' : ''}">
+      <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
+      <span class="plate"><b>ท่าน</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
+        ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
-    <div class="vs">${hp ? '⚔' : '⚖'}</div>
-    <div class="side foe">
-      <img class="pic" src="img/${esc(foeImg(foe.sp))}.png" alt=""
-           onerror="this.onerror=null;this.src='img/spirit7.png'">
-      <span class="nm">${esc(foe.name)}</span>
-      <span class="sub">${esc(foe.sub || '')}</span>
-      ${hpRow(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe')}
+    <div class="fig foe${shake === 'foe' ? ' hit' : ''}">
+      <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
+      <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
+        ${bar(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe', 'กำลังใจ')}</span>
     </div>
   </div>`;
 }
 
 // ---------- ห้องสอบสวน ----------
-// เดิมการไต่สวนอยู่ในแท็บเล็ก ๆ ใต้ฉาก อ่านยากและไม่รู้ว่ากำลังคุยกับใครอยู่
-// ของใหม่: กางเต็มจอ เห็นหน้าเขา เห็นสำนวน เห็นข้ออ้างทีละข้อ และใช้ของบีบได้ตรงนั้นเลย
+// เจ้าของสั่ง 8 ก.ย. 2569: "ปรับเป็นเหมือนเกม Turn-Base RPG · เพิ่มตัวเลือกการลงทัณฑ์ให้ด้วย
+// ใช้ item ได้ และถ้าวิญญาณบางตัวไม่ยอมรับ ก็จะมีต่อสู้"
+// โครงจึงเป็น: เวทีข้างบน + เมนูคำสั่งสามช่อง (ไต่สวน / ของ / ตัดสิน) + บันทึกข้างล่าง
+// ตัดสินจบได้ในห้องนี้เลย ไม่ต้องปิดออกไปกดที่แถบบัญชาการอีก
+let trialTab = 'ask';                     // 'ask' | 'item' | 'judge'
+
 function openTrial() {
   const s = g.queue[0];
   if (!s) return;
   const was = g.paused; g.paused = true; updatePlay();
   bgm('bgm-trial');
+  trialTab = 'ask';
+  let closing = false;
 
   const paint = () => {
     const known = s.deeds.filter(d => d.known);
     const claimed = s.merits.filter(m => !m.exposed);
-    dlg.innerHTML = `<h2>🔍 ห้องสอบสวน — สำนวน #${String(s.id).padStart(3, '0')}</h2>
-      ${duelBar({ name: s.name || s.who, sub: s.name ? s.who : 'ผู้ตาย', sp: s.sp || 7 }, null)}
+    const dests = g.stations.filter(x => x.def.pow > 0);
+    const meBusy = g.stations.some(x => x.crewK === 'me' && x.soul);
+    const idle = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
+    if (pick.st && !dests.some(x => x.def.k === pick.st && !x.soul)) pick.st = null;
+    if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
+    const heavenPick = !!(pick.st && STATIONS.find(d => d.k === pick.st)?.heaven);
 
-      ${s.face ? `<div class="dossier"><b>ภาพลักษณ์ที่สำนวนเขียนไว้</b><br>${esc(s.face)}</div>` : ''}
-      ${s.back ? `<div class="back">↩️ คนนี้เคยผ่านมือท่านมาแล้ว — สำนวน #${String(s.back.id).padStart(3, '0')}
-          ท่านให้ไป <b>${s.back.gave} วาระ</b> แล้วปล่อยกลับไป</div>` : ''}
+    const body =
+      trialTab === 'ask' ? `
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <b style="color:var(--gold);font-size:var(--text-sm)">เลือกข้ออ้างที่ขัดกับสำนวน</b>
+          <span class="press">จี้ได้อีก <b>${s.presses}</b> ครั้ง</span></div>
+        <div class="claims">${s.lines.map(l => {
+          const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
+          return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
+            >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}<span class="q">“</span>${esc(l.t)}<span class="q">”</span></button>`;
+        }).join('')}</div>`
 
-      <div class="sec" style="margin-top:0">สิ่งที่สำนวนเขียนไว้</div>
-      ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
-      ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
-          ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>`
-                   : '<i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i>'}</div>`).join('')}
+      : trialTab === 'item' ? `
+        <div style="margin-bottom:8px"><b style="color:var(--gold);font-size:var(--text-sm)">ใช้ของบีบให้สารภาพ หรือส่องความจริง</b></div>
+        ${POWERS.map(p => {
+          const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
+          const why = g.casesDone < p.unlock ? `ล็อกอยู่ — ต้องปิดคดีครบ ${p.unlock} เรื่อง`
+                    : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่ หรือสร้างหอส่องกรรม'
+                    : pw.cd > 0 ? `เพิ่งใช้ไป ต้องรออีก ${pw.cd} คดี` : `ใช้ได้ · เหลือ ${pw.ammo}`;
+          return `<div class="shop"><span class="g">${p.glyph}</span>
+            <span class="n"><b>${p.name}</b><div>${esc(p.desc)}</div>
+              <div style="color:${ready ? 'var(--success)' : 'var(--muted-foreground)'}">${why}</div></span>
+            <button class="sm" data-pw="${p.k}" ${ready ? '' : 'disabled'}>ใช้</button></div>`;
+        }).join('')}`
 
-      <div class="sec">ข้ออ้างของเขา — <b style="color:var(--gold)">เลือกข้อที่ขัดกับสำนวน</b>
-        <span class="press" style="float:right">จี้ได้อีก <b>${s.presses}</b> ครั้ง</span></div>
-      <div class="claims">${s.lines.map(l => {
-        const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
-        return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
-          >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}<span class="q">“</span>${esc(l.t)}<span class="q">”</span></button>`;
-      }).join('')}</div>
+      : `
+        ${s.resist && !s.beaten ? `<div class="resist">⚔️ <b>ดวงนี้จะไม่ยอมเดินลงไปเอง</b> —
+          พอท่านประทับตรา เขาจะขัดขืน ต้องปราบให้ได้ก่อนถึงจะลากเข้าสถานีได้</div>` : ''}
+        ${s.pure ? '' : ''}
+        <div class="verdictgrid">
+          <div><span class="lb">ส่งไปที่ไหน</span><div class="row2" id="t-st">${dests.length ? dests.map(x => {
+            const busy = !!x.soul;
+            const pct = busy ? Math.round(100 * x.progress / x.need) : 0;
+            return `<button data-k="${x.def.k}" ${busy ? 'disabled' : ''} ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
+              >${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${busy ? `ไม่ว่าง ${pct}%`
+                : (x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป')}</span></button>`;
+          }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง</span>'}</div></div>
 
-      <div class="sec">ของที่ใช้บีบให้สารภาพ / ส่องความจริง</div>
-      <div class="tools">${POWERS.map(p => {
-        const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
-        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี`
-                  : pw.ammo <= 0 ? 'หมด' : pw.cd > 0 ? `รอ ${pw.cd} คดี` : `×${pw.ammo}`;
-        return `<button data-pw="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}"
-          >${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
-      }).join('')}</div>
+          <div><span class="lb">ใครคุม</span><div class="row2" id="t-cr">${idle.length ? idle.map(c =>
+            `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+              >${c.glyph} ${c.name}<span style="opacity:.55"> ${c.self ? 'ช้า · ต้องไปยืนเอง' : Math.round(c.morale)}</span></button>`).join('')
+            : '<span class="idle">ไม่มีใครว่าง — รอผู้คุมออกเวร</span>'}</div></div>
 
-      <div class="sec">บันทึกการสอบสวน</div>
-      <div class="blog">${s.said.slice(-8).map(x =>
-        `<div class="${x.kind === 'truth' || x.kind === 'confess' ? 'hid' : ''}"
-              style="${x.kind === 'truth' ? 'color:var(--gold)' : x.kind === 'confess' ? 'color:var(--warning)' :
-                      x.kind === 'false' ? 'color:var(--destructive)' : ''}">${esc(x.text)}</div>`).join('')
-        || '<div>ยังไม่มีอะไร — เขายืนก้มหน้าอยู่เฉย ๆ</div>'}</div>
+          <div><span class="lb">${heavenPick ? 'ส่งกลับชั้นฟ้า' : 'หนักแค่ไหน'}</span>
+            <div class="row2" id="t-in">${heavenPick
+              ? '<span class="idle">ไม่มีวาระให้เลือก — ประตูสวรรค์ไม่ใช่ที่ลงทัณฑ์</span>'
+              : [1, 2, 3, 4, 5].map(i =>
+                `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div></div>
 
-      <div class="row"><button class="gold" data-close>ปิดห้องสอบสวน</button></div>`;
+          <div class="row2" style="margin-top:2px">
+            <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>⏭️ พักคดีนี้ไว้</button>
+            ${g.has('tarang')
+              ? `<button id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>🔒 ขังไว้ก่อน <span style="opacity:.55">${g.held.length}/${TARANG.hold}</span></button>`
+              : ''}
+            <button class="gold" id="t-go" ${pick.st && pick.cr ? '' : 'disabled'} style="margin-left:auto"
+              >${s.resist && !s.beaten ? '⚔️ ประทับตรา (เขาจะสู้)' : '⚖️ ออกหมาย'}</button>
+          </div>
+        </div>`;
 
+    dlg.innerHTML = `
+      ${arena(`สำนวน #${String(s.id).padStart(3, '0')}`,
+              { name: s.name || s.who, sub: s.name ? s.who : 'ผู้ตาย', sp: s.sp || 7 }, null)}
+      <div class="pad">
+        ${s.face ? `<div class="dossier${s.pure ? ' pure' : ''}"><b>ภาพลักษณ์</b> — ${esc(s.face)}</div>` : ''}
+        ${s.back ? `<div class="back">↩️ คนนี้เคยผ่านมือท่านมาแล้ว — สำนวน #${String(s.back.id).padStart(3, '0')}
+            ท่านให้ไป <b>${s.back.gave} วาระ</b> แล้วปล่อยกลับไป</div>` : ''}
+
+        <div class="sec" style="margin-top:0">สิ่งที่สำนวนเขียนไว้</div>
+        ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
+        ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
+            ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>`
+                     : '<i style="color:var(--muted-foreground)">(เขาอ้างเอง ยังไม่มีใครยืนยัน)</i>'}</div>`).join('')}
+
+        <div class="cmd">
+          <button data-cmd="ask"   ${trialTab === 'ask' ? 'aria-pressed="true"' : ''}>🗣️ ไต่สวน<small>จี้ได้อีก ${s.presses}</small></button>
+          <button data-cmd="item"  ${trialTab === 'item' ? 'aria-pressed="true"' : ''}>🎒 ของ<small>${POWERS.filter(p => g.powerReady(p.k)).length} ชิ้นพร้อมใช้</small></button>
+          <button data-cmd="judge" ${trialTab === 'judge' ? 'aria-pressed="true"' : ''}>⚖️ ตัดสิน<small>${s.pure ? 'ดูให้ดีก่อน' : 'เลือกทัณฑ์'}</small></button>
+        </div>
+        <div class="panelbox">${body}</div>
+
+        <div class="sec">บันทึกการสอบสวน</div>
+        <div class="blog">${s.said.slice(-8).map(x =>
+          `<div style="${x.kind === 'truth' ? 'color:var(--gold)' : x.kind === 'confess' ? 'color:var(--warning)' :
+                        x.kind === 'false' ? 'color:var(--destructive)' : ''}">${esc(x.text)}</div>`).join('')
+          || '<div>ยังไม่มีอะไร — เขายืนก้มหน้าอยู่เฉย ๆ</div>'}</div>
+
+        <div class="row"><button data-close>ปิดห้องสอบสวน</button></div>
+      </div>`;
+
+    dlg.querySelectorAll('[data-cmd]').forEach(el => el.onclick = () => { trialTab = el.dataset.cmd; paint(); });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
-      const before = s.said.length;
       const r = g.press(s, +el.dataset.line);
       if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
-      if (s.said.length !== before || r) paint();
-      refresh();
+      paint(); refresh();
     });
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       g.usePower(el.dataset.pw, s); sfx('crack'); paint(); refresh();
     });
-    dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
+    const bind = (id, key) => dlg.querySelectorAll(`${id} button`).forEach(b =>
+      b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; paint(); });
+    bind('#t-st', 'st'); bind('#t-cr', 'cr'); bind('#t-in', 'inten');
+
+    const sk = dlg.querySelector('#t-skip');
+    if (sk) sk.onclick = () => { if (g.defer()) { sfx('deny'); closeTrial(); } };
+    const jl = dlg.querySelector('#t-jail');
+    if (jl) jl.onclick = () => { if (g.jail(s.id)) { sfx('stamp'); closeTrial(); } };
+
+    const go = dlg.querySelector('#t-go');
+    if (go) go.onclick = () => {
+      // ดวงที่ขัดขืน: ปิดห้องสอบสวนแล้วเข้าฉากต่อสู้ ชนะค่อยออกหมายให้อัตโนมัติ
+      if (g.needBattle(s)) {
+        const st = pick.st, cr = pick.cr, inten = pick.inten;
+        closeTrial();
+        g.startBattle(s);
+        openBattle(res => { if (res === 'win') doVerdict(s, st, cr, inten); else refresh(); });
+        return;
+      }
+      doVerdict(s, pick.st, pick.cr, pick.inten);
+      closeTrial();
+    };
+    dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = closeTrial);
   };
 
+  function closeTrial() {
+    if (closing) return;
+    closing = true;
+    if (dlg.open) dlg.close();
+  }
+
   paint();
-  openDlg('wide');
-  dlg.addEventListener('close', () => {
-    dlg.className = ''; g.paused = was; updatePlay(); bgm('bgm-zone'); refresh();
-  }, { once: true });
+  openDlg('rpg');
+  onDlgClose(() => { g.paused = was; updatePlay(); bgm('bgm-zone'); refresh(); });
+}
+
+/** ออกหมายจริง — ใช้ร่วมกันระหว่างแถบบัญชาการกับห้องสอบสวน */
+function doVerdict(soul, stK, crK, inten) {
+  const heaven = !!STATIONS.find(d => d.k === stK)?.heaven;
+  if (!g.assign(soul.id, stK, crK, heaven ? 1 : inten)) return false;
+  sfx(heaven ? 'heaven' : 'stamp');
+  pick = { st: null, cr: null, inten: 3 };
+  if (g.pendingVerdict) showVerdict(g.pendingVerdict);
+  refresh();
+  return true;
 }
 
 // ---------- ฉากต่อสู้ ----------
@@ -1056,6 +1164,7 @@ function openBattle(after) {
   if (!B) return;
   bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
+  let shake = null;
 
   const paint = () => {
     const b = g.battle;
@@ -1074,34 +1183,38 @@ function openBattle(after) {
     </div>`;
 
     const done = b.over === 'win'
-      ? `<div class="row"><button class="gold" data-fin>ลากเข้าสถานี</button></div>`
+      ? '<div class="row"><button class="gold" data-fin>ลากเข้าสถานี</button></div>'
       : b.over === 'lose' && b.kind === 'yama'
-      ? `<div class="row"><button class="gold" data-fin>...</button></div>`
+      ? '<div class="row"><button class="gold" data-fin>...</button></div>'
       : b.over === 'lose'
-      ? `<div class="row"><button data-fin>ปล่อยเขากลับเข้าคิว</button></div>` : '';
+      ? '<div class="row"><button data-fin>ปล่อยเขากลับเข้าคิว</button></div>' : '';
 
-    dlg.innerHTML = `<h2>${b.kind === 'yama' ? '👑 พญายมลงมาเอง' : '⚔️ วิญญาณขัดขืน'}</h2>
-      ${duelBar({ name: b.who, sub: b.sub, sp: b.sp }, b)}
-      <div class="blog">${b.log.map(l => `<div>${esc(l)}</div>`).join('')}</div>
-      ${acts}${done}`;
+    dlg.innerHTML =
+      arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง' : '⚔️ วิญญาณขัดขืน',
+            { name: b.who, sub: b.sub, sp: b.sp }, b, shake) +
+      `<div class="pad">
+        <div class="blog">${b.log.map(l => `<div>${esc(l)}</div>`).join('')}</div>
+        ${acts}${done}
+      </div>`;
+    shake = null;
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       const k = el.dataset.act;
+      const foeBefore = g.battle.foeHp, youBefore = g.battle.youHp;
       if (!g.battleAct(k)) return;
       sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
       const nb = g.battle;
+      shake = nb.foeHp < foeBefore ? 'foe' : nb.youHp < youBefore ? 'you' : null;
       if (nb && nb.over) sfx(nb.over === 'win' ? 'win' : 'lose');
       paint();
     });
     const fin = dlg.querySelector('[data-fin]');
-    if (fin) fin.onclick = finish;      // เรียกตรง ๆ ไม่ผ่าน event close (ดูเหตุผลข้างล่าง)
+    if (fin) fin.onclick = finish;
   };
 
   // ---- ฉากต่อสู้ "ปิดไม่ได้จนกว่าจะจบ" ----
   // พบ 8 ก.ย. 2569 ว่ามี event close หลุดเข้ามาได้โดยไม่มี cancel นำหน้าและไม่มีใครกดอะไร
-  // ผลคือผู้เล่น "แพ้ฟรี" กลางฉาก เลยไม่ผูกการจบฉากไว้กับ event close อีกต่อไป:
-  //   · ปุ่มจบฉากเรียก finish() ตรง ๆ  → จบถูกทางเสมอ ต่อให้กล่องถูกปิดไปก่อนแล้ว
-  //   · close ที่ยังไม่จบฉาก → เปิดกล่องกลับให้ (ต้องรอ dispatch จบก่อนถึงจะ showModal ได้)
+  // ผลคือผู้เล่น "แพ้ฟรี" กลางฉาก เลยไม่ผูกการจบฉากไว้กับ event close อีกต่อไป
   let reopen = 0, finished = false;
 
   function finish() {
@@ -1111,7 +1224,6 @@ function openBattle(after) {
     dlg.removeEventListener('cancel', noEsc);
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();
-    dlg.className = '';
     const done = g.endBattle();
     bgm('bgm-zone');
     updatePlay();
@@ -1121,12 +1233,12 @@ function openBattle(after) {
 
   const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
   const onClose = () => {
-    // ฉากยังไม่จบ = ไม่นับว่าปิด · ลูปเฟรมจะเปิดกล่องกลับให้เองในเฟรมถัดไป
+    // ฉากยังไม่จบ = ไม่นับว่าปิด · ตัวเฝ้าจะเปิดกล่องกลับให้เองภายในเสี้ยววินาที
     if (g.battle && !g.battle.over && reopen++ < 200) return;
     finish();
   };
 
-  battleUI = () => { paint(); openDlg('wide'); };
+  battleUI = () => { paint(); openDlg('rpg'); };
   battleUI();
   dlg.addEventListener('cancel', noEsc);
   dlg.addEventListener('close', onClose);
@@ -1159,7 +1271,7 @@ function openZone() {
       if (!g.moveZone(b.dataset.zone)) return;
       sfx('gong'); dlg.close(); refresh();
     }));
-  dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+  onDlgClose(() => { g.paused = was; updatePlay(); });
 }
 
 // ---------- บทเรียนทีละขั้น ----------
@@ -1354,7 +1466,7 @@ g.onChange = () => {
     const was = g.paused; g.paused = true; updatePlay();
     modal(`<h2>【${esc(ev.title)}】</h2><p style="line-height:var(--leading-body)">${esc(ev.text)}</p>
       <div class="row"><button class="gold" data-close>รับทราบ</button></div>`);
-    dlg.addEventListener('close', () => { g.paused = was; updatePlay(); }, { once: true });
+    onDlgClose(() => { g.paused = was; updatePlay(); });
   }
 };
 
