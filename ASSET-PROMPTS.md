@@ -502,3 +502,39 @@ standing to their right, shoulders rotated about 40 degrees, both eyes still vis
 
 > ได้มาแล้วบอกผม จะเติมลง `SPIRIT_SEX` กับ `SPIRIT_OF` ให้ —
 > **สองตารางนี้ต้องแก้คู่กันเสมอ** ไม่งั้นรูปกับสรรพนามจะไม่ตรงกันอีก
+
+---
+
+## ชุดที่ 7 — เอฟเฟกต์ตอนลงมือในฉากต่อสู้ (8 ก.ย. 2569)
+
+กดปุ่มโจมตีแล้วต้องมี "อะไรวาบขึ้นมา" ที่ตัวเป้าหมาย ไม่ใช่แค่ตัวเลขลด
+โค้ดรอไฟล์พวกนี้อยู่แล้ว — **ยังไม่มีไฟล์ก็เล่นได้ ใช้อีโมจิแทนไปก่อน** (⚔️ ✨ 🪞 🌀 💢)
+
+| key | ใช้ตอน | สถานะ |
+|---|---|---|
+| `fx-fireball` | 🔥 ลูกไฟ | ✅ **มีแล้ว** |
+| `fx-slash` | ⚔️ ฟาด | ต้อง gen |
+| `fx-heal` | 💊 หีบยา | ต้อง gen |
+| `fx-mirror` | 🪞 กระจกวิเศษ | ต้อง gen |
+| `fx-hypno` | 🌀 สะกดจิต | ต้อง gen |
+| `fx-claw` | ตอนคู่ต่อสู้สวนกลับ | ต้อง gen (ยังไม่ได้ต่อสาย รอไว้ก่อน) |
+
+**บล็อกสไตล์เฉพาะชุดนี้** (ต่างจากชุดอื่น — เป็นเอฟเฟกต์ ไม่ใช่วัตถุ)
+```
+high-detail modern pixel art VFX sprite, single impact effect only, no character, no object,
+no ground, no background elements, fully transparent background, square canvas,
+effect centered and filling most of the frame, bold readable shape that stays clear when
+scaled down to 120px, clean crisp pixel edges, strong rim glow,
+no text, no letters, no numbers, no watermark, no UI
+```
+
+| key | prompt ต่อท้ายบล็อกสไตล์ |
+|---|---|
+| `fx-slash` | three overlapping curved slash arcs sweeping from upper-left to lower-right, white-hot cores fading to molten orange edges, thin sparks flying off the tips, the arcs slightly crescent-shaped like a blade path |
+| `fx-heal` | an upward burst of soft golden-green motes and thin light ribbons spiralling up, a faint lotus silhouette at the base made of light, warm and gentle, no harsh edges |
+| `fx-mirror` | a shattering pane of silver mirror glass — sharp angular shards flying outward from the centre with cold white-blue light between them, each shard catching a hard specular highlight |
+| `fx-hypno` | concentric violet rings spiralling inward to a dark pinpoint centre, thin trailing wisps bending toward the middle, an unsettling pull, deep purple to pale lilac |
+| `fx-claw` | three parallel torn gashes raked diagonally, ragged dark red edges with a dull ember glow inside the tears, small debris flecks along the rip |
+
+> **ทดสอบก่อนใช้:** ย่อลงเหลือ 120px แล้วยังอ่านออกว่าเป็นอะไรไหม
+> ถ้าดูเป็นก้อนเบลอ ๆ แปลว่ารูปทรงหลักบางเกิน gen ใหม่โดยเน้นคำว่า **bold readable shape**

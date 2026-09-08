@@ -1,7 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
-         KARMA_RELIEF, BATTLE, ZONES, TARANG } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
@@ -34,6 +34,7 @@ let tab = 'queue', hover = null, acc = 0, last = performance.now();
  *  (มี close หลุดเข้ามาได้หลายทาง — โมดัลอื่นมาแทรก, Esc, เบราว์เซอร์เอง)
  *  ผู้เล่นต้องไม่มีทาง "ค้างอยู่กับฉากต่อสู้ที่มองไม่เห็น" เด็ดขาด */
 let battleUI = null;
+let lastBattleEnd = 0;      // เวลาที่ฉากต่อสู้ล่าสุดปิดลง — ใช้เว้นจังหวะก่อนเปิดฉากใหม่
 
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
@@ -48,6 +49,10 @@ setInterval(() => {
  *  (บทเรียนของพญายม · เหตุการณ์ · ผลคำตัดสิน) แล้วจะไม่มีอะไรมาปลุกให้เปิดอีกเลย */
 function openPendingMob() {
   if (g.pendingMob == null || g.battle || g.over || dlg.open) return;
+  // เพิ่งจบฉากก่อนหน้าไปหมาด ๆ หรือกำลังโชว์ผลคำตัดสินอยู่ → รอก่อน
+  // ไม่งั้นผู้เล่นกด "ลากเข้าสถานี" แล้วหน้าต่อสู้ตัวใหม่เด้งทับทันที
+  // ดูเหมือนหน้าต่างไม่ยอมปิด (เจ้าของเจอ 8 ก.ย. 2569)
+  if (fx || Date.now() - lastBattleEnd < 2200) return;
   const i = g.pendingMob;
   g.pendingMob = null;
   if (!g.mobs[i]) return;
@@ -975,7 +980,16 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.jpeg (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-function arena(title, foe, hp, shake, closable) {
+function arena(title, foe, hp, shake, closable, fx) {
+  // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
+  const fxAt = side => {
+    if (!fx || fx.side !== side) return '';
+    const d = FX_OF[fx.key] || FX_OF.atk;
+    return `<img class="fx" src="img/${d.img}.png" alt=""
+      onerror="this.onerror=null;this.outerHTML='<span class=&quot;fx glyph&quot;>${d.glyph}</span>'">`;
+  };
+  const dmgAt = (side, v) => v > 0
+    ? `<span class="dmg ${side}">−${v > 900 ? '∞' : v}</span>` : '';
   const bar = (v, max, cls, label) => hp === null ? '' : `
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
@@ -985,11 +999,13 @@ function arena(title, foe, hp, shake, closable) {
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
     <div class="fig you${shake === 'you' ? ' hit' : ''}">
+      ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
     <div class="fig foe${shake === 'foe' ? ' hit' : ''}">
+      ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
       <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe', 'กำลังใจ')}</span>
@@ -1200,7 +1216,7 @@ function openBattle(after) {
   if (!B) return;
   bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
-  let shake = null;
+  let shake = null, fxNow = null, fxTimer = 0;
 
   const paint = () => {
     const b = g.battle;
@@ -1230,9 +1246,9 @@ function openBattle(after) {
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
-            { name: b.who, sub: b.sub, sp: b.sp }, b, shake) +
+            { name: b.who, sub: b.sub, sp: b.sp }, b, shake, false, fxNow) +
       `<div class="pad">
-        <div class="blog">${b.log.map(l => `<div>${esc(l)}</div>`).join('')}</div>
+        <div class="talkbox">${esc(b.talk || '...')}</div>
         ${acts}${done}
       </div>`;
     shake = null;
@@ -1244,8 +1260,14 @@ function openBattle(after) {
       sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
       const nb = g.battle;
       shake = nb.foeHp < foeBefore ? 'foe' : nb.youHp < youBefore ? 'you' : null;
+      // เอฟเฟกต์ของท่านตกที่ฝั่งตรงข้าม ยกเว้นหีบยาที่ตกที่ตัวเอง
+      fxNow = { key: k === 'atk' || k === 'fire' ? k : (FX_OF[k] ? k : 'atk'),
+                side: k === 'health' ? 'you' : 'foe' };
       if (nb && nb.over) sfx(nb.over === 'win' ? 'win' : 'lose');
       paint();
+      // เอฟเฟกต์เล่นจบแล้วลบทิ้ง ไม่งั้นมันจะค้างอยู่ทุกครั้งที่วาดใหม่
+      clearTimeout(fxTimer);
+      fxTimer = setTimeout(() => { fxNow = null; if (g.battle) paint(); }, 950);
     });
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = finish;
@@ -1260,6 +1282,8 @@ function openBattle(after) {
     if (finished) return;
     finished = true;
     battleUI = null;
+    lastBattleEnd = Date.now();
+    clearTimeout(fxTimer);
     dlg.removeEventListener('cancel', noEsc);
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();

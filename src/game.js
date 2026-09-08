@@ -4,7 +4,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
-         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES } from './data.js';
+         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
 
@@ -1064,12 +1064,14 @@ const API = {
     const hp = Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv));
     this.fights++;
     this.battle = {
-      kind: 'soul', soulId: soul.id,
+      kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',
       who: soul.name || soul.who, sub: soul.who, sp: soul.sp || 7,
       foeHp: hp, foeMax: hp,
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null,
-      log: [`${soul.name || soul.who}ไม่ยอมลงจากแท่น — "ท่านจะลากข้าไปได้ก็ต่อเมื่อข้าล้มเท่านั้น"`],
+      log: [],
+      talk: `"ท่านจะลากข้าไปได้ก็ต่อเมื่อข้าล้มเท่านั้น"`,   // ช่องข้อความโชว์แค่บทพูด
+      dmg: null,                                            // เลขความเสียหายรอบล่าสุด {foe,you}
     };
     this.paused = true;
     this.onChange();
@@ -1091,7 +1093,9 @@ const API = {
       foeHp: MOB.fightHp, foeMax: MOB.fightHp,
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null,
-      log: [`${kind.name}กระโจนเข้าใส่ — ${kind.line || '"..."'}`],
+      log: [],
+      talk: `${kind.name}กระโจนเข้าใส่ ${kind.line || ''}`.trim(),
+      dmg: null,
     };
     this.paused = true;
     this.onChange();
@@ -1111,7 +1115,7 @@ const API = {
       kind: 'yama', who: 'พญายม', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
       foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: 1, youMax: this.hpMax, stun: 0, turn: 1, over: null,
-      log: [YAMA_FIGHT.line1],
+      log: [], talk: YAMA_FIGHT.line1, dmg: null,
     };
     this.paused = true;
     this.onChange();
@@ -1124,13 +1128,19 @@ const API = {
     const B = this.battle;
     if (!B || B.over) return false;
     const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
-    const say = t => { B.log.push(t); if (B.log.length > 7) B.log.shift(); };
+    // log เก็บไว้ในเครื่องเฉย ๆ ไม่ได้เอาไปโชว์แล้ว — ช่องข้อความโชว์ B.talk อย่างเดียว
+    // (เจ้าของสั่ง 8 ก.ย. 2569: "เหลือแค่คำพูดของวิญญาณก็พอ log ตัดออก")
+    const say = t => { B.log.push(t); if (B.log.length > 12) B.log.shift(); };
+    const TALK = B.kind === 'mob' ? MOB_TALK : FOE_TALK;
+    const talk = k => { const p = TALK[k]; if (p && p.length) B.talk = voice(pick(p), B.sex || 'm'); };
+    B.dmg = { foe: 0, you: 0 };
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
     if (B.kind === 'yama') {
       say(pick(YAMA_FIGHT.taunt));
-      say(YAMA_FIGHT.line2);
+      B.talk = `${pick(YAMA_FIGHT.taunt)}\n${YAMA_FIGHT.line2}`;
       B.youHp = 0; B.over = 'lose';
+      B.dmg = { foe: 0, you: 999 };
       say(YAMA_FIGHT.line3);
       this.onChange();
       return true;
@@ -1170,7 +1180,9 @@ const API = {
     }
 
     B.foeHp = Math.max(0, B.foeHp - dmg);
+    B.dmg.foe = dmg;
     if (stunFoe) B.stun += stunFoe;
+    if (dmg > 0) talk(dmg >= 26 ? 'crit' : B.foeHp <= B.foeMax * 0.3 ? 'low' : 'hurt');
 
     if (B.foeHp <= 0) {
       B.over = 'win';
@@ -1185,6 +1197,7 @@ const API = {
         if (soul) soul.beaten = true;
         say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
       }
+      talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
@@ -1195,12 +1208,15 @@ const API = {
     else {
       const d = roll(B.kind === 'mob' ? MOB.fightAtk : BATTLE.foeAtk);
       B.youHp = Math.max(0, B.youHp - d);
+      B.dmg.you = d;
       say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
+      if (!B.over) talk('hit');
     }
     B.turn++;
 
     if (B.youHp <= 0) {
       B.over = 'lose';
+      talk('win');
       if (B.kind === 'mob') {
         this.hp = Math.max(1, this.hp - MOB.fightLose);
         say(`ท่านถอยออกมา — ${B.who}ยังอยู่ในโซน · บารมีหาย ${MOB.fightLose}`);
