@@ -40,7 +40,20 @@ let battleUI = null;
 setInterval(() => {
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
+  openPendingMob();        // เปรตที่รอเปิดฉากต่อสู้ — รอจนกว่าโมดัลอื่นจะปิดก่อน
 }, 400);
+
+/** เปรตเพิ่งขึ้นมา → เปิดหน้าต่อสู้ให้
+ *  เช็คในตัวจับเวลา ไม่ใช่ใน onChange อย่างเดียว เพราะตอนเปรตโผล่มักมีโมดัลอื่นเปิดค้างอยู่
+ *  (บทเรียนของพญายม · เหตุการณ์ · ผลคำตัดสิน) แล้วจะไม่มีอะไรมาปลุกให้เปิดอีกเลย */
+function openPendingMob() {
+  if (g.pendingMob == null || g.battle || g.over || dlg.open) return;
+  const i = g.pendingMob;
+  g.pendingMob = null;
+  if (!g.mobs[i]) return;
+  g.startMobBattle(i);
+  openBattle();
+}
 
 // ---------- ลูป ----------
 let saveAt = 0;
@@ -488,6 +501,15 @@ function drawTabHeads() {
     el.setAttribute('aria-selected', el.dataset.tab === tab ? 'true' : 'false');
 }
 
+/** ลงมือกับเปรต — ประชิดแล้วเปิด "หน้าต่อสู้" · ยังไกลอยู่ก็เดินไป/ขว้างลูกไฟตามเดิม
+ *  (ฟาดบนแผนที่ยังใช้ได้ผ่านการขว้าง — หน้าต่อสู้คือทางที่ได้เบี้ยกรรมมากกว่า แต่เสี่ยงกว่า) */
+function tryFight() {
+  if (g.over || g.battle || dlg.open) return;
+  const i = g.mobInReach();
+  if (i >= 0) { g.startMobBattle(i); openBattle(); return; }
+  g.attack(); sfx('hit'); refresh();
+}
+
 /** ปุ่มฟาดเปรต — โผล่เฉพาะตอนมีเปรตในโซน และบอกตรง ๆ ว่าลูกไฟเหลือเท่าไหร่ */
 let atkSig = '';
 function drawAtk() {
@@ -505,10 +527,10 @@ function drawAtk() {
   if (btn.hidden) return;
 
   const [label, color] =
-      near     ? [`⚔️ ฟาดเปรต (${g.mobs.length})`, 'var(--destructive)']
+      near     ? [`⚔️ เข้าต่อสู้กับเปรต (${g.mobs.length})`, 'var(--destructive)']
     : st       ? [`🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`, 'var(--gold)']
     : canThrow ? [`🔥 ขว้างลูกไฟใส่เปรต · ×${fire.ammo}`, 'var(--gold)']
-    : n        ? [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วฟาด`, 'var(--muted-foreground)']
+    : n        ? [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วเข้าต่อสู้`, 'var(--muted-foreground)']
                 : ['⚔️ ฟาด', 'var(--gold)'];
   btn.textContent = label;
   btn.style.color = color;
@@ -522,7 +544,7 @@ document.querySelectorAll('.tabs [data-side]').forEach(el =>
 document.querySelectorAll('.tabs [data-tab]').forEach(el =>
   el.onclick = () => { tab = el.dataset.tab; refresh(); });   // เดิมไม่มีตัวจัดการเลย กดแท็บไม่ติดทั้งเกม
 
-$('#atk').onclick = () => { g.attack(); refresh(); };
+$('#atk').onclick = tryFight;
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
@@ -1196,15 +1218,18 @@ function openBattle(after) {
       }).join('')}
     </div>`;
 
-    const done = b.over === 'win'
-      ? '<div class="row"><button class="gold" data-fin>ลากเข้าสถานี</button></div>'
-      : b.over === 'lose' && b.kind === 'yama'
-      ? '<div class="row"><button class="gold" data-fin>...</button></div>'
-      : b.over === 'lose'
-      ? '<div class="row"><button data-fin>ปล่อยเขากลับเข้าคิว</button></div>' : '';
+    const finLabel =
+        b.over === 'win'  ? (b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
+      : b.over === 'lose' ? (b.kind === 'yama' ? '...'
+                          : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
+                                              : 'ปล่อยเขากลับเข้าคิว') : '';
+    const done = b.over
+      ? `<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     dlg.innerHTML =
-      arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง' : '⚔️ วิญญาณขัดขืน',
+      arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
+          : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
+                               : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, b, shake) +
       `<div class="pad">
         <div class="blog">${b.log.map(l => `<div>${esc(l)}</div>`).join('')}</div>
@@ -1407,7 +1432,7 @@ function onSceneClick(sx, sy) {
   const a = hitActor(g, sx, sy);
   if (a) {
     select(a);
-    if (a.kind === 'mob') g.attack();      // เปรตนอกจากดูข้อมูลแล้วก็ฟาดเลย
+    if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
     return;
   }
@@ -1444,7 +1469,7 @@ addEventListener('keydown', e => {
   if (dlg.open || /input|textarea/i.test(e.target.tagName)) return;
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
-  if (e.key === ' ' && !g.over) { g.attack(); sfx('hit'); refresh(); }   // เว้นวรรค = ฟาดเปรตตนที่ใกล้ที่สุด
+  if (e.key === ' ' && !g.over) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 
@@ -1478,6 +1503,8 @@ g.onChange = () => {
   refresh();
   // ฉากพญายมลงมาเอง (บารมีหมด) เปิดอัตโนมัติ — ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมายเท่านั้น
   if (g.battle && g.battle.kind === 'yama' && !dlg.open) { openBattle(); return; }
+  // เปรตขึ้นมาก่อกวน → เปิดหน้าต่อสู้ให้ (ตัวจับเวลาเป็นตัวสำรองถ้ามีโมดัลอื่นเปิดค้าง)
+  if (g.pendingMob != null && !g.battle && !dlg.open) { openPendingMob(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;

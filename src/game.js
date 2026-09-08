@@ -71,6 +71,7 @@ function mkHardSoul(tags) {
     denied: null,
   };
   soul.deserved = deservedOf(soul);
+  soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
   soul.sp = spiritFor(soul.who, soul.sex);     // หน้าตาต้องตรงกับสำนวน — รวมถึงเพศด้วย
   soul.said.push({ kind: 'deny', text: c.line });
   soul.lines = mkLines(soul);
@@ -118,6 +119,8 @@ function mkSoul(tags, hiddenBonus = 0) {
     denied: null,      // เรื่องที่เขาปฏิเสธ
   };
   soul.deserved = deservedOf(soul);
+  // ดวงที่กรรมหนักพอ มีสิทธิ์ไม่ยอมเดินลงไปเอง — ต้องปราบก่อนถึงจะลากเข้าสถานีได้
+  soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
   soul.sp = spiritFor(soul.who, soul.sex);     // หน้าตาต้องตรงกับสำนวน — รวมถึงเพศด้วย
 
   // คำแก้ตัวตั้งต้น — ปฏิเสธเรื่องที่หนักที่สุดในสำนวน
@@ -609,6 +612,7 @@ const API = {
       back: { id: R.fromId, gave: R.gave },
     };
     soul.deserved = deservedOf(soul);
+    soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
     soul.said.push({ kind: 'confess', text: secret
       ? `"ท่านให้ผมไปแค่ ${R.gave} วาระ... แล้วผมก็ไม่ได้อยู่เฉย ๆ นะครับ"`
       : `"ท่านให้ผมไปแค่ ${R.gave} วาระ ผมออกไปแล้วก็${after.t}ครับ"` });
@@ -1072,6 +1076,34 @@ const API = {
     return this.battle;
   },
 
+  /** ฉากต่อสู้กับเปรตที่ขึ้นมาก่อกวน (8 ก.ย. 2569)
+   *  เจ้าของขอให้ "ผีเข้ามาบุก" เปิดหน้าต่อสู้ด้วย ไม่ใช่แค่เดินไปฟาดบนแผนที่
+   *  ฟาดบนแผนที่ยังทำได้เหมือนเดิม — หน้านี้คือทางที่ได้รางวัลมากกว่าแต่เสี่ยงกว่า */
+  startMobBattle(i) {
+    if (this.battle) return this.battle;
+    const m = this.mobs[i];
+    if (!m) return null;
+    const kind = MOB.kinds[m.kind ?? 0] || MOB;
+    this.fights++;
+    this.battle = {
+      kind: 'mob', mobId: m.id ?? i, mobIndex: i,
+      who: kind.name, sub: 'ขึ้นมาจากรอยแยก', sp: kind.img,
+      foeHp: MOB.fightHp, foeMax: MOB.fightHp,
+      youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
+      stun: 0, turn: 1, over: null,
+      log: [`${kind.name}กระโจนเข้าใส่ — ${kind.line || '"..."'}`],
+    };
+    this.paused = true;
+    this.onChange();
+    return this.battle;
+  },
+
+  /** เปรตที่อยู่ในระยะเอื้อมถึง — คืน index หรือ -1 */
+  mobInReach() {
+    const n = this.nearestMob();
+    return n && n.d <= MOB.reach ? n.i : -1;
+  },
+
   /** ฉากที่ไม่มีทางชนะ — บารมีหมดแล้วพ่อลงมาเอง (แทนหน้าจอจบเกมแบบเดิม) */
   startYamaFight() {
     if (this.battle) return this.battle;
@@ -1142,10 +1174,17 @@ const API = {
 
     if (B.foeHp <= 0) {
       B.over = 'win';
-      this.coin += BATTLE.winCoin;
-      const soul = this.queue.find(x => x.id === B.soulId);
-      if (soul) soul.beaten = true;
-      say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
+      if (B.kind === 'mob') {
+        const gain = Math.round(MOB.bounty * MOB.fightWin);
+        this.coin += gain;
+        this.order = clamp(this.order + 2, 0, 100);
+        say(`${B.who}สลายเป็นควันไป — +${gain} เบี้ยกรรม · ระเบียบ +2`);
+      } else {
+        this.coin += BATTLE.winCoin;
+        const soul = this.queue.find(x => x.id === B.soulId);
+        if (soul) soul.beaten = true;
+        say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
+      }
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
@@ -1154,7 +1193,7 @@ const API = {
     // ---- ตาของเขา ----
     if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
-      const d = roll(BATTLE.foeAtk);
+      const d = roll(B.kind === 'mob' ? MOB.fightAtk : BATTLE.foeAtk);
       B.youHp = Math.max(0, B.youHp - d);
       say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
     }
@@ -1162,9 +1201,14 @@ const API = {
 
     if (B.youHp <= 0) {
       B.over = 'lose';
-      this.hp = Math.max(1, this.hp - BATTLE.loseHp);
-      this.order = clamp(this.order - 6, 0, 100);
-      say(`ท่านคุกเข่าลง — เขาหลุดกลับเข้าคิว · บารมีหาย ${BATTLE.loseHp} · ระเบียบตก 6`);
+      if (B.kind === 'mob') {
+        this.hp = Math.max(1, this.hp - MOB.fightLose);
+        say(`ท่านถอยออกมา — ${B.who}ยังอยู่ในโซน · บารมีหาย ${MOB.fightLose}`);
+      } else {
+        this.hp = Math.max(1, this.hp - BATTLE.loseHp);
+        this.order = clamp(this.order - 6, 0, 100);
+        say(`ท่านคุกเข่าลง — เขาหลุดกลับเข้าคิว · บารมีหาย ${BATTLE.loseHp} · ระเบียบตก 6`);
+      }
     }
     this.onChange();
     return true;
@@ -1177,6 +1221,17 @@ const API = {
     this.battle = null;
     if (B.kind === 'yama') { this.checkEnd(); this.onChange(); return B; }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+    if (B.kind === 'mob') {
+      if (B.over === 'win') {
+        const i = this.mobs.findIndex(m => (m.id ?? -1) === B.mobId);
+        if (i >= 0) this.mobs.splice(i, 1);
+        else if (this.mobs[B.mobIndex]) this.mobs.splice(B.mobIndex, 1);
+        this.log(`⚔️ ปราบ${B.who}ลงได้`, 'good');
+      } else {
+        this.log(`⚔️ ${B.who}ยังอยู่ — ปล่อยไว้ระเบียบจะตกไปเรื่อย ๆ`, 'bad');
+      }
+      this.checkEnd(); this.onChange(); return B;
+    }
     this.log(B.over === 'win'
       ? `⚔️ ปราบ${B.who}ลงได้ — ลากเข้าสถานีได้แล้ว`
       : `⚔️ ${B.who}สลัดหลุดไปได้ — กลับเข้าคิวไปยืนรออีกครั้ง`, B.over === 'win' ? 'good' : 'bad');
@@ -1216,10 +1271,13 @@ const API = {
     // แต่ละโซนมีผีคนละชุด — ไทยครบทุกพันธุ์ · โซนอื่นเหลือพันธุ์กลางที่ใช้รูปเดิมได้
     const pool = (this.zoneDef().mobs || []).filter(i => MOB.kinds[i]);
     const kind = pool.length ? pick(pool) : Math.floor(Math.random() * MOB.kinds.length);
-    this.mobs.push({ x: p[0], y: p[1], hp: MOB.hp, kind });
+    const mob = { id: SEQ++, x: p[0], y: p[1], hp: MOB.hp, kind };
+    this.mobs.push(mob);
+    this.pendingMob = this.mobs.length - 1;      // ui เปิดหน้าต่อสู้ให้ (ดู onChange ใน ui.js)
     // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
+    this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
 
   hireGuard() {
