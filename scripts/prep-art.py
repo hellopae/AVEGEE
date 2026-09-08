@@ -175,3 +175,11 @@ def check_stations():
 
 if __name__ == '__main__':
     main()
+    # อัปเดตรายชื่อภาพให้หน้าโหลดด้วย ไม่งั้นรูปใหม่จะไม่ถูกโหลดล่วงหน้า
+    # (manifest เก่าไม่ทำให้เกมพัง แค่รูปนั้นค่อยมาตอนวาด เหมือนก่อนมีหน้าโหลด)
+    import importlib.util
+    _mf = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'make-manifest.py')
+    _spec = importlib.util.spec_from_file_location('make_manifest', _mf)
+    _mod = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+    _mod.main()

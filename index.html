@@ -598,9 +598,60 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 .acts.busy button{opacity:.4;pointer-events:none}
 .turnhint{font-size:var(--text-xs);color:var(--gold);text-align:center;padding:6px 0 2px;
   letter-spacing:.5px}
+/* ---------- หน้าโหลด ----------
+   ภาพทั้งเกมรวมกัน 16 MB · art.js ตั้งใจโหลดตอนจะวาด ซึ่งบนเน็ตมือถือแปลว่า
+   ผู้เล่นนั่งดูฉากว่างเปล่าอยู่หลายวินาที (เจ้าของเจอ 8 ก.ย. 2569 บนมือถือกับ iPad)
+   จอนี้กั้นไว้จนภาพชุดแรกมาครบ — ตรรกะอยู่ที่ src/preload.js */
+#boot{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:var(--space-4);
+  background:radial-gradient(120% 90% at 50% 0%,#2d1118 0%,#140a0e 55%,#0b0508 100%);
+  transition:opacity .55s ease}
+#boot.gone{opacity:0;pointer-events:none}
+#boot .brand{font-family:var(--font-display);font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;
+  color:var(--gold);letter-spacing:.06em;margin:0;text-shadow:0 0 30px rgba(212,163,85,.32)}
+#boot .bar{width:min(280px,62vw);height:5px;background:rgba(212,163,85,.15);
+  border-radius:99px;overflow:hidden}
+#boot .bar i{display:block;height:100%;width:0;background:var(--gold);
+  border-radius:99px;transition:width .35s ease}
+#boot .pct{font-size:var(--text-xs);color:var(--muted-foreground);font-variant-numeric:tabular-nums;
+  letter-spacing:.1em}
+#boot .note{margin:0;font-size:var(--text-sm);color:var(--muted-foreground);text-align:center;
+  max-width:min(28rem,84vw);line-height:var(--leading-body);min-height:3.4em;
+  transition:opacity .4s ease}
+
+/* ---------- มือถือ: เล่นแนวนอนอย่างเดียว ----------
+   แนวตั้งบนมือถือ แถบทรัพยากรที่ลอยอยู่บนฉากกางเป็นห้าแถวจนบังฉากทั้งจอ
+   (เจ้าของเจอ 8 ก.ย. 2569) จะไล่ย่อให้พอดีจอสูงก็เหลือฉากไม่กี่ร้อยพิกเซล
+   ขอแนวนอนตรง ๆ ชัดกว่า — โซนนี้ออกแบบมาเป็นภาพกว้างตั้งแต่ต้น */
+#rotate{display:none;position:fixed;inset:0;z-index:300;
+  flex-direction:column;align-items:center;justify-content:center;gap:var(--space-4);
+  background:var(--background);text-align:center;padding:var(--space-5)}
+#rotate .ico{font-size:3.2rem;line-height:1;animation:tilt 2.6s ease-in-out infinite}
+@keyframes tilt{0%,40%{transform:rotate(0)}56%,100%{transform:rotate(-90deg)}}
+#rotate h2{font-family:var(--font-display);color:var(--gold);margin:0;font-size:1.5rem}
+#rotate p{margin:0;color:var(--muted-foreground);font-size:var(--text-sm);
+  line-height:var(--leading-body);max-width:22rem}
+@media (orientation:portrait) and (pointer:coarse){
+  #rotate{display:flex}
+  #boot,#title,.wrap{display:none!important}
+}
 </style>
 </head>
 <body>
+<!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
+<div id="boot">
+  <h1 class="brand">อเวจี</h1>
+  <div class="bar"><i></i></div>
+  <div class="pct">0%</div>
+  <p class="note">กำลังเปิดประตูโซนสุวรรณภูมิ…</p>
+</div>
+
+<!-- โผล่เฉพาะจอสัมผัสที่ถือแนวตั้ง (ดู @media ข้างบน) -->
+<div id="rotate">
+  <div class="ico">📱</div>
+  <h2>หมุนเครื่องเป็นแนวนอน</h2>
+  <p>โซนสุวรรณภูมิกว้างกว่าจอแนวตั้ง — หมุนเครื่องนอนลงแล้วเกมจะเปิดให้เอง</p>
+</div>
 <div id="title">
   <div class="art" id="cover-art"></div>
   <div class="scrim"></div>
@@ -668,6 +719,7 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 </div>
 
 <dialog id="dlg"></dialog>
+<script type="module" src="src/preload.js"></script>
 <script type="module" src="src/ui.js"></script>
 </body>
 </html>

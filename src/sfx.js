@@ -182,3 +182,23 @@ export function bgm(key) {
 
 export function stopBgm() { cur = null; if (el) { el.pause(); } }
 export function syncBgm() { if (el) el.volume = AUDIO.on ? AUDIO.bgm : 0; }
+
+// ---------- ออกจากเกม = เงียบ ----------
+// บนมือถือกับ iPad ปิดแท็บหรือสลับไปแอปอื่นแล้วเพลงยังเล่นต่อ (เจ้าของเจอ 8 ก.ย. 2569)
+// <audio> ไม่หยุดเองเวลาหน้าเว็บถูกพักไว้เบื้องหลัง — iOS ยิ่งเลี้ยงไว้เป็นเสียงพื้นหลังให้ด้วย
+// ต้องสั่ง pause() เองตอนหน้าเว็บซ่อน แล้วค่อยเล่นต่อตอนกลับมา (เฉพาะเพลงที่กำลังเล่นค้างไว้)
+let resumeOnReturn = false;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    resumeOnReturn = !!(el && !el.paused);
+    if (el) el.pause();
+    if (AC && AC.state === 'running') AC.suspend();      // เสียงเอฟเฟกต์ที่ค้างอยู่ก็หยุดตาม
+  } else {
+    if (AC && AC.state === 'suspended') AC.resume();
+    if (resumeOnReturn && AUDIO.on && cur && el) el.play().catch(armRetry);
+    resumeOnReturn = false;
+  }
+});
+
+// ปิดแท็บ/กดย้อนกลับ — visibilitychange ไม่ยิงเสมอบน Safari มือถือ ต้องดัก pagehide ด้วย
+addEventListener('pagehide', () => { if (el) el.pause(); });
