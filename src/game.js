@@ -21,7 +21,11 @@ export function createGame() {
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [],
     queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
-    paused: true, speed: 1,
+    // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
+    // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
+    // ค่าเดิมคือ "พัก" เกมเลยค้างตั้งแต่วินาทีแรก: ทัณฑ์ 0% ยมทูตยืนนิ่ง ไม่มีอะไรขยับ
+    // (เจ้าของถามว่าทำไมความคืบหน้าเป็น 0% หมด — นี่คือคำตอบ)
+    paused: false, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
     // ตอนเริ่มเกมมีสามคน: ท่าน · นิรา (อ่านสำนวน) · ทัณฑ์ (ลงทัณฑ์) — คนอื่นต้องจ้างเอง

@@ -73,8 +73,19 @@ function frame(now) {
   }
   if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
   else render(ctx, g, now, hover, sel);
-  followMarks(); drawAtk(); updateTrialBtn();
+  followMarks(); drawAtk(); updateTrialBtn(); drawPauseTag();
   requestAnimationFrame(frame);
+}
+
+/** ป้าย "พักอยู่" ทับฉาก — เกมที่พักอยู่กับเกมที่กำลังเล่นเคยหน้าตาเหมือนกันเป๊ะ
+ *  ต่างกันแค่ตัวหนังสือบนปุ่มเล็ก ๆ ใต้ฉาก ผู้เล่นจึงนั่งรอทัณฑ์ที่ไม่มีวันเดิน
+ *  ไม่ขึ้นตอนเปิดกล่องข้อความ เพราะกล่องพักเกมให้อยู่แล้วโดยตั้งใจ */
+let pauseTagOn = null;
+function drawPauseTag() {
+  const on = g.paused && !g.over && !dlg.open;
+  if (on === pauseTagOn) return;
+  pauseTagOn = on;
+  document.querySelector('.stage').classList.toggle('resting', on);
 }
 
 // ---------- แถบทรัพยากร ----------
@@ -877,7 +888,7 @@ function restart() {
 
 /** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
 function bossModal(title, text, btn = 'รับทราบ') {
-  const was = g.paused; g.paused = true; updatePlay();
+  pauseForDlg();
   modal(`<h2>${esc(title)}</h2>
     <div class="boss">
       <img src="img/hero-boss-profile.png" alt=""
@@ -885,7 +896,6 @@ function bossModal(title, text, btn = 'รับทราบ') {
       <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(text)}</p>
     </div>
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
-  onDlgClose(() => { g.paused = was; updatePlay(); });
 }
 
 function openHelp() {
@@ -965,6 +975,26 @@ function openDlg(cls = '') {
   catch (e) { console.error('[อเวจี] เปิดกล่องไม่ได้', e); return false; }
 }
 
+/** พักเกมไว้ระหว่างมีกล่องเปิดอยู่ — ตัวจัดการตัวเดียวของทั้งไฟล์
+ *
+ *  ของเดิมแต่ละกล่องจำ `was = g.paused` ของตัวเอง แล้วคืนค่านั้นตอนปิด ซึ่งพังเมื่อ
+ *  กล่องถูก "แทนที่" ด้วยกล่องใหม่ (openDlg เขียนทับ innerHTML ไม่ได้ยิง close):
+ *  กล่องใหม่จะจำค่าที่กล่องเก่าตั้งไว้ = พัก แล้วคืนค่า "พัก" ให้ตอนปิด
+ *  เกมจึงค้างถาวรโดยหน้าตาเหมือนกำลังเล่นอยู่ — ทัณฑ์ 0% ยมทูตยืนนิ่ง
+ *  (เจ้าของเจอ 8 ก.ย. 2569 · ก่อนหน้านั้นไม่มีใครสังเกตเพราะเกมเริ่มมาแบบพักอยู่แล้ว)
+ *
+ *  ตอนนี้จำค่าไว้ที่เดียวตอนกล่อง "ใบแรก" เปิด แล้วคืนตอน <dialog> ปิดจริง ๆ
+ *  กล่องจะสลับกันกี่ใบระหว่างนั้นก็ไม่กระทบ */
+let pauseWas = null;
+function pauseForDlg() {
+  if (pauseWas === null) pauseWas = g.paused;
+  g.paused = true; updatePlay();
+}
+dlg.addEventListener('close', () => {
+  if (pauseWas === null) return;
+  g.paused = pauseWas; pauseWas = null; updatePlay();
+});
+
 /** ผูก handler ตอนปิด ที่จะทำงานเฉพาะกล่อง "รุ่นปัจจุบัน" เท่านั้น */
 function onDlgClose(fn) {
   const gen = dlgGen;
@@ -1026,7 +1056,7 @@ let trialCmd = 'ask';        // ask | st | cr | inten
 function openTrial() {
   const s = g.queue[0];
   if (!s) return;
-  const was = g.paused; g.paused = true; updatePlay();
+  pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
 
@@ -1197,7 +1227,7 @@ function openTrial() {
 
   paint();
   openDlg('hudwrap');
-  onDlgClose(() => { g.paused = was; updatePlay(); bgm('bgm-zone'); refresh(); });
+  onDlgClose(() => { bgm('bgm-zone'); refresh(); });
 }
 
 /** ออกหมายจริง — ใช้ร่วมกันระหว่างแถบบัญชาการกับห้องสอบสวน */
@@ -1337,7 +1367,7 @@ function openBattle(after) {
 function openZone() {
   const open = g.zonesOpen();
   const cur = g.zoneDef();
-  const was = g.paused; g.paused = true; updatePlay();
+  pauseForDlg();
   modal(`<h2>🗺️ ย้ายโซน</h2>
     <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}</div>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
@@ -1360,7 +1390,6 @@ function openZone() {
       if (!g.moveZone(b.dataset.zone)) return;
       sfx('gong'); dlg.close(); refresh();
     }));
-  onDlgClose(() => { g.paused = was; updatePlay(); });
 }
 
 // ---------- บทเรียนทีละขั้น ----------
@@ -1413,6 +1442,11 @@ function drawCoach() {
 }
 
 // ---------- ปุ่ม ----------
+/** ปลดพักให้วาระเดิน — ต้องเรียก **ก่อน** เปิดกล่องฉากเปิด
+ *  เพราะ pauseForDlg() จำค่า paused ตอนกล่องใบแรกเปิด แล้วคืนค่านั้นตอนปิด
+ *  ถ้าเข้าเกมมาแบบพักอยู่ ค่าที่ถูกคืนก็คือ "พัก" ตลอดไป */
+function resume() { if (!g.over && g.paused) { g.paused = false; updatePlay(); } }
+
 function updatePlay() {
   $('#play').textContent = g.paused ? '▶ เดินวาระ' : '⏸ พัก';
   $('#spd').textContent = `ความเร็ว ×${g.speed}`;
@@ -1578,11 +1612,10 @@ g.onChange = () => {
   }
   if (g.pendingEvent) {
     const ev = g.pendingEvent; g.pendingEvent = null;
-    const was = g.paused; g.paused = true; updatePlay();
+    pauseForDlg();
     modal(`<h2>【${esc(ev.title)}】</h2><p style="line-height:var(--leading-body)">${esc(ev.text)}</p>
       <div class="row"><button class="gold" data-close>รับทราบ</button></div>`);
-    onDlgClose(() => { g.paused = was; updatePlay(); });
-  }
+    }
 };
 
 dlg.addEventListener('close', () => setTimeout(drawCoach, 0));   // ปิดโมดัลแล้วค่อยต่อบทเรียนขั้นถัดไป
@@ -1603,6 +1636,7 @@ function startPlay(fresh) {
   started = true;
   unlock();                                  // เบราว์เซอร์ยอมให้เล่นเสียงได้หลังการกดครั้งแรกเท่านั้น
   titleEl.classList.add('gone');
+  resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   updatePlay();
   if (fresh) {
     // เพลงหน้าปกแทบไม่มีใครได้ยิน — ปกอยู่บนจอไม่กี่วินาที และเบราว์เซอร์ห้ามเล่นเสียง
