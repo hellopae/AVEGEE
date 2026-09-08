@@ -1183,6 +1183,9 @@ const API = {
     B.dmg.foe = dmg;
     if (stunFoe) B.stun += stunFoe;
     if (dmg > 0) talk(dmg >= 26 ? 'crit' : B.foeHp <= B.foeMax * 0.3 ? 'low' : 'hurt');
+    // ภาพนิ่งของ "ตอนจบตาเรา แต่เขายังไม่สวน" — ui เอาไปเล่นเป็นจังหวะแรก
+    // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
+    B.mid = { foeHp: B.foeHp, youHp: B.youHp, talk: B.talk };
 
     if (B.foeHp <= 0) {
       B.over = 'win';

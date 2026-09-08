@@ -980,7 +980,9 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.jpeg (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-function arena(title, foe, hp, shake, closable, fx) {
+function arena(title, foe, hp, act, closable, fx) {
+  // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
+  const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
   const fxAt = side => {
     if (!fx || fx.side !== side) return '';
@@ -998,13 +1000,13 @@ function arena(title, foe, hp, shake, closable, fx) {
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.jpeg')">
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
-    <div class="fig you${shake === 'you' ? ' hit' : ''}">
+    <div class="fig you${cls('you')}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
-    <div class="fig foe${shake === 'foe' ? ' hit' : ''}">
+    <div class="fig foe${cls('foe')}">
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
       <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
@@ -1216,13 +1218,23 @@ function openBattle(after) {
   if (!B) return;
   bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
-  let shake = null, fxNow = null, fxTimer = 0;
+  // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
+  let phase = null, fxNow = null, phaseTimer = 0;
 
   const paint = () => {
     const b = g.battle;
     if (!b) return;
+    // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
+    const view = phase === 'you' && b.mid
+        ? { ...b, foeHp: b.mid.foeHp, youHp: b.mid.youHp, talk: b.mid.talk,
+            dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0 } }
+      : phase === 'foe'
+        ? { ...b, dmg: { foe: 0, you: b.dmg ? b.dmg.you : 0 } }
+        : { ...b, dmg: { foe: 0, you: 0 } };
+    const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
+              : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
     const fireAmmo = g.powerOf('roar').ammo;
-    const acts = b.over ? '' : `<div class="acts">
+    const acts = b.over && !phase ? '' : `<div class="acts${phase ? ' busy' : ''}">
       <button data-act="atk">⚔️ ฟาด</button>
       <button data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'}>🔥 ลูกไฟ <span style="opacity:.55">×${fireAmmo}</span></button>
       ${BATTLE.items.map(it => {
@@ -1239,35 +1251,49 @@ function openBattle(after) {
       : b.over === 'lose' ? (b.kind === 'yama' ? '...'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
-    const done = b.over
+    const done = b.over && !phase
       ? `<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     dlg.innerHTML =
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
-            { name: b.who, sub: b.sub, sp: b.sp }, b, shake, false, fxNow) +
+            { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow) +
       `<div class="pad">
-        <div class="talkbox">${esc(b.talk || '...')}</div>
+        <div class="talkbox">${esc(view.talk || '...')}</div>
+        ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${acts}${done}
       </div>`;
-    shake = null;
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
+      if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const k = el.dataset.act;
-      const foeBefore = g.battle.foeHp, youBefore = g.battle.youHp;
       if (!g.battleAct(k)) return;
       sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
       const nb = g.battle;
-      shake = nb.foeHp < foeBefore ? 'foe' : nb.youHp < youBefore ? 'you' : null;
-      // เอฟเฟกต์ของท่านตกที่ฝั่งตรงข้าม ยกเว้นหีบยาที่ตกที่ตัวเอง
-      fxNow = { key: k === 'atk' || k === 'fire' ? k : (FX_OF[k] ? k : 'atk'),
-                side: k === 'health' ? 'you' : 'foe' };
-      if (nb && nb.over) sfx(nb.over === 'win' ? 'win' : 'lose');
+
+      // ---- จังหวะที่ 1: ตาของท่าน ----
+      phase = 'you';
+      fxNow = { key: FX_OF[k] ? k : 'atk', side: k === 'health' ? 'you' : 'foe' };
       paint();
-      // เอฟเฟกต์เล่นจบแล้วลบทิ้ง ไม่งั้นมันจะค้างอยู่ทุกครั้งที่วาดใหม่
-      clearTimeout(fxTimer);
-      fxTimer = setTimeout(() => { fxNow = null; if (g.battle) paint(); }, 950);
+
+      clearTimeout(phaseTimer);
+      phaseTimer = setTimeout(() => {
+        if (!g.battle) return;
+        // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
+        const counter = (nb.dmg && nb.dmg.you > 0);
+        if (!counter) { phase = null; fxNow = null; paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
+
+        // ---- จังหวะที่ 2: เขาสวนกลับ ----
+        phase = 'foe';
+        fxNow = { key: 'foe', side: 'you' };
+        sfx('hurt');
+        paint();
+        phaseTimer = setTimeout(() => {
+          phase = null; fxNow = null;
+          if (g.battle) { paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
+        }, 780);
+      }, 780);
     });
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = finish;
@@ -1283,7 +1309,7 @@ function openBattle(after) {
     finished = true;
     battleUI = null;
     lastBattleEnd = Date.now();
-    clearTimeout(fxTimer);
+    clearTimeout(phaseTimer);
     dlg.removeEventListener('cancel', noEsc);
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();

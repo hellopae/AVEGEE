@@ -578,6 +578,26 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
   padding:14px 16px;margin-bottom:var(--space-3);min-height:76px;display:flex;align-items:center;
   font-size:1.02rem;line-height:var(--leading-body);color:var(--foreground);white-space:pre-line}
 @media(max-width:600px){.talkbox{font-size:var(--text-sm);min-height:64px;padding:11px 12px}}
+
+/* ---------- จังหวะการต่อสู้: พุ่งเข้าชน แล้วถอยกลับ (8 ก.ย. 2569) ----------
+   เจ้าของบอกว่าเลือดสองฝั่งลดพร้อมกันดูแปลก ต้องแยกเป็นตาใครตามัน
+   ไม่เพิ่มรูปท่าโจมตี — ใช้สไปรท์เดิมพุ่งเข้าหาคู่กรณีแทน
+   อนิเมชันอยู่ที่ตัวกรอบ .fig ไม่ใช่ที่ <img> เพราะ img ของฝั่งซ้ายถูก scaleX(-1) ไว้แล้ว */
+.arena .fig.lunge{animation:lungeR .58s cubic-bezier(.34,1.3,.64,1)}
+.arena .fig.foe.lunge{animation:lungeL .58s cubic-bezier(.34,1.3,.64,1)}
+@keyframes lungeR{0%{transform:translateX(0)}30%{transform:translateX(62%)}
+  52%{transform:translateX(62%)}100%{transform:translateX(0)}}
+@keyframes lungeL{0%{transform:translateX(0)}30%{transform:translateX(-62%)}
+  52%{transform:translateX(-62%)}100%{transform:translateX(0)}}
+/* ตัวที่โดน — วาบขาวแล้วสั่น ใช้ filter อย่างเดียว จะได้ไม่ไปทับ transform ของ img */
+.arena .fig.struck img{animation:struck .42s ease-out}
+@keyframes struck{0%{filter:none}
+  15%{filter:brightness(2.6) saturate(.4) drop-shadow(0 0 10px #fff)}
+  45%{filter:brightness(1.15)}100%{filter:none}}
+/* ปุ่มถูกล็อกระหว่างเล่นจังหวะ — บอกให้รู้ว่ากดไม่ได้ตอนนี้ ไม่ใช่ปุ่มเสีย */
+.acts.busy button{opacity:.4;pointer-events:none}
+.turnhint{font-size:var(--text-xs);color:var(--gold);text-align:center;padding:6px 0 2px;
+  letter-spacing:.5px}
 </style>
 </head>
 <body>
