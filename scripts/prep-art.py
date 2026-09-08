@@ -90,7 +90,7 @@ def prep(path, name):
             os.path.join(OUT, name + '.png'))
         return im.size
 
-    if im.mode != 'RGBA' and not name.startswith('tile-') and name != 'scene':
+    if im.mode != 'RGBA' and not name.startswith('tile-') and not name.startswith('scene'):
         im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
     im = im.convert('RGBA')
     # 1. ตัดขอบใส — ต้องใช้ threshold ไม่ใช่ getbbox() ตรง ๆ
@@ -106,7 +106,9 @@ def prep(path, name):
         im.save(os.path.join(OUT, name + '.png'))
         return im.size
 
-    if name == 'scene':                      # ฉากเต็มใบ — ย่อพอให้ไฟล์ไม่อ้วน ห้ามตัด ห้ามลอกพื้น
+    if name.startswith('scene'):             # ฉากเต็มใบทุกโซน — ย่อพอให้ไฟล์ไม่อ้วน ห้ามตัด ห้ามลอกพื้น
+                                             # (เดิมเช็ค name == 'scene' เป๊ะ ๆ ทำให้ scene-asia/west
+                                             #  ถูกจับเป็นสไปรท์แล้วบีบเหลือ 512 จัตุรัส — 8 ก.ย. 2569)
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
         im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))

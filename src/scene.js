@@ -47,7 +47,11 @@ export function render(ctx, g, t, hover, sel) {
   ctx.setTransform(sc, 0, 0, sc, 0, 0);   // ตั้งแต่บรรทัดนี้ วาดด้วยพิกัดฉากได้เลย
   ctx.imageSmoothingEnabled = false;
 
-  const bg = img('scene');
+  // ฉากตามโซนที่กำลังคุมอยู่ — ยังไม่มีไฟล์ของโซนนั้นก็ถอยไปใช้ฉากไทย
+  // หมายเหตุ: buildWalk อ่านลาวาจากภาพ "ใบแรกที่โหลดได้" แล้วจำไว้ตลอดเกม
+  //   ตั้งใจให้เป็นแบบนั้น — ฉากทุกโซนต้องวางผังตรงกัน พิกัดใน data.js จึงใช้ร่วมกันได้
+  const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
+  const bg = img(zk) || img('scene');
   if (bg) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); buildWalk(bg); }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
