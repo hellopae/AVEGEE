@@ -400,10 +400,11 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .arena .fig img{height:clamp(78px,17vh,148px);width:auto;max-width:100%;object-fit:contain;
   object-position:bottom;image-rendering:pixelated;
   filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
-/* ทิศทางที่ถูกต้อง (แก้ 8 ก.ย. 2569 หลังเปิดดูสไปรท์จริงทั้งชุด)
-   ยมบาทวาดหันขวาอยู่แล้ว → ฝั่งซ้ายไม่ต้องพลิก หันเข้าหาคู่กรณีพอดี
-   วิญญาณวาดหันซ้าย/หันหน้าตรงเกือบทุกใบ → ฝั่งขวาก็ไม่ต้องพลิกเหมือนกัน
-   ของเดิมพลิกฝั่งขวา เลยกลายเป็นหันหลังให้กันทั้งคู่ */
+/* ⚠️ ทิศทาง — ข้อสรุปหลังเปิดดูสไปรท์จริงทุกใบ (8 ก.ย. 2569)
+   ทั้งยมบาทและวิญญาณ **วาดหันหน้าตรงเข้ากล้อง** ไม่ได้หันซ้ายหรือขวา
+   พลิกกระจกยังไงก็ไม่ทำให้หันเข้าหากัน มีแต่ทำให้ของที่ไม่สมมาตร (แฟ้ม ขลิบทอง) สลับข้าง
+   → ไม่พลิกทั้งคู่ · จะให้หันเข้าหากันจริงต้องมีรูปท่าเฉียงใหม่
+     (ดู ASSET-PROMPTS.md ชุดที่ 6 — hero-yama-side) โค้ดรอไฟล์นั้นอยู่แล้ว */
 .arena .fig.hit img{animation:hitshake .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
@@ -440,6 +441,98 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .verdictgrid .row2{display:flex;gap:5px;flex-wrap:wrap}
 .verdictgrid .row2 button{padding:6px 10px;min-height:0;font-size:var(--text-xs)}
 .verdictgrid .row2 button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+
+/* ---------- หน้าสอบสวนแบบ HUD เกม Turn-based RPG (8 ก.ย. 2569 รอบสอง) ----------
+   เจ้าของอ้างอิงเลย์เอาต์จากเกม tactics: ฉากเป็นพื้นหลังเต็มจอ · HUD ลอยทับเป็นชั้น ๆ
+     บนสุด = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
+     ล่างซ้าย = โปรไฟล์ Yama + ของ · ล่างขวา = โปรไฟล์วิญญาณ */
+dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;background:transparent;
+  max-height:94dvh;overflow:hidden}
+.hud{position:relative;display:flex;flex-direction:column;gap:0;height:min(94dvh,780px);
+  background:#221324 center 42%/cover no-repeat;border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;color:var(--foreground)}
+.hud-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,5,8,.86) 0%,rgba(11,5,8,.18) 26%,rgba(11,5,8,.20) 52%,rgba(11,5,8,.88) 100%)}
+.hud > *{position:relative;z-index:2}
+.hud .x{position:absolute;top:8px;right:8px;z-index:6;width:34px;height:34px;min-height:0;padding:0;
+  border-radius:50%;font-size:17px;line-height:1;background:rgba(12,6,9,.9);border:1px solid var(--border)}
+.hud .x:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
+
+.hud-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:9px 52px 9px 12px}
+.hud-top .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);font-size:var(--text-xs);
+  padding:4px 9px;backdrop-filter:blur(3px)}
+.hud-top .ttl{margin-left:auto;font-family:var(--font-display);color:var(--gold);font-size:var(--text-sm)}
+
+.hud-body{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:168px minmax(0,1fr) minmax(300px,340px);
+  gap:10px;padding:0 12px}
+
+/* แถวคำสั่งแนวตั้งฝั่งซ้าย */
+.hud-left{display:flex;flex-direction:column;gap:6px;align-content:flex-start;
+  min-height:0;overflow-y:auto;padding-bottom:4px}
+.hud-left button{display:flex;align-items:center;gap:8px;text-align:left;min-height:44px;padding:6px 10px;
+  background:rgba(20,10,15,.86);border:1px solid var(--input);backdrop-filter:blur(3px);font-size:var(--text-sm)}
+.hud-left button .ic{font-size:1.15rem;width:22px;text-align:center;flex:none}
+.hud-left button .lb2{min-width:0;line-height:1.2}
+.hud-left button .lb2 small{display:block;font-size:10px;color:var(--muted-foreground);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:104px}
+.hud-left button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hud-left button[aria-pressed=true] small{color:rgba(255,255,255,.75)}
+.hud-left .fire{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground);font-weight:600}
+.hud-left .fire small{color:rgba(26,13,16,.7)}
+
+/* เวทีตรงกลาง — ตัวละครยืนเผชิญหน้ากัน */
+.hud-stage{position:relative;min-width:0}
+.hud .fig{position:absolute;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:4px}
+.hud .fig.you{left:2%} .hud .fig.foe{right:2%}
+.hud .fig img{height:clamp(110px,26vh,196px);width:auto;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;filter:drop-shadow(0 8px 12px rgba(0,0,0,.7))}
+.hud .fig .nm{font-size:11px;color:var(--gold);background:rgba(12,6,9,.8);border-radius:99px;padding:1px 8px}
+
+/* ขวาบน — สำนวนกับคำให้การ */
+.hud-right{display:flex;flex-direction:column;gap:8px;min-height:0}
+.hud-card{background:rgba(12,6,9,.86);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:9px 11px;backdrop-filter:blur(3px);min-height:0}
+.hud-card h4{margin:0 0 6px;font-size:11px;color:var(--muted-foreground);font-weight:400;
+  text-transform:none;letter-spacing:.3px}
+.hud-rec{flex:0 0 auto;max-height:34%;overflow-y:auto}
+.hud-opt{flex:1 1 auto;overflow-y:auto}
+.hud-opt .row2{display:flex;flex-direction:column;gap:5px}
+.hud-opt .row2 button{width:100%;text-align:left;padding:7px 10px;min-height:0;font-size:var(--text-xs)}
+.hud-opt .row2 button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hud-opt .say{margin-bottom:6px;font-size:var(--text-xs);padding:7px 9px}
+.hud-log{font-size:11px;line-height:1.65;color:var(--muted-foreground);max-height:96px;overflow-y:auto}
+.hud-log .hi{color:var(--gold)}
+
+/* แถวล่าง — โปรไฟล์สองฝั่ง + ของของ Yama */
+.hud-bottom{display:flex;gap:10px;align-items:flex-end;padding:10px 12px 12px}
+.port{display:flex;gap:9px;align-items:center;background:rgba(12,6,9,.88);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:7px 10px;backdrop-filter:blur(4px);min-width:0}
+.port img{width:52px;height:52px;flex:none;object-fit:cover;object-position:center top;
+  border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.port.foe img{border-color:#7fb2e0;object-fit:contain;object-position:bottom;image-rendering:pixelated}
+.port .who2{min-width:0}
+.port .who2 b{display:block;font-size:var(--text-sm);color:var(--gold);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.port .who2 small{color:var(--muted-foreground);font-size:10px}
+.port.foe{margin-left:auto}
+.hud-items{display:flex;gap:5px;margin-left:8px}
+.hud-items button{width:44px;height:44px;min-height:0;padding:0;font-size:1.2rem;border-radius:var(--radius-sm);
+  position:relative;background:var(--secondary)}
+.hud-items button b{position:absolute;right:2px;bottom:0;font-size:9px;color:var(--gold);font-weight:600}
+.hud-items button:disabled{opacity:.32}
+
+@media(max-width:900px){
+  .hud{height:auto;max-height:94dvh;overflow-y:auto}
+  .hud-body{grid-template-columns:1fr;gap:8px}
+  .hud-left{flex-direction:row;flex-wrap:wrap}
+  .hud-left button{flex:1 1 46%;min-height:40px}
+  .hud-left button .lb2 small{display:none}
+  .hud-stage{height:180px}
+  .hud-right{max-height:none}
+  .hud-rec{max-height:none}
+  .hud-bottom{flex-wrap:wrap}
+  .port.foe{margin-left:0}
+}
 </style>
 </head>
 <body>
@@ -489,8 +582,7 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   <div class="below">
     <div class="panel">
       <div class="tabs" role="tablist">
-        <button role="tab" data-tab="quiz" aria-selected="true" id="tab-quiz">ไต่สวน</button>
-        <button role="tab" data-tab="queue" aria-selected="false" id="tab-queue">คิววิญญาณ</button>
+        <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
         <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
         <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
       </div>

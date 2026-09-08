@@ -439,3 +439,66 @@ No text, no letters, no numbers, no characters, no people.
 ------------------------------------------
 รวม                  61 ไฟล์  ~12.1 MB   (เพดาน 50 MB — ยังเหลือเยอะ)
 ```
+
+---
+
+## ชุดที่ 6 — รูปท่าเฉียงสำหรับห้องสอบสวน (8 ก.ย. 2569)
+
+**ปัญหาที่ต้องแก้ด้วยรูป ไม่ใช่ด้วยโค้ด**
+เจ้าของทักว่าในห้องสอบสวน "ตัวละครหันหน้าไปคนละทาง" — เปิดสไปรท์ดูแล้วพบว่า
+**ทั้งยมบาทและวิญญาณวาดหันหน้าตรงเข้ากล้องทั้งคู่** (ถูกต้องสำหรับ standee บนแผนที่)
+พลิกกระจกยังไงก็ไม่ทำให้หันเข้าหากัน มีแต่ทำให้ของที่ไม่สมมาตรสลับข้าง
+จึงต้อง gen **ท่าเฉียง** เพิ่มเฉพาะสำหรับหน้าสอบสวน/ต่อสู้
+
+> โค้ดรอไฟล์พวกนี้อยู่แล้ว — **ดรอปลง `img/` แล้วเห็นผลทันที ไม่ต้องแก้โค้ด**
+> ยังไม่มีไฟล์ = ใช้ท่ายืนตรงเดิม เกมไม่พัง
+
+### 6.1 ยมน้อย ท่าเฉียง ⭐ ทำก่อน
+
+| key | ต้องได้ |
+|---|---|
+| `hero-yama-side` | ท่าเฉียง **หันไปทางขวาของภาพ** |
+
+**ใช้โหมดแก้ภาพ แนบ `img/hero-yama.png` เข้าไปด้วยเสมอ** แล้วใส่ prompt นี้
+```
+keep the exact same character, same outfit, same colors and the same chibi head-to-body
+proportions as the reference image — change ONLY the body orientation.
+
+Turn him into a three-quarter side view FACING TO THE RIGHT side of the canvas,
+as if he is looking at someone standing to his right. Shoulders and hips rotated about
+40 degrees, face turned to the right in three-quarter profile, both eyes still visible,
+still hugging the thick ledger against his chest with both arms, feet planted.
+
+His gold Thai mongkut crown, dark navy-black long robe with crimson front panel and thin
+gold trim, small blunt horns, pointed ears and bare feet all stay exactly as in the reference.
+Same outline weight, same palette, same lighting.
+
+single figure centered on a fully transparent background, square canvas, full body with
+feet visible at the bottom edge, no text, no letters, no numbers, no shadow baked in
+```
+
+### 6.2 วิญญาณท่าเฉียง — ใส่ไว้ใน prompt ตอน gen ผีชุดใหม่เลย
+
+เจ้าของกำลังจะ gen ผีเพิ่มอยู่แล้ว **เพิ่มประโยคนี้เข้าไปในทุกตัว**
+```
+three-quarter side view FACING TO THE RIGHT side of the canvas, as if looking at someone
+standing to their right, shoulders rotated about 40 degrees, both eyes still visible
+```
+แล้วตั้งชื่อ `spirit8` `spirit9` … ต่อจากของเดิม
+
+> **ทำไมต้องหันขวาทั้งคู่** — กติกาสไปรท์ของเกมนี้คือ "หันขวาเป็นค่าตั้งต้น"
+> โค้ดพลิกกระจกเองเวลาต้องหันซ้าย ยมบาทยืนซ้ายใช้ตรง ๆ · วิญญาณยืนขวาโค้ดพลิกให้เอง
+
+### 6.3 ผีชายสามัญ — ช่องว่างที่เจอตอนแก้เพศสไปรท์
+
+ตอนนี้สไปรท์ผีชายมีแต่ **ชายชุดสูท** กับ **เศรษฐีอ้วน** กับ **ขุนนางเฒ่า**
+ไม่มีผีชายชาวบ้านเลย ทำให้ "คนขับรถรับจ้าง" ต้องใส่สูท
+
+| key | prompt ต่อท้ายบล็อกสไตล์ |
+|---|---|
+| `spirit8` | translucent pale ghost of a middle-aged Thai working man, weathered face, short cropped hair, plain short-sleeve shirt over a faded singlet, loose work trousers, a cloth wrapped at the waist, tired resigned expression, lower body fading into wisps |
+| `spirit9` | translucent pale ghost of an elderly Thai woman, silver hair pulled into a small bun, thin frame in a simple blouse and phasin wrap skirt, hands together in a wai, deeply lined kind face, lower body fading into wisps |
+| `spirit10` | translucent pale ghost of a Thai schoolgirl about sixteen, white blouse and navy pleated skirt, short ponytail, arms hanging limp at her sides, hollow exhausted eyes, lower body fading into wisps |
+
+> ได้มาแล้วบอกผม จะเติมลง `SPIRIT_SEX` กับ `SPIRIT_OF` ให้ —
+> **สองตารางนี้ต้องแก้คู่กันเสมอ** ไม่งั้นรูปกับสรรพนามจะไม่ตรงกันอีก
