@@ -300,7 +300,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 }
 
 /* ---------- หน้าปก ----------
-   ภาพ img/cover.png วางเป็นพื้นหลัง ยังไม่มีไฟล์ก็ยังสวยอยู่ได้ด้วยไล่สีข้างล่าง
+   ภาพ img/cover.webp วางเป็นพื้นหลัง (ui.js ใส่ background-image ให้ตอนรู้ว่าไฟล์ไหนมี)
+   ยังไม่มีไฟล์ก็ยังสวยอยู่ได้ด้วยไล่สีข้างล่าง
    เมนูอยู่ "ครึ่งขวา" ตรงกับที่ ASSET-PROMPTS.md สั่งให้เว้นที่ว่างไว้ */
 #title{position:fixed;inset:0;z-index:100;display:grid;grid-template-columns:1fr minmax(300px,38%);
   background:#0b0508;overflow:hidden}
@@ -310,8 +311,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     radial-gradient(700px 500px at 15% 20%,rgba(120,40,90,.30),transparent 70%),
     linear-gradient(160deg,#1a0a12 0%,#0b0508 60%);
   background-size:cover;background-position:center}
-#title .art.has{background-image:url('img/cover.png');
-  background-size:cover;background-position:center}
+#title .art.has{background-size:cover;background-position:center}
 #title .scrim{position:absolute;inset:0;
   background:linear-gradient(90deg,rgba(11,5,8,0) 38%,rgba(11,5,8,.72) 62%,rgba(11,5,8,.93) 100%)}
 #title .menu{position:relative;grid-column:2;display:flex;flex-direction:column;justify-content:center;

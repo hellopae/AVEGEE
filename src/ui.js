@@ -1624,10 +1624,18 @@ function buildTitle() {
   const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
   titleEl.addEventListener('pointerdown', wake);
 
+  // หน้าปกเป็น webp ตั้งแต่ 8 ก.ย. 2569 — png เดิม 1.3 MB คือไฟล์ใหญ่สุดของทั้งเกม
+  // และเป็นภาพแรกที่ต้องมาถึง (144 KB แล้ว) · ถ้าวันหลังดรอป cover.png กลับมาก็ยังใช้ได้
+  // ไม่มีสักไฟล์ก็ยังสวยอยู่ได้ด้วยไล่สีใน CSS
   const art = $('#cover-art');
-  const probe = new Image();                 // มีไฟล์หน้าปกค่อยใช้ ไม่มีก็อยู่กับไล่สีไปก่อน
-  probe.onload = () => art.classList.add('has');
-  probe.src = 'img/cover.png';
+  (function probeCover(list) {
+    if (!list.length) return;
+    const [url, ...rest] = list;
+    const probe = new Image();
+    probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
+    probe.onerror = () => probeCover(rest);
+    probe.src = url;
+  })(['img/cover.webp', 'img/cover.png']);
 
   const rs = $('#t-resume');
   if (SAVED) {
