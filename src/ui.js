@@ -992,7 +992,12 @@ function pauseForDlg() {
 }
 dlg.addEventListener('close', () => {
   if (pauseWas === null) return;
-  g.paused = pauseWas; pauseWas = null; updatePlay();
+  // close ของ <dialog> ยิงแบบ async — ตอนกล่องถูก "แทนที่" openDlg จะ close แล้ว showModal
+  // ทันทีในจังหวะเดียวกัน พอ event มาถึง กล่องใหม่เปิดอยู่แล้ว ยังไม่ใช่จังหวะคืนค่า
+  setTimeout(() => {
+    if (dlg.open || pauseWas === null) return;
+    g.paused = pauseWas; pauseWas = null; updatePlay();
+  }, 0);
 });
 
 /** ผูก handler ตอนปิด ที่จะทำงานเฉพาะกล่อง "รุ่นปัจจุบัน" เท่านั้น */
@@ -1246,6 +1251,7 @@ function doVerdict(soul, stK, crK, inten) {
 function openBattle(after) {
   const B = g.battle;
   if (!B) return;
+  pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
   bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก

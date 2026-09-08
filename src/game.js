@@ -1077,8 +1077,7 @@ const API = {
       talk: `"ท่านจะลากข้าไปได้ก็ต่อเมื่อข้าล้มเท่านั้น"`,   // ช่องข้อความโชว์แค่บทพูด
       dmg: null,                                            // เลขความเสียหายรอบล่าสุด {foe,you}
     };
-    this.paused = true;
-    this.onChange();
+    this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
 
@@ -1101,8 +1100,7 @@ const API = {
       talk: `${kind.name}กระโจนเข้าใส่ ${kind.line || ''}`.trim(),
       dmg: null,
     };
-    this.paused = true;
-    this.onChange();
+    this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
 
@@ -1121,8 +1119,7 @@ const API = {
       youHp: 1, youMax: this.hpMax, stun: 0, turn: 1, over: null,
       log: [], talk: YAMA_FIGHT.line1, dmg: null,
     };
-    this.paused = true;
-    this.onChange();
+    this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
 
