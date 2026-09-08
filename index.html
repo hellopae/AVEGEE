@@ -43,11 +43,15 @@ header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
   background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px}
 h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
 h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
-/* ย้ายลงมาอยู่เหนือฉาก 8 ก.ย. 2569 — เดิมเบียดอยู่ในหัวเรื่อง อ่านยากและอยู่ไกลจากที่ที่ใช้จริง
-   ตอนนี้เป็นแถวของตัวเอง คั่นระหว่างแถบบัญชาการกับแผนที่ */
-.res{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:var(--space-2) var(--space-3)}
+/* ลอยทับอยู่บนแผนที่ 8 ก.ย. 2569 — แบบเดียวกับแถบสถานะในหน้าสอบสวน
+   เดิมเป็นแถบสีน้ำตาลคั่นเหนือฉาก กินที่และดูขาดจากภาพ */
+.res{position:absolute;top:calc(var(--space-2) + 7px);left:calc(var(--space-2) + 7px);
+  right:calc(var(--space-2) + 7px);z-index:6;
+  display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.res .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);
+  backdrop-filter:blur(3px);font-size:var(--text-xs);padding:4px 9px;
+  box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.res .bar{width:56px}
 /* ปุ่มระบบย้ายขึ้นมาบนหัวเรื่อง 8 ก.ย. 2569 — เดิมอยู่ใต้ฉาก ต้องเลื่อนหาทุกครั้ง */
 .sysbtn{display:flex;gap:5px;flex-wrap:wrap;width:100%;justify-content:flex-end}
 .sysbtn button{padding:5px 10px;min-height:0;font-size:var(--text-xs)}
@@ -269,7 +273,8 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   .wrap{padding:var(--space-2);gap:var(--space-2)}
   header{gap:var(--space-2)}
   h1{font-size:1.15rem} #ava{width:38px;height:38px}
-  .res{gap:5px;padding:var(--space-2)}
+  .res{gap:4px;top:calc(var(--space-2) + 4px);left:calc(var(--space-2) + 4px);right:calc(var(--space-2) + 4px)}
+  .res .chip{padding:3px 6px}
   .chip{font-size:var(--text-xs);padding:4px 7px;flex:1 1 auto}
   .bar{width:44px}
 
@@ -576,10 +581,9 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 
   <div class="deckbar" id="deck"></div>
 
-  <div class="res" id="res"></div>
-
   <div class="stage">
     <canvas id="cv" width="1527" height="704"></canvas>
+    <div class="res" id="res"></div>
     <div id="ov"></div>
   </div>
   <div class="ctrl">
