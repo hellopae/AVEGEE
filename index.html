@@ -44,6 +44,10 @@ header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
 h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
 h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
 .res{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-left:auto}
+/* ปุ่มระบบย้ายขึ้นมาบนหัวเรื่อง 8 ก.ย. 2569 — เดิมอยู่ใต้ฉาก ต้องเลื่อนหาทุกครั้ง */
+.sysbtn{display:flex;gap:5px;flex-wrap:wrap;width:100%;justify-content:flex-end}
+.sysbtn button{padding:5px 10px;min-height:0;font-size:var(--text-xs)}
+@media(max-width:820px){.sysbtn{justify-content:flex-start}.sysbtn button{flex:1 1 auto}}
 .chip{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:6px 10px;font-size:var(--text-sm);display:flex;gap:6px;align-items:center;white-space:nowrap}
 .chip b{font-variant-numeric:tabular-nums}
@@ -396,11 +400,13 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .arena .fig img{height:clamp(78px,17vh,148px);width:auto;max-width:100%;object-fit:contain;
   object-position:bottom;image-rendering:pixelated;
   filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
-.arena .fig.foe img{transform:scaleX(-1)}      /* สไปรท์ทุกตัวหันขวาเป็นค่าตั้งต้น ฝั่งขวาต้องพลิก */
+/* ทิศทางที่ถูกต้อง (แก้ 8 ก.ย. 2569 หลังเปิดดูสไปรท์จริงทั้งชุด)
+   ยมบาทวาดหันขวาอยู่แล้ว → ฝั่งซ้ายไม่ต้องพลิก หันเข้าหาคู่กรณีพอดี
+   วิญญาณวาดหันซ้าย/หันหน้าตรงเกือบทุกใบ → ฝั่งขวาก็ไม่ต้องพลิกเหมือนกัน
+   ของเดิมพลิกฝั่งขวา เลยกลายเป็นหันหลังให้กันทั้งคู่ */
 .arena .fig.hit img{animation:hitshake .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-.arena .fig.foe.hit img{animation:hitshakeF .28s}
-@keyframes hitshakeF{0%,100%{transform:scaleX(-1) translateX(0)}25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
+
 .plate{background:rgba(12,6,9,.86);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:5px 9px;width:100%;text-align:center;backdrop-filter:blur(3px)}
 .plate b{display:block;font-size:var(--text-sm);color:var(--gold);line-height:1.25;
@@ -458,6 +464,12 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
          onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
     <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
     <div class="res" id="res"></div>
+    <div class="sysbtn">
+      <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
+      <button id="help" class="sm">วิธีเล่น</button>
+      <button id="settings" class="sm">⚙ ตั้งค่า</button>
+      <button id="mute" class="sm">🔊 เสียง</button>
+    </div>
   </header>
 
   <div class="deckbar" id="deck"></div>
@@ -471,9 +483,7 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
     <button id="spd" class="sm">ความเร็ว ×1</button>
     <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
     <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
-    <button id="zone" class="sm" hidden>🗺️ ย้ายโซน</button>
-    <button id="newgame" class="sm" style="margin-left:auto">เริ่มเกมใหม่</button>
-    <button id="help" class="sm">วิธีเล่น</button>
+    <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
   </div>
 
   <div class="below">

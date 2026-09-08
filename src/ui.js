@@ -568,6 +568,18 @@ $('#atk').onclick = () => { g.attack(); refresh(); };
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
+
+// ตัวจับกลางสำหรับปุ่มปิดทุกปุ่มในทุกโมดัล — ผูกครั้งเดียวตอนโหลดหน้า
+// เดิมแต่ละโมดัลผูก onclick ให้ปุ่มของตัวเองตอน render ซึ่งพลาดได้หลายทาง
+// (render ใหม่แล้วผูกไม่ทัน · onclick ถูกทับ · ตัวล็อกภายในค้าง)
+// เจ้าของเจอ 8 ก.ย. 2569: กด "ปิดห้องสอบสวน" แล้วป๊อปอัปไม่ยอมปิด
+// event delegation แบบนี้ไม่มีทางหลุด เพราะไม่ได้ผูกกับปุ่มตัวไหนเลย
+//   ⚠️ ฉากต่อสู้ไม่ได้รับผลกระทบ — ปุ่มในนั้นใช้ data-fin ไม่ใช่ data-close
+//      และถึงปิดไป ตัวเฝ้าก็เปิดกลับให้อยู่ดีถ้าฉากยังไม่จบ
+dlg.addEventListener('click', e => {
+  if (e.target.closest('[data-close]') && dlg.open) dlg.close();
+});
+
 function modal(html, onOpen) {
   dlg.innerHTML = html;
   openDlg('');
@@ -849,19 +861,6 @@ function restart() {
   location.reload();
 }
 
-function openNewGame() {
-  const was = g.paused; g.paused = true; updatePlay();
-  modal(`<h2>เริ่มเกมใหม่</h2>
-    <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
-      เริ่มใหม่แล้ว<b>ความคืบหน้าที่บันทึกไว้จะหายทั้งหมด</b> —
-      ตอนนี้อยู่วาระที่ ${g.tick} · ปิดคดีแล้ว ${g.casesDone} เรื่อง ·
-      ${esc(LEVELS[g.level - 1].name)} ⭐${g.star5}</p>
-    <div class="row"><button data-close>เล่นต่อ</button>
-      <button class="gold" id="ngo">เริ่มใหม่</button></div>`,
-    d => { d.querySelector('#ngo').onclick = restart; });
-  onDlgClose(() => { g.paused = was; updatePlay(); });
-}
-
 /** โมดัลที่มีพญายมนั่งบัลลังก์อยู่ข้าง ๆ (รูปหายก็ยังอ่านได้) */
 function bossModal(title, text, btn = 'รับทราบ') {
   const was = g.paused; g.paused = true; updatePlay();
@@ -978,7 +977,7 @@ function arena(title, foe, hp, shake, closable) {
     <div class="ttl">${esc(title)}</div>
     <div class="fig you${shake === 'you' ? ' hit' : ''}">
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
-      <span class="plate"><b>ท่าน</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
+      <span class="plate"><b>Yama</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
     <div class="fig foe${shake === 'foe' ? ' hit' : ''}">
@@ -1002,7 +1001,6 @@ function openTrial() {
   const was = g.paused; g.paused = true; updatePlay();
   bgm('bgm-trial');
   trialTab = 'ask';
-  let closing = false;
 
   const paint = () => {
     const known = s.deeds.filter(d => d.known);
@@ -1133,12 +1131,13 @@ function openTrial() {
       doVerdict(s, pick.st, pick.cr, pick.inten);
       closeTrial();
     };
-    dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = closeTrial);
+    dlg.querySelectorAll('[data-close]').forEach(b => {
+      b.onclick = closeTrial;
+      b.addEventListener('click', closeTrial);     // ผูกสองทาง กัน onclick ถูกทับ
+    });
   };
 
   function closeTrial() {
-    if (closing) return;
-    closing = true;
     if (dlg.open) dlg.close();
   }
 
@@ -1338,8 +1337,32 @@ function updatePlay() {
 $('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
-$('#newgame').onclick = openNewGame;
 $('#zone').onclick = openZone;
+$('#settings').onclick = openSettings;
+$('#menu').onclick = goMenu;
+
+/** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
+ *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
+function goMenu() {
+  g.save();
+  saveAt = Infinity;                       // กันลูปเฟรมเขียนเซฟทับตอนกำลังรีโหลด
+  sessionStorage.removeItem('avegee.fresh');
+  location.reload();
+}
+
+/** ปุ่มปิด/เปิดเสียงรวม — สลับได้ทันทีโดยไม่ต้องเข้าหน้าตั้งค่า */
+function drawMute() {
+  const b = $('#mute');
+  if (!b) return;
+  b.textContent = AUDIO.on ? '🔊 เสียง' : '🔇 ปิดเสียงอยู่';
+  b.style.opacity = AUDIO.on ? '' : '.6';
+}
+$('#mute').onclick = () => {
+  AUDIO.on = !AUDIO.on;
+  syncBgm(); saveAudio(); drawMute();
+  if (AUDIO.on) { unlock(); bgm(g.battle ? 'bgm-battle' : 'bgm-zone'); sfx('crack'); }
+};
+drawMute();
 
 // มุมมอง 3D ปิดไว้ 6 ก.ย. 2569 — เจ้าของบอกว่า "ยังดูแปลก ๆ เอาออกดีกว่า"
 // โค้ดยังอยู่ครบที่ src/view3d.js เปิดกลับได้โดยเอาปุ่ม #view กับ canvas #cv3 ใน index.html คืนมา
@@ -1565,7 +1588,7 @@ function openSettings() {
       <button class="gold" data-close>เสร็จแล้ว</button></div>`,
     d => {
       const on = d.querySelector('#s-on');
-      on.onchange = () => { AUDIO.on = on.checked; syncBgm(); saveAudio(); if (AUDIO.on) sfx('crack'); };
+      on.onchange = () => { AUDIO.on = on.checked; syncBgm(); saveAudio(); drawMute(); if (AUDIO.on) sfx('crack'); };
       const bind = (id, key) => {
         const r = d.querySelector(id), out = d.querySelector(id + '-v');
         r.oninput = () => { AUDIO[key] = r.value / 100; out.textContent = r.value; syncBgm(); };
