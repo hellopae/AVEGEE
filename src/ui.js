@@ -156,8 +156,14 @@ function explainBar(k) {
 }
 
 // ---------- แผงข้าง ----------
+/** น้ำหนักติดลบ = ข้อเท็จจริงที่ "ลดกรรม" ของคดีนั้น (เช่น เหตุที่ทำให้เห็นใจ)
+ *  เดิมเอาไปเปิดตาราง WEIGHT ตรง ๆ แล้วได้คำว่า undefined ห้อยท้ายสำนวน
+ *  (เจ้าของเจอ 10 ก.ย. 2569 ในคดีของน้องแพรวา) */
+const weightLabel = w => w < 0 ? 'บรรเทาโทษ' : (WEIGHT[w] || '');
 function deedLine(d) {
-  return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span>${esc(d.t)} <b style="color:var(--warning)">· ${WEIGHT[d.w]}</b>`;
+  const w = weightLabel(d.w);
+  return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span>${esc(d.t)}`
+    + (w ? ` <b style="color:var(--${d.w < 0 ? 'success' : 'warning'})">· ${w}</b>` : '');
 }
 
 /** รูปหน้าเล็กในรายชื่อ — ไม่มีไฟล์โปรไฟล์ก็ถอยไปเป็นอีโมจิตัวเดิม */
@@ -440,7 +446,7 @@ function sideBody() {
     const q = g.queue.find(s => s.id === sel.key);
     if (q) {                                        // ยังไม่ลงทัณฑ์ — เห็นแค่ที่เขาพูด
       const rec = q.deeds.filter(d => d.known)
-        .map(d => `<div class="row-truth">${SINS[d.s].name} · ${esc(d.t)} · ${WEIGHT[d.w]}</div>`).join('')
+        .map(d => `<div class="row-truth">${SINS[d.s].name} · ${esc(d.t)} · ${weightLabel(d.w)}</div>`).join('')
         || '<div class="row-truth">สำนวนว่างเปล่า</div>';
       const said = q.said.map(x => `<div class="row-truth ${SAID_STYLE[x.kind] || ''}">${esc(x.text)}</div>`).join('')
         || '<div class="row-truth">...เขาก้มหน้าไม่พูดอะไร</div>';
@@ -1035,7 +1041,7 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.webp (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-function arena(title, foe, hp, act, closable, fx) {
+function arena(title, foe, hp, act, closable, fx, helper) {
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
@@ -1055,6 +1061,11 @@ function arena(title, foe, hp, act, closable, fx) {
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
+    ${helper ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">
+      <img src="img/crew-${esc(helper.k)}.png" alt=""
+           onerror="this.onerror=null;this.src='img/crew-${esc(helper.k)}-profile.png'">
+      <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
+    </div>` : ''}
     <div class="fig you${cls('you')}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
@@ -1327,7 +1338,8 @@ function openBattle(after) {
           : b.kind === 'dad'   ? '👑 พ่อลงมาเอง — ตัดสินพลาดสามสำนวนติด'
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
-            { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow) +
+            { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
+            b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null) +
       `<div class="pad">
         <div class="talkbox">${esc(view.talk || '...')}</div>
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
@@ -1760,8 +1772,19 @@ g.onChange = () => {
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
-    bossModal(`ย้ายมา${z.name}`, `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง — ` +
-      'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
+    bossModal(z.back ? `กลับมาที่${z.name}` : `ย้ายมา${z.name}`,
+      z.back ? `${z.sub}\n\nสถานีที่ท่านสร้างไว้ยังอยู่ครบ คิวที่ค้างไว้ก็ยังรออยู่ที่เดิม`
+             : `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง — ` +
+               'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
+    return;
+  }
+  // สาขาใหม่เพิ่งปลดล็อก — บอกให้รู้ว่ากดย้ายได้แล้ว และย้ายกลับมาได้ตลอด
+  if (g.pendingZoneOpen) {
+    const zs = g.pendingZoneOpen; g.pendingZoneOpen = null;
+    bossModal('เปิดสาขาใหม่ให้ท่านแล้ว',
+      `ขั้น "${LEVELS[g.level - 1].name}" เปิด${zs.map(z => z.name).join(' และ ')}ให้ท่านคุมได้แล้ว\n\n` +
+      'กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ — ยมทูต เบี้ยกรรม พลัง และกรรมของท่านติดตัวไปด้วย\n' +
+      'สาขาที่ทิ้งไว้จะถูกเก็บไว้ให้ทั้งกล่อง ย้ายกลับมาเมื่อไหร่ของยังอยู่ครบ', 'รับทราบ');
     return;
   }
   // เตือนก่อนพ่อลงมา — แดงหนึ่ง/สองครั้งขึ้นเตือน ครั้งที่สามคือของจริง

@@ -575,6 +575,11 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 .acts .crewbtn{display:flex;align-items:center;gap:6px}
 .acts .crewbtn img{width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:top;
   border:1px solid var(--gold);background:rgba(12,6,9,.7)}
+/* ยมทูตที่ถูกเรียกมาช่วย — ยืนถัดจากเราแล้วพุ่งเข้าชนพร้อมกัน */
+.arena .fig.helper{left:20%;z-index:3}
+.arena .fig.helper:not(.lunge){animation:helperIn .35s ease-out}
+.arena .fig.helper img{height:70%;transform:scaleX(-1)}   /* หันหน้าไปทางศัตรูเหมือนฝั่งเรา */
+@keyframes helperIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
 /* ปุ่มสอบสวนลอยอยู่เหนือบัลลังก์บนฉากเลย (เจ้าของสั่ง 9 ก.ย. 2569) */
 #ov .trialfab{position:absolute;transform:translate(-50%,-100%);z-index:4;white-space:nowrap;
   min-height:38px;padding:7px 14px;border-radius:99px;font-size:var(--text-sm);font-weight:600;

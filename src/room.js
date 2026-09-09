@@ -12,10 +12,10 @@
 
 import { drawStandee, drawSoul, img, rr } from './art.js';
 
-const HERO_H = 0.16;      // ความสูงตัวละครเทียบกับด้านสั้นของฉาก
-const CREW_H = 0.14;
-const SOUL_H = 0.105;
-const REACH  = 0.11;      // ระยะเอื้อมถึงจุดลงมือ (พิกัดสัดส่วน)
+const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
+const CREW_H = 0.13;
+const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
+const REACH  = 0.17;      // ระยะเอื้อมถึงจุดลงมือ — ยืนใกล้ ๆ ก็พอ ไม่ต้องเดินจ่อ
 
 const bgCache = new Map();
 /** โหลดภาพฉากของสถานี — ไม่มีไฟล์ก็ถอยไปเวทีกลาง */
@@ -66,11 +66,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
   const onDown = e => {
-    // box อยู่ในหน่วย CSS pixel (draw ตั้ง transform คูณ dpr ให้แล้ว)
-    // ถ้าแปลงเป็นพิกเซลของ backing store ตรงนี้ จะเพี้ยนไปเท่ากับ dpr
+    // box อยู่ในหน่วยพิกเซลของ canvas (backing store) — แปลงพิกัดเมาส์ให้เป็นหน่วยเดียวกัน
     const r = cv.getBoundingClientRect();
-    const cx = (e.clientX - r.left) / r.width * cv.clientWidth;
-    const cy = (e.clientY - r.top) / r.height * cv.clientHeight;
+    const cx = (e.clientX - r.left) / r.width * cv.width;
+    const cy = (e.clientY - r.top) / r.height * cv.height;
     const [tx, ty] = clampWalk((cx - box.ox) / box.w, (cy - box.oy) / box.h);
     P.tx = tx; P.ty = ty;
   };
@@ -98,15 +97,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   function draw(t, st) {
     // ขนาดจริงของ canvas ต้องตามกรอบที่ CSS จัดให้ ไม่งั้นภาพถูกยืดผิดสัดส่วน
     // (ตั้ง width/height ไว้ตายตัวใน HTML แล้วปล่อยให้ CSS ยืด = ฉากบิดทั้งใบ)
+    //
+    // **วาดด้วยพิกเซลของ canvas ตรง ๆ ทั้งไฟล์** ไม่ตั้ง transform ตาม dpr
+    // ทุกขนาด (ตัวละคร ตัวหนังสือ หลอด) คิดเป็นสัดส่วนของ U ซึ่งมาจากกรอบภาพจริง
+    // จอ dpr เท่าไหร่ก็ได้สัดส่วนเดียวกัน — เคยตั้ง transform แล้วมีจุดที่ผสมหน่วยกัน
+    // จนตัวละครใหญ่ผิดขนาดหลายเท่า (เจ้าของเจอ 10 ก.ย. 2569: วิญญาณล้นทั้งจอ)
     const dpr = Math.min(2, devicePixelRatio || 1);
-    const bw = Math.max(64, Math.round(cv.clientWidth * dpr));
-    const bh = Math.max(64, Math.round(cv.clientHeight * dpr));
+    const rect = cv.getBoundingClientRect();
+    const bw = Math.max(64, Math.round((rect.width || cv.clientWidth || 640) * dpr));
+    const bh = Math.max(64, Math.round((rect.height || cv.clientHeight || 420) * dpr));
     if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
-    // วาดด้วยพิกัด CSS pixel ตลอด (คูณ dpr ให้ที่ transform ที่เดียว)
-    // ไม่งั้นตัวหนังสือทุกตัวจะเล็กลงครึ่งหนึ่งบนจอ retina
-    const W = bw / dpr, H = bh / dpr;
+    const W = bw, H = bh;
     const ctx = cv.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, W, H);
     ctx.imageSmoothingEnabled = false;
 
@@ -142,13 +145,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         const x = px(a[0]), y = py(a[1]);
         drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
         const p = Math.min(1, sl.progress / sl.need);
-        const bw = U * 0.10;
-        ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - bw / 2, y + 4, bw, 6, 3); ctx.fill();
+        const bw = U * 0.09, bh2 = Math.max(4, U * 0.011);
+        ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - bw / 2, y + U * 0.012, bw, bh2, bh2 / 2); ctx.fill();
         ctx.fillStyle = def.fx === 'fx-ice' ? '#8fd8ff' : '#ff9d3a';
-        rr(ctx, x - bw / 2, y + 4, bw * p, 6, 3); ctx.fill();
+        rr(ctx, x - bw / 2, y + U * 0.012, bw * p, bh2, bh2 / 2); ctx.fill();
         // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
-        const nm = sl.soul.who.length > 11 ? sl.soul.who.slice(0, 10) + '…' : sl.soul.who;
-        label(ctx, nm, x, y + 18 + (i % 2) * 15, Math.max(11, U * 0.026), '#ffe0c8');
+        const nm = sl.soul.who.length > 9 ? sl.soul.who.slice(0, 8) + '…' : sl.soul.who;
+        label(ctx, nm, x, y + U * 0.035 + (i % 2) * U * 0.032, U * 0.026, '#ffe0c8');
       } });
     });
 
@@ -157,7 +160,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (c && !c.self) acts.push({ y: room.crew[1], fn: () => {
         const x = px(room.crew[0]), y = py(room.crew[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
-        label(ctx, c.name, x, y + 14, Math.max(10, U * 0.028), 'rgba(255,225,195,.85)');
+        label(ctx, c.name, x, y + U * 0.03, U * 0.026, 'rgba(255,225,195,.85)');
       } });
     }
 
@@ -170,7 +173,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // ---- ป้ายบอกวิธี ----
     const tip = near ? '⌨ กดเว้นวรรค หรือปุ่มขวา เพื่อลงมือตรงนี้'
                      : '⌨ ลูกศร/WASD หรือแตะบนฉาก เพื่อเดินเข้าไป';
-    tag(ctx, W / 2, H - 16, tip, near ? '#ffd27a' : 'rgba(240,225,215,.75)');
+    tag(ctx, W / 2, H - U * 0.045, tip, near ? '#ffd27a' : 'rgba(240,225,215,.75)', U);
   }
 
   function frame(now) {
@@ -211,18 +214,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 }
 
 function label(ctx, text, x, y, size, color) {
-  ctx.font = `600 ${Math.round(size)}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  ctx.font = `600 ${Math.round(Math.max(10, size))}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.8)';
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color; ctx.fillText(text, x, y);
 }
 
-function tag(ctx, x, y, text, color) {
-  ctx.font = '600 13px "IBM Plex Sans Thai", system-ui, sans-serif';
+function tag(ctx, x, y, text, color, U = 400) {
+  const size = Math.max(11, U * 0.027);
+  ctx.font = `600 ${Math.round(size)}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  const w = ctx.measureText(text).width + 18;
+  const w = ctx.measureText(text).width + size * 1.4, h = size * 1.9;
   ctx.fillStyle = 'rgba(16,8,12,.82)';
-  rr(ctx, x - w / 2, y - 12, w, 24, 8); ctx.fill();
+  rr(ctx, x - w / 2, y - h / 2, w, h, h / 3); ctx.fill();
   ctx.fillStyle = color; ctx.fillText(text, x, y);
 }

@@ -189,7 +189,7 @@ function mkLines(soul) {
       out.push({ kind: 'deny', t: voice(DENY_BY_SIN[known[0].s], soul.sex), sin: known[0].s });
   }
   const fake = soul.merits.find(m => m.fake);
-  if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วยนะ{p} — ${fake.t}`, soul.sex), merit: fake.t });
+  if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วย{na} — ${fake.t}`, soul.sex), merit: fake.t });
 
   // ---- บรรทัดที่ "ตรงกับสำนวน" ----
   // เจ้าของทัก 8 ก.ย. 2569 ว่าสี่บรรทัดนี้ดูซ้ำทุกคดี เพราะเดิมสุ่มจากกองกลางกองเดียว 5 บรรทัด
@@ -629,7 +629,9 @@ const API = {
     if (Math.random() > RETURN.chance) return;
     this.returning.push({
       at: this.tick + RETURN.after, fromId: soul.id, gave: intensity,
-      who: soul.who, sp: soul.sp,
+      // เพศต้องติดไปด้วย ไม่งั้นคดีที่กลับมาพูด "ผม/ครับ" หมดทุกดวง
+      // (เจ้าของเจอ 10 ก.ย. 2569: นักเรียนหญิง ม.๕ กลับมาแล้วแทนตัวเองว่าผม)
+      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name,
       deeds: soul.deeds.map(d => ({ ...d, known: true })),
       merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
     });
@@ -644,15 +646,16 @@ const API = {
     const after = { t: AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
                     s: worst.s, w: Math.min(5, worst.w + RETURN.addWeight), known: !secret };
     const soul = {
-      id: SEQ++, who: R.who, sp: R.sp, waited: 0, said: [],
+      id: SEQ++, who: R.who, sp: R.sp, sex: R.sex || SEX_OF[R.who] || 'm', name: R.name,
+      waited: 0, said: [],
       deeds: [...R.deeds, after], merits: R.merits, denied: null,
       back: { id: R.fromId, gave: R.gave },
     };
     soul.deserved = deservedOf(soul);
     soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
-    soul.said.push({ kind: 'confess', text: secret
-      ? `"ท่านให้ผมไปแค่ ${R.gave} วาระ... แล้วผมก็ไม่ได้อยู่เฉย ๆ นะครับ"`
-      : `"ท่านให้ผมไปแค่ ${R.gave} วาระ ผมออกไปแล้วก็${after.t}ครับ"` });
+    soul.said.push({ kind: 'confess', text: voice(secret
+      ? `"ท่านให้{i}ไปแค่ ${R.gave} วาระ... แล้ว{i}ก็ไม่ได้อยู่เฉย ๆ {na}"`
+      : `"ท่านให้{i}ไปแค่ ${R.gave} วาระ {i}ออกไปแล้วก็${after.t}{p}"`, soul.sex) });
     soul.lines = mkLines(soul);
     soul.presses = BAL.presses;
     return soul;
@@ -870,6 +873,10 @@ const API = {
     if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
     this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
     this.pendingLevel = nx;
+    // สาขาที่เพิ่งเปิดให้ย้ายไปได้ — เดิมไม่มีอะไรบอกเลยว่าปลดล็อกแล้ว
+    // (เจ้าของ 10 ก.ย. 2569: "ไม่แน่ใจว่าเงื่อนไขย้ายโซนคืออะไร")
+    const opened = ZONES.filter(z => z.level === this.level && z.k !== this.zone);
+    if (opened.length) this.pendingZoneOpen = opened;
   },
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
@@ -1094,9 +1101,13 @@ const API = {
     let waiting = false;
     const R = 16;
     for (const st of this.stations) {
-      holes.push([st.def.x - R, st.def.y - R, st.def.x + R, st.def.y + R]);
+      const r = st.build ? null : footOf(st.def);
+      // ช่องยืนของผู้คุมต้อง "ทะลุออกได้" ด้วย ไม่ใช่เป็นหลุมกลางอาคาร
+      // (เจ้าของเจอ 10 ก.ย. 2569: รีเฟรชแล้วตัวละครไปโผล่ในศาลาน้ำชา แล้วเดินออกไม่ได้เลย)
+      // เปิดเป็นทางเดินแคบ ๆ จากจุดยืนลงมาจนพ้นฐานอาคาร
+      const bottom = Math.max(st.def.y + R, r ? r[3] + 26 : st.def.y + R);
+      holes.push([st.def.x - R, st.def.y - R, st.def.x + R, bottom]);
       if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
-      const r = footOf(st.def);
       if (r) rects.push(r); else waiting = true;
     }
     setBlocks(rects, holes);
@@ -1318,8 +1329,9 @@ const API = {
   },
 
   /** เรียกยมทูตในสังกัดมาช่วยหนึ่งที — เสียกำลังใจของเขา แล้วต้องรอรอบ */
+  /** ยมทูตที่เรียกมาช่วยในฉากต่อสู้ได้ — คืนทุกคนเสมอ (ยังไม่ปลดล็อกก็โชว์ปุ่มไว้ให้เห็น
+   *  ว่ามีของแบบนี้อยู่ · เจ้าของ 10 ก.ย. 2569 นึกว่าไม่มีปุ่มนี้ในฉากสู้กับวิญญาณ) */
   crewHelpers() {
-    if (!this.canCallCrew()) return [];
     return this.crew.filter(c => !c.reader && !c.self);
   },
   crewHelpWhy(c) {
@@ -1368,6 +1380,7 @@ const API = {
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpCd = this.tick + BATTLE.crewCd;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
+      B.helper = { k: c.k, name: c.name, at: Date.now() };   // ui เอาไปวาดท่าพุ่งเข้าชน
       dmg = roll([6 + c.raeng, 12 + c.raeng * 2]);
       say(`${c.glyph} ${c.name}กระโจนเข้ามาช่วย — ${dmg} หน่วย (กำลังใจ −${BATTLE.crewMorale})`);
       B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
@@ -1494,14 +1507,41 @@ const API = {
   moveZone(k) {
     const z = ZONES.find(x => x.k === k);
     if (!z || this.level < z.level || z.k === this.zone) return false;
+
+    // เก็บสาขาเดิมไว้ทั้งกล่อง แล้วหยิบกลับมาตอนย้ายกลับ (เจ้าของสั่ง 10 ก.ย. 2569)
+    // เดิมย้ายกลับมาแล้วสถานีทุกหลังหายหมด เหมือนเริ่มสาขาใหม่ทุกครั้ง
+    this.zoneSave = this.zoneSave || {};
+    this.zoneSave[this.zone] = {
+      stations: this.stations.map(st => ({
+        k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
+        visitCd: st.visitCd || 0, build: 0, slots: st.slots,
+      })),
+      queue: this.queue, held: this.held, items: this.items,
+    };
+
+    const back = this.zoneSave[k];
     this.zone = k;
-    this.queue = []; this.mobs = []; this.items = [];
-    this.stations = [mkStation('sala')];
+    this.mobs = [];
+    if (back) {                              // เคยคุมสาขานี้มาก่อน — ของยังอยู่ครบ
+      this.stations = back.stations.map(sv => {
+        const st = mkStation(sv.k);
+        if (!st.def) return null;
+        Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
+                            visitCd: sv.visitCd || 0, build: 0, slots: sv.slots || [] });
+        return st;
+      }).filter(Boolean);
+      this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
+    } else {
+      this.queue = []; this.items = []; this.held = [];
+      this.stations = [mkStation('sala')];
+      this.coin += z.coin;                   // งบตั้งต้นให้ครั้งแรกที่มาสาขานี้เท่านั้น
+    }
     this.crew.forEach(c => { c.at = null; c.path = null; });
-    this.coin += z.coin;
-    this.log(`🗺️ ย้ายมา${z.name} — ${z.sub} · งบตั้งต้น +${z.coin} เบี้ยกรรม`, 'event');
-    this.pendingZone = z;
-    this.spawnSoul();
+    this.syncBlocks(true);
+    this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
+             + (back ? ' · ของที่ทิ้งไว้ยังอยู่ครบ' : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม`), 'event');
+    this.pendingZone = { ...z, back: !!back };
+    if (!this.queue.length) this.spawnSoul();
     this.onChange();
     return true;
   },
@@ -1610,7 +1650,8 @@ API.snapshot = function () {
     queue: this.queue, held: this.held, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
-    zone: this.zone, usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
+    zone: this.zone, zoneSave: this.zoneSave || {},
+    usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
     logs: this.logs.slice(0, 40),
   };
@@ -1664,6 +1705,7 @@ API.restore = function (d) {
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
+  this.zoneSave = d.zoneSave || {};
   this.usedCases = d.usedCases || [];
   this.fights = d.fights || 0;
   this.spawns = d.spawns || 0;
