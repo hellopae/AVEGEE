@@ -169,9 +169,12 @@ export function setBlocks(rects, keepOpen) {
 export function canWalk(x, y) {
   if (x < 0 || y < 0 || x > SCENE.w || y > SCENE.h) return false;
   for (const r of WALK_OK) if (inRect(x, y, r)) return true;   // สะพาน/ท่าเรือ ทับกรอบห้ามได้
-  for (const h of holes) if (inRect(x, y, h)) return true;     // จุดยืนของผู้คุม
-  for (const r of blocks) if (inRect(x, y, r)) return false;   // ตัวอาคาร
+  // NO_WALK (แม่น้ำวิญญาณ · ผาหิน) ต้องมาก่อน holes เสมอ
+  // ไม่งั้นทางเดินที่เจาะให้ผู้คุมจะทะลุลงแม่น้ำ แล้วตัวละครเดินลงไปติดอยู่ในนั้น
+  // (เจ้าของเจอ 10 ก.ย. 2569: ยืนค้างอยู่ใต้ศาลาน้ำชา ขยับไปไหนไม่ได้เลย)
   for (const r of NO_WALK) if (inRect(x, y, r)) return false;
+  for (const h of holes) if (inRect(x, y, h)) return true;     // จุดยืนของผู้คุม (ทะลุตัวอาคารได้อย่างเดียว)
+  for (const r of blocks) if (inRect(x, y, r)) return false;   // ตัวอาคาร
   if (!mask || mask === 'off') return true;
   const rx = Math.min(COLS - 1, x / CELL | 0), ry = Math.min(ROWS - 1, y / CELL | 0);
   return !mask[ry * COLS + rx];
