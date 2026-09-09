@@ -258,6 +258,10 @@ button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
 dialog{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);
   color:var(--card-foreground);max-width:520px;width:calc(100% - 32px);padding:var(--space-5);font:inherit}
 dialog::backdrop{background:rgba(10,4,6,.78)}
+/* กล่องที่ปิดแล้วต้องหายไปจริง ๆ — กฎ display ของเราเองมีสิทธิ์เหนือ UA stylesheet
+   พลาดตรงนี้ = กล่องปิดไปแล้วแต่ยังค้างอยู่บนจอ ปุ่มข้างในกดไม่ติดสักปุ่ม
+   และหลุดออกจาก top layer จนหมุด/ปุ่มบนฉากลอยทับ (เจ้าของเจอ 10 ก.ย. 2569) */
+dialog:not([open]){display:none!important}
 dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
 .boss{display:flex;gap:var(--space-4);align-items:flex-start}
 .boss img{width:150px;height:150px;object-fit:cover;object-position:center top;flex:none;
@@ -417,7 +421,8 @@ dialog.wide{max-width:860px}
    ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้ (เจ้าของสั่ง 8 ก.ย. 2569 พร้อมส่งฉากหลังมาให้)
    ฉากหลัง img/BG-Turn-Base.webp เป็นลานหินมองจากมุมสูง มีบัลลังก์อยู่กลางบน
    ตัวละครจึงยืน "ริมล่าง" ของลาน ซ้าย-ขวา แล้วเว้นกลางไว้ให้เห็นลวดลายพื้น */
-dialog.rpg{max-width:940px;padding:0;overflow:hidden;background:var(--card);
+/* ต้องมี [open] เสมอ — ไม่งั้น display:flex ทับ display:none ของกล่องที่ปิดแล้ว */
+dialog.rpg[open]{max-width:940px;padding:0;overflow:hidden;background:var(--card);
   max-height:92dvh;display:flex;flex-direction:column}
 dialog.rpg .arena{flex:0 0 auto}
 dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
