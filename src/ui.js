@@ -1660,6 +1660,9 @@ function openStation(k) {
         ${pw ? pw.glyph : '❤️'} ${pw ? 'เติม' + pw.name : 'พักฟื้นบารมี'}
         <small>${esc(vWhy || v.say)}</small></button>`);
     }
+    if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
+        📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
+          : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
     if (k === 'tarang' && g.held.length)
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (cap && g.stFree(st) > 0 && g.queue.length)
@@ -1699,10 +1702,54 @@ function openStation(k) {
     on('#s-smite', doSmite);
     on('#s-visit', () => { if (g.visitStation(k, R && R.inReach())) { sfx('star'); panels(); refresh(); } });
     on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
+    on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
   };
+
+  /** แฟ้มทะเบียนกรรม — ประวัติทุกดวงที่เคยผ่านมือท่าน (เจ้าของสั่ง 10 ก.ย. 2569)
+   *  ทับอยู่บนฉากในห้องเดียวกัน ไม่ใช่กล่องใหม่ — ปิดแล้วกลับมายืนที่เดิม */
+  function showArchive(on) {
+    const box = dlg.querySelector('#st-arch');
+    if (!box) return;
+    box.hidden = !on;
+    if (!on) return;
+    const L = [...g.ledger].reverse();               // ล่าสุดอยู่บนสุด
+    const five = L.filter(x => x.stars === 5).length;
+    const over = L.filter(x => x.over > 0).length;
+    const short = L.filter(x => x.short > 0).length;
+    const wrong = L.filter(x => x.tham < 40).length;
+    const rows = L.map(x => {
+      const cl = g.closed.find(c => c.soul.id === x.id);
+      const stars = '★'.repeat(x.stars ?? 0) + '☆'.repeat(5 - (x.stars ?? 0));
+      const col = x.stars >= 4 ? 'var(--success)' : x.stars <= 1 ? 'var(--destructive)' : 'var(--gold)';
+      const deeds = cl ? cl.soul.deeds.map(d => esc(d.t)).join(' · ') : '';
+      return `<div class="arch-row">
+        <div class="arch-top">
+          <b>#${String(x.id).padStart(3, '0')} ${esc(x.who)}</b>
+          <span style="color:${col}">${stars}</span>
+          <span class="arch-meta">${x.score} คะแนน · วาระที่ ${x.tick}</span>
+        </div>
+        <div class="arch-meta">สมควร ${x.deserved} วาระ · ท่านให้ไป ${x.deserved + x.over - x.short}
+          ${x.over > 0 ? `<b style="color:var(--destructive)">เกิน ${x.over} · กรรมตกมา +${x.karma}</b>` : ''}
+          ${x.short > 0 ? `<b style="color:var(--warning)">เบาไป ${x.short}</b>` : ''}
+          ${x.tham < 40 ? '<b style="color:var(--destructive)">ส่งผิดชนิดกรรม</b>' : ''}
+          ${x.back ? '<b style="color:var(--destructive)">กลับมารอบสอง</b>' : ''}</div>
+        ${deeds ? `<div class="arch-deed">${deeds}</div>` : ''}
+      </div>`;
+    }).join('');
+    box.innerHTML = `
+      <div class="arch-head">
+        <b>📜 แฟ้มทะเบียนกรรม — โซน${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b>
+        <button id="s-arch-x">✕ ปิดแฟ้ม</button>
+      </div>
+      <div class="arch-sum">ปิดคดีแล้ว ${g.casesDone} เรื่อง · ห้าดาว ${five} ·
+        ลงเกินกรรม ${over} · เบาไป ${short} · ส่งผิดชนิดกรรม ${wrong} ·
+        กลับมาใหม่ ${g.returned}</div>
+      <div class="arch-list">${rows || '<div class="arch-meta">แฟ้มยังว่างเปล่า — ท่านยังไม่ได้ตัดสินใครเลย</div>'}</div>`;
+    box.querySelector('#s-arch-x').onclick = () => showArchive(false);
+  }
 
   function doSmite() {
     const st = g.stations.find(x => x.def.k === k);
@@ -1719,7 +1766,8 @@ function openStation(k) {
       <div class="hud-top" id="st-top"></div>
       <div class="hud-body">
         <div class="hud-left st-left" id="st-left"></div>
-        <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas></div>
+        <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
+          <div class="st-arch" id="st-arch" hidden></div></div>
         <div class="hud-right" id="st-right"></div>
       </div>
     </div>`;

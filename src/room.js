@@ -42,9 +42,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const py = v => box.oy + v * box.h;
   const unit = () => Math.min(box.w, box.h);     // ใช้คิดความสูงตัวละครให้คงที่ทุกอัตราส่วน
 
-  const clampWalk = (x, y) => {
-    const [x1, y1, x2, y2] = room.walk;
-    return [Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y))];
+  // walk = กรอบเดียว หรือ "หลายกรอบต่อกัน" ก็ได้ (ห้องทะเบียนมีลานล่าง บันได และชานบน)
+  const areas = Array.isArray(room.walk[0]) ? room.walk : [room.walk];
+  const inArea = (x, y) => areas.some(r => x >= r[0] && y >= r[1] && x <= r[2] && y <= r[3]);
+  /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
+  const snap = (x, y) => {
+    if (inArea(x, y)) return [x, y];
+    let best = null, bd = Infinity;
+    for (const r of areas) {
+      const cx = Math.max(r[0], Math.min(r[2], x)), cy = Math.max(r[1], Math.min(r[3], y));
+      const d = Math.hypot(cx - x, cy - y);
+      if (d < bd) { bd = d; best = [cx, cy]; }
+    }
+    return best || [x, y];
   };
 
   /** ยืนถึงจุดลงมือหรือยัง — ผู้เรียกใช้ตัดสินว่าปุ่มกดได้ไหม */
@@ -70,7 +80,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
     const cy = (e.clientY - r.top) / r.height * cv.height;
-    const [tx, ty] = clampWalk((cx - box.ox) / box.w, (cy - box.oy) / box.h);
+    const [tx, ty] = snap((cx - box.ox) / box.w, (cy - box.oy) / box.h);
     P.tx = tx; P.ty = ty;
   };
   cv.addEventListener('pointerdown', onDown);
@@ -88,8 +98,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     const d = Math.hypot(dx, dy);
     if (d > 0) {
-      const [nx, ny] = clampWalk(P.x + dx / d * sp, P.y + dy / d * sp * 0.7);
-      P.x = nx; P.y = ny;
+      const nx = P.x + dx / d * sp, ny = P.y + dy / d * sp * 0.7;
+      // ชนขอบแล้วไถลไปตามแกนที่ยังไปได้ — เหมือน stepTo บนแผนที่ ไม่ติดหนึบที่มุม
+      if (inArea(nx, ny)) { P.x = nx; P.y = ny; }
+      else if (inArea(nx, P.y)) P.x = nx;
+      else if (inArea(P.x, ny)) P.y = ny;
+      else P.tx = null;
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
     }
   }
