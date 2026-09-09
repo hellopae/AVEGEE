@@ -39,6 +39,7 @@ let lastBattleEnd = 0;      // เวลาที่ฉากต่อสู้�
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
 setInterval(() => {
+  releaseDlgPause();       // กล่องปิดไปแล้วแต่ยังไม่ได้คืนค่าพัก — ดูหมายเหตุที่ pauseForDlg()
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
   openPendingMob();        // เปรตที่รอเปิดฉากต่อสู้ — รอจนกว่าโมดัลอื่นจะปิดก่อน
@@ -95,7 +96,7 @@ function drawRes() {
   const avg = g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0;
   const ot = g.orderTier(), kt = g.karmaTier();
   $('#res').innerHTML = `
-    <span class="chip tap" data-ex="coin">🪙 <b>${g.coin}</b></span>
+    <span class="chip tap" data-ex="coin">🪙 <b>${Math.round(g.coin)}</b></span>
     <span class="chip tap" data-ex="fuel">🔥 <b>${Math.round(g.fuel)}</b></span>
     <span class="chip tap" data-ex="hp">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
     <span class="chip tap" data-ex="order">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b>
@@ -156,7 +157,7 @@ function explainBar(k) {
     <div class="tline"><b>เติมยังไง</b><div>ซื้อที่แท็บก่อสร้าง (${BAL.fuelPrice * 10} เบี้ย/10 ดุ้น) หรือเดินไปเก็บ<b>มัดฟืน</b>บนแผนที่</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
-  return modal(`<h2>🪙 เบี้ยกรรม — ${g.coin}</h2>
+  return modal(`<h2>🪙 เบี้ยกรรม — ${Math.round(g.coin)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       เงินของโซน ใช้สร้างสถานี จ้างยมทูต ซื้อฟืน และบูชาดอกบัว</p>
     <div class="tline"><b>ได้จาก</b><div>ปิดคดี (คูณด้วยระเบียบของโซน) · สี่ดาว +25 · ห้าดาว +60 ·
@@ -224,7 +225,7 @@ function drawTab() {
         </span>
       </div>`).join('')
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
-           ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${g.coin}</div>`
+           ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${Math.round(g.coin)}</div>`
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
         ${face('crew-' + c.k, c.glyph)}
@@ -390,7 +391,7 @@ function sideBody() {
       + think(meThought())
       + kv([`❤️ บารมี ${Math.round(g.hp)}/${g.hpMax}`, `☠️ กรรม ${g.karma.toFixed(1)}`,
             `⭐ ห้าดาว ${g.star5}`, `📁 เฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0}`,
-            `🪙 ${g.coin}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.powerOf('roar').ammo}`])
+            `🪙 ${Math.round(g.coin)}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.powerOf('roar').ammo}`])
       + `<div class="sec">หน้าที่</div>
          <div class="row-truth">พิพากษาให้ <b>ตรงกรรม</b> — ตรงชนิดบาป และหนักพอดี ไม่ใช่หนักที่สุด</div>
          <div class="sec">ความสามารถ</div>${pw}
@@ -985,20 +986,24 @@ function openDlg(cls = '') {
  *
  *  ตอนนี้จำค่าไว้ที่เดียวตอนกล่อง "ใบแรก" เปิด แล้วคืนตอน <dialog> ปิดจริง ๆ
  *  กล่องจะสลับกันกี่ใบระหว่างนั้นก็ไม่กระทบ */
-let pauseWas = null;
-function pauseForDlg() {
-  if (pauseWas === null) pauseWas = g.paused;
-  g.paused = true; updatePlay();
+let userPaused = false;      // ผู้เล่นกดปุ่มพักเอง — อย่างเดียวที่ทำให้เกมพักค้างได้
+function pauseForDlg() { if (!g.paused) { g.paused = true; updatePlay(); } }
+
+/** ไม่มีกล่องเปิดค้างแล้ว = กลับไปเป็นไปตามที่ผู้เล่นสั่งไว้
+ *
+ *  **ห้ามกลับไปใช้วิธี "จำค่า paused ตอนเปิดแล้วคืนตอนปิด"** — พลาดครั้งเดียวเกมค้างถาวร
+ *  เพราะกล่องใบถัดไปจะไปจำค่าที่ค้างนั้นต่อ แล้วคืนค่าค้างให้ตลอดไป
+ *  (ไล่จับกันมาสามรอบวันที่ 8 ก.ย. 2569) ตอนนี้ความจริงมีแหล่งเดียวคือ userPaused
+ *
+ *  **และห้ามผูกกับ event 'close' ของ <dialog>** — เบราว์เซอร์ไม่ยิง close เลยตลอดเวลาที่
+ *  แท็บไม่ได้อยู่หน้าจอ ผูกไว้เมื่อไหร่ = สลับแท็บกลางกล่องแล้วเกมค้างพัก
+ *  เช็คจากตัวจับเวลาแทน · ได้ผลพลอยได้: ตอนกล่องแค่ "ถูกแทนที่" ด้วยใบใหม่
+ *  (openDlg close แล้ว showModal ในจังหวะเดียวกัน) dlg.open ยังเป็น true อยู่ จึงไม่คืนผิดจังหวะ */
+function releaseDlgPause() {
+  if (dlg.open || g.over || g.paused === userPaused) return;
+  g.paused = userPaused; updatePlay();
 }
-dlg.addEventListener('close', () => {
-  if (pauseWas === null) return;
-  // close ของ <dialog> ยิงแบบ async — ตอนกล่องถูก "แทนที่" openDlg จะ close แล้ว showModal
-  // ทันทีในจังหวะเดียวกัน พอ event มาถึง กล่องใหม่เปิดอยู่แล้ว ยังไม่ใช่จังหวะคืนค่า
-  setTimeout(() => {
-    if (dlg.open || pauseWas === null) return;
-    g.paused = pauseWas; pauseWas = null; updatePlay();
-  }, 0);
-});
+dlg.addEventListener('close', () => setTimeout(releaseDlgPause, 0));   // ทางลัดให้ไวขึ้นเฉย ๆ
 
 /** ผูก handler ตอนปิด ที่จะทำงานเฉพาะกล่อง "รุ่นปัจจุบัน" เท่านั้น */
 function onDlgClose(fn) {
@@ -1080,7 +1085,7 @@ function openTrial() {
     // ---- แถบสถานะบนสุด ----
     const ot = g.orderTier(), kt = g.karmaTier();
     const top = `
-      <span class="chip">🪙 <b>${g.coin}</b></span>
+      <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
       <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
       <span class="chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
       <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
@@ -1255,7 +1260,8 @@ function openBattle(after) {
   bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
-  let phase = null, fxNow = null, phaseTimer = 0;
+  // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
+  let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0;
 
   const paint = () => {
     const b = g.battle;
@@ -1287,7 +1293,10 @@ function openBattle(after) {
       : b.over === 'lose' ? (b.kind === 'yama' ? '...'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
-    const done = b.over && !phase
+    // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
+    // กล่องจะไม่มีปุ่มอะไรเลยสักปุ่ม: ปุ่มโจมตีถูกล็อกเพราะ busy ปุ่มจบก็ไม่ถูกวาด
+    // = ทางตัน ปิดกล่องไม่ได้ · ฉากจบแล้วต้องมีทางออกเสมอ ไม่ว่าอนิเมชันจะค้างหรือไม่
+    const done = b.over
       ? `<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     dlg.innerHTML =
@@ -1309,7 +1318,7 @@ function openBattle(after) {
       const nb = g.battle;
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
-      phase = 'you';
+      phase = 'you'; phaseAt = Date.now();
       fxNow = { key: FX_OF[k] ? k : 'atk', side: k === 'health' ? 'you' : 'foe' };
       paint();
 
@@ -1321,7 +1330,7 @@ function openBattle(after) {
         if (!counter) { phase = null; fxNow = null; paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ---- จังหวะที่ 2: เขาสวนกลับ ----
-        phase = 'foe';
+        phase = 'foe'; phaseAt = Date.now();
         fxNow = { key: 'foe', side: 'you' };
         sfx('hurt');
         paint();
@@ -1346,6 +1355,7 @@ function openBattle(after) {
     battleUI = null;
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
+    clearInterval(phaseGuard);
     dlg.removeEventListener('cancel', noEsc);
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();
@@ -1362,6 +1372,15 @@ function openBattle(after) {
     if (g.battle && !g.battle.over && reopen++ < 200) return;
     finish();
   };
+
+  // จังหวะอนิเมชันค้าง = ปุ่มถูกล็อกค้างไปด้วย ผู้เล่นทำอะไรไม่ได้เลย
+  // (setTimeout พลาดได้หลายทาง — แท็บอยู่หลังจอ เครื่องหน่วง กล่องถูกวาดใหม่ระหว่างทาง)
+  // เกินสี่วินาทีเมื่อไหร่ ปลดล็อกแล้ววาดใหม่ ไม่ปล่อยให้ค้าง
+  const phaseGuard = setInterval(() => {
+    if (!phase || Date.now() - phaseAt < 4000) return;
+    phase = null; fxNow = null;
+    if (g.battle) paint();
+  }, 600);
 
   battleUI = () => { paint(); openDlg('rpg'); };
   battleUI();
@@ -1451,7 +1470,7 @@ function drawCoach() {
 /** ปลดพักให้วาระเดิน — ต้องเรียก **ก่อน** เปิดกล่องฉากเปิด
  *  เพราะ pauseForDlg() จำค่า paused ตอนกล่องใบแรกเปิด แล้วคืนค่านั้นตอนปิด
  *  ถ้าเข้าเกมมาแบบพักอยู่ ค่าที่ถูกคืนก็คือ "พัก" ตลอดไป */
-function resume() { if (!g.over && g.paused) { g.paused = false; updatePlay(); } }
+function resume() { userPaused = false; if (!g.over && g.paused) { g.paused = false; updatePlay(); } }
 
 function updatePlay() {
   $('#play').textContent = g.paused ? '▶ เดินวาระ' : '⏸ พัก';
@@ -1463,7 +1482,7 @@ function updatePlay() {
     z.textContent = `🗺️ ย้ายโซน (${g.zoneDef().name})`;
   }
 }
-$('#play').onclick = () => { if (!g.over) { g.paused = !g.paused; updatePlay(); } };
+$('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
