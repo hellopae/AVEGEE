@@ -1,5 +1,5 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
-import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
+import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GUARD_POST,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
@@ -908,8 +908,15 @@ const API = {
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
-      const hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
+      let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
+      // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
+      // ปล่อยไว้ยมทูตจะยืนจมอยู่ในอาคาร มองไม่เห็นทั้งเกม (เจ้าของเจอ 10 ก.ย. 2569)
+      if (!canWalk(hx, hy)) { const o = nearestWalk(hx, hy); if (o) { hx = o[0]; hy = o[1]; } }
       if (c.x == null) { c.x = hx; c.y = hy; c.face = 1; }
+      if (!canWalk(c.x, c.y)) {                 // โดนอาคารที่เพิ่งสร้างทับอยู่ → ดันออกมา
+        const o = nearestWalk(c.x, c.y);
+        if (o) { c.x = o[0]; c.y = o[1]; c.path = null; }
+      }
 
       // เดินตามเส้นทางเหมือนตัวเรา — เดิมเดินตรงเข้าหาจุดหมาย พอมีลาวาขวางก็ค้างอยู่ขอบไฟ
       // (เห็นชัดตอนสั่งไปประจำสถานีที่อยู่คนละฝั่งแผนที่ — ยืนนิ่งกันเป็นกอง)
@@ -1028,8 +1035,10 @@ const API = {
       stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
       if (d < MOB.reach) this.strike(0, GUARD.name);
     } else if (this.guard) {
-      const G = this.guard;                     // ว่างงาน → เดินกลับไปเฝ้าท่าเรือฝั่งขวา
-      stepTo(G, (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt, (SPOTS.ferry.to[1] - 90 - G.y) * 0.0008 * dt);
+      // ว่างงาน → กลับไปเฝ้า "หัวสะพานที่วิญญาณข้ามมา" (เจ้าของสั่ง 10 ก.ย. 2569)
+      // เดิมยืนอยู่ท่าเรือฝั่งขวาซึ่งไม่มีอะไรผ่าน มีผีบุกก็ยังวิ่งไปจัดการเหมือนเดิม
+      const G = this.guard, gp = GUARD_POST;
+      stepTo(G, (gp[0] - G.x) * 0.0012 * dt, (gp[1] - G.y) * 0.0012 * dt);
     }
   },
 
@@ -1040,12 +1049,13 @@ const API = {
     return Math.hypot((d.sx ?? d.x) - this.player.x, (d.sy ?? d.y) - this.player.y) <= BAL.smiteReach * 1.5;
   },
 
-  /** แวะเติมพลังที่สถานี — ว่างเปล่าแปลว่ากดได้ · มีข้อความแปลว่ากดไม่ได้เพราะอะไร */
-  visitWhy(st) {
+  /** แวะเติมพลังที่สถานี — ว่างเปล่าแปลว่ากดได้ · มีข้อความแปลว่ากดไม่ได้เพราะอะไร
+   *  inRoom = ยืนถึงจุดในฉากของหน้าสถานีแล้ว (นับแทนการยืนใกล้บนแผนที่ได้) */
+  visitWhy(st, inRoom = false) {
     const v = st && st.def.visit;
     if (!v) return 'สถานีนี้ไม่มีอะไรให้เติม';
     if (st.build) return 'ยังก่อสร้างไม่เสร็จ';
-    if (!this.nearStation(st)) return 'ต้องเดินมายืนที่นี่ก่อน';
+    if (!inRoom && !this.nearStation(st)) return 'เดินเข้าไปให้ถึงจุดในฉากก่อน';
     if (st.visitCd && this.tick < st.visitCd) return `เพิ่งใช้ไป · อีก ${st.visitCd - this.tick} วาระ`;
     if (v.power) {
       const p = this.powerOf(v.power);
@@ -1056,9 +1066,9 @@ const API = {
     return '';
   },
 
-  visitStation(k) {
+  visitStation(k, inRoom = false) {
     const st = this.stations.find(x => x.def.k === k);
-    if (!st || this.visitWhy(st)) return false;
+    if (!st || this.visitWhy(st, inRoom)) return false;
     const v = st.def.visit;
     st.visitCd = this.tick + v.cool;
     if (v.power) {
@@ -1517,7 +1527,7 @@ const API = {
   hireGuard() {
     if (this.guard || this.coin < GUARD.hire) return false;
     this.coin -= GUARD.hire;
-    this.guard = { x: SPOTS.ferry.to[0], y: SPOTS.ferry.to[1] - 90 };
+    this.guard = { x: GUARD_POST[0], y: GUARD_POST[1] };
     this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
     return true;
   },

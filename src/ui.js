@@ -1,10 +1,11 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
-         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
+import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 
 const $ = s => document.querySelector(s);
@@ -1622,59 +1623,44 @@ const stBg = k => `img/BG-${k[0].toUpperCase()}${k.slice(1)}.webp`;
 
 function openStation(k) {
   const def = STATIONS.find(d => d.k === k);
+  const room = ROOMS[k] || ROOM_DEFAULT;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
-  const paint = () => {
-    // กล่องถูกกล่องอื่นแทนที่ไปแล้ว (บทเรียนพญายม · เหตุการณ์ · ผลคำตัดสิน)
-    // ห้ามเขียนทับของเขา ไม่งั้นเนื้อหาสถานีจะไปโผล่ในกล่องเล็กของคนอื่น
-    // (เจ้าของเจอ 10 ก.ย. 2569: หน้าสถานีเบียดอยู่ในกล่องแคบ ตัวหนังสือเรียงลงแนวตั้ง)
-    if (myGen >= 0 && (!dlg.open || dlgGen !== myGen)) return;
+  let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
+
+  const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
+
+  /** เนื้อหาฝั่งซ้าย/ขวา — วาดใหม่ได้บ่อยโดยไม่แตะ canvas ของฉาก
+   *  (ถ้าวาดทั้งกล่องใหม่ทุกครั้ง ตัวละครในห้องจะกระโดดกลับจุดเริ่มทุก 0.7 วินาที) */
+  const panels = () => {
     const st = g.stations.find(x => x.def.k === k);
-    if (!st) { if (dlg.open) dlg.close(); return; }
-    const near = g.nearStation(st);
-    const cap = g.stCap(st);
-    const v = def.visit;
-    const vWhy = v ? g.visitWhy(st) : 'สถานีนี้ไม่มีอะไรให้เติม';
+    if (!st) return;
+    const cap = g.stCap(st), v = def.visit;
+    const vWhy = v ? g.visitWhy(st, R && R.inReach()) : 'สถานีนี้ไม่มีอะไรให้เติม';
+    const inside = !!(R && R.inReach());
 
-    // ---- วิญญาณที่กำลังรับทัณฑ์ (สูงสุด 3 ดวง) ----
-    const figs = st.slots.map((sl, i) => {
-      const src = typeof sl.soul.sp === 'string' ? `img/${sl.soul.sp}.png` : `img/spirit${sl.soul.sp || 7}.png`;
-      const p = Math.round(100 * Math.min(1, sl.progress / sl.need));
-      return `<div class="st-fig">
-        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
-        <span class="nm">${esc(sl.soul.who)}</span>
-        <span class="hpbar"><i style="width:${p}%"></i></span>
-        <small>วาระ ${sl.intensity} · ${p}%</small>
-      </div>`;
-    }).join('') || `<div class="st-empty">${cap ? 'ยังไม่มีใครถูกส่งมาที่นี่' : 'หลังนี้ไม่ใช่ที่ลงทัณฑ์'}</div>`;
-
-    // ---- ปุ่มลงมือ ----
     const acts = [];
-    if (cap) acts.push(`<button class="gold" id="s-smite" ${st.slots.length && near ? '' : 'disabled'}>
+    if (cap) acts.push(`<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
         🔥 ลงทัณฑ์เอง<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
-          : !near ? 'ต้องเดินมายืนที่สถานีก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
-    if (v) acts.push(`<button id="s-visit" ${vWhy ? 'disabled' : ''}>
-        ${v.power ? POWERS.find(p => p.k === v.power).glyph : '❤️'} ${v.power ? 'เติม' + POWERS.find(p => p.k === v.power).name : 'พักฟื้นบารมี'}
+          : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
+    if (v) {
+      const pw = v.power ? POWERS.find(p => p.k === v.power) : null;
+      acts.push(`<button id="s-visit" ${vWhy ? 'disabled' : ''}>
+        ${pw ? pw.glyph : '❤️'} ${pw ? 'เติม' + pw.name : 'พักฟื้นบารมี'}
         <small>${esc(vWhy || v.say)}</small></button>`);
-    if (!near) acts.push(`<button id="s-walk">🚶 เดินไปที่นี่<small>ยืนถึงแล้วปุ่มอื่นถึงจะกดได้</small></button>`);
-    if (k === 'tarang' && g.held.length) {
-      acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     }
+    if (k === 'tarang' && g.held.length)
+      acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (cap && g.stFree(st) > 0 && g.queue.length)
       acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
 
-    dlg.innerHTML = `
-    <div class="hud st-hud" style="background-image:url('${stBg(k)}'), url('img/BG-Turn-Base.webp')">
-      <div class="hud-scrim"></div>
-      <button class="x" data-close title="ปิด">✕</button>
-      <div class="hud-top">
+    const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
+    if (T) T.innerHTML = `
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
         <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
         <span class="chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
-        <span class="ttl">${def.glyph} ${esc(def.name)}</span>
-      </div>
-      <div class="hud-body">
-        <div class="hud-left st-left">
+        <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
+    if (L) L.innerHTML = `
           <div class="hud-card">
             <h4>ที่นี่คือที่ไหน</h4>
             <div class="st-desc">${esc(def.desc)}</div>
@@ -1684,10 +1670,8 @@ function openStation(k) {
             <div class="st-desc">${esc(def.use || (cap ? 'ที่ลงทัณฑ์ตามชนิดกรรม' : '—'))}</div>
             <div class="st-meta">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
               · ฟืน ${def.fuel}/วาระ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
-          </div>
-        </div>
-        <div class="hud-stage st-stage">${figs}</div>
-        <div class="hud-right">
+          </div>`;
+    if (Rg) Rg.innerHTML = `
           <div class="hud-card st-acts">
             <h4>ทำอะไรได้ตรงนี้</h4>
             ${acts.join('') || '<div class="st-desc">ยังไม่มีอะไรให้ทำที่นี่ตอนนี้</div>'}
@@ -1695,31 +1679,64 @@ function openStation(k) {
           <div class="hud-card">
             <h4>ผู้คุมประจำหลังนี้</h4>
             <div class="st-desc">${st.crewK ? esc(g.crewOf(st.crewK)?.name || '—')
-              + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง — เดินเฉพาะตอนยืนอยู่ตรงนี้)' : '')
+              + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง)' : '')
               : 'ยังไม่มีใครประจำ'}</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+          </div>`;
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
-    on('#s-smite', () => { g.smite(st); sfx('hit'); paint(); refresh(); });
-    on('#s-visit', () => { if (g.visitStation(k)) { sfx('star'); paint(); refresh(); } });
-    on('#s-walk',  () => { g.walkTo(def.x, def.y); dlg.close(); });
+    on('#s-smite', doSmite);
+    on('#s-visit', () => { if (g.visitStation(k, R && R.inReach())) { sfx('star'); panels(); refresh(); } });
     on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
-      if (g.release(+b.dataset.rel)) { sfx('stamp'); paint(); refresh(); }
+      if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
   };
-  paint();
+
+  function doSmite() {
+    const st = g.stations.find(x => x.def.k === k);
+    if (!st || !st.slots.length || !(R && R.inReach())) return;
+    g.smite(st, true);
+    sfx('hit');
+    panels(); refresh();
+  }
+
+  // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
+  dlg.innerHTML = `
+    <div class="hud st-hud">
+      <button class="x" data-close title="ปิด">✕</button>
+      <div class="hud-top" id="st-top"></div>
+      <div class="hud-body">
+        <div class="hud-left st-left" id="st-left"></div>
+        <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas></div>
+        <div class="hud-right" id="st-right"></div>
+      </div>
+    </div>`;
   openDlg('hudwrap');           // กรอบเดียวกับห้องสอบสวน — .hud ต้องการกรอบใสเต็มความกว้าง
   myGen = dlgGen;
-  // ยืนใกล้/ไกลเปลี่ยนได้ระหว่างเปิดหน้าอยู่ (เดินไปเองด้วยปุ่มลูกศร) — วาดใหม่เป็นระยะ
+
+  const cv2 = dlg.querySelector('#st-cv');
+  R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
+  R.st = g.stations.find(x => x.def.k === k);
+  R.onAct = () => { if (def.visit) { if (g.visitStation(k, true)) { sfx('star'); panels(); refresh(); } } else doSmite(); };
+  let wasNear = null;
+  R.onFrame = near => {
+    if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
+    wasNear = near; panels();
+  };
+  R.start();
+  window.__room = R;            // ไว้ส่องตอนดีบักในเบราว์เซอร์ เหมือน window.G
+  panels();
+
+  // แผงข้อมูลอัปเดตตามวาระที่เดินอยู่ (ทัณฑ์คืบหน้า · ไฟไหม้ · คิว)
   const tm = setInterval(() => {
-    if (!dlg.open || dlgGen !== myGen) { clearInterval(tm); return; }
-    paint();
-  }, 700);
-  onDlgClose(() => clearInterval(tm));
+    if (!mine()) { clearInterval(tm); return; }
+    const st = g.stations.find(x => x.def.k === k);
+    if (!st) { dlg.close(); return; }
+    R.st = st;
+    panels();
+  }, 900);
+  // ไม่ผูกการเก็บกวาดไว้กับ event close — ทั้งลูปเฟรมและตัวจับเวลาเช็ค mine() เองอยู่แล้ว
+  // (close ยิงแบบ async · ใบที่ปิดไปตอน openDlg จะมาถึงหลังกล่องใหม่เปิด แล้วเก็บของใหม่ทิ้ง)
 }
 
 function openBuild(def) {

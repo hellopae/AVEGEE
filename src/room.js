@@ -1,0 +1,228 @@
+// room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
+//
+// เจ้าของสั่ง: "ย้ายวิญญาณไปอยู่ในกระทะ / ตรงดาบ / หน้าประตู โดยมียมทูตที่คุมอยู่ด้วย
+//  และให้ตัวละครเราเดินอยู่บนหน้าต่างได้ จะได้เดินไปลงทัณฑ์เอง / เดินไปกดเติมบารมีเอง"
+//
+// เดิมหน้าสถานีเป็นการ์ดนิ่ง ๆ วางรูปวิญญาณเรียงกันหน้าฉาก — ไม่มีอะไรให้ทำนอกจากกดปุ่ม
+// ตอนนี้เป็นฉากจริง: ภาพที่เจ้าของวาดวางเต็มกรอบ (contain ไม่ครอป จุดยึดจะได้ตรงเสมอ)
+// แล้วโค้ดวางคน "ตามจุดยึด" ที่วัดจากภาพนั้นเป็นสัดส่วน 0-1
+//
+// **จุดยึดอยู่ที่ ROOMS ใน data.js ที่เดียว** — วาดฉากใหม่/เปลี่ยนภาพ แก้ตัวเลขชุดเดียวจบ
+// ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
+
+import { drawStandee, drawSoul, img, rr } from './art.js';
+
+const HERO_H = 0.16;      // ความสูงตัวละครเทียบกับด้านสั้นของฉาก
+const CREW_H = 0.14;
+const SOUL_H = 0.105;
+const REACH  = 0.11;      // ระยะเอื้อมถึงจุดลงมือ (พิกัดสัดส่วน)
+
+const bgCache = new Map();
+/** โหลดภาพฉากของสถานี — ไม่มีไฟล์ก็ถอยไปเวทีกลาง */
+function bgOf(src, fallback) {
+  if (bgCache.has(src)) { const r = bgCache.get(src); return r.ok ? r.el : (fallback ? bgOf(fallback) : null); }
+  const el = new Image();
+  const rec = { el, ok: false };
+  el.onload = () => { rec.ok = true; };
+  el.onerror = () => { rec.ok = false; };
+  el.src = src;
+  bgCache.set(src, rec);
+  return null;
+}
+
+/** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
+export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
+  const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
+  const KEY = {};
+  let raf = 0, last = performance.now(), dead = false;
+  let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
+
+  // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
+  const px = u => box.ox + u * box.w;
+  const py = v => box.oy + v * box.h;
+  const unit = () => Math.min(box.w, box.h);     // ใช้คิดความสูงตัวละครให้คงที่ทุกอัตราส่วน
+
+  const clampWalk = (x, y) => {
+    const [x1, y1, x2, y2] = room.walk;
+    return [Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y))];
+  };
+
+  /** ยืนถึงจุดลงมือหรือยัง — ผู้เรียกใช้ตัดสินว่าปุ่มกดได้ไหม */
+  const inReach = () => Math.hypot(P.x - room.act[0], (P.y - room.act[1]) * 0.7) <= REACH;
+
+  // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
+  const onKey = e => {
+    if (/input|textarea/i.test(e.target.tagName)) return;
+    const k = e.key.toLowerCase();
+    if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' '].includes(k)) {
+      if (k === ' ') { e.preventDefault(); if (api.onAct) api.onAct(); return; }
+      e.preventDefault();
+      KEY[k] = e.type === 'keydown';
+      if (e.type === 'keydown') { P.tx = null; P.ty = null; }
+    }
+  };
+  addEventListener('keydown', onKey);
+  addEventListener('keyup', onKey);
+
+  // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
+  const onDown = e => {
+    // box อยู่ในหน่วย CSS pixel (draw ตั้ง transform คูณ dpr ให้แล้ว)
+    // ถ้าแปลงเป็นพิกเซลของ backing store ตรงนี้ จะเพี้ยนไปเท่ากับ dpr
+    const r = cv.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width * cv.clientWidth;
+    const cy = (e.clientY - r.top) / r.height * cv.clientHeight;
+    const [tx, ty] = clampWalk((cx - box.ox) / box.w, (cy - box.oy) / box.h);
+    P.tx = tx; P.ty = ty;
+  };
+  cv.addEventListener('pointerdown', onDown);
+
+  function step(dt) {
+    const sp = 0.00045 * dt;                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
+    let dx = 0, dy = 0;
+    if (KEY.a || KEY.arrowleft) dx -= 1;
+    if (KEY.d || KEY.arrowright) dx += 1;
+    if (KEY.w || KEY.arrowup) dy -= 1;
+    if (KEY.s || KEY.arrowdown) dy += 1;
+    if (!dx && !dy && P.tx != null) {            // เดินไปจุดที่แตะไว้
+      dx = P.tx - P.x; dy = P.ty - P.y;
+      if (Math.hypot(dx, dy) < 0.008) { P.tx = null; dx = dy = 0; }
+    }
+    const d = Math.hypot(dx, dy);
+    if (d > 0) {
+      const [nx, ny] = clampWalk(P.x + dx / d * sp, P.y + dy / d * sp * 0.7);
+      P.x = nx; P.y = ny;
+      if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
+    }
+  }
+
+  function draw(t, st) {
+    // ขนาดจริงของ canvas ต้องตามกรอบที่ CSS จัดให้ ไม่งั้นภาพถูกยืดผิดสัดส่วน
+    // (ตั้ง width/height ไว้ตายตัวใน HTML แล้วปล่อยให้ CSS ยืด = ฉากบิดทั้งใบ)
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const bw = Math.max(64, Math.round(cv.clientWidth * dpr));
+    const bh = Math.max(64, Math.round(cv.clientHeight * dpr));
+    if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+    // วาดด้วยพิกัด CSS pixel ตลอด (คูณ dpr ให้ที่ transform ที่เดียว)
+    // ไม่งั้นตัวหนังสือทุกตัวจะเล็กลงครึ่งหนึ่งบนจอ retina
+    const W = bw / dpr, H = bh / dpr;
+    const ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.imageSmoothingEnabled = false;
+
+    // ---- ฉาก: วางแบบ contain ไม่ครอป จุดยึดทุกจุดจึงตรงกับที่วัดจากภาพต้นฉบับเสมอ ----
+    const bg = bgOf(bgSrc, bgFallback) || (bgFallback ? bgOf(bgFallback) : null);
+    if (bg && bg.naturalWidth) {
+      const s = Math.min(W / bg.naturalWidth, H / bg.naturalHeight);
+      box = { ox: (W - bg.naturalWidth * s) / 2, oy: (H - bg.naturalHeight * s) / 2,
+              w: bg.naturalWidth * s, h: bg.naturalHeight * s };
+      ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
+      ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+    } else {
+      box = { ox: 0, oy: 0, w: W, h: H };
+      ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);
+    }
+
+    const U = unit();
+
+    // ---- วงแหวนบอกจุดลงมือ ----
+    const ax = px(room.act[0]), ay = py(room.act[1]);
+    const q = 0.5 + 0.5 * Math.sin(t / 300);
+    const near = inReach();
+    ctx.strokeStyle = near ? `rgba(255,205,120,${0.55 + q * 0.45})` : 'rgba(255,205,120,.30)';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
+
+    // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
+    const acts = [];
+    (st ? st.slots : []).forEach((sl, i) => {
+      const a = room.souls[i] || room.souls[room.souls.length - 1];
+      if (!a) return;
+      acts.push({ y: a[1], fn: () => {
+        const x = px(a[0]), y = py(a[1]);
+        drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
+        const p = Math.min(1, sl.progress / sl.need);
+        const bw = U * 0.10;
+        ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - bw / 2, y + 4, bw, 6, 3); ctx.fill();
+        ctx.fillStyle = def.fx === 'fx-ice' ? '#8fd8ff' : '#ff9d3a';
+        rr(ctx, x - bw / 2, y + 4, bw * p, 6, 3); ctx.fill();
+        // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
+        const nm = sl.soul.who.length > 11 ? sl.soul.who.slice(0, 10) + '…' : sl.soul.who;
+        label(ctx, nm, x, y + 18 + (i % 2) * 15, Math.max(11, U * 0.026), '#ffe0c8');
+      } });
+    });
+
+    if (st && st.crewK && room.crew) {
+      const c = g.crewOf(st.crewK);
+      if (c && !c.self) acts.push({ y: room.crew[1], fn: () => {
+        const x = px(room.crew[0]), y = py(room.crew[1]);
+        drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
+        label(ctx, c.name, x, y + 14, Math.max(10, U * 0.028), 'rgba(255,225,195,.85)');
+      } });
+    }
+
+    acts.push({ y: P.y, fn: () => {
+      drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face);
+    } });
+
+    acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+
+    // ---- ป้ายบอกวิธี ----
+    const tip = near ? '⌨ กดเว้นวรรค หรือปุ่มขวา เพื่อลงมือตรงนี้'
+                     : '⌨ ลูกศร/WASD หรือแตะบนฉาก เพื่อเดินเข้าไป';
+    tag(ctx, W / 2, H - 16, tip, near ? '#ffd27a' : 'rgba(240,225,215,.75)');
+  }
+
+  function frame(now) {
+    if (dead) return;
+    // กล่องปิดไปแล้ว/ถูกกล่องอื่นแทนที่ — เก็บตัวเองทิ้ง อย่ารอ event close
+    // (event close ของ <dialog> ยิงแบบ async และมาถึงตอนกล่องใหม่เปิดไปแล้ว
+    //  ผูกการเก็บกวาดไว้กับมันเมื่อไหร่ ห้องจะโดนทำลายทิ้งตั้งแต่เฟรมแรก)
+    if (!alive()) { api.destroy(); return; }
+    const dt = Math.min(80, now - last); last = now;
+    step(dt);
+    if (api.onFrame) api.onFrame(inReach());
+    draw(now, api.st);
+    raf = requestAnimationFrame(frame);
+  }
+
+  const api = {
+    st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
+    onAct: null,            // กดเว้นวรรคตอนยืนถึง
+    onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
+    inReach,
+    pos: () => [P.x, P.y, P.tx, P.ty],       // ไว้ส่องตอนดีบัก
+    /** เดินหนึ่งเฟรมด้วยมือ — แท็บที่ไม่ได้อยู่หน้าจอ rAF ไม่ยิงเลย ทดสอบจากคอนโซลต้องใช้ตัวนี้
+     *  (แนวเดียวกับ G.step() ที่เกมเปิดไว้ให้อยู่แล้ว) */
+    tick(dt = 16) { step(dt); if (api.onFrame) api.onFrame(inReach()); draw(performance.now(), api.st); },
+    start() {
+      draw(performance.now(), api.st);   // วาดใบแรกทันที — ก่อนหน้านี้กรอบภาพยังไม่ถูกคำนวณ
+      raf = requestAnimationFrame(frame); //  แตะฉากก่อนเฟรมแรกจะได้พิกัดเพี้ยน
+    },
+    destroy() {
+      dead = true;
+      cancelAnimationFrame(raf);
+      removeEventListener('keydown', onKey);
+      removeEventListener('keyup', onKey);
+      cv.removeEventListener('pointerdown', onDown);
+    },
+  };
+  return api;
+}
+
+function label(ctx, text, x, y, size, color) {
+  ctx.font = `600 ${Math.round(size)}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.8)';
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
+function tag(ctx, x, y, text, color) {
+  ctx.font = '600 13px "IBM Plex Sans Thai", system-ui, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(text).width + 18;
+  ctx.fillStyle = 'rgba(16,8,12,.82)';
+  rr(ctx, x - w / 2, y - 12, w, 24, 8); ctx.fill();
+  ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
