@@ -30,6 +30,14 @@
 "tile-rock.png"
 ],
 "rest": [
+"BG-Dab.jpeg",
+"BG-Krajok.jpeg",
+"BG-Krata.jpeg",
+"BG-Lokan.jpeg",
+"BG-Ngiw.jpeg",
+"BG-Sawan.jpeg",
+"BG-Tarang.jpeg",
+"BG-Tea.jpeg",
 "BG-Turn-Base.jpeg",
 "fx-claw.png",
 "fx-fireball.png",
@@ -72,6 +80,7 @@
 "spirit7.png",
 "spirit8.png",
 "spirit9.png",
+"st-building.png",
 "st-dab.png",
 "st-krajok.png",
 "st-krata.png",

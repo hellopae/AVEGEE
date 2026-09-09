@@ -56,6 +56,66 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
   }
 }
 
+/** กรอบ "ฐานอาคาร" ที่เดินทับไม่ได้ — วัดจากพิกเซลจริงของสไปรท์ ไม่ใช่กรอกมือ
+ *  (เจ้าของทำผังสีแดงมาให้ 8 ก.ย. 2569 ว่าเดินทับอาคารได้ทุกหลัง ต้องปิด)
+ *  อ่านแถบล่างของเนื้อภาพแล้วคืนกรอบในพิกัดฉาก — วาดรูปใหม่แล้วกรอบขยับตามเอง
+ *  คืน null ถ้ารูปยังโหลดไม่เสร็จ (ผู้เรียกลองใหม่รอบหน้าได้) */
+const footCache = new Map();
+export function footOf(def) {
+  if (def.bx == null) return null;
+  if (footCache.has(def.k)) return footCache.get(def.k);
+  const im = img('st-' + def.k);
+  if (!im || !im.naturalWidth) return null;
+  const N = 72;                                   // ย่อลงก่อนอ่านพิกเซล พอสำหรับวัดฐาน
+  const c = document.createElement('canvas');
+  c.width = N; c.height = N;
+  const cx = c.getContext('2d', { willReadFrequently: true });
+  cx.drawImage(im, 0, 0, N, N);
+  let d;
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { footCache.set(def.k, null); return null; }
+  const solid = (x, y) => d[(y * N + x) * 4 + 3] > 40;
+  let bot = -1;
+  for (let y = N - 1; y >= 0 && bot < 0; y--)
+    for (let x = 0; x < N; x++) if (solid(x, y)) { bot = y; break; }
+  if (bot < 0) { footCache.set(def.k, null); return null; }
+  const band = Math.max(2, Math.round(N * 0.16));  // แถบล่างของตัวอาคาร = ส่วนที่ติดพื้น
+  let x1 = N, x2 = -1;
+  for (let y = Math.max(0, bot - band); y <= bot; y++)
+    for (let x = 0; x < N; x++) if (solid(x, y)) { if (x < x1) x1 = x; if (x > x2) x2 = x; }
+  if (x2 < x1) { footCache.set(def.k, null); return null; }
+  const sx = v => def.bx - def.bw / 2 + v / N * def.bw;
+  const sy = v => def.by - def.bw + v / N * def.bw;
+  // เผื่อขอบเข้ามานิดหนึ่งทั้งสองข้าง จะได้เดินเฉียดขอบอาคารได้ ไม่ใช่ชนอากาศ
+  const pad = (sx(x2) - sx(x1)) * 0.06;
+  const r = [sx(x1) + pad, sy(bot - band), sx(x2) - pad, sy(bot)];
+  footCache.set(def.k, r);
+  return r;
+}
+
+/** ยอดของอาคารในพิกัดฉาก — วัดจากพิกเซลจริงเหมือนกัน
+ *  ใช้วางป้ายวงกลมเหนือหลังคา · สไปรท์ส่วนใหญ่มีที่ว่างเหนือเนื้อภาพเยอะ
+ *  ถ้าใช้ (by - bw) ตรง ๆ ป้ายจะลอยไปอยู่กลางฟ้าเหนืออาคารหลายสิบพิกเซล */
+const topCache = new Map();
+export function topOf(def) {
+  if (def.bx == null) return null;
+  if (topCache.has(def.k)) return topCache.get(def.k);
+  const im = img('st-' + def.k);
+  if (!im || !im.naturalWidth) return null;
+  const N = 72;
+  const c = document.createElement('canvas');
+  c.width = N; c.height = N;
+  const cx = c.getContext('2d', { willReadFrequently: true });
+  cx.drawImage(im, 0, 0, N, N);
+  let d;
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { topCache.set(def.k, null); return null; }
+  let top = -1;
+  for (let y = 0; y < N && top < 0; y++)
+    for (let x = 0; x < N; x++) if (d[(y * N + x) * 4 + 3] > 40) { top = y; break; }
+  const r = top < 0 ? null : def.by - def.bw + top / N * def.bw;
+  topCache.set(def.k, r);
+  return r;
+}
+
 /** อาคารสถานี — ไฟล์ img/st-<k>.png วางกึ่งกลาง-ฐานที่ (bx,by) กว้าง bw
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
 export function drawBuilding(ctx, def, t) {

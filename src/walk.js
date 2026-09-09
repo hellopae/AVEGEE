@@ -154,10 +154,23 @@ export function findPath(fx, fy, tx, ty) {
   return out;
 }
 
+/** ฐานอาคารที่สร้างแล้ว — เดินทับไม่ได้ (9 ก.ย. 2569)
+ *  game.js เป็นคนส่งเข้ามาทุกครั้งที่รายการสถานีเปลี่ยน (สร้างเสร็จ · ถูกเผาพัง · ย้ายโซน) */
+let blocks = [], holes = [];
+export function setBlocks(rects, keepOpen) {
+  blocks = (rects || []).filter(Boolean);
+  // holes = จุดที่ต้องเหยียบได้เสมอถึงกรอบอาคารจะทับ — จุดยืนของผู้คุมประจำหลังนั้น
+  // (หอทะเบียนกรรมวางจุดยืนไว้ "ใต้ชายคา" พอปิดฐานอาคารแล้วยมทูตเข้าประจำที่ไม่ได้เลย)
+  holes = (keepOpen || []).filter(Boolean);
+  okGrid = null;                                  // ตารางหาเส้นทางต้องสร้างใหม่
+}
+
 /** จุดนี้เหยียบได้ไหม */
 export function canWalk(x, y) {
   if (x < 0 || y < 0 || x > SCENE.w || y > SCENE.h) return false;
   for (const r of WALK_OK) if (inRect(x, y, r)) return true;   // สะพาน/ท่าเรือ ทับกรอบห้ามได้
+  for (const h of holes) if (inRect(x, y, h)) return true;     // จุดยืนของผู้คุม
+  for (const r of blocks) if (inRect(x, y, r)) return false;   // ตัวอาคาร
   for (const r of NO_WALK) if (inRect(x, y, r)) return false;
   if (!mask || mask === 'off') return true;
   const rx = Math.min(COLS - 1, x / CELL | 0), ry = Math.min(ROWS - 1, y / CELL | 0);

@@ -4,9 +4,11 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
-         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK } from './data.js';
+         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
+import { footOf } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -18,6 +20,8 @@ export function createGame() {
     order: 72, karma: 0, hp: BAL.startHp,
     powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'roar' ? 3 : p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2 })),
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
+    greens: 0,                        // คำตัดสินสีเขียว (78 ขึ้นไป) — เกณฑ์เลื่อนขั้นตั้งแต่ 9 ก.ย. 2569
+    reds: 0,                          // คำตัดสินสีแดงติดกัน — ครบ 3 พ่อลงมาตบเอง
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [],
     queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
@@ -57,9 +61,12 @@ function mkCrew(def) {
   return { ...def, morale: 92, at: null, tired: false };
 }
 
-function mkStation(k) {
+/** สถานีหนึ่งหลังรับวิญญาณได้พร้อมกันหลายดวง (9 ก.ย. 2569 — เดิมทีละดวง)
+ *  slots = [{soul, intensity, progress, need, verdict}] · ผู้คุมคนเดียวดูทั้งหลัง
+ *  build = เวลาที่จะสร้างเสร็จ (0 = เสร็จแล้ว) · fire = ไฟไหม้จากผีที่บุกมา (0-100) */
+function mkStation(k, build = 0) {
   const def = STATIONS.find(s => s.k === k);
-  return { def, soul: null, crewK: null, intensity: 3, progress: 0, need: 0 };
+  return { def, slots: [], crewK: null, intensity: 3, build, fire: 0 };
 }
 
 // ---------- สร้างสำนวนคดี ----------
@@ -262,6 +269,13 @@ const API = {
     return mkCaseSoul(c);
   },
 
+  /** สถานีนี้รับได้กี่ดวง — หลังที่ไม่ได้ใช้ลงทัณฑ์ (แรง 0) รับไม่ได้เลย */
+  stCap(st) { return st && st.def.pow > 0 ? STATION_CAP : 0; },
+  /** ยังรับเพิ่มได้อีกกี่ดวง (กำลังก่อสร้างอยู่ = ยังไม่รับ) */
+  stFree(st) { return st && !st.build ? this.stCap(st) - st.slots.length : 0; },
+  /** ดวงที่อยู่หน้าสุดของสถานี — ใช้ตอนซัดไฟเร่งทัณฑ์เอง */
+  stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
+
   crewOf(k) {
     if (k === 'me') return this.self;        // ท่านลงไปคุมเอง — ไม่มีค่าแรง ไม่ต้องจ้าง
     return this.crew.find(c => c.k === k);
@@ -331,7 +345,7 @@ const API = {
   powerOf(k) { return this.powers.find(p => p.k === k); },
   powerReady(k) {
     const p = this.powerOf(k);
-    return p && p.cd === 0 && p.ammo > 0 && this.casesDone >= p.unlock;
+    return p && p.cd === 0 && p.ammo > 0 && !this.powerLocked(p);
   },
 
   /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
@@ -442,29 +456,33 @@ const API = {
   // ---------- มอบหมายคดี ----------
   assign(soulId, stKey, crewK, intensity) {
     const st = this.stations.find(s => s.def.k === stKey);
-    const c = this.crewOf(crewK);
     const si = this.queue.findIndex(s => s.id === soulId);
-    if (!st || !c || si < 0 || st.soul) return false;
+    if (!st || si < 0 || this.stFree(st) <= 0) return false;
+    // สถานีที่มีผู้คุมประจำอยู่แล้ว ดวงถัดไปเข้าเวรของคนเดิม (หนึ่งหลังหนึ่งผู้คุม)
+    const useK = st.slots.length ? st.crewK : crewK;
+    const c = this.crewOf(useK);
+    if (!c) return false;
     if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
-    if (!c.self && c.at) return false;       // ยมทูตคนอื่นติดเวรอยู่
+    if (!c.self && c.at && c.at !== st.def.k) return false;   // ยมทูตคนอื่นติดเวรที่อื่นอยู่
     const soul = this.queue.splice(si, 1)[0];
-    st.soul = soul;
-    st.crewK = crewK;
-    st.intensity = clamp(intensity, 1, 5);
+    const slot = { soul, intensity: clamp(intensity, 1, 5), progress: 0, need: 0, verdict: null };
+    slot.need = 18 + soul.deserved * 8 + slot.intensity * 7;
+    st.slots.push(slot);
+    st.crewK = useK;
+    st.intensity = slot.intensity;
     c.path = null;                       // ทิ้งเส้นทางเดินเล่นเดิม แล้วเดินไปประจำสถานีใหม่
-    st.progress = 0;
-    st.need = 18 + soul.deserved * 8 + st.intensity * 7;
     if (c.self) this.log('ท่านลงไปคุมเอง — สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น', 'act');
     else c.at = st.def.k;
-    this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${st.intensity}`, 'act');
-    st.verdict = this.judge(st);        // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
-    this.applyVerdict(st.verdict, soul);
+    this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${slot.intensity}`
+             + (st.slots.length > 1 ? ` (คุมอยู่ ${st.slots.length} ดวง)` : ''), 'act');
+    slot.verdict = this.judge(st, slot);   // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
+    this.applyVerdict(slot.verdict, soul);
     return true;
   },
 
   // ---------- สูตรตัดสิน ----------
-  judge(st) {
-    const soul = st.soul, c = this.crewOf(st.crewK);
+  judge(st, slot) {
+    const soul = slot.soul, c = this.crewOf(st.crewK);
     const tags = st.def.tags;
     const rabOf = () => clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
 
@@ -488,8 +506,8 @@ const API = {
     let tham = tags.length === 0 ? 42 : Math.round(100 * hitW / totalW);
     if (c.panya >= 7) tham = Math.min(100, tham + 6);
 
-    const short = Math.max(0, soul.deserved - st.intensity);
-    const over = Math.max(0, st.intensity - soul.deserved);
+    const short = Math.max(0, soul.deserved - slot.intensity);
+    const over = Math.max(0, slot.intensity - soul.deserved);
     // เบาไปกับหนักเกิน ต้องเจ็บพอ ๆ กัน ไม่งั้นซัดวาระ 5 ทุกคดีจะเป็นวิธีเล่นที่ดีที่สุด
     // ซึ่งขัดกับแกนของเกมทั้งเกม
     const ked = clamp(100 - short * 26 - over * 17, 0, 100);
@@ -530,6 +548,15 @@ const API = {
 
     const tag = r.score >= 78 ? 'good' : r.score >= 50 ? '' : 'bad';
     this.log(`คำตัดสิน #${String(soul.id).padStart(3, '0')} — ธรรม ${r.tham} · เข็ด ${r.ked} · รวม ${r.score}`, tag);
+    // เขียวสะสมไว้เลื่อนขั้น · แดงสามครั้งติดกันพ่อลงมาเอง (เตือนก่อนสองครั้ง)
+    if (tag === 'good') { this.greens++; this.reds = 0; this.checkLevel(); }
+    else if (tag === 'bad') {
+      this.reds++;
+      if (this.reds < DAD.redsToCome) {
+        this.log(`⚠️ ${DAD.warn[this.reds - 1] || DAD.warn[0]} (คำตัดสินแดง ${this.reds}/${DAD.redsToCome})`, 'boss');
+        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: DAD.warn[this.reds - 1] || DAD.warn[0] };
+      } else { this.reds = 0; this.dadFight = true; }
+    } else this.reds = 0;
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
     if (r.short > 0) this.log('  ↳ เบาไป วิญญาณยังไม่สำนึก จดไว้ในทะเบียนกลับมาใหม่', 'bad');
     if (r.tham < 40) this.log('  ↳ ทัณฑ์ไม่ตรงชนิดกรรมของเขา', 'bad');
@@ -575,18 +602,24 @@ const API = {
     this.checkEnd();
   },
 
-  finish(st) {
-    const soul = st.soul, c = this.crewOf(st.crewK);
-    const r = st.verdict || this.judge(st);
-    this.scheduleReturn(soul, r, st.intensity);
+  finish(st, slot) {
+    const i = st.slots.indexOf(slot);
+    if (i < 0) return;
+    const soul = slot.soul, c = this.crewOf(st.crewK);
+    const r = slot.verdict || this.judge(st, slot);
+    this.scheduleReturn(soul, r, slot.intensity);
     this.coin += r.coin;
     this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
     this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
-                          intensity: st.intensity, tick: this.tick });
+                          intensity: slot.intensity, tick: this.tick });
     if (this.closed.length > 12) this.closed.pop();
-    st.soul = null; st.progress = 0; st.crewK = null; st.verdict = null;
-    if (c) { c.at = null; c.path = null; }   // ออกเวรแล้วกลับไปเดินเล่นที่จุดประจำของตัวเอง
+    st.slots.splice(i, 1);
+    // ผู้คุมออกเวรเฉพาะตอนไม่เหลือดวงในหลังนั้นแล้ว
+    if (!st.slots.length) {
+      st.crewK = null;
+      if (c) { c.at = null; c.path = null; }
+    }
   },
 
   /** ตัดสินเบาไป = เขายังไม่สำนึก ปล่อยไปแล้วไปก่อเรื่องต่อ แล้วกลับมาใหม่
@@ -653,12 +686,16 @@ const API = {
     let hasSala = false;
     for (const st of this.stations) {
       if (st.def.k === 'sala') hasSala = true;
-      if (!st.soul) continue;
+      if (st.build || !st.slots.length) continue;
+      if (st.fire >= MOB.burnMax) continue;       // ไหม้จนใช้การไม่ได้ ทัณฑ์หยุดหมด
       const c = this.crewOf(st.crewK);
+      if (!c) continue;
       if (this.fuel < st.def.fuel) {
         if (this.tick % 6 === 0) this.log(`🔥 ฟืนหมด ${st.def.name} หยุดทำงาน`, 'bad');
         continue;
       }
+      // คุมหลายดวงพร้อมกัน = แต่ละดวงเดินช้าลง ไม่ใช่ได้ฟรี
+      const share = 1 / (0.55 + 0.45 * st.slots.length);
       // สถานีที่ท่านคุมเอง เดินช้ากว่ามาก และเดินเฉพาะตอนท่านยืนอยู่ตรงนั้นจริง ๆ
       // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย)
       if (c.self) {
@@ -668,15 +705,19 @@ const API = {
           continue;
         }
         this.fuel = Math.max(0, this.fuel - st.def.fuel);
-        st.progress += st.def.pow * 0.7;
-        if (st.progress >= st.need) this.finish(st);
+        for (const slot of [...st.slots]) {
+          slot.progress += st.def.pow * 0.7 * share;
+          if (slot.progress >= slot.need) this.finish(st, slot);
+        }
         continue;
       }
       this.fuel = Math.max(0, this.fuel - st.def.fuel);
       const mf = 0.55 + 0.45 * (c.morale / 100);
-      st.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf;
+      for (const slot of [...st.slots]) {
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share;
+        if (slot.progress >= slot.need) this.finish(st, slot);
+      }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
-      if (st.progress >= st.need) this.finish(st);
     }
 
     // พักฟื้นกำลังใจ
@@ -818,19 +859,28 @@ const API = {
 
   checkLevel() {
     const nx = LEVELS[this.level];              // เลเวลถัดไป (index = level เพราะ level เริ่มที่ 1)
-    if (!nx || this.star5 < nx.star5) return;
+    if (!nx || this.greens < nx.green) return;
     this.level++;
-    if (this.level >= 2) this.powers.forEach(p => { p.max++; p.ammo = p.max; });
+    // ของที่ได้ต้องจับต้องได้ทุกขั้น — พลังที่เพิ่งปลดล็อกต้องมีกระสุนติดมือทันที
+    // ไม่งั้นผู้เล่นเห็นแค่ชื่อขั้นเปลี่ยน แล้วก็ยังกดอะไรใหม่ไม่ได้อยู่ดี
+    if (this.level >= 2) this.powers.forEach(p => { p.max++; });
     if (this.level >= 3) this.coin += 300;
     if (this.level >= 4) { this.hpMax = 120; this.hp = this.hpMax; this.coin += 500; }
+    this.powers.forEach(p => { if (p.lv <= this.level) p.ammo = Math.max(p.ammo, p.lv === this.level ? p.max : 1); });
     if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
     this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
     this.pendingLevel = nx;
   },
 
+  /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
+  powerLocked(p) { return this.level < (p.lv || 1); },
+  /** เรียกยมทูตมาช่วยในฉากต่อสู้ได้หรือยัง */
+  canCallCrew() { return this.level >= CREW_HELP_LV; },
+
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    this.syncBlocks();                 // อาคารที่สร้างเสร็จ/ถูกเผาพัง กันทางเดินให้ตรงเสมอ
     // เดินได้เฉพาะพื้นที่เหยียบได้ — ลาวากับแม่น้ำวิญญาณกันไว้ที่ src/walk.js
     const P = this.player, SP = 0.19 * dt;
     // เซฟเก่า (หรือฉากที่วาดใหม่) อาจทำให้ยืนค้างกลางลาวา — ดันขึ้นฝั่งให้เอง
@@ -909,23 +959,67 @@ const API = {
       this.items.splice(i, 1);
     }
 
-    // เปรต — เดินเข้าไปใกล้แล้วปราบด้วยลูกไฟ (ต้องมีกระสุนตวาด)
+    // ---- นั่งร้านถอดออกเมื่อครบเวลา ----
+    for (const st of this.stations) {
+      if (!st.build || Date.now() < st.build) continue;
+      st.build = 0;
+      const extra = this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '';
+      this.log(`🏗️ สร้าง${st.def.name}เสร็จแล้ว${extra}`, 'good');
+      this.syncBlocks(true);          // นั่งร้านหายแล้ว ตัวอาคารกันทางเดินทันทีในเฟรมเดียวกัน
+      this.onChange();
+    }
+
+    // ---- เปรตเดินไปเผาอาคาร (9 ก.ย. 2569) ----
+    // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
+    // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
+    const burnable = this.stations.filter(st => st.fire < MOB.burnMax);
+    const burning = new Set();
+    // ระยะจาก "ขอบอาคาร" ไม่ใช่จุดกึ่งกลาง — หลังใหญ่ ๆ อย่างหอทะเบียนกรรม
+    // ยืนติดกำแพงแล้วยังห่างจุดกึ่งกลางเป็นร้อยพิกเซล มันจะยืนเฉย ๆ ไม่เผาสักที
+    const nearBuilding = (st, x, y) => {
+      const r = footOf(st.def);
+      if (!r) return Math.hypot((st.def.bx ?? st.def.x) - x, (st.def.by ?? st.def.y) - y) <= MOB.burnReach;
+      const dx = Math.max(r[0] - x, 0, x - r[2]);
+      const dy = Math.max(r[1] - y, 0, y - r[3]);
+      return Math.hypot(dx, dy) <= MOB.burnReach;
+    };
     for (let i = this.mobs.length - 1; i >= 0; i--) {
       const m = this.mobs[i];
-      if (m.wx == null || Math.hypot(m.wx - m.x, m.wy - m.y) < 6) {
-        const tx = clamp(m.x + (Math.random() - 0.5) * 300, 60, SCENE.w - 60);
-        const ty = clamp(m.y + (Math.random() - 0.5) * 200, 90, SCENE.h - 60);
-        const ok = canWalk(tx, ty) ? [tx, ty] : nearestWalk(tx, ty);
-        m.wx = ok ? ok[0] : m.x; m.wy = ok ? ok[1] : m.y;
+      // เลือกเป้าหมายใหม่เมื่อยังไม่มี หรือหลังที่หมายไว้ไหม้จนพังไปแล้ว
+      let tgt = burnable.find(st => st.def.k === m.at);
+      if (!tgt) {
+        let bd = Infinity;
+        for (const st of burnable) {
+          const d = Math.hypot((st.def.bx ?? st.def.x) - m.x, (st.def.by ?? st.def.y) - m.y);
+          if (d < bd) { bd = d; tgt = st; }
+        }
+        m.at = tgt ? tgt.def.k : null;
+        m.path = null;
       }
-      const dx = m.wx - m.x, dy = m.wy - m.y, d = Math.hypot(dx, dy) || 1;
-      if (!stepTo(m, dx / d * 0.035 * dt, dy / d * 0.035 * dt)) m.wx = null;
+      if (tgt && nearBuilding(tgt, m.x, m.y)) {
+        m.path = null;
+        burning.add(tgt.def.k);
+        tgt.fire = Math.min(MOB.burnMax, tgt.fire + MOB.burnRate * dt);
+        if (tgt.fire >= MOB.burnMax) this.burnDown(tgt);
+      } else if (tgt) {
+        // เดินตามเส้นทางเหมือนยมทูต — เดินตรงเข้าหาแล้วชนกำแพงอาคารจะค้างอยู่ตรงนั้นทั้งเกม
+        if (!m.path || !m.path.length) m.path = findPath(m.x, m.y, tgt.def.x, tgt.def.y) || [];
+        const w = m.path[0];
+        if (w) {
+          const dx = w[0] - m.x, dy = w[1] - m.y, d = Math.hypot(dx, dy) || 1;
+          if (d < 6) m.path.shift();
+          else if (!stepTo(m, dx / d * 0.035 * dt, dy / d * 0.035 * dt)) m.path = null;
+        }
+      }
 
       if (this.huntMob && Math.hypot(m.x - P.x, m.y - P.y) < MOB.reach) {
         this.huntMob = false;
         this.strike(i, 'ท่าน');
       }
     }
+    // ไม่มีผียืนอยู่แล้ว ไฟค่อย ๆ มอดเอง
+    for (const st of this.stations)
+      if (st.fire > 0 && !burning.has(st.def.k)) st.fire = Math.max(0, st.fire - MOB.burnCool * dt);
 
     // ยักษ์ทวารบาลไล่ปราบเอง
     if (this.guard && this.mobs.length) {
@@ -937,6 +1031,79 @@ const API = {
       const G = this.guard;                     // ว่างงาน → เดินกลับไปเฝ้าท่าเรือฝั่งขวา
       stepTo(G, (SPOTS.ferry.to[0] - G.x) * 0.0008 * dt, (SPOTS.ferry.to[1] - 90 - G.y) * 0.0008 * dt);
     }
+  },
+
+  /** ยืนอยู่ใกล้สถานีนี้พอจะลงมือเองไหม — ใช้ระยะเดียวกับการซัดไฟเร่งทัณฑ์ */
+  nearStation(st) {
+    if (!st) return false;
+    const d = st.def;
+    return Math.hypot((d.sx ?? d.x) - this.player.x, (d.sy ?? d.y) - this.player.y) <= BAL.smiteReach * 1.5;
+  },
+
+  /** แวะเติมพลังที่สถานี — ว่างเปล่าแปลว่ากดได้ · มีข้อความแปลว่ากดไม่ได้เพราะอะไร */
+  visitWhy(st) {
+    const v = st && st.def.visit;
+    if (!v) return 'สถานีนี้ไม่มีอะไรให้เติม';
+    if (st.build) return 'ยังก่อสร้างไม่เสร็จ';
+    if (!this.nearStation(st)) return 'ต้องเดินมายืนที่นี่ก่อน';
+    if (st.visitCd && this.tick < st.visitCd) return `เพิ่งใช้ไป · อีก ${st.visitCd - this.tick} วาระ`;
+    if (v.power) {
+      const p = this.powerOf(v.power);
+      if (this.powerLocked(p)) return `ยังใช้${p.name}ไม่ได้ — ต้องเลื่อนขั้นก่อน`;
+      if (p.ammo >= p.max) return `${p.name}เต็มมืออยู่แล้ว`;
+    }
+    if (v.heal && this.hp >= this.hpMax) return 'บารมีเต็มอยู่แล้ว';
+    return '';
+  },
+
+  visitStation(k) {
+    const st = this.stations.find(x => x.def.k === k);
+    if (!st || this.visitWhy(st)) return false;
+    const v = st.def.visit;
+    st.visitCd = this.tick + v.cool;
+    if (v.power) {
+      const p = this.powerOf(v.power);
+      p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
+      this.log(`${p.glyph} ${v.say} — ${p.name} +1 (เหลือ ${p.ammo})`, 'good');
+    }
+    if (v.heal) {
+      this.hp = clamp(this.hp + v.heal, 0, this.hpMax);
+      this.log(`❤️ ${v.say} — บารมี +${v.heal} (เหลือ ${Math.round(this.hp)})`, 'good');
+    }
+    this.onChange();
+    return true;
+  },
+
+  /** บอก walk.js ว่าตอนนี้มีอาคารกินพื้นที่ตรงไหนบ้าง
+   *  วัดจากพิกเซลของสไปรท์จริง (art.footOf) — รูปยังโหลดไม่เสร็จก็ลองใหม่รอบหน้า
+   *  เรียกถี่ ๆ ได้ ทำงานจริงเฉพาะตอนรายการสถานีเปลี่ยน */
+  syncBlocks(force = false) {
+    const sig = this.stations.map(st => (st.build ? '~' : '') + st.def.k).join(',');
+    if (!force && sig === this.blockSig) return;
+    const rects = [], holes = [];
+    let waiting = false;
+    const R = 16;
+    for (const st of this.stations) {
+      holes.push([st.def.x - R, st.def.y - R, st.def.x + R, st.def.y + R]);
+      if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
+      const r = footOf(st.def);
+      if (r) rects.push(r); else waiting = true;
+    }
+    setBlocks(rects, holes);
+    this.blockSig = waiting ? null : sig;         // ยังมีรูปไม่มา — ให้ลองใหม่รอบหน้า
+  },
+
+  /** อาคารไหม้จนพัง — ดวงที่กำลังรับทัณฑ์อยู่หลุดกลับเข้าคิว สร้างใหม่ได้จากแท็บก่อสร้าง */
+  burnDown(st) {
+    const i = this.stations.indexOf(st);
+    if (i < 0) return;
+    for (const slot of st.slots) { slot.soul.beaten = false; this.queue.push(slot.soul); }
+    const c = this.crewOf(st.crewK);
+    if (c) { c.at = null; c.path = null; }
+    this.stations.splice(i, 1);
+    this.order = clamp(this.order - 8, 0, 100);
+    this.log(`🔥 ${st.def.name}ถูกเผาจนพังทั้งหลัง — ระเบียบตก 8 · ต้องสร้างใหม่`, 'bad');
+    this.onChange();
   },
 
   /** สั่งเดินไปที่จุดหนึ่ง — วางเส้นทางอ้อมลาวา/แม่น้ำให้เอง */
@@ -967,7 +1134,7 @@ const API = {
     const P = this.player;
     let best = null, bd = BAL.smiteReach;
     for (const st of this.stations) {
-      if (!st.soul) continue;
+      if (!st.slots.length || st.build) continue;
       const d = Math.hypot((st.def.sx ?? st.def.x) - P.x, (st.def.sy ?? st.def.y) - P.y);
       if (d < bd) { bd = d; best = st; }
     }
@@ -1003,10 +1170,12 @@ const API = {
     // แล้วลงทัณฑ์เองไม่ได้เลย" ซึ่งเป็นทางตัน ไม่ใช่ความยาก
     // ลูกไฟเหลือไว้ใช้กับเปรตกับตวาดข่มขู่เท่านั้น · ราคาของการลงมือเองคือ "กรรมท่าน" อยู่แล้ว
     if (this.smiteAt && Date.now() - this.smiteAt < 420) return false;   // กันรัวเกินไป
+    const slot = this.stFront(st);
+    if (!slot) return false;
     this.smiteAt = Date.now();
 
     const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
-    st.progress += BAL.smiteGain;
+    slot.progress += BAL.smiteGain;
     this.swingUntil = Date.now() + 480;
     this.player.face = sx < this.player.x ? -1 : 1;
     this.fxHits.push({ t: Date.now(), x: sx, y: sy });
@@ -1014,8 +1183,8 @@ const API = {
     const c = this.crewOf(st.crewK);
     const k = Math.round(BAL.smiteKarma * (c && c.metta >= 8 ? 0.5 : 1) * 10) / 10;
     this.karma = clamp(this.karma + k, 0, 100);
-    this.log(`🔥 ท่านซัดไฟใส่${st.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
-    if (st.progress >= st.need) this.finish(st);
+    this.log(`🔥 ท่านซัดไฟใส่${slot.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
+    if (slot.progress >= slot.need) this.finish(st, slot);
     this.onChange();
     return true;
   },
@@ -1123,7 +1292,34 @@ const API = {
     return this.battle;
   },
 
-  /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | ชื่อของใน BATTLE.items
+  /** พ่อลงมาตบเองเพราะตัดสินพลาดติดกันสามสำนวน — ไม่ใช่จบเกม
+   *  ตบทีเดียวเหลือบารมี DAD.hpLeft แล้วเกมเดินต่อ (เจ้าของสั่ง 9 ก.ย. 2569) */
+  startDadFight() {
+    if (this.battle) return this.battle;
+    this.dadFight = false;
+    this.battle = {
+      kind: 'dad', who: 'พญายม', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
+      foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
+      youHp: Math.max(1, Math.round(this.hp)), youMax: this.hpMax,
+      stun: 0, turn: 1, over: null, log: [], talk: DAD.line1, dmg: null,
+    };
+    this.onChange();
+    return this.battle;
+  },
+
+  /** เรียกยมทูตในสังกัดมาช่วยหนึ่งที — เสียกำลังใจของเขา แล้วต้องรอรอบ */
+  crewHelpers() {
+    if (!this.canCallCrew()) return [];
+    return this.crew.filter(c => !c.reader && !c.self);
+  },
+  crewHelpWhy(c) {
+    if (!this.canCallCrew()) return `ต้องเป็น${LEVELS[CREW_HELP_LV - 1].name}ก่อน`;
+    if (c.helpCd && this.tick < c.helpCd) return `เพิ่งช่วยไป · อีก ${c.helpCd - this.tick} วาระ`;
+    if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
+    return '';
+  },
+
+  /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | 'crew:<k>' | ชื่อของใน BATTLE.items
    *  คืน false ถ้ากดไม่ได้ (ของไม่พอ / จบไปแล้ว) */
   battleAct(what) {
     const B = this.battle;
@@ -1137,12 +1333,15 @@ const API = {
     B.dmg = { foe: 0, you: 0 };
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
-    if (B.kind === 'yama') {
+    // 'yama' = บารมีหมดแล้วพ่อมาปิดเกม · 'dad' = มาตบเตือนแล้วเกมเดินต่อ
+    if (B.kind === 'yama' || B.kind === 'dad') {
+      const dad = B.kind === 'dad';
       say(pick(YAMA_FIGHT.taunt));
-      B.talk = `${pick(YAMA_FIGHT.taunt)}\n${YAMA_FIGHT.line2}`;
-      B.youHp = 0; B.over = 'lose';
+      B.talk = `${pick(YAMA_FIGHT.taunt)}\n${dad ? DAD.line2 : YAMA_FIGHT.line2}`;
+      B.youHp = dad ? Math.max(1, Math.round(B.youMax * DAD.hpLeft)) : 0;
+      B.over = 'lose';
       B.dmg = { foe: 0, you: 999 };
-      say(YAMA_FIGHT.line3);
+      say(dad ? DAD.line3 : YAMA_FIGHT.line3);
       this.onChange();
       return true;
     }
@@ -1153,6 +1352,15 @@ const API = {
       const crit = Math.random() < BATTLE.crit;
       if (crit) dmg = Math.round(dmg * 1.7);
       say(`⚔️ ท่านฟาดเข้าเต็มแรง — ${dmg} หน่วย${crit ? ' (เข้าเต็ม ๆ)' : ''}`);
+
+    } else if (typeof what === 'string' && what.startsWith('crew:')) {
+      const c = this.crew.find(x => x.k === what.slice(5));
+      if (!c || this.crewHelpWhy(c)) return false;
+      c.helpCd = this.tick + BATTLE.crewCd;
+      c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
+      dmg = roll([6 + c.raeng, 12 + c.raeng * 2]);
+      say(`${c.glyph} ${c.name}กระโจนเข้ามาช่วย — ${dmg} หน่วย (กำลังใจ −${BATTLE.crewMorale})`);
+      B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
 
     } else if (what === 'fire') {
       const p = this.powerOf('roar');
@@ -1239,6 +1447,11 @@ const API = {
     const B = this.battle;
     if (!B) return null;
     this.battle = null;
+    if (B.kind === 'dad') {
+      this.hp = clamp(B.youHp, 1, this.hpMax);
+      this.log(`👹 พญายมตบทีเดียว — บารมีเหลือ ${Math.round(this.hp)} · เริ่มนับคำตัดสินแดงใหม่`, 'boss');
+      this.checkEnd(); this.onChange(); return B;
+    }
     if (B.kind === 'yama') { this.checkEnd(); this.onChange(); return B; }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
     if (B.kind === 'mob') {
@@ -1293,10 +1506,11 @@ const API = {
     const kind = pool.length ? pick(pool) : Math.floor(Math.random() * MOB.kinds.length);
     const mob = { id: SEQ++, x: p[0], y: p[1], hp: MOB.hp, kind };
     this.mobs.push(mob);
-    this.pendingMob = this.mobs.length - 1;      // ui เปิดหน้าต่อสู้ให้ (ดู onChange ใน ui.js)
+    // ไม่เด้งเข้าฉากต่อสู้เองแล้ว (9 ก.ย. 2569) — มันจะเดินไปเผาอาคารแทน
+    // ผู้เล่นเลือกเองว่าจะทิ้งไว้หรือเดินไปหยุด (ปุ่มต่อสู้ขึ้นตอนเข้าไปใกล้)
     // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
-    this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — ปล่อยไว้ระเบียบจะตกเรื่อย ๆ`, 'event');
+    this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — มันจะเดินไปเผาอาคาร ถ้าไม่ไปหยุด`, 'event');
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
 
@@ -1335,12 +1549,13 @@ const API = {
     if (this.stations.some(s => s.def.k === k)) return false;
     const before = this.activeTags();
     this.coin -= def.cost;
-    this.stations.push(mkStation(k));
+    this.stations.push(mkStation(k, Date.now() + BUILD_TIME));
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
     const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
                 : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
-    this.log(`🏗️ สร้าง${def.name}เสร็จ${extra}`, 'good');
+    this.buildExtra = { k, text: extra };       // เก็บไว้พูดตอนนั่งร้านถอดออกจริง
+    this.log(`🏗️ ลงเสาเข็ม${def.name} — กำลังก่อสร้าง`, 'act');
     return true;
   },
 
@@ -1359,22 +1574,28 @@ const API = {
  *  ตอนโหลดจึงเอาค่านิยามล่าสุดมาประกอบใหม่ — แก้สมดุลใน data.js แล้วเซฟเก่ายังใช้ได้ */
 // v2 ตั้งแต่ 7 ก.ย. 2569 — กติกาเปลี่ยนเยอะ (เงินตั้งต้น ผู้คุมตั้งต้น สำนวนตามสถานี)
 // เซฟเก่าเอามาต่อแล้วจะได้เกมที่ครึ่ง ๆ กลาง ๆ ปล่อยให้เริ่มใหม่ดีกว่า
+//
+// 9 ก.ย. 2569: โครงสถานีเปลี่ยนเป็น slots (รับได้ 3 ดวง) เนื้อในเลยเป็น v3 แล้ว
+// แต่ **ใช้ชื่อช่องเดิม** ตั้งใจ — restore() ยกเซฟ v2 ขึ้นเป็น v3 ให้เอง
+// เจ้าของกำลังเล่นค้างอยู่ ไม่ควรล้างความคืบหน้าเพราะเราเปลี่ยนโครงข้างใน
 const SAVE_KEY = 'avegee.save.v2';
 
 API.snapshot = function () {
   return {
-    v: 2, at: Date.now(),
+    v: 3, at: Date.now(),
     tick: this.tick, coin: this.coin, fuel: this.fuel, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, casesDone: this.casesDone, scoreSum: this.scoreSum,
+    greens: this.greens, reds: this.reds,
     kpiPassed: this.kpiPassed, nextArrive: this.nextArrive, nextEvent: this.nextEvent,
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max })),
     crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y })),
     stations: this.stations.map(st => ({
-      k: st.def.k, crewK: st.crewK, intensity: st.intensity,
-      progress: st.progress, need: st.need, soul: st.soul, verdict: st.verdict,
+      k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
+      build: st.build ? Math.max(0, st.build - Date.now()) : 0,   // เก็บเป็น "อีกกี่ ms" ไม่ใช่เวลาจริง
+      slots: st.slots,
     })),
     queue: this.queue, held: this.held, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
@@ -1391,8 +1612,9 @@ API.save = function () {
 };
 
 API.restore = function (d) {
-  if (!d || d.v !== 2) return false;
+  if (!d || (d.v !== 2 && d.v !== 3)) return false;
   const keep = ['tick','coin','fuel','order','karma','hp','hpMax','hits','star5','level',
+                'greens','reds',
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
   SEQ = d.seq || SEQ;
@@ -1401,6 +1623,8 @@ API.restore = function (d) {
     const sv = (d.powers || []).find(x => x.k === p.k) || {};
     return { ...p, cd: sv.cd || 0, ammo: sv.ammo ?? 0, max: sv.max ?? 2 };
   });
+  // เซฟ v2 ไม่มีตัวนับเขียว/แดง — ประมาณจากคะแนนเฉลี่ยที่บันทึกไว้ ดีกว่าเริ่มนับศูนย์
+  if (d.v === 2) { this.greens = Math.floor((d.star5 || 0) * 1.5); this.reds = 0; }
   this.crew = (d.crew || []).map(sv => {
     const def = CREW.find(c => c.k === sv.k);
     return def ? { ...mkCrew(def), ...sv } : null;
@@ -1408,8 +1632,13 @@ API.restore = function (d) {
   this.stations = (d.stations || []).map(sv => {
     const st = mkStation(sv.k);
     if (!st.def) return null;
-    Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity, progress: sv.progress,
-                        need: sv.need, soul: sv.soul, verdict: sv.verdict });
+    st.crewK = sv.crewK; st.intensity = sv.intensity ?? 3; st.fire = sv.fire || 0;
+    st.visitCd = sv.visitCd || 0;
+    st.build = sv.build ? Date.now() + sv.build : 0;
+    // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
+    st.slots = sv.slots || (sv.soul ? [{ soul: sv.soul, intensity: sv.intensity ?? 3,
+                                         progress: sv.progress || 0, need: sv.need || 60,
+                                         verdict: sv.verdict || null }] : []);
     return st;
   }).filter(Boolean);
   this.queue = d.queue || [];

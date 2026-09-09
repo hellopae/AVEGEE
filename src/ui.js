@@ -42,24 +42,11 @@ setInterval(() => {
   releaseDlgPause();       // กล่องปิดไปแล้วแต่ยังไม่ได้คืนค่าพัก — ดูหมายเหตุที่ pauseForDlg()
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
-  openPendingMob();        // เปรตที่รอเปิดฉากต่อสู้ — รอจนกว่าโมดัลอื่นจะปิดก่อน
+  // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
+  if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
+    g.startDadFight(); openBattle();
+  }
 }, 400);
-
-/** เปรตเพิ่งขึ้นมา → เปิดหน้าต่อสู้ให้
- *  เช็คในตัวจับเวลา ไม่ใช่ใน onChange อย่างเดียว เพราะตอนเปรตโผล่มักมีโมดัลอื่นเปิดค้างอยู่
- *  (บทเรียนของพญายม · เหตุการณ์ · ผลคำตัดสิน) แล้วจะไม่มีอะไรมาปลุกให้เปิดอีกเลย */
-function openPendingMob() {
-  if (g.pendingMob == null || g.battle || g.over || dlg.open) return;
-  // เพิ่งจบฉากก่อนหน้าไปหมาด ๆ หรือกำลังโชว์ผลคำตัดสินอยู่ → รอก่อน
-  // ไม่งั้นผู้เล่นกด "ลากเข้าสถานี" แล้วหน้าต่อสู้ตัวใหม่เด้งทับทันที
-  // ดูเหมือนหน้าต่างไม่ยอมปิด (เจ้าของเจอ 8 ก.ย. 2569)
-  if (fx || Date.now() - lastBattleEnd < 2200) return;
-  const i = g.pendingMob;
-  g.pendingMob = null;
-  if (!g.mobs[i]) return;
-  g.startMobBattle(i);
-  openBattle();
-}
 
 // ---------- ลูป ----------
 let saveAt = 0;
@@ -383,7 +370,7 @@ function sideBody() {
   if (sel.kind === 'me') {
     const pw = POWERS.map(p => {
       const q = g.powerOf(p.k);
-      const state = g.casesDone < p.unlock ? `ล็อก (${p.unlock} คดี)` : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
+      const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})` : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
       return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
     }).join('');
     return profile('hero-yama', 'ยมบาท (ตัวท่าน)', LEVELS[g.level - 1].name,
@@ -403,9 +390,10 @@ function sideBody() {
     const c = g.crewOf(sel.key);
     if (!c) return '<div class="empty">ยมทูตคนนี้ไม่ได้อยู่ในสังกัดแล้ว</div>';
     const st = c.at ? g.stations.find(s => s.def.k === c.at) : null;
-    const now = st && st.soul
-      ? `กำลังคุม <b>${esc(st.soul.who)}</b> สำนวน #${String(st.soul.id).padStart(3, '0')} ที่${esc(st.def.name)}
-         · ระดับวาระ ${st.intensity} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`
+    const now = st && st.slots.length
+      ? `กำลังคุม <b>${st.slots.map(sl => esc(sl.soul.who)).join(' · ')}</b> ที่${esc(st.def.name)}
+         · ${st.slots.length}/${g.stCap(st)} ดวง
+         · คืบหน้าดวงแรก ${Math.round(100 * st.slots[0].progress / st.slots[0].need)}%`
       : c.reader ? `ยืนอ่านสำนวนอยู่ข้างแท่นพิพากษา — คิวตอนนี้ ${g.queue.length} ดวง`
       : c.at ? `ประจำ${esc(nameOfSt(c.at))} รอสำนวนถัดไป` : 'ว่าง — รอรับเวร';
     const strong = [['แรง', c.raeng], ['ระเบียบ', c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
@@ -462,10 +450,15 @@ function sideBody() {
            <div class="hintline">ยังไม่ลงทัณฑ์ — ความจริงที่เหลือต้องใช้พลังขุดเอา
              เฉลยจะขึ้นตรงนี้หลังปิดคดีแล้ว</div>`;
     }
-    const st = g.stations.find(s => s.soul && s.soul.id === sel.key);
-    if (st) return profile('spirit' + (st.soul.sp || 7), st.soul.who, `สำนวน #${String(st.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
-        `${esc(st.def.name)} · คืบหน้า ${Math.round(100 * st.progress / st.need)}%`)
-      + verdictCard(st.soul, st.verdict || g.judge(st), st.def.k, st.crewK, st.intensity, false);
+    let stx = null, slotx = null;
+    for (const st0 of g.stations) {
+      const sl = st0.slots.find(x => x.soul.id === sel.key);
+      if (sl) { stx = st0; slotx = sl; break; }
+    }
+    if (stx) return profile('spirit' + (slotx.soul.sp || 7), slotx.soul.who,
+        `สำนวน #${String(slotx.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
+        `${esc(stx.def.name)} · คืบหน้า ${Math.round(100 * slotx.progress / slotx.need)}%`)
+      + verdictCard(slotx.soul, slotx.verdict || g.judge(stx, slotx), stx.def.k, stx.crewK, slotx.intensity, false);
     const cl = g.closed.find(x => x.soul.id === sel.key);
     if (cl) return closedCard(cl);
     return '<div class="empty">ไม่พบวิญญาณดวงนี้แล้ว</div>';
@@ -530,7 +523,7 @@ function tryFight() {
 /** ปุ่มฟาดเปรต — โผล่เฉพาะตอนมีเปรตในโซน และบอกตรง ๆ ว่าลูกไฟเหลือเท่าไหร่ */
 let atkSig = '';
 function drawAtk() {
-  const btn = $('#atk'), fire = g.powerOf('roar');
+  const btn = $('#atk'), fab = $('#fab-atk'), fire = g.powerOf('roar');
   // ปุ่มต้องบอกให้ตรงกับสิ่งที่ attack() จะทำจริงตอนกด — ลำดับเดียวกันเป๊ะ
   //   เปรตประชิด → ฟาดฟรี · ยืนที่สถานี → ซัดไฟเร่งทัณฑ์ · เปรตในระยะขว้าง+มีลูกไฟ → ขว้าง · ไกล → เดินไปหา
   const n = g.over ? null : g.nearestMob();
@@ -541,6 +534,7 @@ function drawAtk() {
   if (sig === atkSig) return;                  // เรียกได้ทุกเฟรม แต่แตะ DOM เฉพาะตอนเปลี่ยนจริง
   atkSig = sig;
   btn.hidden = !!g.over || (!g.mobs.length && !st);
+  fab.hidden = btn.hidden;
   if (btn.hidden) return;
 
   const [label, color] =
@@ -551,6 +545,10 @@ function drawAtk() {
                 : ['⚔️ ฟาด', 'var(--gold)'];
   btn.textContent = label;
   btn.style.color = color;
+  // ปุ่มลอยบนฉากใช้ข้อความสั้นกว่า — บนมือถือมีที่ไม่มาก
+  fab.textContent = near ? '⚔️ เข้าต่อสู้' : st ? '🔥 ลงทัณฑ์เอง' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
+  fab.classList.toggle('hot', !!near);
+  fab.classList.toggle('gold', !near && !!st);
 }
 
 function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); }
@@ -562,6 +560,12 @@ document.querySelectorAll('.tabs [data-tab]').forEach(el =>
   el.onclick = () => { tab = el.dataset.tab; refresh(); });   // เดิมไม่มีตัวจัดการเลย กดแท็บไม่ติดทั้งเกม
 
 $('#atk').onclick = tryFight;
+$('#fab-atk').onclick = tryFight;
+function goTrial() {
+  // ยืนไม่ถึงแท่นก็เดินไปให้ก่อน แล้วค่อยกดใหม่ — ไม่ปิดกั้นเฉย ๆ โดยไม่บอกทาง
+  if (!onBench()) { g.walkTo(SPOTS.bench.x + 40, SPOTS.bench.y); return; }
+  openTrial();
+}
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
@@ -659,6 +663,14 @@ function drawOverlay() {
   }
   if (!s) return;
 
+  // ปุ่มเริ่มสอบสวนลอยอยู่เหนือบัลลังก์ — เจ้าของสั่ง 9 ก.ย. 2569 ว่าต้องมีปุ่มอยู่ในฉากด้วย
+  // (เดิมอยู่แต่ในแถบบัญชาการเหนือฉาก ซึ่งบนมือถือต้องเลื่อนหา)
+  const tb = document.createElement('button');
+  tb.className = 'trialfab';
+  tb.dataset.sx = SPOTS.throne.x; tb.dataset.sy = SPOTS.throne.y - 96;
+  tb.onclick = ev => { ev.stopPropagation(); goTrial(); };
+  ov.appendChild(tb); place(tb);
+
   const rec = s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
@@ -688,14 +700,20 @@ function onBench() {
 
 /** อัปเดตปุ่มสอบสวนทุกเฟรม — แถบบัญชาการวาดใหม่แค่ตอนเปลี่ยนวาระ ตามการเดินไม่ทัน */
 function updateTrialBtn() {
-  const b = deckBar.querySelector('#d-trial');
-  if (!b) return;
   const s = g.queue[0];
-  if (!s) { b.disabled = true; b.textContent = '🔍 ยังไม่มีใครหน้าแท่น'; b.className = ''; return; }
   const near = onBench();
-  b.disabled = false;
-  b.className = near ? 'gold' : '';
-  b.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 เดินไปแท่นพิพากษา';
+  const b = deckBar.querySelector('#d-trial');
+  if (b) {
+    if (!s) { b.disabled = true; b.textContent = '🔍 ยังไม่มีใครหน้าแท่น'; b.className = ''; }
+    else { b.disabled = false; b.className = near ? 'gold' : ''; b.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 เดินไปแท่นพิพากษา'; }
+  }
+  // ปุ่มเดียวกันลอยอยู่เหนือบัลลังก์บนฉาก — ขึ้นเฉพาะตอนมีคนยืนหน้าแท่นจริง
+  const f = ov.querySelector('.trialfab');
+  if (!f) return;
+  f.hidden = !s || !!g.over || !!g.battle;
+  if (f.hidden) return;
+  f.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 ไปแท่นพิพากษา';
+  f.classList.toggle('gold', near);
 }
 
 /** แถบบัญชาการเหนือฉาก — พลัง · ปลายทาง · ผู้คุม · ระดับวาระ · ออกหมาย */
@@ -709,10 +727,10 @@ function drawDeck() {
   // (เจ้าของเจอ 8 ก.ย. 2569: สำนวนฉ้อโกง แต่กระทะทองแดงหายไปจากรายการเพราะกำลังใช้อยู่)
   // ตอนนี้โชว์ทุกหลังที่สร้างแล้ว หลังที่ติดงานเป็นปุ่มกดไม่ได้ + บอกว่าเหลืออีกกี่ %
   const dests = g.stations.filter(x => x.def.pow > 0);
-  const free = dests.filter(x => !x.soul);
+  const free = dests.filter(x => g.stFree(x) > 0);
   // นิราไม่อยู่ในลิสต์ (เธออ่านสำนวน ไม่ลงทัณฑ์) · ท่านเองต่อท้ายเสมอ เผื่อคนไม่พอ
   // ท่านคุมได้ทีละสถานีเท่านั้น — ยืนอยู่สองที่พร้อมกันไม่ได้
-  const meBusy = g.stations.some(x => x.crewK === 'me' && x.soul);
+  const meBusy = g.stations.some(x => x.crewK === 'me' && x.slots.length);
   const idle = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
   if (pick.st && !free.some(x => x.def.k === pick.st)) pick.st = null;
   const heavenPick = !!(pick.st && STATIONS.find(d => d.k === pick.st)?.heaven);
@@ -725,7 +743,7 @@ function drawDeck() {
     <div class="grp"><span class="lb">พลังของท่าน</span>
       <div class="row2" id="d-pw">${POWERS.map(p => {
         const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
-        const why = g.casesDone < p.unlock ? `ล็อก · ${p.unlock} คดี`
+        const why = g.powerLocked(p) ? `ล็อก · ขั้น ${p.lv}`
                   : pw.ammo <= 0 ? 'หมด — เดินไปเก็บ'
                   : pw.cd > 0 ? `รอ ${pw.cd} คดี` : `×${pw.ammo}`;
         return `<button data-k="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
@@ -733,13 +751,13 @@ function drawDeck() {
 
     <div class="grp"><span class="lb">ส่งไปที่ไหน</span>
       <div class="row2" id="d-st">${dests.length ? dests.map(x => {
-        const busy = !!x.soul;
-        const pct = busy ? Math.round(100 * x.progress / x.need) : 0;
+        const busy = g.stFree(x) <= 0, n = x.slots.length, cap = g.stCap(x);
+        const why = x.build ? 'กำลังก่อสร้าง' : busy ? `เต็ม ${n}/${cap}`
+                  : `${n}/${cap} · ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}`;
         return `<button data-k="${x.def.k}" ${busy ? 'disabled' : ''}
            ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
-           title="${busy ? 'กำลังลงทัณฑ์อยู่ — รอให้ว่างก่อน หรือกดพักคดีนี้ไว้' : esc(x.def.desc)}"
-          >${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${busy ? `ไม่ว่าง ${pct}%`
-            : (x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป')}</span></button>`;
+           title="${busy ? 'หลังนี้เต็มแล้ว — รอให้ทัณฑ์ดวงใดดวงหนึ่งครบวาระ' : esc(x.def.desc)}"
+          >${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${why}</span></button>`;
       }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง — ไปที่แท็บก่อสร้าง</span>'}</div></div>
 
     <div class="grp"><span class="lb">ใครคุม</span>
@@ -775,11 +793,7 @@ function drawDeck() {
     b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
   sel('#d-st', 'st'); sel('#d-cr', 'cr'); sel('#d-in', 'inten');
   const tr = deckBar.querySelector('#d-trial');
-  if (tr) tr.onclick = () => {
-    // ยืนไม่ถึงแท่นก็เดินไปให้ก่อน แล้วค่อยกดใหม่ — ไม่ปิดกั้นเฉย ๆ โดยไม่บอกทาง
-    if (!onBench()) { g.walkTo(SPOTS.bench.x + 40, SPOTS.bench.y); return; }
-    openTrial();
-  };
+  if (tr) tr.onclick = goTrial;
   updateTrialBtn();
   const sk = deckBar.querySelector('#d-skip');
   if (sk) sk.onclick = () => { if (g.defer()) { pick = { st: null, cr: null, inten: 3 }; sfx('deny'); refresh(); } };
@@ -1017,7 +1031,7 @@ function onDlgClose(fn) {
 }
 
 /** เวที Turn-based RPG — ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้
- *  ฉากหลังคือ img/BG-Turn-Base.jpeg (เจ้าของวาดมาให้ 8 ก.ย. 2569)
+ *  ฉากหลังคือ img/BG-Turn-Base.webp (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
 function arena(title, foe, hp, act, closable, fx) {
@@ -1037,7 +1051,7 @@ function arena(title, foe, hp, act, closable, fx) {
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
   const youImg = heroFace();
   const foeSrc = typeof foe.sp === 'string' ? `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
-  return `<div class="arena" style="background-image:url('img/BG-Turn-Base.jpeg')">
+  return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
     <div class="fig you${cls('you')}">
@@ -1074,9 +1088,9 @@ function openTrial() {
     const known   = s.deeds.filter(d => d.known);
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
-    const meBusy  = g.stations.some(x => x.crewK === 'me' && x.soul);
+    const meBusy  = g.stations.some(x => x.crewK === 'me' && x.slots.length);
     const idle    = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
-    if (pick.st && !dests.some(x => x.def.k === pick.st && !x.soul)) pick.st = null;
+    if (pick.st && !dests.some(x => x.def.k === pick.st && g.stFree(x) > 0)) pick.st = null;
     if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
     const heaven = !!(stDef && stDef.heaven);
@@ -1120,12 +1134,12 @@ function openTrial() {
       }).join('');
     } else if (trialCmd === 'st') {
       opt = `<h4>ส่งไปที่ไหน</h4><div class="row2">${dests.length ? dests.map(x => {
-        const busy = !!x.soul;
+        const busy = g.stFree(x) <= 0;
         return `<button data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
           ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
-          >${x.def.glyph} ${x.def.name} <span style="opacity:.55">${busy
-            ? `ไม่ว่าง ${Math.round(100 * x.progress / x.need)}%`
-            : (x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป')}</span></button>`;
+          >${x.def.glyph} ${x.def.name} <span style="opacity:.55">${x.build ? 'กำลังก่อสร้าง'
+            : busy ? `เต็ม ${x.slots.length}/${g.stCap(x)}`
+            : `${x.slots.length}/${g.stCap(x)} · ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}`}</span></button>`;
       }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง</span>'}</div>`;
     } else if (trialCmd === 'cr') {
       opt = `<h4>ใครคุม</h4><div class="row2">${idle.length ? idle.map(c =>
@@ -1141,7 +1155,7 @@ function openTrial() {
     const foeSrc = typeof s.sp === 'string' ? `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
 
     dlg.innerHTML = `
-    <div class="hud" style="background-image:url('img/BG-Turn-Base.jpeg')">
+    <div class="hud" style="background-image:url('img/BG-Turn-Base.webp')">
       <div class="hud-scrim"></div>
       <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
 
@@ -1188,7 +1202,7 @@ function openTrial() {
         </div>
         <div class="hud-items">${POWERS.map(p => {
           const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
-          const why = g.casesDone < p.unlock ? `ล็อก · ปิดคดีครบ ${p.unlock} เรื่องก่อน`
+          const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
                     : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่'
                     : pw.cd > 0 ? `เพิ่งใช้ไป รออีก ${pw.cd} คดี` : p.desc;
           return `<button data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}"
@@ -1257,7 +1271,7 @@ function openBattle(after) {
   const B = g.battle;
   if (!B) return;
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
-  bgm(B.kind === 'yama' ? 'bgm-yama' : 'bgm-battle');
+  bgm(B.kind === 'yama' || B.kind === 'dad' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
@@ -1286,11 +1300,19 @@ function openBattle(after) {
         return `<button data-act="${it.k}" ${ok ? '' : 'disabled'}
           >${it.glyph} ${it.name} <span style="opacity:.55">${note}</span></button>`;
       }).join('')}
+      ${g.crewHelpers().map(c => {
+        const why = g.crewHelpWhy(c);
+        return `<button class="crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
+          title="${esc(c.name + ' — ' + (why || 'เรียกมาช่วยฟาดหนึ่งที · กำลังใจเขาหาย ' + BATTLE.crewMorale))}"
+          ><img src="img/crew-${c.k}-profile.png" alt="" onerror="this.onerror=null;this.src='img/crew-${c.k}.png'"
+          >${c.name}<span style="opacity:.55">${why ? ' ' + why : ' แรง ' + c.raeng}</span></button>`;
+      }).join('')}
     </div>`;
 
     const finLabel =
         b.over === 'win'  ? (b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? '...'
+                          : b.kind === 'dad'  ? 'ลุกขึ้นแล้วทำงานต่อ'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
     // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
@@ -1301,6 +1323,7 @@ function openBattle(after) {
 
     dlg.innerHTML =
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
+          : b.kind === 'dad'   ? '👑 พ่อลงมาเอง — ตัดสินพลาดสามสำนวนติด'
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow) +
@@ -1315,6 +1338,7 @@ function openBattle(after) {
       const k = el.dataset.act;
       if (!g.battleAct(k)) return;
       sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
+      if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
@@ -1540,6 +1564,7 @@ function onSceneClick(sx, sy) {
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
   if (a) {
+    if (a.kind === 'station') { openStation(a.key); return; }
     select(a);
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
@@ -1555,20 +1580,13 @@ function onSceneClick(sx, sy) {
     if (!g.walkTo(def.x, def.y)) g.log('ตรงนั้นเดินไปไม่ถึง', 'bad');
     return;
   }
-  if (st.soul) {                              // กำลังลงทัณฑ์อยู่
-    const c = g.crewOf(st.crewK);
+  if (st.build) {
     return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
-      <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
-        กำลังคุม <b>${esc(st.soul.who)}</b> สำนวน #${String(st.soul.id).padStart(3, '0')}<br>
-        ผู้คุม: ${esc(c?.name || '—')} · ระดับวาระ ${st.intensity} ${INTENSITY[st.intensity]}<br>
-        คืบหน้า ${Math.round(100 * st.progress / st.need)}%</p>
+      <p style="font-size:var(--text-sm);line-height:var(--leading-body)">กำลังก่อสร้างอยู่ — รออีกสักครู่</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  if (def.pow === 0 || !g.queue.length) {
-    return modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
-      <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
-      <div class="row"><button data-close>ปิด</button></div>`);
-  }
+  // หลังที่ยืนอยู่แล้ว: เปิดหน้าของสถานีนั้น (ฉากของตัวเอง + สิ่งที่ทำได้ตรงนี้)
+  if (st.slots.length || def.visit || def.pow === 0 || !g.queue.length) return openStation(def.k);
   pick.st = def.k; drawDeck();                // ว่าง + มีคิว → เลือกเป็นปลายทาง
 }
 
@@ -1596,6 +1614,105 @@ function keyWalk(dt) {
   if (dx) P.face = dx < 0 ? -1 : 1;
 }
 
+/** ---------- หน้าของสถานีหนึ่งหลัง (9 ก.ย. 2569) ----------
+ *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
+ *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
+ *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
+const stBg = k => `img/BG-${k[0].toUpperCase()}${k.slice(1)}.webp`;
+
+function openStation(k) {
+  const def = STATIONS.find(d => d.k === k);
+  const paint = () => {
+    const st = g.stations.find(x => x.def.k === k);
+    if (!st) { dlg.close(); return; }
+    const near = g.nearStation(st);
+    const cap = g.stCap(st);
+    const v = def.visit;
+    const vWhy = v ? g.visitWhy(st) : 'สถานีนี้ไม่มีอะไรให้เติม';
+
+    // ---- วิญญาณที่กำลังรับทัณฑ์ (สูงสุด 3 ดวง) ----
+    const figs = st.slots.map((sl, i) => {
+      const src = typeof sl.soul.sp === 'string' ? `img/${sl.soul.sp}.png` : `img/spirit${sl.soul.sp || 7}.png`;
+      const p = Math.round(100 * Math.min(1, sl.progress / sl.need));
+      return `<div class="st-fig">
+        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
+        <span class="nm">${esc(sl.soul.who)}</span>
+        <span class="hpbar"><i style="width:${p}%"></i></span>
+        <small>วาระ ${sl.intensity} · ${p}%</small>
+      </div>`;
+    }).join('') || `<div class="st-empty">${cap ? 'ยังไม่มีใครถูกส่งมาที่นี่' : 'หลังนี้ไม่ใช่ที่ลงทัณฑ์'}</div>`;
+
+    // ---- ปุ่มลงมือ ----
+    const acts = [];
+    if (cap) acts.push(`<button class="gold" id="s-smite" ${st.slots.length && near ? '' : 'disabled'}>
+        🔥 ลงทัณฑ์เอง<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
+          : !near ? 'ต้องเดินมายืนที่สถานีก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
+    if (v) acts.push(`<button id="s-visit" ${vWhy ? 'disabled' : ''}>
+        ${v.power ? POWERS.find(p => p.k === v.power).glyph : '❤️'} ${v.power ? 'เติม' + POWERS.find(p => p.k === v.power).name : 'พักฟื้นบารมี'}
+        <small>${esc(vWhy || v.say)}</small></button>`);
+    if (!near) acts.push(`<button id="s-walk">🚶 เดินไปที่นี่<small>ยืนถึงแล้วปุ่มอื่นถึงจะกดได้</small></button>`);
+    if (k === 'tarang' && g.held.length) {
+      acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
+    }
+    if (cap && g.stFree(st) > 0 && g.queue.length)
+      acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
+
+    dlg.innerHTML = `
+    <div class="hud st-hud" style="background-image:url('${stBg(k)}'), url('img/BG-Turn-Base.webp')">
+      <div class="hud-scrim"></div>
+      <button class="x" data-close title="ปิด">✕</button>
+      <div class="hud-top">
+        <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
+        <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
+        <span class="chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
+        ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
+        <span class="ttl">${def.glyph} ${esc(def.name)}</span>
+      </div>
+      <div class="hud-body">
+        <div class="hud-left st-left">
+          <div class="hud-card">
+            <h4>ที่นี่คือที่ไหน</h4>
+            <div class="st-desc">${esc(def.desc)}</div>
+          </div>
+          <div class="hud-card">
+            <h4>เอาไว้ทำอะไร</h4>
+            <div class="st-desc">${esc(def.use || (cap ? 'ที่ลงทัณฑ์ตามชนิดกรรม' : '—'))}</div>
+            <div class="st-meta">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
+              · ฟืน ${def.fuel}/วาระ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
+          </div>
+        </div>
+        <div class="hud-stage st-stage">${figs}</div>
+        <div class="hud-right">
+          <div class="hud-card st-acts">
+            <h4>ทำอะไรได้ตรงนี้</h4>
+            ${acts.join('') || '<div class="st-desc">ยังไม่มีอะไรให้ทำที่นี่ตอนนี้</div>'}
+          </div>
+          <div class="hud-card">
+            <h4>ผู้คุมประจำหลังนี้</h4>
+            <div class="st-desc">${st.crewK ? esc(g.crewOf(st.crewK)?.name || '—')
+              + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง — เดินเฉพาะตอนยืนอยู่ตรงนี้)' : '')
+              : 'ยังไม่มีใครประจำ'}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+    const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
+    on('#s-smite', () => { g.smite(st); sfx('hit'); paint(); refresh(); });
+    on('#s-visit', () => { if (g.visitStation(k)) { sfx('star'); paint(); refresh(); } });
+    on('#s-walk',  () => { g.walkTo(def.x, def.y); dlg.close(); });
+    on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
+    dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
+      if (g.release(+b.dataset.rel)) { sfx('stamp'); paint(); refresh(); }
+    });
+  };
+  paint();
+  openDlg('rpg');
+  // ยืนใกล้/ไกลเปลี่ยนได้ระหว่างเปิดหน้าอยู่ (เดินไปเองด้วยปุ่มลูกศร) — วาดใหม่เป็นระยะ
+  const tm = setInterval(() => { if (dlg.open) paint(); else clearInterval(tm); }, 700);
+  onDlgClose(() => clearInterval(tm));
+}
+
 function openBuild(def) {
   const afford = g.coin >= def.cost;
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
@@ -1610,15 +1727,23 @@ function openBuild(def) {
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
   refresh();
-  // ฉากพญายมลงมาเอง (บารมีหมด) เปิดอัตโนมัติ — ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมายเท่านั้น
-  if (g.battle && g.battle.kind === 'yama' && !dlg.open) { openBattle(); return; }
-  // เปรตขึ้นมาก่อกวน → เปิดหน้าต่อสู้ให้ (ตัวจับเวลาเป็นตัวสำรองถ้ามีโมดัลอื่นเปิดค้าง)
-  if (g.pendingMob != null && !g.battle && !dlg.open) { openPendingMob(); return; }
+  // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
+  // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
+  if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }
+  if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); openBattle(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
     bossModal(`ย้ายมา${z.name}`, `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง — ` +
       'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
+    return;
+  }
+  // เตือนก่อนพ่อลงมา — แดงหนึ่ง/สองครั้งขึ้นเตือน ครั้งที่สามคือของจริง
+  if (g.pendingWarn) {
+    const w = g.pendingWarn; g.pendingWarn = null;
+    bossModal(`คำตัดสินแดง ${w.n}/${w.of}`,
+      `${w.text}\n\nอีก ${w.of - w.n} สำนวนที่ตัดสินพลาด พ่อจะลงมาเอง — ` +
+      'ตัดสินให้ได้สีเขียวหนึ่งครั้งก็ล้างที่สะสมไว้แล้ว', 'รับทราบ');
     return;
   }
   if (g.pendingKpi) {
@@ -1632,7 +1757,7 @@ g.onChange = () => {
   if (g.pendingLevel) {
     const lv = g.pendingLevel; g.pendingLevel = null;
     bossModal(`เลื่อนขั้น — ${lv.name}`,
-      `"ห้าดาวห้าครั้ง ข้าเห็นแล้ว" พญายมยื่นของบางอย่างให้โดยไม่อธิบาย — ${lv.bonus}`, 'รับไว้');
+      `"สำนวนที่เจ้าตัดสินถูก ข้านับอยู่ทุกเรื่อง" พญายมยื่นของบางอย่างให้โดยไม่อธิบาย — ${lv.bonus}`, 'รับไว้');
     return;
   }
   if (g.pendingEvent) {
