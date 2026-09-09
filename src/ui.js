@@ -1585,9 +1585,9 @@ function onSceneClick(sx, sy) {
       <p style="font-size:var(--text-sm);line-height:var(--leading-body)">กำลังก่อสร้างอยู่ — รออีกสักครู่</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  // หลังที่ยืนอยู่แล้ว: เปิดหน้าของสถานีนั้น (ฉากของตัวเอง + สิ่งที่ทำได้ตรงนี้)
-  if (st.slots.length || def.visit || def.pow === 0 || !g.queue.length) return openStation(def.k);
-  pick.st = def.k; drawDeck();                // ว่าง + มีคิว → เลือกเป็นปลายทาง
+  // กดหลังที่สร้างแล้ว = เข้าหน้าของสถานีนั้นเสมอ (เจ้าของสั่ง 9 ก.ย. 2569)
+  // ในหน้านั้นมีปุ่ม "เลือกเป็นปลายทาง" อยู่แล้ว — ไม่ต้องมีทางลัดที่ข้ามหน้าไปเงียบ ๆ
+  return openStation(def.k);
 }
 
 // เดินด้วยคีย์บอร์ดด้วยก็ได้
@@ -1622,9 +1622,14 @@ const stBg = k => `img/BG-${k[0].toUpperCase()}${k.slice(1)}.webp`;
 
 function openStation(k) {
   const def = STATIONS.find(d => d.k === k);
+  let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   const paint = () => {
+    // กล่องถูกกล่องอื่นแทนที่ไปแล้ว (บทเรียนพญายม · เหตุการณ์ · ผลคำตัดสิน)
+    // ห้ามเขียนทับของเขา ไม่งั้นเนื้อหาสถานีจะไปโผล่ในกล่องเล็กของคนอื่น
+    // (เจ้าของเจอ 10 ก.ย. 2569: หน้าสถานีเบียดอยู่ในกล่องแคบ ตัวหนังสือเรียงลงแนวตั้ง)
+    if (myGen >= 0 && (!dlg.open || dlgGen !== myGen)) return;
     const st = g.stations.find(x => x.def.k === k);
-    if (!st) { dlg.close(); return; }
+    if (!st) { if (dlg.open) dlg.close(); return; }
     const near = g.nearStation(st);
     const cap = g.stCap(st);
     const v = def.visit;
@@ -1707,9 +1712,13 @@ function openStation(k) {
     });
   };
   paint();
-  openDlg('rpg');
+  openDlg('hudwrap');           // กรอบเดียวกับห้องสอบสวน — .hud ต้องการกรอบใสเต็มความกว้าง
+  myGen = dlgGen;
   // ยืนใกล้/ไกลเปลี่ยนได้ระหว่างเปิดหน้าอยู่ (เดินไปเองด้วยปุ่มลูกศร) — วาดใหม่เป็นระยะ
-  const tm = setInterval(() => { if (dlg.open) paint(); else clearInterval(tm); }, 700);
+  const tm = setInterval(() => {
+    if (!dlg.open || dlgGen !== myGen) { clearInterval(tm); return; }
+    paint();
+  }, 700);
   onDlgClose(() => clearInterval(tm));
 }
 
