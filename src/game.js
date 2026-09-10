@@ -1217,7 +1217,7 @@ const API = {
 
     const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
     slot.progress += BAL.smiteGain;
-    this.swingUntil = Date.now() + 480;
+    this.swingUntil = Date.now() + 720;   // ท่าฟาดค้างพอให้เห็น (480 สั้นจนแทบไม่ทัน)
     this.player.face = sx < this.player.x ? -1 : 1;
     this.fxHits.push({ t: Date.now(), x: sx, y: sy });
 
@@ -1244,7 +1244,7 @@ const API = {
     }
     m.hp--; m.cool = Date.now() + 600;
     if (by === 'ท่าน') {
-      this.swingUntil = Date.now() + 480;                   // ให้ scene.js สลับไปท่าฟาด
+      this.swingUntil = Date.now() + 720;   // ท่าฟาดค้างพอให้เห็น (480 สั้นจนแทบไม่ทัน)                   // ให้ scene.js สลับไปท่าฟาด
       this.player.face = m.x < this.player.x ? -1 : 1;      // หันหน้าไปทางที่ขว้าง
     }
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });

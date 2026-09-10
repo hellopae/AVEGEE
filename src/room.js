@@ -232,7 +232,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     acts.push({ y: P.y, fn: () => {
-      drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face);
+      // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
+      const swinging = g.swingUntil && Date.now() < g.swingUntil;
+      const key = swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
+      drawStandee(ctx, key, px(P.x), py(P.y), U * HERO_H, t, '👑', P.face);
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
