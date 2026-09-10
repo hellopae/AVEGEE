@@ -192,7 +192,7 @@ function mkLines(soul) {
   } else {
     // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
     const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
-    const deny = known.length && DENY_BY_SIN[known[0].s];
+    const deny = known.length && ((soul.pool && soul.pool.deny) || DENY_BY_SIN[known[0].s]);
     if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pick(deny) : deny, soul.sex), sin: known[0].s });
   }
   const fake = soul.merits.find(m => m.fake);
@@ -217,11 +217,12 @@ function mkLines(soul) {
     const d = pick(known);
     add(pick(ADMIT_TPL).replace(/\{d\}/g, d.t));
   }
-  const bySin = [];                                     // 2. ตามชนิดบาปของคดีนี้
-  for (const d of known) bySin.push(...(SOLID_BY_SIN[d.s] || []));
+  // soul.pool = บทขากลับที่สำนวนที่มีชื่อเขียนเอง (เช่น เจ้าอาวาส) — ใช้แทนชั้น 2 และ 3 ทั้งหมด
+  const bySin = soul.pool ? [...(soul.pool.solid || [])] : []; // 2. ตามชนิดบาปของคดีนี้
+  if (!soul.pool) for (const d of known) bySin.push(...(SOLID_BY_SIN[d.s] || []));
   while (bySin.length && out.length < 3) add(bySin.splice(Math.floor(Math.random() * bySin.length), 1)[0]);
 
-  const rest = [...SOLID_LINES];                        // 3. กองกลางเป็นตัวเติมท้าย
+  const rest = soul.pool ? [...(soul.pool.solid || [])] : [...SOLID_LINES]; // 3. กองกลางเป็นตัวเติมท้าย
   let guard2 = 0;
   while (rest.length && out.length < 4 && guard2++ < 60)
     add(rest.splice(Math.floor(Math.random() * rest.length), 1)[0]);
@@ -643,7 +644,7 @@ const API = {
       at: this.tick + RETURN.after, fromId: soul.id, gave: intensity,
       // เพศต้องติดไปด้วย ไม่งั้นคดีที่กลับมาพูด "ผม/ครับ" หมดทุกดวง
       // (เจ้าของเจอ 10 ก.ย. 2569: นักเรียนหญิง ม.๕ กลับมาแล้วแทนตัวเองว่าผม)
-      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name, calm: !!soul.calm,
+      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name, calm: !!soul.calm, caseK: soul.case || null,
       deeds: soul.deeds.map(d => ({ ...d, known: true })),
       merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
     });
@@ -655,13 +656,16 @@ const API = {
     // เรื่องที่เขาไปทำต่อหลังถูกปล่อย — ส่วนใหญ่ปิดไว้ก่อน ให้ผู้เล่นต้องไต่สวนเอา
     // (ถ้าเปิดหมดตั้งแต่แรก คดีที่กลับมาจะไม่มีอะไรให้จี้เลย มินิเกมไต่สวนก็ตายไปด้วย)
     const secret = Math.random() < 0.65;
-    const after = { t: AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
+    // สำนวนที่มีชื่อเขียนบทขากลับของตัวเองได้ (cases.js `back`) — กองกลางบางบรรทัดใช้กับบางคนไม่ได้
+    const B = (R.caseK && CASES.find(c => c.k === R.caseK) || {}).back;
+    const after = { t: (B && B.after) || AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
                     s: worst.s, w: Math.min(5, worst.w + RETURN.addWeight), known: !secret };
     const soul = {
       id: SEQ++, who: R.who, sp: R.sp, sex: R.sex || SEX_OF[R.who] || 'm', name: R.name,
       waited: 0, said: [],
       deeds: [...R.deeds, after], merits: R.merits, denied: null,
       back: { id: R.fromId, gave: R.gave }, calm: !!R.calm,
+      pool: B ? { deny: B.deny, solid: B.solid } : null,
     };
     soul.deserved = deservedOf(soul);
     soul.resist = !soul.calm && soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
@@ -1229,8 +1233,13 @@ const API = {
     // แล้วลงทัณฑ์เองไม่ได้เลย" ซึ่งเป็นทางตัน ไม่ใช่ความยาก
     // ลูกไฟเหลือไว้ใช้กับเปรตกับตวาดข่มขู่เท่านั้น · ราคาของการลงมือเองคือ "กรรมท่าน" อยู่แล้ว
     if (this.smiteAt && Date.now() - this.smiteAt < 420) return false;   // กันรัวเกินไป
-    const slot = this.stFront(st);
-    if (!slot) return false;
+    // ดวงที่ calm (เจ้าอาวาส) ห้ามโดนไฟจากมือท่าน — ข้ามไปดวงถัดไปในหลังเดียวกัน (Chris ทัก 10 ก.ย. 2569)
+    const slot = st && st.slots.find(s => !s.soul.calm);
+    if (!slot) {
+      if (st && st.slots.length)
+        this.log(`ท่านยกมือแล้วลดลง — ${st.slots[0].soul.who}ครองผ้าเหลืองมา ปล่อยให้ทัณฑ์เดินไปตามกรรมของมัน`, 'event');
+      return false;
+    }
     this.smiteAt = Date.now();
 
     const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;

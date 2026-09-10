@@ -1756,8 +1756,7 @@ function openStation(k) {
   function doSmite() {
     const st = g.stations.find(x => x.def.k === k);
     if (!st || !st.slots.length || !(R && R.inReach())) return;
-    g.smite(st, true);
-    sfx('hit');
+    if (g.smite(st, true)) sfx('hit');       // ดวง calm ไม่โดน — ไม่มีเสียงฟาดหลอก
     panels(); refresh();
   }
 
