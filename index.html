@@ -262,6 +262,11 @@ dialog::backdrop{background:rgba(10,4,6,.78)}
    พลาดตรงนี้ = กล่องปิดไปแล้วแต่ยังค้างอยู่บนจอ ปุ่มข้างในกดไม่ติดสักปุ่ม
    และหลุดออกจาก top layer จนหมุด/ปุ่มบนฉากลอยทับ (เจ้าของเจอ 10 ก.ย. 2569) */
 dialog:not([open]){display:none!important}
+/* กฎกันพลาดทั้งหน้า: อะไรที่ตั้ง hidden ไว้ต้องหายจริง
+   เจอสองรอบแล้วว่ากฎ display ของเราเองไปทับ [hidden] ของเบราว์เซอร์เงียบ ๆ
+   (10 ก.ย. 2569: .st-arch ตั้ง display:flex ไว้ แผงแฟ้มเลยคลุมฉากทุกห้องแบบมองไม่เห็น
+    เห็นแต่ผลว่า "ฉากมืดทุกหน้า") */
+[hidden]{display:none!important}
 dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
 .boss{display:flex;gap:var(--space-4);align-items:flex-start}
 .boss img{width:150px;height:150px;object-fit:cover;object-position:center top;flex:none;

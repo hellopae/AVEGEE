@@ -24,7 +24,9 @@ const lumCache = new Map();
  *  หอทะเบียนกรรมมืดกว่าห้องอื่นราวหนึ่งในสาม เข้าไปแล้วแทบมองไม่เห็นอะไรเลย
  *  (เจ้าของเจอ 10 ก.ย. 2569) · วัดความสว่างเฉลี่ยจากภาพย่อครั้งเดียวแล้วจำไว้
  *  ห้องไหนอยากคุมเองก็ใส่ bright ใน ROOMS ทับได้ */
-const LUM_TARGET = 74;
+// เป้าความสว่างเฉลี่ยของฉากในห้อง (0-255)
+// 74 ยังมืดเกินไปบนจอจริง เจ้าของบอกว่า "มืดทุกหน้าเลย" (10 ก.ย. 2569)
+const LUM_TARGET = 86;
 
 /** เบราว์เซอร์นี้ตั้ง ctx.filter ได้ไหม — เช็คครั้งเดียว
  *  (เช็คหลัง restore ไม่ได้ เพราะค่ามันถูกคืนกลับเป็น none เสมอ ไม่ว่าจะรองรับหรือไม่) */
@@ -50,7 +52,7 @@ function brightOf(bg, src) {
     let sum = 0;
     for (let i = 0; i < d.length; i += 4) sum += (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
     const mean = sum / (d.length / 4);
-    f = Math.max(1, Math.min(1.9, LUM_TARGET / Math.max(1, mean)));
+    f = Math.max(1, Math.min(2.4, LUM_TARGET / Math.max(1, mean)));
   } catch { f = 1; }
   lumCache.set(src, f);
   return f;
