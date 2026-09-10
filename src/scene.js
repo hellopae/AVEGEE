@@ -110,7 +110,9 @@ export function render(ctx, g, t, hover, sel) {
   //   ประชิดแล้ว  → วงแดงใต้ตีน + ป้าย "⚔ กดเว้นวรรค"  (ฟาดฟรี)
   //   ยังไกลอยู่   → ป้าย "🔥 ขว้างได้" ถ้ามีลูกไฟ · ไม่มีก็บอกให้เดินเข้าไป
   const PA = g.powerOf('roar').ammo;
-  g.mobs.forEach((m, i) => at(m.y, () => {
+  // ผีวาดทับอาคารเสมอ (แต่ยังอยู่ใต้ตัวเรา) — เจ้าของเจอ 10 ก.ย. 2569 ว่ามันไปยืนหลังอาคาร
+  // แล้วหายไปทั้งตัว ทั้งที่เป็นสิ่งเดียวที่ต้องรีบหาให้เจอ
+  g.mobs.forEach((m, i) => at(1e6 + m.y, () => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
     const d = Math.hypot(m.x - g.player.x, m.y - g.player.y);
     const near = d <= MOB.reach, canThrow = !near && d <= MOB.throw && PA > 0;

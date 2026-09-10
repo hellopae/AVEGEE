@@ -188,8 +188,8 @@ function mkLines(soul) {
   } else {
     // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
     const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
-    if (known.length && DENY_BY_SIN[known[0].s])
-      out.push({ kind: 'deny', t: voice(DENY_BY_SIN[known[0].s], soul.sex), sin: known[0].s });
+    const deny = known.length && DENY_BY_SIN[known[0].s];
+    if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pick(deny) : deny, soul.sex), sin: known[0].s });
   }
   const fake = soul.merits.find(m => m.fake);
   if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วย{na} — ${fake.t}`, soul.sex), merit: fake.t });
@@ -197,25 +197,30 @@ function mkLines(soul) {
   // ---- บรรทัดที่ "ตรงกับสำนวน" ----
   // เจ้าของทัก 8 ก.ย. 2569 ว่าสี่บรรทัดนี้ดูซ้ำทุกคดี เพราะเดิมสุ่มจากกองกลางกองเดียว 5 บรรทัด
   // ของใหม่ต่อกันสามชั้น ชั้นแรกผูกกับ "ข้อความในสำนวนจริง" จึงไม่มีทางซ้ำข้ามคดีได้เลย
-  const pool = [];
+  // เดิมโยนทุกกองรวมกันแล้วสุ่ม — กองกลางมี 24 บรรทัด กองเฉพาะคดีมี 3-4
+  // โอกาสออกจึงเป็นของกองกลางเกือบทั้งหมด คดีคนละดวงเลยพูดเหมือนกัน
+  // (เจ้าของทัก 10 ก.ย. 2569) · ตอนนี้บังคับลำดับ: อ้างสำนวนตรง ๆ → ตามชนิดบาป → กองกลาง
   const known = soul.deeds.filter(d => d.known);
-  if (known.length) {
-    const d = pick(known);
-    pool.push(pick(ADMIT_TPL).replace(/\{d\}/g, d.t));           // 1. อ้างสำนวนตรง ๆ
-  }
-  for (const d of known) pool.push(...(SOLID_BY_SIN[d.s] || []));  // 2. ตามชนิดบาปในคดีนี้
-  pool.push(...SOLID_LINES);                                        // 3. กองกลางเป็นตัวเติม
-
   const used = new Set();
-  let guard2 = 0;
-  while (out.length < 4 && guard2++ < 60) {
-    if (!pool.length) break;
-    const i = Math.floor(Math.random() * pool.length);
-    const t = pool.splice(i, 1)[0];
-    if (used.has(t)) continue;
+  const add = t => {
+    if (!t || used.has(t) || out.length >= 4) return false;
     used.add(t);
     out.push({ kind: 'solid', t: voice(t, soul.sex) });
+    return true;
+  };
+
+  if (known.length) {                                   // 1. อ้างข้อความในสำนวนตรง ๆ (ไม่มีทางซ้ำข้ามคดี)
+    const d = pick(known);
+    add(pick(ADMIT_TPL).replace(/\{d\}/g, d.t));
   }
+  const bySin = [];                                     // 2. ตามชนิดบาปของคดีนี้
+  for (const d of known) bySin.push(...(SOLID_BY_SIN[d.s] || []));
+  while (bySin.length && out.length < 3) add(bySin.splice(Math.floor(Math.random() * bySin.length), 1)[0]);
+
+  const rest = [...SOLID_LINES];                        // 3. กองกลางเป็นตัวเติมท้าย
+  let guard2 = 0;
+  while (rest.length && out.length < 4 && guard2++ < 60)
+    add(rest.splice(Math.floor(Math.random() * rest.length), 1)[0]);
   // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
   for (let i = out.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -724,6 +729,13 @@ const API = {
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
+    }
+
+    // บารมีฟื้นเองช้า ๆ ตอนไม่ได้อยู่ในฉากต่อสู้ — ฟื้นได้ถึงเพดานที่ตั้งไว้เท่านั้น
+    // (ไม่ได้ให้เต็มฟรี ยังต้องพึ่งห้าดาว/หีบยา/ศาลาน้ำชาถ้าจะเอาเต็ม)
+    if (!this.battle && this.hp > 0) {
+      const cap = this.hpMax * BAL.hpRegenCap;
+      if (this.hp < cap) this.hp = Math.min(cap, this.hp + BAL.hpRegen);
     }
 
     // พักฟื้นกำลังใจ
