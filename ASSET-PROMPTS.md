@@ -387,8 +387,11 @@ full body, clothing and silhouette must read instantly at very small size
 
 | key | prompt |
 |---|---|
-| `scene-asia` | ดูข้างล่าง |
-| `scene-west` | ดูข้างล่าง |
+| `scene-asia` | ✅ ได้รับจากเจ้าของ 10 ก.ย. 2569 · ลบโทริอิ + รูปปั้นจิโซ 4 องค์ออกแล้ว (ต้นฉบับ `img/raw/_scene-asia-orig.jpeg`) |
+| `scene-west` | ✅ ได้รับจากเจ้าของ 10 ก.ย. 2569 · ลบไม้กางเขนบนโดมออกแล้ว (ต้นฉบับ `img/raw/_scene-west-orig.jpeg`) |
+
+prompt ข้างล่างแก้แล้ว (10 ก.ย. 2569 · Chris ตีกลับ) — **ห้ามสั่งให้ใส่โทริอิ จิโซ รูปพระ/เทพ หรือไม้กางเขน** ในฉากนรก
+ถ้า gen ใหม่แล้วยังโผล่มา ลบด้วยวิธีเดียวกับรอบนี้ได้: เอาพิกเซลฉากโซน 1 ตรงนั้นมาย้อมสีแปะทับ (ผังเดียวกันทุกพิกเซล)
 
 ```
 [scene-asia]
@@ -399,9 +402,10 @@ empty build plots in the same positions.
 
 CHANGE ONLY THE CULTURAL DRESSING of the surrounding architecture and rock, from Thai to a
 blend of East and South Asian underworlds: Chinese Diyu with red lacquer pillars and curved
-green-tiled eaves and hanging red paper lanterns, Japanese Jigoku with weathered stone jizo
-statues and a torii gate half-swallowed by lava, Korean roof tiles with painted dancheong
-patterns, Indian Naraka with carved sandstone pillars and a many-armed stone guardian relief.
+green-tiled eaves and hanging red paper lanterns, Japanese Jigoku with weathered stone lanterns
+and crumbling temple walls, Korean roof tiles with painted dancheong
+patterns, Indian Naraka with carved sandstone pillars.
+NO torii gate, NO jizo statues, NO buddha or bodhisattva figures, NO swastika — sacred images must never sit in hell.
 The mountains become jagged snow-dusted peaks instead of thorn ridges.
 Palette shifts from black-purple to deep jade green, cinnabar red and cold iron grey,
 lava stays molten orange.
@@ -418,7 +422,7 @@ empty build plots in the same positions.
 CHANGE ONLY THE CULTURAL DRESSING of the surrounding architecture and rock, from Thai to a
 blend of European and Slavic underworlds: gothic cathedral ribs and pointed arches in
 blackened stone, broken flying buttresses, Greek marble columns cracked and toppled, an
-Orthodox onion dome with tarnished copper, wrought-iron fences and gargoyles on the ledges,
+onion dome with tarnished copper topped by a plain round finial (NO cross, NO religious symbols), wrought-iron fences and gargoyles on the ledges,
 a frozen Russian birch grove at the far edge. The river of souls becomes the Styx with an
 empty wooden ferry boat.
 Palette shifts from black-purple to charcoal grey, verdigris copper green and bone white,
