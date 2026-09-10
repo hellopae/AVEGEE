@@ -11,6 +11,8 @@ import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
+/** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
+export const sameLabel = (a, b) => !a || !b || a.includes(b) || b.includes(a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 let SEQ = 1;
 
@@ -1217,7 +1219,7 @@ const API = {
 
     const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
     slot.progress += BAL.smiteGain;
-    this.swingUntil = Date.now() + 720;   // ท่าฟาดค้างพอให้เห็น (480 สั้นจนแทบไม่ทัน)
+    this.swingUntil = Date.now() + 500;   // ท่าฟาดค้างครึ่งวินาที (เจ้าของเคาะเอง 10 ก.ย. 2569)
     this.player.face = sx < this.player.x ? -1 : 1;
     this.fxHits.push({ t: Date.now(), x: sx, y: sy });
 
@@ -1244,7 +1246,7 @@ const API = {
     }
     m.hp--; m.cool = Date.now() + 600;
     if (by === 'ท่าน') {
-      this.swingUntil = Date.now() + 720;   // ท่าฟาดค้างพอให้เห็น (480 สั้นจนแทบไม่ทัน)                   // ให้ scene.js สลับไปท่าฟาด
+      this.swingUntil = Date.now() + 500;   // ท่าฟาดค้างครึ่งวินาที (เจ้าของเคาะเอง 10 ก.ย. 2569)                   // ให้ scene.js สลับไปท่าฟาด
       this.player.face = m.x < this.player.x ? -1 : 1;      // หันหน้าไปทางที่ขว้าง
     }
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
@@ -1279,7 +1281,9 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',
-      who: soul.name || soul.who, sub: soul.who, sp: soul.sp || 7,
+      // ชื่อสำนวนเป็นคำบรรยายลักษณะแล้ว (ไม่มีชื่อ-นามสกุลจริง 10 ก.ย. 2569)
+      // บางเรื่องจึงซ้ำกับ who เกือบทั้งบรรทัด — ซ้ำเมื่อไหร่ไม่ต้องโชว์บรรทัดล่าง
+      who: soul.name || soul.who, sub: sameLabel(soul.name, soul.who) ? '' : soul.who, sp: soul.sp || 7,
       foeHp: hp, foeMax: hp,
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null,

@@ -4,7 +4,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
-import { createGame, loadSave, clearSave } from './game.js';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -1223,7 +1223,7 @@ function openTrial() {
         }).join('')}</div>
         <div class="port foe">
           <img src="${esc(foeSrc)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
-          <span class="who2"><b>${esc(s.name || s.who)}</b><small>${esc(s.name ? s.who : 'ผู้ตาย')}</small></span>
+          <span class="who2"><b>${esc(s.name || s.who)}</b><small>${esc(s.name && !sameLabel(s.name, s.who) ? s.who : 'ผู้ตาย')}</small></span>
         </div>
       </div>
     </div>`;
