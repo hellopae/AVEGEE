@@ -5,7 +5,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV } from './data.js';
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf } from './art.js';
@@ -20,6 +20,7 @@ export function createGame() {
     order: 72, karma: 0, hp: BAL.startHp,
     powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'roar' ? 3 : p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2 })),
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
+    orderWarns: 0, orderWarnAt: 0,    // คำเตือนเรื่องคิวล้นที่ได้ไปแล้ว (ดู ORDER_WARN)
     greens: 0,                        // คำตัดสินสีเขียว (78 ขึ้นไป) — เกณฑ์เลื่อนขั้นตั้งแต่ 9 ก.ย. 2569
     reds: 0,                          // คำตัดสินสีแดงติดกัน — ครบ 3 พ่อลงมาตบเอง
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
@@ -813,24 +814,43 @@ const API = {
   },
 
   checkEnd() {
-    // บารมีหมด = พ่อลงมาลงโทษเอง ไม่ใช่จอจบเกมโผล่เฉย ๆ
+    // ---- ระเบียบหมด: ตักเตือนก่อนสามครั้ง ----
+    // เดิมแตะศูนย์ปุ๊บจบเกมปั๊บ ผู้เล่นใหม่ไม่ทันรู้ด้วยซ้ำว่าตัวเองพลาดตรงไหน
+    if (this.order <= 0 && !this.over && !this.battle
+        && this.orderWarns < ORDER_WARN.times && this.tick >= (this.orderWarnAt || 0)) {
+      this.orderWarns = (this.orderWarns || 0) + 1;
+      this.orderWarnAt = this.tick + ORDER_WARN.gap;
+      this.order = ORDER_WARN.restore;                 // ยกให้ตั้งหลักใหม่
+      this.pendingOrderWarn = { n: this.orderWarns, of: ORDER_WARN.times,
+                                text: ORDER_WARN.lines[this.orderWarns - 1] || ORDER_WARN.lines[0] };
+      this.log(`⚠️ พญายมตักเตือนเรื่องคิวล้น (${this.orderWarns}/${ORDER_WARN.times}) — ระเบียบถูกยกให้ตั้งหลักใหม่`, 'boss');
+      this.onChange();
+      return;
+    }
+
+    // บารมีหมด/ระเบียบหมดครบสามคำเตือน = พ่อลงมาลงโทษเอง ไม่ใช่จอจบเกมโผล่เฉย ๆ
     // ฉากนั้นไม่มีทางชนะ (ตั้งใจ) — จบแล้วค่อยไปหน้าจอจบเกมตามเดิม
-    if (this.hp <= 0 && !this.yamaDone && !this.battle) {
+    const doomed = this.hp <= 0 ? 'hp'
+                 : (this.order <= 0 && this.orderWarns >= ORDER_WARN.times) ? 'order' : null;
+    if (doomed && !this.yamaDone && !this.battle) {
       this.yamaDone = true;
+      this.overCause = doomed;                         // จบฉากแล้วใช้ตัวนี้เลือกตอนจบ
       this.startYamaFight();
       return;
     }
-    if (this.hp <= 0) this.over = {
+    if (doomed && this.battle) return;                 // รอฉากของพ่อจบก่อน
+    if (doomed === 'order' || (this.overCause === 'order' && this.order <= 0)) this.over = {
+      k: 'order', title: 'ถูกเรียกกลับ',
+      text: 'คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมเตือนแล้วสามครั้ง ครั้งที่สี่ท่านลงมาเอง — ' +
+            'แล้วรับตราประจำตำแหน่งคืนไปโดยไม่พูดอะไรอีกสักคำ',
+    };
+    else if (this.hp <= 0) this.over = {
       k: 'hp', title: 'พ่อไม่ให้โอกาสอีกแล้ว',
       text: 'คำตัดสินที่พลาดสะสมจนพญายมไม่เหลืออะไรจะพูด ท่านเรียกนิรามารับตราคืนจากมือเจ้าต่อหน้าทุกคน โดยไม่มองหน้าเจ้าเลยสักครั้ง',
     };
     else if (this.karma >= 100) this.over = {
       k: 'karma', title: 'บาปตกที่ยมบาท',
       text: 'กรรมที่ท่านลงเกินไปทีละนิด สะสมจนเต็มบัญชีของท่านเอง เช้าวันหนึ่งชื่อของท่านไปโผล่อยู่ในคิว — สำนวนที่หนาที่สุดที่โซนนี้เคยรับ',
-    };
-    else if (this.order <= 0) this.over = {
-      k: 'order', title: 'ถูกเรียกกลับ',
-      text: 'คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมส่งคนมารับตำแหน่งคืนโดยไม่พูดอะไรสักคำ',
     };
     else if (this.coin <= -300) this.over = {
       k: 'coin', title: 'นรกล้มละลาย',
@@ -1650,6 +1670,7 @@ API.snapshot = function () {
     queue: this.queue, held: this.held, items: this.items, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
+    orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, zoneSave: this.zoneSave || {},
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
@@ -1666,7 +1687,8 @@ API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
   const keep = ['tick','coin','fuel','order','karma','hp','hpMax','hits','star5','level',
                 'greens','reds',
-                'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi'];
+                'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi',
+                'orderWarns','orderWarnAt'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
   SEQ = d.seq || SEQ;
 

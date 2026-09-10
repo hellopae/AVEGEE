@@ -1,7 +1,8 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
-         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
+         ORDER_WARN } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
@@ -1833,6 +1834,15 @@ g.onChange = () => {
       `ขั้น "${LEVELS[g.level - 1].name}" เปิด${zs.map(z => z.name).join(' และ ')}ให้ท่านคุมได้แล้ว\n\n` +
       'กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ — ยมทูต เบี้ยกรรม พลัง และกรรมของท่านติดตัวไปด้วย\n' +
       'สาขาที่ทิ้งไว้จะถูกเก็บไว้ให้ทั้งกล่อง ย้ายกลับมาเมื่อไหร่ของยังอยู่ครบ', 'รับทราบ');
+    return;
+  }
+  // คิวล้นจนระเบียบหมด — เตือนก่อนสามครั้ง พร้อมบอกวิธีแก้ให้ผู้เล่นใหม่
+  if (g.pendingOrderWarn) {
+    const w = g.pendingOrderWarn; g.pendingOrderWarn = null;
+    bossModal(`ตักเตือนเรื่องคิวล้น ${w.n}/${w.of}`,
+      `${w.text}\n\n${ORDER_WARN.how}\n\n` +
+      (w.n < w.of ? `ระเบียบถูกยกให้ตั้งหลักใหม่แล้ว — เหลือโอกาสอีก ${w.of - w.n} ครั้ง`
+                  : 'ครั้งหน้าไม่มีเตือนแล้ว พ่อจะลงมาเอง'), 'รับทราบ');
     return;
   }
   // เตือนก่อนพ่อลงมา — แดงหนึ่ง/สองครั้งขึ้นเตือน ครั้งที่สามคือของจริง
