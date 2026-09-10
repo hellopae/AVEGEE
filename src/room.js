@@ -18,6 +18,43 @@ const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเ
 const REACH  = 0.17;      // ระยะเอื้อมถึงจุดลงมือ — ยืนใกล้ ๆ ก็พอ ไม่ต้องเดินจ่อ
 
 const bgCache = new Map();
+const lumCache = new Map();
+
+/** ปรับแสงฉากให้เท่ากันทุกห้อง — ภาพที่เจ้าของวาดมาสว่างไม่เท่ากัน
+ *  หอทะเบียนกรรมมืดกว่าห้องอื่นราวหนึ่งในสาม เข้าไปแล้วแทบมองไม่เห็นอะไรเลย
+ *  (เจ้าของเจอ 10 ก.ย. 2569) · วัดความสว่างเฉลี่ยจากภาพย่อครั้งเดียวแล้วจำไว้
+ *  ห้องไหนอยากคุมเองก็ใส่ bright ใน ROOMS ทับได้ */
+const LUM_TARGET = 74;
+
+/** เบราว์เซอร์นี้ตั้ง ctx.filter ได้ไหม — เช็คครั้งเดียว
+ *  (เช็คหลัง restore ไม่ได้ เพราะค่ามันถูกคืนกลับเป็น none เสมอ ไม่ว่าจะรองรับหรือไม่) */
+let filterOk = null;
+function canFilter() {
+  if (filterOk !== null) return filterOk;
+  try {
+    const c = document.createElement('canvas').getContext('2d');
+    c.filter = 'brightness(1.2)';
+    filterOk = c.filter !== 'none' && c.filter !== '';
+  } catch { filterOk = false; }
+  return filterOk;
+}
+function brightOf(bg, src) {
+  if (lumCache.has(src)) return lumCache.get(src);
+  let f = 1;
+  try {
+    const c = document.createElement('canvas');
+    c.width = c.height = 48;
+    const x = c.getContext('2d', { willReadFrequently: true });
+    x.drawImage(bg, 0, 0, 48, 48);
+    const d = x.getImageData(0, 0, 48, 48).data;
+    let sum = 0;
+    for (let i = 0; i < d.length; i += 4) sum += (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+    const mean = sum / (d.length / 4);
+    f = Math.max(1, Math.min(1.9, LUM_TARGET / Math.max(1, mean)));
+  } catch { f = 1; }
+  lumCache.set(src, f);
+  return f;
+}
 /** โหลดภาพฉากของสถานี — ไม่มีไฟล์ก็ถอยไปเวทีกลาง */
 function bgOf(src, fallback) {
   if (bgCache.has(src)) { const r = bgCache.get(src); return r.ok ? r.el : (fallback ? bgOf(fallback) : null); }
@@ -134,7 +171,21 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       box = { ox: (W - bg.naturalWidth * s) / 2, oy: (H - bg.naturalHeight * s) / 2,
               w: bg.naturalWidth * s, h: bg.naturalHeight * s };
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
-      ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+      // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
+      const bf = room.bright || brightOf(bg, bgSrc);
+      if (bf > 1.02 && canFilter()) {
+        ctx.save();
+        ctx.filter = `brightness(${bf.toFixed(2)})`;
+        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.restore();
+      } else if (bf > 1.02) {                            // ไม่รองรับ filter — ทับอีกชั้นแบบบวกแสง
+        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
+        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.restore();
+      } else ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);
