@@ -8,6 +8,7 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
+import { soulKey } from './art.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -451,7 +452,7 @@ function sideBody() {
         || '<div class="row-truth">สำนวนว่างเปล่า</div>';
       const said = q.said.map(x => `<div class="row-truth ${SAID_STYLE[x.kind] || ''}">${esc(x.text)}</div>`).join('')
         || '<div class="row-truth">...เขาก้มหน้าไม่พูดอะไร</div>';
-      return profile('spirit' + (q.sp || 7), q.who, `สำนวน #${String(q.id).padStart(3, '0')} · รอคิว ${q.waited} วาระ`,
+      return profile(soulKey(q.sp || 7), q.who, `สำนวน #${String(q.id).padStart(3, '0')} · รอคิว ${q.waited} วาระ`,
           q.hard ? 'สำนวนหนาผิดปกติ — คดีนี้ถูกกับผิดปนกัน' : 'รอขึ้นแท่นพิพากษา')
         + `<div class="sec">สำนวนที่นิราอ่านได้</div>${rec}
            <div class="sec">เขาพูดว่า</div>${said}
@@ -463,7 +464,7 @@ function sideBody() {
       const sl = st0.slots.find(x => x.soul.id === sel.key);
       if (sl) { stx = st0; slotx = sl; break; }
     }
-    if (stx) return profile('spirit' + (slotx.soul.sp || 7), slotx.soul.who,
+    if (stx) return profile(soulKey(slotx.soul.sp || 7), slotx.soul.who,
         `สำนวน #${String(slotx.soul.id).padStart(3, '0')} · กำลังรับทัณฑ์`,
         `${esc(stx.def.name)} · คืบหน้า ${Math.round(100 * slotx.progress / slotx.need)}%`)
       + verdictCard(slotx.soul, slotx.verdict || g.judge(stx, slotx), stx.def.k, stx.crewK, slotx.intensity, false);
@@ -487,7 +488,7 @@ function sideBody() {
 
 function closedCard(cl) {
   const r = cl.verdict;
-  return profile('spirit' + (cl.soul.sp || 7), cl.soul.who, `สำนวน #${String(cl.soul.id).padStart(3, '0')} · ปิดคดีแล้ว`,
+  return profile(soulKey(cl.soul.sp || 7), cl.soul.who, `สำนวน #${String(cl.soul.id).padStart(3, '0')} · ปิดคดีแล้ว`,
       `ปิดที่วาระ ${cl.tick} · พญายมให้ ${'★'.repeat(r.stars ?? 0)}${'☆'.repeat(5 - (r.stars ?? 0))}`)
     + verdictCard(cl.soul, r, cl.stK, cl.crewK, cl.intensity, true);
 }

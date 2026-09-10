@@ -40,6 +40,52 @@ function canFilter() {
   } catch { filterOk = false; }
   return filterOk;
 }
+/** เบราว์เซอร์นี้ผสมสีแบบ color/multiply บน canvas ได้ไหม — เช็คครั้งเดียว
+ *  ถ้าไม่ได้ ค่า globalCompositeOperation จะถูกเมินเงียบ ๆ แล้วสีทองกับไล่เงาจะถูกวาด "ทับ" ฉากทั้งใบ
+ *  กรณีนั้นข้ามการย้อมแสงไปเลยดีกว่า (เห็นฉากสว่างเกิน ดีกว่าเห็นแผ่นสีทึบ) */
+let blendOk = null;
+function canBlend() {
+  if (blendOk !== null) return blendOk;
+  try {
+    const c = document.createElement('canvas').getContext('2d');
+    c.globalCompositeOperation = 'color';
+    const a = c.globalCompositeOperation;
+    c.globalCompositeOperation = 'multiply';
+    blendOk = a === 'color' && c.globalCompositeOperation === 'multiply';
+  } catch { blendOk = false; }
+  return blendOk;
+}
+
+/** ย้อมแสงฉากที่ "สว่างเกิน" ลงมา — ค่าอยู่ที่ ROOMS[k].light ใน data.js (ตอนนี้มีแค่ประตูสวรรค์)
+ *  brightOf() ข้างล่างยกแสงได้อย่างเดียว (Math.max(1, …)) ภาพที่สว่างเกินจึงหลุดผ่านไปทั้งใบ
+ *  ประตูสวรรค์ความสว่างเฉลี่ย 195 ขาวจ้าเกือบครึ่งภาพ ขณะที่ห้องอื่นอยู่ราว 45-93 (เจ้าของเจอ 10 ก.ย. 2569)
+ *  สองชั้น: 1) tint — ผสมแบบ color ให้ขาวอมฟ้ากลายเป็นทองนวล โดยไม่แตะความสว่าง
+ *           2) shade — ไล่เงาแบบ multiply เป็นวงรอบ at (ประตู) ตรงกลางมืดน้อย ขอบมืดมาก
+ *              ประตูจึงยังเป็นจุดที่สว่างที่สุดในภาพ = ยังดูออกว่าแสงมาจากสวรรค์
+ *  ไฟล์ภาพไม่ถูกแก้ — ถ้าวาดฉากใหม่ให้โทนถูกแล้ว ลบ light ออกจาก ROOMS ได้เลย */
+function applyLight(ctx, L, box) {
+  if (!L || !canBlend()) return;
+  ctx.save();
+  ctx.beginPath(); ctx.rect(box.ox, box.oy, box.w, box.h); ctx.clip();
+  if (L.tint) {
+    ctx.globalCompositeOperation = 'color';
+    ctx.globalAlpha = L.mix ?? 0.5;
+    ctx.fillStyle = L.tint;
+    ctx.fillRect(box.ox, box.oy, box.w, box.h);
+  }
+  if (L.shade) {
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'multiply';
+    const at = L.at || [0.5, 0.5];
+    const cx = box.ox + at[0] * box.w, cy = box.oy + at[1] * box.h;
+    const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(box.w, box.h) * (L.r ?? 0.75));
+    L.shade.forEach(([pos, col]) => gr.addColorStop(pos, col));
+    ctx.fillStyle = gr;
+    ctx.fillRect(box.ox, box.oy, box.w, box.h);
+  }
+  ctx.restore();
+}
+
 function brightOf(bg, src) {
   if (lumCache.has(src)) return lumCache.get(src);
   let f = 1;
@@ -188,6 +234,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
         ctx.restore();
       } else ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+      applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#221324'; ctx.fillRect(0, 0, W, H);

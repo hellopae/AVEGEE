@@ -4,7 +4,7 @@
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME } from './data.js';
 import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawEmbers, drawVignette, rr, topOf } from './art.js';
+         drawFire, drawEmbers, drawVignette, rr, topOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
@@ -247,8 +247,7 @@ function soulBadge(ctx, g, st, t, sel) {
   const [x, y] = badgePos(d);
   const front = st.slots.reduce((a, b) => (a && a.progress / a.need > b.progress / b.need ? a : b), null);
   const p = front ? Math.min(1, front.progress / front.need) : 0;
-  const sp = st.slots[0].soul.sp || 7;
-  const im = img('spirit' + sp) || img('spirit7');
+  const im = img(soulKey(st.slots[0].soul.sp || 7)) || img('spirit7');
   const bob = Math.sin(t / 620) * 2.5;
   const cy = y + bob;
 

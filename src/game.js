@@ -156,6 +156,7 @@ function mkCaseSoul(c) {
   const soul = {
     id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex, sp: c.sp,
     face: c.face, waited: 0, said: [], denied: null, resist: !!c.resist,
+    calm: !!c.calm,        // ห้ามเข้าฉากต่อสู้เลย แม้กลับมาเป็นคดีซ้ำ (ดู cases.js เรื่องเจ้าอาวาส)
     pure: isPure(c),
     secret: c.secret || null, reward: c.reward || null, fail: c.fail || null,
     deeds:  [...c.seen.map(d => ({ ...d, known: true })),
@@ -164,8 +165,11 @@ function mkCaseSoul(c) {
   };
   // คนบริสุทธิ์กับเทวดา "ไม่มีวาระที่สมควรได้รับ" — ทางเดียวที่ถูกคือส่งประตูสวรรค์
   soul.deserved = soul.pure ? 0 : deservedOf(soul);
-  soul.said.push({ kind: 'deny', text: c.line });
-  soul.lines = (c.claims || []).map((l, i) => ({ ...l, t: voice(l.t, c.sex), i, used: false }));
+  // บทเปิดกับบทเฉลยต้องผ่าน voice() ด้วย — เดิมผ่านแค่ t เพราะสิบเรื่องแรกเขียนสรรพนามตายตัว
+  // (เจ้าอาวาสเขียนเป็น token ทั้งเรื่อง ถ้าไม่ผ่านจะเห็น "{i}" โผล่บนจอ · 10 ก.ย. 2569)
+  soul.said.push({ kind: 'deny', text: voice(c.line, c.sex) });
+  soul.lines = (c.claims || []).map((l, i) => ({
+    ...l, t: voice(l.t, c.sex), ...(l.reveal ? { reveal: voice(l.reveal, c.sex) } : {}), i, used: false }));
   soul.presses = BAL.presses;
   return soul;
 }
@@ -639,7 +643,7 @@ const API = {
       at: this.tick + RETURN.after, fromId: soul.id, gave: intensity,
       // เพศต้องติดไปด้วย ไม่งั้นคดีที่กลับมาพูด "ผม/ครับ" หมดทุกดวง
       // (เจ้าของเจอ 10 ก.ย. 2569: นักเรียนหญิง ม.๕ กลับมาแล้วแทนตัวเองว่าผม)
-      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name,
+      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name, calm: !!soul.calm,
       deeds: soul.deeds.map(d => ({ ...d, known: true })),
       merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
     });
@@ -657,10 +661,10 @@ const API = {
       id: SEQ++, who: R.who, sp: R.sp, sex: R.sex || SEX_OF[R.who] || 'm', name: R.name,
       waited: 0, said: [],
       deeds: [...R.deeds, after], merits: R.merits, denied: null,
-      back: { id: R.fromId, gave: R.gave },
+      back: { id: R.fromId, gave: R.gave }, calm: !!R.calm,
     };
     soul.deserved = deservedOf(soul);
-    soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
+    soul.resist = !soul.calm && soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
     soul.said.push({ kind: 'confess', text: voice(secret
       ? `"ท่านให้{i}ไปแค่ ${R.gave} วาระ... แล้ว{i}ก็ไม่ได้อยู่เฉย ๆ {na}"`
       : `"ท่านให้{i}ไปแค่ ${R.gave} วาระ {i}ออกไปแล้วก็${after.t}{p}"`, soul.sex) });

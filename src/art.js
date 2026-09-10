@@ -169,14 +169,16 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1) {
 /** จำนวนแบบวิญญาณที่มีไฟล์อยู่ — เพิ่มไฟล์ img/spiritN.png แล้วบวกเลขนี้ */
 export const SPIRIT_KINDS = 10;
 
-/** sp = เลขรูปวิญญาณ 1..SPIRIT_KINDS (มาจาก SPIRIT_OF ตามสำนวน) */
+/** sp → คีย์รูป · เลข = วิญญาณสุ่ม (spirit1..SPIRIT_KINDS) · ข้อความ = สำนวนที่มีชื่อ (img/soul-<k>.png)
+ *  ทุกที่ที่แปลง sp เป็นรูปต้องผ่านตัวนี้ — เดิมป้ายบนแผนที่กับแผงข้อมูลต่อ 'spirit' + sp เอง
+ *  สำนวนที่มีชื่อเลยได้ "spiritsoul-monk" รูปไม่ขึ้นสักเรื่อง (10 ก.ย. 2569) */
+export const soulKey = (sp = 7) =>
+  typeof sp === 'string' ? sp : 'spirit' + ((sp - 1) % SPIRIT_KINDS + 1);
+
 export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   const bob = Math.sin(t / 520 + x) * (h * 0.05);
-  // sp เป็นเลข = วิญญาณสุ่ม (spirit1-7) · เป็นข้อความ = สำนวนที่มีชื่อ (img/soul-<k>.png)
   // ยังไม่มีไฟล์ของสำนวนที่มีชื่อ ก็ถอยไปใช้ผีสามัญ ไม่ปล่อยให้เป็นช่องว่าง
-  const im = typeof sp === 'string'
-    ? (img(sp) || img('spirit7'))
-    : img('spirit' + ((sp - 1) % SPIRIT_KINDS + 1));
+  const im = img(soulKey(sp)) || img('spirit7');
   ctx.fillStyle = 'rgba(0,0,0,.28)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {

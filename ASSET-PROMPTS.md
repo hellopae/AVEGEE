@@ -323,7 +323,7 @@ no signature, no borders, no frame, no blood, no gore.
 
 ---
 
-### 5.1 วิญญาณในสำนวนที่มีชื่อ — 10 ชิ้น
+### 5.1 วิญญาณในสำนวนที่มีชื่อ — 11 ชิ้น
 
 **ใช้บล็อกสไตล์พิกเซลปกติ** + เพิ่มท้ายทุกอัน:
 
@@ -349,6 +349,7 @@ full body, clothing and silhouette must read instantly at very small size
 | `soul-boy` | เด็กหนุ่มยิงกราดโรงเรียน | Thai boy about fifteen, oversized school uniform shirt untucked, thick glasses with one cracked lens, backpack hanging off one shoulder, shoulders hunched inward, eyes darting to the side, not looking at the viewer |
 | `soul-deva` | เทวดาปลอมตัวเป็นขอทาน | frail old Thai beggar in a patched brown wrap-cloth holding a chipped alms bowl — **but** a very faint gold halo ring and two almost-invisible gold celestial ribbons trail behind him, so subtle you only notice on a second look, serene knowing eyes |
 | `soul-nurse` | พยาบาลสาวที่ถูกคัดกรรมผิด | young Thai nurse, neat white uniform and folded white cap, a small watch pinned to the chest, hands clasped in front of her, confused and frightened but standing politely, no guilt in her face at all |
+| `soul-monk` | เจ้าอาวาสชรา (เรื่องที่ 11) | ✅ **ได้รับไฟล์จากเจ้าของแล้ว 10 ก.ย. 2569 — ไม่ต้อง gen** · พระชราผีสีฟ้าซีด ห่มจีวรเหลืองทอง มียันต์ ธรรมจักร ดอกบัวลอยรอบตัว · ต้นฉบับ 1024² พื้นใสอยู่ที่ `img/raw/soul-monk.png` → ผ่าน `prep()` ของ `scripts/prep-art.py` เป็น 512² ชิดขอบล่างเหมือนตัวอื่น · เพศในสำนวน `sex:'monk'` (พูด "อาตมา") |
 
 ---
 
