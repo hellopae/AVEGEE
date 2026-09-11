@@ -4,16 +4,86 @@
 
 const CACHE = new Map();
 
-/** ขอรูปจริง คืน null ถ้ายังไม่มีไฟล์ (แล้วผู้เรียกวาด placeholder เอง) */
-export function img(key) {
-  if (CACHE.has(key)) { const r = CACHE.get(key); return r.ok ? r.el : null; }
+// ---------- รูปประจำโซน (11 ก.ย. 2569) ----------
+// โซน 2-3 มีรูปของตัวเองในโฟลเดอร์ย่อย: img/Asia/<key>-asia.png · img/West/<key>-west.png
+// อยู่โซนไหนก็หาของโซนนั้นก่อน ไม่มีค่อยถอยไปใช้ img/<key>.png ของโซน 1
+// รายชื่อไฟล์มาจาก img/manifest.json (zones) — ไม่ยิงถามทีละไฟล์ให้ 404 เต็มคอนโซล
+// **โซน 1 (th) ไม่ผ่านโค้ดส่วนนี้เลย** ทุกคีย์ได้ path เดิมตัวอักษรต่อตัวอักษร
+let zoneOf = () => 'th';
+const ZMAP = {};                         // zone → { ชื่อไฟล์ไม่มีนามสกุล: path ใต้ img/ }
+let BOXES = {};                          // กรอบเนื้อภาพของอาคาร st-* (0-1) — ดู boxes ใน make-manifest.py
+const warmed = new Set();
+let epoch = 0;
+/** เลขรุ่นของข้อมูลรูป — ขยับเมื่อ manifest มาถึง (กรอบอาคารของโซนอาจเปลี่ยน)
+ *  game.syncBlocks ใส่เลขนี้ใน signature ไม่งั้นฐานอาคารที่วัดไว้ก่อน manifest มาจะค้างทั้งเกม */
+export const artEpoch = () => epoch;
+/** ให้ art.js รู้ว่าตอนนี้อยู่โซนไหน — ui.js ผูกกับ g.zone ครั้งเดียวตอนเริ่ม */
+export function bindZone(fn) { zoneOf = fn; }
+/** เริ่มโหลดรูปทั้งชุดของโซนนี้ล่วงหน้า — เรียกซ้ำได้ ทำจริงครั้งเดียวต่อโซน
+ *  (ไม่งั้นย้ายโซนแล้วอาคารเป็นกล่องเปล่าอยู่ครู่หนึ่งระหว่างรอไฟล์) */
+export function warmZone(z = zoneOf()) {
+  if (warmed.has(z) || !ZMAP[z]) return;
+  warmed.add(z);
+  for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-')) load('img/' + p);
+}
+fetch('img/manifest.json', { cache: 'force-cache' })
+  .then(r => r.ok ? r.json() : null)
+  .then(m => {
+    for (const [z, list] of Object.entries((m && m.zones) || {})) {
+      ZMAP[z] = {};
+      for (const p of list) ZMAP[z][p.split('/').pop().replace(/\.[a-z]+$/i, '')] = p;
+    }
+    BOXES = (m && m.boxes) || {};
+    epoch++;
+    warmZone();
+  })
+  .catch(() => { /* ไม่มี manifest = ไม่มีรูปโซน ใช้โซน 1 ทั้งหมด เกมไม่พัง */ });
+
+/** ท่าพิเศษ — ชื่อไฟล์โซนใส่ชื่อโซนก่อนคำท้าย: hero-yama-asia-profile · crew-taan-asia-work
+ *  ต้องตรงกับ POSES ใน scripts/prep-art.py */
+const POSE = /-(profile|work|atk|side)$/;
+const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
+
+/** path ของไฟล์ที่ต้องใช้กับคีย์นี้ในโซนตอนนี้
+ *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
+ *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
+ *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side เหมือนกันหมด) */
+export function artUrl(key, ext = 'png') {
+  const z = zoneOf(), map = ZMAP[z];
+  if (map) {
+    const hit = map[zoneStem(key, z)];
+    if (hit) return 'img/' + hit;
+    const m = key.match(POSE);
+    if (m && map[zoneStem(key.slice(0, -m[0].length), z)]) return null;
+  }
+  return `img/${key}.${ext}`;
+}
+
+function load(src) {
+  if (CACHE.has(src)) return CACHE.get(src);
   const el = new Image();
   const rec = { el, ok: false };
   el.onload = () => { rec.ok = true; };
   el.onerror = () => { rec.ok = false; };
-  el.src = `img/${key}.png`;
-  CACHE.set(key, rec);
-  return null;
+  el.src = src;
+  CACHE.set(src, rec);
+  return rec;
+}
+
+/** ขอรูปจริง คืน null ถ้ายังไม่มีไฟล์ (แล้วผู้เรียกวาด placeholder เอง) */
+export function img(key) {
+  const src = artUrl(key);
+  if (!src) return null;
+  const r = load(src);
+  return r.ok ? r.el : null;
+}
+
+/** รูปของโซนนี้เท่านั้น — ไม่มีก็ null (ไม่ถอยไปโซน 1) ใช้กับฉากโซนที่มีชื่อไฟล์ของตัวเองอยู่แล้ว */
+export function zoneImg(key) {
+  const z = zoneOf(), hit = ZMAP[z] && ZMAP[z][zoneStem(key, z)];
+  if (!hit) return null;
+  const r = load('img/' + hit);
+  return r.ok ? r.el : null;
 }
 
 export const hash = (x, y) => {
@@ -56,6 +126,32 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
   }
 }
 
+/** กรอบที่วาดอาคารหนึ่งหลังในพิกัดฉาก { im, x, y, w, h } · null = รูปยังไม่มา
+ *  โซน 1 = จัตุรัสกว้าง bw ฐานอยู่ที่ (bx,by) ตามเดิมทุกประการ
+ *  อาคารของโซนอื่น (11 ก.ย. 2569): รูปโซน 2 หลายหลังสัดส่วนไม่ตรงโซน 1 (กระทะ 1.33 แทน 2.12 ·
+ *  ภูเขาดาบ 2.47 แทน 4.79 · ป่าใบมีด 1.10 แทน 0.70) ถ้าวาดเต็มจัตุรัสเหมือนเดิม อาคารจะล้นทับ
+ *  ทางเดินกับหลังข้าง ๆ และฐานอาคารที่กันทางเดินจะกว้างเกินที่ผังเผื่อไว้
+ *  → บีบเนื้อภาพให้ **กว้างไม่เกินเนื้อภาพโซน 1** และ **สูงไม่เกิน 1.5 เท่า** ชิดฐานกึ่งกลางเดียวกัน
+ *    (สูงล้นขึ้นไปข้างหลังได้บ้าง — ภาพมุมเฉียงบังของที่อยู่ข้างหลังเป็นเรื่องปกติ ส่วนฐานต้องไม่ล้น)
+ *  กรอบเนื้อภาพมาจาก manifest (boxes) — ไม่มีข้อมูลก็วาดจัตุรัสแบบโซน 1 */
+const TALLER = 1.5;
+export function stationBox(def) {
+  if (def.bx == null) return null;
+  const key = 'st-' + def.k, im = img(key);
+  if (!im) return null;
+  const sq = { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };
+  const src = artUrl(key);
+  if (src === `img/${key}.png`) return sq;                    // โซน 1 หรือโซนที่ยังไม่มีรูปหลังนี้
+  const A = BOXES[key], B = BOXES[src.split('/').pop().replace(/\.png$/, '')];
+  if (!A || !B) return sq;
+  const aw = A[2] - A[0], ah = A[3] - A[1], bw = B[2] - B[0], bh = B[3] - B[1];
+  const s = Math.min(aw / bw, Math.min(1, ah * TALLER) / bh);  // ขนาดผืนรูปโซน เทียบผืนโซน 1
+  const cx = (A[0] + A[2]) / 2, foot = A[3];                   // ฐานกึ่งกลางของเนื้อภาพโซน 1
+  return { im, w: s * def.bw, h: s * def.bw,
+           x: def.bx - def.bw / 2 + (cx - (B[0] + B[2]) / 2 * s) * def.bw,
+           y: def.by - def.bw + (foot - B[3] * s) * def.bw };
+}
+
 /** กรอบ "ฐานอาคาร" ที่เดินทับไม่ได้ — วัดจากพิกเซลจริงของสไปรท์ ไม่ใช่กรอกมือ
  *  (เจ้าของทำผังสีแดงมาให้ 8 ก.ย. 2569 ว่าเดินทับอาคารได้ทุกหลัง ต้องปิด)
  *  อ่านแถบล่างของเนื้อภาพแล้วคืนกรอบในพิกัดฉาก — วาดรูปใหม่แล้วกรอบขยับตามเอง
@@ -63,32 +159,34 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
 const footCache = new Map();
 export function footOf(def) {
   if (def.bx == null) return null;
-  if (footCache.has(def.k)) return footCache.get(def.k);
-  const im = img('st-' + def.k);
-  if (!im || !im.naturalWidth) return null;
+  const box = stationBox(def);
+  if (!box || !box.im.naturalWidth) return null;
+  // คนละโซนคนละรูป และกรอบอาจเปลี่ยนตอน manifest มาถึงทีหลัง — จำแยกตามทั้งสองอย่าง
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  if (footCache.has(ck)) return footCache.get(ck);
   const N = 72;                                   // ย่อลงก่อนอ่านพิกเซล พอสำหรับวัดฐาน
   const c = document.createElement('canvas');
   c.width = N; c.height = N;
   const cx = c.getContext('2d', { willReadFrequently: true });
   cx.drawImage(im, 0, 0, N, N);
   let d;
-  try { d = cx.getImageData(0, 0, N, N).data; } catch { footCache.set(def.k, null); return null; }
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { footCache.set(ck, null); return null; }
   const solid = (x, y) => d[(y * N + x) * 4 + 3] > 40;
   let bot = -1;
   for (let y = N - 1; y >= 0 && bot < 0; y--)
     for (let x = 0; x < N; x++) if (solid(x, y)) { bot = y; break; }
-  if (bot < 0) { footCache.set(def.k, null); return null; }
+  if (bot < 0) { footCache.set(ck, null); return null; }
   const band = Math.max(2, Math.round(N * 0.16));  // แถบล่างของตัวอาคาร = ส่วนที่ติดพื้น
   let x1 = N, x2 = -1;
   for (let y = Math.max(0, bot - band); y <= bot; y++)
     for (let x = 0; x < N; x++) if (solid(x, y)) { if (x < x1) x1 = x; if (x > x2) x2 = x; }
-  if (x2 < x1) { footCache.set(def.k, null); return null; }
-  const sx = v => def.bx - def.bw / 2 + v / N * def.bw;
-  const sy = v => def.by - def.bw + v / N * def.bw;
+  if (x2 < x1) { footCache.set(ck, null); return null; }
+  const sx = v => box.x + v / N * box.w;
+  const sy = v => box.y + v / N * box.h;
   // เผื่อขอบเข้ามานิดหนึ่งทั้งสองข้าง จะได้เดินเฉียดขอบอาคารได้ ไม่ใช่ชนอากาศ
   const pad = (sx(x2) - sx(x1)) * 0.06;
   const r = [sx(x1) + pad, sy(bot - band), sx(x2) - pad, sy(bot)];
-  footCache.set(def.k, r);
+  footCache.set(ck, r);
   return r;
 }
 
@@ -98,21 +196,22 @@ export function footOf(def) {
 const topCache = new Map();
 export function topOf(def) {
   if (def.bx == null) return null;
-  if (topCache.has(def.k)) return topCache.get(def.k);
-  const im = img('st-' + def.k);
-  if (!im || !im.naturalWidth) return null;
+  const box = stationBox(def);
+  if (!box || !box.im.naturalWidth) return null;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  if (topCache.has(ck)) return topCache.get(ck);
   const N = 72;
   const c = document.createElement('canvas');
   c.width = N; c.height = N;
   const cx = c.getContext('2d', { willReadFrequently: true });
   cx.drawImage(im, 0, 0, N, N);
   let d;
-  try { d = cx.getImageData(0, 0, N, N).data; } catch { topCache.set(def.k, null); return null; }
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { topCache.set(ck, null); return null; }
   let top = -1;
   for (let y = 0; y < N && top < 0; y++)
     for (let x = 0; x < N; x++) if (d[(y * N + x) * 4 + 3] > 40) { top = y; break; }
-  const r = top < 0 ? null : def.by - def.bw + top / N * def.bw;
-  topCache.set(def.k, r);
+  const r = top < 0 ? null : box.y + top / N * box.h;
+  topCache.set(ck, r);
   return r;
 }
 
@@ -120,8 +219,8 @@ export function topOf(def) {
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
 export function drawBuilding(ctx, def, t) {
   if (def.bx == null) return;
-  const im = img('st-' + def.k);
-  if (im) { ctx.drawImage(im, def.bx - def.bw / 2, def.by - def.bw, def.bw, def.bw); return; }
+  const b = stationBox(def);
+  if (b) { ctx.drawImage(b.im, b.x, b.y, b.w, b.h); return; }
 
   // ยังไม่มีไฟล์ img/st-<k>.png — วาดกล่องหินแทนไว้ก่อน
   // 7 ก.ย. 2569: ดงต้นงิ้วชื่อไฟล์ผิดกติกาแล้ว "สร้างเสร็จแต่จอว่างเปล่า" อยู่หลายวัน

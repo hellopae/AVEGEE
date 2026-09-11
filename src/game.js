@@ -8,7 +8,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
-import { footOf } from './art.js';
+import { footOf, artEpoch } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -1137,7 +1137,7 @@ const API = {
    *  วัดจากพิกเซลของสไปรท์จริง (art.footOf) — รูปยังโหลดไม่เสร็จก็ลองใหม่รอบหน้า
    *  เรียกถี่ ๆ ได้ ทำงานจริงเฉพาะตอนรายการสถานีเปลี่ยน */
   syncBlocks(force = false) {
-    const sig = this.stations.map(st => (st.build ? '~' : '') + st.def.k).join(',');
+    const sig = artEpoch() + '|' + this.stations.map(st => (st.build ? '~' : '') + st.def.k).join(',');
     if (!force && sig === this.blockSig) return;
     const rects = [], holes = [];
     let waiting = false;

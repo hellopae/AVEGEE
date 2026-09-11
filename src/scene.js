@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME } from './data.js';
-import { img, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
+import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
@@ -50,8 +50,9 @@ export function render(ctx, g, t, hover, sel) {
   // ฉากตามโซนที่กำลังคุมอยู่ — ยังไม่มีไฟล์ของโซนนั้นก็ถอยไปใช้ฉากไทย
   // หมายเหตุ: buildWalk อ่านลาวาจากภาพ "ใบแรกที่โหลดได้" แล้วจำไว้ตลอดเกม
   //   ตั้งใจให้เป็นแบบนั้น — ฉากทุกโซนต้องวางผังตรงกัน พิกัดใน data.js จึงใช้ร่วมกันได้
+  //   ฉากโซนแบบโฟลเดอร์ (img/Asia/scene-asia.png) มาก่อน · ไม่มีค่อยใช้ img/<scene>.png เดิม (11 ก.ย. 2569)
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
-  const bg = img(zk) || img('scene');
+  const bg = zoneImg('scene') || img(zk) || img('scene');
   if (bg) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); buildWalk(bg); }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 

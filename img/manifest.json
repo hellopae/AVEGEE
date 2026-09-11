@@ -93,5 +93,185 @@
 "st-sawan.png",
 "st-tarang.png",
 "st-tea.png"
+],
+"zones": {
+"asia": [
+"Asia/BG-Dab-asia.webp",
+"Asia/BG-Krajok-asia.webp",
+"Asia/BG-Krata-asia.webp",
+"Asia/BG-Lokan-asia.webp",
+"Asia/BG-Ngiw-asia.webp",
+"Asia/BG-Sala-asia.webp",
+"Asia/BG-Sawan-asia.webp",
+"Asia/BG-Tarang-asia.webp",
+"Asia/BG-Tea-asia.webp",
+"Asia/crew-boon-asia-profile.png",
+"Asia/crew-boon-asia.png",
+"Asia/crew-dam-asia-profile.png",
+"Asia/crew-dam-asia.png",
+"Asia/crew-guard-asia-profile.png",
+"Asia/crew-guard-asia.png",
+"Asia/crew-kan-asia-profile.png",
+"Asia/crew-kan-asia.png",
+"Asia/crew-nira-asia-profile.png",
+"Asia/crew-nira-asia.png",
+"Asia/crew-plerng-asia-profile.png",
+"Asia/crew-plerng-asia.png",
+"Asia/crew-taan-asia-profile.png",
+"Asia/crew-taan-asia.png",
+"Asia/hero-boss-asia-profile.png",
+"Asia/hero-boss-asia.png",
+"Asia/hero-yama-asia-atk.png",
+"Asia/hero-yama-asia-profile.png",
+"Asia/hero-yama-asia.png",
+"Asia/mob-gaki-asia.png",
+"Asia/mob-hitodama-asia.png",
+"Asia/mob-kasha-asia.png",
+"Asia/mob-nukekubi-asia.png",
+"Asia/st-dab-asia.png",
+"Asia/st-krajok-asia.png",
+"Asia/st-krata-asia.png",
+"Asia/st-lan-asia.png",
+"Asia/st-lokan-asia.png",
+"Asia/st-ngiw-asia.png",
+"Asia/st-sala-asia.png",
+"Asia/st-sawan-asia.png",
+"Asia/st-tarang-asia.png",
+"Asia/st-tea-asia.png"
+],
+"west": [
+"West/crew-nira-west-profile.png",
+"West/crew-nira-west.png",
+"West/hero-yama-west-profile.png",
+"West/hero-yama-west.png"
 ]
+},
+"boxes": {
+"st-building": [
+0.0,
+0.1191,
+0.998,
+0.998
+],
+"st-dab": [
+0.0,
+0.791,
+1.0,
+1.0
+],
+"st-krajok": [
+0.2891,
+0.002,
+0.7109,
+1.0
+],
+"st-krata": [
+0.0,
+0.5273,
+1.0,
+0.998
+],
+"st-lan": [
+0.002,
+0.168,
+0.998,
+0.998
+],
+"st-lokan": [
+0.002,
+0.2285,
+0.998,
+0.998
+],
+"st-ngiw": [
+0.1523,
+0.0,
+0.8457,
+1.0
+],
+"st-sala": [
+0.0,
+0.0195,
+1.0,
+0.998
+],
+"st-sawan": [
+0.2168,
+0.002,
+0.7852,
+1.0
+],
+"st-tarang": [
+0.0,
+0.4863,
+1.0,
+0.998
+],
+"st-tea": [
+0.0898,
+0.002,
+0.9102,
+0.998
+],
+"st-dab-asia": [
+0.0,
+0.5938,
+1.0,
+0.998
+],
+"st-krajok-asia": [
+0.2715,
+0.002,
+0.7266,
+1.0
+],
+"st-krata-asia": [
+0.002,
+0.25,
+0.998,
+0.998
+],
+"st-lan-asia": [
+0.002,
+0.2383,
+0.998,
+0.998
+],
+"st-lokan-asia": [
+0.002,
+0.0039,
+0.998,
+1.0
+],
+"st-ngiw-asia": [
+0.002,
+0.0957,
+1.0,
+0.9961
+],
+"st-sala-asia": [
+0.002,
+0.1211,
+1.0,
+0.998
+],
+"st-sawan-asia": [
+0.0742,
+0.002,
+0.9258,
+0.998
+],
+"st-tarang-asia": [
+0.002,
+0.2051,
+0.998,
+0.998
+],
+"st-tea-asia": [
+0.0,
+0.0391,
+0.998,
+0.998
+]
+}
 }

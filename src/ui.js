@@ -8,7 +8,7 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey } from './art.js';
+import { soulKey, artUrl, bindZone, warmZone } from './art.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -18,8 +18,9 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const HERO_NAME = 'ยมน้อย';
 
 /** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม
- *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง) */
-const heroFace = () => heroFace.ok ? 'img/hero-yama-side.png' : 'img/hero-yama.png';
+ *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)
+ *  ทุก path ของรูปตัวละครใน ui.js ผ่าน artUrl() — อยู่โซนไหนได้รูปของโซนนั้นก่อน (art.js) */
+const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero-yama');
 { const im = new Image(); im.onload = () => { heroFace.ok = true; }; im.src = 'img/hero-yama-side.png'; }
 
 const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หนัก', 'หนักมาก', 'มหันต์'];
@@ -28,6 +29,7 @@ const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกล
 const g = createGame();
 const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
+bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
@@ -170,7 +172,7 @@ function deedLine(d) {
 
 /** รูปหน้าเล็กในรายชื่อ — ไม่มีไฟล์โปรไฟล์ก็ถอยไปเป็นอีโมจิตัวเดิม */
 function face(key, glyph) {
-  return `<span class="g"><img src="img/${key}-profile.png" alt=""
+  return `<span class="g"><img src="${artUrl(key + '-profile') || artUrl(key)}" alt=""
     onerror="this.parentNode.textContent='${glyph}'"></span>`;
 }
 
@@ -296,10 +298,11 @@ const nameOfSt = k => STATIONS.find(d => d.k === k)?.name ?? '—';
  *    ไม่ต้องแตะโค้ดสักบรรทัด (7 ก.ย. 2569) */
 function profile(imgKey, name, duty, now) {
   // ไม่มีทั้งรูปโปรไฟล์และรูป standee ก็ซ่อนกรอบไปเลย อย่าปล่อยไอคอนรูปแตกไว้
+  const std = artUrl(imgKey);
   const fallback = `this.onerror=function(){this.style.visibility='hidden'};`
-                 + `this.src='img/${imgKey}.png';this.classList.remove('full')`;
+                 + `this.src='${std}';this.classList.remove('full')`;
   return `<div class="prof">
-    <img class="full" src="img/${imgKey}-profile.png" alt=""
+    <img class="full" src="${artUrl(imgKey + '-profile') || std}" alt=""
          onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">
     <div class="hd"><b>${esc(name)}</b>
       <div class="duty">${esc(duty)}</div>
@@ -435,7 +438,7 @@ function sideBody() {
     const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
     return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
         `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
-      + think(kd.line)
+      + (kd.line ? think(kd.line) : '')
       + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
       + `<div class="sec">ปราบยังไง</div>
          <div class="row-truth">กดปุ่ม ⚔️ ที่แถบล่าง · กดเว้นวรรค · หรือคลิกที่ตัวมันบนฉาก —
@@ -560,7 +563,20 @@ function drawAtk() {
   fab.classList.toggle('gold', !near && !!st);
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); }
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); syncAva(); }
+
+/** รูปหน้าตัวเรามุมซ้ายบน — เปลี่ยนตามโซน (ใน index.html เขียนของโซน 1 ไว้ตายตัว)
+ *  จำค่าที่ตั้งไว้เอง ไม่เทียบกับ src จริง ไม่งั้นพอ onerror สลับไปรูปสำรอง จะตั้งกลับวนไม่จบ */
+function syncAva() {
+  warmZone();
+  const a = $('#ava');
+  if (!a) return;
+  const want = artUrl('hero-yama-profile') || artUrl('hero-yama');
+  if ((a.dataset.want || 'img/hero-yama-profile.png') === want) return;
+  a.dataset.want = want;
+  a.onerror = function () { this.onerror = () => this.remove(); this.src = artUrl('hero-yama'); };
+  a.src = want;
+}
 
 document.querySelectorAll('.tabs [data-side]').forEach(el =>
   el.onclick = () => { side = el.dataset.side; drawSide(); });
@@ -915,8 +931,9 @@ function bossModal(title, text, btn = 'รับทราบ') {
   pauseForDlg();
   modal(`<h2>${esc(title)}</h2>
     <div class="boss">
-      <img src="img/hero-boss-profile.png" alt=""
-           onerror="this.onerror=function(){this.remove()};this.src='img/hero-boss.png';this.classList.add('standee')">
+      ${artUrl('hero-boss-profile') ? `<img src="${artUrl('hero-boss-profile')}" alt=""
+           onerror="this.onerror=function(){this.remove()};this.src='${artUrl('hero-boss')}';this.classList.add('standee')">`
+        : `<img class="standee" src="${artUrl('hero-boss')}" alt="" onerror="this.remove()">`}
       <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(text)}</p>
     </div>
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
@@ -1059,18 +1076,18 @@ function arena(title, foe, hp, act, closable, fx, helper) {
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
   const youImg = heroFace();
-  const foeSrc = typeof foe.sp === 'string' ? `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
+  const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
     ${helper ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">
-      <img src="img/crew-${esc(helper.k)}.png" alt=""
-           onerror="this.onerror=null;this.src='img/crew-${esc(helper.k)}-profile.png'">
+      <img src="${artUrl('crew-' + helper.k)}" alt=""
+           onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
     <div class="fig you${cls('you')}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
-      <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='img/hero-yama-profile.png'">
+      <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
@@ -1166,7 +1183,7 @@ function openTrial() {
           >${i} ${INTENSITY[i]}</button>`).join('')}</div>`;
     }
 
-    const foeSrc = typeof s.sp === 'string' ? `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+    const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
 
     dlg.innerHTML = `
     <div class="hud" style="background-image:url('img/BG-Turn-Base.webp')">
@@ -1180,7 +1197,7 @@ function openTrial() {
 
         <div class="hud-stage">
           <div class="fig you"><img src="${heroFace()}" alt=""
-                 onerror="this.onerror=null;this.src='img/hero-yama.png'">
+                 onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
             <span class="nm">${esc(HERO_NAME)}</span></div>
           <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
                  onerror="this.onerror=null;this.src='img/spirit7.png'">
@@ -1210,8 +1227,8 @@ function openTrial() {
 
       <div class="hud-bottom">
         <div class="port you">
-          <img src="img/hero-yama-profile.png" alt=""
-               onerror="this.onerror=null;this.src='img/hero-yama.png'">
+          <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
+               onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</small></span>
         </div>
         <div class="hud-items">${POWERS.map(p => {
@@ -1318,7 +1335,7 @@ function openBattle(after) {
         const why = g.crewHelpWhy(c);
         return `<button class="crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
           title="${esc(c.name + ' — ' + (why || 'เรียกมาช่วยฟาดหนึ่งที · กำลังใจเขาหาย ' + BATTLE.crewMorale))}"
-          ><img src="img/crew-${c.k}-profile.png" alt="" onerror="this.onerror=null;this.src='img/crew-${c.k}.png'"
+          ><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="" onerror="this.onerror=null;this.src='${artUrl('crew-' + c.k)}'"
           >${c.name}<span style="opacity:.55">${why ? ' ' + why : ' แรง ' + c.raeng}</span></button>`;
       }).join('')}
     </div>`;
@@ -1633,11 +1650,20 @@ function keyWalk(dt) {
  *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
  *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
  *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
-const stBg = k => `img/BG-${k[0].toUpperCase()}${k.slice(1)}.webp`;
+const stBg = k => artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
+
+/** จุดยึดของห้อง — ฉากห้องของโซนที่องค์ประกอบต่างจากโซน 1 มีชุดจุดยึดของตัวเองใน ROOMS[k].zones
+ *  ใช้เฉพาะตอนที่ฉากของโซนนั้นมีจริง (ยังไม่มีไฟล์ = ใช้ฉากโซน 1 ก็ต้องใช้จุดยึดโซน 1) */
+function roomFor(k) {
+  const base = ROOMS[k] || ROOM_DEFAULT;
+  const cap = `BG-${k[0].toUpperCase()}${k.slice(1)}`;
+  const own = base.zones && base.zones[g.zone];
+  return own && stBg(k) !== `img/${cap}.webp` ? { ...base, ...own } : base;
+}
 
 function openStation(k) {
   const def = STATIONS.find(d => d.k === k);
-  const room = ROOMS[k] || ROOM_DEFAULT;
+  const room = roomFor(k);
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
 
