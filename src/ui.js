@@ -23,6 +23,14 @@ const HERO_NAME = 'ยมน้อย';
 const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero-yama');
 { const im = new Image(); im.onload = () => { heroFace.ok = true; }; im.src = 'img/hero-yama-side.png'; }
 
+/** ท่าลงทัณฑ์บนเวทีต่อสู้ (ข้อ 5 ของเจ้าของ 11 ก.ย. 2569)
+ *  จังหวะที่ท่านลงมือใส่คู่กรณี ให้เปลี่ยนเป็น hero-yama-atk · จังหวะอื่นกลับไปท่ายืนเดิม
+ *  artUrl คืน null = "โซนนี้มียมบาทแล้วแต่ยังไม่มีท่าฟาด" → ใช้ท่ายืนของโซน ไม่หยิบท่าโซน 1 มาปน
+ *  (โซนปัจฉิมยังไม่มี hero-yama-west-atk — ตอนนี้จึงยืนนิ่งตอนฟาด ไม่ใช่หน้าเปลี่ยนเป็นคนละคน)
+ *  โหลดไฟล์ไว้ล่วงหน้า ไม่งั้นเฟรมแรกที่สลับท่าจะว่างวูบหนึ่งระหว่างรอไฟล์ */
+const heroAtk = () => artUrl('hero-yama-atk') || heroFace();
+{ const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
+
 const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หนัก', 'หนักมาก', 'มหันต์'];
 const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'สาสม'];
 
@@ -1075,7 +1083,8 @@ function arena(title, foe, hp, act, closable, fx, helper) {
   const bar = (v, max, cls, label) => hp === null ? '' : `
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
-  const youImg = heroFace();
+  // ท่าลงทัณฑ์เฉพาะจังหวะที่เราลงมือใส่เขา — ใช้ของบำรุง (fx ลงที่ตัวเอง) ยังยืนท่าเดิม
+  const youImg = (act && act.lunge === 'you' && (!fx || fx.side === 'foe')) ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
