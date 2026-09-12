@@ -880,6 +880,29 @@ function drawDeck() {
   };
 }
 
+/** คำตัดสินของพ่อต่อคำตัดสินของเรา — ป้ายสั้นสำหรับแฟ้มทะเบียนกรรม (ข้อ 2 ของเจ้าของ 11 ก.ย. 2569)
+ *  ข้อความยาวเต็มอยู่ที่ BOSS_LINE ซึ่งเป็นบทเดียวกับที่พ่อพูดตอนปิดคดี — ในแฟ้มจึงไม่มีคำใหม่
+ *  คีย์ตรงกับ r.boss ที่ judge() ตั้ง (game.js) เป๊ะ */
+const DAD_TAG = {
+  great:    { t:'พ่อว่าตรงกรรม',      c:'var(--success)' },
+  ok:       { t:'พ่อว่าใช้ได้',        c:'var(--gold)' },
+  cruel:    { t:'พ่อว่าลงเกินกรรม',    c:'var(--destructive)' },
+  bad:      { t:'พ่อว่าเดา ไม่ได้อ่าน', c:'var(--destructive)' },
+  terrible: { t:'พ่อตีกลับทั้งเรื่อง',  c:'var(--destructive)' },
+};
+
+/** เซฟเก่าไม่มี boss ในแฟ้ม — เดาย้อนจากคะแนนด้วยเกณฑ์เดียวกับ judge() ใน game.js
+ *  (เรื่องที่ตัดสินไว้ก่อน 12 ก.ย. 2569 จึงยังอ่านคำตัดสินของพ่อได้ ไม่ต้องเริ่มเกมใหม่)
+ *  แก้เกณฑ์ใน judge() เมื่อไหร่ ต้องแก้ตรงนี้ด้วย */
+function dadGrade(x) {
+  if (x.boss) return x.boss;
+  if (x.over >= 2 && x.score >= 50) return 'cruel';
+  if (x.score < 35) return 'terrible';
+  if (x.score < 50) return 'bad';
+  if (x.score >= 82) return 'great';
+  return 'ok';
+}
+
 const BOSS_LINE = {
   great:    '"นี่แหละที่เรียกว่าตรงกรรม" — ท่านคืนบารมีให้ส่วนหนึ่ง และสั่งจ่ายเบี้ยพิเศษ 40',
   ok:       'ท่านอ่านคำตัดสินจนจบ วางลง แล้วมองไปทางอื่น — ใช้ได้ ไม่ถึงกับดี',
@@ -1792,11 +1815,23 @@ function openStation(k) {
     const over = L.filter(x => x.over > 0).length;
     const short = L.filter(x => x.short > 0).length;
     const wrong = L.filter(x => x.tham < 40).length;
+    // คำตัดสินของพ่อ — รวมทั้งแฟ้ม (ข้อ 2 ของเจ้าของ 11 ก.ย. 2569)
+    const byDad = {};
+    for (const x of L) { const k = dadGrade(x); byDad[k] = (byDad[k] || 0) + 1; }
+    const overVaras = L.reduce((a, x) => a + (x.over || 0), 0);
+    const shortVaras = L.reduce((a, x) => a + (x.short || 0), 0);
+    const passed = (byDad.great || 0) + (byDad.ok || 0);
     const rows = L.map(x => {
       const cl = g.closed.find(c => c.soul.id === x.id);
       const stars = '★'.repeat(x.stars ?? 0) + '☆'.repeat(5 - (x.stars ?? 0));
       const col = x.stars >= 4 ? 'var(--success)' : x.stars <= 1 ? 'var(--destructive)' : 'var(--gold)';
       const deeds = cl ? cl.soul.deeds.map(d => esc(d.t)).join(' · ') : '';
+      const gr = dadGrade(x), tag = DAD_TAG[gr] || DAD_TAG.ok;
+      // คลาดไปกี่วาระ — เลขเดียวที่เจ้าของถามหาตรง ๆ ("เราตัดสินผิดไปเท่าไร")
+      const miss = (x.over || 0) - (x.short || 0);
+      const missTxt = miss > 0 ? `หนักเกินไป ${miss} วาระ`
+                    : miss < 0 ? `เบาไป ${-miss} วาระ`
+                    : 'จำนวนวาระตรงพอดี';
       return `<div class="arch-row">
         <div class="arch-top">
           <b>#${String(x.id).padStart(3, '0')} ${esc(x.who)}</b>
@@ -1809,6 +1844,10 @@ function openStation(k) {
           ${x.tham < 40 ? '<b style="color:var(--destructive)">ส่งผิดชนิดกรรม</b>' : ''}
           ${x.back ? '<b style="color:var(--destructive)">กลับมารอบสอง</b>' : ''}</div>
         ${deeds ? `<div class="arch-deed">${deeds}</div>` : ''}
+        <div class="arch-dad" style="border-left-color:${tag.c}">
+          <b style="color:${tag.c}">👑 ${tag.t}</b> · ${esc(missTxt)}
+          <span>${esc((BOSS_LINE[gr] || BOSS_LINE.ok).replace(/\s+—\s+.*$/, ''))}</span>
+        </div>
       </div>`;
     }).join('');
     box.innerHTML = `
@@ -1819,6 +1858,15 @@ function openStation(k) {
       <div class="arch-sum">ปิดคดีแล้ว ${g.casesDone} เรื่อง · ห้าดาว ${five} ·
         ลงเกินกรรม ${over} · เบาไป ${short} · ส่งผิดชนิดกรรม ${wrong} ·
         กลับมาใหม่ ${g.returned}</div>
+      <div class="arch-dadsum">
+        <b>👑 พ่อว่าอย่างไรบ้าง</b>
+        ${L.length ? `ผ่านสายตาท่าน <b style="color:var(--success)">${passed}</b> จาก ${L.length} เรื่อง` +
+          ` (ตรงกรรม ${byDad.great || 0} · ใช้ได้ ${byDad.ok || 0})` +
+          ` · ท่านติงว่าลงเกินกรรม <b style="color:var(--destructive)">${byDad.cruel || 0}</b>` +
+          ` · ตีกลับ <b style="color:var(--destructive)">${(byDad.bad || 0) + (byDad.terrible || 0)}</b>` +
+          `<br>รวมแล้วท่านลงหนักเกินไป <b>${overVaras}</b> วาระ และเบาไป <b>${shortVaras}</b> วาระ`
+          : 'ยังไม่มีเรื่องให้ท่านอ่าน'}
+      </div>
       <div class="arch-list">${rows || '<div class="arch-meta">แฟ้มยังว่างเปล่า — ท่านยังไม่ได้ตัดสินใครเลย</div>'}</div>`;
     box.querySelector('#s-arch-x').onclick = () => showArchive(false);
   }

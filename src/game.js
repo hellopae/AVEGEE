@@ -606,9 +606,13 @@ const API = {
 
     this.hp = clamp(this.hp, 0, this.hpMax);
     // จดทุกคำตัดสินไว้ — ตอนจบเกมนิราจะวางแฟ้มชื่อของท่านเอง แล้วเปิดอ่านได้จริง
+    // boss = คำตัดสินของพ่อต่อคำตัดสินของเรา — เก็บลงแฟ้มด้วยตั้งแต่ 12 ก.ย. 2569
+    // (ข้อ 2 ของเจ้าของ: ศาลาห้องสมุดต้องบอกว่า "พ่อว่าอย่างไร" กับคดีที่ผ่านไปแล้ว)
+    // เซฟเก่าไม่มีฟิลด์นี้ — ui.js เดาย้อนจากคะแนนให้ ดู dadGrade()
     this.ledger.push({ id: soul.id, who: soul.who, tick: this.tick,
                        over: r.over, short: r.short, karma: r.karma,
                        stars: r.stars, score: r.score, tham: r.tham,
+                       boss: r.boss, heaven: !!r.heaven, right: !!r.right,
                        deserved: soul.deserved, back: !!soul.back });
     if (this.ledger.length > 300) this.ledger.shift();
     this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
