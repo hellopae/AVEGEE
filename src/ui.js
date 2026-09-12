@@ -1846,6 +1846,41 @@ function openBuild(def) {
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
 }
 
+/** หน้าต่างเลื่อนขั้น — บอกเป็นรายการว่าได้ความสามารถอะไรเพิ่ม (ข้อ 1 ของเจ้าของ 11 ก.ย. 2569)
+ *  รายการมาจาก LEVELS[].gains ซึ่งต้องตรงกับที่ checkLevel() ใน game.js ทำจริง
+ *  โซนที่เพิ่งเปิดอ่านจาก ZONES ตอนนี้เลย ไม่ hardcode — เพิ่มโซนใหม่แล้วบรรทัดนี้ตามเอง
+ *  (g.level ถูกบวกไปแล้วตอนเรียกถึงตรงนี้ ขั้นก่อนหน้าจึงเป็น g.level - 2) */
+function openLevelUp(lv) {
+  pauseForDlg();
+  sfx('star');
+  const prev = LEVELS[g.level - 2];
+  const zonesNew = g.pendingZoneOpen || ZONES.filter(z => z.level === g.level && z.k !== g.zone);
+  g.pendingZoneOpen = null;                 // บอกในกล่องนี้แล้ว ไม่ต้องเด้งซ้ำอีกกล่อง
+  const rows = [
+    ...(lv.gains || []),
+    ...zonesNew.map(z => ({ g: '🗺️', t: `เปิด${z.name}ให้ท่านคุม`,
+                            d: `${z.sub} · กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ ` +
+                               'สาขาที่ทิ้งไว้ถูกเก็บไว้ให้ ย้ายกลับมาเมื่อไหร่ก็ยังอยู่' })),
+  ];
+  const face = artUrl('hero-yama-profile') || artUrl('hero-yama');
+  modal(`<h2>🎖️ เลื่อนขั้น</h2>
+    <div class="lvup">
+      <img src="${face}" alt="" onerror="this.onerror=function(){this.remove()};this.src='${artUrl('hero-yama')}'">
+      <div class="rank">
+        ${prev ? `<div class="from">จาก ${esc(prev.name)}</div>` : ''}
+        <div class="to">${esc(lv.name)}</div>
+      </div>
+    </div>
+    <p style="font-size:var(--text-sm);line-height:var(--leading-body);margin:0 0 var(--space-3)">
+      "สำนวนที่เจ้าตัดสินถูก ข้านับอยู่ทุกเรื่อง" — พญายมยื่นของให้โดยไม่อธิบาย</p>
+    <div style="font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px">ท่านได้เพิ่ม</div>
+    ${rows.length
+      ? rows.map(r => `<div class="gain"><span class="g">${esc(r.g)}</span>
+          <span class="n"><b>${esc(r.t)}</b><span>${esc(r.d)}</span></span></div>`).join('')
+      : '<div class="hint">ขั้นนี้ยังไม่มีของแถม — แต่ชื่อขั้นของท่านเปลี่ยนแล้ว</div>'}
+    <div class="row"><button class="gold" data-close>รับไว้</button></div>`);
+}
+
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
   refresh();
@@ -1862,13 +1897,14 @@ g.onChange = () => {
                'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
     return;
   }
-  // สาขาใหม่เพิ่งปลดล็อก — บอกให้รู้ว่ากดย้ายได้แล้ว และย้ายกลับมาได้ตลอด
-  if (g.pendingZoneOpen) {
+  // สาขาใหม่เพิ่งปลดล็อก — เด้งเองเฉพาะตอนที่ไม่มีหน้าต่างเลื่อนขั้นตามมา
+  // (pendingZoneOpen ถูกตั้งใน checkLevel เสมอ ซึ่งตั้ง pendingLevel ด้วยทุกครั้ง
+  //  หน้าต่างเลื่อนขั้นมีบรรทัด "เปิดโซน..." อยู่แล้ว ถ้าเด้งทั้งคู่ = บอกเรื่องเดียวกันสองกล่องติด)
+  if (g.pendingZoneOpen && !g.pendingLevel) {
     const zs = g.pendingZoneOpen; g.pendingZoneOpen = null;
     bossModal('เปิดสาขาใหม่ให้ท่านแล้ว',
       `ขั้น "${LEVELS[g.level - 1].name}" เปิด${zs.map(z => z.name).join(' และ ')}ให้ท่านคุมได้แล้ว\n\n` +
-      'กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ — ยมทูต เบี้ยกรรม พลัง และกรรมของท่านติดตัวไปด้วย\n' +
-      'สาขาที่ทิ้งไว้จะถูกเก็บไว้ให้ทั้งกล่อง ย้ายกลับมาเมื่อไหร่ของยังอยู่ครบ', 'รับทราบ');
+      'กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้', 'รับทราบ');
     return;
   }
   // คิวล้นจนระเบียบหมด — เตือนก่อนสามครั้ง พร้อมบอกวิธีแก้ให้ผู้เล่นใหม่
@@ -1898,8 +1934,7 @@ g.onChange = () => {
   }
   if (g.pendingLevel) {
     const lv = g.pendingLevel; g.pendingLevel = null;
-    bossModal(`เลื่อนขั้น — ${lv.name}`,
-      `"สำนวนที่เจ้าตัดสินถูก ข้านับอยู่ทุกเรื่อง" พญายมยื่นของบางอย่างให้โดยไม่อธิบาย — ${lv.bonus}`, 'รับไว้');
+    openLevelUp(lv);
     return;
   }
   if (g.pendingEvent) {

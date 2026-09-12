@@ -273,6 +273,26 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
   border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
 .boss img.standee{image-rendering:pixelated;object-fit:contain;object-position:bottom;border-color:var(--border)}
 @media(max-width:520px){.boss{flex-direction:column;align-items:center;text-align:center}}
+
+/* ---------- หน้าต่างเลื่อนขั้น (ข้อ 1 ของเจ้าของ 11 ก.ย. 2569) ----------
+   เดิมของที่ได้ถูกยัดต่อท้ายบทพูดพญายมเป็นประโยคเดียว อ่านผ่านแล้วไม่รู้ว่าได้อะไร
+   ตอนนี้แยกเป็นรายการทีละข้อ มีสัญลักษณ์นำ — รายการมาจาก LEVELS[].gains */
+.lvup{display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3)}
+.lvup img{width:88px;height:88px;flex:none;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.lvup .rank{min-width:0}
+.lvup .rank .from{font-size:var(--text-xs);color:var(--muted-foreground)}
+.lvup .rank .to{font-family:var(--font-display);font-size:1.35rem;color:var(--gold);line-height:1.25}
+.gain{display:flex;gap:9px;align-items:flex-start;background:var(--muted);border:1px solid var(--border);
+  border-left:3px solid var(--gold);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:6px}
+.gain .g{flex:none;font-size:1.15rem;line-height:1.35;width:1.5em;text-align:center}
+.gain .n{flex:1;min-width:0}
+.gain .n b{display:block;font-size:var(--text-sm);color:var(--foreground)}
+.gain .n span{display:block;font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.55;margin-top:1px}
+@media(max-width:520px){
+  .lvup img{width:64px;height:64px}
+  .lvup .rank .to{font-size:1.1rem}
+}
 .field{margin-bottom:var(--space-4)}
 .field>label{display:block;font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px}
 .opts{display:flex;gap:6px;flex-wrap:wrap}
