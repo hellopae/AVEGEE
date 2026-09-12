@@ -1545,8 +1545,12 @@ const API = {
   /** โซนที่ย้ายไปได้ตอนนี้ — ปลดล็อกตามเลเวลของยมบาท */
   zonesOpen() { return ZONES.filter(z => this.level >= z.level && z.k !== this.zone); },
 
-  /** ย้ายโซน — คนกับของติดตัวไป แต่ "สถานีต้องสร้างใหม่ทั้งโซน"
-   *  ถ้ายกสถานีไปด้วย ด่าน 2 จะไม่มีอะไรให้ทำเลยนอกจากกดเดินวาระ */
+  /** ย้ายโซน — กติกาตาม CONCEPT §12.6 (แก้ตามข้อ 7 ของเจ้าของ 11 ก.ย. 2569)
+   *    ติดตัวไป : ยมบาท · นิรา · เบี้ยกรรม · พลัง · บารมี · กรรม · ขั้น · แฟ้มทะเบียนกรรม
+   *    ไม่ตามไป : สถานี · ยมทูตที่จ้างไว้ · ยักษ์ทวารบาล · คิว · ดวงที่ขัง · ของบนพื้น
+   *  ของที่ไม่ตามไป ถูกเก็บไว้ทั้งกล่องใน zoneSave — ย้ายกลับมาเมื่อไหร่ยังอยู่ครบเหมือนวันที่จากไป
+   *  ยมทูตเป็นคนของสาขา ไม่ใช่คนของท่าน จึงต้องจ้างใหม่ทุกสาขา (นิราคนเดียวที่ตามไป — ดู CREW.follow)
+   *  ถ้ายกสถานีกับคนไปด้วย สาขาที่สองจะไม่มีอะไรให้ทำเลยนอกจากกดเดินวาระ */
   moveZone(k) {
     const z = ZONES.find(x => x.k === k);
     if (!z || this.level < z.level || z.k === this.zone) return false;
@@ -1560,9 +1564,15 @@ const API = {
         visitCd: st.visitCd || 0, build: 0, slots: st.slots,
       })),
       queue: this.queue, held: this.held, items: this.items,
+      // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
+      // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
+      crew: this.crew.filter(c => !c.follow)
+                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpCd: c.helpCd || 0 })),
+      guard: this.guard,
     };
 
     const back = this.zoneSave[k];
+    const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
     this.mobs = [];
     if (back) {                              // เคยคุมสาขานี้มาก่อน — ของยังอยู่ครบ
@@ -1574,15 +1584,23 @@ const API = {
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
+      this.crew = [...keep, ...(back.crew || []).map(sv => {
+        const def = CREW.find(c => c.k === sv.k);
+        return def ? { ...mkCrew(def), ...sv } : null;
+      }).filter(Boolean)];
+      this.guard = back.guard || null;
     } else {
       this.queue = []; this.items = []; this.held = [];
       this.stations = [mkStation('sala')];
+      this.crew = [...keep];                 // สาขาใหม่ยังไม่มีลูกน้อง — ต้องจ้างของโซนนี้เอง
+      this.guard = null;
       this.coin += z.coin;                   // งบตั้งต้นให้ครั้งแรกที่มาสาขานี้เท่านั้น
     }
     this.crew.forEach(c => { c.at = null; c.path = null; });
     this.syncBlocks(true);
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
-             + (back ? ' · ของที่ทิ้งไว้ยังอยู่ครบ' : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม`), 'event');
+             + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
+                     : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     this.onChange();

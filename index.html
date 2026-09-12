@@ -849,7 +849,8 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
   <header>
     <img id="ava" src="img/hero-yama-profile.png" alt="" width="52" height="52"
          onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
-    <h1>อเวจี<small>นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
+    <!-- บรรทัดนี้ ui.js เขียนทับตามโซนและขั้นจริงทุกครั้งที่ refresh — ของในนี้คือค่าเริ่มต้นก่อนเกมเริ่ม -->
+    <h1>อเวจี<small id="hdr-sub">นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
     <div class="sysbtn">
       <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
       <button id="help" class="sm">วิธีเล่น</button>

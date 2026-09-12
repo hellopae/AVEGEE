@@ -572,7 +572,16 @@ function drawAtk() {
   fab.classList.toggle('gold', !near && !!st);
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); syncAva(); }
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); syncAva(); syncTitle(); }
+
+/** บรรทัดใต้ชื่อเกม — เดิมเขียน "นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด" ไว้ตายตัวใน index.html
+ *  ย้ายโซนหรือเลื่อนขั้นแล้วมันยังบอกโซนแรกกับขั้นแรกอยู่ทั้งเกม (เจอตอนทดสอบข้อ 7) */
+function syncTitle() {
+  const el = $('#hdr-sub');
+  if (!el) return;
+  const want = `นรก${g.zoneDef().name} · ${LEVELS[g.level - 1].name}`;
+  if (el.textContent !== want) el.textContent = want;
+}
 
 /** รูปหน้าตัวเรามุมซ้ายบน — เปลี่ยนตามโซน (ใน index.html เขียนของโซน 1 ไว้ตายตัว)
  *  จำค่าที่ตั้งไว้เอง ไม่เทียบกับ src จริง ไม่งั้นพอ onerror สลับไปรูปสำรอง จะตั้งกลับวนไม่จบ */
@@ -1975,8 +1984,9 @@ g.onChange = () => {
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
     bossModal(z.back ? `กลับมาที่${z.name}` : `ย้ายมา${z.name}`,
-      z.back ? `${z.sub}\n\nสถานีที่ท่านสร้างไว้ยังอยู่ครบ คิวที่ค้างไว้ก็ยังรออยู่ที่เดิม`
-             : `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง — ` +
+      z.back ? `${z.sub}\n\nสถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`
+             : `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง และยังไม่มียมทูตสักคน — ` +
+               'ยมทูตเป็นคนของสาขา ไม่ได้ตามท่านมา ต้องจ้างคนของที่นี่เอง\n' +
                'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
     return;
   }
