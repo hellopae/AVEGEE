@@ -792,101 +792,30 @@ function updateMobFab() {
   place(f);
 }
 
-/** แถบบัญชาการเหนือฉาก — พลัง · ปลายทาง · ผู้คุม · ระดับวาระ · ออกหมาย */
+/** แถบบัญชาการเหนือฉาก — เหลือ "ทางเข้าห้องสอบสวน" อย่างเดียว
+ *  เดิมแถบนี้มีครบชุด: พลังของท่าน · ส่งไปที่ไหน · ใครคุม · หนักแค่ไหน ·
+ *  พักคดีนี้ไว้ · ขังไว้ก่อน · ออกหมาย — ซ้ำกับหน้า "เริ่มการสอบสวน" ทุกตัว
+ *  (เจ้าของสั่งตัด 12 ก.ย. 2569) ตัวไหนไปอยู่ที่ไหนในหน้านั้น:
+ *    พลังของท่าน            → .hud-items แถบล่าง (ไอคอน + จำนวนกระสุน + เหตุผลที่กดไม่ได้)
+ *    ส่งไปที่ไหน/ใครคุม/หนักแค่ไหน → ปุ่มคำสั่ง cmd('st'|'cr'|'inten') + แผงตัวเลือกฝั่งขวา
+ *    พักคดีนี้ไว้            → #t-skip
+ *    ขังไว้ก่อน             → #t-jail (โผล่เมื่อมีตะราง — ในแถบเดิมเป็นปุ่มกดไม่ได้เปล่า ๆ)
+ *    ออกหมาย/ประทับตรา      → #t-go (เส้นทางตัดสินจริงคือ doVerdict ที่เดียวกันอยู่แล้ว)
+ *  **ไม่ตัด** ปุ่ม 🔍 เริ่มการสอบสวน เพราะเป็นทางเข้าหน้านั้น ไม่มีในหน้านั้นเอง
+ *  ผลข้างเคียงที่ตั้งใจ: ต้องเดินไปแท่นพิพากษาก่อนจึงสั่งอะไรได้ — ตรงกับกติกา 8 ก.ย. 2569
+ *  ที่ว่าห้องสอบสวนเปิดจากแท่นเท่านั้น (ปุ่มลอยเหนือบัลลังก์ .trialfab ก็พาไปที่เดียวกัน) */
 function drawDeck() {
   const s = g.queue[0];
   if (!s || g.over) {
     deckBar.innerHTML = '<div class="idle">ยังไม่มีวิญญาณยืนอยู่หน้าแท่น — กดเดินวาระให้เรือพาคนข้ามมา</div>';
     return;
   }
-  // เดิมซ่อนสถานีที่ไม่ว่างทิ้งไปเลย — ผู้เล่นจึงเห็นแค่ "ไม่มีที่ให้ส่ง" โดยไม่รู้ว่าเพราะอะไร
-  // (เจ้าของเจอ 8 ก.ย. 2569: สำนวนฉ้อโกง แต่กระทะทองแดงหายไปจากรายการเพราะกำลังใช้อยู่)
-  // ตอนนี้โชว์ทุกหลังที่สร้างแล้ว หลังที่ติดงานเป็นปุ่มกดไม่ได้ + บอกว่าเหลืออีกกี่ %
-  const dests = g.stations.filter(x => x.def.pow > 0);
-  const free = dests.filter(x => g.stFree(x) > 0);
-  // นิราไม่อยู่ในลิสต์ (เธออ่านสำนวน ไม่ลงทัณฑ์) · ท่านเองต่อท้ายเสมอ เผื่อคนไม่พอ
-  // ท่านคุมได้ทีละสถานีเท่านั้น — ยืนอยู่สองที่พร้อมกันไม่ได้
-  const meBusy = g.stations.some(x => x.crewK === 'me' && x.slots.length);
-  const idle = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
-  if (pick.st && !free.some(x => x.def.k === pick.st)) pick.st = null;
-  const heavenPick = !!(pick.st && STATIONS.find(d => d.k === pick.st)?.heaven);
-  if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
-
   deckBar.innerHTML = `
     <div class="grp"><span class="lb">แท่นพิพากษา</span>
-      <div class="row2"><button class="gold" id="d-trial">🔍 เริ่มการสอบสวน</button></div></div>
-
-    <div class="grp"><span class="lb">พลังของท่าน</span>
-      <div class="row2" id="d-pw">${POWERS.map(p => {
-        const pw = g.powerOf(p.k), ready = g.powerReady(p.k);
-        const why = g.powerLocked(p) ? `ล็อก · ขั้น ${p.lv}`
-                  : pw.ammo <= 0 ? 'หมด — เดินไปเก็บ'
-                  : pw.cd > 0 ? `รอ ${pw.cd} คดี` : `×${pw.ammo}`;
-        return `<button data-k="${p.k}" ${ready ? '' : 'disabled'} title="${esc(p.desc)}">${p.glyph} ${p.name} <span style="opacity:.55">${why}</span></button>`;
-      }).join('')}</div></div>
-
-    <div class="grp"><span class="lb">ส่งไปที่ไหน</span>
-      <div class="row2" id="d-st">${dests.length ? dests.map(x => {
-        const busy = g.stFree(x) <= 0, n = x.slots.length, cap = g.stCap(x);
-        const why = x.build ? 'กำลังก่อสร้าง' : busy ? `เต็ม ${n}/${cap}`
-                  : `${n}/${cap} · ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}`;
-        return `<button data-k="${x.def.k}" ${busy ? 'disabled' : ''}
-           ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
-           title="${busy ? 'หลังนี้เต็มแล้ว — รอให้ทัณฑ์ดวงใดดวงหนึ่งครบวาระ' : esc(x.def.desc)}"
-          >${x.def.glyph} ${x.def.name}<span style="opacity:.55"> ${why}</span></button>`;
-      }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง — ไปที่แท็บก่อสร้าง</span>'}</div></div>
-
-    <div class="grp"><span class="lb">ใครคุม</span>
-      <div class="row2" id="d-cr">${!idle.length ? '<span class="idle">ไม่มีใครว่าง — รอผู้คุมออกเวร หรือจ้างเพิ่มที่แท็บยมทูต</span>' : idle.map(c =>
-        `<button data-k="${c.k}" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-           title="${esc(c.self ? 'สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น และช้ากว่ายมทูต' : c.duty || '')}"
-          >${c.glyph} ${c.name}<span style="opacity:.55"> ${c.self ? 'ช้า · ต้องไปยืนเอง' : Math.round(c.morale)}</span></button>`).join('')}</div></div>
-
-    <div class="grp"><span class="lb">${heavenPick ? 'ส่งกลับชั้นฟ้า' : 'หนักแค่ไหน'}</span>
-      <div class="row2" id="d-in">${heavenPick
-        ? '<span class="idle">ไม่มีวาระให้เลือก — ประตูสวรรค์ไม่ใช่ที่ลงทัณฑ์</span>'
-        : [1, 2, 3, 4, 5].map(i =>
-        `<button data-v="${i}" ${i === pick.inten ? 'aria-pressed="true"' : ''}>${i} ${INTENSITY[i]}</button>`).join('')}</div></div>
-
-    <div class="grp go" style="align-items:flex-end">
-      <div class="row2">
-        <button id="d-skip" ${g.queue.length > 1 ? '' : 'disabled'}
-          title="เลื่อนคดีนี้ไปท้ายคิว ให้คนถัดไปขึ้นแทน — ฟรี ไม่มีโทษ">⏭️ พักคดีนี้ไว้</button>
-        ${g.has('tarang')
-          ? `<button id="d-jail" ${g.jailFree() > 0 ? '' : 'disabled'}
-               title="ขังไว้ในตะรางก่อน ออกจากคิวเลย แลกกับค่าข้าวทุกวาระ"
-               >🔒 ขังไว้ก่อน <span style="opacity:.55">${g.held.length}/${g.jailFree() + g.held.length}</span></button>`
-          : `<button disabled title="ต้องสร้างตะรางรอวาระก่อน (แท็บก่อสร้าง)">🔒 ขังไว้ก่อน <span style="opacity:.55">ยังไม่มีตะราง</span></button>`}
-        <button class="gold" id="d-go" ${pick.st && pick.cr ? '' : 'disabled'}
-          >${g.needBattle(s) ? '⚔️ ประทับตรา (เขาจะสู้)' : '⚖️ ออกหมาย'}</button>
-      </div>
-    </div>`;
-
-  deckBar.querySelectorAll('#d-pw button').forEach(b => b.onclick = () => {
-    g.usePower(b.dataset.k, s); drawRes(); drawSide(); drawOverlay(); drawDeck();
-  });
-  const sel = (id, key) => deckBar.querySelectorAll(`${id} button`).forEach(b =>
-    b.onclick = () => { pick[key] = b.dataset.k ?? +b.dataset.v; drawDeck(); });
-  sel('#d-st', 'st'); sel('#d-cr', 'cr'); sel('#d-in', 'inten');
+      <div class="row2"><button class="gold" id="d-trial">🔍 เริ่มการสอบสวน</button></div></div>`;
   const tr = deckBar.querySelector('#d-trial');
   if (tr) tr.onclick = goTrial;
   updateTrialBtn();
-  const sk = deckBar.querySelector('#d-skip');
-  if (sk) sk.onclick = () => { if (g.defer()) { pick = { st: null, cr: null, inten: 3 }; sfx('deny'); refresh(); } };
-  const jl = deckBar.querySelector('#d-jail');
-  if (jl) jl.onclick = () => { if (g.jail(s.id)) { pick = { st: null, cr: null, inten: 3 }; sfx('stamp'); refresh(); } };
-  const go = deckBar.querySelector('#d-go');
-  if (go) go.onclick = () => {
-    // ดวงที่ขัดขืนต้องปราบก่อนถึงจะลากเข้าสถานีได้ — แพ้แล้วเขากลับเข้าคิวไปยืนรอใหม่
-    // (เส้นทางเดียวกับปุ่มออกหมายในห้องสอบสวน — ตัดสินจริงอยู่ที่ doVerdict ที่เดียว)
-    const st = pick.st, cr = pick.cr, inten = pick.inten;
-    if (g.needBattle(s)) {
-      g.startBattle(s);
-      openBattle(res => { if (res === 'win') doVerdict(s, st, cr, inten); else refresh(); });
-      return;
-    }
-    doVerdict(s, st, cr, inten);
-  };
 }
 
 /** คำตัดสินของพ่อต่อคำตัดสินของเรา — ป้ายสั้นสำหรับแฟ้มทะเบียนกรรม (ข้อ 2 ของเจ้าของ 11 ก.ย. 2569)
