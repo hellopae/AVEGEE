@@ -695,6 +695,12 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
   .hud-left button{flex:1 1 46%;min-height:40px}
   .hud-left button .lb2 small{display:none}
   .hud-stage{height:180px}
+  /* หน้าสถานีบนจอมือถือ: .st-hud .hud-body ตั้ง 3 คอลัมน์ไว้ในมีเดีย max-width:1100px
+     ซึ่ง specificity สูงกว่า .hud-body{grid-template-columns:1fr} ของบล็อกนี้ คอลัมน์กลาง
+     (ฉากในสถานี + แฟ้มทะเบียนกรรมที่ทับอยู่) จึงถูกบีบเหลือ 0px บนจอ 390 — เปิดแฟ้มแล้ว
+     ตัวหนังสือตกบรรทัดทีละอักษร (เจอตอนทดสอบข้อ 2 เมื่อ 12 ก.ย. 2569) */
+  .st-hud .hud-body{grid-template-columns:1fr}
+  .st-room{min-height:240px}
   .hud-right{max-height:none}
   .hud-rec{max-height:none}
   .hud-bottom{flex-wrap:wrap}
