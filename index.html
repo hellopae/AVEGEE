@@ -369,6 +369,29 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 #title button small{display:block;color:var(--muted-foreground);font-size:var(--text-xs);
   font-weight:400;margin-top:2px}
 #title .foot{color:var(--muted-foreground);font-size:var(--text-xs);margin-top:var(--space-4)}
+/* คำเตือนอายุ — อยู่เหนือปุ่มเริ่มเล่นเสมอ ไม่ใช่หน้าต่างที่กดปิดได้
+   (ป้ายเรตติ้งต้องเห็นทุกครั้งที่เปิดเกม ไม่ใช่เห็นครั้งเดียวแล้วหายไปกับ localStorage) */
+#title .agewarn{display:flex;align-items:center;gap:var(--space-2);
+  margin:calc(var(--space-4)*-1) 0 var(--space-4);padding:8px 11px;
+  background:rgba(30,16,21,.82);border:1px solid var(--border);border-left:3px solid var(--destructive);
+  border-radius:var(--radius-sm);backdrop-filter:blur(2px);
+  color:var(--muted-foreground);font-size:var(--text-xs);line-height:1.55}
+#title .agewarn .rate{flex:none;font-weight:700;font-size:var(--text-sm);letter-spacing:.02em;
+  color:var(--primary-foreground);background:var(--primary);
+  border-radius:var(--radius-sm);padding:2px 7px}
+/* จอเตี้ย (มือถือแนวนอน 390px สูง) เมนูเดิมล้นกรอบจนปุ่ม "ตั้งค่า" หลุดออกนอกจอไปแล้ว
+   บีบโลโก้กับเกริ่นลง แล้วให้เมนูเลื่อนได้ — คำเตือนกับปุ่มทุกปุ่มต้องอยู่ในจอ */
+@media(max-height:520px){
+  #title .menu{justify-content:flex-start;overflow-y:auto;gap:var(--space-2);
+    padding-top:var(--space-3);padding-bottom:var(--space-3)}
+  #title .brand{margin-bottom:var(--space-2);gap:2px}
+  #title .brand .th{font-size:clamp(2rem,5vw,3rem)}
+  #title .brand .orn{width:clamp(52px,6vw,72px)}
+  #title .lead{margin-bottom:var(--space-3);line-height:1.55}
+  #title .agewarn{margin-top:calc(var(--space-3)*-1);margin-bottom:var(--space-3)}
+  #title button{min-height:44px;padding:9px 14px;font-size:var(--text-base)}
+  #title .foot{margin-top:var(--space-3)}
+}
 @media(max-width:820px){
   #title{grid-template-columns:1fr;grid-template-rows:1fr auto}
   #title .menu{grid-column:1;grid-row:2;justify-content:flex-end;padding-bottom:var(--space-5)}
@@ -765,6 +788,8 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
     <p class="lead">นรกโซนสุวรรณภูมิ<br>
       <b>ท่านคือยมบาทมือใหม่</b> ลูกของพญายม<br>
       งานของท่านคือ <b>พิพากษาให้ตรงกรรม</b> — ไม่ใช่ลงโทษให้แรงที่สุด</p>
+    <!-- คำเตือนก่อนเล่น (เจ้าของสั่ง 11 ก.ย. 2569) — ถ้อยคำนี้เจ้าของเขียนมาเอง ห้ามแก้ -->
+    <p class="agewarn"><span class="rate">18+</span><span>เกมนี้เนื้อหามีความรุนแรง เหมาะสำหรับผู้ใหญ่อายุ 18 ปีขึ้นไป</span></p>
     <button id="t-resume" hidden><b>▶ เล่นต่อ</b><small id="t-resume-info"></small></button>
     <button id="t-new"><b>✦ เริ่มเกมใหม่</b><small>เริ่มจากวาระแรก · สำนวนแรกยืนรออยู่แล้ว</small></button>
     <button id="t-set"><b>⚙ ตั้งค่า</b><small>เสียง · ความเร็ว · ลบข้อมูลที่บันทึกไว้</small></button>
