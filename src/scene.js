@@ -123,9 +123,10 @@ export function render(ctx, g, t, hover, sel) {
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
     drawStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
+    // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
+    if (d <= MOB.fabReach) return;
     tag(ctx, m.x, m.y - MOB.h - 8, t,
-        near      ? ['⚔️ กดเพื่อเข้าต่อสู้', '#ff6a4a']
-      : canThrow  ? [`🔥 กดขว้างลูกไฟ ×${PA}`, '#d4a355']
+        canThrow  ? [`🔥 กดขว้างลูกไฟ ×${PA}`, '#d4a355']
                   : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
   }));
 

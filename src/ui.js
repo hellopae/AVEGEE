@@ -55,6 +55,7 @@ setInterval(() => {
   releaseDlgPause();       // กล่องปิดไปแล้วแต่ยังไม่ได้คืนค่าพัก — ดูหมายเหตุที่ pauseForDlg()
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
+  updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
     g.startDadFight(); openBattle();
@@ -74,7 +75,7 @@ function frame(now) {
   }
   if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
   else render(ctx, g, now, hover, sel);
-  followMarks(); drawAtk(); updateTrialBtn(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -678,7 +679,12 @@ function followMarks() {
 }
 
 function drawOverlay() {
+  // ปุ่มสู้เหนือหัวผีต้องรอดจากการล้างชั้นซ้อน — ทดสอบ 12 ก.ย. 2569 เจอว่าถ้าปล่อยให้
+  // ถูกล้างแล้วสร้างใหม่ทุกรอบ refresh (ราว 0.7 วินาทีครั้ง) ผู้เล่นที่กดคาบเกี่ยวจังหวะนั้น
+  // จะ "กดแล้วไม่ติด" เพราะปุ่มที่รับ mousedown ถูกถอดออกไปก่อน mouseup
+  const keepFab = ov.querySelector('.mobfab');
   ov.innerHTML = '';
+  if (keepFab) ov.appendChild(keepFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -747,6 +753,34 @@ function updateTrialBtn() {
   if (f.hidden) return;
   f.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 ไปแท่นพิพากษา';
   f.classList.toggle('gold', near);
+}
+
+/** ปุ่มสู้ลอยเหนือหัวผี (ข้อ 3 ของเจ้าของ 11 ก.ย. 2569)
+ *  เดินเข้าไปในระยะ MOB.fabReach ของผีตนไหน ปุ่มโผล่เหนือหัวตนนั้น
+ *  กดแล้วเข้าฉากต่อสู้กับ "ตนนั้น" ทันที ไม่ต้องขยับเข้าไปให้ประชิดอีก
+ *  สร้างใหม่ทุกครั้งที่หาย เพราะ drawOverlay() ล้าง #ov ทิ้งทุกรอบ refresh
+ *  ตำแหน่งอัปเดตทุกเฟรม — ผีเดินตลอดเวลา ปุ่มต้องติดหัวมันไปด้วย */
+function updateMobFab() {
+  const gone = () => { const e = ov.querySelector('.mobfab'); if (e) e.remove(); };
+  if (g.over || g.battle || dlg.open || !g.mobs.length) return gone();
+  const n = g.nearestMob();
+  if (!n || n.d > MOB.fabReach) return gone();
+  let f = ov.querySelector('.mobfab');
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'mobfab';
+    f.textContent = '⚔️ เข้าต่อสู้';
+    f.onclick = ev => {
+      ev.stopPropagation();
+      if (g.over || g.battle || dlg.open) return;
+      const m = g.nearestMob();
+      if (!m || m.d > MOB.fabReach) return;
+      g.startMobBattle(m.i); openBattle();
+    };
+    ov.appendChild(f);
+  }
+  f.dataset.sx = n.m.x; f.dataset.sy = n.m.y - MOB.h - 8;
+  place(f);
 }
 
 /** แถบบัญชาการเหนือฉาก — พลัง · ปลายทาง · ผู้คุม · ระดับวาระ · ออกหมาย */
