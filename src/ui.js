@@ -1,6 +1,6 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
-         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS,
+         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
@@ -1718,18 +1718,20 @@ function openStation(k) {
     const st = g.stations.find(x => x.def.k === k);
     if (!st) return;
     const cap = g.stCap(st), v = def.visit;
-    const vWhy = v ? g.visitWhy(st, R && R.inReach()) : 'สถานีนี้ไม่มีอะไรให้เติม';
     const inside = !!(R && R.inReach());
 
     const acts = [];
     if (cap) acts.push(`<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
         🔥 ลงทัณฑ์เอง<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
           : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
-    if (v) {
-      const pw = v.power ? POWERS.find(p => p.k === v.power) : null;
-      acts.push(`<button id="s-visit" ${vWhy ? 'disabled' : ''}>
-        ${pw ? pw.glyph : '❤️'} ${pw ? 'เติม' + pw.name : 'พักฟื้นบารมี'}
-        <small>${esc(vWhy || v.say)}</small></button>`);
+    // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
+    // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
+    if (v && v.drop) {
+      const it = ITEMS[v.drop], ready = g.items.some(x => x.from === k);
+      const wait = Math.max(0, (st.visitCd || 0) - g.tick);
+      acts.push(`<div class="hint">${it.glyph || '🎁'} ${esc(it.name)}${ready
+        ? ' <b>วางรออยู่หน้าสถานีแล้ว</b> — เดินไปเก็บได้เลย'
+        : wait ? ` — อีก ${wait} วาระถึงจะมีชิ้นใหม่มาวาง` : ' — กำลังจัดมาวางให้'}</div>`);
     }
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
         📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
@@ -1771,7 +1773,6 @@ function openStation(k) {
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-smite', doSmite);
-    on('#s-visit', () => { if (g.visitStation(k, R && R.inReach())) { sfx('star'); panels(); refresh(); } });
     on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
@@ -1847,7 +1848,7 @@ function openStation(k) {
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
   R.st = g.stations.find(x => x.def.k === k);
-  R.onAct = () => { if (def.visit) { if (g.visitStation(k, true)) { sfx('star'); panels(); refresh(); } } else doSmite(); };
+  R.onAct = () => doSmite();          // เดิมสถานีเติมพลังใช้ปุ่มนี้ "เติม" — ตอนนี้ของอยู่ในฉากแล้ว
   let wasNear = null;
   R.onFrame = near => {
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง

@@ -761,7 +761,10 @@ const API = {
     }
 
     // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
-    if (this.tick % 18 === 0 && this.items.length < 3) {
+    this.stationDrops();        // สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ
+
+    // ของจากสถานีไม่นับในเพดานนี้ — ไม่งั้นสร้างสถานีเติมพลังครบสี่หลังแล้วของสุ่มหยุดตกทั้งเกม
+    if (this.tick % 18 === 0 && this.items.filter(it => !it.from).length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
                  : this.fuel < 18 ? 'fuel'
                  : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
@@ -1012,6 +1015,11 @@ const API = {
         p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
       }
       this.log(`🎁 เก็บ${def.name} — ${def.say}`, 'good');
+      // ของจากสถานี — คูลดาวน์เริ่มนับตอนเก็บ สถานีถึงจะวางชิ้นใหม่ให้
+      if (it.from) {
+        const src = this.stations.find(x => x.def.k === it.from);
+        if (src) src.visitCd = this.tick + (src.def.visit?.cool || 4);
+      }
       this.items.splice(i, 1);
     }
 
@@ -1091,46 +1099,28 @@ const API = {
     }
   },
 
-  /** ยืนอยู่ใกล้สถานีนี้พอจะลงมือเองไหม — ใช้ระยะเดียวกับการซัดไฟเร่งทัณฑ์ */
-  nearStation(st) {
-    if (!st) return false;
-    const d = st.def;
-    return Math.hypot((d.sx ?? d.x) - this.player.x, (d.sy ?? d.y) - this.player.y) <= BAL.smiteReach * 1.5;
-  },
-
-  /** แวะเติมพลังที่สถานี — ว่างเปล่าแปลว่ากดได้ · มีข้อความแปลว่ากดไม่ได้เพราะอะไร
-   *  inRoom = ยืนถึงจุดในฉากของหน้าสถานีแล้ว (นับแทนการยืนใกล้บนแผนที่ได้) */
-  visitWhy(st, inRoom = false) {
-    const v = st && st.def.visit;
-    if (!v) return 'สถานีนี้ไม่มีอะไรให้เติม';
-    if (st.build) return 'ยังก่อสร้างไม่เสร็จ';
-    if (!inRoom && !this.nearStation(st)) return 'เดินเข้าไปให้ถึงจุดในฉากก่อน';
-    if (st.visitCd && this.tick < st.visitCd) return `เพิ่งใช้ไป · อีก ${st.visitCd - this.tick} วาระ`;
-    if (v.power) {
-      const p = this.powerOf(v.power);
-      if (this.powerLocked(p)) return `ยังใช้${p.name}ไม่ได้ — ต้องเลื่อนขั้นก่อน`;
-      if (p.ammo >= p.max) return `${p.name}เต็มมืออยู่แล้ว`;
+  /** สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569)
+   *  เดิมต้องเปิดหน้าสถานีแล้วกดปุ่ม "เติม" ซึ่งไม่มีอะไรอยู่ในฉากให้เห็นเลยว่ามีของรออยู่
+   *  กติกา: หนึ่งสถานี = ของหนึ่งชิ้นบนพื้น · เก็บไปแล้วอีก visit.cool วาระถึงมีชิ้นใหม่
+   *  ไม่วางถ้าของที่วางไปก็ไม่มีประโยชน์ (พลังเต็ม / ยังไม่ปลดล็อก / บารมีเต็ม)
+   *  — คูลดาวน์เริ่มนับตอน "เก็บ" ไม่ใช่ตอน "วาง" ของจึงไม่หายไปเองถ้าท่านยังเดินไม่ถึง */
+  stationDrops() {
+    for (const st of this.stations) {
+      const v = st.def.visit;
+      if (!v || !v.drop || st.build) continue;
+      if (st.fire >= MOB.burnMax) continue;             // ไหม้จนใช้การไม่ได้ ไม่มีใครมาวางของให้
+      if (this.tick < (st.visitCd || 0)) continue;
+      if (this.items.some(it => it.from === st.def.k)) continue;
+      if (v.power) {
+        const p = this.powerOf(v.power);
+        if (this.powerLocked(p) || p.ammo >= p.max) continue;
+      }
+      if (v.heal && this.hp >= this.hpMax) continue;
+      const at = v.at || [st.def.sx ?? st.def.x, st.def.sy ?? st.def.y];
+      // จุดที่เขียนไว้อาจตกลาวา/ในน้ำเมื่อฉากถูกวาดใหม่ — ดันขึ้นที่เหยียบได้ให้เสมอ
+      const spot = canWalk(at[0], at[1]) ? at : (nearestWalk(at[0], at[1]) || at);
+      this.items.push({ k: v.drop, x: spot[0], y: spot[1], from: st.def.k });
     }
-    if (v.heal && this.hp >= this.hpMax) return 'บารมีเต็มอยู่แล้ว';
-    return '';
-  },
-
-  visitStation(k, inRoom = false) {
-    const st = this.stations.find(x => x.def.k === k);
-    if (!st || this.visitWhy(st, inRoom)) return false;
-    const v = st.def.visit;
-    st.visitCd = this.tick + v.cool;
-    if (v.power) {
-      const p = this.powerOf(v.power);
-      p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
-      this.log(`${p.glyph} ${v.say} — ${p.name} +1 (เหลือ ${p.ammo})`, 'good');
-    }
-    if (v.heal) {
-      this.hp = clamp(this.hp + v.heal, 0, this.hpMax);
-      this.log(`❤️ ${v.say} — บารมี +${v.heal} (เหลือ ${Math.round(this.hp)})`, 'good');
-    }
-    this.onChange();
-    return true;
   },
 
   /** บอก walk.js ว่าตอนนี้มีอาคารกินพื้นที่ตรงไหนบ้าง
