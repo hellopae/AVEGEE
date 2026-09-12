@@ -189,15 +189,17 @@ export function stepTo(p, dx, dy) {
   return false;
 }
 
-/** จุดที่เดินได้ที่ใกล้ (x,y) ที่สุด — ใช้ตอนคลิกสั่งเดินลงลาวา/ลงน้ำ */
-export function nearestWalk(x, y) {
-  if (canWalk(x, y)) return [x, y];
+/** จุดที่เดินได้ที่ใกล้ (x,y) ที่สุด — ใช้ตอนคลิกสั่งเดินลงลาวา/ลงน้ำ
+ *  extra = เงื่อนไขเพิ่มที่จุดนั้นต้องผ่านด้วย (เช่น "ต้องไม่ถูกอาคารบัง" ของยมทูต) */
+export function nearestWalk(x, y, extra) {
+  const ok = (px, py) => canWalk(px, py) && (!extra || extra(px, py));
+  if (ok(x, y)) return [x, y];
   for (let r = CELL * 2; r <= 260; r += CELL * 2) {
     for (let a = 0; a < 20; a++) {
       const th = a / 20 * Math.PI * 2;
       const nx = x + Math.cos(th) * r, ny = y + Math.sin(th) * r;
-      if (canWalk(nx, ny)) return [nx, ny];
+      if (ok(nx, ny)) return [nx, ny];
     }
   }
-  return null;
+  return extra ? nearestWalk(x, y) : null;       // หาจุดที่เห็นตัวไม่ได้ ก็เอาจุดที่เดินได้ไว้ก่อน
 }

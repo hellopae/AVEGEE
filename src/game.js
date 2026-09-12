@@ -8,7 +8,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN } from './data.js';
 import { CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
-import { footOf, artEpoch } from './art.js';
+import { footOf, artEpoch, hiddenAt } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -961,16 +961,24 @@ const API = {
     P.x = clamp(P.x, 40, SCENE.w - 40);
     P.y = clamp(P.y, 60, SCENE.h - 40);
 
+    // ยืนตรงนี้แล้วยังเห็นตัวไหม — จุดที่ "ลึกกว่าฐานอาคาร" คือจุดที่อาคารวาดทับทั้งตัว
+    // เจ้าของทักซ้ำ 12 ก.ย. 2569 ว่ายมทูตถูกฉากทับ ครึ่งแรกแก้ที่ลำดับการวาด (art.depthOf)
+    // ครึ่งหลังคือตรงนี้: ห้ามส่งยมทูตไปยืนในจุดที่ยังไงก็มองไม่เห็นตัว
+    const seen = (x, y) => !this.stations.some(st => !st.build && hiddenAt(st.def, x, y));
+
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
       // ปล่อยไว้ยมทูตจะยืนจมอยู่ในอาคาร มองไม่เห็นทั้งเกม (เจ้าของเจอ 10 ก.ย. 2569)
-      if (!canWalk(hx, hy)) { const o = nearestWalk(hx, hy); if (o) { hx = o[0]; hy = o[1]; } }
+      if (!canWalk(hx, hy) || !seen(hx, hy)) {
+        const o = nearestWalk(hx, hy, seen);
+        if (o) { hx = o[0]; hy = o[1]; }
+      }
       if (c.x == null) { c.x = hx; c.y = hy; c.face = 1; }
       if (!canWalk(c.x, c.y)) {                 // โดนอาคารที่เพิ่งสร้างทับอยู่ → ดันออกมา
-        const o = nearestWalk(c.x, c.y);
+        const o = nearestWalk(c.x, c.y, seen);
         if (o) { c.x = o[0]; c.y = o[1]; c.path = null; }
       }
 
@@ -995,7 +1003,8 @@ const API = {
         // อยู่ไกลบ้าน = กลับเข้าที่ก่อน · อยู่แถวบ้านแล้ว = เดินเล่นรอบ ๆ
         const tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
         const ty = far ? hy : hy + (Math.random() - 0.5) * roam;
-        const ok = canWalk(tx, ty) ? [tx, ty] : nearestWalk(tx, ty);
+        // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
+        const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
         if (ok) c.path = findPath(c.x, c.y, ok[0], ok[1]);
         c.wait = far ? 200 : 700 + Math.random() * 2600;
       }

@@ -4,7 +4,7 @@
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawEmbers, drawVignette, rr, topOf, soulKey } from './art.js';
+         drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
@@ -66,7 +66,10 @@ export function render(ctx, g, t, hover, sel) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
-  for (const st of g.stations) at(st.def.by ?? st.def.y, () => drawStation(ctx, g, st, t));
+  // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
+  // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
+  // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว
+  for (const st of g.stations) at(depthOf(st.def), () => drawStation(ctx, g, st, t));
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {

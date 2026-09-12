@@ -190,6 +190,57 @@ export function footOf(def) {
   return r;
 }
 
+/** กรอบเนื้อภาพทั้งหลังในพิกัดฉาก [x1,y1,x2,y2] — วัดจากพิกเซลจริงเหมือน footOf
+ *  footOf = แถบล่างที่ติดพื้น · bodyBoxOf = ทั้งก้อนรวมหลังคา
+ *  ใช้ตอบคำถามว่า "ยืนตรงนี้แล้วอาคารบังไหม" */
+const bodyCache = new Map();
+export function bodyBoxOf(def) {
+  if (def.bx == null) return null;
+  const box = stationBox(def);
+  if (!box || !box.im.naturalWidth) return null;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  if (bodyCache.has(ck)) return bodyCache.get(ck);
+  const N = 72;
+  const c = document.createElement('canvas');
+  c.width = N; c.height = N;
+  const cx = c.getContext('2d', { willReadFrequently: true });
+  cx.drawImage(im, 0, 0, N, N);
+  let d;
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { bodyCache.set(ck, null); return null; }
+  let x1 = N, y1 = N, x2 = -1, y2 = -1;
+  for (let y = 0; y < N; y++)
+    for (let x = 0; x < N; x++)
+      if (d[(y * N + x) * 4 + 3] > 40) {
+        if (x < x1) x1 = x;
+        if (x > x2) x2 = x;
+        if (y < y1) y1 = y;
+        y2 = y;
+      }
+  const r = x2 < x1 ? null
+    : [box.x + x1 / N * box.w, box.y + y1 / N * box.h,
+       box.x + (x2 + 1) / N * box.w, box.y + (y2 + 1) / N * box.h];
+  bodyCache.set(ck, r);
+  return r;
+}
+
+/** ความลึกของอาคารสำหรับเรียงชั้นวาด — **ขอบหลังของแถบฐานที่ติดพื้น** ไม่ใช่ def.by
+ *  def.by คือ "ขอบหน้าสุด" ของสไปรท์ (ปลายบันได/ปลายลานหน้า) ซึ่งเป็นค่าที่ผิดสำหรับเรียงชั้น:
+ *  สไปรท์อาคารเป็นภาพมุมเฉียง ฐานกินพื้นเป็น **แถบ** ไม่ใช่เส้นเดียว ใครที่ยืนบนแถบนั้น
+ *  (= ยืนบนลานหน้าอาคาร ซึ่งคือจุดประจำของยมทูตหลายคน) จะมี y น้อยกว่า by เสมอ
+ *  → ถูกวาดก่อนอาคาร → จมหายไปทั้งตัว (เจ้าของทักซ้ำ 12 ก.ย. 2569: บุญที่ศาลาน้ำชา · กานต์ที่หอทะเบียน)
+ *  วัดจากพิกเซลจริง รูปเปลี่ยนแล้วขยับตามเอง — ไม่ใช่การกรอกพิกัดใหม่ด้วยมือ */
+export function depthOf(def) {
+  const r = footOf(def);
+  return r ? r[1] : (def.by ?? def.y);
+}
+
+/** ยืนที่ (x,y) แล้วอาคารหลังนี้บังไหม — อยู่ในช่วงกว้างของเนื้อภาพ และลึกกว่าแถบฐาน */
+export function hiddenAt(def, x, y) {
+  const b = bodyBoxOf(def);
+  if (!b) return false;
+  return x > b[0] && x < b[2] && y >= b[1] - 8 && y < depthOf(def);
+}
+
 /** ยอดของอาคารในพิกัดฉาก — วัดจากพิกเซลจริงเหมือนกัน
  *  ใช้วางป้ายวงกลมเหนือหลังคา · สไปรท์ส่วนใหญ่มีที่ว่างเหนือเนื้อภาพเยอะ
  *  ถ้าใช้ (by - bw) ตรง ๆ ป้ายจะลอยไปอยู่กลางฟ้าเหนืออาคารหลายสิบพิกเซล */

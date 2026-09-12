@@ -1,0 +1,83 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#111">
+<canvas id="c" width="1527" height="704" style="width:1527px;display:block"></canvas>
+<div id="o" style="font:13px monospace;color:#0f0;background:#000;padding:6px;white-space:pre"></div>
+<script type="module">
+// ฮาร์เนสชั่วคราว (ไม่ commit): สร้างสถานีครบทุกหลัง + ยมทูตครบทุกคน
+// แล้ววัดว่าตัวไหน "ถูกอาคารทับ" โดยเทียบภาพที่มี/ไม่มีตัวละครตัวนั้น
+// วัดทั้งจุดประจำ และจุดเดินเล่นที่สุ่มในรัศมี roam (เฉพาะจุดที่เดินได้จริง)
+import { SCENE, STATIONS, CREW, GUARD_POST } from './src/data.js';
+import { createGame } from './src/game.js';
+import { render } from './src/scene.js';
+import { img, depthOf, footOf, bodyBoxOf, hiddenAt } from './src/art.js';
+import { canWalk, nearestWalk } from './src/walk.js';
+
+const cv = document.getElementById('c'), cx = cv.getContext('2d');
+const g = createGame();
+let rs = 12345;
+const rnd = () => (rs = (rs * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+
+const seen = (x, y) => !g.stations.some(st => !st.build && hiddenAt(st.def, x, y));
+function setup() {
+  g.stations = STATIONS.map(d => ({ def: d, slots: [], crewK: null, intensity: 3, build: 0, fire: 0 }));
+  g.crew = CREW.map(c => ({ ...c, morale: 92, at: null, x: c.hx, y: c.hy, face: 1 }));
+  g.guard = { x: GUARD_POST[0], y: GUARD_POST[1] };
+  g.queue = []; g.mobs = []; g.items = [];
+  g.syncBlocks(true);
+  for (const c of g.crew) if (!canWalk(c.x, c.y) || !seen(c.x, c.y)) { const o = nearestWalk(c.x, c.y, seen); if (o) { c.x = o[0]; c.y = o[1]; } }
+}
+
+function grab(box) {
+  render(cx, g, 1000, null, null);
+  return cx.getImageData(box[0], box[1], box[2], box[3]).data;
+}
+/** สัดส่วนพิกเซลของกรอบตัวละครที่ "เปลี่ยนไป" เมื่อเอาตัวนั้นออก = ส่วนที่มองเห็นจริง */
+function visibleRatio(key) {
+  const c = g.crew.find(q => q.k === key), h = 82;
+  const box = [Math.max(0, Math.round(c.x - h * 0.4)), Math.max(0, Math.round(c.y - h)),
+               Math.round(h * 0.8), Math.round(h)];
+  const withIt = grab(box);
+  const keep = g.crew;
+  g.crew = g.crew.filter(q => q.k !== key);
+  const without = grab(box);
+  g.crew = keep;
+  let diff = 0;
+  for (let i = 0; i < withIt.length; i += 4)
+    if (Math.abs(withIt[i] - without[i]) + Math.abs(withIt[i+1] - without[i+1]) + Math.abs(withIt[i+2] - without[i+2]) > 24) diff++;
+  return diff / (withIt.length / 4);
+}
+
+function run() {
+  setup();
+  const lines = [];
+  for (const c of g.crew) {
+    const home = [c.x, c.y];
+    const pts = [home];
+    let tries = 0;
+    while (pts.length < 13 && tries++ < 200) {
+      const roam = c.roam ?? 140;
+      const tx = c.hx + (rnd() - 0.5) * roam * 2, ty = c.hy + (rnd() - 0.5) * roam;
+      const o = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
+      if (o) pts.push(o);
+    }
+    const rr = [];
+    for (const p of pts) { c.x = p[0]; c.y = p[1]; rr.push(visibleRatio(c.k)); }
+    c.x = home[0]; c.y = home[1];
+    const bad = rr.filter(v => v < 0.06).length;
+    const homeR = rr[0];
+    lines.push(`${c.name.padEnd(7)} บ้าน(${home[0]|0},${home[1]|0}) เห็น ${(homeR*100).toFixed(1).padStart(5)}% ` +
+      `${homeR < 0.06 ? '❌' : homeR < 0.15 ? '⚠️' : '✅'}  · เดินเล่น ${pts.length-1} จุด หาย ${bad}`);
+  }
+  setup();
+  render(cx, g, 1000, null, null);
+  lines.push('');
+  for (const d of STATIONS) lines.push(`${d.name.padEnd(14)} by=${d.by} depthOf=${(depthOf(d)||0).toFixed(0)} body=${(bodyBoxOf(d)||[]).map(v=>v.toFixed(0)).join(',')}`);
+  document.getElementById('o').textContent = lines.join('\n');
+  document.title = 'done';
+}
+
+const wait = setInterval(() => {
+  if (img('scene') && STATIONS.filter(d => img('st-' + d.k)).length >= 9
+      && CREW.every(c => img('crew-' + c.k)) && img('hero-yama') && img('crew-guard')) { clearInterval(wait); run(); }
+}, 250);
+setTimeout(() => { clearInterval(wait); if (document.title !== 'done') run(); }, 14000);
+</script>
