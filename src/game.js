@@ -159,7 +159,8 @@ function mkCaseSoul(c) {
     calm: !!c.calm,        // ห้ามเข้าฉากต่อสู้เลย แม้กลับมาเป็นคดีซ้ำ (ดู cases.js เรื่องเจ้าอาวาส)
     pure: isPure(c),
     secret: c.secret || null, reward: c.reward || null, fail: c.fail || null,
-    deeds:  [...c.seen.map(d => ({ ...d, known: true })),
+    // ชั้น `seen` ยังเป็นข้อมูลในแฟ้มสำหรับตรรกะสอบสวน แต่ปิดจาก UI จนกว่าจะเริ่มสืบ
+    deeds:  [...c.seen.map(d => ({ ...d, known: true, visible: false })),
              ...(c.hidden || []).map(d => ({ ...d, known: false }))],
     merits: (c.merits || []).map(m => ({ ...m })),
   };
@@ -372,6 +373,8 @@ const API = {
     const hidden = soul.deeds.filter(d => !d.known);
     const fakes = soul.merits.filter(m => m.fake && !m.exposed);
     let out = [];
+    const sealed = soul.deeds.filter(d => d.known && d.visible === false);
+    sealed.forEach(d => { d.visible = true; out.push({ kind: 'truth', text: `📂 นิราเปิดรายการกรรมชั้นแรก — ${d.t}` }); });
 
     if (k === 'mirror') {                        // ความจริงเสมอ ทีละเรื่อง
       // สำนวนที่เขียนมือบางเรื่องมีความลับที่ "จี้เอาเองไม่ได้" — เห็นได้ทางกระจกทางเดียว
@@ -421,6 +424,8 @@ const API = {
     L.used = true;
     soul.presses--;
     const out = [];
+    const sealed = soul.deeds.filter(d => d.known && d.visible === false);
+    sealed.forEach(d => { d.visible = true; out.push({ kind: 'truth', text: `📂 นิราเปิดรายการกรรมชั้นแรก — ${d.t}` }); });
 
     if (L.kind === 'deny') {
       // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง

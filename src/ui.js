@@ -177,6 +177,20 @@ function deedLine(d) {
     + (w ? ` <b style="color:var(--${d.w < 0 ? 'success' : 'warning'})">· ${w}</b>` : '');
 }
 
+/** สิ่งที่นิราอ่านได้ก่อนสอบสวน: ภาพลักษณ์ + บุญที่อ้างเท่านั้น
+ *  ไม่ติดป้ายว่าบุญไหนจริง/ปลอม เพราะนั่นคือคำตอบของคดี */
+function publicMeritLine(m, cls = 'deed') {
+  return `<div class="${cls}" style="color:var(--success)">🪷 ${esc(m.t)}`
+    + (m.note ? ` <i style="color:var(--warning)">— ${esc(m.note)}</i>` : '') + '</div>';
+}
+function publicDossier(s, cls = 'deed') {
+  const faceLine = s.face ? `<div class="${cls}" style="color:var(--accent-foreground)">${esc(s.face)}</div>` : '';
+  const merits = s.merits.filter(m => !m.exposed).map(m => publicMeritLine(m, cls)).join('');
+  const found = s.deeds.filter(d => d.known && d.visible !== false)
+    .map(d => `<div class="${cls}">${deedLine(d)}</div>`).join('');
+  return faceLine + merits + found;
+}
+
 /** รูปหน้าเล็กในรายชื่อ — ไม่มีไฟล์โปรไฟล์ก็ถอยไปเป็นอีโมจิตัวเดิม */
 function face(key, glyph) {
   return `<span class="g"><img src="${artUrl(key + '-profile') || artUrl(key)}" alt=""
@@ -195,8 +209,8 @@ function drawTab() {
     b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
         <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
-        ${s.deeds.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
-        ${s.merits.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}${m.v ? '' : ' <i>(ไม่นับเป็นบุญ)</i>'}</div>`).join('')}
+        ${s.case ? publicDossier(s) : s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
+        ${s.case ? '' : s.merits.filter(m => !m.exposed).map(publicMeritLine).join('')}
       </div>`).join('');
     // คนที่ถูกขังอยู่ — ไม่นับในคิว ไม่กัดระเบียบ แต่กินค่าข้าวทุกวาระ เบิกตัวขึ้นแท่นได้ตลอด
     if (g.held.length) {
@@ -205,7 +219,7 @@ function drawTab() {
         <div class="soul" style="border-color:var(--input)">
           <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}</b>
             <span class="id">#${String(s.id).padStart(3, '0')} · ขังมา ${s.waited} วาระ</span></div>
-          ${s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
+          ${s.case ? publicDossier(s) : s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
           <button class="sm" data-free="${s.id}" style="margin-top:6px">🔓 เบิกตัวขึ้นแท่น</button>
         </div>`).join('');
       b.querySelectorAll('[data-free]').forEach(x =>
@@ -457,7 +471,7 @@ function sideBody() {
   if (sel.kind === 'soul') {
     const q = g.queue.find(s => s.id === sel.key);
     if (q) {                                        // ยังไม่ลงทัณฑ์ — เห็นแค่ที่เขาพูด
-      const rec = q.deeds.filter(d => d.known)
+      const rec = q.case ? publicDossier(q, 'row-truth') : q.deeds.filter(d => d.known)
         .map(d => `<div class="row-truth">${SINS[d.s].name} · ${esc(d.t)} · ${weightLabel(d.w)}</div>`).join('')
         || '<div class="row-truth">สำนวนว่างเปล่า</div>';
       const said = q.said.map(x => `<div class="row-truth ${SAID_STYLE[x.kind] || ''}">${esc(x.text)}</div>`).join('')
@@ -710,7 +724,7 @@ function drawOverlay() {
   tb.onclick = ev => { ev.stopPropagation(); goTrial(); };
   ov.appendChild(tb); place(tb);
 
-  const rec = s.deeds.filter(d => d.known)
+  const rec = s.case ? publicDossier(s, 'line') : s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
   // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
@@ -719,7 +733,7 @@ function drawOverlay() {
   const nx = nira?.x ?? (post ? post.x : (nira ? nira.hx : 660));
   const ny = nira?.y ?? (post ? post.y : (nira ? nira.hy : 400));
   const nm = mark('', nx, ny - CH - 8, '📜',
-    `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.who)}</b>${rec}`);
+    `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.name || s.who)}</b>${rec}`);
   if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
 
   const said = s.said.slice(-6).map(x =>
@@ -953,12 +967,12 @@ function openHelp() {
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
           ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
       <li>อ่านสำนวนจากหมุด 📜 เหนือหัว<b>นิรา</b> และคำแก้ตัวจากหมุด 💬 เหนือหัววิญญาณ (ชี้เมาส์ หรือแตะ)</li>
-      <li><b>ไต่สวนก่อนตัดสิน</b> (แท็บ <b>ไต่สวน</b>) — เขาให้การ 4 บรรทัด
-          บรรทัดไหน<b>ขัดกับสำนวนที่นิราเพิ่งอ่าน</b> ให้จี้บรรทัดนั้น
-          จี้ถูก = เขาสารภาพเรื่องที่สำนวนไม่ได้เขียนไว้ให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
+      <li><b>ไต่สวนก่อนตัดสิน</b> — คดีทั่วไปให้มองหาคำที่ขัดกับสำนวน ส่วนคดีมีชื่อจะเริ่มจาก
+          <b>ภาพลักษณ์ภายนอก</b>เท่านั้น ให้เลือกประเด็นที่น่าสงสัยเพื่อค่อย ๆ เปิดรายการกรรม
+          จี้ถูก = เขาสารภาพเรื่องที่ยังไม่เปิดให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
           (จี้ได้ 2 ครั้งต่อคดี)</li>
-      <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้อง<b>เดินไปเก็บของบนแผนที่</b>มาเติม
-          (หรือสร้าง<b>หอส่องกรรม</b>ให้เติมเอง)</li>
+      <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้องเข้าไปในสถานีที่เกี่ยวข้อง
+          และ<b>เดินไปเก็บไอเท็มในฉาก</b>มาเติม</li>
       <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ตัดสินเบาไป เขาไม่เข็ด ปล่อยไปแล้วไปก่อเรื่องต่อ
           แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
       <li>จบเกมแล้วนิราจะวาง<b>แฟ้มชื่อของท่านเอง</b>ไว้ — เปิดอ่านได้จริง
@@ -1111,7 +1125,7 @@ function openTrial() {
   trialCmd = 'ask';
 
   const paint = () => {
-    const known   = s.deeds.filter(d => d.known);
+    const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
     const meBusy  = g.stations.some(x => x.crewK === 'me' && x.slots.length);
@@ -1153,7 +1167,7 @@ function openTrial() {
     // ---- แผงตัวเลือกตามคำสั่งที่เลือก ----
     let opt = '';
     if (trialCmd === 'ask') {
-      opt = `<h4>ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน</h4>` + s.lines.map(l => {
+      opt = `<h4>${s.case ? 'เลือกประเด็นที่จะสอบสวน' : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
         const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
         return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
           >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
@@ -1203,9 +1217,10 @@ function openTrial() {
           <div class="hud-card hud-rec">
             <h4>สำนวนที่นิราอ่านให้ฟัง</h4>
             ${s.face ? `<div class="deed" style="color:var(--accent-foreground);margin-bottom:4px">${esc(s.face)}</div>` : ''}
-            ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('') || '<div class="deed">สำนวนว่างเปล่า</div>'}
             ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
               ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
+            ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
+            ${!s.face && !claimed.length && !known.length ? '<div class="deed">สำนวนว่างเปล่า</div>' : ''}
             ${s.back ? `<div class="deed" style="color:var(--destructive)">↩️ เคยผ่านมือท่านแล้ว — ให้ไป ${s.back.gave} วาระ</div>` : ''}
           </div>
 
