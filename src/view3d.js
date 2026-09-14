@@ -8,7 +8,8 @@
 // โดยงานวาดเพิ่มเป็นศูนย์ — สไปรท์ชุดเดิมยืนตั้งขึ้นมาหันเข้าหากล้อง
 
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.180.0/three.module.min.js';
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE } from './data.js';
+import { SCENE, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD } from './data.js';
+import { artUrl, soulKey } from './art.js';
 
 const U = 20;                                   // 20 px บนฉาก = 1 หน่วยโลก
 const W = SCENE.w / U, H = SCENE.h / U;         // พื้นกว้าง 76.4 x ลึก 35.2
@@ -18,7 +19,12 @@ const toZ = sy => sy / U - H / 2;
 let R, scene, cam, dirty = true;
 const sprites = new Map();                      // key -> THREE.Sprite/Mesh ที่ใช้ซ้ำ
 const texCache = new Map();
-const orbit = { yaw: 0, pitch: 0.92, dist: 46, tx: 0, tz: 2 };
+// กล้อง Don’t Starve ควรอ่านพื้นที่เล่นง่ายกว่าการโชว์ว่าเป็น 3D
+// เวอร์ชันเก่าให้หมุนรอบฉากได้ แต่ภาพพื้นถูกวาด perspective มาแล้วจึงโดนเอียงซ้ำ
+// รอบนี้ล็อกทิศและให้ลากเลื่อน/ซูมเท่านั้น จนกว่าจะมี ground art แบบมองจากบนจริง
+const orbit = { yaw: 0, pitch: 0.88, dist: 55, tx: 0, tz: 1 };
+let ground;
+let groundUrl = 'img/scene-ground-v1.png';
 
 function tex(url) {
   if (texCache.has(url)) return texCache.get(url);
@@ -42,10 +48,10 @@ export function init(canvas) {
 
   cam = new THREE.PerspectiveCamera(38, canvas.width / canvas.height, 0.5, 400);
 
-  // พื้น = ภาพฉากเดิมทั้งใบ ปูราบเป็นระนาบ
-  const ground = new THREE.Mesh(
+  // เริ่มด้วย ground-only ของสุวรรณภูมิ; render() จะสลับให้ทันทีเมื่อเป็นโซนอื่น
+  ground = new THREE.Mesh(
     new THREE.PlaneGeometry(W, H),
-    new THREE.MeshStandardMaterial({ map: tex('img/scene.png'), roughness: 1, metalness: 0 }));
+    new THREE.MeshStandardMaterial({ map: tex(groundUrl), roughness: 1, metalness: 0 }));
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   ground.position.y = 0.01;                  // ลอยเหนือฝาฐานนิดเดียว กัน z-fighting
@@ -69,8 +75,10 @@ export function init(canvas) {
   void_.position.y = -SLAB - 0.2;
   scene.add(void_);
 
-  scene.add(new THREE.AmbientLight(0x5a3040, 1.15));
-  const moon = new THREE.DirectionalLight(0xffd0b0, 0.75);
+  // StandardMaterial มืดกว่าภาพ Canvas เดิมมาก ถ้าใช้ค่าแสงสมจริง UI จะอ่านตัวละครไม่ออก
+  // ยก fill light ให้รักษาค่าสีของ pixel art แล้วปล่อย point light ทำหน้าที่เป็น accent เท่านั้น
+  scene.add(new THREE.AmbientLight(0xa96b82, 2.05));
+  const moon = new THREE.DirectionalLight(0xffd8bd, 1.05);
   moon.position.set(-18, 34, 14);
   moon.castShadow = true;
   moon.shadow.mapSize.set(2048, 2048);
@@ -91,15 +99,16 @@ export function init(canvas) {
 
 const LAVA = [[560, 120], [700, 180], [560, 330], [560, 470], [700, 520], [900, 520], [1030, 540], [1010, 460]];
 
-/** ผูกการหมุน/ซูมกล้องกับเมาส์ */
+/** ลากเลื่อนฉากและหมุนล้อซูม — ไม่หมุนทิศของงานวาด */
 export function bindControls(canvas) {
   let drag = null;
   canvas.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; });
   addEventListener('pointerup', () => { drag = null; });
   addEventListener('pointermove', e => {
     if (!drag) return;
-    orbit.yaw -= (e.clientX - drag.x) * 0.005;
-    orbit.pitch = clamp(orbit.pitch - (e.clientY - drag.y) * 0.004, 0.32, 1.35);
+    const k = orbit.dist * 0.0012;
+    orbit.tx = clamp(orbit.tx - (e.clientX - drag.x) * k, -W * 0.2, W * 0.2);
+    orbit.tz = clamp(orbit.tz - (e.clientY - drag.y) * k, -H * 0.18, H * 0.18);
     drag = { x: e.clientX, y: e.clientY };
     dirty = true;
   });
@@ -126,15 +135,82 @@ function billboard(key, url, sx, sy, hPx, opt = {}) {
     sprites.set(key, m);
   }
   const h = hPx / U * (opt.scale || 1);
-  m.scale.set(h, h, 1);
+  const w = h * (opt.aspect || 1);
+  m.scale.set(w, h, 1);
   m.position.set(toX(sx), h / 2 + (opt.lift || 0), toZ(sy));
   m.rotation.y = orbit.yaw;
+  // ภาพนิ่งยังรู้สึกมีชีวิตได้โดยขยับน้อยมากแบบ paper puppet
+  // ไม่ใช้กับอาคาร เพราะเส้นตั้งของสถาปัตยกรรมจะดูเมาแทนที่จะดูเคลื่อนไหว
+  const seed = [...key].reduce((n, c) => n + c.charCodeAt(0), 0);
+  m.rotation.z = opt.sway ? Math.sin(performance.now() / 720 + seed) * 0.018 : 0;
   m.visible = true;
   m.userData.live = true;
+
+  // เงารูปเข้มเหลื่อมด้านหลังเล็กน้อย = ความหนาของกระดาษตัดแบบ Don't Starve
+  if (opt.thickness) {
+    let back = m.userData.depthBack;
+    if (!back) {
+      back = new THREE.Mesh(
+        new THREE.PlaneGeometry(1, 1),
+        new THREE.MeshBasicMaterial({ map: tex(url), color: 0x210910, transparent: true,
+          alphaTest: 0.35, opacity: 0.72, side: THREE.DoubleSide, depthWrite: false }));
+      scene.add(back); m.userData.depthBack = back;
+    }
+    back.scale.set(w * 1.055, h * 1.055, 1);
+    back.position.set(toX(sx) + 0.09, h / 2 + (opt.lift || 0) + 0.04, toZ(sy) - 0.06);
+    back.rotation.copy(m.rotation);
+    back.visible = true;
+  }
+
+  if (opt.shadow) {
+    let sh = m.userData.rootShadow;
+    if (!sh) {
+      sh = new THREE.Mesh(
+        new THREE.CircleGeometry(0.5, 24),
+        new THREE.MeshBasicMaterial({ color: 0x080207, transparent: true, opacity: 0.42, depthWrite: false }));
+      sh.rotation.x = -Math.PI / 2;
+      scene.add(sh);
+      m.userData.rootShadow = sh;
+    }
+    sh.position.set(toX(sx), 0.035, toZ(sy));
+    sh.scale.set(h * (opt.shadowScale || 0.88), h * 0.30, 1);
+    sh.visible = true;
+    sh.userData.owner = m;
+  }
+  return m;
+}
+
+function liveBillboard(key, url, sx, sy, hPx, opt) {
+  if (!url || sx == null || sy == null) return null;
+  return billboard(key, url, sx, sy, hPx, opt);
+}
+
+/** ภาพมองจากบน เช่นลานแท่น ต้องนอนบนพื้นโลก ไม่ตั้งเป็นป้ายแนวตั้ง */
+function groundDecal(key, url, sx, sy, wPx, hPx) {
+  let m = sprites.get(key);
+  if (!m) {
+    m = new THREE.Mesh(
+      new THREE.PlaneGeometry(1, 1),
+      new THREE.MeshBasicMaterial({ map: tex(url), transparent: true, alphaTest: 0.12, depthWrite: true }));
+    m.rotation.x = -Math.PI / 2;
+    scene.add(m); sprites.set(key, m);
+  }
+  m.scale.set(wPx / U, hPx / U, 1);
+  m.position.set(toX(sx), 0.055, toZ(sy));
+  m.visible = true; m.userData.live = true;
   return m;
 }
 
 export function render(g, t) {
+  // สลับงานวาดตามโซน โดยยังใช้โลก/เซฟชุดเดียวกับมุม 2D
+  // สุวรรณภูมิมี ground-only รุ่นทดลอง: ตัดแท่น/รั้ว/พร็อพตั้งออกเพื่อไม่ให้ซ้ำกับ billboard
+  // โซนอื่นยังใช้ภาพเต็มตามเดิมจนกว่าจะผ่าน art-direction gate ของโซนแรก
+  const nextGround = g.zone === 'th' ? 'img/scene-ground-v1.png' : (artUrl('scene') || 'img/scene.png');
+  if (nextGround !== groundUrl) {
+    groundUrl = nextGround;
+    ground.material.map = tex(nextGround);
+    ground.material.needsUpdate = true;
+  }
   // ---- กล้อง ----
   cam.position.set(
     orbit.tx + Math.sin(orbit.yaw) * Math.cos(orbit.pitch) * orbit.dist,
@@ -142,43 +218,76 @@ export function render(g, t) {
     orbit.tz + Math.cos(orbit.yaw) * Math.cos(orbit.pitch) * orbit.dist);
   cam.lookAt(orbit.tx, 0, orbit.tz);
 
-  sprites.forEach(m => { m.userData.live = false; });
+  sprites.forEach(m => {
+    m.userData.live = false;
+    if (m.userData.rootShadow) m.userData.rootShadow.visible = false;
+    if (m.userData.depthBack) m.userData.depthBack.visible = false;
+  });
 
   // ---- อาคารที่สร้างแล้ว ----
+  // ภาพแท่นเต็มใบเป็น top-down art จึงใช้เป็น decal ปูบน ground-only
+  // ส่วนกำแพงหน้าเก็บไว้สำหรับ occlusion pass แยก ไม่ฝืนตั้งภาพ top-down เป็น billboard
+  if (g.zone === 'th')
+    groundDecal('judgment-platform', 'img/prop-throne-platform-v1.png', SPOTS.throne.x, 420, 315, 390);
+
+  if (g.zone === 'th')
+    liveBillboard('judgment-foreground', 'img/scene-foreground-v1.png', SPOTS.throne.x, 548, 150,
+      { aspect: 1520 / 704 });
+
   for (const st of g.stations) {
     const d = st.def;
     if (d.bx == null) continue;
-    billboard('st-' + d.k, `img/st-${d.k}.png`, d.bx, d.by, d.bw * 0.92);
+    liveBillboard('st-' + d.k, artUrl('st-' + d.k), d.bx, d.by, d.bw * 0.82,
+      { shadow: true, shadowScale: 1.05, thickness: true });
   }
 
   // ---- ตัวเรา / พญายม / ยมทูต ----
-  billboard('hero', 'img/hero-yama.png', SPOTS.bench.x, SPOTS.bench.y, 92);
+  liveBillboard('hero', artUrl('hero-yama'), g.player.x, g.player.y, 138,
+    { shadow: true, sway: true, thickness: true });
   if (g.bossUntil && t < g.bossUntil)
-    billboard('boss', 'img/hero-boss.png', SPOTS.throne.x, SPOTS.throne.y, 116);
+    liveBillboard('boss', artUrl('hero-boss'), SPOTS.throne.x, SPOTS.throne.y, 164,
+      { shadow: true, sway: true, thickness: true });
   for (const c of g.crew) {
-    const st = c.at ? STATIONS.find(d => d.k === c.at) : null;
-    billboard('c-' + c.k, `img/crew-${c.k}.png`, st ? st.x : c.hx, st ? st.y : c.hy, 82);
+    liveBillboard('c-' + c.k, artUrl('crew-' + c.k), c.x, c.y, 122,
+      { shadow: true, sway: true, thickness: true });
   }
 
   // ---- วิญญาณ: ลอยเหนือพื้นนิดหนึ่ง ----
   g.queue.forEach((s, i) => {
     const p = QUEUE_LINE[i];
     if (!p) return;
-    billboard('q-' + s.id, `img/spirit${s.id % 3 + 1}.png`, p[0], p[1], 64,
-      { lift: 0.5 + Math.sin(t / 520 + i) * 0.18 });
+    liveBillboard('q-' + s.id, artUrl(soulKey(s)), p[0], p[1], 82,
+      { lift: 0.5 + Math.sin(t / 520 + i) * 0.18, shadow: true, sway: true, thickness: true });
   });
-  for (const st of g.stations)
-    if (st.soul)
-      billboard('s-' + st.soul.id, `img/spirit${st.soul.id % 3 + 1}.png`, st.def.x - 40, st.def.y, 56, { lift: 0.4 });
+
+  // ของเก็บบนพื้น / ตัวก่อกวน / ยักษ์ทวารบาล — รุ่นเก่ายังไม่รู้จักระบบเหล่านี้
+  g.items.forEach((it, i) => {
+    const d = ITEMS[it.k];
+    liveBillboard('it-' + i, artUrl(d.img), it.x, it.y, d.h * 1.25, { lift: 0.2, shadow: true });
+  });
+  g.mobs.forEach((m, i) => {
+    const d = MOB.kinds[m.kind ?? 0] || MOB;
+    liveBillboard('mob-' + i, artUrl(d.img), m.x, m.y, MOB.h * 1.35,
+      { shadow: true, sway: true, thickness: true });
+  });
+  if (g.guard)
+    liveBillboard('guard', artUrl(GUARD.img), g.guard.x, g.guard.y, GUARD.h * 1.25,
+      { shadow: true, sway: true, thickness: true });
 
   // ---- เรือข้ามแม่น้ำ ----
   const f = SPOTS.ferry, ph = t / 5200;
   const fx = f.from[0] + (f.to[0] - f.from[0]) * (Math.sin(ph) + 1) / 2;
-  const boat = billboard('boat', 'img/prop-boat.png', fx, f.from[1], 120, { lift: -0.3 });
-  boat.scale.x *= Math.cos(ph) > 0 ? -1 : 1;
+  const boat = liveBillboard('boat', artUrl('prop-boat'), fx, f.from[1], 120, { lift: -0.3 });
+  if (boat) boat.scale.x *= Math.cos(ph) > 0 ? -1 : 1;
 
   // เก็บกวาดสไปรท์ของสิ่งที่หายไปแล้ว (คดีจบ วิญญาณออกจากคิว)
-  sprites.forEach((m, k) => { if (!m.userData.live) m.visible = false; });
+  sprites.forEach((m, k) => {
+    if (!m.userData.live) {
+      m.visible = false;
+      if (m.userData.rootShadow) m.userData.rootShadow.visible = false;
+      if (m.userData.depthBack) m.userData.depthBack.visible = false;
+    }
+  });
 
   // ไฟลาวาเต้น
   scene.children.forEach(o => {

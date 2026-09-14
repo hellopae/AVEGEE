@@ -39,6 +39,7 @@ const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
 const cv = $('#cv'), ctx = cv.getContext('2d');
+const cv3 = $('#cv3');
 let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
@@ -1549,6 +1550,51 @@ $('#zone').onclick = openZone;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;
 
+/** โหมดทดลอง 2.5D ใช้ระบบเกมชุดเดิมทั้งหมด เปลี่ยนเฉพาะวิธีวาดฉาก
+ *  กล้องตั้งใจล็อกทิศไว้ก่อน เพราะภาพฉากปัจจุบันวาด perspective ติดมาแล้ว
+ *  การหมุนฉากทั้งใบจะทำให้มุมของพื้นกับอาคารขัดกันจนดูเหมือนแผ่นกระดาษบิด */
+$('#view').onclick = async () => {
+  const b = $('#view');
+  if (mode === '2d') {
+    b.disabled = true;
+    b.textContent = '⌛ กำลังเปิดฉาก 2.5D…';
+    try {
+      if (!V3) {
+        // query version กัน GitHub Pages/เบราว์เซอร์หยิบ renderer รุ่นเก่าจาก module cache
+        V3 = await import('./view3d.js?v=20260914-7');
+        V3.init(cv3);
+        V3.bindControls(cv3);
+        addEventListener('resize', fit3d);
+      }
+      mode = '3d';
+      cv.hidden = true; cv3.hidden = false;
+      fit3d(); drawOverlay();
+      b.setAttribute('aria-pressed', 'true');
+      b.textContent = '◈ กลับมุมมอง 2D';
+    } catch (err) {
+      mode = '2d'; cv3.hidden = true; cv.hidden = false;
+      b.textContent = '◂ ทดลอง 2.5D';
+      g.log('เปิดฉาก 2.5D ไม่สำเร็จ — เกมยังเล่นต่อในมุมเดิมได้', 'bad');
+      drawLog();
+    } finally { b.disabled = false; }
+  } else {
+    mode = '2d'; cv3.hidden = true; cv.hidden = false;
+    b.setAttribute('aria-pressed', 'false');
+    b.textContent = '◂ ทดลอง 2.5D';
+    drawOverlay();
+  }
+};
+
+function fit3d() {
+  if (!V3) return;
+  const w = cv3.clientWidth || cv.clientWidth;
+  if (!w) return;
+  const h = Math.round(w * SCENE.h / SCENE.w);
+  cv3.width = Math.round(w * Math.min(2, devicePixelRatio));
+  cv3.height = Math.round(h * Math.min(2, devicePixelRatio));
+  V3.resize(cv3.width, cv3.height);
+}
+
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
  *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
 function goMenu() {
@@ -1572,9 +1618,12 @@ $('#mute').onclick = () => {
 };
 drawMute();
 
-// มุมมอง 3D ปิดไว้ 6 ก.ย. 2569 — เจ้าของบอกว่า "ยังดูแปลก ๆ เอาออกดีกว่า"
-// โค้ดยังอยู่ครบที่ src/view3d.js เปิดกลับได้โดยเอาปุ่ม #view กับ canvas #cv3 ใน index.html คืนมา
-// แล้วกู้บล็อกตัวโหลดจาก git ที่ commit "เพิ่มมุมมอง 3D แบบ billboard"
+// 2.5D เป็นโหมดทดลองและย้อนกลับได้ทันที ระบบเกม/เซฟยังเป็นชุดเดียวกับ 2D
+
+cv3.onclick = e => {
+  const p = V3 && V3.unproject(cv3, e);
+  if (p) onSceneClick(p[0], p[1]);
+};
 
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
