@@ -1561,7 +1561,7 @@ $('#view').onclick = async () => {
     try {
       if (!V3) {
         // query version กัน GitHub Pages/เบราว์เซอร์หยิบ renderer รุ่นเก่าจาก module cache
-        V3 = await import('./view3d.js?v=20260914-7');
+        V3 = await import('./view3d.js?v=20260914-8');
         V3.init(cv3);
         V3.bindControls(cv3);
         addEventListener('resize', fit3d);

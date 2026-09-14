@@ -136,13 +136,21 @@ function billboard(key, url, sx, sy, hPx, opt = {}) {
   }
   const h = hPx / U * (opt.scale || 1);
   const w = h * (opt.aspect || 1);
-  m.scale.set(w, h, 1);
-  m.position.set(toX(sx), h / 2 + (opt.lift || 0), toZ(sy));
+  const moved = m.userData.lastSx != null && Math.hypot(sx - m.userData.lastSx, sy - m.userData.lastSy) > 0.03;
+  m.userData.lastSx = sx; m.userData.lastSy = sy;
+  const walking = opt.motion && moved;
+  // Office Agent ใช้จังหวะ steps(2): เท้าสัมผัสพื้น/ยกตัว สลับกันทุกประมาณหนึ่งในห้าวินาที
+  const gait = Math.floor(performance.now() / 105) % 4;
+  const up = walking && gait % 2 ? h * 0.065 : 0;
+  const stretch = walking ? (gait % 2 ? 1.045 : 0.965) : 1;
+  m.scale.set(w / stretch, h * stretch, 1);
+  m.position.set(toX(sx), h * stretch / 2 + (opt.lift || 0) + up, toZ(sy));
   m.rotation.y = orbit.yaw;
   // ภาพนิ่งยังรู้สึกมีชีวิตได้โดยขยับน้อยมากแบบ paper puppet
   // ไม่ใช้กับอาคาร เพราะเส้นตั้งของสถาปัตยกรรมจะดูเมาแทนที่จะดูเคลื่อนไหว
   const seed = [...key].reduce((n, c) => n + c.charCodeAt(0), 0);
-  m.rotation.z = opt.sway ? Math.sin(performance.now() / 720 + seed) * 0.018 : 0;
+  m.rotation.z = walking ? (gait < 2 ? -0.035 : 0.035)
+                 : opt.sway ? Math.sin(performance.now() / 720 + seed) * 0.018 : 0;
   m.visible = true;
   m.userData.live = true;
 
@@ -156,8 +164,8 @@ function billboard(key, url, sx, sy, hPx, opt = {}) {
           alphaTest: 0.35, opacity: 0.72, side: THREE.DoubleSide, depthWrite: false }));
       scene.add(back); m.userData.depthBack = back;
     }
-    back.scale.set(w * 1.055, h * 1.055, 1);
-    back.position.set(toX(sx) + 0.09, h / 2 + (opt.lift || 0) + 0.04, toZ(sy) - 0.06);
+    back.scale.set(w / stretch * 1.055, h * stretch * 1.055, 1);
+    back.position.set(toX(sx) + 0.09, h * stretch / 2 + (opt.lift || 0) + up + 0.04, toZ(sy) - 0.06);
     back.rotation.copy(m.rotation);
     back.visible = true;
   }
@@ -230,9 +238,8 @@ export function render(g, t) {
   if (g.zone === 'th')
     groundDecal('judgment-platform', 'img/prop-throne-platform-v1.png', SPOTS.throne.x, 420, 315, 390);
 
-  if (g.zone === 'th')
-    liveBillboard('judgment-foreground', 'img/scene-foreground-v1.png', SPOTS.throne.x, 548, 150,
-      { aspect: 1520 / 704 });
+  // scene-foreground-v1 มุมไม่ตรงกับกล้องโลกและบังแถววิญญาณ จึงไม่ใช้ทั้งชิ้น
+  // ถ้าจะทำ occlusion ต่อ ให้ตัดเฉพาะกำแพงหน้าจากภาพนี้เป็นชิ้นใหม่
 
   for (const st of g.stations) {
     const d = st.def;
@@ -243,21 +250,21 @@ export function render(g, t) {
 
   // ---- ตัวเรา / พญายม / ยมทูต ----
   liveBillboard('hero', artUrl('hero-yama'), g.player.x, g.player.y, 138,
-    { shadow: true, sway: true, thickness: true });
+    { shadow: true, sway: true, thickness: true, motion: true });
   if (g.bossUntil && t < g.bossUntil)
     liveBillboard('boss', artUrl('hero-boss'), SPOTS.throne.x, SPOTS.throne.y, 164,
-      { shadow: true, sway: true, thickness: true });
+      { shadow: true, sway: true, thickness: true, motion: true });
   for (const c of g.crew) {
     liveBillboard('c-' + c.k, artUrl('crew-' + c.k), c.x, c.y, 122,
-      { shadow: true, sway: true, thickness: true });
+      { shadow: true, sway: true, thickness: true, motion: true });
   }
 
   // ---- วิญญาณ: ลอยเหนือพื้นนิดหนึ่ง ----
   g.queue.forEach((s, i) => {
     const p = QUEUE_LINE[i];
     if (!p) return;
-    liveBillboard('q-' + s.id, artUrl(soulKey(s)), p[0], p[1], 82,
-      { lift: 0.5 + Math.sin(t / 520 + i) * 0.18, shadow: true, sway: true, thickness: true });
+    liveBillboard('q-' + s.id, artUrl(soulKey(s.sp)), p[0], p[1], 82,
+      { lift: 0.5 + Math.sin(t / 520 + i) * 0.18, shadow: true, sway: true, thickness: true, motion: true });
   });
 
   // ของเก็บบนพื้น / ตัวก่อกวน / ยักษ์ทวารบาล — รุ่นเก่ายังไม่รู้จักระบบเหล่านี้
@@ -268,11 +275,11 @@ export function render(g, t) {
   g.mobs.forEach((m, i) => {
     const d = MOB.kinds[m.kind ?? 0] || MOB;
     liveBillboard('mob-' + i, artUrl(d.img), m.x, m.y, MOB.h * 1.35,
-      { shadow: true, sway: true, thickness: true });
+      { shadow: true, sway: true, thickness: true, motion: true });
   });
   if (g.guard)
     liveBillboard('guard', artUrl(GUARD.img), g.guard.x, g.guard.y, GUARD.h * 1.25,
-      { shadow: true, sway: true, thickness: true });
+      { shadow: true, sway: true, thickness: true, motion: true });
 
   // ---- เรือข้ามแม่น้ำ ----
   const f = SPOTS.ferry, ph = t / 5200;

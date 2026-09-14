@@ -221,7 +221,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
       const bf = room.bright || brightOf(bg, bgSrc);
-      if (bf > 1.02 && canFilter()) {
+      if (Math.abs(bf - 1) > 0.02 && canFilter()) {
         ctx.save();
         ctx.filter = `brightness(${bf.toFixed(2)})`;
         ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
@@ -282,7 +282,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
       const swinging = g.swingUntil && Date.now() < g.swingUntil;
       const key = swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
-      drawStandee(ctx, key, px(P.x), py(P.y), U * HERO_H, t, '👑', P.face);
+      // จังหวะเดินแบบ Office Agent: เด้งสองจังหวะ ไม่เลื่อนภาพนิ่งไปกับพื้นเฉย ๆ
+      const moving = P.tx != null || Object.values(KEY).some(Boolean);
+      const gait = Math.floor(t / 105) % 4;
+      const hop = moving && gait % 2 ? U * 0.010 : 0;
+      const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
+      drawStandee(ctx, key, px(P.x), py(P.y) - hop, U * HERO_H * stretch, t, '👑', P.face);
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());

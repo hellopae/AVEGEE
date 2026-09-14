@@ -206,7 +206,10 @@ src/view3d.js   มุมมอง 3D แบบ billboard (โหลดตอน
 - ground-only draft แรกอยู่ที่ `img/scene-ground-v1.png` (สร้างแบบ edit จาก `img/scene.png` แล้วบังคับกลับเป็น
   1527×704) ใช้เฉพาะ renderer 2.5D; มุม 2D ยังใช้ต้นฉบับเดิมและไม่ถูกกระทบ
 - แท่นพิพากษาโปร่งใสจากเจ้าของใช้จริงเป็น `img/prop-throne-platform-v1.png`; ต้นฉบับเก็บใน `img/raw/`
-  ส่วน `img/scene-foreground-v1.png` ผ่าน alpha gate แล้ว แต่พักไว้เป็นวัตถุดิบสำหรับ depth/occlusion pass ถัดไป
+  ส่วน `img/scene-foreground-v1.png` ผ่าน alpha gateแล้ว แต่ภาพทั้งชิ้นมีมุมไม่ตรงกับกล้องและบังแถววิญญาณ
+  จึงพักไว้เป็นวัตถุดิบสำหรับตัดเฉพาะกำแพงหน้าใน depth/occlusion pass ถัดไป
+- ตัวละคร 2.5D ใช้จังหวะเดินสองสเต็ปแบบ Office Agent: ตรวจการเปลี่ยนตำแหน่งจริงแล้วสลับ hop/stretch/lean
+  ขณะเคลื่อนที่; ตอนหยุดกลับไปเป็น idle sway เบา ๆ
 
 #### ทำไมตอนนั้นเลือก billboard ไม่ใช่ 3D เต็มตัว
 
