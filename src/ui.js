@@ -39,8 +39,6 @@ const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
 const cv = $('#cv'), ctx = cv.getContext('2d');
-const cv3 = $('#cv3');
-let V3 = null, mode = '2d';        // มุมมอง 3D ปิดไว้ ดูหมายเหตุท้ายไฟล์
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
 /** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
@@ -74,8 +72,7 @@ function frame(now) {
     const step = BAL.tickMs / g.speed;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
-  if (mode === '3d' && V3) { V3.render(g, now); placeMarks(); }
-  else render(ctx, g, now, hover, sel);
+  render(ctx, g, now, hover, sel);
   followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); drawPauseTag();
   requestAnimationFrame(frame);
 }
@@ -663,19 +660,12 @@ function mark(cls, x, y, pin, html, show = false) {
   return d;
 }
 
-/** วางตำแหน่ง element ที่ผูกพิกัดฉากไว้ — โหมด 2D ใช้ % ตรง ๆ โหมด 3D ต้องฉายจากกล้อง */
+/** วางตำแหน่ง element ที่ผูกพิกัดฉากไว้ */
 function place(d) {
   const sx = +d.dataset.sx, sy = +d.dataset.sy;
-  if (mode === '3d' && V3) {
-    const [lx, ly, front] = V3.project(sx, sy, +(d.dataset.sh || 0));
-    d.style.left = lx + '%'; d.style.top = ly + '%';
-    d.style.visibility = front ? '' : 'hidden';
-  } else {
-    d.style.left = pctX(sx); d.style.top = pctY(sy);
-    d.style.visibility = '';
-  }
+  d.style.left = pctX(sx); d.style.top = pctY(sy);
+  d.style.visibility = '';
 }
-function placeMarks() { for (const d of ov.children) if (d.dataset.sx) place(d); }
 
 /** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
 function followMarks() {
@@ -1550,51 +1540,6 @@ $('#zone').onclick = openZone;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;
 
-/** โหมดทดลอง 2.5D ใช้ระบบเกมชุดเดิมทั้งหมด เปลี่ยนเฉพาะวิธีวาดฉาก
- *  กล้องตั้งใจล็อกทิศไว้ก่อน เพราะภาพฉากปัจจุบันวาด perspective ติดมาแล้ว
- *  การหมุนฉากทั้งใบจะทำให้มุมของพื้นกับอาคารขัดกันจนดูเหมือนแผ่นกระดาษบิด */
-$('#view').onclick = async () => {
-  const b = $('#view');
-  if (mode === '2d') {
-    b.disabled = true;
-    b.textContent = '⌛ กำลังเปิดฉาก 2.5D…';
-    try {
-      if (!V3) {
-        // query version กัน GitHub Pages/เบราว์เซอร์หยิบ renderer รุ่นเก่าจาก module cache
-        V3 = await import('./view3d.js?v=20260914-8');
-        V3.init(cv3);
-        V3.bindControls(cv3);
-        addEventListener('resize', fit3d);
-      }
-      mode = '3d';
-      cv.hidden = true; cv3.hidden = false;
-      fit3d(); drawOverlay();
-      b.setAttribute('aria-pressed', 'true');
-      b.textContent = '◈ กลับมุมมอง 2D';
-    } catch (err) {
-      mode = '2d'; cv3.hidden = true; cv.hidden = false;
-      b.textContent = '◂ ทดลอง 2.5D';
-      g.log('เปิดฉาก 2.5D ไม่สำเร็จ — เกมยังเล่นต่อในมุมเดิมได้', 'bad');
-      drawLog();
-    } finally { b.disabled = false; }
-  } else {
-    mode = '2d'; cv3.hidden = true; cv.hidden = false;
-    b.setAttribute('aria-pressed', 'false');
-    b.textContent = '◂ ทดลอง 2.5D';
-    drawOverlay();
-  }
-};
-
-function fit3d() {
-  if (!V3) return;
-  const w = cv3.clientWidth || cv.clientWidth;
-  if (!w) return;
-  const h = Math.round(w * SCENE.h / SCENE.w);
-  cv3.width = Math.round(w * Math.min(2, devicePixelRatio));
-  cv3.height = Math.round(h * Math.min(2, devicePixelRatio));
-  V3.resize(cv3.width, cv3.height);
-}
-
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
  *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
 function goMenu() {
@@ -1617,13 +1562,6 @@ $('#mute').onclick = () => {
   if (AUDIO.on) { unlock(); bgm(g.battle ? 'bgm-battle' : 'bgm-zone'); sfx('crack'); }
 };
 drawMute();
-
-// 2.5D เป็นโหมดทดลองและย้อนกลับได้ทันที ระบบเกม/เซฟยังเป็นชุดเดียวกับ 2D
-
-cv3.onclick = e => {
-  const p = V3 && V3.unproject(cv3, e);
-  if (p) onSceneClick(p[0], p[1]);
-};
 
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);

@@ -296,16 +296,21 @@ export function drawBuilding(ctx, def, t) {
 // ---------- ตัวละคร ----------
 /** วางตัวละครแบบ standee: เท้าอยู่ที่ (x,y) สูง h ในพิกัดฉาก
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */
-export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1) {
-  const bob = Math.sin(t / 700 + x) * (h * 0.012);
+export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false) {
+  const gait = Math.floor(t / 105) % 2;
+  const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
   ctx.fillStyle = 'rgba(0,0,0,.42)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
   const im = img(key);
   if (im) {
-    if (face < 0) {                       // เดินไปทางซ้าย — พลิกกระจก
+    if (walking) {
+      // จังหวะสองเฟรมแบบ Office Agent: เด้ง สลับยืด/หด และเอียงตามก้าว
+      const sx = gait ? 0.965 : 1.045, sy = gait ? 1.045 : 0.965;
+      ctx.save(); ctx.translate(x, y + bob); ctx.rotate((gait ? 1 : -1) * face * 0.035);
+      ctx.scale(face * sx, sy); ctx.drawImage(im, -h / 2, -h, h, h); ctx.restore();
+    } else if (face < 0) {                 // เดินไปทางซ้าย — พลิกกระจก
       ctx.save(); ctx.translate(x, 0); ctx.scale(-1, 1);
-      ctx.drawImage(im, -h / 2, y - h + bob, h, h);
-      ctx.restore();
+      ctx.drawImage(im, -h / 2, y - h + bob, h, h); ctx.restore();
     } else ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
     return;
   }

@@ -10,6 +10,7 @@ import { buildWalk } from './walk.js';
 const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
 const HERO_H = 92;
 const SOUL_H = 64;
+let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0;
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
  *  => ดรอป img/hero-yama-atk.png หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
@@ -154,6 +155,9 @@ export function render(ctx, g, t, hover, sel) {
   }
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
+  if (Number.isFinite(lastHeroX) && Math.hypot(P.x - lastHeroX, P.y - lastHeroY) > 0.15)
+    heroMovingUntil = t + 120;
+  lastHeroX = P.x; lastHeroY = P.y;
   if (P.tx != null) {                          // จุดหมายที่คลิกไว้
     const q = 0.5 + 0.5 * Math.sin(t / 200);
     ctx.strokeStyle = `rgba(255,210,140,${0.35 + q * 0.35})`; ctx.lineWidth = 2;
@@ -166,7 +170,7 @@ export function render(ctx, g, t, hover, sel) {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
     drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
-                P.x, P.y, HERO_H, t, '👑', P.face);
+                P.x, P.y, HERO_H, t, '👑', P.face, t < heroMovingUntil);
   });
 
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน

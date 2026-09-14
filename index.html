@@ -179,7 +179,6 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
   font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.75);pointer-events:none}
 .score small{display:block;font-family:var(--font-sans);font-size:.75rem;font-weight:400;text-align:center}
 canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
-#cv3{aspect-ratio:1527/704;height:auto;touch-action:none}
 .ctrl{display:flex;gap:var(--space-2);margin-top:var(--space-2);flex-wrap:wrap;align-items:center}
 
 button{font:inherit;font-size:var(--text-sm);cursor:pointer;border-radius:var(--radius-sm);
@@ -863,7 +862,6 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 
   <div class="stage">
     <canvas id="cv" width="1527" height="704"></canvas>
-    <canvas id="cv3" hidden aria-label="ฉากเกมมุมมอง 2.5D แบบทดลอง"></canvas>
     <div class="res" id="res"></div>
     <div id="ov"></div>
     <!-- ปุ่มลอยทับฉาก — บนมือถือไม่มีคีย์บอร์ด กดเว้นวรรคไม่ได้เลย (เจ้าของเจอ 8 ก.ย. 2569)
@@ -875,7 +873,6 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
   <div class="ctrl">
     <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
     <button id="spd" class="sm">ความเร็ว ×1</button>
-    <button id="view" class="sm" aria-pressed="false">&#9672; ทดลอง 2.5D</button>
     <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
     <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
     <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
