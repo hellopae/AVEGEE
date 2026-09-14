@@ -1674,13 +1674,6 @@ function openStation(k) {
           : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
     // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
     // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
-    if (v && v.drop) {
-      const it = ITEMS[v.drop], ready = g.items.some(x => x.from === k);
-      const wait = Math.max(0, (st.visitCd || 0) - g.tick);
-      acts.push(`<div class="hint">${it.glyph || '🎁'} ${esc(it.name)}${ready
-        ? ' <b>วางรออยู่หน้าสถานีแล้ว</b> — เดินไปเก็บได้เลย'
-        : wait ? ` — อีก ${wait} วาระถึงจะมีชิ้นใหม่มาวาง` : ' — กำลังจัดมาวางให้'}</div>`);
-    }
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
         📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
           : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
@@ -1822,6 +1815,7 @@ function openStation(k) {
   R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
   R.st = g.stations.find(x => x.def.k === k);
   R.onAct = () => doSmite();          // เดิมสถานีเติมพลังใช้ปุ่มนี้ "เติม" — ตอนนี้ของอยู่ในฉากแล้ว
+  R.onCollect = () => { panels(); refresh(); };
   let wasNear = null;
   R.onFrame = near => {
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง

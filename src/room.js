@@ -10,6 +10,7 @@
 // **จุดยึดอยู่ที่ ROOMS ใน data.js ที่เดียว** — วาดฉากใหม่/เปลี่ยนภาพ แก้ตัวเลขชุดเดียวจบ
 // ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
 
+import { ITEMS } from './data.js';
 import { drawStandee, drawSoul, img, rr } from './art.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -126,17 +127,37 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const py = v => box.oy + v * box.h;
   const unit = () => Math.min(box.w, box.h);     // ใช้คิดความสูงตัวละครให้คงที่ทุกอัตราส่วน
 
-  // walk = กรอบเดียว หรือ "หลายกรอบต่อกัน" ก็ได้ (ห้องทะเบียนมีลานล่าง บันได และชานบน)
-  const areas = Array.isArray(room.walk[0]) ? room.walk : [room.walk];
-  const inArea = (x, y) => areas.some(r => x >= r[0] && y >= r[1] && x <= r[2] && y <= r[3]);
+  // walk รองรับทั้งกรอบและ polygon — ฉากหน้าผาใช้ polygon เพื่อไม่ให้กรอบสี่เหลี่ยมคร่อมเหว
+  const areas = Array.isArray(room.walk) && (Array.isArray(room.walk[0]) || room.walk[0]?.poly)
+    ? room.walk : [room.walk];
+  const insidePoly = (x, y, p) => {
+    let hit = false;
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+      const a = p[i], b = p[j];
+      if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) hit = !hit;
+    }
+    return hit;
+  };
+  const inArea = (x, y) => areas.some(a => a.poly ? insidePoly(x, y, a.poly)
+                                                   : x >= a[0] && y >= a[1] && x <= a[2] && y <= a[3]);
   /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
   const snap = (x, y) => {
     if (inArea(x, y)) return [x, y];
     let best = null, bd = Infinity;
-    for (const r of areas) {
-      const cx = Math.max(r[0], Math.min(r[2], x)), cy = Math.max(r[1], Math.min(r[3], y));
-      const d = Math.hypot(cx - x, cy - y);
-      if (d < bd) { bd = d; best = [cx, cy]; }
+    for (const a of areas) {
+      if (!a.poly) {
+        const cx = Math.max(a[0], Math.min(a[2], x)), cy = Math.max(a[1], Math.min(a[3], y));
+        const d = Math.hypot(cx - x, cy - y);
+        if (d < bd) { bd = d; best = [cx, cy]; }
+        continue;
+      }
+      for (let i = 0; i < a.poly.length; i++) {
+        const p = a.poly[i], q = a.poly[(i + 1) % a.poly.length];
+        const vx = q[0] - p[0], vy = q[1] - p[1];
+        const u = Math.max(0, Math.min(1, ((x - p[0]) * vx + (y - p[1]) * vy) / (vx * vx + vy * vy || 1)));
+        const cx = p[0] + u * vx, cy = p[1] + u * vy, d = Math.hypot(cx - x, cy - y);
+        if (d < bd) { bd = d; best = [cx, cy]; }
+      }
     }
     return best || [x, y];
   };
@@ -189,6 +210,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       else if (inArea(P.x, ny)) P.y = ny;
       else P.tx = null;
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
+    }
+    const ii = g.items.findIndex(it => it.from === def.k);
+    if (ii >= 0 && room.item && Math.hypot(P.x - room.item[0], (P.y - room.item[1]) * 0.75) < 0.055) {
+      if (g.collectItem(ii) && api.onCollect) api.onCollect();
     }
   }
 
@@ -277,6 +302,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       } });
     }
 
+    const roomItem = g.items.find(it => it.from === def.k);
+    if (roomItem && room.item) {
+      const itemDef = ITEMS[roomItem.k];
+      acts.push({ y: room.item[1], fn: () => {
+        const x = px(room.item[0]), y = py(room.item[1]);
+        const pulse = 0.5 + 0.5 * Math.sin(t / 420);
+        ctx.fillStyle = `rgba(255,215,125,${0.12 + pulse * 0.18})`;
+        ctx.beginPath(); ctx.arc(x, y - U * 0.035, U * 0.07, 0, 7); ctx.fill();
+        drawStandee(ctx, itemDef.img, x, y, U * 0.085, t, itemDef.glyph || '🎁');
+        label(ctx, `เดินไปเก็บ${itemDef.name}`, x, y + U * 0.035, U * 0.024, '#ffe0a8');
+      } });
+    }
+
     acts.push({ y: P.y, fn: () => {
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
       const swinging = g.swingUntil && Date.now() < g.swingUntil;
@@ -314,6 +352,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
+    onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach,
     pos: () => [P.x, P.y, P.tx, P.ty],       // ไว้ส่องตอนดีบัก
     /** เดินหนึ่งเฟรมด้วยมือ — แท็บที่ไม่ได้อยู่หน้าจอ rAF ไม่ยิงเลย ทดสอบจากคอนโซลต้องใช้ตัวนี้

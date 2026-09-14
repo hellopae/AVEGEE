@@ -1015,25 +1015,12 @@ const API = {
       }
     }
 
-    // ของบนพื้น — เดินทับแล้วเก็บ
+    // ของบนแผนที่ด้านนอก — ของที่มาจากสถานีเก็บในฉากภายในของสถานีนั้น
     for (let i = this.items.length - 1; i >= 0; i--) {
       const it = this.items[i];
+      if (it.from) continue;
       if (Math.hypot(it.x - P.x, it.y - P.y) > 42) continue;
-      const def = ITEMS[it.k];
-      if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
-      if (def.fuel) this.fuel += def.fuel;
-      if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
-      if (def.power) {
-        const p = this.powerOf(def.power);
-        p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
-      }
-      this.log(`🎁 เก็บ${def.name} — ${def.say}`, 'good');
-      // ของจากสถานี — คูลดาวน์เริ่มนับตอนเก็บ สถานีถึงจะวางชิ้นใหม่ให้
-      if (it.from) {
-        const src = this.stations.find(x => x.def.k === it.from);
-        if (src) src.visitCd = this.tick + (src.def.visit?.cool || 4);
-      }
-      this.items.splice(i, 1);
+      this.collectItem(i);
     }
 
     // ---- นั่งร้านถอดออกเมื่อครบเวลา ----
@@ -1110,6 +1097,27 @@ const API = {
       const G = this.guard, gp = GUARD_POST;
       stepTo(G, (gp[0] - G.x) * 0.0012 * dt, (gp[1] - G.y) * 0.0012 * dt);
     }
+  },
+
+  /** เก็บของด้วย index เดียวกันทั้งแผนที่หลักและฉากภายในสถานี */
+  collectItem(i) {
+    const it = this.items[i], def = it && ITEMS[it.k];
+    if (!it || !def) return false;
+    if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
+    if (def.fuel) this.fuel += def.fuel;
+    if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
+    if (def.power) {
+      const p = this.powerOf(def.power);
+      p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
+    }
+    this.log(`🎁 เก็บ${def.name} — ${def.say}`, 'good');
+    if (it.from) {
+      const src = this.stations.find(x => x.def.k === it.from);
+      if (src) src.visitCd = this.tick + (src.def.visit?.cool || 4);
+    }
+    this.items.splice(i, 1);
+    this.onChange();
+    return true;
   },
 
   /** สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569)

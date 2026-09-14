@@ -102,7 +102,7 @@ export function render(ctx, g, t, hover, sel) {
   });
 
   // ---- ของที่ตกอยู่บนพื้น ----
-  for (const it of g.items) at(it.y, () => {
+  for (const it of g.items.filter(x => !x.from)) at(it.y, () => {
     const def = ITEMS[it.k];
     const p = 0.5 + 0.5 * Math.sin(t / 480 + it.x);
     ctx.fillStyle = `rgba(255,210,120,${0.10 + p * 0.14})`;
