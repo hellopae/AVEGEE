@@ -1169,6 +1169,31 @@ const API = {
       if (r) rects.push(r); else waiting = true;
     }
     setBlocks(rects, holes);
+    // ถ้าอาคารเพิ่งสร้างครอบตำแหน่งผู้เล่น ให้ย้ายออกสู่พื้นเดินใกล้ที่สุดทันที
+    // ไม่ปล่อยให้เซฟค้างอยู่ในฐานอาคารจนกดเดินไม่ได้อีก
+    const insideBase = rects.some(r => this.player.x >= r[0] && this.player.x <= r[2]
+                                      && this.player.y >= r[1] && this.player.y <= r[3]);
+    if (insideBase || !canWalk(this.player.x, this.player.y)) {
+      // ห้ามใช้ nearestWalk จุดเดียว: ช่องบริการของบางหลัง (โดยเฉพาะศาลาน้ำชา)
+      // อาจเป็นทางตันที่ปลายชนแม่น้ำ จึงกวาดหารอบฐานจนเจอพื้นจริงนอกอาคาร
+      let p = null;
+      outer: for (let radius = 32; radius <= 240; radius += 16) {
+        for (let i = 0; i < 16; i++) {
+          const a = Math.PI / 2 + i * Math.PI / 8;
+          const q = [this.player.x + Math.cos(a) * radius,
+                     this.player.y + Math.sin(a) * radius];
+          if (canWalk(q[0], q[1])
+              && !rects.some(r => q[0] >= r[0] && q[0] <= r[2] && q[1] >= r[1] && q[1] <= r[3])) {
+            p = q; break outer;
+          }
+        }
+      }
+      p ||= nearestWalk(this.player.x, this.player.y + 70);
+      if (p) {
+        this.player.x = p[0]; this.player.y = p[1];
+        this.player.tx = null; this.player.ty = null; this.player.path = null;
+      }
+    }
     this.blockSig = waiting ? null : sig;         // ยังมีรูปไม่มา — ให้ลองใหม่รอบหน้า
   },
 
@@ -1790,6 +1815,9 @@ API.restore = function (d) {
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
+  // เซฟเก่าโซนบูรพาอาจยังมีเปรตไทยจาก pool รุ่นก่อน — เก็บไว้เฉพาะชนิดของโซนปัจจุบัน
+  const allowedMobs = new Set(this.zoneDef().mobs || []);
+  this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));
   this.zoneSave = d.zoneSave || {};
   this.usedCases = d.usedCases || [];
   this.fights = d.fights || 0;
