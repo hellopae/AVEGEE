@@ -8,7 +8,7 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey, artUrl, bindZone, warmZone } from './art.js';
+import { soulKey, artUrl, bindZone, bindHeroStyle, warmZone } from './art.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -38,6 +38,7 @@ const g = createGame();
 const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
+bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
@@ -1483,6 +1484,28 @@ function openZone() {
     }));
 }
 
+function openOutfit() {
+  pauseForDlg();
+  modal(`<h2>👘 ห้องเครื่อง Yama</h2>
+    <div class="hint">ชุดจากโซนที่ท่านปลดล็อกแล้วสามารถสวมคุมงานได้ทุกสาขา</div>
+    ${ZONES.map(z => {
+      const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
+      const face = z.k === 'th' ? 'img/hero-yama-profile.png'
+        : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}-profile.png`;
+      return `<div class="shop"><img class="g" src="${face}" alt="" onerror="this.remove()">
+        <span class="n"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b><div>${esc(z.sub)}</div>
+          <div style="color:var(--muted-foreground)">${lock ? `ปลดล็อกที่ ${LEVELS[z.level - 1].name}` : 'ได้รับแล้ว'}</div></span>
+        ${here ? '<button class="sm" disabled>กำลังสวม</button>'
+               : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวมชุด</button>`}
+      </div>`;
+    }).join('')}
+    <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`,
+    d => d.querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => {
+      if (!g.setOutfit(b.dataset.outfit)) return;
+      warmZone(b.dataset.outfit); sfx('gong'); dlg.close(); refresh();
+    }));
+}
+
 // ---------- บทเรียนทีละขั้น ----------
 // เจ้าของบอก 7 ก.ย. 2569 ว่า "ดูยากไป ต้องค่อยสอนทีละอย่าง"
 // กติกา: ทีละขั้นเท่านั้น และขั้นจะโผล่ตอนที่เรื่องนั้นเพิ่งมีความหมายจริง (เงื่อนไข when อยู่ใน data.js)
@@ -1547,11 +1570,14 @@ function updatePlay() {
     z.hidden = !g.zonesOpen().length;
     z.textContent = `🗺️ ย้ายโซน (${g.zoneDef().name})`;
   }
+  const outfit = $('#outfit');
+  if (outfit) outfit.hidden = g.outfitsOpen().length < 2;
 }
 $('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
+$('#outfit').onclick = openOutfit;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;
 

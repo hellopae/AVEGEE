@@ -6,7 +6,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN } from './data.js';
-import { CASES, isPure, CASE_EVERY } from './cases.js';
+import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt } from './art.js';
 
@@ -15,6 +15,7 @@ const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 export const sameLabel = (a, b) => !a || !b || a.includes(b) || b.includes(a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 let SEQ = 1;
+const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(s && s.case || '');
 
 export function createGame() {
   const g = {
@@ -44,6 +45,7 @@ export function createGame() {
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
+    outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
     spawns: 0,                        // วิญญาณที่ส่งมาแล้วทั้งหมด — ใช้จับจังหวะสำนวนที่เขียนมือ
@@ -269,8 +271,15 @@ const API = {
    *    · คดีคนบริสุทธิ์/เทวดา ส่งมาก็ต่อเมื่อสร้างประตูสวรรค์แล้วเท่านั้น */
   nextNamedCase(tags) {
     if (this.casesDone < 1) return null;
-    if (this.spawns % CASE_EVERY !== 0) return null;
-    const left = CASES.filter(c => !this.usedCases.includes(c.k));
+    if (this.zone === 'th' && this.spawns % CASE_EVERY !== 0) return null;
+    const pool = CASES_BY_ZONE[this.zone] || [];
+    let left = pool.filter(c => !this.usedCases.includes(c.k));
+    // บูรพาไม่ถอยกลับไปสุ่มสำนวนไทยเมื่อ A1-A20 ครบชุด — ล้างรอบแล้วคละใหม่
+    if (!left.length && this.zone === 'asia' && pool.length) {
+      const keys = new Set(pool.map(c => c.k));
+      this.usedCases = this.usedCases.filter(k => !keys.has(k));
+      left = [...pool];
+    }
     if (!left.length) return null;
     const ok = left.filter(c => {
       if (isPure(c)) return this.has('sawan');
@@ -666,7 +675,7 @@ const API = {
     // (ถ้าเปิดหมดตั้งแต่แรก คดีที่กลับมาจะไม่มีอะไรให้จี้เลย มินิเกมไต่สวนก็ตายไปด้วย)
     const secret = Math.random() < 0.65;
     // สำนวนที่มีชื่อเขียนบทขากลับของตัวเองได้ (cases.js `back`) — กองกลางบางบรรทัดใช้กับบางคนไม่ได้
-    const B = (R.caseK && CASES.find(c => c.k === R.caseK) || {}).back;
+    const B = (R.caseK && ALL_CASES.find(c => c.k === R.caseK) || {}).back;
     const after = { t: (B && B.after) || AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
                     s: worst.s, w: Math.min(5, worst.w + RETURN.addWeight), known: !secret };
     const soul = {
@@ -1592,6 +1601,17 @@ const API = {
   /** โซนที่ย้ายไปได้ตอนนี้ — ปลดล็อกตามเลเวลของยมบาท */
   zonesOpen() { return ZONES.filter(z => this.level >= z.level && z.k !== this.zone); },
 
+  outfitsOpen() { return ZONES.filter(z => this.level >= z.level); },
+
+  setOutfit(k) {
+    const z = ZONES.find(x => x.k === k);
+    if (!z || this.level < z.level) return false;
+    this.outfit = k;
+    this.log(`👘 เปลี่ยนชุด Yama เป็นชุด${z.name.replace(/^โซน/, '')}แล้ว`, 'good');
+    this.onChange();
+    return true;
+  },
+
   /** ย้ายโซน — กติกาตาม CONCEPT §12.6 (แก้ตามข้อ 7 ของเจ้าของ 11 ก.ย. 2569)
    *    ติดตัวไป : ยมบาท · นิรา · เบี้ยกรรม · พลัง · บารมี · กรรม · ขั้น · แฟ้มทะเบียนกรรม
    *    ไม่ตามไป : สถานี · ยมทูตที่จ้างไว้ · ยักษ์ทวารบาล · คิว · ดวงที่ขัง · ของบนพื้น
@@ -1621,6 +1641,7 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    this.outfit = k;                         // ครั้งแรกที่ย้ายให้สวมชุดรางวัลของโซนนั้นทันที
     this.mobs = [];
     if (back) {                              // เคยคุมสาขานี้มาก่อน — ของยังอยู่ครบ
       this.stations = back.stations.map(sv => {
@@ -1631,6 +1652,10 @@ const API = {
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
+      // เซฟบูรพารุ่นเก่าเคยรับสำนวนกองไทยร่วมกัน — ไม่ยกคดีผิดสาขากลับมาอีก
+      this.queue = this.queue.filter(s => soulFitsZone(s, k));
+      this.held = this.held.filter(s => soulFitsZone(s, k));
+      this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, k)); });
       this.crew = [...keep, ...(back.crew || []).map(sv => {
         const def = CREW.find(c => c.k === sv.k);
         return def ? { ...mkCrew(def), ...sv } : null;
@@ -1759,7 +1784,7 @@ API.snapshot = function () {
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
-    zone: this.zone, zoneSave: this.zoneSave || {},
+    zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
     logs: this.logs.slice(0, 40),
@@ -1815,6 +1840,7 @@ API.restore = function (d) {
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
+  this.outfit = d.outfit || this.zone;
   // เซฟเก่าโซนบูรพาอาจยังมีเปรตไทยจาก pool รุ่นก่อน — เก็บไว้เฉพาะชนิดของโซนปัจจุบัน
   const allowedMobs = new Set(this.zoneDef().mobs || []);
   this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));
@@ -1825,6 +1851,12 @@ API.restore = function (d) {
   this.yamaDone = !!d.yamaDone;
   this.battle = null;                 // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
   this.over = null;
+  if (this.zone === 'asia') {
+    this.queue = this.queue.filter(s => soulFitsZone(s, this.zone));
+    this.held = this.held.filter(s => soulFitsZone(s, this.zone));
+    this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, this.zone)); });
+    if (!this.queue.length) this.spawnSoul();
+  }
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
 };

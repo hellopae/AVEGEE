@@ -10,6 +10,7 @@ const CACHE = new Map();
 // รายชื่อไฟล์มาจาก img/manifest.json (zones) — ไม่ยิงถามทีละไฟล์ให้ 404 เต็มคอนโซล
 // **โซน 1 (th) ไม่ผ่านโค้ดส่วนนี้เลย** ทุกคีย์ได้ path เดิมตัวอักษรต่อตัวอักษร
 let zoneOf = () => 'th';
+let heroStyleOf = () => null;             // ชุด Yama เลือกแยกจากโซนที่กำลังคุมได้
 const ZMAP = {};                         // zone → { ชื่อไฟล์ไม่มีนามสกุล: path ใต้ img/ }
 let BOXES = {};                          // กรอบเนื้อภาพของอาคาร st-* (0-1) — ดู boxes ใน make-manifest.py
 const warmed = new Set();
@@ -19,6 +20,7 @@ let epoch = 0;
 export const artEpoch = () => epoch;
 /** ให้ art.js รู้ว่าตอนนี้อยู่โซนไหน — ui.js ผูกกับ g.zone ครั้งเดียวตอนเริ่ม */
 export function bindZone(fn) { zoneOf = fn; }
+export function bindHeroStyle(fn) { heroStyleOf = fn; }
 /** เริ่มโหลดรูปทั้งชุดของโซนนี้ล่วงหน้า — เรียกซ้ำได้ ทำจริงครั้งเดียวต่อโซน
  *  (ไม่งั้นย้ายโซนแล้วอาคารเป็นกล่องเปล่าอยู่ครู่หนึ่งระหว่างรอไฟล์) */
 export function warmZone(z = zoneOf()) {
@@ -50,7 +52,8 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side เหมือนกันหมด) */
 export function artUrl(key, ext = 'png') {
-  const z = zoneOf(), map = ZMAP[z];
+  const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
+  const map = ZMAP[z];
   if (map) {
     const hit = map[zoneStem(key, z)];
     if (hit) return 'img/' + hit;
