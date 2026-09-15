@@ -134,8 +134,8 @@ export function render(ctx, g, t, hover, sel) {
                   : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
   }));
 
-  // พี่ชายของ Yama เดินจากปลายสะพานมาท้าสู้; ถ้าแพ้ จะเฝ้าหัวสะพานจนถึงรอบท้าซ้ำ
-  if (g.zone === 'th' && (g.bossWalk || g.bossGuarding?.th)) {
+  // บอสเดินจากปลายสะพานมาท้าสู้; ถ้าแพ้ จะเฝ้าหัวสะพานจนผู้เล่นเดินกลับมาท้า
+  if (g.bossWalk || g.bossGuarding?.[g.zone]) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : 790;
@@ -144,7 +144,7 @@ export function render(ctx, g, t, hover, sel) {
       ring(ctx, x, y, t, 32);
       drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
       tag(ctx, x, y - HERO_H * 1.12 - 15, t,
-          [walk ? 'พี่ใหญ่เดินมาท้าสู้' : 'พี่ใหญ่เฝ้าสะพาน', '#f7c371']);
+          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
 

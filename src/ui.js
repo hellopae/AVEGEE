@@ -56,6 +56,7 @@ setInterval(() => {
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
   updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
+  updateBossFab();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
     g.startDadFight(); openBattle();
@@ -74,7 +75,7 @@ function frame(now) {
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   render(ctx, g, now, hover, sel);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -698,8 +699,10 @@ function drawOverlay() {
   // ถูกล้างแล้วสร้างใหม่ทุกรอบ refresh (ราว 0.7 วินาทีครั้ง) ผู้เล่นที่กดคาบเกี่ยวจังหวะนั้น
   // จะ "กดแล้วไม่ติด" เพราะปุ่มที่รับ mousedown ถูกถอดออกไปก่อน mouseup
   const keepFab = ov.querySelector('.mobfab');
+  const keepBossFab = ov.querySelector('.bossfab');
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
+  if (keepBossFab) ov.appendChild(keepBossFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -798,6 +801,26 @@ function updateMobFab() {
   place(f);
 }
 
+/** บอสที่แพ้แล้วเฝ้าสะพาน ไม่กลับมาเองตามวาระ — เดินเข้าไปใกล้จึงเลือกท้าสู้ได้ */
+function updateBossFab() {
+  const gone = () => { const e = ov.querySelector('.bossfab'); if (e) e.remove(); };
+  if (g.over || g.battle || dlg.open || !g.bossCanChallenge()) return gone();
+  let f = ov.querySelector('.bossfab');
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'bossfab';
+    f.textContent = `⚔️ ท้าสู้${g.zoneDef().bossName}`;
+    f.onclick = ev => {
+      ev.stopPropagation();
+      if (!g.bossCanChallenge() || dlg.open) return;
+      if (g.startZoneBoss(true)) openBattle();
+    };
+    ov.appendChild(f);
+  }
+  f.dataset.sx = 790; f.dataset.sy = 558 - 115;
+  place(f);
+}
+
 /** แถบบัญชาการเหนือฉาก — เหลือ "ทางเข้าห้องสอบสวน" อย่างเดียว
  *  เดิมแถบนี้มีครบชุด: พลังของท่าน · ส่งไปที่ไหน · ใครคุม · หนักแค่ไหน ·
  *  พักคดีนี้ไว้ · ขังไว้ก่อน · ออกหมาย — ซ้ำกับหน้า "เริ่มการสอบสวน" ทุกตัว
@@ -887,6 +910,19 @@ function showVerdict(v) {
 }
 
 function openEnding(o) {
+  if (o.k === 'dad') {
+    pauseForDlg();
+    const z = g.zoneDef();
+    modal(`<h2>👑 Game Over</h2>
+      <div class="boss"><img class="standee" src="${artUrl('hero-boss')}" alt="พญายมบาท"
+        onerror="this.remove()">
+        <p style="line-height:var(--leading-body);margin:0">${esc(o.text)}</p></div>
+      <div class="hint">${esc(z.name)} · ${g.zone === 'th'
+        ? 'เริ่มเกมใหม่จากโซนแรก' : 'เริ่มโซนนี้ใหม่ โดยเก็บสาขาที่ผ่านมาก่อนหน้าไว้'}</div>
+      <div class="row"><button class="gold" id="again">${g.zone === 'th' ? 'เริ่มเกมใหม่' : 'เริ่มโซนนี้ใหม่'}</button></div>`,
+      d => d.querySelector('#again').onclick = restartCurrentZone);
+    return;
+  }
   modal(`<h2>${esc(o.title)}</h2>
     <p style="line-height:var(--leading-body)">${esc(o.text)}</p>
     <div class="hint">ปิดคดีทั้งหมด ${g.casesDone} เรื่อง · คะแนนเฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0} ·
@@ -951,6 +987,19 @@ function openLedger(o) {
 function restart() {
   saveAt = Infinity; clearSave();
   sessionStorage.setItem('avegee.fresh', '1');   // เริ่มใหม่แล้วเข้าเกมเลย ไม่ต้องผ่านหน้าปกอีกรอบ
+  location.reload();
+}
+
+function restartCurrentZone() {
+  if (g.zone === 'th' || !g.zoneEntry) return restart();
+  const entry = JSON.parse(JSON.stringify(g.zoneEntry));
+  saveAt = Infinity;
+  if (!g.restore(entry)) { saveAt = 0; return; }
+  g.zoneEntry = entry;
+  g.hp = g.hpMax; g.order = Math.max(72, g.order);
+  g.reds = 0; g.yamaDone = false; g.over = null;
+  if (!g.save()) { saveAt = 0; return; }
+  sessionStorage.setItem('avegee.fresh', '1');
   location.reload();
 }
 
@@ -1376,9 +1425,9 @@ function openBattle(after) {
 
     const finLabel =
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
-      : b.over === 'lose' ? (b.kind === 'yama' ? '...'
-                          : b.kind === 'dad'  ? 'ลุกขึ้นแล้วทำงานต่อ'
-                          : b.kind === 'zoneBoss' ? 'ถอยไปปิดอีก 5 สำนวน'
+      : b.over === 'lose' ? (b.kind === 'yama' ? 'ฟังคำตัดสินของพ่อ'
+                          : b.kind === 'dad'  ? 'ฟังคำตัดสินของพ่อ'
+                          : b.kind === 'zoneBoss' ? 'กลับไปตั้งหลักที่สะพาน'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
     // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
@@ -1452,7 +1501,7 @@ function openBattle(after) {
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();
     const done = g.endBattle();
-    bgm('bgm-zone');
+    if (done?.kind !== 'dad' && done?.kind !== 'yama') bgm('bgm-zone');
     updatePlay();
     refresh();
     if (after) after(done ? done.over : null);

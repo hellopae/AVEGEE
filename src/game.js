@@ -46,7 +46,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
-    bossGuarding: {}, bossWalk: null,
+    bossGuarding: {}, bossWalk: null, zoneEntry: null,
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
@@ -1396,12 +1396,18 @@ const API = {
   },
 
   bossReady() {
-    return !this.bossCleared[this.zone] && (this.zoneCases[this.zone] || 0) >=
-      Math.max(10, this.bossRetryAt[this.zone] || 0);
+    return !this.bossCleared[this.zone] && !this.bossGuarding[this.zone] &&
+      (this.zoneCases[this.zone] || 0) >= 10;
   },
 
-  startZoneBoss() {
-    if (this.battle || !this.bossReady()) return null;
+  bossCanChallenge() {
+    return !this.battle && !this.over && !!this.bossGuarding[this.zone] &&
+      !this.bossCleared[this.zone] &&
+      Math.hypot(this.player.x - 790, this.player.y - 558) <= 150;
+  },
+
+  startZoneBoss(retry = false) {
+    if (this.battle || !(retry ? this.bossCanChallenge() : this.bossReady())) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
     const hp = 200 + n * 35;
     this.bossPending = false;
@@ -1428,7 +1434,7 @@ const API = {
   startYamaFight() {
     if (this.battle) return this.battle;
     this.battle = {
-      kind: 'yama', who: 'พญายม', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
+      kind: 'yama', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
       foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: 1, youMax: this.hpMax, stun: 0, turn: 1, over: null,
       log: [], talk: YAMA_FIGHT.line1, dmg: null,
@@ -1443,7 +1449,7 @@ const API = {
     if (this.battle) return this.battle;
     this.dadFight = false;
     this.battle = {
-      kind: 'dad', who: 'พญายม', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
+      kind: 'dad', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
       foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: Math.max(1, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null, log: [], talk: DAD.line1, dmg: null,
@@ -1479,12 +1485,12 @@ const API = {
     B.dmg = { foe: 0, you: 0 };
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
-    // 'yama' = บารมีหมดแล้วพ่อมาปิดเกม · 'dad' = มาตบเตือนแล้วเกมเดินต่อ
+    // ทั้งสองฉากพ่อเป็นบทลงโทษระดับสุดท้าย: แพ้แล้วจบโซนนี้
     if (B.kind === 'yama' || B.kind === 'dad') {
       const dad = B.kind === 'dad';
       say(pick(YAMA_FIGHT.taunt));
       B.talk = `${pick(YAMA_FIGHT.taunt)}\n${dad ? DAD.line2 : YAMA_FIGHT.line2}`;
-      B.youHp = dad ? Math.max(1, Math.round(B.youMax * DAD.hpLeft)) : 0;
+      B.youHp = 0;
       B.over = 'lose';
       B.dmg = { foe: 0, you: 999 };
       say(dad ? DAD.line3 : YAMA_FIGHT.line3);
@@ -1587,9 +1593,9 @@ const API = {
         say(`ท่านถอยออกมา — ${B.who}ยังอยู่ในโซน · บารมีหาย ${MOB.fightLose}`);
       } else if (B.kind === 'zoneBoss') {
         this.hp = Math.max(18, Math.round(this.hpMax * 0.35));
-        this.bossRetryAt[B.zone] = (this.zoneCases[B.zone] || 0) + 5;
+        this.bossRetryAt[B.zone] = 0;
         this.bossGuarding[B.zone] = true;
-        say(`${B.who}ถอยไปตั้งหลัก — อีก 5 สำนวนจะกลับมาท้าสู้ใหม่`);
+        say(`${B.who}ยืนรอที่สะพาน — ท่านพร้อมเมื่อไหร่เดินเข้าไปท้าสู้`);
       } else {
         this.hp = Math.max(1, this.hp - BATTLE.loseHp);
         this.order = clamp(this.order - 6, 0, 100);
@@ -1605,16 +1611,17 @@ const API = {
     const B = this.battle;
     if (!B) return null;
     this.battle = null;
-    if (B.kind === 'dad') {
-      this.hp = clamp(B.youHp, 1, this.hpMax);
-      this.log(`👹 พญายมตบทีเดียว — บารมีเหลือ ${Math.round(this.hp)} · เริ่มนับคำตัดสินแดงใหม่`, 'boss');
-      this.checkEnd(); this.onChange(); return B;
+    if (B.kind === 'dad' || B.kind === 'yama') {
+      this.hp = 0; this.yamaDone = true; this.dadFight = false;
+      this.over = { k: 'dad', title: 'Game Over',
+        text: '"เจ้ายังไม่พร้อมจริง ๆ" — พญายมบาทมองท่านนิ่ง ๆ ก่อนรับตราประจำโซนคืน' };
+      this.log('👑 พญายมบาท: "เจ้ายังไม่พร้อมจริง ๆ" — เริ่มโซนนี้ใหม่', 'boss');
+      this.onChange(); return B;
     }
-    if (B.kind === 'yama') { this.checkEnd(); this.onChange(); return B; }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
     if (B.kind === 'zoneBoss') {
       this.log(B.over === 'win' ? `👑 ชนะ${B.who} — ปลดทางไปโซนถัดไป`
-        : `👑 แพ้${B.who} — จะกลับมาใหม่หลังปิดอีก 5 สำนวน`, B.over === 'win' ? 'good' : 'event');
+        : `👑 แพ้${B.who} — เขาเฝ้าสะพานอยู่ เดินเข้าไปท้าสู้เมื่อพร้อม`, B.over === 'win' ? 'good' : 'event');
       this.onChange(); return B;
     }
     if (B.kind === 'mob') {
@@ -1686,6 +1693,7 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    this.zoneCases[k] = this.zoneCases[k] || 0;
     this.outfit = k;                         // ครั้งแรกที่ย้ายให้สวมชุดรางวัลของโซนนั้นทันที
     this.mobs = [];
     if (back) {                              // เคยคุมสาขานี้มาก่อน — ของยังอยู่ครบ
@@ -1723,6 +1731,8 @@ const API = {
                      : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
+    // จุดเริ่มสาขาเก็บความคืบหน้าสาขาก่อนหน้าไว้ แต่ยังไม่รวมผลงานใหม่ในสาขานี้
+    this.zoneEntry = JSON.parse(JSON.stringify(this.snapshot(false)));
     this.onChange();
     return true;
   },
@@ -1812,7 +1822,7 @@ const API = {
 // เจ้าของกำลังเล่นค้างอยู่ ไม่ควรล้างความคืบหน้าเพราะเราเปลี่ยนโครงข้างใน
 const SAVE_KEY = 'avegee.save.v2';
 
-API.snapshot = function () {
+API.snapshot = function (withEntry = true) {
   return {
     v: 3, at: Date.now(),
     tick: this.tick, coin: this.coin, fuel: this.fuel, order: this.order,
@@ -1836,6 +1846,7 @@ API.snapshot = function () {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     bossGuarding: this.bossGuarding,
+    zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
     logs: this.logs.slice(0, 40),
@@ -1897,6 +1908,7 @@ API.restore = function (d) {
   this.bossRetryAt = d.bossRetryAt || {};
   this.bossGuarding = d.bossGuarding || {};
   this.bossWalk = null;
+  this.zoneEntry = d.zoneEntry || null;
   this.bossPending = this.bossReady();
   this.outfit = d.outfit || this.zone;
   this.crew.forEach(c => { c.name = crewName(CREW.find(x => x.k === c.k) || c, this.zone); });
@@ -1915,6 +1927,20 @@ API.restore = function (d) {
     this.held = this.held.filter(s => soulFitsZone(s, this.zone));
     this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, this.zone)); });
     if (!this.queue.length) this.spawnSoul();
+  }
+  // เซฟที่สร้างก่อนระบบจุดเริ่มโซน: กู้ฐานของโซนปัจจุบันจากสถานะที่มี
+  // โดยเก็บ zoneSave ของสาขาก่อนหน้าไว้ทั้งชุด ไม่ล้างความคืบหน้าที่ผ่านมา
+  if (!this.zoneEntry && this.zone !== 'th') {
+    const entry = this.snapshot(false), n = entry.zoneCases[this.zone] || 0;
+    entry.casesDone = Math.max(0, entry.casesDone - n);
+    entry.zoneCases = { ...entry.zoneCases, [this.zone]: 0 };
+    entry.stations = [{ k: 'sala', crewK: null, intensity: 3, fire: 0, build: 0, slots: [] }];
+    entry.queue = []; entry.held = []; entry.items = []; entry.mobs = []; entry.guard = null;
+    entry.crew = entry.crew.filter(c => CREW.find(def => def.k === c.k)?.follow);
+    entry.bossGuarding = { ...entry.bossGuarding, [this.zone]: false };
+    entry.bossRetryAt = { ...entry.bossRetryAt, [this.zone]: 0 };
+    entry.hp = entry.hpMax; entry.order = Math.max(72, entry.order); entry.reds = 0;
+    this.zoneEntry = JSON.parse(JSON.stringify(entry));
   }
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
