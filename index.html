@@ -697,8 +697,14 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 .hud-items button:disabled{opacity:.32}
 
 @media(max-width:900px){
-  .hud{height:auto;max-height:94dvh;overflow-y:auto}
-  .hud-body{grid-template-columns:1fr;gap:8px}
+  /* มือถือใช้ scroll ชั้นเดียวที่ .hud — เดิม hud-rec/hud-opt/hud-log แย่ง gesture กันสามชั้น
+     พอลากจากข้อความจึงไม่มี container ใดยอมเลื่อนทั้งหน้า */
+  dialog.hudwrap[open]{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);
+    width:calc(100% - 12px);margin:6px auto;padding:0}
+  .hud{height:100%;max-height:none;overflow-x:hidden;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;
+    scrollbar-gutter:stable}
+  .hud-body{flex:0 0 auto;grid-template-columns:1fr;gap:8px;padding:0 8px}
   .hud-left{flex-direction:row;flex-wrap:wrap}
   .hud-left button{flex:1 1 46%;min-height:40px}
   .hud-left button .lb2 small{display:none}
@@ -709,10 +715,25 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
      ตัวหนังสือตกบรรทัดทีละอักษร (เจอตอนทดสอบข้อ 2 เมื่อ 12 ก.ย. 2569) */
   .st-hud .hud-body{grid-template-columns:1fr}
   .st-room{min-height:46vh}          /* แฟ้มทะเบียนกรรมทับอยู่บนนี้ — เตี้ยกว่านี้อ่านได้ทีละบรรทัดเดียว */
-  .hud-right{max-height:none}
-  .hud-rec{max-height:none}
-  .hud-bottom{flex-wrap:wrap}
+  .hud-right{max-height:none;overflow:visible}
+  .hud-rec,.hud-opt,.hud-log{flex:none;max-height:none;overflow:visible}
+  .hud-bottom{flex:0 0 auto;flex-wrap:wrap;padding:8px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
   .port.foe{margin-left:0}
+}
+
+@media(max-width:520px){
+  .hud-top{padding:8px 46px 8px 8px;gap:4px}
+  .hud-top .chip{flex:1 1 42%;padding:4px 7px}
+  .hud-top .ttl{flex:1 0 100%;margin-left:0;text-align:right}
+  .hud-left button{flex-basis:46%;font-size:var(--text-xs);padding:6px 8px}
+  .hud-stage{height:270px}
+  .hud .fig img{height:clamp(120px,22vh,178px)}
+  .hud-card{padding:9px}
+  .hud-bottom{align-items:stretch}
+  .port{flex:1 1 44%;padding:6px 8px}
+  .port img{width:44px;height:44px}
+  .hud-items{order:3;flex:1 0 100%;margin-left:0}
+  .hud-items button{flex:1;height:46px}
 }
 
 /* ---------- เอฟเฟกต์ตอนลงมือในฉากต่อสู้ (8 ก.ย. 2569) ---------- */
@@ -797,10 +818,7 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 #rotate h2{font-family:var(--font-display);color:var(--gold);margin:0;font-size:1.5rem}
 #rotate p{margin:0;color:var(--muted-foreground);font-size:var(--text-sm);
   line-height:var(--leading-body);max-width:22rem}
-@media (orientation:portrait) and (pointer:coarse){
-  #rotate{display:flex}
-  #boot,#title,.wrap{display:none!important}
-}
+/* แนวตั้งเล่นได้แล้ว — ไม่บังคับซ่อนเกมหลังจอ "หมุนเครื่อง" อีก */
 </style>
 </head>
 <body>

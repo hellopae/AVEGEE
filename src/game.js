@@ -5,7 +5,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN } from './data.js';
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt } from './art.js';
@@ -62,8 +62,8 @@ export function createGame() {
   return g;
 }
 
-function mkCrew(def) {
-  return { ...def, morale: 92, at: null, tired: false };
+function mkCrew(def, zone = 'th') {
+  return { ...def, name: crewName(def, zone), morale: 92, at: null, tired: false };
 }
 
 /** สถานีหนึ่งหลังรับวิญญาณได้พร้อมกันหลายดวง (9 ก.ย. 2569 — เดิมทีละดวง)
@@ -1117,6 +1117,12 @@ const API = {
   collectItem(i) {
     const it = this.items[i], def = it && ITEMS[it.k];
     if (!it || !def) return false;
+    // ให้ของยังมองเห็นอยู่ในห้อง แต่ไม่เผลอใช้ทิ้งตอนค่าที่เติมเต็มอยู่แล้ว
+    if (def.hp && this.hp >= this.hpMax) return false;
+    if (def.power) {
+      const p = this.powerOf(def.power);
+      if (!p || p.ammo >= p.max) return false;
+    }
     if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
     if (def.fuel) this.fuel += def.fuel;
     if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
@@ -1137,7 +1143,7 @@ const API = {
   /** สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569)
    *  เดิมต้องเปิดหน้าสถานีแล้วกดปุ่ม "เติม" ซึ่งไม่มีอะไรอยู่ในฉากให้เห็นเลยว่ามีของรออยู่
    *  กติกา: หนึ่งสถานี = ของหนึ่งชิ้นบนพื้น · เก็บไปแล้วอีก visit.cool วาระถึงมีชิ้นใหม่
-   *  ไม่วางถ้าของที่วางไปก็ไม่มีประโยชน์ (พลังเต็ม / ยังไม่ปลดล็อก / บารมีเต็ม)
+   *  ของที่ค่าสถานะเต็มแล้วยังวางให้เห็น แต่จะเก็บไม่ได้จนกว่าจะมีช่องว่าง
    *  — คูลดาวน์เริ่มนับตอน "เก็บ" ไม่ใช่ตอน "วาง" ของจึงไม่หายไปเองถ้าท่านยังเดินไม่ถึง */
   stationDrops() {
     for (const st of this.stations) {
@@ -1148,9 +1154,8 @@ const API = {
       if (this.items.some(it => it.from === st.def.k)) continue;
       if (v.power) {
         const p = this.powerOf(v.power);
-        if (this.powerLocked(p) || p.ammo >= p.max) continue;
+        if (this.powerLocked(p)) continue;
       }
-      if (v.heal && this.hp >= this.hpMax) continue;
       const at = v.at || [st.def.sx ?? st.def.x, st.def.sy ?? st.def.y];
       // จุดที่เขียนไว้อาจตกลาวา/ในน้ำเมื่อฉากถูกวาดใหม่ — ดันขึ้นที่เหยียบได้ให้เสมอ
       const spot = canWalk(at[0], at[1]) ? at : (nearestWalk(at[0], at[1]) || at);
@@ -1658,7 +1663,7 @@ const API = {
       this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, k)); });
       this.crew = [...keep, ...(back.crew || []).map(sv => {
         const def = CREW.find(c => c.k === sv.k);
-        return def ? { ...mkCrew(def), ...sv } : null;
+        return def ? { ...mkCrew(def, k), ...sv, name:crewName(def, k) } : null;
       }).filter(Boolean)];
       this.guard = back.guard || null;
     } else {
@@ -1668,7 +1673,10 @@ const API = {
       this.guard = null;
       this.coin += z.coin;                   // งบตั้งต้นให้ครั้งแรกที่มาสาขานี้เท่านั้น
     }
-    this.crew.forEach(c => { c.at = null; c.path = null; });
+    this.crew.forEach(c => {
+      c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
+      c.at = null; c.path = null;
+    });
     this.syncBlocks(true);
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
@@ -1746,8 +1754,9 @@ const API = {
     const def = CREW.find(c => c.k === k);
     if (!def || this.crew.some(c => c.k === k) || this.coin < def.hire) return false;
     this.coin -= def.hire;
-    this.crew.push(mkCrew(def));
-    this.log(`🤝 ${def.name} เข้าประจำการ ${def.line}`, 'good');
+    const member = mkCrew(def, this.zone);
+    this.crew.push(member);
+    this.log(`🤝 ${member.name} เข้าประจำการ ${def.line}`, 'good');
     return true;
   },
 };
@@ -1841,6 +1850,7 @@ API.restore = function (d) {
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
   this.outfit = d.outfit || this.zone;
+  this.crew.forEach(c => { c.name = crewName(CREW.find(x => x.k === c.k) || c, this.zone); });
   // เซฟเก่าโซนบูรพาอาจยังมีเปรตไทยจาก pool รุ่นก่อน — เก็บไว้เฉพาะชนิดของโซนปัจจุบัน
   const allowedMobs = new Set(this.zoneDef().mobs || []);
   this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));

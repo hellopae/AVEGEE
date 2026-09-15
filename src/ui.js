@@ -2,7 +2,7 @@
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN } from './data.js';
+         ORDER_WARN, crewName } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
@@ -249,7 +249,7 @@ function drawTab() {
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
         ${face('crew-' + c.k, c.glyph)}
-        <span class="n"><b>${c.name}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
+        <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta} · ค่าแรง ${c.pay}</div>
           <div class="st">${esc(c.line)}</div></span>
         <button class="sm" data-hire="${c.k}" ${g.coin < c.hire ? 'disabled' : ''}>จ้าง ${c.hire}</button>
@@ -1715,6 +1715,16 @@ function openStation(k) {
           : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
     // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
     // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
+    if (v?.drop) {
+      const item = ITEMS[v.drop];
+      const ready = g.items.some(it => it.from === k);
+      const left = Math.max(0, (st.visitCd || 0) - g.tick);
+      const full = item?.hp ? g.hp >= g.hpMax
+        : item?.power ? (g.powerOf(item.power)?.ammo || 0) >= (g.powerOf(item.power)?.max || 0) : false;
+      acts.push(`<button disabled>${item?.glyph || '🎁'} ${esc(item?.name || 'ของประจำสถานี')}
+        <small>${ready ? (full ? 'วางอยู่ในฉาก · ค่าสถานะเต็มจึงยังเก็บไม่ได้' : 'วางอยู่ในฉากแล้ว · เดินไปเก็บได้เลย')
+          : left ? `กำลังเตรียม · อีก ${left} วาระ` : 'กำลังนำมาวางในฉาก'}</small></button>`);
+    }
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
         📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
           : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
