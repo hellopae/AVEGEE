@@ -83,7 +83,7 @@ function frame(now) {
  *  ไม่ขึ้นตอนเปิดกล่องข้อความ เพราะกล่องพักเกมให้อยู่แล้วโดยตั้งใจ */
 let pauseTagOn = null;
 function drawPauseTag() {
-  const on = g.paused && !g.over && !dlg.open;
+  const on = g.paused && !g.over && !dlg.open && !g.bossWalk;
   if (on === pauseTagOn) return;
   pauseTagOn = on;
   document.querySelector('.stage').classList.toggle('resting', on);
@@ -855,6 +855,25 @@ const BOSS_LINE = {
   terrible: '"คำตัดสินแบบนี้ ทำให้คนที่เขาเจ็บมาแล้ว เจ็บซ้ำอีกครั้ง" — บารมีถูกหักหนัก',
 };
 
+let bossBridgeTimer = 0;
+function beginBossBridgeWalk() {
+  if (g.bossWalk || bossBridgeTimer || !g.bossReady()) return;
+  g.bossGuarding.th = false;
+  g.bossWalk = {
+    started: Date.now(), duration: 2600,
+    from: [770, 620], to: [800, 430],
+  };
+  pauseForDlg();
+  sfx('gong');
+  const finishWalk = () => {
+    if (g.over || !g.bossReady()) { g.bossWalk = null; bossBridgeTimer = 0; return; }
+    if (dlg.open) { bossBridgeTimer = setTimeout(finishWalk, 300); return; }
+    bossBridgeTimer = 0;
+    if (g.startZoneBoss()) openBattle();
+  };
+  bossBridgeTimer = setTimeout(finishWalk, 2600);
+}
+
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
@@ -1049,7 +1068,7 @@ function pauseForDlg() { if (!g.paused) { g.paused = true; updatePlay(); } }
  *  เช็คจากตัวจับเวลาแทน · ได้ผลพลอยได้: ตอนกล่องแค่ "ถูกแทนที่" ด้วยใบใหม่
  *  (openDlg close แล้ว showModal ในจังหวะเดียวกัน) dlg.open ยังเป็น true อยู่ จึงไม่คืนผิดจังหวะ */
 function releaseDlgPause() {
-  if (dlg.open || g.over || g.paused === userPaused) return;
+  if (dlg.open || g.bossWalk || g.over || g.paused === userPaused) return;
   g.paused = userPaused; updatePlay();
 }
 dlg.addEventListener('close', () => setTimeout(releaseDlgPause, 0));   // ทางลัดให้ไวขึ้นเฉย ๆ
@@ -1494,23 +1513,27 @@ function openZone() {
 function openOutfit() {
   pauseForDlg();
   modal(`<h2>👘 ห้องเครื่อง Yama</h2>
-    <div class="hint">ชุดจากโซนที่ท่านปลดล็อกแล้วสามารถสวมคุมงานได้ทุกสาขา</div>
+    <p class="outfit-note">เลือกชุดที่ได้รับแล้ว สวมได้ทุกสาขา</p>
+    <div class="outfit-list">
     ${ZONES.map(z => {
       const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
-      const face = z.k === 'th' ? 'img/hero-yama-profile.png'
-        : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}-profile.png`;
-      return `<div class="shop"><img class="g" src="${face}" alt="" onerror="this.remove()">
-        <span class="n"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b><div>${esc(z.sub)}</div>
-          <div style="color:var(--muted-foreground)">${lock ? `ปลดล็อกที่ ${LEVELS[z.level - 1].name}` : 'ได้รับแล้ว'}</div></span>
-        ${here ? '<button class="sm" disabled>กำลังสวม</button>'
-               : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวมชุด</button>`}
+      const face = z.k === 'th' ? 'img/hero-yama.png'
+        : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}.png`;
+      return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
+        <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
+        <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
+          <small>${esc(z.sub)}</small>
+          <span>${lock ? `🔒 ต้องเป็น ${esc(LEVELS[z.level - 1].name)}` : here ? '✓ กำลังสวม' : 'พร้อมสวม'}</span></span>
+        ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
+               : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
       </div>`;
     }).join('')}
+    </div>
     <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`,
-    d => d.querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => {
+    d => { d.classList.add('outfit'); d.querySelectorAll('[data-outfit]').forEach(b => b.onclick = () => {
       if (!g.setOutfit(b.dataset.outfit)) return;
       warmZone(b.dataset.outfit); sfx('gong'); dlg.close(); refresh();
-    }));
+    }); });
 }
 
 // ---------- บทเรียนทีละขั้น ----------
@@ -1950,6 +1973,7 @@ g.onChange = () => {
   if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); openBattle(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
+    if (g.zone === 'th') { beginBossBridgeWalk(); return; }
     if (g.startZoneBoss()) openBattle();
     return;
   }

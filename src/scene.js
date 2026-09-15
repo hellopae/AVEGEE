@@ -134,6 +134,20 @@ export function render(ctx, g, t, hover, sel) {
                   : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
   }));
 
+  // พี่ชายของ Yama เดินจากปลายสะพานมาท้าสู้; ถ้าแพ้ จะเฝ้าหัวสะพานจนถึงรอบท้าซ้ำ
+  if (g.zone === 'th' && (g.bossWalk || g.bossGuarding?.th)) {
+    const walk = g.bossWalk;
+    const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
+    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : 790;
+    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : 558;
+    at(1e5 + y, () => {
+      ring(ctx, x, y, t, 32);
+      drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
+      tag(ctx, x, y - HERO_H * 1.12 - 15, t,
+          [walk ? 'พี่ใหญ่เดินมาท้าสู้' : 'พี่ใหญ่เฝ้าสะพาน', '#f7c371']);
+    });
+  }
+
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   if (g.guard) at(g.guard.y, () => {
     if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);

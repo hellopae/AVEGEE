@@ -46,6 +46,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    bossGuarding: {}, bossWalk: null,
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
@@ -1402,8 +1403,10 @@ const API = {
   startZoneBoss() {
     if (this.battle || !this.bossReady()) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
-    const hp = 115 + n * 35;
+    const hp = 200 + n * 35;
     this.bossPending = false;
+    this.bossWalk = null;
+    this.bossGuarding[z.k] = false;
     this.fights++;
     this.battle = {
       kind: 'zoneBoss', zone: z.k, who: z.bossName, sub: z.bossSub,
@@ -1550,6 +1553,7 @@ const API = {
       } else if (B.kind === 'zoneBoss') {
         this.bossCleared[B.zone] = true;
         this.bossRetryAt[B.zone] = 0;
+        this.bossGuarding[B.zone] = false;
         this.log(`👑 ปราบ${B.who}ได้ — เปิดทางไปโซนถัดไป`, 'good');
         say(`${B.who}ยอมถอย เปิดทางไปสาขาถัดไป`);
       } else {
@@ -1584,6 +1588,7 @@ const API = {
       } else if (B.kind === 'zoneBoss') {
         this.hp = Math.max(18, Math.round(this.hpMax * 0.35));
         this.bossRetryAt[B.zone] = (this.zoneCases[B.zone] || 0) + 5;
+        this.bossGuarding[B.zone] = true;
         say(`${B.who}ถอยไปตั้งหลัก — อีก 5 สำนวนจะกลับมาท้าสู้ใหม่`);
       } else {
         this.hp = Math.max(1, this.hp - BATTLE.loseHp);
@@ -1830,6 +1835,7 @@ API.snapshot = function () {
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
+    bossGuarding: this.bossGuarding,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
     logs: this.logs.slice(0, 40),
@@ -1889,6 +1895,8 @@ API.restore = function (d) {
   this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
     : this.zone === 'asia' ? { th: true } : {});
   this.bossRetryAt = d.bossRetryAt || {};
+  this.bossGuarding = d.bossGuarding || {};
+  this.bossWalk = null;
   this.bossPending = this.bossReady();
   this.outfit = d.outfit || this.zone;
   this.crew.forEach(c => { c.name = crewName(CREW.find(x => x.k === c.k) || c, this.zone); });

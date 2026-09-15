@@ -303,6 +303,27 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
   border-radius:var(--radius-sm);padding:9px 10px;margin-bottom:8px}
 .shop .n{flex:1;min-width:0}
 .shop .n b{font-size:var(--text-sm)} .shop .n div{font-size:11px;color:var(--muted-foreground);line-height:1.45}
+/* ห้องเครื่อง: สไปรต์ยืนในกรอบคงที่ ไม่ให้ภาพโปรไฟล์ดันการ์ดสูงเกินจอ */
+dialog.outfit[open]{max-width:620px;max-height:calc(100dvh - 32px);overflow-y:auto;
+  -webkit-overflow-scrolling:touch}
+.outfit-note{color:var(--muted-foreground);font-size:var(--text-sm);margin:0 0 12px}
+.outfit-list{display:grid;gap:8px}
+.outfit-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:12px;align-items:center;
+  padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.outfit-card.selected{border-color:var(--gold);background:rgba(212,163,85,.1)}
+.outfit-card.locked{opacity:.64}
+.outfit-card img{display:block;width:78px;height:88px;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;background:rgba(0,0,0,.18);border-radius:6px}
+.outfit-info{min-width:0;display:flex;flex-direction:column;gap:3px}
+.outfit-info b{font-size:var(--text-sm);color:var(--foreground)}
+.outfit-info small{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.4}
+.outfit-info span{font-size:var(--text-xs);color:var(--gold)}
+@media(max-width:520px){
+  dialog.outfit[open]{width:calc(100% - 16px);max-height:calc(100dvh - 16px);padding:14px}
+  .outfit-card{grid-template-columns:60px minmax(0,1fr) auto;gap:8px;padding:8px}
+  .outfit-card img{width:60px;height:70px}
+  .outfit-card button{padding:6px 8px;min-height:36px}
+}
 footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;padding:var(--space-2) 0}
 
 /* ---------- จอเล็ก ----------
