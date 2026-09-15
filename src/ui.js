@@ -2178,6 +2178,7 @@ function buildTitle() {
         location.reload();
       });
   };
+  $('#t-intro').onclick = () => openIntro(true);
   $('#t-set').onclick = () => { unlock(); openSettings(); };
 }
 
@@ -2234,7 +2235,7 @@ else refresh();                          // วาดแผงไว้ใต้
 
 /** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
  *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
-function openIntro() {
+function openIntro(fromTitle = false) {
   const pages = [
     { title:'สามร้อยปีที่ไม่มีใครอยากพูดถึง', art:'scene', line:'โซนสุวรรณภูมิเคยมีผู้คุมสิบสองคน ตอนนี้เหลือสองคน และสำนวนที่ยังไม่มีใครกล้าเปิดอ่าน' },
     { title:'งานแรกของลูกพญายม', art:'hero-boss', line:'“เจ้าจะไม่ตัดสินจากหน้าตา จากคำร่ำลือ หรือจากความโกรธของตัวเอง” พ่อวางตรายมบาทลงในมือยมน้อย' },
@@ -2251,12 +2252,12 @@ function openIntro() {
         <div class="intro-comic-head"><span>อเวจี · บทนำ</span><span>${page + 1} / ${pages.length}</span></div>
         <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
       </div>
-      <div class="intro-comic-controls"><button id="intro-skip">ข้ามบทนำ</button><button class="gold" id="intro-next">${page + 1 === pages.length ? 'รับงาน' : 'หน้าถัดไป →'}</button></div>
+      <div class="intro-comic-controls"><button id="intro-skip">${fromTitle ? 'ปิดบทนำ' : 'ข้ามบทนำ'}</button><button class="gold" id="intro-next">${page + 1 === pages.length ? (fromTitle ? 'กลับหน้าเมนู' : 'รับงาน') : 'หน้าถัดไป →'}</button></div>
     </div>`;
     dlg.querySelector('#intro-skip').onclick = () => dlg.close();
     dlg.querySelector('#intro-next').onclick = () => { if (++page === pages.length) dlg.close(); else paint(); };
   };
-  pauseForDlg();
+  if (!fromTitle) pauseForDlg();
   openDlg('intro-comic-dialog');
   paint();
 }
