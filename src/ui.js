@@ -1317,7 +1317,7 @@ function openBattle(after) {
   const B = g.battle;
   if (!B) return;
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
-  bgm(B.kind === 'yama' || B.kind === 'dad' ? 'bgm-yama' : 'bgm-battle');
+  bgm(B.kind === 'yama' || B.kind === 'dad' || B.kind === 'zoneBoss' ? 'bgm-yama' : 'bgm-battle');
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
@@ -1356,9 +1356,10 @@ function openBattle(after) {
     </div>`;
 
     const finLabel =
-        b.over === 'win'  ? (b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
+        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? '...'
                           : b.kind === 'dad'  ? 'ลุกขึ้นแล้วทำงานต่อ'
+                          : b.kind === 'zoneBoss' ? 'ถอยไปปิดอีก 5 สำนวน'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
     // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
@@ -1370,6 +1371,7 @@ function openBattle(after) {
     dlg.innerHTML =
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
           : b.kind === 'dad'   ? '👑 พ่อลงมาเอง — ตัดสินพลาดสามสำนวนติด'
+          : b.kind === 'zoneBoss' ? '👑 บอสโซน — ทดสอบก่อนย้ายสาขา'
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
@@ -1471,16 +1473,17 @@ function openZone() {
       แต่ <b style="color:var(--warning)">สถานีทัณฑ์ต้องสร้างใหม่ทั้งโซน</b> และคิวเดิมถูกโอนให้สาขาอื่นรับช่วง</p>
     ${ZONES.map(z => {
       const here = z.k === g.zone;
-      const lock = g.level < z.level;
+      const lock = !g.canMoveZone(z.k);
+      const prev = ZONES[ZONES.indexOf(z) - 1];
       return `<div class="shop"><span class="g">${here ? '📍' : lock ? '🔒' : '🗺️'}</span>
         <span class="n"><b>${esc(z.name)}</b><div>${esc(z.sub)}</div>
-          <div style="color:var(--muted-foreground)">${lock ? `ปลดล็อกที่ ${LEVELS[z.level - 1].name}`
+          <div style="color:var(--muted-foreground)">${lock ? (g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
             : `งบตั้งต้น ${z.coin} เบี้ยกรรม`}</div></span>
         ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
                : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
       </div>`;
     }).join('')}
-    ${open.length ? '' : '<div class="hint">ยังไม่มีโซนอื่นที่เปิดให้ท่าน — เลื่อนขั้นให้ถึงก่อน</div>'}
+    ${open.length ? '' : '<div class="hint">ปิด 10 สำนวนในโซนแล้วชนะบอสเพื่อเปิดทางไปสาขาถัดไป</div>'}
     <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`,
     d => d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
       if (!g.moveZone(b.dataset.zone)) return;
@@ -1946,6 +1949,10 @@ g.onChange = () => {
   if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }
   if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); openBattle(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
+    if (g.startZoneBoss()) openBattle();
+    return;
+  }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
     bossModal(z.back ? `กลับมาที่${z.name}` : `ย้ายมา${z.name}`,

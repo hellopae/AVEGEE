@@ -45,6 +45,7 @@ export function createGame() {
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
+    zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
@@ -562,6 +563,8 @@ const API = {
     this.karma = clamp(this.karma + r.karma, 0, 100);
     this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; this.scoreSum += r.score;
+    this.zoneCases[this.zone] = (this.zoneCases[this.zone] || 0) + 1;
+    this.bossPending = this.bossReady();
     // กรรมของท่านยิ่งหนา เปรตยิ่งขึ้นถี่ — มันตามกลิ่นกรรมมา
     const every = Math.max(2, Math.round(MOB.spawnEvery * this.karmaTier().mob));
     if (this.casesDone % every === 0) this.spawnMob();
@@ -929,10 +932,10 @@ const API = {
     if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
     this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
     this.pendingLevel = nx;
-    // สาขาที่เพิ่งเปิดให้ย้ายไปได้ — เดิมไม่มีอะไรบอกเลยว่าปลดล็อกแล้ว
+    // เลเวลอย่างเดียวไม่เปิดสาขาแล้ว — ต้องชนะบอสโซนก่อน
     // (เจ้าของ 10 ก.ย. 2569: "ไม่แน่ใจว่าเงื่อนไขย้ายโซนคืออะไร")
     const opened = ZONES.filter(z => z.level === this.level && z.k !== this.zone);
-    if (opened.length) this.pendingZoneOpen = opened;
+    if (opened.length) this.log(`🗺️ ขั้นพร้อมแล้ว — ปิด 10 สำนวนและชนะบอสโซนก่อนย้ายสาขา`, 'event');
   },
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
@@ -1391,6 +1394,27 @@ const API = {
     return this.battle;
   },
 
+  bossReady() {
+    return !this.bossCleared[this.zone] && (this.zoneCases[this.zone] || 0) >=
+      Math.max(10, this.bossRetryAt[this.zone] || 0);
+  },
+
+  startZoneBoss() {
+    if (this.battle || !this.bossReady()) return null;
+    const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
+    const hp = 115 + n * 35;
+    this.bossPending = false;
+    this.fights++;
+    this.battle = {
+      kind: 'zoneBoss', zone: z.k, who: z.bossName, sub: z.bossSub,
+      sp: z.k === 'th' ? 'zone-boss' : `zone-boss-${z.k}`,
+      foeHp: hp, foeMax: hp, youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
+      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
+    };
+    this.onChange();
+    return this.battle;
+  },
+
   /** เปรตที่อยู่ในระยะเอื้อมถึง — คืน index หรือ -1 */
   mobInReach() {
     const n = this.nearestMob();
@@ -1523,6 +1547,11 @@ const API = {
         this.coin += gain;
         this.order = clamp(this.order + 2, 0, 100);
         say(`${B.who}สลายเป็นควันไป — +${gain} เบี้ยกรรม · ระเบียบ +2`);
+      } else if (B.kind === 'zoneBoss') {
+        this.bossCleared[B.zone] = true;
+        this.bossRetryAt[B.zone] = 0;
+        this.log(`👑 ปราบ${B.who}ได้ — เปิดทางไปโซนถัดไป`, 'good');
+        say(`${B.who}ยอมถอย เปิดทางไปสาขาถัดไป`);
       } else {
         this.coin += BATTLE.winCoin;
         const soul = this.queue.find(x => x.id === B.soulId);
@@ -1538,7 +1567,7 @@ const API = {
     // ---- ตาของเขา ----
     if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
-      const d = roll(B.kind === 'mob' ? MOB.fightAtk : BATTLE.foeAtk);
+      const d = roll(B.kind === 'mob' ? MOB.fightAtk : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3] : BATTLE.foeAtk);
       B.youHp = Math.max(0, B.youHp - d);
       B.dmg.you = d;
       say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
@@ -1552,6 +1581,10 @@ const API = {
       if (B.kind === 'mob') {
         this.hp = Math.max(1, this.hp - MOB.fightLose);
         say(`ท่านถอยออกมา — ${B.who}ยังอยู่ในโซน · บารมีหาย ${MOB.fightLose}`);
+      } else if (B.kind === 'zoneBoss') {
+        this.hp = Math.max(18, Math.round(this.hpMax * 0.35));
+        this.bossRetryAt[B.zone] = (this.zoneCases[B.zone] || 0) + 5;
+        say(`${B.who}ถอยไปตั้งหลัก — อีก 5 สำนวนจะกลับมาท้าสู้ใหม่`);
       } else {
         this.hp = Math.max(1, this.hp - BATTLE.loseHp);
         this.order = clamp(this.order - 6, 0, 100);
@@ -1574,6 +1607,11 @@ const API = {
     }
     if (B.kind === 'yama') { this.checkEnd(); this.onChange(); return B; }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+    if (B.kind === 'zoneBoss') {
+      this.log(B.over === 'win' ? `👑 ชนะ${B.who} — ปลดทางไปโซนถัดไป`
+        : `👑 แพ้${B.who} — จะกลับมาใหม่หลังปิดอีก 5 สำนวน`, B.over === 'win' ? 'good' : 'event');
+      this.onChange(); return B;
+    }
     if (B.kind === 'mob') {
       if (B.over === 'win') {
         const i = this.mobs.findIndex(m => (m.id ?? -1) === B.mobId);
@@ -1596,8 +1634,12 @@ const API = {
   // ---------- Phase 3 · ย้ายโซน ----------
   zoneDef() { return ZONES.find(z => z.k === this.zone) || ZONES[0]; },
 
-  /** โซนที่ย้ายไปได้ตอนนี้ — ปลดล็อกตามเลเวลของยมบาท */
-  zonesOpen() { return ZONES.filter(z => this.level >= z.level && z.k !== this.zone); },
+  canMoveZone(k) {
+    const i = ZONES.findIndex(z => z.k === k), z = ZONES[i];
+    return !!z && this.level >= z.level &&
+      (i === 0 || !!this.bossCleared[ZONES[i - 1].k]);
+  },
+  zonesOpen() { return ZONES.filter(z => this.canMoveZone(z.k) && z.k !== this.zone); },
 
   outfitsOpen() { return ZONES.filter(z => this.level >= z.level); },
 
@@ -1618,7 +1660,7 @@ const API = {
    *  ถ้ายกสถานีกับคนไปด้วย สาขาที่สองจะไม่มีอะไรให้ทำเลยนอกจากกดเดินวาระ */
   moveZone(k) {
     const z = ZONES.find(x => x.k === k);
-    if (!z || this.level < z.level || z.k === this.zone) return false;
+    if (!z || !this.canMoveZone(k) || z.k === this.zone) return false;
 
     // เก็บสาขาเดิมไว้ทั้งกล่อง แล้วหยิบกลับมาตอนย้ายกลับ (เจ้าของสั่ง 10 ก.ย. 2569)
     // เดิมย้ายกลับมาแล้วสถานีทุกหลังหายหมด เหมือนเริ่มสาขาใหม่ทุกครั้ง
@@ -1787,6 +1829,7 @@ API.snapshot = function () {
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
+    zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
     logs: this.logs.slice(0, 40),
@@ -1842,6 +1885,11 @@ API.restore = function (d) {
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
+  this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
+  this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
+    : this.zone === 'asia' ? { th: true } : {});
+  this.bossRetryAt = d.bossRetryAt || {};
+  this.bossPending = this.bossReady();
   this.outfit = d.outfit || this.zone;
   this.crew.forEach(c => { c.name = crewName(CREW.find(x => x.k === c.k) || c, this.zone); });
   // เซฟเก่าโซนบูรพาอาจยังมีเปรตไทยจาก pool รุ่นก่อน — เก็บไว้เฉพาะชนิดของโซนปัจจุบัน

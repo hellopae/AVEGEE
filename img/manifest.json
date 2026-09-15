@@ -59,7 +59,10 @@
 "mob-werewolf.png",
 "prop-boat.png",
 "prop-lantern.png",
+"prop-throne-platform-v1.png",
 "scene-asia.png",
+"scene-foreground-v1.png",
+"scene-ground-v1.png",
 "scene-west.png",
 "soul-boy.png",
 "soul-deva.png",
@@ -92,7 +95,8 @@
 "st-sala.png",
 "st-sawan.png",
 "st-tarang.png",
-"st-tea.png"
+"st-tea.png",
+"zone-boss.png"
 ],
 "zones": {
 "asia": [
@@ -137,13 +141,18 @@
 "Asia/st-sala-asia.png",
 "Asia/st-sawan-asia.png",
 "Asia/st-tarang-asia.png",
-"Asia/st-tea-asia.png"
+"Asia/st-tea-asia.png",
+"Asia/zone-boss-asia.png"
+],
+"cyberhell": [
+"CyberHell/zone-boss-cyber-cyberhell.png"
 ],
 "west": [
 "West/crew-nira-west-profile.png",
 "West/crew-nira-west.png",
 "West/hero-yama-west-profile.png",
-"West/hero-yama-west.png"
+"West/hero-yama-west.png",
+"West/zone-boss-west.png"
 ]
 },
 "boxes": {
