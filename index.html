@@ -851,6 +851,33 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
 #rotate p{margin:0;color:var(--muted-foreground);font-size:var(--text-sm);
   line-height:var(--leading-body);max-width:22rem}
 /* แนวตั้งเล่นได้แล้ว — ไม่บังคับซ่อนเกมหลังจอ "หมุนเครื่อง" อีก */
+dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95dvh;
+  overflow:auto;padding:0;background:#151016}
+.intro-comic-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:#181217}
+.intro-comic-frame img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.intro-comic-head{position:absolute;top:10px;left:14px;right:14px;display:flex;
+  justify-content:space-between;color:#f7c371;text-shadow:0 2px 5px #120b10;
+  font-size:var(--text-xs);letter-spacing:.08em}
+.intro-comic-caption{position:absolute;left:5%;right:5%;bottom:2%;height:18%;
+  display:flex;flex-direction:column;justify-content:center;text-align:left;overflow:auto}
+.intro-comic-caption h2{font-family:var(--font-display);color:#f7c371;
+  font-size:clamp(1rem,2.4vw,1.35rem);margin:0 0 4px}
+.intro-comic-caption p{color:#f4e8df;line-height:1.4;font-size:clamp(.8rem,1.8vw,1rem);margin:0}
+.intro-comic-controls{display:flex;justify-content:space-between;gap:10px;padding:10px 14px}
+@media(max-width:600px){
+  .intro-comic-frame{aspect-ratio:auto}
+  .intro-comic-frame img{height:auto;aspect-ratio:16/7.2;object-fit:cover;object-position:top}
+  .intro-comic-caption{position:static;height:auto;padding:12px 16px;background:#151016}
+  .intro-comic-caption h2{font-size:1.15rem}
+  .intro-comic-caption p{font-size:.95rem}
+}
+.mini-goal{margin:8px 0 14px;padding:8px 12px;border:1px solid rgba(212,163,85,.35);
+  border-radius:8px;background:rgba(212,163,85,.08);color:var(--gold);font-size:var(--text-xs);
+  line-height:var(--leading-body)}
+.boss-prep{padding:12px;border:1px solid rgba(212,163,85,.45);border-radius:10px;
+  background:rgba(26,12,18,.9);margin-bottom:12px}
+.boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -928,6 +955,8 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
     <button id="outfit" class="sm" hidden>👘 เปลี่ยนชุด</button>
     <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
   </div>
+
+  <div id="mini-goal" class="mini-goal" aria-live="polite"></div>
 
   <div class="below">
     <div class="panel">

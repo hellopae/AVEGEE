@@ -1,5 +1,5 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
-import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GUARD_POST,
+import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
@@ -27,7 +27,7 @@ export function createGame() {
     greens: 0,                        // คำตัดสินสีเขียว (78 ขึ้นไป) — เกณฑ์เลื่อนขั้นตั้งแต่ 9 ก.ย. 2569
     reds: 0,                          // คำตัดสินสีแดงติดกัน — ครบ 3 พ่อลงมาตบเอง
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
-    items: [], mobs: [], guard: null, fxHits: [],
+    items: [], mobs: [], guard: null, fxHits: [], transits: [],
     queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
     // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
@@ -46,6 +46,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
@@ -494,6 +495,12 @@ const API = {
     if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
     if (!c.self && c.at && c.at !== st.def.k) return false;   // ยมทูตคนอื่นติดเวรที่อื่นอยู่
     const soul = this.queue.splice(si, 1)[0];
+    // ภาพคำตัดสิน: วิญญาณออกจากแถวแล้วเดินตามทางจริงไปสถานี ไม่ลอยตัดลาวา
+    const route = findPath(QUEUE_LINE[0][0], QUEUE_LINE[0][1], st.def.x, st.def.y);
+    if (route?.length) this.transits.push({ id:soul.id, sp:soul.sp,
+      path:[QUEUE_LINE[0], ...route], started:Date.now() + 900, duration:Math.min(6500, Math.max(2000, route.length * 230)),
+      name:st.def.name, crew:useK });
+    if (this.transits.length > 5) this.transits.shift();
     const slot = { soul, intensity: clamp(intensity, 1, 5), progress: 0, need: 0, verdict: null };
     slot.need = 18 + soul.deserved * 8 + slot.intensity * 7;
     st.slots.push(slot);
@@ -565,6 +572,15 @@ const API = {
     this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; this.scoreSum += r.score;
     this.zoneCases[this.zone] = (this.zoneCases[this.zone] || 0) + 1;
+    // เป้าหมายสั้น ๆ รายสาขา: เปิดหลักฐานที่ซ่อนอยู่และตัดสินได้ดีสามคดี
+    const goal = this.miniGoals[this.zone] ||= { truth:0, earned:false };
+    if (!goal.earned && r.score >= 78 && soul.said?.some(x => x.kind === 'truth' || x.kind === 'confess')) {
+      goal.truth++;
+      if (goal.truth >= 3) {
+        goal.earned = true; this.coin += 90;
+        this.log('📜 เปิดโปงความจริงครบ 3 สำนวน — +90 เบี้ยกรรม และหลักฐานช่วยเตรียมศึกบอสโซนนี้', 'good');
+      }
+    }
     this.bossPending = this.bossReady();
     // กรรมของท่านยิ่งหนา เปรตยิ่งขึ้นถี่ — มันตามกลิ่นกรรมมา
     const every = Math.max(2, Math.round(MOB.spawnEvery * this.karmaTier().mob));
@@ -1418,10 +1434,32 @@ const API = {
       kind: 'zoneBoss', zone: z.k, who: z.bossName, sub: z.bossSub,
       sp: z.k === 'th' ? 'zone-boss' : `zone-boss-${z.k}`,
       foeHp: hp, foeMax: hp, youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
+      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null, prep:null,
     };
     this.onChange();
     return this.battle;
+  },
+
+  /** เตรียมศึกได้หนึ่งอย่างก่อนเปิดกระบวนท่าแรก — ไม่ใช้กาชาหรือของเติมเงิน */
+  prepareBoss(mode) {
+    const b = this.battle;
+    if (!b || b.kind !== 'zoneBoss' || b.prep || b.turn !== 1) return false;
+    if (mode === 'proof') {
+      if (!this.miniGoals[b.zone]?.earned) return false;
+      b.foeHp = Math.max(1, b.foeHp - 24);
+      b.talk = '"แฟ้มที่เจ้าหามา... ข้าจะไม่ออมมือ แต่จะฟัง"';
+    } else if (mode === 'crew') {
+      if (!this.crewHelpers().length) return false;
+      b.youMax += 18; b.youHp += 18;
+    } else if (mode === 'power') {
+      const roar = this.powerOf('roar');
+      if (roar.ammo < roar.max) roar.ammo++;
+      else b.stun = 1; // ลูกไฟเต็มอยู่แล้ว: ใช้แรงที่สำรองไว้กันบอสสวนกลับหนึ่งครั้ง
+    } else return false;
+    b.prep = mode;
+    this.log(`⚔️ เตรียมสู้${b.who}: ${mode === 'proof' ? 'แฟ้มหลักฐาน' : mode === 'crew' ? 'ยมทูตช่วยคุ้มกัน' : 'สำรองพลังลูกไฟ'}`, 'act');
+    this.onChange();
+    return true;
   },
 
   /** เปรตที่อยู่ในระยะเอื้อมถึง — คืน index หรือ -1 */
@@ -1693,6 +1731,7 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    this.transits = [];
     this.zoneCases[k] = this.zoneCases[k] || 0;
     this.outfit = k;                         // ครั้งแรกที่ย้ายให้สวมชุดรางวัลของโซนนั้นทันที
     this.mobs = [];
@@ -1845,6 +1884,7 @@ API.snapshot = function (withEntry = true) {
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
+    miniGoals: this.miniGoals,
     bossGuarding: this.bossGuarding,
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -1893,6 +1933,7 @@ API.restore = function (d) {
   this.held = d.held || [];
   this.items = d.items || [];
   this.mobs = d.mobs || [];
+  this.transits = [];
   this.guard = d.guard || null;
   if (d.player) this.player = d.player;
   this.logs = d.logs || [];
@@ -1903,6 +1944,7 @@ API.restore = function (d) {
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
+  this.miniGoals = d.miniGoals || {};
   this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
     : this.zone === 'asia' ? { th: true } : {});
   this.bossRetryAt = d.bossRetryAt || {};
@@ -1920,6 +1962,15 @@ API.restore = function (d) {
   this.fights = d.fights || 0;
   this.spawns = d.spawns || 0;
   this.yamaDone = !!d.yamaDone;
+  // ผลตอบแทนออฟไลน์เล็กน้อยจากสถานีที่มีผู้คุมประจำอยู่ ไม่บังคับเปิดเกมทิ้งไว้
+  // จำกัด 8 ชั่วโมงและไม่จ่ายถ้าเกมจบหรือเซฟเก่าไม่มีเวลาอ้างอิง
+  const away = Math.min(8 * 3600e3, Math.max(0, Date.now() - (d.at || Date.now())));
+  const working = this.stations.filter(st => st.crewK && st.slots.length && !st.build).length;
+  this.offlineGrant = Math.min(40, Math.floor(away / 1800e3) * working * 3);
+  if (this.offlineGrant > 0 && !d.over) {
+    this.coin += this.offlineGrant;
+    this.log(`⏳ ระหว่างที่ท่านไม่อยู่ ยมทูตคุมงานต่อ · +${this.offlineGrant} เบี้ยกรรม`, 'good');
+  }
   this.battle = null;                 // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
   this.over = null;
   if (this.zone === 'asia') {

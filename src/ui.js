@@ -292,6 +292,7 @@ function drawTab() {
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop"><span class="g">${s.glyph}</span>
           <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
+            ${s.use ? `<div style="color:var(--gold)">${esc(s.use)}</div>` : ''}
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'} · ฟืน ${s.fuel}/วาระ</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost ? 'disabled' : ''}>${built ? 'สร้างแล้ว' : 'สร้าง ' + s.cost}</button>
@@ -586,7 +587,15 @@ function drawAtk() {
   fab.classList.toggle('gold', !near && !!st);
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); syncAva(); syncTitle(); }
+function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); }
+
+function drawMiniGoal() {
+  const el = $('#mini-goal');
+  const goal = g.miniGoals[g.zone] || { truth:0, earned:false };
+  el.textContent = goal.earned
+    ? `📜 ภารกิจสาขาสำเร็จ — แฟ้มหลักฐานพร้อมใช้ก่อนสู้${g.zoneDef().bossName}`
+    : `📜 เป้าหมายสั้น ๆ: สอบสวนจนเปิดความจริง แล้วตัดสินได้อย่างน้อย 78 คะแนน ${goal.truth}/3 คดี · รางวัล 90 เบี้ยกรรม`;
+}
 
 /** บรรทัดใต้ชื่อเกม — เดิมเขียน "นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด" ไว้ตายตัวใน index.html
  *  ย้ายโซนหรือเลื่อนขั้นแล้วมันยังบอกโซนแรกกับขั้นแรกอยู่ทั้งเกม (เจอตอนทดสอบข้อ 7) */
@@ -1404,7 +1413,13 @@ function openBattle(after) {
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
     const fireAmmo = g.powerOf('roar').ammo;
-    const acts = b.over && !phase ? '' : `<div class="acts${phase ? ' busy' : ''}">
+    const prep = b.kind === 'zoneBoss' && !b.prep && !b.over ? `<div class="boss-prep">
+      <b>เลือกเตรียมศึกหนึ่งอย่าง</b><div class="acts">
+      <button data-prep="proof" ${g.miniGoals[b.zone]?.earned ? '' : 'disabled'}>📜 แฟ้มหลักฐาน ${g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
+      <button data-prep="crew" ${g.crewHelpers().length ? '' : 'disabled'}>🛡️ ยมทูตคุ้มกัน · บารมีศึก +18</button>
+      <button data-prep="power">🔥 เตรียมลูกไฟ · เพิ่ม 1 ลูก</button>
+      </div></div>` : '';
+    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `<div class="acts${phase ? ' busy' : ''}">
       <button data-act="atk">⚔️ ฟาด</button>
       <button data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'}>🔥 ลูกไฟ <span style="opacity:.55">×${fireAmmo}</span></button>
       ${BATTLE.items.map(it => {
@@ -1447,8 +1462,12 @@ function openBattle(after) {
       `<div class="pad">
         <div class="talkbox">${esc(view.talk || '...')}</div>
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
-        ${acts}${done}
+        ${prep}${acts}${done}
       </div>`;
+
+    dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
+      if (g.prepareBoss(el.dataset.prep)) { sfx('stamp'); paint(); refresh(); }
+    });
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
@@ -2216,15 +2235,30 @@ else refresh();                          // วาดแผงไว้ใต้
 /** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
  *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
 function openIntro() {
-  bossModal('พญายมเรียกพบ',
-    '"สามร้อยปีที่แล้วโซนนี้มีผู้คุมสิบสองคน ตอนนี้เหลือสองคนกับกองสำนวนสูงเท่าตัวเจ้า — ' +
-    'นิรา คนที่ถือแฟ้ม เธออ่านสำนวนให้เจ้าฟังอย่างเดียว อย่าสั่งเธอไปลงทัณฑ์ · ' +
-    'ทัณฑ์ คนที่ยืนอยู่ข้างกระทะ นั่นคือมือเดียวที่เจ้ามีตอนนี้ ' +
-    'ถ้าไม่พอก็ลงไปคุมเองซะ ข้าไม่ได้ห้าม\n\n' +
-    `นี่ ${BAL.startCoin} เบี้ยกรรม ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง — จำไว้ว่าโซนนี้รับได้เฉพาะกรรม` +
-    'ที่เจ้ามีที่ลงเท่านั้น สร้างอะไรไว้ สำนวนแนวนั้นถึงจะถูกส่งลงมา\n\n' +
-    'แล้วจำข้อเดียวนี้ให้ขึ้นใจ — ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"',
-    'รับงาน');
+  const pages = [
+    { title:'สามร้อยปีที่ไม่มีใครอยากพูดถึง', art:'scene', line:'โซนสุวรรณภูมิเคยมีผู้คุมสิบสองคน ตอนนี้เหลือสองคน และสำนวนที่ยังไม่มีใครกล้าเปิดอ่าน' },
+    { title:'งานแรกของลูกพญายม', art:'hero-boss', line:'“เจ้าจะไม่ตัดสินจากหน้าตา จากคำร่ำลือ หรือจากความโกรธของตัวเอง” พ่อวางตรายมบาทลงในมือยมน้อย' },
+    { title:'แฟ้มเล่มแรก', art:'crew-nira', line:'นิราอ่านเพียงสิ่งที่คนบนโลกเห็น บางวิญญาณดูดี บางวิญญาณดูร้าย แต่สิ่งที่ซ่อนอยู่จะปรากฏก็ต่อเมื่อเจ้าสอบสวน' },
+    { title:'คำตัดสินเดินได้', art:'hero-yama', line:'เมื่อออกหมาย ยมทูตจะพาวิญญาณไปยังสถานที่ที่เจ้าสร้างไว้ ตัดสินให้ตรงกรรมและตรงวาระ เพราะทุกคำสั่งมีผลตามมา' },
+    { title:'กฎข้อเดียวที่ห้ามลืม', art:'hero-boss', line:`“ทัณฑ์ที่เกินกรรมไม่ได้หายไปไหน มันกลับมาอยู่ในบัญชีของผู้ตัดสิน” พ่อให้ ${BAL.startCoin} เบี้ยกรรม แล้วปล่อยให้เจ้ารับสำนวนแรก` },
+  ];
+  let page = 0;
+  const paint = () => {
+    const p = pages[page], image = `img/intro-panel-0${page + 1}.webp`;
+    dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="เรื่องเปิดเกม หน้า ${page + 1} จาก ${pages.length}">
+      <div class="intro-comic-frame">
+        <img src="${image}" alt="" onerror="this.onerror=null;this.src='${artUrl(p.art)}'">
+        <div class="intro-comic-head"><span>อเวจี · บทนำ</span><span>${page + 1} / ${pages.length}</span></div>
+        <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
+      </div>
+      <div class="intro-comic-controls"><button id="intro-skip">ข้ามบทนำ</button><button class="gold" id="intro-next">${page + 1 === pages.length ? 'รับงาน' : 'หน้าถัดไป →'}</button></div>
+    </div>`;
+    dlg.querySelector('#intro-skip').onclick = () => dlg.close();
+    dlg.querySelector('#intro-next').onclick = () => { if (++page === pages.length) dlg.close(); else paint(); };
+  };
+  pauseForDlg();
+  openDlg('intro-comic-dialog');
+  paint();
 }
 
 

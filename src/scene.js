@@ -101,6 +101,20 @@ export function render(ctx, g, t, hover, sel) {
              s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7);
   });
 
+  // วิญญาณที่เพิ่งออกหมายเดินไปสถานีตามเส้นทางที่หาไว้ใน game.js
+  const clock = Date.now();
+  g.transits = (g.transits || []).filter(v => clock < v.started + v.duration);
+  for (const v of g.transits) {
+    const p = Math.max(0, Math.min(1, (clock - v.started) / v.duration));
+    const atStep = p * (v.path.length - 1), i = Math.min(v.path.length - 2, Math.floor(atStep));
+    const a = v.path[i], b = v.path[i + 1], mix = atStep - i;
+    const x = a[0] + (b[0] - a[0]) * mix, y = a[1] + (b[1] - a[1]) * mix;
+    at(y, () => {
+      drawSoul(ctx, x, y, SOUL_H * .82, t + v.id * 300, '#d9eaff', v.sp || 7);
+      if (p < .2) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
+    });
+  }
+
   // ---- ของที่ตกอยู่บนพื้น ----
   for (const it of g.items.filter(x => !x.from)) at(it.y, () => {
     const def = ITEMS[it.k];
