@@ -3,7 +3,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, GU
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
-         DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN, AFTER_BY_SIN,
+         DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
@@ -653,8 +653,8 @@ const API = {
     }
   },
 
-  /** ตัดสินเบาไป = เขายังไม่สำนึก ปล่อยไปแล้วไปก่อเรื่องต่อ แล้วกลับมาใหม่
-   *  นี่คือสิ่งที่ทำให้คำตัดสินมีผลระยะยาว ไม่ใช่จบเป็นคดี ๆ ไป */
+  /** ตัดสินเบาไป = ยังไม่สำนึกหลังครบวาระ จึงถูกส่งกลับเข้าคิวก่อนการไปเกิดใหม่
+   *  ดวงนี้ไม่ได้กลับไปโลกมนุษย์ และยังไม่มีชีวิตใหม่ให้ไปก่อกรรมเพิ่ม */
   scheduleReturn(soul, r, intensity) {
     if (r.short <= 0 || soul.hard) return;
     if (Math.random() > RETURN.chance) return;
@@ -668,28 +668,21 @@ const API = {
     });
   },
 
-  /** สร้างวิญญาณที่กลับมา — สำนวนเดิมเปิดหมดแล้ว บวกเรื่องที่เขาไปทำต่อ */
+  /** สร้างวิญญาณที่ถูกส่งกลับเข้าคิว — สำนวนเดิมและกรรมเดิม ไม่แต่งกรรมใหม่ */
   mkReturnSoul(R) {
-    const worst = [...R.deeds].sort((a, b) => b.w - a.w)[0] || { s: 'kong', w: 2 };
-    // เรื่องที่เขาไปทำต่อหลังถูกปล่อย — ส่วนใหญ่ปิดไว้ก่อน ให้ผู้เล่นต้องไต่สวนเอา
-    // (ถ้าเปิดหมดตั้งแต่แรก คดีที่กลับมาจะไม่มีอะไรให้จี้เลย มินิเกมไต่สวนก็ตายไปด้วย)
-    const secret = Math.random() < 0.65;
-    // สำนวนที่มีชื่อเขียนบทขากลับของตัวเองได้ (cases.js `back`) — กองกลางบางบรรทัดใช้กับบางคนไม่ได้
+    // สำนวนที่มีชื่อมีบทถามขากลับได้ แต่ห้ามเพิ่มข้อกล่าวหาใหม่หลังจบชีวิต
     const B = (R.caseK && ALL_CASES.find(c => c.k === R.caseK) || {}).back;
-    const after = { t: (B && B.after) || AFTER_BY_SIN[worst.s] || 'กลับไปทำเรื่องเดิมซ้ำอีกครั้ง',
-                    s: worst.s, w: Math.min(5, worst.w + RETURN.addWeight), known: !secret };
     const soul = {
       id: SEQ++, who: R.who, sp: R.sp, sex: R.sex || SEX_OF[R.who] || 'm', name: R.name,
       waited: 0, said: [],
-      deeds: [...R.deeds, after], merits: R.merits, denied: null,
+      deeds: R.deeds.map(d => ({ ...d, known:true })), merits: R.merits, denied: null,
       back: { id: R.fromId, gave: R.gave }, calm: !!R.calm,
       pool: B ? { deny: B.deny, solid: B.solid } : null,
     };
     soul.deserved = deservedOf(soul);
     soul.resist = !soul.calm && soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
-    soul.said.push({ kind: 'confess', text: voice(secret
-      ? `"ท่านให้{i}ไปแค่ ${R.gave} วาระ... แล้ว{i}ก็ไม่ได้อยู่เฉย ๆ {na}"`
-      : `"ท่านให้{i}ไปแค่ ${R.gave} วาระ {i}ออกไปแล้วก็${after.t}{p}"`, soul.sex) });
+    soul.said.push({ kind: 'confess', text: voice(
+      `"ท่านให้{i}ไป ${R.gave} วาระ แต่{i}ยังไม่สำนึก{p} เลยถูกส่งกลับมา ก่อนจะไปเกิดใหม่"`, soul.sex) });
     soul.lines = mkLines(soul);
     soul.presses = BAL.presses;
     return soul;
@@ -700,15 +693,15 @@ const API = {
     if (this.over) return;
     this.tick++;
 
-    // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วกลับมาพร้อมเรื่องใหม่
+    // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
     for (let i = this.returning.length - 1; i >= 0; i--) {
       if (this.tick < this.returning[i].at) continue;
       const R = this.returning.splice(i, 1)[0];
       const soul = this.mkReturnSoul(R);
       this.queue.push(soul);
       this.returned++;
-      this.log(`↩️ ${soul.who}กลับมาอีกครั้ง — สำนวน #${String(soul.id).padStart(3, '0')} ` +
-               `(เคยเป็นสำนวน #${String(R.fromId).padStart(3, '0')} ที่ท่านให้ไป ${R.gave} วาระ)`, 'bad');
+      this.log(`↩️ ${soul.who}ยังไม่สำนึกหลัง ${R.gave} วาระ — ถูกส่งกลับเข้าคิวก่อนเกิดใหม่ ` +
+               `(เดิมสำนวน #${String(R.fromId).padStart(3, '0')})`, 'bad');
     }
 
     // วิญญาณมาใหม่

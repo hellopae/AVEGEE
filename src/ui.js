@@ -209,7 +209,7 @@ function drawTab() {
             ? ` · 🔒 ตะราง ${g.held.length}/${TARANG.hold}` : ''}</div>`;
     b.innerHTML += g.queue.map(s => `
       <div class="soul" data-soul="${s.id}">
-        <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ กลับมาอีกครั้ง</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
+        <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ ยังไม่สำนึก · กลับเข้าคิวก่อนเกิดใหม่</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.case ? publicDossier(s) : s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
         ${s.case ? '' : s.merits.filter(m => !m.exposed).map(publicMeritLine).join('')}
       </div>`).join('');
@@ -1222,7 +1222,7 @@ function openTrial() {
               ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
             ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
             ${!s.face && !claimed.length && !known.length ? '<div class="deed">สำนวนว่างเปล่า</div>' : ''}
-            ${s.back ? `<div class="deed" style="color:var(--destructive)">↩️ เคยผ่านมือท่านแล้ว — ให้ไป ${s.back.gave} วาระ</div>` : ''}
+            ${s.back ? `<div class="deed" style="color:var(--destructive)">↩️ ลงทัณฑ์ ${s.back.gave} วาระแล้วยังไม่สำนึก · ถูกส่งกลับเข้าคิวก่อนเกิดใหม่</div>` : ''}
           </div>
 
           <div class="hud-card hud-opt">${opt}</div>
