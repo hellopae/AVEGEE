@@ -705,6 +705,11 @@ dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;backg
     -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;
     scrollbar-gutter:stable}
   .hud-body{flex:0 0 auto;grid-template-columns:1fr;gap:8px;padding:0 8px}
+  /* ห้องสอบสวน: เห็นคู่กรณีก่อน แล้วเมนูอยู่ติดเหนือสำนวน/ตัวเลือก
+     ห้องสถานีใช้ผังของตัวเอง ไม่สลับลำดับ */
+  .hud:not(.st-hud) .hud-stage{grid-row:1}
+  .hud:not(.st-hud) .hud-left{grid-row:2}
+  .hud:not(.st-hud) .hud-right{grid-row:3}
   .hud-left{flex-direction:row;flex-wrap:wrap}
   .hud-left button{flex:1 1 46%;min-height:40px}
   .hud-left button .lb2 small{display:none}

@@ -1126,6 +1126,8 @@ function openTrial() {
   trialCmd = 'ask';
 
   const paint = () => {
+    // เปลี่ยนแท็บแล้ววาดเนื้อหาห้องสอบสวนใหม่ แต่บนมือถืออย่ากระโดดกลับไปหัวกล่อง
+    const scrollAt = dlg.querySelector('.hud')?.scrollTop || 0;
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
@@ -1256,6 +1258,8 @@ function openTrial() {
         </div>
       </div>
     </div>`;
+
+    if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
 
     // ---- ผูกปุ่ม ----
     dlg.querySelectorAll('[data-cmd]').forEach(el => el.onclick = () => { trialCmd = el.dataset.cmd; paint(); });
