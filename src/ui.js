@@ -1410,7 +1410,10 @@ function openBattle(after) {
   const B = g.battle;
   if (!B) return;
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
-  bgm(B.kind === 'yama' || B.kind === 'dad' || B.kind === 'zoneBoss' ? 'bgm-yama' : 'bgm-battle');
+  // เพลง bgm-yama ไม่เคยมีไฟล์จริงเลย (audio/ มีแค่ bgm-title, bgm-zone) — ยิง HEAD 404 สามนามสกุล
+  // ทุกครั้งที่สู้บอส/พ่อ ไม่มีประโยชน์ ใช้ bgm-battle ทุกฉากต่อสู้เหมือนกันหมด (คุณเป้สั่ง 17 ก.ย. 2569)
+  // ระบบ FALLBACK ใน sfx.js จะถอยไปเล่น bgm-zone เองอัตโนมัติถ้ายังไม่มีไฟล์ bgm-battle จริง
+  bgm('bgm-battle');
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
