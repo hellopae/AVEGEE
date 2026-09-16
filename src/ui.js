@@ -58,8 +58,11 @@ setInterval(() => {
   updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
   updateBossFab();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
+  // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
+  // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
+  // ชุดเก่าจะมาปิดกล่องกระทะทองแดงทิ้งทันทีที่ฉากต่อสู้จบ (ดู CONCEPT §22.6)
   if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
-    g.startDadFight(); openBattle();
+    g.startDadFight();
   }
 }, 400);
 
@@ -1025,6 +1028,19 @@ function bossModal(title, text, btn = 'รับทราบ') {
     <div class="row"><button class="gold" data-close>${esc(btn)}</button></div>`);
 }
 
+/** กระทะทองแดง — แพ้พ่อครบสามครั้งเตือนแล้ว ไม่ใช่ Game Over อีกต่อไป (17 ก.ย. 2569)
+ *  แค่โชว์ภาพลงทัณฑ์ + บอกให้ไปพักที่ศาลาน้ำชา แล้วปล่อยเล่นต่อทันที ไม่รีเซ็ตโซน */
+function openDadPunish(p) {
+  pauseForDlg();
+  modal(`<h2>${esc(p.title)}</h2>
+    <div class="boss">
+      <img class="standee" src="${artUrl('st-krata')}" alt="กระทะทองแดง" onerror="this.remove()">
+      <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(p.text)}</p>
+    </div>
+    <div class="hint">บารมีเหลือ ${Math.max(0, Math.round(g.hp))} — เดินไปที่ 🍵 ศาลาน้ำชาเพื่อพักฟื้น</div>
+    <div class="row"><button class="gold" data-close>รับทราบ</button></div>`);
+}
+
 function openHelp() {
   modal(`<h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
@@ -1520,7 +1536,9 @@ function openBattle(after) {
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();
     const done = g.endBattle();
-    if (done?.kind !== 'dad' && done?.kind !== 'yama') bgm('bgm-zone');
+    // 'dad' ไม่ใช่ Game Over อีกต่อไป (17 ก.ย. 2569) — เกมเดินต่อ เพลงจึงต้องกลับมาเป็นเพลงโซนด้วย
+    // 'yama' เท่านั้นที่ยังเป็นจบเกมจริง ไม่ต้องกลับเพลง
+    if (done?.kind !== 'yama') bgm('bgm-zone');
     updatePlay();
     refresh();
     if (after) after(done ? done.over : null);
@@ -2038,8 +2056,16 @@ g.onChange = () => {
   // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
   // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
   if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }
-  if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); openBattle(); return; }
+  // startDadFight() เรียก this.onChange() เองข้างในอยู่แล้ว ซึ่งเข้าเงื่อนไข if แรกด้านบนให้เปิดฉากสู้ให้เอง
+  // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เรียกซ้ำแล้วมี onClose ของฉากสู้สองชุดค้างอยู่บน dlg element เดียวกัน
+  // ชุดเก่าที่ไม่มีใครเคลียร์จะมาเรียก dlg.close() ทับกล่องถัดไป (กระทะทองแดง) ทิ้งทันที (เจอ 17 ก.ย. 2569)
+  if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); return; }
   if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  // แพ้พ่อครบสามครั้งเตือน — โชว์กระทะทองแดงแล้วเล่นต่อ (ไม่ใช่ Game Over อีกต่อไป)
+  if (g.pendingDadPunish && !dlg.open) {
+    const p = g.pendingDadPunish; g.pendingDadPunish = null;
+    openDadPunish(p); return;
+  }
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
     if (g.zone === 'th') { beginBossBridgeWalk(); return; }
     if (g.startZoneBoss()) openBattle();
@@ -2077,7 +2103,8 @@ g.onChange = () => {
   if (g.pendingWarn) {
     const w = g.pendingWarn; g.pendingWarn = null;
     bossModal(`คำตัดสินแดง ${w.n}/${w.of}`,
-      `${w.text}\n\nอีก ${w.of - w.n} สำนวนที่ตัดสินพลาด พ่อจะลงมาเอง — ` +
+      `${w.text}\n\n${w.fireball ? `🔥 ลูกไฟจากบัลลังก์ฟาดถูก — บารมีเหลือ ${Math.max(0, Math.round(g.hp))}\n\n` : ''}` +
+      `อีก ${w.of - w.n} สำนวนที่ตัดสินพลาด พ่อจะลงมาเอง — ` +
       'ตัดสินให้ได้สีเขียวหนึ่งครั้งก็ล้างที่สะสมไว้แล้ว', 'รับทราบ');
     return;
   }

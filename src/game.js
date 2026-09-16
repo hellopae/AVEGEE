@@ -629,7 +629,16 @@ const API = {
       this.reds++;
       if (this.reds < DAD.redsToCome) {
         this.log(`⚠️ ${DAD.warn[this.reds - 1] || DAD.warn[0]} (คำตัดสินแดง ${this.reds}/${DAD.redsToCome})`, 'boss');
-        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: DAD.warn[this.reds - 1] || DAD.warn[0] };
+        // เตือนครั้งที่ warnFireballAt (รองสุดท้าย) มาพร้อมลูกไฟจริง ไม่ใช่แค่คำพูด
+        // (คุณเป้สั่ง 17 ก.ย. 2569: "เห็นเป็นภาพ/เอฟเฟกต์ ไม่ใช่แค่ตัวเลข")
+        const withFireball = this.reds === DAD.warnFireballAt;
+        if (withFireball) {
+          const floor = this.hpMax * DAD.warnFireballFloor;
+          this.hp = Math.max(floor, this.hp - this.hpMax * DAD.warnFireballFrac);
+          this.fxHits.push({ t: Date.now(), x: this.player.x, y: this.player.y });
+          this.log(`🔥 พญายมปล่อยลูกไฟลงมาเตือน — บารมีเหลือ ${Math.max(0, Math.round(this.hp))}`, 'bad');
+        }
+        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: DAD.warn[this.reds - 1] || DAD.warn[0], fireball: withFireball };
       } else { this.reds = 0; this.dadFight = true; }
     } else this.reds = 0;
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
@@ -1699,11 +1708,22 @@ const API = {
     const B = this.battle;
     if (!B) return null;
     this.battle = null;
-    if (B.kind === 'dad' || B.kind === 'yama') {
-      this.hp = 0; this.yamaDone = true; this.dadFight = false;
+    // บารมีหมดจริง (ไม่ใช่ตัดสินพลาดสามครั้ง) — พ่อลงมาเองครั้งสุดท้าย จบเกมจริง (ไม่แตะ ตามใบงาน)
+    if (B.kind === 'yama') {
+      this.hp = 0; this.yamaDone = true;
       this.over = { k: 'dad', title: 'Game Over',
         text: '"เจ้ายังไม่พร้อมจริง ๆ" — พญายมบาทมองท่านนิ่ง ๆ ก่อนรับตราประจำโซนคืน' };
       this.log('👑 พญายมบาท: "เจ้ายังไม่พร้อมจริง ๆ" — เริ่มโซนนี้ใหม่', 'boss');
+      this.onChange(); return B;
+    }
+    // ตัดสินพลาดติดกันครบ 3 ครั้ง — แพ้พ่อแล้วโดนลงทัณฑ์กระทะทองแดง ไม่ใช่ Game Over อีกต่อไป
+    // (คุณเป้สั่ง 17 ก.ย. 2569: "ไม่รีเซ็ตโซน ไม่ Game Over" — เล่นต่อได้เลยหลังไปพักที่ศาลาน้ำชา)
+    if (B.kind === 'dad') {
+      this.dadFight = false;
+      this.hp = DAD.punishHp;
+      this.reds = 0;
+      this.pendingDadPunish = { title: DAD.punishTitle, text: DAD.punishText };
+      this.log('🍳 พ่อลงมาตบจริง — ลงทัณฑ์ในกระทะทองแดงแล้วปล่อยกลับไปคุมโซนต่อ', 'boss');
       this.onChange(); return B;
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
