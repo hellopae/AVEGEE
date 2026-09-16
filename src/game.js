@@ -493,15 +493,43 @@ const API = {
     const c = this.crewOf(useK);
     if (!c) return false;
     if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
+    if (!c.self && c.escort) return false;   // ต้องพาดวงก่อนหน้าไปส่งให้ถึงก่อน จึงรับหมายใหม่ได้
     if (!c.self && c.at && c.at !== st.def.k) return false;   // ยมทูตคนอื่นติดเวรที่อื่นอยู่
     const soul = this.queue.splice(si, 1)[0];
-    // ภาพคำตัดสิน: วิญญาณออกจากแถวแล้วเดินตามทางจริงไปสถานี ไม่ลอยตัดลาวา
+    // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
+    // เส้นทางทั้งสองช่วงใช้พื้นเดินจริง จึงไม่ลอยตัดลาวา/แม่น้ำเหมือน animation รุ่นแรก
     const route = findPath(QUEUE_LINE[0][0], QUEUE_LINE[0][1], st.def.x, st.def.y);
-    if (route?.length) this.transits.push({ id:soul.id, sp:soul.sp,
-      path:[QUEUE_LINE[0], ...route], started:Date.now() + 900, duration:Math.min(6500, Math.max(2000, route.length * 230)),
-      name:st.def.name, crew:useK });
-    if (this.transits.length > 5) this.transits.shift();
-    const slot = { soul, intensity: clamp(intensity, 1, 5), progress: 0, need: 0, verdict: null };
+    const now = Date.now();
+    let arriveAt = now;
+    if (route?.length) {
+      const outbound = [QUEUE_LINE[0], ...route];
+      if (!c.self) {
+        const from = [c.x ?? c.hx, c.y ?? c.hy];
+        const pickupRoute = findPath(from[0], from[1], QUEUE_LINE[0][0], QUEUE_LINE[0][1]);
+        const pickup = [from, ...(pickupRoute?.length ? pickupRoute : [QUEUE_LINE[0]])];
+        const pathLength = path => path.slice(1).reduce((sum, p, i) =>
+          sum + Math.hypot(p[0] - path[i][0], p[1] - path[i][1]), 0);
+        const pickupDuration = Math.max(900, pathLength(pickup) / 0.085);
+        const pickupAt = now + 250;
+        const departAt = pickupAt + pickupDuration + 650; // หยุดรับตัวให้ผู้เล่นอ่านจังหวะออก
+        const travelDuration = Math.max(2400, pathLength(outbound) / 0.060);
+        arriveAt = departAt + travelDuration;
+        this.transits.push({ id:soul.id, sp:soul.sp, name:st.def.name,
+          crew:useK, crewName:c.name, crewGlyph:c.glyph, pickup, outbound,
+          pickupAt, departAt, arriveAt });
+        c.escort = soul.id;
+      } else {
+        const started = now + 900;
+        const duration = Math.min(9000, Math.max(3000, route.length * 330));
+        arriveAt = started + duration;
+        this.transits.push({ id:soul.id, sp:soul.sp, path:outbound,
+          started, duration, arriveAt, name:st.def.name, crew:useK });
+      }
+    }
+    // อย่าตัดรายการเก่าทิ้งตามจำนวน: แต่ละรายการผูกกับผู้คุมที่กำลังเดินไปรับจริง
+    // scene.js จะเก็บกวาดเองเมื่อเดินถึง จึงไม่มีรายการสะสมถาวร
+    const slot = { soul, intensity: clamp(intensity, 1, 5), progress: 0, need: 0,
+      verdict: null, pendingUntil: arriveAt };
     slot.need = 18 + soul.deserved * 8 + slot.intensity * 7;
     st.slots.push(slot);
     st.crewK = useK;
@@ -740,12 +768,16 @@ const API = {
       if (st.fire >= MOB.burnMax) continue;       // ไหม้จนใช้การไม่ได้ ทัณฑ์หยุดหมด
       const c = this.crewOf(st.crewK);
       if (!c) continue;
+      if (!c.self && c.escort) continue;       // ผู้คุมออกไปรับดวงใหม่ งานในสถานีรอเขากลับมาก่อน
+      // ยังอยู่ระหว่างเดินทางไปสถานี — ไม่เริ่มลงทัณฑ์และไม่กินฟืนก่อนถึงจริง
+      const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
+      if (!activeSlots.length) continue;
       if (this.fuel < st.def.fuel) {
         if (this.tick % 6 === 0) this.log(`🔥 ฟืนหมด ${st.def.name} หยุดทำงาน`, 'bad');
         continue;
       }
       // คุมหลายดวงพร้อมกัน = แต่ละดวงเดินช้าลง ไม่ใช่ได้ฟรี
-      const share = 1 / (0.55 + 0.45 * st.slots.length);
+      const share = 1 / (0.55 + 0.45 * activeSlots.length);
       // สถานีที่ท่านคุมเอง เดินช้ากว่ามาก และเดินเฉพาะตอนท่านยืนอยู่ตรงนั้นจริง ๆ
       // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย)
       if (c.self) {
@@ -755,7 +787,7 @@ const API = {
           continue;
         }
         this.fuel = Math.max(0, this.fuel - st.def.fuel);
-        for (const slot of [...st.slots]) {
+        for (const slot of [...activeSlots]) {
           slot.progress += st.def.pow * 0.7 * share;
           if (slot.progress >= slot.need) this.finish(st, slot);
         }
@@ -763,7 +795,7 @@ const API = {
       }
       this.fuel = Math.max(0, this.fuel - st.def.fuel);
       const mf = 0.55 + 0.45 * (c.morale / 100);
-      for (const slot of [...st.slots]) {
+      for (const slot of [...activeSlots]) {
         slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share;
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
@@ -1009,6 +1041,15 @@ const API = {
         if (o) { c.x = o[0]; c.y = o[1]; c.path = null; }
       }
 
+      // ตอนรับตัว scene.js เป็นผู้วาดตำแหน่งยมทูตกับวิญญาณจาก timeline เดียวกัน
+      // ห้ามระบบเดินเล่นขยับตัวจริงซ้อนอยู่ข้างใต้; ถึงสถานีแล้วค่อยคืนให้ระบบปกติ
+      if (c.escort) {
+        const escort = this.transits.find(v => v.id === c.escort && v.crew === c.k);
+        if (escort && Date.now() < escort.arriveAt) continue;
+        c.escort = null;
+        c.x = hx; c.y = hy; c.path = null; c.wait = 500;
+      }
+
       // เดินตามเส้นทางเหมือนตัวเรา — เดิมเดินตรงเข้าหาจุดหมาย พอมีลาวาขวางก็ค้างอยู่ขอบไฟ
       // (เห็นชัดตอนสั่งไปประจำสถานีที่อยู่คนละฝั่งแผนที่ — ยืนนิ่งกันเป็นกอง)
       const onDuty = !!post;
@@ -1032,7 +1073,16 @@ const API = {
         const ty = far ? hy : hy + (Math.random() - 0.5) * roam;
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
-        if (ok) c.path = findPath(c.x, c.y, ok[0], ok[1]);
+        if (ok) {
+          c.path = findPath(c.x, c.y, ok[0], ok[1]);
+          // เซฟเก่าอาจจำตัวไว้ในช่องเปิดเล็กใต้ฐานอาคาร: canWalk=true แต่ช่องนั้น
+          // ไม่ได้เชื่อมกับแผนที่หลัก จึงหาเส้นทางไม่ได้และยืนนิ่งตลอดไป
+          // ถ้ากำลังพยายามกลับจุดประจำแล้วยังออกไม่ได้ ให้ย้ายไปยังพื้นโล่งใกล้บ้านใหม่ทันที
+          if (far && !c.path) {
+            const rescue = nearestWalk(hx, hy, seen);
+            if (rescue) { c.x = rescue[0]; c.y = rescue[1]; c.path = null; }
+          }
+        }
         c.wait = far ? 200 : 700 + Math.random() * 2600;
       }
       if (!c.sayUntil || Date.now() > c.sayUntil + 9000) {

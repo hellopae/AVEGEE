@@ -41,6 +41,24 @@ function ring(ctx, x, y, t, w = 30) {
   ctx.beginPath(); ctx.ellipse(x, y, w, w * 0.34, 0, 0, 7); ctx.stroke();
 }
 
+/** เดินตามระยะจริงของเส้น ไม่ใช่หารเวลาเท่ากันทุก waypoint (ช่วงสั้น/ยาวจึงไม่กระตุก) */
+function pointOnPath(path, progress) {
+  if (!path?.length) return [0, 0];
+  if (path.length === 1) return path[0];
+  const lengths = path.slice(1).map((p, i) => Math.hypot(p[0] - path[i][0], p[1] - path[i][1]));
+  const total = lengths.reduce((a, b) => a + b, 0) || 1;
+  let left = Math.max(0, Math.min(1, progress)) * total;
+  for (let i = 0; i < lengths.length; i++) {
+    if (left <= lengths[i] || i === lengths.length - 1) {
+      const q = lengths[i] ? left / lengths[i] : 0;
+      return [path[i][0] + (path[i + 1][0] - path[i][0]) * q,
+              path[i][1] + (path[i + 1][1] - path[i][1]) * q];
+    }
+    left -= lengths[i];
+  }
+  return path[path.length - 1];
+}
+
 export function render(ctx, g, t, hover, sel) {
   const cv = ctx.canvas, sc = scaleFor(cv);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -103,15 +121,30 @@ export function render(ctx, g, t, hover, sel) {
 
   // วิญญาณที่เพิ่งออกหมายเดินไปสถานีตามเส้นทางที่หาไว้ใน game.js
   const clock = Date.now();
-  g.transits = (g.transits || []).filter(v => clock < v.started + v.duration);
+  g.transits = (g.transits || []).filter(v => clock < (v.arriveAt || v.started + v.duration));
   for (const v of g.transits) {
-    const p = Math.max(0, Math.min(1, (clock - v.started) / v.duration));
-    const atStep = p * (v.path.length - 1), i = Math.min(v.path.length - 2, Math.floor(atStep));
-    const a = v.path[i], b = v.path[i + 1], mix = atStep - i;
-    const x = a[0] + (b[0] - a[0]) * mix, y = a[1] + (b[1] - a[1]) * mix;
+    const escorted = !!v.pickup;
+    const waiting = escorted && clock < v.departAt;
+    const crewProgress = escorted ? (clock - v.pickupAt) / (v.departAt - v.pickupAt - 650) : 1;
+    const travelProgress = escorted ? (clock - v.departAt) / (v.arriveAt - v.departAt)
+                                    : (clock - v.started) / v.duration;
+    const soulAt = waiting ? QUEUE_LINE[0] : pointOnPath(v.outbound || v.path, travelProgress);
+    const crewAt = escorted ? (waiting ? pointOnPath(v.pickup, crewProgress)
+                                       : pointOnPath(v.outbound, travelProgress)) : null;
+    const x = soulAt[0], y = soulAt[1];
     at(y, () => {
       drawSoul(ctx, x, y, SOUL_H * .82, t + v.id * 300, '#d9eaff', v.sp || 7);
-      if (p < .2) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
+      if (waiting) tag(ctx, x, y - SOUL_H - 12, t,
+        [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
+      else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
+    });
+    if (crewAt) at(crewAt[1] + 1, () => {
+      const face = waiting
+        ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1)
+        : (x < crewAt[0] ? -1 : 1);
+      drawStandee(ctx, poseOr(`crew-${v.crew}-work`, `crew-${v.crew}`),
+                  crewAt[0] - (waiting ? 0 : 24 * face), crewAt[1], CREW_H, t,
+                  v.crewGlyph || '👹', face, true);
     });
   }
 
@@ -172,7 +205,7 @@ export function render(ctx, g, t, hover, sel) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of g.crew) {
-    if (c.x == null) continue;
+    if (c.x == null || c.escort) continue;
     at(c.y, () => {
       const base = 'crew-' + c.k;
       if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
