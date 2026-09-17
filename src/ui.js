@@ -588,8 +588,10 @@ function drawAtk() {
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
 
+  // ประตูสวรรค์ (heaven) ไม่ใช่ทัณฑ์ — ปุ่มลอยตอนยืนใกล้สถานีนี้ต้องเลี่ยงคำว่า "ทัณฑ์"/ไอคอนไฟ
   const [label, color] =
       near     ? [`⚔️ เข้าต่อสู้กับเปรต (${g.mobs.length})`, 'var(--destructive)']
+    : st?.def.heaven ? [`🕊️ ส่งเข้าประตูสวรรค์ที่${st.def.name}`, 'var(--gold)']
     : st       ? [`🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`, 'var(--gold)']
     : canThrow ? [`🔥 ขว้างลูกไฟใส่เปรต · ×${fire.ammo}`, 'var(--gold)']
     : n        ? [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วเข้าต่อสู้`, 'var(--muted-foreground)']
@@ -597,7 +599,7 @@ function drawAtk() {
   btn.textContent = label;
   btn.style.color = color;
   // ปุ่มลอยบนฉากใช้ข้อความสั้นกว่า — บนมือถือมีที่ไม่มาก
-  fab.textContent = near ? '⚔️ เข้าต่อสู้' : st ? '🔥 ลงทัณฑ์เอง' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
+  fab.textContent = near ? '⚔️ เข้าต่อสู้' : st?.def.heaven ? '🕊️ ส่งเข้าประตูสวรรค์' : st ? '🔥 ลงทัณฑ์เอง' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
   fab.classList.toggle('hot', !!near);
   fab.classList.toggle('gold', !near && !!st);
 }
@@ -1883,7 +1885,13 @@ function openStation(k) {
     const inside = !!(R && R.inReach());
 
     const acts = [];
-    if (cap) acts.push(`<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
+    // ประตูสวรรค์ (def.heaven) ไม่ใช่การลงทัณฑ์ — เป็นการส่งดวงเข้าประตูกลับขึ้นชั้นฟ้า
+    // ปุ่ม/ไอคอน/คำใบ้ต้องแยกจากสถานีลงทัณฑ์ทั่วไป ไม่งั้นความหมายผิด (เจ้าของทัก 17 ก.ย. 2569)
+    if (cap) acts.push(def.heaven
+      ? `<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
+        🕊️ ส่งเข้าประตูสวรรค์<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
+          : !inside ? 'เดินเข้าไปให้ถึงหน้าประตูก่อน' : `เร่งส่งดวงแรกเข้าประตู · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`
+      : `<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
         🔥 ลงทัณฑ์เอง<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
           : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
     // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน

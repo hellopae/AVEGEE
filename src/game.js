@@ -1381,7 +1381,10 @@ const API = {
     const c = this.crewOf(st.crewK);
     const k = Math.round(BAL.smiteKarma * (c && c.metta >= 8 ? 0.5 : 1) * 10) / 10;
     this.karma = clamp(this.karma + k, 0, 100);
-    this.log(`🔥 ท่านซัดไฟใส่${slot.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
+    // ประตูสวรรค์ (heaven) ไม่ใช่การลงทัณฑ์ — ข้อความในล็อกต้องไม่พูดว่า "ซัดไฟ" (เจ้าของทัก 17 ก.ย. 2569)
+    this.log(d.heaven
+      ? `🕊️ ท่านเร่งส่ง${slot.soul.who}เข้าประตูสวรรค์เอง — ดวงเคลื่อนเร็วขึ้น · กรรมท่าน +${k}`
+      : `🔥 ท่านซัดไฟใส่${slot.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
     if (slot.progress >= slot.need) this.finish(st, slot);
     this.onChange();
     return true;
