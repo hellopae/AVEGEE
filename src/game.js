@@ -1,7 +1,7 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
          POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
-         MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, starsOf,
+         MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
@@ -159,7 +159,8 @@ function mkSoul(tags, hiddenBonus = 0) {
  *  รูป (sp) เพศ (sex) และเนื้อสำนวน จึงตรงกันเสมอโดยไม่ต้องพึ่งการสุ่ม */
 function mkCaseSoul(c) {
   const soul = {
-    id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex, sp: c.sp,
+    id: SEQ++, case: c.k, kind: c.kind, who: c.who, name: c.name, sex: c.sex,
+    sp: safeSp(c.sp, c.sex),   // 17 ก.ย. 2569: A4 sp:4 อ่านเป็นหญิงทั้งที่ sex:'m' — กันซ้ำที่ต้นเหตุ ไม่ใช่แก้เคสเดียว
     face: c.face, waited: 0, said: [], denied: null, resist: !!c.resist,
     calm: !!c.calm,        // ห้ามเข้าฉากต่อสู้เลย แม้กลับมาเป็นคดีซ้ำ (ดู cases.js เรื่องเจ้าอาวาส)
     pure: isPure(c),
