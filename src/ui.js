@@ -1,7 +1,7 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
-         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
+         KARMA_RELIEF, BATTLE, ZONES, ZONE4_BOSS_DRAFT, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -1604,33 +1604,41 @@ function openBattle(after) {
 }
 
 // ---------- ย้ายโซน ----------
+// การ์ดเกาะ img/Zone<N>.webp (17 ก.ย. 2569) — แทนที่รายการตัวหนังสือเดิม
+// โซน 4 (CyberHell) ยังไม่มีใน ZONES[] เลยไม่มีวันเล่นได้จริง (ดู ZONE4_BOSS_DRAFT ใน data.js)
+// แสดงเป็นเกาะที่ 4 ล็อกถาวรไว้ให้เห็นว่ามีอยู่ แต่ไม่มี data-zone จึงกดยังไงก็ไม่ทำงาน
 function openZone() {
-  const open = g.zonesOpen();
   const cur = g.zoneDef();
   pauseForDlg();
+  const cards = ZONES.map((z, i) => {
+    const here = z.k === g.zone;
+    const lock = !g.canMoveZone(z.k);
+    const prev = ZONES[i - 1];
+    const why = lock ? (g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
+      : z.sub;
+    return `<div class="isle-card${here ? ' here' : ''}${lock ? ' locked' : ''}">
+      <span class="badge">${here ? '📍' : lock ? '🔒' : ''}</span>
+      <img src="img/Zone${i + 1}.webp" alt="${esc(z.name)}" loading="lazy">
+      <b>${esc(z.name)}</b><small>${esc(why)}</small>
+      ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
+             : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
+    </div>`;
+  }).join('') + `<div class="isle-card locked draft">
+      <span class="badge">🔒</span>
+      <img src="img/Zone4.webp" alt="${esc(ZONE4_BOSS_DRAFT.name)}" loading="lazy">
+      <b>${esc(ZONE4_BOSS_DRAFT.name)}</b><small>เปิดให้เล่นเร็ว ๆ นี้</small>
+      <button class="sm" disabled>ยังเล่นไม่ได้</button>
+    </div>`;
   modal(`<h2>🗺️ ย้ายโซน</h2>
-    <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}</div>
-    <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
-      ย้ายแล้ว <b>ยมทูต เบี้ยกรรม พลัง บารมี และกรรมของท่านติดตัวไปทั้งหมด</b> —
-      แต่ <b style="color:var(--warning)">สถานีทัณฑ์ต้องสร้างใหม่ทั้งโซน</b> และคิวเดิมถูกโอนให้สาขาอื่นรับช่วง</p>
-    ${ZONES.map(z => {
-      const here = z.k === g.zone;
-      const lock = !g.canMoveZone(z.k);
-      const prev = ZONES[ZONES.indexOf(z) - 1];
-      return `<div class="shop"><span class="g">${here ? '📍' : lock ? '🔒' : '🗺️'}</span>
-        <span class="n"><b>${esc(z.name)}</b><div>${esc(z.sub)}</div>
-          <div style="color:var(--muted-foreground)">${lock ? (g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
-            : `งบตั้งต้น ${z.coin} เบี้ยกรรม`}</div></span>
-        ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
-               : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
-      </div>`;
-    }).join('')}
-    ${open.length ? '' : '<div class="hint">ปิด 10 สำนวนในโซนแล้วชนะบอสเพื่อเปิดทางไปสาขาถัดไป</div>'}
+    <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}
+      · ย้ายแล้ว <b>คน เบี้ยกรรม พลัง บารมี กรรม ติดตัวไปหมด</b> แต่
+      <b style="color:var(--warning)">สถานีทัณฑ์ต้องสร้างใหม่ทั้งโซน</b></div>
+    <div class="isle-grid">${cards}</div>
     <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`,
-    d => d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
+    d => { d.classList.add('zonepick'); d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
       if (!g.moveZone(b.dataset.zone)) return;
       sfx('gong'); dlg.close(); refresh();
-    }));
+    }); });
 }
 
 function openOutfit() {

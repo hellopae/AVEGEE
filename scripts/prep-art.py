@@ -284,6 +284,14 @@ def prep(path, name, out_dir=OUT):
         if box:
             im = im.crop(box)
         im.putalpha(im.getchannel('A').point(lambda v: 0 if v < 16 else v))
+    if re.fullmatch(r'Zone\d+', name):        # การ์ดเกาะในกล่องเลือกโซน (17 ก.ย. 2569)
+        # พื้นหลังโปร่งใสอยู่แล้วจากต้นฉบับ (alpha ต่ำทั่วมุมภาพ ไม่ใช่ลอกพื้นทึบแบบสไปรท์ตัวละคร)
+        # ไม่ใช่ standee — ห้ามชิดขอบล่าง แค่ย่อคง proportion เดิมแล้วแปลง webp ตามใบงาน
+        if max(im.size) > SIZE:
+            s = SIZE / max(im.size)
+            im = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+        im.save(os.path.join(OUT, name + '.webp'), 'WEBP', quality=90, method=6)
+        return im.size
     if name == 'tileset':                    # atlas ห้ามยืด ปล่อยผ่าน
         im.save(os.path.join(OUT, name + '.png'))
         return im.size
@@ -380,7 +388,9 @@ def main():
         name, warn = out_name(sub, os.path.splitext(f)[0])
         out_dir = os.path.join(OUT, sub) if sub else OUT
         os.makedirs(out_dir, exist_ok=True)
-        dst = os.path.join(out_dir, name + ('.webp' if name.startswith('BG-') else '.png'))
+        # .webp = ฉากห้องสถานี (BG-*) และการ์ดเกาะเลือกโซน (Zone<N>) · ที่เหลือ .png ทั้งหมด
+        is_webp = name.startswith('BG-') or bool(re.fullmatch(r'Zone\d+', name))
+        dst = os.path.join(out_dir, name + ('.webp' if is_webp else '.png'))
         src = os.path.join(RAW, rel)
         # ทำเฉพาะของใหม่ — ผลลัพธ์ที่มีอยู่แล้วไม่ถูกแตะ ไม่งั้นแก้กติกาทีไร รูปทั้งเกมเปลี่ยนตามหมด
         if not force and rel not in fresh and os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src):
