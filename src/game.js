@@ -48,6 +48,8 @@ export function createGame() {
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
+    // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
+    bossArriveSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
@@ -1729,8 +1731,14 @@ const API = {
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
     if (B.kind === 'zoneBoss') {
-      this.log(B.over === 'win' ? `👑 ชนะ${B.who} — ปลดทางไปโซนถัดไป`
-        : `👑 แพ้${B.who} — เขาเฝ้าสะพานอยู่ เดินเข้าไปท้าสู้เมื่อพร้อม`, B.over === 'win' ? 'good' : 'event');
+      // บทตอนบอสแพ้/ยมน้อยแพ้ ใช้บท "ผู้ตรวจการ" ของ Rae แทน log ทั่วไป (17 ก.ย. 2569)
+      // ผ่าน Reese fact-check แล้ว — ดู ZONES[].bossWin/bossLose ใน data.js ห้ามแก้ถ้อยคำ
+      const zb = ZONES.find(z => z.k === B.zone);
+      const winLine = zb?.bossWin ? zb.bossWin.join(' ') : '';
+      this.log(B.over === 'win'
+        ? `👑 ชนะ${B.who} — ${winLine || 'ปลดทางไปโซนถัดไป'}`
+        : `👑 แพ้${B.who} — ${zb?.bossLose || 'เขาเฝ้าสะพานอยู่ เดินเข้าไปท้าสู้เมื่อพร้อม'}`,
+        B.over === 'win' ? 'good' : 'event');
       this.onChange(); return B;
     }
     if (B.kind === 'mob') {
@@ -1956,7 +1964,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals,
-    bossGuarding: this.bossGuarding,
+    bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
@@ -2020,6 +2028,9 @@ API.restore = function (d) {
     : this.zone === 'asia' ? { th: true } : {});
   this.bossRetryAt = d.bossRetryAt || {};
   this.bossGuarding = d.bossGuarding || {};
+  // เซฟเก่าก่อนมีฉากมาถึง — ถ้าเคยเจอบอสโซนนั้นแล้ว (ผ่านหรือแพ้แล้วเฝ้าสะพานอยู่) ถือว่าเห็นฉากมาถึงแล้ว
+  // ไม่งั้นผู้เล่นที่เล่นมาก่อนจะโดนฉากมาถึงย้อนหลังทั้งที่สู้บอสไปแล้ว
+  this.bossArriveSeen = d.bossArriveSeen || { ...this.bossCleared, ...this.bossGuarding };
   this.bossWalk = null;
   this.zoneEntry = d.zoneEntry || null;
   this.bossPending = this.bossReady();

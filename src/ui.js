@@ -909,6 +909,36 @@ function beginBossBridgeWalk() {
   bossBridgeTimer = setTimeout(finishWalk, 2600);
 }
 
+/** ฉากมาถึงของบอสประจำโซน — 3-4 บรรทัดสลับผู้พูด ก่อนสู้ครั้งแรกเท่านั้น (17 ก.ย. 2569)
+ *  รีแมตช์ (bossArriveSeen ติดไปแล้ว) ข้ามตรงไปสู้เลย · ใช้ภาพ Intro-Boss-Zone<N> เป็นพื้นหลังถ้ามี
+ *  บทมาจาก Rae ผ่าน Reese fact-check แล้ว (ดู ZONES[].bossArrive ใน data.js) ห้ามแก้ถ้อยคำ */
+function openBossArrive(z, onDone) {
+  const lines = z.bossArrive || [];
+  if (!lines.length) { onDone(); return; }
+  const zn = ZONES.findIndex(x => x.k === z.k) + 1;
+  const bg = artUrl(`Intro-Boss-Zone${zn}`) || artUrl('hero-boss');
+  pauseForDlg();
+  let i = 0;
+  const paint = () => {
+    const line = lines[i];
+    const m = line.match(/^([^:]{1,14}):\s*(.+)$/);
+    const speaker = m ? m[1] : z.bossName;
+    const text = (m ? m[2] : line).replace(/^"|"$/g, '');
+    dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="ฉากมาถึง ${esc(z.bossName)} หน้า ${i + 1} จาก ${lines.length}">
+      <div class="intro-comic-frame">
+        <img src="${bg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-boss')}'">
+        <div class="intro-comic-head"><span>👑 ${esc(z.bossName)}มาถึงแล้ว</span><span>${i + 1} / ${lines.length}</span></div>
+        <div class="intro-comic-caption"><h2>${esc(speaker)}</h2><p>${esc(text)}</p></div>
+      </div>
+      <div class="intro-comic-controls"><button class="gold" id="arrive-next">${i + 1 === lines.length ? '⚔️ สู้เลย' : 'หน้าถัดไป →'}</button></div>
+    </div>`;
+    dlg.querySelector('#arrive-next').onclick = () => { if (++i >= lines.length) dlg.close(); else paint(); };
+  };
+  openDlg('intro-comic-dialog');
+  onDlgClose(onDone);
+  paint();
+}
+
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
@@ -2070,8 +2100,16 @@ g.onChange = () => {
     openDadPunish(p); return;
   }
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
-    if (g.zone === 'th') { beginBossBridgeWalk(); return; }
-    if (g.startZoneBoss()) openBattle();
+    const z = g.zoneDef();
+    const proceed = () => {
+      if (g.zone === 'th') { beginBossBridgeWalk(); return; }
+      if (g.startZoneBoss()) openBattle();
+    };
+    // ฉากมาถึงขึ้นก่อนครั้งแรกเท่านั้น — รีแมตช์ (ติดธงแล้ว) ข้ามตรงไปสู้เลยตามใบงาน
+    if (!g.bossArriveSeen[g.zone]) {
+      g.bossArriveSeen[g.zone] = true; g.save();
+      openBossArrive(z, proceed);
+    } else proceed();
     return;
   }
   if (g.pendingZone) {
