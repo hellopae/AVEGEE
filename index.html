@@ -604,9 +604,16 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
    เจ้าของอ้างอิงเลย์เอาต์จากเกม tactics: ฉากเป็นพื้นหลังเต็มจอ · HUD ลอยทับเป็นชั้น ๆ
      บนสุด = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
      ล่างซ้าย = โปรไฟล์ Yama + ของ · ล่างขวา = โปรไฟล์วิญญาณ */
-dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);padding:0;border:0;background:transparent;
+/* min-width กันไว้อีกชั้น (17 ก.ย. 2569 — เจ้าของเจอห้องสอบสวนหดเหลือ ~1/4 จอหลังกดปุ่ม บน desktop)
+   ไล่ทุกจุดที่คำนวณ width ของกล่องนี้แล้วไม่พบตัวที่ทำให้แคบลงจริง (ทดสอบผ่าน Playwright
+   ครบทุกปุ่ม/ทุกรอบสอบสวน/ความกว้างจอ 700-1920 ทั้ง Chromium และ WebKit ไม่เจอเคสที่หด)
+   ใส่ min-width ชนกับ max-width ไว้เป็นเกราะสุดท้าย — ต่อให้มี style อื่นมาแย่งชิง width ทีหลัง
+   กล่องนี้ก็หดต่ำกว่านี้ไม่ได้อีก (บั๊กเดิมถ้าเกิดซ้ำจะรู้ทันทีว่าไม่ใช่ที่ width ของ dialog เอง) */
+dialog.hudwrap{max-width:1180px;width:calc(100% - 24px);min-width:min(1180px,calc(100% - 24px));
+  box-sizing:border-box;padding:0;border:0;background:transparent;
   max-height:94dvh;overflow:hidden}
-.hud{position:relative;display:flex;flex-direction:column;gap:0;height:min(94dvh,780px);
+.hud{position:relative;display:flex;flex-direction:column;gap:0;width:100%;box-sizing:border-box;
+  height:min(94dvh,780px);
   background:#221324 center 42%/cover no-repeat;border:1px solid var(--border);
   border-radius:var(--radius);overflow:hidden;color:var(--foreground)}
 .hud-scrim{position:absolute;inset:0;pointer-events:none;
