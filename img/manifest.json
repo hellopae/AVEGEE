@@ -122,7 +122,7 @@
 "Asia/BG-Sawan-asia.webp",
 "Asia/BG-Tarang-asia.webp",
 "Asia/BG-Tea-asia.webp",
-"Asia/Boos Zone2-asia.png",
+"Asia/Boss Zone2-asia.png",
 "Asia/Intro-Boss-Zone2-asia.png",
 "Asia/crew-boon-asia-profile.png",
 "Asia/crew-boon-asia.png",
@@ -167,20 +167,35 @@
 "CyberHell/crew-nira-cyberhell.png",
 "CyberHell/hero-yama-cyberhell.png",
 "CyberHell/intro-zone4-cyberhell.png",
+"CyberHell/st-dab-cyberhell.png",
+"CyberHell/st-krata-cyberhell.png",
+"CyberHell/st-lokan-cyberhell.png",
 "CyberHell/zone-boss-cyber-cyberhell.png"
 ],
 "west": [
 "West/BG-Lan-west.webp",
+"West/Boss Zone3-west-profile.png",
 "West/Boss Zone3-west.png",
 "West/Intro-Boss-Zone3-west.png",
+"West/crew-boon-west-profile.png",
+"West/crew-boon-west.png",
+"West/crew-dam-west-profile.png",
+"West/crew-dam-west.png",
+"West/crew-kan-west-profile.png",
+"West/crew-kan-west.png",
 "West/crew-nira-west-profile.png",
 "West/crew-nira-west.png",
+"West/crew-plerng-west-profile.png",
+"West/crew-plerng-west.png",
+"West/crew-taan-west-profile.png",
+"West/crew-taan-west.png",
 "West/hero-yama-west-profile.png",
 "West/hero-yama-west.png",
 "West/intro-zone3-west.png",
 "West/st-dab-west.png",
 "West/st-krata-west.png",
 "West/st-lokan-west.png",
+"West/st-ngiw-west.png",
 "West/st-sala-west.png",
 "West/zone-boss-west.png"
 ]
@@ -312,6 +327,24 @@
 0.998,
 0.998
 ],
+"st-dab-cyberhell": [
+0.002,
+0.1055,
+0.998,
+0.998
+],
+"st-krata-cyberhell": [
+0.002,
+0.166,
+1.0,
+0.998
+],
+"st-lokan-cyberhell": [
+0.002,
+0.2188,
+0.998,
+0.998
+],
 "st-dab-west": [
 0.002,
 0.2715,
@@ -328,6 +361,12 @@
 0.002,
 0.0,
 0.998,
+0.998
+],
+"st-ngiw-west": [
+0.1777,
+0.002,
+0.8203,
 0.998
 ],
 "st-sala-west": [
