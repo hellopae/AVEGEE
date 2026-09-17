@@ -47,6 +47,16 @@
 "fx-ice.png",
 "fx-mirror.png",
 "fx-slash.png",
+"intro-panel-01.png",
+"intro-panel-01.webp",
+"intro-panel-02.png",
+"intro-panel-02.webp",
+"intro-panel-03.png",
+"intro-panel-03.webp",
+"intro-panel-04.png",
+"intro-panel-04.webp",
+"intro-panel-05.png",
+"intro-panel-05.webp",
 "item-fuel.png",
 "item-health.png",
 "item-hypno.png",
@@ -60,8 +70,10 @@
 "prop-boat.png",
 "prop-lantern.png",
 "prop-throne-platform-v1.png",
+"prop-throne-platform.png",
 "scene-asia.png",
 "scene-foreground-v1.png",
+"scene-foreground.png",
 "scene-ground-v1.png",
 "scene-west.png",
 "soul-boy.png",
@@ -103,12 +115,15 @@
 "Asia/BG-Dab-asia.webp",
 "Asia/BG-Krajok-asia.webp",
 "Asia/BG-Krata-asia.webp",
+"Asia/BG-Lan-asia.webp",
 "Asia/BG-Lokan-asia.webp",
 "Asia/BG-Ngiw-asia.webp",
 "Asia/BG-Sala-asia.webp",
 "Asia/BG-Sawan-asia.webp",
 "Asia/BG-Tarang-asia.webp",
 "Asia/BG-Tea-asia.webp",
+"Asia/Boos Zone2-asia.png",
+"Asia/Intro-Boss-Zone2-asia.png",
 "Asia/crew-boon-asia-profile.png",
 "Asia/crew-boon-asia.png",
 "Asia/crew-dam-asia-profile.png",
@@ -128,6 +143,7 @@
 "Asia/hero-yama-asia-atk.png",
 "Asia/hero-yama-asia-profile.png",
 "Asia/hero-yama-asia.png",
+"Asia/intro-zone2-asia.png",
 "Asia/mob-gaki-asia.png",
 "Asia/mob-hitodama-asia.png",
 "Asia/mob-kasha-asia.png",
@@ -145,13 +161,27 @@
 "Asia/zone-boss-asia.png"
 ],
 "cyberhell": [
+"CyberHell/BG-Lan-cyberhell.webp",
+"CyberHell/Boss Zone4-cyberhell.png",
+"CyberHell/Intro-Boss-Zone4-cyberhell.png",
+"CyberHell/crew-nira-cyberhell.png",
+"CyberHell/hero-yama-cyberhell.png",
+"CyberHell/intro-zone4-cyberhell.png",
 "CyberHell/zone-boss-cyber-cyberhell.png"
 ],
 "west": [
+"West/BG-Lan-west.webp",
+"West/Boss Zone3-west.png",
+"West/Intro-Boss-Zone3-west.png",
 "West/crew-nira-west-profile.png",
 "West/crew-nira-west.png",
 "West/hero-yama-west-profile.png",
 "West/hero-yama-west.png",
+"West/intro-zone3-west.png",
+"West/st-dab-west.png",
+"West/st-krata-west.png",
+"West/st-lokan-west.png",
+"West/st-sala-west.png",
 "West/zone-boss-west.png"
 ]
 },
@@ -279,6 +309,30 @@
 "st-tea-asia": [
 0.0,
 0.0391,
+0.998,
+0.998
+],
+"st-dab-west": [
+0.002,
+0.2715,
+0.998,
+0.998
+],
+"st-krata-west": [
+0.0,
+0.2168,
+1.0,
+1.0
+],
+"st-lokan-west": [
+0.002,
+0.0,
+0.998,
+0.998
+],
+"st-sala-west": [
+0.002,
+0.1582,
 0.998,
 0.998
 ]
