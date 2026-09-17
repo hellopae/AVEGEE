@@ -270,6 +270,20 @@ def prep(path, name, out_dir=OUT):
             os.path.join(OUT, name + '.png'))
         return im.size
 
+    # ฉากมาถึงของบอส (Intro-Boss-Zone<N>[-โซน]) — ภาพฉากกว้างเต็มใบ (~16:9) ไม่ใช่ standee
+    # (17 ก.ย. 2569 เจ้าของเจอ: กรอบครึ่งบนว่างดำ หัว/ท้องฟ้าถูกตัด) ต้นเหตุคือชื่อไฟล์ไม่ตรงกติกา
+    # 'scene'/'BG-' เลยหลุดไปเข้าทางสไปรท์ตัวละครแทน — ทางนั้นลอกพื้นหลัง + ครอปให้ชิดขอบล่างบนผืน
+    # จัตุรัส 512×512 (สำหรับ standee) ภาพกว้างเลยเหลือแค่ครึ่งล่างของผืน ครึ่งบนโปร่งใส
+    # พอไปเข้ากรอบ .intro-comic-frame (aspect-ratio:16/9, object-fit:cover) พื้นโปร่งใสนั้นก็ทะลุ
+    # เป็นสีมืดของกล่อง และเนื้อภาพ (ซึ่งอยู่ครึ่งล่างของผืนสี่เหลี่ยมจัตุรัสอยู่แล้ว) ถูก cover crop
+    # กลางผืนซ้ำอีกชั้น หัว/ท้องฟ้าที่ตั้งใจให้อยู่ครึ่งบนของภาพจริงเลยหายไปทั้งคู่
+    # ทางแก้: ห้ามลอกพื้น ห้ามครอปชิดขอบล่าง — ปฏิบัติเหมือนภาพฉาก (scene-) เต็มใบ
+    if re.match(r'Intro-Boss-Zone\d+', name):
+        if im.width > SCENE_W:
+            im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
+        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
+        return im.size
+
     if im.mode != 'RGBA' and not name.startswith('tile-') and not name.startswith('scene'):
         im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
     im = im.convert('RGBA')
@@ -354,7 +368,11 @@ def ingest():
             ext = os.path.splitext(f)[1].lower()
             if f.startswith('.') or ext not in ('.png', '.jpg', '.jpeg', '.webp'):
                 continue
-            if ext == '.webp' or f.startswith('scene'):
+            # scene-* และ Intro-Boss-Zone<N>[-โซน] เป็นภาพฉากเต็มใบ ไม่ถูกบีบเหลือ 512×512
+            # เหมือนสไปรท์ตัวละคร (ดู prep()) เช็คขนาดอย่างเดียวเลยจับผิดว่าเป็นต้นฉบับ ย้ายมันไป
+            # img/raw/ ทั้งที่เป็นผลลัพธ์ที่ถูกต้องแล้ว (เจ้าของเจอ 17 ก.ย. 2569 — Intro-Boss ของ
+            # ทุกโซนหายไปจาก img/ หลังรันสคริปต์รอบถัดมา) เช็คชื่อไฟล์กันไว้เหมือน scene-*
+            if ext == '.webp' or f.startswith('scene') or re.match(r'Intro-Boss-Zone\d+', f):
                 continue
             if ext == '.png':
                 with Image.open(p) as im:
