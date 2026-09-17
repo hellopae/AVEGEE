@@ -375,7 +375,11 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 #title .scrim{position:absolute;inset:0;
   background:linear-gradient(90deg,rgba(11,5,8,0) 38%,rgba(11,5,8,.72) 62%,rgba(11,5,8,.93) 100%)}
 #title .menu{position:relative;grid-column:2;display:flex;flex-direction:column;justify-content:center;
-  gap:var(--space-3);padding:var(--space-5) clamp(20px,4vw,44px);min-width:0}
+  gap:var(--space-3);padding:var(--space-5) clamp(20px,4vw,44px);min-width:0;
+  /* กันเมนูล้นจอแล้วโดน #title{overflow:hidden} ตัดทิ้งเงียบ ๆ (พบที่ 360×640 — ข้อความท้ายหน้าปก
+     หายไปทั้งหมด ไม่ใช่แค่ล้น) เพดานสูงเท่าจอ + เลื่อนได้เอง ไม่ผูกกับ breakpoint ใดเลย
+     ไม่กระทบจอที่พอดีอยู่แล้วเพราะไม่มีอะไรให้เลื่อน (Dale แก้ 17 ก.ย. 2569 ระหว่างรีวิว) */
+  max-height:100vh;overflow-y:auto}
 /* ---------- โลโก้เกม ----------
    บน = "อเวจี" ทองไล่สีแบบทองลงรักปิดทอง · ล่าง = CEO OF HELL คั่นด้วยเส้นทองกับข้าวหลามตัด
    คั่นกลางด้วยลายกนกเปลวไฟ · ทั้งชุดกว้างเท่ากันหมด (width:fit-content แล้วให้ลูกยืดเต็ม)
