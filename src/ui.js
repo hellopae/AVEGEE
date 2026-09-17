@@ -8,7 +8,7 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey, artUrl, bindZone, bindHeroStyle, warmZone } from './art.js';
+import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -916,7 +916,11 @@ function openBossArrive(z, onDone) {
   const lines = z.bossArrive || [];
   if (!lines.length) { onDone(); return; }
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
-  const bg = artUrl(`Intro-Boss-Zone${zn}`) || artUrl('hero-boss');
+  // ภาพบอสระยะใกล้พร้อมพื้นหลังในตัว (คุณเป้สั่ง 17 ก.ย. 2569 "ใช้รูปโปรไฟล์ตรงไหนก็ตามที่เกมโชว์ภาพบอส")
+  // — ยังไม่มีทุกโซน จึงถอยไปใช้ฉากมาถึงเดิมถ้าไม่มี · โซน 1 ไม่ผ่านโฟลเดอร์โซนเลย ข้ามการเช็คนี้ไปเลย
+  // เพราะ artUrl() คืน path ตรง ๆ เสมอแม้ไฟล์ไม่มีจริง (จะเข้าใจผิดว่าเจอไฟล์ทั้งที่ยังไม่โหลดสำเร็จ)
+  const bossProfile = z.k !== 'th' && zoneImg(`Boss Zone${zn}-profile`);
+  const bg = (bossProfile && bossProfile.src) || artUrl(`Intro-Boss-Zone${zn}`) || artUrl('hero-boss');
   pauseForDlg();
   let i = 0;
   const paint = () => {

@@ -214,11 +214,19 @@ def drop_specks(im):
     return im, n
 
 
+#  ต้นฉบับ raw สะกดผิด แต่คุณเป้สั่ง 17 ก.ย. 2569 ห้ามแก้ไฟล์ raw — แก้แค่ชื่อไฟล์ผลลัพธ์ที่จุดเดียวนี้
+#  คีย์ = 'sub/ชื่อไฟล์ (ไม่มีนามสกุล)' ตามที่อยู่จริงใน img/raw/ → ค่า = ชื่อที่ถูกก่อนต่อท้ายโซน
+RENAME = {
+    'Asia/Boos Zone2': 'Boss Zone2',   # img/raw/Asia/Boos Zone2.png → ผลลัพธ์ Boss Zone2-asia.png
+}
+
+
 def out_name(sub, name):
     """ชื่อไฟล์ปลายทางของไฟล์ในโฟลเดอร์โซน — คืน (ชื่อ, คำเตือน)
     บังคับให้ลงท้ายตามแบบ <key>-<zone>[-<ท่า>] เพื่อให้ art.js หาเจอ"""
     if not sub:
         return name, ''
+    name = RENAME.get(f'{sub}/{name}', name)
     z = sub.lower()
     m = re.fullmatch(r'(.+)-(' + '|'.join(POSES) + r')-' + z, name)   # crew-taan-work-asia → crew-taan-asia-work
     if m:

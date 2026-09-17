@@ -1494,7 +1494,10 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'zoneBoss', zone: z.k, who: z.bossName, sub: z.bossSub,
-      sp: z.k === 'th' ? 'zone-boss' : `zone-boss-${z.k}`,
+      // 17 ก.ย. 2569: เดิมต่อ -<zone> เองตรงนี้ แต่ artUrl()/zoneStem() ต่อให้อยู่แล้วทุกคีย์
+      // (เหมือน sp:'hero-boss' ด้านล่าง) — ต่อซ้อนสองรอบ เลยหาไฟล์ไม่เจอ บอสโซน 2-4 เลยตกไปใช้
+      // spirit7.png (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว
+      sp: 'zone-boss',
       foeHp: hp, foeMax: hp, youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null, prep:null,
     };
