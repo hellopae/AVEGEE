@@ -349,13 +349,25 @@ function meThought() {
   return '"พิพากษาให้ตรงกรรม ไม่ใช่ให้แรงที่สุด — พ่อพูดไว้แบบนั้น"';
 }
 
-/** เฉลยคดี: ความจริงทั้งหมด vs สิ่งที่เราสั่งไป */
+/** เฉลยคดี: ความจริงทั้งหมด vs สิ่งที่เราสั่งไป
+ *  17 ก.ย. 2569 — คุณเป้สั่ง: hidden/reveal เปิดได้แค่หลังสอบสวนหรือใช้พลังเท่านั้น
+ *  ก่อนหน้านี้ฟังก์ชันนี้โชว์ soul.deeds/merits "ทั้งชุด" ไม่กรองเลย ไม่ว่า closed จะเป็นอะไร
+ *  พอถูกเรียกตอนวิญญาณ "กำลังรับทัณฑ์" (stx ใน infoOf, closed=false) — คือแค่ลากไปส่งสถานี
+ *  ยังไม่ทันสอบสวน/ใช้พลังสักครั้ง — เรื่องที่ซ่อนไว้กับบุญปลอมก็โชว์เต็มอยู่ดี ทั้งที่ข้อความ
+ *  hint ก่อนหน้านั้นบอกผู้เล่นไว้เองว่า "เฉลยจะขึ้นตรงนี้หลังปิดคดีแล้ว" (ui.js บรรทัด ~489)
+ *  ตอนนี้: ระหว่างรับทัณฑ์ (!closed) กรองเหลือเฉพาะที่ known/exposed จริงแล้วเท่านั้น
+ *  ปิดคดีแล้ว (closed) ถึงโชว์เต็มชุด — ตรงกับ hint เดิมทุกตัวอักษร ไม่ได้แก้ข้อความอะไร */
 function verdictCard(soul, r, stK, crewK, intensity, closed) {
   const st = STATIONS.find(d => d.k === stK);
-  const hit = st && soul.deeds.some(d => st.tags.includes(d.s));
-  const truth = soul.deeds.map(d =>
-    `<div class="row-truth ${d.known ? '' : 'hid'}">${SINS[d.s].name} · ${esc(d.t)} (น้ำหนัก ${d.w})${d.known ? '' : ' ← เรื่องที่สำนวนไม่ได้เขียนไว้'}</div>`).join('');
-  const merit = soul.merits.map(m =>
+  const shownDeeds = closed ? soul.deeds : soul.deeds.filter(d => d.known);
+  // "ตรงชนิดกรรม" ต้องเทียบกับเรื่องที่เห็นแล้วเท่านั้นด้วย — ไม่งั้นสถานีจะขึ้น "ตรงชนิดกรรม"
+  // เพราะเรื่องที่ซ่อนไว้ (ยังไม่สอบสวน) บังเอิญตรง ทั้งที่ผู้เล่นไม่เคยเห็นเรื่องนั้นเลย
+  const hit = st && shownDeeds.some(d => st.tags.includes(d.s));
+  const truth = shownDeeds.map(d =>
+    `<div class="row-truth ${d.known ? '' : 'hid'}">${SINS[d.s].name} · ${esc(d.t)} (น้ำหนัก ${d.w})${d.known ? '' : ' ← เรื่องที่สำนวนไม่ได้เขียนไว้'}</div>`).join('')
+    || '<div class="row-truth">สำนวนว่างเปล่า</div>';
+  const shownMerits = closed ? soul.merits : soul.merits.filter(m => !m.fake || m.exposed);
+  const merit = shownMerits.map(m =>
     `<div class="row-truth ${m.fake ? 'fake' : ''}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
