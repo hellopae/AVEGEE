@@ -14,6 +14,30 @@ const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
 export const sameLabel = (a, b) => !a || !b || a.includes(b) || b.includes(a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
+/** สุ่มแบบกันซ้ำข้ามวิญญาณ (เพิ่ม 17 ก.ย. 2569 — เจ้าของทัก "วิญญาณติดกันพูดบรรทัดเดิมซ้ำ")
+ *  จำบรรทัดที่ใช้ล่าสุด 30 บรรทัดไว้ใน g.recentLines (ข้ามทุกกองรวมกัน เพราะเนื้อความแต่ละกอง
+ *  ไม่ซ้ำกันอยู่แล้ว ไม่ต้องแยก state ต่อกอง) — สุ่มจากบรรทัดที่ "ไม่อยู่ในนั้น" ก่อนเสมอ
+ *  ถ้ากองนั้นบรรทัดสั้นจนหมดกอง (เช่น soul.pool.deny ของสำนวนเขียนมือมีแค่ 2 บรรทัด) ค่อยยอมสุ่มซ้ำ */
+const RECENT_CAP = 30;
+function pickFresh(pool, recent) {
+  if (!pool || !pool.length) return null;
+  const fresh = pool.filter(t => !recent.includes(t));
+  const chosen = pick(fresh.length ? fresh : pool);
+  recent.push(chosen);
+  if (recent.length > RECENT_CAP) recent.shift();
+  return chosen;
+}
+/** เหมือน pickFresh แต่ตัดออกจาก arr เองด้วย (ใช้กับลูปที่ splice ทีละบรรทัดกันซ้ำภายในดวงเดียวกันอยู่แล้ว) */
+function spliceFresh(arr, recent) {
+  const freshIdxs = [];
+  for (let i = 0; i < arr.length; i++) if (!recent.includes(arr[i])) freshIdxs.push(i);
+  const idx = freshIdxs.length ? freshIdxs[Math.floor(Math.random() * freshIdxs.length)]
+                                : Math.floor(Math.random() * arr.length);
+  const [chosen] = arr.splice(idx, 1);
+  recent.push(chosen);
+  if (recent.length > RECENT_CAP) recent.shift();
+  return chosen;
+}
 let SEQ = 1;
 const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(s && s.case || '');
 
@@ -29,6 +53,7 @@ export function createGame() {
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [], mobs: [], guard: null, fxHits: [], transits: [],
     queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
+    recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
     // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
     // ค่าเดิมคือ "พัก" เกมเลยค้างตั้งแต่วินาทีแรก: ทัณฑ์ 0% ยมทูตยืนนิ่ง ไม่มีอะไรขยับ
@@ -81,7 +106,7 @@ function mkStation(k, build = 0) {
 
 // ---------- สร้างสำนวนคดี ----------
 /** คดีที่ถูกกับผิดปนกัน — ด้านที่ทำให้เห็นใจถูกซ่อนไว้ ต้องใช้พลังถึงจะเจอ */
-function mkHardSoul(tags) {
+function mkHardSoul(tags, g) {
   const ok = (!tags || !tags.length) ? HARD_CASES
            : HARD_CASES.filter(h => tags.includes(h.seen.s));
   const c = pick(ok.length ? ok : HARD_CASES);
@@ -95,7 +120,7 @@ function mkHardSoul(tags) {
   soul.resist = soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
   soul.sp = spiritFor(soul.who, soul.sex);     // หน้าตาต้องตรงกับสำนวน — รวมถึงเพศด้วย
   soul.said.push({ kind: 'deny', text: c.line });
-  soul.lines = mkLines(soul);
+  soul.lines = mkLines(soul, g);
   soul.presses = BAL.presses;
   return soul;
 }
@@ -110,7 +135,7 @@ function poolOf(tags) {
   return pool.length ? pool : DEEDS;
 }
 
-function mkSoul(tags, hiddenBonus = 0) {
+function mkSoul(tags, hiddenBonus = 0, g) {
   const POOL = poolOf(tags);
   const n = 1 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.2 ? 1 : 0);
   const deeds = [];
@@ -151,7 +176,7 @@ function mkSoul(tags, hiddenBonus = 0) {
     soul.said.push({ kind: 'deny', text: `"${voice(pick(DENIALS), soul.sex)}" — เรื่อง${worst.t}` });
   }
   for (const m of merits) soul.said.push({ kind: 'claim', text: `"${m.t}" (เขาอ้างเอง ยังไม่มีใครยืนยัน)` });
-  soul.lines = mkLines(soul);
+  soul.lines = mkLines(soul, g);
   soul.presses = BAL.presses;
   return soul;
 }
@@ -193,7 +218,8 @@ function mkCaseSoul(c) {
  *    solid = ยอมรับทุกอย่างตรงกับสำนวน จี้ไปก็ไม่ได้อะไร
  *  จี้ได้ 2 ครั้งต่อคดี = พลาดได้หนึ่งครั้ง
  */
-function mkLines(soul) {
+function mkLines(soul, g) {
+  const recent = (g && g.recentLines) || [];
   const out = [];
   if (soul.hard) {
     const plea = soul.said.find(x => x.kind === 'deny');
@@ -202,7 +228,7 @@ function mkLines(soul) {
     // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
     const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
     const deny = known.length && ((soul.pool && soul.pool.deny) || DENY_BY_SIN[known[0].s]);
-    if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pick(deny) : deny, soul.sex), sin: known[0].s });
+    if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pickFresh(deny, recent) : deny, soul.sex), sin: known[0].s });
   }
   const fake = soul.merits.find(m => m.fake);
   if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วย{na} — ${fake.t}`, soul.sex), merit: fake.t });
@@ -224,17 +250,17 @@ function mkLines(soul) {
 
   if (known.length) {                                   // 1. อ้างข้อความในสำนวนตรง ๆ (ไม่มีทางซ้ำข้ามคดี)
     const d = pick(known);
-    add(pick(ADMIT_TPL).replace(/\{d\}/g, d.t));
+    add(pickFresh(ADMIT_TPL, recent).replace(/\{d\}/g, d.t));
   }
   // soul.pool = บทขากลับที่สำนวนที่มีชื่อเขียนเอง (เช่น เจ้าอาวาส) — ใช้แทนชั้น 2 และ 3 ทั้งหมด
   const bySin = soul.pool ? [...(soul.pool.solid || [])] : []; // 2. ตามชนิดบาปของคดีนี้
   if (!soul.pool) for (const d of known) bySin.push(...(SOLID_BY_SIN[d.s] || []));
-  while (bySin.length && out.length < 3) add(bySin.splice(Math.floor(Math.random() * bySin.length), 1)[0]);
+  while (bySin.length && out.length < 3) add(spliceFresh(bySin, recent));
 
   const rest = soul.pool ? [...(soul.pool.solid || [])] : [...SOLID_LINES]; // 3. กองกลางเป็นตัวเติมท้าย
   let guard2 = 0;
   while (rest.length && out.length < 4 && guard2++ < 60)
-    add(rest.splice(Math.floor(Math.random() * rest.length), 1)[0]);
+    add(spliceFresh(rest, recent));
   // สลับลำดับ ไม่งั้นบรรทัดที่จี้ได้จะอยู่บนสุดทุกคดี
   for (let i = out.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -263,8 +289,8 @@ const API = {
     const tags = this.activeTags();
     const s = this.nextNamedCase(tags)
       || ((this.casesDone >= 2 && Math.random() < 0.22)
-            ? mkHardSoul(tags)
-            : mkSoul(tags, this.orderTier().hidden));
+            ? mkHardSoul(tags, this)
+            : mkSoul(tags, this.orderTier().hidden, this));
     if (s.case) this.log(`📁 สำนวนมีชื่อเข้าคิว — ${s.name} (${s.who})`, 'event');
     else if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
     else this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
@@ -445,7 +471,7 @@ const API = {
     if (L.kind === 'deny') {
       // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง
       const hidden = soul.deeds.find(d => !d.known);
-      out.push({ kind: 'confess', text: `⚖️ ${pick(CRACK_LINES)}` });
+      out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });
       // สำนวนที่เขียนมือมีบทของตัวเอง — ใช้บทนั้นแทนบทกลาง
       if (L.reveal) out.push({ kind: 'truth', text: L.reveal });
       if (hidden) {
@@ -476,7 +502,7 @@ const API = {
       }
 
     } else {
-      out.push({ kind: 'hint', text: `↳ ${pick(HOLD_LINES)}` });
+      out.push({ kind: 'hint', text: `↳ ${pickFresh(HOLD_LINES, this.recentLines)}` });
     }
 
     soul.said.push(...out);
@@ -743,7 +769,7 @@ const API = {
     soul.resist = !soul.calm && soul.deserved >= BAL.resistFrom && Math.random() < BAL.resistChance;
     soul.said.push({ kind: 'confess', text: voice(
       `"ท่านให้{i}ไป ${R.gave} วาระ แต่{i}ยังไม่สำนึก{p} เลยถูกส่งกลับมา ก่อนจะไปเกิดใหม่"`, soul.sex) });
-    soul.lines = mkLines(soul);
+    soul.lines = mkLines(soul, this);
     soul.presses = BAL.presses;
     return soul;
   },
