@@ -1399,6 +1399,9 @@ function openTrial() {
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</small></span>
         </div>
+        <!-- การ์ดรูป+ชื่อวิญญาณ (.port.foe) เอาออก 18 ก.ย. 2569 (ข้อ A ของคุณเป้) — บนจอแคบมันทับ
+             .hud-log ด้านบน และข้อมูลตัวตนซ้ำกับ .fig.foe ที่อยู่บนเวทีอยู่แล้ว (รูป+ชื่อเดียวกัน)
+             เอาออกทุกจอ ไม่ใช่แค่จอแคบ — ดูสะอาดกว่าและไม่เสียข้อมูลอะไรไป การ์ดยมน้อยฝั่งซ้ายคงไว้ -->
         <div class="hud-items">${POWERS.map(p => {
           const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
           const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
@@ -1407,10 +1410,6 @@ function openTrial() {
           return `<button data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}"
             >${p.glyph}<b>${pw.ammo}</b></button>`;
         }).join('')}</div>
-        <div class="port foe">
-          <img src="${esc(foeSrc)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
-          <span class="who2"><b>${esc(s.name || s.who)}</b><small>${esc(s.name && !sameLabel(s.name, s.who) ? s.who : 'ผู้ตาย')}</small></span>
-        </div>
       </div>
     </div>`;
 

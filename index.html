@@ -839,7 +839,6 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .port img{width:96px;height:96px;flex:none;object-fit:cover;object-position:center top;
   border:2px solid var(--gold);box-shadow:0 0 0 1px rgba(212,163,85,.35);border-radius:var(--radius-sm);
   background:var(--muted)}
-.port.foe img{border-color:#7fb2e0;object-fit:contain;object-position:bottom;image-rendering:pixelated}
 .port .who2{min-width:0}
 .port .who2 b{display:block;font-size:16px;color:var(--gold);line-height:1.25;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
@@ -851,8 +850,9 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
    บังคับบรรทัดเดียว ตัดด้วย … แทนการตกบรรทัด */
 .port .who2 small{display:block;color:var(--muted-foreground);font-size:12px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
-.port.foe{margin-left:auto}
-.hud-items{display:flex;gap:5px;margin-left:8px}
+/* .port.foe (รูป+ชื่อวิญญาณมุมล่างขวา) เอาออก 18 ก.ย. 2569 (ข้อ A) — ซ้ำกับ .fig.foe บนเวที
+   .hud-items เลยดันไปชิดขวาแทนที่ (เดิมอยู่ตรงกลางระหว่าง .port.you กับ .port.foe) */
+.hud-items{display:flex;gap:5px;margin-left:auto}
 .hud-items button{width:52px;height:52px;min-height:0;padding:0;font-size:1.2rem;border-radius:var(--radius-sm);
   position:relative;background:var(--secondary)}
 .hud-items button b{position:absolute;right:2px;bottom:0;font-size:9px;color:var(--gold);font-weight:600}
@@ -902,7 +902,6 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   .hud-opt{flex:1 1 auto;max-height:200px}
   .hud-log{max-height:72px}
   .hud-bottom{flex:0 0 auto;padding:8px;padding-bottom:max(12px,env(safe-area-inset-bottom));height:96px}
-  .port.foe{margin-left:auto}
   .port img{width:72px;height:72px;border-width:1.5px}
   .port .who2 b{font-size:14px}
   .port .who2 small{font-size:11px}
