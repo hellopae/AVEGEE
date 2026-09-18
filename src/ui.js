@@ -1351,11 +1351,6 @@ function openTrial() {
 
       <div class="hud-top">${top}</div>
 
-      <div class="hud-menu">
-        <div class="seg">${seg}</div>
-        <div class="go-cluster">${goCluster}</div>
-      </div>
-
       <div class="hud-body">
         <div class="hud-stage">
           <div class="fig you"><img src="${heroFace()}" alt=""
@@ -1364,6 +1359,16 @@ function openTrial() {
           <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
                  onerror="this.onerror=null;this.src='img/spirit7.png'">
             <span class="nm">${esc(s.name || s.who)}</span></div>
+        </div>
+
+        <!-- เมนูคำสั่ง (ย้าย 18 ก.ย. 2569 รอบ 2 — คุณเป้อยากให้ชิดคอลัมน์ขวา เหนือแฟ้มคดีพอดี
+             ไม่ใช่แถบเต็มความกว้าง .hud เหมือนรอบแรก) ตอนนี้เป็นลูกของ .hud-body แทนที่จะเป็นพี่น้อง
+             อยู่นอกกริด — grid-template-areas ใน index.html (.hud-body) วาง .hud-menu ไว้คอลัมน์ขวา
+             แถวบน เหนือ .hud-right แถวล่าง กว้างเท่ากันเพราะเป็นคอลัมน์เดียวกันของกริดเดียวกัน
+             data-cmd/id ทุกตัวคงเดิมเป๊ะ ไม่แตะ logic -->
+        <div class="hud-menu">
+          <div class="seg">${seg}</div>
+          <div class="go-cluster">${goCluster}</div>
         </div>
 
         <div class="hud-right">

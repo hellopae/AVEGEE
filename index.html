@@ -664,33 +664,33 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   padding:4px 9px;backdrop-filter:blur(3px)}
 .hud-top .ttl{margin-left:auto;font-family:var(--font-display);color:var(--gold);font-size:var(--text-sm)}
 
-/* ---------- เมนูบาร์แนวนอน (ใหม่ 18 ก.ย. 2569 — แทน .hud-left คอลัมน์ซ้ายเดิมในหน้าสอบสวน) ----------
+/* ---------- เมนูบาร์คำสั่ง (แก้ 18 ก.ย. 2569 รอบ 2 — คุณเป้ทักว่าเดิมยังเป็นแถบยาวจากซ้ายสุด) ----------
    .hud-left ของเดิมยังอยู่ในไฟล์เหมือนเดิมทุกกฎ — หน้าสถานี (.st-hud) ยังใช้ class เดิม (.hud-left.st-left)
-   อยู่ ไม่ได้ถูกแตะ งานนี้แค่ "เลิกวาง" .hud-left ใน openTrial() เท่านั้น (ดู src/ui.js) แล้วสร้างแถวใหม่นี้แทน
-   เป็นพี่น้องของ .hud-body ไม่ใช่คอลัมน์ในกริด จึงคงตำแหน่งเดิม (ใต้ hud-top เหนือ hud-body) ทุกขนาดจอ
-   โดยไม่ต้องมีกฎ grid-row สลับลำดับแบบที่ .hud-left เคยต้องมี */
-.hud-menu{display:flex;align-items:center;gap:8px;height:60px;padding:8px 14px;flex:0 0 auto}
-.hud-menu .seg{display:flex;gap:8px;flex:1 1 auto;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none}
-.hud-menu .seg::-webkit-scrollbar{display:none}
-.hud-menu .go-cluster{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
-.hud-menu button{display:flex;align-items:center;gap:8px;flex:none;border-radius:10px;
-  backdrop-filter:blur(3px);white-space:nowrap}
-.hud-menu .seg button{height:52px;min-width:150px;padding:6px 12px;text-align:left}
-.hud-menu .seg button .ic{font-size:18px;width:22px;text-align:center;flex:none}
-.hud-menu .seg button .lb2{min-width:0;line-height:1.2;font-size:14px}
-.hud-menu .seg button .lb2 small{display:block;font-size:11px;color:var(--muted-foreground);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
-.hud-menu .seg button[aria-pressed=true] .lb2 small{color:rgba(255,255,255,.75)}
-.hud-menu .go-cluster button{height:52px;padding:6px 14px;justify-content:center}
-.hud-menu .go-cluster button .ic{font-size:18px;flex:none}
-.hud-menu .go-cluster button .lb2 small{display:none}   /* 110px แคบเกินจะพอทั้งป้าย+คำอธิบายย่อย */
-.hud-menu #t-skip,.hud-menu #t-jail{width:110px}
-.hud-menu #t-go{width:168px}
-.hud-menu #t-go .lb2{font-size:15px;font-weight:700}
+   อยู่ ไม่ได้ถูกแตะ
+   รอบแรก (คอมมิต 6ac3c03) ย้าย .hud-menu ออกมาเป็นแถวแนวนอนเต็มความกว้าง .hud ทั้งใบ — คุณเป้ดูจริงแล้ว
+   บอกว่ายังไม่ใช่: อยากให้แถบนี้ "ชิดคอลัมน์ขวา อยู่เหนือ .hud-right พอดีความกว้างเดียวกับแผงคดี" ไม่ใช่กว้างเต็มจอ
+   รอบนี้ย้าย .hud-menu เข้าไปเป็นลูกของ .hud-body ด้วย grid-template-areas (ดูด้านล่าง) แทนการเป็นพี่น้อง
+   นอกกริดแบบเดิม — คอลัมน์ขวาจึงมี 2 แถว: เมนู (บน) + แผงคดี .hud-right (ล่าง) กว้างเท่ากันโดยอัตโนมัติ
+   เพราะเป็นคอลัมน์เดียวกันของกริดเดียวกัน (ไม่ต้องเซ็ตความกว้างซ้ำเป็นตัวเลข)
+   ปุ่มมีสูงสุด 7 ปุ่ม (จี้/ส่งไป/ใครคุม/หนักแค่ไหน + พัก/ขัง/ออกหมาย) เปลี่ยนจากแถวเดียวเลื่อนซ้าย-ขวา
+   เป็นกริด 3 คอลัมน์ (2-3 แถวตามจริง — คุณเป้บอก "2 แถว 3 ปุ่มก็โอเค") ใช้ display:contents บน .seg/.go-cluster
+   ให้ปุ่มข้างในทั้งสองกลุ่มไหลเข้ากริดเดียวกันโดยไม่ต้องแก้โครง HTML ใน ui.js (data-cmd/id เดิมทุกตัว) */
+.hud-menu{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 0 0}
+.hud-menu .seg,.hud-menu .go-cluster{display:contents}
+.hud-menu button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  border-radius:10px;backdrop-filter:blur(3px);text-align:center;min-height:52px;padding:6px 4px;
+  width:100%;box-sizing:border-box}
+.hud-menu button .ic{font-size:16px;line-height:1}
+.hud-menu button .lb2{min-width:0;line-height:1.15;font-size:11.5px}
+/* subtext ("จี้ได้อีก 2 ครั้ง" ฯลฯ) ต้องอ่านได้เสมอตามคำสั่งคุณเป้ — ไม่ซ่อน ไม่ตัดด้วย ellipsis
+   แถวเดิม ให้ wrap ได้ 2 บรรทัดถ้ายาวเกินความกว้างคอลัมน์แคบ ๆ นี้ */
+.hud-menu button .lb2 small{display:block;font-size:9.5px;color:var(--muted-foreground);white-space:normal}
+.hud-menu button[aria-pressed=true] .lb2 small{color:rgba(255,255,255,.75)}
+.hud-menu #t-go .lb2{font-size:12.5px;font-weight:700}
 
 .hud-body{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,420px);
-  gap:14px;padding:0 14px}
+  grid-template-rows:auto 1fr;grid-template-areas:"stage menu" "stage right";gap:8px 14px;padding:0 14px}
+.hud-stage{grid-area:stage} .hud-menu{grid-area:menu} .hud-right{grid-area:right}
 
 /* แถวคำสั่งแนวตั้งฝั่งซ้าย */
 .hud-left{display:flex;flex-direction:column;gap:6px;align-content:flex-start;
@@ -726,11 +726,17 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 /* สำนวน (.hud-rec) ห้ามสกอลล์ภายในตัวเองทุกจอ (สเปก Vera 18 ก.ย. 2569 หัวข้อ 2/3.3) — ตัวเลือก/บันทึก
    ข้างล่างสกอลล์ได้ตามปกติ (.hud-opt/.hud-log) เพราะยาวได้ไม่จำกัดตามจำนวนบรรทัดที่สะสม */
 /* พื้นผิวกระดาษแฟ้มคดี (เพิ่ม 18 ก.ย. 2569 — คุณเป้ gen เอง ผ่าน Mind Output/Mind/2026-09-18-avegee-trial-paper-texture.md)
-   multiply ทับ gradient ม่วงเดิมของ .hud-card แทนการวางเดี่ยว ๆ ให้ได้ทั้งเกรนกระดาษและโทนม่วงของกรอบพร้อมกัน
-   การ์ดนี้สูงไม่เกิน 190px ทุกจอ (ต่ำกว่าผืนลาย 256px เสมอ) จึงไม่มีทางเห็นแนวต่อซ้ำในแนวตั้งเลย */
+   การ์ดนี้สูงไม่เกิน 190px ทุกจอ (ต่ำกว่าผืนลาย 256px เสมอ) จึงไม่มีทางเห็นแนวต่อซ้ำในแนวตั้งเลย
+   แก้ 18 ก.ย. 2569 (คุณเป้บ่นว่ายังดูเป็นกล่องดำทึบ): เดิมวาง gradient ม่วง-เกือบดำ (สต็อปล่างทึบถึง .92)
+   ไว้ "ใต้" แล้วเอาลาย multiply ทับ — multiply กับพื้นเกือบดำ ผลคูณออกมาเกือบดำเสมอ ลายจึงจมหายไปหมด
+   (ตรวจจริงด้วย getComputedStyle + screenshot ซูม พบว่า background-image โหลด 200 ปกติทุกจอ ไม่ใช่ 404
+   — ปัญหาอยู่ที่สูตรผสมสี ไม่ใช่ไฟล์หาย) สลับลำดับ: ลายกระดาษเป็นชั้นล่างสุด (เห็นเต็มความสว่างของมันเอง)
+   gradient ม่วง-ดำโปร่งแสงทับข้างบนแบบ normal (ไม่ multiply) แค่ "ย้อมสี" ให้เข้าธีม ไม่ใช่ลบลายทิ้ง
+   ลดความทึบสต็อปล่างจาก .92 → .68 ด้วย ให้กระดาษยังเห็นชัดที่ขอบล่างการ์ด ตัวหนังสือยังอ่านง่าย
+   (สีตัวหนังสือ .deed ใช้ var(--foreground) โทนอ่อนอยู่แล้ว ตัดกับพื้นน้ำตาล-ม่วงเข้มได้สบาย) */
 .hud-rec{flex:0 0 auto;max-height:36%;overflow-y:auto;padding:10px 12px;
-  background-image:url('img/tex-paper-hell.png'),linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
-  background-size:256px 256px,cover;background-repeat:repeat,no-repeat;background-blend-mode:multiply,normal}
+  background-image:linear-gradient(180deg,rgba(74,31,61,.45) 0%,rgba(20,10,14,.68) 100%),url('img/tex-paper-hell.png');
+  background-size:cover,256px 256px;background-repeat:no-repeat,repeat;background-blend-mode:normal,normal}
 .hud-rec .deed{font-size:var(--text-sm);line-height:1.55}
 /* ---- หน้าของสถานีหนึ่งหลัง (9 ก.ย. 2569) ---- */
 .st-hud{background:#0d0508}
@@ -855,26 +861,22 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   .hud{height:100%;max-height:none;overflow-x:hidden;overflow-y:auto;
     -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;
     scrollbar-gutter:stable}
-  .hud-body{flex:0 0 auto;grid-template-columns:1fr;gap:8px;padding:0 8px}
-  /* .hud-menu ย้ายออกจากกริดของ .hud-body แล้ว (เป็นพี่น้องนอกกริดเสมอ) จึงไม่ต้องมี grid-row
-     สลับลำดับให้ .hud-stage/.hud-right อีกต่อไป — ลำดับ DOM เดิม (สเตจก่อน สำนวนทีหลัง) ตรงกับ
-     ที่ต้องการอยู่แล้ว (เห็นคู่กรณีก่อน แล้วค่อยอ่านสำนวน) · .hud-left/.st-left ของห้องสถานียังใช้
-     กฎเดิมด้านล่างไม่ถูกแตะ (คนละหน้ากับห้องสอบสวน) */
+  .hud-body{flex:0 0 auto;grid-template-columns:1fr;grid-template-areas:"stage" "menu" "right";gap:6px;padding:0 8px}
+  /* คอลัมน์เดียวบนมือถือ — .hud-menu ยังอยู่ "เหนือ .hud-right พอดีความกว้าง" เพราะทั้งคู่เป็นแถวเดียว
+     กว้างเท่ากันของกริด 1fr เดียวกัน (ลำดับ stage→menu→right ตรงกับที่ต้องการ: เห็นคู่กรณีก่อน
+     แล้วค่อยเจอเมนูคำสั่งเหนือแฟ้มคดี) · .hud-left/.st-left ของห้องสถานียังใช้กฎเดิมด้านล่างไม่ถูกแตะ */
   .hud-left{flex-direction:row;flex-wrap:wrap}
   .hud-left button{flex:1 1 46%;min-height:40px}
   .hud-left button .lb2 small{display:none}
-  .hud-menu{height:52px;padding:8px 10px}
-  .hud-menu button{height:44px}
-  .hud-menu .seg button{min-width:118px;padding:5px 10px}
-  .hud-menu .seg button .lb2{font-size:13px}
-  .hud-menu .seg button .lb2 small{display:none}
-  .hud-menu .go-cluster{gap:6px}
-  .hud-menu #t-skip,.hud-menu #t-jail{width:40px;padding:0}
-  .hud-menu #t-skip .lb2,.hud-menu #t-jail .lb2{display:none}
-  .hud-menu #t-go{width:128px}
-  .hud-menu #t-go .lb2{font-size:14px}
-  .hud-stage{height:150px}
-  .hud .fig img{height:clamp(110px,20vh,150px)}
+  .hud-menu{gap:5px;padding:0}
+  .hud-menu button{min-height:44px;padding:5px 3px}
+  .hud-menu button .ic{font-size:14px}
+  .hud-menu button .lb2{font-size:11px}
+  .hud-menu button .lb2 small{font-size:9px}
+  /* 150px เดิมพอดีตอนเมนูยังเป็นแถวเดียว 52px — ตอนนี้เมนูย้ายเข้ามาเป็น 2 แถวในคอลัมน์ขวา (~93px)
+     ดันความสูงรวมเกิน budget ~44px ลดสเตจลงมาชดเชยแทน (ตัวละครใช้ clamp() อยู่แล้วเล็กลงได้โดยไม่แตก) */
+  .hud-stage{height:118px}
+  .hud .fig img{height:clamp(90px,18vh,118px)}
   /* หน้าสถานีบนจอมือถือ: .st-hud .hud-body ตั้ง 3 คอลัมน์ไว้ในมีเดีย max-width:1100px
      ซึ่ง specificity สูงกว่า .hud-body{grid-template-columns:1fr} ของบล็อกนี้ คอลัมน์กลาง
      (ฉากในสถานี + แฟ้มทะเบียนกรรมที่ทับอยู่) จึงถูกบีบเหลือ 0px บนจอ 390 — เปิดแฟ้มแล้ว
@@ -917,13 +919,15 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
    ทั้งคู่แคบกว่า 520px เท่ากัน แต่เดิมใช้กฎเดียวกันหมด ทำให้ .hud-stage กิน 270px จนสำนวนต้องสกอลล์
    บนจอ 360×640 ที่เตี้ยกว่า (คุณเป้บ่นเรื่อง "ต้องเลื่อนไปมา") — สเปก Vera 18 ก.ย. 2569 หัวข้อ 3.6 */
 @media(max-width:420px) and (max-height:700px){
-  .hud-menu{height:48px;padding:6px 8px}
-  .hud-menu button{height:40px}
-  .hud-menu .seg button{min-width:100px}
-  .hud-menu #t-skip,.hud-menu #t-jail{width:36px}
-  .hud-menu #t-go{width:108px}
-  .hud-stage{height:85px}
-  .hud .fig img{height:clamp(72px,14vh,100px)}
+  .hud-menu{gap:4px}
+  .hud-menu button{min-height:38px;padding:4px 2px}
+  .hud-menu button .ic{font-size:13px}
+  .hud-menu button .lb2{font-size:10px}
+  .hud-menu button .lb2 small{font-size:8.5px}
+  /* เดิม 85px พอดีตอนเมนูเป็นแถวเดียว 48px — ตอนนี้เมนู 2 แถว ~80px ในคอลัมน์ขวา ลดสเตจชดเชย
+     (เหตุผลเดียวกับบล็อก 390 ด้านบน) */
+  .hud-stage{height:56px}
+  .hud .fig img{height:clamp(48px,11vh,68px)}
   /* 76px ตามสเปก Vera ตรง ๆ ไม่พอกับคดีสุ่มจริงเหมือนกัน (ดูหมายเหตุที่บล็อก 900px ด้านบน) */
   .hud-rec{max-height:175px;padding:7px 9px}
   .hud-rec .deed{font-size:12.5px;line-height:1.35;margin-top:3px}
