@@ -1292,23 +1292,25 @@ function openTrial() {
       <span class="chip">☠️ กรรม ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
       <span class="ttl">สำนวน #${String(s.id).padStart(3, '0')}</span>`;
 
-    // ---- แถวคำสั่งฝั่งซ้าย ----
+    // ---- เมนูบาร์แนวนอน (ย้ายมาจากคอลัมน์ซ้ายเดิม — สเปก Vera 18 ก.ย. 2569) ----
+    // logic เดิมทั้งหมดคงไว้เป๊ะ (data-cmd/id ไม่เปลี่ยน) ย้ายแค่ตำแหน่ง/สไตล์ HTML
     const cmd = (k, ic, lb, sub) =>
-      `<button data-cmd="${k}" ${trialCmd === k ? 'aria-pressed="true"' : ''}>
+      `<button class="hud-btn" data-cmd="${k}" ${trialCmd === k ? 'aria-pressed="true"' : ''}>
          <span class="ic">${ic}</span><span class="lb2">${lb}<small>${esc(sub)}</small></span></button>`;
-    const left =
+    const seg =
       cmd('ask',   '🗣️', 'ไต่สวน',      `จี้ได้อีก ${s.presses} ครั้ง`) +
       cmd('st',    '📍', 'ส่งไปที่ไหน',  stDef ? stDef.name : 'ยังไม่เลือก') +
       cmd('cr',    '👤', 'ใครคุม',       pick.cr ? (g.crewOf(pick.cr)?.name || '—') : 'ยังไม่เลือก') +
-      (heaven ? '' : cmd('inten', '⚖️', 'หนักแค่ไหน', `${pick.inten} ${INTENSITY[pick.inten]}`)) +
-      `<button class="fire" id="t-go" ${ready ? '' : 'disabled'}>
+      (heaven ? '' : cmd('inten', '⚖️', 'หนักแค่ไหน', `${pick.inten} ${INTENSITY[pick.inten]}`));
+    const goCluster =
+      `<button class="hud-btn" id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>
+         <span class="ic">⏭️</span><span class="lb2">พักคดีนี้<small>ให้คนถัดไปขึ้นแทน</small></span></button>
+       ${g.has('tarang') ? `<button class="hud-btn" id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>
+         <span class="ic">🔒</span><span class="lb2">ขังไว้ก่อน<small>ตะราง ${g.held.length}/${TARANG.hold}</small></span></button>` : ''}
+       <button class="hud-btn fire" id="t-go" ${ready ? '' : 'disabled'}>
          <span class="ic">${g.needBattle(s) ? '⚔️' : '⚒'}</span>
          <span class="lb2">${g.needBattle(s) ? 'ประทับตรา' : 'ออกหมาย'}
-           <small>${g.needBattle(s) ? 'เขาจะขัดขืน ต้องสู้' : ready ? 'พร้อมแล้ว' : 'เลือกให้ครบก่อน'}</small></span></button>
-       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>
-         <span class="ic">⏭️</span><span class="lb2">พักคดีนี้<small>ให้คนถัดไปขึ้นแทน</small></span></button>
-       ${g.has('tarang') ? `<button id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>
-         <span class="ic">🔒</span><span class="lb2">ขังไว้ก่อน<small>ตะราง ${g.held.length}/${TARANG.hold}</small></span></button>` : ''}`;
+           <small>${g.needBattle(s) ? 'เขาจะขัดขืน ต้องสู้' : ready ? 'พร้อมแล้ว' : 'เลือกให้ครบก่อน'}</small></span></button>`;
 
     // ---- แผงตัวเลือกตามคำสั่งที่เลือก ----
     let opt = '';
@@ -1343,13 +1345,18 @@ function openTrial() {
     dlg.innerHTML = `
     <div class="hud" style="background-image:url('img/BG-Turn-Base.webp')">
       <div class="hud-scrim"></div>
+      <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
+      <span class="corner-tick bl"></span><span class="corner-tick br"></span>
       <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
 
       <div class="hud-top">${top}</div>
 
-      <div class="hud-body">
-        <div class="hud-left">${left}</div>
+      <div class="hud-menu">
+        <div class="seg">${seg}</div>
+        <div class="go-cluster">${goCluster}</div>
+      </div>
 
+      <div class="hud-body">
         <div class="hud-stage">
           <div class="fig you"><img src="${heroFace()}" alt=""
                  onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">

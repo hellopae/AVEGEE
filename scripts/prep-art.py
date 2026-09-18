@@ -291,6 +291,13 @@ def prep(path, name, out_dir=OUT):
         im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
         return im.size
 
+    if name.startswith('tex-'):              # พื้นผิว UI (18 ก.ย. 2569) — ผืนลายทึบ seamless เหมือน tile-*
+        # แต่ใช้เป็น background-image ของการ์ด HUD ไม่ใช่พื้นบนแผนที่เกม ตั้งชื่อขึ้นต้นต่างจาก tile-
+        # เพื่อไม่ให้สับสนกับพื้นในฉาก — ปฏิบัติเหมือน tile- ทุกอย่าง (ย่อเป็น PAT×PAT ห้ามลอกพื้น/ครอป)
+        im = im.resize((PAT, PAT), Image.LANCZOS).convert('RGB')
+        im.quantize(colors=COLORS * 2, dither=Image.NONE).convert('RGB').save(os.path.join(OUT, name + '.png'))
+        return (PAT, PAT)
+
     if im.mode != 'RGBA' and not name.startswith('tile-') and not name.startswith('scene'):
         im, stripped = strip_flat_bg(im)      # 0. ไฟล์ที่ไม่มี alpha ลองลอกพื้นหลังทึบออกก่อน
     im = im.convert('RGBA')
