@@ -1229,6 +1229,8 @@ function arena(title, foe, hp, act, closable, fx, helper) {
   const youImg = (act && act.lunge === 'you' && (!fx || fx.side === 'foe')) ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
+    <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
+    <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
     ${helper ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">

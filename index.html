@@ -20,6 +20,9 @@
   --gold:#d4a355;            --gold-foreground:#1a0d10;
   --success:#4a9d6a;         --warning:#e0a132;  --destructive:#e04a2f;
   --border:#3a222a;          --input:#54353f;    --ring:#d4a355;
+  /* หน้าสอบสวน+ต่อสู้ธีมใหม่ 18 ก.ย. 2569 (สเปก Vera) — ม่วงเข้มที่ --accent เดิมไม่พอชัด */
+  --hell-purple-1:#241129;   /* ม่วงเข้มเกือบดำ — พื้นหลังกรอบ/แถบเมนู */
+  --hell-purple-2:#4a1f3d;   /* ม่วงอมแดง — จุดไล่สีสว่างขึ้นของการ์ด/ปุ่ม */
 
   --radius:0.75rem; --radius-sm:calc(var(--radius)*.5); --radius-md:calc(var(--radius)*.75);
   --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.5rem;
@@ -506,7 +509,22 @@ dialog.wide{max-width:860px}
 .blog div{padding:1px 0;color:var(--muted-foreground)}
 .blog div:last-child{color:var(--foreground)}
 .acts{display:flex;gap:8px;flex-wrap:wrap}
-.acts button{flex:1 1 auto;min-width:110px}
+.acts button{flex:1 1 auto;min-width:110px;min-height:48px}
+
+/* ---------- ปุ่มมาตรฐานร่วมหน้าสอบสวน+ต่อสู้ (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.3) ----------
+   .hud-btn ใช้กับปุ่มเมนูบาร์สอบสวน (.hud-menu) โดยตรง · .acts button (ปุ่มฉากต่อสู้) ได้สไตล์
+   ชุดเดียวกันผ่าน selector รวม โดยไม่ต้องแก้ template HTML ของฉากต่อสู้เลย — คนละคดีแต่ธีมเดียวกัน */
+.hud-btn,.acts button{
+  background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92));
+  border:1px solid var(--input);color:var(--foreground)}
+.hud-btn:hover:not(:disabled),.acts button:hover:not(:disabled){border-color:var(--gold);background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92))}
+.hud-btn[aria-pressed=true],.acts button[aria-pressed=true]{
+  background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);
+  box-shadow:0 0 0 1px var(--gold) inset}
+.hud-btn:disabled,.acts button:disabled{opacity:.38;pointer-events:none}
+.hud-btn.fire,.hud-btn.gold{
+  background:linear-gradient(180deg,#e6c07a,var(--gold));border:1px solid var(--gold);
+  color:var(--gold-foreground);font-weight:700;box-shadow:0 3px 10px rgba(212,163,85,.28)}
 
 /* แผงข้ออ้างในห้องสอบสวน */
 .claims{display:flex;flex-direction:column;gap:7px;margin-bottom:var(--space-3)}
@@ -528,17 +546,24 @@ dialog.wide{max-width:860px}
    ฉากหลัง img/BG-Turn-Base.webp เป็นลานหินมองจากมุมสูง มีบัลลังก์อยู่กลางบน
    ตัวละครจึงยืน "ริมล่าง" ของลาน ซ้าย-ขวา แล้วเว้นกลางไว้ให้เห็นลวดลายพื้น */
 /* ต้องมี [open] เสมอ — ไม่งั้น display:flex ทับ display:none ของกล่องที่ปิดแล้ว */
-dialog.rpg[open]{max-width:940px;padding:0;overflow:hidden;background:var(--card);
+dialog.rpg[open]{max-width:1020px;padding:0;overflow:hidden;background:var(--card);
   max-height:92dvh;display:flex;flex-direction:column}
 dialog.rpg .arena{flex:0 0 auto}
 dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
   padding:var(--space-4);overscroll-behavior:contain}
-.arena{position:relative;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;
-  background:#221324 center 38%/cover no-repeat;aspect-ratio:16/6.6;min-height:180px;
-  border-bottom:1px solid var(--border)}
+/* มุมฉลุ HUD 4 มุม — ใช้ร่วมกันทั้ง .hud และ .arena (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.2)
+   วางเยื้องเข้ามาจากขอบจริง 6px ได้เอฟเฟกต์ "วงเล็บมุม" แบบ HUD เกมโดยไม่ต้องพึ่งรูป */
+.corner-tick{position:absolute;width:18px;height:18px;pointer-events:none;z-index:5}
+.corner-tick.tl{top:6px;left:6px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-tick.tr{top:6px;right:6px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.corner-tick.bl{bottom:6px;left:6px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-tick.br{bottom:6px;right:6px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.arena{position:relative;border:1.5px solid var(--gold);border-radius:var(--radius) var(--radius) 0 0;
+  overflow:hidden;background:#221324 center 38%/cover no-repeat;aspect-ratio:16/6.6;min-height:180px;
+  box-shadow:inset 0 0 0 1px rgba(212,163,85,.28),inset 0 0 28px rgba(0,0,0,.55)}
 .arena:before{content:'';position:absolute;inset:0;
   background:radial-gradient(120% 80% at 50% 120%,rgba(0,0,0,.55),transparent 60%),
-             linear-gradient(180deg,rgba(11,5,8,.55),transparent 38%,rgba(11,5,8,.72))}
+             linear-gradient(180deg,rgba(36,17,41,.5),transparent 38%,rgba(11,5,8,.75))}
 .arena .x{position:absolute;top:8px;right:8px;z-index:4;width:34px;height:34px;min-height:0;
   padding:0;border-radius:50%;font-size:17px;line-height:1;
   background:rgba(12,6,9,.86);border:1px solid var(--border);backdrop-filter:blur(3px)}
@@ -549,7 +574,7 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
   align-items:center;gap:5px;width:min(34%,240px)}
 .arena .fig.you{left:4%} .arena .fig.foe{right:4%}
-.arena .fig img{height:clamp(78px,17vh,148px);width:auto;max-width:100%;object-fit:contain;
+.arena .fig img{height:clamp(140px,24vh,215px);width:auto;max-width:100%;object-fit:contain;
   object-position:bottom;image-rendering:pixelated;
   filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
 /* ⚠️ ทิศทาง — ข้อสรุปหลังเปิดดูสไปรท์จริงทุกใบ (8 ก.ย. 2569)
@@ -566,7 +591,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .arena .fig.hit img{animation:hitshake .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
-.plate{background:rgba(12,6,9,.86);border:1px solid var(--border);border-radius:var(--radius-sm);
+.plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
+  border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
   padding:5px 9px;width:100%;text-align:center;backdrop-filter:blur(3px)}
 .plate b{display:block;font-size:var(--text-sm);color:var(--gold);line-height:1.25;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -580,6 +606,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   .arena{aspect-ratio:16/8}
   .arena .fig{width:42%} .arena .fig.you{left:1%} .arena .fig.foe{right:1%}
   .arena .ttl{font-size:.95rem}
+  .arena .fig img{height:clamp(105px,19vh,165px)}
+  .acts button{min-height:42px}
 }
 
 /* เมนูคำสั่งแบบ RPG — แถบปุ่มใหญ่ ๆ กดสลับหน้าที่อยู่ข้างล่าง */
