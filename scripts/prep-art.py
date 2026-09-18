@@ -227,6 +227,13 @@ def out_name(sub, name):
     if not sub:
         return name, ''
     name = RENAME.get(f'{sub}/{name}', name)
+    # ฉากห้องสถานี (BG-<Key>) — art.js สร้างคีย์ค้นหาด้วย k[0].toUpperCase()+k.slice(1) เสมอ
+    # (ดู stBg() ใน ui.js) เช่น สถานี 'lokan' → ค้นหา 'BG-Lokan-west' ตัวใหญ่ตัวแรกเป๊ะ
+    # ถ้าเจ้าของตั้งชื่อไฟล์ดิบว่า BG-lokan-west.jpeg (ตัวเล็ก) ผลลัพธ์จะได้ BG-lokan-west.webp
+    # ซึ่ง artUrl() หาไม่เจอ (case-sensitive) แล้วเงียบ ๆ ถอยไปใช้ฉากโซน 1 แทนโดยไม่มี error ใด ๆ
+    # เกิดจริง 17-18 ก.ย. 2569 กับ BG-lokan/ngiw/sala-west.jpeg — บังคับตัวใหญ่ตัวแรกให้ตรงกันเสมอ ณ จุดนี้
+    if re.match(r'BG-[a-z]', name):
+        name = 'BG-' + name[3].upper() + name[4:]
     z = sub.lower()
     m = re.fullmatch(r'(.+)-(' + '|'.join(POSES) + r')-' + z, name)   # crew-taan-work-asia → crew-taan-asia-work
     if m:
