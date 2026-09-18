@@ -218,6 +218,10 @@ def drop_specks(im):
 #  คีย์ = 'sub/ชื่อไฟล์ (ไม่มีนามสกุล)' ตามที่อยู่จริงใน img/raw/ → ค่า = ชื่อที่ถูกก่อนต่อท้ายโซน
 RENAME = {
     'Asia/Boos Zone2': 'Boss Zone2',   # img/raw/Asia/Boos Zone2.png → ผลลัพธ์ Boss Zone2-asia.png
+    # img/raw/CyberHell/zone-boss-cyber.png (18 ก.ย. 2569) — ชื่อดิบมี "cyber" ติดมาด้วย ทำให้ผลลัพธ์
+    # กลายเป็น zone-boss-cyber-cyberhell.png ขณะที่ src/scene.js เรียกคีย์ 'zone-boss' เฉย ๆ (ต่อท้าย
+    # -cyberhell เองอัตโนมัติ) เกมจึงหาไฟล์นี้ไม่เจอ เงียบ ๆ ถอยไปใช้บอสโซน 1 แทน — ไม่แก้ไฟล์ raw
+    'CyberHell/zone-boss-cyber': 'zone-boss',
 }
 
 

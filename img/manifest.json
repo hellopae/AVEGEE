@@ -162,16 +162,31 @@
 "Asia/zone-boss-asia.png"
 ],
 "cyberhell": [
+"CyberHell/BG-Dab-cyberhell.webp",
+"CyberHell/BG-Krata-cyberhell.webp",
 "CyberHell/BG-Lan-cyberhell.webp",
+"CyberHell/BG-Lokan-cyberhell.webp",
+"CyberHell/BG-Ngiw-cyberhell.webp",
+"CyberHell/BG-Sala-cyberhell.webp",
+"CyberHell/Boss Zone4-cyberhell-profile.png",
 "CyberHell/Boss Zone4-cyberhell.png",
 "CyberHell/Intro-Boss-Zone4-cyberhell.png",
+"CyberHell/crew-boon-cyberhell.png",
+"CyberHell/crew-dam-cyberhell.png",
+"CyberHell/crew-kan-cyberhell.png",
+"CyberHell/crew-nira-cyberhell-profile.png",
 "CyberHell/crew-nira-cyberhell.png",
+"CyberHell/crew-plerng-cyberhell.png",
+"CyberHell/crew-taan-cyberhell.png",
+"CyberHell/hero-yama-cyberhell-profile.png",
 "CyberHell/hero-yama-cyberhell.png",
 "CyberHell/intro-zone4-cyberhell.png",
 "CyberHell/st-dab-cyberhell.png",
 "CyberHell/st-krata-cyberhell.png",
 "CyberHell/st-lokan-cyberhell.png",
-"CyberHell/zone-boss-cyber-cyberhell.png"
+"CyberHell/st-ngiw-cyberhell.png",
+"CyberHell/st-sala-cyberhell.png",
+"CyberHell/zone-boss-cyberhell.png"
 ],
 "west": [
 "West/BG-Dab-west.webp",
@@ -350,6 +365,18 @@
 0.2188,
 0.998,
 0.998
+],
+"st-ngiw-cyberhell": [
+0.0898,
+0.002,
+0.9102,
+1.0
+],
+"st-sala-cyberhell": [
+0.0391,
+0.002,
+0.959,
+1.0
 ],
 "st-dab-west": [
 0.002,
