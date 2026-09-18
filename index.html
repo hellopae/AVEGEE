@@ -843,7 +843,14 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .port .who2{min-width:0}
 .port .who2 b{display:block;font-size:16px;color:var(--gold);line-height:1.25;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
-.port .who2 small{color:var(--muted-foreground);font-size:12px}
+/* บั๊กที่เจอระหว่างทดสอบจอ 390/360 (18 ก.ย. 2569 — ไม่เกี่ยวกับงานย้ายเมนู แก้แยกเป็นคอมมิตของมันเอง):
+   .who2 มี min-width:0 (บรรทัดบน) เพื่อให้ ellipsis ของ b ทำงานได้ แต่ small (ยศ/ระดับ) เดิมไม่มี
+   white-space:nowrap — พอพื้นที่แถวล่างแคบ (การ์ดตัวละคร 3 ใบแย่งกันในแถวเดียว) .who2 ถูกบีบเหลือ
+   0px จริง ๆ ตัวหนังสือใน small เลยตกบรรทัดทีละพยางค์/อักษรจนสูงล้นออกไปทับ .hud-log ด้านบน
+   (บั๊กแบบเดียวกับที่เจอใน .st-arch ตอนแฟ้มทะเบียนกรรมมาก่อน 12 ก.ย. 2569) แก้ด้วยวิธีเดียวกับ b:
+   บังคับบรรทัดเดียว ตัดด้วย … แทนการตกบรรทัด */
+.port .who2 small{display:block;color:var(--muted-foreground);font-size:12px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
 .port.foe{margin-left:auto}
 .hud-items{display:flex;gap:5px;margin-left:8px}
 .hud-items button{width:52px;height:52px;min-height:0;padding:0;font-size:1.2rem;border-radius:var(--radius-sm);
