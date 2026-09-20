@@ -1082,6 +1082,133 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .boss-prep{padding:12px;border:1px solid rgba(212,163,85,.45);border-radius:10px;
   background:rgba(26,12,18,.9);margin-bottom:12px}
 .boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
+
+/* ---------- UI เกมรุ่นภาพตัวอย่าง 21 ก.ย. 2569 ---------- */
+/* ห้องสอบสวน: คำสั่งล้อมตัวละครแทนกล่องเมนูคอลัมน์ขวา; สำนวนยังอยู่ขวาเพื่ออ่านยาวได้ */
+.trial-hud .hud-body{grid-template-columns:minmax(0,1.55fr) minmax(340px,420px);
+  grid-template-rows:1fr;grid-template-areas:"stage right";padding-top:12px}
+.trial-hud .hud-stage{overflow:hidden;border-radius:var(--radius-sm);
+  box-shadow:inset 0 0 45px rgba(0,0,0,.18)}
+.trial-case-no{position:absolute;right:12px;top:6px;z-index:7;color:var(--gold);
+  font:600 var(--text-sm)/1 var(--font-display);text-shadow:0 2px 8px #000}
+.trial-hud .hud-menu{position:absolute;left:125px;bottom:3%;z-index:6;width:330px;height:310px;
+  display:block;padding:0;pointer-events:none}
+.trial-hud .hud-menu .seg,.trial-hud .hud-menu .go-cluster{display:contents}
+.trial-hud .hud-menu button{position:absolute;width:78px;height:78px;min-height:0;padding:8px;border-radius:50%;
+  pointer-events:auto;background:radial-gradient(circle at 40% 32%,rgba(109,56,83,.95),rgba(19,8,13,.94) 72%);
+  border:1px solid rgba(212,163,85,.55);box-shadow:0 7px 18px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.08)}
+.trial-hud .hud-menu button[aria-pressed=true]{background:radial-gradient(circle at 38% 30%,#ef6e37,#8f281d 72%);
+  border-color:#ffb259;box-shadow:0 0 0 3px rgba(255,151,62,.17),0 8px 20px rgba(0,0,0,.58)}
+.trial-hud .hud-menu button .ic{font-size:24px}.trial-hud .hud-menu button .lb2{font-size:11px}
+.trial-hud .hud-menu button .lb2 small{display:none}
+.trial-hud .hud-menu [data-cmd=ask]{left:34px;top:0}
+.trial-hud .hud-menu [data-cmd=st]{left:134px;top:18px}
+.trial-hud .hud-menu [data-cmd=cr]{left:210px;top:94px}
+.trial-hud .hud-menu [data-cmd=inten]{left:184px;top:194px}
+.trial-hud .hud-menu #t-skip{left:85px;top:226px;width:68px;height:68px}
+.trial-hud .hud-menu #t-jail{left:5px;top:180px;width:64px;height:64px}
+.trial-hud .hud-menu #t-go{left:94px;top:104px;width:104px;height:104px;
+  background:radial-gradient(circle at 38% 30%,#ffad2f,#ca3d21 70%);border-color:#ffd074;color:#fff}
+.trial-hud .trial-powers{position:absolute;left:49%;bottom:15%;z-index:7;display:flex;gap:8px;align-items:flex-end}
+.trial-powers button{position:relative;width:68px;height:76px;min-height:0;padding:4px;border:0;background:transparent;
+  color:var(--foreground);display:flex;flex-direction:column;align-items:center;gap:1px}
+.trial-powers button span{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:28px;
+  background:radial-gradient(circle at 38% 28%,#814b59,#261019 70%);border:2px solid var(--gold);
+  box-shadow:0 5px 13px rgba(0,0,0,.65)}
+.trial-powers button b{font-size:9px;color:var(--gold);line-height:1.1}.trial-powers button i{position:absolute;right:3px;top:35px;
+  min-width:18px;padding:1px 3px;border-radius:9px;background:#15090e;border:1px solid var(--gold);font-size:9px;font-style:normal}
+.trial-powers button:disabled{opacity:.3;filter:grayscale(.8)}
+.trial-hud .hud-bottom{height:100px;padding-top:4px}
+
+/* ฉากต่อสู้: ปุ่มกลายเป็นไอคอนบนสนามและมีแถบคูลดาวน์บนรูปยมทูต */
+.battle-actions{position:absolute;z-index:9;left:25%;right:25%;top:48px;display:flex;justify-content:center;
+  align-items:flex-start;gap:7px;flex-wrap:wrap;pointer-events:none}
+.battle-act{position:relative;width:64px;min-height:76px;padding:0;border:0;background:transparent!important;
+  color:var(--foreground);display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:auto}
+.battle-act .battle-icon{position:relative;display:grid;place-items:center;width:54px;height:54px;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 38% 28%,rgba(104,58,75,.98),rgba(20,9,14,.97) 72%);
+  border:2px solid var(--gold);box-shadow:0 7px 15px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.15)}
+.battle-act .battle-icon img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.battle-act b{font-size:10px;line-height:1;color:#ffe4b3;text-shadow:0 2px 4px #000}
+.battle-act i{font-size:8px;line-height:1;color:var(--muted-foreground);font-style:normal;max-width:80px}
+.battle-act .battle-icon em{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(6,3,5,.78) var(--wait),transparent 0);
+  pointer-events:none}
+.battle-actions.busy .battle-act,.battle-act:disabled{opacity:.3;pointer-events:none;filter:grayscale(.65)}
+.battle-squad{position:absolute;z-index:2;left:18%;bottom:10%;display:flex;align-items:flex-end;gap:3px}
+.battle-squad span{display:flex;flex-direction:column;align-items:center}.battle-squad img{height:clamp(82px,15vh,132px);
+  width:auto;image-rendering:pixelated;filter:drop-shadow(0 6px 8px rgba(0,0,0,.7));transform:scaleX(-1)}
+.battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px}
+
+/* ฉากรับโทษกระทะทองแดง */
+dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;padding:0;overflow:hidden;background:#160a0f}
+.punish-stage{position:relative;aspect-ratio:16/8.7;background-position:center 57%;background-size:cover;overflow:hidden}
+.punish-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,3,6,.22),transparent 45%,rgba(9,4,7,.78)),
+  radial-gradient(circle at 50% 58%,transparent 8%,rgba(7,3,5,.38) 72%)}
+.punish-title{position:absolute;left:22px;top:18px;z-index:5;display:flex;flex-direction:column;text-shadow:0 3px 8px #000}
+.punish-title small{font-size:11px;color:#f3c67b}.punish-title b{font:700 clamp(20px,3vw,32px)/1.2 var(--font-display);color:#ffe3ae}
+.punish-yama{position:absolute;z-index:3;left:50%;top:49%;width:15%;height:20%;transform:translate(-50%,-50%);overflow:hidden}
+.punish-yama img{width:100%;height:auto;image-rendering:pixelated;filter:drop-shadow(0 5px 7px rgba(0,0,0,.7));animation:boilYama .6s ease-in-out infinite alternate}
+.punish-dad{position:absolute;z-index:4;right:14%;bottom:24%;display:flex;flex-direction:column;align-items:center;width:24%}
+.punish-dad img{height:min(31vw,270px);max-height:55%;width:auto;image-rendering:pixelated;filter:drop-shadow(0 8px 12px #000)}
+.punish-dad span{background:rgba(16,7,11,.92);border:1px solid var(--gold);color:#ffe1ad;border-radius:10px;padding:7px 10px;
+  font-size:clamp(10px,1.3vw,13px);text-align:center;white-space:nowrap}
+.punish-heat{position:absolute;left:50%;top:53%;z-index:5;transform:translateX(-50%);font-size:32px;color:#ffbf5b;
+  opacity:.7;animation:heatRise 1.2s ease-out infinite}
+.punish-copy{padding:16px 20px}.punish-copy p{margin:0 0 10px;line-height:1.65;white-space:pre-line}
+@keyframes boilYama{to{transform:translateY(-4px)}}@keyframes heatRise{to{transform:translate(-50%,-30px);opacity:0}}
+
+/* ด่านชายแดน */
+#ov .frontierfab{position:absolute;transform:translate(-50%,-100%);z-index:8;white-space:nowrap;min-height:40px;
+  padding:8px 15px;border-radius:99px;font-size:var(--text-sm);font-weight:700;background:#5b2833;border:1px solid var(--gold);
+  color:#ffe3ae;box-shadow:0 7px 20px rgba(0,0,0,.68);pointer-events:auto;animation:mobfabIn .18s ease-out}
+#ov .frontierfab:after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--gold)}
+dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;padding:0;overflow:hidden;background:#160a0f}
+.frontier-screen{position:relative;min-height:min(760px,90dvh);background-size:cover;background-position:center;display:flex;flex-direction:column}
+.frontier-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,6,10,.2),rgba(15,6,10,.18) 45%,rgba(12,5,8,.96) 78%)}
+.frontier-screen>*:not(.frontier-shade){position:relative;z-index:2}.frontier-screen>.x{position:absolute;right:12px;top:12px;z-index:5}
+.frontier-screen header{padding:22px 64px 0 24px;text-shadow:0 3px 8px #000;max-width:620px}.frontier-screen header small{color:#f6c77b}
+.frontier-screen header h2{margin:2px 0;color:#ffe0a4}.frontier-screen header p{margin:4px 0;font-size:var(--text-sm);line-height:1.5}
+.frontier-party{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:2%;padding:10px 22% 0 16%;min-height:280px}
+.frontier-hero{display:flex;flex-direction:column;align-items:center}.frontier-hero img{height:230px;width:auto;image-rendering:pixelated;
+  filter:drop-shadow(0 9px 12px rgba(0,0,0,.7))}.frontier-hero.mate img{height:180px}.frontier-hero b{font-size:11px;color:var(--gold);
+  padding:2px 8px;border-radius:9px;background:rgba(11,5,8,.85)}
+.frontier-panel{padding:14px 20px 18px;background:rgba(14,6,9,.92);border-top:1px solid rgba(212,163,85,.5)}
+.frontier-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.frontier-head span{display:flex;flex-direction:column}
+.frontier-head b{color:var(--gold);font-size:18px}.frontier-head small,.frontier-loot{font-size:11px;color:var(--muted-foreground)}
+.frontier-team h3{font-size:13px;margin:10px 0 6px}.frontier-team h3 small{color:var(--gold)}.frontier-cards{display:flex;gap:8px;overflow-x:auto}
+.frontier-card{min-width:180px;display:flex;align-items:center;gap:8px;padding:7px;text-align:left}.frontier-card img{width:48px;height:48px;border-radius:50%;
+  object-fit:cover;object-position:top;border:1px solid var(--gold)}.frontier-card span{min-width:0}.frontier-card b,.frontier-card small{display:block}
+.frontier-card small{font-size:9px;color:var(--muted-foreground)}.frontier-card i{margin-left:auto;font-size:9px;font-style:normal;color:var(--gold)}
+.frontier-card.selected{background:#783629;border-color:#f4ae52}.frontier-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.frontier-result{padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--muted)}.frontier-result.win{border-color:var(--gold)}
+.frontier-result p{margin:6px 0}.frontier-result small{color:var(--muted-foreground)}
+
+@media(max-width:900px){
+  .trial-hud .hud-body{grid-template-columns:1fr;grid-template-areas:"stage" "right";padding:8px;gap:7px}
+  .trial-hud .hud-stage{height:350px;min-height:350px}
+  .trial-hud .hud-stage .fig{bottom:112px}.trial-hud .hud-stage .fig img{height:150px}
+  .trial-hud .hud-menu{left:6px;right:6px;bottom:5px;width:auto;height:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+  .trial-hud .hud-menu button,.trial-hud .hud-menu #t-go,.trial-hud .hud-menu #t-skip,.trial-hud .hud-menu #t-jail{
+    position:static;width:auto;height:auto;min-height:46px;border-radius:11px;padding:5px 3px}
+  .trial-hud .hud-menu button .ic{font-size:16px}.trial-hud .hud-menu button .lb2{font-size:10px}
+  .trial-hud .trial-powers{left:31%;bottom:120px;gap:3px}.trial-powers button{width:48px;height:58px}.trial-powers button span{width:40px;height:40px;font-size:21px}
+  .trial-powers button b{display:none}.trial-powers button i{top:27px;right:0}
+  .trial-hud .hud-bottom{height:88px}
+  .battle-actions{left:23%;right:23%;top:38px;gap:2px}.battle-act{width:50px;min-height:61px}.battle-act .battle-icon{width:42px;height:42px}
+  .battle-act b{font-size:8px}.battle-act i{display:none}.battle-squad{left:16%}.battle-squad img{height:76px}
+  .frontier-screen{min-height:calc(100dvh - 24px)}.frontier-party{min-height:230px;padding:8px 8% 0}.frontier-hero img{height:170px}.frontier-hero.mate img{height:135px}
+  .frontier-panel{padding:12px}.frontier-cards{display:grid;grid-template-columns:1fr 1fr}.frontier-card{min-width:0}
+  .punish-dad{right:4%;bottom:22%;width:28%}.punish-dad span{white-space:normal}.punish-yama{width:20%;height:21%}
+}
+@media(max-width:520px){
+  .trial-hud .hud-stage{height:310px;min-height:310px}.trial-hud .hud-stage .fig{bottom:110px}.trial-hud .hud-stage .fig img{height:125px}
+  .trial-hud .trial-powers{left:26%;bottom:113px}.trial-hud .hud-bottom{height:78px}.trial-hud .port img{width:60px;height:60px}
+  .battle-actions{left:20%;right:20%;top:34px}.battle-act{width:43px}.battle-act .battle-icon{width:37px;height:37px}.battle-act b{font-size:7px}
+  .frontier-screen header{padding:18px 46px 0 15px}.frontier-party{min-height:190px}.frontier-hero img{height:132px}.frontier-hero.mate img{height:105px}
+  .frontier-cards{grid-template-columns:1fr}.frontier-actions button{font-size:11px;padding:7px}
+  .punish-stage{aspect-ratio:4/3}.punish-yama{top:50%;width:24%;height:20%}.punish-dad{right:2%;bottom:18%;width:34%}.punish-dad img{height:150px}
+}
 </style>
 </head>
 <body>

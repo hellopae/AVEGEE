@@ -2,10 +2,10 @@
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE4_BOSS_DRAFT, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN, crewName } from './data.js';
+         ORDER_WARN, crewName, FRONTIER } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
-import { render, toScene, hitStation, hitActor, nearBuild } from './scene.js';
+import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
@@ -57,6 +57,7 @@ setInterval(() => {
   updateTrialBtn();        // ปุ่มสอบสวนต้องตามการเดินให้ทันแม้ลูปเฟรมจะหยุด (แท็บอยู่หลังจอ)
   updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
   updateBossFab();
+  updateFrontierFab();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
@@ -78,7 +79,7 @@ function frame(now) {
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   render(ctx, g, now, hover, sel);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -726,9 +727,11 @@ function drawOverlay() {
   // จะ "กดแล้วไม่ติด" เพราะปุ่มที่รับ mousedown ถูกถอดออกไปก่อน mouseup
   const keepFab = ov.querySelector('.mobfab');
   const keepBossFab = ov.querySelector('.bossfab');
+  const keepFrontierFab = ov.querySelector('.frontierfab');
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
+  if (keepFrontierFab) ov.appendChild(keepFrontierFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -844,6 +847,23 @@ function updateBossFab() {
     ov.appendChild(f);
   }
   f.dataset.sx = 790; f.dataset.sy = 558 - 115;
+  place(f);
+}
+
+/** ประตูชายแดนเปิดได้เมื่อเดินมาถึงเท่านั้น เหมือนสถานที่อื่นในฉาก */
+function updateFrontierFab() {
+  const gone = () => { const e = ov.querySelector('.frontierfab'); if (e) e.remove(); };
+  const near = g.zone === 'th' && Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
+  if (!near || g.over || g.battle || dlg.open) return gone();
+  let f = ov.querySelector('.frontierfab');
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'frontierfab';
+    f.textContent = '🏯 เข้าด่านชายแดน';
+    f.onclick = ev => { ev.stopPropagation(); if (!g.battle && !dlg.open) openFrontier(); };
+    ov.appendChild(f);
+  }
+  f.dataset.sx = FRONTIER.bx; f.dataset.sy = FRONTIER.by - FRONTIER.bw + 18;
   place(f);
 }
 
@@ -1101,13 +1121,21 @@ function bossModal(title, text, btn = 'รับทราบ') {
  *  แค่โชว์ภาพลงทัณฑ์ + บอกให้ไปพักที่ศาลาน้ำชา แล้วปล่อยเล่นต่อทันที ไม่รีเซ็ตโซน */
 function openDadPunish(p) {
   pauseForDlg();
-  modal(`<h2>${esc(p.title)}</h2>
-    <div class="boss">
-      <img class="standee" src="${artUrl('st-krata')}" alt="กระทะทองแดง" onerror="this.remove()">
-      <p style="line-height:var(--leading-body);margin:0;white-space:pre-line">${esc(p.text)}</p>
+  modal(`<div class="punish-stage" style="background-image:url('img/BG-Krata.webp')">
+      <div class="punish-vignette"></div>
+      <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
+      <div class="punish-yama"><img src="${heroFace()}" alt="ยมน้อยอยู่ในกระทะทองแดง"></div>
+      <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="พญายม"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
+      <div class="punish-heat">♨</div>
     </div>
-    <div class="hint">บารมีเหลือ ${Math.max(0, Math.round(g.hp))} — เดินไปที่ 🍵 ศาลาน้ำชาเพื่อพักฟื้น</div>
-    <div class="row"><button class="gold" data-close>รับทราบ</button></div>`);
+    <div class="punish-copy"><p>${esc(p.text)}</p>
+      <div class="hint">บารมีเหลือ ${Math.max(0, Math.round(g.hp))} — เดินไปที่ 🍵 ศาลาน้ำชาเพื่อพักฟื้น</div>
+      <div class="row"><button class="gold" data-close data-punish-done disabled>รับโทษ...</button></div>
+    </div>`, d => {
+      d.classList.add('punish-scene');
+      const b = d.querySelector('[data-punish-done]');
+      setTimeout(() => { if (b?.isConnected) { b.disabled = false; b.textContent = 'กลับไปคุมโซน'; } }, 1700);
+    });
 }
 
 function openHelp() {
@@ -1231,7 +1259,7 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.webp (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
-function arena(title, foe, hp, act, closable, fx, helper) {
+function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
@@ -1249,7 +1277,8 @@ function arena(title, foe, hp, act, closable, fx, helper) {
   // ท่าลงทัณฑ์เฉพาะจังหวะที่เราลงมือใส่เขา — ใช้ของบำรุง (fx ลงที่ตัวเอง) ยังยืนท่าเดิม
   const youImg = (act && act.lunge === 'you' && (!fx || fx.side === 'foe')) ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
-  return `<div class="arena" style="background-image:url('img/BG-Turn-Base.webp')">
+  const bg = hp?.bg || 'img/BG-Turn-Base.webp';
+  return `<div class="arena" style="background-image:url('${esc(bg)}')">
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -1259,6 +1288,8 @@ function arena(title, foe, hp, act, closable, fx, helper) {
            onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
+    ${squad.length ? `<div class="battle-squad">${squad.map(c => `<span>
+      <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b></span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
@@ -1271,6 +1302,7 @@ function arena(title, foe, hp, act, closable, fx, helper) {
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe', 'กำลังใจ')}</span>
     </div>
+    ${controls}
   </div>`;
 }
 
@@ -1385,34 +1417,36 @@ function openTrial() {
     }
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+    const powerButtons = POWERS.map(p => {
+      const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
+      const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
+                : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่'
+                : pw.cd > 0 ? `เพิ่งใช้ไป รออีก ${pw.cd} คดี` : p.desc;
+      return `<button data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
+        <span>${p.glyph}</span><b>${esc(p.name)}</b><i>×${pw.ammo}</i></button>`;
+    }).join('');
 
     dlg.innerHTML = `
-    <div class="hud" style="background-image:url('img/BG-Turn-Base.webp')">
+    <div class="hud trial-hud" style="background-image:url('img/BG-Turn-Base.webp')">
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
       <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
 
-      <div class="hud-top">${top}</div>
-
       <div class="hud-body">
         <div class="hud-stage">
+          <span class="trial-case-no">สำนวน #${String(s.id).padStart(3, '0')}</span>
           <div class="fig you"><img src="${heroFace()}" alt=""
                  onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
             <span class="nm">${esc(HERO_NAME)}</span></div>
           <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
                  onerror="this.onerror=null;this.src='img/spirit7.png'">
             <span class="nm">${esc(s.name || s.who)}</span></div>
-        </div>
-
-        <!-- เมนูคำสั่ง (ย้าย 18 ก.ย. 2569 รอบ 2 — คุณเป้อยากให้ชิดคอลัมน์ขวา เหนือแฟ้มคดีพอดี
-             ไม่ใช่แถบเต็มความกว้าง .hud เหมือนรอบแรก) ตอนนี้เป็นลูกของ .hud-body แทนที่จะเป็นพี่น้อง
-             อยู่นอกกริด — grid-template-areas ใน index.html (.hud-body) วาง .hud-menu ไว้คอลัมน์ขวา
-             แถวบน เหนือ .hud-right แถวล่าง กว้างเท่ากันเพราะเป็นคอลัมน์เดียวกันของกริดเดียวกัน
-             data-cmd/id ทุกตัวคงเดิมเป๊ะ ไม่แตะ logic -->
-        <div class="hud-menu">
-          <div class="seg">${seg}</div>
-          <div class="go-cluster">${goCluster}</div>
+          <div class="hud-menu" aria-label="คำสั่งสอบสวน">
+            <div class="seg">${seg}</div>
+            <div class="go-cluster">${goCluster}</div>
+          </div>
+          <div class="trial-powers" aria-label="พลังของยมบาท">${powerButtons}</div>
         </div>
 
         <div class="hud-right">
@@ -1446,14 +1480,6 @@ function openTrial() {
         <!-- การ์ดรูป+ชื่อวิญญาณ (.port.foe) เอาออก 18 ก.ย. 2569 (ข้อ A ของคุณเป้) — บนจอแคบมันทับ
              .hud-log ด้านบน และข้อมูลตัวตนซ้ำกับ .fig.foe ที่อยู่บนเวทีอยู่แล้ว (รูป+ชื่อเดียวกัน)
              เอาออกทุกจอ ไม่ใช่แค่จอแคบ — ดูสะอาดกว่าและไม่เสียข้อมูลอะไรไป การ์ดยมน้อยฝั่งซ้ายคงไว้ -->
-        <div class="hud-items">${POWERS.map(p => {
-          const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
-          const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
-                    : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่'
-                    : pw.cd > 0 ? `เพิ่งใช้ไป รออีก ${pw.cd} คดี` : p.desc;
-          return `<button data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}"
-            >${p.glyph}<b>${pw.ammo}</b></button>`;
-        }).join('')}</div>
       </div>
     </div>`;
 
@@ -1511,6 +1537,78 @@ function doVerdict(soul, stK, crK, inten) {
   return true;
 }
 
+// ---------- ด่านชายแดนนรก ----------
+function openFrontier() {
+  if (g.zone !== 'th') return;
+  pauseForDlg();
+  const helpers = g.crewHelpers();
+  g.frontier ||= { clears: 0, team: [] };
+  g.frontier.team = (g.frontier.team || []).filter(k => helpers.some(c => c.k === k));
+  if (!g.frontier.team.length && helpers[0]) g.frontier.team = [helpers[0].k];
+  g.save();
+
+  const paint = () => {
+    const chosen = g.frontier.team || [];
+    const wave = (g.frontier.clears || 0) + 1;
+    dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${FRONTIER.bg}')">
+      <div class="frontier-shade"></div>
+      <button class="x" data-close title="กลับแผนที่">✕</button>
+      <header><small>กิจกรรมต่อสู้ประจำโซน</small><h2>🏯 ${esc(FRONTIER.name)}</h2>
+        <p>ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก</p></header>
+      <div class="frontier-party">
+        <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
+        ${chosen.map(k => {
+          const c = helpers.find(x => x.k === k); if (!c) return '';
+          return `<div class="frontier-hero mate"><img src="${artUrl('crew-' + c.k)}" alt=""><b>${esc(c.name)}</b></div>`;
+        }).join('')}
+      </div>
+      <section class="frontier-panel">
+        <div class="frontier-head"><span><b>ระลอกที่ ${wave}</b><small>ผ่านแล้ว ${g.frontier.clears || 0} ระลอก</small></span>
+          <span class="frontier-loot">รางวัล: เบี้ยกรรม + ของสนามรบ</span></div>
+        <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
+          <div class="frontier-cards">${helpers.length ? helpers.map(c => {
+            const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
+            return `<button data-frontier-crew="${c.k}" class="frontier-card${on ? ' selected' : ''}" ${full ? 'disabled' : ''}>
+              <img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">
+              <span><b>${esc(c.name)}</b><small>แรง ${c.raeng} · กำลังใจ ${Math.round(c.morale)}</small></span>
+              <i>${on ? '✓ เข้าทีม' : 'เลือก'}</i></button>`;
+          }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
+        </div>
+        <div class="frontier-actions"><button data-close>กลับแผนที่</button>
+          <button class="gold" data-frontier-start ${chosen.length ? '' : 'disabled'}>⚔️ เริ่มป้องกันชายแดน</button></div>
+      </section>
+    </div>`;
+    dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
+      if (g.setFrontierTeam(b.dataset.frontierCrew)) { sfx('crack'); paint(); }
+    });
+    const start = dlg.querySelector('[data-frontier-start]');
+    if (start) start.onclick = () => {
+      if (!g.startFrontierBattle()) return;
+      dlg.close();
+      openBattle((_, done) => openFrontierResult(done));
+    };
+  };
+  paint();
+  openDlg('frontier');
+}
+
+function openFrontierResult(done) {
+  if (!done) return;
+  const win = done.over === 'win';
+  const item = done.reward?.item && ITEMS[done.reward.item];
+  pauseForDlg();
+  modal(`<h2>${win ? '🏯 รักษาชายแดนไว้ได้' : '⚔️ ทีมถอยกลับเข้าประตู'}</h2>
+    <div class="frontier-result ${win ? 'win' : 'lose'}">
+      <b>ระลอกที่ ${done.wave}</b>
+      <p>${win ? `ได้รับ ${done.reward.coin} เบี้ยกรรม${item ? ` และ ${item.glyph} ${esc(item.name)} ×1` : ''}`
+                : 'ชายแดนยังไม่แตก พักฟื้นหรือจัดทีมใหม่แล้วค่อยกลับมาสู้ได้'}</p>
+      ${item ? '<small>ของสนามรบถูกเก็บเข้ากระเป๋า รอขายให้พ่อค้านรก</small>' : ''}
+    </div>
+    <div class="row"><button data-close>กลับแผนที่</button><button class="gold" data-frontier-again>จัดทีมระลอกต่อไป</button></div>`, d => {
+      d.querySelector('[data-frontier-again]').onclick = openFrontier;
+    });
+}
+
 // ---------- ฉากต่อสู้ ----------
 // ใช้ทั้งกับวิญญาณที่ขัดขืน และกับพญายมตอนบารมีหมด (ฉากหลังไม่มีทางชนะ ตั้งใจให้แพ้)
 function openBattle(after) {
@@ -1539,36 +1637,43 @@ function openBattle(after) {
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
     const fireAmmo = g.powerOf('roar').ammo;
+    const battleHelpers = b.kind === 'frontier'
+      ? g.crewHelpers().filter(c => b.team?.includes(c.k))
+      : g.crewHelpers();
     const prep = b.kind === 'zoneBoss' && !b.prep && !b.over ? `<div class="boss-prep">
       <b>เลือกเตรียมศึกหนึ่งอย่าง</b><div class="acts">
       <button data-prep="proof" ${g.miniGoals[b.zone]?.earned ? '' : 'disabled'}>📜 แฟ้มหลักฐาน ${g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
       <button data-prep="crew" ${g.crewHelpers().length ? '' : 'disabled'}>🛡️ ยมทูตคุ้มกัน · บารมีศึก +18</button>
       <button data-prep="power">🔥 เตรียมลูกไฟ · เพิ่ม 1 ลูก</button>
       </div></div>` : '';
-    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `<div class="acts${phase ? ' busy' : ''}">
-      <button data-act="atk">⚔️ ฟาด</button>
-      <button data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'}>🔥 ลูกไฟ <span style="opacity:.55">×${fireAmmo}</span></button>
+    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `<div class="battle-actions${phase ? ' busy' : ''}">
+      <button class="battle-act" data-act="atk" title="ฟาด"><span class="battle-icon"><img src="img/fx-slash.png" alt=""></span><b>ฟาด</b></button>
+      <button class="battle-act" data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'} title="ลูกไฟ เหลือ ${fireAmmo}"><span class="battle-icon"><img src="img/fx-fireball.png" alt=""></span><b>ลูกไฟ</b><i>×${fireAmmo}</i></button>
       ${BATTLE.items.map(it => {
         const pw = it.power ? g.powerOf(it.power) : null;
         const ok = it.coin != null ? g.coin >= it.coin : (pw && pw.ammo > 0);
         const note = it.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
-        return `<button data-act="${it.k}" ${ok ? '' : 'disabled'}
-          >${it.glyph} ${it.name} <span style="opacity:.55">${note}</span></button>`;
+        const icon = it.k === 'health' ? 'item-health' : 'item-hypno';
+        return `<button class="battle-act" data-act="${it.k}" ${ok ? '' : 'disabled'} title="${esc(it.name + ' ' + note)}">
+          <span class="battle-icon"><img src="${artUrl(icon) || `img/${icon}.png`}" alt=""></span><b>${esc(it.name)}</b><i>${esc(note)}</i></button>`;
       }).join('')}
-      ${g.crewHelpers().map(c => {
+      ${battleHelpers.map(c => {
         const why = g.crewHelpWhy(c);
-        return `<button class="crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
+        const wait = c.helpCd && g.tick < c.helpCd ? Math.ceil((c.helpCd - g.tick) / BATTLE.crewCd * 100) : 0;
+        return `<button class="battle-act crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
           title="${esc(c.name + ' — ' + (why || 'เรียกมาช่วยฟาดหนึ่งที · กำลังใจเขาหาย ' + BATTLE.crewMorale))}"
-          ><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="" onerror="this.onerror=null;this.src='${artUrl('crew-' + c.k)}'"
-          >${c.name}<span style="opacity:.55">${why ? ' ' + why : ' แรง ' + c.raeng}</span></button>`;
+          ><span class="battle-icon"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt=""
+            onerror="this.onerror=null;this.src='${artUrl('crew-' + c.k)}'"><em style="--wait:${wait}%"></em></span>
+            <b>${esc(c.name)}</b><i>${why ? esc(why) : `แรง ${c.raeng}`}</i></button>`;
       }).join('')}
     </div>`;
 
     const finLabel =
-        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
+        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'รับรางวัลชายแดน' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? 'ฟังคำตัดสินของพ่อ'
                           : b.kind === 'dad'  ? 'ฟังคำตัดสินของพ่อ'
                           : b.kind === 'zoneBoss' ? 'กลับไปตั้งหลักที่สะพาน'
+                          : b.kind === 'frontier' ? 'ถอยกลับเข้าประตู'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
                                               : 'ปล่อยเขากลับเข้าคิว') : '';
     // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
@@ -1581,14 +1686,16 @@ function openBattle(after) {
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
           : b.kind === 'dad'   ? '👑 พ่อลงมาเอง — ตัดสินพลาดสามสำนวนติด'
           : b.kind === 'zoneBoss' ? '👑 บอสโซน — ทดสอบก่อนย้ายสาขา'
+          : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
-            b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null) +
+            b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
+            acts, b.kind === 'frontier' ? battleHelpers : []) +
       `<div class="pad">
         <div class="talkbox">${esc(view.talk || '...')}</div>
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
-        ${prep}${acts}${done}
+        ${prep}${done}
       </div>`;
 
     dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
@@ -1652,7 +1759,7 @@ function openBattle(after) {
     if (done?.kind !== 'yama') bgm('bgm-zone');
     updatePlay();
     refresh();
-    if (after) after(done ? done.over : null);
+    if (after) after(done ? done.over : null, done);
   }
 
   const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
@@ -1744,6 +1851,7 @@ function openOutfit() {
 function bagUseWhy(k) {
   const d = ITEMS[k];
   if (!d) return 'ไม่รู้จักไอเทมนี้';
+  if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
   if (d.hp && g.hp >= g.hpMax) return 'บารมีเต็มแล้ว';
   if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
   if (d.power) {
@@ -1779,7 +1887,7 @@ function openBag() {
       <img src="${artUrl(d.img) || `img/${d.img}.png`}" alt="${esc(d.name)}" loading="lazy">
       <span class="n"><b>${esc(d.glyph)} ${esc(d.name)} ×${n}</b>
         <small>${esc(why || d.say)}</small></span>
-      <button class="gold" data-use-item="${k}" ${why ? 'disabled' : ''}>ใช้</button>
+      <button class="gold" data-use-item="${k}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
 
@@ -1909,8 +2017,9 @@ drawMute();
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
   const def = hitStation(sx, sy);
-  hover = def ? def.k : null;
-  cv.style.cursor = def ? 'pointer' : 'default';
+  const frontier = hitFrontier(g, sx, sy);
+  hover = frontier ? FRONTIER.k : def ? def.k : null;
+  cv.style.cursor = (def || frontier) ? 'pointer' : 'default';
 };
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
@@ -1920,6 +2029,14 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
+  if (hitFrontier(g, sx, sy)) {
+    const near = Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
+    if (near) return openFrontier();
+    if (g.walkTo(FRONTIER.x, FRONTIER.y))
+      g.log(`เดินไป${FRONTIER.name} — เข้าได้เมื่อยืนใกล้ซุ้มประตู`, 'act');
+    else g.log(`${FRONTIER.name}อยู่ในจุดที่เดินไปไม่ถึง`, 'bad');
+    return;
+  }
   const def = hitStation(sx, sy);
   const st = def && g.stations.find(x => x.def.k === def.k);
 

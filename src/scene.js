@@ -2,7 +2,7 @@
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
@@ -89,11 +89,15 @@ export function render(ctx, g, t, hover, sel) {
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว
   for (const st of g.stations) at(depthOf(st.def), () => drawStation(ctx, g, st, t));
+  // ประตูชายแดนเป็นกิจกรรมของโซนสุวรรณภูมิ ไม่อยู่ในรายการสถานีและสร้างไม่ได้
+  if (g.zone === 'th') at(depthOf(FRONTIER), () => drawBuilding(ctx, FRONTIER, t));
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {
-    const def = STATIONS.find(d => d.k === hover);
-    const shown = def && (g.stations.some(x => x.def.k === def.k) || spot?.k === def.k);
+    const def = hover === FRONTIER.k ? FRONTIER : STATIONS.find(d => d.k === hover);
+    const shown = def && (def.k === FRONTIER.k
+      ? g.zone === 'th'
+      : (g.stations.some(x => x.def.k === def.k) || spot?.k === def.k));
     if (shown) {
       const [x1, y1, x2, y2] = def.hit;
       ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 2.5;
@@ -421,6 +425,12 @@ export function hitStation(sx, sy) {
   return [...STATIONS]
     .sort((a, b) => area(a.hit) - area(b.hit))
     .find(d => sx >= d.hit[0] && sx <= d.hit[2] && sy >= d.hit[1] && sy <= d.hit[3]) || null;
+}
+
+/** คลิกโดนซุ้มประตูชายแดนหรือไม่ — เปิดเฉพาะโซนแรกในเวอร์ชันนี้ */
+export function hitFrontier(g, sx, sy) {
+  const h = FRONTIER.hit;
+  return g.zone === 'th' && sx >= h[0] && sx <= h[2] && sy >= h[1] && sy <= h[3];
 }
 const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 

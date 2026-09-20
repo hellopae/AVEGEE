@@ -5,7 +5,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName } from './data.js';
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt } from './art.js';
@@ -75,6 +75,7 @@ export function createGame() {
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
+    frontier: { clears: 0, team: [] }, // ระลอกชายแดนและทีมที่เลือก ติดไปกับเซฟ
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
@@ -1500,6 +1501,47 @@ const API = {
     return this.battle;
   },
 
+  /** เลือกยมทูตเข้าทีมชายแดน (สูงสุดสองคน) */
+  setFrontierTeam(k) {
+    const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
+    if (!c) return false;
+    this.frontier ||= { clears: 0, team: [] };
+    const team = this.frontier.team || (this.frontier.team = []);
+    const i = team.indexOf(k);
+    if (i >= 0) team.splice(i, 1);
+    else {
+      if (team.length >= FRONTIER.teamMax) return false;
+      team.push(k);
+    }
+    this.save(); this.onChange();
+    return true;
+  },
+
+  /** เริ่มหนึ่งระลอกที่ชายแดน ใช้ระบบต่อสู้เดิม แต่จำกัดผู้ช่วยตามทีมที่จัดไว้ */
+  startFrontierBattle() {
+    if (this.battle || this.over || this.zone !== 'th') return null;
+    this.frontier ||= { clears: 0, team: [] };
+    const available = this.crew.filter(c => !c.reader && !c.self);
+    this.frontier.team = (this.frontier.team || []).filter(k => available.some(c => c.k === k));
+    if (!this.frontier.team.length && available[0]) this.frontier.team = [available[0].k];
+    if (!this.frontier.team.length) return null;
+    const wave = (this.frontier.clears || 0) + 1;
+    const pool = MOB.kinds.slice(0, 7);
+    const kind = pick(pool);
+    const hp = 64 + wave * 14;
+    this.fights++;
+    this.battle = {
+      kind:'frontier', wave, team:[...this.frontier.team], bg:FRONTIER.bg,
+      who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
+      foeHp:hp, foeMax:hp, foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
+      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
+      stun:0, turn:1, over:null, log:[], dmg:null,
+      talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
+    };
+    this.onChange();
+    return this.battle;
+  },
+
   bossReady() {
     return !this.bossCleared[this.zone] && !this.bossGuarding[this.zone] &&
       (this.zoneCases[this.zone] || 0) >= 10;
@@ -1601,7 +1643,8 @@ const API = {
     return this.crew.filter(c => !c.reader && !c.self);
   },
   crewHelpWhy(c) {
-    if (!this.canCallCrew()) return `ต้องเป็น${LEVELS[CREW_HELP_LV - 1].name}ก่อน`;
+    // ที่ชายแดนคือภารกิจของทีมโดยตรง จึงไม่ติดเงื่อนไขเลเวล “เรียกคนมาช่วย” ของการต่อสู้ทั่วไป
+    if (!this.canCallCrew() && this.battle?.kind !== 'frontier') return `ต้องเป็น${LEVELS[CREW_HELP_LV - 1].name}ก่อน`;
     if (c.helpCd && this.tick < c.helpCd) return `เพิ่งช่วยไป · อีก ${c.helpCd - this.tick} วาระ`;
     if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
     return '';
@@ -1643,6 +1686,7 @@ const API = {
 
     } else if (typeof what === 'string' && what.startsWith('crew:')) {
       const c = this.crew.find(x => x.k === what.slice(5));
+      if (B.kind === 'frontier' && !B.team?.includes(c?.k)) return false;
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpCd = this.tick + BATTLE.crewCd;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
@@ -1687,7 +1731,16 @@ const API = {
 
     if (B.foeHp <= 0) {
       B.over = 'win';
-      if (B.kind === 'mob') {
+      if (B.kind === 'frontier') {
+        const coin = 32 + B.wave * 10;
+        const item = pick(FRONTIER.drops);
+        this.coin += coin;
+        this.inventory[item] = (this.inventory[item] || 0) + 1;
+        this.frontier.clears = Math.max(this.frontier.clears || 0, B.wave);
+        B.reward = { coin, item };
+        this.order = clamp(this.order + 1, 0, 100);
+        say(`ป้องกันชายแดนสำเร็จ — +${coin} เบี้ยกรรม · ได้ ${ITEMS[item].name} ×1`);
+      } else if (B.kind === 'mob') {
         const gain = Math.round(MOB.bounty * MOB.fightWin);
         this.coin += gain;
         this.order = clamp(this.order + 2, 0, 100);
@@ -1713,7 +1766,10 @@ const API = {
     // ---- ตาของเขา ----
     if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
-      const d = roll(B.kind === 'mob' ? MOB.fightAtk : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3] : BATTLE.foeAtk);
+      const d = roll(B.kind === 'frontier' ? B.foeAtk
+        : B.kind === 'mob' ? MOB.fightAtk
+        : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3]
+        : BATTLE.foeAtk);
       B.youHp = Math.max(0, B.youHp - d);
       B.dmg.you = d;
       say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
@@ -1724,7 +1780,10 @@ const API = {
     if (B.youHp <= 0) {
       B.over = 'lose';
       talk('win');
-      if (B.kind === 'mob') {
+      if (B.kind === 'frontier') {
+        this.hp = Math.max(1, this.hp - 8);
+        say('ทีมถอยกลับเข้าประตู — ชายแดนยังไม่แตก แต่บารมีท่านหาย 8');
+      } else if (B.kind === 'mob') {
         this.hp = Math.max(1, this.hp - MOB.fightLose);
         say(`ท่านถอยออกมา — ${B.who}ยังอยู่ในโซน · บารมีหาย ${MOB.fightLose}`);
       } else if (B.kind === 'zoneBoss') {
@@ -1805,6 +1864,13 @@ const API = {
       } else {
         this.log(`⚔️ ${B.who}ยังอยู่ — ปล่อยไว้ระเบียบจะตกไปเรื่อย ๆ`, 'bad');
       }
+      this.checkEnd(); this.onChange(); return B;
+    }
+    if (B.kind === 'frontier') {
+      this.log(B.over === 'win'
+        ? `🏯 ป้องกันชายแดนระลอกที่ ${B.wave} สำเร็จ — ได้ ${B.reward?.coin || 0} เบี้ยกรรมและของจากสนามรบ`
+        : `🏯 ทีมถอยจากชายแดนระลอกที่ ${B.wave} — จัดทีมแล้วกลับไปลองใหม่ได้`,
+        B.over === 'win' ? 'good' : 'bad');
       this.checkEnd(); this.onChange(); return B;
     }
     this.log(B.over === 'win'
@@ -2018,7 +2084,7 @@ API.snapshot = function (withEntry = true) {
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
-    miniGoals: this.miniGoals,
+    miniGoals: this.miniGoals, frontier: this.frontier,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -2080,6 +2146,7 @@ API.restore = function (d) {
   this.zone = d.zone || 'th';
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.miniGoals = d.miniGoals || {};
+  this.frontier = d.frontier || { clears: 0, team: [] };
   this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
     : this.zone === 'asia' ? { th: true } : {});
   this.bossRetryAt = d.bossRetryAt || {};
