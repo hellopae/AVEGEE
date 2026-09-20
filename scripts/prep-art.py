@@ -239,6 +239,13 @@ def out_name(sub, name):
     if re.match(r'BG-[a-z]', name):
         name = 'BG-' + name[3].upper() + name[4:]
     z = sub.lower()
+    # ภาพคัตซีนและท่าหันซ้าย/ขวาใส่ชื่อโซนไว้กลางชื่ออยู่แล้ว ไม่ใช่ POSE ท้ายชื่อแบบ
+    # -profile/-work/-atk/-side ถ้าปล่อยลงทางทั่วไปจะได้ชื่อซ้ำเป็น
+    # hero-yama-west-atk-cutscene-west ซึ่ง art.js หาไม่เจอ
+    if re.fullmatch(r'.+-' + z + r'-(atk|hyp|mi|ice)-cutscene', name):
+        return name, ''
+    if re.fullmatch(r'.+-' + z + r'-atk-[LR]', name):
+        return name, ''
     m = re.fullmatch(r'(.+)-(' + '|'.join(POSES) + r')-' + z, name)   # crew-taan-work-asia → crew-taan-asia-work
     if m:
         return f'{m.group(1)}-{z}-{m.group(2)}', f'สลับคำท้ายเป็น -{z}-{m.group(2)}'
@@ -255,6 +262,22 @@ def prep(path, name, out_dir=OUT):
     im = Image.open(path)
     stripped = 0
     OUT = out_dir                  # ทุกบรรทัดข้างล่างเซฟลง OUT — โฟลเดอร์โซนก็ใช้ทางเดียวกัน
+
+    # ภาพคัตซีนพลัง — ภาพกว้างเต็มใบ ห้ามลอกพื้น/ครอป/บีบลงผืน 512
+    # เก็บเป็น JPEG เพราะ UI เรียกชื่อนี้โดยตรง และต้นฉบับเป็นภาพทึบไม่มี alpha
+    if name.endswith('-cutscene'):
+        im = im.convert('RGB')
+        if im.width > SCENE_W:
+            im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
+        im.save(os.path.join(OUT, name + '.jpeg'), 'JPEG', quality=90, optimize=True)
+        return im.size
+
+    # การ์ตูนแนะนำโซนตอนย้ายสาขา — ใช้กรอบ 16:9 แบบฉากเปิด ไม่ใช่ standee
+    if re.match(r'intro-zone\d+', name):
+        if im.width > SCENE_W:
+            im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
+        im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
+        return im.size
 
     # ฉากในห้องสถานี (BG-<Key>) — ภาพเต็มใบ ห้ามลอกพื้น ห้ามครอป
     # โซน 1 แปลงมือไว้เป็น webp ตั้งแต่ 9 ก.ย. (ต้นฉบับ _BG-*.jpeg ไม่ผ่านสคริปต์นี้)
@@ -390,7 +413,11 @@ def ingest():
             # เหมือนสไปรท์ตัวละคร (ดู prep()) เช็คขนาดอย่างเดียวเลยจับผิดว่าเป็นต้นฉบับ ย้ายมันไป
             # img/raw/ ทั้งที่เป็นผลลัพธ์ที่ถูกต้องแล้ว (เจ้าของเจอ 17 ก.ย. 2569 — Intro-Boss ของ
             # ทุกโซนหายไปจาก img/ หลังรันสคริปต์รอบถัดมา) เช็คชื่อไฟล์กันไว้เหมือน scene-*
-            if ext == '.webp' or f.startswith('scene') or re.match(r'Intro-Boss-Zone\d+', f):
+            stem = os.path.splitext(f)[0]
+            if (ext == '.webp' or f.startswith('scene')
+                    or (re.match(r'Intro-Boss-Zone\d+', f) and stem.endswith('-' + sub.lower()))
+                    or (ext == '.png' and re.match(r'intro-zone\d+', f))
+                    or f.endswith('-cutscene.jpeg')):
                 continue
             if ext == '.png':
                 with Image.open(p) as im:
@@ -424,9 +451,10 @@ def main():
         name, warn = out_name(sub, os.path.splitext(f)[0])
         out_dir = os.path.join(OUT, sub) if sub else OUT
         os.makedirs(out_dir, exist_ok=True)
-        # .webp = ฉากห้องสถานี (BG-*) และการ์ดเกาะเลือกโซน (Zone<N>) · ที่เหลือ .png ทั้งหมด
+        # .webp = ฉากห้องสถานี/การ์ดเกาะ · .jpeg = คัตซีนกว้าง · ที่เหลือ .png
         is_webp = name.startswith('BG-') or bool(re.fullmatch(r'Zone\d+', name))
-        dst = os.path.join(out_dir, name + ('.webp' if is_webp else '.png'))
+        ext = '.webp' if is_webp else ('.jpeg' if name.endswith('-cutscene') else '.png')
+        dst = os.path.join(out_dir, name + ext)
         src = os.path.join(RAW, rel)
         # ทำเฉพาะของใหม่ — ผลลัพธ์ที่มีอยู่แล้วไม่ถูกแตะ ไม่งั้นแก้กติกาทีไร รูปทั้งเกมเปลี่ยนตามหมด
         if not force and rel not in fresh and os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src):

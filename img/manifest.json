@@ -21,7 +21,13 @@
 "crew-taan.png",
 "hero-boss-profile.png",
 "hero-boss.png",
+"hero-yama-atk-L.png",
+"hero-yama-atk-R.png",
+"hero-yama-atk-cutscene.jpeg",
 "hero-yama-atk.png",
+"hero-yama-hyp-cutscene.jpeg",
+"hero-yama-ice-cutscene.jpeg",
+"hero-yama-mi-cutscene.jpeg",
 "hero-yama-profile.png",
 "hero-yama.png",
 "scene.png",
@@ -33,6 +39,7 @@
 "BG-Dab.webp",
 "BG-Krajok.webp",
 "BG-Krata.webp",
+"BG-Lan.webp",
 "BG-Lokan.webp",
 "BG-Ngiw.webp",
 "BG-Sala.webp",
@@ -40,6 +47,8 @@
 "BG-Tarang.webp",
 "BG-Tea.webp",
 "BG-Turn-Base.webp",
+"book-hyp.png",
+"book-ice.png",
 "fx-claw.png",
 "fx-fireball.png",
 "fx-heal.png",
@@ -141,7 +150,13 @@
 "Asia/crew-taan-asia.png",
 "Asia/hero-boss-asia-profile.png",
 "Asia/hero-boss-asia.png",
+"Asia/hero-yama-asia-atk-L.png",
+"Asia/hero-yama-asia-atk-R.png",
+"Asia/hero-yama-asia-atk-cutscene.jpeg",
 "Asia/hero-yama-asia-atk.png",
+"Asia/hero-yama-asia-hyp-cutscene.jpeg",
+"Asia/hero-yama-asia-ice-cutscene.jpeg",
+"Asia/hero-yama-asia-mi-cutscene.jpeg",
 "Asia/hero-yama-asia-profile.png",
 "Asia/hero-yama-asia.png",
 "Asia/intro-zone2-asia.png",
@@ -168,6 +183,7 @@
 "CyberHell/BG-Lokan-cyberhell.webp",
 "CyberHell/BG-Ngiw-cyberhell.webp",
 "CyberHell/BG-Sala-cyberhell.webp",
+"CyberHell/BG-Tea-cyberhell.webp",
 "CyberHell/Boss Zone4-cyberhell-profile.png",
 "CyberHell/Boss Zone4-cyberhell.png",
 "CyberHell/Intro-Boss-Zone4-cyberhell.png",
@@ -183,6 +199,12 @@
 "CyberHell/crew-plerng-cyberhell.png",
 "CyberHell/crew-taan-cyberhell-profile.png",
 "CyberHell/crew-taan-cyberhell.png",
+"CyberHell/hero-yama-cyberhell-atk-L.png",
+"CyberHell/hero-yama-cyberhell-atk-R.png",
+"CyberHell/hero-yama-cyberhell-atk-cutscene.jpeg",
+"CyberHell/hero-yama-cyberhell-hyp-cutscene.jpeg",
+"CyberHell/hero-yama-cyberhell-ice-cutscene.jpeg",
+"CyberHell/hero-yama-cyberhell-mi-cutscene.jpeg",
 "CyberHell/hero-yama-cyberhell-profile.png",
 "CyberHell/hero-yama-cyberhell.png",
 "CyberHell/intro-zone4-cyberhell.png",
@@ -191,6 +213,7 @@
 "CyberHell/st-lokan-cyberhell.png",
 "CyberHell/st-ngiw-cyberhell.png",
 "CyberHell/st-sala-cyberhell.png",
+"CyberHell/st-tea-cyberhell.png",
 "CyberHell/zone-boss-cyberhell.png"
 ],
 "west": [
@@ -215,14 +238,25 @@
 "West/crew-plerng-west.png",
 "West/crew-taan-west-profile.png",
 "West/crew-taan-west.png",
+"West/hero-yama-west-atk-L.png",
+"West/hero-yama-west-atk-R.png",
+"West/hero-yama-west-atk-cutscene.jpeg",
+"West/hero-yama-west-hyp-cutscene.jpeg",
+"West/hero-yama-west-ice-cutscene.jpeg",
+"West/hero-yama-west-mi-cutscene.jpeg",
 "West/hero-yama-west-profile.png",
 "West/hero-yama-west.png",
 "West/intro-zone3-west.png",
 "West/st-dab-west.png",
+"West/st-krajok-west.png",
 "West/st-krata-west.png",
+"West/st-lan-west.png",
 "West/st-lokan-west.png",
 "West/st-ngiw-west.png",
 "West/st-sala-west.png",
+"West/st-sawan-west.png",
+"West/st-tarang-west.png",
+"West/st-tea-west.png",
 "West/zone-boss-west.png"
 ]
 },
@@ -383,15 +417,33 @@
 0.959,
 1.0
 ],
+"st-tea-cyberhell": [
+0.0391,
+0.002,
+0.959,
+1.0
+],
 "st-dab-west": [
 0.002,
-0.2891,
+0.5859,
 0.998,
+0.998
+],
+"st-krajok-west": [
+0.1602,
+0.0,
+0.8379,
 0.998
 ],
 "st-krata-west": [
 0.002,
 0.1973,
+0.998,
+0.998
+],
+"st-lan-west": [
+0.002,
+0.1367,
 0.998,
 0.998
 ],
@@ -409,7 +461,25 @@
 ],
 "st-sala-west": [
 0.002,
-0.1582,
+0.0918,
+1.0,
+1.0
+],
+"st-sawan-west": [
+0.0859,
+0.002,
+0.9121,
+0.998
+],
+"st-tarang-west": [
+0.0,
+0.0605,
+1.0,
+0.998
+],
+"st-tea-west": [
+0.002,
+0.2422,
 0.998,
 0.998
 ]

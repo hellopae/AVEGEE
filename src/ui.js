@@ -137,7 +137,7 @@ function explainBar(k) {
     <div class="tline"><b>ลงเมื่อ</b><div>คิวเกิน ${g.queueCap()} ดวง (ยิ่งล้นยิ่งตกเร็ว${g.has('tarang') ? ' · ตะรางขยายให้แล้ว' : ' — สร้างตะรางรอวาระขยายได้'}) · ปล่อยเปรตไว้ · คำตัดสินคะแนนต่ำ ·
       ตรวจการไม่ผ่าน (−10) · กรรมท่านสูงเกิน 75</div></div>
     ${tiers(ORDER_TIERS, g.orderTier(), t => t.min + '+')}
-    <div class="tline bad"><b>ถ้าหมด (0)</b><div>จบเกม — คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมส่งคนมารับตำแหน่งคืน</div></div>
+    <div class="tline bad"><b>ถ้าหมด (0)</b><div>พญายมเตือนให้ตั้งหลักได้สามครั้ง หลังจากนั้นท่านจะลงมาปราบและส่งยมบาทไปรับโทษในกระทะทองแดง</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
   if (k === 'karma') return modal(`<h2>☠️ กรรมท่าน — ${g.karma.toFixed(1)} (${esc(g.karmaTier().name)})</h2>
@@ -150,7 +150,7 @@ function explainBar(k) {
       เก็บ<b>ดอกบัวบูชา</b>ที่ตกบนแผนที่ (ตกให้เมื่อกรรมเกิน 40) −4 ·
       บูชาดอกบัวที่<b>ศาลาน้ำชา</b> ${KARMA_RELIEF.lotusCost} เบี้ย −${KARMA_RELIEF.lotusCut} (แท็บก่อสร้าง)</div></div>
     ${tiers(KARMA_TIERS, g.karmaTier(), t => '≤' + t.max)}
-    <div class="tline bad"><b>ถ้าเต็ม (100)</b><div>จบเกม — ชื่อของท่านไปโผล่อยู่ในคิวเอง เป็นสำนวนที่หนาที่สุดที่โซนนี้เคยรับ</div></div>
+    <div class="tline bad"><b>ถ้าเต็ม (100)</b><div>พญายมลงมาปราบด้วยตัวเอง แพ้แล้วถูกส่งลงกระทะทองแดง บารมีเหลือ 1 และกรรมลดลงหลังชดใช้บางส่วน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
   if (k === 'fuel') return modal(`<h2>🔥 ฟืน — ${Math.round(g.fuel)} ดุ้น</h2>
@@ -340,7 +340,7 @@ const kv = arr => `<div class="kv">${arr.map(x => `<span>${x}</span>`).join('')}
 
 /** ความคิดของยมบาท — เปลี่ยนตามสถานะจริง ไม่ใช่ประโยคตายตัว */
 function meThought() {
-  if (g.hp <= g.hpMax * 0.35) return '"บารมีเหลือเท่านี้ ถ้าพลาดอีกครั้งสองครั้งพ่อคงเรียกกลับ"';
+  if (g.hp <= g.hpMax * 0.35) return '"บารมีเหลือเท่านี้ ถ้าหมดพ่อคงลงมาจัดการข้าเอง"';
   if (g.karma >= 45) return '"บัญชีของข้าหนาขึ้นทุกคดี... ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ข้าจริง ๆ"';
   if (g.queue.length > g.queueCap()) return '"คิวล้นขนาดนี้ ระเบียบไม่มีทางขึ้น ต้องรีบปิดคดี"';
   if (g.mobs.length) return '"เปรตขึ้นมาอีกแล้ว ปล่อยไว้ระเบียบตกไปเรื่อย ๆ"';
@@ -957,6 +957,27 @@ function openBossArrive(z, onDone) {
   paint();
 }
 
+/** การ์ตูนแนะนำสาขาใหม่ — ใช้ภาพ intro-zone<N> ที่เจ้าของวาดไว้หนึ่งภาพต่อโซน
+ *  แสดงเฉพาะครั้งแรกที่ย้ายเข้า ส่วนการกลับสาขาเดิมใช้กล่องสรุปสั้น ๆ เพื่อไม่ขัดจังหวะซ้ำ */
+function openZoneArrival(z) {
+  const zn = ZONES.findIndex(x => x.k === z.k) + 1;
+  const image = artUrl(`intro-zone${zn}`);
+  pauseForDlg();
+  dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="แนะนำ ${esc(z.name)}">
+    <div class="intro-comic-frame">
+      <img src="${image}" alt="" onerror="this.onerror=null;this.src='${artUrl('scene')}'">
+      <div class="intro-comic-head"><span>อเวจี · เปิดสาขาใหม่</span><span>โซน ${zn}</span></div>
+      <div class="intro-comic-caption">
+        <h2>${esc(z.name)}</h2>
+        <p>${esc(z.intro)}<br>${esc(z.sub)}</p>
+      </div>
+    </div>
+    <div class="intro-comic-controls"><span class="hint">นิราตามท่านมา · สถานีและยมทูตต้องเริ่มจัดการใหม่ในแต่ละสาขา</span>
+      <button class="gold" data-close>เริ่มงาน</button></div>
+  </div>`;
+  openDlg('intro-comic-dialog');
+}
+
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
@@ -1253,6 +1274,29 @@ function arena(title, foe, hp, act, closable, fx, helper) {
   </div>`;
 }
 
+/** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
+function actionCutsceneSrc(k) {
+  const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
+             : (k === 'atk' || k === 'fire' || k === 'roar') ? 'atk' : null;
+  if (!pose) return null;
+  const style = g.outfit || g.zone;
+  if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
+  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
+  return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
+}
+
+function playActionCutscene(k) {
+  const src = actionCutsceneSrc(k);
+  if (!src || !dlg.open) return;
+  dlg.querySelector('.action-cutscene')?.remove();
+  const cut = document.createElement('div');
+  cut.className = 'action-cutscene';
+  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ">`;
+  cut.querySelector('img').onerror = () => cut.remove();
+  dlg.appendChild(cut);
+  setTimeout(() => cut.remove(), 740);
+}
+
 // ---------- ห้องสอบสวน (HUD แบบเกม Turn-based RPG) ----------
 // เจ้าของออกแบบเลย์เอาต์มาเอง 8 ก.ย. 2569 โดยอ้างอิงเกมแนว tactics:
 //   ฉากเป็นพื้นหลังเต็มจอ · HUD ลอยทับเป็นชั้น ๆ ไม่ใช่แผงเรียงลงมา
@@ -1427,7 +1471,9 @@ function openTrial() {
       paint(); refresh();
     });
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
-      g.usePower(el.dataset.pw, s); sfx('crack'); paint(); refresh();
+      const k = el.dataset.pw;
+      if (!g.usePower(k, s)) return;
+      sfx('crack'); paint(); refresh(); playActionCutscene(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -1561,6 +1607,7 @@ function openBattle(after) {
       phase = 'you'; phaseAt = Date.now();
       fxNow = { key: FX_OF[k] ? k : 'atk', side: k === 'health' ? 'you' : 'foe' };
       paint();
+      playActionCutscene(k);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -1694,6 +1741,67 @@ function openOutfit() {
     }); });
 }
 
+function bagUseWhy(k) {
+  const d = ITEMS[k];
+  if (!d) return 'ไม่รู้จักไอเทมนี้';
+  if (d.hp && g.hp >= g.hpMax) return 'บารมีเต็มแล้ว';
+  if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
+  if (d.power) {
+    const p = g.powerOf(d.power);
+    if (!p || g.powerLocked(p)) return 'พลังนี้ยังไม่ปลดล็อก';
+    if (p.ammo >= p.max) return 'พลังเต็มแล้ว';
+  }
+  return '';
+}
+
+function outfitCards() {
+  return ZONES.map(z => {
+    const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
+    const face = z.k === 'th' ? 'img/hero-yama.png'
+      : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}.png`;
+    return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
+      <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
+      <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
+        <small>${esc(z.sub)}</small>
+        <span>${lock ? `🔒 ต้องเป็น ${esc(LEVELS[z.level - 1].name)}` : here ? '✓ กำลังสวม' : 'เก็บอยู่ในกระเป๋า'}</span></span>
+      ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
+             : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
+    </div>`;
+  }).join('');
+}
+
+function openBag() {
+  pauseForDlg();
+  const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
+  const itemCards = carried.length ? carried.map(([k, n]) => {
+    const d = ITEMS[k], why = bagUseWhy(k);
+    return `<div class="bag-item">
+      <img src="${artUrl(d.img) || `img/${d.img}.png`}" alt="${esc(d.name)}" loading="lazy">
+      <span class="n"><b>${esc(d.glyph)} ${esc(d.name)} ×${n}</b>
+        <small>${esc(why || d.say)}</small></span>
+      <button class="gold" data-use-item="${k}" ${why ? 'disabled' : ''}>ใช้</button>
+    </div>`;
+  }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
+
+  modal(`<h2>🎒 กระเป๋าของยมน้อย</h2>
+    <div class="hint">ของที่เก็บได้จะไม่ถูกใช้ทันที เลือกใช้เมื่อจำเป็น และติดตัวไปทุกโซน</div>
+    <div class="bag-title">ของใช้ · ${carried.reduce((s, [, n]) => s + n, 0)} ชิ้น</div>
+    <div class="bag-list">${itemCards}</div>
+    <div class="bag-title">ชุดที่ได้รับ</div>
+    <div class="outfit-list">${outfitCards()}</div>
+    <div class="row"><button class="gold" data-close>ปิดกระเป๋า</button></div>`, d => {
+      d.classList.add('bag');
+      d.querySelectorAll('[data-use-item]').forEach(b => b.onclick = () => {
+        if (!g.useBag(b.dataset.useItem)) return;
+        sfx('gong'); openBag(); refresh();
+      });
+      d.querySelectorAll('[data-bag-outfit]').forEach(b => b.onclick = () => {
+        if (!g.setOutfit(b.dataset.bagOutfit)) return;
+        warmZone(b.dataset.bagOutfit); sfx('gong'); openBag(); refresh();
+      });
+    });
+}
+
 // ---------- บทเรียนทีละขั้น ----------
 // เจ้าของบอก 7 ก.ย. 2569 ว่า "ดูยากไป ต้องค่อยสอนทีละอย่าง"
 // กติกา: ทีละขั้นเท่านั้น และขั้นจะโผล่ตอนที่เรื่องนั้นเพิ่งมีความหมายจริง (เงื่อนไข when อยู่ใน data.js)
@@ -1760,12 +1868,18 @@ function updatePlay() {
   }
   const outfit = $('#outfit');
   if (outfit) outfit.hidden = g.outfitsOpen().length < 2;
+  const bag = $('#bag');
+  if (bag) {
+    const n = Object.values(g.inventory || {}).reduce((s, v) => s + (Number(v) || 0), 0);
+    bag.textContent = `🎒 กระเป๋า${n ? ` (${n})` : ''}`;
+  }
 }
 $('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
 $('#outfit').onclick = openOutfit;
+$('#bag').onclick = openBag;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;
 
@@ -1809,6 +1923,16 @@ function onSceneClick(sx, sy) {
   const def = hitStation(sx, sy);
   const st = def && g.stations.find(x => x.def.k === def.k);
 
+  const enterStation = key => {
+    const d = STATIONS.find(x => x.k === key);
+    if (!d) return;
+    const near = Math.hypot(g.player.x - d.x, g.player.y - d.y) <= 86;
+    if (near) return openStation(key);
+    if (g.walkTo(d.x, d.y))
+      g.log(`เดินไปหา${d.name} — เข้าได้เมื่อยืนใกล้ทางเข้า`, 'act');
+    else g.log(`${d.name}อยู่ในจุดที่เดินไปไม่ถึง`, 'bad');
+  };
+
   // ป้าย "กดเพื่อสร้าง" มาก่อนทุกอย่าง — ตอนนั้นเรายืนอยู่ตรงจุดพอดี
   // ถ้าไปเช็คตัวละครก่อน คลิกยังไงก็โดนตัวเราเองเสมอ แล้วจะไม่มีทางกดสร้างได้เลย
   if (def && !st && nearBuild(g, g.player.x, g.player.y)?.k === def.k) return openBuild(def);
@@ -1816,7 +1940,7 @@ function onSceneClick(sx, sy) {
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
   if (a) {
-    if (a.kind === 'station') { openStation(a.key); return; }
+    if (a.kind === 'station') { enterStation(a.key); return; }
     select(a);
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
@@ -1837,9 +1961,9 @@ function onSceneClick(sx, sy) {
       <p style="font-size:var(--text-sm);line-height:var(--leading-body)">กำลังก่อสร้างอยู่ — รออีกสักครู่</p>
       <div class="row"><button data-close>ปิด</button></div>`);
   }
-  // กดหลังที่สร้างแล้ว = เข้าหน้าของสถานีนั้นเสมอ (เจ้าของสั่ง 9 ก.ย. 2569)
-  // ในหน้านั้นมีปุ่ม "เลือกเป็นปลายทาง" อยู่แล้ว — ไม่ต้องมีทางลัดที่ข้ามหน้าไปเงียบ ๆ
-  return openStation(def.k);
+  // อาคารที่สร้างแล้วต้องเดินไปถึงก่อน จึงเปิดฉากด้านในได้
+  // คลิกจากไกล = สั่งเดินไปทางเข้า; เมื่อถึงแล้วคลิกอีกครั้งเพื่อเข้า
+  return enterStation(def.k);
 }
 
 // เดินด้วยคีย์บอร์ดด้วยก็ได้
@@ -1913,10 +2037,8 @@ function openStation(k) {
       const item = ITEMS[v.drop];
       const ready = g.items.some(it => it.from === k);
       const left = Math.max(0, (st.visitCd || 0) - g.tick);
-      const full = item?.hp ? g.hp >= g.hpMax
-        : item?.power ? (g.powerOf(item.power)?.ammo || 0) >= (g.powerOf(item.power)?.max || 0) : false;
       acts.push(`<button disabled>${item?.glyph || '🎁'} ${esc(item?.name || 'ของประจำสถานี')}
-        <small>${ready ? (full ? 'วางอยู่ในฉาก · ค่าสถานะเต็มจึงยังเก็บไม่ได้' : 'วางอยู่ในฉากแล้ว · เดินไปเก็บได้เลย')
+        <small>${ready ? 'วางอยู่ในฉากแล้ว · เดินไปเก็บใส่กระเป๋าได้เลย'
           : left ? `กำลังเตรียม · อีก ${left} วาระ` : 'กำลังนำมาวางในฉาก'}</small></button>`);
     }
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
@@ -2159,11 +2281,9 @@ g.onChange = () => {
   }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
-    bossModal(z.back ? `กลับมาที่${z.name}` : `ย้ายมา${z.name}`,
-      z.back ? `${z.sub}\n\nสถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`
-             : `${z.intro}\n\nโซนนี้ยังไม่มีสถานีทัณฑ์สักหลัง และยังไม่มียมทูตสักคน — ` +
-               'ยมทูตเป็นคนของสาขา ไม่ได้ตามท่านมา ต้องจ้างคนของที่นี่เอง\n' +
-               'สร้างแนวไหนก่อน สำนวนแนวนั้นถึงจะเริ่มถูกส่งลงมา', 'เริ่มงาน');
+    if (!z.back) openZoneArrival(z);
+    else bossModal(`กลับมาที่${z.name}`,
+      `${z.sub}\n\nสถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
     return;
   }
   // สาขาใหม่เพิ่งปลดล็อก — เด้งเองเฉพาะตอนที่ไม่มีหน้าต่างเลื่อนขั้นตามมา

@@ -51,7 +51,9 @@ export function createGame() {
     greens: 0,                        // คำตัดสินสีเขียว (78 ขึ้นไป) — เกณฑ์เลื่อนขั้นตั้งแต่ 9 ก.ย. 2569
     reds: 0,                          // คำตัดสินสีแดงติดกัน — ครบ 3 พ่อลงมาตบเอง
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
-    items: [], mobs: [], guard: null, fxHits: [], transits: [],
+    items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
+    inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
+    mobs: [], guard: null, fxHits: [], transits: [],
     queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -954,31 +956,18 @@ const API = {
       return;
     }
 
-    // บารมีหมด/ระเบียบหมดครบสามคำเตือน = พ่อลงมาลงโทษเอง ไม่ใช่จอจบเกมโผล่เฉย ๆ
-    // ฉากนั้นไม่มีทางชนะ (ตั้งใจ) — จบแล้วค่อยไปหน้าจอจบเกมตามเดิม
-    const doomed = this.hp <= 0 ? 'hp'
+    // กรรมเต็ม บารมีหมด หรือระเบียบพังหลังคำเตือนครบ ไม่บังคับเริ่มโซนใหม่แล้ว
+    // พ่อลงมาปราบและส่งไปกระทะทองแดง จากนั้นยกค่าขั้นต่ำให้กลับมาตั้งหลักได้
+    const punish = this.karma >= 100 ? 'karma'
+                 : this.hp <= 0 ? 'hp'
                  : (this.order <= 0 && this.orderWarns >= ORDER_WARN.times) ? 'order' : null;
-    if (doomed && !this.yamaDone && !this.battle) {
-      this.yamaDone = true;
-      this.overCause = doomed;                         // จบฉากแล้วใช้ตัวนี้เลือกตอนจบ
-      this.startYamaFight();
+    if (punish && !this.over && !this.battle && !this.pendingDadPunish) {
+      this.dadFight = punish;
+      this.startDadFight();
       return;
     }
-    if (doomed && this.battle) return;                 // รอฉากของพ่อจบก่อน
-    if (doomed === 'order' || (this.overCause === 'order' && this.order <= 0)) this.over = {
-      k: 'order', title: 'ถูกเรียกกลับ',
-      text: 'คิวล้นจนวิญญาณเดินกลับขึ้นไปเองได้ พญายมเตือนแล้วสามครั้ง ครั้งที่สี่ท่านลงมาเอง — ' +
-            'แล้วรับตราประจำตำแหน่งคืนไปโดยไม่พูดอะไรอีกสักคำ',
-    };
-    else if (this.hp <= 0) this.over = {
-      k: 'hp', title: 'พ่อไม่ให้โอกาสอีกแล้ว',
-      text: 'คำตัดสินที่พลาดสะสมจนพญายมไม่เหลืออะไรจะพูด ท่านเรียกนิรามารับตราคืนจากมือเจ้าต่อหน้าทุกคน โดยไม่มองหน้าเจ้าเลยสักครั้ง',
-    };
-    else if (this.karma >= 100) this.over = {
-      k: 'karma', title: 'บาปตกที่ยมบาท',
-      text: 'กรรมที่ท่านลงเกินไปทีละนิด สะสมจนเต็มบัญชีของท่านเอง เช้าวันหนึ่งชื่อของท่านไปโผล่อยู่ในคิว — สำนวนที่หนาที่สุดที่โซนนี้เคยรับ',
-    };
-    else if (this.coin <= -300) this.over = {
+
+    if (this.coin <= -300) this.over = {
       k: 'coin', title: 'นรกล้มละลาย',
       text: 'ยมทูตไม่ได้ค่าแรงสามวาระติด ทุกคนวางเครื่องมือแล้วเดินออกไปพร้อมกัน',
     };
@@ -1218,20 +1207,8 @@ const API = {
   collectItem(i) {
     const it = this.items[i], def = it && ITEMS[it.k];
     if (!it || !def) return false;
-    // ให้ของยังมองเห็นอยู่ในห้อง แต่ไม่เผลอใช้ทิ้งตอนค่าที่เติมเต็มอยู่แล้ว
-    if (def.hp && this.hp >= this.hpMax) return false;
-    if (def.power) {
-      const p = this.powerOf(def.power);
-      if (!p || p.ammo >= p.max) return false;
-    }
-    if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
-    if (def.fuel) this.fuel += def.fuel;
-    if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
-    if (def.power) {
-      const p = this.powerOf(def.power);
-      p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
-    }
-    this.log(`🎁 เก็บ${def.name} — ${def.say}`, 'good');
+    this.inventory[it.k] = (this.inventory[it.k] || 0) + 1;
+    this.log(`🎒 เก็บ${def.name}ใส่กระเป๋าแล้ว`, 'good');
     if (it.from) {
       const src = this.stations.find(x => x.def.k === it.from);
       if (src) src.visitCd = this.tick + (src.def.visit?.cool || 4);
@@ -1241,10 +1218,31 @@ const API = {
     return true;
   },
 
+  /** ใช้ของที่พกอยู่ ผู้เล่นเป็นคนเลือกจังหวะเอง ไม่กินของทันทีที่เดินผ่าน */
+  useBag(k) {
+    const def = ITEMS[k], n = this.inventory[k] || 0;
+    if (!def || n < 1) return false;
+    if (def.hp && this.hp >= this.hpMax) return false;
+    if (def.karma < 0 && this.karma <= 0) return false;
+    if (def.power) {
+      const p = this.powerOf(def.power);
+      if (!p || this.powerLocked(p) || p.ammo >= p.max) return false;
+      p.ammo = Math.min(p.max, p.ammo + (def.ammo || 1));
+      p.cd = 0;
+    }
+    if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
+    if (def.fuel) this.fuel += def.fuel;
+    if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
+    if (--this.inventory[k] <= 0) delete this.inventory[k];
+    this.log(`${def.glyph || '🎁'} ใช้${def.name} — ${def.say}`, 'good');
+    this.onChange();
+    return true;
+  },
+
   /** สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569)
    *  เดิมต้องเปิดหน้าสถานีแล้วกดปุ่ม "เติม" ซึ่งไม่มีอะไรอยู่ในฉากให้เห็นเลยว่ามีของรออยู่
    *  กติกา: หนึ่งสถานี = ของหนึ่งชิ้นบนพื้น · เก็บไปแล้วอีก visit.cool วาระถึงมีชิ้นใหม่
-   *  ของที่ค่าสถานะเต็มแล้วยังวางให้เห็น แต่จะเก็บไม่ได้จนกว่าจะมีช่องว่าง
+   *  เก็บใส่กระเป๋าได้เสมอแม้ค่าสถานะเต็ม แล้วค่อยเลือกใช้เมื่อจำเป็น
    *  — คูลดาวน์เริ่มนับตอน "เก็บ" ไม่ใช่ตอน "วาง" ของจึงไม่หายไปเองถ้าท่านยังเดินไม่ถึง */
   stationDrops() {
     for (const st of this.stations) {
@@ -1579,12 +1577,18 @@ const API = {
    *  ตบทีเดียวเหลือบารมี DAD.hpLeft แล้วเกมเดินต่อ (เจ้าของสั่ง 9 ก.ย. 2569) */
   startDadFight() {
     if (this.battle) return this.battle;
+    const reason = typeof this.dadFight === 'string' ? this.dadFight : 'verdict';
     this.dadFight = false;
     this.battle = {
       kind: 'dad', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
       foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: Math.max(1, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null, log: [], talk: DAD.line1, dmg: null,
+      stun: 0, turn: 1, over: null, log: [], reason,
+      talk: reason === 'karma' ? '"กรรมของเจ้าเต็มบัญชีแล้ว ถึงเวลารับผลด้วยตัวเอง"'
+          : reason === 'order' ? '"ข้าเตือนเรื่องคิวล้นครบแล้ว คราวนี้เจ้าต้องรับผลเอง"'
+          : reason === 'hp' ? '"แม้แต่บารมีของตนเองยังรักษาไว้ไม่ได้หรือ"'
+          : DAD.line1,
+      dmg: null,
     };
     this.onChange();
     return this.battle;
@@ -1757,8 +1761,27 @@ const API = {
       this.dadFight = false;
       this.hp = DAD.punishHp;
       this.reds = 0;
-      this.pendingDadPunish = { title: DAD.punishTitle, text: DAD.punishText };
-      this.log('🍳 พ่อลงมาตบจริง — ลงทัณฑ์ในกระทะทองแดงแล้วปล่อยกลับไปคุมโซนต่อ', 'boss');
+      if (B.reason === 'karma') this.karma = 70;
+      if (B.reason === 'order') {
+        this.order = ORDER_WARN.restore;
+        this.orderWarns = 0;
+        this.orderWarnAt = this.tick + ORDER_WARN.gap;
+      }
+      const reasonText = B.reason === 'karma'
+        ? 'กรรมในบัญชีของท่านเต็ม พญายมจึงส่งท่านลงกระทะทองแดงให้รับผลด้วยตัวเอง — บารมีเหลือ 1 และกรรมลดลงเหลือ 70 หลังชดใช้บางส่วน'
+        : B.reason === 'order'
+          ? `ปล่อยให้คิวล้นจนระเบียบพัง พญายมส่งท่านลงกระทะทองแดง — บารมีเหลือ 1 และยกระเบียบกลับมา ${ORDER_WARN.restore} ให้ตั้งหลักใหม่`
+          : B.reason === 'hp'
+            ? 'บารมีหมดจนพญายมต้องลงมาหยุดเหตุด้วยตัวเอง — ท่านถูกส่งลงกระทะทองแดง แล้วกลับมาด้วยบารมี 1'
+            : DAD.punishText;
+      this.pendingDadPunish = { title: DAD.punishTitle, text: reasonText };
+      this.log(B.reason === 'karma'
+        ? '🍳 กรรมเต็มบัญชี — แพ้พญายมและถูกลงกระทะทองแดง · บารมีเหลือ 1 · กรรมลดเหลือ 70'
+        : B.reason === 'order'
+          ? `🍳 ระเบียบพัง — ถูกลงกระทะทองแดง · บารมีเหลือ 1 · ระเบียบกลับมา ${ORDER_WARN.restore}`
+          : B.reason === 'hp'
+            ? '🍳 บารมีหมด — ถูกลงกระทะทองแดงและกลับมาด้วยบารมี 1'
+            : '🍳 พ่อลงมาตบจริง — ลงทัณฑ์ในกระทะทองแดงแล้วปล่อยกลับไปคุมโซนต่อ', 'boss');
       this.onChange(); return B;
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
@@ -1989,7 +2012,7 @@ API.snapshot = function (withEntry = true) {
       build: st.build ? Math.max(0, st.build - Date.now()) : 0,   // เก็บเป็น "อีกกี่ ms" ไม่ใช่เวลาจริง
       slots: st.slots,
     })),
-    queue: this.queue, held: this.held, items: this.items, mobs: this.mobs,
+    queue: this.queue, held: this.held, items: this.items, inventory: this.inventory, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
@@ -2043,6 +2066,7 @@ API.restore = function (d) {
   this.queue = d.queue || [];
   this.held = d.held || [];
   this.items = d.items || [];
+  this.inventory = { ...(d.inventory || {}) };
   this.mobs = d.mobs || [];
   this.transits = [];
   this.guard = d.guard || null;
