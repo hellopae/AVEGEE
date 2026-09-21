@@ -618,12 +618,18 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 
 /* ภาพคั่นท่าไม้ตาย — วางทับเฉพาะใน dialog ปัจจุบัน แล้วหายเองก่อนตาคู่ต่อสู้ */
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
-  pointer-events:auto;background:#090407;border-radius:inherit;animation:actionCut .72s ease both}
+  pointer-events:auto;background:#090407;border-radius:inherit;animation:actionCut .56s cubic-bezier(.2,.85,.25,1) both}
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
-  image-rendering:auto;filter:saturate(1.06) contrast(1.03)}
+  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush .56s cubic-bezier(.16,.8,.25,1) both}
+.action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
+  mix-blend-mode:screen;animation:speedLines .56s ease-out both}
 .action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
   border:1px solid var(--gold);pointer-events:none}
-@keyframes actionCut{0%{opacity:0;transform:scale(1.035)}12%,78%{opacity:1;transform:scale(1)}100%{opacity:0}}
+@keyframes actionCut{0%{opacity:0}8%,72%{opacity:1}100%{opacity:0}}
+@keyframes actionRush{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(1.03) translateX(1%)}72%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}20%,62%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
   border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
@@ -1092,56 +1098,63 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
 
 /* ---------- UI เกมรุ่นภาพตัวอย่าง 21 ก.ย. 2569 ---------- */
-/* ห้องสอบสวน: คำสั่งล้อมตัวละครแทนกล่องเมนูคอลัมน์ขวา; สำนวนยังอยู่ขวาเพื่ออ่านยาวได้ */
+/* ห้องสอบสวน: คำสั่งวงกลมล้อมยมน้อย; คำสั่งพักคดี/ขัง/ไต่สวนอยู่ด้านบน */
 .trial-hud .hud-body{grid-template-columns:minmax(0,1.55fr) minmax(340px,420px);
   grid-template-rows:1fr;grid-template-areas:"stage right";padding-top:12px}
 .trial-hud .hud-stage{overflow:hidden;border-radius:var(--radius-sm);
   box-shadow:inset 0 0 45px rgba(0,0,0,.18)}
 .trial-case-no{position:absolute;right:12px;top:6px;z-index:7;color:var(--gold);
   font:600 var(--text-sm)/1 var(--font-display);text-shadow:0 2px 8px #000}
-.trial-hud .hud-menu{position:absolute;left:125px;bottom:3%;z-index:6;width:330px;height:310px;
-  display:block;padding:0;pointer-events:none}
-.trial-hud .hud-menu .seg,.trial-hud .hud-menu .go-cluster{display:contents}
-.trial-hud .hud-menu button{position:absolute;width:78px;height:78px;min-height:0;padding:8px;border-radius:50%;
-  pointer-events:auto;background:radial-gradient(circle at 40% 32%,rgba(109,56,83,.95),rgba(19,8,13,.94) 72%);
-  border:1px solid rgba(212,163,85,.55);box-shadow:0 7px 18px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.08)}
-.trial-hud .hud-menu button[aria-pressed=true]{background:radial-gradient(circle at 38% 30%,#ef6e37,#8f281d 72%);
-  border-color:#ffb259;box-shadow:0 0 0 3px rgba(255,151,62,.17),0 8px 20px rgba(0,0,0,.58)}
-.trial-hud .hud-menu button .ic{font-size:24px}.trial-hud .hud-menu button .lb2{font-size:11px}
-.trial-hud .hud-menu button .lb2 small{display:none}
-.trial-hud .hud-menu [data-cmd=ask]{left:34px;top:0}
-.trial-hud .hud-menu [data-cmd=st]{left:134px;top:18px}
-.trial-hud .hud-menu [data-cmd=cr]{left:210px;top:94px}
-.trial-hud .hud-menu [data-cmd=inten]{left:184px;top:194px}
-.trial-hud .hud-menu #t-skip{left:85px;top:226px;width:68px;height:68px}
-.trial-hud .hud-menu #t-jail{left:5px;top:180px;width:64px;height:64px}
-.trial-hud .hud-menu #t-go{left:94px;top:104px;width:104px;height:104px;
-  background:radial-gradient(circle at 38% 30%,#ffad2f,#ca3d21 70%);border-color:#ffd074;color:#fff}
-.trial-hud .trial-powers{position:absolute;left:49%;bottom:15%;z-index:7;display:flex;gap:8px;align-items:flex-end}
-.trial-powers button{position:relative;width:68px;height:76px;min-height:0;padding:4px;border:0;background:transparent;
-  color:var(--foreground);display:flex;flex-direction:column;align-items:center;gap:1px}
-.trial-powers button span{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:28px;
-  background:radial-gradient(circle at 38% 28%,#814b59,#261019 70%);border:2px solid var(--gold);
-  box-shadow:0 5px 13px rgba(0,0,0,.65)}
-.trial-powers button b{font-size:9px;color:var(--gold);line-height:1.1}.trial-powers button i{position:absolute;right:3px;top:35px;
-  min-width:18px;padding:1px 3px;border-radius:9px;background:#15090e;border:1px solid var(--gold);font-size:9px;font-style:normal}
-.trial-powers button:disabled{opacity:.3;filter:grayscale(.8)}
+.trial-top-actions{position:absolute;z-index:12;right:10px;top:28px;display:flex;gap:6px}
+.trial-top-actions button{min-height:40px;padding:7px 12px;background:rgba(35,14,22,.9);border-color:rgba(212,163,85,.45)}
+.trial-top-actions button[aria-pressed=true]{background:var(--primary);border-color:#ffb259;color:#fff}
+.trial-wheel{position:absolute;left:22%;bottom:7%;z-index:10;width:365px;height:275px;pointer-events:none}
+.trial-orb-group{position:absolute;pointer-events:auto}
+.trial-orb-group.power{left:6px;top:18px}.trial-orb-group.place{left:116px;top:0}
+.trial-orb-group.crew{left:228px;top:48px}.trial-orb-group.force{left:226px;top:159px}
+.trial-orb-group.issue{left:92px;top:108px}
+.orb-main,.orb-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:76px;height:76px;min-height:0;padding:6px;border-radius:50%;color:#ffe6bd;
+  background:radial-gradient(circle at 38% 28%,rgba(113,59,82,.98),rgba(19,8,13,.97) 72%);
+  border:2px solid rgba(212,163,85,.75);box-shadow:0 7px 18px rgba(0,0,0,.6),inset 0 1px rgba(255,255,255,.1);
+  opacity:.6;transition:opacity .16s,transform .2s,border-color .16s,filter .16s}
+.orb-main:hover,.orb-main:focus-visible,.trial-orb-group.open>.orb-main,.trial-orb-group:hover>.orb-main,
+.orb-choice:hover,.orb-choice:focus-visible,.orb-choice[aria-pressed=true]{opacity:1;transform:scale(1.06);border-color:#ffc56f;filter:none}
+.orb-main img,.orb-choice img{display:block;width:49px;height:49px;object-fit:contain;border-radius:50%;image-rendering:pixelated}
+.orb-main b,.orb-choice b{max-width:88px;font-size:9px;line-height:1.05;text-shadow:0 2px 4px #000}
+.trial-orb-group.issue .orb-main{width:98px;height:98px;opacity:.3;filter:grayscale(.65)}
+.trial-orb-group.issue.ready .orb-main{opacity:1;filter:none;background:radial-gradient(circle at 38% 28%,#ef7132,#95271c 72%)}
+.orb-main:disabled,.orb-choice:disabled{opacity:.25!important;filter:grayscale(.8);pointer-events:none}
+.orb-submenu{position:absolute;left:68px;top:4px;z-index:30;display:flex;align-items:center;gap:6px;
+  opacity:0;visibility:hidden;transform:translateX(-12px) scale(.92);transform-origin:left center;
+  transition:opacity .18s ease,transform .22s cubic-bezier(.18,.8,.25,1),visibility 0s linear .22s;pointer-events:none}
+.trial-orb-group.power .orb-submenu,.trial-orb-group.place .orb-submenu{left:0;top:auto;bottom:82px;
+  transform:translateY(12px) scale(.92);transform-origin:left bottom}
+.trial-orb-group.crew .orb-submenu,.trial-orb-group.force .orb-submenu{left:68px;right:auto}
+.trial-orb-group:hover .orb-submenu,.trial-orb-group:focus-within .orb-submenu,.trial-orb-group.open .orb-submenu{
+  opacity:1;visibility:visible;transform:translateX(0) scale(1);transition-delay:0s;pointer-events:auto}
+.trial-orb-group.power:hover .orb-submenu,.trial-orb-group.power:focus-within .orb-submenu,.trial-orb-group.power.open .orb-submenu,
+.trial-orb-group.place:hover .orb-submenu,.trial-orb-group.place:focus-within .orb-submenu,.trial-orb-group.place.open .orb-submenu{
+  transform:translateY(0) scale(1)}
+.orb-choice{position:relative;width:62px;height:62px;flex:0 0 62px;padding:4px;opacity:.88;background:rgba(31,13,20,.97)}
+.orb-choice img{width:40px;height:40px}.orb-choice b{font-size:8px;color:#ffe1a8}
+.orb-choice i{position:absolute;right:-1px;top:-3px;min-width:18px;padding:1px 4px;border-radius:10px;
+  background:#16090e;border:1px solid var(--gold);font-size:8px;font-style:normal}
 .trial-hud .hud-bottom{height:100px;padding-top:4px}
 
-/* ฉากต่อสู้: ปุ่มกลายเป็นไอคอนบนสนามและมีแถบคูลดาวน์บนรูปยมทูต */
-.battle-actions{position:absolute;z-index:9;left:25%;right:25%;top:48px;display:flex;justify-content:center;
-  align-items:flex-start;gap:7px;flex-wrap:wrap;pointer-events:none}
-.battle-act{position:relative;width:64px;min-height:76px;padding:0;border:0;background:transparent!important;
-  color:var(--foreground);display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:auto}
-.battle-act .battle-icon{position:relative;display:grid;place-items:center;width:54px;height:54px;border-radius:50%;overflow:hidden;
-  background:radial-gradient(circle at 38% 28%,rgba(104,58,75,.98),rgba(20,9,14,.97) 72%);
-  border:2px solid var(--gold);box-shadow:0 7px 15px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.15)}
-.battle-act .battle-icon img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-.battle-act b{font-size:10px;line-height:1;color:#ffe4b3;text-shadow:0 2px 4px #000}
-.battle-act i{font-size:8px;line-height:1;color:var(--muted-foreground);font-style:normal;max-width:80px}
-.battle-act .battle-icon em{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(6,3,5,.78) var(--wait),transparent 0);
-  pointer-events:none}
-.battle-actions.busy .battle-act,.battle-act:disabled{opacity:.3;pointer-events:none;filter:grayscale(.65)}
+/* ฉากต่อสู้: สามคำสั่งหลักอยู่ข้างยมน้อย; พลังและไอเท็มเลื่อนแตกออกเมื่อชี้/แตะ */
+.battle-wheel{position:absolute;z-index:9;left:25%;bottom:18%;display:flex;align-items:center;gap:8px;pointer-events:none}
+.battle-orb-group{position:relative;pointer-events:auto}
+.battle-orb-group .orb-submenu{left:8px;top:auto;bottom:69px;flex-direction:column-reverse;transform:translateY(12px) scale(.92);transform-origin:center bottom}
+.battle-orb-group:hover .orb-submenu,.battle-orb-group:focus-within .orb-submenu,.battle-orb-group.open .orb-submenu{
+  opacity:1;visibility:visible;transform:translateY(0) scale(1);transition-delay:0s;pointer-events:auto}
+.battle-wheel.busy .orb-main,.battle-wheel.busy .orb-choice{opacity:.25;pointer-events:none;filter:grayscale(.8)}
+.battle-crew-actions{position:absolute;z-index:9;left:16%;bottom:4%;display:flex;gap:5px}
+.battle-crew-actions .battle-act{position:relative;width:52px;min-height:58px;padding:0;border:0;background:transparent;color:#ffe2ad}
+.battle-crew-actions .battle-icon{position:relative;display:block;width:45px;height:45px;border-radius:50%;overflow:hidden;border:1px solid var(--gold);opacity:.75}
+.battle-crew-actions .battle-icon img{width:100%;height:100%;object-fit:cover;object-position:top}.battle-crew-actions b{font-size:8px}
+.battle-crew-actions .battle-icon em{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(6,3,5,.78) var(--wait),transparent 0)}
+.battle-act:disabled{opacity:.3;pointer-events:none;filter:grayscale(.65)}
 .battle-squad{position:absolute;z-index:2;left:18%;bottom:10%;display:flex;align-items:flex-end;gap:3px}
 .battle-squad span{display:flex;flex-direction:column;align-items:center}.battle-squad img{height:clamp(82px,15vh,132px);
   width:auto;image-rendering:pixelated;filter:drop-shadow(0 6px 8px rgba(0,0,0,.7));transform:scaleX(-1)}
@@ -1196,23 +1209,20 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   .trial-hud .hud-body{grid-template-columns:1fr;grid-template-areas:"stage" "right";padding:8px;gap:7px}
   .trial-hud .hud-stage{height:350px;min-height:350px}
   .trial-hud .hud-stage .fig{bottom:112px}.trial-hud .hud-stage .fig img{height:150px}
-  .trial-hud .hud-menu{left:6px;right:6px;bottom:5px;width:auto;height:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
-  .trial-hud .hud-menu button,.trial-hud .hud-menu #t-go,.trial-hud .hud-menu #t-skip,.trial-hud .hud-menu #t-jail{
-    position:static;width:auto;height:auto;min-height:46px;border-radius:11px;padding:5px 3px}
-  .trial-hud .hud-menu button .ic{font-size:16px}.trial-hud .hud-menu button .lb2{font-size:10px}
-  .trial-hud .trial-powers{left:31%;bottom:120px;gap:3px}.trial-powers button{width:48px;height:58px}.trial-powers button span{width:40px;height:40px;font-size:21px}
-  .trial-powers button b{display:none}.trial-powers button i{top:27px;right:0}
+  .trial-top-actions{top:24px;right:7px}.trial-top-actions button{min-height:34px;padding:5px 8px;font-size:10px}
+  .trial-wheel{left:13%;bottom:1%;transform:scale(.78);transform-origin:left bottom}
   .trial-hud .hud-bottom{height:88px}
-  .battle-actions{left:23%;right:23%;top:38px;gap:2px}.battle-act{width:50px;min-height:61px}.battle-act .battle-icon{width:42px;height:42px}
-  .battle-act b{font-size:8px}.battle-act i{display:none}.battle-squad{left:16%}.battle-squad img{height:76px}
+  .battle-wheel{left:23%;bottom:22%;transform:scale(.82);transform-origin:left bottom}.battle-crew-actions{left:10%;bottom:2%}
+  .battle-squad{left:16%}.battle-squad img{height:76px}
   .frontier-screen{min-height:calc(100dvh - 24px)}.frontier-party{min-height:230px;padding:8px 8% 0}.frontier-hero img{height:170px}.frontier-hero.mate img{height:135px}
   .frontier-panel{padding:12px}.frontier-cards{display:grid;grid-template-columns:1fr 1fr}.frontier-card{min-width:0}
   .punish-dad{right:4%;bottom:22%;width:28%}.punish-dad span{white-space:normal}.punish-yama{width:20%;height:21%}
 }
 @media(max-width:520px){
   .trial-hud .hud-stage{height:310px;min-height:310px}.trial-hud .hud-stage .fig{bottom:110px}.trial-hud .hud-stage .fig img{height:125px}
-  .trial-hud .trial-powers{left:26%;bottom:113px}.trial-hud .hud-bottom{height:78px}.trial-hud .port img{width:60px;height:60px}
-  .battle-actions{left:20%;right:20%;top:34px}.battle-act{width:43px}.battle-act .battle-icon{width:37px;height:37px}.battle-act b{font-size:7px}
+  .trial-wheel{left:4%;bottom:1%;transform:scale(.67)}.trial-top-actions{top:20px}.trial-top-actions button{padding:4px 6px;font-size:9px}
+  .trial-hud .hud-bottom{height:78px}.trial-hud .port img{width:60px;height:60px}
+  .battle-wheel{left:18%;bottom:26%;transform:scale(.7)}.battle-crew-actions{transform:scale(.78);transform-origin:left bottom}
   .frontier-screen header{padding:18px 46px 0 15px}.frontier-party{min-height:190px}.frontier-hero img{height:132px}.frontier-hero.mate img{height:105px}
   .frontier-cards{grid-template-columns:1fr}.frontier-actions button{font-size:11px;padding:7px}
   .punish-stage{aspect-ratio:4/3}.punish-yama{top:50%;width:24%;height:20%}.punish-dad{right:2%;bottom:18%;width:34%}.punish-dad img{height:150px}
@@ -1295,7 +1305,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
     <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
     <button id="bag" class="sm">🎒 กระเป๋า</button>
-    <button id="outfit" class="sm" hidden>👘 เปลี่ยนชุด</button>
     <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
   </div>
 

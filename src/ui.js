@@ -235,7 +235,7 @@ function drawTab() {
       x.onclick = () => {                       // เรียกคดีนี้ขึ้นมาที่แท่นก่อน
         const i = g.queue.findIndex(s => s.id === +x.dataset.soul);
         if (i > 0) g.queue.unshift(g.queue.splice(i, 1)[0]);
-        pick = { st: null, cr: null, inten: 3 };
+        pick = { st: null, cr: null, inten: null };
         refresh();
       });
 
@@ -680,7 +680,7 @@ const SAID_ICON  = { deny:'🗣️', claim:'🪷', truth:'', confess:'', false:'
 
 // ---------- ชั้นซ้อนบนฉาก + แถบบัญชาการ ----------
 const ov = $('#ov'), deckBar = $('#deck');
-let pick = { st: null, cr: null, inten: 3 };   // สิ่งที่เลือกไว้สำหรับคดีที่อยู่หน้าแท่น
+let pick = { st: null, cr: null, inten: null }; // ต้องเลือกสถานที่ ผู้คุม และความแรงก่อนออกหมาย
 let fx = null;                                  // คะแนน + เสียงพญายม (โชว์ชั่วคราว)
 
 const CH = 82;                                  // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
@@ -1315,7 +1315,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 function actionCutsceneSrc(k) {
   const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
              : k === 'ice' ? 'ice'
-             : (k === 'atk' || k === 'fire' || k === 'roar') ? 'atk' : null;
+             : k === 'fire' ? 'atk' : null;
   if (!pose) return null;
   const style = g.outfit || g.zone;
   if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
@@ -1332,7 +1332,7 @@ function playActionCutscene(k) {
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ">`;
   cut.querySelector('img').onerror = () => cut.remove();
   dlg.appendChild(cut);
-  setTimeout(() => cut.remove(), 740);
+  setTimeout(() => cut.remove(), 580);
 }
 
 // ---------- ห้องสอบสวน (HUD แบบเกม Turn-based RPG) ----------
@@ -1341,7 +1341,7 @@ function playActionCutscene(k) {
 //   บน = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
 //   ล่างซ้าย = โปรไฟล์ยมน้อย + ของ · ล่างขวา = โปรไฟล์วิญญาณ
 // เปิดได้จากแท่นพิพากษาเท่านั้น (ดู drawDeck) — แท็บ "ไต่สวน" เดิมถูกถอดออกแล้ว
-let trialCmd = 'ask';        // ask | st | cr | inten
+let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 function openTrial() {
   const s = g.queue[0];
@@ -1362,7 +1362,7 @@ function openTrial() {
     if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
     const heaven = !!(stDef && stDef.heaven);
-    const ready  = pick.st && pick.cr;
+    const ready  = !!(pick.st && pick.cr && (heaven || pick.inten));
 
     // ---- แถบสถานะบนสุด ----
     const ot = g.orderTier(), kt = g.karmaTier();
@@ -1374,64 +1374,67 @@ function openTrial() {
       <span class="chip">☠️ กรรม ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
       <span class="ttl">สำนวน #${String(s.id).padStart(3, '0')}</span>`;
 
-    // ---- เมนูบาร์แนวนอน (ย้ายมาจากคอลัมน์ซ้ายเดิม — สเปก Vera 18 ก.ย. 2569) ----
-    // logic เดิมทั้งหมดคงไว้เป๊ะ (data-cmd/id ไม่เปลี่ยน) ย้ายแค่ตำแหน่ง/สไตล์ HTML
-    const cmd = (k, ic, lb, sub) =>
-      `<button class="hud-btn" data-cmd="${k}" ${trialCmd === k ? 'aria-pressed="true"' : ''}>
-         <span class="ic">${ic}</span><span class="lb2">${lb}<small>${esc(sub)}</small></span></button>`;
-    const seg =
-      cmd('ask',   '🗣️', 'ไต่สวน',      `จี้ได้อีก ${s.presses} ครั้ง`) +
-      cmd('st',    '📍', 'ส่งไปที่ไหน',  stDef ? stDef.name : 'ยังไม่เลือก') +
-      cmd('cr',    '👤', 'ใครคุม',       pick.cr ? (g.crewOf(pick.cr)?.name || '—') : 'ยังไม่เลือก') +
-      (heaven ? '' : cmd('inten', '⚖️', 'หนักแค่ไหน', `${pick.inten} ${INTENSITY[pick.inten]}`));
-    const goCluster =
-      `<button class="hud-btn" id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>
-         <span class="ic">⏭️</span><span class="lb2">พักคดีนี้<small>ให้คนถัดไปขึ้นแทน</small></span></button>
-       ${g.has('tarang') ? `<button class="hud-btn" id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>
-         <span class="ic">🔒</span><span class="lb2">ขังไว้ก่อน<small>ตะราง ${g.held.length}/${TARANG.hold}</small></span></button>` : ''}
-       <button class="hud-btn fire" id="t-go" ${ready ? '' : 'disabled'}>
-         <span class="ic">${g.needBattle(s) ? '⚔️' : '⚒'}</span>
-         <span class="lb2">${g.needBattle(s) ? 'ประทับตรา' : 'ออกหมาย'}
-           <small>${g.needBattle(s) ? 'เขาจะขัดขืน ต้องสู้' : ready ? 'พร้อมแล้ว' : 'เลือกให้ครบก่อน'}</small></span></button>`;
-
-    // ---- แผงตัวเลือกตามคำสั่งที่เลือก ----
-    let opt = '';
-    if (trialCmd === 'ask') {
-      opt = `<h4>${s.case ? 'เลือกประเด็นที่จะสอบสวน' : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
-        const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
-        return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
-          >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
-      }).join('');
-    } else if (trialCmd === 'st') {
-      opt = `<h4>ส่งไปที่ไหน</h4><div class="row2">${dests.length ? dests.map(x => {
-        const busy = g.stFree(x) <= 0;
-        return `<button data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
-          ${x.def.k === pick.st ? 'aria-pressed="true"' : ''}
-          >${x.def.glyph} ${x.def.name} <span style="opacity:.55">${x.build ? 'กำลังก่อสร้าง'
-            : busy ? `เต็ม ${x.slots.length}/${g.stCap(x)}`
-            : `${x.slots.length}/${g.stCap(x)} · ${x.def.tags.map(t => SINS[t].name).join('/') || 'ทั่วไป'}`}</span></button>`;
-      }).join('') : '<span class="idle">ยังไม่ได้สร้างสถานีลงทัณฑ์สักหลัง</span>'}</div>`;
-    } else if (trialCmd === 'cr') {
-      opt = `<h4>ใครคุม</h4><div class="row2">${idle.length ? idle.map(c =>
-        `<button data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-          >${c.glyph} ${c.name} <span style="opacity:.55">${c.self ? 'ช้า · ต้องไปยืนเอง' : 'กำลังใจ ' + Math.round(c.morale)}</span></button>`).join('')
-        : '<span class="idle">ไม่มีใครว่าง — รอผู้คุมออกเวร</span>'}</div>`;
-    } else {
-      opt = `<h4>หนักแค่ไหน — ต้องเท่ากับกรรมที่เขาก่อจริง</h4><div class="row2">${[1, 2, 3, 4, 5].map(i =>
-        `<button data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
-          >${i} ${INTENSITY[i]}</button>`).join('')}</div>`;
-    }
-
-    const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
-    const powerButtons = POWERS.map(p => {
+    // ---- ปุ่มด้านบน + วงคำสั่งข้างยมน้อย ----
+    const topActions =
+      `<button data-cmd="ask" aria-pressed="true">🗣️ ไต่สวน · ${s.presses}</button>
+       ${g.has('tarang') ? `<button id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>🔒 ขังไว้ก่อน</button>` : ''}
+       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>⏭️ พักคดีนี้</button>`;
+    const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
+    const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
+    const powerImg = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', hypno:'img/fx-hypno.png' };
+    const powerChoices = powerDefs.map(p => {
       const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
       const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
                 : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่'
-                : pw.cd > 0 ? `เพิ่งใช้ไป รออีก ${pw.cd} คดี` : p.desc;
-      return `<button data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
-        <span>${p.glyph}</span><b>${esc(p.name)}</b><i>×${pw.ammo}</i></button>`;
+                : pw.cd > 0 ? `รออีก ${pw.cd} คดี` : p.desc;
+      return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
+        ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>×${pw.ammo}</i></button>`;
+    }).join('');
+    const destinationChoices = dests.length ? dests.map(x => {
+      const busy = g.stFree(x) <= 0, bg = stBg(x.def.k);
+      return `<button class="orb-choice" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
+        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (busy ? ' · เต็ม' : ''))}">
+        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b></button>`;
+    }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
+    const crewChoices = idle.length ? idle.map(c =>
+      `<button class="orb-choice" data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+        title="${esc(c.name + (c.self ? ' · ต้องเดินไปเอง' : ' · กำลังใจ ' + Math.round(c.morale)))}">
+        ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
+        <b>${esc(c.name)}</b></button>`).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
+    const forceChoices = heaven ? '' : [1, 2, 3, 4, 5].map(i =>
+      `<button class="orb-choice" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
+        title="ระดับ ${i} ${esc(INTENSITY[i])}"><span style="font-size:25px">${['','💬','❄️','💥','🔥','💢'][i]}</span><b>${esc(INTENSITY[i])}</b></button>`).join('');
+    const crewNow = pick.cr && g.crewOf(pick.cr);
+    const trialWheel = `
+      <div class="trial-orb-group power">
+        <button class="orb-main" data-orb-toggle title="เลือกพลัง">${orbImg('img/fx-fireball.png','พลัง')}<b>พลัง</b></button>
+        <div class="orb-submenu">${powerChoices}</div>
+      </div>
+      <div class="trial-orb-group place">
+        <button class="orb-main" data-orb-toggle title="เลือกสถานที่">${orbImg(stDef ? stBg(stDef.k) : 'img/BG-Krata.webp','ที่ไหน')}<b>${esc(stDef?.name || 'ที่ไหน')}</b></button>
+        <div class="orb-submenu">${destinationChoices}</div>
+      </div>
+      <div class="trial-orb-group crew">
+        <button class="orb-main" data-orb-toggle title="เลือกผู้คุม">${orbImg(crewNow ? (artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`) || artUrl(crewNow.self ? 'hero-yama' : `crew-${crewNow.k}`)) : 'img/crew-taan-profile.png','ใครคุม')}<b>${esc(crewNow?.name || 'ใครคุม')}</b></button>
+        <div class="orb-submenu">${crewChoices}</div>
+      </div>
+      <div class="trial-orb-group force">
+        <button class="orb-main" data-orb-toggle ${heaven ? 'disabled' : ''} title="เลือกระดับความแรง"><span style="font-size:29px">${heaven ? '🕊️' : pick.inten ? ['','💬','❄️','💥','🔥','💢'][pick.inten] : '⚖️'}</span><b>${heaven ? 'อัตโนมัติ' : pick.inten ? INTENSITY[pick.inten] : 'ความแรง'}</b></button>
+        <div class="orb-submenu">${forceChoices}</div>
+      </div>
+      <div class="trial-orb-group issue ${ready ? 'ready' : ''}">
+        <button class="orb-main" id="t-go" ${ready ? '' : 'disabled'} title="${ready ? 'ออกหมาย' : 'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}">
+          ${orbImg('img/icon-sword.png','ออกหมาย')}<b>${g.needBattle(s) ? 'ประทับตราแล้วสู้' : 'ออกหมาย'}</b></button>
+      </div>`;
+
+    // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
+    const opt = `<h4>${s.case ? 'เลือกประเด็นที่จะสอบสวน' : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
+      const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
+      return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
+        >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
     }).join('');
 
+    const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
     dlg.innerHTML = `
     <div class="hud trial-hud" style="background-image:url('img/BG-Turn-Base.webp')">
       <div class="hud-scrim"></div>
@@ -1448,11 +1451,8 @@ function openTrial() {
           <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
                  onerror="this.onerror=null;this.src='img/spirit7.png'">
             <span class="nm">${esc(s.name || s.who)}</span></div>
-          <div class="hud-menu" aria-label="คำสั่งสอบสวน">
-            <div class="seg">${seg}</div>
-            <div class="go-cluster">${goCluster}</div>
-          </div>
-          <div class="trial-powers" aria-label="พลังของยมบาท">${powerButtons}</div>
+          <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
+          <div class="trial-wheel" aria-label="วงคำสั่งออกหมาย">${trialWheel}</div>
         </div>
 
         <div class="hud-right">
@@ -1492,7 +1492,13 @@ function openTrial() {
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
 
     // ---- ผูกปุ่ม ----
-    dlg.querySelectorAll('[data-cmd]').forEach(el => el.onclick = () => { trialCmd = el.dataset.cmd; paint(); });
+    dlg.querySelectorAll('[data-cmd]').forEach(el => el.onclick = () => { trialCmd = el.dataset.cmd; });
+    dlg.querySelectorAll('[data-orb-toggle]').forEach(el => el.onclick = e => {
+      e.preventDefault();
+      const group = el.closest('.trial-orb-group');
+      dlg.querySelectorAll('.trial-orb-group.open').forEach(x => { if (x !== group) x.classList.remove('open'); });
+      group.classList.toggle('open');
+    });
     dlg.querySelectorAll('[data-pickkey]').forEach(el => el.onclick = () => {
       pick[el.dataset.pickkey] = el.dataset.k ?? +el.dataset.v;
       paint();
@@ -1516,9 +1522,8 @@ function openTrial() {
     const go = dlg.querySelector('#t-go');
     if (go) go.onclick = () => {
       const st = pick.st, cr = pick.cr, inten = pick.inten;
-      if (g.needBattle(s)) {                     // ดวงที่ขัดขืน: ปิดห้องนี้แล้วเข้าฉากต่อสู้
-        dlg.close();
-        g.startBattle(s);
+      if (g.needBattle(s)) {                     // เปิดฉากใหม่ทับกล่องเดิมผ่าน openDlg รุ่นเดียว ลด race จาก close event
+        if (!g.startBattle(s)) return;
         openBattle(res => { if (res === 'win') doVerdict(s, st, cr, inten); else refresh(); });
         return;
       }
@@ -1537,7 +1542,7 @@ function doVerdict(soul, stK, crK, inten) {
   const heaven = !!STATIONS.find(d => d.k === stK)?.heaven;
   if (!g.assign(soul.id, stK, crK, heaven ? 1 : inten)) return false;
   sfx(heaven ? 'heaven' : 'stamp');
-  pick = { st: null, cr: null, inten: 3 };
+  pick = { st: null, cr: null, inten: null };
   if (g.pendingVerdict) showVerdict(g.pendingVerdict);
   refresh();
   return true;
@@ -1716,18 +1721,19 @@ function openBattle(after) {
       <button data-prep="crew" ${g.crewHelpers().length ? '' : 'disabled'}>🛡️ ยมทูตคุ้มกัน · บารมีศึก +18</button>
       <button data-prep="power">🔥 เตรียมลูกไฟ · เพิ่ม 1 ลูก</button>
       </div></div>` : '';
-    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `<div class="battle-actions${phase ? ' busy' : ''}">
-      <button class="battle-act" data-act="atk" title="ฟาด"><span class="battle-icon"><img src="img/fx-slash.png" alt=""></span><b>ฟาด</b></button>
-      <button class="battle-act" data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'} title="ลูกไฟ เหลือ ${fireAmmo}"><span class="battle-icon"><img src="img/fx-fireball.png" alt=""></span><b>ลูกไฟ</b><i>×${fireAmmo}</i></button>
-      ${BATTLE.items.map(it => {
-        const pw = it.power ? g.powerOf(it.power) : null;
-        const ok = it.coin != null ? g.coin >= it.coin : (pw && pw.ammo > 0 && !g.powerLocked(pw));
-        const note = it.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
-        const icon = ITEMS[it.k]?.img || (it.k === 'health' ? 'item-health' : 'item-hypno');
-        return `<button class="battle-act" data-act="${it.k}" ${ok ? '' : 'disabled'} title="${esc(it.name + ' ' + note)}">
-          <span class="battle-icon"><img src="${artUrl(icon) || `img/${icon}.png`}" alt=""></span><b>${esc(it.name)}</b><i>${esc(note)}</i></button>`;
-      }).join('')}
-      ${battleHelpers.map(c => {
+    const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
+      title="${esc(label + (note ? ' · ' + note : ''))}"><img src="${icon}" alt=""><b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
+    const battleItem = k => BATTLE.items.find(x => x.k === k);
+    const itemChoice = (k, icon) => {
+      const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
+      const ok = !!it && (it.coin != null ? g.coin >= it.coin : !!(pw && pw.ammo > 0 && !g.powerLocked(pw)));
+      const note = it?.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
+      return battleChoice(k, icon, it?.name || k, ok, note);
+    };
+    const powerChoices = battleChoice('fire', 'img/fx-fireball.png', 'ลูกไฟ', fireAmmo > 0, `×${fireAmmo}`)
+      + itemChoice('ice', 'img/fx-ice.png') + itemChoice('hypno', 'img/fx-hypno.png');
+    const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png');
+    const crewActions = battleHelpers.length ? `<div class="battle-crew-actions">${battleHelpers.map(c => {
         const why = g.crewHelpWhy(c);
         const wait = c.helpCd && g.tick < c.helpCd ? Math.ceil((c.helpCd - g.tick) / BATTLE.crewCd * 100) : 0;
         return `<button class="battle-act crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
@@ -1735,8 +1741,16 @@ function openBattle(after) {
           ><span class="battle-icon"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt=""
             onerror="this.onerror=null;this.src='${artUrl('crew-' + c.k)}'"><em style="--wait:${wait}%"></em></span>
             <b>${esc(c.name)}</b><i>${why ? esc(why) : `แรง ${c.raeng}`}</i></button>`;
-      }).join('')}
-    </div>`;
+      }).join('')}</div>` : '';
+    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `
+      <div class="battle-wheel${phase ? ' busy' : ''}">
+        <div class="battle-orb-group"><button class="orb-main" data-act="atk" title="โจมตี">
+          <img src="img/fx-slash.png" alt=""><b>โจมตี</b></button></div>
+        <div class="battle-orb-group"><button class="orb-main" data-battle-toggle title="เลือกพลัง">
+          <img src="img/fx-fireball.png" alt=""><b>พลัง</b></button><div class="orb-submenu">${powerChoices}</div></div>
+        <div class="battle-orb-group"><button class="orb-main" data-battle-toggle title="เลือกไอเท็ม">
+          <img src="img/item-health.png" alt=""><b>ไอเท็ม</b></button><div class="orb-submenu">${itemChoices}</div></div>
+      </div>${crewActions}`;
 
     const finLabel =
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'รับรางวัลชายแดน' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
@@ -1771,18 +1785,24 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
       if (g.prepareBoss(el.dataset.prep)) { sfx('stamp'); paint(); refresh(); }
     });
+    dlg.querySelectorAll('[data-battle-toggle]').forEach(el => el.onclick = e => {
+      e.preventDefault();
+      const group = el.closest('.battle-orb-group');
+      dlg.querySelectorAll('.battle-orb-group.open').forEach(x => { if (x !== group) x.classList.remove('open'); });
+      group.classList.toggle('open');
+    });
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const k = el.dataset.act;
       if (!g.battleAct(k)) return;
-      sfx(k === 'fire' ? 'fire' : k === 'health' ? 'star' : 'hit');
+      sfx(k === 'fire' ? 'fire' : (k === 'health' || k === 'tea') ? 'star' : 'hit');
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      fxNow = { key: FX_OF[k] ? k : 'atk', side: k === 'health' ? 'you' : 'foe' };
+      fxNow = { key: FX_OF[k] ? k : 'atk', side: (k === 'health' || k === 'tea') ? 'you' : 'foe' };
       paint();
       playActionCutscene(k);
 
@@ -2049,7 +2069,8 @@ $('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = u
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
-$('#outfit').onclick = openOutfit;
+const outfitButton = $('#outfit');
+if (outfitButton) outfitButton.onclick = openOutfit;
 $('#bag').onclick = openBag;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;

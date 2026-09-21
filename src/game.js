@@ -1467,9 +1467,10 @@ const API = {
 
     const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
     slot.progress += BAL.smiteGain;
-    this.swingUntil = Date.now() + 500;   // ท่าฟาดค้างครึ่งวินาที (เจ้าของเคาะเอง 10 ก.ย. 2569)
+    // ประตูสวรรค์เป็นการส่งดวงผ่านประตู ไม่ใช่การฟาด — อย่าเรียกท่าโจมตีหรือเอฟเฟกต์ลูกไฟ
+    if (!d.heaven) this.swingUntil = Date.now() + 500;
     this.player.face = sx < this.player.x ? -1 : 1;
-    this.fxHits.push({ t: Date.now(), x: sx, y: sy });
+    if (!d.heaven) this.fxHits.push({ t: Date.now(), x: sx, y: sy });
 
     const c = this.crewOf(st.crewK);
     const k = Math.round(BAL.smiteKarma * (c && c.metta >= 8 ? 0.5 : 1) * 10) / 10;
