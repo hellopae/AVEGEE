@@ -1,8 +1,8 @@
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
-         KARMA_RELIEF, BATTLE, ZONES, ZONE4_BOSS_DRAFT, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN, crewName, FRONTIER } from './data.js';
+         KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
+         ORDER_WARN, crewName, FRONTIER, MERCHANT, UPGRADES } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier } from './scene.js';
@@ -414,6 +414,8 @@ function drawSide() {
     const [kind, key] = el.dataset.sel.split(':');
     select({ kind, key: /^\d+$/.test(key) ? +key : key });
   });
+  const office = box.querySelector('#open-nira-office');
+  if (office) office.onclick = openNiraOffice;
 }
 
 /** เนื้อของแผงข้อมูลตามตัวที่เลือก */
@@ -457,7 +459,8 @@ function sideBody() {
       + `<div class="sec">ถนัดอะไร</div>
          <div class="row-truth">เด่นที่ <b>${strong[0][0]} ${strong[0][1]}</b> · อ่อนที่ ${strong[3][0]} ${strong[3][1]}</div>
          <div class="row-truth">${crewNote(c)}</div>
-         ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}`;
+         ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}
+         ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม · ฝึกยมทูต</button>' : ''}`;
   }
 
   // ---- ยักษ์ทวารบาล ----
@@ -833,27 +836,29 @@ function updateMobFab() {
 /** บอสที่แพ้แล้วเฝ้าสะพาน ไม่กลับมาเองตามวาระ — เดินเข้าไปใกล้จึงเลือกท้าสู้ได้ */
 function updateBossFab() {
   const gone = () => { const e = ov.querySelector('.bossfab'); if (e) e.remove(); };
-  if (g.over || g.battle || dlg.open || !g.bossCanChallenge()) return gone();
+  const pier = g.bossPierCanTalk();
+  if (g.over || g.battle || dlg.open || (!g.bossCanChallenge() && !pier)) return gone();
   let f = ov.querySelector('.bossfab');
   if (!f) {
     f = document.createElement('button');
     f.className = 'bossfab';
-    f.textContent = `⚔️ ท้าสู้${g.zoneDef().bossName}`;
     f.onclick = ev => {
       ev.stopPropagation();
-      if (!g.bossCanChallenge() || dlg.open) return;
-      if (g.startZoneBoss(true)) openBattle();
+      if (dlg.open) return;
+      if (g.bossPierCanTalk()) return openBossPier();
+      if (g.bossCanChallenge() && g.startZoneBoss(true)) openBattle();
     };
     ov.appendChild(f);
   }
-  f.dataset.sx = 790; f.dataset.sy = 558 - 115;
+  f.textContent = pier ? `💬 คุยกับ${g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;
+  f.dataset.sx = pier ? 1260 : 790; f.dataset.sy = 558 - 115;
   place(f);
 }
 
 /** ประตูชายแดนเปิดได้เมื่อเดินมาถึงเท่านั้น เหมือนสถานที่อื่นในฉาก */
 function updateFrontierFab() {
   const gone = () => { const e = ov.querySelector('.frontierfab'); if (e) e.remove(); };
-  const near = g.zone === 'th' && Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
+  const near = Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
   if (!near || g.over || g.battle || dlg.open) return gone();
   let f = ov.querySelector('.frontierfab');
   if (!f) {
@@ -1309,6 +1314,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
   const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
+             : k === 'ice' ? 'ice'
              : (k === 'atk' || k === 'fire' || k === 'roar') ? 'atk' : null;
   if (!pose) return null;
   const style = g.outfit || g.zone;
@@ -1537,19 +1543,83 @@ function doVerdict(soul, stK, crK, inten) {
   return true;
 }
 
+// ---------- ศูนย์จัดทีม / ร้านค้า / ผู้ตรวจการ ----------
+function openNiraOffice() {
+  pauseForDlg();
+  const paint = () => {
+    const party = g.party?.members || [];
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมติดตาม</h2>
+      <p class="hint">เลือกยมทูตติดตามยมน้อยได้ 2 คน พวกเขาจะยืนข้างตัวบนแผนที่และเป็นทีมตั้งต้นเวลาออกศึก</p>
+      <div class="market-grid">${CREW.filter(c => !c.reader).map(def => {
+        const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
+        const train = c ? UPGRADES.crewBase * ((c.upLv || 0) + 1) : 0;
+        return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
+          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย</small>`}</span>
+          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ติดตาม' : 'เข้าทีม'}</button>
+                  <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
+              : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
+        </article>`;
+      }).join('')}</div>
+      <div class="row"><button data-guard-team ${!g.guard ? 'disabled' : ''}>🛡️ ${g.party?.guard ? 'ให้ยักษ์กลับไปเฝ้าประตู' : 'ให้ยักษ์ร่วมทีม'}</button>
+        <button class="gold" data-close>เสร็จแล้ว</button></div>`;
+    dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-train]').forEach(b => b.onclick = () => { if (g.upgradeCrew(b.dataset.train)) { sfx('coin'); paint(); refresh(); } });
+    const guard = dlg.querySelector('[data-guard-team]'); if (guard) guard.onclick = () => { if (g.togglePartyGuard()) { paint(); refresh(); } };
+  };
+  paint(); openDlg('nira-office');
+}
+
+function openMerchant() {
+  pauseForDlg();
+  const paint = () => {
+    const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
+    dlg.innerHTML = `<h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p>
+      <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
+        const d = ITEMS[k]; return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
+          <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
+      }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
+      <h3>สินค้า</h3><div class="market-grid">${MERCHANT.stock.map(s => {
+        const d = ITEMS[s.k], lock = g.level < s.lv;
+        return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}</small></span>
+          <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
+      }).join('')}</div>
+      <h3>อัปเกรดพลัง</h3><div class="market-grid">${POWERS.map(p => {
+        const lv = g.upgrades?.powers?.[p.k] || 0, cost = UPGRADES.powerBase * (lv + 1), lock = g.powerLocked(p);
+        return `<article class="shop-card"><span class="shop-glyph">${p.glyph}</span><span><b>${esc(p.name)} ขั้น ${lv + 1}</b><small>เพิ่มจำนวนที่เก็บได้ · ${cost} เบี้ย</small></span>
+          <button data-power-up="${p.k}" ${lock || lv >= UPGRADES.max || g.coin < cost ? 'disabled' : ''}>อัปเกรด</button></article>`;
+      }).join('')}</div><div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
+    dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-power-up]').forEach(b => b.onclick = () => { if (g.upgradePower(b.dataset.powerUp)) { sfx('gong'); paint(); refresh(); } });
+  };
+  paint(); openDlg('merchant');
+}
+
+function openBossPier() {
+  const z = g.zoneDef();
+  pauseForDlg();
+  modal(`<h2>👑 ${esc(z.bossName)}</h2><p class="hint">${esc(z.bossWin?.[1] || 'เขายืนดูแลท่าเรืออยู่')}</p>
+    <div class="row"><button data-rematch>⚔️ ประลองใหม่</button><button data-zone-menu>🗺️ เปลี่ยนโซน</button><button class="gold" data-close>ไว้คราวหน้า</button></div>`, d => {
+      d.querySelector('[data-rematch]').onclick = () => { if (g.startZoneBoss('rematch')) { dlg.close(); openBattle(); } };
+      d.querySelector('[data-zone-menu]').onclick = () => { dlg.close(); openZone(); };
+    });
+}
+
 // ---------- ด่านชายแดนนรก ----------
 function openFrontier() {
-  if (g.zone !== 'th') return;
   pauseForDlg();
   const helpers = g.crewHelpers();
-  g.frontier ||= { clears: 0, team: [] };
-  g.frontier.team = (g.frontier.team || []).filter(k => helpers.some(c => c.k === k));
-  if (!g.frontier.team.length && helpers[0]) g.frontier.team = [helpers[0].k];
+  const state = g.frontierOf();
+  state.team = (state.team || []).filter(k => helpers.some(c => c.k === k));
+  if (!state.team.length && helpers[0]) state.team = [helpers[0].k];
   g.save();
 
   const paint = () => {
-    const chosen = g.frontier.team || [];
-    const wave = (g.frontier.clears || 0) + 1;
+    const chosen = state.team || [];
+    const wave = (state.clears || 0) + 1;
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${FRONTIER.bg}')">
       <div class="frontier-shade"></div>
       <button class="x" data-close title="กลับแผนที่">✕</button>
@@ -1563,7 +1633,7 @@ function openFrontier() {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>ระลอกที่ ${wave}</b><small>ผ่านแล้ว ${g.frontier.clears || 0} ระลอก</small></span>
+        <div class="frontier-head"><span><b>ระลอกที่ ${wave}</b><small>${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก</small></span>
           <span class="frontier-loot">รางวัล: เบี้ยกรรม + ของสนามรบ</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
@@ -1651,9 +1721,9 @@ function openBattle(after) {
       <button class="battle-act" data-act="fire" ${fireAmmo > 0 ? '' : 'disabled'} title="ลูกไฟ เหลือ ${fireAmmo}"><span class="battle-icon"><img src="img/fx-fireball.png" alt=""></span><b>ลูกไฟ</b><i>×${fireAmmo}</i></button>
       ${BATTLE.items.map(it => {
         const pw = it.power ? g.powerOf(it.power) : null;
-        const ok = it.coin != null ? g.coin >= it.coin : (pw && pw.ammo > 0);
+        const ok = it.coin != null ? g.coin >= it.coin : (pw && pw.ammo > 0 && !g.powerLocked(pw));
         const note = it.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
-        const icon = it.k === 'health' ? 'item-health' : 'item-hypno';
+        const icon = ITEMS[it.k]?.img || (it.k === 'health' ? 'item-health' : 'item-hypno');
         return `<button class="battle-act" data-act="${it.k}" ${ok ? '' : 'disabled'} title="${esc(it.name + ' ' + note)}">
           <span class="battle-icon"><img src="${artUrl(icon) || `img/${icon}.png`}" alt=""></span><b>${esc(it.name)}</b><i>${esc(note)}</i></button>`;
       }).join('')}
@@ -1785,9 +1855,7 @@ function openBattle(after) {
 }
 
 // ---------- ย้ายโซน ----------
-// การ์ดเกาะ img/Zone<N>.webp (17 ก.ย. 2569) — แทนที่รายการตัวหนังสือเดิม
-// โซน 4 (CyberHell) ยังไม่มีใน ZONES[] เลยไม่มีวันเล่นได้จริง (ดู ZONE4_BOSS_DRAFT ใน data.js)
-// แสดงเป็นเกาะที่ 4 ล็อกถาวรไว้ให้เห็นว่ามีอยู่ แต่ไม่มี data-zone จึงกดยังไงก็ไม่ทำงาน
+// การ์ดเกาะ img/Zone<N>.webp — รวม CyberHell เป็นโซนที่เล่นได้จริงแล้ว
 function openZone() {
   const cur = g.zoneDef();
   pauseForDlg();
@@ -1804,12 +1872,7 @@ function openZone() {
       ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
              : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
     </div>`;
-  }).join('') + `<div class="isle-card locked draft">
-      <span class="badge">🔒</span>
-      <img src="img/Zone4.webp" alt="${esc(ZONE4_BOSS_DRAFT.name)}" loading="lazy">
-      <b>${esc(ZONE4_BOSS_DRAFT.name)}</b><small>เปิดให้เล่นเร็ว ๆ นี้</small>
-      <button class="sm" disabled>ยังเล่นไม่ได้</button>
-    </div>`;
+  }).join('');
   modal(`<h2>🗺️ ย้ายโซน</h2>
     <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}
       · ย้ายแล้ว <b>คน เบี้ยกรรม พลัง บารมี กรรม ติดตัวไปหมด</b> แต่
@@ -1829,8 +1892,8 @@ function openOutfit() {
     <div class="outfit-list">
     ${ZONES.map(z => {
       const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
-      const face = z.k === 'th' ? 'img/hero-yama.png'
-        : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}.png`;
+      const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
+      const face = z.k === 'th' ? 'img/hero-yama.png' : `img/${folders[z.k]}/hero-yama-${z.k}.png`;
       return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
         <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
         <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
@@ -1865,8 +1928,8 @@ function bagUseWhy(k) {
 function outfitCards() {
   return ZONES.map(z => {
     const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
-    const face = z.k === 'th' ? 'img/hero-yama.png'
-      : `img/${z.k === 'asia' ? 'Asia' : 'West'}/hero-yama-${z.k}.png`;
+    const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
+    const face = z.k === 'th' ? 'img/hero-yama.png' : `img/${folders[z.k]}/hero-yama-${z.k}.png`;
     return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
       <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
       <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
@@ -2018,8 +2081,9 @@ cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
   const def = hitStation(sx, sy);
   const frontier = hitFrontier(g, sx, sy);
+  const actor = hitActor(g, sx, sy);
   hover = frontier ? FRONTIER.k : def ? def.k : null;
-  cv.style.cursor = (def || frontier) ? 'pointer' : 'default';
+  cv.style.cursor = (def || frontier || actor) ? 'pointer' : 'default';
 };
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
@@ -2058,6 +2122,18 @@ function onSceneClick(sx, sy) {
   const a = hitActor(g, sx, sy);
   if (a) {
     if (a.kind === 'station') { enterStation(a.key); return; }
+    if (a.kind === 'merchant') {
+      if (Math.hypot(g.player.x - MERCHANT.x, g.player.y - MERCHANT.y) <= MERCHANT.reach) return openMerchant();
+      g.walkTo(MERCHANT.x, MERCHANT.y); g.log(`เดินไปหา${MERCHANT.name} — ซื้อขายได้เมื่อยืนใกล้`, 'act'); return;
+    }
+    if (a.kind === 'boss') {
+      if (g.bossPierCanTalk()) return openBossPier();
+      g.walkTo(1260, 558); return;
+    }
+    if (a.kind === 'crew' && a.key === 'nira') {
+      const c = g.crewOf('nira');
+      if (c && Math.hypot(g.player.x - c.x, g.player.y - c.y) <= 105) return openNiraOffice();
+    }
     select(a);
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
@@ -2165,6 +2241,14 @@ function openStation(k) {
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (cap && g.stFree(st) > 0 && g.queue.length)
       acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
+    if (cap) {
+      const speedCost = UPGRADES.stationBase * ((st.speedLv || 0) + 1);
+      const capCost = UPGRADES.stationBase * ((st.capLv || 0) + 1);
+      const fuelCost = UPGRADES.stationBase * ((st.fuelLv || 0) + 1);
+      acts.push(`<button data-st-up="speed" ${g.coin < speedCost || (st.speedLv || 0) >= UPGRADES.max ? 'disabled' : ''}>⚙️ เร่งการทำงาน ขั้น ${st.speedLv || 0}<small>${speedCost} เบี้ย · เร็วขึ้น 12%</small></button>`,
+        `<button data-st-up="capacity" ${g.coin < capCost || (st.capLv || 0) >= UPGRADES.max ? 'disabled' : ''}>👻 เพิ่มช่องรับ ขั้น ${st.capLv || 0}<small>${capCost} เบี้ย · เพิ่มได้ 1 ดวง</small></button>`,
+        `<button data-st-up="fuel" ${g.coin < fuelCost || (st.fuelLv || 0) >= UPGRADES.max ? 'disabled' : ''}>🪵 ประหยัดฟืน ขั้น ${st.fuelLv || 0}<small>${fuelCost} เบี้ย · ใช้ฟืนน้อยลง</small></button>`);
+    }
 
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
     if (T) T.innerHTML = `
@@ -2202,6 +2286,9 @@ function openStation(k) {
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
+    });
+    dlg.querySelectorAll('[data-st-up]').forEach(b => b.onclick = () => {
+      if (g.upgradeStation(k, b.dataset.stUp)) { sfx('coin'); panels(); refresh(); }
     });
   };
 
@@ -2322,11 +2409,11 @@ function openStation(k) {
 }
 
 function openBuild(def) {
-  const afford = g.coin >= def.cost;
+  const taan = g.crew.find(c => c.k === 'taan'), afford = g.coin >= def.cost && !!taan && !taan.buildK;
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-      · ฟืน ${def.fuel}/วาระ · แรง ${def.pow}</div>
+      · ฟืน ${def.fuel}/วาระ · แรง ${def.pow}${!taan ? ' · ต้องจ้างทัณฑ์ที่โต๊ะนิราก่อน' : taan.buildK ? ' · ทัณฑ์กำลังสร้างหลังอื่นอยู่' : ' · ทัณฑ์จะเดินมาสร้างให้'}</div>
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });

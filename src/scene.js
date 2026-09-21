@@ -2,7 +2,7 @@
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER, MERCHANT } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
@@ -89,14 +89,14 @@ export function render(ctx, g, t, hover, sel) {
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว
   for (const st of g.stations) at(depthOf(st.def), () => drawStation(ctx, g, st, t));
-  // ประตูชายแดนเป็นกิจกรรมของโซนสุวรรณภูมิ ไม่อยู่ในรายการสถานีและสร้างไม่ได้
-  if (g.zone === 'th') at(depthOf(FRONTIER), () => drawBuilding(ctx, FRONTIER, t));
+  // ทุกสาขามีด่านชายแดนของตัวเอง ใช้ประตูผังเดียวกันแต่เก็บระลอกแยกโซน
+  at(depthOf(FRONTIER), () => drawBuilding(ctx, FRONTIER, t));
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {
     const def = hover === FRONTIER.k ? FRONTIER : STATIONS.find(d => d.k === hover);
     const shown = def && (def.k === FRONTIER.k
-      ? g.zone === 'th'
+      ? true
       : (g.stations.some(x => x.def.k === def.k) || spot?.k === def.k));
     if (shown) {
       const [x1, y1, x2, y2] = def.hit;
@@ -185,24 +185,33 @@ export function render(ctx, g, t, hover, sel) {
                   : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
   }));
 
-  // บอสเดินจากปลายสะพานมาท้าสู้; ถ้าแพ้ จะเฝ้าหัวสะพานจนผู้เล่นเดินกลับมาท้า
-  if (g.bossWalk || g.bossGuarding?.[g.zone]) {
+  // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
+  if (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone]) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
-    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : 790;
+    const cleared = !walk && g.bossCleared?.[g.zone];
+    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : cleared ? 1260 : 790;
     const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : 558;
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
       tag(ctx, x, y - HERO_H * 1.12 - 15, t,
-          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
+          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : cleared ? `คุยกับ${g.zoneDef().bossName}` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
 
+  // พ่อค้านรกอยู่ริมแม่น้ำทุกโซน รับซื้อของจากชายแดนและขายคัมภีร์
+  at(1e5 + MERCHANT.y, () => {
+    drawStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
+    tag(ctx, MERCHANT.x, MERCHANT.y - MERCHANT.h - 8, t, ['🧳 ซื้อขาย', '#f7c371']);
+  });
+
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
-  if (g.guard) at(g.guard.y, () => {
-    if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-    drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+  if (g.guard) at(g.party?.guard ? g.player.y + 9 : g.guard.y, () => {
+    const gx = g.party?.guard ? g.player.x - 105 : g.guard.x;
+    const gy = g.party?.guard ? g.player.y + 9 : g.guard.y;
+    if (sel && sel.kind === 'guard') ring(ctx, gx, gy, t, 34);
+    drawStandee(ctx, GUARD.img, gx, gy, GUARD.h, t, '🛡️');
   });
 
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
@@ -288,7 +297,7 @@ function drawStation(ctx, g, st, t) {
     const W = 120, bx = d.bx - W / 2, by = d.by + 10;
     ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12, 6); ctx.fill();
     ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12, 6); ctx.fill();
-    label(ctx, `🏗️ กำลังก่อสร้าง ${Math.round(p * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
+    label(ctx, st.buildWait ? '🔨 รอทัณฑ์เดินมาเริ่มงาน' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
   drawBuilding(ctx, d, t);
@@ -427,10 +436,10 @@ export function hitStation(sx, sy) {
     .find(d => sx >= d.hit[0] && sx <= d.hit[2] && sy >= d.hit[1] && sy <= d.hit[3]) || null;
 }
 
-/** คลิกโดนซุ้มประตูชายแดนหรือไม่ — เปิดเฉพาะโซนแรกในเวอร์ชันนี้ */
+/** คลิกโดนซุ้มประตูชายแดนหรือไม่ */
 export function hitFrontier(g, sx, sy) {
   const h = FRONTIER.hit;
-  return g.zone === 'th' && sx >= h[0] && sx <= h[2] && sy >= h[1] && sy <= h[3];
+  return sx >= h[0] && sx <= h[2] && sy >= h[1] && sy <= h[3];
 }
 const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 
@@ -438,6 +447,8 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
  *  ไล่จากตัวที่ผู้เล่นตั้งใจกดมากที่สุดไปหาน้อยที่สุด (เปรต > วิญญาณ > ยมทูต > ตัวเรา) */
 export function hitActor(g, sx, sy) {
   const near = (x, y, r = 44) => Math.hypot(x - sx, y - sy) < r && sy < y + 16;
+  if (near(MERCHANT.x, MERCHANT.y, 54)) return { kind:'merchant', key:0 };
+  if (g.bossCleared?.[g.zone] && near(1260, 558, 54)) return { kind:'boss', key:g.zone };
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };
   // ป้ายวงกลมเหนือสถานี — กดแล้วเปิดหน้าสถานีนั้น
@@ -452,7 +463,8 @@ export function hitActor(g, sx, sy) {
   }
   for (const c of g.crew)
     if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
-  if (g.guard && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
+  if (g.guard && near(g.party?.guard ? g.player.x - 105 : g.guard.x,
+                      g.party?.guard ? g.player.y + 9 : g.guard.y)) return { kind: 'guard', key: 0 };
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
 }

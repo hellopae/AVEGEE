@@ -5,7 +5,8 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER } from './data.js';
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
+         MERCHANT, UPGRADES } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt } from './art.js';
@@ -75,7 +76,9 @@ export function createGame() {
     zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
-    frontier: { clears: 0, team: [] }, // ระลอกชายแดนและทีมที่เลือก ติดไปกับเซฟ
+    frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
+    party: { members: [], guard: false },
+    upgrades: { powers: {} },
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
@@ -104,7 +107,8 @@ function mkCrew(def, zone = 'th') {
  *  build = เวลาที่จะสร้างเสร็จ (0 = เสร็จแล้ว) · fire = ไฟไหม้จากผีที่บุกมา (0-100) */
 function mkStation(k, build = 0) {
   const def = STATIONS.find(s => s.k === k);
-  return { def, slots: [], crewK: null, intensity: 3, build, fire: 0 };
+  return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, fire: 0,
+           speedLv:0, capLv:0, fuelLv:0 };
 }
 
 // ---------- สร้างสำนวนคดี ----------
@@ -132,14 +136,17 @@ function mkHardSoul(tags, g) {
  *  เจ้าของบอก 7 ก.ย. 2569 ว่าคดีที่มาไม่ตรงกับสถานีที่มี ทำให้ลงทัณฑ์ให้ตรงกรรมไม่ได้เลย
  *  ตอนนี้จึงกรองด้วย tags ของสถานีที่สร้างแล้ว — สร้างสถานีเพิ่ม = เปิดสำนวนแนวนั้นเข้ามา
  *  (ถ้าไม่มีสถานีลงทัณฑ์สักหลัง ค่อยปล่อยทุกแนวตามเดิม ไม่งั้นคิวจะว่างเปล่า) */
-function poolOf(tags) {
-  if (!tags || !tags.length) return DEEDS;
-  const pool = DEEDS.filter(d => tags.includes(d.s));
-  return pool.length ? pool : DEEDS;
+function poolOf(tags, zone = 'th') {
+  const allowed = DEEDS.filter(d => !d.zone || d.zone === zone);
+  const themed = zone === 'cyberhell' ? allowed.filter(d => d.zone === zone) : [];
+  const source = themed.length ? themed : allowed;
+  if (!tags || !tags.length) return source;
+  const pool = source.filter(d => tags.includes(d.s));
+  return pool.length ? pool : source;
 }
 
 function mkSoul(tags, hiddenBonus = 0, g) {
-  const POOL = poolOf(tags);
+  const POOL = poolOf(tags, g?.zone);
   const n = 1 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.2 ? 1 : 0);
   const deeds = [];
   let guard = 0;
@@ -328,7 +335,7 @@ const API = {
   },
 
   /** สถานีนี้รับได้กี่ดวง — หลังที่ไม่ได้ใช้ลงทัณฑ์ (แรง 0) รับไม่ได้เลย */
-  stCap(st) { return st && st.def.pow > 0 ? STATION_CAP : 0; },
+  stCap(st) { return st && st.def.pow > 0 ? STATION_CAP + (st.capLv || 0) : 0; },
   /** ยังรับเพิ่มได้อีกกี่ดวง (กำลังก่อสร้างอยู่ = ยังไม่รับ) */
   stFree(st) { return st && !st.build ? this.stCap(st) - st.slots.length : 0; },
   /** ดวงที่อยู่หน้าสุดของสถานี — ใช้ตอนซัดไฟเร่งทัณฑ์เอง */
@@ -337,6 +344,40 @@ const API = {
   crewOf(k) {
     if (k === 'me') return this.self;        // ท่านลงไปคุมเอง — ไม่มีค่าแรง ไม่ต้องจ้าง
     return this.crew.find(c => c.k === k);
+  },
+
+  /** ความคืบหน้าชายแดนต้องแยกสาขา — แพ้/ย้ายโซนไม่ล้างระลอกเดิม */
+  frontierOf(zone = this.zone) {
+    this.frontier ||= { zones:{} };
+    if (!this.frontier.zones) {
+      const old = { clears:this.frontier.clears || 0, team:[...(this.frontier.team || [])] };
+      this.frontier = { zones:{ th:old } };
+    }
+    return this.frontier.zones[zone] ||= { clears:0, team:[] };
+  },
+
+  partyCrew() {
+    const chosen = new Set(this.party?.members || []);
+    return this.crew.filter(c => chosen.has(c.k));
+  },
+
+  toggleParty(k) {
+    const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
+    if (!c) return false;
+    this.party ||= { members:[], guard:false };
+    const i = this.party.members.indexOf(k);
+    if (i >= 0) this.party.members.splice(i, 1);
+    else { if (this.party.members.length >= 2) return false; this.party.members.push(k); }
+    if (i < 0) this.stations.forEach(st => { if (st.crewK === k) st.crewK = null; });
+    c.at = null; c.path = null;
+    this.save(); this.onChange(); return true;
+  },
+
+  togglePartyGuard() {
+    if (!this.guard) return false;
+    this.party ||= { members:[], guard:false };
+    this.party.guard = !this.party.guard;
+    this.save(); this.onChange(); return true;
   },
 
   has(k) { return this.stations.some(st => st.def.k === k); },
@@ -448,6 +489,12 @@ const API = {
         out.push({ kind: 'hint', text: 'คำสารภาพนี้ออกมาตอนกำลังกลัว จะเชื่อหรือไม่เชื่อก็ได้' });
       }
 
+    } else if (k === 'ice') {
+      const line = soul.lines?.find(x => !x.used);
+      if (line) {
+        line.used = true;
+        out.push({ kind:'truth', text:`❄️ ความกลัวสงบลง เขาพูดช้าลง: “${line.t}”` });
+      } else out.push({ kind:'hint', text:'❄️ เขาสงบลง แต่ไม่มีคำให้การใหม่เหลือแล้ว' });
     } else if (k === 'hypno') {                  // เห็นหมด แต่กรรมตกที่เรา
       hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `🌀 ในใจเขามี: ${d.t}` }); });
       fakes.forEach(m => { m.exposed = true; out.push({ kind: 'truth', text: `🌀 "${m.t}" เป็นเรื่องที่เขาแต่งขึ้น` }); });
@@ -827,17 +874,17 @@ const API = {
           if (this.tick % 10 === 0) this.log(`${st.def.name} หยุดรอ — ท่านคุมเองแต่ไม่ได้ยืนอยู่ตรงนั้น`, 'bad');
           continue;
         }
-        this.fuel = Math.max(0, this.fuel - st.def.fuel);
+        this.fuel = Math.max(0, this.fuel - Math.max(0, st.def.fuel - (st.fuelLv || 0) * .08));
         for (const slot of [...activeSlots]) {
-          slot.progress += st.def.pow * 0.7 * share;
+          slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);
           if (slot.progress >= slot.need) this.finish(st, slot);
         }
         continue;
       }
-      this.fuel = Math.max(0, this.fuel - st.def.fuel);
+      this.fuel = Math.max(0, this.fuel - Math.max(0, st.def.fuel - (st.fuelLv || 0) * .08));
       const mf = 0.55 + 0.45 * (c.morale / 100);
       for (const slot of [...activeSlots]) {
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share;
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12);
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -872,7 +919,7 @@ const API = {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
                  : this.fuel < 18 ? 'fuel'
                  : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
-                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', this.powerOf('hypno').max ? 'hypno' : 'fire']);
+                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', 'ice', this.powerOf('hypno').max ? 'hypno' : 'fire']);
       this.dropItem(need);
     }
 
@@ -1055,7 +1102,8 @@ const API = {
 
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
-      const post = c.at ? STATIONS.find(d => d.k === c.at) : null;
+      const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
+      const post = building || (c.at ? STATIONS.find(d => d.k === c.at) : null);
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
       // ปล่อยไว้ยมทูตจะยืนจมอยู่ในอาคาร มองไม่เห็นทั้งเกม (เจ้าของเจอ 10 ก.ย. 2569)
@@ -1063,7 +1111,15 @@ const API = {
         const o = nearestWalk(hx, hy, seen);
         if (o) { hx = o[0]; hy = o[1]; }
       }
-      if (c.x == null) { c.x = hx; c.y = hy; c.face = 1; }
+      if (c.x == null) { c.x = c.hx ?? hx; c.y = c.hy ?? hy; c.face = 1; }
+
+      // สมาชิกทีมยืนเคียงข้างยมบาท ไม่เดินเตร็ดเตร่หรือรับเวรซ้อนกัน
+      const partyIndex = (this.party?.members || []).indexOf(c.k);
+      if (partyIndex >= 0) {
+        c.x = P.x + (partyIndex ? 58 : -58); c.y = P.y + 7;
+        c.face = partyIndex ? -1 : 1; c.path = null; c.at = null;
+        continue;
+      }
       if (!canWalk(c.x, c.y)) {                 // โดนอาคารที่เพิ่งสร้างทับอยู่ → ดันออกมา
         const o = nearestWalk(c.x, c.y, seen);
         if (o) { c.x = o[0]; c.y = o[1]; c.path = null; }
@@ -1076,6 +1132,16 @@ const API = {
         if (escort && Date.now() < escort.arriveAt) continue;
         c.escort = null;
         c.x = hx; c.y = hy; c.path = null; c.wait = 500;
+      }
+
+      // ทัณฑ์ต้องเดินมาถึงพื้นที่ก่อน เวลา BUILD_TIME จึงเริ่มนับจริง
+      if (building && Math.hypot(hx - c.x, hy - c.y) < 42) {
+        const st = this.stations.find(x => x.def.k === building.k);
+        if (st?.buildWait) {
+          st.buildWait = false; st.build = Date.now() + BUILD_TIME;
+          c.buildK = null; c.wait = 900;
+          this.log(`🔨 ทัณฑ์มาถึง${building.name}แล้ว — เริ่มลงมือก่อสร้าง`, 'act');
+        }
       }
 
       // เดินตามเส้นทางเหมือนตัวเรา — เดิมเดินตรงเข้าหาจุดหมาย พอมีลาวาขวางก็ค้างอยู่ขอบไฟ
@@ -1130,7 +1196,7 @@ const API = {
 
     // ---- นั่งร้านถอดออกเมื่อครบเวลา ----
     for (const st of this.stations) {
-      if (!st.build || Date.now() < st.build) continue;
+      if (!st.build || st.buildWait || Date.now() < st.build) continue;
       st.build = 0;
       const extra = this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '';
       this.log(`🏗️ สร้าง${st.def.name}เสร็จแล้ว${extra}`, 'good');
@@ -1191,7 +1257,9 @@ const API = {
       if (st.fire > 0 && !burning.has(st.def.k)) st.fire = Math.max(0, st.fire - MOB.burnCool * dt);
 
     // ยักษ์ทวารบาลไล่ปราบเอง
-    if (this.guard && this.mobs.length) {
+    if (this.guard && this.party?.guard) {
+      this.guard.x = P.x - 105; this.guard.y = P.y + 9;
+    } else if (this.guard && this.mobs.length) {
       const G = this.guard, m = this.mobs[0];
       const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
       stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
@@ -1505,8 +1573,8 @@ const API = {
   setFrontierTeam(k) {
     const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
     if (!c) return false;
-    this.frontier ||= { clears: 0, team: [] };
-    const team = this.frontier.team || (this.frontier.team = []);
+    const state = this.frontierOf();
+    const team = state.team;
     const i = team.indexOf(k);
     if (i >= 0) team.splice(i, 1);
     else {
@@ -1519,19 +1587,19 @@ const API = {
 
   /** เริ่มหนึ่งระลอกที่ชายแดน ใช้ระบบต่อสู้เดิม แต่จำกัดผู้ช่วยตามทีมที่จัดไว้ */
   startFrontierBattle() {
-    if (this.battle || this.over || this.zone !== 'th') return null;
-    this.frontier ||= { clears: 0, team: [] };
+    if (this.battle || this.over) return null;
+    const state = this.frontierOf();
     const available = this.crew.filter(c => !c.reader && !c.self);
-    this.frontier.team = (this.frontier.team || []).filter(k => available.some(c => c.k === k));
-    if (!this.frontier.team.length && available[0]) this.frontier.team = [available[0].k];
-    if (!this.frontier.team.length) return null;
-    const wave = (this.frontier.clears || 0) + 1;
-    const pool = MOB.kinds.slice(0, 7);
+    state.team = (state.team || []).filter(k => available.some(c => c.k === k));
+    if (!state.team.length && available[0]) state.team = [available[0].k];
+    if (!state.team.length) return null;
+    const wave = (state.clears || 0) + 1;
+    const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
     const kind = pick(pool);
     const hp = 64 + wave * 14;
     this.fights++;
     this.battle = {
-      kind:'frontier', wave, team:[...this.frontier.team], bg:FRONTIER.bg,
+      kind:'frontier', zone:this.zone, wave, team:[...state.team], bg:FRONTIER.bg,
       who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
       foeHp:hp, foeMax:hp, foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -1553,8 +1621,14 @@ const API = {
       Math.hypot(this.player.x - 790, this.player.y - 558) <= 150;
   },
 
+  bossPierCanTalk() {
+    return !this.battle && !this.over && !!this.bossCleared[this.zone] &&
+      Math.hypot(this.player.x - 1260, this.player.y - 558) <= 150;
+  },
+
   startZoneBoss(retry = false) {
-    if (this.battle || !(retry ? this.bossCanChallenge() : this.bossReady())) return null;
+    const rematch = retry === 'rematch';
+    if (this.battle || !(rematch ? this.bossPierCanTalk() : retry ? this.bossCanChallenge() : this.bossReady())) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
     const hp = 200 + n * 35;
     this.bossPending = false;
@@ -1711,7 +1785,7 @@ const API = {
       }
       if (it.power) {
         const p = this.powerOf(it.power);
-        if (!p || p.ammo <= 0) return false;
+        if (!p || p.ammo <= 0 || this.powerLocked(p)) return false;
         p.ammo--;
       }
       if (it.karma) this.karma = clamp(this.karma + it.karma, 0, 100);
@@ -1736,7 +1810,8 @@ const API = {
         const item = pick(FRONTIER.drops);
         this.coin += coin;
         this.inventory[item] = (this.inventory[item] || 0) + 1;
-        this.frontier.clears = Math.max(this.frontier.clears || 0, B.wave);
+        const state = this.frontierOf(B.zone || this.zone);
+        state.clears = Math.max(state.clears || 0, B.wave);
         B.reward = { coin, item };
         this.order = clamp(this.order + 1, 0, 100);
         say(`ป้องกันชายแดนสำเร็จ — +${coin} เบี้ยกรรม · ได้ ${ITEMS[item].name} ×1`);
@@ -1919,12 +1994,14 @@ const API = {
       stations: this.stations.map(st => ({
         k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, build: 0, slots: st.slots,
+        speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
-                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpCd: c.helpCd || 0 })),
+                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpCd: c.helpCd || 0,
+                                  upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
     };
 
@@ -1940,7 +2017,8 @@ const API = {
         const st = mkStation(sv.k);
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
-                            visitCd: sv.visitCd || 0, build: 0, slots: sv.slots || [] });
+                            visitCd: sv.visitCd || 0, build: 0, slots: sv.slots || [],
+                            speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0 });
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
@@ -1964,6 +2042,7 @@ const API = {
       c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
       c.at = null; c.path = null;
     });
+    this.party = { members:[], guard:false };
     this.syncBlocks(true);
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
@@ -2023,19 +2102,77 @@ const API = {
     return false;
   },
 
+  /** ซื้อขายกับพ่อค้า — ของทุกชิ้นเข้ากระเป๋า ไม่ใช้ทันที */
+  sellMaterial(k, all = false) {
+    const def = ITEMS[k], have = this.inventory[k] || 0;
+    if (!def?.material || have < 1) return false;
+    const n = all ? have : 1;
+    this.inventory[k] -= n; this.coin += def.sell * n;
+    this.log(`🧳 ขาย${def.name} ×${n} — +${def.sell * n} เบี้ยกรรม`, 'good');
+    this.save(); this.onChange(); return true;
+  },
+
+  buyMerchant(k) {
+    const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
+    if (!stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    this.coin -= stock.cost;
+    this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1);
+    this.log(`🛍️ ซื้อ${def.name} — ${stock.cost} เบี้ยกรรม`, 'act');
+    this.save(); this.onChange(); return true;
+  },
+
+  upgradePower(k) {
+    const p = this.powerOf(k); if (!p || this.powerLocked(p)) return false;
+    this.upgrades ||= { powers:{} }; this.upgrades.powers ||= {};
+    const lv = this.upgrades.powers[k] || 0;
+    if (lv >= UPGRADES.max || this.level < Math.min(5, (p.lv || 1) + Math.floor(lv / 2))) return false;
+    const cost = UPGRADES.powerBase * (lv + 1);
+    if (this.coin < cost) return false;
+    this.coin -= cost; this.upgrades.powers[k] = lv + 1; p.max++; p.ammo = p.max;
+    this.log(`✨ อัปเกรด${p.name}เป็นขั้น ${lv + 2} — เก็บได้ ${p.max} ครั้ง`, 'good');
+    this.save(); this.onChange(); return true;
+  },
+
+  upgradeCrew(k, stat = 'raeng') {
+    const c = this.crew.find(x => x.k === k); if (!c || c.reader || c.self) return false;
+    c.upLv ||= 0; if (c.upLv >= UPGRADES.max) return false;
+    const cost = UPGRADES.crewBase * (c.upLv + 1);
+    if (this.coin < cost || this.level < Math.min(5, 1 + Math.floor(c.upLv / 2))) return false;
+    this.coin -= cost; c.upLv++; c[stat] = (c[stat] || 0) + 1;
+    this.log(`🛡️ ฝึก${c.name} — ${stat === 'raeng' ? 'แรง' : 'ระเบียบ'}เพิ่มเป็น ${c[stat]}`, 'good');
+    this.save(); this.onChange(); return true;
+  },
+
+  upgradeStation(k, type = 'speed') {
+    const st = this.stations.find(x => x.def.k === k);
+    if (!st || st.build || st.def.pow <= 0) return false;
+    const prop = type === 'capacity' ? 'capLv' : type === 'fuel' ? 'fuelLv' : 'speedLv';
+    const lv = st[prop] || 0; if (lv >= UPGRADES.max) return false;
+    const cost = UPGRADES.stationBase * (lv + 1);
+    if (this.coin < cost || this.level < Math.min(5, 1 + Math.floor(lv / 2))) return false;
+    this.coin -= cost; st[prop] = lv + 1;
+    this.log(`🏗️ อัปเกรด${st.def.name} · ${type === 'capacity' ? 'ช่องรับวิญญาณ' : type === 'fuel' ? 'ประหยัดฟืน' : 'ความเร็ว'} ขั้น ${lv + 1}`, 'good');
+    this.save(); this.onChange(); return true;
+  },
+
   build(k) {
     const def = STATIONS.find(s => s.k === k);
     if (!def || this.coin < def.cost) return false;
     if (this.stations.some(s => s.def.k === k)) return false;
     const before = this.activeTags();
+    const taan = this.crew.find(c => c.k === 'taan');
+    if (!taan || taan.buildK) return false;
     this.coin -= def.cost;
-    this.stations.push(mkStation(k, Date.now() + BUILD_TIME));
+    const st = mkStation(k, Date.now() + BUILD_TIME);
+    st.buildWait = true;
+    this.stations.push(st);
+    taan.at = null; taan.buildK = k; taan.path = null;
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
     const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
                 : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
     this.buildExtra = { k, text: extra };       // เก็บไว้พูดตอนนั่งร้านถอดออกจริง
-    this.log(`🏗️ ลงเสาเข็ม${def.name} — กำลังก่อสร้าง`, 'act');
+    this.log(`🏗️ สั่งสร้าง${def.name} — ทัณฑ์กำลังเดินไปเริ่มงาน`, 'act');
     return true;
   },
 
@@ -2072,10 +2209,12 @@ API.snapshot = function (withEntry = true) {
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max })),
-    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y })),
+    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y,
+      buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
-      build: st.build ? Math.max(0, st.build - Date.now()) : 0,   // เก็บเป็น "อีกกี่ ms" ไม่ใช่เวลาจริง
+      build: st.build ? Math.max(0, st.build - Date.now()) : 0, buildWait:!!st.buildWait,
+      speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
       slots: st.slots,
     })),
     queue: this.queue, held: this.held, items: this.items, inventory: this.inventory, mobs: this.mobs,
@@ -2084,7 +2223,7 @@ API.snapshot = function (withEntry = true) {
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
-    miniGoals: this.miniGoals, frontier: this.frontier,
+    miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -2123,6 +2262,8 @@ API.restore = function (d) {
     st.crewK = sv.crewK; st.intensity = sv.intensity ?? 3; st.fire = sv.fire || 0;
     st.visitCd = sv.visitCd || 0;
     st.build = sv.build ? Date.now() + sv.build : 0;
+    st.buildWait = !!sv.buildWait;
+    st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
     // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
     st.slots = sv.slots || (sv.soul ? [{ soul: sv.soul, intensity: sv.intensity ?? 3,
                                          progress: sv.progress || 0, need: sv.need || 60,
@@ -2146,7 +2287,12 @@ API.restore = function (d) {
   this.zone = d.zone || 'th';
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.miniGoals = d.miniGoals || {};
-  this.frontier = d.frontier || { clears: 0, team: [] };
+  this.frontier = d.frontier || { zones:{} };
+  if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
+  this.party = d.party || { members:[], guard:false };
+  this.party.members = (this.party.members || []).filter(k => this.crew.some(c => c.k === k));
+  this.party.guard = !!this.party.guard && !!this.guard;
+  this.upgrades = d.upgrades || { powers:{} };
   this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
     : this.zone === 'asia' ? { th: true } : {});
   this.bossRetryAt = d.bossRetryAt || {};

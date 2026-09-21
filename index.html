@@ -306,6 +306,14 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
   border-radius:var(--radius-sm);padding:9px 10px;margin-bottom:8px}
 .shop .n{flex:1;min-width:0}
 .shop .n b{font-size:var(--text-sm)} .shop .n div{font-size:11px;color:var(--muted-foreground);line-height:1.45}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px}
+.shop-card{display:grid;grid-template-columns:52px minmax(0,1fr) auto auto;gap:8px;align-items:center;
+  padding:9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.shop-card img{width:52px;height:52px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid var(--gold)}
+.shop-card>span:nth-child(2){min-width:0}.shop-card b,.shop-card small{display:block}.shop-card small{font-size:10px;color:var(--muted-foreground)}
+.shop-card button{padding:6px 8px;font-size:10px}.shop-glyph{font-size:30px;text-align:center}
+dialog.merchant[open],dialog.nira-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:680px){.market-grid{grid-template-columns:1fr}.shop-card{grid-template-columns:46px minmax(0,1fr) auto auto}.shop-card img{width:46px;height:46px}}
 /* กระเป๋า: ของใช้และชุดรางวัลอยู่ในหน้าต่างเดียวกัน อ่านง่ายทั้งจอใหญ่และมือถือ */
 dialog.bag[open]{max-width:680px;max-height:calc(100dvh - 24px);overflow-y:auto;
   -webkit-overflow-scrolling:touch}
