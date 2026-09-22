@@ -313,6 +313,14 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
 .shop-card>span:nth-child(2){min-width:0}.shop-card b,.shop-card small{display:block}.shop-card small{font-size:10px;color:var(--muted-foreground)}
 .shop-card button{padding:6px 8px;font-size:10px}.shop-glyph{font-size:30px;text-align:center}
 dialog.merchant[open],dialog.nira-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+/* โปรไฟล์พ่อค้าในหน้าต่างร้าน — วางคู่ชื่อ/บทพูด มือถือย่อให้ไม่บังสินค้า */
+.merchant-head{display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3)}
+.merchant-head .merchant-intro{min-width:0}
+.merchant-head h2{margin:0}
+.merchant-head .hint{margin-top:2px}
+.merchant-portrait{width:84px;height:84px;flex:none;object-fit:cover;object-position:center top;
+  border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+@media(max-width:520px){.merchant-head{gap:10px}.merchant-portrait{width:56px;height:56px}}
 @media(max-width:680px){.market-grid{grid-template-columns:1fr}.shop-card{grid-template-columns:46px minmax(0,1fr) auto auto}.shop-card img{width:46px;height:46px}}
 /* กระเป๋า: ของใช้และชุดรางวัลอยู่ในหน้าต่างเดียวกัน อ่านง่ายทั้งจอใหญ่และมือถือ */
 dialog.bag[open]{max-width:680px;max-height:calc(100dvh - 24px);overflow-y:auto;
