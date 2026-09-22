@@ -626,7 +626,7 @@ export const FRONTIER = {
 
 /** พ่อค้าริมแม่น้ำ — รับซื้อของสนามรบและขายของใช้/คัมภีร์ */
 export const MERCHANT = {
-  k:'merchant', name:'พ่อค้าควันทอง', glyph:'🧳', img:'spirit2',
+  k:'merchant', name:'พ่อค้าควันทอง', glyph:'🧳', img:'merchant',
   x:470, y:590, h:82, reach:110,
   line:'"ของจากชายแดนมีราคาเสมอ ถ้าท่านยังกลับออกมาได้"',
   stock:[

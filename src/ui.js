@@ -1580,7 +1580,10 @@ function openMerchant() {
   pauseForDlg();
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
-    dlg.innerHTML = `<h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p>
+    dlg.innerHTML = `<div class="merchant-head">
+      <img class="merchant-portrait" src="img/merchant-profile.jpeg" alt="${esc(MERCHANT.name)}">
+      <div class="merchant-intro"><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div>
+    </div>
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
