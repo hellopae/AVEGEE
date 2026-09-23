@@ -55,7 +55,7 @@ export function createGame() {
     items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
     mobs: [], guard: null, fxHits: [], transits: [],
-    queue: [], held: [], logs: [], closed: [], over: null,   // held = ดวงที่ถูกขังในตะราง ไม่นับอยู่ในคิว
+    queue: [], held: [], sentences: [], reborn: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
     // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
@@ -66,7 +66,7 @@ export function createGame() {
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
     // ตอนเริ่มเกมมีสามคน: ท่าน · นิรา (อ่านสำนวน) · ทัณฑ์ (ลงทัณฑ์) — คนอื่นต้องจ้างเอง
     crew: CREW.filter(c => c.hire === 0).map(mkCrew),
-    self: { ...SELF, morale: 100 },   // ท่านเองตอนลงไปคุมสถานีแทนยมทูต
+    self: { ...SELF, morale: 100 },   // เก็บไว้เพื่ออ่านเซฟเก่า แต่ไม่เปิดให้ลงทัณฑ์เอง
     taught: [],                       // ขั้นบทเรียนที่สอนไปแล้ว (ดู TUTOR ใน data.js)
     ledger: [],                       // ทุกคำตัดสินที่เคยออก — ใช้เปิด "แฟ้มของท่าน" ตอนจบ
     returning: [],                    // คดีที่ตัดสินเบาไป รอกลับมาใหม่
@@ -338,7 +338,7 @@ const API = {
   stCap(st) { return st && st.def.pow > 0 ? STATION_CAP + (st.capLv || 0) : 0; },
   /** ยังรับเพิ่มได้อีกกี่ดวง (กำลังก่อสร้างอยู่ = ยังไม่รับ) */
   stFree(st) { return st && !st.build ? this.stCap(st) - st.slots.length : 0; },
-  /** ดวงที่อยู่หน้าสุดของสถานี — ใช้ตอนซัดไฟเร่งทัณฑ์เอง */
+  /** ดวงที่อยู่หน้าสุดของสถานี */
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
   crewOf(k) {
@@ -569,7 +569,7 @@ const API = {
     // สถานีที่มีผู้คุมประจำอยู่แล้ว ดวงถัดไปเข้าเวรของคนเดิม (หนึ่งหลังหนึ่งผู้คุม)
     const useK = st.slots.length ? st.crewK : crewK;
     const c = this.crewOf(useK);
-    if (!c) return false;
+    if (!c || c.self) return false;
     if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
     if (!c.self && c.escort) return false;   // ต้องพาดวงก่อนหน้าไปส่งให้ถึงก่อน จึงรับหมายใหม่ได้
     if (!c.self && c.at && c.at !== st.def.k) return false;   // ยมทูตคนอื่นติดเวรที่อื่นอยู่
@@ -613,8 +613,7 @@ const API = {
     st.crewK = useK;
     st.intensity = slot.intensity;
     c.path = null;                       // ทิ้งเส้นทางเดินเล่นเดิม แล้วเดินไปประจำสถานีใหม่
-    if (c.self) this.log('ท่านลงไปคุมเอง — สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น', 'act');
-    else c.at = st.def.k;
+    c.at = st.def.k;
     this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${slot.intensity}`
              + (st.slots.length > 1 ? ` (คุมอยู่ ${st.slots.length} ดวง)` : ''), 'act');
     slot.verdict = this.judge(st, slot);   // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
@@ -773,7 +772,14 @@ const API = {
     if (i < 0) return;
     const soul = slot.soul, c = this.crewOf(st.crewK);
     const r = slot.verdict || this.judge(st, slot);
-    this.scheduleReturn(soul, r, slot.intensity);
+    if (r.heaven) {
+      this.reborn++;
+      this.log(`🕊️ ${soul.who}ผ่านประตูสวรรค์ ไปเกิดใหม่แล้ว`, 'good');
+    } else {
+      this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
+        stage:'prison', until:this.tick + 6, zone:this.zone });
+      this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
+    }
     this.coin += r.coin;
     this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
@@ -790,17 +796,18 @@ const API = {
 
   /** ตัดสินเบาไป = ยังไม่สำนึกหลังครบวาระ จึงถูกส่งกลับเข้าคิวก่อนการไปเกิดใหม่
    *  ดวงนี้ไม่ได้กลับไปโลกมนุษย์ และยังไม่มีชีวิตใหม่ให้ไปก่อกรรมเพิ่ม */
-  scheduleReturn(soul, r, intensity) {
-    if (r.short <= 0 || soul.hard) return;
-    if (Math.random() > RETURN.chance) return;
+  scheduleReturn(soul, r, intensity, zone = this.zone) {
+    if (r.short <= 0 || soul.hard) return false;
+    if (Math.random() > RETURN.chance) return false;
     this.returning.push({
-      at: this.tick + RETURN.after, fromId: soul.id, gave: intensity,
+      at: this.tick + RETURN.after, fromId: soul.id, gave: intensity, zone,
       // เพศต้องติดไปด้วย ไม่งั้นคดีที่กลับมาพูด "ผม/ครับ" หมดทุกดวง
       // (เจ้าของเจอ 10 ก.ย. 2569: นักเรียนหญิง ม.๕ กลับมาแล้วแทนตัวเองว่าผม)
       who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name, calm: !!soul.calm, caseK: soul.case || null,
       deeds: soul.deeds.map(d => ({ ...d, known: true })),
       merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
     });
+    return true;
   },
 
   /** สร้างวิญญาณที่ถูกส่งกลับเข้าคิว — สำนวนเดิมและกรรมเดิม ไม่แต่งกรรมใหม่ */
@@ -828,12 +835,35 @@ const API = {
     if (this.over) return;
     this.tick++;
 
+    // หลังรับทัณฑ์ครบ วิญญาณอยู่ในตะรางก่อน หากยังไม่เข็ดให้กลับมารับคำตัดสิน
+    // หากสำนึกแล้วจึงผ่านประตูสวรรค์และไปเกิดใหม่ (แยกจาก held ที่พักคดีก่อนตัดสิน)
+    for (let i = this.sentences.length - 1; i >= 0; i--) {
+      const sentence = this.sentences[i];
+      if (this.tick < sentence.until) continue;
+      if (sentence.stage === 'prison') {
+        if (this.scheduleReturn(sentence.soul, sentence.verdict, sentence.intensity, sentence.zone)) {
+          this.sentences.splice(i, 1);
+          this.log(`↩️ ${sentence.soul.who}ยังไม่เข็ด — ส่งกลับมารับคำตัดสินอีกครั้ง`, 'bad');
+        } else {
+          sentence.stage = 'gate';
+          sentence.until = this.tick + 2;
+          this.log(`🕊️ ${sentence.soul.who}สำนึกแล้ว — ส่งจากตะรางไปประตูสวรรค์`, 'good');
+        }
+      } else {
+        this.sentences.splice(i, 1);
+        this.reborn++;
+        this.log(`✨ ${sentence.soul.who}ผ่านประตูสวรรค์และไปเกิดใหม่แล้ว`, 'good');
+      }
+    }
+
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
     for (let i = this.returning.length - 1; i >= 0; i--) {
       if (this.tick < this.returning[i].at) continue;
       const R = this.returning.splice(i, 1)[0];
       const soul = this.mkReturnSoul(R);
-      this.queue.push(soul);
+      if (R.zone && R.zone !== this.zone && this.zoneSave?.[R.zone])
+        this.zoneSave[R.zone].queue.push(soul);
+      else this.queue.push(soul);
       this.returned++;
       this.log(`↩️ ${soul.who}ยังไม่สำนึกหลัง ${R.gave} วาระ — ถูกส่งกลับเข้าคิวก่อนเกิดใหม่ ` +
                `(เดิมสำนวน #${String(R.fromId).padStart(3, '0')})`, 'bad');
@@ -869,7 +899,7 @@ const API = {
       // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย)
       if (c.self) {
         const d = Math.hypot((st.def.sx ?? st.def.x) - this.player.x, (st.def.sy ?? st.def.y) - this.player.y);
-        if (d > BAL.smiteReach) {
+        if (d > 140) {
           if (this.tick % 10 === 0) this.log(`${st.def.name} หยุดรอ — ท่านคุมเองแต่ไม่ได้ยืนอยู่ตรงนั้น`, 'bad');
           continue;
         }
@@ -1407,25 +1437,11 @@ const API = {
     return bi < 0 ? null : { i: bi, m: this.mobs[bi], d: bd };
   },
 
-  /** สถานีที่กำลังลงทัณฑ์และเรายืนอยู่ใกล้พอจะลงมือเอง */
-  stationInReach() {
-    const P = this.player;
-    let best = null, bd = BAL.smiteReach;
-    for (const st of this.stations) {
-      if (!st.slots.length || st.build) continue;
-      const d = Math.hypot((st.def.sx ?? st.def.x) - P.x, (st.def.sy ?? st.def.y) - P.y);
-      if (d < bd) { bd = d; best = st; }
-    }
-    return best;
-  },
-
   /** ปุ่มฟาด (และปุ่มเว้นวรรค) — ทำอะไรขึ้นกับว่ายืนอยู่ตรงไหน
-   *  เปรตประชิด → ฟาดเปรต · ยืนที่สถานีที่กำลังลงทัณฑ์ → ซัดไฟเร่งทัณฑ์ · ไกล → เดินไปหาเปรต */
+   *  เปรตประชิด → ฟาดเปรต · ไกล → ขว้างลูกไฟหรือเดินไปหา */
   attack() {
     const n = this.nearestMob();
     if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');       // ประชิด = ฟรี
-    const st = this.stationInReach();
-    if (st) return this.smite(st);
     if (n) {
       // ไกลเกินมือเอื้อม แต่ยังอยู่ในระยะขว้าง และมีลูกไฟ → ขว้างเลย ไม่ต้องเดิน
       if (n.d <= MOB.throw && this.powerOf('roar').ammo > 0) return this.strike(n.i, 'ท่าน', true);
@@ -1437,43 +1453,8 @@ const API = {
       this.log('เปรตตนนั้นอยู่ฝั่งที่เดินไปไม่ถึง — รอให้มันเดินเข้ามาก่อน', 'bad');
       return false;
     }
-    this.log('ไม่มีอะไรให้ลงมือตรงนี้ — ไปยืนที่สถานีที่กำลังลงทัณฑ์แล้วกดใหม่', 'event');
+    this.log('ไม่มีเปรตอยู่ใกล้ให้ต่อสู้', 'event');
     return false;
-  },
-
-  /** ซัดไฟใส่วิญญาณที่กำลังรับทัณฑ์ — เร่งให้จบเร็วขึ้น แต่ลงมือเองก็เป็นกรรมของเรา
-   *  (แกนของเกมคือ "ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ผู้ตัดสิน" — ปุ่มนี้ต้องมีราคาเสมอ) */
-  smite(st) {
-    // ไม่กินลูกไฟแล้วตั้งแต่ 7 ก.ย. 2569 — เจ้าของเจอสภาพ "ลูกไฟหมด บนแผนที่ก็ไม่มีให้เก็บ
-    // แล้วลงทัณฑ์เองไม่ได้เลย" ซึ่งเป็นทางตัน ไม่ใช่ความยาก
-    // ลูกไฟเหลือไว้ใช้กับเปรตกับตวาดข่มขู่เท่านั้น · ราคาของการลงมือเองคือ "กรรมท่าน" อยู่แล้ว
-    if (this.smiteAt && Date.now() - this.smiteAt < 420) return false;   // กันรัวเกินไป
-    // ดวงที่ calm (เจ้าอาวาส) ห้ามโดนไฟจากมือท่าน — ข้ามไปดวงถัดไปในหลังเดียวกัน (Chris ทัก 10 ก.ย. 2569)
-    const slot = st && st.slots.find(s => !s.soul.calm);
-    if (!slot) {
-      if (st && st.slots.length)
-        this.log(`ท่านยกมือแล้วลดลง — ${st.slots[0].soul.who}ครองผ้าเหลืองมา ปล่อยให้ทัณฑ์เดินไปตามกรรมของมัน`, 'event');
-      return false;
-    }
-    this.smiteAt = Date.now();
-
-    const d = st.def, sx = d.sx ?? d.x, sy = d.sy ?? d.y;
-    slot.progress += BAL.smiteGain;
-    // ประตูสวรรค์เป็นการส่งดวงผ่านประตู ไม่ใช่การฟาด — อย่าเรียกท่าโจมตีหรือเอฟเฟกต์ลูกไฟ
-    if (!d.heaven) this.swingUntil = Date.now() + 500;
-    this.player.face = sx < this.player.x ? -1 : 1;
-    if (!d.heaven) this.fxHits.push({ t: Date.now(), x: sx, y: sy });
-
-    const c = this.crewOf(st.crewK);
-    const k = Math.round(BAL.smiteKarma * (c && c.metta >= 8 ? 0.5 : 1) * 10) / 10;
-    this.karma = clamp(this.karma + k, 0, 100);
-    // ประตูสวรรค์ (heaven) ไม่ใช่การลงทัณฑ์ — ข้อความในล็อกต้องไม่พูดว่า "ซัดไฟ" (เจ้าของทัก 17 ก.ย. 2569)
-    this.log(d.heaven
-      ? `🕊️ ท่านเร่งส่ง${slot.soul.who}เข้าประตูสวรรค์เอง — ดวงเคลื่อนเร็วขึ้น · กรรมท่าน +${k}`
-      : `🔥 ท่านซัดไฟใส่${slot.soul.who}เอง — ทัณฑ์เดินเร็วขึ้น · กรรมท่าน +${k}`, 'act');
-    if (slot.progress >= slot.need) this.finish(st, slot);
-    this.onChange();
-    return true;
   },
 
   /** ฟาดเปรตตนที่ i — คืน true เมื่อฟาดออกจริง */
@@ -2228,7 +2209,8 @@ API.snapshot = function (withEntry = true) {
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
       slots: st.slots,
     })),
-    queue: this.queue, held: this.held, items: this.items, inventory: this.inventory, mobs: this.mobs,
+    queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn,
+    items: this.items, inventory: this.inventory, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
@@ -2283,6 +2265,8 @@ API.restore = function (d) {
   }).filter(Boolean);
   this.queue = d.queue || [];
   this.held = d.held || [];
+  this.sentences = d.sentences || [];
+  this.reborn = d.reborn || 0;
   this.items = d.items || [];
   this.inventory = { ...(d.inventory || {}) };
   this.mobs = d.mobs || [];

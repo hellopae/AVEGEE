@@ -147,7 +147,7 @@ function explainBar(k) {
       บาปที่ <b>ตกใส่ตัวท่านเอง</b> ไม่ใช่ของวิญญาณ — แกนของเกมทั้งเกมคือ
       "ทัณฑ์ที่เกินกรรม มันไม่ได้หายไปไหน มันมาอยู่ที่ผู้ตัดสิน"</p>
     <div class="tline"><b>ขึ้นเมื่อ</b><div>ลงทัณฑ์เกินกรรมที่เขาก่อ (ยิ่งเกินยิ่งหนัก) · ส่งผิดชนิดกรรม (+4) ·
-      ซัดไฟเร่งทัณฑ์เอง (+${BAL.smiteKarma}) · ใช้สะกดจิต (+4) · ตวาดข่มขู่ (+0.5)</div></div>
+      ใช้สะกดจิต (+4) · ตวาดข่มขู่ (+0.5)</div></div>
     <div class="tline good"><b>ลดได้ยังไง</b><div>ตัดสินได้ห้าดาว −${KARMA_RELIEF.star5} ·
       เก็บ<b>ดอกบัวบูชา</b>ที่ตกบนแผนที่ (ตกให้เมื่อกรรมเกิน 40) −4 ·
       บูชาดอกบัวที่<b>ศาลาน้ำชา</b> ${KARMA_RELIEF.lotusCost} เบี้ย −${KARMA_RELIEF.lotusCut} (แท็บก่อสร้าง)</div></div>
@@ -207,7 +207,8 @@ function face(key, glyph) {
 function drawTab() {
   const b = $('#tabbody');
   if (tab === 'queue') {
-    if (!g.queue.length && !g.held.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
+    const sentenced = g.sentences.filter(x => x.zone === g.zone);
+    if (!g.queue.length && !g.held.length && !sentenced.length) { b.innerHTML = '<div class="empty">คิวว่าง — โซนนี้สงบผิดปกติ</div>'; return; }
     const cap = g.queueCap(), over = g.queue.length - cap;
     b.innerHTML = `<div style="font-size:var(--text-xs);margin-bottom:8px;color:${over > 0 ? 'var(--destructive)' : 'var(--muted-foreground)'}">
         คิว ${g.queue.length}/${cap} ดวง${over > 0 ? ` · <b>ล้น ${over} ดวง ระเบียบกำลังตก</b>`
@@ -232,6 +233,10 @@ function drawTab() {
       b.querySelectorAll('[data-free]').forEach(x =>
         x.onclick = e => { e.stopPropagation(); g.release(+x.dataset.free); refresh(); });
     }
+    if (sentenced.length) b.innerHTML += `<div class="sec">🔒 หลังรับทัณฑ์ — ${sentenced.length} ดวง</div>`
+      + sentenced.map(x => `<div class="soul"><div class="top"><b>${esc(x.soul.name || x.soul.who)}</b>
+        <span class="id">#${String(x.soul.id).padStart(3, '0')}</span></div>
+        <div class="deed">${x.stage === 'prison' ? 'อยู่ในตะราง รอการสำนึก' : 'สำนึกแล้ว · กำลังไปประตูสวรรค์'} · อีก ${Math.max(0, x.until - g.tick)} วาระ</div></div>`).join('');
     b.querySelectorAll('[data-soul]').forEach(x =>
       x.onclick = () => {                       // เรียกคดีนี้ขึ้นมาที่แท่นก่อน
         const i = g.queue.findIndex(s => s.id === +x.dataset.soul);
@@ -580,33 +585,24 @@ function tryFight() {
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fab = $('#fab-atk'), fire = g.powerOf('roar');
-  // ปุ่มต้องบอกให้ตรงกับสิ่งที่ attack() จะทำจริงตอนกด — ลำดับเดียวกันเป๊ะ
-  //   เปรตประชิด → ฟาดฟรี · ยืนที่สถานี → ซัดไฟเร่งทัณฑ์ · เปรตในระยะขว้าง+มีลูกไฟ → ขว้าง · ไกล → เดินไปหา
   const n = g.over ? null : g.nearestMob();
-  const st = g.over ? null : g.stationInReach();
   const near = n && n.d <= MOB.reach;
   const canThrow = n && !near && n.d <= MOB.throw && fire.ammo > 0;
-  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}/${st ? st.def.k : ''}/${near ? 1 : canThrow ? 2 : 0}`;
-  if (sig === atkSig) return;                  // เรียกได้ทุกเฟรม แต่แตะ DOM เฉพาะตอนเปลี่ยนจริง
+  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}/${near ? 1 : canThrow ? 2 : 0}`;
+  if (sig === atkSig) return;
   atkSig = sig;
-  btn.hidden = !!g.over || (!g.mobs.length && !st);
+  btn.hidden = !!g.over || !g.mobs.length;
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
-
-  // ประตูสวรรค์ (heaven) ไม่ใช่ทัณฑ์ — ปุ่มลอยตอนยืนใกล้สถานีนี้ต้องเลี่ยงคำว่า "ทัณฑ์"/ไอคอนไฟ
-  const [label, color] =
-      near     ? [`⚔️ เข้าต่อสู้กับเปรต (${g.mobs.length})`, 'var(--destructive)']
-    : st?.def.heaven ? [`🕊️ ส่งเข้าประตูสวรรค์ที่${st.def.name}`, 'var(--gold)']
-    : st       ? [`🔥 ซัดไฟเร่งทัณฑ์ที่${st.def.name}`, 'var(--gold)']
+  const [label, color] = near
+    ? [`⚔️ เข้าต่อสู้กับเปรต (${g.mobs.length})`, 'var(--destructive)']
     : canThrow ? [`🔥 ขว้างลูกไฟใส่เปรต · ×${fire.ammo}`, 'var(--gold)']
-    : n        ? [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วเข้าต่อสู้`, 'var(--muted-foreground)']
-                : ['⚔️ ฟาด', 'var(--gold)'];
+    : [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วเข้าต่อสู้`, 'var(--muted-foreground)'];
   btn.textContent = label;
   btn.style.color = color;
-  // ปุ่มลอยบนฉากใช้ข้อความสั้นกว่า — บนมือถือมีที่ไม่มาก
-  fab.textContent = near ? '⚔️ เข้าต่อสู้' : st?.def.heaven ? '🕊️ ส่งเข้าประตูสวรรค์' : st ? '🔥 ลงทัณฑ์เอง' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
+  fab.textContent = near ? '⚔️ เข้าต่อสู้' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
   fab.classList.toggle('hot', !!near);
-  fab.classList.toggle('gold', !near && !!st);
+  fab.classList.toggle('gold', !near && !!canThrow);
 }
 
 function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); }
@@ -1159,7 +1155,7 @@ function openHelp() {
 
     <ol style="line-height:var(--leading-body);font-size:var(--text-sm);padding-left:1.2em">
       <li><b>ทีมของท่าน</b> — <b>นิรา</b> อ่านสำนวนให้ฟังอย่างเดียว (ไม่รับเวรลงทัณฑ์) ·
-          <b>ทัณฑ์</b> คือผู้คุมคนเดียวที่มีตอนเริ่ม · ถ้าคนไม่พอ เลือก <b>⚖️ ท่านเอง</b> ลงไปคุมได้
+          <b>ทัณฑ์</b> คือผู้คุมคนเดียวที่มีตอนเริ่ม · ถ้าคนไม่พอให้จ้างยมทูตเพิ่ม
           แต่สถานีจะเดินเฉพาะตอนท่านยืนอยู่ตรงนั้น และช้ากว่ายมทูต</li>
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
           ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
@@ -1357,8 +1353,7 @@ function openTrial() {
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
-    const meBusy  = g.stations.some(x => x.crewK === 'me' && x.slots.length);
-    const idle    = meBusy ? g.freeCrew() : [...g.freeCrew(), g.self];
+    const idle    = g.freeCrew();
     if (pick.st && !dests.some(x => x.def.k === pick.st && g.stFree(x) > 0)) pick.st = null;
     if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
@@ -1492,6 +1487,7 @@ function openTrial() {
         <p>ผู้บริสุทธิ์ใช้ประตูสวรรค์ ซึ่งไม่ต้องเลือกความแรง หอทะเบียนกรรมรับงานทั่วไปได้ แต่ควรเลือกสถานที่เฉพาะกรรมเมื่อมีพร้อม</p>
         <h3>เลือกระดับความแรงและบรรเทาโทษ</h3><p>ระดับ 1 ว่ากล่าว · 2 เบา · 3 ปานกลาง · 4 หนัก · 5 สาสม ใช้ความหนักของการกระทำทั้งหมดประกอบกัน อย่าเลือกสูงสุดทุกคดี</p>
         <p>ไต่สวนเพื่อเปิดเผยข้อเท็จจริงและตรวจบุญที่อ้าง บุญที่เป็นจริงช่วยลดโทษ ส่วนคำอ้างเท็จไม่นับ การลงโทษเกินเพิ่มกรรมของท่าน ลงโทษเบาเกินอาจไม่ทำให้สำนึก หากยังไม่พร้อมให้พักคดี หรือขังรอเมื่อมีตะรางและที่ว่าง</p>
+        <p>เมื่อรับทัณฑ์ครบ วิญญาณจะไปตะรางรอสำนึก ผู้ที่ยังไม่เข็ดอาจกลับมารับคำตัดสินใหม่ ส่วนผู้ที่สำนึกแล้วจะผ่านประตูสวรรค์เพื่อเกิดใหม่</p>
         <h3>เลือกผู้คุม</h3><p>แรงช่วยให้งานเร็ว ระเบียบช่วยคุณภาพงาน ปัญญาสูงช่วยให้สำนึก เมตตาช่วยลดกรรมจากโทษที่เกิน แต่ไม่ทำให้คำตัดสินผิดกลายเป็นถูก</p>
         ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${c.name}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ 150 วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
@@ -2231,15 +2227,6 @@ function openStation(k) {
     const inside = !!(R && R.inReach());
 
     const acts = [];
-    // ประตูสวรรค์ (def.heaven) ไม่ใช่การลงทัณฑ์ — เป็นการส่งดวงเข้าประตูกลับขึ้นชั้นฟ้า
-    // ปุ่ม/ไอคอน/คำใบ้ต้องแยกจากสถานีลงทัณฑ์ทั่วไป ไม่งั้นความหมายผิด (เจ้าของทัก 17 ก.ย. 2569)
-    if (cap) acts.push(def.heaven
-      ? `<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
-        🕊️ ส่งเข้าประตูสวรรค์<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
-          : !inside ? 'เดินเข้าไปให้ถึงหน้าประตูก่อน' : `เร่งส่งดวงแรกเข้าประตู · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`
-      : `<button class="gold" id="s-smite" ${st.slots.length && inside ? '' : 'disabled'}>
-        🔥 ลงทัณฑ์เอง<small>${!st.slots.length ? 'ยังไม่มีใครอยู่ที่นี่'
-          : !inside ? 'เดินเข้าไปให้ถึงจุดลงทัณฑ์ก่อน' : `เร่งทัณฑ์ดวงแรก · กรรมท่าน +${BAL.smiteKarma}`}</small></button>`);
     // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
     // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
     if (v?.drop) {
@@ -2255,6 +2242,10 @@ function openStation(k) {
           : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
     if (k === 'tarang' && g.held.length)
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
+    if (k === 'tarang') {
+      const sentenced = g.sentences.filter(x => x.zone === g.zone && x.stage === 'prison');
+      if (sentenced.length) acts.push(`<div class="st-desc">🔒 รับทัณฑ์ครบแล้ว รอสำนึก ${sentenced.length} ดวง · ${sentenced.map(x => esc(x.soul.name || x.soul.who)).join(', ')}</div>`);
+    }
     if (cap && g.stFree(st) > 0 && g.queue.length)
       acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
     if (cap) {
@@ -2297,7 +2288,6 @@ function openStation(k) {
           </div>`;
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
-    on('#s-smite', doSmite);
     on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
@@ -2374,13 +2364,6 @@ function openStation(k) {
       </div>
       <div class="arch-list">${rows || '<div class="arch-meta">แฟ้มยังว่างเปล่า — ท่านยังไม่ได้ตัดสินใครเลย</div>'}</div>`;
     box.querySelector('#s-arch-x').onclick = () => showArchive(false);
-  }
-
-  function doSmite() {
-    const st = g.stations.find(x => x.def.k === k);
-    if (!st || !st.slots.length || !(R && R.inReach())) return;
-    if (g.smite(st, true)) sfx('hit');       // ดวง calm ไม่โดน — ไม่มีเสียงฟาดหลอก
-    panels(); refresh();
   }
 
   // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
