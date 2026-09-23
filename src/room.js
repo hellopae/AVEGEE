@@ -1,7 +1,6 @@
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
-// เจ้าของสั่ง: "ย้ายวิญญาณไปอยู่ในกระทะ / ตรงดาบ / หน้าประตู โดยมียมทูตที่คุมอยู่ด้วย
-//  และให้ตัวละครเราเดินอยู่บนหน้าต่างได้ จะได้เดินไปลงทัณฑ์เอง / เดินไปกดเติมบารมีเอง"
+// ห้องสถานีแสดงวิญญาณ ผู้คุม และตัวละครที่ผู้เล่นบังคับเดินได้
 //
 // เดิมหน้าสถานีเป็นการ์ดนิ่ง ๆ วางรูปวิญญาณเรียงกันหน้าฉาก — ไม่มีอะไรให้ทำนอกจากกดปุ่ม
 // ตอนนี้เป็นฉากจริง: ภาพที่เจ้าของวาดวางเต็มกรอบ (contain ไม่ครอป จุดยึดจะได้ตรงเสมอ)
@@ -293,10 +292,36 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       } });
     });
 
+    if (def.k === 'tarang' || def.k === 'sawan') {
+      const stage = def.k === 'tarang' ? 'prison' : 'gate';
+      const occupied = st?.slots.length || 0;
+      const waiting = [
+        ...(def.k === 'tarang' ? (g.held || []).map(soul => ({ soul })) : []),
+        ...(g.sentences || []).filter(x => x.zone === g.zone && x.stage === stage),
+      ].slice(0, Math.max(0, room.souls.length - occupied));
+      waiting.forEach((entry, i) => {
+        const a = room.souls[i + occupied];
+        acts.push({ y:a[1], fn:() => {
+          const x = px(a[0]), y = py(a[1]);
+          drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
+                   entry.inspected || entry.checked ? '#d4f9cf' : '#ffd9c0', entry.soul.sp || 7);
+          label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04, U * 0.025, '#ffe0c8');
+        } });
+      });
+      const key = def.k === 'tarang' ? 'nira' : 'boon';
+      const name = def.k === 'tarang' ? 'นิรา' : 'บุญ';
+      const a = room.crew || [0.30,0.80];
+      acts.push({ y:a[1], fn:() => {
+        const x = px(a[0]), y = py(a[1]);
+        drawStandee(ctx, 'crew-' + key, x, y, U * CREW_H, t, name);
+        label(ctx, name, x, y + U * 0.03, U * 0.026, '#ffe0c8');
+      } });
+    }
+
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
       if (c && !c.self) acts.push({ y: room.crew[1], fn: () => {
-        const x = px(room.crew[0]), y = py(room.crew[1]);
+        const x = px(room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0)), y = py(room.crew[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
         label(ctx, c.name, x, y + U * 0.03, U * 0.026, 'rgba(255,225,195,.85)');
       } });

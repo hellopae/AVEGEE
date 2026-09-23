@@ -55,7 +55,7 @@ export function createGame() {
     items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
     mobs: [], guard: null, fxHits: [], transits: [],
-    queue: [], held: [], sentences: [], reborn: 0, logs: [], closed: [], over: null,
+    queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
     // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
@@ -772,16 +772,21 @@ const API = {
     if (i < 0) return;
     const soul = slot.soul, c = this.crewOf(st.crewK);
     const r = slot.verdict || this.judge(st, slot);
-    if (r.heaven) {
-      this.reborn++;
-      this.log(`🕊️ ${soul.who}ผ่านประตูสวรรค์ ไปเกิดใหม่แล้ว`, 'good');
+    if (st.def.heaven && !r.right) {
+      soul.beaten = false;
+      this.queue.push(soul);
+      this.log(`↩️ ${soul.who}ยังมีกรรม — ประตูสวรรค์ส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
+    } else if (st.def.heaven) {
+      this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
+        stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right });
+      this.log(`🕊️ ${soul.who}ถึงประตูสวรรค์ — รอให้บุญตรวจกรรมคงเหลือ`, 'act');
     } else {
       this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
-        stage:'prison', until:this.tick + 6, zone:this.zone });
+        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone });
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
     this.coin += r.coin;
-    this.log(`ทัณฑ์ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
+    this.log(`${st.def.heaven ? 'การส่งตัว' : 'ทัณฑ์'}ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
     this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
                           intensity: slot.intensity, tick: this.tick });
@@ -794,19 +799,69 @@ const API = {
     }
   },
 
-  /** ตัดสินเบาไป = ยังไม่สำนึกหลังครบวาระ จึงถูกส่งกลับเข้าคิวก่อนการไปเกิดใหม่
-   *  ดวงนี้ไม่ได้กลับไปโลกมนุษย์ และยังไม่มีชีวิตใหม่ให้ไปก่อกรรมเพิ่ม */
-  scheduleReturn(soul, r, intensity, zone = this.zone) {
-    if (r.short <= 0 || soul.hard) return false;
-    if (Math.random() > RETURN.chance) return false;
-    this.returning.push({
-      at: this.tick + RETURN.after, fromId: soul.id, gave: intensity, zone,
-      // เพศต้องติดไปด้วย ไม่งั้นคดีที่กลับมาพูด "ผม/ครับ" หมดทุกดวง
-      // (เจ้าของเจอ 10 ก.ย. 2569: นักเรียนหญิง ม.๕ กลับมาแล้วแทนตัวเองว่าผม)
-      who: soul.who, sp: soul.sp, sex: soul.sex, name: soul.name, calm: !!soul.calm, caseK: soul.case || null,
-      deeds: soul.deeds.map(d => ({ ...d, known: true })),
-      merits: soul.merits.filter(m => !m.fake).map(m => ({ ...m })),
-    });
+  sentenceOf(id, stage) {
+    return this.sentences.find(x => x.soul.id === id && x.zone === this.zone && x.stage === stage);
+  },
+
+  inspectPrison(id) {
+    const x = this.sentenceOf(id, 'prison');
+    if (!x || this.tick < x.readyAt) return false;
+    if (x.inspected) return true;
+    x.inspected = true;
+    x.repentant = x.verdict.short <= 0 || Math.random() > RETURN.chance;
+    this.log(`📋 นิราตรวจ ${x.soul.who} — ${x.repentant ? 'สำนึกแล้ว ส่งไปประตูสวรรค์ได้' : 'ยังไม่เข็ด ต้องกลับเข้าคิว'}`, x.repentant ? 'good' : 'bad');
+    this.onChange();
+    return true;
+  },
+
+  moveFromPrison(id) {
+    const x = this.sentenceOf(id, 'prison');
+    if (!x || !x.inspected) return false;
+    if (x.repentant) {
+      if (!this.stations.some(st => st.def.k === 'sawan' && !st.build)) return false;
+      x.stage = 'gate'; x.checked = false;
+      x.rewardEligible = x.verdict.right !== false;
+      this.log(`🕊️ ส่ง${x.soul.who}จากตะรางไปประตูสวรรค์ ให้บุญตรวจกรรม`, 'act');
+    } else {
+      this.sentences.splice(this.sentences.indexOf(x), 1);
+      const R = { fromId:x.soul.id, gave:x.intensity, who:x.soul.who,
+        sp:x.soul.sp, sex:x.soul.sex, name:x.soul.name, calm:!!x.soul.calm,
+        caseK:x.soul.case || null, deeds:x.soul.deeds.map(d => ({ ...d, known:true })),
+        merits:x.soul.merits.filter(m => !m.fake).map(m => ({ ...m })) };
+      const soul = this.mkReturnSoul(R);
+      this.queue.push(soul); this.returned++;
+      this.log(`↩️ ${x.soul.who}ยังไม่เข็ด — นิราส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
+    }
+    this.onChange();
+    return true;
+  },
+
+  inspectGate(id) {
+    const x = this.sentenceOf(id, 'gate');
+    if (!x) return false;
+    const sin = x.soul.deeds.reduce((n, d) => n + (d.w || 0), 0);
+    const merit = x.soul.merits.filter(m => !m.fake).reduce((n, m) => n + (m.v || 0), 0);
+    x.karmaLeft = x.soul.pure ? 0 : Math.max(0, Math.round((sin - merit - x.intensity) * 10) / 10);
+    x.checked = true;
+    this.log(`📜 บุญตรวจ${x.soul.who} — กรรมคงเหลือ ${x.karmaLeft}`, 'act');
+    this.onChange();
+    return true;
+  },
+
+  resolveGate(id) {
+    const x = this.sentenceOf(id, 'gate');
+    if (!x || !x.checked) return false;
+    this.sentences.splice(this.sentences.indexOf(x), 1);
+    if (x.karmaLeft > 0) {
+      this.reborn++;
+      this.log(`✨ ${x.soul.who}ยังมีกรรม ${x.karmaLeft} — บุญส่งไปเกิดใหม่`, 'good');
+    } else {
+      this.ascended++;
+      const reward = x.rewardEligible === false ? 0 : 60;
+      this.coin += reward;
+      this.log(`🌟 ${x.soul.who}หมดกรรม — บุญส่งขึ้นสวรรค์${reward ? ` · พ่อให้รางวัล ${reward} เบี้ยกรรม` : ''}`, 'good');
+    }
+    this.onChange();
     return true;
   },
 
@@ -834,27 +889,6 @@ const API = {
   step() {
     if (this.over) return;
     this.tick++;
-
-    // หลังรับทัณฑ์ครบ วิญญาณอยู่ในตะรางก่อน หากยังไม่เข็ดให้กลับมารับคำตัดสิน
-    // หากสำนึกแล้วจึงผ่านประตูสวรรค์และไปเกิดใหม่ (แยกจาก held ที่พักคดีก่อนตัดสิน)
-    for (let i = this.sentences.length - 1; i >= 0; i--) {
-      const sentence = this.sentences[i];
-      if (this.tick < sentence.until) continue;
-      if (sentence.stage === 'prison') {
-        if (this.scheduleReturn(sentence.soul, sentence.verdict, sentence.intensity, sentence.zone)) {
-          this.sentences.splice(i, 1);
-          this.log(`↩️ ${sentence.soul.who}ยังไม่เข็ด — ส่งกลับมารับคำตัดสินอีกครั้ง`, 'bad');
-        } else {
-          sentence.stage = 'gate';
-          sentence.until = this.tick + 2;
-          this.log(`🕊️ ${sentence.soul.who}สำนึกแล้ว — ส่งจากตะรางไปประตูสวรรค์`, 'good');
-        }
-      } else {
-        this.sentences.splice(i, 1);
-        this.reborn++;
-        this.log(`✨ ${sentence.soul.who}ผ่านประตูสวรรค์และไปเกิดใหม่แล้ว`, 'good');
-      }
-    }
 
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
     for (let i = this.returning.length - 1; i >= 0; i--) {
@@ -2209,7 +2243,7 @@ API.snapshot = function (withEntry = true) {
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
       slots: st.slots,
     })),
-    queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn,
+    queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
@@ -2267,6 +2301,7 @@ API.restore = function (d) {
   this.held = d.held || [];
   this.sentences = d.sentences || [];
   this.reborn = d.reborn || 0;
+  this.ascended = d.ascended || 0;
   this.items = d.items || [];
   this.inventory = { ...(d.inventory || {}) };
   this.mobs = d.mobs || [];

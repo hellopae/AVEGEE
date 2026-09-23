@@ -236,7 +236,10 @@ function drawTab() {
     if (sentenced.length) b.innerHTML += `<div class="sec">🔒 หลังรับทัณฑ์ — ${sentenced.length} ดวง</div>`
       + sentenced.map(x => `<div class="soul"><div class="top"><b>${esc(x.soul.name || x.soul.who)}</b>
         <span class="id">#${String(x.soul.id).padStart(3, '0')}</span></div>
-        <div class="deed">${x.stage === 'prison' ? 'อยู่ในตะราง รอการสำนึก' : 'สำนึกแล้ว · กำลังไปประตูสวรรค์'} · อีก ${Math.max(0, x.until - g.tick)} วาระ</div></div>`).join('');
+        <div class="deed">${x.stage === 'prison'
+          ? x.inspected ? (x.repentant ? 'นิราตรวจแล้ว: เข็ดแล้ว · รอส่งไปประตูสวรรค์' : 'นิราตรวจแล้ว: ยังไม่เข็ด · รอส่งกลับคิว')
+            : g.tick < (x.readyAt ?? x.until ?? 0) ? `อยู่ในตะราง · ตรวจได้อีก ${Math.max(0, (x.readyAt ?? x.until) - g.tick)} วาระ` : 'อยู่ในตะราง · รอนิราตรวจ'
+          : x.checked ? `บุญตรวจแล้ว: กรรมคงเหลือ ${x.karmaLeft} · รอส่ง${x.karmaLeft > 0 ? 'ไปเกิดใหม่' : 'ขึ้นสวรรค์'}` : 'อยู่ที่ประตูสวรรค์ · รอบุญตรวจ'}</div></div>`).join('');
     b.querySelectorAll('[data-soul]').forEach(x =>
       x.onclick = () => {                       // เรียกคดีนี้ขึ้นมาที่แท่นก่อน
         const i = g.queue.findIndex(s => s.id === +x.dataset.soul);
@@ -1487,7 +1490,7 @@ function openTrial() {
         <p>ผู้บริสุทธิ์ใช้ประตูสวรรค์ ซึ่งไม่ต้องเลือกความแรง หอทะเบียนกรรมรับงานทั่วไปได้ แต่ควรเลือกสถานที่เฉพาะกรรมเมื่อมีพร้อม</p>
         <h3>เลือกระดับความแรงและบรรเทาโทษ</h3><p>ระดับ 1 ว่ากล่าว · 2 เบา · 3 ปานกลาง · 4 หนัก · 5 สาสม ใช้ความหนักของการกระทำทั้งหมดประกอบกัน อย่าเลือกสูงสุดทุกคดี</p>
         <p>ไต่สวนเพื่อเปิดเผยข้อเท็จจริงและตรวจบุญที่อ้าง บุญที่เป็นจริงช่วยลดโทษ ส่วนคำอ้างเท็จไม่นับ การลงโทษเกินเพิ่มกรรมของท่าน ลงโทษเบาเกินอาจไม่ทำให้สำนึก หากยังไม่พร้อมให้พักคดี หรือขังรอเมื่อมีตะรางและที่ว่าง</p>
-        <p>เมื่อรับทัณฑ์ครบ วิญญาณจะไปตะรางรอสำนึก ผู้ที่ยังไม่เข็ดอาจกลับมารับคำตัดสินใหม่ ส่วนผู้ที่สำนึกแล้วจะผ่านประตูสวรรค์เพื่อเกิดใหม่</p>
+        <p>เมื่อรับทัณฑ์ครบ วิญญาณจะไปตะราง ตรวจรายชื่อกับนิรา: เข็ดแล้วส่งต่อไปประตูสวรรค์ ยังไม่เข็ดส่งกลับคิว ที่ประตูสวรรค์ให้บุญตรวจกรรมคงเหลือ: ยังมีกรรมส่งไปเกิดใหม่ หมดกรรมส่งขึ้นสวรรค์และรับรางวัลจากพ่อ</p>
         <h3>เลือกผู้คุม</h3><p>แรงช่วยให้งานเร็ว ระเบียบช่วยคุณภาพงาน ปัญญาสูงช่วยให้สำนึก เมตตาช่วยลดกรรมจากโทษที่เกิน แต่ไม่ทำให้คำตัดสินผิดกลายเป็นถูก</p>
         ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${c.name}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ 150 วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
@@ -2244,7 +2247,27 @@ function openStation(k) {
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (k === 'tarang') {
       const sentenced = g.sentences.filter(x => x.zone === g.zone && x.stage === 'prison');
-      if (sentenced.length) acts.push(`<div class="st-desc">🔒 รับทัณฑ์ครบแล้ว รอสำนึก ${sentenced.length} ดวง · ${sentenced.map(x => esc(x.soul.name || x.soul.who)).join(', ')}</div>`);
+      acts.push(`<div class="st-desc">📋 ตรวจรายชื่อกับนิรา · รับทัณฑ์ครบแล้ว ${sentenced.length} ดวง</div>`);
+      for (const x of sentenced) {
+        const name = esc(x.soul.name || x.soul.who), ready = g.tick >= (x.readyAt ?? x.until ?? 0);
+        acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name} · ${x.inspected
+          ? x.repentant ? 'เข็ดแล้ว' : 'ยังไม่เข็ด'
+          : ready ? 'พร้อมตรวจ' : `รออีก ${(x.readyAt ?? x.until) - g.tick} วาระ`}</div>`);
+        acts.push(x.inspected
+          ? `<button class="gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || g.stations.some(st => st.def.k === 'sawan' && !st.build)) ? '' : 'disabled'}>${x.repentant ? '🕊️ ส่งไปประตูสวรรค์' : '↩️ ส่งกลับเข้าคิว'}<small>${x.repentant && !g.stations.some(st => st.def.k === 'sawan' && !st.build) ? 'ต้องสร้างประตูสวรรค์ให้เสร็จก่อน · ' : ''}${name}</small></button>`
+          : `<button data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>📋 ให้นิราตรวจ<small>${name}</small></button>`);
+      }
+    }
+    if (k === 'sawan') {
+      const arrivals = g.sentences.filter(x => x.zone === g.zone && x.stage === 'gate');
+      acts.push(`<div class="st-desc">📜 ตรวจกรรมกับบุญ · รอที่ประตู ${arrivals.length} ดวง<br>กรรมคงเหลือคิดจากกรรมทั้งหมด หักบุญจริงและวาระที่รับทัณฑ์แล้ว<br>ส่งไปเกิดใหม่ ${g.reborn} · ขึ้นสวรรค์ ${g.ascended} ดวง</div>`);
+      for (const x of arrivals) {
+        const name = esc(x.soul.name || x.soul.who);
+        acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name}${x.checked ? ` · กรรมคงเหลือ ${x.karmaLeft}` : ' · รอตรวจกรรม'}</div>`);
+        acts.push(x.checked
+          ? `<button class="gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${x.karmaLeft > 0 ? '✨ ส่งไปเกิดใหม่' : '🌟 ส่งขึ้นสวรรค์'}<small>${x.karmaLeft > 0 ? `กรรมคงเหลือ ${x.karmaLeft}` : 'หมดกรรม · รับรางวัลจากพ่อ'} · ${name}</small></button>`
+          : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${name}</small></button>`);
+      }
     }
     if (cap && g.stFree(st) > 0 && g.queue.length)
       acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
@@ -2293,6 +2316,11 @@ function openStation(k) {
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
+    const afterCheck = ok => { if (ok) { sfx('stamp'); panels(); refresh(); } };
+    dlg.querySelectorAll('[data-prison-check]').forEach(b => b.onclick = () => afterCheck(g.inspectPrison(+b.dataset.prisonCheck)));
+    dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => afterCheck(g.moveFromPrison(+b.dataset.prisonSend)));
+    dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => afterCheck(g.inspectGate(+b.dataset.gateCheck)));
+    dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
     dlg.querySelectorAll('[data-st-up]').forEach(b => b.onclick = () => {
       if (g.upgradeStation(k, b.dataset.stUp)) { sfx('coin'); panels(); refresh(); }
     });
@@ -2384,7 +2412,7 @@ function openStation(k) {
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
   R.st = g.stations.find(x => x.def.k === k);
-  R.onAct = () => doSmite();          // เดิมสถานีเติมพลังใช้ปุ่มนี้ "เติม" — ตอนนี้ของอยู่ในฉากแล้ว
+  R.onAct = () => panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   R.onCollect = () => { panels(); refresh(); };
   let wasNear = null;
   R.onFrame = near => {
