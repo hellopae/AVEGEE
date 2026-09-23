@@ -2049,7 +2049,11 @@ function drawCoach() {
     <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
       <span class="step">${n}/${TUTOR.length}</span>
       <button class="sm" id="coach-ok">เข้าใจแล้ว</button></div>`;
-  $('#coach-ok').onclick = () => markTaught(coachStep.k);
+  // เจอตอนทดสอบข้อ C 24 ก.ย. 2569: ปุ่มนี้จับ coachStep ด้วย closure ตัวแปรนอกฟังก์ชัน
+  // ถ้าแถบเก่าที่ถูกซ่อนไปแล้ว (ไม่ทันถูกแทนที่ด้วย HTML ใหม่) ยังมี handler ค้างอยู่ใน DOM
+  // แล้วโดนยิง click เข้ามาตอน coachStep กลายเป็น null ไปแล้ว (ขั้นอื่นเคลียร์ไปก่อน) จะพังทันที
+  const stepAtRender = coachStep;
+  $('#coach-ok').onclick = () => { if (stepAtRender) markTaught(stepAtRender.k); };
 }
 
 // ---------- ปุ่ม ----------
