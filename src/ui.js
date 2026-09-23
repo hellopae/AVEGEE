@@ -2240,6 +2240,15 @@ function openStation(k) {
         <small>${ready ? 'วางอยู่ในฉากแล้ว · เดินไปเก็บใส่กระเป๋าได้เลย'
           : left ? `กำลังเตรียม · อีก ${left} วาระ` : 'กำลังนำมาวางในฉาก'}</small></button>`);
     }
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ปุ่ม "นั่งพัก" เฉพาะศาลาน้ำชา ฟื้นบารมีฟรีแลกเวลา (ดู room.js setSit)
+    if (R?.canSit) {
+      const isSitting = R.sitting();
+      const hpFull = g.hp >= g.hpMax;
+      acts.push(isSitting
+        ? `<button class="gold" id="s-sit">🧎 ลุกขึ้น<small>บารมี ${Math.round(g.hp)}/${g.hpMax} — ลุกได้ทุกเมื่อ</small></button>`
+        : `<button id="s-sit" ${inside && !hpFull ? '' : 'disabled'}>🧎 นั่งพัก<small>${hpFull ? 'บารมีเต็มแล้ว — ไม่ต้องนั่ง'
+            : inside ? 'ฟรี ไม่เสียเบี้ยกรรม — ฟื้นช้า ๆ ตามเวลาที่นั่ง' : 'เดินเข้าไปยืนตรงจุดในศาลาก่อน'}</small></button>`);
+    }
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
         📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
           : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
@@ -2284,7 +2293,7 @@ function openStation(k) {
     if (T) T.innerHTML = `
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
         <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
-        <span class="chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
+        <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
         <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
     if (L) L.innerHTML = `
@@ -2313,6 +2322,7 @@ function openStation(k) {
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
+    on('#s-sit',   () => { R.setSit(!R.sitting()); panels(); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
@@ -2412,10 +2422,20 @@ function openStation(k) {
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
   R.st = g.stations.find(x => x.def.k === k);
-  R.onAct = () => panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
+  R.onAct = () => {
+    // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
+    if (R.canSit) { R.setSit(!R.sitting()); panels(); return; }
+    panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
+  };
   R.onCollect = () => { panels(); refresh(); };
-  let wasNear = null;
+  let wasNear = null, wasSitting = false;
   R.onFrame = near => {
+    // นั่งอยู่ — บารมีขยับทุกเฟรมจริง อัปเดตเฉพาะตัวเลขที่หัวกล่องแบบเบา ๆ ไม่วาดทั้งแผงใหม่ทุกเฟรม
+    if (R.sitting()) {
+      const chip = dlg.querySelector('#st-hp-chip');
+      if (chip) chip.innerHTML = `❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b>`;
+    }
+    if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
     wasNear = near; panels();
   };

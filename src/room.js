@@ -9,7 +9,7 @@
 // **จุดยึดอยู่ที่ ROOMS ใน data.js ที่เดียว** — วาดฉากใหม่/เปลี่ยนภาพ แก้ตัวเลขชุดเดียวจบ
 // ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
 
-import { ITEMS } from './data.js';
+import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawSoul, img, rr } from './art.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -121,6 +121,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
 
+  /** ข้อ A คุณเป้ 24 ก.ย. 2569 — จุดนั่งพักฟื้นบารมี มีเฉพาะศาลาน้ำชา (def.k === 'tea')
+   *  ใช้จุด "act" เดิมของห้องเป็นที่นั่ง (ศาลาไม่เคยมีปุ่มลงมืออื่นอยู่แล้ว ไม่ชนกัน)
+   *  sitting=true ระหว่างนั่ง: ล็อกไม่ให้เดิน ฟื้นบารมีด้วยเวลาจริง (ไม่ผ่าน g.step() ที่พักไปพร้อมกล่องโมดัล)
+   *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
+  const canSit = def.k === 'tea';
+  let sitting = false, sipAt = 0, sipping = false;
+
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
   const px = u => box.ox + u * box.w;
   const py = v => box.oy + v * box.h;
@@ -180,6 +187,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
   const onDown = e => {
+    if (sitting) return;                        // นั่งอยู่ — แตะฉากไม่ให้ลุกเดินเอง ต้องกด "ลุกขึ้น"
     // box อยู่ในหน่วยพิกเซลของ canvas (backing store) — แปลงพิกัดเมาส์ให้เป็นหน่วยเดียวกัน
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
@@ -189,7 +197,30 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   };
   cv.addEventListener('pointerdown', onDown);
 
+  /** เริ่ม/เลิกนั่งพัก — ui.js ผูกกับปุ่ม "นั่งพัก"/"ลุกขึ้น" ในแผงขวา (เฉพาะศาลาน้ำชา)
+   *  ต้องยืนถึงจุด (inReach) ถึงจะเริ่มนั่งได้ · ลุกได้ทุกเมื่อไม่มีเงื่อนไข */
+  function setSit(on) {
+    if (on) {
+      if (!canSit || !inReach() || g.hp >= g.hpMax) return false;
+      sitting = true; sipAt = performance.now() + 1800; sipping = false;
+      P.tx = null; P.ty = null;
+    } else {
+      sitting = false;
+    }
+    return true;
+  }
+
   function step(dt) {
+    if (sitting) {
+      // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
+      if (g.hp < g.hpMax) {
+        g.hp = Math.min(g.hpMax, g.hp + BAL.hpRegenSit * dt / 1000);
+        if (g.hp >= g.hpMax) sitting = false;    // เต็มแล้วลุกเอง
+      } else sitting = false;
+      const now = performance.now();
+      if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
+      return;
+    }
     const sp = 0.00045 * dt;                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
@@ -341,25 +372,38 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     acts.push({ y: P.y, fn: () => {
+      // นั่งพักอยู่ — ใช้ท่านั่ง (hero-yama-sit / -sit-sip สลับกันเป็นระยะ) แทนท่ายืน (ข้อ A 24 ก.ย. 2569)
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
-      const swinging = g.swingUntil && Date.now() < g.swingUntil;
-      const key = swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
+      const swinging = !sitting && g.swingUntil && Date.now() < g.swingUntil;
+      const sitKey = sipping && img('hero-yama-sit-sip') ? 'hero-yama-sit-sip' : 'hero-yama-sit';
+      const haveSitArt = !!img('hero-yama-sit');
+      const key = sitting ? (haveSitArt ? sitKey : 'hero-yama')
+                : swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
       // จังหวะเดินแบบ Office Agent: เด้งสองจังหวะ ไม่เลื่อนภาพนิ่งไปกับพื้นเฉย ๆ
-      const moving = P.tx != null || Object.values(KEY).some(Boolean);
+      const moving = !sitting && (P.tx != null || Object.values(KEY).some(Boolean));
       const gait = Math.floor(t / 105) % 4;
       const hop = moving && gait % 2 ? U * 0.010 : 0;
       const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
       drawStandee(ctx, key, px(P.x), py(P.y) - hop, U * HERO_H * stretch, t, '👑', P.face);
+      // ยังไม่มีไฟล์ท่านั่ง — ใช้ท่ายืนเดิมแทนพร้อมสัญลักษณ์ 💤 กำกับว่ากำลังพัก (ข้อ A ข้อห้าม 24 ก.ย. 2569)
+      if (sitting && !haveSitArt) {
+        const zx = px(P.x) + U * HERO_H * 0.34, zy = py(P.y) - U * HERO_H * 1.05 + Math.sin(t / 380) * U * 0.012;
+        ctx.font = `${Math.round(U * 0.05)}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('💤', zx, zy);
+      }
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
 
     // ---- ป้ายบอกวิธี ----
     // ประตูสวรรค์ (def.heaven) ไม่ใช่การลงทัณฑ์ — คำใบ้ต้องพูดว่า "ส่งดวงเข้าประตู" ไม่ใช่ "ลงมือ"
-    const tip = near ? (def.heaven ? '⌨ กดเว้นวรรค หรือปุ่มขวา เพื่อส่งดวงเข้าประตู'
+    const tip = sitting ? '💤 กำลังนั่งพัก — บารมีค่อย ๆ ฟื้น · กด "ลุกขึ้น" เมื่อพอแล้ว'
+              : near ? (canSit ? '🍵 กดปุ่ม "นั่งพัก" ในแผงขวา เพื่อฟื้นบารมีฟรี'
+                       : def.heaven ? '⌨ กดเว้นวรรค หรือปุ่มขวา เพื่อส่งดวงเข้าประตู'
                                     : '⌨ กดเว้นวรรค หรือปุ่มขวา เพื่อลงมือตรงนี้')
                      : '⌨ ลูกศร/WASD หรือแตะบนฉาก เพื่อเดินเข้าไป';
-    tag(ctx, W / 2, H - U * 0.045, tip, near ? '#ffd27a' : 'rgba(240,225,215,.75)', U);
+    tag(ctx, W / 2, H - U * 0.045, tip, (near || sitting) ? '#ffd27a' : 'rgba(240,225,215,.75)', U);
   }
 
   function frame(now) {
@@ -381,6 +425,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach,
+    canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
+    sitting: () => sitting,
+    setSit,
     pos: () => [P.x, P.y, P.tx, P.ty],       // ไว้ส่องตอนดีบัก
     /** เดินหนึ่งเฟรมด้วยมือ — แท็บที่ไม่ได้อยู่หน้าจอ rAF ไม่ยิงเลย ทดสอบจากคอนโซลต้องใช้ตัวนี้
      *  (แนวเดียวกับ G.step() ที่เกมเปิดไว้ให้อยู่แล้ว) */

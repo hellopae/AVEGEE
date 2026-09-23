@@ -29,6 +29,8 @@
 "hero-yama-ice-cutscene.jpeg",
 "hero-yama-mi-cutscene.jpeg",
 "hero-yama-profile.png",
+"hero-yama-sit-sip.png",
+"hero-yama-sit.png",
 "hero-yama.png",
 "scene.png",
 "tile-lava.png",
@@ -74,6 +76,8 @@
 "item-hypno.png",
 "item-mirror.png",
 "item-tea.png",
+"merchant-profile.jpeg",
+"merchant.png",
 "mob-krahang.png",
 "mob-pop.png",
 "mob-pret.png",
@@ -264,6 +268,18 @@
 "West/st-tarang-west.png",
 "West/st-tea-west.png",
 "West/zone-boss-west.png"
+],
+"ui": [
+"ui/Button1.png",
+"ui/Button10.png",
+"ui/Button2.png",
+"ui/Button3.png",
+"ui/Button4.png",
+"ui/Button5.png",
+"ui/Button6.png",
+"ui/Button7.png",
+"ui/Button8.png",
+"ui/Button9.png"
 ]
 },
 "boxes": {
