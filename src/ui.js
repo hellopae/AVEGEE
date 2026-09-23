@@ -1553,15 +1553,15 @@ function openNiraOffice() {
   pauseForDlg();
   const paint = () => {
     const party = g.party?.members || [];
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมติดตาม</h2>
-      <p class="hint">เลือกยมทูตติดตามยมน้อยได้ 2 คน พวกเขาจะยืนข้างตัวบนแผนที่และเป็นทีมตั้งต้นเวลาออกศึก</p>
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
+      <p class="hint">เลือกยมทูตเข้าทีมต่อสู้ได้ 2 คน เมื่อเข้าสนามรบจะมาช่วยยมน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
       <div class="market-grid">${CREW.filter(c => !c.reader).map(def => {
         const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
         const train = c ? UPGRADES.crewBase * ((c.upLv || 0) + 1) : 0;
         return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}</span>
-          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ติดตาม' : 'เข้าทีม'}</button>
+          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ทีมต่อสู้' : 'เข้าทีมสู้'}</button>
                   <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;

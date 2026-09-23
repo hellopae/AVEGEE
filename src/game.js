@@ -368,8 +368,7 @@ const API = {
     const i = this.party.members.indexOf(k);
     if (i >= 0) this.party.members.splice(i, 1);
     else { if (this.party.members.length >= 2) return false; this.party.members.push(k); }
-    if (i < 0) this.stations.forEach(st => { if (st.crewK === k) st.crewK = null; });
-    c.at = null; c.path = null;
+    // ทีมต่อสู้เป็นเพียงรายชื่อเรียกเข้าฉากสู้ งานและตำแหน่งบนแผนที่ไม่เปลี่ยน
     this.save(); this.onChange(); return true;
   },
 
@@ -1113,13 +1112,6 @@ const API = {
       }
       if (c.x == null) { c.x = c.hx ?? hx; c.y = c.hy ?? hy; c.face = 1; }
 
-      // สมาชิกทีมยืนเคียงข้างยมบาท ไม่เดินเตร็ดเตร่หรือรับเวรซ้อนกัน
-      const partyIndex = (this.party?.members || []).indexOf(c.k);
-      if (partyIndex >= 0) {
-        c.x = P.x + (partyIndex ? 58 : -58); c.y = P.y + 7;
-        c.face = partyIndex ? -1 : 1; c.path = null; c.at = null;
-        continue;
-      }
       if (!canWalk(c.x, c.y)) {                 // โดนอาคารที่เพิ่งสร้างทับอยู่ → ดันออกมา
         const o = nearestWalk(c.x, c.y, seen);
         if (o) { c.x = o[0]; c.y = o[1]; c.path = null; }
