@@ -7,7 +7,10 @@
 .command-segment:disabled,.command-center:disabled{opacity:.5;cursor:not-allowed}
 .segment-0 b{left:34%;top:27%}.segment-1 b{left:70%;top:34%}.segment-2 b{left:78%;top:73%}.segment-3 b{left:43%;top:91%}
 .command-center{clip-path:ellipse(23% 19% at 41% 50.5%);z-index:2}.command-center b{left:41%;top:63%}.combat-wheel .command-center{pointer-events:none;filter:none}
-.command-options{position:absolute;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;width:max-content;max-width:340px;z-index:20;visibility:hidden;pointer-events:none;padding:10px;border-radius:20px;background:rgba(29,13,23,.82);box-shadow:0 6px 25px #0005}
+/* ข้อ B.3 คุณเป้ 24 ก.ย. 2569 — เอาแผงสี่เหลี่ยมสีน้ำตาลหลังปุ่มออก ตอนวงคำสั่งเด้งออกมาให้เหลือ
+   แต่ปุ่มกลมลอยอยู่เฉย ๆ (เดิม background/box-shadow/border-radius/padding ตรงนี้วาดเป็นกล่องทึบ
+   ครอบปุ่มทั้งกลุ่ม) ตัวหนังสือใต้ปุ่มยังอ่านออกอยู่เพราะ .orb-choice b มี text-shadow ทึบจาก index.html แล้ว */
+.command-options{position:absolute;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;width:max-content;max-width:340px;z-index:20;visibility:hidden;pointer-events:none}
 .command-options.is-open{visibility:visible;pointer-events:auto}
 .command-options .orb-choice{position:relative!important;flex:0 0 62px!important;width:62px!important;min-height:80px;padding:0!important;border:0!important;background:transparent!important;color:white;opacity:0;transform:translate(-35px,18px) scale(.6);transition:opacity .26s,transform .4s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--choice-index,0)*65ms)}
 .command-options.is-open .orb-choice{opacity:1;transform:translate(0,0) scale(1)}
@@ -16,6 +19,18 @@
 .command-options .orb-choice b{display:block;font-size:11px;line-height:1.35;white-space:normal}.command-options small{display:block;font-size:9px}.command-options i{font-size:10px}
 .command-options .orb-choice>span{display:grid;place-items:center;width:62px;height:62px;background:#e9b758;border-radius:50%;color:white}
 .options-0{left:8%;bottom:100%}.options-1{left:91%;top:0}.options-2{left:92%;top:46%}.options-3{left:35%;top:98%}
+/* ปุ่มความแรง (ข้อ B.1 คุณเป้ 24 ก.ย. 2569) — วงนี้มีตายตัว 5 ตัวเลือกเสมอ (ต่างจากวงอื่นที่จำนวน
+   ขึ้นกับสถานะเกม) เดิม .orb-choice กว้างคงที่ 62px + flex-wrap ทำให้ตัวที่ 5 ล้นไปแถวที่ 2 แล้วโดน
+   .hud{overflow:hidden} (index.html) ตัดขอบล่างทิ้ง กดไม่ได้เลยไม่ว่าจอขนาดไหน (คุณเป้เจอที่ 1440 จริง —
+   สร้างซ้ำได้ด้วย Playwright เช็คทุกจอตั้งแต่ 390 ถึง 1440)
+   แก้เฉพาะวงคำสั่งไต่สวน (.court-wheel) ไม่แตะวง "ไอเทม" ของฉากต่อสู้ (.combat-wheel .options-3
+   ใช้ selector เดิม จำนวนตัวเลือกไม่คงที่ ของเดิมยังเหมาะกับมันอยู่) — ใช้กริด 5 ช่องเท่ากันเสมอ
+   บังคับแถวเดียวไม่ว่าจอกว้างแค่ไหน ย่อขนาดปุ่มเอาแทนการขึ้นบรรทัดใหม่ */
+.court-wheel .options-3{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;
+  width:min(94vw,300px);max-width:min(94vw,300px)}
+.court-wheel .options-3 .orb-choice{flex:none!important;width:auto!important;min-width:0;min-height:60px}
+.court-wheel .options-3 .orb-choice img{width:100%;height:auto;max-width:46px;max-height:46px;margin:0 auto;aspect-ratio:1}
+.court-wheel .options-3 .orb-choice b{font-size:8px;line-height:1.15}
 .command-selected{position:absolute;width:58px;text-align:center;transition:opacity .2s;pointer-events:none;color:white}.command-selected img,.command-selected strong{display:block;width:54px;height:54px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #edc475}.command-selected strong{background:#e8b454;font-size:34px}.command-selected b{font-size:10px;display:block;text-shadow:0 2px 4px #000}.selected-place{left:94%;top:7%}.selected-crew{left:96%;top:55%}.selected-force{left:43%;top:99%}.has-options .command-selected{opacity:0}
 .court-wheel{left:19%;bottom:65px}
 .trial-hud .trial-top-actions{position:static;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.trial-hud .trial-top-actions button{padding:8px 5px;min-height:58px;font-size:12px}

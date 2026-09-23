@@ -33,7 +33,9 @@ const heroAtk = () => artUrl('hero-yama-atk') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
 
 const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หนัก', 'หนักมาก', 'มหันต์'];
-const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'สาสม'];
+// ระดับ 5 เปลี่ยนจาก "สาสม" เป็น "มหันต์" (ข้อ B.2 คุณเป้ 24 ก.ย. 2569) — ให้ตรงกับคำที่ WEIGHT ใช้อยู่แล้ว
+// (WEIGHT[5] = "มหันต์" มาก่อนแล้ว แต่ INTENSITY[5] สะกดคนละคำ ผู้เล่นอ่านแล้วงงว่าเป็นคำเดียวกันไหม)
+const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'มหันต์'];
 
 const g = createGame();
 const SAVED = loadSave();
@@ -1400,14 +1402,17 @@ function openTrial() {
         title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta)}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
         <b>${esc(c.name)}</b><small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small></button>`).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
+    // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
+    // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
+    const forceIcon = i => `img/icon-force-${i}.png`;
     const forceChoices = heaven ? '' : [1, 2, 3, 4, 5].map(i =>
       `<button class="orb-choice" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
-        title="ระดับ ${i} ${esc(INTENSITY[i])}"><span style="font-size:25px">${['','💬','❄️','💥','🔥','💢'][i]}</span><b>${esc(INTENSITY[i])}</b></button>`).join('');
+        title="ระดับ ${i} ${esc(INTENSITY[i])}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b></button>`).join('');
     const crewNow = pick.cr && g.crewOf(pick.cr);
     const selected = [
       stDef && `<span class="command-selected selected-place">${orbImg(stBg(stDef.k))}<b>${esc(stDef.name)}</b></span>`,
       crewNow && `<span class="command-selected selected-crew">${orbImg(artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`))}<b>${esc(crewNow.name)}</b></span>`,
-      (pick.inten || heaven) && `<span class="command-selected selected-force"><strong>${heaven?'🕊️':['','💬','❄️','☆','🔥','💢'][pick.inten]}</strong><b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
+      (pick.inten || heaven) && `<span class="command-selected selected-force">${heaven ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
     ].filter(Boolean).join('');
     const trialWheel = commandWheel({ready, selected, groups:[
       {choices:powerChoices},{choices:destinationChoices},{choices:crewChoices},{choices:forceChoices,disabled:heaven}
