@@ -1315,9 +1315,12 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
+  // ข้อ E คุณเป้ 24 ก.ย. 2569: "ตวาดข่มขู่" (roar) ไม่เคยขึ้นคัตซีนเลยสักครั้ง — ไม่มีไฟล์ของตัวเอง
+  // (img/raw/ ไม่มี hero-yama-roar-cutscene) ใช้ท่า 'atk' ร่วมกับลูกไฟแทน ไม่ใช่ภาพใหม่/ไม่แต่งสี
+  // แค่ชี้ไปที่ไฟล์เดิมที่มีอยู่แล้วเหมือนที่ fire ทำอยู่ก่อนแล้ว — ทั้งสองท่าคือการข่มขู่/ลงมือแบบดุดัน
   const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
              : k === 'ice' ? 'ice'
-             : k === 'fire' ? 'atk' : null;
+             : k === 'fire' || k === 'roar' ? 'atk' : null;
   if (!pose) return null;
   const style = g.outfit || g.zone;
   if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
@@ -1325,16 +1328,23 @@ function actionCutsceneSrc(k) {
   return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
 }
 
+// ข้อ E คุณเป้ 24 ก.ย. 2569: 580ms เร็วเกินจะทันเห็น (ภาพขึ้นจริงแต่กระพริบผ่านไป)
+// ยืดเป็น 1.3 วิ (อยู่ในช่วง 1.2–1.5 ที่ขอ) ให้ตรงกับ CSS .action-cutscene ใน index.html
+// (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
+const ACTION_CUT_MS = 1300;
 function playActionCutscene(k) {
   const src = actionCutsceneSrc(k);
   if (!src || !dlg.open) return;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
   cut.className = 'action-cutscene';
-  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ">`;
+  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">`;
   cut.querySelector('img').onerror = () => cut.remove();
+  let done = false;
+  const finish = () => { if (done) return; done = true; cut.remove(); };
+  cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
-  setTimeout(() => cut.remove(), 580);
+  setTimeout(finish, ACTION_CUT_MS);
 }
 
 // ---------- ห้องสอบสวน (HUD แบบเกม Turn-based RPG) ----------

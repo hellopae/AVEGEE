@@ -616,20 +616,22 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .arena .fig.hit img{animation:hitshake .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
-/* ภาพคั่นท่าไม้ตาย — วางทับเฉพาะใน dialog ปัจจุบัน แล้วหายเองก่อนตาคู่ต่อสู้ */
+/* ภาพคั่นท่าไม้ตาย — วางทับเฉพาะใน dialog ปัจจุบัน แล้วหายเองก่อนตาคู่ต่อสู้
+   ข้อ E คุณเป้ 24 ก.ย. 2569: เดิม .56s เร็วเกินจะทันเห็น ยืดเป็น 1.3s ให้ตรงกับ ACTION_CUT_MS ใน ui.js
+   (แตะที่ภาพข้ามได้ทันทีอยู่แล้ว ไม่ต้องรอครบก็ได้ — ผูก onclick ไว้ใน playActionCutscene) */
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
-  pointer-events:auto;background:#090407;border-radius:inherit;animation:actionCut .56s cubic-bezier(.2,.85,.25,1) both}
+  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
-  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush .56s cubic-bezier(.16,.8,.25,1) both}
+  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
   background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
-  mix-blend-mode:screen;animation:speedLines .56s ease-out both}
+  mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
 .action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
   border:1px solid var(--gold);pointer-events:none}
-@keyframes actionCut{0%{opacity:0}8%,72%{opacity:1}100%{opacity:0}}
+@keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
 @keyframes actionRush{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(1.03) translateX(1%)}72%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
-@keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}20%,62%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
+  18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
   border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
