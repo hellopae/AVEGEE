@@ -1754,7 +1754,8 @@ function openBattle(after) {
     ]});
 
     const finLabel =
-        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'รับรางวัลชายแดน' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
+        // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
+        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? 'ฟังคำตัดสินของพ่อ'
                           : b.kind === 'dad'  ? 'ฟังคำตัดสินของพ่อ'
                           : b.kind === 'zoneBoss' ? 'กลับไปตั้งหลักที่สะพาน'
