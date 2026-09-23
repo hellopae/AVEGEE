@@ -1717,10 +1717,17 @@ const API = {
   crewHelpers() {
     return this.crew.filter(c => !c.reader && !c.self);
   },
+  battleCrew() {
+    const keys = this.battle?.team || this.party?.members || [];
+    return this.crewHelpers().filter(c => keys.includes(c.k)).slice(0, 2);
+  },
+  crewCooldown(c, now = Date.now()) {
+    return Math.min(BATTLE.crewCd, Math.max(0, Math.ceil(((c?.helpReadyAt || 0) - now) / 1000)));
+  },
   crewHelpWhy(c) {
-    // ที่ชายแดนคือภารกิจของทีมโดยตรง จึงไม่ติดเงื่อนไขเลเวล “เรียกคนมาช่วย” ของการต่อสู้ทั่วไป
-    if (!this.canCallCrew() && this.battle?.kind !== 'frontier') return `ต้องเป็น${LEVELS[CREW_HELP_LV - 1].name}ก่อน`;
-    if (c.helpCd && this.tick < c.helpCd) return `เพิ่งช่วยไป · อีก ${c.helpCd - this.tick} วาระ`;
+    if (!c || !this.battleCrew().some(x => x.k === c.k)) return 'ต้องจัดเข้าทีมก่อนต่อสู้';
+    const remaining = this.crewCooldown(c);
+    if (remaining) return `รออีก ${remaining} วินาที`;
     if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
     return '';
   },
@@ -1761,14 +1768,25 @@ const API = {
 
     } else if (typeof what === 'string' && what.startsWith('crew:')) {
       const c = this.crew.find(x => x.k === what.slice(5));
-      if (B.kind === 'frontier' && !B.team?.includes(c?.k)) return false;
       if (!c || this.crewHelpWhy(c)) return false;
-      c.helpCd = this.tick + BATTLE.crewCd;
+      c.helpReadyAt = Date.now() + BATTLE.crewCd * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
       B.helper = { k: c.k, name: c.name, at: Date.now() };   // ui เอาไปวาดท่าพุ่งเข้าชน
-      dmg = roll([6 + c.raeng, 12 + c.raeng * 2]);
-      say(`${c.glyph} ${c.name}กระโจนเข้ามาช่วย — ${dmg} หน่วย (กำลังใจ −${BATTLE.crewMorale})`);
-      B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
+      if (c.k === 'boon') {
+        const heal = Math.min(36, B.youMax - B.youHp);
+        B.youHp += heal;
+        say(`${c.name}ฟื้นบารมีให้ ${heal} หน่วย`);
+        B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
+      } else if (c.k === 'kan') {
+        stunFoe = 2;
+        say(`${c.name}สะกดจิตศัตรู 2 ตา`);
+        B.talk = `${c.name}: "ผมตรึงเขาไว้ได้สองตา ท่านลงมือได้เลย"`;
+      } else {
+        dmg = roll(c.k === 'plerng' ? [26,38] : [6+c.raeng,12+c.raeng*2]);
+        say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
+        B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
+      }
+      this.save(); // เก็บเวลาพร้อมใช้ไว้ ปิด/เปิดหน้าใหม่ก็ไม่ล้างคูลดาวน์
 
     } else if (what === 'fire') {
       const p = this.powerOf('roar');
@@ -2001,7 +2019,7 @@ const API = {
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
-                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpCd: c.helpCd || 0,
+                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
                                   upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
     };
@@ -2210,7 +2228,7 @@ API.snapshot = function (withEntry = true) {
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max })),
-    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y,
+    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,

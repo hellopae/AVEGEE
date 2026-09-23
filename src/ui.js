@@ -1,3 +1,4 @@
+import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -1288,13 +1289,13 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
-    ${helper ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">
+    ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">
       <img src="${artUrl('crew-' + helper.k)}" alt=""
            onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad">${squad.map(c => `<span>
-      <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b></span>`).join('')}</div>` : ''}
+      <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${crewCooldown(c,g.crewCooldown(c),BATTLE.crewCd)}</span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
@@ -1376,8 +1377,8 @@ function openTrial() {
 
     // ---- ปุ่มด้านบน + วงคำสั่งข้างยมน้อย ----
     const topActions =
-      `<button data-cmd="ask" aria-pressed="true">🗣️ ไต่สวน · ${s.presses}</button>
-       ${g.has('tarang') ? `<button id="t-jail" ${g.jailFree() > 0 ? '' : 'disabled'}>🔒 ขังไว้ก่อน</button>` : ''}
+      `<button data-cmd="ask">ไต่สวน<br>ได้อีก ${s.presses} ครั้ง</button><button id="t-guide">หนังสือ<br>คู่มือ</button>
+       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}">🔒 ขังไว้ก่อน</button>
        <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>⏭️ พักคดีนี้</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
@@ -1398,34 +1399,21 @@ function openTrial() {
     }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
     const crewChoices = idle.length ? idle.map(c =>
       `<button class="orb-choice" data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-        title="${esc(c.name + (c.self ? ' · ต้องเดินไปเอง' : ' · กำลังใจ ' + Math.round(c.morale)))}">
+        title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta)}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${esc(c.name)}</b></button>`).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
+        <b>${esc(c.name)}</b><small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small></button>`).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     const forceChoices = heaven ? '' : [1, 2, 3, 4, 5].map(i =>
       `<button class="orb-choice" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
         title="ระดับ ${i} ${esc(INTENSITY[i])}"><span style="font-size:25px">${['','💬','❄️','💥','🔥','💢'][i]}</span><b>${esc(INTENSITY[i])}</b></button>`).join('');
     const crewNow = pick.cr && g.crewOf(pick.cr);
-    const trialWheel = `
-      <div class="trial-orb-group power">
-        <button class="orb-main" data-orb-toggle title="เลือกพลัง">${orbImg('img/fx-fireball.png','พลัง')}<b>พลัง</b></button>
-        <div class="orb-submenu">${powerChoices}</div>
-      </div>
-      <div class="trial-orb-group place">
-        <button class="orb-main" data-orb-toggle title="เลือกสถานที่">${orbImg(stDef ? stBg(stDef.k) : 'img/BG-Krata.webp','ที่ไหน')}<b>${esc(stDef?.name || 'ที่ไหน')}</b></button>
-        <div class="orb-submenu">${destinationChoices}</div>
-      </div>
-      <div class="trial-orb-group crew">
-        <button class="orb-main" data-orb-toggle title="เลือกผู้คุม">${orbImg(crewNow ? (artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`) || artUrl(crewNow.self ? 'hero-yama' : `crew-${crewNow.k}`)) : 'img/crew-taan-profile.png','ใครคุม')}<b>${esc(crewNow?.name || 'ใครคุม')}</b></button>
-        <div class="orb-submenu">${crewChoices}</div>
-      </div>
-      <div class="trial-orb-group force">
-        <button class="orb-main" data-orb-toggle ${heaven ? 'disabled' : ''} title="เลือกระดับความแรง"><span style="font-size:29px">${heaven ? '🕊️' : pick.inten ? ['','💬','❄️','💥','🔥','💢'][pick.inten] : '⚖️'}</span><b>${heaven ? 'อัตโนมัติ' : pick.inten ? INTENSITY[pick.inten] : 'ความแรง'}</b></button>
-        <div class="orb-submenu">${forceChoices}</div>
-      </div>
-      <div class="trial-orb-group issue ${ready ? 'ready' : ''}">
-        <button class="orb-main" id="t-go" ${ready ? '' : 'disabled'} title="${ready ? 'ออกหมาย' : 'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}">
-          ${orbImg('img/icon-sword.png','ออกหมาย')}<b>${g.needBattle(s) ? 'ประทับตราแล้วสู้' : 'ออกหมาย'}</b></button>
-      </div>`;
+    const selected = [
+      stDef && `<span class="command-selected selected-place">${orbImg(stBg(stDef.k))}<b>${esc(stDef.name)}</b></span>`,
+      crewNow && `<span class="command-selected selected-crew">${orbImg(artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`))}<b>${esc(crewNow.name)}</b></span>`,
+      (pick.inten || heaven) && `<span class="command-selected selected-force"><strong>${heaven?'🕊️':['','💬','❄️','☆','🔥','💢'][pick.inten]}</strong><b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
+    ].filter(Boolean).join('');
+    const trialWheel = commandWheel({ready, selected, groups:[
+      {choices:powerChoices},{choices:destinationChoices},{choices:crewChoices},{choices:forceChoices,disabled:heaven}
+    ]});
 
     // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
     const opt = `<h4>${s.case ? 'เลือกประเด็นที่จะสอบสวน' : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
@@ -1451,11 +1439,11 @@ function openTrial() {
           <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
                  onerror="this.onerror=null;this.src='img/spirit7.png'">
             <span class="nm">${esc(s.name || s.who)}</span></div>
-          <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
-          <div class="trial-wheel" aria-label="วงคำสั่งออกหมาย">${trialWheel}</div>
+          ${trialWheel}
         </div>
 
         <div class="hud-right">
+          <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
             <h4>สำนวนที่นิราอ่านให้ฟัง</h4>
             ${s.face ? `<div class="deed" style="color:var(--accent-foreground);margin-bottom:4px">${esc(s.face)}</div>` : ''}
@@ -1492,13 +1480,25 @@ function openTrial() {
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
 
     // ---- ผูกปุ่ม ----
-    dlg.querySelectorAll('[data-cmd]').forEach(el => el.onclick = () => { trialCmd = el.dataset.cmd; });
-    dlg.querySelectorAll('[data-orb-toggle]').forEach(el => el.onclick = e => {
-      e.preventDefault();
-      const group = el.closest('.trial-orb-group');
-      dlg.querySelectorAll('.trial-orb-group.open').forEach(x => { if (x !== group) x.classList.remove('open'); });
-      group.classList.toggle('open');
-    });
+    bindCommandWheel(dlg);
+    dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
+    dlg.querySelector('#t-guide').onclick = () => {
+      const guide = document.createElement('dialog');
+      guide.className = 'court-guide';
+      guide.innerHTML = `<button class="guide-close">ปิดคู่มือ ✕</button><h2>คู่มือนรก</h2>
+        <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
+        <h3>ส่งคดีไปที่ไหน</h3><p>เลือกสถานที่ให้ตรงกับกรรมหลักที่พบในสำนวน ต้องสร้างสถานที่และมีที่ว่างก่อน</p>
+        <table><thead><tr><th>คดี</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
+        <p>ผู้บริสุทธิ์ใช้ประตูสวรรค์ ซึ่งไม่ต้องเลือกความแรง หอทะเบียนกรรมรับงานทั่วไปได้ แต่ควรเลือกสถานที่เฉพาะกรรมเมื่อมีพร้อม</p>
+        <h3>เลือกระดับความแรงและบรรเทาโทษ</h3><p>ระดับ 1 ว่ากล่าว · 2 เบา · 3 ปานกลาง · 4 หนัก · 5 สาสม ใช้ความหนักของการกระทำทั้งหมดประกอบกัน อย่าเลือกสูงสุดทุกคดี</p>
+        <p>ไต่สวนเพื่อเปิดเผยข้อเท็จจริงและตรวจบุญที่อ้าง บุญที่เป็นจริงช่วยลดโทษ ส่วนคำอ้างเท็จไม่นับ การลงโทษเกินเพิ่มกรรมของท่าน ลงโทษเบาเกินอาจไม่ทำให้สำนึก หากยังไม่พร้อมให้พักคดี หรือขังรอเมื่อมีตะรางและที่ว่าง</p>
+        <h3>เลือกผู้คุม</h3><p>แรงช่วยให้งานเร็ว ระเบียบช่วยคุณภาพงาน ปัญญาสูงช่วยให้สำนึก เมตตาช่วยลดกรรมจากโทษที่เกิน แต่ไม่ทำให้คำตัดสินผิดกลายเป็นถูก</p>
+        ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${c.name}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
+        <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ 150 วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
+      dlg.append(guide); guide.showModal();
+      guide.querySelector('button').onclick=()=>guide.close();
+      guide.addEventListener('close',()=>guide.remove());
+    };
     dlg.querySelectorAll('[data-pickkey]').forEach(el => el.onclick = () => {
       pick[el.dataset.pickkey] = el.dataset.k ?? +el.dataset.v;
       paint();
@@ -1560,7 +1560,7 @@ function openNiraOffice() {
         const train = c ? UPGRADES.crewBase * ((c.upLv || 0) + 1) : 0;
         return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
-          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย</small>`}</span>
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}</span>
           ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ติดตาม' : 'เข้าทีม'}</button>
                   <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
@@ -1580,7 +1580,7 @@ function openMerchant() {
   pauseForDlg();
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
-    dlg.innerHTML = `<h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p>
+    dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -1712,9 +1712,7 @@ function openBattle(after) {
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
     const fireAmmo = g.powerOf('roar').ammo;
-    const battleHelpers = b.kind === 'frontier'
-      ? g.crewHelpers().filter(c => b.team?.includes(c.k))
-      : g.crewHelpers();
+    const battleHelpers = g.battleCrew();
     const prep = b.kind === 'zoneBoss' && !b.prep && !b.over ? `<div class="boss-prep">
       <b>เลือกเตรียมศึกหนึ่งอย่าง</b><div class="acts">
       <button data-prep="proof" ${g.miniGoals[b.zone]?.earned ? '' : 'disabled'}>📜 แฟ้มหลักฐาน ${g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
@@ -1733,24 +1731,13 @@ function openBattle(after) {
     const powerChoices = battleChoice('fire', 'img/fx-fireball.png', 'ลูกไฟ', fireAmmo > 0, `×${fireAmmo}`)
       + itemChoice('ice', 'img/fx-ice.png') + itemChoice('hypno', 'img/fx-hypno.png');
     const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png');
-    const crewActions = battleHelpers.length ? `<div class="battle-crew-actions">${battleHelpers.map(c => {
-        const why = g.crewHelpWhy(c);
-        const wait = c.helpCd && g.tick < c.helpCd ? Math.ceil((c.helpCd - g.tick) / BATTLE.crewCd * 100) : 0;
-        return `<button class="battle-act crewbtn" data-act="crew:${c.k}" ${why ? 'disabled' : ''}
-          title="${esc(c.name + ' — ' + (why || 'เรียกมาช่วยฟาดหนึ่งที · กำลังใจเขาหาย ' + BATTLE.crewMorale))}"
-          ><span class="battle-icon"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt=""
-            onerror="this.onerror=null;this.src='${artUrl('crew-' + c.k)}'"><em style="--wait:${wait}%"></em></span>
-            <b>${esc(c.name)}</b><i>${why ? esc(why) : `แรง ${c.raeng}`}</i></button>`;
-      }).join('')}</div>` : '';
-    const acts = b.kind === 'zoneBoss' && !b.prep ? '' : b.over && !phase ? '' : `
-      <div class="battle-wheel${phase ? ' busy' : ''}">
-        <div class="battle-orb-group"><button class="orb-main" data-act="atk" title="โจมตี">
-          <img src="img/fx-slash.png" alt=""><b>โจมตี</b></button></div>
-        <div class="battle-orb-group"><button class="orb-main" data-battle-toggle title="เลือกพลัง">
-          <img src="img/fx-fireball.png" alt=""><b>พลัง</b></button><div class="orb-submenu">${powerChoices}</div></div>
-        <div class="battle-orb-group"><button class="orb-main" data-battle-toggle title="เลือกไอเท็ม">
-          <img src="img/item-health.png" alt=""><b>ไอเท็ม</b></button><div class="orb-submenu">${itemChoices}</div></div>
-      </div>${crewActions}`;
+    const crewActions = battleHelpers.length ? battleHelpers.map(c => {
+      const why=g.crewHelpWhy(c);
+      return `<button class="orb-choice" data-act="crew:${c.k}" data-crew-action="${c.k}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${artUrl('crew-'+c.k+'-profile') || artUrl('crew-'+c.k)}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
+    }).join('') : '<span class="idle">ยังไม่มีทีม — จัดทีมยมทูตก่อนเข้าสู้ครั้งถัดไป</span>';
+    const acts = (b.kind === 'zoneBoss' && !b.prep) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
+      {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
+    ]});
 
     const finLabel =
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'รับรางวัลชายแดน' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
@@ -1775,7 +1762,7 @@ function openBattle(after) {
                                : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
             b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
-            acts, b.kind === 'frontier' ? battleHelpers : []) +
+            acts, battleHelpers) +
       `<div class="pad">
         <div class="talkbox">${esc(view.talk || '...')}</div>
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
@@ -1785,12 +1772,7 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
       if (g.prepareBoss(el.dataset.prep)) { sfx('stamp'); paint(); refresh(); }
     });
-    dlg.querySelectorAll('[data-battle-toggle]').forEach(el => el.onclick = e => {
-      e.preventDefault();
-      const group = el.closest('.battle-orb-group');
-      dlg.querySelectorAll('.battle-orb-group.open').forEach(x => { if (x !== group) x.classList.remove('open'); });
-      group.classList.toggle('open');
-    });
+    bindCommandWheel(dlg);
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
@@ -1802,7 +1784,8 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      fxNow = { key: FX_OF[k] ? k : 'atk', side: (k === 'health' || k === 'tea') ? 'you' : 'foe' };
+      const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health'})[k] || k;
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe' };
       paint();
       playActionCutscene(k);
 
@@ -1840,6 +1823,7 @@ function openBattle(after) {
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
     clearInterval(phaseGuard);
+    clearInterval(crewTimer);
     dlg.removeEventListener('cancel', noEsc);
     dlg.removeEventListener('close', onClose);
     if (dlg.open) dlg.close();
@@ -1868,6 +1852,17 @@ function openBattle(after) {
     if (g.battle) paint();
   }, 600);
 
+  const crewTimer = setInterval(() => {
+    for (const c of g.battleCrew()) {
+      const remaining=g.crewCooldown(c), progress=100*(1-remaining/BATTLE.crewCd);
+      const bar=dlg.querySelector(`[data-cooldown="${c.k}"]`);
+      if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
+      const label=dlg.querySelector(`[data-cooldown-label="${c.k}"]`);
+      if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
+      const button=dlg.querySelector(`[data-crew-action="${c.k}"]`);
+      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c.k);}
+    }
+  },1000);
   battleUI = () => { paint(); openDlg('rpg'); };
   battleUI();
   dlg.addEventListener('cancel', noEsc);
