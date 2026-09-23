@@ -545,3 +545,62 @@ no text, no letters, no numbers, no watermark, no UI
 
 > **ทดสอบก่อนใช้:** ย่อลงเหลือ 120px แล้วยังอ่านออกว่าเป็นอะไรไหม
 > ถ้าดูเป็นก้อนเบลอ ๆ แปลว่ารูปทรงหลักบางเกิน gen ใหม่โดยเน้นคำว่า **bold readable shape**
+
+---
+
+## ชุดที่ 8 — ยมน้อยท่านั่งพัก ในศาลาน้ำชา (24 ก.ย. 2569)
+
+**บริบท:** ต้องการจุดให้ยมน้อยนั่งพักฟื้นเลือดหลังโดนพ่อลงโทษ ในห้องศาลาน้ำชา (`img/raw/_BG-Tea.jpeg`)
+โค้ดจะใช้ไฟล์ `img/hero-yama-sit.png` — สเปกฉบับเต็มอยู่ที่
+`AGAPAE Agent/Output/Mind/2026-09-24-avegee-yama-sit-prompt.md`
+
+**ใช้โหมดแก้ภาพ แนบ `img/hero-yama.png` เข้าไปด้วยเสมอ** (ตามกฎเหล็กเดิมของชุดที่ 4/6 — ห้าม gen จาก prompt เปล่า)
+
+| key | ต้องได้ |
+|---|---|
+| `hero-yama-sit` | ท่านั่งพักบนเสื่อ ถือถ้วยชา หันหน้าเข้ากล้องเล็กน้อยเหมือนท่ายืน |
+
+```
+Edit this image. Use img/hero-yama.png as the reference image.
+
+Keep the exact same character, same outfit, same colors and the same chibi
+head-to-body proportions as the reference image — change ONLY the pose.
+
+NEW POSE — resting after his punishment: he is now SITTING cross-legged on a
+small round woven mat on a wooden deck floor, spine slightly slumped forward
+with tiredness, head tilted gently down, eyes half-lowered but calm — worn
+out and relieved to finally rest, NOT crying, NOT injured, no visible wounds,
+no blood, no bruises. Both hands are wrapped around a small plain unglazed
+clay tea cup held close to his chest, as if about to take a sip. A single
+thin wisp of steam rises from the cup, drawn as part of this same static
+image (not a separate effect).
+
+The mat he sits on is a small round Thai woven floor mat with a warm
+red-orange tone and a faint gold-trimmed edge, matching the mats already
+used on the tea pavilion's deck — plain pattern, no text, no writing on it.
+
+Keep exactly as in the reference: his tall pointed gold Thai mongkut crown,
+his dark navy-black long robe with the blood-red front panel and thin gold
+trim, his small blunt horns, pointed ears, dark red skin, and bare feet —
+now tucked to one side beneath him. No cape, no armor plates, no full-body
+gold ornament. Same outline weight, same palette, same lighting style as
+the reference image.
+
+Camera: same top-down 3/4 isometric-ish angle as the reference and as the
+rest of the game's sprites — he is seated facing slightly toward the viewer,
+not turned to a full side profile.
+
+Single figure centered on a fully transparent background, square canvas,
+whole seated figure and mat visible, with the base of the mat flush with
+the bottom edge of the canvas (same ground line as the standing sprite),
+no cast shadow baked in, no other scenery, no ground plate beyond the mat's
+own footprint.
+
+No text, no letters, no numbers, no watermark, no UI.
+```
+
+> ขนาด: gen อย่างน้อย 1024×1024 → เซฟ raw ที่ `img/raw/hero-yama-sit.png` → รัน
+> `python3 scripts/prep-art.py` ให้จัดลงเหลือ 512×512 เท่า `hero-yama.png` เอง
+>
+> **Variant ที่ 2 (ถ้าอยากได้เพิ่ม):** `hero-yama-sit-sip` — ท่าเดียวกันทุกอย่าง แต่หลับตาสนิท
+> ยกถ้วยแตะริมฝีปาก มุมปากยิ้มจาง ๆ
