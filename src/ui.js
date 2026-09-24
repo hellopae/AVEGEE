@@ -2317,13 +2317,12 @@ function openStation(k) {
           : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${name}</small></button>`);
       }
     }
+    // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (คุณเป้ยังตัดสินใจเรื่องฟืน/ช่องรับอยู่)
+    // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ — stCap()/fuel-drain ใน game.js ยังอ่านค่าเดิม
+    // แค่ไม่มีปุ่มกดอัปเพิ่มอีกแล้วเท่านั้น "เร่งการทำงาน" คงไว้เหมือนเดิม (จะเปลี่ยนเป็นมินิเกมในชุดที่ 8)
     if (cap) {
       const speedCost = UPGRADES.stationBase * ((st.speedLv || 0) + 1);
-      const capCost = UPGRADES.stationBase * ((st.capLv || 0) + 1);
-      const fuelCost = UPGRADES.stationBase * ((st.fuelLv || 0) + 1);
-      acts.push(`<button data-st-up="speed" ${g.coin < speedCost || (st.speedLv || 0) >= UPGRADES.max ? 'disabled' : ''}>⚙️ เร่งการทำงาน ขั้น ${st.speedLv || 0}<small>${speedCost} เบี้ย · เร็วขึ้น 12%</small></button>`,
-        `<button data-st-up="capacity" ${g.coin < capCost || (st.capLv || 0) >= UPGRADES.max ? 'disabled' : ''}>👻 เพิ่มช่องรับ ขั้น ${st.capLv || 0}<small>${capCost} เบี้ย · เพิ่มได้ 1 ดวง</small></button>`,
-        `<button data-st-up="fuel" ${g.coin < fuelCost || (st.fuelLv || 0) >= UPGRADES.max ? 'disabled' : ''}>🪵 ประหยัดฟืน ขั้น ${st.fuelLv || 0}<small>${fuelCost} เบี้ย · ใช้ฟืนน้อยลง</small></button>`);
+      acts.push(`<button data-st-up="speed" ${g.coin < speedCost || (st.speedLv || 0) >= UPGRADES.max ? 'disabled' : ''}>⚙️ เร่งการทำงาน ขั้น ${st.speedLv || 0}<small>${speedCost} เบี้ย · เร็วขึ้น 12%</small></button>`);
     }
 
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
