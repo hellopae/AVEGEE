@@ -23,5 +23,6 @@ import krata from './krata.js';
 import dab from './dab.js';
 import lokan from './lokan.js';
 import ngiw from './ngiw.js';
+import lan from './lan.js';
 
-export const MINIGAMES = { sala, krata, dab, lokan, ngiw };
+export const MINIGAMES = { sala, krata, dab, lokan, ngiw, lan };
