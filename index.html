@@ -612,6 +612,10 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
    จะให้เผชิญหน้ากันเต็มตัวจริง ๆ ต้องมีรูปท่าเฉียง (ASSET-PROMPTS.md ชุดที่ 6)
    ซึ่ง heroFace() รอไฟล์อยู่แล้ว — วันนั้นค่อยเอาการพลิกนี้ออก */
 .arena .fig.you img,.hud .fig.you img{transform:scaleX(-1)}
+/* ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.png (ต่างจากท่ายืนด้านบน) วาดหันขวา/ชกไปทางขวาอยู่แล้ว
+   กฎ scaleX(-1) ด้านบนตั้งไว้รองรับท่ายืนที่หันตรงเข้ากล้อง (สมมาตร ไม่มีทิศ) พอมาเจอท่าโจมตีที่มีทิศจริง
+   มันเลยพลิกกลับไปหันซ้ายผิดทาง — ยกเลิก flip เฉพาะตอนโชว์ท่าโจมตี (ui.js ใส่ class .atk ให้ตอนนั้น) */
+.arena .fig.you.atk img,.hud .fig.you.atk img{transform:scaleX(1)}
 .arena .fig.you.hit img{animation:hitshakeY .28s}
 @keyframes hitshakeY{0%,100%{transform:scaleX(-1) translateX(0)}
   25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
@@ -624,15 +628,18 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
   pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
-  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both}
+  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
+  /* ข้อ C คุณเป้ 24 ก.ย. 2569 — ภาพคั่น hero-yama-*-cutscene.jpeg ทุกใบวาดยมน้อยอยู่ขวา ปล่อยพลัง/เอฟเฟกต์ไปทางซ้าย
+     พลิกกระจกให้ยมน้อยอยู่ซ้าย ปล่อยพลังไปทางขวา ตรงกับทิศศัตรูในสนาม ให้หันทางเดียวกับท่ายืน/ท่าโจมตี */
+  transform:scaleX(-1)}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
   background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
   mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
 .action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
   border:1px solid var(--gold);pointer-events:none}
 @keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
-@keyframes actionRush{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRush{0%{transform:scaleX(-1) scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scaleX(-1) scale(1.03) translateX(1%)}88%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.08);filter:brightness(1.25)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);

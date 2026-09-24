@@ -58,7 +58,9 @@
 .arena .battle-squad{position:absolute;left:1%;bottom:10%;display:flex;flex-direction:column-reverse;
   align-items:flex-start;gap:6px;z-index:3;max-width:16%}
 .arena .battle-squad>span{display:flex;flex-direction:column;align-items:center;color:#dfb668;font-size:13px}
-.arena .battle-squad img{width:auto;max-width:100%;height:clamp(100px,17vh,165px);object-fit:contain}
+/* ข้อ C คุณเป้ 24 ก.ย. 2569 — ยมทูตในทีมช่วยต้องหันหน้าไปทางศัตรู (ขวา) เหมือนยมน้อยและ .fig.helper เดิม
+   ภาพ crew-*.png วาดหันตรงเข้ากล้อง พลิกกระจกแล้วยังดูเป็นท่ายืนปกติ ไม่ใช่ภาพผิดทิศเหมือนท่าโจมตียมน้อย */
+.arena .battle-squad img{width:auto;max-width:100%;height:clamp(100px,17vh,165px);object-fit:contain;transform:scaleX(-1)}
 .arena .battle-squad small{font-size:10px}
 .crew-cooldown{display:block;width:90%;height:9px;background:#261614;border-radius:10px;overflow:hidden;margin:4px 0}.crew-cooldown i{display:block;height:100%;background:#ffbc43;transition:width .5s linear}
 .combat-wheel .options-0,.combat-wheel .options-1{left:78%;top:0;bottom:auto}.combat-wheel .options-2{left:78%;top:44%}.combat-wheel .options-3{left:78%;top:67%}

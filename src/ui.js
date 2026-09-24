@@ -37,10 +37,12 @@ const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หน
 // (WEIGHT[5] = "มหันต์" มาก่อนแล้ว แต่ INTENSITY[5] สะกดคนละคำ ผู้เล่นอ่านแล้วงงว่าเป็นคำเดียวกันไหม)
 const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'มหันต์'];
 
-// ข้อ C คุณเป้ 24 ก.ย. 2569 — หน่วงก่อนศัตรูตีสวนในฉากต่อสู้ (openBattle) ผู้เล่นต้องเห็นผล
+// ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 6) — หน่วงก่อนศัตรูตีสวนในฉากต่อสู้ (openBattle) ผู้เล่นต้องเห็นผล
 // การโจมตีของตัวเองก่อน (เดิมตีสวนทันทีที่อนิเมชันเราเล่นจบ รู้สึกโดนตีสวนทันที)
-const COUNTER_WAIT_MS = 2000;
-const PHASE_GUARD_MS = 6000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS พอมีระยะปลอดภัย
+// ข้อ C ชุดที่ 7 (24 ก.ย. 2569 เย็น) — 2000ms (รวมกับอนิเมชัน 780ms ของเรา ≈2.8 วิ) ทำให้ดูค้างเกินไป
+// ลดเหลือ 800ms (รวม ≈1.58 วิ) — ยังพอเห็นดาเมจ/แถบเลือดของเรานิ่งอยู่ก่อนโดนตีสวน แต่ไม่รู้สึกหยุดเกม
+const COUNTER_WAIT_MS = 800;
+const PHASE_GUARD_MS = 3000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS(800) + 780(อนิเมชันเขา) ≈2360 พอมีระยะปลอดภัย
 
 const g = createGame();
 const SAVED = loadSave();
@@ -1287,7 +1289,12 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="hpbar ${cls}"><i style="width:${Math.max(0, Math.min(100, 100 * v / max))}%"></i></span>
     <span class="hpn">${label} ${Math.round(v)} / ${max}</span>`;
   // ท่าลงทัณฑ์เฉพาะจังหวะที่เราลงมือใส่เขา — ใช้ของบำรุง (fx ลงที่ตัวเอง) ยังยืนท่าเดิม
-  const youImg = (act && act.lunge === 'you' && (!fx || fx.side === 'foe')) ? heroAtk() : heroFace();
+  // ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.png วาดหันขวา (ยื่นมือ/ชกไปทางขวา) มาแต่ต้นอยู่แล้ว
+  // ต่างจากท่ายืน hero-yama.png ที่หันหน้าเข้ากล้องตรง ๆ (สมมาตร ไม่มีทิศ) ซึ่งเป็นภาพที่กฎ
+  // .fig.you img{transform:scaleX(-1)} ถูกตั้งไว้รองรับแต่แรก (คอมเมนต์ heroFace ด้านบน) — กฎเดียวกันนั้น
+  // ไปพลิกท่าโจมตีที่หันขวาอยู่แล้วให้กลับไปหันซ้ายโดยไม่ตั้งใจ ต้องแยกกันคนละเงื่อนไข ไม่ใช่ flip รวด
+  const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe');
+  const youImg = usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   const bg = hp?.bg || 'img/BG-Turn-Base.webp';
   return `<div class="arena" style="background-image:url('${esc(bg)}')">
@@ -1302,7 +1309,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad">${squad.map(c => `<span>
       <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${crewCooldown(c,g.crewCooldown(c),BATTLE.crewCd)}</span>`).join('')}</div>` : ''}
-    <div class="fig you${cls('you')}">
+    <div class="fig you${cls('you')}${usingAtk ? ' atk' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
