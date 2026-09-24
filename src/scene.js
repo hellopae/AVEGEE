@@ -208,11 +208,11 @@ export function render(ctx, g, t, hover, sel) {
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
-  if (g.guard) at(g.party?.guard ? g.player.y + 9 : g.guard.y, () => {
-    const gx = g.party?.guard ? g.player.x - 105 : g.guard.x;
-    const gy = g.party?.guard ? g.player.y + 9 : g.guard.y;
-    if (sel && sel.kind === 'guard') ring(ctx, gx, gy, t, 34);
-    drawStandee(ctx, GUARD.img, gx, gy, GUARD.h, t, '🛡️');
+  // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
+  // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
+  if (g.guard) at(g.guard.y, () => {
+    if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
+    drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
   });
 
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
@@ -483,8 +483,7 @@ export function hitActor(g, sx, sy) {
   }
   for (const c of g.crew)
     if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
-  if (g.guard && near(g.party?.guard ? g.player.x - 105 : g.guard.x,
-                      g.party?.guard ? g.player.y + 9 : g.guard.y)) return { kind: 'guard', key: 0 };
+  if (g.guard && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
 }

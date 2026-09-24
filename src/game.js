@@ -382,13 +382,6 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
-  togglePartyGuard() {
-    if (!this.guard) return false;
-    this.party ||= { members:[], guard:false };
-    this.party.guard = !this.party.guard;
-    this.save(); this.onChange(); return true;
-  },
-
   has(k) { return this.stations.some(st => st.def.k === k); },
 
   /** คิวรับได้กี่ดวงก่อนระเบียบจะเริ่มตก
@@ -1367,9 +1360,10 @@ const API = {
       if (st.fire > 0 && !burning.has(st.def.k)) st.fire = Math.max(0, st.fire - MOB.burnCool * dt);
 
     // ยักษ์ทวารบาลไล่ปราบเอง
-    if (this.guard && this.party?.guard) {
-      this.guard.x = P.x - 105; this.guard.y = P.y + 9;
-    } else if (this.guard && this.mobs.length) {
+    // ชุดที่ 10 (ข้อ C1) — เอาโหมด "เดินตามผู้เล่น" ออก (คุณเป้สั่ง 25 ก.ย. 2569) เหลือแค่สองสถานะ:
+    // ไล่ปราบเปรตที่อยู่ในโซน หรือไม่งั้นกลับไปยืนเฝ้าหัวสะพาน — เซฟเก่าที่ guard.x ค้างอยู่ใกล้ผู้เล่น
+    // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
+    if (this.guard && this.mobs.length) {
       const G = this.guard, m = this.mobs[0];
       const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
       stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
@@ -1797,6 +1791,18 @@ const API = {
     return '';
   },
 
+  /** ยักษ์ทวารบาล (ข้อ C คุณเป้ 25 ก.ย. 2569) — เข้าช่วยฉากต่อสู้เองอัตโนมัติถ้าจ้างไว้แล้ว
+   *  ไม่ต้องจัดเข้าทีม 2 คนเหมือนยมทูต · คูลดาวน์ของตัวเอง (GUARD.battleCd) ดูแบบเดียวกับ crewCooldown */
+  guardCooldown(now = Date.now()) {
+    return Math.min(GUARD.battleCd, Math.max(0, Math.ceil(((this.guard?.helpReadyAt || 0) - now) / 1000)));
+  },
+  guardHelpWhy() {
+    if (!this.guard) return 'ยังไม่ได้จ้างยักษ์ทวารบาล';
+    const remaining = this.guardCooldown();
+    if (remaining) return `รออีก ${remaining} วินาที`;
+    return '';
+  },
+
   /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | 'crew:<k>' | ชื่อของใน BATTLE.items
    *  คืน false ถ้ากดไม่ได้ (ของไม่พอ / จบไปแล้ว) */
   battleAct(what) {
@@ -1852,6 +1858,16 @@ const API = {
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
       this.save(); // เก็บเวลาพร้อมใช้ไว้ ปิด/เปิดหน้าใหม่ก็ไม่ล้างคูลดาวน์
+
+    } else if (what === 'guard') {
+      // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
+      if (this.guardHelpWhy()) return false;
+      this.guard.helpReadyAt = Date.now() + GUARD.battleCd * 1000;
+      B.helper = { k: 'guard', name: GUARD.name, at: Date.now() };
+      dmg = roll(GUARD.battleAtk);
+      say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
+      B.talk = `${GUARD.name}: "ถอยไปเถอะท่าน ข้าจัดการเอง"`;
+      this.save();
 
     } else if (what === 'fire') {
       // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟกินกระสุนของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
@@ -2455,7 +2471,9 @@ API.restore = function (d) {
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
   this.party = d.party || { members:[], guard:false };
   this.party.members = (this.party.members || []).filter(k => this.crew.some(c => c.k === k));
-  this.party.guard = !!this.party.guard && !!this.guard;
+  // ชุดที่ 10 (ข้อ C1) — party.guard (โหมด "ยักษ์เดินตาม") ถูกตัดออกแล้ว เหลือ field ไว้เฉย ๆ
+  // กันเซฟเก่าพัง (ไม่มีใครอ่านค่านี้อีกต่อไป) บังคับเป็น false เสมอไม่ให้มีทางเหลือค้างจากเซฟเก่า
+  this.party.guard = false;
   this.upgrades = d.upgrades || { powers:{} };
   this.bossCleared = d.bossCleared || (this.zone === 'west' ? { th: true, asia: true }
     : this.zone === 'asia' ? { th: true } : {});
