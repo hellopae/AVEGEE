@@ -2389,6 +2389,7 @@ API.snapshot = function (withEntry = true) {
     zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
+    bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
@@ -2482,6 +2483,18 @@ API.restore = function (d) {
   // เซฟเก่าก่อนมีฉากมาถึง — ถ้าเคยเจอบอสโซนนั้นแล้ว (ผ่านหรือแพ้แล้วเฝ้าสะพานอยู่) ถือว่าเห็นฉากมาถึงแล้ว
   // ไม่งั้นผู้เล่นที่เล่นมาก่อนจะโดนฉากมาถึงย้อนหลังทั้งที่สู้บอสไปแล้ว
   this.bossArriveSeen = d.bossArriveSeen || { ...this.bossCleared, ...this.bossGuarding };
+  // Dale ตรวจชุดที่ 10 (25 ก.ย. 2569, ทดสอบจริงด้วย Playwright พบว่าเซฟที่บั๊กเดิมเคยติดธงไว้
+  // ก่อนเปิดฉาก — เช่นเซฟของคุณเป้ที่เจอบอสโซน 1 "เดินเข้ามาหาเลย ไม่มีฉากเปิด" — flag ค้างเป็น true
+  // ถาวร ต่อให้แพตช์ข้อ E1 (ย้ายการติดธงไปไว้ใน onDone) แก้จุดตั้งธงแล้ว เซฟเก่าที่ติดธงผิดจังหวะไปแล้ว
+  // ก็จะไม่มีทางได้เห็นฉากอีกเลยตลอดไป เพราะเซฟไม่เคยรู้ว่าตัวเอง "ผิด" — ไมเกรตครั้งเดียวตรงนี้:
+  // เซฟที่ไม่มี marker นี้ (เขียนไว้ก่อนแพตช์นี้) รีเซ็ต bossArriveSeen ของทุกโซนที่ยังไม่ชนะบอส
+  // (bossCleared ยังเป็น false) ให้กลับเป็น false ครั้งเดียว — โซนที่ชนะไปแล้วไม่ถูกแตะ (ไม่งั้นฉากขึ้น
+  // ย้อนหลังทั้งที่สู้ไปแล้วจริง) แลกกับผู้เล่นส่วนน้อยที่เคยเห็นฉากถูกต้องอยู่แล้วจะเห็นซ้ำอีกครั้งเดียว
+  // (ไม่เสียหาย) เทียบกับผู้เล่นที่ติดบั๊กจะได้เห็นฉากที่ Rae เขียน/Reese fact-check แล้วจริง ๆ สักที
+  if (!d.bossArriveFixV10) {
+    Object.keys(this.bossArriveSeen).forEach(k => { if (!this.bossCleared[k]) delete this.bossArriveSeen[k]; });
+  }
+  this.bossArriveFixV10 = true;
   this.bossWalk = null;
   this.zoneEntry = d.zoneEntry || null;
   this.bossPending = this.bossReady();

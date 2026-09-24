@@ -106,3 +106,27 @@ test('ครบวาระทัณฑ์เข้าตะราง ส่ว�
   assert.equal(g.sentenceOf(906, 'gate')?.checked, false);
   assert.equal(g.ascended, 0);
 });
+
+// Dale ตรวจชุดที่ 10 (25 ก.ย. 2569) — ข้อ E1: เซฟเก่าที่บั๊กเดิม (ก่อนแพตช์ข้อ E1) เคยติดธง
+// bossArriveSeen[zone]=true ไปแล้วก่อนผู้เล่นได้เห็นฉากมาถึงจริง (เช่นเซฟของคุณเป้ที่เจอบอสโซน 1
+// "เดินเข้ามาหาเลย ไม่มีฉากเปิด") ต้องได้เห็นฉากอีกครั้งหลังโหลดเซฟเก่าเข้าโค้ดที่แก้แล้ว — แต่โซนที่
+// ชนะบอสไปแล้วจริง (bossCleared=true) ห้ามถูกรีเซ็ต ไม่งั้นฉากขึ้นย้อนหลังทั้งที่สู้จบไปแล้ว
+test('ไมเกรตเซฟเก่า: bossArriveSeen ที่ติดธงมาก่อนแพตช์ต้องรีเซ็ตเฉพาะโซนที่ยังไม่ชนะบอส', () => {
+  const oldSave = createGame().snapshot();
+  delete oldSave.bossArriveFixV10;                 // จำลองเซฟที่เขียนไว้ก่อนแพตช์นี้ (ไม่มี marker)
+  oldSave.bossArriveSeen = { th: true, asia: true }; // บั๊กเดิม: ติดธงไปแล้วทั้งที่ยังไม่เคยเห็นฉากจริง
+  oldSave.bossCleared = { asia: true };              // แต่โซนบูรพาชนะบอสไปแล้วจริง ๆ (ต้องคงเดิม)
+
+  const g = createGame();
+  assert.equal(g.restore(oldSave), true);
+  assert.equal(g.bossArriveSeen.th, undefined, 'โซนที่ยังไม่ชนะบอสต้องถูกรีเซ็ตให้เห็นฉากอีกครั้ง');
+  assert.equal(g.bossArriveSeen.asia, true, 'โซนที่ชนะบอสไปแล้วจริงต้องไม่ถูกแตะ');
+
+  // โหลดซ้ำอีกรอบด้วยเซฟที่ผ่านการไมเกรตแล้ว (มี marker) ต้องไม่รีเซ็ตซ้ำอีก
+  const migrated = g.snapshot();
+  assert.equal(migrated.bossArriveFixV10, true);
+  const g2 = createGame();
+  migrated.bossArriveSeen.th = true;   // จำลองว่าเล่นต่อแล้วเห็นฉากจริงหลังไมเกรตรอบแรก
+  assert.equal(g2.restore(migrated), true);
+  assert.equal(g2.bossArriveSeen.th, true, 'เซฟที่ไมเกรตแล้ว (มี marker) ต้องไม่ถูกรีเซ็ตซ้ำ');
+});
