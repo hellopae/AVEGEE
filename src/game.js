@@ -2354,6 +2354,14 @@ API.save = function () {
 
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
+  // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เซฟเก่ามีค่า fuel (ฟืน) ไม่ใช่ food (เสบียง)
+  // ยกมา 1:1 ให้ผู้เล่นไม่เสียเปรียบ (จำนวนคงเดิม แค่เปลี่ยนความหมาย) · เซฟใหม่มี d.food อยู่แล้วไม่ต้องแปลง
+  if (d.food == null && d.fuel != null) d.food = d.fuel;
+  // ของในกระเป๋าที่เคยเป็น 'มัดฟืน' (คีย์ fuel) ต้องยกไปเป็น 'ห่อเสบียง' (คีย์ food ใหม่) ไม่งั้นค้างเป็นของที่หาไม่เจอ
+  if (d.inventory && d.inventory.fuel) {
+    d.inventory.food = (d.inventory.food || 0) + d.inventory.fuel;
+    delete d.inventory.fuel;
+  }
   const keep = ['tick','coin','food','order','karma','hp','hpMax','hits','star5','level',
                 'greens','reds',
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi',
