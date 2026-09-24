@@ -24,5 +24,6 @@ import dab from './dab.js';
 import lokan from './lokan.js';
 import ngiw from './ngiw.js';
 import lan from './lan.js';
+import sawan from './sawan.js';
 
-export const MINIGAMES = { sala, krata, dab, lokan, ngiw, lan };
+export const MINIGAMES = { sala, krata, dab, lokan, ngiw, lan, sawan };

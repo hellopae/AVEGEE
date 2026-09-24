@@ -912,6 +912,15 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .mg-lan-rock{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px}
 .mg-lan-flag{position:absolute;right:-2px;top:50%;transform:translateY(-50%);font-size:24px}
 .mg-lan-tap{align-self:center;min-height:48px;padding:10px 26px;font-size:var(--text-sm)}
+/* ---- sawan "นับลมหายใจ" — วงแสงทองขยาย/หด แตะตอนขยายสุด (โทนสงบ ไม่มีเอฟเฟกต์กระแทก) ---- */
+.mg-sawan{display:flex;flex-direction:column;gap:10px;flex:1 1 auto}
+.mg-sawan-stage{position:relative;flex:1 1 auto;min-height:130px;display:flex;align-items:center;justify-content:center}
+.mg-sawan-ring{width:84px;height:84px;border-radius:50%;border:3px solid var(--gold);
+  box-shadow:0 0 22px rgba(212,163,85,.4)}
+.mg-sawan-ring.good{border-color:var(--success);box-shadow:0 0 26px rgba(74,157,106,.55)}
+.mg-sawan-ring.miss{border-color:var(--muted-foreground);box-shadow:none}
+.mg-sawan-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+.mg-sawan-tap{align-self:center;min-height:48px;padding:10px 24px;font-size:var(--text-sm)}
 /* ---- ปุ่มลอยบนฉาก (9 ก.ย. 2569) ---- */
 .fabs{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;flex-direction:column;
   align-items:flex-end;gap:6px;pointer-events:none}
