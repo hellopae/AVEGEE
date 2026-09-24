@@ -2314,11 +2314,15 @@ function openStation(k) {
     }
 
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ทัณฑ์เดินเฉพาะตอนเกม "เดินวาระ" อยู่ (g.step() ถูกเรียกจากลูปเฟรมเท่านั้น
+    // เมื่อ !g.paused) เห็นได้แค่จากป้ายบนฉาก (ต้องยืนใกล้ถึงจะเห็น) — เพิ่ม chip ตรงนี้ให้เห็นได้ทันที
+    // ไม่ว่าจะยืนตรงไหนในห้อง กันเข้าใจผิดว่า "สถานีค้าง" ทั้งที่เกมทั้งเกมหยุดพักอยู่
     if (T) T.innerHTML = `
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
         <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
         <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
+        ${g.paused ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>` : ''}
         <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
     if (L) L.innerHTML = `
           <div class="hud-card">
