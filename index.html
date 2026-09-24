@@ -598,7 +598,9 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
 .arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
   align-items:center;gap:5px;width:min(34%,240px)}
-.arena .fig.you{left:4%} .arena .fig.foe{right:4%}
+/* ข้อ D คุณเป้ 24 ก.ย. 2569 — ยมน้อยต้องอยู่หน้าสุดเสมอ ไม่มีตัวไหนบังหัวได้
+   (เจอ: ยมทูตที่เข้ามาช่วย .fig.helper วาด z-index:3 ทับหัวยมน้อยซึ่งเดิม z-index:2 ตามค่า .fig ฐาน) */
+.arena .fig.you{left:4%;z-index:4} .arena .fig.foe{right:4%}
 .arena .fig img{height:clamp(140px,24vh,215px);width:auto;max-width:100%;object-fit:contain;
   object-position:bottom;image-rendering:pixelated;
   filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
@@ -649,6 +651,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   .arena .fig{width:42%} .arena .fig.you{left:1%} .arena .fig.foe{right:1%}
   .arena .ttl{font-size:.95rem}
   .arena .fig img{height:clamp(105px,19vh,165px)}
+  /* .fig.helper ใช้ค่า left/width/height ไม่แยกมือถือ — คลิปด้วย clamp(vh) อยู่แล้วจึงย่อขนาดตามจอเตี้ยเอง
+     ตำแหน่ง/ขนาดของ .battle-squad (แถวยมทูตในทีม ที่ใช้งานได้จริง) กำหนดที่ src/command-wheel.css ที่เดียว */
   .acts button{min-height:42px}
 }
 
@@ -829,10 +833,17 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .acts .crewbtn{display:flex;align-items:center;gap:6px}
 .acts .crewbtn img{width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:top;
   border:1px solid var(--gold);background:rgba(12,6,9,.7)}
-/* ยมทูตที่ถูกเรียกมาช่วย — ยืนถัดจากเราแล้วพุ่งเข้าชนพร้อมกัน */
-.arena .fig.helper{left:20%;z-index:3}
+/* ยมทูตที่ถูกเรียกมาช่วย — ยืนถัดจากเราแล้วพุ่งเข้าชนพร้อมกัน (ปัจจุบันโค้ดเรียกไม่ถึงเงื่อนไขนี้แล้วจริง ๆ
+   เพราะปุ่มความสามารถยมทูตต้องอยู่ในทีมสู้ก่อนถึงจะกดได้ ซึ่งทำให้ squad.length > 0 เสมอ = เงื่อนไข
+   `helper && !squad.length` ใน arena() ไม่มีทางเป็นจริง — เหลือไว้กันโค้ดพัง/เผื่อวันหลังเอากลับมาใช้
+   ข้อ D คุณเป้ 24 ก.ย. 2569 — เดิม img{height:70%} ไม่มีความสูงพ่อแม่ให้อ้างอิงจริง (.fig สูงอัตโนมัติ
+   ตามเนื้อหาข้างใน) เบราว์เซอร์เลยตีความ 70% เป็น auto แล้วโชว์ภาพที่ขนาดเนื้อไฟล์จริง (ใหญ่กว่ายมน้อยมาก)
+   ป้ายชื่อ (.plate กว้างเท่า .fig ฐาน 34%/240px) เลยไปทับป้ายยมน้อยพอดีด้วย — ล็อกขนาดใหม่ให้ใกล้เคียงยมน้อย
+   (~85%) และย้ายไปโซนเดียวกับ .battle-squad (left:1% ในโหมดต่อสู้จริง ยมน้อยอยู่ที่ left:19%/17% ไม่ใช่ 4%
+   ที่ .fig ฐานเขียนไว้ — ตำแหน่งจริงถูกทับด้วย src/command-wheel.css `.arena:has(.combat-wheel)>.fig.you`) */
+.arena .fig.helper{left:1%;z-index:3;width:min(24%,175px)}
 .arena .fig.helper:not(.lunge){animation:helperIn .35s ease-out}
-.arena .fig.helper img{height:70%;transform:scaleX(-1)}   /* หันหน้าไปทางศัตรูเหมือนฝั่งเรา */
+.arena .fig.helper img{height:clamp(120px,20vh,183px);transform:scaleX(-1)}   /* หันหน้าไปทางศัตรูเหมือนฝั่งเรา */
 @keyframes helperIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
 /* ปุ่มสอบสวนลอยอยู่เหนือบัลลังก์บนฉากเลย (เจ้าของสั่ง 9 ก.ย. 2569) */
 #ov .trialfab{position:absolute;transform:translate(-50%,-100%);z-index:4;white-space:nowrap;
@@ -1157,9 +1168,9 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .battle-crew-actions .battle-icon img{width:100%;height:100%;object-fit:cover;object-position:top}.battle-crew-actions b{font-size:8px}
 .battle-crew-actions .battle-icon em{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(6,3,5,.78) var(--wait),transparent 0)}
 .battle-act:disabled{opacity:.3;pointer-events:none;filter:grayscale(.65)}
-.battle-squad{position:absolute;z-index:2;left:18%;bottom:10%;display:flex;align-items:flex-end;gap:3px}
-.battle-squad span{display:flex;flex-direction:column;align-items:center}.battle-squad img{height:clamp(82px,15vh,132px);
-  width:auto;image-rendering:pixelated;filter:drop-shadow(0 6px 8px rgba(0,0,0,.7));transform:scaleX(-1)}
+/* ตำแหน่ง/ขนาดจริงของแถวยมทูตช่วย (คอนเทนเนอร์ .arena .battle-squad) ถูกกำหนดใน
+   src/command-wheel.css (selector เฉพาะเจาะจงกว่า ชนะ cascade ที่นี่เสมอ) — ดูคอมเมนต์ข้อ D
+   คุณเป้ 24 ก.ย. 2569 ที่นั่น ที่นี่เหลือไว้แค่สไตล์ที่ command-wheel.css ไม่ได้แตะ (ป้ายชื่อ <b>) */
 .battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px}
 
 /* ฉากรับโทษกระทะทองแดง */
@@ -1215,7 +1226,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   .trial-wheel{left:13%;bottom:1%;transform:scale(.78);transform-origin:left bottom}
   .trial-hud .hud-bottom{height:88px}
   .battle-wheel{left:23%;bottom:22%;transform:scale(.82);transform-origin:left bottom}.battle-crew-actions{left:10%;bottom:2%}
-  .battle-squad{left:16%}.battle-squad img{height:76px}
+  /* ข้อ D คุณเป้ 24 ก.ย. 2569: เดิม left:16%/76px เล็กและใกล้ยมน้อยเกินไป (76px ≈ 46% ของยมน้อยตอนนั้น) ชนกันพอดี */
+  .battle-squad{left:30%}.battle-squad img{height:clamp(88px,16vh,140px)}
   .frontier-screen{min-height:calc(100dvh - 24px)}.frontier-party{min-height:230px;padding:8px 8% 0}.frontier-hero img{height:170px}.frontier-hero.mate img{height:135px}
   .frontier-panel{padding:12px}.frontier-cards{display:grid;grid-template-columns:1fr 1fr}.frontier-card{min-width:0}
   .punish-dad{right:4%;bottom:22%;width:28%}.punish-dad span{white-space:normal}.punish-yama{width:20%;height:21%}
