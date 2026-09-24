@@ -897,6 +897,14 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .mg-lokan-fog{position:absolute;inset:0;border-radius:inherit;
   background:linear-gradient(180deg,rgba(190,230,255,.9),rgba(150,205,248,.9))}
 .mg-lokan-tap{align-self:center;min-height:48px;padding:10px 24px;font-size:var(--text-sm)}
+/* ---- ngiw "เก็บหนามที่เคยทิ่ม" — หนามโผล่สุ่มตำแหน่ง แตะให้ทันก่อนจมหาย ---- */
+.mg-ngiw{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-height:0}
+.mg-ngiw-stage{position:relative;flex:1 1 auto;min-height:150px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(0,0,0,.2)}
+.mg-ngiw-thorn{position:absolute;transform:translate(-50%,-50%);width:46px;height:46px;min-height:0;
+  border-radius:50%;font-size:22px;padding:0;background:rgba(120,80,20,.5);animation:mgPop .15s ease-out}
+@keyframes mgPop{from{transform:translate(-50%,-50%) scale(.5);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.mg-ngiw-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
 /* ---- ปุ่มลอยบนฉาก (9 ก.ย. 2569) ---- */
 .fabs{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;flex-direction:column;
   align-items:flex-end;gap:6px;pointer-events:none}
