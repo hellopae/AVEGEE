@@ -1,17 +1,30 @@
 // src/minigames/krata.js — กระทะทองแดง: "คุมไฟ" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569)
 // ที่มา: Minnie 2A (Output/Minnie/2026-09-18-avegee-station-minigames.md)
+//
+// แก้ตาม FIX LIST ของ Dale (Output/Dale/2026-09-24-avegee-batch9-review.md, FIX-1):
+// เดิมลดทั้ง zoneHalf กับ period พร้อมกันแบบเส้นตรง ทำให้ "เวลาที่เข็มอยู่ในโซนจริง" (dwell)
+// หดตัวแบบทวีคูณ (ไม่ใช่เชิงเส้น) — ขั้น 2→3 ขึ้นไปเหลือ dwell แค่ ~50-100ms ต่ำกว่า latency
+// การแตะจริงของคนทั่วไป (~100-150ms) ทำให้ไปไม่ถึงขั้น 5 ได้จริงแม้กลไกจะอนุญาต
+//
+// ตอนนี้คำนวณ zoneHalf "จาก period ปัจจุบัน" ตรง ๆ ให้ dwell คงที่ ~MIN_DWELL_MS ทุกขั้นเสมอ
+// (สูตรตรงจาก pos(t)=0.5+0.44·sin(2π t/period): ช่วงเวลาที่ |pos-0.5|<=zoneHalf ต่อการแกว่งผ่าน
+// จุดศูนย์กลางหนึ่งรอบ = asin(zoneHalf/0.44)·period/π เมื่อแก้สมการกลับหา zoneHalf ที่ทำให้
+// dwell ตรง MIN_DWELL_MS พอดี — ไม่ต้องประมาณเชิงเส้นแบบเดิม แม่นตรงทุกขั้น) ความยากไล่ระดับ
+// ผ่าน NEED (ต้องแตะติดกันกี่ครั้ง) แทน ไม่ใช่ผ่านเรขาคณิตที่กระทบความเป็นไปได้จริง
 import { el, lerpByLevel, rafLoop } from './util.js';
 
-const NEED = 5;
+const NEED_BY_LEVEL = [4, 5, 6, 7, 8];
+const MIN_DWELL_MS = 220;   // เพดานปลอดภัยเหนือ latency ทดสอบจริงสูงสุดของ Dale (150ms) ~70ms
 
 export default {
   name: 'คุมไฟ',
   icon: '🔥',
-  tip: 'หัวไฟแกว่งซ้าย-ขวาตลอดเวลา — แตะ "พัดไฟ" ตอนหัวไฟอยู่ในโซนทอง ให้ติดกัน 5 ครั้งก่อนหมดเวลา',
+  tip: 'หัวไฟแกว่งซ้าย-ขวาตลอดเวลา — แตะ "พัดไฟ" ตอนหัวไฟอยู่ในโซนทอง ให้ติดกันตามจำนวนที่กำหนดก่อนหมดเวลา',
   run(host, { level, alive, onWin, onLose }) {
+    const NEED = NEED_BY_LEVEL[Math.max(0, Math.min(4, level))];
     const total = 20000;
-    const period = lerpByLevel(level, 1500, 850);   // ขั้นสูงแกว่งเร็วขึ้น
-    const zoneHalf = lerpByLevel(level, 0.16, 0.085); // ขั้นสูงโซนทองแคบลง
+    const period = lerpByLevel(level, 1900, 1500);   // ขั้นสูงแกว่งเร็วขึ้น (เดิม 1500→850 เร็วเกินจนคุมโซนไม่พอ)
+    const zoneHalf = 0.44 * Math.sin((Math.PI * MIN_DWELL_MS) / period);  // dwell คงที่ ~220ms ทุกขั้น
     let streak = 0, pos = 0.5, done = false;
 
     const wrap = el('div', 'mg-krata');

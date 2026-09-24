@@ -1,5 +1,10 @@
 // src/minigames/lan.js — ลานตรากตรำ: "แบกหิน" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569)
 // ที่มา: Minnie 6A (Output/Minnie/2026-09-18-avegee-station-minigames.md)
+//
+// แก้ตาม FIX LIST ของ Dale (Output/Dale/2026-09-24-avegee-batch9-review.md, FIX-2):
+// เดิมขั้น 4 ต้องการอัตรากดรัว >6.25 ครั้ง/วิทางทฤษฎีแค่จะไม่ถอยหลัง ชนะได้จริงก็ต่อเมื่อกด 9 ครั้ง/วิ
+// ต่อเนื่อง (เกินคนทั่วไป) — ลด decay ลง/เพิ่ม perTap ที่ขั้นสูง ให้อัตราที่ต้องการสุทธิไม่เกิน ~5-6
+// ครั้ง/วิ และให้เวลารวมที่ขั้นสูงมีระยะพอ (18 วิ แทน 16 วิ)
 import { el, lerpByLevel, rafLoop } from './util.js';
 
 export default {
@@ -7,9 +12,9 @@ export default {
   icon: '⛏️',
   tip: 'แตะรัว ๆ ที่ปุ่มเพื่อแบกหินไปให้ถึงธง — หยุดแตะแล้วแรงจะค่อย ๆ ลด',
   run(host, { level, alive, onWin, onLose }) {
-    const total = lerpByLevel(level, 19000, 16000);
-    const perTap = lerpByLevel(level, 5.6, 3.2);
-    const decay = lerpByLevel(level, 0.010, 0.020);
+    const total = lerpByLevel(level, 19000, 18000);
+    const perTap = lerpByLevel(level, 5.6, 4.2);      // เดิมเหลือ 3.2 ต่ำไป
+    const decay = lerpByLevel(level, 0.010, 0.014);   // เดิมสูงสุด 0.020 แรงไป
     let prog = 0, done = false;
 
     const wrap = el('div', 'mg-lan');
