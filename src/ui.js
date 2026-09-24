@@ -1374,6 +1374,11 @@ function openTrial() {
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
     const heaven = !!(stDef && stDef.heaven);
     const ready  = !!(pick.st && pick.cr && (heaven || pick.inten));
+    // ปุ่มออกหมายกด disabled แล้วเงียบ ไม่มีทางรู้ว่าขาดอะไร (ข้อ B คุณเป้ 24 ก.ย. 2569)
+    // — ต้องมีข้อความบนจอเสมอ ไม่ใช่แค่ title ที่ disabled button ไม่โชว์บนจอสัมผัส
+    const missingParts = ready ? [] : [
+      !pick.st && 'ที่ไหน', !pick.cr && 'ใครคุม', !(heaven || pick.inten) && 'ความแรง',
+    ].filter(Boolean);
 
     // ---- แถบสถานะบนสุด ----
     const ot = g.orderTier(), kt = g.karmaTier();
@@ -1456,6 +1461,7 @@ function openTrial() {
         </div>
 
         <div class="hud-right">
+          ${missingParts.length ? `<div class="trial-missing" role="status">⚠️ ออกหมายไม่ได้ — ยังไม่ได้เลือก ${missingParts.join(' · ')}</div>` : ''}
           <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
             <h4>สำนวนที่นิราอ่านให้ฟัง</h4>
