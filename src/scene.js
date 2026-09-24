@@ -373,10 +373,27 @@ export function nearBuild(g, x, y) {
   return best;
 }
 
+/** กรอบจริงของป้าย "กดเพื่อสร้าง" ที่ลอยเหนือหัวตัวละคร — แยกออกมาให้ buildPrompt() (วาด)
+ *  กับ hitBuildPrompt() (เช็คคลิก ใน ui.js) ใช้สูตรเดียวกันเป๊ะ ไม่มีทางเพี้ยนจากกัน
+ *  (ชุดที่ 10 คุณเป้ 25 ก.ย. 2569 ข้อ E3 — เดิมกรอบคลิกจริงคือ def.hit ที่ระดับพื้น แต่ป้ายลอยอยู่
+ *  เหนือหัวตัวละคร cy = def.y-122 ซึ่งบางหลัง (โดยเฉพาะหลังเตี้ย/แคบ) ป้ายลอยพ้นกรอบ def.hit ไปเลย
+ *  ผู้เล่นเห็นป้าย "กดตรงนี้" แล้วกดตรงป้ายจริง ๆ แต่กรอบคลิกจริงอยู่คนละที่ กดเท่าไหร่ก็ไม่ติด) */
+function buildPromptRect(ctx, def, afford) {
+  const cx = def.x, cy = Math.max(46, def.y - 122);   // ลอยเหนือหัวตัวเรา ไม่บังตัวละคร
+  const l1 = `${def.glyph} ${def.name}`;
+  const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
+  ctx.font = '700 20px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  const w1 = ctx.measureText(l1).width;
+  ctx.font = '600 15px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  const w2 = ctx.measureText(l2).width;
+  const w = Math.max(w1, w2) + 30, h = 58;
+  const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
+  return { bx, by, w, h };
+}
+
 /** ป้าย "กดเพื่อสร้าง" ที่โผล่เฉพาะตอนยมบาทยืนอยู่ในเขตนั้น */
 function buildPrompt(ctx, def, t, afford) {
   const [x1, y1, x2, y2] = def.hit;
-  const cx = def.x, cy = Math.max(46, def.y - 122);   // ลอยเหนือหัวตัวเรา ไม่บังตัวละคร
   const q = 0.5 + 0.5 * Math.sin(t / 420);
 
   // เส้นประวิ่งรอบเขต บอกว่าอาคารจะลงตรงไหน
@@ -386,20 +403,22 @@ function buildPrompt(ctx, def, t, afford) {
   rr(ctx, x1 + 6, y1 + 6, x2 - x1 - 12, y2 - y1 - 12, 10); ctx.stroke();
   ctx.restore();
 
+  const { bx, by, w, h } = buildPromptRect(ctx, def, afford);
   const l1 = `${def.glyph} ${def.name}`;
   const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
-  ctx.font = '700 20px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
-  const w1 = ctx.measureText(l1).width;
-  ctx.font = '600 15px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
-  const w2 = ctx.measureText(l2).width;
-  const w = Math.max(w1, w2) + 30, h = 58;
-  const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
 
   ctx.fillStyle = 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
   ctx.strokeStyle = afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
   ctx.lineWidth = 2; ctx.stroke();
   label(ctx, l1, bx + w / 2, by + 19, 20, '#ffe7c4');
   label(ctx, l2, bx + w / 2, by + 41, 15, afford ? '#d4a355' : '#b09a92');
+}
+
+/** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
+ *  afford ไม่ผลต่อขนาดกรอบจริง (ข้อความสองแบบยาวใกล้กัน) ใส่ true ไปตรง ๆ ได้เสมอ */
+export function hitBuildPrompt(ctx, def, sx, sy) {
+  const { bx, by, w, h } = buildPromptRect(ctx, def, true);
+  return sx >= bx && sx <= bx + w && sy >= by && sy <= by + h;
 }
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */

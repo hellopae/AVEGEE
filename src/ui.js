@@ -6,7 +6,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
-import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier } from './scene.js';
+import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
@@ -1977,7 +1977,12 @@ function openZone() {
     <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`,
     d => { d.classList.add('zonepick'); d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
       if (!g.moveZone(b.dataset.zone)) return;
-      sfx('gong'); dlg.close(); refresh();
+      // ชุดที่ 10 (ข้อ E2) — g.moveZone() เรียก onChange() เองข้างใน ซึ่งเปิดฉากแนะนำโซนใหม่
+      // (openZoneArrival) หรือกล่อง "กลับมาที่..." ทับกล่องเลือกโซนนี้ไปแล้วทันที (dlg ใช้ element
+      // เดียวกันทั้งเกม) เดิมโค้ดตรงนี้สั่ง dlg.close() ต่อทันที — ปิดฉากที่เพิ่งเปิดไปหมาดๆ ก่อนจะ
+      // ได้เห็นแม้เฟรมเดียว (คุณเป้เจอ 25 ก.ย. 2569: "ชนะบอสแล้วกดเปลี่ยนโซน cutscene ไม่ขึ้น")
+      // ห้ามปิด dlg ซ้ำตรงนี้ — ปล่อยให้กล่องที่ moveZone() เปิดไว้แล้วอยู่ต่อ
+      sfx('gong'); refresh();
     }); });
 }
 
@@ -2219,7 +2224,13 @@ function onSceneClick(sx, sy) {
 
   // ป้าย "กดเพื่อสร้าง" มาก่อนทุกอย่าง — ตอนนั้นเรายืนอยู่ตรงจุดพอดี
   // ถ้าไปเช็คตัวละครก่อน คลิกยังไงก็โดนตัวเราเองเสมอ แล้วจะไม่มีทางกดสร้างได้เลย
+  // ชุดที่ 10 (ข้อ E3) — เดิมเช็คแค่กรอบพื้น def.hit แต่ป้าย "กดตรงนี้เพื่อสร้าง" ลอยอยู่เหนือหัว
+  // ตัวละคร (cy = def.y-122) ซึ่งบางหลังลอยพ้นกรอบ def.hit ไปเลย ผู้เล่นกดตรงป้ายจริง ๆ แต่กรอบคลิก
+  // อยู่คนละที่ กดเท่าไหร่ก็ไม่ติด (คุณเป้เจอที่หอส่องกรรมโซนบูรพา 25 ก.ย. 2569) — เพิ่ม hitBuildPrompt
+  // เป็นทางเลือกที่สอง: ยืนใกล้พอ (nearBuild) แล้วคลิกโดนป้ายจริงที่วาดบนจอ ก็ให้เปิดกล่องสร้างได้เหมือนกัน
   if (def && !st && nearBuild(g, g.player.x, g.player.y)?.k === def.k) return openBuild(def);
+  const buildSpot = nearBuild(g, g.player.x, g.player.y);
+  if (buildSpot && (!def || def.k !== buildSpot.k) && hitBuildPrompt(ctx, buildSpot, sx, sy)) return openBuild(buildSpot);
 
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
@@ -2726,9 +2737,15 @@ g.onChange = () => {
       if (g.startZoneBoss()) openBattle();
     };
     // ฉากมาถึงขึ้นก่อนครั้งแรกเท่านั้น — รีแมตช์ (ติดธงแล้ว) ข้ามตรงไปสู้เลยตามใบงาน
+    // ชุดที่ 10 (ข้อ E1) — เดิมติดธง "เห็นแล้ว" + เซฟ ก่อนเปิดฉากด้วยซ้ำ ถ้าผู้เล่นรีเฟรช/ปิดแท็บ
+    // กลางฉาก (เซฟไปแล้วตั้งแต่บรรทัดนี้) โหลดกลับมาจะข้ามฉากไปเลยทั้งที่ยังไม่เคยเห็นจริง — บอสเดินเข้ามา
+    // สู้ทันทีไม่มีฉากเปิด (คุณเป้เจอ 25 ก.ย. 2569) ย้ายการติดธง/เซฟไปไว้ใน "onDone" แทน ให้ติดธงหลัง
+    // ฉากปิดจริง (ไม่ว่าอ่านจบทุกหน้าหรือกดปิดกลางคัน) ไม่ใช่ก่อนเปิด
     if (!g.bossArriveSeen[g.zone]) {
-      g.bossArriveSeen[g.zone] = true; g.save();
-      openBossArrive(z, proceed);
+      openBossArrive(z, () => {
+        g.bossArriveSeen[g.zone] = true; g.save();
+        proceed();
+      });
     } else proceed();
     return;
   }
