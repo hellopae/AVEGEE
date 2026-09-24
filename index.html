@@ -797,8 +797,21 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   background-size:cover,256px 256px;background-repeat:no-repeat,repeat;background-blend-mode:normal,normal}
 .hud-rec .deed{font-size:var(--text-sm);line-height:1.55}
 /* ---- หน้าของสถานีหนึ่งหลัง (9 ก.ย. 2569) ---- */
+/* ชุดที่ 10 คุณเป้ 25 ก.ย. 2569 (ข้อ A2) — .hud-body เดิม (บรรทัด ~744) ประกาศ
+   grid-template-areas:"stage menu" "stage right" ไว้แค่ 2 คอลัมน์ (สำหรับหน้าไต่สวน ที่ใช้
+   .hud-stage/.hud-menu/.hud-right) แต่หน้าสถานีขยายเป็น 3 คอลัมน์ (.st-left/.st-room/.hud-right)
+   โดยไม่เคยประกาศ areas ของตัวเองเลย — เบราว์เซอร์เลยตีความ "right" ตาม string เดิม (คอลัมน์ที่ 2
+   ของ 2 คอลัมน์) ผลคือ .hud-right ไปเรียงซ้อนอยู่ "ใต้" คอลัมน์กลาง (.st-room) แทนที่จะอยู่ขวาจริง
+   ถูกบีบเหลือแค่เศษพื้นที่แถวสุดท้าย (~190px) เนื้อหาในนั้น (ปุ่ม "ให้บุญตรวจกรรม" ฯลฯ) เลยทับกับ
+   การ์ด "ผู้คุมประจำหลังนี้" จนกดไม่ติดจริง (พิสูจน์ด้วย elementsFromPoint ผ่าน Playwright)
+   แก้ด้วยการประกาศ areas ของหน้าสถานีเองให้ครบ 3 คอลัมน์ 1 แถว แล้วตั้งชื่อ area ให้ .st-left/.st-room
+   ตรง ๆ ไม่พึ่ง auto-placement อีก (ต้นเหตุของบั๊กนี้ทั้งหมด) */
 .st-hud{background:#0d0508}
-.st-hud .hud-body{grid-template-columns:minmax(160px,200px) minmax(0,1fr) minmax(230px,260px);gap:8px}
+.st-hud .hud-body{grid-template-columns:minmax(160px,200px) minmax(0,1fr) minmax(230px,260px);
+  grid-template-rows:1fr;grid-template-areas:"left room right";gap:8px}
+.st-hud .st-left{grid-area:left}
+.st-hud .st-room{grid-area:room}
+.st-hud .hud-right{grid-area:right}
 @media (max-width:1100px){.st-hud .hud-body{grid-template-columns:minmax(140px,170px) minmax(0,1fr) minmax(200px,220px)}}
 .st-left{overflow-y:auto}
 .st-desc{font-size:var(--text-xs);line-height:var(--leading-body);color:var(--foreground)}
@@ -1040,8 +1053,12 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   /* หน้าสถานีบนจอมือถือ: .st-hud .hud-body ตั้ง 3 คอลัมน์ไว้ในมีเดีย max-width:1100px
      ซึ่ง specificity สูงกว่า .hud-body{grid-template-columns:1fr} ของบล็อกนี้ คอลัมน์กลาง
      (ฉากในสถานี + แฟ้มทะเบียนกรรมที่ทับอยู่) จึงถูกบีบเหลือ 0px บนจอ 390 — เปิดแฟ้มแล้ว
-     ตัวหนังสือตกบรรทัดทีละอักษร (เจอตอนทดสอบข้อ 2 เมื่อ 12 ก.ย. 2569) */
-  .st-hud .hud-body{grid-template-columns:1fr}
+     ตัวหนังสือตกบรรทัดทีละอักษร (เจอตอนทดสอบข้อ 2 เมื่อ 12 ก.ย. 2569)
+     ชุดที่ 10 (ข้อ A2) — คอลัมน์เดียวบนมือถือแล้ว areas "left room right" (1 แถว 3 คอลัมน์) ที่ตั้งไว้ตอนจอกว้าง
+     ใช้ไม่ได้อีกต่อไป (คอลัมน์เหลือแค่ 1) ต้องแตก areas เป็น 3 แถวคอลัมน์เดียวให้ตรงกับ grid-template-columns:1fr
+     ไม่งั้น .st-left/.st-room/.hud-right จะกลับไปพึ่ง auto-placement แบบเดิมที่เป็นต้นเหตุบั๊กทั้งหมด */
+  .st-hud .hud-body{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;
+    grid-template-areas:"left" "room" "right"}
   .st-room{min-height:46vh}          /* แฟ้มทะเบียนกรรมทับอยู่บนนี้ — เตี้ยกว่านี้อ่านได้ทีละบรรทัดเดียว */
   .hud-right{max-height:none;overflow:visible}
   /* 92px ตามสเปก Vera ตรง ๆ ไม่พอกับคดีสุ่มจริง (บุญ/กรรมที่รู้แล้วมักมี 2-4 บรรทัด ไม่ใช่แค่ 1-2)
