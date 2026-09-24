@@ -106,7 +106,7 @@ function drawRes() {
   $('#res').innerHTML = `
     <span class="chip tap" data-ex="coin">🪙 <b>${Math.round(g.coin)}</b></span>
     <span class="chip tap" data-ex="fuel">🔥 <b>${Math.round(g.fuel)}</b></span>
-    <span class="chip tap" data-ex="hp">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
+    <span class="chip tap" data-ex="hp" id="res-hp-chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
     <span class="chip tap" data-ex="order">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b>
       <i style="font-style:normal;opacity:.6">${esc(ot.name)}</i></span>
     <span class="chip tap" data-ex="karma">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b>
@@ -2450,10 +2450,18 @@ function openStation(k) {
   R.onCollect = () => { panels(); refresh(); };
   let wasNear = null, wasSitting = false;
   R.onFrame = near => {
-    // นั่งอยู่ — บารมีขยับทุกเฟรมจริง อัปเดตเฉพาะตัวเลขที่หัวกล่องแบบเบา ๆ ไม่วาดทั้งแผงใหม่ทุกเฟรม
+    // นั่งอยู่ — บารมีขยับทุกเฟรมจริง (room.js เขียนตรงที่ g.hp โดยไม่ผ่าน onChange/refresh()
+    // เพราะตั้งใจให้ฟื้นต่อได้แม้เกมพักอยู่กับกล่องโมดัล — ดู room.js setSit) อัปเดตเฉพาะตัวเลข
+    // แบบเบา ๆ ไม่วาดทั้งแผงใหม่ทุกเฟรม แต่ต้องอัปเดต "ทั้งสองที่" พร้อมกัน:
+    // ป้ายในหน้าต่างศาลา (#st-hp-chip) กับแถบหลักด้านหลัง (#res-hp-chip) — ไม่งั้นสองที่ไม่ตรงกัน
+    // ระหว่างนั่ง (ข้อ C คุณเป้ 24 ก.ย. 2569 — ก่อนแก้ แถบหลักค้างค่าเก่าเพราะไม่มีอะไรเรียก refresh()
+    // จนกว่าจะมี action อื่นที่ผ่าน g.onChange() บังเอิญเกิดขึ้น)
     if (R.sitting()) {
+      const barHtml = bar(100 * g.hp / g.hpMax, 'hp'), num = Math.round(g.hp);
       const chip = dlg.querySelector('#st-hp-chip');
-      if (chip) chip.innerHTML = `❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b>`;
+      if (chip) chip.innerHTML = `❤️ ${barHtml} <b>${num}</b>`;
+      const outer = document.querySelector('#res-hp-chip');
+      if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
@@ -2462,6 +2470,9 @@ function openStation(k) {
   R.start();
   window.__room = R;            // ไว้ส่องตอนดีบักในเบราว์เซอร์ เหมือน window.G
   panels();
+  // ปิดหน้าต่างศาลาแล้วแถบหลักต้องเห็นค่าล่าสุดแน่ ๆ ไม่ว่าจะนั่งพักหรือทำอะไรในนี้มา (ข้อ C)
+  // refresh() วาดใหม่จาก g ปัจจุบันเฉย ๆ ไม่แตะ dlg เลย เรียกตอนปิดกี่ครั้ง/กล่องไหนก็ปลอดภัย
+  dlg.addEventListener('close', () => refresh(), { once: true });
 
   // แผงข้อมูลอัปเดตตามวาระที่เดินอยู่ (ทัณฑ์คืบหน้า · ไฟไหม้ · คิว)
   const tm = setInterval(() => {
