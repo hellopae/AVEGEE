@@ -3,7 +3,7 @@ import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN, crewName, FRONTIER, MERCHANT, UPGRADES } from './data.js';
+         ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier } from './scene.js';
@@ -32,10 +32,19 @@ const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero
 const heroAtk = () => artUrl('hero-yama-atk') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
 
+/** ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่คูลดาวน์เป็นเวลาจริง ไม่ใช่นับเป็นคดี
+ *  readyAt = epoch ms สัมบูรณ์ (ไม่ใช่นับถอยหลังสัมพัทธ์) เซฟ/รีโหลดแล้วยังนับถูกเองเพราะเทียบกับนาฬิกาเครื่องตรง ๆ */
+const fmtCountdown = readyAt => {
+  const s = Math.max(0, Math.ceil((readyAt - Date.now()) / 1000));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+};
+
 const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หนัก', 'หนักมาก', 'มหันต์'];
 // ระดับ 5 เปลี่ยนจาก "สาสม" เป็น "มหันต์" (ข้อ B.2 คุณเป้ 24 ก.ย. 2569) — ให้ตรงกับคำที่ WEIGHT ใช้อยู่แล้ว
 // (WEIGHT[5] = "มหันต์" มาก่อนแล้ว แต่ INTENSITY[5] สะกดคนละคำ ผู้เล่นอ่านแล้วงงว่าเป็นคำเดียวกันไหม)
-const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'มหันต์'];
+// ข้อ A คุณเป้ 24 ก.ย. 2569 — ย้ายไปเป็น INTENSITY_NAME ใน data.js ที่เดียว (game.js ต้องใช้ชื่อชุดนี้
+// ในข้อความเฉลยของกระจกวิเศษด้วย) เก็บชื่อ local เดิมไว้กันไม่ต้องแก้ทุกจุดที่เรียก INTENSITY ในไฟล์นี้
+const INTENSITY = INTENSITY_NAME;
 
 // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 6) — หน่วงก่อนศัตรูตีสวนในฉากต่อสู้ (openBattle) ผู้เล่นต้องเห็นผล
 // การโจมตีของตัวเองก่อน (เดิมตีสวนทันทีที่อนิเมชันเราเล่นจบ รู้สึกโดนตีสวนทันที)
@@ -441,8 +450,10 @@ function sideBody() {
   // ---- ตัวเรา ----
   if (sel.kind === 'me') {
     const pw = POWERS.map(p => {
-      const q = g.powerOf(p.k);
-      const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})` : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
+      const q = g.powerOf(p.k), ready = g.powerReady(p.k);
+      const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})`
+                  : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
+                  : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
       return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
     }).join('');
     return profile('hero-yama', 'ยมบาท (ตัวท่าน)', LEVELS[g.level - 1].name,
@@ -450,7 +461,7 @@ function sideBody() {
       + think(meThought())
       + kv([`❤️ บารมี ${Math.round(g.hp)}/${g.hpMax}`, `☠️ กรรม ${g.karma.toFixed(1)}`,
             `⭐ ห้าดาว ${g.star5}`, `📁 เฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0}`,
-            `🪙 ${Math.round(g.coin)}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.powerOf('roar').ammo}`])
+            `🪙 ${Math.round(g.coin)}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.fireAmmo}`])
       + `<div class="sec">หน้าที่</div>
          <div class="row-truth">พิพากษาให้ <b>ตรงกรรม</b> — ตรงชนิดบาป และหนักพอดี ไม่ใช่หนักที่สุด</div>
          <div class="sec">ความสามารถ</div>${pw}
@@ -495,7 +506,7 @@ function sideBody() {
   if (sel.kind === 'mob') {
     const m = g.mobs[sel.key];
     if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
-    const fire = g.powerOf('roar');
+    const fireN = g.fireAmmo;
     const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
     return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
         `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
@@ -503,8 +514,8 @@ function sideBody() {
       + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
       + `<div class="sec">ปราบยังไง</div>
          <div class="row-truth">กดปุ่ม ⚔️ ที่แถบล่าง · กดเว้นวรรค · หรือคลิกที่ตัวมันบนฉาก —
-           ใช้<b>ลูกไฟ</b>หนึ่งลูก ตอนนี้มี <b>×${fire.ammo}</b></div>
-         ${fire.ammo ? '' : '<div class="row-truth hid">ลูกไฟหมด — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน</div>'}`;
+           ใช้<b>ลูกไฟ</b>หนึ่งลูก ตอนนี้มี <b>×${fireN}</b></div>
+         ${fireN ? '' : '<div class="row-truth hid">ลูกไฟหมด — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน</div>'}`;
   }
 
   // ---- วิญญาณ ----
@@ -596,7 +607,8 @@ function tryFight() {
 /** ปุ่มฟาดเปรต — โผล่เฉพาะตอนมีเปรตในโซน และบอกตรง ๆ ว่าลูกไฟเหลือเท่าไหร่ */
 let atkSig = '';
 function drawAtk() {
-  const btn = $('#atk'), fab = $('#fab-atk'), fire = g.powerOf('roar');
+  const btn = $('#atk'), fab = $('#fab-atk');
+  const fire = { ammo: g.fireAmmo };  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกกระสุนจากตวาดข่มขู่แล้ว
   const n = g.over ? null : g.nearestMob();
   const near = n && n.d <= MOB.reach;
   const canThrow = n && !near && n.d <= MOB.throw && fire.ammo > 0;
@@ -1410,13 +1422,22 @@ function openTrial() {
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
     const powerImg = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', hypno:'img/fx-hypno.png' };
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่เปลี่ยนเป็นคูลดาวน์เวลาจริง (p.realtime) ไม่ใช้ ammo/item อีกแล้ว
+    // แยกป้ายกำกับปุ่มเป็นสองแบบ: roar โชว์เวลานับถอยหลัง mm:ss · มิเรอร์/สะกดจิตยังโชว์จำนวนที่เหลือแบบเดิม
     const powerChoices = powerDefs.map(p => {
       const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
-      const why = g.powerLocked(p) ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
-                : pw.ammo <= 0 ? 'หมดแล้ว — เดินไปเก็บบนแผนที่'
+      const locked = g.powerLocked(p);
+      // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno ซื้ออย่างเดียว)
+      const outOfAmmoHint = p.k === 'hypno' ? 'หมดแล้ว — ซื้อจากบุญที่ประตูสวรรค์'
+                           : p.k === 'mirror' ? 'หมดแล้ว — เดินเก็บบนแผนที่ หรือคุยกับกานต์ที่หอส่องกรรม'
+                           : 'หมดแล้ว — เดินไปเก็บบนแผนที่';
+      const why = locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
+                : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
+                : pw.ammo <= 0 ? outOfAmmoHint
                 : pw.cd > 0 ? `รออีก ${pw.cd} คดี` : p.desc;
+      const badge = locked ? '×0' : p.realtime ? (ok ? '✓' : fmtCountdown(pw.readyAt)) : `×${pw.ammo}`;
       return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
-        ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>×${pw.ammo}</i></button>`;
+        ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${badge}</i></button>`;
     }).join('');
     const destinationChoices = dests.length ? dests.map(x => {
       const busy = g.stFree(x) <= 0, bg = stBg(x.def.k);
@@ -1566,7 +1587,22 @@ function openTrial() {
 
   paint();
   openDlg('hudwrap');
-  onDlgClose(() => { bgm('bgm-zone'); refresh(); });
+  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่โชว์เวลานับถอยหลังบนปุ่ม ต้องรีเฟรชเองเป็นระยะ
+  // (paint() ปกติวาดใหม่แค่ตอนมีการกดปุ่ม ไม่ใช่ทุกวินาที) — อัปเดตแค่ปุ่มเดียวตรง ๆ ไม่เรียก paint() เต็ม
+  // ทุกวินาที เพราะจะรื้อ DOM ทั้งกล่องทิ้งโดยไม่จำเป็น (เจอปัญหาอิลิเมนต์อื่นเด้งหาย/โฟกัสหลุดตอนทดสอบจริง)
+  // เคลียร์ทิ้งตอนปิดกล่อง ไม่งั้น interval ค้างวิ่งทั้งเกม
+  const roarTick = setInterval(() => {
+    if (!dlg.open) return;
+    const b = dlg.querySelector('[data-pw="roar"]');
+    if (!b) return;
+    const ok = g.powerReady('roar');
+    if (ok && !b.disabled) return;               // พร้อมอยู่แล้ว ไม่ต้องอัปเดตซ้ำทุกวิ
+    if (ok) { b.disabled = false; }               // เพิ่งครบเวลา — ปลดล็อกปุ่ม (ผู้เล่นกดได้ทันทีไม่ต้องรอ action อื่น)
+    const badge = b.querySelector('i');
+    if (badge) badge.textContent = ok ? '✓' : fmtCountdown(g.powerOf('roar').readyAt);
+    b.title = ok ? 'ตวาดข่มขู่ — พร้อมใช้ — ไม่ต้องใช้ item' : `ตวาดข่มขู่ — รออีก ${fmtCountdown(g.powerOf('roar').readyAt)}`;
+  }, 1000);
+  onDlgClose(() => { clearInterval(roarTick); bgm('bgm-zone'); refresh(); });
 }
 
 /** ออกหมายจริง — ใช้ร่วมกันระหว่างแถบบัญชาการกับห้องสอบสวน */
@@ -1622,7 +1658,7 @@ function openMerchant() {
         return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
-      <h3>อัปเกรดพลัง</h3><div class="market-grid">${POWERS.map(p => {
+      <h3>อัปเกรดพลัง</h3><div class="market-grid">${POWERS.filter(p => !p.realtime).map(p => {
         const lv = g.upgrades?.powers?.[p.k] || 0, cost = UPGRADES.powerBase * (lv + 1), lock = g.powerLocked(p);
         return `<article class="shop-card"><span class="shop-glyph">${p.glyph}</span><span><b>${esc(p.name)} ขั้น ${lv + 1}</b><small>เพิ่มจำนวนที่เก็บได้ · ${cost} เบี้ย</small></span>
           <button data-power-up="${p.k}" ${lock || lv >= UPGRADES.max || g.coin < cost ? 'disabled' : ''}>อัปเกรด</button></article>`;
@@ -1743,7 +1779,7 @@ function openBattle(after) {
         : { ...b, dmg: { foe: 0, you: 0 } };
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
-    const fireAmmo = g.powerOf('roar').ammo;
+    const fireAmmo = g.fireAmmo;  // ข้อ A คุณเป้ 24 ก.ย. 2569 — แยกกระสุนจากตวาดข่มขู่แล้ว
     const battleHelpers = g.battleCrew();
     const prep = b.kind === 'zoneBoss' && !b.prep && !b.over ? `<div class="boss-prep">
       <b>เลือกเตรียมศึกหนึ่งอย่าง</b><div class="acts">
@@ -1978,6 +2014,8 @@ function bagUseWhy(k) {
     if (!p || g.powerLocked(p)) return 'พลังนี้ยังไม่ปลดล็อก';
     if (p.ammo >= p.max) return 'พลังเต็มแล้ว';
   }
+  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกจากระบบ power แล้ว เช็ค g.fireAmmo ของตัวเอง
+  if (d.fireAmmo && g.fireAmmo >= g.fireAmmoMax) return 'ลูกไฟเต็มแล้ว';
   return '';
 }
 
@@ -2298,6 +2336,17 @@ function openStation(k) {
     if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
         📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
           : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
+    if (k === 'krajok') {
+      // ข้อ A-2 คุณเป้ 24 ก.ย. 2569 — คุยกับกานต์รับกระจกวิเศษ แทนของวางพื้นเดิม
+      const mp = g.powerOf('mirror'), locked = g.powerLocked(mp);
+      const left = Math.max(0, (st.kanCd || 0) - g.tick);
+      acts.push(`<button class="gold" id="s-kan" ${inside && !locked && mp.ammo < mp.max && !left ? '' : 'disabled'}>
+        🪞 คุยกับกานต์<small>${locked ? `ล็อก · ต้องเป็น${LEVELS[mp.lv - 1].name}ก่อน`
+          : !inside ? 'เดินเข้าไปยืนใกล้กานต์ก่อน'
+          : mp.ammo >= mp.max ? 'กระจกวิเศษเต็มแล้ว'
+          : left ? `กานต์ยังไม่มีของใหม่ให้ — อีก ${left} วาระ`
+          : 'รับกระจกวิเศษหนึ่งบาน ฟรี'}</small></button>`);
+    }
     if (k === 'tarang' && g.held.length)
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (k === 'tarang') {
@@ -2329,6 +2378,16 @@ function openStation(k) {
           ? `<button class="gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${x.karmaLeft > 0 ? '✨ ส่งไปเกิดใหม่' : '🌟 ส่งขึ้นสวรรค์'}<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${x.karmaLeft > 0 ? `กรรมคงเหลือ ${x.karmaLeft}` : 'หมดกรรม · รับรางวัลจากพ่อ'} · ${name}</small></button>`
           : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${name}</small></button>`);
       }
+      // ข้อ A-3 คุณเป้ 24 ก.ย. 2569 — ซื้อ 🌀 วงสะกดจิตจากบุญที่ยืนอยู่ในห้องนี้ (ไม่ชนกับตรวจกรรมด้านบน — คนละปุ่ม)
+      const hypnoDef = ITEMS.hypno, hypnoStock = BOON_SHOP.stock.find(x => x.k === 'hypno');
+      const hypnoPw = g.powerOf('hypno');
+      const hypnoLocked = g.powerLocked(hypnoPw);
+      const hypnoFull = hypnoPw.ammo + (g.inventory.hypno || 0) >= hypnoPw.max;
+      acts.push(`<button class="gold" data-buy-boon="hypno" ${inside && !hypnoLocked && !hypnoFull && g.coin >= hypnoStock.cost ? '' : 'disabled'}>
+        🌀 ซื้อวงสะกดจิตจากบุญ<small>${hypnoLocked ? `ล็อก · ต้องเป็น${LEVELS[hypnoPw.lv - 1].name}ก่อน`
+          : !inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' + hypnoStock.cost + ' เบี้ยกรรม'
+          : hypnoFull ? 'มีเต็มแล้ว — ใช้ก่อนค่อยซื้อเพิ่ม'
+          : `${hypnoStock.cost} เบี้ยกรรม · สารภาพครบ 100% ทุกครั้ง`}</small></button>`);
     }
     // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (คุณเป้ยังตัดสินใจเรื่องฟืน/ช่องรับอยู่)
     // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ — stCap()/fuel-drain ใน game.js ยังอ่านค่าเดิม
@@ -2379,6 +2438,7 @@ function openStation(k) {
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     on('#s-sit',   () => { R.setSit(!R.sitting()); panels(); });
+    on('#s-kan',   () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
@@ -2389,6 +2449,9 @@ function openStation(k) {
     dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
     dlg.querySelectorAll('[data-st-up]').forEach(b => b.onclick = () => {
       if (g.upgradeStation(k, b.dataset.stUp)) { sfx('coin'); panels(); refresh(); }
+    });
+    dlg.querySelectorAll('[data-buy-boon]').forEach(b => b.onclick = () => {
+      if (g.buyBoon(b.dataset.buyBoon)) { sfx('coin'); panels(); refresh(); }
     });
   };
 

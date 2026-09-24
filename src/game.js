@@ -6,7 +6,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, UPGRADES } from './data.js';
+         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt } from './art.js';
@@ -46,7 +46,12 @@ export function createGame() {
   const g = {
     tick: 0, coin: BAL.startCoin, fuel: BAL.startFuel,
     order: 72, karma: 0, hp: BAL.startHp,
-    powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'roar' ? 3 : p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2 })),
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่ (roar) เลิกใช้ ammo/item แล้ว เปลี่ยนเป็นคูลดาวน์เวลาจริง
+    // readyAt: 0 = ใช้ได้ทันทีตั้งแต่เริ่มเกม · ammo/max ของ roar เหลือไว้เฉยๆ ไม่ได้ใช้กันอีกแล้ว (กันเซฟเก่าพัง)
+    powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2, readyAt: 0 })),
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟในฉากต่อสู้แยกกระสุนออกจากตวาดข่มขู่แล้ว (เดิมแชร์ powerOf('roar').ammo
+    // ก้อนเดียวกัน ตอนนี้ตวาดข่มขู่ไม่มี ammo อีกแล้ว ลูกไฟจึงต้องมีสระของตัวเอง)
+    fireAmmo: 3, fireAmmoMax: 3,
     star5: 0, level: 1, hits: 0, hpMax: BAL.startHp,
     orderWarns: 0, orderWarnAt: 0,    // คำเตือนเรื่องคิวล้นที่ได้ไปแล้ว (ดู ORDER_WARN)
     greens: 0,                        // คำตัดสินสีเขียว (78 ขึ้นไป) — เกณฑ์เลื่อนขั้นตั้งแต่ 9 ก.ย. 2569
@@ -441,17 +446,22 @@ const API = {
 
 
   powerOf(k) { return this.powers.find(p => p.k === k); },
+  /** ข้อ A คุณเป้ 24 ก.ย. 2569 — roar (ตวาดข่มขู่) ใช้คูลดาวน์เวลาจริงแทน ammo/cd แบบคดี
+   *  พลังอื่น (mirror/hypno/ice) ยังเป็นระบบเดิม: cd นับเป็นคดี + ต้องมี ammo (item) */
   powerReady(k) {
     const p = this.powerOf(k);
-    return p && p.cd === 0 && p.ammo > 0 && !this.powerLocked(p);
+    if (!p || this.powerLocked(p)) return false;
+    if (p.realtime) return Date.now() >= (p.readyAt || 0);
+    return p.cd === 0 && p.ammo > 0;
   },
 
   /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
   usePower(k, soul) {
     if (!this.powerReady(k) || !soul) return null;
     const p = this.powerOf(k);
-    p.cd = POWERS.find(x => x.k === k).cd;      // เริ่มนับ cooldown
-    p.ammo--;                                    // และกินกระสุนไปหนึ่ง — เดินไปเก็บของมาเติมได้
+    const def = POWERS.find(x => x.k === k);
+    if (p.realtime) p.readyAt = Date.now() + (def.cdMs || 0);   // คูลดาวน์เวลาจริง ไม่กินกระสุน
+    else { p.cd = def.cd; p.ammo--; }            // เริ่มนับ cooldown แบบคดี + กินกระสุนไปหนึ่ง
     this.karma = clamp(this.karma + p.karma, 0, 100);
 
     const hidden = soul.deeds.filter(d => !d.known);
@@ -460,22 +470,32 @@ const API = {
     const sealed = soul.deeds.filter(d => d.known && d.visible === false);
     sealed.forEach(d => { d.visible = true; out.push({ kind: 'truth', text: `📂 นิราเปิดรายการกรรมชั้นแรก — ${d.t}` }); });
 
-    if (k === 'mirror') {                        // ความจริงเสมอ ทีละเรื่อง
-      // สำนวนที่เขียนมือบางเรื่องมีความลับที่ "จี้เอาเองไม่ได้" — เห็นได้ทางกระจกทางเดียว
-      // (เทวดาปลอมตัว กับคนที่ฝ่ายคัดกรรมส่งมาผิด) นี่คือเหตุผลที่ต้องเก็บกระจกไว้ใช้บ้าง
+    if (k === 'mirror') {
+      // ข้อ A คุณเป้ 24 ก.ย. 2569 — กระจกวิเศษเปลี่ยนผล: กดแล้วเฉลย "ที่ไหน" (สถานี) และ "ความแรง" ที่ถูกต้อง
+      // ทันทีทุกครั้ง (เดิมส่องได้แค่ทีละหนึ่งความลับ) — เลือก "แสดงข้อความ" ไม่ auto-กดปุ่มในวงคำสั่งให้เอง
+      // เพราะผู้เล่นยังต้องกดยืนยันเองอยู่ดี การเห็นคำตอบตรง ๆ บนจอเข้าใจง่ายกว่าเดากติกาว่าทำไมวงถูกเติมให้
+      //
+      // สำนวนที่เขียนมือบางเรื่องมีความลับพิเศษ (เทวดาปลอมตัว/คนที่ฝ่ายคัดกรรมส่งมาผิด) — ยังคงเฉลยผ่านกระจก
+      // เป็นอย่างแรกเหมือนเดิม (เห็นทางกระจกทางเดียวเท่านั้น) แล้วต่อด้วยที่ไหน+ความแรงทุกครั้ง
       if (soul.secret && !soul.secretSeen) {
         soul.secretSeen = true;
         out.push({ kind: 'truth', text: soul.secret });
-      } else if (hidden.length) {
-        hidden[0].known = true;
-        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: ${hidden[0].t}` });
-      } else if (fakes.length) {
-        fakes[0].exposed = true;
-        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: "${fakes[0].t}" ไม่เคยเกิดขึ้นเลย` });
-      } else if (soul.denied) {
-        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็น: ที่เขาปฏิเสธเรื่อง${soul.denied} — เขาทำจริง` });
+      }
+      if (soul.pure) {
+        out.push({ kind: 'truth', text: '🪞 กระจกส่องเห็นที่ที่ควรส่งไป: 🕊️ ประตูสวรรค์ — ดวงนี้ไม่มีกรรมให้ลงทัณฑ์เลย' });
       } else {
-        out.push({ kind: 'truth', text: '🪞 กระจกส่องแล้วไม่พบอะไรที่ยังไม่รู้ สำนวนนี้ตรงไปตรงมา' });
+        const bySin = {};
+        soul.deeds.forEach(d => { bySin[d.s] = (bySin[d.s] || 0) + d.w; });
+        let best = null, bestScore = -1;
+        for (const st of this.stations) {
+          if (st.build || st.def.heaven || !st.def.tags.length) continue;
+          const sc = st.def.tags.reduce((n, t) => n + (bySin[t] || 0), 0);
+          if (sc > bestScore) { bestScore = sc; best = st; }
+        }
+        out.push({ kind: 'truth', text: best
+          ? `🪞 กระจกส่องเห็นที่ที่ควรลงทัณฑ์: ${best.def.glyph} ${best.def.name} (ตรงกรรม ${SINS[best.def.tags[0]].name})`
+          : '🪞 กระจกส่องเห็นว่ายังไม่มีสถานีที่ตรงกรรมของดวงนี้เลย — ต้องสร้างเพิ่ม' });
+        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็นความแรงที่พอดี: ระดับ ${soul.deserved} — ${INTENSITY_NAME[soul.deserved]}` });
       }
 
     } else if (k === 'roar') {                   // เร็วกว่า แต่คนกลัวพูดมั่วได้
@@ -971,18 +991,22 @@ const API = {
       this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
       // ลูกไฟไม่ใช่ทางเดียวที่จะปราบเปรตแล้ว (ฟาดประชิดฟรี) แต่ยังหย่อนให้อยู่
       // เพราะขว้างจากไกลสะดวกกว่ามากเวลาเปรตอยู่คนละฝั่งกับที่เรายืน
-      if (this.powerOf('roar').ammo === 0 && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
+      // ข้อ A คุณเป้ 24 ก.ย. 2569 — เช็คกระสุนลูกไฟของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
+      if (this.fireAmmo === 0 && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     }
 
     // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
     this.stationDrops();        // สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ
 
     // ของจากสถานีไม่นับในเพดานนี้ — ไม่งั้นสร้างสถานีเติมพลังครบสี่หลังแล้วของสุ่มหยุดตกทั้งเกม
+    // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — เอา 'hypno' ออกจากพูลสุ่มนี้แล้ว (ซื้อจากบุญที่ประตูสวรรค์เท่านั้น)
+    // 'mirror' ยังอยู่ในพูล — ทุก 18 วาระ (~12.6 วิจริงที่ tickMs 700ms) เมื่อของบนแผนที่ยังไม่ถึง 3 ชิ้น
+    // มีโอกาสสุ่มได้ 'mirror' 1 ใน 6 ของพูลนี้ (ไม่นับกรณี priority บารมี/ฟืน/บัวตัดหน้า) — ต่ำพอไม่ให้เฉลยทุกคดี
     if (this.tick % 18 === 0 && this.items.filter(it => !it.from).length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
                  : this.fuel < 18 ? 'fuel'
                  : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
-                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', 'ice', this.powerOf('hypno').max ? 'hypno' : 'fire']);
+                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', 'ice']);
       this.dropItem(need);
     }
 
@@ -1004,9 +1028,13 @@ const API = {
     }
 
     // หอส่องกรรม: เติมพลังให้เองเป็นระยะ จะได้ไม่มีวันตันเพราะของหมด
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — mirror/hypno/roar มีทางได้ของของตัวเองแล้ว (แผนที่+กานต์ / ซื้อจากบุญ / คูลดาวน์เวลาจริง)
+    // เหลือแค่ ice ที่ยังพึ่งการเติมอัตโนมัติแบบเดิมนี้อยู่ — ไม่งั้น mirror จะกลายเป็นเติมไม่จำกัดฟรีซ้ำซ้อนกับ
+    // ทางที่ตั้งใจไว้ใหม่ (ข้อ 2 ในใบงาน "ให้รับได้เป็นระยะ ไม่ใช่รับไม่จำกัด" หมายถึงสองทางที่ระบุเท่านั้น)
     if (this.has('krajok') && this.tick % KRAJOK.every === 0) {
       const got = [];
       for (const p of this.powers) {
+        if (p.k === 'roar' || p.k === 'mirror' || p.k === 'hypno') continue;
         if (p.ammo >= p.max) continue;
         p.ammo = Math.min(p.max, p.ammo + KRAJOK.gain);
         got.push(p.name);
@@ -1355,6 +1383,11 @@ const API = {
       p.ammo = Math.min(p.max, p.ammo + (def.ammo || 1));
       p.cd = 0;
     }
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟ (item 'fire') เติม g.fireAmmo ของตัวเอง ไม่ผ่านระบบ power/ammo อีกแล้ว
+    if (def.fireAmmo) {
+      if (this.fireAmmo >= this.fireAmmoMax) return false;
+      this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + def.fireAmmo);
+    }
     if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
     if (def.fuel) this.fuel += def.fuel;
     if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
@@ -1478,7 +1511,7 @@ const API = {
     if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');       // ประชิด = ฟรี
     if (n) {
       // ไกลเกินมือเอื้อม แต่ยังอยู่ในระยะขว้าง และมีลูกไฟ → ขว้างเลย ไม่ต้องเดิน
-      if (n.d <= MOB.throw && this.powerOf('roar').ammo > 0) return this.strike(n.i, 'ท่าน', true);
+      if (n.d <= MOB.throw && this.fireAmmo > 0) return this.strike(n.i, 'ท่าน', true);
       if (this.walkTo(n.m.x, n.m.y, true)) {
         this.huntMob = true;                 // ถึงตัวแล้วค่อยฟาดให้เอง (ดู stepWorld)
         this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
@@ -1498,9 +1531,8 @@ const API = {
     if (!m) return false;
     if (m.cool && Date.now() < m.cool) return false;
     if (ranged && by === 'ท่าน') {
-      const fire = this.powerOf('roar');
-      if (fire.ammo <= 0) return false;
-      fire.ammo--;
+      if (this.fireAmmo <= 0) return false;
+      this.fireAmmo--;
       this.log('🔥 ท่านขว้างลูกไฟใส่เปรตจากระยะไกล', 'act');
     }
     m.hp--; m.cool = Date.now() + 600;
@@ -1668,8 +1700,8 @@ const API = {
       if (!this.crewHelpers().length) return false;
       b.youMax += 18; b.youHp += 18;
     } else if (mode === 'power') {
-      const roar = this.powerOf('roar');
-      if (roar.ammo < roar.max) roar.ammo++;
+      // ข้อ A คุณเป้ 24 ก.ย. 2569 — สระกระสุนลูกไฟของตัวเองแล้ว ไม่ใช่ ammo ของตวาดข่มขู่
+      if (this.fireAmmo < this.fireAmmoMax) this.fireAmmo++;
       else b.stun = 1; // ลูกไฟเต็มอยู่แล้ว: ใช้แรงที่สำรองไว้กันบอสสวนกลับหนึ่งครั้ง
     } else return false;
     b.prep = mode;
@@ -1796,11 +1828,11 @@ const API = {
       this.save(); // เก็บเวลาพร้อมใช้ไว้ ปิด/เปิดหน้าใหม่ก็ไม่ล้างคูลดาวน์
 
     } else if (what === 'fire') {
-      const p = this.powerOf('roar');
-      if (!p || p.ammo <= 0) return false;
-      p.ammo--;
+      // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟกินกระสุนของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
+      if (this.fireAmmo <= 0) return false;
+      this.fireAmmo--;
       dmg = roll(BATTLE.fireDmg);
-      say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (เหลือลูกไฟ ${p.ammo})`);
+      say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (เหลือลูกไฟ ${this.fireAmmo})`);
 
     } else {
       const it = BATTLE.items.find(x => x.k === what);
@@ -2019,7 +2051,7 @@ const API = {
     this.zoneSave[this.zone] = {
       stations: this.stations.map(st => ({
         k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
-        visitCd: st.visitCd || 0, build: 0, slots: st.slots,
+        visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
         speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
@@ -2043,7 +2075,7 @@ const API = {
         const st = mkStation(sv.k);
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
-                            visitCd: sv.visitCd || 0, build: 0, slots: sv.slots || [],
+                            visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
                             speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0 });
         return st;
       }).filter(Boolean);
@@ -2147,6 +2179,33 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  /** ข้อ A-2 คุณเป้ 24 ก.ย. 2569 — คุยกับกานต์ในหอส่องกรรม รับกระจกวิเศษฟรีเป็นระยะ (แทนของวางพื้นเดิม)
+   *  ต้องยืนใกล้กานต์ในห้องก่อน (ui.js เช็ค inside ก่อนโชว์ปุ่ม) · คูลดาวน์นับเป็น "วาระ" เหมือน visit เดิมทุกที่ */
+  talkKan() {
+    const st = this.stations.find(s => s.def.k === 'krajok');
+    if (!st || st.build) return false;
+    if (this.tick < (st.kanCd || 0)) return false;
+    const p = this.powerOf('mirror');
+    if (this.powerLocked(p) || p.ammo >= p.max) return false;
+    p.ammo = Math.min(p.max, p.ammo + 1);
+    st.kanCd = this.tick + KRAJOK.kanCool;
+    this.log('🪞 กานต์: "ส่องดูเถอะครับ เดี๋ยวผมมีให้อีก" — ได้กระจกวิเศษมาหนึ่งบาน', 'good');
+    this.save(); this.onChange();
+    return true;
+  },
+
+  /** ข้อ A-3 คุณเป้ 24 ก.ย. 2569 — ซื้อของจากบุญในห้องประตูสวรรค์ (ตอนนี้มีแต่วงสะกดจิต)
+   *  ต้องยืนใกล้บุญในห้องก่อน (ui.js เช็ค inside ก่อนโชว์ปุ่ม) · กลไกซื้อเหมือน buyMerchant ทุกอย่าง
+   *  ต่างแค่คนละสต็อก/คนละที่ยืน — ของเข้ากระเป๋าเหมือนกัน ใช้ทีหลังผ่าน useBag() */
+  buyBoon(k) {
+    const stock = BOON_SHOP.stock.find(x => x.k === k), def = ITEMS[k];
+    if (!stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    this.coin -= stock.cost;
+    this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1);
+    this.log(`🛍️ ซื้อ${def.name}จากบุญ — ${stock.cost} เบี้ยกรรม`, 'act');
+    this.save(); this.onChange(); return true;
+  },
+
   upgradePower(k) {
     const p = this.powerOf(k); if (!p || this.powerLocked(p)) return false;
     this.upgrades ||= { powers:{} }; this.upgrades.powers ||= {};
@@ -2234,7 +2293,10 @@ API.snapshot = function (withEntry = true) {
     kpiPassed: this.kpiPassed, nextArrive: this.nextArrive, nextEvent: this.nextEvent,
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
-    powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max })),
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — readyAt (คูลดาวน์เวลาจริงของตวาดข่มขู่) กับ fireAmmo ต้องเซฟด้วย
+    // ไม่งั้นรีโหลดแล้ว cooldown/กระสุนลูกไฟรีเซ็ตทุกครั้ง
+    powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max, readyAt: p.readyAt || 0 })),
+    fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
@@ -2275,8 +2337,12 @@ API.restore = function (d) {
 
   this.powers = POWERS.map(p => {
     const sv = (d.powers || []).find(x => x.k === p.k) || {};
-    return { ...p, cd: sv.cd || 0, ammo: sv.ammo ?? 0, max: sv.max ?? 2 };
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 — readyAt ของตวาดข่มขู่ต้องยกมาจากเซฟตรง ๆ (เป็น epoch ms สัมบูรณ์
+    // เทียบกับนาฬิกาเครื่องอยู่แล้ว จึงนับต่อถูกเองไม่ว่าจะปิดเกมไปนานแค่ไหน) เซฟเก่าไม่มีค่านี้ = ใช้ได้ทันที (0)
+    return { ...p, cd: sv.cd || 0, ammo: sv.ammo ?? 0, max: sv.max ?? 2, readyAt: sv.readyAt || 0 };
   });
+  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกสระของตัวเองแล้ว เซฟเก่าไม่มีค่านี้ = เริ่มที่ค่าเริ่มต้นเกมใหม่ (3/3)
+  this.fireAmmo = d.fireAmmo ?? 3; this.fireAmmoMax = d.fireAmmoMax ?? 3;
   // เซฟ v2 ไม่มีตัวนับเขียว/แดง — ประมาณจากคะแนนเฉลี่ยที่บันทึกไว้ ดีกว่าเริ่มนับศูนย์
   if (d.v === 2) { this.greens = Math.floor((d.star5 || 0) * 1.5); this.reds = 0; }
   this.crew = (d.crew || []).map(sv => {
@@ -2287,7 +2353,7 @@ API.restore = function (d) {
     const st = mkStation(sv.k);
     if (!st.def) return null;
     st.crewK = sv.crewK; st.intensity = sv.intensity ?? 3; st.fire = sv.fire || 0;
-    st.visitCd = sv.visitCd || 0;
+    st.visitCd = sv.visitCd || 0; st.kanCd = sv.kanCd || 0;
     st.build = sv.build ? Date.now() + sv.build : 0;
     st.buildWait = !!sv.buildWait;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;

@@ -346,8 +346,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04, U * 0.025, '#ffe0c8');
         } });
       });
-      const key = def.k === 'tarang' ? 'nira' : 'boon';
-      const name = def.k === 'tarang' ? 'นิรา' : 'บุญ';
+    }
+    // NPC ประจำห้อง — นิรา (ตะราง) / บุญ (ประตูสวรรค์) / กานต์ (หอส่องกรรม ข้อ A-2 คุณเป้ 24 ก.ย. 2569)
+    // กานต์เป็นยมทูตตัวเดียวกับใน CREW (ใช้ภาพ crew-kan เดิม ไม่วาดใหม่ — ตามข้อห้ามใบงาน "ห้ามใช้ภาพอื่นแทน")
+    if (def.k === 'tarang' || def.k === 'sawan' || def.k === 'krajok') {
+      const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : 'kan';
+      const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : 'กานต์';
       const a = room.crew || [0.30,0.80];
       acts.push({ y:a[1], fn:() => {
         const x = px(a[0]), y = py(a[1]);
