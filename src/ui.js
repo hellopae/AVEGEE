@@ -2295,26 +2295,32 @@ function openStation(k) {
       acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
     if (k === 'tarang') {
       const sentenced = g.sentences.filter(x => x.zone === g.zone && x.stage === 'prison');
-      acts.push(`<div class="st-desc">📋 ตรวจรายชื่อกับนิรา · รับทัณฑ์ครบแล้ว ${sentenced.length} ดวง</div>`);
+      // ข้อ D คุณเป้ 24 ก.ย. 2569 — ปุ่มตรวจ/ส่งตัวต้องยืนใกล้นิราในห้องก่อนถึงจะกดได้ (ดู room.js inReach)
+      // เดิมปิดปุ่มเงียบ ๆ ไม่บอกเหตุผล ทำให้ดูเหมือนสถานีค้าง — เติม hint ให้เห็นชัดว่าต้องเดินเข้าไปยืนใกล้ก่อน
+      acts.push(`<div class="st-desc">📋 ตรวจรายชื่อกับนิรา · รับทัณฑ์ครบแล้ว ${sentenced.length} ดวง
+        ${sentenced.length && !inside ? '<br>⚠️ เดินเข้าไปยืนใกล้นิราในห้องก่อน ปุ่มถึงจะกดได้' : ''}</div>`);
       for (const x of sentenced) {
         const name = esc(x.soul.name || x.soul.who), ready = g.tick >= (x.readyAt ?? x.until ?? 0);
         acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name} · ${x.inspected
           ? x.repentant ? 'เข็ดแล้ว' : 'ยังไม่เข็ด'
           : ready ? 'พร้อมตรวจ' : `รออีก ${(x.readyAt ?? x.until) - g.tick} วาระ`}</div>`);
+        const needSawan = x.repentant && !g.stations.some(st => st.def.k === 'sawan' && !st.build);
         acts.push(x.inspected
-          ? `<button class="gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || g.stations.some(st => st.def.k === 'sawan' && !st.build)) ? '' : 'disabled'}>${x.repentant ? '🕊️ ส่งไปประตูสวรรค์' : '↩️ ส่งกลับเข้าคิว'}<small>${x.repentant && !g.stations.some(st => st.def.k === 'sawan' && !st.build) ? 'ต้องสร้างประตูสวรรค์ให้เสร็จก่อน · ' : ''}${name}</small></button>`
-          : `<button data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>📋 ให้นิราตรวจ<small>${name}</small></button>`);
+          ? `<button class="gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${x.repentant ? '🕊️ ส่งไปประตูสวรรค์' : '↩️ ส่งกลับเข้าคิว'}<small>${needSawan ? 'ต้องสร้างประตูสวรรค์ให้เสร็จก่อน · ' : !inside ? 'เดินเข้าไปยืนใกล้นิราก่อน · ' : ''}${name}</small></button>`
+          : `<button data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>📋 ให้นิราตรวจ<small>${!ready ? name : !inside ? 'เดินเข้าไปยืนใกล้นิราก่อน · ' + name : name}</small></button>`);
       }
     }
     if (k === 'sawan') {
       const arrivals = g.sentences.filter(x => x.zone === g.zone && x.stage === 'gate');
-      acts.push(`<div class="st-desc">📜 ตรวจกรรมกับบุญ · รอที่ประตู ${arrivals.length} ดวง<br>กรรมคงเหลือคิดจากกรรมทั้งหมด หักบุญจริงและวาระที่รับทัณฑ์แล้ว<br>ส่งไปเกิดใหม่ ${g.reborn} · ขึ้นสวรรค์ ${g.ascended} ดวง</div>`);
+      // ข้อ D คุณเป้ 24 ก.ย. 2569 — เหมือนตะรางด้านบน: ปุ่มตรวจกรรม/ส่งตัวต้องยืนใกล้บุญในห้องก่อน
+      acts.push(`<div class="st-desc">📜 ตรวจกรรมกับบุญ · รอที่ประตู ${arrivals.length} ดวง<br>กรรมคงเหลือคิดจากกรรมทั้งหมด หักบุญจริงและวาระที่รับทัณฑ์แล้ว<br>ส่งไปเกิดใหม่ ${g.reborn} · ขึ้นสวรรค์ ${g.ascended} ดวง
+        ${arrivals.length && !inside ? '<br>⚠️ เดินเข้าไปยืนใกล้บุญในห้องก่อน ปุ่มถึงจะกดได้' : ''}</div>`);
       for (const x of arrivals) {
         const name = esc(x.soul.name || x.soul.who);
         acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name}${x.checked ? ` · กรรมคงเหลือ ${x.karmaLeft}` : ' · รอตรวจกรรม'}</div>`);
         acts.push(x.checked
-          ? `<button class="gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${x.karmaLeft > 0 ? '✨ ส่งไปเกิดใหม่' : '🌟 ส่งขึ้นสวรรค์'}<small>${x.karmaLeft > 0 ? `กรรมคงเหลือ ${x.karmaLeft}` : 'หมดกรรม · รับรางวัลจากพ่อ'} · ${name}</small></button>`
-          : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${name}</small></button>`);
+          ? `<button class="gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${x.karmaLeft > 0 ? '✨ ส่งไปเกิดใหม่' : '🌟 ส่งขึ้นสวรรค์'}<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${x.karmaLeft > 0 ? `กรรมคงเหลือ ${x.karmaLeft}` : 'หมดกรรม · รับรางวัลจากพ่อ'} · ${name}</small></button>`
+          : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${name}</small></button>`);
       }
     }
     // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (คุณเป้ยังตัดสินใจเรื่องฟืน/ช่องรับอยู่)
