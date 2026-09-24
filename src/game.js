@@ -115,8 +115,10 @@ function mkCrew(def, zone = 'th') {
  *  build = เวลาที่จะสร้างเสร็จ (0 = เสร็จแล้ว) · fire = ไฟไหม้จากผีที่บุกมา (0-100) */
 function mkStation(k, build = 0) {
   const def = STATIONS.find(s => s.k === k);
+  // mgCd (ชุดที่ 9) = วาระ (g.tick) ที่จะเล่นมินิเกม "เร่งการทำงาน" ซ้ำที่สถานีนี้ได้อีกครั้ง
+  // ใช้ตัวเลข tick แบบเดียวกับ visitCd/kanCd ที่มีอยู่แล้ว — 0 แปลว่าเล่นได้ทันที
   return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, fire: 0,
-           speedLv:0, capLv:0, fuelLv:0 };
+           speedLv:0, capLv:0, fuelLv:0, mgCd:0 };
 }
 
 // ---------- สร้างสำนวนคดี ----------
@@ -2076,7 +2078,7 @@ const API = {
       stations: this.stations.map(st => ({
         k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
-        speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
+        speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
@@ -2100,7 +2102,7 @@ const API = {
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
                             visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
-                            speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0 });
+                            speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0 });
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
@@ -2266,6 +2268,37 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  // ---------- มินิเกม "เร่งการทำงาน" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) ----------
+  // upgradeStation('speed') ด้านบนไม่มีปุ่มเรียกใช้แล้ว (UI เปลี่ยนไปเปิดมินิเกมแทนจ่ายเบี้ย)
+  // เหลือโค้ดไว้เฉย ๆ เผื่อวันหลังอยากเอากลับมา — ผลลัพธ์เดิมทุกอย่าง (เร็วขึ้น 12%/ขั้น สูงสุด 5)
+  // คงเงื่อนไข "ขั้นยมบาทต้องถึง" ของเดิมไว้ด้วย กันขั้น 5 ตั้งแต่ต้นเกมเพราะตอนนี้ไม่มีค่าเบี้ยกั้นแล้ว
+  mgLevelNeed(lv) { return Math.min(5, 1 + Math.floor(lv / 2)); },
+  mgCooldownFor(st) { return UPGRADES.mgCooldown + UPGRADES.mgCooldownStep * (st.speedLv || 0); },
+  mgReady(st) {
+    if (!st || st.build || st.def.pow <= 0) return false;
+    const lv = st.speedLv || 0;
+    if (lv >= UPGRADES.max) return false;
+    if (this.level < this.mgLevelNeed(lv)) return false;
+    return !st.mgCd || this.tick >= st.mgCd;
+  },
+  /** ผลมินิเกม — ชนะ = speedLv +1 (เพดานเดิม) · แพ้ = ไม่ได้อะไร (แค่เสียเวลา)
+   *  ทั้งชนะและแพ้ต้องรอ cooldown ก่อนเล่นซ้ำที่สถานีเดียวกัน (กันเล่นรัว ข้อ 2 ของใบงาน) */
+  finishMinigame(k, won) {
+    const st = this.stations.find(x => x.def.k === k);
+    if (!st || st.build || st.def.pow <= 0) return false;
+    const lv = st.speedLv || 0;
+    st.mgCd = this.tick + this.mgCooldownFor(st);
+    if (won && lv < UPGRADES.max) {
+      st.speedLv = lv + 1;
+      this.log(`🎮 ${st.def.name} — ชนะมินิเกม เร่งการทำงานขึ้นขั้น ${st.speedLv}`, 'good');
+    } else if (won) {
+      this.log(`🎮 ${st.def.name} — ชนะมินิเกม แต่เร่งเต็มขั้นแล้ว`, 'act');
+    } else {
+      this.log(`🎮 ${st.def.name} — แพ้มินิเกม ลองใหม่ได้อีกครั้งหลังพักสักครู่`, 'bad');
+    }
+    this.save(); this.onChange(); return true;
+  },
+
   build(k) {
     const def = STATIONS.find(s => s.k === k);
     if (!def || this.coin < def.cost) return false;
@@ -2328,7 +2361,7 @@ API.snapshot = function (withEntry = true) {
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
       build: st.build ? Math.max(0, st.build - Date.now()) : 0, buildWait:!!st.buildWait,
-      speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0,
+      speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       slots: st.slots,
     })),
     queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn, ascended:this.ascended,
@@ -2391,6 +2424,7 @@ API.restore = function (d) {
     st.build = sv.build ? Date.now() + sv.build : 0;
     st.buildWait = !!sv.buildWait;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
+    st.mgCd = sv.mgCd || 0;   // คูลดาวน์มินิเกม "เร่งการทำงาน" (ชุดที่ 9)
     // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
     st.slots = sv.slots || (sv.soul ? [{ soul: sv.soul, intensity: sv.intensity ?? 3,
                                          progress: sv.progress || 0, need: sv.need || 60,

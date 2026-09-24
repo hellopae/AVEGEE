@@ -770,7 +770,12 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .hud .fig .nm{font-size:11px;color:var(--gold);background:rgba(12,6,9,.8);border-radius:99px;padding:1px 8px}
 
 /* ขวาบน — สำนวนกับคำให้การ */
-.hud-right{display:flex;flex-direction:column;gap:8px;min-height:0}
+/* overflow-y:auto (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) — เจอบั๊กจริงตอนทดสอบปุ่มมินิเกมที่ประตูสวรรค์/หอทะเบียนกรรม:
+   .hud-card ลูกของแถวนี้ตั้ง min-height:0 ไว้ (บรรทัด .hud-card ด้านล่าง) ทำให้ flexbox ยอมบีบการ์ดให้เตี้ยกว่า
+   เนื้อหาจริงได้เมื่อพื้นที่ไม่พอ (จอเตี้ย/การ์ดขวายาว) เนื้อหาที่ล้นออกมาเลยไปโดนการ์ดถัดไป "ทับกันเงียบ ๆ"
+   กดปุ่มที่ล้นออกมาไม่ติดเลยแม้ตาเห็นปุ่มอยู่ (พิสูจน์ด้วย elementsFromPoint จริง ไม่ใช่เดา) — .hud-left
+   ข้าง ๆ กันแก้ปัญหานี้ด้วยวิธีนี้อยู่แล้วมาตั้งแต่ต้น เอาแบบเดียวกันมาใช้ฝั่งขวาด้วย ไม่กระทบจอที่เนื้อหาพอดีอยู่แล้ว */
+.hud-right{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .hud-card{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
   border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:var(--radius-sm);
   padding:9px 11px;backdrop-filter:blur(3px);min-height:0}
@@ -828,6 +833,32 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   min-height:44px;padding:6px 10px;font-size:var(--text-xs)}
 .st-acts button small{font-size:10px;color:var(--muted-foreground);font-weight:400}
 .st-acts button.gold small{color:rgba(26,13,16,.72)}
+/* ---------- มินิเกม "เร่งการทำงาน" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) ----------
+   กรอบร่วมของมินิเกมทั้ง 7 หลัง (src/minigames/*.js) — ทับอยู่บนฉากในหน้าสถานีเดียวกับ .st-arch
+   (แนวเดียวกับแฟ้มทะเบียนกรรม) z-index สูงกว่า .st-arch หนึ่งขั้นเพราะเปิดทับกันไม่ได้อยู่แล้วแต่กันพลาด
+   ตัวเกมแต่ละหลังมี CSS เฉพาะของตัวเองต่อท้ายบล็อกนี้ (คนละคอมมิต แต่รวมไว้ในบล็อกเดียวกันให้หาง่าย) */
+.mg-ov{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;gap:8px;
+  background:rgba(8,4,7,.95);border:1px solid var(--gold);border-radius:var(--radius-sm);
+  padding:12px;box-sizing:border-box}
+.mg-head{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:var(--text-sm)}
+.mg-head b{font-family:var(--font-display)}
+.mg-x{margin-left:auto;min-height:34px;padding:5px 11px;font-size:var(--text-xs)}
+.mg-tip{font-size:var(--text-xs);line-height:var(--leading-body);color:var(--muted-foreground);
+  background:rgba(212,163,85,.08);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:8px 10px;margin:0}
+.mg-intro{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.mg-intro .mg-start{min-height:46px;padding:10px 22px;font-size:var(--text-sm)}
+.mg-stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+/* แถบเวลา/แถบพลังงานที่ใช้ร่วมกันหลายเกม (เต็ม = ฝั่งขวา ไหลลดไปฝั่งซ้ายเมื่อเวลาลด) */
+.mg-bar{position:relative;height:10px;border-radius:99px;background:rgba(255,255,255,.08);
+  border:1px solid var(--border);overflow:hidden;flex:none}
+.mg-bar-fill{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,var(--gold),#ffe3ad);
+  border-radius:inherit;transition:width .08s linear}
+@media(max-width:520px){
+  .mg-ov{padding:9px;gap:6px}
+  .mg-tip{font-size:11px;padding:7px 9px}
+  .mg-x{min-height:32px;padding:4px 9px;font-size:11px}
+}
 /* ---- ปุ่มลอยบนฉาก (9 ก.ย. 2569) ---- */
 .fabs{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;flex-direction:column;
   align-items:flex-end;gap:6px;pointer-events:none}

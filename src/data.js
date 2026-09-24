@@ -679,8 +679,11 @@ export const MERCHANT = {
 };
 
 /** ราคาฐานของระบบอัปเกรด — ขั้นถัดไปคูณตามระดับปัจจุบัน */
+// mgCooldown/mgCooldownStep (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) — คูลดาวน์มินิเกม "เร่งการทำงาน"
+// นับเป็น "วาระ" (g.tick) แบบเดียวกับ visitCd/kanCd เดิม — ยิ่งอัปขั้นสูง ยิ่งรอนานขึ้น
+// ขั้น 0→1 รอ 10 วาระ (~7 วิที่ความเร็วเกมปกติ) ... ขั้น 4→5 รอ 30 วาระ (~21 วิ)
 export const UPGRADES = {
-  crewBase:90, stationBase:120, powerBase:100, max:5,
+  crewBase:90, stationBase:120, powerBase:100, max:5, mgCooldown:10, mgCooldownStep:5,
 };
 
 /** เลเวลของยมบาท — นับจากจำนวนคดีที่ได้ 5 ดาว */

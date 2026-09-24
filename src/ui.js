@@ -10,6 +10,7 @@ import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier } from '.
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
+import { MINIGAMES } from './minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -2305,6 +2306,8 @@ function openStation(k) {
   const room = roomFor(k);
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
+  let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
+                                         // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
 
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
 
@@ -2395,10 +2398,19 @@ function openStation(k) {
     // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (ชุดที่ 7)
     // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — "ฟืน" เปลี่ยนเป็น "เสบียง" ทั้งระบบแล้ว ไม่ผูกกับสถานีอีกต่อไป
     // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ (ไม่พัง) แค่ fuelLv ไม่มีผลอะไรแล้ว — ดู game.js restore()
-    // แค่ไม่มีปุ่มกดอัปเพิ่มอีกแล้วเท่านั้น "เร่งการทำงาน" คงไว้เหมือนเดิม
-    if (cap) {
-      const speedCost = UPGRADES.stationBase * ((st.speedLv || 0) + 1);
-      acts.push(`<button data-st-up="speed" ${g.coin < speedCost || (st.speedLv || 0) >= UPGRADES.max ? 'disabled' : ''}>⚙️ เร่งการทำงาน ขั้น ${st.speedLv || 0}<small>${speedCost} เบี้ย · เร็วขึ้น 12%</small></button>`);
+    // ชุดที่ 9 คุณเป้ 24 ก.ย. 2569 — "เร่งการทำงาน" เลิกจ่ายเบี้ยแล้ว เปลี่ยนเป็นเล่นมินิเกมของสถานีนี้แทน
+    // (g.finishMinigame ใน game.js) ชนะ = ขั้น +1 เหมือนเดิม แพ้ไม่เสียอะไรนอกจากเวลา · มี cooldown กันเล่นรัว
+    if (cap && MINIGAMES[k]) {
+      const maxed = (st.speedLv || 0) >= UPGRADES.max;
+      const levelLocked = !maxed && g.level < g.mgLevelNeed(st.speedLv || 0);
+      const cdLeft = Math.max(0, (st.mgCd || 0) - g.tick);
+      const locked = maxed || levelLocked || cdLeft > 0 || mgOpen;
+      const note = mgOpen ? 'กำลังเล่นมินิเกมอยู่'
+        : maxed ? 'เร่งเต็มขั้นแล้ว'
+        : levelLocked ? `ต้องเลื่อนขั้นยมบาทก่อน (ขั้น ${g.mgLevelNeed(st.speedLv || 0)})`
+        : cdLeft > 0 ? `รออีก ${cdLeft} วาระ`
+        : 'ชนะ = เร่งขึ้น 1 ขั้น · เร็วขึ้น 12%';
+      acts.push(`<button data-mg="${k}" ${locked ? 'disabled' : ''}>🎮 เล่นมินิเกม ขั้น ${st.speedLv || 0}<small>${esc(note)}</small></button>`);
     }
 
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
@@ -2452,9 +2464,8 @@ function openStation(k) {
     dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => afterCheck(g.moveFromPrison(+b.dataset.prisonSend)));
     dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => afterCheck(g.inspectGate(+b.dataset.gateCheck)));
     dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
-    dlg.querySelectorAll('[data-st-up]').forEach(b => b.onclick = () => {
-      if (g.upgradeStation(k, b.dataset.stUp)) { sfx('coin'); panels(); refresh(); }
-    });
+    // ชุดที่ 9 — ปุ่ม "เร่งการทำงาน" เปลี่ยนจาก data-st-up (จ่ายเบี้ย) เป็น data-mg (เปิดมินิเกม)
+    dlg.querySelectorAll('[data-mg]').forEach(b => b.onclick = () => openMinigame(b.dataset.mg));
     dlg.querySelectorAll('[data-buy-boon]').forEach(b => b.onclick = () => {
       if (g.buyBoon(b.dataset.buyBoon)) { sfx('coin'); panels(); refresh(); }
     });
@@ -2528,6 +2539,61 @@ function openStation(k) {
     box.querySelector('#s-arch-x').onclick = () => showArchive(false);
   }
 
+  /** มินิเกม "เร่งการทำงาน" — ทับอยู่บนฉากในกล่องเดียวกัน ไม่ใช่กล่องใหม่ (แนวเดียวกับ showArchive ด้านบน)
+   *  ชุดที่ 9 คุณเป้ 24 ก.ย. 2569: มีคำอธิบาย 1 บรรทัด + ปุ่ม "เริ่มเลย" ก่อนตัวจับเวลาในเกมเริ่มนับ
+   *  ปิดได้ทุกเมื่อไม่มีบทลงโทษ — cooldown ตั้งเฉพาะตอน "เล่นจบจริง" (ชนะ/แพ้) เท่านั้น ดู g.finishMinigame()
+   *  ระหว่างเล่น: ห้องล็อกอินพุต (R.lock) กันเว้นวรรค/ลูกศรชนกับปุ่มมินิเกม — ส่วนเกมหลัก (g.step()) เดินต่อ
+   *  ตามปกติไม่พัก (หน้าสถานีนี้ไม่เคยเรียก pauseForDlg() อยู่แล้วตั้งแต่ต้น) เลือกแบบนี้เพราะปลอดภัยสุด
+   *  ไม่ต้องแตะ pauseForDlg/releaseDlgPause ที่เคยมีบั๊กเกมค้างมาก่อน (ดูคอมเมนต์ยาวเหนือฟังก์ชันนั้น) */
+  function openMinigame(sk) {
+    const stx = g.stations.find(x => x.def.k === sk);
+    const game = MINIGAMES[sk];
+    const ov = dlg.querySelector('#mg-ov');
+    if (!stx || !game || !ov || mgOpen || !g.mgReady(stx)) return;
+
+    mgOpen = true;
+    let cleanup = null, closed = false;
+    const teardown = () => {
+      cleanup?.(); cleanup = null;
+      R?.lock?.(false);
+      ov.hidden = true; ov.innerHTML = '';
+      mgOpen = false;
+    };
+    const finish = won => {
+      if (closed) return; closed = true;
+      teardown();
+      g.finishMinigame(sk, won);
+      sfx(won ? 'coin' : 'crack');
+      panels(); refresh();
+    };
+    const quit = () => {
+      if (closed) return; closed = true;
+      teardown();
+      panels();
+    };
+
+    R?.lock?.(true);
+    ov.hidden = false;
+    ov.innerHTML = `
+      <div class="mg-head"><b>${game.icon || '🎮'} ${esc(game.name)}</b><button class="mg-x" type="button">✕ ปิด</button></div>
+      <div class="mg-intro">
+        <p class="mg-tip">${esc(game.tip)}</p>
+        <button class="gold mg-start" type="button">▶ เริ่มเลย</button>
+      </div>
+      <div class="mg-stage" hidden></div>`;
+    ov.querySelector('.mg-x').onclick = quit;
+    ov.querySelector('.mg-start').onclick = () => {
+      if (closed) return;
+      ov.querySelector('.mg-intro').hidden = true;
+      const stage = ov.querySelector('.mg-stage');
+      stage.hidden = false;
+      cleanup = game.run(stage, {
+        level: stx.speedLv || 0, alive: mine,
+        onWin: () => finish(true), onLose: () => finish(false),
+      });
+    };
+  }
+
   // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
   dlg.innerHTML = `
     <div class="hud st-hud">
@@ -2536,7 +2602,8 @@ function openStation(k) {
       <div class="hud-body">
         <div class="hud-left st-left" id="st-left"></div>
         <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
-          <div class="st-arch" id="st-arch" hidden></div></div>
+          <div class="st-arch" id="st-arch" hidden></div>
+          <div class="mg-ov" id="mg-ov" hidden></div></div>
         <div class="hud-right" id="st-right"></div>
       </div>
     </div>`;

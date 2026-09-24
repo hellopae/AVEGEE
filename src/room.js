@@ -127,6 +127,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
+  // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
+  // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
+  // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
+  let locked = false;
 
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
   const px = u => box.ox + u * box.w;
@@ -174,6 +178,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
   const onKey = e => {
     if (/input|textarea/i.test(e.target.tagName)) return;
+    if (locked) return;         // มินิเกมกำลังเปิดอยู่ — ปล่อยให้มินิเกมจัดการคีย์เอง
     const k = e.key.toLowerCase();
     if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' '].includes(k)) {
       if (k === ' ') { e.preventDefault(); if (api.onAct) api.onAct(); return; }
@@ -187,7 +192,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
   const onDown = e => {
-    if (sitting) return;                        // นั่งอยู่ — แตะฉากไม่ให้ลุกเดินเอง ต้องกด "ลุกขึ้น"
+    if (locked || sitting) return;              // มินิเกมกำลังเปิดอยู่ — แตะฉากไม่ให้ตัวละครเดิน
     // box อยู่ในหน่วยพิกเซลของ canvas (backing store) — แปลงพิกัดเมาส์ให้เป็นหน่วยเดียวกัน
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
@@ -450,6 +455,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
     setSit,
+    lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
     pos: () => [P.x, P.y, P.tx, P.ty],       // ไว้ส่องตอนดีบัก
     /** เดินหนึ่งเฟรมด้วยมือ — แท็บที่ไม่ได้อยู่หน้าจอ rAF ไม่ยิงเลย ทดสอบจากคอนโซลต้องใช้ตัวนี้
      *  (แนวเดียวกับ G.step() ที่เกมเปิดไว้ให้อยู่แล้ว) */
