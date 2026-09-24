@@ -31,9 +31,16 @@
 .court-wheel .options-3 .orb-choice{flex:none!important;width:auto!important;min-width:0;min-height:60px}
 .court-wheel .options-3 .orb-choice img{width:100%;height:auto;max-width:46px;max-height:46px;margin:0 auto;aspect-ratio:1}
 .court-wheel .options-3 .orb-choice b{font-size:8px;line-height:1.15}
-.command-selected{position:absolute;width:58px;text-align:center;transition:opacity .2s;pointer-events:none;color:white}.command-selected img,.command-selected strong{display:block;width:54px;height:54px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #edc475}.command-selected strong{background:#e8b454;font-size:34px}.command-selected b{font-size:10px;display:block;text-shadow:0 2px 4px #000}.selected-place{left:94%;top:7%}.selected-crew{left:96%;top:55%}.selected-force{left:43%;top:99%}.has-options .command-selected{opacity:0}
+.command-selected{position:absolute;width:58px;text-align:center;transition:opacity .2s;pointer-events:none;color:white}.command-selected img,.command-selected strong{display:block;width:54px;height:54px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #edc475}.command-selected strong{background:#e8b454;font-size:34px}.command-selected b{font-size:10px;display:block;text-shadow:0 2px 4px #000}.selected-place{left:94%;top:7%}.selected-crew{left:96%;top:55%}.selected-force{left:43%;top:99%}
+/* เดิม .has-options ซ่อนป้าย "เลือกแล้ว" ทั้ง 3 อันทุกครั้งที่เปิดวงไหนก็ได้ — ทำให้ดูเหมือนตัวเลือก
+   ของข้ออื่นหายไปตอนเปิดไปเลือกข้อถัดไป (ข้อ A คุณเป้ 24 ก.ย. 2569) ซ่อนเฉพาะป้ายของ "วงที่กำลังเปิดอยู่"
+   พอเพื่อกันป้ายทับตัวเลือกที่เพิ่งกางออกมาของวงเดียวกัน ป้ายของอีกสองข้อต้องเห็นตลอด */
+.command-wheel:has(.options-1.is-open) .selected-place{opacity:0}
+.command-wheel:has(.options-2.is-open) .selected-crew{opacity:0}
+.command-wheel:has(.options-3.is-open) .selected-force{opacity:0}
 .court-wheel{left:19%;bottom:65px}
 .trial-hud .trial-top-actions{position:static;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.trial-hud .trial-top-actions button{padding:8px 5px;min-height:58px;font-size:12px}
+.trial-missing{background:#4a1414;border:1px solid #c65c5c;color:#ffd7d7;font-size:12px;line-height:1.4;padding:8px 10px;border-radius:8px;margin-bottom:8px}
 .trial-hud .hud-stage{overflow:visible;min-height:450px}.trial-hud .hud-right{position:relative;z-index:10}.trial-hud .hud-stage .fig.you{left:0;bottom:65px;width:19%}.trial-hud .hud-stage .fig.foe{right:1%;bottom:65px;width:22%}
 .court-guide{width:min(680px,90vw);max-height:85vh;overflow:auto;background:#281b23;color:#f8e5ca;border:1px solid #d1ac65;border-radius:18px;padding:28px;line-height:1.8}.court-guide::backdrop{background:#000b}.court-guide table{width:100%;border-collapse:collapse}.court-guide td,.court-guide th{text-align:left;padding:8px;border-bottom:1px solid #705245}.guide-close{float:right;position:sticky;top:0}
 .arena:has(.combat-wheel){min-height:470px;aspect-ratio:16/8}.combat-wheel{left:34%;bottom:17%;width:clamp(220px,24vw,300px)}

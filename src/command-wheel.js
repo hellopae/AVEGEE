@@ -34,8 +34,14 @@ export function bindCommandWheel(root) {
       });
       wheel.classList.toggle('has-options',index!==null);
     };
+    // จอที่มีเมาส์จริง (hover ได้) — pointerenter เปิดวงให้ก่อนคลิกเสมอ ถ้าคลิกยัง "สลับปิด/เปิด"
+    // ตามค่า aria-expanded ปัจจุบัน จะเจอ race: hover เปิดไปแล้ว คลิกอ่านค่าที่เพิ่งเปิดนั้นแล้วตีความว่า
+    // "ผู้ใช้ต้องการปิด" ทันที วงเลยกะพริบเปิดแล้วปิดในคลิกเดียว ตัวเลือกที่กดไม่ทันติด (ข้อ A/B 24 ก.ย. 2569)
+    // แก้โดยแยกพฤติกรรม: มีเมาส์ → คลิกแค่ "ตรึงให้เปิดอยู่" (ปิดด้วยการย้ายไปวงอื่น/Esc/ปิดกล่อง)
+    //                     ไม่มี hover (ทัช/คีย์บอร์ด) → คลิกสลับเปิด-ปิดเหมือนเดิม เพราะไม่มี hover เปิดล่วงหน้า
+    const hasHover = typeof matchMedia === 'function' && matchMedia('(hover:hover) and (pointer:fine)').matches;
     wheel.querySelectorAll('[data-command]').forEach(b=>{
-      b.onclick=()=>set(b.getAttribute('aria-expanded')==='true'?null:b.dataset.command);
+      b.onclick=()=>set(hasHover ? b.dataset.command : (b.getAttribute('aria-expanded')==='true'?null:b.dataset.command));
       b.onpointerenter=e=>{if(e.pointerType==='mouse'&&!b.disabled)set(b.dataset.command);};
     });
     wheel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();set(null);}});
