@@ -2304,8 +2304,6 @@ function openStation(k) {
           : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${name}</small></button>`);
       }
     }
-    if (cap && g.stFree(st) > 0 && g.queue.length)
-      acts.push(`<button id="s-pick">📍 เลือกเป็นปลายทาง<small>ของสำนวนที่อยู่หน้าแท่นตอนนี้</small></button>`);
     if (cap) {
       const speedCost = UPGRADES.stationBase * ((st.speedLv || 0) + 1);
       const capCost = UPGRADES.stationBase * ((st.capLv || 0) + 1);
@@ -2346,7 +2344,6 @@ function openStation(k) {
           </div>`;
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
-    on('#s-pick',  () => { pick.st = k; dlg.close(); refresh(); });
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     on('#s-sit',   () => { R.setSit(!R.sitting()); panels(); });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
