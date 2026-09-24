@@ -267,27 +267,34 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     ctx.imageSmoothingEnabled = false;
 
     // ---- ฉาก: วางแบบ contain ไม่ครอป จุดยึดทุกจุดจึงตรงกับที่วัดจากภาพต้นฉบับเสมอ ----
+    // room.crop = [sx,sy,sw,sh] สัดส่วน 0-1 ของภาพต้นฉบับ — ถ้ามี ตัดเฉพาะส่วนนั้นมาขยายเต็มกรอบ
+    // แทนที่จะยัดภาพทั้งใบ (ใช้ซูมเข้าไปในอาคารโดยไม่ต้องวาดภาพใหม่ — ข้อ D คุณเป้ 24 ก.ย. 2569)
+    // จุดยึด (me/walk/act/item) ของห้องที่มี crop ต้องวัดใหม่เทียบกับกรอบที่ครอปแล้ว ไม่ใช่ภาพเต็มอีกต่อไป
     const bg = bgOf(bgSrc, bgFallback) || (bgFallback ? bgOf(bgFallback) : null);
     if (bg && bg.naturalWidth) {
-      const s = Math.min(W / bg.naturalWidth, H / bg.naturalHeight);
-      box = { ox: (W - bg.naturalWidth * s) / 2, oy: (H - bg.naturalHeight * s) / 2,
-              w: bg.naturalWidth * s, h: bg.naturalHeight * s };
+      const crop = room.crop;
+      const sx = crop ? crop[0] * bg.naturalWidth  : 0;
+      const sy = crop ? crop[1] * bg.naturalHeight : 0;
+      const sw = crop ? crop[2] * bg.naturalWidth  : bg.naturalWidth;
+      const sh = crop ? crop[3] * bg.naturalHeight : bg.naturalHeight;
+      const s = Math.min(W / sw, H / sh);
+      box = { ox: (W - sw * s) / 2, oy: (H - sh * s) / 2, w: sw * s, h: sh * s };
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
       const bf = room.bright || brightOf(bg, bgSrc);
       if (Math.abs(bf - 1) > 0.02 && canFilter()) {
         ctx.save();
         ctx.filter = `brightness(${bf.toFixed(2)})`;
-        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
         ctx.restore();
       } else if (bf > 1.02) {                            // ไม่รองรับ filter — ทับอีกชั้นแบบบวกแสง
-        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
-        ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
         ctx.restore();
-      } else ctx.drawImage(bg, box.ox, box.oy, box.w, box.h);
+      } else ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
       applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
