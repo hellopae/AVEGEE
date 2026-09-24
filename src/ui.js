@@ -37,6 +37,11 @@ const WEIGHT = ['', 'เล็กน้อย', 'ปานกลาง', 'หน
 // (WEIGHT[5] = "มหันต์" มาก่อนแล้ว แต่ INTENSITY[5] สะกดคนละคำ ผู้เล่นอ่านแล้วงงว่าเป็นคำเดียวกันไหม)
 const INTENSITY = ['', 'ว่ากล่าว', 'เบา', 'ปานกลาง', 'หนัก', 'มหันต์'];
 
+// ข้อ C คุณเป้ 24 ก.ย. 2569 — หน่วงก่อนศัตรูตีสวนในฉากต่อสู้ (openBattle) ผู้เล่นต้องเห็นผล
+// การโจมตีของตัวเองก่อน (เดิมตีสวนทันทีที่อนิเมชันเราเล่นจบ รู้สึกโดนตีสวนทันที)
+const COUNTER_WAIT_MS = 2000;
+const PHASE_GUARD_MS = 6000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS พอมีระยะปลอดภัย
+
 const g = createGame();
 const SAVED = loadSave();
 if (SAVED) g.restore(SAVED);
@@ -1817,15 +1822,21 @@ function openBattle(after) {
         const counter = (nb.dmg && nb.dmg.you > 0);
         if (!counter) { phase = null; fxNow = null; paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
-        // ---- จังหวะที่ 2: เขาสวนกลับ ----
-        phase = 'foe'; phaseAt = Date.now();
-        fxNow = { key: 'foe', side: 'you' };
-        sfx('hurt');
-        paint();
+        // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
+        // หน่วงเพิ่มอีก ~2 วิ ก่อนเริ่มจังหวะเขาสวนกลับ ผู้เล่นต้องเห็นดาเมจ/แถบเลือดของตัวเองนิ่งอยู่ก่อน
+        // phase ยังเป็น 'you' ต่อระหว่างรอ (ปุ่มล็อกอยู่ผ่าน busy:!!phase) กันกดโจมตีซ้อนจนพัง
         phaseTimer = setTimeout(() => {
-          phase = null; fxNow = null;
-          if (g.battle) { paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
-        }, 780);
+          if (!g.battle) return;
+          // ---- จังหวะที่ 2: เขาสวนกลับ ----
+          phase = 'foe'; phaseAt = Date.now();
+          fxNow = { key: 'foe', side: 'you' };
+          sfx('hurt');
+          paint();
+          phaseTimer = setTimeout(() => {
+            phase = null; fxNow = null;
+            if (g.battle) { paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
+          }, 780);
+        }, COUNTER_WAIT_MS);
       }, 780);
     });
     const fin = dlg.querySelector('[data-fin]');
@@ -1866,9 +1877,11 @@ function openBattle(after) {
 
   // จังหวะอนิเมชันค้าง = ปุ่มถูกล็อกค้างไปด้วย ผู้เล่นทำอะไรไม่ได้เลย
   // (setTimeout พลาดได้หลายทาง — แท็บอยู่หลังจอ เครื่องหน่วง กล่องถูกวาดใหม่ระหว่างทาง)
-  // เกินสี่วินาทีเมื่อไหร่ ปลดล็อกแล้ววาดใหม่ ไม่ปล่อยให้ค้าง
+  // เกิน PHASE_GUARD_MS เมื่อไหร่ ปลดล็อกแล้ววาดใหม่ ไม่ปล่อยให้ค้าง
+  // (ยกจาก 4000 → 6000ms ข้อ C 24 ก.ย. 2569 — จังหวะ 'you' ตอนนี้กินเวลาเองถึง 780+COUNTER_WAIT_MS
+  //  ก่อนสลับเป็น 'foe' ต้องเผื่อระยะปลอดภัยไม่ให้ guard ตัดตอนกลางจังหวะที่ตั้งใจหน่วงไว้)
   const phaseGuard = setInterval(() => {
-    if (!phase || Date.now() - phaseAt < 4000) return;
+    if (!phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
     phase = null; fxNow = null;
     if (g.battle) paint();
   }, 600);
