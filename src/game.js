@@ -44,7 +44,10 @@ const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(
 
 export function createGame() {
   const g = {
-    tick: 0, coin: BAL.startCoin, fuel: BAL.startFuel,
+    tick: 0, coin: BAL.startCoin, food: BAL.startFood,
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — สถานะอิ่ม/หิวของยมทูตที่ "กำลังทำงาน" อยู่ตอนนี้
+    // คำนวณใหม่ทุกวาระใน step() · fed/workingCrew ใช้แสดงผลบนจอเท่านั้น ไม่ต้องเซฟ (คิดใหม่ได้ทุกครั้ง)
+    fed: true, workingCrew: new Set(),
     order: 72, karma: 0, hp: BAL.startHp,
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่ (roar) เลิกใช้ ammo/item แล้ว เปลี่ยนเป็นคูลดาวน์เวลาจริง
     // readyAt: 0 = ใช้ได้ทันทีตั้งแต่เริ่มเกม · ammo/max ของ roar เหลือไว้เฉยๆ ไม่ได้ใช้กันอีกแล้ว (กันเซฟเก่าพัง)
@@ -931,6 +934,31 @@ const API = {
     }
     this.queue.forEach(s => s.waited++);
 
+    // ---------- เสบียง (ข้อ A คุณเป้ 24 ก.ย. 2569 ชุดที่ 8) ----------
+    // ผู้กินคือ "ยมทูตที่กำลังทำงาน" ไม่ใช่สถานี — คุมสถานีอยู่ (มี activeSlots) หรือกำลังเดินออกไปรับดวงใหม่ (escort)
+    // ท่านเอง (SELF) ไม่กินเสบียง ไม่มีค่าจ้าง เหมือนเดิม — ไม่มีผลอิ่ม/หิวกับสถานีที่ท่านคุมเอง
+    // อิ่ม (เสบียงพอ) = ทำงานไวขึ้น (foodFullMul) · หิว (เสบียงหมด) = ทำงานช้าลง (foodHungryMul) แต่ไม่หยุดสนิท
+    const workingCrew = new Set();
+    for (const st of this.stations) {
+      if (st.build || !st.slots.length || st.fire >= MOB.burnMax) continue;
+      const c = this.crewOf(st.crewK);
+      if (!c || c.self || c.escort) continue;
+      const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
+      if (activeSlots.length) workingCrew.add(c.k);
+    }
+    for (const c of this.crew) if (c.escort) workingCrew.add(c.k);
+    const workingCount = workingCrew.size;
+    let fed = true;
+    if (workingCount > 0) {
+      const need = BAL.foodEatRate * workingCount;
+      fed = this.food >= need;
+      this.food = Math.max(0, this.food - (fed ? need : this.food));
+      if (!fed && this.tick % 6 === 0)
+        this.log('🍙 เสบียงหมด — ยมทูตที่กำลังทำงานอยู่ช้าลง (ยังไม่หยุดงาน)', 'bad');
+    }
+    this.fed = fed; this.workingCrew = workingCrew;
+    const foodMul = workingCount === 0 ? 1 : (fed ? BAL.foodFullMul : BAL.foodHungryMul);
+
     // สถานีทำงาน
     let hasSala = false;
     for (const st of this.stations) {
@@ -940,34 +968,28 @@ const API = {
       const c = this.crewOf(st.crewK);
       if (!c) continue;
       if (!c.self && c.escort) continue;       // ผู้คุมออกไปรับดวงใหม่ งานในสถานีรอเขากลับมาก่อน
-      // ยังอยู่ระหว่างเดินทางไปสถานี — ไม่เริ่มลงทัณฑ์และไม่กินฟืนก่อนถึงจริง
+      // ยังอยู่ระหว่างเดินทางไปสถานี — ไม่เริ่มลงทัณฑ์ก่อนถึงจริง
       const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
       if (!activeSlots.length) continue;
-      if (this.fuel < st.def.fuel) {
-        if (this.tick % 6 === 0) this.log(`🔥 ฟืนหมด ${st.def.name} หยุดทำงาน`, 'bad');
-        continue;
-      }
       // คุมหลายดวงพร้อมกัน = แต่ละดวงเดินช้าลง ไม่ใช่ได้ฟรี
       const share = 1 / (0.55 + 0.45 * activeSlots.length);
       // สถานีที่ท่านคุมเอง เดินช้ากว่ามาก และเดินเฉพาะตอนท่านยืนอยู่ตรงนั้นจริง ๆ
-      // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย)
+      // (จะให้เร็วเท่ายมทูตไม่ได้ ไม่งั้นไม่มีเหตุผลจะจ้างใครเลย) — ไม่กินเสบียง ไม่มีผลอิ่ม/หิว
       if (c.self) {
         const d = Math.hypot((st.def.sx ?? st.def.x) - this.player.x, (st.def.sy ?? st.def.y) - this.player.y);
         if (d > 140) {
           if (this.tick % 10 === 0) this.log(`${st.def.name} หยุดรอ — ท่านคุมเองแต่ไม่ได้ยืนอยู่ตรงนั้น`, 'bad');
           continue;
         }
-        this.fuel = Math.max(0, this.fuel - Math.max(0, st.def.fuel - (st.fuelLv || 0) * .08));
         for (const slot of [...activeSlots]) {
           slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);
           if (slot.progress >= slot.need) this.finish(st, slot);
         }
         continue;
       }
-      this.fuel = Math.max(0, this.fuel - Math.max(0, st.def.fuel - (st.fuelLv || 0) * .08));
       const mf = 0.55 + 0.45 * (c.morale / 100);
       for (const slot of [...activeSlots]) {
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12);
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul;
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -1001,12 +1023,12 @@ const API = {
     // ของจากสถานีไม่นับในเพดานนี้ — ไม่งั้นสร้างสถานีเติมพลังครบสี่หลังแล้วของสุ่มหยุดตกทั้งเกม
     // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — เอา 'hypno' ออกจากพูลสุ่มนี้แล้ว (ซื้อจากบุญที่ประตูสวรรค์เท่านั้น)
     // 'mirror' ยังอยู่ในพูล — ทุก 18 วาระ (~12.6 วิจริงที่ tickMs 700ms) เมื่อของบนแผนที่ยังไม่ถึง 3 ชิ้น
-    // มีโอกาสสุ่มได้ 'mirror' 1 ใน 6 ของพูลนี้ (ไม่นับกรณี priority บารมี/ฟืน/บัวตัดหน้า) — ต่ำพอไม่ให้เฉลยทุกคดี
+    // มีโอกาสสุ่มได้ 'mirror' 1 ใน 6 ของพูลนี้ (ไม่นับกรณี priority บารมี/เสบียง/บัวตัดหน้า) — ต่ำพอไม่ให้เฉลยทุกคดี
     if (this.tick % 18 === 0 && this.items.filter(it => !it.from).length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
-                 : this.fuel < 18 ? 'fuel'
+                 : this.food < 18 ? 'food'
                  : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
-                 : pick(['fire', 'fire', 'mirror', 'health', 'fuel', 'ice']);
+                 : pick(['fire', 'fire', 'mirror', 'health', 'food', 'ice']);
       this.dropItem(need);
     }
 
@@ -1042,11 +1064,13 @@ const API = {
       if (got.length) this.log(`🪞 หอส่องกรรมส่องแสงขึ้นมา — เติม${got.join(' · ')}ให้แล้ว`, 'good');
     }
 
-    // ค่าแรง
+    // ค่าแรง — ข้อ A4 คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8): ยมทูตกินเสบียงเป็นค่าจ้างแทนแล้ว ไม่หักเบี้ยกรรมรายวาระอีก
+    // เหลือแค่ยักษ์ทวารบาลที่ยังจ่ายเป็นเบี้ยทุกงวดเหมือนเดิม (ไม่ได้คุมสถานี/ออกรับดวง จึงไม่เข้าเงื่อนไข "กำลังทำงาน" ที่กินเสบียง)
     if (--this.nextPay <= 0) {
-      const total = this.crew.reduce((s, c) => s + c.pay, 0) + (this.guard ? GUARD.pay : 0);
-      this.coin -= total;
-      this.log(`💸 จ่ายค่าแรงยมทูต ${this.crew.length} คน — ${total} เบี้ยกรรม`);
+      if (this.guard) {
+        this.coin -= GUARD.pay;
+        this.log(`💸 จ่ายค่าแรงยักษ์ทวารบาล — ${GUARD.pay} เบี้ยกรรม`);
+      }
       this.nextPay = BAL.payEvery;
     }
 
@@ -1389,7 +1413,7 @@ const API = {
       this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + def.fireAmmo);
     }
     if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
-    if (def.fuel) this.fuel += def.fuel;
+    if (def.food) this.food += def.food;
     if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
     if (--this.inventory[k] <= 0) delete this.inventory[k];
     this.log(`${def.glyph || '🎁'} ใช้${def.name} — ${def.say}`, 'good');
@@ -2140,11 +2164,11 @@ const API = {
   },
 
   buy(kind, n = 1) {
-    if (kind === 'fuel') {
-      const cost = BAL.fuelPrice * n * 10;
+    if (kind === 'food') {
+      const cost = BAL.foodPrice * n * 10;
       if (this.coin < cost) return false;
-      this.coin -= cost; this.fuel += n * 10;
-      this.log(`ซื้อฟืน ${n * 10} ดุ้น — ${cost} เบี้ยกรรม`);
+      this.coin -= cost; this.food += n * 10;
+      this.log(`ซื้อเสบียง ${n * 10} ห่อ — ${cost} เบี้ยกรรม`);
       return true;
     }
     // บูชาดอกบัวที่ศาลาน้ำชา — ทางลดกรรมที่ซื้อได้ แต่ต้องมีศาลาก่อน และไม่ถูก
@@ -2228,15 +2252,17 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เอาเคส type:'fuel' ออก (ปุ่ม "ประหยัดฟืน" ถอดจาก UI ไปแล้วตั้งแต่ชุดที่ 7
+  // และตอนนี้ไม่มีสถานีกินฟืน/เสบียงต่อวาระอีกต่อไป ไม่มีอะไรให้ "ประหยัด") เหลือแค่ speed/capacity
   upgradeStation(k, type = 'speed') {
     const st = this.stations.find(x => x.def.k === k);
     if (!st || st.build || st.def.pow <= 0) return false;
-    const prop = type === 'capacity' ? 'capLv' : type === 'fuel' ? 'fuelLv' : 'speedLv';
+    const prop = type === 'capacity' ? 'capLv' : 'speedLv';
     const lv = st[prop] || 0; if (lv >= UPGRADES.max) return false;
     const cost = UPGRADES.stationBase * (lv + 1);
     if (this.coin < cost || this.level < Math.min(5, 1 + Math.floor(lv / 2))) return false;
     this.coin -= cost; st[prop] = lv + 1;
-    this.log(`🏗️ อัปเกรด${st.def.name} · ${type === 'capacity' ? 'ช่องรับวิญญาณ' : type === 'fuel' ? 'ประหยัดฟืน' : 'ความเร็ว'} ขั้น ${lv + 1}`, 'good');
+    this.log(`🏗️ อัปเกรด${st.def.name} · ${type === 'capacity' ? 'ช่องรับวิญญาณ' : 'ความเร็ว'} ขั้น ${lv + 1}`, 'good');
     this.save(); this.onChange(); return true;
   },
 
@@ -2286,7 +2312,7 @@ const SAVE_KEY = 'avegee.save.v2';
 API.snapshot = function (withEntry = true) {
   return {
     v: 3, at: Date.now(),
-    tick: this.tick, coin: this.coin, fuel: this.fuel, order: this.order,
+    tick: this.tick, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, casesDone: this.casesDone, scoreSum: this.scoreSum,
     greens: this.greens, reds: this.reds,
@@ -2328,7 +2354,7 @@ API.save = function () {
 
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
-  const keep = ['tick','coin','fuel','order','karma','hp','hpMax','hits','star5','level',
+  const keep = ['tick','coin','food','order','karma','hp','hpMax','hits','star5','level',
                 'greens','reds',
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi',
                 'orderWarns','orderWarnAt'];

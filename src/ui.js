@@ -121,7 +121,7 @@ function drawRes() {
   const ot = g.orderTier(), kt = g.karmaTier();
   $('#res').innerHTML = `
     <span class="chip tap" data-ex="coin">🪙 <b>${Math.round(g.coin)}</b></span>
-    <span class="chip tap" data-ex="fuel">🔥 <b>${Math.round(g.fuel)}</b></span>
+    <span class="chip tap" data-ex="food">🍙 <b>${Math.round(g.food)}</b></span>
     <span class="chip tap" data-ex="hp" id="res-hp-chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
     <span class="chip tap" data-ex="order">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b>
       <i style="font-style:normal;opacity:.6">${esc(ot.name)}</i></span>
@@ -173,20 +173,21 @@ function explainBar(k) {
     <div class="tline bad"><b>ถ้าเต็ม (100)</b><div>พญายมลงมาปราบด้วยตัวเอง แพ้แล้วถูกส่งลงกระทะทองแดง บารมีเหลือ 1 และกรรมลดลงหลังชดใช้บางส่วน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
-  if (k === 'fuel') return modal(`<h2>🔥 ฟืน — ${Math.round(g.fuel)} ดุ้น</h2>
+  if (k === 'food') return modal(`<h2>🍙 เสบียง — ${Math.round(g.food)} ห่อ${g.workingCrew?.size
+      ? (g.fed ? ' · <span style="color:var(--success)">อิ่ม ทำงานไว</span>' : ' · <span style="color:var(--destructive)">หิว ทำงานช้า</span>') : ''}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
-      เชื้อไฟใต้สถานี แต่ละสถานีกินไม่เท่ากัน (กระทะทองแดงกินหนักสุด · โลกันตนรกไม่กินเลย)</p>
-    <div class="tline bad"><b>ถ้าหมด</b><div>สถานีที่ต้องใช้ไฟ<b>หยุดทำงานทันที</b> คดีค้าง คิวล้น ระเบียบตกตามไปด้วย —
-      ไม่จบเกมทันที แต่พาไปจบทางระเบียบได้</div></div>
-    <div class="tline"><b>เติมยังไง</b><div>ซื้อที่แท็บก่อสร้าง (${BAL.fuelPrice * 10} เบี้ย/10 ดุ้น) หรือเดินไปเก็บ<b>มัดฟืน</b>บนแผนที่</div></div>
+      ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
+    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> — ไม่หยุดสนิท แค่คดีคืบหน้าช้าลง</div></div>
+    <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
+    <div class="tline"><b>เติมยังไง</b><div>ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือเดินไปเก็บ<b>ห่อเสบียง</b>บนแผนที่</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
   return modal(`<h2>🪙 เบี้ยกรรม — ${Math.round(g.coin)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
-      เงินของโซน ใช้สร้างสถานี จ้างยมทูต ซื้อฟืน และบูชาดอกบัว</p>
+      เงินของโซน ใช้สร้างสถานี จ้างยมทูต ซื้อเสบียง และบูชาดอกบัว</p>
     <div class="tline"><b>ได้จาก</b><div>ปิดคดี (คูณด้วยระเบียบของโซน) · สี่ดาว +25 · ห้าดาว +60 ·
       ปราบเปรต +${MOB.bounty} · ตรวจการผ่าน +150</div></div>
-    <div class="tline"><b>เสียไปกับ</b><div>ค่าแรงยมทูตทุก ${BAL.payEvery} วาระ · ค่าสร้าง · ค่าจ้าง · ค่าฟืน</div></div>
+    <div class="tline"><b>เสียไปกับ</b><div>ค่าแรงยักษ์ทวารบาลทุก ${BAL.payEvery} วาระ · ค่าสร้าง · ค่าจ้างแรกเข้า · ค่าเสบียง</div></div>
     <div class="tline bad"><b>ถ้าติดลบถึง −300</b><div>จบเกม — ยมทูตวางเครื่องมือแล้วเดินออกไปพร้อมกัน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 }
@@ -273,7 +274,8 @@ function drawTab() {
         ${face('crew-' + c.k, c.glyph)}
         <span class="n"><b>${c.name}</b>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
-          <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'} · ค่าแรง ${c.pay}</div>
+          <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'}${g.workingCrew?.has(c.k)
+            ? (g.fed ? ' · <b style="color:var(--success)">🍙 อิ่ม ทำงานไว</b>' : ' · <b style="color:var(--destructive)">🍙 หิว ทำงานช้า</b>') : ''}</div>
         </span>
       </div>`).join('')
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
@@ -282,7 +284,7 @@ function drawTab() {
       <div class="crew">
         ${face('crew-' + c.k, c.glyph)}
         <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
-          <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta} · ค่าแรง ${c.pay}</div>
+          <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">${esc(c.line)}</div></span>
         <button class="sm" data-hire="${c.k}" ${g.coin < c.hire ? 'disabled' : ''}>จ้าง ${c.hire}</button>
       </div>`).join('') : '<div class="empty">จ้างครบทุกคนแล้ว</div>')
@@ -304,9 +306,9 @@ function drawTab() {
 
   } else {
     b.innerHTML = `
-      <div class="shop"><span class="g">🔥</span>
-        <span class="n"><b>ฟืน 10 ดุ้น</b><div>เชื้อไฟใต้สถานี หมดแล้วทุกอย่างหยุด</div></span>
-        <button class="sm" id="buyfuel" ${g.coin < BAL.fuelPrice * 10 ? 'disabled' : ''}>ซื้อ ${BAL.fuelPrice * 10}</button>
+      <div class="shop"><span class="g">🍙</span>
+        <span class="n"><b>เสบียง 10 ห่อ</b><div>ค่าจ้างยมทูตที่กำลังทำงาน — หมดแล้วยังทำงานได้ แค่ช้าลง</div></span>
+        <button class="sm" id="buyfood" ${g.coin < BAL.foodPrice * 10 ? 'disabled' : ''}>ซื้อ ${BAL.foodPrice * 10}</button>
       </div>
       `
       + (g.stations.some(x => x.def.k === 'tea') ? `
@@ -324,12 +326,12 @@ function drawTab() {
         return `<div class="shop"><span class="g">${s.glyph}</span>
           <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
             ${s.use ? `<div style="color:var(--gold)">${esc(s.use)}</div>` : ''}
-            <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'} · ฟืน ${s.fuel}/วาระ</div>
+            <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost ? 'disabled' : ''}>${built ? 'สร้างแล้ว' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
-    const bf = $('#buyfuel'); if (bf) bf.onclick = () => { g.buy('fuel', 1); refresh(); };
+    const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
     const bl = $('#buylotus'); if (bl) bl.onclick = () => { g.buy('lotus'); refresh(); };
     b.querySelectorAll('[data-build]').forEach(el =>
       el.onclick = () => { g.build(el.dataset.build); refresh(); });
@@ -372,7 +374,7 @@ function meThought() {
   if (g.karma >= 45) return '"บัญชีของข้าหนาขึ้นทุกคดี... ทัณฑ์ที่เกินกรรมมันมาอยู่ที่ข้าจริง ๆ"';
   if (g.queue.length > g.queueCap()) return '"คิวล้นขนาดนี้ ระเบียบไม่มีทางขึ้น ต้องรีบปิดคดี"';
   if (g.mobs.length) return '"เปรตขึ้นมาอีกแล้ว ปล่อยไว้ระเบียบตกไปเรื่อย ๆ"';
-  if (g.fuel < 12) return '"ฟืนใกล้หมด ไฟใต้กระทะดับเมื่อไหร่ทุกอย่างหยุด"';
+  if (g.food < 12) return '"เสบียงใกล้หมด ยมทูตที่กำลังทำงานอยู่จะเริ่มช้าลง"';
   if (g.star5 >= 3) return '"ห้าดาวมาสามครั้งแล้ว อีกสองครั้งก็เลื่อนขั้น"';
   return '"พิพากษาให้ตรงกรรม ไม่ใช่ให้แรงที่สุด — พ่อพูดไว้แบบนั้น"';
 }
@@ -461,7 +463,7 @@ function sideBody() {
       + think(meThought())
       + kv([`❤️ บารมี ${Math.round(g.hp)}/${g.hpMax}`, `☠️ กรรม ${g.karma.toFixed(1)}`,
             `⭐ ห้าดาว ${g.star5}`, `📁 เฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0}`,
-            `🪙 ${Math.round(g.coin)}`, `🔥 ฟืน ${Math.round(g.fuel)}`, `🔥 ลูกไฟ ×${g.fireAmmo}`])
+            `🪙 ${Math.round(g.coin)}`, `🍙 เสบียง ${Math.round(g.food)}`, `🔥 ลูกไฟ ×${g.fireAmmo}`])
       + `<div class="sec">หน้าที่</div>
          <div class="row-truth">พิพากษาให้ <b>ตรงกรรม</b> — ตรงชนิดบาป และหนักพอดี ไม่ใช่หนักที่สุด</div>
          <div class="sec">ความสามารถ</div>${pw}
@@ -484,7 +486,8 @@ function sideBody() {
     return profile('crew-' + c.k, c.name, c.duty, now)
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
       + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
-            `กำลังใจ ${Math.round(c.morale)}`, `ค่าแรง ${c.pay}`])
+            `กำลังใจ ${Math.round(c.morale)}`,
+            ...(g.workingCrew?.has(c.k) ? [g.fed ? '🍙 อิ่ม ทำงานไว' : '🍙 หิว ทำงานช้า'] : [])])
       + `<div class="sec">ถนัดอะไร</div>
          <div class="row-truth">เด่นที่ <b>${strong[0][0]} ${strong[0][1]}</b> · อ่อนที่ ${strong[3][0]} ${strong[3][1]}</div>
          <div class="row-truth">${crewNote(c)}</div>
@@ -1408,7 +1411,7 @@ function openTrial() {
     const ot = g.orderTier(), kt = g.karmaTier();
     const top = `
       <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
-      <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
+      <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
       <span class="chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
       <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
       <span class="chip">☠️ กรรม ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
@@ -2389,9 +2392,10 @@ function openStation(k) {
           : hypnoFull ? 'มีเต็มแล้ว — ใช้ก่อนค่อยซื้อเพิ่ม'
           : `${hypnoStock.cost} เบี้ยกรรม · สารภาพครบ 100% ทุกครั้ง`}</small></button>`);
     }
-    // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (คุณเป้ยังตัดสินใจเรื่องฟืน/ช่องรับอยู่)
-    // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ — stCap()/fuel-drain ใน game.js ยังอ่านค่าเดิม
-    // แค่ไม่มีปุ่มกดอัปเพิ่มอีกแล้วเท่านั้น "เร่งการทำงาน" คงไว้เหมือนเดิม (จะเปลี่ยนเป็นมินิเกมในชุดที่ 8)
+    // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (ชุดที่ 7)
+    // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — "ฟืน" เปลี่ยนเป็น "เสบียง" ทั้งระบบแล้ว ไม่ผูกกับสถานีอีกต่อไป
+    // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ (ไม่พัง) แค่ fuelLv ไม่มีผลอะไรแล้ว — ดู game.js restore()
+    // แค่ไม่มีปุ่มกดอัปเพิ่มอีกแล้วเท่านั้น "เร่งการทำงาน" คงไว้เหมือนเดิม
     if (cap) {
       const speedCost = UPGRADES.stationBase * ((st.speedLv || 0) + 1);
       acts.push(`<button data-st-up="speed" ${g.coin < speedCost || (st.speedLv || 0) >= UPGRADES.max ? 'disabled' : ''}>⚙️ เร่งการทำงาน ขั้น ${st.speedLv || 0}<small>${speedCost} เบี้ย · เร็วขึ้น 12%</small></button>`);
@@ -2403,7 +2407,7 @@ function openStation(k) {
     // ไม่ว่าจะยืนตรงไหนในห้อง กันเข้าใจผิดว่า "สถานีค้าง" ทั้งที่เกมทั้งเกมหยุดพักอยู่
     if (T) T.innerHTML = `
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
-        <span class="chip">🔥 <b>${Math.round(g.fuel)}</b></span>
+        <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
         <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
         ${g.paused ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>` : ''}
@@ -2417,7 +2421,7 @@ function openStation(k) {
             <h4>เอาไว้ทำอะไร</h4>
             <div class="st-desc">${esc(def.use || (cap ? 'ที่ลงทัณฑ์ตามชนิดกรรม' : '—'))}</div>
             <div class="st-meta">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-              · ฟืน ${def.fuel}/วาระ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
+              ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
           </div>`;
     // ข้อ E คุณเป้ 24 ก.ย. 2569 — แถบ "ผู้คุมประจำหลังนี้" มีความหมายเฉพาะสถานีที่รับวิญญาณลงทัณฑ์จริง
     // (cap > 0 คือ def.pow > 0 ดู g.stCap) เพราะ crewK ถูกตั้งค่าผ่าน assign() เท่านั้น
@@ -2432,6 +2436,7 @@ function openStation(k) {
             <h4>ผู้คุมประจำหลังนี้</h4>
             <div class="st-desc">${st.crewK ? esc(g.crewOf(st.crewK)?.name || '—')
               + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง)' : '')
+              + (g.workingCrew?.has(st.crewK) ? (g.fed ? ' · 🍙 อิ่ม ทำงานไว' : ' · 🍙 หิว ทำงานช้า') : '')
               : 'ยังไม่มีใครประจำ'}</div>
           </div>` : ''}`;
 
@@ -2590,7 +2595,7 @@ function openBuild(def) {
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-      · ฟืน ${def.fuel}/วาระ · แรง ${def.pow}${!taan ? ' · ต้องจ้างทัณฑ์ที่โต๊ะนิราก่อน' : taan.buildK ? ' · ทัณฑ์กำลังสร้างหลังอื่นอยู่' : ' · ทัณฑ์จะเดินมาสร้างให้'}</div>
+      · แรง ${def.pow}${!taan ? ' · ต้องจ้างทัณฑ์ที่โต๊ะนิราก่อน' : taan.buildK ? ' · ทัณฑ์กำลังสร้างหลังอื่นอยู่' : ' · ทัณฑ์จะเดินมาสร้างให้'}</div>
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
