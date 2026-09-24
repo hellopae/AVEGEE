@@ -20,5 +20,6 @@
 
 import sala from './sala.js';
 import krata from './krata.js';
+import dab from './dab.js';
 
-export const MINIGAMES = { sala, krata };
+export const MINIGAMES = { sala, krata, dab };
