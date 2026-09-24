@@ -2331,17 +2331,21 @@ function openStation(k) {
             <div class="st-meta">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
               · ฟืน ${def.fuel}/วาระ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
           </div>`;
+    // ข้อ E คุณเป้ 24 ก.ย. 2569 — แถบ "ผู้คุมประจำหลังนี้" มีความหมายเฉพาะสถานีที่รับวิญญาณลงทัณฑ์จริง
+    // (cap > 0 คือ def.pow > 0 ดู g.stCap) เพราะ crewK ถูกตั้งค่าผ่าน assign() เท่านั้น
+    // ซึ่งเลือกปลายทางได้จาก dests = stations ที่ pow > 0 เท่านั้น (ดู openTrial ในไฟล์นี้)
+    // ศาลาน้ำชา/ตะรางรอวาระ/หอส่องกรรม (pow:0) ไม่เคยมีใครถูกมอบหมายมาประจำ ซ่อนแถบทิ้งไปเลย
     if (Rg) Rg.innerHTML = `
           <div class="hud-card st-acts">
             <h4>ทำอะไรได้ตรงนี้</h4>
             ${acts.join('') || '<div class="st-desc">ยังไม่มีอะไรให้ทำที่นี่ตอนนี้</div>'}
           </div>
-          <div class="hud-card">
+          ${cap ? `<div class="hud-card">
             <h4>ผู้คุมประจำหลังนี้</h4>
             <div class="st-desc">${st.crewK ? esc(g.crewOf(st.crewK)?.name || '—')
               + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง)' : '')
               : 'ยังไม่มีใครประจำ'}</div>
-          </div>`;
+          </div>` : ''}`;
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
