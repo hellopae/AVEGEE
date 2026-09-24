@@ -859,6 +859,14 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   .mg-tip{font-size:11px;padding:7px 9px}
   .mg-x{min-height:32px;padding:4px 9px;font-size:11px}
 }
+/* ---- sala "เรียงสำนวน" — ปุ่มม้วนสำนวนสีตามหมวดกรรม (var(--c) ตั้งจาก SINS[c].color ใน sala.js) ---- */
+.mg-sala{display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0}
+.mg-sala-head{text-align:center;font-size:var(--text-sm)}
+.mg-sala-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding-top:4px}
+.mg-scroll{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:78px;min-height:52px;
+  padding:8px 10px;font-size:20px;border:2px solid var(--c,var(--border))}
+.mg-scroll span{font-size:11px;color:var(--c,var(--foreground));font-weight:600}
+.mg-sala-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
 /* ---- ปุ่มลอยบนฉาก (9 ก.ย. 2569) ---- */
 .fabs{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;flex-direction:column;
   align-items:flex-end;gap:6px;pointer-events:none}
