@@ -1380,8 +1380,24 @@ const API = {
   collectItem(i) {
     const it = this.items[i], def = it && ITEMS[it.k];
     if (!it || !def) return false;
-    this.inventory[it.k] = (this.inventory[it.k] || 0) + 1;
-    this.log(`🎒 เก็บ${def.name}ใส่กระเป๋าแล้ว`, 'good');
+    // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้ (มีปุ่มของตัวเองในวงคำสั่ง
+    // ต่อสู้อยู่แล้ว ดู BATTLE.items/battleAct) เดิมเก็บเข้ากระเป๋าทั่วไปก่อน แล้วต้องเปิดกระเป๋ามากด "ใช้"
+    // อีกทีถึงจะเติมเป็นกระสุน/พลังจริง ซึ่งกดได้แม้ไม่ได้ต่อสู้อยู่ (ไม่มีความหมาย ไม่มีศัตรูให้ลง)
+    // เปลี่ยนเป็นพร้อมใช้ทันทีที่เก็บแทน ตัวเลข/เพดานเหมือนเดิมทุกอย่าง แค่ย้ายจังหวะเร็วขึ้นมาตอนเก็บ
+    // (ปุ่ม "ใช้" ในกระเป๋าปิดถาวรสำหรับสองไอเทมนี้แล้ว ดู bagUseWhy ใน ui.js)
+    if (it.k === 'fire') {
+      this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + (def.fireAmmo || 1));
+      this.log(`${def.glyph} เก็บ${def.name} — พร้อมใช้ในฉากต่อสู้แล้ว (มี ${this.fireAmmo}/${this.fireAmmoMax})`, 'good');
+    } else if (it.k === 'ice' && this.powerOf(def.power) && !this.powerLocked(this.powerOf(def.power))) {
+      const p = this.powerOf(def.power);
+      p.ammo = Math.min(p.max, p.ammo + 1); p.cd = 0;
+      this.log(`${def.glyph} เก็บ${def.name} — พร้อมใช้ในฉากต่อสู้แล้ว (มี ${p.ammo}/${p.max})`, 'good');
+    } else {
+      // พลังยังไม่ปลดล็อก (เช่นเก็บคัมภีร์น้ำแข็งก่อนถึงขั้นที่ปลดล็อก) หรือของชิ้นอื่นที่ไม่ใช่สองชิ้นนี้
+      // — เก็บเข้ากระเป๋าตามปกติเหมือนเดิมทุกกรณี
+      this.inventory[it.k] = (this.inventory[it.k] || 0) + 1;
+      this.log(`🎒 เก็บ${def.name}ใส่กระเป๋าแล้ว`, 'good');
+    }
     if (it.from) {
       const src = this.stations.find(x => x.def.k === it.from);
       if (src) src.visitCd = this.tick + (src.def.visit?.cool || 4);
@@ -1395,6 +1411,9 @@ const API = {
   useBag(k) {
     const def = ITEMS[k], n = this.inventory[k] || 0;
     if (!def || n < 1) return false;
+    // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
+    // ปิดถาวรแล้ว ดู bagUseWhy ใน ui.js) กันไว้ที่ชั้นข้อมูลด้วยอีกชั้น เผื่อมีทางเรียกอื่นนอก UI ปกติ
+    if (k === 'fire' || k === 'ice') return false;
     if (def.hp && this.hp >= this.hpMax) return false;
     if (def.karma < 0 && this.karma <= 0) return false;
     if (def.power) {
@@ -2455,6 +2474,18 @@ API.restore = function (d) {
   this.ascended = d.ascended || 0;
   this.items = d.items || [];
   this.inventory = { ...(d.inventory || {}) };
+  // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
+  // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
+  // พลังพร้อมใช้ทันทีแทน ไม่ให้ผู้เล่นเสียของที่เก็บมาแล้วเพราะปุ่มหายไป (ตัวเลข/เพดานเดิมทุกอย่าง)
+  if (this.inventory.fire) {
+    this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + this.inventory.fire);
+    delete this.inventory.fire;
+  }
+  if (this.inventory.ice) {
+    const p = this.powerOf('ice');
+    if (p && !this.powerLocked(p)) { p.ammo = Math.min(p.max, p.ammo + this.inventory.ice); delete this.inventory.ice; }
+    // ยังไม่ปลดล็อก — ปล่อยค้างไว้ในกระเป๋าเหมือนเดิม (บอกเหตุผล "ยังไม่ปลดล็อก" ไม่ใช่ "ใช้ในฉากต่อสู้")
+  }
   this.mobs = d.mobs || [];
   this.transits = [];
   this.guard = d.guard || null;
