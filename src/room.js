@@ -348,7 +348,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
                    entry.inspected || entry.checked ? '#d4f9cf' : '#ffd9c0', entry.soul.sp || 7);
-          label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04, U * 0.025, '#ffe0c8');
+          // ข้อ F คุณเป้เจอ 25 ก.ย. 2569 — จุดยืนสามคนอยู่ใกล้กัน ป้ายชื่อทับกันอ่านไม่ออก
+          // สลับสูง-ต่ำทีละดวงแบบเดียวกับคิววิญญาณปกติ (บรรทัด ~334 ด้านบน)
+          label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
         } });
       });
     }
