@@ -1308,16 +1308,29 @@ dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;pad
   radial-gradient(circle at 50% 58%,transparent 8%,rgba(7,3,5,.38) 72%)}
 .punish-title{position:absolute;left:22px;top:18px;z-index:5;display:flex;flex-direction:column;text-shadow:0 3px 8px #000}
 .punish-title small{font-size:11px;color:#f3c67b}.punish-title b{font:700 clamp(20px,3vw,32px)/1.2 var(--font-display);color:#ffe3ae}
-.punish-yama{position:absolute;z-index:3;left:50%;top:49%;width:15%;height:20%;transform:translate(-50%,-50%);overflow:hidden}
+/* ข้อ H คุณเป้เจอ 25 ก.ย. 2569 (รูป 10) — ยมน้อยเดิมยืนข้างหม้อ ไม่ได้ "จมอยู่ในหม้อ" จริง
+   ลดความสูงกรอบ (overflow:hidden) ลงจาก 20% เหลือ 12% ให้ภาพถูกตัดเหลือแค่ครึ่งบน (หัว-ไหล่)
+   โผล่พ้นปากหม้อ ส่วนขา/ลำตัวล่างจมหายไปในหม้อ ลด top ลงนิดหน่อยให้ตัวอยู่ต่ำลง (จมลึกขึ้น)
+   เพิ่มไฟเรืองใต้ตัว (::before) ให้ดูเหมือนมีเปลวไฟลนอยู่จริง ไม่ใช่แค่สัญลักษณ์ ♨ ลอยขึ้นเฉย ๆ */
+.punish-yama{position:absolute;z-index:3;left:50%;top:47%;width:16%;height:12%;transform:translate(-50%,-50%);overflow:hidden}
+.punish-yama::before{content:'';position:absolute;left:50%;bottom:-6%;transform:translateX(-50%);width:140%;height:60%;
+  background:radial-gradient(closest-side,rgba(255,170,60,.85),rgba(255,90,20,.4) 55%,transparent 80%);
+  filter:blur(2px);z-index:-1;animation:emberPulse 1s ease-in-out infinite alternate}
 .punish-yama img{width:100%;height:auto;image-rendering:pixelated;filter:drop-shadow(0 5px 7px rgba(0,0,0,.7));animation:boilYama .6s ease-in-out infinite alternate}
-.punish-dad{position:absolute;z-index:4;right:14%;bottom:24%;display:flex;flex-direction:column;align-items:center;width:24%}
-.punish-dad img{height:min(31vw,270px);max-height:55%;width:auto;image-rendering:pixelated;filter:drop-shadow(0 8px 12px #000)}
+/* ข้อ H — ผู้คุมโซนเดิมดูลอย: ย่อขนาดลง (24%→19%) และลดระยะจากพื้น (bottom 24%→19%) ให้ฐาน
+   บัลลังก์จมลงไปในพื้นที่หินแถวขาของรูปมากขึ้น + เพิ่มเงาวงรีทึบใต้บัลลังก์ (::after) ช่วยยึดกับพื้น
+   เหมือนวิธีที่ใช้กับอาคารบนแผนที่หลัก (ข้อ B) แทนที่จะพึ่งตำแหน่ง Y อย่างเดียว */
+.punish-dad{position:absolute;z-index:4;right:15%;bottom:19%;display:flex;flex-direction:column;align-items:center;width:19%}
+.punish-dad::before{content:'';position:absolute;left:50%;bottom:2%;transform:translateX(-50%);width:78%;height:14%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.62),transparent 75%);z-index:-1}
+.punish-dad img{height:min(25vw,220px);max-height:52%;width:auto;image-rendering:pixelated;filter:drop-shadow(0 8px 12px #000)}
 .punish-dad span{background:rgba(16,7,11,.92);border:1px solid var(--gold);color:#ffe1ad;border-radius:10px;padding:7px 10px;
   font-size:clamp(10px,1.3vw,13px);text-align:center;white-space:nowrap}
-.punish-heat{position:absolute;left:50%;top:53%;z-index:5;transform:translateX(-50%);font-size:32px;color:#ffbf5b;
+.punish-heat{position:absolute;left:50%;top:50%;z-index:5;transform:translateX(-50%);font-size:32px;color:#ffbf5b;
   opacity:.7;animation:heatRise 1.2s ease-out infinite}
 .punish-copy{padding:16px 20px}.punish-copy p{margin:0 0 10px;line-height:1.65;white-space:pre-line}
 @keyframes boilYama{to{transform:translateY(-4px)}}@keyframes heatRise{to{transform:translate(-50%,-30px);opacity:0}}
+@keyframes emberPulse{to{opacity:.55;transform:translateX(-50%) scale(.92)}}
 
 /* ด่านชายแดน */
 #ov .frontierfab{position:absolute;transform:translate(-50%,-100%);z-index:8;white-space:nowrap;min-height:40px;
@@ -1358,7 +1371,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   .battle-squad{left:30%}.battle-squad img{height:clamp(88px,16vh,140px)}
   .frontier-screen{min-height:calc(100dvh - 24px)}.frontier-party{min-height:230px;padding:8px 8% 0}.frontier-hero img{height:170px}.frontier-hero.mate img{height:135px}
   .frontier-panel{padding:12px}.frontier-cards{display:grid;grid-template-columns:1fr 1fr}.frontier-card{min-width:0}
-  .punish-dad{right:4%;bottom:22%;width:28%}.punish-dad span{white-space:normal}.punish-yama{width:20%;height:21%}
+  .punish-dad{right:4%;bottom:19%;width:22%}.punish-dad span{white-space:normal}.punish-yama{width:20%;height:13%}
 }
 @media(max-width:520px){
   .trial-hud .hud-stage{height:310px;min-height:310px}.trial-hud .hud-stage .fig{bottom:110px}.trial-hud .hud-stage .fig img{height:125px}
@@ -1367,7 +1380,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   .battle-wheel{left:18%;bottom:26%;transform:scale(.7)}.battle-crew-actions{transform:scale(.78);transform-origin:left bottom}
   .frontier-screen header{padding:18px 46px 0 15px}.frontier-party{min-height:190px}.frontier-hero img{height:132px}.frontier-hero.mate img{height:105px}
   .frontier-cards{grid-template-columns:1fr}.frontier-actions button{font-size:11px;padding:7px}
-  .punish-stage{aspect-ratio:4/3}.punish-yama{top:50%;width:24%;height:20%}.punish-dad{right:2%;bottom:18%;width:34%}.punish-dad img{height:150px}
+  .punish-stage{aspect-ratio:4/3}.punish-yama{top:48%;width:24%;height:13%}.punish-dad{right:2%;bottom:16%;width:26%}.punish-dad img{height:135px}
 }
 </style>
 <link rel="stylesheet" href="src/command-wheel.css">
