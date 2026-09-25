@@ -1296,7 +1296,10 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 /* ตำแหน่ง/ขนาดจริงของแถวยมทูตช่วย (คอนเทนเนอร์ .arena .battle-squad) ถูกกำหนดใน
    src/command-wheel.css (selector เฉพาะเจาะจงกว่า ชนะ cascade ที่นี่เสมอ) — ดูคอมเมนต์ข้อ D
    คุณเป้ 24 ก.ย. 2569 ที่นั่น ที่นี่เหลือไว้แค่สไตล์ที่ command-wheel.css ไม่ได้แตะ (ป้ายชื่อ <b>) */
-.battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px}
+/* ข้อ J คุณเป้เจอ 26 ก.ย. 2569 (รูป 14) — "ยักษ์ทวารบาล" เป็นคำยาวไม่มีช่องว่าง บนจอแคบตัด
+   ขึ้นบรรทัดกลางคำแบบสุ่ม (เช่น "ยักษ์ทวาร" / "บาล") อ่านแล้วเหมือนพิมพ์ผิด — บังคับบรรทัดเดียวเสมอ
+   ป้ายกว้างกว่าตัวละครนิดหน่อยไม่เป็นไร มีที่ว่างพอทางขวาอยู่แล้วก่อนถึงฝั่งศัตรู */
+.battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px;white-space:nowrap}
 
 /* ฉากรับโทษกระทะทองแดง */
 dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;padding:0;overflow:hidden;background:#160a0f}
