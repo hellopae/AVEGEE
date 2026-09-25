@@ -50,11 +50,17 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
    เดิมเป็นแถบสีน้ำตาลคั่นเหนือฉาก กินที่และดูขาดจากภาพ */
 .res{position:absolute;top:calc(var(--space-2) + 7px);left:calc(var(--space-2) + 7px);
   right:calc(var(--space-2) + 7px);z-index:6;
-  display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  display:flex;gap:5px;flex-wrap:wrap;align-items:center;
+  /* ข้อ A คุณเป้เจอ 25 ก.ย. 2569 (Dale พบตอนรีวิวชุด 10) — .res ลอยทับ #cv เต็มแถบ ที่ 390×844
+     แถบนี้เคยกิน 136px จาก 164px ของแคนวาส (ตัวกล่อง flex ทั้งก้อนกินพื้นที่แตะแม้ช่องว่างระหว่างชิป)
+     แตะอาคารสูงในภาพช่วงบนจึงโดนกล่องว่างของ .res แทนแคนวาสด้านล่าง — ให้ตัวกล่องไม่กิน pointer เลย
+     ปล่อยให้แตะทะลุไปโดนแคนวาสได้ เหลือแค่ตัวชิปจริงที่ยังกดเปิดคำอธิบายได้ (ดูรายงาน Toby ข้อ A) */
+  pointer-events:none}
 .res .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);
   backdrop-filter:blur(3px);font-size:var(--text-xs);padding:4px 9px;
-  box-shadow:0 2px 8px rgba(0,0,0,.45)}
+  box-shadow:0 2px 8px rgba(0,0,0,.45);pointer-events:auto}
 .res .bar{width:56px}
+.res .bar.mini{width:26px}
 /* ปุ่มระบบย้ายขึ้นมาบนหัวเรื่อง 8 ก.ย. 2569 — เดิมอยู่ใต้ฉาก ต้องเลื่อนหาทุกครั้ง */
 .sysbtn{display:flex;gap:5px;flex-wrap:wrap;width:100%;justify-content:flex-end}
 .sysbtn button{padding:5px 10px;min-height:0;font-size:var(--text-xs)}
@@ -392,7 +398,9 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   header{gap:var(--space-2)}
   h1{font-size:1.15rem} #ava{width:38px;height:38px}
   .res{gap:4px;top:calc(var(--space-2) + 4px);left:calc(var(--space-2) + 4px);right:calc(var(--space-2) + 4px)}
-  .res .chip{padding:3px 6px}
+  /* ข้อ A — ของเดิม .chip{flex:1 1 auto} ด้านล่างทำให้ชิปที่เหลือแค่ตัวเดียวในแถวยืดเต็มแถว
+     กลายเป็นแถวเดี่ยวรวด 5-6 แถวซ้อนกันสูงเกือบเต็มแคนวาส ต้องยกเลิกการยืดเฉพาะใน .res */
+  .res .chip{padding:3px 6px;flex:0 1 auto}
   .chip{font-size:var(--text-xs);padding:4px 7px;flex:1 1 auto}
   .bar{width:44px}
 

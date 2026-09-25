@@ -120,16 +120,20 @@ function bar(v, cls = '') { return `<span class="bar ${cls}"><i style="width:${M
 function drawRes() {
   const avg = g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0;
   const ot = g.orderTier(), kt = g.karmaTier();
+  // ข้อ A คุณเป้เจอ 25 ก.ย. 2569 — จอแคบ (≤820px) ย่อชิปให้เหลือแค่ไอคอน+ตัวเลข ตัดป้ายคำ/หลอด/ชื่อขั้น
+  // และตัด 2 ชิปท้าย (คดี/เฉลี่ย, ขั้น/ดาว) ออกเพราะซ้ำกับหน้าโปรไฟล์ที่กดตัวละครดูได้อยู่แล้ว (บรรทัด ~462)
+  // เพื่อให้ .res ทั้งแถบไม่กินพื้นที่แตะของแคนวาสจนแตะอาคารสูงในภาพไม่โดน (ดูรายงาน Toby ข้อ A)
+  const compact = matchMedia('(max-width:820px)').matches;
   $('#res').innerHTML = `
     <span class="chip tap" data-ex="coin">🪙 <b>${Math.round(g.coin)}</b></span>
     <span class="chip tap" data-ex="food">🍙 <b>${Math.round(g.food)}</b></span>
-    <span class="chip tap" data-ex="hp" id="res-hp-chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
-    <span class="chip tap" data-ex="order">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b>
-      <i style="font-style:normal;opacity:.6">${esc(ot.name)}</i></span>
-    <span class="chip tap" data-ex="karma">☠️ กรรมท่าน ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b>
-      <i style="font-style:normal;opacity:.6">${esc(kt.name)}</i></span>
-    <span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>
-    <span class="chip">🎖️ ${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</span>
+    <span class="chip tap" data-ex="hp" id="res-hp-chip">❤️ ${compact ? '' : 'บารมี '}${bar(100 * g.hp / g.hpMax, compact ? 'hp mini' : 'hp')} <b>${Math.round(g.hp)}</b></span>
+    <span class="chip tap" data-ex="order">⚖️ ${compact ? '' : `ระเบียบ ${bar(g.order)}`} <b>${Math.round(g.order)}</b>
+      ${compact ? '' : `<i style="font-style:normal;opacity:.6">${esc(ot.name)}</i>`}</span>
+    <span class="chip tap" data-ex="karma">☠️ ${compact ? '' : `กรรมท่าน ${bar(g.karma, 'karma')}`} <b>${g.karma.toFixed(1)}</b>
+      ${compact ? '' : `<i style="font-style:normal;opacity:.6">${esc(kt.name)}</i>`}</span>
+    ${compact ? '' : `<span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>
+    <span class="chip">🎖️ ${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</span>`}
     ${g.mobs.length ? `<span class="chip" style="color:var(--destructive)">👹 เปรต ${g.mobs.length} ตน</span>` : ''}`;
   $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
   $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
