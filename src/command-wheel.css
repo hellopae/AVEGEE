@@ -62,12 +62,21 @@
    ภาพ crew-*.png วาดหันตรงเข้ากล้อง พลิกกระจกแล้วยังดูเป็นท่ายืนปกติ ไม่ใช่ภาพผิดทิศเหมือนท่าโจมตียมน้อย */
 .arena .battle-squad img{width:auto;max-width:100%;height:clamp(100px,17vh,165px);object-fit:contain;transform:scaleX(-1)}
 .arena .battle-squad small{font-size:10px}
+/* ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลต่อท้ายแถวนี้มาตั้งแต่ข้อ C ชุดที่ 10 (ไม่กินโควตายมทูต
+   2 คน) แต่ที่ขนาดภาพเดิม (สูงสุด 165px) 3 ตัวซ้อนกันในคอลัมน์เดียวล้นพ้นกรอบ .arena ที่ overflow ปิดไว้
+   (วัดจริงด้วย Playwright: ตัวที่ 3 อยู่ที่ y=-32px หลุดจากกรอบทั้งตัว) ทดสอบแล้วว่าในกรอบ .arena เตี้ย
+   (aspect-ratio 16/8) ไม่มีจุดว่างพอจะแยกยักษ์ไปยืนเดี่ยวที่อื่นได้เลยไม่ว่าตำแหน่งไหน (ชนยมน้อย/วงคำสั่ง/
+   คอลัมน์นี้เองอย่างใดอย่างหนึ่งเสมอ) จึงย่อทั้งคอลัมน์ลงเฉพาะตอนมี 3 คน (.trio) ให้พอดีไม่ล้น แล้วให้ยักษ์
+   (.guard) ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ */
+.arena .battle-squad.trio img{height:clamp(70px,11vh,110px)}
+.arena .battle-squad.trio .guard img{height:clamp(85px,13.5vh,130px)}
+.arena .battle-squad.trio>span{font-size:11px}
 .crew-cooldown{display:block;width:90%;height:9px;background:#261614;border-radius:10px;overflow:hidden;margin:4px 0}.crew-cooldown i{display:block;height:100%;background:#ffbc43;transition:width .5s linear}
 .combat-wheel .options-0,.combat-wheel .options-1{left:78%;top:0;bottom:auto}.combat-wheel .options-2{left:78%;top:44%}.combat-wheel .options-3{left:78%;top:67%}
 @media(max-width:1100px){.command-wheel{width:230px}.command-options{max-width:240px}.command-options .orb-choice{flex-basis:52px!important;width:52px!important}.command-options .orb-choice img{width:52px;height:52px}.court-wheel{left:16%}}
 @media(max-width:900px){.trial-hud .hud-body{grid-template-columns:1fr;grid-template-areas:'stage' 'right';grid-template-rows:auto auto}.trial-hud .hud-stage{height:460px;min-height:460px}.court-wheel{left:24%;bottom:70px;width:250px}.command-options{max-width:290px}.court-wheel .command-options{left:0;top:auto;bottom:98%}.court-wheel .options-3{bottom:-45px}.trial-hud .hud-stage .fig.you{width:23%}.trial-hud .hud-stage .fig.foe{width:23%}.arena:has(.combat-wheel){min-height:450px}.combat-wheel{left:32%;width:220px;bottom:17%}.combat-wheel .command-options{left:68%;top:8%;bottom:auto}}
 /* จอแคบ ≤520px (ครอบคลุม 390×844) — ต่อเนื่องจากข้อ D ด้านบน (วางซ้อนแนวตั้งอยู่แล้วในกฎฐาน)
    แค่ย่อขนาด/ระยะให้เข้ากับยมน้อยที่ตัวเล็กลงตามจอ (clamp(105px,19vh,165px) ที่ index.html) ~85% เท่าเดิม */
-@media(max-width:520px){.court-wheel{left:18%;width:210px}.command-selected{width:44px}.command-selected img,.command-selected strong{width:42px;height:42px}.trial-hud .hud-stage{height:410px;min-height:410px}.trial-hud .trial-top-actions button{font-size:10px}.combat-wheel{left:31%;width:180px;bottom:19%}.arena:has(.combat-wheel){min-height:500px}.arena .battle-squad{bottom:15%;max-width:15%;gap:4px}.arena .battle-squad img{height:clamp(80px,14vh,120px)}.arena:has(.combat-wheel)>.fig.you{left:17%;bottom:8%;width:23%}.arena:has(.combat-wheel)>.fig.foe{width:29%;bottom:45%}.command-options{max-width:240px}.combat-wheel .command-options{left:-55%;top:10%}}
+@media(max-width:520px){.court-wheel{left:18%;width:210px}.command-selected{width:44px}.command-selected img,.command-selected strong{width:42px;height:42px}.trial-hud .hud-stage{height:410px;min-height:410px}.trial-hud .trial-top-actions button{font-size:10px}.combat-wheel{left:31%;width:180px;bottom:19%}.arena:has(.combat-wheel){min-height:500px}.arena .battle-squad{bottom:15%;max-width:15%;gap:4px}.arena .battle-squad img{height:clamp(80px,14vh,120px)}.arena .battle-squad.trio img{height:clamp(56px,9vh,85px)}.arena .battle-squad.trio .guard img{height:clamp(68px,11vh,100px)}.arena .battle-squad.trio>span{font-size:9px}.arena:has(.combat-wheel)>.fig.you{left:17%;bottom:8%;width:23%}.arena:has(.combat-wheel)>.fig.foe{width:29%;bottom:45%}.arena:has(.combat-wheel)>.fig.guard{left:8%;width:24%;bottom:28%}.arena:has(.combat-wheel)>.fig.guard img{height:clamp(90px,16vh,130px)}.command-options{max-width:240px}.combat-wheel .command-options{left:-55%;top:10%}}
 @media(prefers-reduced-motion:reduce){.command-wheel *{transition:none!important}}
 .merchant-heading{display:flex;align-items:center;gap:15px;margin-bottom:18px}.merchant-heading img{width:88px;height:88px;object-fit:cover;border:2px solid #c69b5c;border-radius:14px}.merchant-heading h2{margin:0}.merchant-heading .hint{margin:4px 0 0}

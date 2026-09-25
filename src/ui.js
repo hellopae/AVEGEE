@@ -1317,6 +1317,17 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const youImg = usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   const bg = hp?.bg || 'img/BG-Turn-Base.webp';
+  // ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลเคย "อยู่ในทีม" จริง (อยู่ท้ายแถว squad มาตั้งแต่ข้อ C
+  // ชุดที่ 10) แต่แถว .battle-squad เป็น column-reverse ซ้อนขึ้นจากล่าง ที่ขนาดภาพเดิม (clamp สูงสุด 165px)
+  // พอมี 3 คน (ยมทูต 2 + ยักษ์) ตัวที่ 3 ถูกดันสูงจน y ติดลบ (ทดสอบจริงด้วย Playwright:
+  // getBoundingClientRect().y = -32 ที่ 1440px) หลุดพ้นกรอบ .arena ที่ overflow ปิดไว้ ยักษ์เลยหายไป
+  // ทั้งตัว ทั้งที่ค่า/รูปถูกต้องทุกอย่างในโค้ด — ลองแยกยักษ์ไปยืนเป็นฟิกเกอร์ต่างหาก "ด้านบนของยมน้อย"
+  // แล้วแต่พื้นที่แนวตั้งในกรอบ .arena (aspect-ratio 16/8 เตี้ยมาก) ไม่พอจริง ๆ ไม่ว่าจะวางตรงไหนก็ชน
+  // อย่างใดอย่างหนึ่งเสมอ (คอลัมน์ยมทูต/ยมน้อย/วงคำสั่ง/ผู้กระทำผิด กินพื้นที่เกือบเต็มทุกด้านอยู่แล้ว)
+  // ทดสอบแล้วด้วย Playwright วัดพิกัดจริงหลายรอบ — ทางที่เหลือพื้นที่พอจริงคือ "อยู่ในคอลัมน์เดียวกับ
+  // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
+  // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
+  // ใน command-wheel.css)
   return `<div class="arena" style="background-image:url('${esc(bg)}')">
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
@@ -1327,7 +1338,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad">${squad.map(c => `<span>
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''}>
       <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown(c, g.crewCooldown(c), BATTLE.crewCd)
       }</span>`).join('')}</div>` : ''}
