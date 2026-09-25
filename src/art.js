@@ -270,6 +270,27 @@ export function topOf(def) {
   return r;
 }
 
+/** เงาทอดใต้อาคาร — ข้อ B คุณเป้เจอ 25 ก.ย. 2569: อาคาร/สถานีทุกหลังดูลอย ไม่มีอะไรยึดกับพื้น
+ *  ใช้ footOf(def) (แถบฐานจริงที่วัดจากพิกเซล เหมือนที่ใช้กันเดินทับ) เป็นฐานวางวงรีเงา
+ *  ไม่มีรูปให้วัด (ยังโหลดไม่เสร็จ/ยังไม่มีไฟล์) ก็ประมาณจาก bx/by/bw แทนไว้ก่อน ไม่ปล่อยว่าง
+ *  ทิศเดียวกันทุกหลังทั้งแผนที่ (เยื้องขวา-ล่างนิดเดียว) จะได้ดูเหมือนแสงมาจากทิศเดียวกันหมด
+ *  วาดเป็นวงรีโปร่งแสงนุ่ม ๆ ก่อนตัวอาคารเสมอ ไม่แตะป้าย/ปุ่ม HTML (คนละชั้นกับ canvas)
+ *  footOf มี cache อยู่แล้วในตัว (ดูฟังก์ชันนั้น) เรียกทุกเฟรมได้โดยไม่กระทบเฟรมเรตมือถือ */
+export function drawStationShadow(ctx, def) {
+  if (def.bx == null) return;
+  const r = footOf(def) || [def.bx - def.bw * 0.32, def.by - def.bw * 0.05,
+                             def.bx + def.bw * 0.32, def.by + def.bw * 0.05];
+  const cx = (r[0] + r[2]) / 2, cy = r[3];
+  const rw = Math.max(10, (r[2] - r[0]) / 2 * 1.1), rh = Math.max(5, rw * 0.24);
+  ctx.save();
+  ctx.globalAlpha = 0.38;
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.ellipse(cx + rw * 0.12, cy + rh * 0.35, rw, rh, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 /** อาคารสถานี — ไฟล์ img/st-<k>.png วางกึ่งกลาง-ฐานที่ (bx,by) กว้าง bw
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
 export function drawBuilding(ctx, def, t) {

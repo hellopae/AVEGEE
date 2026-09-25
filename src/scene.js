@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER, MERCHANT } from './data.js';
-import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
+import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawStationShadow, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
@@ -298,6 +298,7 @@ function drawStation(ctx, g, st, t) {
     const left = Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
+    drawStationShadow(ctx, d);                       // ข้อ B — อาคารกำลังสร้างก็มีเงาด้วย
     if (im) ctx.drawImage(im, d.bx - bw / 2, d.by - bw, bw, bw);
     else drawBuilding(ctx, d, t);
     const W = 120, bx = d.bx - W / 2, by = d.by + 10;
@@ -306,6 +307,7 @@ function drawStation(ctx, g, st, t) {
     label(ctx, st.buildWait ? '🔨 รอทัณฑ์เดินมาเริ่มงาน' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
+  drawStationShadow(ctx, d);                         // ข้อ B คุณเป้เจอ 25 ก.ย. 2569 — กันอาคารดูลอย
   drawBuilding(ctx, d, t);
   if (st.fire > 0) {                                // ผีกำลังเผาอยู่ — ไฟไต่ขึ้นตามความเสียหาย
     const bw = d.bw || 180;
