@@ -3,7 +3,8 @@ import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
+         ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
+         CREW_HELP_LV } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt } from './scene.js';
@@ -463,15 +464,33 @@ function sideBody() {
                   : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
       return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
     }).join('');
-    return profile('hero-yama', 'ยมบาท (ตัวท่าน)', LEVELS[g.level - 1].name,
+    // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 (รูป 17) — แผงข้อมูลเดิมไม่บอกเลขขั้นตรง ๆ (มีแต่ชื่อขั้น) และไม่บอก
+    // พลังโจมตีเลย ต่อให้เดาไม่ได้ว่าตัวเองแรงแค่ไหน — ดึงจาก BATTLE.atk ตรง ๆ (ค่าจริงที่ใช้ตอนฟาด
+    // ไม่ใช่เลขคิดเอง) ไม่แตะระบบต่อสู้ตามข้อห้ามใบงาน แค่โชว์ค่าที่มีอยู่แล้ว
+    // ตารางปลดล็อก: รวมพลัง (POWERS.lv) + เรียกยมทูตช่วยรบ (CREW_HELP_LV) + โซนที่เปิดตามขั้น
+    // (ZONES.level) — ดึงจากข้อมูลจริงทั้งหมด ไม่พิมพ์เลขซ้ำด้วยมือ ที่ยังไม่ถึงขั้นแสดงล็อกพร้อมบอก
+    // ขั้นที่ต้องใช้ตามที่คุณเป้ขอ
+    const unlockRows = [
+      ...POWERS.map(p => ({ lv: p.lv, glyph: p.glyph, name: p.name, place: 'พลังไต่สวน/ต่อสู้' })),
+      { lv: CREW_HELP_LV, glyph: '🤝', name: 'เรียกยมทูตช่วยในฉากต่อสู้', place: 'ฉากต่อสู้ทุกโซน' },
+      ...ZONES.filter(z => z.k !== 'th').map(z => ({ lv: z.level, glyph: '🗺️', name: `ย้ายไป${z.name}`, place: z.sub })),
+    ].sort((a, b) => a.lv - b.lv);
+    const unlockTable = unlockRows.map(r => {
+      const locked = g.level < r.lv;
+      return `<div class="row-truth">${r.glyph} <b>${esc(r.name)}</b> — ${esc(r.place)}
+        <span style="color:${locked ? 'var(--muted-foreground)' : 'var(--gold)'}">[${locked ? `ล็อก · ต้องขั้น ${r.lv}` : `ปลดล็อกแล้ว · ขั้น ${r.lv}`}]</span></div>`;
+    }).join('');
+    return profile('hero-yama', 'ยมบาท (ตัวท่าน)', `ขั้น ${g.level}/${LEVELS.length} · ${LEVELS[g.level - 1].name}`,
         `ลูกของพญายม ถูกส่งมาคุมโซนสุวรรณภูมิ · ปิดคดีแล้ว ${g.casesDone} เรื่อง`)
       + think(meThought())
       + kv([`❤️ บารมี ${Math.round(g.hp)}/${g.hpMax}`, `☠️ กรรม ${g.karma.toFixed(1)}`,
+            `⚔️ พลังโจมตี ${BATTLE.atk[0]}-${BATTLE.atk[1]}`,
             `⭐ ห้าดาว ${g.star5}`, `📁 เฉลี่ย ${g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0}`,
             `🪙 ${Math.round(g.coin)}`, `🍙 เสบียง ${Math.round(g.food)}`, `🔥 ลูกไฟ ×${g.fireAmmo}`])
       + `<div class="sec">หน้าที่</div>
          <div class="row-truth">พิพากษาให้ <b>ตรงกรรม</b> — ตรงชนิดบาป และหนักพอดี ไม่ใช่หนักที่สุด</div>
          <div class="sec">ความสามารถ</div>${pw}
+         <div class="sec">ปลดล็อกที่ขั้นไหน</div>${unlockTable}
          <div class="hintline">กดตัวละครหรือวิญญาณบนฉากเพื่อดูข้อมูลของเขา</div>`;
   }
 

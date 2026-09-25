@@ -1161,7 +1161,10 @@ const API = {
     // ไม่งั้นผู้เล่นเห็นแค่ชื่อขั้นเปลี่ยน แล้วก็ยังกดอะไรใหม่ไม่ได้อยู่ดี
     if (this.level >= 2) this.powers.forEach(p => { p.max++; });
     if (this.level >= 3) this.coin += 300;
-    if (this.level >= 4) { this.hpMax = 120; this.hp = this.hpMax; this.coin += 500; }
+    if (this.level >= 4) this.coin += 500;
+    // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 — บารมีสูงสุดเพิ่มทีละน้อยทุกขั้น (อ่านจาก LEVELS.hpMax ตรง ๆ
+    // ไม่ใช่ค่าคงที่ 120 เฉพาะขั้น 4 อีกต่อไป) เต็มให้ทันทีเหมือนพฤติกรรมเดิม
+    if (nx.hpMax) { this.hpMax = nx.hpMax; this.hp = this.hpMax; }
     this.powers.forEach(p => { if (p.lv <= this.level) p.ammo = Math.max(p.ammo, p.lv === this.level ? p.max : 1); });
     if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
     // Dale ตรวจชุด 11 พบ 25 ก.ย. 2569 — ของ 'ice' อาจสุ่มตกและถูกเก็บตั้งแต่ก่อนเลเวลปลดล็อกคัมภีร์น้ำแข็ง
@@ -2464,6 +2467,16 @@ API.restore = function (d) {
                 'orderWarns','orderWarnAt'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
   SEQ = d.seq || SEQ;
+
+  // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 — บารมีสูงสุดตอนนี้ผูกกับขั้นตรง ๆ ผ่าน LEVELS.hpMax (เดิมกระโดด
+  // 100→120 ครั้งเดียวตอนขั้น 4) เซฟเก่าอาจมี this.hpMax ไม่ตรงตารางใหม่ตามขั้นปัจจุบัน — ปรับให้ตรงเสมอ
+  // ตอนโหลด โดยไม่ลดทอนบารมีที่ผู้เล่นมีอยู่ตอนนี้ (เพดานสูงขึ้นเท่าไหร่ บารมีปัจจุบันได้เพิ่มเท่านั้นด้วย)
+  const lvHpMax = LEVELS[this.level - 1]?.hpMax;
+  if (lvHpMax && this.hpMax !== lvHpMax) {
+    const diff = lvHpMax - this.hpMax;
+    this.hpMax = lvHpMax;
+    this.hp = diff > 0 ? Math.min(this.hpMax, this.hp + diff) : Math.min(this.hp, this.hpMax);
+  }
 
   this.powers = POWERS.map(p => {
     const sv = (d.powers || []).find(x => x.k === p.k) || {};
