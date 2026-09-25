@@ -304,7 +304,10 @@ function drawStation(ctx, g, st, t) {
     const W = 120, bx = d.bx - W / 2, by = d.by + 10;
     ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12, 6); ctx.fill();
     ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12, 6); ctx.fill();
-    label(ctx, st.buildWait ? '🔨 รอทัณฑ์เดินมาเริ่มงาน' : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
+    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร หาตัวจริงที่กำลังสร้างหลังนี้อยู่
+    // (buildK ตรงกับ d.k) แล้วใช้ชื่อของเขา (ตามโซนผ่าน crewName แล้ว) แทนพิมพ์ "ทัณฑ์" ตรง ๆ
+    const builder = g.crew.find(c => c.buildK === d.k);
+    label(ctx, st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
   drawStationShadow(ctx, d);                         // ข้อ B คุณเป้เจอ 25 ก.ย. 2569 — กันอาคารดูลอย

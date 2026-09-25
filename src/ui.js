@@ -4,7 +4,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV } from './data.js';
+         CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt } from './scene.js';
@@ -1178,7 +1178,7 @@ function openDadPunish(p) {
       <div class="punish-vignette"></div>
       <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
       <div class="punish-yama"><img src="${heroFace()}" alt="ยมน้อยอยู่ในกระทะทองแดง"></div>
-      <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="พญายม"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
+      <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
       <div class="punish-heat">♨</div>
     </div>
     <div class="punish-copy"><p>${esc(p.text)}</p>
@@ -1889,7 +1889,8 @@ function openBattle(after) {
 
     dlg.innerHTML =
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
-          : b.kind === 'dad'   ? '👑 พ่อลงมาเอง — ตัดสินพลาดสามสำนวนติด'
+          // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นผู้ตรวจการของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
+          : b.kind === 'dad'   ? `👑 ${g.zone === 'th' ? 'พ่อ' : authorityOf(g.zone).title}ลงมาเอง — ตัดสินพลาดสามสำนวนติด`
           : b.kind === 'zoneBoss' ? '👑 บอสโซน — ทดสอบก่อนย้ายสาขา'
           : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
@@ -2755,10 +2756,14 @@ function openStation(k) {
 
 function openBuild(def) {
   const taan = g.crew.find(c => c.k === 'taan'), afford = g.coin >= def.cost && !!taan && !taan.buildK;
+  // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name ถ้าจ้างแล้ว (ตามโซนผ่าน
+  // crewName แล้ว) ยังไม่จ้างก็ยังหาชื่อฐานของโซนนี้ผ่าน crewName ตรง ๆ ได้ (ตัวแปรกลางถ้าโซนนั้น
+  // ยังไม่มีชื่อเฉพาะ — ดู CREW.taan.names ใน data.js)
+  const taanName = taan ? taan.name : crewName(CREW.find(c => c.k === 'taan'), g.zone);
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-      · แรง ${def.pow}${!taan ? ' · ต้องจ้างทัณฑ์ที่โต๊ะนิราก่อน' : taan.buildK ? ' · ทัณฑ์กำลังสร้างหลังอื่นอยู่' : ' · ทัณฑ์จะเดินมาสร้างให้'}</div>
+      · แรง ${def.pow}${!taan ? ` · ต้องจ้าง${taanName}ที่โต๊ะนิราก่อน` : taan.buildK ? ` · ${taanName}กำลังสร้างหลังอื่นอยู่` : ` · ${taanName}จะเดินมาสร้างให้`}</div>
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });

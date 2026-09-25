@@ -6,7 +6,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
+         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -723,7 +723,9 @@ const API = {
     else if (tag === 'bad') {
       this.reds++;
       if (this.reds < DAD.redsToCome) {
-        this.log(`⚠️ ${DAD.warn[this.reds - 1] || DAD.warn[0]} (คำตัดสินแดง ${this.reds}/${DAD.redsToCome})`, 'boss');
+        // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 ใช้ชื่อผู้ตรวจการของตัวเอง ไม่ใช่ "พญายม" ของโซน 1
+        const warnText = fmtAuthority(DAD.warn[this.reds - 1] || DAD.warn[0], this.zone);
+        this.log(`⚠️ ${warnText} (คำตัดสินแดง ${this.reds}/${DAD.redsToCome})`, 'boss');
         // เตือนครั้งที่ warnFireballAt (รองสุดท้าย) มาพร้อมลูกไฟจริง ไม่ใช่แค่คำพูด
         // (คุณเป้สั่ง 17 ก.ย. 2569: "เห็นเป็นภาพ/เอฟเฟกต์ ไม่ใช่แค่ตัวเลข")
         const withFireball = this.reds === DAD.warnFireballAt;
@@ -731,9 +733,9 @@ const API = {
           const floor = this.hpMax * DAD.warnFireballFloor;
           this.hp = Math.max(floor, this.hp - this.hpMax * DAD.warnFireballFrac);
           this.fxHits.push({ t: Date.now(), x: this.player.x, y: this.player.y });
-          this.log(`🔥 พญายมปล่อยลูกไฟลงมาเตือน — บารมีเหลือ ${Math.max(0, Math.round(this.hp))}`, 'bad');
+          this.log(fmtAuthority(`🔥 พญายมปล่อยลูกไฟลงมาเตือน — บารมีเหลือ ${Math.max(0, Math.round(this.hp))}`, this.zone), 'bad');
         }
-        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: DAD.warn[this.reds - 1] || DAD.warn[0], fireball: withFireball };
+        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: warnText, fireball: withFireball };
       } else { this.reds = 0; this.dadFight = true; }
     } else this.reds = 0;
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
@@ -754,7 +756,7 @@ const API = {
 
     if (r.stars === 0) this.fireball('คำตัดสินนี้ไม่มีดาวสักดวง');
     else if (r.boss === 'cruel') this.fireball('เกินกรรมไปสองวาระ');
-    else if (r.stars <= 1) { this.hp -= 10; this.log('พญายมส่ายหน้า — บารมีหายไป 10', 'bad'); }
+    else if (r.stars <= 1) { this.hp -= 10; this.log(fmtAuthority('พญายมส่ายหน้า — บารมีหายไป 10', this.zone), 'bad'); }
     else if (r.stars === 5) {
       this.star5++;
       // กรรมของท่านเองสูงเท่าไหร่ พ่อก็ยิ่งไม่อยากคืนบารมีให้ (ดู KARMA_TIERS)
@@ -1107,9 +1109,10 @@ const API = {
       this.orderWarns = (this.orderWarns || 0) + 1;
       this.orderWarnAt = this.tick + ORDER_WARN.gap;
       this.order = ORDER_WARN.restore;                 // ยกให้ตั้งหลักใหม่
+      // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — ผู้ตักเตือนเป็นผู้ตรวจการของโซนนั้น ไม่ใช่ "พญายม" ของโซน 1 เสมอไป
       this.pendingOrderWarn = { n: this.orderWarns, of: ORDER_WARN.times,
-                                text: ORDER_WARN.lines[this.orderWarns - 1] || ORDER_WARN.lines[0] };
-      this.log(`⚠️ พญายมตักเตือนเรื่องคิวล้น (${this.orderWarns}/${ORDER_WARN.times}) — ระเบียบถูกยกให้ตั้งหลักใหม่`, 'boss');
+                                text: fmtAuthority(ORDER_WARN.lines[this.orderWarns - 1] || ORDER_WARN.lines[0], this.zone) };
+      this.log(fmtAuthority(`⚠️ พญายมตักเตือนเรื่องคิวล้น (${this.orderWarns}/${ORDER_WARN.times}) — ระเบียบถูกยกให้ตั้งหลักใหม่`, this.zone), 'boss');
       this.onChange();
       return;
     }
@@ -1252,7 +1255,9 @@ const API = {
         if (st?.buildWait) {
           st.buildWait = false; st.build = Date.now() + BUILD_TIME;
           c.buildK = null; c.wait = 900;
-          this.log(`🔨 ทัณฑ์มาถึง${building.name}แล้ว — เริ่มลงมือก่อสร้าง`, 'act');
+          // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" ตรงนี้คือชื่อตัวละคร ไม่ใช่คำว่า "การลงทัณฑ์"
+          // ต้องใช้ c.name (ผ่าน crewName() ให้ชื่อตามโซนอยู่แล้ว) ไม่ใช่พิมพ์ "ทัณฑ์" ตรง ๆ
+          this.log(`🔨 ${c.name}มาถึง${building.name}แล้ว — เริ่มลงมือก่อสร้าง`, 'act');
         }
       }
 
@@ -1804,8 +1809,10 @@ const API = {
     if (this.battle) return this.battle;
     const reason = typeof this.dadFight === 'string' ? this.dadFight : 'verdict';
     this.dadFight = false;
+    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 ใช้ชื่อ+บทบาทของผู้ตรวจการโซนนั้นแทน "พญายมบาท/ผู้เป็นพ่อของท่าน"
+    const auth = authorityOf(this.zone);
     this.battle = {
-      kind: 'dad', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
+      kind: 'dad', who: auth.full, sub: auth.role, sp: 'hero-boss',
       foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: Math.max(1, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null, log: [], reason,
@@ -1870,11 +1877,13 @@ const API = {
     if (B.kind === 'yama' || B.kind === 'dad') {
       const dad = B.kind === 'dad';
       say(pick(YAMA_FIGHT.taunt));
-      B.talk = `${pick(YAMA_FIGHT.taunt)}\n${dad ? DAD.line2 : YAMA_FIGHT.line2}`;
+      // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — ฉาก "พ่อลงมาเอง" (kind:'dad' เท่านั้น — kind:'yama' คือฉากจบเกม
+      // จริงตอนบารมีหมด ไม่แตะตามใบงานเดิม) ใช้บทของผู้ตรวจการโซนนั้นแทน "พญายม" ของโซน 1
+      B.talk = `${pick(YAMA_FIGHT.taunt)}\n${dad ? fmtAuthority(DAD.line2, this.zone) : YAMA_FIGHT.line2}`;
       B.youHp = 0;
       B.over = 'lose';
       B.dmg = { foe: 0, you: 999 };
-      say(dad ? DAD.line3 : YAMA_FIGHT.line3);
+      say(dad ? fmtAuthority(DAD.line3, this.zone) : YAMA_FIGHT.line3);
       this.onChange();
       return true;
     }
@@ -2050,21 +2059,24 @@ const API = {
         this.orderWarns = 0;
         this.orderWarnAt = this.tick + ORDER_WARN.gap;
       }
-      const reasonText = B.reason === 'karma'
+      // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "พญายม" แทนด้วยผู้ตรวจการของโซนนั้น · "พ่อลงมาตบจริง" (คำว่า
+      // "พ่อ" เดี่ยว ๆ ไม่ผ่าน fmtAuthority เพราะชนกับคำอื่นได้ เช่น "พ่อค้า") แทนด้วยชื่อผู้ตรวจการตรง ๆ
+      const auth = authorityOf(this.zone);
+      const reasonText = fmtAuthority(B.reason === 'karma'
         ? 'กรรมในบัญชีของท่านเต็ม พญายมจึงส่งท่านลงกระทะทองแดงให้รับผลด้วยตัวเอง — บารมีเหลือ 1 และกรรมลดลงเหลือ 70 หลังชดใช้บางส่วน'
         : B.reason === 'order'
           ? `ปล่อยให้คิวล้นจนระเบียบพัง พญายมส่งท่านลงกระทะทองแดง — บารมีเหลือ 1 และยกระเบียบกลับมา ${ORDER_WARN.restore} ให้ตั้งหลักใหม่`
           : B.reason === 'hp'
             ? 'บารมีหมดจนพญายมต้องลงมาหยุดเหตุด้วยตัวเอง — ท่านถูกส่งลงกระทะทองแดง แล้วกลับมาด้วยบารมี 1'
-            : DAD.punishText;
+            : fmtAuthority(DAD.punishText, this.zone), this.zone);
       this.pendingDadPunish = { title: DAD.punishTitle, text: reasonText };
-      this.log(B.reason === 'karma'
+      this.log(fmtAuthority(B.reason === 'karma'
         ? '🍳 กรรมเต็มบัญชี — แพ้พญายมและถูกลงกระทะทองแดง · บารมีเหลือ 1 · กรรมลดเหลือ 70'
         : B.reason === 'order'
           ? `🍳 ระเบียบพัง — ถูกลงกระทะทองแดง · บารมีเหลือ 1 · ระเบียบกลับมา ${ORDER_WARN.restore}`
           : B.reason === 'hp'
             ? '🍳 บารมีหมด — ถูกลงกระทะทองแดงและกลับมาด้วยบารมี 1'
-            : '🍳 พ่อลงมาตบจริง — ลงทัณฑ์ในกระทะทองแดงแล้วปล่อยกลับไปคุมโซนต่อ', 'boss');
+            : `🍳 ${this.zone === 'th' ? 'พ่อ' : auth.title}ลงมาตบจริง — ลงทัณฑ์ในกระทะทองแดงแล้วปล่อยกลับไปคุมโซนต่อ`, this.zone), 'boss');
       this.onChange(); return B;
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
@@ -2381,7 +2393,8 @@ const API = {
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
                 : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
     this.buildExtra = { k, text: extra };       // เก็บไว้พูดตอนนั่งร้านถอดออกจริง
-    this.log(`🏗️ สั่งสร้าง${def.name} — ทัณฑ์กำลังเดินไปเริ่มงาน`, 'act');
+    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name (ตามโซนผ่าน crewName แล้ว)
+    this.log(`🏗️ สั่งสร้าง${def.name} — ${taan.name}กำลังเดินไปเริ่มงาน`, 'act');
     return true;
   },
 
