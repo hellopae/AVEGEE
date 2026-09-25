@@ -2486,8 +2486,17 @@ function openStation(k) {
         <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
         <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
-        ${g.paused ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>` : ''}
+        ${g.paused
+          // ข้อ F คุณเป้เจอ 25/26 ก.ย. 2569 — ป้าย "เกมพักอยู่" มีอยู่แล้ว (24 ก.ย.) แต่ปุ่ม ▶ เดินวาระ
+          // อยู่นอกกล่องนี้ ซึ่งเป็น <dialog> แท้ ๆ บังคลิกพื้นหลังทั้งหมด — กดไม่ถึงปุ่มจริงถ้าไม่ปิดกล่องก่อน
+          // เจ้าของเจอในโซน 2 (กระทะทองแดง) แต่จริง ๆ เป็นแล้วทุกสถานีทุกโซน ไม่ใช่บั๊กเฉพาะโซน 2
+          // เพิ่มปุ่มเดินวาระใช้ตรงนี้เลย ไม่ต้องปิดกล่องไปกดข้างนอก
+          ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>
+             <button class="sm gold" id="st-resume">▶ เดินวาระ</button>`
+          : ''}
         <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
+    const rb = T && T.querySelector('#st-resume');
+    if (rb) rb.onclick = () => { userPaused = false; g.paused = false; updatePlay(); panels(); };
     if (L) L.innerHTML = `
           <div class="hud-card">
             <h4>ที่นี่คือที่ไหน</h4>
