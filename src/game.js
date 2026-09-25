@@ -1164,6 +1164,12 @@ const API = {
     if (this.level >= 4) { this.hpMax = 120; this.hp = this.hpMax; this.coin += 500; }
     this.powers.forEach(p => { if (p.lv <= this.level) p.ammo = Math.max(p.ammo, p.lv === this.level ? p.max : 1); });
     if (this.level >= 5) this.powers.forEach(p => { p.ammo = p.max; });
+    // Dale ตรวจชุด 11 พบ 25 ก.ย. 2569 — ของ 'ice' อาจสุ่มตกและถูกเก็บตั้งแต่ก่อนเลเวลปลดล็อกคัมภีร์น้ำแข็ง
+    // (dropItem ไม่เช็คเลเวล) ตอนนั้น collectItem เก็บมันไว้เฉยๆ ใน inventory.ice เพราะ powerLocked
+    // ถ้าไม่รีโหลดหน้าเว็บ (restore() migrate ให้ตอนโหลดเท่านั้น) ของชิ้นนี้จะค้างกดใช้ไม่ได้ไปตลอด
+    // เพราะ useBag บล็อก 'ice'/'fire' แบบไม่มีเงื่อนไขแล้ว (ดู useBag ข้อ H) — กวาดล้างของค้างทันทีที่
+    // เลเวลอัพปลดล็อกพลังนั้น ไม่ต้องรอ reload
+    this.migrateBagCombatItems();
     this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
     this.pendingLevel = nx;
     // เลเวลอย่างเดียวไม่เปิดสาขาแล้ว — ต้องชนะบอสโซนก่อน
@@ -1373,6 +1379,22 @@ const API = {
       // เดิมยืนอยู่ท่าเรือฝั่งขวาซึ่งไม่มีอะไรผ่าน มีผีบุกก็ยังวิ่งไปจัดการเหมือนเดิม
       const G = this.guard, gp = GUARD_POST;
       stepTo(G, (gp[0] - G.x) * 0.0012 * dt, (gp[1] - G.y) * 0.0012 * dt);
+    }
+  },
+
+  /** ข้อ H คุณเป้เจอ 25 ก.ย. 2569 (แก้เพิ่มโดย Dale ตอนรีวิวชุด 11) — กวาดของ fire/ice ที่ค้างอยู่ใน
+   *  กระเป๋าทั่วไป (เก็บมาตั้งแต่ก่อนแพตช์นี้ หรือเก็บตอนพลังยังล็อกอยู่) ให้กลายเป็นกระสุน/พลังพร้อมใช้
+   *  ทันที เรียกทั้งตอนโหลดเซฟ (restore) และตอนเลเวลอัพปลดล็อกพลังใหม่ (checkLevel) กันของค้างกดใช้
+   *  ไม่ได้ไปตลอดเพราะปุ่ม "ใช้" ในกระเป๋าปิดถาวรสำหรับสองไอเทมนี้แล้ว */
+  migrateBagCombatItems() {
+    if (this.inventory.fire) {
+      this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + this.inventory.fire);
+      delete this.inventory.fire;
+    }
+    if (this.inventory.ice) {
+      const p = this.powerOf('ice');
+      if (p && !this.powerLocked(p)) { p.ammo = Math.min(p.max, p.ammo + this.inventory.ice); delete this.inventory.ice; }
+      // ยังไม่ปลดล็อก — ปล่อยค้างไว้ในกระเป๋าเหมือนเดิม (บอกเหตุผล "ยังไม่ปลดล็อก" ไม่ใช่ "ใช้ในฉากต่อสู้")
     }
   },
 
@@ -2477,15 +2499,7 @@ API.restore = function (d) {
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
   // พลังพร้อมใช้ทันทีแทน ไม่ให้ผู้เล่นเสียของที่เก็บมาแล้วเพราะปุ่มหายไป (ตัวเลข/เพดานเดิมทุกอย่าง)
-  if (this.inventory.fire) {
-    this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + this.inventory.fire);
-    delete this.inventory.fire;
-  }
-  if (this.inventory.ice) {
-    const p = this.powerOf('ice');
-    if (p && !this.powerLocked(p)) { p.ammo = Math.min(p.max, p.ammo + this.inventory.ice); delete this.inventory.ice; }
-    // ยังไม่ปลดล็อก — ปล่อยค้างไว้ในกระเป๋าเหมือนเดิม (บอกเหตุผล "ยังไม่ปลดล็อก" ไม่ใช่ "ใช้ในฉากต่อสู้")
-  }
+  this.migrateBagCombatItems();
   this.mobs = d.mobs || [];
   this.transits = [];
   this.guard = d.guard || null;
