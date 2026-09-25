@@ -1,6 +1,8 @@
 {
 "critical": [
+"cover-v1.webp",
 "cover.webp",
+"cover2.png",
 "crew-boon-profile.png",
 "crew-boon.png",
 "crew-dam-profile.png",
@@ -95,6 +97,7 @@
 "prop-throne-platform-v1.png",
 "prop-throne-platform.png",
 "scene-asia.png",
+"scene-cyberhell.jpeg",
 "scene-foreground-v1.png",
 "scene-foreground.png",
 "scene-ground-v1.png",
@@ -138,6 +141,7 @@
 "zones": {
 "asia": [
 "Asia/BG-Dab-asia.webp",
+"Asia/BG-Frontier-asia.webp",
 "Asia/BG-Krajok-asia.webp",
 "Asia/BG-Krata-asia.webp",
 "Asia/BG-Lan-asia.webp",
@@ -147,6 +151,7 @@
 "Asia/BG-Sawan-asia.webp",
 "Asia/BG-Tarang-asia.webp",
 "Asia/BG-Tea-asia.webp",
+"Asia/BG-Turn-Base-asia.webp",
 "Asia/Boss Zone2-asia.png",
 "Asia/Intro-Boss-Zone2-asia.png",
 "Asia/crew-boon-asia-profile.png",
@@ -193,12 +198,14 @@
 ],
 "cyberhell": [
 "CyberHell/BG-Dab-cyberhell.webp",
+"CyberHell/BG-Frontier-cyberhell.webp",
 "CyberHell/BG-Krata-cyberhell.webp",
 "CyberHell/BG-Lan-cyberhell.webp",
 "CyberHell/BG-Lokan-cyberhell.webp",
 "CyberHell/BG-Ngiw-cyberhell.webp",
 "CyberHell/BG-Sala-cyberhell.webp",
 "CyberHell/BG-Tea-cyberhell.webp",
+"CyberHell/BG-Turn-Base-cyberhell.webp",
 "CyberHell/Boss Zone4-cyberhell-profile.png",
 "CyberHell/Boss Zone4-cyberhell.png",
 "CyberHell/Intro-Boss-Zone4-cyberhell.png",
@@ -234,11 +241,13 @@
 ],
 "west": [
 "West/BG-Dab-west.webp",
+"West/BG-Frontier-west.webp",
 "West/BG-Krata-west.webp",
 "West/BG-Lan-west.webp",
 "West/BG-Lokan-west.webp",
 "West/BG-Ngiw-west.webp",
 "West/BG-Tea-west.webp",
+"West/BG-Turn-Base-west.webp",
 "West/Boss Zone3-west-profile.png",
 "West/Boss Zone3-west.png",
 "West/Intro-Boss-Zone3-west.png",
@@ -274,18 +283,6 @@
 "West/st-tarang-west.png",
 "West/st-tea-west.png",
 "West/zone-boss-west.png"
-],
-"ui": [
-"ui/Button1.png",
-"ui/Button10.png",
-"ui/Button2.png",
-"ui/Button3.png",
-"ui/Button4.png",
-"ui/Button5.png",
-"ui/Button6.png",
-"ui/Button7.png",
-"ui/Button8.png",
-"ui/Button9.png"
 ]
 },
 "boxes": {

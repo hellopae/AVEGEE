@@ -1316,7 +1316,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe');
   const youImg = usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
-  const bg = hp?.bg || 'img/BG-Turn-Base.webp';
+  // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
+  const bg = hp?.bg || artUrl('BG-Turn-Base', 'webp');
   // ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลเคย "อยู่ในทีม" จริง (อยู่ท้ายแถว squad มาตั้งแต่ข้อ C
   // ชุดที่ 10) แต่แถว .battle-squad เป็น column-reverse ซ้อนขึ้นจากล่าง ที่ขนาดภาพเดิม (clamp สูงสุด 165px)
   // พอมี 3 คน (ยมทูต 2 + ยักษ์) ตัวที่ 3 ถูกดันสูงจน y ติดลบ (ทดสอบจริงด้วย Playwright:
@@ -1496,7 +1497,7 @@ function openTrial() {
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
     dlg.innerHTML = `
-    <div class="hud trial-hud" style="background-image:url('img/BG-Turn-Base.webp')">
+    <div class="hud trial-hud" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
@@ -1724,7 +1725,10 @@ function openFrontier() {
   const paint = () => {
     const chosen = state.team || [];
     const wave = (state.clears || 0) + 1;
-    dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${FRONTIER.bg}')">
+    // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ภาพชายแดนตามโซน (BG-Frontier-<zone>) พร้อมใช้แล้ว
+    // zone1 ยังใช้ FRONTIER.bg ('img/BG-frontier.jpeg' ตัวเล็ก) เดิมเป๊ะ ไม่แตะ
+    const frontierBg = g.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg);
+    dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" data-close title="กลับแผนที่">✕</button>
       <header><small>กิจกรรมต่อสู้ประจำโซน</small><h2>🏯 ${esc(FRONTIER.name)}</h2>
@@ -2684,7 +2688,7 @@ function openStation(k) {
   myGen = dlgGen;
 
   const cv2 = dlg.querySelector('#st-cv');
-  R = makeRoom(cv2, g, def, room, stBg(k), 'img/BG-Turn-Base.webp', mine);
+  R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = g.stations.find(x => x.def.k === k);
   R.onAct = () => {
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)

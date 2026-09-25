@@ -9,7 +9,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
-import { footOf, artEpoch, hiddenAt } from './art.js';
+import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -1700,7 +1700,12 @@ const API = {
     const hp = 64 + wave * 14;
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:[...state.team], bg:FRONTIER.bg,
+      // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากชายแดนโซน 2-4 มีรูปของตัวเองแล้ว (img/manifest.json
+      // zones.*.BG-Frontier-<zone>.webp) แต่เดิม FRONTIER.bg ผูกกับไฟล์โซน 1 ตรง ๆ ไม่ผ่านระบบโซน
+      // เลย ยังไม่มีระบบเดินชายแดนจริง (ชุด 14) จุดนี้แค่ให้ "พื้นหลังฉากต่อสู้ตอนสู้ที่ชายแดน" ถูกโซน
+      // ไว้ก่อน — zone1 ยังใช้ไฟล์เดิม img/BG-frontier.jpeg (ตัวเล็ก) เหมือนเดิมเป๊ะ ไม่แตะ
+      kind:'frontier', zone:this.zone, wave, team:[...state.team],
+      bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
       who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
       foeHp:hp, foeMax:hp, foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
