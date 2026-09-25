@@ -179,6 +179,8 @@
 "Asia/hero-yama-asia-mi-cutscene.jpeg",
 "Asia/hero-yama-asia-profile.png",
 "Asia/hero-yama-asia.png",
+"Asia/hero-yama-sit-asia.png",
+"Asia/hero-yama-sit-sip-asia.png",
 "Asia/intro-zone2-asia.png",
 "Asia/mob-gaki-asia.png",
 "Asia/mob-hitodama-asia.png",
@@ -229,6 +231,8 @@
 "CyberHell/hero-yama-cyberhell-mi-cutscene.jpeg",
 "CyberHell/hero-yama-cyberhell-profile.png",
 "CyberHell/hero-yama-cyberhell.png",
+"CyberHell/hero-yama-sit-cyberhell.png",
+"CyberHell/hero-yama-sit-sip-cyberhell.png",
 "CyberHell/intro-zone4-cyberhell.png",
 "CyberHell/scene-cyberhell.jpeg",
 "CyberHell/st-dab-cyberhell.png",
@@ -263,6 +267,8 @@
 "West/crew-plerng-west.png",
 "West/crew-taan-west-profile.png",
 "West/crew-taan-west.png",
+"West/hero-yama-sit-sip-west.png",
+"West/hero-yama-sit-west.png",
 "West/hero-yama-west-atk-L.png",
 "West/hero-yama-west-atk-R.png",
 "West/hero-yama-west-atk-cutscene.jpeg",
@@ -283,6 +289,18 @@
 "West/st-tarang-west.png",
 "West/st-tea-west.png",
 "West/zone-boss-west.png"
+],
+"ui": [
+"ui/Button1.png",
+"ui/Button10.png",
+"ui/Button2.png",
+"ui/Button3.png",
+"ui/Button4.png",
+"ui/Button5.png",
+"ui/Button6.png",
+"ui/Button7.png",
+"ui/Button8.png",
+"ui/Button9.png"
 ]
 },
 "boxes": {
