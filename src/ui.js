@@ -1643,13 +1643,23 @@ function openNiraOffice() {
                   <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
-      }).join('')}</div>
-      ${g.guard ? `<p class="hint">🛡️ ${esc(GUARD.name)} ไม่ต้องจัดเข้าทีม — เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ (ไม่กินโควตาทีม 2 คนของยมทูต)
-        ยืนเฝ้าหัวสะพานไล่ปราบเปรตบนแผนที่ตามปกติ ไม่เดินตามท่านแล้ว</p>` : ''}
+      }).join('')}
+      <!-- ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาว
+           ด้านล่างเดิม (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน) -->
+      <article class="shop-card">
+        <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
+        <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
+        <small>แรง ${GUARD.battleAtk[0]}-${GUARD.battleAtk[1]} · ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small></span>
+        ${g.guard
+          ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม 2 คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา 2 คน)</small></button>`
+          : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
+      </article></div>
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-train]').forEach(b => b.onclick = () => { if (g.upgradeCrew(b.dataset.train)) { sfx('coin'); paint(); refresh(); } });
+    const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
+    if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
   };
   paint(); openDlg('nira-office');
 }

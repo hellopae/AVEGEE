@@ -48,7 +48,9 @@ export function bindCommandWheel(root) {
   });
 }
 
-export const crewAbility = k => ({taan:'ฟาดกระบอง',plerng:'ปล่อยไฟ',boon:'ฟื้นบารมี 36',kan:'สะกดจิต 2 ตา',dam:'โจมตีช่วย'}[k] || 'โจมตีช่วย');
+// ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — เพิ่ม guard ให้การ์ดยักษ์ทวารบาลที่โต๊ะนิราเรียกใช้ข้อความเดียวกับ
+// ปุ่มในวงคำสั่งต่อสู้ (ui.js ~1820 ใช้สตริง "ฟาดแรง" ตรง ๆ อยู่แล้ว ฟังก์ชันนี้แค่ตามให้ตรงกัน)
+export const crewAbility = k => ({taan:'ฟาดกระบอง',plerng:'ปล่อยไฟ',boon:'ฟื้นบารมี 36',kan:'สะกดจิต 2 ตา',dam:'โจมตีช่วย',guard:'ฟาดแรง'}[k] || 'โจมตีช่วย');
 export const cooldownText = seconds => `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
 export function crewCooldown(c, remaining, duration) {
   return `<span class="crew-cooldown" data-cooldown="${esc(c.k)}" role="progressbar" aria-label="ความพร้อม ${esc(c.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(100*(1-remaining/duration))}"><i style="width:${100*(1-remaining/duration)}%"></i></span><small data-cooldown-label="${esc(c.k)}">${remaining?cooldownText(remaining):'พร้อม'}</small>`;
