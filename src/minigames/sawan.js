@@ -8,7 +8,7 @@ const NEED = 3;
 export default {
   name: 'นับลมหายใจ',
   icon: '🕊️',
-  tip: 'วงแสงทองขยายและหดช้า ๆ — แตะ "แตะจังหวะ" ตอนวงขยายกว้างที่สุด ให้ตรงจังหวะ 3 ครั้ง',
+  tip: 'วงแสงทองขยายและหดช้า ๆ — วงจะเรืองเขียวเองตอนถึงจังหวะขยายสุด ให้แตะ "แตะจังหวะ" ตอนนั้น ให้ตรงจังหวะ 3 ครั้ง',
   run(host, { level, alive, onWin, onLose }) {
     const total = lerpByLevel(level, 20000, 17000);
     const period = lerpByLevel(level, 3400, 2200);   // ขั้นสูงรอบเร็วขึ้น จับจังหวะยากขึ้น
@@ -31,10 +31,11 @@ export default {
       if (done) return;
       const dist = Math.abs(phase - 0.5);
       if (dist <= window_ / 2) {
-        hit++; count.textContent = `นับได้ ${hit}/${NEED}`;
+        hit++; count.textContent = `✅ โดน! นับได้ ${hit}/${NEED}`;
         ring.classList.add('good'); setTimeout(() => ring.classList.remove('good'), 240);
         if (hit >= NEED) finish(true);
       } else {
+        count.textContent = `❌ พลาด — นับได้ ${hit}/${NEED}`;
         ring.classList.add('miss'); setTimeout(() => ring.classList.remove('miss'), 240);
       }
     };
@@ -46,6 +47,8 @@ export default {
       const scale = 0.62 + 0.38 * Math.sin(phase * Math.PI);
       ring.style.transform = `scale(${scale.toFixed(3)})`;
       ring.dataset.phase = phase.toFixed(3);   // ไว้ให้ QA/ทดสอบอ่านจังหวะจริงได้ตรง ๆ
+      // ข้อ B ชุด 14 — เกณฑ์เดียวกับ "คุมไฟ": วงเรืองทองเองตอนถึงจังหวะขยายสุด ไม่ต้องกดก่อนถึงจะรู้
+      ring.classList.toggle('in', Math.abs(phase - 0.5) <= window_ / 2);
       const p = Math.min(1, t / total);
       fill.style.width = `${100 * (1 - p)}%`;
       if (p >= 1) finish(false);

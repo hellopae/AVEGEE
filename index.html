@@ -897,8 +897,12 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .mg-krata-track{position:relative;height:46px;border-radius:99px;margin:0 8px;
   background:rgba(255,255,255,.06);border:1px solid var(--border)}
 .mg-krata-zone{position:absolute;top:3px;bottom:3px;border-radius:99px;
-  background:rgba(212,163,85,.32);border:1px solid var(--gold)}
-.mg-krata-marker{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px}
+  background:rgba(212,163,85,.32);border:1px solid var(--gold);transition:background .1s,border-color .1s,box-shadow .1s}
+/* ข้อ B ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมรู้ผลได้ก็ต่อเมื่อกดไปแล้วเท่านั้น ไม่มีสัญญาณ
+   "อยู่ในโซนแล้วนะ" ระหว่างที่ยังไม่กด — โซนเรืองเขียวเองทันทีที่หัวไฟแกว่งเข้ามาอยู่ในนั้นจริง */
+.mg-krata-zone.in{background:rgba(74,157,106,.45);border-color:var(--success);box-shadow:0 0 12px rgba(74,157,106,.6)}
+.mg-krata-marker{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px;transition:filter .1s}
+.mg-krata-marker.in{filter:drop-shadow(0 0 10px var(--success))}
 .mg-krata-marker.good{filter:drop-shadow(0 0 8px var(--success))}
 .mg-krata-marker.bad{filter:drop-shadow(0 0 8px var(--destructive))}
 .mg-krata-hint{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
@@ -941,7 +945,9 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .mg-sawan{display:flex;flex-direction:column;gap:10px;flex:1 1 auto}
 .mg-sawan-stage{position:relative;flex:1 1 auto;min-height:130px;display:flex;align-items:center;justify-content:center}
 .mg-sawan-ring{width:84px;height:84px;border-radius:50%;border:3px solid var(--gold);
-  box-shadow:0 0 22px rgba(212,163,85,.4)}
+  box-shadow:0 0 22px rgba(212,163,85,.4);transition:border-color .1s,box-shadow .1s}
+/* ข้อ B ชุด 14 — เกณฑ์เดียวกับ "คุมไฟ": วงเรืองเขียวเองตอนถึงจังหวะแตะได้จริง ไม่ต้องกดก่อนถึงจะรู้ */
+.mg-sawan-ring.in{border-color:var(--success);box-shadow:0 0 24px rgba(74,157,106,.6)}
 .mg-sawan-ring.good{border-color:var(--success);box-shadow:0 0 26px rgba(74,157,106,.55)}
 .mg-sawan-ring.miss{border-color:var(--muted-foreground);box-shadow:none}
 .mg-sawan-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}

@@ -19,7 +19,7 @@ const MIN_DWELL_MS = 220;   // เพดานปลอดภัยเหนื�
 export default {
   name: 'คุมไฟ',
   icon: '🔥',
-  tip: 'หัวไฟแกว่งซ้าย-ขวาตลอดเวลา — แตะ "พัดไฟ" ตอนหัวไฟอยู่ในโซนทอง ให้ติดกันตามจำนวนที่กำหนดก่อนหมดเวลา',
+  tip: 'หัวไฟแกว่งซ้าย-ขวาตลอดเวลา — โซนจะเรืองเขียวเองตอนหัวไฟแกว่งเข้ามาพอดี ให้แตะ "พัดไฟ" ตอนนั้น ติดกันให้ครบตามจำนวนก่อนหมดเวลา',
   run(host, { level, alive, onWin, onLose }) {
     const NEED = NEED_BY_LEVEL[Math.max(0, Math.min(4, level))];
     const total = 20000;
@@ -42,15 +42,19 @@ export default {
 
     function finish(won) { if (done) return; done = true; stop(); won ? onWin() : onLose(); }
 
+    // ข้อ B ชุด 14 คุณเป้ 26 ก.ย. 2569 — คุณเป้เล่นแล้วไม่เข้าใจว่าต้องกดตอนไหน
+    // เดิมรู้ผลได้ก็ต่อเมื่อกดไปแล้วเท่านั้น (ไม่มีสัญญาณ "อยู่ในโซนแล้วนะ" ระหว่างที่ยังไม่กด)
+    // เพิ่มไฟเขียวที่ตัวโซนเองตอนหัวไฟแกว่งเข้ามาอยู่ในนั้นจริง (ไม่ต้องกดก่อนถึงจะรู้) —
+    // ผู้เล่นเห็นแล้วค่อยตัดสินใจกดได้ทัน ไม่ใช่กดสุ่มแล้วดูผลย้อนหลัง
     hit.onclick = () => {
       if (done) return;
       const dist = Math.abs(pos - 0.5);
       if (dist <= zoneHalf) {
-        streak++; hint.textContent = `ติดต่อกัน ${streak}/${NEED}`;
+        streak++; hint.textContent = `✅ โดน! ติดต่อกัน ${streak}/${NEED}`;
         marker.classList.add('good'); setTimeout(() => marker.classList.remove('good'), 160);
         if (streak >= NEED) { finish(true); return; }
       } else {
-        streak = 0; hint.textContent = `พลาด — ติดต่อกัน 0/${NEED}`;
+        streak = 0; hint.textContent = `❌ พลาด — ติดต่อกัน 0/${NEED}`;
         marker.classList.add('bad'); setTimeout(() => marker.classList.remove('bad'), 160);
       }
     };
@@ -61,6 +65,9 @@ export default {
       pos = 0.5 + 0.44 * Math.sin((2 * Math.PI * t) / period);
       marker.style.left = `${pos * 100}%`;
       marker.dataset.pos = pos.toFixed(3);   // ไว้ให้ QA/ทดสอบอ่านตำแหน่งจริงได้ตรง ๆ
+      const inZone = Math.abs(pos - 0.5) <= zoneHalf;
+      zone.classList.toggle('in', inZone);
+      marker.classList.toggle('in', inZone);
       const p = Math.min(1, t / total);
       totalFill.style.width = `${100 * (1 - p)}%`;
       if (p >= 1) finish(false);
