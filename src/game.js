@@ -1993,7 +1993,10 @@ const API = {
     // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
     B.mid = { foeHp: B.foeHp, youHp: B.youHp, talk: B.talk };
 
-    if (B.foeHp <= 0) {
+    // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — แยกเป็นฟังก์ชันย่อย เพราะตอนนี้เช็คแพ้ชนะได้ 2 จังหวะ:
+    // ตอนยมน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
+    // ถ้าสะกดจิตฆ่าศัตรูตายพอดี ผู้เล่นต้องกดอีกทีถึงจะเห็นว่าชนะแล้ว — Dale เจอตอนรีวิวชุด 13
+    const declareWin = () => {
       B.over = 'win';
       if (B.kind === 'frontier') {
         const coin = 32 + B.wave * 10;
@@ -2026,7 +2029,9 @@ const API = {
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
-    }
+    };
+
+    if (B.foeHp <= 0) return declareWin();
 
     // ---- ตาของเขา ----
     const foeAtkRoll = () => roll(B.kind === 'frontier' ? B.foeAtk
@@ -2041,6 +2046,8 @@ const API = {
       B.foeHp = Math.max(0, B.foeHp - d);
       B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมน้อย
       say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
+      // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
+      if (B.foeHp <= 0) return declareWin();
     } else if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
       const d = foeAtkRoll();
