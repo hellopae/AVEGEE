@@ -1769,38 +1769,31 @@ const API = {
       // (เหมือน sp:'hero-boss' ด้านล่าง) — ต่อซ้อนสองรอบ เลยหาไฟล์ไม่เจอ บอสโซน 2-4 เลยตกไปใช้
       // spirit7.png (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว
       sp: 'zone-boss',
-      foeHp: hp, foeMax: hp, youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
+      // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติแล้ว (ผูกกับเนื้อเรื่องจริง
+      // คือภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก) ตัด "ยมทูตคุ้มกัน" (แทนด้วยปุ่มนิรา — จัดทีมจริงดีกว่าโบนัส
+      // สถิติลอย ๆ) กับ "เตรียมลูกไฟ" ออก (ซื้อลูกไฟที่พ่อค้าได้แล้ว ดู MERCHANT.stock/buyMerchant)
+      foeHp: hp - (this.miniGoals[z.k]?.earned ? 24 : 0), foeMax: hp,
+      youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
-      prepUsed: [], prepStarted: false,   // ข้อ C ชุด 13 — เตรียมศึกได้ทั้ง 3 อย่าง แยกปุ่ม "เข้าสู้" ต่างหาก
+      prepStarted: false, proofBonus: this.miniGoals[z.k]?.earned ? 24 : 0,
     };
     this.onChange();
     return this.battle;
   },
 
-  /** เตรียมศึกก่อนเปิดกระบวนท่าแรก (ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569) — เลือกได้ทั้ง 3 อย่าง
-   *  ไม่บังคับเลือกแค่หนึ่ง (เดิม b.prep เป็นค่าเดียว เลือกอย่างแรกแล้วปุ่มอีกสองอันหายไปเลย)
-   *  b.prepUsed = รายการโหมดที่กดไปแล้ว กันกดซ้ำโหมดเดิมเพื่อฟาร์มโบนัสไม่รู้จบ
-   *  ไม่ใช้กาชาหรือของเติมเงิน — จบด้วยการกด "เข้าสู้" แยกต่างหาก (ดู startBossFight ด้านล่าง) */
-  prepareBoss(mode) {
+  /** กินหีบยาเติมบารมีระหว่างเตรียมศึก (แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569)
+   *  ใช้หีบยาจากกระเป๋าโดยตรง (ITEMS.health) — กินได้หลายครั้งถ้ามีของพอ ไม่ใช่ครั้งเดียวเหมือนของเดิม
+   *  ไม่มีของ/บารมีเต็มแล้ว → คืน false (ฝั่ง UI ปิดปุ่มพร้อมชี้ไปปุ่มพ่อค้านรก) */
+  useBossMedicine() {
     const b = this.battle;
     if (!b || b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1) return false;
-    b.prepUsed ||= [];
-    if (b.prepUsed.includes(mode)) return false;
-    if (mode === 'proof') {
-      if (!this.miniGoals[b.zone]?.earned) return false;
-      b.foeHp = Math.max(1, b.foeHp - 24);
-      b.talk = '"แฟ้มที่เจ้าหามา... ข้าจะไม่ออมมือ แต่จะฟัง"';
-    } else if (mode === 'crew') {
-      if (!this.crewHelpers().length) return false;
-      b.youMax += 18; b.youHp += 18;
-    } else if (mode === 'power') {
-      // ข้อ A คุณเป้ 24 ก.ย. 2569 — สระกระสุนลูกไฟของตัวเองแล้ว ไม่ใช่ ammo ของตวาดข่มขู่
-      if (this.fireAmmo < this.fireAmmoMax) this.fireAmmo++;
-      else b.stun = 1; // ลูกไฟเต็มอยู่แล้ว: ใช้แรงที่สำรองไว้กันบอสสวนกลับหนึ่งครั้ง
-    } else return false;
-    b.prepUsed.push(mode);
-    this.log(`⚔️ เตรียมสู้${b.who}: ${mode === 'proof' ? 'แฟ้มหลักฐาน' : mode === 'crew' ? 'ยมทูตช่วยคุ้มกัน' : 'สำรองพลังลูกไฟ'}`, 'act');
-    this.onChange();
+    const n = this.inventory.health || 0;
+    if (n < 1 || b.youHp >= b.youMax) return false;
+    const def = ITEMS.health;
+    b.youHp = Math.min(b.youMax, b.youHp + def.hp);
+    if (--this.inventory.health <= 0) delete this.inventory.health;
+    this.log(`💊 กินหีบยาเติมบารมีก่อนเข้าสู้${b.who} — ฟื้น ${def.hp}`, 'good');
+    this.save(); this.onChange();
     return true;
   },
 
@@ -2325,7 +2318,19 @@ const API = {
     const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
     if (!stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.coin -= stock.cost;
-    this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1);
+    // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ลูกไฟ/น้ำแข็งพร้อมใช้ทันทีเหมือนเก็บจากแผนที่
+    // (ดู collectItem) เดิมซื้อแล้วเข้ากระเป๋าทั่วไปเฉย ๆ กด "ใช้" ไม่ได้ (ปุ่มปิดถาวรสำหรับสองไอเทมนี้
+    // ดู useBag/bagUseWhy) ต้องรอเซฟ/โหลดหรือเลื่อนขั้นถึงจะถูกไมเกรตเป็นกระสุนจริง (migrateBagCombatItems)
+    // — ตอนนี้ซื้อแล้วได้ใช้เลย ไม่ต้องรอ
+    if (k === 'fire') {
+      this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + (def.fireAmmo || 1) * (stock.qty || 1));
+    } else if (k === 'ice') {
+      const p = this.powerOf('ice');
+      if (p && !this.powerLocked(p)) p.ammo = Math.min(p.max, p.ammo + (stock.qty || 1));
+      else this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1); // ยังไม่ปลดล็อก — เก็บไว้ก่อนเหมือนเดิม
+    } else {
+      this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1);
+    }
     this.log(`🛍️ ซื้อ${def.name} — ${stock.cost} เบี้ยกรรม`, 'act');
     this.save(); this.onChange(); return true;
   },

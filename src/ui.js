@@ -1902,15 +1902,25 @@ function openBattle(after) {
     // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
     const squadMembers = g.guard ? [...battleHelpers, { k: 'guard', name: GUARD.name }] : battleHelpers;
-    // ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — กดได้ทั้ง 3 อย่าง ไม่บังคับเลือกแค่หนึ่ง (ปุ่มที่กดไปแล้วจะปิด
-    // ตัวเอง กันฟาร์มซ้ำ) แยกปุ่ม "เข้าสู้" ต่างหากไว้ท้ายสุด กดเมื่อพร้อมจริง ๆ ค่อยเปิดวงคำสั่งต่อสู้
-    const prepUsed = b.prepUsed || [];
+    // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
+    // กดได้ทุกปุ่ม ลำดับไหนก็ได้ หลายครั้งก็ได้ (ไม่ใช่ครั้งเดียวเหมือนของเดิม) เปิดหน้าต่างเดิมที่มีอยู่แล้ว
+    // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
+    // เปิดฉากเตรียมศึกกลับให้เองอัตโนมัติภายใน 400ms ไม่ต้องเขียน callback พิเศษ ดูคอมเมนต์ตรง
+    // setInterval บนสุดของไฟล์ "ถึงปิดไป ตัวเฝ้าก็เปิดกลับให้อยู่ดีถ้าฉากยังไม่จบ")
+    const medN = g.inventory.health || 0;
+    const medFull = b.youHp >= b.youMax;
+    const canMed = medN > 0 && !medFull;
     const prep = b.kind === 'zoneBoss' && !b.prepStarted && !b.over ? `<div class="boss-prep">
-      <b>เตรียมศึกก่อนบุก (เลือกได้ทุกข้อ ไม่บังคับ)</b><div class="acts">
-      <button data-prep="proof" ${prepUsed.includes('proof') || !g.miniGoals[b.zone]?.earned ? 'disabled' : ''}>📜 แฟ้มหลักฐาน ${prepUsed.includes('proof') ? '· ใช้แล้ว' : g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
-      <button data-prep="crew" ${prepUsed.includes('crew') || !g.crewHelpers().length ? 'disabled' : ''}>🛡️ ยมทูตคุ้มกัน ${prepUsed.includes('crew') ? '· ใช้แล้ว' : '· บารมีศึก +18'}</button>
-      <button data-prep="power" ${prepUsed.includes('power') ? 'disabled' : ''}>🔥 เตรียมลูกไฟ ${prepUsed.includes('power') ? '· ใช้แล้ว' : '· เพิ่ม 1 ลูก'}</button>
+      <b>เตรียมศึกก่อนบุก (กดได้ทุกปุ่ม ก่อนหลังไม่บังคับ)</b>
+      ${b.proofBonus ? `<div class="prep-note good">✓ แฟ้มหลักฐานพร้อม — ลดพลังบอส ${b.proofBonus}</div>` : ''}
+      <div class="acts">
+      <button data-prep-merchant>🧳 พ่อค้านรก · ซื้อของ</button>
+      <button data-prep-nira>📋 นิรา · จัดทีมยมทูต</button>
+      <button data-prep-med ${canMed ? '' : 'disabled'}
+        title="${medN < 1 ? 'ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ' : medFull ? 'บารมีเต็มแล้ว' : `ฟื้นบารมี ${ITEMS.health.hp} · เหลือ ${medN} หีบ`}">
+        💊 กินหีบยา${medN ? ` ×${medN}` : ''}</button>
       </div>
+      ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}
       <div class="row"><button class="gold" data-prep-go>⚔️ เข้าสู้</button></div></div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
       title="${esc(label + (note ? ' · ' + note : ''))}"><img src="${icon}" alt=""><b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
@@ -1971,9 +1981,15 @@ function openBattle(after) {
         ${prep}${done}
       </div>`;
 
-    dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
-      if (g.prepareBoss(el.dataset.prep)) { sfx('stamp'); paint(); refresh(); }
-    });
+    // แก้รอบ 1 ข้อ C ชุด 13 — เปิดหน้าต่างเดิม (พ่อค้า/นิรา) ตรง ๆ ไม่ต้องมี callback "กลับมาหน้าเตรียมศึก"
+    // เพราะ battle ยังไม่จบ (b.over ยังเป็น null) ตัวเฝ้า battleUI ที่ท้ายไฟล์เปิดฉากนี้กลับให้เองอัตโนมัติ
+    // ทันทีที่ merchant/nira ปิด (เหมือนที่คอมเมนต์บนสุดของไฟล์อธิบายไว้แล้วสำหรับกรณีทั่วไป)
+    const prepMerchant = dlg.querySelector('[data-prep-merchant]');
+    if (prepMerchant) prepMerchant.onclick = () => openMerchant();
+    const prepNira = dlg.querySelector('[data-prep-nira]');
+    if (prepNira) prepNira.onclick = () => openNiraOffice();
+    const prepMed = dlg.querySelector('[data-prep-med]');
+    if (prepMed) prepMed.onclick = () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } };
     const prepGo = dlg.querySelector('[data-prep-go]');
     if (prepGo) prepGo.onclick = () => { if (g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
     bindCommandWheel(dlg);
