@@ -451,6 +451,7 @@ function drawSide() {
   });
   const office = box.querySelector('#open-nira-office');
   if (office) office.onclick = openNiraOffice;
+  bindHungerWidgets(box, () => refresh());
 }
 
 /** เนื้อของแผงข้อมูลตามตัวที่เลือก */
@@ -519,6 +520,7 @@ function sideBody() {
          <div class="row-truth">เด่นที่ <b>${strong[0][0]} ${strong[0][1]}</b> · อ่อนที่ ${strong[3][0]} ${strong[3][1]}</div>
          <div class="row-truth">${crewNote(c)}</div>
          ${battleLine}
+         ${!c.reader ? `<div class="sec">คุยกับ${esc(c.name)}</div>${hungerWidget(c)}` : ''}
          ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}
          ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม · ฝึกยมทูต</button>' : ''}`;
   }
@@ -612,6 +614,30 @@ function crewNote(c) {
   if (c.raeng >= 8) return 'แรงเยอะ — ทัณฑ์เสร็จเร็ว แต่เมตตาต่ำ เผลอสั่งเกินแล้วกรรมตกหนัก';
   if (c.rabiab >= 8) return 'ระเบียบสูง — คะแนนแกนระเบียบดีขึ้นทุกคดีที่เขาคุม';
   return 'สเตตัสกลาง ๆ ใช้ได้ทั่วไป';
+}
+
+/** แถบหิว + ปุ่มป้อนข้าวปั้น (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) — ใช้ร่วมกัน 3 จุดตามที่ขอ:
+ *  โต๊ะนิรา (openNiraOffice) · หน้าต่างสถานีที่มียมทูตคุม (openStation) · คุยกับยมทูตบนแผนที่ (talkCrew)
+ *  c = ออบเจ็กต์ยมทูตจริงใน g.crew (มี .hunger) ไม่ใช่ CREW def เฉย ๆ
+ *  ปุ่มมี data-feed="<k>" ให้ผู้เรียกไป bind onclick เอง (แต่ละที่ paint()/refresh() ไม่เหมือนกัน) */
+function hungerWidget(c) {
+  const h = Math.round(c.hunger ?? 100);
+  const empty = h <= 0;
+  // โทนสี: หิวหมด (0) = แดง · ต่ำกว่า 40 = สีทองเตือน · เหลือมาก = เขียว
+  const tone = empty ? 'karma' : h < 40 ? '' : 'hp';
+  const canFeed = g.food >= BAL.feedFoodCost;
+  return `<div class="hunger-line">
+    <span class="bar ${tone}" title="หิว ${h}/100"><i style="width:${h}%"></i></span>
+    <small>🍙 หิว ${h}/100${empty ? ` — ทำงานช้าลงอีก ${Math.round((1 - BAL.hungerPenalty) * 100)}%` : ''}</small>
+    <button data-feed="${esc(c.k)}" class="sm" ${canFeed ? '' : 'disabled'}
+      title="${canFeed ? `หัก ${BAL.feedFoodCost} ห่อจากเสบียงกลาง (เหลือ ${Math.round(g.food)} ห่อ)` : 'เสบียงกลางหมด — ซื้อเพิ่มที่แท็บก่อสร้าง'}">🍙 ให้ข้าวปั้น</button>
+  </div>`;
+}
+/** bind ปุ่ม data-feed ทั้งหมดในกล่อง — เรียกซ้ำได้ (ปุ่มถูกวาดใหม่ทุก paint()) */
+function bindHungerWidgets(root, after) {
+  root.querySelectorAll('[data-feed]').forEach(b => b.onclick = () => {
+    if (g.feedCrew(b.dataset.feed)) { sfx('coin'); after(); }
+  });
 }
 
 /** ป้ายบนหัวแท็บ — บอกว่ามีอะไรให้กดบ้าง ไม่ต้องเปิดดูเอง */
@@ -1245,6 +1271,10 @@ function openHelp() {
       <li><b>กดตัวละครหรือวิญญาณบนฉาก</b> แล้วดูรายละเอียดที่แผง <b>ข้อมูล</b> ด้านขวา —
           <b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>
+      <li><b>ยมทูตแต่ละคนหิวได้</b> (แถบ 🍙 แยกจากเสบียงกองกลาง) ดูและป้อนข้าวปั้นได้ 3 ทาง:
+          ที่<b>โต๊ะนิรา</b> · ที่<b>หน้าต่างสถานี</b>ที่เขาประจำอยู่ · หรือกด<b>ตัวเขาบนแผนที่</b>โดยตรง
+          หิวจนหมดแถบ (0) จะ<b>ทำงานช้าลงอีกชั้นหนึ่ง</b> — ป้อนข้าวปั้นหักจากเสบียงกองกลางครั้งละ 1 ห่อ
+          ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ต้องซื้อเพิ่มที่แท็บก่อสร้างก่อน</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
@@ -1697,7 +1727,8 @@ function openNiraOffice() {
         const train = c ? UPGRADES.crewBase * ((c.upLv || 0) + 1) : 0;
         return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
-          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}</span>
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}
+          ${c ? hungerWidget(c) : ''}</span>
           ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ทีมต่อสู้' : 'เข้าทีมสู้'}</button>
                   <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
@@ -1717,6 +1748,7 @@ function openNiraOffice() {
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-train]').forEach(b => b.onclick = () => { if (g.upgradeCrew(b.dataset.train)) { sfx('coin'); paint(); refresh(); } });
+    bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
     if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
   };
@@ -2587,6 +2619,7 @@ function openStation(k) {
               + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง)' : '')
               + (g.workingCrew?.has(st.crewK) ? (g.fed ? ' · 🍙 อิ่ม ทำงานไว' : ' · 🍙 หิว ทำงานช้า') : '')
               : 'ยังไม่มีใครประจำ'}</div>
+            ${st.crewK && !g.crewOf(st.crewK)?.self ? hungerWidget(g.crewOf(st.crewK)) : ''}
           </div>` : ''}`;
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
@@ -2606,6 +2639,7 @@ function openStation(k) {
     dlg.querySelectorAll('[data-buy-boon]').forEach(b => b.onclick = () => {
       if (g.buyBoon(b.dataset.buyBoon)) { sfx('coin'); panels(); refresh(); }
     });
+    bindHungerWidgets(dlg, () => { panels(); refresh(); });
   };
 
   /** แฟ้มทะเบียนกรรม — ประวัติทุกดวงที่เคยผ่านมือท่าน (เจ้าของสั่ง 10 ก.ย. 2569)

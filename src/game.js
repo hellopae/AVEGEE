@@ -107,7 +107,8 @@ export function createGame() {
 }
 
 function mkCrew(def, zone = 'th') {
-  return { ...def, name: crewName(def, zone), morale: 92, at: null, tired: false };
+  // hunger 100 = อิ่มเต็ม (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) — ลดลงระหว่างทำงาน ป้อนข้าวปั้นแล้วขึ้น
+  return { ...def, name: crewName(def, zone), morale: 92, hunger: 100, at: null, tired: false };
 }
 
 /** สถานีหนึ่งหลังรับวิญญาณได้พร้อมกันหลายดวง (9 ก.ย. 2569 — เดิมทีละดวง)
@@ -956,6 +957,17 @@ const API = {
     this.fed = fed; this.workingCrew = workingCrew;
     const foodMul = workingCount === 0 ? 1 : (fed ? BAL.foodFullMul : BAL.foodHungryMul);
 
+    // ---------- ความหิวรายคน (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) ----------
+    // นี่คือแถบใหม่ แยกจากกองเสบียงกลางด้านบน (this.food/fed/foodMul ไม่ถูกแตะ ยังคุมความเร็วทั้งทีมเหมือนเดิม)
+    // c.hunger ของแต่ละคนลดลงเรื่อย ๆ ระหว่างทำงาน — ป้อนข้าวปั้น (feedCrew) แล้วขึ้นทันที โดยหักเสบียง
+    // จากกองกลางเดียวกัน (ถ้าป้อนบ่อยจนกองกลางหมดเร็วขึ้น ระบบอัตโนมัติด้านบนก็จะเจอ "หิว" ไวขึ้นด้วย
+    // ตั้งใจให้สองระบบเชื่อมกันผ่านทรัพยากรก้อนเดียว ไม่ใช่ของฟรีแยกขาด)
+    // ถ้าใครหิวจนหมดแถบ (0) โดนบทลงโทษเพิ่มอีกชั้นหนึ่งเฉพาะตัวเขา (hungerMul) ต่างหากจาก foodMul ของทีม
+    for (const k of workingCrew) {
+      const c = this.crewOf(k);
+      if (c) c.hunger = Math.max(0, (c.hunger ?? 100) - BAL.hungerDrain);
+    }
+
     // สถานีทำงาน
     let hasSala = false;
     for (const st of this.stations) {
@@ -985,8 +997,10 @@ const API = {
         continue;
       }
       const mf = 0.55 + 0.45 * (c.morale / 100);
+      // ข้อ D ชุด 13 — หมดแถบหิวส่วนตัว (0) โดนช้าเพิ่มอีกชั้น เฉพาะคนนั้น แยกจาก foodMul ของทั้งทีม
+      const hungerMul = (c.hunger ?? 100) > 0 ? 1 : BAL.hungerPenalty;
       for (const slot of [...activeSlots]) {
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul;
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul;
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -2195,7 +2209,7 @@ const API = {
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
-                     .map(c => ({ k: c.k, morale: c.morale, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
+                     .map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
                                   upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
     };
@@ -2365,6 +2379,18 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  /** ป้อนข้าวปั้นให้ยมทูตคนหนึ่ง (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569)
+   *  หัก 1 ห่อจากกองเสบียงกลางเดียวกับที่ระบบอัตโนมัติกินอยู่แล้ว (ดูคอมเมนต์ที่ step())
+   *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
+  feedCrew(k) {
+    const c = this.crew.find(x => x.k === k && !x.self && !x.reader);
+    if (!c || this.food < BAL.feedFoodCost) return false;
+    this.food -= BAL.feedFoodCost;
+    c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
+    this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
+    this.save(); this.onChange(); return true;
+  },
+
   // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เอาเคส type:'fuel' ออก (ปุ่ม "ประหยัดฟืน" ถอดจาก UI ไปแล้วตั้งแต่ชุดที่ 7
   // และตอนนี้ไม่มีสถานีกินฟืน/เสบียงต่อวาระอีกต่อไป ไม่มีอะไรให้ "ประหยัด") เหลือแค่ speed/capacity
   upgradeStation(k, type = 'speed') {
@@ -2468,7 +2494,7 @@ API.snapshot = function (withEntry = true) {
     // ไม่งั้นรีโหลดแล้ว cooldown/กระสุนลูกไฟรีเซ็ตทุกครั้ง
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max, readyAt: p.readyAt || 0 })),
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
-    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
+    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
