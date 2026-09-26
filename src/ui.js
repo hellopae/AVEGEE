@@ -3092,6 +3092,8 @@ function buildTitle() {
   // หน้าปกเป็น webp ตั้งแต่ 8 ก.ย. 2569 — png เดิม 1.3 MB คือไฟล์ใหญ่สุดของทั้งเกม
   // และเป็นภาพแรกที่ต้องมาถึง (144 KB แล้ว) · ถ้าวันหลังดรอป cover.png กลับมาก็ยังใช้ได้
   // ไม่มีสักไฟล์ก็ยังสวยอยู่ได้ด้วยไล่สีใน CSS
+  // cover-v3.webp = ปก version3 ที่เจ้าของอัปเดต 26 ก.ย. 2569 ~15:00 (ชุด 14 ข้อ D1)
+  // ลอง v3 ก่อนเสมอ ไม่มีค่อยถอยไป cover.webp (v2 เดิม) แล้ว cover.png ตามลำดับเดิม
   const art = $('#cover-art');
   (function probeCover(list) {
     if (!list.length) return;
@@ -3100,7 +3102,7 @@ function buildTitle() {
     probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
     probe.onerror = () => probeCover(rest);
     probe.src = url;
-  })(['img/cover.webp', 'img/cover.png']);
+  })(['img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
 
   const rs = $('#t-resume');
   if (SAVED) {
