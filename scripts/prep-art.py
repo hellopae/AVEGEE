@@ -46,6 +46,14 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
 OUT = os.path.join(ROOT, 'img')
 
+# แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — img/ui/ ไม่ใช่โฟลเดอร์โซน (Asia/West/CyberHell)
+# เก็บไอคอนสำเร็จรูป (เช่น Button1.png) ที่ไม่ผ่าน pipeline ครอป/บีบสีของสคริปต์นี้เลย
+# ก่อนแก้: ingest()/raw_files() ปฏิบัติกับมันเหมือนโฟลเดอร์โซนทั่วไป ทำให้ ingest() เห็นว่า
+# img/ui/Button1.png ซ้ำไบต์ต่อไบต์กับ img/raw/ui/Button1.png แล้ว "ลบสำเนา" ทิ้งเงียบ ๆ
+# (เข้าใจผิดว่าเป็นต้นฉบับที่หลงเหลืออยู่ ทั้งที่เป็นไฟล์ใช้งานจริงคนละบทบาทกับโฟลเดอร์โซน)
+# กันโฟลเดอร์นี้ไว้ไม่ให้เข้า pipeline เลยทั้งสองจุด — ต้องจัดการ img/ui/ ด้วยมือเหมือนเดิม
+NON_ZONE_DIRS = {'ui'}
+
 
 def strip_flat_bg(im):
     """ลอกพื้นหลังทึบออกให้เป็น alpha
@@ -385,7 +393,7 @@ def raw_files():
     ok = lambda f: f.lower().endswith(('.png', '.jpg', '.jpeg')) and not f.startswith(('_', '.'))
     out = [('', f) for f in sorted(os.listdir(RAW)) if os.path.isfile(os.path.join(RAW, f)) and ok(f)]
     for sub in sorted(os.listdir(RAW)):
-        if sub.startswith(('_', '.')) or not os.path.isdir(os.path.join(RAW, sub)):
+        if sub in NON_ZONE_DIRS or sub.startswith(('_', '.')) or not os.path.isdir(os.path.join(RAW, sub)):
             continue
         out += [(sub, f) for f in sorted(os.listdir(os.path.join(RAW, sub))) if ok(f)]
     return out
@@ -402,7 +410,7 @@ def ingest():
     got = set()
     for sub in sorted(os.listdir(OUT)):
         d = os.path.join(OUT, sub)
-        if sub == 'raw' or sub.startswith(('_', '.')) or not os.path.isdir(d):
+        if sub == 'raw' or sub in NON_ZONE_DIRS or sub.startswith(('_', '.')) or not os.path.isdir(d):
             continue
         for f in sorted(os.listdir(d)):
             p = os.path.join(d, f)
@@ -479,7 +487,7 @@ def check_orphans(files):
             want.setdefault(sub, set()).add(n)
     for sub in sorted(os.listdir(OUT)):
         d = os.path.join(OUT, sub)
-        if sub == 'raw' or sub.startswith(('_', '.')) or not os.path.isdir(d):
+        if sub == 'raw' or sub in NON_ZONE_DIRS or sub.startswith(('_', '.')) or not os.path.isdir(d):
             continue
         extra = [f for f in sorted(os.listdir(d))
                  if not f.startswith('.') and os.path.splitext(f)[0] not in want.get(sub, set())]
@@ -513,7 +521,7 @@ def check_stations():
     # โซนอื่น — ไม่ใช่ข้อผิดพลาด (เกมใช้รูปโซน 1 แทน) แค่บอกว่ายังขาดหลังไหน
     for sub in sorted(os.listdir(OUT)):
         d = os.path.join(OUT, sub)
-        if sub == 'raw' or sub.startswith(('_', '.')) or not os.path.isdir(d):
+        if sub == 'raw' or sub in NON_ZONE_DIRS or sub.startswith(('_', '.')) or not os.path.isdir(d):
             continue
         z = sub.lower()
         lack = [k for k in keys if not os.path.exists(os.path.join(d, f'st-{k}-{z}.png'))]
