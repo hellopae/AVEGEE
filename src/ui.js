@@ -1870,12 +1870,16 @@ function openBattle(after) {
     // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
     const squadMembers = g.guard ? [...battleHelpers, { k: 'guard', name: GUARD.name }] : battleHelpers;
-    const prep = b.kind === 'zoneBoss' && !b.prep && !b.over ? `<div class="boss-prep">
-      <b>เลือกเตรียมศึกหนึ่งอย่าง</b><div class="acts">
-      <button data-prep="proof" ${g.miniGoals[b.zone]?.earned ? '' : 'disabled'}>📜 แฟ้มหลักฐาน ${g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
-      <button data-prep="crew" ${g.crewHelpers().length ? '' : 'disabled'}>🛡️ ยมทูตคุ้มกัน · บารมีศึก +18</button>
-      <button data-prep="power">🔥 เตรียมลูกไฟ · เพิ่ม 1 ลูก</button>
-      </div></div>` : '';
+    // ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — กดได้ทั้ง 3 อย่าง ไม่บังคับเลือกแค่หนึ่ง (ปุ่มที่กดไปแล้วจะปิด
+    // ตัวเอง กันฟาร์มซ้ำ) แยกปุ่ม "เข้าสู้" ต่างหากไว้ท้ายสุด กดเมื่อพร้อมจริง ๆ ค่อยเปิดวงคำสั่งต่อสู้
+    const prepUsed = b.prepUsed || [];
+    const prep = b.kind === 'zoneBoss' && !b.prepStarted && !b.over ? `<div class="boss-prep">
+      <b>เตรียมศึกก่อนบุก (เลือกได้ทุกข้อ ไม่บังคับ)</b><div class="acts">
+      <button data-prep="proof" ${prepUsed.includes('proof') || !g.miniGoals[b.zone]?.earned ? 'disabled' : ''}>📜 แฟ้มหลักฐาน ${prepUsed.includes('proof') ? '· ใช้แล้ว' : g.miniGoals[b.zone]?.earned ? '· ลดพลังบอส 24' : '· ต้องเปิดโปง 3 คดี'}</button>
+      <button data-prep="crew" ${prepUsed.includes('crew') || !g.crewHelpers().length ? 'disabled' : ''}>🛡️ ยมทูตคุ้มกัน ${prepUsed.includes('crew') ? '· ใช้แล้ว' : '· บารมีศึก +18'}</button>
+      <button data-prep="power" ${prepUsed.includes('power') ? 'disabled' : ''}>🔥 เตรียมลูกไฟ ${prepUsed.includes('power') ? '· ใช้แล้ว' : '· เพิ่ม 1 ลูก'}</button>
+      </div>
+      <div class="row"><button class="gold" data-prep-go>⚔️ เข้าสู้</button></div></div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
       title="${esc(label + (note ? ' · ' + note : ''))}"><img src="${icon}" alt=""><b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
     const battleItem = k => BATTLE.items.find(x => x.k === k);
@@ -1899,7 +1903,7 @@ function openBattle(after) {
       return `<button class="orb-choice" data-act="crew:${c.k}" data-crew-action="${c.k}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${artUrl('crew-'+c.k+'-profile') || artUrl('crew-'+c.k)}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
     }).join('');
     const crewActions = (crewHelperBtns + guardBtn) || '<span class="idle">ยังไม่มีทีม — จัดทีมยมทูตก่อนเข้าสู้ครั้งถัดไป</span>';
-    const acts = (b.kind === 'zoneBoss' && !b.prep) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
+    const acts = (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
@@ -1938,6 +1942,8 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-prep]').forEach(el => el.onclick = () => {
       if (g.prepareBoss(el.dataset.prep)) { sfx('stamp'); paint(); refresh(); }
     });
+    const prepGo = dlg.querySelector('[data-prep-go]');
+    if (prepGo) prepGo.onclick = () => { if (g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
     bindCommandWheel(dlg);
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {

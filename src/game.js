@@ -1756,16 +1756,22 @@ const API = {
       // spirit7.png (ผีทั่วไป) แทนภาพบอสจริงในฉากต่อสู้ ทั้งที่ไฟล์ zone-boss-<zone>.png มีอยู่แล้ว
       sp: 'zone-boss',
       foeHp: hp, foeMax: hp, youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null, prep:null,
+      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
+      prepUsed: [], prepStarted: false,   // ข้อ C ชุด 13 — เตรียมศึกได้ทั้ง 3 อย่าง แยกปุ่ม "เข้าสู้" ต่างหาก
     };
     this.onChange();
     return this.battle;
   },
 
-  /** เตรียมศึกได้หนึ่งอย่างก่อนเปิดกระบวนท่าแรก — ไม่ใช้กาชาหรือของเติมเงิน */
+  /** เตรียมศึกก่อนเปิดกระบวนท่าแรก (ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569) — เลือกได้ทั้ง 3 อย่าง
+   *  ไม่บังคับเลือกแค่หนึ่ง (เดิม b.prep เป็นค่าเดียว เลือกอย่างแรกแล้วปุ่มอีกสองอันหายไปเลย)
+   *  b.prepUsed = รายการโหมดที่กดไปแล้ว กันกดซ้ำโหมดเดิมเพื่อฟาร์มโบนัสไม่รู้จบ
+   *  ไม่ใช้กาชาหรือของเติมเงิน — จบด้วยการกด "เข้าสู้" แยกต่างหาก (ดู startBossFight ด้านล่าง) */
   prepareBoss(mode) {
     const b = this.battle;
-    if (!b || b.kind !== 'zoneBoss' || b.prep || b.turn !== 1) return false;
+    if (!b || b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1) return false;
+    b.prepUsed ||= [];
+    if (b.prepUsed.includes(mode)) return false;
     if (mode === 'proof') {
       if (!this.miniGoals[b.zone]?.earned) return false;
       b.foeHp = Math.max(1, b.foeHp - 24);
@@ -1778,8 +1784,18 @@ const API = {
       if (this.fireAmmo < this.fireAmmoMax) this.fireAmmo++;
       else b.stun = 1; // ลูกไฟเต็มอยู่แล้ว: ใช้แรงที่สำรองไว้กันบอสสวนกลับหนึ่งครั้ง
     } else return false;
-    b.prep = mode;
+    b.prepUsed.push(mode);
     this.log(`⚔️ เตรียมสู้${b.who}: ${mode === 'proof' ? 'แฟ้มหลักฐาน' : mode === 'crew' ? 'ยมทูตช่วยคุ้มกัน' : 'สำรองพลังลูกไฟ'}`, 'act');
+    this.onChange();
+    return true;
+  },
+
+  /** กดปุ่ม "เข้าสู้" แยกจากปุ่มเตรียมศึก (ข้อ C ชุด 13) — เลือกเตรียมศึกไปแล้วกี่อย่างก็ได้ (0-3)
+   *  กดปุ่มนี้เมื่อไหร่ค่อยเปิดวงคำสั่งต่อสู้จริง จะได้ไม่พลาดกดแค่ทีเดียวแล้วเข้าเลย */
+  startBossFight() {
+    const b = this.battle;
+    if (!b || b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1) return false;
+    b.prepStarted = true;
     this.onChange();
     return true;
   },
