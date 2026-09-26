@@ -1,4 +1,5 @@
 // Shared illustrated command wheel. Source artwork keeps its original 900 × 1100 canvas.
+import { CREW_POWER } from './data.js';
 const esc = text => String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const slices = [[-125,-73],[-73,-21],[-21,57],[57,120]];
 function sector(from, to) {
@@ -49,8 +50,18 @@ export function bindCommandWheel(root) {
 }
 
 // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — เพิ่ม guard ให้การ์ดยักษ์ทวารบาลที่โต๊ะนิราเรียกใช้ข้อความเดียวกับ
-// ปุ่มในวงคำสั่งต่อสู้ (ui.js ~1820 ใช้สตริง "ฟาดแรง" ตรง ๆ อยู่แล้ว ฟังก์ชันนี้แค่ตามให้ตรงกัน)
-export const crewAbility = k => ({taan:'ฟาดกระบอง',plerng:'ปล่อยไฟ',boon:'ฟื้นบารมี 36',kan:'สะกดจิต 2 ตา',dam:'โจมตีช่วย',guard:'ฟาดแรง'}[k] || 'โจมตีช่วย');
+// ปุ่มในวงคำสั่งต่อสู้
+// ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — เลิกเขียนตัวเลขตายตัวไว้ในนี้ (36/2 ตา เพี้ยนไปจากค่าจริงแล้ว)
+// อ่านจาก CREW_POWER (data.js) ที่เดียวกับ game.js battleAct() — การ์ดทีม/วงคำสั่ง/แท็บข้อมูล
+// จะไม่มีวันเห็นตัวเลขไม่ตรงกันอีก เพราะทุกที่เรียกฟังก์ชันนี้ตัวเดียวกัน
+export const crewAbility = k => {
+  const p = CREW_POWER[k];
+  if (!p) return 'โจมตีช่วย';
+  if (p.heal != null) return `${p.desc} ${p.heal}`;
+  if (p.confuse != null) return p.desc;   // "สะกดจิต — มึน 1 ตา" — มีตัวเลขอยู่ใน desc แล้ว
+  if (p.dmg != null) return `${p.desc} ${p.dmg}`;
+  return p.desc || 'โจมตีช่วย';
+};
 export const cooldownText = seconds => `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
 export function crewCooldown(c, remaining, duration) {
   return `<span class="crew-cooldown" data-cooldown="${esc(c.k)}" role="progressbar" aria-label="ความพร้อม ${esc(c.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(100*(1-remaining/duration))}"><i style="width:${100*(1-remaining/duration)}%"></i></span><small data-cooldown-label="${esc(c.k)}">${remaining?cooldownText(remaining):'พร้อม'}</small>`;

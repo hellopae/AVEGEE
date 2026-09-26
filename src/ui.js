@@ -507,6 +507,9 @@ function sideBody() {
       : c.at ? `ประจำ${esc(nameOfSt(c.at))} รอสำนวนถัดไป` : 'ว่าง — รอรับเวร';
     const strong = [['แรง', c.raeng], ['ระเบียบ', c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
       .sort((a, b) => b[1] - a[1]);
+    // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — โชว์ท่าสู้/ตัวเลขจริงตรงกับโต๊ะนิรา (ดึงจาก CREW_POWER ที่เดียวกัน)
+    const battleLine = !c.reader
+      ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c.k)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : '';
     return profile('crew-' + c.k, c.name, c.duty, now)
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
       + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
@@ -515,6 +518,7 @@ function sideBody() {
       + `<div class="sec">ถนัดอะไร</div>
          <div class="row-truth">เด่นที่ <b>${strong[0][0]} ${strong[0][1]}</b> · อ่อนที่ ${strong[3][0]} ${strong[3][1]}</div>
          <div class="row-truth">${crewNote(c)}</div>
+         ${battleLine}
          ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}
          ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม · ฝึกยมทูต</button>' : ''}`;
   }
@@ -1332,7 +1336,10 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ต่างจากท่ายืน hero-yama.png ที่หันหน้าเข้ากล้องตรง ๆ (สมมาตร ไม่มีทิศ) ซึ่งเป็นภาพที่กฎ
   // .fig.you img{transform:scaleX(-1)} ถูกตั้งไว้รองรับแต่แรก (คอมเมนต์ heroFace ด้านบน) — กฎเดียวกันนั้น
   // ไปพลิกท่าโจมตีที่หันขวาอยู่แล้วให้กลับไปหันซ้ายโดยไม่ตั้งใจ ต้องแยกกันคนละเงื่อนไข ไม่ใช่ flip รวด
-  const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe');
+  // ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — ยมทูตโจมตี ไม่ใช่ยมน้อย: ตอนก่อนหน้านี้ท่านฟาดของยมทูต
+  // ก็ยังสลับไปใช้ท่าโจมตีของยมน้อยเองเหมือนยมน้อยเป็นคนตี (fx.crew ไม่เคยถูกเช็ค) ดูเหมือนยมน้อย
+  // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมน้อยไม่สลับท่า
+  const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe') && !(fx && fx.crew);
   const youImg = usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
@@ -1353,7 +1360,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <div class="ttl">${esc(title)}</div>
-    ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' ? ' lunge' : ''}">
+    ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
       <img src="${artUrl('crew-' + helper.k)}" alt=""
            onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
@@ -1393,18 +1400,39 @@ function actionCutsceneSrc(k) {
   return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
 }
 
+/** ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — คัตซีนของยมทูตเอง (k = 'taan'|'plerng'|'dam'|'kan'|'boon'|'guard')
+ *  ยังไม่มีภาพแยกโซน 2-4 (Kittanate ยัง gen แต่โซน 1) จึงคืนโซน 1 เสมอตอนนี้ — โครงไว้ให้พร้อมต่อ
+ *  ยอดเมื่อมีไฟล์ img/<Zone>/crew-<k>-<style>-cutscene.jpeg จริง (ชื่อคีย์ยึดโซน 1 เหมือน hero) */
+function crewCutsceneSrc(k) {
+  const zone1 = `img/crew-${k}-cutscene.jpeg`;
+  const style = g.outfit || g.zone;
+  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
+  if (style !== 'th' && folders[style]) {
+    return { src: `img/${folders[style]}/crew-${k}-${style}-cutscene.jpeg`, fallback: zone1 };
+  }
+  return { src: zone1, fallback: null };
+}
+
 // ข้อ E คุณเป้ 24 ก.ย. 2569: 580ms เร็วเกินจะทันเห็น (ภาพขึ้นจริงแต่กระพริบผ่านไป)
 // ยืดเป็น 1.3 วิ (อยู่ในช่วง 1.2–1.5 ที่ขอ) ให้ตรงกับ CSS .action-cutscene ใน index.html
 // (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
 const ACTION_CUT_MS = 1300;
 function playActionCutscene(k) {
-  const src = actionCutsceneSrc(k);
+  // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมน้อย
+  const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
+  const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
+  const src = cs ? cs.src : actionCutsceneSrc(k);
   if (!src || !dlg.open) return;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
   cut.className = 'action-cutscene';
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">`;
-  cut.querySelector('img').onerror = () => cut.remove();
+  const img = cut.querySelector('img');
+  const fallback = cs && cs.fallback;
+  img.onerror = () => {
+    if (fallback) { img.onerror = null; img.src = fallback; }
+    else cut.remove();
+  };
   let done = false;
   const finish = () => { if (done) return; done = true; cut.remove(); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
@@ -1680,7 +1708,7 @@ function openNiraOffice() {
       <article class="shop-card">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
-        <small>แรง ${GUARD.battleAtk[0]}-${GUARD.battleAtk[1]} · ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small></span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small></span>
         ${g.guard
           ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม 2 คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา 2 คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
@@ -1824,15 +1852,18 @@ function openBattle(after) {
   const paint = () => {
     const b = g.battle;
     if (!b) return;
+    // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): ตา "เขา" ที่ถูกสะกด ฟาดเข้าตัวเอง
+    // ไม่ใช่พุ่งเข้าใส่ยมน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมน้อย (ดู B.dmg.confuseSelf ใน game.js)
+    const confuseHit = !!(b.dmg && b.dmg.confuseSelf > 0);
     // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
     const view = phase === 'you' && b.mid
         ? { ...b, foeHp: b.mid.foeHp, youHp: b.mid.youHp, talk: b.mid.talk,
             dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0 } }
       : phase === 'foe'
-        ? { ...b, dmg: { foe: 0, you: b.dmg ? b.dmg.you : 0 } }
+        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0 } : { foe: 0, you: b.dmg ? b.dmg.you : 0 } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
-              : phase === 'foe' ? { lunge: 'foe', struck: 'you' } : null;
+              : phase === 'foe' ? (confuseHit ? { struck: 'foe' } : { lunge: 'foe', struck: 'you' }) : null;
     const fireAmmo = g.fireAmmo;  // ข้อ A คุณเป้ 24 ก.ย. 2569 — แยกกระสุนจากตวาดข่มขู่แล้ว
     const battleHelpers = g.battleCrew();
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าร่วมทุกฉากต่อสู้ให้เองถ้าจ้างไว้แล้ว ไม่กินโควตา
@@ -1860,7 +1891,7 @@ function openBattle(after) {
     const guardBtn = g.guard ? (() => {
       const why = g.guardHelpWhy();
       return `<button class="orb-choice" data-act="guard" data-crew-action="guard" ${why ? 'disabled' : ''}
-        title="${esc(why || `ฟาดแรง ${GUARD.battleAtk[0]}-${GUARD.battleAtk[1]} หน่วย — ช่วยยมน้อยสู้`)}">
+        title="${esc(why || `ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมน้อยสู้`)}">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><b>${esc(GUARD.name)}</b><small>ฟาดแรง</small></button>`;
     })() : '';
     const crewHelperBtns = battleHelpers.map(c => {
@@ -1920,7 +1951,9 @@ function openBattle(after) {
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
       const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health'})[k] || k;
-      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe' };
+      // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
+      const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe', crew: crewNow };
       paint();
       playActionCutscene(k);
 
@@ -1928,7 +1961,8 @@ function openBattle(after) {
       phaseTimer = setTimeout(() => {
         if (!g.battle) return;
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
-        const counter = (nb.dmg && nb.dmg.you > 0);
+        // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
+        const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.confuseSelf > 0));
         if (!counter) { phase = null; fxNow = null; paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
@@ -1936,9 +1970,9 @@ function openBattle(after) {
         // phase ยังเป็น 'you' ต่อระหว่างรอ (ปุ่มล็อกอยู่ผ่าน busy:!!phase) กันกดโจมตีซ้อนจนพัง
         phaseTimer = setTimeout(() => {
           if (!g.battle) return;
-          // ---- จังหวะที่ 2: เขาสวนกลับ ----
+          // ---- จังหวะที่ 2: เขาสวนกลับ (หรือถูกสะกดจิตแล้วฟาดใส่ตัวเอง) ----
           phase = 'foe'; phaseAt = Date.now();
-          fxNow = { key: 'foe', side: 'you' };
+          fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
           paint();
           phaseTimer = setTimeout(() => {
@@ -2013,7 +2047,7 @@ function openBattle(after) {
       const label=dlg.querySelector('[data-cooldown-label="guard"]');
       if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
       const button=dlg.querySelector('[data-crew-action="guard"]');
-      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||`ฟาดแรง ${GUARD.battleAtk[0]}-${GUARD.battleAtk[1]} หน่วย — ช่วยยมน้อยสู้`;}
+      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||`ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมน้อยสู้`;}
     }
   },1000);
   battleUI = () => { paint(); openDlg('rpg'); };

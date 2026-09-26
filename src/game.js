@@ -6,7 +6,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority } from './data.js';
+         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -1888,7 +1888,7 @@ const API = {
       return true;
     }
 
-    let dmg = 0, stunFoe = 0;
+    let dmg = 0, stunFoe = 0, confuseFoe = 0;
     if (what === 'atk') {
       dmg = roll(BATTLE.atk);
       const crit = Math.random() < BATTLE.crit;
@@ -1900,18 +1900,23 @@ const API = {
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpReadyAt = Date.now() + BATTLE.crewCd * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
-      B.helper = { k: c.k, name: c.name, at: Date.now() };   // ui เอาไปวาดท่าพุ่งเข้าชน
+      // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — ค่าพลังยึด CREW_POWER ที่เดียวกับการ์ดทีม/แท็บข้อมูล ไม่สุ่มอีกต่อไป
+      // trainDmg × c.upLv = ระบบฝึก "แรง" เดิม (upgradeCrew) ต่อยอดบนฐานใหม่ ไม่ได้ตัดทิ้ง
+      const pw = CREW_POWER[c.k] || {};
+      const trained = (c.upLv || 0) * (pw.trainDmg || 0);
+      // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
+      B.helper = { k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
       if (c.k === 'boon') {
-        const heal = Math.min(36, B.youMax - B.youHp);
+        const heal = Math.min(pw.heal, B.youMax - B.youHp);
         B.youHp += heal;
         say(`${c.name}ฟื้นบารมีให้ ${heal} หน่วย`);
         B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
       } else if (c.k === 'kan') {
-        stunFoe = 2;
-        say(`${c.name}สะกดจิตศัตรู 2 ตา`);
-        B.talk = `${c.name}: "ผมตรึงเขาไว้ได้สองตา ท่านลงมือได้เลย"`;
+        confuseFoe = pw.confuse || 1;
+        say(`${c.name}สะกดจิตศัตรู — ตาถัดไปเขาจะฟาดใส่ตัวเอง`);
+        B.talk = `${c.name}: "ผมสะกดให้เขาหลงตัวเองแล้ว ท่านลงมือได้เลย"`;
       } else {
-        dmg = roll(c.k === 'plerng' ? [26,38] : [6+c.raeng,12+c.raeng*2]);
+        dmg = pw.dmg + trained;
         say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
@@ -1921,17 +1926,18 @@ const API = {
       // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
       if (this.guardHelpWhy()) return false;
       this.guard.helpReadyAt = Date.now() + GUARD.battleCd * 1000;
-      B.helper = { k: 'guard', name: GUARD.name, at: Date.now() };
-      dmg = roll(GUARD.battleAtk);
+      B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
+      dmg = CREW_POWER.guard.dmg + (this.guard.upLv || 0) * (CREW_POWER.guard.trainDmg || 0);
       say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
       B.talk = `${GUARD.name}: "ถอยไปเถอะท่าน ข้าจัดการเอง"`;
       this.save();
 
     } else if (what === 'fire') {
       // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟกินกระสุนของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
+      // ข้อ B ชุด 13 — 40 คงที่ ไม่สุ่มอีกต่อไป
       if (this.fireAmmo <= 0) return false;
       this.fireAmmo--;
-      dmg = roll(BATTLE.fireDmg);
+      dmg = BATTLE.fireDmg;
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (เหลือลูกไฟ ${this.fireAmmo})`);
 
     } else {
@@ -1949,13 +1955,16 @@ const API = {
       if (it.karma) this.karma = clamp(this.karma + it.karma, 0, 100);
       say(`${it.glyph} ${it.say}`);
       if (it.heal) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
-      if (it.dmg)  { dmg = roll(it.dmg); say(`   ↳ ${dmg} หน่วย`); }
+      // ข้อ B ชุด 13 — it.dmg อาจเป็นเลขคงที่ (ผนึกน้ำแข็ง = 30) หรือช่วง [a,b] แบบเดิมถ้ามีของใหม่ในอนาคต
+      if (it.dmg)  { dmg = Array.isArray(it.dmg) ? roll(it.dmg) : it.dmg; say(`   ↳ ${dmg} หน่วย`); }
       if (it.stun) stunFoe = it.stun;
     }
 
     B.foeHp = Math.max(0, B.foeHp - dmg);
     B.dmg.foe = dmg;
     if (stunFoe) B.stun += stunFoe;
+    // ข้อ B ชุด 13 — สะกดจิต: เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง" (ต่างจาก stun ที่แค่ข้ามตา)
+    if (confuseFoe) B.confuse = (B.confuse || 0) + confuseFoe;
     if (dmg > 0) talk(dmg >= 26 ? 'crit' : B.foeHp <= B.foeMax * 0.3 ? 'low' : 'hurt');
     // ภาพนิ่งของ "ตอนจบตาเรา แต่เขายังไม่สวน" — ui เอาไปเล่นเป็นจังหวะแรก
     // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
@@ -1997,12 +2006,21 @@ const API = {
     }
 
     // ---- ตาของเขา ----
-    if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
+    const foeAtkRoll = () => roll(B.kind === 'frontier' ? B.foeAtk
+      : B.kind === 'mob' ? MOB.fightAtk
+      : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3]
+      : BATTLE.foeAtk);
+    // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง"
+    // ต่างจาก B.stun (แค่ข้ามตา ไม่มีความเสียหาย) เช็คก่อน stun เพราะถือเป็นผลที่แรงกว่า
+    if (B.confuse > 0) {
+      B.confuse--;
+      const d = foeAtkRoll();
+      B.foeHp = Math.max(0, B.foeHp - d);
+      B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมน้อย
+      say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
+    } else if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
-      const d = roll(B.kind === 'frontier' ? B.foeAtk
-        : B.kind === 'mob' ? MOB.fightAtk
-        : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3]
-        : BATTLE.foeAtk);
+      const d = foeAtkRoll();
       B.youHp = Math.max(0, B.youHp - d);
       B.dmg.you = d;
       say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
