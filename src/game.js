@@ -1708,25 +1708,32 @@ const API = {
     return true;
   },
 
-  /** เริ่มหนึ่งระลอกที่ชายแดน ใช้ระบบต่อสู้เดิม แต่จำกัดผู้ช่วยตามทีมที่จัดไว้ */
-  startFrontierBattle() {
+  /** เริ่มหนึ่งระลอกที่ชายแดน ใช้ระบบต่อสู้เดิม แต่จำกัดผู้ช่วยตามทีมที่จัดไว้
+   *  ข้อ A ชุด 14 — target = ศัตรูตัวที่ผู้เล่นเลือกเองบนแผนที่ชายแดน (src/frontier.js)
+   *  { kindIdx, id, level } ไม่ใส่ target (เรียกเฉย ๆ) = พฤติกรรมเดิมทุกประการ (สุ่มตัว) เผื่อเรียกที่อื่น */
+  startFrontierBattle(target) {
     if (this.battle || this.over) return null;
     const state = this.frontierOf();
     const available = this.crew.filter(c => !c.reader && !c.self);
     state.team = (state.team || []).filter(k => available.some(c => c.k === k));
     if (!state.team.length && available[0]) state.team = [available[0].k];
     if (!state.team.length) return null;
-    const wave = (state.clears || 0) + 1;
-    const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
-    const kind = pick(pool);
+    // ระดับของตัวนั้นจับตอนมันโผล่บนแผนที่ชายแดน (src/frontier.js en.level) ไม่ใช่ตอนกดเริ่มสู้ —
+    // ตัวที่ยืนรออยู่นานไม่ควรยากขึ้นย้อนหลังเพราะเราไปปราบตัวอื่นก่อนหน้าจนระลอกขยับ
+    const wave = target?.level || (state.clears || 0) + 1;
+    let kind = target && MOB.kinds[target.kindIdx];
+    if (!kind) {
+      const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
+      kind = pick(pool);
+    }
     const hp = 64 + wave * 14;
     this.fights++;
     this.battle = {
       // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากชายแดนโซน 2-4 มีรูปของตัวเองแล้ว (img/manifest.json
       // zones.*.BG-Frontier-<zone>.webp) แต่เดิม FRONTIER.bg ผูกกับไฟล์โซน 1 ตรง ๆ ไม่ผ่านระบบโซน
-      // เลย ยังไม่มีระบบเดินชายแดนจริง (ชุด 14) จุดนี้แค่ให้ "พื้นหลังฉากต่อสู้ตอนสู้ที่ชายแดน" ถูกโซน
-      // ไว้ก่อน — zone1 ยังใช้ไฟล์เดิม img/BG-frontier.jpeg (ตัวเล็ก) เหมือนเดิมเป๊ะ ไม่แตะ
+      // เลย — zone1 ยังใช้ไฟล์เดิม img/BG-frontier.jpeg (ตัวเล็ก) เหมือนเดิมเป๊ะ ไม่แตะ
       kind:'frontier', zone:this.zone, wave, team:[...state.team],
+      frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
       who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
       foeHp:hp, foeMax:hp, foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
