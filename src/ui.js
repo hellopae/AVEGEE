@@ -416,7 +416,7 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     <div class="sec">บุญที่อ้าง</div>${merit}
     <div class="sec">${closed ? 'ท่านตัดสินไปว่า' : 'ท่านสั่งไปว่า'}</div>
     <div class="row-truth">ส่ง<b>${esc(st?.name ?? '—')}</b> ${hit ? '<span style="color:var(--success)">ตรงชนิดกรรม</span>' : '<span style="color:var(--destructive)">ไม่ตรงชนิดกรรม</span>'}
-      · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? CREW.find(c => c.k === crewK)?.name ?? '—')}</div>
+      · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? crewName(CREW.find(c => c.k === crewK), g.zone))}</div>
     <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · สมควรได้รับ <b>${soul.deserved}</b> → ${judgement}</div>
     ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `ระเบียบ ${r.rab}`, `รวม ${r.score}`,
           '★'.repeat(r.stars ?? 0) + '☆'.repeat(5 - (r.stars ?? 0))])}`;
@@ -1645,7 +1645,7 @@ function openTrial() {
         <p>ไต่สวนเพื่อเปิดเผยข้อเท็จจริงและตรวจบุญที่อ้าง บุญที่เป็นจริงช่วยลดโทษ ส่วนคำอ้างเท็จไม่นับ การลงโทษเกินเพิ่มกรรมของท่าน ลงโทษเบาเกินอาจไม่ทำให้สำนึก หากยังไม่พร้อมให้พักคดี หรือขังรอเมื่อมีตะรางและที่ว่าง</p>
         <p>เมื่อรับทัณฑ์ครบ วิญญาณจะไปตะราง ตรวจรายชื่อกับนิรา: เข็ดแล้วส่งต่อไปประตูสวรรค์ ยังไม่เข็ดส่งกลับคิว ที่ประตูสวรรค์ให้บุญตรวจกรรมคงเหลือ: ยังมีกรรมส่งไปเกิดใหม่ หมดกรรมส่งขึ้นสวรรค์และรับรางวัลจากพ่อ</p>
         <h3>เลือกผู้คุม</h3><p>แรงช่วยให้งานเร็ว ระเบียบช่วยคุณภาพงาน ปัญญาสูงช่วยให้สำนึก เมตตาช่วยลดกรรมจากโทษที่เกิน แต่ไม่ทำให้คำตัดสินผิดกลายเป็นถูก</p>
-        ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${c.name}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
+        ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${esc(crewName(c, g.zone))}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
       guide.querySelector('button').onclick=()=>guide.close();
