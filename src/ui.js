@@ -1116,7 +1116,7 @@ function openZoneArrival(z) {
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
   const image = artUrl(`intro-zone${zn}`);
   pauseForDlg();
-  dlg.innerHTML = `<div class="intro-comic" role="region" aria-label="แนะนำ ${esc(z.name)}">
+  dlg.innerHTML = `<div class="intro-comic zone-arrival" role="region" aria-label="แนะนำ ${esc(z.name)}">
     <div class="intro-comic-frame">
       <img src="${image}" alt="" onerror="this.onerror=null;this.src='${artUrl('scene')}'">
       <div class="intro-comic-head"><span>อเวจี · เปิดสาขาใหม่</span><span>โซน ${zn}</span></div>
@@ -1257,7 +1257,9 @@ function openDadPunish(p) {
   modal(`<div class="punish-stage" style="background-image:url('img/BG-Krata.webp')">
       <div class="punish-vignette"></div>
       <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
-      <div class="punish-yama" style="top:35%;height:22%"><img src="${heroFace()}" alt="ยมน้อยอยู่ในกระทะทองแดง"></div>
+      <div class="punish-flames" aria-hidden="true"><i></i><i></i></div>
+      <div class="punish-yama"><img src="img/hero-yama-cry.png" alt="ยมน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
+      <div class="punish-pot-front" aria-hidden="true"></div>
       <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
       <div class="punish-heat">♨</div>
     </div>
@@ -1271,8 +1273,9 @@ function openDadPunish(p) {
     });
 }
 
+let helpPage = 0;
 function openHelp() {
-  modal(`<h2>วิธีเล่น</h2>
+  modal(`<div class="help-source" hidden><h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
     ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด<br>
     <span style="color:var(--muted-foreground);font-size:var(--text-xs)">
@@ -1312,9 +1315,8 @@ function openHelp() {
       <li><b>กรรมท่านลดได้</b> — ห้าดาว · เก็บ<b>ดอกบัว</b>ที่ตกบนแผนที่ตอนกรรมเกิน 40 ·
           หรือสร้าง<b>ศาลาน้ำชา</b>แล้วบูชาดอกบัวที่แท็บก่อสร้าง (${KARMA_RELIEF.lotusCost} เบี้ย ลด ${KARMA_RELIEF.lotusCut})</li>
       <li>ทุก ๆ ไม่กี่คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน (กรรมท่านยิ่งสูงยิ่งมาถี่) ปล่อยไว้ระเบียบตกเรื่อย ๆ —
-          <b>เดินเข้าไปใกล้แล้วฟาดได้ฟรี ไม่ต้องใช้ลูกไฟ</b> ป้ายเหนือหัวมันจะบอกเองว่ากดได้แล้ว ·
-          กดได้ 3 ทาง: ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน<br>
-          มี<b>ลูกไฟ</b>อยู่ก็<b>ขว้างจากไกลได้เลย</b>ไม่ต้องเดินไป (ลูกละตน) หรือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
+          <b>ต้องกดเข้าไปสู้ในฉากต่อสู้ทุกครั้ง</b> — ใช้ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน<br>
+          ไม่มีการฟาดฟรีหรือขว้างลูกไฟบนแผนที่ · อีกทางคือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
       <li><b>เร่งทัณฑ์เอง</b> — ไปยืนที่สถานีที่กำลังลงทัณฑ์ แล้วกด <b>เว้นวรรค</b>
           — แต่<b>ลงมือเองก็เป็นกรรมของท่าน</b> ครั้งละนิดหน่อย
           ส่งคนเมตตาสูงอย่างบุญไปคุม กรรมจะตกใส่ท่านครึ่งเดียว</li>
@@ -1326,8 +1328,54 @@ function openHelp() {
           หิวจนหมดแถบ (0) จะ<b>ทำงานช้าลงอีกชั้นหนึ่ง</b> — ป้อนข้าวปั้นหักจากเสบียงกองกลางครั้งละ 1 ห่อ
           ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ต้องซื้อเพิ่มที่แท็บก่อสร้างก่อน</li>
     </ol>
-    <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
-    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`, null, 'help-modal');
+    <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
+    <div class="help-reader"></div>`, d => {
+      const source = d.querySelector('.help-source');
+      const items = [...source.querySelectorAll('li')].map(li => li.innerHTML);
+      const intro = `<h2>วิธีเล่น</h2>${source.querySelector('h2 + p').outerHTML}
+        ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
+      const reader = d.querySelector('.help-reader');
+      const total = items.length + 1;
+      const show = next => {
+        helpPage = Math.max(0, Math.min(total - 1, next));
+        reader.innerHTML = `<button type="button" class="help-close" aria-label="ปิดคู่มือ">✕</button>
+          <article class="help-page">${helpPage === 0 ? intro
+          : `<p class="help-chapter">ข้อ ${helpPage}</p><div class="help-item">${items[helpPage - 1]}</div>`}</article>
+          <nav class="help-nav" aria-label="หน้าคู่มือ">
+            <button type="button" data-help-prev ${helpPage === 0 ? 'disabled' : ''}>◀ ก่อนหน้า</button>
+            <span class="help-count" aria-live="polite">${helpPage + 1} / ${total}</span>
+            <button type="button" data-help-next ${helpPage === total - 1 ? 'disabled' : ''}>ถัดไป ▶</button>
+          </nav><div class="help-dots" aria-label="เลือกหน้าคู่มือ">${Array.from({length:total}, (_, i) =>
+            `<button type="button" data-help-page="${i}" aria-label="หน้า ${i + 1}" ${helpPage === i ? 'aria-current="page"' : ''}></button>`).join('')}</div>`;
+        reader.querySelector('.help-close').onclick = () => d.close();
+        reader.querySelector('[data-help-prev]').onclick = () => show(helpPage - 1);
+        reader.querySelector('[data-help-next]').onclick = () => show(helpPage + 1);
+        reader.querySelectorAll('[data-help-page]').forEach(b => b.onclick = () => show(+b.dataset.helpPage));
+        d.scrollTop = 0;
+        // Dale — รีวิว batch18B: คลิกปุ่ม ◀/▶/จุดหน้าด้วยเมาส์ย้ายโฟกัสไปที่ปุ่มนั้น แต่ reader.innerHTML
+        // ข้างบนลบปุ่มเดิมทิ้งทุกครั้งที่เปลี่ยนหน้า ปุ่มที่โฟกัสอยู่เลยหลุดจาก DOM แล้วโฟกัสเด้งไป <body>
+        // คีย์ลูกศรที่ผูกกับ dlg (bubble phase) เลยไม่ได้ยินอีกต่อไปเพราะ body ไม่ใช่ลูกของ dlg (เจอด้วย
+        // Playwright: คลิก "ถัดไป" หนึ่งครั้งแล้วกด ArrowRight ไม่ขยับหน้าเลย) — ดึงโฟกัสกลับมาที่ dlg เอง
+        // (element เดียวที่ไม่เคยถูกแทนที่) ทุกครั้งหลัง render ให้คีย์ลูกศรใช้ได้ต่อเนื่องไม่ว่าจะเพิ่งคลิกมาก่อนไหม
+        d.focus({ preventScroll: true });
+      };
+      let touchX = null;
+      reader.addEventListener('touchstart', e => { touchX = e.changedTouches[0]?.clientX ?? null; }, { passive: true });
+      reader.addEventListener('touchend', e => {
+        if (touchX === null) return;
+        const dx = (e.changedTouches[0]?.clientX ?? touchX) - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 45) show(helpPage + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+      const keys = e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault(); e.stopPropagation(); show(helpPage + (e.key === 'ArrowRight' ? 1 : -1));
+        }
+      };
+      d.addEventListener('keydown', keys);
+      onDlgClose(() => d.removeEventListener('keydown', keys));
+      show(helpPage);
+    }, 'help-modal');
 }
 
 // ---------- Phase 3 · หน้าต่างมินิเกม ----------
@@ -1420,7 +1468,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ก็ยังสลับไปใช้ท่าโจมตีของยมน้อยเองเหมือนยมน้อยเป็นคนตี (fx.crew ไม่เคยถูกเช็ค) ดูเหมือนยมน้อย
   // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมน้อยไม่สลับท่า
   const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe') && !(fx && fx.crew);
-  const youImg = usingAtk ? heroAtk() : heroFace();
+  const youImg = hp && act?.struck === 'you' && hp.dmg?.you > 0
+    ? 'img/hero-yama-cry.png' : usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
   const bg = hp?.bg || artUrl('BG-Turn-Base', 'webp');
