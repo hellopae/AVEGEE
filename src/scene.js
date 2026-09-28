@@ -60,7 +60,18 @@ function pointOnPath(path, progress) {
 }
 
 export function render(ctx, g, t, hover, sel) {
-  const cv = ctx.canvas, sc = scaleFor(cv);
+  const cv = ctx.canvas;
+  // ชุดที่ 15b (28 ก.ย. 2569, ตรวจโดย Dale) — canvas #cv ในมาร์กอัปยังคงแอตทริบิวต์เดิม
+  // width="1527" height="704" (สัดส่วน 2.17:1) ค้างจากก่อนเปลี่ยน SCENE เป็น scene-v2.png
+  // (1678×937, สัดส่วน 1.79:1) ผลคือ sc = cv.width/SCENE.w ตัวเดียวถูกใช้ทั้งสองแกน แล้ว
+  // เนื้อหาสูง SCENE.h*sc เกิน cv.height ไป ~149px — บัฟเฟอร์ canvas ตัดส่วนล่างสุดของแผนที่
+  // ทิ้งไปเงียบๆ (ท่าเรือ/ประตูชายแดน/บันไดส่วนล่างหายไปจริง ไม่ใช่แค่ภาพเพี้ยน) ก่อนที่ CSS
+  // จะยืดบัฟเฟอร์ที่ถูกตัดไปแล้วให้เต็มกล่อง .scene-box ซ้ำอีกชั้น (fitSceneBox() ใน ui.js
+  // ใช้ SCENE.w/h คำนวณกล่องถูกอยู่แล้ว ปัญหาอยู่ที่แอตทริบิวต์ของ <canvas> เท่านั้น)
+  // แก้โดยให้ความละเอียดจริงของ canvas ตามอัตราส่วน SCENE เสมอ (sc จะเป็น 1:1 พอดีสำหรับ
+  // โซน th) — ไม่แตะ index.html/ui.js ตามข้อห้ามของใบงาน ทำที่นี่แทนเพราะ render() เรียกทุกเฟรม
+  if (cv.width !== SCENE.w || cv.height !== SCENE.h) { cv.width = SCENE.w; cv.height = SCENE.h; }
+  const sc = scaleFor(cv);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, cv.width, cv.height);
   ctx.setTransform(sc, 0, 0, sc, 0, 0);   // ตั้งแต่บรรทัดนี้ วาดด้วยพิกัดฉากได้เลย
