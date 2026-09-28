@@ -5,7 +5,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER, FRONTIER_TH,
+         STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER, FRONTIER_TH,
          MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER,
          CREW_HOME_TH, syncSceneZone } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
@@ -137,7 +137,7 @@ function mkStation(k, build = 0) {
   const def = STATIONS.find(s => s.k === k);
   // mgCd (ชุดที่ 9) = วาระ (g.tick) ที่จะเล่นมินิเกม "เร่งการทำงาน" ซ้ำที่สถานีนี้ได้อีกครั้ง
   // ใช้ตัวเลข tick แบบเดียวกับ visitCd/kanCd ที่มีอยู่แล้ว — 0 แปลว่าเล่นได้ทันที
-  return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, fire: 0,
+  return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, repair:0, repairWait:false, fire: 0,
            speedLv:0, capLv:0, fuelLv:0, mgCd:0 };
 }
 
@@ -366,8 +366,9 @@ const API = {
 
   /** สถานีนี้รับได้กี่ดวง — หลังที่ไม่ได้ใช้ลงทัณฑ์ (แรง 0) รับไม่ได้เลย */
   stCap(st) { return st && st.def.pow > 0 ? STATION_CAP + (st.capLv || 0) : 0; },
-  /** ยังรับเพิ่มได้อีกกี่ดวง (กำลังก่อสร้างอยู่ = ยังไม่รับ) */
-  stFree(st) { return st && !st.build ? this.stCap(st) - st.slots.length : 0; },
+  /** ยังรับเพิ่มได้อีกกี่ดวง (นั่งร้าน/อาคารพัง/กำลังซ่อมยังไม่รับ) */
+  stFree(st) { return st && !st.build && !st.repair && st.fire < MOB.burnMax
+    ? this.stCap(st) - st.slots.length : 0; },
   /** ดวงที่อยู่หน้าสุดของสถานี */
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
@@ -470,7 +471,7 @@ const API = {
     const p = this.powerOf(k);
     if (!p || this.powerLocked(p)) return false;
     if (p.realtime) return Date.now() >= (p.readyAt || 0);
-    return p.cd === 0 && p.ammo > 0;
+    return p.cd === 0 && (p.ammo > 0 || k === 'mirror' && (this.inventory.mirror || 0) > 0);
   },
 
   /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
@@ -479,7 +480,12 @@ const API = {
     const p = this.powerOf(k);
     const def = POWERS.find(x => x.k === k);
     if (p.realtime) p.readyAt = Date.now() + (def.cdMs || 0);   // คูลดาวน์เวลาจริง ไม่กินกระสุน
-    else { p.cd = def.cd; p.ammo--; }            // เริ่มนับ cooldown แบบคดี + กินกระสุนไปหนึ่ง
+    else {
+      p.cd = def.cd;
+      if (k === 'mirror' && p.ammo <= 0) {
+        if (--this.inventory.mirror <= 0) delete this.inventory.mirror;
+      } else p.ammo--;
+    }                                           // เริ่มนับ cooldown แบบคดี + กินของหนึ่งชิ้น
     this.karma = clamp(this.karma + p.karma, 0, 100);
 
     const hidden = soul.deeds.filter(d => !d.known);
@@ -1290,9 +1296,14 @@ const API = {
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" ตรงนี้คือชื่อตัวละคร ไม่ใช่คำว่า "การลงทัณฑ์"
           // ต้องใช้ c.name (ผ่าน crewName() ให้ชื่อตามโซนอยู่แล้ว) ไม่ใช่พิมพ์ "ทัณฑ์" ตรง ๆ
           this.log(`🔨 ${c.name}มาถึง${building.name}แล้ว — เริ่มลงมือก่อสร้าง`, 'act');
+        } else if (st?.repairWait) {
+          st.repairWait = false; st.repair = Date.now() + REPAIR_TIME;
+          c.wait = 900;
+          this.log(`🔧 ${c.name}มาถึง${building.name}แล้ว — เริ่มซ่อม`, 'act');
         }
       }
-      if (building && this.stations.some(st => st.def.k === building.k && st.build && !st.buildWait)) {
+      if (building && this.stations.some(st => st.def.k === building.k &&
+          (st.build && !st.buildWait || st.repair && !st.repairWait))) {
         c.x = hx; c.y = hy; c.path = null;
         continue;
       }
@@ -1359,11 +1370,19 @@ const API = {
       this.onChange();
     }
 
+    for (const st of this.stations) {
+      if (!st.repair || st.repairWait || Date.now() < st.repair) continue;
+      st.repair = 0; st.fire = 0;
+      const builder = this.crew.find(c => c.buildK === st.def.k);
+      if (builder) { builder.buildK = null; builder.wait = 0; builder.path = null; }
+      this.log(`🔧 ซ่อม${st.def.name}เสร็จแล้ว`, 'good');
+      this.onChange();
+    }
+
     // ---- เปรตเดินไปเผาอาคาร (9 ก.ย. 2569) ----
     // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
     // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
-    const burnable = this.stations.filter(st => st.fire < MOB.burnMax);
-    const burning = new Set();
+    const burnable = this.stations.filter(st => st.fire < MOB.burnMax && !st.repair);
     // ระยะจาก "ขอบอาคาร" ไม่ใช่จุดกึ่งกลาง — หลังใหญ่ ๆ อย่างหอทะเบียนกรรม
     // ยืนติดกำแพงแล้วยังห่างจุดกึ่งกลางเป็นร้อยพิกเซล มันจะยืนเฉย ๆ ไม่เผาสักที
     const nearBuilding = (st, x, y) => {
@@ -1376,10 +1395,11 @@ const API = {
     for (let i = this.mobs.length - 1; i >= 0; i--) {
       const m = this.mobs[i];
       // เลือกเป้าหมายใหม่เมื่อยังไม่มี หรือหลังที่หมายไว้ไหม้จนพังไปแล้ว
-      let tgt = burnable.find(st => st.def.k === m.at);
+      let tgt = burnable.find(st => st.fire < MOB.burnMax && st.def.k === m.at);
       if (!tgt) {
         let bd = Infinity;
         for (const st of burnable) {
+          if (st.fire >= MOB.burnMax) continue;
           const d = Math.hypot((st.def.bx ?? st.def.x) - m.x, (st.def.by ?? st.def.y) - m.y);
           if (d < bd) { bd = d; tgt = st; }
         }
@@ -1388,7 +1408,6 @@ const API = {
       }
       if (tgt && nearBuilding(tgt, m.x, m.y)) {
         m.path = null;
-        burning.add(tgt.def.k);
         tgt.fire = Math.min(MOB.burnMax, tgt.fire + MOB.burnRate * dt);
         if (tgt.fire >= MOB.burnMax) this.burnDown(tgt);
       } else if (tgt) {
@@ -1407,9 +1426,7 @@ const API = {
         this.strike(i, 'ท่าน');
       }
     }
-    // ไม่มีผียืนอยู่แล้ว ไฟค่อย ๆ มอดเอง
-    for (const st of this.stations)
-      if (st.fire > 0 && !burning.has(st.def.k)) st.fire = Math.max(0, st.fire - MOB.burnCool * dt);
+    // ความเสียหายคงอยู่หลังไล่เปรต เพื่อให้เรียกทัณฑ์มาซ่อมได้
 
     // ยักษ์ทวารบาลไล่ปราบเอง
     // ชุดที่ 10 (ข้อ C1) — เอาโหมด "เดินตามผู้เล่น" ออก (คุณเป้สั่ง 25 ก.ย. 2569) เหลือแค่สองสถานะ:
@@ -1481,7 +1498,7 @@ const API = {
     if (!def || n < 1) return false;
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
     // ปิดถาวรแล้ว ดู bagUseWhy ใน ui.js) กันไว้ที่ชั้นข้อมูลด้วยอีกชั้น เผื่อมีทางเรียกอื่นนอก UI ปกติ
-    if (k === 'fire' || k === 'ice') return false;
+    if (k === 'fire' || k === 'ice' || k === 'mirror') return false;
     if (def.hp && this.hp >= this.hpMax) return false;
     if (def.karma < 0 && this.karma <= 0) return false;
     if (def.power) {
@@ -1575,16 +1592,16 @@ const API = {
     this.blockSig = waiting ? null : sig;         // ยังมีรูปไม่มา — ให้ลองใหม่รอบหน้า
   },
 
-  /** อาคารไหม้จนพัง — ดวงที่กำลังรับทัณฑ์อยู่หลุดกลับเข้าคิว สร้างใหม่ได้จากแท็บก่อสร้าง */
+  /** อาคารไหม้จนใช้การไม่ได้ — ดวงที่ค้างอยู่กลับเข้าคิว รอซ่อมหลังไล่เปรต */
   burnDown(st) {
-    const i = this.stations.indexOf(st);
-    if (i < 0) return;
+    if (!this.stations.includes(st)) return;
     for (const slot of st.slots) { slot.soul.beaten = false; this.queue.push(slot.soul); }
+    st.slots = [];
     const c = this.crewOf(st.crewK);
     if (c) { c.at = null; c.path = null; }
-    this.stations.splice(i, 1);
+    st.crewK = null;
     this.order = clamp(this.order - 8, 0, 100);
-    this.log(`🔥 ${st.def.name}ถูกเผาจนพังทั้งหลัง — ระเบียบตก 8 · ต้องสร้างใหม่`, 'bad');
+    this.log(`🔥 ${st.def.name}ถูกเผาจนใช้การไม่ได้ — ระเบียบตก 8 · ไล่เปรตแล้วเรียกทัณฑ์มาซ่อม`, 'bad');
     this.onChange();
   },
 
@@ -2244,6 +2261,8 @@ const API = {
       stations: this.stations.map(st => ({
         k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
+        repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
+        repairWait:!!st.repairWait,
         speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
@@ -2269,6 +2288,7 @@ const API = {
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
                             visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
+                            repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait,
                             speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0 });
         return st;
       }).filter(Boolean);
@@ -2293,6 +2313,9 @@ const API = {
       c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
       c.at = null; c.path = null;
     });
+    const repair = this.stations.find(st => st.repair);
+    const taan = this.crew.find(c => c.k === 'taan');
+    if (repair && taan) taan.buildK = repair.def.k;
     this.party = { members:[], guard:false };
     this.syncBlocks(true);
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
@@ -2512,6 +2535,25 @@ const API = {
     return true;
   },
 
+  canRepair(k) {
+    const st = this.stations.find(s => s.def.k === k);
+    const taan = this.crew.find(c => c.k === 'taan');
+    return !!(st && !st.build && st.fire > 0 && !st.repair && !this.mobs.length &&
+              taan && !taan.buildK && !taan.at);
+  },
+
+  repairStation(k) {
+    if (!this.canRepair(k)) return false;
+    const st = this.stations.find(s => s.def.k === k);
+    const taan = this.crew.find(c => c.k === 'taan');
+    st.repair = Date.now() + REPAIR_TIME;
+    st.repairWait = true;
+    taan.buildK = k; taan.path = null;
+    this.log(`🔧 เรียก${taan.name}มาซ่อม${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
+    this.onChange();
+    return true;
+  },
+
   hire(k) {
     const def = CREW.find(c => c.k === k);
     if (!def || this.crew.some(c => c.k === k) || this.coin < def.hire) return false;
@@ -2553,6 +2595,8 @@ API.snapshot = function (withEntry = true) {
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
       build: st.build ? Math.max(0, st.build - Date.now()) : 0, buildWait:!!st.buildWait,
+      repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
+      repairWait:!!st.repairWait,
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       slots: st.slots,
     })),
@@ -2627,6 +2671,8 @@ API.restore = function (d) {
     st.visitCd = sv.visitCd || 0; st.kanCd = sv.kanCd || 0;
     st.build = sv.build ? Date.now() + sv.build : 0;
     st.buildWait = !!sv.buildWait;
+    st.repair = sv.repair ? Date.now() + sv.repair : 0;
+    st.repairWait = !!sv.repairWait;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
     st.mgCd = sv.mgCd || 0;   // คูลดาวน์มินิเกม "เร่งการทำงาน" (ชุดที่ 9)
     // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
@@ -2637,7 +2683,7 @@ API.restore = function (d) {
   }).filter(Boolean);
   // เซฟเดิมล้าง buildK ทันทีที่ถึงไซต์: ผูกงานที่ยังสร้างอยู่กลับให้ผู้สร้างจนเสร็จ
   const builder = this.crew.find(c => c.k === 'taan');
-  const activeBuild = this.stations.find(st => st.build && !st.buildWait);
+  const activeBuild = this.stations.find(st => st.build || st.repair);
   if (builder && activeBuild && !builder.buildK) builder.buildK = activeBuild.def.k;
   this.queue = d.queue || [];
   this.held = d.held || [];

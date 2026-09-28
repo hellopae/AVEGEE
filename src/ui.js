@@ -506,9 +506,10 @@ function sideBody() {
   if (sel.kind === 'me') {
     const pw = POWERS.map(p => {
       const q = g.powerOf(p.k), ready = g.powerReady(p.k);
+      const ammo = q.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})`
                   : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
-                  : q.ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${q.ammo}`;
+                  : ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${ammo}`;
       return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
     }).join('');
     // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 (รูป 17) — แผงข้อมูลเดิมไม่บอกเลขขั้นตรง ๆ (มีแต่ชื่อขั้น) และไม่บอก
@@ -1259,7 +1260,7 @@ function openDadPunish(p) {
   modal(`<div class="punish-stage" style="background-image:url('img/BG-Krata.webp')">
       <div class="punish-vignette"></div>
       <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
-      <div class="punish-yama"><img src="${heroFace()}" alt="ยมน้อยอยู่ในกระทะทองแดง"></div>
+      <div class="punish-yama" style="top:35%;height:22%"><img src="${heroFace()}" alt="ยมน้อยอยู่ในกระทะทองแดง"></div>
       <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
       <div class="punish-heat">♨</div>
     </div>
@@ -1437,7 +1438,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
-  return `<div class="arena" style="background-image:url('${esc(bg)}')">
+  return `<div class="arena${hp ? ' combat-arena' : ''}" style="background-image:url('${esc(bg)}')">
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -1581,6 +1582,7 @@ function openTrial() {
     // แยกป้ายกำกับปุ่มเป็นสองแบบ: roar โชว์เวลานับถอยหลัง mm:ss · มิเรอร์/สะกดจิตยังโชว์จำนวนที่เหลือแบบเดิม
     const powerChoices = powerDefs.map(p => {
       const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
+      const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
       // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno ซื้ออย่างเดียว)
       const outOfAmmoHint = p.k === 'hypno' ? 'หมดแล้ว — ซื้อจากบุญที่ประตูสวรรค์'
@@ -1588,9 +1590,9 @@ function openTrial() {
                            : 'หมดแล้ว — เดินไปเก็บบนแผนที่';
       const why = locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
-                : pw.ammo <= 0 ? outOfAmmoHint
+                : ammo <= 0 ? outOfAmmoHint
                 : pw.cd > 0 ? `รออีก ${pw.cd} คดี` : p.desc;
-      const badge = locked ? '×0' : p.realtime ? (ok ? '✓' : fmtCountdown(pw.readyAt)) : `×${pw.ammo}`;
+      const badge = locked ? '×0' : p.realtime ? (ok ? '✓' : fmtCountdown(pw.readyAt)) : `×${ammo}`;
       return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
         ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${badge}</i></button>`;
     }).join('');
@@ -2317,6 +2319,7 @@ function bagUseWhy(k) {
   // (การเก็บของสองชิ้นนี้เปลี่ยนไปเติมกระสุน/พลังให้ทันทีตั้งแต่ตอนเก็บแล้ว ดู collectItem ใน game.js
   // จึงแทบไม่มีทางเห็นแถวนี้ในกระเป๋าอีก ยกเว้นเซฟเก่าที่ยังไมเกรตไม่ครบ — ปุ่มก็ยังต้องปิดเหมือนกัน)
   if (k === 'fire' || k === 'ice') return 'ใช้ในฉากต่อสู้';
+  if (k === 'mirror') return 'ใช้ได้ในห้องสอบสวนเท่านั้น';
   if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
   if (d.hp && g.hp >= g.hpMax) return 'บารมีเต็มแล้ว';
   if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
@@ -2355,7 +2358,7 @@ function openBag() {
       <img src="${artUrl(d.img) || `img/${d.img}.png`}" alt="${esc(d.name)}" loading="lazy">
       <span class="n"><b>${esc(d.glyph)} ${esc(d.name)} ×${n}</b>
         <small>${esc(why || d.say)}</small></span>
-      <button class="gold" data-use-item="${k}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
+      <button class="gold" data-use-item="${k}" title="${esc(why || d.say)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
 
@@ -2660,6 +2663,14 @@ function openStation(k) {
     const inside = !!(R && R.inReach());
 
     const acts = [];
+    if (st.fire > 0 && !g.mobs.length) {
+      const taan = g.crewOf('taan');
+      const why = st.repair ? st.repairWait ? `${taan?.name || 'ทัณฑ์'}กำลังเดินมา` : 'กำลังซ่อมอยู่'
+        : !taan ? 'ยังไม่มีทัณฑ์'
+        : taan.buildK || taan.at ? `${taan.name}ติดงานอื่นอยู่` : '';
+      acts.push(`<button id="s-repair" ${why ? 'disabled' : ''}>🔧 เรียกทัณฑ์มาซ่อม
+        <small>${esc(why || 'ฟรี · ใช้เวลา 2.1 วินาทีหลังทัณฑ์มาถึง')}</small></button>`);
+    }
     // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
     // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
     if (v?.drop) {
@@ -2761,7 +2772,7 @@ function openStation(k) {
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
         <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
         <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
-        ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">🔥 ไฟไหม้ ${Math.round(st.fire)}%</span>` : ''}
+        ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">${g.mobs.length ? '🔥 ไฟไหม้' : '⚠️ เสียหาย'} ${Math.round(st.fire)}%</span>` : ''}
         ${g.paused
           // ข้อ F คุณเป้เจอ 25/26 ก.ย. 2569 — ป้าย "เกมพักอยู่" มีอยู่แล้ว (24 ก.ย.) แต่ปุ่ม ▶ เดินวาระ
           // อยู่นอกกล่องนี้ ซึ่งเป็น <dialog> แท้ ๆ บังคลิกพื้นหลังทั้งหมด — กดไม่ถึงปุ่มจริงถ้าไม่ปิดกล่องก่อน
@@ -2804,6 +2815,7 @@ function openStation(k) {
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
+    on('#s-repair', () => { if (g.repairStation(k)) { panels(); refresh(); } });
     on('#s-sit',   () => { R.setSit(!R.sitting()); panels(); });
     on('#s-kan',   () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {

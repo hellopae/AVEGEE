@@ -33,7 +33,7 @@ test('ขนาดฉาก พิกัดเดิม และ walk grid ส�
   assert.deepEqual(grid(), [210, 118]);
   assert.equal(STATIONS.find(s => s.k === 'sala').bx, 1477);
   assert.deepEqual([SPOTS.bench.x, SPOTS.bench.y], [820, 455]);
-  assert.deepEqual(GUARD_POST, [846, 792]);
+  assert.deepEqual(GUARD_POST, [895, 795]);
   assert.equal(NO_WALK[3][1], 695);
   g.moveZone('asia');
   const fresh = createGame();
