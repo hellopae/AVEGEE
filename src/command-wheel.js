@@ -1,5 +1,6 @@
 // Shared illustrated command wheel. Source artwork keeps its original 900 × 1100 canvas.
 import { CREW_POWER } from './data.js';
+import { t } from './i18n.js';   // ข้อ C1/E.3/F.2 ชุด 15 — ป้ายวงคำสั่งแปล TH/ENG ได้ทันที
 const esc = text => String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const slices = [[-125,-73],[-73,-21],[-21,57],[57,120]];
 function sector(from, to) {
@@ -12,14 +13,15 @@ function sector(from, to) {
   return `polygon(${pts.join(',')})`;
 }
 export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected=''}) {
-  const labels = battle ? ['โจมตี','พลัง','ยมทูต','ไอเท็ม'] : ['พลัง','ที่ไหน','ใครคุม','ความแรง'];
+  const labels = battle ? [t('battle.attack'),t('battle.power'),t('battle.crew'),t('battle.item')]
+                        : [t('trial.power'),t('trial.where'),t('trial.who'),t('trial.force')];
   const first = battle ? 7 : 2;
   return `<div class="command-wheel ${battle?'combat-wheel':'court-wheel'} ${busy?'busy':''}" aria-label="${battle?'คำสั่งต่อสู้':'คำสั่งออกหมาย'}">
     ${groups.map((g,i)=>`<button class="command-segment segment-${i}" style="clip-path:${sector(...slices[i])}"
       ${g.action?`data-act="${g.action}"`:`data-command="${i}" aria-expanded="false"`} ${g.disabled||busy?'disabled':''}
-      aria-label="${labels[i]}"><img src="img/ui/Button${first+i}.png" alt=""><b>${labels[i]}</b></button>`).join('')}
+      aria-label="${labels[i]}"><img src="img/ui/Button${first+i}.png" alt=""><b>${esc(labels[i])}</b></button>`).join('')}
     ${battle?`<div class="command-center"><img src="img/ui/Button6.png" alt=""><b>ยมน้อย</b></div>`:
-      `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?'ออกหมาย':'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}"><img src="img/ui/Button1.png" alt=""><b>ออกหมาย</b></button>`}
+      `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?esc(t('trial.warrant')):'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}"><img src="img/ui/Button1.png" alt=""><b>${esc(t('trial.warrant'))}</b></button>`}
     ${groups.map((g,i)=>g.choices?`<div class="command-options options-${i}" data-options="${i}" inert aria-label="${labels[i]}">${g.choices}</div>`:'').join('')}
     ${selected}
   </div>`;

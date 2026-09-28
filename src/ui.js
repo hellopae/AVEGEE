@@ -785,6 +785,12 @@ const dlg = $('#dlg');
 dlg.addEventListener('click', e => {
   if (e.target.closest('[data-close]') && dlg.open) dlg.close();
 });
+// ข้อ E.1/F.1 ชุด 15 — ไอคอนตั้งค่าจิ๋วในห้องสอบสวน/ฉากต่อสู้ เรียก openSettings() ตัวเดียวกับ HUD หลัก
+// (ปิดกล่องตั้งค่าแล้วไม่ได้เด้งกลับเข้าห้องสอบสวนอัตโนมัติ — เหมือนกดปิดห้องสอบสวนตรงๆ เดิมทุกประการ
+//  ส่วนฉากต่อสู้มีตัวเฝ้า battleUI ที่เปิดฉากกลับให้เองอยู่แล้วถ้าสู้ยังไม่จบ ดูคอมเมนต์บนสุดของไฟล์)
+dlg.addEventListener('click', e => {
+  if (e.target.closest('[data-arena-settings]')) openSettings();
+});
 
 function modal(html, onOpen, cls = '') {
   dlg.innerHTML = html;
@@ -1429,6 +1435,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
+    <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"
+      style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
     <div class="ttl">${esc(title)}</div>
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
       <img src="${artUrl('crew-' + helper.k)}" alt=""
@@ -1551,13 +1559,15 @@ function openTrial() {
       <span class="chip">❤️ บารมี ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
       <span class="chip">⚖️ ระเบียบ ${bar(g.order)} <b>${Math.round(g.order)}</b></span>
       <span class="chip">☠️ กรรม ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
-      <span class="ttl">สำนวน #${String(s.id).padStart(3, '0')}</span>`;
+      <span class="ttl">${esc(t('trial.caseNo'))} #${String(s.id).padStart(3, '0')}</span>`;
 
     // ---- ปุ่มด้านบน + วงคำสั่งข้างยมน้อย ----
+    // ข้อ E.4 ชุด 15 — ไอคอนจริงจาก img/raw/ (icon_book.png · icon lock.png · icon skip.png) แทนอิโมจิเดิม
     const topActions =
-      `<button data-cmd="ask">ไต่สวน<br>ได้อีก ${s.presses} ครั้ง</button><button id="t-guide">หนังสือ<br>คู่มือ</button>
-       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}">🔒 ขังไว้ก่อน</button>
-       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}>⏭️ พักคดีนี้</button>`;
+      `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
+       <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.png" alt="">${esc(t('trial.guideBook'))}</button>
+       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/ui/icon-lock.png" alt="">${esc(t('trial.lockCase'))}</button>
+       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/ui/icon-skip.png" alt="">${esc(t('trial.skipCase'))}</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
     const powerImg = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', hypno:'img/fx-hypno.png' };
@@ -1606,7 +1616,7 @@ function openTrial() {
     ]});
 
     // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
-    const opt = `<h4>${s.case ? 'เลือกประเด็นที่จะสอบสวน' : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
+    const opt = `<h4>${s.case ? esc(t('trial.chooseIssue')) : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
       const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
       return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
         >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
@@ -1618,7 +1628,10 @@ function openTrial() {
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
-      <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
+      <div class="top-left-icons">
+        <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
+        <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"><img src="img/ui/icon-setting2.png" alt=""></button>
+      </div>
 
       <div class="hud-body">
         <div class="hud-stage">
@@ -1636,7 +1649,7 @@ function openTrial() {
           ${missingParts.length ? `<div class="trial-missing" role="status">⚠️ ออกหมายไม่ได้ — ยังไม่ได้เลือก ${missingParts.join(' · ')}</div>` : ''}
           <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
-            <h4>สำนวนที่นิราอ่านให้ฟัง</h4>
+            <h4>${esc(t('trial.readAloud'))}</h4>
             ${s.face ? `<div class="deed" style="color:var(--accent-foreground);margin-bottom:4px">${esc(s.face)}</div>` : ''}
             ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
               ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
@@ -1648,7 +1661,7 @@ function openTrial() {
           <div class="hud-card hud-opt">${opt}</div>
 
           <div class="hud-card">
-            <h4>บันทึกการสอบสวน</h4>
+            <h4>${esc(t('trial.saveRecord'))}</h4>
             <div class="hud-log">${s.said.slice(-6).map(x =>
               `<div class="${x.kind === 'truth' || x.kind === 'confess' ? 'hi' : ''}">${esc(x.text)}</div>`).join('')
               || '<div>ยังไม่มีอะไร — เขายืนก้มหน้าอยู่เฉย ๆ</div>'}</div>
@@ -2071,7 +2084,9 @@ function openBattle(after) {
       arena(b.kind === 'yama' ? '👑 พญายมลงมาเอง'
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นผู้ตรวจการของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
           : b.kind === 'dad'   ? `👑 ${g.zone === 'th' ? 'พ่อ' : authorityOf(g.zone).title}ลงมาเอง — ตัดสินพลาดสามสำนวนติด`
-          : b.kind === 'zoneBoss' ? '👑 บอสโซน — ทดสอบก่อนย้ายสาขา'
+          // ข้อ F.1 ชุด 15 — หัวข้อ "บอสโซน<ชื่อโซน>" ตามม็อกอัป Battle5.jpg — g.zoneDef().name
+          // มีคำว่า "โซน" นำหน้าอยู่แล้ว (เช่น "โซนสุวรรณภูมิ") ต่อแค่ "บอส" ก็ได้ข้อความตรงม็อกอัปเป๊ะ
+          : b.kind === 'zoneBoss' ? `👑 บอส${g.zoneDef().name}`
           : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',

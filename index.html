@@ -622,6 +622,13 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   padding:0;border-radius:50%;font-size:17px;line-height:1;
   background:rgba(12,6,9,.86);border:1px solid var(--border);backdrop-filter:blur(3px)}
 .arena .x:hover:not(:disabled){border-color:var(--gold);background:rgba(61,32,41,.95)}
+/* ข้อ F.1 ชุด 15 — ตั้งค่า มุมขวาบน ตามม็อกอัป Battle5.jpg ("หยุด" ไม่ใส่ — เหตุผลเดียวกับข้อ E.1
+   ด้านบน: ฉากต่อสู้พักเกมหลักไว้แล้วตั้งแต่เปิดกล่อง (pauseForDlg()) ไม่มีกลไก pause ให้ผูกเพิ่ม) */
+.arena .icon-settings-mini{position:absolute;top:8px;z-index:4;width:34px;height:34px;min-height:0;
+  padding:5px;border-radius:50%;background:rgba(12,6,9,.86);border:1px solid var(--border);
+  backdrop-filter:blur(3px)}
+.arena .icon-settings-mini img{width:100%;height:100%;object-fit:contain}
+.arena .icon-settings-mini:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
 .arena .ttl{position:absolute;top:10px;left:44px;right:44px;text-align:center;
   font-family:var(--font-display);font-size:1.15rem;color:var(--gold);
   text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
@@ -737,9 +744,17 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .hud-scrim{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(36,17,41,.88) 0%,rgba(20,10,14,.22) 26%,rgba(20,10,14,.24) 52%,rgba(11,5,8,.90) 100%)}
 .hud > *{position:relative;z-index:2}
-.hud .x{position:absolute;top:8px;right:8px;z-index:6;width:34px;height:34px;min-height:0;padding:0;
+/* ข้อ E.1 ชุด 15 — ปิด/ตั้งค่า ย้ายมาซ้ายบนตามม็อกอัป Comment7.jpg (ของเดิมอยู่ขวาบน)
+   "หยุด" ในม็อกอัปไม่ใส่ต่อ — เกมพักอัตโนมัติทุกครั้งที่กล่องนี้เปิดอยู่แล้ว (pauseForDlg())
+   ไม่มีกลไก pause แยกต่างหากให้ผูก ใส่ปุ่มปลอมที่กดแล้วไม่ทำอะไรจะขัดกับกฎห้ามแต่งกลไกใหม่ */
+.hud .top-left-icons{position:absolute;top:8px;left:8px;z-index:6;display:flex;gap:6px}
+.hud .x{position:static;z-index:6;width:34px;height:34px;min-height:0;padding:0;
   border-radius:50%;font-size:17px;line-height:1;background:rgba(12,6,9,.9);border:1px solid var(--border)}
 .hud .x:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
+.hud .icon-settings-mini{width:34px;height:34px;min-height:0;padding:5px;border-radius:50%;
+  background:rgba(12,6,9,.9);border:1px solid var(--border)}
+.hud .icon-settings-mini img{width:100%;height:100%;object-fit:contain}
+.hud .icon-settings-mini:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
 
 .hud-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 52px 8px 14px}
 .hud-top .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);font-size:var(--text-xs);

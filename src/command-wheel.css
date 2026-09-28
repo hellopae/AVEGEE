@@ -39,7 +39,9 @@
 .command-wheel:has(.options-2.is-open) .selected-crew{opacity:0}
 .command-wheel:has(.options-3.is-open) .selected-force{opacity:0}
 .court-wheel{left:19%;bottom:65px}
-.trial-hud .trial-top-actions{position:static;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.trial-hud .trial-top-actions button{padding:8px 5px;min-height:58px;font-size:12px}
+.trial-hud .trial-top-actions{position:static;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.trial-hud .trial-top-actions button{padding:8px 5px;min-height:58px;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.25}
+/* ข้อ E.4 ชุด 15 — ไอคอนจริง (icon_book/lock/skip) เหนือข้อความ แทนอิโมจิเดิม */
+.trial-hud .trial-top-actions .tab-ico{width:20px;height:20px;object-fit:contain;flex:none}
 .trial-missing{background:#4a1414;border:1px solid #c65c5c;color:#ffd7d7;font-size:12px;line-height:1.4;padding:8px 10px;border-radius:8px;margin-bottom:8px}
 .trial-hud .hud-stage{overflow:visible;min-height:450px}.trial-hud .hud-right{position:relative;z-index:10}.trial-hud .hud-stage .fig.you{left:0;bottom:65px;width:19%}.trial-hud .hud-stage .fig.foe{right:1%;bottom:65px;width:22%}
 .court-guide{width:min(680px,90vw);max-height:85vh;overflow:auto;background:#281b23;color:#f8e5ca;border:1px solid #d1ac65;border-radius:18px;padding:28px;line-height:1.8}.court-guide::backdrop{background:#000b}.court-guide table{width:100%;border-collapse:collapse}.court-guide td,.court-guide th{text-align:left;padding:8px;border-bottom:1px solid #705245}.guide-close{float:right;position:sticky;top:0}
