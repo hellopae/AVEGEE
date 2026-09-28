@@ -45,6 +45,7 @@ function finish() {
   el.classList.add('gone');
   setTimeout(() => {
     el.remove();
+    document.documentElement.dataset.bootReady = 'true';
     dispatchEvent(new Event('avegee:boot-ready'));
   }, 600);
 }

@@ -921,18 +921,17 @@ function updateTrialBtn() {
   if (b) {
     b.disabled = !s;
     b.className = s ? 'gold' : '';
-    b.textContent = s ? t('hud.openCourt') : t('hud.noCourtShort');
+    b.textContent = s ? t('hud.trialBegins') : t('hud.trialRecess');
   }
   // ทางเข้าหลักอยู่ล่างกลาง; เก็บปุ่มลอยเก่าที่อาจค้างจากการวาดก่อนหน้า
   const f = ov.querySelector('.trialfab');
   if (f) f.remove();
-  const court = $('#hud-open-court');
-  if (court) {
-    court.disabled = !s || !!g.over || !!g.battle;
-    court.title = court.disabled ? t('hud.noCourt') : t('hud.openCourt');
-    court.setAttribute('aria-label', court.title);
-    const note = $('#map-control-note');
-    if (note) { note.hidden = !court.disabled; note.textContent = t('hud.noCourtShort'); }
+  const trial = $('#hud-trial');
+  if (trial) {
+    trial.disabled = !s || !!g.over || !!g.battle;
+    trial.textContent = t(trial.disabled ? 'hud.trialRecess' : 'hud.trialBegins');
+    trial.title = trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
+    trial.setAttribute('aria-label', trial.disabled ? `${trial.textContent} — ${trial.title}` : trial.title);
   }
 }
 
@@ -1012,16 +1011,16 @@ function updateFrontierFab() {
  *    พักคดีนี้ไว้            → #t-skip
  *    ขังไว้ก่อน             → #t-jail (โผล่เมื่อมีตะราง — ในแถบเดิมเป็นปุ่มกดไม่ได้เปล่า ๆ)
  *    ออกหมาย/ประทับตรา      → #t-go (เส้นทางตัดสินจริงคือ doVerdict ที่เดียวกันอยู่แล้ว)
- *  ทางเข้าหลักอยู่ที่ปุ่มเปิดศาลล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
+ *  ทางเข้าหลักอยู่ที่ปุ่มเริ่มพิจารณาคดีล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
 function drawDeck() {
   const s = g.queue[0];
   if (!s || g.over) {
-    deckBar.innerHTML = '<div class="idle">ยังไม่มีวิญญาณยืนอยู่หน้าแท่น — กดเดินวาระให้เรือพาคนข้ามมา</div>';
+    deckBar.innerHTML = `<div class="idle">${esc(t('hud.noCourt'))}</div>`;
     return;
   }
   deckBar.innerHTML = `
     <div class="grp"><span class="lb">แท่นพิพากษา</span>
-      <div class="row2"><button class="gold" id="d-trial">${esc(t('hud.openCourt'))}</button></div></div>`;
+      <div class="row2"><button class="gold" id="d-trial">${esc(t('hud.trialBegins'))}</button></div></div>`;
   const tr = deckBar.querySelector('#d-trial');
   if (tr) tr.onclick = goTrial;
   updateTrialBtn();
@@ -2471,7 +2470,7 @@ function openPause(allowReplacing = false) {
 }
 
 function updatePlay() {
-  $('#play').textContent = g.paused ? '▶ เดินวาระ' : '⏸ พัก';
+  $('#play').textContent = t(g.paused ? 'hud.openCourt' : 'hud.closeCourt');
   $('#spd').textContent = `ความเร็ว ×${g.speed}`;
   // ปุ่มย้ายโซนโผล่เมื่อมีโซนอื่นเปิดให้จริง ๆ เท่านั้น — ไม่งั้นกดแล้วเจอแต่กุญแจ
   const z = $('#zone');
@@ -2486,17 +2485,24 @@ function updatePlay() {
     const n = Object.values(g.inventory || {}).reduce((s, v) => s + (Number(v) || 0), 0);
     bag.textContent = `🎒 กระเป๋า${n ? ` (${n})` : ''}`;
   }
-  // ไอคอนหยุด/เล่นบน HUD ใหม่ (ข้อ D.3) — สลับภาพเดียวกับความหมายปุ่ม #play ข้างบน
+  // PAUSE ขวาบนเปิดหน้าต่างพักเสมอ; ปุ่มเปิด/ปิดศาลด้านล่างเป็นตัวคุมเวลา
   const hp = $('#hud-pause-img');
-  if (hp) hp.src = g.paused ? 'img/ui/icon-play.png' : 'img/ui/icon-pause.png';
-  const walk = $('#hud-walk-time');
-  if (walk) {
-    walk.textContent = g.paused ? t('hud.walkTime') : t('hud.walking');
-    walk.classList.toggle('is-walking', !g.paused);
-    walk.setAttribute('aria-pressed', String(!g.paused));
+  if (hp) hp.src = 'img/ui/icon-pause.png';
+  const court = $('#hud-open-court');
+  if (court) {
+    court.textContent = t(g.paused ? 'hud.openCourt' : 'hud.closeCourt');
+    court.disabled = !!g.over;
+    court.setAttribute('aria-pressed', String(!g.paused));
+    court.setAttribute('aria-label', court.textContent);
   }
 }
-$('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
+function toggleCourt() {
+  if (g.over) return;
+  userPaused = !g.paused;
+  g.paused = userPaused;
+  updatePlay();
+}
+$('#play').onclick = toggleCourt;
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
@@ -2513,25 +2519,8 @@ $('#hud-pause').onclick = openPause;
 $('#hud-settings').onclick = () => openSettings();
 $('#hud-book').onclick = () => openHelp();
 $('#hud-bag').onclick = () => openBag();
-$('#hud-open-court').onclick = () => goTrial();
-const mapControls = document.createElement('div');
-mapControls.className = 'map-controls';
-const openCourtButton = $('#hud-open-court');
-openCourtButton.replaceWith(mapControls);
-mapControls.append(openCourtButton);
-const walkTimeButton = document.createElement('button');
-walkTimeButton.id = 'hud-walk-time';
-walkTimeButton.className = 'hud-walk-time';
-mapControls.append(walkTimeButton);
-const mapControlNote = document.createElement('small');
-mapControlNote.id = 'map-control-note';
-mapControls.append(mapControlNote);
-walkTimeButton.onclick = () => {
-  if (g.over) return;
-  userPaused = false;
-  g.paused = false;
-  updatePlay();
-};
+$('#hud-open-court').onclick = toggleCourt;
+$('#hud-trial').onclick = goTrial;
 
 const legacyDrawer = $('#legacy-drawer');
 function openLegacyDrawer() { legacyDrawer.hidden = false; }
@@ -2540,13 +2529,6 @@ $('#hud-avatar').onclick = openLegacyDrawer;
 $('#legacy-drawer-close').onclick = closeLegacyDrawer;
 legacyDrawer.addEventListener('click', e => { if (e.target === legacyDrawer) closeLegacyDrawer(); });
 
-/** ปุ่มเปิดศาล มีภาพแยกไทย/อังกฤษ (ข้อ D.5) — เรียกตอนเปิด HUD ครั้งแรกและทุกครั้งที่เปลี่ยนภาษา */
-function paintHudLangAssets() {
-  const el = $('#hud-open-court-img');
-  if (el) el.src = getLang() === 'en' ? 'img/ui/icon-open-court-eng.png' : 'img/ui/icon-open-court-th.png';
-}
-paintHudLangAssets();
-onLangChange(paintHudLangAssets);
 onLangChange(() => { updatePlay(); updateTrialBtn(); drawCoach(); });
 
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
@@ -2834,7 +2816,7 @@ function openStation(k) {
           // เจ้าของเจอในโซน 2 (กระทะทองแดง) แต่จริง ๆ เป็นแล้วทุกสถานีทุกโซน ไม่ใช่บั๊กเฉพาะโซน 2
           // เพิ่มปุ่มเดินวาระใช้ตรงนี้เลย ไม่ต้องปิดกล่องไปกดข้างนอก
           ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>
-             <button class="sm gold" id="st-resume">▶ เดินวาระ</button>`
+             <button class="sm gold" id="st-resume">${esc(t('hud.openCourt'))}</button>`
           : ''}
         <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
     const rb = T && T.querySelector('#st-resume');
@@ -3258,11 +3240,12 @@ function startPlay(fresh) {
   coverVfx.pause();
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
+  userPaused = true;                        // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
+  g.paused = true;
   updatePlay();
   if (fresh) {
-    // เพลงหน้าปกแทบไม่มีใครได้ยิน — ปกอยู่บนจอไม่กี่วินาที และเบราว์เซอร์ห้ามเล่นเสียง
-    // ก่อนผู้ใช้กดอะไรสักอย่าง ซึ่งการกดครั้งแรกก็คือปุ่ม "เริ่มเกม" พอดี
-    // เลยให้เพลงหน้าปกเล่นคลุมฉากเปิดของพญายมไปเลย แล้วค่อยสลับเป็นเพลงโซนตอนท่านพูดจบ
+    // เพลงชื่อเรื่องเริ่มตั้งแต่ splash และเล่นต่อคลุมฉากเปิดของพญายม
+    // แล้วค่อยสลับเป็นเพลงโซนตอนท่านพูดจบ
     bgm('bgm-title');
     openIntro();
     onDlgClose(() => bgm('bgm-zone'));
@@ -3281,6 +3264,8 @@ function applyTitleLang() {
   if (logo) logo.src = src;
   const splashLogo = $('#splash-logo');
   if (splashLogo) splashLogo.src = src;
+  const enterLogo = $('#enter-logo');
+  if (enterLogo) enterLogo.src = src;
 }
 
 /** ข้อ C1 — สลับภาษาแล้ว UI ทั้งจอ (ที่ทำ i18n ไว้) เปลี่ยนทันทีไม่ต้องรีโหลด
@@ -3449,24 +3434,42 @@ function openSettings() {
 onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAssets(d); });
 
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
-primeAudio();                            // รู้ path เพลงไว้ก่อน (ดูเหตุผลใน sfx.js — Brave ไม่ปล่อยให้ play() ช้า)
+const titleAudioReady = primeAudio(['bgm-title']); // ให้ path พร้อมก่อนจังหวะแตะ (สำคัญกับ Brave)
+primeAudio(['bgm-zone']);
 const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
-if (FRESH || matchMedia('(prefers-reduced-motion: reduce)').matches) revealTitle();
-else {
-  $('#splash-skip').onclick = revealTitle;
-  splashVideo.addEventListener('ended', revealTitle, { once:true });
-  splashVideo.addEventListener('error', revealTitle, { once:true });
-  const playSplash = () => {
-    if (splashDone) return;
-    splashEl.classList.add('playing');
-    if (splashVideo.error) revealTitle();
-    else splashVideo.play().catch(revealTitle);
-    setTimeout(revealTitle, 8000); // ไฟล์หายหรือโหลดช้า ต้องไม่ขวางเมนู
-  };
-  if (!$('#boot')) playSplash();
-  else addEventListener('avegee:boot-ready', playSplash, { once:true });
+const enterGate = $('#enter-gate');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('#splash-skip').onclick = revealTitle;
+splashVideo.addEventListener('ended', revealTitle, { once:true });
+splashVideo.addEventListener('error', revealTitle, { once:true });
+function playSplash() {
+  if (splashDone) return;
+  if (reducedMotion) return revealTitle();
+  splashEl.classList.add('playing');
+  if (splashVideo.error) revealTitle();
+  else splashVideo.play().catch(revealTitle);
+  setTimeout(revealTitle, 8000); // ไฟล์หายหรือโหลดช้า ต้องไม่ขวางเมนู
 }
+function enterFromTap() {
+  enterGate.hidden = true;
+  sessionStorage.setItem('avegee.audioUnlocked', '1');
+  unlock();
+  bgm('bgm-title');
+  playSplash();
+}
+$('#enter-button').onclick = enterFromTap;
+async function afterBoot() {
+  if (FRESH) return;
+  await titleAudioReady;
+  if (navigator.userActivation?.hasBeenActive || sessionStorage.getItem('avegee.audioUnlocked') === '1') {
+    unlock();
+    if (await bgm('bgm-title')) return playSplash();
+  }
+  enterGate.hidden = false;
+}
+if (document.documentElement.dataset.bootReady === 'true' || !$('#boot')) afterBoot();
+else addEventListener('avegee:boot-ready', afterBoot, { once:true });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) coverVfx.pause();
   else if (splashDone && !started && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

@@ -84,7 +84,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 
 /* ป้ายบอกว่าวาระหยุดเดินอยู่ — ของเดิมรู้ได้จากตัวหนังสือบนปุ่มใต้ฉากเท่านั้น
    ผู้เล่นเลยนั่งรอทัณฑ์ที่ค้าง 0% อยู่นานโดยไม่รู้ว่าเกมพักอยู่ (เจ้าของเจอ 8 ก.ย. 2569) */
-.stage.resting::after{content:"⏸ พักอยู่ — กด \201Cเดินวาระ\201D ให้เวลาเดินต่อ";
+.stage.resting::after{content:"⏸ พักอยู่ — กด \201Cเปิดศาล\201D ให้เวลาเดินต่อ";
   position:absolute;left:50%;bottom:calc(var(--space-4) + 64px);transform:translateX(-50%);z-index:8;
   background:rgba(12,6,9,.9);border:1px solid var(--gold);color:var(--gold);
   border-radius:99px;padding:7px 16px;font-size:var(--text-sm);white-space:nowrap;
@@ -457,6 +457,14 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 #splash .splash-skip{position:absolute;z-index:2;right:3%;bottom:4%;
   border:1px solid #9f8067;background:rgba(9,4,7,.7);color:#f4cd7c;
   padding:8px 16px;cursor:pointer;font:inherit}
+#enter-gate{position:fixed;inset:0;z-index:115;background:#090407;display:grid;
+  place-items:center;text-align:center}
+#enter-gate[hidden]{display:none}
+#enter-gate button{display:flex;flex-direction:column;align-items:center;gap:18px;
+  border:0;background:none;color:#f4cd7c;cursor:pointer;font:700 clamp(17px,4vw,25px) var(--font-sans)}
+#enter-gate img{width:min(70vw,430px);max-height:35vh;object-fit:contain}
+#enter-gate span{animation:enter-pulse 1.3s ease-in-out infinite alternate}
+@keyframes enter-pulse{to{opacity:.42}}
 @keyframes splash-logo-in{0%,18%{opacity:0;transform:translate(-50%,-50%) scale(.94)}
   30%,76%{opacity:1;transform:translate(-50%,-50%) scale(1)}
   100%{opacity:0;transform:translate(-50%,-50%) scale(1.03)}}
@@ -1352,11 +1360,21 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .hud-avatar small{display:block;color:#f2e6d6;font-size:clamp(9px,1.15vw,11px);margin-top:2px;
   text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
 
-.hud-open-court{all:unset;box-sizing:border-box;cursor:pointer;position:absolute;left:50%;
-  bottom:calc(env(safe-area-inset-bottom) + 2.4%);transform:translateX(-50%);z-index:6;
-  height:clamp(40px,6.2vh,58px)}
-.hud-open-court img{height:100%;width:auto;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55))}
-.hud-open-court:hover img{filter:drop-shadow(0 3px 8px rgba(0,0,0,.55)) brightness(1.08)}
+.map-controls{position:absolute;z-index:6;left:50%;bottom:calc(env(safe-area-inset-bottom) + 2.4%);
+  transform:translateX(-50%);display:flex;gap:clamp(6px,1vw,12px);align-items:center}
+.btn-gold{box-sizing:border-box;display:grid;place-items:center;flex:none;
+  width:clamp(135px,13vw,200px);height:clamp(54px,5.4vw,70px);padding:5px 15px 8px;
+  border:0;background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  color:#231f20;font:700 clamp(12px,1.25vw,18px)/1.15 var(--font-sans);
+  text-align:center;cursor:pointer;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55));
+  transition:filter .15s,transform .15s}
+.btn-gold:hover:not(:disabled){background-image:url('img/ui/icon-bg.png');
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)) brightness(1.12);transform:translateY(-2px)}
+.btn-gold:active:not(:disabled){background-image:url('img/ui/icon-bg.png');
+  transform:translateY(2px);filter:brightness(.9)}
+.btn-gold:focus-visible{outline:2px solid #fff4c7;outline-offset:2px}
+.btn-gold:disabled{background-image:url('img/ui/icon-bg.png');
+  opacity:.42;filter:grayscale(.65) drop-shadow(0 2px 4px rgba(0,0,0,.4));cursor:not-allowed}
 
 .hud-mini-goal{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 9%);
   transform:translateX(-50%);z-index:5;width:min(560px,64vw);margin:0;text-align:center;
@@ -1381,9 +1399,10 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   .hud-avatar{width:66px}
   .hud-avatar img{width:52px}
   .hud-rank-stars .rk-star{font-size:10px}
-  .hud-open-court{height:36px}
+  .map-controls{bottom:calc(env(safe-area-inset-bottom) + 12%)}
   .hud-mini-goal{display:none}
 }
+@media(max-width:520px){.map-controls{bottom:calc(env(safe-area-inset-bottom) + 18%)}}
 
 /* ================= แผงเดิมย้ายมาไว้ในนี้ (D.6) ================= */
 .legacy-drawer{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;
@@ -1573,6 +1592,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   <img class="splash-logo" id="splash-logo" src="img/ui/logo-th.png" alt="อเวจี — CEO of Hell">
   <button class="splash-skip" id="splash-skip" type="button">ข้าม →</button>
 </div>
+<div id="enter-gate" hidden>
+  <button id="enter-button" type="button"><img id="enter-logo" src="img/ui/logo-th.png" alt=""><span data-t="title.tapEnter"></span></button>
+</div>
 <div id="title">
   <div class="art" id="cover-art"></div>
   <video class="cover-vfx" id="cover-vfx" src="img/home-animated.mp4" poster="img/cover-v3.webp"
@@ -1665,10 +1687,11 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
         <img src="img/ui/icon-bag.png" alt=""></button>
     </div>
 
-    <!-- ล่างกลาง: เปิดศาล (D.5) = ปุ่มเริ่มเวรเดิม -->
-    <button id="hud-open-court" class="hud-open-court">
-      <img id="hud-open-court-img" src="img/ui/icon-open-court-th.png" alt="">
-    </button>
+    <!-- ล่างกลาง: คุมเวลาและเข้าสอบสวน -->
+    <div class="map-controls">
+      <button id="hud-open-court" class="btn-gold" type="button"></button>
+      <button id="hud-trial" class="btn-gold" type="button"></button>
+    </div>
 
     <div id="mini-goal" class="mini-goal hud-mini-goal" aria-live="polite"></div>
     <div class="coach hud-coach" id="coach" hidden></div>
@@ -1696,7 +1719,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
       <div class="deckbar" id="deck"></div>
 
       <div class="ctrl">
-        <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
+        <button id="play" class="pri">เปิดศาล</button>
         <button id="spd" class="sm">ความเร็ว ×1</button>
         <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
         <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
