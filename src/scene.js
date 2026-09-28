@@ -64,6 +64,10 @@ function pointOnPath(path, progress) {
   return path[path.length - 1];
 }
 
+export function afterlifeWalkPosition(walk) {
+  return pointOnPath(walk.path, walk.elapsed / walk.duration);
+}
+
 export function render(ctx, g, t, hover, sel) {
   const cv = ctx.canvas;
   // ชุดที่ 15b (28 ก.ย. 2569, ตรวจโดย Dale) — canvas #cv ในมาร์กอัปยังคงแอตทริบิวต์เดิม
@@ -167,6 +171,32 @@ export function render(ctx, g, t, hover, sel) {
       drawStandee(ctx, poseOr(`crew-${v.crew}-work`, `crew-${v.crew}`),
                   crewAt[0] - (waiting ? 0 : 24 * face), crewAt[1], CREW_H, t,
                   v.crewGlyph || '👹', face, true);
+    });
+  }
+
+  // The destination roster is filled only after the walk completes in game.js.
+  for (const walk of (g.afterlifeWalks || []).slice(0, 24)) {
+    if (walk.zone !== g.zone) continue;
+    const [x, y] = afterlifeWalkPosition(walk);
+    at(y, () => {
+      const exit = walk.destination === 'exit';
+      const progress = Math.min(1, walk.elapsed / walk.duration);
+      ctx.save();
+      if (exit) {
+        ctx.globalAlpha = 1 - progress;
+        const glow = ctx.createRadialGradient(x, y - 26, 3, x, y - 26, 44);
+        glow.addColorStop(0, walk.exitKind === 'ascended' ? 'rgba(255,244,181,.45)' : 'rgba(190,228,255,.35)');
+        glow.addColorStop(1, 'rgba(255,244,181,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(x, y - 26, 44, 0, Math.PI * 2); ctx.fill();
+      }
+      if (sel?.kind === 'soul' && sel.key === walk.soul.id) ring(ctx, x, y, t, 24);
+      drawSoul(ctx, x, y - (exit ? progress * 20 : 0), SOUL_H * .82,
+        t + walk.soul.id * 300, '#d9eaff', walk.soul.sp || 7);
+      if (!exit) tag(ctx, x, y - SOUL_H - 10, t,
+        [walk.destination === 'prison' ? '⛓️ ไปตะราง'
+          : walk.destination === 'gate' ? '🕊️ ไปสวรรค์' : '↩️ กลับคิว', '#f7c371']);
+      ctx.restore();
     });
   }
 
@@ -509,6 +539,11 @@ export function hitActor(g, sx, sy) {
   for (let i = 0; i < g.queue.length; i++) {
     const p = QUEUE_LINE[i];
     if (p && near(p[0], p[1], radius(34))) return { kind: 'soul', key: g.queue[i].id };
+  }
+  for (const walk of g.afterlifeWalks || []) {
+    if (walk.zone !== g.zone) continue;
+    const [x, y] = afterlifeWalkPosition(walk);
+    if (near(x, y, radius(34))) return { kind:'soul', key:walk.soul.id };
   }
   for (const c of g.crew)
     if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
