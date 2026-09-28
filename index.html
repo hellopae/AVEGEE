@@ -1315,11 +1315,17 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
   display:flex;align-items:flex-end;gap:10px}
 .hud-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;
-  align-items:center;width:clamp(60px,7.4vw,84px);flex:none}
-.hud-avatar img{width:100%;aspect-ratio:1;object-fit:cover;object-position:top;border-radius:10px;
-  border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6)}
-.hud-ava-rank{color:#ffd76b;font-size:clamp(10px,1.3vw,13px);text-shadow:0 1px 3px rgba(0,0,0,.85);
-  margin-top:2px}
+  align-items:stretch;width:clamp(76px,9.4vw,106px);flex:none}
+.hud-ava-row{display:flex;align-items:center;gap:4px}
+.hud-avatar img{width:clamp(60px,7.4vw,84px);flex:none;aspect-ratio:1;object-fit:cover;object-position:top;
+  border-radius:10px;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6)}
+/* ข้อ 2 ชุด 15b — สามดวงแนวตั้งข้างรูป ดวงเต็ม = เลื่อนขั้นถึงระดับนั้นแล้ว (JS ใส่ class "on" ให้)
+   ยังไม่ถึงขั้น = ดาวจาง (opacity ต่ำ) — ใช้ตัวอักษร ★ เหมือนที่อื่นในเกมใช้อีโมจิ/สัญลักษณ์แทนไอคอนจริง
+   จนกว่าจะมีไฟล์ img/icon-star-rank.png จริง (ดูสเปกอาร์ตในรายงาน Toby) */
+.hud-rank-stars{display:flex;flex-direction:column;gap:1px;line-height:1}
+.hud-rank-stars .rk-star{font-style:normal;color:#ffd76b;opacity:.28;
+  font-size:clamp(11px,1.5vw,15px);text-shadow:0 1px 2px rgba(0,0,0,.9);transition:opacity .2s}
+.hud-rank-stars .rk-star.on{opacity:1;filter:drop-shadow(0 0 3px rgba(255,215,100,.75))}
 .hud-hpbar{display:block;width:100%;height:6px;border-radius:99px;background:rgba(0,0,0,.55);
   overflow:hidden;margin-top:3px;border:1px solid rgba(0,0,0,.4)}
 .hud-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#5fd987,#2f9d5c)}
@@ -1352,7 +1358,9 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 @media(max-height:420px){
   .hud-icon-btn{width:36px;height:36px}
   .hud-icon-btn--lg{width:40px;height:40px}
-  .hud-avatar{width:52px}
+  .hud-avatar{width:66px}
+  .hud-avatar img{width:52px}
+  .hud-rank-stars .rk-star{font-size:10px}
   .hud-open-court{height:36px}
   .hud-mini-goal{display:none}
 }
@@ -1611,9 +1619,16 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
          แตะการ์ดยมบาทน้อย = เปิดแผงสถานะ (คิว/ยมทูต/ก่อสร้าง/ข้อมูล/บันทึก/ความเร็ว/ย้ายโซน — D.6) -->
     <div class="hud-bottom-left">
       <button id="hud-avatar" class="hud-avatar" aria-label="สถานะยมบาทน้อย">
-        <img id="hud-ava-img" src="img/hero-yama-profile.png" alt=""
-             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
-        <span class="hud-ava-rank"><b id="hud-star5">⭐0</b></span>
+        <span class="hud-ava-row">
+          <img id="hud-ava-img" src="img/hero-yama-profile.png" alt=""
+               onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+          <!-- ข้อ 2 ชุด 15b — ดาวยศ (level 1-3) แทน star5 เดิม ตามม็อกอัป UI2-th.jpg
+               (คุณเป้ 28 ก.ย. 2569: "ดาว คือระดับ level ของ yama ... เวลาพ่อเลื่อนขั้นให้ ก็จะ 1 ดาว")
+               star5 (จำนวนคำตัดสิน 5 ดาวสะสม) ยังนับต่อในแท็บข้อมูลตามเดิม ไม่ได้ลบทิ้ง -->
+          <span id="hud-rank-stars" class="hud-rank-stars" aria-label="ยศยมบาท">
+            <i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i>
+          </span>
+        </span>
         <span class="hud-hpbar"><i id="hud-hp-fill"></i></span>
         <small id="hud-ava-name">ยมบาทน้อย</small>
       </button>

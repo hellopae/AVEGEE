@@ -163,10 +163,16 @@ function drawRes() {
 }
 
 /** ข้อ D.4 — การ์ดยมบาทน้อยมุมซ้ายล่าง: รูป + ยศ(ดาว) + แถบบารมี + ชื่อ
- *  "ดาว" ในม็อกอัปวาดเป็นสามดวงตายตัว แต่ข้อมูลจริงในเกมเป็นตัวนับ star5 (จำนวนคำตัดสิน 5 ดาวสะสม)
- *  ไม่ใช่ยศ 0-3 ระดับ — ใช้ ⭐ ตัวเดียว+ตัวเลขแทนสามดวง กันแต่งความหมายใหม่เอง (ดูรายงาน Toby ขอคำยืนยัน) */
+ *  ข้อ 2 ชุดที่ 15b (28 ก.ย. 2569) — คุณเป้ยืนยันแล้ว: ดาวคือระดับ (g.level) ไม่ใช่ star5
+ *  "เวลาพ่อเลื่อนขั้นให้ ก็จะ 1 ดาว" — ดวงเต็ม = ถึงขั้นนั้นแล้ว (ฝึกหัด 1 · ประจำโซน 2 · ผู้ตัดสิน 3)
+ *  ขั้นสูงกว่า 3 (เจ้าโซนขึ้นไป) ยังโชว์เต็มสามดวงเท่าเดิม (ม็อกอัปมีแค่สามช่อง) · star5 (จำนวนคำตัดสิน
+ *  5 ดาวสะสม) ยังนับอยู่เหมือนเดิม ไปโผล่ที่แท็บข้อมูลยมทูต/แฟ้มแทน (ดู stat cards ที่อื่นในไฟล์นี้) */
 function drawHudAvatar() {
-  const star = $('#hud-star5'); if (star) star.textContent = `⭐${g.star5}`;
+  const stars = $('#hud-rank-stars');
+  if (stars) {
+    const lv = Math.min(3, Math.max(0, g.level || 1));
+    stars.querySelectorAll('.rk-star').forEach(el => el.classList.toggle('on', Number(el.dataset.lv) <= lv));
+  }
   const fill = $('#hud-hp-fill'); if (fill) fill.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
   const name = $('#hud-ava-name'); if (name) name.textContent = HERO_NAME;
   const img = $('#hud-ava-img');
