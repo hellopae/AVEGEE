@@ -5,7 +5,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
@@ -3495,7 +3495,10 @@ onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAsse
 
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
 const titleAudioReady = primeAudio(['bgm-title']); // ให้ path พร้อมก่อนจังหวะแตะ (สำคัญกับ Brave)
-primeAudio(['bgm-zone']);
+primeAudio(['bgm-zone', 'bgm-battle']);
+// ดึงเนื้อไฟล์ bgm-battle เข้า cache ไว้เลย (ไม่ใช่แค่รู้ path) ตอนเข้าฉากต่อสู้ครั้งแรกจะได้เล่นติดทันที
+// ไม่รอ splash/title โหลดเพลงหลักก่อน (warmBgmFile ใช้ requestIdleCallback รอจังหวะว่างเอง)
+warmBgmFile('bgm-battle');
 const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
 const enterGate = $('#enter-gate');

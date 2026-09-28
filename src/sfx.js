@@ -117,8 +117,23 @@ async function findSrc(key) {
  *  (เจ้าของเจอ 8 ก.ย. 2569: Chrome ได้ยินเพลงโซน แต่ Brave เงียบสนิท)
  *
  *  รู้ path ไว้ก่อนตั้งแต่ยังไม่มีใครกด → พอถึงจังหวะกดจริง bgm() สั่ง play() ได้ทันที ไม่ต้องรออะไร */
-export function primeAudio(keys = ['bgm-title', 'bgm-zone']) {
+export function primeAudio(keys = ['bgm-title', 'bgm-zone', 'bgm-battle']) {
   return Promise.all(keys.map(findSrc));
+}
+
+/** อุ่นไฟล์เพลงเข้า HTTP cache ล่วงหน้าแบบ priority ต่ำ — คนละเรื่องกับ primeAudio ข้างบน
+ *  primeAudio รู้แค่ "path ไหนมีไฟล์จริง" (ยิง HEAD) ส่วนฟังก์ชันนี้ดึง "เนื้อไฟล์จริง" (ยิง GET)
+ *  เข้า cache ก่อน จะได้ไม่ต้องโหลด 2.6MB กลางจังหวะเข้าฉากต่อสู้ครั้งแรก (คุณเป้เจอ 29 ก.ย. 2569:
+ *  เพลงต่อสู้มาช้า/ไม่มาเลยบน Brave เพราะ knownSrc() ยังไม่รู้จัก ต้อง await findSrc() หลุดจังหวะ
+ *  user-gesture ไปแล้ว) ใช้ requestIdleCallback รอจังหวะที่ว่างจริง ๆ (หลัง splash/title โหลดเพลงหลัก
+ *  เสร็จ) จะได้ไม่แย่ง bandwidth กับของที่ต้องมาก่อน — ไม่แตะ <audio> ตัวหลัก (el) ที่กำลังเล่นอยู่เลย */
+export function warmBgmFile(key) {
+  const ric = window.requestIdleCallback || (fn => setTimeout(fn, 1200));
+  ric(async () => {
+    const url = await findSrc(key);
+    if (!url) return;
+    try { await fetch(url, { cache: 'force-cache' }); } catch { /* ออฟไลน์ก็แค่ยังไม่ได้อุ่น ไม่พัง */ }
+  });
 }
 
 /** เพลงที่ใช้แทนได้ถ้าเพลงที่ขอยังไม่มีไฟล์
