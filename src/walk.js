@@ -9,9 +9,21 @@
 import { SCENE, NO_WALK, WALK_OK } from './data.js';
 
 const CELL = 8;                                   // ความละเอียดตาราง (พิกัดฉาก)
-const COLS = Math.ceil(SCENE.w / CELL);
-const ROWS = Math.ceil(SCENE.h / CELL);
+let COLS = Math.ceil(SCENE.w / CELL);
+let ROWS = Math.ceil(SCENE.h / CELL);
 let mask = null;                                  // null = ยังไม่สร้าง · 'off' = อ่านพิกเซลไม่ได้
+let maskImage = null;
+
+/** ล้างตารางภาพ/เส้นทางของโซนเดิมก่อนใช้ขนาดและภาพฉากใหม่ */
+export function resetWalk() {
+  COLS = Math.ceil(SCENE.w / CELL);
+  ROWS = Math.ceil(SCENE.h / CELL);
+  mask = null;
+  maskImage = null;
+  okGrid = null;
+}
+
+export const walkGridSize = () => ({ cols:COLS, rows:ROWS });
 
 const inRect = (x, y, r) => x >= r[0] && y >= r[1] && x <= r[2] && y <= r[3];
 // ลาวาจริงเป็นส้ม-แดงจัด: แดงสูง เขียวต่ำกว่าแดงมาก น้ำเงินแทบไม่มี
@@ -26,14 +38,15 @@ const isLava = (d, x, y) => {
 
 /** สร้างตารางครั้งเดียวตอนภาพฉากโหลดเสร็จ — เรียกซ้ำได้ ไม่ทำงานรอบสอง */
 export function buildWalk(im) {
-  if (mask || !im || !im.naturalWidth) return;
+  if (!im || !im.naturalWidth || (mask && maskImage === im)) return false;
+  maskImage = im;
   const c = document.createElement('canvas');
   c.width = SCENE.w; c.height = SCENE.h;
   const cx = c.getContext('2d', { willReadFrequently: true });
   cx.drawImage(im, 0, 0, SCENE.w, SCENE.h);
   let d;
   try { d = cx.getImageData(0, 0, SCENE.w, SCENE.h).data; }
-  catch { mask = 'off'; return; }                 // เปิดจาก file:// จะโดน canvas taint → ปล่อยเดินได้เหมือนเดิม
+  catch { mask = 'off'; okGrid = null; return false; } // เปิดจาก file:// จะโดน canvas taint → ปล่อยเดินได้เหมือนเดิม
   mask = new Uint8Array(COLS * ROWS);
   for (let ry = 0; ry < ROWS; ry++) {
     for (let rx = 0; rx < COLS; rx++) {
@@ -50,6 +63,7 @@ export function buildWalk(im) {
   }
   okGrid = null;                                  // ตารางหาเส้นทางต้องสร้างใหม่
   sealIslands();
+  return true;
 }
 
 /** อุดเกาะเล็ก ๆ ที่เดินไปไม่ถึง — ก้อนหินกลางธารลาวาอ่านสีแล้วเป็น "เดินได้"
