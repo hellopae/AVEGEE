@@ -30,6 +30,7 @@ AUTOCROP = {
     'icon_pause.png':       'icon-pause.png',
     'icon_book.png':        'icon-book.png',
     'icon_bag.png':         'icon-bag.png',
+    'icon_door.png':        'icon-door.png',
     'icon_setting2.png':    'icon-setting2.png',
     'icon_18+.png':         'icon-18plus.png',
     'logo-th.png':          'logo-th.png',
@@ -98,6 +99,14 @@ def prepare_bell(src):
     print(f'bell     {src} {im.size} -> {out.size} => img/ui/icon-bell.png')
 
 
+def prepare_door(src):
+    """เตรียมไอคอนประตูจากภาพต้นฉบับโดยไม่แก้ภาพใน raw"""
+    im = Image.open(src)
+    out = autocrop(im)
+    out.save(os.path.join(OUT, 'icon-door.png'))
+    print(f'door     {src} {im.size} -> {out.size} => img/ui/icon-door.png')
+
+
 def prepare_gold_background(src):
     """ย่อปุ่มทองเปล่าและตัดพิกเซลพื้นขาวออก โดยไม่แตะไฟล์ต้นฉบับ"""
     im = Image.open(src).convert('RGBA')
@@ -158,7 +167,12 @@ def main():
     parser.add_argument('--bell-only', action='store_true')
     parser.add_argument('--gold-source', default=os.path.join(RAW, 'icon_bg.png'))
     parser.add_argument('--gold-only', action='store_true')
+    parser.add_argument('--door-source', default=os.path.join(RAW, 'icon_door.png'))
+    parser.add_argument('--door-only', action='store_true')
     args = parser.parse_args()
+    if args.door_only:
+        prepare_door(args.door_source)
+        return
     if args.gold_only:
         prepare_gold_background(args.gold_source)
         return

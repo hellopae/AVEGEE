@@ -1047,7 +1047,7 @@ const API = {
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
     if (this.mobs.length) {
       this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
-      // ลูกไฟไม่ใช่ทางเดียวที่จะปราบเปรตแล้ว (ฟาดประชิดฟรี) แต่ยังหย่อนให้อยู่
+      // ลูกไฟยังใช้ในฉากต่อสู้ จึงหย่อนให้เก็บเมื่อกระสุนหมด
       // เพราะขว้างจากไกลสะดวกกว่ามากเวลาเปรตอยู่คนละฝั่งกับที่เรายืน
       // ข้อ A คุณเป้ 24 ก.ย. 2569 — เช็คกระสุนลูกไฟของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
       if (this.fireAmmo === 0 && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
@@ -1421,9 +1421,9 @@ const API = {
         }
       }
 
-      if (this.huntMob && Math.hypot(m.x - P.x, m.y - P.y) < MOB.reach) {
+      if (this.huntMob && Math.hypot(m.x - P.x, m.y - P.y) < MOB.fabReach) {
         this.huntMob = false;
-        this.strike(i, 'ท่าน');
+        P.path = null; P.tx = null; // หยุดที่ระยะปุ่มสู้ รอผู้เล่นกดเข้าฉาก
       }
     }
     // ความเสียหายคงอยู่หลังไล่เปรต เพื่อให้เรียกทัณฑ์มาซ่อมได้
@@ -1628,17 +1628,14 @@ const API = {
     return bi < 0 ? null : { i: bi, m: this.mobs[bi], d: bd };
   },
 
-  /** ปุ่มฟาด (และปุ่มเว้นวรรค) — ทำอะไรขึ้นกับว่ายืนอยู่ตรงไหน
-   *  เปรตประชิด → ฟาดเปรต · ไกล → ขว้างลูกไฟหรือเดินไปหา */
+  /** ปุ่มสู้ระยะไกลใช้เดินไปหาปีศาจ; ผู้เล่นกดเข้าฉากต่อสู้เมื่อถึงตัว */
   attack() {
     const n = this.nearestMob();
-    if (n && n.d <= MOB.reach) return this.strike(n.i, 'ท่าน');       // ประชิด = ฟรี
     if (n) {
-      // ไกลเกินมือเอื้อม แต่ยังอยู่ในระยะขว้าง และมีลูกไฟ → ขว้างเลย ไม่ต้องเดิน
-      if (n.d <= MOB.throw && this.fireAmmo > 0) return this.strike(n.i, 'ท่าน', true);
+      if (n.d <= MOB.fabReach) return false;
       if (this.walkTo(n.m.x, n.m.y, true)) {
-        this.huntMob = true;                 // ถึงตัวแล้วค่อยฟาดให้เอง (ดู stepWorld)
-        this.log('เดินเข้าไปหาเปรต — ถึงตัวแล้วจะฟาดให้เอง', 'act');
+        this.huntMob = true;
+        this.log('เดินเข้าไปหาเปรต — ถึงระยะแล้วกดเข้าฉากต่อสู้', 'act');
         return true;
       }
       this.log('เปรตตนนั้นอยู่ฝั่งที่เดินไปไม่ถึง — รอให้มันเดินเข้ามาก่อน', 'bad');
@@ -1648,22 +1645,12 @@ const API = {
     return false;
   },
 
-  /** ฟาดเปรตตนที่ i — คืน true เมื่อฟาดออกจริง */
-  /** ฟาดเปรตตนที่ i — ranged = ขว้างลูกไฟจากไกล (กินลูกไฟ) · ไม่ใส่ = ฟาดประชิด ฟรี */
-  strike(i, by, ranged = false) {
+  /** ยักษ์ทวารบาลปราบปีศาจบนแผนที่ได้; ผู้เล่นต้องเข้าฉากต่อสู้ */
+  strike(i, by) {
     const m = this.mobs[i];
-    if (!m) return false;
+    if (!m || by === 'ท่าน') return false;
     if (m.cool && Date.now() < m.cool) return false;
-    if (ranged && by === 'ท่าน') {
-      if (this.fireAmmo <= 0) return false;
-      this.fireAmmo--;
-      this.log('🔥 ท่านขว้างลูกไฟใส่เปรตจากระยะไกล', 'act');
-    }
     m.hp--; m.cool = Date.now() + 600;
-    if (by === 'ท่าน') {
-      this.swingUntil = Date.now() + 500;   // ท่าฟาดค้างครึ่งวินาที (เจ้าของเคาะเอง 10 ก.ย. 2569)                   // ให้ scene.js สลับไปท่าฟาด
-      this.player.face = m.x < this.player.x ? -1 : 1;      // หันหน้าไปทางที่ขว้าง
-    }
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
     if (m.hp > 0) { this.log(`⚔️ ${by}ฟาด${MOB.kinds[m.kind ?? 0].name}เข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
     this.mobs.splice(i, 1);
@@ -1710,9 +1697,7 @@ const API = {
     return this.battle;
   },
 
-  /** ฉากต่อสู้กับเปรตที่ขึ้นมาก่อกวน (8 ก.ย. 2569)
-   *  เจ้าของขอให้ "ผีเข้ามาบุก" เปิดหน้าต่อสู้ด้วย ไม่ใช่แค่เดินไปฟาดบนแผนที่
-   *  ฟาดบนแผนที่ยังทำได้เหมือนเดิม — หน้านี้คือทางที่ได้รางวัลมากกว่าแต่เสี่ยงกว่า */
+  /** ฉากต่อสู้กับปีศาจที่ขึ้นมาก่อกวน — ทางต่อสู้ของผู้เล่นทุกตัว */
   startMobBattle(i) {
     if (this.battle) return this.battle;
     const m = this.mobs[i];
@@ -1799,7 +1784,7 @@ const API = {
 
   bossPierCanTalk() {
     return !this.battle && !this.over && !!this.bossCleared[this.zone] &&
-      Math.hypot(this.player.x - 1260, this.player.y - 558) <= 150;
+      Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
 
   startZoneBoss(retry = false) {
@@ -1854,12 +1839,6 @@ const API = {
     b.prepStarted = true;
     this.onChange();
     return true;
-  },
-
-  /** เปรตที่อยู่ในระยะเอื้อมถึง — คืน index หรือ -1 */
-  mobInReach() {
-    const n = this.nearestMob();
-    return n && n.d <= MOB.reach ? n.i : -1;
   },
 
   /** ฉากที่ไม่มีทางชนะ — บารมีหมดแล้วพ่อลงมาเอง (แทนหน้าจอจบเกมแบบเดิม) */
@@ -2228,7 +2207,7 @@ const API = {
 
   canMoveZone(k) {
     const i = ZONES.findIndex(z => z.k === k), z = ZONES[i];
-    return !!z && this.level >= z.level &&
+    return !!z && (z.k === 'cyberhell' || this.level >= z.level) &&
       (i === 0 || !!this.bossCleared[ZONES[i - 1].k]);
   },
   zonesOpen() { return ZONES.filter(z => this.canMoveZone(z.k) && z.k !== this.zone); },
@@ -2332,7 +2311,7 @@ const API = {
   spawnMob() {
     const side = Math.random() < 0.5 ? 130 : SCENE.w - 130;
     const y = 200 + Math.random() * 300;
-    // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปฟาดไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
+    // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปกดเข้าสู้ไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
     const p = nearestWalk(side, y) || [side, y];
     // แต่ละโซนมีผีคนละชุด — ไทยครบทุกพันธุ์ · โซนอื่นเหลือพันธุ์กลางที่ใช้รูปเดิมได้
     const pool = (this.zoneDef().mobs || []).filter(i => MOB.kinds[i]);
@@ -2341,7 +2320,7 @@ const API = {
     this.mobs.push(mob);
     // ไม่เด้งเข้าฉากต่อสู้เองแล้ว (9 ก.ย. 2569) — มันจะเดินไปเผาอาคารแทน
     // ผู้เล่นเลือกเองว่าจะทิ้งไว้หรือเดินไปหยุด (ปุ่มต่อสู้ขึ้นตอนเข้าไปใกล้)
-    // ทิ้งลูกไฟให้ด้วยหนึ่งลูกเสมอ — มีเปรตแต่ไม่มีอะไรฟาดคือทางตัน ไม่ใช่ความยาก
+    // ทิ้งลูกไฟให้เก็บไปใช้ในฉากต่อสู้
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — มันจะเดินไปเผาอาคาร ถ้าไม่ไปหยุด`, 'event');
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
@@ -2602,6 +2581,7 @@ API.snapshot = function (withEntry = true) {
     })),
     queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
+    mobRosterV18: true,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
@@ -2696,7 +2676,10 @@ API.restore = function (d) {
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
   // พลังพร้อมใช้ทันทีแทน ไม่ให้ผู้เล่นเสียของที่เก็บมาแล้วเพราะปุ่มหายไป (ตัวเลข/เพดานเดิมทุกอย่าง)
   this.migrateBagCombatItems();
-  this.mobs = d.mobs || [];
+  // รายชื่อปีศาจเดิมมีชนิดที่ถอดออกอยู่ index 3; ทิ้งตัวนั้นและเลื่อนชนิดที่ตามมา
+  // เซฟใหม่มี marker กันการเลื่อน index ซ้ำตอนโหลดครั้งถัดไป
+  this.mobs = (d.mobs || []).filter(m => d.mobRosterV18 || m.kind !== 3)
+    .map(m => d.mobRosterV18 || m.kind == null || m.kind < 4 ? m : { ...m, kind:m.kind - 1 });
   this.transits = [];
   this.guard = d.guard || null;
   if (d.player) this.player = d.player;

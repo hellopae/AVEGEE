@@ -586,16 +586,13 @@ function sideBody() {
   if (sel.kind === 'mob') {
     const m = g.mobs[sel.key];
     if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
-    const fireN = g.fireAmmo;
     const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
     return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
         `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
       + (kd.line ? think(kd.line) : '')
       + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
       + `<div class="sec">ปราบยังไง</div>
-         <div class="row-truth">กดปุ่ม ⚔️ ที่แถบล่าง · กดเว้นวรรค · หรือคลิกที่ตัวมันบนฉาก —
-           ใช้<b>ลูกไฟ</b>หนึ่งลูก ตอนนี้มี <b>×${fireN}</b></div>
-         ${fireN ? '' : '<div class="row-truth hid">ลูกไฟหมด — เดินไปเก็บลูกไฟที่ตกอยู่บนแผนที่ก่อน</div>'}`;
+         <div class="row-truth">เดินเข้าใกล้แล้วกดปุ่ม ⚔️ เหนือหัว กดเว้นวรรค หรือคลิกตัวมันเพื่อเข้าสู้</div>`;
   }
 
   // ---- วิญญาณ ----
@@ -699,41 +696,37 @@ function drawTabHeads() {
     el.setAttribute('aria-selected', el.dataset.tab === tab ? 'true' : 'false');
 }
 
-/** ลงมือกับเปรต — ประชิดแล้วเปิด "หน้าต่อสู้" · ยังไกลอยู่ก็เดินไป/ขว้างลูกไฟตามเดิม
- *  (ฟาดบนแผนที่ยังใช้ได้ผ่านการขว้าง — หน้าต่อสู้คือทางที่ได้เบี้ยกรรมมากกว่า แต่เสี่ยงกว่า) */
+/** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
   if (g.over || g.battle || dlg.open) return;
-  const i = g.mobInReach();
-  if (i >= 0) { g.startMobBattle(i); openBattle(); return; }
-  g.attack(); sfx('hit'); refresh();
+  const n = g.nearestMob();
+  if (n && n.d <= MOB.fabReach) { g.startMobBattle(n.i); openBattle(); return; }
+  g.attack(); refresh();
 }
 
-/** ปุ่มฟาดเปรต — โผล่เฉพาะตอนมีเปรตในโซน และบอกตรง ๆ ว่าลูกไฟเหลือเท่าไหร่ */
+/** ปุ่มปีศาจบนแผนที่มีทางเดียวคือเข้าฉากต่อสู้ */
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fab = $('#fab-atk');
-  const fire = { ammo: g.fireAmmo };  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกกระสุนจากตวาดข่มขู่แล้ว
   const n = g.over ? null : g.nearestMob();
-  const near = n && n.d <= MOB.reach;
-  const canThrow = n && !near && n.d <= MOB.throw && fire.ammo > 0;
-  const sig = `${g.mobs.length}/${fire.ammo}/${g.over ? 1 : 0}/${near ? 1 : canThrow ? 2 : 0}`;
+  const near = n && n.d <= MOB.fabReach;
+  const sig = `${g.mobs.length}/${g.over ? 1 : 0}/${near ? 1 : 0}`;
   if (sig === atkSig) return;
   atkSig = sig;
   btn.hidden = !!g.over || !g.mobs.length;
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
   const [label, color] = near
-    ? [`⚔️ เข้าต่อสู้กับเปรต (${g.mobs.length})`, 'var(--destructive)']
-    : canThrow ? [`🔥 ขว้างลูกไฟใส่เปรต · ×${fire.ammo}`, 'var(--gold)']
-    : [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วเข้าต่อสู้`, 'var(--muted-foreground)'];
+    ? [`⚔️ กดเพื่อเข้าสู้ (${g.mobs.length})`, 'var(--destructive)']
+    : [`🏃 เดินไปหาเปรต (${g.mobs.length}) แล้วกดเข้าสู้`, 'var(--muted-foreground)'];
   btn.textContent = label;
   btn.style.color = color;
-  fab.textContent = near ? '⚔️ เข้าต่อสู้' : canThrow ? `🔥 ขว้างลูกไฟ ×${fire.ammo}` : '🏃 ไปหาเปรต';
+  fab.textContent = near ? '⚔️ กดเพื่อเข้าสู้' : '🏃 ไปหาเปรต';
   fab.classList.toggle('hot', !!near);
-  fab.classList.toggle('gold', !near && !!canThrow);
+  fab.classList.remove('gold');
 }
 
-function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); }
+function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); updatePlay(); }
 
 function drawMiniGoal() {
   const el = $('#mini-goal');
@@ -861,7 +854,8 @@ function followMarks() {
     if (!d.dataset.follow) continue;
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
-    d.dataset.sx = c.x; d.dataset.sy = c.y - CH - 8;
+    d.dataset.sx = c.x + Number(d.dataset.followDx || 0);
+    d.dataset.sy = c.y - CH - 8;
     place(d);
   }
 }
@@ -892,16 +886,27 @@ function drawOverlay() {
     mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
+  const nira = g.crewOf('nira');
+  const post = nira?.at ? STATIONS.find(d => d.k === nira.at) : null;
+  const nx = nira?.x ?? (post ? post.x : (nira ? nira.hx : 660));
+  const ny = nira?.y ?? (post ? post.y : (nira ? nira.hy : 400));
+  if (nira) {
+    const team = mark('', nx + 34, ny - CH - 8, '👥',
+      '<span class="who">นิรา</span>จัดทีมยมทูตที่นี่');
+    team.dataset.follow = 'nira'; team.dataset.followDx = 34;
+    team.setAttribute('aria-label', 'จัดทีมยมทูตที่นี่');
+    team.setAttribute('title', 'จัดทีมยมทูตที่นี่');
+    const pin = team.querySelector('.pin');
+    pin.setAttribute('role', 'button'); pin.tabIndex = 0;
+    pin.setAttribute('aria-label', 'จัดทีมยมทูตที่นี่');
+    pin.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pin.click(); } };
+  }
   if (!s) return;
 
   const rec = s.case ? publicDossier(s, 'line') : s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
   // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
-  const nira = g.crewOf('nira');
-  const post = nira && nira.at ? STATIONS.find(d => d.k === nira.at) : null;
-  const nx = nira?.x ?? (post ? post.x : (nira ? nira.hx : 660));
-  const ny = nira?.y ?? (post ? post.y : (nira ? nira.hy : 400));
   const nm = mark('', nx, ny - CH - 8, '📜',
     `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.name || s.who)}</b>${rec}`);
   if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
@@ -949,7 +954,7 @@ function updateMobFab() {
   if (!f) {
     f = document.createElement('button');
     f.className = 'mobfab';
-    f.textContent = '⚔️ เข้าต่อสู้';
+    f.textContent = '⚔️ กดเพื่อเข้าสู้';
     f.onclick = ev => {
       ev.stopPropagation();
       if (g.over || g.battle || dlg.open) return;
@@ -981,7 +986,8 @@ function updateBossFab() {
     ov.appendChild(f);
   }
   f.textContent = pier ? `💬 คุยกับ${g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;
-  f.dataset.sx = pier ? 1260 : 790; f.dataset.sy = 558 - 115;
+  f.dataset.sx = pier ? SPOTS.bossPier.x : 790;
+  f.dataset.sy = (pier ? SPOTS.bossPier.y : 558) - 115;
   place(f);
 }
 
@@ -2257,7 +2263,7 @@ function openZone() {
     const here = z.k === g.zone;
     const lock = !g.canMoveZone(z.k);
     const prev = ZONES[i - 1];
-    const why = lock ? (g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
+    const why = lock ? (z.k !== 'cyberhell' && g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
       : z.sub;
     return `<div class="isle-card${here ? ' here' : ''}${lock ? ' locked' : ''}">
       <span class="badge">${here ? '📍' : lock ? '🔒' : ''}</span>
@@ -2478,6 +2484,10 @@ function updatePlay() {
     z.hidden = !g.zonesOpen().length;
     z.textContent = `🗺️ ย้ายโซน (${g.zoneDef().name})`;
   }
+  const hudZone = $('#hud-zone');
+  hudZone.hidden = !g.zonesOpen().length;
+  hudZone.setAttribute('aria-label', t('hud.zone'));
+  hudZone.title = t('hud.zone');
   const outfit = $('#outfit');
   if (outfit) outfit.hidden = g.outfitsOpen().length < 2;
   const bag = $('#bag');
@@ -2519,6 +2529,7 @@ $('#hud-pause').onclick = openPause;
 $('#hud-settings').onclick = () => openSettings();
 $('#hud-book').onclick = () => openHelp();
 $('#hud-bag').onclick = () => openBag();
+$('#hud-zone').onclick = openZone;
 $('#hud-open-court').onclick = toggleCourt;
 $('#hud-trial').onclick = goTrial;
 
@@ -2611,7 +2622,7 @@ function onSceneClick(sx, sy) {
     }
     if (a.kind === 'boss') {
       if (g.bossPierCanTalk()) return openBossPier();
-      g.walkTo(1260, 558); return;
+      g.walkTo(SPOTS.bossPier.x, SPOTS.bossPier.y); return;
     }
     if (a.kind === 'crew' && a.key === 'nira') {
       const c = g.crewOf('nira');

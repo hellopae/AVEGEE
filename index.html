@@ -1339,6 +1339,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
 .hud-icon-btn:hover img{transform:scale(1.08)}
 .hud-icon-btn--lg{width:clamp(48px,6.6vw,64px);height:clamp(48px,6.6vw,64px)}
+#hud-zone[hidden]{display:none}
 
 .hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
   display:flex;align-items:flex-end;gap:10px}
@@ -1685,6 +1686,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
         <img src="img/ui/icon-book.png" alt=""></button>
       <button id="hud-bag" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.bag">
         <img src="img/ui/icon-bag.png" alt=""></button>
+      <button id="hud-zone" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.zone" hidden>
+        <img src="img/ui/icon-door.png" alt=""></button>
     </div>
 
     <!-- ล่างกลาง: คุมเวลาและเข้าสอบสวน -->
