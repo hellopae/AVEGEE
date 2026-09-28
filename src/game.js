@@ -7,9 +7,9 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER, FRONTIER_TH,
          MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER,
-         CREW_HOME_TH } from './data.js';
+         CREW_HOME_TH, syncSceneZone } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -101,6 +101,7 @@ export function createGame() {
   // สถานีตั้งต้น: หอทะเบียน + กระทะทองแดง (ที่เหลือสร้างเอาเอง)
   g.stations = [mkStation('sala'), mkStation('krata')];
   syncFrontierPos(g.zone);          // เกมใหม่เริ่มโซน 1 เสมอ — สลับ FRONTIER เป็นพิกัดแผนที่ใหม่
+  g.player.x = SPOTS.bench.x + 60; g.player.y = SPOTS.bench.y;
 
   Object.assign(g, API);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
@@ -114,7 +115,11 @@ export function createGame() {
 // แทนที่จะไล่แก้ทุกจุดให้รับพารามิเตอร์โซนเพิ่ม
 const FRONTIER_DEFAULT_POS = { bx:FRONTIER.bx, by:FRONTIER.by, bw:FRONTIER.bw, x:FRONTIER.x, y:FRONTIER.y, hit:FRONTIER.hit };
 function syncFrontierPos(zone) {
+  syncSceneZone(zone);
+  resetWalk();
   Object.assign(FRONTIER, zone === 'th' ? FRONTIER_TH : FRONTIER_DEFAULT_POS);
+  // fitSceneBox ใน ui.js ฟัง resize อยู่แล้ว; ให้คำนวณกรอบใหม่ตอนสลับสัดส่วนโซน
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('resize'));
 }
 
 function mkCrew(def, zone = 'th') {

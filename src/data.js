@@ -3,11 +3,7 @@
 
 // ฉากเป็นภาพวาดใบเดียว โค้ดวางพิกัดทับ (เลิกใช้ tile grid ตั้งแต่ 6 ก.ย. 2569)
 // พิกัดทุกค่าในไฟล์นี้อ้างระบบพิกัดของภาพฉากขนาดเต็ม แล้วค่อยย่อลงตอนวาด
-// ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1) — โซน 1 เปลี่ยนเป็น img/scene-v2.png (1678×937, 16:9)
-// แทน img/scene.png เดิม (1527×704) ตามม็อกอัป files/UI2-th.jpg · SCENE เป็นค่ากลางที่ใช้ร่วมกับ
-// โซน 2-4 ด้วย (scene-asia-v2/scene-west/scene-cyberhell ยังเป็น 1527×704 เดิม ไม่ได้วัดพิกัดใหม่รอบนี้)
-// ผลคือฉากโซน 2-4 ถูกวาดยืดเข้ากรอบ 1678×937 เล็กน้อย (แนวตั้ง +33%) — ของเดิมยังพอดูได้เพราะ
-// สัดส่วนไม่ต่างมาก แต่ยังไม่ใช่ "cover crop" ตามที่ใบงานข้อ 1.4 ขอ ดูหมายเหตุในรายงาน Toby
+// เปลี่ยนค่าบน object เดิมเมื่อย้ายโซน เพื่อให้ทุกจุดที่ import SCENE อ่านขนาดปัจจุบัน
 export const SCENE = { w: 1678, h: 937 };
 
 // ---------- ชนิดบาป ----------
@@ -1454,7 +1450,7 @@ export const ZONES = [
   // ไฟล์ใหม่ img/scene-v2-opt.png แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์
   // ขึ้นต้น scene- ทุกไฟล์ — ไม่ resize เพราะกว้าง 1678 < SCENE_W 2000 อยู่แล้ว, 1.9MB → 853KB)
   // แล้วชี้โค้ดมาไฟล์นี้แทน — img/scene-v2.png ต้นฉบับยังอยู่ครบ ไม่ถูกทับ/ลบ (กู้คืนได้จาก 6d7f47e)
-  { k:'th', scene:'scene-v2-opt', level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
+  { k:'th', scene:'scene-v2-opt', w:1678, h:937, level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
     bossName:'ยมราชพี่ใหญ่', bossSub:'พี่ชายของยมน้อย · ผู้ตรวจการสาขาสุวรรณภูมิ',
     bossArrive:[
       'พี่ใหญ่: "ได้ยินว่าน้องเก่งขึ้นเยอะนะ วันนี้พี่มาดูของจริง"',
@@ -1469,7 +1465,7 @@ export const ZONES = [
     mobs:[0,1,2,3,4,5,6], coin:0 },
   // scene-asia-v2 = ฉากใหม่ที่เจ้าของ gen มา 26 ก.ย. 2569 (ชุด 14 ข้อ D2) แทน scene-asia เดิม
   // (คงไฟล์เดิมไว้ ไม่ลบ — องค์ประกอบตรงตำแหน่งเดิมทุกจุด แค่ resize 1848x851 → 1527x704)
-  { k:'asia', scene:'scene-asia-v2', level:3, name:'โซนบูรพา', sub:'จีน · ญี่ปุ่น · เกาหลี · อินเดีย',
+  { k:'asia', scene:'scene-asia-v2', w:1527, h:704, level:3, name:'โซนบูรพา', sub:'จีน · ญี่ปุ่น · เกาหลี · อินเดีย',
     bossName:'แม่ทัพตรวนบูรพา', bossSub:'ผู้ตรวจการท้องถิ่นประจำสาขาบูรพา',
     bossArrive:[
       'แม่ทัพ: "เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ"',
@@ -1484,7 +1480,7 @@ export const ZONES = [
           'และยมทูตประจำสาขาไม่มีใครยอมมองหน้าท่านเลยสักคน',
     // ใช้เฉพาะผีที่มีภาพประจำโซนบูรพา ไม่ดึงเปรต/สุนัขจากโซนสุวรรณภูมิมาปน
     mobs:[7,8,9,10], coin:400 },
-  { k:'west', scene:'scene-west', level:4, name:'โซนปัจฉิม', sub:'ยุโรป · อเมริกา · รัสเซีย',
+  { k:'west', scene:'scene-west', w:1527, h:704, level:4, name:'โซนปัจฉิม', sub:'ยุโรป · อเมริกา · รัสเซีย',
     bossName:'อัศวินบัญชีปัจฉิม', bossSub:'ผู้ตรวจการบัญชีประจำสาขาปัจฉิม',
     bossArrive:[
       'อัศวิน: "ได้ยินมาว่าเจ้าตัดสินได้แม่นยำนัก จนข่าวลือไปถึงปัจฉิม"',
@@ -1497,7 +1493,7 @@ export const ZONES = [
     bossLose:'"ยังไม่สมกับข่าวลือเลยนะ กลับมาท้าใหม่เมื่อพร้อม"',
     intro:'สาขานี้มีเอกสารเป็นระเบียบที่สุดที่ท่านเคยเห็น — และมีคิวที่ยาวที่สุดที่ท่านเคยเห็นเหมือนกัน',
     mobs:[0,2], coin:800 },
-  { k:'cyberhell', scene:'scene-cyberhell', level:5, name:'นรกเครือข่าย', nameEn:'CyberHell',
+  { k:'cyberhell', scene:'scene-cyberhell', w:1527, h:704, level:5, name:'นรกเครือข่าย', nameEn:'CyberHell',
     sub:'เครือข่ายข้อมูล · ความทรงจำ · อาชญากรรมดิจิทัล',
     bossName:'จอมข้อมูลไซเบอร์', bossSub:'ผู้ตรวจการระบบประจำนรกเครือข่าย',
     bossArrive:[
@@ -1511,6 +1507,56 @@ export const ZONES = [
     intro:'เส้นสายข้อมูลไหลแทนแม่น้ำ วิญญาณทุกดวงทิ้งร่องรอยไว้ แม้สิ่งที่ลบบนโลกไปแล้วก็ยังถูกบันทึกอยู่ที่นี่',
     mobs:[3,5,6], coin:1200 },
 ];
+
+// พิกัดก่อนชุด 15b ของฉาก 1527×704; เก็บพิกัดไทยไว้ครบแล้วสลับบน object/array เดิม
+// เพราะ game, scene และ ui import นิยามเหล่านี้ร่วมกัน
+const STATIONS_TH = STATIONS.map(({ bx, by, bw, x, y, hit, sx, sy, visit }) =>
+  ({ bx, by, bw, x, y, hit, sx, sy, visitAt:visit?.at }));
+const STATIONS_OLD = {
+  sala:[1260,268,340,1255,258,[1090,10,1430,268]],
+  krata:[1298,396,280,1205,406,[1158,264,1438,396],1297,326],
+  dab:[227,376,270,328,370,[92,252,362,376],227,358],
+  lokan:[260,300,364,378,288,[78,18,442,300],255,252],
+  ngiw:[1172,572,240,1250,540,[1100,420,1240,572],1162,500],
+  lan:[546,546,136,466,528,[478,418,614,546],545,505],
+  tea:[225,588,266,225,566,[92,378,358,588]],
+  tarang:[937,248,240,937,272,[817,125,1057,248],null,null,[937,300]],
+  krajok:[1390,566,190,1390,580,[1342,400,1438,566]],
+  sawan:[640,300,230,730,318,[575,118,705,300],640,258],
+};
+const SPOTS_TH = { bench:{ ...SPOTS.bench }, throne:{ ...SPOTS.throne },
+  ferry:{ from:[...SPOTS.ferry.from], to:[...SPOTS.ferry.to] } };
+const NO_WALK_TH = NO_WALK.map(r => [...r]), WALK_OK_TH = WALK_OK.map(r => [...r]);
+const QUEUE_LINE_TH = QUEUE_LINE.map(p => [...p]);
+
+/** เปลี่ยนระบบพิกัดและขอบเดินพร้อมกัน โดยคง reference ของข้อมูลที่ import ไว้ */
+export function syncSceneZone(zone) {
+  const z = ZONES.find(x => x.k === zone) || ZONES[0], th = z.k === 'th';
+  SCENE.w = z.w; SCENE.h = z.h;
+  STATIONS.forEach((st, i) => {
+    const p = th ? STATIONS_TH[i] : STATIONS_OLD[st.k];
+    if (th) {
+      Object.assign(st, { bx:p.bx, by:p.by, bw:p.bw, x:p.x, y:p.y, hit:p.hit, sx:p.sx, sy:p.sy });
+      if (st.visit?.at) st.visit.at = p.visitAt;
+    } else {
+      const [bx,by,bw,x,y,hit,sx,sy,visitAt] = p;
+      Object.assign(st, { bx,by,bw,x,y,hit,sx,sy });
+      if (st.visit?.at) st.visit.at = visitAt;
+    }
+  });
+  Object.assign(SPOTS.bench, th ? SPOTS_TH.bench : { x:800, y:396 });
+  Object.assign(SPOTS.throne, th ? SPOTS_TH.throne : { x:762, y:358 });
+  const ferry = th ? SPOTS_TH.ferry : { from:[440,646], to:[1250,646] };
+  SPOTS.ferry.from = ferry.from; SPOTS.ferry.to = ferry.to;
+  GUARD_POST.splice(0, 2, ...(th ? [846,792] : [845,672]));
+  const w = z.w, h = z.h;
+  NO_WALK.splice(0, NO_WALK.length, ...(th ? NO_WALK_TH :
+    [[0,0,w,96],[0,0,76,h],[1452,0,w,h],[0,584,w,h]]));
+  WALK_OK.splice(0, WALK_OK.length, ...(th ? WALK_OK_TH :
+    [[725,548,822,h],[822,630,850,h],[398,560,512,600],[1236,560,1340,600]]));
+  QUEUE_LINE.splice(0, QUEUE_LINE.length, ...(th ? QUEUE_LINE_TH :
+    [[872,400],[757,452],[757,500],[757,548],[757,596],[757,644],[757,686]]));
+}
 
 /** ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "คำตัดสินแดง / ฉากพ่อลงมาเอง (kind:'dad') / บทกระทะทองแดง" เดิม
  *  พิมพ์ "พญายม"/"พญายมบาท" ตรง ๆ ไม่ว่าจะอยู่โซนไหน ทั้งที่โซน 2-4 มีผู้ตรวจการของตัวเองอยู่แล้ว
