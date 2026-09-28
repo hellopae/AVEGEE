@@ -24,6 +24,9 @@ const WALK = [0.075, 0.22, 0.925, 0.86];
 const HERO_H = 0.15;
 const MOB_H = 0.12;
 const REACH = 0.09;                 // ระยะเดินเข้าใกล้ศัตรูแล้วปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้น
+const GATE = [0.5, WALK[1]], NIRA = [0.64, WALK[1] + 0.07];
+export const nearFrontierGate = p => Math.hypot(p.x - GATE[0], p.y - GATE[1]) <= REACH;
+export const nearFrontierNira = p => Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH;
 const SPAWN_EVERY = 2600;           // ลองสร้างศัตรูใหม่ทุกเท่านี้ (ms) ถ้ายังไม่เต็มจอ
 const MOVE_SPEED = 0.00015;         // สัดส่วนพื้นที่เดินต่อ ms — ศัตรูเดินจากขอบเข้ามาจุดในสนาม
 export const maxOnScreen = wave => Math.min(5, 3 + Math.floor(wave / 4));
@@ -90,7 +93,7 @@ function label(ctx, text, x, y, size, color) {
  *  wave, alive, fab (ปุ่ม DOM "เริ่มต่อสู้" ที่ ui.js สร้างไว้ให้ — ไฟล์นี้แค่โชว์/ซ่อน/จัดตำแหน่ง) } */
 export function makeFrontierWalk(cv, g, opts) {
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
-  const { bg, kinds, wave, alive, fab } = opts;
+  const { bg, kinds, wave, alive, fab, gate, nira } = opts;
   const sess = frontierSession(g.zone);
   const P = sess.player;
   const KEY = {};
@@ -213,6 +216,7 @@ export function makeFrontierWalk(cv, g, opts) {
       const hop = moving && gait % 2 ? U * 0.010 : 0;
       drawStandee(ctx, 'hero-yama', px(P.x), py(P.y) - hop, U * HERO_H, t, '👑', P.face, moving);
     } });
+    acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * HERO_H, t, '📋') });
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
 
     // ปุ่ม "เริ่มต่อสู้" ลอย — DOM element ที่ ui.js ส่งเข้ามา ไฟล์นี้แค่โชว์/ซ่อน/จัดตำแหน่งเป็น %
@@ -228,6 +232,17 @@ export function makeFrontierWalk(cv, g, opts) {
           fab.style.top = `${(py(en.y) - U * MOB_H) / H * 100}%`;
           fab.dataset.enemyId = String(en.id);
         }
+      }
+    }
+    for (const [button, shown, x, y] of [
+      [gate, nearFrontierGate(P), GATE[0], GATE[1]],
+      [nira, nearFrontierNira(P), NIRA[0], NIRA[1]],
+    ]) {
+      if (!button) continue;
+      button.hidden = !shown;
+      if (shown) {
+        button.style.left = `${px(x) / W * 100}%`;
+        button.style.top = `${(py(y) - U * HERO_H) / H * 100}%`;
       }
     }
 
@@ -259,6 +274,8 @@ export function makeFrontierWalk(cv, g, opts) {
       removeEventListener('keyup', onKey);
       cv.removeEventListener('pointerdown', onDown);
       if (fab) fab.hidden = true;
+      if (gate) gate.hidden = true;
+      if (nira) nira.hidden = true;
     },
   };
   return api;

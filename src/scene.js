@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER, MERCHANT } from './data.js';
-import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawStationShadow, drawSoul, drawBoat,
+import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
@@ -226,8 +226,8 @@ export function render(ctx, g, t, hover, sel) {
       // ข้อ D คุณเป้เจอ 25 ก.ย. 2569 — ถึงไซต์ก่อสร้างแล้ว (buildK ตั้งอยู่ + สถานีนั้นพ้น buildWait
       // แล้ว คือเลิกเดินและเริ่มลงมือจริง) ยืนสลับท่า work ↔ ยืนเฉย ๆ เป็นจังหวะ ไม่ใช่ยืนนิ่งเป็นหุ่น
       // (ก่อนถึงไซต์ยังเดินอยู่ ไม่เข้าเงื่อนไขนี้ เพราะ st จะยังเป็น buildWait:true)
-      const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK && !st.buildWait);
-      const working = c.at || (buildingHere && Math.floor(t / 900) % 2 === 0);
+      const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK && st.build && !st.buildWait);
+      const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
       drawStandee(ctx, working ? poseOr(base + '-work', base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
       label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
@@ -298,7 +298,6 @@ function drawStation(ctx, g, st, t) {
     const left = Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
-    drawStationShadow(ctx, d);                       // ข้อ B — อาคารกำลังสร้างก็มีเงาด้วย
     if (im) ctx.drawImage(im, d.bx - bw / 2, d.by - bw, bw, bw);
     else drawBuilding(ctx, d, t);
     const W = 120, bx = d.bx - W / 2, by = d.by + 10;
@@ -310,7 +309,6 @@ function drawStation(ctx, g, st, t) {
     label(ctx, st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
-  drawStationShadow(ctx, d);                         // ข้อ B คุณเป้เจอ 25 ก.ย. 2569 — กันอาคารดูลอย
   drawBuilding(ctx, d, t);
   if (st.fire > 0) {                                // ผีกำลังเผาอยู่ — ไฟไต่ขึ้นตามความเสียหาย
     const bw = d.bw || 180;

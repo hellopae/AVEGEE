@@ -479,11 +479,11 @@ export const BAL = {
   // เดิม: สถานีใช้ไฟ 5 หลังเผารวมสูงสุด 2.5/วาระ (กระทะ1.4+งิ้ว0.4+ป่าดาบ0.3+ลาน0.2+ศาลา0.2) ที่ fuelPrice 3/หน่วย
   //   บวกค่าจ้างรายวาระของยมทูตที่ทำงานได้ (taan14+plerng16+kan18+boon15+dam9=72) ทุก payEvery=30 วาระ
   //   รวม ≈ 7.5+2.4 = 9.9 เบี้ย/วาระ ตอนมี 5 คนทำงานพร้อมกันครบ (ดูตารางเทียบเต็มใน Output/Toby)
-  // ใหม่: 5 คนทำงานพร้อมกัน กินคนละ foodEatRate เท่ากันหมด = 2.5/วาระ ที่ foodPrice 4/หน่วย = 10 เบี้ย/วาระ — ใกล้เคียงเดิม
+  // ใหม่: 5 คนทำงานพร้อมกัน กินคนละ foodEatRate เท่ากันหมด = 2.5/วาระ ที่ foodPrice 2/หน่วย = 5 เบี้ย/วาระ
   foodEatRate: 0.5,       // เสบียงที่ยมทูต "กำลังทำงาน" 1 คนกินต่อวาระ (เท่ากันทุกคนทุกสถานี ไม่แยกตามสถานีอีกแล้ว)
   foodFullMul: 1.18,      // อิ่ม (มีเสบียงพอ) = ทำงานไวขึ้น 18%
   foodHungryMul: 0.7,     // หิว (เสบียงหมด) = ทำงานช้าลงเหลือ 70% — ไม่หยุดงานสนิท
-  foodPrice: 4,           // เบี้ยกรรมต่อเสบียง 1 ห่อ (ซื้อที่แท็บก่อสร้าง)
+  foodPrice: 2,           // เบี้ยกรรมต่อเสบียง 1 ห่อ (ซื้อที่แท็บก่อสร้าง)
   // ---- ความหิวรายคน (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) ----
   // แยกจากกองเสบียงกลางด้านบน (foodEatRate/foodFullMul/foodHungryMul ไม่ถูกแตะ ยังคุมความเร็วทั้งทีมเหมือนเดิม)
   // นี่คือแถบส่วนตัวต่อคน ลดลงระหว่างทำงาน ป้อนข้าวปั้น (feedCrew ใน game.js) แล้วขึ้นทันที
@@ -718,7 +718,7 @@ export const MERCHANT = {
   // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — เพิ่มลูกไฟ: ปุ่ม "เตรียมลูกไฟ" เดิมในหน้าเตรียมศึก
   // บอสถูกตัดออกแล้ว (คุณเป้สั่งให้ "ซื้อได้ที่พ่อค้า" แทน) ราคาเทียบเท่าหีบยา (มูลค่าใกล้เคียงกัน)
   stock:[
-    { k:'health', cost:55, lv:1 }, { k:'food', cost:36, qty:2, lv:1 },
+    { k:'health', cost:55, lv:1 }, { k:'food', cost:18, qty:2, lv:1 },
     { k:'mirror', cost:95, lv:2 }, { k:'ice', cost:120, lv:3 }, { k:'fire', cost:60, lv:1 },
   ],
 };
@@ -1410,6 +1410,20 @@ export const BATTLE = {
     { k:'ice', name:'ผนึกน้ำแข็ง', glyph:'❄️', stun:1, dmg:30, power:'ice', karma:.5,
       say:'เกล็ดน้ำแข็งเกาะรอบเท้า เขาถูกผนึกไว้หนึ่งตา' },
   ],
+};
+
+// TODO: รอ Rae ตั้งชื่อจริง
+export const BOSS_ULTIMATE = {
+  th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.jpeg' },
+  asia: { name:'เปลวน้ำเงิน', image:'img/Asia/Boss Zone2-asia-cutscene.jpeg' },
+  west: { name:'ตราโซ่', image:'img/West/Boss Zone3-cutscene.jpeg' },
+  cyberhell: { name:'สายฟ้าม่วง', image:'img/CyberHell/Boss Zone4-cutscene.jpeg' },
+};
+export const bossUltimate = (battle, normalDamage) => {
+  const move = BOSS_ULTIMATE[battle.zone];
+  if (!move || battle.foeHp >= battle.foeMax / 2) return null;
+  if (battle.ultimateUsed && battle.turn - battle.ultimateLastTurn < 4) return null;
+  return { ...move, damage: Math.round(normalDamage * 1.7) };
 };
 
 /** พญายมลงโทษ — ฉากที่ "ไม่มีทางชนะ" ตามที่เจ้าของสั่ง
