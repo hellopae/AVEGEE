@@ -223,7 +223,7 @@ export function render(g, t) {
   // สลับงานวาดตามโซน โดยยังใช้โลก/เซฟชุดเดียวกับมุม 2D
   // สุวรรณภูมิมี ground-only รุ่นทดลอง: ตัดแท่น/รั้ว/พร็อพตั้งออกเพื่อไม่ให้ซ้ำกับ billboard
   // โซนอื่นยังใช้ภาพเต็มตามเดิมจนกว่าจะผ่าน art-direction gate ของโซนแรก
-  const nextGround = g.zone === 'th' ? 'img/scene-ground-v1.png' : (artUrl('scene') || 'img/scene.png');
+  const nextGround = g.zone === 'th' ? 'img/scene-ground-v1.png' : artUrl(g.zoneDef().scene);
   if (nextGround !== groundUrl) {
     groundUrl = nextGround;
     ground.material.map = tex(nextGround);

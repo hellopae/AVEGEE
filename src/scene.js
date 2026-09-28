@@ -82,14 +82,14 @@ export function render(ctx, g, t, hover, sel) {
   ctx.setTransform(sc, 0, 0, sc, 0, 0);   // ตั้งแต่บรรทัดนี้ วาดด้วยพิกัดฉากได้เลย
   ctx.imageSmoothingEnabled = false;
 
-  // ฉากตามโซนที่กำลังคุมอยู่ — ยังไม่มีไฟล์ของโซนนั้นก็ถอยไปใช้ฉากไทย
-  // buildWalk อ่านลาวาจากภาพของโซนปัจจุบัน; การย้ายโซนล้าง mask เดิมก่อน
-  //   ฉากโซนแบบโฟลเดอร์ (img/Asia/scene-asia.png) มาก่อน · ไม่มีค่อยใช้ img/<scene>.png เดิม (11 ก.ย. 2569)
+  // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
-  const bg = zoneImg('scene') || img(zk) || img('scene');
+  const bg = img(zk) || zoneImg('scene') || img('scene');
   if (bg) {
     ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
-    if (buildWalk(bg)) g.syncBlocks(true); // ตรวจตำแหน่งผู้เล่นอีกครั้งหลังอ่านลาวาจริง
+    // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
+    const maskBg = g.zone === 'west' ? img('scene-v2-opt') : bg;
+    if (buildWalk(bg, maskBg)) g.syncBlocks(true);
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
