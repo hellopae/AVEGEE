@@ -2,7 +2,7 @@
 // เดิมยมบาทเดินทะลุลาวากับแม่น้ำวิญญาณได้ ทำให้ฉากเสียความหมาย
 //
 // วิธีคิด: ธารลาวาเป็นรูปทรงงูเลื้อย วัดเป็นกรอบสี่เหลี่ยมด้วยมือไม่สวย
-// เลย **อ่านสีจาก img/scene.png เอง** — ลาวาเป็นสีเดียวในฉากที่ R สูงกว่า B มาก
+// เลย **อ่านสีจากภาพฉากปัจจุบัน** — ลาวาเป็นสีเดียวในฉากที่ R สูงกว่า B มาก
 // ข้อดีคือถ้าเป้วาดฉากใหม่แล้วลาวาย้ายที่ ทางเดินขยับตามเองโดยไม่ต้องแก้โค้ด
 // ส่วนแม่น้ำ/ผาหินรอบโซนเป็นเส้นตรง เลยกำหนดเป็นกรอบใน data.js ตรง ๆ (NO_WALK / WALK_OK)
 
@@ -36,14 +36,15 @@ const isLava = (d, x, y) => {
   return r > 150 && r - b > 90 && g < r * 0.62;
 };
 
-/** สร้างตารางครั้งเดียวตอนภาพฉากโหลดเสร็จ — เรียกซ้ำได้ ไม่ทำงานรอบสอง */
-export function buildWalk(im) {
-  if (!im || !im.naturalWidth || (mask && maskImage === im)) return false;
-  maskImage = im;
+/** สร้างตารางจากภาพที่แสดง หรือภาพผังลาวาเดียวกัน (โซนหิมะใช้อย่างหลัง) */
+export function buildWalk(im, maskSource = im) {
+  if (!im || !im.naturalWidth || !maskSource || !maskSource.naturalWidth
+      || (mask && maskImage === maskSource)) return false;
+  maskImage = maskSource;
   const c = document.createElement('canvas');
   c.width = SCENE.w; c.height = SCENE.h;
   const cx = c.getContext('2d', { willReadFrequently: true });
-  cx.drawImage(im, 0, 0, SCENE.w, SCENE.h);
+  cx.drawImage(maskSource, 0, 0, SCENE.w, SCENE.h);
   let d;
   try { d = cx.getImageData(0, 0, SCENE.w, SCENE.h).data; }
   catch { mask = 'off'; okGrid = null; return false; } // เปิดจาก file:// จะโดน canvas taint → ปล่อยเดินได้เหมือนเดิม

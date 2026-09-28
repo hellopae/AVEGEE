@@ -61,7 +61,7 @@ test('ทุกโซนคิวอยู่แนวสะพานและ�
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES) {
     if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
-    const bridgeX = z.k === 'th' ? 835 : 740;
+    const bridgeX = 835;
     assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === bridgeX));
     assert.ok(canWalk(MERCHANT.x, MERCHANT.y), `${z.k}: merchant on pier`);
     assert.ok(canWalk(SPOTS.bossPier.x, SPOTS.bossPier.y), `${z.k}: boss on pier`);
