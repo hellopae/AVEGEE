@@ -1449,7 +1449,12 @@ export const YAMA_FIGHT = {
 // bossLose = บทตอนยมน้อยแพ้ (ท้าใหม่ได้) · ทั้งหมดผ่าน Reese fact-check แล้ว (17 ก.ย. 2569)
 // ดู Output/Rae/2026-09-17-avegee-boss-inspectors.md — ห้ามแก้ถ้อยคำ ล้นจอแจ้ง Claudy แทน
 export const ZONES = [
-  { k:'th', scene:'scene-v2', level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
+  // scene:'scene-v2-opt' — ชุด 15b ตรวจโดย Dale (28 ก.ย. 2569): img/scene-v2.png ต้นฉบับ (1.9MB)
+  // ยังไม่ผ่าน quantize ของ scripts/prep-art.py (ต้องผ่าน img/raw/ ซึ่งใบงานนี้ห้ามแตะ) เลยทำ
+  // ไฟล์ใหม่ img/scene-v2-opt.png แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์
+  // ขึ้นต้น scene- ทุกไฟล์ — ไม่ resize เพราะกว้าง 1678 < SCENE_W 2000 อยู่แล้ว, 1.9MB → 853KB)
+  // แล้วชี้โค้ดมาไฟล์นี้แทน — img/scene-v2.png ต้นฉบับยังอยู่ครบ ไม่ถูกทับ/ลบ (กู้คืนได้จาก 6d7f47e)
+  { k:'th', scene:'scene-v2-opt', level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
     bossName:'ยมราชพี่ใหญ่', bossSub:'พี่ชายของยมน้อย · ผู้ตรวจการสาขาสุวรรณภูมิ',
     bossArrive:[
       'พี่ใหญ่: "ได้ยินว่าน้องเก่งขึ้นเยอะนะ วันนี้พี่มาดูของจริง"',
