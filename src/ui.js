@@ -124,7 +124,7 @@ function frame(now) {
   if (now > saveAt) { saveAt = now + 4000; g.save(); }
   if (!g.paused && !g.over) {
     acc += dt;
-    const step = BAL.tickMs / g.speed;
+    const step = BAL.tickMs;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   render(ctx, g, now, hover, sel);
@@ -2538,7 +2538,6 @@ function openPause(allowReplacing = false) {
 
 function updatePlay() {
   $('#play').textContent = t(g.paused ? 'hud.openCourt' : 'hud.closeCourt');
-  $('#spd').textContent = `ความเร็ว ×${g.speed}`;
   // ปุ่มย้ายโซนโผล่เมื่อมีโซนอื่นเปิดให้จริง ๆ เท่านั้น — ไม่งั้นกดแล้วเจอแต่กุญแจ
   const z = $('#zone');
   if (z) {
@@ -2574,7 +2573,6 @@ function toggleCourt() {
   updatePlay();
 }
 $('#play').onclick = toggleCourt;
-$('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
 $('#help').onclick = openHelp;
 $('#zone').onclick = openZone;
 const outfitButton = $('#outfit');
@@ -2665,8 +2663,8 @@ function onSceneClick(sx, sy) {
 
   // ป้าย "กดเพื่อสร้าง" มาก่อนทุกอย่าง — ตอนนั้นเรายืนอยู่ตรงจุดพอดี
   // ถ้าไปเช็คตัวละครก่อน คลิกยังไงก็โดนตัวเราเองเสมอ แล้วจะไม่มีทางกดสร้างได้เลย
-  // ชุดที่ 10 (ข้อ E3) — เดิมเช็คแค่กรอบพื้น def.hit แต่ป้าย "กดตรงนี้เพื่อสร้าง" ลอยอยู่เหนือหัว
-  // ตัวละคร (cy = def.y-122) ซึ่งบางหลังลอยพ้นกรอบ def.hit ไปเลย ผู้เล่นกดตรงป้ายจริง ๆ แต่กรอบคลิก
+  // ชุดที่ 10 (ข้อ E3) — เดิมเช็คแค่กรอบพื้น def.hit แต่ป้าย "กดตรงนี้เพื่อสร้าง" ลอยเหนือภาพสถานี
+  // ซึ่งบางหลังลอยพ้นกรอบ def.hit ไปเลย ผู้เล่นกดตรงป้ายจริง ๆ แต่กรอบคลิก
   // อยู่คนละที่ กดเท่าไหร่ก็ไม่ติด (คุณเป้เจอที่หอส่องกรรมโซนบูรพา 25 ก.ย. 2569) — เพิ่ม hitBuildPrompt
   // เป็นทางเลือกที่สอง: ยืนใกล้พอ (nearBuild) แล้วคลิกโดนป้ายจริงที่วาดบนจอ ก็ให้เปิดกล่องสร้างได้เหมือนกัน
   if (def && !st && nearBuild(g, g.player.x, g.player.y)?.k === def.k) return openBuild(def);
@@ -3430,15 +3428,6 @@ function openSettings() {
     </div>
     <div class="hint" data-t="settings.audioHint"></div>
 
-    <div class="settings-row">
-      <span class="settings-row-icon settings-row-icon--txt">×</span>
-      <div class="settings-row-body">
-        <label data-t="settings.speed"></label>
-        <span class="opts" id="s-spd">${[1, 2, 4].map(v =>
-          `<button data-v="${v}" ${g.speed === v ? 'aria-pressed="true"' : ''}>×${v}</button>`).join('')}</span>
-      </div>
-    </div>
-
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
@@ -3466,12 +3455,6 @@ function openSettings() {
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
-
-      d.querySelectorAll('#s-spd button').forEach(b => b.onclick = () => {
-        g.speed = +b.dataset.v; updatePlay();
-        d.querySelectorAll('#s-spd button').forEach(x =>
-          x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
-      });
 
       // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
       d.querySelector('#s-lang-toggle').onclick = e => {

@@ -13,6 +13,7 @@ let zoneOf = () => 'th';
 let heroStyleOf = () => null;             // ชุด Yama เลือกแยกจากโซนที่กำลังคุมได้
 const ZMAP = {};                         // zone → { ชื่อไฟล์ไม่มีนามสกุล: path ใต้ img/ }
 let BOXES = {};                          // กรอบเนื้อภาพของอาคาร st-* (0-1) — ดู boxes ใน make-manifest.py
+let STATION_SIZES = {};                  // ขนาดภาพจริงของสถานีหลังครอป
 const warmed = new Set();
 let epoch = 0;
 /** เลขรุ่นของข้อมูลรูป — ขยับเมื่อ manifest มาถึง (กรอบอาคารของโซนอาจเปลี่ยน)
@@ -37,6 +38,7 @@ fetch('img/manifest.json?v=20260915-1', { cache: 'no-cache' })
       for (const p of list) ZMAP[z][p.split('/').pop().replace(/\.[a-z]+$/i, '')] = p;
     }
     BOXES = (m && m.boxes) || {};
+    STATION_SIZES = (m && m.stationSizes) || {};
     epoch++;
     warmZone();
   })
@@ -130,30 +132,34 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
   }
 }
 
-/** กรอบที่วาดอาคารหนึ่งหลังในพิกัดฉาก { im, x, y, w, h } · null = รูปยังไม่มา
- *  โซน 1 = จัตุรัสกว้าง bw ฐานอยู่ที่ (bx,by) ตามเดิมทุกประการ
- *  อาคารของโซนอื่น (11 ก.ย. 2569): รูปโซน 2 หลายหลังสัดส่วนไม่ตรงโซน 1 (กระทะ 1.33 แทน 2.12 ·
- *  ภูเขาดาบ 2.47 แทน 4.79 · ป่าใบมีด 1.10 แทน 0.70) ถ้าวาดเต็มจัตุรัสเหมือนเดิม อาคารจะล้นทับ
- *  ทางเดินกับหลังข้าง ๆ และฐานอาคารที่กันทางเดินจะกว้างเกินที่ผังเผื่อไว้
- *  → บีบเนื้อภาพให้ **กว้างไม่เกินเนื้อภาพโซน 1** และ **สูงไม่เกิน 1.5 เท่า** ชิดฐานกึ่งกลางเดียวกัน
- *    (สูงล้นขึ้นไปข้างหลังได้บ้าง — ภาพมุมเฉียงบังของที่อยู่ข้างหลังเป็นเรื่องปกติ ส่วนฐานต้องไม่ล้น)
- *  กรอบเนื้อภาพมาจาก manifest (boxes) — ไม่มีข้อมูลก็วาดจัตุรัสแบบโซน 1 */
+/** กรอบวาดสถานี: bw คือความกว้างอ้างอิงของผืนเดิม 512px
+ *  รักษาขนาดเนื้อภาพและสัดส่วนเดิม ยึดกึ่งกลางเนื้อภาพกับขอบล่างที่ (bx,by)
+ *  ภาพโซนอื่นกว้างไม่เกินโซน 1 และสูงไม่เกิน 1.5 เท่า เพื่อไม่ทับทางเดิน */
 const TALLER = 1.5;
 export function stationBox(def) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
-  const sq = { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };
+  if (def.k === 'frontier')
+    return { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };
   const src = artUrl(key);
-  if (src === `img/${key}.png`) return sq;                    // โซน 1 หรือโซนที่ยังไม่มีรูปหลังนี้
-  const A = BOXES[key], B = BOXES[src.split('/').pop().replace(/\.png$/, '')];
-  if (!A || !B) return sq;
-  const aw = A[2] - A[0], ah = A[3] - A[1], bw = B[2] - B[0], bh = B[3] - B[1];
-  const s = Math.min(aw / bw, Math.min(1, ah * TALLER) / bh);  // ขนาดผืนรูปโซน เทียบผืนโซน 1
-  const cx = (A[0] + A[2]) / 2, foot = A[3];                   // ฐานกึ่งกลางของเนื้อภาพโซน 1
-  return { im, w: s * def.bw, h: s * def.bw,
-           x: def.bx - def.bw / 2 + (cx - (B[0] + B[2]) / 2 * s) * def.bw,
-           y: def.by - def.bw + (foot - B[3] * s) * def.bw };
+  const sourceKey = src.split('/').pop().replace(/\.png$/, '');
+  const B = BOXES[sourceKey] || [0, 0, 1, 1];
+  const sourceW = (B[2] - B[0]) * im.naturalWidth;
+  const sourceH = (B[3] - B[1]) * im.naturalHeight;
+  if (!sourceW || !sourceH) return null;
+  let scale = def.bw / 512;
+  if (sourceKey !== key) {
+    const A = BOXES[key], base = STATION_SIZES[key];
+    if (A && base) {
+      const baseW = (A[2] - A[0]) * base[0] * def.bw / 512;
+      const baseH = (A[3] - A[1]) * base[1] * def.bw / 512;
+      scale = Math.min(baseW / sourceW, baseH * TALLER / sourceH);
+    }
+  }
+  return { im, w: im.naturalWidth * scale, h: im.naturalHeight * scale,
+           x: def.bx - (B[0] + B[2]) / 2 * im.naturalWidth * scale,
+           y: def.by - B[3] * im.naturalHeight * scale };
 }
 
 /** กรอบ "ฐานอาคาร" ที่เดินทับไม่ได้ — วัดจากพิกเซลจริงของสไปรท์ ไม่ใช่กรอกมือ

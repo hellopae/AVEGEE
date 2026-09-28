@@ -92,3 +92,14 @@ test('เซฟ/โหลด: mgCd และ speedLv รอดผ่าน snaps
   assert.equal(rst.speedLv, st.speedLv);
   assert.equal(rst.mgCd, st.mgCd);
 });
+
+test('เซฟเก่าที่มี speed 4 โหลดด้วยความเร็วปกติ โดยคง speedLv สถานี', () => {
+  const g = game();
+  g.finishMinigame('sala', true);
+  const oldSave = { ...g.snapshot(), speed: 4 };
+  const restored = createGame();
+  restored.speed = 2;
+  assert.equal(restored.restore(oldSave), true);
+  assert.equal(restored.speed, 1);
+  assert.equal(restored.stations.find(x => x.def.k === 'sala').speedLv, 1);
+});

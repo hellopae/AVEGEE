@@ -6,7 +6,7 @@
 
 ทำให้ 4 อย่าง (ต่อยอดจาก AGAPAE Agent/scripts/make-sprites.py):
   1. ตัดขอบโปร่งทิ้ง  — generator ชอบทิ้งขอบใสไว้เยอะ ทำให้ของดูลอยและเล็กกว่าตัวอื่น
-  2. วางลงผืนจัตุรัส 512×512 ชิดขอบล่าง — ทุกชิ้นจะยืนบนพื้นระดับเดียวกันในเกม
+  2. สถานีเก็บกรอบที่ครอปจริง; สไปรท์อื่นวางลงผืนจัตุรัส 512×512 ชิดขอบล่าง
   3. ลด palette เหลือ 96 สี ไม่ dither — ภาพ pixel/cel-shade อยู่แล้ว แทบไม่เสียรายละเอียด ไฟล์เล็กลงครึ่งหนึ่ง
   4. เซฟไปที่ img/<key>.png ซึ่งเป็นชื่อที่ art.js มองหาอยู่ — ดรอปแล้วเกมเปลี่ยนหน้าตาทันที
 
@@ -376,6 +376,15 @@ def prep(path, name, out_dir=OUT):
 
     scale = min(SIZE / im.width, SIZE / im.height)
     im = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
+
+    if name.startswith('st-') and os.path.abspath(out_dir) == os.path.abspath(os.path.join(ROOT, 'img')):
+        # อาคารวาดโดยยึดขอบล่าง-กึ่งกลางใน art.js; ผืน 512 จัตุรัสทำให้
+        # ป่าดาบ/กระทะเตี้ยมากและป้ายวางตามกรอบอากาศแทนขอบภาพจริง
+        alpha = im.getchannel('A')
+        flat = im.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
+        flat.putalpha(alpha)
+        flat.save(os.path.join(OUT, name + '.png'))
+        return flat.size
 
     canvas = Image.new('RGBA', (SIZE, SIZE), (0, 0, 0, 0))   # 2. ชิดขอบล่าง กึ่งกลางแนวนอน
     canvas.paste(im, ((SIZE - im.width) // 2, SIZE - im.height), im)

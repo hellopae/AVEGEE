@@ -134,7 +134,9 @@ test('เดินตามทางจากสถานีไปตะรา�
   g.advanceAfterlife(walk.duration);
   assert.equal(walk.elapsed, elapsed);
   g.paused = false;
-  g.speed = 2;
+  g.speed = 4; // ค่าเกมเก่าต้องไม่เร่งการเดินวิญญาณอีก
+  g.advanceAfterlife(walk.duration / 2);
+  assert.equal(g.sentenceOf(910, 'prison'), undefined);
   g.advanceAfterlife(walk.duration / 2);
   assert.equal(g.sentenceOf(910, 'prison')?.soul.id, 910);
   g.tick += 6;
