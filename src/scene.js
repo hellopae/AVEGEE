@@ -78,12 +78,14 @@ export function render(ctx, g, t, hover, sel) {
   ctx.imageSmoothingEnabled = false;
 
   // ฉากตามโซนที่กำลังคุมอยู่ — ยังไม่มีไฟล์ของโซนนั้นก็ถอยไปใช้ฉากไทย
-  // หมายเหตุ: buildWalk อ่านลาวาจากภาพ "ใบแรกที่โหลดได้" แล้วจำไว้ตลอดเกม
-  //   ตั้งใจให้เป็นแบบนั้น — ฉากทุกโซนต้องวางผังตรงกัน พิกัดใน data.js จึงใช้ร่วมกันได้
+  // buildWalk อ่านลาวาจากภาพของโซนปัจจุบัน; การย้ายโซนล้าง mask เดิมก่อน
   //   ฉากโซนแบบโฟลเดอร์ (img/Asia/scene-asia.png) มาก่อน · ไม่มีค่อยใช้ img/<scene>.png เดิม (11 ก.ย. 2569)
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
   const bg = zoneImg('scene') || img(zk) || img('scene');
-  if (bg) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); buildWalk(bg); }
+  if (bg) {
+    ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
+    if (buildWalk(bg)) g.syncBlocks(true); // ตรวจตำแหน่งผู้เล่นอีกครั้งหลังอ่านลาวาจริง
+  }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
   // ---- จุดที่สร้างสถานีได้ ----

@@ -12,7 +12,7 @@ import { SCENE, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD } from './data.js';
 import { artUrl, soulKey } from './art.js';
 
 const U = 20;                                   // 20 px บนฉาก = 1 หน่วยโลก
-const W = SCENE.w / U, H = SCENE.h / U;         // พื้นกว้าง 76.4 x ลึก 35.2
+let W = SCENE.w / U, H = SCENE.h / U;
 const toX = sx => sx / U - W / 2;
 const toZ = sy => sy / U - H / 2;
 
@@ -23,7 +23,7 @@ const texCache = new Map();
 // เวอร์ชันเก่าให้หมุนรอบฉากได้ แต่ภาพพื้นถูกวาด perspective มาแล้วจึงโดนเอียงซ้ำ
 // รอบนี้ล็อกทิศและให้ลากเลื่อน/ซูมเท่านั้น จนกว่าจะมี ground art แบบมองจากบนจริง
 const orbit = { yaw: 0, pitch: 0.88, dist: 55, tx: 0, tz: 1 };
-let ground;
+let ground, slab, void_;
 let groundUrl = 'img/scene-ground-v1.png';
 
 function tex(url) {
@@ -60,7 +60,7 @@ export function init(canvas) {
   // ฐานไดโอรามา — แผ่นหินหนาใต้แผนที่
   // ถ้าไม่มีอันนี้ พอหมุนกล้องแล้วจะเห็นแผนที่บางเป็นแผ่นกระดาษ และเห็นพื้นหลังโล่ง ๆ เป็นขอบเทา
   const SLAB = 6;
-  const slab = new THREE.Mesh(
+  slab = new THREE.Mesh(
     new THREE.BoxGeometry(W, SLAB, H),
     new THREE.MeshStandardMaterial({ color: 0x2a1620, roughness: 1 }));
   slab.position.y = -SLAB / 2;
@@ -68,7 +68,7 @@ export function init(canvas) {
   scene.add(slab);
 
   // ความมืดรอบ ๆ ให้สายตาจบที่ขอบแผนที่ ไม่ใช่จบที่ขอบจอ
-  const void_ = new THREE.Mesh(
+  void_ = new THREE.Mesh(
     new THREE.PlaneGeometry(W * 6, H * 8),
     new THREE.MeshBasicMaterial({ color: 0x0d0509 }));
   void_.rotation.x = -Math.PI / 2;
@@ -211,6 +211,15 @@ function groundDecal(key, url, sx, sy, wPx, hPx) {
 }
 
 export function render(g, t) {
+  const nextW = SCENE.w / U, nextH = SCENE.h / U;
+  if (W !== nextW || H !== nextH) {
+    W = nextW; H = nextH;
+    ground.geometry.dispose(); ground.geometry = new THREE.PlaneGeometry(W, H);
+    slab.geometry.dispose(); slab.geometry = new THREE.BoxGeometry(W, 6, H);
+    void_.geometry.dispose(); void_.geometry = new THREE.PlaneGeometry(W * 6, H * 8);
+    orbit.tx = clamp(orbit.tx, -W * 0.2, W * 0.2);
+    orbit.tz = clamp(orbit.tz, -H * 0.18, H * 0.18);
+  }
   // สลับงานวาดตามโซน โดยยังใช้โลก/เซฟชุดเดียวกับมุม 2D
   // สุวรรณภูมิมี ground-only รุ่นทดลอง: ตัดแท่น/รั้ว/พร็อพตั้งออกเพื่อไม่ให้ซ้ำกับ billboard
   // โซนอื่นยังใช้ภาพเต็มตามเดิมจนกว่าจะผ่าน art-direction gate ของโซนแรก
