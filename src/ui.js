@@ -748,9 +748,9 @@ dlg.addEventListener('click', e => {
   if (e.target.closest('[data-close]') && dlg.open) dlg.close();
 });
 
-function modal(html, onOpen) {
+function modal(html, onOpen, cls = '') {
   dlg.innerHTML = html;
-  openDlg('');
+  openDlg(cls);
   dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
   if (onOpen) onOpen(dlg);
 }
@@ -3147,46 +3147,114 @@ function buildTitle() {
 }
 
 // ---------- ตั้งค่า ----------
+/** ปุ่มบันทึก/สลับภาษามีภาพแยกไทย/อังกฤษ (ข้อ B) — เรียกทุกครั้งที่เปิดกล่องตั้งค่า
+ *  และทุกครั้งที่ภาษาเปลี่ยนระหว่างกล่องเปิดอยู่ (ผูกกับ onLangChange ด้านล่าง) */
+function paintSettingsLangAssets(d) {
+  const en = getLang() === 'en';
+  const save = d.querySelector('#s-save-img'); if (save) save.src = en ? 'img/ui/icon-save-eng.png' : 'img/ui/icon-save-th.png';
+  const lg = d.querySelector('#s-lang-img'); if (lg) lg.src = en ? 'img/ui/icon-change-eng.png' : 'img/ui/icon-change-th.png';
+}
+
+/** ข้อ B ชุด 15 — กล่องมืดขอบทอง ตามม็อกอัป UI3-menu-*.jpg
+ *  เปิดจากหน้าเมนูแรก (ยังไม่ started) = ปุ่มเดียวคือบันทึก · เปิดระหว่างเล่น = บ้าน/เริ่มใหม่/บันทึก (B.4) */
 function openSettings() {
-  modal(`<h2>⚙ ตั้งค่า</h2>
-    <div class="setrow"><label>เปิดเสียงทั้งหมด</label>
-      <input type="checkbox" id="s-on" ${AUDIO.on ? 'checked' : ''}></div>
-    <div class="setrow"><label>เสียงเพลง</label>
-      <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
-      <b id="s-bgm-v" style="width:34px;text-align:right;font-variant-numeric:tabular-nums">${Math.round(AUDIO.bgm * 100)}</b></div>
-    <div class="setrow"><label>เสียงเอฟเฟกต์</label>
-      <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
-      <b id="s-sfx-v" style="width:34px;text-align:right;font-variant-numeric:tabular-nums">${Math.round(AUDIO.sfx * 100)}</b></div>
-    <div class="setrow"><label>ความเร็วเดินวาระ</label>
-      <span class="opts" id="s-spd">${[1, 2, 4].map(v =>
-        `<button data-v="${v}" ${g.speed === v ? 'aria-pressed="true"' : ''}>×${v}</button>`).join('')}</span></div>
-    <div class="hint">เสียงเอฟเฟกต์ทั้งหมดสังเคราะห์ในโค้ด ไม่มีไฟล์ให้โหลด ·
-      เพลงอ่านจาก <b>audio/</b> ยังไม่มีไฟล์ก็เล่นได้ตามปกติ เงียบเฉย ๆ</div>
-    <div class="sec">ข้อมูลที่บันทึกไว้</div>
-    <div class="hint">${SAVED ? `มีเกมที่บันทึกไว้ — วาระที่ ${SAVED.tick || 0} · ปิดคดีแล้ว ${SAVED.casesDone || 0}`
-                              : 'ยังไม่มีเกมที่บันทึกไว้'}</div>
-    <div class="row"><button id="s-wipe" ${SAVED ? '' : 'disabled'}
-        style="border-color:var(--destructive);color:var(--destructive)">ลบข้อมูลที่บันทึกไว้</button>
-      <button class="gold" data-close>เสร็จแล้ว</button></div>`,
+  const inGame = started;
+  modal(`<div class="settings-head">
+      <img class="settings-gear" src="img/ui/icon-setting2.png" alt="">
+      <span class="settings-title-pill" data-t="settings.title"></span>
+      <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.png" alt=""></button>
+    </div>
+
+    <div class="settings-row">
+      <img class="settings-row-icon" src="img/ui/icon-music.png" alt="">
+      <div class="settings-row-body">
+        <label data-t="settings.music"></label>
+        <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
+      </div>
+    </div>
+    <div class="settings-row">
+      <img class="settings-row-icon" src="img/ui/icon-sound.png" alt="">
+      <div class="settings-row-body">
+        <label data-t="settings.sounds"></label>
+        <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
+      </div>
+    </div>
+    <div class="hint" data-t="settings.audioHint"></div>
+
+    <div class="settings-row">
+      <span class="settings-row-icon settings-row-icon--txt">×</span>
+      <div class="settings-row-body">
+        <label data-t="settings.speed"></label>
+        <span class="opts" id="s-spd">${[1, 2, 4].map(v =>
+          `<button data-v="${v}" ${g.speed === v ? 'aria-pressed="true"' : ''}>×${v}</button>`).join('')}</span>
+      </div>
+    </div>
+
+    <div class="settings-lang">
+      <label data-t="settings.language"></label>
+      <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
+        <img id="s-lang-img" src="img/ui/icon-change-th.png" alt="">
+      </button>
+    </div>
+
+    <div class="settings-actions">
+      ${inGame ? `<button id="s-home" class="settings-square" data-t-title="settings.home" aria-label="home">
+          <img src="img/ui/icon-home.png" alt=""></button>
+        <button id="s-restart" class="settings-square" data-t-title="settings.restart" aria-label="restart">
+          <img src="img/ui/icon-restart.png" alt=""></button>` : ''}
+      <button id="s-save" class="settings-square settings-square--save" aria-label="save">
+        <img id="s-save-img" src="img/ui/icon-save-th.png" alt="">
+      </button>
+    </div>
+    <div class="hint" id="s-saved-hint" style="text-align:center;min-height:1.4em"></div>`,
     d => {
-      const on = d.querySelector('#s-on');
-      on.onchange = () => { AUDIO.on = on.checked; syncBgm(); saveAudio(); drawMute(); if (AUDIO.on) sfx('crack'); };
+      applyI18n(d);
+      paintSettingsLangAssets(d);
+
       const bind = (id, key) => {
-        const r = d.querySelector(id), out = d.querySelector(id + '-v');
-        r.oninput = () => { AUDIO[key] = r.value / 100; out.textContent = r.value; syncBgm(); };
+        const r = d.querySelector(id);
+        r.oninput = () => { AUDIO[key] = r.value / 100; syncBgm(); };
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
+
       d.querySelectorAll('#s-spd button').forEach(b => b.onclick = () => {
         g.speed = +b.dataset.v; updatePlay();
         d.querySelectorAll('#s-spd button').forEach(x =>
           x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
       });
-      d.querySelector('#s-wipe').onclick = () => {
-        clearSave(); sessionStorage.setItem('avegee.fresh', '1'); location.reload();
+
+      // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
+      d.querySelector('#s-lang-toggle').onclick = e => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setLang((e.clientX - r.left) < r.width / 2 ? 'th' : 'en');
+        paintSettingsLangAssets(d);
       };
-    });
+
+      const savedHint = d.querySelector('#s-saved-hint');
+      d.querySelector('#s-save').onclick = () => {
+        g.save(); sfx('stamp');
+        savedHint.textContent = t('settings.saved');
+      };
+
+      if (inGame) {
+        d.querySelector('#s-home').onclick = () => goMenu();
+        // เริ่มใหม่ระหว่างเล่น — ต้องมีกล่องยืนยันในเกม ห้ามใช้ confirm() ของเบราว์เซอร์ (ข้อ B.4)
+        d.querySelector('#s-restart').onclick = () => {
+          modal(`<h2>${esc(t('settings.restart.confirmTitle'))}</h2>
+            <p style="line-height:var(--leading-body);font-size:var(--text-sm)">${esc(t('settings.restart.confirmBody'))}</p>
+            <div class="row"><button data-close>${esc(t('settings.restart.confirmCancel'))}</button>
+              <button class="gold" id="rgo" style="border-color:var(--destructive);background:var(--destructive)">${esc(t('settings.restart.confirmOk'))}</button></div>`,
+            d2 => d2.querySelector('#rgo').onclick = () => {
+              clearSave();
+              sessionStorage.setItem('avegee.fresh', '1');
+              location.reload();
+            });
+        };
+      }
+    }, 'settings-modal');
 }
+onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAssets(d); });
 
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
 primeAudio();                            // รู้ path เพลงไว้ก่อน (ดูเหตุผลใน sfx.js — Brave ไม่ปล่อยให้ play() ช้า)

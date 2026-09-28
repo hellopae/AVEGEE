@@ -555,10 +555,48 @@ dialog.wide{max-width:860px}
 .pure{border-left-color:#7fd8ff}
 .pure b{color:#7fd8ff}
 
-/* แถบตั้งค่า */
+/* แถบตั้งค่า (ของเดิม — เหลือไว้เผื่อโค้ดอื่นอ้างถึง) */
 .setrow{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:var(--text-sm)}
 .setrow label{flex:1;min-width:0}
 .setrow input[type=range]{width:150px;accent-color:var(--gold)}
+
+/* ---------- หน้าตั้งค่าใหม่ (ข้อ B ชุด 15 — ตามม็อกอัป UI3-menu-*.jpg) ----------
+   กล่องมืดขอบทอง header มีเฟือง+ป้ายทอง "ตั้งค่า" ปิดด้วย X มุมขวา */
+dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
+  background:linear-gradient(180deg,#1c0f14 0%,#170b10 100%);padding:var(--space-5) var(--space-5) var(--space-4)}
+.settings-head{display:flex;align-items:center;gap:12px;margin-bottom:var(--space-5)}
+.settings-gear{width:34px;height:34px;object-fit:contain;flex:none}
+.settings-title-pill{flex:1;text-align:center;background:linear-gradient(180deg,#f3ce80,#c8933f);
+  color:#2a1608;font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:.03em;
+  border-radius:var(--radius);padding:9px 14px;box-shadow:0 2px 0 rgba(0,0,0,.35) inset,0 2px 4px rgba(0,0,0,.4)}
+.settings-close{all:unset;flex:none;width:40px;height:40px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.settings-close img{width:100%;height:100%;object-fit:contain}
+.settings-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.settings-row-icon{width:40px;height:40px;object-fit:contain;flex:none}
+.settings-row-icon--txt{display:flex;align-items:center;justify-content:center;width:40px;height:40px;
+  flex:none;color:var(--gold);font-weight:700;font-size:1.1rem}
+.settings-row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.settings-row-body label{font-size:var(--text-sm);font-weight:600;color:var(--foreground)}
+/* แถบเลื่อนแบบ pill ทอง ให้ใกล้ม็อกอัปมากกว่า accent-color เดิม (ลูกศรกลมสีเข้ม บนราง gold gradient) */
+.settings-row-body input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:14px;
+  background:linear-gradient(180deg,#f4d38a,#c8933f);border-radius:99px;outline:none;
+  box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 2px 4px rgba(0,0,0,.4) inset}
+.settings-row-body input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;
+  border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);
+  border:2px solid #e8c67a;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.5)}
+.settings-row-body input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);border:2px solid #e8c67a;cursor:pointer}
+.settings-lang{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 var(--space-4)}
+.settings-lang label{font-size:var(--text-sm);font-weight:600}
+.lang-toggle{all:unset;cursor:pointer;display:block;min-height:40px}
+.lang-toggle img{display:block;height:40px;width:auto}
+.settings-actions{display:flex;gap:10px;justify-content:center;margin-top:var(--space-2)}
+.settings-square{all:unset;box-sizing:border-box;width:56px;height:56px;cursor:pointer;
+  border-radius:var(--radius-sm);overflow:hidden}
+.settings-square img{width:100%;height:100%;object-fit:contain}
+.settings-square:hover{filter:brightness(1.12)}
+@media(max-width:420px){.settings-square{width:48px;height:48px}.settings-title-pill{font-size:.92rem}}
 
 /* ---------- เวทีแบบเกม Turn-based RPG ----------
    ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้ (เจ้าของสั่ง 8 ก.ย. 2569 พร้อมส่งฉากหลังมาให้)
