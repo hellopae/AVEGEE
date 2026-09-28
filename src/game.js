@@ -63,7 +63,7 @@ export function createGame() {
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
-    mobs: [], guard: null, fxHits: [], transits: [],
+    mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [],
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -802,6 +802,45 @@ const API = {
     this.checkEnd();
   },
 
+  /** Keep a soul outside the destination roster until its map walk is complete. */
+  startAfterlifeWalk(soul, from, to, destination, entry = null) {
+    const start = nearestWalk(from[0], from[1]);
+    const end = nearestWalk(to[0], to[1]);
+    const route = start && end && findPath(start[0], start[1], end[0], end[1]);
+    if (!route?.length || Math.hypot(route.at(-1)[0] - end[0], route.at(-1)[1] - end[1]) > 18) {
+      this.finishAfterlifeWalk({ soul, destination, entry });
+      return false;
+    }
+    const path = [start, ...route];
+    const length = path.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - path[i][0], p[1] - path[i][1]), 0);
+    this.afterlifeWalks.push({ soul, destination, entry, path, elapsed:0,
+      duration:Math.max(1100, length / 0.09), zone:this.zone });
+    return true;
+  },
+
+  finishAfterlifeWalk(walk) {
+    const { soul, destination, entry } = walk;
+    if (destination === 'prison' || destination === 'gate') {
+      if (!this.sentences.some(x => x.soul.id === soul.id && x.zone === (entry?.zone || this.zone)))
+        this.sentences.push(entry);
+    } else if (destination === 'queue') {
+      if (!this.queue.some(x => x.id === soul.id)) this.queue.push(soul);
+      this.returned++;
+    }
+  },
+
+  advanceAfterlife(dt) {
+    if (this.paused || this.over || !Number.isFinite(dt) || dt <= 0) return;
+    for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
+      const walk = this.afterlifeWalks[i];
+      walk.elapsed += dt * this.speed;
+      if (walk.elapsed < walk.duration) continue;
+      this.afterlifeWalks.splice(i, 1);
+      if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
+      this.onChange();
+    }
+  },
+
   finish(st, slot) {
     const i = st.slots.indexOf(slot);
     if (i < 0) return;
@@ -816,8 +855,12 @@ const API = {
         stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right });
       this.log(`🕊️ ${soul.who}ถึงประตูสวรรค์ — รอให้บุญตรวจกรรมคงเหลือ`, 'act');
     } else {
-      this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
-        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone });
+      const entry = { soul, verdict:r, intensity:slot.intensity,
+        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone };
+      const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
+      if (prison) this.startAfterlifeWalk(soul, [st.def.x, st.def.y],
+        [prison.def.x, prison.def.y], 'prison', entry);
+      else this.sentences.push(entry);
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
     this.coin += r.coin;
@@ -854,8 +897,14 @@ const API = {
     if (!x || !x.inspected) return false;
     if (x.repentant) {
       if (!this.stations.some(st => st.def.k === 'sawan' && !st.build)) return false;
+      this.sentences.splice(this.sentences.indexOf(x), 1);
       x.stage = 'gate'; x.checked = false;
       x.rewardEligible = x.verdict.right !== false;
+      const prison = this.stations.find(st => st.def.k === 'tarang');
+      const gate = this.stations.find(st => st.def.k === 'sawan' && !st.build);
+      if (prison && !prison.build) this.startAfterlifeWalk(x.soul,
+        [prison.def.x, prison.def.y], [gate.def.x, gate.def.y], 'gate', x);
+      else this.sentences.push(x);
       this.log(`🕊️ ส่ง${x.soul.who}จากตะรางไปประตูสวรรค์ ให้บุญตรวจกรรม`, 'act');
     } else {
       this.sentences.splice(this.sentences.indexOf(x), 1);
@@ -864,7 +913,10 @@ const API = {
         caseK:x.soul.case || null, deeds:x.soul.deeds.map(d => ({ ...d, known:true })),
         merits:x.soul.merits.filter(m => !m.fake).map(m => ({ ...m })) };
       const soul = this.mkReturnSoul(R);
-      this.queue.push(soul); this.returned++;
+      const prison = this.stations.find(st => st.def.k === 'tarang' && !st.build);
+      const tail = QUEUE_LINE[Math.min(this.queue.length, QUEUE_LINE.length - 1)];
+      if (prison) this.startAfterlifeWalk(soul, [prison.def.x, prison.def.y], tail, 'queue');
+      else { this.queue.push(soul); this.returned++; }
       this.log(`↩️ ${x.soul.who}ยังไม่เข็ด — นิราส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
     }
     this.onChange();
@@ -896,6 +948,11 @@ const API = {
       this.coin += reward;
       this.log(`🌟 ${x.soul.who}หมดกรรม — บุญส่งขึ้นสวรรค์${reward ? ` · พ่อให้รางวัล ${reward} เบี้ยกรรม` : ''}`, 'good');
     }
+    // The verdict is final; keep only a brief visible departure at the gate.
+    const gate = this.stations.find(st => st.def.k === 'sawan' && !st.build);
+    if (gate) this.afterlifeWalks.push({ soul:x.soul, destination:'exit',
+      path:[[gate.def.x, gate.def.y]], elapsed:0, duration:1050, zone:this.zone,
+      exitKind:x.karmaLeft > 0 ? 'reborn' : 'ascended' });
     this.onChange();
     return true;
   },
@@ -2222,6 +2279,12 @@ const API = {
     const z = ZONES.find(x => x.k === k);
     if (!z || !this.canMoveZone(k) || z.k === this.zone) return false;
 
+    // A branch cannot keep drawing its walkers once another map is active.
+    for (const walk of this.afterlifeWalks) {
+      if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
+    }
+    this.afterlifeWalks = [];
+
     // เก็บสาขาเดิมไว้ทั้งกล่อง แล้วหยิบกลับมาตอนย้ายกลับ (เจ้าของสั่ง 10 ก.ย. 2569)
     // เดิมย้ายกลับมาแล้วสถานีทุกหลังหายหมด เหมือนเริ่มสาขาใหม่ทุกครั้ง
     this.zoneSave = this.zoneSave || {};
@@ -2568,7 +2631,8 @@ API.snapshot = function (withEntry = true) {
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       slots: st.slots,
     })),
-    queue: this.queue, held: this.held, sentences:this.sentences, reborn:this.reborn, ascended:this.ascended,
+    queue: this.queue, held: this.held, sentences:this.sentences,
+    afterlifeWalks:this.afterlifeWalks, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
     mobRosterV18: true,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
@@ -2765,6 +2829,12 @@ API.restore = function (d) {
     }
   }
   this.mapV3FixBranches = true;
+  // Saves settle travelers exactly once. Older saves simply have no walkers.
+  this.afterlifeWalks = [];
+  for (const walk of d.afterlifeWalks || []) {
+    if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination))
+      this.finishAfterlifeWalk(walk);
+  }
   this.usedCases = d.usedCases || [];
   this.fights = d.fights || 0;
   this.spawns = d.spawns || 0;

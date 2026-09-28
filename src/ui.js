@@ -120,6 +120,7 @@ let saveAt = 0;
 function frame(now) {
   const dt = Math.min(120, now - last); last = now;
   if (!g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
+  g.advanceAfterlife(dt);
   if (now > saveAt) { saveAt = now + 4000; g.save(); }
   if (!g.paused && !g.over) {
     acc += dt;
@@ -597,6 +598,17 @@ function sideBody() {
 
   // ---- วิญญาณ ----
   if (sel.kind === 'soul') {
+    const walking = g.afterlifeWalks.find(w => w.soul.id === sel.key && w.zone === g.zone);
+    if (walking) {
+      const label = { prison:'กำลังไปตะราง', gate:'กำลังไปประตูสวรรค์',
+        queue:'กำลังกลับคิว', exit:'กำลังออกจากประตูสวรรค์' }[walking.destination];
+      const cl = g.closed.find(x => x.soul.id === walking.soul.id);
+      if (cl) return `<div class="hintline">${label}</div>` + closedCard(cl);
+      return profile(soulKey(walking.soul.sp || 7), walking.soul.who,
+        `สำนวน #${String(walking.soul.id).padStart(3, '0')} · ${label}`,
+        walking.soul.back ? 'กลับมาตัดสินใหม่หลังรับทัณฑ์' : 'กำลังเดินบนฉาก')
+        + `<div class="sec">สำนวนที่นิราอ่านได้</div>${publicDossier(walking.soul, 'row-truth')}`;
+    }
     const q = g.queue.find(s => s.id === sel.key);
     if (q) {                                        // ยังไม่ลงทัณฑ์ — เห็นแค่ที่เขาพูด
       const rec = q.case ? publicDossier(q, 'row-truth') : q.deeds.filter(d => d.known)
