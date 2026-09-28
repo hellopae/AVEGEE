@@ -98,6 +98,20 @@ def prepare_bell(src):
     print(f'bell     {src} {im.size} -> {out.size} => img/ui/icon-bell.png')
 
 
+def prepare_gold_background(src):
+    """ย่อปุ่มทองเปล่าและตัดพิกเซลพื้นขาวออก โดยไม่แตะไฟล์ต้นฉบับ"""
+    im = Image.open(src).convert('RGBA')
+    pixels = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = pixels[x, y]
+            if a and min(r, g, b) >= 250:
+                pixels[x, y] = (r, g, b, 0)
+    im.thumbnail((400, 150), Image.Resampling.LANCZOS)
+    im.save(os.path.join(OUT, 'icon-bg.png'))
+    print(f'gold     {src} -> {im.size} => img/ui/icon-bg.png')
+
+
 def flood_bg_remove(im, tol=26):
     """ตัดพื้นหลังไล่สีออกด้วย flood-fill จากขอบ — พิกเซลติดกันที่สีใกล้เคียงกันเรื่อยๆ (เผื่อไล่สี)"""
     im = im.convert('RGBA')
@@ -142,7 +156,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bell-source', default=os.path.join(RAW, 'icon_bell.png'))
     parser.add_argument('--bell-only', action='store_true')
+    parser.add_argument('--gold-source', default=os.path.join(RAW, 'icon_bg.png'))
+    parser.add_argument('--gold-only', action='store_true')
     args = parser.parse_args()
+    if args.gold_only:
+        prepare_gold_background(args.gold_source)
+        return
     if args.bell_only:
         prepare_bell(args.bell_source)
         return
@@ -184,6 +203,8 @@ def main():
         print(f'glyph-crop {src} {box} => img/ui/{dst} {cropped.size}')
     if os.path.exists(args.bell_source):
         prepare_bell(args.bell_source)
+    if os.path.exists(args.gold_source):
+        prepare_gold_background(args.gold_source)
 
 
 if __name__ == '__main__':

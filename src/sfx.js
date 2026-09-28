@@ -118,7 +118,7 @@ async function findSrc(key) {
  *
  *  รู้ path ไว้ก่อนตั้งแต่ยังไม่มีใครกด → พอถึงจังหวะกดจริง bgm() สั่ง play() ได้ทันที ไม่ต้องรออะไร */
 export function primeAudio(keys = ['bgm-title', 'bgm-zone']) {
-  keys.forEach(k => { findSrc(k); });
+  return Promise.all(keys.map(findSrc));
 }
 
 /** เพลงที่ใช้แทนได้ถ้าเพลงที่ขอยังไม่มีไฟล์
@@ -155,28 +155,27 @@ function startEl(url) {
   if (!el) { el = new Audio(); el.loop = true; el.preload = 'auto'; }
   el.volume = AUDIO.on ? AUDIO.bgm : 0;
   if (!el.src.endsWith(url)) el.src = url;
-  else if (!el.paused) return;                   // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
-  el.play().catch(armRetry);
+  else if (!el.paused) return Promise.resolve(true); // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
+  return el.play().then(() => true, () => { armRetry(); return false; });
 }
 
 export function bgm(key) {
   if (!key) return stopBgm();
-  if (!unlocked) { pendingBgm = key; return; }
+  if (!unlocked) { pendingBgm = key; return Promise.resolve(false); }
   pendingBgm = null;
-  if (cur === key && el && !el.paused) return;
+  if (cur === key && el && !el.paused) return Promise.resolve(true);
   cur = key;
 
   const known = knownSrc(key);
   if (known !== undefined) {                     // รู้อยู่แล้ว → สั่งเล่นทันทีในจังหวะที่ผู้ใช้กด
-    if (known) startEl(known);
-    return;
+    return known ? startEl(known) : Promise.resolve(false);
   }
   // ยังไม่เคยถามไฟล์ชุดนี้ — ต้องรอ แล้วค่อยเล่น (จังหวะอาจหลุด จึงมี armRetry รองรับ)
-  (async () => {
+  return (async () => {
     let url = null;
     for (const k of [key, ...FALLBACK]) { url = await findSrc(k); if (url) break; }
-    if (cur !== key || !url) return;
-    startEl(url);
+    if (cur !== key || !url) return false;
+    return startEl(url);
   })();
 }
 
