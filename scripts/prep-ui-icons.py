@@ -12,6 +12,7 @@
 """
 from PIL import Image
 import os
+import argparse
 from collections import deque
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -83,6 +84,20 @@ def autocrop(im):
     return im.crop((l, t, r, b))
 
 
+def prepare_bell(src):
+    """ตัดพื้นขาว (ถ้ามี) และขอบโปร่งของกระดิ่ง โดยไม่แก้ต้นฉบับ"""
+    im = Image.open(src).convert('RGBA')
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if a and min(r, g, b) >= 250:
+                px[x, y] = (r, g, b, 0)
+    out = autocrop(im)
+    out.save(os.path.join(OUT, 'icon-bell.png'))
+    print(f'bell     {src} {im.size} -> {out.size} => img/ui/icon-bell.png')
+
+
 def flood_bg_remove(im, tol=26):
     """ตัดพื้นหลังไล่สีออกด้วย flood-fill จากขอบ — พิกเซลติดกันที่สีใกล้เคียงกันเรื่อยๆ (เผื่อไล่สี)"""
     im = im.convert('RGBA')
@@ -124,6 +139,13 @@ def flood_bg_remove(im, tol=26):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--bell-source', default=os.path.join(RAW, 'icon_bell.png'))
+    parser.add_argument('--bell-only', action='store_true')
+    args = parser.parse_args()
+    if args.bell_only:
+        prepare_bell(args.bell_source)
+        return
     for src, dst in AUTOCROP.items():
         sp = os.path.join(RAW, src)
         if not os.path.exists(sp):
@@ -160,6 +182,8 @@ def main():
         cropped = autocrop(im)
         cropped.save(os.path.join(OUT, dst))
         print(f'glyph-crop {src} {box} => img/ui/{dst} {cropped.size}')
+    if os.path.exists(args.bell_source):
+        prepare_bell(args.bell_source)
 
 
 if __name__ == '__main__':
