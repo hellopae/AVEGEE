@@ -2,11 +2,13 @@
 .command-wheel{position:absolute;z-index:12;width:clamp(220px,25vw,310px);aspect-ratio:9/11;isolation:isolate}
 .command-segment,.command-center{position:absolute;inset:0;width:100%;height:100%;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;transition:filter .2s,opacity .2s;filter:brightness(.72);color:white;cursor:pointer}
 .command-segment img,.command-center img{width:100%;height:100%;object-fit:fill;pointer-events:none;image-rendering:pixelated}
-.command-segment b,.command-center b{position:absolute;transform:translateX(-50%);font-size:clamp(12px,1.45vw,19px);white-space:nowrap;text-shadow:0 2px 4px #000;line-height:1.2}
+.command-label,.command-center-label{position:absolute;z-index:4;display:block;transform:translateX(-50%);
+  font-size:clamp(12px,1.25vw,17px);font-weight:700;white-space:nowrap;color:#ffe8c2;
+  text-shadow:0 2px 4px #000,0 0 9px #000;line-height:1.25;pointer-events:none}
 .command-segment:hover,.command-segment:focus-visible,.command-segment[aria-expanded=true],.command-center.ready{filter:brightness(1.08)}
 .command-segment:disabled,.command-center:disabled{opacity:.5;cursor:not-allowed}
-.segment-0 b{left:34%;top:27%}.segment-1 b{left:70%;top:34%}.segment-2 b{left:78%;top:73%}.segment-3 b{left:43%;top:91%}
-.command-center{clip-path:ellipse(23% 19% at 41% 50.5%);z-index:2}.command-center b{left:41%;top:63%}.combat-wheel .command-center{pointer-events:none;filter:none}
+.label-0{left:34%;top:27%}.label-1{left:70%;top:34%}.label-2{left:78%;top:73%}.label-3{left:43%;top:89%}
+.command-center{clip-path:ellipse(23% 19% at 41% 50.5%);z-index:2}.command-center-label{left:41%;top:61%;z-index:5}.combat-wheel .command-center{pointer-events:none;filter:none}
 /* ข้อ B.3 คุณเป้ 24 ก.ย. 2569 — เอาแผงสี่เหลี่ยมสีน้ำตาลหลังปุ่มออก ตอนวงคำสั่งเด้งออกมาให้เหลือ
    แต่ปุ่มกลมลอยอยู่เฉย ๆ (เดิม background/box-shadow/border-radius/padding ตรงนี้วาดเป็นกล่องทึบ
    ครอบปุ่มทั้งกลุ่ม) ตัวหนังสือใต้ปุ่มยังอ่านออกอยู่เพราะ .orb-choice b มี text-shadow ทึบจาก index.html แล้ว */
@@ -74,7 +76,9 @@
    ทั้ง 1440 และมือถือ · คุณเป้ยกเลิกเรื่องขยายฉากต่อสู้แล้วสั่งให้เท่ายมทูตคนอื่นแทน — เอา override ทิ้ง
    ทั้งชุด (ทั้งกฎฐานนี้และใน media query ด้านล่าง) ให้ตกลงมาใช้ .trio img ขนาดเดียวกับยมทูตทั้งคอลัมน์
    ลดความสูงของตัวบนสุดลง 20px พอดีที่เคยล้นออกไป */
-.arena .battle-squad.trio img{height:clamp(70px,11vh,110px)}
+.arena .battle-squad.trio{top:52px;bottom:8%;gap:3px}
+.arena .battle-squad.trio>span{flex:1 1 0;min-height:0;justify-content:flex-end}
+.arena .battle-squad.trio img{height:calc(100% - 40px);max-height:110px;min-height:0}
 .arena .battle-squad.trio>span{font-size:11px}
 .crew-cooldown{display:block;width:90%;height:9px;background:#261614;border-radius:10px;overflow:hidden;margin:4px 0}.crew-cooldown i{display:block;height:100%;background:#ffbc43;transition:width .5s linear}
 .combat-wheel .options-0,.combat-wheel .options-1{left:78%;top:0;bottom:auto}.combat-wheel .options-2{left:78%;top:44%}.combat-wheel .options-3{left:78%;top:67%}
@@ -153,7 +157,7 @@ dialog.hudwrap:has(.trial-hud)[open]{position:fixed;inset:0;margin:0;width:100vw
 .trial-hud .hud-opt{min-height:180px;overflow:visible}
 .trial-hud .hud-opt .say{display:block;width:100%;text-align:left;font-size:clamp(14px,1.1vw,18px);line-height:1.45;padding:11px 13px;margin-bottom:8px;background:#443038c9;border-radius:12px}
 .trial-hud .hud-log{font-size:clamp(14px,1.05vw,17px);max-height:140px;line-height:1.55}
-.trial-hud .hud-stage .fig.you{left:22%;bottom:23%;width:20%}
+.trial-hud .hud-stage .fig.you{left:2%;bottom:23%;width:16%}
 .trial-hud .hud-stage .fig.foe{right:7%;bottom:23%;width:25%}
 .trial-hud .hud-stage .fig img{height:clamp(150px,24vh,220px)}
 .trial-hud .hud-bottom{position:absolute;left:14%;bottom:2%;height:auto;padding:0;z-index:12}
@@ -163,12 +167,28 @@ dialog.hudwrap:has(.trial-hud)[open]{position:fixed;inset:0;margin:0;width:100vw
 .trial-hpbar{display:block;width:105px;height:8px;margin-top:4px;border-radius:10px;background:#321d1a;border:1px solid #bb8f4f}
 .trial-hpbar i{display:block;height:100%;border-radius:10px;background:#53d974}
 .trial-hud .court-wheel{left:23%;bottom:24%;width:clamp(205px,23vw,300px)}
-.court-wheel .command-missing{position:absolute;left:48%;top:100%;transform:translateX(-50%);width:230px;text-align:center;color:#ffd6ba;font-size:11px;line-height:1.3;text-shadow:0 1px 4px #000;pointer-events:none}
+.court-wheel .command-missing{position:absolute;left:48%;top:calc(100% + 18px);transform:translateX(-50%);width:min(230px,80vw);text-align:center;color:#ffd6ba;font-size:11px;line-height:1.3;text-shadow:0 1px 4px #000;pointer-events:none}
 .court-guide{box-sizing:border-box;width:min(78vw,1050px);max-width:1050px;max-height:88dvh;padding:34px 42px;overflow-x:hidden;overflow-y:auto;overflow-wrap:anywhere}
 .court-guide table{width:100%;table-layout:fixed}.court-guide td,.court-guide th{overflow-wrap:anywhere}
 .court-guide .guide-close{all:unset;position:sticky;float:right;top:0;right:0;cursor:pointer;width:42px;height:42px}
 .court-guide .guide-close img{width:100%;height:100%;object-fit:contain}
 dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1050px;max-height:88dvh;overflow-x:hidden;overflow-y:auto;overflow-wrap:anywhere;padding:34px 42px}
+.help-reader{position:relative;min-height:min(500px,72dvh);display:flex;flex-direction:column;gap:18px}
+.help-close{position:absolute;right:0;top:0;z-index:2;width:42px;height:42px;padding:0;font-size:22px}
+.help-page{flex:1;padding:30px 52px 12px 0;display:flex;flex-direction:column;justify-content:center;
+  font-size:clamp(18px,1.45vw,22px);line-height:1.7}
+.help-page h2{font-size:clamp(27px,2.4vw,36px);color:#f2c77c;margin:0 0 18px}
+.help-page p{font-size:inherit!important;line-height:inherit!important}
+.help-page .tline{font-size:clamp(16px,1.25vw,19px);line-height:1.6;margin:10px 0}
+.help-page .tline b{font-size:inherit}
+.help-page .help-chapter{color:var(--gold);font-family:var(--font-display);font-size:clamp(24px,2vw,30px)!important;margin:0 0 14px}
+.help-item{max-width:70ch}
+.help-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.help-nav button{min-width:130px;min-height:46px;background:var(--gold);border-color:var(--gold);color:#24120d;font-weight:700}
+.help-nav button:disabled{opacity:.45}.help-count{color:var(--gold);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.help-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:3px 0 0}
+.help-dots button{width:11px;height:11px;min-height:0;padding:0;border-radius:50%;background:#6d5053;border:0}
+.help-dots button[aria-current=page]{background:var(--gold);box-shadow:0 0 0 3px rgba(212,163,85,.25)}
 @media(max-width:700px){
   .map-controls{gap:6px;bottom:calc(env(safe-area-inset-bottom) + 1.5%)}
   .map-controls .hud-open-court,.map-controls .hud-walk-time{width:116px;height:44px}
@@ -183,7 +203,7 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .trial-hud .top-left-icons{left:12px;top:16px;gap:7px}
   .trial-hud .top-left-icons button{width:40px;height:40px}
   .trial-hud .trial-close{right:12px;top:15px;width:41px;height:41px}
-  .trial-hud .hud-stage .fig.you{left:2%;bottom:27%;width:24%}
+  .trial-hud .hud-stage .fig.you{left:0;bottom:27%;width:17%}
   .trial-hud .hud-stage .fig.foe{right:0;bottom:27%;width:27%}
   .trial-hud .hud-stage .fig img{height:145px}
   .trial-hud .court-wheel{left:18%;bottom:25%;width:210px}
@@ -198,6 +218,8 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .trial-hud .port.you img{width:64px;height:64px}
   .court-guide{width:100vw;max-width:none;max-height:100dvh;height:100dvh;border-radius:0;padding:22px 18px}
   dialog.help-modal[open]{width:100vw;max-width:none;max-height:100dvh;height:100dvh;border-radius:0;padding:65px 20px 24px}
+  .help-reader{min-height:calc(100dvh - 90px)}.help-page{padding:15px 0;font-size:17px;justify-content:flex-start}
+  .help-close{top:-48px}.help-nav button{min-width:100px;font-size:12px}.help-dots{gap:6px}
   dialog.pause-modal[open]{min-height:240px;padding:24px 18px}
   .pause-head{padding-left:0;gap:12px;margin-bottom:28px}.pause-head img{width:46px;height:46px}
   .pause-head strong{font-size:21px}.pause-actions{gap:8px}.pause-actions button{width:90px;font-size:12px}
