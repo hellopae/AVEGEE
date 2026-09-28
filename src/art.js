@@ -293,7 +293,7 @@ export function drawStationShadow(ctx, def) {
 
 /** อาคารสถานี — ไฟล์ img/st-<k>.png วางกึ่งกลาง-ฐานที่ (bx,by) กว้าง bw
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
-export function drawBuilding(ctx, def, t) {
+export function drawBuilding(ctx, def, t, uiScale = 1) {
   if (def.bx == null) return;
   const b = stationBox(def);
   if (b) { ctx.drawImage(b.im, b.x, b.y, b.w, b.h); return; }
@@ -312,7 +312,7 @@ export function drawBuilding(ctx, def, t) {
   ctx.font = `${Math.round(h * 0.34)}px system-ui, sans-serif`;
   ctx.fillStyle = '#ffd9b0';
   ctx.fillText(def.glyph, def.bx, y + h * 0.46);
-  ctx.font = '600 12px "IBM Plex Sans Thai", system-ui, sans-serif';
+  ctx.font = `600 ${12 * uiScale}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.fillStyle = '#d4a355';
   ctx.fillText(def.name, def.bx, y + h * 0.78);
   ctx.restore();

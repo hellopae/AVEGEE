@@ -7,7 +7,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
-import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt } from './scene.js';
+import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
@@ -773,13 +773,24 @@ document.querySelectorAll('.tabs [data-tab]').forEach(el =>
 $('#atk').onclick = tryFight;
 $('#fab-atk').onclick = tryFight;
 function goTrial() {
-  // ยืนไม่ถึงแท่นก็เดินไปให้ก่อน แล้วค่อยกดใหม่ — ไม่ปิดกั้นเฉย ๆ โดยไม่บอกทาง
-  if (!onBench()) { g.walkTo(SPOTS.bench.x + 40, SPOTS.bench.y); return; }
+  if (!g.queue[0] || g.over || g.battle) return;
   openTrial();
 }
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
+// กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
+new MutationObserver(() => {
+  if (!dlg.open || dlg.querySelector(':scope > .modal-corner-close') ||
+      dlg.querySelector('.settings-close,.trial-close') ||
+      (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
+  const close = document.createElement('button');
+  close.className = 'modal-corner-close';
+  close.setAttribute('aria-label', t('common.close'));
+  close.innerHTML = '<img src="img/ui/icon-close.png" alt="">';
+  close.onclick = () => dlg.close();
+  dlg.append(close);
+}).observe(dlg, {childList:true, subtree:false, attributes:true, attributeFilter:['open']});
 
 // ตัวจับกลางสำหรับปุ่มปิดทุกปุ่มในทุกโมดัล — ผูกครั้งเดียวตอนโหลดหน้า
 // เดิมแต่ละโมดัลผูก onclick ให้ปุ่มของตัวเองตอน render ซึ่งพลาดได้หลายทาง
@@ -882,14 +893,6 @@ function drawOverlay() {
   }
   if (!s) return;
 
-  // ปุ่มเริ่มสอบสวนลอยอยู่เหนือบัลลังก์ — เจ้าของสั่ง 9 ก.ย. 2569 ว่าต้องมีปุ่มอยู่ในฉากด้วย
-  // (เดิมอยู่แต่ในแถบบัญชาการเหนือฉาก ซึ่งบนมือถือต้องเลื่อนหา)
-  const tb = document.createElement('button');
-  tb.className = 'trialfab';
-  tb.dataset.sx = SPOTS.throne.x; tb.dataset.sy = SPOTS.throne.y - 96;
-  tb.onclick = ev => { ev.stopPropagation(); goTrial(); };
-  ov.appendChild(tb); place(tb);
-
   const rec = s.case ? publicDossier(s, 'line') : s.deeds.filter(d => d.known)
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
@@ -910,29 +913,26 @@ function drawOverlay() {
     `<span class="who">${esc(s.who)}</span>${said}`);
 }
 
-/** ยืนอยู่บนแท่นพิพากษาหรือยัง — เจ้าของสั่ง 8 ก.ย. 2569 ว่าห้องสอบสวน
- *  ต้องเปิดได้จากตรงนี้เท่านั้น ไม่ใช่กดจากแท็บข้างล่างเมื่อไหร่ก็ได้ */
-const BENCH_REACH = 170;
-function onBench() {
-  return Math.hypot(g.player.x - SPOTS.bench.x, g.player.y - SPOTS.bench.y) <= BENCH_REACH;
-}
-
-/** อัปเดตปุ่มสอบสวนทุกเฟรม — แถบบัญชาการวาดใหม่แค่ตอนเปลี่ยนวาระ ตามการเดินไม่ทัน */
+/** อัปเดตทางเข้าศาลตามคิววิญญาณทุกเฟรม */
 function updateTrialBtn() {
   const s = g.queue[0];
-  const near = onBench();
   const b = deckBar.querySelector('#d-trial');
   if (b) {
-    if (!s) { b.disabled = true; b.textContent = '🔍 ยังไม่มีใครหน้าแท่น'; b.className = ''; }
-    else { b.disabled = false; b.className = near ? 'gold' : ''; b.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 เดินไปแท่นพิพากษา'; }
+    b.disabled = !s;
+    b.className = s ? 'gold' : '';
+    b.textContent = s ? t('hud.openCourt') : t('hud.noCourtShort');
   }
-  // ปุ่มเดียวกันลอยอยู่เหนือบัลลังก์บนฉาก — ขึ้นเฉพาะตอนมีคนยืนหน้าแท่นจริง
+  // ทางเข้าหลักอยู่ล่างกลาง; เก็บปุ่มลอยเก่าที่อาจค้างจากการวาดก่อนหน้า
   const f = ov.querySelector('.trialfab');
-  if (!f) return;
-  f.hidden = !s || !!g.over || !!g.battle;
-  if (f.hidden) return;
-  f.textContent = near ? '🔍 เริ่มการสอบสวน' : '🚶 ไปแท่นพิพากษา';
-  f.classList.toggle('gold', near);
+  if (f) f.remove();
+  const court = $('#hud-open-court');
+  if (court) {
+    court.disabled = !s || !!g.over || !!g.battle;
+    court.title = court.disabled ? t('hud.noCourt') : t('hud.openCourt');
+    court.setAttribute('aria-label', court.title);
+    const note = $('#map-control-note');
+    if (note) { note.hidden = !court.disabled; note.textContent = t('hud.noCourtShort'); }
+  }
 }
 
 /** ปุ่มสู้ลอยเหนือหัวผี (ข้อ 3 ของเจ้าของ 11 ก.ย. 2569)
@@ -959,7 +959,7 @@ function updateMobFab() {
     };
     ov.appendChild(f);
   }
-  f.dataset.sx = n.m.x; f.dataset.sy = n.m.y - MOB.h - 8;
+  f.dataset.sx = n.m.x; f.dataset.sy = n.m.y - MOB.h * CHAR_SCALE_MAP - 8;
   place(f);
 }
 
@@ -1011,9 +1011,7 @@ function updateFrontierFab() {
  *    พักคดีนี้ไว้            → #t-skip
  *    ขังไว้ก่อน             → #t-jail (โผล่เมื่อมีตะราง — ในแถบเดิมเป็นปุ่มกดไม่ได้เปล่า ๆ)
  *    ออกหมาย/ประทับตรา      → #t-go (เส้นทางตัดสินจริงคือ doVerdict ที่เดียวกันอยู่แล้ว)
- *  **ไม่ตัด** ปุ่ม 🔍 เริ่มการสอบสวน เพราะเป็นทางเข้าหน้านั้น ไม่มีในหน้านั้นเอง
- *  ผลข้างเคียงที่ตั้งใจ: ต้องเดินไปแท่นพิพากษาก่อนจึงสั่งอะไรได้ — ตรงกับกติกา 8 ก.ย. 2569
- *  ที่ว่าห้องสอบสวนเปิดจากแท่นเท่านั้น (ปุ่มลอยเหนือบัลลังก์ .trialfab ก็พาไปที่เดียวกัน) */
+ *  ทางเข้าหลักอยู่ที่ปุ่มเปิดศาลล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
 function drawDeck() {
   const s = g.queue[0];
   if (!s || g.over) {
@@ -1022,7 +1020,7 @@ function drawDeck() {
   }
   deckBar.innerHTML = `
     <div class="grp"><span class="lb">แท่นพิพากษา</span>
-      <div class="row2"><button class="gold" id="d-trial">🔍 เริ่มการสอบสวน</button></div></div>`;
+      <div class="row2"><button class="gold" id="d-trial">${esc(t('hud.openCourt'))}</button></div></div>`;
   const tr = deckBar.querySelector('#d-trial');
   if (tr) tr.onclick = goTrial;
   updateTrialBtn();
@@ -1278,7 +1276,7 @@ function openHelp() {
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
     ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด<br>
     <span style="color:var(--muted-foreground);font-size:var(--text-xs)">
-    เกมจะค่อย ๆ สอนทีละเรื่องเองผ่านแถบสีทองใต้หัวเรื่อง — หน้านี้ไว้เปิดย้อนดูตอนลืม</span></p>
+    ${esc(t('hud.bookTip'))}</span></p>
 
     <div class="tline"><b>สามแถบที่ต้องดูตลอด</b><div>
       ❤️ <b>บารมี</b> = ชีวิตของท่าน หมดแล้วจบเกม ·
@@ -1329,7 +1327,7 @@ function openHelp() {
           ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ต้องซื้อเพิ่มที่แท็บก่อสร้างก่อน</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p>
-    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`, null, 'help-modal');
 }
 
 // ---------- Phase 3 · หน้าต่างมินิเกม ----------
@@ -1554,7 +1552,7 @@ function openTrial() {
     // ปุ่มออกหมายกด disabled แล้วเงียบ ไม่มีทางรู้ว่าขาดอะไร (ข้อ B คุณเป้ 24 ก.ย. 2569)
     // — ต้องมีข้อความบนจอเสมอ ไม่ใช่แค่ title ที่ disabled button ไม่โชว์บนจอสัมผัส
     const missingParts = ready ? [] : [
-      !pick.st && 'ที่ไหน', !pick.cr && 'ใครคุม', !(heaven || pick.inten) && 'ความแรง',
+      !pick.st && t('trial.where'), !pick.cr && t('trial.who'), !(heaven || pick.inten) && t('trial.force'),
     ].filter(Boolean);
 
     // ---- แถบสถานะบนสุด ----
@@ -1617,7 +1615,8 @@ function openTrial() {
       crewNow && `<span class="command-selected selected-crew">${orbImg(artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`))}<b>${esc(crewNow.name)}</b></span>`,
       (pick.inten || heaven) && `<span class="command-selected selected-force">${heaven ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
     ].filter(Boolean).join('');
-    const trialWheel = commandWheel({ready, selected, groups:[
+    const trialWheel = commandWheel({ready, selected,
+      missing: missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', groups:[
       {choices:powerChoices},{choices:destinationChoices},{choices:crewChoices},{choices:forceChoices,disabled:heaven}
     ]});
 
@@ -1635,13 +1634,14 @@ function openTrial() {
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
       <div class="top-left-icons">
-        <button class="x" data-close title="ปิดห้องสอบสวน">✕</button>
-        <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"><img src="img/ui/icon-setting2.png" alt=""></button>
+        <button class="trial-pause" data-trial-pause aria-label="${esc(t('trial.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+        <button class="icon-settings-mini" data-arena-settings title="${esc(t('trial.settings'))}"><img src="img/ui/icon-setting2.png" alt=""></button>
       </div>
+      <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.png" alt=""></button>
 
       <div class="hud-body">
         <div class="hud-stage">
-          <span class="trial-case-no">สำนวน #${String(s.id).padStart(3, '0')}</span>
+          <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
           <div class="fig you"><img src="${heroFace()}" alt=""
                  onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
             <span class="nm">${esc(HERO_NAME)}</span></div>
@@ -1652,14 +1652,13 @@ function openTrial() {
         </div>
 
         <div class="hud-right">
-          ${missingParts.length ? `<div class="trial-missing" role="status">⚠️ ออกหมายไม่ได้ — ยังไม่ได้เลือก ${missingParts.join(' · ')}</div>` : ''}
           <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
             <h4>${esc(t('trial.readAloud'))}</h4>
-            ${s.face ? `<div class="deed" style="color:var(--accent-foreground);margin-bottom:4px">${esc(s.face)}</div>` : ''}
-            ${claimed.map(m => `<div class="deed" style="color:var(--success)">🪷 ${esc(m.t)}
-              ${m.note ? `<i style="color:var(--warning)">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
-            ${known.map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
+            ${s.face ? `<div class="deed allegation">${esc(s.face)}</div>` : ''}
+            ${claimed.map(m => `<div class="deed merit">🪷 ${esc(m.t)}
+              ${m.note ? `<i class="observation">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
+            ${known.map(d => `<div class="deed allegation">${deedLine(d)}</div>`).join('')}
             ${!s.face && !claimed.length && !known.length ? '<div class="deed">สำนวนว่างเปล่า</div>' : ''}
             ${s.back ? `<div class="deed" style="color:var(--destructive)">↩️ ลงทัณฑ์ ${s.back.gave} วาระแล้วยังไม่สำนึก · ถูกส่งกลับเข้าคิวก่อนเกิดใหม่</div>` : ''}
           </div>
@@ -1679,7 +1678,7 @@ function openTrial() {
         <div class="port you">
           <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
-          <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</small></span>
+          <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(t('trial.hp'))} ${Math.round(g.hp)}/${g.hpMax}</small><span class="trial-hpbar"><i style="width:${Math.max(0,Math.min(100,100*g.hp/g.hpMax))}%"></i></span></span>
         </div>
         <!-- การ์ดรูป+ชื่อวิญญาณ (.port.foe) เอาออก 18 ก.ย. 2569 (ข้อ A ของคุณเป้) — บนจอแคบมันทับ
              .hud-log ด้านบน และข้อมูลตัวตนซ้ำกับ .fig.foe ที่อยู่บนเวทีอยู่แล้ว (รูป+ชื่อเดียวกัน)
@@ -1691,11 +1690,12 @@ function openTrial() {
 
     // ---- ผูกปุ่ม ----
     bindCommandWheel(dlg);
+    dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
-      guide.innerHTML = `<button class="guide-close">ปิดคู่มือ ✕</button><h2>คู่มือนรก</h2>
+      guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.png" alt=""></button><h2>คู่มือนรก</h2>
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
         <h3>ส่งคดีไปที่ไหน</h3><p>เลือกสถานที่ให้ตรงกับกรรมหลักที่พบในสำนวน ต้องสร้างสถานที่และมีที่ว่างก่อน</p>
         <table><thead><tr><th>คดี</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
@@ -1750,7 +1750,7 @@ function openTrial() {
   // ทุกวินาที เพราะจะรื้อ DOM ทั้งกล่องทิ้งโดยไม่จำเป็น (เจอปัญหาอิลิเมนต์อื่นเด้งหาย/โฟกัสหลุดตอนทดสอบจริง)
   // เคลียร์ทิ้งตอนปิดกล่อง ไม่งั้น interval ค้างวิ่งทั้งเกม
   const roarTick = setInterval(() => {
-    if (!dlg.open) return;
+    if (!dlg.open || !dlg.querySelector('.trial-hud')) { clearInterval(roarTick); return; }
     const b = dlg.querySelector('[data-pw="roar"]');
     if (!b) return;
     const ok = g.powerReady('roar');
@@ -2385,11 +2385,28 @@ function openBag() {
 const coachEl = $('#coach');
 let coachStep = null;
 
-function markTaught(k) {
-  if (!g.taught.includes(k)) g.taught.push(k);
+function openCoachInbox() {
+  const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
+  if (!available.length) return;
+  const unread = available.filter(st => !g.taught.includes(st.k));
+  let index = unread.length ? available.indexOf(unread[unread.length - 1]) : available.length - 1;
+  unread.forEach(st => g.taught.push(st.k));
   coachStep = null;
   g.save();
-  drawCoach();
+  const paint = () => {
+    const st = available[index];
+    dlg.innerHTML = `<div class="coach-reader-head"><img src="img/ui/icon-bell.png" alt=""><h2>${esc(t('coach.notice'))}</h2></div>
+      <p class="coach-reader-count">${esc(t('coach.chapter'))} ${TUTOR.indexOf(st) + 1} / ${TUTOR.length}</p>
+      <h3>${esc(st.title)}</h3><p>${esc(st.text)}</p>
+      ${st.hint ? `<div class="coach-reader-hint">▸ ${esc(st.hint)}</div>` : ''}
+      <div class="coach-reader-nav">
+        <button id="coach-prev" ${index === 0 ? 'disabled' : ''}>← ${esc(t('coach.previous'))}</button>
+        <button id="coach-next" ${index === available.length - 1 ? 'disabled' : ''}>${esc(t('coach.next'))} →</button>
+      </div>`;
+    dlg.querySelector('#coach-prev').onclick = () => { index--; paint(); };
+    dlg.querySelector('#coach-next').onclick = () => { index++; paint(); };
+  };
+  modal('', paint, 'coach-modal');
 }
 
 function drawCoach() {
@@ -2401,10 +2418,11 @@ function drawCoach() {
   if (g.over) { coachEl.hidden = true; return; }
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
-  if (!coachStep) { coachEl.hidden = true; return; }
+  const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
+  if (!coachStep && !available.length) { coachEl.hidden = true; return; }
 
   // ขั้นของพญายมต้องเป็นโมดัล — ท่านพูดเองแล้วเกมหยุดฟัง
-  if (coachStep.boss) {
+  if (coachStep?.boss) {
     const st = coachStep;
     coachEl.hidden = true;
     // ปิดขั้นนี้ตรงนี้เลย แล้วปล่อยให้ตัวจับ close ของ dlg เป็นคนเรียกขั้นถัดไป
@@ -2415,20 +2433,11 @@ function drawCoach() {
     bossModal(st.title, st.text + (st.hint ? `\n\n▸ ${st.hint}` : ''), 'รับทราบ');
     return;
   }
-  const n = TUTOR.indexOf(coachStep) + 1;
+  const unread = available.filter(st => !g.taught.includes(st.k)).length;
   coachEl.hidden = false;
-  coachEl.innerHTML = `
-    <div class="txt"><b>${esc(coachStep.title)}</b>
-      <p>${esc(coachStep.text)}</p>
-      ${coachStep.hint ? `<div class="tip">▸ ${esc(coachStep.hint)}</div>` : ''}</div>
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-      <span class="step">${n}/${TUTOR.length}</span>
-      <button class="sm" id="coach-ok">เข้าใจแล้ว</button></div>`;
-  // เจอตอนทดสอบข้อ C 24 ก.ย. 2569: ปุ่มนี้จับ coachStep ด้วย closure ตัวแปรนอกฟังก์ชัน
-  // ถ้าแถบเก่าที่ถูกซ่อนไปแล้ว (ไม่ทันถูกแทนที่ด้วย HTML ใหม่) ยังมี handler ค้างอยู่ใน DOM
-  // แล้วโดนยิง click เข้ามาตอน coachStep กลายเป็น null ไปแล้ว (ขั้นอื่นเคลียร์ไปก่อน) จะพังทันที
-  const stepAtRender = coachStep;
-  $('#coach-ok').onclick = () => { if (stepAtRender) markTaught(stepAtRender.k); };
+  coachEl.innerHTML = `<button class="coach-bell ${unread ? 'has-unread' : ''}" aria-label="${esc(t('coach.notice'))}">
+    <img src="img/ui/icon-bell.png" alt="">${unread ? `<span class="coach-count">${unread}</span>` : ''}</button>`;
+  coachEl.querySelector('button').onclick = openCoachInbox;
 }
 
 // ---------- ปุ่ม ----------
@@ -2436,6 +2445,27 @@ function drawCoach() {
  *  เพราะ pauseForDlg() จำค่า paused ตอนกล่องใบแรกเปิด แล้วคืนค่านั้นตอนปิด
  *  ถ้าเข้าเกมมาแบบพักอยู่ ค่าที่ถูกคืนก็คือ "พัก" ตลอดไป */
 function resume() { userPaused = false; if (!g.over && g.paused) { g.paused = false; updatePlay(); } }
+
+function openPause(allowReplacing = false) {
+  if (g.over || (dlg.open && !allowReplacing)) return;
+  if (allowReplacing) bgm('bgm-zone');
+  const before = userPaused;
+  pauseForDlg();
+  modal(`<div class="pause-head">
+      <img src="img/ui/icon-pause.png" alt="">
+      <strong>${esc(t('pause.title'))}</strong>
+    </div>
+    <nav class="pause-actions" aria-label="${esc(t('pause.title'))}">
+      <button id="pause-home"><img src="img/ui/icon-home.png" alt=""><span>${esc(t('pause.home'))}</span></button>
+      <button id="pause-resume"><img src="img/ui/icon-play.png" alt=""><span>${esc(t('pause.resume'))}</span></button>
+      <button id="pause-settings"><img src="img/ui/icon-setting2.png" alt=""><span>${esc(t('pause.settings'))}</span></button>
+    </nav>`, d => {
+      d.querySelector('#pause-home').onclick = goMenu;
+      d.querySelector('#pause-resume').onclick = () => d.close();
+      d.querySelector('#pause-settings').onclick = openSettings;
+    }, 'pause-modal');
+  onDlgClose(() => { userPaused = before; releaseDlgPause(); });
+}
 
 function updatePlay() {
   $('#play').textContent = g.paused ? '▶ เดินวาระ' : '⏸ พัก';
@@ -2456,6 +2486,12 @@ function updatePlay() {
   // ไอคอนหยุด/เล่นบน HUD ใหม่ (ข้อ D.3) — สลับภาพเดียวกับความหมายปุ่ม #play ข้างบน
   const hp = $('#hud-pause-img');
   if (hp) hp.src = g.paused ? 'img/ui/icon-play.png' : 'img/ui/icon-pause.png';
+  const walk = $('#hud-walk-time');
+  if (walk) {
+    walk.textContent = g.paused ? t('hud.walkTime') : t('hud.walking');
+    walk.classList.toggle('is-walking', !g.paused);
+    walk.setAttribute('aria-pressed', String(!g.paused));
+  }
 }
 $('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
@@ -2470,11 +2506,29 @@ $('#menu').onclick = goMenu;
 // ---------- ข้อ D ชุด 15 — ปุ่ม HUD ใหม่ (ไอคอนลอยบนแผนที่) ----------
 // ปุ่มเดิม (#play/#help/#bag/#settings ฯลฯ) ยังอยู่ในโค้ด แค่ย้ายเข้า legacy-drawer (D.6)
 // ปุ่มใหม่เรียกฟังก์ชันเดียวกันตรงๆ ไม่ได้สร้างกลไกซ้ำ
-$('#hud-pause').onclick = () => $('#play').click();
+$('#hud-pause').onclick = openPause;
 $('#hud-settings').onclick = () => openSettings();
 $('#hud-book').onclick = () => openHelp();
 $('#hud-bag').onclick = () => openBag();
 $('#hud-open-court').onclick = () => goTrial();
+const mapControls = document.createElement('div');
+mapControls.className = 'map-controls';
+const openCourtButton = $('#hud-open-court');
+openCourtButton.replaceWith(mapControls);
+mapControls.append(openCourtButton);
+const walkTimeButton = document.createElement('button');
+walkTimeButton.id = 'hud-walk-time';
+walkTimeButton.className = 'hud-walk-time';
+mapControls.append(walkTimeButton);
+const mapControlNote = document.createElement('small');
+mapControlNote.id = 'map-control-note';
+mapControls.append(mapControlNote);
+walkTimeButton.onclick = () => {
+  if (g.over) return;
+  userPaused = false;
+  g.paused = false;
+  updatePlay();
+};
 
 const legacyDrawer = $('#legacy-drawer');
 function openLegacyDrawer() { legacyDrawer.hidden = false; }
@@ -2490,6 +2544,7 @@ function paintHudLangAssets() {
 }
 paintHudLangAssets();
 onLangChange(paintHudLangAssets);
+onLangChange(() => { updatePlay(); updateTrialBtn(); drawCoach(); });
 
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
  *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
@@ -3241,7 +3296,7 @@ function buildTitle() {
         location.reload();
       });
   };
-  $('#t-intro').onclick = () => openIntro(true);
+  $('#t-intro')?.closest('.title-secondary')?.remove();
   $('#t-set').onclick = () => { unlock(); openSettings(); };
 }
 

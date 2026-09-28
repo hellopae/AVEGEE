@@ -12,7 +12,7 @@ function sector(from, to) {
   pts.push(point(from,218));
   return `polygon(${pts.join(',')})`;
 }
-export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected=''}) {
+export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing=''}) {
   const labels = battle ? [t('battle.attack'),t('battle.power'),t('battle.crew'),t('battle.item')]
                         : [t('trial.power'),t('trial.where'),t('trial.who'),t('trial.force')];
   const first = battle ? 7 : 2;
@@ -24,6 +24,7 @@ export function commandWheel({battle=false, ready=true, busy=false, groups=[], s
       `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?esc(t('trial.warrant')):'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}"><img src="img/ui/Button1.png" alt=""><b>${esc(t('trial.warrant'))}</b></button>`}
     ${groups.map((g,i)=>g.choices?`<div class="command-options options-${i}" data-options="${i}" inert aria-label="${labels[i]}">${g.choices}</div>`:'').join('')}
     ${selected}
+    ${missing ? `<small class="command-missing" role="status">${esc(missing)}</small>` : ''}
   </div>`;
 }
 export function bindCommandWheel(root) {

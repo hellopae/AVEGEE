@@ -7,9 +7,14 @@ import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, 
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
-const CREW_H = 82;       // ความสูงตัวละครในพิกัดฉาก (ฉาก 1527px กว้าง)
-const HERO_H = 92;
-const SOUL_H = 64;
+export const UI_SCALE_MAP = 1.2;
+export const CHAR_SCALE_MAP = 0.8;
+const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
+const CREW_H = 82 * CHAR_SCALE_MAP;
+const HERO_H = 92 * CHAR_SCALE_MAP;
+const SOUL_H = 64 * CHAR_SCALE_MAP;
+const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
+  drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0;
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
@@ -25,11 +30,11 @@ export const scaleFor = cv => cv.width / SCENE.w;
 function tag(ctx, x, y, t, [text, color]) {
   const bob = Math.sin(t / 420) * 2;
   ctx.save();
-  ctx.font = '600 13px "IBM Plex Sans Thai", system-ui, sans-serif';
+  ctx.font = `600 ${13 * UI_SCALE_MAP}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  const w = ctx.measureText(text).width + 16, h = 21, yy = y + bob;
+  const w = ctx.measureText(text).width + 16 * UI_SCALE_MAP, h = 21 * UI_SCALE_MAP, yy = y + bob;
   ctx.fillStyle = 'rgba(20,10,14,.88)';
-  rr(ctx, x - w / 2, yy - h / 2, w, h, 7); ctx.fill();
+  rr(ctx, x - w / 2, yy - h / 2, w, h, 7 * UI_SCALE_MAP); ctx.fill();
   ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
   ctx.fillStyle = color; ctx.fillText(text, x, yy + 0.5);
   ctx.restore();
@@ -101,7 +106,7 @@ export function render(ctx, g, t, hover, sel) {
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว
   for (const st of g.stations) at(depthOf(st.def), () => drawStation(ctx, g, st, t));
   // ทุกสาขามีด่านชายแดนของตัวเอง ใช้ประตูผังเดียวกันแต่เก็บระลอกแยกโซน
-  at(depthOf(FRONTIER), () => drawBuilding(ctx, FRONTIER, t));
+  at(depthOf(FRONTIER), () => drawBuilding(ctx, FRONTIER, t, UI_SCALE_MAP));
 
   // ---- ไฮไลต์สถานีที่เมาส์ชี้ ----
   if (hover) {
@@ -189,10 +194,10 @@ export function render(ctx, g, t, hover, sel) {
       ctx.strokeStyle = `rgba(224,74,47,${0.55 + q * 0.45})`; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
-    drawStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
+    mapStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
     if (d <= MOB.fabReach) return;
-    tag(ctx, m.x, m.y - MOB.h - 8, t,
+    tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
         canThrow  ? [`🔥 กดขว้างลูกไฟ ×${PA}`, '#d4a355']
                   : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
   }));
@@ -214,8 +219,8 @@ export function render(ctx, g, t, hover, sel) {
 
   // พ่อค้านรกอยู่ริมแม่น้ำทุกโซน รับซื้อของจากชายแดนและขายคัมภีร์
   at(1e5 + MERCHANT.y, () => {
-    drawStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
-    tag(ctx, MERCHANT.x, MERCHANT.y - MERCHANT.h - 8, t, ['🧳 ซื้อขาย', '#f7c371']);
+    mapStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
+    tag(ctx, MERCHANT.x, MERCHANT.y - MERCHANT.h * CHAR_SCALE_MAP - 8, t, ['🧳 ซื้อขาย', '#f7c371']);
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
@@ -223,7 +228,7 @@ export function render(ctx, g, t, hover, sel) {
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
   if (g.guard) at(g.guard.y, () => {
     if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-    drawStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
+    mapStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
   });
 
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
@@ -310,17 +315,17 @@ function drawStation(ctx, g, st, t) {
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
     if (im) ctx.drawImage(im, d.bx - bw / 2, d.by - bw, bw, bw);
-    else drawBuilding(ctx, d, t);
-    const W = 120, bx = d.bx - W / 2, by = d.by + 10;
-    ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12, 6); ctx.fill();
-    ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12, 6); ctx.fill();
+    else drawBuilding(ctx, d, t, UI_SCALE_MAP);
+    const W = 120 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 10;
+    ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12 * UI_SCALE_MAP, 6); ctx.fill();
+    ctx.fillStyle = '#d4a355';        rr(ctx, bx, by, W * Math.max(0.02, p), 12 * UI_SCALE_MAP, 6); ctx.fill();
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร หาตัวจริงที่กำลังสร้างหลังนี้อยู่
     // (buildK ตรงกับ d.k) แล้วใช้ชื่อของเขา (ตามโซนผ่าน crewName แล้ว) แทนพิมพ์ "ทัณฑ์" ตรง ๆ
     const builder = g.crew.find(c => c.buildK === d.k);
     label(ctx, st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
-  drawBuilding(ctx, d, t);
+  drawBuilding(ctx, d, t, UI_SCALE_MAP);
   if (st.fire > 0) {                                // ผีกำลังเผาอยู่ — ไฟไต่ขึ้นตามความเสียหาย
     const bw = d.bw || 180;
     const n = 1 + Math.round(st.fire / 34);
@@ -330,15 +335,15 @@ function drawStation(ctx, g, st, t) {
     ctx.save(); ctx.globalAlpha = 0.55 + q * 0.45;
     label(ctx, '⚠️', d.bx, d.by - (d.bw || 180) * 0.62, 34, '#ff6a4a');
     ctx.restore();
-    const W = 110, bx = d.bx - W / 2, by = d.by + 24;
-    ctx.fillStyle = 'rgba(0,0,0,.7)'; rr(ctx, bx, by, W, 8, 4); ctx.fill();
-    ctx.fillStyle = '#ff6a4a';        rr(ctx, bx, by, W * (st.fire / 100), 8, 4); ctx.fill();
+    const W = 110 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 24;
+    ctx.fillStyle = 'rgba(0,0,0,.7)'; rr(ctx, bx, by, W, 8 * UI_SCALE_MAP, 4); ctx.fill();
+    ctx.fillStyle = '#ff6a4a';        rr(ctx, bx, by, W * (st.fire / 100), 8 * UI_SCALE_MAP, 4); ctx.fill();
   }
 }
 
 /** ป้ายวงกลม "มีวิญญาณอยู่กี่ดวง" เหนือสถานี — กดแล้วเปิดป๊อปอัปของสถานีนั้น
  *  วงแหวนรอบนอกคือความคืบหน้าของดวงที่ใกล้ครบวาระที่สุด */
-export const BADGE_R = 27;
+export const BADGE_R = 27 * UI_SCALE_MAP;
 /** จุดที่ป้ายวงกลมลอยอยู่ — ทั้งตอนวาดและตอนเช็คคลิกต้องใช้ตัวนี้ตัวเดียวกัน */
 export function badgePos(def) {
   const top = topOf(def);
@@ -369,7 +374,7 @@ function soulBadge(ctx, g, st, t, sel) {
 
   // จำนวนดวง
   const n = st.slots.length;
-  ctx.beginPath(); ctx.arc(x + BADGE_R - 2, cy + BADGE_R - 6, 13, 0, 7);
+  ctx.beginPath(); ctx.arc(x + BADGE_R - 2, cy + BADGE_R - 6, 13 * UI_SCALE_MAP, 0, 7);
   ctx.fillStyle = '#7d2f2a'; ctx.fill();
   ctx.strokeStyle = 'rgba(255,225,195,.85)'; ctx.lineWidth = 1.5; ctx.stroke();
   ctx.restore();
@@ -401,11 +406,11 @@ function buildPromptRect(ctx, def, afford) {
   const cx = def.x, cy = Math.max(46, def.y - 122);   // ลอยเหนือหัวตัวเรา ไม่บังตัวละคร
   const l1 = `${def.glyph} ${def.name}`;
   const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
-  ctx.font = '700 20px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  ctx.font = `700 ${20 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w1 = ctx.measureText(l1).width;
-  ctx.font = '600 15px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif';
+  ctx.font = `600 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w2 = ctx.measureText(l2).width;
-  const w = Math.max(w1, w2) + 30, h = 58;
+  const w = Math.max(w1, w2) + 30 * UI_SCALE_MAP, h = 58 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
   return { bx, by, w, h };
 }
@@ -429,8 +434,8 @@ function buildPrompt(ctx, def, t, afford) {
   ctx.fillStyle = 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
   ctx.strokeStyle = afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
   ctx.lineWidth = 2; ctx.stroke();
-  label(ctx, l1, bx + w / 2, by + 19, 20, '#ffe7c4');
-  label(ctx, l2, bx + w / 2, by + 41, 15, afford ? '#d4a355' : '#b09a92');
+  label(ctx, l1, bx + w / 2, by + 19 * UI_SCALE_MAP, 20, '#ffe7c4');
+  label(ctx, l2, bx + w / 2, by + 41 * UI_SCALE_MAP, 15, afford ? '#d4a355' : '#b09a92');
 }
 
 /** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
@@ -442,8 +447,8 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
 function bubble(ctx, text, x, y) {
-  ctx.font = '600 15px "IBM Plex Sans Thai",sans-serif';
-  const w = Math.min(300, ctx.measureText(text).width + 20), h = 26;
+  ctx.font = `600 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
+  const w = Math.min(300 * UI_SCALE_MAP, ctx.measureText(text).width + 20 * UI_SCALE_MAP), h = 26 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
@@ -454,7 +459,7 @@ function bubble(ctx, text, x, y) {
 }
 
 function label(ctx, text, x, y, size, color = '#fff') {
-  ctx.font = `600 ${size}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
+  ctx.font = `600 ${size * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(0,0,0,.75)';
   ctx.strokeText(text, x, y);
@@ -485,9 +490,10 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 /** คลิกโดนตัวไหนบนฉาก — คืน {kind,key} ที่แผงข้อมูลเอาไปแสดงต่อ
  *  ไล่จากตัวที่ผู้เล่นตั้งใจกดมากที่สุดไปหาน้อยที่สุด (เปรต > วิญญาณ > ยมทูต > ตัวเรา) */
 export function hitActor(g, sx, sy) {
-  const near = (x, y, r = 44) => Math.hypot(x - sx, y - sy) < r && sy < y + 16;
-  if (near(MERCHANT.x, MERCHANT.y, 54)) return { kind:'merchant', key:0 };
-  if (g.bossCleared?.[g.zone] && near(1260, 558, 54)) return { kind:'boss', key:g.zone };
+  const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
+  const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
+  if (near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
+  if (g.bossCleared?.[g.zone] && near(1260, 558, radius(54))) return { kind:'boss', key:g.zone };
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };
   // ป้ายวงกลมเหนือสถานี — กดแล้วเปิดหน้าสถานีนั้น
@@ -498,7 +504,7 @@ export function hitActor(g, sx, sy) {
   }
   for (let i = 0; i < g.queue.length; i++) {
     const p = QUEUE_LINE[i];
-    if (p && near(p[0], p[1], 34)) return { kind: 'soul', key: g.queue[i].id };
+    if (p && near(p[0], p[1], radius(34))) return { kind: 'soul', key: g.queue[i].id };
   }
   for (const c of g.crew)
     if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
