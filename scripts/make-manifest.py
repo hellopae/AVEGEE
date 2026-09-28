@@ -15,9 +15,10 @@ zones — รูปของโซน 2-3 ในโฟลเดอร์ย่�
   **ดรอปรูปโซนแล้วต้องรัน prep-art.py (หรือสคริปต์นี้) ไม่งั้นเกมไม่รู้ว่ามีไฟล์ใหม่**
   preload.js โหลดชุดของโซนที่เซฟค้างอยู่ให้ด้วย ส่วนโซนอื่นโหลดตอนย้ายไปถึง
 
-boxes — กรอบเนื้อภาพ (ส่วนที่ทึบ) ของอาคาร st-* ทุกไฟล์ เป็นสัดส่วน 0-1 ของผืนจัตุรัส
+boxes — กรอบเนื้อภาพ (ส่วนที่ทึบ) ของอาคาร st-* ทุกไฟล์ เป็นสัดส่วน 0-1 ของขนาดภาพจริง
   art.js ใช้บีบอาคารของโซนอื่นให้อยู่ในกรอบเนื้อภาพของอาคารโซน 1 หลังเดียวกัน
   (รูปโซน 2 สัดส่วนไม่ตรงโซน 1 หลายหลัง — ถ้าวาดเต็มจัตุรัสจะล้นทับทางเดินกับหลังข้าง ๆ)
+stationSizes — ขนาดพิกเซลของภาพสถานีแต่ละไฟล์ ใช้รักษาสัดส่วนจริงขณะวางบนผัง
 """
 import json, os
 from PIL import Image
@@ -54,16 +55,20 @@ def main():
         if names:
             zones[sub.lower()] = [f'{sub}/{f}' for f in names]
 
-    boxes = {}
+    boxes, station_sizes = {}, {}
     for rel in [f for f in files if f.startswith('st-')] + [p for v in zones.values() for p in v if p.split('/')[-1].startswith('st-')]:
         im = Image.open(os.path.join(IMG, rel))
-        if im.mode != 'RGBA' or im.width != im.height:
+        if im.mode != 'RGBA':
             continue
+        key = os.path.splitext(rel.split('/')[-1])[0]
+        station_sizes[key] = [im.width, im.height]
         b = im.getchannel('A').point(lambda v: 255 if v > 40 else 0).getbbox()
         if b:
-            boxes[os.path.splitext(rel.split('/')[-1])[0]] = [round(v / im.width, 4) for v in b]
+            boxes[key] = [round(b[0] / im.width, 4), round(b[1] / im.height, 4),
+                          round(b[2] / im.width, 4), round(b[3] / im.height, 4)]
 
-    out = {'critical': crit, 'rest': rest, 'zones': zones, 'boxes': boxes}
+    out = {'critical': crit, 'rest': rest, 'zones': zones, 'boxes': boxes,
+           'stationSizes': station_sizes}
     with open(os.path.join(IMG, 'manifest.json'), 'w') as fh:
         json.dump(out, fh, ensure_ascii=False, indent=0)
     print(f'manifest.json: critical {len(crit)} ไฟล์ ({mb(crit):.1f} MB) · '

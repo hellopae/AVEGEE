@@ -49,7 +49,6 @@ const TH = {
   'settings.restart.confirmOk': 'ยืนยันเริ่มใหม่',
   'settings.close': 'ปิด',
   'settings.saved': 'บันทึกแล้ว',
-  'settings.speed': 'ความเร็วเดินวาระ',
   'settings.audioHint': 'เสียงเอฟเฟกต์สังเคราะห์ในโค้ด ไม่ต้องโหลดไฟล์ · เพลงอ่านจาก audio/ ไม่มีไฟล์ก็เล่นได้ตามปกติ เงียบเฉยๆ',
 
   'hud.pause': 'หยุด',
@@ -79,7 +78,6 @@ const TH = {
   'hud.build': 'ก่อสร้าง',
   'hud.info': 'ข้อมูล',
   'hud.log': 'บันทึก',
-  'hud.speed': 'ความเร็ว',
   'hud.zone': 'ย้ายโซน',
   'hud.rank': 'ยศ',
 
@@ -142,7 +140,6 @@ const EN = {
   'settings.restart.confirmOk': 'Confirm restart',
   'settings.close': 'Close',
   'settings.saved': 'Saved',
-  'settings.speed': 'Game speed',
   'settings.audioHint': 'Sound effects are synthesized in code, nothing to load · music streams from audio/ — no file yet plays fine, just silent.',
 
   'hud.pause': 'Pause',
@@ -172,7 +169,6 @@ const EN = {
   'hud.build': 'Build',
   'hud.info': 'Info',
   'hud.log': 'Log',
-  'hud.speed': 'Speed',
   'hud.zone': 'Change zone',
   'hud.rank': 'Rank',
 

@@ -833,7 +833,7 @@ const API = {
     if (this.paused || this.over || !Number.isFinite(dt) || dt <= 0) return;
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
-      walk.elapsed += dt * this.speed;
+      walk.elapsed += dt;
       if (walk.elapsed < walk.duration) continue;
       this.afterlifeWalks.splice(i, 1);
       if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
@@ -2659,6 +2659,7 @@ API.save = function () {
 
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
+  this.speed = 1; // เซฟเก่าที่เคยเร่งเวลาและออบเจ็กต์เกมเดิมกลับสู่ความเร็วปกติ
   // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เซฟเก่ามีค่า fuel (ฟืน) ไม่ใช่ food (เสบียง)
   // ยกมา 1:1 ให้ผู้เล่นไม่เสียเปรียบ (จำนวนคงเดิม แค่เปลี่ยนความหมาย) · เซฟใหม่มี d.food อยู่แล้วไม่ต้องแปลง
   if (d.food == null && d.fuel != null) d.food = d.fuel;

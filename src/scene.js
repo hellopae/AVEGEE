@@ -4,7 +4,7 @@
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
+         drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
 export const UI_SCALE_MAP = 1.2;
@@ -121,7 +121,7 @@ export function render(ctx, g, t, hover, sel) {
       ? true
       : (g.stations.some(x => x.def.k === def.k) || spot?.k === def.k));
     if (shown) {
-      const [x1, y1, x2, y2] = def.hit;
+      const [x1, y1, x2, y2] = stationHitBox(def);
       ctx.strokeStyle = '#ffd27a'; ctx.lineWidth = 2.5;
       rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.stroke();
     }
@@ -342,7 +342,10 @@ function drawStation(ctx, g, st, t) {
     const left = Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
-    if (im) ctx.drawImage(im, d.bx - bw / 2, d.by - bw, bw, bw);
+    if (im) {
+      const bh = bw * im.naturalHeight / im.naturalWidth;
+      ctx.drawImage(im, d.bx - bw / 2, d.by - bh, bw, bh);
+    }
     else drawBuilding(ctx, d, t, UI_SCALE_MAP);
     const W = 120 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 10;
     ctx.fillStyle = 'rgba(0,0,0,.74)'; rr(ctx, bx, by, W, 12 * UI_SCALE_MAP, 6); ctx.fill();
@@ -367,7 +370,7 @@ function drawStation(ctx, g, st, t) {
       drawFire(ctx, d.bx - bw * 0.28 + i * (bw * 0.28), d.by - 6, 34 + st.fire * 0.22, t + i * 400, 3);
     const q = 0.5 + 0.5 * Math.sin(t / 150);
     ctx.save(); ctx.globalAlpha = 0.55 + q * 0.45;
-    label(ctx, '⚠️', d.bx, d.by - (d.bw || 180) * 0.62, 34, '#ff6a4a');
+    label(ctx, '⚠️', d.bx, (topOf(d) ?? d.by - (d.bw || 180)) - 18, 34, '#ff6a4a');
     ctx.restore();
     const W = 110 * UI_SCALE_MAP, bx = d.bx - W / 2, by = d.by + 24;
     ctx.fillStyle = 'rgba(0,0,0,.7)'; rr(ctx, bx, by, W, 8 * UI_SCALE_MAP, 4); ctx.fill();
@@ -437,7 +440,7 @@ export function nearBuild(g, x, y) {
  *  เหนือหัวตัวละคร cy = def.y-122 ซึ่งบางหลัง (โดยเฉพาะหลังเตี้ย/แคบ) ป้ายลอยพ้นกรอบ def.hit ไปเลย
  *  ผู้เล่นเห็นป้าย "กดตรงนี้" แล้วกดตรงป้ายจริง ๆ แต่กรอบคลิกจริงอยู่คนละที่ กดเท่าไหร่ก็ไม่ติด) */
 function buildPromptRect(ctx, def, afford) {
-  const cx = def.x, cy = Math.max(46, def.y - 122);   // ลอยเหนือหัวตัวเรา ไม่บังตัวละคร
+  const cx = def.x, cy = Math.max(46, (topOf(def) ?? def.by - def.bw) - 40 * UI_SCALE_MAP);
   const l1 = `${def.glyph} ${def.name}`;
   const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
   ctx.font = `700 ${20 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
@@ -507,11 +510,15 @@ export function toScene(cv, e) {
 }
 
 /** คลิกโดนสถานีไหน (คืน def — จะสร้างแล้วหรือยังไม่สร้างก็ได้) */
+const stationHitBox = def => typeof document === 'undefined' ? def.hit : (bodyBoxOf(def) || def.hit);
 export function hitStation(sx, sy) {
   // ไล่จากกรอบเล็กไปใหญ่ เผื่อกรอบซ้อนกัน จะได้เลือกอันที่เจาะจงกว่า
   return [...STATIONS]
-    .sort((a, b) => area(a.hit) - area(b.hit))
-    .find(d => sx >= d.hit[0] && sx <= d.hit[2] && sy >= d.hit[1] && sy <= d.hit[3]) || null;
+    .sort((a, b) => area(stationHitBox(a)) - area(stationHitBox(b)))
+    .find(d => {
+      const h = stationHitBox(d);
+      return sx >= h[0] && sx <= h[2] && sy >= h[1] && sy <= h[3];
+    }) || null;
 }
 
 /** คลิกโดนซุ้มประตูชายแดนหรือไม่ */
