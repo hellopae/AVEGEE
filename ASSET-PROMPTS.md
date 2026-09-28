@@ -369,7 +369,6 @@ full body, clothing and silhouette must read instantly at very small size
 
 | key | prompt (ต่อท้ายบล็อกสไตล์ ไม่ต้องใส่ chibi) |
 |---|---|
-| `mob-krasue` | Thai krasue ghost: a floating severed woman's head with long black hair and a beautiful pale face, glowing internal organs — heart, lungs and a long trailing intestine — hanging beneath the neck, the whole mass lit from inside with a sickly green-orange glow, floating above the ground, **no body, no legs** |
 | `mob-krahang` | Thai krahang ghost: a shirtless dark-skinned man in a red loincloth crouched low in a flying posture, arms spread wide gripping two enormous woven bamboo winnowing baskets used as wings, a wooden rice pestle held between his knees, wild matted hair, mad grin |
 | `mob-pop` | Thai phi pop: a gaunt villager possessed by a spirit, dull grey skin stretched tight over the ribs, mouth smeared dark, crouched on all fours like an animal, head twisted up toward the viewer, eyes solid white with no pupils, torn farmer's clothes |
 | `mob-tanee` | Thai phi tani: a beautiful pale woman in a traditional green-and-gold Thai sabai dress standing half-merged with the trunk of a banana tree, long black hair, green ghostly glow, her lower half becoming the trunk and roots, banana leaves framing her |
@@ -524,7 +523,7 @@ standing to their right, shoulders rotated about 40 degrees, both eyes still vis
 | `fx-hypno` | 🌀 สะกดจิต | ✅ มีแล้ว |
 | `fx-claw` | ตอนคู่ต่อสู้สวนกลับ | ✅ มีแล้ว · ต่อสายแล้ว |
 
-**ชุดนี้ครบแล้ว 8 ก.ย. 2569** — เหลือที่ยังขาดทั้งเกมแค่ `mob-krasue` กับ `hero-yama-side`
+**ชุดนี้ครบแล้ว 8 ก.ย. 2569** — ภาพที่ยังขาดคือ `hero-yama-side`
 
 **บล็อกสไตล์เฉพาะชุดนี้** (ต่างจากชุดอื่น — เป็นเอฟเฟกต์ ไม่ใช่วัตถุ)
 ```

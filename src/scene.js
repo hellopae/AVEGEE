@@ -180,17 +180,13 @@ export function render(ctx, g, t, hover, sel) {
   });
 
   // ---- เปรตที่มาก่อกวน ----
-  // เจ้าของยืนติดตัวเปรตแล้วไม่รู้ว่ากดฟาดได้ (7 ก.ย. 2569) — ต้องมีป้ายบอกเสมอ
-  //   ประชิดแล้ว  → วงแดงใต้ตีน + ป้าย "⚔ กดเว้นวรรค"  (ฟาดฟรี)
-  //   ยังไกลอยู่   → ป้าย "🔥 ขว้างได้" ถ้ามีลูกไฟ · ไม่มีก็บอกให้เดินเข้าไป
-  // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกกระสุนออกจากตวาดข่มขู่แล้ว ใช้ g.fireAmmo ของตัวเอง
-  const PA = g.fireAmmo;
+  // ปีศาจบนแผนที่เข้าฉากต่อสู้เสมอ; ลูกไฟใช้ได้เฉพาะในฉากต่อสู้
   // ผีวาดทับอาคารเสมอ (แต่ยังอยู่ใต้ตัวเรา) — เจ้าของเจอ 10 ก.ย. 2569 ว่ามันไปยืนหลังอาคาร
   // แล้วหายไปทั้งตัว ทั้งที่เป็นสิ่งเดียวที่ต้องรีบหาให้เจอ
   g.mobs.forEach((m, i) => at(1e6 + m.y, () => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
     const d = Math.hypot(m.x - g.player.x, m.y - g.player.y);
-    const near = d <= MOB.reach, canThrow = !near && d <= MOB.throw && PA > 0;
+    const near = d <= MOB.fabReach;
     if (near) {                                       // วงแดงเต้น ๆ บอกว่าเอื้อมถึงแล้ว
       const q = 0.5 + 0.5 * Math.sin(t / 170);
       ctx.strokeStyle = `rgba(224,74,47,${0.55 + q * 0.45})`; ctx.lineWidth = 3;
@@ -200,8 +196,7 @@ export function render(ctx, g, t, hover, sel) {
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
     if (d <= MOB.fabReach) return;
     tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
-        canThrow  ? [`🔥 กดขว้างลูกไฟ ×${PA}`, '#d4a355']
-                  : ['👹 เดินเข้าไปหยุดมัน', '#c8b0a8']);
+        ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
   }));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
@@ -209,8 +204,8 @@ export function render(ctx, g, t, hover, sel) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
-    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : cleared ? 1260 : 790;
-    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : 558;
+    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : cleared ? SPOTS.bossPier.x : 790;
+    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : cleared ? SPOTS.bossPier.y : 558;
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
@@ -502,7 +497,7 @@ export function hitActor(g, sx, sy) {
   const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
   if (near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
-  if (g.bossCleared?.[g.zone] && near(1260, 558, radius(54))) return { kind:'boss', key:g.zone };
+  if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };
   // ป้ายวงกลมเหนือสถานี — กดแล้วเปิดหน้าสถานีนั้น
