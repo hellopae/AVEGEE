@@ -38,29 +38,18 @@ body{
   color:var(--foreground); font-family:var(--font-sans); font-size:var(--text-base);
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1480px;margin:0 auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);min-height:100%}
+/* ---------- ข้อ D ชุด 15 — .wrap เป็นเปลือกเกมเต็มจอ (แทนหน้าเว็บเลื่อนแบบเดิม) ----------
+   เคารพ safe-area (รอยบาก/แถบโฮมมือถือ) ตามกติกา portrait-first */
+.wrap{position:fixed;inset:0;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background:#0b0508;overflow:hidden}
 
-/* ---------- แถบทรัพยากร ---------- */
+/* ---------- แถบทรัพยากรเดิม (เหลือไว้ให้ header ใน legacy-drawer ใช้) ---------- */
 header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
 #ava{object-fit:cover;object-position:center top;
   background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px}
 h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
 h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
-/* ลอยทับอยู่บนแผนที่ 8 ก.ย. 2569 — แบบเดียวกับแถบสถานะในหน้าสอบสวน
-   เดิมเป็นแถบสีน้ำตาลคั่นเหนือฉาก กินที่และดูขาดจากภาพ */
-.res{position:absolute;top:calc(var(--space-2) + 7px);left:calc(var(--space-2) + 7px);
-  right:calc(var(--space-2) + 7px);z-index:6;
-  display:flex;gap:5px;flex-wrap:wrap;align-items:center;
-  /* ข้อ A คุณเป้เจอ 25 ก.ย. 2569 (Dale พบตอนรีวิวชุด 10) — .res ลอยทับ #cv เต็มแถบ ที่ 390×844
-     แถบนี้เคยกิน 136px จาก 164px ของแคนวาส (ตัวกล่อง flex ทั้งก้อนกินพื้นที่แตะแม้ช่องว่างระหว่างชิป)
-     แตะอาคารสูงในภาพช่วงบนจึงโดนกล่องว่างของ .res แทนแคนวาสด้านล่าง — ให้ตัวกล่องไม่กิน pointer เลย
-     ปล่อยให้แตะทะลุไปโดนแคนวาสได้ เหลือแค่ตัวชิปจริงที่ยังกดเปิดคำอธิบายได้ (ดูรายงาน Toby ข้อ A) */
-  pointer-events:none}
-.res .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);
-  backdrop-filter:blur(3px);font-size:var(--text-xs);padding:4px 9px;
-  box-shadow:0 2px 8px rgba(0,0,0,.45);pointer-events:auto}
-.res .bar{width:56px}
-.res .bar.mini{width:26px}
 /* ปุ่มระบบย้ายขึ้นมาบนหัวเรื่อง 8 ก.ย. 2569 — เดิมอยู่ใต้ฉาก ต้องเลื่อนหาทุกครั้ง */
 .sysbtn{display:flex;gap:5px;flex-wrap:wrap;width:100%;justify-content:flex-end}
 .sysbtn button{padding:5px 10px;min-height:0;font-size:var(--text-xs)}
@@ -82,13 +71,21 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
    (เดิมแผงอยู่ข้าง ๆ ทำให้ฉากเหลือความกว้างไม่ถึงสองในสาม) */
 .below{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--space-3);align-items:start}
 @media(max-width:900px){.below{grid-template-columns:1fr}}
-.stage{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:var(--space-2);position:relative;overflow:hidden}
+/* ---------- ข้อ D ชุด 15 — .stage เต็มพื้นที่ที่เหลือของจอ (ไม่มีกรอบ/แถบข้อความรอบนอกแบบเดิม)
+   .scene-box ล็อกอัตราส่วน 1527:704 อยู่ข้างใน จัดกลางด้วย flex — เกิด letterbox บน/ล่างหรือซ้าย/ขวา
+   แทนการครอป (ยังไม่ทำ D.1 ส่วนภาพ/พิกัดใหม่รอบนี้ — ดูรายงาน Toby ว่าทำไม) */
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;
+  background:#0b0508;display:flex;align-items:center;justify-content:center}
+/* ขนาดจริง (px) ตั้งโดย fitSceneBox() ใน ui.js ผ่าน ResizeObserver — CSS aspect-ratio ล้วนๆ
+   ผสมกับ flex-centering มีเคสมุมขอบที่ clamp ผิดแกน (max-width ตัดแล้ว height ไม่รีเคลียร์ตาม)
+   ใช้ JS วัดจริงชัวร์กว่า กัน #ov/canvas เพี้ยนตำแหน่งซึ่งกระทบการคลิกทั้งเกม */
+.scene-box{position:relative}
+.scene-box canvas{position:absolute;inset:0;width:100%;height:100%}
 
 /* ป้ายบอกว่าวาระหยุดเดินอยู่ — ของเดิมรู้ได้จากตัวหนังสือบนปุ่มใต้ฉากเท่านั้น
    ผู้เล่นเลยนั่งรอทัณฑ์ที่ค้าง 0% อยู่นานโดยไม่รู้ว่าเกมพักอยู่ (เจ้าของเจอ 8 ก.ย. 2569) */
 .stage.resting::after{content:"⏸ พักอยู่ — กด \201Cเดินวาระ\201D ให้เวลาเดินต่อ";
-  position:absolute;left:50%;bottom:var(--space-4);transform:translateX(-50%);z-index:8;
+  position:absolute;left:50%;bottom:calc(var(--space-4) + 64px);transform:translateX(-50%);z-index:8;
   background:rgba(12,6,9,.9);border:1px solid var(--gold);color:var(--gold);
   border-radius:99px;padding:7px 16px;font-size:var(--text-sm);white-space:nowrap;
   backdrop-filter:blur(3px);box-shadow:0 4px 18px rgba(0,0,0,.6);
@@ -98,7 +95,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 
 /* ---------- ชั้นซ้อนบนฉาก: บับเบิลคำพูด + เมนูพลัง ----------
    ทุกตำแหน่งคิดเป็น % ของภาพฉาก จึงเลื่อนตามขนาดจอเองโดยไม่ต้องคำนวณใหม่ */
-#ov{position:absolute;inset:var(--space-2);pointer-events:none;font-size:var(--text-xs)}
+#ov{position:absolute;inset:0;pointer-events:none;font-size:var(--text-xs)}
 #ov>*{position:absolute}
 
 /* หมุดเหนือหัวตัวละคร — เอาเมาส์ไปชี้ถึงจะกางบับเบิลออกมา
@@ -1277,6 +1274,84 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .mini-goal{margin:8px 0 14px;padding:8px 12px;border:1px solid rgba(212,163,85,.35);
   border-radius:8px;background:rgba(212,163,85,.08);color:var(--gold);font-size:var(--text-xs);
   line-height:var(--leading-body)}
+
+/* ================= ข้อ D ชุด 15 — HUD ใหม่ลอยทับแผนที่ (UI2-th/eng.jpg) =================
+   ทุกจุดยึดกับ .stage (เต็มจอ) เป็น % ตามตำแหน่งที่ครอปดูจากม็อกอัปจริง (ดูสัดส่วนในรายงาน Toby) */
+.hud-res{position:absolute;left:3%;top:calc(env(safe-area-inset-top) + 2.4%);z-index:6;
+  display:flex;gap:clamp(8px,1.6vw,18px);align-items:center;pointer-events:none}
+.hud-res .chip{pointer-events:auto;display:flex;align-items:center;gap:6px;background:transparent;
+  border:0;padding:0;font-size:1rem}
+.hud-res .chip img{width:clamp(26px,3.4vw,40px);height:clamp(26px,3.4vw,40px);object-fit:contain;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))}
+.hud-res .chip b{font-family:var(--font-display);font-size:clamp(1rem,2.1vw,1.4rem);color:#ffe9b0;
+  text-shadow:0 2px 3px rgba(0,0,0,.85);font-variant-numeric:tabular-nums}
+.hud-res .chip.mob-warn{color:var(--destructive)}
+.hud-res .chip.mob-warn b{color:var(--destructive)}
+
+.hud-top-right{position:absolute;right:3%;top:calc(env(safe-area-inset-top) + 2.4%);z-index:6;
+  display:flex;gap:clamp(8px,1.4vw,14px)}
+.hud-icon-btn{all:unset;box-sizing:border-box;cursor:pointer;
+  width:clamp(40px,5.6vw,58px);height:clamp(40px,5.6vw,58px);flex:none}
+.hud-icon-btn img{width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
+.hud-icon-btn:hover img{transform:scale(1.08)}
+.hud-icon-btn--lg{width:clamp(48px,6.6vw,64px);height:clamp(48px,6.6vw,64px)}
+
+.hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
+  display:flex;align-items:flex-end;gap:10px}
+.hud-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;width:clamp(60px,7.4vw,84px);flex:none}
+.hud-avatar img{width:100%;aspect-ratio:1;object-fit:cover;object-position:top;border-radius:10px;
+  border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6)}
+.hud-ava-rank{color:#ffd76b;font-size:clamp(10px,1.3vw,13px);text-shadow:0 1px 3px rgba(0,0,0,.85);
+  margin-top:2px}
+.hud-hpbar{display:block;width:100%;height:6px;border-radius:99px;background:rgba(0,0,0,.55);
+  overflow:hidden;margin-top:3px;border:1px solid rgba(0,0,0,.4)}
+.hud-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#5fd987,#2f9d5c)}
+.hud-avatar small{display:block;color:#f2e6d6;font-size:clamp(9px,1.15vw,11px);margin-top:2px;
+  text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
+
+.hud-open-court{all:unset;box-sizing:border-box;cursor:pointer;position:absolute;left:50%;
+  bottom:calc(env(safe-area-inset-bottom) + 2.4%);transform:translateX(-50%);z-index:6;
+  height:clamp(40px,6.2vh,58px)}
+.hud-open-court img{height:100%;width:auto;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55))}
+.hud-open-court:hover img{filter:drop-shadow(0 3px 8px rgba(0,0,0,.55)) brightness(1.08)}
+
+.hud-mini-goal{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 9%);
+  transform:translateX(-50%);z-index:5;width:min(560px,64vw);margin:0;text-align:center;
+  background:rgba(12,6,9,.78);backdrop-filter:blur(2px)}
+/* ต้องลอยเหนือทั้งแถวไอคอนล่าง (การ์ดยมบาทน้อย+หนังสือ+กระเป๋า+เปิดศาล) เสมอ ไม่งั้นบังกันจนกดไม่ติด
+   (วัดจริงด้วย Playwright: การ์ดยมบาทน้อยสูงสุดในแถวนั้น ~138px ที่ 1440×810 → เผื่อ 22% ของความสูงจอ) */
+.hud-coach{position:absolute;left:3%;right:3%;bottom:calc(env(safe-area-inset-bottom) + 22%);
+  z-index:7;margin:0;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+@media(max-width:520px){
+  .hud-res{gap:8px}
+  .hud-res .chip b{font-size:.85rem}
+  .hud-bottom-left{gap:6px}
+  .hud-mini-goal{width:88vw;font-size:11px;top:calc(env(safe-area-inset-top) + 12%)}
+  .hud-coach{bottom:calc(env(safe-area-inset-bottom) + 26%);padding:10px 12px}
+  .hud-coach .step{display:none}
+}
+@media(max-height:520px){.hud-coach{bottom:calc(env(safe-area-inset-bottom) + 30%)}}
+/* จอเตี้ยมาก (มือถือแนวนอน ~390×844 หมุนนอน) — ย่อทุกอย่างอีกขั้น กันชนกันเอง */
+@media(max-height:420px){
+  .hud-icon-btn{width:36px;height:36px}
+  .hud-icon-btn--lg{width:40px;height:40px}
+  .hud-avatar{width:52px}
+  .hud-open-court{height:36px}
+  .hud-mini-goal{display:none}
+}
+
+/* ================= แผงเดิมย้ายมาไว้ในนี้ (D.6) ================= */
+.legacy-drawer{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;
+  background:rgba(6,3,4,.7);backdrop-filter:blur(2px)}
+.legacy-drawer[hidden]{display:none}
+.legacy-drawer-sheet{width:100%;max-height:88dvh;overflow-y:auto;background:var(--background);
+  border-top:1px solid var(--gold);border-radius:16px 16px 0 0;padding:var(--space-4);
+  padding-bottom:calc(var(--space-4) + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;gap:var(--space-3)}
+.legacy-drawer-head{display:flex;align-items:center;gap:var(--space-3)}
+.legacy-drawer-head h1{flex:1;min-width:0}
 .boss-prep{padding:12px;border:1px solid rgba(212,163,85,.45);border-radius:10px;
   background:rgba(26,12,18,.9);margin-bottom:12px}
 .boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
@@ -1494,63 +1569,105 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 
 <div class="wrap">
-  <header>
-    <img id="ava" src="img/hero-yama-profile.png" alt="" width="52" height="52"
-         onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
-    <!-- บรรทัดนี้ ui.js เขียนทับตามโซนและขั้นจริงทุกครั้งที่ refresh — ของในนี้คือค่าเริ่มต้นก่อนเกมเริ่ม -->
-    <h1>อเวจี<small id="hdr-sub">นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
-    <div class="sysbtn">
-      <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
-      <button id="help" class="sm">วิธีเล่น</button>
-      <button id="settings" class="sm">⚙ ตั้งค่า</button>
-      <button id="mute" class="sm">🔊 เสียง</button>
-    </div>
-  </header>
-
-  <div class="deckbar" id="deck"></div>
-
   <div class="stage">
-    <canvas id="cv" width="1527" height="704"></canvas>
-    <div class="res" id="res"></div>
-    <div id="ov"></div>
-    <!-- ปุ่มลอยทับฉาก — บนมือถือไม่มีคีย์บอร์ด กดเว้นวรรคไม่ได้เลย (เจ้าของเจอ 8 ก.ย. 2569)
-         ปุ่มเดิมอยู่ในแถบใต้ฉากซึ่งต้องเลื่อนจอลงไปหา จึงเหมือนกดอะไรไม่ได้ทั้งเกม -->
-    <div class="fabs">
-      <button id="fab-atk" class="fab hot" hidden>⚔️ ฟาด</button>
-    </div>
-  </div>
-  <div class="ctrl">
-    <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
-    <button id="spd" class="sm">ความเร็ว ×1</button>
-    <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
-    <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
-    <button id="bag" class="sm">🎒 กระเป๋า</button>
-    <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
-  </div>
+    <!-- กล่องนี้ล็อกอัตราส่วน 1527:704 ของฉากเสมอ (letterbox แทนการครอป — ดูเหตุผลในรายงาน Toby ข้อ D)
+         #ov ต้องมีกรอบเท่าแคนวาสเป๊ะ ไม่งั้นบับเบิลคำพูด/หมุดตัวละครเพี้ยนตำแหน่ง -->
 
-  <div id="mini-goal" class="mini-goal" aria-live="polite"></div>
-
-  <div class="below">
-    <div class="panel">
-      <div class="tabs" role="tablist">
-        <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
-        <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
-        <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
+    <div class="scene-box">
+      <canvas id="cv" width="1527" height="704"></canvas>
+      <div id="ov"></div>
+      <!-- ปุ่มลอยทับฉาก — บนมือถือไม่มีคีย์บอร์ด กดเว้นวรรคไม่ได้เลย (เจ้าของเจอ 8 ก.ย. 2569) -->
+      <div class="fabs">
+        <button id="fab-atk" class="fab hot" hidden>⚔️ ฟาด</button>
       </div>
-      <div class="tabbody" id="tabbody"></div>
     </div>
-    <div class="panel">
-      <div class="tabs" role="tablist">
-        <button role="tab" data-side="info" aria-selected="true" id="side-info">ข้อมูล</button>
-        <button role="tab" data-side="log" aria-selected="false" id="side-log">บันทึก</button>
-      </div>
-      <div id="side" class="sidebody"></div>
+
+    <!-- ================= ข้อ D ชุด 15 — HUD ใหม่ตามม็อกอัป UI2-th/eng.jpg ================= -->
+    <!-- มุมซ้ายบน: เหรียญ/ข้าวปั้น/ระเบียบ(ตาชั่ง)/กรรมท่าน(กะโหลก) — แทนที่ .res เดิม (D.2) -->
+    <div class="hud-res" id="res"></div>
+
+    <!-- มุมขวาบน: หยุด + ตั้งค่า (D.3) -->
+    <div class="hud-top-right">
+      <button id="hud-pause" class="hud-icon-btn" data-t-aria="hud.pause"><img id="hud-pause-img" src="img/ui/icon-pause.png" alt=""></button>
+      <button id="hud-settings" class="hud-icon-btn" data-t-aria="hud.settings"><img src="img/ui/icon-setting2.png" alt=""></button>
     </div>
+
+    <!-- ล่างซ้าย: ยมบาทน้อย + ยศ + แถบบารมี + ชื่อ · หนังสือคู่มือ · กระเป๋า (D.4)
+         แตะการ์ดยมบาทน้อย = เปิดแผงสถานะ (คิว/ยมทูต/ก่อสร้าง/ข้อมูล/บันทึก/ความเร็ว/ย้ายโซน — D.6) -->
+    <div class="hud-bottom-left">
+      <button id="hud-avatar" class="hud-avatar" aria-label="สถานะยมบาทน้อย">
+        <img id="hud-ava-img" src="img/hero-yama-profile.png" alt=""
+             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+        <span class="hud-ava-rank"><b id="hud-star5">⭐0</b></span>
+        <span class="hud-hpbar"><i id="hud-hp-fill"></i></span>
+        <small id="hud-ava-name">ยมบาทน้อย</small>
+      </button>
+      <button id="hud-book" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.book">
+        <img src="img/ui/icon-book.png" alt=""></button>
+      <button id="hud-bag" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.bag">
+        <img src="img/ui/icon-bag.png" alt=""></button>
+    </div>
+
+    <!-- ล่างกลาง: เปิดศาล (D.5) = ปุ่มเริ่มเวรเดิม -->
+    <button id="hud-open-court" class="hud-open-court">
+      <img id="hud-open-court-img" src="img/ui/icon-open-court-th.png" alt="">
+    </button>
+
+    <div id="mini-goal" class="mini-goal hud-mini-goal" aria-live="polite"></div>
+    <div class="coach hud-coach" id="coach" hidden></div>
   </div>
 
-  <div class="coach" id="coach" hidden></div>
+  <!-- ================= แผงของเดิมที่ไม่มีในม็อกอัป (D.6) — ย้ายมาเปิดจากการ์ดยมบาทน้อย =================
+       คิววิญญาณ/ยมทูต/ก่อสร้าง/ข้อมูล/บันทึก/ความเร็วเดินวาระ/ย้ายโซน/หัวเรื่อง+ปุ่มระบบเดิม
+       ของเดิมทุกชิ้น (id เดิมหมด) อยู่ในนี้ครบ แค่ย้ายที่ ไม่ได้แก้โค้ดผูกปุ่ม -->
+  <div id="legacy-drawer" class="legacy-drawer" hidden>
+    <div class="legacy-drawer-sheet">
+      <div class="legacy-drawer-head">
+        <img id="ava" src="img/hero-yama-profile.png" alt="" width="40" height="40"
+             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+        <h1>อเวจี<small id="hdr-sub">นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
+        <button id="legacy-drawer-close" class="settings-close" aria-label="close">
+          <img src="img/ui/icon-close.png" alt=""></button>
+      </div>
+      <div class="sysbtn">
+        <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
+        <button id="help" class="sm">วิธีเล่น</button>
+        <button id="settings" class="sm">⚙ ตั้งค่า</button>
+        <button id="mute" class="sm">🔊 เสียง</button>
+      </div>
 
-  <footer>อเวจี — เกมทดลอง · คลิกพื้นหรือกด WASD เพื่อเดิน · บันทึกอัตโนมัติลงเครื่อง</footer>
+      <div class="deckbar" id="deck"></div>
+
+      <div class="ctrl">
+        <button id="play" class="pri">▶ เริ่มเดินวาระ</button>
+        <button id="spd" class="sm">ความเร็ว ×1</button>
+        <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
+        <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
+        <button id="bag" class="sm" hidden>🎒 กระเป๋า</button>
+        <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
+      </div>
+
+      <div class="below">
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
+            <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
+            <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
+          </div>
+          <div class="tabbody" id="tabbody"></div>
+        </div>
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-side="info" aria-selected="true" id="side-info">ข้อมูล</button>
+            <button role="tab" data-side="log" aria-selected="false" id="side-log">บันทึก</button>
+          </div>
+          <div id="side" class="sidebody"></div>
+        </div>
+      </div>
+
+      <footer>อเวจี — เกมทดลอง · คลิกพื้นหรือกด WASD เพื่อเดิน · บันทึกอัตโนมัติลงเครื่อง</footer>
+    </div>
+  </div>
 </div>
 
 <dialog id="dlg"></dialog>

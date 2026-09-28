@@ -65,6 +65,31 @@ bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นราง
 const cv = $('#cv'), ctx = cv.getContext('2d');
 let tab = 'queue', hover = null, acc = 0, last = performance.now();
 
+/** ข้อ D ชุด 15 — .stage เต็มจอไม่มีกรอบแบบเดิม · .scene-box ต้องล็อกอัตราส่วน 1527:704 อยู่ข้างใน
+ *  (letterbox บน/ล่างหรือซ้าย/ขวาแล้วแต่จอ แทนการครอป — ยังไม่ทำ D.1 พิกัดใหม่รอบนี้)
+ *  ใช้ ResizeObserver วัดจริงเป็น px แทน CSS aspect-ratio ล้วนๆ เพราะ mix กับ flex-centering
+ *  มีเคส max-width clamp แล้ว height ไม่ถูกรีเคลียร์ตามในบางเบราว์เซอร์ — พลาดแล้ว #ov/canvas
+ *  จะเพี้ยนตำแหน่งกระทบการคลิกทั้งเกม (toScene() อิง cv.getBoundingClientRect() ตรงๆ) */
+function fitSceneBox() {
+  const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
+  if (!stage || !box) return;
+  const cw = stage.clientWidth, ch = stage.clientHeight;
+  if (!cw || !ch) return;
+  const ratio = SCENE.w / SCENE.h;
+  let w = cw, h = w / ratio;
+  if (h > ch) { h = ch; w = h * ratio; }
+  box.style.width = `${Math.round(w)}px`;
+  box.style.height = `${Math.round(h)}px`;
+}
+addEventListener('resize', fitSceneBox);
+addEventListener('orientationchange', () => setTimeout(fitSceneBox, 60));
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(fitSceneBox).observe(document.querySelector('.stage'));
+} else {
+  fitSceneBox();
+}
+fitSceneBox();
+
 /** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
  *  ลูปเฟรมใช้ตัวนี้เปิดกล่องกลับให้ ถ้าฉากยังไม่จบแต่กล่องหายไป
  *  (มี close หลุดเข้ามาได้หลายทาง — โมดัลอื่นมาแทรก, Esc, เบราว์เซอร์เอง)
@@ -120,26 +145,39 @@ function drawPauseTag() {
 // ---------- แถบทรัพยากร ----------
 function bar(v, cls = '') { return `<span class="bar ${cls}"><i style="width:${Math.round(v)}%"></i></span>`; }
 
+/** ข้อ D.2 ชุด 15 — ชิปมุมซ้ายบน 4 อัน map ตรงค่าเดิมในเกม (ตรวจจากโค้ดจริง ไม่ได้เดา):
+ *    เหรียญ  = g.coin   (เบี้ยกรรม — สกุลเงินซื้อของ/สร้างสถานี)
+ *    ข้าวปั้น = g.food   (เสบียงกองกลาง ป้อนให้ยมทูตหาย/หิว)
+ *    ตาชั่ง  = g.order  (ระเบียบ — ตัวคูณรายได้ + ค่าที่พญายมใช้ตรวจการ)
+ *    กะโหลก = g.karma  (กรรมท่าน — ยิ่งสูงยิ่งเสี่ยงพ่อลงมาเอง)
+ *  บารมี (g.hp) ไม่ได้อยู่แถวนี้แล้วในม็อกอัป — ย้ายไปเป็นแถบเขียวใต้รูปยมบาทน้อย (drawHudAvatar) */
 function drawRes() {
-  const avg = g.casesDone ? Math.round(g.scoreSum / g.casesDone) : 0;
-  const ot = g.orderTier(), kt = g.karmaTier();
-  // ข้อ A คุณเป้เจอ 25 ก.ย. 2569 — จอแคบ (≤820px) ย่อชิปให้เหลือแค่ไอคอน+ตัวเลข ตัดป้ายคำ/หลอด/ชื่อขั้น
-  // และตัด 2 ชิปท้าย (คดี/เฉลี่ย, ขั้น/ดาว) ออกเพราะซ้ำกับหน้าโปรไฟล์ที่กดตัวละครดูได้อยู่แล้ว (บรรทัด ~462)
-  // เพื่อให้ .res ทั้งแถบไม่กินพื้นที่แตะของแคนวาสจนแตะอาคารสูงในภาพไม่โดน (ดูรายงาน Toby ข้อ A)
-  const compact = matchMedia('(max-width:820px)').matches;
   $('#res').innerHTML = `
-    <span class="chip tap" data-ex="coin">🪙 <b>${Math.round(g.coin)}</b></span>
-    <span class="chip tap" data-ex="food">🍙 <b>${Math.round(g.food)}</b></span>
-    <span class="chip tap" data-ex="hp" id="res-hp-chip">❤️ ${compact ? '' : 'บารมี '}${bar(100 * g.hp / g.hpMax, compact ? 'hp mini' : 'hp')} <b>${Math.round(g.hp)}</b></span>
-    <span class="chip tap" data-ex="order">⚖️ ${compact ? '' : `ระเบียบ ${bar(g.order)}`} <b>${Math.round(g.order)}</b>
-      ${compact ? '' : `<i style="font-style:normal;opacity:.6">${esc(ot.name)}</i>`}</span>
-    <span class="chip tap" data-ex="karma">☠️ ${compact ? '' : `กรรมท่าน ${bar(g.karma, 'karma')}`} <b>${g.karma.toFixed(1)}</b>
-      ${compact ? '' : `<i style="font-style:normal;opacity:.6">${esc(kt.name)}</i>`}</span>
-    ${compact ? '' : `<span class="chip">📁 <b>${g.casesDone}</b> คดี · เฉลี่ย ${avg}</span>
-    <span class="chip">🎖️ ${esc(LEVELS[g.level - 1].name)} · ⭐${g.star5}</span>`}
-    ${g.mobs.length ? `<span class="chip" style="color:var(--destructive)">👹 เปรต ${g.mobs.length} ตน</span>` : ''}`;
+    <span class="chip tap" data-ex="coin"><img src="img/ui/icon-coin.png" alt=""><b>${Math.round(g.coin)}</b></span>
+    <span class="chip tap" data-ex="food"><img src="img/item-food.png" alt=""><b>${Math.round(g.food)}</b></span>
+    <span class="chip tap" data-ex="order"><img src="img/ui/icon-justice.png" alt=""><b>${Math.round(g.order)}</b></span>
+    <span class="chip tap" data-ex="karma"><img src="img/ui/icon-skull.png" alt=""><b>${g.karma.toFixed(1)}</b></span>
+    ${g.mobs.length ? `<span class="chip mob-warn">👹 <b>${g.mobs.length}</b></span>` : ''}`;
   $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
   $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
+}
+
+/** ข้อ D.4 — การ์ดยมบาทน้อยมุมซ้ายล่าง: รูป + ยศ(ดาว) + แถบบารมี + ชื่อ
+ *  "ดาว" ในม็อกอัปวาดเป็นสามดวงตายตัว แต่ข้อมูลจริงในเกมเป็นตัวนับ star5 (จำนวนคำตัดสิน 5 ดาวสะสม)
+ *  ไม่ใช่ยศ 0-3 ระดับ — ใช้ ⭐ ตัวเดียว+ตัวเลขแทนสามดวง กันแต่งความหมายใหม่เอง (ดูรายงาน Toby ขอคำยืนยัน) */
+function drawHudAvatar() {
+  const star = $('#hud-star5'); if (star) star.textContent = `⭐${g.star5}`;
+  const fill = $('#hud-hp-fill'); if (fill) fill.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
+  const name = $('#hud-ava-name'); if (name) name.textContent = HERO_NAME;
+  const img = $('#hud-ava-img');
+  if (img) {
+    const want = artUrl('hero-yama-profile') || artUrl('hero-yama');
+    if (img.dataset.want !== want) {
+      img.dataset.want = want;
+      img.onerror = function () { this.onerror = () => this.remove(); this.src = artUrl('hero-yama'); };
+      img.src = want;
+    }
+  }
 }
 
 /** กดที่แถบไหนก็บอกได้ว่ามันมีไว้ทำอะไร ตอนนี้อยู่ขั้นไหน และหมด/เต็มแล้วเกิดอะไร
@@ -688,7 +726,7 @@ function drawAtk() {
   fab.classList.toggle('gold', !near && !!canThrow);
 }
 
-function refresh() { drawRes(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); }
+function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); }
 
 function drawMiniGoal() {
   const el = $('#mini-goal');
@@ -2381,6 +2419,9 @@ function updatePlay() {
     const n = Object.values(g.inventory || {}).reduce((s, v) => s + (Number(v) || 0), 0);
     bag.textContent = `🎒 กระเป๋า${n ? ` (${n})` : ''}`;
   }
+  // ไอคอนหยุด/เล่นบน HUD ใหม่ (ข้อ D.3) — สลับภาพเดียวกับความหมายปุ่ม #play ข้างบน
+  const hp = $('#hud-pause-img');
+  if (hp) hp.src = g.paused ? 'img/ui/icon-play.png' : 'img/ui/icon-pause.png';
 }
 $('#play').onclick = () => { if (!g.over) { userPaused = !g.paused; g.paused = userPaused; updatePlay(); } };
 $('#spd').onclick = () => { g.speed = g.speed === 1 ? 2 : g.speed === 2 ? 4 : 1; updatePlay(); };
@@ -2391,6 +2432,30 @@ if (outfitButton) outfitButton.onclick = openOutfit;
 $('#bag').onclick = openBag;
 $('#settings').onclick = openSettings;
 $('#menu').onclick = goMenu;
+
+// ---------- ข้อ D ชุด 15 — ปุ่ม HUD ใหม่ (ไอคอนลอยบนแผนที่) ----------
+// ปุ่มเดิม (#play/#help/#bag/#settings ฯลฯ) ยังอยู่ในโค้ด แค่ย้ายเข้า legacy-drawer (D.6)
+// ปุ่มใหม่เรียกฟังก์ชันเดียวกันตรงๆ ไม่ได้สร้างกลไกซ้ำ
+$('#hud-pause').onclick = () => $('#play').click();
+$('#hud-settings').onclick = () => openSettings();
+$('#hud-book').onclick = () => openHelp();
+$('#hud-bag').onclick = () => openBag();
+$('#hud-open-court').onclick = () => goTrial();
+
+const legacyDrawer = $('#legacy-drawer');
+function openLegacyDrawer() { legacyDrawer.hidden = false; }
+function closeLegacyDrawer() { legacyDrawer.hidden = true; }
+$('#hud-avatar').onclick = openLegacyDrawer;
+$('#legacy-drawer-close').onclick = closeLegacyDrawer;
+legacyDrawer.addEventListener('click', e => { if (e.target === legacyDrawer) closeLegacyDrawer(); });
+
+/** ปุ่มเปิดศาล มีภาพแยกไทย/อังกฤษ (ข้อ D.5) — เรียกตอนเปิด HUD ครั้งแรกและทุกครั้งที่เปลี่ยนภาษา */
+function paintHudLangAssets() {
+  const el = $('#hud-open-court-img');
+  if (el) el.src = getLang() === 'en' ? 'img/ui/icon-open-court-eng.png' : 'img/ui/icon-open-court-th.png';
+}
+paintHudLangAssets();
+onLangChange(paintHudLangAssets);
 
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
  *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
@@ -3262,6 +3327,7 @@ const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
 updatePlay();
 buildTitle();
+applyI18n(document);                     // ข้อ C1 — ทา i18n ทั้งจอครั้งแรกตอนบูต (HUD/แผงต่างๆ)
 if (FRESH) startPlay(true);              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
 else refresh();                          // วาดแผงไว้ใต้หน้าปก จะได้ไม่กระพริบตอนกดเริ่ม
 

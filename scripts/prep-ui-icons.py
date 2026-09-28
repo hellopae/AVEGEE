@@ -35,6 +35,7 @@ AUTOCROP = {
     'logo-eng.png':         'logo-eng.png',
     'icon_resume.png':      'icon-resume.png',
     'icon_new-game.png':    'icon-new-game.png',
+    'icon_play.png':        'icon-play.png',
 }
 
 COPY_ASIS = {
