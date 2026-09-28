@@ -135,6 +135,7 @@ function billboard(key, url, sx, sy, hPx, opt = {}) {
     sprites.set(key, m);
   }
   const h = hPx / U * (opt.scale || 1);
+  m.castShadow = opt.castShadow !== false;
   const w = h * (opt.aspect || 1);
   const moved = m.userData.lastSx != null && Math.hypot(sx - m.userData.lastSx, sy - m.userData.lastSy) > 0.03;
   m.userData.lastSx = sx; m.userData.lastSy = sy;
@@ -245,7 +246,7 @@ export function render(g, t) {
     const d = st.def;
     if (d.bx == null) continue;
     liveBillboard('st-' + d.k, artUrl('st-' + d.k), d.bx, d.by, d.bw * 0.82,
-      { shadow: true, shadowScale: 1.05, thickness: true });
+      { castShadow: false, thickness: true });
   }
 
   // ---- ตัวเรา / พญายม / ยมทูต ----

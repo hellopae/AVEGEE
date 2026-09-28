@@ -1495,16 +1495,16 @@ function crewCutsceneSrc(k) {
 // ยืดเป็น 1.3 วิ (อยู่ในช่วง 1.2–1.5 ที่ขอ) ให้ตรงกับ CSS .action-cutscene ใน index.html
 // (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
 const ACTION_CUT_MS = 1300;
-function playActionCutscene(k) {
+function playActionCutscene(k, ultimate = null) {
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
-  const src = cs ? cs.src : actionCutsceneSrc(k);
+  const src = ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));
   if (!src || !dlg.open) return;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
   cut.className = 'action-cutscene';
-  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">`;
+  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
   img.onerror = () => {
@@ -1846,7 +1846,7 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier() {
+function openFrontier(fromWalk = false) {
   pauseForDlg();
   const helpers = g.crewHelpers();
   const state = g.frontierOf();
@@ -1862,7 +1862,7 @@ function openFrontier() {
     const frontierBg = g.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg);
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
-      <button class="x" data-close title="กลับแผนที่">✕</button>
+      <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
       <header><small>กิจกรรมต่อสู้ประจำโซน</small><h2>🏯 ${esc(FRONTIER.name)}</h2>
         <p>ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก</p></header>
       <div class="frontier-party">
@@ -1884,12 +1884,15 @@ function openFrontier() {
               <i>${on ? '✓ เข้าทีม' : 'เลือก'}</i></button>`;
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
         </div>
-        <div class="frontier-actions"><button data-close>กลับแผนที่</button>
-          <button class="gold" data-frontier-start ${chosen.length ? '' : 'disabled'}>⚔️ เริ่มป้องกันชายแดน</button></div>
+        <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk ? '' : 'disabled'}>${fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
       if (g.setFrontierTeam(b.dataset.frontierCrew)) { sfx('crack'); paint(); }
+    });
+    dlg.querySelectorAll('[data-frontier-back]').forEach(b => b.onclick = () => {
+      dlg.close(); openFrontierWalk();
     });
     const start = dlg.querySelector('[data-frontier-start]');
     // ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมกดปุ่มนี้แล้วตัดเข้าฉากสู้ทันที (สุ่มศัตรู)
@@ -1915,15 +1918,18 @@ function openFrontierWalk() {
   const kinds = g.zoneDef().mobs || [];
   const frontierBg = g.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg);
   const chosen = state.team || [];
+  const zoneName = g.zoneDef().name;
+  const gateName = zoneName.startsWith('โซน') ? zoneName : `โซน${zoneName}`;
 
   dlg.innerHTML = `
     <div class="hud st-hud frw-hud">
-      <button class="x" data-close title="กลับแผนที่โซน">✕</button>
       <div class="hud-top" id="frw-top"></div>
       <div class="hud-body">
         <div class="hud-left st-left" id="frw-left"></div>
         <div class="st-room"><canvas id="frw-cv" width="900" height="620"></canvas>
-          <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button></div>
+          <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
+          <button class="frw-fab" id="frw-gate" type="button" hidden>🗺️ กลับเข้าแผนที่${esc(gateName)}</button>
+          <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
         <div class="hud-right" id="frw-right"></div>
       </div>
     </div>`;
@@ -1934,11 +1940,12 @@ function openFrontierWalk() {
   const left = dlg.querySelector('#frw-left');
   const right = dlg.querySelector('#frw-right');
   const fab = dlg.querySelector('#frw-fab');
+  const gate = dlg.querySelector('#frw-gate');
+  const nira = dlg.querySelector('#frw-nira');
   const cv2 = dlg.querySelector('#frw-cv');
 
   top.innerHTML = `<span class="chip">🏯 ${esc(FRONTIER.name)} · ${esc(g.zoneDef().name)}</span>
-    <span class="chip">ระลอกปัจจุบัน ${wave} · ผ่านแล้ว ${state.clears || 0}</span>
-    <button class="ttl frw-exit" id="frw-exit" type="button">🗺️ กลับแผนที่โซน</button>`;
+    <span class="chip">ระลอกปัจจุบัน ${wave} · ผ่านแล้ว ${state.clears || 0}</span>`;
   left.innerHTML = `<div class="hint">ทีมยมทูตที่พาไป</div>
     <div class="frw-team-list"><b>${esc(HERO_NAME)}</b>${chosen.map(k => {
       const c = g.crew.find(x => x.k === k); return c ? ` · <b>${esc(c.name)}</b>` : '';
@@ -1949,7 +1956,7 @@ function openFrontierWalk() {
     <p class="hint">ศัตรูในสนามตอนนี้: <b id="frw-count">0</b>/${maxOnScreen(wave)}</p>
     <p class="hint">ชนะแล้วตัวนั้นหายไป ตัวอื่นยังยืนรออยู่ — ปราบไปเรื่อย ๆ ตัวใหม่จะทยอยเดินเข้ามาแทน</p></div>`;
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab });
+  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira });
   FW.start();
 
   fab.onclick = () => {
@@ -1970,9 +1977,14 @@ function openFrontierWalk() {
   // กด "กลับแผนที่โซน" แค่ปิดกล่อง ไม่ล้างสนามรบ — เดินออกไปทำธุระอื่น (ป้อนข้าวปั้น/ซื้อของ)
   // แล้วกลับมาสู้ต่อได้โดยไม่ต้องเริ่มใหม่ ตัวที่ปราบไปแล้วก็ไม่ฟื้นคืนชีพ (ข้อ 8 ในใบงานอนุญาตแค่
   // "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่กดปุ่มนี้)
-  dlg.querySelector('#frw-exit').onclick = () => {
+  gate.onclick = () => {
     FW.destroy();
     dlg.close();
+  };
+  nira.onclick = () => {
+    FW.destroy();
+    dlg.close();
+    openFrontier(true);
   };
 
   const cm = setInterval(() => {
@@ -2145,6 +2157,7 @@ function openBattle(after) {
           // ---- จังหวะที่ 2: เขาสวนกลับ (หรือถูกสะกดจิตแล้วฟาดใส่ตัวเอง) ----
           phase = 'foe'; phaseAt = Date.now();
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
+          if (nb.ultimate) playActionCutscene('boss', nb.ultimate);
           sfx('hurt');
           paint();
           phaseTimer = setTimeout(() => {

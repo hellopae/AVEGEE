@@ -4,7 +4,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
-         voice, SEX_OF, BATTLE, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
+         voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
@@ -1146,12 +1146,11 @@ const API = {
       k: 'coin', title: 'นรกล้มละลาย',
       text: 'ยมทูตไม่ได้ค่าแรงสามวาระติด ทุกคนวางเครื่องมือแล้วเดินออกไปพร้อมกัน',
     };
-    // เดิมจบที่ 3 รอบ ซึ่งสั้นเกินกว่าที่ระบบเลเวล/เปรต/ของสะสมจะได้ทำงาน
-    // (จำลองแล้วผู้เล่นเก่งจบเกมที่เลเวล 1.4 โดยแทบไม่ได้เลื่อนขั้นเลย)
-    else if (this.kpiPassed >= BAL.kpiWin) this.over =
+    // ตรวจการครบอย่างเดียวไม่จบระหว่างทาง: ต้องผ่านบอสครบสี่สาขาตามเนื้อเรื่องด้วย
+    else if (this.kpiPassed >= BAL.kpiWin && ZONES.every(z => this.bossCleared[z.k])) this.over =
       this.karma < 25 ? {
         k: 'win', title: 'ทายาทบัลลังก์',
-        text: 'สามรอบตรวจผ่านหมด กรรมของท่านยังใส พญายมยื่นตราประจำตำแหน่งให้แล้วพูดสั้น ๆ ว่า "ทำต่อไป"',
+        text: 'ผ่านตรวจการและผู้ตรวจการครบทั้งสี่สาขา กรรมของท่านยังใส พญายมยื่นตราประจำตำแหน่งให้แล้วพูดสั้น ๆ ว่า "ทำต่อไป"',
       } : this.karma < 60 ? {
         k: 'win2', title: 'ผู้คุมที่เก่งเกินไป',
         text: 'โซนนี้เป็นระเบียบที่สุดในนรก ตัวเลขทุกช่องสวยงาม — แต่กรรมในบัญชีของท่านหนากว่าตอนมาถึงมาก พ่อเลื่อนตำแหน่งให้ โดยไม่มองหน้า',
@@ -1268,11 +1267,15 @@ const API = {
         const st = this.stations.find(x => x.def.k === building.k);
         if (st?.buildWait) {
           st.buildWait = false; st.build = Date.now() + BUILD_TIME;
-          c.buildK = null; c.wait = 900;
+          c.wait = 900;
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" ตรงนี้คือชื่อตัวละคร ไม่ใช่คำว่า "การลงทัณฑ์"
           // ต้องใช้ c.name (ผ่าน crewName() ให้ชื่อตามโซนอยู่แล้ว) ไม่ใช่พิมพ์ "ทัณฑ์" ตรง ๆ
           this.log(`🔨 ${c.name}มาถึง${building.name}แล้ว — เริ่มลงมือก่อสร้าง`, 'act');
         }
+      }
+      if (building && this.stations.some(st => st.def.k === building.k && st.build && !st.buildWait)) {
+        c.x = hx; c.y = hy; c.path = null;
+        continue;
       }
 
       // เดินตามเส้นทางเหมือนตัวเรา — เดิมเดินตรงเข้าหาจุดหมาย พอมีลาวาขวางก็ค้างอยู่ขอบไฟ
@@ -1329,6 +1332,8 @@ const API = {
     for (const st of this.stations) {
       if (!st.build || st.buildWait || Date.now() < st.build) continue;
       st.build = 0;
+      const builder = this.crew.find(c => c.buildK === st.def.k);
+      if (builder) { builder.buildK = null; builder.wait = 0; builder.path = null; }
       const extra = this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '';
       this.log(`🏗️ สร้าง${st.def.name}เสร็จแล้ว${extra}`, 'good');
       this.syncBlocks(true);          // นั่งร้านหายแล้ว ตัวอาคารกันทางเดินทันทีในเฟรมเดียวกัน
@@ -1782,6 +1787,7 @@ const API = {
       foeHp: hp - (this.miniGoals[z.k]?.earned ? 24 : 0), foeMax: hp,
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
+      ultimateUsed:false, ultimateLastTurn:0, ultimate:null,
       prepStarted: false, proofBonus: this.miniGoals[z.k]?.earned ? 24 : 0,
     };
     this.onChange();
@@ -1901,6 +1907,7 @@ const API = {
     const TALK = B.kind === 'mob' ? MOB_TALK : FOE_TALK;
     const talk = k => { const p = TALK[k]; if (p && p.length) B.talk = voice(pick(p), B.sex || 'm'); };
     B.dmg = { foe: 0, you: 0 };
+    B.ultimate = null;
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
     // ทั้งสองฉากพ่อเป็นบทลงโทษระดับสุดท้าย: แพ้แล้วจบโซนนี้
@@ -2057,11 +2064,19 @@ const API = {
       if (B.foeHp <= 0) return declareWin();
     } else if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
-      const d = foeAtkRoll();
+      const normal = foeAtkRoll();
+      const ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
+      const d = ultimate ? ultimate.damage : normal;
+      if (ultimate) {
+        B.ultimate = ultimate;
+        B.ultimateUsed = true;
+        B.ultimateLastTurn = B.turn;
+      }
       B.youHp = Math.max(0, B.youHp - d);
       B.dmg.you = d;
-      say(`เขาสวนกลับ — บารมีท่านหาย ${d}`);
+      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${d}` : `เขาสวนกลับ — บารมีท่านหาย ${d}`);
       if (!B.over) talk('hit');
+      if (ultimate) B.talk = `${B.who}ใช้${ultimate.name}!`;
     }
     B.turn++;
 
@@ -2144,7 +2159,7 @@ const API = {
         ? `👑 ชนะ${B.who} — ${winLine || 'ปลดทางไปโซนถัดไป'}`
         : `👑 แพ้${B.who} — ${zb?.bossLose || 'เขาเฝ้าสะพานอยู่ เดินเข้าไปท้าสู้เมื่อพร้อม'}`,
         B.over === 'win' ? 'good' : 'event');
-      this.onChange(); return B;
+      this.checkEnd(); this.onChange(); return B;
     }
     if (B.kind === 'mob') {
       if (B.over === 'win') {
@@ -2599,6 +2614,10 @@ API.restore = function (d) {
                                          verdict: sv.verdict || null }] : []);
     return st;
   }).filter(Boolean);
+  // เซฟเดิมล้าง buildK ทันทีที่ถึงไซต์: ผูกงานที่ยังสร้างอยู่กลับให้ผู้สร้างจนเสร็จ
+  const builder = this.crew.find(c => c.k === 'taan');
+  const activeBuild = this.stations.find(st => st.build && !st.buildWait);
+  if (builder && activeBuild && !builder.buildK) builder.buildK = activeBuild.def.k;
   this.queue = d.queue || [];
   this.held = d.held || [];
   this.sentences = d.sentences || [];
