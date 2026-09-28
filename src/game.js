@@ -5,8 +5,9 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
-         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER } from './data.js';
+         STATION_CAP, BUILD_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER, FRONTIER_TH,
+         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER,
+         CREW_HOME_TH } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -99,6 +100,7 @@ export function createGame() {
 
   // สถานีตั้งต้น: หอทะเบียน + กระทะทองแดง (ที่เหลือสร้างเอาเอง)
   g.stations = [mkStation('sala'), mkStation('krata')];
+  syncFrontierPos(g.zone);          // เกมใหม่เริ่มโซน 1 เสมอ — สลับ FRONTIER เป็นพิกัดแผนที่ใหม่
 
   Object.assign(g, API);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
@@ -106,9 +108,21 @@ export function createGame() {
   return g;
 }
 
+// ชุดที่ 15b — FRONTIER (ค่านิยามเดิม 763,704 ฯลฯ) ยังใช้ร่วมกับโซน 2-4 ที่ฉากยังเป็น 1527×704
+// เดิมอยู่ · โซน 1 ใช้ scene-v2.png ใหม่แล้ว ต้องสลับพิกัดเป็น FRONTIER_TH แทน — object เดียวกันถูก
+// import ไปใช้ตรง ๆ หลายจุด (scene.js/ui.js/game.js) จึงแก้ด้วยการ mutate ค่าใน FRONTIER ตอนเปลี่ยนโซน
+// แทนที่จะไล่แก้ทุกจุดให้รับพารามิเตอร์โซนเพิ่ม
+const FRONTIER_DEFAULT_POS = { bx:FRONTIER.bx, by:FRONTIER.by, bw:FRONTIER.bw, x:FRONTIER.x, y:FRONTIER.y, hit:FRONTIER.hit };
+function syncFrontierPos(zone) {
+  Object.assign(FRONTIER, zone === 'th' ? FRONTIER_TH : FRONTIER_DEFAULT_POS);
+}
+
 function mkCrew(def, zone = 'th') {
   // hunger 100 = อิ่มเต็ม (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) — ลดลงระหว่างทำงาน ป้อนข้าวปั้นแล้วขึ้น
-  return { ...def, name: crewName(def, zone), morale: 92, hunger: 100, at: null, tired: false };
+  // ชุดที่ 15b — โซน 1 มีจุดประจำของตัวเองแยกจาก def.hx/hy เดิม (ดูคอมเมนต์ CREW_HOME_TH ใน data.js)
+  const home = zone === 'th' && CREW_HOME_TH[def.k];
+  const pos = home ? { hx: home[0], hy: home[1] } : null;
+  return { ...def, ...pos, name: crewName(def, zone), morale: 92, hunger: 100, at: null, tired: false };
 }
 
 /** สถานีหนึ่งหลังรับวิญญาณได้พร้อมกันหลายดวง (9 ก.ย. 2569 — เดิมทีละดวง)
@@ -2239,6 +2253,7 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    syncFrontierPos(k);
     this.transits = [];
     this.zoneCases[k] = this.zoneCases[k] || 0;
     this.outfit = k;                         // ครั้งแรกที่ย้ายให้สวมชุดรางวัลของโซนนั้นทันที
@@ -2546,6 +2561,7 @@ API.snapshot = function (withEntry = true) {
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
+    mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
@@ -2640,6 +2656,7 @@ API.restore = function (d) {
   this.returning = d.returning || [];
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
+  syncFrontierPos(this.zone);
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.miniGoals = d.miniGoals || {};
   this.frontier = d.frontier || { zones:{} };
@@ -2669,6 +2686,22 @@ API.restore = function (d) {
     Object.keys(this.bossArriveSeen).forEach(k => { if (!this.bossCleared[k]) delete this.bossArriveSeen[k]; });
   }
   this.bossArriveFixV10 = true;
+  // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.png 1527×704 →
+  // scene-v2.png 1678×937) เซฟเก่าที่มีตำแหน่งยมน้อย/ยมทูต/ยักษ์ทวารบาลอิงพิกัดฉากเดิมอาจไปติดอยู่
+  // ในลาวา/นอกแผนที่ใหม่ — รีเซ็ตตำแหน่งเป็นค่าเริ่มต้นใหม่ครั้งเดียวตอนโหลด (เฉพาะตอนอยู่โซน 1 ที่
+  // แผนที่เปลี่ยนจริง ๆ — โซน 2-4 ยังใช้ฉากเดิม ไม่ต้องรีเซ็ต) ไม่กระทบความคืบหน้า/ของที่ถืออยู่เลย
+  // แค่ตำแหน่งยืน · ยมทูตแค่ล้าง x/y ให้ null พอ — stepWorld ในไฟล์นี้จะตั้งจาก hx/hy ใหม่ให้เองเฟรมแรก
+  if (!d.mapV2FixTh && this.zone === 'th') {
+    this.player.x = SPOTS.bench.x + 60; this.player.y = SPOTS.bench.y;
+    this.player.tx = null; this.player.ty = null; this.player.path = null;
+    this.crew.forEach(c => {
+      c.x = null; c.y = null;                         // stepWorld ตั้งจาก hx/hy ใหม่ให้เองเฟรมแรก
+      const home = CREW_HOME_TH[c.k];                  // sv (เซฟเก่า) อาจมี hx/hy พิกัดเดิมติดมาด้วย
+      if (home) { c.hx = home[0]; c.hy = home[1]; }     // ทับด้วยจุดใหม่ตรง ๆ กันไม่ให้ค้างพิกัดเก่า
+    });
+    if (this.guard) { this.guard.x = GUARD_POST[0]; this.guard.y = GUARD_POST[1]; }
+  }
+  this.mapV2FixTh = true;
   this.bossWalk = null;
   this.zoneEntry = d.zoneEntry || null;
   this.bossPending = this.bossReady();
