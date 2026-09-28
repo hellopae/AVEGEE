@@ -2,7 +2,7 @@
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, FRONTIER, MERCHANT } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
@@ -244,7 +244,8 @@ export function render(ctx, g, t, hover, sel) {
       // ข้อ D คุณเป้เจอ 25 ก.ย. 2569 — ถึงไซต์ก่อสร้างแล้ว (buildK ตั้งอยู่ + สถานีนั้นพ้น buildWait
       // แล้ว คือเลิกเดินและเริ่มลงมือจริง) ยืนสลับท่า work ↔ ยืนเฉย ๆ เป็นจังหวะ ไม่ใช่ยืนนิ่งเป็นหุ่น
       // (ก่อนถึงไซต์ยังเดินอยู่ ไม่เข้าเงื่อนไขนี้ เพราะ st จะยังเป็น buildWait:true)
-      const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK && st.build && !st.buildWait);
+      const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
+        (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
       drawStandee(ctx, working ? poseOr(base + '-work', base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
       label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
@@ -328,10 +329,16 @@ function drawStation(ctx, g, st, t) {
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
+  if (st.repair) {
+    const builder = g.crew.find(c => c.buildK === d.k);
+    label(ctx, st.repairWait ? `🔧 รอ${builder?.name || 'ทัณฑ์'}เดินมาซ่อม`
+      : `🔧 กำลังซ่อม ${Math.round(Math.max(0, 1 - (st.repair - Date.now()) / REPAIR_TIME) * 100)}%`,
+      d.bx, d.by + 34, 14, '#ffe7c4');
+  }
   if (st.fire > 0) {                                // ผีกำลังเผาอยู่ — ไฟไต่ขึ้นตามความเสียหาย
     const bw = d.bw || 180;
     const n = 1 + Math.round(st.fire / 34);
-    for (let i = 0; i < n; i++)
+    if (g.mobs.some(m => m.at === d.k)) for (let i = 0; i < n; i++)
       drawFire(ctx, d.bx - bw * 0.28 + i * (bw * 0.28), d.by - 6, 34 + st.fire * 0.22, t + i * 400, 3);
     const q = 0.5 + 0.5 * Math.sin(t / 150);
     ctx.save(); ctx.globalAlpha = 0.55 + q * 0.45;
