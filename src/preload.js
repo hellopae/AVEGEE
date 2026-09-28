@@ -43,7 +43,10 @@ async function drain(list, onEach) {
 function finish() {
   if (!el || el.classList.contains('gone')) return;
   el.classList.add('gone');
-  setTimeout(() => el.remove(), 600);
+  setTimeout(() => {
+    el.remove();
+    dispatchEvent(new Event('avegee:boot-ready'));
+  }, 600);
 }
 
 (async () => {

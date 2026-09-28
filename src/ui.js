@@ -3159,13 +3159,36 @@ addEventListener('pointerdown', e => {          // แตะที่อื่�
 // เกมไม่เริ่มเดินจนกว่าจะกดจากหน้าปก — ลูปเฟรมจึงต้องรอ ไม่งั้นบันทึกอัตโนมัติ
 // จะเขียนทับเซฟเก่าตั้งแต่ก่อนผู้เล่นจะได้เลือกว่าจะเล่นต่อหรือเริ่มใหม่
 const titleEl = $('#title');
+const splashEl = $('#splash');
+const splashVideo = $('#splash-video');
+const coverVfx = $('#cover-vfx');
 let started = false;
+let splashDone = false;
+
+function revealTitle() {
+  if (splashDone) return;
+  splashDone = true;
+  splashVideo.pause();
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) splashEl.hidden = true;
+  else {
+    splashEl.classList.add('leaving');
+    setTimeout(() => { splashEl.hidden = true; }, 380);
+  }
+  if (!reducedMotion) {
+    coverVfx.play().catch(() => {}); // ภาพปกนิ่งยังแสดงได้ถ้าวิดีโอเล่นไม่ได้
+  }
+}
 
 /** เริ่มเล่นจริง — เรียกได้ครั้งเดียว */
 function startPlay(fresh) {
   if (started) return;
   started = true;
   unlock();                                  // เบราว์เซอร์ยอมให้เล่นเสียงได้หลังการกดครั้งแรกเท่านั้น
+  splashDone = true;
+  splashVideo.pause();
+  splashEl.hidden = true;
+  coverVfx.pause();
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   updatePlay();
@@ -3187,7 +3210,10 @@ function startPlay(fresh) {
 /** โลโก้หน้าปกมีสองไฟล์แยกภาษา (ข้อ A.1) — สลับ src ตรงๆ ไม่ต้องวาดใหม่ทั้งหน้า */
 function applyTitleLang() {
   const logo = $('#title-logo');
-  if (logo) logo.src = getLang() === 'en' ? 'img/ui/logo-eng.png' : 'img/ui/logo-th.png';
+  const src = getLang() === 'en' ? 'img/ui/logo-eng.png' : 'img/ui/logo-th.png';
+  if (logo) logo.src = src;
+  const splashLogo = $('#splash-logo');
+  if (splashLogo) splashLogo.src = src;
 }
 
 /** ข้อ C1 — สลับภาษาแล้ว UI ทั้งจอ (ที่ทำ i18n ไว้) เปลี่ยนทันทีไม่ต้องรีโหลด
@@ -3359,6 +3385,27 @@ onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAsse
 primeAudio();                            // รู้ path เพลงไว้ก่อน (ดูเหตุผลใน sfx.js — Brave ไม่ปล่อยให้ play() ช้า)
 const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
+if (FRESH || matchMedia('(prefers-reduced-motion: reduce)').matches) revealTitle();
+else {
+  $('#splash-skip').onclick = revealTitle;
+  splashVideo.addEventListener('ended', revealTitle, { once:true });
+  splashVideo.addEventListener('error', revealTitle, { once:true });
+  const playSplash = () => {
+    if (splashDone) return;
+    splashEl.classList.add('playing');
+    if (splashVideo.error) revealTitle();
+    else splashVideo.play().catch(revealTitle);
+    setTimeout(revealTitle, 8000); // ไฟล์หายหรือโหลดช้า ต้องไม่ขวางเมนู
+  };
+  if (!$('#boot')) playSplash();
+  else addEventListener('avegee:boot-ready', playSplash, { once:true });
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) coverVfx.pause();
+  else if (splashDone && !started && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    coverVfx.play().catch(() => {});
+  }
+});
 updatePlay();
 buildTitle();
 applyI18n(document);                     // ข้อ C1 — ทา i18n ทั้งจอครั้งแรกตอนบูต (HUD/แผงต่างๆ)
