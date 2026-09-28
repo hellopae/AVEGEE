@@ -57,6 +57,15 @@ COPY_ASIS = {
 
 BG_REMOVE = {}
 
+# ปุ่ม resume/new-game ต้นฉบับเป็นภาพเดียวรวม "ไอคอน + คำอังกฤษ" ติดกัน (RESUME / NEW GAME)
+# ฝั่งไทยไม่มีภาพตัวหนังสือไทยชุดนี้ (ข้อ A.2 ของใบงาน) — ตัดเอาเฉพาะไอคอน (สามเหลี่ยม/ดาว)
+# ออกมาต่างหาก แล้วโค้ดจะวางคำไทยเป็นตัวอักษรจริงข้างๆ (สีทอง เงาดำ สไตล์เดียวกับภาพ)
+# พิกัดคอลัมน์ตัดมาจากการสแกนช่องว่างระหว่างไอคอนกับตัวหนังสือด้วยมือ (ดูรายงาน Toby)
+GLYPH_CROP = {
+    'icon_resume.png':    ((0, 0, 160, 300), 'icon-resume-glyph.png'),
+    'icon_new-game.png':  ((0, 0, 150, 300), 'icon-new-game-glyph.png'),
+}
+
 
 def autocrop(im):
     im = im.convert('RGBA')
@@ -141,6 +150,15 @@ def main():
         cleaned = autocrop(cleaned)
         cleaned.save(os.path.join(OUT, dst))
         print(f'bg-remove {src} removed {n}px => img/ui/{dst} {cleaned.size}')
+
+    for src, (box, dst) in GLYPH_CROP.items():
+        sp = os.path.join(RAW, src)
+        if not os.path.exists(sp):
+            print('MISSING', src); continue
+        im = Image.open(sp).convert('RGBA').crop(box)
+        cropped = autocrop(im)
+        cropped.save(os.path.join(OUT, dst))
+        print(f'glyph-crop {src} {box} => img/ui/{dst} {cropped.size}')
 
 
 if __name__ == '__main__':

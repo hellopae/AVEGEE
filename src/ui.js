@@ -13,6 +13,7 @@ import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
 import { MINIGAMES } from './minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
+import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -3084,6 +3085,17 @@ function startPlay(fresh) {
   requestAnimationFrame(frame);
 }
 
+/** โลโก้หน้าปกมีสองไฟล์แยกภาษา (ข้อ A.1) — สลับ src ตรงๆ ไม่ต้องวาดใหม่ทั้งหน้า */
+function applyTitleLang() {
+  const logo = $('#title-logo');
+  if (logo) logo.src = getLang() === 'en' ? 'img/ui/logo-eng.png' : 'img/ui/logo-th.png';
+}
+
+/** ข้อ C1 — สลับภาษาแล้ว UI ทั้งจอ (ที่ทำ i18n ไว้) เปลี่ยนทันทีไม่ต้องรีโหลด
+ *  สมัครครั้งเดียวตอนบูต ครอบคลุมทุกจอที่วาดอยู่ ณ ตอนนั้น (title/HUD) — โมดัลที่เปิดใหม่ทีหลัง
+ *  ก็ถูก apply ตอนสร้างอยู่แล้วเพราะฟังก์ชันสร้างโมดัลเรียก applyI18n/t() ของตัวเอง */
+onLangChange(() => { applyI18n(document); applyTitleLang(); });
+
 function buildTitle() {
   // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ปลุกเพลงหน้าปกตอนแตะครั้งแรกที่ไหนก็ได้บนปก
   const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
@@ -3104,6 +3116,10 @@ function buildTitle() {
     probe.src = url;
   })(['img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
 
+  // โลโก้/ปุ่ม เปลี่ยนภาษาทันทีไม่ต้องรีโหลด (ข้อ C1) — สลับจริงทำที่หน้าตั้งค่า (ข้อ B)
+  applyTitleLang();
+  applyI18n(titleEl);
+
   const rs = $('#t-resume');
   if (SAVED) {
     rs.hidden = false;
@@ -3116,11 +3132,10 @@ function buildTitle() {
   $('#t-new').onclick = () => {
     unlock(); sfx('gong');
     if (!SAVED) return startPlay(true);
-    modal(`<h2>เริ่มเกมใหม่</h2>
-      <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
-        มีเกมที่บันทึกไว้อยู่ — เริ่มใหม่แล้ว<b>ความคืบหน้าทั้งหมดจะหายไป</b></p>
-      <div class="row"><button data-close>ยกเลิก</button>
-        <button class="gold" id="ngo">เริ่มใหม่</button></div>`,
+    modal(`<h2>${esc(t('title.confirmNewGame.title'))}</h2>
+      <p style="line-height:var(--leading-body);font-size:var(--text-sm)">${esc(t('title.confirmNewGame.body'))}</p>
+      <div class="row"><button data-close>${esc(t('title.confirmNewGame.cancel'))}</button>
+        <button class="gold" id="ngo">${esc(t('title.confirmNewGame.ok'))}</button></div>`,
       d => d.querySelector('#ngo').onclick = () => {
         clearSave();
         sessionStorage.setItem('avegee.fresh', '1');   // โหลดใหม่แล้วข้ามหน้าปกไปเลย
