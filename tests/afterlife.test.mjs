@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { STATIONS } from '../src/data.js';
+import { STATIONS, syncSceneZone } from '../src/data.js';
+import { canWalk, resetWalk } from '../src/walk.js';
+import { afterlifeWalkPosition, hitActor } from '../src/scene.js';
 
 const station = k => ({ def:STATIONS.find(x => x.k === k), slots:[], crewK:null, build:0 });
 const soul = (id, weights) => ({
@@ -18,6 +20,7 @@ const sentence = (g, id, weights, intensity, short = 0) => {
   g.sentences.push({ soul:soul(id,weights), verdict:{ short }, intensity,
     stage:'prison', readyAt:g.tick + 1, inspected:false, zone:g.zone });
 };
+const arrive = g => g.advanceAfterlife(100000);
 
 test('นิราตรวจหลังครบวาระ แล้วบุญแยกเกิดใหม่กับขึ้นสวรรค์', () => {
   const g = game();
@@ -28,6 +31,7 @@ test('นิราตรวจหลังครบวาระ แล้วบ�
   assert.equal(g.sentenceOf(900, 'prison').repentant, true);
   assert.equal(g.moveFromPrison(900), true);
   assert.equal(g.resolveGate(900), false);
+  arrive(g);
   assert.equal(g.inspectGate(900), true);
   assert.equal(g.sentenceOf(900, 'gate').karmaLeft, 0);
   const coin = g.coin;
@@ -40,6 +44,7 @@ test('นิราตรวจหลังครบวาระ แล้วบ�
   g.tick++;
   g.inspectPrison(901);
   g.moveFromPrison(901);
+  arrive(g);
   g.inspectGate(901);
   assert.equal(g.sentenceOf(901, 'gate').karmaLeft, 2);
   g.resolveGate(901);
@@ -65,6 +70,7 @@ test('คนไม่เข็ดกลับคิว และผลตรว�
   } finally { Math.random = original; }
   const before = g.queue.length;
   assert.equal(g.moveFromPrison(902), true);
+  arrive(g);
   assert.equal(g.queue.length, before + 1);
   assert.equal(g.returned, 1);
 });
@@ -95,6 +101,9 @@ test('ครบวาระทัณฑ์เข้าตะราง ส่ว�
     verdict:{ coin:0, short:0, heaven:false } };
   punishment.slots.push(punished);
   g.finish(punishment, punished);
+  assert.equal(g.sentenceOf(905, 'prison'), undefined);
+  assert.equal(g.afterlifeWalks[0]?.destination, 'prison');
+  arrive(g);
   assert.equal(g.sentenceOf(905, 'prison')?.inspected, false);
 
   const gate = g.stations.find(x => x.def.k === 'sawan');
@@ -105,6 +114,100 @@ test('ครบวาระทัณฑ์เข้าตะราง ส่ว�
   g.finish(gate, accepted);
   assert.equal(g.sentenceOf(906, 'gate')?.checked, false);
   assert.equal(g.ascended, 0);
+});
+
+test('เดินตามทางจากสถานีไปตะราง แล้วตะรางไปประตู ก่อนเปลี่ยนรายชื่อ', () => {
+  const g = game();
+  const punishment = station('krata');
+  const slot = { soul:soul(910,[3]), intensity:3,
+    verdict:{ coin:0, short:0, heaven:false } };
+  punishment.slots.push(slot);
+  g.finish(punishment, slot);
+  const walk = g.afterlifeWalks[0];
+  assert.equal(walk?.destination, 'prison');
+  assert.equal(g.sentenceOf(910, 'prison'), undefined);
+  for (const [x, y] of walk.path) assert.equal(canWalk(x, y), true);
+  g.advanceAfterlife(walk.duration / 4);
+  assert.equal(g.sentenceOf(910, 'prison'), undefined);
+  g.paused = true;
+  const elapsed = walk.elapsed;
+  g.advanceAfterlife(walk.duration);
+  assert.equal(walk.elapsed, elapsed);
+  g.paused = false;
+  g.speed = 2;
+  g.advanceAfterlife(walk.duration / 2);
+  assert.equal(g.sentenceOf(910, 'prison')?.soul.id, 910);
+  g.tick += 6;
+  assert.equal(g.inspectPrison(910), true);
+  assert.equal(g.moveFromPrison(910), true);
+  assert.equal(g.sentenceOf(910, 'gate'), undefined);
+  assert.equal(g.afterlifeWalks[0]?.destination, 'gate');
+  const [x, y] = afterlifeWalkPosition(g.afterlifeWalks[0]);
+  assert.deepEqual(hitActor(g, x, y), { kind:'soul', key:910 });
+  arrive(g);
+  assert.equal(g.sentenceOf(910, 'gate')?.soul.id, 910);
+});
+
+test('เส้นทางคำนวณจากตำแหน่งสถานีปัจจุบันทุกโซน', () => {
+  const g = createGame();
+  try {
+    for (const zone of ['th', 'asia', 'west', 'cyberhell']) {
+      syncSceneZone(zone);
+      resetWalk();
+      g.zone = zone;
+      g.afterlifeWalks = [];
+      const a = STATIONS.find(st => st.k === 'krata');
+      const prison = STATIONS.find(st => st.k === 'tarang');
+      const gate = STATIONS.find(st => st.k === 'sawan');
+      const subject = soul(920, [3]);
+      assert.equal(g.startAfterlifeWalk(subject, [a.x, a.y], [prison.x, prison.y],
+        'prison', { soul:subject, stage:'prison', zone }), true, zone);
+      assert.equal(g.startAfterlifeWalk(subject, [prison.x, prison.y], [gate.x, gate.y],
+        'gate', { soul:subject, stage:'gate', zone }), true, zone);
+      for (const walk of g.afterlifeWalks) {
+        for (const [x, y] of walk.path) assert.equal(canWalk(x, y), true, zone);
+        for (let i = 1; i < walk.path.length; i++) {
+          const [ax, ay] = walk.path[i - 1], [bx, by] = walk.path[i];
+          const steps = Math.ceil(Math.hypot(bx - ax, by - ay) / 4);
+          for (let j = 1; j <= steps; j++)
+            assert.equal(canWalk(ax + (bx - ax) * j / steps,
+              ay + (by - ay) * j / steps), true, zone);
+        }
+      }
+    }
+  } finally {
+    syncSceneZone('th');
+    resetWalk();
+  }
+});
+
+test('เซฟระหว่างเดินแล้วโหลดส่งถึงปลายทางหนึ่งครั้ง; เซฟเก่ายังโหลดได้', () => {
+  const g = game();
+  sentence(g, 911, [3], 3);
+  g.tick++;
+  g.inspectPrison(911);
+  assert.equal(g.moveFromPrison(911), true);
+  const saved = g.snapshot();
+  assert.equal(saved.afterlifeWalks[0]?.destination, 'gate');
+  const restored = createGame();
+  assert.equal(restored.restore(saved), true);
+  assert.equal(restored.afterlifeWalks.length, 0);
+  assert.equal(restored.sentences.filter(x => x.soul.id === 911).length, 1);
+  assert.equal(restored.sentenceOf(911, 'gate')?.soul.id, 911);
+  const returning = game();
+  sentence(returning, 912, [4], 2, 1);
+  returning.tick++;
+  returning.inspectPrison(912);
+  returning.sentenceOf(912, 'prison').repentant = false;
+  assert.equal(returning.moveFromPrison(912), true);
+  assert.equal(returning.returned, 0);
+  const back = createGame();
+  back.restore(returning.snapshot());
+  assert.equal(back.queue.filter(s => s.back?.id === 912).length, 1);
+  assert.equal(back.returned, 1);
+  const old = createGame().snapshot();
+  delete old.afterlifeWalks;
+  assert.equal(createGame().restore(old), true);
 });
 
 // Dale ตรวจชุดที่ 10 (25 ก.ย. 2569) — ข้อ E1: เซฟเก่าที่บั๊กเดิม (ก่อนแพตช์ข้อ E1) เคยติดธง
