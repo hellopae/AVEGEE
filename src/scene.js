@@ -224,7 +224,8 @@ export function render(ctx, g, t, hover, sel) {
     }
     mapStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
-    if (d <= MOB.fabReach) return;
+    // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
+    if (d <= MOB.fabReach || g.guard) return;
     tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
         ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
   }));
