@@ -118,6 +118,7 @@ function bgOf(src, fallback) {
 /** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
 export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
+  const mirrorRoom = def.k === 'tea' && g.zone === 'th';
   const KEY = {};
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
@@ -134,7 +135,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   let locked = false;
 
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
-  const px = u => box.ox + u * box.w;
+  const px = u => box.ox + (mirrorRoom ? 1 - u : u) * box.w;
   const py = v => box.oy + v * box.h;
   const unit = () => Math.min(box.w, box.h);     // ใช้คิดความสูงตัวละครให้คงที่ทุกอัตราส่วน
 
@@ -198,7 +199,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
     const cy = (e.clientY - r.top) / r.height * cv.height;
-    const [tx, ty] = snap((cx - box.ox) / box.w, (cy - box.oy) / box.h);
+    const visualX = (cx - box.ox) / box.w;
+    const [tx, ty] = snap(mirrorRoom ? 1 - visualX : visualX, (cy - box.oy) / box.h);
     P.tx = tx; P.ty = ty;
   };
   cv.addEventListener('pointerdown', onDown);
@@ -231,6 +233,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
+    if (mirrorRoom) dx = -dx;
     if (KEY.w || KEY.arrowup) dy -= 1;
     if (KEY.s || KEY.arrowdown) dy += 1;
     if (!dx && !dy && P.tx != null) {            // เดินไปจุดที่แตะไว้
@@ -245,7 +248,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       else if (inArea(nx, P.y)) P.x = nx;
       else if (inArea(P.x, ny)) P.y = ny;
       else P.tx = null;
-      if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
+      if (Math.abs(dx) > 0.001) P.face = (mirrorRoom ? -dx : dx) < 0 ? -1 : 1;
     }
     const ii = g.items.findIndex(it => it.from === def.k);
     if (ii >= 0 && room.item && Math.hypot(P.x - room.item[0], (P.y - room.item[1]) * 0.75) < 0.055) {
@@ -286,21 +289,29 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const s = Math.min(W / sw, H / sh);
       box = { ox: (W - sw * s) / 2, oy: (H - sh * s) / 2, w: sw * s, h: sh * s };
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
+      // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
+      // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
+      const drawRoomBg = () => {
+        ctx.save();
+        if (mirrorRoom) { ctx.translate(box.ox * 2 + box.w, 0); ctx.scale(-1, 1); }
+        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        ctx.restore();
+      };
       // ยกแสงเฉพาะภาพฉาก ตัวละครไม่โดนด้วย จะได้ยังเด่นอยู่บนพื้นหลัง
       const bf = room.bright || brightOf(bg, bgSrc);
       if (Math.abs(bf - 1) > 0.02 && canFilter()) {
         ctx.save();
         ctx.filter = `brightness(${bf.toFixed(2)})`;
-        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        drawRoomBg();
         ctx.restore();
       } else if (bf > 1.02) {                            // ไม่รองรับ filter — ทับอีกชั้นแบบบวกแสง
-        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        drawRoomBg();
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = Math.min(0.5, (bf - 1) * 0.7);
-        ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+        drawRoomBg();
         ctx.restore();
-      } else ctx.drawImage(bg, sx, sy, sw, sh, box.ox, box.oy, box.w, box.h);
+      } else drawRoomBg();
       applyLight(ctx, room.light, box);                 // ห้องที่สว่างเกิน — ย้อมลงเฉพาะภาพฉาก
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };

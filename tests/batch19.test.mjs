@@ -63,6 +63,25 @@ test('an escort already dispatched keeps delivering souls while court is closed'
   assert.ok(slot.progress > 0);
 });
 
+test('closed court admits a returning case without spawning a new soul', () => {
+  const g = createGame();
+  const original = g.queue[0];
+  g.returning.push({ at:g.tick + 1, zone:g.zone, who:original.who, sp:original.sp,
+    sex:original.sex, name:original.name, deeds:original.deeds, merits:original.merits,
+    fromId:original.id, gave:1, calm:true });
+  g.courtClosed = true;
+  g.nextArrive = 1;
+  const before = { queue:g.queue.length, spawns:g.spawns };
+
+  g.step();
+
+  assert.equal(g.queue.length, before.queue + 1);
+  assert.equal(g.queue.at(-1).back.id, original.id);
+  assert.equal(g.returning.length, 0);
+  assert.equal(g.spawns, before.spawns);
+  assert.equal(g.nextArrive, 1);
+});
+
 test('hired guard crosses the river route and defeats a mob without player combat', () => {
   const g = createGame();
   g.coin = 1000;

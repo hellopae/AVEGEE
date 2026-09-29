@@ -782,7 +782,7 @@ document.querySelectorAll('.tabs [data-tab]').forEach(el =>
 $('#atk').onclick = tryFight;
 $('#fab-atk').onclick = tryFight;
 function goTrial() {
-  if (!g.queue[0] || g.courtClosed || g.over || g.battle) return;
+  if (!g.queue[0] || g.over || g.battle) return;
   openTrial();
 }
 
@@ -940,18 +940,18 @@ function updateTrialBtn() {
   const s = g.queue[0];
   const b = deckBar.querySelector('#d-trial');
   if (b) {
-    b.disabled = !s || g.courtClosed;
-    b.className = s && !g.courtClosed ? 'gold' : '';
-    b.textContent = s && !g.courtClosed ? t('hud.trialBegins') : t('hud.trialRecess');
+    b.disabled = !s || !!g.over || !!g.battle;
+    b.className = !b.disabled ? 'gold' : '';
+    b.textContent = !b.disabled ? t('hud.trialBegins') : t('hud.trialRecess');
   }
   // ทางเข้าหลักอยู่ล่างกลาง; เก็บปุ่มลอยเก่าที่อาจค้างจากการวาดก่อนหน้า
   const f = ov.querySelector('.trialfab');
   if (f) f.remove();
   const trial = $('#hud-trial');
   if (trial) {
-    trial.disabled = !s || g.courtClosed || !!g.over || !!g.battle;
+    trial.disabled = !s || !!g.over || !!g.battle;
     trial.textContent = t(trial.disabled ? 'hud.trialRecess' : 'hud.trialBegins');
-    trial.title = g.courtClosed ? t('hud.courtClosedTrial') : trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
+    trial.title = trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
     trial.setAttribute('aria-label', trial.disabled ? `${trial.textContent} — ${trial.title}` : trial.title);
   }
 }
@@ -1036,8 +1036,8 @@ function updateFrontierFab() {
  *  ทางเข้าหลักอยู่ที่ปุ่มเริ่มพิจารณาคดีล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
 function drawDeck() {
   const s = g.queue[0];
-  if (!s || g.over || g.courtClosed) {
-    deckBar.innerHTML = `<div class="idle">${esc(t(g.courtClosed ? 'hud.courtClosedTrial' : 'hud.noCourt'))}</div>`;
+  if (!s || g.over || g.battle) {
+    deckBar.innerHTML = `<div class="idle">${esc(t('hud.noCourt'))}</div>`;
     return;
   }
   deckBar.innerHTML = `
@@ -1602,7 +1602,7 @@ function playActionCutscene(k, ultimate = null) {
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 function openTrial(initialError = '') {
-  if (g.courtClosed) return;
+  if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s) return;
   pauseForDlg();
@@ -2561,7 +2561,9 @@ function openPause(allowReplacing = false) {
 }
 
 function updatePlay() {
-  $('#play').textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
+  const play = $('#play');
+  play.textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
+  play.title = t(g.courtClosed ? 'hud.openCourtTip' : 'hud.closeCourtTip');
   // ปุ่มย้ายโซนโผล่เมื่อมีโซนอื่นเปิดให้จริง ๆ เท่านั้น — ไม่งั้นกดแล้วเจอแต่กุญแจ
   const z = $('#zone');
   if (z) {
@@ -2587,7 +2589,8 @@ function updatePlay() {
     court.textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
     court.disabled = !!g.over;
     court.setAttribute('aria-pressed', String(!g.courtClosed));
-    court.setAttribute('aria-label', court.textContent);
+    court.title = t(g.courtClosed ? 'hud.openCourtTip' : 'hud.closeCourtTip');
+    court.setAttribute('aria-label', `${court.textContent} — ${court.title}`);
   }
 }
 function toggleCourt() {
