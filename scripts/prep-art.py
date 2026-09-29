@@ -30,6 +30,7 @@ crew-nira-profile) จะถูกครอปเป็นจัตุรัส�
 รันเฉย ๆ = ทำเฉพาะไฟล์ที่ต้นฉบับใหม่กว่าผลลัพธ์ (ของที่ทำไว้แล้วไม่ถูกแตะ)
     python3 scripts/prep-art.py --all      ทำใหม่ทุกไฟล์
     python3 scripts/prep-art.py Asia       ทำเฉพาะไฟล์ที่ path มีคำนี้
+    python3 scripts/prep-art.py st-dab --alpha-threshold=8  เก็บขอบเรืองแสงของภาพใหม่
 """
 from PIL import Image
 import os, re, sys
@@ -266,7 +267,7 @@ def out_name(sub, name):
     return f'{name}-{z}', f'ไม่มี -{z} ในชื่อ เติมให้แล้ว'
 
 
-def prep(path, name, out_dir=OUT):
+def prep(path, name, out_dir=OUT, alpha_threshold=16):
     im = Image.open(path)
     stripped = 0
     OUT = out_dir                  # ทุกบรรทัดข้างล่างเซฟลง OUT — โฟลเดอร์โซนก็ใช้ทางเดียวกัน
@@ -343,10 +344,10 @@ def prep(path, name, out_dir=OUT):
     #    ผลคือตัวละครถูกย่อจนเหลือครึ่งเดียวของที่ควรเป็น
     if im.mode == 'RGBA':
         alpha = im.getchannel('A')
-        box = alpha.point(lambda v: 255 if v >= 16 else 0).getbbox()
+        box = alpha.point(lambda v: 255 if v >= alpha_threshold else 0).getbbox()
         if box:
             im = im.crop(box)
-        im.putalpha(im.getchannel('A').point(lambda v: 0 if v < 16 else v))
+        im.putalpha(im.getchannel('A').point(lambda v: 0 if v < alpha_threshold else v))
     if re.fullmatch(r'Zone\d+', name):        # การ์ดเกาะในกล่องเลือกโซน (17 ก.ย. 2569)
         # พื้นหลังโปร่งใสอยู่แล้วจากต้นฉบับ (alpha ต่ำทั่วมุมภาพ ไม่ใช่ลอกพื้นทึบแบบสไปรท์ตัวละคร)
         # ไม่ใช่ standee — ห้ามชิดขอบล่าง แค่ย่อคง proportion เดิมแล้วแปลง webp ตามใบงาน
@@ -376,6 +377,9 @@ def prep(path, name, out_dir=OUT):
 
     scale = min(SIZE / im.width, SIZE / im.height)
     im = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
+    if alpha_threshold != 16:
+        # Lanczos สร้าง alpha จางระดับ 1–7 ใหม่ตรงขอบหลังย่อ; อย่าให้กลายเป็นฝุ่นบนฉาก
+        im.putalpha(im.getchannel('A').point(lambda v: 0 if v < alpha_threshold else v))
 
     if name.startswith('st-') and os.path.abspath(out_dir) == os.path.abspath(os.path.join(ROOT, 'img')):
         # อาคารวาดโดยยึดขอบล่าง-กึ่งกลางใน art.js; ผืน 512 จัตุรัสทำให้
@@ -455,6 +459,13 @@ def main():
     if not os.path.isdir(RAW):
         sys.exit('ไม่พบโฟลเดอร์ ' + RAW)
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    thresholds = [a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--alpha-threshold=')]
+    try:
+        alpha_threshold = int(thresholds[-1]) if thresholds else 16
+    except ValueError:
+        sys.exit('--alpha-threshold ต้องเป็นจำนวนเต็มระหว่าง 1–255')
+    if not 1 <= alpha_threshold <= 255:
+        sys.exit('--alpha-threshold ต้องอยู่ระหว่าง 1–255')
     force = '--all' in sys.argv
     fresh = ingest()
     files = raw_files()
@@ -477,7 +488,7 @@ def main():
         if not force and rel not in fresh and os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src):
             skipped += 1
             continue
-        w, h = prep(src, name, out_dir)
+        w, h = prep(src, name, out_dir, alpha_threshold)
         print(f'  ✓ {rel:34s} → {os.path.relpath(dst, ROOT)}  {w}×{h}' + (f'  ⚠️ {warn}' if warn else ''))
         done += 1
     print(f'เสร็จ {done} ไฟล์' + (f' · ข้าม {skipped} ไฟล์ที่ทำไว้แล้ว (--all = ทำใหม่หมด)' if skipped else '')
