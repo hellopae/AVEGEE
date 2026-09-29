@@ -96,6 +96,8 @@ fitSceneBox();
  *  ผู้เล่นต้องไม่มีทาง "ค้างอยู่กับฉากต่อสู้ที่มองไม่เห็น" เด็ดขาด */
 let battleUI = null;
 let lastBattleEnd = 0;      // เวลาที่ฉากต่อสู้ล่าสุดปิดลง — ใช้เว้นจังหวะก่อนเปิดฉากใหม่
+let prisonAlertSeen = false;
+let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
 
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
@@ -113,6 +115,13 @@ setInterval(() => {
   if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
     g.startDadFight();
   }
+  if (started && g.prisonBreakStatus() === 'pending' && !prisonAlertSeen && !g.battle && !g.over &&
+      !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+      !g.dadFight && Date.now() - lastBattleEnd > 1600) {
+    prisonAlertSeen = true;
+    openPrisonAlert();
+  }
+  updatePrisonFab();
 }, 400);
 
 // ---------- ลูป ----------
@@ -883,10 +892,12 @@ function drawOverlay() {
   const keepFab = ov.querySelector('.mobfab');
   const keepBossFab = ov.querySelector('.bossfab');
   const keepFrontierFab = ov.querySelector('.frontierfab');
+  const keepPrisonFab = ov.querySelector('.prisonfab');
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
   if (keepFrontierFab) ov.appendChild(keepFrontierFab);
+  if (keepPrisonFab) ov.appendChild(keepPrisonFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -1022,6 +1033,36 @@ function updateFrontierFab() {
   }
   f.dataset.sx = FRONTIER.bx; f.dataset.sy = FRONTIER.by - FRONTIER.bw + 18;
   place(f);
+}
+
+function openPrisonAlert() {
+  const images = [1, 4, 7].map(n => `<img src="img/spirit${n}.png" alt="${esc(t('event.prisonBreak.foe'))}">`).join('');
+  modal(`<h2>${esc(t('event.prisonBreak.title'))}</h2>
+    <p>${esc(t('event.prisonBreak.alert'))}</p>
+    <div class="prison-alert-spirits">${images}</div>
+    <div class="row"><button class="gold" data-prison-go>${esc(t('event.prisonBreak.go'))}</button></div>`, d => {
+    d.querySelector('[data-prison-go]').onclick = () => {
+      if (g.startPrisonBreak()) { prisonTried = true; openBattle(); }
+    };
+  }, 'prison-alert');
+}
+
+function updatePrisonFab() {
+  let f = ov.querySelector('.prisonfab');
+  if (!started || g.prisonBreakStatus() !== 'pending' || !prisonAlertSeen || g.zone !== 'th' || g.battle || g.over) {
+    if (f) f.remove();
+    return;
+  }
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'prisonfab';
+    f.onclick = ev => {
+      ev.stopPropagation();
+      if (!dlg.open && !g.battle) openPrisonAlert();
+    };
+    ov.appendChild(f);
+  }
+  f.textContent = `⚠️ ${prisonTried ? t('event.prisonBreak.retry') : t('event.prisonBreak.title')}`;
 }
 
 /** แถบบัญชาการเหนือฉาก — เหลือ "ทางเข้าห้องสอบสวน" อย่างเดียว
@@ -1528,12 +1569,25 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
-    <div class="fig foe${cls('foe')}">
+    ${hp?.foes?.length > 1 ? `<div class="foe-group">${hp.foes.map(f => {
+      const src = typeof f.sp === 'string' ? artUrl(f.sp) || `img/${f.sp}.png` : `img/spirit${f.sp || 7}.png`;
+      const hit = act?.struck === 'foe' &&
+        (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id);
+      const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
+      return `<button type="button" class="fig foe${f.hp <= 0 ? ' down' : ''}${hp.selectedFoeId === f.id ? ' selected' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
+        data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
+        ${hit ? fxAt('foe') + dmgAt('foe', hp.dmg?.confuseSelf || hp.dmg?.foe || 0) : ''}
+        ${hp.selectedFoeId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
+        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
+        <span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
+          ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
+      </button>`;
+    }).join('')}</div>` : `<div class="fig foe${cls('foe')}">
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
       <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
-        ${bar(hp ? hp.foeHp : 0, hp ? hp.foeMax : 1, 'foe', 'กำลังใจ')}</span>
-    </div>
+        ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
+    </div>`}
     ${controls}
   </div>`;
 }
@@ -2127,10 +2181,13 @@ function openBattle(after) {
     const confuseHit = !!(b.dmg && b.dmg.confuseSelf > 0);
     // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
     const view = phase === 'you' && b.mid
-        ? { ...b, foeHp: b.mid.foeHp, youHp: b.mid.youHp, talk: b.mid.talk,
-            dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0 } }
+        ? { ...b, foes:b.mid.foes, selectedFoeId:b.mid.selectedFoeId,
+            youHp: b.mid.youHp, talk: b.mid.talk,
+            dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0, foeId: b.dmg?.foeId } }
       : phase === 'foe'
-        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0 } : { foe: 0, you: b.dmg ? b.dmg.you : 0 } }
+        // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
+        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId }
+                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? (confuseHit ? { struck: 'foe' } : { lunge: 'foe', struck: 'you' }) : null;
@@ -2187,7 +2244,8 @@ function openBattle(after) {
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
-    const finLabel =
+    const finLabel = b.kind === 'prisonBreak'
+      ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? 'ฟังคำตัดสินของพ่อ'
@@ -2210,6 +2268,7 @@ function openBattle(after) {
           // มีคำว่า "โซน" นำหน้าอยู่แล้ว (เช่น "โซนสุวรรณภูมิ") ต่อแค่ "บอส" ก็ได้ข้อความตรงม็อกอัปเป๊ะ
           : b.kind === 'zoneBoss' ? `👑 บอส${g.zoneDef().name}`
           : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
+          : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
@@ -2233,6 +2292,9 @@ function openBattle(after) {
     const prepGo = dlg.querySelector('[data-prep-go]');
     if (prepGo) prepGo.onclick = () => { if (g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
     bindCommandWheel(dlg);
+    dlg.querySelectorAll('[data-foe-id]').forEach(el => el.onclick = () => {
+      if (!phase && g.selectFoe(el.dataset.foeId)) paint();
+    });
 
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน

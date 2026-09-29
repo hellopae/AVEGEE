@@ -7,7 +7,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone } from './data.js';
+         syncSceneZone, ZONE_EVENTS } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -42,6 +42,22 @@ function spliceFresh(arr, recent) {
   return chosen;
 }
 let SEQ = 1;
+// Keep the old single-foe API as accessors for saved tests and bossUltimate;
+// HP and status have exactly one owner, the foe object.
+function prepareBattle(b, hp, maxHp = hp) {
+  if (!b.foes) b.foes = [{ id: 'foe-1', who:b.who, sub:b.sub, sp:b.sp,
+    hp, maxHp, atk:b.foeAtk, stun:0, confuse:0 }];
+  b.selectedFoeId ||= b.foes[0].id;
+  b.counterIndex ||= 0;
+  const selected = () => b.foes.find(f => f.id === b.selectedFoeId) || b.foes[0];
+  Object.defineProperties(b, {
+    foeHp:{ get:() => selected().hp, set:v => { selected().hp = v; }, configurable:true },
+    foeMax:{ get:() => selected().maxHp, configurable:true },
+    stun:{ get:() => selected().stun, set:v => { selected().stun = v; }, configurable:true },
+    confuse:{ get:() => selected().confuse, set:v => { selected().confuse = v; }, configurable:true },
+  });
+  return b;
+}
 const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(s && s.case || '');
 
 export function createGame() {
@@ -83,7 +99,7 @@ export function createGame() {
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
-    zoneCases: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    zoneCases: {}, zoneEvents: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
     frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
@@ -739,6 +755,10 @@ const API = {
     if (Number.isFinite(r.score)) this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; if (Number.isFinite(r.score)) this.scoreSum += r.score;
     this.zoneCases[this.zone] = (this.zoneCases[this.zone] || 0) + 1;
+    if (this.zone === 'th' && this.zoneCases.th >= ZONE_EVENTS.th[0].atCases &&
+        !this.zoneEvents.th?.prisonBreak) {
+      (this.zoneEvents.th ||= {}).prisonBreak = 'pending';
+    }
     // เป้าหมายสั้น ๆ รายสาขา: เปิดหลักฐานที่ซ่อนอยู่และตัดสินได้ดีสามคดี
     const goal = this.miniGoals[this.zone] ||= { truth:0, earned:false };
     if (!goal.earned && r.score >= 78 && soul.said?.some(x => x.kind === 'truth' || x.kind === 'confess')) {
@@ -1801,13 +1821,13 @@ const API = {
       // ชื่อสำนวนเป็นคำบรรยายลักษณะแล้ว (ไม่มีชื่อ-นามสกุลจริง 10 ก.ย. 2569)
       // บางเรื่องจึงซ้ำกับ who เกือบทั้งบรรทัด — ซ้ำเมื่อไหร่ไม่ต้องโชว์บรรทัดล่าง
       who: soul.name || soul.who, sub: sameLabel(soul.name, soul.who) ? '' : soul.who, sp: soul.sp || 7,
-      foeHp: hp, foeMax: hp,
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null,
+      turn: 1, over: null,
       log: [],
       talk: `"ท่านจะลากข้าไปได้ก็ต่อเมื่อข้าล้มเท่านั้น"`,   // ช่องข้อความโชว์แค่บทพูด
       dmg: null,                                            // เลขความเสียหายรอบล่าสุด {foe,you}
     };
+    prepareBattle(this.battle, hp);
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -1823,13 +1843,13 @@ const API = {
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i,
       who: kind.name, sub: t('mob.fromRiver'), sp: kind.img,
-      foeHp: MOB.fightHp, foeMax: MOB.fightHp,
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null,
+      turn: 1, over: null,
       log: [],
       talk: `${kind.name}กระโจนเข้าใส่ ${kind.line || ''}`.trim(),
       dmg: null,
     };
+    prepareBattle(this.battle, MOB.fightHp);
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -1878,11 +1898,12 @@ const API = {
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
       who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
-      foeHp:hp, foeMax:hp, foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
+      foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
-      stun:0, turn:1, over:null, log:[], dmg:null,
+      turn:1, over:null, log:[], dmg:null,
       talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
     };
+    prepareBattle(this.battle, hp);
     this.onChange();
     return this.battle;
   },
@@ -1921,12 +1942,12 @@ const API = {
       // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติแล้ว (ผูกกับเนื้อเรื่องจริง
       // คือภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก) ตัด "ยมทูตคุ้มกัน" (แทนด้วยปุ่มนิรา — จัดทีมจริงดีกว่าโบนัส
       // สถิติลอย ๆ) กับ "เตรียมลูกไฟ" ออก (ซื้อลูกไฟที่พ่อค้าได้แล้ว ดู MERCHANT.stock/buyMerchant)
-      foeHp: hp - (this.miniGoals[z.k]?.earned ? 24 : 0), foeMax: hp,
       youHp: Math.max(24, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
+      turn: 1, over: null, log: [], talk: z.bossTalk, dmg: null,
       ultimateUsed:false, ultimateLastTurn:0, ultimate:null,
       prepStarted: false, proofBonus: this.miniGoals[z.k]?.earned ? 24 : 0,
     };
+    prepareBattle(this.battle, hp - (this.miniGoals[z.k]?.earned ? 24 : 0), hp);
     this.onChange();
     return this.battle;
   },
@@ -1962,10 +1983,10 @@ const API = {
     if (this.battle) return this.battle;
     this.battle = {
       kind: 'yama', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
-      foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
-      youHp: 1, youMax: this.hpMax, stun: 0, turn: 1, over: null,
+      youHp: 1, youMax: this.hpMax, turn: 1, over: null,
       log: [], talk: YAMA_FIGHT.line1, dmg: null,
     };
+    prepareBattle(this.battle, YAMA_FIGHT.hp);
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -1980,17 +2001,47 @@ const API = {
     const auth = authorityOf(this.zone);
     this.battle = {
       kind: 'dad', who: auth.full, sub: auth.role, sp: 'hero-boss',
-      foeHp: YAMA_FIGHT.hp, foeMax: YAMA_FIGHT.hp,
       youHp: Math.max(1, Math.round(this.hp)), youMax: this.hpMax,
-      stun: 0, turn: 1, over: null, log: [], reason,
+      turn: 1, over: null, log: [], reason,
       talk: reason === 'karma' ? '"กรรมของเจ้าเต็มบัญชีแล้ว ถึงเวลารับผลด้วยตัวเอง"'
           : reason === 'order' ? '"ข้าเตือนเรื่องคิวล้นครบแล้ว คราวนี้เจ้าต้องรับผลเอง"'
           : reason === 'hp' ? '"แม้แต่บารมีของตนเองยังรักษาไว้ไม่ได้หรือ"'
           : DAD.line1,
       dmg: null,
     };
+    prepareBattle(this.battle, YAMA_FIGHT.hp);
     this.onChange();
     return this.battle;
+  },
+
+  prisonBreakStatus(zone = this.zone) {
+    return this.zoneEvents[zone]?.prisonBreak || 'locked';
+  },
+  startPrisonBreak() {
+    if (this.zone !== 'th' || this.battle || this.over || this.prisonBreakStatus() !== 'pending') return null;
+    const event = ZONE_EVENTS.th[0];
+    const spirits = [1, 2, 3, 4, 5, 6, 7];
+    for (let i = spirits.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [spirits[i], spirits[j]] = [spirits[j], spirits[i]];
+    }
+    const foes = spirits.slice(0, 3).map((sp, i) => ({ id:`prison-${i + 1}`, who:t('event.prisonBreak.foe'),
+      sub:`${i + 1}/3`, sp, hp:event.foes[0].hp, maxHp:event.foes[0].hp,
+      atk:event.foes[0].atk, stun:0, confuse:0 }));
+    this.zoneEvents.th.prisonBreak = 'active';
+    this.fights++;
+    this.battle = prepareBattle({ kind:'prisonBreak', foes, selectedFoeId:foes[0].id,
+      who:t('event.prisonBreak.foe'), youHp:Math.max(24, Math.round(this.hp)), youMax:this.hpMax,
+      turn:1, over:null, log:[], talk:t('event.prisonBreak.alert'), dmg:null });
+    this.save(); this.onChange();
+    return this.battle;
+  },
+  selectFoe(id) {
+    const b = this.battle, foe = b?.foes.find(f => f.id === id && f.hp > 0);
+    if (!foe || b.over) return false;
+    b.selectedFoeId = id;
+    this.onChange();
+    return true;
   },
 
   /** เรียกยมทูตในสังกัดมาช่วยหนึ่งที — เสียกำลังใจของเขา แล้วต้องรอรอบ */
@@ -2031,6 +2082,8 @@ const API = {
   battleAct(what) {
     const B = this.battle;
     if (!B || B.over) return false;
+    const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
+    if (!target) return false;
     const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
     // log เก็บไว้ในเครื่องเฉย ๆ ไม่ได้เอาไปโชว์แล้ว — ช่องข้อความโชว์ B.talk อย่างเดียว
     // (เจ้าของสั่ง 8 ก.ย. 2569: "เหลือแค่คำพูดของวิญญาณก็พอ log ตัดออก")
@@ -2128,22 +2181,37 @@ const API = {
       if (it.stun) stunFoe = it.stun;
     }
 
-    B.foeHp = Math.max(0, B.foeHp - dmg);
+    target.hp = Math.max(0, target.hp - dmg);
     B.dmg.foe = dmg;
-    if (stunFoe) B.stun += stunFoe;
+    B.dmg.foeId = target.id;
+    if (stunFoe) target.stun += stunFoe;
     // ข้อ B ชุด 13 — สะกดจิต: เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง" (ต่างจาก stun ที่แค่ข้ามตา)
-    if (confuseFoe) B.confuse = (B.confuse || 0) + confuseFoe;
-    if (dmg > 0) talk(dmg >= 26 ? 'crit' : B.foeHp <= B.foeMax * 0.3 ? 'low' : 'hurt');
+    if (confuseFoe) target.confuse += confuseFoe;
+    if (dmg > 0) talk(dmg >= 26 ? 'crit' : target.hp <= target.maxHp * 0.3 ? 'low' : 'hurt');
     // ภาพนิ่งของ "ตอนจบตาเรา แต่เขายังไม่สวน" — ui เอาไปเล่นเป็นจังหวะแรก
     // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
-    B.mid = { foeHp: B.foeHp, youHp: B.youHp, talk: B.talk };
+    B.mid = { foes:B.foes.map(f => ({ ...f })), selectedFoeId:B.selectedFoeId,
+      youHp: B.youHp, talk: B.talk };
+    if (target.hp <= 0) {
+      const start = B.foes.indexOf(target);
+      const next = [...B.foes.slice(start + 1), ...B.foes.slice(0, start)].find(f => f.hp > 0);
+      if (next) B.selectedFoeId = next.id;
+    }
+    B.mid.selectedFoeId = B.selectedFoeId;
 
     // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — แยกเป็นฟังก์ชันย่อย เพราะตอนนี้เช็คแพ้ชนะได้ 2 จังหวะ:
     // ตอนยมน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
     // ถ้าสะกดจิตฆ่าศัตรูตายพอดี ผู้เล่นต้องกดอีกทีถึงจะเห็นว่าชนะแล้ว — Dale เจอตอนรีวิวชุด 13
     const declareWin = () => {
       B.over = 'win';
-      if (B.kind === 'frontier') {
+      if (B.kind === 'prisonBreak') {
+        const event = ZONE_EVENTS.th[0];
+        this.zoneEvents.th.prisonBreak = 'cleared';
+        this.coin += event.reward.coin;
+        this.order = clamp(this.order + event.reward.order, 0, 100);
+        B.talk = t('event.prisonBreak.win');
+        say(B.talk);
+      } else if (B.kind === 'frontier') {
         const coin = 32 + B.wave * 10;
         const item = pick(FRONTIER.drops);
         this.coin += coin;
@@ -2170,30 +2238,37 @@ const API = {
         if (soul) soul.beaten = true;
         say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
       }
-      talk('lose');
+      if (B.kind !== 'prisonBreak') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
     };
 
-    if (B.foeHp <= 0) return declareWin();
+    if (B.foes.every(f => f.hp <= 0)) return declareWin();
 
     // ---- ตาของเขา ----
-    const foeAtkRoll = () => roll(B.kind === 'frontier' ? B.foeAtk
+    const counter = [...B.foes.slice(B.counterIndex), ...B.foes.slice(0, B.counterIndex)]
+      .find(f => f.hp > 0);
+    B.counterIndex = (B.foes.indexOf(counter) + 1) % B.foes.length;
+    B.dmg.counterFoeId = counter.id;
+    const foeAtkRoll = () => roll(counter.atk || (B.kind === 'frontier' ? B.foeAtk
       : B.kind === 'mob' ? MOB.fightAtk
       : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3]
-      : BATTLE.foeAtk);
+      : BATTLE.foeAtk));
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง"
     // ต่างจาก B.stun (แค่ข้ามตา ไม่มีความเสียหาย) เช็คก่อน stun เพราะถือเป็นผลที่แรงกว่า
-    if (B.confuse > 0) {
-      B.confuse--;
+    if (counter.confuse > 0) {
+      counter.confuse--;
       const d = foeAtkRoll();
-      B.foeHp = Math.max(0, B.foeHp - d);
+      counter.hp = Math.max(0, counter.hp - d);
       B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมน้อย
       say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
-      if (B.foeHp <= 0) return declareWin();
-    } else if (B.stun > 0) { B.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
+      if (counter.hp <= 0) {
+        if (B.foes.every(f => f.hp <= 0)) return declareWin();
+        if (B.selectedFoeId === counter.id) B.selectedFoeId = B.foes.find(f => f.hp > 0).id;
+      }
+    } else if (counter.stun > 0) { counter.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
     else {
       const normal = foeAtkRoll();
       const ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
@@ -2214,7 +2289,14 @@ const API = {
     if (B.youHp <= 0) {
       B.over = 'lose';
       talk('win');
-      if (B.kind === 'frontier') {
+      if (B.kind === 'prisonBreak') {
+        const event = ZONE_EVENTS.th[0];
+        this.zoneEvents.th.prisonBreak = 'pending';
+        this.hp = Math.max(1, this.hp - event.lose.hp);
+        this.order = clamp(this.order - event.lose.order, 0, 100);
+        B.talk = t('event.prisonBreak.lose');
+        say(B.talk);
+      } else if (B.kind === 'frontier') {
         this.hp = Math.max(1, this.hp - 8);
         say('ทีมถอยกลับเข้าประตู — ชายแดนยังไม่แตก แต่บารมีท่านหาย 8');
       } else if (B.kind === 'mob') {
@@ -2281,6 +2363,11 @@ const API = {
       this.onChange(); return B;
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+    if (B.kind === 'prisonBreak') {
+      this.log(B.over === 'win' ? t('event.prisonBreak.win') : t('event.prisonBreak.lose'),
+        B.over === 'win' ? 'good' : 'bad');
+      this.save(); this.onChange(); return B;
+    }
     if (B.kind === 'zoneBoss') {
       // บทตอนบอสแพ้/ยมน้อยแพ้ ใช้บท "ผู้ตรวจการ" ของ Rae แทน log ทั่วไป (17 ก.ย. 2569)
       // ผ่าน Reese fact-check แล้ว — ดู ZONES[].bossWin/bossLose ใน data.js ห้ามแก้ถ้อยคำ
@@ -2728,7 +2815,7 @@ API.snapshot = function (withEntry = true) {
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
-    zoneCases: this.zoneCases, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
+    zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
@@ -2841,6 +2928,10 @@ API.restore = function (d) {
   this.zone = d.zone || 'th';
   syncFrontierPos(this.zone);
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
+  this.zoneEvents = d.zoneEvents || {};
+  for (const [zone, events] of Object.entries(this.zoneEvents)) {
+    if (events.prisonBreak === 'active') events.prisonBreak = 'pending';
+  }
   this.miniGoals = d.miniGoals || {};
   this.frontier = d.frontier || { zones:{} };
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };

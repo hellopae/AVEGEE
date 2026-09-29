@@ -1380,6 +1380,15 @@ export const BATTLE = {
   ],
 };
 
+// Per-zone event definitions. Later batches can add other zones and wave entries.
+export const ZONE_EVENTS = {
+  th: [{ k:'prisonBreak', atCases:2, mode:'group',
+    title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
+    alert:{ th:'มีวิญญาณแหกคุกออกมาหลายตน', en:'Several spirits have escaped' },
+    foes:[{ sp:'spirit', count:3, hp:30, atk:[5, 8] }],
+    reward:{ coin:75, order:2 }, lose:{ hp:9, order:4 } }],
+};
+
 // TODO: รอ Rae ตั้งชื่อจริง
 export const BOSS_ULTIMATE = {
   th: { name:'ดาบเพลิง', image:'img/zone-boss-cutscene.jpeg' },
