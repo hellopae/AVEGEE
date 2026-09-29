@@ -119,7 +119,7 @@ setInterval(() => {
 let saveAt = 0;
 function frame(now) {
   const dt = Math.min(120, now - last); last = now;
-  if (!g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
+  if (!g.paused && !g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
   g.advanceAfterlife(dt);
   if (now > saveAt) { saveAt = now + 4000; g.save(); }
   if (!g.paused && !g.over) {
@@ -710,7 +710,7 @@ function drawTabHeads() {
 
 /** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
-  if (g.over || g.battle || dlg.open) return;
+  if (g.over || g.battle || dlg.open || g.guard) return;
   const n = g.nearestMob();
   if (n && n.d <= MOB.fabReach) { g.startMobBattle(n.i); openBattle(); return; }
   g.attack(); refresh();
@@ -720,12 +720,12 @@ function tryFight() {
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fab = $('#fab-atk');
-  const n = g.over ? null : g.nearestMob();
+  const n = g.over || g.guard ? null : g.nearestMob();
   const near = n && n.d <= MOB.fabReach;
-  const sig = `${g.mobs.length}/${g.over ? 1 : 0}/${near ? 1 : 0}`;
+  const sig = `${g.mobs.length}/${g.over ? 1 : 0}/${g.guard ? 1 : 0}/${near ? 1 : 0}`;
   if (sig === atkSig) return;
   atkSig = sig;
-  btn.hidden = !!g.over || !g.mobs.length;
+  btn.hidden = !!g.over || !!g.guard || !g.mobs.length;
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
   const [label, color] = near
@@ -779,7 +779,7 @@ document.querySelectorAll('.tabs [data-tab]').forEach(el =>
 $('#atk').onclick = tryFight;
 $('#fab-atk').onclick = tryFight;
 function goTrial() {
-  if (!g.queue[0] || g.over || g.battle) return;
+  if (!g.queue[0] || g.courtClosed || g.over || g.battle) return;
   openTrial();
 }
 
@@ -816,6 +816,7 @@ dlg.addEventListener('click', e => {
 });
 
 function modal(html, onOpen, cls = '') {
+  pauseForDlg();
   dlg.innerHTML = html;
   openDlg(cls);
   dlg.querySelectorAll('[data-close]').forEach(b => b.onclick = () => dlg.close());
@@ -936,18 +937,18 @@ function updateTrialBtn() {
   const s = g.queue[0];
   const b = deckBar.querySelector('#d-trial');
   if (b) {
-    b.disabled = !s;
-    b.className = s ? 'gold' : '';
-    b.textContent = s ? t('hud.trialBegins') : t('hud.trialRecess');
+    b.disabled = !s || g.courtClosed;
+    b.className = s && !g.courtClosed ? 'gold' : '';
+    b.textContent = s && !g.courtClosed ? t('hud.trialBegins') : t('hud.trialRecess');
   }
   // ทางเข้าหลักอยู่ล่างกลาง; เก็บปุ่มลอยเก่าที่อาจค้างจากการวาดก่อนหน้า
   const f = ov.querySelector('.trialfab');
   if (f) f.remove();
   const trial = $('#hud-trial');
   if (trial) {
-    trial.disabled = !s || !!g.over || !!g.battle;
+    trial.disabled = !s || g.courtClosed || !!g.over || !!g.battle;
     trial.textContent = t(trial.disabled ? 'hud.trialRecess' : 'hud.trialBegins');
-    trial.title = trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
+    trial.title = g.courtClosed ? t('hud.courtClosedTrial') : trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
     trial.setAttribute('aria-label', trial.disabled ? `${trial.textContent} — ${trial.title}` : trial.title);
   }
 }
@@ -959,7 +960,7 @@ function updateTrialBtn() {
  *  ตำแหน่งอัปเดตทุกเฟรม — ผีเดินตลอดเวลา ปุ่มต้องติดหัวมันไปด้วย */
 function updateMobFab() {
   const gone = () => { const e = ov.querySelector('.mobfab'); if (e) e.remove(); };
-  if (g.over || g.battle || dlg.open || !g.mobs.length) return gone();
+  if (g.over || g.battle || dlg.open || g.guard || !g.mobs.length) return gone();
   const n = g.nearestMob();
   if (!n || n.d > MOB.fabReach) return gone();
   let f = ov.querySelector('.mobfab');
@@ -969,7 +970,7 @@ function updateMobFab() {
     f.textContent = '⚔️ กดเพื่อเข้าสู้';
     f.onclick = ev => {
       ev.stopPropagation();
-      if (g.over || g.battle || dlg.open) return;
+      if (g.over || g.battle || dlg.open || g.guard) return;
       const m = g.nearestMob();
       if (!m || m.d > MOB.fabReach) return;
       g.startMobBattle(m.i); openBattle();
@@ -1032,8 +1033,8 @@ function updateFrontierFab() {
  *  ทางเข้าหลักอยู่ที่ปุ่มเริ่มพิจารณาคดีล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
 function drawDeck() {
   const s = g.queue[0];
-  if (!s || g.over) {
-    deckBar.innerHTML = `<div class="idle">${esc(t('hud.noCourt'))}</div>`;
+  if (!s || g.over || g.courtClosed) {
+    deckBar.innerHTML = `<div class="idle">${esc(t(g.courtClosed ? 'hud.courtClosedTrial' : 'hud.noCourt'))}</div>`;
     return;
   }
   deckBar.innerHTML = `
@@ -1598,6 +1599,7 @@ function playActionCutscene(k, ultimate = null) {
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 function openTrial() {
+  if (g.courtClosed) return;
   const s = g.queue[0];
   if (!s) return;
   pauseForDlg();
@@ -2537,7 +2539,7 @@ function openPause(allowReplacing = false) {
 }
 
 function updatePlay() {
-  $('#play').textContent = t(g.paused ? 'hud.openCourt' : 'hud.closeCourt');
+  $('#play').textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
   // ปุ่มย้ายโซนโผล่เมื่อมีโซนอื่นเปิดให้จริง ๆ เท่านั้น — ไม่งั้นกดแล้วเจอแต่กุญแจ
   const z = $('#zone');
   if (z) {
@@ -2555,22 +2557,22 @@ function updatePlay() {
     const n = Object.values(g.inventory || {}).reduce((s, v) => s + (Number(v) || 0), 0);
     bag.textContent = `🎒 กระเป๋า${n ? ` (${n})` : ''}`;
   }
-  // PAUSE ขวาบนเปิดหน้าต่างพักเสมอ; ปุ่มเปิด/ปิดศาลด้านล่างเป็นตัวคุมเวลา
+  // PAUSE ขวาบนเปิดหน้าต่างพักเสมอ; ปุ่มเปิด/ปิดศาลด้านล่างคุมเฉพาะคดีใหม่และการมาถึง
   const hp = $('#hud-pause-img');
   if (hp) hp.src = 'img/ui/icon-pause.png';
   const court = $('#hud-open-court');
   if (court) {
-    court.textContent = t(g.paused ? 'hud.openCourt' : 'hud.closeCourt');
+    court.textContent = t(g.courtClosed ? 'hud.openCourt' : 'hud.closeCourt');
     court.disabled = !!g.over;
-    court.setAttribute('aria-pressed', String(!g.paused));
+    court.setAttribute('aria-pressed', String(!g.courtClosed));
     court.setAttribute('aria-label', court.textContent);
   }
 }
 function toggleCourt() {
   if (g.over) return;
-  userPaused = !g.paused;
-  g.paused = userPaused;
+  g.courtClosed = !g.courtClosed;
   updatePlay();
+  refresh();
 }
 $('#play').onclick = toggleCourt;
 $('#help').onclick = openHelp;
@@ -2872,25 +2874,19 @@ function openStation(k) {
     }
 
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
-    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ทัณฑ์เดินเฉพาะตอนเกม "เดินวาระ" อยู่ (g.step() ถูกเรียกจากลูปเฟรมเท่านั้น
-    // เมื่อ !g.paused) เห็นได้แค่จากป้ายบนฉาก (ต้องยืนใกล้ถึงจะเห็น) — เพิ่ม chip ตรงนี้ให้เห็นได้ทันที
-    // ไม่ว่าจะยืนตรงไหนในห้อง กันเข้าใจผิดว่า "สถานีค้าง" ทั้งที่เกมทั้งเกมหยุดพักอยู่
+    // ถ้าเกมถูกพักอยู่จริง แสดงสถานะพักแยกจากสถานะปิดศาล
     if (T) T.innerHTML = `
         <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
         <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
         <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
         ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">${g.mobs.length ? '🔥 ไฟไหม้' : '⚠️ เสียหาย'} ${Math.round(st.fire)}%</span>` : ''}
         ${g.paused
-          // ข้อ F คุณเป้เจอ 25/26 ก.ย. 2569 — ป้าย "เกมพักอยู่" มีอยู่แล้ว (24 ก.ย.) แต่ปุ่ม ▶ เดินวาระ
-          // อยู่นอกกล่องนี้ ซึ่งเป็น <dialog> แท้ ๆ บังคลิกพื้นหลังทั้งหมด — กดไม่ถึงปุ่มจริงถ้าไม่ปิดกล่องก่อน
-          // เจ้าของเจอในโซน 2 (กระทะทองแดง) แต่จริง ๆ เป็นแล้วทุกสถานีทุกโซน ไม่ใช่บั๊กเฉพาะโซน 2
-          // เพิ่มปุ่มเดินวาระใช้ตรงนี้เลย ไม่ต้องปิดกล่องไปกดข้างนอก
-          ? `<span class="chip" style="color:var(--warning)">⏸ เกมพักอยู่ — ทัณฑ์ไม่เดิน</span>
-             <button class="sm gold" id="st-resume">${esc(t('hud.openCourt'))}</button>`
+          ? `<span class="chip" style="color:var(--warning)">${esc(t('station.gamePaused'))}</span>
+             <button class="sm gold" id="st-resume">${esc(t('station.closeToResume'))}</button>`
           : ''}
         <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
     const rb = T && T.querySelector('#st-resume');
-    if (rb) rb.onclick = () => { userPaused = false; g.paused = false; updatePlay(); panels(); };
+    if (rb) rb.onclick = () => dlg.close();
     if (L) L.innerHTML = `
           <div class="hud-card">
             <h4>ที่นี่คือที่ไหน</h4>
@@ -3310,8 +3306,7 @@ function startPlay(fresh) {
   coverVfx.pause();
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
-  userPaused = true;                        // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
-  g.paused = true;
+  g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
   updatePlay();
   if (fresh) {
     // เพลงชื่อเรื่องเริ่มตั้งแต่ splash และเล่นต่อคลุมฉากเปิดของพญายม
