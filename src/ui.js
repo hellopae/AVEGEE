@@ -6,7 +6,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js';
+import { createGame, loadSave, clearSave, sameLabel, primarySinOf } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -199,7 +199,7 @@ function explainBar(k) {
     <div class="tline"><b>หายเมื่อไหร่</b><div>คำตัดสินได้ 0 ดาว หรือลงทัณฑ์เกินกรรมสองวาระขึ้นไป = โดนลูกไฟ บารมีหาย 1 ใน 5 ·
       ได้ 1 ดาว = หาย 10</div></div>
     <div class="tline"><b>ได้คืนเมื่อไหร่</b><div>ตัดสินได้ห้าดาว (พ่อคืนให้นิดหน่อย — และคืนน้อยลงถ้ากรรมท่านสูง) ·
-      เดินไปเก็บ<b>หีบยาอายุวัฒนะ</b>ที่ตกอยู่บนแผนที่ +20</div></div>
+      ${getLang() === 'en' ? `Pick up a <b>medicine chest</b> on the map for +${ITEMS.health.hp} authority` : `เดินไปเก็บ<b>หีบยาอายุวัฒนะ</b>ที่ตกอยู่บนแผนที่ +${ITEMS.health.hp}`}</div></div>
     <div class="tline bad"><b>ถ้าหมด</b><div>จบเกมทันที — พญายมเรียกตราคืนจากมือท่านต่อหน้าทุกคน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
@@ -232,14 +232,14 @@ function explainBar(k) {
       ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
     <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> — ไม่หยุดสนิท แค่คดีคืบหน้าช้าลง</div></div>
     <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
-    <div class="tline"><b>เติมยังไง</b><div>ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือเดินไปเก็บ<b>ห่อเสบียง</b>บนแผนที่</div></div>
+    <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs in Build for ${BAL.foodPrice * 10} coins, or pick up food packs on the map` : `ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือเดินไปเก็บ<b>ห่อเสบียง</b>บนแผนที่`}</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
   return modal(`<h2>🪙 เบี้ยกรรม — ${Math.round(g.coin)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       เงินของโซน ใช้สร้างสถานี จ้างยมทูต ซื้อเสบียง และบูชาดอกบัว</p>
     <div class="tline"><b>ได้จาก</b><div>ปิดคดี (คูณด้วยระเบียบของโซน) · สี่ดาว +25 · ห้าดาว +60 ·
-      ปราบเปรต +${MOB.bounty} · ตรวจการผ่าน +150</div></div>
+      ${getLang() === 'en' ? `Defeat a demon +${MOB.bounty} coins · Pass inspection +150` : `ปราบเปรต +${MOB.bounty} · ตรวจการผ่าน +150`}</div></div>
     <div class="tline"><b>เสียไปกับ</b><div>ค่าแรงยักษ์ทวารบาลทุก ${BAL.payEvery} วาระ · ค่าสร้าง · ค่าจ้างแรกเข้า · ค่าเสบียง</div></div>
     <div class="tline bad"><b>ถ้าติดลบถึง −300</b><div>จบเกม — ยมทูตวางเครื่องมือแล้วเดินออกไปพร้อมกัน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
@@ -360,8 +360,8 @@ function drawTab() {
   } else {
     b.innerHTML = `
       <div class="shop"><span class="g">🍙</span>
-        <span class="n"><b>เสบียง 10 ห่อ</b><div>ค่าจ้างยมทูตที่กำลังทำงาน — หมดแล้วยังทำงานได้ แค่ช้าลง</div></span>
-        <button class="sm" id="buyfood" ${g.coin < BAL.foodPrice * 10 ? 'disabled' : ''}>ซื้อ ${BAL.foodPrice * 10}</button>
+        <span class="n"><b>${getLang() === 'en' ? '10 food packs' : 'เสบียง 10 ห่อ'}</b><div>ค่าจ้างยมทูตที่กำลังทำงาน — หมดแล้วยังทำงานได้ แค่ช้าลง</div></span>
+        <button class="sm" id="buyfood" ${g.coin < BAL.foodPrice * 10 ? 'disabled' : ''}>${getLang() === 'en' ? 'Buy' : 'ซื้อ'} ${BAL.foodPrice * 10}</button>
       </div>
       `
       + (g.stations.some(x => x.def.k === 'tea') ? `
@@ -591,9 +591,10 @@ function sideBody() {
     if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
     const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
     return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
-        `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
+        getLang() === 'en' ? `Drains ${(MOB.drain).toFixed(2)} order per term while present`
+          : `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
       + (kd.line ? think(kd.line) : '')
-      + kv([`เลือด ${m.hp}/${MOB.hp}`, `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
+      + kv([`เลือด ${m.hp}/${MOB.hp}`, getLang() === 'en' ? `Defeat for +${MOB.bounty} coins` : `ปราบได้ +${MOB.bounty} เบี้ยกรรม`, `ระเบียบ +3`])
       + `<div class="sec">ปราบยังไง</div>
          <div class="row-truth">เดินเข้าใกล้แล้วกดปุ่ม ⚔️ เหนือหัว กดเว้นวรรค หรือคลิกตัวมันเพื่อเข้าสู้</div>`;
   }
@@ -1674,9 +1675,10 @@ function openTrial(initialError = '') {
       const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
         : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
       const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
+      const matched = !s.pure && x.def.tags.includes(primarySinOf(s));
       return `<button class="orb-choice" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
-        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (why ? ' · ' + why : ''))}">
-        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${why ? `<small>${esc(why)}</small>` : ''}</button>`;
+        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (matched ? ' · ' + t('trial.matchBonus') : '') + (why ? ' · ' + why : ''))}">
+        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${matched ? `<small class="match-badge">${esc(t('trial.matchBonus'))}</small>` : why ? `<small>${esc(why)}</small>` : ''}</button>`;
     }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
     const crewChoices = available.length ? available.map(c =>
       `<button class="orb-choice" data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
@@ -2141,7 +2143,7 @@ function openBattle(after) {
       <button data-prep-merchant>🧳 พ่อค้านรก · ซื้อของ</button>
       <button data-prep-nira>📋 นิรา · จัดทีมยมทูต</button>
       <button data-prep-med ${canMed ? '' : 'disabled'}
-        title="${medN < 1 ? 'ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ' : medFull ? 'บารมีเต็มแล้ว' : `ฟื้นบารมี ${ITEMS.health.hp} · เหลือ ${medN} หีบ`}">
+        title="${medN < 1 ? 'ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ' : medFull ? 'บารมีเต็มแล้ว' : getLang() === 'en' ? `Restore ${ITEMS.health.hp} authority · ${medN} chests left` : `ฟื้นบารมี ${ITEMS.health.hp} · เหลือ ${medN} หีบ`}">
         💊 กินหีบยา${medN ? ` ×${medN}` : ''}</button>
       </div>
       ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}

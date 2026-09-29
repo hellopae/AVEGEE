@@ -113,6 +113,9 @@ const TH = {
   'trial.readAloud': 'สำนวนที่นิราอ่านให้ฟัง',
   'trial.chooseIssue': 'เลือกประเด็นที่จะสอบสวน',
   'trial.saveRecord': 'บันทึกการสอบสวน',
+  'trial.matchBonus': 'ตรงบาป +โบนัส',
+  'verdict.matchBonus': 'โบนัสสถานีตรงบาป',
+  'verdict.coins': 'เบี้ยกรรม',
 
   'battle.bossOfZone': 'บอสโซน',
   'battle.pause': 'หยุด',
@@ -201,6 +204,9 @@ const EN = {
   'hud.rank': 'Rank',
 
   'trial.caseNo': 'Case',
+  'trial.matchBonus': 'Sin match +bonus',
+  'verdict.matchBonus': 'Sin match bonus',
+  'verdict.coins': 'coins',
   'trial.pause': 'Pause',
   'trial.settings': 'Settings',
   'trial.close': 'Close',
