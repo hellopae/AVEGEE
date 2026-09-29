@@ -375,13 +375,15 @@ function drawTab() {
            ตอนนี้โซนนี้รับได้: ${g.activeTags().map(t => `<span class="tag" style="background:${SINS[t].color}22;color:${SINS[t].color}">${SINS[t].name}</span>`).join(' ') || 'ยังไม่มีเลย'}</div>`
       + STATIONS.filter(s => s.cost > 0).map(s => {
         const built = g.stations.some(x => x.def.k === s.k);
+        const bt = g.crewOf('taan'), builderBusy = !!bt && !!(bt.at || bt.escort);
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop"><span class="g">${s.glyph}</span>
           <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
             ${s.use ? `<div style="color:var(--gold)">${esc(s.use)}</div>` : ''}
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
-          <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost ? 'disabled' : ''}>${built ? 'สร้างแล้ว' : 'สร้าง ' + s.cost}</button>
+          <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost || builderBusy ? 'disabled' : ''}
+            ${!built && builderBusy ? `title="${esc(bt.name + 'ติดงานอื่นอยู่')}"` : ''}>${built ? 'สร้างแล้ว' : builderBusy ? bt.name + 'ติดงาน' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
     const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
@@ -1598,13 +1600,15 @@ function playActionCutscene(k, ultimate = null) {
 // เปิดได้จากแท่นพิพากษาเท่านั้น (ดู drawDeck) — แท็บ "ไต่สวน" เดิมถูกถอดออกแล้ว
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
-function openTrial() {
+function openTrial(initialError = '') {
   if (g.courtClosed) return;
   const s = g.queue[0];
   if (!s) return;
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
+  let trialError = initialError;
+  const blockText = block => block ? t('trial.' + block.key) + (block.station ? block.station : '') : '';
 
   const paint = () => {
     // เปลี่ยนแท็บแล้ววาดเนื้อหาห้องสอบสวนใหม่ แต่บนมือถืออย่ากระโดดกลับไปหัวกล่อง
@@ -1613,11 +1617,15 @@ function openTrial() {
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
     const idle    = g.freeCrew();
+    const selectedSt = dests.find(x => x.def.k === pick.st);
+    const keeper = selectedSt?.slots.length ? g.crewOf(selectedSt.crewK) : null;
+    const available = keeper ? [keeper] : idle;
     if (pick.st && !dests.some(x => x.def.k === pick.st && g.stFree(x) > 0)) pick.st = null;
-    if (pick.cr && !idle.some(c => c.k === pick.cr)) pick.cr = null;
+    if (pick.cr && !available.some(c => c.k === pick.cr)) pick.cr = null;
     const stDef  = pick.st && STATIONS.find(d => d.k === pick.st);
     const heaven = !!(stDef && stDef.heaven);
-    const ready  = !!(pick.st && pick.cr && (heaven || pick.inten));
+    const blocked = pick.st && pick.cr ? g.assignBlock(s.id, pick.st, pick.cr) : null;
+    const ready  = !!(pick.st && pick.cr && (heaven || pick.inten) && !blocked);
     // ปุ่มออกหมายกด disabled แล้วเงียบ ไม่มีทางรู้ว่าขาดอะไร (ข้อ B คุณเป้ 24 ก.ย. 2569)
     // — ต้องมีข้อความบนจอเสมอ ไม่ใช่แค่ title ที่ disabled button ไม่โชว์บนจอสัมผัส
     const missingParts = ready ? [] : [
@@ -1663,12 +1671,14 @@ function openTrial() {
         ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${badge}</i></button>`;
     }).join('');
     const destinationChoices = dests.length ? dests.map(x => {
-      const busy = g.stFree(x) <= 0, bg = stBg(x.def.k);
+      const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
+        : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
+      const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
       return `<button class="orb-choice" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
-        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (busy ? ' · เต็ม' : ''))}">
-        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b></button>`;
+        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (why ? ' · ' + why : ''))}">
+        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${why ? `<small>${esc(why)}</small>` : ''}</button>`;
     }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
-    const crewChoices = idle.length ? idle.map(c =>
+    const crewChoices = available.length ? available.map(c =>
       `<button class="orb-choice" data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
         title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta)}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
@@ -1685,8 +1695,11 @@ function openTrial() {
       crewNow && `<span class="command-selected selected-crew">${orbImg(artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`))}<b>${esc(crewNow.name)}</b></span>`,
       (pick.inten || heaven) && `<span class="command-selected selected-force">${heaven ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
     ].filter(Boolean).join('');
+    // สถานีที่ผู้คุมประจำส่งไม่ได้ตอนนี้ — บอกเหตุผลในบรรทัดสถานะ (จอแคบไม่มีที่พอสำหรับป้ายเล็กใต้ไอคอน)
+    const stationNotes = dests.filter(x => x.slots.length && g.stFree(x) > 0).map(x => [x, g.assignBlock(s.id, x.def.k, x.crewK)])
+      .filter(([, bk]) => bk).map(([x, bk]) => `${x.def.name}: ${blockText(bk)}`).join(' · ');
     const trialWheel = commandWheel({ready, selected,
-      missing: missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', groups:[
+      missing: trialError || blockText(blocked) || [missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', stationNotes].filter(Boolean).join(' · '), groups:[
       {choices:powerChoices},{choices:destinationChoices},{choices:crewChoices},{choices:forceChoices,disabled:heaven}
     ]});
 
@@ -1782,6 +1795,11 @@ function openTrial() {
     };
     dlg.querySelectorAll('[data-pickkey]').forEach(el => el.onclick = () => {
       pick[el.dataset.pickkey] = el.dataset.k ?? +el.dataset.v;
+      if (el.dataset.pickkey === 'st') {
+        const station = g.stations.find(x => x.def.k === pick.st);
+        pick.cr = station?.slots.length ? station.crewK : null;
+      }
+      trialError = '';
       paint();
     });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
@@ -1803,13 +1821,15 @@ function openTrial() {
     const go = dlg.querySelector('#t-go');
     if (go) go.onclick = () => {
       const st = pick.st, cr = pick.cr, inten = pick.inten;
+      const reason = g.assignBlock(s.id, st, cr);
+      if (reason) { trialError = blockText(reason); paint(); return; }
       if (g.needBattle(s)) {                     // เปิดฉากใหม่ทับกล่องเดิมผ่าน openDlg รุ่นเดียว ลด race จาก close event
-        if (!g.startBattle(s)) return;
-        openBattle(res => { if (res === 'win') doVerdict(s, st, cr, inten); else refresh(); });
+        if (!g.startBattle(s)) { trialError = t('trial.failed'); paint(); return; }
+        openBattle(res => { if (res === 'win' && !doVerdict(s, st, cr, inten)) openTrial(blockText(g.assignBlock(s.id, st, cr)) || t('trial.failed')); else refresh(); });
         return;
       }
-      doVerdict(s, st, cr, inten);
-      dlg.close();
+      if (doVerdict(s, st, cr, inten)) dlg.close();
+      else { trialError = blockText(g.assignBlock(s.id, st, cr)) || t('trial.failed'); paint(); }
     };
   };
 
@@ -2125,7 +2145,7 @@ function openBattle(after) {
         💊 กินหีบยา${medN ? ` ×${medN}` : ''}</button>
       </div>
       ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}
-      <div class="row"><button class="gold" data-prep-go>⚔️ เข้าสู้</button></div></div>` : '';
+      </div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
       title="${esc(label + (note ? ' · ' + note : ''))}"><img src="${icon}" alt=""><b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
     const battleItem = k => BATTLE.items.find(x => x.k === k);
@@ -2185,7 +2205,7 @@ function openBattle(after) {
         <div class="talkbox">${esc(view.talk || '...')}</div>
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${prep}${done}
-      </div>`;
+      </div>${prep ? '<div class="boss-prep-actions"><button class="gold" data-prep-go>⚔️ เข้าสู้</button></div>' : ''}`;
 
     // แก้รอบ 1 ข้อ C ชุด 13 — เปิดหน้าต่างเดิม (พ่อค้า/นิรา) ตรง ๆ ไม่ต้องมี callback "กลับมาหน้าเตรียมศึก"
     // เพราะ battle ยังไม่จบ (b.over ยังเป็น null) ตัวเฝ้า battleUI ที่ท้ายไฟล์เปิดฉากนี้กลับให้เองอัตโนมัติ
@@ -3124,7 +3144,9 @@ function openStation(k) {
 }
 
 function openBuild(def) {
-  const taan = g.crew.find(c => c.k === 'taan'), afford = g.coin >= def.cost && !!taan && !taan.buildK;
+  // build() ปฏิเสธเมื่อทัณฑ์ติดเวร/พาดวงอยู่ — ปุ่มต้องปิดพร้อมเหตุผล ไม่ปล่อยให้กดแล้วกล่องปิดเงียบ (ชุด 21)
+  const taan = g.crew.find(c => c.k === 'taan'), taanBusy = !!taan && !!(taan.at || taan.escort);
+  const afford = g.coin >= def.cost && !!taan && !taan.buildK && !taanBusy;
   // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name ถ้าจ้างแล้ว (ตามโซนผ่าน
   // crewName แล้ว) ยังไม่จ้างก็ยังหาชื่อฐานของโซนนี้ผ่าน crewName ตรง ๆ ได้ (ตัวแปรกลางถ้าโซนนั้น
   // ยังไม่มีชื่อเฉพาะ — ดู CREW.taan.names ใน data.js)
@@ -3132,7 +3154,7 @@ function openBuild(def) {
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-      · แรง ${def.pow}${!taan ? ` · ต้องจ้าง${taanName}ที่โต๊ะนิราก่อน` : taan.buildK ? ` · ${taanName}กำลังสร้างหลังอื่นอยู่` : ` · ${taanName}จะเดินมาสร้างให้`}</div>
+      · แรง ${def.pow}${!taan ? ` · ต้องจ้าง${taanName}ที่โต๊ะนิราก่อน` : taan.buildK ? ` · ${taanName}กำลังสร้างหลังอื่นอยู่` : taanBusy ? ` · ${taanName}ติดงานอื่นอยู่ — รอเสร็จเวรก่อนแล้วค่อยสั่งสร้าง` : ` · ${taanName}จะเดินมาสร้างให้`}</div>
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
