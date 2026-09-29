@@ -299,10 +299,15 @@ function mkLines(soul, g) {
   return out.map((l, i) => ({ ...l, i, used: false }));
 }
 
+/** บาปหนักสุดของดวง ใช้กฎเดียวกันทั้งวาระที่สมควรได้และโบนัสสถานี */
+export function primarySinOf(soul) {
+  return soul.deeds.reduce((best, deed) => !best || deed.w > best.w ? deed : best, null)?.s ?? null;
+}
+
 /** วาระที่สมควรได้รับ คิดจาก "ความจริงทั้งหมด" ไม่ใช่จากที่ผู้เล่นเห็น */
-function deservedOf(soul) {
+export function deservedOf(soul) {
   const ws = soul.deeds.map(d => d.w).sort((a, b) => b - a);
-  const raw = ws[0] + ws.slice(1).reduce((s, w) => s + w * 0.4, 0);
+  const raw = 0.7 * ws[0] + ws.slice(1).reduce((s, w) => s + w * 0.3, 0);
   const merit = soul.merits.filter(m => !m.fake).reduce((s, m) => s + m.v, 0);
   return clamp(Math.round(raw - merit), 1, 5);
 }
@@ -684,11 +689,12 @@ const API = {
       const coin = right ? Math.round(BAL.coinPerCase * 1.4 * this.orderTier().coin) : 0;
       return { tham, ked, rab, score, karma, coin, short: 0, over: 0, heaven: true, right };
     }
-    const totalW = soul.deeds.reduce((s, d) => s + d.w, 0);
-    const hitW = soul.deeds.filter(d => tags.includes(d.s)).reduce((s, d) => s + d.w, 0);
-    // น้ำหนักบาปที่ซ่อนอยู่ติดลบได้: ผลรวมอาจเป็นศูนย์หรือติดลบ
-    let tham = tags.length === 0 ? 42
-      : !Number.isFinite(totalW) || !Number.isFinite(hitW) || totalW <= 0 ? 0
+    const positive = soul.deeds.filter(d => d.w > 0);
+    const totalW = positive.reduce((s, d) => s + d.w, 0);
+    const hitW = positive.filter(d => tags.includes(d.s)).reduce((s, d) => s + d.w, 0);
+    // น้ำหนักลบลดวาระที่สมควรได้ แต่ไม่นำมาหักคะแนนความตรงของสถานี
+    let tham = tags.length === 0 || totalW === 0 ? 42
+      : !Number.isFinite(totalW) || !Number.isFinite(hitW) ? 0
       : clamp(Math.round(100 * hitW / totalW), 0, 100);
     if (c.panya >= 7) tham = Math.min(100, tham + 6);
 
@@ -696,7 +702,7 @@ const API = {
     const over = Math.max(0, slot.intensity - soul.deserved);
     // เบาไปกับหนักเกิน ต้องเจ็บพอ ๆ กัน ไม่งั้นซัดวาระ 5 ทุกคดีจะเป็นวิธีเล่นที่ดีที่สุด
     // ซึ่งขัดกับแกนของเกมทั้งเกม
-    const ked = clamp(100 - short * 26 - over * 17, 0, 100);
+    const ked = clamp(100 - short * 26 - over * 28, 0, 100);
     const rab = clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
 
     const score = Math.round(0.50 * tham + 0.33 * ked + 0.17 * rab);
@@ -711,9 +717,11 @@ const API = {
     karma = Math.round(karma * 10) / 10;
 
     // ระเบียบของโซนคูณเข้ากับรายได้ — นี่คือเหตุผลที่ต้องแคร์แถบระเบียบทุกวาระ
-    const coin = Math.round(BAL.coinPerCase * (score / 100) * (0.7 + soul.deserved * 0.12)
+    const baseCoin = Math.round(BAL.coinPerCase * (score / 100) * (0.7 + soul.deserved * 0.12)
                             * this.orderTier().coin);
-    return { tham, ked, rab, score, karma, coin, short, over };
+    const bonus = baseCoin > 0 && tags.includes(primarySinOf(soul))
+      ? Math.round(baseCoin * BAL.matchBonus) : 0;
+    return { tham, ked, rab, score, karma, coin: baseCoin + bonus, bonus, short, over };
   },
 
   /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
@@ -876,7 +884,9 @@ const API = {
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
     if (Number.isFinite(r.coin)) this.coin += r.coin;
-    this.log(`${st.def.heaven ? 'การส่งตัว' : 'ทัณฑ์'}ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
+    const bonusText = Number.isFinite(r.bonus) && r.bonus > 0
+      ? ` (${t('verdict.matchBonus')} +${r.bonus} ${t('verdict.coins')})` : '';
+    this.log(`${st.def.heaven ? 'การส่งตัว' : 'ทัณฑ์'}ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม${bonusText}`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
     this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
                           intensity: slot.intensity, tick: this.tick });

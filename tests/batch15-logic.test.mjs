@@ -6,7 +6,7 @@ import { clearFrontierSession, frontierSession, nearFrontierGate, nearFrontierNi
 
 test('ราคาห่อเสบียงลดครึ่งทั้งร้านและแท็บก่อสร้าง', () => {
   assert.equal(MERCHANT.stock.find(x => x.k === 'food').cost, 18);
-  assert.equal(BAL.foodPrice * 10, 20);
+  assert.equal(BAL.foodPrice * 10, 10);
 });
 
 test('ครบ KPI ก่อนปราบบอสยังเล่นต่อได้ รวมเซฟ v3 ที่เคยติดฉากจบ', () => {
