@@ -100,6 +100,26 @@
    แค่ย่อขนาด/ระยะให้เข้ากับยมน้อยที่ตัวเล็กลงตามจอ (clamp(105px,19vh,165px) ที่ index.html) ~85% เท่าเดิม */
 @media(max-width:520px){.court-wheel{left:18%;width:210px}.command-selected{width:44px}.command-selected img,.command-selected strong{width:42px;height:42px}.trial-hud .hud-stage{height:410px;min-height:410px}.trial-hud .trial-top-actions button{font-size:10px}.combat-wheel{left:31%;width:180px;bottom:19%}.arena.combat-arena{min-height:500px}.arena .battle-squad{bottom:15%;max-width:15%;gap:4px}.arena .battle-squad img{height:clamp(80px,14vh,120px)}.arena .battle-squad.trio img{height:clamp(56px,9vh,85px)}.arena .battle-squad.trio>span{font-size:9px}.arena.combat-arena>.fig.you{left:17%;bottom:8%;width:23%}.arena.combat-arena>.fig.foe{width:29%;bottom:45%}.arena.combat-arena>.fig.guard{left:8%;width:24%;bottom:28%}.arena.combat-arena>.fig.guard img{height:clamp(90px,16vh,130px)}.command-options{max-width:240px}.combat-wheel .command-options{left:-55%;top:10%}}
 @media(prefers-reduced-motion:reduce){.command-wheel *{transition:none!important}}
+
+/* Three selectable opponents occupy the upper right of the battle stage. */
+.arena.combat-arena .foe-group{position:absolute;z-index:3;top:62px;right:2%;width:34%;display:flex;align-items:flex-end;justify-content:space-around;gap:8px}
+.arena.combat-arena .foe-group .fig.foe{all:unset;box-sizing:border-box;position:relative;display:flex;flex:1 1 0;min-width:0;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--gold);text-align:center;border-radius:12px;padding:5px;transition:filter .2s,box-shadow .2s}
+.arena.combat-arena .foe-group .fig.foe img{height:clamp(100px,17vh,150px);width:100%;object-fit:contain}
+.arena.combat-arena .foe-group .fig.foe .plate{box-sizing:border-box;min-width:0;padding:4px;width:100%}
+.arena.combat-arena .foe-group .fig.foe .plate b{font-size:11px}
+/* ชื่อไทยห้ามตัดกลางคำด้วย … (ให้ตัดบรรทัดตามคำ) · .hpbar ของฉากสู้เดิมเป็น inline จึงไม่เห็นเป็นแถบ — ในกลุ่มศัตรูต้องเห็นแถบต่อตัว */
+.arena.combat-arena .foe-group .fig.foe .plate b{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.4}
+.arena.combat-arena .foe-group .fig.foe .plate .hpbar{display:block;margin-top:3px;height:7px}
+.arena.combat-arena .foe-group .fig.foe.lunge{animation:lungeL .58s cubic-bezier(.34,1.3,.64,1)}
+.arena.combat-arena .foe-group .fig.foe.selected{box-shadow:0 0 0 2px #f6d578,0 0 24px #e9af50aa;background:#452a3677}
+.arena.combat-arena .foe-group .fig.foe.down{opacity:.38;filter:grayscale(1);cursor:default}
+.arena.combat-arena .target-arrow{position:absolute;bottom:100%;color:#ffe398;font:700 12px var(--font-display);text-shadow:0 2px 5px #000;white-space:nowrap}
+.prison-alert-spirits{display:flex;justify-content:center;gap:14px;margin:12px 0}
+.prison-alert-spirits img{height:clamp(90px,16vh,150px);width:25%;object-fit:contain}
+#ov .prisonfab{position:absolute;right:8px;top:8px;z-index:8;pointer-events:auto;background:#41212c;color:#ffe398;border:1px solid #eac579;border-radius:10px;padding:8px 12px;cursor:pointer;font:700 13px var(--font-display)}
+/* จอกว้าง ov คลุมทั้งหน้าจอ — top:8px ไปทับปุ่มตั้งค่า/หยุดเกมของ HUD ให้หลบลงมาใต้กระดิ่ง */
+@media(min-width:821px){#ov .prisonfab{top:172px}}
+@media(max-width:520px){.arena.combat-arena:has(.foe-group) .combat-wheel{bottom:2%}.arena.combat-arena .foe-group{top:58px;right:1%;width:58%;gap:2px}.arena.combat-arena .foe-group .fig.foe{padding:2px}.arena.combat-arena .foe-group .fig.foe img{height:75px}.arena.combat-arena .foe-group .fig.foe .plate{padding:2px}.arena.combat-arena .foe-group .fig.foe .plate b{font-size:9px}.arena.combat-arena .foe-group .fig.foe .plate .sub,.arena.combat-arena .foe-group .fig.foe .plate .hpn{font-size:8px}.arena.combat-arena .target-arrow{font-size:10px}}
 .merchant-heading{display:flex;align-items:center;gap:15px;margin-bottom:18px}.merchant-heading img{width:88px;height:88px;object-fit:cover;border:2px solid #c69b5c;border-radius:14px}.merchant-heading h2{margin:0}.merchant-heading .hint{margin:4px 0 0}
 
 /* Batch 16B: map controls and dialogs. */
