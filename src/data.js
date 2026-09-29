@@ -1372,7 +1372,7 @@ export const BATTLE = {
       say:'ท่านจิบน้ำชาร้อนหนึ่งอึกแล้วกลับมายืนมั่นคงกว่าเดิม' },
     { k:'health', name:'หีบยา',    glyph:'💊', heal:42, coin:45,
       say:'ท่านควักเบี้ยกรรมซื้อยาจากยมทูตข้างสนาม — เขาคิดแพงมากและไม่ต่อรอง' },
-    { k:'hypno',  name:'สะกดจิต',   glyph:'🌀', stun:1, power:'hypno', karma:1,
+    { k:'hypno',  name:'สะกดจิต',   glyph:'🌀', confuse:1, power:'hypno', karma:1,
       say:'วงสะกดจิตหุบเข้าหาเขา เขายืนค้างอยู่กลางท่า — การรื้อใจคนเป็นกรรมของเราเสมอ' },
     // ข้อ B ชุด 13 — น้ำแข็ง 30 คงที่ (เดิมสุ่ม [12,20]) + ยังหยุดศัตรู 1 ตาเหมือนเดิม
     { k:'ice', name:'ผนึกน้ำแข็ง', glyph:'❄️', stun:1, dmg:30, power:'ice', karma:.5,
@@ -1386,7 +1386,15 @@ export const ZONE_EVENTS = {
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
     alert:{ th:'มีวิญญาณแหกคุกออกมาหลายตน', en:'Several spirits have escaped' },
     foes:[{ sp:'spirit', count:3, hp:30, atk:[5, 8] }],
-    reward:{ coin:75, order:2 }, lose:{ hp:9, order:4 } }],
+    reward:{ coin:75, order:2 }, lose:{ hp:9, order:4 } },
+  { k:'frontierBreach', atCases:5, mode:'waves', team:'frontier',
+    title:{ th:'ปีศาจฝ่าชายแดน', en:'Frontier breach' },
+    alert:{ th:'ปีศาจหลายตัวฝ่าชายแดนเข้ามา รวมทีมยมทูตไปสกัดทั้ง 3 ระลอก',
+      en:'Demons have breached the frontier. Assemble the crew and stop all three waves.' },
+    waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
+      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],
+      [{ sp:'boss-frontier-th', count:1, hp:120, atk:[10,16], boss:true }]],
+    betweenWaveHeal:20, reward:{ coin:120, drop:1 }, lose:{ hp:8 } }],
 };
 
 // TODO: รอ Rae ตั้งชื่อจริง

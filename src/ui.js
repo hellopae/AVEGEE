@@ -98,6 +98,8 @@ let battleUI = null;
 let lastBattleEnd = 0;      // เวลาที่ฉากต่อสู้ล่าสุดปิดลง — ใช้เว้นจังหวะก่อนเปิดฉากใหม่
 let prisonAlertSeen = false;
 let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
+let breachAlertSeen = false;
+let breachTried = false;
 
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
@@ -121,7 +123,14 @@ setInterval(() => {
     prisonAlertSeen = true;
     openPrisonAlert();
   }
+  if (started && g.frontierBreachStatus() === 'pending' && g.prisonBreakStatus() === 'cleared' &&
+      !breachAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
+    breachAlertSeen = true;
+    openBreachAlert();
+  }
   updatePrisonFab();
+  updateBreachFab();
 }, 400);
 
 // ---------- ลูป ----------
@@ -893,11 +902,13 @@ function drawOverlay() {
   const keepBossFab = ov.querySelector('.bossfab');
   const keepFrontierFab = ov.querySelector('.frontierfab');
   const keepPrisonFab = ov.querySelector('.prisonfab');
+  const keepBreachFab = ov.querySelector('.breachfab');
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
   if (keepFrontierFab) ov.appendChild(keepFrontierFab);
   if (keepPrisonFab) ov.appendChild(keepPrisonFab);
+  if (keepBreachFab) ov.appendChild(keepBreachFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -1063,6 +1074,28 @@ function updatePrisonFab() {
     ov.appendChild(f);
   }
   f.textContent = `⚠️ ${prisonTried ? t('event.prisonBreak.retry') : t('event.prisonBreak.title')}`;
+}
+
+function openBreachAlert() {
+  modal(`<h2>${esc(t('event.frontierBreach.title'))}</h2>
+    <p>${esc(t('event.frontierBreach.alert'))}</p>
+    <div class="prison-alert-spirits"><img src="${artUrl(MOB.kinds[0].img)}" alt=""><img src="${artUrl(MOB.kinds[4].img)}" alt=""></div>
+    <div class="row"><button class="gold" data-breach-go>${esc(t('event.frontierBreach.go'))}</button></div>`, d => {
+    d.querySelector('[data-breach-go]').onclick = () => openFrontier(false, true);
+  }, 'prison-alert');
+}
+
+function updateBreachFab() {
+  let f = ov.querySelector('.breachfab');
+  if (!started || g.frontierBreachStatus() !== 'pending' || !breachAlertSeen ||
+      g.zone !== 'th' || g.battle || g.over) { if (f) f.remove(); return; }
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'breachfab';
+    f.onclick = ev => { ev.stopPropagation(); if (!dlg.open && !g.battle) openBreachAlert(); };
+    ov.appendChild(f);
+  }
+  f.textContent = `⚠️ ${breachTried ? t('event.frontierBreach.retry') : t('event.frontierBreach.title')}`;
 }
 
 /** แถบบัญชาการเหนือฉาก — เหลือ "ทางเข้าห้องสอบสวน" อย่างเดียว
@@ -1534,6 +1567,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const youImg = hp && act?.struck === 'you' && hp.dmg?.you > 0
     ? 'img/hero-yama-cry.png' : usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
+  const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
   const bg = hp?.bg || artUrl('BG-Turn-Base', 'webp');
   // ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลเคย "อยู่ในทีม" จริง (อยู่ท้ายแถว squad มาตั้งแต่ข้อ C
@@ -1574,17 +1608,17 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       const hit = act?.struck === 'foe' &&
         (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id);
       const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
-      return `<button type="button" class="fig foe${f.hp <= 0 ? ' down' : ''}${hp.selectedFoeId === f.id ? ' selected' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
+      return `<button type="button" class="fig foe${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${hp.selectedFoeId === f.id ? ' selected' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', hp.dmg?.confuseSelf || hp.dmg?.foe || 0) : ''}
         ${hp.selectedFoeId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
-        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
+        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
         <span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
           ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
       </button>`;
-    }).join('')}</div>` : `<div class="fig foe${cls('foe')}">
+    }).join('')}</div>` : `<div class="fig foe${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}">
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
-      <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='img/spirit7.png'">
+      <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}
@@ -2010,7 +2044,7 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier(fromWalk = false) {
+function openFrontier(fromWalk = false, breach = false) {
   pauseForDlg();
   const helpers = g.crewHelpers();
   const state = g.frontierOf();
@@ -2027,8 +2061,8 @@ function openFrontier(fromWalk = false) {
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
-      <header><small>กิจกรรมต่อสู้ประจำโซน</small><h2>🏯 ${esc(FRONTIER.name)}</h2>
-        <p>ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก</p></header>
+      <header><small>${breach ? 'Wave 1/3' : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(t('event.frontierBreach.title')) : esc(FRONTIER.name)}</h2>
+        <p>${breach ? esc(t('event.frontierBreach.alert')) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
         ${chosen.map(k => {
@@ -2037,8 +2071,8 @@ function openFrontier(fromWalk = false) {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>ระลอกที่ ${wave}</b><small>${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก</small></span>
-          <span class="frontier-loot">รางวัล: เบี้ยกรรม + ของสนามรบ</span></div>
+        <div class="frontier-head"><span><b>${breach ? 'Wave 1/3' : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(t('event.frontierBreach.boss')) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
+          <span class="frontier-loot">${breach ? esc(t('event.frontierBreach.win')) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
@@ -2049,7 +2083,7 @@ function openFrontier(fromWalk = false) {
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
         </div>
         <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
-          <button class="gold" data-frontier-start ${chosen.length || fromWalk ? '' : 'disabled'}>${fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
@@ -2062,6 +2096,10 @@ function openFrontier(fromWalk = false) {
     // ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมกดปุ่มนี้แล้วตัดเข้าฉากสู้ทันที (สุ่มศัตรู)
     // ตอนนี้เข้า "แผนที่ชายแดน" ก่อน ให้เดินเลือกเองว่าจะสู้กับตัวไหน (src/frontier.js)
     if (start) start.onclick = () => {
+      if (breach) {
+        if (g.startFrontierBreach()) { breachTried = true; openBattle(); }
+        return;
+      }
       dlg.close();
       openFrontierWalk();
     };
@@ -2244,7 +2282,7 @@ function openBattle(after) {
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
-    const finLabel = b.kind === 'prisonBreak'
+    const finLabel = b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
@@ -2268,6 +2306,7 @@ function openBattle(after) {
           // มีคำว่า "โซน" นำหน้าอยู่แล้ว (เช่น "โซนสุวรรณภูมิ") ต่อแค่ "บอส" ก็ได้ข้อความตรงม็อกอัปเป๊ะ
           : b.kind === 'zoneBoss' ? `👑 บอส${g.zoneDef().name}`
           : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
+          : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · Wave ${b.wave}/3`
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',
@@ -2296,6 +2335,7 @@ function openBattle(after) {
       if (!phase && g.selectFoe(el.dataset.foeId)) paint();
     });
 
+    const finishWave = () => { if (g.battle?.pendingWave) g.advanceFrontierBreachWave(); };
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const k = el.dataset.act;
@@ -2319,7 +2359,7 @@ function openBattle(after) {
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
         // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
         const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.confuseSelf > 0));
-        if (!counter) { phase = null; fxNow = null; paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
+        if (!counter) { phase = null; fxNow = null; finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
         // หน่วงเพิ่มอีก ~2 วิ ก่อนเริ่มจังหวะเขาสวนกลับ ผู้เล่นต้องเห็นดาเมจ/แถบเลือดของตัวเองนิ่งอยู่ก่อน
@@ -2334,7 +2374,7 @@ function openBattle(after) {
           paint();
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null;
-            if (g.battle) { paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
+            if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
           }, 780);
         }, COUNTER_WAIT_MS);
       }, 780);
@@ -2383,7 +2423,7 @@ function openBattle(after) {
   const phaseGuard = setInterval(() => {
     if (!phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
     phase = null; fxNow = null;
-    if (g.battle) paint();
+    if (g.battle) { if (g.battle.pendingWave) g.advanceFrontierBreachWave(); paint(); }
   }, 600);
 
   const crewTimer = setInterval(() => {

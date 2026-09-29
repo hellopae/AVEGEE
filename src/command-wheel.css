@@ -117,8 +117,13 @@
 .prison-alert-spirits{display:flex;justify-content:center;gap:14px;margin:12px 0}
 .prison-alert-spirits img{height:clamp(90px,16vh,150px);width:25%;object-fit:contain}
 #ov .prisonfab{position:absolute;right:8px;top:8px;z-index:8;pointer-events:auto;background:#41212c;color:#ffe398;border:1px solid #eac579;border-radius:10px;padding:8px 12px;cursor:pointer;font:700 13px var(--font-display)}
+#ov .breachfab{position:absolute;right:8px;top:54px;z-index:8;pointer-events:auto;background:#41212c;color:#ffe398;border:1px solid #eac579;border-radius:10px;padding:8px 12px;cursor:pointer;font:700 13px var(--font-display)}
+.arena.combat-arena>.fig.foe.boss-foe{width:29%}
+.arena.combat-arena>.fig.foe.boss-foe img{height:clamp(210px,34vh,310px);max-width:100%;object-fit:contain}
 /* จอกว้าง ov คลุมทั้งหน้าจอ — top:8px ไปทับปุ่มตั้งค่า/หยุดเกมของ HUD ให้หลบลงมาใต้กระดิ่ง */
 @media(min-width:821px){#ov .prisonfab{top:172px}}
+@media(min-width:821px){#ov .breachfab{top:218px}}
+@media(max-width:520px){.arena.combat-arena>.fig.foe.boss-foe{width:34%;right:1%;bottom:42%}.arena.combat-arena>.fig.foe.boss-foe img{height:clamp(155px,23vh,205px)}}
 @media(max-width:520px){.arena.combat-arena:has(.foe-group) .combat-wheel{bottom:2%}.arena.combat-arena .foe-group{top:58px;right:1%;width:58%;gap:2px}.arena.combat-arena .foe-group .fig.foe{padding:2px}.arena.combat-arena .foe-group .fig.foe img{height:75px}.arena.combat-arena .foe-group .fig.foe .plate{padding:2px}.arena.combat-arena .foe-group .fig.foe .plate b{font-size:9px}.arena.combat-arena .foe-group .fig.foe .plate .sub,.arena.combat-arena .foe-group .fig.foe .plate .hpn{font-size:8px}.arena.combat-arena .target-arrow{font-size:10px}}
 .merchant-heading{display:flex;align-items:center;gap:15px;margin-bottom:18px}.merchant-heading img{width:88px;height:88px;object-fit:cover;border:2px solid #c69b5c;border-radius:14px}.merchant-heading h2{margin:0}.merchant-heading .hint{margin:4px 0 0}
 

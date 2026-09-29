@@ -759,6 +759,10 @@ const API = {
         !this.zoneEvents.th?.prisonBreak) {
       (this.zoneEvents.th ||= {}).prisonBreak = 'pending';
     }
+    if (this.zone === 'th' && this.zoneCases.th >= ZONE_EVENTS.th[1].atCases &&
+        this.prisonBreakStatus() === 'cleared' && !this.zoneEvents.th.frontierBreach) {
+      this.zoneEvents.th.frontierBreach = 'pending';
+    }
     // เป้าหมายสั้น ๆ รายสาขา: เปิดหลักฐานที่ซ่อนอยู่และตัดสินได้ดีสามคดี
     const goal = this.miniGoals[this.zone] ||= { truth:0, earned:false };
     if (!goal.earned && r.score >= 78 && soul.said?.some(x => x.kind === 'truth' || x.kind === 'confess')) {
@@ -2017,6 +2021,51 @@ const API = {
   prisonBreakStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.prisonBreak || 'locked';
   },
+  frontierBreachStatus(zone = this.zone) {
+    return this.zoneEvents[zone]?.frontierBreach || 'locked';
+  },
+  frontierBreachFoes(wave) {
+    return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>
+      Array.from({ length:entry.count }, (_, i) => {
+        const kind = MOB.kinds[entry.kind ?? 0];
+        const boss = !!entry.boss;
+        return { id:`breach-${wave}-${group}-${i}`, who:boss ? t('event.frontierBreach.boss') : kind.name,
+          sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/3`,
+          sp:boss ? entry.sp : kind.img, boss,
+          hp:entry.hp, maxHp:entry.hp, atk:entry.atk, stun:0, confuse:0 };
+      }));
+  },
+  startFrontierBreach() {
+    if (this.zone !== 'th' || this.battle || this.over || this.frontierBreachStatus() !== 'pending' ||
+        this.prisonBreakStatus() !== 'cleared') return null;
+    const team = this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k));
+    if (!team.length) return null;
+    const foes = this.frontierBreachFoes(1);
+    this.zoneEvents.th.frontierBreach = 'active';
+    this.fights++;
+    this.battle = prepareBattle({ kind:'frontierBreach', zone:'th', wave:1, pendingWave:null,
+      team:[...team], bg:FRONTIER.bg, foes, selectedFoeId:foes[0].id,
+      who:foes[0].who, sp:foes[0].sp, sub:foes[0].sub,
+      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
+      turn:1, over:null, log:[], dmg:null, talk:t('event.frontierBreach.alert') });
+    this.save(); this.onChange();
+    return this.battle;
+  },
+  advanceFrontierBreachWave() {
+    const b = this.battle;
+    if (b?.kind !== 'frontierBreach' || b.over || !b.pendingWave || b.pendingWave !== b.wave + 1) return false;
+    b.wave = b.pendingWave;
+    b.pendingWave = null;
+    b.foes = this.frontierBreachFoes(b.wave);
+    b.selectedFoeId = b.foes[0].id;
+    b.counterIndex = 0;
+    b.who = b.foes[0].who; b.sp = b.foes[0].sp; b.sub = b.foes[0].sub;
+    b.youHp = Math.min(b.youMax, b.youHp + ZONE_EVENTS.th[1].betweenWaveHeal);
+    b.dmg = null; b.mid = null; b.helper = null;
+    b.talk = b.wave === 3 ? t('event.frontierBreach.bossLine') : t('event.frontierBreach.next');
+    this.onChange();
+    return true;
+  },
   startPrisonBreak() {
     if (this.zone !== 'th' || this.battle || this.over || this.prisonBreakStatus() !== 'pending') return null;
     const event = ZONE_EVENTS.th[0];
@@ -2081,7 +2130,7 @@ const API = {
    *  คืน false ถ้ากดไม่ได้ (ของไม่พอ / จบไปแล้ว) */
   battleAct(what) {
     const B = this.battle;
-    if (!B || B.over) return false;
+    if (!B || B.over || B.pendingWave) return false;
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
     const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
@@ -2178,6 +2227,7 @@ const API = {
       if (it.heal) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
       // ข้อ B ชุด 13 — it.dmg อาจเป็นเลขคงที่ (ผนึกน้ำแข็ง = 30) หรือช่วง [a,b] แบบเดิมถ้ามีของใหม่ในอนาคต
       if (it.dmg)  { dmg = Array.isArray(it.dmg) ? roll(it.dmg) : it.dmg; say(`   ↳ ${dmg} หน่วย`); }
+      if (it.confuse) confuseFoe = it.confuse;
       if (it.stun) stunFoe = it.stun;
     }
 
@@ -2211,6 +2261,17 @@ const API = {
         this.order = clamp(this.order + event.reward.order, 0, 100);
         B.talk = t('event.prisonBreak.win');
         say(B.talk);
+        if (this.zoneCases.th >= ZONE_EVENTS.th[1].atCases && !this.zoneEvents.th.frontierBreach)
+          this.zoneEvents.th.frontierBreach = 'pending';
+      } else if (B.kind === 'frontierBreach') {
+        const event = ZONE_EVENTS.th[1];
+        this.zoneEvents.th.frontierBreach = 'cleared';
+        const item = pick(FRONTIER.drops);
+        this.coin += event.reward.coin;
+        this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
+        B.reward = { coin:event.reward.coin, item };
+        B.talk = t('event.frontierBreach.win');
+        say(B.talk);
       } else if (B.kind === 'frontier') {
         const coin = 32 + B.wave * 10;
         const item = pick(FRONTIER.drops);
@@ -2238,13 +2299,20 @@ const API = {
         if (soul) soul.beaten = true;
         say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
       }
-      if (B.kind !== 'prisonBreak') talk('lose');
+      if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
     };
 
-    if (B.foes.every(f => f.hp <= 0)) return declareWin();
+    if (B.foes.every(f => f.hp <= 0)) {
+      if (B.kind === 'frontierBreach' && B.wave < ZONE_EVENTS.th[1].waves.length) {
+        B.pendingWave = B.wave + 1;
+        this.onChange();
+        return true;
+      }
+      return declareWin();
+    }
 
     // ---- ตาของเขา ----
     const counter = [...B.foes.slice(B.counterIndex), ...B.foes.slice(0, B.counterIndex)]
@@ -2265,7 +2333,14 @@ const API = {
       say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
       if (counter.hp <= 0) {
-        if (B.foes.every(f => f.hp <= 0)) return declareWin();
+        if (B.foes.every(f => f.hp <= 0)) {
+          if (B.kind === 'frontierBreach' && B.wave < ZONE_EVENTS.th[1].waves.length) {
+            B.pendingWave = B.wave + 1;
+            this.onChange();
+            return true;
+          }
+          return declareWin();
+        }
         if (B.selectedFoeId === counter.id) B.selectedFoeId = B.foes.find(f => f.hp > 0).id;
       }
     } else if (counter.stun > 0) { counter.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
@@ -2295,6 +2370,11 @@ const API = {
         this.hp = Math.max(1, this.hp - event.lose.hp);
         this.order = clamp(this.order - event.lose.order, 0, 100);
         B.talk = t('event.prisonBreak.lose');
+        say(B.talk);
+      } else if (B.kind === 'frontierBreach') {
+        this.zoneEvents.th.frontierBreach = 'pending';
+        this.hp = Math.max(1, this.hp - ZONE_EVENTS.th[1].lose.hp);
+        B.talk = t('event.frontierBreach.lose');
         say(B.talk);
       } else if (B.kind === 'frontier') {
         this.hp = Math.max(1, this.hp - 8);
@@ -2363,6 +2443,11 @@ const API = {
       this.onChange(); return B;
     }
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
+    if (B.kind === 'frontierBreach') {
+      this.log(B.over === 'win' ? t('event.frontierBreach.win') : t('event.frontierBreach.lose'),
+        B.over === 'win' ? 'good' : 'bad');
+      this.save(); this.onChange(); return B;
+    }
     if (B.kind === 'prisonBreak') {
       this.log(B.over === 'win' ? t('event.prisonBreak.win') : t('event.prisonBreak.lose'),
         B.over === 'win' ? 'good' : 'bad');
@@ -2931,7 +3016,11 @@ API.restore = function (d) {
   this.zoneEvents = d.zoneEvents || {};
   for (const [zone, events] of Object.entries(this.zoneEvents)) {
     if (events.prisonBreak === 'active') events.prisonBreak = 'pending';
+    if (events.frontierBreach === 'active') events.frontierBreach = 'pending';
   }
+  if ((this.zoneCases.th || 0) >= ZONE_EVENTS.th[1].atCases &&
+      this.zoneEvents.th?.prisonBreak === 'cleared' && !this.zoneEvents.th.frontierBreach)
+    this.zoneEvents.th.frontierBreach = 'pending';
   this.miniGoals = d.miniGoals || {};
   this.frontier = d.frontier || { zones:{} };
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
