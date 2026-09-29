@@ -30,7 +30,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-')) load('img/' + p);
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20260915-1', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20260929-dab', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -46,13 +46,13 @@ fetch('img/manifest.json?v=20260915-1', { cache: 'no-cache' })
 
 /** ท่าพิเศษ — ชื่อไฟล์โซนใส่ชื่อโซนก่อนคำท้าย: hero-yama-asia-profile · crew-taan-asia-work
  *  ต้องตรงกับ POSES ใน scripts/prep-art.py */
-const POSE = /-(profile|work|atk|side)$/;
+const POSE = /-(profile|work|atk|side|walk)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
 
 /** path ของไฟล์ที่ต้องใช้กับคีย์นี้ในโซนตอนนี้
  *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
- *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side เหมือนกันหมด) */
+ *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png') {
   const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
   const map = ZMAP[z];
@@ -348,6 +348,24 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
   ctx.font = `${Math.round(h * 0.62)}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.fillText(glyph, x, y - h * 0.1 + bob);
+}
+
+/** สี่เฟรมในภาพแถบเดียว; คืน false เมื่อชุดที่สวมยังไม่มีภาพเดิน */
+export function drawHeroWalk(ctx, x, y, h, distance, face = 1) {
+  const im = img('hero-yama-walk');
+  if (!im || !im.naturalWidth || !im.naturalHeight) return false;
+  const frameW = im.naturalWidth / 4;
+  const frame = Math.floor(distance / 9) % 4;
+  const drawW = h * frameW / im.naturalHeight;
+  ctx.fillStyle = 'rgba(0,0,0,.42)';
+  ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(face, 1);
+  ctx.drawImage(im, frame * frameW, 0, frameW, im.naturalHeight,
+                -drawW / 2, -h + 2, drawW, h);
+  ctx.restore();
+  return true;
 }
 
 /** วิญญาณ — ใช้สไปรท์ spirit1..3 ถ้ามี ไม่มีก็วาดดวงเรืองแสงเอง

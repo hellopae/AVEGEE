@@ -41,7 +41,7 @@ SCENE_W = 2000     # ความกว้างสูงสุดของภ�
 PROFILE = 512      # ด้านของรูปโปรไฟล์ในแผงข้อมูล (<key>-profile)
 ROOM_W = 1024      # ฉากในห้องสถานี BG-* — เท่ากับ BG-*.webp ของโซน 1
 ROOM_Q = 82        # คุณภาพ webp ที่ได้ขนาดเท่าชุดโซน 1 (BG-Krata 101 KB · BG-Sala 106 KB)
-POSES = ('profile', 'work', 'atk', 'side')   # คำท้ายของท่าพิเศษ — ต้องตรงกับ POSE ใน src/art.js
+POSES = ('profile', 'work', 'atk', 'side', 'walk')   # คำท้ายของท่าพิเศษ — ต้องตรงกับ POSE ใน src/art.js
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 RAW = os.path.join(ROOT, 'img', 'raw')
@@ -272,6 +272,27 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
     stripped = 0
     OUT = out_dir                  # ทุกบรรทัดข้างล่างเซฟลง OUT — โฟลเดอร์โซนก็ใช้ทางเดียวกัน
 
+    # ภาพเดินเป็นแถบ 4 เฟรมแนวนอนเท่ากันทุกช่อง (art.js หั่นด้วย naturalWidth/4 ตรง ๆ)
+    # Dale ตรวจ 29 ก.ย. 2569: ต้นฉบับ gen มา 2172×724 (เฟรมละ 543×724) หนัก 0.9–1.3MB/ไฟล์
+    # ทั้งที่ยมบนแผนที่สูงจริงแค่ ~90-130px — ครอปทีละเฟรมแล้วย่อแยกกัน (กันสีเฟรมข้างเคียง
+    # เลือนเข้าหากันตอน resize ทั้งแถบทีเดียว) แล้วต่อกลับเป็นแถบเดิม + ลด palette เหมือนสไปรท์อื่น
+    if name.endswith('-walk'):
+        im = im.convert('RGBA')
+        frames = 4
+        fw0 = im.width // frames
+        target_fh = 256                        # สูงพอสำหรับจอ retina แต่ไม่หนักเท่าต้นฉบับ
+        scale = target_fh / im.height
+        fw, fh = max(1, round(fw0 * scale)), max(1, round(im.height * scale))
+        strip = Image.new('RGBA', (fw * frames, fh), (0, 0, 0, 0))
+        for i in range(frames):
+            frame = im.crop((i * fw0, 0, (i + 1) * fw0, im.height)).resize((fw, fh), Image.LANCZOS)
+            strip.paste(frame, (i * fw, 0), frame)
+        alpha = strip.getchannel('A')
+        flat = strip.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
+        flat.putalpha(alpha)
+        flat.save(os.path.join(OUT, name + '.png'))
+        return flat.size
+
     # ภาพคัตซีนพลัง — ภาพกว้างเต็มใบ ห้ามลอกพื้น/ครอป/บีบลงผืน 512
     # เก็บเป็น JPEG เพราะ UI เรียกชื่อนี้โดยตรง และต้นฉบับเป็นภาพทึบไม่มี alpha
     if name.endswith('-cutscene'):
@@ -435,7 +456,7 @@ def ingest():
             # img/raw/ ทั้งที่เป็นผลลัพธ์ที่ถูกต้องแล้ว (เจ้าของเจอ 17 ก.ย. 2569 — Intro-Boss ของ
             # ทุกโซนหายไปจาก img/ หลังรันสคริปต์รอบถัดมา) เช็คชื่อไฟล์กันไว้เหมือน scene-*
             stem = os.path.splitext(f)[0]
-            if (ext == '.webp' or f.startswith('scene')
+            if (ext == '.webp' or f.startswith('scene') or stem.endswith('-walk')
                     or (re.match(r'Intro-Boss-Zone\d+', f) and stem.endswith('-' + sub.lower()))
                     or (ext == '.png' and re.match(r'intro-zone\d+', f))
                     or f.endswith('-cutscene.jpeg')):

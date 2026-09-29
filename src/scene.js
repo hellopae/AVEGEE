@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT } from './data.js';
-import { img, zoneImg, drawFallbackGround, drawStandee, drawBuilding, drawSoul, drawBoat,
+import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
@@ -15,7 +15,7 @@ const HERO_H = 92 * CHAR_SCALE_MAP;
 const SOUL_H = 64 * CHAR_SCALE_MAP;
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
-let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0;
+let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0;
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
  *  => ดรอป img/hero-yama-atk.png หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
@@ -279,8 +279,13 @@ export function render(ctx, g, t, hover, sel) {
   }
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
-  if (Number.isFinite(lastHeroX) && Math.hypot(P.x - lastHeroX, P.y - lastHeroY) > 0.15)
-    heroMovingUntil = t + 120;
+  if (Number.isFinite(lastHeroX)) {
+    const moved = Math.hypot(P.x - lastHeroX, P.y - lastHeroY);
+    if (moved > 0.15) {
+      if (moved < 30) heroWalkDistance += moved;
+      heroMovingUntil = t + 120;
+    }
+  }
   lastHeroX = P.x; lastHeroY = P.y;
   if (P.tx != null) {                          // จุดหมายที่คลิกไว้
     const q = 0.5 + 0.5 * Math.sin(t / 200);
@@ -293,8 +298,10 @@ export function render(ctx, g, t, hover, sel) {
   at(Infinity, () => {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
+    const walking = t < heroMovingUntil;
+    if (!swinging && walking && drawHeroWalk(ctx, P.x, P.y, HERO_H, heroWalkDistance, P.face)) return;
     drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
-                P.x, P.y, HERO_H, t, '👑', P.face, t < heroMovingUntil);
+                P.x, P.y, HERO_H, t, '👑', P.face, walking && !swinging);
   });
 
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
