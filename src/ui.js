@@ -6,7 +6,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
-import { createGame, loadSave, clearSave, sameLabel, primarySinOf } from './game.js';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
@@ -1618,6 +1618,7 @@ function openTrial(initialError = '') {
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.stations.filter(x => x.def.pow > 0);
     const idle    = g.freeCrew();
+    const answer  = g.trialAnswer(s);
     const selectedSt = dests.find(x => x.def.k === pick.st);
     const keeper = selectedSt?.slots.length ? g.crewOf(selectedSt.crewK) : null;
     const available = keeper ? [keeper] : idle;
@@ -1666,7 +1667,8 @@ function openTrial(initialError = '') {
       const why = locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
                 : ammo <= 0 ? outOfAmmoHint
-                : pw.cd > 0 ? `รออีก ${pw.cd} คดี` : p.desc;
+                : pw.cd > 0 ? `รออีก ${pw.cd} คดี`
+                : p.k === 'mirror' || p.k === 'hypno' ? t(`power.${p.k}Desc`) : p.desc;
       const badge = locked ? '×0' : p.realtime ? (ok ? '✓' : fmtCountdown(pw.readyAt)) : `×${ammo}`;
       return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
         ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${badge}</i></button>`;
@@ -1675,27 +1677,37 @@ function openTrial(initialError = '') {
       const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
         : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
       const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
-      const matched = !s.pure && x.def.tags.includes(primarySinOf(s));
-      return `<button class="orb-choice" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
-        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (matched ? ' · ' + t('trial.matchBonus') : '') + (why ? ' · ' + why : ''))}">
-        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${matched ? `<small class="match-badge">${esc(t('trial.matchBonus'))}</small>` : why ? `<small>${esc(why)}</small>` : ''}</button>`;
+      const revealed = x.def.k === answer?.station?.k;
+      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
+        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (revealed ? ' · ' + t('trial.revealedWhere') : '') + (why ? ' · ' + why : ''))}">
+        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
     }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
-    const crewChoices = available.length ? available.map(c =>
-      `<button class="orb-choice" data-k="${c.k}" data-pickkey="cr" ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-        title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta)}">
+    const shownCrew = answer?.crew && !available.some(c => c.k === answer.crew.k)
+      ? [...available, answer.crew] : available;
+    const crewChoices = shownCrew.length ? shownCrew.map(c => {
+      const revealed = !!answer?.crew && c.k === answer.crew.k;
+      const unavailable = revealed && (answer.unavailable || !available.some(x => x.k === c.k) && { key:'chooseRevealedStation' });
+      const why = unavailable ? blockText(unavailable) : '';
+      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${c.k}" data-pickkey="cr" ${unavailable ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+        title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta + (revealed ? ' · ' + t('trial.revealedCrew') : '') + (why ? ' · ' + why : ''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${esc(c.name)}</b><small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small></button>`).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
+        <b>${esc(c.name)}</b><small>${unavailable ? esc(t('trial.unavailable') + ' · ' + why) : `แรง ${c.raeng} · ระเบียบ ${c.rabiab}`}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+    }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
     const forceIcon = i => `img/icon-force-${i}.png`;
-    const forceChoices = heaven ? '' : [1, 2, 3, 4, 5].map(i =>
-      `<button class="orb-choice" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
-        title="ระดับ ${i} ${esc(INTENSITY[i])}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b></button>`).join('');
+    const forceChoices = answer?.intensity === 0
+      ? `<button class="orb-choice is-revealed" disabled title="${esc(t('trial.noPunishment'))}"><span class="force-none">🕊️</span><b>${esc(t('trial.noPunishment'))}</b><span class="reveal-mark" aria-hidden="true">✓</span></button>`
+      : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
+      const revealed = i === answer?.intensity;
+      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
+        title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+    }).join('');
     const crewNow = pick.cr && g.crewOf(pick.cr);
     const selected = [
       stDef && `<span class="command-selected selected-place">${orbImg(stBg(stDef.k))}<b>${esc(stDef.name)}</b></span>`,
       crewNow && `<span class="command-selected selected-crew">${orbImg(artUrl(crewNow.self ? 'hero-yama-profile' : `crew-${crewNow.k}-profile`))}<b>${esc(crewNow.name)}</b></span>`,
-      (pick.inten || heaven) && `<span class="command-selected selected-force">${heaven ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${heaven?'อัตโนมัติ':INTENSITY[pick.inten]}</b></span>`
+      (pick.inten || heaven || answer?.intensity === 0) && `<span class="command-selected selected-force${answer?.intensity === 0 ? ' is-revealed' : ''}">${heaven || answer?.intensity === 0 ? '<strong>🕊️</strong>' : orbImg(forceIcon(pick.inten), INTENSITY[pick.inten])}<b>${answer?.intensity === 0 ? esc(t('trial.noPunishment')) : heaven ? 'อัตโนมัติ' : INTENSITY[pick.inten]}</b></span>`
     ].filter(Boolean).join('');
     // สถานีที่ผู้คุมประจำส่งไม่ได้ตอนนี้ — บอกเหตุผลในบรรทัดสถานะ (จอแคบไม่มีที่พอสำหรับป้ายเล็กใต้ไอคอน)
     const stationNotes = dests.filter(x => x.slots.length && g.stFree(x) > 0).map(x => [x, g.assignBlock(s.id, x.def.k, x.crewK)])

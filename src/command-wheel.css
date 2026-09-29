@@ -20,10 +20,14 @@
 .court-wheel .options-1 .orb-choice:disabled{opacity:.85}
 .court-wheel .options-1 .orb-choice small{color:var(--warning);font-size:10px;line-height:1.2;overflow-wrap:anywhere}
 @media (max-width:700px){.court-wheel .options-1 .orb-choice small{display:none}}
-.court-wheel .options-1 .orb-choice:has(.match-badge){z-index:2}
-/* ป้ายตรงบาปวางทับขอบล่างของไอคอนสถานี — ไม่ดันเลย์เอาต์ลงไปทับแถวที่สองของวง (Dale ชุด 22 รีวิว) */
-.court-wheel .options-1 .orb-choice .match-badge{display:block;position:absolute;left:50%;top:44px;transform:translateX(-50%);z-index:3;width:max-content;max-width:64px;white-space:nowrap;color:#ffe6a2;font-size:9px;line-height:1.1;background:#4b2b17;border:1px solid var(--gold);border-radius:6px;padding:2px 3px;pointer-events:none}
-@media(max-width:1100px){.court-wheel .options-1 .orb-choice .match-badge{top:34px}}
+.court-wheel .orb-choice.is-revealed{z-index:2}
+.court-wheel .orb-choice.is-revealed img{border:3px solid #ffe39a;box-shadow:0 0 0 3px #8c5418,0 0 16px 6px #ffd773;filter:brightness(1.15)}
+.court-wheel .orb-choice.is-revealed b{color:#ffe39a;text-shadow:0 1px 3px #000,0 0 7px #d58919}
+/* index.html มี .orb-choice:disabled{opacity:.25!important;grayscale} — เฉลยที่ส่งไม่ได้ต้องยังเห็นชัด (Dale ชุด 25) */
+.court-wheel .orb-choice.is-revealed:disabled{opacity:.95!important;filter:none}
+.court-wheel .orb-choice .reveal-mark{position:absolute;top:0;right:0;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#e9b758;color:#241006;font-size:14px;font-weight:900;box-shadow:0 1px 5px #000}
+.court-wheel .selected-force.is-revealed strong{border:3px solid #ffe39a;box-shadow:0 0 0 3px #8c5418,0 0 16px 6px #ffd773}
+.court-wheel .selected-force.is-revealed b{color:#ffe39a}
 .command-options .orb-choice img{display:block;width:62px;height:62px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #d6b26d}
 .command-options .orb-choice b{display:block;font-size:11px;line-height:1.35;white-space:normal}.command-options small{display:block;font-size:9px}.command-options i{font-size:10px}
 .command-options .orb-choice>span{display:grid;place-items:center;width:62px;height:62px;background:#e9b758;border-radius:50%;color:white}
@@ -40,6 +44,7 @@
 .court-wheel .options-3 .orb-choice{flex:none!important;width:auto!important;min-width:0;min-height:60px}
 .court-wheel .options-3 .orb-choice img{width:100%;height:auto;max-width:46px;max-height:46px;margin:0 auto;aspect-ratio:1}
 .court-wheel .options-3 .orb-choice b{font-size:8px;line-height:1.15}
+.court-wheel .options-3 .force-none{display:grid;place-items:center;width:46px;height:46px;margin:0 auto;border:3px solid #ffe39a;box-shadow:0 0 0 3px #8c5418,0 0 16px 6px #ffd773;background:#e9b758;border-radius:50%;font-size:24px}
 .command-selected{position:absolute;width:58px;text-align:center;transition:opacity .2s;pointer-events:none;color:white}.command-selected img,.command-selected strong{display:block;width:54px;height:54px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid #edc475}.command-selected strong{background:#e8b454;font-size:34px}.command-selected b{font-size:10px;display:block;text-shadow:0 2px 4px #000}.selected-place{left:94%;top:7%}.selected-crew{left:96%;top:55%}.selected-force{left:43%;top:99%}
 /* เดิม .has-options ซ่อนป้าย "เลือกแล้ว" ทั้ง 3 อันทุกครั้งที่เปิดวงไหนก็ได้ — ทำให้ดูเหมือนตัวเลือก
    ของข้ออื่นหายไปตอนเปิดไปเลือกข้อถัดไป (ข้อ A คุณเป้ 24 ก.ย. 2569) ซ่อนเฉพาะป้ายของ "วงที่กำลังเปิดอยู่"
