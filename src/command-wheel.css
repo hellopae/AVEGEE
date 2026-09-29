@@ -20,7 +20,10 @@
 .court-wheel .options-1 .orb-choice:disabled{opacity:.85}
 .court-wheel .options-1 .orb-choice small{color:var(--warning);font-size:10px;line-height:1.2;overflow-wrap:anywhere}
 @media (max-width:700px){.court-wheel .options-1 .orb-choice small{display:none}}
-.court-wheel .options-1 .orb-choice .match-badge{display:block;color:#ffe6a2;font-size:9px;line-height:1.1;background:#4b2b17;border:1px solid var(--gold);border-radius:6px;padding:2px 3px}
+.court-wheel .options-1 .orb-choice:has(.match-badge){z-index:2}
+/* ป้ายตรงบาปวางทับขอบล่างของไอคอนสถานี — ไม่ดันเลย์เอาต์ลงไปทับแถวที่สองของวง (Dale ชุด 22 รีวิว) */
+.court-wheel .options-1 .orb-choice .match-badge{display:block;position:absolute;left:50%;top:44px;transform:translateX(-50%);z-index:3;width:max-content;max-width:64px;white-space:nowrap;color:#ffe6a2;font-size:9px;line-height:1.1;background:#4b2b17;border:1px solid var(--gold);border-radius:6px;padding:2px 3px;pointer-events:none}
+@media(max-width:1100px){.court-wheel .options-1 .orb-choice .match-badge{top:34px}}
 .command-options .orb-choice img{display:block;width:62px;height:62px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #d6b26d}
 .command-options .orb-choice b{display:block;font-size:11px;line-height:1.35;white-space:normal}.command-options small{display:block;font-size:9px}.command-options i{font-size:10px}
 .command-options .orb-choice>span{display:grid;place-items:center;width:62px;height:62px;background:#e9b758;border-radius:50%;color:white}
