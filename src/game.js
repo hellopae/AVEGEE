@@ -11,6 +11,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
+import { t } from './i18n.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -70,7 +71,7 @@ export function createGame() {
     // ทุกกล่องข้อความจำค่า paused ตอนเปิดแล้วคืนค่าเดิมตอนปิดอย่างซื่อสัตย์
     // ค่าเดิมคือ "พัก" เกมเลยค้างตั้งแต่วินาทีแรก: ทัณฑ์ 0% ยมทูตยืนนิ่ง ไม่มีอะไรขยับ
     // (เจ้าของถามว่าทำไมความคืบหน้าเป็น 0% หมด — นี่คือคำตอบ)
-    paused: false, speed: 1,
+    paused: false, courtClosed: false, speed: 1,
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
     // ตอนเริ่มเกมมีสามคน: ท่าน · นิรา (อ่านสำนวน) · ทัณฑ์ (ลงทัณฑ์) — คนอื่นต้องจ้างเอง
@@ -979,11 +980,11 @@ const API = {
 
   // ---------- หนึ่งวาระ ----------
   step() {
-    if (this.over) return;
+    if (this.paused || this.over) return;
     this.tick++;
 
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
-    for (let i = this.returning.length - 1; i >= 0; i--) {
+    for (let i = this.returning.length - 1; !this.courtClosed && i >= 0; i--) {
       if (this.tick < this.returning[i].at) continue;
       const R = this.returning.splice(i, 1)[0];
       const soul = this.mkReturnSoul(R);
@@ -996,12 +997,12 @@ const API = {
     }
 
     // วิญญาณมาใหม่
-    if (--this.nextArrive <= 0) {
+    if (!this.courtClosed && --this.nextArrive <= 0) {
       this.spawnSoul();
       // ระเบียบเละ = ข้างบนไม่สนใจว่าโซนนี้รับไหวไหม ส่งลงมาถี่ขึ้น
       this.nextArrive = Math.max(5, Math.round(BAL.arriveEvery * this.orderTier().arrive));
     }
-    this.queue.forEach(s => s.waited++);
+    if (!this.courtClosed) this.queue.forEach(s => s.waited++);
 
     // ---------- เสบียง (ข้อ A คุณเป้ 24 ก.ย. 2569 ชุดที่ 8) ----------
     // ผู้กินคือ "ยมทูตที่กำลังทำงาน" ไม่ใช่สถานี — คุมสถานีอยู่ (มี activeSlots) หรือกำลังเดินออกไปรับดวงใหม่ (escort)
@@ -1092,7 +1093,7 @@ const API = {
 
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
     if (this.mobs.length) {
-      this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
+      if (!this.courtClosed) this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
       // ลูกไฟยังใช้ในฉากต่อสู้ จึงหย่อนให้เก็บเมื่อกระสุนหมด
       // เพราะขว้างจากไกลสะดวกกว่ามากเวลาเปรตอยู่คนละฝั่งกับที่เรายืน
       // ข้อ A คุณเป้ 24 ก.ย. 2569 — เช็คกระสุนลูกไฟของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
@@ -1116,15 +1117,17 @@ const API = {
 
     // กรรมของท่านเองที่สูงเกินไป กัดระเบียบของโซนไปด้วย
     const kt = this.karmaTier();
-    if (kt.drain) this.order = clamp(this.order - kt.drain, 0, 100);
+    if (!this.courtClosed && kt.drain) this.order = clamp(this.order - kt.drain, 0, 100);
 
     // ระเบียบ
     const over = Math.max(0, this.queue.length - this.queueCap());
-    if (over > 0) this.order = clamp(this.order - BAL.orderDrainPerOver * over, 0, 100);
-    else if (hasSala) this.order = clamp(this.order + BAL.orderGainSala, 0, 100);
+    if (!this.courtClosed) {
+      if (over > 0) this.order = clamp(this.order - BAL.orderDrainPerOver * over, 0, 100);
+      else if (hasSala) this.order = clamp(this.order + BAL.orderGainSala, 0, 100);
+    }
 
     // ตะราง: ส่วนที่ขังไว้ต้องเลี้ยงข้าวทุกวาระ — ไม่งั้นมันจะเป็นของฟรีที่ไม่มีข้อเสีย
-    if (this.held.length) {
+    if (this.held.length && !this.courtClosed) {
       this.coin -= TARANG.feed * this.held.length;
       this.held.forEach(x => x.waited++);
       if (this.tick % 20 === 0)
@@ -1148,7 +1151,7 @@ const API = {
 
     // ค่าแรง — ข้อ A4 คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8): ยมทูตกินเสบียงเป็นค่าจ้างแทนแล้ว ไม่หักเบี้ยกรรมรายวาระอีก
     // เหลือแค่ยักษ์ทวารบาลที่ยังจ่ายเป็นเบี้ยทุกงวดเหมือนเดิม (ไม่ได้คุมสถานี/ออกรับดวง จึงไม่เข้าเงื่อนไข "กำลังทำงาน" ที่กินเสบียง)
-    if (--this.nextPay <= 0) {
+    if (!this.courtClosed && --this.nextPay <= 0) {
       if (this.guard) {
         this.coin -= GUARD.pay;
         this.log(`💸 จ่ายค่าแรงยักษ์ทวารบาล — ${GUARD.pay} เบี้ยกรรม`);
@@ -1157,7 +1160,7 @@ const API = {
     }
 
     // เหตุการณ์
-    if (--this.nextEvent <= 0) {
+    if (!this.courtClosed && --this.nextEvent <= 0) {
       const ev = pick(EVENTS);
       this.log(`【${ev.title}】${ev.text}`, 'event');
       ev.apply(this);
@@ -1166,7 +1169,7 @@ const API = {
     }
 
     // พ่อตรวจ
-    if (--this.nextKpi <= 0) { this.kpi(); this.nextKpi = BAL.kpiEvery; }
+    if (!this.courtClosed && --this.nextKpi <= 0) { this.kpi(); this.nextKpi = BAL.kpiEvery; }
 
     this.checkEnd();
     this.onChange();
@@ -1276,6 +1279,7 @@ const API = {
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    if (this.paused || this.over) return;
     this.syncBlocks();                 // อาคารที่สร้างเสร็จ/ถูกเผาพัง กันทางเดินให้ตรงเสมอ
     // เดินได้เฉพาะพื้นที่เหยียบได้ — ลาวากับแม่น้ำวิญญาณกันไว้ที่ src/walk.js
     const P = this.player, SP = 0.19 * dt;
@@ -1467,7 +1471,7 @@ const API = {
         }
       }
 
-      if (this.huntMob && Math.hypot(m.x - P.x, m.y - P.y) < MOB.fabReach) {
+      if (this.huntMob && !this.guard && Math.hypot(m.x - P.x, m.y - P.y) < MOB.fabReach) {
         this.huntMob = false;
         P.path = null; P.tx = null; // หยุดที่ระยะปุ่มสู้ รอผู้เล่นกดเข้าฉาก
       }
@@ -1480,13 +1484,33 @@ const API = {
     // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
     if (this.guard && this.mobs.length) {
       const G = this.guard, m = this.mobs[0];
-      const dx = m.x - G.x, dy = m.y - G.y, d = Math.hypot(dx, dy) || 1;
-      stepTo(G, dx / d * 0.075 * dt, dy / d * 0.075 * dt);
-      if (d < MOB.reach) this.strike(0, GUARD.name);
+      if (!canWalk(G.x, G.y)) {
+        const p = nearestWalk(G.x, G.y);
+        if (p) { G.x = p[0]; G.y = p[1]; G.path = null; }
+      }
+      const d = Math.hypot(m.x - G.x, m.y - G.y);
+      if (d < MOB.reach) {
+        G.path = null;
+        this.strike(0, GUARD.name);
+      } else {
+        // The mob moves and may stop against a building; follow a walkable route instead of the blocked straight line.
+        if (!G.path?.length || !G.target || Math.hypot(m.x - G.target[0], m.y - G.target[1]) > 32) {
+          G.path = findPath(G.x, G.y, m.x, m.y);
+          G.target = [m.x, m.y];
+        }
+        const w = G.path?.[0];
+        if (w) {
+          const dx = w[0] - G.x, dy = w[1] - G.y, wd = Math.hypot(dx, dy);
+          if (wd < 6) G.path.shift();
+          else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
+        }
+        if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) this.strike(0, GUARD.name);
+      }
     } else if (this.guard) {
       // ว่างงาน → กลับไปเฝ้า "หัวสะพานที่วิญญาณข้ามมา" (เจ้าของสั่ง 10 ก.ย. 2569)
       // เดิมยืนอยู่ท่าเรือฝั่งขวาซึ่งไม่มีอะไรผ่าน มีผีบุกก็ยังวิ่งไปจัดการเหมือนเดิม
       const G = this.guard, gp = GUARD_POST;
+      G.path = null; G.target = null;
       stepTo(G, (gp[0] - G.x) * 0.0012 * dt, (gp[1] - G.y) * 0.0012 * dt);
     }
   },
@@ -1676,6 +1700,7 @@ const API = {
 
   /** ปุ่มสู้ระยะไกลใช้เดินไปหาปีศาจ; ผู้เล่นกดเข้าฉากต่อสู้เมื่อถึงตัว */
   attack() {
+    if (this.guard) return false;
     const n = this.nearestMob();
     if (n) {
       if (n.d <= MOB.fabReach) return false;
@@ -1691,7 +1716,7 @@ const API = {
     return false;
   },
 
-  /** ยักษ์ทวารบาลปราบปีศาจบนแผนที่ได้; ผู้เล่นต้องเข้าฉากต่อสู้ */
+  /** ยักษ์ทวารบาลปราบปีศาจบนแผนที่; ผู้เล่นสู้เองได้เมื่อยังไม่จ้างยักษ์ */
   strike(i, by) {
     const m = this.mobs[i];
     if (!m || by === 'ท่าน') return false;
@@ -1745,6 +1770,7 @@ const API = {
 
   /** ฉากต่อสู้กับปีศาจที่ขึ้นมาก่อกวน — ทางต่อสู้ของผู้เล่นทุกตัว */
   startMobBattle(i) {
+    if (this.guard) return null;
     if (this.battle) return this.battle;
     const m = this.mobs[i];
     if (!m) return null;
@@ -1752,7 +1778,7 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i,
-      who: kind.name, sub: 'ขึ้นมาจากรอยแยก', sp: kind.img,
+      who: kind.name, sub: t('mob.fromRiver'), sp: kind.img,
       foeHp: MOB.fightHp, foeMax: MOB.fightHp,
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
       stun: 0, turn: 1, over: null,
@@ -2361,20 +2387,21 @@ const API = {
   },
 
   spawnMob() {
-    const side = Math.random() < 0.5 ? 130 : SCENE.w - 130;
-    const y = 200 + Math.random() * 300;
-    // ต้องโผล่บนพื้นที่เดินถึง ไม่งั้นท่านเดินไปกดเข้าสู้ไม่ได้ ระเบียบก็ตกไปเรื่อย ๆ
-    const p = nearestWalk(side, y) || [side, y];
+    // สุ่มตามชายฝั่งขอบล่าง เหนือแม่น้ำเล็กน้อย เพื่อให้ทุกโซนเดินไปถึงได้
+    const x = 110 + Math.random() * (SCENE.w - 220);
+    const y = 675;
+    const p = nearestWalk(x, y);
+    if (!p) return;
     // แต่ละโซนมีผีคนละชุด — ไทยครบทุกพันธุ์ · โซนอื่นเหลือพันธุ์กลางที่ใช้รูปเดิมได้
     const pool = (this.zoneDef().mobs || []).filter(i => MOB.kinds[i]);
     const kind = pool.length ? pick(pool) : Math.floor(Math.random() * MOB.kinds.length);
     const mob = { id: SEQ++, x: p[0], y: p[1], hp: MOB.hp, kind };
     this.mobs.push(mob);
     // ไม่เด้งเข้าฉากต่อสู้เองแล้ว (9 ก.ย. 2569) — มันจะเดินไปเผาอาคารแทน
-    // ผู้เล่นเลือกเองว่าจะทิ้งไว้หรือเดินไปหยุด (ปุ่มต่อสู้ขึ้นตอนเข้าไปใกล้)
+    // ยังไม่จ้างยักษ์ ผู้เล่นเลือกเดินไปสู้เองได้; จ้างแล้วให้ยักษ์จัดการบนแผนที่
     // ทิ้งลูกไฟให้เก็บไปใช้ในฉากต่อสู้
     if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
-    this.log(`👹 ${MOB.kinds[kind].name}ขึ้นมาจากรอยแยก — มันจะเดินไปเผาอาคาร ถ้าไม่ไปหยุด`, 'event');
+    this.log(`👹 ${MOB.kinds[kind].name}${t(this.guard ? 'mob.spawnRiverGuard' : 'mob.spawnRiver')}`, 'event');
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
 
@@ -2382,6 +2409,7 @@ const API = {
     if (this.guard || this.coin < GUARD.hire) return false;
     this.coin -= GUARD.hire;
     this.guard = { x: GUARD_POST[0], y: GUARD_POST[1] };
+    if (this.huntMob) { this.huntMob = false; this.player.path = null; this.player.tx = null; }
     this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
     return true;
   },
@@ -2610,7 +2638,7 @@ const SAVE_KEY = 'avegee.save.v2';
 API.snapshot = function (withEntry = true) {
   return {
     v: 3, at: Date.now(),
-    tick: this.tick, coin: this.coin, food: this.food, order: this.order,
+    tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, casesDone: this.casesDone, scoreSum: this.scoreSum,
     greens: this.greens, reds: this.reds,
@@ -2673,6 +2701,7 @@ API.restore = function (d) {
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi',
                 'orderWarns','orderWarnAt'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
+  this.courtClosed = !!d.courtClosed;
   SEQ = d.seq || SEQ;
 
   // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 — บารมีสูงสุดตอนนี้ผูกกับขั้นตรง ๆ ผ่าน LEVELS.hpMax (เดิมกระโดด

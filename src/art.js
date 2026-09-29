@@ -3,6 +3,7 @@
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
 
 const CACHE = new Map();
+const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
 
 // ---------- รูปประจำโซน (11 ก.ย. 2569) ----------
 // โซน 2-3 มีรูปของตัวเองในโฟลเดอร์ย่อย: img/Asia/<key>-asia.png · img/West/<key>-west.png
@@ -355,13 +356,14 @@ export function drawHeroWalk(ctx, x, y, h, distance, face = 1) {
   const im = img('hero-yama-walk');
   if (!im || !im.naturalWidth || !im.naturalHeight) return false;
   const frameW = im.naturalWidth / 4;
-  const frame = Math.floor(distance / 9) % 4;
+  const frame = Math.floor(distance / HERO_WALK_STRIDE) % 4;
   const drawW = h * frameW / im.naturalHeight;
   ctx.fillStyle = 'rgba(0,0,0,.42)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
   ctx.save();
   ctx.translate(x, y);
-  ctx.scale(face, 1);
+  // สไปรท์เดินทั้ง 4 ชุดวาดหันซ้าย (ต่างจากท่ายืนที่หันขวา) จึงกลับเครื่องหมาย: face>0 = ไปขวา ต้องพลิก
+  ctx.scale(-face, 1);
   ctx.drawImage(im, frame * frameW, 0, frameW, im.naturalHeight,
                 -drawW / 2, -h + 2, drawW, h);
   ctx.restore();
