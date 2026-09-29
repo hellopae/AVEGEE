@@ -1531,8 +1531,22 @@ const API = {
       // ว่างงาน → กลับไปเฝ้า "หัวสะพานที่วิญญาณข้ามมา" (เจ้าของสั่ง 10 ก.ย. 2569)
       // เดิมยืนอยู่ท่าเรือฝั่งขวาซึ่งไม่มีอะไรผ่าน มีผีบุกก็ยังวิ่งไปจัดการเหมือนเดิม
       const G = this.guard, gp = GUARD_POST;
-      G.path = null; G.target = null;
-      stepTo(G, (gp[0] - G.x) * 0.0012 * dt, (gp[1] - G.y) * 0.0012 * dt);
+      if (Math.hypot(gp[0] - G.x, gp[1] - G.y) < 6) {
+        G.x = gp[0]; G.y = gp[1]; G.path = null; G.target = null;
+      } else {
+        if (!G.path?.length || G.target?.[0] !== gp[0] || G.target?.[1] !== gp[1]) {
+          G.path = findPath(G.x, G.y, gp[0], gp[1]);
+          G.target = gp;
+        }
+        const w = G.path?.[0];
+        if (w) {
+          const dx = w[0] - G.x, dy = w[1] - G.y, wd = Math.hypot(dx, dy);
+          // ถึงจุดแวะแล้ว "วางตัวลงบนจุดนั้นเลย" — เส้นตรงจุดแวะถัดไปถูกตรวจว่าโล่งจากจุดนั้นเป๊ะ ๆ
+          // ถ้าปล่อยให้ค้างห่างไป 6px แล้วเดินต่อ จะเฉียดกำแพงบางหนึ่งช่องแล้วติด (เฟรมเล็กในเบราว์เซอร์)
+          if (wd < 6) { G.x = w[0]; G.y = w[1]; G.path.shift(); }
+          else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
+        }
+      }
     }
   },
 
@@ -2409,9 +2423,26 @@ const API = {
 
   spawnMob() {
     // สุ่มตามชายฝั่งขอบล่าง เหนือแม่น้ำเล็กน้อย เพื่อให้ทุกโซนเดินไปถึงได้
-    const x = 110 + Math.random() * (SCENE.w - 220);
+    // เลือกเฉพาะจุดที่ findPath เชื่อมถึงจุดเฝ้าได้ ไม่งั้นยักษ์/ผู้เล่นไปไล่ปีศาจไม่ถึง
     const y = 675;
-    const p = nearestWalk(x, y);
+    const reach = p => {
+      if (!p) return false;
+      const path = findPath(p[0], p[1], GUARD_POST[0], GUARD_POST[1]);
+      const end = path?.[path.length - 1];
+      return !!end && end[0] === GUARD_POST[0] && end[1] === GUARD_POST[1];
+    };
+    const x0 = 110 + Math.random() * (SCENE.w - 220);
+    let p = nearestWalk(x0, y);
+    for (let i = 0; i < 6 && !reach(p); i++) p = nearestWalk(110 + Math.random() * (SCENE.w - 220), y);
+    if (!reach(p)) {                 // สุ่มไม่โดน → กวาดหาจุดที่เชื่อมได้ใกล้ x0 ที่สุด
+      p = null;
+      for (let d = 0; d <= SCENE.w && !p; d += 40)
+        for (const x of [x0 - d, x0 + d]) {
+          if (x < 110 || x > SCENE.w - 110) continue;
+          const q = nearestWalk(x, y);
+          if (reach(q)) { p = q; break; }
+        }
+    }
     if (!p) return;
     // แต่ละโซนมีผีคนละชุด — ไทยครบทุกพันธุ์ · โซนอื่นเหลือพันธุ์กลางที่ใช้รูปเดิมได้
     const pool = (this.zoneDef().mobs || []).filter(i => MOB.kinds[i]);
