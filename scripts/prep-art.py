@@ -408,6 +408,9 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         alpha = im.getchannel('A')
         flat = im.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
         flat.putalpha(alpha)
+        # ศาลาน้ำชาโซนไทย: บันไดต้องอยู่ขวา; กลับก่อนเซฟเพื่อให้แผนที่และภาพอาคารที่โหลดจากไฟล์เดียวกันตรงกัน
+        if name == 'st-tea':
+            flat = flat.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
         flat.save(os.path.join(OUT, name + '.png'))
         return flat.size
 

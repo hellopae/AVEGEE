@@ -995,7 +995,7 @@ const API = {
     this.tick++;
 
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
-    for (let i = this.returning.length - 1; !this.courtClosed && i >= 0; i--) {
+    for (let i = this.returning.length - 1; i >= 0; i--) {
       if (this.tick < this.returning[i].at) continue;
       const R = this.returning.splice(i, 1)[0];
       const soul = this.mkReturnSoul(R);
@@ -2844,6 +2844,14 @@ API.restore = function (d) {
   const allowedMobs = new Set(this.zoneDef().mobs || []);
   this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));
   this.zoneSave = d.zoneSave || {};
+  // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
+  // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
+  const moveOldGuardPost = guard => {
+    if (guard?.x === 895 && guard?.y === 795) [guard.x, guard.y] = GUARD_POST;
+  };
+  moveOldGuardPost(this.guard);
+  Object.values(this.zoneSave).forEach(saved => moveOldGuardPost(saved?.guard));
+  moveOldGuardPost(this.zoneEntry?.guard);
   if (!d.mapV3FixBranches) {
     // เซฟผัง 1527×704 ยังไม่มี mask ภาพตอน restore: ย้ายตำแหน่งที่ผูกกับผังเก่า
     // ไปจุดเกิดที่เดินได้ แล้วให้ syncBlocks ตรวจซ้ำเมื่อภาพฉากโหลดเสร็จ

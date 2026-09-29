@@ -60,7 +60,7 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
     assert.deepEqual([STATIONS.find(s => s.k === 'tea').x, STATIONS.find(s => s.k === 'tea').y],
       z.k === 'asia' ? [250,610] : [218,619]);
     assert.deepEqual([SPOTS.bench.x, SPOTS.bench.y], [820, 455]);
-    assert.deepEqual(GUARD_POST, [895, 795]);
+    assert.deepEqual(GUARD_POST, [700, 795]);
     assert.deepEqual([FRONTIER.x, FRONTIER.y], [835, 840]);
     assert.equal(NO_WALK[3][1], 695);
     assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === 835));
@@ -130,4 +130,14 @@ test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล�
     assert.equal(again.restore(g.snapshot()), true);
     assert.deepEqual([again.player.x,again.player.y], [880,455]);
   }
+});
+
+test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน', () => {
+  const saved = createGame().snapshot();
+  saved.guard = { x:895, y:795 };
+  saved.zoneSave = { asia:{ guard:{ x:895, y:795 } } };
+  const g = createGame();
+  assert.equal(g.restore(saved), true);
+  assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
+  assert.deepEqual([g.zoneSave.asia.guard.x, g.zoneSave.asia.guard.y], GUARD_POST);
 });
