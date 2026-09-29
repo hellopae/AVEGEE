@@ -596,17 +596,25 @@ const API = {
   freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
 
   // ---------- มอบหมายคดี ----------
+  assignBlock(soulId, stKey, crewK) {
+    const st = this.stations.find(s => s.def.k === stKey);
+    if (!st) return { key: 'stationMissing' };
+    if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
+    if (this.stFree(st) <= 0) return { key: 'stationFull' };
+    const c = this.crewOf(st.slots.length ? st.crewK : crewK);
+    if (!c || c.self || c.reader) return { key: 'crewMissing' };
+    if (c.escort) return { key: 'crewEscort' };
+    if (c.buildK) return { key: 'crewBuilding' };
+    if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
+    return null;
+  },
   assign(soulId, stKey, crewK, intensity) {
+    if (this.assignBlock(soulId, stKey, crewK)) return false;
     const st = this.stations.find(s => s.def.k === stKey);
     const si = this.queue.findIndex(s => s.id === soulId);
-    if (!st || si < 0 || this.stFree(st) <= 0) return false;
     // สถานีที่มีผู้คุมประจำอยู่แล้ว ดวงถัดไปเข้าเวรของคนเดิม (หนึ่งหลังหนึ่งผู้คุม)
     const useK = st.slots.length ? st.crewK : crewK;
     const c = this.crewOf(useK);
-    if (!c || c.self) return false;
-    if (c.reader) return false;              // นิราไม่รับเวรลงทัณฑ์
-    if (!c.self && c.escort) return false;   // ต้องพาดวงก่อนหน้าไปส่งให้ถึงก่อน จึงรับหมายใหม่ได้
-    if (!c.self && c.at && c.at !== st.def.k) return false;   // ยมทูตคนอื่นติดเวรที่อื่นอยู่
     const soul = this.queue.splice(si, 1)[0];
     // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
     // เส้นทางทั้งสองช่วงใช้พื้นเดินจริง จึงไม่ลอยตัดลาวา/แม่น้ำเหมือน animation รุ่นแรก
@@ -678,7 +686,10 @@ const API = {
     }
     const totalW = soul.deeds.reduce((s, d) => s + d.w, 0);
     const hitW = soul.deeds.filter(d => tags.includes(d.s)).reduce((s, d) => s + d.w, 0);
-    let tham = tags.length === 0 ? 42 : Math.round(100 * hitW / totalW);
+    // น้ำหนักบาปที่ซ่อนอยู่ติดลบได้: ผลรวมอาจเป็นศูนย์หรือติดลบ
+    let tham = tags.length === 0 ? 42
+      : !Number.isFinite(totalW) || !Number.isFinite(hitW) || totalW <= 0 ? 0
+      : clamp(Math.round(100 * hitW / totalW), 0, 100);
     if (c.panya >= 7) tham = Math.min(100, tham + 6);
 
     const short = Math.max(0, soul.deserved - slot.intensity);
@@ -707,9 +718,9 @@ const API = {
 
   /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
   applyVerdict(r, soul) {
-    this.karma = clamp(this.karma + r.karma, 0, 100);
-    this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
-    this.casesDone++; this.scoreSum += r.score;
+    if (Number.isFinite(r.karma)) this.karma = clamp(this.karma + r.karma, 0, 100);
+    if (Number.isFinite(r.score)) this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
+    this.casesDone++; if (Number.isFinite(r.score)) this.scoreSum += r.score;
     this.zoneCases[this.zone] = (this.zoneCases[this.zone] || 0) + 1;
     // เป้าหมายสั้น ๆ รายสาขา: เปิดหลักฐานที่ซ่อนอยู่และตัดสินได้ดีสามคดี
     const goal = this.miniGoals[this.zone] ||= { truth:0, earned:false };
@@ -864,7 +875,7 @@ const API = {
       else this.sentences.push(entry);
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
-    this.coin += r.coin;
+    if (Number.isFinite(r.coin)) this.coin += r.coin;
     this.log(`${st.def.heaven ? 'การส่งตัว' : 'ทัณฑ์'}ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
     this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
@@ -2578,7 +2589,7 @@ const API = {
     if (this.stations.some(s => s.def.k === k)) return false;
     const before = this.activeTags();
     const taan = this.crew.find(c => c.k === 'taan');
-    if (!taan || taan.buildK) return false;
+    if (!taan || taan.buildK || taan.at || taan.escort) return false;
     this.coin -= def.cost;
     const st = mkStation(k, Date.now() + BUILD_TIME);
     st.buildWait = true;
@@ -2701,6 +2712,10 @@ API.restore = function (d) {
                 'casesDone','scoreSum','kpiPassed','nextArrive','nextEvent','nextPay','nextKpi',
                 'orderWarns','orderWarnAt'];
   keep.forEach(k => { if (d[k] != null) this[k] = d[k]; });
+  // JSON แปลง NaN เป็น null; เซฟที่ถูกแก้มืออาจมี NaN ตรง ๆ
+  for (const k of ['coin', 'order', 'karma', 'scoreSum']) {
+    this[k] = Number.isFinite(d[k]) ? d[k] : k === 'coin' ? BAL.startCoin : k === 'order' ? 72 : 0;
+  }
   this.courtClosed = !!d.courtClosed;
   SEQ = d.seq || SEQ;
 

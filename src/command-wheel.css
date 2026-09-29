@@ -17,6 +17,9 @@
 .command-options .orb-choice{position:relative!important;flex:0 0 62px!important;width:62px!important;min-height:80px;padding:0!important;border:0!important;background:transparent!important;color:white;opacity:0;transform:translate(-35px,18px) scale(.6);transition:opacity .26s,transform .4s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--choice-index,0)*65ms)}
 .command-options.is-open .orb-choice{opacity:1;transform:translate(0,0) scale(1)}
 .command-options .orb-choice:disabled{opacity:.4}
+.court-wheel .options-1 .orb-choice:disabled{opacity:.85}
+.court-wheel .options-1 .orb-choice small{color:var(--warning);font-size:10px;line-height:1.2;overflow-wrap:anywhere}
+@media (max-width:700px){.court-wheel .options-1 .orb-choice small{display:none}}
 .command-options .orb-choice img{display:block;width:62px;height:62px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #d6b26d}
 .command-options .orb-choice b{display:block;font-size:11px;line-height:1.35;white-space:normal}.command-options small{display:block;font-size:9px}.command-options i{font-size:10px}
 .command-options .orb-choice>span{display:grid;place-items:center;width:62px;height:62px;background:#e9b758;border-radius:50%;color:white}
