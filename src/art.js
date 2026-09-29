@@ -47,7 +47,7 @@ fetch('img/manifest.json?v=20260929-dab', { cache: 'no-cache' })
 
 /** ท่าพิเศษ — ชื่อไฟล์โซนใส่ชื่อโซนก่อนคำท้าย: hero-yama-asia-profile · crew-taan-asia-work
  *  ต้องตรงกับ POSES ใน scripts/prep-art.py */
-const POSE = /-(profile|work|atk|side|walk)$/;
+const POSE = /-(profile|work|atk|side|walk|cry)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
 
 /** path ของไฟล์ที่ต้องใช้กับคีย์นี้ในโซนตอนนี้

@@ -2,7 +2,7 @@
 //
 // เดิม: กดเข้าชายแดน → จัดทีม → ตัดเข้าฉากสู้ทันที (สุ่มศัตรู) → ชนะ เก็บของ → กลับ "แผนที่โซน"
 // ตอนนี้:  กดเข้าชายแดน → จัดทีม (หน้าเดิม ไม่แตะ) → เข้า "แผนที่ชายแดน" (ไฟล์นี้) →
-//   ยมน้อยเดินเอง (คลิก/แตะ/WASD เหมือนแผนที่หลัก) → ศัตรูของโซนนั้นค่อย ๆ เดินเข้ามาทีละตัวจากขอบ
+//   ยมน้อยเดินเอง (คลิก/แตะ/WASD เหมือนแผนที่หลัก) จากประตูบน → ศัตรูค่อย ๆ บุกจากประตูล่าง
 //   จนถึงจุดในสนามแล้ว "หยุดยืนรอ" (ไม่ไล่ล่าเรา — ดูเหตุผลเลือกแบบนี้ในรายงาน Toby ข้อ A6) →
 //   เดินเข้าไปใกล้ตัวไหน ปุ่ม "เริ่มต่อสู้" ลอยขึ้นเหนือหัวตัวนั้น → กดแล้วตัดเข้าฉากต่อสู้เดิมกับตัวนั้น
 //   เป๊ะ (ไม่แตะฉากต่อสู้/ค่าพลัง/คูลดาวน์เลย) → ชนะ เก็บของที่ตก → กลับมา "แผนที่ชายแดน" ต่อ (ไฟล์นี้)
@@ -37,7 +37,7 @@ let session = null;   // { zone, player:{x,y,tx,ty,face}, enemies:[{id,kindIdx,x
 /** ได้เซสชันของโซนนี้ — สร้างใหม่ถ้ายังไม่มีหรือเพิ่งย้ายโซน */
 export function frontierSession(zone) {
   if (!session || session.zone !== zone) {
-    session = { zone, player: { x: (WALK[0] + WALK[2]) / 2, y: WALK[3] - 0.05, tx: null, ty: null, face: 1 },
+    session = { zone, player: { x: 0.5, y: WALK[1] + 0.02, tx: null, ty: null, face: 1 },
                 enemies: [], nextId: 1 };
   }
   return session;
@@ -57,17 +57,10 @@ export function removeSessionEnemy(zone, id) {
 
 const rand = (a, b) => a + Math.random() * (b - a);
 function edgePoint() {
-  const [x1, y1, x2, y2] = WALK;
-  const side = Math.floor(Math.random() * 4);
-  if (side === 0) return [rand(x1, x2), y1];
-  if (side === 1) return [rand(x1, x2), y2];
-  if (side === 2) return [x1, rand(y1, y2)];
-  return [x2, rand(y1, y2)];
+  return [rand(0.35, 0.65), WALK[3]];
 }
 function insidePoint() {
-  const [x1, y1, x2, y2] = WALK;
-  const pad = 0.10;
-  return [rand(x1 + pad, x2 - pad), rand(y1 + pad, y2 - pad)];
+  return [rand(0.20, 0.80), rand(0.47, 0.70)];
 }
 const clampArea = (x, y) => [Math.min(WALK[2], Math.max(WALK[0], x)), Math.min(WALK[3], Math.max(WALK[1], y))];
 

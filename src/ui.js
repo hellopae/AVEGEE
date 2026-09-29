@@ -34,6 +34,7 @@ const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero
  *  (โซนปัจฉิมยังไม่มี hero-yama-west-atk — ตอนนี้จึงยืนนิ่งตอนฟาด ไม่ใช่หน้าเปลี่ยนเป็นคนละคน)
  *  โหลดไฟล์ไว้ล่วงหน้า ไม่งั้นเฟรมแรกที่สลับท่าจะว่างวูบหนึ่งระหว่างรอไฟล์ */
 const heroAtk = () => artUrl('hero-yama-atk') || heroFace();
+const heroCry = () => artUrl('hero-yama-cry') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
 
 /** ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่คูลดาวน์เป็นเวลาจริง ไม่ใช่นับเป็นคดี
@@ -112,6 +113,7 @@ setInterval(() => {
   updateMobFab();          // ปุ่มสู้เหนือหัวผีก็ต้องเก็บกวาดตัวเองได้แม้ลูปเฟรมจะหยุด
   updateBossFab();
   updateFrontierFab();
+  updateRepairFabs();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
@@ -155,7 +157,7 @@ function frame(now) {
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   render(ctx, g, now, hover, sel);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -910,6 +912,7 @@ function drawOverlay() {
   const keepFab = ov.querySelector('.mobfab');
   const keepBossFab = ov.querySelector('.bossfab');
   const keepFrontierFab = ov.querySelector('.frontierfab');
+  const keepRepairFabs = [...ov.querySelectorAll('.repairfab')];
   const keepPrisonFab = ov.querySelector('.prisonfab');
   const keepBreachFab = ov.querySelector('.breachfab');
   const keepDevaFab = ov.querySelector('.devafab');
@@ -917,6 +920,7 @@ function drawOverlay() {
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
   if (keepFrontierFab) ov.appendChild(keepFrontierFab);
+  for (const f of keepRepairFabs) ov.appendChild(f);
   if (keepPrisonFab) ov.appendChild(keepPrisonFab);
   if (keepBreachFab) ov.appendChild(keepBreachFab);
   if (keepDevaFab) ov.appendChild(keepDevaFab);
@@ -1055,6 +1059,33 @@ function updateFrontierFab() {
   }
   f.dataset.sx = FRONTIER.bx; f.dataset.sy = FRONTIER.by - FRONTIER.bw + 18;
   place(f);
+}
+
+/** เรียกทัณฑ์จากแผนที่ได้เมื่ออาคารพัง ไม่ต้องเข้าห้องสถานี */
+function updateRepairFabs() {
+  const damaged = g.over || g.battle || dlg.open ? []
+    : g.stations.filter(st => !st.build && st.fire >= MOB.burnMax && !st.repair);
+  const keys = new Set(damaged.map(st => st.def.k));
+  for (const f of ov.querySelectorAll('.repairfab')) if (!keys.has(f.dataset.station)) f.remove();
+  for (const st of damaged) {
+    let f = ov.querySelector(`.repairfab[data-station="${st.def.k}"]`);
+    if (!f) {
+      f = document.createElement('button');
+      f.className = 'repairfab';
+      f.dataset.station = st.def.k;
+      f.onclick = ev => {
+        ev.stopPropagation();
+        if (g.repairStation(st.def.k)) { sfx('crack'); refresh(); }
+      };
+      ov.appendChild(f);
+    }
+    f.textContent = `🔧 เรียกทัณฑ์ซ่อม${st.def.name}`;
+    f.disabled = !g.canRepair(st.def.k);
+    f.title = g.mobs.length ? 'ไล่ปีศาจออกก่อน' : 'ทัณฑ์ต้องว่างจากงานอื่นก่อน';
+    f.dataset.sx = st.def.bx;
+    f.dataset.sy = Math.min(SCENE.h - 45, st.def.by + 64);
+    place(f);
+  }
 }
 
 function openPrisonAlert() {
@@ -1389,7 +1420,7 @@ function openDadPunish(p) {
       <div class="punish-vignette"></div>
       <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
       <div class="punish-flames" aria-hidden="true"><i></i><i></i></div>
-      <div class="punish-yama"><img src="img/hero-yama-cry.png" alt="ยมน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
+      <div class="punish-yama"><img src="${heroCry()}" alt="ยมน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
       <div class="punish-pot-front" aria-hidden="true"></div>
       <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
       <div class="punish-heat">♨</div>
@@ -1600,7 +1631,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมน้อยไม่สลับท่า
   const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe') && !(fx && fx.crew);
   const youImg = hp && act?.struck === 'you' && hp.dmg?.you > 0
-    ? 'img/hero-yama-cry.png' : usingAtk ? heroAtk() : heroFace();
+    ? heroCry() : usingAtk ? heroAtk() : heroFace();
   const foeSrc = typeof foe.sp === 'string' ? artUrl(foe.sp) || `img/${foe.sp}.png` : `img/spirit${foe.sp || 7}.png`;
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว

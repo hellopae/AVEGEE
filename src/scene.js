@@ -492,8 +492,8 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
 function bubble(ctx, text, x, y) {
-  ctx.font = `600 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
-  const w = Math.min(300 * UI_SCALE_MAP, ctx.measureText(text).width + 20 * UI_SCALE_MAP), h = 26 * UI_SCALE_MAP;
+  ctx.font = `600 ${12 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
+  const w = Math.min(270 * UI_SCALE_MAP, ctx.measureText(text).width + 16 * UI_SCALE_MAP), h = 22 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();

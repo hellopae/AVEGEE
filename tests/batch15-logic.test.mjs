@@ -77,11 +77,12 @@ test('ทีมยมน้อย ทัณฑ์ เพลิง พร้อ�
   } finally { Math.random = originalRandom; }
 });
 
-test('ประตูต้องเดินถึง และเปิดหน้าจัดทีมแล้วเซสชันชายแดนคงศัตรูเดิม', () => {
+test('ยมบาทเริ่มที่ประตูบน และเปิดหน้าจัดทีมแล้วเซสชันชายแดนคงศัตรูเดิม', () => {
   clearFrontierSession();
   for (const z of ZONES) {
     const s = frontierSession(z.k);
-    assert.equal(nearFrontierGate(s.player), false);
+    assert.equal(nearFrontierGate(s.player), true);
+    assert.ok(s.player.y < 0.30, 'Yama enters from the upper gate');
     s.player.x = 0.5; s.player.y = 0.22;
     assert.equal(nearFrontierGate(s.player), true);
     s.player.x = 0.64; s.player.y = 0.29;

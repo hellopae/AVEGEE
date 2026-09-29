@@ -278,7 +278,7 @@ export const STATIONS = [
 ];
 
 /** จุดเฝ้าของยักษ์ทวารบาล — ฝั่งซ้ายของหัวสะพาน พ้นกรอบประตูชายแดนทุกโซน */
-export const GUARD_POST = [700, 795];
+export const GUARD_POST = [720, 890];
 
 /** จุดสำคัญบนฉากที่ไม่ใช่สถานี — ชุดที่ 15b วัดใหม่จาก img/scene-v2.png จริง (บัลลังก์/บันได/ท่าเรือ
  *  วาดติดอยู่ในภาพฉากเอง ไม่ใช่สไปรท์แยก จึงวัดจากพิกเซลจริงตรง ๆ ไม่ผ่านม็อกอัป) */
@@ -562,8 +562,7 @@ export const ITEMS = {
   fire:   { name:'ลูกไฟ',          img:'fx-fireball', h:42, fireAmmo:1, glyph:'🔥',
             say:'ได้ลูกไฟมาอีกลูก' },
   // ข้อ A/B คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เปลี่ยนจากฟืน (item-fuel) เป็นเสบียงที่ยมทูตกินเอง
-  // ข้อ H2 คุณเป้เจอ 25 ก.ย. 2569 — เปลี่ยนภาพเป็น item-food.png (ข้าวปั้นพิกเซลอาร์ตวาดด้วยโค้ด
-  // ตามสเปกใน Output/Toby เพราะห้าม gen ภาพใหม่ — คุณเป้ gen ภาพจริงมาทับชื่อไฟล์นี้ได้เลยภายหลัง)
+  // ภาพ item-food.png ใช้ต้นฉบับข้าวปั้นจาก img/raw/item-food.png
   food:   { name:'ห่อเสบียง',      img:'item-food',   h:44, food:12, glyph:'🍙',
             say:'ยมทูตอิ่มขึ้นอีกหน่อย ทำงานไวขึ้นได้อีกพัก' },
   // ของที่ศาลาน้ำชาวางไว้ให้ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569) — แทนปุ่ม "พักฟื้นบารมี" ที่ถูกถอดออก
@@ -1510,8 +1509,11 @@ export function syncSceneZone(zone) {
   Object.assign(lan, z.k === 'th' ? { x:585, y:615, sx:590, sy:600 }
                                  : { x:500, y:615, sx:500, sy:600 });
   // ดอกไม้แดงในฉากบูรพาถูกตัวอ่านสีมองเป็นลาวาตรงปลายเท้าจุดเดิม
-  Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia' ? { x:250, y:610 }
-                                                               : { x:218, y:619 });
+  // Asia's painted gate occupies the old tea site. Place the pavilion on the open path beside it.
+  // The other scenes keep the left-hand site, lowered clear of the rocks behind the roof.
+  Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
+    ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
+    : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
 }
 
 /** ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "คำตัดสินแดง / ฉากพ่อลงมาเอง (kind:'dad') / บทกระทะทองแดง" เดิม

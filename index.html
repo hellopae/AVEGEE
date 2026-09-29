@@ -1538,6 +1538,10 @@ dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;pad
   color:#ffe3ae;box-shadow:0 7px 20px rgba(0,0,0,.68);pointer-events:auto;animation:mobfabIn .18s ease-out}
 #ov .frontierfab:after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
   border:6px solid transparent;border-top-color:var(--gold)}
+#ov .repairfab{position:absolute;transform:translate(-50%,-50%);z-index:9;min-height:38px;
+  padding:7px 13px;border-radius:99px;font-size:var(--text-sm);font-weight:700;white-space:nowrap;
+  background:#492735;border:1px solid var(--gold);color:#ffe3ae;box-shadow:0 6px 18px #0009;pointer-events:auto}
+#ov .repairfab:disabled{opacity:.65;cursor:not-allowed}
 dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;padding:0;overflow:hidden;background:#160a0f}
 .frontier-screen{position:relative;min-height:min(760px,90dvh);background-size:cover;background-position:center;display:flex;flex-direction:column}
 .frontier-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,6,10,.2),rgba(15,6,10,.18) 45%,rgba(12,5,8,.96) 78%)}

@@ -1164,12 +1164,12 @@ const API = {
     // ของจากสถานีไม่นับในเพดานนี้ — ไม่งั้นสร้างสถานีเติมพลังครบสี่หลังแล้วของสุ่มหยุดตกทั้งเกม
     // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — เอา 'hypno' ออกจากพูลสุ่มนี้แล้ว (ซื้อจากบุญที่ประตูสวรรค์เท่านั้น)
     // 'mirror' ยังอยู่ในพูล — ทุก 18 วาระ (~12.6 วิจริงที่ tickMs 700ms) เมื่อของบนแผนที่ยังไม่ถึง 3 ชิ้น
-    // มีโอกาสสุ่มได้ 'mirror' 1 ใน 6 ของพูลนี้ (ไม่นับกรณี priority บารมี/เสบียง/บัวตัดหน้า) — ต่ำพอไม่ให้เฉลยทุกคดี
+    // ของทั่วไปมี 'mirror' และ 'food' อย่างละ 1 ใน 8; เสบียงเร่งด่วนเฉพาะเมื่อเหลือต่ำกว่า 10 และยังไม่มีห่อบนพื้น
     if (this.tick % 18 === 0 && this.items.filter(it => !it.from).length < 3) {
       const need = this.hp < this.hpMax * 0.55 ? 'health'
-                 : this.food < 18 ? 'food'
+                 : this.food < 10 && !this.items.some(it => it.k === 'food') ? 'food'
                  : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
-                 : pick(['fire', 'fire', 'mirror', 'health', 'food', 'ice']);
+                 : pick(['fire', 'fire', 'mirror', 'health', 'ice', 'ice', 'lotus', 'food']);
       this.dropItem(need);
     }
 
@@ -3138,7 +3138,7 @@ API.restore = function (d) {
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
   const moveOldGuardPost = guard => {
-    if (guard?.x === 895 && guard?.y === 795) [guard.x, guard.y] = GUARD_POST;
+    if (guard?.y === 795 && (guard.x === 895 || guard.x === 700)) [guard.x, guard.y] = GUARD_POST;
   };
   moveOldGuardPost(this.guard);
   Object.values(this.zoneSave).forEach(saved => moveOldGuardPost(saved?.guard));

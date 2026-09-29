@@ -43,7 +43,7 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   const sceneRef = SCENE;
-  const stationPos = STATIONS.map(s => [s.bx, s.by, s.bw, ...s.hit]);
+  const stationPos = STATIONS.filter(s => s.k !== 'tea').map(s => [s.bx, s.by, s.bw, ...s.hit]);
   const servicePos = STATIONS.filter(s => s.k !== 'lan' && s.k !== 'tea').map(s => [s.x, s.y]);
   const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
   for (const z of ZONES) {
@@ -53,14 +53,14 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
     assert.deepEqual(size(), [1678, 937]);
     assert.deepEqual(grid(), [210, 118]);
-    assert.deepEqual(STATIONS.map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
+    assert.deepEqual(STATIONS.filter(s => s.k !== 'tea').map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
     assert.deepEqual(STATIONS.filter(s => s.k !== 'lan' && s.k !== 'tea').map(s => [s.x, s.y]), servicePos);
     assert.deepEqual([STATIONS.find(s => s.k === 'lan').x, STATIONS.find(s => s.k === 'lan').y],
       z.k === 'th' ? [585,615] : [500,615]);
     assert.deepEqual([STATIONS.find(s => s.k === 'tea').x, STATIONS.find(s => s.k === 'tea').y],
-      z.k === 'asia' ? [250,610] : [218,619]);
+      z.k === 'asia' ? [365,650] : [218,653]);
     assert.deepEqual([SPOTS.bench.x, SPOTS.bench.y], [820, 455]);
-    assert.deepEqual(GUARD_POST, [700, 795]);
+    assert.deepEqual(GUARD_POST, [720, 890]);
     assert.deepEqual([FRONTIER.x, FRONTIER.y], [835, 840]);
     assert.equal(NO_WALK[3][1], 695);
     assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === 835));
@@ -230,4 +230,7 @@ test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่�
   assert.equal(g.restore(saved), true);
   assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
   assert.deepEqual([g.zoneSave.asia.guard.x, g.zoneSave.asia.guard.y], GUARD_POST);
+  saved.guard = { x:700, y:795 };
+  assert.equal(g.restore(saved), true);
+  assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
 });
