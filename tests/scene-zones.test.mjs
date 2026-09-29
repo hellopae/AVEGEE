@@ -178,6 +178,22 @@ test('ยักษ์ปราบปีศาจจากท่าเรือ�
   }
 }));
 
+test('ยักษ์ snap จุดแวะขณะไล่ปีศาจที่เฟรม 16ms แล้วเดินถึงเป้าหมาย', () => withImageCanvas(() => {
+  const g = createGame();
+  resetWalk();
+  g.syncBlocks(true);
+  const bg = image(ZONES.find(z => z.k === 'th').scene);
+  assert.equal(buildWalk(bg), true);
+  g.guard = { x:GUARD_POST[0], y:GUARD_POST[1] - 5,
+    path:[[...GUARD_POST]], target:[1380, 682] };
+  g.mobs = [{ id:1900, x:1380, y:682, hp:MOB.hp, kind:0 }];
+  g.stepWorld(16);
+  assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
+  let frames = 0;
+  while (frames++ < 6000 && g.mobs.length) g.stepWorld(16);
+  assert.equal(g.mobs.length, 0, `defeats pier mob in ${frames} small frames`);
+}));
+
 test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว', () => {
   for (const zone of ['asia', 'west', 'cyberhell']) {
     const saved = createGame().snapshot();

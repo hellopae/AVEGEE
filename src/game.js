@@ -6,7 +6,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME, authorityOf, fmtAuthority, CREW_POWER,
+         MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
          syncSceneZone } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
@@ -490,32 +490,17 @@ const API = {
     sealed.forEach(d => { d.visible = true; out.push({ kind: 'truth', text: `📂 นิราเปิดรายการกรรมชั้นแรก — ${d.t}` }); });
 
     if (k === 'mirror') {
-      // ข้อ A คุณเป้ 24 ก.ย. 2569 — กระจกวิเศษเปลี่ยนผล: กดแล้วเฉลย "ที่ไหน" (สถานี) และ "ความแรง" ที่ถูกต้อง
-      // ทันทีทุกครั้ง (เดิมส่องได้แค่ทีละหนึ่งความลับ) — เลือก "แสดงข้อความ" ไม่ auto-กดปุ่มในวงคำสั่งให้เอง
-      // เพราะผู้เล่นยังต้องกดยืนยันเองอยู่ดี การเห็นคำตอบตรง ๆ บนจอเข้าใจง่ายกว่าเดากติกาว่าทำไมวงถูกเติมให้
-      //
-      // สำนวนที่เขียนมือบางเรื่องมีความลับพิเศษ (เทวดาปลอมตัว/คนที่ฝ่ายคัดกรรมส่งมาผิด) — ยังคงเฉลยผ่านกระจก
-      // เป็นอย่างแรกเหมือนเดิม (เห็นทางกระจกทางเดียวเท่านั้น) แล้วต่อด้วยที่ไหน+ความแรงทุกครั้ง
+      soul.revealed ||= {};
+      soul.revealed.mirror = true;
+      // ความลับของสำนวนเขียนมือยังเปิดผ่านกระจกตามเดิม
       if (soul.secret && !soul.secretSeen) {
         soul.secretSeen = true;
         out.push({ kind: 'truth', text: soul.secret });
       }
-      if (soul.pure) {
-        out.push({ kind: 'truth', text: '🪞 กระจกส่องเห็นที่ที่ควรส่งไป: 🕊️ ประตูสวรรค์ — ดวงนี้ไม่มีกรรมให้ลงทัณฑ์เลย' });
-      } else {
-        const bySin = {};
-        soul.deeds.forEach(d => { bySin[d.s] = (bySin[d.s] || 0) + d.w; });
-        let best = null, bestScore = -1;
-        for (const st of this.stations) {
-          if (st.build || st.def.heaven || !st.def.tags.length) continue;
-          const sc = st.def.tags.reduce((n, t) => n + (bySin[t] || 0), 0);
-          if (sc > bestScore) { bestScore = sc; best = st; }
-        }
-        out.push({ kind: 'truth', text: best
-          ? `🪞 กระจกส่องเห็นที่ที่ควรลงทัณฑ์: ${best.def.glyph} ${best.def.name} (ตรงกรรม ${SINS[best.def.tags[0]].name})`
-          : '🪞 กระจกส่องเห็นว่ายังไม่มีสถานีที่ตรงกรรมของดวงนี้เลย — ต้องสร้างเพิ่ม' });
-        out.push({ kind: 'truth', text: `🪞 กระจกส่องเห็นความแรงที่พอดี: ระดับ ${soul.deserved} — ${INTENSITY_NAME[soul.deserved]}` });
-      }
+      const station = this.trialAnswer(soul).station;
+      out.push({ kind: 'truth', text: station
+        ? `🪞 กระจกเผยที่ไหน ความแรง และผู้คุมบนวงคำสั่ง${this.stations.some(st => st.def.k === station.k && !st.build) ? '' : ' — ต้องสร้างสถานีเฉลยก่อน'}`
+        : '🪞 ยังไม่มีสถานีที่ตรงกรรมของดวงนี้' });
 
     } else if (k === 'roar') {                   // เร็วกว่า แต่คนกลัวพูดมั่วได้
       if (Math.random() < 0.65 && hidden.length) {
@@ -534,6 +519,8 @@ const API = {
         out.push({ kind:'truth', text:`❄️ ความกลัวสงบลง เขาพูดช้าลง: “${line.t}”` });
       } else out.push({ kind:'hint', text:'❄️ เขาสงบลง แต่ไม่มีคำให้การใหม่เหลือแล้ว' });
     } else if (k === 'hypno') {                  // เห็นหมด แต่กรรมตกที่เรา
+      soul.revealed ||= {};
+      soul.revealed.hypno = true;
       hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `🌀 ในใจเขามี: ${d.t}` }); });
       fakes.forEach(m => { m.exposed = true; out.push({ kind: 'truth', text: `🌀 "${m.t}" เป็นเรื่องที่เขาแต่งขึ้น` }); });
       if (!out.length) out.push({ kind: 'truth', text: '🌀 ในใจเขาไม่มีอะไรมากไปกว่าที่พูดออกมาแล้ว' });
@@ -599,6 +586,28 @@ const API = {
   },
 
   freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
+
+  /** เฉลยเฉพาะคดีที่ใช้พลังแล้ว; ผู้คุมคิดคะแนนจาก judge() ที่สถานีเฉลย/วาระสมควร
+   *  เลือกคะแนนสูงสุดในกลุ่มที่รับหมายได้ตอนนี้ก่อน ถ้าไม่มีให้แสดงคนคะแนนสูงสุดพร้อมเหตุผล */
+  trialAnswer(soul) {
+    if (!soul?.revealed?.mirror && !soul?.revealed?.hypno) return null;
+    const station = STATIONS.find(st => soul.pure ? st.heaven : st.tags.includes(primarySinOf(soul))) || null;
+    const answer = { station, intensity: soul.revealed.mirror ? soul.deserved : null, crew: null, unavailable: null };
+    if (!soul.revealed.mirror || !station) return answer;
+    const st = this.stations.find(x => x.def.k === station.k);
+    if (!st || st.build) return answer;
+    // สถานีที่มีดวงอยู่แล้วเปลี่ยนผู้คุมไม่ได้ จึงพิจารณาเฉพาะผู้คุมประจำ
+    const candidates = this.crew.filter(c => !c.reader && !c.self && (!st.slots.length || c.k === st.crewK));
+    const available = candidates.filter(c => !this.assignBlock(soul.id, st.def.k, c.k));
+    const scoring = Object.create(this);
+    scoring.log = () => {}; // judge() ของเพลิงอาจเขียน log แม้คะแนนไม่เปลี่ยน
+    const ranked = (available.length ? available : candidates).map(c => ({ c,
+      score: this.judge.call(scoring, { ...st, crewK:c.k }, { soul, intensity:soul.deserved || 1 }).score,
+    })).sort((a, b) => b.score - a.score);
+    answer.crew = ranked[0]?.c || null;
+    if (answer.crew && !available.length) answer.unavailable = this.assignBlock(soul.id, st.def.k, answer.crew.k) || { key:'crewMissing' };
+    return answer;
+  },
 
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
@@ -1522,7 +1531,7 @@ const API = {
         const w = G.path?.[0];
         if (w) {
           const dx = w[0] - G.x, dy = w[1] - G.y, wd = Math.hypot(dx, dy);
-          if (wd < 6) G.path.shift();
+          if (wd < 6) { G.x = w[0]; G.y = w[1]; G.path.shift(); }
           else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
         }
         if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) this.strike(0, GUARD.name);
