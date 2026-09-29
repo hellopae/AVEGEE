@@ -100,6 +100,8 @@ let prisonAlertSeen = false;
 let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
 let breachAlertSeen = false;
 let breachTried = false;
+let devaAlertSeen = false;
+let devaTried = false;
 
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
@@ -129,8 +131,15 @@ setInterval(() => {
     breachAlertSeen = true;
     openBreachAlert();
   }
+  if (started && g.devaTestStatus() === 'pending' && g.frontierBreachStatus() === 'cleared' &&
+      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
+    devaAlertSeen = true;
+    openDevaAlert();
+  }
   updatePrisonFab();
   updateBreachFab();
+  updateDevaFab();
 }, 400);
 
 // ---------- ลูป ----------
@@ -903,12 +912,14 @@ function drawOverlay() {
   const keepFrontierFab = ov.querySelector('.frontierfab');
   const keepPrisonFab = ov.querySelector('.prisonfab');
   const keepBreachFab = ov.querySelector('.breachfab');
+  const keepDevaFab = ov.querySelector('.devafab');
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
   if (keepFrontierFab) ov.appendChild(keepFrontierFab);
   if (keepPrisonFab) ov.appendChild(keepPrisonFab);
   if (keepBreachFab) ov.appendChild(keepBreachFab);
+  if (keepDevaFab) ov.appendChild(keepDevaFab);
   if (g.over) return;
   const s = g.queue[0];
 
@@ -1096,6 +1107,30 @@ function updateBreachFab() {
     ov.appendChild(f);
   }
   f.textContent = `⚠️ ${breachTried ? t('event.frontierBreach.retry') : t('event.frontierBreach.title')}`;
+}
+
+function openDevaAlert() {
+  modal(`<h2>${esc(t('event.devaTest.title'))}</h2>
+    <p>${esc(t('event.devaTest.alert'))}</p>
+    <img class="deva-alert-art" src="${artUrl('boss-tester-th')}" alt="${esc(t('event.devaTest.foe'))}">
+    <div class="row"><button class="gold" data-deva-go>${esc(t('event.devaTest.go'))}</button></div>`, d => {
+    d.querySelector('[data-deva-go]').onclick = () => {
+      if (g.startDevaTest()) { devaTried = true; openBattle(); }
+    };
+  }, 'prison-alert');
+}
+
+function updateDevaFab() {
+  let f = ov.querySelector('.devafab');
+  if (!started || g.devaTestStatus() !== 'pending' || !devaAlertSeen ||
+      g.zone !== 'th' || g.battle || g.over) { if (f) f.remove(); return; }
+  if (!f) {
+    f = document.createElement('button');
+    f.className = 'devafab';
+    f.onclick = ev => { ev.stopPropagation(); if (!dlg.open && !g.battle) openDevaAlert(); };
+    ov.appendChild(f);
+  }
+  f.textContent = `⚠️ ${devaTried ? t('event.devaTest.retry') : t('event.devaTest.title')}`;
 }
 
 /** แถบบัญชาการเหนือฉาก — เหลือ "ทางเข้าห้องสอบสวน" อย่างเดียว
@@ -2282,7 +2317,7 @@ function openBattle(after) {
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
-    const finLabel = b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
+    const finLabel = b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
@@ -2307,6 +2342,7 @@ function openBattle(after) {
           : b.kind === 'zoneBoss' ? `👑 บอส${g.zoneDef().name}`
           : b.kind === 'frontier' ? `🏯 ชายแดนนรก — ระลอกที่ ${b.wave}`
           : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · Wave ${b.wave}/3`
+          : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? '👹 ผีบุกเข้าโซน'
                                : '⚔️ วิญญาณขัดขืน',

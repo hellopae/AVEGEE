@@ -1394,7 +1394,13 @@ export const ZONE_EVENTS = {
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
       [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],
       [{ sp:'boss-frontier-th', count:1, hp:120, atk:[10,16], boss:true }]],
-    betweenWaveHeal:20, reward:{ coin:120, drop:1 }, lose:{ hp:8 } }],
+    betweenWaveHeal:20, reward:{ coin:120, drop:1 }, lose:{ hp:8 } },
+  { k:'devaTest', atCases:8, mode:'single',
+    title:{ th:'เทวดามาทดสอบ', en:'A deva comes to test you' },
+    alert:{ th:'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมน้อย',
+      en:'A deva has heard of the new warden and has come to test them.' },
+    foe:{ sp:'boss-tester-th', hp:100, atk:[10,16] },
+    reward:{ coin:90 }, lose:{ hp:9 } }],
 };
 
 // TODO: รอ Rae ตั้งชื่อจริง

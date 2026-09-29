@@ -5,7 +5,11 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { MERCHANT, ITEMS } from '../src/data.js';
 
-const readyBoss = (g) => { g.zoneCases[g.zone] = 10; return g.startZoneBoss(); };
+const readyBoss = (g) => {
+  g.zoneCases[g.zone] = 10;
+  if (g.zone === 'th') g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' };
+  return g.startZoneBoss();
+};
 
 test('เข้าบอส — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติถ้าภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก', () => {
   const g1 = createGame();

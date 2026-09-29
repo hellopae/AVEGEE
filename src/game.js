@@ -99,7 +99,7 @@ export function createGame() {
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
-    zoneCases: {}, zoneEvents: {}, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    zoneCases: {}, zoneEvents: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
     frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
@@ -762,6 +762,10 @@ const API = {
     if (this.zone === 'th' && this.zoneCases.th >= ZONE_EVENTS.th[1].atCases &&
         this.prisonBreakStatus() === 'cleared' && !this.zoneEvents.th.frontierBreach) {
       this.zoneEvents.th.frontierBreach = 'pending';
+    }
+    if (this.zone === 'th' && this.zoneCases.th >= ZONE_EVENTS.th[2].atCases &&
+        this.frontierBreachStatus() === 'cleared' && !this.zoneEvents.th.devaTest) {
+      this.zoneEvents.th.devaTest = 'pending';
     }
     // เป้าหมายสั้น ๆ รายสาขา: เปิดหลักฐานที่ซ่อนอยู่และตัดสินได้ดีสามคดี
     const goal = this.miniGoals[this.zone] ||= { truth:0, earned:false };
@@ -1914,12 +1918,18 @@ const API = {
 
   bossReady() {
     return !this.bossCleared[this.zone] && !this.bossGuarding[this.zone] &&
-      (this.zoneCases[this.zone] || 0) >= 10;
+      (this.zoneCases[this.zone] || 0) >= 10 && this.zoneEventGateReady();
+  },
+
+  zoneEventGateReady() {
+    return this.zone !== 'th' || this.legacyBossGate ||
+      (this.prisonBreakStatus('th') === 'cleared' &&
+       this.frontierBreachStatus('th') === 'cleared' && this.devaTestStatus('th') === 'cleared');
   },
 
   bossCanChallenge() {
     return !this.battle && !this.over && !!this.bossGuarding[this.zone] &&
-      !this.bossCleared[this.zone] &&
+      !this.bossCleared[this.zone] && this.zoneEventGateReady() &&
       Math.hypot(this.player.x - 790, this.player.y - 558) <= 150;
   },
 
@@ -2023,6 +2033,25 @@ const API = {
   },
   frontierBreachStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.frontierBreach || 'locked';
+  },
+  devaTestStatus(zone = this.zone) {
+    return this.zoneEvents[zone]?.devaTest || 'locked';
+  },
+  startDevaTest() {
+    if (this.zone !== 'th' || this.battle || this.over || this.devaTestStatus() !== 'pending' ||
+        this.frontierBreachStatus() !== 'cleared') return null;
+    const event = ZONE_EVENTS.th[2];
+    const foe = { id:'deva-test', who:t('event.devaTest.foe'), sub:t('event.devaTest.sub'),
+      sp:event.foe.sp, boss:true, hp:event.foe.hp, maxHp:event.foe.hp,
+      atk:event.foe.atk, stun:0, confuse:0 };
+    this.zoneEvents.th.devaTest = 'active';
+    this.fights++;
+    this.battle = prepareBattle({ kind:'devaTest', zone:'th', foes:[foe],
+      who:foe.who, sub:foe.sub, sp:foe.sp,
+      youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
+      turn:1, over:null, log:[], dmg:null, talk:t('event.devaTest.alert') });
+    this.save(); this.onChange();
+    return this.battle;
   },
   frontierBreachFoes(wave) {
     return ZONE_EVENTS.th[1].waves[wave - 1].flatMap((entry, group) =>
@@ -2272,6 +2301,15 @@ const API = {
         B.reward = { coin:event.reward.coin, item };
         B.talk = t('event.frontierBreach.win');
         say(B.talk);
+        if (this.zoneCases.th >= ZONE_EVENTS.th[2].atCases && !this.zoneEvents.th.devaTest)
+          this.zoneEvents.th.devaTest = 'pending';
+      } else if (B.kind === 'devaTest') {
+        this.zoneEvents.th.devaTest = 'cleared';
+        this.coin += ZONE_EVENTS.th[2].reward.coin;
+        B.reward = { coin:ZONE_EVENTS.th[2].reward.coin };
+        B.talk = t('event.devaTest.win');
+        say(B.talk);
+        this.bossPending = this.bossReady();
       } else if (B.kind === 'frontier') {
         const coin = 32 + B.wave * 10;
         const item = pick(FRONTIER.drops);
@@ -2299,7 +2337,7 @@ const API = {
         if (soul) soul.beaten = true;
         say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
       }
-      if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach') talk('lose');
+      if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
       this.onChange();
       return true;
@@ -2376,6 +2414,11 @@ const API = {
         this.hp = Math.max(1, this.hp - ZONE_EVENTS.th[1].lose.hp);
         B.talk = t('event.frontierBreach.lose');
         say(B.talk);
+      } else if (B.kind === 'devaTest') {
+        this.zoneEvents.th.devaTest = 'pending';
+        this.hp = Math.max(1, this.hp - ZONE_EVENTS.th[2].lose.hp);
+        B.talk = t('event.devaTest.lose');
+        say(B.talk);
       } else if (B.kind === 'frontier') {
         this.hp = Math.max(1, this.hp - 8);
         say('ทีมถอยกลับเข้าประตู — ชายแดนยังไม่แตก แต่บารมีท่านหาย 8');
@@ -2445,6 +2488,11 @@ const API = {
     if (B.over === 'win') this.hp = clamp(B.youHp, 1, this.hpMax);
     if (B.kind === 'frontierBreach') {
       this.log(B.over === 'win' ? t('event.frontierBreach.win') : t('event.frontierBreach.lose'),
+        B.over === 'win' ? 'good' : 'bad');
+      this.save(); this.onChange(); return B;
+    }
+    if (B.kind === 'devaTest') {
+      this.log(B.over === 'win' ? t('event.devaTest.win') : t('event.devaTest.lose'),
         B.over === 'win' ? 'good' : 'bad');
       this.save(); this.onChange(); return B;
     }
@@ -2900,7 +2948,8 @@ API.snapshot = function (withEntry = true) {
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
-    zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
+    zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, legacyBossGate:this.legacyBossGate,
+    bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
@@ -2920,6 +2969,8 @@ API.save = function () {
 
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
+  const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
+    ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));
   this.speed = 1; // เซฟเก่าที่เคยเร่งเวลาและออบเจ็กต์เกมเดิมกลับสู่ความเร็วปกติ
   // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เซฟเก่ามีค่า fuel (ฟืน) ไม่ใช่ food (เสบียง)
   // ยกมา 1:1 ให้ผู้เล่นไม่เสียเปรียบ (จำนวนคงเดิม แค่เปลี่ยนความหมาย) · เซฟใหม่มี d.food อยู่แล้วไม่ต้องแปลง
@@ -3014,13 +3065,23 @@ API.restore = function (d) {
   syncFrontierPos(this.zone);
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
+  if (legacyBossGate) {
+    Object.assign((this.zoneEvents.th ||= {}),
+      { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' });
+  }
   for (const [zone, events] of Object.entries(this.zoneEvents)) {
     if (events.prisonBreak === 'active') events.prisonBreak = 'pending';
     if (events.frontierBreach === 'active') events.frontierBreach = 'pending';
+    if (events.devaTest === 'active') events.devaTest = 'pending';
   }
   if ((this.zoneCases.th || 0) >= ZONE_EVENTS.th[1].atCases &&
       this.zoneEvents.th?.prisonBreak === 'cleared' && !this.zoneEvents.th.frontierBreach)
     this.zoneEvents.th.frontierBreach = 'pending';
+  if ((this.zoneCases.th || 0) >= ZONE_EVENTS.th[2].atCases &&
+      this.zoneEvents.th?.frontierBreach === 'cleared' && !this.zoneEvents.th.devaTest)
+    this.zoneEvents.th.devaTest = 'pending';
+  // เซฟก่อนชุด event ที่ไปถึงบอสแล้วคงสิทธิ์เดิม ไม่บังคับให้ย้อนกลับมาทำสามเหตุการณ์
+  this.legacyBossGate = legacyBossGate;
   this.miniGoals = d.miniGoals || {};
   this.frontier = d.frontier || { zones:{} };
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };

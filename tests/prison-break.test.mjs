@@ -34,7 +34,7 @@ test('mob, frontier, zone boss, dad, and yama battles each have one foe', () => 
   };
   check(g => { g.mobs.push({ id:900, kind:0 }); g.startMobBattle(0); });
   check(g => { g.setFrontierTeam('taan'); g.startFrontierBattle(); });
-  check(g => { g.zoneCases.th = 10; g.startZoneBoss(); });
+  check(g => { g.zoneCases.th = 10; g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' }; g.startZoneBoss(); });
   check(g => g.startDadFight());
   check(g => g.startYamaFight());
 });

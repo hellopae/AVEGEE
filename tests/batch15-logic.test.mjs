@@ -20,6 +20,7 @@ test('ครบ KPI ก่อนปราบบอสยังเล่นต่
   assert.equal(g.over, null);
   const oldSave = g.snapshot();
   oldSave.over = { k:'win', title:'ทายาทบัลลังก์' };
+  delete oldSave.legacyBossGate;
   const loaded = createGame();
   assert.equal(loaded.restore(oldSave), true);
   loaded.checkEnd();
@@ -56,6 +57,7 @@ test('ทีมยมน้อย ทัณฑ์ เพลิง พร้อ�
       assert.equal(g.hire('plerng'), true);
       g.party.members = ['taan', 'plerng'];
       g.zoneCases[z.k] = 10;
+      if (z.k === 'th') g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' };
       assert.ok(g.startZoneBoss());
       assert.equal(g.startBossFight(), true);
       let ultimateCount = 0, turns = 0, medicineCount = 0;
