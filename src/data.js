@@ -1590,6 +1590,7 @@ export const FX_OF = {
   atk:    { img:'fx-slash',    glyph:'⚔️' },
   fire:   { img:'fx-fireball', glyph:'🔥' },
   flameCharge: { img:'fx-flame-charge', glyph:'🔥' },
+  rage:   { img:'fx-rage', glyph:'🔥' },
   wind:   { img:'fx-fan-wind', glyph:'🌪️' },
   health: { img:'fx-heal',     glyph:'✨' },
   mirror: { img:'fx-mirror',   glyph:'🪞' },
