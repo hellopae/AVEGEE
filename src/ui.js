@@ -1694,6 +1694,14 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
+  const style = g.outfit || g.zone;
+  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
+  // ลูกไฟใหญ่ปลดล็อกหลังบอสโซน 1; ภาพพัดเตรียมไว้หลังบอสชายแดนโซน 2
+  if ((k === 'fire' && g.bossCleared?.th) || (k === 'wind' && g.bossCleared?.asia)) {
+    const pose = k === 'fire' ? 'fire' : 'wind';
+    if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
+    if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg`;
+  }
   // ข้อ E คุณเป้ 24 ก.ย. 2569: "ตวาดข่มขู่" (roar) ไม่เคยขึ้นคัตซีนเลยสักครั้ง — ไม่มีไฟล์ของตัวเอง
   // (img/raw/ ไม่มี hero-yama-roar-cutscene) ใช้ท่า 'atk' ร่วมกับลูกไฟแทน ไม่ใช่ภาพใหม่/ไม่แต่งสี
   // แค่ชี้ไปที่ไฟล์เดิมที่มีอยู่แล้วเหมือนที่ fire ทำอยู่ก่อนแล้ว — ทั้งสองท่าคือการข่มขู่/ลงมือแบบดุดัน
@@ -1701,9 +1709,7 @@ function actionCutsceneSrc(k) {
              : k === 'ice' ? 'ice'
              : k === 'fire' || k === 'roar' ? 'atk' : null;
   if (!pose) return null;
-  const style = g.outfit || g.zone;
   if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
-  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
 }
 
@@ -2330,7 +2336,7 @@ function openBattle(after) {
       const note = it?.coin != null ? `${it.coin} เบี้ย` : `×${pw ? pw.ammo : 0}`;
       return battleChoice(k, icon, it?.name || k, ok, note);
     };
-    const powerChoices = battleChoice('fire', 'img/fx-fireball.png', 'ลูกไฟ', fireAmmo > 0, `×${fireAmmo}`)
+    const powerChoices = battleChoice('fire', g.bossCleared?.th ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', 'ลูกไฟ', fireAmmo > 0, `×${fireAmmo}`)
       + itemChoice('ice', 'img/fx-ice.png') + itemChoice('hypno', 'img/fx-hypno.png');
     const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png');
     const guardBtn = g.guard ? (() => {
