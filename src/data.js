@@ -1589,6 +1589,8 @@ export const MOB_TALK = {
 export const FX_OF = {
   atk:    { img:'fx-slash',    glyph:'⚔️' },
   fire:   { img:'fx-fireball', glyph:'🔥' },
+  flameCharge: { img:'fx-flame-charge', glyph:'🔥' },
+  wind:   { img:'fx-fan-wind', glyph:'🌪️' },
   health: { img:'fx-heal',     glyph:'✨' },
   mirror: { img:'fx-mirror',   glyph:'🪞' },
   hypno:  { img:'fx-hypno',    glyph:'🌀' },

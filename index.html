@@ -698,9 +698,9 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
   image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
-  /* ข้อ C คุณเป้ 24 ก.ย. 2569 — ภาพคั่น hero-yama-*-cutscene.jpeg ทุกใบวาดยมน้อยอยู่ขวา ปล่อยพลัง/เอฟเฟกต์ไปทางซ้าย
-     พลิกกระจกให้ยมน้อยอยู่ซ้าย ปล่อยพลังไปทางขวา ตรงกับทิศศัตรูในสนาม ให้หันทางเดียวกับท่ายืน/ท่าโจมตี */
+  /* ภาพคัตซีนเดิมวาดยมน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
   transform:scaleX(-1)}
+.action-cutscene.right-facing img{transform:none;animation-name:actionRushRight}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
   background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
   mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
@@ -709,6 +709,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
 @keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
 @keyframes actionRush{0%{transform:scaleX(-1) scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
   18%{transform:scaleX(-1) scale(1.03) translateX(1%)}88%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRushRight{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);

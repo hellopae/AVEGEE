@@ -1697,9 +1697,11 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 function actionCutsceneSrc(k) {
   const style = g.outfit || g.zone;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
-  // ลูกไฟใหญ่ปลดล็อกหลังบอสโซน 1; ภาพพัดเตรียมไว้หลังบอสชายแดนโซน 2
-  if ((k === 'fire' && g.bossCleared?.th) || (k === 'wind' && g.bossCleared?.asia)) {
-    const pose = k === 'fire' ? 'fire' : 'wind';
+  // ภาพท่าที่ได้จากบอสชายแดน: ลูกไฟใหญ่กับพุ่งไฟโซน 1, พัดสายลมโซน 2
+  const pose = k === 'fire' && g.bossCleared?.th ? 'fire'
+             : k === 'flameCharge' && g.bossCleared?.th ? 'flame-charge'
+             : k === 'wind' && g.bossCleared?.asia ? 'wind' : null;
+  if (pose) {
     if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
     if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg`;
   }
@@ -1739,7 +1741,8 @@ function playActionCutscene(k, ultimate = null) {
   if (!src || !dlg.open) return;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
-  cut.className = 'action-cutscene';
+  // ภาพพุ่งชนวาดให้หันขวาอยู่แล้ว จึงไม่ใช้การพลิกภาพของคัตซีนชุดเดิม
+  cut.className = k === 'flameCharge' ? 'action-cutscene right-facing' : 'action-cutscene';
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
