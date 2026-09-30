@@ -251,7 +251,7 @@ def out_name(sub, name):
     # ภาพคัตซีนและท่าหันซ้าย/ขวาใส่ชื่อโซนไว้กลางชื่ออยู่แล้ว ไม่ใช่ POSE ท้ายชื่อแบบ
     # -profile/-work/-atk/-side ถ้าปล่อยลงทางทั่วไปจะได้ชื่อซ้ำเป็น
     # hero-yama-west-atk-cutscene-west ซึ่ง art.js หาไม่เจอ
-    if re.fullmatch(r'.+-' + z + r'-(atk|hyp|mi|ice|fire|wind|flame-charge|rage)-cutscene', name):
+    if re.fullmatch(r'.+-' + z + r'-(atk|hyp|mi|ice|fire|wind|flame-charge|rage|valkyrie-spear|clock-reset)-cutscene', name):
         return name, ''
     if re.fullmatch(r'.+-' + z + r'-atk-[LR]', name):
         return name, ''

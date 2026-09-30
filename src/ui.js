@@ -1701,7 +1701,9 @@ function actionCutsceneSrc(k) {
   const unlockedPose = k === 'fire' && g.bossCleared?.th ? 'fire'
              : k === 'flameCharge' && g.bossCleared?.th ? 'flame-charge'
              : k === 'wind' && g.bossCleared?.asia ? 'wind'
-             : k === 'rage' && g.bossCleared?.asia ? 'rage' : null;
+             : k === 'rage' && g.bossCleared?.asia ? 'rage'
+             : k === 'valkyrieSpear' && g.bossCleared?.west ? 'valkyrie-spear'
+             : k === 'clockReset' && g.bossCleared?.cyberhell ? 'clock-reset' : null;
   if (unlockedPose) {
     if (style === 'th') return `img/hero-yama-${unlockedPose}-cutscene.jpeg`;
     if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${unlockedPose}-cutscene.jpeg`;
@@ -1742,8 +1744,9 @@ function playActionCutscene(k, ultimate = null) {
   if (!src || !dlg.open) return;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
-  // ภาพพุ่งชนและ Rage หันขวาอยู่แล้ว จึงไม่ใช้การพลิกภาพของคัตซีนชุดเดิม
-  cut.className = k === 'flameCharge' || k === 'rage' ? 'action-cutscene right-facing' : 'action-cutscene';
+  // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
+  cut.className = ['flameCharge', 'rage', 'valkyrieSpear', 'clockReset'].includes(k)
+    ? 'action-cutscene right-facing' : 'action-cutscene';
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;

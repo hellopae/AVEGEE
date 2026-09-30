@@ -1591,6 +1591,8 @@ export const FX_OF = {
   fire:   { img:'fx-fireball', glyph:'🔥' },
   flameCharge: { img:'fx-flame-charge', glyph:'🔥' },
   rage:   { img:'fx-rage', glyph:'🔥' },
+  valkyrieSpear: { img:'fx-valkyrie-spear', glyph:'🔱' },
+  clockReset: { img:'fx-clock-reset', glyph:'⏱️' },
   wind:   { img:'fx-fan-wind', glyph:'🌪️' },
   health: { img:'fx-heal',     glyph:'✨' },
   mirror: { img:'fx-mirror',   glyph:'🪞' },
