@@ -14,6 +14,7 @@ import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './a
 import { MINIGAMES } from './minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
+import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -2526,40 +2527,79 @@ function openBattle(after) {
   dlg.addEventListener('close', onClose);
 }
 
-// ---------- ย้ายโซน ----------
-// การ์ดเกาะ img/Zone<N>.webp — รวม CyberHell เป็นโซนที่เล่นได้จริงแล้ว
+// ---------- ย้ายโซน: แผนที่ด้านนอกและทางเดินข้ามสะพาน ----------
 function openZone() {
   const cur = g.zoneDef();
-  pauseForDlg();
-  const cards = ZONES.map((z, i) => {
+  const markers = ZONES.map((z, i) => {
     const here = z.k === g.zone;
     const lock = !g.canMoveZone(z.k);
     const prev = ZONES[i - 1];
     const why = lock ? (z.k !== 'cyberhell' && g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
       : z.sub;
-    return `<div class="isle-card${here ? ' here' : ''}${lock ? ' locked' : ''}">
-      <span class="badge">${here ? '📍' : lock ? '🔒' : ''}</span>
-      <img src="img/Zone${i + 1}.webp" alt="${esc(z.name)}" loading="lazy">
-      <b>${esc(z.name)}</b><small>${esc(why)}</small>
-      ${here ? '<button class="sm" disabled>อยู่ที่นี่</button>'
-             : `<button class="sm" data-zone="${z.k}" ${lock ? 'disabled' : ''}>ย้ายไป</button>`}
-    </div>`;
+    const [x, y] = ZONE_MAP[z.k].marker;
+    return `<button class="world-zone${here ? ' here' : ''}${lock ? ' locked' : ''}"
+      style="left:${x}%;top:${y}%" data-zone="${z.k}" ${here || lock ? 'disabled' : ''}
+      aria-label="${esc(z.name)} — ${esc(here ? 'อยู่ที่นี่' : lock ? why : 'กดเพื่อเดินทาง')}"
+      title="${esc(here ? 'อยู่ที่นี่' : why)}">
+      <b>${here ? '📍 ' : lock ? '🔒 ' : ''}${esc(z.name)}</b>
+      <small>${esc(here ? 'อยู่ที่นี่' : lock ? why : 'กดเพื่อเดินทาง')}</small>
+    </button>`;
   }).join('');
-  modal(`<h2>🗺️ ย้ายโซน</h2>
-    <div class="hint">ตอนนี้ท่านคุม <b style="color:var(--gold)">${esc(cur.name)}</b> — ${esc(cur.sub)}
-      · ย้ายแล้ว <b>คน เบี้ยกรรม พลัง บารมี กรรม ติดตัวไปหมด</b> แต่
-      <b style="color:var(--warning)">สถานีทัณฑ์ต้องสร้างใหม่ทั้งโซน</b></div>
-    <div class="isle-grid">${cards}</div>
-    <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`,
-    d => { d.classList.add('zonepick'); d.querySelectorAll('[data-zone]').forEach(b => b.onclick = () => {
-      if (!g.moveZone(b.dataset.zone)) return;
-      // ชุดที่ 10 (ข้อ E2) — g.moveZone() เรียก onChange() เองข้างใน ซึ่งเปิดฉากแนะนำโซนใหม่
-      // (openZoneArrival) หรือกล่อง "กลับมาที่..." ทับกล่องเลือกโซนนี้ไปแล้วทันที (dlg ใช้ element
-      // เดียวกันทั้งเกม) เดิมโค้ดตรงนี้สั่ง dlg.close() ต่อทันที — ปิดฉากที่เพิ่งเปิดไปหมาดๆ ก่อนจะ
-      // ได้เห็นแม้เฟรมเดียว (คุณเป้เจอ 25 ก.ย. 2569: "ชนะบอสแล้วกดเปลี่ยนโซน cutscene ไม่ขึ้น")
-      // ห้ามปิด dlg ซ้ำตรงนี้ — ปล่อยให้กล่องที่ moveZone() เปิดไว้แล้วอยู่ต่อ
-      sfx('gong'); refresh();
-    }); });
+  const [startX, startY] = ZONE_MAP[g.zone].gate;
+  modal(`<h2>🗺️ แผนที่อเวจี</h2>
+    <div class="world-map-note">ตอนนี้อยู่ <b style="color:var(--gold)">${esc(cur.name)}</b> · กดชื่อโซนที่เปิดแล้วเพื่อให้ยมน้อยกับนิราเดินทางข้ามไป
+      <span class="world-pan-hint">· ปัดแผนที่ซ้าย–ขวาเพื่อดูทุกโซน</span></div>
+    <div class="world-map-scroll"><div class="world-map" role="group" aria-label="แผนที่เลือกโซน">
+      <img class="world-map-art" src="img/zone-world-map.webp" alt="เส้นทางเชื่อมสี่ดินแดนในอเวจี">
+      ${markers}
+      <div class="world-travelers" style="left:${startX}%;top:${startY}%" aria-hidden="true">
+        <span class="yama" style="background-image:url('${artUrl('hero-yama-walk') || artUrl('hero-yama')}')"></span>
+        <img class="nira" src="${artUrl('crew-nira')}" alt="">
+      </div>
+    </div></div>
+    <div class="world-map-note">ยมน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
+    <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`, d => {
+    const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
+    const travelers = d.querySelector('.world-travelers');
+    let traveling = false, frame = 0;
+    const centerOn = x => { scroll.scrollLeft = map.clientWidth * x / 100 - scroll.clientWidth / 2; };
+    centerOn(startX);
+    onDlgClose(() => cancelAnimationFrame(frame));
+    d.querySelectorAll('.world-zone:not(:disabled)').forEach(b => b.onclick = () => {
+      if (traveling || !g.canMoveZone(b.dataset.zone)) return;
+      const route = zoneMapRoute(g.zone, b.dataset.zone);
+      if (route.length < 2) return;
+      traveling = true;
+      map.classList.add('traveling');
+      d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = true; });
+      const distances = [0];
+      for (let i = 1; i < route.length; i++) {
+        const dx = (route[i][0] - route[i - 1][0]) * 1.78;
+        const dy = route[i][1] - route[i - 1][1];
+        distances.push(distances[i - 1] + Math.hypot(dx, dy));
+      }
+      const total = distances.at(-1);
+      const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 :
+        Math.min(3600, Math.max(1500, total * 34));
+      const started = performance.now();
+      const step = now => {
+        if (!d.open || !d.classList.contains('zonepick')) return;
+        const done = duration === 0 ? total : Math.min(total, (now - started) / duration * total);
+        let i = 1;
+        while (i < distances.length - 1 && distances[i] < done) i++;
+        const ratio = distances[i] === distances[i - 1] ? 0 : (done - distances[i - 1]) / (distances[i] - distances[i - 1]);
+        const x = route[i - 1][0] + (route[i][0] - route[i - 1][0]) * ratio;
+        const y = route[i - 1][1] + (route[i][1] - route[i - 1][1]) * ratio;
+        travelers.style.left = `${x}%`; travelers.style.top = `${y}%`;
+        centerOn(x);
+        if (done < total) { frame = requestAnimationFrame(step); return; }
+        map.classList.remove('traveling');
+        // moveZone() เปิดฉากมาถึงผ่าน onChange() เอง; ปล่อยให้ฉากนั้นแทนแผนที่ทันที
+        if (g.moveZone(b.dataset.zone)) { sfx('gong'); refresh(); }
+      };
+      frame = requestAnimationFrame(step);
+    });
+  }, 'zonepick');
 }
 
 function openOutfit() {
