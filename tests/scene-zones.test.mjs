@@ -211,7 +211,9 @@ test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล�
     assert.deepEqual(grid(), [210,118]);
     assert.deepEqual([g.player.x,g.player.y], [880,455]);
     assert.equal(g.player.path, null);
-    assert.deepEqual([g.items[0].x,g.items[0].y], [880,455]);
+    // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่าเข้ากระเป๋าตอนโหลด (ไม่มีของตกบนแผนที่อีก)
+    assert.deepEqual(g.items, []);
+    assert.equal(g.inventory.food, 1);
     assert.deepEqual([g.crew[0].hx,g.crew[0].hy], [463,443]);
     assert.equal(g.crew[0].x, null);
     assert.deepEqual([g.guard.x,g.guard.y], GUARD_POST);

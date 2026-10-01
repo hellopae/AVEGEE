@@ -120,7 +120,8 @@ export function createGame() {
   };
 
   // สถานีตั้งต้น: หอทะเบียน + กระทะทองแดง (ที่เหลือสร้างเอาเอง)
-  g.stations = [mkStation('sala'), mkStation('krata')];
+  // ตะรางรอวาระมีให้ฟรีตั้งแต่เริ่ม (ชุด 27D — มี event แหกคุก) ไม่ต้องซื้อ
+  g.stations = [mkStation('sala'), mkStation('krata'), mkStation('tarang')];
   syncFrontierPos(g.zone);          // เกมใหม่เริ่มโซน 1 เสมอ — ตั้งขนาดฉากและล้าง walk mask
   g.player.x = SPOTS.bench.x + 60; g.player.y = SPOTS.bench.y;
 
@@ -1147,26 +1148,12 @@ const API = {
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
     if (this.mobs.length) {
       if (!this.courtClosed) this.order = clamp(this.order - MOB.drain * this.mobs.length, 0, 100);
-      // ลูกไฟยังใช้ในฉากต่อสู้ จึงหย่อนให้เก็บเมื่อกระสุนหมด
-      // เพราะขว้างจากไกลสะดวกกว่ามากเวลาเปรตอยู่คนละฝั่งกับที่เรายืน
-      // ข้อ A คุณเป้ 24 ก.ย. 2569 — เช็คกระสุนลูกไฟของตัวเอง (g.fireAmmo) ไม่ใช่ ammo ของตวาดข่มขู่แล้ว
-      if (this.mp < BATTLE.mpCost.fire && !this.items.some(it => it.k === 'fire')) this.dropItem('fire');
+      // ชุด 27D — เลิกหย่อนลูกไฟบนแผนที่ตอน MP หมดแล้ว: ฟาดปกติไม่กิน MP จึงไม่มีทางติดตาย
+      // และ MP ฟื้นได้จากนั่งพักศาลาน้ำชา / หอส่องกรรม / น้ำชา / เลื่อนขั้น
     }
 
-    // ของตกบนแผนที่เป็นระยะ (ไม่ให้เกินสามชิ้น จะได้ต้องเลือกว่าจะเดินไปเก็บอันไหนก่อน)
-    this.stationDrops();        // สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ
-
-    // ของจากสถานีไม่นับในเพดานนี้ — ไม่งั้นสร้างสถานีเติมพลังครบสี่หลังแล้วของสุ่มหยุดตกทั้งเกม
-    // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — เอา 'hypno' ออกจากพูลสุ่มนี้แล้ว (ซื้อจากบุญที่ประตูสวรรค์เท่านั้น)
-    // 'mirror' ยังอยู่ในพูล — ทุก 18 วาระ (~12.6 วิจริงที่ tickMs 700ms) เมื่อของบนแผนที่ยังไม่ถึง 3 ชิ้น
-    // ของทั่วไปมี 'mirror' และ 'food' อย่างละ 1 ใน 8; เสบียงเร่งด่วนเฉพาะเมื่อเหลือต่ำกว่า 10 และยังไม่มีห่อบนพื้น
-    if (this.tick % 18 === 0 && this.items.filter(it => !it.from).length < 3) {
-      const need = this.hp < this.hpMax * 0.55 ? 'health'
-                 : this.food < 10 && !this.items.some(it => it.k === 'food') ? 'food'
-                 : this.karma >= 40 && Math.random() < 0.35 ? 'lotus'
-                 : pick(['fire', 'fire', 'mirror', 'health', 'ice', 'ice', 'lotus', 'food']);
-      this.dropItem(need);
-    }
+    // ชุด 27D คุณเป้ 1 ต.ค. 2569 — เลิกวางของบนแผนที่ให้เดินเก็บ (ทั้งสุ่มเป็นระยะและจากสถานี) "เยอะไป"
+    // ได้ของตอนปราบเปรต/ชนะศัตรูแทน ดู winLoot()
 
     // กรรมของท่านเองที่สูงเกินไป กัดระเบียบของโซนไปด้วย
     const kt = this.karmaTier();
@@ -1647,29 +1634,6 @@ const API = {
     return true;
   },
 
-  /** สถานีเติมพลังวางของไว้หน้าประตูให้เดินไปเก็บ (ข้อ 4 ของเจ้าของ 11 ก.ย. 2569)
-   *  เดิมต้องเปิดหน้าสถานีแล้วกดปุ่ม "เติม" ซึ่งไม่มีอะไรอยู่ในฉากให้เห็นเลยว่ามีของรออยู่
-   *  กติกา: หนึ่งสถานี = ของหนึ่งชิ้นบนพื้น · เก็บไปแล้วอีก visit.cool วาระถึงมีชิ้นใหม่
-   *  เก็บใส่กระเป๋าได้เสมอแม้ค่าสถานะเต็ม แล้วค่อยเลือกใช้เมื่อจำเป็น
-   *  — คูลดาวน์เริ่มนับตอน "เก็บ" ไม่ใช่ตอน "วาง" ของจึงไม่หายไปเองถ้าท่านยังเดินไม่ถึง */
-  stationDrops() {
-    for (const st of this.stations) {
-      const v = st.def.visit;
-      if (!v || !v.drop || st.build) continue;
-      if (st.fire >= MOB.burnMax) continue;             // ไหม้จนใช้การไม่ได้ ไม่มีใครมาวางของให้
-      if (this.tick < (st.visitCd || 0)) continue;
-      if (this.items.some(it => it.from === st.def.k)) continue;
-      if (v.power) {
-        const p = this.powerOf(v.power);
-        if (this.powerLocked(p)) continue;
-      }
-      const at = v.at || [st.def.sx ?? st.def.x, st.def.sy ?? st.def.y];
-      // จุดที่เขียนไว้อาจตกลาวา/ในน้ำเมื่อฉากถูกวาดใหม่ — ดันขึ้นที่เหยียบได้ให้เสมอ
-      const spot = canWalk(at[0], at[1]) ? at : (nearestWalk(at[0], at[1]) || at);
-      this.items.push({ k: v.drop, x: spot[0], y: spot[1], from: st.def.k });
-    }
-  },
-
   /** บอก walk.js ว่าตอนนี้มีอาคารกินพื้นที่ตรงไหนบ้าง
    *  วัดจากพิกเซลของสไปรท์จริง (art.footOf) — รูปยังโหลดไม่เสร็จก็ลองใหม่รอบหน้า
    *  เรียกถี่ ๆ ได้ ทำงานจริงเฉพาะตอนรายการสถานีเปลี่ยน */
@@ -1783,14 +1747,27 @@ const API = {
     this.mobs.splice(i, 1);
     this.coin += MOB.bounty;
     this.order = clamp(this.order + 3, 0, 100);
-    this.log(`💥 ${by}ปราบ${MOB.kinds[m.kind ?? 0].name}ได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3`, 'good');
+    this.log(`💥 ${by}ปราบ${MOB.kinds[m.kind ?? 0].name}ได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3${this.winLoot()}`, 'good');
     return true;
   },
 
-  dropItem(k) {
-    const spot = pick(ITEM_SPOTS);
-    if (this.items.some(it => it.x === spot[0] && it.y === spot[1])) return;
-    this.items.push({ k, x: spot[0], y: spot[1] });
+  /** ชุด 27D — ของรางวัลเมื่อปราบเปรต/ชนะศัตรู: 1 ชิ้นต่อชัยชนะ สุ่มจาก MOB.winLoot เข้ากระเป๋าตรง ๆ
+   *  คืนข้อความ " · ได้ 🍙ห่อเสบียง" ไว้ต่อท้ายบรรทัดแจ้งผลของผู้เรียก */
+  winLoot() {
+    const k = pick(MOB.winLoot), def = ITEMS[k];
+    this.inventory[k] = (this.inventory[k] || 0) + 1;
+    return ` · ${t('loot.got')} ${def.glyph || '🎁'}${def.name}`;
+  },
+
+  /** เซฟเก่าที่ยังมีของวางบนแผนที่/ในสถานี — เก็บเข้ากระเป๋าให้หมดตอนโหลด (ใช้ collectItem เดิม:
+   *  ลูกไฟ/น้ำแข็งกลายเป็น MP ส่วนที่เหลือเข้ากระเป๋า) เพราะระบบของตกบนแผนที่ถูกยกเลิกแล้ว */
+  sweepMapItems() {
+    for (let i = this.items.length - 1; i >= 0; i--) if (!this.collectItem(i)) this.items.splice(i, 1);
+  },
+
+  /** ตะรางรอวาระมีทุกโซนตั้งแต่ต้น — เซฟ/สาขาเก่าที่ยังไม่มีให้เติมให้ (ไม่ซ้ำถ้ามีแล้ว) */
+  ensureTarang() {
+    if (!this.stations.some(st => st.def.k === 'tarang')) this.stations.push(mkStation('tarang'));
   },
 
   // ---------- Phase 3 · ฉากต่อสู้ ----------
@@ -2455,7 +2432,8 @@ const API = {
         const gain = Math.round(MOB.bounty * MOB.fightWin);
         this.coin += gain;
         this.order = clamp(this.order + 2, 0, 100);
-        say(`${B.who}สลายเป็นควันไป — +${gain} เบี้ยกรรม · ระเบียบ +2`);
+        B.loot = this.winLoot();
+        say(`${B.who}สลายเป็นควันไป — +${gain} เบี้ยกรรม · ระเบียบ +2${B.loot}`);
       } else if (B.kind === 'zoneBoss') {
         this.bossCleared[B.zone] = true;
         if (B.zone === 'west') this.abilities.ice = true;
@@ -2467,7 +2445,8 @@ const API = {
         this.coin += BATTLE.winCoin;
         const soul = this.queue.find(x => x.id === B.soulId);
         if (soul) soul.beaten = true;
-        say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว`);
+        B.loot = this.winLoot();
+        say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว${B.loot}`);
       }
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
@@ -2825,9 +2804,11 @@ const API = {
         return def ? { ...mkCrew(def, k), ...sv, name:crewName(def, k) } : null;
       }).filter(Boolean)];
       this.guard = back.guard || null;
+      this.ensureTarang();
+      this.sweepMapItems();
     } else {
       this.queue = []; this.items = []; this.held = [];
-      this.stations = [mkStation('sala')];
+      this.stations = [mkStation('sala'), mkStation('tarang')];
       this.crew = k === 'cyberhell' ? keep : [...keep, mkCrew(CREW.find(c => c.k === 'taan'), k)];
       this.guard = null;
       this.coin += z.coin;                   // งบตั้งต้นให้ครั้งแรกที่มาสาขานี้เท่านั้น
@@ -2891,8 +2872,6 @@ const API = {
     this.mobs.push(mob);
     // ไม่เด้งเข้าฉากต่อสู้เองแล้ว (9 ก.ย. 2569) — มันจะเดินไปเผาอาคารแทน
     // ยังไม่จ้างยักษ์ ผู้เล่นเลือกเดินไปสู้เองได้; จ้างแล้วให้ยักษ์จัดการบนแผนที่
-    // ทิ้งลูกไฟให้เก็บไปใช้ในฉากต่อสู้
-    if (!this.items.some(it => it.k === 'fire')) this.dropItem('fire');
     this.log(`👹 ${MOB.kinds[kind].name}${t(this.guard ? 'mob.spawnRiverGuard' : 'mob.spawnRiver')}`, 'event');
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
@@ -3274,6 +3253,7 @@ API.restore = function (d) {
                                          verdict: sv.verdict || null }] : []);
     return st;
   }).filter(Boolean);
+  this.ensureTarang();                 // ชุด 27D — ตะรางมีให้ฟรีทุกเซฟ (เซฟเก่าที่ยังไม่เคยสร้างได้รับตอนโหลด)
   // เซฟเดิมล้าง buildK ทันทีที่ถึงไซต์: ผูกงานที่ยังสร้างอยู่กลับให้ผู้สร้างจนเสร็จ
   const builder = this.crew.find(c => c.k === 'taan');
   const activeBuild = this.stations.find(st => st.build || st.repair);
@@ -3383,6 +3363,7 @@ API.restore = function (d) {
   const allowedMobs = new Set(this.zoneDef().mobs || []);
   this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));
   this.zoneSave = d.zoneSave || {};
+  this.sweepMapItems();                // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่า เก็บเข้ากระเป๋าให้ (ระบบของตกถูกยกเลิก)
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
   const moveOldGuardPost = guard => {
@@ -3454,7 +3435,8 @@ API.restore = function (d) {
     const entry = this.snapshot(false), n = entry.zoneCases[this.zone] || 0;
     entry.casesDone = Math.max(0, entry.casesDone - n);
     entry.zoneCases = { ...entry.zoneCases, [this.zone]: 0 };
-    entry.stations = [{ k: 'sala', crewK: null, intensity: 3, fire: 0, build: 0, slots: [] }];
+    entry.stations = [{ k: 'sala', crewK: null, intensity: 3, fire: 0, build: 0, slots: [] },
+                      { k: 'tarang', crewK: null, intensity: 3, fire: 0, build: 0, slots: [] }];
     entry.queue = []; entry.held = []; entry.items = []; entry.mobs = []; entry.guard = null;
     entry.crew = entry.crew.filter(c => CREW.find(def => def.k === c.k)?.follow);
     entry.bossGuarding = { ...entry.bossGuarding, [this.zone]: false };

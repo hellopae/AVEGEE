@@ -246,7 +246,7 @@ export function render(g, t) {
   // ภาพแท่นเต็มใบเป็น top-down art จึงใช้เป็น decal ปูบน ground-only
   // ส่วนกำแพงหน้าเก็บไว้สำหรับ occlusion pass แยก ไม่ฝืนตั้งภาพ top-down เป็น billboard
   if (g.zone === 'th')
-    groundDecal('judgment-platform', 'img/prop-throne-platform-v1.png', SPOTS.throne.x, 420, 315, 390);
+    groundDecal('judgment-platform', 'img/prop-throne-platform-v1.png', 790, 420, 315, 390); // 790 = ค่า SPOTS.throne.x เดิม (27D ย้ายจุดพญายมไปตรงเก้าอี้ ไม่ขยับ decal)
 
   // scene-foreground-v1 มุมไม่ตรงกับกล้องโลกและบังแถววิญญาณ จึงไม่ใช้ทั้งชิ้น
   // ถ้าจะทำ occlusion ต่อ ให้ตัดเฉพาะกำแพงหน้าจากภาพนี้เป็นชิ้นใหม่
