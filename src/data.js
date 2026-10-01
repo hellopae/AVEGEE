@@ -651,6 +651,10 @@ export const MOB = {
     { name:'คาชะ',            img:'mob-kasha',    line:'"ศพนี้ข้าจองไว้แล้ว ท่านมาทีหลัง"' },
     { name:'นุเคะคุบิ',        img:'mob-nukekubi', line:'"หัวมาเข้าคิวก่อน ตัวนอนรออยู่บ้าน"' },
     { name:'ดวงไฟวิญญาณ',     img:'mob-hitodama', line:'"วูบ..." (มันไม่มีปาก มีแต่แสง)' },
+    { name:'โครงกระดูก', nameKey:'mob.skeleton', img:'mob-skeleton', line:'"กึก... กัก..."' },
+    { name:'บอต', nameKey:'mob.bot', img:'mob-bot', line:'"กำลังประมวลผล"' },
+    { name:'บั๊ก', nameKey:'mob.bug', img:'mob-bug', line:'"ระบบผิดพลาด"' },
+    { name:'หนอน', nameKey:'mob.worm', img:'mob-worm', line:'"กำลังแพร่กระจาย"' },
   ],
   reach: 62,              // ระยะที่ยักษ์ทวารบาลปราบผีได้
   // ปุ่มสู้ลอยเหนือหัวผี (ข้อ 3 ของเจ้าของ 11 ก.ย. 2569) — กว้างกว่าระยะฟาดประชิด
@@ -1438,11 +1442,11 @@ export const ZONE_EVENTS = {
     { k:'westHypnotized', atCases:0, mode:'group',
       title:{ th:'วิญญาณถูกสะกดจิต', en:'Hypnotized spirits' },
       alert:{ th:'วิญญาณที่ถูกสะกดจิตเดินอยู่ในโซน ต้องช่วยให้หมดก่อนสร้างสถานที่', en:'Free the hypnotized spirits before building.' },
-      foes:[{ kind:0, count:3, hp:45, atk:[8,13] }], reward:{ coin:70 } },
+      foes:[{ kind:10, count:3, hp:45, atk:[8,13] }], reward:{ coin:70 } },
     { k:'westVampireBreach', atCases:3, requires:['westHypnotized'], mode:'waves', team:'frontier',
       title:{ th:'แวมไพรที่ชายแดน', en:'Vampire at the frontier' },
       alert:{ th:'วิญญาณหยุดนิ่งไปหมด ชายแดนมีปีศาจสามระลอกและแวมไพร', en:'The spirits freeze. Three demon waves and a vampire await at the frontier.' },
-      waves:[[{ kind:0, count:2, hp:55, atk:[9,14] }], [{ kind:3, count:2, hp:60, atk:[10,15] }],
+      waves:[[{ kind:10, count:2, hp:55, atk:[9,14] }], [{ kind:10, count:2, hp:60, atk:[10,15] }],
         [{ name:'แวมไพร', sp:'boss-frontier-west', count:1, hp:150, atk:[13,20], boss:true }]],
       betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
     { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
@@ -1460,8 +1464,8 @@ export const ZONE_EVENTS = {
     { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
       title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },
       alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
-      waves:[[{ kind:3, count:2, hp:60, atk:[10,16] }], [{ kind:4, count:2, hp:65, atk:[11,17] }],
-        [{ kind:5, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
+      waves:[[{ kind:11, count:2, hp:60, atk:[10,16] }], [{ kind:12, count:2, hp:65, atk:[11,17] }],
+        [{ kind:13, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
       betweenWaveHeal:15, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ศึกบอสทั้งสี่สาขา', en:'Four branch bosses' },
@@ -1558,7 +1562,7 @@ export const ZONES = [
     bossWin:[ '"ยอดตรวจสอบออกมาสมกับที่เขาลือกันจริง ๆ"', '"ข้าขอปิดบัญชีนี้ด้วยการยกปัจฉิมให้เจ้าปกครอง"' ],
     bossLose:'"ยังไม่สมกับข่าวลือเลยนะ กลับมาท้าใหม่เมื่อพร้อม"',
     intro:'สาขานี้มีเอกสารเป็นระเบียบที่สุดที่ท่านเคยเห็น — และมีคิวที่ยาวที่สุดที่ท่านเคยเห็นเหมือนกัน',
-    mobs:[0,2], coin:800 },
+    mobs:[10], coin:800 },
   { k:'cyberhell', scene:'scene-cyberhell-v2', w:1678, h:937, level:5, name:'นรกเครือข่าย', nameEn:'CyberHell',
     sub:'เครือข่ายข้อมูล · ความทรงจำ · อาชญากรรมดิจิทัล',
     bossName:'จอมข้อมูลไซเบอร์', bossSub:'ผู้ตรวจการระบบประจำนรกเครือข่าย',
@@ -1571,7 +1575,7 @@ export const ZONES = [
     bossWin:[ '"ข้อมูลไม่โกหก คุณมีสิทธิ์จริงอย่างที่อ้าง"', '"นรกเครือข่ายนี้ยกให้คุณปกครองต่อจากนี้"' ],
     bossLose:'"สิทธิ์ของคุณยังไม่ผ่านการตรวจสอบ ลองใหม่อีกครั้ง"',
     intro:'เส้นสายข้อมูลไหลแทนแม่น้ำ วิญญาณทุกดวงทิ้งร่องรอยไว้ แม้สิ่งที่ลบบนโลกไปแล้วก็ยังถูกบันทึกอยู่ที่นี่',
-    mobs:[3,4,5], coin:1200 },
+    mobs:[11,12,13], coin:1200 },
 ];
 
 /** ทุกโซนใช้ผังและพิกัด 1678×937 เดียวกัน; คง SCENE object ที่โมดูลอื่น import ไว้ */

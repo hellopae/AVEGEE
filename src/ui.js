@@ -98,13 +98,13 @@ fitSceneBox();
  *  ผู้เล่นต้องไม่มีทาง "ค้างอยู่กับฉากต่อสู้ที่มองไม่เห็น" เด็ดขาด */
 let battleUI = null;
 let lastBattleEnd = 0;      // เวลาที่ฉากต่อสู้ล่าสุดปิดลง — ใช้เว้นจังหวะก่อนเปิดฉากใหม่
-let prisonAlertSeen = false;
+let prisonAlertSeen = !!g.eventMapClosed['th:prisonBreak'];
 let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
-let breachAlertSeen = false;
+let breachAlertSeen = !!g.eventMapClosed['th:frontierBreach'];
 let breachTried = false;
-let devaAlertSeen = false;
+let devaAlertSeen = !!g.eventMapClosed['th:devaTest'];
 let devaTried = false;
-const zoneEventAlertSeen = new Set();
+const zoneEventAlertSeen = new Set(Object.keys(g.eventMapClosed).filter(k => g.eventMapClosed[k]));
 const zoneEventTried = new Set();
 
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
@@ -632,7 +632,7 @@ function sideBody() {
     const m = g.mobs[sel.key];
     if (!m) return '<div class="empty">เปรตตนนั้นถูกปราบไปแล้ว</div>';
     const kd = MOB.kinds[m.kind ?? 0] || { name: MOB.name, img: MOB.img, line: '"หิว... หิว..."' };
-    return profile(kd.img, kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
+    return profile(kd.img, kd.nameKey ? t(kd.nameKey) : kd.name, 'วิญญาณที่หลุดออกมาก่อกวน',
         getLang() === 'en' ? `Drains ${(MOB.drain).toFixed(2)} order per term while present`
           : `กัดระเบียบไป ${(MOB.drain).toFixed(2)} ต่อวาระ ตราบใดที่ยังอยู่`)
       + (kd.line ? think(kd.line) : '')
@@ -756,7 +756,8 @@ function drawTabHeads() {
 /** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
   if (g.over || g.battle || dlg.open || g.guard) return;
-  const n = g.nearestMob();
+  const n = g.mobs.map((m, i) => ({ m, i, d:Math.hypot(m.x - g.player.x, m.y - g.player.y) }))
+    .filter(x => !x.m.eventKey).sort((a, b) => a.d - b.d)[0];
   if (n && n.d <= MOB.fabReach) { g.startMobBattle(n.i); openBattle(); return; }
   g.attack(); refresh();
 }
@@ -832,7 +833,7 @@ function goTrial() {
 const dlg = $('#dlg');
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
-  if (!dlg.open || dlg.querySelector(':scope > .modal-corner-close') ||
+  if (!dlg.open || dlg.classList.contains('event-alert') || dlg.querySelector(':scope > .modal-corner-close') ||
       dlg.querySelector('.settings-close,.trial-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
   const close = document.createElement('button');
@@ -1026,7 +1027,8 @@ function updateMobFab() {
     f.onclick = ev => {
       ev.stopPropagation();
       if (g.over || g.battle || dlg.open || g.guard) return;
-      const m = g.nearestMob();
+      const m = g.mobs.map((mob, i) => ({ m:mob, i, d:Math.hypot(mob.x - g.player.x, mob.y - g.player.y) }))
+        .filter(x => !x.m.eventKey).sort((a, b) => a.d - b.d)[0];
       if (!m || m.d > MOB.fabReach) return;
       g.startMobBattle(m.i); openBattle();
     };
@@ -1049,13 +1051,13 @@ function updateBossFab() {
       ev.stopPropagation();
       if (dlg.open) return;
       if (g.bossPierCanTalk()) return openBossPier();
-      if (g.bossCanChallenge() && g.startZoneBoss(true)) openBattle();
+      if (g.bossCanChallenge()) openBossAlert();
     };
     ov.appendChild(f);
   }
   f.textContent = pier ? `💬 คุยกับ${g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;
-  f.dataset.sx = pier ? SPOTS.bossPier.x : 790;
-  f.dataset.sy = (pier ? SPOTS.bossPier.y : 558) - 115;
+  f.dataset.sx = SPOTS.bossPier.x;
+  f.dataset.sy = SPOTS.bossPier.y - 115;
   place(f);
 }
 
@@ -1103,16 +1105,54 @@ function updateRepairFabs() {
   }
 }
 
+function openEventAlert(key, title, description, art, action, start, raider = false) {
+  const reopen = () => {
+    if (key === 'prisonBreak') openPrisonAlert();
+    else if (key === 'frontierBreach') openBreachAlert();
+    else if (key === 'devaTest') openDevaAlert();
+    else if (key === 'zoneBoss') openBossAlert();
+    else {
+      const ev = (ZONE_EVENTS[g.zone] || []).find(e => e.k === key);
+      if (ev) openZoneEventAlert(ev);
+    }
+  };
+  const prep = (which, label, line, image, disabled = false) => `<button class="event-prep-card" data-event-prep="${which}" ${disabled ? 'disabled' : ''}>
+    <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
+  const medicine = g.inventory.health || 0;
+  modal(`<div class="event-alert-main"><div class="event-alert-controls">
+      <button data-event-pause aria-label="${esc(t('hud.pause'))}">Ⅱ</button><button data-close aria-label="${esc(t('common.close'))}">✕</button></div>
+    <h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>
+    <img class="event-alert-foe" src="${esc(art)}" alt="${esc(title)}">
+    <button class="gold event-alert-go" data-event-go>${esc(action)}</button></div>
+    <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
+      ${prep('merchant', t('event.prep.merchant'), t('event.prep.merchantLine'), 'img/merchant-profile.jpeg')}
+      ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
+      ${prep('medicine', t('event.prep.medicine'), medicine ? t('event.prep.medicineLine') : t('event.prep.none'), artUrl(ITEMS.health.img), !medicine)}
+    </div></div>`, d => {
+    d.querySelector('[data-event-go]').onclick = start;
+    d.querySelector('[data-event-pause]').onclick = () => { userPaused = !userPaused; d.querySelector('[data-event-pause]').setAttribute('aria-pressed', String(userPaused)); };
+    d.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => {
+      openMerchant(true); onDlgClose(() => setTimeout(reopen, 0));
+    });
+    d.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => {
+      openNiraOffice(); onDlgClose(() => setTimeout(reopen, 0));
+    });
+    d.querySelector('[data-event-prep="medicine"]')?.addEventListener('click', () => {
+      if (g.useBag('health')) reopen();
+    });
+  }, 'event-alert');
+  onDlgClose(() => {
+    if (key === 'zoneBoss') {
+      g.bossGuarding[g.zone] = true; g.bossPending = false; g.save();
+    } else if (g.zoneEventStatus(key) === 'pending') g.dismissEventAlert(key, raider);
+  });
+}
+
 function openPrisonAlert() {
-  const images = [1, 4, 7].map(n => `<img src="img/spirit${n}.png" alt="${esc(t('event.prisonBreak.foe'))}">`).join('');
-  modal(`<h2>${esc(t('event.prisonBreak.title'))}</h2>
-    <p>${esc(t('event.prisonBreak.alert'))}</p>
-    <div class="prison-alert-spirits">${images}</div>
-    <div class="row"><button class="gold" data-prison-go>${esc(t('event.prisonBreak.go'))}</button></div>`, d => {
-    d.querySelector('[data-prison-go]').onclick = () => {
+  openEventAlert('prisonBreak', t('event.prisonBreak.title'), t('event.prisonBreak.alert'),
+    'img/spirit7.png', t('event.prisonBreak.go'), () => {
       if (g.startPrisonBreak()) { prisonTried = true; openBattle(); }
-    };
-  }, 'prison-alert');
+    }, true);
 }
 
 function updatePrisonFab() {
@@ -1134,12 +1174,8 @@ function updatePrisonFab() {
 }
 
 function openBreachAlert() {
-  modal(`<h2>${esc(t('event.frontierBreach.title'))}</h2>
-    <p>${esc(t('event.frontierBreach.alert'))}</p>
-    <div class="prison-alert-spirits"><img src="${artUrl(MOB.kinds[0].img)}" alt=""><img src="${artUrl(MOB.kinds[4].img)}" alt=""></div>
-    <div class="row"><button class="gold" data-breach-go>${esc(t('event.frontierBreach.go'))}</button></div>`, d => {
-    d.querySelector('[data-breach-go]').onclick = () => openFrontier(false, true);
-  }, 'prison-alert');
+  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.alert'),
+    artUrl(MOB.kinds[0].img), t('event.frontierBreach.go'), () => openFrontier(false, true), true);
 }
 
 function updateBreachFab() {
@@ -1156,14 +1192,10 @@ function updateBreachFab() {
 }
 
 function openDevaAlert() {
-  modal(`<h2>${esc(t('event.devaTest.title'))}</h2>
-    <p>${esc(t('event.devaTest.alert'))}</p>
-    <img class="deva-alert-art" src="${artUrl('boss-tester-th')}" alt="${esc(t('event.devaTest.foe'))}">
-    <div class="row"><button class="gold" data-deva-go>${esc(t('event.devaTest.go'))}</button></div>`, d => {
-    d.querySelector('[data-deva-go]').onclick = () => {
+  openEventAlert('devaTest', t('event.devaTest.title'), t('event.devaTest.alert'),
+    artUrl('boss-tester-th'), t('event.devaTest.go'), () => {
       if (g.startDevaTest()) { devaTried = true; openBattle(); }
-    };
-  }, 'prison-alert');
+    });
 }
 
 function updateDevaFab() {
@@ -1195,18 +1227,11 @@ function openZoneEventAlert(ev) {
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
-    : 'img/spirit7.png';
-  modal(`<h2>⚠️ ${esc(title)}</h2><p>${esc(zoneEventText(ev.alert))}</p>
-    <img class="deva-alert-art" src="${esc(foeArt)}" alt="">
-    <div class="row"><button class="gold" data-zone-event-go>⚔️ ${esc(zoneEventTried.has(`${g.zone}:${ev.k}`) ? 'ท้าอีกครั้ง' : 'เข้าสู้')}</button>
-    <button data-close>ไว้ก่อน</button></div>`, d => {
-    d.querySelector('[data-zone-event-go]').onclick = () => {
-      if (g.startZoneEvent(ev.k)) {
-        zoneEventTried.add(`${g.zone}:${ev.k}`);
-        openBattle();
-      }
-    };
-  }, 'prison-alert');
+    : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
+  openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
+    zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
+      if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(); }
+    }, ev.mode === 'waves' || /prison/i.test(ev.k));
 }
 function updateZoneEventFabs() {
   const pending = started && !g.battle && !g.over ? pendingZoneEvents()
@@ -1344,6 +1369,12 @@ function openBossArrive(z, onDone) {
 
 /** การ์ตูนแนะนำสาขาใหม่ — ใช้ภาพ intro-zone<N> ที่เจ้าของวาดไว้หนึ่งภาพต่อโซน
  *  แสดงเฉพาะครั้งแรกที่ย้ายเข้า ส่วนการกลับสาขาเดิมใช้กล่องสรุปสั้น ๆ เพื่อไม่ขัดจังหวะซ้ำ */
+function openBossAlert() {
+  const z = g.zoneDef();
+  openEventAlert('zoneBoss', z.bossName, z.bossSub, artUrl('zone-boss'),
+    t('event.prep.fight'), () => { if (g.startZoneBoss('alert')) openBattle(); });
+}
+
 function openZoneArrival(z) {
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
   const image = artUrl(`intro-zone${zn}`);
@@ -2178,8 +2209,8 @@ function openNiraOffice() {
   paint(); openDlg('nira-office');
 }
 
-function openMerchant() {
-  if (!g.zoneCaptivesFree()) return;
+function openMerchant(fromEvent = false) {
+  if (!fromEvent && !g.zoneCaptivesFree()) return;
   pauseForDlg();
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
@@ -2197,7 +2228,7 @@ function openMerchant() {
       <div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
-    dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy, fromEvent)) { sfx('coin'); paint(); refresh(); } });
     const outfitBuy = dlg.querySelector('[data-buy-outfit]');
     if (outfitBuy) outfitBuy.onclick = () => { if (g.buyZoneOutfit()) { sfx('coin'); paint(); refresh(); } };
   };
@@ -3079,6 +3110,7 @@ function onSceneClick(sx, sy) {
   if (a) {
     if (a.kind === 'station') { enterStation(a.key); return; }
     if (a.kind === 'zoneEvent') {
+      if (a.key === 'devaTest') return openDevaAlert();
       const ev = (ZONE_EVENTS[g.zone] || []).find(e => e.k === a.key);
       if (ev) openZoneEventAlert(ev);
       return;
@@ -3086,6 +3118,14 @@ function onSceneClick(sx, sy) {
     if (a.kind === 'merchant') {
       if (Math.hypot(g.player.x - MERCHANT.x, g.player.y - MERCHANT.y) <= MERCHANT.reach) return openMerchant();
       g.walkTo(MERCHANT.x, MERCHANT.y); g.log(`เดินไปหา${MERCHANT.name} — ซื้อขายได้เมื่อยืนใกล้`, 'act'); return;
+    }
+    if (a.kind === 'bossPending') return openBossAlert();
+    if (a.kind === 'eventRaider') {
+      const ev = (ZONE_EVENTS[g.zone] || []).find(e => e.k === a.key);
+      if (a.key === 'prisonBreak') openPrisonAlert();
+      else if (a.key === 'frontierBreach') openBreachAlert();
+      else if (ev) openZoneEventAlert(ev);
+      return;
     }
     if (a.kind === 'boss') {
       if (g.bossPierCanTalk()) return openBossPier();
@@ -3593,8 +3633,7 @@ g.onChange = () => {
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
     const z = g.zoneDef();
     const proceed = () => {
-      if (g.zone === 'th') { beginBossBridgeWalk(); return; }
-      if (g.startZoneBoss()) openBattle();
+      openBossAlert();
     };
     // ฉากมาถึงขึ้นก่อนครั้งแรกเท่านั้น — รีแมตช์ (ติดธงแล้ว) ข้ามตรงไปสู้เลยตามใบงาน
     // ชุดที่ 10 (ข้อ E1) — เดิมติดธง "เห็นแล้ว" + เซฟ ก่อนเปิดฉากด้วยซ้ำ ถ้าผู้เล่นรีเฟรช/ปิดแท็บ

@@ -100,7 +100,7 @@ export function createGame() {
     returned: 0,                      // นับว่ากลับมาแล้วกี่คดี
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
-    zoneCases: {}, zoneEvents: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
+    zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     gameCompleted: false,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
@@ -1469,6 +1469,15 @@ const API = {
     // ---- เปรตเดินไปเผาอาคาร (9 ก.ย. 2569) ----
     // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
     // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
+    this.mobs = this.mobs.filter(m => !m.eventKey || this.zoneEventStatus(m.eventKey) === 'pending');
+    for (const [tag, closed] of Object.entries(this.eventMapClosed)) {
+      if (!closed) continue;
+      const [zone, key] = tag.split(':');
+      if (zone === this.zone && (key === 'prisonBreak' || key === 'frontierBreach' ||
+          (ZONE_EVENTS[zone] || []).some(ev => ev.k === key &&
+            (ev.mode === 'waves' || /prison/i.test(ev.k)))))
+        this.ensureEventRaider(key);
+    }
     const burnable = this.stations.filter(st => st.fire < MOB.burnMax && !st.repair);
     // ระยะจาก "ขอบอาคาร" ไม่ใช่จุดกึ่งกลาง — หลังใหญ่ ๆ อย่างหอทะเบียนกรรม
     // ยืนติดกำแพงแล้วยังห่างจุดกึ่งกลางเป็นร้อยพิกเซล มันจะยืนเฉย ๆ ไม่เผาสักที
@@ -1519,8 +1528,9 @@ const API = {
     // ชุดที่ 10 (ข้อ C1) — เอาโหมด "เดินตามผู้เล่น" ออก (คุณเป้สั่ง 25 ก.ย. 2569) เหลือแค่สองสถานะ:
     // ไล่ปราบเปรตที่อยู่ในโซน หรือไม่งั้นกลับไปยืนเฝ้าหัวสะพาน — เซฟเก่าที่ guard.x ค้างอยู่ใกล้ผู้เล่น
     // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
-    if (this.guard && this.mobs.length) {
-      const G = this.guard, m = this.mobs[0];
+    const guardTarget = this.mobs.find(m => !m.eventKey);
+    if (this.guard && guardTarget) {
+      const G = this.guard, m = guardTarget;
       if (!canWalk(G.x, G.y)) {
         const p = nearestWalk(G.x, G.y);
         if (p) { G.x = p[0]; G.y = p[1]; G.path = null; }
@@ -1528,7 +1538,7 @@ const API = {
       const d = Math.hypot(m.x - G.x, m.y - G.y);
       if (d < MOB.reach) {
         G.path = null;
-        this.strike(0, GUARD.name);
+        this.strike(this.mobs.indexOf(m), GUARD.name);
       } else {
         // The mob moves and may stop against a building; follow a walkable route instead of the blocked straight line.
         if (!G.path?.length || !G.target || Math.hypot(m.x - G.target[0], m.y - G.target[1]) > 32) {
@@ -1541,7 +1551,7 @@ const API = {
           if (wd < 6) { G.x = w[0]; G.y = w[1]; G.path.shift(); }
           else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
         }
-        if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) this.strike(0, GUARD.name);
+        if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) this.strike(this.mobs.indexOf(m), GUARD.name);
       }
     } else if (this.guard) {
       // ว่างงาน → กลับไปเฝ้า "หัวสะพานที่วิญญาณข้ามมา" (เจ้าของสั่ง 10 ก.ย. 2569)
@@ -1750,11 +1760,11 @@ const API = {
     if (m.cool && Date.now() < m.cool) return false;
     m.hp--; m.cool = Date.now() + 600;
     this.fxHits.push({ t: Date.now(), x: m.x, y: m.y });
-    if (m.hp > 0) { this.log(`⚔️ ${by}ฟาด${MOB.kinds[m.kind ?? 0].name}เข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
+    if (m.hp > 0) { this.log(`⚔️ ${by}ฟาด${MOB.kinds[m.kind ?? 0].nameKey ? t(MOB.kinds[m.kind ?? 0].nameKey) : MOB.kinds[m.kind ?? 0].name}เข้าเต็ม ๆ — มันยังไม่ล้ม`, 'act'); return true; }
     this.mobs.splice(i, 1);
     this.coin += MOB.bounty;
     this.order = clamp(this.order + 3, 0, 100);
-    this.log(`💥 ${by}ปราบ${MOB.kinds[m.kind ?? 0].name}ได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3${this.winLoot()}`, 'good');
+    this.log(`💥 ${by}ปราบ${MOB.kinds[m.kind ?? 0].nameKey ? t(MOB.kinds[m.kind ?? 0].nameKey) : MOB.kinds[m.kind ?? 0].name}ได้หนึ่งตน +${MOB.bounty} เบี้ยกรรม · ระเบียบ +3${this.winLoot()}`, 'good');
     return true;
   },
 
@@ -1818,7 +1828,7 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i,
-      who: kind.name, sub: t('mob.fromRiver'), sp: kind.img,
+      who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
       turn: 1, over: null,
       log: [],
@@ -1873,7 +1883,7 @@ const API = {
       kind:'frontier', zone:this.zone, wave, team:[...state.team],
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
-      who:kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
+      who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
       foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null,
@@ -1901,7 +1911,7 @@ const API = {
   bossCanChallenge() {
     return !this.battle && !this.over && !!this.bossGuarding[this.zone] &&
       !this.bossCleared[this.zone] && this.zoneEventGateReady() &&
-      Math.hypot(this.player.x - 790, this.player.y - 558) <= 150;
+      Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
 
   bossPierCanTalk() {
@@ -1911,7 +1921,9 @@ const API = {
 
   startZoneBoss(retry = false) {
     const rematch = retry === 'rematch';
-    if (this.battle || !(rematch ? this.bossPierCanTalk() : retry ? this.bossCanChallenge() : this.bossReady())) return null;
+    if (this.battle || !(rematch ? this.bossPierCanTalk() : retry === 'alert'
+      ? (this.bossReady() || (!!this.bossGuarding[this.zone] && this.zoneEventGateReady()))
+      : retry ? this.bossCanChallenge() : this.bossReady())) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
     const hp = 200 + n * 35;
     this.bossPending = false;
@@ -1938,7 +1950,7 @@ const API = {
       this.battle.foes = [
         { id:`${z.k}-boss`, who:z.bossName, sub:z.bossSub, sp:'zone-boss', boss:true,
           hp:bossHp, maxHp:hp, atk:[14 + n * 2, 22 + n * 3], stun:0, confuse:0 },
-        ...Array.from({ length:2 }, (_, i) => ({ id:`${z.k}-demon-${i}`, who:mob.name,
+        ...Array.from({ length:2 }, (_, i) => ({ id:`${z.k}-demon-${i}`, who:mob.nameKey ? t(mob.nameKey) : mob.name,
           sub:'ผู้ติดตามบอส', sp:mob.img, hp:48 + n * 8, maxHp:48 + n * 8,
           atk:[7 + n, 12 + n], stun:0, confuse:0 })),
       ];
@@ -2017,6 +2029,18 @@ const API = {
   frontierBreachStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.frontierBreach || 'locked';
   },
+  dismissEventAlert(key, raider = false) {
+    this.eventMapClosed[`${this.zone}:${key}`] = true;
+    if (raider) this.ensureEventRaider(key);
+    this.save();
+  },
+  ensureEventRaider(key) {
+    if (this.zoneEventStatus(key) !== 'pending' || this.mobs.some(m => m.eventKey === key)) return;
+    const kind = this.zone === 'west' ? 10 : this.zone === 'cyberhell' ? 11 : this.zone === 'asia' ? 6 : 0;
+    const p = nearestWalk(760, 680) || [760, 680];
+    this.mobs.push({ id:SEQ++, x:p[0], y:p[1], hp:MOB.hp, kind, eventKey:key,
+      eventArt:this.zone === 'th' && key === 'prisonBreak' ? 'spirit7' : null });
+  },
   devaTestStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.devaTest || 'locked';
   },
@@ -2041,7 +2065,7 @@ const API = {
     const groups = ev.mode === 'waves' ? ev.waves[wave - 1] : ev.foes || [ev.foe];
     return (groups || []).flatMap((entry, group) => Array.from({ length:entry.count || 1 }, (_, i) => {
       const mob = MOB.kinds[entry.kind ?? 0];
-      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.name || mob.name,
+      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss,
         hp:entry.hp, maxHp:entry.hp, atk:entry.atk, stun:0, confuse:0 };
@@ -2883,7 +2907,7 @@ const API = {
     this.mobs.push(mob);
     // ไม่เด้งเข้าฉากต่อสู้เองแล้ว (9 ก.ย. 2569) — มันจะเดินไปเผาอาคารแทน
     // ยังไม่จ้างยักษ์ ผู้เล่นเลือกเดินไปสู้เองได้; จ้างแล้วให้ยักษ์จัดการบนแผนที่
-    this.log(`👹 ${MOB.kinds[kind].name}${t(this.guard ? 'mob.spawnRiverGuard' : 'mob.spawnRiver')}`, 'event');
+    this.log(`👹 ${MOB.kinds[kind].nameKey ? t(MOB.kinds[kind].nameKey) : MOB.kinds[kind].name}${t(this.guard ? 'mob.spawnRiverGuard' : 'mob.spawnRiver')}`, 'event');
     this.onChange();          // ให้ ui เปิดหน้าต่อสู้ได้ทันที ไม่ต้องรอวาระถัดไป
   },
 
@@ -2927,9 +2951,9 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
-  buyMerchant(k) {
+  buyMerchant(k, fromEvent = false) {
     const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
-    if (!this.zoneCaptivesFree() || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    if ((!fromEvent && !this.zoneCaptivesFree()) || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.coin -= stock.cost;
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ลูกไฟ/น้ำแข็งพร้อมใช้ทันทีเหมือนเก็บจากแผนที่
     // (ดู collectItem) เดิมซื้อแล้วเข้ากระเป๋าทั่วไปเฉย ๆ กด "ใช้" ไม่ได้ (ปุ่มปิดถาวรสำหรับสองไอเทมนี้
@@ -3173,7 +3197,7 @@ API.snapshot = function (withEntry = true) {
     ledger: this.ledger, returning: this.returning, returned: this.returned,
     orderWarns: this.orderWarns || 0, orderWarnAt: this.orderWarnAt || 0,
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
-    zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, legacyBossGate:this.legacyBossGate,
+    zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     gameCompleted: !!this.gameCompleted,
     bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
@@ -3298,6 +3322,7 @@ API.restore = function (d) {
   syncFrontierPos(this.zone);
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
+  this.eventMapClosed = d.eventMapClosed || {};
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
   if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.flameCharge = true;
   if (legacyBossGate) {
