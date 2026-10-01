@@ -753,12 +753,23 @@ function drawTabHeads() {
     el.setAttribute('aria-selected', el.dataset.tab === tab ? 'true' : 'false');
 }
 
+/** ตัวบุกของ event (eventKey) ไม่เข้าฉากสู้ธรรมดา — เปิดหน้าต่าง event ของมันแทน (เหมือนกดที่ตัวมันบนแผนที่) */
+function openRaiderAlert(key) {
+  const ev = (ZONE_EVENTS[g.zone] || []).find(e => e.k === key);
+  if (key === 'prisonBreak') openPrisonAlert();
+  else if (key === 'frontierBreach') openBreachAlert();
+  else if (ev) openZoneEventAlert(ev);
+}
+function fightMob(n) {
+  if (n.m.eventKey) { openRaiderAlert(n.m.eventKey); return; }
+  g.startMobBattle(n.i); openBattle();
+}
+
 /** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
   if (g.over || g.battle || dlg.open || g.guard) return;
-  const n = g.mobs.map((m, i) => ({ m, i, d:Math.hypot(m.x - g.player.x, m.y - g.player.y) }))
-    .filter(x => !x.m.eventKey).sort((a, b) => a.d - b.d)[0];
-  if (n && n.d <= MOB.fabReach) { g.startMobBattle(n.i); openBattle(); return; }
+  const n = g.nearestMob();
+  if (n && n.d <= MOB.fabReach) { fightMob(n); return; }
   g.attack(); refresh();
 }
 
@@ -1026,10 +1037,9 @@ function updateMobFab() {
     f.onclick = ev => {
       ev.stopPropagation();
       if (g.over || g.battle || dlg.open || g.guard) return;
-      const m = g.mobs.map((mob, i) => ({ m:mob, i, d:Math.hypot(mob.x - g.player.x, mob.y - g.player.y) }))
-        .filter(x => !x.m.eventKey).sort((a, b) => a.d - b.d)[0];
+      const m = g.nearestMob();
       if (!m || m.d > MOB.fabReach) return;
-      g.startMobBattle(m.i); openBattle();
+      fightMob(m);
     };
     ov.appendChild(f);
   }
@@ -1131,12 +1141,21 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     </div></div>`, d => {
     d.querySelector('[data-event-go]').onclick = start;
     d.querySelector('[data-event-pause]').onclick = () => { userPaused = !userPaused; d.querySelector('[data-event-pause]').setAttribute('aria-pressed', String(userPaused)); };
-    d.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => {
-      openMerchant(); onDlgClose(() => setTimeout(reopen, 0));
-    });
-    d.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => {
-      openNiraOffice(); onDlgClose(() => setTimeout(reopen, 0));
-    });
+    // เปิดกล่องร้าน/ห้องนิราแทนหน้าต่างนี้ แล้วกลับมาที่หน้าต่างนี้ตอนปิดกล่องนั้น
+    // ระวัง: openDlg ปิดกล่องเก่าแล้ว showModal ทันที — 'close' ของกล่องเก่ายิงทีหลังแบบ async ขณะ dlg.open เป็น true
+    // ถ้าถือว่านั่นคือ "ผู้เล่นปิดแล้ว" จะเด้งกลับหน้าต่างนี้ทับร้านทันที (เจอตอนรีวิวชุด 27) — จึงรอ close ที่ dlg.open เป็น false จริง
+    const visit = open => {
+      open();
+      const gen = dlgGen;
+      const h = () => {
+        if (dlg.open) return;
+        dlg.removeEventListener('close', h);
+        if (gen === dlgGen) setTimeout(reopen, 0);
+      };
+      dlg.addEventListener('close', h);
+    };
+    d.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => visit(openMerchant));
+    d.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => visit(openNiraOffice));
     d.querySelector('[data-event-prep="medicine"]')?.addEventListener('click', () => {
       if (g.useBag('health')) reopen();
     });
@@ -3218,10 +3237,7 @@ function onSceneClick(sx, sy) {
     }
     if (a.kind === 'bossPending') return openBossAlert();
     if (a.kind === 'eventRaider') {
-      const ev = (ZONE_EVENTS[g.zone] || []).find(e => e.k === a.key);
-      if (a.key === 'prisonBreak') openPrisonAlert();
-      else if (a.key === 'frontierBreach') openBreachAlert();
-      else if (ev) openZoneEventAlert(ev);
+      openRaiderAlert(a.key);
       return;
     }
     if (a.kind === 'boss') {

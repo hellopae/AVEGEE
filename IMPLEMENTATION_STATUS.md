@@ -25,6 +25,17 @@ This tracks the owner's phased request and its verification status.
 - [x] Event defeats leave HP 1 and keep the opponent available. The tea house remains available for recovery.
 - [x] The final victory opens an ending with continue or New Game. Continue keeps the world open for old boss rematches.
 
+## Batch 27 (1 Oct 2026)
+
+- [x] 27A rooms: all 10 rooms redrawn to the UI4 layout (crop, action buttons, walk areas, prison list panel).
+- [x] 27B battle scene: full-frame battle dialog with team HUD, boss HUD, numbered meters, multi-foe name plates.
+- [x] 27C profile screen, short goal moved into the bell inbox, crew help from level 1, event text fixes.
+- [x] 27D walkable bridges, throne seat, free prison, win loot instead of map drops.
+- [x] 27E shared event alert window with three prep slots (merchant / Nira / medicine). Closing the window sends raiders to burn buildings or leaves the foe waiting at the right bridge; clicking it reopens the window. Zone 3 uses skeletons, Zone 4 uses bot / bug / worm. The merchant slot stays locked until the CyberHell rescue is cleared.
+- [x] Hero renamed to "ยมบาทน้อย" in all player-visible text.
+- [x] Merge review: the prep slots returned to the alert immediately because the replaced dialog's async `close` event was read as a player close (fixed with `visit()` in `openEventAlert`); the nearby-mob button did nothing for event raiders and now opens their alert.
+- [x] 155 Node tests pass (`combat-power` "cooldown B" is a known 1 ms timing flake). Browser checked at 1440x810 and 390x844: 10 rooms, event windows, boss alert and fight, Zone 3/4 waves, profile.
+
 ## Verification and follow-up
 
 - [x] 124 Node tests passed; JavaScript syntax and `git diff --check` passed.
