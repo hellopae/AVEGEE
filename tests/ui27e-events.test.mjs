@@ -81,12 +81,14 @@ test('west and CyberHell wave mobs use local rosters and preserve encounter stat
     'boss-frontier-asia');
 });
 
-test('event preparation can reach the merchant during the CyberHell rescue alert', () => {
+test('event preparation merchant stays locked until the CyberHell rescue is cleared', () => {
   const g = createGame();
   g.zone = 'cyberhell';
   g.zoneEvents.cyberhell = { cyberRescue:'pending' };
   g.coin = 500;
   assert.equal(g.zoneCaptivesFree(), false);
   assert.equal(g.buyMerchant('tea'), false);
-  assert.equal(g.buyMerchant('tea', true), true);
+  g.zoneEvents.cyberhell.cyberRescue = 'cleared';
+  assert.equal(g.zoneCaptivesFree(), true);
+  assert.equal(g.buyMerchant('tea'), true);
 });

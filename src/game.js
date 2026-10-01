@@ -2951,9 +2951,9 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
-  buyMerchant(k, fromEvent = false) {
+  buyMerchant(k) {
     const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
-    if ((!fromEvent && !this.zoneCaptivesFree()) || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    if (!this.zoneCaptivesFree() || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.coin -= stock.cost;
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ลูกไฟ/น้ำแข็งพร้อมใช้ทันทีเหมือนเก็บจากแผนที่
     // (ดู collectItem) เดิมซื้อแล้วเข้ากระเป๋าทั่วไปเฉย ๆ กด "ใช้" ไม่ได้ (ปุ่มปิดถาวรสำหรับสองไอเทมนี้

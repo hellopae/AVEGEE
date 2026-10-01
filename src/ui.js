@@ -1119,20 +1119,21 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
   const prep = (which, label, line, image, disabled = false) => `<button class="event-prep-card" data-event-prep="${which}" ${disabled ? 'disabled' : ''}>
     <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
   const medicine = g.inventory.health || 0;
+  const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
   modal(`<div class="event-alert-main"><div class="event-alert-controls">
       <button data-event-pause aria-label="${esc(t('hud.pause'))}">Ⅱ</button><button data-close aria-label="${esc(t('common.close'))}">✕</button></div>
     <h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>
     <img class="event-alert-foe" src="${esc(art)}" alt="${esc(title)}">
     <button class="gold event-alert-go" data-event-go>${esc(action)}</button></div>
     <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
-      ${prep('merchant', t('event.prep.merchant'), t('event.prep.merchantLine'), 'img/merchant-profile.jpeg')}
+      ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !merchantOpen)}
       ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
       ${prep('medicine', t('event.prep.medicine'), medicine ? t('event.prep.medicineLine') : t('event.prep.none'), artUrl(ITEMS.health.img), !medicine)}
     </div></div>`, d => {
     d.querySelector('[data-event-go]').onclick = start;
     d.querySelector('[data-event-pause]').onclick = () => { userPaused = !userPaused; d.querySelector('[data-event-pause]').setAttribute('aria-pressed', String(userPaused)); };
     d.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => {
-      openMerchant(true); onDlgClose(() => setTimeout(reopen, 0));
+      openMerchant(); onDlgClose(() => setTimeout(reopen, 0));
     });
     d.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => {
       openNiraOffice(); onDlgClose(() => setTimeout(reopen, 0));
@@ -2209,8 +2210,8 @@ function openNiraOffice() {
   paint(); openDlg('nira-office');
 }
 
-function openMerchant(fromEvent = false) {
-  if (!fromEvent && !g.zoneCaptivesFree()) return;
+function openMerchant() {
+  if (!g.zoneCaptivesFree()) return;
   pauseForDlg();
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
@@ -2228,7 +2229,7 @@ function openMerchant(fromEvent = false) {
       <div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
-    dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy, fromEvent)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
     const outfitBuy = dlg.querySelector('[data-buy-outfit]');
     if (outfitBuy) outfitBuy.onclick = () => { if (g.buyZoneOutfit()) { sfx('coin'); paint(); refresh(); } };
   };
