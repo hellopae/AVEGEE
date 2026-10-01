@@ -555,7 +555,7 @@ function sideBody() {
       const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})`
                   : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
                   : ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${ammo}`;
-      return `<div class="row-truth">${p.glyph} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
+      return `<div class="row-truth">${p.glyph.startsWith('img/') ? `<img class="power-glyph" src="${p.glyph}" alt="">` : esc(p.glyph)} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
     }).join('');
     // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 (รูป 17) — แผงข้อมูลเดิมไม่บอกเลขขั้นตรง ๆ (มีแต่ชื่อขั้น) และไม่บอก
     // พลังโจมตีเลย ต่อให้เดาไม่ได้ว่าตัวเองแรงแค่ไหน — ดึงจาก BATTLE.atk ตรง ๆ (ค่าจริงที่ใช้ตอนฟาด
@@ -570,7 +570,7 @@ function sideBody() {
     ].sort((a, b) => a.lv - b.lv);
     const unlockTable = unlockRows.map(r => {
       const locked = g.level < r.lv;
-      return `<div class="row-truth">${r.glyph} <b>${esc(r.name)}</b> — ${esc(r.place)}
+      return `<div class="row-truth">${r.glyph.startsWith('img/') ? `<img class="power-glyph" src="${r.glyph}" alt="">` : esc(r.glyph)} <b>${esc(r.name)}</b> — ${esc(r.place)}
         <span style="color:${locked ? 'var(--muted-foreground)' : 'var(--gold)'}">[${locked ? `ล็อก · ต้องขั้น ${r.lv}` : `ปลดล็อกแล้ว · ขั้น ${r.lv}`}]</span></div>`;
     }).join('');
     return profile('hero-yama', 'ยมบาท (ตัวท่าน)', `ขั้น ${g.level}/${LEVELS.length} · ${LEVELS[g.level - 1].name}`,
@@ -783,14 +783,13 @@ function drawAtk() {
   fab.classList.remove('gold');
 }
 
-function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); drawMiniGoal(); syncAva(); syncTitle(); updatePlay(); }
+function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); if (!$('#hero-profile').hidden) drawHeroProfile(); syncAva(); syncTitle(); updatePlay(); }
 
-function drawMiniGoal() {
-  const el = $('#mini-goal');
+function miniGoalText() {
   const goal = g.miniGoals[g.zone] || { truth:0, earned:false };
-  el.textContent = goal.earned
-    ? `📜 ภารกิจสาขาสำเร็จ — แฟ้มหลักฐานพร้อมใช้ก่อนสู้${g.zoneDef().bossName}`
-    : `📜 เป้าหมายสั้น ๆ: สอบสวนจนเปิดความจริง แล้วตัดสินได้อย่างน้อย 78 คะแนน ${goal.truth}/3 คดี · รางวัล 90 เบี้ยกรรม`;
+  return goal.earned
+    ? t('coach.goalDone').replace('{boss}', g.zoneDef().bossName)
+    : t('coach.goalOpen').replace('{n}', goal.truth);
 }
 
 /** บรรทัดใต้ชื่อเกม — เดิมเขียน "นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด" ไว้ตายตัวใน index.html
@@ -1782,6 +1781,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
+  if (k === 'roar') return null;
   const style = g.outfit || g.zone;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   // ภาพท่าที่ปลดล็อกจากบอสชายแดน
@@ -1795,12 +1795,9 @@ function actionCutsceneSrc(k) {
     if (style === 'th') return `img/hero-yama-${unlockedPose}-cutscene.jpeg`;
     if (folders[style]) return `img/${folders[style]}/hero-yama-${style}-${unlockedPose}-cutscene.jpeg`;
   }
-  // ข้อ E คุณเป้ 24 ก.ย. 2569: "ตวาดข่มขู่" (roar) ไม่เคยขึ้นคัตซีนเลยสักครั้ง — ไม่มีไฟล์ของตัวเอง
-  // (img/raw/ ไม่มี hero-yama-roar-cutscene) ใช้ท่า 'atk' ร่วมกับลูกไฟแทน ไม่ใช่ภาพใหม่/ไม่แต่งสี
-  // แค่ชี้ไปที่ไฟล์เดิมที่มีอยู่แล้วเหมือนที่ fire ทำอยู่ก่อนแล้ว — ทั้งสองท่าคือการข่มขู่/ลงมือแบบดุดัน
   const pose = k === 'hypno' ? 'hyp' : k === 'mirror' ? 'mi'
              : k === 'ice' ? 'ice'
-             : k === 'fire' || k === 'roar' ? 'atk' : null;
+             : k === 'fire' ? 'atk' : null;
   if (!pose) return null;
   if (style === 'th') return `img/hero-yama-${pose}-cutscene.jpeg`;
   return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
@@ -2232,7 +2229,7 @@ function openFrontier(fromWalk = false, breach = false) {
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
-      <header><small>${breach ? 'Wave 1/3' : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(t('event.frontierBreach.title')) : esc(FRONTIER.name)}</h2>
+      <header><small>${breach ? 'Wave 1/2' : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(t('event.frontierBreach.title')) : esc(FRONTIER.name)}</h2>
         <p>${breach ? esc(t('event.frontierBreach.alert')) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
@@ -2242,7 +2239,7 @@ function openFrontier(fromWalk = false, breach = false) {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>${breach ? 'Wave 1/3' : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(t('event.frontierBreach.boss')) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
+        <div class="frontier-head"><span><b>${breach ? 'Wave 1/2' : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
           <span class="frontier-loot">${breach ? esc(t('event.frontierBreach.win')) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
@@ -2835,21 +2832,23 @@ let coachStep = null;
 
 function openCoachInbox() {
   const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
-  if (!available.length) return;
   const unread = available.filter(st => !g.taught.includes(st.k));
-  let index = unread.length ? available.indexOf(unread[unread.length - 1]) : available.length - 1;
+  // รายการสุดท้ายในกล่องคือ "เป้าหมายสั้น ๆ" ของโซน (เดิมเป็นแถบกลางจอ) — ไม่มีบทไหนค้างอ่านก็เปิดที่นี่ก่อน
+  const goalIndex = available.length;
+  let index = unread.length ? available.indexOf(unread[unread.length - 1]) : goalIndex;
   unread.forEach(st => g.taught.push(st.k));
   coachStep = null;
   g.save();
   const paint = () => {
     const st = available[index];
     dlg.innerHTML = `<div class="coach-reader-head"><img src="img/ui/icon-bell.png" alt=""><h2>${esc(t('coach.notice'))}</h2></div>
+      ${!st ? `<h3>📜 ${esc(t('coach.goal'))}</h3><p>${esc(miniGoalText())}</p>` : `
       <p class="coach-reader-count">${esc(t('coach.chapter'))} ${TUTOR.indexOf(st) + 1} / ${TUTOR.length}</p>
       <h3>${esc(st.title)}</h3><p>${esc(st.text)}</p>
-      ${st.hint ? `<div class="coach-reader-hint">▸ ${esc(st.hint)}</div>` : ''}
+      ${st.hint ? `<div class="coach-reader-hint">▸ ${esc(st.hint)}</div>` : ''}`}
       <div class="coach-reader-nav">
         <button id="coach-prev" ${index === 0 ? 'disabled' : ''}>← ${esc(t('coach.previous'))}</button>
-        <button id="coach-next" ${index === available.length - 1 ? 'disabled' : ''}>${esc(t('coach.next'))} →</button>
+        <button id="coach-next" ${index === goalIndex ? 'disabled' : ''}>${esc(t('coach.next'))} →</button>
       </div>`;
     dlg.querySelector('#coach-prev').onclick = () => { index--; paint(); };
     dlg.querySelector('#coach-next').onclick = () => { index++; paint(); };
@@ -2867,7 +2866,6 @@ function drawCoach() {
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
   const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
-  if (!coachStep && !available.length) { coachEl.hidden = true; return; }
 
   // ขั้นของพญายมต้องเป็นโมดัล — ท่านพูดเองแล้วเกมหยุดฟัง
   if (coachStep?.boss) {
@@ -2908,10 +2906,12 @@ function openPause(allowReplacing = false, automatic = false) {
       <button id="pause-home"><img src="img/ui/icon-home.png" alt=""><span>${esc(t('pause.home'))}</span></button>
       <button id="pause-resume"><img src="img/ui/icon-play.png" alt=""><span>${esc(t('pause.resume'))}</span></button>
       <button id="pause-settings"><img src="img/ui/icon-setting2.png" alt=""><span>${esc(t('pause.settings'))}</span></button>
+      <button id="pause-more"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('profile.more'))}</span></button>
     </nav>`, d => {
       d.querySelector('#pause-home').onclick = goMenu;
       d.querySelector('#pause-resume').onclick = () => { resumeRequested = true; d.close(); };
       d.querySelector('#pause-settings').onclick = openSettings;
+      d.querySelector('#pause-more').onclick = () => { d.close(); openLegacyDrawer(); };
     }, 'pause-modal');
   onDlgClose(() => {
     userPaused = automatic && resumeRequested ? false : before;
@@ -2998,11 +2998,58 @@ $('#hud-trial').onclick = goTrial;
 const legacyDrawer = $('#legacy-drawer');
 function openLegacyDrawer() { legacyDrawer.hidden = false; }
 function closeLegacyDrawer() { legacyDrawer.hidden = true; }
-$('#hud-avatar').onclick = openLegacyDrawer;
+const heroProfile = $('#hero-profile');
+function drawHeroProfile() {
+  const face = artUrl('hero-yama-profile') || artUrl('hero-yama');
+  $('#hero-profile-face').src = face;
+  $('#hero-profile-standee').src = artUrl('hero-yama');
+  $('#hero-profile-intro').innerHTML = `<h2>${esc(HERO_NAME)}</h2>
+    <div class="profile-stars" aria-label="${esc(t('profile.rank'))}">${'★'.repeat(g.level)}${'☆'.repeat(Math.max(0, LEVELS.length - g.level))}</div>
+    <strong>${esc(t('profile.rank'))} ${g.level}/${LEVELS.length} - ${esc(LEVELS[g.level - 1].name)}</strong>
+    <p>${esc(t('profile.story'))}${esc(g.zoneDef().name)}</p><p>${esc(t('profile.duty'))}</p>`;
+  const row = (img, value, label, extra = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span></div>`;
+  const hpBar = `<span class="hero-profile-hp"><i style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>`;
+  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar)
+    + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
+    + row('img/item-food.png', Math.round(g.food), t('profile.food'))
+    + row('img/ui/icon-justice.png', Math.round(g.order), t('profile.order'))
+    + row('img/ui/icon-skull.png', g.karma.toFixed(1), t('profile.karma'))
+    + row('img/ui/icon-book.png', g.casesDone, t('profile.cases'));
+  const attack = `${BATTLE.atk[0] + (g.level - 1) * 2}–${BATTLE.atk[1] + (g.level - 1) * 2}`;
+  const lvBonus = (g.level - 1) * 2;
+  const fireDmg = BATTLE.fireDmg + ((g.abilities.bigFire || g.bossCleared.th) ? 20 : 0) + lvBonus;
+  const powerIcon = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png' };
+  const abilityRows = [
+    ['flameCharge', 'img/fx-flame-charge.png', `${65 + (g.level - 1) * 3}`, 'charge'],
+    ['windFan', 'img/fx-fan-wind.png', 'MP ' + BATTLE.mpCost.wind, 'wind'],
+    ['rage', 'img/fx-rage.png', 'MP ' + BATTLE.mpCost.rage, 'rage'],
+    ['valkyrieSpear', 'img/fx-valkyrie-spear.png', 'MP ' + BATTLE.mpCost.spear, 'spear'],
+    ['cooldownClock', 'img/fx-clock-reset.png', 'MP ' + BATTLE.mpCost.clock, 'clock'],
+  ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
+  const powers = row('img/icon-sword.png', `${BATTLE.atk[0] + lvBonus}–${BATTLE.atk[1] + lvBonus}`, t('profile.attack'))
+    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo}`)
+    + abilityRows.join('')
+    + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
+  const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
+  const bag = carried.length ? carried.map(([k, n]) => row(artUrl(ITEMS[k].img) || `img/${ITEMS[k].img}.png`, `×${n}`, ITEMS[k].name)).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(c.reader ? c.duty : crewAbility(c.k))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.rabiab} · ${esc(t('profile.training'))} ${c.upLv || 0}</small></span></div>`).join('');
+  const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${GUARD.battleAtk + (g.guard?.upLv || 0) * 2} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
+  $('#hero-profile-columns').innerHTML = [
+    [t('profile.status'), status], [t('profile.powers'), powers],
+    [t('profile.bag'), bag], [t('profile.crew'), crew + guard]
+  ].map(([title, content]) => `<section class="hero-profile-column"><h3>${esc(title)}</h3>${content}</section>`).join('');
+  $('#hero-profile-menu').textContent = t('profile.more');
+}
+function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; }
+function closeHeroProfile() { heroProfile.hidden = true; }
+$('#hud-avatar').onclick = openHeroProfile;
+$('#hero-profile-close').onclick = closeHeroProfile;
+$('#hero-profile-pause').onclick = () => { closeHeroProfile(); openPause(); };
+$('#hero-profile-menu').onclick = () => { closeHeroProfile(); openLegacyDrawer(); };
 $('#legacy-drawer-close').onclick = closeLegacyDrawer;
 legacyDrawer.addEventListener('click', e => { if (e.target === legacyDrawer) closeLegacyDrawer(); });
 
-onLangChange(() => { updatePlay(); updateTrialBtn(); drawCoach(); });
+onLangChange(() => { updatePlay(); updateTrialBtn(); drawCoach(); if (!heroProfile.hidden) drawHeroProfile(); });
 
 /** กลับไปหน้าเมนู — บันทึกก่อน แล้วโหลดใหม่โดยไม่ตั้งธง fresh
  *  หน้าปกจะขึ้นมาพร้อมปุ่ม "เล่นต่อ" (ต่างจากปุ่มเดิมที่ลบเซฟทิ้งเลย) */
@@ -3525,7 +3572,10 @@ function openStation(k) {
 function openBuild(def) {
   // build() ปฏิเสธเมื่อทัณฑ์ติดเวร/พาดวงอยู่ — ปุ่มต้องปิดพร้อมเหตุผล ไม่ปล่อยให้กดแล้วกล่องปิดเงียบ (ชุด 21)
   const taan = g.crew.find(c => c.k === 'taan'), taanBusy = !!taan && !!(taan.at || taan.escort);
-  const afford = g.coin >= def.cost && !!taan && !taan.buildK && !taanBusy;
+  // build() ปฏิเสธเงียบถ้าโซนยังมีเหตุค้าง (west: วิญญาณสะกดจิต · cyberhell: ทัณฑ์/พ่อค้าถูกจับ) — บอกเหตุผลบนปุ่มด้วย
+  const zoneBlock = g.zone === 'west' && g.zoneEventStatus('westHypnotized') !== 'cleared' ? t('build.westBlocked')
+                  : !g.zoneCaptivesFree() ? t('build.captivesBlocked') : '';
+  const afford = g.coin >= def.cost && !!taan && !taan.buildK && !taanBusy && !zoneBlock;
   // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name ถ้าจ้างแล้ว (ตามโซนผ่าน
   // crewName แล้ว) ยังไม่จ้างก็ยังหาชื่อฐานของโซนนี้ผ่าน crewName ตรง ๆ ได้ (ตัวแปรกลางถ้าโซนนั้น
   // ยังไม่มีชื่อเฉพาะ — ดู CREW.taan.names ใน data.js)
@@ -3534,6 +3584,7 @@ function openBuild(def) {
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
       · แรง ${def.pow}${!taan ? ` · ต้องจ้าง${taanName}ที่โต๊ะนิราก่อน` : taan.buildK ? ` · ${taanName}กำลังสร้างหลังอื่นอยู่` : taanBusy ? ` · ${taanName}ติดงานอื่นอยู่ — รอเสร็จเวรก่อนแล้วค่อยสั่งสร้าง` : ` · ${taanName}จะเดินมาสร้างให้`}</div>
+    ${zoneBlock ? `<div class="hint" style="color:var(--gold)">${esc(zoneBlock)}</div>` : ''}
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
@@ -3590,6 +3641,7 @@ g.onChange = () => {
     const p = g.pendingDadPunish; g.pendingDadPunish = null;
     openDadPunish(p); return;
   }
+  if (g.battle) return;   // TEMP-QA: รอฉากต่อสู้ปิดก่อนค่อยเด้งกล่องเลื่อนขั้น/โซน (endBattle เรียก onChange ซ้ำเอง)
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
     const z = g.zoneDef();
     const proceed = () => {
