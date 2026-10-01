@@ -70,14 +70,14 @@ test('ลูกไฟ 40 คงที่ · น้ำแข็ง 30 + ศัต
   const youHpBefore = g2.battle.youHp;
   assert.equal(g2.battleAct('ice'), true);
   assert.equal(g2.battle.dmg.foe, 30);
-  // ผนึกไว้ได้ 1 ตาจริง — ตาของเขาที่ตามมาทันทีถูกข้าม ยมน้อยจึงไม่โดนแตะเลยเทิร์นนี้
+  // ผนึกไว้ได้ 1 ตาจริง — ตาของเขาที่ตามมาทันทีถูกข้าม ยมบาทน้อยจึงไม่โดนแตะเลยเทิร์นนี้
   // (เหมือนกับกลไกสะกดจิต/ผนึกน้ำแข็งเดิม: หยุดตาที่ "ตามมาติด ๆ" ในการประมวลผลเดียวกัน)
   assert.equal(g2.battle.youHp, youHpBefore);
 });
 
 test('บุญเติมบารมี 50 (ไม่เกินเพดาน) — ค่าฐานตรงตาราง B', () => {
   const g = battleWith(['boon']);
-  g.battle.youHp = Math.max(1, g.battle.youMax - 70);   // จำลองว่ายมน้อยเสียบารมีไปมากก่อนหน้า
+  g.battle.youHp = Math.max(1, g.battle.youMax - 70);   // จำลองว่ายมบาทน้อยเสียบารมีไปมากก่อนหน้า
   const before = g.battle.youHp;
   const expectHeal = Math.min(50, g.battle.youMax - before);
   assert.equal(g.battleAct('crew:boon'), true);
@@ -87,14 +87,14 @@ test('บุญเติมบารมี 50 (ไม่เกินเพดา
   assert.equal(g.battle.helper.lunge, false);   // บุญร่ายจากที่เดิม ไม่พุ่งเข้าใส่
 });
 
-test('กานต์สะกดจิต — เทิร์นถัดไปของศัตรู มึน ฟาดใส่ตัวเองแทนยมน้อย', () => {
+test('กานต์สะกดจิต — เทิร์นถัดไปของศัตรู มึน ฟาดใส่ตัวเองแทนยมบาทน้อย', () => {
   const g = battleWith(['kan']);
   const foeHpBefore = g.battle.foeHp;
   const youHpBefore = g.battle.youHp;
   assert.equal(g.battleAct('crew:kan'), true);
   assert.equal(g.battle.helper.lunge, false);   // กานต์ก็ร่ายจากที่เดิมเหมือนบุญ
   assert.ok(g.battle.dmg.confuseSelf > 0, 'ต้องมีดาเมจที่ศัตรูฟาดใส่ตัวเอง');
-  assert.equal(g.battle.youHp, youHpBefore, 'ยมน้อยต้องไม่โดนแตะเลยเทิร์นนี้');
+  assert.equal(g.battle.youHp, youHpBefore, 'ยมบาทน้อยต้องไม่โดนแตะเลยเทิร์นนี้');
   assert.equal(g.battle.foeHp, foeHpBefore - g.battle.dmg.confuseSelf, 'ดาเมจต้องตกที่ศัตรูเอง');
   assert.equal(g.battle.confuse, 0, 'ใช้ผลไปแล้วในเทิร์นถัดมาที่ตามมาทันที');
 });
@@ -108,7 +108,7 @@ test('ระบบฝึก "แรง" (upgradeCrew) ยังเพิ่ม�
 });
 
 // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — Dale เจอตอนรีวิว: สะกดจิตฆ่าศัตรูตายพอดีต้องประกาศชนะทันที
-// เดิมเช็คแพ้ชนะแค่จังหวะที่ยมน้อยฟาดเอง ไม่เช็คซ้ำตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย
+// เดิมเช็คแพ้ชนะแค่จังหวะที่ยมบาทน้อยฟาดเอง ไม่เช็คซ้ำตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย
 test('สะกดจิตฆ่าศัตรูตายพอดี — ประกาศชนะทันทีในคอลเดียวกัน ไม่ต้องรอกดโจมตีอีกครั้ง', () => {
   const g = battleWith(['kan']);
   g.battle.foeHp = 5; // ต่ำกว่าดาเมจต่ำสุดที่สะกดจิตทำได้แน่นอน (BATTLE.foeAtk = [7,15])

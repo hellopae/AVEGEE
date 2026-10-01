@@ -276,7 +276,7 @@ const TH = {
   'event.frontierBreach.win': 'สกัดครบ 2 wave · +120 เบี้ยกรรม · ของสนามรบ ×1',
   'event.frontierBreach.lose': 'ต้องถอยมาตั้งหลัก · บารมีเหลือ 1 · ท้าสกัดอีกครั้งได้',
   'event.devaTest.title': '⚠️ เทวดามาทดสอบ!',
-  'event.devaTest.alert': 'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมน้อย',
+  'event.devaTest.alert': 'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมบาทน้อย',
   'event.devaTest.go': 'รับการทดสอบ',
   'event.devaTest.retry': 'ทดสอบอีกครั้ง',
   'event.devaTest.return': 'กลับไปคุมโซน',

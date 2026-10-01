@@ -2305,7 +2305,7 @@ const API = {
       if (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge) return false;
       this.mp -= BATTLE.mpCost.charge;
       dmg = 65 + (this.level - 1) * 3;
-      say(`🔥 ยมน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
+      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'windFan') {
       if (!this.abilities.windFan || this.mp < BATTLE.mpCost.wind) return false;
@@ -2318,7 +2318,7 @@ const API = {
       if (!this.abilities.rage || B.rageTurns > 0 || this.mp < BATTLE.mpCost.rage) return false;
       this.mp -= BATTLE.mpCost.rage;
       B.rageTurns = 3;
-      say('🔥 พลังบ้าคลั่งปกคลุมยมน้อย — การโจมตี 3 ครั้งถัดไปแรงขึ้น');
+      say('🔥 พลังบ้าคลั่งปกคลุมยมบาทน้อย — การโจมตี 3 ครั้งถัดไปแรงขึ้น');
 
     } else if (what === 'valkyrieSpear') {
       if (!this.abilities.valkyrieSpear || this.mp < BATTLE.mpCost.spear) return false;
@@ -2396,7 +2396,7 @@ const API = {
     B.mid.selectedFoeId = B.selectedFoeId;
 
     // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — แยกเป็นฟังก์ชันย่อย เพราะตอนนี้เช็คแพ้ชนะได้ 2 จังหวะ:
-    // ตอนยมน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
+    // ตอนยมบาทน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
     // ถ้าสะกดจิตฆ่าศัตรูตายพอดี ผู้เล่นต้องกดอีกทีถึงจะเห็นว่าชนะแล้ว — Dale เจอตอนรีวิวชุด 13
     const declareWin = () => {
       B.over = 'win';
@@ -2527,7 +2527,7 @@ const API = {
       counter.confuse--;
       const d = foeAtkRoll();
       counter.hp = Math.max(0, counter.hp - d);
-      B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมน้อย
+      B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมบาทน้อย
       say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
       if (counter.hp <= 0) {
@@ -2586,7 +2586,7 @@ const API = {
     if (B.youHp <= 0 && (this.inventory.spareHeart || 0) > 0) {
       if (--this.inventory.spareHeart <= 0) delete this.inventory.spareHeart;
       B.youHp = Math.max(1, Math.round(B.youMax * 0.4));
-      say(`❤️ หัวใจสำรองแตกสลาย — ยมน้อยลุกขึ้นด้วยบารมี ${B.youHp}`);
+      say(`❤️ หัวใจสำรองแตกสลาย — ยมบาทน้อยลุกขึ้นด้วยบารมี ${B.youHp}`);
     }
     if (B.youHp <= 0) {
       B.over = 'lose';
@@ -2703,13 +2703,13 @@ const API = {
         B.over === 'win' ? 'good' : 'bad');
       if (B.over === 'win' && ev?.reward?.ending) {
         this.gameCompleted = true;
-        this.over = { k:'finalWin', title:'ยมน้อยพิชิตนรกทั้งสี่สาขา',
-          text:'ยมน้อยช่วยหัวหน้าทั้งสามสาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ทางเดินของทั้งสี่สาขาเปิดให้กลับไปพบทุกคนอีกครั้ง' };
+        this.over = { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา',
+          text:'ยมบาทน้อยช่วยหัวหน้าทั้งสามสาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ทางเดินของทั้งสี่สาขาเปิดให้กลับไปพบทุกคนอีกครั้ง' };
       }
       this.save(); this.onChange(); return B;
     }
     if (B.kind === 'zoneBoss') {
-      // บทตอนบอสแพ้/ยมน้อยแพ้ ใช้บท "ผู้ตรวจการ" ของ Rae แทน log ทั่วไป (17 ก.ย. 2569)
+      // บทตอนบอสแพ้/ยมบาทน้อยแพ้ ใช้บท "ผู้ตรวจการ" ของ Rae แทน log ทั่วไป (17 ก.ย. 2569)
       // ผ่าน Reese fact-check แล้ว — ดู ZONES[].bossWin/bossLose ใน data.js ห้ามแก้ถ้อยคำ
       const zb = ZONES.find(z => z.k === B.zone);
       const winLine = zb?.bossWin ? zb.bossWin.join(' ') : '';
@@ -3372,7 +3372,7 @@ API.restore = function (d) {
   }
   this.bossArriveFixV10 = true;
   // ชุดที่ 15b (28 ก.ย. 2569 ข้อ D.1/D.5) — โซน 1 เปลี่ยนแผนที่ทั้งผัง (scene.png 1527×704 →
-  // scene-v2.png 1678×937) เซฟเก่าที่มีตำแหน่งยมน้อย/ยมทูต/ยักษ์ทวารบาลอิงพิกัดฉากเดิมอาจไปติดอยู่
+  // scene-v2.png 1678×937) เซฟเก่าที่มีตำแหน่งยมบาทน้อย/ยมทูต/ยักษ์ทวารบาลอิงพิกัดฉากเดิมอาจไปติดอยู่
   // ในลาวา/นอกแผนที่ใหม่ — รีเซ็ตตำแหน่งเป็นค่าเริ่มต้นใหม่ครั้งเดียวตอนโหลด (เฉพาะตอนอยู่โซน 1 ที่
   // ตอนชุดที่ 15b เปลี่ยนเฉพาะโซน 1; โซนอื่นมี migration แยกด้านล่าง ไม่กระทบความคืบหน้า/ของที่ถืออยู่เลย
   // แค่ตำแหน่งยืน · ยมทูตแค่ล้าง x/y ให้ null พอ — stepWorld ในไฟล์นี้จะตั้งจาก hx/hy ใหม่ให้เองเฟรมแรก

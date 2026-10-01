@@ -23,7 +23,7 @@ export function commandWheel({battle=false, ready=true, busy=false, groups=[], s
     ${groups.map((g,i)=>`<span class="command-label label-${i}" aria-hidden="true">${esc(labels[i])}</span>`).join('')}
     ${battle?`<div class="command-center"><img src="img/ui/Button6.png" alt=""></div>`:
       `<button class="command-center ${ready?'ready':''}" id="t-go" ${ready?'':'disabled'} title="${ready?esc(t('trial.warrant')):'เลือกสถานที่ ผู้คุม และความแรงให้ครบ'}" aria-label="${esc(t('trial.warrant'))}"><img src="img/ui/Button1.png" alt=""></button>`}
-    <span class="command-center-label" aria-hidden="true">${battle?'ยมน้อย':esc(t('trial.warrant'))}</span>
+    <span class="command-center-label" aria-hidden="true">${battle?'ยมบาทน้อย':esc(t('trial.warrant'))}</span>
     ${groups.map((g,i)=>g.choices?`<div class="command-options options-${i}" data-options="${i}" inert aria-label="${labels[i]}">${g.choices}</div>`:'').join('')}
     ${selected}
     ${missing ? `<small class="command-missing" role="status">${esc(missing)}</small>` : ''}

@@ -19,9 +19,9 @@ import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 /** ชื่อตัวผู้เล่น — "Yama" คือชื่อฝรั่งของพญายมซึ่งเป็น "พ่อ" ของเรา ไม่ใช่ตัวเรา
- *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมน้อย" ให้ต่างจากพ่อชัด ๆ
+ *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมบาทน้อย" ให้ต่างจากพ่อชัด ๆ
  *  (เจ้าของถามว่าเขียนไทยว่าอะไรดี 8 ก.ย. 2569 — เปลี่ยนที่นี่ที่เดียวได้ทั้งเกม) */
-const HERO_NAME = 'ยมน้อย';
+const HERO_NAME = 'ยมบาทน้อย';
 
 /** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม
  *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)
@@ -1538,7 +1538,7 @@ function openDadPunish(p) {
       <div class="punish-vignette"></div>
       <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
       <div class="punish-flames" aria-hidden="true"><i></i><i></i></div>
-      <div class="punish-yama"><img src="${heroCry()}" alt="ยมน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
+      <div class="punish-yama"><img src="${heroCry()}" alt="ยมบาทน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
       <div class="punish-pot-front" aria-hidden="true"></div>
       <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
       <div class="punish-heat">♨</div>
@@ -1745,9 +1745,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ต่างจากท่ายืน hero-yama.png ที่หันหน้าเข้ากล้องตรง ๆ (สมมาตร ไม่มีทิศ) ซึ่งเป็นภาพที่กฎ
   // .fig.you img{transform:scaleX(-1)} ถูกตั้งไว้รองรับแต่แรก (คอมเมนต์ heroFace ด้านบน) — กฎเดียวกันนั้น
   // ไปพลิกท่าโจมตีที่หันขวาอยู่แล้วให้กลับไปหันซ้ายโดยไม่ตั้งใจ ต้องแยกกันคนละเงื่อนไข ไม่ใช่ flip รวด
-  // ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — ยมทูตโจมตี ไม่ใช่ยมน้อย: ตอนก่อนหน้านี้ท่านฟาดของยมทูต
-  // ก็ยังสลับไปใช้ท่าโจมตีของยมน้อยเองเหมือนยมน้อยเป็นคนตี (fx.crew ไม่เคยถูกเช็ค) ดูเหมือนยมน้อย
-  // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมน้อยไม่สลับท่า
+  // ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — ยมทูตโจมตี ไม่ใช่ยมบาทน้อย: ตอนก่อนหน้านี้ท่านฟาดของยมทูต
+  // ก็ยังสลับไปใช้ท่าโจมตีของยมบาทน้อยเองเหมือนยมบาทน้อยเป็นคนตี (fx.crew ไม่เคยถูกเช็ค) ดูเหมือนยมบาทน้อย
+  // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมบาทน้อยไม่สลับท่า
   const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe') && !(fx && fx.crew);
   const youImg = hp && act?.struck === 'you' && hp.dmg?.you > 0
     ? heroCry() : usingAtk ? heroAtk() : heroFace();
@@ -1759,9 +1759,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ชุดที่ 10) แต่แถว .battle-squad เป็น column-reverse ซ้อนขึ้นจากล่าง ที่ขนาดภาพเดิม (clamp สูงสุด 165px)
   // พอมี 3 คน (ยมทูต 2 + ยักษ์) ตัวที่ 3 ถูกดันสูงจน y ติดลบ (ทดสอบจริงด้วย Playwright:
   // getBoundingClientRect().y = -32 ที่ 1440px) หลุดพ้นกรอบ .arena ที่ overflow ปิดไว้ ยักษ์เลยหายไป
-  // ทั้งตัว ทั้งที่ค่า/รูปถูกต้องทุกอย่างในโค้ด — ลองแยกยักษ์ไปยืนเป็นฟิกเกอร์ต่างหาก "ด้านบนของยมน้อย"
+  // ทั้งตัว ทั้งที่ค่า/รูปถูกต้องทุกอย่างในโค้ด — ลองแยกยักษ์ไปยืนเป็นฟิกเกอร์ต่างหาก "ด้านบนของยมบาทน้อย"
   // แล้วแต่พื้นที่แนวตั้งในกรอบ .arena (aspect-ratio 16/8 เตี้ยมาก) ไม่พอจริง ๆ ไม่ว่าจะวางตรงไหนก็ชน
-  // อย่างใดอย่างหนึ่งเสมอ (คอลัมน์ยมทูต/ยมน้อย/วงคำสั่ง/ผู้กระทำผิด กินพื้นที่เกือบเต็มทุกด้านอยู่แล้ว)
+  // อย่างใดอย่างหนึ่งเสมอ (คอลัมน์ยมทูต/ยมบาทน้อย/วงคำสั่ง/ผู้กระทำผิด กินพื้นที่เกือบเต็มทุกด้านอยู่แล้ว)
   // ทดสอบแล้วด้วย Playwright วัดพิกัดจริงหลายรอบ — ทางที่เหลือพื้นที่พอจริงคือ "อยู่ในคอลัมน์เดียวกับ
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
@@ -1853,7 +1853,7 @@ function crewCutsceneSrc(k) {
 // (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
 const ACTION_CUT_MS = 1300;
 function playActionCutscene(k, ultimate = null) {
-  // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมน้อย
+  // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
   const src = ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));
@@ -1882,7 +1882,7 @@ function playActionCutscene(k, ultimate = null) {
 // เจ้าของออกแบบเลย์เอาต์มาเอง 8 ก.ย. 2569 โดยอ้างอิงเกมแนว tactics:
 //   ฉากเป็นพื้นหลังเต็มจอ · HUD ลอยทับเป็นชั้น ๆ ไม่ใช่แผงเรียงลงมา
 //   บน = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
-//   ล่างซ้าย = โปรไฟล์ยมน้อย + ของ · ล่างขวา = โปรไฟล์วิญญาณ
+//   ล่างซ้าย = โปรไฟล์ยมบาทน้อย + ของ · ล่างขวา = โปรไฟล์วิญญาณ
 // เปิดได้จากแท่นพิพากษาเท่านั้น (ดู drawDeck) — แท็บ "ไต่สวน" เดิมถูกถอดออกแล้ว
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
@@ -1930,7 +1930,7 @@ function openTrial(initialError = '') {
       <span class="chip">☠️ กรรม ${bar(g.karma, 'karma')} <b>${g.karma.toFixed(1)}</b></span>
       <span class="ttl">${esc(t('trial.caseNo'))} #${String(s.id).padStart(3, '0')}</span>`;
 
-    // ---- ปุ่มด้านบน + วงคำสั่งข้างยมน้อย ----
+    // ---- ปุ่มด้านบน + วงคำสั่งข้างยมบาทน้อย ----
     // ข้อ E.4 ชุด 15 — ไอคอนจริงจาก img/raw/ (icon_book.png · icon lock.png · icon skip.png) แทนอิโมจิเดิม
     const topActions =
       `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
@@ -2066,7 +2066,7 @@ function openTrial(initialError = '') {
         </div>
         <!-- การ์ดรูป+ชื่อวิญญาณ (.port.foe) เอาออก 18 ก.ย. 2569 (ข้อ A ของคุณเป้) — บนจอแคบมันทับ
              .hud-log ด้านบน และข้อมูลตัวตนซ้ำกับ .fig.foe ที่อยู่บนเวทีอยู่แล้ว (รูป+ชื่อเดียวกัน)
-             เอาออกทุกจอ ไม่ใช่แค่จอแคบ — ดูสะอาดกว่าและไม่เสียข้อมูลอะไรไป การ์ดยมน้อยฝั่งซ้ายคงไว้ -->
+             เอาออกทุกจอ ไม่ใช่แค่จอแคบ — ดูสะอาดกว่าและไม่เสียข้อมูลอะไรไป การ์ดยมบาทน้อยฝั่งซ้ายคงไว้ -->
       </div>
     </div>`;
 
@@ -2171,7 +2171,7 @@ function openNiraOffice() {
   const paint = () => {
     const party = g.party?.members || [];
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
-      <p class="hint">เลือกยมทูตเข้าทีมต่อสู้ได้ 2 คน เมื่อเข้าสนามรบจะมาช่วยยมน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
+      <p class="hint">เลือกยมทูตเข้าทีมต่อสู้ได้ 2 คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
       <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
       <div class="market-grid">${CREW.filter(c => !c.reader).map(def => {
         const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
@@ -2415,7 +2415,7 @@ function openBattle(after) {
     const b = g.battle;
     if (!b) return;
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): ตา "เขา" ที่ถูกสะกด ฟาดเข้าตัวเอง
-    // ไม่ใช่พุ่งเข้าใส่ยมน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมน้อย (ดู B.dmg.confuseSelf ใน game.js)
+    // ไม่ใช่พุ่งเข้าใส่ยมบาทน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมบาทน้อย (ดู B.dmg.confuseSelf ใน game.js)
     const confuseHit = !!(b.dmg && b.dmg.confuseSelf > 0);
     // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
     const view = phase === 'you' && b.mid
@@ -2479,7 +2479,7 @@ function openBattle(after) {
     const guardBtn = g.guard ? (() => {
       const why = g.guardHelpWhy();
       return `<button class="orb-choice" data-act="guard" data-crew-action="guard" ${why ? 'disabled' : ''}
-        title="${esc(why || `ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมน้อยสู้`)}">
+        title="${esc(why || `ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมบาทน้อยสู้`)}">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><b>${esc(GUARD.name)}</b><small>ฟาดแรง</small></button>`;
     })() : '';
     const crewHelperBtns = battleHelpers.map(c => {
@@ -2618,7 +2618,7 @@ function openBattle(after) {
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
       const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health'})[k] || k;
-      // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
+      // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe', crew: crewNow };
       paint();
@@ -2722,7 +2722,7 @@ function openBattle(after) {
       const label=dlg.querySelector('[data-cooldown-label="guard"]');
       if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
       const button=dlg.querySelector('[data-crew-action="guard"]');
-      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||`ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมน้อยสู้`;}
+      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||`ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมบาทน้อยสู้`;}
     }
   },1000);
   battleUI = () => { paint(); openDlg('rpg'); };
@@ -2751,7 +2751,7 @@ function openZone() {
   }).join('');
   const [startX, startY] = ZONE_MAP[g.zone].gate;
   modal(`<h2>🗺️ แผนที่อเวจี</h2>
-    <div class="world-map-note">ตอนนี้อยู่ <b style="color:var(--gold)">${esc(cur.name)}</b> · กดชื่อโซนที่เปิดแล้วเพื่อให้ยมน้อยกับนิราเดินทางข้ามไป
+    <div class="world-map-note">ตอนนี้อยู่ <b style="color:var(--gold)">${esc(cur.name)}</b> · กดชื่อโซนที่เปิดแล้วเพื่อให้ยมบาทน้อยกับนิราเดินทางข้ามไป
       <span class="world-pan-hint">· ปัดแผนที่ซ้าย–ขวาเพื่อดูทุกโซน</span></div>
     <div class="world-map-scroll"><div class="world-map" role="group" aria-label="แผนที่เลือกโซน">
       <img class="world-map-art" src="img/zone-world-map.webp" alt="เส้นทางเชื่อมสี่ดินแดนในอเวจี">
@@ -2761,7 +2761,7 @@ function openZone() {
         <img class="nira" src="${artUrl('crew-nira')}" alt="">
       </div>
     </div></div>
-    <div class="world-map-note">ยมน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
+    <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
     <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`, d => {
     const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
     const travelers = d.querySelector('.world-travelers');
@@ -2885,7 +2885,7 @@ function openBag() {
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
 
-  modal(`<h2>🎒 กระเป๋าของยมน้อย</h2>
+  modal(`<h2>🎒 กระเป๋าของยมบาทน้อย</h2>
     <div class="hint">ของที่เก็บได้จะไม่ถูกใช้ทันที เลือกใช้เมื่อจำเป็น และติดตัวไปทุกโซน</div>
     <div class="bag-title">ของใช้ · ${carried.reduce((s, [, n]) => s + n, 0)} ชิ้น</div>
     <div class="bag-list">${itemCards}</div>
@@ -4083,7 +4083,7 @@ else refresh();                          // วาดแผงไว้ใต้
 function openIntro(fromTitle = false) {
   const pages = [
     { title:'สามร้อยปีที่ไม่มีใครอยากพูดถึง', art:'scene', line:'โซนสุวรรณภูมิเคยมีผู้คุมสิบสองคน ตอนนี้เหลือสองคน และสำนวนที่ยังไม่มีใครกล้าเปิดอ่าน' },
-    { title:'งานแรกของลูกพญายม', art:'hero-boss', line:'“เจ้าจะไม่ตัดสินจากหน้าตา จากคำร่ำลือ หรือจากความโกรธของตัวเอง” พ่อวางตรายมบาทลงในมือยมน้อย' },
+    { title:'งานแรกของลูกพญายม', art:'hero-boss', line:'“เจ้าจะไม่ตัดสินจากหน้าตา จากคำร่ำลือ หรือจากความโกรธของตัวเอง” พ่อวางตรายมบาทลงในมือยมบาทน้อย' },
     { title:'แฟ้มเล่มแรก', art:'crew-nira', line:'นิราอ่านเพียงสิ่งที่คนบนโลกเห็น บางวิญญาณดูดี บางวิญญาณดูร้าย แต่สิ่งที่ซ่อนอยู่จะปรากฏก็ต่อเมื่อเจ้าสอบสวน' },
     { title:'คำตัดสินเดินได้', art:'hero-yama', line:'เมื่อออกหมาย ยมทูตจะพาวิญญาณไปยังสถานที่ที่เจ้าสร้างไว้ ตัดสินให้ตรงกรรมและตรงวาระ เพราะทุกคำสั่งมีผลตามมา' },
     { title:'กฎข้อเดียวที่ห้ามลืม', art:'hero-boss', line:`“ทัณฑ์ที่เกินกรรมไม่ได้หายไปไหน มันกลับมาอยู่ในบัญชีของผู้ตัดสิน” พ่อให้ ${BAL.startCoin} เบี้ยกรรม แล้วปล่อยให้เจ้ารับสำนวนแรก` },
