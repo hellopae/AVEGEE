@@ -944,22 +944,121 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .st-hud .st-left{grid-area:left}
 .st-hud .st-room{grid-area:room}
 .st-hud .hud-right{grid-area:right}
-/* ห้องโซน 1 ใช้ฉากเต็มพื้นที่ตามภาพอ้างอิง โดยคำอธิบายและปุ่มลอยบนฉาก */
+/* ---------- ห้องสถานีตามแบบ UI4 (ชุด 27A) ----------
+   จอเต็มกรอบเกม: ฉาก canvas เต็มกรอบ · การ์ดหัวเรื่องซ้ายบน · พัก/ปิดขวาบน · ปุ่มทองลอยตามจุดในแบบ · HUD ล่างซ้าย
+   ขนาดทั้งหมดบนจอกว้างคิดเป็น cqw ของกรอบ (แบบวาดที่กรอบกว้าง 1913px → 1cqw ≈ 19px ของแบบ) ย่อ/ขยายตามจอได้
+   จอแคบ (≤1100px): เรียงเป็นแนวตั้ง — การ์ด · ฉาก · ปุ่ม · แผงรายชื่อ · HUD (ไม่มีอะไรลอยทับจนกดไม่ได้) */
+.st-hud.zone1-room{container-type:inline-size;background:#0d0508;border:1px solid var(--gold);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6);border-radius:14px}
+.st-hud.zone1-room > *{z-index:2}
+.st-hud.zone1-room .st-room{z-index:0}
+.st-card{background:rgba(34,17,30,.95);border:1px solid var(--gold);color:#f2e6d6}
+.st-card h2{margin:0;font-family:var(--font-display);font-weight:600;color:#e8b65e;line-height:1.15}
+.st-card p{margin:0;color:#f0e4d6;line-height:1.5}
+.st-icon-btn{all:unset;box-sizing:border-box;cursor:pointer;display:block;flex:none}
+.st-icon-btn img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
+.st-icon-btn:hover img{transform:scale(1.06)}
+.st-icon-btn:focus-visible,.st-hud-item:focus-visible{outline:2px solid #fff4c7;outline-offset:2px}
+.st-controls{display:flex;align-items:center}
+.st-avatar{display:flex;flex-direction:column;align-items:stretch;flex:none}
+.st-ava-row{display:flex;align-items:flex-start}
+.st-avatar img{aspect-ratio:1;object-fit:cover;object-position:top;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6);flex:none}
+.st-avatar small{display:block;color:#f2e6d6;font-weight:600;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.95);white-space:nowrap}
+.st-hud-item{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;flex:none}
+.st-hud-item img{object-fit:contain;display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6))}
+.st-hud-item span{color:#e8b65e;font-weight:600;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.95);line-height:1.15}
+.st-action{display:flex;flex-direction:column;align-items:center;text-align:center}
+.st-action small,.st-alert small{color:#e8dccb;opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.st-hpbar{display:block;border-radius:99px;background:#0b0508;overflow:hidden}
+.st-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#1fb866,#14994f)}
+.st-hp{color:#f4ead9;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.st-drawer{background:rgba(34,18,30,.96);border:1px solid rgba(232,182,94,.35);overflow-y:auto;overscroll-behavior:contain}
+.st-drawer[hidden]{display:none}
+.st-pane[hidden]{display:none}
+.st-pane-title{color:#f6ecdc;font-weight:700}
+.st-pane-note{color:#e8b65e}
+.st-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.045);color:#d6cbbd}
+.st-row .btn-gold{flex:none;white-space:nowrap}
+.st-action .btn-gold,.st-alert .btn-gold,.st-row .btn-gold{width:auto}
+.st-action .btn-gold:disabled,.st-alert .btn-gold:disabled,.st-row .btn-gold:disabled{opacity:.5}
+
 @media (min-width:1101px){
-  .st-hud.zone1-room .hud-body{display:block;position:relative;min-height:0;padding:0;overflow:hidden}
-  .st-hud.zone1-room .st-room{position:absolute;inset:0;display:block;z-index:0}
-  .st-hud.zone1-room .st-room canvas{width:100%;height:100%;border-radius:0}
-  .st-hud.zone1-room .st-left{position:absolute;z-index:2;top:24px;left:24px;width:min(26%,390px);
-    max-height:32%;overflow-y:auto;background:rgba(31,14,23,.93);border:1px solid var(--gold);
-    border-radius:14px;padding:12px;box-shadow:0 8px 30px #0008}
-  .st-hud.zone1-room .st-left .hud-card{background:transparent;border:0;padding:4px 8px}
-  .st-hud.zone1-room .hud-right{position:absolute;z-index:2;top:34%;left:50%;transform:translateX(-50%);
-    width:min(340px,31%);max-height:48%;overflow-y:auto;background:rgba(25,11,19,.82);
-    border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:0 8px 30px #0008}
-  .st-hud.zone1-room .hud-right .hud-card{background:transparent;border:0;padding:4px}
-  .st-hud.zone1-room .hud-right .hud-card h4{display:none}
-  .st-hud.zone1-room .hud-top{position:absolute;z-index:2;bottom:9px;left:16px;right:16px;
-    width:auto;background:rgba(25,11,19,.72);border-radius:10px}
+  dialog.hudwrap:has(.st-hud.zone1-room){width:min(calc(100vw - 32px),calc((100dvh - 24px) * 1.866));
+    min-width:0;max-width:none;max-height:none;overflow:visible}
+  .st-hud.zone1-room{display:block;width:100%;height:auto;aspect-ratio:1913/1025;overflow:hidden}
+  .st-hud.zone1-room > *{position:absolute}
+  .st-hud.zone1-room .st-room{inset:0;display:block}
+  .st-hud.zone1-room .st-room canvas{width:100%;height:100%;border-radius:0;background:#120810}
+  .st-card{left:1.8cqw;top:1.7cqw;box-sizing:border-box;width:max-content;max-width:28.5cqw;padding:1.55cqw 2.1cqw 1.6cqw;border-radius:1.15cqw}
+  .st-card[data-room=tarang]{max-width:26cqw}
+  .st-card h2{font-size:1.9cqw;margin-bottom:.55cqw}
+  .st-card p{font-size:1.12cqw}
+  .st-controls{right:8.7cqw;top:2.2cqw}
+  .st-controls .st-icon-btn{width:3.55cqw;height:3.55cqw}
+  /* ปุ่มปิดทองมาจากตัวเฝ้ากลางของกล่อง (.modal-corner-close ใน ui.js) — แค่วางตำแหน่งให้ตรงแบบ */
+  dialog#dlg:has(.st-hud.zone1-room) > .modal-corner-close{--dw:min(calc(100vw - 32px),calc((100dvh - 24px) * 1.866));
+    right:calc(var(--dw) * .03);top:calc(var(--dw) * .0215);width:calc(var(--dw) * .032);height:calc(var(--dw) * .032)}
+  .st-bottom-left{left:2.6cqw;bottom:1.7cqw;display:flex;align-items:flex-end;gap:1.5cqw}
+  .st-avatar{width:7.6cqw}
+  .st-avatar img{width:6.2cqw;border-radius:.5cqw}
+  .st-hud.zone1-room .hud-rank-stars{margin-left:.5cqw}
+  .st-hud.zone1-room .hud-rank-stars .rk-star{font-size:1.2cqw}
+  .st-avatar .hud-hpbar{width:6.2cqw;height:.55cqw;margin-top:.35cqw}
+  .st-avatar small{font-size:1.05cqw;width:6.2cqw;margin-top:.25cqw}
+  .st-hud-item{margin-bottom:.1cqw}
+  .st-hud-item img{height:4cqw;width:auto;max-width:3.6cqw}
+  .st-hud-item span{font-size:1.02cqw;margin-top:.3cqw;max-width:5cqw}
+  #st-actions{inset:0;pointer-events:none}
+  .st-action{position:absolute;left:var(--action-x);top:var(--action-y);transform:translate(-50%,-1.6cqw);pointer-events:auto}
+  .st-action .btn-gold,.st-alert .btn-gold{min-width:11.6cqw;height:3.1cqw;padding:0 1.6cqw .15cqw;font-size:1.32cqw;border-radius:.6cqw}
+  .st-action small{margin-top:.55cqw;font-size:.98cqw;max-width:26cqw;line-height:1.35}
+  .st-hpbar{width:11.6cqw;height:.55cqw;margin-top:.9cqw}
+  .st-hp{font-size:1.1cqw;margin-top:.4cqw}
+  .st-alert{left:50%;bottom:2.2cqw;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+  .st-alert:empty{display:none}
+  .st-alert small{font-size:.98cqw;margin-top:.4cqw}
+  .st-drawer{right:2.7cqw;top:13.6%;width:34.3cqw;max-height:56%;box-sizing:border-box;padding:1.1cqw 1.1cqw 1cqw;border-radius:1.3cqw}
+  .st-pane-title{font-size:.98cqw;padding:.25cqw .6cqw .6cqw}
+  .st-pane-note{font-size:.95cqw;padding:0 .6cqw .5cqw}
+  .st-row{margin-top:.5cqw;min-height:4.1cqw;padding:.45cqw .6cqw .45cqw 1.3cqw;border-radius:.9cqw;font-size:1.06cqw}
+  .st-row .btn-gold{min-width:9.7cqw;height:3cqw;padding:0 1cqw .15cqw;font-size:1.25cqw;border-radius:.55cqw}
+}
+@media (max-width:1100px){
+  dialog.hudwrap:has(.st-hud.zone1-room)[open]{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);
+    width:calc(100% - 12px);min-width:0;margin:6px auto;padding:0}
+  .st-hud.zone1-room{display:flex;flex-direction:column;gap:10px;height:100%;max-height:none;box-sizing:border-box;
+    padding:10px 10px max(12px,env(safe-area-inset-bottom));overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+  .st-hud.zone1-room > *{position:static;flex:none}
+  .st-card{order:1;padding:10px 14px 12px;border-radius:14px}
+  .st-card h2{font-size:20px;line-height:30px;margin:0 0 10px;padding-right:104px;min-height:30px}
+  .st-card p{font-size:13px}
+  .st-hud.zone1-room .st-room{order:2;position:relative;z-index:auto;width:100%;min-height:0;aspect-ratio:1913/1025;border-radius:10px;overflow:hidden}
+  .st-hud.zone1-room .st-room canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
+  #st-actions{order:3;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
+  .st-action{width:100%}
+  .st-action .btn-gold,.st-alert .btn-gold{min-width:160px;max-width:100%;height:50px;padding:0 20px 3px;font-size:16px}
+  .st-action small,.st-alert small{margin-top:6px;font-size:12px;line-height:1.4}
+  .st-hpbar{width:160px;height:6px;margin-top:10px}
+  .st-hp{font-size:13px;margin-top:4px}
+  .st-alert{order:4;display:flex;flex-direction:column;align-items:center}
+  .st-alert:empty{display:none}
+  .st-drawer{order:5;box-sizing:border-box;padding:10px;border-radius:14px;max-height:36dvh;min-height:0}
+  .st-pane-title{font-size:14px;padding:2px 4px 8px}
+  .st-pane-note{font-size:12px;padding:0 4px 8px}
+  .st-row{margin-top:6px;min-height:54px;padding:6px 8px 6px 12px;border-radius:10px;font-size:13px}
+  .st-row .btn-gold{min-width:112px;height:44px;padding:0 12px 3px;font-size:14px}
+  .st-hud.zone1-room > .st-controls{position:absolute;top:10px;right:60px;z-index:5}
+  .st-controls .st-icon-btn{width:42px;height:42px}
+  .st-hud.zone1-room .st-arch,.st-hud.zone1-room .mg-ov{position:fixed;inset:8px;z-index:120}
+  .st-bottom-left{order:6;display:flex;align-items:flex-end;gap:14px;margin-top:auto;padding:4px 4px 0}
+  .st-avatar{width:78px}
+  .st-avatar img{width:62px;border-radius:8px}
+  .st-ava-row .hud-rank-stars{margin-left:4px}
+  .st-avatar .hud-hpbar{width:62px;height:6px}
+  .st-avatar small{font-size:11px;width:78px}
+  .st-hud-item{min-width:56px;min-height:44px}
+  .st-hud-item img{height:46px;width:auto;max-width:44px}
+  .st-hud-item span{font-size:11px;margin-top:2px}
 }
 @media (max-width:1100px){.st-hud .hud-body{grid-template-columns:minmax(140px,170px) minmax(0,1fr) minmax(200px,220px)}}
 .st-left{overflow-y:auto}
