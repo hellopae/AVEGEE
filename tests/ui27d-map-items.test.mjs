@@ -188,3 +188,149 @@ test('ชนะฉากต่อสู้กับเปรต/วิญญา�
   for (let i = 0; i < 40 && !g.battle.over; i++) g.battleAct('atk');
   if (g.battle.over === 'lose') assert.equal(total(g), 0);
 });
+
+// ---------- รอบ 2: บอสได้ EXP ไม่ได้ winLoot · ชายแดนได้ winLoot ต่อศึก · พญายมไม่ทับยมบาท ----------
+import { ZONE_EVENTS, FRONTIER } from '../src/data.js';
+
+const total = g => Object.values(g.inventory).reduce((a, b) => a + b, 0);
+/** ชนะฉากสู้ให้จบ: ข้ามระลอก ลดเลือดศัตรูทุกตัวเหลือ 1 แล้วฟาด */
+function winBattle(g) {
+  for (let i = 0; i < 80; i++) {
+    const B = g.battle;
+    if (B.over) return;
+    if (B.pendingWave) { B.kind === 'frontierBreach' ? g.advanceFrontierBreachWave() : g.advanceZoneEventWave(); continue; }
+    B.foes.forEach(f => { f.hp = Math.min(f.hp, 1); });
+    if (!B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0)) B.selectedFoeId = B.foes.find(f => f.hp > 0)?.id;
+    B.youHp = 9999; B.youMax = 9999;
+    g.battleAct('atk');
+  }
+}
+const freshIn = zone => {
+  const g = createGame();
+  g.level = 5; g.hpMax = 9999; g.hp = 9999;
+  g.inventory = {};
+  if (zone !== 'th') { for (const z of ZONES) g.bossCleared[z.k] = true; g.moveZone(zone); g.inventory = {}; g.paused = false; }
+  return g;
+};
+
+test('ศึกบอส/เทวดา/อีเวนต์ทุกตัวในเกม ให้ EXP จริงและไม่ได้ winLoot', () => {
+  const seen = [];
+  for (const zone of Object.keys(ZONE_EVENTS)) {
+    for (const ev of ZONE_EVENTS[zone]) {
+      if (!ev.foe && !ev.foes && !ev.waves) continue;
+      const g = freshIn(zone);
+      g.setFrontierTeam?.('taan');
+      g.zoneEvents[zone] = g.zoneEvents[zone] || {};
+      g.zoneEvents[zone][ev.k] = 'pending';
+      let b;
+      if (ev.k === 'prisonBreak') b = g.startPrisonBreak();
+      else if (ev.k === 'devaTest') b = (g.zoneEvents.th.prisonBreak = 'cleared', g.startDevaTest());
+      else if (ev.k === 'frontierBreach') b = (g.zoneEvents.th.devaTest = 'cleared', g.startFrontierBreach());
+      else b = g.startZoneEvent(ev.k);
+      assert.ok(b, `${zone}/${ev.k} starts`);
+      const exp0 = g.exp, lvl0 = g.level;
+      const itemsBefore = total(g);
+      winBattle(g);
+      assert.equal(g.battle.over, 'win', `${zone}/${ev.k} won`);
+      assert.ok(g.exp > exp0 || g.level > lvl0, `${zone}/${ev.k} gives EXP`);
+      const frontierWave = ev.team === 'frontier';
+      if (!frontierWave) assert.ok(!g.battle.loot, `${zone}/${ev.k}: no winLoot`);
+      seen.push(`${zone}/${ev.k}`);
+    }
+  }
+  assert.ok(seen.length === 13, seen.join());
+});
+
+test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {
+  const g = freshIn('asia');
+  g.zoneCases.asia = 10;
+  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+  g.bossCleared.asia = false;
+  assert.ok(g.startZoneBoss());
+  const exp0 = g.exp, lvl0 = g.level;
+  winBattle(g);
+  assert.equal(g.battle.over, 'win');
+  assert.ok(g.exp > exp0 || g.level > lvl0);
+  assert.equal(total(g), 0);
+  assert.ok(!g.battle.loot);
+});
+
+test('ชายแดน: ชนะกิจกรรมอิสระได้ winLoot เพิ่ม 1 ชิ้นจากตาราง 6 อย่าง', () => {
+  const allowed = new Set(MOB.winLoot);
+  const g = freshIn('th');
+  g.setFrontierTeam('taan');
+  assert.ok(g.startFrontierBattle());
+  winBattle(g);
+  assert.equal(g.battle.over, 'win');
+  const reward = g.battle.reward.item;
+  assert.ok(FRONTIER.drops.includes(reward));
+  assert.equal(total(g), 2);                       // รางวัลชายแดนเดิม 1 + winLoot 1
+  assert.ok(g.battle.loot.includes(' · '));
+  const names = Object.keys(g.inventory);
+  assert.ok(names.every(k => allowed.has(k) || k === reward));
+});
+
+test('ชายแดน: ศึก event หลายระลอกได้ winLoot ครั้งเดียวต่อศึก (th breach + โซน 2–4)', () => {
+  const allowed = new Set(MOB.winLoot);
+  // th frontierBreach: รางวัลเดิม FRONTIER.drops ×1 + winLoot 1
+  let g = freshIn('th');
+  g.setFrontierTeam('taan');
+  g.zoneEvents.th = { frontierBreach:'pending', devaTest:'cleared' };
+  assert.ok(g.startFrontierBreach());
+  winBattle(g);
+  assert.equal(g.battle.over, 'win');
+  assert.equal(total(g), 1 + 1);
+  assert.ok(g.battle.loot);
+  // zoneEvent team:'frontier' โซน 2–4 ไม่มีรางวัลเป็นของ → ได้ winLoot 1 ชิ้นพอดี แม้มี 3–4 ระลอก
+  for (const [zone, key] of [['asia', 'asiaRageBreach'], ['west', 'westVampireBreach'], ['cyberhell', 'cyberBreach']]) {
+    g = freshIn(zone);
+    g.setFrontierTeam('taan');
+    g.zoneEvents[zone][key] = 'pending';
+    const ev = ZONE_EVENTS[zone].find(e => e.k === key);
+    assert.ok(g.startZoneEvent(key), key);
+    winBattle(g);
+    assert.equal(g.battle.over, 'win', key);
+    const extra = ev.reward.item ? 1 : 0;           // cyberBreach ให้ spareHeart เป็นรางวัลของมัน
+    assert.equal(total(g), 1 + extra, `${key}: one winLoot for the whole battle`);
+    const loot = Object.keys(g.inventory).filter(k => k !== ev.reward.item);
+    assert.ok(loot.length === 1 || (loot.length === 0 && allowed.has(ev.reward.item)), key);
+  }
+});
+
+test('ดอกบัวมีขายที่พ่อค้านรกอยู่แล้ว (65 เบี้ย) และซื้อได้', async () => {
+  const { MERCHANT } = await import('../src/data.js');
+  const row = MERCHANT.stock.find(x => x.k === 'lotus');
+  assert.ok(row && row.cost === 65 && row.lv === 1);
+  const g = createGame(); g.coin = 100; g.inventory = {};
+  assert.equal(g.buyMerchant('lotus'), true);
+  assert.equal(g.inventory.lotus, 1);
+  assert.equal(g.coin, 35);
+});
+
+test('พญายมโผล่บนเก้าอี้ — ยมบาทที่ยืนทับถอยไปข้างแท่น ไม่ทับกัน และถอยครั้งเดียวต่อการปรากฏ', () => withImageCanvas(() => {
+  for (const z of ZONES) {
+    const g = createGame();
+    g.zone = z.k; syncSceneZone(z.k); resetWalk(); g.syncBlocks(true);
+    const bg = image(z.scene);
+    assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true);
+    g.mobs = [];
+    const T = SPOTS.throne;
+    for (const start of [[880, 455], [820, 455], [836, 470]]) {
+      g.player.x = start[0]; g.player.y = start[1]; g.player.path = null; g.player.tx = null;
+      g.bossUntil = performance.now() + 7000; g.bossDodged = null;
+      for (let i = 0; i < 400; i++) g.stepWorld(16);
+      const d = Math.hypot(g.player.x - T.x, (g.player.y - T.y) * 1.6);
+      assert.ok(d >= 90, `${z.k}: from ${start} stands clear of the throne (d=${d.toFixed(0)})`);
+      assert.equal(canWalk(g.player.x, g.player.y), true);
+    }
+    // ยืนไกลอยู่แล้ว → ไม่ถูกลากไปไหน
+    g.player.x = 400; g.player.y = 600; g.player.path = null;
+    g.bossUntil = performance.now() + 7000; g.bossDodged = null;
+    g.stepWorld(16);
+    assert.deepEqual([g.player.x, g.player.y, g.player.path], [400, 600, null]);
+    // เดินกลับมาทับเองระหว่างพญายมยังอยู่ → ไม่ถูกฉุดซ้ำ
+    g.player.x = T.x; g.player.y = T.y; g.player.path = null;
+    g.stepWorld(16);
+    assert.equal(g.player.path, null);
+  }
+}));

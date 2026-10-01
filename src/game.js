@@ -1318,6 +1318,13 @@ const API = {
       const p = nearestWalk(P.x, P.y);
       if (p) { P.x = p[0]; P.y = p[1]; P.tx = null; P.path = null; }
     }
+    // ชุด 27D รอบ 2 — พญายมมานั่งเก้าอี้ (ui.js ตั้ง g.bossUntil ตอนแสดงคำตัดสิน) ถ้ายมบาทยืนทับเขาอยู่
+    // ให้ถอยไปยืนข้างแท่นฝั่งขวา (พ้นแถวคิวที่ 880,440) ครั้งเดียวต่อการปรากฏ — ผู้เล่นเดินกลับมาเองได้ ไม่ฉุดซ้ำ
+    if (this.bossUntil && this.bossUntil !== this.bossDodged && performance.now() < this.bossUntil) {
+      this.bossDodged = this.bossUntil;
+      const T = SPOTS.throne;
+      if (Math.hypot(P.x - T.x, (P.y - T.y) * 1.6) < 70) this.walkTo(T.x + 116, T.y + 52);
+    }
     // เดินตามเส้นทางที่ findPath วางไว้ — อ้อมลาวาเองได้ ไม่ไปยืนจ่อกำแพงแล้วค้าง
     if (P.path && P.path.length) {
       const w = P.path[0];
@@ -2386,7 +2393,8 @@ const API = {
         this.coin += event.reward.coin;
         this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
         B.reward = { coin:event.reward.coin, item };
-        B.talk = t('event.frontierBreach.win');
+        B.loot = this.winLoot();             // ชนะทั้งศึกครั้งเดียว (declareWin ถูกเรียกตอนจบระลอกสุดท้ายเท่านั้น)
+        B.talk = t('event.frontierBreach.win') + B.loot;
         say(B.talk);
         this.bossPending = this.bossReady();
       } else if (B.kind === 'devaTest') {
@@ -2415,7 +2423,9 @@ const API = {
         }
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
-        B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}`;
+        // ศึกชายแดนของโซน 2–4 (team:'frontier') ได้ของสุ่มเพิ่มต่อชัยชนะทั้งศึกครั้งเดียว · บอส/เทวดา/แหกคุก ไม่ได้
+        B.loot = ev?.team === 'frontier' ? this.winLoot() : '';
+        B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
         say(B.talk);
         this.bossPending = this.bossReady();
       } else if (B.kind === 'frontier') {
@@ -2427,7 +2437,8 @@ const API = {
         state.clears = Math.max(state.clears || 0, B.wave);
         B.reward = { coin, item };
         this.order = clamp(this.order + 1, 0, 100);
-        say(`ป้องกันชายแดนสำเร็จ — +${coin} เบี้ยกรรม · ได้ ${ITEMS[item].name} ×1`);
+        B.loot = this.winLoot();
+        say(`ป้องกันชายแดนสำเร็จ — +${coin} เบี้ยกรรม · ได้ ${ITEMS[item].name} ×1${B.loot}`);
       } else if (B.kind === 'mob') {
         const gain = Math.round(MOB.bounty * MOB.fightWin);
         this.coin += gain;
