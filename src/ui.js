@@ -3156,7 +3156,8 @@ function roomFor(k) {
   const base = ROOMS[k] || ROOM_DEFAULT;
   const cap = `BG-${k[0].toUpperCase()}${k.slice(1)}`;
   const own = base.zones && base.zones[g.zone];
-  return own && stBg(k) !== `img/${cap}.webp` ? { ...base, ...own } : base;
+  return own && stBg(k) !== `img/${cap}.webp` ? { ...base, ...own }
+    : g.zone === 'th' && base.ui4 ? { ...base, ...base.ui4 } : base;
 }
 
 function openStation(k) {
@@ -3165,160 +3166,142 @@ function openStation(k) {
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
+  let drawerMode = k === 'tarang' ? 'inspect' : null;
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
 
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
+  // เขียน innerHTML เฉพาะตอนเนื้อหาเปลี่ยนจริง — panels() วาดซ้ำทุก 0.9 วินาที ปุ่มต้องไม่ถูกสร้างใหม่ใต้นิ้วผู้เล่น
+  const put = (el, html) => { if (el._h === html) return; el._h = html; el.innerHTML = html; };
 
   /** เนื้อหาฝั่งซ้าย/ขวา — วาดใหม่ได้บ่อยโดยไม่แตะ canvas ของฉาก
    *  (ถ้าวาดทั้งกล่องใหม่ทุกครั้ง ตัวละครในห้องจะกระโดดกลับจุดเริ่มทุก 0.7 วินาที) */
   const panels = () => {
     const st = g.stations.find(x => x.def.k === k);
     if (!st) return;
-    const cap = g.stCap(st), v = def.visit;
+    const cap = g.stCap(st);
     const inside = !!(R && R.inReach());
 
-    const acts = [];
-    if (st.fire > 0 && !g.mobs.length) {
-      const taan = g.crewOf('taan');
-      const why = st.repair ? st.repairWait ? `${taan?.name || 'ทัณฑ์'}กำลังเดินมา` : 'กำลังซ่อมอยู่'
-        : !taan ? 'ยังไม่มีทัณฑ์'
-        : taan.buildK || taan.at ? `${taan.name}ติดงานอื่นอยู่` : '';
-      acts.push(`<button id="s-repair" ${why ? 'disabled' : ''}>🔧 เรียกทัณฑ์มาซ่อม
-        <small>${esc(why || 'ฟรี · ใช้เวลา 2.1 วินาทีหลังทัณฑ์มาถึง')}</small></button>`);
+    // ---- ทุกอย่างในห้องวาดตามแบบ UI4: การ์ดหัวเรื่อง · ปุ่มทองกลางฉาก · แผงรายชื่อ (ตะราง/ประตูสวรรค์) ----
+    const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'),
+          A = dlg.querySelector('#st-actions'), AL = dlg.querySelector('#st-alert');
+    const row = (label, btn) => `<div class="st-row"><span>${label}</span>${btn}</div>`;
+    const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
+
+    // ปุ่มซ่อม — ไม่อยู่ในแบบ แต่เป็นปุ่มของเกมที่โผล่เฉพาะตอนสถานีเสียหาย/ไฟไหม้ จึงคงไว้ (ล่างกลางฉาก)
+    if (AL) {
+      if (st.fire > 0 && !g.mobs.length) {
+        const taan = g.crewOf('taan');
+        const why = st.repair ? st.repairWait ? `${taan?.name || 'ทัณฑ์'}กำลังเดินมา` : 'กำลังซ่อมอยู่'
+          : !taan ? 'ยังไม่มีทัณฑ์'
+          : taan.buildK || taan.at ? `${taan.name}ติดงานอื่นอยู่` : '';
+        put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair'))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
+      } else put(AL, '');
     }
-    // ปุ่ม "เติมพลัง" ถูกถอดออก 12 ก.ย. 2569 (ข้อ 4 ของเจ้าของ) — สถานีวางของไว้ในฉากแทน
-    // เหลือไว้แค่บรรทัดบอกว่าของชิ้นนั้นวางอยู่หรือยัง จะได้ไม่ต้องเดินไปลุ้นเอง
-    if (v?.drop) {
-      const item = ITEMS[v.drop];
-      const ready = g.items.some(it => it.from === k);
-      const left = Math.max(0, (st.visitCd || 0) - g.tick);
-      acts.push(`<button disabled>${item?.glyph || '🎁'} ${esc(item?.name || 'ของประจำสถานี')}
-        <small>${ready ? 'วางอยู่ในฉากแล้ว · เดินไปเก็บใส่กระเป๋าได้เลย'
-          : left ? `กำลังเตรียม · อีก ${left} วาระ` : 'กำลังนำมาวางในฉาก'}</small></button>`);
-    }
-    // ข้อ A คุณเป้ 24 ก.ย. 2569 — ปุ่ม "นั่งพัก" เฉพาะศาลาน้ำชา ฟื้นบารมีฟรีแลกเวลา (ดู room.js setSit)
-    if (R?.canSit) {
-      const isSitting = R.sitting();
-      const hpFull = g.hp >= g.hpMax && g.mp >= g.mpMax;
-      acts.push(isSitting
-        ? `<button class="gold" id="s-sit">🧎 ลุกขึ้น<small>บารมี ${Math.round(g.hp)}/${g.hpMax} — ลุกได้ทุกเมื่อ</small></button>`
-        : `<button id="s-sit" ${inside && !hpFull ? '' : 'disabled'}>🧎 นั่งพัก<small>${hpFull ? 'บารมีเต็มแล้ว — ไม่ต้องนั่ง'
-            : inside ? 'ฟรี ไม่เสียเบี้ยกรรม — ฟื้นช้า ๆ ตามเวลาที่นั่ง' : 'เดินเข้าไปยืนตรงจุดในศาลาก่อน'}</small></button>`);
-    }
-    if (def.archive) acts.push(`<button class="gold" id="s-arch" ${inside ? '' : 'disabled'}>
-        📜 เปิดแฟ้มทะเบียนกรรม<small>${inside ? `ประวัติวิญญาณทุกดวงที่ผ่านมือท่าน · ${g.ledger.length} เรื่อง`
-          : 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน'}</small></button>`);
-    if (k === 'krajok') {
-      // ข้อ A-2 คุณเป้ 24 ก.ย. 2569 — คุยกับกานต์รับกระจกวิเศษ แทนของวางพื้นเดิม
-      const mp = g.powerOf('mirror'), locked = g.powerLocked(mp);
-      const left = Math.max(0, (st.kanCd || 0) - g.tick);
-      acts.push(`<button class="gold" id="s-kan" ${inside && !locked && mp.ammo < mp.max && !left ? '' : 'disabled'}>
-        🪞 คุยกับกานต์<small>${locked ? `ล็อก · ต้องเป็น${LEVELS[mp.lv - 1].name}ก่อน`
-          : !inside ? 'เดินเข้าไปยืนใกล้กานต์ก่อน'
-          : mp.ammo >= mp.max ? 'กระจกวิเศษเต็มแล้ว'
-          : left ? `กานต์ยังไม่มีของใหม่ให้ — อีก ${left} วาระ`
-          : 'รับกระจกวิเศษหนึ่งบาน ฟรี'}</small></button>`);
-    }
-    if (k === 'tarang' && g.held.length)
-      acts.push(...g.held.map(h => `<button data-rel="${h.id}">🔓 ปล่อย ${esc(h.who)}<small>ออกไปขึ้นแท่นตัดสิน</small></button>`));
+
+    // ข้อมูลมินิเกม "เร่งการทำงาน" ของสถานีนี้ (เหตุผลที่กดไม่ได้ → ใช้แทนคำใต้ปุ่มชั่วคราว)
+    const mgOn = !!(cap && MINIGAMES[k]);
+    const mgWhy = !mgOn ? ''
+      : mgOpen ? t('room.mgBusy')
+      : (st.speedLv || 0) >= UPGRADES.max ? t('room.mgMaxed')
+      : g.level < g.mgLevelNeed(st.speedLv || 0) ? t('room.mgLevel').replace('{n}', g.mgLevelNeed(st.speedLv || 0))
+      : (st.mgCd || 0) > g.tick ? t('room.mgWait').replace('{n}', st.mgCd - g.tick) : '';
+    const mgReady = mgOn && !mgWhy && g.mgReady(st);
+
+    // ---- แผงด้านขวา (เปิดจากปุ่มในฉาก) ----
+    let drawer = '';
     if (k === 'tarang') {
       const sentenced = g.sentences.filter(x => x.zone === g.zone && x.stage === 'prison');
-      // ข้อ D คุณเป้ 24 ก.ย. 2569 — ปุ่มตรวจ/ส่งตัวต้องยืนใกล้นิราในห้องก่อนถึงจะกดได้ (ดู room.js inReach)
-      // เดิมปิดปุ่มเงียบ ๆ ไม่บอกเหตุผล ทำให้ดูเหมือนสถานีค้าง — เติม hint ให้เห็นชัดว่าต้องเดินเข้าไปยืนใกล้ก่อน
-      acts.push(`<div class="st-desc">📋 ตรวจรายชื่อกับนิรา · รับทัณฑ์ครบแล้ว ${sentenced.length} ดวง
-        ${sentenced.length && !inside ? '<br>⚠️ เดินเข้าไปยืนใกล้นิราในห้องก่อน ปุ่มถึงจะกดได้' : ''}</div>`);
-      for (const x of sentenced) {
+      // ปุ่มตรวจ/ส่งตัวต้องยืนใกล้นิราในห้องก่อนถึงจะกดได้ (ดู room.js inReach)
+      const rows = sentenced.map(x => {
         const name = esc(x.soul.name || x.soul.who), ready = g.tick >= (x.readyAt ?? x.until ?? 0);
-        acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name} · ${x.inspected
-          ? x.repentant ? 'เข็ดแล้ว' : 'ยังไม่เข็ด'
-          : ready ? 'พร้อมตรวจ' : `รออีก ${(x.readyAt ?? x.until) - g.tick} วาระ`}</div>`);
-        const needSawan = x.repentant && !g.stations.some(st => st.def.k === 'sawan' && !st.build);
-        acts.push(x.inspected
-          ? `<button class="gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${x.repentant ? '🕊️ ส่งไปประตูสวรรค์' : '↩️ ส่งกลับเข้าคิว'}<small>${needSawan ? 'ต้องสร้างประตูสวรรค์ให้เสร็จก่อน · ' : !inside ? 'เดินเข้าไปยืนใกล้นิราก่อน · ' : ''}${name}</small></button>`
-          : `<button data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>📋 ให้นิราตรวจ<small>${!ready ? name : !inside ? 'เดินเข้าไปยืนใกล้นิราก่อน · ' + name : name}</small></button>`);
-      }
+        const needSawan = x.repentant && !g.stations.some(s => s.def.k === 'sawan' && !s.build);
+        const status = x.inspected ? t(x.repentant ? 'room.repentant' : 'room.notRepentant')
+          : ready ? '' : t('room.wait').replace('{n}', (x.readyAt ?? x.until) - g.tick);
+        const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}` : ''}`;
+        return row(label, x.inspected
+          ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
+          : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
+      }).join('');
+      drawer = `<div class="st-pane" data-pane="manage">
+          ${g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('') || note(t('room.noneHeld'))}
+        </div>
+        <div class="st-pane" data-pane="inspect">
+          <div class="st-pane-title">${esc(t('room.roster').replace('{n}', sentenced.length))}</div>
+          ${sentenced.length && !inside ? note(t('room.nearNira')) : ''}${rows}
+        </div>`;
     }
     if (k === 'sawan') {
       const arrivals = g.sentences.filter(x => x.zone === g.zone && x.stage === 'gate');
-      // ข้อ D คุณเป้ 24 ก.ย. 2569 — เหมือนตะรางด้านบน: ปุ่มตรวจกรรม/ส่งตัวต้องยืนใกล้บุญในห้องก่อน
-      acts.push(`<div class="st-desc">📜 ตรวจกรรมกับบุญ · รอที่ประตู ${arrivals.length} ดวง<br>กรรมคงเหลือคิดจากกรรมทั้งหมด หักบุญจริงและวาระที่รับทัณฑ์แล้ว<br>ส่งไปเกิดใหม่ ${g.reborn} · ขึ้นสวรรค์ ${g.ascended} ดวง
-        ${arrivals.length && !inside ? '<br>⚠️ เดินเข้าไปยืนใกล้บุญในห้องก่อน ปุ่มถึงจะกดได้' : ''}</div>`);
-      for (const x of arrivals) {
+      const rows = arrivals.map(x => {
         const name = esc(x.soul.name || x.soul.who);
-        acts.push(`<div class="st-desc">#${String(x.soul.id).padStart(3, '0')} ${name}${x.checked ? ` · กรรมคงเหลือ ${x.karmaLeft}` : ' · รอตรวจกรรม'}</div>`);
-        acts.push(x.checked
-          ? `<button class="gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${x.karmaLeft > 0 ? '✨ ส่งไปเกิดใหม่' : '🌟 ส่งขึ้นสวรรค์'}<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${x.karmaLeft > 0 ? `กรรมคงเหลือ ${x.karmaLeft}` : 'หมดกรรม · รับรางวัลจากพ่อ'} · ${name}</small></button>`
-          : `<button data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>📜 ให้บุญตรวจกรรม<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน · ' : ''}${name}</small></button>`);
-      }
-      acts.push(`<button class="gold" data-offer-lotus ${inside && g.inventory.lotus > 0 && g.karma > 0 ? '' : 'disabled'}>
-        🪷 มอบดอกบัวให้บุญ<small>${!inside ? 'เดินเข้าไปยืนใกล้บุญก่อน' : `ลดกรรม 8 · มีดอกบัว ${g.inventory.lotus || 0}`}</small></button>`);
+        const label = `#${String(x.soul.id).padStart(3, '0')} ${name} · ${esc(x.checked ? t('room.karmaLeft').replace('{n}', x.karmaLeft) : t('room.gateWait'))}`;
+        return row(label, x.checked
+          ? `<button class="btn-gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t(x.karmaLeft > 0 ? 'room.toReborn' : 'room.toSky'))}</button>`
+          : `<button class="btn-gold" data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t('room.gateCheck'))}</button>`);
+      }).join('');
+      // ปุ่มของเกมที่แบบไม่มี: ดอกบัว + มินิเกมเร่งประตู — คงไว้ในแผงเดียวกัน
+      drawer = `<div class="st-pane" data-pane="inspect">
+          <div class="st-pane-title">${esc(t('room.gateTitle').replace('{n}', arrivals.length))}</div>
+          ${arrivals.length && !inside ? note(t('room.nearBoon')) : ''}${rows}
+          ${row(esc(t('room.lotusHint').replace('{n}', g.inventory.lotus || 0)),
+            `<button class="btn-gold" data-offer-lotus ${inside && g.inventory.lotus > 0 && g.karma > 0 ? '' : 'disabled'}>${esc(t('room.lotus'))}</button>`)}
+          ${mgOn ? row(esc(mgWhy || t('room.mgNote')),
+            `<button class="btn-gold" data-mg="${k}" ${mgReady ? '' : 'disabled'}>${esc(t('room.mgBtn').replace('{n}', st.speedLv || 0))}</button>`) : ''}
+        </div>`;
     }
-    // ข้อ B คุณเป้ 24 ก.ย. 2569 — เอาปุ่ม "เพิ่มช่องรับ" กับ "ประหยัดฟืน" ออก (ชุดที่ 7)
-    // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — "ฟืน" เปลี่ยนเป็น "เสบียง" ทั้งระบบแล้ว ไม่ผูกกับสถานีอีกต่อไป
-    // เซฟเก่าที่เคยอัป capLv/fuelLv ไปแล้ว "ผลยังอยู่" ปกติ (ไม่พัง) แค่ fuelLv ไม่มีผลอะไรแล้ว — ดู game.js restore()
-    // ชุดที่ 9 คุณเป้ 24 ก.ย. 2569 — "เร่งการทำงาน" เลิกจ่ายเบี้ยแล้ว เปลี่ยนเป็นเล่นมินิเกมของสถานีนี้แทน
-    // (g.finishMinigame ใน game.js) ชนะ = ขั้น +1 เหมือนเดิม แพ้ไม่เสียอะไรนอกจากเวลา · มี cooldown กันเล่นรัว
-    if (cap && MINIGAMES[k]) {
-      const maxed = (st.speedLv || 0) >= UPGRADES.max;
-      const levelLocked = !maxed && g.level < g.mgLevelNeed(st.speedLv || 0);
-      const cdLeft = Math.max(0, (st.mgCd || 0) - g.tick);
-      const locked = maxed || levelLocked || cdLeft > 0 || mgOpen;
-      const note = mgOpen ? 'กำลังเล่นมินิเกมอยู่'
-        : maxed ? 'เร่งเต็มขั้นแล้ว'
-        : levelLocked ? `ต้องเลื่อนขั้นยมบาทก่อน (ขั้น ${g.mgLevelNeed(st.speedLv || 0)})`
-        : cdLeft > 0 ? `รออีก ${cdLeft} วาระ`
-        : 'ชนะ = เร่งขึ้น 1 ขั้น · เร็วขึ้น 12%';
-      acts.push(`<button data-mg="${k}" ${locked ? 'disabled' : ''}>🎮 เล่นมินิเกม ขั้น ${st.speedLv || 0}<small>${esc(note)}</small></button>`);
+    if (Rg) {
+      put(Rg, drawer);
+      Rg.hidden = !drawer || !drawerMode;
+      Rg.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== drawerMode; });
     }
 
-    const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'), T = dlg.querySelector('#st-top');
-    // ถ้าเกมถูกพักอยู่จริง แสดงสถานะพักแยกจากสถานะปิดศาล
-    if (T) T.innerHTML = `
-        <span class="chip">🪙 <b>${Math.round(g.coin)}</b></span>
-        <span class="chip">🍙 <b>${Math.round(g.food)}</b></span>
-        <span class="chip" id="st-hp-chip">❤️ ${bar(100 * g.hp / g.hpMax, 'hp')} <b>${Math.round(g.hp)}</b></span>
-        ${st.fire > 0 ? `<span class="chip" style="color:var(--destructive)">${g.mobs.length ? '🔥 ไฟไหม้' : '⚠️ เสียหาย'} ${Math.round(st.fire)}%</span>` : ''}
-        ${g.paused
-          ? `<span class="chip" style="color:var(--warning)">${esc(t('station.gamePaused'))}</span>
-             <button class="sm gold" id="st-resume">${esc(t('station.closeToResume'))}</button>`
-          : ''}
-        <span class="ttl">${def.glyph} ${esc(def.name)}</span>`;
-    const rb = T && T.querySelector('#st-resume');
-    if (rb) rb.onclick = () => dlg.close();
-    if (L) L.innerHTML = `
-          <div class="hud-card">
-            <h4>ที่นี่คือที่ไหน</h4>
-            <div class="st-desc">${esc(def.desc)}</div>
-          </div>
-          <div class="hud-card">
-            <h4>เอาไว้ทำอะไร</h4>
-            <div class="st-desc">${esc(def.use || (cap ? 'ที่ลงทัณฑ์ตามชนิดกรรม' : '—'))}</div>
-            <div class="st-meta">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-              ${cap ? ` · รับได้ ${st.slots.length}/${cap} ดวง` : ''}</div>
-          </div>`;
-    // ข้อ E คุณเป้ 24 ก.ย. 2569 — แถบ "ผู้คุมประจำหลังนี้" มีความหมายเฉพาะสถานีที่รับวิญญาณลงทัณฑ์จริง
-    // (cap > 0 คือ def.pow > 0 ดู g.stCap) เพราะ crewK ถูกตั้งค่าผ่าน assign() เท่านั้น
-    // ซึ่งเลือกปลายทางได้จาก dests = stations ที่ pow > 0 เท่านั้น (ดู openTrial ในไฟล์นี้)
-    // ศาลาน้ำชา/ตะรางรอวาระ/หอส่องกรรม (pow:0) ไม่เคยมีใครถูกมอบหมายมาประจำ ซ่อนแถบทิ้งไปเลย
-    if (Rg) Rg.innerHTML = `
-          <div class="hud-card st-acts">
-            <h4>ทำอะไรได้ตรงนี้</h4>
-            ${acts.join('') || '<div class="st-desc">ยังไม่มีอะไรให้ทำที่นี่ตอนนี้</div>'}
-          </div>
-          ${cap ? `<div class="hud-card">
-            <h4>ผู้คุมประจำหลังนี้</h4>
-            <div class="st-desc">${st.crewK ? esc(g.crewOf(st.crewK)?.name || '—')
-              + (g.crewOf(st.crewK)?.self ? ' (ท่านเอง)' : '')
-              + (g.workingCrew?.has(st.crewK) ? (g.fed ? ' · 🍙 อิ่ม ทำงานไว' : ' · 🍙 หิว ทำงานช้า') : '')
-              : 'ยังไม่มีใครประจำ'}</div>
-            ${st.crewK && !g.crewOf(st.crewK)?.self ? hungerWidget(g.crewOf(st.crewK)) : ''}
-          </div>` : ''}`;
+    // ---- การ์ดหัวเรื่อง (ซ้ายบน) ----
+    if (L) L.dataset.room = k;
+    if (L) put(L, `<h2>${esc(def.name)}</h2>
+      <p>${esc(t(`room.${k}.desc`))}</p>
+      ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
+      ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}`);
+
+    // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
+    // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
+    if (A) {
+      const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
+      const mp = k === 'krajok' ? g.powerOf('mirror') : null;
+      const kanLeft = Math.max(0, (st.kanCd || 0) - g.tick);
+      const specs = k === 'tarang' ? [
+        ['room.manage', 'room.manageHint', toggle('manage')],
+        ['room.inspect', 'room.inspectHint', toggle('inspect')],
+      ] : k === 'sala' ? [
+        ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
+        ['room.sala.action2', 'room.sala.hint2', () => openMinigame(k), !mgReady, mgWhy],
+      ] : k === 'sawan' ? [
+        ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
+      ] : k === 'tea' ? [
+        [R?.sitting() ? 'room.tea.rise' : 'room.tea.action', 'room.tea.hint', () => { R.setSit(!R.sitting()); panels(); },
+          !R?.sitting() && (!inside || (g.hp >= g.hpMax && g.mp >= g.mpMax)),
+          !R?.sitting() ? (g.hp >= g.hpMax && g.mp >= g.mpMax ? t('room.teaFull') : !inside ? t('room.nearTea') : '') : ''],
+      ] : k === 'krajok' ? [
+        ['room.krajok.action', 'room.krajok.hint', () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } },
+          !inside || g.powerLocked(mp) || mp.ammo >= mp.max || kanLeft > 0,
+          g.powerLocked(mp) ? t('room.kanLocked').replace('{lv}', LEVELS[mp.lv - 1].name)
+            : !inside ? t('room.nearKan') : mp.ammo >= mp.max ? t('room.kanFull')
+            : kanLeft ? t('room.kanWait').replace('{n}', kanLeft) : ''],
+      ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
+      const hpLine = k === 'tea' ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>
+          <span class="st-hp">${esc(t('trial.hp'))} <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>` : '';
+      put(A, specs.map(([label, hint, , disabled, why], i) => {
+        const [x, y] = room.actions?.[i] || [0.5, 0.5];
+        const sub = why || (hint ? t(hint) : '');
+        return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
+          <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(t(label))}</button>
+          ${sub ? `<small>${esc(sub)}</small>` : ''}${hpLine}
+        </div>`;
+      }).join(''));
+      A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
+    }
 
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
-    on('#s-arch',  () => { showArchive(true); sfx('stamp'); });
     on('#s-repair', () => { if (g.repairStation(k)) { panels(); refresh(); } });
-    on('#s-sit',   () => { R.setSit(!R.sitting()); panels(); });
-    on('#s-kan',   () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
@@ -3327,13 +3310,14 @@ function openStation(k) {
     dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => afterCheck(g.moveFromPrison(+b.dataset.prisonSend)));
     dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => afterCheck(g.inspectGate(+b.dataset.gateCheck)));
     dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
-    // ชุดที่ 9 — ปุ่ม "เร่งการทำงาน" เปลี่ยนจาก data-st-up (จ่ายเบี้ย) เป็น data-mg (เปิดมินิเกม)
+    // ชุดที่ 9 — "เร่งการทำงาน" เป็นมินิเกม (data-mg) ไม่ใช่การจ่ายเบี้ย
     dlg.querySelectorAll('[data-mg]').forEach(b => b.onclick = () => openMinigame(b.dataset.mg));
-    dlg.querySelectorAll('[data-buy-boon]').forEach(b => b.onclick = () => {
-      if (g.buyBoon(b.dataset.buyBoon)) { sfx('coin'); panels(); refresh(); }
-    });
     on('[data-offer-lotus]', () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } });
-    bindHungerWidgets(dlg, () => { panels(); refresh(); });
+    // แถบบารมี/ดาวยศใน HUD ล่างซ้าย
+    const hpf = dlg.querySelector('#st-hud-hp');
+    if (hpf) hpf.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
+    const lv = Math.min(3, Math.max(0, g.level || 1));
+    dlg.querySelectorAll('#st-stars .rk-star').forEach(el => el.classList.toggle('on', Number(el.dataset.lv) <= lv));
   };
 
   /** แฟ้มทะเบียนกรรม — ประวัติทุกดวงที่เคยผ่านมือท่าน (เจ้าของสั่ง 10 ก.ย. 2569)
@@ -3343,6 +3327,7 @@ function openStation(k) {
     if (!box) return;
     box.hidden = !on;
     if (!on) return;
+    dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);   // จอแคบ: แฟ้มเปิดทับทั้งจอ ต้องเลื่อนกลับบนสุดก่อน
     const L = [...g.ledger].reverse();               // ล่าสุดอยู่บนสุด
     const five = L.filter(x => x.stars === 5).length;
     const over = L.filter(x => x.over > 0).length;
@@ -3438,6 +3423,7 @@ function openStation(k) {
     };
 
     R?.lock?.(true);
+    dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);   // จอแคบ: มินิเกมเปิดทับทั้งจอ ต้องเลื่อนกลับบนสุดก่อน
     ov.hidden = false;
     ov.innerHTML = `
       <div class="mg-head"><b>${game.icon || '🎮'} ${esc(game.name)}</b><button class="mg-x" type="button">✕ ปิด</button></div>
@@ -3461,19 +3447,30 @@ function openStation(k) {
 
   // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
   dlg.innerHTML = `
-    <div class="hud st-hud ${g.zone === 'th' ? 'zone1-room' : ''}">
-      <button class="x" data-close title="ปิด">✕</button>
-      <div class="hud-top" id="st-top"></div>
-      <div class="hud-body">
-        <div class="hud-left st-left" id="st-left"></div>
-        <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
-          <div class="st-arch" id="st-arch" hidden></div>
-          <div class="mg-ov" id="mg-ov" hidden></div></div>
-        <div class="hud-right" id="st-right"></div>
+    <div class="hud st-hud zone1-room">
+      <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
+        <div class="st-arch" id="st-arch" hidden></div>
+        <div class="mg-ov" id="mg-ov" hidden></div></div>
+      <div class="st-card" id="st-left"></div>
+      <div id="st-actions"></div>
+      <div class="st-drawer" id="st-right" hidden></div>
+      <div class="st-alert" id="st-alert"></div>
+      <div class="st-controls">
+        <button id="st-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+      </div>
+      <div class="st-bottom-left">
+        <div class="st-avatar"><span class="st-ava-row"><img src="img/hero-yama-profile.png" alt=""><span class="hud-rank-stars" id="st-stars"><i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i></span></span>
+          <span class="hud-hpbar"><i id="st-hud-hp"></i></span><small>${esc(HERO_NAME)}</small></div>
+        <button id="st-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('room.hud.book'))}</span></button>
+        <button id="st-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>${esc(t('hud.bag'))}</span></button>
       </div>
     </div>`;
   openDlg('hudwrap');           // กรอบเดียวกับห้องสอบสวน — .hud ต้องการกรอบใสเต็มความกว้าง
   myGen = dlgGen;
+  document.activeElement?.blur?.();     // กล่องโฟกัสปุ่มแรกให้เอง — ไม่ให้เห็นกรอบโฟกัสบนปุ่มพักตั้งแต่เปิด
+  dlg.querySelector('#st-pause').onclick = () => { dlg.close(); openPause(); };
+  dlg.querySelector('#st-book').onclick = () => { dlg.close(); openHelp(); };
+  dlg.querySelector('#st-bag').onclick = () => { dlg.close(); openBag(); };
 
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
@@ -3494,8 +3491,10 @@ function openStation(k) {
     // จนกว่าจะมี action อื่นที่ผ่าน g.onChange() บังเอิญเกิดขึ้น)
     if (R.sitting()) {
       const barHtml = bar(100 * g.hp / g.hpMax, 'hp'), num = Math.round(g.hp);
-      const chip = dlg.querySelector('#st-hp-chip');
-      if (chip) chip.innerHTML = `❤️ ${barHtml} <b>${num}</b>`;
+      const pct = Math.max(0, Math.min(100, 100 * g.hp / g.hpMax));
+      const fill = dlg.querySelector('#st-hp-fill'); if (fill) fill.style.width = `${pct}%`;
+      const val = dlg.querySelector('#st-hp-value'); if (val) val.textContent = `${num}/${g.hpMax}`;
+      const hud = dlg.querySelector('#st-hud-hp'); if (hud) hud.style.width = `${pct}%`;
       const outer = document.querySelector('#res-hp-chip');
       if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
@@ -3522,6 +3521,7 @@ function openStation(k) {
   // (close ยิงแบบ async · ใบที่ปิดไปตอน openDlg จะมาถึงหลังกล่องใหม่เปิด แล้วเก็บของใหม่ทิ้ง)
 }
 
+window.__openStation = openStation; // TEMP-27A-DEBUG
 function openBuild(def) {
   // build() ปฏิเสธเมื่อทัณฑ์ติดเวร/พาดวงอยู่ — ปุ่มต้องปิดพร้อมเหตุผล ไม่ปล่อยให้กดแล้วกล่องปิดเงียบ (ชุด 21)
   const taan = g.crew.find(c => c.k === 'taan'), taanBusy = !!taan && !!(taan.at || taan.escort);

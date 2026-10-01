@@ -10,7 +10,7 @@
 // ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
 
 import { ITEMS, BAL } from './data.js';
-import { drawStandee, drawSoul, img, rr } from './art.js';
+import { drawStandee, drawHeroWalk, drawSoul, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -133,6 +133,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
   let locked = false;
+  // แอนิเมชันเดิน — ใช้สไปรท์เดินชุดเดียวกับบนแผนที่ (art.js drawHeroWalk) เฟรมเปลี่ยนตามระยะที่เดินจริง
+  let walkDist = 0, movedAt = -1e9;
 
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
   const px = u => box.ox + (mirrorRoom ? 1 - u : u) * box.w;
@@ -245,10 +247,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (d > 0) {
       const nx = P.x + dx / d * sp, ny = P.y + dy / d * sp * 0.7;
       // ชนขอบแล้วไถลไปตามแกนที่ยังไปได้ — เหมือน stepTo บนแผนที่ ไม่ติดหนึบที่มุม
+      const bx = P.x, by = P.y;
       if (inArea(nx, ny)) { P.x = nx; P.y = ny; }
       else if (inArea(nx, P.y)) P.x = nx;
       else if (inArea(P.x, ny)) P.y = ny;
       else P.tx = null;
+      const stepPx = Math.hypot((P.x - bx) * box.w, (P.y - by) * box.h);
+      if (stepPx > 0.05) { walkDist += stepPx; movedAt = performance.now(); }
       if (Math.abs(dx) > 0.001) P.face = (mirrorRoom ? -dx : dx) < 0 ? -1 : 1;
     }
     const ii = g.items.findIndex(it => it.from === def.k);
@@ -287,13 +292,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const sy = crop ? crop[1] * bg.naturalHeight : 0;
       const sw = crop ? crop[2] * bg.naturalWidth  : bg.naturalWidth;
       const sh = crop ? crop[3] * bg.naturalHeight : bg.naturalHeight;
-      // ภาพห้องต้นฉบับเป็นสี่เหลี่ยมจัตุรัสหรือแนวตั้ง แต่ mockup UI4 เป็นฉากกว้าง
-      // การใช้ cover จะตัดจุด me/act ที่อยู่ใกล้ขอบล่างของหลายห้องออกไป จึงขยาย
-      // ภาพให้เต็มพื้นที่เฉพาะเลย์เอาต์กว้าง พร้อมรักษาพิกัด 0-1 ของตัวละครและจุดกดไว้
-      const fillWide = !!cv.closest?.('.zone1-room') && matchMedia('(min-width:1101px)').matches;
+      // ภาพฉากวางแบบ contain ไม่ยืด/ไม่ครอปซ้ำ — โซน 1 ใช้ room.crop ตัดแถบกว้างตามแบบ UI4 มาแล้ว
+      // กรอบหน้าสถานีบนจอกว้างมีสัดส่วนเท่ากับแถบนั้น จึงเต็มพอดี
       const s = Math.min(W / sw, H / sh);
-      box = fillWide ? { ox:0, oy:0, w:W, h:H }
-        : { ox:(W - sw * s) / 2, oy:(H - sh * s) / 2, w:sw * s, h:sh * s };
+      box = { ox:(W - sw * s) / 2, oy:(H - sh * s) / 2, w:sw * s, h:sh * s };
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
@@ -372,6 +374,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         } });
       });
     }
+    // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
     // NPC ประจำห้อง — นิรา (ตะราง) / บุญ (ประตูสวรรค์) / กานต์ (หอส่องกรรม ข้อ A-2 คุณเป้ 24 ก.ย. 2569)
     // กานต์เป็นยมทูตตัวเดียวกับใน CREW (ใช้ภาพ crew-kan เดิม ไม่วาดใหม่ — ตามข้อห้ามใบงาน "ห้ามใช้ภาพอื่นแทน")
     // ข้อ I-2 คุณเป้เจอ 25 ก.ย. 2569 — ประตูสวรรค์ (sawan) มอบหมายผู้คุมได้จริงผ่านระบบเดียวกับ
@@ -389,7 +392,6 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
           drawStandee(ctx, 'crew-' + key, x, y, U * CREW_H, t, name);
-          label(ctx, name, x, y + U * 0.03, U * 0.026, '#ffe0c8');
         } });
       }
     }
@@ -399,7 +401,6 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (c && !c.self) acts.push({ y: room.crew[1], fn: () => {
         const x = px(room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0)), y = py(room.crew[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
-        label(ctx, c.name, x, y + U * 0.03, U * 0.026, 'rgba(255,225,195,.85)');
       } });
     }
 
@@ -412,7 +413,6 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         ctx.fillStyle = `rgba(255,215,125,${0.12 + pulse * 0.18})`;
         ctx.beginPath(); ctx.arc(x, y - U * 0.035, U * 0.07, 0, 7); ctx.fill();
         drawStandee(ctx, itemDef.img, x, y, U * 0.085, t, itemDef.glyph || '🎁');
-        label(ctx, `เดินไปเก็บ${itemDef.name}`, x, y + U * 0.035, U * 0.024, '#ffe0a8');
       } });
     }
 
@@ -436,12 +436,16 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const haveSitArt = !!img('hero-yama-sit');
       const key = sitting ? (haveSitArt ? sitKey : 'hero-yama')
                 : swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
-      // จังหวะเดินแบบ Office Agent: เด้งสองจังหวะ ไม่เลื่อนภาพนิ่งไปกับพื้นเฉย ๆ
-      const moving = !sitting && (P.tx != null || Object.values(KEY).some(Boolean));
-      const gait = Math.floor(t / 105) % 4;
-      const hop = moving && gait % 2 ? U * 0.010 : 0;
-      const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
-      drawStandee(ctx, key, px(P.x), py(P.y) - hop, U * HERO_H * stretch, t, '👑', P.face);
+      // เดินอยู่จริง (ขยับตำแหน่งในช่วง 120ms ที่ผ่านมา) → ใช้สไปรท์เดิน 4 เฟรมเหมือนบนแผนที่
+      // สไปรท์เดินวาดหันซ้าย drawHeroWalk พลิกให้ตามทิศ P.face เอง · ไม่มีไฟล์เดินก็ถอยไปท่ายืนเด้งเดิม
+      const moving = !sitting && !swinging && t - movedAt < 120;
+      const heroH = U * HERO_H;
+      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDist * 14 / (heroH * 0.16), P.face))) {
+        const gait = Math.floor(t / 105) % 4;
+        const hop = moving && gait % 2 ? U * 0.010 : 0;
+        const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
+        drawStandee(ctx, key, px(P.x), py(P.y) - hop, heroH * stretch, t, '👑', P.face);
+      }
       // ยังไม่มีไฟล์ท่านั่ง — ใช้ท่ายืนเดิมแทนพร้อมสัญลักษณ์ 💤 กำกับว่ากำลังพัก (ข้อ A ข้อห้าม 24 ก.ย. 2569)
       if (sitting && !haveSitArt) {
         const zx = px(P.x) + U * HERO_H * 0.34, zy = py(P.y) - U * HERO_H * 1.05 + Math.sin(t / 380) * U * 0.012;
@@ -452,25 +456,6 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
-
-    // ---- ป้ายบอกวิธี ----
-    // ข้อ A คุณเป้ 24 ก.ย. 2569 — "ลงทัณฑ์เอง/ส่งเข้าประตูเอง" ถูกถอดออกไปแล้วจริง ๆ เมื่อวาน
-    // (commit f245ecc 23 ก.ย. 2569: assign() ปฏิเสธ crew.self, attack() เลิกเรียก smite())
-    // เว้นวรรค/ปุ่มขวาที่ไม่ใช่ศาลาน้ำชาตอนนี้แค่เรียก panels() เฉย ๆ ไม่ได้ "ลงมือ" อะไรจริง
-    // ป้ายเดิมชวนกดแล้วไม่มีอะไรเกิดขึ้นทำให้เข้าใจผิดว่าสถานีค้าง — เอาข้อความนั้นออก
-    // เปลี่ยนเป็นบอกสถานะจริงแทน: มีใครอยู่ระหว่างรับทัณฑ์ไหม ผู้คุมทำงานเองอัตโนมัติผ่านการเดินวาระ
-    const hasSlots = !!(st && st.slots && st.slots.length);
-    const takesSouls = def.pow > 0;      // ตรงกับเงื่อนไข cap ใน g.stCap() ที่ ui.js ใช้ตัดสินใจเรื่องเดียวกัน
-    const idleTip = def.heaven ? '🕊️ ดวงที่ถึงนี่รอบุญตรวจกรรม — ดูรายชื่อที่แผงขวา'
-                  : hasSlots    ? '👺 ผู้คุมกำลังลงทัณฑ์อยู่ — ดูความคืบหน้าที่แผงขวา'
-                  : takesSouls  ? '📭 ยังไม่มีใครถูกส่งมาที่นี่ — ออกหมายจากห้องสอบสวนก่อน' : '';
-    // สถานะพักเกมจริงแยกจากการปิดศาล; ศาลปิดอยู่ก็ยังลงทัณฑ์ต่อ
-    const tip = sitting ? '💤 กำลังนั่งพัก — บารมีค่อย ๆ ฟื้น · กด "ลุกขึ้น" เมื่อพอแล้ว'
-              : g.paused ? tr('station.gamePaused')
-              : near ? (canSit ? '🍵 กดปุ่ม "นั่งพัก" ในแผงขวา เพื่อฟื้นบารมีฟรี' : idleTip)
-                     : '⌨ ลูกศร/WASD หรือแตะบนฉาก เพื่อเดินเข้าไป';
-    const tipColor = g.paused && !sitting ? '#ff9a66' : (near || sitting) ? '#ffd27a' : 'rgba(240,225,215,.75)';
-    if (tip) tag(ctx, W / 2, H - U * 0.045, tip, tipColor, U);
   }
 
   function frame(now) {
