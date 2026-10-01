@@ -3191,9 +3191,10 @@ function openStation(k) {
     if (AL) {
       if (st.fire > 0 && !g.mobs.length) {
         const taan = g.crewOf('taan');
-        const why = st.repair ? st.repairWait ? `${taan?.name || 'ทัณฑ์'}กำลังเดินมา` : 'กำลังซ่อมอยู่'
-          : !taan ? 'ยังไม่มีทัณฑ์'
-          : taan.buildK || taan.at ? `${taan.name}ติดงานอื่นอยู่` : '';
+        const who = taan?.name || t('room.taan');
+        const why = st.repair ? st.repairWait ? t('room.repairComing').replace('{name}', who) : t('room.repairing')
+          : !taan ? t('room.noTaan')
+          : taan.buildK || taan.at ? t('room.taanBusy').replace('{name}', who) : '';
         put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair'))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
       } else put(AL, '');
     }
@@ -3265,7 +3266,7 @@ function openStation(k) {
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
     if (A) {
-      const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
+      const toggle = mode => () => { drawerMode = k === 'tarang' ? mode : drawerMode === mode ? null : mode; panels(); };
       const mp = k === 'krajok' ? g.powerOf('mirror') : null;
       const kanLeft = Math.max(0, (st.kanCd || 0) - g.tick);
       const specs = k === 'tarang' ? [
@@ -3521,7 +3522,6 @@ function openStation(k) {
   // (close ยิงแบบ async · ใบที่ปิดไปตอน openDlg จะมาถึงหลังกล่องใหม่เปิด แล้วเก็บของใหม่ทิ้ง)
 }
 
-window.__openStation = openStation; // TEMP-27A-DEBUG
 function openBuild(def) {
   // build() ปฏิเสธเมื่อทัณฑ์ติดเวร/พาดวงอยู่ — ปุ่มต้องปิดพร้อมเหตุผล ไม่ปล่อยให้กดแล้วกล่องปิดเงียบ (ชุด 21)
   const taan = g.crew.find(c => c.k === 'taan'), taanBusy = !!taan && !!(taan.at || taan.escort);

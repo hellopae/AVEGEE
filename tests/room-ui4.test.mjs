@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ROOMS, STATIONS } from '../src/data.js';
 import { setLang, t } from '../src/i18n.js';
+import { walkSegmentInside } from '../src/room.js';
 
 globalThis.document ??= { documentElement:{} };   // setLang() แตะ document.documentElement.lang
 
@@ -47,9 +48,16 @@ test('ยมบาทเริ่มและจุดลงมือของ�
   }
 });
 
+test('หนึ่งเฟรมเดินข้ามแถบห้ามเดินที่คั่นระหว่างจุดเริ่มและปลายไม่ได้', () => {
+  const allowed = (x, y) => y >= 0 && y <= 1 && (x < 0.495 || x > 0.505);
+  assert.equal(walkSegmentInside(0.49, 0.5, 0.51, 0.5, allowed), false);
+  assert.equal(walkSegmentInside(0.45, 0.5, 0.49, 0.5, allowed), true);
+});
+
 test('ข้อความของห้องมีทั้งไทยและอังกฤษ และตัวเลขความจุไม่ถูกฝังในข้อความ', () => {
   const keys = ['room.capacity', 'room.karma', 'room.roster', 'room.manage', 'room.manageHint', 'room.inspect',
-    'room.inspectHint', 'room.niraCheck', 'room.repair', 'room.noneHeld', 'room.gateTitle'];
+    'room.inspectHint', 'room.niraCheck', 'room.repair', 'room.taan', 'room.repairComing', 'room.repairing',
+    'room.noTaan', 'room.taanBusy', 'room.noneHeld', 'room.gateTitle'];
   for (const s of STATIONS) for (const part of ['desc', 'action', 'hint', 'sins']) {
     const k = `room.${s.k}.${part}`;
     const src = readFileSync(new URL('../src/i18n.js', import.meta.url), 'utf8');

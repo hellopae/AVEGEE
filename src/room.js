@@ -18,6 +18,16 @@ const CREW_H = 0.13;
 const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
 const REACH  = 0.17;      // ระยะเอื้อมถึงจุดลงมือ — ยืนใกล้ ๆ ก็พอ ไม่ต้องเดินจ่อ
 
+/** ตรวจตลอดทางในหนึ่งเฟรม ไม่ให้ก้าวข้ามช่องที่ห้ามเดินซึ่งแคบกว่าระยะก้าว */
+export function walkSegmentInside(x1, y1, x2, y2, inArea) {
+  const steps = Math.max(1, Math.ceil(Math.hypot(x2 - x1, y2 - y1) / 0.002));
+  for (let i = 1; i <= steps; i++) {
+    const f = i / steps;
+    if (!inArea(x1 + (x2 - x1) * f, y1 + (y2 - y1) * f)) return false;
+  }
+  return true;
+}
+
 const bgCache = new Map();
 const lumCache = new Map();
 
@@ -248,9 +258,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const nx = P.x + dx / d * sp, ny = P.y + dy / d * sp * 0.7;
       // ชนขอบแล้วไถลไปตามแกนที่ยังไปได้ — เหมือน stepTo บนแผนที่ ไม่ติดหนึบที่มุม
       const bx = P.x, by = P.y;
-      if (inArea(nx, ny)) { P.x = nx; P.y = ny; }
-      else if (inArea(nx, P.y)) P.x = nx;
-      else if (inArea(P.x, ny)) P.y = ny;
+      if (walkSegmentInside(bx, by, nx, ny, inArea)) { P.x = nx; P.y = ny; }
+      else if (walkSegmentInside(bx, by, nx, by, inArea)) P.x = nx;
+      else if (walkSegmentInside(bx, by, bx, ny, inArea)) P.y = ny;
       else P.tx = null;
       const stepPx = Math.hypot((P.x - bx) * box.w, (P.y - by) * box.h);
       if (stepPx > 0.05) { walkDist += stepPx; movedAt = performance.now(); }
