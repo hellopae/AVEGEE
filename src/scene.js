@@ -2,7 +2,7 @@
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
@@ -15,6 +15,16 @@ const HERO_H = 92 * CHAR_SCALE_MAP;
 const SOUL_H = 64 * CHAR_SCALE_MAP;
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
+const waitingEvents = g => {
+  const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
+    ev.k !== 'devaTest' && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
+    ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach');
+  if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
+    events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
+  return events.map((ev, i) => ({ key:ev.k, x:SPOTS.bossPier.x + (i % 3 - 1) * 86,
+    y:SPOTS.bossPier.y - Math.floor(i / 3) * 80,
+    art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7').replace(/-(asia|west|cyberhell)$/, '') }));
+};
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0;
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
@@ -222,7 +232,7 @@ export function render(ctx, g, t, hover, sel) {
       ctx.strokeStyle = `rgba(224,74,47,${0.55 + q * 0.45})`; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
-    mapStandee(ctx, (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
+    mapStandee(ctx, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
     // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
     if (d <= MOB.fabReach || g.guard) return;
@@ -235,8 +245,8 @@ export function render(ctx, g, t, hover, sel) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
-    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : cleared ? SPOTS.bossPier.x : 790;
-    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : cleared ? SPOTS.bossPier.y : 558;
+    const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
+    const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
@@ -245,12 +255,18 @@ export function render(ctx, g, t, hover, sel) {
     });
   }
 
+  for (const ev of waitingEvents(g)) at(1e5 + ev.y, () => {
+    ring(ctx, ev.x, ev.y, t, 28);
+    mapStandee(ctx, ev.art, ev.x, ev.y, 90, t, '⚠️');
+    tag(ctx, ev.x, ev.y - 90, t, ['⚠️', '#f7c371']);
+  });
+
   if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending') {
     [[1110,465],[1240,535],[1335,615]].forEach(([bx,by], i) => {
       const x = bx + Math.sin(t / 800 + i * 2) * 18;
       const y = by + Math.cos(t / 1100 + i * 2) * 9;
       at(y, () => {
-        mapStandee(ctx, 'spirit7', x, y, 58, t, '👻');
+        mapStandee(ctx, 'mob-skeleton', x, y, 58, t, '💀');
         if (i === 1) tag(ctx, x, y - 63, t, ['🌀 วิญญาณถูกสะกดจิต', '#c8b4ef']);
       });
     });
@@ -558,13 +574,17 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 export function hitActor(g, sx, sy) {
   const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
+  for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
+  if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
+    return { kind:'bossPending', key:g.zone };
   if (g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
   if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending' &&
       [[1110,465],[1240,535],[1335,615]].some(([x,y]) => near(x,y,radius(78))))
     return { kind:'zoneEvent', key:'westHypnotized' };
   if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   for (let i = 0; i < g.mobs.length; i++)
-    if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };
+    if (near(g.mobs[i].x, g.mobs[i].y)) return g.mobs[i].eventKey
+      ? { kind:'eventRaider', key:g.mobs[i].eventKey } : { kind: 'mob', key: i };
   // ป้ายวงกลมเหนือสถานี — กดแล้วเปิดหน้าสถานีนั้น
   for (const st of g.stations) {
     if (st.build || !st.slots.length) continue;

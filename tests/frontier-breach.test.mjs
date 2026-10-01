@@ -55,7 +55,11 @@ test('two waves keep one battle, heal at transition, and reward after both', () 
   assert.equal(b.over, 'win');
   assert.equal(g.frontierBreachStatus(), 'cleared');
   assert.equal(g.coin - beforeCoin, ZONE_EVENTS.th[1].reward.coin);
-  assert.equal(FRONTIER.drops.reduce((n, k) => n + (g.inventory[k] || 0) - (beforeBag[k] || 0), 0), 1);
+  // ชุด 27D รอบ 2 — ชนะทั้งศึกได้ของชายแดน 1 ชิ้น (รางวัลเดิม) + winLoot สุ่ม 1 ชิ้น (ครั้งเดียวต่อศึก ไม่ใช่ต่อระลอก)
+  const gained = Object.keys(g.inventory).reduce((n, k) => n + (g.inventory[k] || 0) - (beforeBag[k] || 0), 0);
+  assert.equal(gained, 2);
+  assert.ok((g.inventory[b.reward.item] || 0) - (beforeBag[b.reward.item] || 0) >= 1);
+  assert.ok(b.loot);
   assert.equal(g.frontierOf().clears, beforeClears);
   assert.deepEqual(g.bossCleared, beforeBoss);
   assert.equal(g.battleAct('atk'), false);
