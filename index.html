@@ -664,6 +664,25 @@ dialog.rpg[open]{max-width:1020px;padding:0;overflow:hidden;background:var(--car
 dialog.rpg .arena{flex:0 0 auto}
 dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
   padding:var(--space-4);overscroll-behavior:contain}
+/* Battle7: the battle dialog itself is the game frame. Preparation and results remain
+   inside the frame so the field, combat effects, and HUD share one coordinate space. */
+dialog.rpg:has(.combat-arena)[open]{width:calc(100vw - 24px);max-width:none;
+  height:calc(100dvh - 24px);max-height:none;position:relative}
+dialog.rpg .combat-arena{flex:1 1 auto;min-height:0;aspect-ratio:auto;border-radius:var(--radius)}
+dialog.rpg:has(.combat-arena)>.pad{position:absolute;z-index:21;left:50%;bottom:3%;
+  width:min(420px,34%);max-height:30%;transform:translateX(-50%);padding:0;
+  text-align:center;pointer-events:none;background:transparent}
+dialog.rpg:has(.combat-arena)>.pad>*{pointer-events:auto}
+dialog.rpg:has(.combat-arena)>.pad:empty{display:none}
+dialog.rpg:has(>.pad .boss-prep)>.pad{top:13%;bottom:auto;width:min(580px,90%);max-height:40%}
+dialog.rpg:has(.combat-arena)>.boss-prep-actions{position:absolute;z-index:22;left:50%;
+  bottom:3%;transform:translateX(-50%);padding:0;border:0;background:transparent}
+dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
+@media(max-width:700px){
+  dialog.rpg:has(.combat-arena)>.pad{left:auto;right:3%;transform:none;bottom:29%;width:58%;max-height:26%}
+  dialog.rpg:has(>.pad .boss-prep)>.pad{left:50%;right:auto;transform:translateX(-50%);top:9%;bottom:auto;width:90%;max-height:40%}
+  dialog.rpg:has(.combat-arena)>.boss-prep-actions{left:auto;right:5%;bottom:27%;transform:none;padding:0;border:0;background:transparent}
+}
 /* มุมฉลุ HUD 4 มุม — ใช้ร่วมกันทั้ง .hud และ .arena (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.2)
    วางเยื้องเข้ามาจากขอบจริง 6px ได้เอฟเฟกต์ "วงเล็บมุม" แบบ HUD เกมโดยไม่ต้องพึ่งรูป */
 .corner-tick{position:absolute;width:18px;height:18px;pointer-events:none;z-index:5}
