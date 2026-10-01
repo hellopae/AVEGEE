@@ -569,6 +569,8 @@ export const ITEMS = {
   // ค่าฟื้น 40 เท่ากับปุ่มเดิมเป๊ะ ไม่ได้ถือโอกาสปรับสมดุลไปด้วย
   tea:    { name:'ถ้วยน้ำชาร้อน',   img:'item-tea',    h:44, hp:40, glyph:'🍵',
             say:'ท่านนั่งลงจิบน้ำชาหนึ่งถ้วย บารมีฟื้นขึ้นมา' },
+  spareHeart: { name:'หัวใจสำรอง', img:'item-health', h:44, glyph:'❤️', revive:true,
+            say:'หัวใจสำรองช่วยให้ยืนขึ้นได้อีกครั้งเมื่อพ่ายแพ้' },
   // ดอกบัวเป็นทางเดียวที่ "กรรมท่าน" ลดลงได้โดยไม่ต้องรอห้าดาว
   // ตกให้เมื่อกรรมเริ่มสูงเท่านั้น — ไม่งั้นมันจะกลายเป็นใบอนุญาตให้ลงทัณฑ์เกินฟรี ๆ
   lotus:  { name:'ดอกบัวบูชา',      img:'item-lotus',  h:40, karma:-4, glyph:'🪷',
@@ -670,9 +672,7 @@ export const FRONTIER = {
 /** บุญที่ยืนอยู่ในห้อง "ประตูสวรรค์" (STATIONS.sawan) ขายวงสะกดจิตให้โดยตรง — ราคา 155
  *  (ข้อ A-3 ชุดที่ 8 · 24 ก.ย. 2569) ชุดที่ 10 (ข้อ B · 25 ก.ย. 2569) คุณเป้ตัดสินให้ขายที่บุญ
  *  "ที่เดียว" เท่านั้น — ถอด hypno ออกจาก MERCHANT.stock แล้ว (ดูคอมเมนต์ตรง MERCHANT ด้านล่าง) */
-export const BOON_SHOP = {
-  stock: [ { k:'hypno', cost:155, lv:4 } ],
-};
+export const BOON_SHOP = { stock: [] };
 
 /** พ่อค้าริมแม่น้ำ — รับซื้อของสนามรบและขายของใช้/คัมภีร์
  *  ชุดที่ 10 คุณเป้ 25 ก.ย. 2569 (ข้อ B) — เอา hypno ออกจาก stock ที่นี่ "สะกดจิตขายที่บุญที่เดียว"
@@ -684,8 +684,8 @@ export const MERCHANT = {
   // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — เพิ่มลูกไฟ: ปุ่ม "เตรียมลูกไฟ" เดิมในหน้าเตรียมศึก
   // บอสถูกตัดออกแล้ว (คุณเป้สั่งให้ "ซื้อได้ที่พ่อค้า" แทน) ราคาเทียบเท่าหีบยา (มูลค่าใกล้เคียงกัน)
   stock:[
-    { k:'health', cost:55, lv:1 }, { k:'food', cost:18, qty:2, lv:1 },
-    { k:'mirror', cost:95, lv:2 }, { k:'ice', cost:120, lv:3 }, { k:'fire', cost:60, lv:1 },
+    { k:'tea', cost:24, lv:1 }, { k:'health', cost:55, lv:1 },
+    { k:'food', cost:18, qty:2, lv:1 }, { k:'lotus', cost:65, lv:1 },
   ],
 };
 
@@ -697,10 +697,7 @@ export const UPGRADES = {
   crewBase:90, stationBase:120, powerBase:100, max:5, mgCooldown:10, mgCooldownStep:5,
 };
 
-/** เลเวลของยมบาท — นับจากจำนวนคดีที่ได้ 5 ดาว */
-// เลื่อนขั้นด้วย "คำตัดสินสีเขียว" (คะแนน 78 ขึ้นไป) ไม่ใช่ห้าดาวอีกแล้ว — 9 ก.ย. 2569
-// ห้าดาวต้องได้ 90 คะแนนซึ่งแทบไม่เกิด เจ้าของเล่นทั้งเกมยังอยู่ขั้น 1
-// เส้นใหม่: เขียว 3 ครั้งขึ้นขั้น 2 · ทุกขั้นมีของให้จริง ไม่ใช่แค่เปลี่ยนชื่อ
+/** เลเวลของยมบาท — ได้ EXP จากการสอบสวนและการต่อสู้ */
 /** ขั้นของยมบาท — `bonus` ใช้กับบรรทัดในบันทึก · `gains` ใช้กับหน้าต่างเลื่อนขั้น
  *  gains ต้องตรงกับสิ่งที่ `checkLevel()` ใน game.js ทำจริงทุกข้อ (ข้อ 1 ของเจ้าของ 11 ก.ย. 2569)
  *  — เดิมหน้าต่างเลื่อนขั้นยัด bonus ทั้งก้อนต่อท้ายบทพูดพญายมเป็นประโยคเดียว
@@ -712,30 +709,30 @@ export const UPGRADES = {
 // hpMax = ค่าบารมีสูงสุด ณ ขั้นนั้น (checkLevel ใน game.js อ่านค่านี้ตรง ๆ ไม่ฮาร์ดโค้ดเลขซ้ำอีกต่อไป)
 // เซฟเก่าที่เคยได้ 120 ตอนขั้น 4 มาก่อนแพตช์นี้ — โหลดใหม่จะถูกปรับให้ตรงตารางนี้ตามขั้นปัจจุบันเสมอ (ดู restore())
 export const LEVELS = [
-  { green:0,  name:'ยมบาทฝึกหัด',  hpMax:100, bonus:'', gains:[] },
-  { green:3,  name:'ยมบาทประจำโซน', hpMax:110, bonus:'ปลดล็อก 🪞 กระจกวิเศษ · พลังเก็บได้มากขึ้น 1 · บารมีสูงสุด 110',
+  { green:0,  exp:0,   name:'ยมบาทฝึกหัด',  hpMax:100, mpMax:40, bonus:'', gains:[] },
+  { green:3,  exp:120, name:'ยมบาทประจำโซน', hpMax:110, mpMax:48, bonus:'บารมีสูงสุด 110 · MP สูงสุด 48 · โจมตีแรงขึ้น',
     gains:[
-      { g:'🪞', t:'ปลดล็อกพลัง "กระจกวิเศษ"', d:'ส่องแล้วเฉลยทันที: ต้องลงทัณฑ์ที่ไหนและแรงแค่ไหน — เห็นความจริงเสมอ ไม่มีทางถูกโกหก' },
-      { g:'🔋', t:'พลังทุกอย่างเก็บได้มากขึ้น 1 ครั้ง', d:'และพลังที่เพิ่งปลดล็อกเติมเต็มให้ทันที' },
       { g:'❤️', t:'บารมีสูงสุดขึ้นเป็น 110', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
+      { g:'🔷', t:'MP สูงสุดขึ้นเป็น 48', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
+      { g:'⚔️', t:'โจมตีพื้นฐานแรงขึ้น', d:'เพิ่ม 2 หน่วยต่อขั้น' },
     ] },
-  { green:7,  name:'ยมบาทผู้ตัดสิน', hpMax:120, bonus:'ปลดล็อก ❄️ คัมภีร์น้ำแข็ง · เรียกยมทูตช่วยสู้ได้ · เบี้ยกรรม +300 · บารมีสูงสุด 120',
+  { green:7,  exp:320, name:'ยมบาทผู้ตัดสิน', hpMax:120, mpMax:56, bonus:'เรียกยมทูตช่วยสู้ได้ · เบี้ยกรรม +300 · บารมีสูงสุด 120 · MP สูงสุด 56',
     gains:[
-      { g:'❄️', t:'ปลดล็อกพลัง "คัมภีร์น้ำแข็ง"', d:'ผนึกคู่ต่อสู้ให้หยุดหนึ่งตา และช่วยให้วิญญาณสงบลงระหว่างสอบสวน' },
       { g:'🤝', t:'เรียกยมทูตมาช่วยในฉากต่อสู้ได้', d:'ปุ่มรูปยมทูตจะโผล่ในฉากต่อสู้ — เขาฟาดให้หนึ่งที แลกกับกำลังใจของเขา' },
       { g:'🪙', t:'เบี้ยกรรม +300', d:'พญายมโอนงบเพิ่มให้ทันที' },
       { g:'❤️', t:'บารมีสูงสุดขึ้นเป็น 120', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
+      { g:'🔷', t:'MP สูงสุดขึ้นเป็น 56', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
     ] },
-  { green:12, name:'ยมบาทเจ้าโซน',  hpMax:130, bonus:'ปลดล็อก 🌀 สะกดจิต · บารมีสูงสุด 130 · เบี้ยกรรม +500',
+  { green:12, exp:620, name:'ยมบาทเจ้าโซน',  hpMax:130, mpMax:64, bonus:'บารมีสูงสุด 130 · MP สูงสุด 64 · เบี้ยกรรม +500',
     gains:[
-      { g:'🌀', t:'ปลดล็อกพลัง "สะกดจิต"', d:'สะกดให้สารภาพครบ 100% ทุกครั้ง — แต่การรื้อใจคนก็เป็นกรรมของเราเหมือนกัน · ซื้อ item ได้จากบุญที่ประตูสวรรค์' },
       { g:'❤️', t:'บารมีสูงสุดขึ้นเป็น 130', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
+      { g:'🔷', t:'MP สูงสุดขึ้นเป็น 64', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
       { g:'🪙', t:'เบี้ยกรรม +500', d:'พญายมโอนงบเพิ่มให้ทันที' },
     ] },
-  { green:18, name:'ทายาทพญายม',    hpMax:140, bonus:'พลังทุกอย่างเต็มทุกครั้งที่ขึ้นขั้น · บารมีสูงสุด 140',
+  { green:18, exp:1000,name:'ทายาทพญายม',    hpMax:140, mpMax:72, bonus:'บารมีสูงสุด 140 · MP สูงสุด 72',
     gains:[
-      { g:'♾️', t:'พลังทุกอย่างเต็มทุกครั้งที่ขึ้นขั้น', d:'ไม่ต้องรอคูลดาวน์ทีละอย่างอีกแล้ว' },
       { g:'❤️', t:'บารมีสูงสุดขึ้นเป็น 140', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
+      { g:'🔷', t:'MP สูงสุดขึ้นเป็น 72', d:'และเติมเต็มให้ทันทีในจังหวะที่ขึ้นขั้น' },
     ] },
 ];
 
@@ -1349,6 +1346,7 @@ export const AFTER_BY_SIN = {
 // ปุ่ม: ⚔️ ฟาด · 🔥 ลูกไฟ · 🎒 ของ
 export const BATTLE = {
   youHp: 100,
+  mpCost: { fire:8, ice:12, hypno:14, charge:18, rage:20, wind:14, spear:24, clock:16 },
   atk:      [11, 19],   // ฟาดปกติ — ไม่เปลืองอะไร ใช้ได้ทุกตา
   // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟแยกกระสุนออกจากตวาดข่มขู่แล้ว (g.fireAmmo ของตัวเอง ดู game.js)
   // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — เลิกสุ่ม [25,38] เป็นค่าคงที่ 40 ตามที่กำหนดเป๊ะ
@@ -1367,9 +1365,9 @@ export const BATTLE = {
   // ของที่ใช้ได้ในฉากต่อสู้ — ทุกชิ้น "มีราคา" ที่หักจากทรัพยากรจริงในเกม
   // ไม่มีของฟรีสักชิ้น ไม่งั้นฉากต่อสู้จะกลายเป็นกดปุ่มเดิมซ้ำจนกว่าจะชนะ
   items: [
-    { k:'tea', name:'น้ำชาร้อน', glyph:'🍵', heal:24, coin:22,
+    { k:'tea', name:'น้ำชาร้อน', glyph:'🍵', heal:24,
       say:'ท่านจิบน้ำชาร้อนหนึ่งอึกแล้วกลับมายืนมั่นคงกว่าเดิม' },
-    { k:'health', name:'หีบยา',    glyph:'💊', heal:42, coin:45,
+    { k:'health', name:'หีบยา',    glyph:'💊', heal:42,
       say:'ท่านควักเบี้ยกรรมซื้อยาจากยมทูตข้างสนาม — เขาคิดแพงมากและไม่ต่อรอง' },
     { k:'hypno',  name:'สะกดจิต',   glyph:'🌀', confuse:1, power:'hypno', karma:1,
       say:'วงสะกดจิตหุบเข้าหาเขา เขายืนค้างอยู่กลางท่า — การรื้อใจคนเป็นกรรมของเราเสมอ' },
@@ -1379,27 +1377,91 @@ export const BATTLE = {
   ],
 };
 
-// Per-zone event definitions. Later batches can add other zones and wave entries.
+// Event keys are persisted in zoneEvents. Keep them stable for saved games.
 export const ZONE_EVENTS = {
-  th: [{ k:'prisonBreak', atCases:2, mode:'group',
+  th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
     alert:{ th:'มีวิญญาณแหกคุกออกมาหลายตน', en:'Several spirits have escaped' },
     foes:[{ sp:'spirit', count:3, hp:30, atk:[5, 8] }],
     reward:{ coin:75, order:2 }, lose:{ hp:9, order:4 } },
-  { k:'frontierBreach', atCases:5, mode:'waves', team:'frontier',
+  { k:'frontierBreach', atCases:8, requires:['devaTest'], mode:'waves', team:'frontier',
     title:{ th:'ปีศาจฝ่าชายแดน', en:'Frontier breach' },
     alert:{ th:'ปีศาจหลายตัวฝ่าชายแดนเข้ามา รวมทีมยมทูตไปสกัดทั้ง 3 ระลอก',
       en:'Demons have breached the frontier. Assemble the crew and stop all three waves.' },
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
-      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }],
-      [{ sp:'boss-frontier-th', count:1, hp:120, atk:[10,16], boss:true }]],
+      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }]],
     betweenWaveHeal:20, reward:{ coin:120, drop:1 }, lose:{ hp:8 } },
-  { k:'devaTest', atCases:8, mode:'single',
+  { k:'devaTest', atCases:5, requires:['prisonBreak'], mode:'single',
     title:{ th:'เทวดามาทดสอบ', en:'A deva comes to test you' },
     alert:{ th:'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมน้อย',
       en:'A deva has heard of the new warden and has come to test them.' },
     foe:{ sp:'boss-tester-th', hp:100, atk:[10,16] },
-    reward:{ coin:90 }, lose:{ hp:9 } }],
+    reward:{ coin:90 }, lose:{ hp:9 } },
+  { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',
+    title:{ th:'บอสบูรพาบุกชายแดน', en:'Eastern boss at the frontier' },
+    alert:{ th:'บอสจากโซน 2 พาปีศาจสองตนมาท้ารบที่ชายแดน', en:'The Eastern boss arrives with two demons.' },
+    foes:[{ name:'แม่ทัพตรวนบูรพา', sp:'zone-boss-asia', count:1, hp:155, atk:[12,19], boss:true },
+      { kind:6, count:2, hp:52, atk:[7,12] }],
+    reward:{ coin:160, ability:'bigFire', unlockZone:'asia' } }],
+  asia:[
+    { k:'asiaPrisonFire', atCases:3, mode:'group',
+      title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },
+      alert:{ th:'วิญญาณสามตนแหกคุกและเผาอาคารไปหนึ่งหลัง เทวดาจะลงมาช่วยหลังปราบตนแรก', en:'Three spirits escape and destroy a building. A deva descends after the first falls.' },
+      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterFirstKill:'devaArrives',
+      reward:{ coin:90 } },
+    { k:'asiaDevaTest', atCases:3, requires:['asiaPrisonFire'], mode:'single',
+      title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },
+      alert:{ th:'เทวดาที่ลงมาช่วยรอทดสอบยมน้อย', en:'The deva who helped now tests Yama.' },
+      foe:{ name:'เทวดาพัดสายลม', sp:'boss-tester-asia', hp:130, atk:[11,18], boss:true },
+      reward:{ coin:110, ability:'windFan' } },
+    { k:'asiaRageBreach', atCases:6, requires:['asiaDevaTest'], mode:'waves', team:'frontier',
+      title:{ th:'ปีศาจฝ่าชายแดนสามระลอก', en:'Three frontier waves' },
+      alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },
+      waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],
+        [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
+      betweenWaveHeal:18, reward:{ coin:150, ability:'rage' } },
+  ],
+  west:[
+    { k:'westHypnotized', atCases:0, mode:'group',
+      title:{ th:'วิญญาณถูกสะกดจิต', en:'Hypnotized spirits' },
+      alert:{ th:'วิญญาณที่ถูกสะกดจิตเดินอยู่ในโซน ต้องช่วยให้หมดก่อนสร้างสถานที่', en:'Free the hypnotized spirits before building.' },
+      foes:[{ kind:0, count:3, hp:45, atk:[8,13] }], reward:{ coin:70 } },
+    { k:'westVampireBreach', atCases:3, requires:['westHypnotized'], mode:'waves', team:'frontier',
+      title:{ th:'แวมไพรที่ชายแดน', en:'Vampire at the frontier' },
+      alert:{ th:'วิญญาณหยุดนิ่งไปหมด ชายแดนมีปีศาจสามระลอกและแวมไพร', en:'The spirits freeze. Three demon waves and a vampire await at the frontier.' },
+      waves:[[{ kind:0, count:2, hp:55, atk:[9,14] }], [{ kind:3, count:2, hp:60, atk:[10,15] }],
+        [{ name:'แวมไพร', sp:'boss-frontier-west', count:1, hp:150, atk:[13,20], boss:true }]],
+      betweenWaveHeal:18, reward:{ coin:170, ability:'hypno' } },
+    { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
+      title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
+      alert:{ th:'เทวดามาปราบแวมไพร แต่ยมน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
+      foe:{ name:'เทวดาหอกวาคิวรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },
+      reward:{ coin:130, ability:'valkyrieSpear' } },
+  ],
+  cyberhell:[
+    { k:'cyberRescue', atCases:0, mode:'group',
+      title:{ th:'ช่วยทัณฑ์และพ่อค้านรก', en:'Rescue Taan and the merchant' },
+      alert:{ th:'เทวดาจับทัณฑ์กับพ่อค้านรกไว้ในคุก ต้องชนะจึงจะช่วยออกมาได้', en:'Devas imprisoned Taan and the merchant. Defeat them to free the captives.' },
+      foes:[{ name:'เทวดาผู้คุม', sp:'boss-tester-cyberhell', count:2, hp:105, atk:[12,19], boss:true }],
+      reward:{ coin:130, ability:'cooldownClock', releaseCaptives:true } },
+    { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
+      title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },
+      alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
+      waves:[[{ kind:3, count:2, hp:60, atk:[10,16] }], [{ kind:4, count:2, hp:65, atk:[11,17] }],
+        [{ kind:5, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
+      betweenWaveHeal:15, reward:{ coin:200, item:'spareHeart' } },
+    { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
+      title:{ th:'ศึกบอสทั้งสี่สาขา', en:'Four branch bosses' },
+      alert:{ th:'บอสสุดท้ายควบคุมหัวหน้าของสามสาขาก่อนหน้า ต้องฝ่าทั้งสามคนก่อนจึงจะสู้กับเขาได้',
+        en:'The final boss controls the three former wardens. Defeat them before facing him.' },
+      waves:[
+        [{ name:'พญายมบาท', sp:'hero-boss', count:1, hp:145, atk:[13,20], boss:true }],
+        [{ name:'แม่ทัพตรวนบูรพา', sp:'zone-boss-asia', count:1, hp:160, atk:[14,21], boss:true }],
+        [{ name:'อัศวินบัญชีปัจฉิม', sp:'zone-boss-west', count:1, hp:175, atk:[15,22], boss:true }],
+        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[17,25], boss:true }],
+      ],
+      betweenWaveHeal:25, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
+  ],
 };
 
 // TODO: รอ Rae ตั้งชื่อจริง

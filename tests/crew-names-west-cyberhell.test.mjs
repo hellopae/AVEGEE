@@ -41,9 +41,8 @@ test('g.crew[].name อัปเดตเป็นชื่อโซน west/cyb
   g.bossCleared = { th: true, asia: true };
   assert.equal(g.canMoveZone('west'), true, 'เตรียมเงื่อนไขให้ย้ายโซน west ได้จริงก่อนเช็คชื่อ');
   g.moveZone('west');
-  assert.equal(g.crew.some(c => c.k === 'taan'), false, 'สาขาใหม่ยังไม่มีลูกน้อง — ต้องจ้างเอง (พฤติกรรมเดิม)');
-  g.hire('taan');
+  assert.equal(g.crew.some(c => c.k === 'taan'), true, 'สาขาใหม่มีทัณฑ์รอสร้างสถานที่');
   const taan = g.crew.find(c => c.k === 'taan');
-  assert.ok(taan, 'จ้างทัณฑ์ในโซน west แล้วต้องมีในทีม');
+  assert.ok(taan);
   assert.equal(taan.name, 'โพเอน่า');
 });

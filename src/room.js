@@ -209,7 +209,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ต้องยืนถึงจุด (inReach) ถึงจะเริ่มนั่งได้ · ลุกได้ทุกเมื่อไม่มีเงื่อนไข */
   function setSit(on) {
     if (on) {
-      if (!canSit || !inReach() || g.hp >= g.hpMax) return false;
+      if (!canSit || !inReach() || (g.hp >= g.hpMax && g.mp >= g.mpMax)) return false;
       sitting = true; sipAt = performance.now() + 1800; sipping = false;
       P.tx = null; P.ty = null;
     } else {
@@ -221,9 +221,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   function step(dt) {
     if (sitting) {
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
-      if (g.hp < g.hpMax) {
+      if (g.hp < g.hpMax || g.mp < g.mpMax) {
         g.hp = Math.min(g.hpMax, g.hp + BAL.hpRegenSit * dt / 1000);
-        if (g.hp >= g.hpMax) sitting = false;    // เต็มแล้วลุกเอง
+        g.mp = Math.min(g.mpMax, g.mp + 5 * dt / 1000);
+        if (g.hp >= g.hpMax && g.mp >= g.mpMax) sitting = false;
       } else sitting = false;
       const now = performance.now();
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
@@ -275,7 +276,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     ctx.clearRect(0, 0, W, H);
     ctx.imageSmoothingEnabled = false;
 
-    // ---- ฉาก: วางแบบ contain ไม่ครอป จุดยึดทุกจุดจึงตรงกับที่วัดจากภาพต้นฉบับเสมอ ----
+    // ---- ฉาก: โซน 1 บนจอกว้างใช้พื้นที่เต็มกรอบ; จอเล็กยังคงสัดส่วนภาพเดิม ----
     // room.crop = [sx,sy,sw,sh] สัดส่วน 0-1 ของภาพต้นฉบับ — ถ้ามี ตัดเฉพาะส่วนนั้นมาขยายเต็มกรอบ
     // แทนที่จะยัดภาพทั้งใบ (ใช้ซูมเข้าไปในอาคารโดยไม่ต้องวาดภาพใหม่ — ข้อ D คุณเป้ 24 ก.ย. 2569)
     // จุดยึด (me/walk/act/item) ของห้องที่มี crop ต้องวัดใหม่เทียบกับกรอบที่ครอปแล้ว ไม่ใช่ภาพเต็มอีกต่อไป
@@ -286,8 +287,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const sy = crop ? crop[1] * bg.naturalHeight : 0;
       const sw = crop ? crop[2] * bg.naturalWidth  : bg.naturalWidth;
       const sh = crop ? crop[3] * bg.naturalHeight : bg.naturalHeight;
+      // ภาพห้องต้นฉบับเป็นสี่เหลี่ยมจัตุรัสหรือแนวตั้ง แต่ mockup UI4 เป็นฉากกว้าง
+      // การใช้ cover จะตัดจุด me/act ที่อยู่ใกล้ขอบล่างของหลายห้องออกไป จึงขยาย
+      // ภาพให้เต็มพื้นที่เฉพาะเลย์เอาต์กว้าง พร้อมรักษาพิกัด 0-1 ของตัวละครและจุดกดไว้
+      const fillWide = !!cv.closest?.('.zone1-room') && matchMedia('(min-width:1101px)').matches;
       const s = Math.min(W / sw, H / sh);
-      box = { ox: (W - sw * s) / 2, oy: (H - sh * s) / 2, w: sw * s, h: sh * s };
+      box = fillWide ? { ox:0, oy:0, w:W, h:H }
+        : { ox:(W - sw * s) / 2, oy:(H - sh * s) / 2, w:sw * s, h:sh * s };
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน

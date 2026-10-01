@@ -4,7 +4,7 @@ import { createGame } from '../src/game.js';
 
 const pendingGame = () => {
   const g = createGame();
-  g.zoneCases.th = 1;
+  g.zoneCases.th = 2;
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
   return g;
 };
@@ -25,23 +25,25 @@ test('ordinary combat owns HP in one foe and keeps the old result', () => {
   assert.equal(soul.beaten, true);
 });
 
-test('mob, frontier, zone boss, dad, and yama battles each have one foe', () => {
-  const check = start => {
+test('ordinary encounters keep one foe; Zone 2 boss arrives with two demons', () => {
+  const check = (start, count = 1) => {
     const g = createGame();
     start(g);
-    assert.equal(g.battle?.foes.length, 1);
+    assert.equal(g.battle?.foes.length, count);
     assert.equal(g.battle.foes[0].hp, g.battle.foeHp);
   };
   check(g => { g.mobs.push({ id:900, kind:0 }); g.startMobBattle(0); });
   check(g => { g.setFrontierTeam('taan'); g.startFrontierBattle(); });
-  check(g => { g.zoneCases.th = 10; g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' }; g.startZoneBoss(); });
+  check(g => { g.zone = 'asia'; g.zoneCases.asia = 10;
+    g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
+    g.startZoneBoss(); }, 3);
   check(g => g.startDadFight());
   check(g => g.startYamaFight());
 });
 
-test('case two schedules prison break once and active restore becomes pending', () => {
+test('case three schedules prison break once and active restore becomes pending', () => {
   const g = pendingGame();
-  assert.equal(g.zoneCases.th, 2);
+  assert.equal(g.zoneCases.th, 3);
   assert.equal(g.prisonBreakStatus(), 'pending');
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
   assert.equal(g.prisonBreakStatus(), 'pending');
@@ -103,7 +105,7 @@ test('loss applies the event penalty and allows a fresh retry', () => {
   b.youHp = 1;
   g.battleAct('atk');
   assert.equal(b.over, 'lose');
-  assert.equal(g.hp, hp - 9);
+  assert.equal(g.hp, 1);
   assert.equal(g.order, order - 4);
   assert.equal(g.coin, coin);
   assert.equal(g.prisonBreakStatus(), 'pending');

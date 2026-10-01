@@ -6,8 +6,9 @@ import { createGame } from '../src/game.js';
 import { MERCHANT, ITEMS } from '../src/data.js';
 
 const readyBoss = (g) => {
-  g.zoneCases[g.zone] = 10;
-  if (g.zone === 'th') g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' };
+  g.zone = 'asia';
+  g.zoneCases.asia = 10;
+  g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
   return g.startZoneBoss();
 };
 
@@ -18,7 +19,7 @@ test('เข้าบอส — แฟ้มหลักฐานเป็นโ
   const baseFoeHp = g1.battle.foeHp;
 
   const g2 = createGame();
-  g2.miniGoals[g2.zone] = { truth: 3, earned: true };
+  g2.miniGoals.asia = { truth: 3, earned: true };
   readyBoss(g2);
   assert.equal(g2.battle.proofBonus, 24);
   assert.equal(g2.battle.foeHp, g2.battle.foeMax - 24, 'ลดพลังบอสอัตโนมัติทันทีตอนเปิดฉาก');
@@ -64,12 +65,11 @@ test('กดเข้าสู้แล้ว กินหีบยาเพิ�
   assert.equal(g.useBossMedicine(), false);
 });
 
-test('ซื้อลูกไฟที่พ่อค้า — พร้อมใช้ทันที ไม่ค้างเป็นเลขเฉย ๆ ในกระเป๋า', () => {
+test('พ่อค้านรกขายของฟื้นฟูและเสบียง ไม่ขายพลังโจมตี', () => {
   const g = createGame();
-  assert.ok(MERCHANT.stock.some(s => s.k === 'fire'), 'MERCHANT.stock ต้องมีลูกไฟขาย');
-  g.fireAmmo = 0;
+  assert.deepEqual(MERCHANT.stock.map(s => s.k), ['tea', 'health', 'food', 'lotus']);
   g.coin = 9999;
-  assert.equal(g.buyMerchant('fire'), true);
-  assert.ok(g.fireAmmo >= 1, 'ต้องได้กระสุนพร้อมใช้ทันที');
-  assert.equal(g.inventory.fire, undefined, 'ไม่ควรค้างอยู่ในกระเป๋าทั่วไป');
+  assert.equal(g.buyMerchant('fire'), false);
+  assert.equal(g.buyMerchant('tea'), true);
+  assert.equal(g.inventory.tea, 1);
 });

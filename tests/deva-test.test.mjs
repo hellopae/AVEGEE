@@ -6,11 +6,11 @@ import { ZONE_EVENTS } from '../src/data.js';
 const ready = () => {
   const g = createGame();
   g.zoneCases.th = 10;
-  g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'pending' };
+  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'pending' };
   return g;
 };
 
-test('the zone-one boss waits until the deva test is cleared', () => {
+test('the zone-one border boss waits for deva and frontier events', () => {
   const g = ready();
   assert.equal(g.bossReady(), false);
   assert.equal(g.startZoneBoss(), null);
@@ -23,19 +23,22 @@ test('the zone-one boss waits until the deva test is cleared', () => {
   assert.equal(battle.over, 'win');
   assert.equal(g.devaTestStatus(), 'cleared');
   assert.equal(g.coin - coin, ZONE_EVENTS.th[2].reward.coin);
-  assert.equal(g.bossReady(), true);
+  assert.equal(g.bossReady(), false);
   g.endBattle();
   assert.equal(g.startDevaTest(), null);
-  assert.equal(g.startZoneBoss()?.kind, 'zoneBoss');
+  assert.equal(g.frontierBreachStatus(), 'pending');
+  g.zoneEvents.th.frontierBreach = 'cleared';
+  g.refreshZoneEvents('th');
+  assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
+  assert.equal(g.startZoneEvent('thBorderBoss')?.kind, 'zoneEvent');
 });
 
 test('a failed deva test can be retried, and an active save restarts the test', () => {
   const g = ready();
-  const hp = g.hp;
   g.startDevaTest().youHp = 1;
   g.battleAct('atk');
   assert.equal(g.battle.over, 'lose');
-  assert.equal(g.hp, hp - ZONE_EVENTS.th[2].lose.hp);
+  assert.equal(g.hp, 1);
   assert.equal(g.devaTestStatus(), 'pending');
   g.endBattle();
   g.startDevaTest();
@@ -47,21 +50,19 @@ test('a failed deva test can be retried, and an active save restarts the test', 
   assert.equal(loaded.startDevaTest()?.foes[0].hp, 100);
 });
 
-test('case eight waits for the frontier breach, then schedules the deva', () => {
+test('case five schedules deva after prison; case eight schedules frontier after deva', () => {
   const g = createGame();
-  g.zoneCases.th = 7;
-  g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'pending' };
+  g.zoneCases.th = 4;
+  g.zoneEvents.th = { prisonBreak:'cleared' };
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
-  assert.equal(g.devaTestStatus(), 'locked');
-  g.setFrontierTeam('taan');
-  const battle = g.startFrontierBreach();
-  for (let wave = 1; wave <= 3; wave++) {
-    battle.foes.forEach(foe => { foe.hp = 1; });
-    for (const foe of battle.foes) g.battleAct('atk');
-    if (wave < 3) g.advanceFrontierBreachWave();
-  }
-  assert.equal(g.frontierBreachStatus(), 'cleared');
   assert.equal(g.devaTestStatus(), 'pending');
+  g.startDevaTest().foes[0].hp = 1;
+  g.battleAct('atk');
+  assert.equal(g.devaTestStatus(), 'cleared');
+  g.endBattle();
+  g.zoneCases.th = 7;
+  g.applyVerdict({ score:55, karma:0 }, { said:[] });
+  assert.equal(g.frontierBreachStatus(), 'pending');
 });
 
 test('a pre-event save already at the boss keeps its old access; a new save does not', () => {

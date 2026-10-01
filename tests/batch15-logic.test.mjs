@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { BAL, BOSS_ULTIMATE, bossUltimate, LEVELS, MERCHANT, ZONES } from '../src/data.js';
+import { BAL, BATTLE, BOSS_ULTIMATE, bossUltimate, LEVELS, MERCHANT, ZONES, ZONE_EVENTS, SPOTS } from '../src/data.js';
 import { clearFrontierSession, frontierSession, nearFrontierGate, nearFrontierNira } from '../src/frontier.js';
 
 test('ราคาห่อเสบียงลดครึ่งทั้งร้านและแท็บก่อสร้าง', () => {
@@ -9,7 +9,7 @@ test('ราคาห่อเสบียงลดครึ่งทั้ง�
   assert.equal(BAL.foodPrice * 10, 10);
 });
 
-test('ครบ KPI ก่อนปราบบอสยังเล่นต่อได้ รวมเซฟ v3 ที่เคยติดฉากจบ', () => {
+test('ครบ KPI หรือบอสสาขาเก่ายังไม่จบเกมก่อนศึกสุดท้าย รวมเซฟ v3 ที่เคยติดฉากจบ', () => {
   const g = createGame();
   g.kpiPassed = BAL.kpiWin;
   g.karma = 22.4;
@@ -30,7 +30,7 @@ test('ครบ KPI ก่อนปราบบอสยังเล่นต่
   assert.equal(loaded.bossReady(), true);
   for (const z of ZONES) loaded.bossCleared[z.k] = true;
   loaded.checkEnd();
-  assert.equal(loaded.over?.k, 'win');
+  assert.equal(loaded.over, null);
 });
 
 test('ท่าไม้ตายออกครั้งแรกหลังเลือดต่ำกว่าครึ่ง แล้วเว้นอย่างน้อย 4 เทิร์น', () => {
@@ -43,7 +43,7 @@ test('ท่าไม้ตายออกครั้งแรกหลัง�
   }
 });
 
-test('ทีมยมน้อย ทัณฑ์ เพลิง พร้อมลูกไฟและหีบยาซื้อได้ ชนะบอสทั้ง 4 โซน', () => {
+test('ทีมยมน้อย ทัณฑ์ เพลิง ใช้ MP และยาจากกระเป๋าชนะบอสทั้ง 4 โซน', () => {
   const originalRandom = Math.random;
   Math.random = () => 0.5;
   try {
@@ -54,18 +54,31 @@ test('ทีมยมน้อย ทัณฑ์ เพลิง พร้อ�
       g.hpMax = LEVELS[z.level - 1].hpMax;
       g.hp = g.hpMax;
       g.coin = 1500;
+      g.inventory.health = 10;
+      g.inventory.tea = 5;
       assert.equal(g.hire('plerng'), true);
       g.party.members = ['taan', 'plerng'];
       g.zoneCases[z.k] = 10;
-      if (z.k === 'th') g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared' };
-      assert.ok(g.startZoneBoss());
+      // This test enters the ordinary zone-boss arena directly; story events
+      // are covered separately and must be cleared before that arena opens.
+      g.zoneEvents[z.k] = Object.fromEntries((ZONE_EVENTS[z.k] || [])
+        .filter(event => event.atCases <= 9)
+        .map(event => [event.k, 'cleared']));
+      if (z.k === 'th' || z.k === 'cyberhell') {
+        // These zones now use story battles at case ten; the old arena remains
+        // available as a replay after clearing its boss.
+        g.bossCleared[z.k] = true;
+        g.player.x = SPOTS.bossPier.x;
+        g.player.y = SPOTS.bossPier.y;
+        assert.ok(g.startZoneBoss('rematch'));
+      } else assert.ok(g.startZoneBoss());
       assert.equal(g.startBossFight(), true);
       let ultimateCount = 0, turns = 0, medicineCount = 0;
       while (!g.battle.over && turns++ < 45) {
         const b = g.battle;
         const helper = g.battleCrew().find(c => !g.crewHelpWhy(c));
-        const act = b.youHp <= b.youMax - 35 ? 'health'
-          : helper ? `crew:${helper.k}` : g.fireAmmo ? 'fire' : 'atk';
+        const act = b.youHp <= b.youMax - 35 && g.inventory.health ? 'health'
+          : helper ? `crew:${helper.k}` : g.mp >= BATTLE.mpCost.fire ? 'fire' : 'atk';
         assert.equal(g.battleAct(act), true);
         if (act === 'health') medicineCount++;
         if (b.ultimate) ultimateCount++;

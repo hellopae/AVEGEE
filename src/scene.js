@@ -245,8 +245,25 @@ export function render(ctx, g, t, hover, sel) {
     });
   }
 
-  // พ่อค้านรกอยู่ริมแม่น้ำทุกโซน รับซื้อของจากชายแดนและขายคัมภีร์
-  at(1e5 + MERCHANT.y, () => {
+  if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending') {
+    [[1110,465],[1240,535],[1335,615]].forEach(([bx,by], i) => {
+      const x = bx + Math.sin(t / 800 + i * 2) * 18;
+      const y = by + Math.cos(t / 1100 + i * 2) * 9;
+      at(y, () => {
+        mapStandee(ctx, 'spirit7', x, y, 58, t, '👻');
+        if (i === 1) tag(ctx, x, y - 63, t, ['🌀 วิญญาณถูกสะกดจิต', '#c8b4ef']);
+      });
+    });
+  }
+
+  // ในโซน 4 ทัณฑ์กับพ่อค้ารออยู่หน้าตะรางจนกว่าจะชนะเทวดาผู้คุม
+  if (!g.zoneCaptivesFree()) {
+    at(350, () => {
+      mapStandee(ctx, 'crew-taan', 966, 350, 72, t, '🔒');
+      mapStandee(ctx, MERCHANT.img, 1038, 350, 72, t, '🔒');
+      tag(ctx, 1002, 256, t, ['🔒 ช่วยทัณฑ์และพ่อค้า', '#f7c371']);
+    });
+  } else at(1e5 + MERCHANT.y, () => {
     mapStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
     tag(ctx, MERCHANT.x, MERCHANT.y - MERCHANT.h * CHAR_SCALE_MAP - 8, t, ['🧳 ซื้อขาย', '#f7c371']);
   });
@@ -274,7 +291,7 @@ export function render(ctx, g, t, hover, sel) {
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
       drawStandee(ctx, working ? poseOr(base + '-work', base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
-      label(ctx, c.name, c.x, c.y + 13, 13, 'rgba(255,225,195,.72)');
+      label(ctx, c.name, c.x, c.y + 13, 10.5, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
   }
@@ -492,8 +509,8 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
 function bubble(ctx, text, x, y) {
-  ctx.font = `600 ${12 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
-  const w = Math.min(270 * UI_SCALE_MAP, ctx.measureText(text).width + 16 * UI_SCALE_MAP), h = 22 * UI_SCALE_MAP;
+  ctx.font = `600 ${10 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
+  const w = Math.min(235 * UI_SCALE_MAP, ctx.measureText(text).width + 14 * UI_SCALE_MAP), h = 20 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
@@ -541,7 +558,10 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 export function hitActor(g, sx, sy) {
   const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
-  if (near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
+  if (g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
+  if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending' &&
+      [[1110,465],[1240,535],[1335,615]].some(([x,y]) => near(x,y,radius(78))))
+    return { kind:'zoneEvent', key:'westHypnotized' };
   if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return { kind: 'mob', key: i };

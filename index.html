@@ -667,6 +667,11 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
 .arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
   align-items:center;gap:5px;width:min(34%,240px)}
+.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{
+  animation:battleBreath 2.4s ease-in-out infinite}
+.arena.combat-arena .fig.foe{animation-delay:-1.1s}
+@keyframes battleBreath{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media(prefers-reduced-motion:reduce){.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{animation:none}}
 /* ข้อ D คุณเป้ 24 ก.ย. 2569 — ยมน้อยต้องอยู่หน้าสุดเสมอ ไม่มีตัวไหนบังหัวได้
    (เจอ: ยมทูตที่เข้ามาช่วย .fig.helper วาด z-index:3 ทับหัวยมน้อยซึ่งเดิม z-index:2 ตามค่า .fig ฐาน) */
 .arena .fig.you{left:4%;z-index:4} .arena .fig.foe{right:4%}
@@ -701,6 +706,7 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   /* ภาพคัตซีนเดิมวาดยมน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
   transform:scaleX(-1)}
 .action-cutscene.right-facing img{transform:none;animation-name:actionRushRight}
+.action-cutscene.enemy-facing img{transform:none;animation-name:actionRushEnemy}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
   background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
   mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
@@ -711,6 +717,8 @@ dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scro
   18%{transform:scaleX(-1) scale(1.03) translateX(1%)}88%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.08);filter:brightness(1.25)}}
 @keyframes actionRushRight{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
   18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRushEnemy{0%{transform:scale(1.18) translateX(5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(1.03) translateX(-1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
@@ -891,6 +899,23 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
 .st-hud .st-left{grid-area:left}
 .st-hud .st-room{grid-area:room}
 .st-hud .hud-right{grid-area:right}
+/* ห้องโซน 1 ใช้ฉากเต็มพื้นที่ตามภาพอ้างอิง โดยคำอธิบายและปุ่มลอยบนฉาก */
+@media (min-width:1101px){
+  .st-hud.zone1-room .hud-body{display:block;position:relative;min-height:0;padding:0;overflow:hidden}
+  .st-hud.zone1-room .st-room{position:absolute;inset:0;display:block;z-index:0}
+  .st-hud.zone1-room .st-room canvas{width:100%;height:100%;border-radius:0}
+  .st-hud.zone1-room .st-left{position:absolute;z-index:2;top:24px;left:24px;width:min(26%,390px);
+    max-height:32%;overflow-y:auto;background:rgba(31,14,23,.93);border:1px solid var(--gold);
+    border-radius:14px;padding:12px;box-shadow:0 8px 30px #0008}
+  .st-hud.zone1-room .st-left .hud-card{background:transparent;border:0;padding:4px 8px}
+  .st-hud.zone1-room .hud-right{position:absolute;z-index:2;top:34%;left:50%;transform:translateX(-50%);
+    width:min(340px,31%);max-height:48%;overflow-y:auto;background:rgba(25,11,19,.82);
+    border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:0 8px 30px #0008}
+  .st-hud.zone1-room .hud-right .hud-card{background:transparent;border:0;padding:4px}
+  .st-hud.zone1-room .hud-right .hud-card h4{display:none}
+  .st-hud.zone1-room .hud-top{position:absolute;z-index:2;bottom:9px;left:16px;right:16px;
+    width:auto;background:rgba(25,11,19,.72);border-radius:10px}
+}
 @media (max-width:1100px){.st-hud .hud-body{grid-template-columns:minmax(140px,170px) minmax(0,1fr) minmax(200px,220px)}}
 .st-left{overflow-y:auto}
 .st-desc{font-size:var(--text-xs);line-height:var(--leading-body);color:var(--foreground)}
@@ -1369,6 +1394,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .hud-hpbar{display:block;width:100%;height:6px;border-radius:99px;background:rgba(0,0,0,.55);
   overflow:hidden;margin-top:3px;border:1px solid rgba(0,0,0,.4)}
 .hud-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#5fd987,#2f9d5c)}
+.hud-hpbar.mp i{background:linear-gradient(90deg,#82c8ff,#3865c8)}
 .hud-avatar small{display:block;color:#f2e6d6;font-size:clamp(9px,1.15vw,11px);margin-top:2px;
   text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
 
@@ -1502,6 +1528,15 @@ dialog.rpg .boss-prep-actions{flex:0 0 auto;display:flex;justify-content:center;
    ขึ้นบรรทัดกลางคำแบบสุ่ม (เช่น "ยักษ์ทวาร" / "บาล") อ่านแล้วเหมือนพิมพ์ผิด — บังคับบรรทัดเดียวเสมอ
    ป้ายกว้างกว่าตัวละครนิดหน่อยไม่เป็นไร มีที่ว่างพอทางขวาอยู่แล้วก่อนถึงฝั่งศัตรู */
 .battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px;white-space:nowrap}
+.battle-squad [data-crew-pick]{cursor:pointer;border-radius:8px}
+.battle-squad [data-crew-pick]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.battle-buff{display:inline-block;margin:5px 0;padding:4px 9px;border:1px solid #e46d31;border-radius:14px;background:#35131b;color:#ffd29a;font-size:12px}
+#ov .zone-eventfab{position:absolute;z-index:8;transform:translate(-50%,-100%);
+  pointer-events:auto;display:flex;align-items:center;gap:5px;background:#41212c;color:#ffe398;
+  border:1px solid #eac579;border-radius:10px;padding:4px 7px;cursor:pointer;
+  font:700 12px var(--font-display);max-width:160px;white-space:normal;text-align:left;
+  box-shadow:0 4px 16px #090308b8}
+#ov .zone-eventfab img{height:34px;width:34px;object-fit:contain;flex:none}
 
 /* ฉากรับโทษกระทะทองแดง */
 dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;padding:0;overflow:hidden;background:#160a0f}
@@ -1703,6 +1738,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
           </span>
         </span>
         <span class="hud-hpbar"><i id="hud-hp-fill"></i></span>
+        <span class="hud-hpbar mp" title="MP"><i id="hud-mp-fill"></i></span>
         <small id="hud-ava-name">ยมบาทน้อย</small>
       </button>
       <button id="hud-book" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.book">

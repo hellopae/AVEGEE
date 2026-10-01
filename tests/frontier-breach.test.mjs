@@ -1,32 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { CREW_POWER, FRONTIER, MOB, ZONE_EVENTS } from '../src/data.js';
+import { BATTLE, CREW_POWER, FRONTIER, MOB, ZONE_EVENTS } from '../src/data.js';
 
 const ready = () => {
   const g = createGame();
-  g.zoneCases.th = 5;
-  g.zoneEvents.th = { prisonBreak:'cleared', frontierBreach:'pending' };
+  g.zoneCases.th = 8;
+  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' };
   g.setFrontierTeam('taan');
   return g;
 };
 
-test('case five waits for prison break, including when prison break clears later', () => {
+test('case eight waits for deva test before frontier breach', () => {
   const g = createGame();
-  g.zoneCases.th = 4;
-  g.zoneEvents.th = { prisonBreak:'pending' };
+  g.zoneCases.th = 7;
+  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'pending' };
   g.applyVerdict({ score:55, karma:0 }, { said:[] });
   assert.equal(g.frontierBreachStatus(), 'locked');
   assert.equal(g.startFrontierBreach(), null);
-  g.startPrisonBreak();
-  g.battle.youHp = 999;
-  g.battle.foes.forEach(f => { f.hp = 1; });
-  for (let i = 0; i < 3; i++) g.battleAct('atk');
-  assert.equal(g.prisonBreakStatus(), 'cleared');
+  g.startDevaTest();
+  g.battle.foes[0].hp = 1;
+  g.battleAct('atk');
+  assert.equal(g.devaTestStatus(), 'cleared');
   assert.equal(g.frontierBreachStatus(), 'pending');
 });
 
-test('three waves keep one battle, heal at transition, and reward only after boss', () => {
+test('two waves keep one battle, heal at transition, and reward after both', () => {
   const g = ready(), beforeCoin = g.coin;
   const beforeClears = g.frontierOf().clears;
   const beforeBoss = { ...g.bossCleared };
@@ -53,14 +52,6 @@ test('three waves keep one battle, heal at transition, and reward only after bos
   g.battleAct('atk');
   assert.equal(b.pendingWave, null);
   g.battleAct('atk');
-  assert.equal(b.pendingWave, 3);
-  assert.equal(g.advanceFrontierBreachWave(), true);
-  assert.equal(b.youHp, b.youMax);
-  assert.equal(b.foes[0].hp, 120);
-  assert.deepEqual(b.foes[0].atk, [10, 16]);
-  assert.equal(b.foes[0].sp, 'boss-frontier-th');
-  b.foes[0].hp = 1;
-  g.battleAct('atk');
   assert.equal(b.over, 'win');
   assert.equal(g.frontierBreachStatus(), 'cleared');
   assert.equal(g.coin - beforeCoin, ZONE_EVENTS.th[1].reward.coin);
@@ -72,13 +63,13 @@ test('three waves keep one battle, heal at transition, and reward only after bos
   assert.equal(g.startFrontierBreach(), null);
 });
 
-test('loss costs eight authority and retry starts at wave one; active save restores pending', () => {
-  const g = ready(), hp = g.hp, coin = g.coin;
+test('loss leaves one authority and retry starts at wave one; active save restores pending', () => {
+  const g = ready(), coin = g.coin;
   g.startFrontierBreach();
   g.battle.youHp = 1;
   g.battleAct('atk');
   assert.equal(g.battle.over, 'lose');
-  assert.equal(g.hp, hp - 8);
+  assert.equal(g.hp, 1);
   assert.equal(g.coin, coin);
   assert.equal(g.frontierBreachStatus(), 'pending');
   g.endBattle();
@@ -94,7 +85,7 @@ test('loss costs eight authority and retry starts at wave one; active save resto
   assert.equal(loaded.startFrontierBreach().wave, 1);
 });
 
-test('older cleared save at case five schedules the breach on load', () => {
+test('cleared deva save at case eight schedules the breach on load', () => {
   const g = ready();
   const saved = JSON.parse(JSON.stringify(g.snapshot()));
   delete saved.zoneEvents.th.frontierBreach;
@@ -120,11 +111,12 @@ test('battle hypnosis makes the target strike itself, unlike ice stun', () => {
   g.startBattle({ id:900, name:'test', who:'test', sp:1 });
   const hp = g.battle.youHp;
   const foeHp = g.battle.foeHp;
+  const mp = g.mp;
   assert.equal(g.battleAct('hypno'), true);
   assert.ok(g.battle.dmg.confuseSelf > 0);
   assert.equal(g.battle.youHp, hp);
   assert.equal(g.battle.foeHp, foeHp - g.battle.dmg.confuseSelf);
-  assert.equal(g.powerOf('hypno').ammo, 0);
+  assert.equal(g.mp, mp - BATTLE.mpCost.hypno);
 });
 
 test('a confused foe dying to its own counter queues the next wave', () => {
