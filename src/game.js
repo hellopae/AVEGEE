@@ -7,7 +7,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone, ZONE_EVENTS } from './data.js';
+         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -110,6 +110,7 @@ export function createGame() {
     upgrades: { powers: {} },
     abilities: {},
     storyQueue: [], storySeen: {}, niraRest: null,
+    pendingReward: null,               // ชุด 28B — สรุปรางวัลหลังชนะ รอ ui.js เด้งหน้าต่าง (ไม่เซฟ)
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
@@ -1673,6 +1674,7 @@ const API = {
     // ปิดถาวรแล้ว ดู bagUseWhy ใน ui.js) กันไว้ที่ชั้นข้อมูลด้วยอีกชั้น เผื่อมีทางเรียกอื่นนอก UI ปกติ
     if (k === 'fire' || k === 'ice' || k === 'mirror' || k === 'lotus' || k === 'food') return false;
     if (def.hp && this.hp >= this.hpMax && !(k === 'tea' && this.mp < this.mpMax)) return false;
+    if (def.mp && !def.hp && this.mp >= this.mpMax) return false;   // น้ำมนต์ (ชุด 28B) — MP เต็มแล้วไม่กินของ
     if (def.karma < 0 && this.karma <= 0) return false;
     if (def.power) {
       const p = this.powerOf(def.power);
@@ -1687,10 +1689,11 @@ const API = {
     }
     if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
     if (k === 'tea') this.mp = Math.min(this.mpMax, this.mp + 12);
+    if (def.mp) this.mp = Math.min(this.mpMax, this.mp + def.mp);
     if (def.food) this.food += def.food;
     if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
     if (--this.inventory[k] <= 0) delete this.inventory[k];
-    this.log(`${def.glyph || '🎁'} ใช้${def.name} — ${def.say}`, 'good');
+    this.log(`${def.glyph ? def.glyph + ' ' : ''}ใช้${def.name} — ${def.say}`, 'good');
     this.onChange();
     return true;
   },
@@ -1844,10 +1847,11 @@ const API = {
 
   startBattle(soul) {
     if (this.battle) return this.battle;
-    const hp = Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv));
+    const hp = scaleFoeHp(this.zone, Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv)));
     this.fights++;
     this.battle = {
       kind: 'soul', soulId: soul.id, sex: soul.sex || 'm',
+      foeAtk: scaleFoeAtk(this.zone, BATTLE.foeAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
       // ชื่อสำนวนเป็นคำบรรยายลักษณะแล้ว (ไม่มีชื่อ-นามสกุลจริง 10 ก.ย. 2569)
       // บางเรื่องจึงซ้ำกับ who เกือบทั้งบรรทัด — ซ้ำเมื่อไหร่ไม่ต้องโชว์บรรทัดล่าง
       who: soul.name || soul.who, sub: sameLabel(soul.name, soul.who) ? '' : soul.who, sp: soul.sp || 7,
@@ -1873,13 +1877,14 @@ const API = {
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i,
       who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
+      foeAtk: scaleFoeAtk(this.zone, MOB.fightAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
       turn: 1, over: null,
       log: [],
       talk: `${kind.name}กระโจนเข้าใส่ ${kind.line || ''}`.trim(),
       dmg: null,
     };
-    prepareBattle(this.battle, MOB.fightHp);
+    prepareBattle(this.battle, scaleFoeHp(this.zone, MOB.fightHp));
     this.onChange();       // เรื่องพักเกมเป็นของ pauseForDlg() ใน ui.js ที่เดียว
     return this.battle;
   },
@@ -1918,7 +1923,7 @@ const API = {
       const pool = (this.zoneDef().mobs || []).map(i => MOB.kinds[i]).filter(Boolean);
       kind = pick(pool);
     }
-    const hp = 64 + wave * 14;
+    const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
     this.fights++;
     this.battle = {
       // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากชายแดนโซน 2-4 มีรูปของตัวเองแล้ว (img/manifest.json
@@ -1928,7 +1933,7 @@ const API = {
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
-      foeAtk:[8 + Math.floor(wave / 2), 14 + wave],
+      foeAtk:scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]),
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null,
       talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
@@ -1969,7 +1974,7 @@ const API = {
       ? (this.bossReady() || (!!this.bossGuarding[this.zone] && this.zoneEventGateReady()))
       : retry ? this.bossCanChallenge() : this.bossReady())) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
-    const hp = 200 + n * 35;
+    const hp = scaleFoeHp(z.k, 200 + n * 35, 'boss');   // ชุด 28B — ตัวคูณบอส
     this.bossPending = false;
     this.bossWalk = null;
     this.bossGuarding[z.k] = false;
@@ -1996,7 +2001,7 @@ const API = {
           hp:bossHp, maxHp:hp, atk:[14 + n * 2, 22 + n * 3], stun:0, confuse:0 },
         ...Array.from({ length:2 }, (_, i) => ({ id:`${z.k}-demon-${i}`, who:mob.nameKey ? t(mob.nameKey) : mob.name,
           sub:'ผู้ติดตามบอส', sp:mob.img, hp:48 + n * 8, maxHp:48 + n * 8,
-          atk:[7 + n, 12 + n], stun:0, confuse:0 })),
+          atk:scaleFoeAtk(z.k, [7 + n, 12 + n], 'event'), stun:0, confuse:0 })),
       ];
       this.battle.selectedFoeId = this.battle.foes[0].id;
     }
@@ -2017,6 +2022,22 @@ const API = {
     b.youHp = Math.min(b.youMax, b.youHp + def.hp);
     if (--this.inventory.health <= 0) delete this.inventory.health;
     this.log(`💊 กินหีบยาเติมบารมี — ฟื้น ${def.hp}`, 'good');
+    this.save(); this.onChange();
+    return true;
+  },
+
+  /** ดื่มน้ำมนต์เติม MP ที่จุดพักก่อนบอส/ศึกสุดท้าย (ชุด 28B) — เงื่อนไขเดียวกับ useBossMedicine เป๊ะ
+   *  (เตรียมศึกบอสโซน หรือจุดพักของอีเวนต์หลายระลอก) ไม่มีของ/MP เต็ม → false
+   *  MP เป็นของผู้เล่นทั้งเกม (g.mp) ไม่ใช่ของฉากต่อสู้ จึงเพิ่มที่ g.mp ตรง ๆ */
+  useHolyWater() {
+    const b = this.battle;
+    if (!b || !this.zoneEventRestReady() && (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1)) return false;
+    const def = ITEMS.holyWater;
+    if ((this.inventory.holyWater || 0) < 1 || this.mp >= this.mpMax) return false;
+    const gain = Math.min(def.mp, this.mpMax - this.mp);
+    this.mp += gain;
+    if (--this.inventory.holyWater <= 0) delete this.inventory.holyWater;
+    this.log(`ดื่ม${def.name} — MP +${gain}`, 'good');
     this.save(); this.onChange();
     return true;
   },
@@ -2107,12 +2128,15 @@ const API = {
   },
   zoneEventFoes(ev, wave = 1) {
     const groups = ev.mode === 'waves' ? ev.waves[wave - 1] : ev.foes || [ev.foe];
+    const zone = Object.keys(ZONE_EVENTS).find(z => ZONE_EVENTS[z].includes(ev)) || this.zone;
     return (groups || []).flatMap((entry, group) => Array.from({ length:entry.count || 1 }, (_, i) => {
       const mob = MOB.kinds[entry.kind ?? 0];
+      const kindOf = entry.boss ? 'boss' : 'event';   // ชุด 28B
+      const hp = scaleFoeHp(zone, entry.hp, kindOf);
       return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss,
-        hp:entry.hp, maxHp:entry.hp, atk:entry.atk, stun:0, confuse:0 };
+        hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:0, confuse:0 };
     }));
   },
   startZoneEvent(key) {
@@ -2158,8 +2182,9 @@ const API = {
     if (this.zone !== 'th' || this.battle || this.over || this.devaTestStatus() !== 'pending' ||
         this.prisonBreakStatus() !== 'cleared') return null;
     const event = ZONE_EVENTS.th[2];
+    const devaHp = scaleFoeHp('th', event.foe.hp, 'boss');   // ชุด 28B
     const foe = { id:'deva-test', who:t('event.devaTest.foe'), sub:t('event.devaTest.sub'),
-      sp:event.foe.sp, boss:true, hp:event.foe.hp, maxHp:event.foe.hp,
+      sp:event.foe.sp, boss:true, hp:devaHp, maxHp:devaHp,
       atk:event.foe.atk, stun:0, confuse:0 };
     this.zoneEvents.th.devaTest = 'active';
     this.fights++;
@@ -2178,7 +2203,7 @@ const API = {
         return { id:`breach-${wave}-${group}-${i}`, who:boss ? t('event.frontierBreach.boss') : kind.name,
           sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/${ZONE_EVENTS.th[1].waves.length}`,
           sp:boss ? entry.sp : kind.img, boss,
-          hp:entry.hp, maxHp:entry.hp, atk:entry.atk, stun:0, confuse:0 };
+          hp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), maxHp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), atk:entry.atk, stun:0, confuse:0 };
       }));
   },
   startFrontierBreach() {
@@ -2458,6 +2483,8 @@ const API = {
     // ถ้าสะกดจิตฆ่าศัตรูตายพอดี ผู้เล่นต้องกดอีกทีถึงจะเห็นว่าชนะแล้ว — Dale เจอตอนรีวิวชุด 13
     const declareWin = () => {
       B.over = 'win';
+      // ชุด 28B — จำของก่อนรับรางวัล เพื่อสรุปให้หน้าต่างรางวัลจากส่วนต่างจริง (ไม่เดาแยกตามชนิดศึก)
+      const before = { coin:this.coin, inv:{ ...this.inventory }, ab:{ ...this.abilities } };
       if (B.kind === 'prisonBreak') {
         const event = ZONE_EVENTS.th[0];
         this.zoneEvents.th.prisonBreak = 'cleared';
@@ -2549,7 +2576,16 @@ const API = {
       }
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      this.gainExp(B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? 60 : B.kind === 'prisonBreak' ? 40 : 20, 'ต่อสู้');
+      const expGain = B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? 60 : B.kind === 'prisonBreak' ? 40 : 20;
+      // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
+      // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
+      if (B.kind !== 'soul') {
+        B.summary = { kind:B.kind, who:B.who, zone:B.zone || this.zone, coin:this.coin - before.coin, exp:expGain,
+          items:Object.keys(this.inventory).filter(k => (this.inventory[k] || 0) > (before.inv[k] || 0))
+            .map(k => ({ k, n:this.inventory[k] - (before.inv[k] || 0) })),
+          abilities:Object.keys(this.abilities).filter(k => this.abilities[k] && !before.ab[k]) };
+      }
+      this.gainExp(expGain, 'ต่อสู้');
       this.onChange();
       return true;
     };
@@ -2729,6 +2765,8 @@ const API = {
     const B = this.battle;
     if (!B) return null;
     this.battle = null;
+    // ชุด 28B — ตั้งก่อน onChange ทุกทางออกของฟังก์ชันนี้ ui.js จะเด้งหน้าต่างรางวัลจากค่านี้ (หลังเรื่องราว/พลังใหม่)
+    this.pendingReward = B.over === 'win' && B.summary ? B.summary : null;
     // บารมีหมดจริง (ไม่ใช่ตัดสินพลาดสามครั้ง) — พ่อลงมาเองครั้งสุดท้าย จบเกมจริง (ไม่แตะ ตามใบงาน)
     if (B.kind === 'yama') {
       this.hp = 0; this.yamaDone = true;

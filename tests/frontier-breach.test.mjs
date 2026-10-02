@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { BATTLE, CREW_POWER, FRONTIER, MOB, ZONE_EVENTS } from '../src/data.js';
+import { BATTLE, CREW_POWER, FRONTIER, MOB, ZONE_EVENTS, scaleFoeHp } from '../src/data.js';
 
 const ready = () => {
   const g = createGame();
@@ -46,7 +46,7 @@ test('two waves keep one battle, heal at transition, and reward after both', () 
   assert.equal(g.battle, b);
   assert.equal(b.wave, 2);
   assert.equal(b.youHp, Math.min(b.youMax, 90));
-  assert.deepEqual(b.foes.map(f => f.hp), [40, 90]);
+  assert.deepEqual(b.foes.map(f => f.hp), [40, scaleFoeHp('th', 90, 'boss')]);   // ชุด 28B: บอสอึดขึ้น
   b.youHp = b.youMax - 5;
   b.foes.forEach(f => { f.hp = 1; });
   g.battleAct('atk');

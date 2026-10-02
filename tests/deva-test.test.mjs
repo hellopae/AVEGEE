@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { ZONE_EVENTS } from '../src/data.js';
+import { ZONE_EVENTS, scaleFoeHp } from '../src/data.js';
 
 const ready = () => {
   const g = createGame();
@@ -47,7 +47,7 @@ test('a failed deva test can be retried, and an active save restarts the test', 
   loaded.restore(saved);
   assert.equal(loaded.battle, null);
   assert.equal(loaded.devaTestStatus(), 'pending');
-  assert.equal(loaded.startDevaTest()?.foes[0].hp, 100);
+  assert.equal(loaded.startDevaTest()?.foes[0].hp, scaleFoeHp('th', 100, 'boss'));   // ชุด 28B: บอสอึดขึ้น
 });
 
 test('case five schedules deva after prison; case eight schedules frontier after deva', () => {
