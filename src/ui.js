@@ -2535,15 +2535,17 @@ function openBattle(after) {
       ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}
       </div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
-      title="${esc(label + (note ? ' · ' + note : ''))}"><img src="${icon}" alt=""><b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
+      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
       const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
-      const consumable = k === 'tea' || k === 'health';
-      const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0
+      const consumable = k === 'tea' || k === 'health' || k === 'holyWater';
+      // น้ำมนต์ (28E): ต้องมีของ + MP ยังไม่เต็ม · โชว์จำนวนคงเหลือ ×N ใต้ปุ่ม
+      const ok = !!it && (k === 'holyWater' ? (g.inventory.holyWater || 0) > 0 && mp < g.mpMax
+        : consumable ? (g.inventory[k] || 0) > 0
         : !!((g.abilities?.[it.power] || (pw && !g.powerLocked(pw))) && mp >= BATTLE.mpCost[it.power]));
-      const note = consumable ? '' : `MP ${BATTLE.mpCost[it?.power] || 0}`;
-      return battleChoice(k, icon, it?.name || k, ok, note);
+      const note = k === 'holyWater' ? `×${g.inventory.holyWater || 0}` : consumable ? '' : `MP ${BATTLE.mpCost[it?.power] || 0}`;
+      return battleChoice(k, icon, ITEMS[k]?.nameKey ? itemName(k) : (it?.name || k), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `MP ${BATTLE.mpCost.fire}`)
@@ -2554,7 +2556,8 @@ function openBattle(after) {
       + (g.abilities?.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', mp >= BATTLE.mpCost.clock && !b.clockUsed, `MP ${BATTLE.mpCost.clock}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
-    const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png');
+    const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png')
+      + itemChoice('holyWater', itemImg('holyWater'));
     const guardBtn = g.guard ? (() => {
       const why = g.guardHelpWhy();
       return `<button class="orb-choice" data-act="guard" data-crew-action="guard" ${why ? 'disabled' : ''}
@@ -2710,7 +2713,7 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health'})[k] || k;
+      const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe', crew: crewNow };

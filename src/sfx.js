@@ -132,7 +132,7 @@ export function powerSfx(k, abilities = {}) {
     case 'hypno':         return 'hypno';
     case 'roar':          return 'roar';
     case 'mirror':        return 'mirror';
-    case 'health': case 'tea': return 'star';
+    case 'health': case 'tea': case 'holyWater': return 'star';
     default:              return 'hit';
   }
 }

@@ -355,3 +355,6 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 /* Dale QA 1 ต.ค. 2569 — บล็อก 700px ด้านบนดึงปุ่มเปิดศาล/พิจารณาคดีลงมา 1.5% ทับกฎ 18% ของ index.html
    ทำให้ปุ่มหนังสือ/กระเป๋า/ย้ายโซน (hud-zone) ถูกปุ่มทองบังที่ 390px กดแผนที่โลกไม่ได้ — ยกกลับขึ้นเหนือแถวไอคอน */
 @media(max-width:520px){.map-controls{bottom:calc(env(safe-area-inset-bottom) + 18%)}}
+/* 28E: กลุ่ม "ไอเทม" ในฉากต่อสู้มี 3 ปุ่มแล้ว (น้ำชา · หีบยา · น้ำมนต์) — บนมือถือ 3 ปุ่มเรียงแถวเดียวไปทับส่วน "โจมตี" ของวง
+   จึงให้ห่อเป็น 2 ปุ่มต่อแถว (ปุ่มที่ 3 ลงแถวสอง ใต้น้ำชา) ซ้ายของวงเหมือนเดิม ไม่ทับวง */
+@media(max-width:700px){.arena.combat-arena .combat-wheel .options-3{max-width:124px}}
