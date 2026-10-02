@@ -10,6 +10,8 @@ const LS = 'avegee.audio';
 // เพลงเป็นฉากหลังของการอ่านสำนวน ต้องเบากว่าที่คิดไว้มาก · ปรับเพิ่มได้ที่หน้าตั้งค่า
 export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true };
 try { Object.assign(AUDIO, JSON.parse(localStorage.getItem(LS) || '{}')); } catch {}
+// el.volume ขว้าง RangeError ถ้าเกิน 0..1 — ค่าใน localStorage แก้มือ/พังได้ จึงบีบเข้าช่วงก่อนใช้ทุกครั้ง
+const clamp01 = v => Math.min(1, Math.max(0, Number.isFinite(+v) ? +v : 0));
 export function saveAudio() { try { localStorage.setItem(LS, JSON.stringify(AUDIO)); } catch {} }
 
 let AC = null, unlocked = false;
@@ -22,7 +24,7 @@ export function unlock() {
 
 /** เสียงพื้นฐานหนึ่งชั้น — ใช้ประกอบกันเป็นเสียงจริงข้างล่าง */
 function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
-  if (!AC || !AUDIO.on) return;
+  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const o = AC.createOscillator(), g = AC.createGain();
   o.type = type;
@@ -37,7 +39,7 @@ function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
 
 /** เสียงซ่า — ใช้ทำเสียงฟาด เสียงตรา เสียงกระจกร้าว */
 function noise({ t = 0.12, vol = 0.4, hp = 800, delay = 0 }) {
-  if (!AC || !AUDIO.on) return;
+  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const n = Math.floor(AC.sampleRate * t);
   const buf = AC.createBuffer(1, n, AC.sampleRate);
@@ -72,7 +74,68 @@ const BANK = {
   win:    () => { [523, 659, 784, 1046].forEach((f, i) =>
                     tone({ f, t:0.4, type:'triangle', vol:0.26, delay:i * 0.08 })); },
   lose:   () => { tone({ f:160, f2:44, t:1.2, type:'sawtooth', vol:0.36 }); },
+
+  // ---- ท่าไม้ตาย / พลังพิเศษ (28C, 2 ต.ค. 2569) ----
+  // สังเคราะห์ในโค้ดเหมือนเสียงอื่น 0 ไฟล์ · แต่ละเสียงสั้น (<= ~0.9 วิ) ผลรวม vol ของชั้นที่ดังพร้อมกัน <= ~0.75
+  // (คูณ AUDIO.sfx อีกชั้น) เพื่อไม่ให้กลบเพลงและไม่ล้น 1.0 แม้เลื่อนสไลเดอร์เสียงสุด
+  bigfire: () => { tone({ f:96,  f2:42,  t:0.55, type:'sawtooth', vol:0.30 });          // ตูมต่ำ
+                   tone({ f:520, f2:90,  t:0.50, type:'sawtooth', vol:0.20 });          // ลมพุ่ง
+                   noise({ t:0.45, vol:0.22, hp:350 }); },
+  charge: () => { tone({ f:120, f2:540, t:0.42, type:'sawtooth', vol:0.24 });           // พุ่งขึ้น
+                  noise({ t:0.40, vol:0.18, hp:450 });
+                  noise({ t:0.08, vol:0.32, hp:700,  delay:0.44 });                     // กระแทก
+                  tone({ f:150, f2:55, t:0.2, type:'square', vol:0.28, delay:0.44 }); },
+  wind:   () => { noise({ t:0.62, vol:0.26, hp:1200 });
+                  noise({ t:0.50, vol:0.18, hp:2400, delay:0.10 });
+                  tone({ f:420, f2:1250, t:0.5, type:'triangle', vol:0.10 }); },
+  rage:   () => { tone({ f:72,  f2:48,  t:0.75, type:'sawtooth', vol:0.28 });           // คำราม
+                  tone({ f:140, f2:96,  t:0.55, type:'square',   vol:0.12 });
+                  tone({ f:110, f2:240, t:0.50, type:'sawtooth', vol:0.14, delay:0.05 });
+                  noise({ t:0.5, vol:0.18, hp:220 }); },
+  spear:  () => { tone({ f:1800, f2:520, t:0.22, type:'triangle', vol:0.20 });          // ปา
+                  noise({ t:0.10, vol:0.22, hp:3500 });
+                  tone({ f:210, f2:80, t:0.18, type:'square', vol:0.28, delay:0.24 }); // ปัก
+                  noise({ t:0.07, vol:0.30, hp:1200, delay:0.24 }); },
+  clock:  () => { [1600, 1200, 1600, 1200].forEach((f, i) =>                            // ติ๊กต่อก ย้อนกลับ
+                    tone({ f: f - i * 120, t:0.06, type:'sine', vol:0.20, delay:i * 0.11 }));
+                  tone({ f:1046, t:0.55, type:'sine', vol:0.18, delay:0.48 });
+                  tone({ f:1568, t:0.45, type:'sine', vol:0.12, delay:0.52 }); },
+  ice:    () => { noise({ t:0.10, vol:0.28, hp:4500 });
+                  tone({ f:2400, f2:1800, t:0.35, type:'sine', vol:0.14 });
+                  tone({ f:3000, f2:2200, t:0.30, type:'sine', vol:0.11, delay:0.07 });
+                  tone({ f:1800, t:0.40, type:'triangle', vol:0.10, delay:0.14 }); },
+  hypno:  () => { tone({ f:440, f2:330, t:0.9, type:'sine',     vol:0.20 });           // สองโน้ตเหลื่อมกันเป็นคลื่นหวือ
+                  tone({ f:447, f2:337, t:0.9, type:'sine',     vol:0.18 });
+                  tone({ f:660, f2:220, t:0.8, type:'triangle', vol:0.10, delay:0.10 }); },
+  roar:   () => { tone({ f:120, f2:60, t:0.55, type:'sawtooth', vol:0.28 });            // ตวาดข่มขู่ (ไต่สวน)
+                  noise({ t:0.40, vol:0.18, hp:250 }); },
+  mirror: () => { [1568, 2093, 2637].forEach((f, i) =>                                  // กระจกวิเศษ แวววับ
+                    tone({ f, t:0.35, type:'sine', vol:0.14, delay:0.05 + i * 0.07 }));
+                  noise({ t:0.06, vol:0.14, hp:5000 }); },
 };
+
+/** ชื่อเสียงทั้งหมดที่มีในตาราง — ให้เทสต์ตรวจว่าท่าทุกท่าชี้ไปหาเสียงที่มีจริง */
+export const SFX_NAMES = Object.keys(BANK);
+
+/** ท่าไม้ตาย/ไอเท็มในฉากต่อสู้และวงไต่สวน → ชื่อเสียงใน BANK
+ *  k = คีย์ที่ปุ่มส่งมา (data-act / data-pw) · abilities = g.abilities (ใช้แยกลูกไฟธรรมดา/ลูกไฟใหญ่)
+ *  ท่าที่ไม่รู้จัก (โจมตีธรรมดา, ยมทูตช่วย, ยักษ์) = 'hit' เหมือนเดิม */
+export function powerSfx(k, abilities = {}) {
+  switch (k) {
+    case 'fire':          return abilities?.bigFire ? 'bigfire' : 'fire';
+    case 'flameCharge':   return 'charge';
+    case 'windFan':       return 'wind';
+    case 'rage':          return 'rage';
+    case 'valkyrieSpear': return 'spear';
+    case 'cooldownClock': return 'clock';
+    case 'ice':           return 'ice';
+    case 'hypno':         return 'hypno';
+    case 'roar':          return 'roar';
+    case 'mirror':        return 'mirror';
+    case 'health': case 'tea': return 'star';
+    default:              return 'hit';
+  }
+}
 
 export function sfx(name) {
   if (!AUDIO.on || !AC) return;
@@ -88,7 +151,11 @@ export function sfx(name) {
 // mp3 เล่นได้ทุกเบราว์เซอร์ และไฟล์ใหญ่กว่า ogg ไม่กี่สิบเปอร์เซ็นต์เท่านั้น
 // ลองไล่ทีละนามสกุล ตัวไหนเล่นได้ก็ใช้ตัวนั้น
 const EXT = ['ogg', 'mp3', 'm4a'];
-let el = null, cur = null, pendingBgm = null;
+let cur = null, pendingBgm = null;   // cur = key เพลงที่ขอล่าสุด
+// เพลงทุกเพลงมี <audio> ของตัวเอง "สร้างครั้งเดียว ตั้ง src ครั้งเดียว" (url → track) แล้วสลับด้วยการ fade
+// ไม่สลับ src บน element เดียวอีก — ดูสาเหตุเสียงแตกที่ 28C ในคอมเมนต์เหนือ switchTo()
+const tracks = new Map();          // url → { el, lvl (0..1 ระดับ fade ตอนนี้), goal (0|1) }
+let curUrl = null;                 // url ของเพลงที่ควรดังอยู่ตอนนี้
 const srcCache = new Map();       // key → path ที่มีจริง (หรือ null ถ้าไม่มีสักนามสกุล)
 
 /** หาไฟล์ที่มีอยู่จริง — ถามเซิร์ฟเวอร์ตรง ๆ ด้วย HEAD
@@ -121,18 +188,21 @@ export function primeAudio(keys = ['bgm-title', 'bgm-zone', 'bgm-battle']) {
   return Promise.all(keys.map(findSrc));
 }
 
-/** อุ่นไฟล์เพลงเข้า HTTP cache ล่วงหน้าแบบ priority ต่ำ — คนละเรื่องกับ primeAudio ข้างบน
- *  primeAudio รู้แค่ "path ไหนมีไฟล์จริง" (ยิง HEAD) ส่วนฟังก์ชันนี้ดึง "เนื้อไฟล์จริง" (ยิง GET)
- *  เข้า cache ก่อน จะได้ไม่ต้องโหลด 2.6MB กลางจังหวะเข้าฉากต่อสู้ครั้งแรก (คุณเป้เจอ 29 ก.ย. 2569:
+/** อุ่นเพลงล่วงหน้าแบบ priority ต่ำ — คนละเรื่องกับ primeAudio ข้างบน
+ *  primeAudio รู้แค่ "path ไหนมีไฟล์จริง" (ยิง HEAD) ส่วนฟังก์ชันนี้สร้าง <audio> ของเพลงนั้นไว้ (preload='auto')
+ *  ให้เบราว์เซอร์โหลดเนื้อไฟล์ไว้ก่อน จะได้ไม่ต้องโหลด 2.6MB กลางจังหวะเข้าฉากต่อสู้ครั้งแรก (คุณเป้เจอ 29 ก.ย. 2569:
  *  เพลงต่อสู้มาช้า/ไม่มาเลยบน Brave เพราะ knownSrc() ยังไม่รู้จัก ต้อง await findSrc() หลุดจังหวะ
- *  user-gesture ไปแล้ว) ใช้ requestIdleCallback รอจังหวะที่ว่างจริง ๆ (หลัง splash/title โหลดเพลงหลัก
- *  เสร็จ) จะได้ไม่แย่ง bandwidth กับของที่ต้องมาก่อน — ไม่แตะ <audio> ตัวหลัก (el) ที่กำลังเล่นอยู่เลย */
+ *  user-gesture ไปแล้ว) ใช้ requestIdleCallback รอจังหวะที่ว่างจริง ๆ จะได้ไม่แย่ง bandwidth กับของที่ต้องมาก่อน
+ *  (28C: เดิมใช้ fetch อุ่น HTTP cache แต่เซิร์ฟเวอร์ dev สั่ง no-store จึงไม่เคยช่วย และ <audio> ตัวเดียวสลับ src
+ *  ก็ต้องโหลดใหม่อยู่ดี — ตอนนี้ element ของเพลงนั้นถูกใช้เล่นจริง ที่โหลดไว้จึงเป็นของที่เล่นต่อได้เลย) */
 export function warmBgmFile(key) {
-  const ric = window.requestIdleCallback || (fn => setTimeout(fn, 1200));
+  const ric = (typeof window !== 'undefined' && window.requestIdleCallback) || (fn => setTimeout(fn, 1200));
   ric(async () => {
     const url = await findSrc(key);
     if (!url) return;
-    try { await fetch(url, { cache: 'force-cache' }); } catch { /* ออฟไลน์ก็แค่ยังไม่ได้อุ่น ไม่พัง */ }
+    // สร้าง <audio> ของเพลงนี้ไว้ล่วงหน้า (preload='auto') — พอผู้เล่นเข้าฉากต่อสู้ เพลงโหลด/ถอดรหัสไว้แล้ว
+    // สั่ง play() ได้เลยโดยไม่ต้องโหลดไฟล์ 2.6MB ทับจังหวะที่หน้าจอกำลังวาดฉากต่อสู้
+    try { getTrack(url); } catch { /* ไม่มี Audio (เทสต์/เบราว์เซอร์แปลก) ก็ข้าม */ }
   });
 }
 
@@ -160,59 +230,138 @@ function armRetry() {
     document.removeEventListener('pointerdown', again, true);
     document.removeEventListener('keydown', again, true);
     retryArmed = false;
-    if (el && el.paused && cur && AUDIO.on) el.play().catch(armRetry);
+    const t = curUrl && tracks.get(curUrl);
+    if (t && t.el.paused && AUDIO.on) t.el.play().catch(onPlayFail);
   };
   document.addEventListener('pointerdown', again, true);
   document.addEventListener('keydown', again, true);
 }
+/** play() ล้มเพราะนโยบายเบราว์เซอร์ = รอกดแล้วลองใหม่ · ล้มเพราะเราเองสั่ง pause() ทับ (AbortError) = ปกติ ไม่ต้องทำอะไร */
+function onPlayFail(e) { if (!e || e.name !== 'AbortError') armRetry(); return false; }
 
-function startEl(url) {
-  if (!el) { el = new Audio(); el.loop = true; el.preload = 'auto'; }
-  el.volume = AUDIO.on ? AUDIO.bgm : 0;
-  if (!el.src.endsWith(url)) el.src = url;
-  else if (!el.paused) return Promise.resolve(true); // เพลงเดียวกันเล่นอยู่แล้ว อย่าตัดจังหวะ
-  return el.play().then(() => true, () => { armRetry(); return false; });
+// ---------- สลับเพลงด้วย fade (28C, 2 ต.ค. 2569) ----------
+const FADE_MS = 700;
+// เพลงพวกนี้เล่นต่อจากจุดเดิมตอนกลับมา (เพลงโซนไม่เด้งกลับไปต้นเพลงทุกครั้งที่สู้จบ) · เพลงอื่นเริ่มใหม่จากต้นทุกครั้ง
+const KEEP_POSITION = /\/bgm-zone\./;
+const clock = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
+
+function getTrack(url) {
+  let t = tracks.get(url);
+  if (!t) {
+    const el = new Audio();
+    el.loop = true; el.preload = 'auto'; el.volume = 0;
+    el.src = url;                       // ตั้งครั้งเดียวตลอดอายุเกม — ไม่มีการสลับ src → ไม่ teardown/โหลดใหม่ตอนเปลี่ยนเพลง
+    t = { el, lvl: 0, goal: 0 };
+    tracks.set(url, t);
+  }
+  return t;
+}
+
+/** ตั้งความดังจริงของทุก element จากระดับ fade — ผลรวมความดังของเพลงที่ซ้อนกันอยู่ไม่เกิน AUDIO.bgm (ไม่เกิน 1.0)
+ *  ตอน crossfade ปกติ lvl ขาออก + lvl ขาเข้า = 1 อยู่แล้ว · ถ้าสลับรัว ๆ จนซ้อนเกินสองเพลง หารลงให้ผลรวมยังเป็น 1 */
+function applyVolumes() {
+  let sum = 0;
+  for (const t of tracks.values()) sum += t.lvl;
+  const k = Math.max(1, sum);
+  for (const t of tracks.values())
+    t.el.volume = AUDIO.on ? clamp01(clamp01(AUDIO.bgm) * t.lvl / k) : 0;
+}
+
+let ticker = 0, lastT = 0;
+function step() {
+  const now = clock(), dt = Math.max(0, now - lastT); lastT = now;
+  let moving = false;
+  for (const [url, t] of tracks) {
+    if (t.lvl < t.goal) t.lvl = Math.min(t.goal, t.lvl + dt / FADE_MS);
+    else if (t.lvl > t.goal) t.lvl = Math.max(t.goal, t.lvl - dt / FADE_MS);
+    if (t.lvl !== t.goal) moving = true;
+    else if (t.goal === 0 && !t.el.paused) {         // จางหมดแล้ว → หยุดจริง (ไม่กินเครื่องเงียบ ๆ เบื้องหลัง)
+      t.el.pause();
+      if (!KEEP_POSITION.test(url)) { try { t.el.currentTime = 0; } catch {} }
+    }
+  }
+  applyVolumes();
+  if (!moving) { clearInterval(ticker); ticker = 0; }
+}
+function ensureTicker() {
+  if (ticker) return;
+  lastT = clock();
+  ticker = setInterval(step, 40);
+}
+
+/** สลับไปเพลง url ด้วย crossfade — สั่ง play() ทันที (อยู่ในจังหวะที่ผู้ใช้กด) แล้วค่อย ๆ ดันความดังขึ้น
+ *
+ *  สาเหตุที่เสียงแตกตอนเข้า/ออกฉากต่อสู้ (วัดจริงด้วย Chromium + ดัก event ของ <audio> ตอนสลับ 10 รอบ):
+ *  โค้ดเดิมใช้ <audio> ตัวเดียว แล้วเปลี่ยน `el.src` ทุกครั้งที่เปลี่ยนเพลง ผลคือทุกครั้ง
+ *    1) เบราว์เซอร์รื้อ pipeline เดิมทิ้ง (abort → emptied) แล้วโหลดไฟล์ใหม่ทั้งไฟล์ (loadstart → waiting → canplay)
+ *       ตรง ๆ ในจังหวะเดียวกับที่หน้าจอกำลังวาดฉากต่อสู้ (รูปใหญ่ + คัตซีน) · เซิร์ฟเวอร์ dev ไม่รองรับ Range และสั่ง no-store
+ *       ด้วย จึงดึง 2.6 MB ใหม่ทุกรอบ ("อุ่นไฟล์" ด้วย fetch ไม่ช่วย) → เล่นสะดุด/ขาดช่วง = เสียงแตก
+ *    2) ตัดเพลงเก่าทิ้งกลางคลื่นแล้วเริ่มเพลงใหม่ที่ความดังเต็มทันที ไม่มี fade → คลิก/ป๊อปที่รอยต่อ
+ *    3) เพลงโซนเด้งกลับไปเริ่มจาก 0:00 ทุกครั้งที่สู้จบ
+ *  ไม่ใช่เสียงซ้อนหรือ AudioContext ซ้ำ (เช็คแล้ว: มี <audio> 1 ตัว + AudioContext 1 ตัวตลอด) · ไฟล์เพลงเองไม่แตก
+ *  (peak −2.9 dB ไม่มี flat/clip ทั้ง 3 ไฟล์) · ผลรวมความดังเพลง+เอฟเฟกต์สูงสุด ~0.6 ไม่ถึง clipping
+ *  แก้: <audio> ต่อเพลง สร้างครั้งเดียว src ตั้งครั้งเดียว สลับด้วย fade ขาออก/ขาเข้า (FADE_MS) ผลรวมไม่เกิน AUDIO.bgm */
+function switchTo(url) {
+  const t = getTrack(url);
+  curUrl = url;
+  for (const o of tracks.values()) if (o !== t) o.goal = 0;
+  t.goal = 1;
+  ensureTicker();
+  if (!t.el.paused) { applyVolumes(); return Promise.resolve(true); }
+  applyVolumes();                                   // เริ่มที่ volume ปัจจุบัน (ปกติ 0) แล้วให้ ticker ดันขึ้น
+  return t.el.play().then(() => true, onPlayFail);
 }
 
 export function bgm(key) {
   if (!key) return stopBgm();
   if (!unlocked) { pendingBgm = key; return Promise.resolve(false); }
   pendingBgm = null;
-  if (cur === key && el && !el.paused) return Promise.resolve(true);
+  const playing = curUrl && tracks.get(curUrl);
+  if (cur === key && playing && !playing.el.paused) return Promise.resolve(true);
   cur = key;
 
   const known = knownSrc(key);
   if (known !== undefined) {                     // รู้อยู่แล้ว → สั่งเล่นทันทีในจังหวะที่ผู้ใช้กด
-    return known ? startEl(known) : Promise.resolve(false);
+    return known ? switchTo(known) : Promise.resolve(false);
   }
   // ยังไม่เคยถามไฟล์ชุดนี้ — ต้องรอ แล้วค่อยเล่น (จังหวะอาจหลุด จึงมี armRetry รองรับ)
   return (async () => {
     let url = null;
     for (const k of [key, ...FALLBACK]) { url = await findSrc(k); if (url) break; }
     if (cur !== key || !url) return false;
-    return startEl(url);
+    return switchTo(url);
   })();
 }
 
-export function stopBgm() { cur = null; if (el) { el.pause(); } }
-export function syncBgm() { if (el) el.volume = AUDIO.on ? AUDIO.bgm : 0; }
+export function stopBgm() {
+  cur = null; curUrl = null;
+  for (const t of tracks.values()) t.goal = 0;     // จางออกแล้วหยุดเอง (step)
+  if (tracks.size) ensureTicker();
+}
+export function syncBgm() { applyVolumes(); }
 
 // ---------- ออกจากเกม = เงียบ ----------
 // บนมือถือกับ iPad ปิดแท็บหรือสลับไปแอปอื่นแล้วเพลงยังเล่นต่อ (เจ้าของเจอ 8 ก.ย. 2569)
 // <audio> ไม่หยุดเองเวลาหน้าเว็บถูกพักไว้เบื้องหลัง — iOS ยิ่งเลี้ยงไว้เป็นเสียงพื้นหลังให้ด้วย
 // ต้องสั่ง pause() เองตอนหน้าเว็บซ่อน แล้วค่อยเล่นต่อตอนกลับมา (เฉพาะเพลงที่กำลังเล่นค้างไว้)
 let resumeOnReturn = false;
-document.addEventListener('visibilitychange', () => {
+function pauseAll() {
+  for (const t of tracks.values()) if (!t.el.paused) t.el.pause();
+}
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    resumeOnReturn = !!(el && !el.paused);
-    if (el) el.pause();
+    const t = curUrl && tracks.get(curUrl);
+    resumeOnReturn = !!(t && !t.el.paused);
+    pauseAll();
+    for (const o of tracks.values()) if (o.goal === 0) o.lvl = 0;   // เพลงที่กำลังจางออก ไม่ต้องกลับมา
     if (AC && AC.state === 'running') AC.suspend();      // เสียงเอฟเฟกต์ที่ค้างอยู่ก็หยุดตาม
   } else {
     if (AC && AC.state === 'suspended') AC.resume();
-    if (resumeOnReturn && AUDIO.on && cur && el) el.play().catch(armRetry);
+    const t = curUrl && tracks.get(curUrl);
+    if (resumeOnReturn && AUDIO.on && t) { t.el.play().catch(onPlayFail); ensureTicker(); }
     resumeOnReturn = false;
   }
 });
 
 // ปิดแท็บ/กดย้อนกลับ — visibilitychange ไม่ยิงเสมอบน Safari มือถือ ต้องดัก pagehide ด้วย
-addEventListener('pagehide', () => { if (el) el.pause(); });
+if (typeof addEventListener === 'function') addEventListener('pagehide', pauseAll);

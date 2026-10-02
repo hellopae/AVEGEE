@@ -5,7 +5,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
@@ -2136,7 +2136,7 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      sfx('crack'); paint(); refresh(); playActionCutscene(k);
+      sfx(powerSfx(k, g.abilities)); paint(); refresh(); playActionCutscene(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -2656,7 +2656,7 @@ function openBattle(after) {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const k = el.dataset.act;
       if (!g.battleAct(k)) return;
-      sfx(k === 'fire' ? 'fire' : (k === 'health' || k === 'tea') ? 'star' : 'hit');
+      sfx(powerSfx(k, g.abilities));            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit'
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }
