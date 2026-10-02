@@ -67,7 +67,7 @@ test('กดเข้าสู้แล้ว กินหีบยาเพิ�
 
 test('พ่อค้านรกขายของฟื้นฟูและเสบียง ไม่ขายพลังโจมตี', () => {
   const g = createGame();
-  assert.deepEqual(MERCHANT.stock.map(s => s.k), ['tea', 'health', 'food', 'lotus']);
+  assert.deepEqual(MERCHANT.stock.map(s => s.k), ['tea', 'health', 'food', 'lotus', 'holyWater']);
   g.coin = 9999;
   assert.equal(g.buyMerchant('fire'), false);
   assert.equal(g.buyMerchant('tea'), true);

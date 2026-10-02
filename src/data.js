@@ -577,6 +577,12 @@ export const ITEMS = {
   // ค่าฟื้น 40 เท่ากับปุ่มเดิมเป๊ะ ไม่ได้ถือโอกาสปรับสมดุลไปด้วย
   tea:    { name:'ถ้วยน้ำชาร้อน',   img:'item-tea',    h:44, hp:40, glyph:'🍵',
             say:'ท่านนั่งลงจิบน้ำชาหนึ่งถ้วย บารมีฟื้นขึ้นมา' },
+  // ชุด 28B คุณเป้ 2 ต.ค. 2569 — น้ำมนต์ขายที่พ่อค้านรก เติม MP อย่างเดียว (น้ำชามี MP ติดมาแค่ 12 พร้อมบารมี)
+  // 30 MP = ลูกไฟ ~3.7 ลูก · ราคา 45 (หีบยา 40 บารมี = 55) · ใช้ได้จากกระเป๋าบนแผนที่ และที่จุดพักศึกสุดท้าย/เตรียมศึกบอส
+  // img:'item-holywater' ยังไม่มีไฟล์ — ui.js ใช้ภาพชั่วคราว "MP" จนกว่าจะวาง img/item-holywater.png (ดูใบสเปกอาร์ตในรายงาน)
+  // glyph ว่างโดยตั้งใจ: ห้ามใช้อีโมจิแทนภาพ
+  holyWater: { name:'น้ำมนต์', nameKey:'item.holyWater', img:'item-holywater', h:44, mp:30, glyph:'', placeholder:'MP',
+            say:'น้ำมนต์เย็นฉ่ำไหลลงคอ — พลัง MP ฟื้นขึ้นมา' },
   spareHeart: { name:'หัวใจสำรอง', img:'item-health', h:44, glyph:'❤️', revive:true,
             say:'หัวใจสำรองช่วยให้ยืนขึ้นได้อีกครั้งเมื่อพ่ายแพ้' },
   // ดอกบัวเป็นทางเดียวที่ "กรรมท่าน" ลดลงได้โดยไม่ต้องรอห้าดาว
@@ -706,6 +712,7 @@ export const MERCHANT = {
   stock:[
     { k:'tea', cost:24, lv:1 }, { k:'health', cost:55, lv:1 },
     { k:'food', cost:18, qty:2, lv:1 }, { k:'lotus', cost:65, lv:1 },
+    { k:'holyWater', cost:45, lv:1 },   // ชุด 28B — เติม MP 30 (ITEMS.holyWater.mp)
   ],
 };
 
@@ -1532,6 +1539,44 @@ export const BATTLE = {
   ],
 };
 
+// ---------- ชุด 28B คุณเป้ 2 ต.ค. 2569 — ศัตรูเก่งขึ้นตามโซน · บอสอึดขึ้น ----------
+// ตัวคูณทั้งหมดอยู่ที่นี่ที่เดียว game.js เรียกผ่าน scaleFoeHp/scaleFoeAtk ตอน "สร้างศัตรู" ทุกจุด
+// ตัวเลขใน ZONE_EVENTS และสูตร hp ของ startFrontierBattle/startZoneBoss ยังเป็นค่าฐานเดิม ไม่ได้แก้
+// ศัตรูมี 3 ประเภท (kind) — ใส่ตัวคูณต่างกันเพราะเหตุผลทางสมดุลจริง:
+//   'roam'  = ศัตรูที่สู้ทีละฉากแล้วจบ: วิญญาณขัดขืน · ผีบนแผนที่ · ศัตรูชายแดน → คูณทั้ง HP และ ATK ตามโซน
+//             (สู้จบแล้ว MP/บารมีฟื้นก่อนฉากถัดไป ปรับ HP ได้อิสระ)
+//   'event' = ศัตรูธรรมดาในอีเวนต์หลายระลอก/บอสโซน (ลูกน้อง) → คูณ "ATK อย่างเดียว"
+//             เพราะค่าฐานเขียนมือให้ไล่ขึ้นตามโซนอยู่แล้ว (โซน 2 = 43–56 · 3 = 45–60 · 4 = 60–70) และตั้งไว้ให้
+//             ลูกไฟของเลเวลที่ถึงจุดนั้นล้มได้ในนัดเดียว (ลูกไฟ L3=64 · L4=66 · L5=68) — คูณ HP เมื่อไหร่ ทุกตัวกลายเป็น 2 นัด
+//             MP หมดกลางศึก (ไม่มีทางเติมระหว่างระลอก) จำลองแล้วชนะ 100% → 0% ที่ HP +10% (ดูตารางในรายงาน 28B)
+//   'boss'  = บอสทุกตัวทุกโซน (บอสชายแดน · เทวดาทดสอบ · พี่ใหญ่ · บอสโซน · พญายมบาทที่ถูกควบคุม · ศึกสุดท้าย)
+//             → คูณ HP ตัวเดียวกันทั้งหมด ไม่คูณตามโซนซ้ำ (ค่าฐานของบอสไล่ขึ้นตามโซนอยู่แล้ว) · ATK บอสคงเดิม
+// โซน 1 = 1 ทุกช่อง (ค่าเดิมทุกตัว) · โซน 2 < 3 < 4 · ปรับสมดุลแก้ที่นี่ แล้วรัน tests/balance28b.test.mjs
+export const FOE_SCALE = {
+  roam: {
+    th:        { hp:1,    atk:1 },
+    asia:      { hp:1.15, atk:1.1 },
+    west:      { hp:1.3,  atk:1.2 },
+    cyberhell: { hp:1.45, atk:1.3 },
+  },
+  event: {
+    th:        { atk:1 },
+    asia:      { atk:1.1 },
+    west:      { atk:1.2 },
+    cyberhell: { atk:1.3 },
+  },
+  boss: { hp:1.25 },
+};
+/** เลือดศัตรูหลังคูณ — kind = 'roam' | 'event' | 'boss' (ดูคำอธิบายด้านบน) */
+export const scaleFoeHp = (zone, hp, kind = 'roam') => Math.max(1, Math.round(hp *
+  (kind === 'boss' ? FOE_SCALE.boss.hp : (FOE_SCALE[kind]?.[zone]?.hp ?? 1))));
+/** ช่วงพลังโจมตี [min,max] หลังคูณ — บอสคงเดิม · atk ไม่ใช่ช่วง (ไม่มีค่า) คืนตามเดิม */
+export const scaleFoeAtk = (zone, atk, kind = 'roam') => {
+  if (kind === 'boss' || !Array.isArray(atk)) return atk;
+  const m = FOE_SCALE[kind]?.[zone]?.atk ?? 1;
+  return [Math.round(atk[0] * m), Math.round(atk[1] * m)];
+};
+
 // Event keys are persisted in zoneEvents. Keep them stable for saved games.
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
@@ -1604,7 +1649,8 @@ export const ZONE_EVENTS = {
       alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
       waves:[[{ kind:11, count:2, hp:60, atk:[10,16] }], [{ kind:12, count:2, hp:65, atk:[11,17] }],
         [{ kind:13, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
-      betweenWaveHeal:15, reward:{ coin:200, item:'spareHeart' } },
+      // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
+      betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
       alert:{ th:'ฝ่าปีศาจสามระลอก พักเตรียมทีม แล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
@@ -1620,7 +1666,8 @@ export const ZONE_EVENTS = {
         [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[16,23], boss:true }],
         [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[17,25], boss:true }],
       ],
-      betweenWaveHeal:25, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
+      // ชุด 28B: 25 → 40 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — บอส 4 ระลอกติดกันไม่มีจุดพักคั่น ฟื้นตรงนี้คือทางเดียวที่ไม่ใช่หีบยา
+      betweenWaveHeal:40, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
   ],
 };
 
