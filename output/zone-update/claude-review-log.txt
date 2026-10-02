@@ -1,0 +1,40 @@
+I found three regressions in the spirit portraits and the mobile arrival caption, plus two smaller issues. All 224 tests in `node --test tests/*.test.mjs` pass. I didn't edit, commit or delegate anything.
+
+`src/soul-portraits.js` and its test file changed at 19:18, during the review. I re-read them, but the findings below reflect that point in time.
+
+## Findings
+
+**1. Zone 1 souls show portraits of the wrong sex, age or job** — `src/regional-spirits.js:4`, `src/art.js:74-77`, `src/soul-portraits.js:67-69`
+- In Zone 1, `soulPortrait` still returns the old numbered sprites (1–10). But once the manifest loads, `artUrl` maps those numbers to the new Thai art through the `numbered` table, and that table doesn't match `SPIRIT_SEX` / `SPIRIT_OF`:
+  - Sprite 4 is marked female, but maps to the officer image, which is an old man in uniform.
+  - Sprite 10 is the schoolgirl (นักเรียนหญิง), but maps to the worker image, which is an old man with a cane.
+- So a random schoolgirl soul, or the female `sister` case, appears as an old man. Other mismatches:
+  - The taxi driver in `scapegoat` (sprite 1) shows as a cleric.
+  - Case A7, a cult leader, and the officers in A3 and A13 show as executives.
+  - In `deva`, the old beggar shows as an executive in Zone 1 but as a worker in other zones.
+- The same code also replaces the hand-drawn Zone 1 `soul-*.png` portraits, which works against `soulPortrait`'s "preserve the bespoke Thai portraits" branch.
+- The tests miss this because they check portrait keys, not the image each key resolves to.
+
+**2. `spirit-elder-woman` has no artwork** — `src/soul-portraits.js:35,60`
+- This new type isn't in `SPIRIT_ARCHETYPES`, the manifest, or on disk, so it requests `img/spirit-elder-woman.png`, which doesn't exist.
+- The scene still draws something because it falls back to spirit 7. But the trial portrait (`ui.js:2072`) and the info-panel profile (`ui.js:657` onward) show broken images.
+- This affects the `hammer` case and every random หญิงวัยเกษียณ (retired woman) soul in all zones.
+
+**3. Arrival captions are unreadable on phones** — `index.html:1543-1555`
+- At 600px wide or less, the caption band is 32% of a 16:9 frame. On a 360px-wide phone that's about 62px tall.
+- After padding and the button row (about 33px), roughly 19px is left for the speaker name and the speech. The long welcome and guidance text ends up inside a tiny scroll box.
+- Before this change, the caption sat below the image on mobile, so it was fully readable.
+
+**4. Slower first load in Zone 1** — `src/art.js:39-46`
+- The manifest now creates a Thai (`th`) art map, so `warmZone()` downloads all 9 Thai spirit PNGs when the game starts. Each is 1254×1254 and about 1.25MB.
+- The 36 new spirit PNGs total about 32MB, and none appear to have been shrunk the way other game art is.
+
+**5. Wrong wording when returning to a zone** — `src/ui.js:1447`, `src/ui.js:3996`
+- If a player returns to a zone whose introduction they haven't seen yet (older saves), they get the "new branch" screen (อเวจี · เปิดสาขาใหม่) instead of the "welcome back" summary.
+- On page 1 of the regional zones, the leader's welcome also replaces the zone's original intro line from `data.js`.
+
+## Checked, no problems found
+- **Zone 1 boss intro:** the fight starts only after the introduction closes, the preparation dialog doesn't wrongly count as dismissed, and the "seen" flag is set after the scene.
+- **Bridge routes:** all routes connect, start and end at the right gates, and reverse correctly. Speed uses the map's own width-to-height ratio, which is fixed in CSS. Nira follows on the same path and catches up.
+- **Leader welcomes and crew cutscenes:** all 3 leader portraits and all 18 crew cutscene images exist. The fallback for a missing image now removes the cutscene instead of retrying forever.
+- **Saving:** whether each zone's introduction has been seen is saved and restored, and older saves restore to "not seen".

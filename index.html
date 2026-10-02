@@ -421,17 +421,18 @@ dialog.zonepick[open]{width:min(1080px,calc(100% - 24px));max-width:1080px;
 .world-zone.here:disabled{opacity:1}
 .world-zone.locked{border-color:#777;opacity:.77;cursor:not-allowed}
 .world-zone.locked small{color:#ccc}
-.world-travelers{position:absolute;z-index:2;display:flex;align-items:flex-end;gap:0;
-  transform:translate(-50%,-100%);filter:drop-shadow(0 3px 2px #000);pointer-events:none}
-.world-travelers .yama{width:48px;height:64px;background-size:400% 100%;background-repeat:no-repeat;
+.world-travelers{position:absolute;inset:0;z-index:2;pointer-events:none}
+.world-travelers .yama,.world-travelers .nira{position:absolute;transform:translate(-50%,-100%);
+  filter:drop-shadow(0 2px 1px #000);width:3.2%;height:7.5%}
+.world-travelers .yama{background-size:400% 100%;background-repeat:no-repeat;
   background-position:0 0;image-rendering:pixelated}
-.world-travelers .nira{display:block;width:48px;height:64px;object-fit:contain;object-position:bottom;image-rendering:pixelated}
+.world-travelers .nira{display:block;object-fit:contain;object-position:bottom;image-rendering:pixelated}
 .world-map.traveling .yama{animation:world-yama-step .55s linear infinite}
 .world-map.traveling .nira{animation:world-nira-step .36s ease-in-out infinite alternate}
 @keyframes world-yama-step{
   0%,24%{background-position:0 0}25%,49%{background-position:33.333% 0}
   50%,74%{background-position:66.666% 0}75%,100%{background-position:100% 0}}
-@keyframes world-nira-step{to{transform:translateY(-4px) rotate(3deg)}}
+@keyframes world-nira-step{to{transform:translate(-50%,calc(-100% - 2px)) rotate(3deg)}}
 .world-map-note{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.45}
 .world-pan-hint{display:none;color:var(--gold)}
 @media(max-width:700px){dialog.zonepick[open]{padding:10px;width:calc(100% - 12px)}
@@ -1527,10 +1528,6 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   display:flex;flex-direction:column;justify-content:center;text-align:left;overflow:auto}
 .intro-comic-caption h2{font-family:var(--font-display);color:#f7c371;
   font-size:clamp(1rem,2.4vw,1.35rem);margin:0 0 4px}
-.zone-arrival .intro-comic-frame{aspect-ratio:auto;overflow:visible}
-.zone-arrival .intro-comic-frame img{height:auto;aspect-ratio:16/9;object-fit:cover}
-.zone-arrival .intro-comic-caption{position:static;height:auto;padding:16px 20px;background:#151016}
-.zone-arrival .intro-comic-caption h2{margin-bottom:8px;line-height:1.35}
 .intro-comic-caption p{color:#f4e8df;line-height:1.4;font-size:clamp(.8rem,1.8vw,1rem);margin:0}
 .intro-comic-controls{display:flex;justify-content:space-between;gap:10px;padding:10px 14px}
 @media(max-width:600px){
@@ -1540,6 +1537,27 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   .intro-comic-caption h2{font-size:1.15rem}
   .intro-comic-caption p{font-size:.95rem}
 }
+
+/* Reuse the painted lower letterbox; captions and controls share one band. */
+.zone-arrival .intro-comic-frame{aspect-ratio:16/9;overflow:hidden}
+.zone-arrival .intro-comic-frame img{height:100%;aspect-ratio:auto;object-fit:cover}
+.zone-arrival-band{position:absolute;left:0;right:0;bottom:0;height:21%;
+  display:flex;flex-direction:column;padding:6px 16px;box-sizing:border-box;background:#08070b}
+.zone-arrival .intro-comic-caption{position:static;flex:1;min-height:0;height:auto;padding:0;
+  overflow:auto;background:transparent;justify-content:flex-start}
+.zone-arrival .intro-comic-caption h2{font-size:clamp(.8rem,2vw,1.2rem);margin:0 0 2px;line-height:1.2}
+.zone-arrival .intro-comic-caption p{font-size:clamp(.7rem,1.5vw,.95rem);line-height:1.35}
+.zone-arrival .intro-comic-controls{padding:3px 0 0;align-items:center;flex-shrink:0;gap:8px}
+.zone-arrival .intro-comic-controls .hint{font-size:clamp(.6rem,1.1vw,.75rem);line-height:1.2}
+.zone-arrival .intro-comic-controls button{padding:5px 12px;font-size:clamp(.7rem,1.3vw,.9rem);flex-shrink:0}
+@media(max-width:600px){
+  .zone-arrival .intro-comic-frame{aspect-ratio:auto;padding-bottom:72px}
+  .zone-arrival .intro-comic-frame img{height:auto}
+  .zone-arrival-band{height:112px;padding:5px 10px}
+  .zone-arrival .intro-comic-controls .hint{display:none}
+  .zone-arrival .intro-comic-controls{justify-content:flex-end}
+}
+
 .mini-goal{margin:8px 0 14px;padding:8px 12px;border:1px solid rgba(212,163,85,.35);
   border-radius:8px;background:rgba(212,163,85,.08);color:var(--gold);font-size:var(--text-xs);
   line-height:var(--leading-body)}

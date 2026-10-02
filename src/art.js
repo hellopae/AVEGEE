@@ -2,6 +2,8 @@
 // กฎ: ทุกชิ้นต้องมี placeholder ที่โค้ดวาดเองได้ ถ้ามีไฟล์ img/<key>.png ให้ใช้ไฟล์แทนอัตโนมัติ
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
 
+import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js';
+
 const CACHE = new Map();
 const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
 
@@ -9,7 +11,7 @@ const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays u
 // โซน 2-3 มีรูปของตัวเองในโฟลเดอร์ย่อย: img/Asia/<key>-asia.png · img/West/<key>-west.png
 // อยู่โซนไหนก็หาของโซนนั้นก่อน ไม่มีค่อยถอยไปใช้ img/<key>.png ของโซน 1
 // รายชื่อไฟล์มาจาก img/manifest.json (zones) — ไม่ยิงถามทีละไฟล์ให้ 404 เต็มคอนโซล
-// **โซน 1 (th) ไม่ผ่านโค้ดส่วนนี้เลย** ทุกคีย์ได้ path เดิมตัวอักษรต่อตัวอักษร
+// โซน 1 ใช้ภาพวิญญาณชุดใหม่ ส่วนภาพตัวละครและอาคารเดิมยังใช้เส้นทางเดิม
 let zoneOf = () => 'th';
 let heroStyleOf = () => null;             // ชุด Yama เลือกแยกจากโซนที่กำลังคุมได้
 const ZMAP = {};                         // zone → { ชื่อไฟล์ไม่มีนามสกุล: path ใต้ img/ }
@@ -28,15 +30,20 @@ export function bindHeroStyle(fn) { heroStyleOf = fn; }
 export function warmZone(z = zoneOf()) {
   if (warmed.has(z) || !ZMAP[z]) return;
   warmed.add(z);
-  for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-')) load('img/' + p);
+  for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261002-frontier', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261002-zone-intros', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
-      ZMAP[z] = {};
+      const mapZone = z === 'thai' ? 'th' : z;
+      ZMAP[mapZone] = {};
+      if (mapZone !== z) ZMAP[z] = ZMAP[mapZone];
       for (const p of list) ZMAP[z][p.split('/').pop().replace(/\.[a-z]+$/i, '')] = p;
+      for (const [key, path] of Object.entries(regionalSpiritAliases(mapZone))) {
+        if (list.includes(path)) ZMAP[z][key] = path;
+      }
       const guard = `crew-guard-${z}`;
       if (ZMAP[z][`${guard}-v2`]) ZMAP[z][guard] = ZMAP[z][`${guard}-v2`];
       // 28D: use the compact ruler revision for every existing hero-boss caller.
@@ -64,6 +71,17 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
 export function artUrl(key, ext = 'png') {
   const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
   const map = ZMAP[z];
+  // Semantic soul assets ship at known paths, including before the async manifest arrives.
+  const soulKey = key.replace(POSE, '');
+  if (soulKey.startsWith('spirit-') && SPIRIT_ARCHETYPES.includes(soulKey.slice(7))) {
+    if (soulKey !== key) return null; // No separate profile pose: use the full sprite.
+    const path = regionalSpiritAliases(z)[`${key}-${z}`] || regionalSpiritAliases('th')[`${key}-th`];
+    return 'img/' + path;
+  }
+  if (z === 'th' && map && /^(spirit\d+|soul-)/.test(key)) {
+    const regional = regionalSpiritAliases('th')[`${key}-th`];
+    if (regional && Object.values(map).includes(regional)) return 'img/' + regional;
+  }
   if (map) {
     const hit = map[zoneStem(key, z)];
     if (hit) return 'img/' + hit;

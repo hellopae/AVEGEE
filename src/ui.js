@@ -16,6 +16,7 @@ import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
+import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1269,7 +1270,14 @@ function openZoneEventAlert(ev) {
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
     zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
-      if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(afterBreachBattle); }
+      const startFight = () => {
+        if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(afterBreachBattle); }
+      };
+      if (ev.k === 'thBorderBoss' && !g.bossArriveSeen.th) {
+        openBossArrive(g.zoneDef(), () => {
+          g.bossArriveSeen.th = true; g.save(); startFight();
+        });
+      } else startFight();
     }, ev.mode === 'waves' || /prison/i.test(ev.k));
 }
 function updateZoneEventFabs() {
@@ -1402,7 +1410,15 @@ function openBossArrive(z, onDone) {
     dlg.querySelector('#arrive-next').onclick = () => { if (++i >= lines.length) dlg.close(); else paint(); };
   };
   openDlg('intro-comic-dialog');
-  onDlgClose(onDone);
+  // Replacing the preparation dialog queues an old close event. Wait for
+  // this introduction to close, rather than starting combat on that event.
+  const gen = dlgGen;
+  const finish = () => {
+    if (gen !== dlgGen) { dlg.removeEventListener('close', finish); return; }
+    if (dlg.open) return;
+    dlg.removeEventListener('close', finish); onDone();
+  };
+  dlg.addEventListener('close', finish);
   paint();
 }
 
@@ -1416,21 +1432,31 @@ function openBossAlert() {
 
 function openZoneArrival(z) {
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
-  const image = artUrl(`intro-zone${zn}`);
+  const intro = zoneIntroduction(z.k);
+  const pages = [{ image:artUrl(`intro-zone${zn}`), speaker:z.name,
+    line:intro?.welcome || `${z.intro}${z.sub ? ` · ${z.sub}` : ''}`,
+    hint:'นิราตามท่านมา · จัดสถานีและทีมยมทูตประจำสาขาให้พร้อม' }];
+  if (intro) pages.push({ image:intro.image, speaker:intro.speaker, line:intro.guidance,
+    hint:'หัวหน้าประจำศาลจะช่วยท่านพิจารณาคดีของสาขานี้' });
+  let page = 0;
   pauseForDlg();
-  dlg.innerHTML = `<div class="intro-comic zone-arrival" role="region" aria-label="แนะนำ ${esc(z.name)}">
-    <div class="intro-comic-frame">
-      <img src="${image}" alt="" onerror="this.onerror=null;this.src='${artUrl('scene')}'">
-      <div class="intro-comic-head"><span>อเวจี · เปิดสาขาใหม่</span><span>โซน ${zn}</span></div>
-      <div class="intro-comic-caption">
-        <h2>${esc(z.name)}</h2>
-        <p>${esc(z.intro)}${z.sub ? `<br>${esc(z.sub)}` : ''}</p>
+  const paint = () => {
+    const current = pages[page];
+    dlg.innerHTML = `<div class="intro-comic zone-arrival" role="region" aria-label="แนะนำ ${esc(z.name)} หน้า ${page + 1} จาก ${pages.length}">
+      <div class="intro-comic-frame">
+        <img src="${esc(current.image)}" alt="${esc(page ? intro.speaker : z.name)}" onerror="this.onerror=null;this.src='${artUrl('scene')}'">
+        <div class="intro-comic-head"><span>อเวจี · ${z.back ? 'กลับมาที่สาขา' : 'เปิดสาขาใหม่'}</span><span>โซน ${zn} · ${page + 1} / ${pages.length}</span></div>
+        <div class="zone-arrival-band">
+          <div class="intro-comic-caption"><h2>${esc(current.speaker)}</h2><p>${esc(current.line)}</p></div>
+          <div class="intro-comic-controls"><span class="hint">${esc(current.hint)}</span>
+            <button class="gold" data-arrival-next>${page + 1 < pages.length ? 'พบหัวหน้าสาขา →' : 'เริ่มงาน'}</button></div>
+        </div>
       </div>
-    </div>
-    <div class="intro-comic-controls"><span class="hint">นิราตามท่านมา · สถานีและยมทูตต้องเริ่มจัดการใหม่ในแต่ละสาขา</span>
-      <button class="gold" data-close>เริ่มงาน</button></div>
-  </div>`;
+    </div>`;
+    dlg.querySelector('[data-arrival-next]').onclick = () => { if (++page < pages.length) paint(); else { g.zoneIntroSeen[z.k] = true; g.save(); dlg.close(); } };
+  };
   openDlg('intro-comic-dialog');
+  paint();
 }
 
 function showVerdict(v) {
@@ -1874,17 +1900,10 @@ function actionCutsceneSrc(k) {
   return folders[style] ? `img/${folders[style]}/hero-yama-${style}-${pose}-cutscene.jpeg` : null;
 }
 
-/** ข้อ A ชุด 13 คุณเป้ 26 ก.ย. 2569 — คัตซีนของยมทูตเอง (k = 'taan'|'plerng'|'dam'|'kan'|'boon'|'guard')
- *  ยังไม่มีภาพแยกโซน 2-4 (Kittanate ยัง gen แต่โซน 1) จึงคืนโซน 1 เสมอตอนนี้ — โครงไว้ให้พร้อมต่อ
- *  ยอดเมื่อมีไฟล์ img/<Zone>/crew-<k>-<style>-cutscene.jpeg จริง (ชื่อคีย์ยึดโซน 1 เหมือน hero) */
+/** Crew and Guard use their branch's action art, regardless of Yama's outfit. */
 function crewCutsceneSrc(k) {
-  const zone1 = `img/crew-${k}-cutscene.jpeg`;
-  const style = g.outfit || g.zone;
-  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
-  if (style !== 'th' && folders[style]) {
-    return { src: `img/${folders[style]}/crew-${k}-${style}-cutscene.jpeg`, fallback: zone1 };
-  }
-  return { src: zone1, fallback: null };
+  const scene = regionalCrewCutscene(k, g.zone);
+  return { src:scene.src, fallback:scene.regional ? artUrl(`crew-${k}`) : null };
 }
 
 // ข้อ E คุณเป้ 24 ก.ย. 2569: 580ms เร็วเกินจะทันเห็น (ภาพขึ้นจริงแต่กระพริบผ่านไป)
@@ -1907,7 +1926,7 @@ function playActionCutscene(k, ultimate = null) {
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
   img.onerror = () => {
-    if (fallback) { img.onerror = null; img.src = fallback; }
+    if (fallback) { img.onerror = () => cut.remove(); img.src = fallback; }
     else cut.remove();
   };
   let done = false;
@@ -2864,15 +2883,15 @@ function openZone() {
     <div class="world-map-scroll"><div class="world-map" role="group" aria-label="แผนที่เลือกโซน">
       <img class="world-map-art" src="img/zone-world-map.webp" alt="เส้นทางเชื่อมสี่ดินแดนในอเวจี">
       ${markers}
-      <div class="world-travelers" style="left:${startX}%;top:${startY}%" aria-hidden="true">
-        <span class="yama" style="background-image:url('${artUrl('hero-yama-walk') || artUrl('hero-yama')}')"></span>
-        <img class="nira" src="${artUrl('crew-nira')}" alt="">
+      <div class="world-travelers" aria-hidden="true">
+        <span class="yama" style="left:${startX}%;top:${startY}%;background-image:url('${artUrl('hero-yama-walk') || artUrl('hero-yama')}')"></span>
+        <img class="nira" style="left:${startX}%;top:${startY}%" src="${artUrl('crew-nira')}" alt="">
       </div>
     </div></div>
     <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
     <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`, d => {
     const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
-    const travelers = d.querySelector('.world-travelers');
+    const yama = d.querySelector('.world-travelers .yama'), nira = d.querySelector('.world-travelers .nira');
     let traveling = false, frame = 0;
     const centerOn = x => { scroll.scrollLeft = map.clientWidth * x / 100 - scroll.clientWidth / 2; };
     centerOn(startX);
@@ -2884,27 +2903,21 @@ function openZone() {
       traveling = true;
       map.classList.add('traveling');
       d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = true; });
-      const distances = [0];
-      for (let i = 1; i < route.length; i++) {
-        const dx = (route[i][0] - route[i - 1][0]) * 1.78;
-        const dy = route[i][1] - route[i - 1][1];
-        distances.push(distances[i - 1] + Math.hypot(dx, dy));
-      }
-      const total = distances.at(-1);
+      const path = travelPath(route, map.clientWidth / map.clientHeight);
+      const total = path.total;
+      const followGap = Math.min(2.5, total / 4);
       const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 :
         Math.min(3600, Math.max(1500, total * 34));
       const started = performance.now();
       const step = now => {
         if (!d.open || !d.classList.contains('zonepick')) return;
-        const done = duration === 0 ? total : Math.min(total, (now - started) / duration * total);
-        let i = 1;
-        while (i < distances.length - 1 && distances[i] < done) i++;
-        const ratio = distances[i] === distances[i - 1] ? 0 : (done - distances[i - 1]) / (distances[i] - distances[i - 1]);
-        const x = route[i - 1][0] + (route[i][0] - route[i - 1][0]) * ratio;
-        const y = route[i - 1][1] + (route[i][1] - route[i - 1][1]) * ratio;
-        travelers.style.left = `${x}%`; travelers.style.top = `${y}%`;
+        const done = duration === 0 ? total + followGap : Math.min(total + followGap, (now - started) / duration * (total + followGap));
+        const [x, y] = path.at(done);
+        const [nx, ny] = path.at(done - followGap);
+        yama.style.left = `${x}%`; yama.style.top = `${y}%`;
+        nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
         centerOn(x);
-        if (done < total) { frame = requestAnimationFrame(step); return; }
+        if (done < total + followGap) { frame = requestAnimationFrame(step); return; }
         map.classList.remove('traveling');
         // moveZone() เปิดฉากมาถึงผ่าน onChange() เอง; ปล่อยให้ฉากนั้นแทนแผนที่ทันที
         if (g.moveZone(b.dataset.zone)) { sfx('gong'); refresh(); }
@@ -3980,7 +3993,7 @@ g.onChange = () => {
   }
   if (g.pendingZone) {
     const z = g.pendingZone; g.pendingZone = null;
-    if (!z.back) openZoneArrival(z);
+    if (!z.back || (zoneIntroduction(z.k) && !g.zoneIntroSeen[z.k])) openZoneArrival(z);
     else bossModal(`กลับมาที่${z.name}`,
       `${z.sub ? `${z.sub}\n\n` : ''}สถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
     return;

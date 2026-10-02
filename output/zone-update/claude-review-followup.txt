@@ -1,0 +1,17 @@
+I checked all five fixes and they hold up. One low-severity bug remains, in a fallback path. I didn't edit anything.
+
+**Remaining bug: semantic spirit keys point at a missing file until the manifest has loaded**
+
+- `soulPortrait()` now always returns a key like `spirit-worker` (`src/soul-portraits.js:57`). `artUrl()` can only turn that into a real file through `ZMAP`, which gets filled in after the async `fetch('img/manifest.json…')` in `src/art.js:36`.
+- Before that fetch finishes, or if it fails (offline, `file://`, a bad deploy), `artUrl('spirit-worker')` falls through to `img/spirit-worker.png` (`src/art.js:84`). There are no root `img/spirit-*.png` files.
+- **What happens:**
+  - **Canvas:** `drawSoul` draws before the manifest arrives, so it requests `img/spirit-<role>.png` and gets one 404 per role in the queue on every cold start. That breaks the "no 404s in the console" rule in the art.js header. The soul still falls back to `spirit7`, so the 404s are the only visible effect.
+  - **Panels:** if the manifest never loads, the soul portrait in the profile panel (`src/ui.js:460-466`) is hidden instead of showing old art. Before this change, Thai souls used the root `spiritN.png` files, which do exist.
+- **Suggested fix:** in `artUrl`, when a `spirit-<role>` key has no `ZMAP` match, return `img/Thai/spirit-<role>-th-v2.png` (or `img/spirit7.png`) instead of the root path.
+
+**The fixes themselves:**
+- **Neutral role keys:** all four zones turn `spirit-<role>-<zone>` into their own `-v2` art through `regionalSpiritAliases`. All 40 PNGs exist and are in the manifest. Profile panels fall back from `-profile` to the plain image correctly, because the pose lookup returns `null` in that case.
+- **Elder-woman art:** present and registered in all four zones.
+- **Mobile arrival frame:** the `.zone-arrival` image rules override the older 16:7.2 mobile rule, so the image keeps its natural shape. All intro images are about 16:9. The 112px band sits 40px into the image's painted letterbox, and the 72px padding covers the rest.
+- **warmZone:** it skips every regional `/spirit-` file. No numbered `spiritN-<zone>` files are in the manifest, so nothing slips past the filter.
+- **Returning heading:** it says "กลับมาที่สาขา" when `z.back` is set. A returning player only sees the arrival dialog if the zone has an introduction they haven't finished (`zoneIntroSeen`), and that flag is saved and restored correctly.

@@ -1,0 +1,26 @@
+[
+  {
+    "z": "asia",
+    "folder": "Asia",
+    "head": "hero-boss-asia.png",
+    "theme": "East Asian teal rocky underworld, Chinese red lanterns and jade tiled pavilion, distant orange lava and pale cyan soul river",
+    "path": "img/Asia/intro-head-asia-v2.png",
+    "prompt": "Use case: illustration-story. Create a NEW wide 16:9 pixel art game introduction cutscene. References: image 1 exact FRIENDLY regional ruler and throne identity; image 2 regional environment design; image 3 little Yama identity; image 4 Nira identity. Scene: East Asian teal rocky underworld, Chinese red lanterns and jade tiled pavilion, distant orange lava and pale cyan soul river. Yama and Nira politely meet the friendly regional ruler who is SEATED on his own throne, greeting and offering judicial help. Yama holds his book, Nira carries files. Three characters only. Coherent eye-level cinematic perspective, characters' heads/body proportions consistent compact chibi sprite art, throne scaled to ruler, all on same stone floor, distant architecture genuinely distant. Preserve exact costumes, faces, colors and accessories in references. Friendly welcome, no battle. Detailed crisp pixel art with restrained game palette. Landscape canvas: the illustrated scene occupies the UPPER 76 percent, the lower 24 percent is pure solid black empty letterbox reserved for later UI captions; no text, symbols, UI buttons or writing. No top letterbox."
+  },
+  {
+    "z": "west",
+    "folder": "West",
+    "head": "hero-boss-west-v2.png",
+    "theme": "Nordic snowy underworld, ice gothic hall, blue glacial river and snowy pines, warm lanterns",
+    "path": "img/West/intro-head-west-v2.png",
+    "prompt": "Use case: illustration-story. Create a NEW wide 16:9 pixel art game introduction cutscene. References: image 1 exact FRIENDLY regional ruler and throne identity; image 2 regional environment design; image 3 little Yama identity; image 4 Nira identity. Scene: Nordic snowy underworld, ice gothic hall, blue glacial river and snowy pines, warm lanterns. Yama and Nira politely meet the friendly regional ruler who is SEATED on his own throne, greeting and offering judicial help. Yama holds his book, Nira carries files. Three characters only. Coherent eye-level cinematic perspective, characters' heads/body proportions consistent compact chibi sprite art, throne scaled to ruler, all on same stone floor, distant architecture genuinely distant. Preserve exact costumes, faces, colors and accessories in references. Friendly welcome, no battle. Detailed crisp pixel art with restrained game palette. Landscape canvas: the illustrated scene occupies the UPPER 76 percent, the lower 24 percent is pure solid black empty letterbox reserved for later UI captions; no text, symbols, UI buttons or writing. No top letterbox."
+  },
+  {
+    "z": "cyberhell",
+    "folder": "CyberHell",
+    "head": "hero-boss-cyberhell-v2.png",
+    "theme": "Cyber underworld purple crystalline cavern, violet server racks and cyan circuits, distant lava and cyan soul river",
+    "path": "img/CyberHell/intro-head-cyberhell-v2.png",
+    "prompt": "Use case: illustration-story. Create a NEW wide 16:9 pixel art game introduction cutscene. References: image 1 exact FRIENDLY regional ruler and throne identity; image 2 regional environment design; image 3 little Yama identity; image 4 Nira identity. Scene: Cyber underworld purple crystalline cavern, violet server racks and cyan circuits, distant lava and cyan soul river. Yama and Nira politely meet the friendly regional ruler who is SEATED on his own throne, greeting and offering judicial help. Yama holds his book, Nira carries files. Three characters only. Coherent eye-level cinematic perspective, characters' heads/body proportions consistent compact chibi sprite art, throne scaled to ruler, all on same stone floor, distant architecture genuinely distant. Preserve exact costumes, faces, colors and accessories in references. Friendly welcome, no battle. Detailed crisp pixel art with restrained game palette. Landscape canvas: the illustrated scene occupies the UPPER 76 percent, the lower 24 percent is pure solid black empty letterbox reserved for later UI captions; no text, symbols, UI buttons or writing. No top letterbox."
+  }
+]

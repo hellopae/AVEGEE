@@ -13,6 +13,7 @@ import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY } from './story.js';
+import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -113,6 +114,7 @@ export function createGame() {
     pendingReward: null,               // ชุด 28B — สรุปรางวัลหลังชนะ รอ ui.js เด้งหน้าต่าง (ไม่เซฟ)
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
+    zoneIntroSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     outfitsOwned: ['th'],
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
@@ -353,6 +355,7 @@ const API = {
     if (s.case) this.log(`📁 สำนวนมีชื่อเข้าคิว — ${s.name} (${s.who})`, 'event');
     else if (s.hard) this.log(`⚖️ สำนวน #${String(s.id).padStart(3, '0')} หนา​ผิดปกติ — นิราวางไว้แล้วไม่พูดอะไร`, 'event');
     else this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
+    applySoulPortrait(s, this.zone);
     this.queue.push(s);
   },
 
@@ -380,7 +383,7 @@ const API = {
     if (!ok.length) return null;
     const c = pick(ok);
     this.usedCases.push(c.k);
-    return mkCaseSoul(c);
+    return applySoulPortrait(mkCaseSoul(c), this.zone);
   },
 
   /** สถานีนี้รับได้กี่ดวง — หลังที่ไม่ได้ใช้ลงทัณฑ์ (แรง 0) รับไม่ได้เลย */
@@ -924,7 +927,7 @@ const API = {
       ? ` (${t('verdict.matchBonus')} +${r.bonus} ${t('verdict.coins')})` : '';
     this.log(`${st.def.heaven ? 'การส่งตัว' : 'ทัณฑ์'}ของ ${soul.who} ครบวาระแล้ว · +${r.coin} เบี้ยกรรม${bonusText}`, 'good');
     // เก็บสำนวนที่ปิดแล้วไว้ให้กดดูเฉลยย้อนหลังได้ในแผงข้อมูล (เก็บ 12 คดีล่าสุดพอ)
-    this.closed.unshift({ soul, verdict: r, stK: st.def.k, crewK: st.crewK,
+    this.closed.unshift({ soul, zone:this.zone, verdict: r, stK: st.def.k, crewK: st.crewK,
                           intensity: slot.intensity, tick: this.tick });
     if (this.closed.length > 12) this.closed.pop();
     st.slots.splice(i, 1);
@@ -1021,6 +1024,7 @@ const API = {
     const B = (R.caseK && ALL_CASES.find(c => c.k === R.caseK) || {}).back;
     const soul = {
       id: SEQ++, who: R.who, sp: R.sp, sex: R.sex || SEX_OF[R.who] || 'm', name: R.name,
+      case: R.caseK || null,
       waited: 0, said: [],
       deeds: R.deeds.map(d => ({ ...d, known:true })), merits: R.merits, denied: null,
       back: { id: R.fromId, gave: R.gave }, calm: !!R.calm,
@@ -1032,7 +1036,7 @@ const API = {
       `"ท่านให้{i}ไป ${R.gave} วาระ แต่{i}ยังไม่สำนึก{p} เลยถูกส่งกลับมา ก่อนจะไปเกิดใหม่"`, soul.sex) });
     soul.lines = mkLines(soul, this);
     soul.presses = BAL.presses;
-    return soul;
+    return applySoulPortrait(soul, R.zone || this.zone);
   },
 
   // ---------- หนึ่งวาระ ----------
@@ -1847,6 +1851,7 @@ const API = {
 
   startBattle(soul) {
     if (this.battle) return this.battle;
+    applySoulPortrait(soul, this.zone);
     const hp = scaleFoeHp(this.zone, Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv)));
     this.fights++;
     this.battle = {
@@ -3026,6 +3031,7 @@ const API = {
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name}${z.sub ? ` — ${z.sub}` : ''}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
                      : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
+    reconcileSoulPortraits(this);
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     // จุดเริ่มสาขาเก็บความคืบหน้าสาขาก่อนหน้าไว้ แต่ยังไม่รวมผลงานใหม่ในสาขานี้
@@ -3376,6 +3382,7 @@ API.snapshot = function (withEntry = true) {
     bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
+    zoneIntroSeen: this.zoneIntroSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
@@ -3535,6 +3542,7 @@ API.restore = function (d) {
   // เซฟเก่าก่อนมีฉากมาถึง — ถ้าเคยเจอบอสโซนนั้นแล้ว (ผ่านหรือแพ้แล้วเฝ้าสะพานอยู่) ถือว่าเห็นฉากมาถึงแล้ว
   // ไม่งั้นผู้เล่นที่เล่นมาก่อนจะโดนฉากมาถึงย้อนหลังทั้งที่สู้บอสไปแล้ว
   this.bossArriveSeen = d.bossArriveSeen || { ...this.bossCleared, ...this.bossGuarding };
+  this.zoneIntroSeen = d.zoneIntroSeen || {};
   // Dale ตรวจชุดที่ 10 (25 ก.ย. 2569, ทดสอบจริงด้วย Playwright พบว่าเซฟที่บั๊กเดิมเคยติดธงไว้
   // ก่อนเปิดฉาก — เช่นเซฟของคุณเป้ที่เจอบอสโซน 1 "เดินเข้ามาหาเลย ไม่มีฉากเปิด" — flag ค้างเป็น true
   // ถาวร ต่อให้แพตช์ข้อ E1 (ย้ายการติดธงไปไว้ใน onDone) แก้จุดตั้งธงแล้ว เซฟเก่าที่ติดธงผิดจังหวะไปแล้ว
@@ -3641,6 +3649,7 @@ API.restore = function (d) {
     this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, this.zone)); });
     if (!this.queue.length) this.spawnSoul();
   }
+  reconcileSoulPortraits(this);
   // เซฟที่สร้างก่อนระบบจุดเริ่มโซน: กู้ฐานของโซนปัจจุบันจากสถานะที่มี
   // โดยเก็บ zoneSave ของสาขาก่อนหน้าไว้ทั้งชุด ไม่ล้างความคืบหน้าที่ผ่านมา
   if (!this.zoneEntry && this.zone !== 'th') {
