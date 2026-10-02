@@ -438,7 +438,7 @@ const API = {
     if (i < 0) return false;
     const soul = this.queue.splice(i, 1)[0];
     this.held.push(soul);
-    this.log(`🔒 ขัง${soul.name || soul.who} (สำนวน #${String(soul.id).padStart(3, '0')}) ไว้ในตะรางก่อน — ` +
+    this.log(`ขัง${soul.name || soul.who} (สำนวน #${String(soul.id).padStart(3, '0')}) ไว้ในตะรางก่อน — ` +
              `ค่าข้าว ${TARANG.feed} เบี้ยต่อวาระ`, 'act');
     this.onChange();
     return true;
@@ -462,7 +462,7 @@ const API = {
     if (this.queue.length < 2) return false;
     const soul = this.queue.shift();
     this.queue.push(soul);
-    this.log(`⏭️ ให้${this.queue[0].name || this.queue[0].who}ขึ้นแทน — ` +
+    this.log(`ให้${this.queue[0].name || this.queue[0].who}ขึ้นแทน — ` +
              `สำนวน #${String(soul.id).padStart(3, '0')} เลื่อนไปท้ายคิว`, 'act');
     this.onChange();
     return true;
