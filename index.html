@@ -683,6 +683,14 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   dialog.rpg:has(>.pad .boss-prep)>.pad{left:50%;right:auto;transform:translateX(-50%);top:9%;bottom:auto;width:90%;max-height:40%}
   dialog.rpg:has(.combat-arena)>.boss-prep-actions{left:auto;right:5%;bottom:27%;transform:none;padding:0;border:0;background:transparent}
 }
+/* 28A: ปุ่มจบศึกตอนชนะที่ถูกย้ายออกจาก .pad (ดู openBattle ใน ui.js) */
+.combat-arena .fin-float{position:absolute;z-index:22;margin:0;width:max-content;max-width:92%;pointer-events:auto}
+.combat-arena .fin-float.fin-foe{left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);justify-content:center}
+.combat-arena .fin-float.fin-center{left:50%;bottom:18%;transform:translateX(-50%);justify-content:center}
+@media(max-width:700px){
+  /* มือถือแนวตั้ง: กล่องผลรางวัล (.battle-scene-talk) อยู่ right:3% bottom:19% — ยกปุ่มขึ้นเหนือกล่อง เยื้องขวาพ้นตัวยมบาทน้อย */
+  .combat-arena .fin-float.fin-center{left:62%;bottom:calc(19% + 92px)}
+}
 /* มุมฉลุ HUD 4 มุม — ใช้ร่วมกันทั้ง .hud และ .arena (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.2)
    วางเยื้องเข้ามาจากขอบจริง 6px ได้เอฟเฟกต์ "วงเล็บมุม" แบบ HUD เกมโดยไม่ต้องพึ่งรูป */
 .corner-tick{position:absolute;width:18px;height:18px;pointer-events:none;z-index:5}
@@ -1781,7 +1789,9 @@ dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;pad
 #ov .frontierfab:after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
   border:6px solid transparent;border-top-color:var(--gold)}
 #ov .repairfab{position:absolute;transform:translate(-50%,-50%);z-index:9;min-height:38px;
-  padding:7px 13px;border-radius:99px;font-size:var(--text-sm);font-weight:700;white-space:nowrap;
+  /* 28A: จอแคบตัดบรรทัดได้ ไม่ดันล้นขอบ (ตำแหน่งถูก clamp ใน ui.js clampInView) */
+  width:max-content;max-width:calc(100% - 16px);line-height:1.25;text-align:center;
+  padding:7px 13px;border-radius:99px;font-size:var(--text-sm);font-weight:700;white-space:normal;
   background:#492735;border:1px solid var(--gold);color:#ffe3ae;box-shadow:0 6px 18px #0009;pointer-events:auto}
 #ov .repairfab:disabled{opacity:.65;cursor:not-allowed}
 dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;padding:0;overflow:hidden;background:#160a0f}

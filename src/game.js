@@ -2651,8 +2651,11 @@ const API = {
           'zone-boss-west':'img/West/Boss Zone3-cutscene.jpeg',
           'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.jpeg',
         };
+        // ภาพท่าไม้ตายบอส/เทวดาในอีเวนต์: โซน 1 = img/boss-<tester|frontier>-th-cutscene.jpeg
+        // โซนอื่น = img/<Zone>/boss-<tester|frontier>-<z>-cutscene-<z>.png (เดิมชี้โฟลเดอร์ raw ซึ่ง gitignore → 404 บน live)
+        const who = tester ? 'boss-tester' : 'boss-frontier';
         const special = bossScenes[counter.sp]
-          || `img/raw/${folder}${tester ? 'boss-tester' : 'boss-frontier'}-${z}-cutscene.jpeg`;
+          || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);
         ultimate = { name: /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
           image:special, damage:Math.round(normal * 1.7) };
       }
@@ -2973,7 +2976,7 @@ const API = {
       const nira = this.crew.find(c => c.k === 'nira');
       if (nira) { nira.x = gate[0] - 36; nira.y = gate[1] - 12; nira.path = null; nira.wait = 0; }
     }
-    this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name} — ${z.sub}`
+    this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name}${z.sub ? ` — ${z.sub}` : ''}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
                      : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
     this.pendingZone = { ...z, back: !!back };

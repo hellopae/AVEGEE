@@ -88,7 +88,7 @@ test('event boss stronger counter exposes its cutscene metadata', () => {
   b.foes[0].maxHp = 1000;
   assert.equal(g.battleAct('atk'), true);
   assert.equal(b.ultimate?.name, 'คำพิพากษาเทวดา');
-  assert.equal(b.ultimate?.image, 'img/raw/Asia/boss-tester-asia-cutscene.jpeg');
+  assert.equal(b.ultimate?.image, 'img/Asia/boss-tester-asia-cutscene-asia.png');
   assert.ok(b.ultimate?.damage > 0);
 });
 
