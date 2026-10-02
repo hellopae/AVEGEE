@@ -196,7 +196,10 @@
 "leader-th-possessed.png",
 "leader-asia-possessed.png",
 "leader-west-possessed.png",
-"leader-cyberhell-possessed.png"
+"leader-cyberhell-possessed.png",
+"item-holywater.png",
+"story-cyberhell-02-v3.png",
+"story-cyberhell-03-v4.png"
 ],
 "zones": {
 "asia": [
@@ -338,7 +341,8 @@
 "CyberHell/mob-cyber-guard-cyberhell.png",
 "CyberHell/mob-cyber-lancer-cyberhell.png",
 "CyberHell/mob-cyber-brute-cyberhell.png",
-"CyberHell/hero-boss-cyberhell.png"
+"CyberHell/hero-boss-cyberhell.png",
+"CyberHell/hero-boss-cyberhell-v2.png"
 ],
 "west": [
 "West/BG-Dab-west.webp",
@@ -402,7 +406,8 @@
 "West/st-tarang-west.png",
 "West/st-tea-west.png",
 "West/zone-boss-west.png",
-"West/hero-boss-west.png"
+"West/hero-boss-west.png",
+"West/hero-boss-west-v2.png"
 ],
 "ui": [
 "ui/Button1.png",

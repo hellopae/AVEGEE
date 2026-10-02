@@ -248,6 +248,9 @@ def out_name(sub, name):
     if re.match(r'BG-[a-z]', name):
         name = 'BG-' + name[3].upper() + name[4:]
     z = sub.lower()
+    # Versioned zone sprites keep the revision after the zone: hero-boss-west-v2.
+    if re.fullmatch(r'.+-' + z + r'-v\d+', name):
+        return name, ''
     # ภาพคัตซีนและท่าหันซ้าย/ขวาใส่ชื่อโซนไว้กลางชื่ออยู่แล้ว ไม่ใช่ POSE ท้ายชื่อแบบ
     # -profile/-work/-atk/-side ถ้าปล่อยลงทางทั่วไปจะได้ชื่อซ้ำเป็น
     # hero-yama-west-atk-cutscene-west ซึ่ง art.js หาไม่เจอ
@@ -302,8 +305,8 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
         im.save(os.path.join(OUT, name + '.jpeg'), 'JPEG', quality=90, optimize=True)
         return im.size
 
-    # การ์ตูนแนะนำโซนตอนย้ายสาขา — ใช้กรอบ 16:9 แบบฉากเปิด ไม่ใช่ standee
-    if re.match(r'intro-zone\d+', name):
+    # การ์ตูนแนะนำโซนและเนื้อเรื่อง — ฉากเต็มใบ รวมแถบดำ ไม่ใช่ standee
+    if re.match(r'intro-zone\d+', name) or name.startswith('story-'):
         if im.width > SCENE_W:
             im = im.resize((SCENE_W, round(im.height * SCENE_W / im.width)), Image.LANCZOS)
         im.convert('RGB').quantize(colors=256, dither=Image.NONE).save(os.path.join(OUT, name + '.png'))
