@@ -37,6 +37,11 @@ fetch('img/manifest.json?v=20261002-heads', { cache: 'no-cache' })
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
       ZMAP[z] = {};
       for (const p of list) ZMAP[z][p.split('/').pop().replace(/\.[a-z]+$/i, '')] = p;
+      // 28D: use the compact ruler revision for every existing hero-boss caller.
+      if (z === 'west' || z === 'cyberhell') {
+        const ruler = `hero-boss-${z}`;
+        if (ZMAP[z][`${ruler}-v2`]) ZMAP[z][ruler] = ZMAP[z][`${ruler}-v2`];
+      }
     }
     BOXES = (m && m.boxes) || {};
     STATION_SIZES = (m && m.stationSizes) || {};
