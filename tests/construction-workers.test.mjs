@@ -119,3 +119,19 @@ test('two repair jobs keep separate owners when leaving and returning to a branc
   for (const [k,site] of owners) assert.equal(g.crewOf(k).buildK, site);
   assert.equal(g.stations.filter(st => st.repairWait).length, 2);
 });
+
+// Regression: the old roaming radius (73.6) exceeded the arrival radius (42).
+test('a builder stopped 45 units from lan approaches instead of roaming forever, with a mob present', () => {
+  const g = setup();
+  assert.equal(g.build('lan'), true);
+  const c = g.crewOf('taan'), st = g.stations.find(st => st.def.k === 'lan');
+  c.x = st.def.x + 45; c.y = st.def.y; c.path = null; c.wait = 0;
+  g.mobs = [{ id:1900, x:710, y:674, hp:100, kind:0 }];
+  const random = Math.random;
+  Math.random = () => 0.999;
+  try {
+    for (let i = 0; i < 1876 && st.buildWait; i++) g.stepWorld(16);
+    assert.equal(st.buildWait, false);
+    assert.equal(c.buildK, 'lan');
+  } finally { Math.random = random; }
+});

@@ -148,7 +148,7 @@ function mkStation(k, build = 0) {
   const def = STATIONS.find(s => s.k === k);
   // mgCd (ชุดที่ 9) = วาระ (g.tick) ที่จะเล่นมินิเกม "เร่งการทำงาน" ซ้ำที่สถานีนี้ได้อีกครั้ง
   // ใช้ตัวเลข tick แบบเดียวกับ visitCd/kanCd ที่มีอยู่แล้ว — 0 แปลว่าเล่นได้ทันที
-  return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, repair:0, repairWait:false, fire: 0,
+  return { def, slots: [], crewK: null, intensity: 3, build, buildWait:false, repair:0, repairWait:false, arrivalElapsed:0, fire: 0,
            speedLv:0, capLv:0, fuelLv:0, mgCd:0 };
 }
 
@@ -1374,6 +1374,17 @@ const API = {
         c.x = hx; c.y = hy; c.path = null; c.wait = 500;
       }
 
+      const job = building && this.stations.find(st => st.def.k === building.k);
+      const arriving = job && (job.buildWait || job.repairWait);
+      // Count active walking time only; pause/hidden-tab gaps must not trigger a jump.
+      // A disconnected path (or a changing building footprint) must not strand a job.
+      if (arriving) {
+        job.arrivalElapsed = (job.arrivalElapsed || 0) + Math.max(0, Math.min(dt, 120));
+        if (job.arrivalElapsed >= 30000 && canWalk(hx, hy)) {
+          c.x = hx; c.y = hy; c.path = null;
+        }
+      }
+
       // ทัณฑ์ต้องเดินมาถึงพื้นที่ก่อน เวลา BUILD_TIME จึงเริ่มนับจริง
       if (building && Math.hypot(hx - c.x, hy - c.y) < 42) {
         const st = this.stations.find(x => x.def.k === building.k);
@@ -1392,6 +1403,29 @@ const API = {
       if (building && this.stations.some(st => st.def.k === building.k &&
           (st.build && !st.buildWait || st.repair && !st.repairWait))) {
         c.x = hx; c.y = hy; c.path = null;
+        continue;
+      }
+
+      // Pending jobs approach the same walkable/visible point used by arrival.
+      // Do not roam in the 42–73.6 unit gap, or follow an obsolete roaming path.
+      if (arriving) {
+        if (!c.workTarget || c.workTarget[0] !== hx || c.workTarget[1] !== hy) {
+          c.workTarget = [hx, hy]; c.path = null; c.wait = 0;
+        }
+        if (!c.path?.length) {
+          c.wait = Math.max(0, (c.wait || 0) - Math.min(dt, 120));
+          if (!c.wait) { c.path = findPath(c.x, c.y, hx, hy); c.wait = 200; }
+        }
+        const w = c.path?.[0];
+        if (w) {
+          const dx = w[0] - c.x, dy = w[1] - c.y, d = Math.hypot(dx, dy);
+          if (d < 5) { c.x = w[0]; c.y = w[1]; c.path.shift(); }
+          else {
+            const sp = Math.min(0.11 * Math.min(dt, 120), d);
+            if (!stepTo(c, dx / d * sp, dy / d * sp)) c.path = null;
+            if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
+          }
+        }
         continue;
       }
 
@@ -2800,7 +2834,7 @@ const API = {
         k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
         repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
-        repairWait:!!st.repairWait,
+        repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
         speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
@@ -2826,7 +2860,7 @@ const API = {
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
                             visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
-                            repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait,
+                            repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait, arrivalElapsed:sv.arrivalElapsed || 0,
                             speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0 });
         return st;
       }).filter(Boolean);
@@ -3109,7 +3143,7 @@ const API = {
     const st = mkStation(k, Date.now() + BUILD_TIME);
     st.buildWait = true;
     this.stations.push(st);
-    worker.at = null; worker.buildK = k; worker.path = null;
+    worker.at = null; worker.buildK = k; worker.path = null; worker.workTarget = null;
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
     const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
@@ -3148,8 +3182,8 @@ const API = {
     const st = this.stations.find(s => s.def.k === k);
     const worker = this.availableBuilder();
     st.repair = Date.now() + REPAIR_TIME;
-    st.repairWait = true;
-    worker.buildK = k; worker.path = null;
+    st.repairWait = true; st.arrivalElapsed = 0;
+    worker.buildK = k; worker.path = null; worker.workTarget = null;
     this.log(`🔧 เรียก${worker.name}มาซ่อม${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
     this.onChange();
     return true;
@@ -3200,7 +3234,7 @@ API.snapshot = function (withEntry = true) {
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
       build: st.buildWait ? BUILD_TIME : st.build ? Math.max(1, st.build - Date.now()) : 0, buildWait:!!st.buildWait, buildExtra:st.buildExtra || '',
       repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
-      repairWait:!!st.repairWait,
+      repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
       slots: st.slots,
     })),
@@ -3296,6 +3330,7 @@ API.restore = function (d) {
     st.buildExtra = sv.buildExtra;
     st.repair = sv.repair ? Date.now() + sv.repair : 0;
     st.repairWait = !!sv.repairWait;
+    st.arrivalElapsed = sv.arrivalElapsed || 0;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
     st.mgCd = sv.mgCd || 0;   // คูลดาวน์มินิเกม "เร่งการทำงาน" (ชุดที่ 9)
     // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
