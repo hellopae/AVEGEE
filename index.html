@@ -1220,6 +1220,27 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92));border:1px solid var(--gold);color:var(--gold)}
 .frw-exit:hover{background:var(--gold);color:var(--gold-foreground)}
 .frw-team-list{font-size:var(--text-xs);line-height:var(--leading-body)}
+dialog.frontier-map-dialog[open]{inset:0;margin:0;padding:0;width:100vw;max-width:none;height:100dvh;max-height:none;border:0;border-radius:0;overflow:hidden;background:#100a15}
+dialog.frontier-map-dialog>.modal-corner-close{display:none!important}
+.frw-fullscreen{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size}
+.frw-map{position:absolute;inset:0}
+.frw-map canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:pixelated}
+.frw-res{position:absolute;left:2.7%;top:2.6%;display:flex;gap:1.5cqw;align-items:center;pointer-events:none}
+.frw-res>span{display:flex;align-items:center;gap:.7cqw;color:#fff;font-weight:800;font-size:clamp(16px,2cqw,40px);text-shadow:0 2px 5px #000}
+.frw-res>span:first-child{color:#fff500}
+.frw-res img{width:3.2cqw;height:3.6cqw;min-width:26px;min-height:30px;object-fit:contain}
+.frw-return{position:absolute;left:50%;top:3%;transform:translateX(-50%);padding:.8cqw 1.5cqw;font-weight:800;font-size:clamp(12px,1.1cqw,24px);white-space:nowrap}
+.frw-controls{position:absolute;right:2.5%;top:3%;display:flex;gap:1.5cqw}
+.frw-controls button{width:3.7cqw;height:3.7cqw;min-width:38px;min-height:38px}
+.frw-bottom{position:absolute;left:2.5%;bottom:2%;display:flex;gap:2.5cqw;align-items:center}
+.frw-avatar{width:7cqw;min-width:64px;color:#fff;text-align:center;font-size:clamp(12px,1cqw,22px);text-shadow:0 2px 4px #000}
+.frw-avatar>div{position:relative}.frw-avatar img{width:85%;aspect-ratio:1;object-fit:cover;border:2px solid var(--gold)}
+.frw-avatar>div>span{position:absolute;right:-7%;top:0;display:flex;flex-direction:column;color:#55452c}.frw-avatar i{font-style:normal}.frw-avatar i.on{color:var(--gold)}
+.frw-avatar .hud-hpbar{display:block;height:7px;margin:3px 0 5px;background:#140b11}.frw-avatar .hud-hpbar i{height:100%;display:block;background:#14b55c}
+.frw-bottom .st-hud-item img{height:4.2cqw;max-width:5cqw;min-height:40px;object-fit:contain}
+.frw-bottom .st-hud-item span{font-size:clamp(11px,1cqw,22px)}
+.frw-status{position:absolute;right:2%;bottom:2%;color:#f3d7a1;text-shadow:0 2px 4px #000;font-size:clamp(11px,.8cqw,17px)}
+@media(max-width:700px){.frw-res{gap:10px;left:12px;top:12px}.frw-res>span{gap:4px;font-size:16px}.frw-controls{top:60px;right:12px}.frw-return{top:62px;left:12px;transform:none}.frw-bottom{left:12px;gap:20px}.frw-avatar{width:72px}}
 /* ปุ่ม "เริ่มต่อสู้" ลอยเหนือหัวศัตรูที่เข้าใกล้ — src/frontier.js ตั้ง left/top เป็น % เอง
    (กันปัญหาขนาด canvas จริง (backing store) กับขนาด CSS ไม่ตรงกันตอน dpr>1 แบบเดียวกับ .mobfab) */
 .frw-fab{position:absolute;transform:translate(-50%,-100%);z-index:6;white-space:nowrap;

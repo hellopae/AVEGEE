@@ -38,6 +38,16 @@ test('ruler lookup selects v2 in both zones, with an old-manifest fallback', asy
         assert.equal(art.artUrl('hero-boss'), path);
         assert.ok(existsSync(new URL('../' + path, import.meta.url)));
       }
+      for (const [z, path] of [
+        ['th','img/crew-guard-v2.png'],
+        ['asia','img/Asia/crew-guard-asia-v2.png'],
+        ['west','img/West/crew-guard-west.png'],
+        ['cyberhell','img/CyberHell/crew-guard-cyberhell-v2.png'],
+      ]) {
+        art.bindZone(() => z);
+        assert.equal(art.artUrl('crew-guard'), path, `Guard must match ${z}`);
+        assert.ok(existsSync(new URL('../' + path, import.meta.url)));
+      }
     }
   } finally {
     globalThis.fetch = previousFetch;

@@ -16,15 +16,13 @@
 
 import { MOB } from './data.js';
 import { drawStandee } from './art.js';
+import { frontierWalkable, frontierPath, frontierSegmentClear } from './frontier-navigation.js';
 
-// พื้นที่เดินได้ สัดส่วน 0-1 ของภาพฉาก [x1,y1,x2,y2] — วัดจากภาพจริงทั้ง 4 โซน (กำแพง/ประตูอยู่แถบบน
-// ~0-20% ของสูง · รูปปั้น/บันไดฐานอยู่แถบล่าง ~86-100% · ซากปรักซ้าย-ขวาแถบขอบ) ยึดกรอบเดียวกันทั้ง
-// 4 โซนได้เพราะเจ้าของวาดผังเดียวกันทุกโซน (ประตูบน-ลานร้าวกลาง-บันไดล่าง) ต่างแค่โทนสี/ธีมประดับ
-const WALK = [0.075, 0.22, 0.925, 0.86];
-const HERO_H = 0.15;
-const MOB_H = 0.12;
+// ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
+const HERO_H = 0.085;
+const MOB_H = 0.115;
 const REACH = 0.09;                 // ระยะเดินเข้าใกล้ศัตรูแล้วปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้น
-const GATE = [0.5, WALK[1]], NIRA = [0.64, WALK[1] + 0.07];
+const GATE = [0.5, 0.19], NIRA = [0.575, 0.265], GUARD = [0.43, 0.265];
 export const nearFrontierGate = p => Math.hypot(p.x - GATE[0], p.y - GATE[1]) <= REACH;
 export const nearFrontierNira = p => Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH;
 const SPAWN_EVERY = 2600;           // ลองสร้างศัตรูใหม่ทุกเท่านี้ (ms) ถ้ายังไม่เต็มจอ
@@ -37,7 +35,7 @@ let session = null;   // { zone, player:{x,y,tx,ty,face}, enemies:[{id,kindIdx,x
 /** ได้เซสชันของโซนนี้ — สร้างใหม่ถ้ายังไม่มีหรือเพิ่งย้ายโซน */
 export function frontierSession(zone) {
   if (!session || session.zone !== zone) {
-    session = { zone, player: { x: 0.5, y: WALK[1] + 0.02, tx: null, ty: null, face: 1 },
+    session = { zone, player: { x: 0.485, y: 0.35, tx: null, ty: null, face: 1 },
                 enemies: [], nextId: 1 };
   }
   return session;
@@ -57,12 +55,11 @@ export function removeSessionEnemy(zone, id) {
 
 const rand = (a, b) => a + Math.random() * (b - a);
 function edgePoint() {
-  return [rand(0.35, 0.65), WALK[3]];
+  return [rand(0.47, 0.53), 0.955];
 }
 function insidePoint() {
   return [rand(0.20, 0.80), rand(0.47, 0.70)];
 }
-const clampArea = (x, y) => [Math.min(WALK[2], Math.max(WALK[0], x)), Math.min(WALK[3], Math.max(WALK[1], y))];
 
 function loadImg(src) {
   const el = new Image();
@@ -89,6 +86,9 @@ export function makeFrontierWalk(cv, g, opts) {
   const { bg, kinds, wave, alive, fab, gate, nira } = opts;
   const sess = frontierSession(g.zone);
   const P = sess.player;
+  if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
+  let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);
+  const routes = new Map();
   const KEY = {};
   let raf = 0, last = performance.now(), dead = false, nextSpawn = 500;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };
@@ -103,7 +103,9 @@ export function makeFrontierWalk(cv, g, opts) {
     if (sess.enemies.length >= maxOnScreen(wave) || !kinds.length) return;
     const kindIdx = kinds[Math.floor(Math.random() * kinds.length)];
     const [ex, ey] = edgePoint();
-    const [tx, ty] = insidePoint();
+    let [tx, ty] = insidePoint();
+    for (let tries=0; tries<50 && !frontierWalkable(g.zone,tx,ty); tries++) [tx,ty]=insidePoint();
+    if (!frontierWalkable(g.zone,tx,ty)) return;
     sess.enemies.push({ id: sess.nextId++, kindIdx, x: ex, y: ey, tx, ty, arrived: false, level: wave });
   }
 
@@ -113,7 +115,7 @@ export function makeFrontierWalk(cv, g, opts) {
     if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k)) {
       e.preventDefault();
       KEY[k] = e.type === 'keydown';
-      if (e.type === 'keydown') { P.tx = null; P.ty = null; }
+      if (e.type === 'keydown') { P.tx = null; P.ty = null; route = []; }
     }
   };
   addEventListener('keydown', onKey);
@@ -123,8 +125,9 @@ export function makeFrontierWalk(cv, g, opts) {
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
     const cy = (e.clientY - r.top) / r.height * cv.height;
-    const [tx, ty] = clampArea((cx - box.ox) / box.w, (cy - box.oy) / box.h);
-    P.tx = tx; P.ty = ty;
+    route = frontierPath(g.zone, [P.x,P.y], [(cx-box.ox)/box.w,(cy-box.oy)/box.h]);
+    const target=route.at(-1);
+    P.tx=target?.[0] ?? null; P.ty=target?.[1] ?? null;
   };
   cv.addEventListener('pointerdown', onDown);
 
@@ -136,22 +139,28 @@ export function makeFrontierWalk(cv, g, opts) {
     if (KEY.w || KEY.arrowup) dy -= 1;
     if (KEY.s || KEY.arrowdown) dy += 1;
     if (!dx && !dy && P.tx != null) {
-      dx = P.tx - P.x; dy = P.ty - P.y;
-      if (Math.hypot(dx, dy) < 0.01) { P.tx = null; dx = dy = 0; }
+      const target=route[0] || [P.tx,P.ty];
+      dx = target[0] - P.x; dy = target[1] - P.y;
+      if (Math.hypot(dx,dy)<.006) { route.shift(); if(!route.length) P.tx=null; dx=dy=0; }
     }
     const d = Math.hypot(dx, dy);
     if (d > 0) {
-      const [nx, ny] = clampArea(P.x + dx / d * sp, P.y + dy / d * sp * 0.72);
-      P.x = nx; P.y = ny;
+      const stride=Math.min(sp,d), nx=P.x+dx/d*stride, ny=P.y+dy/d*stride;
+      if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,ny])) {P.x=nx;P.y=ny;}
+      else if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,P.y])) P.x=nx;
+      else if(frontierSegmentClear(g.zone,[P.x,P.y],[P.x,ny])) P.y=ny;
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
     }
     // ศัตรูเดินจากขอบเข้ามาจุดในสนามทีละก้าว ถึงแล้วหยุดยืนรอ (ไม่ไล่ล่ายมบาทน้อย — ดูข้อ A6 ในรายงาน)
     for (const en of sess.enemies) {
       if (en.arrived) continue;
-      const ex = en.tx - en.x, ey = en.ty - en.y, ed = Math.hypot(ex, ey);
-      if (ed < 0.01) { en.arrived = true; continue; }
-      en.x += ex / ed * MOVE_SPEED * dt;
-      en.y += ey / ed * MOVE_SPEED * dt;
+      if(!routes.has(en.id)) routes.set(en.id,frontierPath(g.zone,[en.x,en.y],[en.tx,en.ty]));
+      const path=routes.get(en.id), target=path[0];
+      if(!target) { en.arrived=true; continue; }
+      const ex = target[0] - en.x, ey = target[1] - en.y, ed = Math.hypot(ex, ey);
+      if (ed < 0.006) { path.shift(); if(!path.length) en.arrived=true; continue; }
+      en.x += ex / ed * Math.min(ed,MOVE_SPEED * dt);
+      en.y += ey / ed * Math.min(ed,MOVE_SPEED * dt);
     }
     // ศัตรูใกล้ที่สุดในระยะเอื้อม — ปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้นตัวเดียว
     let bestId = null, bestD = Infinity;
@@ -176,8 +185,11 @@ export function makeFrontierWalk(cv, g, opts) {
 
     if (bgRec.ok && bgRec.el.naturalWidth) {
       const im = bgRec.el, sw = im.naturalWidth, sh = im.naturalHeight;
-      const s = Math.min(W / sw, H / sh);
-      box = { ox: (W - sw * s) / 2, oy: (H - sh * s) / 2, w: sw * s, h: sh * s };
+      // Fill the viewport without stretching the map. Narrow screens follow Yama;
+      // pointer coordinates still map back to the same navigation polygons.
+      const s = Math.max(W / sw, H / sh), w = sw * s, h = sh * s;
+      box = { ox: Math.max(W-w,Math.min(0,W/2-P.x*w)),
+              oy: Math.max(H-h,Math.min(0,H/2-P.y*h)), w, h };
       ctx.fillStyle = '#0d0710'; ctx.fillRect(0, 0, W, H);
       ctx.drawImage(im, 0, 0, sw, sh, box.ox, box.oy, box.w, box.h);
     } else {
@@ -209,6 +221,7 @@ export function makeFrontierWalk(cv, g, opts) {
       const hop = moving && gait % 2 ? U * 0.010 : 0;
       drawStandee(ctx, 'hero-yama', px(P.x), py(P.y) - hop, U * HERO_H, t, '👑', P.face, moving);
     } });
+    if(g.guard) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
     acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * HERO_H, t, '📋') });
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
 
@@ -240,7 +253,7 @@ export function makeFrontierWalk(cv, g, opts) {
     }
 
     if (!sess.enemies.length) {
-      label(ctx, 'ยังไม่มีศัตรูในสนาม — รอครู่หนึ่งให้มันเดินเข้ามา', W / 2, py(WALK[1]) - U * 0.02, 13, 'rgba(240,225,215,.72)');
+      label(ctx, 'ยังไม่มีศัตรูในสนาม — รอครู่หนึ่งให้มันเดินเข้ามา', W / 2, py(.22) - U * 0.02, 13, 'rgba(240,225,215,.72)');
     }
   }
 

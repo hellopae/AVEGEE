@@ -31,12 +31,14 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-')) load('img/' + p);
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261002-heads', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261002-frontier', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
       ZMAP[z] = {};
       for (const p of list) ZMAP[z][p.split('/').pop().replace(/\.[a-z]+$/i, '')] = p;
+      const guard = `crew-guard-${z}`;
+      if (ZMAP[z][`${guard}-v2`]) ZMAP[z][guard] = ZMAP[z][`${guard}-v2`];
       // 28D: use the compact ruler revision for every existing hero-boss caller.
       if (z === 'west' || z === 'cyberhell') {
         const ruler = `hero-boss-${z}`;
@@ -68,7 +70,7 @@ export function artUrl(key, ext = 'png') {
     const m = key.match(POSE);
     if (m && map[zoneStem(key.slice(0, -m[0].length), z)]) return null;
   }
-  return `img/${key}.${ext}`;
+  return `img/${key === 'crew-guard' && ext === 'png' ? 'crew-guard-v2' : key}.${ext}`;
 }
 
 function load(src) {

@@ -847,7 +847,7 @@ function goTrial() {
 const dlg = $('#dlg');
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
-  if (!dlg.open || dlg.classList.contains('event-alert') || dlg.querySelector(':scope > .modal-corner-close') ||
+  if (!dlg.open || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
       dlg.querySelector('.settings-close,.trial-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
   const close = document.createElement('button');
@@ -2372,42 +2372,53 @@ function openFrontierWalk() {
   const gateName = zoneName.startsWith('โซน') ? zoneName : `โซน${zoneName}`;
 
   dlg.innerHTML = `
-    <div class="hud st-hud frw-hud">
-      <div class="hud-top" id="frw-top"></div>
-      <div class="hud-body">
-        <div class="hud-left st-left" id="frw-left"></div>
-        <div class="st-room"><canvas id="frw-cv" width="900" height="620"></canvas>
-          <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
-          <button class="frw-fab" id="frw-gate" type="button" hidden>🗺️ กลับเข้าแผนที่${esc(gateName)}</button>
-          <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
-        <div class="hud-right" id="frw-right"></div>
+    <div class="frw-fullscreen">
+      <div class="frw-map"><canvas id="frw-cv" width="1376" height="768"></canvas>
+        <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
+        <button class="frw-fab" id="frw-gate" type="button" hidden>🗺️ กลับเข้า${esc(gateName)}</button>
+        <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
+      <div class="frw-res" aria-label="ทรัพยากร">
+        ${[['img/ui/icon-coin.png',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.png',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.png',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.png',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
       </div>
+      <button id="frw-exit" class="gold frw-return">กลับเข้า${esc(gateName)}</button>
+      <div class="frw-controls">
+        <button id="frw-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+        <button id="frw-settings" class="st-icon-btn" aria-label="${esc(t('pause.settings'))}"><img src="img/ui/icon-setting2.png" alt=""></button>
+      </div>
+      <div class="frw-bottom">
+        <div class="frw-avatar"><div><img src="${artUrl('hero-yama-profile') || heroFace()}" alt="${esc(HERO_NAME)}"><span>${[1,2,3].map(l=>`<i class="${g.level>=l?'on':''}">★</i>`).join('')}</span></div>
+          <span class="hud-hpbar"><i style="width:${Math.max(0,Math.min(100,g.hp/g.hpMax*100))}%"></i></span><b>YAMA</b></div>
+        <button id="frw-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>GUIDE<br>BOOK</span></button>
+        <button id="frw-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>BAG</span></button>
+      </div>
+      <small class="frw-status">ระลอก ${wave} · ศัตรู <b id="frw-count">0</b>/${maxOnScreen(wave)}</small>
     </div>`;
-  openDlg('hudwrap');
+  openDlg('frontier-map-dialog');
   myGen = dlgGen;
-
-  const top = dlg.querySelector('#frw-top');
-  const left = dlg.querySelector('#frw-left');
-  const right = dlg.querySelector('#frw-right');
   const fab = dlg.querySelector('#frw-fab');
   const gate = dlg.querySelector('#frw-gate');
   const nira = dlg.querySelector('#frw-nira');
   const cv2 = dlg.querySelector('#frw-cv');
 
-  top.innerHTML = `<span class="chip">🏯 ${esc(FRONTIER.name)} · ${esc(g.zoneDef().name)}</span>
-    <span class="chip">ระลอกปัจจุบัน ${wave} · ผ่านแล้ว ${state.clears || 0}</span>`;
-  left.innerHTML = `<div class="hint">ทีมยมทูตที่พาไป</div>
-    <div class="frw-team-list"><b>${esc(HERO_NAME)}</b>${chosen.map(k => {
-      const c = g.crew.find(x => x.k === k); return c ? ` · <b>${esc(c.name)}</b>` : '';
-    }).join('')}</div>
-    <div class="hint" style="margin-top:10px">เดิน (คลิก/แตะ/WASD) เข้าไปใกล้ศัตรู แล้วกดปุ่ม<br>
-      "⚔️ เริ่มต่อสู้" ที่ลอยขึ้นเหนือหัวมัน</div>`;
-  right.innerHTML = `<div class="hud-card"><h4>สนามรบ</h4>
-    <p class="hint">ศัตรูในสนามตอนนี้: <b id="frw-count">0</b>/${maxOnScreen(wave)}</p>
-    <p class="hint">ชนะแล้วตัวนั้นหายไป ตัวอื่นยังยืนรออยู่ — ปราบไปเรื่อย ๆ ตัวใหม่จะทยอยเดินเข้ามาแทน</p></div>`;
-
   const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira });
   FW.start();
+  dlg.querySelector('#frw-exit').onclick = () => { FW.destroy(); dlg.close(); };
+  const menu = fn => {
+    const zone=g.zone;
+    FW.destroy();
+    fn();
+    const back = () => {
+      if(dlg.open) return; // Ignore the asynchronous close from replacing the map.
+      dlg.removeEventListener('close',back);
+      if(started && !g.over && !g.battle && g.zone===zone) openFrontierWalk();
+    };
+    dlg.addEventListener('close',back);
+  };
+  dlg.querySelector('#frw-pause').onclick = () => menu(() => openPause(true));
+  dlg.querySelector('#frw-settings').onclick = () => menu(openSettings);
+  dlg.querySelector('#frw-book').onclick = () => menu(openHelp);
+  dlg.querySelector('#frw-bag').onclick = () => menu(openBag);
+
 
   fab.onclick = () => {
     const id = FW.nearId();

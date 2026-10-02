@@ -1,0 +1,29 @@
+{
+  "tool": "image_gen.imagegen",
+  "jobs": [
+    {
+      "id": "asia",
+      "dest": "img/Asia/crew-guard-asia-v2.png",
+      "refs": [
+        "img/Asia/crew-guard-asia.png",
+        "img/Asia/crew-plerng-asia.png",
+        "img/crew-guard-v2.png"
+      ],
+      "identity": "dark GRAY HORSE-headed armored guard, black mane, long pointed horse ears, bronze/red lamellar armor, red sash, sandals and LONG SPEAR. Preserve horse muzzle and anatomy, no human or green demon face",
+      "prompt": "Use case: identity-preserve. Image1 exact target Guard; image2 zone crew body-proportion reference; image3 approved compact Guard reference. Redraw image1 with substantially larger head relative to short stocky torso and shorter legs; head around 40-45 percent of body height, broad hands and feet. Match compact chunky low-resolution pixel clusters and dark outlines of images2-3, not realistic tall adult. Preserve EXACT dark GRAY HORSE-headed armored guard, black mane, long pointed horse ears, bronze/red lamellar armor, red sash, sandals and LONG SPEAR. Preserve horse muzzle and anatomy, no human or green demon face. Keep same three-quarter standing direction and weapon grip. Complete character and weapon centered square with similar sprite occupancy and margins, actual transparent alpha background. No checkerboard, floor, environment, text or watermark.",
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-e1f326d2-4426-4882-b145-a4496d3e32b2.png"
+    },
+    {
+      "id": "cyberhell",
+      "dest": "img/CyberHell/crew-guard-cyberhell-v2.png",
+      "refs": [
+        "img/CyberHell/crew-guard-cyberhell.png",
+        "img/CyberHell/crew-taan-cyberhell.png",
+        "img/crew-guard-v2.png"
+      ],
+      "identity": "dark GRAY horned yaksha, gold/bronze cyber lamellar armor, red sash, cyan glowing cyber eye implant and cyan circuits, sandals and tall cyan honeycomb energy mace. Keep dark gray skin and exact cyber identity",
+      "prompt": "Use case: identity-preserve. Image1 exact target Guard; image2 zone crew body-proportion reference; image3 approved compact Guard reference. Redraw image1 with substantially larger head relative to short stocky torso and shorter legs; head around 40-45 percent of body height, broad hands and feet. Match compact chunky low-resolution pixel clusters and dark outlines of images2-3, not realistic tall adult. Preserve EXACT dark GRAY horned yaksha, gold/bronze cyber lamellar armor, red sash, cyan glowing cyber eye implant and cyan circuits, sandals and tall cyan honeycomb energy mace. Keep dark gray skin and exact cyber identity. Keep same three-quarter standing direction and weapon grip. Complete character and weapon centered square with similar sprite occupancy and margins, actual transparent alpha background. No checkerboard, floor, environment, text or watermark.",
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-5411febf-e00d-414e-b687-5d0c3c66f382.png"
+    }
+  ]
+}

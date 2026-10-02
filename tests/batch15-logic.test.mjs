@@ -94,8 +94,8 @@ test('ยมบาทเริ่มที่ประตูบน และเ�
   clearFrontierSession();
   for (const z of ZONES) {
     const s = frontierSession(z.k);
-    assert.equal(nearFrontierGate(s.player), true);
-    assert.ok(s.player.y < 0.30, 'Yama enters from the upper gate');
+    assert.equal(nearFrontierGate(s.player), false);
+    assert.ok(s.player.y >= 0.30 && s.player.y < 0.40, 'Yama starts below the upper gate, as in the frontier UI mockup');
     s.player.x = 0.5; s.player.y = 0.22;
     assert.equal(nearFrontierGate(s.player), true);
     s.player.x = 0.64; s.player.y = 0.29;

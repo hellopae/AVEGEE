@@ -1,0 +1,13 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Use case: identity-preserve. Asset: Zone1 green yaksha Guard standing sprite. Image1 exact edit target; Images2 and3 strict compact chibi body proportion and chunky pixel-art references from same game. Redraw ONLY Guard with a substantially larger head/face relative to SHORT stocky torso and SHORT legs. Head with crown about 45 percent of full character height; broad big hands and feet; match other crew's cute compact silhouette, not a realistic tall adult. Preserve green skin, Thai pointed gold-bronze crown, pointed ears, yellow tusks, stern confident face, dark bronze/red lamellar armor, red rope sash, sandals, same standing three-quarter direction and tall bronze mace held in same hand. Simplify tiny armor engraving and shading into readable coarse pixel clusters, dark outlines and limited palette matching image2 and3. Full character, crown, mace and feet centered on square canvas with similar occupancy to references. Actual transparent alpha background. No environment, floor, shadow backdrop, checkerboard, text or watermark.",
+  "refs": [
+    "img/crew-guard.png",
+    "img/crew-plerng.png",
+    "img/crew-boon.png"
+  ],
+  "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-1901968f-230a-40f7-a275-0298ac47befa.png",
+  "dest": "img/crew-guard-v2.png",
+  "canonical": "img/crew-guard.png",
+  "backup": "img/crew-guard-v1.png"
+}
