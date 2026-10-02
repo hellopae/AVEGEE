@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { BAL } from '../src/data.js';
 
-test('case ten in Zone 4 runs the former three bosses before the final boss', () => {
+test('case ten in Zone 4 runs the four controlled rulers before the final boss', () => {
   const g = createGame();
   g.zone = 'cyberhell';
   g.zoneCases.cyberhell = 10;
@@ -13,18 +13,41 @@ test('case ten in Zone 4 runs the former three bosses before the final boss', ()
   assert.equal(g.bossReady(), false);
   const b = g.startZoneEvent('cyberFinal');
   assert.ok(b);
-  assert.equal(b.foes[0].who, 'พญายมบาท');
-  const names = [];
-  for (let wave = 1; wave <= 4; wave++) {
-    names.push(g.battle.foes[0].who);
-    g.battle.foes[0].hp = 1;
-    assert.equal(g.battleAct('atk'), true);
-    if (wave < 4) {
+  assert.equal(b.wave, 1);
+  assert.equal(b.storyInterlude, 'cyber-approach');
+  const names = [], sprites = [];
+  for (let wave = 1; wave <= 8; wave++) {
+    if (wave >= 4) { names.push(g.battle.foes[0].who); sprites.push(g.battle.foes[0].sp); }
+    while (g.battle.foes.some(f => f.hp > 0)) {
+      const foe = g.battle.foes.find(f => f.hp > 0);
+      g.battle.selectedFoeId = foe.id; foe.hp = 1;
+      assert.equal(g.battleAct('atk'), true);
+    }
+    if (wave < 8) {
       assert.equal(g.battle.pendingWave, wave + 1);
-      assert.equal(g.advanceZoneEventWave(), true);
+      if (wave === 3 || wave === 7) {
+        assert.equal(g.zoneEventRestReady(), true);
+        assert.equal(g.advanceZoneEventWave(), false);
+        assert.equal(g.battleAct('atk'), false);
+        const hp = g.battle.youHp = 20;
+        g.inventory.health = 2;
+        assert.equal(g.useBossMedicine(), true);
+        assert.ok(g.battle.youHp > hp);
+        assert.equal(g.inventory.health, 1);
+        g.coin = 500;
+        assert.equal(g.buyMerchant('tea'), true);
+        if (!g.crew.some(c => c.k === 'kan')) assert.equal(g.hire('kan'), true);
+        const on = g.party.members.includes('kan');
+        assert.equal(g.toggleParty('kan'), true);
+        assert.equal(g.battleCrew().some(c => c.k === 'kan'), !on);
+        assert.equal(g.advanceZoneEventWave(true), true);
+      } else assert.equal(g.advanceZoneEventWave(), true);
+      if (wave === 3) assert.equal(g.battle.storyInterlude, 'cyber-control');
+      if (wave === 7) assert.equal(g.battle.storyInterlude, 'cyber-duel');
     }
   }
-  assert.deepEqual(names, ['พญายมบาท', 'แม่ทัพตรวนบูรพา', 'อัศวินบัญชีปัจฉิม', 'จอมข้อมูลไซเบอร์']);
+  assert.deepEqual(names, ['พญายมบาท', 'หัวหน้าสาขาบูรพา', 'หัวหน้าสาขาปัจฉิม', 'หัวหน้านรกเครือข่าย', 'จอมข้อมูลไซเบอร์']);
+  assert.deepEqual(sprites, ['leader-th-possessed', 'leader-asia-possessed', 'leader-west-possessed', 'leader-cyberhell-possessed', 'zone-boss-cyberhell']);
   assert.equal(g.battle.over, 'win');
   assert.equal(g.gameCompleted, false);
   g.endBattle();

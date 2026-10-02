@@ -31,7 +31,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-')) load('img/' + p);
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261002-builders', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261002-heads', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {

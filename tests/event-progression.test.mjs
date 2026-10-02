@@ -19,7 +19,7 @@ function winBattle(g) {
   g.endBattle();
 }
 
-test('Zone 1 case 10 boss with two demons awards big fire and opens Zone 2', () => {
+test('Zone 1 case 10 boss with two demons awards flame charge and opens Zone 2', () => {
   const g = createGame();
   g.zoneCases.th = 10;
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared' };
@@ -27,11 +27,11 @@ test('Zone 1 case 10 boss with two demons awards big fire and opens Zone 2', () 
   assert.equal(g.zoneEventStatus('thBorderBoss'), 'pending');
   assert.equal(g.startZoneEvent('thBorderBoss').foes.length, 3);
   winBattle(g);
-  assert.equal(g.abilities.bigFire, true);
+  assert.equal(g.abilities.flameCharge, true);
   assert.equal(g.bossCleared.th, true);
 });
 
-test('Zone 2 fire, deva, and three waves unlock wind fan then Rage', () => {
+test('Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for the zone boss', () => {
   const g = createGame();
   g.zone = 'asia'; g.zoneCases.asia = 3;
   g.refreshZoneEvents();
@@ -49,7 +49,7 @@ test('Zone 2 fire, deva, and three waves unlock wind fan then Rage', () => {
   const breach = g.startZoneEvent('asiaRageBreach');
   assert.equal(breach.foes.length, 2);
   winBattle(g);
-  assert.equal(g.abilities.rage, true);
+  assert.equal(!!g.abilities.rage, false);
 });
 
 test('Zone 3 blocks building until hypnotized spirits are freed, then awards hypnosis and spear', () => {

@@ -15,6 +15,7 @@ import { MINIGAMES } from './minigames/index.js';   // มินิเกม "�
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
+import { STORY, ABILITY_REWARDS } from './story.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -22,6 +23,7 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
  *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมบาทน้อย" ให้ต่างจากพ่อชัด ๆ
  *  (เจ้าของถามว่าเขียนไทยว่าอะไรดี 8 ก.ย. 2569 — เปลี่ยนที่นี่ที่เดียวได้ทั้งเกม) */
 const HERO_NAME = 'ยมบาทน้อย';
+let storyPlaying = false, storyScheduled = false;
 
 /** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม
  *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)
@@ -146,6 +148,7 @@ setInterval(() => {
   updatePrisonFab();
   updateBreachFab();
   updateDevaFab();
+  if (started && !g.battle && !dlg.open && g.storyQueue.length) { g.onChange(); return; }
   const nextEvent = pendingZoneEvents().find(ev => !zoneEventAlertSeen.has(`${g.zone}:${ev.k}`));
   if (started && nextEvent && !g.battle && !g.over && !dlg.open && !fx &&
       !g.pendingVerdict && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
@@ -1234,6 +1237,8 @@ function updateDevaFab() {
 const LEGACY_ZONE_EVENTS = new Set(['prisonBreak', 'frontierBreach', 'devaTest']);
 function storyFoeArt(sp) {
   if (typeof sp !== 'string') return `img/spirit${sp || 7}.png`;
+  // Possessed rulers keep their home-zone identity in the CyberHell arena.
+  if (/^leader-(th|asia|west|cyberhell)-possessed$/.test(sp)) return `img/${sp}.png`;
   const z = sp.match(/-(asia|west|cyberhell)$/)?.[1];
   if (z) return `img/${{asia:'Asia', west:'West', cyberhell:'CyberHell'}[z]}/${sp}.png`;
   return artUrl(sp) || `img/${sp}.png`;
@@ -1429,7 +1434,7 @@ function showVerdict(v) {
 function openEnding(o) {
   if (o.k === 'finalWin') {
     modal(`<h2>👑 ${esc(o.title)}</h2>
-      <div class="boss"><img class="standee" src="img/CyberHell/Boss Zone4-cutscene.jpeg" alt="บอสสุดท้าย"
+      <div class="boss"><img class="standee" src="img/story-ending-02-v3.png" alt="สันติสุขทั้ง 4 โซน"
         onerror="this.remove()"><p style="line-height:var(--leading-body)">${esc(o.text)}</p></div>
       <div class="hint">ปิดคดี ${g.casesDone} เรื่อง · ปราบบอสครบทั้งสี่สาขา · กลับไปท้าบอสเก่าที่รออยู่ในแต่ละโซนได้</div>
       <div class="row"><button id="final-continue" class="gold">เล่นต่อ</button>
@@ -1837,7 +1842,7 @@ function actionCutsceneSrc(k) {
   const style = g.outfit || g.zone;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   // ภาพท่าที่ปลดล็อกจากบอสชายแดน
-  const unlockedPose = k === 'fire' && (g.abilities?.bigFire || g.bossCleared?.th) ? 'fire'
+  const unlockedPose = k === 'fire' && g.abilities?.bigFire ? 'fire'
              : k === 'flameCharge' && g.abilities?.flameCharge ? 'flame-charge'
              : k === 'windFan' && g.abilities?.windFan ? 'wind'
              : k === 'rage' && g.abilities?.rage ? 'rage'
@@ -2187,6 +2192,15 @@ function doVerdict(soul, stK, crK, inten) {
 
 // ---------- ศูนย์จัดทีม / ร้านค้า / ผู้ตรวจการ ----------
 function openNiraOffice() {
+  if (g.niraRest) {
+    const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
+    const near = Math.hypot(g.player.x - site.x, g.player.y - site.y) <= 150;
+    modal(`<h2>🍵 เยี่ยมนิราที่ศาลาน้ำชา</h2><img src="img/story-asia-05-v2.png" alt="นิราพักฟื้น" style="width:100%;border-radius:12px">
+      <p>นิรากำลังพักฟื้น อีก ${g.niraRest.remaining} วาระจะกลับมาช่วยงาน</p>
+      <div class="row"><button id="visit-nira" class="gold" ${g.niraRest.visited ? 'disabled' : ''}>${g.niraRest.visited ? 'เยี่ยมแล้ว · ให้นิราพักต่อ' : near ? 'แวะเยี่ยมและส่งกำลังใจ' : 'เดินไปเยี่ยมที่ศาลาน้ำชา'}</button><button data-close>ให้นิราพักก่อน</button></div>`,
+      d => d.querySelector('#visit-nira').onclick = () => { if (!near) { d.close(); g.walkTo(site.x, site.y); } else if (g.visitNira()) { d.close(); refresh(); } });
+    return;
+  }
   pauseForDlg();
   const paint = () => {
     const party = g.party?.members || [];
@@ -2429,11 +2443,21 @@ function openBattle(after) {
   sfx('gong');
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
-  let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0;
+  let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
 
   const paint = () => {
     const b = g.battle;
-    if (!b) return;
+    if (!b || storyActive) return;
+    if (b.storyInterlude) {
+      const key = b.storyInterlude; b.storyInterlude = null;
+      storyActive = true;
+      const overlay = document.createElement('div');
+      overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
+      renderStoryComic(overlay, STORY[key], () => {
+        overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
+      });
+      return;
+    }
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): ตา "เขา" ที่ถูกสะกด ฟาดเข้าตัวเอง
     // ไม่ใช่พุ่งเข้าใส่ยมบาทน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมบาทน้อย (ดู B.dmg.confuseSelf ใน game.js)
     const confuseHit = !!(b.dmg && b.dmg.confuseSelf > 0);
@@ -2463,8 +2487,9 @@ function openBattle(after) {
     const medN = g.inventory.health || 0;
     const medFull = b.youHp >= b.youMax;
     const canMed = medN > 0 && !medFull;
-    const prep = b.kind === 'zoneBoss' && !b.prepStarted && !b.over ? `<div class="boss-prep">
-      <b>เตรียมศึกก่อนบุก (กดได้ทุกปุ่ม ก่อนหลังไม่บังคับ)</b>
+    const rest = g.zoneEventRestReady() && !phase;
+    const prep = (rest || b.kind === 'zoneBoss' && !b.prepStarted && !b.over) ? `<div class="boss-prep">
+      <b>${rest ? b.pendingWave === 4 ? 'พักหลังฝ่าปีศาจ 3 ระลอก · เตรียมปลดปล่อยหัวหน้าทั้ง 4 โซน' : 'หัวหน้าทั้ง 4 เป็นอิสระแล้ว · พักก่อนสู้บอสใหญ่' : 'เตรียมศึกก่อนบุก (กดได้ทุกปุ่ม ก่อนหลังไม่บังคับ)'}</b>
       ${b.proofBonus ? `<div class="prep-note good">✓ แฟ้มหลักฐานพร้อม — ลดพลังบอส ${b.proofBonus}</div>` : ''}
       <div class="acts">
       ${g.zoneCaptivesFree() ? '<button data-prep-merchant>🧳 พ่อค้านรก · ซื้อของ</button>' : ''}
@@ -2486,11 +2511,11 @@ function openBattle(after) {
       const note = consumable ? '' : `MP ${BATTLE.mpCost[it?.power] || 0}`;
       return battleChoice(k, icon, it?.name || k, ok, note);
     };
-    const bigFire = !!(g.abilities?.bigFire || g.bossCleared?.th);
+    const bigFire = !!g.abilities?.bigFire;
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `MP ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `MP ${BATTLE.mpCost.charge}`) : '')
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม', mp >= BATTLE.mpCost.wind, `MP ${BATTLE.mpCost.wind}`) : '')
-      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage, `MP ${BATTLE.mpCost.rage}`) : '')
+      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns && !b.rageCooldown, b.rageCooldown ? `พักพลังอีก ${b.rageCooldown} เทิร์น` : `MP ${BATTLE.mpCost.rage}`) : '')
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `MP ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', mp >= BATTLE.mpCost.clock && !b.clockUsed, `MP ${BATTLE.mpCost.clock}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
@@ -2507,7 +2532,7 @@ function openBattle(after) {
       return `<button class="orb-choice" data-act="crew:${c.k}" data-crew-action="${c.k}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${artUrl('crew-'+c.k+'-profile') || artUrl('crew-'+c.k)}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
     }).join('');
     const crewActions = (crewHelperBtns + guardBtn) || '<span class="idle">ยังไม่มีทีม — จัดทีมยมทูตก่อนเข้าสู้ครั้งถัดไป</span>';
-    const acts = (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
+    const acts = rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
@@ -2530,7 +2555,7 @@ function openBattle(after) {
 
     dlg.innerHTML =
       arena(b.kind === 'yama' ? 'พญายมลงมาเอง'
-          // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นผู้ตรวจการของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
+          // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นหัวหน้าที่บัลลังก์ของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
           : b.kind === 'dad'   ? `${g.zone === 'th' ? 'พ่อ' : authorityOf(g.zone).title}ลงมาเอง — ตัดสินพลาดสามสำนวนติด`
           // ข้อ F.1 ชุด 15 — หัวข้อ "บอสโซน<ชื่อโซน>" ตามม็อกอัป Battle5.jpg — g.zoneDef().name
           // มีคำว่า "โซน" นำหน้าอยู่แล้ว (เช่น "โซนสุวรรณภูมิ") ต่อแค่ "บอส" ก็ได้ข้อความตรงม็อกอัปเป๊ะ
@@ -2550,7 +2575,7 @@ function openBattle(after) {
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${prep}${done}
-      </div>${prep ? '<div class="boss-prep-actions"><button class="gold" data-prep-go>⚔️ เข้าสู้</button></div>' : ''}`;
+      </div>${prep ? `<div class="boss-prep-actions"><button class="gold" data-prep-go>⚔️ ${rest ? b.pendingWave === 4 ? 'เข้าสู้หัวหน้าทั้ง 4 โซน' : 'เข้าสู้บอสใหญ่' : 'เข้าสู้'}</button></div>` : ''}`;
 
     const stage = dlg.querySelector('.combat-arena');
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
@@ -2577,7 +2602,7 @@ function openBattle(after) {
         </div>
       </div>
       ${view.foes?.length === 1 ? (() => { const f = view.foes[0]; return `<div class="battle-boss-hud">
-        <img src="${esc(artUrl(f.sp + '-profile') || storyFoeArt(f.sp))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
+        <img src="${esc(f.sp?.startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
         <div class="battle-boss-status"><b>${esc(f.who)}</b>${meter(f.hp, f.maxHp, 'health', t('battle.morale'))}<small>${esc(t('battle.morale'))} ${Math.round(f.hp)}/${f.maxHp}</small></div>
         ${f.sub ? `<p>${esc(f.sub)}</p>` : ''}
       </div>`; })() : `<div class="battle-scene-talk talkbox">${esc(view.talk || '')}</div>`}
@@ -2607,7 +2632,7 @@ function openBattle(after) {
     const prepMed = dlg.querySelector('[data-prep-med]');
     if (prepMed) prepMed.onclick = () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } };
     const prepGo = dlg.querySelector('[data-prep-go]');
-    if (prepGo) prepGo.onclick = () => { if (g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
+    if (prepGo) prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
     bindCommandWheel(dlg);
     dlg.querySelectorAll('[data-crew-pick]').forEach(el => {
       const activate = () => {
@@ -2634,6 +2659,7 @@ function openBattle(after) {
       sfx(k === 'fire' ? 'fire' : (k === 'health' || k === 'tea') ? 'star' : 'hit');
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
+      if (nb.storyFinale) { sfx('win'); finish(); return; }
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
@@ -2699,7 +2725,7 @@ function openBattle(after) {
     if (after) after(done ? done.over : null, done);
   }
 
-  const noEsc = e => { if (g.battle && !g.battle.over) e.preventDefault(); };
+  const noEsc = e => { if (storyActive || (g.battle && !g.battle.over)) e.preventDefault(); };
   const onClose = () => {
     // ฉากยังไม่จบ = ไม่นับว่าปิด · ตัวเฝ้าจะเปิดกล่องกลับให้เองภายในเสี้ยววินาที
     if (g.battle && !g.battle.over && reopen++ < 200) return;
@@ -2712,7 +2738,7 @@ function openBattle(after) {
   // (ยกจาก 4000 → 6000ms ข้อ C 24 ก.ย. 2569 — จังหวะ 'you' ตอนนี้กินเวลาเองถึง 780+COUNTER_WAIT_MS
   //  ก่อนสลับเป็น 'foe' ต้องเผื่อระยะปลอดภัยไม่ให้ guard ตัดตอนกลางจังหวะที่ตั้งใจหน่วงไว้)
   const phaseGuard = setInterval(() => {
-    if (!phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
+    if (storyActive || !phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
     phase = null; fxNow = null;
     if (g.battle) { if (g.battle.pendingWave) {
       if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
@@ -3118,7 +3144,7 @@ function drawHeroProfile() {
     + row('img/ui/icon-book.png', g.casesDone, t('profile.cases'));
   const attack = `${BATTLE.atk[0] + (g.level - 1) * 2}–${BATTLE.atk[1] + (g.level - 1) * 2}`;
   const lvBonus = (g.level - 1) * 2;
-  const fireDmg = BATTLE.fireDmg + ((g.abilities.bigFire || g.bossCleared.th) ? 20 : 0) + lvBonus;
+  const fireDmg = BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus;
   const powerIcon = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png' };
   const abilityRows = [
     ['flameCharge', 'img/fx-flame-charge.png', `${65 + (g.level - 1) * 3}`, 'charge'],
@@ -3350,6 +3376,9 @@ function openStation(k) {
           : !g.builders().length ? t('room.noTaan')
           : !g.availableBuilder() ? t('room.taanBusy').replace('{name}', who) : '';
         put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair').replace('{name}', worker?.name || (g.builders().map(c => c.name).join(' / ') || t('room.taan'))))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
+      } else if (g.niraRest && (k === 'tea' || (k === 'sala' && !g.stations.some(s => s.def.k === 'tea' && !s.build)))) {
+        put(AL, `<button class="btn-gold" id="visit-nira-tea" ${g.niraRest.visited ? 'disabled' : ''}>🍵 ${g.niraRest.visited ? 'เยี่ยมนิราแล้ว' : 'เยี่ยมนิราที่กำลังพักฟื้น'}</button><small>พักอีก ${g.niraRest.remaining} วาระ</small>`);
+        AL.querySelector('#visit-nira-tea').onclick = () => { g.visitNira(); panels(); };
       } else put(AL, '');
     }
 
@@ -3730,9 +3759,70 @@ function openLevelUp(lv) {
     <div class="row"><button class="gold" data-close>รับไว้</button></div>`);
 }
 
+/** Reuses the intro's page layout for both battle interludes and victory scenes. */
+function renderStoryComic(root, story, onDone) {
+  let page = 0, done = false;
+  const finish = () => { if (!done) { done = true; onDone(); } };
+  const paint = () => {
+    const p = story.pages[page];
+    root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
+      <div class="intro-comic-frame"><img src="${p.image}" alt="${esc(p.title)}">
+        <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
+        <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div></div>
+      <div class="intro-comic-controls"><button data-story-skip>ข้ามฉาก</button>
+        <button data-story-back ${page ? '' : 'disabled'}>← ย้อนกลับ</button>
+        <button class="gold" data-story-next>${page + 1 === story.pages.length ? 'ดำเนินเรื่องต่อ' : 'หน้าถัดไป →'}</button></div></div>`;
+    root.querySelector('[data-story-skip]').onclick = finish;
+    root.querySelector('[data-story-back]').onclick = () => { if (page) { page--; paint(); } };
+    root.querySelector('[data-story-next]').onclick = () => { if (++page === story.pages.length) finish(); else paint(); };
+  };
+  paint();
+}
+
+function showPendingStory() {
+  const pending = g.storyQueue[0];
+  if (!pending || storyPlaying || dlg.open || g.battle) return;
+  storyPlaying = true;
+  const closed = next => {
+    const gen = dlgGen;
+    const handler = () => {
+      if (dlg.open || gen !== dlgGen) return;
+      dlg.removeEventListener('close', handler);
+      storyPlaying = false;
+      next(); g.save();
+      setTimeout(() => g.onChange(), 0);
+    };
+    dlg.addEventListener('close', handler);
+  };
+  if (pending.stage === 'comic' && STORY[pending.key]) {
+    pauseForDlg(); openDlg('intro-comic-dialog');
+    renderStoryComic(dlg, STORY[pending.key], () => dlg.close());
+    closed(() => {
+      if (pending.reward) pending.stage = 'reward';
+      else g.completeStory();
+    });
+    return;
+  }
+  const reward = ABILITY_REWARDS[pending.reward];
+  if (!reward) { storyPlaying = false; g.completeStory(); g.onChange(); return; }
+  sfx('star');
+  modal(`<h2>✨ ได้พลังใหม่ · ${esc(reward.name)}</h2>
+    <div class="boss"><img class="standee" src="${reward.image}" alt="${esc(reward.name)}"><p>${esc(reward.text)}</p></div>
+    <div class="row"><button class="gold" data-close>รับพลังและเล่นต่อ</button></div>`, null, 'story-reward');
+  closed(() => g.completeStory());
+}
+
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
   refresh();
+  if (storyPlaying) return;
+  if (!g.battle && g.storyQueue.length) {
+    if (!dlg.open && !storyScheduled) {
+      storyScheduled = true;
+      setTimeout(() => { storyScheduled = false; if (!dlg.open && !g.battle) showPendingStory(); }, 0);
+    }
+    return;
+  }
   // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
   // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
   if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }

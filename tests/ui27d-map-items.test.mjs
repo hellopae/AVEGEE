@@ -198,7 +198,7 @@ function winBattle(g) {
   for (let i = 0; i < 80; i++) {
     const B = g.battle;
     if (B.over) return;
-    if (B.pendingWave) { B.kind === 'frontierBreach' ? g.advanceFrontierBreachWave() : g.advanceZoneEventWave(); continue; }
+    if (B.pendingWave) { B.kind === 'frontierBreach' ? g.advanceFrontierBreachWave() : g.advanceZoneEventWave(g.zoneEventRestReady()); continue; }
     B.foes.forEach(f => { f.hp = Math.min(f.hp, 1); });
     if (!B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0)) B.selectedFoeId = B.foes.find(f => f.hp > 0)?.id;
     B.youHp = 9999; B.youMax = 9999;

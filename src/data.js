@@ -655,6 +655,9 @@ export const MOB = {
     { name:'บอต', nameKey:'mob.bot', img:'mob-bot', line:'"กำลังประมวลผล"' },
     { name:'บั๊ก', nameKey:'mob.bug', img:'mob-bug', line:'"ระบบผิดพลาด"' },
     { name:'หนอน', nameKey:'mob.worm', img:'mob-worm', line:'"กำลังแพร่กระจาย"' },
+    { name:'อสูรโล่ม่วง', img:'mob-cyber-guard', line:'"ไม่มีใครผ่านกองทัพนายท่านไปได้"' },
+    { name:'อสูรหอกม่วง', img:'mob-cyber-lancer', line:'"ชายแดนนี้อยู่ใต้อำนาจนายท่าน"' },
+    { name:'อสูรค้อนม่วง', img:'mob-cyber-brute', line:'"ข้าจะบดขยี้ผู้บุกรุก"' },
   ],
   reach: 62,              // ระยะที่ยักษ์ทวารบาลปราบผีได้
   // ปุ่มสู้ลอยเหนือหัวผี (ข้อ 3 ของเจ้าของ 11 ก.ย. 2569) — กว้างกว่าระยะฟาดประชิด
@@ -1541,8 +1544,8 @@ export const ZONE_EVENTS = {
     alert:{ th:'ปีศาจหลายตัวฝ่าชายแดนเข้ามา รวมทีมยมทูตไปสกัดทั้ง 2 ระลอก',
       en:'Demons have breached the frontier. Assemble the crew and stop both waves.' },
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
-      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { kind:4, count:1, hp:40, atk:MOB.fightAtk }]],
-    betweenWaveHeal:20, reward:{ coin:120, drop:1 }, lose:{ hp:8 } },
+      [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],
+    betweenWaveHeal:20, reward:{ coin:120, drop:1, ability:'bigFire' }, lose:{ hp:8 } },
   { k:'devaTest', atCases:5, requires:['prisonBreak'], mode:'single',
     title:{ th:'เทวดามาทดสอบ', en:'A deva comes to test you' },
     alert:{ th:'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมบาทน้อย',
@@ -1550,11 +1553,11 @@ export const ZONE_EVENTS = {
     foe:{ sp:'boss-tester-th', hp:100, atk:[10,16] },
     reward:{ coin:90 }, lose:{ hp:9 } },
   { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',
-    title:{ th:'บอสบูรพาบุกชายแดน', en:'Eastern boss at the frontier' },
-    alert:{ th:'บอสจากโซน 2 พาปีศาจสองตนมาท้ารบที่ชายแดน', en:'The Eastern boss arrives with two demons.' },
-    foes:[{ name:'แม่ทัพตรวนบูรพา', sp:'zone-boss-asia', count:1, hp:155, atk:[12,19], boss:true },
+    title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
+    alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },
+    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:155, atk:[12,19], boss:true },
       { kind:6, count:2, hp:52, atk:[7,12] }],
-    reward:{ coin:160, ability:'bigFire', unlockZone:'asia' } }],
+    reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } }],
   asia:[
     { k:'asiaPrisonFire', atCases:3, mode:'group',
       title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },
@@ -1571,7 +1574,7 @@ export const ZONE_EVENTS = {
       alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },
       waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],
         [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
-      betweenWaveHeal:18, reward:{ coin:150, ability:'rage' } },
+      betweenWaveHeal:18, reward:{ coin:150 } },
   ],
   west:[
     { k:'westHypnotized', atCases:0, mode:'group',
@@ -1603,13 +1606,18 @@ export const ZONE_EVENTS = {
         [{ kind:13, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
       betweenWaveHeal:15, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
-      title:{ th:'ศึกบอสทั้งสี่สาขา', en:'Four branch bosses' },
-      alert:{ th:'บอสสุดท้ายควบคุมหัวหน้าของสามสาขาก่อนหน้า ต้องฝ่าทั้งสามคนก่อนจึงจะสู้กับเขาได้',
-        en:'The final boss controls the three former wardens. Defeat them before facing him.' },
+      title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
+      alert:{ th:'ฝ่าปีศาจสามระลอก พักเตรียมทีม แล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
+        en:'Defeat three demon waves, rest, free all four rulers, then rest again before the final inspector.' },
+      restBeforeWaves:[4,8],
       waves:[
-        [{ name:'พญายมบาท', sp:'hero-boss', count:1, hp:145, atk:[13,20], boss:true }],
-        [{ name:'แม่ทัพตรวนบูรพา', sp:'zone-boss-asia', count:1, hp:160, atk:[14,21], boss:true }],
-        [{ name:'อัศวินบัญชีปัจฉิม', sp:'zone-boss-west', count:1, hp:175, atk:[15,22], boss:true }],
+        [{ kind:14, count:2, hp:60, atk:[10,16] }],
+        [{ kind:15, count:2, hp:65, atk:[11,17] }],
+        [{ kind:16, count:2, hp:70, atk:[12,18] }],
+        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[13,20], boss:true }],
+        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[14,21], boss:true }],
+        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[15,22], boss:true }],
+        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[16,23], boss:true }],
         [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[17,25], boss:true }],
       ],
       betweenWaveHeal:25, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
@@ -1710,7 +1718,7 @@ export const ZONES = [
     bossWin:[ '"ข้อมูลไม่โกหก คุณมีสิทธิ์จริงอย่างที่อ้าง"', '"นรกเครือข่ายนี้ยกให้คุณปกครองต่อจากนี้"' ],
     bossLose:'"สิทธิ์ของคุณยังไม่ผ่านการตรวจสอบ ลองใหม่อีกครั้ง"',
     intro:'เส้นสายข้อมูลไหลแทนแม่น้ำ วิญญาณทุกดวงทิ้งร่องรอยไว้ แม้สิ่งที่ลบบนโลกไปแล้วก็ยังถูกบันทึกอยู่ที่นี่',
-    mobs:[11,12,13], coin:1200 },
+    mobs:[11,12,13,14,15,16], coin:1200 },
 ];
 
 /** ทุกโซนใช้ผังและพิกัด 1678×937 เดียวกัน; คง SCENE object ที่โมดูลอื่น import ไว้ */
@@ -1730,20 +1738,17 @@ export function syncSceneZone(zone) {
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
 }
 
-/** ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "คำตัดสินแดง / ฉากพ่อลงมาเอง (kind:'dad') / บทกระทะทองแดง" เดิม
- *  พิมพ์ "พญายม"/"พญายมบาท" ตรง ๆ ไม่ว่าจะอยู่โซนไหน ทั้งที่โซน 2-4 มีผู้ตรวจการของตัวเองอยู่แล้ว
- *  (ZONES[].bossName/bossSub — คนเดียวกับที่มาทดสอบตอนต้นโซน) ใช้ชื่อนี้แทน "พ่อ" ตัวจริงในบริบท
- *  ที่เป็นการตักเตือน/ลงโทษระหว่างเล่น (ไม่ใช่ทุกจุด — ฉากจบเกมจริงตอนบารมีหมด kind:'yama' ไม่แตะ
- *  ตามใบงานเดิม และหน้าคู่มือ/ประวัติคดีทั่วไปยังพูดถึง "พญายม" ในฐานะผู้สร้างกฎเดิมของทั้งระบบ
- *  ซึ่งสมเหตุผลที่จะคงที่ทุกโซน — ไม่ใช่บั๊ก แยกไว้ในรายงาน Toby ให้ Claudy ตัดสินว่าจะขยายผลต่อไหม)
- *  โซน 1 คืนค่าเดิมทุกตัวอักษร ไม่เปลี่ยนอะไรเลย */
-export const authorityOf = zone => {
-  const z = ZONES.find(x => x.k === zone);
-  if (!z || zone === 'th') return { title: 'พญายม', full: 'พญายมบาท', role: 'ผู้เป็นพ่อของท่าน' };
-  return { title: z.bossName, full: z.bossName, role: z.bossSub };
+// Seated rulers guide the player. ZONES[].bossName identifies the separate
+// hostile inspector; it must never supply the ruler's identity.
+export const REGIONAL_HEADS = {
+  th: { title:'พญายม', full:'พญายมบาท', role:'ผู้เป็นพ่อของท่าน' },
+  asia: { title:'หัวหน้าสาขาบูรพา', full:'หัวหน้าสาขาบูรพา', role:'หัวหน้าโซน 2 · ผู้ดูแลบัลลังก์บูรพา' },
+  west: { title:'หัวหน้าสาขาปัจฉิม', full:'หัวหน้าสาขาปัจฉิม', role:'หัวหน้าโซน 3 · ผู้ดูแลบัลลังก์ปัจฉิม' },
+  cyberhell: { title:'หัวหน้านรกเครือข่าย', full:'หัวหน้านรกเครือข่าย', role:'หัวหน้าโซน 4 · ผู้ดูแลบัลลังก์ไซเบอร์' },
 };
+export const authorityOf = zone => REGIONAL_HEADS[zone] || REGIONAL_HEADS.th;
 
-/** แทน "พญายมบาท"/"พญายม" ในข้อความคงที่ด้วยชื่อผู้ตรวจการของโซนนั้น (โซน 1 คืนค่าเดิมเป๊ะ)
+/** แทน "พญายมบาท"/"พญายม" ในข้อความคงที่ด้วยชื่อหัวหน้าประจำโซนนั้น (โซน 1 คืนค่าเดิมเป๊ะ)
  *  ใช้เฉพาะจุดที่ยืนยันแล้วว่าเป็นคำเรียกตัวละคร ไม่ใช่แทนคำว่า "พ่อ" ลอย ๆ (ชนกับ "พ่อค้า" ได้) —
  *  จุดที่มีแค่ "พ่อ" เดี่ยว ๆ แก้ตรงจุดด้วยมือทีละที่แทน ดูจุดที่เรียกฟังก์ชันนี้ประกอบ */
 export const fmtAuthority = (text, zone) =>

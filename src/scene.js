@@ -307,7 +307,7 @@ export function render(ctx, g, t, hover, sel) {
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
       drawStandee(ctx, working ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
-      label(ctx, c.name, c.x, c.y + 13, 10.5, 'rgba(255,225,195,.72)');
+      label(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 13, 10.5, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
   }

@@ -170,7 +170,31 @@
 "tex-paper-hell.png",
 "zone-boss-cutscene.jpeg",
 "zone-boss.png",
-"zone-world-map.webp"
+"zone-world-map.webp",
+"story-asia-01.png",
+"story-asia-02.png",
+"story-asia-03.png",
+"story-asia-04.png",
+"story-asia-05-v2.png",
+"story-cyberhell-01-v2.png",
+"story-cyberhell-02-v2.png",
+"story-ending-01-v4.png",
+"story-ending-02-v3.png",
+"story-th-01.png",
+"story-th-02.png",
+"story-th-03.png",
+"story-th-04.png",
+"story-th-05.png",
+"story-west-01.png",
+"story-west-02.png",
+"mob-cyber-guard.png",
+"mob-cyber-lancer.png",
+"mob-cyber-brute.png",
+"story-cyberhell-03-v3.png",
+"leader-th-possessed.png",
+"leader-asia-possessed.png",
+"leader-west-possessed.png",
+"leader-cyberhell-possessed.png"
 ],
 "zones": {
 "asia": [
@@ -304,7 +328,11 @@
 "CyberHell/st-ngiw-cyberhell.png",
 "CyberHell/st-sala-cyberhell.png",
 "CyberHell/st-tea-cyberhell.png",
-"CyberHell/zone-boss-cyberhell.png"
+"CyberHell/zone-boss-cyberhell.png",
+"CyberHell/mob-cyber-guard-cyberhell.png",
+"CyberHell/mob-cyber-lancer-cyberhell.png",
+"CyberHell/mob-cyber-brute-cyberhell.png",
+"CyberHell/hero-boss-cyberhell.png"
 ],
 "west": [
 "West/BG-Dab-west.webp",
@@ -365,7 +393,8 @@
 "West/st-sawan-west.png",
 "West/st-tarang-west.png",
 "West/st-tea-west.png",
-"West/zone-boss-west.png"
+"West/zone-boss-west.png",
+"West/hero-boss-west.png"
 ],
 "ui": [
 "ui/Button1.png",

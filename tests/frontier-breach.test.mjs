@@ -46,13 +46,15 @@ test('two waves keep one battle, heal at transition, and reward after both', () 
   assert.equal(g.battle, b);
   assert.equal(b.wave, 2);
   assert.equal(b.youHp, Math.min(b.youMax, 90));
-  assert.deepEqual(b.foes.map(f => f.hp), [40, 40]);
+  assert.deepEqual(b.foes.map(f => f.hp), [40, 90]);
   b.youHp = b.youMax - 5;
   b.foes.forEach(f => { f.hp = 1; });
   g.battleAct('atk');
   assert.equal(b.pendingWave, null);
   g.battleAct('atk');
   assert.equal(b.over, 'win');
+  assert.equal(g.abilities.bigFire, true);
+  assert.equal(!!g.abilities.flameCharge, false);
   assert.equal(g.frontierBreachStatus(), 'cleared');
   assert.equal(g.coin - beforeCoin, ZONE_EVENTS.th[1].reward.coin);
   // ชุด 27D รอบ 2 — ชนะทั้งศึกได้ของชายแดน 1 ชิ้น (รางวัลเดิม) + winLoot สุ่ม 1 ชิ้น (ครั้งเดียวต่อศึก ไม่ใช่ต่อระลอก)

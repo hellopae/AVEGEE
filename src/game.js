@@ -12,6 +12,7 @@ import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
+import { STORY } from './story.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -108,6 +109,7 @@ export function createGame() {
     party: { members: [], guard: false },
     upgrades: { powers: {} },
     abilities: {},
+    storyQueue: [], storySeen: {}, niraRest: null,
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
@@ -1036,6 +1038,12 @@ const API = {
   step() {
     if (this.paused || this.over) return;
     this.tick++;
+    if (this.niraRest && --this.niraRest.remaining <= 0) {
+      this.niraRest = null;
+      const nira = this.crewOf('nira');
+      if (nira) nira.path = null;
+      this.log('🍵 นิราพักฟื้นครบแล้ว กลับมาช่วยงานตามเดิม', 'good');
+    }
 
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
     for (let i = this.returning.length - 1; i >= 0; i--) {
@@ -1350,7 +1358,9 @@ const API = {
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
-      const post = building || (c.at ? STATIONS.find(d => d.k === c.at) : null);
+      const rest = c.k === 'nira' && this.niraRest;
+      const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
+        : building || (c.at ? STATIONS.find(d => d.k === c.at) : null);
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
       // ปล่อยไว้ยมทูตจะยืนจมอยู่ในอาคาร มองไม่เห็นทั้งเกม (เจ้าของเจอ 10 ก.ย. 2569)
@@ -2000,13 +2010,13 @@ const API = {
    *  ไม่มีของ/บารมีเต็มแล้ว → คืน false (ฝั่ง UI ปิดปุ่มพร้อมชี้ไปปุ่มพ่อค้านรก) */
   useBossMedicine() {
     const b = this.battle;
-    if (!b || b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1) return false;
+    if (!b || !this.zoneEventRestReady() && (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1)) return false;
     const n = this.inventory.health || 0;
     if (n < 1 || b.youHp >= b.youMax) return false;
     const def = ITEMS.health;
     b.youHp = Math.min(b.youMax, b.youHp + def.hp);
     if (--this.inventory.health <= 0) delete this.inventory.health;
-    this.log(`💊 กินหีบยาเติมบารมีก่อนเข้าสู้${b.who} — ฟื้น ${def.hp}`, 'good');
+    this.log(`💊 กินหีบยาเติมบารมี — ฟื้น ${def.hp}`, 'good');
     this.save(); this.onChange();
     return true;
   },
@@ -2117,13 +2127,22 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });
+    if (key === 'cyberFinal') this.battle.storyInterlude = 'cyber-approach';
     this.save(); this.onChange(); return this.battle;
   },
-  advanceZoneEventWave() {
+  zoneEventRestReady() {
+    const b = this.battle;
+    const ev = b?.kind === 'zoneEvent' && ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey);
+    return !!(ev && !b.over && b.foes.every(f => f.hp <= 0) && ev.restBeforeWaves?.includes(b.pendingWave));
+  },
+  advanceZoneEventWave(resume = false) {
     const b = this.battle;
     if (b?.kind !== 'zoneEvent' || b.over || !b.pendingWave || b.pendingWave !== b.wave + 1) return false;
     const ev = ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey);
     if (!ev?.waves?.[b.pendingWave - 1]) return false;
+    // Animation callbacks cannot skip the two rest stops. Only the player's
+    // explicit continue button resumes a completed combat stage.
+    if (this.zoneEventRestReady() && !resume) return false;
     b.wave = b.pendingWave; b.pendingWave = null;
     b.foes = this.zoneEventFoes(ev, b.wave);
     b.selectedFoeId = b.foes[0].id; b.counterIndex = 0;
@@ -2131,6 +2150,8 @@ const API = {
     b.youHp = Math.min(b.youMax, b.youHp + (ev.betweenWaveHeal || 0));
     b.dmg = null; b.mid = null; b.helper = null;
     b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;
+    if (b.eventKey === 'cyberFinal' && (b.wave === 4 || b.wave === 8))
+      b.storyInterlude = b.wave === 4 ? 'cyber-control' : 'cyber-duel';
     this.onChange(); return true;
   },
   startDevaTest() {
@@ -2332,7 +2353,7 @@ const API = {
       // ข้อ B ชุด 13 — 40 คงที่ ไม่สุ่มอีกต่อไป
       if (this.mp < BATTLE.mpCost.fire) return false;
       this.mp -= BATTLE.mpCost.fire;
-      dmg = BATTLE.fireDmg + ((this.abilities.bigFire || this.bossCleared.th) ? 20 : 0) + (this.level - 1) * 2;
+      dmg = BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2;
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'flameCharge') {
@@ -2349,7 +2370,7 @@ const API = {
       say(`🌪️ พัดสายลมซัดศัตรู — ${dmg} หน่วย และหยุดการสวนกลับหนึ่งตา`);
 
     } else if (what === 'rage') {
-      if (!this.abilities.rage || B.rageTurns > 0 || this.mp < BATTLE.mpCost.rage) return false;
+      if (!this.abilities.rage || B.rageTurns > 0 || B.rageCooldown > 0 || this.mp < BATTLE.mpCost.rage) return false;
       this.mp -= BATTLE.mpCost.rage;
       B.rageTurns = 3;
       say('🔥 พลังบ้าคลั่งปกคลุมยมบาทน้อย — การโจมตี 3 ครั้งถัดไปแรงขึ้น');
@@ -2404,11 +2425,14 @@ const API = {
       if (it.stun) stunFoe = it.stun;
     }
 
+    if (B.rageCooldown > 0) B.rageCooldown--;
+
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
     if (dmg > 0 && B.rageTurns > 0) {
       dmg = Math.round(dmg * 1.5);
       B.rageTurns--;
+      if (!B.rageTurns) B.rageCooldown = 3;
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
     target.hp = Math.max(0, target.hp - dmg);
@@ -2446,11 +2470,12 @@ const API = {
       } else if (B.kind === 'frontierBreach') {
         const event = ZONE_EVENTS.th[1];
         this.zoneEvents.th.frontierBreach = 'cleared';
-        this.abilities.flameCharge = true;
+        this.abilities.bigFire = true;
+        this.queueStory('frontier-power', 'bigFire');
         const item = pick(FRONTIER.drops);
         this.coin += event.reward.coin;
         this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
-        B.reward = { coin:event.reward.coin, item };
+        B.reward = { coin:event.reward.coin, item, ability:'bigFire' };
         B.loot = this.winLoot();             // ชนะทั้งศึกครั้งเดียว (declareWin ถูกเรียกตอนจบระลอกสุดท้ายเท่านั้น)
         B.talk = t('event.frontierBreach.win') + B.loot;
         say(B.talk);
@@ -2481,6 +2506,7 @@ const API = {
         }
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
+        if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
         // ศึกชายแดนของโซน 2–4 (team:'frontier') ได้ของสุ่มเพิ่มต่อชัยชนะทั้งศึกครั้งเดียว · บอส/เทวดา/แหกคุก ไม่ได้
         B.loot = ev?.team === 'frontier' ? this.winLoot() : '';
         B.talk = `${ev?.title.th || 'อีเวนต์'}สำเร็จ${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}${B.loot}`;
@@ -2504,8 +2530,12 @@ const API = {
         B.loot = this.winLoot();
         say(`${B.who}สลายเป็นควันไป — +${gain} เบี้ยกรรม · ระเบียบ +2${B.loot}`);
       } else if (B.kind === 'zoneBoss') {
+        const firstWin = !this.bossCleared[B.zone];
         this.bossCleared[B.zone] = true;
+        if (B.zone === 'th') this.abilities.flameCharge = true;
+        if (B.zone === 'asia') this.abilities.rage = true;
         if (B.zone === 'west') this.abilities.ice = true;
+        if (firstWin && ['th','asia','west'].includes(B.zone)) this.queueStory(B.zone, STORY[B.zone].reward);
         this.bossRetryAt[B.zone] = 0;
         this.bossGuarding[B.zone] = false;
         this.log(`👑 ปราบ${B.who}ได้ — เปิดทางไปโซนถัดไป`, 'good');
@@ -2523,6 +2553,25 @@ const API = {
       this.onChange();
       return true;
     };
+
+    const storyZone = B.kind === 'zoneEvent' && B.eventKey === 'thBorderBoss' ? 'th'
+      : B.kind === 'zoneBoss' && ['th','asia'].includes(B.zone) ? B.zone : null;
+    const storyBoss = storyZone && (B.foes.find(f => f.boss) || (B.kind === 'zoneBoss' ? B.foes[0] : null));
+    if (storyZone && !this.bossCleared[storyZone] && !B.storyFinale && storyBoss && storyBoss.hp <= storyBoss.maxHp * 0.25) {
+      B.storyFinale = storyZone;
+      if (storyZone === 'th') {
+        const hurt = Math.min(Math.max(0, B.youHp - 1), 34);
+        B.youHp -= hurt; B.dmg.you = hurt;
+        say('พี่ใหญ่ใช้ดาบเพลิงจนยมบาทน้อยบาดเจ็บ ก่อนพุ่งชนเพลิงพลิกกลับมาชนะ');
+      } else {
+        this.niraRest = { remaining:3, visited:false };
+        const nira = this.crewOf('nira');
+        if (nira) nira.path = null;
+        say('นิรารับท่าไม้ตายแทน ยมบาทน้อยปลุกพลัง Rage และพุ่งโจมตีจนชนะ');
+      }
+      B.foes.forEach(f => { f.hp = 0; });
+      return declareWin();
+    }
 
     if (B.kind === 'zoneEvent' && B.eventKey === 'asiaPrisonFire' && target.hp <= 0 && !B.devaArrived) {
       B.devaArrived = true;
@@ -2593,14 +2642,18 @@ const API = {
         const folder = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' }[z] || '';
         const tester = /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
         const bossScenes = {
-          'hero-boss':'img/zone-boss-cutscene.jpeg',
+          'hero-boss':'img/hero-boss-cutscene.jpeg',
+          'leader-th-possessed':'img/leader-th-possessed.png',
+          'leader-asia-possessed':'img/leader-asia-possessed.png',
+          'leader-west-possessed':'img/leader-west-possessed.png',
+          'leader-cyberhell-possessed':'img/leader-cyberhell-possessed.png',
           'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.jpeg',
           'zone-boss-west':'img/West/Boss Zone3-cutscene.jpeg',
           'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.jpeg',
         };
         const special = bossScenes[counter.sp]
           || `img/raw/${folder}${tester ? 'boss-tester' : 'boss-frontier'}-${z}-cutscene.jpeg`;
-        ultimate = { name: tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
+        ultimate = { name: /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
           image:special, damage:Math.round(normal * 1.7) };
       }
       const d = ultimate ? ultimate.damage : normal;
@@ -2737,8 +2790,9 @@ const API = {
         B.over === 'win' ? 'good' : 'bad');
       if (B.over === 'win' && ev?.reward?.ending) {
         this.gameCompleted = true;
+        this.queueStory('ending');
         this.over = { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา',
-          text:'ยมบาทน้อยช่วยหัวหน้าทั้งสามสาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ทางเดินของทั้งสี่สาขาเปิดให้กลับไปพบทุกคนอีกครั้ง' };
+          text:'ยมบาทน้อยช่วยหัวหน้าทั้งสามสาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข' };
       }
       this.save(); this.onChange(); return B;
     }
@@ -2780,6 +2834,26 @@ const API = {
   },
 
   // ---------- Phase 3 · ย้ายโซน ----------
+  queueStory(key, reward = null) {
+    if (this.storySeen[key] || this.storyQueue.some(p => p.key === key)) return;
+    this.storyQueue.push({ key, reward, stage:STORY[key] ? 'comic' : 'reward' });
+  },
+  completeStory() {
+    const next = this.storyQueue.shift();
+    if (next) this.storySeen[next.key] = true;
+    this.save();
+  },
+  visitNira() {
+    if (!this.niraRest || this.niraRest.visited || this.battle) return false;
+    const site = STATIONS.find(d => d.k === (this.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
+    if (!site || Math.hypot(this.player.x - site.x, this.player.y - site.y) > 150) return false;
+    this.niraRest.visited = true;
+    const nira = this.crewOf('nira');
+    if (nira) nira.morale = Math.min(100, nira.morale + 8);
+    this.log('🍵 แวะเยี่ยมนิราที่ศาลาน้ำชา — เธอยิ้มและบอกว่าอีกไม่นานก็หาย', 'good');
+    this.save(); this.onChange(); return true;
+  },
+
   zoneDef() { return ZONES.find(z => z.k === this.zone) || ZONES[0]; },
 
   zoneCaptivesFree() { return this.zone !== 'cyberhell' || this.zoneEventStatus('cyberRescue') === 'cleared'; },
@@ -3227,6 +3301,7 @@ API.snapshot = function (withEntry = true) {
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max, readyAt: p.readyAt || 0 })),
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     abilities: this.abilities,
+    storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     crew: this.crew.map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
@@ -3350,6 +3425,7 @@ API.restore = function (d) {
   this.items = d.items || [];
   this.inventory = { ...(d.inventory || {}) };
   this.abilities = { ...(d.abilities || {}) };
+  this.storyQueue = d.storyQueue || []; this.storySeen = d.storySeen || {}; this.niraRest = d.niraRest || null;
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
   // พลังพร้อมใช้ทันทีแทน ไม่ให้ผู้เล่นเสียของที่เก็บมาแล้วเพราะปุ่มหายไป (ตัวเลข/เพดานเดิมทุกอย่าง)
@@ -3373,7 +3449,7 @@ API.restore = function (d) {
   this.zoneEvents = d.zoneEvents || {};
   this.eventMapClosed = d.eventMapClosed || {};
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
-  if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.flameCharge = true;
+  if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.bigFire = true;
   if (legacyBossGate) {
     Object.assign((this.zoneEvents.th ||= {}),
       { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });
@@ -3382,7 +3458,8 @@ API.restore = function (d) {
     for (const [key, status] of Object.entries(events)) if (status === 'active') events[key] = 'pending';
   }
   if (d.bossCleared?.th) this.zoneEvents.th.thBorderBoss ||= 'cleared';
-  if (this.zoneEvents.th?.thBorderBoss === 'cleared') this.abilities.bigFire = true;
+  if (this.zoneEvents.th?.thBorderBoss === 'cleared') this.abilities.flameCharge = true;
+  if (d.bossCleared?.asia) this.abilities.rage = true;
   if (d.bossCleared?.west) this.abilities.ice = true;
   for (const zone of Object.keys(ZONE_EVENTS)) this.refreshZoneEvents(zone);
   for (const [zone, events] of Object.entries(this.zoneEvents)) {

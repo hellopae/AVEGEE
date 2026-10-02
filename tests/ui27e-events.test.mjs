@@ -71,12 +71,12 @@ test('west and CyberHell wave mobs use local rosters and preserve encounter stat
   const west = ZONE_EVENTS.west.find(ev => ev.k === 'westVampireBreach');
   const cyber = ZONE_EVENTS.cyberhell.find(ev => ev.k === 'cyberBreach');
   assert.deepEqual(ZONES.find(z => z.k === 'west').mobs, [10]);
-  assert.deepEqual(ZONES.find(z => z.k === 'cyberhell').mobs, [11,12,13]);
+  assert.deepEqual(ZONES.find(z => z.k === 'cyberhell').mobs, [11,12,13,14,15,16]);
   assert.deepEqual(west.waves.slice(0, 2).map(w => w[0].kind), [10,10]);
   assert.deepEqual(cyber.waves.slice(0, 3).map(w => w[0].kind), [11,12,13]);
   assert.deepEqual(cyber.waves.slice(0, 3).map(w => w[0].hp), [60,65,70]);
   assert.deepEqual(MOB.kinds.slice(10).map(m => m.img),
-    ['mob-skeleton','mob-bot','mob-bug','mob-worm']);
+    ['mob-skeleton','mob-bot','mob-bug','mob-worm','mob-cyber-guard','mob-cyber-lancer','mob-cyber-brute']);
   assert.equal(ZONE_EVENTS.asia.find(ev => ev.k === 'asiaRageBreach').waves[2][0].sp,
     'boss-frontier-asia');
 });
