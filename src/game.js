@@ -1451,7 +1451,7 @@ const API = {
       st.build = 0;
       const builder = this.crew.find(c => c.buildK === st.def.k);
       if (builder) { builder.buildK = null; builder.wait = 0; builder.path = null; }
-      const extra = this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '';
+      const extra = st.buildExtra ?? (this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '');
       this.log(`🏗️ สร้าง${st.def.name}เสร็จแล้ว${extra}`, 'good');
       this.syncBlocks(true);          // นั่งร้านหายแล้ว ตัวอาคารกันทางเดินทันทีในเฟรมเดียวกัน
       this.onChange();
@@ -2808,6 +2808,7 @@ const API = {
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
                      .map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
+                                  buildK:this.stations.some(st => st.def.k === c.buildK && st.repair) ? c.buildK : null,
                                   upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
     };
@@ -2853,9 +2854,7 @@ const API = {
       c.at = null; c.path = null;
     });
     this.refreshZoneEvents(k);
-    const repair = this.stations.find(st => st.repair);
-    const taan = this.crew.find(c => c.k === 'taan');
-    if (repair && taan) taan.buildK = repair.def.k;
+    this.restoreBuilders();
     this.party = { members:[], guard:false };
     this.syncBlocks(true);
     if (!back) {
@@ -3104,38 +3103,54 @@ const API = {
     if (!def || this.coin < def.cost) return false;
     if (this.stations.some(s => s.def.k === k)) return false;
     const before = this.activeTags();
-    const taan = this.crew.find(c => c.k === 'taan');
-    if (!taan || taan.buildK || taan.at || taan.escort) return false;
+    const worker = this.availableBuilder();
+    if (!worker) return false;
     this.coin -= def.cost;
     const st = mkStation(k, Date.now() + BUILD_TIME);
     st.buildWait = true;
     this.stations.push(st);
-    taan.at = null; taan.buildK = k; taan.path = null;
+    worker.at = null; worker.buildK = k; worker.path = null;
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
     const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
                 : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
-    this.buildExtra = { k, text: extra };       // เก็บไว้พูดตอนนั่งร้านถอดออกจริง
-    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name (ตามโซนผ่าน crewName แล้ว)
-    this.log(`🏗️ สั่งสร้าง${def.name} — ${taan.name}กำลังเดินไปเริ่มงาน`, 'act');
+    st.buildExtra = extra;                    // แต่ละไซต์เก็บข้อความของตัวเองเมื่อสร้างพร้อมกัน
+    // ใช้ชื่อช่างที่รับงานจริง ซึ่งเปลี่ยนตามโซน
+    this.log(`🏗️ สั่งสร้าง${def.name} — ${worker.name}กำลังเดินไปเริ่มงาน`, 'act');
     return true;
+  },
+
+  builders() {
+    return this.crew.filter(c => c.k === 'taan' || c.k === 'dam');
+  },
+
+  availableBuilder() {
+    return this.builders().find(c => !c.buildK && !c.at && !c.escort) || null;
+  },
+
+  // Older saves did not keep a worker at the site. Preserve saved owners first.
+  restoreBuilders() {
+    for (const st of this.stations.filter(s => s.build || s.repair)) {
+      if (this.crew.some(c => c.buildK === st.def.k)) continue;
+      const worker = this.availableBuilder();
+      if (worker) worker.buildK = st.def.k;
+    }
   },
 
   canRepair(k) {
     const st = this.stations.find(s => s.def.k === k);
-    const taan = this.crew.find(c => c.k === 'taan');
     return !!(st && !st.build && st.fire > 0 && !st.repair && !this.mobs.length &&
-              taan && !taan.buildK && !taan.at);
+              this.availableBuilder());
   },
 
   repairStation(k) {
     if (!this.canRepair(k)) return false;
     const st = this.stations.find(s => s.def.k === k);
-    const taan = this.crew.find(c => c.k === 'taan');
+    const worker = this.availableBuilder();
     st.repair = Date.now() + REPAIR_TIME;
     st.repairWait = true;
-    taan.buildK = k; taan.path = null;
-    this.log(`🔧 เรียก${taan.name}มาซ่อม${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
+    worker.buildK = k; worker.path = null;
+    this.log(`🔧 เรียก${worker.name}มาซ่อม${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
     this.onChange();
     return true;
   },
@@ -3183,7 +3198,7 @@ API.snapshot = function (withEntry = true) {
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
-      build: st.build ? Math.max(0, st.build - Date.now()) : 0, buildWait:!!st.buildWait,
+      build: st.buildWait ? BUILD_TIME : st.build ? Math.max(1, st.build - Date.now()) : 0, buildWait:!!st.buildWait, buildExtra:st.buildExtra || '',
       repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
       repairWait:!!st.repairWait,
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
@@ -3278,6 +3293,7 @@ API.restore = function (d) {
     st.visitCd = sv.visitCd || 0; st.kanCd = sv.kanCd || 0;
     st.build = sv.build ? Date.now() + sv.build : 0;
     st.buildWait = !!sv.buildWait;
+    st.buildExtra = sv.buildExtra;
     st.repair = sv.repair ? Date.now() + sv.repair : 0;
     st.repairWait = !!sv.repairWait;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
@@ -3290,9 +3306,7 @@ API.restore = function (d) {
   }).filter(Boolean);
   this.ensureTarang();                 // ชุด 27D — ตะรางมีให้ฟรีทุกเซฟ (เซฟเก่าที่ยังไม่เคยสร้างได้รับตอนโหลด)
   // เซฟเดิมล้าง buildK ทันทีที่ถึงไซต์: ผูกงานที่ยังสร้างอยู่กลับให้ผู้สร้างจนเสร็จ
-  const builder = this.crew.find(c => c.k === 'taan');
-  const activeBuild = this.stations.find(st => st.build || st.repair);
-  if (builder && activeBuild && !builder.buildK) builder.buildK = activeBuild.def.k;
+  this.restoreBuilders();
   this.queue = d.queue || [];
   this.held = d.held || [];
   this.sentences = d.sentences || [];

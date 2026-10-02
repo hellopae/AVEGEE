@@ -417,7 +417,7 @@ function drawTab() {
            ตอนนี้โซนนี้รับได้: ${g.activeTags().map(t => `<span class="tag" style="background:${SINS[t].color}22;color:${SINS[t].color}">${SINS[t].name}</span>`).join(' ') || 'ยังไม่มีเลย'}</div>`
       + STATIONS.filter(s => s.cost > 0).map(s => {
         const built = g.stations.some(x => x.def.k === s.k);
-        const bt = g.crewOf('taan'), builderBusy = !!bt && !!(bt.at || bt.escort);
+        const bt = g.availableBuilder(), builderBusy = !bt;
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop"><span class="g">${s.glyph}</span>
           <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
@@ -425,7 +425,7 @@ function drawTab() {
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost || builderBusy ? 'disabled' : ''}
-            ${!built && builderBusy ? `title="${esc(bt.name + 'ติดงานอื่นอยู่')}"` : ''}>${built ? 'สร้างแล้ว' : builderBusy ? bt.name + 'ติดงาน' : 'สร้าง ' + s.cost}</button>
+            ${!built && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
     const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
@@ -1087,7 +1087,7 @@ function updateFrontierFab() {
   place(f);
 }
 
-/** เรียกทัณฑ์จากแผนที่ได้เมื่ออาคารพัง ไม่ต้องเข้าห้องสถานี */
+/** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
 function updateRepairFabs() {
   const damaged = g.over || g.battle || dlg.open ? []
     : g.stations.filter(st => !st.build && st.fire >= MOB.burnMax && !st.repair);
@@ -1105,9 +1105,10 @@ function updateRepairFabs() {
       };
       ov.appendChild(f);
     }
-    f.textContent = `🔧 เรียกทัณฑ์ซ่อม${st.def.name}`;
+    const worker = g.availableBuilder();
+    f.textContent = `🔧 เรียก${worker?.name || 'ช่าง'}ซ่อม${st.def.name}`;
     f.disabled = !g.canRepair(st.def.k);
-    f.title = g.mobs.length ? 'ไล่ปีศาจออกก่อน' : 'ทัณฑ์ต้องว่างจากงานอื่นก่อน';
+    f.title = g.mobs.length ? 'ไล่ปีศาจออกก่อน' : worker ? `${worker.name}จะเดินมาซ่อมให้` : 'ต้องมีช่างว่างจากงานอื่นก่อน';
     f.dataset.sx = st.def.bx;
     f.dataset.sy = Math.min(SCENE.h - 45, st.def.by + 64);
     place(f);
@@ -3343,12 +3344,12 @@ function openStation(k) {
     // ปุ่มซ่อม — ไม่อยู่ในแบบ แต่เป็นปุ่มของเกมที่โผล่เฉพาะตอนสถานีเสียหาย/ไฟไหม้ จึงคงไว้ (ล่างกลางฉาก)
     if (AL) {
       if (st.fire > 0 && !g.mobs.length) {
-        const taan = g.crewOf('taan');
-        const who = taan?.name || t('room.taan');
+        const worker = g.crew.find(c => c.buildK === st.def.k) || g.availableBuilder();
+        const who = worker?.name || g.builders().map(c => c.name).join(' / ');
         const why = st.repair ? st.repairWait ? t('room.repairComing').replace('{name}', who) : t('room.repairing')
-          : !taan ? t('room.noTaan')
-          : taan.buildK || taan.at ? t('room.taanBusy').replace('{name}', who) : '';
-        put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair'))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
+          : !g.builders().length ? t('room.noTaan')
+          : !g.availableBuilder() ? t('room.taanBusy').replace('{name}', who) : '';
+        put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair').replace('{name}', worker?.name || (g.builders().map(c => c.name).join(' / ') || t('room.taan'))))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
       } else put(AL, '');
     }
 
@@ -3676,20 +3677,18 @@ function openStation(k) {
 }
 
 function openBuild(def) {
-  // build() ปฏิเสธเมื่อทัณฑ์ติดเวร/พาดวงอยู่ — ปุ่มต้องปิดพร้อมเหตุผล ไม่ปล่อยให้กดแล้วกล่องปิดเงียบ (ชุด 21)
-  const taan = g.crew.find(c => c.k === 'taan'), taanBusy = !!taan && !!(taan.at || taan.escort);
-  // build() ปฏิเสธเงียบถ้าโซนยังมีเหตุค้าง (west: วิญญาณสะกดจิต · cyberhell: ทัณฑ์/พ่อค้าถูกจับ) — บอกเหตุผลบนปุ่มด้วย
+  const worker = g.availableBuilder();
   const zoneBlock = g.zone === 'west' && g.zoneEventStatus('westHypnotized') !== 'cleared' ? t('build.westBlocked')
                   : !g.zoneCaptivesFree() ? t('build.captivesBlocked') : '';
-  const afford = g.coin >= def.cost && !!taan && !taan.buildK && !taanBusy && !zoneBlock;
-  // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร ใช้ taan.name ถ้าจ้างแล้ว (ตามโซนผ่าน
-  // crewName แล้ว) ยังไม่จ้างก็ยังหาชื่อฐานของโซนนี้ผ่าน crewName ตรง ๆ ได้ (ตัวแปรกลางถ้าโซนนั้น
-  // ยังไม่มีชื่อเฉพาะ — ดู CREW.taan.names ใน data.js)
-  const taanName = taan ? taan.name : crewName(CREW.find(c => c.k === 'taan'), g.zone);
+  const afford = g.coin >= def.cost && !!worker && !zoneBlock;
+  const builderNames = ['taan', 'dam'].map(k => crewName(CREW.find(c => c.k === k), g.zone)).join(' / ');
+  const builderHint = worker ? `${worker.name}จะเดินมาสร้างให้`
+    : g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่ — รอคนใดคนหนึ่งว่างก่อน'
+    : `ต้องจ้าง${builderNames}ที่โต๊ะนิราก่อน`;
   modal(`<h2>${def.glyph} ${esc(def.name)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">${esc(def.desc)}</p>
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
-      · แรง ${def.pow}${!taan ? ` · ต้องจ้าง${taanName}ที่โต๊ะนิราก่อน` : taan.buildK ? ` · ${taanName}กำลังสร้างหลังอื่นอยู่` : taanBusy ? ` · ${taanName}ติดงานอื่นอยู่ — รอเสร็จเวรก่อนแล้วค่อยสั่งสร้าง` : ` · ${taanName}จะเดินมาสร้างให้`}</div>
+      · แรง ${def.pow} · ${esc(builderHint)}</div>
     ${zoneBlock ? `<div class="hint" style="color:var(--gold)">${esc(zoneBlock)}</div>` : ''}
     <div class="row"><button data-close>ยังไม่สร้าง</button>
       <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
