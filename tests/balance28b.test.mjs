@@ -314,3 +314,22 @@ test('สรุปรางวัล: ศึกหลายระลอกสร
   assert.equal(items.spareHeart, 1);
   assert.equal(g.battle.summary.coin, 200);
 });
+
+// ---------------------------------------------------------------- 5. ข้อความใหม่ผ่าน i18n มีไทย+อังกฤษคู่
+globalThis.document ??= { documentElement:{} };
+const { t, setLang, englishKeys } = await import('../src/i18n.js');
+test('ข้อความหน้าต่างรางวัล/น้ำมนต์/ชื่อพลังมีทั้งไทยและอังกฤษ', () => {
+  const keys = ['item.holyWater', 'item.mpGain', 'bag.mpFull', 'prep.water', 'prep.water.none',
+    'reward.title', 'reward.coin', 'reward.exp', 'reward.power', 'reward.noDrop', 'reward.claim',
+    ...ABIL.map(k => 'power.' + k)];
+  const en = new Set(englishKeys());
+  for (const k of keys) assert.ok(en.has(k), `ไม่มีอังกฤษ: ${k}`);
+  for (const lang of ['th', 'en']) {
+    setLang(lang);
+    for (const k of keys) assert.notEqual(t(k), k, `${lang}:${k}`);
+  }
+  setLang('th');
+  assert.notEqual(t('item.holyWater'), (setLang('en'), t('item.holyWater')));
+  setLang('th');
+  assert.equal(ITEMS.holyWater.nameKey, 'item.holyWater');
+});

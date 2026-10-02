@@ -2253,7 +2253,7 @@ function openMerchant() {
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
       <h3>สินค้า</h3><div class="market-grid">${MERCHANT.stock.map(s => {
         const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}</small></span>
+        return `<article class="shop-card">${d.glyph ? `<span class="shop-glyph">${d.glyph}</span>` : itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
@@ -2487,6 +2487,9 @@ function openBattle(after) {
     const medN = g.inventory.health || 0;
     const medFull = b.youHp >= b.youMax;
     const canMed = medN > 0 && !medFull;
+    const waterN = g.inventory.holyWater || 0;           // ชุด 28B — น้ำมนต์เติม MP ที่จุดพัก/เตรียมศึก
+    const waterFull = g.mp >= g.mpMax;
+    const canWater = waterN > 0 && !waterFull;
     const rest = g.zoneEventRestReady() && !phase;
     const prep = (rest || b.kind === 'zoneBoss' && !b.prepStarted && !b.over) ? `<div class="boss-prep">
       <b>${rest ? b.pendingWave === 4 ? 'พักหลังฝ่าปีศาจ 3 ระลอก · เตรียมปลดปล่อยหัวหน้าทั้ง 4 โซน' : 'หัวหน้าทั้ง 4 เป็นอิสระแล้ว · พักก่อนสู้บอสใหญ่' : 'เตรียมศึกก่อนบุก (กดได้ทุกปุ่ม ก่อนหลังไม่บังคับ)'}</b>
@@ -2497,6 +2500,9 @@ function openBattle(after) {
       <button data-prep-med ${canMed ? '' : 'disabled'}
         title="${medN < 1 ? 'ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ' : medFull ? 'บารมีเต็มแล้ว' : getLang() === 'en' ? `Restore ${ITEMS.health.hp} authority · ${medN} chests left` : `ฟื้นบารมี ${ITEMS.health.hp} · เหลือ ${medN} หีบ`}">
         💊 กินหีบยา${medN ? ` ×${medN}` : ''}</button>
+      <button data-prep-water ${canWater ? '' : 'disabled'}
+        title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${t('item.mpGain')} ${ITEMS.holyWater.mp} · ×${waterN}`)}">
+        ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))}${waterN ? ` ×${waterN}` : ''}</button>
       </div>
       ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}
       </div>` : '';
@@ -2631,6 +2637,8 @@ function openBattle(after) {
     if (prepNira) prepNira.onclick = () => openNiraOffice();
     const prepMed = dlg.querySelector('[data-prep-med]');
     if (prepMed) prepMed.onclick = () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } };
+    const prepWater = dlg.querySelector('[data-prep-water]');
+    if (prepWater) prepWater.onclick = () => { if (g.useHolyWater()) { sfx('star'); paint(); refresh(); } };
     const prepGo = dlg.querySelector('[data-prep-go]');
     if (prepGo) prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
     bindCommandWheel(dlg);
@@ -2722,7 +2730,8 @@ function openBattle(after) {
     if (done?.kind !== 'yama') bgm('bgm-zone');
     updatePlay();
     refresh();
-    if (after) after(done ? done.over : null, done);
+    // ชุด 28B — ถ้ามีหน้าต่างรางวัลรออยู่ ให้ฟังก์ชันต่อท้าย (เช่นกลับแผนที่ชายแดน) รอจนปิดหน้าต่างรางวัลก่อน
+    if (after) afterReward(() => after(done ? done.over : null, done));
   }
 
   const noEsc = e => { if (storyActive || (g.battle && !g.battle.over)) e.preventDefault(); };
@@ -2878,6 +2887,23 @@ function openOutfit() {
     }); });
 }
 
+// ---------- ภาพ/ชื่อไอเท็ม (ชุด 28B) ----------
+/** ชื่อไอเท็มตามภาษา — ไอเท็มที่มี nameKey ผ่าน i18n (น้ำมนต์) ที่เหลือใช้ชื่อไทยเดิมตามขอบเขตรอบ C2 */
+const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (ITEMS[k]?.name || k);
+/** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง (ITEMS[k].placeholder = ข้อความบนป้าย) — ไม่ใช่งานศิลป์ ไม่ใช่อีโมจิ
+ *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด
+ *  สีเท่า token --gold (#d4a355) / --muted (#2a171d) ใน index.html — data-URI อ่านตัวแปร CSS ไม่ได้ */
+const placeholderSrc = text => 'data:image/svg+xml,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="10" fill="#2a171d" stroke="#d4a355" stroke-width="3" stroke-dasharray="6 4"/><text x="32" y="40" font-size="20" font-weight="700" text-anchor="middle" fill="#d4a355" font-family="sans-serif">${text}</text></svg>`
+).replace(/'/g, '%27');
+/** <img> ของไอเท็ม — ไม่มีไฟล์ + มี placeholder ให้ใช้ป้ายแทน */
+function itemImg(k, attrs = '') {
+  const d = ITEMS[k]; if (!d) return '';
+  const src = artUrl(d.img) || `img/${d.img}.png`;
+  const ph = d.placeholder ? ` onerror="this.onerror=null;this.src='${placeholderSrc(d.placeholder)}'"` : '';
+  return `<img src="${src}" alt="${esc(itemName(k))}" ${attrs}${ph}>`;
+}
+
 function bagUseWhy(k) {
   const d = ITEMS[k];
   if (!d) return 'ไม่รู้จักไอเทมนี้';
@@ -2891,6 +2917,7 @@ function bagUseWhy(k) {
   if (k === 'lotus') return 'นำไปมอบให้บุญที่ประตูสวรรค์';
   if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
   if (d.hp && g.hp >= g.hpMax && !(k === 'tea' && g.mp < g.mpMax)) return 'บารมีเต็มแล้ว';
+  if (d.mp && !d.hp && g.mp >= g.mpMax) return t('bag.mpFull');
   if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
   if (d.power) {
     const p = g.powerOf(d.power);
@@ -2924,8 +2951,8 @@ function openBag() {
   const itemCards = carried.length ? carried.map(([k, n]) => {
     const d = ITEMS[k], why = bagUseWhy(k);
     return `<div class="bag-item">
-      <img src="${artUrl(d.img) || `img/${d.img}.png`}" alt="${esc(d.name)}" loading="lazy">
-      <span class="n"><b>${esc(d.glyph)} ${esc(d.name)} ×${n}</b>
+      ${itemImg(k, 'loading="lazy"')}
+      <span class="n"><b>${d.glyph ? esc(d.glyph) + ' ' : ''}${esc(itemName(k))} ×${n}</b>
         <small>${esc(why || d.say)}</small></span>
       <button class="gold" data-use-item="${k}" title="${esc(why || d.say)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
     </div>`;
@@ -3158,7 +3185,7 @@ function drawHeroProfile() {
     + abilityRows.join('')
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
-  const bag = carried.length ? carried.map(([k, n]) => row(artUrl(ITEMS[k].img) || `img/${ITEMS[k].img}.png`, `×${n}`, ITEMS[k].name)).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
+  const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
   const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(c.reader ? c.duty : crewAbility(c.k))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.rabiab} · ${esc(t('profile.training'))} ${c.upLv || 0}</small></span></div>`).join('');
   const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${GUARD.battleAtk + (g.guard?.upLv || 0) * 2} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
@@ -3779,6 +3806,44 @@ function renderStoryComic(root, story, onDone) {
   paint();
 }
 
+// ---------- หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) ----------
+// game.js ตั้ง g.pendingReward ตอน endBattle (ค่าจากส่วนต่างจริง ไม่ใช่เดา) → g.onChange เด้งกล่องนี้
+// "หลัง" เรื่องราว/หน้าต่างพลังใหม่เดิมจบแล้วเสมอ (คิวเรื่องราวมาก่อน) จึงไม่ซ้อนกัน แล้วหน้าต่างเลื่อนขั้น/โซนค่อยตามมา
+// ปิดกล่อง (ปุ่มรับรางวัล / ปุ่ม × มุมขวาบนที่ MutationObserver วางให้ทุกกล่อง / Esc) = เคลียร์ g.pendingReward แล้วปล่อยคิวถัดไป · ฟังก์ชันที่ค้างรอไว้ (rewardAfter) ทำงานหลังกล่องนี้
+const ABILITY_FX = { bigFire:'img/fx-fireball-big.png', flameCharge:'img/fx-flame-charge.png', windFan:'img/fx-fan-wind.png',
+  rage:'img/fx-rage.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png', valkyrieSpear:'img/fx-valkyrie-spear.png',
+  cooldownClock:'img/fx-clock-reset.png' };
+let rewardAfter = null, rewardOpen = false;
+function afterReward(fn) { if (g.pendingReward || rewardOpen) rewardAfter = fn; else fn(); }
+function openBattleReward() {
+  const r = g.pendingReward;
+  if (!r || rewardOpen || dlg.open) return;
+  rewardOpen = true;
+  sfx('star');
+  const rows = [];
+  if (r.coin > 0) rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">+${Math.round(r.coin)}</span></div>`);
+  if (r.exp > 0) rows.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt">+${r.exp}</span></div>`);
+  for (const it of r.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
+  for (const k of r.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
+  if (!r.items.length && !r.abilities.length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
+  modal(`<h2>${esc(t('reward.title'))}</h2>
+    <p class="reward-who">${esc(r.who || '')}</p>
+    <div class="reward-list">${rows.join('')}</div>
+    <div class="row"><button class="gold" data-close>${esc(t('reward.claim'))}</button></div>`, null, 'battle-reward');
+  // ระวัง: event 'close' ของฉากต่อสู้ที่เพิ่งปิด (dlg.close() ใน finish) มาถึง "หลัง" กล่องนี้เปิดแล้ว (ยิงแบบ async)
+  // onDlgClose ธรรมดาจึงตีความว่ากล่องรางวัลปิดทันที — ต้องข้ามเมื่อกล่องยังเปิดอยู่และเป็นรุ่นเดียวกัน (เหมือน showPendingStory)
+  const gen = dlgGen;
+  const closed = () => {
+    if (dlg.open && gen === dlgGen) return;
+    dlg.removeEventListener('close', closed);
+    rewardOpen = false; g.pendingReward = null;
+    const next = rewardAfter; rewardAfter = null;
+    g.onChange();                                   // ปล่อยหน้าต่างถัดไปในคิว (เลื่อนขั้น/โซน/...)
+    if (next) { if (dlg.open) onDlgClose(next); else next(); }
+  };
+  dlg.addEventListener('close', closed);
+}
+
 function showPendingStory() {
   const pending = g.storyQueue[0];
   if (!pending || storyPlaying || dlg.open || g.battle) return;
@@ -3821,6 +3886,11 @@ g.onChange = () => {
       storyScheduled = true;
       setTimeout(() => { storyScheduled = false; if (!dlg.open && !g.battle) showPendingStory(); }, 0);
     }
+    return;
+  }
+  // หน้าต่างรางวัลหลังชนะ (ชุด 28B) — อยู่หลังคิวเรื่องราว/พลังใหม่ ก่อนหน้าต่างอื่นทั้งหมด · เปิดไม่ได้ตอนมีกล่องอื่นค้างอยู่
+  if (g.pendingReward && !g.battle) {
+    if (!dlg.open && !rewardOpen) openBattleReward();
     return;
   }
   // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ

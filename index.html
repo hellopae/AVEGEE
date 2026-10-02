@@ -324,6 +324,23 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
 .gain .n{flex:1;min-width:0}
 .gain .n b{display:block;font-size:var(--text-sm);color:var(--foreground)}
 .gain .n span{display:block;font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.55;margin-top:1px}
+/* ---------- หน้าต่างรางวัลหลังชนะ (ชุด 28B) — มือถือ 390 เป็นหลัก ---------- */
+dialog.battle-reward[open]{max-width:420px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.reward-who{margin:-6px 0 var(--space-3);color:var(--muted-foreground);font-size:var(--text-sm)}
+.reward-list{margin-bottom:var(--space-3)}
+.reward-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;
+  background:var(--muted);border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:6px}
+.reward-row img{width:44px;height:44px;object-fit:contain;image-rendering:pixelated}
+.reward-row .badge{width:44px;height:44px;display:grid;place-items:center;color:var(--gold);font-weight:700;
+  font-size:var(--text-xs);border:1px dashed var(--gold);border-radius:var(--radius-sm)}
+.reward-row b{display:block;font-size:var(--text-sm);overflow-wrap:anywhere}
+.reward-row small{display:block;font-size:var(--text-xs);color:var(--muted-foreground)}
+.reward-row .amt{font-family:var(--font-display);color:var(--gold);font-size:1.1rem;white-space:nowrap}
+.reward-row.power{border-left-color:var(--success)}
+.reward-none{padding:10px;text-align:center;color:var(--muted-foreground);font-size:var(--text-xs)}
+.shop-card img.shop-item-img{border-radius:var(--radius-sm);object-fit:contain;image-rendering:pixelated;border-color:var(--border);background:rgba(0,0,0,.16)}
+.boss-prep .prep-ico{width:18px;height:18px;vertical-align:-4px;object-fit:contain;image-rendering:pixelated}
 @media(max-width:520px){
   .lvup img{width:64px;height:64px}
   .lvup .rank .to{font-size:1.1rem}
