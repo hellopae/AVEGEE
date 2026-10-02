@@ -1950,12 +1950,12 @@ function openTrial(initialError = '') {
       <span class="ttl">${esc(t('trial.caseNo'))} #${String(s.id).padStart(3, '0')}</span>`;
 
     // ---- ปุ่มด้านบน + วงคำสั่งข้างยมบาทน้อย ----
-    // ข้อ E.4 ชุด 15 — ไอคอนจริงจาก img/raw/ (icon_book.png · icon lock.png · icon skip.png) แทนอิโมจิเดิม
+    // ไอคอนปุ่มสอบสวนใช้ไฟล์ที่เตรียมไว้ใน img/
     const topActions =
       `<button data-cmd="ask">${esc(t('trial.interrogateLeft'))}<br>${s.presses} ${esc(t('trial.times'))}</button>
        <button id="t-guide"><img class="tab-ico" src="img/ui/icon-book.png" alt="">${esc(t('trial.guideBook'))}</button>
-       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/ui/icon-lock.png" alt="">${esc(t('trial.lockCase'))}</button>
-       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/ui/icon-skip.png" alt="">${esc(t('trial.skipCase'))}</button>`;
+       <button id="t-jail" ${g.has('tarang') && g.jailFree() > 0 ? '' : 'disabled'} title="${g.has('tarang') ? 'ต้องมีที่ว่างในตะราง' : 'สร้างตะรางรอวาระก่อน'}"><img class="tab-ico" src="img/icon-lock.png" alt="">${esc(t('trial.lockCase'))}</button>
+       <button id="t-skip" ${g.queue.length > 1 ? '' : 'disabled'}><img class="tab-ico" src="img/icon-skip.png" alt="">${esc(t('trial.skipCase'))}</button>`;
     const orbImg = (src, alt = '') => `<img src="${src}" alt="${esc(alt)}">`;
     const powerDefs = POWERS.filter(p => ['roar', 'mirror', 'hypno'].includes(p.k));
     const powerImg = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', hypno:'img/fx-hypno.png' };
