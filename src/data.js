@@ -230,7 +230,7 @@ export const STATIONS = [
     desc:'นรกน้ำแข็ง — สำหรับคนที่เย็นชากับคนที่ควรอบอุ่นที่สุด',
     use:'มอบหมายยมทูตเป็นผู้คุม แล้วรอให้รับทัณฑ์ครบตามคำตัดสิน' },
   { k:'ngiw',  name:'ดงต้นงิ้ว',      glyph:'🌵', tags:['kam'],         cost:160, pow:3,
-    bx:1268, by:654, bw:159, x:1353, y:622, hit:[1213,495,1323,654],
+    bx:1268, by:654, bw:225, x:1353, y:622, hit:[1190,429,1346,654],
     sx:1265, sy:582,
     desc:'ปีนขึ้นปีนลง หนามทุกก้าวคือคนที่เคยเจ็บ',
     use:'มอบหมายยมทูตเป็นผู้คุม แล้วรอให้รับทัณฑ์ครบตามคำตัดสิน' },
@@ -260,7 +260,7 @@ export const STATIONS = [
     desc:'ขังวิญญาณที่ยังตัดสินไม่ได้ไว้ก่อน หรือรับดวงที่ลงทัณฑ์ครบแล้ว · ตรวจรายชื่อกับนิรา',
     use:'คดีที่พักไว้เบิกกลับขึ้นแท่นได้ · นิราตรวจผู้รับทัณฑ์ครบ: เข็ดแล้วส่งไปประตูสวรรค์ ยังไม่เข็ดส่งกลับเข้าคิว' },
   { k:'krajok', name:'หอส่องกรรม',    glyph:'🪞', tags:[],              cost:340, pow:0,
-    bx:1450, by:638, bw:100, x:1450, y:652, hit:[1429,538,1471,638],
+    bx:1450, by:638, bw:150, x:1450, y:652, hit:[1418,488,1482,638],
     desc:'หอกระจกริมแม่น้ำวิญญาณ — กานต์ยืนประจำอยู่ในหอ คุยกับเขาเพื่อรับกระจกวิเศษเป็นระยะ',
     use:'เดินเข้าไปในหอ ยืนใกล้กานต์ แล้วกด "คุยกับกานต์" รับ 🪞 กระจกวิเศษหนึ่งบาน — รับได้เป็นระยะ ไม่ใช่รับไม่จำกัด' },
 
@@ -268,7 +268,7 @@ export const STATIONS = [
   // heaven:true = โค้ดในสูตรตัดสิน (judge) จะตีความสถานีนี้กลับด้าน:
   //   ส่งคนบริสุทธิ์/เทวดามาที่นี่ = เต็มร้อย · ส่งคนบาปมาที่นี่ = ศูนย์ และกรรมตกที่ท่าน
   { k:'sawan', name:'ประตูสวรรค์',   glyph:'🕊️', tags:[],              cost:240, pow:6, heaven:true,
-    bx:752,  by:336, bw:165, x:792,  y:346, hit:[705,171,799,336],
+    bx:752,  by:336, bw:235, x:792,  y:346, hit:[685,101,819,336],
     sx:752,  sy:294,
     desc:'ประตูส่งกลับชั้นฟ้า — บุญตรวจกรรมคงเหลือของดวงที่สำนึกแล้วจากตะราง และดวงบริสุทธิ์ · ซื้อ 🌀 วงสะกดจิตจากบุญได้ที่นี่',
     // ข้อ A-3 คุณเป้ 24 ก.ย. 2569 — เอา visit (ของวางพื้นฟรี) ออก เปลี่ยนเป็นซื้อจากบุญเท่านั้น (ดู BOON_SHOP + g.buyBoon)
@@ -1678,7 +1678,7 @@ export const ZONES = [
     bossLose:'"ยังอ่อนไปหน่อยนะ กลับมาลองใหม่เมื่อพร้อมแล้วกัน"',
     intro:'"เริ่มจากสาขาที่เละที่สุดก่อน" — พญายมพูดแค่นั้นแล้วก็หันหลังกลับ',
     mobs:[0,1,2,3,4,5], coin:0 },
-  { k:'asia', scene:'scene-asia-v3', w:1678, h:937, level:3, name:'โซนบูรพา', sub:'จีน · ญี่ปุ่น · เกาหลี · อินเดีย',
+  { k:'asia', scene:'scene-asia-v3', w:1678, h:937, level:3, name:'โซนบูรพา', sub:'',   // 28A: คุณเป้ตัดคำโปรยประเทศออก — UI ต้องเช็ค sub ว่างก่อนแสดง
     bossName:'แม่ทัพตรวนบูรพา', bossSub:'ผู้ตรวจการท้องถิ่นประจำสาขาบูรพา',
     bossArrive:[
       'แม่ทัพ: "เจ้าคือยมบาทที่พ่อส่งมาจากสุวรรณภูมิสินะ"',
@@ -1733,9 +1733,10 @@ export function syncSceneZone(zone) {
   // ดอกไม้แดงในฉากบูรพาถูกตัวอ่านสีมองเป็นลาวาตรงปลายเท้าจุดเดิม
   // Asia's painted gate occupies the old tea site. Place the pavilion on the open path beside it.
   // The other scenes keep the left-hand site, lowered clear of the rocks behind the roof.
+  // 28A: โซนบูรพาวาดโรงน้ำชาหลังคาฟางหันด้านเปิดไปทางซ้าย — คุณเป้ขอกลับด้านซ้าย↔ขวา (flip ตอนวาด ไม่แก้ไฟล์ภาพ)
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
-    ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
-    : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
+    ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670], flip:true }
+    : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674], flip:false });
 }
 
 // Seated rulers guide the player. ZONES[].bossName identifies the separate
@@ -1754,6 +1755,16 @@ export const authorityOf = zone => REGIONAL_HEADS[zone] || REGIONAL_HEADS.th;
 export const fmtAuthority = (text, zone) =>
   zone === 'th' || !text ? text
     : text.replace(/พญายมบาท/g, authorityOf(zone).full).replace(/พญายม/g, authorityOf(zone).title);
+
+/** 28A — ศึก "ปีศาจฝ่าชายแดน" (frontierBreach โซน 1 และ zoneEvent ที่ team:'frontier' ของโซนอื่น)
+ *  ชนะแล้วเนื้อเรื่องคือยมบาทอยู่ที่ชายแดน ไม่ใช่กลับลานศาล → ui.js เปิด "แผนที่ชายแดน" ต่อให้
+ *  รับผลศึกที่ g.endBattle() คืนมา (done) แล้วบอกว่าควรไปแผนที่ชายแดนไหม — แพ้ไม่ไป (กลับไปตั้งหลักตามเดิม) */
+export function returnsToFrontier(done) {
+  if (!done || done.over !== 'win') return false;
+  if (done.kind === 'frontierBreach') return true;
+  if (done.kind !== 'zoneEvent') return false;
+  return (ZONE_EVENTS[done.zone] || []).some(ev => ev.k === done.eventKey && ev.team === 'frontier');
+}
 
 // ---------- Phase 3 · บทพูดในฉากต่อสู้ (8 ก.ย. 2569) ----------
 // เจ้าของสั่ง: "ช่องคำบรรยาย เหลือแค่คำพูดของวิญญาณก็พอ log ว่าทำอะไรบ้างตัดออก"

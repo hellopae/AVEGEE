@@ -158,8 +158,10 @@ export function stationBox(def) {
       scale = Math.min(baseW / sourceW, baseH * TALLER / sourceH);
     }
   }
-  return { im, w: im.naturalWidth * scale, h: im.naturalHeight * scale,
-           x: def.bx - (B[0] + B[2]) / 2 * im.naturalWidth * scale,
+  // def.flip = วาดกลับด้านแนวนอน (28A: ศาลาน้ำชาโซนบูรพา) — ไม่แตะไฟล์ภาพ แค่กลับตอนวาด/ตอนวัดพิกเซล
+  const cxFrac = def.flip ? 1 - (B[0] + B[2]) / 2 : (B[0] + B[2]) / 2;
+  return { im, w: im.naturalWidth * scale, h: im.naturalHeight * scale, flip: !!def.flip,
+           x: def.bx - cxFrac * im.naturalWidth * scale,
            y: def.by - B[3] * im.naturalHeight * scale };
 }
 
@@ -173,7 +175,7 @@ export function footOf(def) {
   const box = stationBox(def);
   if (!box || !box.im.naturalWidth) return null;
   // คนละโซนคนละรูป และกรอบอาจเปลี่ยนตอน manifest มาถึงทีหลัง — จำแยกตามทั้งสองอย่าง
-  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (footCache.has(ck)) return footCache.get(ck);
   const N = 72;                                   // ย่อลงก่อนอ่านพิกเซล พอสำหรับวัดฐาน
   const c = document.createElement('canvas');
@@ -182,7 +184,7 @@ export function footOf(def) {
   cx.drawImage(im, 0, 0, N, N);
   let d;
   try { d = cx.getImageData(0, 0, N, N).data; } catch { footCache.set(ck, null); return null; }
-  const solid = (x, y) => d[(y * N + x) * 4 + 3] > 40;
+  const solid = (x, y) => d[(y * N + (box.flip ? N - 1 - x : x)) * 4 + 3] > 40;
   let bot = -1;
   for (let y = N - 1; y >= 0 && bot < 0; y--)
     for (let x = 0; x < N; x++) if (solid(x, y)) { bot = y; break; }
@@ -209,7 +211,7 @@ export function bodyBoxOf(def) {
   if (def.bx == null) return null;
   const box = stationBox(def);
   if (!box || !box.im.naturalWidth) return null;
-  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (bodyCache.has(ck)) return bodyCache.get(ck);
   const N = 72;
   const c = document.createElement('canvas');
@@ -221,7 +223,7 @@ export function bodyBoxOf(def) {
   let x1 = N, y1 = N, x2 = -1, y2 = -1;
   for (let y = 0; y < N; y++)
     for (let x = 0; x < N; x++)
-      if (d[(y * N + x) * 4 + 3] > 40) {
+      if (d[(y * N + (box.flip ? N - 1 - x : x)) * 4 + 3] > 40) {
         if (x < x1) x1 = x;
         if (x > x2) x2 = x;
         if (y < y1) y1 = y;
@@ -260,7 +262,7 @@ export function topOf(def) {
   if (def.bx == null) return null;
   const box = stationBox(def);
   if (!box || !box.im.naturalWidth) return null;
-  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}`;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
   if (topCache.has(ck)) return topCache.get(ck);
   const N = 72;
   const c = document.createElement('canvas');
@@ -303,7 +305,13 @@ export function drawStationShadow(ctx, def) {
 export function drawBuilding(ctx, def, t, uiScale = 1) {
   if (def.bx == null) return;
   const b = stationBox(def);
-  if (b) { ctx.drawImage(b.im, b.x, b.y, b.w, b.h); return; }
+  if (b) {
+    if (b.flip) {                                 // กลับด้านแนวนอนรอบกึ่งกลางกรอบวาด
+      ctx.save(); ctx.translate(b.x + b.w, b.y); ctx.scale(-1, 1);
+      ctx.drawImage(b.im, 0, 0, b.w, b.h); ctx.restore();
+    } else ctx.drawImage(b.im, b.x, b.y, b.w, b.h);
+    return;
+  }
 
   // ยังไม่มีไฟล์ img/st-<k>.png — วาดกล่องหินแทนไว้ก่อน
   // 7 ก.ย. 2569: ดงต้นงิ้วชื่อไฟล์ผิดกติกาแล้ว "สร้างเสร็จแต่จอว่างเปล่า" อยู่หลายวัน

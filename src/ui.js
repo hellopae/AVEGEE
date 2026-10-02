@@ -3,7 +3,7 @@ import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
-         ORDER_WARN, crewName, FRONTIER, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
+         ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -86,6 +86,7 @@ function fitSceneBox() {
   box.style.height = `${Math.round(h)}px`;
 }
 addEventListener('resize', fitSceneBox);
+addEventListener('resize', () => requestAnimationFrame(() => ov.querySelectorAll('.repairfab').forEach(place)));
 addEventListener('orientationchange', () => setTimeout(fitSceneBox, 60));
 if (typeof ResizeObserver !== 'undefined') {
   new ResizeObserver(fitSceneBox).observe(document.querySelector('.stage'));
@@ -573,7 +574,7 @@ function sideBody() {
     ].sort((a, b) => a.lv - b.lv);
     const unlockTable = unlockRows.map(r => {
       const locked = g.level < r.lv;
-      return `<div class="row-truth">${r.glyph.startsWith('img/') ? `<img class="power-glyph" src="${r.glyph}" alt="">` : esc(r.glyph)} <b>${esc(r.name)}</b> — ${esc(r.place)}
+      return `<div class="row-truth">${r.glyph.startsWith('img/') ? `<img class="power-glyph" src="${r.glyph}" alt="">` : esc(r.glyph)} <b>${esc(r.name)}</b>${r.place ? ` — ${esc(r.place)}` : ''}
         <span style="color:${locked ? 'var(--muted-foreground)' : 'var(--gold)'}">[${locked ? `ล็อก · ต้องขั้น ${r.lv}` : `ปลดล็อกแล้ว · ขั้น ${r.lv}`}]</span></div>`;
     }).join('');
     return profile('hero-yama', 'ยมบาท (ตัวท่าน)', `ขั้น ${g.level}/${LEVELS.length} · ${LEVELS[g.level - 1].name}`,
@@ -918,6 +919,19 @@ function place(d) {
   const sx = +d.dataset.sx, sy = +d.dataset.sy;
   d.style.left = pctX(sx); d.style.top = pctY(sy);
   d.style.visibility = '';
+  if (d.classList.contains('repairfab')) clampInView(d);
+}
+
+/** 28A: ปุ่มลอยที่กึ่งกลางตัวเองผูกกับพิกัดฉาก (translate -50%) ต้องไม่ล้นขอบจอ — ปุ่มซ่อมสถานีริมซ้าย/ขวา
+ *  เคยโดนตัดครึ่ง · เลื่อนจุดกึ่งกลางเข้ามาให้ทั้งปุ่มอยู่ในส่วนของ #ov ที่เห็นบนจอ (เว้น 8px) */
+function clampInView(d) {
+  const o = ov.getBoundingClientRect(), w = d.offsetWidth;
+  if (!o.width || !w) return;
+  const m = 8, lo = Math.max(o.left, 0) + m + w / 2, hi = Math.min(o.right, innerWidth) - m - w / 2;
+  if (hi < lo) { d.style.left = ((lo + hi) / 2 - o.left) / o.width * 100 + '%'; return; }
+  const cx = o.left + parseFloat(d.style.left) / 100 * o.width;
+  const nx = Math.min(hi, Math.max(lo, cx));
+  if (nx !== cx) d.style.left = (nx - o.left) / o.width * 100 + '%';
 }
 
 /** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
@@ -1255,7 +1269,7 @@ function openZoneEventAlert(ev) {
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
     zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
-      if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(); }
+      if (g.startZoneEvent(ev.k)) { zoneEventTried.add(`${g.zone}:${ev.k}`); openBattle(afterBreachBattle); }
     }, ev.mode === 'waves' || /prison/i.test(ev.k));
 }
 function updateZoneEventFabs() {
@@ -1410,7 +1424,7 @@ function openZoneArrival(z) {
       <div class="intro-comic-head"><span>อเวจี · เปิดสาขาใหม่</span><span>โซน ${zn}</span></div>
       <div class="intro-comic-caption">
         <h2>${esc(z.name)}</h2>
-        <p>${esc(z.intro)}<br>${esc(z.sub)}</p>
+        <p>${esc(z.intro)}${z.sub ? `<br>${esc(z.sub)}` : ''}</p>
       </div>
     </div>
     <div class="intro-comic-controls"><span class="hint">นิราตามท่านมา · สถานีและยมทูตต้องเริ่มจัดการใหม่ในแต่ละสาขา</span>
@@ -2331,7 +2345,7 @@ function openFrontier(fromWalk = false, breach = false) {
     // ตอนนี้เข้า "แผนที่ชายแดน" ก่อน ให้เดินเลือกเองว่าจะสู้กับตัวไหน (src/frontier.js)
     if (start) start.onclick = () => {
       if (breach) {
-        if (g.startFrontierBreach()) { breachTried = true; openBattle(); }
+        if (g.startFrontierBreach()) { breachTried = true; openBattle(afterBreachBattle); }
         return;
       }
       dlg.close();
@@ -2428,6 +2442,20 @@ function openFrontierWalk() {
     const el = dlg.querySelector('#frw-count');
     if (el) el.textContent = String(FW.enemyCount());
   }, 500);
+}
+
+/** 28A — ชนะศึกปีศาจฝ่าชายแดน (frontierBreach / zoneEvent ทีมชายแดน): ยมบาทอยู่ที่ "แผนที่ชายแดน" ต่อ
+ *  ไม่กลับลานศาล · รอให้กล่องเนื้อเรื่อง/รางวัล/เลื่อนขั้นที่เด้งหลังศึกปิดก่อน แล้วค่อยเปิดแผนที่ชายแดน
+ *  (เปิดทับทันทีจะดันกล่องพวกนั้นไปค้างจนกว่าจะออกจากชายแดน) · แพ้ → ไม่ทำอะไร กลับแผนที่โซนตามเดิม */
+function afterBreachBattle(_, done) {
+  if (!returnsToFrontier(done)) return;
+  const zone = g.zone;
+  const go = () => {
+    if (g.over || g.battle || g.zone !== zone) return;
+    if (dlg.open || storyPlaying || g.storyQueue.length || g.pendingLevel || g.pendingZone) { setTimeout(go, 400); return; }
+    openFrontierWalk();
+  };
+  setTimeout(go, 0);
 }
 
 // ---------- ฉากต่อสู้ ----------
@@ -2618,6 +2646,17 @@ function openBattle(after) {
         el.setAttribute('aria-label', `${name} ${Math.round(f.hp)}/${f.maxHp}`);
       });
     }
+    // 28A: ปุ่มจบศึก (data-fin) ตอนชนะ ย้ายออกจากกล่อง .pad ตามภาพที่คุณเป้ชี้
+    //  - วิญญาณขัดขืนตัวเดียว (ลากเข้าสถานี) → ลอยเหนือหัววิญญาณเป้าหมาย (ผูกกับ .fig.foe จึงตามตัวไปทุกขนาดจอ)
+    //  - ศึกหลายตัว (วิญญาณแหกคุก/ระลอกชายแดน → กลับไปคุมโซน) → กลางล่างเหนือแถบ HUD ไม่ทับกล่องผลรางวัล
+    // ปุ่มยังเป็น [data-fin] ตัวเดิม handler ด้านล่างผูกด้วย dlg.querySelector จึงทำงานเหมือนเดิม
+    const finRow = b.over === 'win' ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
+    if (finRow) {
+      const multi = view.foes?.length > 1;
+      const foeFig = !multi && b.kind === 'soul' ? stage.querySelector('.fig.foe') : null;
+      if (foeFig) { finRow.classList.add('fin-float', 'fin-foe'); foeFig.appendChild(finRow); }
+      else if (multi) { finRow.classList.add('fin-float', 'fin-center'); stage.appendChild(finRow); }
+    }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
@@ -2785,7 +2824,7 @@ function openZone() {
     const lock = !g.canMoveZone(z.k);
     const prev = ZONES[i - 1];
     const why = lock ? (z.k !== 'cyberhell' && g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
-      : z.sub;
+      : (z.sub || 'กดเพื่อเดินทาง');
     const [x, y] = ZONE_MAP[z.k].marker;
     return `<button class="world-zone${here ? ' here' : ''}${lock ? ' locked' : ''}"
       style="left:${x}%;top:${y}%" data-zone="${z.k}" ${here || lock ? 'disabled' : ''}
@@ -2864,7 +2903,7 @@ function openOutfit() {
       return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
         <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
         <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
-          <small>${esc(z.sub)}</small>
+          ${z.sub ? `<small>${esc(z.sub)}</small>` : ''}
           <span>${lock ? `🔒 ซื้อจากพ่อค้านรกใน${esc(z.name)}` : here ? '✓ กำลังสวม' : 'พร้อมสวม'}</span></span>
         ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
                : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
@@ -2910,7 +2949,7 @@ function outfitCards() {
     return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
       <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
       <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
-        <small>${esc(z.sub)}</small>
+        ${z.sub ? `<small>${esc(z.sub)}</small>` : ''}
         <span>${lock ? `🔒 ต้องเป็น ${esc(LEVELS[z.level - 1].name)}` : here ? '✓ กำลังสวม' : 'เก็บอยู่ในกระเป๋า'}</span></span>
       ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
              : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
@@ -3737,7 +3776,7 @@ function openLevelUp(lv) {
   const rows = [
     ...(lv.gains || []),
     ...zonesNew.map(z => ({ g: '🗺️', t: `เปิด${z.name}ให้ท่านคุม`,
-                            d: `${z.sub} · กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ ` +
+                            d: `${z.sub ? `${z.sub} · ` : ''}กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ ` +
                                'สาขาที่ทิ้งไว้ถูกเก็บไว้ให้ ย้ายกลับมาเมื่อไหร่ก็ยังอยู่' })),
   ];
   const face = artUrl('hero-yama-profile') || artUrl('hero-yama');
@@ -3859,7 +3898,7 @@ g.onChange = () => {
     const z = g.pendingZone; g.pendingZone = null;
     if (!z.back) openZoneArrival(z);
     else bossModal(`กลับมาที่${z.name}`,
-      `${z.sub}\n\nสถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
+      `${z.sub ? `${z.sub}\n\n` : ''}สถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
     return;
   }
   // สาขาใหม่เพิ่งปลดล็อก — เด้งเองเฉพาะตอนที่ไม่มีหน้าต่างเลื่อนขั้นตามมา
