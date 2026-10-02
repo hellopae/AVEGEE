@@ -24,17 +24,20 @@ function withSeed(seed, fn) {
 }
 
 // ---------------------------------------------------------------- 1. ตัวคูณอยู่ที่เดียว และเรียงโซน 2 < 3 < 4
-test('FOE_SCALE: โซน 1 = ค่าเดิม · โซน 2 < 3 < 4 ทั้ง HP และ ATK ของศัตรูทั่วไป', () => {
+test('FOE_SCALE: โซน 1 = ค่าเดิม · โซน 2 < 3 < 4 ทั้ง HP และ ATK ของศัตรูทั่วไป (ชุด 28E: อีเวนต์คูณ HP แล้ว)', () => {
   const Z = ['th', 'asia', 'west', 'cyberhell'];
   for (const kind of ['roam', 'event']) {
     assert.equal(FOE_SCALE[kind].th.atk, 1, `${kind} th atk`);
+    assert.equal(FOE_SCALE[kind].th.hp, 1, `${kind} th hp`);
+    for (let i = 1; i < Z.length; i++) assert.ok(FOE_SCALE[kind][Z[i]].hp > FOE_SCALE[kind][Z[i - 1]].hp, `${kind} hp ${Z[i]}`);
     for (let i = 1; i < Z.length; i++)
       assert.ok(FOE_SCALE[kind][Z[i]].atk > FOE_SCALE[kind][Z[i - 1]].atk, `${kind} atk ${Z[i]}`);
   }
   assert.equal(FOE_SCALE.roam.th.hp, 1);
   for (let i = 1; i < Z.length; i++) assert.ok(FOE_SCALE.roam[Z[i]].hp > FOE_SCALE.roam[Z[i - 1]].hp, `roam hp ${Z[i]}`);
-  // ศัตรูในอีเวนต์ไม่คูณ HP (ค่าฐานไล่ขึ้นตามโซนอยู่แล้ว และตั้งให้ลูกไฟล้มนัดเดียว) — ถ้าเปลี่ยนต้องรันจำลองศึกด้านล่างใหม่
-  for (const z of Z) assert.equal(scaleFoeHp(z, 60, 'event'), 60);
+  // ค่า HP ของอีเวนต์ตั้งโดยอิงอัตราชนะจำลองด้านล่าง (28E) — เปลี่ยนเมื่อไหร่ต้องดูผลจำลองด้วย
+  assert.equal(scaleFoeHp('th', 60, 'event'), 60);
+  for (let i = 1; i < Z.length; i++) assert.ok(scaleFoeHp(Z[i], 60, 'event') > scaleFoeHp(Z[i - 1], 60, 'event'), `event hp ${Z[i]}`);
   assert.equal(FOE_SCALE.boss.hp > 1, true);
   assert.deepEqual(scaleFoeAtk('cyberhell', [10, 16], 'boss'), [10, 16], 'ATK บอสคงเดิม');
 });
@@ -56,7 +59,7 @@ test('ศัตรูที่สร้างจริงใช้ตัวค�
   assert.deepEqual(soul('th').atk, BATTLE.foeAtk);
 });
 
-test('บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP เท่าเดิม', () => {
+test('บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน', () => {
   const g = createGame();
   g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
@@ -68,7 +71,7 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
     g.battle.foes.forEach((f, i) => {
       const base = ev.waves[wave - 1][0].hp;
       if (f.boss) { assert.ok(f.maxHp > base, `${f.who} บอสต้องอึดขึ้น`); assert.equal(f.maxHp, scaleFoeHp('cyberhell', base, 'boss')); }
-      else assert.equal(f.maxHp, base, `${f.who} ศัตรูธรรมดา`);
+      else { assert.equal(f.maxHp, scaleFoeHp('cyberhell', base, 'event'), `${f.who} ศัตรูธรรมดา`); assert.ok(f.maxHp > base); }
       seen.push(f.boss);
     });
     g.battle.foes.forEach(f => { f.hp = 0; });
@@ -82,7 +85,7 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
     const b = gg.startZoneBoss();
     assert.equal(b.foes[0].maxHp, scaleFoeHp(zone, 200 + n * 35, 'boss'));
     assert.ok(b.foes[0].maxHp > 200 + n * 35);
-    assert.equal(b.foes[1].maxHp, 48 + n * 8, 'ลูกน้องบอสไม่คูณ HP');
+    assert.equal(b.foes[1].maxHp, 48 + n * 8, 'ลูกน้องบอสโซนคงเดิม (ไม่ผ่าน zoneEventFoes)');
     assert.ok(b.foes[1].atk[1] > 12 + n, 'ลูกน้องบอสคูณ ATK ตามโซน');
   }
   const th = createGame();
@@ -99,7 +102,7 @@ function setup(zone, level, abilityCount, chests) {
   g.level = level; const L = LEVELS[level - 1];
   g.hpMax = g.hp = L.hpMax; g.mpMax = g.mp = L.mpMax;
   ABIL.slice(0, abilityCount).forEach(k => { g.abilities[k] = true; });
-  g.zone = zone; g.inventory.health = chests; g.coin = 400;
+  g.zone = zone; g.inventory.health = chests; g.inventory.holyWater = 3; g.coin = 400;   // สมมติฐาน 28E: พกน้ำมนต์ 3 ขวด
   for (const k of ['taan', 'plerng']) if (!g.crew.some(c => c.k === k)) g.hire(k);
   g.party.members = ['taan', 'plerng'];
   return g;
@@ -111,6 +114,8 @@ function botTurn(g) {
   if (turnNo % 15 === 1) for (const c of g.crewHelpers()) c.helpReadyAt = 0;
   if (low && g.battleAct('crew:boon')) return true;
   if (low && (g.inventory.health || 0) > 0) return g.battleAct('health');
+  // ชุด 28E: MP หมด + มีน้ำมนต์ → ดื่ม (เสียเทิร์น) แล้วลูกไฟต่อ
+  if (g.mp < BATTLE.mpCost.fire && (g.inventory.holyWater || 0) > 0 && g.battleAct('holyWater')) return true;
   if (g.mp >= BATTLE.mpCost.fire) return g.battleAct('fire');
   for (const c of g.crewHelpers()) if (['taan', 'plerng', 'dam'].includes(c.k) && !g.crewHelpWhy(c) && g.battleAct('crew:' + c.k)) return true;
   return g.battleAct('atk');
@@ -161,22 +166,25 @@ function winRate([name, zone, level, ab, chests, start], runs, seed) {
   });
 }
 
-test('ยังชนะได้: ทุกอีเวนต์/บอสโซน 1–4 บอทที่เลเวลของจุดนั้นชนะ ≥ 90%', () => {
-  for (const sc of SCEN) {
+test('ยังชนะได้: อีเวนต์/บอสโซน โซน 1–3 ชนะ ≥ 90% · โซน 4 (ฝ่าชายแดน 4 ระลอก) อยู่ในช่วง 70–90% (เป้า 28E ≈ 75–85%)', () => {
+  for (const sc of SCEN.filter(x => !x[0].startsWith('cyber breach'))) {
     const rate = winRate(sc, 20, 28);
     if (process.env.BAL_VERBOSE) console.log(sc[0].padEnd(20), rate);
     assert.ok(rate >= 0.9, `${sc[0]} win rate`);
   }
+  const breach = winRate(SCEN.find(x => x[0] === 'cyber breach'), 100, 28);
+  if (process.env.BAL_VERBOSE) console.log('cyber breach'.padEnd(20), breach);
+  assert.ok(breach >= 0.7 && breach <= 0.9, `cyber breach win rate ${breach}`);
 });
 
-test('ศึกสุดท้าย 8 ระลอก: เลเวล 5 เตรียมหีบยา 5 + ซื้อน้ำมนต์/ยาที่จุดพัก ชนะ ≥ 70% (ก่อน 28B ≈ 98%)', () => {
+test('ศึกสุดท้าย 8 ระลอก: เลเวล 5 เตรียมหีบยา 5 + ซื้อน้ำมนต์/ยาที่จุดพัก ชนะ 70–90% (ก่อน 28B ≈ 98%)', () => {
   const sc = ['cyber FINAL', 'cyberhell', 5, 8, 5, g => {
     g.zoneCases.cyberhell = 10; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', cyberFinal:'pending' };
     return g.startZoneEvent('cyberFinal');
   }];
-  const rate = winRate(sc, 60, 28);
+  const rate = winRate(sc, 100, 28);
   if (process.env.BAL_VERBOSE) console.log('final gauntlet win rate', rate);
-  assert.ok(rate >= 0.7, `final gauntlet win rate ${rate}`);
+  assert.ok(rate >= 0.7 && rate <= 0.9, `final gauntlet win rate ${rate}`);   // เป้า 28E ≈ 70–85%
   // และต้องยังเป็นศึกที่ "ตอบสนองต่อการเตรียมตัว" — ไม่มีหีบยาเลยแพ้แน่ (กันตัวเลขหลวมจนเดินผ่านฟรี)
   const poor = ['cyber FINAL (no chests)', 'cyberhell', 5, 8, 0, sc[5]];
   assert.ok(winRate(poor, 30, 28) < rate, 'เตรียมตัวน้อยกว่าต้องชนะน้อยกว่า');
@@ -332,4 +340,73 @@ test('ข้อความหน้าต่างรางวัล/น้ำ�
   assert.notEqual(t('item.holyWater'), (setLang('en'), t('item.holyWater')));
   setLang('th');
   assert.equal(ITEMS.holyWater.nameKey, 'item.holyWater');
+});
+
+// ---------------------------------------------------------------- 6. ชุด 28E — น้ำมนต์กลางศึก + วิญญาณขัดขืนไม่มีหน้าต่างรางวัล
+function drinkChecks(g, label) {
+  const b = g.battle;
+  assert.ok(b && !b.over, `${label}: ต้องอยู่ในศึก`);
+  // ไม่มีของ → กดไม่ได้ ไม่เสียเทิร์น
+  g.inventory.holyWater = 0; g.mp = 5;
+  const turn = b.turn;
+  assert.equal(g.battleAct('holyWater'), false, `${label}: ไม่มีน้ำมนต์`);
+  assert.equal(b.turn, turn);
+  // MP เต็ม → กดไม่ได้ ไม่กินของ
+  g.inventory.holyWater = 2; g.mp = g.mpMax;
+  assert.equal(g.battleAct('holyWater'), false, `${label}: MP เต็ม`);
+  assert.equal(g.inventory.holyWater, 2);
+  assert.equal(b.turn, turn);
+  // ดื่มได้ MP +30 ของลด 1 และ "เสียเทิร์น" (ศัตรูสวนกลับ) เหมือนน้ำชา/หีบยา
+  g.mp = 5; const hp = b.youHp;
+  assert.equal(g.battleAct('holyWater'), true, `${label}: ดื่ม`);
+  assert.equal(g.mp, 5 + ITEMS.holyWater.mp, `${label}: MP`);
+  assert.equal(g.inventory.holyWater, 1, `${label}: ของลด`);
+  assert.equal(b.turn, turn + 1, `${label}: เสียเทิร์น`);
+  assert.ok(b.youHp < hp || b.dmg.you === 0, `${label}: ศัตรูสวนกลับ`);
+  assert.equal(b.dmg.foe, 0, `${label}: ไม่ทำดาเมจใส่ศัตรู`);
+  // ไม่ล้นหลอด MP
+  g.mp = g.mpMax - 4;
+  assert.equal(g.battleAct('holyWater'), true);
+  assert.equal(g.mp, g.mpMax, `${label}: ไม่ล้นหลอด`);
+  assert.equal(g.inventory.holyWater, undefined);
+}
+test('น้ำมนต์ดื่มได้กลางศึกทุกประเภท: ผีบนแผนที่ · ชายแดน · อีเวนต์หลายระลอก · บอสโซน · ศึกสุดท้าย · วิญญาณขัดขืน', () => {
+  const huge = g => { g.battle.foes.forEach(f => { f.hp = f.maxHp = 9999; }); g.battle.youHp = g.battle.youMax = 9999; };
+  const mob = createGame(); mob.mobs.push({ id:1, kind:0 }); mob.startMobBattle(0); huge(mob);
+  drinkChecks(mob, 'mob');
+  const fr = createGame(); fr.setFrontierTeam('taan'); fr.startFrontierBattle({ kindIdx:0, id:1, level:1 }); huge(fr);
+  drinkChecks(fr, 'frontier');
+  const ev = createGame(); ev.zone = 'asia'; ev.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'pending' }; ev.zoneCases.asia = 6;
+  ev.startZoneEvent('asiaRageBreach'); huge(ev);
+  drinkChecks(ev, 'zoneEvent wave 1');
+  const bs = createGame(); bs.zone = 'west'; bs.zoneCases.west = 10;
+  bs.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared', westDevaTest:'cleared' };
+  bs.startZoneBoss(); bs.startBossFight(); huge(bs);
+  drinkChecks(bs, 'zoneBoss');
+  const fin = createGame(); fin.zone = 'cyberhell'; fin.zoneCases.cyberhell = 10;
+  fin.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', cyberFinal:'pending' };
+  fin.startZoneEvent('cyberFinal'); huge(fin);
+  drinkChecks(fin, 'cyberFinal');
+  const soul = createGame(); soul.startBattle({ id:3, who:'x', deserved:3, resist:true }); huge(soul);
+  drinkChecks(soul, 'soul');
+});
+
+test('น้ำมนต์ในวงคำสั่งต่อสู้: มีใน BATTLE.items · ไม่มีอีโมจิ · ค่า MP อ่านจาก ITEMS ที่เดียว', () => {
+  const it = BATTLE.items.find(x => x.k === 'holyWater');
+  assert.ok(it);
+  assert.equal(it.glyph, '');
+  assert.equal(it.nameKey, ITEMS.holyWater.nameKey);
+  assert.equal(it.heal, undefined);
+  assert.equal(it.dmg, undefined);
+});
+
+test('วิญญาณขัดขืนบนแท่นไต่สวน: ชนะแล้วไม่มีสรุปรางวัล และไม่เด้งหน้าต่างรางวัล (คงเดิมตามคุณเป้ 28E)', () => {
+  const g = createGame();
+  g.startBattle({ id:3, who:'x', deserved:3, resist:true });
+  g.battle.foes.forEach(f => { f.hp = 1; });
+  g.battleAct('atk');
+  assert.equal(g.battle.over, 'win');
+  assert.equal(g.battle.summary, undefined);
+  g.endBattle();
+  assert.equal(g.pendingReward, null);
 });

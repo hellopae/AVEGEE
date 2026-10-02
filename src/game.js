@@ -2432,6 +2432,15 @@ const API = {
         if (--this.inventory[it.k] <= 0) delete this.inventory[it.k];
         if (it.k === 'tea') this.mp = Math.min(this.mpMax, this.mp + 12);
       }
+      // ชุด 28E — น้ำมนต์กลางศึก: ไม่มีของ/MP เต็ม → ไม่กินของ ไม่เสียเทิร์น (return ก่อนแตะอะไร)
+      if (it.k === 'holyWater') {
+        if (!(this.inventory.holyWater > 0) || this.mp >= this.mpMax) return false;
+        if (--this.inventory.holyWater <= 0) delete this.inventory.holyWater;
+        const gain = Math.min(ITEMS.holyWater.mp, this.mpMax - this.mp);
+        this.mp += gain;
+        say(`${it.say} (MP +${gain})`);
+        this.save();
+      }
       if (it.coin != null) {
         if (this.coin < it.coin) return false;
         this.coin -= it.coin;
@@ -2442,7 +2451,7 @@ const API = {
         this.mp -= BATTLE.mpCost[it.power];
       }
       if (it.karma) this.karma = clamp(this.karma + it.karma, 0, 100);
-      say(`${it.glyph} ${it.say}`);
+      if (it.k !== 'holyWater') say(`${it.glyph} ${it.say}`);
       if (it.heal) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
       // ข้อ B ชุด 13 — it.dmg อาจเป็นเลขคงที่ (ผนึกน้ำแข็ง = 30) หรือช่วง [a,b] แบบเดิมถ้ามีของใหม่ในอนาคต
       if (it.dmg)  { dmg = Array.isArray(it.dmg) ? roll(it.dmg) : it.dmg; say(`   ↳ ${dmg} หน่วย`); }
