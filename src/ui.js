@@ -1960,7 +1960,7 @@ function openTrial(initialError = '') {
     const scrollAt = dlg.querySelector('.hud')?.scrollTop || 0;
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
-    const dests   = g.stations.filter(x => x.def.pow > 0);
+    const dests   = g.trialDestinations();       // 29C: ไม่รวมหอทะเบียนกรรม (ส่งไปแล้วไม่มีอะไรเกิด)
     const idle    = g.freeCrew();
     const answer  = g.trialAnswer(s);
     const selectedSt = dests.find(x => x.def.k === pick.st);

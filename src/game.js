@@ -7,7 +7,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY } from './data.js';
+         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -617,6 +617,9 @@ const API = {
 
   freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
 
+  /** สถานีที่เลือกเป็น "สถานที่" ในห้องสอบสวนได้ (เฉพาะที่รับวิญญาณไปลงทัณฑ์/ส่งสวรรค์จริง — ดู isTrialDestination) */
+  trialDestinations() { return this.stations.filter(x => isTrialDestination(x.def)); },
+
   /** เฉลยเฉพาะคดีที่ใช้พลังแล้ว; ผู้คุมคิดคะแนนจาก judge() ที่สถานีเฉลย/วาระสมควร
    *  เลือกคะแนนสูงสุดในกลุ่มที่รับหมายได้ตอนนี้ก่อน ถ้าไม่มีให้แสดงคนคะแนนสูงสุดพร้อมเหตุผล */
   trialAnswer(soul) {
@@ -642,7 +645,7 @@ const API = {
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
     const st = this.stations.find(s => s.def.k === stKey);
-    if (!st) return { key: 'stationMissing' };
+    if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
     if (this.stFree(st) <= 0) return { key: 'stationFull' };
     const c = this.crewOf(st.slots.length ? st.crewK : crewK);
