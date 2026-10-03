@@ -1,0 +1,62 @@
+{
+  "tool": "Built-in image_gen",
+  "poseReference": "img/crew-taan-work.png",
+  "assets": [
+    {
+      "zone": "th",
+      "crew": "taan",
+      "reference": "img/crew-taan.png",
+      "asset": "img/crew-taan-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body Thai red ogre, gray topknot, tusks, brown wrap, using a heavy masonry hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "th",
+      "crew": "dam",
+      "reference": "img/crew-dam.png",
+      "asset": "img/crew-dam-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body small charcoal bat demon, huge ears and small red wings, black shorts, using a masonry hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "asia",
+      "crew": "taan",
+      "reference": "img/Asia/crew-taan-asia.png",
+      "asset": "img/Asia/crew-taan-asia-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body bull headed muscular brown oni, horns, tiger skin wrap, using a large wooden construction mallet, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "asia",
+      "crew": "dam",
+      "reference": "img/Asia/crew-dam-asia.png",
+      "asset": "img/Asia/crew-dam-asia-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body small green oni, short horns, straw skirt, using a wooden construction mallet, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "west",
+      "crew": "taan",
+      "reference": "img/West/crew-taan-west.png",
+      "asset": "img/West/crew-taan-west-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body gray horned armored demon knight, burgundy scarf, using a steel masonry hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "west",
+      "crew": "dam",
+      "reference": "img/West/crew-dam-west.png",
+      "asset": "img/West/crew-dam-west-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body small gray bat demon, huge ears, leather apron over burgundy tunic, using a masonry hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "cyberhell",
+      "crew": "taan",
+      "reference": "img/CyberHell/crew-taan-cyberhell.png",
+      "asset": "img/CyberHell/crew-taan-cyberhell-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body red ogre cyborg, silver topknot, bronze armor, cyan accents, using a powered mechanical construction hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    },
+    {
+      "zone": "cyberhell",
+      "crew": "dam",
+      "reference": "img/CyberHell/crew-dam-cyberhell.png",
+      "asset": "img/CyberHell/crew-dam-cyberhell-build-work.png",
+      "prompt": "Use case: identity-preserve. Asset type: transparent pixel art construction and building repair game sprite. Input image 1 is character identity reference; image 2 is work pose and pixel-art style reference. Draw ONLY one full-body small charcoal bat cyborg, huge mechanical ears, cyber respirator, dark armor, using a compact powered repair hammer, in a crouched energetic working pose facing left three-quarter view, BOTH hands holding the tool at a low forward diagonal hammer strike as in image 2. Preserve EXACT character identity, face, anatomy, clothing, colors and pixel shading from image 1. Replace carried weapons/bucket/log with the construction tool. Crisp chunky retro pixel art matching reference, dark outlines, muted warm shading. Single sprite, centered with full tool, feet and ears within canvas, similar framing to image 2, transparent background with real alpha. No scenery, no building, no floor, no text, no watermark, no sprite sheet. This pose will alternate with the standing sprite in an animation."
+    }
+  ]
+}

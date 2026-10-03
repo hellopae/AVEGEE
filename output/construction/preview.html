@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVEGEE — Taan & Dam ทำงานทุกโซน</title>
+<style>
+body{margin:0;padding:32px;background:#180f15;color:#f7e1ce;font:16px system-ui}main{max-width:1100px;margin:auto}h1{font-size:26px}p{color:#c9afa1}.controls{display:flex;gap:16px;align-items:center;margin:20px 0}button{background:#d8a46d;color:#23141c;border:0;padding:10px 18px;border-radius:8px;font:inherit;cursor:pointer}section{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}article{border:1px solid #5a3946;border-radius:14px;padding:16px;background:#271921}h2{font-size:16px;margin:0 0 12px}.sprite{position:relative;aspect-ratio:1;background:repeating-conic-gradient(#312831 0% 25%,#3b303a 0% 50%) 0/24px 24px;border-radius:8px}.sprite img{position:absolute;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.idle{animation:idle 1s steps(1) infinite}.work{animation:work 1s steps(1) infinite}@keyframes idle{0%,100%{opacity:1}50%{opacity:0}}@keyframes work{0%,100%{opacity:0}50%{opacity:1}}body.paused img{animation:none}.paused .idle{opacity:0}.paused .work{opacity:1}a{color:#efbc87;font-size:13px}article p{margin:8px 0 0}@media(max-width:850px){section{grid-template-columns:repeat(2,1fr)}}@media(max-width:420px){body{padding:16px}}
+</style><main><h1>ท่าสร้างและซ่อมอาคาร — taan / dam</h1><p>ครบ 4 โซน · PNG พื้นหลังโปร่งใส · สลับท่ายืนกับท่าทำงานทุก 500 ms เช่นเดียวกับในเกม</p><div class="controls"><button id="toggle">ดูท่าทำงานค้างไว้</button><span>คลิกชื่อ PNG ใต้ภาพเพื่อเปิดไฟล์</span></div><section id="grid"></section></main>
+<script>
+const zones=[['th','ไทย',''],['asia','Asia','Asia/'],['west','West','West/'],['cyberhell','CyberHell','CyberHell/']];
+const names={th:['ทัณฑ์','ดำ'],asia:['โกคุ','คุโร'],west:['โพเอน่า','นัวร์'],cyberhell:['ซิสอ็อป','ดาร์กเน็ต']};
+for(const [z,label,dir] of zones) for(const [i,k] of ['taan','dam'].entries()){
+ const stem=`crew-${k}${z==='th'?'':`-${z}`}`;
+ const base=`../../img/${dir}${stem}.png`, work=`../../img/${dir}${stem}-build-work.png`;
+ const a=document.createElement('article');a.innerHTML=`<h2>${label} · ${names[z][i]} (${k})</h2><div class="sprite"><img class="idle" src="${base}" alt="ท่ายืน"><img class="work" src="${work}" alt="ท่าสร้างและซ่อม"></div><p><a href="${work}">${stem}-build-work.png</a></p>`;document.querySelector('#grid').append(a);
+}
+document.querySelector('#toggle').onclick=()=>{const paused=document.body.classList.toggle('paused');document.querySelector('#toggle').textContent=paused?'เล่น animation':'ดูท่าทำงานค้างไว้';};
+</script></html>

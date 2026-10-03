@@ -1,0 +1,2087 @@
+<!doctype html>
+<html lang="th">
+<head><base href="../../">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>อเวจี — นรกโซนสุวรรณภูมิ</title>
+<meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Trirong:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- token: ธีมมืด ตั้งชื่อตาม DESIGN.md ---------- */
+:root{
+  --background:#140a0e;      --foreground:#f2e6dd;
+  --card:#1e1015;            --card-foreground:#f2e6dd;
+  --muted:#2a171d;           --muted-foreground:#b09a92;
+  --secondary:#33202a;       --secondary-foreground:#f2e6dd;
+  --accent:#3d2029;          --accent-foreground:#ffd9b0;
+  --primary:#c2381f;         --primary-foreground:#fff4ee;
+  --gold:#d4a355;            --gold-foreground:#1a0d10;
+  --success:#4a9d6a;         --warning:#e0a132;  --destructive:#e04a2f;
+  --border:#3a222a;          --input:#54353f;    --ring:#d4a355;
+  /* หน้าสอบสวน+ต่อสู้ธีมใหม่ 18 ก.ย. 2569 (สเปก Vera) — ม่วงเข้มที่ --accent เดิมไม่พอชัด */
+  --hell-purple-1:#241129;   /* ม่วงเข้มเกือบดำ — พื้นหลังกรอบ/แถบเมนู */
+  --hell-purple-2:#4a1f3d;   /* ม่วงอมแดง — จุดไล่สีสว่างขึ้นของการ์ด/ปุ่ม */
+
+  --radius:0.75rem; --radius-sm:calc(var(--radius)*.5); --radius-md:calc(var(--radius)*.75);
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.5rem;
+  --font-sans:"IBM Plex Sans Thai","Noto Sans Thai",-apple-system,sans-serif;
+  --font-display:"Trirong",Georgia,serif;
+  --text-xs:.8125rem; --text-sm:.9375rem; --text-base:1rem;
+  --leading-body:1.7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:radial-gradient(1200px 700px at 50% -10%,#2a1016 0%,var(--background) 60%);
+  color:var(--foreground); font-family:var(--font-sans); font-size:var(--text-base);
+  -webkit-font-smoothing:antialiased;
+}
+/* ---------- ข้อ D ชุด 15 — .wrap เป็นเปลือกเกมเต็มจอ (แทนหน้าเว็บเลื่อนแบบเดิม) ----------
+   เคารพ safe-area (รอยบาก/แถบโฮมมือถือ) ตามกติกา portrait-first */
+.wrap{position:fixed;inset:0;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background:#0b0508;overflow:hidden}
+
+/* ---------- แถบทรัพยากรเดิม (เหลือไว้ให้ header ใน legacy-drawer ใช้) ---------- */
+header{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+#ava{object-fit:cover;object-position:center top;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px}
+h1{font-family:var(--font-display);font-size:1.5rem;margin:0;color:var(--gold);letter-spacing:.5px}
+h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);color:var(--muted-foreground);font-weight:400;letter-spacing:0}
+/* ปุ่มระบบย้ายขึ้นมาบนหัวเรื่อง 8 ก.ย. 2569 — เดิมอยู่ใต้ฉาก ต้องเลื่อนหาทุกครั้ง */
+.sysbtn{display:flex;gap:5px;flex-wrap:wrap;width:100%;justify-content:flex-end}
+.sysbtn button{padding:5px 10px;min-height:0;font-size:var(--text-xs)}
+@media(max-width:820px){.sysbtn{justify-content:flex-start}.sysbtn button{flex:1 1 auto}}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:6px 10px;font-size:var(--text-sm);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.chip b{font-variant-numeric:tabular-nums}
+.bar{width:70px;height:6px;background:var(--muted);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold)}
+.bar.karma i{background:var(--destructive)}
+.bar.hp i{background:var(--success)}
+
+/* ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569 — แถบหิว + ปุ่มป้อนข้าวปั้น ใช้ร่วมกัน 3 จุด (ดู hungerWidget ใน ui.js) */
+.hunger-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
+.hunger-line small{white-space:nowrap}
+
+/* ---------- เลย์เอาต์หลัก ----------
+   ฉากกินเต็มความกว้าง แผงควบคุมกับบันทึกอยู่ใต้ฉาก
+   (เดิมแผงอยู่ข้าง ๆ ทำให้ฉากเหลือความกว้างไม่ถึงสองในสาม) */
+.below{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--space-3);align-items:start}
+@media(max-width:900px){.below{grid-template-columns:1fr}}
+/* ---------- ข้อ D ชุด 15 — .stage เต็มพื้นที่ที่เหลือของจอ (ไม่มีกรอบ/แถบข้อความรอบนอกแบบเดิม)
+   .scene-box ล็อกอัตราส่วน 1527:704 อยู่ข้างใน จัดกลางด้วย flex — เกิด letterbox บน/ล่างหรือซ้าย/ขวา
+   แทนการครอป (ยังไม่ทำ D.1 ส่วนภาพ/พิกัดใหม่รอบนี้ — ดูรายงาน Toby ว่าทำไม) */
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;
+  background:#0b0508;display:flex;align-items:center;justify-content:center}
+/* ขนาดจริง (px) ตั้งโดย fitSceneBox() ใน ui.js ผ่าน ResizeObserver — CSS aspect-ratio ล้วนๆ
+   ผสมกับ flex-centering มีเคสมุมขอบที่ clamp ผิดแกน (max-width ตัดแล้ว height ไม่รีเคลียร์ตาม)
+   ใช้ JS วัดจริงชัวร์กว่า กัน #ov/canvas เพี้ยนตำแหน่งซึ่งกระทบการคลิกทั้งเกม */
+.scene-box{position:relative}
+.scene-box canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* ป้ายบอกว่าวาระหยุดเดินอยู่ — ของเดิมรู้ได้จากตัวหนังสือบนปุ่มใต้ฉากเท่านั้น
+   ผู้เล่นเลยนั่งรอทัณฑ์ที่ค้าง 0% อยู่นานโดยไม่รู้ว่าเกมพักอยู่ (เจ้าของเจอ 8 ก.ย. 2569) */
+.stage.resting::after{content:"⏸ พักอยู่ — กด \201Cเปิดศาล\201D ให้เวลาเดินต่อ";
+  position:absolute;left:50%;bottom:calc(var(--space-4) + 64px);transform:translateX(-50%);z-index:8;
+  background:rgba(12,6,9,.9);border:1px solid var(--gold);color:var(--gold);
+  border-radius:99px;padding:7px 16px;font-size:var(--text-sm);white-space:nowrap;
+  backdrop-filter:blur(3px);box-shadow:0 4px 18px rgba(0,0,0,.6);
+  animation:restpulse 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes restpulse{0%,100%{opacity:.72}50%{opacity:1}}
+@media(max-width:820px){.stage.resting::after{font-size:var(--text-xs);padding:5px 11px}}
+
+/* ---------- ชั้นซ้อนบนฉาก: บับเบิลคำพูด + เมนูพลัง ----------
+   ทุกตำแหน่งคิดเป็น % ของภาพฉาก จึงเลื่อนตามขนาดจอเองโดยไม่ต้องคำนวณใหม่ */
+#ov{position:absolute;inset:0;pointer-events:none;font-size:var(--text-xs)}
+#ov>*{position:absolute}
+
+/* หมุดเหนือหัวตัวละคร — เอาเมาส์ไปชี้ถึงจะกางบับเบิลออกมา
+   (บับเบิลกางค้างไว้ตลอดบังฉากจนมองไม่เห็นแผนที่) */
+.mark{transform:translate(-50%,-100%);pointer-events:auto;cursor:help}
+.mark .pin{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  font-size:14px;background:rgba(24,11,17,.92);border:1.5px solid var(--gold);
+  box-shadow:0 2px 8px rgba(0,0,0,.6);animation:pin 2.2s ease-in-out infinite}
+.mark.soul .pin{border-color:#7fb2e0} .mark.boss .pin{border-color:var(--primary)}
+@keyframes pin{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.mark .bub{display:none;position:absolute;bottom:34px;left:50%;transform:translateX(-50%)}
+.mark.aL .bub{left:-8px;transform:none}
+.mark.aR .bub{left:auto;right:-8px;transform:none}
+.mark:hover .bub,.mark.show .bub{display:block}
+.mark:hover{z-index:9}
+
+.bub{width:min(32vw,340px);background:rgba(24,11,17,.96);
+  border:1px solid var(--border);border-radius:var(--radius-md);padding:8px 11px;
+  line-height:1.6;box-shadow:var(--shadow-lg)}
+.bub:after{content:'';position:absolute;bottom:-8px;left:50%;margin-left:-8px;
+  border:8px solid transparent;border-top-color:rgba(24,11,17,.96);border-bottom:0}
+.mark.aL .bub:after{left:20px;margin:0} .mark.aR .bub:after{left:auto;right:20px;margin:0}
+.bub .who{color:var(--gold);font-weight:600;display:block;margin-bottom:3px}
+.bub.soul{background:rgba(18,26,38,.95);border-color:#33455c}
+.bub.soul:after{border-top-color:rgba(18,26,38,.95)}
+.bub.boss{background:rgba(38,12,10,.96);border-color:var(--primary);width:min(34vw,400px)}
+.bub.boss:after{border-top-color:rgba(38,12,10,.96)}
+.bub .line{color:var(--muted-foreground);padding:1px 0}
+.bub .line.truth{color:var(--gold)} .bub .line.confess{color:var(--warning)}
+.bub .line.false{color:var(--destructive)}
+
+/* ---------- แถบบัญชาการเหนือฉาก ----------
+   เดิมแผงนี้ลอยทับกลางฉากจนมองแผนที่ไม่เห็น ย้ายมาอยู่เหนือฉากเป็นแถบเต็มความกว้าง */
+/* ---------- แถบโค้ช: สอนทีละเรื่อง ----------
+   เดิมมีแต่โมดัล "วิธีเล่น" ที่เทสิบสามข้อพร้อมกัน เจ้าของบอกว่าดูยากไป (7 ก.ย. 2569) */
+/* ย้ายมาอยู่ล่างสุดของหน้า 8 ก.ย. 2569 — เดิมอยู่ใต้หัวเรื่อง
+   ทุกครั้งที่มีบทใหม่ มันดันแถบบัญชาการกับฉากเลื่อนลงไปทั้งแผง จนคลิกผิดที่ */
+.coach{background:linear-gradient(90deg,var(--accent),var(--card));
+  border:1px solid var(--gold);border-left-width:4px;border-radius:var(--radius);
+  padding:var(--space-3) var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start;
+  margin-top:auto}
+.coach .txt{min-width:0;flex:1}
+.coach b{color:var(--gold);font-family:var(--font-display);font-size:1.05rem;display:block;margin-bottom:2px}
+.coach p{margin:0;font-size:var(--text-sm);line-height:var(--leading-body)}
+.coach .tip{margin-top:6px;font-size:var(--text-xs);color:var(--accent-foreground)}
+.coach .step{font-size:var(--text-xs);color:var(--muted-foreground);white-space:nowrap}
+.coach button{flex-shrink:0}
+
+/* ชิปทรัพยากรกดได้ทุกอัน — กดแล้วบอกว่าแถบนั้นมีไว้ทำอะไร หมดแล้วเกิดอะไร */
+.chip.tap{cursor:pointer;border-color:var(--input)}
+.chip.tap:hover{border-color:var(--gold)}
+.chip.tap::after{content:'?';font-size:10px;color:var(--muted-foreground);margin-left:2px}
+
+/* ---------- แผงไต่สวน (Phase 2) ----------
+   คำให้การเป็นปุ่มกดได้ · จี้ถูกบรรทัดที่ขัดกับสำนวน = ได้ความจริงฟรี */
+.quiz .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.quiz .press{font-size:var(--text-xs);color:var(--gold);white-space:nowrap}
+.quiz .press b{font-variant-numeric:tabular-nums}
+.say{display:block;width:100%;text-align:left;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:9px 11px;margin-bottom:7px;font-size:var(--text-sm);
+  line-height:var(--leading-body);color:var(--foreground);cursor:pointer;min-height:0}
+.say:hover:not(:disabled){border-color:var(--gold);background:var(--accent)}
+.say:disabled{cursor:default;opacity:.5}
+.say.hit{border-color:var(--success);background:rgba(74,157,106,.14);opacity:1}
+.say.miss{border-color:var(--border);opacity:.45;text-decoration:line-through}
+.say .q{color:var(--muted-foreground);margin-right:4px}
+.back{background:rgba(224,74,47,.12);border:1px solid var(--destructive);border-radius:var(--radius-sm);
+  padding:7px 10px;margin-bottom:8px;font-size:var(--text-xs);line-height:1.6;color:var(--foreground)}
+
+/* บรรทัดอธิบายในโมดัล "แถบนี้มีไว้ทำอะไร" — ขั้นที่กำลังอยู่จะไฮไลต์ */
+.tline{border-left:3px solid var(--border);padding:6px 0 6px 10px;margin:6px 0;font-size:var(--text-sm)}
+.tline b{color:var(--foreground)}
+.tline div{color:var(--muted-foreground);font-size:var(--text-xs);line-height:1.6;margin-top:2px}
+.tline.on{border-left-color:var(--gold);background:var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding-right:8px}
+.tline.on b{color:var(--gold)}
+.tline.good{border-left-color:var(--success)}
+.tline.bad{border-left-color:var(--destructive)}
+.tline.bad b{color:var(--destructive)}
+
+.deckbar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--space-2) var(--space-3);display:flex;gap:var(--space-4);
+  flex-wrap:wrap;align-items:flex-end}
+.deckbar .grp{display:flex;flex-direction:column;gap:4px;min-width:0}
+.deckbar .lb{color:var(--muted-foreground);font-size:11px}
+.deckbar .row2{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.deckbar button{padding:5px 9px;min-height:0;font-size:var(--text-xs);line-height:1.35}
+.deckbar button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.deckbar .go{margin-left:auto;align-self:flex-end}
+.deckbar .idle{color:var(--muted-foreground);font-size:var(--text-sm);padding:6px 0}
+.score{transform:translate(-50%,-100%);font-family:var(--font-display);font-size:2.6rem;
+  font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.75);pointer-events:none}
+.score small{display:block;font-family:var(--font-sans);font-size:.75rem;font-weight:400;text-align:center}
+canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
+.ctrl{display:flex;gap:var(--space-2);margin-top:var(--space-2);flex-wrap:wrap;align-items:center}
+
+button{font:inherit;font-size:var(--text-sm);cursor:pointer;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--secondary);color:var(--secondary-foreground);
+  padding:8px 12px;min-height:38px;transition:.15s}
+button:hover:not(:disabled){border-color:var(--ring);background:var(--accent)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.pri{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+button.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground);font-weight:600}
+button.sm{padding:5px 9px;min-height:0;font-size:var(--text-xs)}
+
+/* ---------- แผงข้าง ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tabs button{flex:1;border:0;border-radius:0;background:transparent;color:var(--muted-foreground);padding:10px 4px}
+.tabs button[aria-selected=true]{color:var(--gold);box-shadow:inset 0 -2px 0 var(--gold);background:var(--muted)}
+.tabbody{padding:var(--space-3);height:294px;overflow:auto}
+.empty{color:var(--muted-foreground);font-size:var(--text-sm);text-align:center;padding:var(--space-5) 0}
+
+.soul{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.soul:hover{border-color:var(--ring)}
+.soul .top{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:var(--text-sm)}
+.soul .id{color:var(--muted-foreground);font-size:var(--text-xs);font-variant-numeric:tabular-nums}
+.deed{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:5px;line-height:1.5}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:99px;margin-right:4px;
+  background:var(--accent);color:var(--accent-foreground)}
+.wait{color:var(--warning)}
+
+.crew{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:8px}
+.crew .g{font-size:1.4rem;width:46px;height:46px;flex:none;display:grid;place-items:center}
+.crew .g img{width:46px;height:46px;object-fit:cover;object-position:center top;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.crew .n{flex:1;min-width:0}
+.crew .n b{font-size:var(--text-sm)}
+.crew .st{font-size:11px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+
+/* ---------- แผงข้อมูล (dashboard) ---------- */
+.sidebody{padding:var(--space-3);height:294px;overflow:auto}
+/* หัวโปรไฟล์ในแผงข้อมูล — ขยายจาก 74px เป็น 132px ตอนเจ้าของเริ่ม gen รูปโปรไฟล์เอง
+   .full = รูปโปรไฟล์เต็มใบ (เต็มกรอบ) · ไม่มี .full = รูป standee ตัวยืน (วางชิดล่าง ไม่ครอป) */
+.prof{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.prof img{width:132px;height:132px;image-rendering:pixelated;object-fit:contain;object-position:bottom;
+  background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);flex:none}
+.prof img.full{object-fit:cover;object-position:center top;border-color:var(--gold);image-rendering:auto}
+@media(max-width:640px){.prof img{width:96px;height:96px}}
+.prof .hd{min-width:0}
+.prof .hd b{font-size:1.05rem;font-family:var(--font-display)}
+.prof .hd .duty{font-size:var(--text-xs);color:var(--gold);margin-top:2px}
+.prof .hd .now{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:4px;line-height:1.5}
+.think{background:var(--muted);border-left:2px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:7px 10px;margin:8px 0;font-size:var(--text-sm);color:var(--foreground);line-height:var(--leading-body)}
+.kv{display:flex;flex-wrap:wrap;gap:4px 6px;margin:8px 0}
+.kv span{font-size:11px;background:var(--muted);border:1px solid var(--border);border-radius:99px;
+  padding:2px 8px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+.sec{font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 5px;
+  border-top:1px solid var(--border);padding-top:8px}
+.row-truth{font-size:var(--text-xs);line-height:1.6;margin-top:4px}
+.row-truth.hid{color:var(--warning)}
+.row-truth.fake{color:var(--destructive);text-decoration:line-through}
+.picker{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.picker button{padding:3px 9px;min-height:0;font-size:11px}
+.picker button[aria-pressed=true]{border-color:var(--gold);color:var(--gold)}
+.hintline{font-size:var(--text-xs);color:var(--muted-foreground);margin-top:10px;line-height:1.6}
+
+/* ---------- บันทึก ---------- */
+.log{height:294px;overflow:auto;font-size:var(--text-sm);line-height:var(--leading-body);
+  padding:var(--space-3)}
+.log div{padding:1px 0;color:var(--muted-foreground)}
+.log .good{color:var(--success)} .log .bad{color:var(--destructive)}
+.log .act{color:var(--foreground)} .log .event{color:var(--gold)}
+.log .boss{color:var(--gold);font-family:var(--font-display)}
+
+/* ---------- โมดัล ---------- */
+dialog{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);
+  color:var(--card-foreground);max-width:520px;width:calc(100% - 32px);padding:var(--space-5);font:inherit}
+dialog::backdrop{background:rgba(10,4,6,.78)}
+/* กล่องที่ปิดแล้วต้องหายไปจริง ๆ — กฎ display ของเราเองมีสิทธิ์เหนือ UA stylesheet
+   พลาดตรงนี้ = กล่องปิดไปแล้วแต่ยังค้างอยู่บนจอ ปุ่มข้างในกดไม่ติดสักปุ่ม
+   และหลุดออกจาก top layer จนหมุด/ปุ่มบนฉากลอยทับ (เจ้าของเจอ 10 ก.ย. 2569) */
+dialog:not([open]){display:none!important}
+dialog.event-alert[open]{width:min(1000px,calc(100% - 20px));max-width:1000px;max-height:94dvh;
+  padding:0;overflow-y:auto;background:#24131e;border-color:#c5a455;border-radius:10px}
+.event-alert-main{position:relative;min-height:min(53vh,440px);padding:24px 32px 72px;text-align:center;
+  border-bottom:1px solid #c5a455;display:flex;flex-direction:column;align-items:center}
+.event-alert-main h2{margin:4px 94px 8px;font-size:clamp(22px,3vw,34px);color:#efc357}
+.event-alert-main p{margin:0;color:#e8dde1;line-height:1.45}
+.event-alert-foe{display:block;min-height:0;max-height:295px;max-width:62%;object-fit:contain;flex:1;margin:12px auto 0}
+.event-alert-go{position:absolute;right:20px;bottom:18px;min-width:175px}
+.event-alert-controls{position:absolute;right:18px;top:18px;display:flex;gap:10px;z-index:1}
+.event-alert-controls button{width:42px;height:42px;padding:0;font-size:22px;color:#30180f;
+  background:linear-gradient(#ffe8a3,#b9802e);border:1px solid #ffe1a0;border-radius:8px;cursor:pointer}
+.event-alert-prep{padding:16px 24px 20px}
+.event-alert-prep>p{margin:0 0 12px;color:#efe2e5}
+.event-alert-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.event-prep-card{min-width:0;display:grid;grid-template-columns:88px 1fr;grid-template-rows:86px auto;
+  align-items:center;gap:6px 10px;text-align:left;background:#2c1822;color:#f6e6df;
+  border:1px solid #a7864a;border-radius:6px;padding:10px;cursor:pointer}
+.event-prep-card img{width:88px;height:86px;object-fit:contain;grid-row:1;background:#1a1018}
+.event-prep-speech{border:1px solid #af8c50;border-radius:8px;padding:8px;line-height:1.35;font-size:13px}
+.event-prep-card b{grid-column:1 / -1;text-align:center}
+.event-prep-card:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){.event-alert-main{min-height:330px;padding:62px 14px 66px}
+  .event-alert-main h2{margin:0 0 8px;font-size:22px}.event-alert-foe{max-height:185px;max-width:90%}
+  .event-alert-go{right:14px;bottom:14px}.event-alert-prep{padding:12px}
+  .event-alert-cards{grid-template-columns:1fr}.event-prep-card{grid-template-columns:72px 1fr;grid-template-rows:64px auto}
+  .event-prep-card img{width:72px;height:64px}}
+/* กฎกันพลาดทั้งหน้า: อะไรที่ตั้ง hidden ไว้ต้องหายจริง
+   เจอสองรอบแล้วว่ากฎ display ของเราเองไปทับ [hidden] ของเบราว์เซอร์เงียบ ๆ
+   (10 ก.ย. 2569: .st-arch ตั้ง display:flex ไว้ แผงแฟ้มเลยคลุมฉากทุกห้องแบบมองไม่เห็น
+    เห็นแต่ผลว่า "ฉากมืดทุกหน้า") */
+[hidden]{display:none!important}
+dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--space-3);font-size:1.25rem}
+.boss{display:flex;gap:var(--space-4);align-items:flex-start}
+.boss img{width:150px;height:150px;object-fit:cover;object-position:center top;flex:none;
+  border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.boss img.standee{image-rendering:pixelated;object-fit:contain;object-position:bottom;border-color:var(--border)}
+@media(max-width:520px){.boss{flex-direction:column;align-items:center;text-align:center}}
+
+/* ---------- หน้าต่างเลื่อนขั้น (ข้อ 1 ของเจ้าของ 11 ก.ย. 2569) ----------
+   เดิมของที่ได้ถูกยัดต่อท้ายบทพูดพญายมเป็นประโยคเดียว อ่านผ่านแล้วไม่รู้ว่าได้อะไร
+   ตอนนี้แยกเป็นรายการทีละข้อ มีสัญลักษณ์นำ — รายการมาจาก LEVELS[].gains */
+.lvup{display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3)}
+.lvup img{width:88px;height:88px;flex:none;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.lvup .rank{min-width:0}
+.lvup .rank .from{font-size:var(--text-xs);color:var(--muted-foreground)}
+.lvup .rank .to{font-family:var(--font-display);font-size:1.35rem;color:var(--gold);line-height:1.25}
+.gain{display:flex;gap:9px;align-items:flex-start;background:var(--muted);border:1px solid var(--border);
+  border-left:3px solid var(--gold);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:6px}
+.gain .g{flex:none;font-size:1.15rem;line-height:1.35;width:1.5em;text-align:center}
+.gain .n{flex:1;min-width:0}
+.gain .n b{display:block;font-size:var(--text-sm);color:var(--foreground)}
+.gain .n span{display:block;font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.55;margin-top:1px}
+/* ---------- หน้าต่างรางวัลหลังชนะ (ชุด 28B) — มือถือ 390 เป็นหลัก ---------- */
+dialog.battle-reward[open]{max-width:420px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.reward-who{margin:-6px 0 var(--space-3);color:var(--muted-foreground);font-size:var(--text-sm)}
+.reward-list{margin-bottom:var(--space-3)}
+.reward-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;
+  background:var(--muted);border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:6px}
+.reward-row img{width:44px;height:44px;object-fit:contain;image-rendering:pixelated}
+.reward-row .badge{width:44px;height:44px;display:grid;place-items:center;color:var(--gold);font-weight:700;
+  font-size:var(--text-xs);border:1px dashed var(--gold);border-radius:var(--radius-sm)}
+.reward-row b{display:block;font-size:var(--text-sm);overflow-wrap:anywhere}
+.reward-row small{display:block;font-size:var(--text-xs);color:var(--muted-foreground)}
+.reward-row .amt{font-family:var(--font-display);color:var(--gold);font-size:1.1rem;white-space:nowrap}
+.reward-row.power{border-left-color:var(--success)}
+.reward-none{padding:10px;text-align:center;color:var(--muted-foreground);font-size:var(--text-xs)}
+.shop-card img.shop-item-img{border-radius:var(--radius-sm);object-fit:contain;image-rendering:pixelated;border-color:var(--border);background:rgba(0,0,0,.16)}
+.boss-prep .prep-ico{width:18px;height:18px;vertical-align:-4px;object-fit:contain;image-rendering:pixelated}
+@media(max-width:520px){
+  .lvup img{width:64px;height:64px}
+  .lvup .rank .to{font-size:1.1rem}
+}
+.field{margin-bottom:var(--space-4)}
+.field>label{display:block;font-size:var(--text-xs);color:var(--muted-foreground);margin-bottom:6px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hint{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.6;margin-top:6px}
+.warn{color:var(--warning)}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:var(--space-4)}
+.shop{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:9px 10px;margin-bottom:8px}
+.shop .n{flex:1;min-width:0}
+.shop .n b{font-size:var(--text-sm)} .shop .n div{font-size:11px;color:var(--muted-foreground);line-height:1.45}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px}
+.shop-card{display:grid;grid-template-columns:52px minmax(0,1fr) auto auto;gap:8px;align-items:center;
+  padding:9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.shop-card img{width:52px;height:52px;object-fit:cover;object-position:top;border-radius:50%;border:1px solid var(--gold)}
+.shop-card>span:nth-child(2){min-width:0}.shop-card b,.shop-card small{display:block}.shop-card small{font-size:10px;color:var(--muted-foreground)}
+.shop-card button{padding:6px 8px;font-size:10px}.shop-glyph{font-size:30px;text-align:center}
+dialog.merchant[open],dialog.nira-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:680px){.market-grid{grid-template-columns:1fr}.shop-card{grid-template-columns:46px minmax(0,1fr) auto auto}.shop-card img{width:46px;height:46px}}
+/* กระเป๋า: ของใช้และชุดรางวัลอยู่ในหน้าต่างเดียวกัน อ่านง่ายทั้งจอใหญ่และมือถือ */
+dialog.bag[open]{max-width:680px;max-height:calc(100dvh - 24px);overflow-y:auto;
+  -webkit-overflow-scrolling:touch}
+.bag-title{font-family:var(--font-display);font-size:var(--text-sm);color:var(--gold);margin:14px 0 7px}
+.bag-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bag-item{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:9px;align-items:center;
+  padding:9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.bag-item img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated;
+  border-radius:5px;background:rgba(0,0,0,.16)}
+.bag-item .n{min-width:0}.bag-item .n b{display:block;font-size:var(--text-sm)}
+.bag-item .n small{display:block;font-size:11px;color:var(--muted-foreground);line-height:1.35;margin-top:2px}
+.bag-empty{grid-column:1/-1;padding:18px;text-align:center;color:var(--muted-foreground);
+  border:1px dashed var(--border);border-radius:var(--radius-sm)}
+@media(max-width:560px){
+  dialog.bag[open]{width:calc(100% - 16px);max-height:calc(100dvh - 16px);padding:13px}
+  .bag-list{grid-template-columns:1fr}
+}
+/* ห้องเครื่อง: สไปรต์ยืนในกรอบคงที่ ไม่ให้ภาพโปรไฟล์ดันการ์ดสูงเกินจอ */
+dialog.outfit[open]{max-width:620px;max-height:calc(100dvh - 32px);overflow-y:auto;
+  -webkit-overflow-scrolling:touch}
+.outfit-note{color:var(--muted-foreground);font-size:var(--text-sm);margin:0 0 12px}
+.outfit-list{display:grid;gap:8px}
+.outfit-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:12px;align-items:center;
+  padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--muted)}
+.outfit-card.selected{border-color:var(--gold);background:rgba(212,163,85,.1)}
+.outfit-card.locked{opacity:.64}
+.outfit-card img{display:block;width:78px;height:88px;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;background:rgba(0,0,0,.18);border-radius:6px}
+.outfit-info{min-width:0;display:flex;flex-direction:column;gap:3px}
+.outfit-info b{font-size:var(--text-sm);color:var(--foreground)}
+.outfit-info small{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.4}
+.outfit-info span{font-size:var(--text-xs);color:var(--gold)}
+@media(max-width:520px){
+  dialog.outfit[open]{width:calc(100% - 16px);max-height:calc(100dvh - 16px);padding:14px}
+  .outfit-card{grid-template-columns:60px minmax(0,1fr) auto;gap:8px;padding:8px}
+  .outfit-card img{width:60px;height:70px}
+  .outfit-card button{padding:6px 8px;min-height:36px}
+}
+
+/* ---------- แผนที่เดินทางระหว่างโซน ---------- */
+dialog.zonepick[open]{width:min(1080px,calc(100% - 24px));max-width:1080px;
+  max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
+.world-map-scroll{overflow-x:auto;overflow-y:hidden;margin:10px 0;border:1px solid #67472e;
+  border-radius:10px;-webkit-overflow-scrolling:touch;background:#100912}
+.world-map{position:relative;width:100%;min-width:640px;aspect-ratio:1672/941;overflow:hidden}
+.world-map-art{display:block;width:100%;height:100%;object-fit:fill;image-rendering:auto}
+.world-zone{position:absolute;transform:translate(-50%,-50%);z-index:3;min-width:120px;
+  padding:5px 7px;border:1px solid var(--gold);border-radius:8px;
+  background:rgba(22,10,17,.89);color:var(--foreground);box-shadow:0 2px 10px #000a;
+  cursor:pointer;text-align:center;font:inherit;line-height:1.2}
+.world-zone b{display:block;font-size:12px;white-space:nowrap}
+.world-zone small{display:block;font-size:10px;color:#dec395;white-space:nowrap}
+.world-zone:hover:not(:disabled),.world-zone:focus-visible{background:#3d2029;outline:2px solid #fff1ba;outline-offset:2px}
+.world-zone.here{border-color:#ffe29a;background:rgba(76,41,22,.93)}
+.world-zone.here:disabled{opacity:1}
+.world-zone.locked{border-color:#777;opacity:.77;cursor:not-allowed}
+.world-zone.locked small{color:#ccc}
+.world-travelers{position:absolute;z-index:2;display:flex;align-items:flex-end;gap:0;
+  transform:translate(-50%,-100%);filter:drop-shadow(0 3px 2px #000);pointer-events:none}
+.world-travelers .yama{width:48px;height:64px;background-size:400% 100%;background-repeat:no-repeat;
+  background-position:0 0;image-rendering:pixelated}
+.world-travelers .nira{display:block;width:48px;height:64px;object-fit:contain;object-position:bottom;image-rendering:pixelated}
+.world-map.traveling .yama{animation:world-yama-step .55s linear infinite}
+.world-map.traveling .nira{animation:world-nira-step .36s ease-in-out infinite alternate}
+@keyframes world-yama-step{
+  0%,24%{background-position:0 0}25%,49%{background-position:33.333% 0}
+  50%,74%{background-position:66.666% 0}75%,100%{background-position:100% 0}}
+@keyframes world-nira-step{to{transform:translateY(-4px) rotate(3deg)}}
+.world-map-note{font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.45}
+.world-pan-hint{display:none;color:var(--gold)}
+@media(max-width:700px){dialog.zonepick[open]{padding:10px;width:calc(100% - 12px)}
+  .world-map{width:640px}.world-map-note{font-size:11px}.world-pan-hint{display:inline}}
+@media(prefers-reduced-motion:reduce){.world-map.traveling .yama,.world-map.traveling .nira{animation:none}}
+footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;padding:var(--space-2) 0}
+
+/* ---------- จอเล็ก ----------
+   ปัญหาที่เจอบนมือถือ: แถบบัญชาการยืดเป็นสิบแถวจนดันแผนที่หลุดจอ
+   และบับเบิลที่ผูกกับหมุดล้นขอบซ้าย-ขวาจนอ่านไม่ได้ */
+@media(max-width:820px){
+  .wrap{padding:var(--space-2);gap:var(--space-2)}
+  header{gap:var(--space-2)}
+  h1{font-size:1.15rem} #ava{width:38px;height:38px}
+  .res{gap:4px;top:calc(var(--space-2) + 4px);left:calc(var(--space-2) + 4px);right:calc(var(--space-2) + 4px)}
+  /* ข้อ A — ของเดิม .chip{flex:1 1 auto} ด้านล่างทำให้ชิปที่เหลือแค่ตัวเดียวในแถวยืดเต็มแถว
+     กลายเป็นแถวเดี่ยวรวด 5-6 แถวซ้อนกันสูงเกือบเต็มแคนวาส ต้องยกเลิกการยืดเฉพาะใน .res */
+  .res .chip{padding:3px 6px;flex:0 1 auto}
+  .chip{font-size:var(--text-xs);padding:4px 7px;flex:1 1 auto}
+  .bar{width:44px}
+
+  /* แต่ละกลุ่มเลื่อนแนวนอนในตัวเอง แถบทั้งหมดจึงสูงแค่ 4 แถว ไม่ใช่สิบ */
+  .deckbar{gap:var(--space-2);padding:var(--space-2)}
+  .deckbar .grp{width:100%}
+  .deckbar .row2{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .deckbar .row2::-webkit-scrollbar{display:none}
+  .deckbar .row2>button{flex:0 0 auto}
+  .deckbar .go{margin-left:0;width:100%;min-height:42px}
+
+  /* บับเบิลกลายเป็นแผ่นติดขอบล่างจอ — ไม่ผูกตำแหน่งกับหมุดอีก จึงไม่มีทางตกขอบ */
+  .mark .bub{position:fixed;left:var(--space-2);right:var(--space-2);bottom:var(--space-2);
+    top:auto;width:auto;max-height:44vh;overflow:auto;transform:none;z-index:30}
+  .mark.aL .bub,.mark.aR .bub{left:var(--space-2);right:var(--space-2);transform:none}
+  .bub:after{display:none}
+  .mark .pin{width:32px;height:32px;font-size:16px}
+  .score{font-size:1.8rem}
+
+  .ctrl{gap:5px} .ctrl button{flex:1 1 auto}
+  .tabbody,.sidebody,.log{height:230px}
+}
+
+/* ---------- หน้าปก (ข้อ A ชุด 15 — ทำตามม็อกอัป files/UI-th.jpg / UI-eng.jpg) ----------
+   ภาพ img/cover-v3.webp เต็มจอ ไม่มีแผงมืดคาดขวาเหมือนเดิมแล้ว — โลโก้/ปุ่มลอยตรงบนภาพ
+   ตำแหน่งอิงสัดส่วนที่วัดจากม็อกอัป 2500×1396 (ครอปดูจริงทีละจุดแล้วประมาณเป็น % ไม่ใช่เดาจากความจำ):
+     เฟือง ⚙ กึ่งกลางที่ (94.4%, 6.5%) กว้าง ~5% ของจอ
+     โลโก้กึ่งกลางแนวขวางที่ ~89% ของความกว้าง กว้างรวม ~30vw
+     RESUME baseline ~77% ของความสูง · NEW GAME baseline ~82%
+     ป้าย 18+ กึ่งกลางที่ (~97%, ~98%) เส้นผ่านศูนย์กลาง ~4.3% ของความกว้าง */
+#title{position:fixed;inset:0;z-index:100;background:#0b0508;overflow:hidden}
+#title.gone{display:none}
+#title .art{position:absolute;inset:0;background:
+    radial-gradient(900px 600px at 30% 70%,rgba(226,96,32,.28),transparent 65%),
+    radial-gradient(700px 500px at 15% 20%,rgba(120,40,90,.30),transparent 70%),
+    linear-gradient(160deg,#1a0a12 0%,#0b0508 60%);
+  background-size:cover;background-position:center}
+#title .art.has{background-size:cover;background-position:center}
+/* วิดีโอพื้นหลัง Home เต็มจอ วนลูป แทนภาพปก — #cover-art (คุมสีไล่/webp) อยู่ชั้นล่าง
+   ทำหน้าที่ poster/fallback ระหว่างวิดีโอยังโหลดไม่เสร็จ/เล่นไม่ได้/reduced-motion */
+#title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#splash{position:fixed;inset:0;z-index:110;background:#090407;overflow:hidden;
+  display:grid;place-items:center;transition:opacity .35s ease}
+#splash[hidden]{display:none}
+#splash.leaving{opacity:0;pointer-events:none}
+#splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#splash .splash-logo{position:absolute;z-index:1;left:50%;top:71%;
+  width:min(38vw,430px);max-height:23vh;
+  object-fit:contain;filter:drop-shadow(0 4px 20px #000);
+  animation:splash-logo-in 5s both;animation-play-state:paused}
+#splash.playing .splash-logo{animation-play-state:running}
+#splash .splash-skip{position:absolute;z-index:2;right:3%;bottom:4%;
+  border:1px solid #9f8067;background:rgba(9,4,7,.7);color:#f4cd7c;
+  padding:8px 16px;cursor:pointer;font:inherit}
+#enter-gate{position:fixed;inset:0;z-index:115;background:#090407;display:grid;
+  place-items:center;text-align:center}
+#enter-gate[hidden]{display:none}
+#enter-gate button{display:flex;flex-direction:column;align-items:center;gap:18px;
+  border:0;background:none;color:#f4cd7c;cursor:pointer;font:700 clamp(17px,4vw,25px) var(--font-sans)}
+#enter-gate img{width:min(70vw,430px);max-height:35vh;object-fit:contain}
+#enter-gate span{animation:enter-pulse 1.3s ease-in-out infinite alternate}
+@keyframes enter-pulse{to{opacity:.42}}
+@keyframes splash-logo-in{0%,18%{opacity:0;transform:translate(-50%,-50%) scale(.94)}
+  30%,76%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.03)}}
+@media(prefers-reduced-motion:reduce){#title .cover-vfx{display:none}}
+/* เงาไล่จากขวาล่าง (โซนที่มีปุ่ม) เท่านั้น ให้ตัวหนังสือคมโดยไม่คลุมภาพประกอบทั้งจอแบบแผงเดิม */
+#title .scrim{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(760px 640px at 92% 78%,rgba(9,4,7,.62),transparent 68%)}
+
+#title .title-gear{position:absolute;top:4%;right:4.5%;width:clamp(38px,4.6vw,58px);aspect-ratio:1;
+  padding:0;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+#title .title-gear img{width:100%;height:100%;object-fit:contain;transition:transform .2s}
+#title .title-gear:hover img{transform:rotate(25deg)}
+
+#title .title-badge18{position:absolute;right:2.6%;bottom:3%;width:clamp(46px,5.4vw,74px);
+  pointer-events:none}
+#title .title-badge18 img{width:100%;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
+
+#title .title-menu{position:absolute;right:4%;top:48%;bottom:11%;width:min(84vw,34vh,420px);
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-end;
+  gap:clamp(10px,2vh,18px);text-align:right;padding-right:clamp(30px,5vw,50px)}
+#title .agewarn,#title .disclaimer{margin-top:auto}
+#title .disclaimer{margin-top:2px}
+#title .title-logo{width:100%;height:auto;display:block;
+  filter:drop-shadow(0 4px 18px rgba(0,0,0,.55))}
+
+#title .title-actions{display:flex;flex-direction:column;gap:clamp(6px,1.6vh,14px);width:100%}
+#title button.title-action{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;
+  justify-content:flex-end;cursor:pointer;padding:4px 2px;min-height:40px}
+#title button.title-action .glyph{flex:none;width:clamp(22px,2.6vw,34px)}
+#title button.title-action .glyph img{width:100%;display:block;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.7))}
+#title button.title-action .label{display:flex;flex-direction:column;align-items:flex-end}
+#title button.title-action b{font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.15rem,2.6vw,1.7rem);letter-spacing:.02em;color:#f4cd7c;
+  text-shadow:0 2px 0 rgba(30,10,6,.9),0 3px 6px rgba(0,0,0,.7)}
+#title button.title-action small{display:block;color:#e7d3b6;font-size:var(--text-xs);
+  text-shadow:0 1px 4px rgba(0,0,0,.85)}
+#title button.title-action:hover b{color:#ffe4a3}
+#title button.title-action:disabled{opacity:.4;cursor:not-allowed}
+
+#title .title-secondary{display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-top:2px}
+#title .title-secondary button{all:unset;cursor:pointer;color:#cbb695;font-size:var(--text-xs);
+  text-shadow:0 1px 4px rgba(0,0,0,.85);min-height:32px;display:flex;align-items:center}
+#title .title-secondary button:hover{color:#f4cd7c}
+
+#title .agewarn{display:flex;align-items:center;gap:6px;flex-direction:row-reverse;
+  color:#d9c6ab;font-size:10px;line-height:1.5;text-shadow:0 1px 4px rgba(0,0,0,.9);
+  max-width:100%}
+/* ป้าย 18+ ตัวจริง (icon_18+.png) อยู่มุมขวาล่างแล้วตามม็อกอัป — ซ่อนป้ายจิ๋วซ้ำในนี้ (เนื้อความ
+   ประโยคข้างๆ ยังพูดถึง "18 ปีขึ้นไป" อยู่ครบ ไม่ได้ตัดคำเตือนออก แค่เลิกซ้อนภาพสองอัน) */
+#title .agewarn .rate{display:none}
+#title .disclaimer{color:#c9b699;opacity:.75;font-size:9px;line-height:1.4;text-align:right;
+  text-shadow:0 1px 4px rgba(0,0,0,.9)}
+
+@media(max-width:520px),(max-height:520px){
+  #title .title-menu{width:min(88vw,300px);top:auto;bottom:15%;gap:8px}
+  #title button.title-action b{font-size:1.05rem}
+  #title .title-gear{width:34px}
+  #title .title-badge18{width:38px}
+}
+
+/* ---------- หน้าต่างมินิเกม: สอบสวน · ต่อสู้ ----------
+   สองอันใช้โครงเดียวกัน — โปรไฟล์สองฝั่ง ตัว SD ยืนอยู่ตรงกลาง แถบข้อมูลข้างล่าง */
+dialog.wide{max-width:860px}
+.duel{display:grid;grid-template-columns:1fr auto 1fr;gap:var(--space-3);align-items:end;
+  background:linear-gradient(180deg,rgba(46,16,22,.6),rgba(20,10,14,.9));
+  border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-3);margin-bottom:var(--space-3)}
+.duel .side{min-width:0;display:flex;flex-direction:column;gap:6px}
+.duel .side.foe{align-items:flex-end;text-align:right}
+.duel .pic{width:100%;max-width:132px;aspect-ratio:1;object-fit:contain;object-position:bottom;
+  background:rgba(0,0,0,.28);border:1px solid var(--border);border-radius:var(--radius-sm);
+  image-rendering:pixelated}
+.duel .nm{font-family:var(--font-display);font-size:1.05rem;color:var(--gold);line-height:1.25}
+.duel .sub{font-size:11px;color:var(--muted-foreground)}
+.duel .hpbar{width:100%;height:12px;background:var(--muted);border:1px solid var(--border);
+  border-radius:99px;overflow:hidden}
+.duel .hpbar i{display:block;height:100%;background:var(--success);transition:width .35s}
+.duel .hpbar.foe i{background:var(--destructive)}
+.duel .hpn{font-size:11px;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+.duel .vs{font-family:var(--font-display);font-size:1.6rem;color:var(--primary);padding-bottom:34px}
+@media(max-width:560px){.duel .pic{max-width:88px}.duel .vs{font-size:1.1rem;padding-bottom:22px}}
+
+.blog{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 12px;font-size:var(--text-sm);line-height:var(--leading-body);
+  max-height:150px;overflow:auto;margin-bottom:var(--space-3)}
+.blog div{padding:1px 0;color:var(--muted-foreground)}
+.blog div:last-child{color:var(--foreground)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-width:110px;min-height:48px}
+
+/* ---------- ปุ่มมาตรฐานร่วมหน้าสอบสวน+ต่อสู้ (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.3) ----------
+   .hud-btn ใช้กับปุ่มเมนูบาร์สอบสวน (.hud-menu) โดยตรง · .acts button (ปุ่มฉากต่อสู้) ได้สไตล์
+   ชุดเดียวกันผ่าน selector รวม โดยไม่ต้องแก้ template HTML ของฉากต่อสู้เลย — คนละคดีแต่ธีมเดียวกัน */
+.hud-btn,.acts button{
+  background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92));
+  border:1px solid var(--input);color:var(--foreground)}
+.hud-btn:hover:not(:disabled),.acts button:hover:not(:disabled){border-color:var(--gold);background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92))}
+.hud-btn[aria-pressed=true],.acts button[aria-pressed=true]{
+  background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);
+  box-shadow:0 0 0 1px var(--gold) inset}
+.hud-btn:disabled,.acts button:disabled{opacity:.38;pointer-events:none}
+.hud-btn.fire,.hud-btn.gold{
+  background:linear-gradient(180deg,#e6c07a,var(--gold));border:1px solid var(--gold);
+  color:var(--gold-foreground);font-weight:700;box-shadow:0 3px 10px rgba(212,163,85,.28)}
+
+/* แผงข้ออ้างในห้องสอบสวน */
+.claims{display:flex;flex-direction:column;gap:7px;margin-bottom:var(--space-3)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--space-3)}
+.tools button{flex:0 0 auto}
+.dossier{background:rgba(0,0,0,.22);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:8px 11px;margin-bottom:var(--space-3);font-size:var(--text-sm);line-height:var(--leading-body)}
+.dossier b{color:var(--gold)}
+.pure{border-left-color:#7fd8ff}
+.pure b{color:#7fd8ff}
+
+/* แถบตั้งค่า (ของเดิม — เหลือไว้เผื่อโค้ดอื่นอ้างถึง) */
+.setrow{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:var(--text-sm)}
+.setrow label{flex:1;min-width:0}
+.setrow input[type=range]{width:150px;accent-color:var(--gold)}
+
+/* ---------- หน้าตั้งค่าใหม่ (ข้อ B ชุด 15 — ตามม็อกอัป UI3-menu-*.jpg) ----------
+   กล่องมืดขอบทอง header มีเฟือง+ป้ายทอง "ตั้งค่า" ปิดด้วย X มุมขวา */
+dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
+  background:linear-gradient(180deg,#1c0f14 0%,#170b10 100%);padding:var(--space-5) var(--space-5) var(--space-4)}
+.settings-head{display:flex;align-items:center;gap:12px;margin-bottom:var(--space-5)}
+.settings-gear{width:34px;height:34px;object-fit:contain;flex:none}
+.settings-title-pill{flex:1;text-align:center;background:linear-gradient(180deg,#f3ce80,#c8933f);
+  color:#2a1608;font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:.03em;
+  border-radius:var(--radius);padding:9px 14px;box-shadow:0 2px 0 rgba(0,0,0,.35) inset,0 2px 4px rgba(0,0,0,.4)}
+.settings-close{all:unset;flex:none;width:40px;height:40px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.settings-close img{width:100%;height:100%;object-fit:contain}
+.settings-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.settings-row-icon{width:40px;height:40px;object-fit:contain;flex:none}
+.settings-row-icon--txt{display:flex;align-items:center;justify-content:center;width:40px;height:40px;
+  flex:none;color:var(--gold);font-weight:700;font-size:1.1rem}
+.settings-row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.settings-row-body label{font-size:var(--text-sm);font-weight:600;color:var(--foreground)}
+/* แถบเลื่อนแบบ pill ทอง ให้ใกล้ม็อกอัปมากกว่า accent-color เดิม (ลูกศรกลมสีเข้ม บนราง gold gradient) */
+.settings-row-body input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:14px;
+  background:linear-gradient(180deg,#f4d38a,#c8933f);border-radius:99px;outline:none;
+  box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 2px 4px rgba(0,0,0,.4) inset}
+.settings-row-body input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;
+  border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);
+  border:2px solid #e8c67a;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.5)}
+.settings-row-body input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3a2416,#150c07);border:2px solid #e8c67a;cursor:pointer}
+.settings-lang{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 var(--space-4)}
+.settings-lang label{font-size:var(--text-sm);font-weight:600}
+.lang-toggle{all:unset;cursor:pointer;display:block;min-height:40px}
+.lang-toggle img{display:block;height:40px;width:auto}
+.settings-actions{display:flex;gap:10px;justify-content:center;margin-top:var(--space-2)}
+.settings-square{all:unset;box-sizing:border-box;width:56px;height:56px;cursor:pointer;
+  border-radius:var(--radius-sm);overflow:hidden}
+.settings-square img{width:100%;height:100%;object-fit:contain}
+.settings-square:hover{filter:brightness(1.12)}
+@media(max-width:420px){.settings-square{width:48px;height:48px}.settings-title-pill{font-size:.92rem}}
+
+/* ---------- เวทีแบบเกม Turn-based RPG ----------
+   ใช้ร่วมกันทั้งห้องสอบสวนและฉากต่อสู้ (เจ้าของสั่ง 8 ก.ย. 2569 พร้อมส่งฉากหลังมาให้)
+   ฉากหลัง img/BG-Turn-Base.webp เป็นลานหินมองจากมุมสูง มีบัลลังก์อยู่กลางบน
+   ตัวละครจึงยืน "ริมล่าง" ของลาน ซ้าย-ขวา แล้วเว้นกลางไว้ให้เห็นลวดลายพื้น */
+/* ต้องมี [open] เสมอ — ไม่งั้น display:flex ทับ display:none ของกล่องที่ปิดแล้ว */
+dialog.rpg[open]{max-width:1020px;padding:0;overflow:hidden;background:var(--card);
+  max-height:92dvh;display:flex;flex-direction:column}
+dialog.rpg .arena{flex:0 0 auto}
+dialog.rpg .pad{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:var(--space-4);overscroll-behavior:contain}
+/* Battle7: the battle dialog itself is the game frame. Preparation and results remain
+   inside the frame so the field, combat effects, and HUD share one coordinate space. */
+dialog.rpg:has(.combat-arena)[open]{width:calc(100vw - 24px);max-width:none;
+  height:calc(100dvh - 24px);max-height:none;position:relative}
+dialog.rpg .combat-arena{flex:1 1 auto;min-height:0;aspect-ratio:auto;border-radius:var(--radius)}
+dialog.rpg:has(.combat-arena)>.pad{position:absolute;z-index:21;left:50%;bottom:3%;
+  width:min(420px,34%);max-height:30%;transform:translateX(-50%);padding:0;
+  text-align:center;pointer-events:none;background:transparent}
+dialog.rpg:has(.combat-arena)>.pad>*{pointer-events:auto}
+dialog.rpg:has(.combat-arena)>.pad:empty{display:none}
+dialog.rpg:has(>.pad .boss-prep)>.pad{top:13%;bottom:auto;width:min(580px,90%);max-height:40%}
+dialog.rpg:has(.combat-arena)>.boss-prep-actions{position:absolute;z-index:22;left:50%;
+  bottom:3%;transform:translateX(-50%);padding:0;border:0;background:transparent}
+dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
+@media(max-width:700px){
+  dialog.rpg:has(.combat-arena)>.pad{left:auto;right:3%;transform:none;bottom:29%;width:58%;max-height:26%}
+  dialog.rpg:has(>.pad .boss-prep)>.pad{left:50%;right:auto;transform:translateX(-50%);top:9%;bottom:auto;width:90%;max-height:40%}
+  dialog.rpg:has(.combat-arena)>.boss-prep-actions{left:auto;right:5%;bottom:27%;transform:none;padding:0;border:0;background:transparent}
+}
+/* 28A: ปุ่มจบศึกตอนชนะที่ถูกย้ายออกจาก .pad (ดู openBattle ใน ui.js) */
+.combat-arena .fin-float{position:absolute;z-index:22;margin:0;width:max-content;max-width:92%;pointer-events:auto}
+.combat-arena .fin-float.fin-foe{left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);justify-content:center}
+.combat-arena .fin-float.fin-center{left:50%;bottom:18%;transform:translateX(-50%);justify-content:center}
+@media(max-width:700px){
+  /* มือถือแนวตั้ง: กล่องผลรางวัล (.battle-scene-talk) อยู่ right:3% bottom:19% — ยกปุ่มขึ้นเหนือกล่อง เยื้องขวาพ้นตัวยมบาทน้อย */
+  .combat-arena .fin-float.fin-center{left:62%;bottom:calc(19% + 92px)}
+}
+/* มุมฉลุ HUD 4 มุม — ใช้ร่วมกันทั้ง .hud และ .arena (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.2)
+   วางเยื้องเข้ามาจากขอบจริง 6px ได้เอฟเฟกต์ "วงเล็บมุม" แบบ HUD เกมโดยไม่ต้องพึ่งรูป */
+.corner-tick{position:absolute;width:18px;height:18px;pointer-events:none;z-index:5}
+.corner-tick.tl{top:6px;left:6px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-tick.tr{top:6px;right:6px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.corner-tick.bl{bottom:6px;left:6px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-tick.br{bottom:6px;right:6px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.arena{position:relative;border:1.5px solid var(--gold);border-radius:var(--radius) var(--radius) 0 0;
+  overflow:hidden;background:#221324 center 38%/cover no-repeat;aspect-ratio:16/6.6;min-height:180px;
+  box-shadow:inset 0 0 0 1px rgba(212,163,85,.28),inset 0 0 28px rgba(0,0,0,.55)}
+.arena:before{content:'';position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 50% 120%,rgba(0,0,0,.55),transparent 60%),
+             linear-gradient(180deg,rgba(36,17,41,.5),transparent 38%,rgba(11,5,8,.75))}
+.arena .x{position:absolute;top:8px;right:8px;z-index:4;width:34px;height:34px;min-height:0;
+  padding:0;border-radius:50%;font-size:17px;line-height:1;
+  background:rgba(12,6,9,.86);border:1px solid var(--border);backdrop-filter:blur(3px)}
+.arena .x:hover:not(:disabled){border-color:var(--gold);background:rgba(61,32,41,.95)}
+/* ข้อ F.1 ชุด 15 — ตั้งค่า มุมขวาบน ตามม็อกอัป Battle5.jpg ("หยุด" ไม่ใส่ — เหตุผลเดียวกับข้อ E.1
+   ด้านบน: ฉากต่อสู้พักเกมหลักไว้แล้วตั้งแต่เปิดกล่อง (pauseForDlg()) ไม่มีกลไก pause ให้ผูกเพิ่ม) */
+.arena .icon-settings-mini{position:absolute;top:8px;z-index:4;width:34px;height:34px;min-height:0;
+  padding:5px;border-radius:50%;background:rgba(12,6,9,.86);border:1px solid var(--border);
+  backdrop-filter:blur(3px)}
+.arena .icon-settings-mini img{width:100%;height:100%;object-fit:contain}
+.arena .icon-settings-mini:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
+.arena .ttl{position:absolute;top:10px;left:44px;right:44px;text-align:center;
+  font-family:var(--font-display);font-size:1.15rem;color:var(--gold);
+  text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
+.arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
+  align-items:center;gap:5px;width:min(34%,240px)}
+.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{
+  animation:battleBreath 2.4s ease-in-out infinite}
+.arena.combat-arena .fig.foe{animation-delay:-1.1s}
+@keyframes battleBreath{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media(prefers-reduced-motion:reduce){.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{animation:none}}
+/* ข้อ D คุณเป้ 24 ก.ย. 2569 — ยมบาทน้อยต้องอยู่หน้าสุดเสมอ ไม่มีตัวไหนบังหัวได้
+   (เจอ: ยมทูตที่เข้ามาช่วย .fig.helper วาด z-index:3 ทับหัวยมบาทน้อยซึ่งเดิม z-index:2 ตามค่า .fig ฐาน) */
+.arena .fig.you{left:4%;z-index:4} .arena .fig.foe{right:4%}
+.arena .fig img{height:clamp(140px,24vh,215px);width:auto;max-width:100%;object-fit:contain;
+  object-position:bottom;image-rendering:pixelated;
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
+/* ⚠️ ทิศทาง — ข้อสรุปหลังเปิดดูสไปรท์จริงทุกใบ (8 ก.ย. 2569)
+   ทั้งยมบาทและวิญญาณ **วาดหันหน้าตรงเข้ากล้อง** ไม่ได้หันซ้ายหรือขวา
+   พลิกกระจกยังไงก็ไม่ทำให้หันเข้าหากัน มีแต่ทำให้ของที่ไม่สมมาตร (แฟ้ม ขลิบทอง) สลับข้าง
+   ทั้งคู่วาดค่อนไปทางซ้ายเล็กน้อย — วิญญาณจึงหันเข้าหาคู่กรณีพอดีอยู่แล้ว (ยืนขวา)
+   แต่ยมบาทน้อยยืนซ้าย เลยต้อง **พลิกกระจก** ถึงจะหันเข้าหากัน
+   จะให้เผชิญหน้ากันเต็มตัวจริง ๆ ต้องมีรูปท่าเฉียง (ASSET-PROMPTS.md ชุดที่ 6)
+   ซึ่ง heroFace() รอไฟล์อยู่แล้ว — วันนั้นค่อยเอาการพลิกนี้ออก */
+.arena .fig.you img,.hud .fig.you img{transform:scaleX(-1)}
+/* ข้อ C คุณเป้ 24 ก.ย. 2569 — img/hero-yama-atk.png (ต่างจากท่ายืนด้านบน) วาดหันขวา/ชกไปทางขวาอยู่แล้ว
+   กฎ scaleX(-1) ด้านบนตั้งไว้รองรับท่ายืนที่หันตรงเข้ากล้อง (สมมาตร ไม่มีทิศ) พอมาเจอท่าโจมตีที่มีทิศจริง
+   มันเลยพลิกกลับไปหันซ้ายผิดทาง — ยกเลิก flip เฉพาะตอนโชว์ท่าโจมตี (ui.js ใส่ class .atk ให้ตอนนั้น) */
+.arena .fig.you.atk img,.hud .fig.you.atk img{transform:scaleX(1)}
+.arena .fig.you.hit img{animation:hitshakeY .28s}
+@keyframes hitshakeY{0%,100%{transform:scaleX(-1) translateX(0)}
+  25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
+.arena .fig.hit img{animation:hitshake .28s}
+@keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ภาพคั่นท่าไม้ตาย — วางทับเฉพาะใน dialog ปัจจุบัน แล้วหายเองก่อนตาคู่ต่อสู้
+   ข้อ E คุณเป้ 24 ก.ย. 2569: เดิม .56s เร็วเกินจะทันเห็น ยืดเป็น 1.3s ให้ตรงกับ ACTION_CUT_MS ใน ui.js
+   (แตะที่ภาพข้ามได้ทันทีอยู่แล้ว ไม่ต้องรอครบก็ได้ — ผูก onclick ไว้ใน playActionCutscene) */
+.action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
+  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
+.action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
+  /* ภาพคัตซีนเดิมวาดยมบาทน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
+  transform:scaleX(-1)}
+.action-cutscene.right-facing img{transform:none;animation-name:actionRushRight}
+.action-cutscene.enemy-facing img{transform:none;animation-name:actionRushEnemy}
+.action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
+  mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
+.action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
+  border:1px solid var(--gold);pointer-events:none}
+@keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
+@keyframes actionRush{0%{transform:scaleX(-1) scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scaleX(-1) scale(1.03) translateX(1%)}88%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRushRight{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRushEnemy{0%{transform:scale(1.18) translateX(5%);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(1.03) translateX(-1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
+
+.plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
+  border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  padding:5px 9px;width:100%;text-align:center;backdrop-filter:blur(3px)}
+.plate b{display:block;font-size:var(--text-sm);color:var(--gold);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plate .sub{font-size:10px;color:var(--muted-foreground)}
+.plate .hpbar{margin-top:4px;height:9px;background:#2a171d;border:1px solid var(--border);
+  border-radius:99px;overflow:hidden}
+.plate .hpbar i{display:block;height:100%;background:var(--success);transition:width .3s}
+.plate .hpbar.foe i{background:var(--destructive)}
+.plate .hpn{font-size:10px;color:var(--muted-foreground);font-variant-numeric:tabular-nums;margin-top:1px}
+@media(max-width:600px){
+  .arena{aspect-ratio:16/8}
+  .arena .fig{width:42%} .arena .fig.you{left:1%} .arena .fig.foe{right:1%}
+  .arena .ttl{font-size:.95rem}
+  .arena .fig img{height:clamp(105px,19vh,165px)}
+  /* .fig.helper ใช้ค่า left/width/height ไม่แยกมือถือ — คลิปด้วย clamp(vh) อยู่แล้วจึงย่อขนาดตามจอเตี้ยเอง
+     ตำแหน่ง/ขนาดของ .battle-squad (แถวยมทูตในทีม ที่ใช้งานได้จริง) กำหนดที่ src/command-wheel.css ที่เดียว */
+  .acts button{min-height:42px}
+}
+
+/* เมนูคำสั่งแบบ RPG — แถบปุ่มใหญ่ ๆ กดสลับหน้าที่อยู่ข้างล่าง */
+.cmd{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:var(--space-3) 0}
+.cmd button{min-height:46px;font-size:var(--text-sm);font-weight:600;
+  background:var(--secondary);border:1px solid var(--input)}
+.cmd button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);
+  color:var(--primary-foreground)}
+.cmd button small{display:block;font-weight:400;font-size:10px;opacity:.72}
+.panelbox{background:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:var(--space-3);min-height:132px}
+.resist{background:rgba(224,74,47,.14);border:1px solid var(--destructive);
+  border-radius:var(--radius-sm);padding:7px 10px;margin-bottom:var(--space-3);
+  font-size:var(--text-xs);line-height:1.6;color:var(--foreground)}
+.verdictgrid{display:grid;gap:var(--space-3)}
+.verdictgrid .lb{font-size:11px;color:var(--muted-foreground);margin-bottom:4px;display:block}
+.verdictgrid .row2{display:flex;gap:5px;flex-wrap:wrap}
+.verdictgrid .row2 button{padding:6px 10px;min-height:0;font-size:var(--text-xs)}
+.verdictgrid .row2 button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+
+/* ---------- หน้าสอบสวนแบบ HUD เกม Turn-based RPG (8 ก.ย. 2569 รอบสอง) ----------
+   เจ้าของอ้างอิงเลย์เอาต์จากเกม tactics: ฉากเป็นพื้นหลังเต็มจอ · HUD ลอยทับเป็นชั้น ๆ
+     บนสุด = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
+     ล่างซ้าย = โปรไฟล์ Yama + ของ · ล่างขวา = โปรไฟล์วิญญาณ */
+/* min-width กันไว้อีกชั้น (17 ก.ย. 2569 — เจ้าของเจอห้องสอบสวนหดเหลือ ~1/4 จอหลังกดปุ่ม บน desktop)
+   ไล่ทุกจุดที่คำนวณ width ของกล่องนี้แล้วไม่พบตัวที่ทำให้แคบลงจริง (ทดสอบผ่าน Playwright
+   ครบทุกปุ่ม/ทุกรอบสอบสวน/ความกว้างจอ 700-1920 ทั้ง Chromium และ WebKit ไม่เจอเคสที่หด)
+   ใส่ min-width ชนกับ max-width ไว้เป็นเกราะสุดท้าย — ต่อให้มี style อื่นมาแย่งชิง width ทีหลัง
+   กล่องนี้ก็หดต่ำกว่านี้ไม่ได้อีก (บั๊กเดิมถ้าเกิดซ้ำจะรู้ทันทีว่าไม่ใช่ที่ width ของ dialog เอง) */
+dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,calc(100% - 32px));
+  box-sizing:border-box;padding:0;border:0;background:transparent;
+  max-height:94dvh;overflow:hidden}
+/* กรอบทอง 2 ชั้น + พื้นหลังไล่สีม่วง-ดำ แทนกล่องดำทึบเดิม (สเปก Vera 18 ก.ย. 2569 หัวข้อ 1.2)
+   background-image ตัวจริง (BG-Turn-Base.webp) มาจาก inline style ใน ui.js ทับ background-image
+   ของกฎนี้เสมอ (inline ชนะ specificity) — ไล่สีม่วงข้างล่างนี้จึงเห็นผลตอนภาพฉากโหลดไม่ทัน/พัง
+   เท่านั้น ส่วนที่ทำให้กรอบดูเป็นม่วง-ดำจริงบนจอปกติคือ .hud-scrim (คนละเลเยอร์ ทับอยู่ข้างบน) */
+.hud{position:relative;display:flex;flex-direction:column;gap:0;width:100%;box-sizing:border-box;
+  height:min(90dvh,830px);
+  background:linear-gradient(165deg,var(--hell-purple-1) 0%,#1a0a12 55%,var(--background) 100%) center 42%/cover no-repeat;
+  border:1.5px solid var(--gold);box-shadow:inset 0 0 0 1px rgba(212,163,85,.28),inset 0 0 28px rgba(0,0,0,.55);
+  border-radius:var(--radius);overflow:hidden;color:var(--foreground)}
+/* สต็อปสีปรับเป็นม่วง-ดำ (แทนดำล้วน) ให้เข้าธีมข้อ 4 ของคุณเป้ — ทำได้ถ้ามีเวลาตามสเปก Vera
+   แต่ปรับด้วยเพราะเป็นจุดที่ "ดูเป็นเกม ไม่ใช่กล่องดำ" เห็นผลจริงที่สุด (ภาพฉากทับ background ของ .hud เอง
+   จาก inline style เสมอ ดูคอมเมนต์ที่ .hud) · ไม่ขยับ % ของสต็อป (แถวเมนูใหม่บางกว่าที่กังวลไว้ ของเดิมยังพอดี) */
+.hud-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(36,17,41,.88) 0%,rgba(20,10,14,.22) 26%,rgba(20,10,14,.24) 52%,rgba(11,5,8,.90) 100%)}
+.hud > *{position:relative;z-index:2}
+/* ข้อ E.1 ชุด 15 — ปิด/ตั้งค่า ย้ายมาซ้ายบนตามม็อกอัป Comment7.jpg (ของเดิมอยู่ขวาบน)
+   "หยุด" ในม็อกอัปไม่ใส่ต่อ — เกมพักอัตโนมัติทุกครั้งที่กล่องนี้เปิดอยู่แล้ว (pauseForDlg())
+   ไม่มีกลไก pause แยกต่างหากให้ผูก ใส่ปุ่มปลอมที่กดแล้วไม่ทำอะไรจะขัดกับกฎห้ามแต่งกลไกใหม่ */
+.hud .top-left-icons{position:absolute;top:8px;left:8px;z-index:6;display:flex;gap:6px}
+.hud .x{position:static;z-index:6;width:34px;height:34px;min-height:0;padding:0;
+  border-radius:50%;font-size:17px;line-height:1;background:rgba(12,6,9,.9);border:1px solid var(--border)}
+.hud .x:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
+.hud .icon-settings-mini{width:34px;height:34px;min-height:0;padding:5px;border-radius:50%;
+  background:rgba(12,6,9,.9);border:1px solid var(--border)}
+.hud .icon-settings-mini img{width:100%;height:100%;object-fit:contain}
+.hud .icon-settings-mini:hover{border-color:var(--gold);background:rgba(61,32,41,.95)}
+
+.hud-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 52px 8px 14px}
+.hud-top .chip{background:rgba(12,6,9,.82);border:1px solid var(--border);font-size:var(--text-xs);
+  padding:4px 9px;backdrop-filter:blur(3px)}
+.hud-top .ttl{margin-left:auto;font-family:var(--font-display);color:var(--gold);font-size:var(--text-sm)}
+
+/* ---------- เมนูบาร์คำสั่ง (แก้ 18 ก.ย. 2569 รอบ 2 — คุณเป้ทักว่าเดิมยังเป็นแถบยาวจากซ้ายสุด) ----------
+   .hud-left ของเดิมยังอยู่ในไฟล์เหมือนเดิมทุกกฎ — หน้าสถานี (.st-hud) ยังใช้ class เดิม (.hud-left.st-left)
+   อยู่ ไม่ได้ถูกแตะ
+   รอบแรก (คอมมิต 6ac3c03) ย้าย .hud-menu ออกมาเป็นแถวแนวนอนเต็มความกว้าง .hud ทั้งใบ — คุณเป้ดูจริงแล้ว
+   บอกว่ายังไม่ใช่: อยากให้แถบนี้ "ชิดคอลัมน์ขวา อยู่เหนือ .hud-right พอดีความกว้างเดียวกับแผงคดี" ไม่ใช่กว้างเต็มจอ
+   รอบนี้ย้าย .hud-menu เข้าไปเป็นลูกของ .hud-body ด้วย grid-template-areas (ดูด้านล่าง) แทนการเป็นพี่น้อง
+   นอกกริดแบบเดิม — คอลัมน์ขวาจึงมี 2 แถว: เมนู (บน) + แผงคดี .hud-right (ล่าง) กว้างเท่ากันโดยอัตโนมัติ
+   เพราะเป็นคอลัมน์เดียวกันของกริดเดียวกัน (ไม่ต้องเซ็ตความกว้างซ้ำเป็นตัวเลข)
+   ปุ่มมีสูงสุด 7 ปุ่ม (จี้/ส่งไป/ใครคุม/หนักแค่ไหน + พัก/ขัง/ออกหมาย) เปลี่ยนจากแถวเดียวเลื่อนซ้าย-ขวา
+   เป็นกริด 3 คอลัมน์ (2-3 แถวตามจริง — คุณเป้บอก "2 แถว 3 ปุ่มก็โอเค") ใช้ display:contents บน .seg/.go-cluster
+   ให้ปุ่มข้างในทั้งสองกลุ่มไหลเข้ากริดเดียวกันโดยไม่ต้องแก้โครง HTML ใน ui.js (data-cmd/id เดิมทุกตัว) */
+.hud-menu{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 0 0}
+.hud-menu .seg,.hud-menu .go-cluster{display:contents}
+.hud-menu button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  border-radius:10px;backdrop-filter:blur(3px);text-align:center;min-height:52px;padding:6px 4px;
+  width:100%;box-sizing:border-box}
+.hud-menu button .ic{font-size:16px;line-height:1}
+.hud-menu button .lb2{min-width:0;line-height:1.15;font-size:11.5px}
+/* subtext ("จี้ได้อีก 2 ครั้ง" ฯลฯ) ต้องอ่านได้เสมอตามคำสั่งคุณเป้ — ไม่ซ่อน ไม่ตัดด้วย ellipsis
+   แถวเดิม ให้ wrap ได้ 2 บรรทัดถ้ายาวเกินความกว้างคอลัมน์แคบ ๆ นี้ */
+.hud-menu button .lb2 small{display:block;font-size:9.5px;color:var(--muted-foreground);white-space:normal}
+.hud-menu button[aria-pressed=true] .lb2 small{color:rgba(255,255,255,.75)}
+.hud-menu #t-go .lb2{font-size:12.5px;font-weight:700}
+
+.hud-body{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,420px);
+  grid-template-rows:auto 1fr;grid-template-areas:"stage menu" "stage right";gap:8px 14px;padding:0 14px}
+.hud-stage{grid-area:stage} .hud-menu{grid-area:menu} .hud-right{grid-area:right}
+
+/* แถวคำสั่งแนวตั้งฝั่งซ้าย */
+.hud-left{display:flex;flex-direction:column;gap:6px;align-content:flex-start;
+  min-height:0;overflow-y:auto;padding-bottom:4px}
+.hud-left button{display:flex;align-items:center;gap:8px;text-align:left;min-height:44px;padding:6px 10px;
+  background:rgba(20,10,15,.86);border:1px solid var(--input);backdrop-filter:blur(3px);font-size:var(--text-sm)}
+.hud-left button .ic{font-size:1.15rem;width:22px;text-align:center;flex:none}
+.hud-left button .lb2{min-width:0;line-height:1.2}
+.hud-left button .lb2 small{display:block;font-size:10px;color:var(--muted-foreground);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:104px}
+.hud-left button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hud-left button[aria-pressed=true] small{color:rgba(255,255,255,.75)}
+.hud-left .fire{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground);font-weight:600}
+.hud-left .fire small{color:rgba(26,13,16,.7)}
+
+/* เวทีตรงกลาง — ตัวละครยืนเผชิญหน้ากัน */
+/* overflow:hidden กันตัวละครโผล่ทะลุขึ้นไปทับ .hud-menu ด้านบน — เกิดจริงบนจอ 360×640 ตอนบีบ
+   .hud-stage ให้เตี้ยลงมากเพื่อคืนพื้นที่ให้ .hud-rec (ตัวละครสูงกว่ากรอบเล็กน้อยที่ bottom:6%) */
+.hud-stage{position:relative;min-width:0;overflow:hidden}
+.hud .fig{position:absolute;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:4px}
+.hud .fig.you{left:2%} .hud .fig.foe{right:2%}
+.hud .fig img{height:clamp(150px,32vh,230px);width:auto;object-fit:contain;object-position:bottom;
+  image-rendering:pixelated;filter:drop-shadow(0 8px 12px rgba(0,0,0,.7))}
+.hud .fig .nm{font-size:11px;color:var(--gold);background:rgba(12,6,9,.8);border-radius:99px;padding:1px 8px}
+
+/* ขวาบน — สำนวนกับคำให้การ */
+/* overflow-y:auto (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) — เจอบั๊กจริงตอนทดสอบปุ่มมินิเกมที่ประตูสวรรค์/หอทะเบียนกรรม:
+   .hud-card ลูกของแถวนี้ตั้ง min-height:0 ไว้ (บรรทัด .hud-card ด้านล่าง) ทำให้ flexbox ยอมบีบการ์ดให้เตี้ยกว่า
+   เนื้อหาจริงได้เมื่อพื้นที่ไม่พอ (จอเตี้ย/การ์ดขวายาว) เนื้อหาที่ล้นออกมาเลยไปโดนการ์ดถัดไป "ทับกันเงียบ ๆ"
+   กดปุ่มที่ล้นออกมาไม่ติดเลยแม้ตาเห็นปุ่มอยู่ (พิสูจน์ด้วย elementsFromPoint จริง ไม่ใช่เดา) — .hud-left
+   ข้าง ๆ กันแก้ปัญหานี้ด้วยวิธีนี้อยู่แล้วมาตั้งแต่ต้น เอาแบบเดียวกันมาใช้ฝั่งขวาด้วย ไม่กระทบจอที่เนื้อหาพอดีอยู่แล้ว */
+.hud-right{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.hud-card{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
+  border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:var(--radius-sm);
+  padding:9px 11px;backdrop-filter:blur(3px);min-height:0}
+.hud-card h4{margin:0 0 6px;font-size:11px;color:var(--muted-foreground);font-weight:400;
+  text-transform:none;letter-spacing:.3px}
+/* สำนวน (.hud-rec) ห้ามสกอลล์ภายในตัวเองทุกจอ (สเปก Vera 18 ก.ย. 2569 หัวข้อ 2/3.3) — ตัวเลือก/บันทึก
+   ข้างล่างสกอลล์ได้ตามปกติ (.hud-opt/.hud-log) เพราะยาวได้ไม่จำกัดตามจำนวนบรรทัดที่สะสม */
+/* พื้นผิวกระดาษแฟ้มคดี (เพิ่ม 18 ก.ย. 2569 — คุณเป้ gen เอง ผ่าน Mind Output/Mind/2026-09-18-avegee-trial-paper-texture.md)
+   การ์ดนี้สูงไม่เกิน 190px ทุกจอ (ต่ำกว่าผืนลาย 256px เสมอ) จึงไม่มีทางเห็นแนวต่อซ้ำในแนวตั้งเลย
+   แก้ 18 ก.ย. 2569 (คุณเป้บ่นว่ายังดูเป็นกล่องดำทึบ): เดิมวาง gradient ม่วง-เกือบดำ (สต็อปล่างทึบถึง .92)
+   ไว้ "ใต้" แล้วเอาลาย multiply ทับ — multiply กับพื้นเกือบดำ ผลคูณออกมาเกือบดำเสมอ ลายจึงจมหายไปหมด
+   (ตรวจจริงด้วย getComputedStyle + screenshot ซูม พบว่า background-image โหลด 200 ปกติทุกจอ ไม่ใช่ 404
+   — ปัญหาอยู่ที่สูตรผสมสี ไม่ใช่ไฟล์หาย) สลับลำดับ: ลายกระดาษเป็นชั้นล่างสุด (เห็นเต็มความสว่างของมันเอง)
+   gradient ม่วง-ดำโปร่งแสงทับข้างบนแบบ normal (ไม่ multiply) แค่ "ย้อมสี" ให้เข้าธีม ไม่ใช่ลบลายทิ้ง
+   ลดความทึบสต็อปล่างจาก .92 → .68 ด้วย ให้กระดาษยังเห็นชัดที่ขอบล่างการ์ด ตัวหนังสือยังอ่านง่าย
+   (สีตัวหนังสือ .deed ใช้ var(--foreground) โทนอ่อนอยู่แล้ว ตัดกับพื้นน้ำตาล-ม่วงเข้มได้สบาย) */
+.hud-rec{flex:0 0 auto;max-height:36%;overflow-y:auto;padding:10px 12px;
+  background-image:linear-gradient(180deg,rgba(74,31,61,.45) 0%,rgba(20,10,14,.68) 100%),url('img/tex-paper-hell.png');
+  background-size:cover,256px 256px;background-repeat:no-repeat,repeat;background-blend-mode:normal,normal}
+.hud-rec .deed{font-size:var(--text-sm);line-height:1.55}
+/* ---- หน้าของสถานีหนึ่งหลัง (9 ก.ย. 2569) ---- */
+/* ชุดที่ 10 คุณเป้ 25 ก.ย. 2569 (ข้อ A2) — .hud-body เดิม (บรรทัด ~744) ประกาศ
+   grid-template-areas:"stage menu" "stage right" ไว้แค่ 2 คอลัมน์ (สำหรับหน้าไต่สวน ที่ใช้
+   .hud-stage/.hud-menu/.hud-right) แต่หน้าสถานีขยายเป็น 3 คอลัมน์ (.st-left/.st-room/.hud-right)
+   โดยไม่เคยประกาศ areas ของตัวเองเลย — เบราว์เซอร์เลยตีความ "right" ตาม string เดิม (คอลัมน์ที่ 2
+   ของ 2 คอลัมน์) ผลคือ .hud-right ไปเรียงซ้อนอยู่ "ใต้" คอลัมน์กลาง (.st-room) แทนที่จะอยู่ขวาจริง
+   ถูกบีบเหลือแค่เศษพื้นที่แถวสุดท้าย (~190px) เนื้อหาในนั้น (ปุ่ม "ให้บุญตรวจกรรม" ฯลฯ) เลยทับกับ
+   การ์ด "ผู้คุมประจำหลังนี้" จนกดไม่ติดจริง (พิสูจน์ด้วย elementsFromPoint ผ่าน Playwright)
+   แก้ด้วยการประกาศ areas ของหน้าสถานีเองให้ครบ 3 คอลัมน์ 1 แถว แล้วตั้งชื่อ area ให้ .st-left/.st-room
+   ตรง ๆ ไม่พึ่ง auto-placement อีก (ต้นเหตุของบั๊กนี้ทั้งหมด) */
+.st-hud{background:#0d0508}
+.st-hud .hud-body{grid-template-columns:minmax(160px,200px) minmax(0,1fr) minmax(230px,260px);
+  grid-template-rows:1fr;grid-template-areas:"left room right";gap:8px}
+.st-hud .st-left{grid-area:left}
+.st-hud .st-room{grid-area:room}
+.st-hud .hud-right{grid-area:right}
+/* ---------- ห้องสถานีตามแบบ UI4 (ชุด 27A) ----------
+   จอเต็มกรอบเกม: ฉาก canvas เต็มกรอบ · การ์ดหัวเรื่องซ้ายบน · พัก/ปิดขวาบน · ปุ่มทองลอยตามจุดในแบบ · HUD ล่างซ้าย
+   ขนาดทั้งหมดบนจอกว้างคิดเป็น cqw ของกรอบ (แบบวาดที่กรอบกว้าง 1913px → 1cqw ≈ 19px ของแบบ) ย่อ/ขยายตามจอได้
+   จอแคบ (≤1100px): เรียงเป็นแนวตั้ง — การ์ด · ฉาก · ปุ่ม · แผงรายชื่อ · HUD (ไม่มีอะไรลอยทับจนกดไม่ได้) */
+.st-hud.zone1-room{container-type:inline-size;background:#0d0508;border:1px solid var(--gold);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6);border-radius:14px}
+.st-hud.zone1-room > *{z-index:2}
+.st-hud.zone1-room .st-room{z-index:0}
+.st-card{background:rgba(34,17,30,.95);border:1px solid var(--gold);color:#f2e6d6}
+.st-card h2{margin:0;font-family:var(--font-display);font-weight:600;color:#e8b65e;line-height:1.15}
+.st-card p{margin:0;color:#f0e4d6;line-height:1.5}
+.st-icon-btn{all:unset;box-sizing:border-box;cursor:pointer;display:block;flex:none}
+.st-icon-btn img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
+.st-icon-btn:hover img{transform:scale(1.06)}
+.st-icon-btn:focus-visible,.st-hud-item:focus-visible{outline:2px solid #fff4c7;outline-offset:2px}
+.st-controls{display:flex;align-items:center}
+.st-avatar{display:flex;flex-direction:column;align-items:stretch;flex:none}
+.st-ava-row{display:flex;align-items:flex-start}
+.st-avatar img{aspect-ratio:1;object-fit:cover;object-position:top;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6);flex:none}
+.st-avatar small{display:block;color:#f2e6d6;font-weight:600;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.95);white-space:nowrap}
+.st-hud-item{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;flex:none}
+.st-hud-item img{object-fit:contain;display:block;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6))}
+.st-hud-item span{color:#e8b65e;font-weight:600;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.95);line-height:1.15}
+.st-action{display:flex;flex-direction:column;align-items:center;text-align:center}
+.st-action small,.st-alert small{color:#e8dccb;opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.st-hpbar{display:block;border-radius:99px;background:#0b0508;overflow:hidden}
+.st-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#1fb866,#14994f)}
+.st-hp{color:#f4ead9;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.st-drawer{background:rgba(34,18,30,.96);border:1px solid rgba(232,182,94,.35);overflow-y:auto;overscroll-behavior:contain}
+.st-drawer[hidden]{display:none}
+.st-pane[hidden]{display:none}
+.st-pane-title{color:#f6ecdc;font-weight:700}
+.st-pane-note{color:#e8b65e}
+.st-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.045);color:#d6cbbd}
+.st-row .btn-gold{flex:none;white-space:nowrap}
+.st-action .btn-gold,.st-alert .btn-gold,.st-row .btn-gold{width:auto}
+.st-action .btn-gold:disabled,.st-alert .btn-gold:disabled,.st-row .btn-gold:disabled{opacity:.5}
+
+@media (min-width:1101px){
+  dialog.hudwrap:has(.st-hud.zone1-room){width:min(calc(100vw - 32px),calc((100dvh - 24px) * 1.866));
+    min-width:0;max-width:none;max-height:none;overflow:visible}
+  .st-hud.zone1-room{display:block;width:100%;height:auto;aspect-ratio:1913/1025;overflow:hidden}
+  .st-hud.zone1-room > *{position:absolute}
+  .st-hud.zone1-room .st-room{inset:0;display:block}
+  .st-hud.zone1-room .st-room canvas{width:100%;height:100%;border-radius:0;background:#120810}
+  .st-card{left:1.8cqw;top:1.7cqw;box-sizing:border-box;width:max-content;max-width:28.5cqw;padding:1.55cqw 2.1cqw 1.6cqw;border-radius:1.15cqw}
+  .st-card[data-room=tarang]{max-width:26cqw}
+  .st-card h2{font-size:1.9cqw;margin-bottom:.55cqw}
+  .st-card p{font-size:1.12cqw}
+  .st-controls{right:8.7cqw;top:2.2cqw}
+  .st-controls .st-icon-btn{width:3.55cqw;height:3.55cqw}
+  /* ปุ่มปิดทองมาจากตัวเฝ้ากลางของกล่อง (.modal-corner-close ใน ui.js) — แค่วางตำแหน่งให้ตรงแบบ */
+  dialog#dlg:has(.st-hud.zone1-room) > .modal-corner-close{--dw:min(calc(100vw - 32px),calc((100dvh - 24px) * 1.866));
+    right:calc(var(--dw) * .03);top:calc(var(--dw) * .0215);width:calc(var(--dw) * .032);height:calc(var(--dw) * .032)}
+  .st-bottom-left{left:2.6cqw;bottom:1.7cqw;display:flex;align-items:flex-end;gap:1.5cqw}
+  .st-avatar{width:7.6cqw}
+  .st-avatar img{width:6.2cqw;border-radius:.5cqw}
+  .st-hud.zone1-room .hud-rank-stars{margin-left:.5cqw}
+  .st-hud.zone1-room .hud-rank-stars .rk-star{font-size:1.2cqw}
+  .st-avatar .hud-hpbar{width:6.2cqw;height:.55cqw;margin-top:.35cqw}
+  .st-avatar small{font-size:1.05cqw;width:6.2cqw;margin-top:.25cqw}
+  .st-hud-item{margin-bottom:.1cqw}
+  .st-hud-item img{height:4cqw;width:auto;max-width:3.6cqw}
+  .st-hud-item span{font-size:1.02cqw;margin-top:.3cqw;max-width:5cqw}
+  #st-actions{inset:0;pointer-events:none}
+  .st-action{position:absolute;left:var(--action-x);top:var(--action-y);transform:translate(-50%,-1.6cqw);pointer-events:auto}
+  .st-action .btn-gold,.st-alert .btn-gold{min-width:11.6cqw;height:3.1cqw;padding:0 1.6cqw .15cqw;font-size:1.32cqw;border-radius:.6cqw}
+  .st-action small{margin-top:.55cqw;font-size:.98cqw;max-width:26cqw;line-height:1.35}
+  .st-hpbar{width:11.6cqw;height:.55cqw;margin-top:.9cqw}
+  .st-hp{font-size:1.1cqw;margin-top:.4cqw}
+  .st-alert{left:50%;bottom:2.2cqw;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+  .st-alert:empty{display:none}
+  .st-alert small{font-size:.98cqw;margin-top:.4cqw}
+  .st-drawer{right:2.7cqw;top:13.6%;width:34.3cqw;max-height:56%;box-sizing:border-box;padding:1.1cqw 1.1cqw 1cqw;border-radius:1.3cqw}
+  .st-pane-title{font-size:.98cqw;padding:.25cqw .6cqw .6cqw}
+  .st-pane-note{font-size:.95cqw;padding:0 .6cqw .5cqw}
+  .st-row{margin-top:.5cqw;min-height:4.1cqw;padding:.45cqw .6cqw .45cqw 1.3cqw;border-radius:.9cqw;font-size:1.06cqw}
+  .st-row .btn-gold{min-width:9.7cqw;height:3cqw;padding:0 1cqw .15cqw;font-size:1.25cqw;border-radius:.55cqw}
+}
+@media (max-width:1100px){
+  dialog.hudwrap:has(.st-hud.zone1-room)[open]{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);
+    width:calc(100% - 12px);min-width:0;margin:6px auto;padding:0}
+  .st-hud.zone1-room{display:flex;flex-direction:column;gap:10px;height:100%;max-height:none;box-sizing:border-box;
+    padding:10px 10px max(12px,env(safe-area-inset-bottom));overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+  .st-hud.zone1-room > *{position:static;flex:none}
+  .st-card{order:1;padding:10px 14px 12px;border-radius:14px}
+  .st-card h2{font-size:20px;line-height:30px;margin:0 0 10px;padding-right:104px;min-height:30px}
+  .st-card p{font-size:13px}
+  .st-hud.zone1-room .st-room{order:2;position:relative;z-index:auto;width:100%;min-height:0;aspect-ratio:1913/1025;border-radius:10px;overflow:hidden}
+  .st-hud.zone1-room .st-room canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
+  #st-actions{order:3;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
+  .st-action{width:100%}
+  .st-action .btn-gold,.st-alert .btn-gold{min-width:160px;max-width:100%;height:50px;padding:0 20px 3px;font-size:16px}
+  .st-action small,.st-alert small{margin-top:6px;font-size:12px;line-height:1.4}
+  .st-hpbar{width:160px;height:6px;margin-top:10px}
+  .st-hp{font-size:13px;margin-top:4px}
+  .st-alert{order:4;display:flex;flex-direction:column;align-items:center}
+  .st-alert:empty{display:none}
+  .st-drawer{order:5;box-sizing:border-box;padding:10px;border-radius:14px;max-height:36dvh;min-height:0}
+  .st-pane-title{font-size:14px;padding:2px 4px 8px}
+  .st-pane-note{font-size:12px;padding:0 4px 8px}
+  .st-row{margin-top:6px;min-height:54px;padding:6px 8px 6px 12px;border-radius:10px;font-size:13px}
+  .st-row .btn-gold{min-width:112px;height:44px;padding:0 12px 3px;font-size:14px}
+  .st-hud.zone1-room > .st-controls{position:absolute;top:10px;right:60px;z-index:5}
+  .st-controls .st-icon-btn{width:42px;height:42px}
+  .st-hud.zone1-room .st-arch,.st-hud.zone1-room .mg-ov{position:fixed;inset:8px;z-index:120}
+  .st-bottom-left{order:6;display:flex;align-items:flex-end;gap:14px;margin-top:auto;padding:4px 4px 0}
+  .st-avatar{width:78px}
+  .st-avatar img{width:62px;border-radius:8px}
+  .st-ava-row .hud-rank-stars{margin-left:4px}
+  .st-avatar .hud-hpbar{width:62px;height:6px}
+  .st-avatar small{font-size:11px;width:78px}
+  .st-hud-item{min-width:56px;min-height:44px}
+  .st-hud-item img{height:46px;width:auto;max-width:44px}
+  .st-hud-item span{font-size:11px;margin-top:2px}
+}
+@media (max-width:1100px){.st-hud .hud-body{grid-template-columns:minmax(140px,170px) minmax(0,1fr) minmax(200px,220px)}}
+.st-left{overflow-y:auto}
+.st-desc{font-size:var(--text-xs);line-height:var(--leading-body);color:var(--foreground)}
+.st-meta{margin-top:6px;font-size:10px;color:var(--muted-foreground)}
+/* ฉากเดินได้ในหน้าสถานี — canvas เต็มช่องกลาง (src/room.js เป็นคนวาด) */
+.st-room{position:relative;min-width:0;min-height:0;display:flex}
+.st-room canvas{flex:1 1 auto;width:100%;height:100%;display:block;touch-action:none;cursor:pointer;
+  border-radius:var(--radius-sm);background:#120810}
+/* แฟ้มทะเบียนกรรม — ทับบนฉากในห้องเดียวกัน ไม่ใช่กล่องใหม่ */
+.st-arch{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;gap:6px;
+  background:rgba(10,5,8,.93);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px}
+.arch-head{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:var(--text-sm)}
+.arch-head button{margin-left:auto;min-height:32px;padding:4px 10px;font-size:var(--text-xs)}
+.arch-sum{font-size:10px;color:var(--muted-foreground)}
+.arch-list{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:5px;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.arch-row{background:rgba(24,12,18,.85);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px}
+.arch-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:var(--text-xs)}
+.arch-meta{font-size:10px;color:var(--muted-foreground);line-height:1.5}
+.arch-deed{font-size:10px;color:var(--foreground);opacity:.75;margin-top:2px}
+/* คำตัดสินของพ่อต่อคดีที่ผ่านไปแล้ว (ข้อ 2 ของเจ้าของ 11 ก.ย. 2569) */
+.arch-dad{margin-top:4px;padding:4px 7px;border-left:3px solid var(--gold);
+  background:rgba(212,163,23,.07);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-size:10px;line-height:1.55;color:var(--muted-foreground)}
+.arch-dad span{display:block;color:var(--foreground);opacity:.8;margin-top:1px}
+.arch-dadsum{font-size:10px;line-height:1.6;color:var(--muted-foreground);
+  background:rgba(212,163,23,.08);border:1px solid var(--gold);
+  border-radius:var(--radius-sm);padding:6px 8px}
+.arch-dadsum b:first-child{display:block;color:var(--gold);font-size:var(--text-xs);margin-bottom:2px}
+.st-acts{display:flex;flex-direction:column;gap:6px}
+.st-acts button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;
+  min-height:44px;padding:6px 10px;font-size:var(--text-xs)}
+.st-acts button small{font-size:10px;color:var(--muted-foreground);font-weight:400}
+.st-acts button.gold small{color:rgba(26,13,16,.72)}
+/* ---------- มินิเกม "เร่งการทำงาน" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) ----------
+   กรอบร่วมของมินิเกมทั้ง 7 หลัง (src/minigames/*.js) — ทับอยู่บนฉากในหน้าสถานีเดียวกับ .st-arch
+   (แนวเดียวกับแฟ้มทะเบียนกรรม) z-index สูงกว่า .st-arch หนึ่งขั้นเพราะเปิดทับกันไม่ได้อยู่แล้วแต่กันพลาด
+   ตัวเกมแต่ละหลังมี CSS เฉพาะของตัวเองต่อท้ายบล็อกนี้ (คนละคอมมิต แต่รวมไว้ในบล็อกเดียวกันให้หาง่าย) */
+.mg-ov{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;gap:8px;
+  background:rgba(8,4,7,.95);border:1px solid var(--gold);border-radius:var(--radius-sm);
+  padding:12px;box-sizing:border-box}
+.mg-head{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:var(--text-sm)}
+.mg-head b{font-family:var(--font-display)}
+.mg-x{margin-left:auto;min-height:34px;padding:5px 11px;font-size:var(--text-xs)}
+.mg-tip{font-size:var(--text-xs);line-height:var(--leading-body);color:var(--muted-foreground);
+  background:rgba(212,163,85,.08);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:8px 10px;margin:0}
+.mg-intro{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.mg-intro .mg-start{min-height:46px;padding:10px 22px;font-size:var(--text-sm)}
+.mg-stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+/* แถบเวลา/แถบพลังงานที่ใช้ร่วมกันหลายเกม (เต็ม = ฝั่งขวา ไหลลดไปฝั่งซ้ายเมื่อเวลาลด) */
+.mg-bar{position:relative;height:10px;border-radius:99px;background:rgba(255,255,255,.08);
+  border:1px solid var(--border);overflow:hidden;flex:none}
+.mg-bar-fill{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,var(--gold),#ffe3ad);
+  border-radius:inherit;transition:width .08s linear}
+@media(max-width:520px){
+  .mg-ov{padding:9px;gap:6px}
+  .mg-tip{font-size:11px;padding:7px 9px}
+  .mg-x{min-height:32px;padding:4px 9px;font-size:11px}
+}
+/* ---- sala "เรียงสำนวน" — ปุ่มม้วนสำนวนสีตามหมวดกรรม (var(--c) ตั้งจาก SINS[c].color ใน sala.js) ---- */
+.mg-sala{display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0}
+.mg-sala-head{text-align:center;font-size:var(--text-sm)}
+.mg-sala-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding-top:4px}
+.mg-scroll{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:78px;min-height:52px;
+  padding:8px 10px;font-size:20px;border:2px solid var(--c,var(--border))}
+.mg-scroll span{font-size:11px;color:var(--c,var(--foreground));font-weight:600}
+.mg-sala-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+/* ---- krata "คุมไฟ" — หัวไฟแกว่งซ้าย-ขวาบนราง แตะตอนอยู่ในโซนทอง ---- */
+.mg-krata{display:flex;flex-direction:column;gap:12px;flex:1 1 auto;justify-content:center}
+.mg-krata-track{position:relative;height:46px;border-radius:99px;margin:0 8px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.mg-krata-zone{position:absolute;top:3px;bottom:3px;border-radius:99px;
+  background:rgba(212,163,85,.32);border:1px solid var(--gold);transition:background .1s,border-color .1s,box-shadow .1s}
+/* ข้อ B ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมรู้ผลได้ก็ต่อเมื่อกดไปแล้วเท่านั้น ไม่มีสัญญาณ
+   "อยู่ในโซนแล้วนะ" ระหว่างที่ยังไม่กด — โซนเรืองเขียวเองทันทีที่หัวไฟแกว่งเข้ามาอยู่ในนั้นจริง */
+.mg-krata-zone.in{background:rgba(74,157,106,.45);border-color:var(--success);box-shadow:0 0 12px rgba(74,157,106,.6)}
+.mg-krata-marker{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px;transition:filter .1s}
+.mg-krata-marker.in{filter:drop-shadow(0 0 10px var(--success))}
+.mg-krata-marker.good{filter:drop-shadow(0 0 8px var(--success))}
+.mg-krata-marker.bad{filter:drop-shadow(0 0 8px var(--destructive))}
+.mg-krata-hint{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+.mg-krata-hit{align-self:center;min-height:48px;padding:10px 26px;font-size:var(--text-sm)}
+/* ---- dab "หลบใบดาบ" — 3 เลน ใบดาบร่วงจากบน แตะปุ่มเลนเพื่อย้ายตัวเอง ---- */
+.mg-dab{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-height:0}
+.mg-dab-stage{position:relative;flex:1 1 auto;min-height:140px;overflow:hidden;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(0,0,0,.25)}
+.mg-dab-stage.hit{animation:mgShake .15s}
+@keyframes mgShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.mg-dab-player{position:absolute;bottom:4%;transform:translateX(-50%);font-size:26px}
+.mg-dab-blade{position:absolute;top:0;transform:translate(-50%,-50%);font-size:22px}
+.mg-dab-ctrl{display:flex;gap:6px}
+.mg-dab-btn{flex:1 1 0;min-height:44px;font-size:var(--text-xs)}
+.mg-dab-hits{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+/* ---- lokan "ไอเย็นแห่งความเนรคุณ" — แตะรัว ๆ ไล่หมอกที่ค่อย ๆ ไหลกลับมาเอง ---- */
+.mg-lokan{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-height:0}
+.mg-lokan-stage{position:relative;flex:1 1 auto;min-height:110px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(140,200,245,.06);overflow:hidden}
+.mg-lokan-face{font-size:52px}
+.mg-lokan-fog{position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(190,230,255,.9),rgba(150,205,248,.9))}
+.mg-lokan-tap{align-self:center;min-height:48px;padding:10px 24px;font-size:var(--text-sm)}
+/* ---- ngiw "เก็บหนามที่เคยทิ่ม" — หนามโผล่สุ่มตำแหน่ง แตะให้ทันก่อนจมหาย ---- */
+.mg-ngiw{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-height:0}
+.mg-ngiw-stage{position:relative;flex:1 1 auto;min-height:150px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(0,0,0,.2)}
+.mg-ngiw-thorn{position:absolute;transform:translate(-50%,-50%);width:46px;height:46px;min-height:0;
+  border-radius:50%;font-size:22px;padding:0;background:rgba(120,80,20,.5);animation:mgPop .15s ease-out}
+@keyframes mgPop{from{transform:translate(-50%,-50%) scale(.5);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.mg-ngiw-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+/* ---- lan "แบกหิน" — แตะรัว ๆ ดันหินไปธง หยุดแตะแล้วค่อย ๆ ไหลถอย ---- */
+.mg-lan{display:flex;flex-direction:column;gap:12px;flex:1 1 auto;justify-content:center}
+.mg-lan-track{position:relative;height:40px;border-radius:99px;margin:0 8px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.mg-lan-rock{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px}
+.mg-lan-flag{position:absolute;right:-2px;top:50%;transform:translateY(-50%);font-size:24px}
+.mg-lan-tap{align-self:center;min-height:48px;padding:10px 26px;font-size:var(--text-sm)}
+/* ---- sawan "นับลมหายใจ" — วงแสงทองขยาย/หด แตะตอนขยายสุด (โทนสงบ ไม่มีเอฟเฟกต์กระแทก) ---- */
+.mg-sawan{display:flex;flex-direction:column;gap:10px;flex:1 1 auto}
+.mg-sawan-stage{position:relative;flex:1 1 auto;min-height:130px;display:flex;align-items:center;justify-content:center}
+.mg-sawan-ring{width:84px;height:84px;border-radius:50%;border:3px solid var(--gold);
+  box-shadow:0 0 22px rgba(212,163,85,.4);transition:border-color .1s,box-shadow .1s}
+/* ข้อ B ชุด 14 — เกณฑ์เดียวกับ "คุมไฟ": วงเรืองเขียวเองตอนถึงจังหวะแตะได้จริง ไม่ต้องกดก่อนถึงจะรู้ */
+.mg-sawan-ring.in{border-color:var(--success);box-shadow:0 0 24px rgba(74,157,106,.6)}
+.mg-sawan-ring.good{border-color:var(--success);box-shadow:0 0 26px rgba(74,157,106,.55)}
+.mg-sawan-ring.miss{border-color:var(--muted-foreground);box-shadow:none}
+.mg-sawan-count{text-align:center;font-size:var(--text-xs);color:var(--muted-foreground)}
+.mg-sawan-tap{align-self:center;min-height:48px;padding:10px 24px;font-size:var(--text-sm)}
+/* ---- แผนที่ชายแดน (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569) — src/frontier.js วาดในกรอบเดียวกับห้องสถานี ----
+   ใช้ .hud.st-hud/.st-room เดิมทั้งชุด (คอลัมน์ซ้าย/กลาง/ขวา ยุบเป็นแถวที่ ≤1100px อยู่แล้ว) */
+.frw-hud .hud-top{gap:8px}
+.frw-exit{min-height:34px;padding:6px 13px;font-size:var(--text-xs);font-weight:600;
+  background:linear-gradient(180deg,rgba(74,31,61,.6),rgba(20,10,14,.92));border:1px solid var(--gold);color:var(--gold)}
+.frw-exit:hover{background:var(--gold);color:var(--gold-foreground)}
+.frw-team-list{font-size:var(--text-xs);line-height:var(--leading-body)}
+dialog.frontier-map-dialog[open]{inset:0;margin:0;padding:0;width:100vw;max-width:none;height:100dvh;max-height:none;border:0;border-radius:0;overflow:hidden;background:#100a15}
+dialog.frontier-map-dialog>.modal-corner-close{display:none!important}
+.frw-fullscreen{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size}
+.frw-map{position:absolute;inset:0}
+.frw-map canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:pixelated}
+.frw-res{position:absolute;left:2.7%;top:2.6%;display:flex;gap:1.5cqw;align-items:center;pointer-events:none}
+.frw-res>span{display:flex;align-items:center;gap:.7cqw;color:#fff;font-weight:800;font-size:clamp(16px,2cqw,40px);text-shadow:0 2px 5px #000}
+.frw-res>span:first-child{color:#fff500}
+.frw-res img{width:3.2cqw;height:3.6cqw;min-width:26px;min-height:30px;object-fit:contain}
+.frw-return{position:absolute;left:50%;top:3%;transform:translateX(-50%);padding:.8cqw 1.5cqw;font-weight:800;font-size:clamp(12px,1.1cqw,24px);white-space:nowrap}
+.frw-controls{position:absolute;right:2.5%;top:3%;display:flex;gap:1.5cqw}
+.frw-controls button{width:3.7cqw;height:3.7cqw;min-width:38px;min-height:38px}
+.frw-bottom{position:absolute;left:2.5%;bottom:2%;display:flex;gap:2.5cqw;align-items:center}
+.frw-avatar{width:7cqw;min-width:64px;color:#fff;text-align:center;font-size:clamp(12px,1cqw,22px);text-shadow:0 2px 4px #000}
+.frw-avatar>div{position:relative}.frw-avatar img{width:85%;aspect-ratio:1;object-fit:cover;border:2px solid var(--gold)}
+.frw-avatar>div>span{position:absolute;right:-7%;top:0;display:flex;flex-direction:column;color:#55452c}.frw-avatar i{font-style:normal}.frw-avatar i.on{color:var(--gold)}
+.frw-avatar .hud-hpbar{display:block;height:7px;margin:3px 0 5px;background:#140b11}.frw-avatar .hud-hpbar i{height:100%;display:block;background:#14b55c}
+.frw-bottom .st-hud-item img{height:4.2cqw;max-width:5cqw;min-height:40px;object-fit:contain}
+.frw-bottom .st-hud-item span{font-size:clamp(11px,1cqw,22px)}
+.frw-status{position:absolute;right:2%;bottom:2%;color:#f3d7a1;text-shadow:0 2px 4px #000;font-size:clamp(11px,.8cqw,17px)}
+@media(max-width:700px){.frw-res{gap:10px;left:12px;top:12px}.frw-res>span{gap:4px;font-size:16px}.frw-controls{top:60px;right:12px}.frw-return{top:62px;left:12px;transform:none}.frw-bottom{left:12px;gap:20px}.frw-avatar{width:72px}}
+/* ปุ่ม "เริ่มต่อสู้" ลอยเหนือหัวศัตรูที่เข้าใกล้ — src/frontier.js ตั้ง left/top เป็น % เอง
+   (กันปัญหาขนาด canvas จริง (backing store) กับขนาด CSS ไม่ตรงกันตอน dpr>1 แบบเดียวกับ .mobfab) */
+.frw-fab{position:absolute;transform:translate(-50%,-100%);z-index:6;white-space:nowrap;
+  min-height:40px;padding:8px 15px;border-radius:99px;font-size:var(--text-sm);font-weight:700;
+  background:var(--destructive);border:1px solid var(--destructive);color:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.6)}
+.frw-fab::after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--destructive)}
+@media (max-width:820px){.frw-fab{font-size:var(--text-xs);padding:6px 11px;min-height:34px}}
+/* ---- ปุ่มลอยบนฉาก (9 ก.ย. 2569) ---- */
+.fabs{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;flex-direction:column;
+  align-items:flex-end;gap:6px;pointer-events:none}
+.fabs .fab{pointer-events:auto;min-height:42px;padding:8px 14px;border-radius:99px;
+  font-size:var(--text-sm);font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.55);
+  background:rgba(18,8,13,.92);border:1px solid var(--gold);color:var(--gold)}
+.fabs .fab.hot{background:var(--destructive);border-color:var(--destructive);color:#fff}
+.fabs .fab.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground)}
+/* ปุ่มเรียกยมทูตมาช่วยในฉากต่อสู้ — มีรูปหน้าเขาอยู่บนปุ่ม (9 ก.ย. 2569) */
+.acts .crewbtn{display:flex;align-items:center;gap:6px}
+.acts .crewbtn img{width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:top;
+  border:1px solid var(--gold);background:rgba(12,6,9,.7)}
+/* ยมทูตที่ถูกเรียกมาช่วย — ยืนถัดจากเราแล้วพุ่งเข้าชนพร้อมกัน (ปัจจุบันโค้ดเรียกไม่ถึงเงื่อนไขนี้แล้วจริง ๆ
+   เพราะปุ่มความสามารถยมทูตต้องอยู่ในทีมสู้ก่อนถึงจะกดได้ ซึ่งทำให้ squad.length > 0 เสมอ = เงื่อนไข
+   `helper && !squad.length` ใน arena() ไม่มีทางเป็นจริง — เหลือไว้กันโค้ดพัง/เผื่อวันหลังเอากลับมาใช้
+   ข้อ D คุณเป้ 24 ก.ย. 2569 — เดิม img{height:70%} ไม่มีความสูงพ่อแม่ให้อ้างอิงจริง (.fig สูงอัตโนมัติ
+   ตามเนื้อหาข้างใน) เบราว์เซอร์เลยตีความ 70% เป็น auto แล้วโชว์ภาพที่ขนาดเนื้อไฟล์จริง (ใหญ่กว่ายมบาทน้อยมาก)
+   ป้ายชื่อ (.plate กว้างเท่า .fig ฐาน 34%/240px) เลยไปทับป้ายยมบาทน้อยพอดีด้วย — ล็อกขนาดใหม่ให้ใกล้เคียงยมบาทน้อย
+   (~85%) และย้ายไปโซนเดียวกับ .battle-squad (left:1% ในโหมดต่อสู้จริง ยมบาทน้อยอยู่ที่ left:19%/17% ไม่ใช่ 4%
+   ที่ .fig ฐานเขียนไว้ — ตำแหน่งจริงถูกทับด้วย src/command-wheel.css `.arena:has(.combat-wheel)>.fig.you`) */
+.arena .fig.helper{left:1%;z-index:3;width:min(24%,175px)}
+.arena .fig.helper:not(.lunge){animation:helperIn .35s ease-out}
+.arena .fig.helper img{height:clamp(120px,20vh,183px);transform:scaleX(-1)}   /* หันหน้าไปทางศัตรูเหมือนฝั่งเรา */
+@keyframes helperIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+/* ปุ่มสอบสวนลอยอยู่เหนือบัลลังก์บนฉากเลย (เจ้าของสั่ง 9 ก.ย. 2569) */
+#ov .trialfab{position:absolute;transform:translate(-50%,-100%);z-index:4;white-space:nowrap;
+  min-height:38px;padding:7px 14px;border-radius:99px;font-size:var(--text-sm);font-weight:600;
+  background:rgba(18,8,13,.92);border:1px solid var(--gold);color:var(--gold);
+  box-shadow:0 6px 16px rgba(0,0,0,.55);pointer-events:auto}
+#ov .trialfab.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-foreground)}
+#ov .trialfab::after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--gold)}
+
+/* ปุ่มสู้ลอยเหนือหัวผี (ข้อ 3 ของเจ้าของ 11 ก.ย. 2569)
+   เดินเข้าไปใกล้ผีตนไหน ปุ่มขึ้นเหนือหัวตนนั้น กดแล้วเข้าฉากต่อสู้กับตนนั้นทันที
+   สีแดงตลอด เพราะโผล่เฉพาะตอนกดได้จริง ไม่มีสถานะ "ขึ้นแต่กดไม่ได้" */
+#ov .mobfab{position:absolute;transform:translate(-50%,-100%);z-index:6;white-space:nowrap;
+  min-height:38px;padding:7px 14px;border-radius:99px;font-size:var(--text-sm);font-weight:600;
+  background:var(--destructive);border:1px solid var(--destructive);color:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.6);pointer-events:auto;animation:mobfabIn .18s ease-out}
+#ov .mobfab::after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--destructive)}
+#ov .bossfab{position:absolute;transform:translate(-50%,-100%);z-index:7;white-space:nowrap;
+  min-height:38px;padding:7px 14px;border-radius:99px;font-size:var(--text-sm);font-weight:600;
+  background:var(--gold);border:1px solid var(--gold);color:var(--gold-foreground);
+  box-shadow:0 6px 18px rgba(0,0,0,.65);pointer-events:auto;animation:mobfabIn .18s ease-out}
+#ov .bossfab::after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--gold)}
+@keyframes mobfabIn{from{opacity:0;transform:translate(-50%,-88%)}to{opacity:1;transform:translate(-50%,-100%)}}
+@media (max-width:820px){#ov .mobfab{font-size:var(--text-xs);padding:6px 11px;min-height:34px}}
+
+@media (max-width:820px){.fabs .fab{font-size:var(--text-xs);padding:7px 11px}}
+.hud-opt{flex:1 1 auto;overflow-y:auto}
+.hud-opt .row2{display:flex;flex-direction:column;gap:5px}
+.hud-opt .row2 button{width:100%;text-align:left;padding:7px 10px;min-height:0;font-size:var(--text-xs)}
+.hud-opt .row2 button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.hud-opt .say{margin-bottom:6px;font-size:var(--text-xs);padding:7px 9px}
+.hud-log{font-size:11px;line-height:1.65;color:var(--muted-foreground);max-height:96px;overflow-y:auto}
+.hud-log .hi{color:var(--gold)}
+
+/* แถวล่าง — โปรไฟล์สองฝั่ง + ของของ Yama */
+/* การ์ดตัวละครมุมล่างขยายใหญ่ขึ้น (สเปก Vera 18 ก.ย. 2569 หัวข้อ 2/3.4) — desktop 96×96,
+   390×844→72×72, 360×640→60×60 (ดู media query ท้ายไฟล์) */
+.hud-bottom{display:flex;gap:10px;align-items:flex-end;padding:10px 14px 12px;height:112px;box-sizing:border-box}
+.port{display:flex;gap:9px;align-items:center;
+  background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);border:1px solid var(--border);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:var(--radius-sm);padding:7px 10px;
+  backdrop-filter:blur(4px);min-width:0}
+.port img{width:96px;height:96px;flex:none;object-fit:cover;object-position:center top;
+  border:2px solid var(--gold);box-shadow:0 0 0 1px rgba(212,163,85,.35);border-radius:var(--radius-sm);
+  background:var(--muted)}
+.port .who2{min-width:0}
+.port .who2 b{display:block;font-size:16px;color:var(--gold);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+/* บั๊กที่เจอระหว่างทดสอบจอ 390/360 (18 ก.ย. 2569 — ไม่เกี่ยวกับงานย้ายเมนู แก้แยกเป็นคอมมิตของมันเอง):
+   .who2 มี min-width:0 (บรรทัดบน) เพื่อให้ ellipsis ของ b ทำงานได้ แต่ small (ยศ/ระดับ) เดิมไม่มี
+   white-space:nowrap — พอพื้นที่แถวล่างแคบ (การ์ดตัวละคร 3 ใบแย่งกันในแถวเดียว) .who2 ถูกบีบเหลือ
+   0px จริง ๆ ตัวหนังสือใน small เลยตกบรรทัดทีละพยางค์/อักษรจนสูงล้นออกไปทับ .hud-log ด้านบน
+   (บั๊กแบบเดียวกับที่เจอใน .st-arch ตอนแฟ้มทะเบียนกรรมมาก่อน 12 ก.ย. 2569) แก้ด้วยวิธีเดียวกับ b:
+   บังคับบรรทัดเดียว ตัดด้วย … แทนการตกบรรทัด */
+.port .who2 small{display:block;color:var(--muted-foreground);font-size:12px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+/* .port.foe (รูป+ชื่อวิญญาณมุมล่างขวา) เอาออก 18 ก.ย. 2569 (ข้อ A) — ซ้ำกับ .fig.foe บนเวที
+   .hud-items เลยดันไปชิดขวาแทนที่ (เดิมอยู่ตรงกลางระหว่าง .port.you กับ .port.foe) */
+.hud-items{display:flex;gap:5px;margin-left:auto}
+.hud-items button{width:52px;height:52px;min-height:0;padding:0;font-size:1.2rem;border-radius:var(--radius-sm);
+  position:relative;background:var(--secondary)}
+.hud-items button b{position:absolute;right:2px;bottom:0;font-size:9px;color:var(--gold);font-weight:600}
+.hud-items button:disabled{opacity:.32}
+
+@media(max-width:900px){
+  /* มือถือใช้ scroll ชั้นเดียวที่ .hud เป็นเกราะสำรอง — ของจริงคือการ์ดแต่ละใบตั้งความสูงพอดี
+     จอไว้แล้ว (ตัวเลข .hud-rec/.hud-opt/.hud-log/.hud-stage ด้านล่าง) ไม่ต้องเลื่อนทั้งโมดัลอีก
+     (สเปก Vera 18 ก.ย. 2569 หัวข้อ 2/3.3 — เดิมปล่อย max-height:none หมดเพราะกลัวสามชั้นแย่ง
+     gesture กัน ตอนนี้คุมความสูงแต่ละใบละเอียดแล้ว จึงกำหนดตัวเลขจริงได้โดยไม่ชนกัน) */
+  dialog.hudwrap[open]{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);
+    width:calc(100% - 12px);margin:6px auto;padding:0}
+  .hud{height:100%;max-height:none;overflow-x:hidden;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;
+    scrollbar-gutter:stable}
+  .hud-body{flex:0 0 auto;grid-template-columns:1fr;grid-template-areas:"stage" "menu" "right";gap:6px;padding:0 8px}
+  /* คอลัมน์เดียวบนมือถือ — .hud-menu ยังอยู่ "เหนือ .hud-right พอดีความกว้าง" เพราะทั้งคู่เป็นแถวเดียว
+     กว้างเท่ากันของกริด 1fr เดียวกัน (ลำดับ stage→menu→right ตรงกับที่ต้องการ: เห็นคู่กรณีก่อน
+     แล้วค่อยเจอเมนูคำสั่งเหนือแฟ้มคดี) · .hud-left/.st-left ของห้องสถานียังใช้กฎเดิมด้านล่างไม่ถูกแตะ */
+  .hud-left{flex-direction:row;flex-wrap:wrap}
+  .hud-left button{flex:1 1 46%;min-height:40px}
+  .hud-left button .lb2 small{display:none}
+  .hud-menu{gap:5px;padding:0}
+  .hud-menu button{min-height:44px;padding:5px 3px}
+  .hud-menu button .ic{font-size:14px}
+  .hud-menu button .lb2{font-size:11px}
+  .hud-menu button .lb2 small{font-size:9px}
+  /* 150px เดิมพอดีตอนเมนูยังเป็นแถวเดียว 52px — ตอนนี้เมนูย้ายเข้ามาเป็น 2 แถวในคอลัมน์ขวา (~93px)
+     ดันความสูงรวมเกิน budget ~44px ลดสเตจลงมาชดเชยแทน (ตัวละครใช้ clamp() อยู่แล้วเล็กลงได้โดยไม่แตก) */
+  .hud-stage{height:118px}
+  .hud .fig img{height:clamp(90px,18vh,118px)}
+  /* หน้าสถานีบนจอมือถือ: .st-hud .hud-body ตั้ง 3 คอลัมน์ไว้ในมีเดีย max-width:1100px
+     ซึ่ง specificity สูงกว่า .hud-body{grid-template-columns:1fr} ของบล็อกนี้ คอลัมน์กลาง
+     (ฉากในสถานี + แฟ้มทะเบียนกรรมที่ทับอยู่) จึงถูกบีบเหลือ 0px บนจอ 390 — เปิดแฟ้มแล้ว
+     ตัวหนังสือตกบรรทัดทีละอักษร (เจอตอนทดสอบข้อ 2 เมื่อ 12 ก.ย. 2569)
+     ชุดที่ 10 (ข้อ A2) — คอลัมน์เดียวบนมือถือแล้ว areas "left room right" (1 แถว 3 คอลัมน์) ที่ตั้งไว้ตอนจอกว้าง
+     ใช้ไม่ได้อีกต่อไป (คอลัมน์เหลือแค่ 1) ต้องแตก areas เป็น 3 แถวคอลัมน์เดียวให้ตรงกับ grid-template-columns:1fr
+     ไม่งั้น .st-left/.st-room/.hud-right จะกลับไปพึ่ง auto-placement แบบเดิมที่เป็นต้นเหตุบั๊กทั้งหมด */
+  .st-hud .hud-body{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;
+    grid-template-areas:"left" "room" "right"}
+  .st-room{min-height:46vh}          /* แฟ้มทะเบียนกรรมทับอยู่บนนี้ — เตี้ยกว่านี้อ่านได้ทีละบรรทัดเดียว */
+  .hud-right{max-height:none;overflow:visible}
+  /* 92px ตามสเปก Vera ตรง ๆ ไม่พอกับคดีสุ่มจริง (บุญ/กรรมที่รู้แล้วมักมี 2-4 บรรทัด ไม่ใช่แค่ 1-2)
+     ขยับขึ้นจากตัวเลขสเปกเพื่อให้เกณฑ์รับงานข้อ "ไม่มี scrollHeight > clientHeight" เป็นจริงกับคดีจริง
+     ไม่ใช่แค่คดีสั้นที่สุด — ลดพื้นที่ตัวละคร (.hud-stage) ลงมาชดเชยแทน */
+  .hud-rec{max-height:195px;padding:8px 10px}
+  .hud-rec .deed{font-size:13px;line-height:1.4;margin-top:3px}
+  /* .hud-opt (ตัวเลือกจี้/ส่งไปไหน/ใครคุม) ยาวได้ไม่จำกัดตามจำนวนตัวเลือก (4 ปุ่ม ~250px+) —
+     ปล่อย flex:1 1 auto ไม่จำกัดจะดัน .hud-bottom หลุดจอต้องเลื่อนทั้งกล่องเสมอ คุมเพดานไว้แทน
+     ให้ .hud-opt สกอลล์ภายในตัวเอง (สเปกอนุญาตไว้แล้วในหัวข้อ 2) .hud-bottom จะได้ยังอยู่ในสายตา */
+  .hud-opt{flex:1 1 auto;max-height:200px}
+  .hud-log{max-height:72px}
+  .hud-bottom{flex:0 0 auto;padding:8px;padding-bottom:max(12px,env(safe-area-inset-bottom));height:96px}
+  .port img{width:72px;height:72px;border-width:1.5px}
+  .port .who2 b{font-size:14px}
+  .port .who2 small{font-size:11px}
+  .hud-items button{width:44px;height:44px}
+}
+
+@media(max-width:520px){
+  /* เดิม chip กว้าง 42% (2 ต่อแถว) + หลอด .bar 70px ตายตัว ดันแถบสถานะกิน ~150px สูง
+     (4 แถวจาก 5 chip + หัวเรื่อง) จนงบความสูงที่เหลือให้ .hud-rec ไม่พออ่านสำนวนจริง — ย่อ chip/หลอด
+     ให้เรียงแน่นขึ้นแทน (สเปก Vera ไม่ได้ล็อกตัวเลข .hud-top บนมือถือ แต่ต้องแก้เพื่อให้ข้อ 3
+     "ไม่ต้องเลื่อนอ่านสำนวน" เป็นจริงได้ — ดูเหตุผลเต็มในรายงาน Toby) */
+  .hud-top{padding:6px 44px 6px 8px;gap:4px}
+  .hud-top .chip{flex:0 0 auto;padding:3px 6px;font-size:10.5px;gap:3px}
+  .hud-top .bar{width:38px}
+  .hud-top .ttl{flex:1 0 100%;margin-left:0;text-align:right;font-size:12px}
+  .hud-left button{flex-basis:46%;font-size:var(--text-xs);padding:6px 8px}
+  .hud-card{padding:9px}
+}
+
+/* จอเตี้ย (360×640) — ต้องแยกจากจอแคบ-สูง (390×844) ด้วยความสูงจอ ไม่ใช่ความกว้างอย่างเดียว
+   ทั้งคู่แคบกว่า 520px เท่ากัน แต่เดิมใช้กฎเดียวกันหมด ทำให้ .hud-stage กิน 270px จนสำนวนต้องสกอลล์
+   บนจอ 360×640 ที่เตี้ยกว่า (คุณเป้บ่นเรื่อง "ต้องเลื่อนไปมา") — สเปก Vera 18 ก.ย. 2569 หัวข้อ 3.6 */
+@media(max-width:420px) and (max-height:700px){
+  .hud-menu{gap:4px}
+  .hud-menu button{min-height:38px;padding:4px 2px}
+  .hud-menu button .ic{font-size:13px}
+  .hud-menu button .lb2{font-size:10px}
+  .hud-menu button .lb2 small{font-size:8.5px}
+  /* เดิม 85px พอดีตอนเมนูเป็นแถวเดียว 48px — ตอนนี้เมนู 2 แถว ~80px ในคอลัมน์ขวา ลดสเตจชดเชย
+     (เหตุผลเดียวกับบล็อก 390 ด้านบน) */
+  .hud-stage{height:56px}
+  .hud .fig img{height:clamp(48px,11vh,68px)}
+  /* 76px ตามสเปก Vera ตรง ๆ ไม่พอกับคดีสุ่มจริงเหมือนกัน (ดูหมายเหตุที่บล็อก 900px ด้านบน) */
+  .hud-rec{max-height:175px;padding:7px 9px}
+  .hud-rec .deed{font-size:12.5px;line-height:1.35;margin-top:3px}
+  .hud-opt{max-height:118px}
+  .hud-log{max-height:58px}
+  .hud-bottom{height:84px}
+  .port img{width:60px;height:60px}
+  .port .who2 b{font-size:13px}
+  .port .who2 small{font-size:10.5px}
+  .hud-items button{width:40px;height:40px}
+}
+
+/* ---------- เอฟเฟกต์ตอนลงมือในฉากต่อสู้ (8 ก.ย. 2569) ---------- */
+.arena .fx{position:absolute;left:50%;bottom:34%;transform:translate(-50%,0);
+  width:clamp(72px,15vh,132px);height:auto;pointer-events:none;z-index:5;
+  image-rendering:pixelated;animation:fxpop .5s ease-out forwards;
+  filter:drop-shadow(0 0 12px rgba(255,180,80,.55))}
+.arena .fx.glyph{font-size:clamp(46px,9vh,84px);line-height:1;width:auto;
+  text-shadow:0 3px 10px rgba(0,0,0,.8)}
+@keyframes fxpop{
+  0%{opacity:0;transform:translate(-50%,10px) scale(.55)}
+  25%{opacity:1;transform:translate(-50%,0) scale(1.12)}
+  70%{opacity:1;transform:translate(-50%,-6px) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-22px) scale(.95)}}
+
+.arena .dmg{position:absolute;left:50%;bottom:60%;transform:translateX(-50%);
+  font-family:var(--font-display);font-size:clamp(22px,4.5vh,38px);font-weight:700;
+  pointer-events:none;z-index:6;text-shadow:0 3px 0 rgba(0,0,0,.8),0 0 14px rgba(0,0,0,.9);
+  animation:dmgrise .9s ease-out forwards}
+.arena .dmg.foe{color:#ffd36b} .arena .dmg.you{color:#ff8f7a}
+@keyframes dmgrise{
+  0%{opacity:0;transform:translateX(-50%) translateY(12px) scale(.7)}
+  20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.15)}
+  55%{opacity:1;transform:translateX(-50%) translateY(-14px) scale(1)}
+  100%{opacity:0;transform:translateX(-50%) translateY(-40px) scale(.95)}}
+
+/* ช่องบทพูด — เหลือแค่คำพูดของคู่กรณี ไม่มี log แล้ว */
+.talkbox{background:rgba(12,6,9,.9);border:1px solid rgba(212,163,85,.3);border-radius:var(--radius-sm);
+  padding:14px 16px;margin-bottom:var(--space-3);min-height:84px;display:flex;align-items:center;
+  font-size:1.02rem;line-height:var(--leading-body);color:var(--foreground);white-space:pre-line}
+@media(max-width:600px){.talkbox{font-size:var(--text-sm);min-height:68px;padding:11px 12px}}
+
+/* ---------- จังหวะการต่อสู้: พุ่งเข้าชน แล้วถอยกลับ (8 ก.ย. 2569) ----------
+   เจ้าของบอกว่าเลือดสองฝั่งลดพร้อมกันดูแปลก ต้องแยกเป็นตาใครตามัน
+   ไม่เพิ่มรูปท่าโจมตี — ใช้สไปรท์เดิมพุ่งเข้าหาคู่กรณีแทน
+   อนิเมชันอยู่ที่ตัวกรอบ .fig ไม่ใช่ที่ <img> เพราะ img ของฝั่งซ้ายถูก scaleX(-1) ไว้แล้ว */
+.arena .fig.lunge{animation:lungeR .58s cubic-bezier(.34,1.3,.64,1)}
+.arena .fig.foe.lunge{animation:lungeL .58s cubic-bezier(.34,1.3,.64,1)}
+@keyframes lungeR{0%{transform:translateX(0)}30%{transform:translateX(62%)}
+  52%{transform:translateX(62%)}100%{transform:translateX(0)}}
+@keyframes lungeL{0%{transform:translateX(0)}30%{transform:translateX(-62%)}
+  52%{transform:translateX(-62%)}100%{transform:translateX(0)}}
+/* ตัวที่โดน — วาบขาวแล้วสั่น ใช้ filter อย่างเดียว จะได้ไม่ไปทับ transform ของ img */
+.arena .fig.struck img{animation:struck .42s ease-out}
+@keyframes struck{0%{filter:none}
+  15%{filter:brightness(2.6) saturate(.4) drop-shadow(0 0 10px #fff)}
+  45%{filter:brightness(1.15)}100%{filter:none}}
+/* ปุ่มถูกล็อกระหว่างเล่นจังหวะ — บอกให้รู้ว่ากดไม่ได้ตอนนี้ ไม่ใช่ปุ่มเสีย */
+.acts.busy button{opacity:.4;pointer-events:none}
+.turnhint{font-size:var(--text-xs);color:var(--gold);text-align:center;padding:6px 0 2px;
+  letter-spacing:.5px}
+/* ---------- หน้าโหลด ----------
+   ภาพทั้งเกมรวมกัน 16 MB · art.js ตั้งใจโหลดตอนจะวาด ซึ่งบนเน็ตมือถือแปลว่า
+   ผู้เล่นนั่งดูฉากว่างเปล่าอยู่หลายวินาที (เจ้าของเจอ 8 ก.ย. 2569 บนมือถือกับ iPad)
+   จอนี้กั้นไว้จนภาพชุดแรกมาครบ — ตรรกะอยู่ที่ src/preload.js */
+#boot{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:var(--space-4);
+  background:radial-gradient(120% 90% at 50% 0%,#2d1118 0%,#140a0e 55%,#0b0508 100%);
+  transition:opacity .55s ease}
+#boot.gone{opacity:0;pointer-events:none}
+#boot .brand{font-family:var(--font-display);font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;
+  color:var(--gold);letter-spacing:.06em;margin:0;text-shadow:0 0 30px rgba(212,163,85,.32)}
+#boot .bar{width:min(280px,62vw);height:5px;background:rgba(212,163,85,.15);
+  border-radius:99px;overflow:hidden}
+#boot .bar i{display:block;height:100%;width:0;background:var(--gold);
+  border-radius:99px;transition:width .35s ease}
+#boot .pct{font-size:var(--text-xs);color:var(--muted-foreground);font-variant-numeric:tabular-nums;
+  letter-spacing:.1em}
+#boot .note{margin:0;font-size:var(--text-sm);color:var(--muted-foreground);text-align:center;
+  max-width:min(28rem,84vw);line-height:var(--leading-body);min-height:3.4em;
+  transition:opacity .4s ease}
+
+/* ---------- มือถือ: เล่นแนวนอนอย่างเดียว ----------
+   แนวตั้งบนมือถือ แถบทรัพยากรที่ลอยอยู่บนฉากกางเป็นห้าแถวจนบังฉากทั้งจอ
+   (เจ้าของเจอ 8 ก.ย. 2569) จะไล่ย่อให้พอดีจอสูงก็เหลือฉากไม่กี่ร้อยพิกเซล
+   ขอแนวนอนตรง ๆ ชัดกว่า — โซนนี้ออกแบบมาเป็นภาพกว้างตั้งแต่ต้น */
+#rotate{display:none;position:fixed;inset:0;z-index:300;
+  flex-direction:column;align-items:center;justify-content:center;gap:var(--space-4);
+  background:var(--background);text-align:center;padding:var(--space-5)}
+#rotate .ico{font-size:3.2rem;line-height:1;animation:tilt 2.6s ease-in-out infinite}
+@keyframes tilt{0%,40%{transform:rotate(0)}56%,100%{transform:rotate(-90deg)}}
+#rotate h2{font-family:var(--font-display);color:var(--gold);margin:0;font-size:1.5rem}
+#rotate p{margin:0;color:var(--muted-foreground);font-size:var(--text-sm);
+  line-height:var(--leading-body);max-width:22rem}
+/* แนวตั้งเล่นได้แล้ว — ไม่บังคับซ่อนเกมหลังจอ "หมุนเครื่อง" อีก */
+dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95dvh;
+  overflow:auto;padding:0;background:#151016}
+.intro-comic-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:#181217}
+.intro-comic-frame img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.intro-comic-head{position:absolute;top:10px;left:14px;right:14px;display:flex;
+  justify-content:space-between;color:#f7c371;text-shadow:0 2px 5px #120b10;
+  font-size:var(--text-xs);letter-spacing:.08em}
+.intro-comic-caption{position:absolute;left:5%;right:5%;bottom:2%;height:18%;
+  display:flex;flex-direction:column;justify-content:center;text-align:left;overflow:auto}
+.intro-comic-caption h2{font-family:var(--font-display);color:#f7c371;
+  font-size:clamp(1rem,2.4vw,1.35rem);margin:0 0 4px}
+.zone-arrival .intro-comic-frame{aspect-ratio:auto;overflow:visible}
+.zone-arrival .intro-comic-frame img{height:auto;aspect-ratio:16/9;object-fit:cover}
+.zone-arrival .intro-comic-caption{position:static;height:auto;padding:16px 20px;background:#151016}
+.zone-arrival .intro-comic-caption h2{margin-bottom:8px;line-height:1.35}
+.intro-comic-caption p{color:#f4e8df;line-height:1.4;font-size:clamp(.8rem,1.8vw,1rem);margin:0}
+.intro-comic-controls{display:flex;justify-content:space-between;gap:10px;padding:10px 14px}
+@media(max-width:600px){
+  .intro-comic-frame{aspect-ratio:auto}
+  .intro-comic-frame img{height:auto;aspect-ratio:16/7.2;object-fit:cover;object-position:top}
+  .intro-comic-caption{position:static;height:auto;padding:12px 16px;background:#151016}
+  .intro-comic-caption h2{font-size:1.15rem}
+  .intro-comic-caption p{font-size:.95rem}
+}
+.mini-goal{margin:8px 0 14px;padding:8px 12px;border:1px solid rgba(212,163,85,.35);
+  border-radius:8px;background:rgba(212,163,85,.08);color:var(--gold);font-size:var(--text-xs);
+  line-height:var(--leading-body)}
+
+/* ================= ข้อ D ชุด 15 — HUD ใหม่ลอยทับแผนที่ (UI2-th/eng.jpg) =================
+   ทุกจุดยึดกับ .stage (เต็มจอ) เป็น % ตามตำแหน่งที่ครอปดูจากม็อกอัปจริง (ดูสัดส่วนในรายงาน Toby) */
+.hud-res{position:absolute;left:3%;top:calc(env(safe-area-inset-top) + 2.4%);z-index:6;
+  display:flex;gap:clamp(8px,1.6vw,18px);align-items:center;pointer-events:none}
+.hud-res .chip{pointer-events:auto;display:flex;align-items:center;gap:6px;background:transparent;
+  border:0;padding:0;font-size:1rem}
+.hud-res .chip img{width:clamp(26px,3.4vw,40px);height:clamp(26px,3.4vw,40px);object-fit:contain;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))}
+.hud-res .chip b{font-family:var(--font-display);font-size:clamp(1rem,2.1vw,1.4rem);color:#ffe9b0;
+  text-shadow:0 2px 3px rgba(0,0,0,.85);font-variant-numeric:tabular-nums}
+.hud-res .chip.mob-warn{color:var(--destructive)}
+.hud-res .chip.mob-warn b{color:var(--destructive)}
+
+.hud-top-right{position:absolute;right:3%;top:calc(env(safe-area-inset-top) + 2.4%);z-index:6;
+  display:flex;gap:clamp(8px,1.4vw,14px)}
+.hud-icon-btn{all:unset;box-sizing:border-box;cursor:pointer;
+  width:clamp(40px,5.6vw,58px);height:clamp(40px,5.6vw,58px);flex:none}
+.hud-icon-btn img{width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
+.hud-icon-btn:hover img{transform:scale(1.08)}
+.hud-icon-btn--lg{width:clamp(48px,6.6vw,64px);height:clamp(48px,6.6vw,64px)}
+#hud-zone[hidden]{display:none}
+
+.hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
+  display:flex;align-items:flex-end;gap:10px}
+.hud-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;
+  align-items:stretch;width:clamp(76px,9.4vw,106px);flex:none}
+.hud-ava-row{display:flex;align-items:center;gap:4px}
+.hud-avatar img{width:clamp(60px,7.4vw,84px);flex:none;aspect-ratio:1;object-fit:cover;object-position:top;
+  border-radius:10px;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(0,0,0,.6)}
+/* ข้อ 2 ชุด 15b — สามดวงแนวตั้งข้างรูป ดวงเต็ม = เลื่อนขั้นถึงระดับนั้นแล้ว (JS ใส่ class "on" ให้)
+   ยังไม่ถึงขั้น = ดาวจาง (opacity ต่ำ) — ใช้ตัวอักษร ★ เหมือนที่อื่นในเกมใช้อีโมจิ/สัญลักษณ์แทนไอคอนจริง
+   จนกว่าจะมีไฟล์ img/icon-star-rank.png จริง (ดูสเปกอาร์ตในรายงาน Toby) */
+.hud-rank-stars{display:flex;flex-direction:column;gap:1px;line-height:1}
+.hud-rank-stars .rk-star{font-style:normal;color:#ffd76b;opacity:.28;
+  font-size:clamp(11px,1.5vw,15px);text-shadow:0 1px 2px rgba(0,0,0,.9);transition:opacity .2s}
+.hud-rank-stars .rk-star.on{opacity:1;filter:drop-shadow(0 0 3px rgba(255,215,100,.75))}
+.hud-hpbar{display:block;width:100%;height:6px;border-radius:99px;background:rgba(0,0,0,.55);
+  overflow:hidden;margin-top:3px;border:1px solid rgba(0,0,0,.4)}
+.hud-hpbar i{display:block;height:100%;background:linear-gradient(90deg,#5fd987,#2f9d5c)}
+.hud-hpbar.mp i{background:linear-gradient(90deg,#82c8ff,#3865c8)}
+.hud-avatar small{display:block;color:#f2e6d6;font-size:clamp(9px,1.15vw,11px);margin-top:2px;
+  text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
+
+.map-controls{position:absolute;z-index:6;left:50%;bottom:calc(env(safe-area-inset-bottom) + 2.4%);
+  transform:translateX(-50%);display:flex;gap:clamp(6px,1vw,12px);align-items:center}
+.btn-gold{box-sizing:border-box;display:grid;place-items:center;flex:none;
+  width:clamp(135px,13vw,200px);height:clamp(54px,5.4vw,70px);padding:5px 15px 8px;
+  border:0;background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  color:#231f20;font:700 clamp(12px,1.25vw,18px)/1.15 var(--font-sans);
+  text-align:center;cursor:pointer;filter:drop-shadow(0 3px 8px rgba(0,0,0,.55));
+  transition:filter .15s,transform .15s}
+.btn-gold:hover:not(:disabled){background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)) brightness(1.12);transform:translateY(-2px)}
+.btn-gold:active:not(:disabled){background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  transform:translateY(2px);filter:brightness(.9)}
+.btn-gold:focus-visible{outline:2px solid #fff4c7;outline-offset:2px}
+.btn-gold:disabled{background:transparent url('img/ui/icon-bg.png') center/100% 100% no-repeat;
+  opacity:.42;filter:grayscale(.65) drop-shadow(0 2px 4px rgba(0,0,0,.4));cursor:not-allowed}
+
+.hud-mini-goal{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 9%);
+  transform:translateX(-50%);z-index:5;width:min(560px,64vw);margin:0;text-align:center;
+  background:rgba(12,6,9,.78);backdrop-filter:blur(2px)}
+/* ต้องลอยเหนือทั้งแถวไอคอนล่าง (การ์ดยมบาทน้อย+หนังสือ+กระเป๋า+เปิดศาล) เสมอ ไม่งั้นบังกันจนกดไม่ติด
+   (วัดจริงด้วย Playwright: การ์ดยมบาทน้อยสูงสุดในแถวนั้น ~138px ที่ 1440×810 → เผื่อ 22% ของความสูงจอ) */
+.hud-coach{position:absolute;left:3%;right:3%;bottom:calc(env(safe-area-inset-bottom) + 22%);
+  z-index:7;margin:0;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+@media(max-width:520px){
+  .hud-res{gap:8px}
+  .hud-res .chip b{font-size:.85rem}
+  .hud-bottom-left{gap:6px}
+  .hud-mini-goal{width:88vw;font-size:11px;top:calc(env(safe-area-inset-top) + 12%)}
+  .hud-coach{bottom:calc(env(safe-area-inset-bottom) + 26%);padding:10px 12px}
+  .hud-coach .step{display:none}
+}
+@media(max-height:520px){.hud-coach{bottom:calc(env(safe-area-inset-bottom) + 30%)}}
+/* จอเตี้ยมาก (มือถือแนวนอน ~390×844 หมุนนอน) — ย่อทุกอย่างอีกขั้น กันชนกันเอง */
+@media(max-height:420px){
+  .hud-icon-btn{width:36px;height:36px}
+  .hud-icon-btn--lg{width:40px;height:40px}
+  .hud-avatar{width:66px}
+  .hud-avatar img{width:52px}
+  .hud-rank-stars .rk-star{font-size:10px}
+  .map-controls{bottom:calc(env(safe-area-inset-bottom) + 12%)}
+  .hud-mini-goal{display:none}
+}
+@media(max-width:520px){.map-controls{bottom:calc(env(safe-area-inset-bottom) + 18%)}}
+
+/* โปรไฟล์ UI5 — กรอบเต็มฉากและข้อมูลที่เลื่อนภายในจอแคบ */
+.hero-profile{position:fixed;inset:0;z-index:39;padding:2.5vh 2.2vw;background:rgba(8,2,8,.9)}
+.hero-profile[hidden]{display:none}
+.hero-profile-frame{position:relative;box-sizing:border-box;width:100%;height:100%;display:grid;
+  grid-template-columns:36% minmax(0,1fr);gap:2.5%;padding:2.5%;overflow:hidden;
+  border:1px solid #d2a758;border-radius:11px;background:#190d13;color:#f4e9df}
+.hero-profile-actions{position:absolute;right:2.5%;top:2.5%;z-index:2;display:flex;gap:12px}
+.hero-profile-figure{min-width:0;min-height:0;border:2px solid #bd914a;display:grid;place-items:center;
+  background:radial-gradient(ellipse at 50% 70%,#342027 0%,#180d13 68%)}
+.hero-profile-figure img{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.hero-profile-content{min-width:0;min-height:0;overflow-y:auto;padding:1.5% 0 1.5% 0}
+.hero-profile-heading{display:flex;align-items:center;gap:clamp(14px,2vw,32px);min-height:21%;padding-right:115px}
+.hero-profile-heading>img{width:clamp(80px,12vw,190px);aspect-ratio:1;object-fit:cover;border:2px solid #cba255}
+.hero-profile-heading h2{font-size:clamp(22px,2vw,34px);margin:0;color:#fff}
+.hero-profile-heading .profile-stars{font-size:clamp(18px,2vw,32px);color:#dfac54;letter-spacing:.12em}
+.hero-profile-heading strong{display:block;color:#dcb563;font-size:clamp(13px,1.3vw,21px)}
+.hero-profile-heading p{margin:6px 0;color:#bfb1b7;font-size:clamp(12px,1vw,17px)}
+.hero-profile-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.55fr);gap:clamp(10px,1.4vw,24px);padding-top:1.5%}
+.hero-profile-column{min-width:0}
+.hero-profile-column h3{font-size:clamp(16px,1.35vw,23px);margin:0 0 10px;color:#f8ecdf}
+.hero-profile-row{display:flex;align-items:center;gap:8px;margin:0 0 9px;min-width:0}
+.hero-profile-row>img{width:clamp(30px,3.3vw,56px);height:clamp(30px,3.3vw,56px);object-fit:contain;flex:none}
+.hero-profile-row .profile-row-text{min-width:0;overflow-wrap:anywhere}
+.hero-profile-row b{display:block;font-size:clamp(14px,1.4vw,24px);line-height:1.1;color:#fff}
+.hero-profile-row small{display:block;font-size:clamp(11px,.9vw,15px);color:#bdb0b6;line-height:1.3}
+.hero-profile-row.crew{margin:0 0 6px;padding:5px 8px}
+.hero-profile-row.crew>img{width:clamp(34px,3.6vw,56px);height:clamp(34px,3.6vw,56px);border-radius:50%;border:1px solid #b98b42;object-fit:cover}
+.hero-profile-row.crew b{font-size:clamp(14px,1.25vw,21px)}
+.hero-profile-row>img[src$="icon-sword.png"]{transform:scale(1.7);transform-origin:68% 45%}
+.hero-profile-row>img[src$="icon-fang.png"]{object-fit:cover;border-radius:50%}
+.hero-profile-hp{display:block;height:6px;width:100%;margin:3px 0;border-radius:8px;background:#13090e;overflow:hidden}
+.hero-profile-hp i{display:block;height:100%;background:#1aa65c}
+.hero-profile-menu{margin:16px 0 0;padding:8px 18px;border:1px solid #c69a51;border-radius:6px;background:#35202a;color:#f5d18c;cursor:pointer}
+.profile-emoji{display:grid;place-items:center;width:clamp(30px,3.3vw,56px);height:clamp(30px,3.3vw,56px);font-size:clamp(24px,2.6vw,44px);flex:none}
+.power-glyph{display:inline-block;width:1.3em;height:1.3em;object-fit:contain;vertical-align:middle}
+@media(max-width:900px){
+  .hero-profile-frame{grid-template-columns:30% minmax(0,1fr)}
+  .hero-profile-columns{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-profile-heading{padding-right:95px}
+}
+@media(max-width:520px){
+  .hero-profile{padding:8px}
+  .hero-profile-frame{display:block;overflow-y:auto;padding:12px}
+  .hero-profile-actions{top:8px;right:8px;gap:4px}
+  .hero-profile-actions .hud-icon-btn{width:34px;height:34px}
+  .hero-profile-figure{height:165px;width:35%;float:left;margin:40px 12px 8px 0}
+  .hero-profile-content{overflow:visible;padding:40px 0 0}
+  .hero-profile-heading{display:block;min-height:0;padding-right:0}
+  .hero-profile-heading>img{width:62px;float:left;margin:0 8px 4px 0}
+  .hero-profile-heading h2{font-size:19px}
+  .hero-profile-heading p{font-size:11px}
+  .hero-profile-columns{clear:both;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px;padding-top:20px}
+  .hero-profile-column h3{margin-bottom:9px}
+  .hero-profile-row{margin-bottom:9px}
+  .hero-profile-row>img{width:32px;height:32px}
+}
+/* ================= แผงเดิมย้ายมาไว้ในนี้ (D.6) ================= */
+.legacy-drawer{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;
+  background:rgba(6,3,4,.7);backdrop-filter:blur(2px)}
+.legacy-drawer[hidden]{display:none}
+.legacy-drawer-sheet{width:100%;max-height:88dvh;overflow-y:auto;background:var(--background);
+  border-top:1px solid var(--gold);border-radius:16px 16px 0 0;padding:var(--space-4);
+  padding-bottom:calc(var(--space-4) + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;gap:var(--space-3)}
+.legacy-drawer-head{display:flex;align-items:center;gap:var(--space-3)}
+.legacy-drawer-head h1{flex:1;min-width:0}
+.boss-prep{padding:12px;border:1px solid rgba(212,163,85,.45);border-radius:10px;
+  background:rgba(26,12,18,.9);margin-bottom:12px}
+.boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
+/* แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ข้อความสถานะในหน้าเตรียมศึก (แฟ้มหลักฐานอัตโนมัติ/ไม่มีหีบยา) */
+.boss-prep .prep-note{font-size:var(--text-xs);margin-bottom:8px}
+.boss-prep .prep-note.good{color:var(--success)}
+.boss-prep .prep-note.warn{color:var(--warning)}
+dialog.rpg .boss-prep-actions{flex:0 0 auto;display:flex;justify-content:center;
+  padding:var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+  border-top:1px solid var(--gold);background:var(--card)}
+
+/* ---------- UI เกมรุ่นภาพตัวอย่าง 21 ก.ย. 2569 ---------- */
+/* ห้องสอบสวน: คำสั่งวงกลมล้อมยมบาทน้อย; คำสั่งพักคดี/ขัง/ไต่สวนอยู่ด้านบน */
+.trial-hud .hud-body{grid-template-columns:minmax(0,1.55fr) minmax(340px,420px);
+  grid-template-rows:1fr;grid-template-areas:"stage right";padding-top:12px}
+.trial-hud .hud-stage{overflow:hidden;border-radius:var(--radius-sm);
+  box-shadow:inset 0 0 45px rgba(0,0,0,.18)}
+.trial-case-no{position:absolute;right:12px;top:6px;z-index:7;color:var(--gold);
+  font:600 var(--text-sm)/1 var(--font-display);text-shadow:0 2px 8px #000}
+.trial-top-actions{position:absolute;z-index:12;right:10px;top:28px;display:flex;gap:6px}
+.trial-top-actions button{min-height:40px;padding:7px 12px;background:rgba(35,14,22,.9);border-color:rgba(212,163,85,.45)}
+.trial-top-actions button[aria-pressed=true]{background:var(--primary);border-color:#ffb259;color:#fff}
+.trial-wheel{position:absolute;left:22%;bottom:7%;z-index:10;width:365px;height:275px;pointer-events:none}
+.trial-orb-group{position:absolute;pointer-events:auto}
+.trial-orb-group.power{left:6px;top:18px}.trial-orb-group.place{left:116px;top:0}
+.trial-orb-group.crew{left:228px;top:48px}.trial-orb-group.force{left:226px;top:159px}
+.trial-orb-group.issue{left:92px;top:108px}
+.orb-main,.orb-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:76px;height:76px;min-height:0;padding:6px;border-radius:50%;color:#ffe6bd;
+  background:radial-gradient(circle at 38% 28%,rgba(113,59,82,.98),rgba(19,8,13,.97) 72%);
+  border:2px solid rgba(212,163,85,.75);box-shadow:0 7px 18px rgba(0,0,0,.6),inset 0 1px rgba(255,255,255,.1);
+  opacity:.6;transition:opacity .16s,transform .2s,border-color .16s,filter .16s}
+.orb-main:hover,.orb-main:focus-visible,.trial-orb-group.open>.orb-main,.trial-orb-group:hover>.orb-main,
+.orb-choice:hover,.orb-choice:focus-visible,.orb-choice[aria-pressed=true]{opacity:1;transform:scale(1.06);border-color:#ffc56f;filter:none}
+.orb-main img,.orb-choice img{display:block;width:49px;height:49px;object-fit:contain;border-radius:50%;image-rendering:pixelated}
+.orb-main b,.orb-choice b{max-width:88px;font-size:9px;line-height:1.05;text-shadow:0 2px 4px #000}
+.trial-orb-group.issue .orb-main{width:98px;height:98px;opacity:.3;filter:grayscale(.65)}
+.trial-orb-group.issue.ready .orb-main{opacity:1;filter:none;background:radial-gradient(circle at 38% 28%,#ef7132,#95271c 72%)}
+.orb-main:disabled,.orb-choice:disabled{opacity:.25!important;filter:grayscale(.8);pointer-events:none}
+.orb-submenu{position:absolute;left:68px;top:4px;z-index:30;display:flex;align-items:center;gap:6px;
+  opacity:0;visibility:hidden;transform:translateX(-12px) scale(.92);transform-origin:left center;
+  transition:opacity .18s ease,transform .22s cubic-bezier(.18,.8,.25,1),visibility 0s linear .22s;pointer-events:none}
+.trial-orb-group.power .orb-submenu,.trial-orb-group.place .orb-submenu{left:0;top:auto;bottom:82px;
+  transform:translateY(12px) scale(.92);transform-origin:left bottom}
+.trial-orb-group.crew .orb-submenu,.trial-orb-group.force .orb-submenu{left:68px;right:auto}
+.trial-orb-group:hover .orb-submenu,.trial-orb-group:focus-within .orb-submenu,.trial-orb-group.open .orb-submenu{
+  opacity:1;visibility:visible;transform:translateX(0) scale(1);transition-delay:0s;pointer-events:auto}
+.trial-orb-group.power:hover .orb-submenu,.trial-orb-group.power:focus-within .orb-submenu,.trial-orb-group.power.open .orb-submenu,
+.trial-orb-group.place:hover .orb-submenu,.trial-orb-group.place:focus-within .orb-submenu,.trial-orb-group.place.open .orb-submenu{
+  transform:translateY(0) scale(1)}
+.orb-choice{position:relative;width:62px;height:62px;flex:0 0 62px;padding:4px;opacity:.88;background:rgba(31,13,20,.97)}
+.orb-choice img{width:40px;height:40px}.orb-choice b{font-size:8px;color:#ffe1a8}
+.orb-choice i{position:absolute;right:-1px;top:-3px;min-width:18px;padding:1px 4px;border-radius:10px;
+  background:#16090e;border:1px solid var(--gold);font-size:8px;font-style:normal}
+.trial-hud .hud-bottom{height:100px;padding-top:4px}
+
+/* ฉากต่อสู้: สามคำสั่งหลักอยู่ข้างยมบาทน้อย; พลังและไอเท็มเลื่อนแตกออกเมื่อชี้/แตะ */
+.battle-wheel{position:absolute;z-index:9;left:25%;bottom:18%;display:flex;align-items:center;gap:8px;pointer-events:none}
+.battle-orb-group{position:relative;pointer-events:auto}
+.battle-orb-group .orb-submenu{left:8px;top:auto;bottom:69px;flex-direction:column-reverse;transform:translateY(12px) scale(.92);transform-origin:center bottom}
+.battle-orb-group:hover .orb-submenu,.battle-orb-group:focus-within .orb-submenu,.battle-orb-group.open .orb-submenu{
+  opacity:1;visibility:visible;transform:translateY(0) scale(1);transition-delay:0s;pointer-events:auto}
+.battle-wheel.busy .orb-main,.battle-wheel.busy .orb-choice{opacity:.25;pointer-events:none;filter:grayscale(.8)}
+.battle-crew-actions{position:absolute;z-index:9;left:16%;bottom:4%;display:flex;gap:5px}
+.battle-crew-actions .battle-act{position:relative;width:52px;min-height:58px;padding:0;border:0;background:transparent;color:#ffe2ad}
+.battle-crew-actions .battle-icon{position:relative;display:block;width:45px;height:45px;border-radius:50%;overflow:hidden;border:1px solid var(--gold);opacity:.75}
+.battle-crew-actions .battle-icon img{width:100%;height:100%;object-fit:cover;object-position:top}.battle-crew-actions b{font-size:8px}
+.battle-crew-actions .battle-icon em{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(6,3,5,.78) var(--wait),transparent 0)}
+.battle-act:disabled{opacity:.3;pointer-events:none;filter:grayscale(.65)}
+/* ตำแหน่ง/ขนาดจริงของแถวยมทูตช่วย (คอนเทนเนอร์ .arena .battle-squad) ถูกกำหนดใน
+   src/command-wheel.css (selector เฉพาะเจาะจงกว่า ชนะ cascade ที่นี่เสมอ) — ดูคอมเมนต์ข้อ D
+   คุณเป้ 24 ก.ย. 2569 ที่นั่น ที่นี่เหลือไว้แค่สไตล์ที่ command-wheel.css ไม่ได้แตะ (ป้ายชื่อ <b>) */
+/* ข้อ J คุณเป้เจอ 26 ก.ย. 2569 (รูป 14) — "ยักษ์ทวารบาล" เป็นคำยาวไม่มีช่องว่าง บนจอแคบตัด
+   ขึ้นบรรทัดกลางคำแบบสุ่ม (เช่น "ยักษ์ทวาร" / "บาล") อ่านแล้วเหมือนพิมพ์ผิด — บังคับบรรทัดเดียวเสมอ
+   ป้ายกว้างกว่าตัวละครนิดหน่อยไม่เป็นไร มีที่ว่างพอทางขวาอยู่แล้วก่อนถึงฝั่งศัตรู */
+.battle-squad b{font-size:9px;color:var(--gold);background:rgba(10,5,8,.82);padding:1px 5px;border-radius:8px;white-space:nowrap}
+.battle-squad [data-crew-pick]{cursor:pointer;border-radius:8px}
+.battle-squad [data-crew-pick]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.battle-buff{display:inline-block;margin:5px 0;padding:4px 9px;border:1px solid #e46d31;border-radius:14px;background:#35131b;color:#ffd29a;font-size:12px}
+#ov .zone-eventfab{position:absolute;z-index:8;transform:translate(-50%,-100%);
+  pointer-events:auto;display:flex;align-items:center;gap:5px;background:#41212c;color:#ffe398;
+  border:1px solid #eac579;border-radius:10px;padding:4px 7px;cursor:pointer;
+  font:700 12px var(--font-display);max-width:160px;white-space:normal;text-align:left;
+  box-shadow:0 4px 16px #090308b8}
+#ov .zone-eventfab img{height:34px;width:34px;object-fit:contain;flex:none}
+
+/* ฉากรับโทษกระทะทองแดง */
+dialog.punish-scene[open]{width:min(960px,calc(100% - 24px));max-width:960px;padding:0;overflow:hidden;background:#160a0f}
+.punish-stage{position:relative;aspect-ratio:16/8.7;background-position:center 57%;background-size:cover;overflow:hidden}
+.punish-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,3,6,.22),transparent 45%,rgba(9,4,7,.78)),
+  radial-gradient(circle at 50% 58%,transparent 8%,rgba(7,3,5,.38) 72%)}
+.punish-title{position:absolute;left:22px;top:18px;z-index:5;display:flex;flex-direction:column;text-shadow:0 3px 8px #000}
+.punish-title small{font-size:11px;color:#f3c67b}.punish-title b{font:700 clamp(20px,3vw,32px)/1.2 var(--font-display);color:#ffe3ae}
+/* ภาพขอบหน้ากระทะใช้ฉากเดียวกันซ้อนทับช่วงล่างของยม จึงแนบสนิทกับหม้อทุกขนาดจอ */
+.punish-yama{position:absolute;z-index:3;left:50%;top:31%;width:17%;transform:translateX(-50%)}
+.punish-yama img{display:block;width:100%;height:auto;image-rendering:pixelated;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.7));animation:boilYama .6s ease-in-out infinite alternate}
+.punish-flames{position:absolute;z-index:3;left:43%;top:37%;width:14%;height:23%;pointer-events:none}
+.punish-flames i{position:absolute;bottom:0;width:44%;aspect-ratio:1;background:url('img/fx-fireball.png') center/contain no-repeat;
+  filter:drop-shadow(0 0 8px #ff7518);animation:punishFlame 1.1s ease-in-out infinite alternate}
+.punish-flames i:first-child{left:0;transform:rotate(-20deg)}
+.punish-flames i:nth-child(2){right:0;animation-delay:-.55s;transform:scaleX(-1) rotate(-20deg)}
+.punish-pot-front{position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:url('img/BG-Krata.webp') center 57%/cover no-repeat;
+  clip-path:polygon(36% 47%,64% 47%,64% 69%,36% 69%)}
+/* ข้อ H — ผู้คุมโซนเดิมดูลอย: ย่อขนาดลง (24%→19%) และลดระยะจากพื้น (bottom 24%→19%) ให้ฐาน
+   บัลลังก์จมลงไปในพื้นที่หินแถวขาของรูปมากขึ้น + เพิ่มเงาวงรีทึบใต้บัลลังก์ (::after) ช่วยยึดกับพื้น
+   เหมือนวิธีที่ใช้กับอาคารบนแผนที่หลัก (ข้อ B) แทนที่จะพึ่งตำแหน่ง Y อย่างเดียว */
+.punish-dad{position:absolute;z-index:4;right:15%;bottom:19%;display:flex;flex-direction:column;align-items:center;width:19%}
+.punish-dad::before{content:'';position:absolute;left:50%;bottom:2%;transform:translateX(-50%);width:78%;height:14%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.62),transparent 75%);z-index:-1}
+.punish-dad img{height:min(25vw,220px);max-height:52%;width:auto;image-rendering:pixelated;filter:drop-shadow(0 8px 12px #000)}
+.punish-dad span{background:rgba(16,7,11,.92);border:1px solid var(--gold);color:#ffe1ad;border-radius:10px;padding:7px 10px;
+  font-size:clamp(10px,1.3vw,13px);text-align:center;white-space:nowrap}
+.punish-heat{position:absolute;left:50%;top:50%;z-index:5;transform:translateX(-50%);font-size:32px;color:#ffbf5b;
+  opacity:.7;animation:heatRise 1.2s ease-out infinite}
+.punish-copy{padding:16px 20px}.punish-copy p{margin:0 0 10px;line-height:1.65;white-space:pre-line}
+@keyframes boilYama{to{transform:translateY(-4px)}}@keyframes heatRise{to{transform:translate(-50%,-30px);opacity:0}}
+@keyframes emberPulse{to{opacity:.55;transform:translateX(-50%) scale(.92)}}
+@keyframes punishFlame{to{opacity:.65;translate:0 -8px;scale:.9 1.08}}
+@media(prefers-reduced-motion:reduce){.punish-yama img,.punish-flames i,.punish-heat{animation:none}}
+
+/* ด่านชายแดน */
+#ov .frontierfab{position:absolute;transform:translate(-50%,-100%);z-index:8;white-space:nowrap;min-height:40px;
+  padding:8px 15px;border-radius:99px;font-size:var(--text-sm);font-weight:700;background:#5b2833;border:1px solid var(--gold);
+  color:#ffe3ae;box-shadow:0 7px 20px rgba(0,0,0,.68);pointer-events:auto;animation:mobfabIn .18s ease-out}
+#ov .frontierfab:after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--gold)}
+#ov .repairfab{position:absolute;transform:translate(-50%,-50%);z-index:9;min-height:38px;
+  /* 28A: จอแคบตัดบรรทัดได้ ไม่ดันล้นขอบ (ตำแหน่งถูก clamp ใน ui.js clampInView) */
+  width:max-content;max-width:calc(100% - 16px);line-height:1.25;text-align:center;
+  padding:7px 13px;border-radius:99px;font-size:var(--text-sm);font-weight:700;white-space:normal;
+  background:#492735;border:1px solid var(--gold);color:#ffe3ae;box-shadow:0 6px 18px #0009;pointer-events:auto}
+#ov .repairfab:disabled{opacity:.65;cursor:not-allowed}
+dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;padding:0;overflow:hidden;background:#160a0f}
+.frontier-screen{position:relative;min-height:min(760px,90dvh);background-size:cover;background-position:center;display:flex;flex-direction:column}
+.frontier-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,6,10,.2),rgba(15,6,10,.18) 45%,rgba(12,5,8,.96) 78%)}
+.frontier-screen>*:not(.frontier-shade){position:relative;z-index:2}.frontier-screen>.x{position:absolute;right:12px;top:12px;z-index:5}
+.frontier-screen header{padding:22px 64px 0 24px;text-shadow:0 3px 8px #000;max-width:620px}.frontier-screen header small{color:#f6c77b}
+.frontier-screen header h2{margin:2px 0;color:#ffe0a4}.frontier-screen header p{margin:4px 0;font-size:var(--text-sm);line-height:1.5}
+.frontier-party{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:2%;padding:10px 22% 0 16%;min-height:280px}
+.frontier-hero{display:flex;flex-direction:column;align-items:center}.frontier-hero img{height:230px;width:auto;image-rendering:pixelated;
+  filter:drop-shadow(0 9px 12px rgba(0,0,0,.7))}.frontier-hero.mate img{height:180px}.frontier-hero b{font-size:11px;color:var(--gold);
+  padding:2px 8px;border-radius:9px;background:rgba(11,5,8,.85)}
+.frontier-panel{padding:14px 20px 18px;background:rgba(14,6,9,.92);border-top:1px solid rgba(212,163,85,.5)}
+.frontier-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.frontier-head span{display:flex;flex-direction:column}
+.frontier-head b{color:var(--gold);font-size:18px}.frontier-head small,.frontier-loot{font-size:11px;color:var(--muted-foreground)}
+.frontier-team h3{font-size:13px;margin:10px 0 6px}.frontier-team h3 small{color:var(--gold)}.frontier-cards{display:flex;gap:8px;overflow-x:auto}
+.frontier-card{min-width:180px;display:flex;align-items:center;gap:8px;padding:7px;text-align:left}.frontier-card img{width:48px;height:48px;border-radius:50%;
+  object-fit:cover;object-position:top;border:1px solid var(--gold)}.frontier-card span{min-width:0}.frontier-card b,.frontier-card small{display:block}
+.frontier-card small{font-size:9px;color:var(--muted-foreground)}.frontier-card i{margin-left:auto;font-size:9px;font-style:normal;color:var(--gold)}
+.frontier-card.selected{background:#783629;border-color:#f4ae52}.frontier-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.frontier-result{padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--muted)}.frontier-result.win{border-color:var(--gold)}
+.frontier-result p{margin:6px 0}.frontier-result small{color:var(--muted-foreground)}
+
+@media(max-width:900px){
+  .trial-hud .hud-body{grid-template-columns:1fr;grid-template-areas:"stage" "right";padding:8px;gap:7px}
+  .trial-hud .hud-stage{height:350px;min-height:350px}
+  .trial-hud .hud-stage .fig{bottom:112px}.trial-hud .hud-stage .fig img{height:150px}
+  .trial-top-actions{top:24px;right:7px}.trial-top-actions button{min-height:34px;padding:5px 8px;font-size:10px}
+  .trial-wheel{left:13%;bottom:1%;transform:scale(.78);transform-origin:left bottom}
+  .trial-hud .hud-bottom{height:88px}
+  .battle-wheel{left:23%;bottom:22%;transform:scale(.82);transform-origin:left bottom}.battle-crew-actions{left:10%;bottom:2%}
+  /* ข้อ D คุณเป้ 24 ก.ย. 2569: เดิม left:16%/76px เล็กและใกล้ยมบาทน้อยเกินไป (76px ≈ 46% ของยมบาทน้อยตอนนั้น) ชนกันพอดี */
+  .battle-squad{left:30%}.battle-squad img{height:clamp(88px,16vh,140px)}
+  .frontier-screen{min-height:calc(100dvh - 24px)}.frontier-party{min-height:230px;padding:8px 8% 0}.frontier-hero img{height:170px}.frontier-hero.mate img{height:135px}
+  .frontier-panel{padding:12px}.frontier-cards{display:grid;grid-template-columns:1fr 1fr}.frontier-card{min-width:0}
+  .punish-dad{right:4%;bottom:19%;width:22%}.punish-dad span{white-space:normal}.punish-yama{width:20%}
+}
+@media(max-width:520px){
+  .trial-hud .hud-stage{height:310px;min-height:310px}.trial-hud .hud-stage .fig{bottom:110px}.trial-hud .hud-stage .fig img{height:125px}
+  .trial-wheel{left:4%;bottom:1%;transform:scale(.67)}.trial-top-actions{top:20px}.trial-top-actions button{padding:4px 6px;font-size:9px}
+  .trial-hud .hud-bottom{height:78px}.trial-hud .port img{width:60px;height:60px}
+  .battle-wheel{left:18%;bottom:26%;transform:scale(.7)}.battle-crew-actions{transform:scale(.78);transform-origin:left bottom}
+  .frontier-screen header{padding:18px 46px 0 15px}.frontier-party{min-height:190px}.frontier-hero img{height:132px}.frontier-hero.mate img{height:105px}
+  .frontier-cards{grid-template-columns:1fr}.frontier-actions button{font-size:11px;padding:7px}
+  .punish-stage{aspect-ratio:4/3}.punish-yama{width:24%}.punish-dad{right:2%;bottom:16%;width:26%}.punish-dad img{height:135px}
+}
+.story-battle-overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:auto;background:rgba(9,5,12,.98);padding:16px}
+.story-battle-overlay .intro-comic{width:min(900px,100%)}
+.story-reward .boss p{line-height:1.7}
+.intro-comic-controls .gold{color:#f3d18b;background:#3a2735}
+</style>
+<link rel="stylesheet" href="src/command-wheel.css">
+</head>
+<body>
+<!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
+<div id="boot">
+  <h1 class="brand">อเวจี</h1>
+  <div class="bar"><i></i></div>
+  <div class="pct">0%</div>
+  <p class="note">กำลังเปิดประตูโซนสุวรรณภูมิ…</p>
+</div>
+
+<!-- โผล่เฉพาะจอสัมผัสที่ถือแนวตั้ง (ดู @media ข้างบน) -->
+<div id="rotate">
+  <div class="ico">📱</div>
+  <h2>หมุนเครื่องเป็นแนวนอน</h2>
+  <p>โซนสุวรรณภูมิกว้างกว่าจอแนวตั้ง — หมุนเครื่องนอนลงแล้วเกมจะเปิดให้เอง</p>
+</div>
+<div id="splash" aria-label="แอนิเมชันเปิดเกม">
+  <video id="splash-video" src="img/intro-splash.mp4" muted playsinline preload="auto"></video>
+  <img class="splash-logo" id="splash-logo" src="img/ui/logo-th.png" alt="อเวจี — CEO of Hell">
+  <button class="splash-skip" id="splash-skip" type="button">ข้าม →</button>
+</div>
+<div id="enter-gate" hidden>
+  <button id="enter-button" type="button"><img id="enter-logo" src="img/ui/logo-th.png" alt=""><span data-t="title.tapEnter"></span></button>
+</div>
+<div id="title">
+  <div class="art" id="cover-art"></div>
+  <video class="cover-vfx" id="cover-vfx" src="img/home-animated.mp4" poster="img/cover-v3.webp"
+    muted playsinline loop preload="none" aria-hidden="true"></video>
+  <div class="scrim"></div>
+
+  <!-- เฟืองตั้งค่ามุมขวาบน (ข้อ A.3) — ใช้ id เดิม #t-set ที่ ui.js ผูก openSettings() ไว้แล้ว -->
+  <button id="t-set" class="title-gear" aria-label="settings">
+    <img src="img/ui/icon-setting2.png" alt="">
+  </button>
+  <!-- ป้าย 18+ มุมขวาล่าง (ข้อ A.3) -->
+  <div class="title-badge18"><img src="img/ui/icon-18plus.png" alt="18+"></div>
+
+  <div class="title-menu">
+    <!-- โลโก้ขวากลางตามม็อกอัป (ข้อ A.1) — สลับ th/eng ตามภาษาใน bindTitleLang() (ui.js) -->
+    <img class="title-logo" id="title-logo" src="img/ui/logo-th.png" alt="อเวจี — CEO of Hell">
+
+    <div class="title-actions">
+      <!-- เล่นต่อ/RESUME (ข้อ A.2) — ไทย: ไอคอนสามเหลี่ยมที่ตัดจาก icon_resume.png + ตัวอักษรไทยสไตล์เดียวกัน
+           (ทองไล่สี เงาดำ) เพราะไม่มีภาพตัวหนังสือไทยชุดนี้ · อังกฤษ: ยังใช้ตัวหนังสือ CSS เดียวกัน (ผ่าน i18n)
+           เพื่อให้จัดวางสม่ำเสมอกับปุ่ม NEW GAME — ไม่ใช้ icon_resume.png เต็มภาพเพราะฟอนต์ในภาพนั้นไม่ตรงกับ
+           ฟอนต์แสดงผล (Trirong) ที่เหลือทั้งเกม -->
+
+      <button id="t-resume" class="title-action" hidden>
+        <span class="glyph"><img src="img/ui/icon-resume-glyph.png" alt=""></span>
+        <span class="label"><b data-t="title.resume"></b><small id="t-resume-info"></small></span>
+      </button>
+      <button id="t-new" class="title-action">
+        <span class="glyph"><img src="img/ui/icon-new-game-glyph.png" alt=""></span>
+        <span class="label"><b data-t="title.newGame"></b></span>
+      </button>
+    </div>
+
+    <!-- ฟังก์ชันเดิมที่ไม่มีในม็อกอัป (ดูบทนำอีกครั้ง) — ย้ายมาเป็นลิงก์เล็กๆ ใต้ปุ่มหลัก ไม่ให้แย่งสายตา -->
+    <div class="title-secondary">
+      <button id="t-intro" data-t="title.intro"></button>
+    </div>
+
+    <!-- คำเตือนก่อนเล่น (เจ้าของสั่ง 11 ก.ย. 2569) — ถ้อยคำนี้เจ้าของเขียนมาเอง ห้ามแก้/ห้ามแปลเอง
+         (รอ Rae แปลอย่างเป็นทางการ — ตอนนี้โชว์ไทยทั้งสองภาษา ดูรายงาน Toby) -->
+    <p class="agewarn"><span class="rate">18+</span><span>เกมนี้เนื้อหามีความรุนแรง เหมาะสำหรับผู้ใหญ่อายุ 18 ปีขึ้นไป</span></p>
+    <div class="disclaimer">สำนวนในเกมเป็นเรื่องแต่งขึ้นเพื่อความบันเทิงเท่านั้น</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stage">
+    <!-- กล่องนี้ล็อกอัตราส่วน 1527:704 ของฉากเสมอ (letterbox แทนการครอป — ดูเหตุผลในรายงาน Toby ข้อ D)
+         #ov ต้องมีกรอบเท่าแคนวาสเป๊ะ ไม่งั้นบับเบิลคำพูด/หมุดตัวละครเพี้ยนตำแหน่ง -->
+
+    <div class="scene-box">
+      <canvas id="cv" width="1527" height="704"></canvas>
+      <div id="ov"></div>
+      <!-- ปุ่มลอยทับฉาก — บนมือถือไม่มีคีย์บอร์ด กดเว้นวรรคไม่ได้เลย (เจ้าของเจอ 8 ก.ย. 2569) -->
+      <div class="fabs">
+        <button id="fab-atk" class="fab hot" hidden>⚔️ ฟาด</button>
+      </div>
+    </div>
+
+    <!-- ================= ข้อ D ชุด 15 — HUD ใหม่ตามม็อกอัป UI2-th/eng.jpg ================= -->
+    <!-- มุมซ้ายบน: เหรียญ/ข้าวปั้น/ระเบียบ(ตาชั่ง)/กรรมท่าน(กะโหลก) — แทนที่ .res เดิม (D.2) -->
+    <div class="hud-res" id="res"></div>
+
+    <!-- มุมขวาบน: หยุด + ตั้งค่า (D.3) -->
+    <div class="hud-top-right">
+      <button id="hud-pause" class="hud-icon-btn" data-t-aria="hud.pause"><img id="hud-pause-img" src="img/ui/icon-pause.png" alt=""></button>
+      <button id="hud-settings" class="hud-icon-btn" data-t-aria="hud.settings"><img src="img/ui/icon-setting2.png" alt=""></button>
+    </div>
+
+    <!-- ล่างซ้าย: ยมบาทน้อย + ยศ + แถบบารมี + ชื่อ · หนังสือคู่มือ · กระเป๋า (D.4)
+         แตะการ์ดยมบาทน้อย = เปิดแผงสถานะ (คิว/ยมทูต/ก่อสร้าง/ข้อมูล/บันทึก/ย้ายโซน — D.6) -->
+    <div class="hud-bottom-left">
+      <button id="hud-avatar" class="hud-avatar" aria-label="สถานะยมบาทน้อย">
+        <span class="hud-ava-row">
+          <img id="hud-ava-img" src="img/hero-yama-profile.png" alt=""
+               onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+          <!-- ข้อ 2 ชุด 15b — ดาวยศ (level 1-3) แทน star5 เดิม ตามม็อกอัป UI2-th.jpg
+               (คุณเป้ 28 ก.ย. 2569: "ดาว คือระดับ level ของ yama ... เวลาพ่อเลื่อนขั้นให้ ก็จะ 1 ดาว")
+               star5 (จำนวนคำตัดสิน 5 ดาวสะสม) ยังนับต่อในแท็บข้อมูลตามเดิม ไม่ได้ลบทิ้ง -->
+          <span id="hud-rank-stars" class="hud-rank-stars" aria-label="ยศยมบาท">
+            <i class="rk-star" data-lv="1">★</i><i class="rk-star" data-lv="2">★</i><i class="rk-star" data-lv="3">★</i>
+          </span>
+        </span>
+        <span class="hud-hpbar"><i id="hud-hp-fill"></i></span>
+        <span class="hud-hpbar mp" title="MP"><i id="hud-mp-fill"></i></span>
+        <small id="hud-ava-name">ยมบาทน้อย</small>
+      </button>
+      <button id="hud-book" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.book">
+        <img src="img/ui/icon-book.png" alt=""></button>
+      <button id="hud-bag" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.bag">
+        <img src="img/ui/icon-bag.png" alt=""></button>
+      <button id="hud-zone" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.zone" hidden>
+        <img src="img/ui/icon-door.png" alt=""></button>
+    </div>
+
+    <!-- ล่างกลาง: คุมเวลาและเข้าสอบสวน -->
+    <div class="map-controls">
+      <button id="hud-open-court" class="btn-gold" type="button"></button>
+      <button id="hud-trial" class="btn-gold" type="button"></button>
+    </div>
+
+    <div class="coach hud-coach" id="coach" hidden></div>
+  </div>
+
+  <section id="hero-profile" class="hero-profile" hidden aria-label="โปรไฟล์ยมบาท">
+    <div class="hero-profile-frame">
+      <div class="hero-profile-actions">
+        <button id="hero-profile-pause" class="hud-icon-btn" aria-label="พัก"><img src="img/ui/icon-pause.png" alt=""></button>
+        <button id="hero-profile-close" class="hud-icon-btn" aria-label="ปิด"><img src="img/ui/icon-close.png" alt=""></button>
+      </div>
+      <div class="hero-profile-figure"><img id="hero-profile-standee" src="img/hero-yama.png" alt=""></div>
+      <div class="hero-profile-content">
+        <header class="hero-profile-heading">
+          <img id="hero-profile-face" src="img/hero-yama-profile.png" alt="">
+          <div id="hero-profile-intro"></div>
+        </header>
+        <div id="hero-profile-columns" class="hero-profile-columns"></div>
+        <button id="hero-profile-menu" class="hero-profile-menu"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= แผงของเดิมที่ไม่มีในม็อกอัป (D.6) — ย้ายมาเปิดจากการ์ดยมบาทน้อย =================
+       คิววิญญาณ/ยมทูต/ก่อสร้าง/ข้อมูล/บันทึก/ย้ายโซน/หัวเรื่อง+ปุ่มระบบเดิม
+       ของเดิมทุกชิ้น (id เดิมหมด) อยู่ในนี้ครบ แค่ย้ายที่ ไม่ได้แก้โค้ดผูกปุ่ม -->
+  <div id="legacy-drawer" class="legacy-drawer" hidden>
+    <div class="legacy-drawer-sheet">
+      <div class="legacy-drawer-head">
+        <img id="ava" src="img/hero-yama-profile.png" alt="" width="40" height="40"
+             onerror="this.onerror=function(){this.remove()};this.src='img/hero-yama.png'">
+        <h1>อเวจี<small id="hdr-sub">นรกโซนสุวรรณภูมิ · ยมบาทฝึกหัด</small></h1>
+        <button id="legacy-drawer-close" class="settings-close" aria-label="close">
+          <img src="img/ui/icon-close.png" alt=""></button>
+      </div>
+      <div class="sysbtn">
+        <button id="menu" class="sm">↩ ออกไปหน้าเมนู</button>
+        <button id="help" class="sm">วิธีเล่น</button>
+        <button id="settings" class="sm">⚙ ตั้งค่า</button>
+        <button id="mute" class="sm">🔊 เสียง</button>
+      </div>
+
+      <div class="deckbar" id="deck"></div>
+
+      <div class="ctrl">
+        <button id="play" class="pri">เปิดศาล</button>
+        <button id="atk" class="sm" hidden>⚔️ ฟาดเปรต</button>
+        <span id="tickinfo" style="font-size:var(--text-xs);color:var(--muted-foreground)"></span>
+        <button id="bag" class="sm" hidden>🎒 กระเป๋า</button>
+        <button id="zone" class="sm" hidden style="margin-left:auto">🗺️ ย้ายโซน</button>
+      </div>
+
+      <div class="below">
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-tab="queue" aria-selected="true" id="tab-queue">คิววิญญาณ</button>
+            <button role="tab" data-tab="crew" aria-selected="false" id="tab-crew">ยมทูต</button>
+            <button role="tab" data-tab="build" aria-selected="false" id="tab-build">ก่อสร้าง</button>
+          </div>
+          <div class="tabbody" id="tabbody"></div>
+        </div>
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-side="info" aria-selected="true" id="side-info">ข้อมูล</button>
+            <button role="tab" data-side="log" aria-selected="false" id="side-log">บันทึก</button>
+          </div>
+          <div id="side" class="sidebody"></div>
+        </div>
+      </div>
+
+      <footer>อเวจี — เกมทดลอง · คลิกพื้นหรือกด WASD เพื่อเดิน · บันทึกอัตโนมัติลงเครื่อง</footer>
+    </div>
+  </div>
+</div>
+
+<dialog id="dlg"></dialog>
+<script type="module" src="src/preload.js"></script>
+<script type="module" src="output/frontier/test-ui.js"></script>
+</body>
+</html>
