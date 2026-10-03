@@ -58,7 +58,8 @@ test('repair targets cover zones, call actual builder and preserve special stati
     assert.equal(mapInteractions(g,MERCHANT).find(t=>t.key==='ngiw').kind,'station');
     for (const key of ['tarang','sawan']) {
       g.stations = [{def:STATIONS.find(s=>s.k===key),fire:1}];
-      assert.equal(mapInteractions(g,MERCHANT).find(t=>t.key===key).kind,'station');
+      // 29M: ตะราง/ประตูสวรรค์ซ่อมจากแผนที่ได้เหมือนสถานที่อื่น (ปุ่มซ่อมในห้องถูกถอดแล้ว)
+      assert.equal(mapInteractions(g,MERCHANT).find(t=>t.key===key).kind,'repair');
     }
   }
 });

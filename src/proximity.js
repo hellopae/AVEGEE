@@ -33,7 +33,7 @@ export function mapInteractions(g, merchant) {
   for (const st of g.stations) {
     if (st.build) continue;
     const def = st.def;
-    const repair = !['tarang', 'sawan'].includes(def.k) && st.fire > 0 && !st.repair;
+    const repair = st.fire > 0 && !st.repair;
     targets.push({ id:def.k, key:def.k, kind:repair ? 'repair' : 'station',
       x:def.x, y:def.y, bx:def.bx, by:def.by - def.bw - 24,
       label:repair ? `เรียก${g.availableBuilder()?.name || 'ทัณฑ์'}มาซ่อม` : 'เข้าไป' });

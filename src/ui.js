@@ -864,7 +864,7 @@ dlg.addEventListener('close', () => { setTimeout(() => { if (!dlg.open) g.onChan
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
   if (!dlg.open || dlg.classList.contains('pause-modal') ||
-      (dlg.querySelector('.st-hud') && !['tarang', 'sawan'].includes(dlg.querySelector('#st-left')?.dataset.room)) || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
+      dlg.querySelector('.st-hud') || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
       dlg.querySelector('.settings-close,.trial-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
   const close = document.createElement('button');
@@ -949,6 +949,13 @@ function clampInView(d) {
   const cx = o.left + parseFloat(d.style.left) / 100 * o.width;
   const nx = Math.min(hi, Math.max(lo, cx));
   if (nx !== cx) d.style.left = (nx - o.left) / o.width * 100 + '%';
+  // 29M: สถานีแถวบนสุด (โลกันตนรก) ทำให้ปุ่มลอยไปทับแถบทรัพยากรบน HUD — ดันลงมาให้พ้นแถบนั้น (บนจอ ~84px)
+  // (คำนวณจากค่า top ที่ตั้งไว้ ไม่อ่านตำแหน่งจริง เพราะปุ่มมี transition ตำแหน่งอยู่)
+  const topMin = 84;
+  if (o.height) {
+    const edge = o.top + parseFloat(d.style.top) / 100 * o.height - d.offsetHeight / 2;
+    if (edge < topMin) d.style.top = parseFloat(d.style.top) + (topMin - edge) / o.height * 100 + '%';
+  }
 }
 
 /** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
@@ -3530,16 +3537,9 @@ function openStation(k) {
     const row = (label, btn) => `<div class="st-row"><span>${label}</span>${btn}</div>`;
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
-    // 29B: คงปุ่มซ่อมเดิมเฉพาะตะราง/ประตูสวรรค์ซึ่งอยู่ในขอบเขต 29C
+    // 29M: ปุ่มซ่อมย้ายไปอยู่บนแผนที่ทุกสถานที่แล้ว (รวมตะราง/ประตูสวรรค์) — ในห้องเหลือแค่ปุ่มเยี่ยมนิรา
     if (AL) {
-      if (['tarang', 'sawan'].includes(k) && st.fire > 0 && !g.mobs.length) {
-        const worker = g.crew.find(c => c.buildK === st.def.k) || g.availableBuilder();
-        const who = worker?.name || g.builders().map(c => c.name).join(' / ');
-        const why = st.repair ? st.repairWait ? t('room.repairComing').replace('{name}', who) : t('room.repairing')
-          : !g.builders().length ? t('room.noTaan')
-          : !g.availableBuilder() ? t('room.taanBusy').replace('{name}', who) : '';
-        put(AL, `<button class="btn-gold" id="s-repair" ${why ? 'disabled' : ''}>${esc(t('room.repair').replace('{name}', worker?.name || (g.builders().map(c => c.name).join(' / ') || t('room.taan'))))}</button>${why ? `<small>${esc(why)}</small>` : ''}`);
-      } else if (g.niraRest && (k === 'tea' || (k === 'sala' && !g.stations.some(s => s.def.k === 'tea' && !s.build)))) {
+      if (g.niraRest && (k === 'tea' || (k === 'sala' && !g.stations.some(s => s.def.k === 'tea' && !s.build)))) {
         put(AL, `<button class="btn-gold" id="visit-nira-tea" ${g.niraRest.visited ? 'disabled' : ''}>🍵 ${g.niraRest.visited ? 'เยี่ยมนิราแล้ว' : 'เยี่ยมนิราที่กำลังพักฟื้น'}</button><small>พักอีก ${g.niraRest.remaining} วาระ</small>`);
         AL.querySelector('#visit-nira-tea').onclick = () => { g.visitNira(); panels(); };
       } else put(AL, '');
@@ -3675,7 +3675,6 @@ function openStation(k) {
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
-    on('#s-repair', () => { if (g.repairStation(k)) { panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
@@ -3822,7 +3821,7 @@ function openStation(k) {
   dlg.innerHTML = `
     <div class="hud st-hud zone1-room">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
-        ${['tarang', 'sawan'].includes(k) ? '' : '<button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>'}
+        <button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>
         <div class="st-arch" id="st-arch" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
         <div class="st-npc" id="st-npc"></div></div>
