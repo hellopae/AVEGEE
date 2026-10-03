@@ -1,0 +1,105 @@
+{
+  "tool": "built-in image_gen",
+  "leaders": [
+    {
+      "zone": "west",
+      "prompt": "Use case: stylized-concept. Create a finished transparent-background pixel-art game sprite for the friendly seated ruler of snowy Western underworld, using image 1 as exact character and throne design reference, image 2 only as zone palette reference. Preserve mature maroon demon king, long white beard, steel horned Viking helmet, engraved silver scale armor, fur-edged dark cloak, spear in left hand, black raven perched on red-backed dark wooden throne. This is the HELPING REGIONAL RULER, distinct from the inspector enemy. Full body and complete throne, centered square composition, crisp coarse pixel clusters and dark outlines matching reference, ice-blue highlights, no background or checkerboard, no floor, no text. Actual transparent alpha, including space around spear/raven/throne. Feet and spear end completely visible.",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-8a7933f7-3693-4758-8fd1-eaa6ec1a16b6.png",
+      "destination": "img/West/hero-boss-west.png"
+    },
+    {
+      "zone": "cyberhell",
+      "prompt": "Use case: stylized-concept. Create a NEW friendly seated ruler for cyber underworld game. Image 1 is pixel-art sprite style and seated throne composition reference only. Image 2 is the cyberhell environment palette. Mature red-maroon demon with short swept-back SILVER hair, small curved horns, neatly trimmed SILVER beard, wise steady face; low angular silver crown with bright cyan central gem. Regal long BLACK and VIOLET robe with silver circuit embroidery and cyan cuffs, no armor, no tall rectangular inspector hat. Holds glowing cyan judgment tablet in one hand, other hand rests on throne. Broad angular black-and-silver throne with violet crystal pillars and cyan light strips. Clearly distinct from a dark blue-faced clean-shaven purple/gold rectangular-hatted inspector. Full body complete throne centered square sprite. Crisp chunky pixel art dark outlines. Actual TRANSPARENT background with alpha, no checkerboard, no environment, no floor, no text. Complete feet and throne visible.",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-4e04099a-8108-4151-929b-2ed2206448ee.png",
+      "destination": "img/CyberHell/hero-boss-cyberhell.png"
+    }
+  ],
+  "battleSprites": [
+    {
+      "zone": "th",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-d4b1c96f-6252-4e4c-ba2f-481c1f520198.png",
+      "destination": "img/leader-th-possessed.png",
+      "prompt": "Use case: identity-preserve. Create a transparent pixel-art battle sprite of the EXACT seated regional ruler in image 1 now STANDING ready to fight under mind control. Remove throne completely, keep exact face, skin, crown or hat, outfit, jewelry, Thai broad ornate gold crown, dark maroon demon skin, black burgundy gold robes, ceremonial gold staff. Full body, three-quarter facing slightly left, weapon raised defensively, two feet planted, purple glowing eyes and faint purple chain wrapped around wrists to convey unwilling possession. Keep coarse pixel clusters dark outlines matching source sprite, square centered framing, complete feet and staff. ACTUAL transparent alpha background, no checkerboard, no floor, no text. Single character only."
+    },
+    {
+      "zone": "asia",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-e7451855-dd5b-46a8-a8b1-f80b20526239.png",
+      "destination": "img/leader-asia-possessed.png",
+      "prompt": "Use case: identity-preserve. Create a transparent pixel-art battle sprite of the EXACT seated regional ruler in image 1 now STANDING ready to fight under mind control. Remove throne completely, keep exact face, skin, crown or hat, outfit, jewelry, thick black beard and mustache, tall black rectangular hat with gold front panel, vivid red skin and red gold Chinese robes, double-face gold judgment staff and tan tablet. Full body, three-quarter facing slightly left, weapon raised defensively, two feet planted, purple glowing eyes and faint purple chain wrapped around wrists to convey unwilling possession. Keep coarse pixel clusters dark outlines matching source sprite, square centered framing, complete feet and staff. ACTUAL transparent alpha background, no checkerboard, no floor, no text. Single character only."
+    },
+    {
+      "zone": "west",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-6fa39377-1e78-4e9b-aa3b-f3daab256a54.png",
+      "destination": "img/leader-west-possessed.png",
+      "prompt": "Use case: identity-preserve. Create a transparent pixel-art battle sprite of EXACT ruler in image 1 now STANDING ready to fight under mind control. Remove throne completely, keep maroon skin, long WHITE beard, horned silver Viking helmet, engraved silver scale armor and fur cloak, spear, black raven perched on shoulder. Full body three-quarter slightly left, spear gripped for combat, complete two planted feet and spear tip, purple glowing eyes and faint purple chains wrapped at wrists showing unwilling control. Same coarse pixel clusters and dark outlines. Centered square canvas, ACTUAL transparent alpha background, no checkerboard, no floor, no text. One character only."
+    },
+    {
+      "zone": "cyberhell",
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-8ea58f70-74ae-43da-9eb6-f774a74570eb.png",
+      "destination": "img/leader-cyberhell-possessed.png",
+      "prompt": "Use case: identity-preserve. Generate an exact character variant of seated friendly CyberHell ruler in image1, now STANDING under hostile mind control, ready to fight. Remove throne entirely; keep red-maroon demon skin, white sweptback hair, silver beard, curved horns, low silver cyan-gem crown, black violet silver circuit robe and cyan tablet. Stands three-quarter facing left with one open hand projecting violet energy and tablet in other hand, purple glowing eyes and faint purple chains around wrists. Full complete body and feet, centered square transparent sprite, crisp chunky pixel art matching reference, dark outlines. Actual transparent alpha, no checkerboard, no background/floor/text. One character only."
+    }
+  ],
+  "storyEdits": [
+    {
+      "id": "cyberhell-02-v2",
+      "target": "img/story-cyberhell-02.png",
+      "action": "Replace the three controlled people with FOUR controlled regional rulers from images2-5, father, red-black-bearded Chinese king, white-bearded silver Viking king, and silver-haired circuit-robed cyber ruler. Arrange all4 on broad raised platform, seated on each OWN DISTINCT throne, visibly possessed glowing violet eyes, violet chains connect ALL4 to raised hand of original towering dark gray-faced rectangular purple/gold crowned inspector behind them. Keep original FINAL ENEMY exactly same identity and original young hero foreground backview unchanged. Expand lineup in same shot naturally; exactly4 controlled rulers plus1controller plus1younghero. Preserve server cavern, lava, blue soulriver, bridges and coherent perspective.",
+      "prompt": "Use case: compositing. Edit target Image1. Image 2 is father/head Zone1: dark maroon demon, broad ornate Thai gold crown, black burgundy gold ceremonial robes and staff. Image3 is head Zone2: vivid red mature demon, THICK BLACK beard, tall BLACK rectangular gold-panel Chinese ceremonial hat, RED gold robes, two-face staff. Image4 is head Zone3: maroon Viking demon, LONG WHITE beard, horned SILVER helmet, SILVER scale armor, fur cloak, spear and raven. Image5 is head Zone4: red demon with WHITE sweptback hair and SILVER beard, curved horns, LOW SILVER CYAN GEM crown, BLACK VIOLET SILVER circuit robes and cyan tablet. These FOUR FRIENDLY REGIONAL RULERS are DIFFERENT people from hostile inspectors. Do NOT depict green/red Chinese general or cyan-rune black skull-armored knight as any ruler. Primary request: Replace the three controlled people with FOUR controlled regional rulers from images2-5, father, red-black-bearded Chinese king, white-bearded silver Viking king, and silver-haired circuit-robed cyber ruler. Arrange all4 on broad raised platform, seated on each OWN DISTINCT throne, visibly possessed glowing violet eyes, violet chains connect ALL4 to raised hand of original towering dark gray-faced rectangular purple/gold crowned inspector behind them. Keep original FINAL ENEMY exactly same identity and original young hero foreground backview unchanged. Expand lineup in same shot naturally; exactly4 controlled rulers plus1controller plus1younghero. Preserve server cavern, lava, blue soulriver, bridges and coherent perspective. Preserve original crisp chunky pixel-art cinematic style, palette, wide canvas and EXACT black letterbox bands. No text, watermark, UI or speech bubbles. Only change requested people; do not redesign environment or preserved characters.",
+      "refs": [
+        "img/story-cyberhell-02.png",
+        "img/hero-boss.png",
+        "img/Asia/hero-boss-asia.png",
+        "img/West/hero-boss-west.png",
+        "img/CyberHell/hero-boss-cyberhell.png"
+      ],
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-5207b36f-a7cb-4f43-8474-d5b403235a1c.png",
+      "destination": "img/story-cyberhell-02-v2.png"
+    },
+    {
+      "id": "cyberhell-03-v3",
+      "target": "img/story-cyberhell-03-v2.png",
+      "action": "Replace the three rescued people on back-left island with FOUR rescued regional rulers from images2-5. All4 crouch recovering alive on island, distinctly father, Chinese red black-bearded king, white-bearded silver Viking king, silver-haired black-violet circuit cyber ruler. No chains now and normal eyes. Keep original gray-faced tall purple/gold rectangular-crowned FINAL ENEMY on right and young cyber hero foreground EXACTLY unchanged. Four rulers safely behind hero, no chairs needed. Preserve exact cyber server cavern, throne platform, lava and cyan soul river; coherent natural perspective.",
+      "prompt": "Use case: compositing. Edit target Image1. Image 2 is father/head Zone1: dark maroon demon, broad ornate Thai gold crown, black burgundy gold ceremonial robes and staff. Image3 is head Zone2: vivid red mature demon, THICK BLACK beard, tall BLACK rectangular gold-panel Chinese ceremonial hat, RED gold robes, two-face staff. Image4 is head Zone3: maroon Viking demon, LONG WHITE beard, horned SILVER helmet, SILVER scale armor, fur cloak, spear and raven. Image5 is head Zone4: red demon with WHITE sweptback hair and SILVER beard, curved horns, LOW SILVER CYAN GEM crown, BLACK VIOLET SILVER circuit robes and cyan tablet. These FOUR FRIENDLY REGIONAL RULERS are DIFFERENT people from hostile inspectors. Do NOT depict green/red Chinese general or cyan-rune black skull-armored knight as any ruler. Primary request: Replace the three rescued people on back-left island with FOUR rescued regional rulers from images2-5. All4 crouch recovering alive on island, distinctly father, Chinese red black-bearded king, white-bearded silver Viking king, silver-haired black-violet circuit cyber ruler. No chains now and normal eyes. Keep original gray-faced tall purple/gold rectangular-crowned FINAL ENEMY on right and young cyber hero foreground EXACTLY unchanged. Four rulers safely behind hero, no chairs needed. Preserve exact cyber server cavern, throne platform, lava and cyan soul river; coherent natural perspective. Preserve original crisp chunky pixel-art cinematic style, palette, wide canvas and EXACT black letterbox bands. No text, watermark, UI or speech bubbles. Only change requested people; do not redesign environment or preserved characters.",
+      "refs": [
+        "img/story-cyberhell-03-v2.png",
+        "img/hero-boss.png",
+        "img/Asia/hero-boss-asia.png",
+        "img/West/hero-boss-west.png",
+        "img/CyberHell/hero-boss-cyberhell.png"
+      ],
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-7ea6c739-138b-4286-8b32-4e5c124142c8.png",
+      "destination": "img/story-cyberhell-03-v3.png"
+    },
+    {
+      "id": "ending-01-v4",
+      "target": "img/story-ending-01-v3.png",
+      "action": "Replace the three standing adults behind young Yama with FOUR rightful rulers from images2-5, standing together back-left in calm recovered poses: father, red-black-bearded Chinese king, white-bearded silver Viking king with raven, silver-haired cyber ruler with cyan tablet. All4 normal eyes freed from control; their attire matches their own refs, no chairs. Preserve young Yama foreground EXACTLY: small red boy, pointedgoldcrown, black red goldrobes, book held LEFT hand, NO STAFF in either hand, head turned RIGHT looking at kneeling enemy. Keep kneeling gray-faced rectangular purple gold crowned FINAL ENEMY on right EXACTLY unchanged including chains. Only adult lineup changes, may extend a little left as needed. Preserve cavern map background and warm victory light.",
+      "prompt": "Use case: compositing. Edit target Image1. Image 2 is father/head Zone1: dark maroon demon, broad ornate Thai gold crown, black burgundy gold ceremonial robes and staff. Image3 is head Zone2: vivid red mature demon, THICK BLACK beard, tall BLACK rectangular gold-panel Chinese ceremonial hat, RED gold robes, two-face staff. Image4 is head Zone3: maroon Viking demon, LONG WHITE beard, horned SILVER helmet, SILVER scale armor, fur cloak, spear and raven. Image5 is head Zone4: red demon with WHITE sweptback hair and SILVER beard, curved horns, LOW SILVER CYAN GEM crown, BLACK VIOLET SILVER circuit robes and cyan tablet. These FOUR FRIENDLY REGIONAL RULERS are DIFFERENT people from hostile inspectors. Do NOT depict green/red Chinese general or cyan-rune black skull-armored knight as any ruler. Primary request: Replace the three standing adults behind young Yama with FOUR rightful rulers from images2-5, standing together back-left in calm recovered poses: father, red-black-bearded Chinese king, white-bearded silver Viking king with raven, silver-haired cyber ruler with cyan tablet. All4 normal eyes freed from control; their attire matches their own refs, no chairs. Preserve young Yama foreground EXACTLY: small red boy, pointedgoldcrown, black red goldrobes, book held LEFT hand, NO STAFF in either hand, head turned RIGHT looking at kneeling enemy. Keep kneeling gray-faced rectangular purple gold crowned FINAL ENEMY on right EXACTLY unchanged including chains. Only adult lineup changes, may extend a little left as needed. Preserve cavern map background and warm victory light. Preserve original crisp chunky pixel-art cinematic style, palette, wide canvas and EXACT black letterbox bands. No text, watermark, UI or speech bubbles. Only change requested people; do not redesign environment or preserved characters.",
+      "refs": [
+        "img/story-ending-01-v3.png",
+        "img/hero-boss.png",
+        "img/Asia/hero-boss-asia.png",
+        "img/West/hero-boss-west.png",
+        "img/CyberHell/hero-boss-cyberhell.png"
+      ],
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-a1a34922-6a2c-4f0a-b17a-97938e73d57f.png",
+      "destination": "img/story-ending-01-v4.png"
+    },
+    {
+      "id": "ending-02-v3",
+      "target": "img/story-ending-02-v2.png",
+      "action": "Keep exact panorama of all4 peaceful zone maps, central small red Yama at ornate throne and lavender Nira with purple topknot and papers unchanged. Replace the wrong surrounding adult group and add one person to create SIX total foreground people: Yama + Nira + FOUR regional rulers from images2-5. Back or three-quarter backs looking over realm: father with broad Thai gold crown black burgundy gold robes; Chinese king black rectangular ceremonial hat redgold robes and black beard visible in sideprofile; Viking silver horned helmet white beard furcloak silver armor and raven; cyber ruler silver sweptbackhair curvedhorns low cyan silver crown blackvioletcircuitrobe cyantablet. All4 upright peaceful free, no chains. Space them naturally on wider foreground terrace around central Yama and Nira, complete silhouettes/readable identities. No hostile enemy inspector in the peaceful group. Keep all4 zones identifiable with lava Thai left, Chinese teal/redmaple centerleft, snow ice center-right, purple servers right. Consistent ground and character perspective.",
+      "prompt": "Use case: compositing. Edit target Image1. Image 2 is father/head Zone1: dark maroon demon, broad ornate Thai gold crown, black burgundy gold ceremonial robes and staff. Image3 is head Zone2: vivid red mature demon, THICK BLACK beard, tall BLACK rectangular gold-panel Chinese ceremonial hat, RED gold robes, two-face staff. Image4 is head Zone3: maroon Viking demon, LONG WHITE beard, horned SILVER helmet, SILVER scale armor, fur cloak, spear and raven. Image5 is head Zone4: red demon with WHITE sweptback hair and SILVER beard, curved horns, LOW SILVER CYAN GEM crown, BLACK VIOLET SILVER circuit robes and cyan tablet. These FOUR FRIENDLY REGIONAL RULERS are DIFFERENT people from hostile inspectors. Do NOT depict green/red Chinese general or cyan-rune black skull-armored knight as any ruler. Primary request: Keep exact panorama of all4 peaceful zone maps, central small red Yama at ornate throne and lavender Nira with purple topknot and papers unchanged. Replace the wrong surrounding adult group and add one person to create SIX total foreground people: Yama + Nira + FOUR regional rulers from images2-5. Back or three-quarter backs looking over realm: father with broad Thai gold crown black burgundy gold robes; Chinese king black rectangular ceremonial hat redgold robes and black beard visible in sideprofile; Viking silver horned helmet white beard furcloak silver armor and raven; cyber ruler silver sweptbackhair curvedhorns low cyan silver crown blackvioletcircuitrobe cyantablet. All4 upright peaceful free, no chains. Space them naturally on wider foreground terrace around central Yama and Nira, complete silhouettes/readable identities. No hostile enemy inspector in the peaceful group. Keep all4 zones identifiable with lava Thai left, Chinese teal/redmaple centerleft, snow ice center-right, purple servers right. Consistent ground and character perspective. Preserve original crisp chunky pixel-art cinematic style, palette, wide canvas and EXACT black letterbox bands. No text, watermark, UI or speech bubbles. Only change requested people; do not redesign environment or preserved characters.",
+      "refs": [
+        "img/story-ending-02-v2.png",
+        "img/hero-boss.png",
+        "img/Asia/hero-boss-asia.png",
+        "img/West/hero-boss-west.png",
+        "img/CyberHell/hero-boss-cyberhell.png"
+      ],
+      "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-b024d0ad-575b-4fd8-b923-8efaab3aa381.png",
+      "destination": "img/story-ending-02-v3.png"
+    }
+  ]
+}

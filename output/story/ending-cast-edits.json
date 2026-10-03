@@ -1,0 +1,28 @@
+[
+  {
+    "id": "ending-01-v2",
+    "refs": [
+      "story-ending-01.png",
+      "hero-yama.png",
+      "hero-boss.png",
+      "Asia/zone-boss-asia.png",
+      "West/zone-boss-west.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Image 1 is the AVEGEE ending panel edit target. Images 2–5 are exact character identity references: image 2 Yama, the SMALL youthful red-skinned protagonist with small pointed golden Thai crown, two small horns, large expressive eyes and black/red/gold robe; image 3 his FATHER, an ADULT dark-maroon demon with elaborate broad ornate gold Thai crown, gold jewelry and black/burgundy/gold ceremonial outfit with gold staff; image 4 Eastern zone 2 boss, HUMAN male in dark green/red lamellar armor, tall black commander hat, chains and square weight; image 5 Western zone 3 boss, ADULT red demon with grey beard, dark steel helmet and skull shoulder armor, cyan glowing chest rune and burgundy mantle.\nCorrect ONLY the cast and their positions in image 1. The small young YAMA from image 2 is missing: put him standing triumphantly at the current father's FOREGROUND position immediately left of the kneeling defeated final CyberHell boss. Young Yama must clearly be a child-sized protagonist, much shorter than the adults, never resemble his father; gold crown and black/red/gold robe exactly match image 2. Move the FATHER from that position into the BACKGROUND row on the left, standing with the Eastern general and Western greybearded warden. Exactly THREE freed adults in that rear row, exactly ONE young Yama in the foreground, exactly ONE kneeling defeated CyberHell boss on right: FIVE main characters TOTAL. Father can be behind/between the other two while all three faces remain clearly visible; remove his chair/throne from foreground. The father is a separate person from Yama.\nPreserve exactly the CyberHell game-map cave background, servers, cables, purple circuits, lava, blue soul river, stairs and distant throne, warm shafts of victory light, defeated final boss's identity and kneeling pose and broken purple chains. Keep original wide landscape composition, pure black letterbox bars, consistent pixel art and perspective. Do not add Nira or any additional character in this panel. No text/UI/watermark.",
+    "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-45c17045-ce26-4612-9c60-57c8c2a96abe.png",
+    "destination": "img/story-ending-01-v2.png"
+  },
+  {
+    "id": "ending-02-v2",
+    "refs": [
+      "story-ending-02.png",
+      "crew-nira.png",
+      "hero-boss.png",
+      "Asia/zone-boss-asia.png",
+      "West/zone-boss-west.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Image 1 is the AVEGEE peaceful ending panel edit target. Keep the small red-skinned young YAMA already standing centrally behind the gold throne completely unchanged: same pointed gold crown, face/head, clothes, pose, position and size. Keep the gold throne and entire beautiful panorama of all FOUR zones unchanged, including warm Thai lava region left, teal Eastern gates and maples center, snowy frozen Western region upper right, purple circuit/server CyberHell lower right, blue soul rivers, bridges and peaceful tiny background inhabitants. Preserve original wide landscape aspect and black letterbox.\nCorrect ONLY the FOUR large foreground companions surrounding Yama. Replace all four existing companions with these EXACT identities from images 2–5, seen from the back or slight rear three-quarter, all looking over the four peaceful zones alongside young Yama. Main group is exactly FIVE people total: YAMA plus NIRA plus FATHER plus boss ZONE 2 plus boss ZONE 3. NIRA image 2: lavender skin, paired lavender horns, purple hair in large topknot with gold band, black top with gold trim and burgundy skirt, petite adult, carrying files, alive and fully recovered. FATHER image 3: tall adult dark maroon demon, elaborate broad GOLD THAI CROWN, burgundy/black robes with gold embroidery and shoulder jewelry, GOLD STAFF, regal and paternal, NO grey hair/fur hood or cyber hat. Eastern ZONE 2 boss image 4: human general with tall black commander hat, dark green armor with red lamellar plates and gold edging, chain weapon. Western ZONE 3 boss image 5: tall red demon with GREY BEARD visible in rear three-quarter profile, dark metal helmet, dark steel skull shoulder armor with cyan rune/light and burgundy mantle, NO fur cloak.\nPlace Nira immediately to Yama's left, Father immediately to Yama's right, Zone 2 general at far left, Zone 3 greybearded armored warden at far right. All four are individually recognizable and their outfits, skin, headgear and equipment match the references. Maintain natural relative scale: Yama is the small child hero, Nira petite, the three leaders taller adults. Do NOT include a second Yama, a purple cyber Yama, a cyber boss, an anonymous fur-cloaked man, or extra foreground companions. This scene celebrates Yama ruling with Nira, his father and the Zone 2/3 bosses at peace. Preserve pixel art quality, lighting and coherent perspective, no text/UI/watermark.",
+    "path": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-956d96f6-6b98-43e2-b6c9-a32996d38f5f.png",
+    "destination": "img/story-ending-02-v2.png"
+  }
+]

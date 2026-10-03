@@ -1,0 +1,49 @@
+{
+  "tool": "image_gen.imagegen",
+  "jobs": [
+    {
+      "id": "hero-boss-west-v2",
+      "dest": "img/West/hero-boss-west-v2.png",
+      "alpha": true,
+      "refs": [
+        "img/West/hero-boss-west.png",
+        "img/hero-boss.png",
+        "img/Asia/hero-boss-asia.png"
+      ],
+      "prompt": "Use case: identity-preserve. Image1 is edit target: seated Western ruler. Images2-3 are strict body-proportion, silhouette and coarse pixel-art style references from the SAME game. Redraw Image1 to match their compact CHIBI proportions: substantially larger helmet/head/white beard relative to a short compact torso, shorter legs, broad simplified hands, chunky low-resolution pixel clusters. Crown/helmet+face+beard occupy about 45 percent of seated character height as in references. Do not make a tall realistic adult with small head. Keep exact identity maroon demon, long white beard, horned silver Viking helmet, silver scale armor, dark fur cloak, spear, black raven, red-backed wooden throne. Simplify silver engraving into readable large pixel shapes, match references dark outlines and restrained shading; avoid finely detailed high-resolution rendering. Fit COMPLETE throne, raven, spear and feet in square canvas with similar subject occupancy and margins to images2-3. Actual transparent alpha background. No checkerboard, floor, text or environment.",
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-47767768-c560-47e0-8da3-0b0df4d1f322.png"
+    },
+    {
+      "id": "cyberhell-02-v3",
+      "dest": "img/story-cyberhell-02-v3.png",
+      "alpha": false,
+      "refs": [
+        "img/story-cyberhell-02-v2.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Edit this exact cutscene. KEEP EXACT SIX CHARACTER IDENTITIES, clothing, colors: small young cyber Yama foreground from back, gray-blue faced clean-shaven tall gold/purple rectangular crowned inspector raising a hand, and FOUR captive regional heads: Thai broad gold crown father; RED Chinese black-bearded king in tall black/gold hat; WHITE-bearded silver Viking with raven; SILVER-haired red cyber king with low cyan crown. Change all FOUR captives to seated or kneeling DIRECTLY ON STONE GROUND, knees bent or legs folded, hands bound by violet chains, possessed glowing purple eyes. REMOVE ALL FOUR CHAIRS completely, no chairs anywhere. Inspector sends FOUR distinct chains to the FOUR captives. MAIN SECOND CORRECTION: Rebuild environment perspective from an eye-level cinematic three-quarter camera, one consistent horizon and vanishing point. Everyone occupies the SAME believable ground plane, natural contact shadows. No overhead isometric game map behind front-facing characters. Foreground Yama nearest bottom-left; four captive heads across middle ground, inspector standing behind them at plausible adult scale, not a giant. Stone paving recedes smoothly, distant rock walls are vertical, server racks have believable adult-height scale, background racks and crystals become smaller with distance. Cyan soul river and orange lava visible at low oblique angle behind/alongside platform, not large flat top-down maps. Retain CyberHell environment identity: purple crystal cavern, dark server racks, cables, cyan soul river and lava. Preserve original wide landscape canvas, exact black letterbox bands, crisp chunky pixel-art cinematic look and lighting palette. No captions, UI, text, watermark. Exactly four captives, one inspector and one Yama.",
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-8f6dfc6e-f1c4-481e-913c-186090f7d7ca.png"
+    },
+    {
+      "id": "cyberhell-03-v4",
+      "dest": "img/story-cyberhell-03-v4.png",
+      "alpha": false,
+      "refs": [
+        "img/story-cyberhell-03-v3.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Fix the BACKGROUND CAMERA PERSPECTIVE and relative spatial scale in this exact cutscene, retaining all SIX characters and their exact identities/costumes and narrative poses. Foreground small young cyber Yama back view faces right toward gray-blue clean-shaven rectangular gold/purple crowned inspector holding glowing book, four freed regional heads crouch recovering safely at left: father gold Thai crown, red Chinese king black beard/blackhat/redrobe, whitebearded silver Viking/raven, silverhaired red cyber king low cyan crown blackpurple robe. Rebuild scene with ONE coherent eye-level cinematic three-quarter perspective and consistent horizon/vanishing points. Foreground duel figures on same flat stone ground with convincing contact shadows; adult inspector only naturally taller than young hero, not giant relative to architecture. FOUR rescued heads on nearby slightly recessed ledge, their apparent scale is appropriate for distance. Background should be vertical cavern walls with servers and crystal pillars, not overhead isometric map. Receding stone walkway and railing converge naturally; server racks adult-scale near subjects then progressively smaller in distance; distant central throne platform seen from LOW OBLIQUE ANGLE with visible front faces of steps, restrained view of top surfaces, throne realistically scaled to a sitting adult. Cyan soul river and orange lava seen as receding horizontal waterways, not top-down schematic channels. Retain recognizable CyberHell purple crystals, servers, cables and orange/cyan lights. Preserve foreground identities, clothing, actions and overall placement, original wide landscape and EXACT black letterboxing, crisp chunky pixel-art cinematic style. No text, watermark, UI or extra characters.",
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-ebc12f52-ee61-4271-8756-1351bf92253d.png"
+    },
+    {
+      "id": "hero-boss-cyberhell-v2",
+      "dest": "img/CyberHell/hero-boss-cyberhell-v2.png",
+      "alpha": true,
+      "prompt": "Use case: identity-preserve. Image1 is exact edit target seated CyberHell friendly ruler. Image2 is APPROVED compact chibi ruler proportion and coarse pixel-art reference. Image3 is original Thai ruler proportion reference. Redraw image1 with much larger head relative to SHORT compact torso, shorter limbs and legs, big readable hands and feet, matching image2 character proportions. Hair/crown/horns+face+beard take about 45 percent of seated character height. Keep EXACT red demon identity, sweptback SILVER/WHITE hair, silver beard, curved maroon horns, LOW SILVER crown cyan gem, BLACK/VIOLET/SILVER circuit-embroidered ceremonial robes, cyan judgment tablet in same hand, other hand on throne. Keep black silver angular crystal throne with violet pillars and cyan light strips, but throne must fit compact seated anatomy. Simplify embroidery and shading into CHUNKY coarse low-resolution pixel clusters matching approved image2, dark outlines and restrained highlights. Do not draw realistic tall adult or tiny head. Complete full body and entire throne centered square, similar sprite occupancy and margins to references. Actual transparent alpha background; no checkerboard, floor, environment, text, watermark.",
+      "refs": [
+        "img/CyberHell/hero-boss-cyberhell.png",
+        "img/West/hero-boss-west-v2.png",
+        "img/hero-boss.png"
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-1aac346f-ac1a-4bb1-bff6-b3cbf140123e.png"
+    }
+  ]
+}
