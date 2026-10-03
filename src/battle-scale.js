@@ -91,19 +91,25 @@ export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 6 } = {}) 
 }
 
 /** ปรับยมทูตทีมในฉากต่อสู้ — เรียกหลังวาดฉากทุกครั้ง (วัดภาพครั้งแรกอาจรอโหลดเล็กน้อย) */
-export function fitBattleSprites(stage, heroRefSrc = null) {
-  const hero = stage.querySelector('.fig.you img');
+export function fitBattleSprites(stage, heroRefSrc = null, tries = 0) {
+  const seq = stage._fitSeq = (stage._fitSeq || 0) + 1;   // ผลของรอบเก่าที่เสร็จทีหลังต้องไม่ทับรอบใหม่
+  const hero = stage.querySelector('.fig.you img:not(.fx)');  // .fx = เอฟเฟกต์โดนตีซ้อนอยู่ใน .fig เดียวกัน ไม่ใช่ตัวยมบาทน้อย
   const squad = stage.querySelector('.battle-squad');
   const crewImgs = squad ? [...squad.querySelectorAll('img')] : [];
-  const helperImg = stage.querySelector('.fig.helper img');
+  const helperImg = stage.querySelector('.fig.helper img:not(.fx)');
   if (!hero || (!crewImgs.length && !helperImg)) return Promise.resolve(false);
   // ท่าของยมบาทน้อยเปลี่ยนตลอดการต่อสู้ (ยืน · ฟาด · โดนตี) แต่ละท่ามีกรอบตัวจริงต่างกัน — ใช้ท่ายืนเป็นหลักเสมอ
   // ไม่งั้นยมทูตจะขยับขนาดตามท่าทุกครั้งที่วาดฉากใหม่
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
   return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null]).then(([hb, ...rest]) => {
-    if (!stage.isConnected || !hb) return false;
+    if (!stage.isConnected || !hb || stage._fitSeq !== seq) return false;
     const crewBoxes = rest.slice(0, crewImgs.length), helperBox = rest[crewImgs.length];
     const hd = drawnRect(hero), sr = stage.getBoundingClientRect();
+    // ภาพท่าของยมบาทน้อยกำลังโหลด (กล่องยุบเป็น 0×0) → ยังวัดไม่ได้ อย่าตั้งขนาดยมทูตเป็นศูนย์ รอบหน้าลองใหม่
+    if (!(hd.w > 4 && hd.h > 4)) {
+      if (tries < 25) setTimeout(() => { if (stage.isConnected && stage._fitSeq === seq) fitBattleSprites(stage, heroRefSrc, tries + 1); }, 80);
+      return false;
+    }
     const heroVis = { visH:hd.h * hb.h, oLeft:hd.left + hb.l * hd.w, base:hd.top + (hb.t + hb.h) * hd.h };
     const local = { visH:heroVis.visH, oLeft:heroVis.oLeft - sr.left, base:heroVis.base - sr.top };
     if (crewImgs.length && crewBoxes.every(Boolean)) {
