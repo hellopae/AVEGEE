@@ -4,9 +4,18 @@ export const ROOM_EXIT_REACH = 0.10;
 // Configure a scene here, e.g. ngiw: { asia: { x: .28, y: .93 } }.
 // Every existing scene defaults to its own bottom entrance (room.me), including ui4.
 export const ROOM_EXITS = {
+  // 29G: บันไดทางเข้าด้านล่างของภาพบูรพาใหม่ (ใช้ระยะเอื้อมออกเดิม)
+  sala: { asia: { x:.50, y:.94 } },
+  krata: { asia: { x:.50, y:.94 } },
+  dab: { asia: { x:.50, y:.94 } },
+  lan: { asia: { x:.50, y:.94 } },
+  sawan: { asia: { x:.50, y:.94 } },
+  krajok: { asia: { x:.50, y:.94 } },
+  tarang: { asia: { x:.50, y:.94 } },
+
   // 29M: ทางออก = บันไดในภาพใหม่ของ 29D (พิกัดหลัง crop ของแบบ UI4 สำหรับโซนไทย)
   tea:   { th:   { x:.83, y:.854, reach:.07 }, asia: { x:.50, y:.906, reach:.08 } },
-  ngiw:  { th:   { x:.50, y:.916, reach:.08 } },
+  ngiw:  { th:   { x:.50, y:.916, reach:.08 }, asia: { x:.50, y:.94 } },
   lokan: { asia: { x:.50, y:.916, reach:.08 } },
 };
 export function roomExit(key, zone, room) {
