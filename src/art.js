@@ -3,6 +3,7 @@
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
 
 import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js';
+import { crewWalkSheet } from './crew-walk-assets.js';
 
 const CACHE = new Map();
 const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
@@ -71,6 +72,8 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
 export function artUrl(key, ext = 'png') {
   const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
   const map = ZMAP[z];
+  if (/^crew-(nira|taan|plerng|dam|kan|boon|guard)-walk$/.test(key))
+    return crewWalkSheet(key.slice(0, -5), z)?.src || null;
   // Semantic soul assets ship at known paths, including before the async manifest arrives.
   const soulKey = key.replace(POSE, '');
   if (soulKey.startsWith('spirit-') && SPIRIT_ARCHETYPES.includes(soulKey.slice(7))) {
@@ -399,6 +402,30 @@ export function drawHeroWalk(ctx, x, y, h, distance, face = 1) {
   ctx.scale(-face, 1);
   ctx.drawImage(im, frame * frameW, 0, frameW, im.naturalHeight,
                 -drawW / 2, -h + 2, drawW, h);
+  ctx.restore();
+  return true;
+}
+
+/** Native RGBA walk frames preserve scale and anchors; phase follows actual travel. */
+export function drawCrewWalk(ctx, key, x, y, h, distance, face = 1) {
+  const im = img(`${key}-walk`);
+  if (!im || !im.naturalWidth || !im.naturalHeight) return false;
+  const sheet = crewWalkSheet(key, zoneOf());
+  const frameW = im.naturalWidth / 4;
+  const frame = Math.floor(Math.max(0, distance) / HERO_WALK_STRIDE) % 4;
+  const box = sheet?.frames?.[frame] || { x:frame * frameW, y:0, w:frameW, h:im.naturalHeight };
+  const drawH = h * (sheet?.heightScale ?? 1);
+  const footY = y - h * (sheet?.footOffset ?? 0);
+  const size = sheet?.frameSize || box;
+  const pixelScale = drawH / size.h;
+  const drawW = pixelScale * size.w;
+  ctx.fillStyle = 'rgba(0,0,0,.42)';
+  ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
+  ctx.save(); ctx.translate(x, footY);
+  const direction = face < 0 ? -1 : 1;
+  ctx.scale(sheet?.rightFacing === false ? -direction : direction, 1);
+  ctx.drawImage(im, box.x, box.y, box.w, box.h, -drawW / 2 + (box.ox || 0) * pixelScale,
+    -drawH + (box.oy || 0) * pixelScale, box.w * pixelScale, box.h * pixelScale);
   ctx.restore();
   return true;
 }

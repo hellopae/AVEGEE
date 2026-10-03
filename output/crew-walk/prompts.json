@@ -1,0 +1,198 @@
+[
+  {
+    "z": "th",
+    "k": "nira",
+    "ref": "img/crew-nira.png",
+    "path": "img/crew-nira-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "th",
+    "k": "taan",
+    "ref": "img/crew-taan.png",
+    "path": "img/crew-taan-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "th",
+    "k": "plerng",
+    "ref": "img/crew-plerng.png",
+    "path": "img/crew-plerng-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "th",
+    "k": "dam",
+    "ref": "img/crew-dam.png",
+    "path": "img/crew-dam-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "th",
+    "k": "kan",
+    "ref": "img/crew-kan.png",
+    "path": "img/crew-kan-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "th",
+    "k": "boon",
+    "ref": "img/crew-boon.png",
+    "path": "img/crew-boon-walk-v2.png",
+    "prompt": "Use case: identity-preserve. Reference is the exact character identity and outfit. Create a transparent pixel-art WALK CYCLE SPRITE SHEET for this same character. ONE horizontal row of EXACTLY FOUR equally sized rectangular cells on a wide 3:1 canvas. All four figures face RIGHT in identical three-quarter side view. Keep the same compact chibi head/body proportions, horns, face, colors, clothing and carried object. Each cell contains one complete character at identical scale, centered at 12.5%,37.5%,62.5%,87.5% of canvas width. Feet baseline at 94% of canvas height; head tops align at 8%. Cell 1 right leg forward left leg back, cell 2 passing with feet close and left knee lifting, cell 3 left leg forward right leg back, cell 4 passing with right knee lifting. Show visibly alternating foot and knee positions, subtle natural arm swing while holding object; head and torso remain consistent without squash/stretch. Nothing crosses cell boundaries. TRUE RGBA TRANSPARENT background, no painted checkerboard, no floor or shadows, no grid, labels or text. Crisp pixel clusters and dark outlines matching reference. Leave transparent padding around all figures and weapons."
+  },
+  {
+    "z": "th",
+    "k": "guard",
+    "ref": "img/crew-guard-v2.png",
+    "path": "img/crew-guard-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "nira",
+    "ref": "img/Asia/crew-nira-asia.png",
+    "path": "img/Asia/crew-nira-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "taan",
+    "ref": "img/Asia/crew-taan-asia.png",
+    "path": "img/Asia/crew-taan-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "plerng",
+    "ref": "img/Asia/crew-plerng-asia.png",
+    "path": "img/Asia/crew-plerng-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "dam",
+    "ref": "img/Asia/crew-dam-asia.png",
+    "path": "img/Asia/crew-dam-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "kan",
+    "ref": "img/Asia/crew-kan-asia.png",
+    "path": "img/Asia/crew-kan-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "boon",
+    "ref": "img/Asia/crew-boon-asia.png",
+    "path": "img/Asia/crew-boon-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "asia",
+    "k": "guard",
+    "ref": "img/Asia/crew-guard-asia-v2.png",
+    "path": "img/Asia/crew-guard-asia-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "nira",
+    "ref": "img/West/crew-nira-west.png",
+    "path": "img/West/crew-nira-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "taan",
+    "ref": "img/West/crew-taan-west.png",
+    "path": "img/West/crew-taan-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "plerng",
+    "ref": "img/West/crew-plerng-west.png",
+    "path": "img/West/crew-plerng-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "dam",
+    "ref": "img/West/crew-dam-west.png",
+    "path": "img/West/crew-dam-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "kan",
+    "ref": "img/West/crew-kan-west.png",
+    "path": "img/West/crew-kan-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "boon",
+    "ref": "img/West/crew-boon-west.png",
+    "path": "img/West/crew-boon-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "west",
+    "k": "guard",
+    "ref": "img/West/crew-guard-west.png",
+    "path": "img/West/crew-guard-west-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "nira",
+    "ref": "img/CyberHell/crew-nira-cyberhell.png",
+    "path": "img/CyberHell/crew-nira-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "taan",
+    "ref": "img/CyberHell/crew-taan-cyberhell.png",
+    "path": "img/CyberHell/crew-taan-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "plerng",
+    "ref": "img/CyberHell/crew-plerng-cyberhell.png",
+    "path": "img/CyberHell/crew-plerng-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "dam",
+    "ref": "img/CyberHell/crew-dam-cyberhell.png",
+    "path": "img/CyberHell/crew-dam-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "kan",
+    "ref": "img/CyberHell/crew-kan-cyberhell.png",
+    "path": "img/CyberHell/crew-kan-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "boon",
+    "ref": "img/CyberHell/crew-boon-cyberhell.png",
+    "path": "img/CyberHell/crew-boon-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  },
+  {
+    "z": "cyberhell",
+    "k": "guard",
+    "ref": "img/CyberHell/crew-guard-cyberhell-v2.png",
+    "path": "img/CyberHell/crew-guard-cyberhell-walk-v2.png",
+    "prompt": "Create exactly FOUR copies of the reference character, in FOUR different walking poses, side by side in ONE SINGLE HORIZONTAL ROW. Wide short 3:1 canvas. ONLY FOUR figures TOTAL. DO NOT create a grid, multiple rows, direction charts, front/back views or labels. This is a four-pose horizontal animation strip. All four figures face RIGHT at the same three-quarter side angle. Preserve reference species, face, outfit, colors, weapons and carried objects. Same character scale and head proportions in every pose, feet aligned at one baseline. Figure centers 12.5%,37.5%,62.5%,87.5% of image width. Pose1 right foot forward left foot behind. Pose2 left knee lifting under body. Pose3 LEFT foot forward RIGHT foot behind, reverse the legs from pose1. Pose4 right knee lifting under body, reverse pose2. Visible alternating leg positions and subtle arm swing, stable head and torso, no squash. Entire body and equipment fit in each quarter of the image with transparent padding, no overlap. Crisp pixel art matching reference. Actual RGBA transparent background, no floor, shadows, colored outlines, checkerboard, text or numbers. FINAL FORMAT: ONE ROW, FOUR FIGURES, WIDE HORIZONTAL."
+  }
+]

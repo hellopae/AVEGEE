@@ -3,7 +3,7 @@
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
-import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawBuilding, drawSoul, drawBoat,
+import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 
@@ -26,6 +26,28 @@ const waitingEvents = g => {
     art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7').replace(/-(asia|west|cyberhell)$/, '') }));
 };
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0;
+const crewWalkTracks = new WeakMap();
+/** Movement is sampled from coordinates, never from a pending path or idle time. */
+export function actorWalkMotion(actor, time, zone = 'th', position = null) {
+  const [x, y] = position || [actor.x, actor.y];
+  let state = crewWalkTracks.get(actor);
+  if (!state || state.zone !== zone || !Number.isFinite(x) || !Number.isFinite(y)) {
+    state = { x, y, zone, distance:0, movingUntil:0, face:actor.face || 1 };
+    crewWalkTracks.set(actor, state);
+    return { ...state, moving:false };
+  }
+  const dx = x - state.x, dy = y - state.y, moved = Math.hypot(dx, dy);
+  if (moved > 0.15 && moved < 30) {
+    state.distance += moved; state.movingUntil = time + 120;
+    if (Math.abs(dx) > 0.15) state.face = dx < 0 ? -1 : 1;
+  } else if (moved >= 30) {
+    // Teleports, rescue placement and branch changes are not a walking step.
+    state.distance = 0; state.movingUntil = 0;
+  }
+  state.x = x; state.y = y;
+  return { ...state, moving:time < state.movingUntil };
+}
+
 
 /** ใช้รูปท่าพิเศษถ้ามีไฟล์จริง ไม่มีก็ใช้ท่ายืนปกติ
  *  => ดรอป img/hero-yama-atk.png หรือ img/crew-<k>-work.png ลงไปแล้วเห็นผลทันที ไม่ต้องแก้โค้ด */
@@ -174,14 +196,17 @@ export function render(ctx, g, t, hover, sel) {
         [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
       else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
     });
-    if (crewAt) at(crewAt[1] + 1, () => {
-      const face = waiting
-        ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1)
-        : (x < crewAt[0] ? -1 : 1);
-      drawStandee(ctx, poseOr(`crew-${v.crew}-work`, `crew-${v.crew}`),
-                  crewAt[0] - (waiting ? 0 : 24 * face), crewAt[1], CREW_H, t,
-                  v.crewGlyph || '👹', face, true);
-    });
+    if (crewAt) {
+      const escortFace = waiting ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1) : (x < crewAt[0] ? -1 : 1);
+      const position = [crewAt[0] - (waiting ? 0 : 24 * escortFace), crewAt[1]];
+      const motion = actorWalkMotion(v, t, g.zone, position);
+      at(crewAt[1] + 1, () => {
+        const key = `crew-${v.crew}`;
+        if (motion.moving && drawCrewWalk(ctx, key, position[0], position[1], CREW_H, motion.distance, motion.face)) return;
+        drawStandee(ctx, motion.moving ? key : poseOr(`${key}-work`, key), position[0], position[1], CREW_H, t,
+          v.crewGlyph || '👹', motion.face, motion.moving);
+      });
+    }
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -287,16 +312,22 @@ export function render(ctx, g, t, hover, sel) {
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
-  if (g.guard) at(g.guard.y, () => {
-    if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-    mapStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️');
-  });
+  if (g.guard) {
+    const motion = actorWalkMotion(g.guard, t, g.zone);
+    at(g.guard.y, () => {
+      if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
+      if (motion.moving && drawCrewWalk(ctx, GUARD.img, g.guard.x, g.guard.y,
+          GUARD.h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
+      mapStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️', motion.face, motion.moving);
+    });
+  }
 
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of g.crew) {
     if (c.x == null || c.escort) continue;
+    const motion = actorWalkMotion(c, t, g.zone);
     at(c.y, () => {
       const base = 'crew-' + c.k;
       if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
@@ -306,7 +337,10 @@ export function render(ctx, g, t, hover, sel) {
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
-      drawStandee(ctx, working ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base, c.x, c.y, CREW_H, t, c.glyph, c.face ?? 1);
+      const animated = !buildingHere && motion.moving &&
+        drawCrewWalk(ctx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
+      if (!animated) drawStandee(ctx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
+        c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
       label(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 13, 10.5, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });

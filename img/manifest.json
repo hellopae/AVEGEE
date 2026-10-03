@@ -904,5 +904,43 @@
 512,
 512
 ]
+},
+"crewWalks": {
+"th": [
+"crew-nira-walk-v2.png",
+"crew-taan-walk-v2.png",
+"crew-plerng-walk-v2.png",
+"crew-dam-walk-v2.png",
+"crew-kan-walk-v2.png",
+"crew-boon-walk-v2.png",
+"crew-guard-walk-v2.png"
+],
+"asia": [
+"Asia/crew-nira-asia-walk-v2.png",
+"Asia/crew-taan-asia-walk-v2.png",
+"Asia/crew-plerng-asia-walk-v2.png",
+"Asia/crew-dam-asia-walk-v2.png",
+"Asia/crew-kan-asia-walk-v2.png",
+"Asia/crew-boon-asia-walk-v2.png",
+"Asia/crew-guard-asia-walk-v2.png"
+],
+"west": [
+"West/crew-nira-west-walk-v2.png",
+"West/crew-taan-west-walk-v2.png",
+"West/crew-plerng-west-walk-v2.png",
+"West/crew-dam-west-walk-v2.png",
+"West/crew-kan-west-walk-v2.png",
+"West/crew-boon-west-walk-v2.png",
+"West/crew-guard-west-walk-v2.png"
+],
+"cyberhell": [
+"CyberHell/crew-nira-cyberhell-walk-v2.png",
+"CyberHell/crew-taan-cyberhell-walk-v2.png",
+"CyberHell/crew-plerng-cyberhell-walk-v2.png",
+"CyberHell/crew-dam-cyberhell-walk-v2.png",
+"CyberHell/crew-kan-cyberhell-walk-v2.png",
+"CyberHell/crew-boon-cyberhell-walk-v2.png",
+"CyberHell/crew-guard-cyberhell-walk-v2.png"
+]
 }
 }

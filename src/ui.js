@@ -10,7 +10,7 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from './art.js';
+import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee } from './art.js';
 import { MINIGAMES } from './minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
@@ -2885,7 +2885,7 @@ function openZone() {
       ${markers}
       <div class="world-travelers" aria-hidden="true">
         <span class="yama" style="left:${startX}%;top:${startY}%;background-image:url('${artUrl('hero-yama-walk') || artUrl('hero-yama')}')"></span>
-        <img class="nira" style="left:${startX}%;top:${startY}%" src="${artUrl('crew-nira')}" alt="">
+        <canvas class="nira" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none"></canvas>
       </div>
     </div></div>
     <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
@@ -2893,6 +2893,20 @@ function openZone() {
     const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
     const yama = d.querySelector('.world-travelers .yama'), nira = d.querySelector('.world-travelers .nira');
     let traveling = false, frame = 0;
+    const niraCtx = nira.getContext('2d');
+    niraCtx.imageSmoothingEnabled = false;
+    let niraFace = 1, niraLastX = startX;
+    const paintNira = (distance = 0, moving = false) => {
+      niraCtx.clearRect(0, 0, 160, 160);
+      if (moving && drawCrewWalk(niraCtx, 'crew-nira', 80, 150, 135, distance, niraFace)) return;
+      drawStandee(niraCtx, 'crew-nira', 80, 150, 135, 0, '📜', niraFace, false);
+    };
+    paintNira();
+    const niraStill = new Image();
+    niraStill.onload = () => { if (!traveling) paintNira(); };
+    niraStill.src = artUrl('crew-nira');
+    const niraWalk = new Image();
+    niraWalk.src = artUrl('crew-nira-walk');
     const centerOn = x => { scroll.scrollLeft = map.clientWidth * x / 100 - scroll.clientWidth / 2; };
     centerOn(startX);
     onDlgClose(() => cancelAnimationFrame(frame));
@@ -2916,6 +2930,10 @@ function openZone() {
         const [nx, ny] = path.at(done - followGap);
         yama.style.left = `${x}%`; yama.style.top = `${y}%`;
         nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
+        if (Math.abs(nx - niraLastX) > .001) niraFace = nx > niraLastX ? 1 : -1;
+        niraLastX = nx;
+        paintNira(Math.max(0, done - followGap) * map.clientHeight / 100,
+          done > followGap && done < total + followGap);
         centerOn(x);
         if (done < total + followGap) { frame = requestAnimationFrame(step); return; }
         map.classList.remove('traveling');
