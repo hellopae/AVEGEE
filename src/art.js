@@ -4,6 +4,7 @@
 
 import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js';
 import { crewWalkSheet } from './crew-walk-assets.js';
+import { heroWalkSheet } from './hero-walk-assets.js';
 
 const CACHE = new Map();
 const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
@@ -72,6 +73,7 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
 export function artUrl(key, ext = 'png') {
   const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
   const map = ZMAP[z];
+  if (key === 'hero-yama-walk-4dir') return heroWalkSheet(z).src;
   if (/^crew-(nira|taan|plerng|dam|kan|boon|guard)-walk$/.test(key))
     return crewWalkSheet(key.slice(0, -5), z)?.src || null;
   // Semantic soul assets ship at known paths, including before the async manifest arrives.
@@ -388,7 +390,22 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
 }
 
 /** สี่เฟรมในภาพแถบเดียว; คืน false เมื่อชุดที่สวมยังไม่มีภาพเดิน */
-export function drawHeroWalk(ctx, x, y, h, distance, face = 1) {
+export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face < 0 ? 'left' : 'right') {
+  const sheet = heroWalkSheet(heroStyleOf() || zoneOf());
+  const four = img('hero-yama-walk-4dir');
+  if (four?.naturalWidth && four?.naturalHeight) {
+    const phase = Math.floor(Math.max(0, distance) / HERO_WALK_STRIDE) % 4;
+    const box = (sheet.directions[direction] || sheet.directions.down)[phase];
+    const height = h * sheet.heightScale, scale = height / sheet.frameSize.h;
+    const width = sheet.frameSize.w * scale;
+    ctx.fillStyle = 'rgba(0,0,0,.42)';
+    ctx.beginPath(); ctx.ellipse(x, y, h * .24, h * .075, 0, 0, 7); ctx.fill();
+    // Every direction is drawn explicitly, including the book and asymmetric clothing.
+    ctx.drawImage(four, box.x, box.y, box.w, box.h,
+      x - width / 2 + box.ox * scale, y - h * sheet.footOffset - height + box.oy * scale,
+      box.w * scale, box.h * scale);
+    return true;
+  }
   const im = img('hero-yama-walk');
   if (!im || !im.naturalWidth || !im.naturalHeight) return false;
   const frameW = im.naturalWidth / 4;

@@ -15,7 +15,8 @@
 // (ui.js เปิด/ปิด <dialog> ใบเดียวกันสลับกับฉากต่อสู้ ไม่ใช่โหลดหน้าใหม่) แต่หายไปเมื่อโหลดหน้าใหม่จริง ๆ
 
 import { MOB } from './data.js';
-import { drawStandee } from './art.js';
+import { drawStandee, drawHeroWalk } from './art.js';
+import { walkDirection } from './walk-direction.js';
 import { frontierWalkable, frontierPath, frontierSegmentClear } from './frontier-navigation.js';
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
@@ -93,6 +94,7 @@ export function makeFrontierWalk(cv, g, opts) {
   let raf = 0, last = performance.now(), dead = false, nextSpawn = 500;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };
   let nearId = null;
+  let walkDistance = 0, direction = 'down', movedAt = 0;
 
   const bgRec = loadImg(bg);
 
@@ -132,6 +134,7 @@ export function makeFrontierWalk(cv, g, opts) {
   cv.addEventListener('pointerdown', onDown);
 
   function step(dt) {
+    const beforeX = P.x, beforeY = P.y;
     const sp = 0.00046 * dt;
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
@@ -150,6 +153,12 @@ export function makeFrontierWalk(cv, g, opts) {
       else if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,P.y])) P.x=nx;
       else if(frontierSegmentClear(g.zone,[P.x,P.y],[P.x,ny])) P.y=ny;
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
+    }
+    const actualX = (P.x - beforeX) * box.w, actualY = (P.y - beforeY) * box.h;
+    if (Math.hypot(actualX, actualY) > .15) {
+      walkDistance += Math.hypot(actualX, actualY) / unit() * 640;
+      direction = walkDirection(actualX, actualY, direction);
+      movedAt = performance.now();
     }
     // ศัตรูเดินจากขอบเข้ามาจุดในสนามทีละก้าว ถึงแล้วหยุดยืนรอ (ไม่ไล่ล่ายมบาทน้อย — ดูข้อ A6 ในรายงาน)
     for (const en of sess.enemies) {
@@ -216,10 +225,9 @@ export function makeFrontierWalk(cv, g, opts) {
       } });
     }
     acts.push({ y: P.y, fn: () => {
-      const moving = P.tx != null || Object.values(KEY).some(Boolean);
-      const gait = Math.floor(t / 105) % 4;
-      const hop = moving && gait % 2 ? U * 0.010 : 0;
-      drawStandee(ctx, 'hero-yama', px(P.x), py(P.y) - hop, U * HERO_H, t, '👑', P.face, moving);
+      const moving = t - movedAt < 120;
+      if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDistance : 0, P.face, direction))
+        drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face, moving);
     } });
     if(g.guard) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
     acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * HERO_H, t, '📋') });

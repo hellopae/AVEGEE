@@ -1,0 +1,11 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="../../"><title>Yama เดิน 4 ทิศ · ทุกโซน</title>
+<style>body{background:#160f1b;color:#eadcc9;font:16px system-ui;margin:24px}h1{font-size:24px}h2{color:#ddb16b}section{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}article{background:#292030;border:1px solid #574258;border-radius:12px;text-align:center}canvas{width:min(180px,100%);image-rendering:pixelated}button{padding:10px 18px;background:#d7ad61;border:0;border-radius:8px;cursor:pointer}@media(max-width:500px){section{grid-template-columns:repeat(2,1fr)}}</style>
+<h1>Yama เดินครบ 4 ทิศ</h1><p>หน้า · ซ้าย · ขวา · หลัง — ชุดทุกโซน ทิศละ 4 เฟรม</p><button id="pause">หยุด / เดิน</button><main></main>
+<script type="module">
+import {bindHeroStyle,drawHeroWalk} from './src/art.js';
+const styles={th:'โซน 1 · สุวรรณภูมิ',asia:'โซน 2 · บูรพา',west:'โซน 3 · ปัจฉิม',cyberhell:'โซน 4 · เครือข่าย'};
+const directions={down:'หน้า (ลง)',left:'ซ้าย',right:'ขวา',up:'หลัง (ขึ้น)'};let outfit='th',paused=false,distance=0,last=0;const items=[];bindHeroStyle(()=>outfit);
+for(const [style,label] of Object.entries(styles)){const h=document.createElement('h2');h.textContent=label;document.querySelector('main').append(h);const s=document.createElement('section');document.querySelector('main').append(s);for(const [direction,label] of Object.entries(directions)){const a=document.createElement('article');a.innerHTML=`<canvas width="200" height="200"></canvas><p>${label}</p>`;s.append(a);const ctx=a.firstChild.getContext('2d');ctx.imageSmoothingEnabled=false;items.push({style,direction,ctx});}}
+document.querySelector('#pause').onclick=()=>paused=!paused;
+function frame(t){if(!paused)distance+=(t-last)/100*14;last=t;for(const o of items){outfit=o.style;o.ctx.clearRect(0,0,200,200);drawHeroWalk(o.ctx,100,183,160,paused?0:distance,1,o.direction);}requestAnimationFrame(frame);}requestAnimationFrame(frame);
+</script></html>

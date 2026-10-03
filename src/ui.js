@@ -10,13 +10,14 @@ import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee } from './art.js';
+import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
+import { walkDirection } from './walk-direction.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -2884,7 +2885,7 @@ function openZone() {
       <img class="world-map-art" src="img/zone-world-map.webp" alt="เส้นทางเชื่อมสี่ดินแดนในอเวจี">
       ${markers}
       <div class="world-travelers" aria-hidden="true">
-        <span class="yama" style="left:${startX}%;top:${startY}%;background-image:url('${artUrl('hero-yama-walk') || artUrl('hero-yama')}')"></span>
+        <canvas class="yama" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none;background:none"></canvas>
         <canvas class="nira" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none"></canvas>
       </div>
     </div></div>
@@ -2893,6 +2894,18 @@ function openZone() {
     const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
     const yama = d.querySelector('.world-travelers .yama'), nira = d.querySelector('.world-travelers .nira');
     let traveling = false, frame = 0;
+    const yamaCtx = yama.getContext('2d');
+    yamaCtx.imageSmoothingEnabled = false;
+    let yamaDirection = 'down', yamaLast = [startX, startY];
+    const paintYama = (distance = 0) => {
+      yamaCtx.clearRect(0, 0, 160, 160);
+      if (!drawHeroWalk(yamaCtx, 80, 150, 135, distance, 1, yamaDirection))
+        drawStandee(yamaCtx, 'hero-yama', 80, 150, 135, 0, '👑');
+    };
+    paintYama();
+    const heroReady = new Image();
+    heroReady.onload = () => { if (!traveling) paintYama(); };
+    heroReady.src = artUrl('hero-yama-walk-4dir');
     const niraCtx = nira.getContext('2d');
     niraCtx.imageSmoothingEnabled = false;
     let niraFace = 1, niraLastX = startX;
@@ -2929,6 +2942,10 @@ function openZone() {
         const [x, y] = path.at(done);
         const [nx, ny] = path.at(done - followGap);
         yama.style.left = `${x}%`; yama.style.top = `${y}%`;
+        yamaDirection = walkDirection((x - yamaLast[0]) * map.clientWidth / 100,
+          (y - yamaLast[1]) * map.clientHeight / 100, yamaDirection);
+        yamaLast = [x, y];
+        paintYama(done < total ? done * map.clientHeight / 100 : 0);
         nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
         if (Math.abs(nx - niraLastX) > .001) niraFace = nx > niraLastX ? 1 : -1;
         niraLastX = nx;

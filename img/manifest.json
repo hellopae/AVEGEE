@@ -942,5 +942,11 @@
 "CyberHell/crew-boon-cyberhell-walk-v2.png",
 "CyberHell/crew-guard-cyberhell-walk-v2.png"
 ]
+},
+"heroWalks": {
+"th": "hero-yama-walk-4dir-v2.png",
+"asia": "Asia/hero-yama-asia-walk-4dir-v2.png",
+"west": "West/hero-yama-west-walk-4dir-v2.png",
+"cyberhell": "CyberHell/hero-yama-cyberhell-walk-4dir-v2.png"
 }
 }

@@ -6,6 +6,7 @@ import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPA
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
+import { walkDirection } from './walk-direction.js';
 
 export const UI_SCALE_MAP = 1.2;
 export const CHAR_SCALE_MAP = 0.8;
@@ -25,7 +26,8 @@ const waitingEvents = g => {
     y:SPOTS.bossPier.y - Math.floor(i / 3) * 80,
     art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7').replace(/-(asia|west|cyberhell)$/, '') }));
 };
-let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0;
+let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
+let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
 /** Movement is sampled from coordinates, never from a pending path or idle time. */
 export function actorWalkMotion(actor, time, zone = 'th', position = null) {
@@ -347,10 +349,17 @@ export function render(ctx, g, t, hover, sel) {
   }
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
+  if (lastHeroActor !== P || lastHeroZone !== g.zone) {
+    lastHeroActor = P; lastHeroZone = g.zone;
+    lastHeroX = NaN; lastHeroY = NaN; heroMovingUntil = 0; heroWalkDistance = 0; heroDirection = 'down';
+  }
   if (Number.isFinite(lastHeroX)) {
     const moved = Math.hypot(P.x - lastHeroX, P.y - lastHeroY);
     if (moved > 0.15) {
-      if (moved < 30) heroWalkDistance += moved;
+      if (moved < 30) {
+        heroWalkDistance += moved;
+        heroDirection = walkDirection(P.x - lastHeroX, P.y - lastHeroY, heroDirection);
+      }
       heroMovingUntil = t + 120;
     }
   }
@@ -367,7 +376,7 @@ export function render(ctx, g, t, hover, sel) {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
     const walking = t < heroMovingUntil;
-    if (!swinging && walking && drawHeroWalk(ctx, P.x, P.y, HERO_H, heroWalkDistance, P.face)) return;
+    if (!swinging && drawHeroWalk(ctx, P.x, P.y, HERO_H, walking ? heroWalkDistance : 0, P.face, heroDirection)) return;
     drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
                 P.x, P.y, HERO_H, t, '👑', P.face, walking && !swinging);
   });
