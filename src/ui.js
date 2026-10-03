@@ -3474,7 +3474,7 @@ function openStation(k) {
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
-  let drawerMode = k === 'tarang' ? 'inspect' : null;
+  let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
 
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
@@ -3534,12 +3534,17 @@ function openStation(k) {
           ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
           : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
       }).join('');
-      drawer = `<div class="st-pane" data-pane="manage">
-          ${g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('') || note(t('room.noneHeld'))}
-        </div>
-        <div class="st-pane" data-pane="inspect">
+      const heldHtml = g.held.length
+        ? `<div class="st-pane-title">${esc(t('room.heldTitle').replace('{n}', g.held.length))}</div>`
+          + g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
+        : '';
+      // 29C: ปุ่ม "ตรวจความเข็ดหลาบ" ถูกตัด — งานตรวจ/ส่งไปประตูสวรรค์ย้ายมารวมในหน้าต่างเดียวกับรายชื่อ
+      drawer = `<div class="st-pane" data-pane="roster">
+          <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
+          ${heldHtml}
           <div class="st-pane-title">${esc(t('room.roster').replace('{n}', sentenced.length))}</div>
           ${sentenced.length && !inside ? note(t('room.nearNira')) : ''}${rows}
+          ${!sentenced.length && !g.held.length ? note(t('room.noneHeld')) : ''}
         </div>`;
     }
     if (k === 'sawan') {
@@ -3552,11 +3557,11 @@ function openStation(k) {
           : `<button class="btn-gold" data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t('room.gateCheck'))}</button>`);
       }).join('');
       // ปุ่มของเกมที่แบบไม่มี: ดอกบัว + มินิเกมเร่งประตู — คงไว้ในแผงเดียวกัน
+      // 29C: แถว "ให้ดอกบัว" แยกออกไปเป็นปุ่มลอยข้างบุญ (ดู npcTags ด้านล่าง) — หน้าต่างนี้เหลือรายการรอตรวจ + มินิเกม
       drawer = `<div class="st-pane" data-pane="inspect">
+          <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
           <div class="st-pane-title">${esc(t('room.gateTitle').replace('{n}', arrivals.length))}</div>
           ${arrivals.length && !inside ? note(t('room.nearBoon')) : ''}${rows}
-          ${row(esc(t('room.lotusHint').replace('{n}', g.inventory.lotus || 0)),
-            `<button class="btn-gold" data-offer-lotus ${inside && g.inventory.lotus > 0 && g.karma > 0 ? '' : 'disabled'}>${esc(t('room.lotus'))}</button>`)}
           ${mgOn ? row(esc(mgWhy || t('room.mgNote')),
             `<button class="btn-gold" data-mg="${k}" ${mgReady ? '' : 'disabled'}>${esc(t('room.mgBtn').replace('{n}', st.speedLv || 0))}</button>`) : ''}
         </div>`;
@@ -3577,12 +3582,10 @@ function openStation(k) {
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
     if (A) {
-      const toggle = mode => () => { drawerMode = k === 'tarang' ? mode : drawerMode === mode ? null : mode; panels(); };
+      const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
       const mp = k === 'krajok' ? g.powerOf('mirror') : null;
       const kanLeft = Math.max(0, (st.kanCd || 0) - g.tick);
-      const specs = k === 'tarang' ? [
-        ['room.manage', 'room.manageHint', toggle('manage')],
-        ['room.inspect', 'room.inspectHint', toggle('inspect')],
+      const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
         ['room.sala.action2', 'room.sala.hint2', () => openMinigame(k), !mgReady, mgWhy],
@@ -3612,6 +3615,30 @@ function openStation(k) {
       A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
     }
 
+    // ---- ปุ่มลอยข้างตัวละครประจำห้อง (ชุด 29C) — ตะราง: "จัดการรายชื่อ" บนหัวนิรา · ประตูสวรรค์: "ให้ดอกบัว" ข้างบุญ ----
+    // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
+    const N = dlg.querySelector('#st-npc');
+    if (N && R) {
+      const tags = [];
+      if (k === 'tarang' && room.crew) {
+        const [ax, ay] = R.anchor(room.crew[0], room.crew[1], R.crewHeight + 0.012);
+        tags.push({ id:'manage', ax, ay, pos:'above', label:t('room.manage'), hint:t('room.manageHint'), pressed:drawerMode === 'roster' });
+      }
+      if (k === 'sawan' && room.crew) {
+        const lotus = g.inventory.lotus || 0;
+        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : !inside ? t('room.nearBoon') : '';
+        const boonX = room.crew[0] + (st.crewK === 'boon' ? 0.13 : 0);
+        const [ax, ay] = R.anchor(boonX + 0.075, room.crew[1], R.crewHeight * 0.55);
+        tags.push({ id:'lotus', ax, ay, pos:'side', label:t('room.lotus'), hint:why || t('room.lotusHint').replace('{n}', lotus), disabled:!!why });
+      }
+      put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
+          <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
+          ${x.hint ? `<small${x.disabled ? ' class="reason"' : ''}>${esc(x.hint)}</small>` : ''}</div>`).join(''));
+      const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
+      if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
+      if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };
+    }
+    dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-repair', () => { if (g.repairStation(k)) { panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
@@ -3624,7 +3651,6 @@ function openStation(k) {
     dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
     // ชุดที่ 9 — "เร่งการทำงาน" เป็นมินิเกม (data-mg) ไม่ใช่การจ่ายเบี้ย
     dlg.querySelectorAll('[data-mg]').forEach(b => b.onclick = () => openMinigame(b.dataset.mg));
-    on('[data-offer-lotus]', () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } });
     // แถบบารมี/ดาวยศใน HUD ล่างซ้าย
     const hpf = dlg.querySelector('#st-hud-hp');
     if (hpf) hpf.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
@@ -3762,7 +3788,8 @@ function openStation(k) {
     <div class="hud st-hud zone1-room">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
         <div class="st-arch" id="st-arch" hidden></div>
-        <div class="mg-ov" id="mg-ov" hidden></div></div>
+        <div class="mg-ov" id="mg-ov" hidden></div>
+        <div class="st-npc" id="st-npc"></div></div>
       <div class="st-card" id="st-left"></div>
       <div id="st-actions"></div>
       <div class="st-drawer" id="st-right" hidden></div>
