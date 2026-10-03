@@ -491,6 +491,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     sitting: () => sitting,
     setSit,
     lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
+    project: ([x, y]) => {
+      const rect = cv.getBoundingClientRect();
+      return [px(x) / cv.width * rect.width,
+              (box.oy + y * box.h) / cv.height * rect.height];
+    },
     pos: () => [P.x, P.y, P.tx, P.ty],       // ไว้ส่องตอนดีบัก
     /** เดินหนึ่งเฟรมด้วยมือ — แท็บที่ไม่ได้อยู่หน้าจอ rAF ไม่ยิงเลย ทดสอบจากคอนโซลต้องใช้ตัวนี้
      *  (แนวเดียวกับ G.step() ที่เกมเปิดไว้ให้อยู่แล้ว) */

@@ -308,7 +308,6 @@ export function render(ctx, g, t, hover, sel) {
     });
   } else at(1e5 + MERCHANT.y, () => {
     mapStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
-    tag(ctx, MERCHANT.x, MERCHANT.y - MERCHANT.h * CHAR_SCALE_MAP - 8, t, ['🧳 ซื้อขาย', '#f7c371']);
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
@@ -527,11 +526,11 @@ function buildPromptRect(ctx, def, afford) {
   const cx = def.x, cy = Math.max(46, (topOf(def) ?? def.by - def.bw) - 40 * UI_SCALE_MAP);
   const l1 = `${def.glyph} ${def.name}`;
   const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
-  ctx.font = `700 ${20 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
+  ctx.font = `700 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w1 = ctx.measureText(l1).width;
-  ctx.font = `600 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
+  ctx.font = `600 ${11 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w2 = ctx.measureText(l2).width;
-  const w = Math.max(w1, w2) + 30 * UI_SCALE_MAP, h = 58 * UI_SCALE_MAP;
+  const w = Math.max(w1, w2) + 20 * UI_SCALE_MAP, h = 44 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, cx - w / 2)), by = cy - h / 2;
   return { bx, by, w, h };
 }
@@ -555,8 +554,8 @@ function buildPrompt(ctx, def, t, afford) {
   ctx.fillStyle = 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
   ctx.strokeStyle = afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
   ctx.lineWidth = 2; ctx.stroke();
-  label(ctx, l1, bx + w / 2, by + 19 * UI_SCALE_MAP, 20, '#ffe7c4');
-  label(ctx, l2, bx + w / 2, by + 41 * UI_SCALE_MAP, 15, afford ? '#d4a355' : '#b09a92');
+  label(ctx, l1, bx + w / 2, by + 14 * UI_SCALE_MAP, 15, '#ffe7c4');
+  label(ctx, l2, bx + w / 2, by + 31 * UI_SCALE_MAP, 11, afford ? '#d4a355' : '#b09a92');
 }
 
 /** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
@@ -568,15 +567,15 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
 function bubble(ctx, text, x, y) {
-  ctx.font = `600 ${10 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
-  const w = Math.min(235 * UI_SCALE_MAP, ctx.measureText(text).width + 14 * UI_SCALE_MAP), h = 20 * UI_SCALE_MAP;
+  ctx.font = `600 ${8 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
+  const w = Math.min(180 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 7);
   ctx.fillStyle = 'rgba(20,9,14,.92)'; ctx.fill();
   ctx.fillStyle = '#f2e6dd'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(text, bx + w / 2, y - h / 2 + 1);
+  ctx.fillText(text, bx + w / 2, y - h / 2 + 1, w - 10 * UI_SCALE_MAP);
 }
 
 function label(ctx, text, x, y, size, color = '#fff') {
