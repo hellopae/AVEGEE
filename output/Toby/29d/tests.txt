@@ -1,0 +1,46 @@
+(node:38160) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Recovered: th/lan/build/taan
+Recovered: th/lan/build/dam
+Arrival matrix: 158 walked, 2 recovered at timeout
+Lan route evidence: {"worker":[588,660],"target":[585,615],"pending":true,"elapsed":28800}
+✔ all stations in all four zones: both builders arrive for build and repair among other buildings (20311.742121ms)
+✔ blocked definition point plus mob: build and repair reach a walkable visible work point (23.256666ms)
+✔ disconnected route recovers after 30 active seconds, preserving elapsed time on reload and pause (852.993359ms)
+✔ escort suspends arrival, then releases the worker; battle help keeps the job owner (37.054918ms)
+✔ two builds approach concurrently and retain each owner and build-work render state (626.485894ms)
+✔ Thai lan route reproduction records the reachable endpoint before bounded recovery (509.396359ms)
+✔ construction poses resolve to all eight zone-specific transparent PNG assets (4.194092ms)
+(node:38162) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ dam builds while taan is on duty, escorting, or building; busy crew cannot take another job (11.397007ms)
+✔ two simultaneous builds preserve their owners on reload and release each worker independently (42.574687ms)
+✔ dam repairs independently while taan builds, keeping ownership through walking, reload and completion (24.145946ms)
+✔ repair never interrupts an escort and still requires enemies to be cleared (1.211243ms)
+✔ loading a dam-owned repair does not assign taan to the same site (2.077815ms)
+✔ two repair jobs keep separate owners when leaving and returning to a branch (11.800385ms)
+✔ a builder stopped 45 units from lan approaches instead of roaming forever, with a mob present (14.418693ms)
+(node:38164) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ทุกห้องมี ui4: crop ตรงสัดส่วนกรอบแบบ · พื้นที่เดิน · ปุ่มครบ (3.293527ms)
+✔ ยมบาทเริ่มและจุดลงมือของทุกห้องอยู่ในพื้นที่เดินได้ (ไม่งั้นเดินไปกดไม่ถึง) (1.393276ms)
+✔ หนึ่งเฟรมเดินข้ามแถบห้ามเดินที่คั่นระหว่างจุดเริ่มและปลายไม่ได้ (0.595026ms)
+✔ ข้อความของห้องมีทั้งไทยและอังกฤษ และตัวเลขความจุไม่ถูกฝังในข้อความ (19.640218ms)
+(node:38165) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ทุกโซนใช้ผังและพิกัดเดียวกัน และประตูย้ายโซนทำงาน (88.808024ms)
+✔ ภาพจริงกันธารโซน 2–4 และให้เดินข้ามสะพานถึงจุดงาน (1106.872491ms)
+✔ ยักษ์เดินกลับจุดเฝ้าจากท่าเรือและขอบล่างในทุกโซน แล้วหยุดนิ่ง (1220.90349ms)
+✔ spawnMob เลือกเฉพาะจุดขอบล่างที่ findPath เชื่อมถึงจุดเฝ้า ทุกโซน (3615.203088ms)
+✔ ยักษ์ปราบปีศาจจากท่าเรือขวาแล้วกลับจุดเฝ้าในโซนไทยและบูรพา (200.195434ms)
+✔ ยักษ์ snap จุดแวะขณะไล่ปีศาจที่เฟรม 16ms แล้วเดินถึงเป้าหมาย (84.163402ms)
+✔ เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว (13.719876ms)
+✔ เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน (1.760506ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22736.835664
