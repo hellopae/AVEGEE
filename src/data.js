@@ -1824,6 +1824,11 @@ export const fmtAuthority = (text, zone) =>
 /** 28A — ศึก "ปีศาจฝ่าชายแดน" (frontierBreach โซน 1 และ zoneEvent ที่ team:'frontier' ของโซนอื่น)
  *  ชนะแล้วเนื้อเรื่องคือยมบาทอยู่ที่ชายแดน ไม่ใช่กลับลานศาล → ui.js เปิด "แผนที่ชายแดน" ต่อให้
  *  รับผลศึกที่ g.endBattle() คืนมา (done) แล้วบอกว่าควรไปแผนที่ชายแดนไหม — แพ้ไม่ไป (กลับไปตั้งหลักตามเดิม) */
+/** event "ปีศาจชายแดนบุก" — th.frontierBreach และ event ระลอกชายแดนของโซน 2–4 (team:'frontier')
+ *  ชุด 29C ข้อ 9: ผู้เล่นต้องเดินไปที่ชายแดนเองก่อน ถึงจะเปิดหน้าต่างเตรียมทีมและสู้ได้ (ไม่ตัดเข้าหน้าต่างทันที) */
+export const isFrontierBreachEvent = (zone, key) =>
+  (ZONE_EVENTS[zone] || []).some(ev => ev.k === key && ev.team === 'frontier');
+
 export function returnsToFrontier(done) {
   if (!done || done.over !== 'win') return false;
   if (done.kind === 'frontierBreach') return true;

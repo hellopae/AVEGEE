@@ -7,7 +7,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination } from './data.js';
+         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -1573,10 +1573,12 @@ const API = {
     // ---- เปรตเดินไปเผาอาคาร (9 ก.ย. 2569) ----
     // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
     // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
-    this.mobs = this.mobs.filter(m => !m.eventKey || this.zoneEventStatus(m.eventKey) === 'pending');
+    // 29C: event ชายแดนบุกไม่มีตัวปีศาจเดินบนแผนที่แล้ว (ปีศาจรออยู่ที่ชายแดน) · ของที่ค้างมากับเซฟเก่าเก็บทิ้ง
+    this.mobs = this.mobs.filter(m => !m.eventKey || (this.zoneEventStatus(m.eventKey) === 'pending' && !isFrontierBreachEvent(this.zone, m.eventKey)));
     for (const [tag, closed] of Object.entries(this.eventMapClosed)) {
       if (!closed) continue;
       const [zone, key] = tag.split(':');
+      if (isFrontierBreachEvent(zone, key)) continue;
       if (zone === this.zone && (key === 'prisonBreak' || key === 'frontierBreach' ||
           (ZONE_EVENTS[zone] || []).some(ev => ev.k === key &&
             (ev.mode === 'waves' || /prison/i.test(ev.k)))))
@@ -2162,6 +2164,23 @@ const API = {
   frontierBreachStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.frontierBreach || 'locked';
   },
+  /** ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก 3 ช่วง: (1) หน้าต่างแจ้งเตือน (2) ผู้เล่นเดินไปชายแดนเอง (3) ถึงแล้วเปิดหน้าต่างเตรียมทีม
+   *  ไม่มีตัวจับเวลา — event รอได้ไม่จำกัด เดินไปถึงเมื่อไรก็ได้ · ช่วง (2) คือ "สถานะ pending + ผู้เล่นรับทราบแล้ว (eventMapClosed)"
+   *  ทั้งสองค่าเซฟอยู่แล้ว (status 'active' ที่ค้างจะกลับเป็น pending ตอนโหลด) จึงเซฟ/โหลดกลางทางแล้ว event ยังค้างถูกต้องโดยไม่ต้องมีฟิลด์ใหม่
+   *  คืน { key, ev } ของ event ที่ต้องไปชายแดน หรือ null */
+  breachMarch() {
+    if (this.battle || this.over) return null;
+    for (const ev of ZONE_EVENTS[this.zone] || []) {
+      if (ev.team !== 'frontier' || this.zoneEventStatus(ev.k) !== 'pending') continue;
+      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;
+      if (this.eventMapClosed[`${this.zone}:${ev.k}`]) return { key:ev.k, ev };
+    }
+    return null;
+  },
+  /** ยมบาทถึงประตูชายแดนแล้วหรือยัง (ระยะเดียวกับปุ่ม "เข้าด่านชายแดน") */
+  nearFrontierGate(pad = 0) {
+    return Math.hypot(this.player.x - FRONTIER.x, this.player.y - FRONTIER.y) <= FRONTIER.reach + pad;
+  },
   dismissEventAlert(key, raider = false) {
     this.eventMapClosed[`${this.zone}:${key}`] = true;
     if (raider) this.ensureEventRaider(key);
@@ -2214,7 +2233,11 @@ const API = {
     if (!foes.length) return null;
     const state = this.zoneEvents[this.zone];
     state[key] = 'active'; this.fights++;
+    // 29C: ศึกระลอกชายแดนใช้ทีมที่จัดไว้ในหน้าต่างเตรียมทีมที่ชายแดน (เดิมใช้ทีมของโต๊ะนิรา ทำให้ที่เลือกไว้ไม่มีผล)
+    const frontierTeam = ev.team === 'frontier'
+      ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
+      ...(frontierTeam.length ? { team:[...frontierTeam] } : {}),
       wave:1, pendingWave:null, foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,

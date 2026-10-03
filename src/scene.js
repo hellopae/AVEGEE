@@ -8,6 +8,7 @@ import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWa
 import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
+import { t as tr } from './i18n.js';
 
 export const UI_SCALE_MAP = 1.2;
 export const CHAR_SCALE_MAP = 0.8;
@@ -301,6 +302,24 @@ export function render(ctx, g, t, hover, sel) {
     mapStandee(ctx, ev.art, ev.x, ev.y, 90, t, '⚠️');
     tag(ctx, ev.x, ev.y - 90, t, ['⚠️', '#f7c371']);
   });
+
+  // ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก (รับทราบแล้ว รอให้ยมบาทเดินไป): เครื่องหมายเรืองแสงที่ประตูชายแดน
+  // ลูกศรชี้ลงเด้งอยู่เหนือซุ้มประตู + ป้ายชื่อ + วงแหวนแดงที่พื้น · หายไปเมื่อสู้เริ่มหรือ event จบ
+  if (g.breachMarch?.()) {
+    const gx = FRONTIER.x, gy = FRONTIER.y;
+    at(1e5 + gy, () => {
+      const q = 0.5 + 0.5 * Math.sin(t / 240);
+      ctx.save();
+      ctx.strokeStyle = `rgba(255,96,72,${0.55 + q * 0.4})`; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(gx, gy, 70 + q * 8, 24 + q * 3, 0, 0, 7); ctx.stroke();
+      const bob = Math.sin(t / 200) * 8, ay = gy - 150 + bob;
+      ctx.fillStyle = '#ff6a4a'; ctx.strokeStyle = '#2a0c08'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(gx - 20, ay - 24); ctx.lineTo(gx + 20, ay - 24); ctx.lineTo(gx, ay + 10); ctx.closePath();
+      ctx.stroke(); ctx.fill();
+      ctx.restore();
+      tag(ctx, gx, ay - 48, t, ['⚠️ ' + tr('event.frontierBreach.marker'), '#ff9a7a']);
+    });
+  }
 
   if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending') {
     [[1110,465],[1240,535],[1335,615]].forEach(([bx,by], i) => {

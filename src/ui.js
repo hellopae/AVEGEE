@@ -108,6 +108,7 @@ let prisonAlertSeen = !!g.eventMapClosed['th:prisonBreak'];
 let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
 let breachAlertSeen = !!g.eventMapClosed['th:frontierBreach'];
 let breachTried = false;
+let breachPrepOffered = false;   // เปิดหน้าต่างเตรียมทีมที่ชายแดนให้รอบนี้แล้ว (ดู setInterval ด้านบน)
 let devaAlertSeen = !!g.eventMapClosed['th:devaTest'];
 let devaTried = false;
 const zoneEventAlertSeen = new Set(Object.keys(g.eventMapClosed).filter(k => g.eventMapClosed[k]));
@@ -149,6 +150,16 @@ setInterval(() => {
     devaAlertSeen = true;
     openDevaAlert();
   }
+  // ชุด 29C ข้อ 9 — ยมบาทเดินถึงประตูชายแดนขณะ event ปีศาจบุกรออยู่ → เปิดหน้าต่างเตรียมทีมครั้งเดียวต่อรอบที่เดินเข้าไป
+  // (ปิดหน้าต่างแล้วยืนต่อไม่เด้งซ้ำ · ออกห่างแล้วกลับมาถึงจะเด้งอีก · กดปุ่ม "เข้าด่านชายแดน" เปิดเองได้ตลอด)
+  const march = started && g.breachMarch();
+  if (march && g.nearFrontierGate()) {
+    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+        !g.dadFight && !storyPlaying && !g.storyQueue.length && Date.now() - lastBattleEnd > 1600) {
+      breachPrepOffered = true;
+      openFrontier(false, march.key);
+    }
+  } else if (!g.nearFrontierGate(70)) breachPrepOffered = false;
   updatePrisonFab();
   updateBreachFab();
   updateDevaFab();
@@ -1213,9 +1224,12 @@ function updatePrisonFab() {
   f.textContent = `⚠️ ${prisonTried ? t('event.prisonBreak.retry') : t('event.prisonBreak.title')}`;
 }
 
+// ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก: หน้าต่างนี้แค่แจ้งเตือน (รับทราบ) ไม่ตัดเข้าหน้าต่างเตรียมทีมทันทีอีกแล้ว
+// ผู้เล่นเดินยมบาทไปชายแดนเอง ถึงแล้ว watcher ใน setInterval ด้านบนจึงเปิดหน้าต่างเตรียมทีม (openFrontier)
+// ปิดหน้าต่างด้วยทางไหนก็ตามนับเป็นรับทราบ (onDlgClose → dismissEventAlert ตั้ง eventMapClosed ซึ่งเซฟอยู่แล้ว)
 function openBreachAlert() {
-  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.alert'),
-    artUrl(MOB.kinds[0].img), t('event.frontierBreach.go'), () => openFrontier(false, true), true);
+  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.march'),
+    artUrl(MOB.kinds[0].img), t('event.frontierBreach.ack'), () => dlg.close(), false);
 }
 
 function updateBreachFab() {
@@ -1270,6 +1284,10 @@ function openZoneEventAlert(ev) {
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
+  if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
+    openEventAlert(ev.k, title, t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false);
+    return;
+  }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
     zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
       const startFight = () => {
@@ -2317,7 +2335,15 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier(fromWalk = false, breach = false) {
+function openFrontier(fromWalk = false, breachArg = null) {
+  // ชุด 29C ข้อ 9 — มี event ปีศาจบุกรออยู่ (รับทราบแล้ว) → หน้าต่างนี้คือหน้าเตรียมทีมของ event นั้น · ไม่มี = หน้าเตรียมทีมชายแดนปกติ
+  const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
+  const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
+  const breach = !!bev, thBreach = breachKey === 'frontierBreach';
+  const waveN = bev?.waves?.length || 2;
+  const breachTitle = thBreach ? t('event.frontierBreach.title') : zoneEventText(bev?.title);
+  const breachText = thBreach ? t('event.frontierBreach.alert') : zoneEventText(bev?.alert);
+  const breachLoot = thBreach ? t('event.frontierBreach.win') : `รางวัล: ${bev?.reward?.coin || 0} เบี้ยกรรม + ของสนามรบ`;
   pauseForDlg();
   const helpers = g.crewHelpers();
   const state = g.frontierOf();
@@ -2334,8 +2360,8 @@ function openFrontier(fromWalk = false, breach = false) {
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
-      <header><small>${breach ? 'Wave 1/2' : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(t('event.frontierBreach.title')) : esc(FRONTIER.name)}</h2>
-        <p>${breach ? esc(t('event.frontierBreach.alert')) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
+      <header><small>${breach ? `Wave 1/${waveN}` : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(breachTitle) : esc(FRONTIER.name)}</h2>
+        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
         ${chosen.map(k => {
@@ -2344,8 +2370,8 @@ function openFrontier(fromWalk = false, breach = false) {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>${breach ? 'Wave 1/2' : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
-          <span class="frontier-loot">${breach ? esc(t('event.frontierBreach.win')) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
+        <div class="frontier-head"><span><b>${breach ? `Wave 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
+          <span class="frontier-loot">${breach ? esc(breachLoot) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
@@ -2356,7 +2382,7 @@ function openFrontier(fromWalk = false, breach = false) {
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
         </div>
         <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
-          <button class="gold" data-frontier-start ${chosen.length || fromWalk ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
@@ -2369,8 +2395,12 @@ function openFrontier(fromWalk = false, breach = false) {
     // ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมกดปุ่มนี้แล้วตัดเข้าฉากสู้ทันที (สุ่มศัตรู)
     // ตอนนี้เข้า "แผนที่ชายแดน" ก่อน ให้เดินเลือกเองว่าจะสู้กับตัวไหน (src/frontier.js)
     if (start) start.onclick = () => {
-      if (breach) {
+      if (thBreach) {
         if (g.startFrontierBreach()) { breachTried = true; openBattle(afterBreachBattle); }
+        return;
+      }
+      if (breach) {                               // ระลอกชายแดนของโซน 2–4 — ศึกเดียวกับที่เคยเริ่มจากหน้าต่างแจ้งเตือน
+        if (g.startZoneEvent(breachKey)) { zoneEventTried.add(`${g.zone}:${breachKey}`); openBattle(afterBreachBattle); }
         return;
       }
       dlg.close();
