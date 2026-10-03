@@ -1,8 +1,0 @@
-img/Asia/BG-Lokan-asia.webp (1024, 576) 16:9; no fully black rows or columns
-img/BG-Tea.webp (1024, 576) 16:9; no fully black rows or columns
-img/Asia/BG-Tea-asia.webp (1024, 576) 16:9; no fully black rows or columns
-img/BG-Ngiw.webp (1024, 576) 16:9; no fully black rows or columns
-img/Asia/st-lokan-asia.png (512, 512) RGBA alpha extrema (0, 255) nonzero fraction 0.5114
-img/item-demon-sword.png (512, 512) RGBA alpha extrema (0, 255) nonzero fraction 0.263
-img/item-lotus.png (512, 512) RGBA alpha extrema (0, 255) nonzero fraction 0.5215
-7 manifest entries present; alpha bounds correct; only 29D manifest changes; all 7 prompts retained

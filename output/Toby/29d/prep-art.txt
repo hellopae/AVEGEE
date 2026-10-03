@@ -1,7 +1,0 @@
-img/raw/Asia/st-lokan-asia.png -> img/Asia/st-lokan-asia (512, 512)
-img/raw/Asia/BG-Lokan-asia.png -> img/Asia/BG-Lokan-asia (1024, 576)
-img/raw/BG-Tea.png -> img/BG-Tea (1024, 576)
-img/raw/Asia/BG-Tea-asia.png -> img/Asia/BG-Tea-asia (1024, 576)
-img/raw/BG-Ngiw.png -> img/BG-Ngiw (1024, 576)
-img/raw/item-demon-sword.png -> img/item-demon-sword (512, 512)
-img/raw/item-lotus.png -> img/item-lotus (512, 512)

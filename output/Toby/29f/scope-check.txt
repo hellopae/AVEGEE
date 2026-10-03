@@ -1,2 +1,0 @@
-Protected paths unchanged. Manifest critical/rest/boxes/stationSizes unchanged.
-No logic change: src/zone-introductions.js only replaces the cutscene URL string.

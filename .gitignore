@@ -16,3 +16,6 @@ img/Zone*.png
 # ไฟล์ไบต์โค้ดของสคริปต์ python — เกิดใหม่เองทุกครั้งที่รัน ไม่ต้องเก็บเข้า repo
 __pycache__/
 *.pyc
+
+# หลักฐานงานของเอเจนต์ (ภาพก่อน/หลัง prompt log) — เก็บใน AGAPAE Agent/Output/Toby แทน ไม่ขึ้นเว็บ (4 ต.ค. 2569)
+output/Toby/
