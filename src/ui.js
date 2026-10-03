@@ -1,3 +1,4 @@
+import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
@@ -620,7 +621,7 @@ function sideBody() {
          ${battleLine}
          ${!c.reader ? `<div class="sec">คุยกับ${esc(c.name)}</div>${hungerWidget(c)}` : ''}
          ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}
-         ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม · ฝึกยมทูต</button>' : ''}`;
+         ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม</button>' : ''}`;
   }
 
   // ---- ยักษ์ทวารบาล ----
@@ -849,7 +850,8 @@ function goTrial() {
 const dlg = $('#dlg');
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
-  if (!dlg.open || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
+  if (!dlg.open || dlg.classList.contains('pause-modal') ||
+      (dlg.querySelector('.st-hud') && !['tarang', 'sawan'].includes(dlg.querySelector('#st-left')?.dataset.room)) || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
       dlg.querySelector('.settings-close,.trial-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
   const close = document.createElement('button');
@@ -988,17 +990,6 @@ function drawOverlay() {
   const post = nira?.at ? STATIONS.find(d => d.k === nira.at) : null;
   const nx = nira?.x ?? (post ? post.x : (nira ? nira.hx : 660));
   const ny = nira?.y ?? (post ? post.y : (nira ? nira.hy : 400));
-  if (nira) {
-    const team = mark('', nx + 34, ny - CH - 8, '👥',
-      '<span class="who">นิรา</span>จัดทีมยมทูตที่นี่');
-    team.dataset.follow = 'nira'; team.dataset.followDx = 34;
-    team.setAttribute('aria-label', 'จัดทีมยมทูตที่นี่');
-    team.setAttribute('title', 'จัดทีมยมทูตที่นี่');
-    const pin = team.querySelector('.pin');
-    pin.setAttribute('role', 'button'); pin.tabIndex = 0;
-    pin.setAttribute('aria-label', 'จัดทีมยมทูตที่นี่');
-    pin.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pin.click(); } };
-  }
   if (!s) return;
 
   const rec = s.case ? publicDossier(s, 'line') : s.deeds.filter(d => d.known)
@@ -1107,31 +1098,37 @@ function updateFrontierFab() {
 }
 
 /** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
+function currentMapInteraction() {
+  if (g.over || g.battle || dlg.open) return null;
+  return nearestInteraction(g.player, mapInteractions(g, MERCHANT));
+}
+
+/** One nearby action, including repairs, survives refresh while the player taps. */
 function updateRepairFabs() {
-  const damaged = g.over || g.battle || dlg.open ? []
-    : g.stations.filter(st => !st.build && st.fire >= MOB.burnMax && !st.repair);
-  const keys = new Set(damaged.map(st => st.def.k));
-  for (const f of ov.querySelectorAll('.repairfab')) if (!keys.has(f.dataset.station)) f.remove();
-  for (const st of damaged) {
-    let f = ov.querySelector(`.repairfab[data-station="${st.def.k}"]`);
-    if (!f) {
-      f = document.createElement('button');
-      f.className = 'repairfab';
-      f.dataset.station = st.def.k;
-      f.onclick = ev => {
-        ev.stopPropagation();
-        if (g.repairStation(st.def.k)) { sfx('crack'); refresh(); }
-      };
-      ov.appendChild(f);
-    }
-    const worker = g.availableBuilder();
-    f.textContent = `🔧 เรียก${worker?.name || 'ช่าง'}ซ่อม${st.def.name}`;
-    f.disabled = !g.canRepair(st.def.k);
-    f.title = g.mobs.length ? 'ไล่ปีศาจออกก่อน' : worker ? `${worker.name}จะเดินมาซ่อมให้` : 'ต้องมีช่างว่างจากงานอื่นก่อน';
-    f.dataset.sx = st.def.bx;
-    f.dataset.sy = Math.min(SCENE.h - 45, st.def.by + 64);
-    place(f);
+  const target = currentMapInteraction();
+  for (const f of ov.querySelectorAll('.repairfab'))
+    if (!target || f.dataset.target !== target.id) f.remove();
+  if (!target) return;
+  let f = ov.querySelector('.repairfab');
+  if (!f) {
+    f = document.createElement('button'); f.className = 'repairfab';
+    f.dataset.target = target.id;
+    f.onclick = ev => {
+      ev.stopPropagation();
+      const now = currentMapInteraction();
+      if (!now || now.id !== f.dataset.target) return;
+      if (now.kind === 'repair') {
+        if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
+      } else if (now.kind === 'nira') openNiraOffice();
+      else if (now.kind === 'merchant') openMerchant();
+      else openStation(now.key);
+    };
+    ov.appendChild(f);
   }
+  f.textContent = target.label;
+  f.disabled = target.kind === 'repair' && !g.canRepair(target.key);
+  f.dataset.sx = target.bx; f.dataset.sy = target.by;
+  place(f);
 }
 
 function openEventAlert(key, title, description, art, action, start, raider = false) {
@@ -1684,7 +1681,7 @@ function openHelp() {
       const total = items.length + 1;
       const show = next => {
         helpPage = Math.max(0, Math.min(total - 1, next));
-        reader.innerHTML = `<button type="button" class="help-close" aria-label="ปิดคู่มือ">✕</button>
+        reader.innerHTML = `
           <article class="help-page">${helpPage === 0 ? intro
           : `<p class="help-chapter">ข้อ ${helpPage}</p><div class="help-item">${items[helpPage - 1]}</div>`}</article>
           <nav class="help-nav" aria-label="หน้าคู่มือ">
@@ -1693,7 +1690,6 @@ function openHelp() {
             <button type="button" data-help-next ${helpPage === total - 1 ? 'disabled' : ''}>ถัดไป ▶</button>
           </nav><div class="help-dots" aria-label="เลือกหน้าคู่มือ">${Array.from({length:total}, (_, i) =>
             `<button type="button" data-help-page="${i}" aria-label="หน้า ${i + 1}" ${helpPage === i ? 'aria-current="page"' : ''}></button>`).join('')}</div>`;
-        reader.querySelector('.help-close').onclick = () => d.close();
         reader.querySelector('[data-help-prev]').onclick = () => show(helpPage - 1);
         reader.querySelector('[data-help-next]').onclick = () => show(helpPage + 1);
         reader.querySelectorAll('[data-help-page]').forEach(b => b.onclick = () => show(+b.dataset.helpPage));
@@ -2243,13 +2239,11 @@ function openNiraOffice() {
       <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
       <div class="market-grid">${CREW.filter(c => !c.reader).map(def => {
         const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
-        const train = c ? UPGRADES.crewBase * ((c.upLv || 0) + 1) : 0;
         return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
-          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ฝึกขั้น ${c.upLv || 0}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? hungerWidget(c) : ''}</span>
-          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ทีมต่อสู้' : 'เข้าทีมสู้'}</button>
-                  <button data-train="${c.k}" class="sm" ${g.coin < train || (c.upLv || 0) >= UPGRADES.max ? 'disabled' : ''}>ฝึกแรง ${train}</button>`
+          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ทีมต่อสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
       }).join('')}
@@ -2266,7 +2260,6 @@ function openNiraOffice() {
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
-    dlg.querySelectorAll('[data-train]').forEach(b => b.onclick = () => { if (g.upgradeCrew(b.dataset.train)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelector('[data-gift-nira]')?.addEventListener('click', () => { if (g.giveOnigiriNira()) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
@@ -3154,7 +3147,6 @@ function openPause(allowReplacing = false, automatic = false) {
   let resumeRequested = false;
   pauseForDlg();
   modal(`<div class="pause-head">
-      <img src="img/ui/icon-pause.png" alt="">
       <strong>${esc(t('pause.title'))}</strong>
     </div>
     <nav class="pause-actions" aria-label="${esc(t('pause.title'))}">
@@ -3169,7 +3161,7 @@ function openPause(allowReplacing = false, automatic = false) {
       d.querySelector('#pause-more').onclick = () => { d.close(); openLegacyDrawer(); };
     }, 'pause-modal');
   onDlgClose(() => {
-    userPaused = automatic && resumeRequested ? false : before;
+    userPaused = resumeRequested ? false : before;
     if (automatic && !resumeRequested && started && !g.over) autoPausePending = true;
     releaseDlgPause();
   });
@@ -3293,14 +3285,12 @@ function drawHeroProfile() {
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]
   ].map(([title, content]) => `<section class="hero-profile-column"><h3>${esc(title)}</h3>${content}</section>`).join('');
-  $('#hero-profile-menu').textContent = t('profile.more');
 }
 function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; }
 function closeHeroProfile() { heroProfile.hidden = true; }
 $('#hud-avatar').onclick = openHeroProfile;
 $('#hero-profile-close').onclick = closeHeroProfile;
 $('#hero-profile-pause').onclick = () => { closeHeroProfile(); openPause(); };
-$('#hero-profile-menu').onclick = () => { closeHeroProfile(); openLegacyDrawer(); };
 $('#legacy-drawer-close').onclick = closeLegacyDrawer;
 legacyDrawer.addEventListener('click', e => { if (e.target === legacyDrawer) closeLegacyDrawer(); });
 
@@ -3359,7 +3349,7 @@ function onSceneClick(sx, sy) {
   const enterStation = key => {
     const d = STATIONS.find(x => x.k === key);
     if (!d) return;
-    const near = Math.hypot(g.player.x - d.x, g.player.y - d.y) <= 86;
+    const near = Math.hypot(g.player.x - d.x, g.player.y - d.y) <= INTERACTION_REACH;
     if (near) return openStation(key);
     if (g.walkTo(d.x, d.y))
       g.log(`เดินไปหา${d.name} — เข้าได้เมื่อยืนใกล้ทางเข้า`, 'act');
@@ -3387,7 +3377,7 @@ function onSceneClick(sx, sy) {
       return;
     }
     if (a.kind === 'merchant') {
-      if (Math.hypot(g.player.x - MERCHANT.x, g.player.y - MERCHANT.y) <= MERCHANT.reach) return openMerchant();
+      if (Math.hypot(g.player.x - MERCHANT.x, g.player.y - MERCHANT.y) <= INTERACTION_REACH) return openMerchant();
       g.walkTo(MERCHANT.x, MERCHANT.y); g.log(`เดินไปหา${MERCHANT.name} — ซื้อขายได้เมื่อยืนใกล้`, 'act'); return;
     }
     if (a.kind === 'bossPending') return openBossAlert();
@@ -3401,7 +3391,8 @@ function onSceneClick(sx, sy) {
     }
     if (a.kind === 'crew' && a.key === 'nira') {
       const c = g.crewOf('nira');
-      if (c && Math.hypot(g.player.x - c.x, g.player.y - c.y) <= 105) return openNiraOffice();
+      if (c && Math.hypot(g.player.x - c.x, g.player.y - c.y) <= INTERACTION_REACH) return openNiraOffice();
+      if (c) { g.walkTo(c.x, c.y); return; }
     }
     select(a);
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
@@ -3495,9 +3486,9 @@ function openStation(k) {
     const row = (label, btn) => `<div class="st-row"><span>${label}</span>${btn}</div>`;
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
-    // ปุ่มซ่อม — ไม่อยู่ในแบบ แต่เป็นปุ่มของเกมที่โผล่เฉพาะตอนสถานีเสียหาย/ไฟไหม้ จึงคงไว้ (ล่างกลางฉาก)
+    // 29B: คงปุ่มซ่อมเดิมเฉพาะตะราง/ประตูสวรรค์ซึ่งอยู่ในขอบเขต 29C
     if (AL) {
-      if (st.fire > 0 && !g.mobs.length) {
+      if (['tarang', 'sawan'].includes(k) && st.fire > 0 && !g.mobs.length) {
         const worker = g.crew.find(c => c.buildK === st.def.k) || g.availableBuilder();
         const who = worker?.name || g.builders().map(c => c.name).join(' / ');
         const why = st.repair ? st.repairWait ? t('room.repairComing').replace('{name}', who) : t('room.repairing')
@@ -3761,6 +3752,7 @@ function openStation(k) {
   dlg.innerHTML = `
     <div class="hud st-hud zone1-room">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
+        ${['tarang', 'sawan'].includes(k) ? '' : '<button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>'}
         <div class="st-arch" id="st-arch" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div></div>
       <div class="st-card" id="st-left"></div>
@@ -3794,7 +3786,20 @@ function openStation(k) {
   };
   R.onCollect = () => { panels(); refresh(); };
   let wasNear = null, wasSitting = false;
+  const exit = roomExit(k, g.zone, room);
+  const exitBtn = dlg.querySelector('#st-exit');
+  if (exitBtn) exitBtn.onclick = () => {
+    if (!mgOpen && nearRoomExit(R.pos(), exit)) dlg.close();
+  };
   R.onFrame = near => {
+    if (exitBtn) {
+      exitBtn.hidden = mgOpen || !nearRoomExit(R.pos(), exit);
+      const [left, top] = R.project(R.pos());
+      const width = cv2.getBoundingClientRect().width;
+      const half = exitBtn.offsetWidth / 2 + 8;
+      exitBtn.style.left = `${Math.max(half, Math.min(width - half, left))}px`;
+      exitBtn.style.top = `${Math.max(exitBtn.offsetHeight + 8, top - 42)}px`;
+    }
     // นั่งอยู่ — บารมีขยับทุกเฟรมจริง (room.js เขียนตรงที่ g.hp โดยไม่ผ่าน onChange/refresh()
     // เพราะตั้งใจให้ฟื้นต่อได้แม้เกมพักอยู่กับกล่องโมดัล — ดู room.js setSit) อัปเดตเฉพาะตัวเลข
     // แบบเบา ๆ ไม่วาดทั้งแผงใหม่ทุกเฟรม แต่ต้องอัปเดต "ทั้งสองที่" พร้อมกัน:

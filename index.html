@@ -1015,10 +1015,10 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   .st-hud.zone1-room > *{position:absolute}
   .st-hud.zone1-room .st-room{inset:0;display:block}
   .st-hud.zone1-room .st-room canvas{width:100%;height:100%;border-radius:0;background:#120810}
-  .st-card{left:1.8cqw;top:1.7cqw;box-sizing:border-box;width:max-content;max-width:28.5cqw;padding:1.55cqw 2.1cqw 1.6cqw;border-radius:1.15cqw}
-  .st-card[data-room=tarang]{max-width:26cqw}
-  .st-card h2{font-size:1.9cqw;margin-bottom:.55cqw}
-  .st-card p{font-size:1.12cqw}
+  .st-card{left:1.8cqw;top:1.7cqw;box-sizing:border-box;width:max-content;max-width:22cqw;padding:.9cqw 1.1cqw;border-radius:1.15cqw}
+  .st-card[data-room=tarang]{max-width:22cqw}
+  .st-card h2{font-size:1.45cqw;margin-bottom:.4cqw}
+  .st-card p{font-size:.95cqw}
   .st-controls{right:8.7cqw;top:2.2cqw}
   .st-controls .st-icon-btn{width:3.55cqw;height:3.55cqw}
   /* ปุ่มปิดทองมาจากตัวเฝ้ากลางของกล่อง (.modal-corner-close ใน ui.js) — แค่วางตำแหน่งให้ตรงแบบ */
@@ -1055,9 +1055,9 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   .st-hud.zone1-room{display:flex;flex-direction:column;gap:10px;height:100%;max-height:none;box-sizing:border-box;
     padding:10px 10px max(12px,env(safe-area-inset-bottom));overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
   .st-hud.zone1-room > *{position:static;flex:none}
-  .st-card{order:1;padding:10px 14px 12px;border-radius:14px}
-  .st-card h2{font-size:20px;line-height:30px;margin:0 0 10px;padding-right:104px;min-height:30px}
-  .st-card p{font-size:13px}
+  .st-card{order:1;padding:8px 10px;border-radius:14px}
+  .st-card h2{font-size:17px;line-height:24px;margin:0 0 6px;padding-right:104px;min-height:30px}
+  .st-card p{font-size:12px}
   .st-hud.zone1-room .st-room{order:2;position:relative;z-index:auto;width:100%;min-height:0;aspect-ratio:1913/1025;border-radius:10px;overflow:hidden}
   .st-hud.zone1-room .st-room canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
   #st-actions{order:3;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
@@ -1898,6 +1898,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .story-battle-overlay .intro-comic{width:min(900px,100%)}
 .story-reward .boss p{line-height:1.7}
 .intro-comic-controls .gold{color:#f3d18b;background:#3a2735}
+.st-exit{position:absolute;z-index:10;transform:translate(-50%,-100%);max-width:calc(100% - 16px);min-height:44px;padding:7px 12px;background:#35202a;color:#f5d18c;border:1px solid #c69a51;border-radius:8px;white-space:nowrap}
+.st-exit[hidden]{display:none}
 </style>
 <link rel="stylesheet" href="src/command-wheel.css">
 </head>
@@ -2041,7 +2043,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
           <div id="hero-profile-intro"></div>
         </header>
         <div id="hero-profile-columns" class="hero-profile-columns"></div>
-        <button id="hero-profile-menu" class="hero-profile-menu"></button>
       </div>
     </div>
   </section>
