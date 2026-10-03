@@ -8,8 +8,8 @@ import { walkSegmentInside } from '../src/room.js';
 globalThis.document ??= { documentElement:{} };   // setLang() แตะ document.documentElement.lang
 
 // ชุด 27A — ห้องตามแบบ UI4: ข้อมูลของทั้ง 10 ห้องต้องครบและเดินได้จริง
-const BG = { tea:[1024,925], tarang:[1081,976], dab:[895,1200], krajok:[1024,1024], sala:[1024,1024],
-             sawan:[1024,1024], ngiw:[895,1200], lan:[1024,1024], krata:[1024,1024], lokan:[1024,1024] };
+const BG = { tea:[1024,576], tarang:[1081,976], dab:[895,1200], krajok:[1024,1024], sala:[1024,1024],
+             sawan:[1024,1024], ngiw:[1024,576], lan:[1024,1024], krata:[1024,1024], lokan:[1024,1024] };
 const ACTIONS = { tarang:2, sala:2 };
 const inside = (x, y, polys) => polys.some(({ poly }) => {
   let hit = false;
@@ -43,7 +43,9 @@ test('ยมบาทเริ่มและจุดลงมือของ�
     if (u.item) assert.ok(inside(...u.item, u.walk), `${k}: item อยู่นอกพื้นที่เดิน`);
     for (const s of u.souls || []) assert.ok(unit(s), `${k}: ตำแหน่งวิญญาณนอกกรอบ`);
     // ต้องยืนจากจุดเริ่มแล้วไปถึงจุดลงมือได้ภายในพื้นที่เดินเดียวกัน: ทั้งสองจุดต้องอยู่ในรูปเดียวกัน
-    const same = u.walk.some(p => inside(...u.me, [p]) && inside(...u.act, [p]));
+    // 29M: ห้องที่มีหลายรูปต่อกัน (ศาลาไทยใหม่) — ยืนยันด้วยเส้นตรงจากจุดเกิดไปจุดลงมือที่อยู่ในพื้นที่เดินรวมตลอดทาง
+    const same = u.walk.some(p => inside(...u.me, [p]) && inside(...u.act, [p])) ||
+      walkSegmentInside(...u.me, ...u.act, (x, y) => inside(x, y, u.walk));
     assert.ok(same, `${k}: me กับ act อยู่คนละพื้นที่ที่ไม่ต่อกัน`);
   }
 });

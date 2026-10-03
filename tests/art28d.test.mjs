@@ -80,7 +80,7 @@ for rel in ['item-holywater.png','West/hero-boss-west-v2.png','CyberHell/hero-bo
     alpha = im.getchannel('A')
     assert alpha.getextrema() == (0,255), rel
     assert all(alpha.getpixel(pt) == 0 for pt in [(0,0),(511,0),(0,511),(511,511)]), rel
-assert Image.open(root/'img/BG-Tea.webp').size == (1024,925)
+assert Image.open(root/'img/BG-Tea.webp').size == (1024,576)
 for rel in ['story-cyberhell-02-v3.png','story-cyberhell-03-v4.png']:
     im = Image.open(root/'img'/rel).convert('RGB')
     assert im.width == 1280 and im.width/im.height > 1.7, rel

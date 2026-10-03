@@ -128,7 +128,7 @@ function bgOf(src, fallback) {
 /** ฉากภายในหนึ่งห้อง — เรียก destroy() ทุกครั้งที่ปิดหน้า ไม่งั้นลูปเฟรมค้างอยู่ตลอดเกม */
 export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true) {
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
-  const mirrorRoom = def.k === 'tea' && g.zone === 'th';
+  const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
@@ -431,7 +431,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // วางอยู่ที่จุดเดิม (room.item) ตลอดเวลา "ยกเว้น" ตอนนั่งพัก — ตอนนั่ง ถ้วยไปอยู่ในมือยมบาทน้อยแทน
     // อยู่แล้วในภาพ hero-yama-sit(-sip).png ที่เจ้าของวาดมาให้ (ไม่ต้องวาดถ้วยซ้อนเพิ่ม) ลุกขึ้นแล้ว
     // ถ้วยที่วางในฉากก็กลับมาโผล่ที่เดิมทันที (ไม่มีอนิเมชันเคลื่อนที่ — แค่ซ่อน/โผล่ตามสถานะนั่ง)
-    if (def.k === 'tea' && room.item && !sitting) {
+    if (def.k === 'tea' && room.item && !room.noCup && !sitting) {
       acts.push({ y: room.item[1], fn: () => {
         const x = px(room.item[0]), y = py(room.item[1]);
         drawStandee(ctx, ITEMS.tea.img, x, y, U * 0.07, t, ITEMS.tea.glyph);

@@ -21,7 +21,19 @@ test('every room/zone gets a reachable entrance exit; config overrides distance'
   for (const [key, base] of Object.entries(ROOMS)) for (const zone of ZONES) {
     const room = zone.k === 'th' && base.ui4 ? {...base,...base.ui4} : {...base,...base.zones?.[zone.k]};
     const exit = roomExit(key, zone.k, room);
-    assert.ok(nearRoomExit(room.me, exit), `${key}/${zone.k}: entrance`);
+    // 29M: ฉากที่ 29D วาดใหม่ตั้งทางออกที่บันไดผ่าน ROOM_EXITS (จุดเกิดไม่ต้องอยู่ติดทางออก)
+    // → ต้องมีทางออกนั้นอยู่ในพื้นที่เดินจริง; ฉากอื่นยังต้องเกิดที่ทางเข้าเหมือนเดิม
+    if (ROOM_EXITS[key]?.[zone.k]) {
+      const polys = (room.walk || []).map(w => Array.isArray(w) ? { poly:[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]] } : w);
+      assert.ok(polys.some(({ poly }) => {
+        let hit = false;
+        for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+          const a = poly[i], b = poly[j];
+          if ((a[1] > exit.y) !== (b[1] > exit.y) && exit.x < (b[0] - a[0]) * (exit.y - a[1]) / (b[1] - a[1]) + a[0]) hit = !hit;
+        }
+        return hit;
+      }), `${key}/${zone.k}: exit inside walk area`);
+    } else assert.ok(nearRoomExit(room.me, exit), `${key}/${zone.k}: entrance`);
     assert.ok(!nearRoomExit([exit.x,exit.y-.2],exit), `${key}/${zone.k}: away`);
   }
   ROOM_EXITS.ngiw = {asia:{x:.2,y:.9,reach:.05}};
