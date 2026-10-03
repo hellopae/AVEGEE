@@ -93,5 +93,5 @@ print(json.dumps({p: Image.open(p).size for p in sys.argv[1:]}))`, ...cutFiles])
       assert.ok((r - l) >= cw * 0.98 || (b - t) >= ch * 0.98, `${tag}: เต็มอย่างน้อยหนึ่งแกน`);
     }
   }
-  assert.ok(squareWithEmptyTop >= 12, `มีภาพโซน 2–4 ที่ครึ่งบนโปร่งใสจริง (พบ ${squareWithEmptyTop} ใบ)`);
+  assert.equal(squareWithEmptyTop, 0, '29F: คัตซีนทุกโซนไม่มีครึ่งบนโปร่งใส');
 });

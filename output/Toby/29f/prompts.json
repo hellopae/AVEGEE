@@ -1,0 +1,55 @@
+{
+  "mode": "built-in image_gen",
+  "common": "Use case: style-transfer. Asset type: AVEGEE pixel-art game room background. Image 1 is the exact composition reference/edit target. Image 2 is zone material and palette reference only. Retheme image 1 while strictly preserving every structural silhouette, camera angle, perspective, platform, stair, walkway, door, seat, desk and object footprint at the same normalized coordinates. Match the finely outlined pixel art of the references, no painterly smoothing. Full opaque background. No UI, labels, added characters, watermarks. Keep identical aspect ratio and entire framing of image 1.",
+  "rooms": [
+    {
+      "key": "BG-Sala-west",
+      "zone": "West",
+      "base": "Sala",
+      "style": "Dark European / Viking judgement archive. Replace Thai ornaments with carved Norse wood, runic cabinets, cold slate, iron railings, warm braziers, frosty mountains. Keep central staircase, illuminated ledger board, upper judge desk and lower four desks exactly placed.",
+      "ref": "img/West/BG-Lan-west.webp"
+    },
+    {
+      "key": "BG-Tarang-west",
+      "zone": "West",
+      "base": "Tarang",
+      "style": "Dark European / Viking waiting prison. Replace Thai roof trims with Norse gables and stone fortress details, iron bars, frost, icy cliffs and reddish underworld glow. Keep stepped central prison block, all door positions, surrounding terraces, side stairs and lower central entrance exactly placed.",
+      "ref": "img/West/BG-Lan-west.webp"
+    },
+    {
+      "key": "BG-Krajok-west",
+      "zone": "West",
+      "base": "Krajok",
+      "style": "Dark European / Viking mirror-of-karma sanctuary. Replace Thai pointed spires with Gothic/Norse mirrored sanctuary spires, bright reflective windows, dark evergreen forest, frost and purple lightning. Keep building footprint, central doorway, narrow central stair to bottom offering terrace and all left/right staircase paths exactly placed.",
+      "ref": "img/West/BG-Lan-west.webp"
+    },
+    {
+      "key": "BG-Sawan-west",
+      "zone": "West",
+      "base": "Sawan",
+      "style": "European / Viking heavenly gate. Norse carved archway, ivory stone, golden light, snowy peaks and clouds, Bifrost-like distant winding bridge. Preserve bright heaven mood while matching zone pixel linework. Keep gate opening, raised gate terrace, side stairs, foreground lower platforms and left approach bridge at identical positions. Retheme existing statues as Norse sentinels.",
+      "ref": "img/West/BG-Krata-west.webp"
+    },
+    {
+      "key": "BG-Tarang-cyberhell",
+      "zone": "CyberHell",
+      "base": "Tarang",
+      "style": "Cyberhell waiting prison. Steel stepped detention block, purple/cyan neon, energy cell doors, server machinery, pipes, dark industrial cavern and luminous magenta coolant. Keep stepped central prison block, door positions, surrounding terraces, side stairs and lower central entrance exactly placed.",
+      "ref": "img/CyberHell/BG-Lan-cyberhell.webp"
+    },
+    {
+      "key": "BG-Krajok-cyberhell",
+      "zone": "CyberHell",
+      "base": "Krajok",
+      "style": "Cyberhell mirror-of-karma sanctuary. Replace Thai spires with mirrored data towers and luminous cyan reflective panels, mechanical forest/cables, purple lightning, neon offerings on lower terrace. Keep building footprint, central doorway, narrow central stair to bottom offering terrace and all left/right staircase paths exactly placed.",
+      "ref": "img/CyberHell/BG-Lan-cyberhell.webp"
+    },
+    {
+      "key": "BG-Sawan-cyberhell",
+      "zone": "CyberHell",
+      "base": "Sawan",
+      "style": "Cyberhell heavenly transit gate. Luminous cyan portal in steel frame, violet/cyan circuit trims, pale illuminated cloudlike data mist, distant futuristic towers and winding transit bridge. Keep gate opening, raised gate terrace, side stairs, foreground lower platforms and left approach bridge at identical positions. Retheme existing statues as stationary mechanical sentinels.",
+      "ref": "img/CyberHell/BG-Sala-cyberhell.webp"
+    }
+  ]
+}

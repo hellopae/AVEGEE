@@ -15,12 +15,12 @@ test('arrival introductions name the friendly ruler, separate from hostile inspe
   assert.equal(zoneIntroduction('th'), null);
 });
 
-test('every crew power resolves the current branch PNG; Thai keeps its existing JPEG', () => {
+test('every crew power resolves the current branch JPEG; Thai keeps its existing JPEG', () => {
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   for (const key of ['taan', 'plerng', 'dam', 'kan', 'boon', 'guard']) {
     for (const [zone, folder] of Object.entries(folders)) {
       assert.deepEqual(regionalCrewCutscene(key, zone), {
-        src:`img/${folder}/crew-${key}-${zone}-cutscene-${zone}.png`, regional:true,
+        src:`img/${folder}/crew-${key}-${zone}-cutscene.jpeg`, regional:true,
       });
     }
     assert.equal(regionalCrewCutscene(key, 'th').src, `img/crew-${key}-cutscene.jpeg`);

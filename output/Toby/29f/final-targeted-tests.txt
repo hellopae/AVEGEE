@@ -1,0 +1,11 @@
+✔ 29F: all seven room lookups select the regional asset after manifest loads (11.831068ms)
+✔ 29F: every crew cutscene consumer points to one existing regional JPEG (2.087389ms)
+✔ 29F: real room dimensions preserve reference ratios; all 18 cutscenes are opaque 1375x768 (603.412542ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 742.808865

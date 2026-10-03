@@ -16,7 +16,7 @@ export function zoneIntroduction(zone) {
 /** Crew belong to the current branch; Yama's chosen outfit is independent. */
 export function regionalCrewCutscene(key, zone) {
   const area = AREAS[zone];
-  return area ? { src:`img/${area.folder}/crew-${key}-${zone}-cutscene-${zone}.png`, regional:true }
+  return area ? { src:`img/${area.folder}/crew-${key}-${zone}-cutscene.jpeg`, regional:true }
     : { src:`img/crew-${key}-cutscene.jpeg`, regional:false };
 }
 
