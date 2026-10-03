@@ -14,6 +14,7 @@
    ครอบปุ่มทั้งกลุ่ม) ตัวหนังสือใต้ปุ่มยังอ่านออกอยู่เพราะ .orb-choice b มี text-shadow ทึบจาก index.html แล้ว */
 .command-options{position:absolute;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;width:max-content;max-width:340px;z-index:20;visibility:hidden;pointer-events:none}
 .command-options.is-open{visibility:visible;pointer-events:auto}
+.command-options .trial-empty-hint{padding:10px;border-radius:8px;background:#24131eee;color:#f6e6df;font-size:14px;line-height:1.5;white-space:normal}
 .command-options .orb-choice{position:relative!important;flex:0 0 62px!important;width:62px!important;min-height:80px;padding:0!important;border:0!important;background:transparent!important;color:white;opacity:0;transform:translate(-35px,18px) scale(.6);transition:opacity .26s,transform .4s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--choice-index,0)*65ms)}
 .command-options.is-open .orb-choice{opacity:1;transform:translate(0,0) scale(1)}
 .command-options .orb-choice:disabled{opacity:.4}

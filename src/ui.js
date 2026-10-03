@@ -1151,7 +1151,8 @@ function updateRepairFabs() {
   place(f);
 }
 
-function openEventAlert(key, title, description, art, action, start, raider = false) {
+// ackOnly = ปุ่มหลักแค่ "รับทราบ" (ปิดหน้าต่าง) อยู่แล้ว → ไม่ต้องมีปุ่ม "ปิด" ซ้ำอีกอัน
+function openEventAlert(key, title, description, art, action, start, raider = false, ackOnly = false) {
   const reopen = () => {
     if (key === 'prisonBreak') openPrisonAlert();
     else if (key === 'frontierBreach') openBreachAlert();
@@ -1166,18 +1167,17 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
   const medicine = g.inventory.health || 0;
   const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
-  modal(`<div class="event-alert-main"><div class="event-alert-controls">
-      <button data-event-pause aria-label="${esc(t('hud.pause'))}">Ⅱ</button><button data-close aria-label="${esc(t('common.close'))}">✕</button></div>
+  modal(`<div class="event-alert-main">
     <h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>
     <img class="event-alert-foe" src="${esc(art)}" alt="${esc(title)}">
-    <button class="gold event-alert-go" data-event-go>${esc(action)}</button></div>
+    <div class="event-alert-actions">${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
+      <button class="gold event-alert-go" data-event-go${ackOnly ? ' data-close' : ''}>${esc(action)}</button></div></div>
     <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
       ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !merchantOpen)}
       ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
       ${prep('medicine', t('event.prep.medicine'), medicine ? t('event.prep.medicineLine') : t('event.prep.none'), artUrl(ITEMS.health.img), !medicine)}
     </div></div>`, d => {
     d.querySelector('[data-event-go]').onclick = start;
-    d.querySelector('[data-event-pause]').onclick = () => { userPaused = !userPaused; d.querySelector('[data-event-pause]').setAttribute('aria-pressed', String(userPaused)); };
     // เปิดกล่องร้าน/ห้องนิราแทนหน้าต่างนี้ แล้วกลับมาที่หน้าต่างนี้ตอนปิดกล่องนั้น
     // ระวัง: openDlg ปิดกล่องเก่าแล้ว showModal ทันที — 'close' ของกล่องเก่ายิงทีหลังแบบ async ขณะ dlg.open เป็น true
     // ถ้าถือว่านั่นคือ "ผู้เล่นปิดแล้ว" จะเด้งกลับหน้าต่างนี้ทับร้านทันที (เจอตอนรีวิวชุด 27) — จึงรอ close ที่ dlg.open เป็น false จริง
@@ -1234,7 +1234,7 @@ function updatePrisonFab() {
 // ปิดหน้าต่างด้วยทางไหนก็ตามนับเป็นรับทราบ (onDlgClose → dismissEventAlert ตั้ง eventMapClosed ซึ่งเซฟอยู่แล้ว)
 function openBreachAlert() {
   openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.march'),
-    artUrl(MOB.kinds[0].img), t('event.frontierBreach.ack'), () => dlg.close(), false);
+    artUrl(MOB.kinds[0].img), t('event.frontierBreach.ack'), () => dlg.close(), false, true);
 }
 
 function updateBreachFab() {
@@ -1290,7 +1290,7 @@ function openZoneEventAlert(ev) {
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
-    openEventAlert(ev.k, title, t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false);
+    openEventAlert(ev.k, title, t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
     return;
   }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
@@ -2054,7 +2054,7 @@ function openTrial(initialError = '') {
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
         ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (revealed ? ' · ' + t('trial.revealedWhere') : '') + (why ? ' · ' + why : ''))}">
         ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
-    }).join('') : '<span class="idle">ยังไม่มีสถานที่</span>';
+    }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`;
     const shownCrew = answer?.crew && !available.some(c => c.k === answer.crew.k)
       ? [...available, answer.crew] : available;
     const crewChoices = shownCrew.length ? shownCrew.map(c => {
