@@ -7,6 +7,7 @@ import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWa
          drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
+import { escortCrewPosition, soulWalkPosition } from './escort.js';
 
 export const UI_SCALE_MAP = 1.2;
 export const CHAR_SCALE_MAP = 0.8;
@@ -99,7 +100,7 @@ function pointOnPath(path, progress) {
 }
 
 export function afterlifeWalkPosition(walk) {
-  return pointOnPath(walk.path, walk.elapsed / walk.duration);
+  return soulWalkPosition(walk);          // ชุด 29C: หักช่วงที่วิญญาณยืนรอยมทูตมารับ (walk.delay) ออกให้แล้ว
 }
 
 export function render(ctx, g, t, hover, sel) {
@@ -235,6 +236,19 @@ export function render(ctx, g, t, hover, sel) {
           : walk.destination === 'gate' ? '🕊️ ไปสวรรค์' : '↩️ กลับคิว', '#f7c371']);
       ctx.restore();
     });
+    // ชุด 29C — ยมทูตนำวิญญาณไปตะราง: มารับ → เดินนำหน้า วิญญาณตามติด (ตำแหน่งจริงอยู่ที่ escort.js ที่เดียว)
+    if (walk.escort) {
+      const pos = escortCrewPosition(walk), crew = g.crewOf(walk.escort.k);
+      if (pos && crew) {
+        const motion = actorWalkMotion(walk, t, g.zone, [pos.x, pos.y]);
+        at(pos.y + 1, () => {
+          const key = `crew-${crew.k}`;
+          if (motion.moving && drawCrewWalk(ctx, key, pos.x, pos.y, CREW_H, motion.distance, motion.face)) return;
+          drawStandee(ctx, motion.moving ? key : poseOr(`${key}-work`, key), pos.x, pos.y, CREW_H, t,
+            crew.glyph || '👹', motion.moving ? motion.face : pos.face, motion.moving);
+        });
+      }
+    }
   }
 
   // ---- ของที่ตกอยู่บนพื้น ----

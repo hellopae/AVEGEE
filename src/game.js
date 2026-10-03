@@ -14,6 +14,7 @@ import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
+import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -862,7 +863,7 @@ const API = {
   },
 
   /** Keep a soul outside the destination roster until its map walk is complete. */
-  startAfterlifeWalk(soul, from, to, destination, entry = null) {
+  startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null) {
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -872,9 +873,48 @@ const API = {
     }
     const path = [start, ...route];
     const length = path.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - path[i][0], p[1] - path[i][1]), 0);
-    this.afterlifeWalks.push({ soul, destination, entry, path, elapsed:0,
-      duration:Math.max(1100, length / 0.09), zone:this.zone });
+    const walk = { soul, destination, entry, path, elapsed:0,
+      duration:Math.max(1100, length / 0.09), zone:this.zone };
+    if (destination === 'prison') this.assignEscort(walk, keeperK);
+    this.afterlifeWalks.push(walk);
     return true;
+  },
+
+  /** ชุด 29C ข้อ 2 — วิญญาณที่รับทัณฑ์ครบไม่เดินเข้าตะรางเอง: ยมทูตที่คุมการลงทัณฑ์นำไปส่ง (ยมทูตนำ วิญญาณตามติด)
+   *  ยมทูตคนนั้นยังมีดวงอื่นให้คุมอยู่ / ไม่ว่าง / ไม่มี → ใช้ยมทูตที่ว่างและอยู่ใกล้จุดรับที่สุด
+   *  ไม่มีใครว่างเลย → วิญญาณเดินคนเดียวเหมือนเดิม · ท่านเอง (self) กับนิรา (reader) ไม่ถูกเรียกใช้
+   *  ตำแหน่งยมทูตขยับใน advanceAfterlife · ส่งเสร็จปล่อยตัว (releaseEscort) ให้ระบบเดินปกติพากลับไปทำงานเอง */
+  assignEscort(walk, keeperK = null) {
+    const start = walk.path[0];
+    const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
+    const free = this.crew.filter(c => !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
+    const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
+    for (const c of ranked) {
+      const cx = c.x ?? c.hx, cy = c.y ?? c.hy;
+      let pickup = [[cx, cy]];
+      if (dist(c) > 6) {
+        const from = canWalk(cx, cy) ? [cx, cy] : nearestWalk(cx, cy);
+        const route = from && findPath(from[0], from[1], start[0], start[1]);
+        if (!route?.length || Math.hypot(route.at(-1)[0] - start[0], route.at(-1)[1] - start[1]) > 18) continue;
+        pickup = [[cx, cy], ...route];
+      }
+      const delay = Math.round(pathLength(pickup) / ESCORT_PICKUP_SPEED);
+      walk.delay = delay;
+      walk.duration += delay;
+      walk.escort = { k:c.k, pickup };
+      c.escort = walk.soul.id; c.path = null; c.x = cx; c.y = cy;
+      return true;
+    }
+    return false;
+  },
+
+  /** ส่งตัวเสร็จ (หรือเลิกกลางคัน) — คืนยมทูตให้ระบบเดินปกติ: ยืนที่ปลายทางแล้วเดินกลับจุดประจำเอง */
+  releaseEscort(walk) {
+    const c = walk.escort && this.crewOf(walk.escort.k);
+    if (!c || c.self) return;
+    if (c.escort === walk.soul.id) c.escort = null;
+    const end = walk.path.at(-1);
+    c.x = end[0]; c.y = end[1]; c.path = null; c.wait = 0;
   },
 
   finishAfterlifeWalk(walk) {
@@ -893,8 +933,16 @@ const API = {
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
       walk.elapsed += dt;
-      if (walk.elapsed < walk.duration) continue;
+      if (walk.elapsed < walk.duration) {
+        const c = walk.escort && this.crewOf(walk.escort.k);
+        if (c && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
+          const pos = escortCrewPosition(walk);
+          c.x = pos.x; c.y = pos.y; c.face = pos.face; c.path = null;
+        }
+        continue;
+      }
       this.afterlifeWalks.splice(i, 1);
+      this.releaseEscort(walk);
       if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
       this.onChange();
     }
@@ -905,6 +953,7 @@ const API = {
     if (i < 0) return;
     const soul = slot.soul, c = this.crewOf(st.crewK);
     const r = slot.verdict || this.judge(st, slot);
+    let toPrison = null;
     if (st.def.heaven && !r.right) {
       soul.beaten = false;
       this.queue.push(soul);
@@ -917,9 +966,9 @@ const API = {
       const entry = { soul, verdict:r, intensity:slot.intensity,
         stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone };
       const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
-      if (prison) this.startAfterlifeWalk(soul, [st.def.x, st.def.y],
-        [prison.def.x, prison.def.y], 'prison', entry);
-      else this.sentences.push(entry);
+      // 29C: ออกเดินหลังปลดผู้คุมออกจากเวร (ด้านล่าง) เพื่อให้รู้ว่ายมทูตคนนั้นว่างไปส่งได้ไหม
+      toPrison = prison ? { soul, entry, from:[st.def.x, st.def.y], to:[prison.def.x, prison.def.y] } : null;
+      if (!prison) this.sentences.push(entry);
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
     if (Number.isFinite(r.coin)) this.coin += r.coin;
@@ -932,10 +981,12 @@ const API = {
     if (this.closed.length > 12) this.closed.pop();
     st.slots.splice(i, 1);
     // ผู้คุมออกเวรเฉพาะตอนไม่เหลือดวงในหลังนั้นแล้ว
+    const keeperK = st.crewK;
     if (!st.slots.length) {
       st.crewK = null;
       if (c) { c.at = null; c.path = null; }
     }
+    if (toPrison) this.startAfterlifeWalk(toPrison.soul, toPrison.from, toPrison.to, 'prison', toPrison.entry, keeperK);
   },
 
   sentenceOf(id, stage) {
@@ -1383,6 +1434,7 @@ const API = {
       // ตอนรับตัว scene.js เป็นผู้วาดตำแหน่งยมทูตกับวิญญาณจาก timeline เดียวกัน
       // ห้ามระบบเดินเล่นขยับตัวจริงซ้อนอยู่ข้างใต้; ถึงสถานีแล้วค่อยคืนให้ระบบปกติ
       if (c.escort) {
+        if (this.afterlifeWalks.some(w => w.escort?.k === c.k && w.soul.id === c.escort)) continue;   // 29C: กำลังนำวิญญาณไปตะราง — ตำแหน่งขยับใน advanceAfterlife
         const escort = this.transits.find(v => v.id === c.escort && v.crew === c.k);
         if (escort && Date.now() < escort.arriveAt) continue;
         c.escort = null;
@@ -2954,6 +3006,7 @@ const API = {
 
     // A branch cannot keep drawing its walkers once another map is active.
     for (const walk of this.afterlifeWalks) {
+      this.releaseEscort(walk);
       if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
     }
     this.afterlifeWalks = [];
