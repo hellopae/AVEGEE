@@ -847,6 +847,7 @@ function goTrial() {
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
+dlg.addEventListener('close', () => { setTimeout(() => { if (!dlg.open) g.onChange(); }, 0); });
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
   if (!dlg.open || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
@@ -1643,7 +1644,7 @@ function openHelp() {
       <li><b>ไต่สวนก่อนตัดสิน</b> — คดีทั่วไปให้มองหาคำที่ขัดกับสำนวน ส่วนคดีมีชื่อจะเริ่มจาก
           <b>ภาพลักษณ์ภายนอก</b>เท่านั้น ให้เลือกประเด็นที่น่าสงสัยเพื่อค่อย ๆ เปิดรายการกรรม
           จี้ถูก = เขาสารภาพเรื่องที่ยังไม่เปิดให้<b>ฟรี</b> · จี้ผิด = เสียจังหวะไปเปล่า ๆ
-          (จี้ได้ 2 ครั้งต่อคดี)</li>
+          (จี้ได้ 2 ครั้งต่อคดี) · ใช้<b>ตวาดข่มขู่</b>เพื่อชี้ข้อหลักฐานที่ควรสอบสวน แล้วกดข้อที่มี 💢 · คูลดาวน์ 2 นาที</li>
       <li>ใช้พลังขุดความจริง — <b>มีจำนวนจำกัด</b> ใช้แล้วต้องเข้าไปในสถานีที่เกี่ยวข้อง
           และ<b>เดินไปเก็บไอเท็มในฉาก</b>มาเติม</li>
       <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ตัดสินเบาไป เขาไม่เข็ด ปล่อยไปแล้วไปก่อเรื่องต่อ
@@ -2002,22 +2003,22 @@ function openTrial(initialError = '') {
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่เปลี่ยนเป็นคูลดาวน์เวลาจริง (p.realtime) ไม่ใช้ ammo/item อีกแล้ว
     // แยกป้ายกำกับปุ่มเป็นสองแบบ: roar โชว์เวลานับถอยหลัง mm:ss · มิเรอร์/สะกดจิตยังโชว์จำนวนที่เหลือแบบเดิม
     const powerChoices = powerDefs.map(p => {
-      const pw = g.powerOf(p.k), ok = g.powerReady(p.k);
+      const pw = g.powerOf(p.k), noIssue = p.k === 'roar' && g.roarWhy(s), ok = g.powerReady(p.k) && !noIssue;
       const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
       // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno ซื้ออย่างเดียว)
       const outOfAmmoHint = p.k === 'mirror' ? 'หมดแล้ว — เดินเก็บบนแผนที่ หรือคุยกับกานต์ที่หอส่องกรรม'
                            : 'หมดแล้ว — เดินไปเก็บบนแผนที่';
       const mpPower = p.k === 'hypno' || p.k === 'ice';
-      const why = locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
+      const why = noIssue || (locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
                 : mpPower && g.mp < BATTLE.mpCost[p.k] ? `MP ไม่พอ · ใช้ ${BATTLE.mpCost[p.k]}`
                 : !mpPower && ammo <= 0 ? outOfAmmoHint
                 : pw.cd > 0 ? `รออีก ${pw.cd} คดี`
-                : p.k === 'mirror' || p.k === 'hypno' ? t(`power.${p.k}Desc`) : p.desc;
+                : p.k === 'mirror' || p.k === 'hypno' ? t(`power.${p.k}Desc`) : p.desc);
       const badge = locked ? '×0' : p.realtime ? (ok ? '✓' : fmtCountdown(pw.readyAt)) : mpPower ? `${BATTLE.mpCost[p.k]} MP` : `×${ammo}`;
       return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
-        ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${badge}</i></button>`;
+        ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${noIssue ? esc(noIssue) : badge}</i></button>`;
     }).join('');
     const destinationChoices = dests.length ? dests.map(x => {
       const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
@@ -2066,8 +2067,8 @@ function openTrial(initialError = '') {
     // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
     const opt = `<h4>${s.case ? esc(t('trial.chooseIssue')) : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
       const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
-      return `<button class="say ${cls}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
-        >${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
+      return `<button class="say ${cls}${s.roarHint === l.i && !l.used ? ' roar-hint' : ''}" style="${s.roarHint === l.i && !l.used ? 'outline:3px solid #e9b448' : ''}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
+        >${s.roarHint === l.i && !l.used ? '💢 ' : ''}${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
     }).join('');
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
@@ -2203,6 +2204,8 @@ function openTrial(initialError = '') {
     if (!dlg.open || !dlg.querySelector('.trial-hud')) { clearInterval(roarTick); return; }
     const b = dlg.querySelector('[data-pw="roar"]');
     if (!b) return;
+    const why = g.roarWhy(s);
+    if (why) { b.disabled = true; b.title = why; const badge = b.querySelector('i'); if (badge) badge.textContent = why; return; }
     const ok = g.powerReady('roar');
     if (ok && !b.disabled) return;               // พร้อมอยู่แล้ว ไม่ต้องอัปเดตซ้ำทุกวิ
     if (ok) { b.disabled = false; }               // เพิ่งครบเวลา — ปลดล็อกปุ่ม (ผู้เล่นกดได้ทันทีไม่ต้องรอ action อื่น)
@@ -2282,12 +2285,12 @@ function openMerchant() {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
-        const d = ITEMS[k]; return `<article class="shop-card"><span class="shop-glyph">${d.glyph}</span><span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
+        const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
       <h3>สินค้า</h3><div class="market-grid">${MERCHANT.stock.map(s => {
         const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card">${d.glyph ? `<span class="shop-glyph">${d.glyph}</span>` : itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
+        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
@@ -2977,7 +2980,7 @@ function openOutfit() {
           ${z.sub ? `<small>${esc(z.sub)}</small>` : ''}
           <span>${lock ? `🔒 ซื้อจากพ่อค้านรกใน${esc(z.name)}` : here ? '✓ กำลังสวม' : 'พร้อมสวม'}</span></span>
         ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
-               : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
+               : `<button class="sm" data-outfit="${z.k}" ${lock ? 'disabled' : ''}>${lock ? '🔒 ยังสวมไม่ได้' : 'สวม'}</button>`}
       </div>`;
     }).join('')}
     </div>
@@ -2991,17 +2994,17 @@ function openOutfit() {
 // ---------- ภาพ/ชื่อไอเท็ม (ชุด 28B) ----------
 /** ชื่อไอเท็มตามภาษา — ไอเท็มที่มี nameKey ผ่าน i18n (น้ำมนต์) ที่เหลือใช้ชื่อไทยเดิมตามขอบเขตรอบ C2 */
 const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (ITEMS[k]?.name || k);
-/** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง (ITEMS[k].placeholder = ข้อความบนป้าย) — ไม่ใช่งานศิลป์ ไม่ใช่อีโมจิ
+/** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง ใช้ placeholder/glyph/fallback จากข้อมูลไอเท็ม
  *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด
  *  สีเท่า token --gold (#d4a355) / --muted (#2a171d) ใน index.html — data-URI อ่านตัวแปร CSS ไม่ได้ */
 const placeholderSrc = text => 'data:image/svg+xml,' + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="10" fill="#2a171d" stroke="#d4a355" stroke-width="3" stroke-dasharray="6 4"/><text x="32" y="40" font-size="20" font-weight="700" text-anchor="middle" fill="#d4a355" font-family="sans-serif">${text}</text></svg>`
 ).replace(/'/g, '%27');
-/** <img> ของไอเท็ม — ไม่มีไฟล์ + มี placeholder ให้ใช้ป้ายแทน */
+/** <img> ของไอเท็ม — ไฟล์หายใช้ fallback ที่แสดงได้แทนรูปแตก */
 function itemImg(k, attrs = '') {
   const d = ITEMS[k]; if (!d) return '';
   const src = artUrl(d.img) || `img/${d.img}.png`;
-  const ph = d.placeholder ? ` onerror="this.onerror=null;this.src='${placeholderSrc(d.placeholder)}'"` : '';
+  const ph = ` onerror="this.onerror=null;this.src='${placeholderSrc(d.placeholder || d.glyph || d.fallback)}'"`;
   return `<img src="${src}" alt="${esc(itemName(k))}" ${attrs}${ph}>`;
 }
 
@@ -3032,16 +3035,16 @@ function bagUseWhy(k) {
 
 function outfitCards() {
   return ZONES.map(z => {
-    const lock = g.level < z.level, here = (g.outfit || g.zone) === z.k;
+    const why = g.outfitWhy(z.k), lock = !!why, here = (g.outfit || 'th') === z.k;
     const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
     const face = z.k === 'th' ? 'img/hero-yama.png' : `img/${folders[z.k]}/hero-yama-${z.k}.png`;
     return `<div class="outfit-card${here ? ' selected' : ''}${lock ? ' locked' : ''}">
       <img src="${face}" alt="ชุด${esc(z.name)}" loading="lazy">
       <span class="outfit-info"><b>ชุด${esc(z.name.replace(/^โซน/, ''))}</b>
         ${z.sub ? `<small>${esc(z.sub)}</small>` : ''}
-        <span>${lock ? `🔒 ต้องเป็น ${esc(LEVELS[z.level - 1].name)}` : here ? '✓ กำลังสวม' : 'เก็บอยู่ในกระเป๋า'}</span></span>
+        <span>${lock ? `🔒 ${esc(why)}` : here ? '✓ กำลังสวม' : 'เก็บอยู่ในกระเป๋า'}</span></span>
       ${here ? '<button class="sm" disabled>ชุดปัจจุบัน</button>'
-             : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>สวม</button>`}
+             : `<button class="sm" data-bag-outfit="${z.k}" ${lock ? 'disabled' : ''}>${lock ? '🔒 ยังสวมไม่ได้' : 'สวม'}</button>`}
     </div>`;
   }).join('');
 }
@@ -3053,7 +3056,7 @@ function openBag() {
     const d = ITEMS[k], why = bagUseWhy(k);
     return `<div class="bag-item">
       ${itemImg(k, 'loading="lazy"')}
-      <span class="n"><b>${d.glyph ? esc(d.glyph) + ' ' : ''}${esc(itemName(k))} ×${n}</b>
+      <span class="n"><b>${esc(itemName(k))} ×${n}</b>
         <small>${esc(why || d.say)}</small></span>
       <button class="gold" data-use-item="${k}" title="${esc(why || d.say)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
     </div>`;
@@ -3909,11 +3912,9 @@ function renderStoryComic(root, story, onDone) {
 
 // ---------- หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) ----------
 // game.js ตั้ง g.pendingReward ตอน endBattle (ค่าจากส่วนต่างจริง ไม่ใช่เดา) → g.onChange เด้งกล่องนี้
-// "หลัง" เรื่องราว/หน้าต่างพลังใหม่เดิมจบแล้วเสมอ (คิวเรื่องราวมาก่อน) จึงไม่ซ้อนกัน แล้วหน้าต่างเลื่อนขั้น/โซนค่อยตามมา
+// หลังเรื่องราวจบแล้วเสมอ (คิวเรื่องราวมาก่อน) จากนั้นหน้าต่างอธิบายของใหม่/เลื่อนขั้นค่อยตามมา
 // ปิดกล่อง (ปุ่มรับรางวัล / ปุ่ม × มุมขวาบนที่ MutationObserver วางให้ทุกกล่อง / Esc) = เคลียร์ g.pendingReward แล้วปล่อยคิวถัดไป · ฟังก์ชันที่ค้างรอไว้ (rewardAfter) ทำงานหลังกล่องนี้
-const ABILITY_FX = { bigFire:'img/fx-fireball-big.png', flameCharge:'img/fx-flame-charge.png', windFan:'img/fx-fan-wind.png',
-  rage:'img/fx-rage.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png', valkyrieSpear:'img/fx-valkyrie-spear.png',
-  cooldownClock:'img/fx-clock-reset.png' };
+const ABILITY_FX = Object.fromEntries(Object.entries(ABILITY_REWARDS).map(([k, d]) => [k, d.image]));
 let rewardAfter = null, rewardOpen = false;
 function afterReward(fn) { if (g.pendingReward || rewardOpen) rewardAfter = fn; else fn(); }
 function openBattleReward() {
@@ -3964,22 +3965,41 @@ function showPendingStory() {
     pauseForDlg(); openDlg('intro-comic-dialog');
     renderStoryComic(dlg, STORY[pending.key], () => dlg.close());
     closed(() => {
-      if (pending.reward) pending.stage = 'reward';
-      else g.completeStory();
+      g.completeStory();
     });
     return;
   }
-  const reward = ABILITY_REWARDS[pending.reward];
-  if (!reward) { storyPlaying = false; g.completeStory(); g.onChange(); return; }
-  sfx('star');
-  modal(`<h2>✨ ได้พลังใหม่ · ${esc(reward.name)}</h2>
-    <div class="boss"><img class="standee" src="${reward.image}" alt="${esc(reward.name)}"><p>${esc(reward.text)}</p></div>
-    <div class="row"><button class="gold" data-close>รับพลังและเล่นต่อ</button></div>`, null, 'story-reward');
-  closed(() => g.completeStory());
+  storyPlaying = false;
+  g.completeStory();
+  setTimeout(() => g.onChange(), 0);
+}
+
+function openDiscovery() {
+  const id = g.discoveryQueue[0];
+  if (!id || dlg.open || g.battle || g.pendingReward || rewardOpen) return;
+  const [kind, k] = id.split(':');
+  const def = kind === 'item' ? ITEMS[k] : kind === 'power' ? POWERS.find(p => p.k === k) : ABILITY_REWARDS[k];
+  if (!def) { g.acknowledgeDiscovery(id); return; }
+  pauseForDlg();
+  const icon = kind === 'item' ? itemImg(k, 'style="width:96px;height:96px;object-fit:contain"')
+    : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.png' : `img/fx-${k}.png`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
+  modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(def.name)}</h2>
+    ${icon}<p><b>ทำอะไร:</b> ${esc(def.desc || def.text || def.say)}</p>
+    <p><b>วิธีใช้:</b> ${esc(def.howTo)}</p>
+    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`, null, 'discovery');
+  const gen = dlgGen;
+  const closed = () => {
+    if (dlg.open || gen !== dlgGen) return;
+    dlg.removeEventListener('close', closed);
+    g.acknowledgeDiscovery(id);
+    setTimeout(() => g.onChange(), 0);
+  };
+  dlg.addEventListener('close', closed);
 }
 
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
+  g.syncDiscoveries();
   refresh();
   if (storyPlaying) return;
   if (!g.battle && g.storyQueue.length) {
@@ -3993,6 +4013,10 @@ g.onChange = () => {
   if (g.pendingReward && !g.battle) {
     if (!dlg.open && !rewardOpen) openBattleReward();
     return;
+  }
+  if (!g.battle && dlg.open) return;
+  if (!g.battle && !dlg.open && !g.pendingLevel && g.discoveryQueue.length) {
+    openDiscovery(); return;
   }
   // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
   // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น

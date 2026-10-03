@@ -1,6 +1,6 @@
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
-         POWERS, DENIALS, CONFESS, PANIC, HARD_CASES, ITEMS, ITEM_SPOTS,
+         POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
@@ -12,7 +12,7 @@ import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
-import { STORY } from './story.js';
+import { STORY, ABILITY_REWARDS } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
@@ -110,6 +110,7 @@ export function createGame() {
     party: { members: [], guard: false },
     upgrades: { powers: {} },
     abilities: {},
+    discoverySeen: {}, discoveryQueue: [],
     storyQueue: [], storySeen: {}, niraRest: null,
     pendingReward: null,               // ชุด 28B — สรุปรางวัลหลังชนะ รอ ui.js เด้งหน้าต่าง (ไม่เซฟ)
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
@@ -486,6 +487,36 @@ const API = {
   karmaTier() { return KARMA_TIERS.find(t => this.karma <= t.max) || KARMA_TIERS[KARMA_TIERS.length - 1]; },
 
 
+  roarTarget(soul) {
+    if (!soul?.lines || soul.presses <= 0) return null;
+    const available = soul.lines.filter(l => !l.used);
+    return available.find(l => l.kind === 'deny') || available.find(l => l.kind === 'plea') ||
+      available.find(l => l.kind === 'boast') || null;
+  },
+  roarWhy(soul) {
+    return this.roarTarget(soul) ? '' : 'ไม่มีข้อหลักฐานที่สอบสวนได้เหลือแล้ว';
+  },
+  discover(kind, k) {
+    const id = `${kind}:${k}`;
+    if (this.discoverySeen[id] || this.discoveryQueue.includes(id)) return;
+    this.discoveryQueue.push(id);
+  },
+  syncDiscoveries() {
+    for (const [k, n] of Object.entries(this.inventory)) if (n > 0 && ITEMS[k]) this.discover('item', k);
+    for (const p of this.powers) if (!this.powerLocked(p)) this.discover('power', p.k);
+    for (const [k, yes] of Object.entries(this.abilities)) if (yes && ABILITY_REWARDS[k]) this.discover('ability', k);
+  },
+  acknowledgeDiscovery(id) {
+    if (this.discoveryQueue[0] !== id) return false;
+    this.discoveryQueue.shift(); this.discoverySeen[id] = true; this.save(); return true;
+  },
+  outfitWhy(k) {
+    const z = ZONES.find(z => z.k === k);
+    if (!z) return 'ไม่รู้จักชุดนี้';
+    if (this.outfitsOwned?.includes(k)) return '';
+    return this.zone !== k ? `ใช้ได้เมื่อถึง${z.name}และซื้อชุดจากพ่อค้านรก` : 'ซื้อชุดจากพ่อค้านรกก่อน';
+  },
+
   powerOf(k) { return this.powers.find(p => p.k === k); },
   /** ข้อ A คุณเป้ 24 ก.ย. 2569 — roar (ตวาดข่มขู่) ใช้คูลดาวน์เวลาจริงแทน ammo/cd แบบคดี
    *  พลังอื่น (mirror/hypno/ice) ยังเป็นระบบเดิม: cd นับเป็นคดี + ต้องมี ammo (item) */
@@ -499,7 +530,7 @@ const API = {
 
   /** ใช้พลังกับวิญญาณที่ยืนอยู่หน้าแท่น — คืนข้อความที่จะขึ้นบนโต๊ะ */
   usePower(k, soul) {
-    if (!this.powerReady(k) || !soul) return null;
+    if (!this.powerReady(k) || !soul || k === 'roar' && this.roarWhy(soul)) return null;
     const p = this.powerOf(k);
     const def = POWERS.find(x => x.k === k);
     if (p.realtime) p.readyAt = Date.now() + (def.cdMs || 0);   // คูลดาวน์เวลาจริง ไม่กินกระสุน
@@ -531,15 +562,10 @@ const API = {
         ? `🪞 กระจกเผยที่ไหน ความแรง และผู้คุมบนวงคำสั่ง${this.stations.some(st => st.def.k === station.k && !st.build) ? '' : ' — ต้องสร้างสถานีเฉลยก่อน'}`
         : '🪞 ยังไม่มีสถานีที่ตรงกรรมของดวงนี้' });
 
-    } else if (k === 'roar') {                   // เร็วกว่า แต่คนกลัวพูดมั่วได้
-      if (Math.random() < 0.65 && hidden.length) {
-        hidden[0].known = true;
-        out.push({ kind: 'confess', text: `💢 "${pick(CONFESS)}" — ${hidden[0].t}` });
-      } else {
-        const f = pick(DEEDS);
-        out.push({ kind: 'false', text: `💢 "${pick(PANIC)}" — เขาสารภาพว่า${f.t}` });
-        out.push({ kind: 'hint', text: 'คำสารภาพนี้ออกมาตอนกำลังกลัว จะเชื่อหรือไม่เชื่อก็ได้' });
-      }
+    } else if (k === 'roar') {
+      const line = this.roarTarget(soul);
+      soul.roarHint = line.i;
+      out.push({ kind:'confess', text:`💢 “ข้ายอมแล้ว… ถามเรื่องข้อ ${line.i + 1} เถิด” — กดสอบสวนข้อที่มี 💢` });
 
     } else if (k === 'ice') {
       const line = soul.lines?.find(x => !x.used);
@@ -567,6 +593,7 @@ const API = {
     const L = soul.lines[i];
     if (!L || L.used || soul.presses <= 0) return null;
     L.used = true;
+    if (soul.roarHint === i) delete soul.roarHint;
     soul.presses--;
     const out = [];
     const sealed = soul.deeds.filter(d => d.known && d.visible === false);
@@ -1644,6 +1671,7 @@ const API = {
   collectItem(i) {
     const it = this.items[i], def = it && ITEMS[it.k];
     if (!it || !def) return false;
+    this.discover('item', it.k);
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้ (มีปุ่มของตัวเองในวงคำสั่ง
     // ต่อสู้อยู่แล้ว ดู BATTLE.items/battleAct) เดิมเก็บเข้ากระเป๋าทั่วไปก่อน แล้วต้องเปิดกระเป๋ามากด "ใช้"
     // อีกทีถึงจะเติมเป็นกระสุน/พลังจริง ซึ่งกดได้แม้ไม่ได้ต่อสู้อยู่ (ไม่มีความหมาย ไม่มีศัตรูให้ลง)
@@ -3120,6 +3148,7 @@ const API = {
   buyMerchant(k) {
     const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
     if (!this.zoneCaptivesFree() || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    this.discover('item', k);
     this.coin -= stock.cost;
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ลูกไฟ/น้ำแข็งพร้อมใช้ทันทีเหมือนเก็บจากแผนที่
     // (ดู collectItem) เดิมซื้อแล้วเข้ากระเป๋าทั่วไปเฉย ๆ กด "ใช้" ไม่ได้ (ปุ่มปิดถาวรสำหรับสองไอเทมนี้
@@ -3165,6 +3194,7 @@ const API = {
     if (this.tick < (st.kanCd || 0)) return false;
     const p = this.powerOf('mirror');
     if (this.powerLocked(p) || p.ammo >= p.max) return false;
+    this.discover('item', 'mirror');
     p.ammo = Math.min(p.max, p.ammo + 1);
     st.kanCd = this.tick + KRAJOK.kanCool;
     this.log('🪞 กานต์: "ส่องดูเถอะครับ เดี๋ยวผมมีให้อีก" — ได้กระจกวิเศษมาหนึ่งบาน', 'good');
@@ -3345,6 +3375,7 @@ const API = {
 const SAVE_KEY = 'avegee.save.v2';
 
 API.snapshot = function (withEntry = true) {
+  this.syncDiscoveries();
   return {
     v: 3, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -3360,6 +3391,7 @@ API.snapshot = function (withEntry = true) {
     powers: this.powers.map(p => ({ k: p.k, cd: p.cd, ammo: p.ammo, max: p.max, readyAt: p.readyAt || 0 })),
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     abilities: this.abilities,
+    discoverySeen: { ...this.discoverySeen }, discoveryQueue: [...this.discoveryQueue],
     storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     crew: this.crew.map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
@@ -3405,6 +3437,8 @@ API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
     ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));
+  this.discoverySeen = { ...(d.discoverySeen || {}) };
+  this.discoveryQueue = [...(d.discoveryQueue || [])];
   this.speed = 1; // เซฟเก่าที่เคยเร่งเวลาและออบเจ็กต์เกมเดิมกลับสู่ความเร็วปกติ
   // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เซฟเก่ามีค่า fuel (ฟืน) ไม่ใช่ food (เสบียง)
   // ยกมา 1:1 ให้ผู้เล่นไม่เสียเปรียบ (จำนวนคงเดิม แค่เปลี่ยนความหมาย) · เซฟใหม่มี d.food อยู่แล้วไม่ต้องแปลง
@@ -3651,6 +3685,12 @@ API.restore = function (d) {
     this.held = this.held.filter(s => soulFitsZone(s, this.zone));
     this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, this.zone)); });
     if (!this.queue.length) this.spawnSoul();
+  }
+  this.syncDiscoveries();
+  if (!d.discoverySeen) {
+    // Legacy saves treat already owned unlocks as explained; future acquisitions still queue.
+    for (const id of this.discoveryQueue) this.discoverySeen[id] = true;
+    this.discoveryQueue = [];
   }
   reconcileSoulPortraits(this);
   // เซฟที่สร้างก่อนระบบจุดเริ่มโซน: กู้ฐานของโซนปัจจุบันจากสถานะที่มี
