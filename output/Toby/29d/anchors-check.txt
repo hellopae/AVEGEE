@@ -1,0 +1,5 @@
+lokan-asia: anchors and sampled routes stay inside proposed floor polygon
+tea-th: anchors and sampled routes stay inside proposed floor polygon (exit via stair landing)
+tea-asia: anchors and sampled routes stay inside proposed floor polygon
+ngiw-th: anchors and sampled routes stay inside proposed floor polygon
+Proposed geometry only; not applied to game config or playtested.

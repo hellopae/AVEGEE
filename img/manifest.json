@@ -107,10 +107,12 @@
 "intro-panel-04.webp",
 "intro-panel-05.png",
 "intro-panel-05.webp",
+"item-demon-sword.png",
 "item-food.png",
 "item-fuel.png",
 "item-health.png",
 "item-hypno.png",
+"item-lotus.png",
 "item-mirror.png",
 "item-tea.png",
 "merchant-profile.jpeg",
@@ -621,9 +623,9 @@
 0.998
 ],
 "st-lokan-asia": [
-0.002,
-0.0039,
-0.998,
+0.0,
+0.1465,
+1.0,
 1.0
 ],
 "st-ngiw-asia": [
