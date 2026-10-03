@@ -633,7 +633,7 @@ function sideBody() {
          ${battleLine}
          ${!c.reader ? `<div class="sec">คุยกับ${esc(c.name)}</div>${hungerWidget(c)}` : ''}
          ${c.morale < 40 ? '<div class="row-truth hid">กำลังใจต่ำ — ทำงานช้าลง ควรให้พักที่ศาลาน้ำชา</div>' : ''}
-         ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างคน · จัดทีม</button>' : ''}`;
+         ${c.k === 'nira' ? '<button class="gold" id="open-nira-office">📋 จ้างยมทูต · จัดทีม</button>' : ''}`;
   }
 
   // ---- ยักษ์ทวารบาล ----
@@ -2046,7 +2046,7 @@ function openTrial(initialError = '') {
       return `<button class="orb-choice" data-pw="${p.k}" ${ok ? '' : 'disabled'} title="${esc(p.name + ' — ' + why)}">
         ${orbImg(powerImg[p.k], p.name)}<b>${esc(p.name)}</b><i>${noIssue ? esc(noIssue) : badge}</i></button>`;
     }).join('');
-    const destinationChoices = dests.length ? dests.map(x => {
+    const destinationChoices = (dests.length ? dests.map(x => {
       const block = x.slots.length ? g.assignBlock(s.id, x.def.k, x.crewK)
         : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
       const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
@@ -2054,7 +2054,8 @@ function openTrial(initialError = '') {
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
         ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (revealed ? ' · ' + t('trial.revealedWhere') : '') + (why ? ' · ' + why : ''))}">
         ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
-    }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`;
+    }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`) + (answer?.station && !dests.some(x => x.def.k === answer.station.k && !x.build)
+      ? `<span class="idle trial-empty-hint trial-revealed-destination">✓ ${esc(t('trial.revealedWhere'))}: ${esc(answer.station.name)}</span>` : '');
     const shownCrew = answer?.crew && !available.some(c => c.k === answer.crew.k)
       ? [...available, answer.crew] : available;
     const crewChoices = shownCrew.length ? shownCrew.map(c => {
@@ -2091,10 +2092,11 @@ function openTrial(initialError = '') {
     ]});
 
     // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
+    const roarHint = s.roarHint != null ? g.roarTarget(s)?.i : null;
     const opt = `<h4>${s.case ? esc(t('trial.chooseIssue')) : 'ข้ออ้างของเขา — เลือกข้อที่ขัดกับสำนวน'}</h4>` + s.lines.map(l => {
       const cls = !l.used ? '' : l.kind === 'solid' ? 'miss' : 'hit';
-      return `<button class="say ${cls}${s.roarHint === l.i && !l.used ? ' roar-hint' : ''}" style="${s.roarHint === l.i && !l.used ? 'outline:3px solid #e9b448' : ''}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
-        >${s.roarHint === l.i && !l.used ? '💢 ' : ''}${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
+      return `<button class="say ${cls}${roarHint === l.i && !l.used ? ' roar-hint' : ''}" style="${roarHint === l.i && !l.used ? 'outline:3px solid #e9b448' : ''}" data-line="${l.i}" ${l.used || s.presses <= 0 ? 'disabled' : ''}
+        >${roarHint === l.i && !l.used ? '💢 ' : ''}${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
     }).join('');
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
@@ -2274,9 +2276,9 @@ function openNiraOffice() {
         const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
         return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
-          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ย · ท่าสู้: ${crewAbility(def.k)}</small>`}
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? hungerWidget(c) : ''}</span>
-          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ ทีมต่อสู้' : 'เข้าทีมสู้'}</button>`
+          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
       }).join('')}
@@ -2308,12 +2310,12 @@ function openMerchant() {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
-        const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยต่อชิ้น</small></span>
+        const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
       <h3>สินค้า</h3><div class="market-grid">${MERCHANT.stock.map(s => {
         const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
+        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
@@ -2363,8 +2365,8 @@ function openFrontier(fromWalk = false, breachArg = null) {
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
-      <header><small>${breach ? `Wave 1/${waveN}` : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(breachTitle) : esc(FRONTIER.name)}</h2>
-        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
+      <header><small>${breach ? `ระลอก 1/${waveN}` : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(breachTitle) : esc(FRONTIER.name)}</h2>
+        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คน แล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
         ${chosen.map(k => {
@@ -2373,7 +2375,7 @@ function openFrontier(fromWalk = false, breachArg = null) {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>${breach ? `Wave 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
+        <div class="frontier-head"><span><b>${breach ? `ระลอก 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
           <span class="frontier-loot">${breach ? esc(breachLoot) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
@@ -2385,7 +2387,7 @@ function openFrontier(fromWalk = false, breachArg = null) {
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
         </div>
         <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
-          <button class="gold" data-frontier-start ${chosen.length || fromWalk || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปป้องกันชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
@@ -4056,7 +4058,7 @@ function openDiscovery() {
   const icon = kind === 'item' ? itemImg(k, 'style="width:96px;height:96px;object-fit:contain"')
     : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.png' : `img/fx-${k}.png`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
   modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(def.name)}</h2>
-    ${icon}<p><b>ทำอะไร:</b> ${esc(def.desc || def.text || def.say)}</p>
+    ${icon}<p><b>ใช้ทำอะไร:</b> ${esc(def.desc || def.text || def.say)}</p>
     <p><b>วิธีใช้:</b> ${esc(def.howTo)}</p>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`, null, 'discovery');
   const gen = dlgGen;

@@ -488,14 +488,20 @@ const API = {
   karmaTier() { return KARMA_TIERS.find(t => this.karma <= t.max) || KARMA_TIERS[KARMA_TIERS.length - 1]; },
 
 
+  /** The deeds press() will uncover, in the same order as the interrogation. */
+  pressDeeds(soul, line) {
+    const hidden = soul.deeds.filter(d => !d.known);
+    return line.kind === 'deny' ? hidden.slice(0, 1) : line.kind === 'plea' ? hidden : [];
+  },
   roarTarget(soul) {
-    if (!soul?.lines || soul.presses <= 0) return null;
-    const available = soul.lines.filter(l => !l.used);
-    return available.find(l => l.kind === 'deny') || available.find(l => l.kind === 'plea') ||
-      available.find(l => l.kind === 'boast') || null;
+    if (!soul?.lines || soul.pure || soul.presses <= 0) return null;
+    const sin = primarySinOf(soul);
+    return soul.lines.find(l => !l.used && this.pressDeeds(soul, l).some(d => d.s === sin)) || null;
   },
   roarWhy(soul) {
-    return this.roarTarget(soul) ? '' : 'ไม่มีข้อหลักฐานที่สอบสวนได้เหลือแล้ว';
+    if (soul?.pure) return 'ดวงนี้ไม่มีบาปให้จับ';
+    if (soul?.presses <= 0) return 'ไม่มีข้อหลักฐานให้สอบสวนเหลือแล้ว';
+    return this.roarTarget(soul) ? '' : 'ไม่มีข้อไหนนำไปสู่บาปหลักแล้ว';
   },
   discover(kind, k) {
     const id = `${kind}:${k}`;
@@ -515,7 +521,7 @@ const API = {
     const z = ZONES.find(z => z.k === k);
     if (!z) return 'ไม่รู้จักชุดนี้';
     if (this.outfitsOwned?.includes(k)) return '';
-    return this.zone !== k ? `ใช้ได้เมื่อถึง${z.name}และซื้อชุดจากพ่อค้านรก` : 'ซื้อชุดจากพ่อค้านรกก่อน';
+    return this.zone !== k ? `ใช้ได้เมื่อถึง${z.name} และซื้อชุดจากพ่อค้านรกแล้ว` : 'ซื้อชุดจากพ่อค้านรกก่อน';
   },
 
   powerOf(k) { return this.powers.find(p => p.k === k); },
@@ -558,6 +564,10 @@ const API = {
         soul.secretSeen = true;
         out.push({ kind: 'truth', text: soul.secret });
       }
+      const line = this.roarTarget(soul);
+      if (line) soul.roarHint = line.i;
+      else delete soul.roarHint;
+      out.push({ kind:'hint', text: line ? `💢 ข้อ ${line.i + 1} นำไปสู่บาปหลัก — กดสอบสวนข้อที่มี 💢` : this.roarWhy(soul) });
       const station = this.trialAnswer(soul).station;
       out.push({ kind: 'truth', text: station
         ? `🪞 กระจกเผยที่ไหน ความแรง และผู้คุมบนวงคำสั่ง${this.stations.some(st => st.def.k === station.k && !st.build) ? '' : ' — ต้องสร้างสถานีเฉลยก่อน'}`
@@ -566,7 +576,7 @@ const API = {
     } else if (k === 'roar') {
       const line = this.roarTarget(soul);
       soul.roarHint = line.i;
-      out.push({ kind:'confess', text:`💢 “ข้ายอมแล้ว… ถามเรื่องข้อ ${line.i + 1} เถิด” — กดสอบสวนข้อที่มี 💢` });
+      out.push({ kind:'confess', text:`💢 “ยอมแล้ว… ถามเรื่องข้อ ${line.i + 1} เถอะ” — ข้อนี้นำไปสู่บาปหลัก กดสอบสวนข้อที่มี 💢` });
 
     } else if (k === 'ice') {
       const line = soul.lines?.find(x => !x.used);
@@ -602,7 +612,7 @@ const API = {
 
     if (L.kind === 'deny') {
       // จนมุม — เรื่องที่สำนวนไม่ได้เขียนไว้โผล่ออกมาเอง ไม่ต้องเสียพลังสักอย่าง
-      const hidden = soul.deeds.find(d => !d.known);
+      const hidden = this.pressDeeds(soul, L)[0];
       out.push({ kind: 'confess', text: `⚖️ ${pickFresh(CRACK_LINES, this.recentLines)}` });
       // สำนวนที่เขียนมือมีบทของตัวเอง — ใช้บทนั้นแทนบทกลาง
       if (L.reveal) out.push({ kind: 'truth', text: L.reveal });
@@ -625,7 +635,7 @@ const API = {
 
     } else if (L.kind === 'plea') {
       // คดีที่ถูกกับผิดปนกัน — จี้แล้วเจอด้านที่ทำให้เห็นใจ
-      const hidden = soul.deeds.filter(d => !d.known);
+      const hidden = this.pressDeeds(soul, L);
       if (L.reveal) out.push({ kind: 'confess', text: `⚖️ ${L.reveal}` });
       if (hidden.length) {
         hidden.forEach(d => { d.known = true; out.push({ kind: 'truth', text: `⚖️ เขาเล่าต่อจนจบ — ${d.t}` }); });
@@ -654,8 +664,7 @@ const API = {
     const station = STATIONS.find(st => soul.pure ? st.heaven : st.tags.includes(primarySinOf(soul))) || null;
     const answer = { station, intensity: soul.revealed.mirror ? soul.deserved : null, crew: null, unavailable: null };
     if (!soul.revealed.mirror || !station) return answer;
-    const st = this.stations.find(x => x.def.k === station.k);
-    if (!st || st.build) return answer;
+    const st = this.stations.find(x => x.def.k === station.k) || mkStation(station.k);
     // สถานีที่มีดวงอยู่แล้วเปลี่ยนผู้คุมไม่ได้ จึงพิจารณาเฉพาะผู้คุมประจำ
     const candidates = this.crew.filter(c => !c.reader && !c.self && (!st.slots.length || c.k === st.crewK));
     const available = candidates.filter(c => !this.assignBlock(soul.id, st.def.k, c.k));
@@ -2511,7 +2520,7 @@ const API = {
       this.mp -= BATTLE.mpCost.wind;
       dmg = 36 + (this.level - 1) * 2;
       stunFoe = 1;
-      say(`🌪️ พัดสายลมซัดศัตรู — ${dmg} หน่วย และหยุดการสวนกลับหนึ่งตา`);
+      say(`🌪️ พัดสายลมซัดศัตรู — ${dmg} หน่วย และหยุดการสวนกลับ 1 เทิร์น`);
 
     } else if (what === 'rage') {
       if (!this.abilities.rage || B.rageTurns > 0 || B.rageCooldown > 0 || this.mp < BATTLE.mpCost.rage) return false;

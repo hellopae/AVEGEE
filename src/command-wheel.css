@@ -359,3 +359,9 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 /* 28E: กลุ่ม "ไอเทม" ในฉากต่อสู้มี 3 ปุ่มแล้ว (น้ำชา · หีบยา · น้ำมนต์) — บนมือถือ 3 ปุ่มเรียงแถวเดียวไปทับส่วน "โจมตี" ของวง
    จึงให้ห่อเป็น 2 ปุ่มต่อแถว (ปุ่มที่ 3 ลงแถวสอง ใต้น้ำชา) ซ้ายของวงเหมือนเดิม ไม่ทับวง */
 @media(max-width:700px){.arena.combat-arena .combat-wheel .options-3{max-width:124px}}
+
+/* 29H: keep advice inside the stage, to the left of the case panel. */
+@media(min-width:701px){
+  .trial-hud .court-wheel .options-1:has(.trial-empty-hint){left:0;top:auto;bottom:calc(100% + 12px);width:min(340px,100%);max-width:100%;max-height:26vh;overflow-y:auto;box-sizing:border-box}
+  .trial-hud .court-wheel .options-1 .trial-empty-hint{box-sizing:border-box;width:100%;overflow-wrap:anywhere;flex:0 0 100%}
+}

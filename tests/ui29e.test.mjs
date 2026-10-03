@@ -31,7 +31,7 @@ test('29E: fresh zone shows TH/EN next steps; build and manual jail hold are rea
     assert.match(renderChoices(g), /trial-empty-hint/);
     assert.ok(renderChoices(g).includes(esc(hint)));
     assert.ok(hint.includes(t('trial.lockCase')), 'names the actual hold button');
-    assert.match(hint, lang === 'th' ? /ปิดห้องสอบสวน.*ป้ายก่อสร้างบนแผนที่.*หากตะรางมีที่ว่าง/ : /close the interrogation room.*construction sign on the map.*If the jail has room/);
+    assert.match(hint, lang === 'th' ? /ปิดห้อง.*ป้ายก่อสร้างบนแผนที่.*ถ้ายังว่าง/ : /close the interrogation room.*construction sign on the map.*If the jail has room/);
   }
   assert.equal(g.held.length, 0, 'souls are not automatically held');
   assert.equal(g.jail(29001), true);

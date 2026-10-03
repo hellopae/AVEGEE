@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import { createGame } from '../src/game.js';
+import { createGame, primarySinOf } from '../src/game.js';
 import { ALL_CASES } from '../src/cases.js';
 import { ITEMS, POWERS, ZONES, LEVELS } from '../src/data.js';
 import { ABILITY_REWARDS } from '../src/story.js';
@@ -14,8 +14,10 @@ test('roar points to an unexamined evidence claim in every authored case, withou
   for (const c of ALL_CASES) {
     const soul = { lines:c.claims.map((l,i) => ({...l,i,used:false})), presses:2,
       deeds:[...c.seen.map(d=>({...d,known:true})), ...(c.hidden || []).map(d=>({...d,known:false}))],
-      merits:(c.merits || []).map(m=>({...m})), said:[] };
-    const candidates = soul.lines.filter(l => ['deny','plea','boast'].includes(l.kind));
+      pure:['innocent','deva'].includes(c.kind), merits:(c.merits || []).map(m=>({...m})), said:[] };
+    const hidden = soul.deeds.filter(d => !d.known);
+    const candidates = soul.pure ? [] : soul.lines.filter(l =>
+      (l.kind === 'deny' ? hidden.slice(0,1) : l.kind === 'plea' ? hidden : []).some(d => d.s === primarySinOf(soul)));
     if (!candidates.length) {
       assert.equal(g.roarTarget(soul), null, c.k);
       assert.ok(g.roarWhy(soul), c.k);
@@ -149,7 +151,7 @@ test('roar handles generated cases and exhausted interrogation attempts without 
     const g=createGame(), soul=g.queue[0];
     const target=g.roarTarget(soul);
     if (target) {
-      assert.ok(['deny','plea','boast'].includes(target.kind));
+      assert.ok(['deny','plea'].includes(target.kind));
       assert.equal(target.used,false);
       const original=Math.random;
       Math.random=()=>{throw Error('roar used RNG');};
