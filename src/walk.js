@@ -16,6 +16,7 @@ let maskImage = null;
 
 /** ล้างตารางภาพ/เส้นทางของโซนเดิมก่อนใช้ขนาดและภาพฉากใหม่ */
 export function resetWalk() {
+  version++; blocksSig = null;
   COLS = Math.ceil(SCENE.w / CELL);
   ROWS = Math.ceil(SCENE.h / CELL);
   mask = null;
@@ -24,6 +25,11 @@ export function resetWalk() {
 }
 
 export const walkGridSize = () => ({ cols:COLS, rows:ROWS });
+
+/** เลขรุ่นของผังเดิน — เพิ่มทุกครั้งที่ผังเปลี่ยนจริง (ภาพ mask เพิ่งโหลด · ย้ายโซน · รายการอาคารเปลี่ยน)
+ *  game.js ใช้รู้ว่าเส้นทางที่คำนวณไว้ก่อนหน้า "เก่า" แล้ว (ชุด 29C: นิราเดินทะลุลาวาที่ mask ยังไม่โหลดจนติดขอบ) */
+let version = 0, blocksSig = null;
+export const walkVersion = () => version;
 
 const inRect = (x, y, r) => x >= r[0] && y >= r[1] && x <= r[2] && y <= r[3];
 // ลาวาจริงเป็นส้ม-แดงจัด: แดงสูง เขียวต่ำกว่าแดงมาก น้ำเงินแทบไม่มี
@@ -41,6 +47,7 @@ export function buildWalk(im, maskSource = im) {
   if (!im || !im.naturalWidth || !maskSource || !maskSource.naturalWidth
       || (mask && maskImage === maskSource)) return false;
   maskImage = maskSource;
+  version++;
   const c = document.createElement('canvas');
   c.width = SCENE.w; c.height = SCENE.h;
   const cx = c.getContext('2d', { willReadFrequently: true });
@@ -173,6 +180,8 @@ export function findPath(fx, fy, tx, ty) {
  *  game.js เป็นคนส่งเข้ามาทุกครั้งที่รายการสถานีเปลี่ยน (สร้างเสร็จ · ถูกเผาพัง · ย้ายโซน) */
 let blocks = [], holes = [];
 export function setBlocks(rects, keepOpen) {
+  const sig = JSON.stringify([rects, keepOpen]);
+  if (sig !== blocksSig) { blocksSig = sig; version++; }
   blocks = (rects || []).filter(Boolean);
   // holes = จุดที่ต้องเหยียบได้เสมอถึงกรอบอาคารจะทับ — จุดยืนของผู้คุมประจำหลังนั้น
   // (หอทะเบียนกรรมวางจุดยืนไว้ "ใต้ชายคา" พอปิดฐานอาคารแล้วยมทูตเข้าประจำที่ไม่ได้เลย)

@@ -7,9 +7,9 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk } from './data.js';
+         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY } from './story.js';
@@ -1800,6 +1800,14 @@ const API = {
       }
     }
     this.blockSig = waiting ? null : sig;         // ยังมีรูปไม่มา — ให้ลองใหม่รอบหน้า
+    // ชุด 29C — ผังเดินเปลี่ยนจริง (ภาพ mask เพิ่งโหลดหลังย้ายโซน ฯลฯ) → เส้นทางที่วางไว้ตอนยังไม่มี mask เป็นเส้นตรงข้ามลาวา
+    // ตัวละครที่เดินตามมันจะลื่นไถลติดขอบไปเรื่อย ๆ (นิราตอนเข้าโซนใหม่) วางเส้นทางใหม่ให้ตรงกับผังปัจจุบัน
+    if (walkVersion() !== this.walkSeen) {
+      this.walkSeen = walkVersion();
+      const P = this.player;
+      if (P.path?.length && P.tx != null) P.path = findPath(P.x, P.y, P.tx, P.ty);
+      for (const c of this.crew) if (c.path?.length) { c.path = null; c.wait = 0; }
+    }
   },
 
   /** อาคารไหม้จนใช้การไม่ได้ — ดวงที่ค้างอยู่กลับเข้าคิว รอซ่อมหลังไล่เปรต */
@@ -3077,12 +3085,17 @@ const API = {
     this.party = { members:[], guard:false };
     this.syncBlocks(true);
     if (!back) {
-      const gate = nearestWalk(SPOTS.bench.x, 190) || [SPOTS.bench.x, 190];
+      // ชุด 29C ข้อ 4 — ทั้งคู่เดินออกจากประตูชายแดนไปแท่นตัดสิน (เดิมเกิดที่ขอบบน (820,190) แล้วนิราติดอยู่ตรงนั้น)
+      // ยมบาทเดินไปยืนข้างบัลลังก์ · นิราไม่ต้องสั่ง: ระบบเดินของยมทูตพากลับจุดประจำ (hx,hy) เองเพราะอยู่ไกลบ้าน
+      const gate = nearestWalk(ZONE_ENTRY.gate[0], ZONE_ENTRY.gate[1]) || ZONE_ENTRY.gate;
       this.player.x = gate[0]; this.player.y = gate[1];
-      this.player.tx = SPOTS.bench.x + 60; this.player.ty = SPOTS.bench.y;
+      this.player.tx = ZONE_ENTRY.goal[0]; this.player.ty = ZONE_ENTRY.goal[1];
       this.player.path = findPath(this.player.x, this.player.y, this.player.tx, this.player.ty);
       const nira = this.crew.find(c => c.k === 'nira');
-      if (nira) { nira.x = gate[0] - 36; nira.y = gate[1] - 12; nira.path = null; nira.wait = 0; }
+      if (nira) {
+        const at = nearestWalk(ZONE_ENTRY.nira[0], ZONE_ENTRY.nira[1]) || gate;
+        nira.x = at[0]; nira.y = at[1]; nira.path = null; nira.wait = 0; nira.escort = null;
+      }
     }
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name}${z.sub ? ` — ${z.sub}` : ''}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
