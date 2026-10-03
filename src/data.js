@@ -1657,8 +1657,8 @@ export const ZONE_EVENTS = {
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
-      alert:{ th:'ฝ่าปีศาจสามระลอก พักเตรียมทีม แล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
-        en:'Defeat three demon waves, rest, free all four rulers, then rest again before the final inspector.' },
+      alert:{ th:'ฝ่าปีศาจสามระลอก กองหนุนทั้งสี่โซนจะรับมือลูกน้องที่เหลือ พักเตรียมทีมแล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
+        en:'Defeat three demon waves. Allies from all four zones take on the remaining army. Rest, free all four rulers, then rest again before the final inspector.' },
       restBeforeWaves:[4,8],
       waves:[
         [{ kind:14, count:2, hp:60, atk:[10,16] }],

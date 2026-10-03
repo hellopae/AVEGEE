@@ -2640,6 +2640,9 @@ const API = {
       const zoneEv = B.kind === 'zoneEvent' ? ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey) : null;
       if (zoneEv?.waves && B.wave < zoneEv.waves.length) {
         B.pendingWave = B.wave + 1;
+        if (B.eventKey === 'cyberFinal' && B.wave === 3) {
+          B.storyInterlude = 'cyber-reinforcements';
+        }
         this.onChange(); return true;
       }
       return declareWin();

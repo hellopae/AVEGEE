@@ -1,0 +1,122 @@
+{
+  "squads": [
+    {
+      "z": "th",
+      "keys": [
+        "taan",
+        "plerng",
+        "dam",
+        "boon",
+        "guard"
+      ],
+      "refs": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/crew-taan.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/crew-plerng.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/crew-dam.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/crew-boon.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/crew-guard-v2.png"
+      ],
+      "path": "output/final-reinforcements/squad-th.png",
+      "prompt": "Create a transparent pixel-art squad reference illustration using these five supplied character designs EXACTLY. Five characters total, one of each reference in order taan, plerng, dam, boon, guard. Same chibi proportions/head to body ratio as original references, same species, facial features, clothes colors and equipment. All five full bodies visible in a compact staggered two-row formation, heroically rushing toward the RIGHT, guard in front. Discrete crisp game pixel art, no realistic rendering, no text, no scenery, transparent background. This is the friendly th regional squad, not villains. Small props/weapon motion, readable silhouettes. Keep their designs faithful; do not turn human/animal characters into generic demons.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-e1355513-d150-4351-8595-c1d4a1b51d38.png"
+    },
+    {
+      "z": "asia",
+      "keys": [
+        "taan",
+        "plerng",
+        "kan",
+        "boon",
+        "guard"
+      ],
+      "refs": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/Asia/crew-taan-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/Asia/crew-plerng-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/Asia/crew-kan-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/Asia/crew-boon-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/Asia/crew-guard-asia-v2.png"
+      ],
+      "path": "output/final-reinforcements/squad-asia.png",
+      "prompt": "Create a transparent pixel-art squad reference illustration using these five supplied character designs EXACTLY. Five characters total, one of each reference in order taan, plerng, kan, boon, guard. Same chibi proportions/head to body ratio as original references, same species, facial features, clothes colors and equipment. All five full bodies visible in a compact staggered two-row formation, heroically rushing toward the RIGHT, guard in front. Discrete crisp game pixel art, no realistic rendering, no text, no scenery, transparent background. This is the friendly asia regional squad, not villains. Small props/weapon motion, readable silhouettes. Keep their designs faithful; do not turn human/animal characters into generic demons.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-1e9950e1-4dd0-4ec3-88a0-90a920b00469.png"
+    },
+    {
+      "z": "west",
+      "keys": [
+        "taan",
+        "dam",
+        "kan",
+        "boon",
+        "guard"
+      ],
+      "refs": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/West/crew-taan-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/West/crew-dam-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/West/crew-kan-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/West/crew-boon-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/West/crew-guard-west.png"
+      ],
+      "path": "output/final-reinforcements/squad-west.png",
+      "prompt": "Create a transparent pixel-art squad reference illustration using these five supplied character designs EXACTLY. Five characters total, one of each reference in order taan, dam, kan, boon, guard. Same chibi proportions/head to body ratio as original references, same species, facial features, clothes colors and equipment. All five full bodies visible in a compact staggered two-row formation, heroically rushing toward the RIGHT, guard in front. Discrete crisp game pixel art, no realistic rendering, no text, no scenery, transparent background. This is the friendly west regional squad, not villains. Small props/weapon motion, readable silhouettes. Keep their designs faithful; do not turn human/animal characters into generic demons.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-fd9c0a2a-860d-4e60-b0a9-c76b68c694d7.png"
+    },
+    {
+      "z": "cyberhell",
+      "keys": [
+        "nira",
+        "taan",
+        "plerng",
+        "dam",
+        "guard"
+      ],
+      "refs": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/CyberHell/crew-nira-cyberhell.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/CyberHell/crew-taan-cyberhell.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/CyberHell/crew-plerng-cyberhell.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/CyberHell/crew-dam-cyberhell.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/CyberHell/crew-guard-cyberhell-v2.png"
+      ],
+      "path": "output/final-reinforcements/squad-cyberhell.png",
+      "prompt": "Create a transparent pixel-art squad reference illustration using these five supplied character designs EXACTLY. Five characters total, one of each reference in order nira, taan, plerng, dam, guard. Same chibi proportions/head to body ratio as original references, same species, facial features, clothes colors and equipment. All five full bodies visible in a compact staggered two-row formation, heroically rushing toward the RIGHT, guard in front. Discrete crisp game pixel art, no realistic rendering, no text, no scenery, transparent background. This is the friendly cyberhell regional squad, not villains. Small props/weapon motion, readable silhouettes. Keep their designs faithful; do not turn human/animal characters into generic demons.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-12999130-0117-4b7d-a28c-7b8424092b64.png"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "01",
+      "scene": "ARRIVAL / RELIEF. After three waves are defeated, battered Yama foreground near center looks over his left shoulder with relief. Nira is close beside him. From BEHIND Yama on the LEFT, four regional squads have just emerged together to help him. Group the recognizable guards and companions in four staggered formations, enough space so faces are readable. Remaining enemy horde is ahead at RIGHT, looming but distant; show many hostile minions. Yama and allies occupy left two thirds, enemies right third. Warm heroic light from arriving allies against cold purple hostile side. Dramatic calm beat before charging.",
+      "prompt": "Create a finished pixel-art story cutscene for AVEGEE, landscape 16:9 with narrow black cinematic bars, no words or UI. Image 1 is the CyberHell environment and ENEMY army reference: purple armored crystal demons and final gray-faced crowned purple/gold inspector far away. Match game crisp pixel-art style and chibi character proportions. Images 2,3,4,5 are FOUR distinct FRIENDLY regional squads: Thai green ogre guard, Asian horse guard, Western raven guard, Cyber purple/cyan armored guard, plus their worker companions. Include ALL FOUR guards recognizably and recognizable workers from each squad. Friendly characters face RIGHT; hostile violet crystal soldiers face LEFT. Do not confuse allies with enemies. Yama is the small red horned hero from image 1 in black purple-trim cyber robe and flat purple cap, seen rear three-quarter. Nira from image 5 is his sole lavender-skinned female assistant with gray-purple hair bun carrying court papers. Exactly ONE Yama and ONE Nira. Preserve identities/clothes/weapons of supplied squads. Cyber cave purple crystals, server racks, orange lava, cyan spirit river, a broad safe stone causeway. Ground-level cinematic camera, low visible horizon, ONE consistent vanishing point, believable foreshortening. All characters stand on the same grounded surface and scale naturally with distance. Do NOT make the background a top-down map; no cliffs underneath standing feet. No thrones traveling with soldiers.\nARRIVAL / RELIEF. After three waves are defeated, battered Yama foreground near center looks over his left shoulder with relief. Nira is close beside him. From BEHIND Yama on the LEFT, four regional squads have just emerged together to help him. Group the recognizable guards and companions in four staggered formations, enough space so faces are readable. Remaining enemy horde is ahead at RIGHT, looming but distant; show many hostile minions. Yama and allies occupy left two thirds, enemies right third. Warm heroic light from arriving allies against cold purple hostile side. Dramatic calm beat before charging.",
+      "references": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/story-cyberhell-01-v2.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-th.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-cyberhell.png"
+      ],
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-be4a8b4f-5859-489f-ab01-817e7b5b4275.png"
+    },
+    {
+      "id": "02",
+      "scene": "CHARGE / OPEN THE WAY. Same location and characters as arrival. All four regional guards and worker squads surge LEFT TO RIGHT and clash with the remaining violet enemy horde, guarding Yama’s rear. Dynamic powerful readable poses: green ogre staff strike, horse spear thrust, raven axe, cyber guard cyan energy staff; workers use fire, club, ice or supporting magic according to their own equipment. Show actual opposing hostile soldiers at impact on right, not allies fighting each other. Yama and sole Nira are at safe lower-left turning away from the main clash toward a clear stone passage leading deeper into the cave to rescue the four captured rulers. Keep Yama recognizable, not lost in crowd. Heroic cooperation and hopeful mood; no gore.",
+      "prompt": "Create a finished pixel-art story cutscene for AVEGEE, landscape 16:9 with narrow black cinematic bars, no words or UI. Image 1 is the CyberHell environment and ENEMY army reference: purple armored crystal demons and final gray-faced crowned purple/gold inspector far away. Match game crisp pixel-art style and chibi character proportions. Images 2,3,4,5 are FOUR distinct FRIENDLY regional squads: Thai green ogre guard, Asian horse guard, Western raven guard, Cyber purple/cyan armored guard, plus their worker companions. Include ALL FOUR guards recognizably and recognizable workers from each squad. Friendly characters face RIGHT; hostile violet crystal soldiers face LEFT. Do not confuse allies with enemies. Yama is the small red horned hero from image 1 in black purple-trim cyber robe and flat purple cap, seen rear three-quarter. Nira from image 5 is his sole lavender-skinned female assistant with gray-purple hair bun carrying court papers. Exactly ONE Yama and ONE Nira. Preserve identities/clothes/weapons of supplied squads. Cyber cave purple crystals, server racks, orange lava, cyan spirit river, a broad safe stone causeway. Ground-level cinematic camera, low visible horizon, ONE consistent vanishing point, believable foreshortening. All characters stand on the same grounded surface and scale naturally with distance. Do NOT make the background a top-down map; no cliffs underneath standing feet. No thrones traveling with soldiers.\nCHARGE / OPEN THE WAY. Same location and characters as arrival. All four regional guards and worker squads surge LEFT TO RIGHT and clash with the remaining violet enemy horde, guarding Yama’s rear. Dynamic powerful readable poses: green ogre staff strike, horse spear thrust, raven axe, cyber guard cyan energy staff; workers use fire, club, ice or supporting magic according to their own equipment. Show actual opposing hostile soldiers at impact on right, not allies fighting each other. Yama and sole Nira are at safe lower-left turning away from the main clash toward a clear stone passage leading deeper into the cave to rescue the four captured rulers. Keep Yama recognizable, not lost in crowd. Heroic cooperation and hopeful mood; no gore.",
+      "references": [
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/img/story-cyberhell-01-v2.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-th.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-asia.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-west.png",
+        "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/output/final-reinforcements/squad-cyberhell.png"
+      ],
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-b185f267-de5e-4a0e-bc5d-0ba34b18662f.png"
+    }
+  ],
+  "edits": [
+    {
+      "prompt": "Edit image 1 with one precise addition: the FRIENDLY CyberHell regional Guard shown in image 2 is currently missing from the allied army on the LEFT. Add this exact chibi purple-gray tusked cyber ogre, black/gold armored uniform with cyan glowing gems, orange waist panel, cyan energy staff, clearly visible full head and upper body between the horse guard and raven guard, slightly behind them, facing RIGHT toward enemies. Make space by moving one background worker slightly, keep character scale and ground-level perspective natural. Ensure FOUR distinct allied guards are unmistakably visible: green Thai ogre, Asian horse, Western raven, and this cyber ogre. Preserve every other character, the single Yama and Nira, background, enemy horde and black bars. Maintain same crisp pixel-art style, do not redesign whole scene.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-50a6d18e-5d6b-4812-9d2b-5dfc66ba5bcf.png"
+    },
+    {
+      "prompt": "Edit image 1 precisely to add the missing FOURTH friendly regional guard, using image 2 exact character identity. Add the purple-gray tusked CyberHell ogre guard wearing black/gold armor with cyan glowing jewels, red/orange waist sash and cyan energy staff. Place him in the central battle line BETWEEN the horse guard behind and the green Thai guard in front, facing RIGHT, full distinctive head and upper torso clearly visible, raising his cyan staff to strike a hostile purple soldier. Move a small flame/beam to make enough space. Keep the green Thai ogre guard holding a traditional dark bronze/gold staff; the CYAN magic energy staff belongs to the newly added cyber guard. Preserve the Western raven guard, Asian horse guard, all workers, single Yama and Nira, enemy horde, inspector, cave scenery and perspective. FOUR different regional guards must all be recognizable, no duplicated guards. Same crisp pixel art, same composition, no other redesign.",
+      "nativeSource": "/Users/agapae/.codex/generated_images/01a0fa93-4af6-73a2-8c0f-a6c1b52bd6b0/exec-7aeae21e-3848-406d-8e36-7db53918929d.png"
+    }
+  ]
+}

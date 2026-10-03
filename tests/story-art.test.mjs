@@ -7,9 +7,9 @@ import { createGame } from '../src/game.js';
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url), 'utf8'));
 globalThis.Image = class {};
 
-test('all seventeen story panels exist in the project and preload manifest', () => {
+test('all twenty story panels exist in the project and preload manifest', () => {
   const panels = Object.values(STORY).flatMap(s => s.pages);
-  assert.equal(panels.length, 17);
+  assert.equal(panels.length, 20);
   for (const p of panels) {
     assert.ok(existsSync(new URL('../' + p.image, import.meta.url)), p.image);
     assert.ok(manifest.rest.includes(p.image.slice(4)), p.image);
@@ -44,6 +44,45 @@ test('cutscene minions fight in the final three opening waves and are available 
 });
 
 // A branch inspector cannot silently become the helper seated at the throne.
+test('reinforcements arrive after wave three, preserving both rests and the four ruler fights', () => {
+  const g = createGame(); g.zone = 'cyberhell';
+  g.zoneCases.cyberhell = 10;
+  g.zoneEvents.cyberhell = {cyberRescue:'cleared',cyberBreach:'cleared'};
+  g.refreshZoneEvents(); g.startZoneEvent('cyberFinal');
+  const roster = JSON.stringify({crew:g.crew, guard:g.guard});
+  const defeatWave = () => {
+    while (g.battle.foes.some(f => f.hp > 0)) {
+      const foe = g.battle.foes.find(f => f.hp > 0);
+      g.battle.selectedFoeId = foe.id; foe.hp = 1;
+      assert.equal(g.battleAct('atk'), true);
+    }
+  };
+  g.battle.storyInterlude = null; // Comic completion consumes the opening cue.
+  for (let wave = 1; wave <= 3; wave++) {
+    defeatWave();
+    assert.equal(g.battle.storyInterlude, wave === 3 ? 'cyber-reinforcements' : null);
+    if (wave < 3) assert.equal(g.advanceZoneEventWave(), true);
+  }
+  assert.equal(g.zoneEventRestReady(), true);
+  assert.equal(g.advanceZoneEventWave(), false);
+  assert.equal(g.battle.wave, 3);
+  g.battle.storyInterlude = null;
+  assert.equal(g.advanceZoneEventWave(true), true);
+  assert.equal(g.battle.storyInterlude, 'cyber-control');
+  g.battle.storyInterlude = null;
+  for (const zone of ['th','asia','west','cyberhell']) {
+    assert.equal(g.battle.foes[0].sp, `leader-${zone}-possessed`);
+    defeatWave();
+    if (zone !== 'cyberhell') assert.equal(g.advanceZoneEventWave(), true);
+  }
+  assert.equal(g.zoneEventRestReady(), true);
+  assert.equal(g.advanceZoneEventWave(), false);
+  assert.equal(g.advanceZoneEventWave(true), true);
+  assert.equal(g.battle.storyInterlude, 'cyber-duel');
+  assert.equal(g.battle.foes[0].sp, 'zone-boss-cyberhell');
+  assert.equal(JSON.stringify({crew:g.crew, guard:g.guard}), roster);
+});
+
 test('all four rulers have separate identities and final combat assets', () => {
   for (const z of ZONES) {
     assert.notEqual(authorityOf(z.k).full, z.bossName);
