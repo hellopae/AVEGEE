@@ -487,6 +487,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach,
+    /** ชุด 29C — จุดบนฉากเป็นเปอร์เซ็นต์ของ canvas (ไว้วางปุ่ม HTML ลอยเหนือตัวละคร)
+     *  u,v = สัดส่วน 0-1 ของภาพฉากเหมือน ROOMS · up = ยกขึ้นกี่ส่วนของด้านสั้นของกรอบ (CREW_H = เหนือหัวคน) */
+    anchor(u, v, up = 0) {
+      const w = cv.width || 1, h = cv.height || 1;
+      return [px(u) / w * 100, (py(v) - up * unit()) / h * 100];
+    },
+    crewHeight: CREW_H,
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
     setSit,

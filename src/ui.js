@@ -1,5 +1,6 @@
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
+import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -108,6 +109,7 @@ let prisonAlertSeen = !!g.eventMapClosed['th:prisonBreak'];
 let prisonTried = false;   // เคยกด "ออกไปปราบ" แล้วในรอบนี้ — ป้ายมุมจอถึงเปลี่ยนเป็น "ท้าอีกครั้ง"
 let breachAlertSeen = !!g.eventMapClosed['th:frontierBreach'];
 let breachTried = false;
+let breachPrepOffered = false;   // เปิดหน้าต่างเตรียมทีมที่ชายแดนให้รอบนี้แล้ว (ดู setInterval ด้านบน)
 let devaAlertSeen = !!g.eventMapClosed['th:devaTest'];
 let devaTried = false;
 const zoneEventAlertSeen = new Set(Object.keys(g.eventMapClosed).filter(k => g.eventMapClosed[k]));
@@ -149,6 +151,16 @@ setInterval(() => {
     devaAlertSeen = true;
     openDevaAlert();
   }
+  // ชุด 29C ข้อ 9 — ยมบาทเดินถึงประตูชายแดนขณะ event ปีศาจบุกรออยู่ → เปิดหน้าต่างเตรียมทีมครั้งเดียวต่อรอบที่เดินเข้าไป
+  // (ปิดหน้าต่างแล้วยืนต่อไม่เด้งซ้ำ · ออกห่างแล้วกลับมาถึงจะเด้งอีก · กดปุ่ม "เข้าด่านชายแดน" เปิดเองได้ตลอด)
+  const march = started && g.breachMarch();
+  if (march && g.nearFrontierGate()) {
+    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+        !g.dadFight && !storyPlaying && !g.storyQueue.length && Date.now() - lastBattleEnd > 1600) {
+      breachPrepOffered = true;
+      openFrontier(false, march.key);
+    }
+  } else if (!g.nearFrontierGate(70)) breachPrepOffered = false;
   updatePrisonFab();
   updateBreachFab();
   updateDevaFab();
@@ -1210,9 +1222,12 @@ function updatePrisonFab() {
   f.textContent = `⚠️ ${prisonTried ? t('event.prisonBreak.retry') : t('event.prisonBreak.title')}`;
 }
 
+// ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก: หน้าต่างนี้แค่แจ้งเตือน (รับทราบ) ไม่ตัดเข้าหน้าต่างเตรียมทีมทันทีอีกแล้ว
+// ผู้เล่นเดินยมบาทไปชายแดนเอง ถึงแล้ว watcher ใน setInterval ด้านบนจึงเปิดหน้าต่างเตรียมทีม (openFrontier)
+// ปิดหน้าต่างด้วยทางไหนก็ตามนับเป็นรับทราบ (onDlgClose → dismissEventAlert ตั้ง eventMapClosed ซึ่งเซฟอยู่แล้ว)
 function openBreachAlert() {
-  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.alert'),
-    artUrl(MOB.kinds[0].img), t('event.frontierBreach.go'), () => openFrontier(false, true), true);
+  openEventAlert('frontierBreach', t('event.frontierBreach.title'), t('event.frontierBreach.march'),
+    artUrl(MOB.kinds[0].img), t('event.frontierBreach.ack'), () => dlg.close(), false);
 }
 
 function updateBreachFab() {
@@ -1267,6 +1282,10 @@ function openZoneEventAlert(ev) {
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
+  if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
+    openEventAlert(ev.k, title, t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false);
+    return;
+  }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
     zoneEventTried.has(`${g.zone}:${ev.k}`) ? t('event.prep.retry') : t('event.prep.fight'), () => {
       const startFight = () => {
@@ -1920,6 +1939,9 @@ function playActionCutscene(k, ultimate = null) {
   cut.className = ultimate ? 'action-cutscene enemy-facing'
     : ['flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
       ? 'action-cutscene right-facing' : 'action-cutscene';
+  // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
+  // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
+  if (crewKey) cut.classList.add('crew-cut');
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
@@ -1931,6 +1953,7 @@ function playActionCutscene(k, ultimate = null) {
   const finish = () => { if (done) return; done = true; cut.remove(); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
+  if (crewKey) fitCutsceneImage(cut, img);          // 29C ข้อ 8 — จัดตามส่วนที่มีภาพจริง (ไฟล์โซน 2–4 ครึ่งบนโปร่งใส)
   setTimeout(finish, ACTION_CUT_MS);
 }
 
@@ -1957,7 +1980,7 @@ function openTrial(initialError = '') {
     const scrollAt = dlg.querySelector('.hud')?.scrollTop || 0;
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
-    const dests   = g.stations.filter(x => x.def.pow > 0);
+    const dests   = g.trialDestinations();       // 29C: ไม่รวมหอทะเบียนกรรม (ส่งไปแล้วไม่มีอะไรเกิด)
     const idle    = g.freeCrew();
     const answer  = g.trialAnswer(s);
     const selectedSt = dests.find(x => x.def.k === pick.st);
@@ -2308,7 +2331,15 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier(fromWalk = false, breach = false) {
+function openFrontier(fromWalk = false, breachArg = null) {
+  // ชุด 29C ข้อ 9 — มี event ปีศาจบุกรออยู่ (รับทราบแล้ว) → หน้าต่างนี้คือหน้าเตรียมทีมของ event นั้น · ไม่มี = หน้าเตรียมทีมชายแดนปกติ
+  const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
+  const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
+  const breach = !!bev, thBreach = breachKey === 'frontierBreach';
+  const waveN = bev?.waves?.length || 2;
+  const breachTitle = thBreach ? t('event.frontierBreach.title') : zoneEventText(bev?.title);
+  const breachText = thBreach ? t('event.frontierBreach.alert') : zoneEventText(bev?.alert);
+  const breachLoot = thBreach ? t('event.frontierBreach.win') : `รางวัล: ${bev?.reward?.coin || 0} เบี้ยกรรม + ของสนามรบ`;
   pauseForDlg();
   const helpers = g.crewHelpers();
   const state = g.frontierOf();
@@ -2325,8 +2356,8 @@ function openFrontier(fromWalk = false, breach = false) {
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
-      <header><small>${breach ? 'Wave 1/2' : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(t('event.frontierBreach.title')) : esc(FRONTIER.name)}</h2>
-        <p>${breach ? esc(t('event.frontierBreach.alert')) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
+      <header><small>${breach ? `Wave 1/${waveN}` : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(breachTitle) : esc(FRONTIER.name)}</h2>
+        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คนแล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
         ${chosen.map(k => {
@@ -2335,8 +2366,8 @@ function openFrontier(fromWalk = false, breach = false) {
         }).join('')}
       </div>
       <section class="frontier-panel">
-        <div class="frontier-head"><span><b>${breach ? 'Wave 1/2' : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
-          <span class="frontier-loot">${breach ? esc(t('event.frontierBreach.win')) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
+        <div class="frontier-head"><span><b>${breach ? `Wave 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
+          <span class="frontier-loot">${breach ? esc(breachLoot) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
         <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
@@ -2347,7 +2378,7 @@ function openFrontier(fromWalk = false, breach = false) {
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
         </div>
         <div class="frontier-actions"><button ${fromWalk ? 'data-frontier-back' : 'data-close'}>${fromWalk ? 'กลับชายแดน' : 'กลับแผนที่'}</button>
-          <button class="gold" data-frontier-start ${chosen.length || fromWalk ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
+          <button class="gold" data-frontier-start ${chosen.length || fromWalk || (breach && !thBreach) ? '' : 'disabled'}>${breach ? esc(t('event.frontierBreach.start')) : fromWalk ? 'กลับไปเล่นชายแดน' : '⚔️ เริ่มป้องกันชายแดน'}</button></div>
       </section>
     </div>`;
     dlg.querySelectorAll('[data-frontier-crew]').forEach(b => b.onclick = () => {
@@ -2360,8 +2391,12 @@ function openFrontier(fromWalk = false, breach = false) {
     // ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมกดปุ่มนี้แล้วตัดเข้าฉากสู้ทันที (สุ่มศัตรู)
     // ตอนนี้เข้า "แผนที่ชายแดน" ก่อน ให้เดินเลือกเองว่าจะสู้กับตัวไหน (src/frontier.js)
     if (start) start.onclick = () => {
-      if (breach) {
+      if (thBreach) {
         if (g.startFrontierBreach()) { breachTried = true; openBattle(afterBreachBattle); }
+        return;
+      }
+      if (breach) {                               // ระลอกชายแดนของโซน 2–4 — ศึกเดียวกับที่เคยเริ่มจากหน้าต่างแจ้งเตือน
+        if (g.startZoneEvent(breachKey)) { zoneEventTried.add(`${g.zone}:${breachKey}`); openBattle(afterBreachBattle); }
         return;
       }
       dlg.close();
@@ -2686,13 +2721,19 @@ function openBattle(after) {
     //  - วิญญาณขัดขืนตัวเดียว (ลากเข้าสถานี) → ลอยเหนือหัววิญญาณเป้าหมาย (ผูกกับ .fig.foe จึงตามตัวไปทุกขนาดจอ)
     //  - ศึกหลายตัว (วิญญาณแหกคุก/ระลอกชายแดน → กลับไปคุมโซน) → กลางล่างเหนือแถบ HUD ไม่ทับกล่องผลรางวัล
     // ปุ่มยังเป็น [data-fin] ตัวเดิม handler ด้านล่างผูกด้วย dlg.querySelector จึงทำงานเหมือนเดิม
-    const finRow = b.over === 'win' ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
+    // ชุด 29C ข้อ 6 — ปุ่ม "กลับไปคุมโซน" ของศึกที่กลับสู่แผนที่ (ผีบุก · เทวดาทดสอบ · แหกคุก · ชายแดนบุก) ต้องอยู่กลางจอ
+    // ใหญ่ระดับปุ่มหลัก ไม่ใช่ปุ่มเล็กมุมล่างที่ทับ/ชิดกล่องผลกับแถบ HUD (ภาพจากคุณเป้ 2 ต.ค. 2569)
+    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak'].includes(b.kind) || (b.kind === 'mob' && b.over === 'win');
+    const finRow = b.over === 'win' || (b.over && returnsToZone) ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
     if (finRow) {
       const multi = view.foes?.length > 1;
       const foeFig = !multi && b.kind === 'soul' ? stage.querySelector('.fig.foe') : null;
       if (foeFig) { finRow.classList.add('fin-float', 'fin-foe'); foeFig.appendChild(finRow); }
-      else if (multi) { finRow.classList.add('fin-float', 'fin-center'); stage.appendChild(finRow); }
+      else if (multi || returnsToZone) { finRow.classList.add('fin-float', 'fin-center', 'fin-main'); stage.appendChild(finRow); }
     }
+    // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
+    fitBattleSprites(stage, heroFace());
+    if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
@@ -3468,7 +3509,7 @@ function openStation(k) {
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
-  let drawerMode = k === 'tarang' ? 'inspect' : null;
+  let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
 
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
@@ -3528,12 +3569,17 @@ function openStation(k) {
           ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
           : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
       }).join('');
-      drawer = `<div class="st-pane" data-pane="manage">
-          ${g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('') || note(t('room.noneHeld'))}
-        </div>
-        <div class="st-pane" data-pane="inspect">
+      const heldHtml = g.held.length
+        ? `<div class="st-pane-title">${esc(t('room.heldTitle').replace('{n}', g.held.length))}</div>`
+          + g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
+        : '';
+      // 29C: ปุ่ม "ตรวจความเข็ดหลาบ" ถูกตัด — งานตรวจ/ส่งไปประตูสวรรค์ย้ายมารวมในหน้าต่างเดียวกับรายชื่อ
+      drawer = `<div class="st-pane" data-pane="roster">
+          <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
+          ${heldHtml}
           <div class="st-pane-title">${esc(t('room.roster').replace('{n}', sentenced.length))}</div>
           ${sentenced.length && !inside ? note(t('room.nearNira')) : ''}${rows}
+          ${!sentenced.length && !g.held.length ? note(t('room.noneHeld')) : ''}
         </div>`;
     }
     if (k === 'sawan') {
@@ -3546,11 +3592,11 @@ function openStation(k) {
           : `<button class="btn-gold" data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t('room.gateCheck'))}</button>`);
       }).join('');
       // ปุ่มของเกมที่แบบไม่มี: ดอกบัว + มินิเกมเร่งประตู — คงไว้ในแผงเดียวกัน
+      // 29C: แถว "ให้ดอกบัว" แยกออกไปเป็นปุ่มลอยข้างบุญ (ดู npcTags ด้านล่าง) — หน้าต่างนี้เหลือรายการรอตรวจ + มินิเกม
       drawer = `<div class="st-pane" data-pane="inspect">
+          <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
           <div class="st-pane-title">${esc(t('room.gateTitle').replace('{n}', arrivals.length))}</div>
           ${arrivals.length && !inside ? note(t('room.nearBoon')) : ''}${rows}
-          ${row(esc(t('room.lotusHint').replace('{n}', g.inventory.lotus || 0)),
-            `<button class="btn-gold" data-offer-lotus ${inside && g.inventory.lotus > 0 && g.karma > 0 ? '' : 'disabled'}>${esc(t('room.lotus'))}</button>`)}
           ${mgOn ? row(esc(mgWhy || t('room.mgNote')),
             `<button class="btn-gold" data-mg="${k}" ${mgReady ? '' : 'disabled'}>${esc(t('room.mgBtn').replace('{n}', st.speedLv || 0))}</button>`) : ''}
         </div>`;
@@ -3571,12 +3617,10 @@ function openStation(k) {
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
     if (A) {
-      const toggle = mode => () => { drawerMode = k === 'tarang' ? mode : drawerMode === mode ? null : mode; panels(); };
+      const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
       const mp = k === 'krajok' ? g.powerOf('mirror') : null;
       const kanLeft = Math.max(0, (st.kanCd || 0) - g.tick);
-      const specs = k === 'tarang' ? [
-        ['room.manage', 'room.manageHint', toggle('manage')],
-        ['room.inspect', 'room.inspectHint', toggle('inspect')],
+      const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
         ['room.sala.action2', 'room.sala.hint2', () => openMinigame(k), !mgReady, mgWhy],
@@ -3606,6 +3650,30 @@ function openStation(k) {
       A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
     }
 
+    // ---- ปุ่มลอยข้างตัวละครประจำห้อง (ชุด 29C) — ตะราง: "จัดการรายชื่อ" บนหัวนิรา · ประตูสวรรค์: "ให้ดอกบัว" ข้างบุญ ----
+    // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
+    const N = dlg.querySelector('#st-npc');
+    if (N && R) {
+      const tags = [];
+      if (k === 'tarang' && room.crew) {
+        const [ax, ay] = R.anchor(room.crew[0], room.crew[1], R.crewHeight + 0.012);
+        tags.push({ id:'manage', ax, ay, pos:'above', label:t('room.manage'), hint:t('room.manageHint'), pressed:drawerMode === 'roster' });
+      }
+      if (k === 'sawan' && room.crew) {
+        const lotus = g.inventory.lotus || 0;
+        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : !inside ? t('room.nearBoon') : '';
+        const boonX = room.crew[0] + (st.crewK === 'boon' ? 0.13 : 0);
+        const [ax, ay] = R.anchor(boonX + 0.075, room.crew[1], R.crewHeight * 0.55);
+        tags.push({ id:'lotus', ax, ay, pos:'side', label:t('room.lotus'), hint:why || t('room.lotusHint').replace('{n}', lotus), disabled:!!why });
+      }
+      put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
+          <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
+          ${x.hint ? `<small${x.disabled ? ' class="reason"' : ''}>${esc(x.hint)}</small>` : ''}</div>`).join(''));
+      const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
+      if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
+      if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };
+    }
+    dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     on('#s-repair', () => { if (g.repairStation(k)) { panels(); refresh(); } });
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
@@ -3618,7 +3686,6 @@ function openStation(k) {
     dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
     // ชุดที่ 9 — "เร่งการทำงาน" เป็นมินิเกม (data-mg) ไม่ใช่การจ่ายเบี้ย
     dlg.querySelectorAll('[data-mg]').forEach(b => b.onclick = () => openMinigame(b.dataset.mg));
-    on('[data-offer-lotus]', () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } });
     // แถบบารมี/ดาวยศใน HUD ล่างซ้าย
     const hpf = dlg.querySelector('#st-hud-hp');
     if (hpf) hpf.style.width = `${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%`;
@@ -3757,7 +3824,8 @@ function openStation(k) {
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
         ${['tarang', 'sawan'].includes(k) ? '' : '<button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>'}
         <div class="st-arch" id="st-arch" hidden></div>
-        <div class="mg-ov" id="mg-ov" hidden></div></div>
+        <div class="mg-ov" id="mg-ov" hidden></div>
+        <div class="st-npc" id="st-npc"></div></div>
       <div class="st-card" id="st-left"></div>
       <div id="st-actions"></div>
       <div class="st-drawer" id="st-right" hidden></div>

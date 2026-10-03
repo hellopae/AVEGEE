@@ -7,13 +7,14 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
-         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk } from './data.js';
+         syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion } from './walk.js';
 import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
+import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
@@ -643,6 +644,9 @@ const API = {
 
   freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
 
+  /** สถานีที่เลือกเป็น "สถานที่" ในห้องสอบสวนได้ (เฉพาะที่รับวิญญาณไปลงทัณฑ์/ส่งสวรรค์จริง — ดู isTrialDestination) */
+  trialDestinations() { return this.stations.filter(x => isTrialDestination(x.def)); },
+
   /** เฉลยเฉพาะคดีที่ใช้พลังแล้ว; ผู้คุมคิดคะแนนจาก judge() ที่สถานีเฉลย/วาระสมควร
    *  เลือกคะแนนสูงสุดในกลุ่มที่รับหมายได้ตอนนี้ก่อน ถ้าไม่มีให้แสดงคนคะแนนสูงสุดพร้อมเหตุผล */
   trialAnswer(soul) {
@@ -668,7 +672,7 @@ const API = {
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
     const st = this.stations.find(s => s.def.k === stKey);
-    if (!st) return { key: 'stationMissing' };
+    if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
     if (this.stFree(st) <= 0) return { key: 'stationFull' };
     const c = this.crewOf(st.slots.length ? st.crewK : crewK);
@@ -889,7 +893,7 @@ const API = {
   },
 
   /** Keep a soul outside the destination roster until its map walk is complete. */
-  startAfterlifeWalk(soul, from, to, destination, entry = null) {
+  startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null) {
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -899,9 +903,48 @@ const API = {
     }
     const path = [start, ...route];
     const length = path.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - path[i][0], p[1] - path[i][1]), 0);
-    this.afterlifeWalks.push({ soul, destination, entry, path, elapsed:0,
-      duration:Math.max(1100, length / 0.09), zone:this.zone });
+    const walk = { soul, destination, entry, path, elapsed:0,
+      duration:Math.max(1100, length / 0.09), zone:this.zone };
+    if (destination === 'prison') this.assignEscort(walk, keeperK);
+    this.afterlifeWalks.push(walk);
     return true;
+  },
+
+  /** ชุด 29C ข้อ 2 — วิญญาณที่รับทัณฑ์ครบไม่เดินเข้าตะรางเอง: ยมทูตที่คุมการลงทัณฑ์นำไปส่ง (ยมทูตนำ วิญญาณตามติด)
+   *  ยมทูตคนนั้นยังมีดวงอื่นให้คุมอยู่ / ไม่ว่าง / ไม่มี → ใช้ยมทูตที่ว่างและอยู่ใกล้จุดรับที่สุด
+   *  ไม่มีใครว่างเลย → วิญญาณเดินคนเดียวเหมือนเดิม · ท่านเอง (self) กับนิรา (reader) ไม่ถูกเรียกใช้
+   *  ตำแหน่งยมทูตขยับใน advanceAfterlife · ส่งเสร็จปล่อยตัว (releaseEscort) ให้ระบบเดินปกติพากลับไปทำงานเอง */
+  assignEscort(walk, keeperK = null) {
+    const start = walk.path[0];
+    const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
+    const free = this.crew.filter(c => !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
+    const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
+    for (const c of ranked) {
+      const cx = c.x ?? c.hx, cy = c.y ?? c.hy;
+      let pickup = [[cx, cy]];
+      if (dist(c) > 6) {
+        const from = canWalk(cx, cy) ? [cx, cy] : nearestWalk(cx, cy);
+        const route = from && findPath(from[0], from[1], start[0], start[1]);
+        if (!route?.length || Math.hypot(route.at(-1)[0] - start[0], route.at(-1)[1] - start[1]) > 18) continue;
+        pickup = [[cx, cy], ...route];
+      }
+      const delay = Math.round(pathLength(pickup) / ESCORT_PICKUP_SPEED);
+      walk.delay = delay;
+      walk.duration += delay;
+      walk.escort = { k:c.k, pickup };
+      c.escort = walk.soul.id; c.path = null; c.x = cx; c.y = cy;
+      return true;
+    }
+    return false;
+  },
+
+  /** ส่งตัวเสร็จ (หรือเลิกกลางคัน) — คืนยมทูตให้ระบบเดินปกติ: ยืนที่ปลายทางแล้วเดินกลับจุดประจำเอง */
+  releaseEscort(walk) {
+    const c = walk.escort && this.crewOf(walk.escort.k);
+    if (!c || c.self) return;
+    if (c.escort === walk.soul.id) c.escort = null;
+    const end = walk.path.at(-1);
+    c.x = end[0]; c.y = end[1]; c.path = null; c.wait = 0;
   },
 
   finishAfterlifeWalk(walk) {
@@ -920,8 +963,16 @@ const API = {
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
       walk.elapsed += dt;
-      if (walk.elapsed < walk.duration) continue;
+      if (walk.elapsed < walk.duration) {
+        const c = walk.escort && this.crewOf(walk.escort.k);
+        if (c && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
+          const pos = escortCrewPosition(walk);
+          c.x = pos.x; c.y = pos.y; c.face = pos.face; c.path = null;
+        }
+        continue;
+      }
       this.afterlifeWalks.splice(i, 1);
+      this.releaseEscort(walk);
       if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
       this.onChange();
     }
@@ -932,6 +983,7 @@ const API = {
     if (i < 0) return;
     const soul = slot.soul, c = this.crewOf(st.crewK);
     const r = slot.verdict || this.judge(st, slot);
+    let toPrison = null;
     if (st.def.heaven && !r.right) {
       soul.beaten = false;
       this.queue.push(soul);
@@ -944,9 +996,9 @@ const API = {
       const entry = { soul, verdict:r, intensity:slot.intensity,
         stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone };
       const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
-      if (prison) this.startAfterlifeWalk(soul, [st.def.x, st.def.y],
-        [prison.def.x, prison.def.y], 'prison', entry);
-      else this.sentences.push(entry);
+      // 29C: ออกเดินหลังปลดผู้คุมออกจากเวร (ด้านล่าง) เพื่อให้รู้ว่ายมทูตคนนั้นว่างไปส่งได้ไหม
+      toPrison = prison ? { soul, entry, from:[st.def.x, st.def.y], to:[prison.def.x, prison.def.y] } : null;
+      if (!prison) this.sentences.push(entry);
       this.log(`🔒 ${soul.who}รับทัณฑ์ครบแล้ว — ส่งเข้าตะรางรอการสำนึก`, 'act');
     }
     if (Number.isFinite(r.coin)) this.coin += r.coin;
@@ -959,10 +1011,12 @@ const API = {
     if (this.closed.length > 12) this.closed.pop();
     st.slots.splice(i, 1);
     // ผู้คุมออกเวรเฉพาะตอนไม่เหลือดวงในหลังนั้นแล้ว
+    const keeperK = st.crewK;
     if (!st.slots.length) {
       st.crewK = null;
       if (c) { c.at = null; c.path = null; }
     }
+    if (toPrison) this.startAfterlifeWalk(toPrison.soul, toPrison.from, toPrison.to, 'prison', toPrison.entry, keeperK);
   },
 
   sentenceOf(id, stage) {
@@ -1410,6 +1464,7 @@ const API = {
       // ตอนรับตัว scene.js เป็นผู้วาดตำแหน่งยมทูตกับวิญญาณจาก timeline เดียวกัน
       // ห้ามระบบเดินเล่นขยับตัวจริงซ้อนอยู่ข้างใต้; ถึงสถานีแล้วค่อยคืนให้ระบบปกติ
       if (c.escort) {
+        if (this.afterlifeWalks.some(w => w.escort?.k === c.k && w.soul.id === c.escort)) continue;   // 29C: กำลังนำวิญญาณไปตะราง — ตำแหน่งขยับใน advanceAfterlife
         const escort = this.transits.find(v => v.id === c.escort && v.crew === c.k);
         if (escort && Date.now() < escort.arriveAt) continue;
         c.escort = null;
@@ -1545,10 +1600,12 @@ const API = {
     // ---- เปรตเดินไปเผาอาคาร (9 ก.ย. 2569) ----
     // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
     // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
-    this.mobs = this.mobs.filter(m => !m.eventKey || this.zoneEventStatus(m.eventKey) === 'pending');
+    // 29C: event ชายแดนบุกไม่มีตัวปีศาจเดินบนแผนที่แล้ว (ปีศาจรออยู่ที่ชายแดน) · ของที่ค้างมากับเซฟเก่าเก็บทิ้ง
+    this.mobs = this.mobs.filter(m => !m.eventKey || (this.zoneEventStatus(m.eventKey) === 'pending' && !isFrontierBreachEvent(this.zone, m.eventKey)));
     for (const [tag, closed] of Object.entries(this.eventMapClosed)) {
       if (!closed) continue;
       const [zone, key] = tag.split(':');
+      if (isFrontierBreachEvent(zone, key)) continue;
       if (zone === this.zone && (key === 'prisonBreak' || key === 'frontierBreach' ||
           (ZONE_EVENTS[zone] || []).some(ev => ev.k === key &&
             (ev.mode === 'waves' || /prison/i.test(ev.k)))))
@@ -1776,6 +1833,14 @@ const API = {
       }
     }
     this.blockSig = waiting ? null : sig;         // ยังมีรูปไม่มา — ให้ลองใหม่รอบหน้า
+    // ชุด 29C — ผังเดินเปลี่ยนจริง (ภาพ mask เพิ่งโหลดหลังย้ายโซน ฯลฯ) → เส้นทางที่วางไว้ตอนยังไม่มี mask เป็นเส้นตรงข้ามลาวา
+    // ตัวละครที่เดินตามมันจะลื่นไถลติดขอบไปเรื่อย ๆ (นิราตอนเข้าโซนใหม่) วางเส้นทางใหม่ให้ตรงกับผังปัจจุบัน
+    if (walkVersion() !== this.walkSeen) {
+      this.walkSeen = walkVersion();
+      const P = this.player;
+      if (P.path?.length && P.tx != null) P.path = findPath(P.x, P.y, P.tx, P.ty);
+      for (const c of this.crew) if (c.path?.length) { c.path = null; c.wait = 0; }
+    }
   },
 
   /** อาคารไหม้จนใช้การไม่ได้ — ดวงที่ค้างอยู่กลับเข้าคิว รอซ่อมหลังไล่เปรต */
@@ -2127,6 +2192,23 @@ const API = {
   frontierBreachStatus(zone = this.zone) {
     return this.zoneEvents[zone]?.frontierBreach || 'locked';
   },
+  /** ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก 3 ช่วง: (1) หน้าต่างแจ้งเตือน (2) ผู้เล่นเดินไปชายแดนเอง (3) ถึงแล้วเปิดหน้าต่างเตรียมทีม
+   *  ไม่มีตัวจับเวลา — event รอได้ไม่จำกัด เดินไปถึงเมื่อไรก็ได้ · ช่วง (2) คือ "สถานะ pending + ผู้เล่นรับทราบแล้ว (eventMapClosed)"
+   *  ทั้งสองค่าเซฟอยู่แล้ว (status 'active' ที่ค้างจะกลับเป็น pending ตอนโหลด) จึงเซฟ/โหลดกลางทางแล้ว event ยังค้างถูกต้องโดยไม่ต้องมีฟิลด์ใหม่
+   *  คืน { key, ev } ของ event ที่ต้องไปชายแดน หรือ null */
+  breachMarch() {
+    if (this.battle || this.over) return null;
+    for (const ev of ZONE_EVENTS[this.zone] || []) {
+      if (ev.team !== 'frontier' || this.zoneEventStatus(ev.k) !== 'pending') continue;
+      if (ev.k === 'frontierBreach' && this.devaTestStatus() !== 'cleared') continue;
+      if (this.eventMapClosed[`${this.zone}:${ev.k}`]) return { key:ev.k, ev };
+    }
+    return null;
+  },
+  /** ยมบาทถึงประตูชายแดนแล้วหรือยัง (ระยะเดียวกับปุ่ม "เข้าด่านชายแดน") */
+  nearFrontierGate(pad = 0) {
+    return Math.hypot(this.player.x - FRONTIER.x, this.player.y - FRONTIER.y) <= FRONTIER.reach + pad;
+  },
   dismissEventAlert(key, raider = false) {
     this.eventMapClosed[`${this.zone}:${key}`] = true;
     if (raider) this.ensureEventRaider(key);
@@ -2179,7 +2261,11 @@ const API = {
     if (!foes.length) return null;
     const state = this.zoneEvents[this.zone];
     state[key] = 'active'; this.fights++;
+    // 29C: ศึกระลอกชายแดนใช้ทีมที่จัดไว้ในหน้าต่างเตรียมทีมที่ชายแดน (เดิมใช้ทีมของโต๊ะนิรา ทำให้ที่เลือกไว้ไม่มีผล)
+    const frontierTeam = ev.team === 'frontier'
+      ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
+      ...(frontierTeam.length ? { team:[...frontierTeam] } : {}),
       wave:1, pendingWave:null, foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -2982,6 +3068,7 @@ const API = {
 
     // A branch cannot keep drawing its walkers once another map is active.
     for (const walk of this.afterlifeWalks) {
+      this.releaseEscort(walk);
       if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
     }
     this.afterlifeWalks = [];
@@ -3052,12 +3139,17 @@ const API = {
     this.party = { members:[], guard:false };
     this.syncBlocks(true);
     if (!back) {
-      const gate = nearestWalk(SPOTS.bench.x, 190) || [SPOTS.bench.x, 190];
+      // ชุด 29C ข้อ 4 — ทั้งคู่เดินออกจากประตูชายแดนไปแท่นตัดสิน (เดิมเกิดที่ขอบบน (820,190) แล้วนิราติดอยู่ตรงนั้น)
+      // ยมบาทเดินไปยืนข้างบัลลังก์ · นิราไม่ต้องสั่ง: ระบบเดินของยมทูตพากลับจุดประจำ (hx,hy) เองเพราะอยู่ไกลบ้าน
+      const gate = nearestWalk(ZONE_ENTRY.gate[0], ZONE_ENTRY.gate[1]) || ZONE_ENTRY.gate;
       this.player.x = gate[0]; this.player.y = gate[1];
-      this.player.tx = SPOTS.bench.x + 60; this.player.ty = SPOTS.bench.y;
+      this.player.tx = ZONE_ENTRY.goal[0]; this.player.ty = ZONE_ENTRY.goal[1];
       this.player.path = findPath(this.player.x, this.player.y, this.player.tx, this.player.ty);
       const nira = this.crew.find(c => c.k === 'nira');
-      if (nira) { nira.x = gate[0] - 36; nira.y = gate[1] - 12; nira.path = null; nira.wait = 0; }
+      if (nira) {
+        const at = nearestWalk(ZONE_ENTRY.nira[0], ZONE_ENTRY.nira[1]) || gate;
+        nira.x = at[0]; nira.y = at[1]; nira.path = null; nira.wait = 0; nira.escort = null;
+      }
     }
     this.log(`🗺️ ${back ? 'กลับมาที่' : 'ย้ายมา'}${z.name}${z.sub ? ` — ${z.sub}` : ''}`
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
