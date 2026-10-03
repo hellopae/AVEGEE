@@ -31,3 +31,22 @@
   .st-npc-tag small:not(.reason){display:none}   /* จอแคบ: ฉากเล็ก ซ่อนคำอธิบายใต้ปุ่ม เหลือเฉพาะเหตุผลตอนปุ่มกดไม่ได้ */
   .st-drawer-x{--x-size:36px;width:36px;height:36px;font-size:16px;top:0;right:0}
 }
+
+/* ---- ปุ่ม "กลับไปคุมโซน" หลังจบศึก (ข้อ 6) — กลางฉาก ใหญ่ระดับปุ่มหลัก ----
+   ทับกฎ .fin-center เดิม (index.html: bottom:18% ปุ่มเล็ก) ด้วย selector ที่เจาะจงกว่า
+   ตำแหน่งกลางเฟรมของฉาก: พื้นว่างระหว่างยมบาทน้อย (ซ้าย) กับศัตรู (ขวา) · กล่องผลกับแถบ HUD อยู่ขอบล่างเสมอ */
+.combat-arena .fin-float.fin-center.fin-main{left:52%;top:48%;bottom:auto;transform:translate(-50%,-50%);z-index:30}
+.combat-arena .fin-main button{min-width:min(250px,72vw);min-height:60px;padding:12px 30px;font-size:clamp(18px,1.9vw,24px);
+  font-family:var(--font-display);font-weight:700;border-radius:var(--radius);
+  box-shadow:0 0 0 2px rgba(255,214,140,.55),0 6px 22px rgba(0,0,0,.65),0 0 28px rgba(255,190,90,.35)}
+@media (max-width:700px){
+  .combat-arena .fin-float.fin-center.fin-main{left:52%;top:48%;bottom:auto}
+  .combat-arena .fin-main button{min-width:min(240px,66vw);min-height:56px;font-size:19px}
+}
+
+/* ---- คัตซีนยมทูต/ยักษ์ทวารบาล (ข้อ 8) — เห็นทั้งภาพ ไม่ตกขอบ ----
+   ต้นเหตุ: ภาพโซน 2–4 เป็นสี่เหลี่ยมจัตุรัส 512×512 แต่ <img> ตั้ง width:100% height:100% ในกริดที่ความสูงเป็น auto
+   ความสูง 100% เลยตีเป็น auto = กว้างเท่ากว้างจอ (กล่องภาพจัตุรัสสูง 1439px สูงกว่าฉาก 870px) แล้วถูกฉากตัดทิ้งเกือบครึ่ง
+   (ตัวละครอยู่ล่างภาพจึงเห็นแต่หัว) — จับกล่องภาพให้เต็มฉากพอดี (absolute inset:0) แล้ว object-fit:contain เห็นครบทุกสัดส่วนจอ
+   ส่วนที่เหลือเป็นพื้นดำของ .action-cutscene เดิม (ไม่แตะ/ไม่ย้อมสีภาพ) */
+.action-cutscene.crew-cut img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center}

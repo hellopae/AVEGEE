@@ -1,4 +1,5 @@
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
+import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -1923,6 +1924,9 @@ function playActionCutscene(k, ultimate = null) {
   cut.className = ultimate ? 'action-cutscene enemy-facing'
     : ['flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
       ? 'action-cutscene right-facing' : 'action-cutscene';
+  // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
+  // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
+  if (crewKey) cut.classList.add('crew-cut');
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
@@ -1934,6 +1938,7 @@ function playActionCutscene(k, ultimate = null) {
   const finish = () => { if (done) return; done = true; cut.remove(); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
+  if (crewKey) fitCutsceneImage(cut, img);          // 29C ข้อ 8 — จัดตามส่วนที่มีภาพจริง (ไฟล์โซน 2–4 ครึ่งบนโปร่งใส)
   setTimeout(finish, ACTION_CUT_MS);
 }
 
@@ -2690,13 +2695,19 @@ function openBattle(after) {
     //  - วิญญาณขัดขืนตัวเดียว (ลากเข้าสถานี) → ลอยเหนือหัววิญญาณเป้าหมาย (ผูกกับ .fig.foe จึงตามตัวไปทุกขนาดจอ)
     //  - ศึกหลายตัว (วิญญาณแหกคุก/ระลอกชายแดน → กลับไปคุมโซน) → กลางล่างเหนือแถบ HUD ไม่ทับกล่องผลรางวัล
     // ปุ่มยังเป็น [data-fin] ตัวเดิม handler ด้านล่างผูกด้วย dlg.querySelector จึงทำงานเหมือนเดิม
-    const finRow = b.over === 'win' ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
+    // ชุด 29C ข้อ 6 — ปุ่ม "กลับไปคุมโซน" ของศึกที่กลับสู่แผนที่ (ผีบุก · เทวดาทดสอบ · แหกคุก · ชายแดนบุก) ต้องอยู่กลางจอ
+    // ใหญ่ระดับปุ่มหลัก ไม่ใช่ปุ่มเล็กมุมล่างที่ทับ/ชิดกล่องผลกับแถบ HUD (ภาพจากคุณเป้ 2 ต.ค. 2569)
+    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak'].includes(b.kind) || (b.kind === 'mob' && b.over === 'win');
+    const finRow = b.over === 'win' || (b.over && returnsToZone) ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
     if (finRow) {
       const multi = view.foes?.length > 1;
       const foeFig = !multi && b.kind === 'soul' ? stage.querySelector('.fig.foe') : null;
       if (foeFig) { finRow.classList.add('fin-float', 'fin-foe'); foeFig.appendChild(finRow); }
-      else if (multi) { finRow.classList.add('fin-float', 'fin-center'); stage.appendChild(finRow); }
+      else if (multi || returnsToZone) { finRow.classList.add('fin-float', 'fin-center', 'fin-main'); stage.appendChild(finRow); }
     }
+    // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
+    fitBattleSprites(stage, heroFace());
+    if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
