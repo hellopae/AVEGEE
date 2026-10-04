@@ -346,3 +346,131 @@ test('B8 sala → nira: EXP reaches global Nira from any zone, nobody else; orde
   g.zone = 'west'; assert.deepEqual(g.trainingTargets('sala').map(a => a.id), ['global:nira'], 'shared across branches');
   assert.equal(rec(g, 'global:nira').exp, 80);
 });
+
+// ================================================ ngiw / targets (→ dam) ==============================================
+import * as targets from '../src/minigames/training/targets.js';
+const atSlot = (e, i, off = .3) => advance(e, i * targets.SLOT + off);
+const tapKind = (e, kind) => { const spot = e.view().spots.find(s => s.kind === kind); if (spot) e.input({ type:'tap', slot:spot.slot, kind }); return spot; };
+
+test('B8 ngiw: schedule — 12 slots in 30 s, 6 thorn slots, thorn never on the mark, no repeated mark cell', () => {
+  assert.equal(targets.SLOTS * targets.SLOT, targets.SECONDS); assert.equal(TRAINING_STATIONS.ngiw.seconds, targets.SECONDS);
+  const seen = new Set();
+  for (let seed = 1; seed <= 300; seed++) {
+    const plan = targets.makeSchedule(seed);
+    assert.equal(plan.length, 12); assert.equal(plan.filter(s => s.thorn != null).length, 6);
+    plan.forEach((s, i) => {
+      assert.ok(s.cut >= 0 && s.cut < 12); assert.ok(s.thorn == null || (s.thorn >= 0 && s.thorn < 12 && s.thorn !== s.cut));
+      if (i) assert.notEqual(s.cut, plan[i - 1].cut); seen.add(s.cut);
+    });
+  }
+  assert.equal(seen.size, 12, 'every trunk cell gets used');
+});
+
+test('B8 ngiw: perfect run = 12 cuts, score 100; 8 cuts completes; 7 does not; thorns cost half a mark', () => {
+  const run = (cutSlots, thornSlots = []) => {
+    const e = createTrainingGame('ngiw', 2);
+    for (let i = 0; i < 12; i++) {
+      atSlot(e, i);
+      if (thornSlots.includes(i)) tapKind(e, 'thorn');
+      if (cutSlots.includes(i)) tapKind(e, 'cut');
+    }
+    advance(e, 30); return e;
+  };
+  const all = [0,1,2,3,4,5,6,7,8,9,10,11];
+  const perfect = run(all); assert.equal(perfect.view().done, true); assert.equal(perfect.score(), 100); assert.equal(perfect.completed(), true);
+  const eight = run(all.slice(0, 8)); assert.equal(eight.completed(), true); assert.equal(eight.score(), 67); assert.equal(scoreExp(eight.score()), 20);
+  const seven = run(all.slice(0, 7)); assert.equal(seven.completed(), false);
+  const plan = targets.makeSchedule(2), thornSlots = plan.map((s, i) => s.thorn != null ? i : -1).filter(i => i >= 0);
+  const hurt = run(all, thornSlots.slice(0, 4)); assert.equal(hurt.view().thorns, 4); assert.equal(hurt.score(), Math.round((12 - 2) / 12 * 100));
+  assert.equal(run(all, thornSlots).score(), 75, '12 cuts − 6 thorns/2 = 9/12');
+  const allThorn = run([], thornSlots); assert.equal(allThorn.score(), 0, 'score never goes negative'); assert.equal(allThorn.completed(), false);
+});
+
+test('B8 ngiw: only the visible spot counts — late, early, duplicate, wrong slot/kind and pause-cancel taps do nothing', () => {
+  const e = createTrainingGame('ngiw', 2);
+  assert.equal(e.view().spots.length >= 1, true, 'first mark is up immediately');
+  advance(e, .2); assert.ok(tapKind(e, 'cut')); assert.equal(e.view().cuts, 1);
+  e.input({ type:'tap', slot:1, kind:'cut' }); assert.equal(e.view().cuts, 1, 'wrong slot');
+  const before = e.view().cuts; for (const bad of [null, 'hit', 'cancel', { type:'tap', slot:1, kind:'x' }, { type:'tap' }, { type:'tap', slot:1 }]) e.input(bad);
+  assert.equal(e.view().cuts, before);
+  const spot = e.view().spots.find(s => s.kind === 'thorn');
+  if (spot) { e.input({ type:'tap', slot:1, kind:'thorn' }); assert.equal(e.view().thorns, 0); }
+  advance(e, 2.5 + targets.LIFE + .05);                     // slot 2's mark has expired
+  assert.equal(e.view().spots.length, 0); e.input({ type:'tap', slot:2, kind:'cut' }); assert.equal(e.view().cuts, 1);
+  advance(e, 2 * 2.5 + .1); const s3 = e.view().spots.find(s => s.kind === 'cut');
+  e.input({ type:'tap', slot:s3.slot, kind:'cut' }); e.input({ type:'tap', slot:s3.slot, kind:'cut' }); assert.equal(e.view().cuts, 2, 'a mark cannot be cut twice');
+  advance(e, 30); e.input({ type:'tap', slot:12, kind:'cut' }); assert.equal(e.view().cuts, 2);
+  const n = createTrainingGame('ngiw', 2); n.step(NaN); n.step(-1); assert.equal(n.view().time, 0);
+});
+
+test('B8 ngiw: host — spots are real ≥ buttons, pointer + click both work once, pause blocks, abandon cleans up', () => withDom(doc => {
+  const f = frames(), host = new FakeEl('div'), results = [];
+  let paused = false, alive = true, abandoned = 0;
+  const plan = targets.makeSchedule(2);
+  const stop = runTraining(host, { station:'ngiw', session:{ id:'n1', seed:2 }, paused:() => paused, alive:() => alive,
+    onResult:r => results.push(r), onAbandon:() => abandoned++, raf:f.raf, caf:f.caf });
+  const trunk = host.children[1], info = host.children[0];
+  let t = 0; const run = until => { while (t < until) { t += 50; f.step(t); } };
+  f.step(0); run(200);
+  const spots = () => trunk.children.filter(n => n.tag === 'button');
+  assert.ok(spots().some(b => b.attrs.class.includes('cut')));
+  paused = true; run(300); assert.ok(spots().every(b => b.disabled));
+  spots().forEach(b => { b.dispatchEvent(new Event('pointerdown')); b.dispatchEvent(new Event('click')); });
+  paused = false; run(400); assert.ok(info.textContent.includes('0/8'), 'paused taps did not score');
+  for (let i = 0; i < 12; i++) {
+    run(i * 2500 + 300);
+    for (const b of spots().filter(s => s.attrs.class.includes('cut'))) { b.dispatchEvent(new Event('pointerdown')); b.dispatchEvent(new Event('click')); }
+  }
+  run(31000);
+  assert.equal(results.length, 1); assert.equal(results[0].completed, true); assert.equal(results[0].score, 100); assert.equal(f.pending, false);
+  stop();
+  const g2 = frames(), h2 = new FakeEl('div'); let gone = 0;
+  runTraining(h2, { station:'ngiw', session:{ id:'n2', seed:2 }, paused:() => false, alive:() => false, onResult:() => assert.fail('result'), onAbandon:() => gone++, raf:g2.raf, caf:g2.caf });
+  g2.step(0); assert.equal(gone, 1); assert.equal(g2.pending, false);
+}));
+
+test('B8 ngiw → dam: EXP reaches only the selected Dam; cancel/wrong id/repeat pay nothing; zones keep separate Dam', () => {
+  const g = game();
+  assert.deepEqual(g.trainingTargets('ngiw').map(a => a.id), ['th:dam']);
+  const s = g.startTraining('ngiw', 'th:dam');
+  assert.equal(g.finishTraining({ sessionId:s.id + 'x', completed:true, score:100 }), null);
+  assert.equal(g.cancelTraining(s.id).exp, 0); assert.equal(rec(g, 'th:dam').exp, 0);
+  g.tick = 30; assert.equal(win(g, 'ngiw', 'th:dam', 67).exp, 20);
+  for (const other of ['th:taan','th:kan','th:boon','th:plerng','th:guard',HERO_TRAINING_ID,'global:nira']) assert.equal(rec(g, other)?.exp ?? 0, 0, other);
+  const before = g.allyStats(g.roster['th:dam']).dmg;
+  g.tick = 130; win(g, 'ngiw', 'th:dam', 100);
+  assert.equal(rec(g, 'th:dam').exp, 60); assert.ok(g.trainingWhy('ngiw', 'th:dam').includes('cap'), 'zone 1 cap is level 2');
+  assert.ok(g.allyStats(g.roster['th:dam']).dmg > before, 'Dam attack follows the real progression');
+  const h = game('asia'); assert.deepEqual(h.trainingTargets('ngiw').map(a => a.id), ['asia:dam']);
+});
+
+test('B8 all 8 training stations are playable: registry, kinds, seconds, trainee kinds and mobile-safe durations', () => {
+  assert.deepEqual(Object.keys(TRAINING_STATIONS).sort(), [...ALL].sort());
+  for (const k of ALL) {
+    assert.ok(TRAINING_GAMES[k], `${k} has a game`);
+    const e = createTrainingGame(k, 1); assert.equal(typeof e.step, 'function'); assert.equal(typeof e.input, 'function'); assert.equal(typeof e.view, 'function'); assert.equal(typeof e.score, 'function');
+    const seconds = TRAINING_GAMES[k].seconds || 30;
+    assert.equal(seconds, TRAINING_STATIONS[k].seconds, `${k} duration matches the station table`);
+    assert.ok(seconds >= 20 && seconds <= 60);
+    const g = game(); assert.ok(g.trainingTargets(k).length >= 1, `${k} has a trainee`);
+    // every station: finish pays the selected trainee exactly once, cancel pays nothing, duplicate result pays nothing
+    const id = g.trainingTargets(k)[0].id, s = g.startTraining(k, id);
+    assert.equal(g.cancelTraining(s.id).exp, 0);
+    g.tick = 30; const s2 = g.startTraining(k, id), r = { sessionId:s2.id, completed:true, score:100 };
+    assert.equal(g.finishTraining(r).exp, 40); assert.equal(g.finishTraining(r), null);
+  }
+  const expTarget = { dab:HERO_TRAINING_ID, lan:'th:taan', lokan:'th:guard', krata:'th:plerng', krajok:'th:kan', sawan:'th:boon', sala:'global:nira', ngiw:'th:dam' };
+  for (const [k, id] of Object.entries(expTarget)) assert.ok(game().trainingTargets(k).some(a => a.id === id), `${k} → ${id}`);
+});
+
+test('B8 every new game: closing mid-play leaves no frame/listener behind and an old save loads without B8 data', () => withDom(doc => {
+  for (const station of ['krajok','sawan','sala','ngiw']) {
+    const f = frames(), host = new FakeEl('div'); let alive = true, abandoned = 0;
+    const stop = runTraining(host, { station, session:{ id:station, seed:3 }, paused:() => false, alive:() => alive, onResult:() => {}, onAbandon:() => abandoned++, raf:f.raf, caf:f.caf });
+    f.step(0); f.step(50); stop(); assert.equal(f.pending, false, `${station}: frame cancelled`);
+    doc.hidden = true; doc.dispatchEvent(new Event('visibilitychange'));   // listener already removed: must not throw or react
+    doc.hidden = false; alive = false; stop(); assert.equal(abandoned, 0);
+  }
+  const g = game(), snap = JSON.parse(JSON.stringify(g.snapshot())); delete snap.training;
+  const h = game(); assert.equal(h.restore(snap), true); assert.equal(h.training.activeSession, null);
+}));
