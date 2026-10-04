@@ -156,12 +156,27 @@ export function planCutscene({ cw, ch }, { nw, nh }, box) {
            left:(cw - bw * s) / 2 - b.l * nw * s, top:(ch - bh * s) / 2 - b.t * nh * s };
 }
 
+/** ชุด 30B ข้อ 10 — ภาพคัตซีนทึบเต็มเฟรม (ไฟล์ JPEG ของยมทูต/ยักษ์โซน 1–4) ถ้าใช้ contain บนฉากที่สัดส่วนต่างจากภาพ
+ *  จะเกิดแถบดำบน/ล่าง → ให้ "เต็มกรอบ" (cover) เมื่อส่วนที่ต้องตัดไม่เกิน maxCrop ของด้านใดด้านหนึ่ง (ตัวละครอยู่กลางภาพ ตัดแค่ขอบ)
+ *  กรอบแคบ/แนวตั้ง (ตัดเกิน maxCrop → จะตัดหน้าตัวละคร) คืน null ให้ใช้ contain ตามเดิม · ใช้กับภาพที่ส่วนมีเนื้อเต็ม ≥ 98% เท่านั้น
+ *  ไม่แตะไฟล์ภาพ — คำนวณขนาด/ตำแหน่งกล่องเท่านั้น */
+export function planCutsceneCover({ cw, ch }, { nw, nh }, box, maxCrop = 0.15) {
+  if (!(cw > 0 && ch > 0 && nw > 0 && nh > 0)) return null;
+  if (box && (box.w < 0.98 || box.h < 0.98)) return null;
+  const s = Math.max(cw / nw, ch / nh);
+  const crop = Math.max(0, 1 - Math.min(cw / (nw * s), ch / (nh * s)));   // สัดส่วนที่ล้นกรอบของด้านที่ถูกตัด
+  if (crop > maxCrop) return null;
+  return { scale:s, width:nw * s, height:nh * s, left:(cw - nw * s) / 2, top:(ch - nh * s) / 2, crop };
+}
+
 /** ปรับรูปคัตซีนที่เพิ่งใส่เข้า .action-cutscene — รอภาพโหลดแล้ววัด · วัดไม่ได้ (file://) ก็ปล่อยตาม CSS contain */
 export function fitCutsceneImage(cut, img) {
   measure(img).then(box => {
     if (!box || !cut.isConnected) return;
     const r = cut.getBoundingClientRect();
-    const p = planCutscene({ cw:r.width, ch:r.height }, { nw:img.naturalWidth, nh:img.naturalHeight }, box);
+    const dims = { cw:r.width, ch:r.height }, nat = { nw:img.naturalWidth, nh:img.naturalHeight };
+    // คัตซีนยมทูต/ยักษ์ (crew-cut) ภาพทึบเต็มเฟรม → เต็มกรอบไม่มีแถบดำ ถ้าตัดขอบไม่เกินเกณฑ์ (ดู planCutsceneCover)
+    const p = (cut.classList.contains('crew-cut') && planCutsceneCover(dims, nat, box)) || planCutscene(dims, nat, box);
     img.style.setProperty('position', 'absolute', 'important');
     img.style.setProperty('inset', 'auto', 'important');          // ต้องมาก่อน left/top (inset เป็นตัวย่อที่ล้างค่าทั้งสี่ด้าน)
     for (const [k, v] of Object.entries({ left:p.left, top:p.top, width:p.width, height:p.height }))

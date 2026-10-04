@@ -799,6 +799,9 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
   /* ภาพคัตซีนเดิมวาดยมบาทน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
   transform:scaleX(-1)}
+/* ชุด 30B ข้อ 10 — คัตซีนยมทูต/ยักษ์ (ภาพ 16:9 ทึบ): จอกว้างให้ภาพเต็มกรอบ (ดู planCutsceneCover ใน battle-scale.js)
+   จอแนวตั้งตัดไม่ได้โดยไม่เสียหน้าตัวละคร → หดกรอบให้ได้สัดส่วนภาพ กลางจอ ไม่เหลือแถบดำในกรอบ */
+@media(max-aspect-ratio:1/1){.action-cutscene.crew-cut{inset:auto 0;top:50%;height:auto;aspect-ratio:16/9;translate:0 -50%}}
 .action-cutscene.right-facing img{transform:none;animation-name:actionRushRight}
 .action-cutscene.enemy-facing img{transform:none;animation-name:actionRushEnemy}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;

@@ -140,3 +140,19 @@ test('30B-9: บุญเติมบารมีจริงตามเดิ�
   assert.equal(g.battleAct('crew:boon'), true);
   assert.ok(g.battle.youHp > 40);
 });
+
+import { planCutsceneCover } from '../src/battle-scale.js';
+
+test('30B-10: คัตซีนยมทูต เต็มกรอบเมื่อจอกว้าง · แถบดำหายไป · จอแนวตั้งถอยไป contain ไม่ตัดหน้าตัวละคร', () => {
+  const nat = { nw:1672, nh:941 };          // 16:9 ภาพทึบ
+  const full = { l:0, t:0, w:1, h:1 };
+  for (const [cw, ch] of [[1254, 774], [1414, 874]]) {
+    const p = planCutsceneCover({ cw, ch }, nat, full);
+    assert.ok(p, `${cw}x${ch}`);
+    assert.ok(p.width >= cw - 0.5 && p.height >= ch - 0.5, 'ภาพคลุมกรอบทั้งหมด = ไม่มีแถบดำ');
+    assert.ok(p.crop <= 0.15);
+    assert.ok(Math.abs(p.left + p.width / 2 - cw / 2) < 0.5, 'ตัดสองข้างเท่ากัน');
+  }
+  assert.equal(planCutsceneCover({ cw:390, ch:844 }, nat, full), null, 'มือถือแนวตั้ง: ตัดเกินเกณฑ์ → contain');
+  assert.equal(planCutsceneCover({ cw:1254, ch:774 }, { nw:512, nh:512 }, { l:0, t:.5, w:1, h:.5 }), null, 'ภาพโปร่งใสบางส่วน (ครึ่งล่าง) ไม่ใช้ cover');
+});
