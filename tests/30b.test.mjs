@@ -120,3 +120,23 @@ test('30B-8: หัวใจสำรองไม่ใช้ภาพกล่�
   assert.equal(ITEMS.spareHeart.glyph, '❤️');
   assert.equal(ITEMS.spareHeart.revive, true);
 });
+
+test('30B-9: โค้ดเรืองแสงเติมบารมีของบุญ — เฉพาะ crew:boon, 0.6–1 วิ, เคารพ reduced-motion', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const ms = Number(ui.match(/const HEAL_GLOW_MS = (\d+)/)[1]);
+  assert.ok(ms >= 600 && ms <= 1000, `HEAL_GLOW_MS=${ms}`);
+  assert.match(ui, /k === 'crew:boon' && g\.battle\.youHp > hpBefore/);
+  assert.match(css, /\.arena \.fig\.you\.healing::after/);
+  assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{\s*\.arena \.fig\.you\.healing::after\{animation:none/);
+});
+
+test('30B-9: บุญเติมบารมีจริงตามเดิม (ตัวเลขสมดุลไม่ถูกแตะ)', () => {
+  const g = createGame();
+  g.battle = { kind:'mob', youHp:40, youMax:100, over:null, log:[], turn:1, dmg:null, talk:'',
+    foes:[{ id:'f', who:'x', hp:9999, maxHp:9999, atk:[0, 0], stun:0, confuse:0 }], selectedFoeId:'f' };
+  g.coin = 9999; assert.equal(g.hire('boon'), true);
+  g.party = { members:['boon'], guard:false };
+  assert.equal(g.battleAct('crew:boon'), true);
+  assert.ok(g.battle.youHp > 40);
+});

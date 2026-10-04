@@ -74,6 +74,7 @@ const INTENSITY = INTENSITY_NAME;
 // ข้อ C ชุดที่ 7 (24 ก.ย. 2569 เย็น) — 2000ms (รวมกับอนิเมชัน 780ms ของเรา ≈2.8 วิ) ทำให้ดูค้างเกินไป
 // ลดเหลือ 800ms (รวม ≈1.58 วิ) — ยังพอเห็นดาเมจ/แถบเลือดของเรานิ่งอยู่ก่อนโดนตีสวน แต่ไม่รู้สึกหยุดเกม
 const COUNTER_WAIT_MS = 800;
+const HEAL_GLOW_MS = 900;   // ชุด 30B ข้อ 9 — เรืองแสง 0.6–1 วินาที
 const PHASE_GUARD_MS = 3000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS(800) + 780(อนิเมชันเขา) ≈2360 พอมีระยะปลอดภัย
 
 const g = createGame();
@@ -2580,6 +2581,28 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
+  // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
+  let healFx = null, healTimer = 0;
+  const applyHealFx = () => {
+    const h = healFx, fig = dlg.querySelector('.fig.you');
+    if (!h || !fig) return;
+    const el = Date.now() - h.start;
+    if (el < 0 || el >= h.ms) { if (el >= h.ms) healFx = null; return; }
+    fig.classList.add('healing');
+    fig.style.setProperty('--heal-delay', `${-el}ms`);
+    if (!fig.querySelector('.heal-num')) fig.insertAdjacentHTML('beforeend', `<span class="heal-num" style="animation-delay:${-el}ms">+${h.amount}</span>`);
+  };
+  const scheduleHealFx = () => {
+    clearTimeout(healTimer);
+    healTimer = setTimeout(() => {
+      applyHealFx();
+      healTimer = setTimeout(() => {          // ครบเวลา — เก็บ class/ตัวเลขออก (กรณีไม่มีการวาดใหม่มาเก็บให้)
+        healFx = null;
+        const fig = dlg.querySelector('.fig.you');
+        fig?.classList.remove('healing'); fig?.querySelector('.heal-num')?.remove();
+      }, healFx ? healFx.ms : 0);
+    }, Math.max(0, healFx.start - Date.now()));
+  };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
   const paint = () => {
@@ -2800,6 +2823,7 @@ function openBattle(after) {
       else if (multi || returnsToZone) { finRow.classList.add('fin-float', 'fin-center', 'fin-main'); stage.appendChild(finRow); }
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
+    applyHealFx();
     fitBattleSprites(stage, heroFace());
     if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
@@ -2839,7 +2863,14 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const k = el.dataset.act;
+      const hpBefore = g.battle.youHp;
       if (!g.battleAct(k)) return;
+      // ชุด 30B ข้อ 9 — บุญ (ยมทูตสายเติมเลือด) เติมบารมี: ยมบาทน้อยเรืองแสงเขียว-ทอง + เลข +HP ลอยขึ้น
+      // เริ่มตอนภาพคั่นท่าพิเศษจางลงพอดี (ไม่งั้นอยู่ใต้ภาพคั่นที่ทับเต็มกรอบ)
+      if (k === 'crew:boon' && g.battle.youHp > hpBefore) {
+        healFx = { amount: Math.round(g.battle.youHp - hpBefore), start: Date.now() + ACTION_CUT_MS - 200, ms: HEAL_GLOW_MS };
+        scheduleHealFx();
+      }
       sfx(powerSfx(k, g.abilities));            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit'
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
