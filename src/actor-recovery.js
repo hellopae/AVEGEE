@@ -14,3 +14,7 @@ export function recoverActor(actor, now, safePoint) {
   [actor.x,actor.y] = safePoint; actor.path = null;
   return true;
 }
+/** รวมน้ำหนักเป้าทั้งหมดของฝั่งเรา (ยมบาท 2 + crew 1 + Guard 3) — ใช้คำนวณตัวคูณสมดุลของศัตรู */
+export function targetWeight(crew, guard) {
+  return 2 + crew.filter(actorStanding).length + (actorStanding(guard) ? 3 : 0);
+}

@@ -1,8 +1,8 @@
-import { actorStanding, specialCooldown, weightedTarget, recoverActor, RECOVERY_MS } from './actor-recovery.js';
+import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { FINAL_EVENT } from './data.js';
+import { FINAL_EVENT, TEAM_PRESSURE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -409,9 +409,15 @@ const API = {
 
   actorStanding(actor) { return actorStanding(actor); },
   guardActive() { return actorStanding(this.guard); },
-  enemyTarget() {
+  enemyGuard() {
     const b = this.battle;
-    return weightedTarget(this.battleCrew(), this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null);
+    return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
+  },
+  enemyTarget() { return weightedTarget(this.battleCrew(), this.enemyGuard()); },
+  /** B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ทำให้ยมบาทรอดง่ายขึ้น — ชดเชยด้วย TEAM_PRESSURE (data.js) */
+  teamPressure(B) {
+    const share = TEAM_PRESSURE.share[B.encounter] ?? TEAM_PRESSURE.share[B.eventKey] ?? TEAM_PRESSURE.share[B.kind] ?? TEAM_PRESSURE.share.default;
+    return 1 + share * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1);
   },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
@@ -3037,7 +3043,7 @@ const API = {
       say('ศัตรูถูกผนึกน้ำแข็ง ขยับไม่ได้ทั้งตา');
     }
     else {
-      const normal = foeAtkRoll();
+      const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
       let ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.

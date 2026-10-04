@@ -7,6 +7,7 @@ export function finalGame() {
 }
 export function win(g) {
   g.battle.youHp = g.battle.youMax; // State transitions tested independently of attrition.
+  for (const f of g.battle.foes) f.atk = [0, 0];   // B5-R: ไม่ให้ลูกน้องล้มกลางทางจากการสุ่มเป้า (ตัวคูณสมดุลทำให้โดนแรงขึ้น)
   for (let i = 0; g.battle.foes.some(f => f.hp > 0) && i < 30; i++) {
     const f = g.battle.foes.find(f => f.hp > 0); g.selectFoe(f.id); f.hp = 1;
     assert.equal(g.battleAct('atk'), true);

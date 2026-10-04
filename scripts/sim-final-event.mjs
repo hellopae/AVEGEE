@@ -1,7 +1,8 @@
 // Reproducible B2b comparison using actual battle actions and the B1 save roster.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
-import { BATTLE, LEVELS } from '../src/data.js';
+import { BATTLE, LEVELS, TRAINING_RULES } from '../src/data.js';
+import { normalizeTraining } from '../src/progression.js';
 const fixture=JSON.parse(readFileSync(new URL('../tests/fixtures/b1-v3.json',import.meta.url)));
 const ids=['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
 const encounters=['ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
@@ -14,7 +15,11 @@ function game(id,trained) {
   const g=createGame(); g.restore(structuredClone(fixture));
   g.zone='cyberhell'; g.zoneEvents.cyberhell={cyberRescue:'cleared',cyberBreach:'cleared',cyberFinal:'active'};
   g.bossCleared={th:true,asia:true,west:true};
-  for(const c of Object.values(g.roster)) {c.morale=92;c.upLv=trained;c.statTraining={raeng:trained,rabiab:trained,panya:trained,metta:trained};c.helpReadyAt=0;c.recoverUntil=0;}
+  // B4: พลังฝึกมาจาก g.training (EXP ต่อคน) ไม่ใช่ upLv — trained = ระดับฝึกที่ต้องการ-1 ของทุกคนที่ลงทีม (0 = ไม่ฝึก = ระดับ 1)
+  for(const c of Object.values(g.roster)) {c.morale=92;c.helpReadyAt=0;c.recoverUntil=0;}
+  const exp=TRAINING_RULES.exp[Math.min(trained,TRAINING_RULES.exp.length-1)], zones={};
+  for(const id of ids) { const [zone]=id.split(':'); (zones[zone] ||= {})[id]={exp,readyAtTick:0,attempts:{}}; }
+  g.training=normalizeTraining({shared:{'global:yama':{exp},'global:nira':{exp}},zones});
   g.finalEvent={version:1,migrationVersion:1,phase:'staging',minionsCleared:4,
     rulersCleared:encounters.slice(0,encounters.indexOf(id)).filter(x=>x.startsWith('ruler:')).map(x=>x.split(':')[1]),
     rewardLedger:{},pendingReward:null,activeEncounter:null,reinforcementsSeen:true};
@@ -53,10 +58,10 @@ try {
   for(const trained of [0,4]) for(const id of encounters) for(const adds of [false,true]) {
     const samples=Array.from({length:100},(_,i)=>run(id,adds,trained,2800+i));
     const mean=k=>Number((samples.reduce((sum,s)=>sum+s[k],0)/samples.length).toFixed(2));
-    rows.push({encounter:id,upLv:trained,adds,wins:samples.filter(s=>s.win).length,samples:100,
+    rows.push({encounter:id,trainLevel:trained+1,adds,wins:samples.filter(s=>s.win).length,samples:100,
       meanTurns:mean('turns'),meanHealthUsed:mean('health'),meanWaterUsed:mean('water'),meanRewardCoin:mean('coin'),meanHp:mean('hp')});
   }
 } finally {Math.random=originalRandom;Date.now=originalNow;}
-const result={method:'100 paired seeds 2800–2899 per encounter; level 5; six cross-zone helpers; morale 92; full HP/MP after map rest; two health and two holyWater; simulated 3s active battle time per turn; wall-clock actor recovery; no Guard; upLv 0 and 4. Enemy stats unchanged. Before = same encounter with adds removed.',rows};
-writeFileSync(new URL('../output/Toby/b5-final-after-details.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+const result={method:'100 paired seeds 2800–2899 per encounter; level 5; six cross-zone helpers; morale 92; full HP/MP after map rest; two health and two holyWater; simulated 3s active battle time per turn; wall-clock actor recovery; no Guard; training level 1 and 5 via g.training. Enemy stats unchanged. Before = same encounter with adds removed.',rows};
+if(process.argv[2]) writeFileSync(process.argv[2],JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(rows,null,2));
