@@ -382,9 +382,12 @@ export function render(ctx, g, t, hover, sel) {
     mapStandee(ctx, ITEMS.tea.img, camp.x, camp.y, 50, t, '🍵');
     label(ctx, 'ค่ายพัก · นอนฟื้นบารมี', camp.x, camp.y + 15, 11, '#f7c371');
   });
+  // ผู้ท้าชิงยืนห่างกันแค่ 80px (และไล่ลงทีละ 20px) แต่ป้ายชื่อยาวกว่านั้น → ตัวคี่วางป้ายไว้เหนือหัว ตัวคู่ไว้ใต้เท้า
+  // ตัดสินจากตำแหน่ง x (คงที่แม้ตัวก่อนหน้าถูกปราบไปแล้ว) · ตัดคำว่า "รอ" ออก (ป้ายสีเทา = ยังไม่ถึงคิว)
   for (const a of finalEventActors(g)) at(a.y, () => {
     drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
-    label(ctx, `${a.name}${a.reinforcement ? '' : a.enabled ? ' · พร้อมสู้' : ' · รอ'}`, a.x, a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
+    const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
+    label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
   });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
