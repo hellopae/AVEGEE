@@ -3529,6 +3529,16 @@ function onSceneClick(sx, sy) {
     else g.log(`${FRONTIER.name}อยู่ในจุดที่เดินไปไม่ถึง`, 'bad');
     return;
   }
+  // B2b: ผู้ท้าชิง/ค่ายพักของศึกสุดท้ายมาก่อนป้ายสร้างอาคาร — ดงต้นงิ้วที่ยังไม่สร้างมีกรอบคลิกทับหัวหน้าโซน 3 อยู่
+  if (g.finalEventOnMap()) {
+    const fa = hitActor(g, sx, sy);
+    if (fa?.kind === 'finalRest') {
+      if (Math.hypot(g.player.x-fa.x,g.player.y-fa.y) <= INTERACTION_REACH) openStation('tea', true);
+      else g.walkTo(fa.x,fa.y);
+      return;
+    }
+    if (fa?.kind === 'finalEncounter') return openFinalEncounter(fa.key);
+  }
   const def = hitStation(sx, sy);
   const st = def && g.stations.find(x => x.def.k === def.k);
 
@@ -3555,12 +3565,6 @@ function onSceneClick(sx, sy) {
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
   if (a) {
-    if (a.kind === 'finalRest') {
-      if (Math.hypot(g.player.x-a.x,g.player.y-a.y) <= INTERACTION_REACH) openStation('tea', true);
-      else g.walkTo(a.x,a.y);
-      return;
-    }
-    if (a.kind === 'finalEncounter') return openFinalEncounter(a.key);
     if (a.kind === 'station') { enterStation(a.key); return; }
     if (a.kind === 'zoneEvent') {
       if (a.key === 'devaTest') return openDevaAlert();
