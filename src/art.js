@@ -67,12 +67,12 @@ fetch('img/manifest.json?v=20261004-30f-art', { cache: 'no-cache' })
 const POSE = /-(build-work|profile|work|atk|side|walk|cry)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
 
-/** path ของไฟล์ที่ต้องใช้กับคีย์นี้ในโซนตอนนี้
+/** path ของไฟล์ที่ต้องใช้กับคีย์นี้ — sourceZone ใช้โซนต้นทางของหน่วย (ไม่ระบุ = โซนปัจจุบัน)
  *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
-export function artUrl(key, ext = 'png') {
-  const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
+export function artUrl(key, ext = 'png', sourceZone = null) {
+  const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   const map = ZMAP[z];
   if (key === 'hero-yama-unconscious') return yamaDownImage(z);
   if (key === 'hero-yama-tea-clean') return `img/hero-yama-${z}-tea-clean.png`;

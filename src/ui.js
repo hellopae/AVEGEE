@@ -1856,6 +1856,8 @@ function onDlgClose(fn) {
  *  ฉากหลังคือ img/BG-Turn-Base.webp (เจ้าของวาดมาให้ 8 ก.ย. 2569)
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
+const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
+const crewArt = (c, pose = '') => artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
@@ -1903,7 +1905,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
-  return `<div class="arena${hp ? ' combat-arena' : ''}" style="background-image:url('${esc(bg)}')">
+  return `<div class="arena${hp ? ' combat-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}" style="background-image:url('${esc(bg)}')">
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -1911,13 +1913,13 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
     <div class="ttl">${esc(title)}</div>
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
-      <img src="${artUrl('crew-' + helper.k)}" class="${teamFaceClass(artUrl('crew-' + helper.k))}" alt=""
-           onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
+      <img src="${crewArt(helper)}" class="${teamFaceClass(crewArt(helper))}" alt=""
+           onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(c.k)}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ">
-      <img src="${artUrl('crew-' + c.k)}" class="${teamFaceClass(artUrl('crew-' + c.k))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown(c, g.crewCooldown(c), BATTLE.crewCd)
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ">
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), BATTLE.crewCd)
       }</span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
@@ -1977,8 +1979,9 @@ function actionCutsceneSrc(k) {
 
 /** Crew and Guard use their branch's action art, regardless of Yama's outfit. */
 function crewCutsceneSrc(k) {
-  const scene = regionalCrewCutscene(k, g.zone);
-  return { src:scene.src, fallback:scene.regional ? artUrl(`crew-${k}`) : null };
+  const actor = g.roster[k], kind = actor?.kind || k, zone = actor?.homeZone || g.zone;
+  const scene = regionalCrewCutscene(kind, zone);
+  return { src:scene.src, fallback:scene.regional ? artUrl(`crew-${kind}`, 'png', zone) : null };
 }
 
 // ข้อ E คุณเป้ 24 ก.ย. 2569: 580ms เร็วเกินจะทันเห็น (ภาพขึ้นจริงแต่กระพริบผ่านไป)
@@ -2320,17 +2323,20 @@ function openNiraOffice() {
   }
   pauseForDlg();
   const paint = () => {
-    const party = g.party?.members || [];
+    const final = g.finalTeamSelection(), max = final ? g.teamLimits.finalTeamMax : g.teamLimits.normalTeamMax;
+    const party = (final ? g.party?.finalMembers : g.party?.members) || [];
+    const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
-      <p class="hint">เลือกยมทูตเข้าทีมต่อสู้ได้ 2 คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
+      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
       <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
-      <div class="market-grid">${CREW.filter(c => !c.reader).map(def => {
-        const c = g.crew.find(x => x.k === def.k), on = c && party.includes(c.k);
-        return `<article class="shop-card"><img src="${artUrl('crew-' + def.k + '-profile') || artUrl('crew-' + def.k)}" alt="">
-          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>
+      <div class="market-grid">${candidates.map(def => {
+        const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
+        const why = final ? g.finalTeamWhy(c) : '';
+        return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
+          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? hungerWidget(c) : ''}</span>
-          ${c ? `<button data-party="${c.k}" class="sm" ${!on && party.length >= 2 ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
+          ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
       }).join('')}
@@ -2730,7 +2736,7 @@ function openBattle(after) {
     })() : '';
     const crewHelperBtns = battleHelpers.map(c => {
       const why=g.crewHelpWhy(c);
-      return `<button class="orb-choice" data-act="crew:${c.k}" data-crew-action="${c.k}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${artUrl('crew-'+c.k+'-profile') || artUrl('crew-'+c.k)}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
+      return `<button class="orb-choice" data-act="crew:${crewBattleKey(c)}" data-crew-action="${crewBattleKey(c)}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${crewArt(c, '-profile')}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
     }).join('');
     const crewActions = (crewHelperBtns + guardBtn) || '<span class="idle">ยังไม่มีทีม — จัดทีมยมทูตก่อนเข้าสู้ครั้งถัดไป</span>';
     const acts = rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
@@ -2792,9 +2798,9 @@ function openBattle(after) {
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
           const duration = c.k === 'guard' ? GUARD.battleCd : BATTLE.crewCd;
-          return `<button class="battle-portrait" data-crew-pick="${esc(c.k)}" aria-label="${esc(c.name)}">
-            <img src="${esc(artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k))}" alt=""><b>${esc(c.name)}</b>
-            <span data-crew-ready="${esc(c.k)}">${meter(duration - remaining, duration, 'ready', c.name)}</span>
+          return `<button class="battle-portrait" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}">
+            <img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
+            <span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
           </button>`;
         }).join('')}
         <div class="battle-portrait hero"><img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
@@ -2836,8 +2842,8 @@ function openBattle(after) {
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
     applyHealFx();
-    fitBattleSprites(stage, heroFace());
-    if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
+    if (!g.isFinalBattle()) fitBattleSprites(stage, heroFace());
+    if (!g.isFinalBattle() && typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
@@ -2874,9 +2880,11 @@ function openBattle(after) {
     };
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
-      const k = el.dataset.act;
+      const action = el.dataset.act;
+      const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
+      const k = actor ? 'crew:' + actor.k : action;
       const hpBefore = g.battle.youHp;
-      if (!g.battleAct(k)) return;
+      if (!g.battleAct(action)) return;
       // ชุด 30B ข้อ 9 — บุญ (ยมทูตสายเติมเลือด) เติมบารมี: ยมบาทน้อยเรืองแสงเขียว-ทอง + เลข +HP ลอยขึ้น
       // เริ่มตอนภาพคั่นท่าพิเศษจางลงพอดี (ไม่งั้นอยู่ใต้ภาพคั่นที่ทับเต็มกรอบ)
       if (k === 'crew:boon' && g.battle.youHp > hpBefore) {
@@ -2895,7 +2903,7 @@ function openBattle(after) {
       const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
       paint();
-      playActionCutscene(k);
+      playActionCutscene(action);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -2978,13 +2986,13 @@ function openBattle(after) {
   const crewTimer = setInterval(() => {
     for (const c of g.battleCrew()) {
       const remaining=g.crewCooldown(c), progress=100*(1-remaining/BATTLE.crewCd);
-      const ready=dlg.querySelector(`[data-crew-ready="${c.k}"] .battle-meter`);
+      const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
       if(ready){ready.setAttribute('aria-valuenow',Math.round(BATTLE.crewCd-remaining));ready.querySelector('i').style.width=progress+'%';}
-      const bar=dlg.querySelector(`[data-cooldown="${c.k}"]`);
+      const bar=dlg.querySelector(`[data-cooldown="${crewBattleKey(c)}"]`);
       if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
-      const label=dlg.querySelector(`[data-cooldown-label="${c.k}"]`);
+      const label=dlg.querySelector(`[data-cooldown-label="${crewBattleKey(c)}"]`);
       if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
-      const button=dlg.querySelector(`[data-crew-action="${c.k}"]`);
+      const button=dlg.querySelector(`[data-crew-action="${crewBattleKey(c)}"]`);
       if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c.k);}
     }
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.battleCd) แยกจากยมทูต

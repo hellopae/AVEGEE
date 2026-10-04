@@ -367,3 +367,34 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .trial-hud .court-wheel .options-1:has(.trial-empty-hint){left:0;top:auto;bottom:calc(100% + 12px);width:min(340px,100%);max-width:100%;max-height:26vh;overflow-y:auto;box-sizing:border-box}
   .trial-hud .court-wheel .options-1 .trial-empty-hint{box-sizing:border-box;width:100%;overflow-wrap:anywhere;flex:0 0 100%}
 }
+
+/* B2: six branch-owned helpers, with Yama and Guard in the front rank. */
+.arena.combat-arena.final-team .battle-squad,
+.arena.combat-arena.final-team .battle-squad.trio{
+  left:3%;bottom:38%;top:auto;width:31%;max-width:none;height:29%;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3px 8px;
+}
+.arena.combat-arena.final-team .battle-squad>span{height:100%;min-width:0}
+.arena.combat-arena.final-team .battle-squad>span:nth-child(n+4):not(.guard){transform:translateX(18%)}
+.arena.combat-arena.final-team .battle-squad>span.guard{position:absolute;left:38%;bottom:-47%;width:30%;height:85%}
+.arena.combat-arena.final-team>.fig.you{left:27%;bottom:27%;width:13%}
+.arena.combat-arena.final-team .battle-team-hud{
+  left:3%;bottom:2%;width:64%;max-width:none;gap:8px;
+}
+.arena.combat-arena.final-team .battle-portrait{flex:1 1 0;min-width:72px;max-width:110px}
+.arena.combat-arena.final-team .battle-portrait small{display:block;font-size:10px}
+.arena.combat-arena.final-team .battle-boss-hud{right:2%;width:28%}
+.arena.combat-arena.final-team .options-2{max-height:210px;overflow-y:auto}
+@media(max-width:700px){
+  .arena.combat-arena.final-team{min-height:600px}
+  .arena.combat-arena.final-team .battle-squad,.arena.combat-arena.final-team .battle-squad.trio{left:2%;width:45%;bottom:41%;height:23%;gap:3px}
+  .arena.combat-arena.final-team .foe-group{top:12%;height:24%}
+  .arena.combat-arena.final-team .battle-squad>span.guard{left:17%;bottom:-65%;width:34%;height:80%}
+  .arena.combat-arena.final-team>.fig.you{left:28%;bottom:28%;width:21%}
+  .arena.combat-arena.final-team .combat-wheel{left:49%;bottom:27%;width:160px}
+  .arena.combat-arena.final-team .combat-wheel .options-2{left:auto;right:0;top:auto;bottom:100%;max-width:250px}
+  .arena.combat-arena.final-team .battle-team-hud{left:2%;bottom:2%;width:96%;max-width:96%;overflow-x:auto;align-items:flex-start;padding-bottom:6px}
+  .arena.combat-arena.final-team .battle-portrait{flex:0 0 72px;min-width:72px}
+  .arena.combat-arena.final-team .battle-boss-hud{bottom:22%;right:2%;width:48%}
+  .arena.combat-arena.final-team .battle-scene-talk{bottom:22%;right:2%;width:48%}
+}

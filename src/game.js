@@ -416,18 +416,62 @@ const API = {
     return this.frontier.zones[zone] ||= { clears:0, team:[] };
   },
 
+  isFinalBattle(b = this.battle) {
+    return b?.kind === 'zoneEvent' && b.eventKey === 'cyberFinal';
+  },
+  finalTeamSelection() {
+    return this.zone === 'cyberhell' && this.zoneCaptivesFree() &&
+      ['pending', 'active'].includes(this.zoneEventStatus('cyberFinal'));
+  },
+  finalTeamCandidates() {
+    syncRoster(this);
+    return Object.values(this.roster).filter(c => !c.reader && !c.self &&
+      c.kind !== 'nira' && c.kind !== 'guard' && (c.homeZone === this.zone || this.canMoveZone(c.homeZone)));
+  },
+  finalTeamWhy(c, now = Date.now()) {
+    if (!c || !this.finalTeamCandidates().includes(c)) return 'ยังไม่ปลดล็อกสาขา';
+    if (c.recoverUntil > now) return 'กำลังพักฟื้น';
+    if (c.morale <= 0) return 'กำลังใจหมด';
+    return '';
+  },
+  finalPartyCrew() {
+    const ids = this.party?.finalMembers || [];
+    const candidates = this.finalTeamCandidates();
+    return ids.map(id => candidates.find(c => c.id === id)).filter(Boolean);
+  },
+
   partyCrew() {
     const chosen = new Set(this.party?.members || []);
     return this.crew.filter(c => chosen.has(c.k));
   },
 
   toggleParty(k) {
+    if (this.finalTeamSelection()) {
+      const c = this.finalTeamCandidates().find(c => c.id === k || c.id === rosterId(this.zone, k));
+      if (!c) return false;
+      this.party.finalMembers ||= [];
+      const team = this.party.finalMembers, i = team.indexOf(c.id);
+      if (i >= 0) team.splice(i, 1);
+      else {
+        if (team.length >= this.teamLimits.finalTeamMax || this.finalTeamWhy(c)) return false;
+        team.push(c.id);
+      }
+      // Legacy kind callers still refer to the local person; IDs remain canonical.
+      if (!k.includes(':')) {
+        const local = this.party.members.indexOf(k);
+        if (i >= 0 && local >= 0) this.party.members.splice(local, 1);
+        else if (i < 0 && local < 0 && this.party.members.length < this.teamLimits.normalTeamMax) this.party.members.push(k);
+      }
+      if (this.isFinalBattle() && this.zoneEventRestReady())
+        this.battle.team = this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id);
+      this.save(); this.onChange(); return true;
+    }
     const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
     if (!c) return false;
     this.party ||= { members:[], guard:false };
     const i = this.party.members.indexOf(k);
     if (i >= 0) this.party.members.splice(i, 1);
-    else { if (this.party.members.length >= 2) return false; this.party.members.push(k); }
+    else { if (this.party.members.length >= this.teamLimits.normalTeamMax) return false; this.party.members.push(k); }
     // ทีมต่อสู้เป็นเพียงรายชื่อเรียกเข้าฉากสู้ งานและตำแหน่งบนแผนที่ไม่เปลี่ยน
     this.save(); this.onChange(); return true;
   },
@@ -2307,7 +2351,8 @@ const API = {
     const frontierTeam = ev.team === 'frontier'
       ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
-      ...(frontierTeam.length ? { team:[...frontierTeam] } : {}),
+      ...(key === 'cyberFinal' ? { team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0, this.teamLimits.finalTeamMax) }
+        : frontierTeam.length ? { team:[...frontierTeam] } : {}),
       wave:1, pendingWave:null, foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -2433,13 +2478,16 @@ const API = {
   },
   battleCrew() {
     const keys = this.battle?.team || this.party?.members || [];
-    return this.crewHelpers().filter(c => keys.includes(c.k)).slice(0, 2);
+    if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
+      .map(id => this.roster[id]).filter(Boolean).slice(0, this.teamLimits.finalTeamMax);
+    return this.crewHelpers().filter(c => keys.includes(c.k)).slice(0, this.teamLimits.normalTeamMax);
   },
   crewCooldown(c, now = Date.now()) {
     return Math.min(BATTLE.crewCd, Math.max(0, Math.ceil(((c?.helpReadyAt || 0) - now) / 1000)));
   },
   crewHelpWhy(c) {
-    if (!c || !this.battleCrew().some(x => x.k === c.k)) return 'ต้องจัดเข้าทีมก่อนต่อสู้';
+    if (!c || !this.battleCrew().includes(c)) return 'ต้องจัดเข้าทีมก่อนต่อสู้';
+    if (this.isFinalBattle() && this.finalTeamWhy(c)) return this.finalTeamWhy(c);
     const remaining = this.crewCooldown(c);
     if (remaining) return `รออีก ${remaining} วินาที`;
     if (c.morale < BATTLE.crewMin) return 'กำลังใจไม่พอ';
@@ -2498,7 +2546,7 @@ const API = {
       say(`⚔️ ท่านฟาดเข้าเต็มแรง — ${dmg} หน่วย${crit ? ' (เข้าเต็ม ๆ)' : ''}`);
 
     } else if (typeof what === 'string' && what.startsWith('crew:')) {
-      const c = this.crew.find(x => x.k === what.slice(5));
+      const c = this.battleCrew().find(x => (this.isFinalBattle() ? x.id : x.k) === what.slice(5));
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpReadyAt = Date.now() + BATTLE.crewCd * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
@@ -2507,7 +2555,7 @@ const API = {
       const pw = CREW_POWER[c.k] || {};
       const trained = (c.upLv || 0) * (pw.trainDmg || 0);
       // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
-      B.helper = { k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
+      B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
       if (c.k === 'boon') {
         const heal = Math.min(pw.heal, B.youMax - B.youHp);
         B.youHp += heal;
@@ -2571,7 +2619,7 @@ const API = {
       if (!this.abilities.cooldownClock || B.clockUsed || this.mp < cost) return false;
       this.mp -= cost;
       B.clockUsed = true;
-      for (const c of this.crew) if (c.helpReadyAt) c.helpReadyAt = 0;
+      for (const c of (this.isFinalBattle() ? this.battleCrew() : this.crew)) if (c.helpReadyAt) c.helpReadyAt = 0;
       if (this.guard?.helpReadyAt) this.guard.helpReadyAt = 0;
       for (const p of this.powers) if (p.readyAt) p.readyAt = 0;
       say('⏱️ นาฬิกาย้อนคูลดาวน์ — ยมทูตและยักษ์พร้อมช่วยอีกครั้ง');
@@ -3193,11 +3241,12 @@ const API = {
         if (!def) return null;
         const actor = this.roster[rosterId(k, sv.k)] || actorFromLegacy(sv, k);
         const state = snapshotRoster({ [actor.id]:actor })[actor.id];
+        const buildK = sv.buildK || null;
         // Returning crew historically starts with fresh map motion, while its
         // morale/training now comes from the canonical actor, not a stale copy.
         delete state.x; delete state.y;
         for (const field of Object.keys(actor)) delete actor[field];
-        Object.assign(actor, mkCrew(def, k), state, { buildK:sv.buildK || null });
+        Object.assign(actor, mkCrew(def, k), state, { buildK });
         return actor;
       }).filter(Boolean)];
       this.guard = back.guard || null;
@@ -3217,7 +3266,7 @@ const API = {
     syncRoster(this);
     this.refreshZoneEvents(k);
     this.restoreBuilders();
-    this.party = { members:[], guard:false };
+    this.party = { members:[], finalMembers:this.party?.finalMembers || [], guard:false };
     this.syncBlocks(true);
     if (!back) {
       // ชุด 29C ข้อ 4 — ทั้งคู่เดินออกจากประตูชายแดนไปแท่นตัดสิน (เดิมเกิดที่ขอบบน (820,190) แล้วนิราติดอยู่ตรงนั้น)
@@ -3764,6 +3813,7 @@ API.restore = function (d) {
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
   this.party = d.party || { members:[], guard:false };
   this.party.members = teamKeys(this.party.members, this.roster, this.zone);
+  this.party.finalMembers = teamIds(this.party.finalMembers, this.roster, this.zone).slice(0, this.teamLimits.finalTeamMax);
   for (const [zone, state] of Object.entries(this.frontier.zones)) state.team = teamKeys(state.team, this.roster, zone);
   // ชุดที่ 10 (ข้อ C1) — party.guard (โหมด "ยักษ์เดินตาม") ถูกตัดออกแล้ว เหลือ field ไว้เฉย ๆ
   // กันเซฟเก่าพัง (ไม่มีใครอ่านค่านี้อีกต่อไป) บังคับเป็น false เสมอไม่ให้มีทางเหลือค้างจากเซฟเก่า

@@ -65,7 +65,8 @@ export function migrateRosterSave(input, now = Date.now()) {
   d.roster = snapshotRoster(roster);
   d.rosterVersion = ROSTER_VERSION;
   d.teamLimits = { ...TEAM_LIMITS };
-  d.party = { ...(d.party || {}), members: teamIds(d.party?.members, roster, zone), guard: false };
+  d.party = { ...(d.party || {}), members: teamIds(d.party?.members, roster, zone),
+    finalMembers: teamIds(d.party?.finalMembers, roster, zone).slice(0, TEAM_LIMITS.finalTeamMax), guard: false };
   if (d.frontier) {
     if (!d.frontier.zones) d.frontier = { zones: { th: d.frontier } };
     for (const [home, state] of Object.entries(d.frontier.zones)) state.team = teamIds(state.team, roster, home);
