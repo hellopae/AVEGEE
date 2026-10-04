@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { merchantStock } from '../src/progression.js';
 import { createGame } from '../src/game.js';
 import { win } from './final-event-helpers.mjs';
-import { BATTLE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
+import { BATTLE, BOSS_BALANCE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
 
 globalThis.Image ??= class {};
 
@@ -83,14 +83,14 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
     const gg = createGame(); gg.zone = zone; gg.zoneCases[zone] = 10;
     gg.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].map(e => [e.k, 'cleared']));
     const b = gg.startZoneBoss();
-    assert.equal(b.foes[0].maxHp, scaleFoeHp(zone, 200 + n * 35, 'boss'));
+    assert.equal(b.foes[0].maxHp, scaleFoeHp(zone, BOSS_BALANCE[zone].hp, 'boss'));
     assert.ok(b.foes[0].maxHp > 200 + n * 35);
     assert.equal(b.foes[1].maxHp, 48 + n * 8, 'ลูกน้องบอสโซนคงเดิม (ไม่ผ่าน zoneEventFoes)');
     assert.ok(b.foes[1].atk[1] > 12 + n, 'ลูกน้องบอสคูณ ATK ตามโซน');
   }
   const th = createGame();
   th.zoneCases.th = 10; th.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'pending' };
-  assert.equal(th.startZoneEvent('thBorderBoss').foes[0].maxHp, scaleFoeHp('th', 155, 'boss'));
+  assert.equal(th.startZoneEvent('thBorderBoss').foes[0].maxHp, scaleFoeHp('th', BOSS_BALANCE.th.hp, 'boss'));
   assert.ok(scaleFoeHp('th', 155, 'boss') > 155);
   for (const [name, hp] of Object.entries(BEFORE.boss)) assert.ok(scaleFoeHp('th', hp, 'boss') > hp, name);
 });

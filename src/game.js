@@ -2,7 +2,7 @@ import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverAc
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { FINAL_EVENT, TEAM_PRESSURE } from './data.js';
+import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -2238,7 +2238,7 @@ const API = {
       ? (this.bossReady() || (!!this.bossGuarding[this.zone] && this.zoneEventGateReady()))
       : retry ? this.bossCanChallenge() : this.bossReady())) return null;
     const z = this.zoneDef(), n = ZONES.findIndex(x => x.k === z.k);
-    const hp = scaleFoeHp(z.k, 200 + n * 35, 'boss');   // ชุด 28B — ตัวคูณบอส
+    const hp = scaleFoeHp(z.k, (['asia','west'].includes(z.k) ? BOSS_BALANCE[z.k].hp : 200 + n * 35), 'boss');   // ชุด 28B — ตัวคูณบอส
     this.bossPending = false;
     this.bossWalk = null;
     this.bossGuarding[z.k] = false;

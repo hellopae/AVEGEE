@@ -12,15 +12,54 @@ function sector(from, to) {
   pts.push(point(from,218));
   return `polygon(${pts.join(',')})`;
 }
+// B7: cropped alpha artwork, positioned in its original 900 × 1100 canvas.
+const petals = {
+  "b1": {
+    "box": [
+      85,
+      64,
+      696,
+      388
+    ],
+    "clip": "polygon(9.556% 13.455%,23.778% 32.455%,28.667% 30.091%,33.333% 28.727%,37.889% 28.091%,42.778% 28.091%,48.111% 28.909%,52.000% 30.091%,56.889% 32.455%,60.444% 35.091%,61.000% 34.818%,77.111% 17.364%,74.222% 15.273%,69.778% 12.727%,61.111% 9.091%,52.556% 6.909%,44.333% 5.909%,35.000% 6.000%,26.667% 7.182%,21.889% 8.364%,17.222% 9.909%)"
+  },
+  "b2": {
+    "box": [
+      531,
+      190,
+      857,
+      933
+    ],
+    "clip": "polygon(77.111% 17.364%,60.667% 35.091%,63.889% 38.455%,66.444% 42.636%,68.000% 47.909%,68.111% 52.273%,67.111% 56.818%,65.667% 60.000%,63.000% 63.727%,59.111% 67.273%,75.667% 84.636%,80.444% 81.091%,83.667% 78.000%,86.778% 74.364%,90.000% 69.545%,91.889% 65.818%,93.778% 60.545%,94.556% 57.182%,95.111% 52.091%,95.000% 47.273%,94.222% 42.364%,92.556% 36.909%,90.778% 33.000%,88.333% 28.909%,84.556% 24.091%,81.222% 20.727%)"
+  },
+  "b3": {
+    "box": [
+      127,
+      740,
+      682,
+      1048
+    ],
+    "clip": "polygon(75.667% 84.727%,59.111% 67.364%,56.667% 69.000%,52.333% 71.091%,47.778% 72.455%,43.667% 73.091%,38.778% 73.182%,35.333% 72.818%,30.444% 71.636%,26.778% 70.182%,14.222% 89.545%,21.444% 92.364%,29.000% 94.182%,36.778% 95.091%,45.778% 95.000%,54.556% 93.727%,62.000% 91.636%,69.444% 88.455%)"
+  },
+  "b4": {
+    "box": [
+      545,
+      190,
+      857,
+      850
+    ],
+    "clip": "polygon(76.889% 17.364%,60.556% 35.091%,63.000% 37.455%,65.778% 41.455%,67.000% 44.182%,67.889% 47.727%,68.111% 50.636%,67.667% 54.545%,66.444% 58.273%,64.556% 61.727%,84.444% 77.091%,87.667% 73.091%,89.889% 69.636%,91.778% 66.000%,93.222% 62.273%,94.889% 54.636%,94.889% 46.364%,94.222% 42.455%,92.778% 37.545%,90.667% 32.818%,88.444% 29.091%,83.111% 22.545%,79.111% 18.909%)"
+  }
+};
 export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.png'}) {
   if (segments) {
-    // Per-actor wheel reuses the original wedge artwork (Button7 attack / Button8 power / Button10 item) so it matches
-    // the Battle8 mockups; slot picks which wedge + which .options-N / .label-N the segment uses.
-    const slotById = {attack:0, power:1, item:3};
+    // A two-command actor uses the right item petal; Yama keeps the bottom item petal.
+    const slotById = {attack:0, power:1, item:segments.length === 2 ? 1 : 3};
     const slotOf = (g, i) => slotById[g.id] ?? (segments.length === 2 ? [0,3] : [0,1,3])[i] ?? i;
+    const petalOf = g => g.id === 'attack' ? 'b1' : g.id === 'power' ? 'b2' : segments.length === 2 ? 'b4' : 'b3';
     const shortName = String(actorName).split(' / ')[0];
     return `<div class="command-wheel combat-wheel actor-wheel petals-${segments.length} ${busy?'busy':''}" aria-label="${esc(actorName)}">
-      ${segments.map((g,i)=>{const s=slotOf(g,i);return `<button class="actor-segment command-segment segment-${s}" style="clip-path:${sector(...slices[s])}" data-command="${esc(g.id)}" aria-expanded="false" aria-label="${esc(g.label)}" ${busy||g.disabled?'disabled':''}><img src="img/ui/Button${7+s}.png" alt=""></button>`;}).join('')}
+      ${segments.map((g,i)=>{const s=slotOf(g,i), key=petalOf(g), {box,clip}=petals[key];return `<button class="actor-segment command-segment segment-${s}" style="clip-path:${clip}" data-command="${esc(g.id)}" aria-expanded="false" aria-label="${esc(g.label)}" ${busy||g.disabled?'disabled':''}><img src="img/ui/${key}.webp" style="position:absolute;left:${box[0]/9}%;top:${box[1]/11}%;width:${(box[2]-box[0])/9}%;height:${(box[3]-box[1])/11}%" alt=""></button>`;}).join('')}
       ${segments.map((g,i)=>`<span class="command-label label-${slotOf(g,i)}" aria-hidden="true">${esc(String(g.label).split(' / ')[0])}</span>`).join('')}
       <div class="command-center"><img src="${esc(portrait)}" alt="${esc(actorName)}"></div>
       <span class="command-center-label" aria-hidden="true">${esc(shortName)}</span>

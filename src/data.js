@@ -1677,6 +1677,13 @@ export const scaleFoeAtk = (zone, atk, kind = 'roam') => {
 };
 
 // Event keys are persisted in zoneEvents. Keep them stable for saved games.
+// B7: base HP before the existing boss ×1.25 scaling. Only zone-ending bosses change.
+// before = b71e16e; hp = B7. Attack, adds, rewards and final encounters stay as defined.
+export const BOSS_BALANCE = {
+  th:   { before:155, hp:543 },
+  asia: { before:235, hp:294 },
+  west: { before:270, hp:284 },
+};
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -1699,7 +1706,7 @@ export const ZONE_EVENTS = {
   { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',
     title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },
-    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:155, atk:[12,19], boss:true },
+    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[12,19], boss:true },
       { kind:6, count:2, hp:52, atk:[7,12] }],
     reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } }],
   asia:[

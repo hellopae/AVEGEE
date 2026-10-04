@@ -420,3 +420,9 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
  .battle-team-hud{overflow-x:auto}.battle-team-hud .battle-portrait{flex:0 0 72px;min-width:72px}
 }
 .battle-portrait[aria-pressed=true]{outline:2px solid #ffe39a;outline-offset:2px}
+
+/* B7: on narrow screens select actors from the labelled bottom cards.
+   Overlapping scene sprites must not steal taps from a neighbouring actor. */
+@media(max-width:700px){
+ .combat-arena [data-crew-pick]:not(.battle-portrait){pointer-events:none}
+}
