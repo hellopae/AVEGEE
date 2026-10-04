@@ -2762,7 +2762,7 @@ function openBattle(after) {
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
-    const attacks = battleChoice('atk', 'img/ui/Button7.png', 'โจมตีปกติ / Attack', isYama || actor.morale >= 2,
+    const attacks = battleChoice('atk', 'img/fx-slash.png', 'โจมตีปกติ / Attack', isYama || actor.morale >= 2,
       isYama ? '' : actor.morale < 2 ? 'กำลังใจไม่พอ / Low morale' : 'กำลังใจ / Morale −2')
       + (isYama ? '' : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`));
     const pending = b.command;
@@ -2918,10 +2918,20 @@ function openBattle(after) {
     const wheel = stage.querySelector('.actor-wheel');
     const anchor = stage.querySelector(`[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
     wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) paint(); });
-    if (wheel && anchor && matchMedia('(min-width:701px)').matches) {
-      const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
-      wheel.style.left = `${Math.max(0, Math.min(area.width - wheel.offsetWidth, rect.left - area.left + rect.width/2 - wheel.offsetWidth/2))}px`;
-      wheel.style.bottom = `${Math.max(90, area.bottom - rect.top - rect.height/2 - wheel.offsetHeight/2)}px`;
+    if (wheel && anchor) {
+      // วางวงให้ "หน้าผู้ลงมือ" (41% / 50.5% ของผืนภาพ 900×1100) ทับกลางตัวละครที่เลือก — วัดซ้ำหลังกล่องเปิดจริง
+      // เพราะ paint() รอบแรกรันก่อน openDlg() (กล่องยังไม่มีขนาด วงเลยไปชิดซ้ายล่าง)
+      const place = () => {
+        if (!wheel.isConnected || !matchMedia('(min-width:701px)').matches) return;
+        const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
+        if (!area.width || !rect.width) return;
+        const w = wheel.offsetWidth, h = wheel.offsetHeight;
+        const cx = rect.left - area.left + rect.width * 0.5 + w * 0.3, cy = rect.top - area.top + rect.height * 0.4;
+        const left = Math.max(0, Math.min(area.width - w, cx - w * 0.41));
+        const top = Math.max(0, Math.min(area.height - h, cy - h * 0.505));
+        wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.bottom = 'auto';
+      };
+      place(); requestAnimationFrame(place); setTimeout(place, 260);
     }
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {

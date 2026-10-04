@@ -14,11 +14,17 @@ function sector(from, to) {
 }
 export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.png'}) {
   if (segments) {
+    // Per-actor wheel reuses the original wedge artwork (Button7 attack / Button8 power / Button10 item) so it matches
+    // the Battle8 mockups; slot picks which wedge + which .options-N / .label-N the segment uses.
+    const slotById = {attack:0, power:1, item:3};
+    const slotOf = (g, i) => slotById[g.id] ?? (segments.length === 2 ? [0,3] : [0,1,3])[i] ?? i;
+    const shortName = String(actorName).split(' / ')[0];
     return `<div class="command-wheel combat-wheel actor-wheel petals-${segments.length} ${busy?'busy':''}" aria-label="${esc(actorName)}">
-      ${segments.map((g,i)=>`<button class="actor-segment petal-${i}" data-command="${esc(g.id)}" aria-expanded="false" ${busy||g.disabled?'disabled':''}><img src="${esc(g.icon)}" alt=""><b>${esc(g.label)}</b></button>`).join('')}
+      ${segments.map((g,i)=>{const s=slotOf(g,i);return `<button class="actor-segment command-segment segment-${s}" style="clip-path:${sector(...slices[s])}" data-command="${esc(g.id)}" aria-expanded="false" aria-label="${esc(g.label)}" ${busy||g.disabled?'disabled':''}><img src="img/ui/Button${7+s}.png" alt=""></button>`;}).join('')}
+      ${segments.map((g,i)=>`<span class="command-label label-${slotOf(g,i)}" aria-hidden="true">${esc(String(g.label).split(' / ')[0])}</span>`).join('')}
       <div class="command-center"><img src="${esc(portrait)}" alt="${esc(actorName)}"></div>
-      <span class="command-center-label">${esc(actorName)}</span>
-      ${segments.map(g=>`<div class="command-options" data-options="${esc(g.id)}" inert>${g.choices || ''}</div>`).join('')}
+      <span class="command-center-label" aria-hidden="true">${esc(shortName)}</span>
+      ${segments.map((g,i)=>`<div class="command-options options-${slotOf(g,i)}" data-options="${esc(g.id)}" inert aria-label="${esc(g.label)}">${g.choices || ''}</div>`).join('')}
       ${selected}
     </div>`;
   }
