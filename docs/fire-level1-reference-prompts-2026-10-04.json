@@ -1,0 +1,11 @@
+{
+  "tool": "built-in imagegen",
+  "zones": [
+    "th",
+    "asia",
+    "west",
+    "cyberhell"
+  ],
+  "reference": "img/raw/hero-yama-atk-cutscene.jpeg",
+  "prompt": "Precise object edit. Image 1 is the target full-body Yama game cutscene; image 2 is the old LEVEL ONE fireball reference. Preserve target Yama exactly: face, body proportions, clothing, regional headgear, pose, position, pixel-art style and temple environment. Replace only the fire projectile to match image 2's classic ROUND FLAMING ORB: pale yellow circular core, layered gold and orange surface, red-orange short tongues of flames flowing upwards around its round perimeter, a few embers. The round orb diameter should be approximately ONE YAMA FACE WIDTH measured cheek to cheek excluding ears (roughly 250-280px on this 1672x941 target), outer flame silhouette at most 350px tall, immediately left of extended hand. No long horizontal tail, beam, funnel, streak or huge wave. This is level one: a distinct round ball around head size, clearly weaker than level two's enormous fire wave. Restore background wherever the former giant projectile was. Keep wide landscape full-frame, no text."
+}
