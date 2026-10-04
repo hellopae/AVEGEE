@@ -247,3 +247,102 @@ test('B8 sawan → boon: EXP reaches only the selected Boon; cancel gives nothin
   g.tick = 130; win(g, 'sawan', 'th:boon', 100);
   assert.ok(g.allyStats(g.roster['th:boon']).heal > healBefore, 'level 2 Boon heals more');
 });
+
+// ================================================ sala / documents (→ nira) ===========================================
+import * as documents from '../src/minigames/training/documents.js';
+const bubble = (list, mode) => {   // optimal adjacent-swap plan: [[i, i+1], …] (length = inversions)
+  const a = list.map(d => ({ ...d })), key = d => mode === 'category' ? d.c * 10 + d.n : d.n, plan = [];
+  for (let pass = 0; pass < a.length; pass++) for (let i = 0; i < a.length - 1; i++) if (key(a[i]) > key(a[i + 1])) { [a[i], a[i + 1]] = [a[i + 1], a[i]]; plan.push(i); }
+  return plan;
+};
+const playSets = (e, extra = () => {}) => {
+  for (const s of e.sets) {
+    extra(e);
+    for (const i of bubble(s.docs, s.mode)) { e.input({ type:'tap', index:i }); e.input({ type:'tap', index:i + 1 }); }
+  }
+};
+
+test('B8 sala: every board is solvable by adjacent swaps, starts unsorted, 3–6 swaps, numbers/categories valid', () => {
+  for (let seed = 1; seed <= 300; seed++) for (let i = 0; i < 2; i++) {
+    const s = documents.makeSet(seed, i);
+    assert.equal(s.mode, i === 0 ? 'number' : 'category');
+    assert.equal(documents.isSorted(s.start, s.mode), false, `seed ${seed} set ${i} starts unsorted`);
+    assert.ok(s.minSwaps >= 3 && s.minSwaps <= 6, `${s.minSwaps} swaps`);
+    assert.equal(bubble(s.start, s.mode).length, s.minSwaps);
+    assert.deepEqual([...s.start].map(d => d.n).sort(), [1,2,3,4,5,6]);
+    assert.equal(documents.isSorted(s.target, s.mode), true);
+    if (s.mode === 'category') assert.deepEqual([0,1,2].map(c => s.start.filter(d => d.c === c).length), [2,2,2]);
+    const e = createTrainingGame('sala', seed);
+    // play the optimal plan through the engine's real input path
+    let guard = 0;
+    for (const set of e.sets) for (const p of bubble(set.docs, set.mode)) { e.input({ type:'tap', index:p }); e.input({ type:'tap', index:p + 1 }); guard++; }
+    assert.equal(e.completed(), true, `seed ${seed} solved through the engine`);
+  }
+});
+
+test('B8 sala: engine rules — select, deselect, reselect, non-adjacent, swaps counted, 2 sets then done, perfect = 100', () => {
+  const e = createTrainingGame('sala', 3), first = e.view().docs.map(d => d.n).join();
+  e.input({ type:'tap', index:0 }); assert.equal(e.view().selected, 0);
+  e.input({ type:'tap', index:0 }); assert.equal(e.view().selected, null);
+  e.input({ type:'tap', index:0 }); e.input({ type:'tap', index:3 });
+  assert.equal(e.view().selected, 3, 'non-adjacent second tap moves the selection'); assert.equal(e.view().swaps, 0);
+  assert.equal(e.view().docs.map(d => d.n).join(), first);
+  for (const bad of [null, 'hit', { type:'tap', index:-1 }, { type:'tap', index:6 }, { type:'tap', index:1.5 }, { type:'tap' }, { type:'swap', index:1 }]) e.input(bad);
+  assert.equal(e.view().selected, 3);
+  e.input({ type:'tap', index:3 });
+  playSets(e);
+  assert.equal(e.view().done, true); assert.equal(e.completed(), true); assert.equal(e.score(), 100);
+  e.input({ type:'tap', index:0 }); e.step(1); assert.equal(e.score(), 100, 'finished game ignores input');
+});
+
+test('B8 sala: wasted swaps lower the score (5% each, floor 70% of a set); partial/unsolved never completes', () => {
+  const e = createTrainingGame('sala', 4);
+  playSets(e, g => { const s = g.sets[g.view().set - 1]; g.input({ type:'tap', index:0 }); g.input({ type:'tap', index:1 }); g.input({ type:'tap', index:0 }); g.input({ type:'tap', index:1 }); });
+  // two wasted swaps per set: 50 * (1 - .10) * 2 = 90
+  assert.equal(e.completed(), true); assert.equal(e.score(), 90);
+  const slow = createTrainingGame('sala', 4);
+  for (let i = 0; i < 20; i++) { slow.input({ type:'tap', index:0 }); slow.input({ type:'tap', index:1 }); }
+  slow.input({ type:'tap', index:0 });
+  while (!slow.view().done) slow.step(.5);
+  assert.equal(slow.view().time, 45); assert.equal(slow.completed(), false); assert.ok(slow.score() < 60);
+  const half = createTrainingGame('sala', 4);
+  for (const p of bubble(half.sets[0].docs, 'number')) { half.input({ type:'tap', index:p }); half.input({ type:'tap', index:p + 1 }); }
+  while (!half.view().done) half.step(.5);
+  assert.equal(half.view().solvedSets, 1); assert.equal(half.completed(), false); assert.ok(half.score() >= 50 && half.score() < 60, 'set 1 earns 50, set 2 only partial credit');
+  const n = createTrainingGame('sala', 4); n.step(NaN); n.step(-1); assert.equal(n.view().time, 0);
+});
+
+test('B8 sala: host UI — buttons ≥6, pause blocks taps, solve through real clicks reports once', () => withDom(doc => {
+  const f = frames(), host = new FakeEl('div'), results = [];
+  let paused = false, alive = true;
+  const engineSeed = 7, ref = createTrainingGame('sala', engineSeed);
+  runTraining(host, { station:'sala', session:{ id:'d1', seed:engineSeed }, paused:() => paused, alive:() => alive,
+    onResult:r => results.push(r), onAbandon:() => assert.fail('abandon'), raf:f.raf, caf:f.caf });
+  const docs = host.find(n => n.tag === 'button');
+  assert.equal(docs.length, 6);
+  f.step(0); f.step(100);
+  paused = true; f.step(200); docs[0].dispatchEvent(new Event('click')); docs[1].dispatchEvent(new Event('click')); f.step(300);
+  assert.ok(docs.every(b => b.disabled)); paused = false; f.step(400);
+  const swaps = () => host.find(n => n.tag === 'p')[0].textContent;
+  assert.ok(swaps().includes('0'), 'paused taps did nothing');
+  let t = 400;
+  for (const s of ref.sets) for (const p of bubble(s.docs, s.mode)) {
+    docs[p].dispatchEvent(new Event('click')); docs[p + 1].dispatchEvent(new Event('click')); t += 100; if (f.pending) f.step(t);
+  }
+  assert.equal(results.length, 1); assert.equal(results[0].completed, true); assert.equal(results[0].score, 100); assert.equal(f.pending, false);
+}));
+
+test('B8 sala → nira: EXP reaches global Nira from any zone, nobody else; order/regeneration follow her level', () => {
+  const g = game('asia');
+  assert.deepEqual(g.trainingTargets('sala').map(a => a.id), ['global:nira']);
+  const base = g.allyStats(g.roster['global:nira']);
+  const s = g.startTraining('sala', 'global:nira');
+  assert.equal(g.cancelTraining(s.id).exp, 0); assert.equal(rec(g, 'global:nira').exp, 0);
+  g.tick = 30; assert.equal(win(g, 'sala', 'global:nira').exp, 40);
+  g.tick = 130; win(g, 'sala', 'global:nira');
+  for (const other of ['asia:kan','asia:boon','asia:taan','asia:dam',HERO_TRAINING_ID]) assert.equal(rec(g, other)?.exp ?? 0, 0, other);
+  const now = g.allyStats(g.roster['global:nira']);
+  assert.equal(now.level, 2); assert.equal(now.order, base.order + 1); assert.ok(now.orderRegenMultiplier > base.orderRegenMultiplier);
+  g.zone = 'west'; assert.deepEqual(g.trainingTargets('sala').map(a => a.id), ['global:nira'], 'shared across branches');
+  assert.equal(rec(g, 'global:nira').exp, 80);
+});
