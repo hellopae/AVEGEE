@@ -2476,12 +2476,11 @@ function openFrontierWalk() {
     <div class="frw-fullscreen">
       <div class="frw-map"><canvas id="frw-cv" width="1376" height="768"></canvas>
         <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
-        <button class="frw-fab" id="frw-gate" type="button" hidden>🗺️ กลับเข้า${esc(gateName)}</button>
+        <button class="frw-fab frw-gate" id="frw-gate" type="button" hidden>กลับเข้า${esc(gateName)}</button>
         <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
       <div class="frw-res" aria-label="ทรัพยากร">
         ${[['img/ui/icon-coin.png',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.png',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.png',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.png',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
       </div>
-      <button id="frw-exit" class="gold frw-return">กลับเข้า${esc(gateName)}</button>
       <div class="frw-controls">
         <button id="frw-pause" class="st-icon-btn" aria-label="${esc(t('hud.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
         <button id="frw-settings" class="st-icon-btn" aria-label="${esc(t('pause.settings'))}"><img src="img/ui/icon-setting2.png" alt=""></button>
@@ -2503,7 +2502,6 @@ function openFrontierWalk() {
 
   const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira });
   FW.start();
-  dlg.querySelector('#frw-exit').onclick = () => { FW.destroy(); dlg.close(); };
   const menu = fn => {
     const zone=g.zone;
     FW.destroy();

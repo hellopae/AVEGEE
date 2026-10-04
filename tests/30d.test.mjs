@@ -143,3 +143,16 @@ test('3. mapInteractions ส่งตำแหน่งปุ่มของส�
   assert.equal(t.anchor, 'center');
   assert.equal(t.by, 20 - 80 - 24);
 });
+
+// ---------- ข้อ 4: ฉากชายแดน ปุ่มกลับโซนเหลือปุ่มเดียว สีทอง ขึ้นเมื่อเข้าใกล้ทางออก ----------
+import { readFileSync } from 'node:fs';
+import { nearFrontierGate } from '../src/frontier.js';
+test('4. ฉากชายแดน: ไม่มีแถบกลับโซนถาวร เหลือปุ่ม #frw-gate ปุ่มเดียว สีทอง (token --gold) และปุ่มโผล่เฉพาะตอนเข้าใกล้ทางออก', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.equal((ui.match(/กลับเข้า\$\{esc\(gateName\)\}/g) || []).length, 1, 'ข้อความ "กลับเข้า<โซน>" ต้องมีปุ่มเดียว');
+  assert.ok(!ui.includes('id="frw-exit"') && !ui.includes('#frw-exit'), 'แถบทองถาวรต้องถูกถอด');
+  assert.match(html, /\.frw-fab\.frw-gate\{background:var\(--gold\)/);
+  assert.equal(nearFrontierGate({ x: .485, y: .35 }), false, 'จุดเริ่มเดินยังไม่ใกล้ทางออก → ไม่มีปุ่ม');
+  assert.equal(nearFrontierGate({ x: .5, y: .25 }), true, 'เดินเข้าใกล้ประตูบน → ปุ่มขึ้น');
+});
