@@ -39,7 +39,7 @@ export function trainingTargets(g, station) {
   const def = TRAINING_STATIONS[station];
   if (!def) return [];
   return def.actors.flatMap(kind => kind === 'yama' ? [hero()]
-    : Object.values(g.roster || {}).filter(a => a.kind === kind && a.homeZone === g.zone));
+    : Object.values(g.roster || {}).filter(a => a.kind === kind && (isShared(a) || a.homeZone === g.zone)));   // B8: Nira is global (homeZone 'global'), she trains from any zone
 }
 
 export function trainingProgress(g, actorId) {
