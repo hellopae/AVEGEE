@@ -971,7 +971,9 @@ function clampInView(d) {
   // (คำนวณจากค่า top ที่ตั้งไว้ ไม่อ่านตำแหน่งจริง เพราะปุ่มมี transition ตำแหน่งอยู่)
   const topMin = 84;
   if (o.height) {
-    const edge = o.top + parseFloat(d.style.top) / 100 * o.height - d.offsetHeight / 2;
+    // ปุ่มที่ยึดขอบล่าง (anchor-top) ขอบบนอยู่สูงกว่าจุดยึดเต็มความสูงปุ่ม + ช่องไฟ 6px
+    const lift = d.classList.contains('anchor-top') ? d.offsetHeight + 6 : d.offsetHeight / 2;
+    const edge = o.top + parseFloat(d.style.top) / 100 * o.height - lift;
     if (edge < topMin) d.style.top = parseFloat(d.style.top) + (topMin - edge) / o.height * 100 + '%';
   }
 }
@@ -1166,6 +1168,7 @@ function updateRepairFabs() {
   f.textContent = target.label;
   f.disabled = target.kind === 'repair' && !g.canRepair(target.key);
   f.dataset.sx = target.bx; f.dataset.sy = target.by;
+  f.classList.toggle('anchor-top', target.anchor === 'top');   // 30D: ปุ่มของอาคารยึดขอบล่างไว้ที่ยอดหลังคา
   place(f);
 }
 

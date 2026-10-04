@@ -1,3 +1,4 @@
+import { topOf, bodyBoxOf } from './art.js';
 // 29B: map distances are scene pixels; room distances are normalized image coordinates.
 export const INTERACTION_REACH = 100;
 export const ROOM_EXIT_REACH = 0.10;
@@ -32,6 +33,16 @@ export function nearestInteraction(player, targets, reach = INTERACTION_REACH) {
   }
   return nearest;
 }
+/** 30D — ตำแหน่งปุ่มลอยของอาคาร: จุดที่ "ขอบล่างของปุ่ม" แตะเหนือยอดอาคารจริง (ui.js ยึดปุ่มด้วยขอบล่าง + เว้น 6px)
+ *  เดิม by = def.by - def.bw - 24 ใช้ "ความกว้างอ้างอิง" bw เป็นความสูง — อาคารเตี้ย (กระท่อมไม้โซน 3) ปุ่มเลยลอยเหนือหลังคาเป็นร้อยพิกเซล
+ *  ตอนนี้วัดยอดเนื้อภาพจากพิกเซลสไปรท์จริง (art.topOf) · x = กึ่งกลางตัวอาคาร (กรอบเนื้อภาพ)
+ *  ยึดด้วยขอบล่างของปุ่ม (ไม่ใช่กึ่งกลาง) เพราะปุ่มมีขนาดเป็นพิกเซลหน้าจอคงที่ แต่ฉากย่อ/ขยายตามจอ — ยึดกึ่งกลางแล้วช่องไฟเพี้ยนตามขนาดจอ
+ *  รูปยังโหลดไม่เสร็จ → ใช้สูตรเดิมไปก่อน (anchor 'center') รอบหน้าค่อยวัดใหม่ */
+export function stationButtonPos(def, top = topOf(def), body = bodyBoxOf(def)) {
+  if (top == null) return { bx: def.bx, by: def.by - def.bw - 24, anchor: 'center' };
+  return { bx: body ? (body[0] + body[2]) / 2 : def.bx, by: top, anchor: 'top' };
+}
+
 export function mapInteractions(g, merchant) {
   const targets = [];
   const nira = g.crewOf('nira');
@@ -43,8 +54,9 @@ export function mapInteractions(g, merchant) {
     if (st.build) continue;
     const def = st.def;
     const repair = st.fire > 0 && !st.repair;
+    const pos = stationButtonPos(def);
     targets.push({ id:def.k, key:def.k, kind:repair ? 'repair' : 'station',
-      x:def.x, y:def.y, bx:def.bx, by:def.by - def.bw - 24,
+      x:def.x, y:def.y, bx:pos.bx, by:pos.by, anchor:pos.anchor,
       label:repair ? `เรียก${g.availableBuilder()?.name || 'ทัณฑ์'}มาซ่อม` : 'เข้าไป' });
   }
   return targets;

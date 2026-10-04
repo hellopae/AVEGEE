@@ -122,3 +122,24 @@ test('2. ฉากชายแดน: เส้นทางอ้อมศัต
     assert.equal(frontierPath(zone, from, to).length, 1);
   }
 });
+
+// ---------- ข้อ 3: ปุ่ม "เข้าไป" ชิดอาคารจริง ----------
+import { stationButtonPos, mapInteractions } from '../src/proximity.js';
+test('3. ปุ่มของอาคารยึดขอบล่างไว้ที่ยอดเนื้อภาพจริง ไม่ขึ้นกับ bw · x = กึ่งกลางตัวอาคาร · รูปยังไม่มา = สูตรเดิม', () => {
+  const def = { k: 'tea', bx: 218, by: 674, bw: 460 };
+  const low = stationButtonPos(def, 543, [150, 543, 290, 674]);     // กระท่อมเตี้ย ยอดอยู่ที่ y=543
+  assert.deepEqual(low, { bx: 220, by: 543, anchor: 'top' });
+  const tall = stationButtonPos(def, 466, [150, 466, 290, 674]);
+  assert.equal(tall.by, 466);                                          // ตามยอดจริง ไม่ใช่ค่าคงที่
+  const fallback = stationButtonPos(def, null, null);
+  assert.deepEqual(fallback, { bx: 218, by: 674 - 460 - 24, anchor: 'center' });
+});
+test('3. mapInteractions ส่งตำแหน่งปุ่มของสถานีผ่าน stationButtonPos (ไม่มีภาพใน node → สูตรเดิม anchor center)', () => {
+  globalThis.Image ??= class { set src(_) {} };                       // node ไม่มี Image → รูปไม่โหลด → null
+  const def = { k: 'tea', x: 400, y: 20, bx: 400, by: 20, bw: 80 };
+  const g = { crewOf: () => null, zoneCaptivesFree: () => false, stations: [{ def, fire: 0 }], availableBuilder: () => null };
+  const t = mapInteractions(g, { x: 0, y: 0 }).find(x => x.id === 'tea');
+  assert.equal(t.label, 'เข้าไป');
+  assert.equal(t.anchor, 'center');
+  assert.equal(t.by, 20 - 80 - 24);
+});
