@@ -4120,9 +4120,18 @@ function openStation(k, emergency = false) {
       exitBtn.hidden = mgOpen || R.sleeping() || !nearRoomExit(R.pos(), exit);
       const [left, top] = R.project(R.pos());
       const width = cv2.getBoundingClientRect().width;
-      const half = exitBtn.offsetWidth / 2 + 8;
-      exitBtn.style.left = `${Math.max(half, Math.min(width - half, left))}px`;
-      exitBtn.style.top = `${Math.max(exitBtn.offsetHeight + 8, top - 42)}px`;
+      const bw = exitBtn.offsetWidth, bh = exitBtn.offsetHeight, half = bw / 2 + 8;
+      const clampX = x => Math.max(half, Math.min(width - half, x));
+      // ห้องที่จอแคบ (390px) ฉากเตี้ย — ปุ่ม 44px เหนือหัวยมบาทไปทับวงทองจุดฝึก/จุดลงมือ ทำให้แตะเดินไปจุดนั้นไม่ได้
+      // ลองเลื่อนไปซ้าย/ขวาข้างตัวละครก่อน แล้วค่อยลอยเหนือวงทอง (จอกว้างที่ไม่ทับยังอยู่ที่เดิมเหนือหัวเหมือนเดิม)
+      const [actX, actY] = R.project(room.act);
+      const base = Math.max(bh + 8, top - 42);
+      const covers = (x, bottom) => Math.abs(x - actX) < bw / 2 + 36 && bottom > actY - 20 && bottom - bh < actY + 20;
+      const spots = [[clampX(left), base], [clampX(left - bw / 2 - 56), base], [clampX(left + bw / 2 + 56), base],
+        [clampX(left), Math.max(bh + 8, actY - 30)]];
+      const [bx, by] = spots.find(([x, y]) => !covers(x, y)) || spots[0];
+      exitBtn.style.left = `${bx}px`;
+      exitBtn.style.top = `${by}px`;
     }
     // นั่งอยู่ — บารมีขยับทุกเฟรมจริง (room.js เขียนตรงที่ g.hp โดยไม่ผ่าน onChange/refresh()
     // เพราะตั้งใจให้ฟื้นต่อได้แม้เกมพักอยู่กับกล่องโมดัล — ดู room.js setSit) อัปเดตเฉพาะตัวเลข
