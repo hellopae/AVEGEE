@@ -2347,7 +2347,7 @@ function openNiraOffice() {
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
         <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small></span>
         ${g.guard
-          ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม 2 คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา 2 คน)</small></button>`
+          ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม ${max} คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article></div>
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
