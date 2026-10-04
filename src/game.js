@@ -1062,7 +1062,7 @@ const API = {
       this.sentences.splice(this.sentences.indexOf(x), 1);
       const R = { fromId:x.soul.id, gave:x.intensity, who:x.soul.who,
         sp:x.soul.sp, sex:x.soul.sex, name:x.soul.name, calm:!!x.soul.calm,
-        caseK:x.soul.case || null, deeds:x.soul.deeds.map(d => ({ ...d, known:true })),
+        zone:x.zone, caseK:x.soul.case || null, deeds:x.soul.deeds.map(d => ({ ...d, known:true })),
         merits:x.soul.merits.filter(m => !m.fake).map(m => ({ ...m })) };
       const soul = this.mkReturnSoul(R);
       const prison = this.stations.find(st => st.def.k === 'tarang' && !st.build);
@@ -1144,10 +1144,14 @@ const API = {
     // คดีที่ตัดสินเบาไป — ครบกำหนดแล้วยังไม่สำนึก จึงกลับเข้าคิวเดิม
     for (let i = this.returning.length - 1; i >= 0; i--) {
       if (this.tick < this.returning[i].at) continue;
-      const R = this.returning.splice(i, 1)[0];
+      const R = this.returning[i];
+      // Keep legacy returns without a source zone out of newly opened branches.
+      const zone = R.zone || 'th';
+      if (zone !== this.zone && !this.zoneSave?.[zone]) continue;
+      this.returning.splice(i, 1);
+      R.zone = zone;
       const soul = this.mkReturnSoul(R);
-      if (R.zone && R.zone !== this.zone && this.zoneSave?.[R.zone])
-        this.zoneSave[R.zone].queue.push(soul);
+      if (zone !== this.zone) this.zoneSave[zone].queue.push(soul);
       else this.queue.push(soul);
       this.returned++;
       this.log(`↩️ ${soul.who}ยังไม่สำนึกหลัง ${R.gave} วาระ — ถูกส่งกลับเข้าคิวก่อนเกิดใหม่ ` +
@@ -3144,6 +3148,10 @@ const API = {
     const back = this.zoneSave[k];
     const keep = this.crew.filter(c => c.follow);      // นิราตามท่านไปทุกสาขา
     this.zone = k;
+    this.bossWalk = null; // bridge animation belongs to the previous map
+    this.huntMob = false;
+    this.player.path = null;
+    this.player.tx = this.player.x; this.player.ty = this.player.y;
     syncFrontierPos(k);
     this.transits = [];
     this.zoneCases[k] = this.zoneCases[k] || 0;

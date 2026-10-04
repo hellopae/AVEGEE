@@ -861,6 +861,12 @@ function goTrial() {
 
 // ---------- โมดัล ----------
 const dlg = $('#dlg');
+// Keep the active scene and its listeners intact while the player is away.
+const pauseDlg = document.createElement('dialog');
+pauseDlg.id = 'pause-dlg';
+pauseDlg.className = 'pause-modal';
+document.body.append(pauseDlg);
+pauseDlg.addEventListener('cancel', e => { e.preventDefault(); finishPause(); });
 dlg.addEventListener('close', () => { setTimeout(() => { if (!dlg.open) g.onChange(); }, 0); });
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
@@ -1795,7 +1801,7 @@ function pauseForDlg() { if (!g.paused) { g.paused = true; updatePlay(); } }
  *  เช็คจากตัวจับเวลาแทน · ได้ผลพลอยได้: ตอนกล่องแค่ "ถูกแทนที่" ด้วยใบใหม่
  *  (openDlg close แล้ว showModal ในจังหวะเดียวกัน) dlg.open ยังเป็น true อยู่ จึงไม่คืนผิดจังหวะ */
 function releaseDlgPause() {
-  if (dlg.open || g.bossWalk || g.over || g.paused === userPaused) return;
+  if (dlg.open || pauseDlg.open || g.bossWalk || g.over || g.paused === userPaused) return;
   g.paused = userPaused; updatePlay();
 }
 dlg.addEventListener('close', () => setTimeout(releaseDlgPause, 0));   // ทางลัดให้ไวขึ้นเฉย ๆ
@@ -1804,6 +1810,7 @@ dlg.addEventListener('close', () => setTimeout(releaseDlgPause, 0));   // ทา
 function onDlgClose(fn) {
   const gen = dlgGen;
   const h = () => {
+    if (dlg.open && gen === dlgGen) return; // queued close from the dialog we just replaced
     dlg.removeEventListener('close', h);
     if (gen !== dlgGen) return;         // กล่องถูกแทนที่ไปแล้ว — ไม่ใช่เรื่องของ handler ตัวนี้
     fn();
@@ -3198,13 +3205,20 @@ function drawCoach() {
  *  ถ้าเข้าเกมมาแบบพักอยู่ ค่าที่ถูกคืนก็คือ "พัก" ตลอดไป */
 function resume() { userPaused = false; if (!g.over && g.paused) { g.paused = false; updatePlay(); } }
 
-function openPause(allowReplacing = false, automatic = false) {
-  if (g.over || (dlg.open && !allowReplacing)) return;
-  if (allowReplacing) bgm('bgm-zone');
-  const before = userPaused;
-  let resumeRequested = false;
+function finishPause() {
+  autoPausePending = false;
+  userPaused = false;
+  if (pauseDlg.open) pauseDlg.close();
+  releaseDlgPause();
+  if (dlg.open) dlg.focus({ preventScroll:true });
+}
+
+function openPause(allowReplacing = false) {
+  if (g.over || pauseDlg.open || (dlg.open && !allowReplacing)) return;
+  autoPausePending = false;
+  userPaused = true;
   pauseForDlg();
-  modal(`<div class="pause-head">
+  pauseDlg.innerHTML = `<div class="pause-head">
       <strong>${esc(t('pause.title'))}</strong>
     </div>
     <nav class="pause-actions" aria-label="${esc(t('pause.title'))}">
@@ -3212,23 +3226,18 @@ function openPause(allowReplacing = false, automatic = false) {
       <button id="pause-resume"><img src="img/ui/icon-play.png" alt=""><span>${esc(t('pause.resume'))}</span></button>
       <button id="pause-settings"><img src="img/ui/icon-setting2.png" alt=""><span>${esc(t('pause.settings'))}</span></button>
       <button id="pause-more"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('profile.more'))}</span></button>
-    </nav>`, d => {
-      d.querySelector('#pause-home').onclick = goMenu;
-      d.querySelector('#pause-resume').onclick = () => { resumeRequested = true; d.close(); };
-      d.querySelector('#pause-settings').onclick = openSettings;
-      d.querySelector('#pause-more').onclick = () => { d.close(); openLegacyDrawer(); };
-    }, 'pause-modal');
-  onDlgClose(() => {
-    userPaused = resumeRequested ? false : before;
-    if (automatic && !resumeRequested && started && !g.over) autoPausePending = true;
-    releaseDlgPause();
-  });
+    </nav>`;
+  pauseDlg.querySelector('#pause-resume').onclick = finishPause;
+  pauseDlg.querySelector('#pause-home').onclick = () => { finishPause(); goMenu(); };
+  pauseDlg.querySelector('#pause-settings').onclick = () => { finishPause(); openSettings(); };
+  pauseDlg.querySelector('#pause-more').onclick = () => { finishPause(); openLegacyDrawer(); };
+  pauseDlg.showModal();
 }
 
 function pauseWhenLeaving() {
-  if (!started || g.over) return;
+  if (!started || g.over || pauseDlg.open || autoPausePending) return;
   userPaused = true;
-  if (!dlg.classList.contains('pause-modal')) autoPausePending = true;
+  autoPausePending = true;
   if (!g.paused) { g.paused = true; updatePlay(); }
 }
 function showAutoPause() {
@@ -3236,7 +3245,7 @@ function showAutoPause() {
   // The tab being visible is enough to present the pause dialog on return.
   if (!autoPausePending || document.hidden || g.over) return;
   autoPausePending = false;
-  openPause(dlg.open, true);
+  openPause(dlg.open);
 }
 addEventListener('blur', pauseWhenLeaving);
 addEventListener('focus', () => setTimeout(showAutoPause, 0));
