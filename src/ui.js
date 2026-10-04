@@ -4429,6 +4429,8 @@ function startPlay(fresh) {
     bgm('bgm-zone');
   }
   refresh();
+  // B2b: เซฟที่ค้างหน้าต่างรางวัล/ศึกสุดท้ายต้องเด้งกลับมาทันทีหลังกดเล่นต่อ (บนแผนที่ศึกสุดท้ายไม่มีวาระให้ onChange ทำงานเอง)
+  if (g.pendingReward?.encounter || g.isFinalBattle()) g.onChange();
   last = performance.now();
   requestAnimationFrame(frame);
 }
