@@ -1009,7 +1009,7 @@ const SHEETS = {
       }
     ],
     "rightFacing": false,
-    "heightScale": 0.873,
+    "heightScale": 1.0,
     "footOffset": 0.0
   },
   "cyberhell:plerng": {

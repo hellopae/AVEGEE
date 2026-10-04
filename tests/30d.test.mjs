@@ -156,3 +156,47 @@ test('4. ฉากชายแดน: ไม่มีแถบกลับโซ
   assert.equal(nearFrontierGate({ x: .485, y: .35 }), false, 'จุดเริ่มเดินยังไม่ใกล้ทางออก → ไม่มีปุ่ม');
   assert.equal(nearFrontierGate({ x: .5, y: .25 }), true, 'เดินเข้าใกล้ประตูบน → ปุ่มขึ้น');
 });
+
+// ---------- ข้อ 5: ไอคอนอีเวนต์ปีศาจบุก = รูปปีศาจ ไม่ใช่วิญญาณขาว ----------
+import { ZONE_EVENTS, MOB } from '../src/data.js';
+test('5. ป้ายอีเวนต์ชายแดนโซน 2-4 เลือกรูปบอสปีศาจท้ายระลอก · อีเวนต์ kind ใช้รูป mob ของ kind นั้น ไม่ตกไป spirit7', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /function zoneEventMarkerArt\(ev\)/);
+  assert.ok(ui.includes('esc(zoneEventMarkerArt(ev))'), 'ป้าย .zone-eventfab ต้องใช้ zoneEventMarkerArt');
+  assert.ok(!/<img src="\$\{esc\(storyFoeArt\(foe\?\.sp\)\)\}" alt="" onerror="this\.remove\(\)"><span>⚔️/.test(ui), 'สูตรเก่า (foe.sp ว่าง → spirit7) ต้องไม่เหลือ');
+  // ทุกอีเวนต์ชายแดนของโซน 2-4 มีบอสท้ายระลอกที่มี sp → รูปปีศาจเฉพาะ
+  for (const z of ['asia', 'west', 'cyberhell']) {
+    const evs = ZONE_EVENTS[z].filter(e => e.team === 'frontier');
+    assert.ok(evs.length >= 1);
+    for (const ev of evs) {
+      const boss = ev.waves.flat().find(f => f.boss && f.sp);
+      assert.match(boss.sp, /^boss-frontier-/, `${ev.k} ต้องมีบอสปีศาจให้ใช้เป็นไอคอน`);
+    }
+  }
+  // อีเวนต์ที่ foe มีแต่ kind → mob kind มีชื่อไฟล์รูป
+  for (const z of Object.keys(ZONE_EVENTS)) for (const ev of ZONE_EVENTS[z]) {
+    const f = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
+    if (f?.kind != null) assert.ok(MOB.kinds[f.kind]?.img, `${ev.k} kind ${f.kind} ไม่มีรูป`);
+  }
+});
+
+// ---------- ข้อ 6: ขนาดทัณฑ์/ซิสอ็อปโซน 4 เท่ายมทูตคนอื่น ----------
+import { crewWalkSheet } from '../src/crew-walk-assets.js';
+import { standeeFit } from '../src/art.js';
+test('6. ความสูงตัวจริงของยมทูตทุกตัวทุกโซน (ท่าเดิน) อยู่ใน ±15% ของกันและกัน · ซิสอ็อปโซน 4 ไม่เตี้ยกว่าเพื่อน', () => {
+  for (const z of ['th', 'asia', 'west', 'cyberhell']) {
+    const hs = ['nira', 'taan', 'plerng', 'dam', 'kan', 'boon', 'guard'].map(k => {
+      const s = crewWalkSheet(k, z), f = s.frames[0];
+      return [k, f.h / s.frameSize.h * s.heightScale];
+    });
+    const max = Math.max(...hs.map(h => h[1])), min = Math.min(...hs.map(h => h[1]));
+    assert.ok(min >= max * 0.85, `${z}: ${hs.map(h => h[0] + '=' + h[1].toFixed(2)).join(' ')}`);
+  }
+  assert.ok(crewWalkSheet('taan', 'cyberhell').heightScale >= 0.99);
+});
+test('6. ท่ายืน: ขยายเฉพาะทัณฑ์โซน 4 (ทุกท่า) ให้ 0.871 × fit ≈ 1 · โซนอื่น/ตัวอื่นไม่เปลี่ยน', () => {
+  assert.ok(Math.abs(0.871 * standeeFit('crew-taan', 'cyberhell') - 1) < 0.01);
+  assert.equal(standeeFit('crew-taan-build-work', 'cyberhell'), standeeFit('crew-taan', 'cyberhell'));
+  assert.equal(standeeFit('crew-taan', 'th'), 1);
+  assert.equal(standeeFit('crew-dam', 'cyberhell'), 1);
+});

@@ -382,7 +382,14 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
 // ---------- ตัวละคร ----------
 /** วางตัวละครแบบ standee: เท้าอยู่ที่ (x,y) สูง h ในพิกัดฉาก
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */
+/** 30D ข้อ 6 — ภาพยืนของทัณฑ์/ซิสอ็อปโซน 4 วาดตัวสูงแค่ ~87% ของกรอบ (ยมทูตคนอื่นเต็มกรอบ ~100%)
+ *  เลยตัวเล็กกว่าเพื่อนบนแผนที่ → ขยายตอนวาดให้ความสูงตัวจริงเท่าคนอื่น (ไม่แตะไฟล์ภาพ)
+ *  ค่า = 1 / (ความสูงตัวจริง ÷ ความสูงกรอบ) วัดจาก alpha ของ img/CyberHell/crew-taan-cyberhell.png (0.871) */
+export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
+export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '')}`] || 1;
+
 export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false) {
+  h *= standeeFit(key, zoneOf());
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
   ctx.fillStyle = 'rgba(0,0,0,.42)';
