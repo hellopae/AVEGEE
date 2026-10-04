@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { actorFromLegacy, rosterId } from '../src/roster.js';
 import { effectiveAllyStats, actorTraining, normalizeTraining, merchantStock } from '../src/progression.js';
-import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS, ITEMS, BATTLE, ZONE_EVENTS } from '../src/data.js';
+import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS, ITEMS, BATTLE, ZONE_EVENTS, SPOTS } from '../src/data.js';
 import { crewAbility } from '../src/command-wheel.js';
 import { setLang } from '../src/i18n.js';
 
@@ -110,13 +110,11 @@ function prep(g) {
   if (g.zone === 'th') { g.zone='asia'; g.zoneCases.asia=10; g.zoneEvents.asia=Object.fromEntries(ZONE_EVENTS.asia.map(e => [e.k,'cleared'])); }
   let b;
   if (g.zone === 'cyberhell') {
-    g.zoneEvents.cyberhell.cyberFinal='pending';
-    b=g.startZoneEvent('cyberFinal'); assert.ok(b);
-    for (let wave=1;wave<=3;wave++) {
-      b.foes.forEach(f => { f.hp=0; }); b.pendingWave=wave+1;
-      if (wave<3) assert.equal(g.advanceZoneEventWave(),true);
-    }
-    assert.equal(g.zoneEventRestReady(),true);
+    // B2b: the final event no longer has an in-battle rest stop (medicine is used from the bag on the map between fights),
+    // so Zone 4 prep medicine is exercised on the zone-boss rematch arena, which still has a turn-1 prep window.
+    g.bossCleared.cyberhell=true; g.zoneEvents.cyberhell.cyberFinal='cleared';
+    g.player.x=SPOTS.bossPier.x; g.player.y=SPOTS.bossPier.y;
+    b=g.startZoneBoss('rematch');
   } else b=g.startZoneBoss();
   assert.ok(b); b.youMax=1000; b.youHp=10; return b;
 }
