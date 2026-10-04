@@ -12,7 +12,8 @@ export const ROOM_EXITS = {
   lan: { asia: { x:.50, y:.94 } },
   sawan: { asia: { x:.50, y:.94 } },
   krajok: { asia: { x:.50, y:.94 } },
-  tarang: { asia: { x:.50, y:.94 }, west: { x:.50, y:.97 }, cyberhell: { x:.50, y:.97 } },
+  // 30E: smaller reach so the yama's start spot below the nameplate row is not already "at the exit"
+  tarang: { asia: { x:.50, y:.99, reach:.07 }, west: { x:.50, y:.97, reach:.07 }, cyberhell: { x:.50, y:.97, reach:.07 } },
 
   // 29M: ทางออก = บันไดในภาพใหม่ของ 29D (พิกัดหลัง crop ของแบบ UI4 สำหรับโซนไทย)
   tea:   Object.fromEntries(['th','asia','west','cyberhell'].map(z => [z,{x:.50,y:.91,reach:.09}])),
