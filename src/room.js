@@ -141,6 +141,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
   let lying = false, sleepElapsed = 0, recoverySleep = false;
+  const mpAcc = { frac:0 };   // เศษ MP ที่ยังไม่ครบหน่วย (ข้อ 5 ชุด 30B)
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
@@ -256,7 +257,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.hp < g.hpMax || g.mp < g.mpMax) {
         g.hp = Math.min(g.hpMax, g.hp + BAL.hpRegenSit * dt / 1000);
-        g.mp = Math.min(g.mpMax, g.mp + 5 * dt / 1000);
+        regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
         if (g.hp >= g.hpMax && g.mp >= g.mpMax) sitting = false;
       } else sitting = false;
       const now = performance.now();

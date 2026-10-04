@@ -171,7 +171,9 @@
 .battle-meter i{display:block;height:100%;border-radius:inherit;transition:width .3s}
 .battle-meter.ready i{background:#f7ae3d}.battle-meter.health i{background:#17ba56}.battle-meter.mana i{background:#27b9e9}
 .battle-numbered-meter{display:flex;align-items:center;gap:5px;margin:3px 0}
-.battle-numbered-meter small{font-size:clamp(9px,.9vw,13px);white-space:nowrap;color:#eee;font-variant-numeric:tabular-nums}
+.battle-numbered-meter small{font-size:clamp(9px,.9vw,13px);white-space:nowrap;color:#eee;font-variant-numeric:tabular-nums;flex:0 0 auto}
+/* ชุด 30B ข้อ 5 — แถบต้องไม่ถูกตัวเลขยาวบีบจนหาย (เดิม MP ทศนิยมยาวทำให้แถบกว้าง 0 ในโซน 4) */
+.battle-numbered-meter .battle-meter{flex:1 1 auto;min-width:36px}
 .battle-boss-hud{position:absolute;z-index:10;right:7%;bottom:3%;width:26%;display:grid;
   grid-template-columns:minmax(65px,40%) 1fr;gap:4px 12px;align-items:end;color:#eee}
 .battle-boss-hud img{grid-row:1/3;width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #d4ab5b;background:#241522}

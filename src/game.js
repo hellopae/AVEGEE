@@ -3605,7 +3605,7 @@ API.restore = function (d) {
   if (!Number.isFinite(this.exp)) this.exp = LEVELS[this.level - 1]?.exp || 0;
   if (d.mpMax == null) this.mpMax = LEVELS[this.level - 1]?.mpMax || LEVELS[0].mpMax;
   if (d.mp == null) this.mp = this.mpMax;
-  this.mp = clamp(this.mp, 0, this.mpMax);
+  this.mp = clamp(Math.round(this.mp), 0, this.mpMax);   // ชุด 30B ข้อ 5 — เซฟเก่าที่ MP เป็นทศนิยมโหลดแล้วปัดเป็นจำนวนเต็ม
   // JSON แปลง NaN เป็น null; เซฟที่ถูกแก้มืออาจมี NaN ตรง ๆ
   for (const k of ['coin', 'order', 'karma', 'scoreSum']) {
     this[k] = Number.isFinite(d[k]) ? d[k] : k === 'coin' ? BAL.startCoin : k === 'order' ? 72 : 0;

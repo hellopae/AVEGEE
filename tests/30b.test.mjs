@@ -67,3 +67,26 @@ test('30B-4: ui.js — Rage แสดงฝั่งเรา ไม่ขึ้
   assert.match(ui, /effect === 'health' \|\| effect === 'tea' \|\| effect === 'rage'\) \? 'you' : 'foe'/);
   assert.match(ui, /fxNow\?\.key === 'rage' \? null/);
 });
+
+import { regenMp } from '../src/mp-regen.js';
+
+test('30B-5: regenMp เติมเป็นจำนวนเต็ม ไม่เกิน mpMax และเก็บเศษข้ามเฟรม', () => {
+  const g = { mp: 6.4219999999995, mpMax: 72 };
+  const acc = { frac: 0 };
+  for (let i = 0; i < 60; i++) { regenMp(g, acc, 16.7); assert.ok(Number.isInteger(g.mp), `frame ${i}: ${g.mp}`); }
+  assert.ok(g.mp >= 11 && g.mp <= 12, `หนึ่งวินาทีเติม ~5: ${g.mp}`);
+  const full = { mp: 71, mpMax: 72 };
+  regenMp(full, { frac: 0 }, 10000);
+  assert.equal(full.mp, 72);
+});
+
+test('30B-5: เซฟเก่าที่ MP เป็นทศนิยมโหลดแล้วเป็นจำนวนเต็ม + ui ปัดตัวเลขทุกจุด', () => {
+  const g = createGame();
+  g.mp = 6.4219999999995; g.mpMax = 72;
+  const g2 = createGame();
+  assert.equal(g2.restore(g.snapshot()), true);
+  assert.equal(g2.mp, 6);
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /<small>\$\{Math\.round\(mp\)\}\/\$\{g\.mpMax\}<\/small>/);
+  assert.doesNotMatch(ui, /MP \$\{g\.mp\}\//);
+});
