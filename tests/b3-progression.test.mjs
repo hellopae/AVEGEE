@@ -134,8 +134,11 @@ test('B3 medicine price/effect table and all three use paths agree for every zon
         if (context === 'battle') { battle(g); g.battle.youHp=10; }
         if (context === 'prep') prep(g);
         assert.equal(context === 'bag' ? g.useBag(k) : context === 'battle' ? g.battleAct(k) : g.useMedicine(k,'prep'),true,`${k} ${context}`);
-        assert.equal(g.battle ? g.battle.youHp : g.hp,10+gainHp); assert.equal(g.mp,10+gainMp);
+        // น้ำชาโซน 1 กลางศึกฟื้น 24 (ค่าเดิม) ส่วนกระเป๋า/เตรียมศึกตามตาราง
+        const shown=context === 'battle' && k === 'tea' ? 24 : gainHp;
+        assert.equal(g.battle ? g.battle.youHp : g.hp,10+shown); assert.equal(g.mp,10+gainMp);
         assert.equal(g.inventory[k],undefined);
+        if (context === 'battle') assert.equal(BATTLE.items.find(x => x.k === k).heal,k === 'tea' ? 24 : (gainHp || undefined));
       }
     }
   });

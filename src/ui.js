@@ -2,7 +2,7 @@ import { trainingProgress } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
 import { punishmentScene } from './punishment-scene.js';
-import { merchantStock, medicineResult } from './progression.js';
+import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
@@ -2675,7 +2675,7 @@ function openBattle(after) {
     const waterFull = g.mp >= g.mpMax;
     const canWater = waterN > 0 && !waterFull;
     const extraPrepMedicines = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable && !['health','holyWater'].includes(k)).map(k =>
-      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax) ? '' : 'disabled'} title="HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
+      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'prep') ? '' : 'disabled'} title="HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
     const rest = g.zoneEventRestReady() && !phase;
     // ชุด 30B ข้อ 1 — เตรียมศึก (บอสโซน 2–4 · พักก่อนระลอก 4/8 โซน 4) ใช้หน้าตาเดียวกับหน้าต่างแจ้งเตือนอีเวนต์:
     // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
@@ -2717,9 +2717,9 @@ function openBattle(after) {
       const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
       const consumable = !!ITEMS[k]?.consumable;
       // น้ำมนต์ (28E): ต้องมีของ + MP ยังไม่เต็ม · โชว์จำนวนคงเหลือ ×N ใต้ปุ่ม
-      const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0 && !!medicineResult(k,b.youHp,b.youMax,mp,g.mpMax)
+      const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0 && !!medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'battle')
         : !!((g.abilities?.[it.power] || (pw && !g.powerLocked(pw))) && mp >= BATTLE.mpCost[it.power]));
-      const note = consumable ? `×${g.inventory[k] || 0} · HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}` : `MP ${BATTLE.mpCost[it?.power] || 0}`;
+      const note = consumable ? `×${g.inventory[k] || 0} · HP +${medicineHp(ITEMS[k], 'battle')} / MP +${ITEMS[k].mp || 0}` : `MP ${BATTLE.mpCost[it?.power] || 0}`;
       return battleChoice(k, icon, consumable ? itemName(k) : (it?.name || k), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;

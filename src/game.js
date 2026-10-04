@@ -2211,7 +2211,7 @@ const API = {
       (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1))) return false;
     if (context === 'battle' && (!b || b.over || b.pendingWave)) return false;
     if (context === 'bag' && b) return false;
-    const result = medicineResult(k, b ? b.youHp : this.hp, b ? b.youMax : this.hpMax, this.mp, this.mpMax);
+    const result = medicineResult(k, b ? b.youHp : this.hp, b ? b.youMax : this.hpMax, this.mp, this.mpMax, context);
     if (!result) return false;
     if (b) b.youHp = result.hp; else this.hp = result.hp;
     this.mp = result.mp;

@@ -56,10 +56,12 @@ export function normalAttack(base, playerLevel, zone, training) {
   return Math.round((base + (playerLevel-1)*2) * effectiveAllyStats('yama',zone,training).normalMultiplier);
 }
 export const merchantStock = zone => MERCHANT_STOCK_BY_ZONE[zone] || MERCHANT_STOCK_BY_ZONE.th;
-export function medicineResult(k, hp, hpMax, mp, mpMax) {
+// context 'battle' ใช้ battleHp ถ้าไอเท็มกำหนดไว้ (น้ำชาโซน 1 กลางศึก 24 ตามเดิม · ในกระเป๋า/เตรียมศึกใช้ hp ตามตาราง B3)
+export const medicineHp = (def, context) => (context === 'battle' && def?.battleHp != null ? def.battleHp : def?.hp) || 0;
+export function medicineResult(k, hp, hpMax, mp, mpMax, context = 'bag') {
   const def = ITEMS[k];
   if (!def?.consumable) return null;
-  const hpGain = Math.max(0, Math.min(def.hp || 0, hpMax-hp));
+  const hpGain = Math.max(0, Math.min(medicineHp(def, context), hpMax-hp));
   const mpGain = Math.max(0, Math.min(def.mp || 0, mpMax-mp));
   return hpGain || mpGain ? { hp:hp+hpGain, mp:mp+mpGain, hpGain, mpGain } : null;
 }

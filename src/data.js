@@ -2064,10 +2064,12 @@ for (const [zone,suffix,th,en,hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost] of ZONE_M
     return costs[item.k] ? { ...item, k:item.k+suffix, cost:costs[item.k] } : { ...item };
   });
 }
+// น้ำชาโซน 1 กลางศึกฟื้น 24 (ค่าเดิมก่อน B3) ตั้งหลังสร้างน้ำชาโซนอื่นแล้ว เพื่อไม่ให้ถูกคัดลอกไปด้วย · ในกระเป๋า/เตรียมศึกยังเป็น ITEMS.tea.hp
+ITEMS.tea.battleHp = 24;
 // Compatibility metadata for existing battle item consumers, from ITEMS.
 for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
   const existing = BATTLE.items.find(item => item.k === k);
   const entry = { k, name:def.name, nameKey:def.nameKey, glyph:def.glyph,
-    heal:def.hp || undefined, mp:def.mp || 0, say:def.say };
+    heal:(def.battleHp ?? def.hp) || undefined, mp:def.mp || 0, say:def.say };
   if (existing) Object.assign(existing, entry); else BATTLE.items.push(entry);
 }
