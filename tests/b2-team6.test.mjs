@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
-import { BATTLE, CREW_POWER } from '../src/data.js';
+import { ALLY_ZONE_SCALE, BATTLE, CREW_POWER } from '../src/data.js';
 
 const ids = ['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
 function finalGame() {
@@ -73,12 +73,12 @@ test('B2 normal fights and frontier retain two local helpers despite final selec
 test('B2 helper morale, cooldown and trained damage belong to the source ID after battle/save', () => {
   const g = finalGame(); for (const id of ids) g.toggleParty(id);
   const actor = g.roster['west:taan'], other = g.roster['th:taan'];
-  actor.upLv = 4;
+  actor.upLv = 4; actor.statTraining.raeng = 4;   // B3: strength tracked separately; west ally multiplier 1.4 at level 1
   const b = g.startZoneEvent('cyberFinal');
   for (const f of b.foes) { f.hp = f.maxHp = 10000; f.atk = [0,0]; }
   const hp = b.foes[0].hp;
   assert.equal(g.battleAct('crew:west:taan'), true);
-  assert.equal(hp - b.foes[0].hp, CREW_POWER.taan.dmg + 4 * CREW_POWER.taan.trainDmg);
+  assert.equal(hp - b.foes[0].hp, Math.round((CREW_POWER.taan.dmg + 4 * CREW_POWER.taan.trainDmg) * ALLY_ZONE_SCALE.west.ally));
   assert.equal(actor.morale, 92 - BATTLE.crewMorale); assert.equal(other.morale, 92);
   assert.equal(other.helpReadyAt, 0); assert.ok(actor.helpReadyAt > Date.now());
   assert.equal(g.battleAct('crew:th:taan'), true);
