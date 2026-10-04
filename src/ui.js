@@ -153,19 +153,19 @@ setInterval(() => {
     g.startDadFight();
   }
   if (started && g.prisonBreakStatus() === 'pending' && !prisonAlertSeen && !g.battle && !g.over &&
-      !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+      !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone &&
       !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     prisonAlertSeen = true;
     openPrisonAlert();
   }
   if (started && g.frontierBreachStatus() === 'pending' && g.devaTestStatus() === 'cleared' &&
-      !breachAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !breachAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
       !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     breachAlertSeen = true;
     openBreachAlert();
   }
   if (started && g.devaTestStatus() === 'pending' && g.prisonBreakStatus() === 'cleared' &&
-      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
       !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     devaAlertSeen = true;
     openDevaAlert();
@@ -174,7 +174,7 @@ setInterval(() => {
   // (ปิดหน้าต่างแล้วยืนต่อไม่เด้งซ้ำ · ออกห่างแล้วกลับมาถึงจะเด้งอีก · กดปุ่ม "เข้าด่านชายแดน" เปิดเองได้ตลอด)
   const march = started && g.breachMarch();
   if (march && g.nearFrontierGate()) {
-    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone &&
         !g.dadFight && !storyPlaying && !g.storyQueue.length && Date.now() - lastBattleEnd > 1600) {
       breachPrepOffered = true;
       openFrontier(false, march.key);
@@ -186,7 +186,7 @@ setInterval(() => {
   if (started && !g.battle && !dlg.open && g.storyQueue.length) { g.onChange(); return; }
   const nextEvent = pendingZoneEvents().find(ev => !zoneEventAlertSeen.has(`${g.zone}:${ev.k}`));
   if (started && nextEvent && !g.battle && !g.over && !dlg.open && !fx &&
-      !g.pendingVerdict && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
+      !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
       Date.now() - lastBattleEnd > 1600) {
     zoneEventAlertSeen.add(`${g.zone}:${nextEvent.k}`);
     openZoneEventAlert(nextEvent);
