@@ -111,8 +111,8 @@ function load(src) {
 }
 
 /** ขอรูปจริง คืน null ถ้ายังไม่มีไฟล์ (แล้วผู้เรียกวาด placeholder เอง) */
-export function img(key) {
-  const src = artUrl(key);
+export function img(key, sourceZone = null) {
+  const src = artUrl(key, 'png', sourceZone);
   if (!src) return null;
   const r = load(src);
   return r.ok ? r.el : null;
@@ -388,13 +388,13 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
 export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
 export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '')}`] || 1;
 
-export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false) {
-  h *= standeeFit(key, zoneOf());
+export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null) {
+  h *= standeeFit(key, sourceZone || zoneOf());
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
   ctx.fillStyle = 'rgba(0,0,0,.42)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
-  const im = img(key);
+  const im = img(key, sourceZone);
   if (im) {
     if (walking) {
       // จังหวะสองเฟรมแบบ Office Agent: เด้ง สลับยืด/หด และเอียงตามก้าว

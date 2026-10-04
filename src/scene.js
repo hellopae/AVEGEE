@@ -1,3 +1,4 @@
+import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 // scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
@@ -376,6 +377,15 @@ export function render(ctx, g, t, hover, sel) {
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
   }
+  const camp = finalRestSpot(g);
+  if (camp) at(camp.y, () => {
+    mapStandee(ctx, ITEMS.tea.img, camp.x, camp.y, 50, t, '🍵');
+    label(ctx, 'ค่ายพัก · นอนฟื้นบารมี', camp.x, camp.y + 15, 11, '#f7c371');
+  });
+  for (const a of finalEventActors(g)) at(a.y, () => {
+    drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
+    label(ctx, `${a.name}${a.reinforcement ? '' : a.enabled ? ' · พร้อมสู้' : ' · รอ'}`, a.x, a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
+  });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
   if (lastHeroActor !== P || lastHeroZone !== g.zone) {
@@ -646,6 +656,9 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 export function hitActor(g, sx, sy) {
   const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
+  const rest = finalRestSpot(g);
+  if (rest && near(rest.x,rest.y,radius(40))) return { kind:'finalRest', ...rest };
+  for (const a of finalEventActors(g)) if (!a.reinforcement && near(a.x,a.y,radius(45))) return { kind:'finalEncounter', key:a.id, x:a.x,y:a.y, enabled:a.enabled };
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
     return { kind:'bossPending', key:g.zone };

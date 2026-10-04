@@ -1,3 +1,4 @@
+import { nextFinalEncounter, finalEventActors } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
@@ -1162,6 +1163,8 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
+      else if (now.kind === 'finalRest') openStation('tea', true);
       else openStation(now.key);
     };
     ov.appendChild(f);
@@ -1322,7 +1325,23 @@ function zoneEventMarkerArt(ev) {
   if (foe?.kind != null && MOB.kinds[foe.kind]) return artUrl(MOB.kinds[foe.kind].img);
   return storyFoeArt(foe?.sp);
 }
+function openFinalEncounter(id) {
+  const a = finalEventActors(g).find(a => a.id === id);
+  if (!a?.enabled || nextFinalEncounter(g.finalEventState()) !== id) return;
+  if (Math.hypot(g.player.x-a.x,g.player.y-a.y) > INTERACTION_REACH) { g.walkTo(a.x,a.y); return; }
+  modal(`<h2>${esc(a.name)}</h2><p>${esc(t('final.map.prepare'))}</p><div class="row"><button data-close>${esc(t('common.close'))}</button><button class="gold" data-final-go>${esc(t('event.prep.fight'))}</button></div>`, d => {
+    d.querySelector('[data-final-go]').onclick = () => { if (g.startFinalEncounter(id)) openBattle(afterBreachBattle); };
+  });
+}
 function openZoneEventAlert(ev) {
+  if (ev.k === 'cyberFinal') {
+    const id = nextFinalEncounter(g.finalEventState());
+    const a = finalEventActors(g).find(a => a.id === id);
+    modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><p>${esc(t('final.map.walk'))}</p><button class="gold" data-final-map>${esc(t('common.close'))}</button>`, d => {
+      d.querySelector('[data-final-map]').onclick = () => { g.eventMapClosed['cyberhell:cyberFinal'] = true; dlg.close(); if (a) g.walkTo(a.x,a.y); g.save(); };
+    });
+    return;
+  }
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
@@ -2770,7 +2789,7 @@ function openBattle(after) {
           : b.kind === 'frontier' ? `ชายแดนนรก — ระลอกที่ ${b.wave}`
           // จำนวนระลอกอ่านจากข้อมูล event จริง ไม่ฮาร์ดโค้ด (frontierBreach โซน 1 มี 2 ระลอก)
           : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · Wave ${b.wave}/${ZONE_EVENTS.th.find(x => x.k === 'frontierBreach').waves.length}`
-          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
+          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return g.isFinalBattle(b) ? `${zoneEventText(ev?.title)} · ${b.encounter.startsWith('minion:') ? `Wave ${b.wave}/4` : b.who}` : `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
           : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? 'ผีบุกเข้าโซน'
@@ -3536,6 +3555,12 @@ function onSceneClick(sx, sy) {
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
   if (a) {
+    if (a.kind === 'finalRest') {
+      if (Math.hypot(g.player.x-a.x,g.player.y-a.y) <= INTERACTION_REACH) openStation('tea', true);
+      else g.walkTo(a.x,a.y);
+      return;
+    }
+    if (a.kind === 'finalEncounter') return openFinalEncounter(a.key);
     if (a.kind === 'station') { enterStation(a.key); return; }
     if (a.kind === 'zoneEvent') {
       if (a.key === 'devaTest') return openDevaAlert();
@@ -4150,7 +4175,9 @@ function openBattleReward() {
   const closed = () => {
     if (dlg.open && gen === dlgGen) return;
     dlg.removeEventListener('close', closed);
-    rewardOpen = false; g.pendingReward = null;
+    rewardOpen = false;
+    if (r.encounter) { if (!g.acknowledgeFinalReward()) { g.onChange(); return; } }
+    else g.pendingReward = null;
     const next = rewardAfter; rewardAfter = null;
     g.onChange();                                   // ปล่อยหน้าต่างถัดไปในคิว (เลื่อนขั้น/โซน/...)
     if (next) { if (dlg.open) onDlgClose(next); else next(); }
@@ -4239,6 +4266,11 @@ g.onChange = () => {
     if (!dlg.open) openDefeatRecovery();
     return;
   }
+  if (g.pendingReward?.encounter && !g.battle) {
+    if (!dlg.open && !rewardOpen) openBattleReward();
+    return;
+  }
+  if (g.isFinalBattle() && !dlg.open) { openBattle(afterBreachBattle); return; }
   if (!g.battle && g.storyQueue.length) {
     if (!dlg.open && !storyScheduled) {
       storyScheduled = true;

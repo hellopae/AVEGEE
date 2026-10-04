@@ -1,3 +1,4 @@
+import { finalEventActors } from './final-event.js';
 // npc-stand.js — ตัวละครบนแผนที่ที่ยมบาทเดินทับไม่ได้ (30D)
 // ยมบาทเดินทับตัวเขาไม่ได้ (src/walk.js วงรอบตัว) · พิกัดตรงกับที่ scene.js วาด จึงอยู่ที่เดียวไม่ให้คลาดกัน
 import { SPOTS, MOB, MERCHANT, ZONE_EVENTS } from './data.js';
@@ -26,5 +27,6 @@ export function standPoints(g) {
   if (g.guard) pts.push([g.guard.x, g.guard.y]);
   if (!g.bossWalk && (g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) pts.push([SPOTS.bossPier.x, SPOTS.bossPier.y]);
   for (const ev of waitingEvents(g)) pts.push([ev.x, ev.y]);
+  for (const a of finalEventActors(g)) pts.push([a.x,a.y]);
   return pts;
 }

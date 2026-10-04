@@ -1752,13 +1752,14 @@ export const ZONE_EVENTS = {
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
-      alert:{ th:'ฝ่าปีศาจสามระลอก กองหนุนทั้งสี่โซนจะรับมือลูกน้องที่เหลือ พักเตรียมทีมแล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
-        en:'Defeat three demon waves. Allies from all four zones take on the remaining army. Rest, free all four rulers, then rest again before the final inspector.' },
-      restBeforeWaves:[4,8],
+      alert:{ th:'ชนะลูกน้อง 4 ระลอก แล้วช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน ก่อนสู้บอส',
+        en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
+
       waves:[
         [{ kind:14, count:2, hp:60, atk:[10,16] }],
         [{ kind:15, count:2, hp:65, atk:[11,17] }],
         [{ kind:16, count:2, hp:70, atk:[12,18] }],
+        [{ kind:16, count:2, hp:75, atk:[13,19] }],
         [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[13,20], boss:true }],
         [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[14,21], boss:true }],
         [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[15,22], boss:true }],
@@ -2006,4 +2007,15 @@ export const FX_OF = {
   hypno:  { img:'fx-hypno',    glyph:'🌀' },
   ice:    { img:'fx-ice',      glyph:'❄️' },
   foe:    { img:'fx-claw',     glyph:'💢' },
+};
+
+// B2b: encounter additions and receipts, without changing existing enemy stats.
+export const FINAL_EVENT = {
+  waveRewards:[40,50,60,70].map(coin => ({ coin, item:'holyWater', exp:5 })),
+  rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
+  rulerAdds:[1,1,2,2], bossAdds:3,
+  add:{ kind:14, hp:60, atk:[10,16] },
+  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],
+  restPosition:[700,600],
+  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],
 };
