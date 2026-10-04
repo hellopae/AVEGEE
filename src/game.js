@@ -2600,7 +2600,7 @@ const API = {
   },
   selectFoe(id) {
     const b = this.battle, foe = b?.foes.find(f => f.id === id && f.hp > 0);
-    if (!foe || b.over) return false;
+    if (!foe || b.over || b.commandBusy) return false;
     b.selectedFoeId = id;
     this.onChange();
     return true;
@@ -2643,11 +2643,56 @@ const API = {
     return '';
   },
 
+  battleActors() {
+    return [{ id:'you', k:'yama', name:'ยมบาทน้อย / Yama' }, ...this.battleCrew(),
+      ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : [])];
+  },
+  selectBattleActor(id) {
+    const b = this.battle;
+    if (!b || b.over || b.commandBusy || !this.battleActors().some(c => c.id === id)) return false;
+    b.actorId = id; b.command = null; this.onChange(); return true;
+  },
+  cancelBattleCommand() {
+    if (!this.battle || this.battle.commandBusy) return false;
+    this.battle.command = null; this.onChange(); return true;
+  },
+  battleRecipientWhy(k, id) {
+    const b = this.battle, c = this.battleActors().find(c => c.id === id);
+    if (!b || !c) return 'พักฟื้น / Recovering';
+    if (!(this.inventory[k] > 0)) return 'ไม่มีของ / No stock';
+    if (id !== 'you' && ITEMS[k]?.mp) return 'เฉพาะยมบาท / Yama only';
+    if (k !== 'food' && !ITEMS[k]?.consumable) return 'ใช้ไม่ได้ / Unavailable';
+    const hp = id === 'you' ? b.youHp : c.morale, max = id === 'you' ? b.youMax : 100;
+    if (k === 'food') return hp >= max ? 'เต็มแล้ว / Full' : '';
+    return medicineResult(k, hp, max, id === 'you' ? this.mp : 0, id === 'you' ? this.mpMax : 0, 'battle') ? '' : 'เต็มแล้ว / Full';
+  },
+  confirmBattleCommand(what, recipientId = 'you') {
+    const b = this.battle;
+    if (!b || b.commandBusy) return false;
+    const actorId = b.actorId || 'you';
+    if (!this.battleActors().some(c => c.id === actorId)) return false;
+    if (!this.battleAct(what, { actorId, recipientId })) return false;
+    b.commandBusy = true; b.command = null; return true;
+  },
+  finishBattleCommand() {
+    if (this.battle) this.battle.commandBusy = false;
+  },
+
   /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | 'crew:<k>' | ชื่อของใน BATTLE.items
    *  คืน false ถ้ากดไม่ได้ (ของไม่พอ / จบไปแล้ว) */
-  battleAct(what) {
+  battleAct(what, command = null) {
     const B = this.battle;
-    if (!B || B.over || B.pendingWave) return false;
+    if (typeof what !== 'string') return false;
+    if (!B || B.over || B.pendingWave || B.commandBusy) return false;
+    const actor = command && this.battleActors().find(c => c.id === command.actorId);
+    const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
+    if (command && !actor) return false;
+    const itemCommand = command && (what === 'food' || ITEMS[what]?.consumable);
+    if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
+    if (command && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
+    if (command && actor.id !== 'you' && !itemCommand && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    if (command && what === 'atk' && actor.id !== 'you' && actor.morale < 2) return false;
+    if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
     const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
@@ -2658,6 +2703,7 @@ const API = {
     const talk = k => { const p = TALK[k]; if (p && p.length) B.talk = voice(pick(p), B.sex || 'm'); };
     B.dmg = { foe: 0, you: 0 };
     B.ultimate = null;
+    B.helper = null;
 
     // ---- ฝั่งพญายม: ทำอะไรก็จบเหมือนกัน ----
     // ทั้งสองฉากพ่อเป็นบทลงโทษระดับสุดท้าย: แพ้แล้วจบโซนนี้
@@ -2676,7 +2722,23 @@ const API = {
     }
 
     let dmg = 0, stunFoe = 0, confuseFoe = 0;
-    if (what === 'atk') {
+    if (itemCommand) {
+      const hp = recipient.id === 'you' ? B.youHp : recipient.morale;
+      const max = recipient.id === 'you' ? B.youMax : 100;
+      const result = what === 'food' ? { hp:Math.min(max, hp + 20), mp:this.mp }
+        : medicineResult(what, hp, max, recipient.id === 'you' ? this.mp : 0, recipient.id === 'you' ? this.mpMax : 0, 'battle');
+      if (recipient.id === 'you') { B.youHp = result.hp; this.mp = result.mp; }
+      else recipient.morale = result.hp;
+      this.inventory[what]--; B.dmg.healActorId = recipient.id;
+      B.helper = actor.id === 'you' ? null : { ...actor, lunge:false };
+      this.save();
+    } else if (what === 'atk' && actor && actor.id !== 'you') {
+      const stats = this.allyStats(actor);
+      dmg = Math.max(1, Math.round((actor.k === 'guard' ? 14 : 10) * stats.normalMultiplier));
+      actor.morale = Math.max(0, actor.morale - 2);
+      if (!actor.morale) this.downActor(actor);
+      B.helper = { ...actor, lunge:true, at:Date.now() }; this.save();
+    } else if (what === 'atk') {
       dmg = this.normalAttack(roll(BATTLE.atk));
       const crit = Math.random() < BATTLE.crit;
       if (crit) dmg = Math.round(dmg * 1.7);
@@ -2687,13 +2749,14 @@ const API = {
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpReadyAt = 0; c.helpRemainingMs = specialCooldown(c) * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
-      if (!c.morale) this.downActor(c);
       const pw = this.allyStats(c);
       // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
       B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
       if (c.k === 'boon') {
-        const heal = Math.min(pw.heal, B.youMax - B.youHp);
-        B.youHp += heal;
+        const receiver = recipient || { id:'you' };
+        const heal = Math.min(pw.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale);
+        if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
+        B.dmg.healActorId = receiver.id;
         say(`${c.name}ฟื้นบารมีให้ ${heal} หน่วย`);
         B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
       } else if (c.k === 'kan') {
@@ -2706,6 +2769,7 @@ const API = {
         say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
+      if (!c.morale) this.downActor(c);
       this.save(); // เก็บเวลาพร้อมใช้ไว้ ปิด/เปิดหน้าใหม่ก็ไม่ล้างคูลดาวน์
 
     } else if (what === 'guard') {
@@ -2796,7 +2860,7 @@ const API = {
 
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
-    if (dmg > 0 && B.rageTurns > 0) {
+    if (dmg > 0 && B.rageTurns > 0 && (!actor || actor.id === 'you')) {
       dmg = Math.round(dmg * 1.5);
       B.rageTurns--;
       if (!B.rageTurns) B.rageCooldown = 3;

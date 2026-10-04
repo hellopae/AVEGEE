@@ -12,7 +12,16 @@ function sector(from, to) {
   pts.push(point(from,218));
   return `polygon(${pts.join(',')})`;
 }
-export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing=''}) {
+export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.png'}) {
+  if (segments) {
+    return `<div class="command-wheel combat-wheel actor-wheel petals-${segments.length} ${busy?'busy':''}" aria-label="${esc(actorName)}">
+      ${segments.map((g,i)=>`<button class="actor-segment petal-${i}" data-command="${esc(g.id)}" aria-expanded="false" ${busy||g.disabled?'disabled':''}><img src="${esc(g.icon)}" alt=""><b>${esc(g.label)}</b></button>`).join('')}
+      <div class="command-center"><img src="${esc(portrait)}" alt="${esc(actorName)}"></div>
+      <span class="command-center-label">${esc(actorName)}</span>
+      ${segments.map(g=>`<div class="command-options" data-options="${esc(g.id)}" inert>${g.choices || ''}</div>`).join('')}
+      ${selected}
+    </div>`;
+  }
   const labels = battle ? [t('battle.attack'),t('battle.power'),t('battle.crew'),t('battle.item')]
                         : [t('trial.power'),t('trial.where'),t('trial.who'),t('trial.force')];
   const first = battle ? 7 : 2;
