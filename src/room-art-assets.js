@@ -3,7 +3,7 @@
 export const WIDE_ROOM_ART = {
   "th": {
     "sala": {
-      "image": "img/rooms-wide/th-sala.png",
+      "image": "img/rooms-wide/th-sala.webp",
       "entrance": [
         0.5,
         0.88
@@ -43,7 +43,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krata": {
-      "image": "img/rooms-wide/th-krata.png",
+      "image": "img/rooms-wide/th-krata.webp",
       "entrance": [
         0.5,
         0.88
@@ -83,7 +83,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "dab": {
-      "image": "img/rooms-wide/th-dab.png",
+      "image": "img/rooms-wide/th-dab.webp",
       "entrance": [
         0.5,
         0.88
@@ -123,7 +123,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/th-lokan.png",
+      "image": "img/rooms-wide/th-lokan.webp",
       "entrance": [
         0.5,
         0.88
@@ -163,7 +163,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "ngiw": {
-      "image": "img/rooms-wide/th-ngiw.png",
+      "image": "img/rooms-wide/th-ngiw.webp",
       "entrance": [
         0.5,
         0.88
@@ -203,7 +203,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lan": {
-      "image": "img/rooms-wide/th-lan.png",
+      "image": "img/rooms-wide/th-lan.webp",
       "entrance": [
         0.5,
         0.88
@@ -244,7 +244,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/th-krajok.png",
+      "image": "img/rooms-wide/th-krajok.webp",
       "entrance": [
         0.5,
         0.88
@@ -284,7 +284,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "sawan": {
-      "image": "img/rooms-wide/th-sawan.png",
+      "image": "img/rooms-wide/th-sawan.webp",
       "entrance": [
         0.5,
         0.88
@@ -324,7 +324,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "tarang": {
-      "image": "img/rooms-wide/th-tarang.png",
+      "image": "img/rooms-wide/th-tarang.webp",
       "entrance": [
         0.5,
         0.88
@@ -354,7 +354,7 @@ export const WIDE_ROOM_ART = {
   },
   "asia": {
     "sala": {
-      "image": "img/rooms-wide/asia-sala.png",
+      "image": "img/rooms-wide/asia-sala.webp",
       "entrance": [
         0.5,
         0.88
@@ -394,7 +394,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krata": {
-      "image": "img/rooms-wide/asia-krata.png",
+      "image": "img/rooms-wide/asia-krata.webp",
       "entrance": [
         0.5,
         0.88
@@ -434,7 +434,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "dab": {
-      "image": "img/rooms-wide/asia-dab.png",
+      "image": "img/rooms-wide/asia-dab.webp",
       "entrance": [
         0.5,
         0.88
@@ -474,7 +474,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/asia-lokan.png",
+      "image": "img/rooms-wide/asia-lokan.webp",
       "entrance": [
         0.5,
         0.88
@@ -514,7 +514,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "ngiw": {
-      "image": "img/rooms-wide/asia-ngiw.png",
+      "image": "img/rooms-wide/asia-ngiw.webp",
       "entrance": [
         0.5,
         0.88
@@ -554,7 +554,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lan": {
-      "image": "img/rooms-wide/asia-lan.png",
+      "image": "img/rooms-wide/asia-lan.webp",
       "entrance": [
         0.5,
         0.88
@@ -595,7 +595,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/asia-krajok.png",
+      "image": "img/rooms-wide/asia-krajok.webp",
       "entrance": [
         0.5,
         0.88
@@ -635,7 +635,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "sawan": {
-      "image": "img/rooms-wide/asia-sawan.png",
+      "image": "img/rooms-wide/asia-sawan.webp",
       "entrance": [
         0.5,
         0.88
@@ -675,7 +675,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "tarang": {
-      "image": "img/rooms-wide/asia-tarang.png",
+      "image": "img/rooms-wide/asia-tarang.webp",
       "entrance": [
         0.5,
         0.88
@@ -705,7 +705,7 @@ export const WIDE_ROOM_ART = {
   },
   "west": {
     "sala": {
-      "image": "img/rooms-wide/west-sala.png",
+      "image": "img/rooms-wide/west-sala.webp",
       "entrance": [
         0.5,
         0.88
@@ -745,7 +745,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krata": {
-      "image": "img/rooms-wide/west-krata.png",
+      "image": "img/rooms-wide/west-krata.webp",
       "entrance": [
         0.5,
         0.88
@@ -785,7 +785,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "dab": {
-      "image": "img/rooms-wide/west-dab.png",
+      "image": "img/rooms-wide/west-dab.webp",
       "entrance": [
         0.5,
         0.88
@@ -825,7 +825,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/west-lokan.png",
+      "image": "img/rooms-wide/west-lokan.webp",
       "entrance": [
         0.5,
         0.88
@@ -865,7 +865,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "ngiw": {
-      "image": "img/rooms-wide/west-ngiw.png",
+      "image": "img/rooms-wide/west-ngiw.webp",
       "entrance": [
         0.5,
         0.88
@@ -905,7 +905,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lan": {
-      "image": "img/rooms-wide/west-lan.png",
+      "image": "img/rooms-wide/west-lan.webp",
       "entrance": [
         0.5,
         0.88
@@ -946,7 +946,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/west-krajok.png",
+      "image": "img/rooms-wide/west-krajok.webp",
       "entrance": [
         0.5,
         0.88
@@ -986,7 +986,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "sawan": {
-      "image": "img/rooms-wide/west-sawan.png",
+      "image": "img/rooms-wide/west-sawan.webp",
       "entrance": [
         0.5,
         0.88
@@ -1026,7 +1026,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "tarang": {
-      "image": "img/rooms-wide/west-tarang.png",
+      "image": "img/rooms-wide/west-tarang.webp",
       "entrance": [
         0.5,
         0.88
@@ -1056,7 +1056,7 @@ export const WIDE_ROOM_ART = {
   },
   "cyberhell": {
     "sala": {
-      "image": "img/rooms-wide/cyberhell-sala.png",
+      "image": "img/rooms-wide/cyberhell-sala.webp",
       "entrance": [
         0.5,
         0.88
@@ -1096,7 +1096,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krata": {
-      "image": "img/rooms-wide/cyberhell-krata.png",
+      "image": "img/rooms-wide/cyberhell-krata.webp",
       "entrance": [
         0.5,
         0.88
@@ -1136,7 +1136,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "dab": {
-      "image": "img/rooms-wide/cyberhell-dab.png",
+      "image": "img/rooms-wide/cyberhell-dab.webp",
       "entrance": [
         0.5,
         0.88
@@ -1176,7 +1176,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/cyberhell-lokan.png",
+      "image": "img/rooms-wide/cyberhell-lokan.webp",
       "entrance": [
         0.5,
         0.88
@@ -1216,7 +1216,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "ngiw": {
-      "image": "img/rooms-wide/cyberhell-ngiw.png",
+      "image": "img/rooms-wide/cyberhell-ngiw.webp",
       "entrance": [
         0.5,
         0.88
@@ -1256,7 +1256,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lan": {
-      "image": "img/rooms-wide/cyberhell-lan.png",
+      "image": "img/rooms-wide/cyberhell-lan.webp",
       "entrance": [
         0.5,
         0.88
@@ -1297,7 +1297,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/cyberhell-krajok.png",
+      "image": "img/rooms-wide/cyberhell-krajok.webp",
       "entrance": [
         0.5,
         0.88
@@ -1337,7 +1337,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "sawan": {
-      "image": "img/rooms-wide/cyberhell-sawan.png",
+      "image": "img/rooms-wide/cyberhell-sawan.webp",
       "entrance": [
         0.5,
         0.88
@@ -1377,7 +1377,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "tarang": {
-      "image": "img/rooms-wide/cyberhell-tarang.png",
+      "image": "img/rooms-wide/cyberhell-tarang.webp",
       "entrance": [
         0.5,
         0.88
