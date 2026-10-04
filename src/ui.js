@@ -2,7 +2,7 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
-import { teamFaceClass, foeFaceClass } from './battle-facing.js';
+import { teamFaceClass, foeFaceClass, ragePoseSrc } from './battle-facing.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -1857,8 +1857,14 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ก็ยังสลับไปใช้ท่าโจมตีของยมบาทน้อยเองเหมือนยมบาทน้อยเป็นคนตี (fx.crew ไม่เคยถูกเช็ค) ดูเหมือนยมบาทน้อย
   // ทำท่าโจมตีแทนทุกครั้ง แก้โดยกันไว้ว่าถ้าเป็นตาของยมทูต/ยักษ์ (fx.crew มีค่า) ยมบาทน้อยไม่สลับท่า
   const usingAtk = act && act.lunge === 'you' && (!fx || fx.side === 'foe') && !(fx && fx.crew);
-  const youImg = hp && act?.struck === 'you' && hp.dmg?.you > 0
-    ? heroCry() : usingAtk ? heroAtk() : heroFace();
+  // ชุด 30B ข้อ 4 — พลังบ้าคลั่ง: ยมบาทน้อยเปลี่ยนเป็นท่าชาร์จที่ตัวเอง + ไฟรอบตัว (fx ลงฝั่งเรา ไม่ขึ้นที่ศัตรู)
+  // ท่าชาร์จค้างไว้ตลอดช่วงที่บัฟยังอยู่ (hp.rageTurns > 0) ให้เห็นว่าพลังทำงาน · โดนตี/ฟาดอยู่ใช้ท่าของมันก่อน
+  const hurtNow = !!(hp && act?.struck === 'you' && hp.dmg?.you > 0);
+  const charged = (fx?.key === 'rage' && fx.side === 'you') || hp?.rageTurns > 0;
+  const showRage = charged && !hurtNow && !usingAtk;
+  const raging = charged && !hurtNow;
+  const youImg = hurtNow ? heroCry() : usingAtk ? heroAtk()
+    : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
@@ -1890,7 +1896,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <img src="${artUrl('crew-' + c.k)}" class="${teamFaceClass(artUrl('crew-' + c.k))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown(c, g.crewCooldown(c), BATTLE.crewCd)
       }</span>`).join('')}</div>` : ''}
-    <div class="fig you${cls('you')}${usingAtk ? ' atk' : ''}">
+    <div class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
@@ -2594,7 +2600,9 @@ function openBattle(after) {
         ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
                                   : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId } }
         : { ...b, dmg: { foe: 0, you: 0 } };
-    const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
+    // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
+    const act = phase === 'you' && fxNow?.key === 'rage' ? null
+              : phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? (confuseHit ? { struck: 'foe' } : { lunge: 'foe', struck: 'you' }) : null;
     const mp = g.mp;
     const battleHelpers = g.battleCrew();
@@ -2833,7 +2841,7 @@ function openBattle(after) {
       const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
-      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea') ? 'you' : 'foe', crew: crewNow };
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
       paint();
       playActionCutscene(k);
 

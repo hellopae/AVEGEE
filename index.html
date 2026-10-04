@@ -758,6 +758,14 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
    มันเลยพลิกกลับไปหันซ้ายผิดทาง — ยกเลิก flip เฉพาะตอนโชว์ท่าโจมตี (ui.js ใส่ class .atk ให้ตอนนั้น) */
 .arena .fig.you.atk img,.hud .fig.you.atk img{transform:scaleX(1)}
 .arena .fig.you.hit img{animation:hitshakeY .28s}
+/* ชุด 30B ข้อ 4 — พลังบ้าคลั่ง: ไฟรอบตัวยมบาทน้อย (ชั้นแยกใต้ภาพ ไม่ใส่ฟิลเตอร์/ย้อมสีที่ภาพวาด) · โทนทอง */
+.arena .fig.you.raging::before{content:'';position:absolute;left:50%;bottom:8%;width:150%;height:78%;
+  transform:translateX(-50%);z-index:-1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 60%,rgba(239,195,87,.78) 0,rgba(212,163,85,.42) 38%,rgba(212,163,85,0) 70%);
+  animation:rageAura .9s ease-out both}
+@keyframes rageAura{0%{opacity:0;transform:translateX(-50%) scale(.5)}30%{opacity:1;transform:translateX(-50%) scale(1.1)}
+  100%{opacity:.55;transform:translateX(-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){.arena .fig.you.raging::before{animation:none;opacity:.7}}
 @keyframes hitshakeY{0%,100%{transform:scaleX(-1) translateX(0)}
   25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
 .arena .fig.hit img{animation:hitshake .28s}

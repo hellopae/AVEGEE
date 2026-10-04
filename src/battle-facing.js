@@ -36,3 +36,15 @@ export const foeFaceClass = src => foeNeedsMirror(src) ? 'face-flip' : '';
 
 /** กรอบส่วนมีตัว (เศษส่วน 0-1) หลังพลิกกระจกแนวนอน — ใช้วัดตำแหน่งภาพที่ถูกพลิก */
 export const mirrorBox = box => box ? { ...box, l:1 - (box.l + box.w) } : box;
+
+/** ท่าชาร์จ/โจมตีของยมบาทที่หันขวามาแต่ต้น (ชุด 30B ข้อ 4 — พลังบ้าคลั่ง Rage แสดงที่ตัวยมบาท ไม่ใช่ที่ศัตรู)
+ *  โซน 1–2 มี hero-yama[-asia]-atk · โซน 3–4 มีเฉพาะ atk-R (atk-L คือภาพกระจกหันซ้าย) · ไม่รู้จักชุด → null (ผู้เรียกถอยไปท่าเดิม) */
+export function ragePoseSrc(style) {
+  switch (style) {
+    case 'th': return 'img/hero-yama-atk.png';
+    case 'asia': return 'img/Asia/hero-yama-asia-atk.png';
+    case 'west': return 'img/West/hero-yama-west-atk-R.png';
+    case 'cyberhell': return 'img/CyberHell/hero-yama-cyberhell-atk-R.png';
+    default: return null;
+  }
+}

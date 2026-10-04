@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spriteKey, teamNeedsMirror, foeNeedsMirror, teamFaceClass, foeFaceClass, mirrorBox,
-         TEAM_DRAWN_FACING_RIGHT } from '../src/battle-facing.js';
+         TEAM_DRAWN_FACING_RIGHT, ragePoseSrc } from '../src/battle-facing.js';
 
 test('30B-2: spriteKey ตัด path/นามสกุล/-v2/query', () => {
   assert.equal(spriteKey('img/West/crew-guard-west-v2.png?x=1'), 'crew-guard-west');
@@ -35,4 +35,35 @@ test('30B-2: mirrorBox สลับขอบซ้ายตามการพล
   assert.deepEqual({ t:m.t, w:m.w, h:m.h }, { t:.2, w:.5, h:.7 });
   assert.ok(Math.abs(mirrorBox(m).l - .1) < 1e-9);
   assert.equal(mirrorBox(null), null);
+});
+
+import { readFileSync, existsSync } from 'node:fs';
+import { createGame } from '../src/game.js';
+
+test('30B-4: ท่า Rage ของทุกชุดชี้ไฟล์ที่มีจริง (โซน 3-4 ใช้ atk-R ที่หันขวา)', () => {
+  for (const style of ['th', 'asia', 'west', 'cyberhell']) {
+    const src = ragePoseSrc(style);
+    assert.ok(src && existsSync(new URL(`../${src}`, import.meta.url)), `${style} -> ${src}`);
+  }
+  assert.match(ragePoseSrc('west'), /atk-R/);
+  assert.equal(ragePoseSrc('unknown'), null);
+});
+
+test('30B-4: Rage ยังเพิ่มดาเมจ 3 ครั้งเหมือนเดิม และตัวมันเองไม่ทำดาเมจ', () => {
+  const g = createGame();
+  g.abilities.rage = true; g.mp = g.mpMax;
+  g.battle = { kind:'mob', youHp:100, youMax:100, over:null, log:[], turn:1, dmg:null, talk:'',
+    foes:[{ id:'f', who:'x', hp:9999, maxHp:9999, atk:[0, 0], stun:0, confuse:0 }], selectedFoeId:'f' };
+  assert.equal(g.battleAct('rage'), true);
+  assert.equal(g.battle.rageTurns, 3);
+  assert.equal(g.battle.dmg.foe, 0, 'Rage ไม่ใช่การโจมตี');
+  g.battleAct('fire');
+  assert.equal(g.battle.rageTurns, 2);
+  assert.ok(g.battle.dmg.foe >= 60, 'ลูกไฟ ×1.5');
+});
+
+test('30B-4: ui.js — Rage แสดงฝั่งเรา ไม่ขึ้นที่ศัตรู และไม่ทำให้ศัตรูสะดุ้ง', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /effect === 'health' \|\| effect === 'tea' \|\| effect === 'rage'\) \? 'you' : 'foe'/);
+  assert.match(ui, /fxNow\?\.key === 'rage' \? null/);
 });
