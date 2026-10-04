@@ -1856,6 +1856,9 @@ export const ZONES = [
     mobs:[11,12,13,14,15,16], coin:1200 },
 ];
 
+/** 30D ข้อ 7 — อาคารที่กลับด้านตอนวาด ต่อโซน */
+export const STATION_FLIP = { asia: ['lokan'], west: ['sala'] };
+
 /** ทุกโซนใช้ผังและพิกัด 1678×937 เดียวกัน; คง SCENE object ที่โมดูลอื่น import ไว้ */
 export function syncSceneZone(zone) {
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
@@ -1872,6 +1875,10 @@ export function syncSceneZone(zone) {
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
     ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670], flip:true }
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674], flip:false });
+  // 30D ข้อ 7 (คุณเป้ #11 #13): กลับด้านภาพอาคารซ้าย↔ขวาตอนวาด (วิธีเดียวกับศาลาน้ำชา 28A — ไฟล์ภาพไม่ถูกแตะ)
+  //   #11 แท่นบัวหิมะ มีบันได โคมแดง ปะการังแดง = img/Asia/st-lokan-asia.png (โซน 2 ไม่ใช่ west)
+  //   #13 หลังคากระเบื้องดำ ฐานไม้ดำ มีบันไดหน้า = img/West/st-sala-west.png (โซน 3)
+  for (const s of STATIONS) if (s.k !== 'tea') s.flip = !!STATION_FLIP[z.k]?.includes(s.k);
 }
 
 // Seated rulers guide the player. ZONES[].bossName identifies the separate

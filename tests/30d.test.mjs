@@ -200,3 +200,25 @@ test('6. ท่ายืน: ขยายเฉพาะทัณฑ์โซน
   assert.equal(standeeFit('crew-taan', 'th'), 1);
   assert.equal(standeeFit('crew-dam', 'cyberhell'), 1);
 });
+
+// ---------- ข้อ 7: กลับด้านอาคาร #11 (แท่นบัวหิมะ = st-lokan-asia โซน 2) #13 (หลังคากระเบื้องดำ = st-sala-west โซน 3) ----------
+import { STATIONS, syncSceneZone, STATION_FLIP } from '../src/data.js';
+test('7. flip เฉพาะ lokan โซน 2 และ sala โซน 3 · โซนอื่นไม่กลับ · ศาลาน้ำชาโซน 2 ยังกลับเหมือน 28A · จุดประตู/hit ไม่ขยับ', () => {
+  const pos = () => STATIONS.map(s => [s.k, s.bx, s.by, s.x, s.y, s.hit.join()].join('|'));
+  syncSceneZone('th');
+  const thPos = pos();
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), []);
+  syncSceneZone('asia');
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['lokan', 'tea']);
+  syncSceneZone('west');
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['sala']);
+  syncSceneZone('cyberhell');
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), []);
+  assert.deepEqual(STATION_FLIP, { asia: ['lokan'], west: ['sala'] });
+  syncSceneZone('th');
+  assert.deepEqual(pos(), thPos, 'การเปลี่ยนโซนวนกลับต้องได้ตำแหน่งเดิม ไม่ค้าง flip');
+  assert.equal(STATIONS.find(s => s.k === 'lokan').flip, false);
+  // ไฟล์ภาพจริงอยู่ครบ (flip ตอนวาด ไม่แตะไฟล์ของ Kittanate)
+  for (const f of ['img/Asia/st-lokan-asia.png', 'img/West/st-sala-west.png'])
+    assert.ok(readFileSync(new URL('../' + f, import.meta.url)).length > 1000, f);
+});
