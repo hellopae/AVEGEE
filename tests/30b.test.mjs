@@ -111,3 +111,12 @@ test('30B-7: โปรไฟล์หัวหน้าโซน 3 ต่อโ�
   assert.match(ui, /BOSS_PROFILE_ART = \{ west:'img\/West\/hero-boss-west-profile\.webp' \}/);
   assert.match(ui, /bossProfileOverride\(f\.sp, g\.zone\) \|\| /, 'override ก่อน แล้วถอยไปภาพเดิม');
 });
+
+import { ITEMS } from '../src/data.js';
+
+test('30B-8: หัวใจสำรองไม่ใช้ภาพกล่องยาแล้ว (ชี้ item-heart + glyph ❤️) และยังชุบชีวิตเหมือนเดิม', () => {
+  assert.equal(ITEMS.spareHeart.img, 'item-heart');
+  assert.notEqual(ITEMS.spareHeart.img, ITEMS.health.img);
+  assert.equal(ITEMS.spareHeart.glyph, '❤️');
+  assert.equal(ITEMS.spareHeart.revive, true);
+});

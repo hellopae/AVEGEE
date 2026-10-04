@@ -3098,9 +3098,12 @@ const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (ITEMS[k]?.name 
 /** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง ใช้ placeholder/glyph/fallback จากข้อมูลไอเท็ม
  *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด
  *  สีเท่า token --gold (#d4a355) / --muted (#2a171d) ใน index.html — data-URI อ่านตัวแปร CSS ไม่ได้ */
-const placeholderSrc = text => 'data:image/svg+xml,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="10" fill="#2a171d" stroke="#d4a355" stroke-width="3" stroke-dasharray="6 4"/><text x="32" y="40" font-size="20" font-weight="700" text-anchor="middle" fill="#d4a355" font-family="sans-serif">${text}</text></svg>`
+const placeholderSrc = text => {
+  const emoji = [...String(text)].length <= 2 && /\p{Extended_Pictographic}/u.test(String(text));   // glyph อีโมจิ (เช่น ❤️) ใหญ่เต็มกรอบ ไม่ใช่ตัวอักษรเล็ก
+  return 'data:image/svg+xml,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="10" fill="#2a171d" stroke="#d4a355" stroke-width="3" stroke-dasharray="6 4"/><text x="32" y="${emoji ? 43 : 40}" font-size="${emoji ? 32 : 20}" font-weight="700" text-anchor="middle" fill="#d4a355" font-family="sans-serif">${text}</text></svg>`
 ).replace(/'/g, '%27');
+};
 /** <img> ของไอเท็ม — ไฟล์หายใช้ fallback ที่แสดงได้แทนรูปแตก */
 function itemImg(k, attrs = '') {
   const d = ITEMS[k]; if (!d) return '';
