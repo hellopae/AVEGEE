@@ -25,3 +25,17 @@
 .tr-mirror-g.sel .tr-hit{stroke:var(--gold);stroke-dasharray:2 2}
 .tr-mirror-g.sel .tr-num{fill:var(--gold)}
 @media(prefers-reduced-motion:reduce){.tr-beam,.tr-exit{transition:none}}
+/* breath */
+.tr-cue{margin:0;font-size:var(--text-base);color:var(--gold);text-align:center;min-height:1.7em}
+.tr-breath-ring{position:relative;width:min(70vw,240px,34vh);aspect-ratio:1/1;flex:none;border-radius:50%;
+  border:2px dashed var(--gold);display:flex;align-items:center;justify-content:center}
+.tr-breath-orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6d6,var(--gold) 60%,#8a5a1e);
+  transform:scale(.3);will-change:transform;opacity:.9}
+.tr-breath-ring.out .tr-breath-orb{background:radial-gradient(circle at 35% 30%,#d6efff,#6fb3d6 60%,#2f5f7d)}
+.tr-breath-ring.holding{border-style:solid;box-shadow:0 0 18px rgba(255,227,173,.5)}
+.tr-dots{display:flex;gap:8px;justify-content:center;font-size:var(--text-base);color:var(--muted-foreground)}
+.tr-dot.ok{color:#6fd08c}.tr-dot.bad{color:var(--destructive)}
+.tr-hold{width:100%;max-width:420px;min-height:88px;font-size:1.2rem;touch-action:none;user-select:none;-webkit-user-select:none;
+  background:#674b38;color:#fff;border:1px solid var(--gold);border-radius:var(--radius-sm);cursor:pointer}
+.tr-hold[aria-pressed="true"]{background:#247747}
+.tr-hold:disabled{opacity:.45;cursor:default}

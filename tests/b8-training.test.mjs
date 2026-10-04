@@ -149,3 +149,101 @@ test('B8 krajok → kan: EXP reaches only the selected Kan; cancel, wrong id, re
   g.tick = 100; win(g, 'krajok', 'th:kan');
   assert.ok(g.allyStats(g.roster['th:kan']).confuseMultiplier > before, 'Kan confuse multiplier follows the real progression');
 });
+
+// ================================================ sawan / breath (→ boon) =============================================
+import * as breath from '../src/minigames/training/breath.js';
+const advance = (e, to) => { while (e.view().time < to - 1e-9) e.step(Math.min(.01, to - e.view().time)); };
+const cueIn = r => breath.LEAD + r * breath.PERIOD, cueOut = r => cueIn(r) + breath.INHALE;
+const breathe = (e, r, pressOff = 0, releaseOff = 0) => { advance(e, cueIn(r) + pressOff); e.input('hold'); advance(e, cueOut(r) + releaseOff); e.input('release'); };
+
+test('B8 sawan: 8 breaths fit exactly in 32 s and perfect timing scores 100', () => {
+  assert.equal(breath.LEAD + breath.ROUNDS * breath.PERIOD, breath.SECONDS);
+  assert.equal(TRAINING_STATIONS.sawan.seconds, breath.SECONDS);
+  const e = createTrainingGame('sawan', 1);
+  for (let r = 0; r < 8; r++) breathe(e, r);
+  advance(e, 32);
+  assert.equal(e.view().done, true); assert.equal(e.view().successes, 8);
+  assert.equal(e.score(), 100); assert.equal(e.completed(), true);
+});
+
+test('B8 sawan: tolerance edges, accuracy-based score, 6 of 8 needed', () => {
+  const sloppy = createTrainingGame('sawan', 1);   // every breath 0.5 s late on press and release: counts, but scores lower
+  for (let r = 0; r < 8; r++) breathe(sloppy, r, .5, .5);
+  advance(sloppy, 32);
+  assert.equal(sloppy.view().successes, 8); assert.equal(sloppy.score(), Math.round(70 + 30 * (1 - .5 / breath.TOLERANCE)));
+  assert.ok(sloppy.score() < 100 && sloppy.score() >= 60);
+  const six = createTrainingGame('sawan', 1);
+  for (let r = 0; r < 6; r++) breathe(six, r);
+  advance(six, 32); assert.equal(six.completed(), true); assert.equal(six.score(), 75);
+  const five = createTrainingGame('sawan', 1);
+  for (let r = 0; r < 5; r++) breathe(five, r);
+  advance(five, 32); assert.equal(five.completed(), false);
+  const offbeat = createTrainingGame('sawan', 1);   // press OK, release 1 s late → the round fails
+  for (let r = 0; r < 8; r++) breathe(offbeat, r, 0, 1);
+  advance(offbeat, 32); assert.equal(offbeat.view().successes, 0); assert.equal(offbeat.completed(), false); assert.equal(offbeat.score(), 0);
+  const edge = createTrainingGame('sawan', 1);      // exactly on the tolerance boundary still counts
+  breathe(edge, 0, breath.TOLERANCE, -breath.TOLERANCE); assert.equal(edge.view().successes, 1);
+});
+
+test('B8 sawan: stray presses, repeats, cancel and unreleased holds never score', () => {
+  const e = createTrainingGame('sawan', 1);
+  advance(e, .2); e.input('hold'); advance(e, .3); e.input('release');           // long before the first cue
+  assert.equal(e.view().successes, 0); assert.equal(e.view().results[0], null);
+  breathe(e, 0); assert.equal(e.view().successes, 1);
+  breathe(e, 0, 0, 0.0001);                                                        // the same round again (time already past): ignored
+  advance(e, cueIn(1)); e.input('hold'); advance(e, cueIn(1) + .5); e.input('cancel'); advance(e, cueOut(1)); e.input('release');
+  assert.equal(e.view().results[1], null, 'cancelled breath is discarded');
+  advance(e, cueIn(7)); e.input('hold'); advance(e, 32);
+  assert.equal(e.view().done, true); assert.equal(e.view().holding, false); assert.equal(e.view().successes, 1);
+  e.input('hold'); e.input('release'); e.step(1); assert.equal(e.view().successes, 1, 'nothing after the end');
+  const f = createTrainingGame('sawan', 1); f.step(NaN); f.step(-3); assert.equal(f.view().time, 0);
+  f.input('hit'); f.input({ type:'rotate' }); assert.equal(f.view().holding, false);
+});
+
+test('B8 sawan: host buttons, pause freezes and cancels the hold, abandon cleans up', () => withDom(doc => {
+  const f = frames(), host = new FakeEl('div'), results = [];
+  let paused = false, alive = true, abandoned = 0;
+  const stop = runTraining(host, { station:'sawan', session:{ id:'b1', seed:1 }, paused:() => paused, alive:() => alive,
+    onResult:r => results.push(r), onAbandon:() => abandoned++, raf:f.raf, caf:f.caf });
+  const hold = host.find(n => n.tag === 'button')[0], cue = host.find(n => n.tag === 'p' && n.attrs.class === 'tr-cue')[0];
+  let t = 0; const run = until => { while (t < until) { t += 50; f.step(t); } };
+  f.step(0); run(500); assert.ok(cue.textContent.startsWith('เตรียม'));
+  hold.dispatchEvent(new Event('pointerdown')); run(1700);
+  assert.equal(host.find(n => n.attrs.class?.includes('tr-breath-ring'))[0].attrs.class.includes('holding'), true);
+  paused = true; run(5000);
+  assert.equal(cue.textContent.startsWith('หยุดพัก'), true); assert.equal(hold.disabled, true);
+  hold.dispatchEvent(new Event('pointerup'));
+  paused = false; run(5100);
+  assert.equal(host.find(n => n.attrs.class?.includes('tr-breath-ring'))[0].attrs.class.includes('holding'), false, 'pause cancelled the hold');
+  alive = false; run(5200); assert.equal(abandoned, 1); assert.equal(f.pending, false); assert.equal(results.length, 0);
+  stop(); stop();
+}));
+
+test('B8 sawan: host plays a perfect session through pointer events and reports once', () => withDom(() => {
+  const f = frames(), host = new FakeEl('div'), results = [];
+  runTraining(host, { station:'sawan', session:{ id:'b2', seed:1 }, paused:() => false, alive:() => true,
+    onResult:r => results.push(r), onAbandon:() => assert.fail('abandon'), raf:f.raf, caf:f.caf });
+  const hold = host.find(n => n.tag === 'button')[0];
+  const events = [];
+  for (let r = 0; r < 8; r++) { events.push([cueIn(r), 'pointerdown'], [cueOut(r), 'pointerup']); }
+  let t = 0; f.step(0);
+  while (f.pending) {
+    t += 10;
+    f.step(t);
+    while (events.length && events[0][0] * 1000 <= t) hold.dispatchEvent(new Event(events.shift()[1]));
+  }
+  assert.equal(results.length, 1); assert.equal(results[0].completed, true); assert.ok(results[0].score >= 90); assert.equal(results[0].sessionId, 'b2');
+}));
+
+test('B8 sawan → boon: EXP reaches only the selected Boon; cancel gives nothing; heal follows the real progression', () => {
+  const g = game();
+  assert.deepEqual(g.trainingTargets('sawan').map(a => a.id), ['th:boon']);
+  const healBefore = g.allyStats(g.roster['th:boon']).heal;
+  const s = g.startTraining('sawan', 'th:boon');
+  assert.equal(g.cancelTraining(s.id).exp, 0); assert.equal(rec(g, 'th:boon').exp, 0);
+  g.tick = 30; win(g, 'sawan', 'th:boon', 85);
+  assert.equal(rec(g, 'th:boon').exp, 30);
+  for (const other of ['th:kan','th:taan','th:dam',HERO_TRAINING_ID,'global:nira']) assert.equal(rec(g, other)?.exp ?? 0, 0, other);
+  g.tick = 130; win(g, 'sawan', 'th:boon', 100);
+  assert.ok(g.allyStats(g.roster['th:boon']).heal > healBefore, 'level 2 Boon heals more');
+});

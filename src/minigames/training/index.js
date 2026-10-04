@@ -1,10 +1,12 @@
 import * as mirror from './mirror.js';
+import * as breath from './breath.js';
 // B4 engine shared by lan/lokan; 30 seconds of active, unpaused play. B8 games carry create()/ui() instead of a kind.
 export const TRAINING_GAMES = Object.freeze({
   dab:{ name:'ฝึกฟันดาบ / Sword training', tip:'แตะเป้าดาบตอนสีเขียว เลี่ยงเป้าหลอก × · 12 เป้า / Tap green sword targets; avoid × decoys (12 targets)', kind:'sword' },
   lan:{ name:'ยกก้อนหิน / Stone lifting', tip:'กดค้างเพื่อยก ปล่อยที่ 55–75 · 10 ครั้ง / Hold to lift; release at 55–75 (10 lifts)', kind:'stone' },
   lokan:{ name:'ยกก้อนหิน / Stone lifting', tip:'กดค้างเพื่อยก ปล่อยที่ 55–75 · 10 ครั้ง / Hold to lift; release at 55–75 (10 lifts)', kind:'stone' },
   krajok:{ name:'ฝึกหอส่องกรรม / Mirror training', tip:'แตะกระจกแล้วลากหรือกด ±15° ให้แสงถึงทางออก ⛩ ค้าง 2 วิ · 45 วิ / Tap a mirror, drag or press ±15° so the light reaches the exit ⛩ and holds 2 s (45 s)', kind:'mirror', seconds:45, create:mirror.create, ui:mirror.mount },
+  sawan:{ name:'ฝึกกำหนดลมหายใจ / Breath training', tip:'กดค้างตอนหายใจเข้า ปล่อยตอนหายใจออก ให้ตรงจังหวะ ≥6 จาก 8 รอบ · 32 วิ / Hold while breathing in, release while breathing out; 6 of 8 breaths on the beat (32 s)', kind:'breath', seconds:32, create:breath.create, ui:breath.mount },
   krata:{ name:'เร่งไฟ / Fire control', tip:'พัดไฟ + หรือลดไฟ − ให้อยู่ 40–60 อย่างน้อย 60% / Keep heat at 40–60 for at least 60% of the time', kind:'fire' },
 });
 export function createTrainingGame(station, seed = 1) {
