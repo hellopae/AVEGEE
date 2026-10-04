@@ -1,9 +1,11 @@
 import { TRAINING_GAMES, createTrainingGame } from './index.js';
+import { runPanel } from './panel-host.js';
 
 // Own every listener/frame. Pausing and hidden tabs freeze both clock and input.
 export function runTraining(host, { station, session, paused, alive, onResult, onAbandon,
   raf = requestAnimationFrame, caf = cancelAnimationFrame }) {
   const engine = createTrainingGame(station, session.seed);
+  if (TRAINING_GAMES[station].ui) return runPanel(host, TRAINING_GAMES[station], engine, { session, paused, alive, onResult, onAbandon, raf, caf });
   let stopped = false, frame = 0, previous = null;
   const controller = new AbortController();
   const text = document.createElement('p'); text.setAttribute('aria-live', 'polite');

@@ -1,0 +1,27 @@
+/* B8 training minigames (mirror / breath / documents / targets). Mobile first: every press target >= 48px,
+   board sizes follow the stage width (390px portrait base, no fixed pixel widths). Colours use the game tokens. */
+.mg-train .mg-stage{overflow:auto;align-items:center;-webkit-overflow-scrolling:touch}
+.mg-train .mg-stage .tr-info,.mg-train .mg-stage .tr-label{margin:0;width:100%;max-width:420px;text-align:center;font-size:var(--text-sm);line-height:var(--leading-body)}
+.mg-train .mg-stage progress{width:100%;max-width:420px;height:14px;flex:none}
+.tr-btn{min-height:48px;min-width:48px;padding:6px 12px;font-size:var(--text-sm);touch-action:manipulation;
+  background:rgba(212,163,85,.12);border:1px solid var(--gold);border-radius:var(--radius-sm);color:var(--gold);cursor:pointer}
+.tr-btn:disabled{opacity:.45;cursor:default}
+.tr-btn[aria-pressed="true"]{background:var(--gold);color:#1a0d10}
+.tr-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-width:420px}
+.tr-board{width:min(100%,420px,42vh);aspect-ratio:1/1;flex:none;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.03);touch-action:none;user-select:none;-webkit-user-select:none}
+.tr-bg{fill:rgba(14,8,12,.9)}
+/* mirror */
+.tr-source{fill:var(--gold)}
+.tr-beam{fill:none;stroke:#ffe3ad;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.tr-beam.lit{stroke:#fff6d6;stroke-width:1.8}
+.tr-exit{fill:rgba(212,163,85,.12);stroke:var(--gold);stroke-width:1.1;stroke-dasharray:2 1.5}
+.tr-exit.lit{fill:rgba(255,227,173,.45);stroke-dasharray:none}
+.tr-exit-label{font-size:7px;fill:var(--gold);pointer-events:none}
+.tr-mirror{stroke:#9fd8e8;stroke-width:3;stroke-linecap:round}
+.tr-hit{fill:transparent;stroke:transparent;stroke-width:1;cursor:grab}
+.tr-num{font-size:5px;fill:var(--muted-foreground);pointer-events:none}
+.tr-mirror-g.sel .tr-mirror{stroke:#fff;stroke-width:3.6}
+.tr-mirror-g.sel .tr-hit{stroke:var(--gold);stroke-dasharray:2 2}
+.tr-mirror-g.sel .tr-num{fill:var(--gold)}
+@media(prefers-reduced-motion:reduce){.tr-beam,.tr-exit{transition:none}}
