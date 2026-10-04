@@ -9,6 +9,8 @@
 //   4) เรียงเป็นแถวชิดซ้ายยมบาทน้อย เส้นเท้าเดียวกัน ให้ตัวจริงห่างกันนิดหน่อย (กล่องภาพซ้อนกันได้เพราะขอบโปร่งใส)
 // ไม่ยุ่งกับตัวภาพ ไม่ย้อมสี ไม่ใส่ฟิลเตอร์ — ปรับแค่ขนาด/ตำแหน่งกล่อง
 
+import { mirrorBox } from './battle-facing.js';
+
 /** ความสูงตัวจริงของยมทูตเทียบยมบาทน้อย — 1 = เท่ากัน · ยมบาทน้อยเป็นตัวเอกยังต้องเด่นกว่าเล็กน้อย */
 export const CREW_SCALE_TARGET = 0.96;
 const MIN_FIT = 0.8;           // แถวแคบเกินจริง ๆ ยอมย่อได้ไม่เกินนี้ของเป้า (ไม่ทับยมบาทน้อยกับขอบจอ)
@@ -103,7 +105,9 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0) {
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
   return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null]).then(([hb, ...rest]) => {
     if (!stage.isConnected || !hb || stage._fitSeq !== seq) return false;
-    const crewBoxes = rest.slice(0, crewImgs.length), helperBox = rest[crewImgs.length];
+    // ภาพที่ถูกพลิกกระจก (ทุกใบที่ไม่ใช่ .face-native — ดู battle-facing.js) ขอบซ้าย/ขวาของส่วนมีตัวสลับข้างกัน
+    const crewBoxes = rest.slice(0, crewImgs.length).map((box, i) => crewImgs[i].classList.contains('face-native') ? box : mirrorBox(box));
+    const helperBox = rest[crewImgs.length];
     const hd = drawnRect(hero), sr = stage.getBoundingClientRect();
     // ภาพท่าของยมบาทน้อยกำลังโหลด (กล่องยุบเป็น 0×0) → ยังวัดไม่ได้ อย่าตั้งขนาดยมทูตเป็นศูนย์ รอบหน้าลองใหม่
     if (!(hd.w > 4 && hd.h > 4)) {

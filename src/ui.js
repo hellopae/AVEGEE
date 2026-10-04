@@ -2,6 +2,7 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
+import { teamFaceClass, foeFaceClass } from './battle-facing.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -1881,12 +1882,12 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
     <div class="ttl">${esc(title)}</div>
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
-      <img src="${artUrl('crew-' + helper.k)}" alt=""
+      <img src="${artUrl('crew-' + helper.k)}" class="${teamFaceClass(artUrl('crew-' + helper.k))}" alt=""
            onerror="this.onerror=null;this.src='${artUrl('crew-' + helper.k + '-profile') || artUrl('crew-' + helper.k)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(c.k)}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ">
-      <img src="${artUrl('crew-' + c.k)}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
+      <img src="${artUrl('crew-' + c.k)}" class="${teamFaceClass(artUrl('crew-' + c.k))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown(c, g.crewCooldown(c), BATTLE.crewCd)
       }</span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}${usingAtk ? ' atk' : ''}">
@@ -1906,13 +1907,13 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
         ${hp.selectedFoeId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
-        <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
+        <img src="${esc(src)}" class="${foeFaceClass(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
         <span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
           ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
       </button>`;
     }).join('')}</div>` : `<div class="fig foe${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}">
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
-      <img src="${foeSrc}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
+      <img src="${foeSrc}" class="${foeFaceClass(foeSrc)}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}

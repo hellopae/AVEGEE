@@ -761,6 +761,10 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
 @keyframes hitshakeY{0%,100%{transform:scaleX(-1) translateX(0)}
   25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
 .arena .fig.hit img{animation:hitshake .28s}
+/* ชุด 30B ข้อ 2 — ทิศหันหน้า: ภาพฝั่งเราที่วาดหันขวามาแล้วไม่ต้องพลิก · ภาพศัตรูที่วาดหันขวามาต้องพลิก (ตารางอยู่ที่ src/battle-facing.js) */
+.arena .fig.helper img.face-native,.arena .battle-squad img.face-native{transform:none}
+.arena .fig.foe img.face-flip{transform:scaleX(-1)}
+.arena .fig.foe.hit img.face-flip{animation:hitshakeY .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 
 /* ภาพคั่นท่าไม้ตาย — วางทับเฉพาะใน dialog ปัจจุบัน แล้วหายเองก่อนตาคู่ต่อสู้
