@@ -21,6 +21,7 @@ import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
+import { powerCutsceneImage } from './power-cutscene-assets.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1905,8 +1906,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 
 /** ภาพคั่นสั้น ๆ ตอนใช้ท่าพิเศษ ชุดไหนยังไม่มีภาพให้ข้ามอย่างเงียบ ๆ */
 function actionCutsceneSrc(k) {
-  if (k === 'roar') return null;
   const style = g.outfit || g.zone;
+  const powerArt = powerCutsceneImage(k, style, g.abilities);
+  if (powerArt) return powerArt;
   if (k === 'ice') return `img/hero-yama-${style}-ice-cutscene-v2.png`;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   // ภาพท่าที่ปลดล็อกจากบอสชายแดน
@@ -1948,7 +1950,7 @@ function playActionCutscene(k, ultimate = null) {
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
   cut.className = ultimate ? 'action-cutscene enemy-facing'
-    : ['ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
+    : ['hypno', 'mirror', 'roar', 'ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
       ? 'action-cutscene right-facing' : 'action-cutscene';
   // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต

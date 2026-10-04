@@ -20,7 +20,7 @@ test('27C: ตวาดข่มขู่ใช้ไอคอนเขี้ย
   const roar = POWERS.find(p => p.k === 'roar');
   assert.equal(roar.glyph, 'img/icon-fang.png');
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /if \(k === 'roar'\) return null;/);
+  assert.doesNotMatch(ui, /if \(k === 'roar'\) return null;/);
 });
 
 test('27C: บทสอนไม่อ้างแถบแดง และไม่อ้าง emoji ⏭️/🔒 ที่เปลี่ยนเป็นไอคอนใหม่', () => {

@@ -1,0 +1,83 @@
+{
+  "tool": "built-in imagegen",
+  "jobs": [
+    {
+      "z": "th",
+      "p": "fire",
+      "v": "v3",
+      "prompt": "Edit this game cutscene precisely. Keep Yama's character, face, squat chibi proportions, Thai golden crown, black/red/gold robe, pose, position, coarse crisp pixel art, and fiery temple backdrop unchanged. Replace only the oversized fire projectile with a SMALL LEVEL ONE FIREBALL. Round bright yellow/orange ball diameter about 140 pixels on this 1672x941 canvas (about half Yama's face width), centered just left of his extended hand; short flame tail no longer than 180 pixels, total projectile occupies under 22% canvas width. Remove the old huge flames across left half and restore dark temple background there. A few sparks only. Clearly a modest single beginner fireball, not a giant beam. Keep full 16:9 composition, no text."
+    },
+    {
+      "z": "th",
+      "p": "ice",
+      "v": "v2",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (ice ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ice wave and snowflake sigil, composition, ability direction and regional th costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "th",
+      "p": "mirror",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (mirror ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ornate mirror, reflected spirits and shards, composition, ability direction and regional th costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "th",
+      "p": "roar",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (roar ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical golden roaring spirit lion and shockwave rings, composition, ability direction and regional th costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep mouth open shouting aggressively. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "asia",
+      "p": "ice",
+      "v": "v2",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (ice ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ice wave and snowflake sigil, composition, ability direction and regional asia costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "asia",
+      "p": "mirror",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (mirror ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ornate mirror, reflected spirits and shards, composition, ability direction and regional asia costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "asia",
+      "p": "roar",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (roar ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical golden roaring spirit lion and shockwave rings, composition, ability direction and regional asia costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep mouth open shouting aggressively. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "west",
+      "p": "ice",
+      "v": "v2",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (ice ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ice wave and snowflake sigil, composition, ability direction and regional west costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "west",
+      "p": "mirror",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (mirror ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ornate mirror, reflected spirits and shards, composition, ability direction and regional west costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "west",
+      "p": "roar",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (roar ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical golden roaring spirit lion and shockwave rings, composition, ability direction and regional west costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep mouth open shouting aggressively. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "cyberhell",
+      "p": "ice",
+      "v": "v2",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (ice ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ice wave and snowflake sigil, composition, ability direction and regional cyberhell costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "cyberhell",
+      "p": "mirror",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (mirror ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical ornate mirror, reflected spirits and shards, composition, ability direction and regional cyberhell costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep determined gritted-teeth expression. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    },
+    {
+      "z": "cyberhell",
+      "p": "roar",
+      "v": "v3",
+      "prompt": "Use case: identity-preserve / style-transfer. Image 1 is the EDIT TARGET (roar ability). Image 2 is the approved FIRE CUTSCENE character-style reference. Edit image 1 preserving its exact background, magical golden roaring spirit lion and shockwave rings, composition, ability direction and regional cyberhell costume/hat. Redraw ONLY Yama to match image 2's stout squat chibi body, oversized broad head, SHORT torso and limbs, broad angular jaw/cheeks, aggressive thick angular black eyebrows, narrow determined eyes, red skin, short black hair and sturdy hands. Use the same bold dark outline and COARSE clean visible pixel clusters as image 2, not delicate smooth anime linework, not a slender long-bodied character or sweet face. Match image 2's head-to-body proportions closely (about 2.5 heads tall excluding headgear), while keeping Yama on LEFT facing RIGHT as in image 1. Keep mouth open shouting aggressively. Costume remains the target zone's design, not the Thai reference costume. Keep all limbs and headgear inside frame. Output single full-width landscape cutscene, no collage or text."
+    }
+  ]
+}
