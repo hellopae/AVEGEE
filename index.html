@@ -1515,44 +1515,35 @@ dialog.frontier-map-dialog>.modal-corner-close{display:none!important}
 #rotate p{margin:0;color:var(--muted-foreground);font-size:var(--text-sm);
   line-height:var(--leading-body);max-width:22rem}
 /* แนวตั้งเล่นได้แล้ว — ไม่บังคับซ่อนเกมหลังจอ "หมุนเครื่อง" อีก */
+/* 30A: captions and controls follow the clipped art in normal document flow. */
 dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95dvh;
-  overflow:auto;padding:0;background:#151016}
+  overflow:auto;padding:0;background:var(--card)}
 .intro-comic-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
-  background:#181217}
-.intro-comic-frame img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-.intro-comic-head{position:absolute;top:10px;left:14px;right:14px;display:flex;
-  justify-content:space-between;color:#f7c371;text-shadow:0 2px 5px #120b10;
-  font-size:var(--text-xs);letter-spacing:.08em}
-.intro-comic-caption{position:absolute;left:5%;right:5%;bottom:2%;height:18%;
-  display:flex;flex-direction:column;justify-content:center;text-align:left;overflow:auto}
-.intro-comic-caption h2{font-family:var(--font-display);color:#f7c371;
+  background:var(--card)}
+.intro-comic-frame > img{position:absolute;top:0;left:0;display:block;width:100%;height:100%;
+  object-fit:cover;image-rendering:auto}
+.intro-comic-head{position:absolute;top:10px;left:14px;right:14px;display:flex;gap:12px;
+  justify-content:space-between;color:var(--gold);font-size:var(--text-xs);letter-spacing:.08em}
+.intro-comic-head span{background:var(--card);padding:3px 8px;border-radius:var(--radius-sm)}
+.intro-comic-caption{position:static;display:flex;flex-direction:column;text-align:left;
+  height:auto;padding:12px 20px;background:var(--card);overflow:visible}
+.intro-comic-caption h2{font-family:var(--font-display);color:var(--gold);
   font-size:clamp(1rem,2.4vw,1.35rem);margin:0 0 4px}
-.intro-comic-caption p{color:#f4e8df;line-height:1.4;font-size:clamp(.8rem,1.8vw,1rem);margin:0}
-.intro-comic-controls{display:flex;justify-content:space-between;gap:10px;padding:10px 14px}
+.intro-comic-caption p{color:var(--foreground);line-height:1.5;font-size:clamp(.8rem,1.8vw,1rem);margin:0;
+  overflow-wrap:anywhere}
+.intro-comic-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--card)}
+.zone-arrival-band{position:static;background:var(--card)}
+.zone-arrival .intro-comic-controls .hint{font-size:var(--text-xs);line-height:1.4}
+.ending-thumbnail{position:relative;width:150px;height:150px;flex:none;overflow:hidden;
+  border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
+.final-ending .ending-thumbnail img{position:absolute;left:0;top:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;image-rendering:auto;border:0;border-radius:0}
 @media(max-width:600px){
-  .intro-comic-frame{aspect-ratio:auto}
-  .intro-comic-frame img{height:auto;aspect-ratio:auto;object-fit:contain;object-position:center}
-  .intro-comic-caption{position:static;height:auto;padding:12px 16px;background:#151016}
+  .intro-comic-caption{padding:12px 16px}
   .intro-comic-caption h2{font-size:1.15rem}
   .intro-comic-caption p{font-size:.95rem}
-}
-
-/* Reuse the painted lower letterbox; captions and controls share one band. */
-.zone-arrival .intro-comic-frame{aspect-ratio:16/9;overflow:hidden}
-.zone-arrival .intro-comic-frame img{height:100%;aspect-ratio:auto;object-fit:contain}
-.zone-arrival-band{position:absolute;left:0;right:0;bottom:0;height:21%;
-  display:flex;flex-direction:column;padding:6px 16px;box-sizing:border-box;background:#08070b}
-.zone-arrival .intro-comic-caption{position:static;flex:1;min-height:0;height:auto;padding:0;
-  overflow:auto;background:transparent;justify-content:flex-start}
-.zone-arrival .intro-comic-caption h2{font-size:clamp(.8rem,2vw,1.2rem);margin:0 0 2px;line-height:1.2}
-.zone-arrival .intro-comic-caption p{font-size:clamp(.7rem,1.5vw,.95rem);line-height:1.35}
-.zone-arrival .intro-comic-controls{padding:3px 0 0;align-items:center;flex-shrink:0;gap:8px}
-.zone-arrival .intro-comic-controls .hint{font-size:clamp(.6rem,1.1vw,.75rem);line-height:1.2}
-.zone-arrival .intro-comic-controls button{padding:5px 12px;font-size:clamp(.7rem,1.3vw,.9rem);flex-shrink:0}
-@media(max-width:600px){
-  .zone-arrival .intro-comic-frame{aspect-ratio:auto;padding-bottom:72px}
-  .zone-arrival .intro-comic-frame img{height:auto}
-  .zone-arrival-band{height:112px;padding:5px 10px}
+  .intro-comic-controls{flex-wrap:wrap}
   .zone-arrival .intro-comic-controls .hint{display:none}
   .zone-arrival .intro-comic-controls{justify-content:flex-end}
 }

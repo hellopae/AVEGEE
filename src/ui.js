@@ -21,6 +21,7 @@ import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
+import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1419,11 +1420,10 @@ function openBossArrive(z, onDone) {
   const lines = z.bossArrive || [];
   if (!lines.length) { onDone(); return; }
   const zn = ZONES.findIndex(x => x.k === z.k) + 1;
-  // ภาพบอสระยะใกล้พร้อมพื้นหลังในตัว (คุณเป้สั่ง 17 ก.ย. 2569 "ใช้รูปโปรไฟล์ตรงไหนก็ตามที่เกมโชว์ภาพบอส")
-  // — ยังไม่มีทุกโซน จึงถอยไปใช้ฉากมาถึงเดิมถ้าไม่มี · โซน 1 ไม่ผ่านโฟลเดอร์โซนเลย ข้ามการเช็คนี้ไปเลย
-  // เพราะ artUrl() คืน path ตรง ๆ เสมอแม้ไฟล์ไม่มีจริง (จะเข้าใจผิดว่าเจอไฟล์ทั้งที่ยังไม่โหลดสำเร็จ)
+  // 30A: โซน 2–4 ใช้ฉากมาถึงตรง path ที่มีจริง ไม่รอ manifest/ภาพ closeup (closeup จตุรัสทำให้กรอบสูงจนข้อความตกขอบจอ)
+  // โซน 1 คงการเลือกภาพเดิม (artUrl คืน path แม้ไฟล์ยังไม่โหลด)
   const bossProfile = z.k !== 'th' && zoneImg(`Boss Zone${zn}-profile`);
-  const bg = (bossProfile && bossProfile.src) || artUrl(`Intro-Boss-Zone${zn}`) || artUrl('hero-boss');
+  const bg = bossArrivalScene(z.k) || (bossProfile && bossProfile.src) || artUrl(`Intro-Boss-Zone${zn}`) || artUrl('hero-boss');
   pauseForDlg();
   let i = 0;
   const paint = () => {
@@ -1435,10 +1435,11 @@ function openBossArrive(z, onDone) {
       <div class="intro-comic-frame">
         <img src="${bg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-boss')}'">
         <div class="intro-comic-head"><span>👑 ${esc(z.bossName)}มาถึงแล้ว</span><span>${i + 1} / ${lines.length}</span></div>
-        <div class="intro-comic-caption"><h2>${esc(speaker)}</h2><p>${esc(text)}</p></div>
       </div>
+      <div class="intro-comic-caption"><h2>${esc(speaker)}</h2><p>${esc(text)}</p></div>
       <div class="intro-comic-controls"><button class="gold" id="arrive-next">${i + 1 === lines.length ? '⚔️ สู้เลย' : 'หน้าถัดไป →'}</button></div>
     </div>`;
+    prepareComicImages(dlg);
     dlg.querySelector('#arrive-next').onclick = () => { if (++i >= lines.length) dlg.close(); else paint(); };
   };
   openDlg('intro-comic-dialog');
@@ -1478,13 +1479,14 @@ function openZoneArrival(z) {
       <div class="intro-comic-frame">
         <img src="${esc(current.image)}" alt="${esc(page ? intro.speaker : z.name)}" onerror="this.onerror=null;this.src='${artUrl('scene')}'">
         <div class="intro-comic-head"><span>อเวจี · ${z.back ? 'กลับมาที่สาขา' : 'เปิดสาขาใหม่'}</span><span>โซน ${zn} · ${page + 1} / ${pages.length}</span></div>
-        <div class="zone-arrival-band">
-          <div class="intro-comic-caption"><h2>${esc(current.speaker)}</h2><p>${esc(current.line)}</p></div>
-          <div class="intro-comic-controls"><span class="hint">${esc(current.hint)}</span>
-            <button class="gold" data-arrival-next>${page + 1 < pages.length ? 'พบหัวหน้าสาขา →' : 'เริ่มงาน'}</button></div>
-        </div>
+      </div>
+      <div class="zone-arrival-band">
+        <div class="intro-comic-caption"><h2>${esc(current.speaker)}</h2><p>${esc(current.line)}</p></div>
+        <div class="intro-comic-controls"><span class="hint">${esc(current.hint)}</span>
+          <button class="gold" data-arrival-next>${page + 1 < pages.length ? 'พบหัวหน้าสาขา →' : 'เริ่มงาน'}</button></div>
       </div>
     </div>`;
+    prepareComicImages(dlg);
     dlg.querySelector('[data-arrival-next]').onclick = () => { if (++page < pages.length) paint(); else { g.zoneIntroSeen[z.k] = true; g.save(); dlg.close(); } };
   };
   openDlg('intro-comic-dialog');
@@ -1506,11 +1508,12 @@ function showVerdict(v) {
 function openEnding(o) {
   if (o.k === 'finalWin') {
     modal(`<h2>👑 ${esc(o.title)}</h2>
-      <div class="boss"><img class="standee" src="img/story-ending-02-v3.png" alt="สันติสุขทั้ง 4 โซน"
-        onerror="this.remove()"><p style="line-height:var(--leading-body)">${esc(o.text)}</p></div>
+      <div class="boss"><div class="ending-thumbnail"><img src="img/story-ending-02-v3.png" alt="สันติสุขทั้ง 4 โซน"
+        onerror="this.remove()"></div><p style="line-height:var(--leading-body)">${esc(o.text)}</p></div>
       <div class="hint">ปิดคดี ${g.casesDone} เรื่อง · ปราบบอสครบทั้งสี่สาขา · กลับไปท้าบอสเก่าที่รออยู่ในแต่ละโซนได้</div>
       <div class="row"><button id="final-continue" class="gold">เล่นต่อ</button>
         <button id="final-new">เริ่มเกมใหม่</button></div>`, d => {
+      prepareComicImages(d);
       d.querySelector('#final-continue').onclick = () => {
         g.over = null;
         userPaused = false;
@@ -1960,6 +1963,7 @@ function playActionCutscene(k, ultimate = null) {
   // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
+  if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
@@ -4010,10 +4014,11 @@ function renderStoryComic(root, story, onDone) {
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
       <div class="intro-comic-frame"><img src="${p.image}" alt="${esc(p.title)}">
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
-        <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div></div>
+      </div><div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
       <div class="intro-comic-controls"><button data-story-skip>ข้ามฉาก</button>
         <button data-story-back ${page ? '' : 'disabled'}>← ย้อนกลับ</button>
         <button class="gold" data-story-next>${page + 1 === story.pages.length ? 'ดำเนินเรื่องต่อ' : 'หน้าถัดไป →'}</button></div></div>`;
+    prepareComicImages(root);
     root.querySelector('[data-story-skip]').onclick = finish;
     root.querySelector('[data-story-back]').onclick = () => { if (page) { page--; paint(); } };
     root.querySelector('[data-story-next]').onclick = () => { if (++page === story.pages.length) finish(); else paint(); };
@@ -4531,10 +4536,11 @@ function openIntro(fromTitle = false) {
       <div class="intro-comic-frame">
         <img src="${image}" alt="" onerror="this.onerror=null;this.src='${artUrl(p.art)}'">
         <div class="intro-comic-head"><span>อเวจี · บทนำ</span><span>${page + 1} / ${pages.length}</span></div>
-        <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
       </div>
+      <div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
       <div class="intro-comic-controls"><button id="intro-skip">${fromTitle ? 'ปิดบทนำ' : 'ข้ามบทนำ'}</button><button class="gold" id="intro-next">${page + 1 === pages.length ? (fromTitle ? 'กลับหน้าเมนู' : 'รับงาน') : 'หน้าถัดไป →'}</button></div>
     </div>`;
+    prepareComicImages(dlg);
     dlg.querySelector('#intro-skip').onclick = () => dlg.close();
     dlg.querySelector('#intro-next').onclick = () => { if (++page === pages.length) dlg.close(); else paint(); };
   };
