@@ -25,7 +25,9 @@ export function normalizeTraining(value = {}) {
     shared:Object.fromEntries(['yama','nira'].map(k => [`global:${k}`,record(value.shared?.[`global:${k}`], 'th', true)])),
     zones:Object.fromEntries(Object.entries(value.zones || {}).map(([zone,actors]) => [zone,
       Object.fromEntries(Object.entries(actors || {}).map(([id,v]) => [id,record(v,zone,false)]))])),
-    activeSession:null };
+    // B4: รอบฝึกที่กำลังเล่นต้องรอดผ่าน snapshot ตอนเริ่ม (ไม่งั้นส่งผลกลับมาไม่ได้) · createGame.restore ล้างทิ้งเองตอนโหลดเซฟ
+    sequence:count(value.sequence),
+    activeSession:value.activeSession && typeof value.activeSession.id === 'string' ? { ...value.activeSession } : null };
 }
 export function actorTraining(training, actor, zone = 'th') {
   const kind = typeof actor === 'string' ? actor : actor.kind || actor.k;

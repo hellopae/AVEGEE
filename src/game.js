@@ -1,4 +1,5 @@
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
+import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -3486,6 +3487,27 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  trainingTargets(station) { syncRoster(this); return trainingTargets(this, station); },
+  trainingWhy(station, actorId) { syncRoster(this); return trainingWhy(this, station, actorId); },
+  startTraining(station, actorId) {
+    syncRoster(this);
+    const before = structuredClone(this.training);
+    const session = beginTraining(this, station, actorId);
+    if (!session) return null;
+    // No playable session unless quota/session have been durably saved.
+    if (!this.save()) { this.training = before; return null; }
+    return session;
+  },
+  finishTraining(result) {
+    const before = structuredClone(this.training);
+    const receipt = finishTraining(this, result);
+    if (!receipt) return null;
+    if (!this.save()) { this.training = before; return null; }
+    this.onChange();
+    return receipt;
+  },
+  cancelTraining(sessionId) { return this.finishTraining({ sessionId, score:0, completed:false }); },
+
   // ---------- มินิเกม "เร่งการทำงาน" (ชุดที่ 9 คุณเป้ 24 ก.ย. 2569) ----------
   // upgradeStation('speed') ด้านบนไม่มีปุ่มเรียกใช้แล้ว (UI เปลี่ยนไปเปิดมินิเกมแทนจ่ายเบี้ย)
   // เหลือโค้ดไว้เฉย ๆ เผื่อวันหลังอยากเอากลับมา — ผลลัพธ์เดิมทุกอย่าง (เร็วขึ้น 12%/ขั้น สูงสุด 5)
@@ -3680,6 +3702,7 @@ API.restore = function (d) {
   d = migrateRosterSave(d);
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
+  this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)
   this.teamLimits = { ...TEAM_LIMITS };
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
     ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));

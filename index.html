@@ -1170,6 +1170,12 @@ dialog.hudwrap{max-width:1320px;width:calc(100% - 32px);min-width:min(1320px,cal
   border:1px solid var(--border);overflow:hidden;flex:none}
 .mg-bar-fill{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,var(--gold),#ffe3ad);
   border-radius:inherit;transition:width .08s linear}
+/* B4 ฝึกตัวละคร — การ์ดซ้ายบนของห้องลอยอยู่เหนือ .mg-ov บนจอกว้าง จึงบังหัวเกม/เวลา/ผล: และปุ่มทองกลางฉากโผล่ทับแถบพัก: ซ่อนไว้ระหว่างฝึก */
+.st-hud:has(.mg-ov.mg-train:not([hidden])) :is(#st-left,#st-actions,#st-alert){visibility:hidden}
+.mg-train .mg-intro p{margin:0;max-width:640px;line-height:var(--leading-body)}
+.mg-train .mg-intro select{min-height:36px;padding:4px 8px;max-width:100%}
+.mg-train progress{accent-color:var(--gold)}
+.mg-train .mg-stage>p{margin:0;line-height:var(--leading-body)}
 @media(max-width:520px){
   .mg-ov{padding:9px;gap:6px}
   .mg-tip{font-size:11px;padding:7px 9px}

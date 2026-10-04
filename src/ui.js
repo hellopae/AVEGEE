@@ -1,3 +1,6 @@
+import { trainingProgress } from './training.js';
+import { TRAINING_GAMES } from './minigames/training/index.js';
+import { runTraining } from './minigames/training/host.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
@@ -3641,6 +3644,7 @@ function openStation(k, emergency = false) {
   const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
+  let trainingQuit = null;
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
@@ -3738,7 +3742,10 @@ function openStation(k, emergency = false) {
     if (L) put(L, `<h2>${esc(def.name)}</h2>
       <p>${esc(t(`room.${k}.desc`))}</p>
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
-      ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}`);
+      ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
+      ${TRAINING_GAMES[k] ? `<button id="st-training" class="btn-gold" ${!inside || mgOpen || st.build ? 'disabled' : ''}>ฝึกตัวละคร / Train character</button>` : ''}`);
+    const trainButton = dlg.querySelector('#st-training');
+    if (trainButton) trainButton.onclick = () => openTraining(k);
 
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
@@ -3899,6 +3906,73 @@ function openStation(k, emergency = false) {
     box.querySelector('#s-arch-x').onclick = () => showArchive(false);
   }
 
+  function openTraining(sk) {
+    const ov = dlg.querySelector('#mg-ov'), game = TRAINING_GAMES[sk];
+    if (!ov || !game || mgOpen || !R?.inReach()) return;
+    mgOpen = true;
+    R.lock(true);
+    ov.hidden = false; ov.classList.add('mg-train');
+    let stop = null, session = null, closed = false;
+    let pauseOwned = false;
+    const releasePause = () => { if (pauseOwned) { g.paused = false; pauseOwned = false; } };
+    const teardown = () => {
+      if (closed) return;
+      closed = true; stop?.(); releasePause();
+      if (session) g.cancelTraining(session.id);
+      R?.lock(false); mgOpen = false; trainingQuit = null;
+      ov.classList.remove('mg-train');
+      if (mine()) { ov.hidden = true; ov.replaceChildren(); panels(); refresh(); }
+    };
+    trainingQuit = teardown;
+    ov.innerHTML = `<div class="mg-head"><b>${esc(game.name)}</b><button class="mg-x" type="button">✕ ปิด / Close</button></div>
+      <div class="mg-intro"><p>${esc(game.tip)}</p>
+        <p>2 ครั้ง / 100 วาระ · พัก 30 วาระ · ปิดหลังเริ่มเสียครั้ง / 2 attempts per 100 ticks; 30 tick cooldown; quitting consumes attempt</p>
+        <label>ผู้ฝึก / Trainee <select class="training-target"></select></label>
+        <p class="training-why" role="status"></p>
+        <button class="gold mg-start" type="button">▶ เริ่ม / Start</button></div>
+      <button class="training-pause" type="button" hidden>พัก / Pause</button><div class="mg-stage" hidden></div>`;
+    const select = ov.querySelector('select');
+    for (const actor of g.trainingTargets(sk)) {
+      const option = document.createElement('option'); option.value = actor.id;
+      option.textContent = actor.kind === 'guard' ? GUARD.name : actor.name || actor.kind; select.append(option);
+    }
+    const reason = ov.querySelector('.training-why'), start = ov.querySelector('.mg-start');
+    const check = () => {
+      const why = g.trainingWhy(sk, select.value);
+      const pr = trainingProgress(g, select.value);
+      const progress = `Lv ${pr.level}/${pr.cap} · EXP ${pr.exp}`;
+      reason.textContent = `${progress} · ${why || (sk === 'dab' ? 'เพิ่มเฉพาะโจมตีปกติ / Normal attack only' : 'เพิ่มพลังผู้ฝึกคนที่เลือก / Selected trainee only')}`;
+      start.disabled = !!why;
+    };
+    select.onchange = check; check();
+    ov.querySelector('.mg-x').onclick = teardown;
+    const pauseButton = ov.querySelector('.training-pause');
+    pauseButton.onclick = () => {
+      if (g.paused && !pauseOwned) return;
+      pauseOwned = !pauseOwned; g.paused = pauseOwned;
+      pauseButton.textContent = pauseOwned ? 'เล่นต่อ / Resume' : 'พัก / Pause';
+    };
+    start.onclick = () => {
+      if (session || closed) return;
+      session = g.startTraining(sk, select.value);
+      if (!session) { check(); reason.textContent = g.trainingWhy(sk, select.value) || 'เซฟไม่ได้ / Could not save'; return; }
+      ov.querySelector('.mg-intro').hidden = true;
+      const stage = ov.querySelector('.mg-stage'); stage.hidden = false; pauseButton.hidden = false;
+      try {
+        stop = runTraining(stage, { station:sk, session, alive:mine, paused:() => g.paused,
+          onAbandon:teardown, onResult:result => {
+            const receipt = g.finishTraining(result);
+            stop?.(); releasePause(); pauseButton.hidden = true;
+            if (!receipt) { teardown(); return; }
+            session = null;
+            const next = receipt.next == null ? 'MAX' : receipt.next;
+            stage.textContent = `${receipt.score} / 100 · EXP +${receipt.exp} (${receipt.total}/${next}) · Lv ${receipt.before} → ${receipt.level} · พลัง / Power ×${receipt.multiplierBefore.toFixed(2)} → ×${receipt.multiplierAfter.toFixed(2)}`;
+            refresh();
+          } });
+      } catch (error) { teardown(); throw error; }
+    };
+  }
+
   /** มินิเกม "เร่งการทำงาน" — ทับอยู่บนฉากในกล่องเดียวกัน ไม่ใช่กล่องใหม่ (แนวเดียวกับ showArchive ด้านบน)
    *  ชุดที่ 9 คุณเป้ 24 ก.ย. 2569: มีคำอธิบาย 1 บรรทัด + ปุ่ม "เริ่มเลย" ก่อนตัวจับเวลาในเกมเริ่มนับ
    *  ปิดได้ทุกเมื่อไม่มีบทลงโทษ — cooldown ตั้งเฉพาะตอน "เล่นจบจริง" (ชนะ/แพ้) เท่านั้น ดู g.finishMinigame()
@@ -3980,7 +4054,10 @@ function openStation(k, emergency = false) {
   openDlg('hudwrap');           // กรอบเดียวกับห้องสอบสวน — .hud ต้องการกรอบใสเต็มความกว้าง
   myGen = dlgGen;
   document.activeElement?.blur?.();     // กล่องโฟกัสปุ่มแรกให้เอง — ไม่ให้เห็นกรอบโฟกัสบนปุ่มพักตั้งแต่เปิด
-  dlg.querySelector('#st-pause').onclick = () => { dlg.close(); openPause(); };
+  dlg.querySelector('#st-pause').onclick = () => {
+    if (trainingQuit) { dlg.querySelector('.training-pause')?.click(); return; }
+    dlg.close(); openPause();
+  };
   dlg.querySelector('#st-book').onclick = () => { dlg.close(); openHelp(); };
   dlg.querySelector('#st-bag').onclick = () => { dlg.close(); openBag(); };
 
@@ -4044,7 +4121,7 @@ function openStation(k, emergency = false) {
 
   // แผงข้อมูลอัปเดตตามวาระที่เดินอยู่ (ทัณฑ์คืบหน้า · ไฟไหม้ · คิว)
   const tm = setInterval(() => {
-    if (!mine()) { clearInterval(tm); return; }
+    if (!mine()) { trainingQuit?.(); clearInterval(tm); return; }
     const st = stationHere();
     if (!st) { dlg.close(); return; }
     R.st = st;
