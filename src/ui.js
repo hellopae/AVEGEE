@@ -635,7 +635,7 @@ function sideBody() {
       .sort((a, b) => b[1] - a[1]);
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — โชว์ท่าสู้/ตัวเลขจริงตรงกับโต๊ะนิรา (ดึงจาก CREW_POWER ที่เดียวกัน)
     const battleLine = !c.reader
-      ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c.k)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : `<div class="row-truth">${crewAbility(c)}</div>`;
+      ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : `<div class="row-truth">${crewAbility(c)}</div>`;
     return profile('crew-' + c.k, c.name, c.duty, now)
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
       + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.reader ? g.allyStats(c).order : c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
@@ -2335,7 +2335,7 @@ function openNiraOffice() {
         const why = final ? g.finalTeamWhy(c) : '';
         return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
-          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c.k)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
+          ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? hungerWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
@@ -2737,7 +2737,7 @@ function openBattle(after) {
     })() : '';
     const crewHelperBtns = battleHelpers.map(c => {
       const why=g.crewHelpWhy(c);
-      return `<button class="orb-choice" data-act="crew:${crewBattleKey(c)}" data-crew-action="${crewBattleKey(c)}" ${why?'disabled':''} title="${esc(why || crewAbility(c.k))}"><img src="${crewArt(c, '-profile')}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c.k)}</small></button>`;
+      return `<button class="orb-choice" data-act="crew:${crewBattleKey(c)}" data-crew-action="${crewBattleKey(c)}" ${why?'disabled':''} title="${esc(why || crewAbility(c))}"><img src="${crewArt(c, '-profile')}" alt=""><b>${esc(c.name)}</b><small>${crewAbility(c)}</small></button>`;
     }).join('');
     const crewActions = (crewHelperBtns + guardBtn) || '<span class="idle">ยังไม่มีทีม — จัดทีมยมทูตก่อนเข้าสู้ครั้งถัดไป</span>';
     const acts = rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,groups:[
@@ -2995,7 +2995,7 @@ function openBattle(after) {
       const label=dlg.querySelector(`[data-cooldown-label="${crewBattleKey(c)}"]`);
       if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
       const button=dlg.querySelector(`[data-crew-action="${crewBattleKey(c)}"]`);
-      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c.k);}
+      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c);}
     }
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.battleCd) แยกจากยมทูต
     if (g.guard) {
