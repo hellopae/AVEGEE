@@ -1312,6 +1312,15 @@ function pendingZoneEvents() {
     g.zoneEventStatus?.(ev.k) === 'pending').sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }
+/** 30D ข้อ 5 — รูปบนป้ายแจ้งเตือนอีเวนต์: ตัวที่บุกมาจริง (ไม่ใช่วิญญาณขาวสำรอง)
+ *  ระลอกชายแดน → หัวหน้าปีศาจท้ายระลอก (แวมไพร ฯลฯ) · อื่น ๆ → ตัวแรกของอีเวนต์ ถ้าเป็นปีศาจทั่วไป (kind) ใช้รูปของ kind นั้น */
+function zoneEventMarkerArt(ev) {
+  const boss = ev.team === 'frontier' && ev.waves ? ev.waves.flat().find(f => f.boss && f.sp) : null;
+  const foe = boss || ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
+  if (foe?.sp && foe.sp !== 'spirit') return storyFoeArt(foe.sp);
+  if (foe?.kind != null && MOB.kinds[foe.kind]) return artUrl(MOB.kinds[foe.kind].img);
+  return storyFoeArt(foe?.sp);
+}
 function openZoneEventAlert(ev) {
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
@@ -1349,9 +1358,8 @@ function updateZoneEventFabs() {
       f.onclick = e => { e.stopPropagation(); if (!dlg.open && !g.battle) openZoneEventAlert(ev); };
       ov.appendChild(f);
     }
-    const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
     const title = `${zoneEventTried.has(key) ? 'ท้าอีกครั้ง · ' : ''}${zoneEventText(ev.title)}`;
-    f.innerHTML = `<img src="${esc(storyFoeArt(foe?.sp))}" alt="" onerror="this.remove()"><span>⚔️ ${esc(title)}</span>`;
+    f.innerHTML = `<img src="${esc(zoneEventMarkerArt(ev))}" alt="" onerror="this.remove()"><span>⚔️ ${esc(title)}</span>`;
     f.setAttribute('aria-label', title);
     f.dataset.sx = 690 + i * 155;
     f.dataset.sy = 560;
