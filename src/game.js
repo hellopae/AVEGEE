@@ -1,3 +1,4 @@
+import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
@@ -97,7 +98,7 @@ export function createGame() {
     nextArrive: 4, nextEvent: BAL.eventEvery, nextPay: BAL.payEvery, nextKpi: BAL.kpiEvery,
     kpiPassed: 0, casesDone: 0, scoreSum: 0,
     // ตอนเริ่มเกมมีสามคน: ท่าน · นิรา (อ่านสำนวน) · ทัณฑ์ (ลงทัณฑ์) — คนอื่นต้องจ้างเอง
-    crew: CREW.filter(c => c.hire === 0).map(mkCrew),
+    crew: CREW.filter(c => c.hire === 0).map(c => mkCrew(c, 'th')),
     self: { ...SELF, morale: 100 },   // เก็บไว้เพื่ออ่านเซฟเก่า แต่ไม่เปิดให้ลงทัณฑ์เอง
     taught: [],                       // ขั้นบทเรียนที่สอนไปแล้ว (ดู TUTOR ใน data.js)
     ledger: [],                       // ทุกคำตัดสินที่เคยออก — ใช้เปิด "แฟ้มของท่าน" ตอนจบ
@@ -135,6 +136,8 @@ export function createGame() {
   g.player.x = SPOTS.bench.x + 60; g.player.y = SPOTS.bench.y;
 
   Object.assign(g, API);
+  g.teamLimits = { ...TEAM_LIMITS };
+  syncRoster(g);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
   g.spawnSoul();
   return g;
@@ -147,7 +150,7 @@ function syncFrontierPos(zone) {
 
 function mkCrew(def, zone = 'th') {
   // hunger 100 = อิ่มเต็ม (ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569) — ลดลงระหว่างทำงาน ป้อนข้าวปั้นแล้วขึ้น
-  return { ...def, name: crewName(def, zone), morale: 92, hunger: 100, at: null, tired: false };
+  return actorFromLegacy({ at:null, tired:false }, zone, def.k);
 }
 
 /** สถานีหนึ่งหลังรับวิญญาณได้พร้อมกันหลายดวง (9 ก.ย. 2569 — เดิมทีละดวง)
@@ -2700,6 +2703,7 @@ const API = {
         }
         if (ev?.reward?.releaseCaptives && !this.crew.some(c => c.k === 'taan')) {
           this.crew.push(mkCrew(CREW.find(c => c.k === 'taan'), B.zone));
+          syncRoster(this);
         }
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
@@ -3138,6 +3142,7 @@ const API = {
 
     // เก็บสาขาเดิมไว้ทั้งกล่อง แล้วหยิบกลับมาตอนย้ายกลับ (เจ้าของสั่ง 10 ก.ย. 2569)
     // เดิมย้ายกลับมาแล้วสถานีทุกหลังหายหมด เหมือนเริ่มสาขาใหม่ทุกครั้ง
+    syncRoster(this);
     this.zoneSave = this.zoneSave || {};
     this.zoneSave[this.zone] = {
       stations: this.stations.map(st => ({
@@ -3151,7 +3156,7 @@ const API = {
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
-                     .map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
+                     .map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
                                   buildK:this.stations.some(st => st.def.k === c.buildK && st.repair) ? c.buildK : null,
                                   upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
@@ -3185,7 +3190,15 @@ const API = {
       this.stations.forEach(st => { st.slots = st.slots.filter(x => soulFitsZone(x.soul, k)); });
       this.crew = [...keep, ...(back.crew || []).map(sv => {
         const def = CREW.find(c => c.k === sv.k);
-        return def ? { ...mkCrew(def, k), ...sv, name:crewName(def, k) } : null;
+        if (!def) return null;
+        const actor = this.roster[rosterId(k, sv.k)] || actorFromLegacy(sv, k);
+        const state = snapshotRoster({ [actor.id]:actor })[actor.id];
+        // Returning crew historically starts with fresh map motion, while its
+        // morale/training now comes from the canonical actor, not a stale copy.
+        delete state.x; delete state.y;
+        for (const field of Object.keys(actor)) delete actor[field];
+        Object.assign(actor, mkCrew(def, k), state, { buildK:sv.buildK || null });
+        return actor;
       }).filter(Boolean)];
       this.guard = back.guard || null;
       this.ensureTarang();
@@ -3201,6 +3214,7 @@ const API = {
       c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
       c.at = null; c.path = null;
     });
+    syncRoster(this);
     this.refreshZoneEvents(k);
     this.restoreBuilders();
     this.party = { members:[], guard:false };
@@ -3267,7 +3281,8 @@ const API = {
   hireGuard() {
     if (this.guard || this.coin < GUARD.hire) return false;
     this.coin -= GUARD.hire;
-    this.guard = { x: GUARD_POST[0], y: GUARD_POST[1] };
+    this.guard = actorFromLegacy({ x: GUARD_POST[0], y: GUARD_POST[1] }, this.zone, 'guard');
+    syncRoster(this);
     if (this.huntMob) { this.huntMob = false; this.player.path = null; this.player.tx = null; }
     this.log(`🛡️ จ้าง${GUARD.name}แล้ว ${GUARD.line}`, 'good');
     return true;
@@ -3517,6 +3532,7 @@ const API = {
     this.coin -= def.hire;
     const member = mkCrew(def, this.zone);
     this.crew.push(member);
+    syncRoster(this);
     this.log(`🤝 ${member.name} เข้าประจำการ ${def.line}`, 'good');
     return true;
   },
@@ -3535,8 +3551,12 @@ const SAVE_KEY = 'avegee.save.v2';
 
 API.snapshot = function (withEntry = true) {
   this.syncDiscoveries();
+  syncRoster(this);
+  const frontier = JSON.parse(JSON.stringify(this.frontier));
+  for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 3, at: Date.now(),
+    v: 3, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
+    teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, exp: this.exp, mp: this.mp, mpMax: this.mpMax,
@@ -3553,7 +3573,7 @@ API.snapshot = function (withEntry = true) {
     discoverySeen: { ...this.discoverySeen }, discoveryQueue: [...this.discoveryQueue],
     storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
-    crew: this.crew.map(c => ({ k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
+    crew: this.crew.map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
@@ -3575,7 +3595,7 @@ API.snapshot = function (withEntry = true) {
     gameCompleted: !!this.gameCompleted,
     teaBeds:this.teaBeds, pendingRecovery:this.pendingRecovery,
     bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
-    miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
+    miniGoals: this.miniGoals, frontier, party:{ ...this.party, members:teamIds(this.party?.members, this.roster, this.zone) }, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneIntroSeen: this.zoneIntroSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
@@ -3595,6 +3615,20 @@ API.save = function () {
 
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3)) return false;
+  if (d.rosterVersion !== ROSTER_VERSION) {
+    // Back up before any legacy restore code mutates the payload. If storage is
+    // available but the backup fails, stop rather than overwrite the only save.
+    const original = JSON.stringify(d);
+    if (typeof localStorage !== 'undefined') {
+      try {
+        if (localStorage.getItem(ROSTER_BACKUP_KEY) == null) localStorage.setItem(ROSTER_BACKUP_KEY, original);
+      } catch { return false; }
+    }
+    this.saveBeforeRosterMigration = original;
+  }
+  d = migrateRosterSave(d);
+  this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
+  this.teamLimits = { ...TEAM_LIMITS };
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
     ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));
   this.discoverySeen = { ...(d.discoverySeen || {}) };
@@ -3647,7 +3681,7 @@ API.restore = function (d) {
   if (d.v === 2) { this.greens = Math.floor((d.star5 || 0) * 1.5); this.reds = 0; }
   this.crew = (d.crew || []).map(sv => {
     const def = CREW.find(c => c.k === sv.k);
-    return def ? { ...mkCrew(def), ...sv } : null;
+    return def ? this.roster[rosterId(d.zone || 'th', sv.k)] : null;
   }).filter(Boolean);
   this.stations = (d.stations || []).map(sv => {
     const st = mkStation(sv.k);
@@ -3689,7 +3723,7 @@ API.restore = function (d) {
   this.mobs = (d.mobs || []).filter(m => d.mobRosterV18 || m.kind !== 3)
     .map(m => d.mobRosterV18 || m.kind == null || m.kind < 4 ? m : { ...m, kind:m.kind - 1 });
   this.transits = [];
-  this.guard = d.guard || null;
+  this.guard = d.guard ? this.roster[rosterId(d.zone || 'th', 'guard')] : null;
   if (d.player) this.player = d.player;
   this.logs = d.logs || [];
   this.closed = d.closed || [];
@@ -3729,7 +3763,8 @@ API.restore = function (d) {
   this.frontier = d.frontier || { zones:{} };
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
   this.party = d.party || { members:[], guard:false };
-  this.party.members = (this.party.members || []).filter(k => this.crew.some(c => c.k === k));
+  this.party.members = teamKeys(this.party.members, this.roster, this.zone);
+  for (const [zone, state] of Object.entries(this.frontier.zones)) state.team = teamKeys(state.team, this.roster, zone);
   // ชุดที่ 10 (ข้อ C1) — party.guard (โหมด "ยักษ์เดินตาม") ถูกตัดออกแล้ว เหลือ field ไว้เฉย ๆ
   // กันเซฟเก่าพัง (ไม่มีใครอ่านค่านี้อีกต่อไป) บังคับเป็น false เสมอไม่ให้มีทางเหลือค้างจากเซฟเก่า
   this.party.guard = false;
@@ -3782,6 +3817,7 @@ API.restore = function (d) {
   const allowedMobs = new Set(this.zoneDef().mobs || []);
   this.mobs = this.mobs.filter(m => allowedMobs.has(m.kind ?? 0));
   this.zoneSave = d.zoneSave || {};
+  syncRoster(this);
   this.sweepMapItems();                // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่า เก็บเข้ากระเป๋าให้ (ระบบของตกถูกยกเลิก)
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
@@ -3865,6 +3901,9 @@ API.restore = function (d) {
                       { k: 'tarang', crewK: null, intensity: 3, fire: 0, build: 0, slots: [] }];
     entry.queue = []; entry.held = []; entry.items = []; entry.mobs = []; entry.guard = null;
     entry.crew = entry.crew.filter(c => CREW.find(def => def.k === c.k)?.follow);
+    entry.roster = Object.fromEntries(Object.entries(entry.roster).filter(([, a]) => a.homeZone !== this.zone));
+    entry.party.members = [];
+    if (entry.frontier.zones?.[this.zone]) entry.frontier.zones[this.zone].team = [];
     entry.bossGuarding = { ...entry.bossGuarding, [this.zone]: false };
     entry.bossRetryAt = { ...entry.bossRetryAt, [this.zone]: 0 };
     entry.hp = entry.hpMax; entry.order = Math.max(72, entry.order); entry.reds = 0;
