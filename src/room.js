@@ -1,3 +1,4 @@
+import { actorStanding } from './actor-recovery.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
@@ -247,6 +248,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (lying) {
       sleepElapsed += dt;
       if (sleepElapsed >= TEA_SLEEP_MS) {
+        sleepElapsed = 0;
+        if (recoverySleep && g.pendingRecovery?.stage !== 'wake') { g.finishTeaSleep(); return; }
         lying = false;
         P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
         if (recoverySleep) g.completeTeaRecovery();
@@ -434,7 +437,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
       const guard = room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
-      if (c && !c.self) acts.push({ y: guard[1], fn: () => {
+      if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
       } });

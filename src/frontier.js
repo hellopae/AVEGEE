@@ -1,3 +1,4 @@
+import { actorStanding } from './actor-recovery.js';
 // src/frontier.js — แผนที่ชายแดน: เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569)
 //
 // เดิม: กดเข้าชายแดน → จัดทีม → ตัดเข้าฉากสู้ทันที (สุ่มศัตรู) → ชนะ เก็บของ → กลับ "แผนที่โซน"
@@ -105,7 +106,7 @@ export function makeFrontierWalk(cv, g, opts) {
     const rx = unit() * 0.045 / box.w, ry = unit() * 0.022 / box.h;
     const list = sess.enemies.map(en => [en.x, en.y, rx, ry]);
     list.push([NIRA[0], NIRA[1], rx, ry]);
-    if (g.guard) list.push([GUARD[0], GUARD[1], rx, ry]);
+    if (actorStanding(g.guard)) list.push([GUARD[0], GUARD[1], rx, ry]);
     return list;
   };
   let replanAt = 0;
@@ -244,7 +245,7 @@ export function makeFrontierWalk(cv, g, opts) {
       if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDistance : 0, P.face, direction))
         drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face, moving);
     } });
-    if(g.guard) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
+    if(actorStanding(g.guard)) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
     acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * HERO_H, t, '📋') });
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
 

@@ -1,3 +1,4 @@
+import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
@@ -804,7 +805,7 @@ function fightMob(n) {
 
 /** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
-  if (g.over || g.battle || dlg.open || g.guard) return;
+  if (g.over || g.battle || dlg.open || g.guardActive()) return;
   const n = g.nearestMob();
   if (n && n.d <= MOB.fabReach) { fightMob(n); return; }
   g.attack(); refresh();
@@ -814,12 +815,12 @@ function tryFight() {
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fab = $('#fab-atk');
-  const n = g.over || g.guard ? null : g.nearestMob();
+  const n = g.over || g.guardActive() ? null : g.nearestMob();
   const near = n && n.d <= MOB.fabReach;
   const sig = `${g.mobs.length}/${g.over ? 1 : 0}/${g.guard ? 1 : 0}/${near ? 1 : 0}`;
   if (sig === atkSig) return;
   atkSig = sig;
-  btn.hidden = !!g.over || !!g.guard || !g.mobs.length;
+  btn.hidden = !!g.over || g.guardActive() || !g.mobs.length;
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
   const [label, color] = near
@@ -1082,7 +1083,7 @@ function updateTrialBtn() {
  *  ตำแหน่งอัปเดตทุกเฟรม — ผีเดินตลอดเวลา ปุ่มต้องติดหัวมันไปด้วย */
 function updateMobFab() {
   const gone = () => { const e = ov.querySelector('.mobfab'); if (e) e.remove(); };
-  if (g.over || g.battle || dlg.open || g.guard || !g.mobs.length) return gone();
+  if (g.over || g.battle || dlg.open || g.guardActive() || !g.mobs.length) return gone();
   const n = g.nearestMob();
   if (!n || n.d > MOB.fabReach) return gone();
   let f = ov.querySelector('.mobfab');
@@ -1092,7 +1093,7 @@ function updateMobFab() {
     f.textContent = '⚔️ กดเพื่อเข้าสู้';
     f.onclick = ev => {
       ev.stopPropagation();
-      if (g.over || g.battle || dlg.open || g.guard) return;
+      if (g.over || g.battle || dlg.open || g.guardActive()) return;
       const m = g.nearestMob();
       if (!m || m.d > MOB.fabReach) return;
       fightMob(m);
@@ -1940,9 +1941,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ">
-      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), BATTLE.crewCd)
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ" style="${hp?.dmg?.targetActorId === c.id ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${hp?.dmg?.targetActorId === c.id ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
@@ -2670,7 +2671,7 @@ function openBattle(after) {
       : phase === 'foe'
         // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
         ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
-                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId } }
+                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId, crew:b.dmg?.crew, targetActorId:b.dmg?.targetActorId } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
     const act = phase === 'you' && fxNow?.key === 'rage' ? null
@@ -2681,7 +2682,9 @@ function openBattle(after) {
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าร่วมทุกฉากต่อสู้ให้เองถ้าจ้างไว้แล้ว ไม่กินโควตา
     // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
-    const squadMembers = g.guard ? [...battleHelpers, { k: 'guard', name: GUARD.name }] : battleHelpers;
+    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [...battleHelpers, { ...g.guard, name: GUARD.name }] : battleHelpers;
+    if (phase === 'foe' && b.dmg?.hitActor && !squadMembers.some(c => c.id === b.dmg.hitActor.id))
+      squadMembers = [...squadMembers, { ...b.dmg.hitActor, name:b.dmg.hitActor.name || GUARD.name }];
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
     // กดได้ทุกปุ่ม ลำดับไหนก็ได้ หลายครั้งก็ได้ (ไม่ใช่ครั้งเดียวเหมือนของเดิม) เปิดหน้าต่างเดิมที่มีอยู่แล้ว
     // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
@@ -2813,17 +2816,17 @@ function openBattle(after) {
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
     const meter = (value, max, type, label = '') => `<span class="battle-meter ${type}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.max(0, Math.round(value))}"><i style="width:${Math.max(0, Math.min(100, 100 * value / (max || 1)))}%"></i></span>`;
     const team = [
-      ...(g.guard ? [{ k:'guard', name:GUARD.name }] : []),
+      ...(g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name:GUARD.name }] : []),
       ...battleHelpers,
     ];
     stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
       <div class="battle-team-hud">
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
-          const duration = c.k === 'guard' ? GUARD.battleCd : BATTLE.crewCd;
+          const duration = specialCooldown(c);
           return `<button class="battle-portrait" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}">
             <img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
-            <span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
+            <div class="battle-numbered-meter">${meter(c.morale, 100, 'health', t('battle.hp'))}<small>${Math.round(c.morale)}/100</small></div><span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
           </button>`;
         }).join('')}
         <div class="battle-portrait hero"><img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
@@ -2934,7 +2937,7 @@ function openBattle(after) {
         if (!g.battle) return;
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
         // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
-        const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.confuseSelf > 0));
+        const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.crew > 0 || nb.dmg.confuseSelf > 0));
         if (!counter) { phase = null; fxNow = null; finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
@@ -3007,11 +3010,15 @@ function openBattle(after) {
     } paint(); }
   }, 600);
 
+  let crewClockAt = performance.now();
   const crewTimer = setInterval(() => {
+    const now = performance.now(), elapsed = now - crewClockAt; crewClockAt = now;
+    g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
+    g.updateActorRecovery();
     for (const c of g.battleCrew()) {
-      const remaining=g.crewCooldown(c), progress=100*(1-remaining/BATTLE.crewCd);
+      const remaining=g.crewCooldown(c), progress=100*(1-remaining/specialCooldown(c));
       const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
-      if(ready){ready.setAttribute('aria-valuenow',Math.round(BATTLE.crewCd-remaining));ready.querySelector('i').style.width=progress+'%';}
+      if(ready){ready.setAttribute('aria-valuenow',Math.round(specialCooldown(c)-remaining));ready.querySelector('i').style.width=progress+'%';}
       const bar=dlg.querySelector(`[data-cooldown="${crewBattleKey(c)}"]`);
       if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
       const label=dlg.querySelector(`[data-cooldown-label="${crewBattleKey(c)}"]`);
@@ -4132,6 +4139,13 @@ function openStation(k, emergency = false) {
       const outer = document.querySelector('#res-hp-chip');
       if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
+    if (g.pendingRecovery?.stage === 'wake' && !dlg.querySelector('.nira-wakeup')) {
+      const wake = document.createElement('div'); wake.className = 'nira-wakeup';
+      wake.style.cssText = 'position:absolute;inset:20% 25%;z-index:20;text-align:center;pointer-events:none;background:#201326dd;border-radius:20px;padding:1rem';
+      wake.innerHTML = `<img src="${artUrl('crew-nira')}" alt="" style="height:180px"><p>นิรา: ตื่นได้แล้วค่ะ ไปทำงานกัน / Nira: Wake up. Time to get back to work.</p>`;
+      (dlg.querySelector('.st-main') || dlg).append(wake);
+    }
+    if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
@@ -4327,11 +4341,11 @@ function openDiscovery() {
 function openDefeatRecovery() {
   const recovery = g.pendingRecovery;
   if (!recovery || dlg.open || g.battle) return;
-  if (recovery.stage === 'sleep') { openStation('tea', true); return; }
+  if (['sleep','wake'].includes(recovery.stage)) { openStation('tea', true); return; }
   modal(`<div style="position:relative;min-height:60vh;display:grid;place-items:center;overflow:hidden;background:#160c20">
     <img src="${esc(recovery.bg || teaBackground(recovery.zone))}" alt="" style="position:absolute;width:100%;height:100%;object-fit:cover;opacity:.35">
     <img src="${yamaDownImage(recovery.outfit)}" alt="ยมบาทน้อยนอนสลบ" style="position:relative;width:50%;max-height:45vh;object-fit:contain">
-    <p style="position:absolute;bottom:1rem;text-align:center">ยมบาทน้อยหมดแรง… กำลังพากลับศาลาน้ำชา</p></div>`, null, 'defeat-recovery');
+    <p style="position:absolute;bottom:1rem;text-align:center">ยมบาทน้อยหมดแรง… กำลังพากลับศาลาน้ำชา / Exhausted… returning to tea pavilion</p></div>`, null, 'defeat-recovery');
   const gen = dlgGen;
   const noSkip = e => e.preventDefault();
   dlg.addEventListener('cancel', noSkip);

@@ -14,7 +14,7 @@ function game(id,trained) {
   const g=createGame(); g.restore(structuredClone(fixture));
   g.zone='cyberhell'; g.zoneEvents.cyberhell={cyberRescue:'cleared',cyberBreach:'cleared',cyberFinal:'active'};
   g.bossCleared={th:true,asia:true,west:true};
-  for(const c of Object.values(g.roster)) {c.morale=92;c.upLv=trained;c.helpReadyAt=0;c.recoverUntil=0;}
+  for(const c of Object.values(g.roster)) {c.morale=92;c.upLv=trained;c.statTraining={raeng:trained,rabiab:trained,panya:trained,metta:trained};c.helpReadyAt=0;c.recoverUntil=0;}
   g.finalEvent={version:1,migrationVersion:1,phase:'staging',minionsCleared:4,
     rulersCleared:encounters.slice(0,encounters.indexOf(id)).filter(x=>x.startsWith('ruler:')).map(x=>x.split(':')[1]),
     rewardLedger:{},pendingReward:null,activeEncounter:null,reinforcementsSeen:true};
@@ -31,6 +31,7 @@ function run(id,adds,trained,seed) {
   const startCoin=g.coin;let turns=0;
   while(!b.over && turns<400) {
     now+=3000;turns++;
+    g.advanceBattleTime?.(3000); g.updateActorRecovery?.(now);
     const low=b.youHp<b.youMax*.45;
     let acted=false;
     if(low) acted=g.battleAct('crew:west:boon');
@@ -56,6 +57,6 @@ try {
       meanTurns:mean('turns'),meanHealthUsed:mean('health'),meanWaterUsed:mean('water'),meanRewardCoin:mean('coin'),meanHp:mean('hp')});
   }
 } finally {Math.random=originalRandom;Date.now=originalNow;}
-const result={method:'100 paired seeds 2800–2899 per encounter; level 5; six cross-zone helpers; morale 92; full HP/MP after map rest; two health and two holyWater; simulated 3s per turn; no Guard; upLv 0 and 4. Enemy stats unchanged. Before = same encounter with adds removed.',rows};
-writeFileSync(new URL('../output/Toby/b2b-simulation.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+const result={method:'100 paired seeds 2800–2899 per encounter; level 5; six cross-zone helpers; morale 92; full HP/MP after map rest; two health and two holyWater; simulated 3s active battle time per turn; wall-clock actor recovery; no Guard; upLv 0 and 4. Enemy stats unchanged. Before = same encounter with adds removed.',rows};
+writeFileSync(new URL('../output/Toby/b5-final-after-details.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(rows,null,2));
