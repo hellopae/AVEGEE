@@ -43,16 +43,15 @@ test('ตารางค่าพลัง B — ทัณฑ์/เพลิง
   assert.equal(g.battle.dmg.foe, 60);
 });
 
-test('คูลดาวน์ B — ยมทูตทั่วไป 1 นาที (60 วิ) · ยักษ์ 2 นาที (120 วิ)', () => {
-  assert.equal(BATTLE.crewCd, 60);
-  assert.equal(GUARD.battleCd, 120);
+test('คูลดาวน์ B5 — ยมทูต 15 วิ · ยักษ์ 20 วิ ของเวลาศึก', () => {
+  assert.equal(BATTLE.crewCd, 15);
+  assert.equal(GUARD.battleCd, 20);
 
   const g = battleWith(['taan']);
-  const before = Date.now();
   assert.equal(g.battleAct('crew:taan'), true);
   const c = g.crew.find(x => x.k === 'taan');
-  const waitMs = c.helpReadyAt - before;
-  assert.ok(waitMs > 59000 && waitMs <= 60000, `คูลดาวน์ควรตั้งไว้ ~60 วิ ได้ ${waitMs}ms`);
+  assert.equal(c.helpRemainingMs, 15000);
+  g.advanceBattleTime(1000); assert.equal(g.crewCooldown(c), 14);
 });
 
 test('ลูกไฟ 40 คงที่ · น้ำแข็ง 30 + ศัตรูข้าม 1 ตา — ไม่สุ่มอีกต่อไป', () => {

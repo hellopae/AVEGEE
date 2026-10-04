@@ -688,10 +688,10 @@ export const MOB = {
 
 // ชุดที่ 10 (ข้อ C2) คุณเป้ 25 ก.ย. 2569 — เข้าร่วมฉากต่อสู้แบบผลัดตา (g.battle) ได้แล้ว
 // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — battleAtk/battleCd ยึด CREW_POWER.guard ที่เดียวกับยมทูต
-// (เดิม [34,48] สุ่ม + คูลดาวน์ 130 วิ → ตอนนี้ 60 คงที่ + คูลดาวน์ 120 วิ = 2 นาทีตามที่คุณเป้กำหนด)
+// B5: ฟาดแรง 60, เสียกำลังใจ 8, คูลดาวน์ 20 วินาทีสนามรบ
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
-  hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,
+  hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:20,
   line:'"ข้าเฝ้าประตูนี้มาก่อนที่ท่านจะเกิด ปล่อยเรื่องพวกเปรตให้ข้า"',
   desc:'ไล่ปราบเปรตให้เอง ไม่ต้องเดินไปเอง แต่กินค่าแรงทุกงวด · เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ',
 };
@@ -1613,12 +1613,12 @@ export const BATTLE = {
   crit: 0.18,           // โอกาสเข้าเต็ม ๆ (คูณ 1.7)
   loseHp: 9,            // แพ้แล้วบารมีท่านหาย (14 → 9 · เจ้าของแพ้แล้วฟื้นไม่ทัน)
   winCoin: 45,          // ชนะแล้วได้เบี้ยกรรม
-  // ---- ยมทูตในทีมช่วยต่อสู้ได้คนละครั้ง แล้วพักตามเวลาจริง ----
+  // ---- ท่าพิเศษยมทูต: กำลังใจเป็น HP และคูลดาวน์ใช้เวลาสนามรบ ----
   // นิราไม่อยู่ในรายชื่อ เธอไม่รับเวรลงมือ · เรียกแล้วเสียกำลังใจ
-  // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — คูลดาวน์ 60 วิ (1 นาที) ตามที่กำหนดเป๊ะ (เดิม 150→100→60)
-  crewCd: 60,           // วินาทีจริง: ยังนับต่อระหว่างหน้าต่อสู้พักวาระเกม
-  crewMorale: 22,       // เรียกหนึ่งครั้งกำลังใจเขาหายเท่านี้
-  crewMin: 25,          // กำลังใจต่ำกว่านี้เรียกไม่ไหวแล้ว
+  // B5: ท่าทั่วไป 15 วิ, บุญรักษา 20 วิ (actor-recovery.js)
+  crewCd: 15,           // เวลาสนามรบ: หยุดตอน pause/ซ่อนแท็บ
+  crewMorale: 6,       // เรียกหนึ่งครั้งกำลังใจเขาหายเท่านี้
+  crewMin: 6,          // ค่าใช้ท่าพิเศษ
   // ของที่ใช้ได้ในฉากต่อสู้ — ทุกชิ้น "มีราคา" ที่หักจากทรัพยากรจริงในเกม
   // ไม่มีของฟรีสักชิ้น ไม่งั้นฉากต่อสู้จะกลายเป็นกดปุ่มเดิมซ้ำจนกว่าจะชนะ
   items: [
@@ -1752,13 +1752,14 @@ export const ZONE_EVENTS = {
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
-      alert:{ th:'ฝ่าปีศาจสามระลอก กองหนุนทั้งสี่โซนจะรับมือลูกน้องที่เหลือ พักเตรียมทีมแล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
-        en:'Defeat three demon waves. Allies from all four zones take on the remaining army. Rest, free all four rulers, then rest again before the final inspector.' },
-      restBeforeWaves:[4,8],
+      alert:{ th:'ชนะลูกน้อง 4 ระลอก แล้วช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน ก่อนสู้บอส',
+        en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
+
       waves:[
         [{ kind:14, count:2, hp:60, atk:[10,16] }],
         [{ kind:15, count:2, hp:65, atk:[11,17] }],
         [{ kind:16, count:2, hp:70, atk:[12,18] }],
+        [{ kind:16, count:2, hp:75, atk:[13,19] }],
         [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[13,20], boss:true }],
         [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[14,21], boss:true }],
         [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[15,22], boss:true }],
@@ -2073,3 +2074,21 @@ for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
     heal:(def.battleHp ?? def.hp) || undefined, mp:def.mp || 0, say:def.say };
   if (existing) Object.assign(existing, entry); else BATTLE.items.push(entry);
 }
+// B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ยมบาทจึงรอดง่ายขึ้น — ตัวคูณดาเมจศัตรูชดเชยตามจำนวนเป้าที่ยืนอยู่
+// mult = 1 + share × (น้ำหนักเป้ารวม/2 − 1) (ยมบาท 2 · crew 1 · Guard 3) · share 1 = ยมบาทรับดาเมจคาดหวังเท่าเดิม, 0 = ไม่ชดเชย
+// max = เพดานตัวคูณ (ทีมใหญ่/มี Guard ดาเมจต่อหัวไม่พุ่งจนยมทูตล้มในนัดเดียว) — ศึกสุดท้ายใหม่ทีม 6 + Guard ต้องการเพดานสูงกว่าศึกทั่วไป
+// ลำดับค้นหา key: encounter (เช่น ruler:west) → eventKey (เช่น cyberBreach) → kind (zoneBoss/zoneEvent/...) → default
+export const TEAM_PRESSURE = {
+  share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 },
+  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:3.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
+};
+// B2b: encounter additions and receipts, without changing existing enemy stats.
+export const FINAL_EVENT = {
+  waveRewards:[40,50,60,70].map(coin => ({ coin, item:'holyWater', exp:5 })),
+  rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
+  rulerAdds:[1,1,2,2], bossAdds:3,
+  add:{ kind:14, hp:60, atk:[10,16] },
+  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],
+  restPosition:[700,600],
+  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],
+};

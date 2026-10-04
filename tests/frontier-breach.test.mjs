@@ -73,7 +73,9 @@ test('loss leaves one authority and retry starts at wave one; active save restor
   const g = ready(), coin = g.coin;
   g.startFrontierBreach();
   g.battle.youHp = 1;
-  g.battleAct('atk');
+  // B5: ศัตรูสุ่มเป้าถ่วงน้ำหนัก — ตรึงให้โดนยมบาทเพื่อให้เทสต์แพ้นี้แน่นอน
+  const rnd = Math.random; Math.random = () => 0;
+  try { g.battleAct('atk'); } finally { Math.random = rnd; }
   assert.equal(g.battle.over, 'lose');
   assert.equal(g.hp, 1);
   assert.equal(g.coin, coin);

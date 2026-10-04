@@ -1,3 +1,4 @@
+import { actorStanding } from './actor-recovery.js';
 // view3d.js — มุมมอง 3D แบบ billboard
 //
 // ทำไมเป็น billboard ไม่ใช่ 3D เต็มตัว:
@@ -265,6 +266,7 @@ export function render(g, t) {
     liveBillboard('boss', artUrl('hero-boss'), SPOTS.throne.x, SPOTS.throne.y, 164,
       { shadow: true, sway: true, thickness: true, motion: true });
   for (const c of g.crew) {
+    if (!actorStanding(c)) continue;
     liveBillboard('c-' + c.k, artUrl('crew-' + c.k), c.x, c.y, 122,
       { shadow: true, sway: true, thickness: true, motion: true });
   }
@@ -287,7 +289,7 @@ export function render(g, t) {
     liveBillboard('mob-' + i, artUrl(d.img), m.x, m.y, MOB.h * 1.35,
       { shadow: true, sway: true, thickness: true, motion: true });
   });
-  if (g.guard)
+  if (actorStanding(g.guard))
     liveBillboard('guard', artUrl(GUARD.img), g.guard.x, g.guard.y, GUARD.h * 1.25,
       { shadow: true, sway: true, thickness: true, motion: true });
 

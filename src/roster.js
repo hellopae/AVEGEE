@@ -1,3 +1,4 @@
+import { specialCooldown } from './actor-recovery.js';
 import { migrateStatTraining } from './progression.js';
 // Owned actors only: hiring a kind in another branch creates a different person.
 import { CREW, crewName } from './data.js';
@@ -15,13 +16,13 @@ export function actorFromLegacy(sv, zone, kind = sv.k) {
   if (!def && kind !== 'guard') return null;
   const id = rosterId(zone, kind);
   return migrateStatTraining({ ...(def || {}), morale: kind === 'guard' ? 100 : 92, hunger: 100,
-    upLv: 0, recoverUntil: 0, ...sv, id, kind, k: kind,
+    upLv: 0, recoverUntil: 0, ...sv, helpRemainingMs: sv.helpRemainingMs ?? Math.min(specialCooldown({k:kind}) * 1000, Math.max(0, (sv.helpReadyAt || 0) - Date.now())), id, kind, k: kind,
     homeZone: kind === 'nira' ? 'global' : zone,
     ...(def ? { name: crewName(def, zone) } : {}) });
 }
 
 const STATE_FIELDS = ['id', 'kind', 'homeZone', 'k', 'morale', 'hunger', 'upLv',
-  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt',
+  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt', 'helpRemainingMs',
   'at', 'tired', 'x', 'y', 'buildK'];
 export function snapshotRoster(roster) {
   return Object.fromEntries(listActors(roster).map(a => [a.id,

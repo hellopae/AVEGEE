@@ -1,5 +1,8 @@
+import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
+import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
+import { FINAL_EVENT, TEAM_PRESSURE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -404,6 +407,55 @@ const API = {
   /** ดวงที่อยู่หน้าสุดของสถานี */
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
+  actorStanding(actor) { return actorStanding(actor); },
+  guardActive() { return actorStanding(this.guard); },
+  enemyGuard() {
+    const b = this.battle;
+    return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
+  },
+  enemyTarget() { return weightedTarget(this.battleCrew(), this.enemyGuard()); },
+  /** B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ทำให้ยมบาทรอดง่ายขึ้น — ชดเชยด้วย TEAM_PRESSURE (data.js) */
+  teamPressure(B) {
+    const pick = table => table[B.encounter] ?? table[B.eventKey] ?? table[B.kind] ?? table.default;
+    return Math.min(pick(TEAM_PRESSURE.max), 1 + pick(TEAM_PRESSURE.share) * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1));
+  },
+  downActor(actor, now = Date.now()) {
+    if (!actor || actor.recoverUntil) return false;
+    actor.morale = 0; actor.recoverUntil = now + RECOVERY_MS;
+    if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
+    actor.at = null; actor.path = null; actor.escort = null;
+    for (const walk of this.afterlifeWalks) if (walk.escort?.k === actor.k) walk.escort = null;
+    for (const transit of this.transits) if (transit.crew === actor.k) { transit.crew = null; transit.crewName = ''; }
+
+    if (actor.buildK) {
+      const stations = actor.homeZone === this.zone ? this.stations : this.zoneSave[actor.homeZone]?.stations || [];
+      const st = stations.find(s => (s.def?.k || s.k) === actor.buildK);
+      if (st?.build) st.buildWait = true;
+      if (st?.repair) st.repairWait = true;
+      actor.buildK = null;
+      if (actor.homeZone === this.zone) this.restoreBuilders();
+    }
+    return true;
+  },
+  updateActorRecovery(now = Date.now()) {
+    syncRoster(this);
+    let changed = false;
+    for (const actor of Object.values(this.roster)) {
+      if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;
+      if (actor.recoverUntil && now >= actor.recoverUntil) {
+        if (this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
+        const point = nearestWalk(actor.k === 'guard' ? GUARD_POST[0] : actor.hx || GUARD_POST[0],
+          actor.k === 'guard' ? GUARD_POST[1] : actor.hy || GUARD_POST[1]);
+        changed = recoverActor(actor, now, point || GUARD_POST) || changed;
+      }
+    }
+    if (changed) this.save();
+  },
+  advanceBattleTime(dt, active = !this.paused) {
+    if (!this.battle || this.battle.over || !active || globalThis.document?.hidden) return;
+    for (const actor of [...this.battleCrew(), this.guard].filter(Boolean))
+      actor.helpRemainingMs = Math.max(0, (actor.helpRemainingMs || 0) - Math.max(0, dt));
+  },
   crewOf(k) {
     if (k === 'me') return this.self;        // ท่านลงไปคุมเอง — ไม่มีค่าแรง ไม่ต้องจ้าง
     return this.crew.find(c => c.k === k);
@@ -433,7 +485,7 @@ const API = {
   },
   finalTeamWhy(c, now = Date.now()) {
     if (!c || !this.finalTeamCandidates().includes(c)) return 'ยังไม่ปลดล็อกสาขา';
-    if (c.recoverUntil > now) return 'กำลังพักฟื้น';
+    if (c.recoverUntil) return 'กำลังพักฟื้น / Recovering';
     if (c.morale <= 0) return 'กำลังใจหมด';
     return '';
   },
@@ -704,7 +756,7 @@ const API = {
     return out;
   },
 
-  freeCrew() { return this.crew.filter(c => !c.at && !c.reader); },
+  freeCrew() { return this.crew.filter(c => actorStanding(c) && !c.at && !c.reader); },
 
   /** สถานีที่เลือกเป็น "สถานที่" ในห้องสอบสวนได้ (เฉพาะที่รับวิญญาณไปลงทัณฑ์/ส่งสวรรค์จริง — ดู isTrialDestination) */
   trialDestinations() { return this.stations.filter(x => isTrialDestination(x.def)); },
@@ -718,7 +770,7 @@ const API = {
     if (!soul.revealed.mirror || !station) return answer;
     const st = this.stations.find(x => x.def.k === station.k) || mkStation(station.k);
     // สถานีที่มีดวงอยู่แล้วเปลี่ยนผู้คุมไม่ได้ จึงพิจารณาเฉพาะผู้คุมประจำ
-    const candidates = this.crew.filter(c => !c.reader && !c.self && (!st.slots.length || c.k === st.crewK));
+    const candidates = this.crew.filter(c => !c.reader && !c.self && actorStanding(c) && (!st.slots.length || c.k === st.crewK));
     const available = candidates.filter(c => !this.assignBlock(soul.id, st.def.k, c.k));
     const scoring = Object.create(this);
     scoring.log = () => {}; // judge() ของเพลิงอาจเขียน log แม้คะแนนไม่เปลี่ยน
@@ -736,8 +788,8 @@ const API = {
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
     if (this.stFree(st) <= 0) return { key: 'stationFull' };
-    const c = this.crewOf(st.slots.length ? st.crewK : crewK);
-    if (!c || c.self || c.reader) return { key: 'crewMissing' };
+    const c = this.crewOf(st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK);
+    if (!actorStanding(c) || c.self || c.reader) return { key: 'crewMissing' };
     if (c.escort) return { key: 'crewEscort' };
     if (c.buildK) return { key: 'crewBuilding' };
     if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
@@ -748,7 +800,7 @@ const API = {
     const st = this.stations.find(s => s.def.k === stKey);
     const si = this.queue.findIndex(s => s.id === soulId);
     // สถานีที่มีผู้คุมประจำอยู่แล้ว ดวงถัดไปเข้าเวรของคนเดิม (หนึ่งหลังหนึ่งผู้คุม)
-    const useK = st.slots.length ? st.crewK : crewK;
+    const useK = st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK;
     const c = this.crewOf(useK);
     const soul = this.queue.splice(si, 1)[0];
     // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
@@ -978,7 +1030,7 @@ const API = {
   assignEscort(walk, keeperK = null) {
     const start = walk.path[0];
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
-    const free = this.crew.filter(c => !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
+    const free = this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
     for (const c of ranked) {
       const cx = c.x ?? c.hx, cy = c.y ?? c.hy;
@@ -1002,7 +1054,7 @@ const API = {
   /** ส่งตัวเสร็จ (หรือเลิกกลางคัน) — คืนยมทูตให้ระบบเดินปกติ: ยืนที่ปลายทางแล้วเดินกลับจุดประจำเอง */
   releaseEscort(walk) {
     const c = walk.escort && this.crewOf(walk.escort.k);
-    if (!c || c.self) return;
+    if (!actorStanding(c) || c.self) return;
     if (c.escort === walk.soul.id) c.escort = null;
     const end = walk.path.at(-1);
     c.x = end[0]; c.y = end[1]; c.path = null; c.wait = 0;
@@ -1026,7 +1078,7 @@ const API = {
       walk.elapsed += dt;
       if (walk.elapsed < walk.duration) {
         const c = walk.escort && this.crewOf(walk.escort.k);
-        if (c && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
+        if (actorStanding(c) && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
           const pos = escortCrewPosition(walk);
           c.x = pos.x; c.y = pos.y; c.face = pos.face; c.path = null;
         }
@@ -1183,7 +1235,8 @@ const API = {
 
   // ---------- หนึ่งวาระ ----------
   step() {
-    if (this.paused || this.over) return;
+    this.updateActorRecovery();
+    if (this.paused || this.over || this.finalEventOnMap()) return;
     this.tick++;
     if (this.niraRest && --this.niraRest.remaining <= 0) {
       this.niraRest = null;
@@ -1225,11 +1278,11 @@ const API = {
     for (const st of this.stations) {
       if (st.build || !st.slots.length || st.fire >= MOB.burnMax) continue;
       const c = this.crewOf(st.crewK);
-      if (!c || c.self || c.escort) continue;
+      if (!actorStanding(c) || c.self || c.escort) continue;
       const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
       if (activeSlots.length) workingCrew.add(c.k);
     }
-    for (const c of this.crew) if (c.escort) workingCrew.add(c.k);
+    for (const c of this.crew) if (actorStanding(c) && c.escort) workingCrew.add(c.k);
     const workingCount = workingCrew.size;
     let fed = true;
     if (workingCount > 0) {
@@ -1260,7 +1313,7 @@ const API = {
       if (st.build || !st.slots.length) continue;
       if (st.fire >= MOB.burnMax) continue;       // ไหม้จนใช้การไม่ได้ ทัณฑ์หยุดหมด
       const c = this.crewOf(st.crewK);
-      if (!c) continue;
+      if (!actorStanding(c)) continue;
       if (!c.self && c.escort) continue;       // ผู้คุมออกไปรับดวงใหม่ งานในสถานีรอเขากลับมาก่อน
       // ยังอยู่ระหว่างเดินทางไปสถานี — ไม่เริ่มลงทัณฑ์ก่อนถึงจริง
       const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
@@ -1289,6 +1342,7 @@ const API = {
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
+      if (!c.morale) this.downActor(c);
     }
 
     // บารมีฟื้นเองช้า ๆ ตอนไม่ได้อยู่ในฉากต่อสู้ — ฟื้นได้ถึงเพดานที่ตั้งไว้เท่านั้น
@@ -1299,10 +1353,14 @@ const API = {
     }
 
     // พักฟื้นกำลังใจ
-    const tea = this.stations.some(s => s.def.k === 'tea');
+    const tea = this.stations.some(s => s.def.k === 'tea' && !s.build);
     for (const c of this.crew) {
+      if (!actorStanding(c)) continue;
       if (!c.at) c.morale = Math.min(100, c.morale + (tea ? BAL.moraleRest * 1.0 + BAL.moraleRestTea * 0.5 : BAL.moraleRest));
     }
+
+    if (this.guardActive() && !this.mobs.length)
+      this.guard.morale = Math.min(100, this.guard.morale + (tea ? BAL.moraleRest + BAL.moraleRestTea * .5 : BAL.moraleRest));
 
     // เปรตกัดกินระเบียบไปเรื่อย ๆ ถ้าไม่ไปปราบ
     if (this.mobs.length) {
@@ -1363,6 +1421,7 @@ const API = {
       const ev = pick(EVENTS);
       this.log(`【${ev.title}】${ev.text}`, 'event');
       ev.apply(this);
+      this.updateActorRecovery();
       this.pendingEvent = ev;
       this.nextEvent = BAL.eventEvery;
     }
@@ -1472,6 +1531,7 @@ const API = {
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    this.updateActorRecovery();
     if (this.paused || this.over) return;
     this.syncBlocks();                 // อาคารที่สร้างเสร็จ/ถูกเผาพัง กันทางเดินให้ตรงเสมอ
     // เดินได้เฉพาะพื้นที่เหยียบได้ — ลาวากับแม่น้ำวิญญาณกันไว้ที่ src/walk.js
@@ -1513,6 +1573,12 @@ const API = {
     }
     P.x = clamp(P.x, 40, SCENE.w - 40);
     P.y = clamp(P.y, 60, SCENE.h - 40);
+    if (this.finalEventOnMap()) {
+      // Keep Nira accessible while management and raider activity are paused.
+      const nira = this.crewOf('nira');
+      if (nira && nira.x == null) { nira.x = nira.hx; nira.y = nira.hy; }
+      return;
+    }
 
     // ยืนตรงนี้แล้วยังเห็นตัวไหม — จุดที่ "ลึกกว่าฐานอาคาร" คือจุดที่อาคารวาดทับทั้งตัว
     // เจ้าของทักซ้ำ 12 ก.ย. 2569 ว่ายมทูตถูกฉากทับ ครึ่งแรกแก้ที่ลำดับการวาด (art.depthOf)
@@ -1521,6 +1587,7 @@ const API = {
 
     // ยมทูตเดินเตร็ดเตร่รอบจุดประจำ แล้วพูดตามนิสัยเป็นระยะ
     for (const c of this.crew) {
+      if (!actorStanding(c)) continue;
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
       const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
@@ -1683,7 +1750,7 @@ const API = {
     for (const [tag, closed] of Object.entries(this.eventMapClosed)) {
       if (!closed) continue;
       const [zone, key] = tag.split(':');
-      if (isFrontierBreachEvent(zone, key)) continue;
+      if (key === 'cyberFinal' || isFrontierBreachEvent(zone, key)) continue;
       if (zone === this.zone && (key === 'prisonBreak' || key === 'frontierBreach' ||
           (ZONE_EVENTS[zone] || []).some(ev => ev.k === key &&
             (ev.mode === 'waves' || /prison/i.test(ev.k)))))
@@ -1728,7 +1795,7 @@ const API = {
         }
       }
 
-      if (this.huntMob && !this.guard && Math.hypot(m.x - P.x, m.y - P.y) < MOB.fabReach) {
+      if (this.huntMob && !this.guardActive() && Math.hypot(m.x - P.x, m.y - P.y) < MOB.fabReach) {
         this.huntMob = false;
         P.path = null; P.tx = null; // หยุดที่ระยะปุ่มสู้ รอผู้เล่นกดเข้าฉาก
       }
@@ -1740,7 +1807,7 @@ const API = {
     // ไล่ปราบเปรตที่อยู่ในโซน หรือไม่งั้นกลับไปยืนเฝ้าหัวสะพาน — เซฟเก่าที่ guard.x ค้างอยู่ใกล้ผู้เล่น
     // (จากตอนยังตามอยู่) จะเดินกลับ GUARD_POST เองตามปกติ ไม่ต้อง migrate อะไรเป็นพิเศษ
     const guardTarget = this.mobs.find(m => !m.eventKey);
-    if (this.guard && guardTarget) {
+    if (this.guardActive() && guardTarget) {
       const G = this.guard, m = guardTarget;
       if (!canWalk(G.x, G.y)) {
         const p = nearestWalk(G.x, G.y);
@@ -1762,9 +1829,12 @@ const API = {
           if (wd < 6) { G.x = w[0]; G.y = w[1]; G.path.shift(); }
           else if (!stepTo(G, dx / wd * Math.min(0.075 * dt, wd), dy / wd * Math.min(0.075 * dt, wd))) G.path = null;
         }
-        if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) this.strike(this.mobs.indexOf(m), GUARD.name);
+        if (Math.hypot(m.x - G.x, m.y - G.y) < MOB.reach) {
+          this.strike(this.mobs.indexOf(m), GUARD.name);
+          G.morale = Math.max(0, G.morale - 2); if (!G.morale) this.downActor(G);
+        }
       }
-    } else if (this.guard) {
+    } else if (this.guardActive()) {
       // ว่างงาน → กลับไปเฝ้า "หัวสะพานที่วิญญาณข้ามมา" (เจ้าของสั่ง 10 ก.ย. 2569)
       // เดิมยืนอยู่ท่าเรือฝั่งขวาซึ่งไม่มีอะไรผ่าน มีผีบุกก็ยังวิ่งไปจัดการเหมือนเดิม
       const G = this.guard, gp = GUARD_POST;
@@ -1961,7 +2031,7 @@ const API = {
 
   /** ปุ่มสู้ระยะไกลใช้เดินไปหาปีศาจ; ผู้เล่นกดเข้าฉากต่อสู้เมื่อถึงตัว */
   attack() {
-    if (this.guard) return false;
+    if (this.guardActive()) return false;
     const n = this.nearestMob();
     if (n) {
       if (n.d <= MOB.fabReach) return false;
@@ -2018,6 +2088,9 @@ const API = {
     this.teaBeds[this.zone] = true;
     this.save(); this.onChange(); return true;
   },
+  finishTeaSleep() {
+    if (this.pendingRecovery) { this.pendingRecovery.stage = 'wake'; this.save(); this.onChange(); }
+  },
   completeTeaRecovery() {
     this.hp = this.hpMax;
     this.pendingRecovery = null;
@@ -2059,7 +2132,7 @@ const API = {
 
   /** ฉากต่อสู้กับปีศาจที่ขึ้นมาก่อกวน — ทางต่อสู้ของผู้เล่นทุกตัว */
   startMobBattle(i) {
-    if (this.guard) return null;
+    if (this.guardActive()) return null;
     if (this.battle) return this.battle;
     const m = this.mobs[i];
     if (!m) return null;
@@ -2102,7 +2175,7 @@ const API = {
   startFrontierBattle(target) {
     if (this.battle || this.over) return null;
     const state = this.frontierOf();
-    const available = this.crew.filter(c => !c.reader && !c.self);
+    const available = this.crew.filter(c => !c.reader && !c.self && actorStanding(c));
     state.team = (state.team || []).filter(k => available.some(c => c.k === k));
     if (!state.team.length && available[0]) state.team = [available[0].k];
     if (!state.team.length) return null;
@@ -2312,6 +2385,7 @@ const API = {
     this.save();
   },
   ensureEventRaider(key) {
+    if (key === 'cyberFinal') return;
     if (this.zoneEventStatus(key) !== 'pending' || this.mobs.some(m => m.eventKey === key)) return;
     const kind = this.zone === 'west' ? 10 : this.zone === 'cyberhell' ? 11 : this.zone === 'asia' ? 6 : 0;
     const p = nearestWalk(760, 680) || [760, 680];
@@ -2353,6 +2427,7 @@ const API = {
   },
   startZoneEvent(key) {
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
+    if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
     const foes = this.zoneEventFoes(ev, 1);
     if (!foes.length) return null;
@@ -2368,8 +2443,59 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });
-    if (key === 'cyberFinal') this.battle.storyInterlude = 'cyber-approach';
     this.save(); this.onChange(); return this.battle;
+  },
+  finalEventState() {
+    this.finalEvent ||= migrateFinalEvent(this);
+    if (this.finalEvent.phase === 'locked' && ['pending','active'].includes(this.zoneEventStatus('cyberFinal')))
+      this.finalEvent.phase = 'ready';
+    return this.finalEvent;
+  },
+  finalEventOnMap() {
+    return this.zone === 'cyberhell' && !['locked','completed'].includes(this.finalEventState().phase);
+  },
+  persistFinalEvent() {
+    const ok = this.save();
+    this.finalSaveFailed = typeof localStorage !== 'undefined' && !ok;
+    if (this.finalSaveFailed) this.log('บันทึกศึกสุดท้ายไม่สำเร็จ กรุณาลองบันทึกอีกครั้งก่อนดำเนินต่อ', 'bad');
+    return !this.finalSaveFailed;
+  },
+  startFinalEncounter(id = null) {
+    if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || this.pendingRecovery) return null;
+    const s = this.finalEventState(), next = nextFinalEncounter(s);
+    if (!next || (id && id !== next) || !this.persistFinalEvent()) return null;
+    id = next;
+    const ev = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal');
+    const wave = id === 'boss' ? 9 : id.startsWith('minion:') ? Number(id.split(':')[1]) : 5 + RULER_ORDER.indexOf(id.split(':')[1]);
+    const adds = id === 'boss' ? FINAL_EVENT.bossAdds : id.startsWith('ruler:') ? FINAL_EVENT.rulerAdds[wave - 5] : 0;
+    const groups = [...ev.waves[wave - 1], ...(adds ? [{ ...FINAL_EVENT.add, count:adds }] : [])];
+    const foes = this.zoneEventFoes({ ...ev, mode:'encounter', foes:groups }, wave);
+    s.activeEncounter = id;
+    s.phase = id === 'boss' ? 'finalBoss' : id.startsWith('ruler:') ? 'rulerBattle' : 'minions';
+    this.zoneEvents.cyberhell.cyberFinal = 'active'; this.fights++;
+    this.battle = prepareBattle({ kind:'zoneEvent', eventKey:'cyberFinal', encounter:id, zone:this.zone,
+      team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0,this.teamLimits.finalTeamMax),
+      wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sp:foes[0].sp,
+      sub:id.startsWith('minion:') ? `ระลอก ${wave}/4` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
+      turn:1, over:null, log:[], dmg:null, talk:ev.alert.th,
+      storyInterlude:wave === 1 ? 'cyber-approach' : id === 'boss' ? 'cyber-duel' : null });
+    this.persistFinalEvent(); this.onChange(); return this.battle;
+  },
+  acknowledgeFinalReward() {
+    if (this.battle) return false;
+    const s = this.finalEventState();
+    if (!this.persistFinalEvent() || !acknowledgeFinalReward(s)) return false;
+    this.pendingReward = null;
+    if (s.phase === 'reinforcementCutscene') this.queueStory('cyber-reinforcements');
+    this.persistFinalEvent(); return true;
+  },
+  completeFinalReinforcements() {
+    const s = this.finalEventState();
+    if (s.phase !== 'reinforcementCutscene' || s.pendingReward) return false;
+    s.reinforcementsSeen = true;
+    s.phase = s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+    s.stagingPosition = { x:this.player.x, y:this.player.y };
+    this.persistFinalEvent(); return true;
   },
   zoneEventRestReady() {
     const b = this.battle;
@@ -2378,6 +2504,7 @@ const API = {
   },
   advanceZoneEventWave(resume = false) {
     const b = this.battle;
+    if (this.isFinalBattle(b)) return false;
     if (b?.kind !== 'zoneEvent' || b.over || !b.pendingWave || b.pendingWave !== b.wave + 1) return false;
     const ev = ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey);
     if (!ev?.waves?.[b.pendingWave - 1]) return false;
@@ -2391,8 +2518,6 @@ const API = {
     b.youHp = Math.min(b.youMax, b.youHp + (ev.betweenWaveHeal || 0));
     b.dmg = null; b.mid = null; b.helper = null;
     b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;
-    if (b.eventKey === 'cyberFinal' && (b.wave === 4 || b.wave === 8))
-      b.storyInterlude = b.wave === 4 ? 'cyber-control' : 'cyber-duel';
     this.onChange(); return true;
   },
   startDevaTest() {
@@ -2485,16 +2610,16 @@ const API = {
   /** ยมทูตที่เรียกมาช่วยในฉากต่อสู้ได้ — คืนทุกคนเสมอ (ยังไม่ปลดล็อกก็โชว์ปุ่มไว้ให้เห็น
    *  ว่ามีของแบบนี้อยู่ · เจ้าของ 10 ก.ย. 2569 นึกว่าไม่มีปุ่มนี้ในฉากสู้กับวิญญาณ) */
   crewHelpers() {
-    return this.crew.filter(c => !c.reader && !c.self);
+    return this.crew.filter(c => !c.reader && !c.self && actorStanding(c));
   },
   battleCrew() {
     const keys = this.battle?.team || this.party?.members || [];
     if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
-      .map(id => this.roster[id]).filter(Boolean).slice(0, this.teamLimits.finalTeamMax);
-    return this.crewHelpers().filter(c => keys.includes(c.k)).slice(0, this.teamLimits.normalTeamMax);
+      .map(id => this.roster[id]).filter(c => actorStanding(c) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.teamLimits.finalTeamMax);
+    return this.crewHelpers().filter(c => keys.includes(c.k) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.teamLimits.normalTeamMax);
   },
   crewCooldown(c, now = Date.now()) {
-    return Math.min(BATTLE.crewCd, Math.max(0, Math.ceil(((c?.helpReadyAt || 0) - now) / 1000)));
+    return Math.ceil((c?.helpRemainingMs || 0) / 1000);
   },
   crewHelpWhy(c) {
     if (!c || !this.battleCrew().includes(c)) return 'ต้องจัดเข้าทีมก่อนต่อสู้';
@@ -2508,10 +2633,11 @@ const API = {
   /** ยักษ์ทวารบาล (ข้อ C คุณเป้ 25 ก.ย. 2569) — เข้าช่วยฉากต่อสู้เองอัตโนมัติถ้าจ้างไว้แล้ว
    *  ไม่ต้องจัดเข้าทีม 2 คนเหมือนยมทูต · คูลดาวน์ของตัวเอง (GUARD.battleCd) ดูแบบเดียวกับ crewCooldown */
   guardCooldown(now = Date.now()) {
-    return Math.min(GUARD.battleCd, Math.max(0, Math.ceil(((this.guard?.helpReadyAt || 0) - now) / 1000)));
+    return Math.ceil((this.guard?.helpRemainingMs || 0) / 1000);
   },
   guardHelpWhy() {
-    if (!this.guard) return 'ยังไม่ได้จ้างยักษ์ทวารบาล';
+    if (!this.guardActive() || (this.battle?.absentActors || []).includes(this.guard.id)) return 'พักฟื้น / Recovering';
+    if (this.guard.morale < 8) return 'กำลังใจไม่พอ / Low morale';
     const remaining = this.guardCooldown();
     if (remaining) return `รออีก ${remaining} วินาที`;
     return '';
@@ -2559,8 +2685,9 @@ const API = {
     } else if (typeof what === 'string' && what.startsWith('crew:')) {
       const c = this.battleCrew().find(x => (this.isFinalBattle() ? x.id : x.k) === what.slice(5));
       if (!c || this.crewHelpWhy(c)) return false;
-      c.helpReadyAt = Date.now() + BATTLE.crewCd * 1000;
+      c.helpReadyAt = 0; c.helpRemainingMs = specialCooldown(c) * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
+      if (!c.morale) this.downActor(c);
       const pw = this.allyStats(c);
       // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
       B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
@@ -2584,7 +2711,9 @@ const API = {
     } else if (what === 'guard') {
       // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
       if (this.guardHelpWhy()) return false;
-      this.guard.helpReadyAt = Date.now() + GUARD.battleCd * 1000;
+      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 20000;
+      this.guard.morale = Math.max(0, this.guard.morale - 8);
+      if (!this.guard.morale) this.downActor(this.guard);
       B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
       dmg = this.allyStats(this.guard).dmg;
       say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
@@ -2628,8 +2757,8 @@ const API = {
       if (!this.abilities.cooldownClock || B.clockUsed || this.mp < cost) return false;
       this.mp -= cost;
       B.clockUsed = true;
-      for (const c of (this.isFinalBattle() ? this.battleCrew() : this.crew)) if (c.helpReadyAt) c.helpReadyAt = 0;
-      if (this.guard?.helpReadyAt) this.guard.helpReadyAt = 0;
+      for (const c of (this.isFinalBattle() ? this.battleCrew() : this.crew)) { c.helpReadyAt = 0; c.helpRemainingMs = 0; }
+      if (this.guard) { this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 0; }
       for (const p of this.powers) if (p.readyAt) p.readyAt = 0;
       say('⏱️ นาฬิกาย้อนคูลดาวน์ — ยมทูตและยักษ์พร้อมช่วยอีกครั้ง');
       this.save();
@@ -2705,7 +2834,15 @@ const API = {
       B.over = 'win';
       // ชุด 28B — จำของก่อนรับรางวัล เพื่อสรุปให้หน้าต่างรางวัลจากส่วนต่างจริง (ไม่เดาแยกตามชนิดศึก)
       const before = { coin:this.coin, inv:{ ...this.inventory }, ab:{ ...this.abilities } };
-      if (B.kind === 'prisonBreak') {
+      if (this.isFinalBattle(B)) {
+        const s = this.finalEventState(), id = B.encounter;
+        const r = id === 'boss' ? FINAL_EVENT.bossReward : id.startsWith('minion:') ? FINAL_EVENT.waveRewards[B.wave - 1] : FINAL_EVENT.rulerReward;
+        if (winFinalEncounter(s, id, r)) {
+          this.coin += r.coin;
+          if (r.item) this.inventory[r.item] = (this.inventory[r.item] || 0) + 1;
+          B.reward = { ...r };
+        }
+      } else if (B.kind === 'prisonBreak') {
         const event = ZONE_EVENTS.th[0];
         this.zoneEvents.th.prisonBreak = 'cleared';
         this.coin += event.reward.coin;
@@ -2797,7 +2934,7 @@ const API = {
       }
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      const expGain = B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? 60 : B.kind === 'prisonBreak' ? 40 : 20;
+      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? 60 : B.kind === 'prisonBreak' ? 40 : 20;
       // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
       // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
       if (B.kind !== 'soul') {
@@ -2807,6 +2944,7 @@ const API = {
           abilities:Object.keys(this.abilities).filter(k => this.abilities[k] && !before.ab[k]) };
       }
       this.gainExp(expGain, 'ต่อสู้');
+      if (this.isFinalBattle(B)) { this.finalEvent.pendingReward = { ...B.summary, encounter:B.encounter }; this.persistFinalEvent(); }
       this.onChange();
       return true;
     };
@@ -2845,11 +2983,8 @@ const API = {
         return true;
       }
       const zoneEv = B.kind === 'zoneEvent' ? ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey) : null;
-      if (zoneEv?.waves && B.wave < zoneEv.waves.length) {
+      if (!this.isFinalBattle(B) && zoneEv?.waves && B.wave < zoneEv.waves.length) {
         B.pendingWave = B.wave + 1;
-        if (B.eventKey === 'cyberFinal' && B.wave === 3) {
-          B.storyInterlude = 'cyber-reinforcements';
-        }
         this.onChange(); return true;
       }
       return declareWin();
@@ -2895,7 +3030,7 @@ const API = {
             return true;
           }
           const zoneEv = B.kind === 'zoneEvent' ? ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey) : null;
-          if (zoneEv?.waves && B.wave < zoneEv.waves.length) {
+          if (!this.isFinalBattle(B) && zoneEv?.waves && B.wave < zoneEv.waves.length) {
             B.pendingWave = B.wave + 1;
             this.onChange(); return true;
           }
@@ -2908,7 +3043,7 @@ const API = {
       say('ศัตรูถูกผนึกน้ำแข็ง ขยับไม่ได้ทั้งตา');
     }
     else {
-      const normal = foeAtkRoll();
+      const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
       let ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.
@@ -2942,8 +3077,12 @@ const API = {
         B.ultimateUsed = true;
         B.ultimateLastTurn = B.turn;
       }
-      B.youHp = Math.max(0, B.youHp - d);
-      B.dmg.you = d;
+      const victim = this.enemyTarget();
+      B.dmg.targetActorId = victim.id;
+      if (victim.actor) B.dmg.hitActor = { ...victim.actor };
+      if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - d); B.dmg.you = d; }
+      else { victim.actor.morale = Math.max(0, victim.actor.morale - d); B.dmg.crew = d;
+        if (!victim.actor.morale) this.downActor(victim.actor); this.save(); }
       say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${d}` : `เขาสวนกลับ — บารมีท่านหาย ${d}`);
       if (!B.over) talk('hit');
       if (ultimate) B.talk = `${B.who}ใช้${ultimate.name}!`;
@@ -2997,6 +3136,7 @@ const API = {
         say(`ท่านคุกเข่าลง — เขาหลุดกลับเข้าคิว · บารมีหาย ${BATTLE.loseHp} · ระเบียบตก 6`);
       }
     }
+    if (this.isFinalBattle(B)) this.persistFinalEvent();
     this.onChange();
     return true;
   },
@@ -3004,10 +3144,10 @@ const API = {
   /** ปิดฉากต่อสู้ — คืนค่าบารมีตามที่เหลือจริง แล้วปล่อยเกมเดินต่อ */
   endBattle() {
     const B = this.battle;
-    if (!B) return null;
+    if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
     if (B.over === 'lose') {
-      this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, foe:B.who, bg:B.bg };
+      this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };
       this.hp = Math.max(1, this.hp);
       this.yamaDone = false;
       this.over = null;
@@ -3070,6 +3210,20 @@ const API = {
         B.over === 'win' ? 'good' : 'bad');
       this.save(); this.onChange(); return B;
     }
+    if (this.isFinalBattle(B)) {
+      const s = this.finalEventState();
+      if (B.over !== 'win') {
+        s.activeEncounter = null;
+        s.phase = s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+      } else if (B.encounter === 'boss') {
+        s.phase = 'completed'; this.gameCompleted = true;
+        this.zoneEvents.cyberhell.cyberFinal = 'cleared'; this.bossCleared.cyberhell = true;
+        this.bossGuarding.cyberhell = false; this.queueStory('ending');
+        this.over = { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา', text:'หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและกำลังเสริมชนะบอสโซน 4' };
+      }
+      this.pendingReward = s.pendingReward;
+      this.persistFinalEvent(); this.onChange(); return B;
+    }
     if (B.kind === 'zoneEvent') {
       const ev = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
       this.log(B.over === 'win'
@@ -3080,7 +3234,7 @@ const API = {
         this.gameCompleted = true;
         this.queueStory('ending');
         this.over = { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา',
-          text:'ยมบาทน้อยช่วยหัวหน้าทั้งสามสาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข' };
+          text:'ยมบาทน้อยช่วยหัวหน้าทั้งสี่สาขาให้หลุดจากการควบคุม แล้วชนะบอสสุดท้าย นิราปิดแฟ้มคดีเล่มสุดท้ายลง ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข' };
       }
       this.save(); this.onChange(); return B;
     }
@@ -3129,6 +3283,7 @@ const API = {
   completeStory() {
     const next = this.storyQueue.shift();
     if (next) this.storySeen[next.key] = true;
+    if (next?.key === 'cyber-reinforcements') this.completeFinalReinforcements();
     this.save();
   },
   visitNira() {
@@ -3393,10 +3548,10 @@ const API = {
 
   giveOnigiriNira() {
     const nira = this.crew.find(c => c.k === 'nira');
-    if (!nira || !(this.inventory.food > 0)) return false;
+    if (!actorStanding(nira) || !(this.inventory.food > 0)) return false;
     if (--this.inventory.food <= 0) delete this.inventory.food;
     nira.morale = Math.min(100, nira.morale + 25);
-    this.crew.filter(c => !c.reader).forEach(c => { c.morale = Math.min(100, c.morale + 10); });
+    [...this.crew.filter(c => !c.reader), this.guard].filter(actorStanding).forEach(c => { c.morale = Math.min(100, c.morale + 10); });
     this.food += ITEMS.food.food;
     this.log('🍙 นิรารับข้าวปั้นไปแจกทีม — กำลังใจและเสบียงเพิ่มขึ้น', 'good');
     this.save(); this.onChange(); return true;
@@ -3465,10 +3620,11 @@ const API = {
    *  หัก 1 ห่อจากกองเสบียงกลางเดียวกับที่ระบบอัตโนมัติกินอยู่แล้ว (ดูคอมเมนต์ที่ step())
    *  ไม่มีเสบียงเหลือ → คืน false (ปุ่มฝั่ง UI ปิดเองพร้อมบอกจุดซื้อ) */
   feedCrew(k) {
-    const c = this.crew.find(x => x.k === k && !x.self && !x.reader);
-    if (!c || this.food < BAL.feedFoodCost) return false;
+    const c = k === 'guard' ? this.guard : this.crew.find(x => x.k === k && !x.self && !x.reader);
+    if (!actorStanding(c) || this.food < BAL.feedFoodCost) return false;
     this.food -= BAL.feedFoodCost;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
+    c.morale = Math.min(100, c.morale + 10);
     this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
     this.save(); this.onChange(); return true;
   },
@@ -3564,7 +3720,7 @@ const API = {
   },
 
   builders() {
-    return this.crew.filter(c => c.k === 'taan' || c.k === 'dam');
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam'));
   },
 
   availableBuilder() {
@@ -3628,7 +3784,8 @@ API.snapshot = function (withEntry = true) {
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 3, training: structuredClone(this.training), rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
+    v: 4, training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
+    finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
@@ -3687,7 +3844,7 @@ API.save = function () {
 };
 
 API.restore = function (d) {
-  if (!d || (d.v !== 2 && d.v !== 3)) return false;
+  if (!d || (d.v !== 2 && d.v !== 3 && d.v !== 4)) return false;
   if (d.rosterVersion !== ROSTER_VERSION) {
     // Back up before any legacy restore code mutates the payload. If storage is
     // available but the backup fails, stop rather than overwrite the only save.
@@ -3699,7 +3856,7 @@ API.restore = function (d) {
     }
     this.saveBeforeRosterMigration = original;
   }
-  d = migrateRosterSave(d);
+  d = migrateRosterSave(structuredClone(d));
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
   this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)
@@ -3952,8 +4109,18 @@ API.restore = function (d) {
     this.coin += this.offlineGrant;
     this.log(`⏳ ระหว่างที่ท่านไม่อยู่ ยมทูตคุมงานต่อ · +${this.offlineGrant} เบี้ยกรรม`, 'good');
   }
-  this.battle = null;                 // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
-  this.over = null;
+  this.finalEvent = migrateFinalEvent(d);
+  this.pendingReward = this.finalEvent.pendingReward;
+  this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
+  if (!this.battle && this.finalEvent.activeEncounter) {
+    this.finalEvent.activeEncounter = null;
+    this.finalEvent.phase = this.finalEvent.minionsCleared < 4 ? 'ready' : 'staging';
+  }
+  if (this.finalEvent.phase === 'reinforcementCutscene' && !this.storyQueue.some(p => p.key === 'cyber-reinforcements'))
+    this.queueStory('cyber-reinforcements');
+  // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
+  if (this.battle) this.zoneEvents.cyberhell.cyberFinal = 'active';
+  this.over = this.finalEvent.phase === 'ending' && !this.battle ? { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา', text:'หัวหน้าทั้งสี่เป็นอิสระแล้ว' } : null;
   if (this.zone === 'asia') {
     this.queue = this.queue.filter(s => soulFitsZone(s, this.zone));
     this.held = this.held.filter(s => soulFitsZone(s, this.zone));

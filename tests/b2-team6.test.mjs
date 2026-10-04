@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGame } from '../src/game.js';
+import { win } from './final-event-helpers.mjs';
 import { ALLY_ZONE_SCALE, BATTLE, CREW_POWER } from '../src/data.js';
 
 const ids = ['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
@@ -44,17 +45,16 @@ test('B2 zero morale, resting and locked branches cannot join; removal remains p
   assert.deepEqual(g.startZoneEvent('cyberFinal').team, []);
 });
 
-test('B2 rest stops apply ID team edits immediately and keep six into the next wave', () => {
+test('B2 map rests apply ID team edits and keep six into the next encounter', () => {
   const g = finalGame(); for (const id of ids) g.toggleParty(id);
   const b = g.startZoneEvent('cyberFinal');
-  b.wave = 3; b.pendingWave = 4; b.foes.forEach(f => f.hp = 0);
-  assert.equal(g.zoneEventRestReady(), true);
+  win(g); g.endBattle(); assert.equal(g.acknowledgeFinalReward(),true);
   assert.equal(g.toggleParty('west:taan'), true);
   assert.equal(g.toggleParty('asia:kan'), true);
-  assert.equal(g.battleCrew().length, 6);
-  assert.ok(g.battleCrew().includes(g.roster['asia:kan']));
-  assert.ok(!g.battleCrew().includes(g.roster['west:taan']));
-  assert.equal(g.advanceZoneEventWave(true), true);
+  assert.equal(g.finalPartyCrew().length, 6);
+  assert.ok(g.finalPartyCrew().includes(g.roster['asia:kan']));
+  assert.ok(!g.finalPartyCrew().includes(g.roster['west:taan']));
+  assert.ok(g.startFinalEncounter('minion:2'));
   assert.equal(g.battleCrew().length, 6);
 });
 
@@ -80,7 +80,7 @@ test('B2 helper morale, cooldown and trained damage belong to the source ID afte
   assert.equal(g.battleAct('crew:west:taan'), true);
   assert.equal(hp - b.foes[0].hp, Math.round((CREW_POWER.taan.dmg + 4 * CREW_POWER.taan.trainDmg) * ALLY_ZONE_SCALE.west.ally));
   assert.equal(actor.morale, 92 - BATTLE.crewMorale); assert.equal(other.morale, 92);
-  assert.equal(other.helpReadyAt, 0); assert.ok(actor.helpReadyAt > Date.now());
+  assert.equal(other.helpReadyAt, 0); assert.equal(actor.helpRemainingMs, 15000);
   assert.equal(g.battleAct('crew:th:taan'), true);
   assert.equal(g.battleAct('crew:west:taan'), false);
   b.over = 'lose'; g.endBattle();

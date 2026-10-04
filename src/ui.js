@@ -1,6 +1,8 @@
+import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
+import { nextFinalEncounter, finalEventActors } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
@@ -151,19 +153,19 @@ setInterval(() => {
     g.startDadFight();
   }
   if (started && g.prisonBreakStatus() === 'pending' && !prisonAlertSeen && !g.battle && !g.over &&
-      !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+      !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone &&
       !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     prisonAlertSeen = true;
     openPrisonAlert();
   }
   if (started && g.frontierBreachStatus() === 'pending' && g.devaTestStatus() === 'cleared' &&
-      !breachAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !breachAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
       !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     breachAlertSeen = true;
     openBreachAlert();
   }
   if (started && g.devaTestStatus() === 'pending' && g.prisonBreakStatus() === 'cleared' &&
-      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict &&
+      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
       !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     devaAlertSeen = true;
     openDevaAlert();
@@ -172,7 +174,7 @@ setInterval(() => {
   // (ปิดหน้าต่างแล้วยืนต่อไม่เด้งซ้ำ · ออกห่างแล้วกลับมาถึงจะเด้งอีก · กดปุ่ม "เข้าด่านชายแดน" เปิดเองได้ตลอด)
   const march = started && g.breachMarch();
   if (march && g.nearFrontierGate()) {
-    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone &&
+    if (!breachPrepOffered && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone &&
         !g.dadFight && !storyPlaying && !g.storyQueue.length && Date.now() - lastBattleEnd > 1600) {
       breachPrepOffered = true;
       openFrontier(false, march.key);
@@ -184,7 +186,7 @@ setInterval(() => {
   if (started && !g.battle && !dlg.open && g.storyQueue.length) { g.onChange(); return; }
   const nextEvent = pendingZoneEvents().find(ev => !zoneEventAlertSeen.has(`${g.zone}:${ev.k}`));
   if (started && nextEvent && !g.battle && !g.over && !dlg.open && !fx &&
-      !g.pendingVerdict && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
+      !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
       Date.now() - lastBattleEnd > 1600) {
     zoneEventAlertSeen.add(`${g.zone}:${nextEvent.k}`);
     openZoneEventAlert(nextEvent);
@@ -803,7 +805,7 @@ function fightMob(n) {
 
 /** กดสู้เมื่ออยู่ในระยะปุ่ม หรือเดินเข้าไปให้ถึงระยะนั้น */
 function tryFight() {
-  if (g.over || g.battle || dlg.open || g.guard) return;
+  if (g.over || g.battle || dlg.open || g.guardActive()) return;
   const n = g.nearestMob();
   if (n && n.d <= MOB.fabReach) { fightMob(n); return; }
   g.attack(); refresh();
@@ -813,12 +815,12 @@ function tryFight() {
 let atkSig = '';
 function drawAtk() {
   const btn = $('#atk'), fab = $('#fab-atk');
-  const n = g.over || g.guard ? null : g.nearestMob();
+  const n = g.over || g.guardActive() ? null : g.nearestMob();
   const near = n && n.d <= MOB.fabReach;
   const sig = `${g.mobs.length}/${g.over ? 1 : 0}/${g.guard ? 1 : 0}/${near ? 1 : 0}`;
   if (sig === atkSig) return;
   atkSig = sig;
-  btn.hidden = !!g.over || !!g.guard || !g.mobs.length;
+  btn.hidden = !!g.over || g.guardActive() || !g.mobs.length;
   fab.hidden = btn.hidden;
   if (btn.hidden) return;
   const [label, color] = near
@@ -1081,7 +1083,7 @@ function updateTrialBtn() {
  *  ตำแหน่งอัปเดตทุกเฟรม — ผีเดินตลอดเวลา ปุ่มต้องติดหัวมันไปด้วย */
 function updateMobFab() {
   const gone = () => { const e = ov.querySelector('.mobfab'); if (e) e.remove(); };
-  if (g.over || g.battle || dlg.open || g.guard || !g.mobs.length) return gone();
+  if (g.over || g.battle || dlg.open || g.guardActive() || !g.mobs.length) return gone();
   const n = g.nearestMob();
   if (!n || n.d > MOB.fabReach) return gone();
   let f = ov.querySelector('.mobfab');
@@ -1091,7 +1093,7 @@ function updateMobFab() {
     f.textContent = '⚔️ กดเพื่อเข้าสู้';
     f.onclick = ev => {
       ev.stopPropagation();
-      if (g.over || g.battle || dlg.open || g.guard) return;
+      if (g.over || g.battle || dlg.open || g.guardActive()) return;
       const m = g.nearestMob();
       if (!m || m.d > MOB.fabReach) return;
       fightMob(m);
@@ -1166,6 +1168,8 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
+      else if (now.kind === 'finalRest') openStation('tea', true);
       else openStation(now.key);
     };
     ov.appendChild(f);
@@ -1326,7 +1330,23 @@ function zoneEventMarkerArt(ev) {
   if (foe?.kind != null && MOB.kinds[foe.kind]) return artUrl(MOB.kinds[foe.kind].img);
   return storyFoeArt(foe?.sp);
 }
+function openFinalEncounter(id) {
+  const a = finalEventActors(g).find(a => a.id === id);
+  if (!a?.enabled || nextFinalEncounter(g.finalEventState()) !== id) return;
+  if (Math.hypot(g.player.x-a.x,g.player.y-a.y) > INTERACTION_REACH) { g.walkTo(a.x,a.y); return; }
+  modal(`<h2>${esc(a.name)}</h2><p>${esc(t('final.map.prepare'))}</p><div class="row"><button data-close>${esc(t('common.close'))}</button><button class="gold" data-final-go>${esc(t('event.prep.fight'))}</button></div>`, d => {
+    d.querySelector('[data-final-go]').onclick = () => { if (g.startFinalEncounter(id)) openBattle(afterBreachBattle); };
+  });
+}
 function openZoneEventAlert(ev) {
+  if (ev.k === 'cyberFinal') {
+    const id = nextFinalEncounter(g.finalEventState());
+    const a = finalEventActors(g).find(a => a.id === id);
+    modal(`<h2>${esc(zoneEventText(ev.title))}</h2><p>${esc(zoneEventText(ev.alert))}</p><p>${esc(t('final.map.walk'))}</p><button class="gold" data-final-map>${esc(t('common.close'))}</button>`, d => {
+      d.querySelector('[data-final-map]').onclick = () => { g.eventMapClosed['cyberhell:cyberFinal'] = true; dlg.close(); if (a) g.walkTo(a.x,a.y); g.save(); };
+    });
+    return;
+  }
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
@@ -1921,9 +1941,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ">
-      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), BATTLE.crewCd)
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="ให้${esc(c.name)}ใช้ท่าพิเศษ" style="${hp?.dmg?.targetActorId === c.id ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${hp?.dmg?.targetActorId === c.id ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
@@ -2331,7 +2351,7 @@ function openNiraOffice() {
     const party = (final ? g.party?.finalMembers : g.party?.members) || [];
     const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
-      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม</p>
+      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
       <div class="market-grid">${candidates.map(def => {
         const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
@@ -2651,7 +2671,7 @@ function openBattle(after) {
       : phase === 'foe'
         // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
         ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
-                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId } }
+                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId, crew:b.dmg?.crew, targetActorId:b.dmg?.targetActorId } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
     const act = phase === 'you' && fxNow?.key === 'rage' ? null
@@ -2662,7 +2682,9 @@ function openBattle(after) {
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าร่วมทุกฉากต่อสู้ให้เองถ้าจ้างไว้แล้ว ไม่กินโควตา
     // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
-    const squadMembers = g.guard ? [...battleHelpers, { k: 'guard', name: GUARD.name }] : battleHelpers;
+    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [...battleHelpers, { ...g.guard, name: GUARD.name }] : battleHelpers;
+    if (phase === 'foe' && b.dmg?.hitActor && !squadMembers.some(c => c.id === b.dmg.hitActor.id))
+      squadMembers = [...squadMembers, { ...b.dmg.hitActor, name:b.dmg.hitActor.name || GUARD.name }];
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
     // กดได้ทุกปุ่ม ลำดับไหนก็ได้ หลายครั้งก็ได้ (ไม่ใช่ครั้งเดียวเหมือนของเดิม) เปิดหน้าต่างเดิมที่มีอยู่แล้ว
     // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
@@ -2774,7 +2796,7 @@ function openBattle(after) {
           : b.kind === 'frontier' ? `ชายแดนนรก — ระลอกที่ ${b.wave}`
           // จำนวนระลอกอ่านจากข้อมูล event จริง ไม่ฮาร์ดโค้ด (frontierBreach โซน 1 มี 2 ระลอก)
           : b.kind === 'frontierBreach' ? `${t('event.frontierBreach.title')} · Wave ${b.wave}/${ZONE_EVENTS.th.find(x => x.k === 'frontierBreach').waves.length}`
-          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
+          : b.kind === 'zoneEvent' ? (() => { const ev = ZONE_EVENTS[b.zone]?.find(x => x.k === b.eventKey); return g.isFinalBattle(b) ? `${zoneEventText(ev?.title)} · ${b.encounter.startsWith('minion:') ? `Wave ${b.wave}/4` : b.who}` : `${zoneEventText(ev?.title)}${ev?.waves ? ` · Wave ${b.wave}/${ev.waves.length}` : ''}`; })()
           : b.kind === 'devaTest' ? t('event.devaTest.title')
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? 'ผีบุกเข้าโซน'
@@ -2794,17 +2816,17 @@ function openBattle(after) {
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
     const meter = (value, max, type, label = '') => `<span class="battle-meter ${type}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.max(0, Math.round(value))}"><i style="width:${Math.max(0, Math.min(100, 100 * value / (max || 1)))}%"></i></span>`;
     const team = [
-      ...(g.guard ? [{ k:'guard', name:GUARD.name }] : []),
+      ...(g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name:GUARD.name }] : []),
       ...battleHelpers,
     ];
     stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
       <div class="battle-team-hud">
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
-          const duration = c.k === 'guard' ? GUARD.battleCd : BATTLE.crewCd;
+          const duration = specialCooldown(c);
           return `<button class="battle-portrait" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}">
             <img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
-            <span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
+            <div class="battle-numbered-meter">${meter(c.morale, 100, 'health', t('battle.hp'))}<small>${Math.round(c.morale)}/100</small></div><span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
           </button>`;
         }).join('')}
         <div class="battle-portrait hero"><img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
@@ -2915,7 +2937,7 @@ function openBattle(after) {
         if (!g.battle) return;
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
         // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
-        const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.confuseSelf > 0));
+        const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.crew > 0 || nb.dmg.confuseSelf > 0));
         if (!counter) { phase = null; fxNow = null; finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
@@ -2988,11 +3010,15 @@ function openBattle(after) {
     } paint(); }
   }, 600);
 
+  let crewClockAt = performance.now();
   const crewTimer = setInterval(() => {
+    const now = performance.now(), elapsed = now - crewClockAt; crewClockAt = now;
+    g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
+    g.updateActorRecovery();
     for (const c of g.battleCrew()) {
-      const remaining=g.crewCooldown(c), progress=100*(1-remaining/BATTLE.crewCd);
+      const remaining=g.crewCooldown(c), progress=100*(1-remaining/specialCooldown(c));
       const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
-      if(ready){ready.setAttribute('aria-valuenow',Math.round(BATTLE.crewCd-remaining));ready.querySelector('i').style.width=progress+'%';}
+      if(ready){ready.setAttribute('aria-valuenow',Math.round(specialCooldown(c)-remaining));ready.querySelector('i').style.width=progress+'%';}
       const bar=dlg.querySelector(`[data-cooldown="${crewBattleKey(c)}"]`);
       if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
       const label=dlg.querySelector(`[data-cooldown-label="${crewBattleKey(c)}"]`);
@@ -3519,6 +3545,16 @@ function onSceneClick(sx, sy) {
       g.log(`เดินไป${FRONTIER.name} — เข้าได้เมื่อยืนใกล้ซุ้มประตู`, 'act');
     else g.log(`${FRONTIER.name}อยู่ในจุดที่เดินไปไม่ถึง`, 'bad');
     return;
+  }
+  // B2b: ผู้ท้าชิง/ค่ายพักของศึกสุดท้ายมาก่อนป้ายสร้างอาคาร — ดงต้นงิ้วที่ยังไม่สร้างมีกรอบคลิกทับหัวหน้าโซน 3 อยู่
+  if (g.finalEventOnMap()) {
+    const fa = hitActor(g, sx, sy);
+    if (fa?.kind === 'finalRest') {
+      if (Math.hypot(g.player.x-fa.x,g.player.y-fa.y) <= INTERACTION_REACH) openStation('tea', true);
+      else g.walkTo(fa.x,fa.y);
+      return;
+    }
+    if (fa?.kind === 'finalEncounter') return openFinalEncounter(fa.key);
   }
   const def = hitStation(sx, sy);
   const st = def && g.stations.find(x => x.def.k === def.k);
@@ -4103,6 +4139,13 @@ function openStation(k, emergency = false) {
       const outer = document.querySelector('#res-hp-chip');
       if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
+    if (g.pendingRecovery?.stage === 'wake' && !dlg.querySelector('.nira-wakeup')) {
+      const wake = document.createElement('div'); wake.className = 'nira-wakeup';
+      wake.style.cssText = 'position:absolute;inset:20% 25%;z-index:20;text-align:center;pointer-events:none;background:#201326dd;border-radius:20px;padding:1rem';
+      wake.innerHTML = `<img src="${artUrl('crew-nira')}" alt="" style="height:180px"><p>นิรา: ตื่นได้แล้วค่ะ ไปทำงานกัน / Nira: Wake up. Time to get back to work.</p>`;
+      (dlg.querySelector('.st-main') || dlg).append(wake);
+    }
+    if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
@@ -4234,7 +4277,9 @@ function openBattleReward() {
   const closed = () => {
     if (dlg.open && gen === dlgGen) return;
     dlg.removeEventListener('close', closed);
-    rewardOpen = false; g.pendingReward = null;
+    rewardOpen = false;
+    if (r.encounter) { if (!g.acknowledgeFinalReward()) { g.onChange(); return; } }
+    else g.pendingReward = null;
     const next = rewardAfter; rewardAfter = null;
     g.onChange();                                   // ปล่อยหน้าต่างถัดไปในคิว (เลื่อนขั้น/โซน/...)
     if (next) { if (dlg.open) onDlgClose(next); else next(); }
@@ -4296,11 +4341,11 @@ function openDiscovery() {
 function openDefeatRecovery() {
   const recovery = g.pendingRecovery;
   if (!recovery || dlg.open || g.battle) return;
-  if (recovery.stage === 'sleep') { openStation('tea', true); return; }
+  if (['sleep','wake'].includes(recovery.stage)) { openStation('tea', true); return; }
   modal(`<div style="position:relative;min-height:60vh;display:grid;place-items:center;overflow:hidden;background:#160c20">
     <img src="${esc(recovery.bg || teaBackground(recovery.zone))}" alt="" style="position:absolute;width:100%;height:100%;object-fit:cover;opacity:.35">
     <img src="${yamaDownImage(recovery.outfit)}" alt="ยมบาทน้อยนอนสลบ" style="position:relative;width:50%;max-height:45vh;object-fit:contain">
-    <p style="position:absolute;bottom:1rem;text-align:center">ยมบาทน้อยหมดแรง… กำลังพากลับศาลาน้ำชา</p></div>`, null, 'defeat-recovery');
+    <p style="position:absolute;bottom:1rem;text-align:center">ยมบาทน้อยหมดแรง… กำลังพากลับศาลาน้ำชา / Exhausted… returning to tea pavilion</p></div>`, null, 'defeat-recovery');
   const gen = dlgGen;
   const noSkip = e => e.preventDefault();
   dlg.addEventListener('cancel', noSkip);
@@ -4323,6 +4368,11 @@ g.onChange = () => {
     if (!dlg.open) openDefeatRecovery();
     return;
   }
+  if (g.pendingReward?.encounter && !g.battle) {
+    if (!dlg.open && !rewardOpen) openBattleReward();
+    return;
+  }
+  if (g.isFinalBattle() && !dlg.open) { openBattle(afterBreachBattle); return; }
   if (!g.battle && g.storyQueue.length) {
     if (!dlg.open && !storyScheduled) {
       storyScheduled = true;
@@ -4481,6 +4531,8 @@ function startPlay(fresh) {
     bgm('bgm-zone');
   }
   refresh();
+  // B2b: เซฟที่ค้างหน้าต่างรางวัล/ศึกสุดท้ายต้องเด้งกลับมาทันทีหลังกดเล่นต่อ (บนแผนที่ศึกสุดท้ายไม่มีวาระให้ onChange ทำงานเอง)
+  if (g.pendingReward?.encounter || g.isFinalBattle()) g.onChange();
   last = performance.now();
   requestAnimationFrame(frame);
 }
