@@ -2076,8 +2076,12 @@ for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
 }
 // B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ยมบาทจึงรอดง่ายขึ้น — ตัวคูณดาเมจศัตรูชดเชยตามจำนวนเป้าที่ยืนอยู่
 // mult = 1 + share × (น้ำหนักเป้ารวม/2 − 1) (ยมบาท 2 · crew 1 · Guard 3) · share 1 = ยมบาทรับดาเมจคาดหวังเท่าเดิม, 0 = ไม่ชดเชย
-// key: eventKey (เช่น cyberBreach) → 'final' (ศึกสุดท้ายใหม่) → kind (zoneBoss/zoneEvent/...) → default
-export const TEAM_PRESSURE = { share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 } };
+// max = เพดานตัวคูณ (ทีมใหญ่/มี Guard ดาเมจต่อหัวไม่พุ่งจนยมทูตล้มในนัดเดียว) — ศึกสุดท้ายใหม่ทีม 6 + Guard ต้องการเพดานสูงกว่าศึกทั่วไป
+// ลำดับค้นหา key: encounter (เช่น ruler:west) → eventKey (เช่น cyberBreach) → kind (zoneBoss/zoneEvent/...) → default
+export const TEAM_PRESSURE = {
+  share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 },
+  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:3.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
+};
 // B2b: encounter additions and receipts, without changing existing enemy stats.
 export const FINAL_EVENT = {
   waveRewards:[40,50,60,70].map(coin => ({ coin, item:'holyWater', exp:5 })),

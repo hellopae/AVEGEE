@@ -5,7 +5,7 @@ import { BATTLE, LEVELS, TRAINING_RULES } from '../src/data.js';
 import { normalizeTraining } from '../src/progression.js';
 const fixture=JSON.parse(readFileSync(new URL('../tests/fixtures/b1-v3.json',import.meta.url)));
 const ids=['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
-const encounters=['ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
+const encounters=['minion:1','minion:2','minion:3','minion:4','ruler:th','ruler:asia','ruler:west','ruler:cyberhell','boss'];
 const originalRandom=Math.random, originalNow=Date.now;
 let now=1800000000000;
 Date.now=()=>now;
@@ -20,7 +20,7 @@ function game(id,trained) {
   const exp=TRAINING_RULES.exp[Math.min(trained,TRAINING_RULES.exp.length-1)], zones={};
   for(const id of ids) { const [zone]=id.split(':'); (zones[zone] ||= {})[id]={exp,readyAtTick:0,attempts:{}}; }
   g.training=normalizeTraining({shared:{'global:yama':{exp},'global:nira':{exp}},zones});
-  g.finalEvent={version:1,migrationVersion:1,phase:'staging',minionsCleared:4,
+  g.finalEvent={version:1,migrationVersion:1,phase:'staging',minionsCleared:id.startsWith('minion:')?Number(id.split(':')[1])-1:4,
     rulersCleared:encounters.slice(0,encounters.indexOf(id)).filter(x=>x.startsWith('ruler:')).map(x=>x.split(':')[1]),
     rewardLedger:{},pendingReward:null,activeEncounter:null,reinforcementsSeen:true};
   g.party.finalMembers=ids;
@@ -55,7 +55,7 @@ function run(id,adds,trained,seed) {
 }
 const rows=[];
 try {
-  for(const trained of [0,4]) for(const id of encounters) for(const adds of [false,true]) {
+  for(const trained of [0,4]) for(const id of encounters) for(const adds of id.startsWith('minion:')?[true]:[false,true]) {
     const samples=Array.from({length:100},(_,i)=>run(id,adds,trained,2800+i));
     const mean=k=>Number((samples.reduce((sum,s)=>sum+s[k],0)/samples.length).toFixed(2));
     rows.push({encounter:id,trainLevel:trained+1,adds,wins:samples.filter(s=>s.win).length,samples:100,

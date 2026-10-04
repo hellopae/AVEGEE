@@ -416,8 +416,8 @@ const API = {
   enemyTarget() { return weightedTarget(this.battleCrew(), this.enemyGuard()); },
   /** B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ทำให้ยมบาทรอดง่ายขึ้น — ชดเชยด้วย TEAM_PRESSURE (data.js) */
   teamPressure(B) {
-    const share = TEAM_PRESSURE.share[B.encounter] ?? TEAM_PRESSURE.share[B.eventKey] ?? TEAM_PRESSURE.share[B.kind] ?? TEAM_PRESSURE.share.default;
-    return 1 + share * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1);
+    const pick = table => table[B.encounter] ?? table[B.eventKey] ?? table[B.kind] ?? table.default;
+    return Math.min(pick(TEAM_PRESSURE.max), 1 + pick(TEAM_PRESSURE.share) * Math.max(0, targetWeight(this.battleCrew(), this.enemyGuard()) / 2 - 1));
   },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
