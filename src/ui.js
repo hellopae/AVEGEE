@@ -1,7 +1,8 @@
 import { punishmentScene } from './punishment-scene.js';
+import { merchantStock, medicineResult } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
-import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
+import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
 import { teamFaceClass, foeFaceClass, ragePoseSrc } from './battle-facing.js';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
@@ -630,14 +631,14 @@ function sideBody() {
          · คืบหน้าดวงแรก ${Math.round(100 * st.slots[0].progress / st.slots[0].need)}%`
       : c.reader ? `ยืนอ่านสำนวนอยู่ข้างแท่นพิพากษา — คิวตอนนี้ ${g.queue.length} ดวง`
       : c.at ? `ประจำ${esc(nameOfSt(c.at))} รอสำนวนถัดไป` : 'ว่าง — รอรับเวร';
-    const strong = [['แรง', c.raeng], ['ระเบียบ', c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
+    const strong = [['แรง', c.raeng], ['ระเบียบ', c.reader ? g.allyStats(c).order : c.rabiab], ['ปัญญา', c.panya], ['เมตตา', c.metta]]
       .sort((a, b) => b[1] - a[1]);
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — โชว์ท่าสู้/ตัวเลขจริงตรงกับโต๊ะนิรา (ดึงจาก CREW_POWER ที่เดียวกัน)
     const battleLine = !c.reader
-      ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c.k)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : '';
+      ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c.k)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : `<div class="row-truth">${crewAbility(c)}</div>`;
     return profile('crew-' + c.k, c.name, c.duty, now)
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
-      + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
+      + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.reader ? g.allyStats(c).order : c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
             `กำลังใจ ${Math.round(c.morale)}`,
             ...(g.workingCrew?.has(c.k) ? [g.fed ? '🍙 อิ่ม ทำงานไว' : '🍙 หิว ทำงานช้า'] : [])])
       + `<div class="sec">ถนัดอะไร</div>
@@ -2371,9 +2372,9 @@ function openMerchant() {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
-      <h3>สินค้า</h3><div class="market-grid">${MERCHANT.stock.map(s => {
+      <h3>สินค้า</h3><div class="market-grid">${merchantStock(g.zone).map(s => {
         const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.mp && !d.hp ? ` · ${esc(t('item.mpGain'))} ${d.mp}` : ''}</small></span>
+        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · HP +${d.hp || 0} / MP +${d.mp || 0}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
@@ -2670,6 +2671,8 @@ function openBattle(after) {
     const waterN = g.inventory.holyWater || 0;           // ชุด 28B — น้ำมนต์เติม MP ที่จุดพัก/เตรียมศึก
     const waterFull = g.mp >= g.mpMax;
     const canWater = waterN > 0 && !waterFull;
+    const extraPrepMedicines = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable && !['health','holyWater'].includes(k)).map(k =>
+      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax) ? '' : 'disabled'} title="HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
     const rest = g.zoneEventRestReady() && !phase;
     // ชุด 30B ข้อ 1 — เตรียมศึก (บอสโซน 2–4 · พักก่อนระลอก 4/8 โซน 4) ใช้หน้าตาเดียวกับหน้าต่างแจ้งเตือนอีเวนต์:
     // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
@@ -2700,7 +2703,7 @@ function openBattle(after) {
               ${itemImg('health', 'class="prep-ico"')} ${esc(t('prep.med'))} ×${medN}</button>
             <button data-prep-water ${canWater ? '' : 'disabled'}
               title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${t('item.mpGain')} ${ITEMS.holyWater.mp} · ×${waterN}`)}">
-              ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))} ×${waterN}</button></span></div>
+              ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))} ×${waterN}</button>${extraPrepMedicines}</span></div>
       </div></div></div></div>` : '';
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
       <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
@@ -2709,13 +2712,12 @@ function openBattle(after) {
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
       const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
-      const consumable = k === 'tea' || k === 'health' || k === 'holyWater';
+      const consumable = !!ITEMS[k]?.consumable;
       // น้ำมนต์ (28E): ต้องมีของ + MP ยังไม่เต็ม · โชว์จำนวนคงเหลือ ×N ใต้ปุ่ม
-      const ok = !!it && (k === 'holyWater' ? (g.inventory.holyWater || 0) > 0 && mp < g.mpMax
-        : consumable ? (g.inventory[k] || 0) > 0
+      const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0 && !!medicineResult(k,b.youHp,b.youMax,mp,g.mpMax)
         : !!((g.abilities?.[it.power] || (pw && !g.powerLocked(pw))) && mp >= BATTLE.mpCost[it.power]));
-      const note = k === 'holyWater' ? `×${g.inventory.holyWater || 0}` : consumable ? '' : `MP ${BATTLE.mpCost[it?.power] || 0}`;
-      return battleChoice(k, icon, ITEMS[k]?.nameKey ? itemName(k) : (it?.name || k), ok, note);
+      const note = consumable ? `×${g.inventory[k] || 0} · HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}` : `MP ${BATTLE.mpCost[it?.power] || 0}`;
+      return battleChoice(k, icon, consumable ? itemName(k) : (it?.name || k), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `MP ${BATTLE.mpCost.fire}`)
@@ -2726,13 +2728,12 @@ function openBattle(after) {
       + (g.abilities?.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', mp >= BATTLE.mpCost.clock && !b.clockUsed, `MP ${BATTLE.mpCost.clock}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
-    const itemChoices = itemChoice('tea', 'img/item-tea.png') + itemChoice('health', 'img/item-health.png')
-      + itemChoice('holyWater', itemImg('holyWater'));
+    const itemChoices = [...new Set(['tea','health','holyWater', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable && g.inventory[k] > 0)])].map(k => itemChoice(k, itemImg(k))).join('');
     const guardBtn = g.guard ? (() => {
       const why = g.guardHelpWhy();
       return `<button class="orb-choice" data-act="guard" data-crew-action="guard" ${why ? 'disabled' : ''}
-        title="${esc(why || `ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมบาทน้อยสู้`)}">
-        <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><b>${esc(GUARD.name)}</b><small>ฟาดแรง</small></button>`;
+        title="${esc(why || crewAbility('guard'))}">
+        <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><b>${esc(GUARD.name)}</b><small>${crewAbility('guard')}</small></button>`;
     })() : '';
     const crewHelperBtns = battleHelpers.map(c => {
       const why=g.crewHelpWhy(c);
@@ -2853,6 +2854,7 @@ function openBattle(after) {
     // ทันทีที่ merchant/nira ปิด (เหมือนที่คอมเมนต์บนสุดของไฟล์อธิบายไว้แล้วสำหรับกรณีทั่วไป)
     dlg.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => openMerchant());
     dlg.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => openNiraOffice());
+    dlg.querySelectorAll('[data-prep-item]').forEach(button => button.onclick = () => { if (g.useMedicine(button.dataset.prepItem, 'prep')) { sfx('star'); paint(); refresh(); } });
     dlg.querySelector('[data-prep-med]')?.addEventListener('click', () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } });
     dlg.querySelector('[data-prep-water]')?.addEventListener('click', () => { if (g.useHolyWater()) { sfx('star'); paint(); refresh(); } });
     dlg.querySelector('[data-prep-pause]')?.addEventListener('click', () => openPause(true));
@@ -2898,7 +2900,7 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      const effect = ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
+      const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
@@ -3005,7 +3007,7 @@ function openBattle(after) {
       const label=dlg.querySelector('[data-cooldown-label="guard"]');
       if(label)label.textContent=remaining?cooldownText(remaining):'พร้อม';
       const button=dlg.querySelector('[data-crew-action="guard"]');
-      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||`ฟาดแรง ${GUARD.battleAtk} หน่วย — ช่วยยมบาทน้อยสู้`;}
+      if(button){button.disabled=!!phase||!!g.battle?.over||!!g.guardHelpWhy();button.title=g.guardHelpWhy()||crewAbility('guard');}
     }
   },1000);
   battleUI = () => { paint(); openDlg('rpg'); };
@@ -3145,7 +3147,10 @@ function openOutfit() {
 
 // ---------- ภาพ/ชื่อไอเท็ม (ชุด 28B) ----------
 /** ชื่อไอเท็มตามภาษา — ไอเท็มที่มี nameKey ผ่าน i18n (น้ำมนต์) ที่เหลือใช้ชื่อไทยเดิมตามขอบเขตรอบ C2 */
-const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (ITEMS[k]?.name || k);
+const crewAbility = actor => describeCrewAbility(typeof actor === 'string'
+  ? actor === 'guard' ? g.guard || actor : g.crew.find(c => c.k === actor) || actor : actor, g.zone, g.training);
+const itemText = (k, field) => getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
+const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (itemText(k, 'name') || k);
 /** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง ใช้ placeholder/glyph/fallback จากข้อมูลไอเท็ม
  *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด
  *  สีเท่า token --gold (#d4a355) / --muted (#2a171d) ใน index.html — data-URI อ่านตัวแปร CSS ไม่ได้ */
@@ -3175,7 +3180,7 @@ function bagUseWhy(k) {
   if (k === 'food') return 'นำไปให้นิราบนแผนที่เพื่อแจกทีม';
   if (k === 'lotus') return 'นำไปมอบให้บุญที่ประตูสวรรค์';
   if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
-  if (d.hp && g.hp >= g.hpMax && !(k === 'tea' && g.mp < g.mpMax)) return 'บารมีเต็มแล้ว';
+  if (d.hp && g.hp >= g.hpMax && !(d.mp && g.mp < g.mpMax)) return 'บารมีเต็มแล้ว';
   if (d.mp && !d.hp && g.mp >= g.mpMax) return t('bag.mpFull');
   if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
   if (d.power) {
@@ -3212,8 +3217,8 @@ function openBag() {
     return `<div class="bag-item">
       ${itemImg(k, 'loading="lazy"')}
       <span class="n"><b>${esc(itemName(k))} ×${n}</b>
-        <small>${esc(why || d.say)}</small></span>
-      <button class="gold" data-use-item="${k}" title="${esc(why || d.say)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
+        <small>${esc(why || itemText(k, 'say'))}</small></span>
+      <button class="gold" data-use-item="${k}" title="${esc(why || itemText(k, 'say'))}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
 
@@ -3440,14 +3445,14 @@ function drawHeroProfile() {
     ['valkyrieSpear', 'img/fx-valkyrie-spear.png', 'MP ' + BATTLE.mpCost.spear, 'spear'],
     ['cooldownClock', 'img/fx-clock-reset.png', 'MP ' + BATTLE.mpCost.clock, 'clock'],
   ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
-  const powers = row('img/icon-sword.png', `${BATTLE.atk[0] + lvBonus}–${BATTLE.atk[1] + lvBonus}`, t('profile.attack'))
+  const powers = row('img/icon-sword.png', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
     + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo}`)
     + abilityRows.join('')
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
-  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(c.reader ? c.duty : crewAbility(c.k))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.rabiab} · ${esc(t('profile.training'))} ${c.upLv || 0}</small></span></div>`).join('');
-  const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${GUARD.battleAtk + (g.guard?.upLv || 0) * 2} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
+  const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]

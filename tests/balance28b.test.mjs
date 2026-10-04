@@ -1,6 +1,7 @@
 // ชุด 28B คุณเป้ 2 ต.ค. 2569 — ศัตรูเก่งขึ้นตามโซน · บอสอึดขึ้น · น้ำมนต์เติม MP · สรุปรางวัลหลังชนะ
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { merchantStock } from '../src/progression.js';
 import { createGame } from '../src/game.js';
 import { BATTLE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
 
@@ -104,6 +105,7 @@ function setup(zone, level, abilityCount, chests) {
   ABIL.slice(0, abilityCount).forEach(k => { g.abilities[k] = true; });
   g.zone = zone; g.inventory.health = chests; g.inventory.holyWater = 3; g.coin = 400;   // สมมติฐาน 28E: พกน้ำมนต์ 3 ขวด
   for (const k of ['taan', 'plerng']) if (!g.crew.some(c => c.k === k)) g.hire(k);
+  for (const c of g.crew) if (!c.reader) { c.homeZone=zone; c.id=`${zone}:${c.k}`; }
   g.party.members = ['taan', 'plerng'];
   return g;
 }
@@ -123,9 +125,12 @@ function botTurn(g) {
 /** จุดพักศึกสุดท้าย: ซื้อน้ำมนต์/หีบยาจากพ่อค้าด้วยเบี้ยกรรม 400 แล้วใช้ผ่าน useHolyWater/useBossMedicine จริง */
 function rest(g) {
   g.coin = 400;
+  const stock = merchantStock(g.zone);
+  const water = stock.find(s => s.k.startsWith('holyWater'));
+  const health = stock.find(s => s.k.startsWith('health'));
   for (let i = 0; i < 12; i++) {
-    if (g.mpMax - g.mp >= 20 && g.coin >= 45 && g.buyMerchant('holyWater') && g.useHolyWater()) continue;
-    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= 55 && g.buyMerchant('health') && g.useBossMedicine()) continue;
+    if (g.mpMax - g.mp >= 20 && g.coin >= water.cost && g.buyMerchant(water.k) && g.useHolyWater(water.k)) continue;
+    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= health.cost && g.buyMerchant(health.k) && g.useBossMedicine(health.k)) continue;
     break;
   }
 }

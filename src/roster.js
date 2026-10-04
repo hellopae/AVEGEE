@@ -1,3 +1,4 @@
+import { migrateStatTraining } from './progression.js';
 // Owned actors only: hiring a kind in another branch creates a different person.
 import { CREW, crewName } from './data.js';
 
@@ -13,18 +14,18 @@ export function actorFromLegacy(sv, zone, kind = sv.k) {
   const def = CREW.find(c => c.k === kind);
   if (!def && kind !== 'guard') return null;
   const id = rosterId(zone, kind);
-  return { ...(def || {}), morale: kind === 'guard' ? 100 : 92, hunger: 100,
+  return migrateStatTraining({ ...(def || {}), morale: kind === 'guard' ? 100 : 92, hunger: 100,
     upLv: 0, recoverUntil: 0, ...sv, id, kind, k: kind,
     homeZone: kind === 'nira' ? 'global' : zone,
-    ...(def ? { name: crewName(def, zone) } : {}) };
+    ...(def ? { name: crewName(def, zone) } : {}) });
 }
 
 const STATE_FIELDS = ['id', 'kind', 'homeZone', 'k', 'morale', 'hunger', 'upLv',
-  'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt',
+  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt',
   'at', 'tired', 'x', 'y', 'buildK'];
 export function snapshotRoster(roster) {
   return Object.fromEntries(listActors(roster).map(a => [a.id,
-    Object.fromEntries(STATE_FIELDS.filter(k => a[k] !== undefined).map(k => [k, a[k]]))]));
+    Object.fromEntries(STATE_FIELDS.filter(k => a[k] !== undefined).map(k => [k, k === 'statTraining' ? { ...a[k] } : a[k]]))]));
 }
 
 export function teamIds(keys, roster, zone) {
@@ -90,12 +91,14 @@ export function syncRoster(game) {
   for (const c of game.crew) {
     Object.assign(c, { id: rosterId(game.zone, c.k), kind: c.k, homeZone: c.k === 'nira' ? 'global' : game.zone });
     c.recoverUntil ??= 0;
+    migrateStatTraining(c);
     game.roster[c.id] = c;
   }
   if (game.guard) {
     Object.assign(game.guard, { id: rosterId(game.zone, 'guard'), kind: 'guard', k: 'guard', homeZone: game.zone });
     game.guard.morale ??= 100; game.guard.hunger ??= 100;
     game.guard.upLv ??= 0; game.guard.recoverUntil ??= 0;
+    migrateStatTraining(game.guard);
     game.roster[game.guard.id] = game.guard;
   }
 }

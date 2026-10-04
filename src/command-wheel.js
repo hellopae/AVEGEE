@@ -1,6 +1,6 @@
 // Shared illustrated command wheel. Source artwork keeps its original 900 × 1100 canvas.
-import { CREW_POWER } from './data.js';
-import { t } from './i18n.js';   // ข้อ C1/E.3/F.2 ชุด 15 — ป้ายวงคำสั่งแปล TH/ENG ได้ทันที
+import { effectiveAllyStats } from './progression.js';
+import { t, getLang } from './i18n.js';   // ข้อ C1/E.3/F.2 ชุด 15 — ป้ายวงคำสั่งแปล TH/ENG ได้ทันที
 const esc = text => String(text ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const slices = [[-125,-73],[-73,-21],[-21,57],[57,120]];
 function sector(from, to) {
@@ -59,13 +59,15 @@ export function bindCommandWheel(root) {
 // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — เลิกเขียนตัวเลขตายตัวไว้ในนี้ (36/2 ตา เพี้ยนไปจากค่าจริงแล้ว)
 // อ่านจาก CREW_POWER (data.js) ที่เดียวกับ game.js battleAct() — การ์ดทีม/วงคำสั่ง/แท็บข้อมูล
 // จะไม่มีวันเห็นตัวเลขไม่ตรงกันอีก เพราะทุกที่เรียกฟังก์ชันนี้ตัวเดียวกัน
-export const crewAbility = k => {
-  const p = CREW_POWER[k];
-  if (!p) return 'โจมตีช่วย';
-  if (p.heal != null) return `${p.desc} ${p.heal}`;
-  if (p.confuse != null) return p.desc;   // "สะกดจิต — มึน 1 ตา" — มีตัวเลขอยู่ใน desc แล้ว
-  if (p.dmg != null) return `${p.desc} ${p.dmg}`;
-  return p.desc || 'โจมตีช่วย';
+export const crewAbility = (actor, zone = 'th', training) => {
+  const p = effectiveAllyStats(actor, zone, training);
+  const kind = typeof actor === 'string' ? actor : actor.kind || actor.k;
+  const en = getLang() === 'en';
+  if (kind === 'nira') return en ? `Order ${p.order} · recovery ×${p.orderRegenMultiplier.toFixed(2)}` : `ระเบียบ ${p.order} · ฟื้นระเบียบ ×${p.orderRegenMultiplier.toFixed(2)}`;
+  if (p.heal != null) return `${en ? 'Restore HP' : p.desc} ${p.heal}`;
+  if (p.confuse != null) return en ? `Confuse ${p.confuse} turn · self damage ×${p.confuseMultiplier.toFixed(2)}` : `${p.desc} · ตีตัวเอง ×${p.confuseMultiplier.toFixed(2)}`;
+  if (p.dmg != null) return `${en ? ({taan:'Club strike',plerng:'Fire attack',dam:'Assist attack',guard:'Guard strike'}[kind] || 'Attack') : p.desc} ${p.dmg}`;
+  return en ? 'Assist attack' : 'โจมตีช่วย';
 };
 export const cooldownText = seconds => `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
 export function crewCooldown(c, remaining, duration) {

@@ -1,3 +1,4 @@
+import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -8,7 +9,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
+         MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority,
          syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
@@ -68,6 +69,7 @@ const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(
 
 export function createGame() {
   const g = {
+    training: normalizeTraining(),
     tick: 0, coin: BAL.startCoin, food: BAL.startFood,
     // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — สถานะอิ่ม/หิวของยมทูตที่ "กำลังทำงาน" อยู่ตอนนี้
     // คำนวณใหม่ทุกวาระใน step() · fed/workingCrew ใช้แสดงผลบนจอเท่านั้น ไม่ต้องเซฟ (คิดใหม่ได้ทุกครั้ง)
@@ -1253,7 +1255,7 @@ const API = {
     // สถานีทำงาน
     let hasSala = false;
     for (const st of this.stations) {
-      if (st.def.k === 'sala') hasSala = true;
+      if (st.def.k === 'sala' && !st.build && !st.repair && st.fire < MOB.burnMax) hasSala = true;
       if (st.build || !st.slots.length) continue;
       if (st.fire >= MOB.burnMax) continue;       // ไหม้จนใช้การไม่ได้ ทัณฑ์หยุดหมด
       const c = this.crewOf(st.crewK);
@@ -1319,7 +1321,11 @@ const API = {
     const over = Math.max(0, this.queue.length - this.queueCap());
     if (!this.courtClosed) {
       if (over > 0) this.order = clamp(this.order - BAL.orderDrainPerOver * over, 0, 100);
-      else if (hasSala) this.order = clamp(this.order + BAL.orderGainSala, 0, 100);
+      else if (hasSala) {
+        const nira = this.crew.find(c => c.k === 'nira');
+        if (nira && !this.niraRest && !(nira.recoverUntil > Date.now()) && nira.morale > 0)
+          this.order = clamp(this.order + BAL.orderGainSala * this.allyStats(nira).orderRegenMultiplier, 0, 100);
+      }
     }
 
     // ตะราง: ส่วนที่ขังไว้ต้องเลี้ยงข้าวทุกวาระ — ไม่งั้นมันจะเป็นของฟรีที่ไม่มีข้อเสีย
@@ -1828,6 +1834,7 @@ const API = {
 
   /** ใช้ของที่พกอยู่ ผู้เล่นเป็นคนเลือกจังหวะเอง ไม่กินของทันทีที่เดินผ่าน */
   useBag(k) {
+    if (ITEMS[k]?.consumable) return !this.battle && this.useMedicine(k);
     const def = ITEMS[k], n = this.inventory[k] || 0;
     if (!def || n < 1) return false;
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
@@ -1848,7 +1855,6 @@ const API = {
       this.fireAmmo = Math.min(this.fireAmmoMax, this.fireAmmo + def.fireAmmo);
     }
     if (def.hp) this.hp = clamp(this.hp + def.hp, 0, this.hpMax);
-    if (k === 'tea') this.mp = Math.min(this.mpMax, this.mp + 12);
     if (def.mp) this.mp = Math.min(this.mpMax, this.mp + def.mp);
     if (def.food) this.food += def.food;
     if (def.karma) this.karma = clamp(this.karma + def.karma, 0, 100);
@@ -2197,33 +2203,37 @@ const API = {
   /** กินหีบยาเติมบารมีระหว่างเตรียมศึก (แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569)
    *  ใช้หีบยาจากกระเป๋าโดยตรง (ITEMS.health) — กินได้หลายครั้งถ้ามีของพอ ไม่ใช่ครั้งเดียวเหมือนของเดิม
    *  ไม่มีของ/บารมีเต็มแล้ว → คืน false (ฝั่ง UI ปิดปุ่มพร้อมชี้ไปปุ่มพ่อค้านรก) */
-  useBossMedicine() {
+  useMedicine(k, context = 'bag') {
+    if (!['bag','prep','battle'].includes(context) || !(this.inventory[k] > 0)) return false;
     const b = this.battle;
-    if (!b || !this.zoneEventRestReady() && (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1)) return false;
-    const n = this.inventory.health || 0;
-    if (n < 1 || b.youHp >= b.youMax) return false;
-    const def = ITEMS.health;
-    b.youHp = Math.min(b.youMax, b.youHp + def.hp);
-    if (--this.inventory.health <= 0) delete this.inventory.health;
-    this.log(`💊 กินหีบยาเติมบารมี — ฟื้น ${def.hp}`, 'good');
-    this.save(); this.onChange();
+    if (context === 'prep' && (!b || b.over || !this.zoneEventRestReady() &&
+      (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1))) return false;
+    if (context === 'battle' && (!b || b.over || b.pendingWave)) return false;
+    if (context === 'bag' && b) return false;
+    const result = medicineResult(k, b ? b.youHp : this.hp, b ? b.youMax : this.hpMax, this.mp, this.mpMax);
+    if (!result) return false;
+    if (b) b.youHp = result.hp; else this.hp = result.hp;
+    this.mp = result.mp;
+    if (--this.inventory[k] <= 0) delete this.inventory[k];
+    this.save();
+    if (context !== 'battle') this.onChange();
     return true;
   },
 
-  /** ดื่มน้ำมนต์เติม MP ที่จุดพักก่อนบอส/ศึกสุดท้าย (ชุด 28B) — เงื่อนไขเดียวกับ useBossMedicine เป๊ะ
-   *  (เตรียมศึกบอสโซน หรือจุดพักของอีเวนต์หลายระลอก) ไม่มีของ/MP เต็ม → false
-   *  MP เป็นของผู้เล่นทั้งเกม (g.mp) ไม่ใช่ของฉากต่อสู้ จึงเพิ่มที่ g.mp ตรง ๆ */
-  useHolyWater() {
-    const b = this.battle;
-    if (!b || !this.zoneEventRestReady() && (b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1)) return false;
-    const def = ITEMS.holyWater;
-    if ((this.inventory.holyWater || 0) < 1 || this.mp >= this.mpMax) return false;
-    const gain = Math.min(def.mp, this.mpMax - this.mp);
-    this.mp += gain;
-    if (--this.inventory.holyWater <= 0) delete this.inventory.holyWater;
-    this.log(`ดื่ม${def.name} — MP +${gain}`, 'good');
-    this.save(); this.onChange();
-    return true;
+  useBossMedicine(k = 'health') {
+    return !!ITEMS[k]?.hp && this.useMedicine(k, 'prep');
+  },
+
+  useHolyWater(k = 'holyWater') {
+    return !!ITEMS[k]?.mp && this.useMedicine(k, 'prep');
+  },
+
+  normalAttack(base) {
+    return normalAttack(base, this.level, this.zone, this.training);
+  },
+
+  allyStats(actor) {
+    return effectiveAllyStats(actor, this.zone, this.training);
   },
 
   /** กดปุ่ม "เข้าสู้" แยกจากปุ่มเตรียมศึก (ข้อ C ชุด 13) — เลือกเตรียมศึกไปแล้วกี่อย่างก็ได้ (0-3)
@@ -2540,7 +2550,7 @@ const API = {
 
     let dmg = 0, stunFoe = 0, confuseFoe = 0;
     if (what === 'atk') {
-      dmg = roll(BATTLE.atk) + (this.level - 1) * 2;
+      dmg = this.normalAttack(roll(BATTLE.atk));
       const crit = Math.random() < BATTLE.crit;
       if (crit) dmg = Math.round(dmg * 1.7);
       say(`⚔️ ท่านฟาดเข้าเต็มแรง — ${dmg} หน่วย${crit ? ' (เข้าเต็ม ๆ)' : ''}`);
@@ -2550,10 +2560,7 @@ const API = {
       if (!c || this.crewHelpWhy(c)) return false;
       c.helpReadyAt = Date.now() + BATTLE.crewCd * 1000;
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
-      // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — ค่าพลังยึด CREW_POWER ที่เดียวกับการ์ดทีม/แท็บข้อมูล ไม่สุ่มอีกต่อไป
-      // trainDmg × c.upLv = ระบบฝึก "แรง" เดิม (upgradeCrew) ต่อยอดบนฐานใหม่ ไม่ได้ตัดทิ้ง
-      const pw = CREW_POWER[c.k] || {};
-      const trained = (c.upLv || 0) * (pw.trainDmg || 0);
+      const pw = this.allyStats(c);
       // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
       B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
       if (c.k === 'boon') {
@@ -2563,10 +2570,11 @@ const API = {
         B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
       } else if (c.k === 'kan') {
         confuseFoe = pw.confuse || 1;
+        target.confuseMultiplier = pw.confuseMultiplier;
         say(`${c.name}สะกดจิตศัตรู — ตาถัดไปเขาจะฟาดใส่ตัวเอง`);
         B.talk = `${c.name}: "ผมสะกดให้เขาหลงตัวเองแล้ว ท่านลงมือได้เลย"`;
       } else {
-        dmg = pw.dmg + trained;
+        dmg = pw.dmg;
         say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
@@ -2577,7 +2585,7 @@ const API = {
       if (this.guardHelpWhy()) return false;
       this.guard.helpReadyAt = Date.now() + GUARD.battleCd * 1000;
       B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
-      dmg = CREW_POWER.guard.dmg + (this.guard.upLv || 0) * (CREW_POWER.guard.trainDmg || 0);
+      dmg = this.allyStats(this.guard).dmg;
       say(`${GUARD.name}ฟาดเข้าเต็มแรง — ${dmg} หน่วย`);
       B.talk = `${GUARD.name}: "ถอยไปเถอะท่าน ข้าจัดการเอง"`;
       this.save();
@@ -2635,20 +2643,7 @@ const API = {
     } else {
       const it = BATTLE.items.find(x => x.k === what);
       if (!it) return false;
-      if (it.k === 'tea' || it.k === 'health') {
-        if (!(this.inventory[it.k] > 0)) return false;
-        if (--this.inventory[it.k] <= 0) delete this.inventory[it.k];
-        if (it.k === 'tea') this.mp = Math.min(this.mpMax, this.mp + 12);
-      }
-      // ชุด 28E — น้ำมนต์กลางศึก: ไม่มีของ/MP เต็ม → ไม่กินของ ไม่เสียเทิร์น (return ก่อนแตะอะไร)
-      if (it.k === 'holyWater') {
-        if (!(this.inventory.holyWater > 0) || this.mp >= this.mpMax) return false;
-        if (--this.inventory.holyWater <= 0) delete this.inventory.holyWater;
-        const gain = Math.min(ITEMS.holyWater.mp, this.mpMax - this.mp);
-        this.mp += gain;
-        say(`${it.say} (MP +${gain})`);
-        this.save();
-      }
+      if (ITEMS[it.k]?.consumable && !this.useMedicine(it.k, 'battle')) return false;
       if (it.coin != null) {
         if (this.coin < it.coin) return false;
         this.coin -= it.coin;
@@ -2660,7 +2655,7 @@ const API = {
       }
       if (it.karma) this.karma = clamp(this.karma + it.karma, 0, 100);
       if (it.k !== 'holyWater') say(`${it.glyph} ${it.say}`);
-      if (it.heal) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
+      if (it.heal && !ITEMS[it.k]?.consumable) { B.youHp = Math.min(B.youMax, B.youHp + it.heal); say(`   ↳ บารมีฟื้น ${it.heal}`); }
       // ข้อ B ชุด 13 — it.dmg อาจเป็นเลขคงที่ (ผนึกน้ำแข็ง = 30) หรือช่วง [a,b] แบบเดิมถ้ามีของใหม่ในอนาคต
       if (it.dmg)  { dmg = Array.isArray(it.dmg) ? roll(it.dmg) : it.dmg; say(`   ↳ ${dmg} หน่วย`); }
       if (it.confuse) confuseFoe = it.confuse;
@@ -2682,7 +2677,10 @@ const API = {
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
       if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
-      if (confuseFoe) foe.confuse = (foe.confuse || 0) + confuseFoe;
+      if (confuseFoe) {
+        foe.confuse = (foe.confuse || 0) + confuseFoe;
+        if (what !== 'crew:kan') foe.confuseMultiplier = 1;
+      }
     }
     B.dmg.foe = dmg;
     B.dmg.foeId = target.id;
@@ -2876,7 +2874,9 @@ const API = {
       const attacks = confused.map((foe, i) => {
         foe.confuse = Math.max(0, (foe.confuse || 0) - 1);
         const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length] : foe;
-        return { attackerId:foe.id, id:victim.id, damage:foeAtkRoll(foe) };
+        const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));
+        if (!foe.confuse) delete foe.confuseMultiplier;
+        return { attackerId:foe.id, id:victim.id, damage };
       });
       for (const attack of attacks) {
         const victim = B.foes.find(f => f.id === attack.id);
@@ -3206,7 +3206,7 @@ const API = {
       crew: this.crew.filter(c => !c.follow)
                      .map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, tired: c.tired, helpReadyAt: c.helpReadyAt || 0,
                                   buildK:this.stations.some(st => st.def.k === c.buildK && st.repair) ? c.buildK : null,
-                                  upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
+                                  upLv:c.upLv || 0, statTraining:{ ...c.statTraining }, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
       guard: this.guard,
     };
 
@@ -3369,7 +3369,7 @@ const API = {
   },
 
   buyMerchant(k) {
-    const stock = MERCHANT.stock.find(x => x.k === k), def = ITEMS[k];
+    const stock = merchantStock(this.zone).find(x => x.k === k), def = ITEMS[k];
     if (!this.zoneCaptivesFree() || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.discover('item', k);
     this.coin -= stock.cost;
@@ -3450,11 +3450,12 @@ const API = {
   },
 
   upgradeCrew(k, stat = 'raeng') {
-    const c = this.crew.find(x => x.k === k); if (!c || c.reader || c.self) return false;
+    const c = this.crew.find(x => x.k === k || x.id === k); if (!c || c.reader || c.self || !['raeng','rabiab','panya','metta'].includes(stat)) return false;
+    migrateStatTraining(c);
     c.upLv ||= 0; if (c.upLv >= UPGRADES.max) return false;
     const cost = UPGRADES.crewBase * (c.upLv + 1);
     if (this.coin < cost || this.level < Math.min(5, 1 + Math.floor(c.upLv / 2))) return false;
-    this.coin -= cost; c.upLv++; c[stat] = (c[stat] || 0) + 1;
+    this.coin -= cost; c.upLv++; c.statTraining[stat]++; c[stat] = (c[stat] || 0) + 1;
     this.log(`🛡️ ฝึก${c.name} — ${stat === 'raeng' ? 'แรง' : 'ระเบียบ'}เพิ่มเป็น ${c[stat]}`, 'good');
     this.save(); this.onChange(); return true;
   },
@@ -3601,10 +3602,11 @@ const SAVE_KEY = 'avegee.save.v2';
 API.snapshot = function (withEntry = true) {
   this.syncDiscoveries();
   syncRoster(this);
+  this.training = normalizeTraining(this.training);
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 3, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
+    v: 3, training: structuredClone(this.training), rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
@@ -3623,7 +3625,7 @@ API.snapshot = function (withEntry = true) {
     storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     crew: this.crew.map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
-      buildK:c.buildK || null, upLv:c.upLv || 0, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
+      buildK:c.buildK || null, upLv:c.upLv || 0, statTraining:{ ...c.statTraining }, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
     stations: this.stations.map(st => ({
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
       build: st.buildWait ? BUILD_TIME : st.build ? Math.max(1, st.build - Date.now()) : 0, buildWait:!!st.buildWait, buildExtra:st.buildExtra || '',
@@ -3677,6 +3679,7 @@ API.restore = function (d) {
   }
   d = migrateRosterSave(d);
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
+  this.training = normalizeTraining(d.training);
   this.teamLimits = { ...TEAM_LIMITS };
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
     ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));

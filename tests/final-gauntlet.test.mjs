@@ -35,7 +35,7 @@ test('case ten in Zone 4 runs the four controlled rulers before the final boss',
         assert.ok(g.battle.youHp > hp);
         assert.equal(g.inventory.health, 1);
         g.coin = 500;
-        assert.equal(g.buyMerchant('tea'), true);
+        assert.equal(g.buyMerchant('teaZ4'), true);
         if (!g.crew.some(c => c.k === 'kan')) assert.equal(g.hire('kan'), true);
         const on = g.party.members.includes('kan');
         assert.equal(g.toggleParty('kan'), true);

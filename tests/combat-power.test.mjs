@@ -102,7 +102,7 @@ test('กานต์สะกดจิต — เทิร์นถัดไป
 test('ระบบฝึก "แรง" (upgradeCrew) ยังเพิ่มดาเมจต่อยอดบนฐานใหม่ได้ตามเดิม', () => {
   const g = battleWith(['taan']);
   const c = g.crew.find(x => x.k === 'taan');
-  c.upLv = 2;   // จำลองฝึกมาแล้ว 2 ขั้น โดยไม่ต้องเสียเบี้ยกรรมจริงในเทสต์นี้
+  c.upLv = 2; c.statTraining.raeng = 2; // B3: two paid strength upgrades, separately from other stats
   assert.equal(g.battleAct('crew:taan'), true);
   assert.equal(g.battle.dmg.foe, 35 + 2 * CREW_POWER.taan.trainDmg);
 });

@@ -2007,3 +2007,67 @@ export const FX_OF = {
   ice:    { img:'fx-ice',      glyph:'❄️' },
   foe:    { img:'fx-claw',     glyph:'💢' },
 };
+
+// B3: tunable zone progression; training gameplay is reserved for B4.
+export const ALLY_ZONE_SCALE = {
+  th: { ally:1, yama:1, cap:2, kan:1 },
+  asia: { ally:1.2, yama:1.08, cap:3, kan:1.05 },
+  west: { ally:1.4, yama:1.16, cap:4, kan:1.10 },
+  cyberhell: { ally:1.6, yama:1.24, cap:5, kan:1.15 },
+};
+export const TRAINING_RULES = {
+  exp:[0,60,150,270,420], multipliers:[1,1.06,1.12,1.18,1.24],
+  yamaPerLevel:.03, kanPerLevel:.03, kanMax:1.27,
+  niraOrderBase:9, niraOrderMax:13, niraRegenPerLevel:.05,
+  cooldownTicks:30, attemptsPerWindow:2, windowTicks:100,
+  rewards:[{score:60, exp:20},{score:80, exp:30},{score:95, exp:40}],
+};
+export const TRAINING_STATIONS = {
+  dab:{ actors:['yama'], game:'sword', seconds:30 },
+  lan:{ actors:['taan','guard'], game:'stone', seconds:30 },
+  krata:{ actors:['plerng'], game:'fire', seconds:30 },
+  krajok:{ actors:['kan'], game:'mirror', seconds:45 },
+  sawan:{ actors:['boon'], game:'breath', seconds:32 },
+  sala:{ actors:['nira'], game:'documents', seconds:45 },
+  ngiw:{ actors:['dam'], game:'targets', seconds:30 },
+  lokan:{ actors:['guard'], game:'stone', seconds:30 },
+};
+// Item identity fixes its effect, including when carried to another zone.
+export const MERCHANT_STOCK_BY_ZONE = { th: MERCHANT.stock };
+ITEMS.tea.mp = 12;
+ITEMS.health.nameEn = 'Longevity Chest';
+ITEMS.tea.nameEn = 'Tea';
+for (const k of ['health','tea','holyWater']) {
+  ITEMS[k].descEn = `Restore HP ${ITEMS[k].hp || 0} / MP ${ITEMS[k].mp || 0}`;
+  ITEMS[k].howToEn = 'Use in bag, battle or preparation';
+  ITEMS[k].sayEn = 'Power restored';
+}
+ITEMS.health.consumable = ITEMS.tea.consumable = ITEMS.holyWater.consumable = true;
+const ZONE_MEDICINES = [
+  ['asia','Z2','บูรพา','Eastern',55,40,50,16,70,55,30],
+  ['west','Z3','ปัจฉิม','Western',70,50,60,20,85,65,35],
+  ['cyberhell','Z4','เครือข่าย','Network',85,60,70,24,95,75,40],
+];
+for (const [zone,suffix,th,en,hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost] of ZONE_MEDICINES) {
+  for (const [base,name,nameEn,gainHp,gainMp] of [
+    ['health',`หีบยาอายุวัฒนะ${th}`,`${en} Longevity Chest`,hp,0],
+    ['holyWater',`น้ำมนต์${th}`,`${en} Holy Water`,0,mp],
+    ['tea',`น้ำชา${th}`,`${en} Tea`,teaHp,teaMp],
+  ]) {
+    ITEMS[base+suffix] = { ...ITEMS[base], nameKey:undefined, name, nameEn,
+      hp:gainHp, mp:gainMp, desc:`ฟื้น HP ${gainHp} / MP ${gainMp}`, descEn:`Restore HP ${gainHp} / MP ${gainMp}`,
+      howTo:'ใช้จากกระเป๋า ในศึก หรือเตรียมศึก', howToEn:'Use in bag, battle or preparation',
+      say:'พลังฟื้นขึ้นมา', sayEn:'Power restored' };
+  }
+  MERCHANT_STOCK_BY_ZONE[zone] = MERCHANT.stock.map(item => {
+    const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };
+    return costs[item.k] ? { ...item, k:item.k+suffix, cost:costs[item.k] } : { ...item };
+  });
+}
+// Compatibility metadata for existing battle item consumers, from ITEMS.
+for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
+  const existing = BATTLE.items.find(item => item.k === k);
+  const entry = { k, name:def.name, nameKey:def.nameKey, glyph:def.glyph,
+    heal:def.hp || undefined, mp:def.mp || 0, say:def.say };
+  if (existing) Object.assign(existing, entry); else BATTLE.items.push(entry);
+}

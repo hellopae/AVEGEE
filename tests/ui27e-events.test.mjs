@@ -87,8 +87,8 @@ test('event preparation merchant stays locked until the CyberHell rescue is clea
   g.zoneEvents.cyberhell = { cyberRescue:'pending' };
   g.coin = 500;
   assert.equal(g.zoneCaptivesFree(), false);
-  assert.equal(g.buyMerchant('tea'), false);
+  assert.equal(g.buyMerchant('teaZ4'), false);
   g.zoneEvents.cyberhell.cyberRescue = 'cleared';
   assert.equal(g.zoneCaptivesFree(), true);
-  assert.equal(g.buyMerchant('tea'), true);
+  assert.equal(g.buyMerchant('teaZ4'), true);
 });
