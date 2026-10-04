@@ -1187,7 +1187,7 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     }
   };
   const prep = prepCardHtml;
-  const medicine = g.inventory.health || 0;
+  const medicine = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable).length;   // ยาทุกระดับ ไม่ใช่แค่หีบยาโซน 1
   const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
   modal(`${eventAlertMainHtml(title, description, art,
     `${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
@@ -2695,7 +2695,7 @@ function openBattle(after) {
         ${prepCardHtml('merchant', t('event.prep.merchant'), g.zoneCaptivesFree() ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !g.zoneCaptivesFree())}
         ${prepCardHtml('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
         <div class="event-prep-card prep-box"><img src="${esc(artUrl(ITEMS.health.img))}" alt="">
-          <span class="event-prep-speech">${esc(medN || waterN ? t('event.prep.medicineLine') : t('event.prep.none'))}</span>
+          <span class="event-prep-speech">${esc(medicineCount(g.inventory) ? t('event.prep.medicineLine') : t('event.prep.none'))}</span>
           <b>${esc(t('event.prep.medicine'))}</b>
           <span class="prep-chips">
             <button data-prep-med ${canMed ? '' : 'disabled'}
@@ -3150,6 +3150,8 @@ function openOutfit() {
 const crewAbility = actor => describeCrewAbility(typeof actor === 'string'
   ? actor === 'guard' ? g.guard || actor : g.crew.find(c => c.k === actor) || actor : actor, g.zone, g.training);
 const itemText = (k, field) => getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
+// นับยาทุกระดับ (หีบยา/น้ำมนต์/น้ำชา ของทุกโซน) — ใช้บอกว่ากล่องยาเตรียมศึก "มีของ" หรือไม่
+const medicineCount = inv => Object.keys(inv || {}).reduce((n, k) => n + (ITEMS[k]?.consumable ? Math.max(0, inv[k] || 0) : 0), 0);
 const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (itemText(k, 'name') || k);
 /** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง ใช้ placeholder/glyph/fallback จากข้อมูลไอเท็ม
  *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด

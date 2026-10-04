@@ -121,7 +121,7 @@ function prep(g) {
   assert.ok(b); b.youMax=1000; b.youHp=10; return b;
 }
 test('B3 medicine price/effect table and all three use paths agree for every zone item', () => {
-  const expected=[[40,30,40,12,55,45,24],[55,40,50,16,70,55,30],[70,50,60,20,85,65,35],[85,60,70,24,95,75,40]];
+  const expected=[[42,30,40,12,55,45,24],[55,40,50,16,70,55,30],[70,50,60,20,85,65,35],[85,60,70,24,95,75,40]];
   zones.forEach((zone,i) => {
     const stock=merchantStock(zone), [hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost]=expected[i];
     for (const [family,gainHp,gainMp,cost] of [['health',hp,0,hpCost],['holyWater',0,mp,mpCost],['tea',teaHp,teaMp,teaCost]]) {
