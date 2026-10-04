@@ -105,3 +105,9 @@ test('30B-6/7: ปุ่ม "รับรางวัล" / "ฟังคำต�
   assert.doesNotMatch(ui, /ฟังคำตัดสินของพ่อ|รับรางวัลและกลับแผนที่/);
   assert.match(ui, /\['mob', 'zoneEvent'\]\.includes\(b\.kind\) && b\.over === 'win'/, 'ปุ่มรางวัลศึกอีเวนต์อยู่กลางจอ');
 });
+
+test('30B-7: โปรไฟล์หัวหน้าโซน 3 ต่อโค้ดไว้ มีไฟล์เมื่อไหร่ใช้เมื่อนั้น ไม่มีก็ใช้ภาพเดิม', () => {
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /BOSS_PROFILE_ART = \{ west:'img\/West\/hero-boss-west-profile\.webp' \}/);
+  assert.match(ui, /bossProfileOverride\(f\.sp, g\.zone\) \|\| /, 'override ก่อน แล้วถอยไปภาพเดิม');
+});

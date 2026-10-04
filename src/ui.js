@@ -44,6 +44,14 @@ const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero
  *  (โซนปัจฉิมยังไม่มี hero-yama-west-atk — ตอนนี้จึงยืนนิ่งตอนฟาด ไม่ใช่หน้าเปลี่ยนเป็นคนละคน)
  *  โหลดไฟล์ไว้ล่วงหน้า ไม่งั้นเฟรมแรกที่สลับท่าจะว่างวูบหนึ่งระหว่างรอไฟล์ */
 const heroAtk = () => artUrl('hero-yama-atk') || heroFace();
+
+/** ชุด 30B ข้อ 7 — โปรไฟล์ครึ่งตัวของหัวหน้าโซน 3 ("ศึกพ่อ" โซน 3) แทนภาพตัวเต็มนั่งบัลลังก์ในกล่อง HUD ล่างขวา
+ *  ไฟล์ต้องผ่าน prep() ใน scripts/prep-art.py ก่อน (img/West/hero-boss-west-profile.webp) — ยังไม่มีไฟล์ = ใช้ภาพเดิม ไม่พัง
+ *  ตรวจว่ามีไฟล์จริงด้วยการโหลดลองครั้งเดียว (ไม่ยิง 404 ซ้ำทุกครั้งที่วาดฉาก) */
+const BOSS_PROFILE_ART = { west:'img/West/hero-boss-west-profile.webp' };
+const bossProfileOk = {};
+for (const [z, src] of Object.entries(BOSS_PROFILE_ART)) { const im = new Image(); im.onload = () => { bossProfileOk[z] = true; }; im.src = src; }
+const bossProfileOverride = (sp, zone) => sp === 'hero-boss' && bossProfileOk[zone] ? BOSS_PROFILE_ART[zone] : null;
 const heroCry = () => artUrl('hero-yama-cry') || heroFace();
 { const u = artUrl('hero-yama-atk'); if (u) new Image().src = u; }
 
@@ -2760,7 +2768,7 @@ function openBattle(after) {
         </div>
       </div>
       ${view.foes?.length === 1 ? (() => { const f = view.foes[0]; return `<div class="battle-boss-hud">
-        <img src="${esc(String(f.sp ?? '').startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
+        <img src="${esc(bossProfileOverride(f.sp, g.zone) || (String(f.sp ?? '').startsWith('leader-') ? storyFoeArt(f.sp) : artUrl(f.sp + '-profile') || storyFoeArt(f.sp)))}" alt="${esc(f.who)}" onerror="this.onerror=null;this.src='${esc(storyFoeArt(f.sp))}'">
         <div class="battle-boss-status"><b>${esc(f.who)}</b>${meter(f.hp, f.maxHp, 'health', t('battle.morale'))}<small>${esc(t('battle.morale'))} ${Math.round(f.hp)}/${f.maxHp}</small></div>
         ${f.sub ? `<p>${esc(f.sub)}</p>` : ''}
       </div>`; })() : `<div class="battle-scene-talk talkbox">${esc(view.talk || '')}</div>`}
