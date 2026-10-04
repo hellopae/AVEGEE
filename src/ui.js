@@ -1,3 +1,4 @@
+import { punishmentScene } from './punishment-scene.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
@@ -1662,22 +1663,24 @@ function bossModal(title, text, btn = 'รับทราบ') {
  *  แค่โชว์ภาพลงทัณฑ์ + บอกให้ไปพักที่ศาลาน้ำชา แล้วปล่อยเล่นต่อทันที ไม่รีเซ็ตโซน */
 function openDadPunish(p) {
   pauseForDlg();
-  modal(`<div class="punish-stage" style="background-image:url('img/BG-Krata.webp')">
+  const scene = punishmentScene(g.zone, stBg('krata'));
+  modal(`<div class="punish-stage" data-effect="${scene.effect}" style="--stage-ratio:${scene.ratio > 1 ? scene.ratio : '16/8.7'};--punish-bg:url('${esc(scene.background)}');--scene-ratio:${scene.ratio};--pot-x:${scene.x * 100}%;--pot-y:${scene.rim * 100}%;--hero-width:${scene.width * 100}%;--hero-height:${scene.height * 100}%">
+      <div class="punish-room">
+        <div class="punish-yama"><img src="${heroCry()}" alt="${esc(t('punish.heroAlt'))}"></div>
+        <div class="punish-pot-front" aria-hidden="true"></div>
+        <div class="punish-flames" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
       <div class="punish-vignette"></div>
-      <div class="punish-title"><small>บทลงทัณฑ์ของผู้ตัดสิน</small><b>${esc(p.title)}</b></div>
-      <div class="punish-flames" aria-hidden="true"><i></i><i></i></div>
-      <div class="punish-yama"><img src="${heroCry()}" alt="ยมบาทน้อยร้องไห้อยู่ในกระทะทองแดง"></div>
-      <div class="punish-pot-front" aria-hidden="true"></div>
-      <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>“ความยุติธรรมต้องเริ่มจากผู้ตัดสินเอง”</span></div>
-      <div class="punish-heat">♨</div>
+      <div class="punish-title"><small>${esc(t('punish.heading'))}</small><b>${esc(getLang() === 'th' ? p.title : t('punish.title'))}</b></div>
+      <div class="punish-dad"><img src="${artUrl('hero-boss')}" alt="${esc(g.zone === 'th' ? 'พญายม' : authorityOf(g.zone).title)}"><span>${esc(t('punish.quote'))}</span></div>
     </div>
-    <div class="punish-copy"><p>${esc(p.text)}</p>
-      <div class="hint">บารมีเหลือ ${Math.max(0, Math.round(g.hp))} — เดินไปที่ 🍵 ศาลาน้ำชาเพื่อพักฟื้น</div>
-      <div class="row"><button class="gold" data-close data-punish-done disabled>รับโทษ...</button></div>
+    <div class="punish-copy"><p>${esc(getLang() === 'th' ? p.text : t('punish.explanation'))}</p>
+      <div class="hint">${esc(t('punish.recover').replace('{hp}', Math.max(0, Math.round(g.hp))))}</div>
+      <div class="row"><button class="gold" data-close data-punish-done disabled>${esc(t('punish.serving'))}</button></div>
     </div>`, d => {
       d.classList.add('punish-scene');
       const b = d.querySelector('[data-punish-done]');
-      setTimeout(() => { if (b?.isConnected) { b.disabled = false; b.textContent = 'กลับไปคุมโซน'; } }, 1700);
+      setTimeout(() => { if (b?.isConnected) { b.disabled = false; b.textContent = t('punish.return'); } }, 1700);
     });
 }
 
@@ -3939,7 +3942,7 @@ function openStation(k, emergency = false) {
 
   // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
   dlg.innerHTML = `
-    <div class="hud st-hud zone1-room">
+    <div class="hud st-hud zone1-room" data-room="${k}">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
         <button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>
         <div class="st-arch" id="st-arch" hidden></div>
