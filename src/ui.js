@@ -1171,15 +1171,12 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
       if (ev) openZoneEventAlert(ev);
     }
   };
-  const prep = (which, label, line, image, disabled = false) => `<button class="event-prep-card" data-event-prep="${which}" ${disabled ? 'disabled' : ''}>
-    <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
+  const prep = prepCardHtml;
   const medicine = g.inventory.health || 0;
   const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
-  modal(`<div class="event-alert-main">
-    <h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>
-    <img class="event-alert-foe" src="${esc(art)}" alt="${esc(title)}">
-    <div class="event-alert-actions">${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
-      <button class="gold event-alert-go" data-event-go${ackOnly ? ' data-close' : ''}>${esc(action)}</button></div></div>
+  modal(`${eventAlertMainHtml(title, description, art,
+    `${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
+      <button class="gold event-alert-go" data-event-go${ackOnly ? ' data-close' : ''}>${esc(action)}</button>`)}
     <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
       ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !merchantOpen)}
       ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
@@ -1211,6 +1208,16 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     } else if (g.zoneEventStatus(key) === 'pending') g.dismissEventAlert(key, raider);
   });
 }
+
+/** ชุด 30B ข้อ 1 — ชิ้นส่วนหน้าตา "หน้าต่างเตรียมตัวก่อนเข้าไปสู้" ใช้ร่วมกันสองที่:
+ *  แจ้งเตือนอีเวนต์ (openEventAlert) และหน้าเตรียมศึกในฉากต่อสู้ (openBattle) — แก้หน้าตาที่นี่ที่เดียว */
+const prepCardHtml = (which, label, line, image, disabled = false) => `<button class="event-prep-card" data-event-prep="${which}" ${disabled ? 'disabled' : ''}>
+    <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
+/** กล่องบน: หัวข้อทอง ⚠ · คำอธิบาย · (หมายเหตุ) · ภาพศัตรู · แถวปุ่ม (actionsHtml) · extraTop = ปุ่มมุมขวาบน */
+const eventAlertMainHtml = (title, description, art, actionsHtml, { note = '', extraTop = '' } = {}) => `<div class="event-alert-main">
+    ${extraTop}<h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>${note}
+    <img class="event-alert-foe" src="${esc(art)}" alt="${esc(title)}">
+    <div class="event-alert-actions">${actionsHtml}</div></div>`;
 
 function openPrisonAlert() {
   openEventAlert('prisonBreak', t('event.prisonBreak.title'), t('event.prisonBreak.alert'),
@@ -2558,6 +2565,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
+  let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
   const paint = () => {
     const b = g.battle;
@@ -2605,21 +2613,39 @@ function openBattle(after) {
     const waterFull = g.mp >= g.mpMax;
     const canWater = waterN > 0 && !waterFull;
     const rest = g.zoneEventRestReady() && !phase;
-    const prep = (rest || b.kind === 'zoneBoss' && !b.prepStarted && !b.over) ? `<div class="boss-prep">
-      <b>${rest ? b.pendingWave === 4 ? 'พักหลังฝ่าปีศาจ 3 ระลอก · เตรียมปลดปล่อยหัวหน้าทั้ง 4 โซน' : 'หัวหน้าทั้ง 4 เป็นอิสระแล้ว · พักก่อนสู้บอสใหญ่' : 'เตรียมศึกก่อนบุก (กดได้ทุกปุ่ม ก่อนหลังไม่บังคับ)'}</b>
-      ${b.proofBonus ? `<div class="prep-note good">✓ แฟ้มหลักฐานพร้อม — ลดพลังบอส ${b.proofBonus}</div>` : ''}
-      <div class="acts">
-      ${g.zoneCaptivesFree() ? '<button data-prep-merchant>🧳 พ่อค้านรก · ซื้อของ</button>' : ''}
-      <button data-prep-nira>📋 นิรา · จัดทีมยมทูต</button>
-      <button data-prep-med ${canMed ? '' : 'disabled'}
-        title="${medN < 1 ? 'ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ' : medFull ? 'บารมีเต็มแล้ว' : getLang() === 'en' ? `Restore ${ITEMS.health.hp} authority · ${medN} chests left` : `ฟื้นบารมี ${ITEMS.health.hp} · เหลือ ${medN} หีบ`}">
-        💊 กินหีบยา${medN ? ` ×${medN}` : ''}</button>
-      <button data-prep-water ${canWater ? '' : 'disabled'}
-        title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${t('item.mpGain')} ${ITEMS.holyWater.mp} · ×${waterN}`)}">
-        ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))}${waterN ? ` ×${waterN}` : ''}</button>
-      </div>
-      ${medN < 1 ? '<div class="prep-note warn">ไม่มีหีบยา — กดพ่อค้านรกเพื่อซื้อ</div>' : ''}
-      </div>` : '';
+    // ชุด 30B ข้อ 1 — เตรียมศึก (บอสโซน 2–4 · พักก่อนระลอก 4/8 โซน 4) ใช้หน้าตาเดียวกับหน้าต่างแจ้งเตือนอีเวนต์:
+    // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
+    // วางเป็นชั้นทับในกล่องต่อสู้ — กด ✕ แล้วเห็นฉากต่อสู้ข้างหลังเต็ม และกด "เตรียมศึก" เปิดกลับได้ก่อนเข้าสู้
+    const prepOn = rest || b.kind === 'zoneBoss' && !b.prepStarted && !b.over;
+    const goLabel = rest ? b.pendingWave === 4 ? 'เข้าสู้หัวหน้าทั้ง 4 โซน' : 'เข้าสู้บอสใหญ่' : t('event.prep.fight');
+    const prepFoeArt = () => {
+      if (!rest) return storyFoeArt(b.sp);
+      const ev = ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey);
+      return storyFoeArt(ev?.waves?.[b.pendingWave - 1]?.[0]?.sp || b.sp);
+    };
+    const prepLayer = prepOn ? `<div class="prep-layer" data-prep-layer ${prepHidden ? 'hidden' : ''}><div class="prep-layer-card">
+      ${eventAlertMainHtml(rest ? zoneEventText(ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey)?.title) : t('battle.prep.title'),
+        rest ? (b.pendingWave === 4 ? t('battle.prep.rest4') : t('battle.prep.rest8')) : t('battle.prep.sub'),
+        prepFoeArt(), `<button class="gold event-alert-go" data-prep-go>⚔️ ${esc(goLabel)}</button>`,
+        { note: b.proofBonus ? `<div class="prep-note good">✓ ${esc(t('battle.prep.proof'))} ${b.proofBonus}</div>` : '',
+          extraTop: `<div class="prep-top-actions"><button data-prep-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
+            <button data-prep-hide aria-label="${esc(t('common.close'))}">✕</button></div>` })}
+      <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
+        ${prepCardHtml('merchant', t('event.prep.merchant'), g.zoneCaptivesFree() ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !g.zoneCaptivesFree())}
+        ${prepCardHtml('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
+        <div class="event-prep-card prep-box"><img src="${esc(artUrl(ITEMS.health.img))}" alt="">
+          <span class="event-prep-speech">${esc(medN || waterN ? t('event.prep.medicineLine') : t('event.prep.none'))}</span>
+          <b>${esc(t('event.prep.medicine'))}</b>
+          <span class="prep-chips">
+            <button data-prep-med ${canMed ? '' : 'disabled'}
+              title="${esc(medN < 1 ? t('prep.med.none') : medFull ? t('bag.hpFull') : `${t('prep.med.gain')} ${ITEMS.health.hp} · ×${medN}`)}">
+              ${itemImg('health', 'class="prep-ico"')} ${esc(t('prep.med'))} ×${medN}</button>
+            <button data-prep-water ${canWater ? '' : 'disabled'}
+              title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${t('item.mpGain')} ${ITEMS.holyWater.mp} · ×${waterN}`)}">
+              ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))} ×${waterN}</button></span></div>
+      </div></div></div></div>` : '';
+    const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
+      <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
       title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
     const battleItem = k => BATTLE.items.find(x => x.k === k);
@@ -2697,8 +2723,8 @@ function openBattle(after) {
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
-        ${prep}${done}
-      </div>${prep ? `<div class="boss-prep-actions"><button class="gold" data-prep-go>⚔️ ${rest ? b.pendingWave === 4 ? 'เข้าสู้หัวหน้าทั้ง 4 โซน' : 'เข้าสู้บอสใหญ่' : 'เข้าสู้'}</button></div>` : ''}`;
+        ${done}
+      </div>${prep}${prepLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
@@ -2765,16 +2791,14 @@ function openBattle(after) {
     // แก้รอบ 1 ข้อ C ชุด 13 — เปิดหน้าต่างเดิม (พ่อค้า/นิรา) ตรง ๆ ไม่ต้องมี callback "กลับมาหน้าเตรียมศึก"
     // เพราะ battle ยังไม่จบ (b.over ยังเป็น null) ตัวเฝ้า battleUI ที่ท้ายไฟล์เปิดฉากนี้กลับให้เองอัตโนมัติ
     // ทันทีที่ merchant/nira ปิด (เหมือนที่คอมเมนต์บนสุดของไฟล์อธิบายไว้แล้วสำหรับกรณีทั่วไป)
-    const prepMerchant = dlg.querySelector('[data-prep-merchant]');
-    if (prepMerchant) prepMerchant.onclick = () => openMerchant();
-    const prepNira = dlg.querySelector('[data-prep-nira]');
-    if (prepNira) prepNira.onclick = () => openNiraOffice();
-    const prepMed = dlg.querySelector('[data-prep-med]');
-    if (prepMed) prepMed.onclick = () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } };
-    const prepWater = dlg.querySelector('[data-prep-water]');
-    if (prepWater) prepWater.onclick = () => { if (g.useHolyWater()) { sfx('star'); paint(); refresh(); } };
-    const prepGo = dlg.querySelector('[data-prep-go]');
-    if (prepGo) prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { sfx('gong'); paint(); refresh(); } };
+    dlg.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => openMerchant());
+    dlg.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => openNiraOffice());
+    dlg.querySelector('[data-prep-med]')?.addEventListener('click', () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } });
+    dlg.querySelector('[data-prep-water]')?.addEventListener('click', () => { if (g.useHolyWater()) { sfx('star'); paint(); refresh(); } });
+    dlg.querySelector('[data-prep-pause]')?.addEventListener('click', () => openPause(true));
+    dlg.querySelector('[data-prep-hide]')?.addEventListener('click', () => { prepHidden = true; paint(); });
+    dlg.querySelector('[data-prep-show]')?.addEventListener('click', () => { prepHidden = false; paint(); });
+    dlg.querySelectorAll('[data-prep-go]').forEach(prepGo => prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { prepHidden = false; sfx('gong'); paint(); refresh(); } });
     bindCommandWheel(dlg);
     dlg.querySelectorAll('[data-crew-pick]').forEach(el => {
       const activate = () => {

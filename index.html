@@ -339,7 +339,6 @@ dialog.battle-reward[open]{max-width:420px;max-height:calc(100dvh - 24px);overfl
 .reward-row.power{border-left-color:var(--success)}
 .reward-none{padding:10px;text-align:center;color:var(--muted-foreground);font-size:var(--text-xs)}
 .shop-card img.shop-item-img{border-radius:var(--radius-sm);object-fit:contain;image-rendering:pixelated;border-color:var(--border);background:rgba(0,0,0,.16)}
-.boss-prep .prep-ico{width:18px;height:18px;vertical-align:-4px;object-fit:contain;image-rendering:pixelated}
 @media(max-width:520px){
   .lvup img{width:64px;height:64px}
   .lvup .rank .to{font-size:1.1rem}
@@ -691,13 +690,11 @@ dialog.rpg:has(.combat-arena)>.pad{position:absolute;z-index:21;left:50%;bottom:
   text-align:center;pointer-events:none;background:transparent}
 dialog.rpg:has(.combat-arena)>.pad>*{pointer-events:auto}
 dialog.rpg:has(.combat-arena)>.pad:empty{display:none}
-dialog.rpg:has(>.pad .boss-prep)>.pad{top:13%;bottom:auto;width:min(580px,90%);max-height:40%}
 dialog.rpg:has(.combat-arena)>.boss-prep-actions{position:absolute;z-index:22;left:50%;
   bottom:3%;transform:translateX(-50%);padding:0;border:0;background:transparent}
 dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
 @media(max-width:700px){
   dialog.rpg:has(.combat-arena)>.pad{left:auto;right:3%;transform:none;bottom:29%;width:58%;max-height:26%}
-  dialog.rpg:has(>.pad .boss-prep)>.pad{left:50%;right:auto;transform:translateX(-50%);top:9%;bottom:auto;width:90%;max-height:40%}
   dialog.rpg:has(.combat-arena)>.boss-prep-actions{left:auto;right:5%;bottom:27%;transform:none;padding:0;border:0;background:transparent}
 }
 /* 28A: ปุ่มจบศึกตอนชนะที่ถูกย้ายออกจาก .pad (ดู openBattle ใน ui.js) */
@@ -1706,14 +1703,28 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   display:flex;flex-direction:column;gap:var(--space-3)}
 .legacy-drawer-head{display:flex;align-items:center;gap:var(--space-3)}
 .legacy-drawer-head h1{flex:1;min-width:0}
-.boss-prep{padding:12px;border:1px solid rgba(212,163,85,.45);border-radius:10px;
-  background:rgba(26,12,18,.9);margin-bottom:12px}
-.boss-prep>b{color:var(--gold);display:block;margin-bottom:8px}
-/* แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ข้อความสถานะในหน้าเตรียมศึก (แฟ้มหลักฐานอัตโนมัติ/ไม่มีหีบยา) */
-.boss-prep .prep-note{font-size:var(--text-xs);margin-bottom:8px}
-.boss-prep .prep-note.good{color:var(--success)}
-.boss-prep .prep-note.warn{color:var(--warning)}
-dialog.rpg .boss-prep-actions{flex:0 0 auto;display:flex;justify-content:center;
+.boss-prep .prep-ico,.prep-chips .prep-ico{width:18px;height:18px;vertical-align:-4px;object-fit:contain;image-rendering:pixelated}
+.prep-note{font-size:var(--text-xs);margin-top:6px}
+.prep-note.good{color:var(--success)}
+/* ชุด 30B ข้อ 1 — หน้าเตรียมศึกในฉากต่อสู้ใช้หน้าตา .event-alert-* เดียวกับหน้าต่างแจ้งเตือนอีเวนต์ วางเป็นชั้นทับกล่องต่อสู้ */
+.prep-layer{position:absolute;inset:0;z-index:30;overflow-y:auto;display:flex;padding:10px;
+  background:rgba(10,4,6,.78);border-radius:inherit}
+.prep-layer[hidden]{display:none}
+.prep-layer-card{margin:auto;width:min(1000px,100%);background:#24131e;border:1px solid #c5a455;border-radius:10px}
+.prep-layer .event-alert-main{min-height:min(40vh,360px)}
+.prep-layer .event-alert-foe{max-height:min(30vh,260px)}
+.prep-top-actions{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:2}
+.prep-top-actions button{width:40px;height:40px;min-height:0;padding:6px;border-radius:50%;
+  background:rgba(12,6,9,.86);border:1px solid var(--gold);color:var(--gold);font-size:18px;line-height:1;
+  display:grid;place-items:center;cursor:pointer}
+.prep-top-actions img{width:100%;height:100%;object-fit:contain}
+.event-prep-card.prep-box{cursor:default}
+.prep-chips{grid-column:1 / -1;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.prep-chips button{min-height:40px;padding:6px 12px;font-size:var(--text-sm)}
+@media(max-width:600px){.prep-layer{padding:6px}.prep-layer .event-alert-main{min-height:0;padding-top:58px}
+  .prep-layer .event-alert-foe{max-height:150px}
+  .prep-layer .event-alert-actions{justify-content:center}.prep-layer .event-alert-go{width:100%}}
+dialog.rpg .boss-prep-actions{flex:0 0 auto;display:flex;justify-content:center;gap:10px;
   padding:var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
   border-top:1px solid var(--gold);background:var(--card)}
 
