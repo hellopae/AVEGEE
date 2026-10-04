@@ -17,7 +17,7 @@
 import { MOB } from './data.js';
 import { drawStandee, drawHeroWalk } from './art.js';
 import { walkDirection } from './walk-direction.js';
-import { frontierWalkable, frontierPath, frontierSegmentClear } from './frontier-navigation.js';
+import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } from './frontier-navigation.js';
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
 const HERO_H = 0.085;
@@ -100,6 +100,15 @@ export function makeFrontierWalk(cv, g, opts) {
 
   const px = u => box.ox + u * box.w, py = v => box.oy + v * box.h;
   const unit = () => Math.min(box.w, box.h);
+  // 30D — ยมบาทเดินทับศัตรู/นิรา/ยักษ์ที่ยืนอยู่ไม่ได้: วงรีรอบเท้าแต่ละตัว (พิกัด 0–1 · ขนาดตามตัวละครที่วาด)
+  const blockers = () => {
+    const rx = unit() * 0.045 / box.w, ry = unit() * 0.022 / box.h;
+    const list = sess.enemies.map(en => [en.x, en.y, rx, ry]);
+    list.push([NIRA[0], NIRA[1], rx, ry]);
+    if (g.guard) list.push([GUARD[0], GUARD[1], rx, ry]);
+    return list;
+  };
+  let replanAt = 0;
 
   function spawnOne() {
     if (sess.enemies.length >= maxOnScreen(wave) || !kinds.length) return;
@@ -127,7 +136,7 @@ export function makeFrontierWalk(cv, g, opts) {
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
     const cy = (e.clientY - r.top) / r.height * cv.height;
-    route = frontierPath(g.zone, [P.x,P.y], [(cx-box.ox)/box.w,(cy-box.oy)/box.h]);
+    route = frontierPath(g.zone, [P.x,P.y], [(cx-box.ox)/box.w,(cy-box.oy)/box.h], blockers());
     const target=route.at(-1);
     P.tx=target?.[0] ?? null; P.ty=target?.[1] ?? null;
   };
@@ -149,9 +158,15 @@ export function makeFrontierWalk(cv, g, opts) {
     const d = Math.hypot(dx, dy);
     if (d > 0) {
       const stride=Math.min(sp,d), nx=P.x+dx/d*stride, ny=P.y+dy/d*stride;
-      if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,ny])) {P.x=nx;P.y=ny;}
-      else if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,P.y])) P.x=nx;
-      else if(frontierSegmentClear(g.zone,[P.x,P.y],[P.x,ny])) P.y=ny;
+      const blk = liveBlockers(blockers(), [P.x, P.y]);
+      if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,ny],blk)) {P.x=nx;P.y=ny;}
+      else if(frontierSegmentClear(g.zone,[P.x,P.y],[nx,P.y],blk)) P.x=nx;
+      else if(frontierSegmentClear(g.zone,[P.x,P.y],[P.x,ny],blk)) P.y=ny;
+      else if(P.tx != null && performance.now() >= replanAt) {
+        // ติดเพราะมีศัตรูเดินมายืนขวาง — วางเส้นทางอ้อมใหม่ (ไม่ถี่เกิน 4 ครั้ง/วินาที)
+        replanAt = performance.now() + 250;
+        route = frontierPath(g.zone, [P.x,P.y], [P.tx,P.ty], blockers());
+      }
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
     }
     const actualX = (P.x - beforeX) * box.w, actualY = (P.y - beforeY) * box.h;

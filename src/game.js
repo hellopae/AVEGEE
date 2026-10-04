@@ -10,8 +10,9 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, CREW_POWER,
          syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion } from './walk.js';
-import { footOf, artEpoch, hiddenAt, artUrl } from './art.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
+import { standPoints } from './npc-stand.js';
+import { footOf, blockOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
@@ -1433,6 +1434,8 @@ const API = {
       const T = SPOTS.throne;
       if (Math.hypot(P.x - T.x, (P.y - T.y) * 1.6) < 70) this.walkTo(T.x + 116, T.y + 52);
     }
+    // 30D — จุดเท้าของตัวละครที่ยืนนิ่ง: ยมบาทเดินทับไม่ได้ (walk.js วงรอบตัว ใช้กับยมบาทอย่างเดียว)
+    setNpcDiscs(standPoints(this));
     // เดินตามเส้นทางที่ findPath วางไว้ — อ้อมลาวาเองได้ ไม่ไปยืนจ่อกำแพงแล้วค้าง
     if (P.path && P.path.length) {
       const w = P.path[0];
@@ -1441,7 +1444,14 @@ const API = {
         P.path.shift();
         if (!P.path.length) { P.path = null; P.tx = null; }
       } else {
-        if (!stepTo(P, dx / d * SP, dy / d * SP)) { P.path = null; P.tx = null; }
+        if (!stepTo(P, dx / d * SP, dy / d * SP, true)) {
+          // ติดเพราะมีตัวละครเดินมายืนขวาง (พื้นยังเดินได้) → วางเส้นทางอ้อมใหม่ แล้วค่อยยอมแพ้ถ้ายังไม่มีทาง
+          const now = performance.now();
+          const retry = P.tx != null && now >= (P.replanAt || 0);
+          P.replanAt = now + 250;
+          const again = retry ? findPath(P.x, P.y, P.tx, P.ty, true) : null;
+          if (again?.length) P.path = again; else { P.path = null; P.tx = null; }
+        }
         P.face = dx < 0 ? -1 : 1;
       }
     } else if (P.tx != null) {
@@ -1818,7 +1828,9 @@ const API = {
       const bottom = Math.max(st.def.y + R, r ? r[3] + 26 : st.def.y + R);
       holes.push([st.def.x - R, st.def.y - R, st.def.x + R, bottom]);
       if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
-      if (r) rects.push(r); else waiting = true;
+      // 30D: กันทั้งตัวอาคาร (ยอดเนื้อภาพ → ขอบหน้าฐาน) ไม่ใช่แค่แถบฐาน — ยมบาทเดินขึ้นไปยืนบนกระทะ/หลังคาไม่ได้
+      const blk = r ? blockOf(st.def) : null;
+      if (blk) rects.push(blk); else waiting = true;
     }
     setBlocks(rects, holes);
     // ถ้าอาคารเพิ่งสร้างครอบตำแหน่งผู้เล่น ให้ย้ายออกสู่พื้นเดินใกล้ที่สุดทันที
@@ -1874,9 +1886,9 @@ const API = {
   walkTo(x, y, hunt = false) {
     if (!hunt) this.huntMob = false;
     const P = this.player;
-    const t = canWalk(x, y) ? [x, y] : nearestWalk(x, y);
+    const t = canWalkAvoid(x, y) ? [x, y] : nearestWalk(x, y, undefined, true);   // 30D: ไม่ทับตัวยมทูตที่ยืนอยู่
     if (!t) return false;
-    const path = findPath(P.x, P.y, t[0], t[1]);
+    const path = findPath(P.x, P.y, t[0], t[1], true);
     if (!path || !path.length) return false;
     P.tx = t[0]; P.ty = t[1]; P.path = path;
     return true;

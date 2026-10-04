@@ -10,6 +10,7 @@ import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';
+import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
 export const CHAR_SCALE_MAP = 0.8;
@@ -19,16 +20,6 @@ const HERO_H = 92 * CHAR_SCALE_MAP;
 const SOUL_H = 64 * CHAR_SCALE_MAP;
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
-const waitingEvents = g => {
-  const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
-    ev.k !== 'devaTest' && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
-    ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach');
-  if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
-    events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
-  return events.map((ev, i) => ({ key:ev.k, x:SPOTS.bossPier.x + (i % 3 - 1) * 86,
-    y:SPOTS.bossPier.y - Math.floor(i / 3) * 80,
-    art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7').replace(/-(asia|west|cyberhell)$/, '') }));
-};
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
 let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();

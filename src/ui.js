@@ -3585,7 +3585,7 @@ function keyWalk(dt) {
   if (KEY.s || KEY.arrowdown) dy += 1;
   if (!dx && !dy) return;
   const d = Math.hypot(dx, dy);
-  stepTo(P, dx / d * sp, dy / d * sp);          // ลาวา/แม่น้ำกันไว้ ชนแล้วไถลไปตามขอบ
+  stepTo(P, dx / d * sp, dy / d * sp, true);    // ลาวา/แม่น้ำ/ตัวยมทูตที่ยืนอยู่กันไว้ ชนแล้วไถลไปตามขอบ
   P.tx = null; P.path = null; g.huntMob = false; // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้ (รวมคำสั่งไล่เปรต)
   if (dx) P.face = dx < 0 ? -1 : 1;
 }

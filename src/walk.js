@@ -6,7 +6,7 @@
 // ข้อดีคือถ้าเป้วาดฉากใหม่แล้วลาวาย้ายที่ ทางเดินขยับตามเองโดยไม่ต้องแก้โค้ด
 // ส่วนแม่น้ำ/ผาหินรอบโซนเป็นเส้นตรง เลยกำหนดเป็นกรอบใน data.js ตรง ๆ (NO_WALK / WALK_OK)
 
-import { SCENE, NO_WALK, WALK_OK } from './data.js';
+import { SCENE, NO_WALK, WALK_OK, WALK_OK_POLY } from './data.js';
 
 const CELL = 8;                                   // ความละเอียดตาราง (พิกัดฉาก)
 let COLS = Math.ceil(SCENE.w / CELL);
@@ -22,6 +22,7 @@ export function resetWalk() {
   mask = null;
   maskImage = null;
   okGrid = null;
+  discs = []; discSig = '[]'; avoidGrid = null;   // 30D: ย้ายโซน — วงตัวละครของโซนเก่าหมดความหมาย
 }
 
 export const walkGridSize = () => ({ cols:COLS, rows:ROWS });
@@ -32,6 +33,14 @@ let version = 0, blocksSig = null;
 export const walkVersion = () => version;
 
 const inRect = (x, y, r) => x >= r[0] && y >= r[1] && x <= r[2] && y <= r[3];
+export function inPoly(x, y, pts) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const [ax, ay] = pts[i], [bx, by] = pts[j];
+    if ((ay > y) !== (by > y) && x < (bx - ax) * (y - ay) / (by - ay) + ax) inside = !inside;
+  }
+  return inside;
+}
 // ลาวาจริงเป็นส้ม-แดงจัด: แดงสูง เขียวต่ำกว่าแดงมาก น้ำเงินแทบไม่มี
 // เงื่อนไขเดิม (แดง-น้ำเงิน > 90) ไปกินไม้สะพานสีน้ำตาลอ่อน (219,162,121) ด้วย
 // ผลคือราวสะพานไม้เหนือลาวากลายเป็นกำแพงขวางทางทั้งเส้น เดินข้ามไม่ได้ (เจอ 7 ก.ย. 2569)
@@ -116,11 +125,11 @@ function grid() {
 }
 
 /** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
-function clearLine(a, b) {
+function clearLine(a, b, walkable = canWalk) {
   const dx = b[0] - a[0], dy = b[1] - a[1];
   const n = Math.ceil(Math.hypot(dx, dy) / (CELL / 2));
   for (let i = 1; i <= n; i++)
-    if (!canWalk(a[0] + dx * i / n, a[1] + dy * i / n)) return false;
+    if (!walkable(a[0] + dx * i / n, a[1] + dy * i / n)) return false;
   return true;
 }
 
@@ -128,8 +137,10 @@ function clearLine(a, b) {
  *  คืนลิสต์จุดแวะ (ไม่รวมจุดเริ่ม) · null ถ้าขยับไม่ได้เลย
  *  ไปไม่ถึงจริง ๆ จะพาไปช่องที่เดินถึงและใกล้ปลายทางที่สุดแทน — ดีกว่ายืนนิ่งเฉย
  *  ใช้ BFS เพราะแผนที่แค่ 191×88 ช่อง ไม่ต้องถึง A* */
-export function findPath(fx, fy, tx, ty) {
-  const G = grid();
+export function findPath(fx, fy, tx, ty, avoid = false) {
+  const G = avoid ? gridAvoid(fx, fy) : grid();
+  const live = avoid ? discs.filter(d => !inDisc(fx, fy, d)) : [];
+  const walkable = avoid && live.length ? (x, y) => canWalk(x, y) && !live.some(d => inDisc(x, y, d)) : canWalk;
   const cell = (x, lim) => Math.max(0, Math.min(lim - 1, x / CELL | 0));
   const sx = cell(fx, COLS), sy = cell(fy, ROWS);
   const gx = cell(tx, COLS), gy = cell(ty, ROWS);
@@ -170,10 +181,49 @@ export function findPath(fx, fy, tx, ty) {
   let i = 0;
   while (i < all.length - 1) {
     let j = Math.min(all.length - 1, i + 40);
-    while (j > i + 1 && !clearLine(all[i], all[j])) j--;
+    while (j > i + 1 && !clearLine(all[i], all[j], walkable)) j--;
     out.push(all[j]); i = j;
   }
   return out;
+}
+
+// ---------- 30D: วงรอบตัวละครที่ยืนนิ่ง (ยมทูต/พ่อค้า/ยักษ์/บอส) — ใช้กับ "ยมบาท" เท่านั้น ----------
+// ยมบาทเดินทับตัวยมทูตที่ยืนอยู่ไม่ได้ ต้องอ้อม · ใช้ canWalk ตรง ๆ ไม่ได้เพราะยมทูตเองก็ยืนอยู่ในวงของตัวเอง
+// ผู้เรียกที่เป็นยมบาทส่ง avoid=true เข้า stepTo / findPath / nearestWalk · ตัวละครอื่นไม่รู้จักวงพวกนี้
+export const NPC_RX = 30, NPC_RY = 20;           // ครึ่งความกว้าง/สูงของวงรีฐานตัวละคร (พิกัดฉาก)
+let discs = [], discSig = '', avoidGrid = null, avoidKey = '', avoidBase = null;
+/** discs = [[x,y]...] — เรียกทุกเฟรมได้ ถูกจำไว้แค่เมื่อตำแหน่งเปลี่ยนเกิน 2px */
+export function setNpcDiscs(list) {
+  const next = (list || []).filter(p => p && Number.isFinite(p[0]) && Number.isFinite(p[1]))
+    .map(p => [Math.round(p[0] / 2) * 2, Math.round(p[1] / 2) * 2]);
+  const sig = JSON.stringify(next);
+  if (sig === discSig) return;
+  discSig = sig; discs = next; avoidGrid = null;
+}
+export const npcDiscs = () => discs;
+const discValue = (x, y, d) => ((x - d[0]) / NPC_RX) ** 2 + ((y - d[1]) / NPC_RY) ** 2;
+const inDisc = (x, y, d) => discValue(x, y, d) < 1;
+/** ยืนที่ (x,y) ทับตัวยมทูตที่ยืนนิ่งอยู่ไหม */
+export const inNpcDisc = (x, y) => discs.some(d => inDisc(x, y, d));
+/** เดินได้และไม่ทับตัวใคร */
+export const canWalkAvoid = (x, y) => canWalk(x, y) && !inNpcDisc(x, y);
+
+/** ตารางหาเส้นทางที่ปิดวงตัวละครไว้ด้วย — วงที่ผู้เล่นยืนอยู่ข้างในตอนเริ่มถูกเปิดไว้ (ไม่งั้นออกจากวงไม่ได้) */
+function gridAvoid(fx, fy) {
+  const base = grid();
+  if (!discs.length) return base;
+  const live = discs.filter(d => !inDisc(fx, fy, d));
+  if (avoidBase !== base) { avoidBase = base; avoidGrid = null; }   // ผังเดินเปลี่ยน (อาคาร/โซน) → ตารางเก่าใช้ไม่ได้
+  if (live.length === discs.length && avoidGrid && avoidKey === 'all') return avoidGrid;
+  const g2 = new Uint8Array(base);
+  for (const d of live) {
+    const x0 = Math.max(0, (d[0] - NPC_RX - CELL) / CELL | 0), x1 = Math.min(COLS - 1, (d[0] + NPC_RX + CELL) / CELL | 0);
+    const y0 = Math.max(0, (d[1] - NPC_RY - CELL) / CELL | 0), y1 = Math.min(ROWS - 1, (d[1] + NPC_RY + CELL) / CELL | 0);
+    for (let cy = y0; cy <= y1; cy++) for (let cx = x0; cx <= x1; cx++)
+      if (inDisc(cx * CELL + CELL / 2, cy * CELL + CELL / 2, d)) g2[cy * COLS + cx] = 0;
+  }
+  if (live.length === discs.length) { avoidGrid = g2; avoidKey = 'all'; }
+  return g2;
 }
 
 /** ฐานอาคารที่สร้างแล้ว — เดินทับไม่ได้ (9 ก.ย. 2569)
@@ -193,6 +243,7 @@ export function setBlocks(rects, keepOpen) {
 export function canWalk(x, y) {
   if (x < 0 || y < 0 || x > SCENE.w || y > SCENE.h) return false;
   for (const r of WALK_OK) if (inRect(x, y, r)) return true;   // สะพาน/ท่าเรือ ทับกรอบห้ามได้
+  for (const p of WALK_OK_POLY) if (inPoly(x, y, p)) return true; // 30D: สะพาน+เกาะหน้าประตูชายแดน (ไม่รวมน้ำสองข้าง)
   // NO_WALK (แม่น้ำวิญญาณ · ผาหิน) ต้องมาก่อน holes เสมอ
   // ไม่งั้นทางเดินที่เจาะให้ผู้คุมจะทะลุลงแม่น้ำ แล้วตัวละครเดินลงไปติดอยู่ในนั้น
   // (เจ้าของเจอ 10 ก.ย. 2569: ยืนค้างอยู่ใต้ศาลาน้ำชา ขยับไปไหนไม่ได้เลย)
@@ -206,17 +257,27 @@ export function canWalk(x, y) {
 
 /** ขยับตัวละครไปทาง (dx,dy) เท่าที่พื้นให้เดิน — ชนแล้วไถลไปตามขอบ ไม่ติดหนึบ
  *  คืน false เมื่อไปต่อไม่ได้เลย (ผู้เรียกใช้ยกเลิกจุดหมายที่ตั้งไว้) */
-export function stepTo(p, dx, dy) {
-  if (canWalk(p.x + dx, p.y + dy)) { p.x += dx; p.y += dy; return true; }
-  if (dx && canWalk(p.x + dx, p.y)) { p.x += dx; return true; }
-  if (dy && canWalk(p.x, p.y + dy)) { p.y += dy; return true; }
+export function stepTo(p, dx, dy, avoid = false) {
+  const ok = (x, y) => canWalk(x, y) && (!avoid || stepClear(p, x, y));
+  if (ok(p.x + dx, p.y + dy)) { p.x += dx; p.y += dy; return true; }
+  if (dx && ok(p.x + dx, p.y)) { p.x += dx; return true; }
+  if (dy && ok(p.x, p.y + dy)) { p.y += dy; return true; }
   return false;
+}
+
+/** ก้าวไป (x,y) ได้ไหมโดยไม่ทับตัวยมทูตที่ยืนอยู่ — ถ้าตอนนี้ยืนในวงของใครอยู่แล้ว (เขาเดินมายืนทับเรา)
+ *  วงนั้นถูกมองข้าม จะได้เดินออกมาได้ทุกทิศ ไม่ติดอยู่ในวง (เส้นทางก็มองข้ามวงนั้นเหมือนกัน — ดู findPath) */
+function stepClear(p, x, y) {
+  for (const d of discs) {
+    if (inDisc(x, y, d) && !inDisc(p.x, p.y, d)) return false;
+  }
+  return true;
 }
 
 /** จุดที่เดินได้ที่ใกล้ (x,y) ที่สุด — ใช้ตอนคลิกสั่งเดินลงลาวา/ลงน้ำ
  *  extra = เงื่อนไขเพิ่มที่จุดนั้นต้องผ่านด้วย (เช่น "ต้องไม่ถูกอาคารบัง" ของยมทูต) */
-export function nearestWalk(x, y, extra) {
-  const ok = (px, py) => canWalk(px, py) && (!extra || extra(px, py));
+export function nearestWalk(x, y, extra, avoid = false) {
+  const ok = (px, py) => canWalk(px, py) && (!avoid || !inNpcDisc(px, py)) && (!extra || extra(px, py));
   if (ok(x, y)) return [x, y];
   for (let r = CELL * 2; r <= 260; r += CELL * 2) {
     for (let a = 0; a < 20; a++) {
@@ -225,5 +286,5 @@ export function nearestWalk(x, y, extra) {
       if (ok(nx, ny)) return [nx, ny];
     }
   }
-  return extra ? nearestWalk(x, y) : null;       // หาจุดที่เห็นตัวไม่ได้ ก็เอาจุดที่เดินได้ไว้ก่อน
+  return extra ? nearestWalk(x, y, undefined, avoid) : null;       // หาจุดที่เห็นตัวไม่ได้ ก็เอาจุดที่เดินได้ไว้ก่อน
 }
