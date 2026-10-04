@@ -139,3 +139,10 @@ test('failed storage blocks acknowledgement and the next encounter; retry does n
     assert.ok(g.startFinalEncounter('minion:2'));
   } finally { if (before===undefined) delete globalThis.localStorage; else globalThis.localStorage=before; }
 });
+
+test('map boss stands with the zone-boss standee art, not the battle-only sprite key', () => {
+  const g=finalGame(); clearMinions(g);
+  for (const z of ['th','asia','west','cyberhell']) { g.startFinalEncounter(`ruler:${z}`); win(g); g.endBattle(); acknowledge(g); }
+  const boss=finalEventActors(g).find(a=>a.id==='boss');
+  assert.equal(boss.art,'zone-boss'); assert.equal(boss.enabled,true);
+});

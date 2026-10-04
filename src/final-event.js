@@ -60,7 +60,7 @@ export function finalEventActors(g) {
   const enemies = [...RULER_ORDER.map((z,i) => ({ id:`ruler:${z}`, entry:waves[i+4][0], i })) , { id:'boss', entry:waves[8][0], i:4 }]
     .filter(a => !s.rulersCleared.includes(a.id.split(':')[1]))
     .map(a => ({ id:a.id, x:FINAL_EVENT.enemyPositions[a.i][0], y:FINAL_EVENT.enemyPositions[a.i][1],
-      art:a.entry.sp, name:a.entry.name, enabled:a.id === next }));
+      art:a.id === 'boss' ? 'zone-boss' : a.entry.sp, name:a.entry.name, enabled:a.id === next }));
   return [...enemies, ...RULER_ORDER.map((zone,i) => ({ id:`reinforcement:${zone}:taan`,
     x:FINAL_EVENT.reinforcementPositions[i][0], y:FINAL_EVENT.reinforcementPositions[i][1],
     art:'crew-taan', sourceZone:zone, name:`กำลังเสริมโซน ${i+1}`, reinforcement:true }))];
