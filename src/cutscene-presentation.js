@@ -4,7 +4,7 @@ const CONTENT_ROWS = {
   'story-th-01.png':[270,757], 'story-th-02.png':[258,768],
   'story-th-03.png':[244,787], 'story-th-04.png':[247,779], 'story-th-05.png':[271,753],
   'story-asia-01.png':[123,595], 'story-asia-02.png':[100,615],
-  'story-asia-03.png':[99,621], 'story-asia-04.png':[222,802], 'story-asia-05-v2.png':[112,594],
+  'story-asia-04.png':[222,802], 'story-asia-05-v2.png':[112,594],
   'story-west-01.png':[118,594], 'story-west-02.png':[102,620],
   'story-cyberhell-01-v2.png':[221,821], 'story-cyberhell-02-v3.png':[104,640],
   'story-cyberhell-03-v4.png':[88,632],

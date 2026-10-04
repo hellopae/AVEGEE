@@ -1859,10 +1859,28 @@ export const ZONES = [
 /** 30D ข้อ 7 — อาคารที่กลับด้านตอนวาด ต่อโซน */
 export const STATION_FLIP = { asia: ['lokan'], west: ['sala'] };
 
-/** ทุกโซนใช้ผังและพิกัด 1678×937 เดียวกัน; คง SCENE object ที่โมดูลอื่น import ไว้ */
+// 30F: move complete station geometry together, including service/worker points.
+// Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
+const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[-90,12], dab:[155,205], krata:[0,42] };
+const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(key => {
+  const d = STATIONS.find(s => s.k === key);
+  return [key, Object.fromEntries(['bx','by','x','y','sx','sy','hit']
+    .filter(field => d[field] != null).map(field => [field, Array.isArray(d[field]) ? [...d[field]] : d[field]]))];
+}));
+
+/** ทุกโซนใช้ผัง 1678×937; คง SCENE object ที่โมดูลอื่น import ไว้ */
 export function syncSceneZone(zone) {
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
   SCENE.w = z.w; SCENE.h = z.h;
+  // Bare floor beside the painted servers; no changes to the scene bitmap.
+  for (const [key, site] of sharedStationSites) {
+    const [dx, dy] = z.k === 'cyberhell' ? CYBERHELL_STATION_OFFSETS[key] : [0,0];
+    const def = STATIONS.find(s => s.k === key);
+    for (const [field, value] of Object.entries(site)) {
+      def[field] = field === 'hit' ? value.map((v, i) => v + (i % 2 ? dy : dx))
+        : value + (['bx','x','sx'].includes(field) ? dx : dy);
+    }
+  }
   // เกาะลานตรากตรำในภาพถูกธารล้อมครบ แม้ในโซน 1: ให้จุดบริการโซนใหม่อยู่ฝั่งซ้าย
   // โดยคงตำแหน่งภาพสถานี/กรอบคลิกเดิมไว้ ไม่เปิดทางเดินข้ามธารที่ภาพไม่ได้วาด
   const lan = STATIONS.find(s => s.k === 'lan');

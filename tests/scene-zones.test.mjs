@@ -43,8 +43,10 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   const sceneRef = SCENE;
-  const stationPos = STATIONS.filter(s => s.k !== 'tea').map(s => [s.bx, s.by, s.bw, ...s.hit]);
-  const servicePos = STATIONS.filter(s => s.k !== 'lan' && s.k !== 'tea').map(s => [s.x, s.y]);
+  // 30F verifies CyberHell's four local relocations and restoration in its own regression file.
+  const fixedSite = s => !['tea','lokan','krajok','dab','krata'].includes(s.k);
+  const stationPos = STATIONS.filter(fixedSite).map(s => [s.bx, s.by, s.bw, ...s.hit]);
+  const servicePos = STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x, s.y]);
   const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
   for (const z of ZONES) {
     if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
@@ -53,8 +55,8 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
     assert.deepEqual(size(), [1678, 937]);
     assert.deepEqual(grid(), [210, 118]);
-    assert.deepEqual(STATIONS.filter(s => s.k !== 'tea').map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
-    assert.deepEqual(STATIONS.filter(s => s.k !== 'lan' && s.k !== 'tea').map(s => [s.x, s.y]), servicePos);
+    assert.deepEqual(STATIONS.filter(fixedSite).map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
+    assert.deepEqual(STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x, s.y]), servicePos);
     assert.deepEqual([STATIONS.find(s => s.k === 'lan').x, STATIONS.find(s => s.k === 'lan').y],
       z.k === 'th' ? [585,615] : [500,615]);
     assert.deepEqual([STATIONS.find(s => s.k === 'tea').x, STATIONS.find(s => s.k === 'tea').y],

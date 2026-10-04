@@ -102,6 +102,7 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     const png = readFileSync(new URL(`../${panel.image}`, import.meta.url));
     const width = png.readUInt32BE(16), height = png.readUInt32BE(20);
     const layout = comicImageLayout(panel.image, width, height);
+    if (panel.image === 'img/story-asia-03.png') continue;   // 30F: วาดใหม่เต็มเฟรม ไม่มีแถบดำให้ตัด (ทดสอบใน 30f.test.mjs)
     assert.ok(layout.height > 100 && layout.top <= 0);
     const visibleHeight = width / layout.aspect;
     assert.ok(visibleHeight > 0 && visibleHeight < height);
