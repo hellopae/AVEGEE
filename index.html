@@ -767,10 +767,12 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   100%{opacity:.55;transform:translateX(-50%) scale(1)}}
 @media(prefers-reduced-motion:reduce){.arena .fig.you.raging::before{animation:none;opacity:.7}}
 /* ชุด 30B ข้อ 9 — บุญเติมบารมี: เรืองแสงเขียว-ทองรอบยมบาทน้อย (ชั้นแยกบนตัวกรอบ ไม่แตะภาพวาด) + เลข +HP ลอยขึ้น */
-.arena .fig.you.healing::after{content:'';position:absolute;left:50%;bottom:4%;width:170%;height:100%;
+.arena .fig.you.healing::after{content:'';position:absolute;left:50%;bottom:4%;width:125%;height:100%;
   transform:translateX(-50%);z-index:-1;pointer-events:none;border-radius:50%;
   background:radial-gradient(ellipse at 50% 55%,rgba(239,195,87,.95) 0,rgba(74,157,106,.8) 42%,rgba(74,157,106,0) 74%);
   animation:healGlow .9s ease-in-out both;animation-delay:var(--heal-delay,0ms)}
+.arena .fig.you.healing img:not(.fx){animation:healImg .9s ease-in-out both;animation-delay:var(--heal-delay,0ms)}
+@keyframes healImg{0%,100%{filter:none}35%{filter:drop-shadow(0 0 8px rgba(239,195,87,.95)) drop-shadow(0 0 20px rgba(74,157,106,.85))}}
 @keyframes healGlow{0%{opacity:0;transform:translateX(-50%) scale(.7)}35%{opacity:1;transform:translateX(-50%) scale(1.08)}
   100%{opacity:0;transform:translateX(-50%) scale(1.2)}}
 .arena .fig.you .heal-num{position:absolute;left:44%;bottom:80%;transform:translateX(-50%);z-index:6;pointer-events:none;
@@ -780,6 +782,7 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   100%{opacity:0;transform:translateX(-50%) translateY(-42px) scale(1)}}
 @media(prefers-reduced-motion:reduce){
   .arena .fig.you.healing::after{animation:none;opacity:.65}
+  .arena .fig.you.healing img:not(.fx){animation:none;filter:drop-shadow(0 0 8px rgba(239,195,87,.95))}
   .arena .fig.you .heal-num{animation:none;opacity:1;transform:translateX(-50%)}}
 @keyframes hitshakeY{0%,100%{transform:scaleX(-1) translateX(0)}
   25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
