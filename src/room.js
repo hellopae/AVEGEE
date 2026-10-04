@@ -1,3 +1,4 @@
+import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
 // ห้องสถานีแสดงวิญญาณ ผู้คุม และตัวละครที่ผู้เล่นบังคับเดินได้
@@ -139,6 +140,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
+  let lying = false, sleepElapsed = 0, recoverySleep = false;
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
@@ -192,7 +194,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
   const onKey = e => {
     if (/input|textarea/i.test(e.target.tagName)) return;
-    if (locked) return;         // มินิเกมกำลังเปิดอยู่ — ปล่อยให้มินิเกมจัดการคีย์เอง
+    if (locked || lying) return;         // มินิเกมกำลังเปิดอยู่ — ปล่อยให้มินิเกมจัดการคีย์เอง
     const k = e.key.toLowerCase();
     if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' '].includes(k)) {
       if (k === ' ') { e.preventDefault(); if (api.onAct) api.onAct(); return; }
@@ -206,7 +208,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   // ---- แตะ/คลิกบนฉาก = เดินไปตรงนั้น ----
   const onDown = e => {
-    if (locked || sitting) return;              // มินิเกมกำลังเปิดอยู่ — แตะฉากไม่ให้ตัวละครเดิน
+    if (locked || sitting || lying) return;              // มินิเกมกำลังเปิดอยู่ — แตะฉากไม่ให้ตัวละครเดิน
     // box อยู่ในหน่วยพิกเซลของ canvas (backing store) — แปลงพิกัดเมาส์ให้เป็นหน่วยเดียวกัน
     const r = cv.getBoundingClientRect();
     const cx = (e.clientX - r.left) / r.width * cv.width;
@@ -221,8 +223,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ต้องยืนถึงจุด (inReach) ถึงจะเริ่มนั่งได้ · ลุกได้ทุกเมื่อไม่มีเงื่อนไข */
   function setSit(on) {
     if (on) {
-      if (!canSit || !inReach() || (g.hp >= g.hpMax && g.mp >= g.mpMax)) return false;
+      if (lying || !canSit || !inReach() || (g.hp >= g.hpMax && g.mp >= g.mpMax)) return false;
       sitting = true; sipAt = performance.now() + 1800; sipping = false;
+      P.x = room.act[0]; P.y = room.act[1];
       P.tx = null; P.ty = null;
     } else {
       sitting = false;
@@ -230,7 +233,25 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     return true;
   }
 
+  function setSleep(emergency = false) {
+    if (!canSit || lying || sitting || (!emergency &&
+        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
+    lying = true; sleepElapsed = 0; recoverySleep = emergency;
+    P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
+    return true;
+  }
+
   function step(dt) {
+    if (lying) {
+      sleepElapsed += dt;
+      if (sleepElapsed >= TEA_SLEEP_MS) {
+        lying = false;
+        P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
+        if (recoverySleep) g.completeTeaRecovery();
+        else { g.hp = g.hpMax; g.save(); g.onChange(); }
+      }
+      return;
+    }
     if (sitting) {
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.hp < g.hpMax || g.mp < g.mpMax) {
@@ -304,8 +325,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const sh = crop ? crop[3] * bg.naturalHeight : bg.naturalHeight;
       // ภาพฉากวางแบบ contain ไม่ยืด/ไม่ครอปซ้ำ — โซน 1 ใช้ room.crop ตัดแถบกว้างตามแบบ UI4 มาแล้ว
       // กรอบหน้าสถานีบนจอกว้างมีสัดส่วนเท่ากับแถบนั้น จึงเต็มพอดี
-      const s = Math.min(W / sw, H / sh);
-      box = { ox:(W - sw * s) / 2, oy:(H - sh * s) / 2, w:sw * s, h:sh * s };
+      box = roomImageBox(W, H, sw, sh, canSit);
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
@@ -344,7 +364,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     const near = inReach();
     ctx.strokeStyle = near ? `rgba(255,205,120,${0.55 + q * 0.45})` : 'rgba(255,205,120,.30)';
     ctx.lineWidth = 2.5;
-    ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
+    if (!sitting && !lying) {
+      ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
+    }
 
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
@@ -439,11 +461,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     acts.push({ y: P.y, fn: () => {
-      // นั่งพักอยู่ — ใช้ท่านั่ง (hero-yama-sit / -sit-sip สลับกันเป็นระยะ) แทนท่ายืน (ข้อ A 24 ก.ย. 2569)
+      // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
+      if (lying) {
+        const down = img('hero-yama-unconscious');
+        if (down) {
+          const width = U * 0.24, height = width * down.naturalHeight / down.naturalWidth;
+          ctx.drawImage(down, px(P.x)-width/2, py(P.y)-height, width, height);
+        }
+        return;
+      }
       const swinging = !sitting && g.swingUntil && Date.now() < g.swingUntil;
-      const sitKey = sipping && img('hero-yama-sit-sip') ? 'hero-yama-sit-sip' : 'hero-yama-sit';
-      const haveSitArt = !!img('hero-yama-sit');
+      const sitKey = 'hero-yama-tea-clean';
+      const haveSitArt = !!img('hero-yama-tea-clean');
       const key = sitting ? (haveSitArt ? sitKey : 'hero-yama')
                 : swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
       // เดินอยู่จริง (ขยับตำแหน่งในช่วง 120ms ที่ผ่านมา) → ใช้สไปรท์เดิน 4 เฟรมเหมือนบนแผนที่
@@ -496,6 +526,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     crewHeight: CREW_H,
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
+    sleeping: () => lying,
+    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
+    setSleep,
     setSit,
     lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
     project: ([x, y]) => {

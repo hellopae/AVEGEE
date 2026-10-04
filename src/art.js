@@ -1,3 +1,4 @@
+import { yamaDownImage } from './tea-recovery.js';
 // art.js — ชั้นวาดภาพทั้งหมด
 // กฎ: ทุกชิ้นต้องมี placeholder ที่โค้ดวาดเองได้ ถ้ามีไฟล์ img/<key>.png ให้ใช้ไฟล์แทนอัตโนมัติ
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
@@ -35,7 +36,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261004-29g-art', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261004-recovery-ice', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -73,6 +74,8 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
 export function artUrl(key, ext = 'png') {
   const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
   const map = ZMAP[z];
+  if (key === 'hero-yama-unconscious') return yamaDownImage(z);
+  if (key === 'hero-yama-tea-clean') return `img/hero-yama-${z}-tea-clean.png`;
   if (key === 'hero-yama-walk-4dir') return heroWalkSheet(z).src;
   if (/^crew-(nira|taan|plerng|dam|kan|boon|guard)-walk$/.test(key))
     return crewWalkSheet(key.slice(0, -5), z)?.src || null;

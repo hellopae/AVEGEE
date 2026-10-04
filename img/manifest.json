@@ -54,7 +54,15 @@
 "scene.png",
 "tile-lava.png",
 "tile-path.png",
-"tile-rock.png"
+"tile-rock.png",
+"hero-yama-th-unconscious.png",
+"hero-yama-th-tea-clean.png",
+"hero-yama-asia-unconscious.png",
+"hero-yama-asia-tea-clean.png",
+"hero-yama-west-unconscious.png",
+"hero-yama-west-tea-clean.png",
+"hero-yama-cyberhell-unconscious.png",
+"hero-yama-cyberhell-tea-clean.png"
 ],
 "rest": [
 "BG-Dab.webp",
@@ -204,7 +212,19 @@
 "item-holywater.png",
 "story-cyberhell-02-v3.png",
 "story-cyberhell-03-v4.png",
-"crew-guard-v2.png"
+"crew-guard-v2.png",
+"leader-th-attack-cutscene.png",
+"tea-th-recovery.png",
+"leader-asia-attack-cutscene.png",
+"tea-asia-recovery.png",
+"leader-west-attack-cutscene.png",
+"tea-west-recovery.png",
+"leader-cyberhell-attack-cutscene.png",
+"tea-cyberhell-recovery.png",
+"hero-yama-th-ice-cutscene-v2.png",
+"hero-yama-asia-ice-cutscene-v2.png",
+"hero-yama-west-ice-cutscene-v2.png",
+"hero-yama-cyberhell-ice-cutscene-v2.png"
 ],
 "zones": {
 "asia": [

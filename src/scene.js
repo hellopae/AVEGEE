@@ -1,10 +1,11 @@
+import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 // scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawEmbers, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
+         drawFire, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
@@ -31,6 +32,8 @@ const waitingEvents = g => {
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
 let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
+const reducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+let ambientTime = 0;
 /** Movement is sampled from coordinates, never from a pending path or idle time. */
 export function actorWalkMotion(actor, time, zone = 'th', position = null) {
   const [x, y] = position || [actor.x, actor.y];
@@ -132,6 +135,9 @@ export function render(ctx, g, t, hover, sel) {
     if (buildWalk(bg, maskBg)) g.syncBlocks(true);
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
+
+  if (!g.paused) ambientTime = t;
+  if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
 
   // ---- จุดที่สร้างสถานีได้ ----
   // เดิมเป็นกรอบประ + ป้ายชื่อ-ราคา ลอยค้างเต็มแผนที่ตลอดเวลา เจ้าของบอกว่ารก (6 ก.ย. 2569)
@@ -446,7 +452,7 @@ export function render(ctx, g, t, hover, sel) {
 
   if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
 
-  drawEmbers(ctx, SCENE.w, SCENE.h, t);
+  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }

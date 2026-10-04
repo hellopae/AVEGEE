@@ -771,7 +771,7 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
    (แตะที่ภาพข้ามได้ทันทีอยู่แล้ว ไม่ต้องรอครบก็ได้ — ผูก onclick ไว้ใน playActionCutscene) */
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
   pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
-.action-cutscene img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+.action-cutscene img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;
   image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
   /* ภาพคัตซีนเดิมวาดยมบาทน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
   transform:scaleX(-1)}
@@ -783,12 +783,12 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
 .action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
   border:1px solid var(--gold);pointer-events:none}
 @keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
-@keyframes actionRush{0%{transform:scaleX(-1) scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scaleX(-1) scale(1.03) translateX(1%)}88%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.08);filter:brightness(1.25)}}
-@keyframes actionRushRight{0%{transform:scale(1.18) translateX(-5%);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(1.03) translateX(1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
-@keyframes actionRushEnemy{0%{transform:scale(1.18) translateX(5%);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(1.03) translateX(-1%)}88%{transform:scale(1)}100%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes actionRush{0%{transform:scaleX(-1) scale(.96);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scaleX(-1) scale(.98)}88%,100%{transform:scaleX(-1) scale(1);filter:brightness(1.25)}}
+@keyframes actionRushRight{0%{transform:scale(.96);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(.98)}88%,100%{transform:scale(1);filter:brightness(1.25)}}
+@keyframes actionRushEnemy{0%{transform:scale(.96);filter:brightness(1.8) saturate(1.35)}
+  18%{transform:scale(.98)}88%,100%{transform:scale(1);filter:brightness(1.25)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
@@ -1519,7 +1519,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   overflow:auto;padding:0;background:#151016}
 .intro-comic-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
   background:#181217}
-.intro-comic-frame img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.intro-comic-frame img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 .intro-comic-head{position:absolute;top:10px;left:14px;right:14px;display:flex;
   justify-content:space-between;color:#f7c371;text-shadow:0 2px 5px #120b10;
   font-size:var(--text-xs);letter-spacing:.08em}
@@ -1531,7 +1531,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .intro-comic-controls{display:flex;justify-content:space-between;gap:10px;padding:10px 14px}
 @media(max-width:600px){
   .intro-comic-frame{aspect-ratio:auto}
-  .intro-comic-frame img{height:auto;aspect-ratio:16/7.2;object-fit:cover;object-position:top}
+  .intro-comic-frame img{height:auto;aspect-ratio:auto;object-fit:contain;object-position:center}
   .intro-comic-caption{position:static;height:auto;padding:12px 16px;background:#151016}
   .intro-comic-caption h2{font-size:1.15rem}
   .intro-comic-caption p{font-size:.95rem}
@@ -1539,7 +1539,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 
 /* Reuse the painted lower letterbox; captions and controls share one band. */
 .zone-arrival .intro-comic-frame{aspect-ratio:16/9;overflow:hidden}
-.zone-arrival .intro-comic-frame img{height:100%;aspect-ratio:auto;object-fit:cover}
+.zone-arrival .intro-comic-frame img{height:100%;aspect-ratio:auto;object-fit:contain}
 .zone-arrival-band{position:absolute;left:0;right:0;bottom:0;height:21%;
   display:flex;flex-direction:column;padding:6px 16px;box-sizing:border-box;background:#08070b}
 .zone-arrival .intro-comic-caption{position:static;flex:1;min-height:0;height:auto;padding:0;

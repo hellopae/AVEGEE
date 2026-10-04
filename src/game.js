@@ -1,3 +1,4 @@
+import { TEA_BED_COST } from './tea-recovery.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
          POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS,
@@ -104,7 +105,7 @@ export function createGame() {
     stations: [],
     zone: 'th',                       // โซนที่กำลังคุมอยู่ (ดู ZONES ใน data.js)
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
-    gameCompleted: false,
+    gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
     bossGuarding: {}, bossWalk: null, zoneEntry: null,
     frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
@@ -1940,6 +1941,19 @@ const API = {
     if (!this.stations.some(st => st.def.k === 'tarang')) this.stations.push(mkStation('tarang'));
   },
 
+  buyTeaBed() {
+    if (this.teaBeds[this.zone] || this.coin < TEA_BED_COST ||
+        !this.stations.some(st => st.def.k === 'tea' && !st.build)) return false;
+    this.coin -= TEA_BED_COST;
+    this.teaBeds[this.zone] = true;
+    this.save(); this.onChange(); return true;
+  },
+  completeTeaRecovery() {
+    this.hp = this.hpMax;
+    this.pendingRecovery = null;
+    this.save(); this.onChange();
+  },
+
   // ---------- Phase 3 · ฉากต่อสู้ ----------
   // "วิญญาณที่โทษหนัก ๆ ร้ายกาจ จะขัดขืน ต้องสู้" — เจ้าของสั่ง 7 ก.ย. 2569
   // ตัวเกมยังเป็นเกมบริหารเหมือนเดิม ฉากต่อสู้เป็น "ด่านกั้น" ก่อนออกหมาย ไม่ใช่ระบบแยก
@@ -2519,8 +2533,7 @@ const API = {
       if (!this.abilities.windFan || this.mp < BATTLE.mpCost.wind) return false;
       this.mp -= BATTLE.mpCost.wind;
       dmg = 36 + (this.level - 1) * 2;
-      stunFoe = 1;
-      say(`🌪️ พัดสายลมซัดศัตรู — ${dmg} หน่วย และหยุดการสวนกลับ 1 เทิร์น`);
+      say(`🌪️ พัดสายลมซัดศัตรูทุกคน — คนละ ${dmg} หน่วย`);
 
     } else if (what === 'rage') {
       if (!this.abilities.rage || B.rageTurns > 0 || B.rageCooldown > 0 || this.mp < BATTLE.mpCost.rage) return false;
@@ -2550,7 +2563,7 @@ const API = {
       this.mp -= BATTLE.mpCost.hypno;
       confuseFoe = 1;
       this.karma = clamp(this.karma + 1, 0, 100);
-      say('🌀 สะกดจิตศัตรู — ตานี้เขาจะหันมาโจมตีตัวเอง');
+      say('🌀 สะกดจิตศัตรูทุกคน — ตานี้จะหันไปโจมตีกันเอง');
 
     } else {
       const it = BATTLE.items.find(x => x.k === what);
@@ -2597,12 +2610,16 @@ const API = {
       if (!B.rageTurns) B.rageCooldown = 3;
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
-    target.hp = Math.max(0, target.hp - dmg);
+    const areaAttack = ['ice', 'windFan', 'hypno'].includes(what);
+    const affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
+    for (const foe of affected) {
+      foe.hp = Math.max(0, foe.hp - dmg);
+      if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
+      if (confuseFoe) foe.confuse = (foe.confuse || 0) + confuseFoe;
+    }
     B.dmg.foe = dmg;
     B.dmg.foeId = target.id;
-    if (stunFoe) target.stun += stunFoe;
-    // ข้อ B ชุด 13 — สะกดจิต: เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง" (ต่างจาก stun ที่แค่ข้ามตา)
-    if (confuseFoe) target.confuse += confuseFoe;
+    B.dmg.foeHits = affected.map(f => ({ id:f.id, damage:dmg }));
     if (dmg > 0) talk(dmg >= 26 ? 'crit' : target.hp <= target.maxHp * 0.3 ? 'low' : 'hurt');
     // ภาพนิ่งของ "ตอนจบตาเรา แต่เขายังไม่สวน" — ui เอาไปเล่นเป็นจังหวะแรก
     // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
@@ -2776,20 +2793,32 @@ const API = {
       .find(f => f.hp > 0);
     B.counterIndex = (B.foes.indexOf(counter) + 1) % B.foes.length;
     B.dmg.counterFoeId = counter.id;
-    const foeAtkRoll = () => roll(counter.atk || (B.kind === 'frontier' ? B.foeAtk
+    const foeAtkRoll = (foe = counter) => roll(foe.atk || (B.kind === 'frontier' ? B.foeAtk
       : B.kind === 'mob' ? MOB.fightAtk
       : B.kind === 'zoneBoss' ? [14, 22 + ZONES.findIndex(z => z.k === B.zone) * 3]
       : BATTLE.foeAtk));
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): เทิร์นถัดไปของศัตรู "มึน โจมตีตัวเอง"
     // ต่างจาก B.stun (แค่ข้ามตา ไม่มีความเสียหาย) เช็คก่อน stun เพราะถือเป็นผลที่แรงกว่า
-    if (counter.confuse > 0) {
-      counter.confuse--;
-      const d = foeAtkRoll();
-      counter.hp = Math.max(0, counter.hp - d);
-      B.dmg.confuseSelf = d;   // ui ใช้ค่านี้ flash ที่ตัวศัตรู แทนที่จะ flash ที่ยมบาทน้อย
-      say(`เขาสับสนเพราะสะกดจิต ฟาดเข้ากับตัวเอง — เสีย ${d} หน่วย`);
+    if (what === 'ice') {
+      for (const foe of affected) foe.stun = Math.max(0, foe.stun - 1);
+      say('น้ำแข็งผนึกศัตรูทุกคน หยุดสวนกลับ 1 เทิร์น');
+    } else if (counter.confuse > 0 || what === 'hypno') {
+      const confused = what === 'hypno' ? B.foes.filter(f => f.hp > 0) : [counter];
+      // เลือกเป้าหมายจากภาพก่อนโจมตี ทุกคนออกท่าพร้อมกัน แม้โดนเพื่อนตีล้มในตานี้
+      const attacks = confused.map((foe, i) => {
+        foe.confuse = Math.max(0, (foe.confuse || 0) - 1);
+        const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length] : foe;
+        return { attackerId:foe.id, id:victim.id, damage:foeAtkRoll(foe) };
+      });
+      for (const attack of attacks) {
+        const victim = B.foes.find(f => f.id === attack.id);
+        victim.hp = Math.max(0, victim.hp - attack.damage);
+      }
+      B.dmg.confuseHits = attacks;
+      B.dmg.confuseSelf = attacks.reduce((sum, a) => sum + a.damage, 0);
+      say(confused.length > 1 ? 'ศัตรูถูกสะกดจิตและหันไปโจมตีกันเอง' : 'ศัตรูถูกสะกดจิต ฟาดเข้ากับตัวเอง');
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
-      if (counter.hp <= 0) {
+      if (B.foes.some(f => f.hp <= 0)) {
         if (B.foes.every(f => f.hp <= 0)) {
           if (B.kind === 'frontierBreach' && B.wave < ZONE_EVENTS.th[1].waves.length) {
             B.pendingWave = B.wave + 1;
@@ -2803,9 +2832,12 @@ const API = {
           }
           return declareWin();
         }
-        if (B.selectedFoeId === counter.id) B.selectedFoeId = B.foes.find(f => f.hp > 0).id;
+        if (!B.foes.some(f => f.id === B.selectedFoeId && f.hp > 0)) B.selectedFoeId = B.foes.find(f => f.hp > 0).id;
       }
-    } else if (counter.stun > 0) { counter.stun--; say('เขายืนค้างอยู่กลางท่า ขยับไม่ได้ทั้งตา'); }
+    } else if (counter.stun > 0) {
+      counter.stun--;
+      say('ศัตรูถูกผนึกน้ำแข็ง ขยับไม่ได้ทั้งตา');
+    }
     else {
       const normal = foeAtkRoll();
       let ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
@@ -2819,10 +2851,10 @@ const API = {
         const tester = /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
         const bossScenes = {
           'hero-boss':'img/hero-boss-cutscene.jpeg',
-          'leader-th-possessed':'img/leader-th-possessed.png',
-          'leader-asia-possessed':'img/leader-asia-possessed.png',
-          'leader-west-possessed':'img/leader-west-possessed.png',
-          'leader-cyberhell-possessed':'img/leader-cyberhell-possessed.png',
+          'leader-th-possessed':'img/leader-th-attack-cutscene.png',
+          'leader-asia-possessed':'img/leader-asia-attack-cutscene.png',
+          'leader-west-possessed':'img/leader-west-attack-cutscene.png',
+          'leader-cyberhell-possessed':'img/leader-cyberhell-attack-cutscene.png',
           'zone-boss-asia':'img/Asia/Boss Zone2-asia-cutscene.jpeg',
           'zone-boss-west':'img/West/Boss Zone3-cutscene.jpeg',
           'zone-boss-cyberhell':'img/CyberHell/Boss Zone4-cutscene.jpeg',
@@ -2905,15 +2937,21 @@ const API = {
     const B = this.battle;
     if (!B) return null;
     this.battle = null;
+    if (B.over === 'lose') {
+      this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, foe:B.who, bg:B.bg };
+      this.hp = Math.max(1, this.hp);
+      this.yamaDone = false;
+      this.over = null;
+      this.huntMob = false;
+      this.player.tx = null; this.player.ty = null; this.player.path = null;
+    }
     // ชุด 28B — ตั้งก่อน onChange ทุกทางออกของฟังก์ชันนี้ ui.js จะเด้งหน้าต่างรางวัลจากค่านี้ (หลังเรื่องราว/พลังใหม่)
     this.pendingReward = B.over === 'win' && B.summary ? B.summary : null;
-    // บารมีหมดจริง (ไม่ใช่ตัดสินพลาดสามครั้ง) — พ่อลงมาเองครั้งสุดท้าย จบเกมจริง (ไม่แตะ ตามใบงาน)
+    // คุณเป้ 4 ต.ค. 2569: หมดแรงจากศึกนี้ก็กลับไปนอนพักฟื้นเหมือนศึกอื่น
     if (B.kind === 'yama') {
-      this.hp = 0; this.yamaDone = true;
-      this.over = { k: 'dad', title: 'Game Over',
-        text: '"เจ้ายังไม่พร้อมจริง ๆ" — พญายมบาทมองท่านนิ่ง ๆ ก่อนรับตราประจำโซนคืน' };
-      this.log('👑 พญายมบาท: "เจ้ายังไม่พร้อมจริง ๆ" — เริ่มโซนนี้ใหม่', 'boss');
-      this.onChange(); return B;
+      this.hp = 1;
+      this.log('หมดแรงในการต่อสู้ — กลับไปพักที่ศาลาน้ำชา', 'bad');
+      this.save(); this.onChange(); return B;
     }
     // ตัดสินพลาดติดกันครบ 3 ครั้ง — แพ้พ่อแล้วโดนลงทัณฑ์กระทะทองแดง ไม่ใช่ Game Over อีกต่อไป
     // (คุณเป้สั่ง 17 ก.ย. 2569: "ไม่รีเซ็ตโซน ไม่ Game Over" — เล่นต่อได้เลยหลังไปพักที่ศาลาน้ำชา)
@@ -3515,6 +3553,7 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     gameCompleted: !!this.gameCompleted,
+    teaBeds:this.teaBeds, pendingRecovery:this.pendingRecovery,
     bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier: this.frontier, party:this.party, upgrades:this.upgrades,
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
@@ -3643,6 +3682,8 @@ API.restore = function (d) {
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
   this.eventMapClosed = d.eventMapClosed || {};
+  this.teaBeds = d.teaBeds || {};
+  this.pendingRecovery = d.pendingRecovery || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
   if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.bigFire = true;
   if (legacyBossGate) {

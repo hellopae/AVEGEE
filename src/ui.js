@@ -1,3 +1,4 @@
+import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
@@ -863,7 +864,7 @@ const dlg = $('#dlg');
 dlg.addEventListener('close', () => { setTimeout(() => { if (!dlg.open) g.onChange(); }, 0); });
 // กล่องทั่วไปถูกสร้างจากหลายจุด; วางปุ่มปิดทองไว้ขวาบนทุกครั้งที่วาดใหม่
 new MutationObserver(() => {
-  if (!dlg.open || dlg.classList.contains('pause-modal') ||
+  if (!dlg.open || dlg.classList.contains('defeat-recovery') || dlg.classList.contains('pause-modal') ||
       dlg.querySelector('.st-hud') || dlg.classList.contains('event-alert') || dlg.classList.contains('frontier-map-dialog') || dlg.querySelector(':scope > .modal-corner-close') ||
       dlg.querySelector('.settings-close,.trial-close') ||
       (dlg.classList.contains('rpg') && dlg.querySelector('.combat-wheel'))) return;
@@ -1879,12 +1880,14 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     </div>
     ${hp?.foes?.length > 1 ? `<div class="foe-group">${hp.foes.map(f => {
       const src = storyFoeArt(f.sp);
-      const hit = act?.struck === 'foe' &&
-        (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id);
+      const hits = hp.dmg?.confuseSelf > 0 ? hp.dmg?.confuseHits : hp.dmg?.foeHits;
+      const damage = hits?.filter(h => h.id === f.id).reduce((sum,h) => sum+h.damage,0);
+      const hit = act?.struck === 'foe' && (hits ? damage > 0 :
+        (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id));
       const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
       return `<button type="button" class="fig foe${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${hp.selectedFoeId === f.id ? ' selected' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
-        ${hit ? fxAt('foe') + dmgAt('foe', hp.dmg?.confuseSelf || hp.dmg?.foe || 0) : ''}
+        ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
         ${hp.selectedFoeId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
         <img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
         <span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
@@ -1904,6 +1907,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
 function actionCutsceneSrc(k) {
   if (k === 'roar') return null;
   const style = g.outfit || g.zone;
+  if (k === 'ice') return `img/hero-yama-${style}-ice-cutscene-v2.png`;
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' };
   // ภาพท่าที่ปลดล็อกจากบอสชายแดน
   const unlockedPose = k === 'fire' && g.abilities?.bigFire ? 'fire'
@@ -1944,7 +1948,7 @@ function playActionCutscene(k, ultimate = null) {
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
   cut.className = ultimate ? 'action-cutscene enemy-facing'
-    : ['flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
+    : ['ice', 'flameCharge', 'rage', 'windFan', 'valkyrieSpear', 'cooldownClock'].includes(k)
       ? 'action-cutscene right-facing' : 'action-cutscene';
   // ชุด 29C ข้อ 8 — คัตซีนยมทูต/ยักษ์: ภาพของโซน 2–4 เป็นผืนสี่เหลี่ยมจัตุรัส 512×512 พอ object-fit:cover บนฉากกว้าง
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
@@ -1960,7 +1964,7 @@ function playActionCutscene(k, ultimate = null) {
   const finish = () => { if (done) return; done = true; cut.remove(); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
-  if (crewKey) fitCutsceneImage(cut, img);          // 29C ข้อ 8 — จัดตามส่วนที่มีภาพจริง (ไฟล์โซน 2–4 ครึ่งบนโปร่งใส)
+  fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
   setTimeout(finish, ACTION_CUT_MS);
 }
 
@@ -2564,10 +2568,10 @@ function openBattle(after) {
     const view = phase === 'you' && b.mid
         ? { ...b, foes:b.mid.foes, selectedFoeId:b.mid.selectedFoeId,
             youHp: b.mid.youHp, talk: b.mid.talk,
-            dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0, foeId: b.dmg?.foeId } }
+            dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0, foeId: b.dmg?.foeId, foeHits:b.dmg?.foeHits } }
       : phase === 'foe'
         // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
-        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId }
+        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
                                   : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     const act = phase === 'you' ? { lunge: 'you', struck: 'foe' }
@@ -2850,6 +2854,7 @@ function openBattle(after) {
     updatePlay();
     refresh();
     // ชุด 28B — ถ้ามีหน้าต่างรางวัลรออยู่ ให้ฟังก์ชันต่อท้าย (เช่นกลับแผนที่ชายแดน) รอจนปิดหน้าต่างรางวัลก่อน
+    if (done?.over === 'lose') return;
     if (after) afterReward(() => after(done ? done.over : null, done));
   }
 
@@ -3500,11 +3505,12 @@ function keyWalk(dt) {
  *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
  *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
  *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
-const stBg = k => artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
+const stBg = k => k === 'tea' ? teaBackground(g.zone) : artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
 
 /** จุดยึดของห้อง — ฉากห้องของโซนที่องค์ประกอบต่างจากโซน 1 มีชุดจุดยึดของตัวเองใน ROOMS[k].zones
  *  ใช้เฉพาะตอนที่ฉากของโซนนั้นมีจริง (ยังไม่มีไฟล์ = ใช้ฉากโซน 1 ก็ต้องใช้จุดยึดโซน 1) */
 function roomFor(k) {
+  if (k === 'tea') return teaRoom(g.zone);
   const base = ROOMS[k] || ROOM_DEFAULT;
   const cap = `BG-${k[0].toUpperCase()}${k.slice(1)}`;
   const own = base.zones && base.zones[g.zone];
@@ -3512,9 +3518,11 @@ function roomFor(k) {
     : g.zone === 'th' && base.ui4 ? { ...base, ...base.ui4 } : base;
 }
 
-function openStation(k) {
+function openStation(k, emergency = false) {
   const def = STATIONS.find(d => d.k === k);
   const room = roomFor(k);
+  const emergencyStation = emergency ? { def, slots:[], fire:0, build:0 } : null;
+  const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
@@ -3528,7 +3536,7 @@ function openStation(k) {
   /** เนื้อหาฝั่งซ้าย/ขวา — วาดใหม่ได้บ่อยโดยไม่แตะ canvas ของฉาก
    *  (ถ้าวาดทั้งกล่องใหม่ทุกครั้ง ตัวละครในห้องจะกระโดดกลับจุดเริ่มทุก 0.7 วินาที) */
   const panels = () => {
-    const st = g.stations.find(x => x.def.k === k);
+    const st = stationHere();
     if (!st) return;
     const cap = g.stCap(st);
     const inside = !!(R && R.inReach());
@@ -3639,14 +3647,26 @@ function openStation(k) {
             : !inside ? t('room.nearKan') : mp.ammo >= mp.max ? t('room.kanFull')
             : kanLeft ? t('room.kanWait').replace('{n}', kanLeft) : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
+      if (k === 'tea') {
+        const owned = !!g.teaBeds[g.zone], asleep = R?.sleeping();
+        specs[0][3] ||= !!asleep;
+        specs.push([asleep ? 'กำลังนอนพัก…' : owned ? 'นอนพัก' : `ซื้อที่นอน · ${TEA_BED_COST} เบี้ยกรรม`,
+          null, () => { if (owned) R.setSleep(); else g.buyTeaBed(); panels(); },
+          !!asleep || !!R?.sitting() || (owned ? !R?.nearBed() || g.hp >= g.hpMax
+            : g.coin < TEA_BED_COST || !g.stations.some(st => st.def.k === 'tea' && !st.build)),
+          asleep ? 'พักแป๊บเดียวแล้วเลือดเต็มทันที' : owned ? (R?.nearBed() ? 'นอนสั้น ๆ แล้วเลือดเต็ม' : 'เดินไปที่นอนก่อน')
+            : 'อัปเกรดประจำโซน · นอนสั้น ๆ แล้วเลือดเต็ม']);
+      }
       const hpLine = k === 'tea' ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>
           <span class="st-hp">${esc(t('trial.hp'))} <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>` : '';
       put(A, specs.map(([label, hint, , disabled, why], i) => {
-        const [x, y] = room.actions?.[i] || [0.5, 0.5];
+        const [u, v] = room.actions?.[i] || [0.5, 0.5];
+        const [ax, ay] = k === 'tea' && R ? R.anchor(u, v) : [u*100,v*100];
+        const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
           <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(t(label))}</button>
-          ${sub ? `<small>${esc(sub)}</small>` : ''}${hpLine}
+          ${sub ? `<small>${esc(sub)}</small>` : ''}${i === 0 ? hpLine : ''}
         </div>`;
       }).join(''));
       A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
@@ -3850,14 +3870,17 @@ function openStation(k) {
 
   const cv2 = dlg.querySelector('#st-cv');
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
-  R.st = g.stations.find(x => x.def.k === k);
+  R.st = stationHere();
   R.onAct = () => {
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
+    if (R.sleeping()) return;
+    if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }
     if (R.canSit) { R.setSit(!R.sitting()); panels(); return; }
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
   R.onCollect = () => { panels(); refresh(); };
-  let wasNear = null, wasSitting = false;
+  if (emergency) R.setSleep(true);
+  let wasNear = null, wasSitting = false, wasSleeping = R.sleeping();
   const exit = roomExit(k, g.zone, room);
   const exitBtn = dlg.querySelector('#st-exit');
   if (exitBtn) exitBtn.onclick = () => {
@@ -3865,7 +3888,7 @@ function openStation(k) {
   };
   R.onFrame = near => {
     if (exitBtn) {
-      exitBtn.hidden = mgOpen || !nearRoomExit(R.pos(), exit);
+      exitBtn.hidden = mgOpen || R.sleeping() || !nearRoomExit(R.pos(), exit);
       const [left, top] = R.project(R.pos());
       const width = cv2.getBoundingClientRect().width;
       const half = exitBtn.offsetWidth / 2 + 8;
@@ -3878,7 +3901,7 @@ function openStation(k) {
     // ป้ายในหน้าต่างศาลา (#st-hp-chip) กับแถบหลักด้านหลัง (#res-hp-chip) — ไม่งั้นสองที่ไม่ตรงกัน
     // ระหว่างนั่ง (ข้อ C คุณเป้ 24 ก.ย. 2569 — ก่อนแก้ แถบหลักค้างค่าเก่าเพราะไม่มีอะไรเรียก refresh()
     // จนกว่าจะมี action อื่นที่ผ่าน g.onChange() บังเอิญเกิดขึ้น)
-    if (R.sitting()) {
+    if (R.sitting() || R.sleeping()) {
       const barHtml = bar(100 * g.hp / g.hpMax, 'hp'), num = Math.round(g.hp);
       const pct = Math.max(0, Math.min(100, 100 * g.hp / g.hpMax));
       const fill = dlg.querySelector('#st-hp-fill'); if (fill) fill.style.width = `${pct}%`;
@@ -3887,21 +3910,26 @@ function openStation(k) {
       const outer = document.querySelector('#res-hp-chip');
       if (outer) outer.innerHTML = `❤️ บารมี ${barHtml} <b>${num}</b>`;
     }
+    if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
     if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
     wasNear = near; panels();
   };
   R.start();
   window.__room = R;            // ไว้ส่องตอนดีบักในเบราว์เซอร์ เหมือน window.G
+  const noSleepExit = e => { if (R.sleeping()) e.preventDefault(); };
+  dlg.addEventListener('cancel', noSleepExit);
+  const controls = dlg.querySelectorAll('.st-controls button, .st-hud-item');
+  for (const b of controls) { const action = b.onclick; b.onclick = e => { if (!R.sleeping()) action?.(e); }; }
   panels();
   // ปิดหน้าต่างศาลาแล้วแถบหลักต้องเห็นค่าล่าสุดแน่ ๆ ไม่ว่าจะนั่งพักหรือทำอะไรในนี้มา (ข้อ C)
   // refresh() วาดใหม่จาก g ปัจจุบันเฉย ๆ ไม่แตะ dlg เลย เรียกตอนปิดกี่ครั้ง/กล่องไหนก็ปลอดภัย
-  dlg.addEventListener('close', () => refresh(), { once: true });
+  dlg.addEventListener('close', () => { if (!mine()) dlg.removeEventListener('cancel', noSleepExit); refresh(); }, { once: true });
 
   // แผงข้อมูลอัปเดตตามวาระที่เดินอยู่ (ทัณฑ์คืบหน้า · ไฟไหม้ · คิว)
   const tm = setInterval(() => {
     if (!mine()) { clearInterval(tm); return; }
-    const st = g.stations.find(x => x.def.k === k);
+    const st = stationHere();
     if (!st) { dlg.close(); return; }
     R.st = st;
     panels();
@@ -4071,11 +4099,36 @@ function openDiscovery() {
   dlg.addEventListener('close', closed);
 }
 
+function openDefeatRecovery() {
+  const recovery = g.pendingRecovery;
+  if (!recovery || dlg.open || g.battle) return;
+  if (recovery.stage === 'sleep') { openStation('tea', true); return; }
+  modal(`<div style="position:relative;min-height:60vh;display:grid;place-items:center;overflow:hidden;background:#160c20">
+    <img src="${esc(recovery.bg || teaBackground(recovery.zone))}" alt="" style="position:absolute;width:100%;height:100%;object-fit:cover;opacity:.35">
+    <img src="${yamaDownImage(recovery.outfit)}" alt="ยมบาทน้อยนอนสลบ" style="position:relative;width:50%;max-height:45vh;object-fit:contain">
+    <p style="position:absolute;bottom:1rem;text-align:center">ยมบาทน้อยหมดแรง… กำลังพากลับศาลาน้ำชา</p></div>`, null, 'defeat-recovery');
+  const gen = dlgGen;
+  const noSkip = e => e.preventDefault();
+  dlg.addEventListener('cancel', noSkip);
+  setTimeout(() => {
+    dlg.removeEventListener('cancel', noSkip);
+    if (dlgGen !== gen || !g.pendingRecovery) return;
+    recovery.stage = 'sleep'; g.save();
+    const site = STATIONS.find(d => d.k === 'tea');
+    if (site) { const [x,y] = nearestWalk(site.x, site.y + 90); g.player.x=x; g.player.y=y; }
+    openStation('tea', true);
+  }, DEFEAT_SCENE_MS);
+}
+
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
   g.syncDiscoveries();
   refresh();
   if (storyPlaying) return;
+  if (g.pendingRecovery && !g.battle && !g.pendingDadPunish) {
+    if (!dlg.open) openDefeatRecovery();
+    return;
+  }
   if (!g.battle && g.storyQueue.length) {
     if (!dlg.open && !storyScheduled) {
       storyScheduled = true;

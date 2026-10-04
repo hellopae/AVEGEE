@@ -22,13 +22,13 @@ test('new powers require their event unlock and enough MP', () => {
   assert.equal(g.battle.turn, 1);
 });
 
-test('wind fan damages and stops the immediate counter', () => {
+test('wind fan damages every foe and allows the ordinary counter', () => {
   const g = battle();
   g.abilities.windFan = true;
   const hp = g.battle.youHp;
   assert.equal(g.battleAct('windFan'), true);
   assert.equal(g.battle.dmg.foe, 36);
-  assert.equal(g.battle.youHp, hp);
+  assert.ok(g.battle.youHp < hp);
   assert.equal(g.mp, 100 - BATTLE.mpCost.wind);
 });
 

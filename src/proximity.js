@@ -14,7 +14,7 @@ export const ROOM_EXITS = {
   tarang: { asia: { x:.50, y:.94 } },
 
   // 29M: ทางออก = บันไดในภาพใหม่ของ 29D (พิกัดหลัง crop ของแบบ UI4 สำหรับโซนไทย)
-  tea:   { th:   { x:.83, y:.854, reach:.07 }, asia: { x:.50, y:.906, reach:.08 } },
+  tea:   Object.fromEntries(['th','asia','west','cyberhell'].map(z => [z,{x:.50,y:.91,reach:.09}])),
   ngiw:  { th:   { x:.50, y:.916, reach:.08 }, asia: { x:.50, y:.94 } },
   lokan: { asia: { x:.50, y:.916, reach:.08 } },
 };
