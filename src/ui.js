@@ -2694,13 +2694,13 @@ function openBattle(after) {
       {action:'atk'},{choices:powerChoices},{choices:crewActions},{choices:itemChoices}
     ]});
 
-    const finLabel = b.kind === 'zoneEvent' ? (b.over === 'win' ? 'รับรางวัลและกลับแผนที่' : 'กลับไปพักแล้วท้าใหม่')
+    const finLabel = b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
         b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
-      : b.over === 'lose' ? (b.kind === 'yama' ? 'ฟังคำตัดสินของพ่อ'
-                          : b.kind === 'dad'  ? 'ฟังคำตัดสินของพ่อ'
+      : b.over === 'lose' ? (b.kind === 'yama' ? t('battle.verdict')
+                          : b.kind === 'dad'  ? t('battle.verdict')
                           : b.kind === 'zoneBoss' ? 'กลับไปตั้งหลักที่สะพาน'
                           : b.kind === 'frontier' ? 'ถอยกลับเข้าประตู'
                           : b.kind === 'mob'  ? 'ถอยกลับไปตั้งหลัก'
@@ -2782,7 +2782,8 @@ function openBattle(after) {
     // ปุ่มยังเป็น [data-fin] ตัวเดิม handler ด้านล่างผูกด้วย dlg.querySelector จึงทำงานเหมือนเดิม
     // ชุด 29C ข้อ 6 — ปุ่ม "กลับไปคุมโซน" ของศึกที่กลับสู่แผนที่ (ผีบุก · เทวดาทดสอบ · แหกคุก · ชายแดนบุก) ต้องอยู่กลางจอ
     // ใหญ่ระดับปุ่มหลัก ไม่ใช่ปุ่มเล็กมุมล่างที่ทับ/ชิดกล่องผลกับแถบ HUD (ภาพจากคุณเป้ 2 ต.ค. 2569)
-    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak'].includes(b.kind) || (b.kind === 'mob' && b.over === 'win');
+    // ชุด 30B ข้อ 6 — ศึกอีเวนต์โซน 2–4 ที่ชนะ (ปุ่ม "รับรางวัล" ระลอกสุดท้าย) ก็อยู่กลางจอเหมือนกัน ไม่ทับป้ายมุมล่าง
+    const returnsToZone = ['devaTest', 'frontierBreach', 'prisonBreak'].includes(b.kind) || (['mob', 'zoneEvent'].includes(b.kind) && b.over === 'win');
     const finRow = b.over === 'win' || (b.over && returnsToZone) ? dlg.querySelector('[data-fin]')?.closest('.row') : null;
     if (finRow) {
       const multi = view.foes?.length > 1;

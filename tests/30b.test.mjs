@@ -90,3 +90,18 @@ test('30B-5: เซฟเก่าที่ MP เป็นทศนิยมโ
   assert.match(ui, /<small>\$\{Math\.round\(mp\)\}\/\$\{g\.mpMax\}<\/small>/);
   assert.doesNotMatch(ui, /MP \$\{g\.mp\}\//);
 });
+
+import { setLang, t } from '../src/i18n.js';
+
+test('30B-6/7: ปุ่ม "รับรางวัล" / "ฟังคำตัดสิน" มี TH+EN และไม่มีข้อความเก่าเหลือ', () => {
+  globalThis.document ||= { documentElement:{} };
+  for (const [lang, reward, verdict] of [['th', 'รับรางวัล', 'ฟังคำตัดสิน'], ['en', 'Collect reward', 'Hear the verdict']]) {
+    setLang(lang);
+    assert.equal(t('battle.reward'), reward);
+    assert.equal(t('battle.verdict'), verdict);
+  }
+  setLang('th');
+  const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(ui, /ฟังคำตัดสินของพ่อ|รับรางวัลและกลับแผนที่/);
+  assert.match(ui, /\['mob', 'zoneEvent'\]\.includes\(b\.kind\) && b\.over === 'win'/, 'ปุ่มรางวัลศึกอีเวนต์อยู่กลางจอ');
+});
