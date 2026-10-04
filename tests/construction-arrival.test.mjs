@@ -19,8 +19,10 @@ globalThis.Image = class {
 const pixels = new Map();
 globalThis.document = { documentElement:{}, createElement: () => ({ getContext: () => {
   let source, width, height;
-  return {
+  return new Proxy({
     drawImage(im, x, y, w, h) { source = im.src; width = w; height = h; },
+    createImageData(w, h) { return { data:new Uint8ClampedArray(w * h * 4) }; },
+    putImageData() {},
     getImageData() {
       const key = `${source}:${width}:${height}`;
       if (!pixels.has(key)) pixels.set(key, execFileSync('python3', ['-c',
@@ -28,7 +30,7 @@ globalThis.document = { documentElement:{}, createElement: () => ({ getContext: 
         fileURLToPath(new URL(`../${source}`, import.meta.url)), `${width}`, `${height}`], { maxBuffer:7_000_000 }));
       return { data:pixels.get(key) };
     },
-  };
+  }, { get: (target, key) => key in target ? target[key] : () => {} });
 } }) };
 const { createGame } = await import('../src/game.js');
 const { STATIONS, ZONES, BUILD_TIME, REPAIR_TIME, syncSceneZone } = await import('../src/data.js');

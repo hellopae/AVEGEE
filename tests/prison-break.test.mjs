@@ -113,21 +113,22 @@ test('loss applies the event penalty and allows a fresh retry', () => {
   assert.equal(g.startPrisonBreak().foes.length, 3);
 });
 
-test('ice stops the selected foe on its own counter turn', () => {
+test('ice hits every foe, spends its stun on the counter turn, then the next counter is normal', () => {
   const g = pendingGame();
   g.level = 3;
   const ice = g.powerOf('ice');
   ice.ammo = ice.max;
   g.startPrisonBreak();
-  const b = g.battle, [first, second] = b.foes;
-  second.hp = second.maxHp = 100;
+  const b = g.battle, [first, second, third] = b.foes;
+  for (const f of b.foes) f.hp = f.maxHp = 100;
   g.selectFoe(second.id);
-  g.battleAct('ice');
-  assert.equal(b.dmg.counterFoeId, first.id);
-  assert.equal(second.stun, 1);
   const hp = b.youHp;
+  g.battleAct('ice');
+  assert.deepEqual(b.foes.map(f => f.hp), [70, 70, 70]);
+  assert.equal(b.dmg.counterFoeId, first.id);
+  assert.deepEqual(b.foes.map(f => f.stun), [0, 0, 0]);
+  assert.equal(b.youHp, hp);
   g.battleAct('atk');
   assert.equal(b.dmg.counterFoeId, second.id);
-  assert.equal(second.stun, 0);
-  assert.equal(b.youHp, hp);
+  assert.ok(b.youHp < hp);
 });
