@@ -31,6 +31,8 @@ export function bindHeroStyle(fn) { heroStyleOf = fn; }
 /** เริ่มโหลดรูปทั้งชุดของโซนนี้ล่วงหน้า — เรียกซ้ำได้ ทำจริงครั้งเดียวต่อโซน
  *  (ไม่งั้นย้ายโซนแล้วอาคารเป็นกล่องเปล่าอยู่ครู่หนึ่งระหว่างรอไฟล์) */
 export function warmZone(z = zoneOf()) {
+  // Let the bounded preload queue own the connection while its screen is open.
+  if (typeof document !== 'undefined' && document.querySelector?.('#boot, .asset-loading')) return;
   if (warmed.has(z) || !ZMAP[z]) return;
   warmed.add(z);
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
@@ -100,11 +102,12 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
 }
 
 function load(src) {
-  if (CACHE.has(src)) return CACHE.get(src);
+  const old = CACHE.get(src);
+  if (old && (!old.failedAt || Date.now() - old.failedAt < 10000)) return old;
   const el = new Image();
-  const rec = { el, ok: false };
+  const rec = { el, ok: false, failedAt:0 };
   el.onload = () => { rec.ok = true; };
-  el.onerror = () => { rec.ok = false; };
+  el.onerror = () => { rec.ok = false; rec.failedAt = Date.now(); };
   el.src = src;
   CACHE.set(src, rec);
   return rec;

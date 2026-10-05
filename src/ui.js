@@ -16,7 +16,8 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio, warmBgmFile } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio } from './sfx.js';
+import { preloadZone } from './preload.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
@@ -1861,7 +1862,7 @@ function pauseForDlg() { if (!g.paused) { g.paused = true; updatePlay(); } }
  *  เช็คจากตัวจับเวลาแทน · ได้ผลพลอยได้: ตอนกล่องแค่ "ถูกแทนที่" ด้วยใบใหม่
  *  (openDlg close แล้ว showModal ในจังหวะเดียวกัน) dlg.open ยังเป็น true อยู่ จึงไม่คืนผิดจังหวะ */
 function releaseDlgPause() {
-  if (dlg.open || pauseDlg.open || g.bossWalk || g.over || g.paused === userPaused) return;
+  if (g.assetsLoading || dlg.open || pauseDlg.open || g.bossWalk || g.over || g.paused === userPaused) return;
   g.paused = userPaused; updatePlay();
 }
 dlg.addEventListener('close', () => setTimeout(releaseDlgPause, 0));   // ทางลัดให้ไวขึ้นเฉย ๆ
@@ -4458,6 +4459,20 @@ function openDefeatRecovery() {
 
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
+  if (g.assetsLoading) return;
+  // Hold the world before story/boss handlers can show any art from the new branch.
+  if (g.pendingZone) {
+    const z = g.pendingZone;
+    g.assetsLoading = true; g.paused = true;
+    preloadZone(z.k, g.outfit || z.k).then(() => {
+      g.pendingZone = null; g.assetsLoading = false;
+      refresh();
+      if (!z.back || (zoneIntroduction(z.k) && !g.zoneIntroSeen[z.k])) openZoneArrival(z);
+      else bossModal(`กลับมาที่${z.name}`,
+        `${z.sub ? `${z.sub}\n\n` : ''}สถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
+    });
+    return;
+  }
   g.syncDiscoveries();
   refresh();
   if (storyPlaying) return;
@@ -4516,13 +4531,6 @@ g.onChange = () => {
         proceed();
       });
     } else proceed();
-    return;
-  }
-  if (g.pendingZone) {
-    const z = g.pendingZone; g.pendingZone = null;
-    if (!z.back || (zoneIntroduction(z.k) && !g.zoneIntroSeen[z.k])) openZoneArrival(z);
-    else bossModal(`กลับมาที่${z.name}`,
-      `${z.sub ? `${z.sub}\n\n` : ''}สถานี ยมทูต และคิวที่ท่านทิ้งไว้ที่สาขานี้ยังอยู่ครบเหมือนวันที่ท่านจากไป`, 'เริ่มงาน');
     return;
   }
   // สาขาใหม่เพิ่งปลดล็อก — เด้งเองเฉพาะตอนที่ไม่มีหน้าต่างเลื่อนขั้นตามมา
@@ -4798,9 +4806,7 @@ onLangChange(() => { const d = $('#dlg'); if (d && d.open) paintSettingsLangAsse
 // ฉากเปิดต้องมาก่อน refresh() — ไม่งั้น drawCoach จะเปิดโมดัลบทที่ 1 ทับ แล้วบทที่ 1 หายไปเลย
 const titleAudioReady = primeAudio(['bgm-title']); // ให้ path พร้อมก่อนจังหวะแตะ (สำคัญกับ Brave)
 primeAudio(['bgm-zone', 'bgm-battle']);
-// ดึงเนื้อไฟล์ bgm-battle เข้า cache ไว้เลย (ไม่ใช่แค่รู้ path) ตอนเข้าฉากต่อสู้ครั้งแรกจะได้เล่นติดทันที
-// ไม่รอ splash/title โหลดเพลงหลักก่อน (warmBgmFile ใช้ requestIdleCallback รอจังหวะว่างเอง)
-warmBgmFile('bgm-battle');
+// preload.js downloads the music completely before boot-ready, including on iOS.
 const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
 const enterGate = $('#enter-gate');

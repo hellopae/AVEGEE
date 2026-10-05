@@ -191,3 +191,20 @@ test('ปิดเสียง effect แล้วเงียบ: AUDIO.on=fals
   layers.length = 0; S.sfx('ice');
   assert.ok(layers.length > 0, 'เปิดแล้วต้องมีเสียง');
 });
+
+test('preloading downloads whole music once, reuses track, and does not autoplay', async () => {
+  S.stopBgm(); advance(1000);
+  const previous = globalThis.fetch;
+  let downloads = 0;
+  globalThis.fetch = async () => ({ ok:true, blob:async () => { downloads++; return new Blob(['music'], {type:'audio/mpeg'}); } });
+  try {
+    const count = created.audio.length;
+    const plays = created.audio.reduce((n,a) => n + a.playCalls, 0);
+    await S.preloadBgm('bgm-battle');
+    await S.preloadBgm('bgm-battle');
+    assert.equal(downloads, 1);
+    assert.equal(created.audio.length, count);
+    assert.equal(created.audio.reduce((n,a) => n + a.playCalls, 0), plays);
+    assert(created.audio.some(a => a.src.startsWith('blob:')));
+  } finally { globalThis.fetch = previous; }
+});

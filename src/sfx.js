@@ -5,6 +5,7 @@
 //   · เพลง = ไฟล์จริงจาก Suno ที่ audio/<key>.ogg → ไม่มีไฟล์ก็เงียบ ไม่พัง ไม่ error
 // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ทุกอย่างจึงเริ่มที่ unlock() ตอนกดปุ่มแรก
 
+import { fetchWithTimeout } from './asset-preload.js';
 const LS = 'avegee.audio';
 // bgm 0.22 ตั้งแต่ 8 ก.ย. 2569 — เดิม 0.40 เจ้าของบอกว่าดังเกิน
 // เพลงเป็นฉากหลังของการอ่านสำนวน ต้องเบากว่าที่คิดไว้มาก · ปรับเพิ่มได้ที่หน้าตั้งค่า
@@ -157,6 +158,7 @@ let cur = null, pendingBgm = null;   // cur = key เพลงที่ขอล
 const tracks = new Map();          // url → { el, lvl (0..1 ระดับ fade ตอนนี้), goal (0|1) }
 let curUrl = null;                 // url ของเพลงที่ควรดังอยู่ตอนนี้
 const srcCache = new Map();       // key → path ที่มีจริง (หรือ null ถ้าไม่มีสักนามสกุล)
+const mediaSources = new Map();  // complete downloaded music, including on iOS which ignores preload=auto
 
 /** หาไฟล์ที่มีอยู่จริง — ถามเซิร์ฟเวอร์ตรง ๆ ด้วย HEAD
  *  เดิมอาศัย el.onerror ของ <audio> ไล่ทีละนามสกุล ซึ่งพึ่งไม่ได้:
@@ -168,7 +170,8 @@ async function findSrc(key) {
   for (const ext of EXT) {
     const url = `audio/${key}.${ext}`;
     try {
-      const r = await fetch(url, { method: 'HEAD', cache: 'force-cache' });
+      const { response:r, release } = await fetchWithTimeout(url, { method:'HEAD', cache:'force-cache' }, 15000);
+      release();
       if (r.ok) { found = url; break; }
     } catch { /* ออฟไลน์หรือ HEAD ไม่ผ่าน — ลองนามสกุลถัดไป */ }
   }
@@ -186,6 +189,27 @@ async function findSrc(key) {
  *  รู้ path ไว้ก่อนตั้งแต่ยังไม่มีใครกด → พอถึงจังหวะกดจริง bgm() สั่ง play() ได้ทันที ไม่ต้องรออะไร */
 export function primeAudio(keys = ['bgm-title', 'bgm-zone', 'bgm-battle']) {
   return Promise.all(keys.map(findSrc));
+}
+
+/** Fetch the whole file before releasing the loading screen. No play() until a user gesture. */
+export async function preloadBgm(key) {
+  if (srcCache.get(key) === null) srcCache.delete(key);
+  const url = await findSrc(key);
+  if (!url) throw new Error('music unavailable');
+  if (mediaSources.has(url)) return;
+  const { response, release } = await fetchWithTimeout(url, { cache:'force-cache' }, 45000);
+  let blob;
+  try {
+    if (!response.ok) throw new Error('music download failed');
+    blob = await response.blob();
+  } finally { release(); }
+  if (!blob.size) throw new Error('empty music');
+  const source = URL.createObjectURL(blob);
+  mediaSources.set(url, source);
+  // An idle warmer may have created the track already. Never interrupt a playing track.
+  const existing = tracks.get(url);
+  if (existing && existing.el.paused && existing.goal === 0) existing.el.src = source;
+  getTrack(url);
 }
 
 /** อุ่นเพลงล่วงหน้าแบบ priority ต่ำ — คนละเรื่องกับ primeAudio ข้างบน
@@ -250,7 +274,7 @@ function getTrack(url) {
   if (!t) {
     const el = new Audio();
     el.loop = true; el.preload = 'auto'; el.volume = 0;
-    el.src = url;                       // ตั้งครั้งเดียวตลอดอายุเกม — ไม่มีการสลับ src → ไม่ teardown/โหลดใหม่ตอนเปลี่ยนเพลง
+    el.src = mediaSources.get(url) || url;
     t = { el, lvl: 0, goal: 0 };
     tracks.set(url, t);
   }

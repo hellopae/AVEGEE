@@ -1520,25 +1520,29 @@ dialog.frontier-map-dialog>.modal-corner-close{display:none!important}
 .turnhint{font-size:var(--text-xs);color:var(--gold);text-align:center;padding:6px 0 2px;
   letter-spacing:.5px}
 /* ---------- หน้าโหลด ----------
-   ภาพทั้งเกมรวมกัน 16 MB · art.js ตั้งใจโหลดตอนจะวาด ซึ่งบนเน็ตมือถือแปลว่า
+   ภาพถูกจัดโหลดตามโซนก่อนเข้าเล่น · บนเน็ตมือถือ
    ผู้เล่นนั่งดูฉากว่างเปล่าอยู่หลายวินาที (เจ้าของเจอ 8 ก.ย. 2569 บนมือถือกับ iPad)
    จอนี้กั้นไว้จนภาพชุดแรกมาครบ — ตรรกะอยู่ที่ src/preload.js */
-#boot{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+#boot,.asset-loading{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:var(--space-4);
   background:radial-gradient(120% 90% at 50% 0%,#2d1118 0%,#140a0e 55%,#0b0508 100%);
   transition:opacity .55s ease}
 #boot.gone{opacity:0;pointer-events:none}
-#boot .brand{font-family:var(--font-display);font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;
+:is(#boot,.asset-loading) .brand{font-family:var(--font-display);font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;
   color:var(--gold);letter-spacing:.06em;margin:0;text-shadow:0 0 30px rgba(212,163,85,.32)}
-#boot .bar{width:min(280px,62vw);height:5px;background:rgba(212,163,85,.15);
+:is(#boot,.asset-loading) .bar{width:min(280px,62vw);height:5px;background:rgba(212,163,85,.15);
   border-radius:99px;overflow:hidden}
-#boot .bar i{display:block;height:100%;width:0;background:var(--gold);
+:is(#boot,.asset-loading) .bar i{display:block;height:100%;width:0;background:var(--gold);
   border-radius:99px;transition:width .35s ease}
-#boot .pct{font-size:var(--text-xs);color:var(--muted-foreground);font-variant-numeric:tabular-nums;
+:is(#boot,.asset-loading) .pct{font-size:var(--text-xs);color:var(--muted-foreground);font-variant-numeric:tabular-nums;
   letter-spacing:.1em}
-#boot .note{margin:0;font-size:var(--text-sm);color:var(--muted-foreground);text-align:center;
+:is(#boot,.asset-loading) .note{margin:0;font-size:var(--text-sm);color:var(--muted-foreground);text-align:center;
   max-width:min(28rem,84vw);line-height:var(--leading-body);min-height:3.4em;
   transition:opacity .4s ease}
+.asset-loading{width:100vw;height:100dvh;max-width:none;max-height:none;border:0;margin:0;padding:24px;color:var(--gold)}
+.asset-loading::backdrop{background:#0b0508}
+:is(#boot,.asset-loading) .row{justify-content:center;flex-wrap:wrap}
+:is(#boot,.asset-loading) .pct{min-height:1.5em}
 
 /* ---------- มือถือ: เล่นแนวนอนอย่างเดียว ----------
    แนวตั้งบนมือถือ แถบทรัพยากรที่ลอยอยู่บนฉากกางเป็นห้าแถวจนบังฉากทั้งจอ
