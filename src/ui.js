@@ -2626,6 +2626,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
+  let commandMenuOpen = true;
   // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
   let healFx = null, healTimer = 0;
   const applyHealFx = () => {
@@ -2778,7 +2779,7 @@ function openBattle(after) {
       ? `<div class="battle-command-confirm" role="status"><b>เลือกผู้รับ / Choose recipient</b>${recipients}
           <button data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button></div>`
       : `<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
-    const acts = rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,
+    const acts = !commandMenuOpen || !!phase || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,
       actorName:actor.name || GUARD.name, portrait:isYama ? artUrl('hero-yama-profile') : crewArt(actor, '-profile'),
       segments:[{id:'attack',label:'โจมตี / Attack',icon:'img/ui/Button7.png',choices:attacks},
         ...(isYama ? [{id:'power',label:'พลัง / Power',icon:'img/ui/Button8.png',choices:powerChoices}] : []),
@@ -2910,7 +2911,7 @@ function openBattle(after) {
         if (phase) return;
         const key = el.dataset.crewPick;
         const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
-        if (chosen && g.selectBattleActor(chosen.id)) paint();
+        if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
       };
       el.onclick = activate;
       el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
@@ -2969,6 +2970,7 @@ function openBattle(after) {
       const k = actor ? 'crew:' + actor.k : action;
       const hpBefore = g.battle.youHp;
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
+      commandMenuOpen = false;
       // ชุด 30B ข้อ 9 — บุญ (ยมทูตสายเติมเลือด) เติมบารมี: ยมบาทน้อยเรืองแสงเขียว-ทอง + เลข +HP ลอยขึ้น
       // เริ่มตอนภาพคั่นท่าพิเศษจางลงพอดี (ไม่งั้นอยู่ใต้ภาพคั่นที่ทับเต็มกรอบ)
       if (k === 'crew:boon' && g.battle.youHp > hpBefore) {
