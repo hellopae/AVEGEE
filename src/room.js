@@ -1,3 +1,5 @@
+import { actorStanding } from './actor-recovery.js';
+import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
@@ -141,6 +143,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
   let lying = false, sleepElapsed = 0, recoverySleep = false;
+  const mpAcc = { frac:0 };   // เศษ MP ที่ยังไม่ครบหน่วย (ข้อ 5 ชุด 30B)
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
@@ -245,6 +248,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (lying) {
       sleepElapsed += dt;
       if (sleepElapsed >= TEA_SLEEP_MS) {
+        sleepElapsed = 0;
+        if (recoverySleep && g.pendingRecovery?.stage !== 'wake') { g.finishTeaSleep(); return; }
         lying = false;
         P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
         if (recoverySleep) g.completeTeaRecovery();
@@ -256,7 +261,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.hp < g.hpMax || g.mp < g.mpMax) {
         g.hp = Math.min(g.hpMax, g.hp + BAL.hpRegenSit * dt / 1000);
-        g.mp = Math.min(g.mpMax, g.mp + 5 * dt / 1000);
+        regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
         if (g.hp >= g.hpMax && g.mp >= g.mpMax) sitting = false;
       } else sitting = false;
       const now = performance.now();
@@ -383,7 +388,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         rr(ctx, x - bw / 2, y + U * 0.012, bw * p, bh2, bh2 / 2); ctx.fill();
         // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
         const nm = sl.soul.who.length > 9 ? sl.soul.who.slice(0, 8) + '…' : sl.soul.who;
-        label(ctx, nm, x, y + U * 0.035 + (i % 2) * U * 0.032, U * 0.026, '#ffe0c8');
+        if (def.k === 'tarang') soulNameplate(ctx, sl.soul.name || sl.soul.who, x, y, U, soulNameplateWidth(room.souls, i, box.w, U));
+        else label(ctx, nm, x, y + U * 0.035 + (i % 2) * U * 0.032, U * 0.026, '#ffe0c8');
       } });
     });
 
@@ -400,9 +406,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
                    entry.inspected || entry.checked ? '#d4f9cf' : '#ffd9c0', entry.soul.sp || 7);
-          // ข้อ F คุณเป้เจอ 25 ก.ย. 2569 — จุดยืนสามคนอยู่ใกล้กัน ป้ายชื่อทับกันอ่านไม่ออก
-          // สลับสูง-ต่ำทีละดวงแบบเดียวกับคิววิญญาณปกติ (บรรทัด ~334 ด้านบน)
-          label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
+          if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
+            soulNameplateWidth(room.souls, i + occupied, box.w, U));
+          else label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
         } });
       });
     }
@@ -430,8 +436,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
-      if (c && !c.self) acts.push({ y: room.crew[1], fn: () => {
-        const x = px(room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0)), y = py(room.crew[1]);
+      const guard = room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
+      if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
+        const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
       } });
     }
@@ -571,4 +578,16 @@ function tag(ctx, x, y, text, color, U = 400) {
   ctx.fillStyle = 'rgba(16,8,12,.82)';
   rr(ctx, x - w / 2, y - h / 2, w, h, h / 3); ctx.fill();
   ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
+function soulNameplate(ctx, name, x, y, U, maxWidth) {
+  const size = Math.max(10, U * 0.018), pad = size * 0.55;
+  ctx.font = `600 ${size}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  const text = fitSoulName(name, Math.max(0, maxWidth - pad * 2), s => ctx.measureText(s).width);
+  const width = Math.min(maxWidth, ctx.measureText(text).width + pad * 2), height = size * 1.65;
+  const top = y + U * 0.012;
+  ctx.fillStyle = 'rgba(16,8,12,.92)';
+  rr(ctx, x - width / 2, top, width, height, height / 3); ctx.fill();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#ffe0c8'; ctx.fillText(text, x, top + height / 2);
 }

@@ -4,6 +4,7 @@ import { INTERACTION_REACH, nearestInteraction, mapInteractions, ROOM_EXITS, roo
 globalThis.Image = class { set src(v) {} };
 const { createGame, loadSave } = await import('../src/game.js');
 const { ROOMS, ZONES, STATIONS, MERCHANT } = await import('../src/data.js');
+const { teaRoom } = await import('../src/tea-recovery.js');
 
 test('nearest action uses one inclusive radius, disappears out of range and handles ties', () => {
   const origin = {x:0, y:0};
@@ -19,13 +20,18 @@ test('nearest action uses one inclusive radius, disappears out of range and hand
 
 test('every room/zone gets a reachable entrance exit; config overrides distance', () => {
   for (const [key, base] of Object.entries(ROOMS)) for (const zone of ZONES) {
-    const room = zone.k === 'th' && base.ui4 ? {...base,...base.ui4} : {...base,...base.zones?.[zone.k]};
+    // ศาลาน้ำชาใช้ห้องกลางจาก teaRoom() ทุกโซน (ui.js roomFor) ไม่ใช่ค่าใน ROOMS
+    const room = key === 'tea' ? teaRoom(zone.k)
+      : zone.k === 'th' && base.ui4 ? {...base,...base.ui4} : {...base,...base.zones?.[zone.k]};
     const exit = roomExit(key, zone.k, room);
     // 29M: ฉากที่ 29D วาดใหม่ตั้งทางออกที่บันไดผ่าน ROOM_EXITS (จุดเกิดไม่ต้องอยู่ติดทางออก)
     // → ต้องมีทางออกนั้นอยู่ในพื้นที่เดินจริง; ฉากอื่นยังต้องเกิดที่ทางเข้าเหมือนเดิม
     if (ROOM_EXITS[key]?.[zone.k]) {
-      const polys = (room.walk || []).map(w => Array.isArray(w) ? { poly:[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]] } : w);
-      assert.ok(polys.some(({ poly }) => {
+      const walks = typeof room.walk?.[0] === 'number' ? [room.walk] : (room.walk || []);   // teaRoom ใช้สี่เหลี่ยมเดี่ยว [x0,y0,x1,y1]
+      const rects = walks.filter(Array.isArray);
+      const polys = walks.map(w => Array.isArray(w) ? { poly:[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]] } : w);
+      // ขอบสี่เหลี่ยมนับว่าอยู่ในพื้นที่เดิน (ทางออกศาลาน้ำชาอยู่ที่ขอบล่างของพื้นที่เดินพอดี)
+      assert.ok(rects.some(w => exit.x >= w[0] && exit.x <= w[2] && exit.y >= w[1] && exit.y <= w[3]) || polys.some(({ poly }) => {
         let hit = false;
         for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
           const a = poly[i], b = poly[j];

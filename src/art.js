@@ -36,7 +36,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261004-recovery-ice', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261004-b7-art', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -67,12 +67,12 @@ fetch('img/manifest.json?v=20261004-recovery-ice', { cache: 'no-cache' })
 const POSE = /-(build-work|profile|work|atk|side|walk|cry)$/;
 const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slice(0, -m[0].length)}-${z}${m[0]}` : `${key}-${z}`; };
 
-/** path ของไฟล์ที่ต้องใช้กับคีย์นี้ในโซนตอนนี้
+/** path ของไฟล์ที่ต้องใช้กับคีย์นี้ — sourceZone ใช้โซนต้นทางของหน่วย (ไม่ระบุ = โซนปัจจุบัน)
  *  คืน null = "ท่านี้ของโซนนี้ยังไม่มี แต่ตัวละครของโซนมีแล้ว" → ผู้เรียกต้องถอยไปท่ายืน
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
-export function artUrl(key, ext = 'png') {
-  const z = key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf();
+export function artUrl(key, ext = 'png', sourceZone = null) {
+  const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   const map = ZMAP[z];
   if (key === 'hero-yama-unconscious') return yamaDownImage(z);
   if (key === 'hero-yama-tea-clean') return `img/hero-yama-${z}-tea-clean.png`;
@@ -111,8 +111,8 @@ function load(src) {
 }
 
 /** ขอรูปจริง คืน null ถ้ายังไม่มีไฟล์ (แล้วผู้เรียกวาด placeholder เอง) */
-export function img(key) {
-  const src = artUrl(key);
+export function img(key, sourceZone = null) {
+  const src = artUrl(key, 'png', sourceZone);
   if (!src) return null;
   const r = load(src);
   return r.ok ? r.el : null;
@@ -269,6 +269,19 @@ export function bodyBoxOf(def) {
   return r;
 }
 
+/** 30D — กรอบ "ทั้งตัวอาคาร" ที่ยมบาท/ยมทูตเหยียบไม่ได้ [x1,y1,x2,y2] (พิกัดฉาก)
+ *  เดิมกันแค่แถบฐานล่างสุด (footOf) ยมบาทเดินขึ้นไปยืนบนตัวอาคาร (กระทะทองแดงโซน 3) ได้ — ตัวละครถูกวาดซ้อนบนอาคาร
+ *  ตอนนี้กันตั้งแต่ยอดเนื้อภาพ (bodyBoxOf) ลงมาถึงขอบหน้าของฐาน แคบเข้าข้างละ 10% จะได้เดินเฉียดชายคาได้
+ *  ภาพยังไม่มา (footOf = null) → คืน null ให้ผู้เรียกลองใหม่รอบหน้า · ใช้พิกเซลจริงเหมือนเดิม วาดใหม่แล้วกรอบขยับตามเอง */
+export function blockOf(def) {
+  const foot = footOf(def);
+  if (!foot) return null;
+  const body = bodyBoxOf(def);
+  if (!body) return foot;
+  const pad = (body[2] - body[0]) * 0.10;
+  return [Math.min(foot[0], body[0] + pad), Math.min(foot[1], body[1]), Math.max(foot[2], body[2] - pad), foot[3]];
+}
+
 /** ความลึกของอาคารสำหรับเรียงชั้นวาด — **ขอบหลังของแถบฐานที่ติดพื้น** ไม่ใช่ def.by
  *  def.by คือ "ขอบหน้าสุด" ของสไปรท์ (ปลายบันได/ปลายลานหน้า) ซึ่งเป็นค่าที่ผิดสำหรับเรียงชั้น:
  *  สไปรท์อาคารเป็นภาพมุมเฉียง ฐานกินพื้นเป็น **แถบ** ไม่ใช่เส้นเดียว ใครที่ยืนบนแถบนั้น
@@ -369,12 +382,19 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
 // ---------- ตัวละคร ----------
 /** วางตัวละครแบบ standee: เท้าอยู่ที่ (x,y) สูง h ในพิกัดฉาก
  *  ยังไม่มีรูปก็วาดเงา + สัญลักษณ์แทน เกมเล่นได้เหมือนกัน */
-export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false) {
+/** 30D ข้อ 6 — ภาพยืนของทัณฑ์/ซิสอ็อปโซน 4 วาดตัวสูงแค่ ~87% ของกรอบ (ยมทูตคนอื่นเต็มกรอบ ~100%)
+ *  เลยตัวเล็กกว่าเพื่อนบนแผนที่ → ขยายตอนวาดให้ความสูงตัวจริงเท่าคนอื่น (ไม่แตะไฟล์ภาพ)
+ *  ค่า = 1 / (ความสูงตัวจริง ÷ ความสูงกรอบ) วัดจาก alpha ของ img/CyberHell/crew-taan-cyberhell.png (0.871) */
+export const STANDEE_FIT = { 'cyberhell:crew-taan': 1.148 };
+export const standeeFit = (key, zone) => STANDEE_FIT[`${zone}:${key.replace(POSE, '')}`] || 1;
+
+export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walking = false, sourceZone = null) {
+  h *= standeeFit(key, sourceZone || zoneOf());
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
   ctx.fillStyle = 'rgba(0,0,0,.42)';
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
-  const im = img(key);
+  const im = img(key, sourceZone);
   if (im) {
     if (walking) {
       // จังหวะสองเฟรมแบบ Office Agent: เด้ง สลับยืด/หด และเอียงตามก้าว

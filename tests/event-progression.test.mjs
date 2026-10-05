@@ -74,10 +74,10 @@ test('Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retri
   assert.equal(g.zoneCaptivesFree(), false);
   assert.equal(g.build('tea'), false);
   g.coin = 500;
-  assert.equal(g.buyMerchant('tea'), false);
+  assert.equal(g.buyMerchant('teaZ4'), false);
   g.startZoneEvent('cyberRescue'); winBattle(g);
   assert.equal(g.zoneCaptivesFree(), true);
-  assert.equal(g.buyMerchant('tea'), true);
+  assert.equal(g.buyMerchant('teaZ4'), true);
   assert.equal(g.crew.some(c => c.k === 'taan'), true);
   assert.equal(g.abilities.cooldownClock, true);
   g.zoneCases.cyberhell = 5; g.refreshZoneEvents();

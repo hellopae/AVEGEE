@@ -86,7 +86,7 @@ export const DEEDS = [
   { t: 'สั่งฝูงบัญชีอัตโนมัติรุมข่มขู่เด็กจนไม่กล้าไปโรงเรียน', s: 'bian', w: 4, zone:'cyberhell' },
   { t: 'เจาะระบบโรงพยาบาลแล้วล็อกเครื่องช่วยชีวิตเรียกค่าไถ่', s: 'kha', w: 5, zone:'cyberhell' },
   { t: 'เปิดเว็บพนันให้เยาวชนและซ่อนเส้นทางเงินด้วยคริปโต', s: 'mao', w: 5, zone:'cyberhell' },
-  { t: 'ตัดต่อเสียงพ่อแม่เพื่อหลอกเอาเงินจากลูกของเขา', s: 'akata', w: 4, zone:'cyberhell' },
+  { t: 'ตัดต่อเสียงพ่อแม่เพื่อหลอกเอาเงินจากลูกของเขา', s: 'kong', w: 4, zone:'cyberhell' },
 ];
 
 // ---------- คดีที่ตัดสินยาก ----------
@@ -308,8 +308,9 @@ export const NO_WALK = [
 /** กรอบที่ทับ NO_WALK แล้วยังเดินได้ — สะพานหินกลางจอ + เกาะกลางน้ำ + ประตูชายแดน + ท่าเรือไม้สองฝั่ง
  *  ชุดที่ 15b วัดใหม่จาก img/scene-v2.png จริง (บันได-เกาะ-ประตูอยู่ในแนวกลางภาพเดียวกัน) */
 export const WALK_OK = [
-  [690, RIVER_Y, 900, 850],                  // บันไดหิน + เกาะกลางแม่น้ำวิญญาณ (ใต้ RIVER_Y)
-  [660, 690, 910, SCENE.h],                  // ทางต่อจากเกาะไปประตูชายแดน + ที่ยืนของยักษ์ทวารบาล
+  // 30D: สองกรอบสี่เหลี่ยมเดิม ([690,RIVER_Y,900,850] / [660,690,910,H]) กว้างกว่าสะพานกับเกาะมาก
+  // ผลคือน้ำทั้งสองข้างสะพาน (ด้านล่างซ้ายของประตูชายแดน) เหยียบได้ ยมบาทเดินลงไปยืนในแม่น้ำวิญญาณ
+  // เปลี่ยนเป็นรูปหลายเหลี่ยม WALK_OK_POLY ตามขอบสะพาน+เกาะจริง (ดูด้านล่าง)
   [408, 655, 528, 705],                      // ท่าเรือฝั่งซ้าย (ขอบ x ชิดขอบช่อง 8px ของตาราง walk.js — ไม่งั้น BFS เห็นช่องเดินได้แต่ก้าวจริงติดเส้นบาง ๆ)
   [1320, 655, 1440, 705],                    // ท่าเรือฝั่งขวา (ขอบ x ชิดขอบช่องเช่นกัน)
   // ชุด 27D — สะพานไม้ข้ามลาวา 2 แห่ง (ตำแหน่งเดียวกันทุกโซน) ตัวอ่านสีลาวาใน walk.js เห็นแสงลาวาลอดช่องระหว่างไม้กระดาน
@@ -318,6 +319,14 @@ export const WALK_OK = [
   // กรอบนี้วัดเฉพาะพื้นไม้ (ไม่รวมราวและลาวาสองข้าง) ลาวานอกกรอบยังห้ามเดินเหมือนเดิม
   [808, 572, 863, 660],                      // สะพานใหญ่หน้าบันไดแท่น (เดินแนวตั้ง ข้ามธารลาวาแนวนอน)
   [592, 432, 680, 479],                      // สะพานเล็กซ้ายแท่น (เดินแนวนอน ข้ามธารลาวาแนวตั้ง)
+];
+
+/** 30D — สะพานไม้ + เกาะกลางแม่น้ำวิญญาณ (ที่ตั้งของประตูชายแดน) เป็นรูปหลายเหลี่ยม [x,y]
+ *  วัดจากพิกเซลของฉากทั้ง 4 โซน (ผังสะพาน/เกาะเหมือนกันทุกโซน) แล้วหดเข้ามาราว 8px จากขอบน้ำ
+ *  ตัวละครจึงยืนได้เฉพาะบนพื้นเกาะ/สะพาน ไม่ลงไปในน้ำสองข้าง · y=690 คือหัวสะพานฝั่งตลิ่ง */
+export const WALK_OK_POLY = [
+  [[796,690],[876,690],[878,752],[910,757],[924,780],[935,800],[945,820],[954,840],[965,860],[972,880],[972,SCENE.h],
+   [707,SCENE.h],[707,860],[712,840],[730,820],[741,800],[751,780],[768,757],[794,752]],
 ];
 
 /** แถวคิว: หัวคิวยืนบนแท่นพิพากษา "ฝั่งขวา" ให้ตรงกับบับเบิลคำพูดของเขา
@@ -557,7 +566,7 @@ export const KRAJOK = {
  *    cool = เก็บไปแล้วกี่วาระถึงจะมีชิ้นใหม่มาวาง (เท่าคูลดาวน์ของปุ่มเดิมทุกหลัง ไม่ได้ปรับสมดุล)
  *  หนึ่งสถานีมีของวางได้ทีละชิ้นเดียว — ทิ้งไว้ไม่เก็บ ก็ไม่มีชิ้นที่สองมากอง */
 export const ITEMS = {
-  health: { name:'หีบยาอายุวัฒนะ', img:'item-health', h:46, hp:40, glyph:'💊',
+  health: { name:'หีบยาอายุวัฒนะ', img:'item-health', h:46, hp:42, glyph:'💊',
             desc:'ฟื้นบารมีของยมบาทน้อย', howTo:'เปิดกระเป๋า กดใช้เพื่อฟื้นบารมี หรือเลือกไอเท็มในฉากต่อสู้', fallback:'ของ', say:'บารมีฟื้นขึ้นมาอีกหน่อย' },
   mirror: { name:'กระจกวิเศษ',     img:'item-mirror', h:54, power:'mirror', glyph:'🪞',
             desc:'เผยสถานที่ ความแรง และยมทูตที่เหมาะกับคดี พร้อมชี้ข้อที่นำไปสู่บาปหลัก', howTo:'ในห้องสอบสวน กดกระจกวิเศษ · เมื่อพลังสำรองหมด จะใช้ของในกระเป๋าแทน', fallback:'ของ', say:'กระจกวิเศษพร้อมใช้อีกครั้ง' },
@@ -583,7 +592,9 @@ export const ITEMS = {
   // glyph ว่างโดยตั้งใจ: ห้ามใช้อีโมจิแทนภาพ
   holyWater: { name:'น้ำมนต์', nameKey:'item.holyWater', img:'item-holywater', h:44, mp:30, glyph:'', placeholder:'MP',
             desc:'เติม MP ของยมบาทน้อย', howTo:'เปิดกระเป๋า กดใช้เพื่อเติม MP หรือใช้ที่จุดเตรียมศึก', fallback:'MP', say:'น้ำมนต์เย็นฉ่ำไหลลงคอ — พลัง MP ฟื้นขึ้นมา' },
-  spareHeart: { name:'หัวใจสำรอง', img:'item-health', h:44, glyph:'❤️', revive:true,
+  // ชุด 30B ข้อ 8 — เดิมใช้ภาพกล่องยา (item-health) ซ้ำ ผู้เล่นแยกไม่ออก · ตอนนี้ชี้ item-heart (ยังไม่มีไฟล์ → โชว์ glyph ❤️ ในกรอบเดียวกัน)
+  // พอ Kittanate วาดหัวใจแล้ววาง img/item-heart.png เกมใช้ภาพจริงทันที ไม่ต้องแก้โค้ด (สเปก 128×128 พื้นใส ดูรายงานชุด 30B)
+  spareHeart: { name:'หัวใจสำรอง', img:'item-heart', h:44, glyph:'❤️', revive:true,
             desc:'ช่วยให้ลุกขึ้นสู้ต่ออัตโนมัติเมื่อบารมีหมดในศึก', howTo:'เก็บไว้ในกระเป๋า — ถ้าบารมีหมดในศึก ระบบจะใช้ให้เอง', fallback:'ของ', say:'หัวใจสำรองช่วยให้ยืนขึ้นได้อีกครั้งเมื่อพ่ายแพ้' },
   // ดอกบัวเป็นทางเดียวที่ "กรรมท่าน" ลดลงได้โดยไม่ต้องรอห้าดาว
   // ตกให้เมื่อกรรมเริ่มสูงเท่านั้น — ไม่งั้นมันจะกลายเป็นใบอนุญาตให้ลงทัณฑ์เกินฟรี ๆ
@@ -677,10 +688,10 @@ export const MOB = {
 
 // ชุดที่ 10 (ข้อ C2) คุณเป้ 25 ก.ย. 2569 — เข้าร่วมฉากต่อสู้แบบผลัดตา (g.battle) ได้แล้ว
 // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — battleAtk/battleCd ยึด CREW_POWER.guard ที่เดียวกับยมทูต
-// (เดิม [34,48] สุ่ม + คูลดาวน์ 130 วิ → ตอนนี้ 60 คงที่ + คูลดาวน์ 120 วิ = 2 นาทีตามที่คุณเป้กำหนด)
+// B5: ฟาดแรง 60, เสียกำลังใจ 8, คูลดาวน์ 20 วินาทีสนามรบ
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
-  hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,
+  hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:20,
   line:'"ข้าเฝ้าประตูนี้มาก่อนที่ท่านจะเกิด ปล่อยเรื่องพวกเปรตให้ข้า"',
   desc:'ไล่ปราบเปรตให้เอง ไม่ต้องเดินไปเอง แต่กินค่าแรงทุกงวด · เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ',
 };
@@ -962,12 +973,24 @@ export const ROOMS = {
             zones:{asia:{crop:[0,0,1,0.9993934702357659],
                          bright:1,
                          light:null,
-                         me:[0.5,0.79],
+                         me:[0.50,0.91],
                          act:[0.5,0.71],
-                         crew:[0.35,0.76],
-                         souls:[[0.4,0.72],[0.5,0.73],[0.6,0.72]],
+                         crew:[0.35,0.79],
+                         guard:[0.69,0.76],
+                         souls:[[0.43,0.725],[0.54,0.725],[0.65,0.725]],
                          walk:[{poly:[[0.29,0.74],[0.35,0.7],[0.41,0.67],[0.59,0.67],[0.65,0.7],[0.71,0.74],[0.67,0.81],[0.6,0.85],[0.6,1],[0.4,1],[0.4,0.85],[0.33,0.81]]}],
-                         item:[0.58,0.77]}} },
+                         item:[0.58,0.77]},
+                   // 30E: front landing in the regional prison images, after the 40% crop.
+                   west:{crop:[0,0.40,1,0.60], bright:1, light:null,
+                         souls:[[0.39,0.68],[0.50,0.68],[0.61,0.68]],
+                         crew:[0.27,0.71], guard:[0.73,0.71], me:[0.50,0.89], act:[0.34,0.72],
+                         walk:[{poly:[[0.18,0.67],[0.82,0.67],[0.84,0.73],[0.65,0.78],[0.63,1],[0.37,1],[0.35,0.78],[0.16,0.73]]}],
+                         item:[0.58,0.74]},
+                   cyberhell:{crop:[0,0.40,1,0.60], bright:1, light:null,
+                         souls:[[0.39,0.68],[0.50,0.68],[0.61,0.68]],
+                         crew:[0.27,0.71], guard:[0.73,0.71], me:[0.50,0.89], act:[0.34,0.72],
+                         walk:[{poly:[[0.18,0.67],[0.82,0.67],[0.84,0.73],[0.65,0.78],[0.63,1],[0.37,1],[0.35,0.78],[0.16,0.73]]}],
+                         item:[0.58,0.74]}} },
 };
 
 // ---- ชุด 27A: ห้องตามแบบ UI4 (โซน 1 / th) ----
@@ -1590,12 +1613,12 @@ export const BATTLE = {
   crit: 0.18,           // โอกาสเข้าเต็ม ๆ (คูณ 1.7)
   loseHp: 9,            // แพ้แล้วบารมีท่านหาย (14 → 9 · เจ้าของแพ้แล้วฟื้นไม่ทัน)
   winCoin: 45,          // ชนะแล้วได้เบี้ยกรรม
-  // ---- ยมทูตในทีมช่วยต่อสู้ได้คนละครั้ง แล้วพักตามเวลาจริง ----
+  // ---- ท่าพิเศษยมทูต: กำลังใจเป็น HP และคูลดาวน์ใช้เวลาสนามรบ ----
   // นิราไม่อยู่ในรายชื่อ เธอไม่รับเวรลงมือ · เรียกแล้วเสียกำลังใจ
-  // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — คูลดาวน์ 60 วิ (1 นาที) ตามที่กำหนดเป๊ะ (เดิม 150→100→60)
-  crewCd: 60,           // วินาทีจริง: ยังนับต่อระหว่างหน้าต่อสู้พักวาระเกม
-  crewMorale: 22,       // เรียกหนึ่งครั้งกำลังใจเขาหายเท่านี้
-  crewMin: 25,          // กำลังใจต่ำกว่านี้เรียกไม่ไหวแล้ว
+  // B5: ท่าทั่วไป 15 วิ, บุญรักษา 20 วิ (actor-recovery.js)
+  crewCd: 15,           // เวลาสนามรบ: หยุดตอน pause/ซ่อนแท็บ
+  crewMorale: 6,       // เรียกหนึ่งครั้งกำลังใจเขาหายเท่านี้
+  crewMin: 6,          // ค่าใช้ท่าพิเศษ
   // ของที่ใช้ได้ในฉากต่อสู้ — ทุกชิ้น "มีราคา" ที่หักจากทรัพยากรจริงในเกม
   // ไม่มีของฟรีสักชิ้น ไม่งั้นฉากต่อสู้จะกลายเป็นกดปุ่มเดิมซ้ำจนกว่าจะชนะ
   items: [
@@ -1654,6 +1677,13 @@ export const scaleFoeAtk = (zone, atk, kind = 'roam') => {
 };
 
 // Event keys are persisted in zoneEvents. Keep them stable for saved games.
+// B7: base HP before the existing boss ×1.25 scaling. Only zone-ending bosses change.
+// before = b71e16e; hp = B7. Attack, adds, rewards and final encounters stay as defined.
+export const BOSS_BALANCE = {
+  th:   { before:155, hp:543 },
+  asia: { before:235, hp:294 },
+  west: { before:270, hp:284 },
+};
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -1676,7 +1706,7 @@ export const ZONE_EVENTS = {
   { k:'thBorderBoss', atCases:10, requires:['frontierBreach'], mode:'group',
     title:{ th:'พี่ใหญ่ท้าประลอง', en:'The elder brother challenges you' },
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },
-    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:155, atk:[12,19], boss:true },
+    foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[12,19], boss:true },
       { kind:6, count:2, hp:52, atk:[7,12] }],
     reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } }],
   asia:[
@@ -1729,13 +1759,14 @@ export const ZONE_EVENTS = {
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
-      alert:{ th:'ฝ่าปีศาจสามระลอก กองหนุนทั้งสี่โซนจะรับมือลูกน้องที่เหลือ พักเตรียมทีมแล้วปลดปล่อยหัวหน้าทั้งสี่ พักอีกครั้งก่อนสู้ผู้ตรวจการโซน 4',
-        en:'Defeat three demon waves. Allies from all four zones take on the remaining army. Rest, free all four rulers, then rest again before the final inspector.' },
-      restBeforeWaves:[4,8],
+      alert:{ th:'ชนะลูกน้อง 4 ระลอก แล้วช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน ก่อนสู้บอส',
+        en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
+
       waves:[
         [{ kind:14, count:2, hp:60, atk:[10,16] }],
         [{ kind:15, count:2, hp:65, atk:[11,17] }],
         [{ kind:16, count:2, hp:70, atk:[12,18] }],
+        [{ kind:16, count:2, hp:75, atk:[13,19] }],
         [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[13,20], boss:true }],
         [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[14,21], boss:true }],
         [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[15,22], boss:true }],
@@ -1845,10 +1876,31 @@ export const ZONES = [
     mobs:[11,12,13,14,15,16], coin:1200 },
 ];
 
-/** ทุกโซนใช้ผังและพิกัด 1678×937 เดียวกัน; คง SCENE object ที่โมดูลอื่น import ไว้ */
+/** 30D ข้อ 7 — อาคารที่กลับด้านตอนวาด ต่อโซน */
+export const STATION_FLIP = { asia: ['lokan'], west: ['sala'] };
+
+// 30F: move complete station geometry together, including service/worker points.
+// Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
+const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[-90,12], dab:[155,205], krata:[0,42] };
+const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(key => {
+  const d = STATIONS.find(s => s.k === key);
+  return [key, Object.fromEntries(['bx','by','x','y','sx','sy','hit']
+    .filter(field => d[field] != null).map(field => [field, Array.isArray(d[field]) ? [...d[field]] : d[field]]))];
+}));
+
+/** ทุกโซนใช้ผัง 1678×937; คง SCENE object ที่โมดูลอื่น import ไว้ */
 export function syncSceneZone(zone) {
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
   SCENE.w = z.w; SCENE.h = z.h;
+  // Bare floor beside the painted servers; no changes to the scene bitmap.
+  for (const [key, site] of sharedStationSites) {
+    const [dx, dy] = z.k === 'cyberhell' ? CYBERHELL_STATION_OFFSETS[key] : [0,0];
+    const def = STATIONS.find(s => s.k === key);
+    for (const [field, value] of Object.entries(site)) {
+      def[field] = field === 'hit' ? value.map((v, i) => v + (i % 2 ? dy : dx))
+        : value + (['bx','x','sx'].includes(field) ? dx : dy);
+    }
+  }
   // เกาะลานตรากตรำในภาพถูกธารล้อมครบ แม้ในโซน 1: ให้จุดบริการโซนใหม่อยู่ฝั่งซ้าย
   // โดยคงตำแหน่งภาพสถานี/กรอบคลิกเดิมไว้ ไม่เปิดทางเดินข้ามธารที่ภาพไม่ได้วาด
   const lan = STATIONS.find(s => s.k === 'lan');
@@ -1861,6 +1913,10 @@ export function syncSceneZone(zone) {
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
     ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670], flip:true }
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674], flip:false });
+  // 30D ข้อ 7 (คุณเป้ #11 #13): กลับด้านภาพอาคารซ้าย↔ขวาตอนวาด (วิธีเดียวกับศาลาน้ำชา 28A — ไฟล์ภาพไม่ถูกแตะ)
+  //   #11 แท่นบัวหิมะ มีบันได โคมแดง ปะการังแดง = img/Asia/st-lokan-asia.png (โซน 2 ไม่ใช่ west)
+  //   #13 หลังคากระเบื้องดำ ฐานไม้ดำ มีบันไดหน้า = img/West/st-sala-west.png (โซน 3)
+  for (const s of STATIONS) if (s.k !== 'tea') s.flip = !!STATION_FLIP[z.k]?.includes(s.k);
 }
 
 // Seated rulers guide the player. ZONES[].bossName identifies the separate
@@ -1958,4 +2014,88 @@ export const FX_OF = {
   hypno:  { img:'fx-hypno',    glyph:'🌀' },
   ice:    { img:'fx-ice',      glyph:'❄️' },
   foe:    { img:'fx-claw',     glyph:'💢' },
+};
+
+// B3: tunable zone progression; training gameplay is reserved for B4.
+export const ALLY_ZONE_SCALE = {
+  th: { ally:1, yama:1, cap:2, kan:1 },
+  asia: { ally:1.2, yama:1.08, cap:3, kan:1.05 },
+  west: { ally:1.4, yama:1.16, cap:4, kan:1.10 },
+  cyberhell: { ally:1.6, yama:1.24, cap:5, kan:1.15 },
+};
+export const TRAINING_RULES = {
+  exp:[0,60,150,270,420], multipliers:[1,1.06,1.12,1.18,1.24],
+  yamaPerLevel:.03, kanPerLevel:.03, kanMax:1.27,
+  niraOrderBase:9, niraOrderMax:13, niraRegenPerLevel:.05,
+  cooldownTicks:30, attemptsPerWindow:2, windowTicks:100,
+  rewards:[{score:60, exp:20},{score:80, exp:30},{score:95, exp:40}],
+};
+export const TRAINING_STATIONS = {
+  dab:{ actors:['yama'], game:'sword', seconds:30 },
+  lan:{ actors:['taan','guard'], game:'stone', seconds:30 },
+  krata:{ actors:['plerng'], game:'fire', seconds:30 },
+  krajok:{ actors:['kan'], game:'mirror', seconds:45 },
+  sawan:{ actors:['boon'], game:'breath', seconds:32 },
+  sala:{ actors:['nira'], game:'documents', seconds:45 },
+  ngiw:{ actors:['dam'], game:'targets', seconds:30 },
+  lokan:{ actors:['guard'], game:'stone', seconds:30 },
+};
+// Item identity fixes its effect, including when carried to another zone.
+export const MERCHANT_STOCK_BY_ZONE = { th: MERCHANT.stock };
+ITEMS.tea.mp = 12;
+ITEMS.health.nameEn = 'Longevity Chest';
+ITEMS.tea.nameEn = 'Tea';
+for (const k of ['health','tea','holyWater']) {
+  ITEMS[k].descEn = `Restore HP ${ITEMS[k].hp || 0} / MP ${ITEMS[k].mp || 0}`;
+  ITEMS[k].howToEn = 'Use in bag, battle or preparation';
+  ITEMS[k].sayEn = 'Power restored';
+}
+ITEMS.health.consumable = ITEMS.tea.consumable = ITEMS.holyWater.consumable = true;
+const ZONE_MEDICINES = [
+  ['asia','Z2','บูรพา','Eastern',55,40,50,16,70,55,30],
+  ['west','Z3','ปัจฉิม','Western',70,50,60,20,85,65,35],
+  ['cyberhell','Z4','เครือข่าย','Network',85,60,70,24,95,75,40],
+];
+for (const [zone,suffix,th,en,hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost] of ZONE_MEDICINES) {
+  for (const [base,name,nameEn,gainHp,gainMp] of [
+    ['health',`หีบยาอายุวัฒนะ${th}`,`${en} Longevity Chest`,hp,0],
+    ['holyWater',`น้ำมนต์${th}`,`${en} Holy Water`,0,mp],
+    ['tea',`น้ำชา${th}`,`${en} Tea`,teaHp,teaMp],
+  ]) {
+    ITEMS[base+suffix] = { ...ITEMS[base], nameKey:undefined, name, nameEn,
+      hp:gainHp, mp:gainMp, desc:`ฟื้น HP ${gainHp} / MP ${gainMp}`, descEn:`Restore HP ${gainHp} / MP ${gainMp}`,
+      howTo:'ใช้จากกระเป๋า ในศึก หรือเตรียมศึก', howToEn:'Use in bag, battle or preparation',
+      say:'พลังฟื้นขึ้นมา', sayEn:'Power restored' };
+  }
+  MERCHANT_STOCK_BY_ZONE[zone] = MERCHANT.stock.map(item => {
+    const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };
+    return costs[item.k] ? { ...item, k:item.k+suffix, cost:costs[item.k] } : { ...item };
+  });
+}
+// น้ำชาโซน 1 กลางศึกฟื้น 24 (ค่าเดิมก่อน B3) ตั้งหลังสร้างน้ำชาโซนอื่นแล้ว เพื่อไม่ให้ถูกคัดลอกไปด้วย · ในกระเป๋า/เตรียมศึกยังเป็น ITEMS.tea.hp
+ITEMS.tea.battleHp = 24;
+// Compatibility metadata for existing battle item consumers, from ITEMS.
+for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
+  const existing = BATTLE.items.find(item => item.k === k);
+  const entry = { k, name:def.name, nameKey:def.nameKey, glyph:def.glyph,
+    heal:(def.battleHp ?? def.hp) || undefined, mp:def.mp || 0, say:def.say };
+  if (existing) Object.assign(existing, entry); else BATTLE.items.push(entry);
+}
+// B5-R: ศัตรูกระจายตีไปยังลูกน้อง/Guard ยมบาทจึงรอดง่ายขึ้น — ตัวคูณดาเมจศัตรูชดเชยตามจำนวนเป้าที่ยืนอยู่
+// mult = 1 + share × (น้ำหนักเป้ารวม/2 − 1) (ยมบาท 2 · crew 1 · Guard 3) · share 1 = ยมบาทรับดาเมจคาดหวังเท่าเดิม, 0 = ไม่ชดเชย
+// max = เพดานตัวคูณ (ทีมใหญ่/มี Guard ดาเมจต่อหัวไม่พุ่งจนยมทูตล้มในนัดเดียว) — ศึกสุดท้ายใหม่ทีม 6 + Guard ต้องการเพดานสูงกว่าศึกทั่วไป
+// ลำดับค้นหา key: encounter (เช่น ruler:west) → eventKey (เช่น cyberBreach) → kind (zoneBoss/zoneEvent/...) → default
+export const TEAM_PRESSURE = {
+  share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 },
+  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:3.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
+};
+// B2b: encounter additions and receipts, without changing existing enemy stats.
+export const FINAL_EVENT = {
+  waveRewards:[40,50,60,70].map(coin => ({ coin, item:'holyWater', exp:5 })),
+  rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
+  rulerAdds:[1,1,2,2], bossAdds:3,
+  add:{ kind:14, hp:60, atk:[10,16] },
+  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],
+  restPosition:[700,600],
+  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],
 };

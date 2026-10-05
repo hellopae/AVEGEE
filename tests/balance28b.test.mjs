@@ -1,8 +1,10 @@
 // ชุด 28B คุณเป้ 2 ต.ค. 2569 — ศัตรูเก่งขึ้นตามโซน · บอสอึดขึ้น · น้ำมนต์เติม MP · สรุปรางวัลหลังชนะ
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { merchantStock } from '../src/progression.js';
 import { createGame } from '../src/game.js';
-import { BATTLE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
+import { win } from './final-event-helpers.mjs';
+import { BATTLE, BOSS_BALANCE, FOE_SCALE, ITEMS, LEVELS, MERCHANT, MOB, ZONE_EVENTS, scaleFoeAtk, scaleFoeHp } from '../src/data.js';
 
 globalThis.Image ??= class {};
 
@@ -67,15 +69,13 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
   g.startZoneEvent('cyberFinal');
   const ev = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal');
   const seen = [];
-  for (let wave = 1; wave <= 8; wave++) {
-    g.battle.foes.forEach((f, i) => {
+  for (let wave = 1; wave <= 9; wave++) {
+    g.zoneEventFoes(ev,wave).forEach((f, i) => {
       const base = ev.waves[wave - 1][0].hp;
       if (f.boss) { assert.ok(f.maxHp > base, `${f.who} บอสต้องอึดขึ้น`); assert.equal(f.maxHp, scaleFoeHp('cyberhell', base, 'boss')); }
       else { assert.equal(f.maxHp, scaleFoeHp('cyberhell', base, 'event'), `${f.who} ศัตรูธรรมดา`); assert.ok(f.maxHp > base); }
       seen.push(f.boss);
     });
-    g.battle.foes.forEach(f => { f.hp = 0; });
-    if (wave < 8) { g.battle.pendingWave = wave + 1; g.advanceZoneEventWave(true); }
   }
   assert.equal(seen.filter(Boolean).length, 5, 'ศึกสุดท้ายมีบอส 5 ตัว');
   // บอสโซน (ชนะแล้วเปิดโซนถัดไป) และเทวดา/บอสชายแดน/พี่ใหญ่โซน 1
@@ -83,14 +83,14 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
     const gg = createGame(); gg.zone = zone; gg.zoneCases[zone] = 10;
     gg.zoneEvents[zone] = Object.fromEntries(ZONE_EVENTS[zone].map(e => [e.k, 'cleared']));
     const b = gg.startZoneBoss();
-    assert.equal(b.foes[0].maxHp, scaleFoeHp(zone, 200 + n * 35, 'boss'));
+    assert.equal(b.foes[0].maxHp, scaleFoeHp(zone, BOSS_BALANCE[zone].hp, 'boss'));
     assert.ok(b.foes[0].maxHp > 200 + n * 35);
     assert.equal(b.foes[1].maxHp, 48 + n * 8, 'ลูกน้องบอสโซนคงเดิม (ไม่ผ่าน zoneEventFoes)');
     assert.ok(b.foes[1].atk[1] > 12 + n, 'ลูกน้องบอสคูณ ATK ตามโซน');
   }
   const th = createGame();
   th.zoneCases.th = 10; th.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'pending' };
-  assert.equal(th.startZoneEvent('thBorderBoss').foes[0].maxHp, scaleFoeHp('th', 155, 'boss'));
+  assert.equal(th.startZoneEvent('thBorderBoss').foes[0].maxHp, scaleFoeHp('th', BOSS_BALANCE.th.hp, 'boss'));
   assert.ok(scaleFoeHp('th', 155, 'boss') > 155);
   for (const [name, hp] of Object.entries(BEFORE.boss)) assert.ok(scaleFoeHp('th', hp, 'boss') > hp, name);
 });
@@ -104,6 +104,7 @@ function setup(zone, level, abilityCount, chests) {
   ABIL.slice(0, abilityCount).forEach(k => { g.abilities[k] = true; });
   g.zone = zone; g.inventory.health = chests; g.inventory.holyWater = 3; g.coin = 400;   // สมมติฐาน 28E: พกน้ำมนต์ 3 ขวด
   for (const k of ['taan', 'plerng']) if (!g.crew.some(c => c.k === k)) g.hire(k);
+  for (const c of g.crew) if (!c.reader) { c.homeZone=zone; c.id=`${zone}:${c.k}`; }
   g.party.members = ['taan', 'plerng'];
   return g;
 }
@@ -123,9 +124,12 @@ function botTurn(g) {
 /** จุดพักศึกสุดท้าย: ซื้อน้ำมนต์/หีบยาจากพ่อค้าด้วยเบี้ยกรรม 400 แล้วใช้ผ่าน useHolyWater/useBossMedicine จริง */
 function rest(g) {
   g.coin = 400;
+  const stock = merchantStock(g.zone);
+  const water = stock.find(s => s.k.startsWith('holyWater'));
+  const health = stock.find(s => s.k.startsWith('health'));
   for (let i = 0; i < 12; i++) {
-    if (g.mpMax - g.mp >= 20 && g.coin >= 45 && g.buyMerchant('holyWater') && g.useHolyWater()) continue;
-    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= 55 && g.buyMerchant('health') && g.useBossMedicine()) continue;
+    if (g.mpMax - g.mp >= 20 && g.coin >= water.cost && g.buyMerchant(water.k) && g.useHolyWater(water.k)) continue;
+    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= health.cost && g.buyMerchant(health.k) && g.useBossMedicine(health.k)) continue;
     break;
   }
 }
@@ -177,17 +181,23 @@ test('ยังชนะได้: อีเวนต์/บอสโซน โ�
   assert.ok(breach >= 0.7 && breach <= 0.9, `cyber breach win rate ${breach}`);
 });
 
-test('ศึกสุดท้าย 8 ระลอก: เลเวล 5 เตรียมหีบยา 5 + ซื้อน้ำมนต์/ยาที่จุดพัก ชนะ 70–90% (ก่อน 28B ≈ 98%)', () => {
-  const sc = ['cyber FINAL', 'cyberhell', 5, 8, 5, g => {
-    g.zoneCases.cyberhell = 10; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', cyberFinal:'pending' };
-    return g.startZoneEvent('cyberFinal');
-  }];
-  const rate = winRate(sc, 100, 28);
-  if (process.env.BAL_VERBOSE) console.log('final gauntlet win rate', rate);
-  assert.ok(rate >= 0.7 && rate <= 0.9, `final gauntlet win rate ${rate}`);   // เป้า 28E ≈ 70–85%
-  // และต้องยังเป็นศึกที่ "ตอบสนองต่อการเตรียมตัว" — ไม่มีหีบยาเลยแพ้แน่ (กันตัวเลขหลวมจนเดินผ่านฟรี)
-  const poor = ['cyber FINAL (no chests)', 'cyberhell', 5, 8, 0, sc[5]];
-  assert.ok(winRate(poor, 30, 28) < rate, 'เตรียมตัวน้อยกว่าต้องชนะน้อยกว่า');
+// Preserve the original eight-wave balance benchmark and its numeric assertions.
+// B2b's independent six-member encounters are simulated in scripts/sim-final-event.mjs.
+test('legacy eight-wave balance benchmark retains 70–90% and preparation sensitivity', () => {
+  const source=ZONE_EVENTS.cyberhell.find(e=>e.k==='cyberFinal');
+  const legacy={ ...source,k:'legacyFinalBenchmark',restBeforeWaves:[4,8],waves:source.waves.filter((_,i)=>i!==3) };
+  ZONE_EVENTS.cyberhell.push(legacy);
+  try {
+    const sc = ['legacy cyber FINAL', 'cyberhell', 5, 8, 5, g => {
+      g.zoneCases.cyberhell = 10; g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', legacyFinalBenchmark:'pending' };
+      return g.startZoneEvent('legacyFinalBenchmark');
+    }];
+    const rate=winRate(sc,100,28);
+    if(process.env.BAL_VERBOSE) console.log('legacy final gauntlet win rate',rate);
+    assert.ok(rate>=0.7 && rate<=0.9,`legacy final gauntlet win rate ${rate}`);
+    const poor=['legacy cyber FINAL (no chests)','cyberhell',5,8,0,sc[5]];
+    assert.ok(winRate(poor,30,28)<rate,'เตรียมตัวน้อยกว่าต้องชนะน้อยกว่า');
+  } finally { ZONE_EVENTS.cyberhell.pop(); }
 });
 
 // ---------------------------------------------------------------- 3. น้ำมนต์
@@ -220,24 +230,20 @@ test('น้ำมนต์: พ่อค้านรกขาย · ราค�
   assert.equal(g.mp, g.mpMax, 'ไม่ล้นหลอด');
 });
 
-test('น้ำมนต์: ดื่มได้ที่จุดพักศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก', () => {
+test('น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก', () => {
   const g = createGame();
   g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
   g.refreshZoneEvents(); g.startZoneEvent('cyberFinal');
   g.inventory.holyWater = 2; g.mp = 10;
   assert.equal(g.useHolyWater(), false, 'กลางศึก (ไม่ใช่จุดพัก) ใช้ไม่ได้');
-  for (let wave = 1; wave <= 3; wave++) {
-    g.battle.foes.forEach(f => { f.hp = 0; });
-    if (wave < 3) { g.battle.pendingWave = wave + 1; g.advanceZoneEventWave(); }
-  }
-  g.battle.pendingWave = 4;
-  assert.equal(g.zoneEventRestReady(), true);
-  assert.equal(g.useHolyWater(), true);
+  win(g); g.endBattle();
+  assert.equal(g.battle,null); g.inventory.holyWater=2;
+  assert.equal(g.useBag('holyWater'),true);
   assert.equal(g.mp, 40);
   assert.equal(g.inventory.holyWater, 1);
   g.mp = g.mpMax;
-  assert.equal(g.useHolyWater(), false, 'MP เต็มแล้ว');
+  assert.equal(g.useBag('holyWater'), false, 'MP เต็มแล้ว');
 
   const b = createGame(); b.zone = 'asia'; b.zoneCases.asia = 10;
   b.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };

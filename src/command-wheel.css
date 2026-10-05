@@ -171,7 +171,9 @@
 .battle-meter i{display:block;height:100%;border-radius:inherit;transition:width .3s}
 .battle-meter.ready i{background:#f7ae3d}.battle-meter.health i{background:#17ba56}.battle-meter.mana i{background:#27b9e9}
 .battle-numbered-meter{display:flex;align-items:center;gap:5px;margin:3px 0}
-.battle-numbered-meter small{font-size:clamp(9px,.9vw,13px);white-space:nowrap;color:#eee;font-variant-numeric:tabular-nums}
+.battle-numbered-meter small{font-size:clamp(9px,.9vw,13px);white-space:nowrap;color:#eee;font-variant-numeric:tabular-nums;flex:0 0 auto}
+/* ชุด 30B ข้อ 5 — แถบต้องไม่ถูกตัวเลขยาวบีบจนหาย (เดิม MP ทศนิยมยาวทำให้แถบกว้าง 0 ในโซน 4) */
+.battle-numbered-meter .battle-meter{flex:1 1 auto;min-width:36px}
 .battle-boss-hud{position:absolute;z-index:10;right:7%;bottom:3%;width:26%;display:grid;
   grid-template-columns:minmax(65px,40%) 1fr;gap:4px 12px;align-items:end;color:#eee}
 .battle-boss-hud img{grid-row:1/3;width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #d4ab5b;background:#241522}
@@ -365,3 +367,74 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .trial-hud .court-wheel .options-1:has(.trial-empty-hint){left:0;top:auto;bottom:calc(100% + 12px);width:min(340px,100%);max-width:100%;max-height:26vh;overflow-y:auto;box-sizing:border-box}
   .trial-hud .court-wheel .options-1 .trial-empty-hint{box-sizing:border-box;width:100%;overflow-wrap:anywhere;flex:0 0 100%}
 }
+
+/* B2: six branch-owned helpers, with Yama and Guard in the front rank. */
+.arena.combat-arena.final-team .battle-squad,
+.arena.combat-arena.final-team .battle-squad.trio{
+  left:3%;bottom:38%;top:auto;width:31%;max-width:none;height:29%;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3px 8px;
+}
+.arena.combat-arena.final-team .battle-squad>span{height:100%;min-width:0}
+.arena.combat-arena.final-team .battle-squad>span:nth-child(n+4):not(.guard){transform:translateX(18%)}
+.arena.combat-arena.final-team .battle-squad>span.guard{position:absolute;left:38%;bottom:-47%;width:30%;height:85%}
+.arena.combat-arena.final-team>.fig.you{left:27%;bottom:27%;width:13%}
+.arena.combat-arena.final-team .battle-team-hud{
+  left:3%;bottom:2%;width:64%;max-width:none;gap:8px;
+}
+.arena.combat-arena.final-team .battle-portrait{flex:1 1 0;min-width:72px;max-width:110px}
+.arena.combat-arena.final-team .battle-portrait small{display:block;font-size:10px}
+.arena.combat-arena.final-team .battle-boss-hud{right:2%;width:28%}
+.arena.combat-arena.final-team .options-2{max-height:210px;overflow-y:auto}
+.arena.combat-arena.final-team .battle-scene-talk{right:2%;bottom:3%;width:28%;padding:10px 14px;font-size:12px}  /* HUD 8 ใบกว้าง 64% — กล่องข้อความต้องไม่ทับการ์ดยมบาท */
+@media(max-width:700px){
+  .arena.combat-arena.final-team{min-height:600px}
+  .arena.combat-arena.final-team .battle-squad,.arena.combat-arena.final-team .battle-squad.trio{left:2%;width:45%;bottom:41%;height:23%;gap:3px}
+  .arena.combat-arena.final-team .foe-group{top:12%;height:24%}
+  .arena.combat-arena.final-team .battle-squad>span.guard{left:17%;bottom:-65%;width:34%;height:80%}
+  .arena.combat-arena.final-team>.fig.you{left:28%;bottom:28%;width:21%}
+  .arena.combat-arena.final-team .combat-wheel{left:49%;bottom:27%;width:160px}
+  .arena.combat-arena.final-team .combat-wheel .options-2{left:auto;right:0;top:auto;bottom:100%;max-width:250px}
+  .arena.combat-arena.final-team .battle-team-hud{left:2%;bottom:2%;width:96%;max-width:96%;overflow-x:auto;align-items:flex-start;padding-bottom:6px}
+  .arena.combat-arena.final-team .battle-portrait{flex:0 0 72px;min-width:72px}
+  .arena.combat-arena.final-team .battle-boss-hud{bottom:22%;right:2%;width:48%}
+  .arena.combat-arena.final-team .battle-scene-talk{bottom:19%;right:3%;width:62%;padding:8px 10px;font-size:11px}
+}
+
+/* B6: per-actor wheel — original wedge artwork (2 or 3 wedges), centre = the actor's face (Battle8-1/8-2).
+   Canvas is 900x1100; face circle matches the old centre ellipse (41% / 50.5%, 23% x 19% radius). */
+.actor-wheel{pointer-events:none}
+.actor-wheel .command-center{inset:auto;left:18%;top:31.5%;width:46%;height:38%;clip-path:none;border-radius:50%!important;overflow:hidden;
+  background:#291821!important;border:2px solid #dfb569!important;box-sizing:border-box;filter:none}
+.actor-wheel .command-center img{width:100%;height:100%;object-fit:cover;image-rendering:auto}
+.actor-wheel .command-segment{pointer-events:auto;z-index:3}
+.actor-wheel .command-label,.actor-wheel .command-center-label{pointer-events:none;z-index:5}
+.actor-wheel .command-center-label{left:41%;top:61%}
+.actor-wheel .command-segment:disabled{opacity:.5}
+.actor-wheel .command-options{pointer-events:none}.actor-wheel .command-options.is-open{pointer-events:auto}
+.battle-command-confirm{position:absolute;top:0;left:calc(100% + 8px);width:260px;max-width:85vw;display:flex;flex-wrap:wrap;gap:5px;padding:8px;background:#21141bf5;border:1px solid #dfb569;border-radius:12px;pointer-events:auto;z-index:8}
+.battle-command-confirm b{width:100%;font-size:12px}.battle-command-confirm button{font-size:12px;min-height:40px}
+.battle-portrait.hero{color:inherit;font:inherit}
+@media(max-width:700px){
+ .arena.combat-arena .actor-wheel,.arena.combat-arena.final-team .actor-wheel{left:auto;right:2%;bottom:38%;width:150px}
+ .actor-wheel .battle-command-confirm{left:auto;right:0;top:100%;width:300px;max-height:none;overflow:visible}
+ .battle-team-hud{overflow-x:auto}.battle-team-hud .battle-portrait{flex:0 0 72px;min-width:72px}
+}
+.battle-portrait[aria-pressed=true]{outline:2px solid #ffe39a;outline-offset:2px}
+
+/* B7: on narrow screens select actors from the labelled bottom cards.
+   Overlapping scene sprites must not steal taps from a neighbouring actor. */
+@media(max-width:700px){
+ .combat-arena [data-crew-pick]:not(.battle-portrait){pointer-events:none}
+}
+
+/* Selecting an attack makes every living enemy a direct, rectangular target. */
+.arena.combat-arena [data-foe-id].choose-target{
+  animation:none!important;box-sizing:border-box;outline:2px solid #f6d578;outline-offset:5px;border-radius:0;
+  box-shadow:0 0 18px #e8ba5966;cursor:pointer}
+.arena.combat-arena [data-foe-id].choose-target:hover,
+.arena.combat-arena [data-foe-id].choose-target:focus-visible{outline:3px solid #ffe9a9;filter:brightness(1.12)}
+.target-prompt{position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);
+  padding:3px 8px;background:#281725e8;border:1px solid #f6d578;color:#ffe398;
+  font:700 clamp(11px,1.1vw,16px)/1.4 var(--font-display);white-space:nowrap;pointer-events:none}
+.battle-command-cancel{position:absolute;left:16%;top:96%;pointer-events:auto;
+  padding:5px 10px;min-height:36px;font-size:12px}

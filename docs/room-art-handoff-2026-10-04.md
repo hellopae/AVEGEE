@@ -22,7 +22,7 @@ Tarang มีภาพใหม่ด้วย แต่ผู้ใช้ยั
 ## การต่อภาพสถานที่
 
 ภาพใหม่แยกจากภาพเดิมที่ `img/rooms-wide/` รวม 9 สถานที่ × 4 โซน
-ชื่อใช้ `<zone>-<station>.png` (th, asia, west, cyberhell)
+ชื่อใช้ `<zone>-<station>.webp` (th, asia, west, cyberhell)
 ภาพเน้นพื้นเดินด้านหน้าและอุปกรณ์ฝึกแยกจากส่วนทำงานปกติ
 
 ไฟล์ `src/room-art-assets.js` มี `WIDE_ROOM_ART[zone][station]` พร้อม image, entrance, crew, trainingProp, trainingApproach, displaySlots และ minigame

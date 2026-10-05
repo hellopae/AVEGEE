@@ -401,10 +401,12 @@
 "CyberHell/spirit-woman-cyberhell-v2.png",
 "CyberHell/spirit-worker-cyberhell-v2.png",
 "CyberHell/st-dab-cyberhell.png",
+"CyberHell/st-krajok-cyberhell.png",
 "CyberHell/st-krata-cyberhell.png",
 "CyberHell/st-lokan-cyberhell.png",
 "CyberHell/st-ngiw-cyberhell.png",
 "CyberHell/st-sala-cyberhell.png",
+"CyberHell/st-tarang-cyberhell.png",
 "CyberHell/st-tea-cyberhell.png",
 "CyberHell/zone-boss-cyberhell.png",
 "CyberHell/spirit-business-cyberhell-v2.png",
@@ -452,6 +454,7 @@
 "West/crew-taan-west-cutscene.jpeg",
 "West/crew-taan-west-profile.png",
 "West/crew-taan-west.png",
+"West/hero-boss-west-profile.webp",
 "West/hero-boss-west-v2.png",
 "West/hero-boss-west.png",
 "West/hero-yama-sit-sip-west.png",
@@ -505,6 +508,10 @@
 "ui/Button4.png",
 "ui/Button5.png",
 "ui/Button6.png",
+"ui/b1.webp",
+"ui/b2.webp",
+"ui/b3.webp",
+"ui/b4.webp",
 "ui/Button7.png",
 "ui/Button8.png",
 "ui/Button9.png",
@@ -781,6 +788,18 @@
 0.2422,
 0.998,
 0.998
+],
+"st-tarang-cyberhell": [
+0.0,
+0.228515625,
+1.0,
+1.0
+],
+"st-krajok-cyberhell": [
+0.255859375,
+0.001953125,
+0.7421875,
+1.0
 ]
 },
 "stationSizes": {
@@ -933,6 +952,14 @@
 512
 ],
 "st-tea-west": [
+512,
+512
+],
+"st-tarang-cyberhell": [
+512,
+512
+],
+"st-krajok-cyberhell": [
 512,
 512
 ]

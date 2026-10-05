@@ -1,3 +1,5 @@
+import { actorStanding } from './actor-recovery.js';
+import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 // scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
@@ -10,6 +12,7 @@ import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';
+import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
 export const CHAR_SCALE_MAP = 0.8;
@@ -19,16 +22,6 @@ const HERO_H = 92 * CHAR_SCALE_MAP;
 const SOUL_H = 64 * CHAR_SCALE_MAP;
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
-const waitingEvents = g => {
-  const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
-    ev.k !== 'devaTest' && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
-    ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach');
-  if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
-    events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
-  return events.map((ev, i) => ({ key:ev.k, x:SPOTS.bossPier.x + (i % 3 - 1) * 86,
-    y:SPOTS.bossPier.y - Math.floor(i / 3) * 80,
-    art:ev.foe?.kind != null ? MOB.kinds[ev.foe.kind]?.img : (ev.foe?.sp || ev.foes?.[0]?.sp || 'spirit7').replace(/-(asia|west|cyberhell)$/, '') }));
-};
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
 let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
@@ -202,11 +195,11 @@ export function render(ctx, g, t, hover, sel) {
     const x = soulAt[0], y = soulAt[1];
     at(y, () => {
       drawSoul(ctx, x, y, SOUL_H * .82, t + v.id * 300, '#d9eaff', v.sp || 7);
-      if (waiting) tag(ctx, x, y - SOUL_H - 12, t,
+      if (waiting && v.crew) tag(ctx, x, y - SOUL_H - 12, t,
         [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
       else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
     });
-    if (crewAt) {
+    if (crewAt && actorStanding(g.crewOf(v.crew))) {
       const escortFace = waiting ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1) : (x < crewAt[0] ? -1 : 1);
       const position = [crewAt[0] - (waiting ? 0 : 24 * escortFace), crewAt[1]];
       const motion = actorWalkMotion(v, t, g.zone, position);
@@ -244,7 +237,7 @@ export function render(ctx, g, t, hover, sel) {
       ctx.restore();
     });
     // ชุด 29C — ยมทูตนำวิญญาณไปตะราง: มารับ → เดินนำหน้า วิญญาณตามติด (ตำแหน่งจริงอยู่ที่ escort.js ที่เดียว)
-    if (walk.escort) {
+    if (walk.escort && actorStanding(g.crewOf(walk.escort.k))) {
       const pos = escortCrewPosition(walk), crew = g.crewOf(walk.escort.k);
       if (pos && crew) {
         const motion = actorWalkMotion(walk, t, g.zone, [pos.x, pos.y]);
@@ -283,7 +276,7 @@ export function render(ctx, g, t, hover, sel) {
     mapStandee(ctx, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
     // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
-    if (d <= MOB.fabReach || g.guard) return;
+    if (d <= MOB.fabReach || actorStanding(g.guard)) return;
     tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
         ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
   }));
@@ -352,7 +345,7 @@ export function render(ctx, g, t, hover, sel) {
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
-  if (g.guard) {
+  if (actorStanding(g.guard)) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
     at(g.guard.y, () => {
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
@@ -366,6 +359,7 @@ export function render(ctx, g, t, hover, sel) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of g.crew) {
+    if (!actorStanding(c)) continue;
     if (c.x == null || c.escort) continue;
     const motion = actorWalkMotion(c, t, g.zone);
     at(c.y, () => {
@@ -385,6 +379,18 @@ export function render(ctx, g, t, hover, sel) {
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
   }
+  const camp = finalRestSpot(g);
+  if (camp) at(camp.y, () => {
+    mapStandee(ctx, ITEMS.tea.img, camp.x, camp.y, 50, t, '🍵');
+    label(ctx, 'ค่ายพัก · นอนฟื้นบารมี', camp.x, camp.y + 15, 11, '#f7c371');
+  });
+  // ผู้ท้าชิงยืนห่างกันแค่ 80px (และไล่ลงทีละ 20px) แต่ป้ายชื่อยาวกว่านั้น → ตัวคี่วางป้ายไว้เหนือหัว ตัวคู่ไว้ใต้เท้า
+  // ตัดสินจากตำแหน่ง x (คงที่แม้ตัวก่อนหน้าถูกปราบไปแล้ว) · ตัดคำว่า "รอ" ออก (ป้ายสีเทา = ยังไม่ถึงคิว)
+  for (const a of finalEventActors(g)) at(a.y, () => {
+    drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
+    const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
+    label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
+  });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
   if (lastHeroActor !== P || lastHeroZone !== g.zone) {
@@ -655,6 +661,9 @@ const area = h => (h[2] - h[0]) * (h[3] - h[1]);
 export function hitActor(g, sx, sy) {
   const radius = base => base * CHAR_SCALE_MAP + CHAR_HIT_PAD_MAP;
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
+  const rest = finalRestSpot(g);
+  if (rest && near(rest.x,rest.y,radius(40))) return { kind:'finalRest', ...rest };
+  for (const a of finalEventActors(g)) if (!a.reinforcement && near(a.x,a.y,radius(45))) return { kind:'finalEncounter', key:a.id, x:a.x,y:a.y, enabled:a.enabled };
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
     return { kind:'bossPending', key:g.zone };
@@ -682,8 +691,8 @@ export function hitActor(g, sx, sy) {
     if (near(x, y, radius(34))) return { kind:'soul', key:walk.soul.id };
   }
   for (const c of g.crew)
-    if (c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
-  if (g.guard && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
+    if (actorStanding(c) && c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
+  if (actorStanding(g.guard) && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
 }

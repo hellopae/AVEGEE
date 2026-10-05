@@ -58,7 +58,16 @@ test('actual room sleep heals in 1.2 seconds, blocks unowned manual use and allo
   assert.equal(R.setSit(true),false);
   assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);
   R.tick(TEA_SLEEP_MS-1);assert.equal(g.hp,1);assert.equal(R.sleeping(),true);
-  R.tick(1);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
+  R.tick(1);assert.equal(g.pendingRecovery.stage,'wake'); assert.equal(g.hp,1);
+  R.tick(TEA_SLEEP_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
+  for (const stage of ['sleep','wake']) {
+   const resumed=game();g.hp=1;g.pendingRecovery={zone:'th',stage};resumed.restore(g.snapshot());
+   const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.png',null);
+   assert.equal(room.setSleep(true),true);room.tick(TEA_SLEEP_MS-1);assert.equal(resumed.hp,1);
+   room.tick(1);if(stage==='sleep'){assert.equal(resumed.pendingRecovery.stage,'wake');room.tick(TEA_SLEEP_MS);}
+   assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
+  }
+  g.pendingRecovery=null;
   g.hp=1;g.teaBeds.th=true;assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);R.tick(TEA_SLEEP_MS);assert.equal(g.hp,g.hpMax);
  } finally {globalThis.window=prevWindow;globalThis.document=prevDocument;}
 });
