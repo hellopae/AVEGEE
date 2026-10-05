@@ -9,7 +9,7 @@ const CASE_ROLES = {
   A6:'executive', A7:'cleric', A8:'woman', A9:'business', A10:'business',
   A11:'clerk', A12:'woman', A13:'officer', A14:'business', A15:'executive',
   A16:'clerk', A17:'business', A18:'business', A19:'executive', A20:'business',
-  pol:'officer', gen:'officer', nun:'woman', recruit:'officer', star:'worker',
+  pol:'officer', gen:'officer', nun:'woman', recruit:'recruit', star:'worker',
   lord:'business', girl:'girl', boy:'boy', deva:'worker', nurse:'woman', monk:'cleric',
   orchard:'woman', trader:'executive', sister:'clerk', novice:'woman', inspector:'officer',
   hunter:'business', gadget:'business', sergeant:'officer', accountant:'executive',
@@ -40,6 +40,7 @@ export function soulArchetype(soul) {
         !/ชรา|เกษียณ|สูงวัย|สูงอายุ|elderly/i.test(description)) return 'clerk';
     return 'woman';
   }
+  if (/นักศึกษา|เพิ่งจบ|graduate|student/i.test(description)) return 'graduate';
   if (CASE_ROLES[key]) return CASE_ROLES[key];
   if (/นักเรียน|เด็กชาย|schoolboy/i.test(description)) return 'boy';
   if (sex === 'monk' || /พระ|เจ้าอาวาส|ศิษย์วัด|ลัทธิ|นักบวช|priest|monk/i.test(description)) return 'cleric';

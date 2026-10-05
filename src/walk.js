@@ -150,6 +150,16 @@ export function findPath(fx, fy, tx, ty, avoid = false) {
   const prev = new Int32Array(COLS * ROWS).fill(-2);
   prev[start] = -1;
   const q = [start];
+  // A valid foot position can lie in a blocked coarse cell beside the boss pier.
+  // Seed visible nearby cells so the actor can leave that edge without teleporting.
+  if (!G[start] && canWalk(fx, fy)) {
+    for (let yy = Math.max(0, sy - 2); yy <= Math.min(ROWS - 1, sy + 2); yy++) {
+      for (let xx = Math.max(0, sx - 2); xx <= Math.min(COLS - 1, sx + 2); xx++) {
+        const k = yy * COLS + xx, point = [(xx + .5) * CELL, (yy + .5) * CELL];
+        if (G[k] && prev[k] === -2 && clearLine([fx, fy], point, walkable)) { prev[k] = start; q.push(k); }
+      }
+    }
+  }
   let best = start, bestD = (sx - gx) ** 2 + (sy - gy) ** 2, found = -1;
 
   for (let h = 0; h < q.length; h++) {

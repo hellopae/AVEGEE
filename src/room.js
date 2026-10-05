@@ -1,6 +1,7 @@
 import { actorStanding } from './actor-recovery.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
+import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
 // ห้องสถานีแสดงวิญญาณ ผู้คุม และตัวละครที่ผู้เล่นบังคับเดินได้
@@ -268,7 +269,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;
     }
-    const sp = 0.00045 * dt;                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
+    const sp = 0.00045 * Math.min(dt, 50);                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -281,7 +282,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     const d = Math.hypot(dx, dy);
     if (d > 0) {
-      const nx = P.x + dx / d * sp, ny = P.y + dy / d * sp * 0.7;
+      const stride = P.tx != null ? Math.min(sp, d) : sp;
+      const nx = P.x + dx / d * stride, ny = P.y + dy / d * stride * (P.tx != null ? 1 : 0.7);
       // ชนขอบแล้วไถลไปตามแกนที่ยังไปได้ — เหมือน stepTo บนแผนที่ ไม่ติดหนึบที่มุม
       const bx = P.x, by = P.y;
       if (walkSegmentInside(bx, by, nx, ny, inArea)) { P.x = nx; P.y = ny; }
@@ -474,7 +476,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         const down = img('hero-yama-unconscious');
         if (down) {
           const width = U * 0.24, height = width * down.naturalHeight / down.naturalWidth;
-          ctx.drawImage(down, px(P.x)-width/2, py(P.y)-height, width, height);
+          ctx.drawImage(down, px(P.x)-width/2, py(P.y)-height/2, width, height);
         }
         return;
       }

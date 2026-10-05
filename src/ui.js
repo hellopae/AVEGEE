@@ -1,3 +1,4 @@
+import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
@@ -336,7 +337,7 @@ const weightLabel = w => w < 0 ? 'บรรเทาโทษ' : (WEIGHT[w] || '
 function deedLine(d) {
   const w = weightLabel(d.w);
   return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span>${esc(d.t)}`
-    + (w ? ` <b style="color:var(--${d.w < 0 ? 'success' : 'warning'})">· ${w}</b>` : '');
+    + (w ? ` <b style="color:var(--${d.w < 0 ? 'success' : 'warning'})">· ${w} (น้ำหนัก ${d.w})</b>` : '');
 }
 
 /** สิ่งที่นิราอ่านได้ก่อนสอบสวน: ภาพลักษณ์ + บุญที่อ้างเท่านั้น
@@ -1765,6 +1766,7 @@ function openHelp() {
           ที่<b>โต๊ะนิรา</b> · ที่<b>หน้าต่างสถานี</b>ที่เขาประจำอยู่ · หรือกด<b>ตัวเขาบนแผนที่</b>โดยตรง
           หิวจนหมดแถบ (0) จะ<b>ทำงานช้าลงอีกชั้นหนึ่ง</b> — ป้อนข้าวปั้นหักจากเสบียงกองกลางครั้งละ 1 ห่อ
           ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ต้องซื้อเพิ่มที่แท็บก่อสร้างก่อน</li>
+      ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}<li>${clockGuide}</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
     <div class="help-reader"></div>`, d => {
@@ -2195,6 +2197,7 @@ function openTrial(initialError = '') {
       </div>
       <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.png" alt=""></button>
 
+      ${!g.taught.includes('trial-calculation') ? `<div class="trial-first-lesson" role="dialog" aria-label="วิธีออกหมายครั้งแรก">${firstTrialLesson}<button class="gold" data-lesson-done>เข้าใจแล้ว เริ่มสอบสวน</button></div>` : ''}
       <div class="hud-body">
         <div class="hud-stage">
           <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
@@ -2246,6 +2249,7 @@ function openTrial(initialError = '') {
 
     // ---- ผูกปุ่ม ----
     bindCommandWheel(dlg);
+    dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
     dlg.querySelector('#t-guide').onclick = () => {
@@ -2253,13 +2257,9 @@ function openTrial(initialError = '') {
       guide.className = 'court-guide';
       guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.png" alt=""></button><h2>คู่มือนรก</h2>
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
-        <h3>ส่งคดีไปที่ไหน</h3><p>เลือกสถานที่ให้ตรงกับกรรมหลักที่พบในสำนวน ต้องสร้างสถานที่และมีที่ว่างก่อน</p>
-        <table><thead><tr><th>คดี</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
-        <p>ผู้บริสุทธิ์ใช้ประตูสวรรค์ ซึ่งไม่ต้องเลือกความแรง หอทะเบียนกรรมรับงานทั่วไปได้ แต่ควรเลือกสถานที่เฉพาะกรรมเมื่อมีพร้อม</p>
-        <h3>เลือกระดับความแรงและบรรเทาโทษ</h3><p>ระดับ 1 ว่ากล่าว · 2 เบา · 3 ปานกลาง · 4 หนัก · 5 มหันต์ ใช้ความหนักของการกระทำทั้งหมดประกอบกัน อย่าเลือกสูงสุดทุกคดี</p>
-        <p>ไต่สวนเพื่อเปิดเผยข้อเท็จจริงและตรวจบุญที่อ้าง บุญที่เป็นจริงช่วยลดโทษ ส่วนคำอ้างเท็จไม่นับ การลงโทษเกินเพิ่มกรรมของท่าน ลงโทษเบาเกินอาจไม่ทำให้สำนึก หากยังไม่พร้อมให้พักคดี หรือขังรอเมื่อมีตะรางและที่ว่าง</p>
-        <p>เมื่อรับทัณฑ์ครบ วิญญาณจะไปตะราง ตรวจรายชื่อกับนิรา: เข็ดแล้วส่งต่อไปประตูสวรรค์ ยังไม่เข็ดส่งกลับคิว ที่ประตูสวรรค์ให้บุญตรวจกรรมคงเหลือ: ยังมีกรรมส่งไปเกิดใหม่ หมดกรรมส่งขึ้นสวรรค์และรับรางวัลจากพ่อ</p>
-        <h3>เลือกผู้คุม</h3><p>แรงช่วยให้งานเร็ว ระเบียบช่วยคุณภาพงาน ปัญญาสูงช่วยให้สำนึก เมตตาช่วยลดกรรมจากโทษที่เกิน แต่ไม่ทำให้คำตัดสินผิดกลายเป็นถูก</p>
+        ${sentencingChapters.join('')}
+        <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
+        ${clockGuide}
         ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${esc(crewName(c, g.zone))}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
@@ -2777,7 +2777,6 @@ function openBattle(after) {
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม', mp >= BATTLE.mpCost.wind, `MP ${BATTLE.mpCost.wind}`) : '')
       + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns && !b.rageCooldown, b.rageCooldown ? `พักพลังอีก ${b.rageCooldown} เทิร์น` : `MP ${BATTLE.mpCost.rage}`) : '')
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `MP ${BATTLE.mpCost.spear}`) : '')
-      + (g.abilities?.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', mp >= BATTLE.mpCost.clock && !b.clockUsed, `MP ${BATTLE.mpCost.clock}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
     const actor = g.battleActors().find(c => c.id === (b.actorId || 'you')) || g.battleActors()[0];
@@ -2785,7 +2784,8 @@ function openBattle(after) {
     const isYama = actor.id === 'you';
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
       battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice ball' : itemName(k), g.inventory[k] > 0,
-        g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('');
+        g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
+      + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : '1 ครั้งต่อชุด · ไม่ใช้ MP') : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
     const attacks = battleChoice('atk', 'img/fx-slash.png', 'โจมตีปกติ / Attack', isYama || actor.morale >= 2,
@@ -2793,15 +2793,8 @@ function openBattle(after) {
       + (isYama ? '' : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`));
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
-    const recipients = needsReceiver ? g.battleActors().map(c => {
-      const reason = pending === special ? ((c.id === 'you' ? b.youHp >= b.youMax : c.morale >= 100) ? 'เต็มแล้ว / Full' : '') : g.battleRecipientWhy(pending, c.id);
-      return `<button data-execute="${esc(pending)}" data-recipient="${esc(c.id)}" ${reason||phase?'disabled':''}>${esc(c.name || GUARD.name)}${reason ? ` · ${esc(reason)}` : ''}</button>`;
-    }).join('') : '';
     const choosingTarget = !!(pending && !needsReceiver && !phase && !b.over);
-    const selection = pending ? needsReceiver
-      ? `<div class="battle-command-confirm" role="status"><b>เลือกผู้รับ / Choose recipient</b>${recipients}
-          <button data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button></div>`
-      : `<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
+    const selection = pending ? `<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
     const acts = !commandMenuOpen || !!phase || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,
       actorName:actor.name || GUARD.name, portrait:isYama ? artUrl('hero-yama-profile') : crewArt(actor, '-profile'),
       segments:[{id:'attack',label:'โจมตี / Attack',icon:'img/ui/Button7.png',choices:attacks},
@@ -2934,8 +2927,15 @@ function openBattle(after) {
         if (phase) return;
         const key = el.dataset.crewPick;
         const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
+        if (needsReceiver && chosen) {
+          const reason = pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
+          if (!reason) executeCommand(pending, chosen.id);
+          return;
+        }
         if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
       };
+      el.classList.toggle('choose-recipient', !!needsReceiver && !phase);
+      if (needsReceiver && !phase) el.insertAdjacentHTML('beforeend', '<span class="target-prompt">เลือกผู้รับ</span>');
       el.onclick = activate;
       el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
     });
@@ -2970,8 +2970,10 @@ function openBattle(after) {
         const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
         if (!area.width || !rect.width) return;
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
-        const cx = rect.left - area.left + rect.width * 0.5 + w * 0.3, cy = rect.top - area.top + rect.height * 0.4;
-        const left = Math.max(0, Math.min(area.width - w, cx - w * 0.41));
+        const cx = rect.left - area.left + rect.width * 0.5 + w * 0.65, cy = rect.top - area.top + rect.height * 0.4;
+        const hero = stage.querySelector('.fig.you')?.getBoundingClientRect();
+        const front = hero ? hero.right - area.left + 12 : 0;
+        const left = Math.max(0, Math.min(area.width - w, Math.max(front, cx - w * 0.41)));
         const top = Math.max(0, Math.min(area.height - h, cy - h * 0.505 - Math.max(48, Math.min(84, area.height * 0.075))));
         wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.bottom = 'auto';
       };
@@ -2980,6 +2982,7 @@ function openBattle(after) {
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
+      if (el.dataset.act === 'cooldownClock') { executeCommand('cooldownClock'); return; }
       b.command = el.dataset.act; paint();
     });
     const finishWave = () => {
@@ -3161,14 +3164,16 @@ function openZone() {
       ${markers}
       <div class="world-travelers" aria-hidden="true">
         <canvas class="yama" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none;background:none"></canvas>
-        <canvas class="nira" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none"></canvas>
+        <canvas class="nira" width="160" height="160" style="left:${startX - 1.7}%;top:${startY + 1.5}%;width:auto;animation:none"></canvas>
       </div>
     </div></div>
     <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
-    <div class="row"><button class="gold" data-close>อยู่ที่นี่ต่อ</button></div>`, d => {
+    <div class="row"><button class="gold" id="zone-enter" disabled>เข้าโซนนี้</button></div>`, d => {
     const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
     const yama = d.querySelector('.world-travelers .yama'), nira = d.querySelector('.world-travelers .nira');
-    let traveling = false, frame = 0;
+    let traveling = false, frame = 0, arrivedZone = null;
+    const enter = d.querySelector('#zone-enter');
+    enter.onclick = () => { if (arrivedZone && !traveling && g.moveZone(arrivedZone)) { sfx('gong'); refresh(); } };
     const yamaCtx = yama.getContext('2d');
     yamaCtx.imageSmoothingEnabled = false;
     let yamaDirection = 'down', yamaLast = [startX, startY];
@@ -3200,16 +3205,16 @@ function openZone() {
     onDlgClose(() => cancelAnimationFrame(frame));
     d.querySelectorAll('.world-zone:not(:disabled)').forEach(b => b.onclick = () => {
       if (traveling || !g.canMoveZone(b.dataset.zone)) return;
-      const route = zoneMapRoute(g.zone, b.dataset.zone);
+      const route = zoneMapRoute(arrivedZone || g.zone, b.dataset.zone);
       if (route.length < 2) return;
-      traveling = true;
+      traveling = true; arrivedZone = null; enter.disabled = true;
       map.classList.add('traveling');
       d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = true; });
       const path = travelPath(route, map.clientWidth / map.clientHeight);
       const total = path.total;
-      const followGap = Math.min(2.5, total / 4);
+      const followGap = Math.min(6, total / 4);
       const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 :
-        Math.min(3600, Math.max(1500, total * 34));
+        Math.min(10000, Math.max(3500, total * 90));
       const started = performance.now();
       const step = now => {
         if (!d.open || !d.classList.contains('zonepick')) return;
@@ -3221,7 +3226,7 @@ function openZone() {
           (y - yamaLast[1]) * map.clientHeight / 100, yamaDirection);
         yamaLast = [x, y];
         paintYama(done < total ? done * map.clientHeight / 100 : 0);
-        nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
+        nira.style.left = `${nx - 1.7}%`; nira.style.top = `${ny + 1.5}%`;
         if (Math.abs(nx - niraLastX) > .001) niraFace = nx > niraLastX ? 1 : -1;
         niraLastX = nx;
         paintNira(Math.max(0, done - followGap) * map.clientHeight / 100,
@@ -3229,8 +3234,9 @@ function openZone() {
         centerOn(x);
         if (done < total + followGap) { frame = requestAnimationFrame(step); return; }
         map.classList.remove('traveling');
-        // moveZone() เปิดฉากมาถึงผ่าน onChange() เอง; ปล่อยให้ฉากนั้นแทนแผนที่ทันที
-        if (g.moveZone(b.dataset.zone)) { sfx('gong'); refresh(); }
+        // Both travelers have arrived; entering still requires the explicit button.
+        traveling = false; arrivedZone = b.dataset.zone; enter.disabled = false;
+        d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = btn.dataset.zone === g.zone || !g.canMoveZone(btn.dataset.zone); });
       };
       frame = requestAnimationFrame(step);
     });
@@ -3302,6 +3308,7 @@ function bagUseWhy(k) {
   if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
   if (d.hp && g.hp >= g.hpMax && !(d.mp && g.mp < g.mpMax)) return 'บารมีเต็มแล้ว';
   if (d.mp && !d.hp && g.mp >= g.mpMax) return t('bag.mpFull');
+  if (d.battleOnly) return 'ใช้จากเมนูไอเท็มในสนามรบ · ไม่ใช้ MP';
   if (d.karma < 0 && g.karma <= 0) return 'ยังไม่มีกรรมให้ชำระ';
   if (d.power) {
     const p = g.powerOf(d.power);
@@ -3549,6 +3556,7 @@ function drawHeroProfile() {
   const row = (img, value, label, extra = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span></div>`;
   const hpBar = `<span class="hero-profile-hp"><i style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>`;
   const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar)
+    + row('<span class="profile-emoji">🔹</span>', `${Math.round(g.mp)}/${g.mpMax}`, 'MP', `<span class="hero-profile-hp profile-mp"><i style="width:${Math.max(0, Math.min(100, 100 * g.mp / g.mpMax))}%"></i></span>`)
     + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
     + row('img/item-food.png', Math.round(g.food), t('profile.food'))
     + row('img/ui/icon-justice.png', Math.round(g.order), t('profile.order'))
@@ -3563,7 +3571,6 @@ function drawHeroProfile() {
     ['windFan', 'img/fx-fan-wind.png', 'MP ' + BATTLE.mpCost.wind, 'wind'],
     ['rage', 'img/fx-rage.png', 'MP ' + BATTLE.mpCost.rage, 'rage'],
     ['valkyrieSpear', 'img/fx-valkyrie-spear.png', 'MP ' + BATTLE.mpCost.spear, 'spear'],
-    ['cooldownClock', 'img/fx-clock-reset.png', 'MP ' + BATTLE.mpCost.clock, 'clock'],
   ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
   const powers = row('img/icon-sword.png', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
     + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo}`)
@@ -4220,7 +4227,7 @@ function openStation(k, emergency = false) {
         [clampX(left), Math.max(bh + 8, actY - 30)]];
       const [bx, by] = spots.find(([x, y]) => !covers(x, y)) || spots[0];
       exitBtn.style.left = `${bx}px`;
-      exitBtn.style.top = `${by}px`;
+      exitBtn.style.top = `${k === 'tea' ? Math.min(cv2.getBoundingClientRect().height - 8, top + bh + 24) : by}px`;
     }
     // นั่งอยู่ — บารมีขยับทุกเฟรมจริง (room.js เขียนตรงที่ g.hp โดยไม่ผ่าน onChange/refresh()
     // เพราะตั้งใจให้ฟื้นต่อได้แม้เกมพักอยู่กับกล่องโมดัล — ดู room.js setSit) อัปเดตเฉพาะตัวเลข

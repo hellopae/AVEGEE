@@ -28,7 +28,7 @@ test('no power keeps the case answer hidden while the same station still earns i
 test('mirror reveals the bonus station, deserved intensity and highest scoring assignable keeper for this case', () => {
   const g = createGame();
   const soul = caseAtCourt(g);
-  g.level = 2;
+  g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
   g.coin = 1000;
   assert.equal(g.hire('kan'), true);
   const logsBefore = g.logs.length;
@@ -58,7 +58,7 @@ test('mirror reveals the bonus station, deserved intensity and highest scoring a
 test('mirror names the strongest keeper and why they cannot take the case when all are busy', () => {
   const g = createGame();
   const soul = caseAtCourt(g);
-  g.level = 2;
+  g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
   g.coin = 1000;
   g.hire('kan');
   g.crewOf('taan').at = 'sala';
@@ -73,7 +73,7 @@ test('mirror names the strongest keeper and why they cannot take the case when a
 test('an occupied matching station recommends only its assigned keeper', () => {
   const g = createGame();
   const soul = caseAtCourt(g);
-  g.level = 2;
+  g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
   g.coin = 1000;
   g.hire('kan');
   const station = g.stations.find(st => st.def.k === 'krata');
@@ -109,7 +109,7 @@ test('mirror gives a pure soul the heaven gate and zero punishment', () => {
   soul.pure = true;
   soul.deserved = 0;
   g.stations.push({ def:STATIONS.find(st => st.k === 'sawan'), slots:[], crewK:null, build:0, repair:0, fire:0 });
-  g.level = 2;
+  g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
   assert.ok(g.usePower('mirror', soul));
   const answer = g.trialAnswer(soul);
   assert.equal(answer.station.k, 'sawan');

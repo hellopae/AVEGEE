@@ -58,10 +58,12 @@ test('Valkyrie spear is a strong MP attack', () => {
 test('clock resets helper cooldowns once per battle', () => {
   const g = battle();
   g.abilities.cooldownClock = true;
+  g.mp = 0;
   const crew = g.crew[0];
   crew.helpReadyAt = Date.now() + 60000;
   g.powers[0].readyAt = Date.now() + 60000;
   assert.equal(g.battleAct('cooldownClock'), true);
+  assert.equal(g.mp, 0);
   assert.equal(crew.helpReadyAt, 0);
   assert.equal(g.powers[0].readyAt, 0);
   assert.equal(g.battleAct('cooldownClock'), false);

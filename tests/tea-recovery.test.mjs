@@ -45,11 +45,14 @@ test('actual room sleep heals in 1.2 seconds, blocks unowned manual use and allo
  const cv={width:900,height:620,getContext:()=>ctx,addEventListener:noop,removeEventListener:noop,getBoundingClientRect:()=>({width:900,height:620})};
  try {
   for (const zone of ['th','asia','west','cyberhell']) {
-   const sitter=game();sitter.zone=zone;sitter.hp=1;
+   const sitter=game();sitter.zone=zone;sitter.hp=1;sitter.mp=0;
    const seatRoom=teaRoom(zone);seatRoom.me=[seatRoom.act[0]+.03,seatRoom.act[1]+.02];
    const seated=makeRoom(cv,sitter,STATIONS.find(d=>d.k==='tea'),seatRoom,`img/tea-${zone}-recovery.png`,null);
    assert.equal(seated.setSit(true),true);
    assert.deepEqual(seated.pos().slice(0,2),seatRoom.act,`${zone} sits exactly on its cushion`);
+   seated.tick(1000);
+   assert.ok(sitter.hp>1,`${zone} restores health without stopping the room loop`);
+   assert.equal(sitter.mp,5);
    seated.setSit(false);
   }
   const g=game();g.hp=1;g.pendingRecovery={zone:'th'};

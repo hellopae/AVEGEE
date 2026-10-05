@@ -96,7 +96,7 @@ test('29H: hypnosis renders the station on the wheel with no force/keeper reveal
 
 test('29H: mirror renders station, force and keeper, and marks the primary issue before construction too', () => {
   for(const built of [true,false]) {
-    const g=createGame(),s=courtSoul(g);g.level=2;
+    const g=createGame(),s=courtSoul(g);g.level=2;(g.zoneEvents.th ||= {}).devaTest='cleared';g.powerOf('mirror').ammo=1;
     if(!built)g.stations=g.stations.filter(st=>st.def.k!=='krata');
     assert.ok(g.usePower('mirror',s));
     const answer=g.trialAnswer(s),rendered=renderChoices(g,s);

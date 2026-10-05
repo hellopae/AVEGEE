@@ -62,7 +62,7 @@ test('discovery queue covers pickups, shops, levels, abilities and survives save
   assert.equal(new Set(queue).size,queue.length);
   assert.ok(queue.includes('item:health'));
   assert.ok(queue.includes('power:hypno'));
-  for (const k of Object.keys(ABILITY_REWARDS)) assert.ok(queue.includes(`ability:${k}`));
+  for (const k of Object.keys(ABILITY_REWARDS)) assert.ok(queue.includes(`${k === "cooldownClock" ? "item" : "ability"}:${k}`));
   const saved=g.snapshot(), loaded=createGame();
   assert.equal(loaded.restore(saved),true);
   assert.deepEqual(loaded.discoveryQueue,queue);

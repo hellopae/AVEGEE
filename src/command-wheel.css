@@ -438,3 +438,16 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   font:700 clamp(11px,1.1vw,16px)/1.4 var(--font-display);white-space:nowrap;pointer-events:none}
 .battle-command-cancel{position:absolute;left:16%;top:96%;pointer-events:auto;
   padding:5px 10px;min-height:36px;font-size:12px}
+
+/* Detail revisions: reserve independent name, icon and MP rows. */
+.profile-mp i{background:#25bde2!important}
+.combat-wheel .command-options{row-gap:24px!important;column-gap:18px!important;align-items:flex-start}
+.combat-wheel .command-options .orb-choice:has(i){height:auto!important;min-height:148px;justify-content:flex-start;gap:6px}
+.combat-wheel .command-options .orb-choice:has(i) b{position:static!important;min-height:2.8em;line-height:1.4;white-space:normal;margin:0!important}
+.combat-wheel .command-options .orb-choice:has(i) i{position:static!important;line-height:1.4;margin:0!important}
+.choose-recipient{cursor:pointer;outline:2px solid #80ebac;outline-offset:4px}
+@media(min-width:701px){.arena.combat-arena:not(.final-team)>.fig.you{left:34%}.arena.combat-arena:not(.final-team)>.fig.foe{right:9%}.arena.combat-arena .foe-group{gap:22px}}
+@media(max-width:700px){.arena.combat-arena:not(.final-team)>.fig.you{left:50%}}
+.battle-squad .choose-recipient .target-prompt{bottom:18%;left:50%;transform:translateX(-50%);font-size:11px;z-index:5}
+.choose-recipient img{filter:drop-shadow(0 0 5px #7fffc1)}
+.trial-first-lesson{position:fixed;z-index:60;left:0;right:0;top:5vh;margin-inline:auto;width:min(560px,90vw);max-height:90vh;overflow:auto;padding:22px;border:2px solid var(--gold);border-radius:16px;background:#211219;box-shadow:0 0 0 100vmax #0009;color:#f4e5ca;line-height:1.65}.trial-first-lesson h3{margin:0 0 12px}.trial-first-lesson button{margin-top:8px}

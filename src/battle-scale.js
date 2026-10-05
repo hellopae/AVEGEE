@@ -63,7 +63,7 @@ function drawnRect(img) {
 /** คำนวณแถวยมทูตจากตัวเลขล้วน (ไม่แตะ DOM) — แยกออกมาให้เทสต์ได้
  *  hero = { visH, oLeft, base } ความสูงตัวจริง · ขอบซ้ายตัวจริง · เส้นเท้า (พิกัดเดียวกับ stageLeft)
  *  crew = [{ box:{l,t,w,h}, aspect }] · คืน { items:[{boxW,boxH,left}], fit } (left = x ของกล่องภาพ) */
-export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 6 } = {}) {
+export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 18 } = {}) {
   const sizeAt = k => crew.map(c => {
     const visH = hero.visH * CREW_SCALE_TARGET * k;
     const boxH = visH / (c.box?.h || 1);
@@ -72,10 +72,9 @@ export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 6 } = {}) 
   const sum = items => items.reduce((a, i) => a + i.oW, 0);
   const room = hero.oLeft - gap - (stageLeft + pad);
   let k = 1, items = sizeAt(k), g = gap;
-  // แถวไม่พอ → ให้ตัวจริงเหลื่อมกันได้นิดหน่อยแบบแถวประจัญบาน (ไม่เกิน 35% ของความกว้างตัวจริงเฉลี่ย) ก่อนค่อยย่อขนาด
+  // Keep visible bodies separated even when a small screen requires scaling.
   if (sum(items) + g * (crew.length - 1) > room && crew.length > 1 && room > 0) {
-    const meanW = sum(items) / crew.length;
-    g = Math.max(-0.35 * meanW, (room - sum(items)) / (crew.length - 1));
+    g = Math.max(8, (room - sum(items)) / (crew.length - 1));
   }
   if (sum(items) + g * Math.max(0, crew.length - 1) > room && room > 0) {
     k = Math.max(MIN_FIT, (room - g * Math.max(0, crew.length - 1)) / sum(items));
@@ -128,7 +127,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0) {
         const span = img.closest('[data-crew-pick]') || img.parentElement;
         const footGap = (1 - (box.t + box.h)) * p.boxH;
         put(span, { position:'absolute', left:`${p.left}px`, top:`${local.base + footGap - p.boxH}px`, width:`${p.boxW}px`, height:`${p.boxH}px`,
-                    flex:'none', margin:'0' });
+                    flex:'none', margin:'0', 'clip-path':`inset(${Math.max(0, box.t * p.boxH - 5)}px ${Math.max(0, (1 - box.l - box.w) * p.boxW - 5)}px ${Math.max(0, (1 - box.t - box.h) * p.boxH - 5)}px ${Math.max(0, box.l * p.boxW - 5)}px)` });
         put(img, { width:`${p.boxW}px`, height:`${p.boxH}px`, 'max-width':'none', 'max-height':'none', 'object-fit':'fill' });
       });
       squad.dataset.fit = plan.fit.toFixed(2);

@@ -120,7 +120,7 @@ export function render(ctx, g, t, hover, sel) {
 
   // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
-  const bg = img(zk) || zoneImg('scene') || img('scene');
+  const bg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
   if (bg) {
     ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร

@@ -82,7 +82,7 @@ export function createGame() {
     order: 72, karma: 0, hp: BAL.startHp,
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ตวาดข่มขู่ (roar) เลิกใช้ ammo/item แล้ว เปลี่ยนเป็นคูลดาวน์เวลาจริง
     // readyAt: 0 = ใช้ได้ทันทีตั้งแต่เริ่มเกม · ammo/max ของ roar เหลือไว้เฉยๆ ไม่ได้ใช้กันอีกแล้ว (กันเซฟเก่าพัง)
-    powers: POWERS.map(p => ({ ...p, cd: 0, ammo: p.k === 'mirror' ? 2 : 0, max: p.k === 'roar' ? 3 : 2, readyAt: 0 })),
+    powers: POWERS.map(p => ({ ...p, cd: 0, ammo: 0, max: p.k === 'roar' ? 3 : 2, readyAt: 0 })),
     // ข้อ A คุณเป้ 24 ก.ย. 2569 — ลูกไฟในฉากต่อสู้แยกกระสุนออกจากตวาดข่มขู่แล้ว (เดิมแชร์ powerOf('roar').ammo
     // ก้อนเดียวกัน ตอนนี้ตวาดข่มขู่ไม่มี ammo อีกแล้ว ลูกไฟจึงต้องมีสระของตัวเอง)
     fireAmmo: 3, fireAmmoMax: 3,
@@ -614,9 +614,10 @@ const API = {
     this.discoveryQueue.push(id);
   },
   syncDiscoveries() {
+    if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
     for (const [k, n] of Object.entries(this.inventory)) if (n > 0 && ITEMS[k]) this.discover('item', k);
     for (const p of this.powers) if (!this.powerLocked(p)) this.discover('power', p.k);
-    for (const [k, yes] of Object.entries(this.abilities)) if (yes && ABILITY_REWARDS[k]) this.discover('ability', k);
+    for (const [k, yes] of Object.entries(this.abilities)) if (yes && k !== 'cooldownClock' && ABILITY_REWARDS[k]) this.discover('ability', k);
   },
   acknowledgeDiscovery(id) {
     if (this.discoveryQueue[0] !== id) return false;
@@ -1525,7 +1526,7 @@ const API = {
   },
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
-  powerLocked(p) { return this.level < (p.lv || 1); },
+  powerLocked(p) { return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared'; },
   /** เรียกยมทูตมาช่วยในฉากต่อสู้ได้หรือยัง */
   canCallCrew() { return this.level >= CREW_HELP_LV; },
 
@@ -1559,7 +1560,7 @@ const API = {
         P.path.shift();
         if (!P.path.length) { P.path = null; P.tx = null; }
       } else {
-        if (!stepTo(P, dx / d * SP, dy / d * SP, true)) {
+        if (!stepTo(P, dx / d * Math.min(SP, d), dy / d * Math.min(SP, d), true)) {
           // ติดเพราะมีตัวละครเดินมายืนขวาง (พื้นยังเดินได้) → วางเส้นทางอ้อมใหม่ แล้วค่อยยอมแพ้ถ้ายังไม่มีทาง
           const now = performance.now();
           const retry = P.tx != null && now >= (P.replanAt || 0);
@@ -1876,7 +1877,7 @@ const API = {
   /** เก็บของด้วย index เดียวกันทั้งแผนที่หลักและฉากภายในสถานี */
   collectItem(i) {
     const it = this.items[i], def = it && ITEMS[it.k];
-    if (!it || !def) return false;
+    if (!it || !def || it.k === 'mirror' && this.devaTestStatus('th') !== 'cleared') return false;
     this.discover('item', it.k);
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้ (มีปุ่มของตัวเองในวงคำสั่ง
     // ต่อสู้อยู่แล้ว ดู BATTLE.items/battleAct) เดิมเก็บเข้ากระเป๋าทั่วไปก่อน แล้วต้องเปิดกระเป๋ามากด "ใช้"
@@ -1908,7 +1909,7 @@ const API = {
   useBag(k) {
     if (ITEMS[k]?.consumable) return !this.battle && this.useMedicine(k);
     const def = ITEMS[k], n = this.inventory[k] || 0;
-    if (!def || n < 1) return false;
+    if (!def || n < 1 || def.battleOnly) return false;
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
     // ปิดถาวรแล้ว ดู bagUseWhy ใน ui.js) กันไว้ที่ชั้นข้อมูลด้วยอีกชั้น เผื่อมีทางเรียกอื่นนอก UI ปกติ
     if (k === 'fire' || k === 'ice' || k === 'mirror' || k === 'lotus' || k === 'food') return false;
@@ -2474,7 +2475,9 @@ const API = {
     s.activeEncounter = id;
     s.phase = id === 'boss' ? 'finalBoss' : id.startsWith('ruler:') ? 'rulerBattle' : 'minions';
     this.zoneEvents.cyberhell.cyberFinal = 'active'; this.fights++;
+    const clockGroup = id.startsWith('minion:') ? 'minions' : id.startsWith('ruler:') ? 'rulers' : 'boss';
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:'cyberFinal', encounter:id, zone:this.zone,
+      clockUsed:!!s.clockUsedByGroup?.[clockGroup],
       team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0,this.teamLimits.finalTeamMax),
       wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sp:foes[0].sp,
       sub:id.startsWith('minion:') ? `ระลอก ${wave}/4` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
@@ -2691,7 +2694,7 @@ const API = {
     const itemCommand = command && (what === 'food' || ITEMS[what]?.consumable);
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
     if (command && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
-    if (command && actor.id !== 'you' && !itemCommand && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    if (command && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you' && actor.morale < 2) return false;
     if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
@@ -2820,10 +2823,13 @@ const API = {
       say(`🔱 หอกวาคิวรีแทงตรงไปยังศัตรู — ${dmg} หน่วย`);
 
     } else if (what === 'cooldownClock') {
-      const cost = BATTLE.mpCost.clock ?? 16;
-      if (!this.abilities.cooldownClock || B.clockUsed || this.mp < cost) return false;
-      this.mp -= cost;
+      if (!(this.abilities.cooldownClock || this.inventory.cooldownClock) || B.clockUsed) return false;
       B.clockUsed = true;
+      B.rageCooldown = 0;
+      if (this.isFinalBattle()) {
+        const group = B.encounter.startsWith('minion:') ? 'minions' : B.encounter.startsWith('ruler:') ? 'rulers' : 'boss';
+        (this.finalEventState().clockUsedByGroup ||= {})[group] = true;
+      }
       for (const c of (this.isFinalBattle() ? this.battleCrew() : this.crew)) { c.helpReadyAt = 0; c.helpRemainingMs = 0; }
       if (this.guard) { this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 0; }
       for (const p of this.powers) if (p.readyAt) p.readyAt = 0;
@@ -2956,6 +2962,7 @@ const API = {
           this.crew.push(mkCrew(CREW.find(c => c.k === 'taan'), B.zone));
           syncRoster(this);
         }
+        if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
         this.refreshZoneEvents(B.zone);
         B.reward = { ...(ev?.reward || {}) };
         if (B.eventKey === 'thBorderBoss') this.queueStory('th', 'flameCharge');
@@ -3593,7 +3600,7 @@ const API = {
 
   buyMerchant(k) {
     const stock = merchantStock(this.zone).find(x => x.k === k), def = ITEMS[k];
-    if (!this.zoneCaptivesFree() || !stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    if (!this.zoneCaptivesFree() || !stock || !def || k === 'mirror' && this.devaTestStatus('th') !== 'cleared' || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.discover('item', k);
     this.coin -= stock.cost;
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — ลูกไฟ/น้ำแข็งพร้อมใช้ทันทีเหมือนเก็บจากแผนที่
@@ -3653,7 +3660,7 @@ const API = {
    *  ต่างแค่คนละสต็อก/คนละที่ยืน — ของเข้ากระเป๋าเหมือนกัน ใช้ทีหลังผ่าน useBag() */
   buyBoon(k) {
     const stock = BOON_SHOP.stock.find(x => x.k === k), def = ITEMS[k];
-    if (!stock || !def || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
+    if (!stock || !def || k === 'mirror' && this.devaTestStatus('th') !== 'cleared' || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.coin -= stock.cost;
     this.inventory[k] = (this.inventory[k] || 0) + (stock.qty || 1);
     this.log(`🛍️ ซื้อ${def.name}จากบุญ — ${stock.cost} เบี้ยกรรม`, 'act');
@@ -3931,7 +3938,7 @@ API.restore = function (d) {
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
     ((d.zoneCases?.th || 0) >= 10 || !!d.bossCleared?.th || !!d.bossGuarding?.th));
   this.discoverySeen = { ...(d.discoverySeen || {}) };
-  this.discoveryQueue = [...(d.discoveryQueue || [])];
+  this.discoveryQueue = [...new Set((d.discoveryQueue || []).map(id => id === 'ability:cooldownClock' ? 'item:cooldownClock' : id))];
   this.speed = 1; // เซฟเก่าที่เคยเร่งเวลาและออบเจ็กต์เกมเดิมกลับสู่ความเร็วปกติ
   // ข้อ C คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — เซฟเก่ามีค่า fuel (ฟืน) ไม่ใช่ food (เสบียง)
   // ยกมา 1:1 ให้ผู้เล่นไม่เสียเปรียบ (จำนวนคงเดิม แค่เปลี่ยนความหมาย) · เซฟใหม่มี d.food อยู่แล้วไม่ต้องแปลง
@@ -4012,6 +4019,7 @@ API.restore = function (d) {
   this.items = d.items || [];
   this.inventory = { ...(d.inventory || {}) };
   this.abilities = { ...(d.abilities || {}) };
+  if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
   this.storyQueue = d.storyQueue || []; this.storySeen = d.storySeen || {}; this.niraRest = d.niraRest || null;
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
@@ -4179,6 +4187,11 @@ API.restore = function (d) {
   this.finalEvent = migrateFinalEvent(d);
   this.pendingReward = this.finalEvent.pendingReward;
   this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
+  if (this.battle?.clockUsed && this.battle.encounter) {
+    const id = this.battle.encounter;
+    const group = id.startsWith('minion:') ? 'minions' : id.startsWith('ruler:') ? 'rulers' : 'boss';
+    (this.finalEvent.clockUsedByGroup ||= {})[group] = true;
+  }
   if (!this.battle && this.finalEvent.activeEncounter) {
     this.finalEvent.activeEncounter = null;
     this.finalEvent.phase = this.finalEvent.minionsCleared < 4 ? 'ready' : 'staging';
@@ -4201,6 +4214,11 @@ API.restore = function (d) {
     this.discoveryQueue = [];
   }
   reconcileSoulPortraits(this);
+  // Remove prematurely granted mirrors in old saves, before the tester reward.
+  if (this.devaTestStatus('th') !== 'cleared') {
+    this.powerOf('mirror').ammo = 0; delete this.inventory.mirror;
+    this.items = this.items.filter(it => it.k !== 'mirror');
+  }
   // เซฟที่สร้างก่อนระบบจุดเริ่มโซน: กู้ฐานของโซนปัจจุบันจากสถานะที่มี
   // โดยเก็บ zoneSave ของสาขาก่อนหน้าไว้ทั้งชุด ไม่ล้างความคืบหน้าที่ผ่านมา
   if (!this.zoneEntry && this.zone !== 'th') {

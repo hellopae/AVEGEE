@@ -7,7 +7,7 @@ globalThis.Image = class {};
 
 test('กระจกในกระเป๋าไม่ถูกใช้บนแผนที่ แต่พลังในห้องสอบสวนยังทำงาน', () => {
   const g = createGame();
-  g.level = 2;
+  g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
   g.inventory.mirror = 1;
   const ammo = g.powerOf('mirror').ammo;
   assert.equal(g.useBag('mirror'), false);

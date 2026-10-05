@@ -36,7 +36,7 @@ test('ทุกโซน ทุกยมทูต (รวมยักษ์ท�
   const boxes = boxesOf(crewFiles);
   const cases = [
     // [ชื่อ, ความสูงตัวจริงของยมบาทน้อยบนจอ, ขอบซ้ายตัวจริง, ซ้ายสุดของฉาก]
-    ['desktop 1440', 215, 515, 0.92], ['laptop 1024', 150, 330, 0.92], ['mobile 390', 79, 125, 0.85],
+    ['desktop 1440', 215, 515, 0.92], ['laptop 1024', 150, 330, 0.92], ['mobile 390', 79, 210, 0.85],
   ];
   for (const [name, visH, oLeft, minRatio] of cases) {
     {

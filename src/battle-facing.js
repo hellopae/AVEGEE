@@ -11,13 +11,13 @@
 
 /** ภาพฝั่งเราที่วาดหันขวามาอยู่แล้ว → ห้ามพลิก */
 export const TEAM_DRAWN_FACING_RIGHT = new Set([
-  'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
+  'crew-guard', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
   'crew-plerng-cyberhell',                                                                    // โซน 4 (ตรงกับคัตซีน 30A ที่หันขวา)
 ]);
 
 /** ภาพศัตรูที่วาดหันขวามา → พลิกให้หันซ้ายเข้าหาทีมเรา */
 export const FOE_DRAWN_FACING_RIGHT = new Set([
-  'mob-gaki-asia',
+  'mob-gaki-asia', 'mob-pret', 'mob-pret2',
 ]);
 
 /** ชื่อฐานของไฟล์ภาพ: ตัด path, query, นามสกุล และ -v2 */

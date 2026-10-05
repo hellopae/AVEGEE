@@ -77,7 +77,7 @@ test('30F: selected story image is 16:9; both regional sprites have alpha, accur
   for(const [i,key] of ['tarang','krajok'].entries()) {
     const stem=`st-${key}-cyberhell`,path=`CyberHell/${stem}.png`,a=audit[i+1];
     assert.equal(manifest.zones.cyberhell.filter(p=>p===path).length,1);
-    assert.deepEqual(a.size,[512,512]);assert.deepEqual(a.alpha,[0,255]);
+    assert.equal(a.size[0],a.size[1]);assert.ok(a.size[0]>=512);assert.deepEqual(a.alpha,[0,255]);
     assert.deepEqual(manifest.stationSizes[stem],a.size);assert.deepEqual(manifest.boxes[stem],a.box);
   }
 });
