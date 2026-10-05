@@ -5,6 +5,7 @@ import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFi
 import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
+import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
          POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS,
@@ -2716,6 +2717,8 @@ const API = {
       B.youHp = 0;
       B.over = 'lose';
       B.dmg = { foe: 0, you: 999 };
+      if (dad) B.ultimate = { name:'คำพิพากษาของหัวหน้าสาขา',
+        image:authorityPunishmentCutscene(this.zone), damage:999 };
       say(dad ? fmtAuthority(DAD.line3, this.zone) : YAMA_FIGHT.line3);
       this.onChange();
       return true;

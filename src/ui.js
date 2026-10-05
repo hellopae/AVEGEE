@@ -31,6 +31,7 @@ import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-intro
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
 import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
+import { frontierIntroduction } from './narrative-cutscenes.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -2425,11 +2426,32 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier(fromWalk = false, breachArg = null) {
+function openFrontier(fromWalk = false, breachArg = null, introSeen = false) {
   // ชุด 29C ข้อ 9 — มี event ปีศาจบุกรออยู่ (รับทราบแล้ว) → หน้าต่างนี้คือหน้าเตรียมทีมของ event นั้น · ไม่มี = หน้าเตรียมทีมชายแดนปกติ
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
+  // An invasion still requires walking to the gate. The boss speaks on arrival,
+  // before team preparation; acknowledging this scene never starts a fight.
+  const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
+  if (intro) {
+    const zone = g.zone;
+    const proceed = () => {
+      if (g.zone === zone && g.zoneEventStatus(breachKey) === 'pending') openFrontier(false, breachKey, true);
+      else dlg.close();
+    };
+    modal(`<div class="intro-comic frontier-introduction" role="region" aria-label="${esc(intro.speaker)}">
+      <div class="intro-comic-frame"><img src="${esc(intro.image)}" alt="${esc(intro.speaker)}"></div>
+      <div class="intro-comic-caption"><h2>${esc(intro.speaker)}</h2><p>“${esc(intro.line)}”</p></div>
+      <div class="intro-comic-controls"><button data-frontier-intro-skip>${getLang() === 'en' ? 'Skip scene' : 'ข้ามฉาก'}</button>
+        <button class="gold" data-frontier-intro-next>${getLang() === 'en' ? 'Prepare the team' : 'เตรียมทีมรับศึก'}</button></div>
+      </div>`, d => {
+        prepareComicImages(d);
+        d.querySelector('[data-frontier-intro-skip]').onclick = proceed;
+        d.querySelector('[data-frontier-intro-next]').onclick = proceed;
+      }, 'intro-comic-dialog');
+    return;
+  }
   const waveN = bev?.waves?.length || 2;
   const breachTitle = thBreach ? t('event.frontierBreach.title') : zoneEventText(bev?.title);
   const breachText = thBreach ? t('event.frontierBreach.alert') : zoneEventText(bev?.alert);
