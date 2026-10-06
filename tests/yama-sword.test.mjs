@@ -15,8 +15,8 @@ test('all four outfits have shipped transparent atlases and consistent frame anc
 });
 test('slash follows the lunge and stops on recovery, never wraps back into another strike', () => {
   assert.equal(SWORD_DURATION_MS,580);
-  assert.equal(swordFrame(-1),0); assert.equal(swordFrame(49),0); assert.equal(swordFrame(50),1);
-  assert.equal(swordFrame(170),3); assert.equal(swordFrame(225),4);
+  assert.equal(swordFrame(-1),0); assert.equal(swordFrame(84),0); assert.equal(swordFrame(85),1);
+  assert.equal(swordFrame(165),2); assert.equal(swordFrame(225),3); assert.equal(swordFrame(260),4);
   assert.equal(swordFrame(579),7); assert.equal(swordFrame(2000),7);
 });
 test('only Yama ordinary attack uses sword, including while rage is active', () => {
@@ -27,7 +27,7 @@ test('only Yama ordinary attack uses sword, including while rage is active', () 
 test('canvas crops the selected frame and keeps the feet fixed when facing either way', () => {
   globalThis.Image = class { complete=true; naturalWidth=5120; };
   const calls=[],ctx={save(){},restore(){},translate(...a){calls.push(['translate',...a]);},scale(...a){calls.push(['scale',...a]);},drawImage(...a){calls.push(['draw',...a.slice(1)]);}};
-  assert.equal(drawYamaSword(ctx,'west',100,200,414,225,-1),true);
+  assert.equal(drawYamaSword(ctx,'west',100,200,swordSheet('west').bodyHeight,260,-1),true);
   assert.deepEqual(calls[0],['translate',100,200]); assert.deepEqual(calls[1],['scale',-1,1]);
   assert.deepEqual(calls[2],['draw',2560,0,640,640,-240,-570,640,640]);
 });

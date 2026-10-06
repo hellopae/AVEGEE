@@ -288,7 +288,7 @@
       "img/ui/icon-open-court-th.png",
       "img/ui/icon-save-th.png",
       "img/ui/logo-th.png",
-      "img/yama-sword-v1/hero-yama-th-sword.webp"
+      "img/yama-sword-v2/hero-yama-th-sword.webp"
     ],
     "asia": [
       "img/Asia/BG-Dab-asia.webp",
@@ -434,7 +434,7 @@
       "img/theme-v4/st-sawan-asia.webp",
       "img/theme-v4/st-tarang-asia.webp",
       "img/theme-v4/st-tea-asia.webp",
-      "img/yama-sword-v1/hero-yama-asia-sword.webp"
+      "img/yama-sword-v2/hero-yama-asia-sword.webp"
     ],
     "west": [
       "img/West/BG-Dab-west.webp",
@@ -573,7 +573,7 @@
       "img/theme-v4/st-sawan-west.webp",
       "img/theme-v4/st-tarang-west.webp",
       "img/theme-v4/st-tea-west.webp",
-      "img/yama-sword-v1/hero-yama-west-sword.webp"
+      "img/yama-sword-v2/hero-yama-west-sword.webp"
     ],
     "cyberhell": [
       "img/CyberHell/BG-Dab-cyberhell.webp",
@@ -719,7 +719,7 @@
       "img/theme-v4/st-sawan-cyberhell.webp",
       "img/theme-v4/st-tarang-cyberhell.webp",
       "img/theme-v4/st-tea-cyberhell.webp",
-      "img/yama-sword-v1/hero-yama-cyberhell-sword.webp"
+      "img/yama-sword-v2/hero-yama-cyberhell-sword.webp"
     ]
   }
 }

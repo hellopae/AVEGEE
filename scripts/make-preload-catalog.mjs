@@ -5,6 +5,8 @@ const zones = ['th', 'asia', 'west', 'cyberhell'];
 const catalog = { shared: [], zones: Object.fromEntries(zones.map(z => [z, []])) };
 const files = execFileSync('git', ['ls-files', '-z', 'img'], { encoding:'utf8' }).split('\0');
 for (const path of files) {
+  // Keep the original sword artwork for comparison, but only preload the corrected animation.
+  if (path.startsWith('img/yama-sword-v1/')) continue;
   if (!/\.(png|jpe?g|webp)$/i.test(path) || path.startsWith('img/raw/')) continue;
   const name = path.split('/').at(-1);
   const folder = path.split('/')[1].toLowerCase();

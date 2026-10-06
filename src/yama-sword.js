@@ -1,7 +1,8 @@
-import { SWORD_SHEETS } from './yama-sword-assets.js';
+import { SWORD_SHEETS } from './yama-sword-v2-assets.js';
 
 // One physical slash, synchronized to the existing 580 ms battle lunge.
-export const SWORD_FRAME_MS = Object.freeze([50, 60, 60, 55, 75, 70, 80, 130]);
+// Wind up visibly, cut quickly through contact, hold the low follow-through, then recover.
+export const SWORD_FRAME_MS = Object.freeze([85, 80, 60, 35, 40, 80, 100, 100]);
 export const SWORD_DURATION_MS = SWORD_FRAME_MS.reduce((a, b) => a + b, 0);
 export const swordSheet = style => SWORD_SHEETS[style] || SWORD_SHEETS.th;
 export function swordFrame(elapsed) {
