@@ -21,7 +21,7 @@ test('case ten runs four minion fights, four fixed rulers, then final boss with 
       assert.equal((g.party.finalMembers || []).includes(c.id),!on); acknowledge(g);
     }
   }
-  assert.deepEqual(names,['พญายมบาท','หัวหน้าสาขาบูรพา','หัวหน้าสาขาปัจฉิม','หัวหน้านรกเครือข่าย','จอมข้อมูลไซเบอร์']);
+  assert.deepEqual(names,['พญายมบาท','จ้าวเหวิน','ฮาลวาร์','เน็กซาร','อาร์คอน-ศูนย์']);
   assert.deepEqual(sprites,['leader-th-possessed','leader-asia-possessed','leader-west-possessed','leader-cyberhell-possessed','zone-boss-cyberhell']);
   assert.equal(g.gameCompleted,true); assert.equal(g.over.k,'finalWin'); assert.equal(g.zoneEventStatus('cyberFinal'),'cleared');
   g.over=null; g.kpiPassed=BAL.kpiWin; g.checkEnd(); assert.equal(g.over,null);

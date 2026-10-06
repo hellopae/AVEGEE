@@ -1,3 +1,4 @@
+import { wideStationRoom } from './room-art-assets.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress } from './training.js';
@@ -3756,12 +3757,14 @@ function keyWalk(dt) {
  *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
  *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
  *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
-const stBg = k => k === 'tea' ? teaBackground(g.zone) : artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
+const stBg = k => k === 'tea' ? teaBackground(g.zone) : wideStationRoom(g.zone, k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
 
 /** จุดยึดของห้อง — ฉากห้องของโซนที่องค์ประกอบต่างจากโซน 1 มีชุดจุดยึดของตัวเองใน ROOMS[k].zones
  *  ใช้เฉพาะตอนที่ฉากของโซนนั้นมีจริง (ยังไม่มีไฟล์ = ใช้ฉากโซน 1 ก็ต้องใช้จุดยึดโซน 1) */
 function roomFor(k) {
   if (k === 'tea') return teaRoom(g.zone);
+  const wide = wideStationRoom(g.zone, k);
+  if (wide) return wide;
   const base = ROOMS[k] || ROOM_DEFAULT;
   const cap = `BG-${k[0].toUpperCase()}${k.slice(1)}`;
   const own = base.zones && base.zones[g.zone];
@@ -3875,7 +3878,7 @@ function openStation(k, emergency = false) {
       <p>${esc(t(`room.${k}.desc`))}</p>
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
       ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
-      ${TRAINING_GAMES[k] ? `<button id="st-training" class="btn-gold" ${!inside || mgOpen || st.build ? 'disabled' : ''}>ฝึกตัวละคร / Train character</button>` : ''}`);
+      ${TRAINING_GAMES[k] ? `<button id="st-training" class="btn-gold" ${!R?.inTrainingReach() || mgOpen || st.build ? 'disabled' : ''}>ฝึกตัวละคร / Train character</button>` : ''}`);
     const trainButton = dlg.querySelector('#st-training');
     if (trainButton) trainButton.onclick = () => openTraining(k);
 
@@ -4040,7 +4043,7 @@ function openStation(k, emergency = false) {
 
   function openTraining(sk) {
     const ov = dlg.querySelector('#mg-ov'), game = TRAINING_GAMES[sk];
-    if (!ov || !game || mgOpen || !R?.inReach()) return;
+    if (!ov || !game || mgOpen || !R?.inTrainingReach()) return;
     mgOpen = true;
     R.lock(true);
     ov.hidden = false; ov.classList.add('mg-train');
@@ -4197,6 +4200,7 @@ function openStation(k, emergency = false) {
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
   R.onAct = () => {
+    if (room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;
     if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }

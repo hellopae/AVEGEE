@@ -193,6 +193,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   };
 
   /** ยืนถึงจุดลงมือหรือยัง — ผู้เรียกใช้ตัดสินว่าปุ่มกดได้ไหม */
+  const inTrainingReach = () => {
+    const at = room.training || room.act;
+    return Math.hypot(P.x-at[0], (P.y-at[1])*.7) <= REACH;
+  };
   const inReach = () => Math.hypot(P.x - room.act[0], (P.y - room.act[1]) * 0.7) <= REACH;
 
   // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
@@ -332,7 +336,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const sh = crop ? crop[3] * bg.naturalHeight : bg.naturalHeight;
       // ภาพฉากวางแบบ contain ไม่ยืด/ไม่ครอปซ้ำ — โซน 1 ใช้ room.crop ตัดแถบกว้างตามแบบ UI4 มาแล้ว
       // กรอบหน้าสถานีบนจอกว้างมีสัดส่วนเท่ากับแถบนั้น จึงเต็มพอดี
-      box = roomImageBox(W, H, sw, sh, canSit);
+      box = roomImageBox(W, H, sw, sh, canSit || room.cover);
       ctx.fillStyle = '#120810'; ctx.fillRect(0, 0, W, H);
       // ห้องศาลาโซนไทยใช้ภาพฉากเดิม แต่หันให้ตรงกับสไปรท์บนแผนที่;
       // จุดเดิน/จุดนั่งแปลงผ่าน px และ pointer เพื่อให้ยังตรงกับภาพที่กลับด้าน
@@ -375,6 +379,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
+    if (room.training) {
+      const [x,y] = room.training, ready = inTrainingReach();
+      ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
+      ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();
+      ctx.font = `${Math.max(12,U*.023)}px sans-serif`; ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffe29a'; ctx.fillText('จุดฝึก',px(x),py(y)+U*.045);
+    }
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
     (st ? st.slots : []).forEach((sl, i) => {
@@ -525,7 +536,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
-    inReach,
+    inReach, inTrainingReach,
     /** ชุด 29C — จุดบนฉากเป็นเปอร์เซ็นต์ของ canvas (ไว้วางปุ่ม HTML ลอยเหนือตัวละคร)
      *  u,v = สัดส่วน 0-1 ของภาพฉากเหมือน ROOMS · up = ยกขึ้นกี่ส่วนของด้านสั้นของกรอบ (CREW_H = เหนือหัวคน) */
     anchor(u, v, up = 0) {

@@ -129,7 +129,7 @@ export function render(ctx, g, t, hover, sel) {
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
-  if (!g.paused) ambientTime = t;
+  ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
   if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
 
   // ---- จุดที่สร้างสถานีได้ ----

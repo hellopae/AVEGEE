@@ -22,7 +22,7 @@ export const ROOM_EXITS = {
   lokan: { asia: { x:.50, y:.916, reach:.08 } },
 };
 export function roomExit(key, zone, room) {
-  return ROOM_EXITS[key]?.[zone] || room.exit || { x: room.me[0], y: room.me[1] };
+  return room.exit || ROOM_EXITS[key]?.[zone] || { x: room.me[0], y: room.me[1] };
 }
 export function nearRoomExit([x, y], exit) {
   return Math.hypot(x - exit.x, y - exit.y) <= (exit.reach ?? ROOM_EXIT_REACH);

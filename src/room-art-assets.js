@@ -1,4 +1,4 @@
-// Art handoff only. Claude owns UI/game integration.
+// Regional room backgrounds and shared image-space geometry.
 // Coordinates are normalized image-space visual suggestions; review collision per scene.
 export const WIDE_ROOM_ART = {
   "th": {
@@ -1415,4 +1415,19 @@ export function wideRoomImageBox(width, height, imageWidth, imageHeight) {
 }
 export function wideRoomPoint(point, box) {
   return { x:box.x+point[0]*box.w, y:box.y+point[1]*box.h };
+}
+
+/** The painted courtyard has a central entrance and a separate training alcove. */
+export function wideStationRoom(zone, key) {
+  const art = WIDE_ROOM_ART[zone]?.[key];
+  if (!art) return null;
+  return {
+    image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
+    me:[...art.entrance], crew:[...art.crew], souls:art.displaySlots.map(p => [...p]),
+    act:key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
+    training:art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
+    actions:[[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
+    walk:[{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
+      [.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}],
+  };
 }

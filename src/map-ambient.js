@@ -65,7 +65,7 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
       const x=mod(seed(i+9)*W+t*(18+seed(i+60)*16),W+70)-35;
       const y=(zone==='west'?.15:.745)*H+seed(i+40)*(zone==='west'?.85:.25)*H+Math.sin(t*1.5+i)*3;
       const size=12+seed(i+80)*26;
-      c.strokeStyle=`rgba(${zone==='th'?'202,185,233':'139,241,255'},${.12+seed(i+5)*.18})`;
+      c.strokeStyle=`rgba(${zone==='th'?'202,185,233':'139,241,255'},${.24+seed(i+5)*.22})`;
       c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x+size*.5,y-4,x+size,y);c.stroke();
     }
     if(zone==='west'){
@@ -79,14 +79,14 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
     }
   });
   masked(ctx,masks,'lava',W,H,c=>{
-    c.fillStyle=`rgba(255,210,58,${.04+(1+Math.sin(t*2.4))*.025})`;c.fillRect(0,0,W,H);
+    c.fillStyle=`rgba(255,210,58,${.08+(1+Math.sin(t*2.4))*.055})`;c.fillRect(0,0,W,H);
     for(let i=0;i<65;i++){
       const x=seed(i+211)*W,y=seed(i+307)*H;
       const age=mod(t*.32+seed(i+41),1),r=2+age*9;
-      c.strokeStyle=`rgba(255,245,123,${(1-age)*.38})`;c.lineWidth=1.6;
+      c.strokeStyle=`rgba(255,245,123,${(1-age)*.58})`;c.lineWidth=1.6;
       c.beginPath();c.ellipse(x,y,r,r*.45,0,0,Math.PI*2);c.stroke();
     }
-    c.strokeStyle='rgba(255,235,99,.24)';c.lineWidth=2;
+    c.strokeStyle='rgba(255,235,99,.44)';c.lineWidth=2;
     for(let i=0;i<44;i++){
       const x=seed(i+19)*W,y=mod(seed(i+27)*H+t*11,H);
       c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x+10,y-3,x+26,y);c.stroke();
@@ -130,7 +130,7 @@ export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
     ctx.fillStyle=zone==='west'?'#e4f9ff':zone==='asia'?'#d66b43':zone==='th'?'#ffc674':'#b3dfff';
     if(zone==='asia'){
       ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillRect(-p.size,-1,p.size*2,2);ctx.restore();
-    }else ctx.fillRect(p.x,p.y,p.size,p.size);
+    }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
   }
   ctx.globalAlpha=1;
   if(zone==='cyberhell'){

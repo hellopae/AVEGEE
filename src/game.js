@@ -14,7 +14,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
-         MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority,
+         MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, BOSS_NAMES,
          syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
@@ -2421,7 +2421,7 @@ const API = {
       const mob = MOB.kinds[entry.kind ?? 0];
       const kindOf = entry.boss ? 'boss' : 'event';   // ชุด 28B
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
-      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
+      return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',
         sp:entry.sp || mob.img, boss:!!entry.boss,
         hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:0, confuse:0 };
@@ -2529,7 +2529,7 @@ const API = {
         this.prisonBreakStatus() !== 'cleared') return null;
     const event = ZONE_EVENTS.th[2];
     const devaHp = scaleFoeHp('th', event.foe.hp, 'boss');   // ชุด 28B
-    const foe = { id:'deva-test', who:t('event.devaTest.foe'), sub:t('event.devaTest.sub'),
+    const foe = { id:'deva-test', who:BOSS_NAMES.th.tester, sub:t('event.devaTest.sub'),
       sp:event.foe.sp, boss:true, hp:devaHp, maxHp:devaHp,
       atk:event.foe.atk, stun:0, confuse:0 };
     this.zoneEvents.th.devaTest = 'active';
@@ -2546,7 +2546,7 @@ const API = {
       Array.from({ length:entry.count }, (_, i) => {
         const kind = MOB.kinds[entry.kind ?? 0];
         const boss = !!entry.boss;
-        return { id:`breach-${wave}-${group}-${i}`, who:boss ? t('event.frontierBreach.boss') : kind.name,
+        return { id:`breach-${wave}-${group}-${i}`, who:boss ? BOSS_NAMES.th.frontier : kind.name,
           sub:boss ? t('event.frontierBreach.bossSub') : `Wave ${wave}/${ZONE_EVENTS.th[1].waves.length}`,
           sp:boss ? entry.sp : kind.img, boss,
           hp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), maxHp:scaleFoeHp('th', entry.hp, boss ? 'boss' : 'event'), atk:entry.atk, stun:0, confuse:0 };

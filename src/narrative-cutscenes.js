@@ -1,3 +1,4 @@
+import { BOSS_NAMES } from './data.js';
 // The seated regional heads and the hostile frontier bosses are separate people.
 export function authorityPunishmentCutscene(zone) {
   return ({
@@ -35,6 +36,6 @@ export function frontierIntroduction(zone, lang = 'th') {
   const scene = FRONTIER_INTROS[zone];
   if (!scene) return null;
   return { image:`img/frontier-${zone}-intro-v1.png`,
-    speaker:scene.speaker[lang] || scene.speaker.th,
+    speaker:lang === 'th' ? `${BOSS_NAMES[zone].frontier} · ${scene.speaker.th}` : scene.speaker[lang] || scene.speaker.th,
     line:scene.line[lang] || scene.line.th };
 }
