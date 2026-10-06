@@ -1,4 +1,5 @@
 import { actorStanding } from './actor-recovery.js';
+import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
@@ -500,6 +501,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // สไปรท์เดินวาดหันซ้าย drawHeroWalk พลิกให้ตามทิศ P.face เอง · ไม่มีไฟล์เดินก็ถอยไปท่ายืนเด้งเดิม
       const moving = !sitting && !swinging && t - movedAt < 120;
       const heroH = U * HERO_H;
+      if (swinging && def.k === 'dab' && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
+          SWORD_DURATION_MS - (g.swingUntil - Date.now()), P.face)) return;
       if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDist * 14 / (heroH * 0.16), P.face))) {
         const gait = Math.floor(t / 105) % 4;
         const hop = moving && gait % 2 ? U * 0.010 : 0;

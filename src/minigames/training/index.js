@@ -42,7 +42,7 @@ export function createTrainingGame(station, seed = 1) {
         if (action === 'release' && holding) { holding = false; used = true; if (green()) successes++; else mistakes++; }
       } else if (action === 'hit' && !used) { used = true; if (green() && !decoy()) successes++; else mistakes++; }
     },
-    view() { return { kind, time, round:round + 1, rounds, green:green(), decoy:decoy(), lift, heat, successes, done:time >= 30 }; },
+    view() { return { kind, time, round:round + 1, rounds, green:green(), decoy:decoy(), lift, heat, successes, used, done:time >= 30 }; },
     score() { return kind === 'fire' ? Math.round(goodTime / 30 * 100) : Math.max(0, Math.round((successes - (kind === 'sword' ? mistakes * .25 : 0)) / (kind === 'sword' ? 10 : 10) * 100)); },
   };
 }

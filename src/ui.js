@@ -1,8 +1,9 @@
 import { wideStationRoom } from './room-art-assets.js';
+import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js';
 import { themeBackground } from './theme-assets.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { specialCooldown } from './actor-recovery.js';
-import { trainingProgress } from './training.js';
+import { trainingProgress, HERO_TRAINING_ID } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
 import { nextFinalEncounter, finalEventActors } from './final-event.js';
@@ -1919,7 +1920,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const charged = (fx?.key === 'rage' && fx.side === 'you') || hp?.rageTurns > 0;
   const showRage = charged && !hurtNow && !usingAtk;
   const raging = charged && !hurtNow;
-  const youImg = hurtNow ? heroCry() : usingAtk ? heroAtk()
+  const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
     : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
@@ -2844,6 +2845,8 @@ function openBattle(after) {
       </div>${prep}${prepLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
+    swordImage(g.outfit || g.zone);
+    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt);
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
@@ -3014,7 +3017,7 @@ function openBattle(after) {
       const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
-      fxNow = { key: FX_OF[effect] ? effect : 'atk', side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
       paint();
       playActionCutscene(action);
 
@@ -4095,6 +4098,8 @@ function openStation(k, emergency = false) {
       const stage = ov.querySelector('.mg-stage'); stage.hidden = false; pauseButton.hidden = false;
       try {
         stop = runTraining(stage, { station:sk, session, alive:mine, paused:() => g.paused,
+          heroStyle:session.actorId === HERO_TRAINING_ID ? g.outfit || g.zone : null,
+          onSword:() => { g.swingUntil = Date.now() + SWORD_DURATION_MS; },
           onAbandon:teardown, onResult:result => {
             const receipt = g.finishTraining(result);
             stop?.(); releasePause(); pauseButton.hidden = true;
