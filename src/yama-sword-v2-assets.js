@@ -1,7 +1,7 @@
 // Exported frame geometry; every outfit shares a fixed foot anchor.
 export const SWORD_SHEETS = {
   "th": {
-    "src": "img/yama-sword-v2/hero-yama-th-sword.webp",
+    "src": "img/yama-sword-v3/hero-yama-th-sword.webp",
     "size": 640,
     "frames": 8,
     "anchor": {
