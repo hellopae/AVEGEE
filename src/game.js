@@ -347,9 +347,19 @@ export function primarySinOf(soul) {
 /** วาระที่สมควรได้รับ คิดจาก "ความจริงทั้งหมด" ไม่ใช่จากที่ผู้เล่นเห็น */
 export function deservedOf(soul) {
   const ws = soul.deeds.map(d => d.w).sort((a, b) => b - a);
-  const raw = 0.7 * ws[0] + ws.slice(1).reduce((s, w) => s + w * 0.3, 0);
+  const raw = ws[0] || 0;
   const merit = soul.merits.filter(m => !m.fake).reduce((s, m) => s + m.v, 0);
   return clamp(Math.round(raw - merit), 1, 5);
+}
+
+// Pending cases adopt the current rule; sentences already handed down keep their verdicts.
+export function refreshPendingSentences(state) {
+  const prisoners = (state.stations || []).flatMap(st => (st.slots || []).filter(slot => !slot.verdict).map(slot => slot.soul));
+  for (const soul of [...(state.queue || []), ...(state.held || []), ...prisoners]) {
+    if (!soul) continue;
+    if (Array.isArray(soul.deeds) && Array.isArray(soul.merits))
+      soul.deserved = soul.pure ? 0 : deservedOf(soul);
+  }
 }
 
 const API = {
@@ -2192,12 +2202,9 @@ const API = {
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
     this.fights++;
     this.battle = {
-      // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากชายแดนโซน 2-4 มีรูปของตัวเองแล้ว (img/manifest.json
-      // zones.*.BG-Frontier-<zone>.webp) แต่เดิม FRONTIER.bg ผูกกับไฟล์โซน 1 ตรง ๆ ไม่ผ่านระบบโซน
-      // เลย — zone1 ยังใช้ไฟล์เดิม img/BG-frontier.jpeg (ตัวเล็ก) เหมือนเดิมเป๊ะ ไม่แตะ
       kind:'frontier', zone:this.zone, wave, team:[...state.team],
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
-      bg: this.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg),
+      bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
       foeAtk:scaleFoeAtk(this.zone, [8 + Math.floor(wave / 2), 14 + wave]),
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -2561,7 +2568,7 @@ const API = {
     this.zoneEvents.th.frontierBreach = 'active';
     this.fights++;
     this.battle = prepareBattle({ kind:'frontierBreach', zone:'th', wave:1, pendingWave:null,
-      team:[...team], bg:FRONTIER.bg, foes, selectedFoeId:foes[0].id,
+      team:[...team], bg:artUrl('BG-Frontier', 'webp', this.zone), foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sp:foes[0].sp, sub:foes[0].sub,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:t('event.frontierBreach.alert') });
@@ -3515,6 +3522,7 @@ const API = {
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
                      : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
     reconcileSoulPortraits(this);
+    refreshPendingSentences(this);
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
     // จุดเริ่มสาขาเก็บความคืบหน้าสาขาก่อนหน้าไว้ แต่ยังไม่รวมผลงานใหม่ในสาขานี้
@@ -4214,6 +4222,8 @@ API.restore = function (d) {
     this.discoveryQueue = [];
   }
   reconcileSoulPortraits(this);
+  refreshPendingSentences(this);
+  Object.values(this.zoneSave).forEach(refreshPendingSentences);
   // Remove prematurely granted mirrors in old saves, before the tester reward.
   if (this.devaTestStatus('th') !== 'cleared') {
     this.powerOf('mirror').ammo = 0; delete this.inventory.mirror;

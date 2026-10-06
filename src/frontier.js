@@ -216,7 +216,10 @@ export function makeFrontierWalk(cv, g, opts) {
       box = { ox: Math.max(W-w,Math.min(0,W/2-P.x*w)),
               oy: Math.max(H-h,Math.min(0,H/2-P.y*h)), w, h };
       ctx.fillStyle = '#0d0710'; ctx.fillRect(0, 0, W, H);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(im, 0, 0, sw, sh, box.ox, box.oy, box.w, box.h);
+      ctx.imageSmoothingEnabled = false;
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#1c0f16'; ctx.fillRect(0, 0, W, H);

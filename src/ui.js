@@ -1,4 +1,5 @@
 import { wideStationRoom } from './room-art-assets.js';
+import { themeBackground } from './theme-assets.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress } from './training.js';
@@ -1923,7 +1924,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
-  const bg = hp?.bg || artUrl('BG-Turn-Base', 'webp');
+  const bg = hp?.kind?.startsWith('frontier') ? themeBackground(g.zone, 'frontier') : artUrl('BG-Turn-Base', 'webp');
   // ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลเคย "อยู่ในทีม" จริง (อยู่ท้ายแถว squad มาตั้งแต่ข้อ C
   // ชุดที่ 10) แต่แถว .battle-squad เป็น column-reverse ซ้อนขึ้นจากล่าง ที่ขนาดภาพเดิม (clamp สูงสุด 165px)
   // พอมี 3 คน (ยมทูต 2 + ยักษ์) ตัวที่ 3 ถูกดันสูงจน y ติดลบ (ทดสอบจริงด้วย Playwright:
@@ -2469,8 +2470,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false) {
     const chosen = state.team || [];
     const wave = (state.clears || 0) + 1;
     // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ภาพชายแดนตามโซน (BG-Frontier-<zone>) พร้อมใช้แล้ว
-    // zone1 ยังใช้ FRONTIER.bg ('img/BG-frontier.jpeg' ตัวเล็ก) เดิมเป๊ะ ไม่แตะ
-    const frontierBg = g.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg);
+    const frontierBg = themeBackground(g.zone, 'frontier');
     dlg.innerHTML = `<div class="frontier-screen" style="background-image:url('${frontierBg}')">
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
@@ -2535,7 +2535,7 @@ function openFrontierWalk() {
   const state = g.frontierOf();
   const wave = (state.clears || 0) + 1;
   const kinds = g.zoneDef().mobs || [];
-  const frontierBg = g.zone === 'th' ? FRONTIER.bg : (artUrl('BG-Frontier', 'jpeg') || FRONTIER.bg);
+  const frontierBg = themeBackground(g.zone, 'frontier');
   const chosen = state.team || [];
   const zoneName = g.zoneDef().name;
   const gateName = zoneName.startsWith('โซน') ? zoneName : `โซน${zoneName}`;
@@ -4209,7 +4209,7 @@ function openStation(k, emergency = false) {
   };
   R.onCollect = () => { panels(); refresh(); };
   if (emergency) R.setSleep(true);
-  let wasNear = null, wasSitting = false, wasSleeping = R.sleeping();
+  let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping();
   const exit = roomExit(k, g.zone, room);
   const exitBtn = dlg.querySelector('#st-exit');
   if (exitBtn) exitBtn.onclick = () => {
@@ -4257,8 +4257,9 @@ function openStation(k, emergency = false) {
     if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
-    if (near === wasNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
-    wasNear = near; panels();
+    const trainingNear = R.inTrainingReach();
+    if (near === wasNear && trainingNear === wasTrainingNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
+    wasNear = near; wasTrainingNear = trainingNear; panels();
   };
   R.start();
   window.__room = R;            // ไว้ส่องตอนดีบักในเบราว์เซอร์ เหมือน window.G

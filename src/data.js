@@ -1882,7 +1882,7 @@ export const STATION_FLIP = { asia: ['lokan'], west: ['sala'] };
 
 // 30F: move complete station geometry together, including service/worker points.
 // Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
-const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[-90,12], dab:[155,205], krata:[0,42] };
+const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[-90,12], dab:[65,5], krata:[0,42] };
 const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(key => {
   const d = STATIONS.find(s => s.k === key);
   return [key, Object.fromEntries(['bx','by','x','y','sx','sy','hit']

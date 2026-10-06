@@ -1,4 +1,5 @@
 import { yamaDownImage } from './tea-recovery.js';
+import { themeArt } from './theme-assets.js';
 // art.js — ชั้นวาดภาพทั้งหมด
 // กฎ: ทุกชิ้นต้องมี placeholder ที่โค้ดวาดเองได้ ถ้ามีไฟล์ img/<key>.png ให้ใช้ไฟล์แทนอัตโนมัติ
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
@@ -75,6 +76,8 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
+  const themed = themeArt(key, z);
+  if (themed) return themed;
   const map = ZMAP[z];
   if (key.replace(POSE, '') === 'spirit-recruit') return key === 'spirit-recruit' ? 'img/Thai/spirit-recruit-th-v3.png' : null;
   if (key.replace(POSE, '') === 'spirit-graduate') return key === 'spirit-graduate' ? 'img/West/spirit-graduate-west-v3.png' : null;
@@ -182,7 +185,7 @@ export function stationBox(def) {
   if (def.k === 'frontier')
     return { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };
   const src = artUrl(key);
-  const sourceKey = src.split('/').pop().replace(/\.png$/, '');
+  const sourceKey = src.split('/').pop().replace(/\.(png|webp)$/, '');
   const B = BOXES[sourceKey] || [0, 0, 1, 1];
   const sourceW = (B[2] - B[0]) * im.naturalWidth;
   const sourceH = (B[3] - B[1]) * im.naturalHeight;
@@ -193,7 +196,9 @@ export function stationBox(def) {
     if (A && base) {
       const baseW = (A[2] - A[0]) * base[0] * def.bw / 512;
       const baseH = (A[3] - A[1]) * base[1] * def.bw / 512;
-      scale = Math.min(baseW / sourceW, baseH * TALLER / sourceH);
+      // The detailed exterior set must fit the original plots, including narrow right-bank paths.
+      const heightLimit = src.includes('/theme-v4/') ? 1 : TALLER;
+      scale = Math.min(baseW / sourceW, baseH * heightLimit / sourceH);
     }
   }
   // def.flip = วาดกลับด้านแนวนอน (28A: ศาลาน้ำชาโซนบูรพา) — ไม่แตะไฟล์ภาพ แค่กลับตอนวาด/ตอนวัดพิกเซล
@@ -357,10 +362,14 @@ export function drawBuilding(ctx, def, t, uiScale = 1) {
   if (def.bx == null) return;
   const b = stationBox(def);
   if (b) {
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
     if (b.flip) {                                 // กลับด้านแนวนอนรอบกึ่งกลางกรอบวาด
       ctx.save(); ctx.translate(b.x + b.w, b.y); ctx.scale(-1, 1);
       ctx.drawImage(b.im, 0, 0, b.w, b.h); ctx.restore();
     } else ctx.drawImage(b.im, b.x, b.y, b.w, b.h);
+    ctx.restore();
     return;
   }
 

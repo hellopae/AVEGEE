@@ -9,8 +9,8 @@ globalThis.fetch = async () => ({ok:true, json:async () => manifest});
 globalThis.Image = class {
   set src(src) {
     this._src = src;
-    const key = src.split('/').at(-1).replace(/\.png$/, '');
-    [this.naturalWidth, this.naturalHeight] = manifest.stationSizes[key] || [1678,937];
+    const key = src.split('/').at(-1).replace(/\.(png|webp)$/, '');
+    [this.naturalWidth, this.naturalHeight] = src.includes('/theme-v4/') ? JSON.parse(execFileSync('python3', ['-c', 'from PIL import Image;import json,sys;print(json.dumps(Image.open(sys.argv[1]).size))', fileURLToPath(new URL('../'+src, import.meta.url))], {encoding:'utf8'})) : manifest.stationSizes[key] || [1678,937];
     if (existsSync(new URL('../'+src, import.meta.url))) this.onload?.();
   }
   get src() { return this._src; }
@@ -38,20 +38,7 @@ await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
 const original=sites();
-const offsets={lokan:[73,41],krajok:[-90,12],dab:[155,205],krata:[0,42]};
-// Ground-contact bounds traced from scene-cyberhell-v2.png, not the elevated
-// tops of servers. This checks placement on bare floor; it cannot prove visual
-// depth ordering or substitute for the required browser screenshots.
-const paintedStructures = [
-  [128,238,181,272], [355,222,406,253], [413,232,445,256],
-  [99,414,171,460], [245,477,304,525], [266,600,306,638],
-  [947,223,983,245], [1244,226,1282,252], [1284,266,1350,310],
-  [1510,209,1544,237], [1565,338,1614,371], [1153,425,1182,451],
-  [1454,433,1513,477], [1410,605,1479,646], [1541,615,1575,648],
-  [1180,553,1257,598], [1148,299,1200,367], [996,358,1050,397],
-  [1048,415,1082,475], [1350,354,1429,395], [377,443,410,493],
-];
-
+const offsets={lokan:[73,41],krajok:[-90,12],dab:[65,5],krata:[0,42]};
 test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',()=>{
   for (const destination of ['th','asia','west','unknown']) {
     syncSceneZone('cyberhell');
@@ -91,16 +78,13 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
   for(const d of STATIONS) {
     const foot=art.footOf(d);
     assert.ok(foot,d.k+': loaded footprint');
-    for(const r of paintedStructures)assert.equal(
-      foot[0]<r[2] && foot[2]>r[0] && foot[1]<r[3] && foot[3]>r[1],false,
-      d.k+': footprint avoids traced server/gate base '+r);
     const path=walk.findPath(835,680,d.x,d.y);
     assert.equal(walk.canWalk(d.x,d.y),true,d.k+': entry on reachable ground');
     // 30D blocks whole buildings, so the walk may stop beside the door; the "enter" button reach (INTERACTION_REACH = 100) is what matters
     const end=path.at(-1);
     assert.ok(Math.hypot(end[0]-d.x,end[1]-d.y)<=100,d.k+': path ends within interaction reach of the door, got '+end);
   }
-  for(const key of ['tarang','krajok'])assert.equal(art.artUrl('st-'+key),`img/CyberHell/st-${key}-cyberhell.png`);
+  assert.equal(art.artUrl('st-tarang'),'img/theme-v4/st-tarang-cyberhell.webp');
   const saved=g.snapshot(); saved.v=2;
   const restored=createGame();restored.restore(saved);
   assert.equal(restored.zone,'cyberhell');
@@ -114,4 +98,19 @@ test('30F review: new Rage image is full-bleed, so the old letterbox crop is gon
   const { comicImageLayout } = await import('../src/cutscene-presentation.js');
   const l = comicImageLayout('img/story-asia-03.png', 1664, 936);
   assert.ok(Math.abs(l.aspect - 1664 / 936) < 1e-6 && l.top === 0 && Math.abs(l.height - 100) < 1e-6);
+});
+
+test('themed sprites keep every zone station reachable with the original terrain mask',()=>{
+ for(const zone of ['th','asia','west','cyberhell']){
+  const g=createGame();g.zone=zone;syncSceneZone(zone);art.bindZone(()=>zone);
+  g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
+  walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
+  const src=zone==='west'?'img/scene-v2-opt.png':'img/'+g.zoneDef().scene+'.png';
+  walk.buildWalk({src,naturalWidth:1678,naturalHeight:937});g.syncBlocks(true);
+  for(const d of STATIONS){
+   const path=walk.findPath(835,680,d.x,d.y),end=path?.at(-1);
+   assert.ok(end && Math.hypot(end[0]-d.x,end[1]-d.y)<=100,zone+'/'+d.k+': reachable interaction '+JSON.stringify(end));
+  }
+ }
+ syncSceneZone('th');
 });

@@ -120,11 +120,16 @@ export function render(ctx, g, t, hover, sel) {
 
   // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
-  const bg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
+  const legacyBg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
+  const bg = img('theme-map-' + g.zone) || legacyBg;
   if (bg) {
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
+    ctx.imageSmoothingEnabled = false;
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
-    const maskBg = g.zone === 'west' ? img('scene-v2-opt') : bg;
+    // Painted gold and glowing details are decorative; navigation uses the original terrain mask.
+    const maskBg = g.zone === 'west' ? img('scene-v2-opt') : legacyBg;
     if (buildWalk(bg, maskBg)) g.syncBlocks(true);
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);

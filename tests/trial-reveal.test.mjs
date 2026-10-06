@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createGame } from '../src/game.js';
+import { deservedOf, createGame } from '../src/game.js';
 import { BAL, STATIONS } from '../src/data.js';
 
 globalThis.Image = class {};
@@ -47,7 +47,7 @@ test('mirror reveals the bonus station, deserved intensity and highest scoring a
   const restored = createGame();
   assert.equal(restored.restore(g.snapshot()), true);
   assert.equal(restored.trialAnswer(restored.queue[0]).station.k, 'krata');
-  assert.equal(restored.trialAnswer(restored.queue[0]).intensity, 3);
+  assert.equal(restored.trialAnswer(restored.queue[0]).intensity, deservedOf(restored.queue[0]));
   restored.spawnSoul();
   assert.equal(restored.defer(), true);
   assert.equal(restored.trialAnswer(restored.queue[0]), null);

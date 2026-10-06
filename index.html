@@ -188,7 +188,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 .score{transform:translate(-50%,-100%);font-family:var(--font-display);font-size:2.6rem;
   font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.75);pointer-events:none}
 .score small{display:block;font-family:var(--font-sans);font-size:.75rem;font-weight:400;text-align:center}
-canvas{width:100%;height:auto;display:block;image-rendering:pixelated;border-radius:var(--radius-sm);cursor:pointer}
+canvas{width:100%;height:auto;display:block;image-rendering:auto;border-radius:var(--radius-sm);cursor:pointer}
 .ctrl{display:flex;gap:var(--space-2);margin-top:var(--space-2);flex-wrap:wrap;align-items:center}
 
 button{font:inherit;font-size:var(--text-sm);cursor:pointer;border-radius:var(--radius-sm);
@@ -1260,7 +1260,7 @@ dialog.frontier-map-dialog[open]{inset:0;margin:0;padding:0;width:100vw;max-widt
 dialog.frontier-map-dialog>.modal-corner-close{display:none!important}
 .frw-fullscreen{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size}
 .frw-map{position:absolute;inset:0}
-.frw-map canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:pixelated}
+.frw-map canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:auto}
 .frw-res{position:absolute;left:2.7%;top:2.6%;display:flex;gap:1.5cqw;align-items:center;pointer-events:none}
 .frw-res>span{display:flex;align-items:center;gap:.7cqw;color:#fff;font-weight:800;font-size:clamp(16px,2cqw,40px);text-shadow:0 2px 5px #000}
 .frw-res>span:first-child{color:#fff500}

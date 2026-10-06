@@ -85,7 +85,7 @@ test('hammer and healer earn fairness for their actual positive sin', () => {
   assert.equal(g.judge(station('lan'), { soul:noPositive, intensity:1 }).tham, 42);
 });
 
-test('older queued and assigned souls retain their saved deserved and verdict', () => {
+test('pending saved cases adopt the simple rule while assigned sentences retain their verdict', () => {
   const g = createGame();
   const saved = g.snapshot();
   saved.queue[0].deserved = 5;
@@ -93,7 +93,7 @@ test('older queued and assigned souls retain their saved deserved and verdict', 
     intensity:4, progress:0, need:60, verdict:{ coin:31, score:80, karma:0 } }];
   const loaded = createGame();
   assert.equal(loaded.restore(saved), true);
-  assert.equal(loaded.queue[0].deserved, 5);
+  assert.equal(loaded.queue[0].deserved, deservedOf(saved.queue[0]));
   assert.equal(loaded.stations.find(x => x.def.k === 'krata').slots[0].soul.deserved, 4);
   assert.equal(loaded.stations.find(x => x.def.k === 'krata').slots[0].verdict.coin, 31);
 });

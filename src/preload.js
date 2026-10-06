@@ -5,7 +5,7 @@ const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
 async function catalog() {
-  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261005', { cache:'no-cache' })
+  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261006-theme', { cache:'no-cache' })
     .then(async ({response:r, release}) => {
       try { if (!r.ok) throw new Error('catalog unavailable'); return await r.json(); }
       finally { release(); }
@@ -38,7 +38,7 @@ async function run(zone, outfit, boot) {
   siblings.forEach(n => { n.inert = true; });
   try {
     while (true) {
-      el.querySelector('.note').textContent = `กำลังเตรียมภาพและเพลง · ${LABELS[zone] || LABELS.th}…`;
+      el.querySelector('.note').textContent = `เรือข้ามฟากกำลังพาดวงวิญญาณมาสู่${LABELS[zone] || LABELS.th}…`;
       let failed;
       try {
         const list = zoneAssets(await catalog(), zone, outfit);
