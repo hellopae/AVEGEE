@@ -84,7 +84,7 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
     const end=path.at(-1);
     assert.ok(Math.hypot(end[0]-d.x,end[1]-d.y)<=100,d.k+': path ends within interaction reach of the door, got '+end);
   }
-  assert.equal(art.artUrl('st-tarang'),'img/theme-v4/st-tarang-cyberhell.webp');
+  assert.equal(art.artUrl('st-tarang'),'img/map-v5/st-tarang-cyberhell.webp');
   const saved=g.snapshot(); saved.v=2;
   const restored=createGame();restored.restore(saved);
   assert.equal(restored.zone,'cyberhell');

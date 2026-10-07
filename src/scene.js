@@ -137,6 +137,21 @@ export function render(ctx, g, t, hover, sel) {
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
   if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
 
+  // Ferry sits in the river; the painted bridge/island occludes it.
+  // Draw before characters and buildings so the gate and bridge retain their foreground.
+  {
+    const f = SPOTS.ferry, ph = t / 5200, inbound = Math.cos(ph) > 0;
+    const fx = f.from[0] + (f.to[0] - f.from[0]) * (Math.sin(ph) + 1) / 2;
+    drawBoat(ctx, fx, f.from[1] + 120, t, inbound ? Math.min(2, g.queue.length) : 0, inbound);
+    if (bg) {
+      ctx.save(); ctx.beginPath();
+      const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
+        [988,937],[676,937],[704,872],[704,790],[770,755]];
+      bridge.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+      ctx.closePath(); ctx.clip(); ctx.drawImage(bg,0,0,SCENE.w,SCENE.h); ctx.restore();
+    }
+  }
+
   // ---- จุดที่สร้างสถานีได้ ----
   // เดิมเป็นกรอบประ + ป้ายชื่อ-ราคา ลอยค้างเต็มแผนที่ตลอดเวลา เจ้าของบอกว่ารก (6 ก.ย. 2569)
   // ตอนนี้เงียบสนิทจนกว่ายมบาทจะเดินเข้าไปในเขตนั้น แล้วป้าย "กดเพื่อสร้าง" ค่อยโผล่
@@ -166,15 +181,6 @@ export function render(ctx, g, t, hover, sel) {
       rr(ctx, x1, y1, x2 - x1, y2 - y1, 8); ctx.stroke();
     }
   }
-
-  // ---- เรือข้ามธารลาวา (โค้ดล้วน ไม่ใช้ไฟล์รูป) ----
-  const f = SPOTS.ferry;
-  const ph = t / 5200;
-  const trip = (Math.sin(ph) + 1) / 2;                       // ไป-กลับช้า ๆ
-  const fx = f.from[0] + (f.to[0] - f.from[0]) * trip;
-  // ขามาบรรทุกวิญญาณ ขากลับเรือเปล่า — อ่านออกว่ากำลังรับคนข้ามฟากอยู่
-  const inbound = Math.cos(ph) > 0;
-  drawBoat(ctx, fx, f.from[1], t, inbound ? Math.min(2, g.queue.length) : 0, inbound);
 
   // ---- คิววิญญาณ ยืนเรียงขึ้นสะพานมาที่แท่นพิพากษา ----
   g.queue.forEach((s, i) => {

@@ -5,7 +5,7 @@ const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
 async function catalog() {
-  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261007-roar-v4', { cache:'no-cache' })
+  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261007-map-v5', { cache:'no-cache' })
     .then(async ({response:r, release}) => {
       try { if (!r.ok) throw new Error('catalog unavailable'); return await r.json(); }
       finally { release(); }

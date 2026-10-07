@@ -1,5 +1,6 @@
 import { yamaDownImage } from './tea-recovery.js';
 import { themeArt } from './theme-assets.js';
+import { reviewStationBox } from './map-art-v5.js';
 // art.js — ชั้นวาดภาพทั้งหมด
 // กฎ: ทุกชิ้นต้องมี placeholder ที่โค้ดวาดเองได้ ถ้ามีไฟล์ img/<key>.png ให้ใช้ไฟล์แทนอัตโนมัติ
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
@@ -182,6 +183,7 @@ export function stationBox(def) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
+  if (artUrl(key).includes('/map-v5/')) return reviewStationBox(def, im, zoneOf());
   if (def.k === 'frontier')
     return { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };
   const src = artUrl(key);
