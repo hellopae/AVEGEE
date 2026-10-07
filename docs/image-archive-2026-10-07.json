@@ -1,0 +1,1256 @@
+{
+  "date": "2026-10-07",
+  "baseCommit": "870c6cab2627b6d2fda2b7616c85c5d071985c99",
+  "images": [
+    {
+      "original": "img/theme-v4/st-dab-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-dab-th.webp",
+      "bytes": 80610,
+      "sha256": "fbd6be69e009c70ba2006ecb7420c1d5ec72c2bacaced605dfba56b7ae354610",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-dab-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-ngiw-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-ngiw-th.webp",
+      "bytes": 73624,
+      "sha256": "0a387c0cd3b9d3f85e8371cb79f1b674d4fea31e693f7b6d9e1c20c280e756a7",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-ngiw-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krata-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krata-th.webp",
+      "bytes": 84418,
+      "sha256": "26524b29896041beccfda41c32c47257721961646584b249674020a7f4176f30",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krata-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-tarang-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-tarang-th.webp",
+      "bytes": 79012,
+      "sha256": "6af7f9701608c62368020366785d64e5fef3afca4731260c32ffa90bc39abcee",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-tarang-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sala-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sala-th.webp",
+      "bytes": 87562,
+      "sha256": "00b4381cc2d323131a21b692b835bf1c7232816ddda07fb960a9ce3c785ff0d6",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sala-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-lan-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-lan-th.webp",
+      "bytes": 78002,
+      "sha256": "4c7ed6117612d2a114429e387edef388f2fef7e9c2cf4ef829d5534c530adf8d",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-lan-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krajok-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krajok-th.webp",
+      "bytes": 178490,
+      "sha256": "e6b715be4b476acd099e6648e52fd09785583dc7580b203f96deb19fbcdc9b6e",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krajok-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sawan-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sawan-th.webp",
+      "bytes": 76832,
+      "sha256": "79905963a970560bf2e38bdc14bd761c18961890502ed53872b8b8a54d550590",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sawan-th.webp"
+    },
+    {
+      "original": "img/theme-v4/st-frontier-th.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-frontier-th.webp",
+      "bytes": 78480,
+      "sha256": "a9231c301540cbc3044fbb6e892c654a575b34fe73bdad7f02cc7e78232e2c76",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-frontier-th.webp"
+    },
+    {
+      "original": "img/yama-sword-v1/hero-yama-th-sword.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/yama-sword-v1/hero-yama-th-sword.webp",
+      "bytes": 943354,
+      "sha256": "15c46ab7995ad8032110cd5c1e7ecd3a06fac098f4424f00af08c32a580ea47c",
+      "reason": "Unreachable v1 animation module; current sword resolver selects replacement",
+      "replacement": "img/yama-sword-v3/hero-yama-th-sword.webp"
+    },
+    {
+      "original": "img/hero-yama-th-roar-cutscene-v3.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-th-roar-cutscene-v3.png",
+      "bytes": 2682063,
+      "sha256": "dd1b02e5ffe321b9a31cf30931893fe4c0e81e87ac4c5248f864c7f414e2d8cc",
+      "reason": "Roar resolver always selects v4",
+      "replacement": "img/hero-yama-th-roar-cutscene-v4.png"
+    },
+    {
+      "original": "img/crew-guard.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/crew-guard.png",
+      "bytes": 1041532,
+      "sha256": "75752752c5bcc02e87496f71c3427ac469542e1f26ceaf610cd8612be2172b52",
+      "reason": "Manifest guard alias selects v2",
+      "replacement": "img/crew-guard-v2.png"
+    },
+    {
+      "original": "img/hero-yama-atk-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-atk-cutscene.jpeg",
+      "bytes": 130209,
+      "sha256": "c30a93c3d4dc795238662192d2b6a95b7a1b7860c554e279d6331ce19977c20d",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-th-atk-cutscene-v3.png"
+    },
+    {
+      "original": "img/hero-yama-fire-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-fire-cutscene.jpeg",
+      "bytes": 284167,
+      "sha256": "42f18ac2b9b50d22f3dd78d89363df8d59dbff3c179ac7a5cbaac8043882a9d0",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-th-fire-cutscene-v3.png"
+    },
+    {
+      "original": "img/hero-yama-ice-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-ice-cutscene.jpeg",
+      "bytes": 195073,
+      "sha256": "e7564fe8c4c65a65d9d035113b9e11a4288a1e05d66035151c081a856fc37a6b",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-th-ice-cutscene-v2.png"
+    },
+    {
+      "original": "img/hero-yama-hyp-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-hyp-cutscene.jpeg",
+      "bytes": 191909,
+      "sha256": "f916d5264ab9be942a2233837341333d76d19bed0e0ae19e782d06d2aab71265",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-th-hypno-cutscene-v3.png"
+    },
+    {
+      "original": "img/hero-yama-mi-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-mi-cutscene.jpeg",
+      "bytes": 203571,
+      "sha256": "6792533cdba46171dd96fdb51199749e7c4fa81d0fb013ab3db1646f3f06d696",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-th-mirror-cutscene-v3.png"
+    },
+    {
+      "original": "img/theme-v4/st-dab-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-dab-asia.webp",
+      "bytes": 69516,
+      "sha256": "d0bd5f851e578adb080749ba58014802e8b89a4a835d7af4bc413437022ec69f",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-dab-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-ngiw-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-ngiw-asia.webp",
+      "bytes": 89226,
+      "sha256": "c21faf3b7ce55aa78f1d73b56ae6531ae717a2a6e3fdd2dbd46fc2ebefe4b79a",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-ngiw-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krata-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krata-asia.webp",
+      "bytes": 76046,
+      "sha256": "4fe41eedf1a0f147ee63490e0f1e49f7624b4610ecfa8c5fd05e503441754942",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krata-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-tarang-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-tarang-asia.webp",
+      "bytes": 72442,
+      "sha256": "9a04284fcdc14f5c10d1118631eb14ccc34d92725aed51a5e1a18f3344de0f87",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-tarang-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sala-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sala-asia.webp",
+      "bytes": 86284,
+      "sha256": "1d7a1f65aae77a78cf10ee9a23d2384789afcb6e72627408b7a91640e9eb86b9",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sala-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-lan-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-lan-asia.webp",
+      "bytes": 77718,
+      "sha256": "5d8149c728a76fef4b180dd92bd2f88ed91a8c7716ae5bdcc032d107a6cda078",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-lan-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krajok-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krajok-asia.webp",
+      "bytes": 176344,
+      "sha256": "276bb86d120483ba0866869328f26cc6e8833b53b9fa14834df7f8871e433bcc",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krajok-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sawan-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sawan-asia.webp",
+      "bytes": 89072,
+      "sha256": "57095f74d31af8406a2e013d8fdd06c14094626288793f0f8b5a683202570827",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sawan-asia.webp"
+    },
+    {
+      "original": "img/theme-v4/st-frontier-asia.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-frontier-asia.webp",
+      "bytes": 82486,
+      "sha256": "ec1dc2c26d12205c18ab97c6ff85ec6aeb5b56e58e81003bd571438e7f8f3339",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-frontier-asia.webp"
+    },
+    {
+      "original": "img/yama-sword-v1/hero-yama-asia-sword.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/yama-sword-v1/hero-yama-asia-sword.webp",
+      "bytes": 1192306,
+      "sha256": "e786815ba026575020f4aee250bb54f1a4f84c98b1449ed720c15caa63263bd1",
+      "reason": "Unreachable v1 animation module; current sword resolver selects replacement",
+      "replacement": "img/yama-sword-v2/hero-yama-asia-sword.webp"
+    },
+    {
+      "original": "img/hero-yama-asia-roar-cutscene-v3.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-asia-roar-cutscene-v3.png",
+      "bytes": 2756118,
+      "sha256": "753ff3afefb791ad04a4fbc606061293247247ce39fa3bee73bd87bdda74b308",
+      "reason": "Roar resolver always selects v4",
+      "replacement": "img/hero-yama-asia-roar-cutscene-v4.png"
+    },
+    {
+      "original": "img/Asia/crew-guard-asia.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/crew-guard-asia.png",
+      "bytes": 1031846,
+      "sha256": "7b30366f2a0f66e0951cb69959f3833a329c896926274fa819a49ed5d44f52c6",
+      "reason": "Manifest guard alias selects v2",
+      "replacement": "img/Asia/crew-guard-asia-v2.png"
+    },
+    {
+      "original": "img/Asia/hero-yama-asia-atk-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/hero-yama-asia-atk-cutscene.jpeg",
+      "bytes": 137594,
+      "sha256": "91f60a707a00f2be167cc49c6a60bc64aea642671cb2ebd6a33798ac0f0a5522",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-asia-atk-cutscene-v3.png"
+    },
+    {
+      "original": "img/Asia/hero-yama-asia-fire-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/hero-yama-asia-fire-cutscene.jpeg",
+      "bytes": 309312,
+      "sha256": "48c5f8c3c8d0500b08d232b0448e00d199c012df3157e60db7e67c766678f7ac",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-asia-fire-cutscene-v3.png"
+    },
+    {
+      "original": "img/Asia/hero-yama-asia-ice-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/hero-yama-asia-ice-cutscene.jpeg",
+      "bytes": 176049,
+      "sha256": "c54f2b6fea8fdccce9bb4cf49909b28275ba8a354093f8a6c0b9fc813a0f9732",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-asia-ice-cutscene-v2.png"
+    },
+    {
+      "original": "img/Asia/hero-yama-asia-hyp-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/hero-yama-asia-hyp-cutscene.jpeg",
+      "bytes": 186998,
+      "sha256": "8adc97ade4efeed66d3213b987e12466bc2007e08914d6449b5522a9eda452a6",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-asia-hypno-cutscene-v3.png"
+    },
+    {
+      "original": "img/Asia/hero-yama-asia-mi-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/Asia/hero-yama-asia-mi-cutscene.jpeg",
+      "bytes": 200028,
+      "sha256": "12a3e3dae85cde1fce708b2195b73d479e4ebc4adec3721d4c0fc12112fc0e96",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-asia-mirror-cutscene-v3.png"
+    },
+    {
+      "original": "img/theme-v4/st-dab-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-dab-west.webp",
+      "bytes": 73616,
+      "sha256": "0d2526a5d11f92d063a8c581016cc4c76705a53a3cabeb1d190de27f58759d05",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-dab-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-ngiw-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-ngiw-west.webp",
+      "bytes": 95666,
+      "sha256": "700a3f1a826c474c312d75ca598cdd3027c6dfdddda56a3a404b48de626ec501",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-ngiw-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krata-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krata-west.webp",
+      "bytes": 73662,
+      "sha256": "d2acb026fd7b82ea1f48c77d0fcb5e249c5a56a8a6db743f313558bf84ddcba9",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krata-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-tarang-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-tarang-west.webp",
+      "bytes": 80640,
+      "sha256": "a1713ec36abc5d019dde917e7e885a5a3c9b37dac2bf0eb85fe08c4f5b2814ae",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-tarang-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sala-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sala-west.webp",
+      "bytes": 82504,
+      "sha256": "13f7aacaa9b4e755a92623d9c3de08590aea5c27fc69cedc670d5a54826d216c",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sala-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-lan-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-lan-west.webp",
+      "bytes": 83052,
+      "sha256": "ff39e89e1df5e8d5f5578e34af835852630ee8e3d3486bba4ba1e5988c0898fe",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-lan-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krajok-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krajok-west.webp",
+      "bytes": 178860,
+      "sha256": "ba679cef9ba461cfd06717ba1a56125855faad0080896d500d62dd3282f06b0c",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krajok-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sawan-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sawan-west.webp",
+      "bytes": 85608,
+      "sha256": "b6c0147e4d875db117a14e1cf1e48a891f97eeca4149488575275e2dfe7054c4",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sawan-west.webp"
+    },
+    {
+      "original": "img/theme-v4/st-frontier-west.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-frontier-west.webp",
+      "bytes": 79960,
+      "sha256": "2704ce362aa27dcba7436a0b7b137f3a2929769cc57bb6dfe1a1dcd0402ad587",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-frontier-west.webp"
+    },
+    {
+      "original": "img/yama-sword-v1/hero-yama-west-sword.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/yama-sword-v1/hero-yama-west-sword.webp",
+      "bytes": 1228790,
+      "sha256": "568b1265506a4ab485498bd761d1c125b499399feb4377bb168f2e7ddfeb3cab",
+      "reason": "Unreachable v1 animation module; current sword resolver selects replacement",
+      "replacement": "img/yama-sword-v2/hero-yama-west-sword.webp"
+    },
+    {
+      "original": "img/hero-yama-west-roar-cutscene-v3.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-west-roar-cutscene-v3.png",
+      "bytes": 2815392,
+      "sha256": "4d9dbafc84c993e4b594306b0d523b39da6ec295d639304b4bda890954eaa85d",
+      "reason": "Roar resolver always selects v4",
+      "replacement": "img/hero-yama-west-roar-cutscene-v4.png"
+    },
+    {
+      "original": "img/West/hero-yama-west-atk-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/West/hero-yama-west-atk-cutscene.jpeg",
+      "bytes": 157442,
+      "sha256": "0469bf8271f25fa3221e5e5a28efaffc155c03bf732733f048b339fc503e02d6",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-west-atk-cutscene-v3.png"
+    },
+    {
+      "original": "img/West/hero-yama-west-fire-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/West/hero-yama-west-fire-cutscene.jpeg",
+      "bytes": 332420,
+      "sha256": "8e5709078204dd86ea6757eec474f07ecff6eb8c9428085b537fb048853539fa",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-west-fire-cutscene-v3.png"
+    },
+    {
+      "original": "img/West/hero-yama-west-ice-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/West/hero-yama-west-ice-cutscene.jpeg",
+      "bytes": 205598,
+      "sha256": "7a444ba0f3940da282d242571762a30c8ab60d56e2efa7ee8b2c5d84ecac3310",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-west-ice-cutscene-v2.png"
+    },
+    {
+      "original": "img/West/hero-yama-west-hyp-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/West/hero-yama-west-hyp-cutscene.jpeg",
+      "bytes": 206577,
+      "sha256": "b369f11429d217274207a064899bffe4ae0f3920db75610f6a16325061ac24e0",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-west-hypno-cutscene-v3.png"
+    },
+    {
+      "original": "img/West/hero-yama-west-mi-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/West/hero-yama-west-mi-cutscene.jpeg",
+      "bytes": 200859,
+      "sha256": "526212bdf0fea5a86c22aded5793b3270e27ff728510b7b1dafef90210ce040a",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-west-mirror-cutscene-v3.png"
+    },
+    {
+      "original": "img/theme-v4/st-dab-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-dab-cyberhell.webp",
+      "bytes": 77584,
+      "sha256": "29f502ce97c53bf31968b1bf470f1001fccacb87597b2257378b474f0a9326e4",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-dab-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-ngiw-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-ngiw-cyberhell.webp",
+      "bytes": 94262,
+      "sha256": "9d93ad3a596c27537dd1ba04f30cb6d9fd02bebdfd8f3566d481cb51b8646957",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-ngiw-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krata-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krata-cyberhell.webp",
+      "bytes": 74760,
+      "sha256": "00d7034e87fa6522c42eed00cb4e8285499e4bba376e168902c5d1901898a43b",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krata-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-tarang-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-tarang-cyberhell.webp",
+      "bytes": 77146,
+      "sha256": "414cf75e2a5c7fe8ea84d814d4c877e4623d7c3391ee6388946bd627f4da44ea",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-tarang-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sala-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sala-cyberhell.webp",
+      "bytes": 84050,
+      "sha256": "730baa6a07255aa20a9eef41fe2875c18aeeb8515be5f2e57bfc1ab081cdedb6",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sala-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-lan-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-lan-cyberhell.webp",
+      "bytes": 71882,
+      "sha256": "60573c0162cd50e0bb68526d9dfbf4a3211e9ca308d18dde83538b4892b86315",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-lan-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-krajok-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-krajok-cyberhell.webp",
+      "bytes": 174494,
+      "sha256": "485bc49cdce7967ad02982c11f8e846d3041c4a784992ab1b8dcbdad5a96f84c",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-krajok-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-sawan-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-sawan-cyberhell.webp",
+      "bytes": 77442,
+      "sha256": "874d460a19a13714b49168c4ba4eb7a92aeb2315a5b7d031fbd0941a84492e10",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-sawan-cyberhell.webp"
+    },
+    {
+      "original": "img/theme-v4/st-frontier-cyberhell.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/theme-v4/st-frontier-cyberhell.webp",
+      "bytes": 65660,
+      "sha256": "07bcce48de689ddbef442d7d1dc94936a5116e3f478197e71cf76914463c8731",
+      "reason": "Station resolver always selects map-v5",
+      "replacement": "img/map-v5/st-frontier-cyberhell.webp"
+    },
+    {
+      "original": "img/yama-sword-v1/hero-yama-cyberhell-sword.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/yama-sword-v1/hero-yama-cyberhell-sword.webp",
+      "bytes": 915156,
+      "sha256": "5d7e5489375d235b424a6ee59608f3d3d340b99c5bc81a9c9689a27ea295b78a",
+      "reason": "Unreachable v1 animation module; current sword resolver selects replacement",
+      "replacement": "img/yama-sword-v2/hero-yama-cyberhell-sword.webp"
+    },
+    {
+      "original": "img/hero-yama-cyberhell-roar-cutscene-v3.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/hero-yama-cyberhell-roar-cutscene-v3.png",
+      "bytes": 2893104,
+      "sha256": "e42282f165f60039671337bf527b15087df019d1b5865ee2c82e9f9ebdc3619d",
+      "reason": "Roar resolver always selects v4",
+      "replacement": "img/hero-yama-cyberhell-roar-cutscene-v4.png"
+    },
+    {
+      "original": "img/CyberHell/crew-guard-cyberhell.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/crew-guard-cyberhell.png",
+      "bytes": 1437470,
+      "sha256": "54ee905fad67cd279c2aad424f9e15a87feb02de0bc654ae0d9863a4b32bd79b",
+      "reason": "Manifest guard alias selects v2",
+      "replacement": "img/CyberHell/crew-guard-cyberhell-v2.png"
+    },
+    {
+      "original": "img/CyberHell/hero-yama-cyberhell-atk-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/hero-yama-cyberhell-atk-cutscene.jpeg",
+      "bytes": 138691,
+      "sha256": "6149f177a1b64846993417f6f0ac5c3ba4587cc0b571ffed8ca10edd76f5c1c6",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-cyberhell-atk-cutscene-v3.png"
+    },
+    {
+      "original": "img/CyberHell/hero-yama-cyberhell-fire-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/hero-yama-cyberhell-fire-cutscene.jpeg",
+      "bytes": 298784,
+      "sha256": "aea4d091e6b487c7b8397a4f11300e3ed2a71a4e2908e53fe2df0e5cd83278ac",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-cyberhell-fire-cutscene-v3.png"
+    },
+    {
+      "original": "img/CyberHell/hero-yama-cyberhell-ice-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/hero-yama-cyberhell-ice-cutscene.jpeg",
+      "bytes": 184853,
+      "sha256": "b1a667a155298b50c6bc2cae1228cf8c96e20031e86395187fe067c38cc748d0",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-cyberhell-ice-cutscene-v2.png"
+    },
+    {
+      "original": "img/CyberHell/hero-yama-cyberhell-hyp-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/hero-yama-cyberhell-hyp-cutscene.jpeg",
+      "bytes": 189429,
+      "sha256": "5e37a80e884c62407a5cfcee83ae8b4e37be5f452500df90086d0fcfe5a4d53b",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-cyberhell-hypno-cutscene-v3.png"
+    },
+    {
+      "original": "img/CyberHell/hero-yama-cyberhell-mi-cutscene.jpeg",
+      "backup": "AVEGEE-backup/2026-10-07/img/CyberHell/hero-yama-cyberhell-mi-cutscene.jpeg",
+      "bytes": 201056,
+      "sha256": "924e88b9f4f6b5d0c30e6685112e6a1f0055dbc84e929467af650fb42dd658d3",
+      "reason": "actionCutsceneSrc returns versioned power artwork before legacy fallback",
+      "replacement": "img/hero-yama-cyberhell-mirror-cutscene-v3.png"
+    },
+    {
+      "original": "img/story-cyberhell-02-v2.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/story-cyberhell-02-v2.png",
+      "bytes": 466375,
+      "sha256": "000f0be5850812db9e0664e53d02501b3e46dfd62dc2d36ad8216d942e78c790",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/story-cyberhell-02-v3.png"
+    },
+    {
+      "original": "img/story-cyberhell-03-v3.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/story-cyberhell-03-v3.png",
+      "bytes": 406471,
+      "sha256": "834b58f7ba504798dc4bfac274946a7d9689bbfed7da7b7746bc835b76019185",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/story-cyberhell-03-v4.png"
+    },
+    {
+      "original": "img/cover-v1.webp",
+      "backup": "AVEGEE-backup/2026-10-07/img/cover-v1.webp",
+      "bytes": 147876,
+      "sha256": "aaed95c56a4f534d292e7c1d6a8963bcee3fcd9a4cab66d12712e4f7ba7177c8",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/cover-v3.webp"
+    },
+    {
+      "original": "img/cover2.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/cover2.png",
+      "bytes": 2483748,
+      "sha256": "6cfd04c61489e15187c8ca65d296f1195daaed4ca71478cd56164c1db08c1ab4",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/cover-v3.webp"
+    },
+    {
+      "original": "img/scene-asia-v2.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/scene-asia-v2.png",
+      "bytes": 687961,
+      "sha256": "2210424366c749b9fc669e25ca6da62587b034338ea6e8edf489a8549d655c4c",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/scene-asia-v3.png"
+    },
+    {
+      "original": "img/scene-v2.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/scene-v2.png",
+      "bytes": 1859048,
+      "sha256": "4db08c5ed44459085d7d90f003fe672a173f9e9d4819d08bd575a155ba72958a",
+      "reason": "Superseded version with no active references",
+      "replacement": "img/scene-v2-opt.png"
+    },
+    {
+      "original": "img/scene-foreground-v1.png",
+      "backup": "AVEGEE-backup/2026-10-07/img/scene-foreground-v1.png",
+      "bytes": 779186,
+      "sha256": "c9d4c495065088c2a2883b228a7fc4b03079e5cd9706d79550ee5f063f0bec0a",
+      "reason": "Unused foreground; view3d explicitly does not render this layer",
+      "replacement": null
+    }
+  ],
+  "verifiedSelections": [
+    {
+      "label": "th:station:sala",
+      "value": "img/map-v5/st-sala-th.webp"
+    },
+    {
+      "label": "th:station:krata",
+      "value": "img/map-v5/st-krata-th.webp"
+    },
+    {
+      "label": "th:station:dab",
+      "value": "img/map-v5/st-dab-th.webp"
+    },
+    {
+      "label": "th:station:lokan",
+      "value": "img/theme-v4/st-lokan-th.webp"
+    },
+    {
+      "label": "th:station:ngiw",
+      "value": "img/map-v5/st-ngiw-th.webp"
+    },
+    {
+      "label": "th:station:lan",
+      "value": "img/map-v5/st-lan-th.webp"
+    },
+    {
+      "label": "th:station:tea",
+      "value": "img/theme-v4/st-tea-th.webp"
+    },
+    {
+      "label": "th:station:sawan",
+      "value": "img/map-v5/st-sawan-th.webp"
+    },
+    {
+      "label": "th:station:tarang",
+      "value": "img/map-v5/st-tarang-th.webp"
+    },
+    {
+      "label": "th:station:frontier",
+      "value": "img/map-v5/st-frontier-th.webp"
+    },
+    {
+      "label": "th:station:krajok",
+      "value": "img/map-v5/st-krajok-th.webp"
+    },
+    {
+      "label": "th:background:map",
+      "value": "img/theme-v4/map-th.webp"
+    },
+    {
+      "label": "th:background:arena",
+      "value": "img/theme-v4/arena-th.webp"
+    },
+    {
+      "label": "th:background:frontier",
+      "value": "img/theme-v4/frontier-th.webp"
+    },
+    {
+      "label": "th:art:crew-guard",
+      "value": "img/crew-guard-v2.png"
+    },
+    {
+      "label": "th:art:crew-guard-profile",
+      "value": "img/crew-guard-profile.png"
+    },
+    {
+      "label": "th:art:hero-boss",
+      "value": "img/hero-boss.png"
+    },
+    {
+      "label": "th:art:hero-boss-profile",
+      "value": "img/hero-boss-profile.png"
+    },
+    {
+      "label": "th:art:hero-yama-walk",
+      "value": "img/hero-yama-walk.png"
+    },
+    {
+      "label": "th:art:hero-yama-walk-4dir",
+      "value": "img/hero-yama-walk-4dir-v2.png"
+    },
+    {
+      "label": "th:sword",
+      "value": "img/yama-sword-v3/hero-yama-th-sword.webp"
+    },
+    {
+      "label": "th:true:action:roar",
+      "value": "img/hero-yama-th-roar-cutscene-v4.png"
+    },
+    {
+      "label": "th:true:action:hypno",
+      "value": "img/hero-yama-th-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "th:true:action:mirror",
+      "value": "img/hero-yama-th-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "th:true:action:fire",
+      "value": "img/hero-yama-th-atk-cutscene-v3.png"
+    },
+    {
+      "label": "th:true:action:ice",
+      "value": "img/hero-yama-th-ice-cutscene-v2.png"
+    },
+    {
+      "label": "th:true:action:flameCharge",
+      "value": "img/hero-yama-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "th:true:action:windFan",
+      "value": "img/hero-yama-wind-cutscene.jpeg"
+    },
+    {
+      "label": "th:true:action:rage",
+      "value": "img/hero-yama-rage-cutscene.jpeg"
+    },
+    {
+      "label": "th:true:action:valkyrieSpear",
+      "value": "img/hero-yama-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "th:true:action:cooldownClock",
+      "value": "img/hero-yama-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "th:false:action:roar",
+      "value": "img/hero-yama-th-roar-cutscene-v4.png"
+    },
+    {
+      "label": "th:false:action:hypno",
+      "value": "img/hero-yama-th-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "th:false:action:mirror",
+      "value": "img/hero-yama-th-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "th:false:action:fire",
+      "value": "img/hero-yama-th-fire-cutscene-v3.png"
+    },
+    {
+      "label": "th:false:action:ice",
+      "value": "img/hero-yama-th-ice-cutscene-v2.png"
+    },
+    {
+      "label": "th:false:action:flameCharge",
+      "value": "img/hero-yama-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "th:false:action:windFan",
+      "value": "img/hero-yama-wind-cutscene.jpeg"
+    },
+    {
+      "label": "th:false:action:rage",
+      "value": "img/hero-yama-rage-cutscene.jpeg"
+    },
+    {
+      "label": "th:false:action:valkyrieSpear",
+      "value": "img/hero-yama-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "th:false:action:cooldownClock",
+      "value": "img/hero-yama-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "asia:station:sala",
+      "value": "img/map-v5/st-sala-asia.webp"
+    },
+    {
+      "label": "asia:station:krata",
+      "value": "img/map-v5/st-krata-asia.webp"
+    },
+    {
+      "label": "asia:station:dab",
+      "value": "img/map-v5/st-dab-asia.webp"
+    },
+    {
+      "label": "asia:station:lokan",
+      "value": "img/theme-v4/st-lokan-asia.webp"
+    },
+    {
+      "label": "asia:station:ngiw",
+      "value": "img/map-v5/st-ngiw-asia.webp"
+    },
+    {
+      "label": "asia:station:lan",
+      "value": "img/map-v5/st-lan-asia.webp"
+    },
+    {
+      "label": "asia:station:tea",
+      "value": "img/theme-v4/st-tea-asia.webp"
+    },
+    {
+      "label": "asia:station:sawan",
+      "value": "img/map-v5/st-sawan-asia.webp"
+    },
+    {
+      "label": "asia:station:tarang",
+      "value": "img/map-v5/st-tarang-asia.webp"
+    },
+    {
+      "label": "asia:station:frontier",
+      "value": "img/map-v5/st-frontier-asia.webp"
+    },
+    {
+      "label": "asia:station:krajok",
+      "value": "img/map-v5/st-krajok-asia.webp"
+    },
+    {
+      "label": "asia:background:map",
+      "value": "img/theme-v4/map-asia.webp"
+    },
+    {
+      "label": "asia:background:arena",
+      "value": "img/theme-v4/arena-asia.webp"
+    },
+    {
+      "label": "asia:background:frontier",
+      "value": "img/theme-v4/frontier-asia.webp"
+    },
+    {
+      "label": "asia:art:crew-guard",
+      "value": "img/Asia/crew-guard-asia-v2.png"
+    },
+    {
+      "label": "asia:art:crew-guard-profile",
+      "value": "img/Asia/crew-guard-asia-profile.png"
+    },
+    {
+      "label": "asia:art:hero-boss",
+      "value": "img/Asia/hero-boss-asia.png"
+    },
+    {
+      "label": "asia:art:hero-boss-profile",
+      "value": "img/Asia/hero-boss-asia-profile.png"
+    },
+    {
+      "label": "asia:art:hero-yama-walk",
+      "value": "img/Asia/hero-yama-asia-walk.png"
+    },
+    {
+      "label": "asia:art:hero-yama-walk-4dir",
+      "value": "img/Asia/hero-yama-asia-walk-4dir-v2.png"
+    },
+    {
+      "label": "asia:sword",
+      "value": "img/yama-sword-v2/hero-yama-asia-sword.webp"
+    },
+    {
+      "label": "asia:true:action:roar",
+      "value": "img/hero-yama-asia-roar-cutscene-v4.png"
+    },
+    {
+      "label": "asia:true:action:hypno",
+      "value": "img/hero-yama-asia-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "asia:true:action:mirror",
+      "value": "img/hero-yama-asia-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "asia:true:action:fire",
+      "value": "img/hero-yama-asia-atk-cutscene-v3.png"
+    },
+    {
+      "label": "asia:true:action:ice",
+      "value": "img/hero-yama-asia-ice-cutscene-v2.png"
+    },
+    {
+      "label": "asia:true:action:flameCharge",
+      "value": "img/Asia/hero-yama-asia-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "asia:true:action:windFan",
+      "value": "img/Asia/hero-yama-asia-wind-cutscene.jpeg"
+    },
+    {
+      "label": "asia:true:action:rage",
+      "value": "img/Asia/hero-yama-asia-rage-cutscene.jpeg"
+    },
+    {
+      "label": "asia:true:action:valkyrieSpear",
+      "value": "img/Asia/hero-yama-asia-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "asia:true:action:cooldownClock",
+      "value": "img/Asia/hero-yama-asia-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "asia:false:action:roar",
+      "value": "img/hero-yama-asia-roar-cutscene-v4.png"
+    },
+    {
+      "label": "asia:false:action:hypno",
+      "value": "img/hero-yama-asia-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "asia:false:action:mirror",
+      "value": "img/hero-yama-asia-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "asia:false:action:fire",
+      "value": "img/hero-yama-asia-fire-cutscene-v3.png"
+    },
+    {
+      "label": "asia:false:action:ice",
+      "value": "img/hero-yama-asia-ice-cutscene-v2.png"
+    },
+    {
+      "label": "asia:false:action:flameCharge",
+      "value": "img/Asia/hero-yama-asia-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "asia:false:action:windFan",
+      "value": "img/Asia/hero-yama-asia-wind-cutscene.jpeg"
+    },
+    {
+      "label": "asia:false:action:rage",
+      "value": "img/Asia/hero-yama-asia-rage-cutscene.jpeg"
+    },
+    {
+      "label": "asia:false:action:valkyrieSpear",
+      "value": "img/Asia/hero-yama-asia-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "asia:false:action:cooldownClock",
+      "value": "img/Asia/hero-yama-asia-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "west:station:sala",
+      "value": "img/map-v5/st-sala-west.webp"
+    },
+    {
+      "label": "west:station:krata",
+      "value": "img/map-v5/st-krata-west.webp"
+    },
+    {
+      "label": "west:station:dab",
+      "value": "img/map-v5/st-dab-west.webp"
+    },
+    {
+      "label": "west:station:lokan",
+      "value": "img/theme-v4/st-lokan-west.webp"
+    },
+    {
+      "label": "west:station:ngiw",
+      "value": "img/map-v5/st-ngiw-west.webp"
+    },
+    {
+      "label": "west:station:lan",
+      "value": "img/map-v5/st-lan-west.webp"
+    },
+    {
+      "label": "west:station:tea",
+      "value": "img/theme-v4/st-tea-west.webp"
+    },
+    {
+      "label": "west:station:sawan",
+      "value": "img/map-v5/st-sawan-west.webp"
+    },
+    {
+      "label": "west:station:tarang",
+      "value": "img/map-v5/st-tarang-west.webp"
+    },
+    {
+      "label": "west:station:frontier",
+      "value": "img/map-v5/st-frontier-west.webp"
+    },
+    {
+      "label": "west:station:krajok",
+      "value": "img/map-v5/st-krajok-west.webp"
+    },
+    {
+      "label": "west:background:map",
+      "value": "img/theme-v4/map-west.webp"
+    },
+    {
+      "label": "west:background:arena",
+      "value": "img/theme-v4/arena-west.webp"
+    },
+    {
+      "label": "west:background:frontier",
+      "value": "img/theme-v4/frontier-west.webp"
+    },
+    {
+      "label": "west:art:crew-guard",
+      "value": "img/West/crew-guard-west.png"
+    },
+    {
+      "label": "west:art:crew-guard-profile",
+      "value": null
+    },
+    {
+      "label": "west:art:hero-boss",
+      "value": "img/West/hero-boss-west-v2.png"
+    },
+    {
+      "label": "west:art:hero-boss-profile",
+      "value": "img/West/hero-boss-west-profile.webp"
+    },
+    {
+      "label": "west:art:hero-yama-walk",
+      "value": "img/West/hero-yama-west-walk.png"
+    },
+    {
+      "label": "west:art:hero-yama-walk-4dir",
+      "value": "img/West/hero-yama-west-walk-4dir-v2.png"
+    },
+    {
+      "label": "west:sword",
+      "value": "img/yama-sword-v2/hero-yama-west-sword.webp"
+    },
+    {
+      "label": "west:true:action:roar",
+      "value": "img/hero-yama-west-roar-cutscene-v4.png"
+    },
+    {
+      "label": "west:true:action:hypno",
+      "value": "img/hero-yama-west-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "west:true:action:mirror",
+      "value": "img/hero-yama-west-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "west:true:action:fire",
+      "value": "img/hero-yama-west-atk-cutscene-v3.png"
+    },
+    {
+      "label": "west:true:action:ice",
+      "value": "img/hero-yama-west-ice-cutscene-v2.png"
+    },
+    {
+      "label": "west:true:action:flameCharge",
+      "value": "img/West/hero-yama-west-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "west:true:action:windFan",
+      "value": "img/West/hero-yama-west-wind-cutscene.jpeg"
+    },
+    {
+      "label": "west:true:action:rage",
+      "value": "img/West/hero-yama-west-rage-cutscene.jpeg"
+    },
+    {
+      "label": "west:true:action:valkyrieSpear",
+      "value": "img/West/hero-yama-west-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "west:true:action:cooldownClock",
+      "value": "img/West/hero-yama-west-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "west:false:action:roar",
+      "value": "img/hero-yama-west-roar-cutscene-v4.png"
+    },
+    {
+      "label": "west:false:action:hypno",
+      "value": "img/hero-yama-west-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "west:false:action:mirror",
+      "value": "img/hero-yama-west-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "west:false:action:fire",
+      "value": "img/hero-yama-west-fire-cutscene-v3.png"
+    },
+    {
+      "label": "west:false:action:ice",
+      "value": "img/hero-yama-west-ice-cutscene-v2.png"
+    },
+    {
+      "label": "west:false:action:flameCharge",
+      "value": "img/West/hero-yama-west-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "west:false:action:windFan",
+      "value": "img/West/hero-yama-west-wind-cutscene.jpeg"
+    },
+    {
+      "label": "west:false:action:rage",
+      "value": "img/West/hero-yama-west-rage-cutscene.jpeg"
+    },
+    {
+      "label": "west:false:action:valkyrieSpear",
+      "value": "img/West/hero-yama-west-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "west:false:action:cooldownClock",
+      "value": "img/West/hero-yama-west-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:station:sala",
+      "value": "img/map-v5/st-sala-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:krata",
+      "value": "img/map-v5/st-krata-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:dab",
+      "value": "img/map-v5/st-dab-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:lokan",
+      "value": "img/theme-v4/st-lokan-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:ngiw",
+      "value": "img/map-v5/st-ngiw-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:lan",
+      "value": "img/map-v5/st-lan-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:tea",
+      "value": "img/theme-v4/st-tea-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:sawan",
+      "value": "img/map-v5/st-sawan-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:tarang",
+      "value": "img/map-v5/st-tarang-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:frontier",
+      "value": "img/map-v5/st-frontier-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:station:krajok",
+      "value": "img/map-v5/st-krajok-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:background:map",
+      "value": "img/theme-v4/map-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:background:arena",
+      "value": "img/theme-v4/arena-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:background:frontier",
+      "value": "img/theme-v4/frontier-cyberhell.webp"
+    },
+    {
+      "label": "cyberhell:art:crew-guard",
+      "value": "img/CyberHell/crew-guard-cyberhell-v2.png"
+    },
+    {
+      "label": "cyberhell:art:crew-guard-profile",
+      "value": null
+    },
+    {
+      "label": "cyberhell:art:hero-boss",
+      "value": "img/CyberHell/hero-boss-cyberhell-v2.png"
+    },
+    {
+      "label": "cyberhell:art:hero-boss-profile",
+      "value": null
+    },
+    {
+      "label": "cyberhell:art:hero-yama-walk",
+      "value": "img/CyberHell/hero-yama-cyberhell-walk.png"
+    },
+    {
+      "label": "cyberhell:art:hero-yama-walk-4dir",
+      "value": "img/CyberHell/hero-yama-cyberhell-walk-4dir-v2.png"
+    },
+    {
+      "label": "cyberhell:sword",
+      "value": "img/yama-sword-v2/hero-yama-cyberhell-sword.webp"
+    },
+    {
+      "label": "cyberhell:true:action:roar",
+      "value": "img/hero-yama-cyberhell-roar-cutscene-v4.png"
+    },
+    {
+      "label": "cyberhell:true:action:hypno",
+      "value": "img/hero-yama-cyberhell-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:true:action:mirror",
+      "value": "img/hero-yama-cyberhell-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:true:action:fire",
+      "value": "img/hero-yama-cyberhell-atk-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:true:action:ice",
+      "value": "img/hero-yama-cyberhell-ice-cutscene-v2.png"
+    },
+    {
+      "label": "cyberhell:true:action:flameCharge",
+      "value": "img/CyberHell/hero-yama-cyberhell-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:true:action:windFan",
+      "value": "img/CyberHell/hero-yama-cyberhell-wind-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:true:action:rage",
+      "value": "img/CyberHell/hero-yama-cyberhell-rage-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:true:action:valkyrieSpear",
+      "value": "img/CyberHell/hero-yama-cyberhell-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:true:action:cooldownClock",
+      "value": "img/CyberHell/hero-yama-cyberhell-clock-reset-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:false:action:roar",
+      "value": "img/hero-yama-cyberhell-roar-cutscene-v4.png"
+    },
+    {
+      "label": "cyberhell:false:action:hypno",
+      "value": "img/hero-yama-cyberhell-hypno-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:false:action:mirror",
+      "value": "img/hero-yama-cyberhell-mirror-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:false:action:fire",
+      "value": "img/hero-yama-cyberhell-fire-cutscene-v3.png"
+    },
+    {
+      "label": "cyberhell:false:action:ice",
+      "value": "img/hero-yama-cyberhell-ice-cutscene-v2.png"
+    },
+    {
+      "label": "cyberhell:false:action:flameCharge",
+      "value": "img/CyberHell/hero-yama-cyberhell-flame-charge-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:false:action:windFan",
+      "value": "img/CyberHell/hero-yama-cyberhell-wind-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:false:action:rage",
+      "value": "img/CyberHell/hero-yama-cyberhell-rage-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:false:action:valkyrieSpear",
+      "value": "img/CyberHell/hero-yama-cyberhell-valkyrie-spear-cutscene.jpeg"
+    },
+    {
+      "label": "cyberhell:false:action:cooldownClock",
+      "value": "img/CyberHell/hero-yama-cyberhell-clock-reset-cutscene.jpeg"
+    }
+  ]
+}

@@ -1,11 +1,13 @@
 // Only shipped images: never include raw art, experiments or untracked references.
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, statSync } from 'node:fs';
+import { writeFileSync, statSync, existsSync } from 'node:fs';
 const zones = ['th', 'asia', 'west', 'cyberhell'];
 const catalog = { shared: [], zones: Object.fromEntries(zones.map(z => [z, []])) };
 const files = execFileSync('git', ['ls-files', '-z', 'img'], { encoding:'utf8' }).split('\0');
 for (const path of files) {
-  // Keep the original sword artwork for comparison, but only preload the corrected animation.
+  // A local archive can move tracked files before the deletion is staged.
+  if (!existsSync(path)) continue;
+  // Only preload the corrected animation; authoring sources stay outside the catalog.
   if (path.startsWith('img/yama-sword-v1/') || path === 'img/yama-sword-v2/hero-yama-th-sword.webp') continue;
   if (/hero-yama-.*-roar-cutscene-v3\.png$/.test(path)) continue;
   // Annotated map review replaces nine station sprites in every zone.

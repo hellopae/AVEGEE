@@ -56,3 +56,8 @@
 ## เพิ่มเติม: ระบบที่ผู้ใช้ให้ Codex ทำระหว่างรอ Claude (7 ต.ค.)
 
 ดู `docs/system-review-2026-10-07.md` สำหรับรายละเอียดทั้งหมด: คูลดาวน์ยมทูต/ยักษ์ 120 วินาทีและตัดโจมตีธรรมดา (Yama ยังฟันดาบ), นอนพัก HP กับดื่มชา MP แยกกัน, ลำดับแดง 1–2–3 → หัวหน้า → กระทะ HP 1 → นอนศาลาอัตโนมัติ, สีของจำนวนในสำนวนพร้อมคู่มือ, ข้ออ้าง/คำสารภาพผูกเรื่องเดียวกัน, cutscene บอสโซน 1 และท่าไม้ตายโดนทั้งทีม, รับวิญญาณ 3 ดวงระหว่างผู้คุมเดินส่งดวงแรก งานนี้ใช้ภาพที่มีอยู่ ไม่มีภาพใหม่
+
+
+## Image archive cleanup — 7 October
+
+74 confirmed unused images (31.6 MiB) moved to local ignored `AVEGEE-backup/2026-10-07/img/`; corresponding Git deletions are intentional. Keep that backup directory local. See `docs/image-cleanup-2026-10-07.md` and `docs/image-archive-2026-10-07.json` for evidence, exact paths, replacements and checksums. Active selectors are unchanged; manifest and preload catalog now exclude archived files. Raw artwork, fallback assets, geometry sources and authoring inputs remain. Run `node scripts/check-image-archive.mjs` after future artwork changes; it records the current 164-selection baseline.
