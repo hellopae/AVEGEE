@@ -122,7 +122,7 @@ export function createGame() {
     upgrades: { powers: {} },
     abilities: {},
     discoverySeen: {}, discoveryQueue: [],
-    storyQueue: [], storySeen: {}, niraRest: null,
+    devaVisits: {}, storyQueue: [], storySeen: {}, niraRest: null,
     pendingReward: null,               // ชุด 28B — สรุปรางวัลหลังชนะ รอ ui.js เด้งหน้าต่าง (ไม่เซฟ)
     // ฉากมาถึงของบอสประจำโซน — โผล่ครั้งแรกก่อนสู้เท่านั้น รีแมตช์ไม่เล่นซ้ำ (17 ก.ย. 2569)
     bossArriveSeen: {},
@@ -396,11 +396,24 @@ const API = {
    *  กติกาสองข้อที่ทำให้ไม่มีทางเจอคดีที่ "ตัดสินให้ถูกไม่ได้เลย":
    *    · คดีปกติต้องมีสถานีที่รับชนิดกรรมของเขาอยู่แล้วอย่างน้อยหนึ่งหลัง
    *    · คดีคนบริสุทธิ์/เทวดา ส่งมาก็ต่อเมื่อสร้างประตูสวรรค์แล้วเท่านั้น */
+  ensureDevaCase() {
+    if (this.zone !== 'th' || this.zoneCases.th !== 4 || this.devaTestStatus() === 'cleared') return;
+    const queued = this.queue.find(s => s.case === 'monk');
+    if (queued && !queued.pure) {
+      const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'monk')), 'th');
+      Object.assign(queued, replacement, { id:queued.id });
+    }
+    if (!queued) {
+      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'monk')), 'th');
+      this.queue.unshift(soul);
+      if (!this.usedCases.includes('monk')) this.usedCases.push('monk');
+    }
+  },
   nextNamedCase(tags) {
     if (this.casesDone < 1) return null;
     if (this.zone === 'th' && this.spawns % CASE_EVERY !== 0) return null;
     const pool = CASES_BY_ZONE[this.zone] || [];
-    let left = pool.filter(c => !this.usedCases.includes(c.k));
+    let left = pool.filter(c => c.k !== 'monk' && !this.usedCases.includes(c.k));
     // บูรพาไม่ถอยกลับไปสุ่มสำนวนไทยเมื่อ A1-A20 ครบชุด — ล้างรอบแล้วคละใหม่
     if (!left.length && this.zone === 'asia' && pool.length) {
       const keys = new Set(pool.map(c => c.k));
@@ -565,6 +578,7 @@ const API = {
   /** ขังไว้ก่อน — ทางออกตอน "สถานีที่ตรงกรรมไม่ว่าง แต่คิวกำลังล้น"
    *  ไม่นับเป็นคำตัดสิน ไม่ได้คะแนน ไม่เสียคะแนน แค่ซื้อเวลา แลกกับค่าข้าวทุกวาระ */
   jail(soulId) {
+    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue.find(s => s.id === soulId)?.case === 'monk') return false;
     if (this.jailFree() <= 0) return false;
     const i = this.queue.findIndex(x => x.id === soulId);
     if (i < 0) return false;
@@ -591,6 +605,7 @@ const API = {
    *  มีไว้แก้ทางตันที่เจ้าของเจอ 8 ก.ย. 2569: สำนวนเป็นฉ้อโกง แต่กระทะทองแดงไม่ว่าง
    *  ตัดสินให้ตรงกรรมไม่ได้เลย และไม่มีปุ่มอะไรให้กดนอกจากตัดสินผิด ๆ ไปก่อน */
   defer() {
+    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue[0]?.case === 'monk') return false;
     if (this.queue.length < 2) return false;
     const soul = this.queue.shift();
     this.queue.push(soul);
@@ -815,6 +830,9 @@ const API = {
 
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
+    const reservedCase = this.zone === 'th' && this.zoneCases.th === 4 && this.devaTestStatus() !== 'cleared' && this.queue.some(s => s.case === 'monk');
+    const selectedSoul = this.queue.find(s => s.id === soulId);
+    if (reservedCase && selectedSoul && selectedSoul.case !== 'monk') return { key:'devaCaseFirst' };
     const st = this.stations.find(s => s.def.k === stKey);
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
@@ -1035,6 +1053,12 @@ const API = {
                        boss: r.boss, heaven: !!r.heaven, right: !!r.right,
                        deserved: soul.deserved, back: !!soul.back });
     if (this.ledger.length > 300) this.ledger.shift();
+    this.ensureDevaCase();
+    if (this.zone === 'th' && this.zoneCases.th === 5 && soul.case === 'monk' && this.devaTestStatus() !== 'cleared') {
+      this.zoneEvents.th.devaTest = 'pending';
+      this.devaVisits.th = { phase:'intro', right:!!r.right };
+      this.queueStory(r.right ? 'deva-th-praise' : 'deva-th-warning');
+    }
     this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
     this.checkEnd();
   },
@@ -2437,7 +2461,7 @@ const API = {
       if ((ev.requires || []).every(key => states[key] === 'cleared')) {
         states[ev.k] = 'pending';
         if (zone === this.zone && ev.k === 'asiaPrisonFire') {
-          const st = this.stations.find(s => s.def.k !== 'sala' && !s.build) || this.stations.find(s => !s.build);
+          const st = this.stations.find(s => s.def.k === 'tarang' && !s.build);
           if (st) { st.fire = MOB.burnMax; this.burnDown(st); }
         }
       }
@@ -2556,7 +2580,7 @@ const API = {
   },
   startDevaTest() {
     if (this.zone !== 'th' || this.battle || this.over || this.devaTestStatus() !== 'pending' ||
-        this.prisonBreakStatus() !== 'cleared') return null;
+        this.prisonBreakStatus() !== 'cleared' && this.devaVisits.th?.phase !== 'fighting') return null;
     const event = ZONE_EVENTS.th[2];
     const devaHp = scaleFoeHp('th', event.foe.hp, 'boss');   // ชุด 28B
     const foe = { id:'deva-test', who:BOSS_NAMES.th.tester, sub:t('event.devaTest.sub'),
@@ -2727,6 +2751,7 @@ const API = {
     if (command && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
+    const livingBefore = B.foes.filter(f => f.hp > 0).map(f => ({ id:f.id, hp:f.hp }));
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
     const roll = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
@@ -3066,14 +3091,24 @@ const API = {
       return declareWin();
     }
 
-    if (B.kind === 'zoneEvent' && B.eventKey === 'asiaPrisonFire' && target.hp <= 0 && !B.devaArrived) {
-      B.devaArrived = true;
-      const allyTarget = B.foes.find(f => f.hp > 0);
-      if (allyTarget) allyTarget.hp = Math.max(0, allyTarget.hp - 24);
-      B.mid.foes = B.foes.map(f => ({ ...f }));
-      B.talk = 'เทวดาบินลงมาช่วยและซัดวิญญาณอีกตนด้วยพลังลม';
-      say(B.talk);
+    if (B.devaResolution) {
+      B.foes.forEach(f => { f.hp = 0; });
+      return declareWin();
     }
+    const awaitDeva = () => {
+      if (B.kind !== 'zoneEvent' || B.eventKey !== 'asiaPrisonFire' || B.devaArrived || B.foes.filter(f => f.hp <= 0).length < 2) return false;
+      // Area attacks also leave the last spirit for the deva; no combat stats change.
+      if (B.foes.every(f => f.hp <= 0)) {
+        const last = livingBefore.at(-1);
+        B.foes.find(f => f.id === last.id).hp = last.hp;
+      }
+      B.devaArrived = true;
+      this.devaVisits.asia = { phase:'descending', battle:B };
+      this.battle = null;
+      this.save(); this.onChange();
+      return true;
+    };
+    if (awaitDeva()) return true;
     if (B.foes.every(f => f.hp <= 0)) {
       if (B.kind === 'frontierBreach' && B.wave < ZONE_EVENTS.th[1].waves.length) {
         B.pendingWave = B.wave + 1;
@@ -3121,6 +3156,7 @@ const API = {
       say(confused.length > 1 ? 'ศัตรูถูกสะกดจิตและหันไปโจมตีกันเอง' : 'ศัตรูถูกสะกดจิต ฟาดเข้ากับตัวเอง');
       // แก้รอบ 1 — สะกดจิตฆ่าศัตรูตายพอดี ต้องประกาศชนะทันที ไม่ใช่รอผู้เล่นกดโจมตีอีกครั้ง
       if (B.foes.some(f => f.hp <= 0)) {
+        if (awaitDeva()) return true;
         if (B.foes.every(f => f.hp <= 0)) {
           if (B.kind === 'frontierBreach' && B.wave < ZONE_EVENTS.th[1].waves.length) {
             B.pendingWave = B.wave + 1;
@@ -3391,6 +3427,28 @@ const API = {
   },
 
   // ---------- Phase 3 · ย้ายโซน ----------
+  finishDevaDescent() {
+    const visit = this.devaVisits.asia;
+    if (visit?.phase !== 'descending') return false;
+    visit.phase = 'intro';
+    this.queueStory('deva-asia'); this.save(); this.onChange(); return true;
+  },
+  completeDevaArrival() {
+    const visit = this.devaVisits.asia;
+    if (visit?.phase !== 'intro') return false;
+    visit.phase = 'waiting';
+    const b = visit.battle; delete visit.battle;
+    if (b && this.zoneEventStatus('asiaPrisonFire') !== 'cleared') {
+      b.devaResolution = true; b.commandBusy = false;
+      const foe = b.foes.find(f => f.hp > 0);
+      if (foe) {
+        foe.hp = 1; b.selectedFoeId = foe.id; this.battle = b;
+        const change = this.onChange; this.onChange = () => {};
+        try { this.battleAct('atk'); this.endBattle(); } finally { this.onChange = change; }
+      }
+    }
+    this.save(); return true;
+  },
   queueStory(key, reward = null) {
     if (this.storySeen[key] || this.storyQueue.some(p => p.key === key)) return;
     this.storyQueue.push({ key, reward, stage:STORY[key] ? 'comic' : 'reward' });
@@ -3398,6 +3456,11 @@ const API = {
   completeStory() {
     const next = this.storyQueue.shift();
     if (next) this.storySeen[next.key] = true;
+    if (next?.key === 'deva-asia') this.completeDevaArrival();
+    if (next?.key?.startsWith('deva-th-')) {
+      this.devaVisits.th.phase = 'fighting';
+      this.startDevaTest();
+    }
     if (next?.key === 'cyber-reinforcements') this.completeFinalReinforcements();
     this.save();
   },
@@ -3918,7 +3981,7 @@ API.snapshot = function (withEntry = true) {
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     abilities: this.abilities,
     discoverySeen: { ...this.discoverySeen }, discoveryQueue: [...this.discoveryQueue],
-    storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
+    devaVisits:this.devaVisits, storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     crew: this.crew.map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, statTraining:{ ...c.statTraining }, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
@@ -4063,6 +4126,7 @@ API.restore = function (d) {
   this.inventory = { ...(d.inventory || {}) };
   this.abilities = { ...(d.abilities || {}) };
   if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
+  this.devaVisits = d.devaVisits || {};
   this.storyQueue = d.storyQueue || []; this.storySeen = d.storySeen || {}; this.niraRest = d.niraRest || null;
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
@@ -4259,6 +4323,8 @@ API.restore = function (d) {
     for (const id of this.discoveryQueue) this.discoverySeen[id] = true;
     this.discoveryQueue = [];
   }
+  if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
+  this.ensureDevaCase();
   reconcileSoulPortraits(this);
   refreshPendingSentences(this);
   Object.values(this.zoneSave).forEach(refreshPendingSentences);

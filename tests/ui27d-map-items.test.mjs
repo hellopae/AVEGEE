@@ -196,6 +196,9 @@ const total = g => Object.values(g.inventory).reduce((a, b) => a + b, 0);
 /** ชนะฉากสู้ให้จบ: ข้ามระลอก ลดเลือดศัตรูทุกตัวเหลือ 1 แล้วฟาด */
 function winBattle(g) {
   for (let i = 0; i < 80; i++) {
+    if (!g.battle && g.devaVisits?.asia?.phase === 'descending') {
+      g.finishDevaDescent(); g.completeStory(); return;
+    }
     const B = g.battle;
     if (B.over) return;
     if (B.pendingWave) { B.kind === 'frontierBreach' ? g.advanceFrontierBreachWave() : g.advanceZoneEventWave(g.zoneEventRestReady()); continue; }
@@ -231,10 +234,10 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       const exp0 = g.exp, lvl0 = g.level;
       const itemsBefore = total(g);
       winBattle(g);
-      assert.equal(g.battle.over, 'win', `${zone}/${ev.k} won`);
+      assert.equal(b.over, 'win', `${zone}/${ev.k} won`);
       assert.ok(g.exp > exp0 || g.level > lvl0, `${zone}/${ev.k} gives EXP`);
       const frontierWave = ev.team === 'frontier';
-      if (!frontierWave) assert.ok(!g.battle.loot, `${zone}/${ev.k}: no winLoot`);
+      if (!frontierWave) assert.ok(!b.loot, `${zone}/${ev.k}: no winLoot`);
       seen.push(`${zone}/${ev.k}`);
     }
   }

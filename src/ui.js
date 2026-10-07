@@ -8,6 +8,7 @@ import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress, HERO_TRAINING_ID } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
+import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { nextFinalEncounter, finalEventActors } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
@@ -146,6 +147,12 @@ const zoneEventTried = new Set();
 // เฝ้าด้วย timer ไม่ใช่ลูปเฟรม — requestAnimationFrame หยุดสนิทเมื่อแท็บอยู่หลังจอ
 // (เจอตอนทดสอบ 8 ก.ย. 2569: สลับแท็บกลางฉากต่อสู้แล้วกล่องหาย ไม่มีอะไรเปิดกลับให้)
 setInterval(() => {
+  if (started && g.zone === 'asia' && g.devaVisits?.asia?.phase === 'descending' && !dlg.open && !g.battle) {
+    g.devaDescentStartedAt ||= Date.now();
+    if (Date.now() - g.devaDescentStartedAt >= DEVA_DESCENT_MS) {
+      g.devaDescentStartedAt = null; g.finishDevaDescent();
+    }
+  }
   releaseDlgPause();       // กล่องปิดไปแล้วแต่ยังไม่ได้คืนค่าพัก — ดูหมายเหตุที่ pauseForDlg()
   showAutoPause();
   if (battleUI && g.battle && !g.battle.over && !dlg.open) battleUI();
@@ -174,7 +181,7 @@ setInterval(() => {
     openBreachAlert();
   }
   if (started && g.devaTestStatus() === 'pending' && g.prisonBreakStatus() === 'cleared' &&
-      !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
+      !g.storyQueue.some(s => s.key.startsWith('deva-th-')) && !devaAlertSeen && !g.battle && !g.over && !dlg.open && !fx && !g.pendingVerdict && !g.pendingRecovery &&
       !g.pendingLevel && !g.pendingZone && !g.dadFight && Date.now() - lastBattleEnd > 1600) {
     devaAlertSeen = true;
     openDevaAlert();
@@ -1175,6 +1182,7 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
       else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
       else if (now.kind === 'finalRest') openStation('tea', true);
       else openStation(now.key);
@@ -1325,7 +1333,7 @@ function storyFoeArt(sp) {
 }
 function pendingZoneEvents() {
   return (ZONE_EVENTS[g.zone] || []).filter(ev => !LEGACY_ZONE_EVENTS.has(ev.k) &&
-    g.zoneEventStatus?.(ev.k) === 'pending').sort((a, b) => a.atCases - b.atCases);
+    g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }
 /** 30D ข้อ 5 — รูปบนป้ายแจ้งเตือนอีเวนต์: ตัวที่บุกมาจริง (ไม่ใช่วิญญาณขาวสำรอง)
@@ -1336,6 +1344,12 @@ function zoneEventMarkerArt(ev) {
   if (foe?.sp && foe.sp !== 'spirit') return storyFoeArt(foe.sp);
   if (foe?.kind != null && MOB.kinds[foe.kind]) return artUrl(MOB.kinds[foe.kind].img);
   return storyFoeArt(foe?.sp);
+}
+function openDevaEncounter(key) {
+  const a = devaMapActors(g).find(a => a.key === key && a.enabled);
+  if (!a) return;
+  if (Math.hypot(g.player.x-a.x, g.player.y-a.y) > INTERACTION_REACH) { g.walkTo(a.x,a.y); return; }
+  openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === key));
 }
 function openFinalEncounter(id) {
   const a = finalEventActors(g).find(a => a.id === id);
@@ -2448,18 +2462,19 @@ function openBossPier() {
 }
 
 // ---------- ด่านชายแดนนรก ----------
-function openFrontier(fromWalk = false, breachArg = null, introSeen = false) {
+function openFrontier(fromWalk = false, breachArg = null, introSeen = false, approachReached = false) {
   // ชุด 29C ข้อ 9 — มี event ปีศาจบุกรออยู่ (รับทราบแล้ว) → หน้าต่างนี้คือหน้าเตรียมทีมของ event นั้น · ไม่มี = หน้าเตรียมทีมชายแดนปกติ
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
+  if (['frontierBreach','asiaRageBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
   // An invasion still requires walking to the gate. The boss speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
   const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
   if (intro) {
     const zone = g.zone;
     const proceed = () => {
-      if (g.zone === zone && g.zoneEventStatus(breachKey) === 'pending') openFrontier(false, breachKey, true);
+      if (g.zone === zone && g.zoneEventStatus(breachKey) === 'pending') openFrontier(false, breachKey, true, true);
       else dlg.close();
     };
     modal(`<div class="intro-comic frontier-introduction" role="region" aria-label="${esc(intro.speaker)}">
@@ -2547,7 +2562,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false) {
 /** แผนที่ชายแดน — เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14)
  *  ทีมที่จัดไว้จาก openFrontier() ใช้ต่อเนื่องทั้งเซสชัน ไม่ต้องกลับไปจัดใหม่ทุกครั้งที่ชนะ/แพ้หนึ่งตัว
  *  ชนะ/แพ้แต่ละครั้ง → กลับมาหน้านี้ต่อ (ไม่ใช่แผนที่โซน) จนกว่าจะกด "กลับแผนที่โซน" เอง */
-function openFrontierWalk() {
+function openFrontierWalk(invasionKey = null) {
   pauseForDlg();
   let myGen = -1;
   const mine = () => myGen < 0 || (dlg.open && dlgGen === myGen);
@@ -2587,7 +2602,7 @@ function openFrontierWalk() {
   const nira = dlg.querySelector('#frw-nira');
   const cv2 = dlg.querySelector('#frw-cv');
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira });
+  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, invasionKey });
   FW.start();
   const menu = fn => {
     const zone=g.zone;
@@ -2596,7 +2611,7 @@ function openFrontierWalk() {
     const back = () => {
       if(dlg.open) return; // Ignore the asynchronous close from replacing the map.
       dlg.removeEventListener('close',back);
-      if(started && !g.over && !g.battle && g.zone===zone) openFrontierWalk();
+      if(started && !g.over && !g.battle && g.zone===zone) openFrontierWalk(invasionKey);
     };
     dlg.addEventListener('close',back);
   };
@@ -2610,6 +2625,7 @@ function openFrontierWalk() {
     const id = FW.nearId();
     const en = id != null && FW.getEnemy(id);
     if (!en) return;
+    if (invasionKey) { FW.destroy(); openFrontier(false, invasionKey, false, true); return; }
     if (!g.startFrontierBattle({ kindIdx: en.kindIdx, id: en.id, level: en.level })) return;
     FW.destroy();
     dlg.close();
@@ -3018,6 +3034,7 @@ function openBattle(after) {
       const k = actor ? 'crew:' + actor.k : action;
       const hpBefore = g.battle.youHp;
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
+      if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
       commandMenuOpen = false;
       // ชุด 30B ข้อ 9 — บุญ (ยมทูตสายเติมเลือด) เติมบารมี: ยมบาทน้อยเรืองแสงเขียว-ทอง + เลข +HP ลอยขึ้น
       // เริ่มตอนภาพคั่นท่าพิเศษจางลงพอดี (ไม่งั้นอยู่ใต้ภาพคั่นที่ทับเต็มกรอบ)
@@ -3682,6 +3699,7 @@ function onSceneClick(sx, sy) {
       else g.walkTo(fa.x,fa.y);
       return;
     }
+    if (fa?.kind === 'devaEncounter') return openDevaEncounter(fa.key);
     if (fa?.kind === 'finalEncounter') return openFinalEncounter(fa.key);
   }
   const def = hitStation(sx, sy);
@@ -4524,6 +4542,7 @@ g.onChange = () => {
   }
   g.syncDiscoveries();
   refresh();
+  if (g.battle?.kind === 'devaTest' && g.devaVisits?.th?.phase === 'fighting' && !dlg.open) { openBattle(); return; }
   if (storyPlaying) return;
   if (g.pendingRecovery && !g.battle && !g.pendingDadPunish) {
     if (!dlg.open) openDefeatRecovery();

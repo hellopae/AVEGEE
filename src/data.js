@@ -1713,8 +1713,8 @@ export const ZONE_EVENTS = {
   asia:[
     { k:'asiaPrisonFire', atCases:3, mode:'group',
       title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },
-      alert:{ th:'วิญญาณสามตนแหกคุกและเผาอาคารไปหนึ่งหลัง เทวดาจะลงมาช่วยหลังปราบตนแรก', en:'Three spirits escape and destroy a building. A deva descends after the first falls.' },
-      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterFirstKill:'devaArrives',
+      alert:{ th:'วิญญาณสามตนแหกคุกและเผาอาคารไปหนึ่งหลัง เทวดาจะลงมาช่วยหลังปราบสองตน', en:'Three spirits escape and destroy a building. A deva descends after two spirits fall.' },
+      foes:[{ kind:6, count:3, hp:43, atk:[7,11] }], afterKills:2, arrival:'devaArrives',
       reward:{ coin:90 } },
     { k:'asiaDevaTest', atCases:3, requires:['asiaPrisonFire'], mode:'single',
       title:{ th:'เทวดาทดสอบพลังพัด', en:'Deva wind test' },

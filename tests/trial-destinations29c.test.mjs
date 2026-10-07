@@ -30,6 +30,8 @@ test('หอทะเบียนกรรมไม่ใช่สถานท�
 test('ทุกโซน: ตัวเลือกสถานที่ทุกตัวมีอยู่จริงในโซนนั้น มีฉากห้อง และส่งไปแล้วทำงานได้', () => {
   const g = createGame();
   g.level = 5; g.coin = 99999;
+  // This fixture has already cleared every boss; reserve-case progression is tested in E3.
+  g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'cleared' };
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES) {
     if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);

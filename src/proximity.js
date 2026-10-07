@@ -1,3 +1,4 @@
+import { devaMapActors } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { topOf, bodyBoxOf } from './art.js';
 // 29B: map distances are scene pixels; room distances are normalized image coordinates.
@@ -47,6 +48,7 @@ export function stationButtonPos(def, top = topOf(def), body = bodyBoxOf(def)) {
 
 export function mapInteractions(g, merchant) {
   const targets = [];
+  for (const a of devaMapActors(g)) if (a.enabled) targets.push({ ...a, kind:'devaEncounter', bx:a.x, by:a.y-110 });
   for (const a of finalEventActors(g)) if (a.enabled) targets.push({ id:a.id,key:a.id,kind:'finalEncounter',x:a.x,y:a.y,bx:a.x,by:a.y-85,label:'เริ่มศึก' });
   const rest = finalRestSpot(g);
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });

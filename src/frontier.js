@@ -1,3 +1,4 @@
+import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
 // src/frontier.js — แผนที่ชายแดน: เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569)
 //
@@ -86,7 +87,9 @@ function label(ctx, text, x, y, size, color) {
 export function makeFrontierWalk(cv, g, opts) {
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
   const { bg, kinds, wave, alive, fab, gate, nira } = opts;
-  const sess = frontierSession(g.zone);
+  const invasion = breachApproachActors(g.zone, opts.invasionKey);
+  const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
+  if (invasion.length) sess.enemies = invasion;
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
   let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);
@@ -112,6 +115,7 @@ export function makeFrontierWalk(cv, g, opts) {
   let replanAt = 0;
 
   function spawnOne() {
+    if (invasion.length) return;
     if (sess.enemies.length >= maxOnScreen(wave) || !kinds.length) return;
     const kindIdx = kinds[Math.floor(Math.random() * kinds.length)];
     const [ex, ey] = edgePoint();
@@ -190,6 +194,7 @@ export function makeFrontierWalk(cv, g, opts) {
     // ศัตรูใกล้ที่สุดในระยะเอื้อม — ปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้นตัวเดียว
     let bestId = null, bestD = Infinity;
     for (const en of sess.enemies) {
+      if (invasion.length && !en.boss) continue;
       const dd = Math.hypot(en.x - P.x, en.y - P.y);
       if (dd <= REACH && dd < bestD) { bestD = dd; bestId = en.id; }
     }
@@ -233,13 +238,13 @@ export function makeFrontierWalk(cv, g, opts) {
         const x = px(en.x), y = py(en.y);
         const inReach = en.id === nearId;
         const kd = MOB.kinds[en.kindIdx] || MOB;
-        drawStandee(ctx, kd.img, x, y, U * MOB_H, t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
+        drawStandee(ctx, en.art || kd.img, x, y, U * MOB_H * (en.boss ? 1.5 : 1), t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
         if (inReach) {
           ctx.strokeStyle = `rgba(255,205,120,${0.55 + 0.35 * Math.sin(t / 260)})`;
           ctx.lineWidth = 2.5;
           ctx.beginPath(); ctx.ellipse(x, y, U * 0.05, U * 0.02, 0, 0, 7); ctx.stroke();
         }
-        label(ctx, `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, U * 0.024,
+        label(ctx, en.name || `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, U * 0.024,
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
