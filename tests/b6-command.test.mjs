@@ -13,8 +13,9 @@ test('selection/cancel do not spend turns; selected actor attacks and duplicate 
  const g=setup(),c=g.crewOf('taan'),turn=g.battle.turn,hp=g.battle.foes[0].hp;
  assert.equal(g.selectBattleActor(c.id),true);g.battle.command='atk';assert.equal(g.cancelBattleCommand(),true);
  assert.equal(g.battle.turn,turn);assert.equal(g.battle.foes[0].hp,hp);
- assert.equal(g.confirmBattleCommand('atk'),true);assert.equal(g.battle.helper.id,c.id);
- assert.equal(c.morale,90);assert.equal(g.battle.turn,turn+1);
+ assert.equal(g.confirmBattleCommand('atk'),false);
+ assert.equal(g.confirmBattleCommand('crew:taan'),true);assert.equal(g.battle.helper.id,c.id);
+ assert.equal(c.morale,86);assert.equal(g.battle.turn,turn+1);
  assert.equal(g.confirmBattleCommand('atk'),false);assert.equal(g.selectBattleActor('you'),false);
  assert.equal(g.battleAct('atk'),false);assert.equal(g.battle.turn,turn+1);
  g.finishBattleCommand();assert.equal(g.selectBattleActor('you'),true);
@@ -31,12 +32,13 @@ test('items reach chosen crew/Guard/Yama; full and MP-ineligible recipients cost
  assert.match(g.battleRecipientWhy('holyWater',c.id),/Yama only/);
  assert.equal(g.confirmBattleCommand('holyWater','you'),true);assert.equal(g.mp,30);
 });
-test('Boon heals chosen friend; special cooldown blocks repetition, normal attack remains available',()=>{
+test('Boon heals chosen friend; special cooldown blocks repetition, ordinary crew attack is removed',()=>{
  const g=setup(),c=g.crewOf('boon'),friend=g.crewOf('taan');friend.morale=30;
  g.selectBattleActor(c.id);assert.equal(g.confirmBattleCommand('crew:boon',friend.id),true);
  assert.ok(friend.morale>30);assert.equal(g.battle.dmg.healActorId,friend.id);g.finishBattleCommand();
  const turn=g.battle.turn;assert.equal(g.confirmBattleCommand('crew:boon',friend.id),false);assert.equal(g.battle.turn,turn);
- assert.equal(g.confirmBattleCommand('atk'),true);
+ assert.equal(g.confirmBattleCommand('atk'),false);
+ assert.equal(g.selectBattleActor('you'),true);assert.equal(g.confirmBattleCommand('atk'),true);
 });
 test('one successful command schedules exactly one enemy counter',()=>{
  const g=setup();g.battle.foes.push({...g.battle.foes[0],id:'second'});

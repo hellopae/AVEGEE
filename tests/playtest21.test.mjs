@@ -63,20 +63,18 @@ test('nonfinite verdict rewards cannot poison economy values', () => {
   assert.deepEqual([g.coin, g.order, g.karma, g.scoreSum], before);
 });
 
-test('repro: a station keeper escorting the previous soul exposes the same block to UI', () => {
-  const g = createGame();
-  g.coin = 1000;
-  assert.equal(g.hire('dam'), true);
-  g.spawnSoul();
-  g.queue.forEach(s => { s.resist = false; s.beaten = true; });
-  assert.equal(g.assign(g.queue[0].id, 'krata', 'taan', 3), true);
-  const next = g.queue[0];
-  assert.deepEqual(g.assignBlock(next.id, 'krata', 'dam'), { key:'crewEscort' });
-  assert.equal(g.assign(next.id, 'krata', 'dam', 3), false);
-  assert.ok(g.queue.includes(next));
-  g.crewOf('taan').escort = null;
-  assert.equal(g.assignBlock(next.id, 'krata', 'dam'), null);
-  assert.equal(g.assign(next.id, 'krata', 'dam', 3), true);
+test('one keeper can accept three souls while the first escort is still travelling', () => {
+ const g=createGame();g.coin=1000;g.hire('dam');
+ while(g.queue.length<4)g.spawnSoul();g.queue.forEach(s=>{s.resist=false;s.beaten=true;});
+ const st=g.stations.find(st=>st.def.k==='krata');
+ for(let i=0;i<3;i++){
+  const soul=g.queue[0];assert.equal(g.assignBlock(soul.id,'krata','dam'),null);
+  assert.equal(g.assign(soul.id,'krata','dam',3),true);
+ }
+ assert.equal(st.slots.length,3);assert.equal(st.crewK,'dam');
+ assert.deepEqual(g.assignBlock(g.queue[0].id,'krata','taan'),{key:'stationFull'});
+ assert.equal(g.assign(g.queue[0].id,'krata','taan',3),false);
+ assert.equal(g.transits.filter(t=>t.pickup).length<=1,true,'only one keeper sprite escorts');
 });
 
 test('keeper assigned elsewhere reports its station and builder cannot be reassigned', () => {

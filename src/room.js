@@ -1,7 +1,7 @@
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
-import { TEA_SLEEP_MS, roomImageBox } from './tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, roomImageBox } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
@@ -140,7 +140,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   /** ข้อ A คุณเป้ 24 ก.ย. 2569 — จุดนั่งพักฟื้นบารมี มีเฉพาะศาลาน้ำชา (def.k === 'tea')
    *  ใช้จุด "act" เดิมของห้องเป็นที่นั่ง (ศาลาไม่เคยมีปุ่มลงมืออื่นอยู่แล้ว ไม่ชนกัน)
-   *  sitting=true ระหว่างนั่ง: ล็อกไม่ให้เดิน ฟื้นบารมีด้วยเวลาจริง (ไม่ผ่าน g.step() ที่พักไปพร้อมกล่องโมดัล)
+   *  sitting=true ระหว่างนั่ง: ล็อกไม่ให้เดิน เติม MP ด้วยเวลาจริง (ไม่ผ่าน g.step() ที่พักไปพร้อมกล่องโมดัล)
    *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
@@ -232,7 +232,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ต้องยืนถึงจุด (inReach) ถึงจะเริ่มนั่งได้ · ลุกได้ทุกเมื่อไม่มีเงื่อนไข */
   function setSit(on) {
     if (on) {
-      if (lying || !canSit || !inReach() || (g.hp >= g.hpMax && g.mp >= g.mpMax)) return false;
+      if (lying || !canSit || !inReach() || g.mp >= g.mpMax) return false;
       sitting = true; sipAt = performance.now() + 1800; sipping = false;
       P.x = room.act[0]; P.y = room.act[1];
       P.tx = null; P.ty = null;
@@ -245,7 +245,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   function setSleep(emergency = false) {
     if (!canSit || lying || sitting || (!emergency &&
         (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
-    lying = true; sleepElapsed = 0; recoverySleep = emergency;
+    lying = true; recoverySleep = emergency;
+    sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS + TEA_BLACKOUT_MS : 0;
     P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
     return true;
   }
@@ -253,9 +254,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   function step(dt) {
     if (lying) {
       sleepElapsed += dt;
-      if (sleepElapsed >= TEA_SLEEP_MS) {
-        sleepElapsed = 0;
-        if (recoverySleep && g.pendingRecovery?.stage !== 'wake') { g.finishTeaSleep(); return; }
+      if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
+      if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
         P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
         if (recoverySleep) g.completeTeaRecovery();
@@ -264,11 +264,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       return;
     }
     if (sitting) {
-      // นั่งนิ่ง ไม่รับอินพุตเดินเลย — ฟื้นบารมีด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
-      if (g.hp < g.hpMax || g.mp < g.mpMax) {
-        g.hp = Math.min(g.hpMax, g.hp + BAL.hpRegenSit * dt / 1000);
+      // นั่งนิ่ง ไม่รับอินพุตเดินเลย — เติม MP ด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
+      if (g.mp < g.mpMax) {
         regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
-        if (g.hp >= g.hpMax && g.mp >= g.mpMax) sitting = false;
+        if (g.mp >= g.mpMax) sitting = false;
       } else sitting = false;
       const now = performance.now();
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
@@ -484,6 +483,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     acts.push({ y: P.y, fn: () => {
       // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
+      if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
+        drawStandee(ctx,'hero-yama',px(P.x),py(room.bed[1]+0.09),U*HERO_H,t,'👑',P.face);
+        ctx.restore(); return;
+      }
       if (lying) {
         const down = img('hero-yama-unconscious');
         if (down) {
@@ -519,6 +524,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+    if (lying && sleepElapsed >= TEA_SLEEP_MS) {
+      const phase = teaSleepPhase(sleepElapsed);
+      ctx.save(); ctx.globalAlpha = phase === 'blackout' ? Math.min(1,(sleepElapsed-TEA_SLEEP_MS)/200)
+        : Math.max(0,1-(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
+      ctx.fillStyle='#000'; ctx.fillRect(0,0,cv.width,cv.height); ctx.restore();
+    }
   }
 
   function frame(now) {
@@ -550,6 +561,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
     sleeping: () => lying,
+    sleepPhase: () => lying ? teaSleepPhase(sleepElapsed) : null,
     nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
     setSleep,
     setSit,

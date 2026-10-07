@@ -2,7 +2,7 @@ import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverAc
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE } from './data.js';
+import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
@@ -11,7 +11,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          POWERS, DENIALS, HARD_CASES, ITEMS, ITEM_SPOTS,
          MOB, GUARD, LEVELS, SPIRIT_OF, spiritFor, safeSp, starsOf,
          SELF, ORDER_TIERS, KARMA_TIERS, KARMA_RELIEF, TARANG, KRAJOK,
-         DENY_BY_SIN, SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
+         SOLID_LINES, SOLID_BY_SIN, ADMIT_TPL, CRACK_LINES, HOLD_LINES, RETURN,
          voice, SEX_OF, BATTLE, bossUltimate, YAMA_FIGHT, ZONES, FOE_TALK, MOB_TALK,
          STATION_CAP, BUILD_TIME, REPAIR_TIME, DAD, CREW_HELP_LV, ORDER_WARN, crewName, FRONTIER,
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, BOSS_NAMES,
@@ -282,7 +282,7 @@ function mkCaseSoul(c) {
  *
  *  กติกาที่ทำให้มัน "อ่านออก" ไม่ใช่เดา:
  *    weak = บรรทัดที่ขัดกับสิ่งที่อยู่ในสำนวนตรงหน้าอยู่แล้ว ผู้เล่นเทียบเองได้
- *      · deny  — ปฏิเสธชนิดบาปที่สำนวนเขียนไว้ชัด ๆ  → จี้แล้วจนมุม สารภาพเรื่องที่ซ่อนไว้
+ *      · deny  — ปฏิเสธกรรมที่สำนวนเขียนไว้ชัด ๆ → จี้แล้วสารภาพเรื่องเดียวกับข้ออ้าง
  *      · boast — อวดบุญที่เป็นบุญปลอม               → จี้แล้วบุญนั้นถูกลบทิ้ง
  *      · plea  — คดีที่ตัดสินยาก คำขอร้องของเขาเอง    → จี้แล้วเจอด้านที่ทำให้เห็นใจ
  *    solid = ยอมรับทุกอย่างตรงกับสำนวน จี้ไปก็ไม่ได้อะไร
@@ -297,9 +297,17 @@ function mkLines(soul, g) {
   } else {
     // ปฏิเสธชนิดบาปที่หนักที่สุดในสำนวนที่ผู้เล่นเห็นแล้ว
     const known = soul.deeds.filter(d => d.known).sort((a, b) => b.w - a.w);
-    const deny = known.length && ((soul.pool && soul.pool.deny) || DENY_BY_SIN[known[0].s]);
-    if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pickFresh(deny, recent) : deny, soul.sex), sin: known[0].s });
+    const deny = known.length && [
+      `เรื่อง${known[0].t} {i}ไม่ได้ทำอย่างที่สำนวนเขียน{p}`,
+      `เรื่อง${known[0].t} {i}เลิกมานานแล้ว{p} ท่านไปถามคนที่บ้านก็ได้`,
+      `เรื่อง${known[0].t} {i}แค่ทำตามคนอื่น{p} ไม่ใช่ความผิดของ{i}`,
+    ];
+    if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pickFresh(deny, recent) : deny, soul.sex), sin: known[0].s, deedIndex:soul.deeds.indexOf(known[0]) });
   }
+  // A separate, explicit claim keeps hidden facts discoverable without switching subjects.
+  const hidden = !soul.hard && soul.deeds.filter(d => !d.known).sort((a,b) => b.w-a.w)[0];
+  if (hidden) out.push({kind:'deny', t:voice(`ส่วนเรื่อง${hidden.t} {i}ไม่เกี่ยวข้องด้วย{p}`,soul.sex),
+    sin:hidden.s, deedIndex:soul.deeds.indexOf(hidden)});
   const fake = soul.merits.find(m => m.fake);
   if (fake) out.push({ kind: 'boast', t: voice(`ท่านดูบุญ{my}ด้วย{na} — ${fake.t}`, soul.sex), merit: fake.t });
 
@@ -349,7 +357,8 @@ export function deservedOf(soul) {
   const ws = soul.deeds.map(d => d.w).sort((a, b) => b - a);
   const raw = ws[0] || 0;
   const merit = soul.merits.filter(m => !m.fake).reduce((s, m) => s + m.v, 0);
-  return clamp(Math.round(raw - merit), 1, 5);
+  const relief = soul.deeds.filter(d => d.w < 0).reduce((sum,d) => sum + d.w,0);
+  return clamp(Math.round(raw + relief - merit), 1, 5);
 }
 
 // Pending cases adopt the current rule; sentences already handed down keep their verdicts.
@@ -606,7 +615,15 @@ const API = {
   /** The deeds press() will uncover, in the same order as the interrogation. */
   pressDeeds(soul, line) {
     const hidden = soul.deeds.filter(d => !d.known);
-    return line.kind === 'deny' ? hidden.slice(0, 1) : line.kind === 'plea' ? hidden : [];
+    if (line.kind === 'deny' && Number.isInteger(line.deedIndex)) {
+      const deed = soul.deeds[line.deedIndex];
+      return deed ? [deed] : [];
+    }
+    if (line.kind === 'deny' && line.sin) {
+      const related = soul.deeds.filter(d => d.known && d.s === line.sin).sort((a,b) => b.w-a.w)[0];
+      return related ? [related] : hidden.filter(d => d.s === line.sin).slice(0,1);
+    }
+    return line.kind === 'deny' ? hidden.slice(0,1) : line.kind === 'plea' ? hidden : [];
   },
   roarTarget(soul) {
     if (!soul?.lines || soul.pure || soul.presses <= 0) return null;
@@ -734,7 +751,9 @@ const API = {
       if (L.reveal) out.push({ kind: 'truth', text: L.reveal });
       if (hidden) {
         hidden.known = true;
-        if (!L.reveal) out.push({ kind: 'truth', text: `"${voice('...จริง ๆ แล้วยังมีอีกเรื่องหนึ่ง{p}', soul.sex)}" — ${hidden.t}` });
+        if (!L.reveal) out.push({ kind: 'truth', text: Number.isInteger(L.deedIndex) || L.sin
+          ? `"${voice('{i}ยอมรับเรื่องนี้{p}', soul.sex)}" — ${hidden.t}`
+          : `"${voice('...จริง ๆ แล้วยังมีอีกเรื่องหนึ่ง{p}', soul.sex)}" — ${hidden.t}` });
         else out.push({ kind: 'truth', text: `เปิดเพิ่มในสำนวน — ${hidden.t}` });
       } else if (soul.denied) {
         out.push({ kind: 'truth', text: `"${voice(`ที่{i}ปฏิเสธเรื่อง${soul.denied} — {i}ทำจริง{p}`, soul.sex)}"` });
@@ -802,7 +821,7 @@ const API = {
     if (this.stFree(st) <= 0) return { key: 'stationFull' };
     const c = this.crewOf(st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK);
     if (!actorStanding(c) || c.self || c.reader) return { key: 'crewMissing' };
-    if (c.escort) return { key: 'crewEscort' };
+    if (c.escort && !(st.slots.length && st.crewK === c.k && c.at === stKey)) return { key: 'crewEscort' };
     if (c.buildK) return { key: 'crewBuilding' };
     if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
     return null;
@@ -822,7 +841,7 @@ const API = {
     let arriveAt = now;
     if (route?.length) {
       const outbound = [QUEUE_LINE[0], ...route];
-      if (!c.self) {
+      if (!c.self && !st.slots.length) {
         const from = [c.x ?? c.hx, c.y ?? c.hy];
         const pickupRoute = findPath(from[0], from[1], QUEUE_LINE[0][0], QUEUE_LINE[0][1]);
         const pickup = [from, ...(pickupRoute?.length ? pickupRoute : [QUEUE_LINE[0]])];
@@ -966,7 +985,10 @@ const API = {
           this.log(fmtAuthority(`🔥 พญายมปล่อยลูกไฟลงมาเตือน — บารมีเหลือ ${Math.max(0, Math.round(this.hp))}`, this.zone), 'bad');
         }
         this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: warnText, fireball: withFireball };
-      } else { this.reds = 0; this.dadFight = true; }
+      } else {
+        this.pendingWarn = { n:this.reds, of:DAD.redsToCome, text:fmtAuthority(DAD.line1, this.zone), fireball:false };
+        this.reds = 0; this.dadFight = true;
+      }
     } else this.reds = 0;
     if (r.over > 0) this.log(`  ↳ เกินกรรมไป ${r.over} วาระ · กรรมตกที่ท่าน +${r.karma}`, 'bad');
     if (r.short > 0) this.log('  ↳ เบาไป วิญญาณยังไม่สำนึก จดไว้ในทะเบียนกลับมาใหม่', 'bad');
@@ -984,9 +1006,9 @@ const API = {
     else if (r.score >= 82) r.boss = 'great';
     else                    r.boss = 'ok';
 
-    if (r.stars === 0) this.fireball('คำตัดสินนี้ไม่มีดาวสักดวง');
-    else if (r.boss === 'cruel') this.fireball('เกินกรรมไปสองวาระ');
-    else if (r.stars <= 1) { this.hp -= 10; this.log(fmtAuthority('พญายมส่ายหน้า — บารมีหายไป 10', this.zone), 'bad'); }
+    if (tag !== 'bad' && r.stars === 0) this.fireball('คำตัดสินนี้ไม่มีดาวสักดวง');
+    else if (tag !== 'bad' && r.boss === 'cruel') this.fireball('เกินกรรมไปสองวาระ');
+    else if (tag !== 'bad' && r.stars <= 1) { this.hp -= 10; this.log(fmtAuthority('พญายมส่ายหน้า — บารมีหายไป 10', this.zone), 'bad'); }
     else if (r.stars === 5) {
       this.star5++;
       // กรรมของท่านเองสูงเท่าไหร่ พ่อก็ยิ่งไม่อยากคืนบารมีให้ (ดู KARMA_TIERS)
@@ -2279,6 +2301,7 @@ const API = {
       this.battle.selectedFoeId = this.battle.foes[0].id;
     }
     prepareBattle(this.battle, hp - (this.miniGoals[z.k]?.earned ? 24 : 0), hp);
+    this.battle.foes[0].boss = true;
     this.onChange();
     return this.battle;
   },
@@ -2702,7 +2725,7 @@ const API = {
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
     if (command && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
     if (command && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
-    if (command && what === 'atk' && actor.id !== 'you' && actor.morale < 2) return false;
+    if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
@@ -2745,12 +2768,6 @@ const API = {
       this.inventory[what]--; B.dmg.healActorId = recipient.id;
       B.helper = actor.id === 'you' ? null : { ...actor, lunge:false };
       this.save();
-    } else if (what === 'atk' && actor && actor.id !== 'you') {
-      const stats = this.allyStats(actor);
-      dmg = Math.max(1, Math.round((actor.k === 'guard' ? 14 : 10) * stats.normalMultiplier));
-      actor.morale = Math.max(0, actor.morale - 2);
-      if (!actor.morale) this.downActor(actor);
-      B.helper = { ...actor, lunge:true, at:Date.now() }; this.save();
     } else if (what === 'atk') {
       dmg = this.normalAttack(roll(BATTLE.atk));
       const crit = Math.random() < BATTLE.crit;
@@ -3125,17 +3142,22 @@ const API = {
     }
     else {
       const normal = Math.round(foeAtkRoll() * this.teamPressure(B));
-      let ultimate = B.kind === 'zoneBoss' ? bossUltimate(B, normal) : null;
+      // A group strike must not apply the single-target team-pressure bonus to every ally.
+      const groupBase = Math.round(normal / this.teamPressure(B));
+      let ultimate = B.kind === 'zoneBoss' && counter.boss
+        ? bossUltimate({...B,foeHp:counter.hp,foeMax:counter.maxHp}, groupBase) : null;
       // Story foes use their own cutscene when their stronger counterattack
       // starts. Keep the same { name, image, damage } shape as zone bosses.
-      if (!ultimate && B.kind === 'zoneEvent' && counter.boss &&
+      if (!ultimate && ['zoneEvent','devaTest','frontierBreach'].includes(B.kind) && counter.boss &&
           counter.hp <= counter.maxHp / 2 &&
           (!B.ultimateUsed || B.turn - B.ultimateLastTurn >= 4)) {
         const z = B.zone || this.zone;
         const folder = { th:'', asia:'Asia/', west:'West/', cyberhell:'CyberHell/' }[z] || '';
-        const tester = /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
+        const tester = B.kind === 'devaTest' || /deva|rescue/i.test(B.eventKey || '') || /boss-tester/.test(counter.sp || '');
         const bossScenes = {
           'hero-boss':'img/hero-boss-cutscene.jpeg',
+          'zone-boss':'img/zone-boss-cutscene.jpeg',
+          'zone-boss-th':'img/zone-boss-cutscene.jpeg',
           'leader-th-possessed':'img/leader-th-attack-cutscene.png',
           'leader-asia-possessed':'img/leader-asia-attack-cutscene.png',
           'leader-west-possessed':'img/leader-west-attack-cutscene.png',
@@ -3149,8 +3171,8 @@ const API = {
         const who = tester ? 'boss-tester' : 'boss-frontier';
         const special = bossScenes[counter.sp]
           || (z === 'th' ? `img/${who}-th-cutscene.jpeg` : `img/${folder}${who}-${z}-cutscene-${z}.png`);
-        ultimate = { name: /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
-          image:special, damage:Math.round(normal * 1.7) };
+        ultimate = { name: /^zone-boss/.test(counter.sp || '') ? (BOSS_ULTIMATE[z]?.name || 'พลังของบอส') : /^leader-/.test(counter.sp || '') ? 'คำพิพากษาที่ถูกควบคุม' : tester ? 'คำพิพากษาเทวดา' : 'พลังฝ่าชายแดน',
+          image:special, damage:Math.round(groupBase * 1.7) };
       }
       const d = ultimate ? ultimate.damage : normal;
       if (ultimate) {
@@ -3158,12 +3180,21 @@ const API = {
         B.ultimateUsed = true;
         B.ultimateLastTurn = B.turn;
       }
-      const victim = this.enemyTarget();
-      B.dmg.targetActorId = victim.id;
-      if (victim.actor) B.dmg.hitActor = { ...victim.actor };
-      if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - d); B.dmg.you = d; }
-      else { victim.actor.morale = Math.max(0, victim.actor.morale - d); B.dmg.crew = d;
-        if (!victim.actor.morale) this.downActor(victim.actor); this.save(); }
+      const victims = ultimate
+        ? [{id:'you'}, ...this.battleActors().filter(c => c.id !== 'you').map(actor => ({id:actor.id,actor}))]
+        : [this.enemyTarget()];
+      B.dmg.enemyHits = [];
+      B.dmg.hitActors = [];
+      for (const victim of victims) {
+        B.dmg.enemyHits.push({id:victim.id,damage:d});
+        if (victim.actor) B.dmg.hitActors.push({...victim.actor});
+        if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - d); B.dmg.you = d; }
+        else { victim.actor.morale = Math.max(0, victim.actor.morale - d); B.dmg.crew = d;
+          if (!victim.actor.morale) this.downActor(victim.actor); }
+      }
+      B.dmg.targetActorId = victims[0].id;
+      B.dmg.hitActor = B.dmg.hitActors[0];
+      if (victims.some(v => v.actor)) this.save();
       say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${d}` : `เขาสวนกลับ — บารมีท่านหาย ${d}`);
       if (!B.over) talk('hit');
       if (ultimate) B.talk = `${B.who}ใช้${ultimate.name}!`;
@@ -3266,6 +3297,9 @@ const API = {
             ? 'บารมีหมดจนพญายมต้องลงมาหยุดเหตุด้วยตัวเอง — ท่านถูกส่งลงกระทะทองแดง แล้วกลับมาด้วยบารมี 1'
             : fmtAuthority(DAD.punishText, this.zone), this.zone);
       this.pendingDadPunish = { title: DAD.punishTitle, text: reasonText };
+      if (this.pendingRecovery) this.pendingRecovery.stage = 'sleep';
+      const pot = STATIONS.find(s => s.k === 'krata');
+      if (pot) { const p = nearestWalk(pot.x,pot.y); this.player.x=p[0]; this.player.y=p[1]; }
       this.log(fmtAuthority(B.reason === 'karma'
         ? '🍳 กรรมเต็มบัญชี — แพ้พญายมและถูกลงกระทะทองแดง · บารมีเหลือ 1 · กรรมลดเหลือ 70'
         : B.reason === 'order'
@@ -3874,6 +3908,7 @@ API.snapshot = function (withEntry = true) {
     star5: this.star5, level: this.level, exp: this.exp, mp: this.mp, mpMax: this.mpMax,
     casesDone: this.casesDone, scoreSum: this.scoreSum,
     greens: this.greens, reds: this.reds,
+    pendingWarn:this.pendingWarn || null, dadFight:this.dadFight || (this.battle?.kind === 'dad' && !this.pendingRecovery ? this.battle.reason || true : false), pendingDadPunish:this.pendingDadPunish || null,
     kpiPassed: this.kpiPassed, nextArrive: this.nextArrive, nextEvent: this.nextEvent,
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
@@ -4053,6 +4088,9 @@ API.restore = function (d) {
   this.eventMapClosed = d.eventMapClosed || {};
   this.teaBeds = d.teaBeds || {};
   this.pendingRecovery = d.pendingRecovery || null;
+  this.pendingWarn = d.pendingWarn || null;
+  this.dadFight = d.dadFight || false;
+  this.pendingDadPunish = d.pendingDadPunish || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
   if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.bigFire = true;
   if (legacyBossGate) {

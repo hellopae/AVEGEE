@@ -1,6 +1,12 @@
 // Shared rules for all four tea pavilions and all four wearable outfits.
 export const TEA_BED_COST = 180;
-export const TEA_SLEEP_MS = 1200;
+export const TEA_SLEEP_MS = 5000;
+export const TEA_BLACKOUT_MS = 600;
+export const TEA_WAKE_MS = 600;
+export const TEA_REST_TOTAL_MS = TEA_SLEEP_MS + TEA_BLACKOUT_MS + TEA_WAKE_MS;
+export const teaSleepPhase = elapsed => elapsed < TEA_SLEEP_MS ? 'sleep'
+  : elapsed < TEA_SLEEP_MS + TEA_BLACKOUT_MS ? 'blackout'
+  : elapsed < TEA_REST_TOTAL_MS ? 'wake' : 'done';
 export const DEFEAT_SCENE_MS = 1600;
 export const yamaDownImage = outfit => `img/hero-yama-${outfit || 'th'}-unconscious.png`;
 export const teaBackground = zone => `img/tea-${zone || 'th'}-recovery.png`;

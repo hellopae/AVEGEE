@@ -451,3 +451,9 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 .battle-squad .choose-recipient .target-prompt{bottom:18%;left:50%;transform:translateX(-50%);font-size:11px;z-index:5}
 .choose-recipient img{filter:drop-shadow(0 0 5px #7fffc1)}
 .trial-first-lesson{position:fixed;z-index:60;left:0;right:0;top:5vh;margin-inline:auto;width:min(560px,90vw);max-height:90vh;overflow:auto;padding:22px;border:2px solid var(--gold);border-radius:16px;background:#211219;box-shadow:0 0 0 100vmax #0009;color:#f4e5ca;line-height:1.65}.trial-first-lesson h3{margin:0 0 12px}.trial-first-lesson button{margin-top:8px}
+
+.warning-yama{position:relative;margin:1rem auto;width:150px;text-align:center}
+.warning-yama>img:first-child{height:160px;width:110px;object-fit:contain}
+.warning-fireball{position:absolute;width:85px;height:85px;object-fit:contain;left:32px;top:62px;animation:warn-burn .7s ease-in-out infinite alternate}
+@keyframes warn-burn{from{opacity:.65;transform:scale(.85)}to{opacity:1;transform:scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.warning-fireball{animation:none}}

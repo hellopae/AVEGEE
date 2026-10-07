@@ -80,7 +80,7 @@ test('B2 helper morale, cooldown and trained damage belong to the source ID afte
   assert.equal(g.battleAct('crew:west:taan'), true);
   assert.equal(hp - b.foes[0].hp, Math.round((CREW_POWER.taan.dmg + 4 * CREW_POWER.taan.trainDmg) * ALLY_ZONE_SCALE.west.ally));
   assert.equal(actor.morale, 92 - BATTLE.crewMorale); assert.equal(other.morale, 92);
-  assert.equal(other.helpReadyAt, 0); assert.equal(actor.helpRemainingMs, 15000);
+  assert.equal(other.helpReadyAt, 0); assert.equal(actor.helpRemainingMs, 120000);
   assert.equal(g.battleAct('crew:th:taan'), true);
   assert.equal(g.battleAct('crew:west:taan'), false);
   b.over = 'lose'; g.endBattle();

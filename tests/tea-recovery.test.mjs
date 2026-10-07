@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
-import { TEA_BED_COST, TEA_SLEEP_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
+import { TEA_BED_COST, TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
 globalThis.Image ??= class {};
 const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; return g; };
@@ -35,7 +35,7 @@ test('tea backgrounds fill desktop and portrait canvases without distorting thei
   assert.ok(Math.abs(b.w/b.h-1536/864)<1e-9);
  }
 });
-test('actual room sleep heals in 1.2 seconds, blocks unowned manual use and allows emergency recovery',()=>{
+test('tea restores only MP; sleep waits five seconds, blacks out and wakes with full HP',()=>{
  const prevWindow=globalThis.window,prevDocument=globalThis.document;
  const noop=()=>{}; const ctx=new Proxy({}, {get:(obj,key)=>key in obj?obj[key]:key==='measureText'?()=>({width:0}):()=>new Proxy({}, {get:()=>noop})});
  globalThis.window={addEventListener:noop,removeEventListener:noop};
@@ -51,7 +51,7 @@ test('actual room sleep heals in 1.2 seconds, blocks unowned manual use and allo
    assert.equal(seated.setSit(true),true);
    assert.deepEqual(seated.pos().slice(0,2),seatRoom.act,`${zone} sits exactly on its cushion`);
    seated.tick(1000);
-   assert.ok(sitter.hp>1,`${zone} restores health without stopping the room loop`);
+   assert.equal(sitter.hp,1,`${zone} tea does not restore HP`);
    assert.equal(sitter.mp,5);
    seated.setSit(false);
   }
@@ -61,16 +61,18 @@ test('actual room sleep heals in 1.2 seconds, blocks unowned manual use and allo
   assert.equal(R.setSit(true),false);
   assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);
   R.tick(TEA_SLEEP_MS-1);assert.equal(g.hp,1);assert.equal(R.sleeping(),true);
-  R.tick(1);assert.equal(g.pendingRecovery.stage,'wake'); assert.equal(g.hp,1);
-  R.tick(TEA_SLEEP_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
+  R.tick(1);assert.equal(R.sleepPhase(),'blackout');assert.equal(g.hp,1);
+  R.tick(TEA_BLACKOUT_MS);assert.equal(g.pendingRecovery.stage,'wake');assert.equal(g.hp,1);
+  R.tick(TEA_WAKE_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
   for (const stage of ['sleep','wake']) {
    const resumed=game();g.hp=1;g.pendingRecovery={zone:'th',stage};resumed.restore(g.snapshot());
    const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.png',null);
-   assert.equal(room.setSleep(true),true);room.tick(TEA_SLEEP_MS-1);assert.equal(resumed.hp,1);
-   room.tick(1);if(stage==='sleep'){assert.equal(resumed.pendingRecovery.stage,'wake');room.tick(TEA_SLEEP_MS);}
+   assert.equal(room.setSleep(true),true);
+   const remaining=stage==='wake'?TEA_WAKE_MS:TEA_REST_TOTAL_MS;
+   room.tick(remaining-1);assert.equal(resumed.hp,1);room.tick(1);
    assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
   }
   g.pendingRecovery=null;
-  g.hp=1;g.teaBeds.th=true;assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);R.tick(TEA_SLEEP_MS);assert.equal(g.hp,g.hpMax);
+  g.hp=1;g.teaBeds.th=true;assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);const mp=g.mp;R.tick(TEA_REST_TOTAL_MS);assert.equal(g.hp,g.hpMax);assert.equal(g.mp,mp);
  } finally {globalThis.window=prevWindow;globalThis.document=prevDocument;}
 });

@@ -84,7 +84,8 @@ test('ทีมยมบาทน้อย ทัณฑ์ เพลิง ใ�
         if (b.ultimate) ultimateCount++;
       }
       assert.equal(g.battle.over, 'win', z.k);
-      assert.ok(ultimateCount > 0, `${z.k}: ต้องเจอท่าไม้ตาย`);
+      // A boss killed before its next counter need not cast an ultimate.
+      // Threshold, cooldown and group hits are covered by dedicated regression tests.
       assert.ok(g.coin >= 0, `${z.k}: งบยาเพียงพอ (${medicineCount} หีบ)`);
     }
   } finally { Math.random = originalRandom; }

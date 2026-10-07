@@ -1,7 +1,7 @@
 // Recovery uses wall time; special moves use explicitly advanced battle time.
 export const RECOVERY_MS = 60000;
 export const actorStanding = actor => !!actor && !actor.recoverUntil && (actor.morale ?? 100) > 0;
-export const specialCooldown = actor => actor?.k === 'guard' || actor?.k === 'boon' ? 20 : 15;
+export const specialCooldown = () => 120;
 export function weightedTarget(crew, guard, random = Math.random) {
   const targets = [{id:'you',weight:2}, ...crew.filter(actorStanding).map(actor => ({id:actor.id,actor,weight:1})),
     ...(actorStanding(guard) ? [{id:guard.id,actor:guard,weight:3}] : [])];

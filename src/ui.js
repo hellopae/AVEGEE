@@ -1,6 +1,8 @@
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js';
 import { themeBackground } from './theme-assets.js';
+import { sentenceColor } from './sentence-colors.js';
+import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { specialCooldown } from './actor-recovery.js';
 import { trainingProgress, HERO_TRAINING_ID } from './training.js';
@@ -156,7 +158,7 @@ setInterval(() => {
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
   // ชุดเก่าจะมาปิดกล่องกระทะทองแดงทิ้งทันทีที่ฉากต่อสู้จบ (ดู CONCEPT §22.6)
-  if (g.dadFight && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
+  if (g.dadFight && !g.pendingWarn && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
     g.startDadFight();
   }
   if (started && g.prisonBreakStatus() === 'pending' && !prisonAlertSeen && !g.battle && !g.over &&
@@ -338,15 +340,13 @@ function explainBar(k) {
  *  (เจ้าของเจอ 10 ก.ย. 2569 ในคดีของน้องแพรวา) */
 const weightLabel = w => w < 0 ? 'บรรเทาโทษ' : (WEIGHT[w] || '');
 function deedLine(d) {
-  const w = weightLabel(d.w);
-  return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span>${esc(d.t)}`
-    + (w ? ` <b style="color:var(--${d.w < 0 ? 'success' : 'warning'})">· ${w} (น้ำหนัก ${d.w})</b>` : '');
+  return `<span class="tag" style="background:${SINS[d.s].color}22;color:${SINS[d.s].color}">${SINS[d.s].name}</span><span style="color:${sentenceColor(d.w).color}">${esc(d.t)}${d.w < 0 ? ' · บรรเทาโทษ' : ''}</span>`;
 }
 
 /** สิ่งที่นิราอ่านได้ก่อนสอบสวน: ภาพลักษณ์ + บุญที่อ้างเท่านั้น
  *  ไม่ติดป้ายว่าบุญไหนจริง/ปลอม เพราะนั่นคือคำตอบของคดี */
 function publicMeritLine(m, cls = 'deed') {
-  return `<div class="${cls}" style="color:var(--success)">🪷 ${esc(m.t)}`
+  return `<div class="${cls}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}`
     + (m.note ? ` <i style="color:var(--warning)">— ${esc(m.note)}</i>` : '') + '</div>';
 }
 function publicDossier(s, cls = 'deed') {
@@ -1692,6 +1692,22 @@ function bossModal(title, text, btn = 'รับทราบ') {
 
 /** กระทะทองแดง — แพ้พ่อครบสามครั้งเตือนแล้ว ไม่ใช่ Game Over อีกต่อไป (17 ก.ย. 2569)
  *  แค่โชว์ภาพลงทัณฑ์ + บอกให้ไปพักที่ศาลาน้ำชา แล้วปล่อยเล่นต่อทันที ไม่รีเซ็ตโซน */
+function openAuthorityWarning() {
+  const w=g.pendingWarn; if(!w)return;
+  g.pendingWarn=null; g.save();
+  const auth=authorityOf(g.zone);
+  bossModal(`คำตัดสินแดง ${w.n}/${w.of} · ${auth.full}`,
+    `${w.text}\n\n${w.n===w.of ? 'หัวหน้าจะตรวจและลงโทษท่านด้วยตนเอง' : `อีก ${w.of-w.n} คำตัดสินแดงติดกัน หัวหน้าจะลงมาด้วยตนเอง`}\nตัดสินได้สีเขียวจะล้างคำตัดสินแดงที่สะสม`, 'รับทราบ');
+  if(w.fireball) {
+    const hit=document.createElement('div');hit.className='warning-yama';
+    hit.innerHTML=`<img src="${heroCry()}" alt="Yama ถูกลูกไฟ"><img class="warning-fireball" src="img/fx-fireball.png" alt="ลูกไฟ"><p>HP ${Math.round(g.hp)}/${g.hpMax}</p>`;
+    dlg.querySelector('.boss').after(hit);
+    playActionCutscene('boss',{image:authorityPunishmentCutscene(g.zone),name:'ลูกไฟตักเตือน'});
+    sfx('fire');
+  }
+  onDlgClose(()=>g.onChange());
+}
+
 function openDadPunish(p) {
   pauseForDlg();
   const scene = punishmentScene(g.zone, stBg('krata'));
@@ -1711,7 +1727,9 @@ function openDadPunish(p) {
     </div>`, d => {
       d.classList.add('punish-scene');
       const b = d.querySelector('[data-punish-done]');
-      setTimeout(() => { if (b?.isConnected) { b.disabled = false; b.textContent = t('punish.return'); } }, 1700);
+      const generation=dlgGen;
+      setTimeout(() => { if (dlgGen===generation && b?.isConnected) { dlg.close(); } }, 2400);
+      onDlgClose(()=>g.onChange());
     });
 }
 
@@ -1949,8 +1967,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
-    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${hp?.dmg?.targetActorId === c.id ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
-      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${hp?.dmg?.targetActorId === c.id ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
+    ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
@@ -2651,7 +2669,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
-  let commandMenuOpen = true;
+  let commandMenuOpen = true, authorityAttackScheduled = false;
   // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
   let healFx = null, healTimer = 0;
   const applyHealFx = () => {
@@ -2700,7 +2718,7 @@ function openBattle(after) {
       : phase === 'foe'
         // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
         ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
-                                  : { foe: 0, you: b.dmg ? b.dmg.you : 0, counterFoeId: b.dmg?.counterFoeId, crew:b.dmg?.crew, targetActorId:b.dmg?.targetActorId } }
+                                  : { ...b.dmg, foe:0 } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
     const act = phase === 'you' && fxNow?.key === 'rage' ? null
@@ -2712,8 +2730,9 @@ function openBattle(after) {
     // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
     let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [...battleHelpers, { ...g.guard, name: GUARD.name }] : battleHelpers;
-    if (phase === 'foe' && b.dmg?.hitActor && !squadMembers.some(c => c.id === b.dmg.hitActor.id))
-      squadMembers = [...squadMembers, { ...b.dmg.hitActor, name:b.dmg.hitActor.name || GUARD.name }];
+    if (phase === 'foe') for (const c of b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])) {
+      if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || GUARD.name});
+    }
     // แก้รอบ 1 ข้อ C ชุด 13 คุณเป้ 26 ก.ย. 2569 — 3 ปุ่มตามใบงานเป๊ะ: พ่อค้านรก/นิรา/กินหีบยา
     // กดได้ทุกปุ่ม ลำดับไหนก็ได้ หลายครั้งก็ได้ (ไม่ใช่ครั้งเดียวเหมือนของเดิม) เปิดหน้าต่างเดิมที่มีอยู่แล้ว
     // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
@@ -2790,9 +2809,8 @@ function openBattle(after) {
       + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : '1 ครั้งต่อชุด · ไม่ใช้ MP') : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
-    const attacks = battleChoice('atk', 'img/fx-slash.png', 'โจมตีปกติ / Attack', isYama || actor.morale >= 2,
-      isYama ? '' : actor.morale < 2 ? 'กำลังใจไม่พอ / Low morale' : 'กำลังใจ / Morale −2')
-      + (isYama ? '' : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`));
+    const attacks = isYama ? battleChoice('atk', 'img/fx-slash.png', 'ฟันดาบ / Sword slash', true, '')
+      : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
     const choosingTarget = !!(pending && !needsReceiver && !phase && !b.over);
@@ -3011,6 +3029,12 @@ function openBattle(after) {
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }
+      if (nb.kind === 'dad') {
+        phase='foe'; phaseAt=Date.now(); fxNow={key:'foe',side:'you'}; paint();
+        playActionCutscene('boss',nb.ultimate); sfx('hurt');
+        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();finish();},ACTION_CUT_MS+400);
+        return;
+      }
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
@@ -3050,6 +3074,10 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = finish;
+    if (b.kind === 'dad' && !b.over && !authorityAttackScheduled) {
+      authorityAttackScheduled=true;
+      phaseTimer=setTimeout(()=>{if(g.battle!==b)return;b.actorId='you';b.command='atk';executeCommand('atk');},900);
+    }
   };
 
   // ---- ฉากต่อสู้ "ปิดไม่ได้จนกว่าจะจบ" ----
@@ -3899,8 +3927,8 @@ function openStation(k, emergency = false) {
         ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
       ] : k === 'tea' ? [
         [R?.sitting() ? 'room.tea.rise' : 'room.tea.action', 'room.tea.hint', () => { R.setSit(!R.sitting()); panels(); },
-          !R?.sitting() && (!inside || (g.hp >= g.hpMax && g.mp >= g.mpMax)),
-          !R?.sitting() ? (g.hp >= g.hpMax && g.mp >= g.mpMax ? t('room.teaFull') : !inside ? t('room.nearTea') : '') : ''],
+          !R?.sitting() && (!inside || g.mp >= g.mpMax),
+          !R?.sitting() ? (g.mp >= g.mpMax ? 'MP เต็มแล้ว / MP full' : !inside ? t('room.nearTea') : '') : ''],
       ] : k === 'krajok' ? [
         ['room.krajok.action', 'room.krajok.hint', () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } },
           !inside || g.powerLocked(mp) || mp.ammo >= mp.max || kanLeft > 0,
@@ -3915,11 +3943,11 @@ function openStation(k, emergency = false) {
           null, () => { if (owned) R.setSleep(); else g.buyTeaBed(); panels(); },
           !!asleep || !!R?.sitting() || (owned ? !R?.nearBed() || g.hp >= g.hpMax
             : g.coin < TEA_BED_COST || !g.stations.some(st => st.def.k === 'tea' && !st.build)),
-          asleep ? 'พักแป๊บเดียวแล้วเลือดเต็มทันที' : owned ? (R?.nearBed() ? 'นอนสั้น ๆ แล้วเลือดเต็ม' : 'เดินไปที่นอนก่อน')
-            : 'อัปเกรดประจำโซน · นอนสั้น ๆ แล้วเลือดเต็ม']);
+          asleep ? 'นอน 5 วินาที แล้วลุกพร้อม HP เต็ม' : owned ? (R?.nearBed() ? 'นอน 5 วินาที → จอดำ → ลุกขึ้นพร้อม HP เต็ม' : 'เดินไปที่นอนก่อน')
+            : 'อัปเกรดประจำโซน · นอน 5 วินาที → จอดำ → ลุกขึ้นพร้อม HP เต็ม']);
       }
       const hpLine = k === 'tea' ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>
-          <span class="st-hp">${esc(t('trial.hp'))} <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>` : '';
+          <span class="st-hp">${esc(t('trial.hp'))} <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span><span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>` : '';
       put(A, specs.map(([label, hint, , disabled, why], i) => {
         const [u, v] = room.actions?.[i] || [0.5, 0.5];
         const [ax, ay] = k === 'tea' && R ? R.anchor(u, v) : [u*100,v*100];
@@ -4262,6 +4290,10 @@ function openStation(k, emergency = false) {
     if (!g.pendingRecovery) dlg.querySelector('.nira-wakeup')?.remove();
     if (R.sleeping() !== wasSleeping) { wasSleeping = R.sleeping(); panels(); refresh(); }
     if (R.sitting() !== wasSitting) { wasSitting = R.sitting(); panels(); }  // เต็มแล้วลุกเอง → วาดปุ่มใหม่
+    if (k === 'tea') {
+      const val = dlg.querySelector('#st-mp-value'); if (val) val.textContent = `${Math.round(g.mp)}/${g.mpMax}`;
+      const fill = dlg.querySelector('#st-mp-fill'); if (fill) fill.style.width = `${100*g.mp/g.mpMax}%`;
+    }
     const trainingNear = R.inTrainingReach();
     if (near === wasNear && trainingNear === wasTrainingNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
     wasNear = near; wasTrainingNear = trainingNear; panels();
@@ -4497,6 +4529,20 @@ g.onChange = () => {
     if (!dlg.open) openDefeatRecovery();
     return;
   }
+  if (g.pendingWarn && !g.battle && !dlg.open) { openAuthorityWarning(); return; }
+  // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
+  // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
+  if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }
+  // startDadFight() เรียก this.onChange() เองข้างในอยู่แล้ว ซึ่งเข้าเงื่อนไข if แรกด้านบนให้เปิดฉากสู้ให้เอง
+  // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เรียกซ้ำแล้วมี onClose ของฉากสู้สองชุดค้างอยู่บน dlg element เดียวกัน
+  // ชุดเก่าที่ไม่มีใครเคลียร์จะมาเรียก dlg.close() ทับกล่องถัดไป (กระทะทองแดง) ทิ้งทันที (เจอ 17 ก.ย. 2569)
+  if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); return; }
+  if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  // แพ้พ่อครบสามครั้งเตือน — โชว์กระทะทองแดงแล้วเล่นต่อ (ไม่ใช่ Game Over อีกต่อไป)
+  if (g.pendingDadPunish && !dlg.open) {
+    const p = g.pendingDadPunish; g.pendingDadPunish = null;
+    openDadPunish(p); return;
+  }
   if (g.pendingReward?.encounter && !g.battle) {
     if (!dlg.open && !rewardOpen) openBattleReward();
     return;
@@ -4517,19 +4563,6 @@ g.onChange = () => {
   if (!g.battle && dlg.open) return;
   if (!g.battle && !dlg.open && !g.pendingLevel && g.discoveryQueue.length) {
     openDiscovery(); return;
-  }
-  // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
-  // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
-  if (g.battle && (g.battle.kind === 'yama' || g.battle.kind === 'dad') && !dlg.open) { openBattle(); return; }
-  // startDadFight() เรียก this.onChange() เองข้างในอยู่แล้ว ซึ่งเข้าเงื่อนไข if แรกด้านบนให้เปิดฉากสู้ให้เอง
-  // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เรียกซ้ำแล้วมี onClose ของฉากสู้สองชุดค้างอยู่บน dlg element เดียวกัน
-  // ชุดเก่าที่ไม่มีใครเคลียร์จะมาเรียก dlg.close() ทับกล่องถัดไป (กระทะทองแดง) ทิ้งทันที (เจอ 17 ก.ย. 2569)
-  if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); return; }
-  if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
-  // แพ้พ่อครบสามครั้งเตือน — โชว์กระทะทองแดงแล้วเล่นต่อ (ไม่ใช่ Game Over อีกต่อไป)
-  if (g.pendingDadPunish && !dlg.open) {
-    const p = g.pendingDadPunish; g.pendingDadPunish = null;
-    openDadPunish(p); return;
   }
   if (g.battle) return;   // รอฉากต่อสู้ปิดก่อนค่อยเด้งกล่องเลื่อนขั้น/โซน (endBattle เรียก onChange ซ้ำเอง)
   if (!g.battle && g.bossPending && !dlg.open && !g.pendingVerdict && !g.pendingLevel && !g.pendingZone) {
@@ -4567,15 +4600,6 @@ g.onChange = () => {
       `${w.text}\n\n${ORDER_WARN.how}\n\n` +
       (w.n < w.of ? `ระเบียบถูกยกให้ตั้งหลักใหม่แล้ว — เหลือโอกาสอีก ${w.of - w.n} ครั้ง`
                   : 'ครั้งหน้าไม่มีเตือนแล้ว พ่อจะลงมาเอง'), 'รับทราบ');
-    return;
-  }
-  // เตือนก่อนพ่อลงมา — แดงหนึ่ง/สองครั้งขึ้นเตือน ครั้งที่สามคือของจริง
-  if (g.pendingWarn) {
-    const w = g.pendingWarn; g.pendingWarn = null;
-    bossModal(`คำตัดสินแดง ${w.n}/${w.of}`,
-      `${w.text}\n\n${w.fireball ? `🔥 ลูกไฟจากบัลลังก์ฟาดถูก — บารมีเหลือ ${Math.max(0, Math.round(g.hp))}\n\n` : ''}` +
-      `อีก ${w.of - w.n} สำนวนที่ตัดสินพลาด พ่อจะลงมาเอง — ` +
-      'ตัดสินให้ได้สีเขียวหนึ่งครั้งก็ล้างที่สะสมไว้แล้ว', 'รับทราบ');
     return;
   }
   if (g.pendingKpi) {
