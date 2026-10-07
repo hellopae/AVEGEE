@@ -1877,15 +1877,21 @@ export const ZONES = [
     mobs:[11,12,13,14,15,16], coin:1200 },
 ];
 
-/** 30D ข้อ 7 — อาคารที่กลับด้านตอนวาด ต่อโซน */
-export const STATION_FLIP = { asia: ['lokan'], west: ['sala'] };
+/** E1: final draw orientation, including tea and map-v5 (no renderer-local flips).
+ * map-v5 previously ignored the old sala flag; preserve west sala's rendered orientation.
+ * Asia lokan/tea and west tarang were already mirrored: E1 removes their mirrors.
+ */
+export const STATION_FLIP = {
+  th: ['krata'], asia: ['krata'],
+  west: ['krata', 'tea'], cyberhell: ['krata'],
+};
 
 // 30F: move complete station geometry together, including service/worker points.
 // Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
-const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[-90,12], dab:[65,5], krata:[0,42] };
+const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[110,37], dab:[65,5], krata:[0,42] };
 const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(key => {
   const d = STATIONS.find(s => s.k === key);
-  return [key, Object.fromEntries(['bx','by','x','y','sx','sy','hit']
+  return [key, Object.fromEntries(['bx','by','bw','x','y','sx','sy','hit']
     .filter(field => d[field] != null).map(field => [field, Array.isArray(d[field]) ? [...d[field]] : d[field]]))];
 }));
 
@@ -1898,9 +1904,18 @@ export function syncSceneZone(zone) {
     const [dx, dy] = z.k === 'cyberhell' ? CYBERHELL_STATION_OFFSETS[key] : [0,0];
     const def = STATIONS.find(s => s.k === key);
     for (const [field, value] of Object.entries(site)) {
-      def[field] = field === 'hit' ? value.map((v, i) => v + (i % 2 ? dy : dx))
+      def[field] = field === 'bw' ? value : field === 'hit' ? value.map((v, i) => v + (i % 2 ? dy : dx))
         : value + (['bx','x','sx'].includes(field) ? dx : dy);
     }
+  }
+  const mirrorTower = STATIONS.find(s => s.k === 'krajok');
+  mirrorTower.mapScale = z.k === 'cyberhell' ? 1.3 : 1;
+  if (z.k === 'cyberhell') {
+    mirrorTower.bw *= 1.3;
+    // Conservative fallback hit; the browser uses the scaled sprite's actual alpha body.
+    mirrorTower.hit = [mirrorTower.bx - 100.75, mirrorTower.by - 195, mirrorTower.bx + 100.75, mirrorTower.by];
+    mirrorTower.x = mirrorTower.bx - 30;
+    mirrorTower.y = mirrorTower.by + 10;
   }
   // เกาะลานตรากตรำในภาพถูกธารล้อมครบ แม้ในโซน 1: ให้จุดบริการโซนใหม่อยู่ฝั่งซ้าย
   // โดยคงตำแหน่งภาพสถานี/กรอบคลิกเดิมไว้ ไม่เปิดทางเดินข้ามธารที่ภาพไม่ได้วาด
@@ -1912,12 +1927,9 @@ export function syncSceneZone(zone) {
   // The other scenes keep the left-hand site, lowered clear of the rocks behind the roof.
   // 28A: โซนบูรพาวาดโรงน้ำชาหลังคาฟางหันด้านเปิดไปทางซ้าย — คุณเป้ขอกลับด้านซ้าย↔ขวา (flip ตอนวาด ไม่แก้ไฟล์ภาพ)
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
-    ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670], flip:true }
-    : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674], flip:false });
-  // 30D ข้อ 7 (คุณเป้ #11 #13): กลับด้านภาพอาคารซ้าย↔ขวาตอนวาด (วิธีเดียวกับศาลาน้ำชา 28A — ไฟล์ภาพไม่ถูกแตะ)
-  //   #11 แท่นบัวหิมะ มีบันได โคมแดง ปะการังแดง = img/Asia/st-lokan-asia.png (โซน 2 ไม่ใช่ west)
-  //   #13 หลังคากระเบื้องดำ ฐานไม้ดำ มีบันไดหน้า = img/West/st-sala-west.png (โซน 3)
-  for (const s of STATIONS) if (s.k !== 'tea') s.flip = !!STATION_FLIP[z.k]?.includes(s.k);
+    ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
+    : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
+  for (const s of STATIONS) s.flip = STATION_FLIP[z.k].includes(s.k);
 }
 
 // Seated rulers guide the player. ZONES[].bossName identifies the separate

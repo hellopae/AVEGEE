@@ -38,12 +38,17 @@ await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
 const original=sites();
-const offsets={lokan:[73,41],krajok:[-90,12],dab:[65,5],krata:[0,42]};
+const offsets={lokan:[73,41],krajok:[110,37],dab:[65,5],krata:[0,42]};
 test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',()=>{
   for (const destination of ['th','asia','west','unknown']) {
     syncSceneZone('cyberhell');
     const once=sites(); syncSceneZone('cyberhell'); assert.deepEqual(sites(),once,'no accumulated offsets');
     for (const [key,[dx,dy]] of Object.entries(offsets)) {
+      if(key==='krajok') {
+        // E1 supersedes the old translation-only tower: moved, scaled hit, door below the stairs.
+        assert.deepEqual(once.krajok,{bx:1560,by:675,x:1530,y:685,hit:[1459.25,480,1660.75,675]});
+        continue;
+      }
       for (const [field,value] of Object.entries(original[key])) {
         const want=field==='hit'?value.map((v,i)=>v+(i%2?dy:dx)):value+(['bx','x','sx'].includes(field)?dx:dy);
         assert.deepEqual(once[key][field],want,`${key}/${field}`);
