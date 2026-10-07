@@ -12,7 +12,10 @@ for(const zone of ['th','asia','west','cyberhell']) {
 test('Thai annotated fences and tower block walking; clicks route around the tower',()=>{
  assert.equal(frontierWalkable('th',.20,.35),false);
  assert.equal(frontierWalkable('th',.75,.48),false);
- let from=[.15,.32];const path=frontierPath('th',from,[.28,.40]);assert.ok(path.length>1);
+ // Map-Zone1-3.jpg paints the former [.15,.32] start inside the tower.
+ // Start on the north-west floor; retain the same obstacle and detour checks.
+ let from=[.145,.265];assert.ok(frontierWalkable('th',...from));
+ const path=frontierPath('th',from,[.28,.40]);assert.ok(path.length>1);
  for(const to of path){assert.ok(frontierSegmentClear('th',from,to));from=to;}
 });
 test('Zone-specific water, buildings and machinery block movement and destination clicks',()=>{
