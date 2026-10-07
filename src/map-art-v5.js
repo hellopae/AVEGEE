@@ -9,7 +9,7 @@ export function mapReviewArt(key, zone) {
 }
 export function reviewStationBox(def, im, zone) {
   const [maxW,maxH] = MAP_REVIEW_SIZES[def.k];
-  const scale = Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight);
+  const scale = Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight) * (def.mapScale || 1);
   const w=im.naturalWidth*scale,h=im.naturalHeight*scale;
-  return {im,x:def.bx-w/2,y:def.by-h,w,h,flip:zone === 'west' && def.k === 'tarang'};
+  return {im,x:def.bx-w/2,y:def.by-h,w,h,flip:!!def.flip};
 }

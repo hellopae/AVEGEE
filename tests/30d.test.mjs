@@ -203,18 +203,18 @@ test('6. ท่ายืน: ขยายเฉพาะทัณฑ์โซน
 
 // ---------- ข้อ 7: กลับด้านอาคาร #11 (แท่นบัวหิมะ = st-lokan-asia โซน 2) #13 (หลังคากระเบื้องดำ = st-sala-west โซน 3) ----------
 import { STATIONS, syncSceneZone, STATION_FLIP } from '../src/data.js';
-test('7. flip เฉพาะ lokan โซน 2 และ sala โซน 3 · โซนอื่นไม่กลับ · ศาลาน้ำชาโซน 2 ยังกลับเหมือน 28A · จุดประตู/hit ไม่ขยับ', () => {
+test('E1 supersedes 30D orientations; zone round trips restore geometry', () => {
   const pos = () => STATIONS.map(s => [s.k, s.bx, s.by, s.x, s.y, s.hit.join()].join('|'));
   syncSceneZone('th');
   const thPos = pos();
-  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), []);
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['krata']);
   syncSceneZone('asia');
-  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['lokan', 'tea']);
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['krata']);
   syncSceneZone('west');
-  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['sala']);
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['krata', 'tea']);
   syncSceneZone('cyberhell');
-  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), []);
-  assert.deepEqual(STATION_FLIP, { asia: ['lokan'], west: ['sala'] });
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['krata']);
+  assert.deepEqual(STATION_FLIP, { th:['krata'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] });
   syncSceneZone('th');
   assert.deepEqual(pos(), thPos, 'การเปลี่ยนโซนวนกลับต้องได้ตำแหน่งเดิม ไม่ค้าง flip');
   assert.equal(STATIONS.find(s => s.k === 'lokan').flip, false);

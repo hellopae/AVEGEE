@@ -24,11 +24,11 @@ test('ประตูสวรรค์ ดงต้นงิ้ว หอส่
 });
 
 // ---------- ข้อ 2: กลับด้านโรงน้ำชาโซนบูรพา ----------
-test('โรงน้ำชาหลังคาฟาง (ศาลาโซนบูรพา) วาดกลับด้าน โซนอื่นไม่กลับ (28A ข้อ 2)', () => {
+test('E1 supersedes 28A: tea mirrors only in west', () => {
   const tea = () => STATIONS.find(s => s.k === 'tea');
   for (const z of ZONES) {
     syncSceneZone(z.k);
-    assert.equal(tea().flip, z.k === 'asia', z.k);
+    assert.equal(tea().flip, z.k === 'west', z.k);
   }
   syncSceneZone('th');
 });
