@@ -1,0 +1,116 @@
+{
+  "th": {
+    "source": "Map-Zone1-3.jpg",
+    "background_to_screenshot": [
+      [
+        1.489824717324998,
+        -2.9625380947655472e-05,
+        0.45368134556399337
+      ],
+      [
+        2.9625380947655472e-05,
+        1.489824717324998,
+        -0.7339818680105424
+      ]
+    ],
+    "inliers": 1866,
+    "median_registration_error_px": 0.2824760989810556,
+    "background_size": [
+      1678,
+      937
+    ],
+    "screenshot_size": [
+      2500,
+      1365
+    ],
+    "simplification_epsilon_px": 4.195,
+    "max_simplification_boundary_error_px": 14.0,
+    "runtime_geometry_sha256": "0ee417e278283fb3ba25a0550eead09ce9e5985d7ebab34302a65f66c709ad13",
+    "measured_pixels": 1335476,
+    "excluded_or_unobserved_percent": 15.061509165635256,
+    "mismatch_percent": 0.6281655379804654,
+    "raw_color_mismatch_percent": 2.8781498132501073,
+    "outer_vertices": 147,
+    "hole_vertices": [
+      4,
+      4
+    ]
+  },
+  "asia": {
+    "source": "Map-Zone2-4.jpg",
+    "background_to_screenshot": [
+      [
+        1.4898053670213,
+        7.759392869076059e-06,
+        0.9636110701883109
+      ],
+      [
+        -7.759392869076059e-06,
+        1.4898053670213,
+        -1.1709250400778157
+      ]
+    ],
+    "inliers": 2292,
+    "median_registration_error_px": 0.21780642731891978,
+    "background_size": [
+      1678,
+      937
+    ],
+    "screenshot_size": [
+      2500,
+      1365
+    ],
+    "simplification_epsilon_px": 4.195,
+    "max_simplification_boundary_error_px": 5.0,
+    "runtime_geometry_sha256": "b0350f6c30416dea0eb6c4455fdf43e3ba8cc92ccb2822dc95b5b5e8df9d82b3",
+    "measured_pixels": 1328327,
+    "excluded_or_unobserved_percent": 15.516197434817835,
+    "mismatch_percent": 0.7535042199699321,
+    "raw_color_mismatch_percent": 1.1401560007437928,
+    "outer_vertices": 267,
+    "hole_vertices": [
+      18,
+      40
+    ]
+  },
+  "west": {
+    "source": "Map-Zone3-5.jpg",
+    "background_to_screenshot": [
+      [
+        1.4888395978584197,
+        -3.0052351621354818e-05,
+        0.27983074367943783
+      ],
+      [
+        3.0052351621354818e-05,
+        1.4888395978584197,
+        -0.47353617840367296
+      ]
+    ],
+    "inliers": 3438,
+    "median_registration_error_px": 0.21779652432175922,
+    "background_size": [
+      1679,
+      937
+    ],
+    "screenshot_size": [
+      2500,
+      1365
+    ],
+    "simplification_epsilon_px": 4.1975,
+    "max_simplification_boundary_error_px": 5.0,
+    "runtime_geometry_sha256": "4b5c42102546c4e6e0babcb0a20d70a419eb0bdd933abfd00f5d2baca4e579cb",
+    "measured_pixels": 1330432,
+    "excluded_or_unobserved_percent": 15.432713607670367,
+    "mismatch_percent": 2.237393568404849,
+    "raw_color_mismatch_percent": 2.832162786222821,
+    "outer_vertices": 308,
+    "hole_vertices": [
+      9,
+      13,
+      8,
+      7,
+      9
+    ]
+  }
+}
