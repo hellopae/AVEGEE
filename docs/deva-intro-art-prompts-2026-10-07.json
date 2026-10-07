@@ -1,0 +1,82 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Four new pre-battle deity introduction stills; artwork deliverables for system integration.",
+  "assets": [
+    {
+      "zone": "th",
+      "file": "deva-intro-th-v1.png",
+      "refs": [
+        "files/UI map/Map-Zone1-4.jpg",
+        "img/boss-tester-th.png",
+        "img/hero-yama.png",
+        "img/soul-monk.png"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE game intro cutscene still, landscape 16:9 cinematic frame. Repaint the annotated map reference as an entirely new eye-level narrative illustration, not a screenshot. Match the richly detailed illustrated fantasy game interior art: crisp painterly pixel-inspired edges, ornate architectural details, expressive anime/chibi hero, dramatic cinematic depth and light. Keep all referenced character identities and precise outfits. No UI, arrows, annotation boxes, captions, lettering, watermark, collage or panels. One complete scene. Keep important faces and action in the central 80%; quieter bottom 15% for game dialogue overlay. Scene: Zone 1 ornate Thai underworld court, black volcanic stone terraces edged in gold, glowing orange lava channels, red foliage, red-and-gold throne behind the action. Story beat: after Yama fairly judges an innocent monk, the monk disguise dissolves to reveal Arun Det, the heavenly inspector. The main subject is the adult male Thai deva from reference 2 with exactly the pointed gold crown, white gold blue armor, two white feathered wings edged cyan, and blue-tipped spear. He stands calmly elevated in the center-right, revealed in soft white-gold radiance, one open palm inviting a fair duel. A small fading translucent outline of the old monk saffron robe is peeling away as light behind him, not a second solid person. Lower left foreground Yama from reference 3 turns toward him with surprised yet determined expression, holding his judgment book: red skin, small RED horns, short black hair, ornate tall GOLD Thai crown, BLACK robe GOLD trim and RED center panel. Do not substitute the grey cyber outfit. Divine light contrasts with warm lava, celebratory revelation rather than a destructive attack. No magic mirror reward yet, no combat hit."
+    },
+    {
+      "zone": "asia",
+      "file": "deva-intro-asia-v1.png",
+      "refs": [
+        "files/UI map/Map-Zone2-2.jpg",
+        "img/Asia/boss-tester-asia.png",
+        "img/Asia/hero-yama-asia.png"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE game intro cutscene still, landscape 16:9 cinematic frame. Repaint the annotated map reference as an entirely new eye-level narrative illustration, not a screenshot. Match the richly detailed illustrated fantasy game interior art: crisp painterly pixel-inspired edges, ornate architectural details, expressive anime/chibi hero, dramatic cinematic depth and light. Keep all referenced character identities and precise outfits. No UI, arrows, annotation boxes, captions, lettering, watermark, collage or panels. One complete scene. Keep important faces and action in the central 80%; quieter bottom 15% for game dialogue overlay. Scene: Zone 2 eastern underworld, jade/teal dark stone terraces, ornate East Asian pavilions with dark tiled roofs and gold details, red maples, misty mountain backdrop, orange lava channels. A barred prison building in the background burns from the prison escape. Story beat: Kuroha, the heavenly crow inspector, glides down to help Yama subdue an escaped spirit. Reference 2 is a BLACK CROW HUMANOID with feathered black head, sharp beak, large black feathered wings, indigo/navy kimono with gold wave decoration, white hakama, sandals and black feather fan. Do not depict a human-faced generic angel. He dominates upper center-right, wings spread in a believable descending landing, using his feather fan to send a pale cyan wind spiral toward one snarling translucent escaped grey spirit below. Wind visibly restrains the spirit, no gore. Lower left Yama from reference 3 watches with relief and determination, red skin, red small horns, tall BLACK court cap tied to a black topknot, burgundy embroidered robe with gold cloud motifs and dark navy skirt; holds judgment book. Show clear readable arrival action and wing silhouette, warm prison fire against cool wind; no final victory, no reward icon.",
+      "refinements": [
+        "Edit this cutscene illustration with a single surgical correction. Preserve the entire composition, crow deity's identity and pose, Yama outfit, all architecture, colors, lighting, fan wind spiral, burning prison, and the large central escaped spirit. Remove ALL small translucent ghost figures around the prison bars, upper-right prison wall, and peripheral background. Exactly ONE escaped spirit should remain visible in the entire image: the large snarling spirit in the central cyan wind spiral. Replace removed small ghosts with the existing prison stonework, bars, smoke and fire. This story occurs after Yama defeats two prisoners and the crow deity subdues the last one. No new figures, no text, no layout change. Preserve landscape 16:9 size."
+      ]
+    },
+    {
+      "zone": "west",
+      "file": "deva-intro-west-v1.png",
+      "refs": [
+        "files/UI map/Map-Zone3-4.jpg",
+        "img/West/boss-tester-west.png",
+        "img/West/hero-yama-west.png"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE game intro cutscene still, landscape 16:9 cinematic frame. Repaint the annotated map reference as an entirely new eye-level narrative illustration, not a screenshot. Match the richly detailed illustrated fantasy game interior art: crisp painterly pixel-inspired edges, ornate architectural details, expressive anime/chibi hero, dramatic cinematic depth and light. Keep all referenced character identities and precise outfits. No UI, arrows, annotation boxes, captions, lettering, watermark, collage or panels. One complete scene. Keep important faces and action in the central 80%; quieter bottom 15% for game dialogue overlay. Scene: Zone 3 western frozen underworld, grand frosted gothic frontier gate opening behind the figures, carved dark stone with gold filigree, snowy bridge and icy blue river, tall snow-covered pines, twilight violet sky, warm amber braziers. Story beat: Eirlin the valkyrie rushes through the frontier gate to rescue Yama from a vampire, only to discover Yama has already won. Show a proud but surprised adult female valkyrie from reference 2 in exact polished SILVER armor and rounded silver helmet, long SILVER hair braided across chest, TEAL cloak, white tunic, long spear and ROUND WOODEN SHIELD. She has just stopped midstride on the bridge at center-right, spear held upright, looking down with widened amused impressed eyes toward little Yama. Lower left Yama from reference 3 looks up quietly, a little bashful but proud, holding judgment book: red skin, small red horns, BRONZE horned Viking helmet with two large brown horns, olive green tunic with red gold patterned trim, brown belt and thick tan FUR cape and boots. Tiny dissipating bat-shaped mist traces on snowy stones hint at the defeated vampire; no living vampire, no body or gore. Charming comic timing through expressions while retaining heroic cinematic art; leave visual space between characters, no speech bubbles."
+    },
+    {
+      "zone": "cyberhell",
+      "file": "deva-intro-cyberhell-v1.png",
+      "refs": [
+        "files/UI map/Map-Zone4-1.jpg",
+        "img/CyberHell/boss-tester-cyberhell.png",
+        "img/CyberHell/hero-yama-cyberhell.png",
+        "img/CyberHell/crew-taan-cyberhell.png",
+        "img/merchant.png"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE game intro cutscene still, landscape 16:9 cinematic frame. Repaint the annotated map reference as an entirely new eye-level narrative illustration, not a screenshot. Match the richly detailed illustrated fantasy game interior art: crisp painterly pixel-inspired edges, ornate architectural details, expressive anime/chibi hero, dramatic cinematic depth and light. Keep all referenced character identities and precise outfits. No UI, arrows, annotation boxes, captions, lettering, watermark, collage or panels. One complete scene. Keep important faces and action in the central 80%; quieter bottom 15% for game dialogue overlay. Scene: Zone 4 cyber gothic underworld, enormous dark obsidian prison cathedral with gothic arches, gold circuit tracery, purple crystal spires, cyan braziers, purple and cyan electrical conduits, distant orange lava. Story beat: Lumen-01 challenges the new warden while Taan and the infernal merchant are imprisoned behind him. Foreground center-right the adult tall robotic heavenly inspector from reference 2, precise sleek dark grey and violet armored suit, FACELESS BLACK oval visor with two narrow CYAN eye slits, cyan luminous chest core, segmented CYAN halo ring behind head, small translucent cyan tablet in one hand, other palm extended as a stern challenge. No human face, no white wings. Foreground left small Yama faces him determinedly, reference 3 outfit EXACT: red skin, small red horns, flat angular DARK GREY/VIOLET ceremonial cap with central engraved emblem, grey high-collar coat with subtle violet circuit embroidery, dark trousers; NO gold Thai crown and NO bronze Viking helmet. Midground behind inspector inside a barred gothic prison chamber are the two captives: Taan reference 4, stout red-skinned older demon with grey hair topknot and grey moustache, copper/brown cyber armor; and merchant reference 5, stout GREY-skinned bald horned older demon in brown gold-trimmed long coat, pack on back. Thin vivid cyan electric restraints around their wrists and ankles, clearly captive but unharmed; no shackles on Yama. Keep all four figures readable, prisoners smaller and deeper than duel pair. Controlled intimidating cyan electricity, no gore, no cooldown clock reward yet."
+    }
+  ],
+  "finalFiles": [
+    {
+      "path": "img/deva-intro/deva-intro-asia-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 3044503,
+      "sha256": "90ffd26b764131ebc107d34a0f4b37246505d4cfb2bf845246cab37348478c6c"
+    },
+    {
+      "path": "img/deva-intro/deva-intro-cyberhell-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2950389,
+      "sha256": "043f259d1a8dee880de2e7eb1e2f4d02226f0d2f7f83280335c7dbb1de39235c"
+    },
+    {
+      "path": "img/deva-intro/deva-intro-th-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 3010842,
+      "sha256": "7b8e5911db12a96dc293fc429450db610d4936575699caa49f93f52b5b3d4342"
+    },
+    {
+      "path": "img/deva-intro/deva-intro-west-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 3294620,
+      "sha256": "e5051c5ef675b0b3fcac90ff07c3684206e4779e8f64214b73e0cc1aa723c377"
+    }
+  ]
+}

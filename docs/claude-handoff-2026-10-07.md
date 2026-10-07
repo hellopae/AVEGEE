@@ -61,3 +61,8 @@
 ## Image archive cleanup — 7 October
 
 74 confirmed unused images (31.6 MiB) moved to local ignored `AVEGEE-backup/2026-10-07/img/`; corresponding Git deletions are intentional. Keep that backup directory local. See `docs/image-cleanup-2026-10-07.md` and `docs/image-archive-2026-10-07.json` for evidence, exact paths, replacements and checksums. Active selectors are unchanged; manifest and preload catalog now exclude archived files. Raw artwork, fallback assets, geometry sources and authoring inputs remain. Run `node scripts/check-image-archive.mjs` after future artwork changes; it records the current 164-selection baseline.
+
+
+## Deva intro artwork — 8 October 2026
+
+Four new intro stills are ready in `img/deva-intro/`, drawn from the owner's Map-Zone1-4, Map-Zone2-2, Map-Zone3-4 and Map-Zone4-1 storyboards. See `docs/deva-intro-art-handoff-2026-10-08.md` for exact image paths, event hooks and outfit locks. Full image_gen prompts and final checksums are in `docs/deva-intro-art-prompts-2026-10-07.json`. Artwork only: event triggers, cases, dialogue/rewards and runtime preload integration still belong to the system task. Use these intro images separately from boss attack cutscenes.
