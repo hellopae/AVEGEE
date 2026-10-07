@@ -7,6 +7,7 @@ const files = execFileSync('git', ['ls-files', '-z', 'img'], { encoding:'utf8' }
 for (const path of files) {
   // Keep the original sword artwork for comparison, but only preload the corrected animation.
   if (path.startsWith('img/yama-sword-v1/') || path === 'img/yama-sword-v2/hero-yama-th-sword.webp') continue;
+  if (/hero-yama-.*-roar-cutscene-v3\.png$/.test(path)) continue;
   if (!/\.(png|jpe?g|webp)$/i.test(path) || path.startsWith('img/raw/')) continue;
   const name = path.split('/').at(-1);
   const folder = path.split('/')[1].toLowerCase();

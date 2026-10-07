@@ -7,7 +7,7 @@ test('all four visual powers ship four outfits, selected independently from the 
   for (const outfit of ['th','asia','west','cyberhell'])
     for (const power of ['hypno','mirror','roar','fire'])
       assert.ok(existsSync(powerCutsceneImage(power,outfit)));
-  assert.equal(powerCutsceneImage('roar','west'),'img/hero-yama-west-roar-cutscene-v3.png');
+  assert.equal(powerCutsceneImage('roar','west'),'img/hero-yama-west-roar-cutscene-v4.png');
   assert.equal(powerCutsceneImage('hypno',undefined),'img/hero-yama-th-hypno-cutscene-v3.png');
   assert.equal(powerCutsceneImage('fire','th'),'img/hero-yama-th-fire-cutscene-v3.png');
   assert.equal(powerCutsceneImage('fire','th',{bigFire:true}),'img/hero-yama-th-atk-cutscene-v3.png');
