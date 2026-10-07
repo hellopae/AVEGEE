@@ -502,7 +502,10 @@ function drawStation(ctx, g, st, t) {
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
   if (d.k === 'tarang' && prisonEventBurning(g)) {
-    for (let i = 0; i < 5; i++) drawFire(ctx, d.bx + (i-2) * 36, d.by - 30, 110, t + i*350, 3);
+    // flames climb from the base to the roofline (smaller sprites so the building stays readable)
+    const bw = d.bw || 180, top = topOf(d) ?? d.by - bw, mid = (d.by + top) / 2;
+    [[-.3,d.by-6,60],[0,d.by-6,68],[.3,d.by-6,60],[-.2,mid+14,54],[.2,mid+14,54],[0,top+44,56]]
+      .forEach(([fx,fy,fw],i) => drawFire(ctx, d.bx + fx * bw, fy, fw, t + i*350, 2));
   }
   if (st.repair) {
     const builder = g.crew.find(c => c.buildK === d.k);
