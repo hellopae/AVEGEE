@@ -40,8 +40,14 @@ test('Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for th
   assert.equal(g.startZoneEvent('asiaPrisonFire').foes.length, 3);
   g.battle.foes[0].hp = 1;
   g.battleAct('atk');
-  assert.equal(g.battle.devaArrived, true);
-  winBattle(g);
+  assert.equal(!!g.battle.devaArrived, false);
+  const second = g.battle.foes.find(f => f.hp > 0);
+  second.hp = 1; g.battle.selectedFoeId = second.id; g.battleAct('atk');
+  assert.equal(g.battle, null);
+  assert.equal(g.devaVisits.asia.phase, 'descending');
+  assert.equal(g.finishDevaDescent(), true);
+  g.completeStory();
+  assert.equal(g.zoneEventStatus('asiaPrisonFire'), 'cleared');
   assert.equal(g.zoneEventStatus('asiaDevaTest'), 'pending');
   g.startZoneEvent('asiaDevaTest'); winBattle(g);
   assert.equal(g.abilities.windFan, true);

@@ -1,7 +1,14 @@
+import { t } from './i18n.js';
 import { BATTLE } from './data.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
+const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
+  image:`img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
+}] });
 export const STORY = {
+  'deva-th-praise':devaPanel('th', 'deva.th.praise'),
+  'deva-th-warning':devaPanel('th', 'deva.th.warning'),
+  'deva-asia':devaPanel('asia', 'deva.asia.arrival'),
   th: { title:'โซน 1 · เพลิงที่ตื่นขึ้น', reward:'flameCharge', pages:[
     panel('th-01','ดาบเพลิงของพี่ใหญ่','เมื่อใกล้พ่ายแพ้ พี่ใหญ่รวบรวมแรงเฮือกสุดท้าย ฟาดดาบเพลิงใส่ยมบาทน้อย'),
     panel('th-02','ยังล้มไม่ได้','ยมบาทน้อยบาดเจ็บ ทรุดลงกับพื้น แต่ยังไม่ยอมปล่อยให้การต่อสู้จบลง'),

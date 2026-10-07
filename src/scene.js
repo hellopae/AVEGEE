@@ -1,4 +1,5 @@
 import { actorStanding } from './actor-recovery.js';
+import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 // scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
@@ -402,6 +403,10 @@ export function render(ctx, g, t, hover, sel) {
     const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
     label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
   });
+  for (const a of devaMapActors(g)) at(a.y, () => {
+    drawStandee(ctx, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, false, a.sourceZone);
+    if (a.enabled) label(ctx, a.label, a.x, a.y + 18, 12, '#f7c371');
+  });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
   const P = g.player;
   if (lastHeroActor !== P || lastHeroZone !== g.zone) {
@@ -496,6 +501,9 @@ function drawStation(ctx, g, st, t) {
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
+  if (d.k === 'tarang' && prisonEventBurning(g)) {
+    for (let i = 0; i < 5; i++) drawFire(ctx, d.bx + (i-2) * 36, d.by - 30, 110, t + i*350, 3);
+  }
   if (st.repair) {
     const builder = g.crew.find(c => c.buildK === d.k);
     label(ctx, st.repairWait ? `🔧 รอ${builder?.name || 'ทัณฑ์'}เดินมาซ่อม`
@@ -674,6 +682,7 @@ export function hitActor(g, sx, sy) {
   const near = (x, y, r = radius(44)) => Math.hypot(x - sx, y - sy) < r && sy < y + 16 * CHAR_SCALE_MAP;
   const rest = finalRestSpot(g);
   if (rest && near(rest.x,rest.y,radius(40))) return { kind:'finalRest', ...rest };
+  for (const a of devaMapActors(g)) if (a.enabled && near(a.x,a.y,radius(45))) return { ...a, kind:'devaEncounter' };
   for (const a of finalEventActors(g)) if (!a.reinforcement && near(a.x,a.y,radius(45))) return { kind:'finalEncounter', key:a.id, x:a.x,y:a.y, enabled:a.enabled };
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))

@@ -1,4 +1,5 @@
 import { actorStanding } from './actor-recovery.js';
+import { devaMapActors, DEVA_MAP } from './deva-map.js';
 import { finalEventActors } from './final-event.js';
 // npc-stand.js — ตัวละครบนแผนที่ที่ยมบาทเดินทับไม่ได้ (30D)
 // ยมบาทเดินทับตัวเขาไม่ได้ (src/walk.js วงรอบตัว) · พิกัดตรงกับที่ scene.js วาด จึงอยู่ที่เดียวไม่ให้คลาดกัน
@@ -7,7 +8,7 @@ import { SPOTS, MOB, MERCHANT, ZONE_EVENTS } from './data.js';
 /** อีเวนต์ที่รออยู่ที่ท่าเรือ (ผู้ท้าทายยืนรอให้ยมบาทเดินไปหา) — scene.js วาด, game.js กันทาง */
 export const waitingEvents = g => {
   const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
-    ev.k !== 'devaTest' && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
+    ev.k !== 'devaTest' && ev.k !== DEVA_MAP[g.zone]?.key && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
     ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach');
   if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
     events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
@@ -29,6 +30,7 @@ export function standPoints(g) {
   if (actorStanding(g.guard)) pts.push([g.guard.x, g.guard.y]);
   if (!g.bossWalk && (g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) pts.push([SPOTS.bossPier.x, SPOTS.bossPier.y]);
   for (const ev of waitingEvents(g)) pts.push([ev.x, ev.y]);
+  for (const a of devaMapActors(g)) if (a.enabled) pts.push([a.x,a.y]);
   for (const a of finalEventActors(g)) pts.push([a.x,a.y]);
   return pts;
 }
