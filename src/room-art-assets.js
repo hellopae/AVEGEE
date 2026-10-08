@@ -1418,16 +1418,23 @@ export function wideRoomPoint(point, box) {
 }
 
 /** The painted courtyard has a central entrance and a separate training alcove. */
+// Image-space floor traced from the sala reference; desk, shelves and plinths stay outside.
+export const SALA_WALK = [
+  {poly:[[.07,.74],[.18,.49],[.23,.39],[.34,.39],[.34,.52],[.64,.52],[.64,.72],[.94,.72],[.94,.81],[.60,.81],[.60,1],[.40,1],[.40,.81],[.07,.81]]},
+  {poly:[[.23,.39],[.78,.39],[.81,.43],[.23,.43]]},
+  {poly:[[.66,.43],[.81,.43],[.86,.53],[.66,.53]]},
+  {poly:[[.91,.53],[.95,.74],[.90,.74],[.90,.54]]},
+];
 export function wideStationRoom(zone, key) {
   const art = WIDE_ROOM_ART[zone]?.[key];
   if (!art) return null;
   return {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
-    me:[...art.entrance], crew:[...art.crew], souls:art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
-    act:key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
+    me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
+    act:key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
     training:art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
-    actions:[[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
-    walk:[{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
+    actions:key === 'sala' ? [[.50,.19],[.74,.57]] : [[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
+    walk:key === 'sala' ? SALA_WALK.map(a=>({poly:a.poly.map(p=>[...p])})) : [{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
       [.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}],
   };
 }

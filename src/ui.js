@@ -3898,12 +3898,12 @@ function openStation(k, emergency = false) {
 
     // ข้อมูลมินิเกม "เร่งการทำงาน" ของสถานีนี้ (เหตุผลที่กดไม่ได้ → ใช้แทนคำใต้ปุ่มชั่วคราว)
     const mgOn = !!(cap && MINIGAMES[k]);
-    const mgWhy = !mgOn ? ''
+    const mgWhy = k === 'sala' ? mgOpen ? t('room.mgBusy') : (st.documentCd || 0)>g.tick ? `พักอีก ${st.documentCd-g.tick} วาระ` : '' : !mgOn ? ''
       : mgOpen ? t('room.mgBusy')
       : (st.speedLv || 0) >= UPGRADES.max ? t('room.mgMaxed')
       : g.level < g.mgLevelNeed(st.speedLv || 0) ? t('room.mgLevel').replace('{n}', g.mgLevelNeed(st.speedLv || 0))
       : (st.mgCd || 0) > g.tick ? t('room.mgWait').replace('{n}', st.mgCd - g.tick) : '';
-    const mgReady = mgOn && !mgWhy && g.mgReady(st);
+    const mgReady = k === 'sala' ? !mgWhy && g.documentPuzzleReady(st) : mgOn && !mgWhy && g.mgReady(st);
 
     // ---- แผงด้านขวา (เปิดจากปุ่มในฉาก) ----
     let drawer = '';
@@ -3977,7 +3977,7 @@ function openStation(k, emergency = false) {
       const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
-        ['room.sala.action2', 'room.sala.hint2', () => openMinigame(k), !mgReady, mgWhy],
+        ['จัดเอกสาร', null, () => openMinigame(k), !mgReady, mgWhy],
       ] : k === 'sawan' ? [
         ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
       ] : k === 'tea' ? [
@@ -4004,7 +4004,7 @@ function openStation(k, emergency = false) {
         : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
         const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_LAYOUT.pivot[0], MIRROR_LAYOUT.pivot[1]-.15] : [MIRROR_LAYOUT.target[0], MIRROR_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
-        const [ax, ay] = (k === 'tea' || k === 'krajok') && R ? R.anchor(u, v) : [u*100,v*100];
+        const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
@@ -4205,20 +4205,20 @@ function openStation(k, emergency = false) {
     const stx = g.stations.find(x => x.def.k === sk);
     const game = MINIGAMES[sk];
     const ov = dlg.querySelector('#mg-ov');
-    if (!stx || !game || !ov || mgOpen || !g.mgReady(stx)) return;
+    if (!stx || !game || !ov || mgOpen || !(sk === 'sala' ? g.documentPuzzleReady(stx) : g.mgReady(stx))) return;
 
     mgOpen = true;
     let cleanup = null, closed = false;
     const teardown = () => {
       cleanup?.(); cleanup = null;
       R?.lock?.(false);
-      ov.hidden = true; ov.innerHTML = '';
+      ov.hidden = true; ov.innerHTML = '';ov.classList.remove('mg-documents');
       mgOpen = false;
     };
     const finish = won => {
       if (closed) return; closed = true;
       teardown();
-      g.finishMinigame(sk, won);
+      if(sk === 'sala') g.finishDocumentPuzzle(won); else g.finishMinigame(sk, won);
       sfx(won ? 'coin' : 'crack');
       panels(); refresh();
     };
@@ -4231,6 +4231,7 @@ function openStation(k, emergency = false) {
     R?.lock?.(true);
     dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);   // จอแคบ: มินิเกมเปิดทับทั้งจอ ต้องเลื่อนกลับบนสุดก่อน
     ov.hidden = false;
+    ov.classList.toggle('mg-documents',sk === 'sala');
     ov.innerHTML = `
       <div class="mg-head"><b>${game.icon || '🎮'} ${esc(game.name)}</b><button class="mg-x" type="button">✕ ปิด</button></div>
       <div class="mg-intro">
@@ -4287,6 +4288,7 @@ function openStation(k, emergency = false) {
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
   R.onAct = () => {
+    if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
     if (room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;

@@ -3661,7 +3661,7 @@ const API = {
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
         repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
         repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
-        speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
+        speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       })),
       queue: this.queue, held: this.held, items: this.items,
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
@@ -3691,7 +3691,7 @@ const API = {
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
                             visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
                             repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait, arrivalElapsed:sv.arrivalElapsed || 0,
-                            speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0 });
+                            speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0, documentCd:sv.documentCd || 0 });
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
@@ -3987,6 +3987,15 @@ const API = {
   // เหลือโค้ดไว้เฉย ๆ เผื่อวันหลังอยากเอากลับมา — ผลลัพธ์เดิมทุกอย่าง (เร็วขึ้น 12%/ขั้น สูงสุด 5)
   // คงเงื่อนไข "ขั้นยมบาทต้องถึง" ของเดิมไว้ด้วย กันขั้น 5 ตั้งแต่ต้นเกมเพราะตอนนี้ไม่มีค่าเบี้ยกั้นแล้ว
   mgLevelNeed(lv) { return Math.min(5, 1 + Math.floor(lv / 2)); },
+  documentPuzzleReady(st) { return !!st && st.def.k === 'sala' && !st.build && this.tick >= (st.documentCd || 0); },
+  finishDocumentPuzzle(won) {
+    const st=this.stations.find(s=>s.def.k==='sala');
+    if (!this.documentPuzzleReady(st) || !won) return false;
+    const before=this.order;this.order=clamp(this.order+8,0,100);
+    st.documentCd=this.tick+UPGRADES.mgCooldown;
+    this.log(`📚 จัดเอกสารครบหมวด — ระเบียบ +${Math.round(this.order-before)} (${Math.round(this.order)}/100)`,'good');
+    this.save();this.onChange();return true;
+  },
   mgCooldownFor(st) { return UPGRADES.mgCooldown + UPGRADES.mgCooldownStep * (st.speedLv || 0); },
   mgReady(st) {
     if (!st || st.build || st.def.pow <= 0) return false;
@@ -4129,7 +4138,7 @@ API.snapshot = function (withEntry = true) {
       build: st.buildWait ? BUILD_TIME : st.build ? Math.max(1, st.build - Date.now()) : 0, buildWait:!!st.buildWait, buildExtra:st.buildExtra || '',
       repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
       repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
-      speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0,
+      speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       slots: st.slots,
     })),
     queue: this.queue, held: this.held, sentences:this.sentences,
@@ -4246,6 +4255,7 @@ API.restore = function (d) {
     st.repairWait = !!sv.repairWait;
     st.arrivalElapsed = sv.arrivalElapsed || 0;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
+    st.documentCd = sv.documentCd || 0;
     st.mgCd = sv.mgCd || 0;   // คูลดาวน์มินิเกม "เร่งการทำงาน" (ชุดที่ 9)
     // เซฟ v2 เก็บดวงเดียวต่อสถานี — ยกขึ้นเป็นช่องแรกของหลังนั้น
     st.slots = sv.slots || (sv.soul ? [{ soul: sv.soul, intensity: sv.intensity ?? 3,

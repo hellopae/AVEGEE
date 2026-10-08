@@ -31,3 +31,15 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 @media(max-width:700px){.st-hud .st-drawer{width:90%;max-height:65%;right:5%;top:16%}.st-hud .st-card{max-width:200px;padding:10px}.st-hud .st-row{font-size:12px;flex-wrap:wrap}.st-hud .st-row button{margin-left:auto}.st-hud .btn-gold{min-height:44px;font-size:12px}.st-hud .st-hpbar{width:100px}}
 .sentence-color-cards{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.sentence-color-cards b{display:block;padding:10px 16px;border:1px solid;border-radius:10px;background:#ffffff08;min-width:58px;text-align:center}
 .court-guide>.guide-card{margin-top:12px;font-size:13px;line-height:1.65}
+/* Sala document puzzle follows the supplied coloured book grid. */
+.st-hud:has(.mg-documents:not([hidden])) :is(#st-left,#st-actions,#st-alert,#st-npc){visibility:hidden}
+.mg-ov.mg-documents{z-index:15;background:#180e14bb;padding:clamp(10px,2vw,28px)}
+.mg-documents .mg-stage{display:flex;min-height:0;flex:1}.doc-puzzle{display:flex;flex-direction:column;gap:10px;width:100%;min-height:0}
+.doc-goals{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:center}.doc-goal{display:flex;align-items:center;gap:8px;font-size:14px}.doc-goal i{display:block;width:22px;height:30px;background:var(--book);border-radius:2px;box-shadow:inset 3px 0 #0003;border-top:3px solid #ffefc2}.doc-goal.complete{color:#a9ecbd}
+.c0{--book:#e73731}.c1{--book:#ffca66}.c2{--book:#b5e7fa}.c3{--book:#793c80}
+.doc-rule,.doc-status{font-size:12px;text-align:center;margin:0;line-height:1.6}.doc-scroll{flex:1;min-height:0;overflow:auto;border-radius:20px;background:#1b1015;padding:clamp(12px,3vw,30px)}
+.doc-board{display:grid;grid-template-columns:repeat(14,minmax(32px,1fr));gap:clamp(7px,1.7vw,24px);min-width:560px;height:100%;min-height:290px}
+.doc-book{position:relative;background:var(--book);border:0;border-top:5px solid #ffe8b7;border-left:5px solid #0003;border-radius:3px;min-height:42px;padding:0;touch-action:none;box-shadow:2px 3px 0 #0004;cursor:grab}
+.doc-book.selected-col{outline:1px dashed #b59056;outline-offset:4px}.doc-book.selected-row{box-shadow:0 0 0 1px #e7bf6b66}.doc-book.selected{outline:3px solid #ffe19b;outline-offset:4px}.doc-book:focus-visible{outline:3px solid white;outline-offset:3px}
+.doc-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}.doc-tools button{min-width:40px;min-height:40px;padding:6px 12px;font-size:13px}.doc-moves{font-size:12px;color:#ddc7a5}
+@media(max-width:700px){.doc-goals{gap:10px}.doc-goal{font-size:12px}.doc-scroll{padding:10px}.doc-board{gap:10px;min-width:620px;min-height:280px}.doc-tools button{min-height:44px}.mg-ov.mg-documents{inset:0}.doc-rule{font-size:11px}}
