@@ -17,6 +17,7 @@ import { t as tr } from './i18n.js';
 import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
+const MAP_NAME_SIZE = 8; // Character names and floating dialogue share the same map type size.
 export const CHAR_SCALE_MAP = 0.8;
 const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
 const CREW_H = 82 * CHAR_SCALE_MAP;
@@ -388,7 +389,7 @@ export function render(ctx, g, t, hover, sel) {
         drawCrewWalk(ctx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
       if (!animated) drawStandee(ctx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
         c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
-      label(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 13, 10.5, 'rgba(255,225,195,.72)');
+      mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
   }
@@ -407,7 +408,7 @@ export function render(ctx, g, t, hover, sel) {
     }
     drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
     const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
-    label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
+    mapName(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 10, a.enabled ? '#f7c371' : '#ddd');
     if (arrival.presentation === 'warp') ctx.restore();
   });
   for (const a of devaMapActors(g)) at(a.y, () => {
@@ -642,7 +643,7 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
 function bubble(ctx, text, x, y) {
-  ctx.font = `600 ${8 * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
+  ctx.font = `600 ${MAP_NAME_SIZE * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
   const w = Math.min(180 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
   const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
@@ -653,10 +654,14 @@ function bubble(ctx, text, x, y) {
   ctx.fillText(text, bx + w / 2, y - h / 2 + 1, w - 10 * UI_SCALE_MAP);
 }
 
-function label(ctx, text, x, y, size, color = '#fff') {
+function mapName(ctx, text, x, y, color) {
+  label(ctx, text, x, y, MAP_NAME_SIZE, color, MAP_NAME_SIZE * UI_SCALE_MAP / 3);
+}
+
+function label(ctx, text, x, y, size, color = '#fff', outline = 6) {
   ctx.font = `600 ${size * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(0,0,0,.75)';
+  ctx.lineWidth = outline; ctx.strokeStyle = 'rgba(0,0,0,.75)';
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color; ctx.fillText(text, x, y);
 }
