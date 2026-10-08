@@ -5,6 +5,7 @@ import { frontierPath, frontierWalkable } from '../src/frontier-navigation.js';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS, ZONE_EVENTS, MOB } from '../src/data.js';
+import { ALL_CASES, CASES_BY_ZONE } from '../src/cases.js';
 import { STORY } from '../src/story.js';
 import { setLang, t } from '../src/i18n.js';
 import { devaMapActors, prisonEventBurning, DEVA_DESCENT_MS } from '../src/deva-map.js';
@@ -15,7 +16,7 @@ const reload = g => { const loaded=createGame(); loaded.restore(JSON.parse(JSON.
 function strike(g) { const f=g.battle.foes.find(f=>f.hp>0); f.hp=1;g.battle.selectedFoeId=f.id;assert.equal(g.battleAct('atk'),true); }
 for (const right of [true,false]) test(`case five monk → ${right?'praise':'warning'} → test → mirror once`,()=>{
  const g=createGame();g.zoneCases.th=4;g.casesDone=4;g.zoneEvents.th={prisonBreak:'cleared'};
- g.ensureDevaCase();const monk=g.queue[0];assert.equal(monk.case,'monk');assert.equal(monk.pure,true);
+ g.ensureDevaCase();const monk=g.queue[0];assert.equal(monk.case,'devaMonk');assert.equal(monk.pure,true);
  assert.equal(monk.deeds.length,0);assert.equal(g.inventory.mirror||0,0);
  const st={def:STATIONS.find(d=>d.k===(right?'sawan':'krata')),crewK:'taan'};
  const r=g.judge(st,{soul:monk,intensity:1});assert.equal(!!r.right,right);
@@ -76,7 +77,7 @@ test('area damage and self-hit still leave the third spirit to the deva',()=>{
 });
 test('case five cannot be deferred or replaced; old case-four saves receive the monk',()=>{
  const g=createGame();g.zoneCases.th=4;g.zoneEvents.th={prisonBreak:'cleared'};
- const loaded=reload(g);assert.equal(loaded.queue[0].case,'monk');
+ const loaded=reload(g);assert.equal(loaded.queue[0].case,'devaMonk');
  assert.equal(loaded.defer(),false);assert.equal(loaded.jail(loaded.queue[0].id),false);
  loaded.queue.push({id:999999,case:'other'});
  assert.deepEqual(loaded.assignBlock(999999,'krata','taan'),{key:'devaCaseFirst'});
@@ -96,4 +97,29 @@ test('both deva intro images preload only in their zones and cache version chang
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  for(const zone of ['th','asia'])assert.ok(catalog.zones[zone].includes(`img/deva-intro/deva-intro-${zone}-v1.png`));
  assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-e3-events'));
+});
+test('E3-fix: abbot case restored, case five is devaMonk, beggar deva retired from the pool, old saves load',()=>{
+ const abbot=ALL_CASES.find(c=>c.k==='monk');
+ assert.equal(abbot.name,'เจ้าอาวาสดัง');assert.equal(abbot.kind,'twist');assert.ok(abbot.hidden.length>0);
+ const dm=ALL_CASES.find(c=>c.k==='devaMonk');assert.equal(dm.kind,'deva');assert.equal(dm.sp,'soul-monk');
+ assert.equal(ALL_CASES.some(c=>c.k==='deva'),false);
+ // case five (th) is devaMonk and the ordinary pool never yields it or the retired beggar
+ const g=createGame();g.zoneCases.th=4;g.casesDone=4;g.zoneEvents.th={prisonBreak:'cleared'};
+ g.ensureDevaCase();assert.equal(g.queue[0].case,'devaMonk');
+ const seen=new Set();
+ for(let i=0;i<300;i++){const h=createGame();h.casesDone=5;h.spawns=0;h.has=()=>true;const s=h.nextNamedCase([]);if(s)seen.add(s.case);}
+ assert.ok(seen.has('monk'),'abbot is drawable again');
+ assert.ok(!seen.has('devaMonk'));assert.ok(!seen.has('deva'));
+ assert.ok(CASES_BY_ZONE.th.some(c=>c.k==='monk'));
+ // old save with the retired beggar in queue/held/usedCases loads without it
+ const old=createGame();const snap=JSON.parse(JSON.stringify(old.snapshot()));
+ snap.queue=[{id:7001,case:'deva',who:'ชายชราขอทานหน้าวัด',name:'ชายชราขอทาน',pure:true,deeds:[],merits:[],lines:[]},...(snap.queue||[])];
+ snap.held=[{id:7002,case:'deva',pure:true,deeds:[],merits:[],lines:[]}];snap.usedCases=['deva','girl'];
+ const loaded=createGame();loaded.restore(snap);
+ assert.ok(!loaded.queue.some(s=>s.case==='deva'));assert.ok(!loaded.held.some(s=>s.case==='deva'));
+ assert.ok(loaded.usedCases.includes('girl'));
+ // interim E3 save: pure 'monk' soul in the case-four slot is migrated to devaMonk
+ const mid=createGame();mid.zoneCases.th=4;mid.zoneEvents.th={prisonBreak:'cleared'};
+ mid.queue.unshift({id:7003,case:'monk',pure:true,deeds:[],merits:[],lines:[]});
+ mid.ensureDevaCase();assert.equal(mid.queue.find(s=>s.id===7003).case,'devaMonk');
 });

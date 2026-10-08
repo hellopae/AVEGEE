@@ -398,22 +398,23 @@ const API = {
    *    · คดีคนบริสุทธิ์/เทวดา ส่งมาก็ต่อเมื่อสร้างประตูสวรรค์แล้วเท่านั้น */
   ensureDevaCase() {
     if (this.zone !== 'th' || this.zoneCases.th !== 4 || this.devaTestStatus() === 'cleared') return;
-    const queued = this.queue.find(s => s.case === 'monk');
-    if (queued && !queued.pure) {
-      const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'monk')), 'th');
+    // 'monk' pure = soul จาก build E3 ช่วงสั้น ๆ ที่เขียนทับเจ้าอาวาส — ย้ายมาเป็น devaMonk
+    const queued = this.queue.find(s => s.case === 'devaMonk' || s.case === 'monk' && s.pure);
+    if (queued && (!queued.pure || queued.case !== 'devaMonk')) {
+      const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');
       Object.assign(queued, replacement, { id:queued.id });
     }
     if (!queued) {
-      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'monk')), 'th');
+      const soul = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');
       this.queue.unshift(soul);
-      if (!this.usedCases.includes('monk')) this.usedCases.push('monk');
+      if (!this.usedCases.includes('devaMonk')) this.usedCases.push('devaMonk');
     }
   },
   nextNamedCase(tags) {
     if (this.casesDone < 1) return null;
     if (this.zone === 'th' && this.spawns % CASE_EVERY !== 0) return null;
     const pool = CASES_BY_ZONE[this.zone] || [];
-    let left = pool.filter(c => c.k !== 'monk' && !this.usedCases.includes(c.k));
+    let left = pool.filter(c => c.k !== 'devaMonk' && !this.usedCases.includes(c.k));
     // บูรพาไม่ถอยกลับไปสุ่มสำนวนไทยเมื่อ A1-A20 ครบชุด — ล้างรอบแล้วคละใหม่
     if (!left.length && this.zone === 'asia' && pool.length) {
       const keys = new Set(pool.map(c => c.k));
@@ -578,7 +579,7 @@ const API = {
   /** ขังไว้ก่อน — ทางออกตอน "สถานีที่ตรงกรรมไม่ว่าง แต่คิวกำลังล้น"
    *  ไม่นับเป็นคำตัดสิน ไม่ได้คะแนน ไม่เสียคะแนน แค่ซื้อเวลา แลกกับค่าข้าวทุกวาระ */
   jail(soulId) {
-    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue.find(s => s.id === soulId)?.case === 'monk') return false;
+    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue.find(s => s.id === soulId)?.case === 'devaMonk') return false;
     if (this.jailFree() <= 0) return false;
     const i = this.queue.findIndex(x => x.id === soulId);
     if (i < 0) return false;
@@ -605,7 +606,7 @@ const API = {
    *  มีไว้แก้ทางตันที่เจ้าของเจอ 8 ก.ย. 2569: สำนวนเป็นฉ้อโกง แต่กระทะทองแดงไม่ว่าง
    *  ตัดสินให้ตรงกรรมไม่ได้เลย และไม่มีปุ่มอะไรให้กดนอกจากตัดสินผิด ๆ ไปก่อน */
   defer() {
-    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue[0]?.case === 'monk') return false;
+    if (this.zone === 'th' && this.zoneCases.th === 4 && this.queue[0]?.case === 'devaMonk') return false;
     if (this.queue.length < 2) return false;
     const soul = this.queue.shift();
     this.queue.push(soul);
@@ -830,9 +831,9 @@ const API = {
 
   // ---------- มอบหมายคดี ----------
   assignBlock(soulId, stKey, crewK) {
-    const reservedCase = this.zone === 'th' && this.zoneCases.th === 4 && this.devaTestStatus() !== 'cleared' && this.queue.some(s => s.case === 'monk');
+    const reservedCase = this.zone === 'th' && this.zoneCases.th === 4 && this.devaTestStatus() !== 'cleared' && this.queue.some(s => s.case === 'devaMonk');
     const selectedSoul = this.queue.find(s => s.id === soulId);
-    if (reservedCase && selectedSoul && selectedSoul.case !== 'monk') return { key:'devaCaseFirst' };
+    if (reservedCase && selectedSoul && selectedSoul.case !== 'devaMonk') return { key:'devaCaseFirst' };
     const st = this.stations.find(s => s.def.k === stKey);
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
     if (!this.queue.some(s => s.id === soulId)) return { key: 'soulMissing' };
@@ -1054,7 +1055,7 @@ const API = {
                        deserved: soul.deserved, back: !!soul.back });
     if (this.ledger.length > 300) this.ledger.shift();
     this.ensureDevaCase();
-    if (this.zone === 'th' && this.zoneCases.th === 5 && soul.case === 'monk' && this.devaTestStatus() !== 'cleared') {
+    if (this.zone === 'th' && this.zoneCases.th === 5 && soul.case === 'devaMonk' && this.devaTestStatus() !== 'cleared') {
       this.zoneEvents.th.devaTest = 'pending';
       this.devaVisits.th = { phase:'intro', right:!!r.right };
       this.queueStory(r.right ? 'deva-th-praise' : 'deva-th-warning');
@@ -4117,8 +4118,10 @@ API.restore = function (d) {
   this.ensureTarang();                 // ชุด 27D — ตะรางมีให้ฟรีทุกเซฟ (เซฟเก่าที่ยังไม่เคยสร้างได้รับตอนโหลด)
   // เซฟเดิมล้าง buildK ทันทีที่ถึงไซต์: ผูกงานที่ยังสร้างอยู่กลับให้ผู้สร้างจนเสร็จ
   this.restoreBuilders();
-  this.queue = d.queue || [];
-  this.held = d.held || [];
+  // 'deva' (ชายชราขอทาน) ถูกถอดจากกองคดีแล้ว (E3-fix) — เซฟเก่าที่ยังมีเขาในคิว/คุกต้องไม่ค้าง
+  const dropRetired = s => s?.case !== 'deva';
+  this.queue = (d.queue || []).filter(dropRetired);
+  this.held = (d.held || []).filter(dropRetired);
   this.sentences = d.sentences || [];
   this.reborn = d.reborn || 0;
   this.ascended = d.ascended || 0;
