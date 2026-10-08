@@ -48,7 +48,7 @@ test('E5 a→e: warp before approach/preparation, four waves, reinforcement map,
   g.dismissFinalPreparation();encounter(g,'boss');story(g,'ending',images);
   assert.deepEqual(images,['story-cyberhell-01-v2.png','story-cyberhell-reinforcements-01.png',
     'story-cyberhell-reinforcements-02.png','story-cyberhell-02-v3.png','story-cyberhell-03-v4.png',
-    'story-ending-01-v4.png','story-ending-02-v3.png']);
+    'story-ending-01-v4.png','story-ending-02-v3.png','story-ending-03-v1.png']);
   assert.equal(new Set(images).size,images.length);assert.equal(g.gameCompleted,true);
 });
 test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win',()=>{

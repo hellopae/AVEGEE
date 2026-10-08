@@ -102,7 +102,7 @@ test('30A: crop geometry removes letterbox rows without horizontal cropping in t
     const png = readFileSync(new URL(`../${panel.image}`, import.meta.url));
     const width = png.readUInt32BE(16), height = png.readUInt32BE(20);
     const layout = comicImageLayout(panel.image, width, height);
-    if (panel.image.startsWith('img/deva-intro/')) {
+    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.png') {
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
     }

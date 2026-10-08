@@ -4423,17 +4423,32 @@ function openLevelUp(lv) {
 /** Reuses the intro's page layout for both battle interludes and victory scenes. */
 function renderStoryComic(root, story, onDone) {
   let page = 0, done = false;
-  const finish = () => { if (!done) { done = true; onDone(); } };
+  const stopVideo = () => root.querySelector('video')?.pause?.();
+  const finish = () => { if (!done) { done = true; stopVideo(); root.removeEventListener?.('close', stopVideo); onDone(); } };
+  root.addEventListener?.('close', stopVideo, { once:true });
   const paint = () => {
+    stopVideo();
     const p = story.pages[page];
+    const media = p.video
+      ? `<video src="${esc(p.video)}" poster="${esc(p.poster || p.image)}" autoplay muted playsinline controls preload="auto" aria-label="${esc(p.title)}"></video>`
+      : `<img src="${p.image}" alt="${esc(p.title)}">`;
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
-      <div class="intro-comic-frame"><img src="${p.image}" alt="${esc(p.title)}">
+      <div class="intro-comic-frame">${media}
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
       </div><div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p style="white-space:pre-line">${esc(p.line)}</p></div>
       <div class="intro-comic-controls"><button data-story-skip>ข้ามฉาก</button>
         <button data-story-back ${page ? '' : 'disabled'}>← ย้อนกลับ</button>
         <button class="gold" data-story-next>${page + 1 === story.pages.length ? 'ดำเนินเรื่องต่อ' : 'หน้าถัดไป →'}</button></div></div>`;
     prepareComicImages(root);
+    if (p.video) {
+      const video = root.querySelector('video');
+      const frame = root.querySelector('.intro-comic-frame');
+      if (frame.style) frame.style.aspectRatio = String(p.videoAspect || 16/9);
+      video.onerror = () => {
+        video.outerHTML = `<img src="${esc(p.image)}" alt="${esc(p.title)}">`;
+        prepareComicImages(root);
+      };
+    }
     root.querySelector('[data-story-skip]').onclick = finish;
     root.querySelector('[data-story-back]').onclick = () => { if (page) { page--; paint(); } };
     root.querySelector('[data-story-next]').onclick = () => { if (++page === story.pages.length) finish(); else paint(); };
