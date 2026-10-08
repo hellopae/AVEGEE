@@ -1888,7 +1888,7 @@ export const STATION_FLIP = {
 
 // 30F: move complete station geometry together, including service/worker points.
 // Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
-const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[110,37], dab:[65,5], krata:[0,42] };
+const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[90,37], dab:[65,5], krata:[0,42] };
 const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(key => {
   const d = STATIONS.find(s => s.k === key);
   return [key, Object.fromEntries(['bx','by','bw','x','y','sx','sy','hit']
@@ -1901,7 +1901,7 @@ export function syncSceneZone(zone) {
   SCENE.w = z.w; SCENE.h = z.h;
   // Bare floor beside the painted servers; no changes to the scene bitmap.
   for (const [key, site] of sharedStationSites) {
-    const [dx, dy] = z.k === 'cyberhell' ? CYBERHELL_STATION_OFFSETS[key] : [0,0];
+    const [dx, dy] = z.k === 'cyberhell' ? (key === 'lokan' ? [73, 6] : CYBERHELL_STATION_OFFSETS[key]) : (key === 'lokan' ? [0, -35] : [0,0]);
     const def = STATIONS.find(s => s.k === key);
     for (const [field, value] of Object.entries(site)) {
       def[field] = field === 'bw' ? value : field === 'hit' ? value.map((v, i) => v + (i % 2 ? dy : dx))
@@ -1913,7 +1913,7 @@ export function syncSceneZone(zone) {
   if (z.k === 'cyberhell') {
     mirrorTower.bw *= 1.3;
     // Conservative fallback hit; the browser uses the scaled sprite's actual alpha body.
-    mirrorTower.hit = [mirrorTower.bx - 100.75, mirrorTower.by - 195, mirrorTower.bx + 100.75, mirrorTower.by];
+    mirrorTower.hit = [mirrorTower.bx - 136.5, mirrorTower.by - 234, mirrorTower.bx + 136.5, mirrorTower.by];
     mirrorTower.x = mirrorTower.bx - 30;
     mirrorTower.y = mirrorTower.by + 10;
   }

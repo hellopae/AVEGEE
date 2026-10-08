@@ -14,6 +14,7 @@ import { regenMp } from './mp-regen.js';
 // **จุดยึดอยู่ที่ ROOMS ใน data.js ที่เดียว** — วาดฉากใหม่/เปลี่ยนภาพ แก้ตัวเลขชุดเดียวจบ
 // ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
 
+import { walkDirection } from './walk-direction.js';
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawHeroWalk, drawSoul, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
@@ -151,7 +152,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
   let locked = false;
   // แอนิเมชันเดิน — ใช้สไปรท์เดินชุดเดียวกับบนแผนที่ (art.js drawHeroWalk) เฟรมเปลี่ยนตามระยะที่เดินจริง
-  let walkDist = 0, movedAt = -1e9;
+  let walkDist = 0, movedAt = -1e9, direction = 'down';
 
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
   const px = u => box.ox + (mirrorRoom ? 1 - u : u) * box.w;
@@ -273,7 +274,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;
     }
-    const sp = 0.00045 * Math.min(dt, 50);                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
+    const sp = 0.00022 * Math.min(dt, 50);                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -284,10 +285,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       dx = P.tx - P.x; dy = P.ty - P.y;
       if (Math.hypot(dx, dy) < 0.008) { P.tx = null; dx = dy = 0; }
     }
-    const d = Math.hypot(dx, dy);
+    const aspect = box.w / box.h;
+    const d = Math.hypot(dx * aspect, dy);
     if (d > 0) {
       const stride = P.tx != null ? Math.min(sp, d) : sp;
-      const nx = P.x + dx / d * stride, ny = P.y + dy / d * stride * (P.tx != null ? 1 : 0.7);
+      const nx = P.x + dx / d * stride, ny = P.y + dy / d * stride;
       // ชนขอบแล้วไถลไปตามแกนที่ยังไปได้ — เหมือน stepTo บนแผนที่ ไม่ติดหนึบที่มุม
       const bx = P.x, by = P.y;
       if (walkSegmentInside(bx, by, nx, ny, inArea)) { P.x = nx; P.y = ny; }
@@ -295,7 +297,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       else if (walkSegmentInside(bx, by, bx, ny, inArea)) P.y = ny;
       else P.tx = null;
       const stepPx = Math.hypot((P.x - bx) * box.w, (P.y - by) * box.h);
-      if (stepPx > 0.05) { walkDist += stepPx; movedAt = performance.now(); }
+      if (stepPx > 0.05) { walkDist += stepPx; direction = walkDirection((P.x - bx) * box.w * (mirrorRoom ? -1 : 1), (P.y - by) * box.h, direction); movedAt = performance.now(); }
       if (Math.abs(dx) > 0.001) P.face = (mirrorRoom ? -dx : dx) < 0 ? -1 : 1;
     }
     const ii = g.items.findIndex(it => it.from === def.k);
@@ -508,8 +510,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const heroH = U * HERO_H;
       if (swinging && def.k === 'dab' && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
           SWORD_DURATION_MS - (g.swingUntil - Date.now()), P.face)) return;
-      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDist * 14 / (heroH * 0.16), P.face))) {
-        const gait = Math.floor(t / 105) % 4;
+      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDist * 14 / (heroH * 0.28), P.face, direction))) {
+        const gait = Math.floor(t / 180) % 4;
         const hop = moving && gait % 2 ? U * 0.010 : 0;
         const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
         drawStandee(ctx, key, px(P.x), py(P.y) - hop, heroH * stretch, t, '👑', P.face);

@@ -123,7 +123,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/th-lokan.webp",
+      "image": "img/rooms-wide/th-lokan-ice-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -474,7 +474,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/asia-lokan.webp",
+      "image": "img/rooms-wide/asia-lokan-ice-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -825,7 +825,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/west-lokan.webp",
+      "image": "img/rooms-wide/west-lokan-ice-v2.webp",
       "entrance": [
         0.5,
         0.88
@@ -1176,7 +1176,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "lokan": {
-      "image": "img/rooms-wide/cyberhell-lokan.webp",
+      "image": "img/rooms-wide/cyberhell-lokan-ice-v2.webp",
       "entrance": [
         0.5,
         0.88

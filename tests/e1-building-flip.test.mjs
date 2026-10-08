@@ -39,7 +39,7 @@ test('E1: CyberHell tower moves right, scales 1.3, updates service/hit, and rest
   const im={naturalWidth:1240,naturalHeight:1240};
   const old=reviewStationBox({...d,bx:1360,by:650},im,'cyberhell');
   syncSceneZone('cyberhell');
-  assert.deepEqual(geometry(),{bx:1560,by:675,bw:195,x:1530,y:685,hit:[1459.25,480,1660.75,675],mapScale:1.3});
+  assert.deepEqual(geometry(),{bx:1540,by:675,bw:195,x:1510,y:685,hit:[1403.5,441,1676.5,675],mapScale:1.3});
   const now=reviewStationBox(d,im,'cyberhell');
   assert.ok(d.bx>1360);
   assert.ok(Math.abs(now.w/old.w-1.3)<1e-12);

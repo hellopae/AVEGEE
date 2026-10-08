@@ -1,7 +1,7 @@
 // Owner's annotated map review, 7 October: visual sizes in the 1678 × 937 world.
 export const MAP_REVIEW_SIZES = {
   dab:[210,180], ngiw:[195,225], krata:[250,180], tarang:[240,170],
-  sala:[230,185], lan:[150,120], krajok:[155,130], sawan:[200,220], frontier:[160,160],
+  sala:[230,185], lan:[150,120], krajok:[210,180], sawan:[200,220], frontier:[160,160],
 };
 export function mapReviewArt(key, zone) {
   return ['th','asia','west','cyberhell'].includes(zone) && MAP_REVIEW_SIZES[key.slice(3)] && key.startsWith('st-')

@@ -37,8 +37,9 @@ const {STORY} = await import('../src/story.js');
 await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
+syncSceneZone('th');
 const original=sites();
-const offsets={lokan:[73,41],krajok:[110,37],dab:[65,5],krata:[0,42]};
+const offsets={lokan:[73,41],krajok:[90,37],dab:[65,5],krata:[0,42]};
 test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',()=>{
   for (const destination of ['th','asia','west','unknown']) {
     syncSceneZone('cyberhell');
@@ -46,7 +47,7 @@ test('30F: CyberHell translations move hits and worker/service points together a
     for (const [key,[dx,dy]] of Object.entries(offsets)) {
       if(key==='krajok') {
         // E1 supersedes the old translation-only tower: moved, scaled hit, door below the stairs.
-        assert.deepEqual(once.krajok,{bx:1560,by:675,x:1530,y:685,hit:[1459.25,480,1660.75,675]});
+        assert.deepEqual(once.krajok,{bx:1540,by:675,x:1510,y:685,hit:[1403.5,441,1676.5,675]});
         continue;
       }
       for (const [field,value] of Object.entries(original[key])) {

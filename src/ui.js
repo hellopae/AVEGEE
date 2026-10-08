@@ -3240,7 +3240,7 @@ function openZone() {
       ${markers}
       <div class="world-travelers" aria-hidden="true">
         <canvas class="yama" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none;background:none"></canvas>
-        <canvas class="nira" width="160" height="160" style="left:${startX - 1.7}%;top:${startY + 1.5}%;width:auto;animation:none"></canvas>
+        <canvas class="nira" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none"></canvas>
       </div>
     </div></div>
     <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
@@ -3302,7 +3302,7 @@ function openZone() {
           (y - yamaLast[1]) * map.clientHeight / 100, yamaDirection);
         yamaLast = [x, y];
         paintYama(done < total ? done * map.clientHeight / 100 : 0);
-        nira.style.left = `${nx - 1.7}%`; nira.style.top = `${ny + 1.5}%`;
+        nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
         if (Math.abs(nx - niraLastX) > .001) niraFace = nx > niraLastX ? 1 : -1;
         niraLastX = nx;
         paintNira(Math.max(0, done - followGap) * map.clientHeight / 100,

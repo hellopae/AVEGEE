@@ -149,7 +149,7 @@ export function makeFrontierWalk(cv, g, opts) {
 
   function step(dt) {
     const beforeX = P.x, beforeY = P.y;
-    const sp = 0.00046 * dt;
+    const sp = 0.00013 * Math.min(dt, 50);
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -158,9 +158,9 @@ export function makeFrontierWalk(cv, g, opts) {
     if (!dx && !dy && P.tx != null) {
       const target=route[0] || [P.tx,P.ty];
       dx = target[0] - P.x; dy = target[1] - P.y;
-      if (Math.hypot(dx,dy)<.006) { route.shift(); if(!route.length) P.tx=null; dx=dy=0; }
+      if (Math.hypot(dx,dy)<.000001) { route.shift(); if(!route.length) P.tx=null; dx=dy=0; }
     }
-    const d = Math.hypot(dx, dy);
+    const d = Math.hypot(dx * box.w / box.h, dy);
     if (d > 0) {
       const stride=Math.min(sp,d), nx=P.x+dx/d*stride, ny=P.y+dy/d*stride;
       const blk = liveBlockers(blockers(), [P.x, P.y]);
@@ -172,11 +172,12 @@ export function makeFrontierWalk(cv, g, opts) {
         replanAt = performance.now() + 250;
         route = frontierPath(g.zone, [P.x,P.y], [P.tx,P.ty], blockers());
       }
+      if (P.tx != null && Math.hypot(P.x - (route[0]?.[0] ?? P.tx), P.y - (route[0]?.[1] ?? P.ty)) < .000001) { route.shift(); if (!route.length) P.tx = null; }
       if (Math.abs(dx) > 0.001) P.face = dx < 0 ? -1 : 1;
     }
     const actualX = (P.x - beforeX) * box.w, actualY = (P.y - beforeY) * box.h;
     if (Math.hypot(actualX, actualY) > .15) {
-      walkDistance += Math.hypot(actualX, actualY) / unit() * 640;
+      walkDistance += Math.hypot(actualX, actualY) * 14 / (unit() * HERO_H * .28);
       direction = walkDirection(actualX, actualY, direction);
       movedAt = performance.now();
     }
