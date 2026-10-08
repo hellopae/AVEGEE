@@ -3,7 +3,7 @@ import { BATTLE } from './data.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
-  image:`img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
+  image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.png' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
 }] });
 export const STORY = {
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),

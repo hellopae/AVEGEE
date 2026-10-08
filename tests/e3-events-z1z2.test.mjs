@@ -22,7 +22,7 @@ for (const right of [true,false]) test(`case five monk → ${right?'praise':'war
  const r=g.judge(st,{soul:monk,intensity:1});assert.equal(!!r.right,right);
  g.applyVerdict(r,monk);assert.equal(g.zoneCases.th,5);
  const key=right?'deva-th-praise':'deva-th-warning';assert.equal(g.storyQueue[0].key,key);
- assert.equal(STORY[key].pages[0].image,'img/deva-intro/deva-intro-th-v1.png');
+ assert.equal(STORY[key].pages[0].image,'img/deva-intro/deva-intro-th-beggar-v2.png');
  assert.equal(g.battle,null);assert.equal(g.inventory.mirror||0,0);
  for(const lang of ['th','en']) {setLang(lang);assert.notEqual(t('deva.th.praise'),t('deva.th.warning'));assert.ok(!t('deva.th.praise').startsWith('deva.'));}setLang('th');
  const saved=reload(g);saved.completeStory();assert.equal(saved.battle.kind,'devaTest');
@@ -98,10 +98,10 @@ test('both deva intro images preload only in their zones and cache version chang
  for(const zone of ['th','asia'])assert.ok(catalog.zones[zone].includes(`img/deva-intro/deva-intro-${zone}-v1.png`));
  assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-e3-events'));
 });
-test('E3-fix: abbot case restored, case five is devaMonk, beggar deva retired from the pool, old saves load',()=>{
+test('temple beggar deity stays separate from the abbot and old saves load',()=>{
  const abbot=ALL_CASES.find(c=>c.k==='monk');
  assert.equal(abbot.name,'เจ้าอาวาสดัง');assert.equal(abbot.kind,'twist');assert.ok(abbot.hidden.length>0);
- const dm=ALL_CASES.find(c=>c.k==='devaMonk');assert.equal(dm.kind,'deva');assert.equal(dm.sp,'soul-monk');
+ const dm=ALL_CASES.find(c=>c.k==='devaMonk');assert.equal(dm.kind,'deva');assert.equal(dm.sp,'soul-deva');assert.equal(dm.name,'ขอทานในวัด');assert.equal(dm.sex,'m');assert.deepEqual(dm.seen,[]);assert.deepEqual(dm.hidden,[]);
  assert.equal(ALL_CASES.some(c=>c.k==='deva'),false);
  // case five (th) is devaMonk and the ordinary pool never yields it or the retired beggar
  const g=createGame();g.zoneCases.th=4;g.casesDone=4;g.zoneEvents.th={prisonBreak:'cleared'};
@@ -122,4 +122,12 @@ test('E3-fix: abbot case restored, case five is devaMonk, beggar deva retired fr
  const mid=createGame();mid.zoneCases.th=4;mid.zoneEvents.th={prisonBreak:'cleared'};
  mid.queue.unshift({id:7003,case:'monk',pure:true,deeds:[],merits:[],lines:[]});
  mid.ensureDevaCase();assert.equal(mid.queue.find(s=>s.id===7003).case,'devaMonk');
+});
+
+test('legacy case-five monk is refreshed as the innocent temple beggar without changing soul id',()=>{
+ const g=createGame();g.zoneCases.th=4;g.zoneEvents.th={prisonBreak:'cleared'};
+ g.queue=[{id:8001,case:'devaMonk',name:'พระจำวัด',who:'พระผู้จำวัด',sex:'monk',sp:'spirit-cleric',pure:true,deeds:[],merits:[],lines:[]}];
+ g.ensureDevaCase();const soul=g.queue[0];
+ assert.equal(soul.id,8001);assert.equal(soul.name,'ขอทานในวัด');assert.equal(soul.sex,'m');assert.equal(soul.sp,'soul-deva');assert.equal(soul.pure,true);assert.deepEqual(soul.deeds,[]);
+ g.ensureDevaCase();assert.equal(g.queue.length,1);
 });

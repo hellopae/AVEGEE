@@ -4921,7 +4921,7 @@ function playSplash() {
   splashEl.classList.add('playing');
   if (splashVideo.error) revealTitle();
   else splashVideo.play().catch(revealTitle);
-  setTimeout(revealTitle, 8000); // ไฟล์หายหรือโหลดช้า ต้องไม่ขวางเมนู
+  setTimeout(revealTitle, 25000); // อินโทรโลโก้ + Yama ประมาณ 19 วินาที; ยังมีปุ่มข้ามและ fallback
 }
 function enterFromTap() {
   enterGate.hidden = true;

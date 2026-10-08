@@ -709,7 +709,7 @@ export function applyI18n(root = document) {
 }
 
 Object.assign(TH, {
-  'trial.devaCaseFirst':'โปรดตัดสินคดีพระจำวัดเป็นคดีที่ห้า',
+  'trial.devaCaseFirst':'โปรดตัดสินคดีขอทานในวัดเป็นคดีที่ห้า',
   'deva.map.test':'ทดสอบฝีมือ',
   'deva.intro.title':'เทวดาเผยกาย',
   'deva.th.praise':'ท่านพิจารณาด้วยความเป็นธรรม สมควรแก่หน้าที่ผู้คุม ขอให้ข้าทดสอบฝีมือท่านสักครู่',
@@ -735,7 +735,7 @@ yama: นายเป็นใคร
   'deva.asia.arrival':'ท่านปราบได้สองตนแล้ว ข้าจะจัดการตนสุดท้ายให้ หากท่านพร้อม โปรดมาพบข้าเพื่อทดสอบฝีมือ',
 });
 Object.assign(EN, {
-  'trial.devaCaseFirst':'Please judge the sleeping monk as your fifth case.',
+  'trial.devaCaseFirst':'Please judge the temple beggar as your fifth case.',
   'deva.map.test':'Test your skill',
   'deva.intro.title':'The deva reveals himself',
   'deva.th.praise':'You have judged fairly and honoured your duty. Please allow me to test your skill.',

@@ -54,6 +54,7 @@ export function soulArchetype(soul) {
 }
 
 export function soulPortrait(soul, zone = 'th') {
+  if (soulIdentity(soul).key === 'devaMonk') return 'soul-deva';
   // All four branches resolve the semantic key through their own art aliases.
   // Keeping old numeric or soul-* keys would reintroduce the original mismatch
   // after Thai restyling (e.g. spirit4 now denotes a male officer).

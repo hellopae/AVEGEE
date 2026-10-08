@@ -76,6 +76,7 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
+  if (key === 'soul-deva') return 'img/soul-deva.png'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   const themed = themeArt(key, z);
   if (themed) return themed;

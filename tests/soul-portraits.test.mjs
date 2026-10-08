@@ -39,7 +39,7 @@ test('large male business roles get their body archetype without changing guilt 
 });
 
 test('Thai and other branches resolve canonical roles consistently after restyling', () => {
-  for (const key of ['girl','boy','nurse','monk','devaMonk']) {
+  for (const key of ['girl','boy','nurse','monk']) {
     assert.equal(soulPortrait(named(key), 'th'), `spirit-${soulArchetype(named(key))}`);
   }
   assert.equal(soulPortrait(named('prophet'), 'th'), 'spirit-cleric');
@@ -112,7 +112,7 @@ test('Thai legacy numbers cannot override sex, age or the case profession', () =
   assert.equal(soulPortrait({ who:'นักเรียนหญิง', sex:'g', sp:10 }, 'th'), 'spirit-girl');
   assert.equal(soulPortrait(named('sister'), 'th'), 'spirit-clerk');
   assert.equal(soulPortrait(named('scapegoat'), 'th'), 'spirit-worker');
-  assert.equal(soulPortrait(named('devaMonk'), 'th'), 'spirit-cleric');
+  assert.equal(soulPortrait(named('devaMonk'), 'th'), 'soul-deva');
   assert.equal(soulPortrait(named('A7'), 'th'), 'spirit-cleric');
   assert.equal(soulPortrait(named('A3'), 'th'), 'spirit-officer');
   assert.equal(soulPortrait(named('A13'), 'th'), 'spirit-officer');

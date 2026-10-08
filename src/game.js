@@ -402,7 +402,7 @@ const API = {
     if (this.zone !== 'th' || this.zoneCases.th !== 4 || this.devaTestStatus() === 'cleared') return;
     // 'monk' pure = soul จาก build E3 ช่วงสั้น ๆ ที่เขียนทับเจ้าอาวาส — ย้ายมาเป็น devaMonk
     const queued = this.queue.find(s => s.case === 'devaMonk' || s.case === 'monk' && s.pure);
-    if (queued && (!queued.pure || queued.case !== 'devaMonk')) {
+    if (queued && (!queued.pure || queued.case !== 'devaMonk' || queued.name !== 'ขอทานในวัด' || queued.sp !== 'soul-deva' || queued.sex !== 'm')) {
       const replacement = applySoulPortrait(mkCaseSoul(ALL_CASES.find(c => c.k === 'devaMonk')), 'th');
       Object.assign(queued, replacement, { id:queued.id });
     }
