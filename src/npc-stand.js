@@ -1,3 +1,4 @@
+import { westRescuePending, westRescueActors } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, DEVA_MAP } from './deva-map.js';
 import { finalEventActors } from './final-event.js';
@@ -8,7 +9,7 @@ import { SPOTS, MOB, MERCHANT, ZONE_EVENTS } from './data.js';
 /** อีเวนต์ที่รออยู่ที่ท่าเรือ (ผู้ท้าทายยืนรอให้ยมบาทเดินไปหา) — scene.js วาด, game.js กันทาง */
 export const waitingEvents = g => {
   const events = (ZONE_EVENTS[g.zone] || []).filter(ev =>
-    ev.k !== 'devaTest' && ev.k !== DEVA_MAP[g.zone]?.key && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
+    ev.k !== 'westHypnotized' && ev.k !== 'devaTest' && ev.k !== DEVA_MAP[g.zone]?.key && g.zoneEventStatus(ev.k) === 'pending' && g.eventMapClosed?.[`${g.zone}:${ev.k}`] &&
     ev.mode !== 'waves' && !/prison/i.test(ev.k) && ev.k !== 'frontierBreach');
   if (g.zone === 'th' && g.devaTestStatus() === 'pending' && g.eventMapClosed?.['th:devaTest'])
     events.unshift({ k:'devaTest', foe:{ sp:'boss-tester-th' } });
@@ -19,6 +20,7 @@ export const waitingEvents = g => {
 
 /** จุดเท้าของทุกตัวที่ยืนนิ่งอยู่ตอนนี้ [[x,y],...] — ยมทูตที่อยู่บนแผนที่ (ไม่ได้ถูกพาไปกับวิญญาณ — เดินอยู่ก็นับ ไม่งั้นไปหยุดทับตัวยมบาทตอนถึงจุดประจำ) · พ่อค้า · ยักษ์ · บอสที่ท่าเรือ · ผู้ท้าทายที่รอ */
 export function standPoints(g) {
+  if (westRescuePending(g)) return westRescueActors(g).map(a => [a.x,a.y]);
   const pts = [];
   for (const c of g.crew || []) {
     if (!actorStanding(c)) continue;

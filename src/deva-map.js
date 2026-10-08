@@ -1,6 +1,8 @@
+import { westDevaPosition } from './west-events.js';
 import { t } from './i18n.js';
 // Reusable deva actors: register another zone here; event keys stay in zoneEvents.
 export const DEVA_MAP = {
+  west:{ key:'westDevaTest', prerequisite:'westVampireBreach', x:1160, y:400 },
   asia:{ key:'asiaDevaTest', prerequisite:'asiaPrisonFire', x:1120, y:400 },
 };
 export const DEVA_DESCENT_MS = 3200;
@@ -11,6 +13,12 @@ export function devaMapActors(g, now = Date.now()) {
   const phase = g.devaVisits?.[g.zone]?.phase;
   const descending = phase === 'descending';
   const waiting = phase === 'waiting' || (!phase && g.zoneEventStatus(def.prerequisite) === 'cleared');
+  if (g.zone === 'west') {
+    const visit = g.devaVisits?.west;
+    if (!visit || !['descending','intro','waiting'].includes(phase)) return [];
+    return [{ ...def, ...westDevaPosition(visit), id:'deva:west', art:'boss-tester', sourceZone:'west',
+      moving:descending, enabled:waiting && g.zoneEventStatus(def.key) === 'pending', label:t('deva.map.test') }];
+  }
   if (!descending && !waiting) return [];
   const progress = descending ? Math.min(1, Math.max(0, (now - (g.devaDescentStartedAt || now)) / DEVA_DESCENT_MS)) : 1;
   return [{ ...def, id:`deva:${g.zone}`, art:g.zone === 'th' ? 'boss-tester-th' : 'boss-tester', sourceZone:g.zone,

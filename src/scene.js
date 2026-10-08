@@ -1,3 +1,4 @@
+import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
@@ -138,12 +139,14 @@ export function render(ctx, g, t, hover, sel) {
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
   if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
 
+  const rescue = westRescuePending(g), frozen = westSpiritsFrozen(g);
+  const soulTime = frozen ? (g.westFreezeAt || 0) : t;
   // Ferry sits in the river; the painted bridge/island occludes it.
   // Draw before characters and buildings so the gate and bridge retain their foreground.
   {
-    const f = SPOTS.ferry, ph = t / 5200, inbound = Math.cos(ph) > 0;
+    const f = SPOTS.ferry, ph = soulTime / 5200, inbound = Math.cos(ph) > 0;
     const fx = f.from[0] + (f.to[0] - f.from[0]) * (Math.sin(ph) + 1) / 2;
-    drawBoat(ctx, fx, f.from[1] + 120, t, inbound ? Math.min(2, g.queue.length) : 0, inbound);
+    drawBoat(ctx, fx, f.from[1] + 120, soulTime, !rescue && inbound ? Math.min(2, g.queue.length) : 0, inbound);
     if (bg) {
       ctx.save(); ctx.beginPath();
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
@@ -184,18 +187,19 @@ export function render(ctx, g, t, hover, sel) {
   }
 
   // ---- คิววิญญาณ ยืนเรียงขึ้นสะพานมาที่แท่นพิพากษา ----
-  g.queue.forEach((s, i) => {
+  (rescue ? [] : g.queue).forEach((s, i) => {
     const p = QUEUE_LINE[i];
     if (!p) return;
     if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
-    drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, t + s.id * 300,
+    drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, soulTime + s.id * 300,
              s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7);
+    if (frozen) tag(ctx, p[0], p[1]-SOUL_H-16, 0, ['!!!','#ff9a7a']);
   });
 
   // วิญญาณที่เพิ่งออกหมายเดินไปสถานีตามเส้นทางที่หาไว้ใน game.js
-  const clock = Date.now();
+  const clock = frozen ? (g.westFreezeAt || Date.now()) : Date.now();
   g.transits = (g.transits || []).filter(v => clock < (v.arriveAt || v.started + v.duration));
-  for (const v of g.transits) {
+  for (const v of (rescue ? [] : g.transits)) {
     const escorted = !!v.pickup;
     const waiting = escorted && clock < v.departAt;
     const crewProgress = escorted ? (clock - v.pickupAt) / (v.departAt - v.pickupAt - 650) : 1;
@@ -206,8 +210,9 @@ export function render(ctx, g, t, hover, sel) {
                                        : pointOnPath(v.outbound, travelProgress)) : null;
     const x = soulAt[0], y = soulAt[1];
     at(y, () => {
-      drawSoul(ctx, x, y, SOUL_H * .82, t + v.id * 300, '#d9eaff', v.sp || 7);
-      if (waiting && v.crew) tag(ctx, x, y - SOUL_H - 12, t,
+      drawSoul(ctx, x, y, SOUL_H * .82, soulTime + v.id * 300, '#d9eaff', v.sp || 7);
+      if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
+      else if (waiting && v.crew) tag(ctx, x, y - SOUL_H - 12, t,
         [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
       else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
     });
@@ -225,7 +230,7 @@ export function render(ctx, g, t, hover, sel) {
   }
 
   // The destination roster is filled only after the walk completes in game.js.
-  for (const walk of (g.afterlifeWalks || []).slice(0, 24)) {
+  for (const walk of (rescue ? [] : g.afterlifeWalks || []).slice(0, 24)) {
     if (walk.zone !== g.zone) continue;
     const [x, y] = afterlifeWalkPosition(walk);
     at(y, () => {
@@ -242,8 +247,9 @@ export function render(ctx, g, t, hover, sel) {
       }
       if (sel?.kind === 'soul' && sel.key === walk.soul.id) ring(ctx, x, y, t, 24);
       drawSoul(ctx, x, y - (exit ? progress * 20 : 0), SOUL_H * .82,
-        t + walk.soul.id * 300, '#d9eaff', walk.soul.sp || 7);
-      if (!exit) tag(ctx, x, y - SOUL_H - 10, t,
+        soulTime + walk.soul.id * 300, '#d9eaff', walk.soul.sp || 7);
+      if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
+      else if (!exit) tag(ctx, x, y - SOUL_H - 10, t,
         [walk.destination === 'prison' ? '⛓️ ไปตะราง'
           : walk.destination === 'gate' ? '🕊️ ไปสวรรค์' : '↩️ กลับคิว', '#f7c371']);
       ctx.restore();
@@ -276,7 +282,7 @@ export function render(ctx, g, t, hover, sel) {
   // ปีศาจบนแผนที่เข้าฉากต่อสู้เสมอ; ลูกไฟใช้ได้เฉพาะในฉากต่อสู้
   // ผีวาดทับอาคารเสมอ (แต่ยังอยู่ใต้ตัวเรา) — เจ้าของเจอ 10 ก.ย. 2569 ว่ามันไปยืนหลังอาคาร
   // แล้วหายไปทั้งตัว ทั้งที่เป็นสิ่งเดียวที่ต้องรีบหาให้เจอ
-  g.mobs.forEach((m, i) => at(1e6 + m.y, () => {
+  (rescue ? [] : g.mobs).forEach((m, i) => at(1e6 + m.y, () => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
     const d = Math.hypot(m.x - g.player.x, m.y - g.player.y);
     const near = d <= MOB.fabReach;
@@ -332,16 +338,10 @@ export function render(ctx, g, t, hover, sel) {
     });
   }
 
-  if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending') {
-    [[1110,465],[1240,535],[1335,615]].forEach(([bx,by], i) => {
-      const x = bx + Math.sin(t / 800 + i * 2) * 18;
-      const y = by + Math.cos(t / 1100 + i * 2) * 9;
-      at(y, () => {
-        mapStandee(ctx, 'mob-skeleton', x, y, 58, t, '💀');
-        if (i === 1) tag(ctx, x, y - 63, t, ['🌀 วิญญาณถูกสะกดจิต', '#c8b4ef']);
-      });
-    });
-  }
+  for (const a of westRescueActors(g)) at(a.y, () => {
+    mapStandee(ctx, a.art, a.x, a.y, 72, t, '⚔️');
+    if (a.id === 'rescue:taan') tag(ctx, a.x, a.y-90, t, [tr('west.rescue.approach'),'#f7c371']);
+  });
 
   // ในโซน 4 ทัณฑ์กับพ่อค้ารออยู่หน้าตะรางจนกว่าจะชนะเทวดาผู้คุม
   if (!g.zoneCaptivesFree()) {
@@ -350,14 +350,14 @@ export function render(ctx, g, t, hover, sel) {
       mapStandee(ctx, MERCHANT.img, 1038, 350, 72, t, '🔒');
       tag(ctx, 1002, 256, t, ['🔒 ช่วยทัณฑ์และพ่อค้า', '#f7c371']);
     });
-  } else at(1e5 + MERCHANT.y, () => {
+  } else if (!rescue) at(1e5 + MERCHANT.y, () => {
     mapStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
   });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
-  if (actorStanding(g.guard)) {
+  if (!rescue && actorStanding(g.guard)) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
     at(g.guard.y, () => {
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
@@ -370,7 +370,7 @@ export function render(ctx, g, t, hover, sel) {
   // ---- ยมทูตในสังกัด — ยืนประจำจุด/เดินเตร็ดเตร่ (เพิ่ม 6 ก.ย. 2569)
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
-  for (const c of g.crew) {
+  for (const c of (rescue ? [] : g.crew)) {
     if (!actorStanding(c)) continue;
     if (c.x == null || c.escort) continue;
     const motion = actorWalkMotion(c, t, g.zone);
@@ -404,7 +404,7 @@ export function render(ctx, g, t, hover, sel) {
     label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
   });
   for (const a of devaMapActors(g)) at(a.y, () => {
-    drawStandee(ctx, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, false, a.sourceZone);
+    drawStandee(ctx, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, !!a.moving, a.sourceZone);
     if (a.enabled) label(ctx, a.label, a.x, a.y + 18, 12, '#f7c371');
   });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
@@ -446,12 +446,12 @@ export function render(ctx, g, t, hover, sel) {
 
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
-  for (const c of g.crew)
+  for (const c of (rescue ? [] : g.crew))
     if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - 34);
 
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
-  if (g.bossUntil && t < g.bossUntil)
+  if (!rescue && g.bossUntil && t < g.bossUntil)
     drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.2, t, '👹');
 
   // ---- ลูกไฟที่เพิ่งฟาด ----
@@ -469,7 +469,8 @@ export function render(ctx, g, t, hover, sel) {
   // อยากดูของจริงให้กดเข้าไปในสถานี (ป๊อปอัปมีฉากของหลังนั้นเอง)
   for (const st of g.stations) {
     if (st.build || !st.slots.length) continue;
-    soulBadge(ctx, g, st, t, sel);
+    if (!rescue) soulBadge(ctx, g, st, frozen ? soulTime : t, sel);
+    if (!rescue && frozen) { const [x,y] = badgePos(st.def); tag(ctx,x,y-BADGE_R-18,0,['!!!','#ff9a7a']); }
   }
 
   if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
@@ -690,11 +691,11 @@ export function hitActor(g, sx, sy) {
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
     return { kind:'bossPending', key:g.zone };
-  if (g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
-  if (g.zone === 'west' && g.zoneEventStatus('westHypnotized') === 'pending' &&
-      [[1110,465],[1240,535],[1335,615]].some(([x,y]) => near(x,y,radius(78))))
+  if (!westRescuePending(g) && g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
+  if (westRescueActors(g).some(a => near(a.x,a.y,radius(60))))
     return { kind:'zoneEvent', key:'westHypnotized' };
   if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
+  if (westRescuePending(g)) return null;
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return g.mobs[i].eventKey
       ? { kind:'eventRaider', key:g.mobs[i].eventKey } : { kind: 'mob', key: i };

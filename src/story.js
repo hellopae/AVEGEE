@@ -8,6 +8,7 @@ const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title
 export const STORY = {
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
+  'deva-west':devaPanel('west', 'deva.west.arrival'),
   'deva-asia':devaPanel('asia', 'deva.asia.arrival'),
   th: { title:'โซน 1 · เพลิงที่ตื่นขึ้น', reward:'flameCharge', pages:[
     panel('th-01','ดาบเพลิงของพี่ใหญ่','เมื่อใกล้พ่ายแพ้ พี่ใหญ่รวบรวมแรงเฮือกสุดท้าย ฟาดดาบเพลิงใส่ยมบาทน้อย'),
