@@ -11,6 +11,7 @@
 
 /** ภาพฝั่งเราที่วาดหันขวามาอยู่แล้ว → ห้ามพลิก */
 export const TEAM_DRAWN_FACING_RIGHT = new Set([
+  'hero-yama-west', 'hero-yama-west-atk-R',
   'crew-guard', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
   'crew-plerng-cyberhell',                                                                    // โซน 4 (ตรงกับคัตซีน 30A ที่หันขวา)
 ]);

@@ -96,7 +96,7 @@ test('breach actors stand on navigable ground with a reachable boss; UI waits fo
 test('both deva intro images preload only in their zones and cache version changed',()=>{
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  for(const zone of ['th','asia'])assert.ok(catalog.zones[zone].includes(`img/deva-intro/deva-intro-${zone}-v1.png`));
- assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-e3-events'));
+ assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-zone3-hypnosis-ui'));
 });
 test('temple beggar deity stays separate from the abbot and old saves load',()=>{
  const abbot=ALL_CASES.find(c=>c.k==='monk');

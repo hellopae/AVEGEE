@@ -10,7 +10,7 @@ globalThis.Image = class {};
 
 test('all story and deva panels exist in the project and preload manifest', () => {
   const panels = Object.values(STORY).flatMap(s => s.pages);
-  assert.equal(panels.length, 25);
+  assert.equal(panels.length, 27);
   const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json', import.meta.url), 'utf8'));
   for (const p of panels) {
     assert.ok(existsSync(new URL('../' + p.image, import.meta.url)), p.image);

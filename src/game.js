@@ -5,6 +5,7 @@ import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './t
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
 import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
+import { mirrorBeam } from './mirror-charge.js';
 import { TEA_BED_COST } from './tea-recovery.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -2484,6 +2485,14 @@ const API = {
     return states;
   },
   zoneEventFoes(ev, wave = 1) {
+    if (ev.k === 'westVampireBreach' && wave === 3) {
+      const chosen = this.battle?.hypnotizedTeam || this.battleCrew();
+      return chosen.map((c,i) => {
+        const hp = scaleFoeHp('west', 65, 'event');
+        return { id:`west-hypnotized-${i}`, who:`${c.name || crewName(c,'west')} · ถูกสะกดจิต`, sub:'ปลดปล่อยลูกทีม', sp:`crew-${c.k}-west`,
+          crewK:c.k, boss:false, hp, maxHp:hp, atk:scaleFoeAtk('west',[10,15],'event'), stun:0, confuse:0 };
+      });
+    }
     const groups = ev.mode === 'waves' ? ev.waves[wave - 1] : ev.foes || [ev.foe];
     const zone = Object.keys(ZONE_EVENTS).find(z => ZONE_EVENTS[z].includes(ev)) || this.zone;
     return (groups || []).flatMap((entry, group) => Array.from({ length:entry.count || 1 }, (_, i) => {
@@ -2500,6 +2509,7 @@ const API = {
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
     if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
+    if (key === 'westVampireBreach' && !this.crewHelpers().length && !this.guardActive()) return null;
     const foes = this.zoneEventFoes(ev, 1);
     if (!foes.length) return null;
     const state = this.zoneEvents[this.zone];
@@ -2507,6 +2517,7 @@ const API = {
     // 29C: ศึกระลอกชายแดนใช้ทีมที่จัดไว้ในหน้าต่างเตรียมทีมที่ชายแดน (เดิมใช้ทีมของโต๊ะนิรา ทำให้ที่เลือกไว้ไม่มีผล)
     const frontierTeam = ev.team === 'frontier'
       ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
+    if (key === 'westVampireBreach' && !frontierTeam.length) frontierTeam.push(...this.crewHelpers().slice(0,2).map(c => c.k));
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
       ...(key === 'westHypnotized' ? { team:['taan'] } : key === 'cyberFinal' ? { team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0, this.teamLimits.finalTeamMax) }
         : frontierTeam.length ? { team:[...frontierTeam] } : {}),
@@ -2514,6 +2525,10 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });
+    if (key === 'westVampireBreach') {
+      const allies = [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])];
+      this.battle.hypnotizedTeam = allies.map(c => ({ k:c.k || 'guard', id:c.id, name:c.k === 'guard' ? GUARD.name : crewName(c,'west') }));
+    }
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
     this.save(); this.onChange(); return this.battle;
@@ -2632,6 +2647,14 @@ const API = {
     // explicit continue button resumes a completed combat stage.
     if (this.zoneEventRestReady() && !resume) return false;
     b.wave = b.pendingWave; b.pendingWave = null;
+    if (ev.k === 'westVampireBreach') {
+      if (b.wave === 3) {
+        b.hypnotizedTeam ||= [...this.battleCrew(), ...(this.guardActive() ? [this.guard] : [])].map(c => ({k:c.k || 'guard',id:c.id,name:c.name}));
+        b.hypnosisAbsentBefore = [...(b.absentActors || [])];
+        b.absentActors = [...new Set([...b.hypnosisAbsentBefore, ...b.hypnotizedTeam.map(c => c.id).filter(Boolean)])];
+        b.storyInterlude = 'west-hypnosis';
+      } else if (b.wave === 4 && b.hypnosisAbsentBefore) b.absentActors = b.hypnosisAbsentBefore;
+    }
     b.foes = this.zoneEventFoes(ev, b.wave);
     b.selectedFoeId = b.foes[0].id; b.counterIndex = 0;
     b.who = b.foes[0].who; b.sub = b.foes[0].sub; b.sp = b.foes[0].sp;
@@ -2639,6 +2662,11 @@ const API = {
     b.dmg = null; b.mid = null; b.helper = null;
     b.talk = `${ev.title.th} — ระลอก ${b.wave}/${ev.waves.length}`;
     this.onChange(); return true;
+  },
+  completeBattleInterlude() {
+    const b=this.battle;
+    if (b?.storyInterlude !== 'west-hypnosis') return false;
+    b.storyInterlude=null; this.save(); return true;
   },
   startDevaTest() {
     if (this.zone !== 'th' || this.battle || this.over || this.devaTestStatus() !== 'pending' ||
@@ -2803,7 +2831,7 @@ const API = {
   battleAct(what, command = null) {
     const B = this.battle;
     if (typeof what !== 'string') return false;
-    if (!B || B.over || B.pendingWave || B.commandBusy) return false;
+    if (!B || B.over || B.pendingWave || B.storyInterlude === 'west-hypnosis' || B.commandBusy) return false;
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
     const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
     if (command && !actor) return false;
@@ -3847,6 +3875,16 @@ const API = {
 
   /** ข้อ A-2 คุณเป้ 24 ก.ย. 2569 — คุยกับกานต์ในหอส่องกรรม รับกระจกวิเศษฟรีเป็นระยะ (แทนของวางพื้นเดิม)
    *  ต้องยืนใกล้กานต์ในห้องก่อน (ui.js เช็ค inside ก่อนโชว์ปุ่ม) · คูลดาวน์นับเป็น "วาระ" เหมือน visit เดิมทุกที่ */
+  chargeMirror(angle, aspect = 16/9) {
+    const st = this.stations.find(s => s.def.k === 'krajok' && !s.build);
+    const p = this.powerOf('mirror');
+    if (!st || this.powerLocked(p) || p.ammo >= p.max || this.tick < (st.kanCd || 0) || !Number.isFinite(angle) || !Number.isFinite(aspect) || aspect <= 0 || !mirrorBeam(angle, aspect).hit) return false;
+    p.ammo = Math.min(p.max, p.ammo + 1);
+    st.kanCd = this.tick + KRAJOK.kanCool;
+    this.discover('item','mirror');
+    this.log('🪞 แสงสะท้อนถึงกระจกวิเศษ — เติมพลัง +1','good');
+    this.save(); this.onChange(); return true;
+  },
   talkKan() {
     const st = this.stations.find(s => s.def.k === 'krajok');
     if (!st || st.build) return false;

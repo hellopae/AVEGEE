@@ -5,7 +5,7 @@ const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
 async function catalog() {
-  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261008-e3-events-e4-e5-beggar-intro-ice-walking-v2-ending-video', { cache:'no-cache' })
+  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261008-zone3-hypnosis-ui-mirror-charge', { cache:'no-cache' })
     .then(async ({response:r, release}) => {
       try { if (!r.ok) throw new Error('catalog unavailable'); return await r.json(); }
       finally { release(); }
@@ -33,6 +33,9 @@ function choose(el, text) {
   });
 }
 async function run(zone, outfit, boot) {
+  let list;
+  try { list = [...zoneAssets(await catalog(), zone, outfit), 'audio:bgm-title','audio:bgm-zone','audio:bgm-battle']; } catch {}
+  if (list && !queue.missing(list).length) { boot?.remove(); return; }
   const el = screen(boot);
   const siblings = boot ? [...document.body.children].filter(n => n !== boot && !n.inert) : [];
   siblings.forEach(n => { n.inert = true; });
@@ -41,8 +44,8 @@ async function run(zone, outfit, boot) {
       el.querySelector('.note').textContent = `เรือข้ามฟากกำลังพาดวงวิญญาณมาสู่${LABELS[zone] || LABELS.th}…`;
       let failed;
       try {
-        const list = zoneAssets(await catalog(), zone, outfit);
-        failed = await queue.run([...list, 'audio:bgm-title', 'audio:bgm-zone', 'audio:bgm-battle'], ({done,total,failed}) => {
+        list ||= [...zoneAssets(await catalog(), zone, outfit), 'audio:bgm-title','audio:bgm-zone','audio:bgm-battle'];
+        failed = await queue.run(queue.missing(list), ({done,total,failed}) => {
           const percent = total ? Math.round(done / total * 100) : 0;
           el.querySelector('.bar i').style.width = `${percent}%`;
           el.querySelector('.pct').textContent = `${percent}% · ${done}/${total}${failed ? ` · ต้องลองใหม่ ${failed}` : ''}`;

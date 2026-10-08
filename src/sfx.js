@@ -66,6 +66,8 @@ const BANK = {
   crack:  () => { noise({ t:0.07, vol:0.3, hp:3200 });
                   tone({ f:1400, f2:600, t:0.18, type:'triangle', vol:0.2 }); },
   deny:   () => tone({ f:150, f2:120, t:0.16, type:'square', vol:0.22 }),
+  item: () => { [784,1047,1568].forEach((f,i) => tone({f,t:.28,type:'sine',vol:.25,delay:i*.10})); },
+  levelup: () => { [523,659,784,1047,1319].forEach((f,i) => tone({f,t:.42,type:'triangle',vol:.27,delay:i*.12})); },
   star:   () => { [880, 1108, 1318].forEach((f, i) =>
                     tone({ f, t:0.5, type:'sine', vol:0.28, delay:i * 0.09 })); },
   hurt:   () => { tone({ f:200, f2:52, t:0.5, type:'sawtooth', vol:0.34 });

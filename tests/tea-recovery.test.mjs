@@ -35,7 +35,7 @@ test('tea backgrounds fill desktop and portrait canvases without distorting thei
   assert.ok(Math.abs(b.w/b.h-1536/864)<1e-9);
  }
 });
-test('tea restores only MP; sleep waits five seconds, blacks out and wakes with full HP',()=>{
+test('tea restores only MP; sleep gradually restores HP without blackout and wakes fully recovered',()=>{
  const prevWindow=globalThis.window,prevDocument=globalThis.document;
  const noop=()=>{}; const ctx=new Proxy({}, {get:(obj,key)=>key in obj?obj[key]:key==='measureText'?()=>({width:0}):()=>new Proxy({}, {get:()=>noop})});
  globalThis.window={addEventListener:noop,removeEventListener:noop};
@@ -60,16 +60,15 @@ test('tea restores only MP; sleep waits five seconds, blacks out and wakes with 
   assert.equal(R.setSleep(),false);assert.equal(R.setSleep(true),true);
   assert.equal(R.setSit(true),false);
   assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);
-  R.tick(TEA_SLEEP_MS-1);assert.equal(g.hp,1);assert.equal(R.sleeping(),true);
-  R.tick(1);assert.equal(R.sleepPhase(),'blackout');assert.equal(g.hp,1);
-  R.tick(TEA_BLACKOUT_MS);assert.equal(g.pendingRecovery.stage,'wake');assert.equal(g.hp,1);
+  R.tick(TEA_SLEEP_MS/2);assert.ok(g.hp>1 && g.hp<g.hpMax);assert.equal(R.sleepPhase(),'sleep');
+  R.tick(TEA_SLEEP_MS/2);assert.equal(TEA_BLACKOUT_MS,0);assert.equal(R.sleepPhase(),'wake');assert.equal(g.pendingRecovery.stage,'wake');assert.equal(g.hp,g.hpMax);
   R.tick(TEA_WAKE_MS);assert.equal(g.hp,g.hpMax);assert.equal(R.sleeping(),false);assert.equal(g.pendingRecovery,null);
   for (const stage of ['sleep','wake']) {
    const resumed=game();g.hp=1;g.pendingRecovery={zone:'th',stage};resumed.restore(g.snapshot());
    const room=makeRoom(cv,resumed,STATIONS.find(d=>d.k==='tea'),teaRoom(),'img/tea-th-recovery.png',null);
    assert.equal(room.setSleep(true),true);
    const remaining=stage==='wake'?TEA_WAKE_MS:TEA_REST_TOTAL_MS;
-   room.tick(remaining-1);assert.equal(resumed.hp,1);room.tick(1);
+   room.tick(remaining-1);assert.ok(resumed.hp>1);assert.equal(room.sleeping(),true);room.tick(1);
    assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
   }
   g.pendingRecovery=null;

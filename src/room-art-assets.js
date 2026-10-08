@@ -1423,7 +1423,7 @@ export function wideStationRoom(zone, key) {
   if (!art) return null;
   return {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
-    me:[...art.entrance], crew:[...art.crew], souls:art.displaySlots.map(p => [...p]),
+    me:[...art.entrance], crew:[...art.crew], souls:art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
     act:key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
     training:art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
     actions:[[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},

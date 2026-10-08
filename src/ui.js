@@ -1,3 +1,4 @@
+import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js';
@@ -1775,6 +1776,16 @@ function openDadPunish(p) {
 }
 
 let helpPage = 0;
+function guideCards(html) {
+  const template = document.createElement('template'); template.innerHTML = html;
+  const title = template.content.querySelector('h3');
+  const heading = title?.textContent || 'สิ่งที่ควรรู้'; title?.remove();
+  for (const p of template.content.querySelectorAll('p')) {
+    const tile=document.createElement('div');tile.className='guide-tile';tile.innerHTML=p.innerHTML;p.replaceWith(tile);
+  }
+  const content = template.innerHTML;
+  return `<section class="guide-card"><h3>${esc(heading)}</h3>${content}</section>`;
+}
 function openHelp() {
   modal(`<div class="help-source" hidden><h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
@@ -1842,7 +1853,7 @@ function openHelp() {
         helpPage = Math.max(0, Math.min(total - 1, next));
         reader.innerHTML = `
           <article class="help-page">${helpPage === 0 ? intro
-          : `<p class="help-chapter">ข้อ ${helpPage}</p><div class="help-item">${items[helpPage - 1]}</div>`}</article>
+          : `<p class="help-chapter">ข้อ ${helpPage}</p><div class="help-item guide-card-grid">${guideCards(items[helpPage - 1])}</div>`}</article>
           <nav class="help-nav" aria-label="หน้าคู่มือ">
             <button type="button" data-help-prev ${helpPage === 0 ? 'disabled' : ''}>◀ ก่อนหน้า</button>
             <span class="help-count" aria-live="polite">${helpPage + 1} / ${total}</span>
@@ -2014,7 +2025,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
-      <img src="${youImg}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
+      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
@@ -2319,10 +2330,10 @@ function openTrial(initialError = '') {
       guide.className = 'court-guide';
       guide.innerHTML = `<button class="guide-close" aria-label="${esc(t('common.close'))}"><img src="img/ui/icon-close.png" alt=""></button><h2>คู่มือนรก</h2>
         <p>กติกาของอเวจี · อ่านสำนวน → ไต่สวน → เลือกสถานที่ ผู้คุม และความแรง → ออกหมาย</p>
-        ${sentencingChapters.join('')}
+        <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
-        ${clockGuide}
-        ${CREW.filter(c=>!c.reader).map(c=>`<p><b>${esc(crewName(c, g.zone))}</b> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p>`).join('')}
+        <div class="guide-card-grid">${guideCards(clockGuide)}</div>
+        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card"><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
       guide.querySelector('button').onclick=()=>guide.close();
@@ -2741,11 +2752,12 @@ function openBattle(after) {
     const b = g.battle;
     if (!b || storyActive) return;
     if (b.storyInterlude) {
-      const key = b.storyInterlude; b.storyInterlude = null;
+      const key = b.storyInterlude;
       storyActive = true;
       const overlay = document.createElement('div');
       overlay.className = 'story-battle-overlay'; dlg.replaceChildren(overlay);
       renderStoryComic(overlay, STORY[key], () => {
+        if (key === 'west-hypnosis') g.completeBattleInterlude(); else { b.storyInterlude = null; g.save(); }
         overlay.remove(); storyActive = false; phase = null; fxNow = null; paint();
       });
       return;
@@ -3035,10 +3047,8 @@ function openBattle(after) {
         const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
         if (!area.width || !rect.width) return;
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
-        const cx = rect.left - area.left + rect.width * 0.5 + w * 0.65, cy = rect.top - area.top + rect.height * 0.4;
-        const hero = stage.querySelector('.fig.you')?.getBoundingClientRect();
-        const front = hero ? hero.right - area.left + 12 : 0;
-        const left = Math.max(0, Math.min(area.width - w, Math.max(front, cx - w * 0.41)));
+        const cx = rect.left - area.left + rect.width * 0.5, cy = rect.top - area.top + rect.height * 0.4;
+        const left = Math.max(0, Math.min(area.width - w, cx - w * 0.41));
         const top = Math.max(0, Math.min(area.height - h, cy - h * 0.505 - Math.max(48, Math.min(84, area.height * 0.075))));
         wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.bottom = 'auto';
       };
@@ -3855,7 +3865,7 @@ function openStation(k, emergency = false) {
   const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
-  let trainingQuit = null;
+  let trainingQuit = null, mirrorCharge = null;
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
@@ -3929,15 +3939,15 @@ function openStation(k, emergency = false) {
         const name = esc(x.soul.name || x.soul.who);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name} · ${esc(x.checked ? t('room.karmaLeft').replace('{n}', x.karmaLeft) : t('room.gateWait'))}`;
         return row(label, x.checked
-          ? `<button class="btn-gold" data-gate-send="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t(x.karmaLeft > 0 ? 'room.toReborn' : 'room.toSky'))}</button>`
-          : `<button class="btn-gold" data-gate-check="${x.soul.id}" ${inside ? '' : 'disabled'}>${esc(t('room.gateCheck'))}</button>`);
+          ? `<button class="btn-gold" data-gate-send="${x.soul.id}">${esc(t(x.karmaLeft > 0 ? 'room.toReborn' : 'room.toSky'))}</button>`
+          : `<button class="btn-gold" data-gate-check="${x.soul.id}">${esc(t('room.gateCheck'))}</button>`);
       }).join('');
       // ปุ่มของเกมที่แบบไม่มี: ดอกบัว + มินิเกมเร่งประตู — คงไว้ในแผงเดียวกัน
       // 29C: แถว "ให้ดอกบัว" แยกออกไปเป็นปุ่มลอยข้างบุญ (ดู npcTags ด้านล่าง) — หน้าต่างนี้เหลือรายการรอตรวจ + มินิเกม
       drawer = `<div class="st-pane" data-pane="inspect">
           <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
           <div class="st-pane-title">${esc(t('room.gateTitle').replace('{n}', arrivals.length))}</div>
-          ${arrivals.length && !inside ? note(t('room.nearBoon')) : ''}${rows}
+          ${rows}
           ${mgOn ? row(esc(mgWhy || t('room.mgNote')),
             `<button class="btn-gold" data-mg="${k}" ${mgReady ? '' : 'disabled'}>${esc(t('room.mgBtn').replace('{n}', st.speedLv || 0))}</button>`) : ''}
         </div>`;
@@ -3963,7 +3973,7 @@ function openStation(k, emergency = false) {
     if (A) {
       const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
       const mp = k === 'krajok' ? g.powerOf('mirror') : null;
-      const kanLeft = Math.max(0, (st.kanCd || 0) - g.tick);
+
       const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
@@ -3975,11 +3985,9 @@ function openStation(k, emergency = false) {
           !R?.sitting() && (!inside || g.mp >= g.mpMax),
           !R?.sitting() ? (g.mp >= g.mpMax ? 'MP เต็มแล้ว / MP full' : !inside ? t('room.nearTea') : '') : ''],
       ] : k === 'krajok' ? [
-        ['room.krajok.action', 'room.krajok.hint', () => { if (g.talkKan()) { sfx('crack'); panels(); refresh(); } },
-          !inside || g.powerLocked(mp) || mp.ammo >= mp.max || kanLeft > 0,
-          g.powerLocked(mp) ? t('room.kanLocked').replace('{lv}', LEVELS[mp.lv - 1].name)
-            : !inside ? t('room.nearKan') : mp.ammo >= mp.max ? t('room.kanFull')
-            : kanLeft ? t('room.kanWait').replace('{n}', kanLeft) : ''],
+        ['ปรับองศา', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed(), ''],
+        ['วางกระจก', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
+          g.powerLocked(mp) ? 'รับกระจกวิเศษจากเทวดาก่อน' : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
       if (k === 'tea') {
         const owned = !!g.teaBeds[g.zone], asleep = R?.sleeping();
@@ -3988,19 +3996,20 @@ function openStation(k, emergency = false) {
           null, () => { if (owned) R.setSleep(); else g.buyTeaBed(); panels(); },
           !!asleep || !!R?.sitting() || (owned ? !R?.nearBed() || g.hp >= g.hpMax
             : g.coin < TEA_BED_COST || !g.stations.some(st => st.def.k === 'tea' && !st.build)),
-          asleep ? 'นอน 5 วินาที แล้วลุกพร้อม HP เต็ม' : owned ? (R?.nearBed() ? 'นอน 5 วินาที → จอดำ → ลุกขึ้นพร้อม HP เต็ม' : 'เดินไปที่นอนก่อน')
-            : 'อัปเกรดประจำโซน · นอน 5 วินาที → จอดำ → ลุกขึ้นพร้อม HP เต็ม']);
+          asleep ? 'HP ค่อย ๆ ฟื้นระหว่างนอน' : owned ? (R?.nearBed() ? 'HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที' : 'เดินไปที่นอนก่อน')
+            : 'อัปเกรดประจำโซน · HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที']);
       }
-      const hpLine = k === 'tea' ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>
-          <span class="st-hp">${esc(t('trial.hp'))} <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span><span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>` : '';
+      const resourceLine = i => k !== 'tea' ? '' : i === 1
+        ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${100*g.hp/g.hpMax}%"></i></span><span class="st-hp">HP <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>`
+        : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
-        const [u, v] = room.actions?.[i] || [0.5, 0.5];
-        const [ax, ay] = k === 'tea' && R ? R.anchor(u, v) : [u*100,v*100];
+        const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_LAYOUT.pivot[0], MIRROR_LAYOUT.pivot[1]-.15] : [MIRROR_LAYOUT.target[0], MIRROR_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
+        const [ax, ay] = (k === 'tea' || k === 'krajok') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
-        const sub = why || (hint ? t(hint) : '');
+        const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
           <button class="btn-gold" data-room-action="${i}" ${disabled ? 'disabled' : ''}>${esc(t(label))}</button>
-          ${sub ? `<small>${esc(sub)}</small>` : ''}${i === 0 ? hpLine : ''}
+          ${sub ? `<small>${esc(sub)}</small>` : ''}${resourceLine(i)}
         </div>`;
       }).join(''));
       A.querySelectorAll('[data-room-action]').forEach(b => b.onclick = specs[+b.dataset.roomAction][2]);
@@ -4017,10 +4026,10 @@ function openStation(k, emergency = false) {
       }
       if (k === 'sawan' && room.crew) {
         const lotus = g.inventory.lotus || 0;
-        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : !inside ? t('room.nearBoon') : '';
-        const boonX = room.crew[0] + (st.crewK === 'boon' ? 0.13 : 0);
-        const [ax, ay] = R.anchor(boonX + 0.075, room.crew[1], R.crewHeight * 0.55);
-        tags.push({ id:'lotus', ax, ay, pos:'side', label:t('room.lotus'), hint:why || t('room.lotusHint').replace('{n}', lotus), disabled:!!why });
+        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : '';
+        const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
+        const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
+        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:'', disabled:!!why });
       }
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
@@ -4343,6 +4352,15 @@ function openStation(k, emergency = false) {
     if (near === wasNear && trainingNear === wasTrainingNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
     wasNear = near; wasTrainingNear = trainingNear; panels();
   };
+  if (k === 'krajok') {
+    mirrorCharge = mountMirrorCharge(dlg.querySelector('.st-room'), {
+      anchor:(...p) => R.anchor(...p), alive:mine, onState:panels,
+      canPlace:() => !g.powerLocked(g.powerOf('mirror')),
+      canCharge:() => { const st=stationHere(), p=g.powerOf('mirror'); return !!st && !g.powerLocked(p) && p.ammo<p.max && g.tick >= (st.kanCd || 0); },
+      onCharge:(angle,aspect) => { const ok=g.chargeMirror(angle,aspect); if(ok) {sfx('item');panels();refresh();} return ok; },
+    });
+    onDlgClose(() => mirrorCharge.destroy());
+  }
   R.start();
   window.__room = R;            // ไว้ส่องตอนดีบักในเบราว์เซอร์ เหมือน window.G
   const noSleepExit = e => { if (R.sleeping()) e.preventDefault(); };
@@ -4391,7 +4409,7 @@ function openBuild(def) {
  *  (g.level ถูกบวกไปแล้วตอนเรียกถึงตรงนี้ ขั้นก่อนหน้าจึงเป็น g.level - 2) */
 function openLevelUp(lv) {
   pauseForDlg();
-  sfx('star');
+  sfx('levelup');
   const prev = LEVELS[g.level - 2];
   const zonesNew = g.pendingZoneOpen || [];
   g.pendingZoneOpen = null;                 // บอกในกล่องนี้แล้ว ไม่ต้องเด้งซ้ำอีกกล่อง
@@ -4529,6 +4547,7 @@ function openDiscovery() {
   const def = kind === 'item' ? ITEMS[k] : kind === 'power' ? POWERS.find(p => p.k === k) : ABILITY_REWARDS[k];
   if (!def) { g.acknowledgeDiscovery(id); return; }
   pauseForDlg();
+  sfx('item');
   const icon = kind === 'item' ? itemImg(k, 'style="width:96px;height:96px;object-fit:contain"')
     : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.png' : `img/fx-${k}.png`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
   modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(def.name)}</h2>
@@ -4857,6 +4876,7 @@ function openSettings() {
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
       </div>
     </div>
+    <button id="s-mute" type="button" aria-pressed="${!AUDIO.on}">${AUDIO.on ? '🔊 ปิดเสียง / Mute' : '🔇 เปิดเสียง / Unmute'}</button>
     <div class="hint" data-t="settings.audioHint"></div>
 
     <div class="settings-lang">
@@ -4886,6 +4906,12 @@ function openSettings() {
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
+      d.querySelector('#s-mute').onclick = e => {
+        AUDIO.on = !AUDIO.on; syncBgm(); saveAudio(); drawMute();
+        e.currentTarget.setAttribute('aria-pressed', String(!AUDIO.on));
+        e.currentTarget.textContent = AUDIO.on ? '🔊 ปิดเสียง / Mute' : '🔇 เปิดเสียง / Unmute';
+        if (AUDIO.on) { unlock(); sfx('stamp'); }
+      };
 
       // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
       d.querySelector('#s-lang-toggle').onclick = e => {

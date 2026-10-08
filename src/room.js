@@ -1,7 +1,7 @@
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
-import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, roomImageBox } from './tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
@@ -145,7 +145,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
    *  ลุกเองอัตโนมัติเมื่อเต็ม · ผู้เล่นกด "ลุกขึ้น" เองก่อนเต็มก็ได้ (ui.js เรียก api.setSit(false)) */
   const canSit = def.k === 'tea';
   let sitting = false, sipAt = 0, sipping = false;
-  let lying = false, sleepElapsed = 0, recoverySleep = false;
+  let lying = false, sleepElapsed = 0, recoverySleep = false, sleepStartHp = 0;
   const mpAcc = { frac:0 };   // เศษ MP ที่ยังไม่ครบหน่วย (ข้อ 5 ชุด 30B)
   // ข้อ 7 ใบงานชุดที่ 9 (มินิเกม "เร่งการทำงาน") — ระหว่างมินิเกมเปิดทับอยู่ ห้องนี้ต้อง
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
@@ -247,7 +247,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (!canSit || lying || sitting || (!emergency &&
         (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
-    sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS + TEA_BLACKOUT_MS : 0;
+    sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
+    sleepStartHp = g.hp;
     P.x = room.bed[0]; P.y = room.bed[1]; P.tx = null; P.ty = null;
     return true;
   }
@@ -255,6 +256,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   function step(dt) {
     if (lying) {
       sleepElapsed += dt;
+      g.hp = teaRecoveredHp(sleepStartHp, g.hpMax, sleepElapsed);
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
       if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
@@ -388,6 +390,20 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.font = `${Math.max(12,U*.023)}px sans-serif`; ctx.textAlign = 'center';
       ctx.fillStyle = '#ffe29a'; ctx.fillText('จุดฝึก',px(x),py(y)+U*.045);
     }
+    const chains = (x,y) => {
+      if(def.k !== 'tarang') return;
+      ctx.save();ctx.strokeStyle='#a7a4a1';ctx.lineWidth=Math.max(1,U*.0018);
+      for(const side of [-1,1]) {
+        const ax=x+side*U*.025, ay=y-U*SOUL_H*.42;
+        const bx=x+side*U*.065, by=y+U*.012;
+        for(let i=0;i<10;i++) {
+          const f=i/9, lx=ax+(bx-ax)*f, ly=ay+(by-ay)*f+Math.sin(f*Math.PI)*U*.012;
+          ctx.beginPath();ctx.ellipse(lx,ly,U*.004,U*.0025,i%2?Math.PI/3:-Math.PI/3,0,Math.PI*2);ctx.stroke();
+        }
+        ctx.beginPath();ctx.ellipse(ax,ay,U*.008,U*.003,0,0,Math.PI*2);ctx.stroke();
+      }
+      ctx.restore();
+    };
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
     (st ? st.slots : []).forEach((sl, i) => {
@@ -396,6 +412,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
         drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
+        chains(x,y);
         const p = Math.min(1, sl.progress / sl.need);
         const bw = U * 0.09, bh2 = Math.max(4, U * 0.011);
         ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - bw / 2, y + U * 0.012, bw, bh2, bh2 / 2); ctx.fill();
@@ -421,6 +438,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
                    entry.inspected || entry.checked ? '#d4f9cf' : '#ffd9c0', entry.soul.sp || 7);
+          chains(x,y);
           if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
           else label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
@@ -526,12 +544,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
-    if (lying && sleepElapsed >= TEA_SLEEP_MS) {
-      const phase = teaSleepPhase(sleepElapsed);
-      ctx.save(); ctx.globalAlpha = phase === 'blackout' ? Math.min(1,(sleepElapsed-TEA_SLEEP_MS)/200)
-        : Math.max(0,1-(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
-      ctx.fillStyle='#000'; ctx.fillRect(0,0,cv.width,cv.height); ctx.restore();
-    }
+
   }
 
   function frame(now) {

@@ -1,0 +1,33 @@
+
+/* October UI revision: compact text with readable Thai line height and touch targets. */
+.st-hud .st-card{max-width:300px;padding:14px 16px;border-radius:14px}
+.st-hud .st-card h2{font-size:clamp(16px,1.3vw,21px);margin-bottom:6px}
+.st-hud .st-card p{font-size:clamp(12px,.95vw,15px);line-height:1.6}
+.st-hud .btn-gold{font-size:clamp(12px,1vw,16px);min-height:40px;height:auto;padding:7px 16px;min-width:0;border-radius:10px}
+.st-hud .st-drawer{width:min(390px,42%);max-height:62%;overflow:auto;border-radius:16px}
+.st-hud .st-pane{padding:14px}
+.st-hud .st-pane-title{font-size:14px;padding-right:36px;margin-bottom:12px}
+.st-hud .st-row{font-size:13px;padding:10px;gap:10px;border-radius:10px;margin:6px 0;line-height:1.5}
+.st-hud .st-row>span{min-width:0;overflow-wrap:anywhere}
+.st-hud .st-row button{flex-shrink:0;font-size:12px;padding:6px 10px}
+.st-hud .st-npc-tag small,.st-hud .st-action small{font-size:11px}
+.st-hud .st-hp{font-size:12px}.st-hud .st-hpbar{width:140px;height:5px;margin-top:10px}
+.st-hud .st-npc-tag.above{transform:translate(-50%,-100%)}
+dialog:not(.intro-comic-dialog):not(.rpg):not(.station-room) h2{font-size:clamp(18px,1.6vw,24px)}
+dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
+.guide-card-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
+.guide-card{padding:16px;background:#34212c;border:1px solid #98713d;border-radius:14px;min-width:0}
+.guide-card h3{font-size:16px;line-height:1.5;margin:0 0 12px;color:#efcd89}
+.guide-tile{padding:12px;border-radius:10px;background:#201720;margin-top:8px;font-size:13px;line-height:1.75}
+.guide-equation{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:8px}
+.guide-equation b{padding:8px;border-radius:8px}.eq-karma{background:#6f3036;color:#ffc1bc}.eq-merit{background:#245949;color:#beefd4}.eq-relief{background:#304f70;color:#c2e6ff}
+.severity-scale{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}.severity-scale span{padding:6px 8px;border-radius:7px;background:#414760;color:#eaf0ff}.severity-scale span:nth-child(2){background:#245949}.severity-scale span:nth-child(3){background:#735a27}.severity-scale span:nth-child(4){background:#79402f}.severity-scale span:nth-child(5){background:#733341}
+.court-guide{width:min(1000px,94vw);max-height:88vh}.court-guide>p{font-size:13px}.court-guide table{font-size:13px;margin-top:16px}
+.help-item.guide-card-grid{max-width:850px;margin:auto}.help-page{font-size:14px}
+.mirror-charge-layer{position:absolute;inset:0;pointer-events:none;z-index:2}.mirror-charge-layer svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 4px #ffd16d)}
+.placed-mirror{position:absolute;transform:translate(-50%,-50%);width:5%;min-width:30px;filter:drop-shadow(0 0 10px #ffe49b)}.placed-mirror.charged{filter:drop-shadow(0 0 18px #8fffff)}
+.mirror-charge-controls{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);z-index:8;width:min(420px,86%);padding:12px 16px;border:1px solid #c39454;border-radius:14px;background:#211624f5;font-size:12px;box-sizing:border-box}
+.mirror-charge-controls label{display:block}.mirror-charge-controls output{float:right;color:#ffe5a5}.mirror-charge-controls input{width:100%;margin:10px 0;accent-color:#efc574}.mirror-charge-stepper{display:flex;gap:6px;justify-content:center}.mirror-charge-stepper button{min-height:40px;font-size:12px;padding:6px 12px}.mirror-charge-controls progress{width:100%;height:8px;margin:10px 0;accent-color:#81efff}.mirror-charge-controls small{display:block;font-size:12px;line-height:1.5}
+@media(max-width:700px){.st-hud .st-drawer{width:90%;max-height:65%;right:5%;top:16%}.st-hud .st-card{max-width:200px;padding:10px}.st-hud .st-row{font-size:12px;flex-wrap:wrap}.st-hud .st-row button{margin-left:auto}.st-hud .btn-gold{min-height:44px;font-size:12px}.st-hud .st-hpbar{width:100px}}
+.sentence-color-cards{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.sentence-color-cards b{display:block;padding:10px 16px;border:1px solid;border-radius:10px;background:#ffffff08;min-width:58px;text-align:center}
+.court-guide>.guide-card{margin-top:12px;font-size:13px;line-height:1.65}

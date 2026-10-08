@@ -17,7 +17,9 @@ globalThis.document = { documentElement:{} };
 function west() { const g=createGame();g.bossCleared.asia=true;assert.equal(g.moveZone('west'),true);return g; }
 function reload(g) { const copy=createGame();copy.restore(JSON.parse(JSON.stringify(g.snapshot())));return copy; }
 function win(g) {
+ g.battle.youHp=100000;
  for(let n=0;g.battle && !g.battle.over && n<30;n++) {
+  if(g.battle.storyInterlude === 'west-hypnosis') {g.completeBattleInterlude();continue;}
   if(g.battle.pendingWave) {g.advanceZoneEventWave();continue;}
   const foe=g.battle.foes.find(f=>f.hp>0);foe.hp=1;g.battle.selectedFoeId=foe.id;
   assert.equal(g.battleAct('atk'),true);
@@ -54,11 +56,11 @@ test('case 3 freezes all walkers and management until vampire win; thaw resumes 
  win(g);assert.equal(g.abilities.hypno,true);assert.equal(westSpiritsFrozen(g),false);
  g.advanceAfterlife(100);assert.equal(g.afterlifeWalks[0].elapsed,350);
 });
-test('vampire approach uses zone art and existing intro; three waves and reward remain',()=>{
+test('vampire approach uses zone art and existing intro; two minion waves, hypnotized party wave, then vampire reward',()=>{
  const actors=breachApproachActors('west','westVampireBreach');assert.equal(actors.length,3);
  assert.equal(actors[0].art,'boss-frontier');
  assert.equal(frontierIntroduction('west','en').image,'img/frontier-west-intro-v1.png');
- const ev=ZONE_EVENTS.west[1];assert.equal(ev.waves.length,3);assert.equal(ev.waves[2][0].sp,'boss-frontier-west');assert.equal(ev.reward.ability,'hypno');
+ const ev=ZONE_EVENTS.west[1];assert.equal(ev.waves.length,4);assert.equal(ev.waves[2][0].crew,'taan');assert.equal(ev.waves[3][0].sp,'boss-frontier-west');assert.equal(ev.reward.ability,'hypno');
 });
 test('case 7: run from bottom → saved intro with five bilingual lines → move right → wait → fight → spear once',()=>{
  let g=rescued();g.zoneEvents.west.westVampireBreach='cleared';g.zoneCases.west=7;g.refreshZoneEvents();
@@ -86,7 +88,7 @@ test('west intro preloads in west only; new cache token and rescue proximity UI 
  const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
  const path='img/deva-intro/deva-intro-west-v1.png';assert.ok(catalog.zones.west.includes(path));assert.ok(!catalog.shared.includes(path));
  for(const z of ['th','asia','cyberhell']) assert.ok(!catalog.zones[z].includes(path));
- const preload=readFileSync(new URL('../src/preload.js',import.meta.url),'utf8');assert.ok(preload.includes('20261008-e3-events-e4'));
+ const preload=readFileSync(new URL('../src/preload.js',import.meta.url),'utf8');assert.ok(preload.includes('20261008-zone3-hypnosis-ui'));
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');assert.ok(ui.includes("g.startZoneEvent('westHypnotized')"));assert.ok(ui.includes('white-space:pre-line'));
 });
 test('frozen transit deadlines resume from same point and vampire loss leaves spirits frozen',()=>{

@@ -34,7 +34,8 @@ export function createAssetQueue(load, lanes = 3) {
     pending.set(url, task);
     try { await task; } finally { pending.delete(url); }
   }
-  return { async run(urls, progress = () => {}) {
+  return { missing: urls => [...new Set(urls)].filter(url => !ready.has(url)),
+    async run(urls, progress = () => {}) {
     const list = [...new Set(urls)], failed = [];
     let next = 0, done = 0;
     progress({ done, total:list.length, failed:0 });
@@ -49,7 +50,30 @@ export function createAssetQueue(load, lanes = 3) {
   } };
 }
 
-export function loadImage(url, timeoutMs = 30000) {
+const IMAGE_CACHE = 'avegee-images-20261008-zone3-ui';
+export async function loadImage(url, timeoutMs = 30000) {
+  let cachedUrl, cache;
+  // Unsupported/disabled storage falls back to normal HTTP image caching.
+  if (typeof window !== 'undefined' && globalThis.caches && /^img\//.test(url)) {
+    try {
+      cache = await caches.open(IMAGE_CACHE);
+      let response = await cache.match(url);
+      if (!response) {
+        const fetched = await fetchWithTimeout(url, {}, timeoutMs);
+        try {
+          if (!fetched.response.ok) throw new Error('image unavailable');
+          response = new Response(await fetched.response.blob(), {headers:fetched.response.headers});
+          try { await cache.put(url,response.clone()); } catch {}
+        } finally { fetched.release(); }
+      }
+      cachedUrl = URL.createObjectURL(await response.blob());
+    } catch { cache = null; }
+  }
+  try { return await decodeImage(cachedUrl || url, timeoutMs); }
+  catch (error) { try { await cache?.delete(url); } catch {} throw error; }
+  finally { if (cachedUrl) URL.revokeObjectURL(cachedUrl); }
+}
+function decodeImage(url, timeoutMs) {
   return new Promise((resolve, reject) => {
     const im = new Image();
     const timer = setTimeout(() => finish(new Error('image timeout')), timeoutMs);

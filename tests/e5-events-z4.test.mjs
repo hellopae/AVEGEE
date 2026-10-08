@@ -134,7 +134,7 @@ test('E5 runtime intro is preloaded only in CyberHell, cache bumped, canvas ligh
   const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
   const path='img/deva-intro/deva-intro-cyberhell-v1.png';assert.ok(existsSync(path));assert.ok(catalog.zones.cyberhell.includes(path));
   assert.ok(!catalog.shared.includes(path));for(const z of ['th','asia','west'])assert.ok(!catalog.zones[z].includes(path));
-  assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-e3-events-e4-e5'));
+  assert.ok(readFileSync(new URL('../src/preload.js',import.meta.url),'utf8').includes('20261008-zone3-hypnosis-ui'));
   const scene=readFileSync(new URL('../src/scene.js',import.meta.url),'utf8');
   assert.ok(scene.includes('if (!g.zoneCaptivesFree())'));assert.ok(scene.includes('drawCaptiveLightning(ctx, t)'));
 });

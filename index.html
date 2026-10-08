@@ -788,7 +788,7 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   25%{transform:scaleX(-1) translateX(-7px)}75%{transform:scaleX(-1) translateX(7px)}}
 .arena .fig.hit img{animation:hitshake .28s}
 /* ชุด 30B ข้อ 2 — ทิศหันหน้า: ภาพฝั่งเราที่วาดหันขวามาแล้วไม่ต้องพลิก · ภาพศัตรูที่วาดหันขวามาต้องพลิก (ตารางอยู่ที่ src/battle-facing.js) */
-.arena .fig.helper img.face-native,.arena .battle-squad img.face-native{transform:none}
+.arena .fig.you img.face-native,.arena .fig.helper img.face-native,.arena .battle-squad img.face-native{transform:none}
 .arena .fig.foe img.face-flip{transform:scaleX(-1)}
 .arena .fig.foe.hit img.face-flip{animation:hitshakeY .28s}
 @keyframes hitshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
@@ -1969,6 +1969,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/command-wheel.css">
 <link rel="stylesheet" href="src/flow29c.css">
 <link rel="stylesheet" href="src/minigames/training/training.css">
+<link rel="stylesheet" href="src/compact-ui.css?v=20261008-zone3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->

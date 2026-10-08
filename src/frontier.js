@@ -16,7 +16,7 @@ import { actorStanding } from './actor-recovery.js';
 // อยู่ในหน่วยความจำ JS เฉย ๆ จึงอยู่รอดข้าม "เปิด/ปิดกล่องระหว่างไปสู้แล้วกลับมา" ได้ในหนึ่งเซสชันเล่น
 // (ui.js เปิด/ปิด <dialog> ใบเดียวกันสลับกับฉากต่อสู้ ไม่ใช่โหลดหน้าใหม่) แต่หายไปเมื่อโหลดหน้าใหม่จริง ๆ
 
-import { MOB } from './data.js';
+import { MOB, SCENE } from './data.js';
 import { drawStandee, drawHeroWalk } from './art.js';
 import { walkDirection } from './walk-direction.js';
 import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } from './frontier-navigation.js';
@@ -151,7 +151,7 @@ export function makeFrontierWalk(cv, g, opts) {
 
   function step(dt) {
     const beforeX = P.x, beforeY = P.y;
-    const sp = 0.00013 * Math.min(dt, 50);
+    const sp = (0.32 / SCENE.h) * Math.min(dt, 50);
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -179,7 +179,7 @@ export function makeFrontierWalk(cv, g, opts) {
     }
     const actualX = (P.x - beforeX) * box.w, actualY = (P.y - beforeY) * box.h;
     if (Math.hypot(actualX, actualY) > .15) {
-      walkDistance += Math.hypot(actualX, actualY) * 14 / (unit() * HERO_H * .28);
+      walkDistance += Math.hypot(actualX, actualY) * 14 / (unit() * HERO_H * (14 / (92 * .8)));
       direction = walkDirection(actualX, actualY, direction);
       movedAt = performance.now();
     }

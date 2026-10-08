@@ -201,6 +201,7 @@ function winBattle(g) {
     }
     const B = g.battle;
     if (B.over) return;
+    if (B.storyInterlude === 'west-hypnosis') { g.completeBattleInterlude(); continue; }
     if (B.pendingWave) { B.kind === 'frontierBreach' ? g.advanceFrontierBreachWave() : g.advanceZoneEventWave(g.zoneEventRestReady()); continue; }
     B.foes.forEach(f => { f.hp = Math.min(f.hp, 1); });
     if (!B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0)) B.selectedFoeId = B.foes.find(f => f.hp > 0)?.id;

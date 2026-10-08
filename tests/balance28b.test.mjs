@@ -135,6 +135,7 @@ function rest(g) {
 }
 function fight(g) {
   for (let guard = 0; g.battle && !g.battle.over && guard < 800; guard++) {
+    if (g.battle.storyInterlude === 'west-hypnosis') { g.completeBattleInterlude(); continue; }
     if (g.battle.pendingWave) {
       if (g.zoneEventRestReady()) { rest(g); if (!g.advanceZoneEventWave(true)) return false; }
       else if (g.battle.kind === 'frontierBreach') { if (!g.advanceFrontierBreachWave()) return false; }

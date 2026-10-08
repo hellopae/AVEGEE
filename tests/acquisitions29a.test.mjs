@@ -80,7 +80,7 @@ test('discovery queue covers pickups, shops, levels, abilities and survives save
 test('discovery modal waits for reward and existing dialogs, shows one entry, and acknowledges only on close', () => {
   const g=createGame(); g.discoveryQueue=['item:lotus','ability:bigFire'];
   const listeners=new Set(), renders=[];
-  const ctx={g,ITEMS,POWERS,ABILITY_REWARDS,esc:String,pauseForDlg(){},itemImg:k=>`<img data-item="${k}">`,placeholderSrc:()=>'',
+  const ctx={g,ITEMS,POWERS,ABILITY_REWARDS,esc:String,pauseForDlg(){},sfx(){},itemImg:k=>`<img data-item="${k}">`,placeholderSrc:()=>'',
     dlg:{open:false,addEventListener:(_,f)=>listeners.add(f),removeEventListener:(_,f)=>listeners.delete(f)},
     dlgGen:0,rewardOpen:false,setTimeout:()=>{}, modal(html){renders.push(html);ctx.dlg.open=true;ctx.dlgGen++;}};
   vm.createContext(ctx); vm.runInContext(extract('openDiscovery','// ---------- เหตุการณ์เด้ง'),ctx);

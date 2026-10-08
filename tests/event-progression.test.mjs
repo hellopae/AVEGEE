@@ -6,6 +6,7 @@ import { ZONE_EVENTS, MOB } from '../src/data.js';
 function winBattle(g) {
   let guard = 0;
   while (g.battle && !g.battle.over && guard++ < 30) {
+    if (g.battle.storyInterlude === 'west-hypnosis') { g.completeBattleInterlude(); continue; }
     if (g.battle.pendingWave) {
       assert.equal(g.advanceZoneEventWave(), true);
       continue;
