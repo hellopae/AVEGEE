@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { FRONTIER_NAV, frontierWalkable, frontierPath, frontierSegmentClear } from '../src/frontier-navigation.js';
-import { clearFrontierSession, frontierSession } from '../src/frontier.js';
+import { clearFrontierSession, frontierSession, frontierAnchors } from '../src/frontier.js';
 
 // Read runtime anchors/ranges so moving a standee or spawn range cannot silently
 // leave this regression test checking obsolete, independently invented points.
@@ -34,7 +34,7 @@ for(const zone of Object.keys(FRONTIER_NAV)) {
   clearFrontierSession();
   const {player} = frontierSession(zone);
   const start = [player.x,player.y];
-  for(const target of [anchor('GATE'),anchor('NIRA'),anchor('GUARD'),[.5,.105], [.5,.985]]) route(zone,start,target);
+  for(const target of [...Object.values(frontierAnchors(zone)),[.5,.105], [.5,.985]]) route(zone,start,target);
   const [[lo,hi]] = range('edgePoint');
   const y = Number(source.match(/function edgePoint\(\)[\s\S]*?\),\s*([\d.]+)\]/)[1]);
   for(const x of [lo,(lo+hi)/2,hi]) route(zone,start,[x,y]);
@@ -51,7 +51,7 @@ for(const zone of Object.keys(FRONTIER_NAV)) {
   }
   assert.ok(tested>=30, 'adequate floor coverage');
  });
- test(`${zone}: source-mask discrepancy remains below 3%`, {skip:zone==='cyberhell' ? 'manual draft has no approved red-mask source' : false}, () => {
+ test(`${zone}: source-mask discrepancy remains below 3%`, () => {
   const metrics=JSON.parse(readFileSync(new URL('../output/Codex/e2-preview/extraction-metrics.json',import.meta.url)))[zone];
   assert.equal(metrics.runtime_geometry_sha256,createHash('sha256').update(JSON.stringify(FRONTIER_NAV[zone])).digest('hex'),'metrics must describe current runtime polygons');
   assert.ok(metrics.inliers>100);

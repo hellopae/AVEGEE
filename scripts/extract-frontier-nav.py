@@ -13,33 +13,20 @@ import cv2
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = {'th': 'Map-Zone1-3.jpg', 'asia': 'Map-Zone2-4.jpg', 'west': 'Map-Zone3-5.jpg'}
+SOURCES = {'th': 'Map-Zone1-3.jpg', 'asia': 'Map-Zone2-4.jpg', 'west': 'Map-Zone3-5.jpg', 'cyberhell': 'Map-Zone4-w.jpg'}
 # Painted standees are transient blockers, not geometry. These boxes cover only
 # the two standees beside the top gate and characters on the central floor.
 ACTORS = [(0.40, 0.16, 0.45, 0.275), (0.555, 0.16, 0.59, 0.275),
           (0.47, 0.28, 0.505, 0.365)]
 
 def actor_boxes(zone):
+    if zone == 'cyberhell':
+        return [(0.47, 0.30, 0.51, 0.43)]
     return ACTORS + {
         'th': [(0.36, 0.62, 0.435, 0.77)],
         'asia': [(0.57, 0.60, 0.65, 0.79)],
         'west': [(0.55, 0.64, 0.65, 0.79)]
     }[zone]
-
-# Hand draft from frontier-cyberhell.webp, 2026-10-08. Follow inner fence
-# edges, cut around crystals/buildings, keep gate and central stairs connected.
-CYBER = {
- 'outer': [[.47,.10],[.53,.10],[.55,.23],[.585,.24],[.59,.30],
- [.625,.30],[.635,.25],[.70,.255],[.74,.28],[.78,.30],[.79,.40],
- [.84,.44],[.87,.46],[.865,.53],[.89,.57],[.865,.62],[.83,.66],
- [.785,.705],[.73,.74],[.64,.76],[.58,.77],[.56,.83],[.56,1],
- [.44,1],[.44,.83],[.42,.77],[.36,.76],[.28,.73],[.21,.69],
- [.16,.64],[.115,.59],[.11,.54],[.13,.49],[.14,.44],[.16,.43],
- [.175,.37],[.20,.32],[.245,.32],[.25,.39],[.31,.40],[.365,.37],
- [.37,.27],[.44,.255]],
- 'holes': [[[.69,.29],[.755,.30],[.785,.355],[.775,.435],[.74,.455],[.70,.43],[.675,.38]],
-           [[.695,.715],[.735,.715],[.755,.76],[.735,.805],[.69,.795],[.68,.75]]]
-}
 
 def rect(mask, bounds, value):
     h, w = mask.shape
@@ -137,14 +124,13 @@ def main():
         navs[zone]=geometry(floor)
         refs[zone]=(reference,red,valid,aligned,floor.copy())
         meta[zone]={'source':name,**info,'simplification_epsilon_px': .0025*bg.shape[1]}
-    navs['cyberhell']=CYBER
     target=ROOT/'src/frontier-navigation.js'
     if args.write_nav:
         text=target.read_text()
         start=text.index('function inPolygon')
         header='// Background-normalized E2 navigation, extracted 2026-10-08.\n'
         header+='// th: Map-Zone1-3.jpg; asia: Map-Zone2-4.jpg; west: Map-Zone3-5.jpg.\n'
-        header+='// cyberhell: manual draft from frontier-cyberhell.webp / Map-Zone4-2.jpg; awaiting approval.\n'
+        header+='// cyberhell: approved Map-Zone4-w.jpg red-mask source.\n'
         header+='// Regenerate with scripts/extract-frontier-nav.py --write-nav; portals and actors are documented there.\n'
         body = 'export const FRONTIER_NAV = {\n'
         for zone,nav in navs.items():
@@ -159,9 +145,6 @@ def main():
         overlay=bg.copy(); overlay[blocked]=(.40*bg[blocked]+.60*np.array([45,55,255])).astype(np.uint8)
         cv2.imwrite(str(out/f'frontier-{zone}-overlay.png'),overlay)
         cv2.imwrite(str(out/f'frontier-{zone}-walkable.png'),floor)
-        if zone=='cyberhell':
-            cv2.imwrite(str(out/'Map-Zone4-frontier-mask-draft.png'),overlay)
-            continue
         ref,red,valid,aligned,unsimplified=refs[zone]
         def boundary(mask):
             edge=np.zeros(mask.shape,np.uint8)

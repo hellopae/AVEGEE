@@ -112,5 +112,39 @@
       7,
       9
     ]
+  },
+  "cyberhell": {
+    "source": "Map-Zone4-w.jpg",
+    "background_to_screenshot": [
+      [
+        1.4898070759865265,
+        1.5375142835725836e-05,
+        0.2087250550669234
+      ],
+      [
+        -1.5375142835725836e-05,
+        1.4898070759865265,
+        -1.1734761473407571
+      ]
+    ],
+    "inliers": 1500,
+    "median_registration_error_px": 0.2420142850061405,
+    "background_size": [
+      1678,
+      937
+    ],
+    "screenshot_size": [
+      2500,
+      1365
+    ],
+    "simplification_epsilon_px": 4.195,
+    "max_simplification_boundary_error_px": 4.242640495300293,
+    "runtime_geometry_sha256": "584cd777c0d8907ee5ecc5ffcb3bf6dafdd702fb3cbb89d2ffddda851779373a",
+    "measured_pixels": 1365026,
+    "excluded_or_unobserved_percent": 13.182080105019056,
+    "mismatch_percent": 0.5803552459806627,
+    "raw_color_mismatch_percent": 1.006354457717289,
+    "outer_vertices": 205,
+    "hole_vertices": []
   }
 }

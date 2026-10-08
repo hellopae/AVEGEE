@@ -29,3 +29,8 @@ test('ending video navigation pauses outgoing clips, keeps manual completion, an
   const replay=r.querySelector('video');r.close();assert.equal(replay.pauses,1);
   r.querySelector('[data-story-skip]').onclick();r.querySelector('[data-story-skip]').onclick();assert.equal(done,1);
 });
+test('additional clips attach to the right story events and retain matching fallback stills',()=>{
+  const expected=[['deva-th-praise','deva-intro-th-beggar-v2'],['deva-th-warning','deva-intro-th-beggar-v2'],['cyber-control','story-cyberhell-02-v3'],['cyber-duel','story-cyberhell-03-v4'],['ending','story-ending-01-v4']];
+  for(const [key,name] of expected){const p=STORY[key].pages[0];assert.ok(p.video.endsWith(name+'.mp4'));assert.ok(p.image.endsWith(name+'.png'));assert.ok(p.videoAspect>0);assert.ok(existsSync(new URL('../'+p.video,import.meta.url)));}
+  for(const key of ['deva-west','deva-asia','deva-cyberhell'])assert.equal(STORY[key].pages[0].video,`img/deva-intro/deva-intro-${key.slice(5)}-v1-web.mp4`);
+});

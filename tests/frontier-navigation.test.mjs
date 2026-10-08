@@ -26,3 +26,12 @@ test('Zone-specific water, buildings and machinery block movement and destinatio
   assert.ok(frontierWalkable(zone,...from));
  }
 });
+test('approved cyber frontier mask blocks structures and connects side floor, gate and stairs',()=>{
+ for(const p of [[.43,.265],[.575,.265],[.16,.5],[.7,.36],[.82,.48],[.3,.8]])assert.equal(frontierWalkable('cyberhell',...p),false,`blocked ${p}`);
+ for(const p of [[.5,.19],[.46,.30],[.548,.30],[.23,.55],[.80,.58],[.5,.955]]){
+  assert.ok(frontierWalkable('cyberhell',...p),`floor ${p}`);
+  let from=[.485,.35];const path=frontierPath('cyberhell',from,p);assert.ok(path.length);
+  for(const next of path){assert.ok(frontierSegmentClear('cyberhell',from,next));from=next;}
+  assert.ok(Math.hypot(from[0]-p[0],from[1]-p[1])<1e-8);
+ }
+});
