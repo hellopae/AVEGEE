@@ -1634,6 +1634,7 @@ const API = {
     P.x = clamp(P.x, 40, SCENE.w - 40);
     P.y = clamp(P.y, 60, SCENE.h - 40);
     if (this.finalEventOnMap()) {
+      this.advanceFinalArrival(dt);
       // Keep Nira accessible while management and raider activity are paused.
       const nira = this.crewOf('nira');
       if (nira && nira.x == null) { nira.x = nira.hx; nira.y = nira.hy; }
@@ -2475,6 +2476,10 @@ const API = {
       if (states.westDevaTest === 'pending' && !this.devaVisits.west)
         this.devaVisits.west = { phase:'descending', elapsed:0 };
     }
+    if (zone === 'cyberhell' && states.cyberRescue === 'pending') {
+      const visit = this.devaVisits.cyberhell ||= { phase:this.storySeen['deva-cyberhell'] ? 'waiting' : 'intro' };
+      if (zone === this.zone && visit.phase === 'intro') this.queueStory('deva-cyberhell');
+    }
     return states;
   },
   zoneEventFoes(ev, wave = 1) {
@@ -2508,6 +2513,7 @@ const API = {
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });
+    if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
     this.save(); this.onChange(); return this.battle;
   },
@@ -2529,7 +2535,7 @@ const API = {
   startFinalEncounter(id = null) {
     if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || this.pendingRecovery) return null;
     const s = this.finalEventState(), next = nextFinalEncounter(s);
-    if (!next || (id && id !== next) || !this.persistFinalEvent()) return null;
+    if (s.presentation || !next || (id && id !== next) || !this.persistFinalEvent()) return null;
     id = next;
     const ev = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal');
     const wave = id === 'boss' ? 9 : id.startsWith('minion:') ? Number(id.split(':')[1]) : 5 + RULER_ORDER.indexOf(id.split(':')[1]);
@@ -2546,7 +2552,8 @@ const API = {
       wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sp:foes[0].sp,
       sub:id.startsWith('minion:') ? `ระลอก ${wave}/4` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th,
-      storyInterlude:wave === 1 ? 'cyber-approach' : id === 'boss' ? 'cyber-duel' : null });
+      // API callers and old battles retain their interlude; map choreography marks it seen first.
+      storyInterlude:wave === 1 && !s.approachSeen ? 'cyber-approach' : id === 'boss' && !s.duelSeen ? 'cyber-duel' : null });
     this.persistFinalEvent(); this.onChange(); return this.battle;
   },
   acknowledgeFinalReward() {
@@ -2554,7 +2561,12 @@ const API = {
     const s = this.finalEventState();
     if (!this.persistFinalEvent() || !acknowledgeFinalReward(s)) return false;
     this.pendingReward = null;
-    if (s.phase === 'reinforcementCutscene') this.queueStory('cyber-reinforcements');
+    if (s.phase === 'reinforcementCutscene') {
+      if (s.choreography) s.presentation = 'reinforcementIntro';
+      this.queueStory('cyber-reinforcements');
+    } else if (s.phase === 'bossReady' && s.choreography && !s.duelSeen) {
+      s.presentation = 'duel'; this.queueStory('cyber-duel');
+    }
     this.persistFinalEvent(); return true;
   },
   completeFinalReinforcements() {
@@ -2562,8 +2574,47 @@ const API = {
     if (s.phase !== 'reinforcementCutscene' || s.pendingReward) return false;
     s.reinforcementsSeen = true;
     s.phase = s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
+    if (s.choreography) s.presentation = 'reinforcementMap';
     s.stagingPosition = { x:this.player.x, y:this.player.y };
     this.persistFinalEvent(); return true;
+  },
+  beginFinalArrival() {
+    if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward) return false;
+    const s = this.finalEventState();
+    if (['locked','completed','ending','reward'].includes(s.phase) || s.presentation) return false;
+    s.choreography = true;
+    if (s.minionsCleared === 0 && !s.approachSeen) {
+      s.presentation = 'warp'; s.warpElapsed = 0;
+      // A fixed walkable staging spot puts the appearing army in front of Yama.
+      Object.assign(this.player, { x:1010, y:580, tx:null, path:null });
+    } else if (s.minionsCleared === 4 && !s.reinforcementsSeen) {
+      s.phase = 'reinforcementCutscene'; s.presentation = 'reinforcementIntro';
+      this.queueStory('cyber-reinforcements');
+    } else if (s.reinforcementsSeen && !s.controlSeen && s.rulersCleared.length < 4) {
+      s.presentation = 'control'; this.queueStory('cyber-control');
+    } else if (s.rulersCleared.length === 4 && !s.duelSeen) {
+      s.presentation = 'duel'; this.queueStory('cyber-duel');
+    } else return false;
+    this.save(); return true;
+  },
+  advanceFinalArrival(dt) {
+    const s = this.finalEventState();
+    if (this.zone !== 'cyberhell' || s.presentation !== 'warp' || this.battle || this.storyQueue.length || !Number.isFinite(dt) || dt <= 0) return;
+    s.warpElapsed = Math.min(1200, (s.warpElapsed || 0) + dt);
+    if (s.warpElapsed === 1200) {
+      s.presentation = 'approach'; this.queueStory('cyber-approach'); this.save(); this.onChange();
+    }
+  },
+  continueFinalMapScene() {
+    const s = this.finalEventState();
+    if (s.presentation !== 'reinforcementMap' || this.battle) return false;
+    s.presentation = 'reinforcementAdvance';
+    this.queueStory('cyber-reinforcements-advance'); this.save(); this.onChange(); return true;
+  },
+  dismissFinalPreparation() {
+    const s = this.finalEventState();
+    if (s.presentation !== 'prepare') return false;
+    s.presentation = null; this.save(); return true;
   },
   zoneEventRestReady() {
     const b = this.battle;
@@ -3387,6 +3438,7 @@ const API = {
       this.persistFinalEvent(); this.onChange(); return B;
     }
     if (B.kind === 'zoneEvent') {
+      if (B.eventKey === 'cyberRescue' && B.over !== 'win') this.devaVisits.cyberhell = { phase:'waiting' };
       if (B.eventKey === 'westDevaTest' && B.over !== 'win')
         this.devaVisits.west = { phase:'waiting', arrived:true, elapsed:WEST_DEVA_EXIT_MS };
       const ev = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
@@ -3488,12 +3540,20 @@ const API = {
     if (next) this.storySeen[next.key] = true;
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
       Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
+    if (next?.key === 'deva-cyberhell') this.devaVisits.cyberhell = { phase:'waiting' };
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key?.startsWith('deva-th-')) {
       this.devaVisits.th.phase = 'fighting';
       this.startDevaTest();
     }
     if (next?.key === 'cyber-reinforcements') this.completeFinalReinforcements();
+    const final = this.finalEventState();
+    if (next?.key === 'cyber-approach') { final.approachSeen = true; final.presentation = 'prepare'; }
+    if (next?.key === 'cyber-reinforcements-advance') {
+      final.presentation = 'control'; this.queueStory('cyber-control');
+    }
+    if (next?.key === 'cyber-control') { final.controlSeen = true; final.presentation = 'prepare'; }
+    if (next?.key === 'cyber-duel') { final.duelSeen = true; final.presentation = 'prepare'; }
     this.save();
   },
   visitNira() {
@@ -4162,6 +4222,7 @@ API.restore = function (d) {
   if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
   this.devaVisits = d.devaVisits || {};
   this.westFreezeAt = d.westFreezeAt || null;
+  if (this.devaVisits.cyberhell?.phase === 'fighting') this.devaVisits.cyberhell.phase = 'waiting';
   // Ordinary event battles are not serialized; a saved fight must remain challengeable.
   if (this.devaVisits.west?.phase === 'fighting')
     this.devaVisits.west = { phase:'waiting', arrived:true, elapsed:WEST_DEVA_EXIT_MS };
@@ -4201,6 +4262,11 @@ API.restore = function (d) {
   }
   for (const [zone, events] of Object.entries(this.zoneEvents)) {
     for (const [key, status] of Object.entries(events)) if (status === 'active') events[key] = 'pending';
+  }
+  if (this.zone === 'cyberhell' && this.zoneEventStatus('cyberRescue') === 'pending') {
+    const visit = this.devaVisits.cyberhell ||= { phase:this.storySeen['deva-cyberhell'] ? 'waiting' : 'intro' };
+    if (visit.phase === 'fighting' || visit.phase === 'descending') visit.phase = 'waiting';
+    if (visit.phase === 'intro') this.queueStory('deva-cyberhell');
   }
   if (d.bossCleared?.th) this.zoneEvents.th.thBorderBoss ||= 'cleared';
   if (this.zoneEvents.th?.thBorderBoss === 'cleared') this.abilities.flameCharge = true;
@@ -4342,10 +4408,22 @@ API.restore = function (d) {
   }
   if (!this.battle && this.finalEvent.activeEncounter) {
     this.finalEvent.activeEncounter = null;
-    this.finalEvent.phase = this.finalEvent.minionsCleared < 4 ? 'ready' : 'staging';
+    this.finalEvent.phase = this.finalEvent.minionsCleared < 4 ? 'ready' : this.finalEvent.rulersCleared.length === 4 ? 'bossReady' : 'staging';
   }
-  if (this.finalEvent.phase === 'reinforcementCutscene' && !this.storyQueue.some(p => p.key === 'cyber-reinforcements'))
-    this.queueStory('cyber-reinforcements');
+  if (this.finalEvent.phase === 'reinforcementCutscene' && !this.storyQueue.some(p => p.key === 'cyber-reinforcements')) {
+    delete this.storySeen['cyber-reinforcements']; this.queueStory('cyber-reinforcements');
+  }
+  if (['ending','completed'].includes(this.finalEvent.phase) && !this.battle) {
+    this.finalEvent.phase = 'completed'; this.gameCompleted = true;
+    this.zoneEvents.cyberhell ||= {}; this.zoneEvents.cyberhell.cyberFinal = 'cleared';
+    this.bossCleared.cyberhell = true; this.bossGuarding.cyberhell = false;
+  }
+  const finalStory = { approach:'cyber-approach', reinforcementIntro:'cyber-reinforcements',
+    reinforcementAdvance:'cyber-reinforcements-advance', control:'cyber-control', duel:'cyber-duel' }[this.finalEvent.presentation];
+  if (finalStory && !this.storyQueue.some(p => p.key === finalStory)) {
+    delete this.storySeen[finalStory]; this.queueStory(finalStory);
+  }
+  if (this.finalEvent.phase === 'completed' && !this.storySeen.ending) this.queueStory('ending');
   // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
   if (this.battle) this.zoneEvents.cyberhell.cyberFinal = 'active';
   this.over = this.finalEvent.phase === 'ending' && !this.battle ? { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา', text:'หัวหน้าทั้งสี่เป็นอิสระแล้ว' } : null;

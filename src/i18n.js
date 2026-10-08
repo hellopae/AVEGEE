@@ -720,6 +720,18 @@ yama: .......
 yama: !!-"-"
 วาคิวรี: ..... เจ้าตัวเล็ก ฝีมือไม่ธรรมดานิ`,
   'west.rescue.approach':'เดินเข้าไปช่วยทัณฑ์และพ่อค้านรก',
+  'deva.cyberhell.arrival':`ลูเมน: นายเองสินะ ที่กล้าจะมาคุมดินแดนนี้ ที่นี่ไม่ง่ายเหมือนที่อื่นๆหรอกนะ
+yama: นายเป็นใคร
+ลูเมน: ข้าคือตัวแทน ที่เบื้องบนส่งมา เพื่อมาดูว่าเจ้าคู่ควรจะปกครองดินแดนนี้หรือไม่??`,
+  'final.reinforcement.th':'เพลิง · สุวรรณภูมิ',
+  'final.reinforcement.asia':'ยมทูตบูรพา',
+  'final.reinforcement.west':'ยมทูตปัจฉิม',
+  'final.reinforcement.cyberhell':'ยักษ์นรกเครือข่าย',
+  'final.prep.title':'เตรียมตัวสู้',
+  'final.prep.merchant':'ไปหาพ่อค้านรกซื้อของ',
+  'final.prep.nira':'ไปหานิราจัดทีม',
+  'final.prep.tea':'ไปนอนพักที่ศาลาน้ำชา',
+  'final.map.continue':'ดูเหตุการณ์ต่อ',
   'deva.asia.arrival':'ท่านปราบได้สองตนแล้ว ข้าจะจัดการตนสุดท้ายให้ หากท่านพร้อม โปรดมาพบข้าเพื่อทดสอบฝีมือ',
 });
 Object.assign(EN, {
@@ -734,5 +746,17 @@ Valkyrie: Oh! Where has the vampire demon gone?
 Yama: !!-"-"
 Valkyrie: ..... Little one, you are quite skilled.`,
   'west.rescue.approach':'Approach Taan and the hell merchant to help',
+  'deva.cyberhell.arrival':`Lumen: So you are the one who dares to rule this realm. It is not as easy here as elsewhere.
+Yama: Who are you?
+Lumen: I am the representative sent from above to see whether you deserve to rule this realm.`,
+  'final.reinforcement.th':'Plerng · Thai branch',
+  'final.reinforcement.asia':'Eastern reaper',
+  'final.reinforcement.west':'Western reaper',
+  'final.reinforcement.cyberhell':'CyberHell guard',
+  'final.prep.title':'Prepare to fight',
+  'final.prep.merchant':'Walk to the merchant to shop',
+  'final.prep.nira':'Walk to Nira to arrange the team',
+  'final.prep.tea':'Walk to the tea pavilion to sleep',
+  'final.map.continue':'Continue the story',
   'deva.asia.arrival':'You have defeated two spirits. I shall handle the last. When ready, please approach me for a test of skill.',
 });

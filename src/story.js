@@ -9,6 +9,7 @@ export const STORY = {
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
   'deva-west':devaPanel('west', 'deva.west.arrival'),
+  'deva-cyberhell':devaPanel('cyberhell', 'deva.cyberhell.arrival'),
   'deva-asia':devaPanel('asia', 'deva.asia.arrival'),
   th: { title:'โซน 1 · เพลิงที่ตื่นขึ้น', reward:'flameCharge', pages:[
     panel('th-01','ดาบเพลิงของพี่ใหญ่','เมื่อใกล้พ่ายแพ้ พี่ใหญ่รวบรวมแรงเฮือกสุดท้าย ฟาดดาบเพลิงใส่ยมบาทน้อย'),
@@ -30,10 +31,11 @@ export const STORY = {
   ]},
   'cyber-approach': { title:'โซน 4 · ศึกสุดท้าย', pages:[
     panel('cyberhell-01-v2','สี่ระลอกก่อนกำลังเสริม','หลังคดีที่ 10 ปีศาจสี่ระลอกขวางทางอยู่ รับเงินและไอเทมแต่ละระลอก แล้วกลับไปเตรียมตัวบนแผนที่ได้'),
-    panel('cyberhell-02-v3','หัวหน้าทั้งสี่ถูกควบคุม','ผู้ตรวจการโซน 4 จับพ่อและหัวหน้าโซน 2–4 ไว้ใต้พลังควบคุม ท่ามกลางกองทัพปีศาจที่ขวางทาง'),
   ]},
   'cyber-reinforcements': { title:'โซน 4 · กองหนุนจากทั้งสี่สาขา', pages:[
     panel('cyberhell-reinforcements-01','พวกเราไม่ได้มาคนเดียว','ปีศาจสี่ระลอกพ่ายแพ้แล้ว แต่ลูกน้องของบอสยังเหลืออีกมาก เสียงฝีเท้าด้านหลังเผยให้เห็นยมทูตและ Guard จากทั้งสี่โซนที่มาช่วย'),
+  ]},
+  'cyber-reinforcements-advance': { title:'โซน 4 · กองหนุนเปิดทาง', pages:[
     panel('cyberhell-reinforcements-02','เปิดทางให้ยมบาทน้อย','กองหนุนพุ่งเข้ารับมือลูกน้องที่เหลือ ยมบาทน้อยกับนิราจึงหันไปช่วยหัวหน้าทั้งสี่ ก่อนเข้าถึงบอสใหญ่ · ช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน พัก ซื้อของ และจัดทีมระหว่างศึกได้'),
   ]},
   'cyber-control': { title:'โซน 4 · ผู้ถูกควบคุม', pages:[
