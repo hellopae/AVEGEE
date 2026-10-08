@@ -1,3 +1,4 @@
+import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js';
 import { themeBackground } from './theme-assets.js';
@@ -196,6 +197,10 @@ setInterval(() => {
       openFrontier(false, march.key);
     }
   } else if (!g.nearFrontierGate(70)) breachPrepOffered = false;
+  if (started && westRescuePending(g) && !g.battle && !dlg.open && !fx && !g.storyQueue.length &&
+      Math.hypot(g.player.x-WEST_RESCUE.x,g.player.y-WEST_RESCUE.y) <= INTERACTION_REACH) {
+    if (g.startZoneEvent('westHypnotized')) openBattle(afterBreachBattle);
+  }
   updatePrisonFab();
   updateBreachFab();
   updateDevaFab();
@@ -1182,6 +1187,7 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
       else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
       else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
       else if (now.kind === 'finalRest') openStation('tea', true);
@@ -1368,12 +1374,18 @@ function openZoneEventAlert(ev) {
     });
     return;
   }
+  if (ev.k === 'westHypnotized' && Math.hypot(g.player.x-WEST_RESCUE.x,g.player.y-WEST_RESCUE.y) > INTERACTION_REACH) {
+    openEventAlert(ev.k, zoneEventText(ev.title), zoneEventText(ev.alert), zoneEventMarkerArt(ev), t('west.rescue.approach'), () => {
+      dlg.close(); g.walkTo(WEST_RESCUE.x, WEST_RESCUE.y);
+    }, false, true);
+    return;
+  }
   const title = zoneEventText(ev.title);
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
-    openEventAlert(ev.k, title, t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
+    openEventAlert(ev.k, title, ev.k === 'westVampireBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
     return;
   }
   openEventAlert(ev.k, title, zoneEventText(ev.alert), foeArt,
@@ -4402,7 +4414,7 @@ function renderStoryComic(root, story, onDone) {
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
       <div class="intro-comic-frame"><img src="${p.image}" alt="${esc(p.title)}">
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
-      </div><div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p>${esc(p.line)}</p></div>
+      </div><div class="intro-comic-caption"><h2>${esc(p.title)}</h2><p style="white-space:pre-line">${esc(p.line)}</p></div>
       <div class="intro-comic-controls"><button data-story-skip>ข้ามฉาก</button>
         <button data-story-back ${page ? '' : 'disabled'}>← ย้อนกลับ</button>
         <button class="gold" data-story-next>${page + 1 === story.pages.length ? 'ดำเนินเรื่องต่อ' : 'หน้าถัดไป →'}</button></div></div>`;

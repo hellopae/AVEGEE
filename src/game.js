@@ -1,3 +1,4 @@
+import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
@@ -442,7 +443,7 @@ const API = {
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
   actorStanding(actor) { return actorStanding(actor); },
-  guardActive() { return actorStanding(this.guard); },
+  guardActive() { return this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard); },
   enemyGuard() {
     const b = this.battle;
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
@@ -1131,7 +1132,7 @@ const API = {
   },
 
   advanceAfterlife(dt) {
-    if (this.paused || this.over || !Number.isFinite(dt) || dt <= 0) return;
+    if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
       walk.elapsed += dt;
@@ -1295,7 +1296,7 @@ const API = {
   // ---------- หนึ่งวาระ ----------
   step() {
     this.updateActorRecovery();
-    if (this.paused || this.over || this.finalEventOnMap()) return;
+    if (this.paused || this.over || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
     this.tick++;
     if (this.niraRest && --this.niraRest.remaining <= 0) {
       this.niraRest = null;
@@ -1639,6 +1640,8 @@ const API = {
       return;
     }
 
+    this.advanceWestDeva(dt);
+
     // ยืนตรงนี้แล้วยังเห็นตัวไหม — จุดที่ "ลึกกว่าฐานอาคาร" คือจุดที่อาคารวาดทับทั้งตัว
     // เจ้าของทักซ้ำ 12 ก.ย. 2569 ว่ายมทูตถูกฉากทับ ครึ่งแรกแก้ที่ลำดับการวาด (art.depthOf)
     // ครึ่งหลังคือตรงนี้: ห้ามส่งยมทูตไปยืนในจุดที่ยังไงก็มองไม่เห็นตัว
@@ -1670,7 +1673,7 @@ const API = {
       if (c.escort) {
         if (this.afterlifeWalks.some(w => w.escort?.k === c.k && w.soul.id === c.escort)) continue;   // 29C: กำลังนำวิญญาณไปตะราง — ตำแหน่งขยับใน advanceAfterlife
         const escort = this.transits.find(v => v.id === c.escort && v.crew === c.k);
-        if (escort && Date.now() < escort.arriveAt) continue;
+        if (escort && (westSpiritsFrozen(this) || Date.now() < escort.arriveAt)) continue;
         c.escort = null;
         c.x = hx; c.y = hy; c.path = null; c.wait = 500;
       }
@@ -2467,6 +2470,11 @@ const API = {
         }
       }
     }
+    if (zone === 'west') {
+      if (['pending','active'].includes(states.westVampireBreach)) this.westFreezeAt ||= Date.now();
+      if (states.westDevaTest === 'pending' && !this.devaVisits.west)
+        this.devaVisits.west = { phase:'descending', elapsed:0 };
+    }
     return states;
   },
   zoneEventFoes(ev, wave = 1) {
@@ -2494,12 +2502,13 @@ const API = {
     const frontierTeam = ev.team === 'frontier'
       ? this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k)) : [];
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:key, zone:this.zone,
-      ...(key === 'cyberFinal' ? { team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0, this.teamLimits.finalTeamMax) }
+      ...(key === 'westHypnotized' ? { team:['taan'] } : key === 'cyberFinal' ? { team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0, this.teamLimits.finalTeamMax) }
         : frontierTeam.length ? { team:[...frontierTeam] } : {}),
       wave:1, pendingWave:null, foes, selectedFoeId:foes[0].id,
       who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th });
+    if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
     this.save(); this.onChange(); return this.battle;
   },
   finalEventState() {
@@ -3000,6 +3009,7 @@ const API = {
       } else if (B.kind === 'zoneEvent') {
         const ev = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
         this.zoneEvents[B.zone][B.eventKey] = 'cleared';
+        if (B.eventKey === 'westVampireBreach') this.thawWestSpirits();
         if (ev?.reward?.coin) this.coin += ev.reward.coin;
         if (ev?.reward?.ability) this.abilities[ev.reward.ability] = true;
         if (ev?.reward?.item) this.inventory[ev.reward.item] = (this.inventory[ev.reward.item] || 0) + 1;
@@ -3377,6 +3387,8 @@ const API = {
       this.persistFinalEvent(); this.onChange(); return B;
     }
     if (B.kind === 'zoneEvent') {
+      if (B.eventKey === 'westDevaTest' && B.over !== 'win')
+        this.devaVisits.west = { phase:'waiting', arrived:true, elapsed:WEST_DEVA_EXIT_MS };
       const ev = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
       this.log(B.over === 'win'
         ? `⚔️ ชนะ${ev?.title.th || 'อีเวนต์'}${ev?.reward?.ability ? ' — ได้พลังใหม่' : ''}`
@@ -3428,6 +3440,23 @@ const API = {
   },
 
   // ---------- Phase 3 · ย้ายโซน ----------
+  thawWestSpirits() {
+    const delay = Math.max(0, Date.now() - (this.westFreezeAt || Date.now()));
+    for (const v of this.transits) for (const key of ['started','pickupAt','departAt','arriveAt'])
+      if (v[key] != null) v[key] += delay;
+    for (const st of this.stations) for (const slot of st.slots)
+      if (slot.pendingUntil) slot.pendingUntil += delay;
+    this.westFreezeAt = null;
+  },
+  advanceWestDeva(dt) {
+    const visit = this.devaVisits.west;
+    if (this.paused || this.over || !Number.isFinite(dt) || dt <= 0 || this.zone !== 'west' || visit?.phase !== 'descending' || this.battle || this.storyQueue.length) return;
+    visit.elapsed = (visit.elapsed || 0) + dt;
+    if (visit.elapsed < (visit.arrived ? WEST_DEVA_EXIT_MS : WEST_DEVA_RUN_MS)) return;
+    if (visit.arrived) { visit.phase = 'waiting'; visit.elapsed = WEST_DEVA_EXIT_MS; }
+    else { visit.phase = 'intro'; visit.elapsed = WEST_DEVA_RUN_MS; this.queueStory('deva-west'); }
+    this.save(); this.onChange();
+  },
   finishDevaDescent() {
     const visit = this.devaVisits.asia;
     if (visit?.phase !== 'descending') return false;
@@ -3457,6 +3486,8 @@ const API = {
   completeStory() {
     const next = this.storyQueue.shift();
     if (next) this.storySeen[next.key] = true;
+    if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
+      Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key?.startsWith('deva-th-')) {
       this.devaVisits.th.phase = 'fighting';
@@ -3982,7 +4013,7 @@ API.snapshot = function (withEntry = true) {
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     abilities: this.abilities,
     discoverySeen: { ...this.discoverySeen }, discoveryQueue: [...this.discoveryQueue],
-    devaVisits:this.devaVisits, storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
+    westFreezeAt:this.westFreezeAt, devaVisits:this.devaVisits, storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     crew: this.crew.map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
       buildK:c.buildK || null, upLv:c.upLv || 0, statTraining:{ ...c.statTraining }, raeng:c.raeng, rabiab:c.rabiab, panya:c.panya, metta:c.metta })),
@@ -4130,6 +4161,10 @@ API.restore = function (d) {
   this.abilities = { ...(d.abilities || {}) };
   if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
   this.devaVisits = d.devaVisits || {};
+  this.westFreezeAt = d.westFreezeAt || null;
+  // Ordinary event battles are not serialized; a saved fight must remain challengeable.
+  if (this.devaVisits.west?.phase === 'fighting')
+    this.devaVisits.west = { phase:'waiting', arrived:true, elapsed:WEST_DEVA_EXIT_MS };
   this.storyQueue = d.storyQueue || []; this.storySeen = d.storySeen || {}; this.niraRest = d.niraRest || null;
   // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — เซฟเก่าอาจมีลูกไฟ/คัมภีร์น้ำแข็งค้างอยู่ในกระเป๋าจากก่อนแพตช์นี้
   // (ตอนนั้นยังต้องเปิดกระเป๋ากด "ใช้" เอง) ปุ่มนั้นปิดถาวรแล้ว เลยไมเกรตของที่ค้างให้กลายเป็นกระสุน/
@@ -4281,8 +4316,8 @@ API.restore = function (d) {
   // Saves settle travelers exactly once. Older saves simply have no walkers.
   this.afterlifeWalks = [];
   for (const walk of d.afterlifeWalks || []) {
-    if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination))
-      this.finishAfterlifeWalk(walk);
+    if (walk?.soul && westSpiritsFrozen(this) && walk.zone === 'west') this.afterlifeWalks.push(structuredClone(walk));
+    else if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination)) this.finishAfterlifeWalk(walk);
   }
   this.usedCases = d.usedCases || [];
   this.fights = d.fights || 0;

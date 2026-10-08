@@ -236,7 +236,7 @@ const TH = {
   'profile.training': 'ฝึกขั้น',
   'profile.guardTeam': 'ยามประจำโซน อยู่ในทีมเสมอ',
   'profile.more': 'เมนูเพิ่มเติม',
-  'build.westBlocked': 'ยังสร้างที่นี่ไม่ได้ — ต้องช่วยวิญญาณที่ถูกสะกดจิตบนแผนที่ก่อน',
+  'build.westBlocked': 'ยังสร้างที่นี่ไม่ได้ — เดินไปช่วยทัณฑ์และพ่อค้านรกที่ถูกปีศาจรุมฝั่งซ้ายก่อน',
   'build.captivesBlocked': 'ยังสร้างที่นี่ไม่ได้ — ต้องช่วยทัณฑ์และพ่อค้านรกที่ถูกจับก่อน',
   'trial.missing': 'ออกหมายไม่ได้ — ยังไม่ได้เลือก',
   'trial.stationMissing': 'ไม่พบสถานีนี้',
@@ -567,7 +567,7 @@ const EN = {
   'profile.training': 'Training',
   'profile.guardTeam': 'Zone guard — always on the team',
   'profile.more': 'More menu',
-  'build.westBlocked': 'Cannot build here yet — rescue the hypnotized spirits on the map first',
+  'build.westBlocked': 'Cannot build here yet — rescue Taan and the hell merchant from the demons on the left first',
   'build.captivesBlocked': 'Cannot build here yet — rescue the captured Taan and the merchant first',
   'trial.missing': 'Cannot issue warrant — still choose',
   'trial.stationMissing': 'Station unavailable',
@@ -714,6 +714,12 @@ Object.assign(TH, {
   'deva.intro.title':'เทวดาเผยกาย',
   'deva.th.praise':'ท่านพิจารณาด้วยความเป็นธรรม สมควรแก่หน้าที่ผู้คุม ขอให้ข้าทดสอบฝีมือท่านสักครู่',
   'deva.th.warning':'ข้าเพียงจำวัด มิได้ทำบาป โปรดพิจารณาให้รอบคอบกว่านี้ ขอให้ข้าทดสอบฝีมือท่านสักครู่',
+  'deva.west.arrival':`วาคิวรี: ไม่ต้องห่วงเจ้าตัวเล็ก ข้ามาช่วยเจ้าแล้ว
+yama: .......
+วาคิวรี: อ้าว! ปีศาจแวมไพร หายไปไหนแล้ว..
+yama: !!-"-"
+วาคิวรี: ..... เจ้าตัวเล็ก ฝีมือไม่ธรรมดานิ`,
+  'west.rescue.approach':'เดินเข้าไปช่วยทัณฑ์และพ่อค้านรก',
   'deva.asia.arrival':'ท่านปราบได้สองตนแล้ว ข้าจะจัดการตนสุดท้ายให้ หากท่านพร้อม โปรดมาพบข้าเพื่อทดสอบฝีมือ',
 });
 Object.assign(EN, {
@@ -722,5 +728,11 @@ Object.assign(EN, {
   'deva.intro.title':'The deva reveals himself',
   'deva.th.praise':'You have judged fairly and honoured your duty. Please allow me to test your skill.',
   'deva.th.warning':'I only rested and committed no sin. Please judge more carefully. Allow me to test your skill.',
+  'deva.west.arrival':`Valkyrie: Fear not, little one. I have come to help you.
+Yama: .......
+Valkyrie: Oh! Where has the vampire demon gone?
+Yama: !!-"-"
+Valkyrie: ..... Little one, you are quite skilled.`,
+  'west.rescue.approach':'Approach Taan and the hell merchant to help',
   'deva.asia.arrival':'You have defeated two spirits. I shall handle the last. When ready, please approach me for a test of skill.',
 });

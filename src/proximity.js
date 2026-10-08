@@ -1,3 +1,5 @@
+import { westRescuePending, WEST_RESCUE } from './west-events.js';
+import { t } from './i18n.js';
 import { devaMapActors } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { topOf, bodyBoxOf } from './art.js';
@@ -47,6 +49,8 @@ export function stationButtonPos(def, top = topOf(def), body = bodyBoxOf(def)) {
 }
 
 export function mapInteractions(g, merchant) {
+  if (westRescuePending(g)) return [{ id:'west-rescue', kind:'zoneEvent', key:'westHypnotized', ...WEST_RESCUE,
+    bx:WEST_RESCUE.x, by:WEST_RESCUE.y-100, label:t('west.rescue.approach') }];
   const targets = [];
   for (const a of devaMapActors(g)) if (a.enabled) targets.push({ ...a, kind:'devaEncounter', bx:a.x, by:a.y-110 });
   for (const a of finalEventActors(g)) if (a.enabled) targets.push({ id:a.id,key:a.id,kind:'finalEncounter',x:a.x,y:a.y,bx:a.x,by:a.y-85,label:'เริ่มศึก' });
