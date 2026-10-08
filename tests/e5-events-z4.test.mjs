@@ -57,7 +57,9 @@ test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foe
   const a=devaMapActors(g)[0];assert.deepEqual([a.x,a.y,a.art],[880,480,'boss-tester']);
   assert.equal(a.enabled,false);g=roundTrip(g);
   for(const lang of ['th','en']) {setLang(lang);assert.equal(STORY['deva-cyberhell'].pages[0].line.split('\n').length,3);}
-  setLang('th');story(g,'deva-cyberhell',[]);assert.equal(devaMapActors(g)[0].enabled,true);
+  setLang('th');Object.assign(g.player,{x:880,y:455});story(g,'deva-cyberhell',[]);assert.equal(devaMapActors(g)[0].enabled,true);
+  // Arrival ends on the throne spot: Yama must not stand on top of Lumen (Dale fix).
+  assert.ok(Math.hypot(g.player.x-880,g.player.y-480)>=90);
   assert.ok(mapInteractions(g,MERCHANT).some(a=>a.key==='cyberRescue'));
   const ev=ZONE_EVENTS.cyberhell[0];assert.equal(ev.foes[0].count,2);assert.equal(ev.foes[0].hp,105);
   g.startZoneEvent('cyberRescue');assert.equal(g.devaVisits.cyberhell.phase,'fighting');

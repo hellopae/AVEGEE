@@ -19,6 +19,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
+import { DEVA_MAP } from './deva-map.js';
 import { standPoints } from './npc-stand.js';
 import { footOf, blockOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
@@ -3540,7 +3541,15 @@ const API = {
     if (next) this.storySeen[next.key] = true;
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
       Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
-    if (next?.key === 'deva-cyberhell') this.devaVisits.cyberhell = { phase:'waiting' };
+    if (next?.key === 'deva-cyberhell') {
+      this.devaVisits.cyberhell = { phase:'waiting' };
+      // Arrival walk ends on the same throne spot as Lumen and hides him; step Yama down to the stairs.
+      const lumen = DEVA_MAP.cyberhell;
+      if (Math.hypot(this.player.x - lumen.x, this.player.y - lumen.y) < 90) {
+        const spot = nearestWalk(lumen.x, lumen.y + 110) || [lumen.x, lumen.y + 110];
+        Object.assign(this.player, { x:spot[0], y:spot[1], tx:null, ty:null, path:null });
+      }
+    }
     if (next?.key === 'deva-asia') this.completeDevaArrival();
     if (next?.key?.startsWith('deva-th-')) {
       this.devaVisits.th.phase = 'fighting';
