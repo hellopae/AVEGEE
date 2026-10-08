@@ -2,6 +2,7 @@ import { westDevaPosition } from './west-events.js';
 import { t } from './i18n.js';
 // Reusable deva actors: register another zone here; event keys stay in zoneEvents.
 export const DEVA_MAP = {
+  cyberhell:{ key:'cyberRescue', prerequisite:null, x:880, y:480 },
   west:{ key:'westDevaTest', prerequisite:'westVampireBreach', x:1160, y:400 },
   asia:{ key:'asiaDevaTest', prerequisite:'asiaPrisonFire', x:1120, y:400 },
 };
@@ -13,6 +14,10 @@ export function devaMapActors(g, now = Date.now()) {
   const phase = g.devaVisits?.[g.zone]?.phase;
   const descending = phase === 'descending';
   const waiting = phase === 'waiting' || (!phase && g.zoneEventStatus(def.prerequisite) === 'cleared');
+  if (g.zone === 'cyberhell') {
+    return [{ ...def, id:'deva:cyberhell', art:'boss-tester', sourceZone:'cyberhell',
+      enabled:phase === 'waiting', label:t('deva.map.test') }];
+  }
   if (g.zone === 'west') {
     const visit = g.devaVisits?.west;
     if (!visit || !['descending','intro','waiting'].includes(phase)) return [];

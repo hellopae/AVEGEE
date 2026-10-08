@@ -2,7 +2,7 @@ import { t } from './i18n.js';
 import { ZONE_EVENTS, MOB } from './data.js';
 // Display actors only: the existing event remains responsible for combat stats/rewards.
 export function breachApproachActors(zone, key) {
-  if (!['frontierBreach','asiaRageBreach','westVampireBreach'].includes(key)) return [];
+  if (!['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach'].includes(key)) return [];
   const ev = ZONE_EVENTS[zone]?.find(ev => ev.k === key);
   const boss = ev?.waves.flat().find(foe => foe.boss);
   if (!boss) return [];

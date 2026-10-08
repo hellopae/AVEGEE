@@ -10,7 +10,7 @@ import { trainingProgress, HERO_TRAINING_ID } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
-import { nextFinalEncounter, finalEventActors } from './final-event.js';
+import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
@@ -205,6 +205,7 @@ setInterval(() => {
   updateBreachFab();
   updateDevaFab();
   if (started && !g.battle && !dlg.open && g.storyQueue.length) { g.onChange(); return; }
+  if (started && !g.battle && !g.over && !dlg.open && g.finalEventOnMap()) { g.onChange(); return; }
   const nextEvent = pendingZoneEvents().find(ev => !zoneEventAlertSeen.has(`${g.zone}:${ev.k}`));
   if (started && nextEvent && !g.battle && !g.over && !dlg.open && !fx &&
       !g.pendingVerdict && !g.pendingRecovery && !g.pendingLevel && !g.pendingZone && !g.dadFight &&
@@ -1361,10 +1362,24 @@ function openFinalEncounter(id) {
   const a = finalEventActors(g).find(a => a.id === id);
   if (!a?.enabled || nextFinalEncounter(g.finalEventState()) !== id) return;
   if (Math.hypot(g.player.x-a.x,g.player.y-a.y) > INTERACTION_REACH) { g.walkTo(a.x,a.y); return; }
-  modal(`<h2>${esc(a.name)}</h2><p>${esc(t('final.map.prepare'))}</p><div class="row"><button data-close>${esc(t('common.close'))}</button><button class="gold" data-final-go>${esc(t('event.prep.fight'))}</button></div>`, d => {
-    d.querySelector('[data-final-go]').onclick = () => { if (g.startFinalEncounter(id)) openBattle(afterBreachBattle); };
-  });
+  openFinalPreparation(id);
 }
+function openFinalPreparation(id = null) {
+  const targets = finalPreparationTargets(g);
+  modal(`<h2>${esc(t('final.prep.title'))}</h2><p>${esc(t('final.map.prepare'))}</p>
+    <div class="row">${Object.keys(targets).map(key => `<button data-final-prep="${key}" ${targets[key] ? '' : 'disabled'}>${esc(t('final.prep.' + key))}</button>`).join('')}</div>
+    <div class="row"><button data-close>${esc(t('common.close'))}</button>${id ? `<button class="gold" data-final-go>${esc(t('event.prep.fight'))}</button>` : ''}</div>`, d => {
+    d.querySelectorAll('[data-final-prep]').forEach(b => b.onclick = () => {
+      const target = finalPreparationTargets(g)[b.dataset.finalPrep];
+      if (target && g.walkTo(target.x, target.y)) { g.dismissFinalPreparation(); dlg.close(); }
+    });
+    d.querySelector('[data-final-go]')?.addEventListener('click', () => {
+      g.dismissFinalPreparation(); if (g.startFinalEncounter(id)) openBattle(afterBreachBattle);
+    });
+  });
+  onDlgClose(() => g.dismissFinalPreparation());
+}
+
 function openZoneEventAlert(ev) {
   if (ev.k === 'cyberFinal') {
     const id = nextFinalEncounter(g.finalEventState());
@@ -1587,7 +1602,7 @@ function showVerdict(v) {
   clearTimeout(showVerdict.t);
   showVerdict.t = setTimeout(() => {
     fx = null; drawOverlay();
-    if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); }
+    if (g.over && (g.over.k !== 'finalWin' || (!g.pendingReward?.encounter && !g.storyQueue.length))) { g.paused = true; updatePlay(); openEnding(g.over); }
   }, 7000);
 }
 
@@ -2479,7 +2494,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
-  if (['frontierBreach','asiaRageBreach','westVampireBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
+  if (['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
   // An invasion still requires walking to the gate. The boss speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
   const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
@@ -4568,7 +4583,7 @@ g.onChange = () => {
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เรียกซ้ำแล้วมี onClose ของฉากสู้สองชุดค้างอยู่บน dlg element เดียวกัน
   // ชุดเก่าที่ไม่มีใครเคลียร์จะมาเรียก dlg.close() ทับกล่องถัดไป (กระทะทองแดง) ทิ้งทันที (เจอ 17 ก.ย. 2569)
   if (g.dadFight && !g.battle && !dlg.open) { g.startDadFight(); return; }
-  if (g.over) { g.paused = true; updatePlay(); openEnding(g.over); return; }
+  if (g.over && (g.over.k !== 'finalWin' || (!g.pendingReward?.encounter && !g.storyQueue.length))) { g.paused = true; updatePlay(); openEnding(g.over); return; }
   // แพ้พ่อครบสามครั้งเตือน — โชว์กระทะทองแดงแล้วเล่นต่อ (ไม่ใช่ Game Over อีกต่อไป)
   if (g.pendingDadPunish && !dlg.open) {
     const p = g.pendingDadPunish; g.pendingDadPunish = null;
@@ -4585,6 +4600,20 @@ g.onChange = () => {
       setTimeout(() => { storyScheduled = false; if (!dlg.open && !g.battle) showPendingStory(); }, 0);
     }
     return;
+  }
+  if (!g.battle && !dlg.open && g.finalEventOnMap()) {
+    if (g.beginFinalArrival()) { refresh(); return; }
+    const s = g.finalEventState();
+    if (s.presentation === 'prepare') { openFinalPreparation(); return; }
+    if (s.presentation === 'reinforcementMap') {
+      let button = ov.querySelector('.final-continue');
+      if (!button) {
+        button = document.createElement('button'); button.className = 'final-continue zone-eventfab';
+        button.textContent = t('final.map.continue'); button.style.cssText = 'position:absolute;bottom:90px;left:50%;transform:translateX(-50%)';
+        button.onclick = () => { button.remove(); g.continueFinalMapScene(); }; ov.appendChild(button);
+      }
+      return;
+    }
   }
   // หน้าต่างรางวัลหลังชนะ (ชุด 28B) — อยู่หลังคิวเรื่องราว/พลังใหม่ ก่อนหน้าต่างอื่นทั้งหมด · เปิดไม่ได้ตอนมีกล่องอื่นค้างอยู่
   if (g.pendingReward && !g.battle) {

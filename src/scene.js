@@ -348,6 +348,7 @@ export function render(ctx, g, t, hover, sel) {
     at(350, () => {
       mapStandee(ctx, 'crew-taan', 966, 350, 72, t, '🔒');
       mapStandee(ctx, MERCHANT.img, 1038, 350, 72, t, '🔒');
+      drawCaptiveLightning(ctx, t);
       tag(ctx, 1002, 256, t, ['🔒 ช่วยทัณฑ์และพ่อค้า', '#f7c371']);
     });
   } else if (!rescue) at(1e5 + MERCHANT.y, () => {
@@ -399,9 +400,15 @@ export function render(ctx, g, t, hover, sel) {
   // ผู้ท้าชิงยืนห่างกันแค่ 80px (และไล่ลงทีละ 20px) แต่ป้ายชื่อยาวกว่านั้น → ตัวคี่วางป้ายไว้เหนือหัว ตัวคู่ไว้ใต้เท้า
   // ตัดสินจากตำแหน่ง x (คงที่แม้ตัวก่อนหน้าถูกปราบไปแล้ว) · ตัดคำว่า "รอ" ออก (ป้ายสีเทา = ยังไม่ถึงคิว)
   for (const a of finalEventActors(g)) at(a.y, () => {
+    const arrival = g.finalEventState();
+    if (arrival.presentation === 'warp') {
+      ctx.save(); drawArrivalWarp(ctx, a, arrival.warpElapsed || 0);
+      ctx.globalAlpha = Math.min(1, (arrival.warpElapsed || 0) / 900);
+    }
     drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
     const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
     label(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 15, 10.5, a.enabled ? '#f7c371' : '#ddd');
+    if (arrival.presentation === 'warp') ctx.restore();
   });
   for (const a of devaMapActors(g)) at(a.y, () => {
     drawStandee(ctx, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, !!a.moving, a.sourceZone);
@@ -719,4 +726,25 @@ export function hitActor(g, sx, sy) {
   if (actorStanding(g.guard) && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
+}
+
+// Thin perimeter bolts and ground rings keep the building and main figures visible.
+function drawCaptiveLightning(ctx, time) {
+  ctx.save(); ctx.strokeStyle = '#e2c1ff'; ctx.lineWidth = 2;
+  ctx.shadowColor = '#9755ff'; ctx.shadowBlur = 5;
+  for (const x of [926, 1078]) {
+    ctx.beginPath(); ctx.moveTo(x, 272);
+    for (let i=1;i<=6;i++) ctx.lineTo(x + Math.sin(time/90+i*2)*7,272+i*13);
+    ctx.stroke();
+  }
+  ctx.beginPath(); ctx.ellipse(1002,354,84,13,0,0,Math.PI*2);ctx.stroke();
+  ctx.restore();
+}
+function drawArrivalWarp(ctx, actor, elapsed) {
+  ctx.save(); ctx.strokeStyle = `rgba(194,129,255,${.45+.4*Math.sin(elapsed/160)**2})`;
+  ctx.lineWidth = 2; ctx.shadowColor = '#a566ff';ctx.shadowBlur = 8;
+  for (let i=0;i<2;i++) {
+    ctx.beginPath();ctx.ellipse(actor.x,actor.y+4,27+i*10+elapsed/180,8+i*3,0,0,Math.PI*2);ctx.stroke();
+  }
+  ctx.restore();
 }
