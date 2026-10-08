@@ -2479,7 +2479,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
-  if (['frontierBreach','asiaRageBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
+  if (['frontierBreach','asiaRageBreach','westVampireBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
   // An invasion still requires walking to the gate. The boss speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
   const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
