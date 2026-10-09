@@ -22,7 +22,7 @@ for (const right of [true,false]) test(`case five monk → ${right?'praise':'war
  const r=g.judge(st,{soul:monk,intensity:1});assert.equal(!!r.right,right);
  g.applyVerdict(r,monk);assert.equal(g.zoneCases.th,5);
  const key=right?'deva-th-praise':'deva-th-warning';assert.equal(g.storyQueue[0].key,key);
- assert.equal(STORY[key].pages[0].image,'img/deva-intro/deva-intro-th-beggar-v2.png');
+ assert.equal(STORY[key].pages[0].image,'img/deva-intro/deva-intro-th-beggar-v2.webp');
  assert.equal(g.battle,null);assert.equal(g.inventory.mirror||0,0);
  for(const lang of ['th','en']) {setLang(lang);assert.notEqual(t('deva.th.praise'),t('deva.th.warning'));assert.ok(!t('deva.th.praise').startsWith('deva.'));}setLang('th');
  const saved=reload(g);saved.completeStory();assert.equal(saved.battle.kind,'devaTest');
