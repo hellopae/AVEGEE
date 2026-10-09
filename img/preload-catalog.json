@@ -1,5 +1,13 @@
 {
   "shared": [
+    "img/weapons/weapon-cutscene-fang.jpeg",
+    "img/weapons/weapon-cutscene-chain.jpeg",
+    "img/weapons/weapon-cutscene-cane.jpeg",
+    "img/weapons/weapon-cutscene-trojan.jpeg",
+    "img/weapons/weapon-icon-fang.png",
+    "img/weapons/weapon-icon-chain.png",
+    "img/weapons/weapon-icon-cane.png",
+    "img/weapons/weapon-icon-trojan.png",
     "img/mirror-charge-base.png",
     "img/mirror-charge-pane.png",
     "img/Boss Zone1.png",
