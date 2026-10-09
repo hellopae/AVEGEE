@@ -383,7 +383,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
-    if (room.training) {
+    if (room.training && def.k !== 'sala') {
       const [x,y] = room.training, ready = inTrainingReach();
       ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
       ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();
