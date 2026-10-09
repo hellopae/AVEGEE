@@ -1,6 +1,6 @@
 import { TRAINING_GAMES, createTrainingGame } from './index.js';
 import { runPanel } from './panel-host.js';
-import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4';
+import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 
 // Own every listener/frame. Pausing and hidden tabs freeze both clock and input.
 export function runTraining(host, { station, session, paused, alive, onResult, onAbandon,

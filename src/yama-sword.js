@@ -1,4 +1,4 @@
-import { SWORD_SHEETS } from './yama-sword-v2-assets.js?v=20261009-f2-merge-f3-f4';
+import { SWORD_SHEETS } from './yama-sword-v2-assets.js?v=20261009-f2-merge-f3-f4-sala-books';
 
 // One physical slash, synchronized to the existing 580 ms battle lunge.
 // Wind up visibly, cut quickly through contact, hold the low follow-through, then recover.

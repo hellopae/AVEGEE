@@ -1,7 +1,7 @@
-import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js?v=20261009-f2-merge-f3-f4';
+import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
-import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4';
+import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { themeBackground } from './theme-assets.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
@@ -3870,7 +3870,7 @@ function openStation(k, emergency = false) {
   const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
-  let trainingQuit = null, mirrorCharge = null;
+  let trainingQuit = null, minigameQuit = null, mirrorCharge = null;
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
@@ -4213,48 +4213,67 @@ function openStation(k, emergency = false) {
     if (!stx || !game || !ov || mgOpen || !(sk === 'sala' ? g.documentPuzzleReady(stx) : g.mgReady(stx))) return;
 
     mgOpen = true;
-    let cleanup = null, closed = false;
+    let cleanup = null, closed = false, started = false, pauseOwned = false;
+    const zone = g.zone;
+    const active = () => mine() && g.zone === zone && g.stations.includes(stx);
     const teardown = () => {
       cleanup?.(); cleanup = null;
+      if (pauseOwned) { if (mine() || !dlg.open) g.paused = false; pauseOwned = false; }
       R?.lock?.(false);
-      ov.hidden = true; ov.innerHTML = '';ov.classList.remove('mg-documents');
-      mgOpen = false;
+      ov.hidden = true; ov.innerHTML = ''; ov.classList.remove('mg-documents');
+      mgOpen = false; minigameQuit = null;
     };
     const finish = won => {
-      if (closed) return; closed = true;
-      teardown();
-      if(sk === 'sala') g.finishDocumentPuzzle(won); else g.finishMinigame(sk, won);
+      if (closed || !active() || (sk === 'sala' && g.paused)) return false;
+      if (sk === 'sala') {
+        if (!g.finishDocumentPuzzle(won)) return false;
+      } else g.finishMinigame(sk, won);
+      closed = true; teardown();
       sfx(won ? 'coin' : 'crack');
-      panels(); refresh();
+      if (mine()) panels(); refresh();
+      return true;
     };
     const quit = () => {
       if (closed) return; closed = true;
       teardown();
-      panels();
+      if (mine()) panels();
     };
+    minigameQuit = quit;
 
     R?.lock?.(true);
-    dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);   // จอแคบ: มินิเกมเปิดทับทั้งจอ ต้องเลื่อนกลับบนสุดก่อน
+    dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);
     ov.hidden = false;
     ov.classList.toggle('mg-documents',sk === 'sala');
     ov.innerHTML = `
-      <div class="mg-head"><b>${game.icon || '🎮'} ${esc(game.name)}</b><button class="mg-x" type="button">✕ ปิด</button></div>
+      <div class="mg-head"><b>${sk === 'sala' ? '' : game.icon || '🎮'} ${esc(game.name)}</b>${sk === 'sala' ? `<button class="doc-pause" type="button" aria-pressed="false">${esc(t('doc.pause'))}</button>` : ''}<button class="mg-x" type="button">✕ ปิด</button></div>
       <div class="mg-intro">
         <p class="mg-tip">${esc(game.tip)}</p>
         <button class="gold mg-start" type="button">▶ เริ่มเลย</button>
       </div>
       <div class="mg-stage" hidden></div>`;
     ov.querySelector('.mg-x').onclick = quit;
-    ov.querySelector('.mg-start').onclick = () => {
-      if (closed) return;
-      ov.querySelector('.mg-intro').hidden = true;
-      const stage = ov.querySelector('.mg-stage');
-      stage.hidden = false;
-      cleanup = game.run(stage, {
-        level: stx.speedLv || 0, alive: mine,
-        onWin: () => finish(true), onLose: () => finish(false),
-      });
+    const pauseButton = ov.querySelector('.doc-pause');
+    if (pauseButton) pauseButton.onclick = () => {
+      if (g.paused && !pauseOwned) return;
+      pauseOwned = !pauseOwned; g.paused = pauseOwned;
+      pauseButton.textContent = pauseOwned ? t('doc.resume') : t('doc.pause');
+      pauseButton.setAttribute('aria-pressed',String(pauseOwned));
     };
+    const start = () => {
+      if (closed || started) return;
+      started = true;
+      ov.querySelector('.mg-intro').hidden = true;
+      const stage = ov.querySelector('.mg-stage'); stage.hidden = false;
+      try {
+        cleanup = game.run(stage, {
+          level: stx.speedLv || 0, alive: () => !closed && active(), paused: () => g.paused,
+          reward: () => Math.max(0,Math.min(8,100-g.order)),
+          onWin: () => finish(true), onLose: () => finish(false),
+        });
+      } catch (error) { quit(); throw error; }
+    };
+    ov.querySelector('.mg-start').onclick = start;
+    if (sk === 'sala') start();
   }
 
   // ---- โครงของหน้า วาดครั้งเดียว: canvas ของฉากต้องไม่ถูกสร้างใหม่ ----
@@ -4284,6 +4303,7 @@ function openStation(k, emergency = false) {
   document.activeElement?.blur?.();     // กล่องโฟกัสปุ่มแรกให้เอง — ไม่ให้เห็นกรอบโฟกัสบนปุ่มพักตั้งแต่เปิด
   dlg.querySelector('#st-pause').onclick = () => {
     if (trainingQuit) { dlg.querySelector('.training-pause')?.click(); return; }
+    if (k === 'sala' && mgOpen) { dlg.querySelector('.doc-pause')?.click(); return; }
     dlg.close(); openPause();
   };
   dlg.querySelector('#st-book').onclick = () => { dlg.close(); openHelp(); };
@@ -4381,7 +4401,7 @@ function openStation(k, emergency = false) {
 
   // แผงข้อมูลอัปเดตตามวาระที่เดินอยู่ (ทัณฑ์คืบหน้า · ไฟไหม้ · คิว)
   const tm = setInterval(() => {
-    if (!mine()) { trainingQuit?.(); clearInterval(tm); return; }
+    if (!mine()) { trainingQuit?.(); minigameQuit?.(); clearInterval(tm); return; }
     const st = stationHere();
     if (!st) { dlg.close(); return; }
     R.st = st;

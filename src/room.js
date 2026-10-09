@@ -1,5 +1,5 @@
 import { actorStanding } from './actor-recovery.js';
-import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4';
+import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { potLayout, drawPotSoul } from './pot-souls.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
@@ -392,7 +392,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
-    if (room.training) {
+    if (room.training && def.k !== 'sala') {
       const [x,y] = room.training, ready = inTrainingReach();
       ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
       ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();

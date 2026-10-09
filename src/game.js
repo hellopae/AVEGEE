@@ -3991,10 +3991,16 @@ const API = {
   finishDocumentPuzzle(won) {
     const st=this.stations.find(s=>s.def.k==='sala');
     if (!this.documentPuzzleReady(st) || !won) return false;
-    const before=this.order;this.order=clamp(this.order+8,0,100);
+    const before=this.order, cooldown=st.documentCd, logs=[...this.logs];
+    this.order=clamp(this.order+8,0,100);
     st.documentCd=this.tick+UPGRADES.mgCooldown;
     this.log(`📚 จัดเอกสารครบหมวด — ระเบียบ +${Math.round(this.order-before)} (${Math.round(this.order)}/100)`,'good');
-    this.save();this.onChange();return true;
+    if (!this.save()) {
+      this.order=before; this.logs=logs;
+      if (cooldown === undefined) delete st.documentCd; else st.documentCd=cooldown;
+      return false;
+    }
+    this.onChange();return true;
   },
   mgCooldownFor(st) { return UPGRADES.mgCooldown + UPGRADES.mgCooldownStep * (st.speedLv || 0); },
   mgReady(st) {
