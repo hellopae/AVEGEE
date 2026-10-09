@@ -16,6 +16,7 @@ test('ending plays panorama then father acceptance, using shipped media and post
   assert.equal(pages[1].videoAspect,1280/544);assert.equal(pages[2].videoAspect,16/9);
   for(const p of pages)for(const path of [p.image,p.video,p.poster].filter(Boolean))assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   assert.match(pages[2].line,/ทำได้ดีมากลูกพ่อ/);
+  assert.match(pages[2].line,/ตบบ่าของยมบาทน้อย/);
 });
 test('ending video navigation pauses outgoing clips, keeps manual completion, and falls back on failure',()=>{
   const r=root();let done=0;render(r,STORY.ending,()=>done++);
