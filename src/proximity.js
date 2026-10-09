@@ -3,6 +3,7 @@ import { t } from './i18n.js';
 import { devaMapActors } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { topOf, bodyBoxOf } from './art.js';
+import { CHALLENGE_STAND, BOSS_NAMES } from './data.js';
 // 29B: map distances are scene pixels; room distances are normalized image coordinates.
 export const INTERACTION_REACH = 100;
 export const ROOM_EXIT_REACH = 0.10;
@@ -58,6 +59,9 @@ export function mapInteractions(g, merchant) {
   for (const a of finalEventActors(g)) if (a.enabled) targets.push({ id:a.id,key:a.id,kind:'finalEncounter',x:a.x,y:a.y,bx:a.x,by:a.y-85,label:'เริ่มศึก' });
   const rest = finalRestSpot(g);
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
+  // G3b — บอสชายแดนที่ประตูล่าง: ปุ่มคุยลอยเหนือหัวเมื่อเดินเข้าใกล้ (เหมือนนิรา/พ่อค้า)
+  if (g.challengeUnlocked?.()) targets.push({ id:'challenge', key:g.zone, kind:'challenge', x:CHALLENGE_STAND.x, y:CHALLENGE_STAND.y,
+    bx:CHALLENGE_STAND.x, by:CHALLENGE_STAND.y - 110, label:t('challenge.fab', { name:BOSS_NAMES[g.zone].frontier }) });
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
     bx:nira.x, by:nira.y - 96, label:'จัดทีมยมทูต' });

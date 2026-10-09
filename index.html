@@ -403,6 +403,28 @@ dialog.outfit[open]{max-width:620px;max-height:calc(100dvh - 32px);overflow-y:au
   .outfit-card button{padding:6px 8px;min-height:36px}
 }
 
+/* ---------- G3b · ประลองปีศาจชายแดน + อาวุธประจำโซน — มือถือ 390 เป็นหลัก ---------- */
+dialog.challenge-dialog[open]{max-width:460px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.challenge-talk{display:flex;flex-direction:column;align-items:stretch;gap:8px;text-align:center}
+.challenge-talk h2{margin:0}
+.challenge-boss{display:block;margin:0 auto;width:min(46vw,200px);max-height:34dvh;object-fit:contain;image-rendering:pixelated}
+.challenge-line{margin:0;padding:8px 10px;text-align:left;font-size:var(--text-sm);line-height:1.5;color:var(--foreground);
+  background:var(--muted);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius-sm)}
+.challenge-weapon{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;align-items:center;text-align:left;
+  padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(212,163,85,.08)}
+.challenge-weapon img{width:56px;height:56px;object-fit:contain;image-rendering:pixelated;background:rgba(0,0,0,.18);border-radius:6px}
+.challenge-weapon small{display:block;font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.45}
+.challenge-weapon small:first-child{color:var(--gold)}
+.challenge-talk .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.challenge-talk .row button{min-height:44px;flex:1 1 140px}
+.challenge-boss-line{margin:6px 0;padding:8px 10px;text-align:left;font-size:var(--text-xs);line-height:1.5;color:#f6e6df;
+  background:rgba(24,11,17,.92);border:1px solid var(--gold);border-radius:var(--radius-sm);pointer-events:auto}
+.challenge-boss-line b{color:var(--gold)}
+.challenge-boss-line small{display:block;margin-top:2px;color:var(--muted-foreground)}
+.weapon-card .outfit-info small{display:block}
+.weapon-note{border-color:#d4a355;color:#fff0c8}
+@media(max-width:520px){.challenge-boss{width:min(40vw,150px);max-height:26dvh}}
+
 /* ---------- แผนที่เดินทางระหว่างโซน ---------- */
 dialog.zonepick[open]{width:min(1080px,calc(100% - 24px));max-width:1080px;
   max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}

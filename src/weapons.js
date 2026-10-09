@@ -1,0 +1,75 @@
+// weapons.js — อาวุธประจำโซน (G3b · 9 ต.ค. 2569)
+// ส่วนนี้เป็นฟังก์ชันล้วน ไม่แตะสถานะเกม: ตารางชื่อไฟล์ภาพ · สูตรฟาดปกติเมื่อถืออาวุธ · ผลพิเศษหลังฟาด
+// game.js เรียกใช้ตอน battleAct('atk') เท่านั้น — ลูกไฟ/ผนึกน้ำแข็ง/พุ่งชนเพลิง/ท่ายมทูตไม่ผ่านที่นี่
+import { WEAPONS, WEAPON_STACK_CAP, BATTLE } from './data.js';
+import { t } from './i18n.js';
+
+export const WEAPON_IDS = Object.keys(WEAPONS);
+export const OUTFIT_IDS = ['th', 'asia', 'west', 'cyberhell'];
+export const CRIT_MULT = 1.7;   // ตัวคูณคริเดิมของ battleAct
+
+// ---------- ตารางไฟล์ภาพ (Kittanate/Codex วาดทับชื่อเดิมได้เลย ไม่ต้องแตะโค้ด) ----------
+/** สไปรท์ฟัน 8 เฟรม ต่ออาวุธ × ชุดยมบาท — ไม่มีไฟล์ = ใช้ดาบเดิมของชุดนั้นเอง (ดู yama-sword.js) */
+export const weaponSpriteSrc = (weapon, outfit) => `img/yama-sword-weapons/hero-yama-${outfit}-sword-${weapon}.webp`;
+export const weaponIconSrc = weapon => `img/weapons/weapon-icon-${weapon}.png`;
+export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}.jpeg`;
+/** รายชื่อไฟล์ทั้งหมดที่ต้องวาด (16 สไปรท์ + 4 ไอคอน + 4 คัตซีน) */
+export const WEAPON_ART_FILES = {
+  sprites: WEAPON_IDS.flatMap(w => OUTFIT_IDS.map(o => weaponSpriteSrc(w, o))),
+  icons: WEAPON_IDS.map(weaponIconSrc),
+  cutscenes: WEAPON_IDS.map(weaponCutsceneSrc),
+};
+
+// ---------- สูตรฟาดปกติ ----------
+/** ฟาดปกติหนึ่งครั้งเมื่อถืออาวุธ (ก่อน rage)
+ *  base = normalAttack(สุ่ม [11,19]) · maxBase = normalAttack(19) · r = ค่าสุ่ม [0,1) ตัวเดียวกับที่ใช้ตัดสินคริ
+ *  ใช้ r ตัวเดียวกันทั้งแบบมี/ไม่มีอาวุธ — เปรียบเทียบ "ฟาดเดียวกัน" ได้ตรง (จับคู่ seed ในผลจำลอง)
+ *  คืน { dmg, crit, plain, cap } — plain = ฟาดเดียวกันถ้าไม่ถืออาวุธ · cap = เพดานก่อนคูณ rage */
+export function meleeSwing(base, maxBase, r, weaponId) {
+  const plainCrit = r < BATTLE.crit;
+  const plain = plainCrit ? Math.round(base * CRIT_MULT) : base;
+  const w = WEAPONS[weaponId];
+  if (!w) return { dmg:plain, crit:plainCrit, plain, cap:Infinity };
+  const crit = r < BATTLE.crit + (w.effect.type === 'crit' ? w.effect.bonus : 0);
+  const boosted = Math.round(base * (1 + w.atk));
+  const dmg = crit ? Math.round(boosted * CRIT_MULT) : boosted;
+  // เพดานรวม: ฟาดที่แรงที่สุดที่ "ไม่ถืออาวุธ" ทำได้ (ค่าสูงสุด × คริ) × WEAPON_STACK_CAP
+  const cap = Math.round(Math.round(maxBase * CRIT_MULT) * WEAPON_STACK_CAP);
+  return { dmg:Math.min(dmg, cap), crit, plain, cap };
+}
+
+/** เพดานหลังคูณ rage (rage คูณทั้งฟาดและเพดานเท่ากัน) */
+export const capWithRage = (cap, rageMult = 1) => Number.isFinite(cap) ? Math.round(cap * rageMult) : cap;
+
+/** ผลพิเศษหลังฟาดโดน — dealt = ดาเมจจริงที่เข้าเป้า (หลัง rage/เพดาน) · rnd = ฟังก์ชันสุ่ม [0,1)
+ *  คืน { burn:{turns,dmg}|null, heal:number, replay:number } (ตัวที่ไม่เกี่ยวเป็น null/0) */
+export function weaponOnHit(weaponId, { dealt, targetMax, youHp, youMax }, rnd = Math.random) {
+  const out = { burn:null, heal:0, replay:0 };
+  const e = WEAPONS[weaponId]?.effect;
+  if (!e || dealt <= 0) return out;
+  if (e.type === 'burn' && rnd() < e.chance)
+    out.burn = { turns:e.turns, dmg:Math.min(e.cap, Math.max(1, Math.round(targetMax * e.pct))) };
+  else if (e.type === 'drain')
+    out.heal = Math.max(0, Math.min(e.cap, Math.round(dealt * e.pct), youMax - youHp));
+  else if (e.type === 'replay' && rnd() < e.chance)
+    out.replay = Math.max(1, Math.round(dealt * e.ratio));
+  return out;
+}
+
+// ---------- ข้อความอธิบายผล (สร้างจากตัวเลขใน data.js — เปลี่ยนสมดุลแล้วข้อความตามเอง) ----------
+/** บรรทัดอธิบายอาวุธ: ฟาดปกติ +X% แล้วตามด้วยผลพิเศษ */
+export function weaponEffectLines(id) {
+  const w = WEAPONS[id]; if (!w) return [];
+  const e = w.effect, pct = x => Math.round(x * 100);
+  const lines = [t('weapon.effect.atk', { pct:pct(w.atk) })];
+  if (e.type === 'burn') lines.push(t('weapon.effect.burn', { chance:pct(e.chance), hp:pct(e.pct), turns:e.turns, cap:e.cap }));
+  if (e.type === 'crit') lines.push(t('weapon.effect.crit', { pts:pct(e.bonus) }));
+  if (e.type === 'drain') lines.push(t('weapon.effect.drain', { pct:pct(e.pct), cap:e.cap }));
+  if (e.type === 'replay') lines.push(t('weapon.effect.replay', { chance:pct(e.chance), ratio:pct(e.ratio) }));
+  return lines;
+}
+/** ข้อความสั้นหลังฟาด (B.weaponNote จาก game.js) */
+export function weaponNoteText(note) {
+  if (!note) return '';
+  return t({ ignite:'battle.weapon.ignite', burn:'battle.weapon.burn', drain:'battle.weapon.drain', replay:'battle.weapon.replay' }[note.k], { n:note.n });
+}

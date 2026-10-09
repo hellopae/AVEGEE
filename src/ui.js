@@ -24,7 +24,8 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV, authorityOf } from './data.js';
+         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
+import { weaponEffectLines, weaponNoteText, weaponIconSrc } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -36,7 +37,7 @@ import { MINIGAMES } from './minigames/index.js?v=20261009-book-art';   // ม�
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
-import { STORY, ABILITY_REWARDS } from './story.js';
+import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -1201,6 +1202,7 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'challenge') openChallenge();
       else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
       else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
       else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
@@ -2513,6 +2515,27 @@ function openMerchant() {
   paint(); openDlg('merchant');
 }
 
+/** G3b — คุยกับบอสชายแดนที่ประตูล่าง: บทพูด (ตอนคุย + ชวน) · รางวัล · ปุ่มประลอง 10 ระลอก / ประลองต่อ / ประลองซ้ำ */
+function openChallenge() {
+  const zone = g.zone, ev = g.challengeEvent(zone);
+  if (!ev || !g.challengeUnlocked(zone) || g.battle) return;
+  const w = ev.reward.weapon, name = BOSS_NAMES[zone].frontier, done = g.challengeDone(zone), wave = g.challengeStartWave(zone);
+  const go = done ? t('challenge.rematch') : wave > 1 ? t('challenge.resume', { wave }) : t('challenge.start');
+  const info = done ? t('challenge.info.replay') : wave > 1 ? t('challenge.info.checkpoint', { wave }) : '';
+  pauseForDlg();
+  modal(`<div class="challenge-talk">
+    <img class="challenge-boss" src="${esc(storyFoeArt(`boss-frontier-${zone}`))}" alt="${esc(name)}">
+    <h2>${esc(name)}</h2>
+    <p class="challenge-line">“${esc(t(`challenge.${zone}.talk`))}”</p>
+    <p class="challenge-line">“${esc(t(`challenge.${zone}.invite`))}”</p>
+    <div class="challenge-weapon">${weaponImg(w)}<span><small>${esc(t('challenge.info.reward', { weapon:t(`weapon.${w}.name`) }))}</small>
+      ${weaponEffectLines(w).map(l => `<small>${esc(l)}</small>`).join('')}<small>${esc(t('weapon.only'))}</small></span></div>
+    ${info ? `<p class="hint">${esc(info)}</p>` : ''}
+    <div class="row"><button data-close>${esc(t('challenge.later'))}</button><button class="gold" data-challenge-go>${go}</button></div></div>`, d => {
+      d.querySelector('[data-challenge-go]').onclick = () => { if (g.startChallenge()) { dlg.close(); openBattle(); } };
+    }, 'challenge-dialog');
+}
+
 function openBossPier() {
   const z = g.zoneDef();
   pauseForDlg();
@@ -2830,15 +2853,16 @@ function openBattle(after) {
     // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
     // วางเป็นชั้นทับในกล่องต่อสู้ — กด ✕ แล้วเห็นฉากต่อสู้ข้างหลังเต็ม และกด "เตรียมศึก" เปิดกลับได้ก่อนเข้าสู้
     const prepOn = rest || b.kind === 'zoneBoss' && !b.prepStarted && !b.over;
-    const goLabel = rest ? b.pendingWave === 4 ? 'เข้าสู้หัวหน้าทั้ง 4 โซน' : 'เข้าสู้บอสใหญ่' : t('event.prep.fight');
+    const goLabel = rest ? b.challenge ? t('challenge.rest.go', { wave:b.pendingWave }) : b.pendingWave === 4 ? 'เข้าสู้หัวหน้าทั้ง 4 โซน' : 'เข้าสู้บอสใหญ่' : t('event.prep.fight');
     const prepFoeArt = () => {
       if (!rest) return storyFoeArt(b.sp);
       const ev = ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey);
-      return storyFoeArt(ev?.waves?.[b.pendingWave - 1]?.[0]?.sp || b.sp);
+      const next = ev?.waves?.[b.pendingWave - 1]?.[0];
+      return next?.sp ? storyFoeArt(next.sp) : next?.kind != null && MOB.kinds[next.kind] ? artUrl(MOB.kinds[next.kind].img) : storyFoeArt(b.sp);
     };
     const prepLayer = prepOn ? `<div class="prep-layer" data-prep-layer ${prepHidden ? 'hidden' : ''}><div class="prep-layer-card">
       ${eventAlertMainHtml(rest ? zoneEventText(ZONE_EVENTS[b.zone]?.find(e => e.k === b.eventKey)?.title) : t('battle.prep.title'),
-        rest ? (b.pendingWave === 4 ? t('battle.prep.rest4') : t('battle.prep.rest8')) : t('battle.prep.sub'),
+        rest ? (b.challenge ? t('challenge.rest.text', { wave:b.pendingWave }) : b.pendingWave === 4 ? t('battle.prep.rest4') : t('battle.prep.rest8')) : t('battle.prep.sub'),
         prepFoeArt(), `<button class="gold event-alert-go" data-prep-go>⚔️ ${esc(goLabel)}</button>`,
         { note: b.proofBonus ? `<div class="prep-note good">✓ ${esc(t('battle.prep.proof'))} ${b.proofBonus}</div>` : '',
           extraTop: `<div class="prep-top-actions"><button data-prep-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>
@@ -2888,7 +2912,7 @@ function openBattle(after) {
       + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : '1 ครั้งต่อชุด · ไม่ใช้ MP') : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
-    const attacks = isYama ? battleChoice('atk', 'img/fx-slash.png', 'ฟันดาบ / Sword slash', true, '')
+    const attacks = isYama ? battleChoice('atk', 'img/fx-slash.png', 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) : '')
       : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
@@ -2914,8 +2938,11 @@ function openBattle(after) {
     // เดิมมีเงื่อนไข `&& !phase` ด้วย — พอจังหวะอนิเมชันค้าง (เจ้าของเจอ 8 ก.ย. 2569)
     // กล่องจะไม่มีปุ่มอะไรเลยสักปุ่ม: ปุ่มโจมตีถูกล็อกเพราะ busy ปุ่มจบก็ไม่ถูกวาด
     // = ทางตัน ปิดกล่องไม่ได้ · ฉากจบแล้วต้องมีทางออกเสมอ ไม่ว่าอนิเมชันจะค้างหรือไม่
+    // G3b — การประลองชายแดน: บอสพูดบทแพ้/ชนะหลังจบ (ชนะครั้งแรกเท่านั้น — ประลองซ้ำไม่มีบทใหม่) · ศึกบอสตัวเดียวไม่มีกล่องบทพูดกลางจอ จึงแสดงตรงนี้
+    const challengeLine = b.challenge && b.over && (b.over === 'lose' || !b.rematch)
+      ? `<p class="challenge-boss-line"><b>${esc(BOSS_NAMES[b.zone].frontier)}</b> “${esc(t(`challenge.${b.zone}.${b.over === 'win' ? 'win' : 'lose'}`))}”${b.over === 'lose' ? `<small>${esc(t('challenge.lose.note'))}</small>` : ''}</p>` : '';
     const done = b.over
-      ? `<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
+      ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     dlg.innerHTML =
       arena(b.kind === 'yama' ? 'พญายมลงมาเอง'
@@ -2937,13 +2964,14 @@ function openBattle(after) {
             acts, squadMembers) +
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
+        ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
       </div>${prep}${prepLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
-    swordImage(g.outfit || g.zone);
-    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt);
+    swordImage(g.outfit || g.zone, g.weapons?.equipped);
+    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
@@ -3446,6 +3474,31 @@ function outfitCards() {
   }).join('');
 }
 
+/** ไอคอนอาวุธ — ไฟล์ยังไม่มี = ภาพแทน (กรอบประ + glyph) · วางไฟล์ img/weapons/weapon-icon-<id>.png จริงแล้วขึ้นเอง */
+const weaponImg = (id, attrs = '') =>
+  `<img src="${weaponIconSrc(id)}" alt="${esc(t(`weapon.${id}.name`))}" ${attrs} onerror="this.onerror=null;this.src='${placeholderSrc('🗡️')}'">`;
+/** การ์ดอาวุธในกระเป๋า — หน้าตาเดียวกับการ์ดชุด: ล็อก/เก็บอยู่/กำลังถือ + ปุ่มสวม·ถอด */
+function weaponCards() {
+  const eq = g.weapons?.equipped || null;
+  const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' }, style = g.outfit || g.zone;
+  const face = style === 'th' ? 'img/hero-yama.png' : `img/${folders[style]}/hero-yama-${style}.png`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
+  const base = `<div class="outfit-card weapon-card${eq ? '' : ' selected'}">
+    <img src="${face}" alt="" loading="lazy">
+    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote'))}</small></span>
+    ${eq ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>` : `<button class="sm" disabled>${esc(t('weapon.on'))}</button>`}</div>`;
+  return base + Object.keys(WEAPONS).map(id => {
+    const owned = !!g.weapons?.owned?.[id], on = eq === id, zone = ZONES.find(z => z.k === WEAPONS[id].zone);
+    return `<div class="outfit-card weapon-card${on ? ' selected' : ''}${owned ? '' : ' locked'}">
+      ${weaponImg(id, 'loading="lazy"')}
+      <span class="outfit-info"><b>${esc(t(`weapon.${id}.name`))}</b>
+        ${weaponEffectLines(id).map(l => `<small>${esc(l)}</small>`).join('')}
+        <span>${owned ? esc(on ? t('weapon.on') : t('weapon.stored')) : esc(t('weapon.locked', { zone:zone.name.replace(/^โซน/, '') }))}</span></span>
+      ${on ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>`
+           : `<button class="sm" data-bag-weapon="${id}" ${owned ? '' : 'disabled'}>${owned ? esc(t('weapon.equip')) : '🔒'}</button>`}
+    </div>`;
+  }).join('');
+}
+
 function openBag() {
   pauseForDlg();
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
@@ -3467,8 +3520,14 @@ function openBag() {
     <div class="bag-list">${itemCards}</div>
     <div class="bag-title">ชุดที่ได้รับ</div>
     <div class="outfit-list">${outfitCards()}</div>
+    <div class="bag-title">${esc(t('weapon.section'))}</div>
+    <div class="outfit-list weapon-list">${weaponCards()}</div>
     <div class="row"><button class="gold" data-close>ปิดกระเป๋า</button></div>`, d => {
       d.classList.add('bag');
+      d.querySelectorAll('[data-bag-weapon]').forEach(b => b.onclick = () => {
+        if (!g.equipWeapon(b.dataset.bagWeapon || null)) return;
+        sfx('gong'); openBag(); refresh();
+      });
       d.querySelectorAll('[data-use-item]').forEach(b => b.onclick = () => {
         if (!g.useBag(b.dataset.useItem, d.querySelector(`[data-bag-target="${b.dataset.useItem}"]`)?.value || 'you')) return;
         sfx('gong'); openBag(); refresh();
@@ -3803,6 +3862,10 @@ function onSceneClick(sx, sy) {
       g.walkTo(MERCHANT.x, MERCHANT.y); g.log(`เดินไปหา${MERCHANT.name} — ซื้อขายได้เมื่อยืนใกล้`, 'act'); return;
     }
     if (a.kind === 'bossPending') return openBossAlert();
+    if (a.kind === 'challengeBoss') {
+      if (Math.hypot(g.player.x - CHALLENGE_STAND.x, g.player.y - CHALLENGE_STAND.y) <= INTERACTION_REACH) return openChallenge();
+      g.walkTo(CHALLENGE_STAND.x, CHALLENGE_STAND.y); return;
+    }
     if (a.kind === 'eventRaider') {
       openRaiderAlert(a.key);
       return;
@@ -4494,6 +4557,9 @@ function openLevelUp(lv) {
 /** Reuses the intro's page layout for both battle interludes and victory scenes. */
 function renderStoryComic(root, story, onDone) {
   let page = 0, done = false;
+  // ภาพแทนคัตซีน 16:9 ที่ยังไม่มีไฟล์จริง (p.fallback = glyph) — สีเท่า token --muted/--gold · มีแค่ glyph ไม่มีตัวอักษร
+  const placeholder = glyph => ('data:image/svg+xml,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1375 768"><rect width="1375" height="768" fill="#1d1016"/><rect x="40" y="40" width="1295" height="688" rx="28" fill="none" stroke="#d4a355" stroke-width="6" stroke-dasharray="22 14"/><text x="687" y="470" font-size="300" text-anchor="middle">${glyph}</text></svg>`)).replace(/'/g, '%27');
   const stopVideo = () => root.querySelector('video')?.pause?.();
   // Battle interludes use a plain <div> overlay inside the battle <dialog>: 'close' never fires on the overlay, so also watch the host dialog.
   const hosts = new Set([root, root.closest?.('dialog')].filter(Boolean));
@@ -4504,7 +4570,7 @@ function renderStoryComic(root, story, onDone) {
     const p = story.pages[page];
     const media = p.video
       ? `<video src="${esc(p.video)}" poster="${esc(p.poster || p.image)}" autoplay muted playsinline controls preload="auto" aria-label="${esc(p.title)}"></video>`
-      : `<img src="${p.image}" alt="${esc(p.title)}">`;
+      : `<img src="${p.image}" alt="${esc(p.title)}"${p.fallback ? ` onerror="this.onerror=null;this.src='${placeholder(p.fallback)}'"` : ''}>`;
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
       <div class="intro-comic-frame">${media}
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
@@ -4545,8 +4611,9 @@ function openBattleReward() {
   if (r.coin > 0) rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">+${Math.round(r.coin)}</span></div>`);
   if (r.exp > 0) rows.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt">+${r.exp}</span></div>`);
   for (const it of r.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
+  for (const id of r.weapons || []) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
   for (const k of r.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
-  if (!r.items.length && !r.abilities.length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
+  if (!r.items.length && !r.abilities.length && !(r.weapons || []).length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
   modal(`<h2>${esc(t('reward.title'))}</h2>
     <p class="reward-who">${esc(r.who || '')}</p>
     <div class="reward-list">${rows.join('')}</div>
@@ -4582,9 +4649,9 @@ function showPendingStory() {
     };
     dlg.addEventListener('close', handler);
   };
-  if (pending.stage === 'comic' && STORY[pending.key]) {
+  if (pending.stage === 'comic' && storyOf(pending.key)) {
     pauseForDlg(); openDlg('intro-comic-dialog');
-    renderStoryComic(dlg, STORY[pending.key], () => dlg.close());
+    renderStoryComic(dlg, storyOf(pending.key), () => dlg.close());
     closed(() => {
       g.completeStory();
     });

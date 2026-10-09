@@ -222,6 +222,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
   for (const zone of Object.keys(ZONE_EVENTS)) {
     for (const ev of ZONE_EVENTS[zone]) {
       if (!ev.foe && !ev.foes && !ev.waves) continue;
+      if (ev.challenge) continue;   // G3b — ประลองชายแดน/อาวุธมีเทสต์ของตัวเอง (tests/g3b-frontier-challenge.test.mjs)
       const g = freshIn(zone);
       g.setFrontierTeam?.('taan');
       g.zoneEvents[zone] = g.zoneEvents[zone] || {};

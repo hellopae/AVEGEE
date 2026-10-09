@@ -1685,6 +1685,88 @@ export const BOSS_BALANCE = {
   asia: { before:235, hp:294 },
   west: { before:270, hp:284 },
 };
+// ---------- G3b · ประลองปีศาจชายแดน 10 wave (9 ต.ค. 2569) ----------
+// ตารางตั้งต้นมาจาก Minnie (Output/Minnie/2026-10-09-avegee-frontier-weapons.md หัวข้อ 5) แล้ว Toby ปรับด้วยการจำลอง
+// (scripts/sim-g3b.mjs · ผลใน output/Toby/2026-10-09-avegee-g3b.md) — ค่าฐานก่อนคูณ FOE_SCALE เหมือน ZONE_EVENTS อื่น
+// แถว = [kind, count, hp, atk] ต่อกลุ่มศัตรู · wave 10 = บอสชายแดนตัวเดียว (ใช้ sp ของบอสเดิม)
+const challengeWaves = (rows, boss) => [...rows.map(groups => groups.map(([kind, count, hp, atk]) => ({ kind, count, hp, atk }))),
+  [{ sp:boss.sp, boss:true, count:1, hp:boss.hp, atk:boss.atk }]];
+export const CHALLENGE_WAVES = {
+  th: challengeWaves([
+    [[0,1,40,[10,17]]],
+    [[0,2,42,[10,19]]],
+    [[1,2,46,[12,19]]],
+    [[2,2,48,[12,20]]],
+    [[3,1,52,[14,20]], [2,1,52,[14,20]]],                     // wave 5 = จุดพัก
+    [[5,2,52,[14,22]]],
+    [[3,2,54,[14,22]], [1,1,54,[14,22]]],
+    [[4,2,58,[15,24]]],
+    [[4,1,60,[15,26]], [5,1,60,[15,26]], [3,1,60,[15,26]]],
+  ], { sp:'boss-frontier-th', hp:130, atk:[13,20] }),
+  asia: challengeWaves([
+    [[9,2,34,[9,14]]],
+    [[6,2,39,[10,16]]],
+    [[7,1,42,[10,17]], [6,1,42,[10,17]]],
+    [[8,2,44,[12,17]]],
+    [[7,2,47,[12,18]]],                                       // wave 5 = จุดพัก
+    [[9,2,45,[12,18]], [8,1,45,[12,18]]],
+    [[6,2,49,[13,20]], [7,1,49,[13,20]]],
+    [[8,2,50,[13,20]], [7,1,50,[13,20]]],
+    [[6,1,52,[13,21]], [7,1,52,[13,21]], [8,1,52,[13,21]]],
+  ], { sp:'boss-frontier-asia', hp:165, atk:[13,20] }),
+  west: challengeWaves([
+    [[10,2,32,[9,13]]],
+    [[2,1,35,[9,14]], [10,1,35,[9,14]]],
+    [[10,3,34,[9,14]]],
+    [[2,2,38,[10,15]]],
+    [[2,1,39,[11,15]], [10,2,39,[11,15]]],                    // wave 5 = จุดพัก
+    [[10,3,41,[11,17]]],
+    [[2,2,42,[11,17]], [10,1,42,[11,17]]],
+    [[10,3,43,[12,18]]],
+    [[2,2,45,[12,18]], [10,1,45,[12,18]]],
+  ], { sp:'boss-frontier-west', hp:200, atk:[14,21] }),
+  cyberhell: challengeWaves([
+    [[11,2,44,[5,7]]],
+    [[12,2,46,[6,8]]],
+    [[13,2,50,[6,9]]],
+    [[11,1,50,[7,9]], [12,1,50,[7,9]], [13,1,50,[7,9]]],
+    [[14,2,54,[7,9]]],                                       // wave 5 = จุดพัก
+    [[15,2,54,[7,10]]],
+    [[16,1,56,[7,10]], [12,2,56,[7,10]]],
+    [[14,1,58,[7,10]], [15,1,58,[7,10]], [16,1,58,[7,10]]],
+    [[16,2,61,[7,11]], [13,1,61,[7,11]]],
+  ], { sp:'boss-frontier-cyberhell', hp:168, atk:[11,17] }),
+};
+/** ธงชนะบอสชายแดนในเนื้อเรื่อง — บอสโซนนั้นไปยืนที่ประตูล่างหลังธงนี้เป็น 'cleared' */
+export const CHALLENGE_STORY_KEY = { th:'frontierBreach', asia:'asiaRageBreach', west:'westVampireBreach', cyberhell:'cyberBreach' };
+/** wave ที่เป็นจุดพัก: ผ่านแล้วบันทึกถาวร · แพ้ทีหลังเริ่ม wave ถัดไป */
+export const CHALLENGE_REST_WAVE = 5;
+/** อาวุธประจำโซน 4 เล่ม — ผลเฉพาะ "ฟาดปกติ" ของยมบาท (ไม่แตะลูกไฟ/ผนึกน้ำแข็ง/พุ่งชนเพลิง/ท่ายมทูต)
+ *  atk = ตัวคูณโจมตีฐานก่อนคริ/rage · effect.type: burn ติดไฟ · crit คริเพิ่ม (จุด%) · drain ดูดเลือด · replay ฟันซ้ำ
+ *  ตัวเลขตั้งต้นจาก Minnie (ช่วงต่ำ) แล้ว Toby จำลองสมดุล (output/Toby/2026-10-09-avegee-g3b.md)
+ *  ชื่อ/คำอธิบาย/บทพูดอยู่ใน i18n (weapon.<id>.*, challenge.<zone>.*) */
+export const WEAPONS = {
+  fang:   { zone:'th',        atk:.20, effect:{ type:'burn',   chance:.15, pct:.05, turns:2, cap:8 } },
+  chain:  { zone:'asia',      atk:.25, effect:{ type:'crit',   bonus:.07 } },
+  cane:   { zone:'west',      atk:.25, effect:{ type:'drain',  pct:.08, cap:4 } },
+  trojan: { zone:'cyberhell', atk:.30, effect:{ type:'replay', chance:.10, ratio:.5 } },
+};
+export const WEAPON_OF_ZONE = Object.fromEntries(Object.entries(WEAPONS).map(([id, w]) => [w.zone, id]));
+/** เพดานรวมของฟาดปกติเมื่อถืออาวุธ: ต้องไม่เกิน 130% ของฟาดที่แรงที่สุดที่ไม่ถืออาวุธทำได้ในสภาพเดียวกัน (คริ ×1.7 · rage ×1.5) */
+export const WEAPON_STACK_CAP = 1.3;
+/** ประลองซ้ำหลังได้อาวุธแล้ว: เบี้ยกรรมครึ่งหนึ่งของรอบแรก · วัตถุดิบชายแดนกี่ชิ้น · ไม่ได้ EXP */
+export const CHALLENGE_REPLAY = { coinShare:.5, drops:2, exp:0 };
+export const CHALLENGE_EXP = 60;
+/** ที่ยืนของบอสชายแดนหลังชนะในเนื้อเรื่อง — ข้างซุ้มประตูชายแดนด้านล่าง ฝั่งขวา (ฝั่งซ้ายคือจุดเฝ้าของยักษ์ทวารบาล GUARD_POST)
+ *  วัดจากพื้นที่เดินได้จริงของทั้ง 4 โซน: แหลมหน้าประตูกว้าง x≈712–968 ที่ y≥876 · ผัง 1678×937 ร่วมกันทุกโซน (ดูเทสต์ tests/g3b-frontier-challenge.test.mjs) */
+export const CHALLENGE_STAND = { x:940, y:886 };
+export const challengeKeyOf = zone => `${zone === 'cyberhell' ? 'cyber' : zone}Challenge`;
+const challengeEvent = (zone, extra) => ({
+  k:challengeKeyOf(zone), challenge:true, atCases:999, mode:'waves',
+  title:{ th:'ประลองปีศาจชายแดน', en:'Frontier Trial' },
+  alert:{ th:'ผ่านครบ 10 ระลอกเพื่อรับอาวุธประจำโซน', en:'Clear all 10 waves to earn the zone weapon.' },
+  waves:CHALLENGE_WAVES[zone], restBeforeWaves:[CHALLENGE_REST_WAVE + 1], lose:{ hp:8 }, ...extra,
+});
 export const ZONE_EVENTS = {
   th: [{ k:'prisonBreak', atCases:3, mode:'group',
     title:{ th:'วิญญาณแหกคุก', en:'Prison break' },
@@ -1709,7 +1791,8 @@ export const ZONE_EVENTS = {
     alert:{ th:'พี่ใหญ่พาปีศาจสองตนมาทดสอบฝีมือยมบาทน้อยหลังคดีที่ 10', en:'Your elder brother arrives with two demons to test you after case ten.' },
     foes:[{ name:'ยมราชพี่ใหญ่', sp:'zone-boss', count:1, hp:BOSS_BALANCE.th.hp, atk:[12,19], boss:true },
       { kind:6, count:2, hp:52, atk:[7,12] }],
-    reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } }],
+    reward:{ coin:160, ability:'flameCharge', unlockZone:'asia' } },
+  challengeEvent('th', { betweenWaveHeal:20, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:150, weapon:'fang' } })],
   asia:[
     { k:'asiaPrisonFire', atCases:3, mode:'group',
       title:{ th:'วิญญาณแหกคุกเผาอาคาร', en:'Prisoners set a building ablaze' },
@@ -1727,6 +1810,7 @@ export const ZONE_EVENTS = {
       waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],
         [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
       betweenWaveHeal:18, reward:{ coin:150 } },
+    challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
   west:[
     { k:'westHypnotized', atCases:0, mode:'group',
@@ -1745,6 +1829,7 @@ export const ZONE_EVENTS = {
       alert:{ th:'เทวดามาปราบแวมไพร แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
       foe:{ name:'เทวดาหอกวาคิวรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },
       reward:{ coin:130, ability:'valkyrieSpear' } },
+    challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
   cyberhell:[
     { k:'cyberRescue', atCases:0, mode:'group',
@@ -1778,6 +1863,7 @@ export const ZONE_EVENTS = {
       // ชุด 28B: 25 → 40 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — บอส 4 ระลอกติดกันไม่มีจุดพักคั่น
       // ชุด 28E: 40 → 30 หลังมีน้ำมนต์กลางศึกและ HP ศัตรูอีเวนต์เพิ่มตามโซน (จำลองศึกสุดท้ายชนะ ~85%)
       betweenWaveHeal:30, reward:{ coin:300, ending:true, unlockZone:'cyberhell' } },
+    challengeEvent('cyberhell', { betweenWaveHeal:28, waveCoin:[12,12,14,14,16,16,18,18,20,0], reward:{ coin:240, weapon:'trojan' } }),
   ],
 };
 

@@ -8,7 +8,7 @@ import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
-import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
+import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS, CHALLENGE_STAND, BOSS_NAMES } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawVignette, drawStationShadow, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
@@ -331,6 +331,16 @@ export function render(ctx, g, t, hover, sel) {
       drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
       tag(ctx, x, y - HERO_H * 1.12 - 15, t,
           [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : cleared ? `คุยกับ${g.zoneDef().bossName}` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
+    });
+  }
+
+  // G3b — หลังชนะบอสชายแดนในเนื้อเรื่อง บอสโซนนั้นยืนที่ประตูล่างข้างซุ้มชายแดน คุยแล้วเริ่มประลอง 10 ระลอกได้
+  if (!rescue && g.challengeUnlocked?.() && !g.battle) {
+    const { x, y } = CHALLENGE_STAND, H = HERO_H * 1.12;
+    at(1e5 + y, () => {
+      ring(ctx, x, y, t, 32);
+      drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', x, y, H, t, '👹');
+      tag(ctx, x, y - H - 15, t, [tr('challenge.tag', { name:BOSS_NAMES[g.zone].frontier }), '#f7c371']);
     });
   }
 
@@ -725,6 +735,7 @@ export function hitActor(g, sx, sy) {
   if (!westRescuePending(g) && g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
   if (westRescueActors(g).some(a => near(a.x,a.y,radius(60))))
     return { kind:'zoneEvent', key:'westHypnotized' };
+  if (g.challengeUnlocked?.() && near(CHALLENGE_STAND.x, CHALLENGE_STAND.y, radius(64))) return { kind:'challengeBoss', key:g.zone };
   if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   if (westRescuePending(g)) return null;
   for (let i = 0; i < g.mobs.length; i++)
