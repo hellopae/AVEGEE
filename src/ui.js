@@ -4029,11 +4029,11 @@ function openStation(k, emergency = false) {
         const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : '';
         const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
-        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:'', disabled:!!why });
+        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, disabled:!!why });
       }
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
-          ${x.hint ? `<small${x.disabled ? ' class="reason"' : ''}>${esc(x.hint)}</small>` : ''}</div>`).join(''));
+          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}</div>`).join(''));
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
       if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };

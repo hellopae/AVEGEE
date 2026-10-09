@@ -421,7 +421,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
         const nm = sl.soul.who.length > 9 ? sl.soul.who.slice(0, 8) + '…' : sl.soul.who;
         if (def.k === 'tarang') soulNameplate(ctx, sl.soul.name || sl.soul.who, x, y, U, soulNameplateWidth(room.souls, i, box.w, U));
-        else label(ctx, nm, x, y + U * 0.035 + (i % 2) * U * 0.032, U * 0.026, '#ffe0c8');
+        else soulLabel(ctx, nm, x, y + U * 0.033 + (i % 2) * U * 0.024, U);
       } });
     });
 
@@ -441,7 +441,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           chains(x,y);
           if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
-          else label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
+          else soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036 + (i % 2) * U * 0.024, U);
         } });
       });
     }
@@ -611,6 +611,16 @@ function label(ctx, text, x, y, size, color) {
   ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.8)';
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
+/** F2 ข้อ 3 — ชื่อวิญญาณใต้ตัว: เล็ก เรียบ ไม่เกะกะ (เดิมใช้ label() ขนาด U*0.025 ตัวใหญ่จนบังฉาก) */
+function soulLabel(ctx, text, x, y, U) {
+  const size = Math.max(10, U * 0.0155);
+  ctx.font = `500 ${Math.round(size)}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round'; ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(0,0,0,.7)';
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = 'rgba(255,224,200,.92)'; ctx.fillText(text, x, y);
 }
 
 function tag(ctx, x, y, text, color, U = 400) {
