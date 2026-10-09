@@ -27,7 +27,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
-import { preloadZone } from './preload.js';
+import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
