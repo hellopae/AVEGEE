@@ -9,9 +9,13 @@ import { fetchWithTimeout } from './asset-preload.js';
 const LS = 'avegee.audio';
 // bgm 0.22 ตั้งแต่ 8 ก.ย. 2569 — เดิม 0.40 เจ้าของบอกว่าดังเกิน
 // เพลงเป็นฉากหลังของการอ่านสำนวน ต้องเบากว่าที่คิดไว้มาก · ปรับเพิ่มได้ที่หน้าตั้งค่า
-export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true };
+export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true,
+  sfxOn: true, bgmOn: true };   // F2 ข้อ 7: ปิดเสียงเอฟเฟกต์/เพลงแยกกันได้ (หน้าตั้งค่า) · เซฟเก่าไม่มีคีย์นี้ = เปิด
 try { Object.assign(AUDIO, JSON.parse(localStorage.getItem(LS) || '{}')); } catch {}
 // el.volume ขว้าง RangeError ถ้าเกิน 0..1 — ค่าใน localStorage แก้มือ/พังได้ จึงบีบเข้าช่วงก่อนใช้ทุกครั้ง
+/** เสียงเอฟเฟกต์/เพลง เปิดอยู่ไหม — ต้องเปิดทั้งสวิตช์รวม (on) และสวิตช์ของตัวเอง */
+const sfxEnabled = () => AUDIO.on && AUDIO.sfxOn !== false;
+const bgmEnabled = () => AUDIO.on && AUDIO.bgmOn !== false;
 const clamp01 = v => Math.min(1, Math.max(0, Number.isFinite(+v) ? +v : 0));
 export function saveAudio() { try { localStorage.setItem(LS, JSON.stringify(AUDIO)); } catch {} }
 
@@ -25,7 +29,7 @@ export function unlock() {
 
 /** เสียงพื้นฐานหนึ่งชั้น — ใช้ประกอบกันเป็นเสียงจริงข้างล่าง */
 function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0, attack = 0.008 }) {
-  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
+  if (!AC || !sfxEnabled() || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const o = AC.createOscillator(), g = AC.createGain();
   o.type = type;
@@ -40,7 +44,7 @@ function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0, atta
 
 /** เสียงซ่า — ใช้ทำเสียงฟาด เสียงตรา เสียงกระจกร้าว */
 function noise({ t = 0.12, vol = 0.4, hp = 800, delay = 0 }) {
-  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
+  if (!AC || !sfxEnabled() || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const n = Math.floor(AC.sampleRate * t);
   const buf = AC.createBuffer(1, n, AC.sampleRate);
@@ -142,7 +146,7 @@ export function powerSfx(k, abilities = {}) {
 
 // ---------- เสียงท่าไม้ตาย (F2 ข้อ 6, คุณเป้ 9 ต.ค. 2569) ----------
 // ชาร์จพลังสั้น ๆ → ระเบิด/กระแทกหนัก → ก้องหาย รวม ~1.3 วิ ตรงกับคัตซีน ACTION_CUT_MS (ui.js)
-// สังเคราะห์ในโค้ดเหมือนเสียงอื่น (0 ไฟล์) · ผลรวม vol ตอนกระแทก ≈ 0.76 (คูณ AUDIO.sfx อีกชั้น) · ปิดเสียง = เงียบหมด (tone/noise เช็ก AUDIO.on เอง)
+// สังเคราะห์ในโค้ดเหมือนเสียงอื่น (0 ไฟล์) · ผลรวม vol ตอนกระแทก ≈ 0.76 (คูณ AUDIO.sfx อีกชั้น) · ปิดเสียง = เงียบหมด (tone/noise เช็ก sfxEnabled เอง)
 // pitch ต่างกันตามท่า: ไฟ/ลมกลาง · น้ำแข็งแหลม · คำรามต่ำ — โครงเสียงเดียวกัน
 export const ULTIMATE_POWERS = Object.freeze({
   flameCharge:1, windFan:1.25, rage:0.7, valkyrieSpear:1.15, ice:1.6, hypno:1.1,
@@ -153,12 +157,12 @@ export const isUltimatePower = k => Object.prototype.hasOwnProperty.call(ULTIMAT
 export const VOICE_LINES = {};
 function playVoice(k) {
   const url = VOICE_LINES[k];
-  if (!url || !AUDIO.on || AUDIO.sfx <= 0 || typeof Audio === 'undefined') return;
+  if (!url || !sfxEnabled() || AUDIO.sfx <= 0 || typeof Audio === 'undefined') return;
   try { const a = new Audio(url); a.volume = clamp01(AUDIO.sfx); a.play()?.catch?.(() => {}); } catch {}
 }
 export function playUltimate(k) {
   if (!isUltimatePower(k)) return;
-  if (AC && AUDIO.on && AUDIO.sfx > 0) {
+  if (AC && sfxEnabled() && AUDIO.sfx > 0) {
     const p = ULTIMATE_POWERS[k];
     // 0.00–0.55 ชาร์จ: เสียงไต่ขึ้น + ลมซ่าไต่ขึ้น + ก้นหนักบวมขึ้น
     tone({ f:70*p,  f2:430*p, t:0.55, type:'sawtooth', vol:0.20, attack:0.35 });
@@ -175,7 +179,7 @@ export function playUltimate(k) {
 }
 
 export function sfx(name) {
-  if (!AUDIO.on || !AC) return;
+  if (!sfxEnabled() || !AC) return;
   const fn = BANK[name];
   if (fn) try { fn(); } catch {}
 }
@@ -324,7 +328,7 @@ function applyVolumes() {
   for (const t of tracks.values()) sum += t.lvl;
   const k = Math.max(1, sum);
   for (const t of tracks.values())
-    t.el.volume = AUDIO.on ? clamp01(clamp01(AUDIO.bgm) * t.lvl / k) : 0;
+    t.el.volume = bgmEnabled() ? clamp01(clamp01(AUDIO.bgm) * t.lvl / k) : 0;
 }
 
 let ticker = 0, lastT = 0;

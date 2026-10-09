@@ -38,6 +38,8 @@ const TH = {
 
   'settings.title': 'ตั้งค่า',
   'settings.music': 'เสียงเพลง',
+  'settings.musicToggle': 'เปิด/ปิดเสียงเพลง',
+  'settings.soundsToggle': 'เปิด/ปิดเสียงเอฟเฟกต์',
   'settings.sounds': 'เสียงเอฟเฟกต์',
   'settings.language': 'ภาษา',
   'settings.save': 'บันทึก',
@@ -464,6 +466,8 @@ const EN = {
 
   'settings.title': 'SETTING',
   'settings.music': 'MUSIC',
+  'settings.musicToggle': 'Turn music on/off',
+  'settings.soundsToggle': 'Turn sound effects on/off',
   'settings.sounds': 'SOUNDS',
   'settings.language': 'LANGUAGE',
   'settings.save': 'SAVE',

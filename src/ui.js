@@ -4869,15 +4869,17 @@ function openSettings() {
       <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.png" alt=""></button>
     </div>
 
-    <div class="settings-row">
-      <img class="settings-row-icon" src="img/ui/icon-music.png" alt="">
+    <div class="settings-row" data-off="${AUDIO.bgmOn === false}">
+      <button type="button" id="s-bgm-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.bgmOn === false}"
+        aria-label="${esc(t('settings.musicToggle'))}" title="${esc(t('settings.musicToggle'))}"><img src="img/ui/${AUDIO.bgmOn === false ? 'icon-music-close' : 'icon-music'}.png" alt=""></button>
       <div class="settings-row-body">
         <label data-t="settings.music"></label>
         <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
       </div>
     </div>
-    <div class="settings-row">
-      <img class="settings-row-icon" src="img/ui/icon-sound.png" alt="">
+    <div class="settings-row" data-off="${AUDIO.sfxOn === false}">
+      <button type="button" id="s-sfx-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.sfxOn === false}"
+        aria-label="${esc(t('settings.soundsToggle'))}" title="${esc(t('settings.soundsToggle'))}"><img src="img/ui/${AUDIO.sfxOn === false ? 'icon-sound-close' : 'icon-sound'}.png" alt=""></button>
       <div class="settings-row-body">
         <label data-t="settings.sounds"></label>
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
@@ -4913,6 +4915,19 @@ function openSettings() {
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
+      // F2 ข้อ 7 — ไอคอนหน้าแถบเลื่อนเป็นปุ่มปิด/เปิดเสียงเพลงและเสียงเอฟเฟกต์แยกกัน (เก็บใน AUDIO → localStorage 'avegee.audio')
+      const bindToggle = (id, key, onIcon, offIcon) => {
+        const b = d.querySelector(id), img = b.querySelector('img'), row = b.closest('.settings-row');
+        b.onclick = () => {
+          AUDIO[key] = AUDIO[key] === false;           // เปิด↔ปิด
+          const off = AUDIO[key] === false;
+          img.src = `img/ui/${off ? offIcon : onIcon}.png`; b.setAttribute('aria-pressed', String(off)); row.dataset.off = String(off);
+          syncBgm(); saveAudio();
+          if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
+        };
+      };
+      bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
+      bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
       d.querySelector('#s-mute').onclick = e => {
         AUDIO.on = !AUDIO.on; syncBgm(); saveAudio(); drawMute();
         e.currentTarget.setAttribute('aria-pressed', String(!AUDIO.on));

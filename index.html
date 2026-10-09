@@ -646,6 +646,10 @@ dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
 .settings-close img{width:100%;height:100%;object-fit:contain}
 .settings-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .settings-row-icon{width:40px;height:40px;object-fit:contain;flex:none}
+.settings-row-toggle{all:unset;box-sizing:border-box;width:40px;height:40px;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.settings-row-toggle img{width:100%;height:100%;object-fit:contain}
+.settings-row-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.settings-row[data-off="true"] .settings-row-body{opacity:.55}   /* ปิดอยู่: แถบเลื่อนหรี่ลง ยังเลื่อนระดับเสียงไว้ล่วงหน้าได้ */
 .settings-row-icon--txt{display:flex;align-items:center;justify-content:center;width:40px;height:40px;
   flex:none;color:var(--gold);font-weight:700;font-size:1.1rem}
 .settings-row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
