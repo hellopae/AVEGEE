@@ -2333,7 +2333,7 @@ function openTrial(initialError = '') {
         <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
         <div class="guide-card-grid">${guideCards(clockGuide)}</div>
-        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card"><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></section>`).join('')}
+        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
       guide.querySelector('button').onclick=()=>guide.close();
