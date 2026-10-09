@@ -1,0 +1,76 @@
+== before 1280x800 @1x frontier cyberhell
+bg img/theme-v4/frontier-cyberhell.webp
+idle rAF mean ms 16.7 max 17.7
+{'draws': 152, 'fps_median': 59.9, 'interval_p95_ms': 17.7, 'interval_max_ms': 17.9, 'speed_css_px_s': 81.0, 'hero_css_px': 66.0, 'speed_hero_heights_s': 1.23, 'frame_hold_ms_median': 50.0}
+== before 1280x800 @1x frontier th
+idle rAF mean ms 16.7 max 17.5
+{'draws': 151, 'fps_median': 59.9, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.8, 'speed_css_px_s': 170.0, 'hero_css_px': 66.0, 'speed_hero_heights_s': 2.59, 'frame_hold_ms_median': 50.0}
+== before 1280x800 @1x room cyberhell/krata
+room ['img/rooms-wide/cyberhell-krata.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 96, 'fps_median': 59.9, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.7, 'speed_css_px_s': 176.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 1.52, 'frame_hold_ms_median': 192.0}
+== before 1280x800 @1x room west/lokan
+room ['img/rooms-wide/west-lokan-ice-v2.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 97, 'fps_median': 59.9, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.6, 'speed_css_px_s': 176.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 1.51, 'frame_hold_ms_median': 192.0}
+== before 1280x800 @1x room th/dab
+room ['img/rooms-wide/th-dab.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 98, 'fps_median': 60.2, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.7, 'speed_css_px_s': 176.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 1.52, 'frame_hold_ms_median': 192.0}
+== before 844x390 @3x frontier cyberhell
+bg img/theme-v4/frontier-cyberhell.webp
+idle rAF mean ms 16.7 max 17.8
+{'draws': 151, 'fps_median': 60.2, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.7, 'speed_css_px_s': 72.0, 'hero_css_px': 26.0, 'speed_hero_heights_s': 2.8, 'frame_hold_ms_median': 50.0}
+== before 844x390 @3x frontier th
+idle rAF mean ms 16.7 max 17.7
+{'draws': 150, 'fps_median': 59.9, 'interval_p95_ms': 17.7, 'interval_max_ms': 17.7, 'speed_css_px_s': 107.0, 'hero_css_px': 26.0, 'speed_hero_heights_s': 4.15, 'frame_hold_ms_median': 50.0}
+== before 844x390 @3x room cyberhell/krata
+room ['img/rooms-wide/cyberhell-krata.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 98, 'fps_median': 59.9, 'interval_p95_ms': 17.3, 'interval_max_ms': 17.6, 'speed_css_px_s': 66.0, 'hero_css_px': 43.0, 'speed_hero_heights_s': 1.52, 'frame_hold_ms_median': 192.0}
+== before 844x390 @3x room west/lokan
+room ['img/rooms-wide/west-lokan-ice-v2.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 98, 'fps_median': 59.9, 'interval_p95_ms': 17.6, 'interval_max_ms': 256.8, 'speed_css_px_s': 56.0, 'hero_css_px': 44.0, 'speed_hero_heights_s': 1.28, 'frame_hold_ms_median': 200.0}
+== before 844x390 @3x room th/dab
+room ['img/rooms-wide/th-dab.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 100, 'fps_median': 59.9, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.7, 'speed_css_px_s': 66.0, 'hero_css_px': 43.0, 'speed_hero_heights_s': 1.52, 'frame_hold_ms_median': 192.0}
+== after 1280x800 @1x frontier cyberhell
+bg img/theme-v4/frontier-cyberhell.webp
+idle rAF mean ms 21.3 max 383.3
+{'draws': 151, 'fps_median': 59.9, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.7, 'speed_css_px_s': 67.0, 'hero_css_px': 66.0, 'speed_hero_heights_s': 1.01, 'frame_hold_ms_median': 83.0}
+== after 1280x800 @1x frontier th
+idle rAF mean ms 20.9 max 317.0
+{'draws': 151, 'fps_median': 59.9, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.6, 'speed_css_px_s': 78.0, 'hero_css_px': 66.0, 'speed_hero_heights_s': 1.18, 'frame_hold_ms_median': 83.0}
+== after 1280x800 @1x room cyberhell/krata
+room ['img/rooms-wide/cyberhell-krata.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 60, 'fps_median': 59.9, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.6, 'speed_css_px_s': 300.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 2.58, 'frame_hold_ms_median': 84.0}
+== after 1280x800 @1x room west/lokan
+room ['img/rooms-wide/west-lokan-ice-v2.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 68, 'fps_median': 59.9, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.6, 'speed_css_px_s': 292.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 2.52, 'frame_hold_ms_median': 83.0}
+== after 1280x800 @1x room th/dab
+room ['img/rooms-wide/th-dab.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 60, 'fps_median': 60.2, 'interval_p95_ms': 17.5, 'interval_max_ms': 17.5, 'speed_css_px_s': 300.0, 'hero_css_px': 116.0, 'speed_hero_heights_s': 2.58, 'frame_hold_ms_median': 83.0}
+== after 844x390 @3x frontier cyberhell
+bg img/theme-v4/frontier-cyberhell.webp
+idle rAF mean ms 21.9 max 433.4
+{'draws': 150, 'fps_median': 60.2, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.7, 'speed_css_px_s': 67.0, 'hero_css_px': 26.0, 'speed_hero_heights_s': 2.59, 'frame_hold_ms_median': 83.0}
+== after 844x390 @3x frontier th
+idle rAF mean ms 23.0 max 416.5
+{'draws': 151, 'fps_median': 59.9, 'interval_p95_ms': 17.4, 'interval_max_ms': 17.6, 'speed_css_px_s': 67.0, 'hero_css_px': 26.0, 'speed_hero_heights_s': 2.59, 'frame_hold_ms_median': 83.0}
+== after 844x390 @3x room cyberhell/krata
+room ['img/rooms-wide/cyberhell-krata.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 60, 'fps_median': 59.9, 'interval_p95_ms': 17.4, 'interval_max_ms': 17.5, 'speed_css_px_s': 113.0, 'hero_css_px': 44.0, 'speed_hero_heights_s': 2.58, 'frame_hold_ms_median': 83.0}
+== after 844x390 @3x room west/lokan
+room ['img/rooms-wide/west-lokan-ice-v2.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 46, 'fps_median': 59.9, 'interval_p95_ms': 17.6, 'interval_max_ms': 17.7, 'speed_css_px_s': 113.0, 'hero_css_px': 44.0, 'speed_hero_heights_s': 2.6, 'frame_hold_ms_median': 83.0}
+== after 844x390 @3x room th/dab
+room ['img/rooms-wide/th-dab.webp', '[0.5,0.88,null,null]']
+errs []
+{'draws': 47, 'fps_median': 60.2, 'interval_p95_ms': 17.7, 'interval_max_ms': 17.8, 'speed_css_px_s': 112.0, 'hero_css_px': 43.0, 'speed_hero_heights_s': 2.58, 'frame_hold_ms_median': 83.0}
