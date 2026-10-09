@@ -1,5 +1,7 @@
 {
   "shared": [
+    "img/mirror-charge-base.png",
+    "img/mirror-charge-pane.png",
     "img/Boss Zone1.png",
     "img/Intro-Boss-Zone1.png",
     "img/Zone1.webp",
