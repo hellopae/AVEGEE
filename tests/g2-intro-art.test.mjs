@@ -47,14 +47,14 @@ test('cover selects G2 art before fallbacks and old video cannot obscure it', ()
     set src(url) { requests.push(url); this.onload(); }
   }});
   vm.runInContext(ui.slice(start, end), context);
-  assert.equal(requests[0], 'img/cover-v4.webp');
-  assert.equal(art.style.backgroundImage, "url('img/cover-v4.webp')");
+  assert.equal(requests[0], 'img/cover-v5.webp');
+  assert.equal(art.style.backgroundImage, "url('img/cover-v5.webp')");
   assert.ok(existsSync(requests[0]));
-  assert.ok(shipped.includes('cover-v4.webp'));
+  assert.ok(shipped.includes('cover-v5.webp'));
   assert.ok(catalog.shared.includes(requests[0]));
   const html = readFileSync('index.html', 'utf8');
   const video = html.match(/<video[^>]*id="cover-vfx"[^>]*>/)[0];
   assert.match(video, /\bhidden\b/);
-  assert.match(video, /poster="img\/cover-v4.webp"/);
+  assert.match(video, /poster="img\/cover-v5.webp"/);
   assert.doesNotMatch(video, /\bsrc=/);
 });

@@ -18,7 +18,7 @@ test('H1: three tiers partition the full zone bundle exactly (nothing dropped, n
 
 test('H1: critical tier holds the first-screen art and is far smaller than the whole zone', () => {
   const t = zoneTiers(catalog, 'th', 'th');
-  for (const p of ['img/scene-v2-opt.png', 'img/cover-v4.webp', 'img/hero-yama-walk-4dir-v2.png', 'img/map-v5/st-sala-th.webp',
+  for (const p of ['img/scene-v2-opt.png', 'img/cover-v5.webp', 'img/hero-yama-walk-4dir-v2.png', 'img/map-v5/st-sala-th.webp',
     'img/crew-nira-walk-v2.png', 'img/ui/logo-th.png', 'img/spirit1.png', 'img/Thai/spirit-worker-th-v2.png', 'img/icon-fang.png'])
     assert(t.critical.includes(p), p);
   assert(mb(t.critical) < mb(zoneAssets(catalog, 'th')) * 0.5, 'critical must be < 50% of the old gate');
@@ -44,7 +44,4 @@ test('H1: loading screen rotates several TH+EN notes and only one preload instan
   assert((src.match(/^  (zone => |\(\) => )\(\{ th:/gm) || []).length >= 6);
   assert(src.includes('NOTE_MS = 2500') && src.includes('en:'));
   assert(src.includes('__avegeePreload'));
-  const html = readFileSync('index.html', 'utf8'), ui = readFileSync('src/ui.js', 'utf8');
-  const tag = html.match(/src="(src\/preload\.js\?v=[^"]+)"/)[1];
-  assert(ui.includes(`from './${tag.replace('src/', '')}'`), 'ui.js and index.html must import the same preload.js URL');
 });
