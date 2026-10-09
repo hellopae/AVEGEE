@@ -13,6 +13,15 @@ export function swordFrame(elapsed) {
   }
   return SWORD_FRAME_MS.length - 1;
 }
+/** F2 ข้อ 2 — เฟรมท่าเตรียม (0) และท่าคืนตัว (7) ของแอตลาสบูรพา/ปัจฉิม/นรกเครือข่ายวาดสายตาหันซ้าย (ซ้ำรอยโซน 1 ที่แก้ไว้ใน v3)
+ *  จนกว่าจะมีภาพที่วาดใหม่หันขวา ให้ใช้เฟรมที่หันขวาอยู่แล้วของแอตลาสเดียวกันแทน (ไม่แตะไฟล์ภาพ · ไม่แตะเวลา)
+ *  เมื่อภาพแก้เสร็จ ให้ลบแถวของชุดนั้นออกจากตารางนี้ที่เดียว */
+export const FRAME_FACING_FIX = Object.freeze({ asia:{ 0:1, 7:6 }, west:{ 0:1, 7:6 }, cyberhell:{ 0:1, 7:6 } });
+export function swordDrawFrame(style, elapsed) {
+  const f = swordFrame(elapsed);
+  const fix = FRAME_FACING_FIX[SWORD_SHEETS[style] ? style : 'th'];
+  return fix && f in fix ? fix[f] : f;
+}
 export const isYamaSwordAttack = fx => fx?.action === 'atk' && !fx.crew;
 const images = new Map();
 export function swordImage(style) {
@@ -25,7 +34,7 @@ export function swordImage(style) {
 export function drawYamaSword(ctx, style, x, feet, bodyHeight, elapsed = 0, face = 1) {
   const sheet = swordSheet(style), im = swordImage(style);
   if (!im.complete || !im.naturalWidth) return false;
-  const scale = bodyHeight / sheet.bodyHeight, frame = swordFrame(elapsed);
+  const scale = bodyHeight / sheet.bodyHeight, frame = swordDrawFrame(style, elapsed);
   ctx.save(); ctx.translate(x, feet); ctx.scale(face < 0 ? -1 : 1, 1);
   ctx.drawImage(im, frame * sheet.size, 0, sheet.size, sheet.size,
     -sheet.anchor.x * scale, -sheet.anchor.y * scale, sheet.size * scale, sheet.size * scale);

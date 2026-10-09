@@ -43,3 +43,9 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 .doc-book.selected-col{outline:1px dashed #b59056;outline-offset:4px}.doc-book.selected-row{box-shadow:0 0 0 1px #e7bf6b66}.doc-book.selected{outline:3px solid #ffe19b;outline-offset:4px}.doc-book:focus-visible{outline:3px solid white;outline-offset:3px}
 .doc-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}.doc-tools button{min-width:40px;min-height:40px;padding:6px 12px;font-size:13px}.doc-moves{font-size:12px;color:#ddc7a5}
 @media(max-width:700px){.doc-goals{gap:10px}.doc-goal{font-size:12px}.doc-scroll{padding:10px}.doc-board{gap:10px;min-width:620px;min-height:280px}.doc-tools button{min-height:44px}.mg-ov.mg-documents{inset:0}.doc-rule{font-size:11px}}
+/* F2 ข้อ 4 — รูปประกอบในหนังสือคู่มือ: นาฬิกาย้อนเวลา + การ์ดทีมยมทูต (ใช้รูปที่มีในเกม ไม่แก้สี/ฟิลเตอร์) */
+.guide-art{display:block;width:112px;height:112px;object-fit:contain;margin:2px auto 12px}
+.guide-card.guide-crew{display:grid;grid-template-columns:88px minmax(0,1fr);gap:14px;align-items:start;margin-top:12px}
+.guide-card.guide-crew>div{min-width:0}.guide-card.guide-crew h3{margin-top:0}
+.guide-portrait{width:88px;height:88px;object-fit:contain;object-position:center bottom;border-radius:10px;background:#201720;border:1px solid #98713d}
+@media (max-width:520px){.guide-card.guide-crew{grid-template-columns:64px minmax(0,1fr);gap:10px}.guide-portrait{width:64px;height:64px}.guide-art{width:88px;height:88px}}

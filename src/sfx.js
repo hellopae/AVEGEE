@@ -9,9 +9,13 @@ import { fetchWithTimeout } from './asset-preload.js';
 const LS = 'avegee.audio';
 // bgm 0.22 ตั้งแต่ 8 ก.ย. 2569 — เดิม 0.40 เจ้าของบอกว่าดังเกิน
 // เพลงเป็นฉากหลังของการอ่านสำนวน ต้องเบากว่าที่คิดไว้มาก · ปรับเพิ่มได้ที่หน้าตั้งค่า
-export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true };
+export const AUDIO = { sfx: 0.55, bgm: 0.22, on: true,
+  sfxOn: true, bgmOn: true };   // F2 ข้อ 7: ปิดเสียงเอฟเฟกต์/เพลงแยกกันได้ (หน้าตั้งค่า) · เซฟเก่าไม่มีคีย์นี้ = เปิด
 try { Object.assign(AUDIO, JSON.parse(localStorage.getItem(LS) || '{}')); } catch {}
 // el.volume ขว้าง RangeError ถ้าเกิน 0..1 — ค่าใน localStorage แก้มือ/พังได้ จึงบีบเข้าช่วงก่อนใช้ทุกครั้ง
+/** เสียงเอฟเฟกต์/เพลง เปิดอยู่ไหม — ต้องเปิดทั้งสวิตช์รวม (on) และสวิตช์ของตัวเอง */
+const sfxEnabled = () => AUDIO.on && AUDIO.sfxOn !== false;
+const bgmEnabled = () => AUDIO.on && AUDIO.bgmOn !== false;
 const clamp01 = v => Math.min(1, Math.max(0, Number.isFinite(+v) ? +v : 0));
 export function saveAudio() { try { localStorage.setItem(LS, JSON.stringify(AUDIO)); } catch {} }
 
@@ -24,15 +28,15 @@ export function unlock() {
 }
 
 /** เสียงพื้นฐานหนึ่งชั้น — ใช้ประกอบกันเป็นเสียงจริงข้างล่าง */
-function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
-  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
+function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0, attack = 0.008 }) {
+  if (!AC || !sfxEnabled() || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const o = AC.createOscillator(), g = AC.createGain();
   o.type = type;
   o.frequency.setValueAtTime(f, t0);
   if (f2) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t0 + t);
   g.gain.setValueAtTime(0.0001, t0);
-  g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol * AUDIO.sfx), t0 + 0.008);
+  g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol * AUDIO.sfx), t0 + attack);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + t);
   o.connect(g).connect(AC.destination);
   o.start(t0); o.stop(t0 + t + 0.02);
@@ -40,7 +44,7 @@ function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
 
 /** เสียงซ่า — ใช้ทำเสียงฟาด เสียงตรา เสียงกระจกร้าว */
 function noise({ t = 0.12, vol = 0.4, hp = 800, delay = 0 }) {
-  if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
+  if (!AC || !sfxEnabled() || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const n = Math.floor(AC.sampleRate * t);
   const buf = AC.createBuffer(1, n, AC.sampleRate);
@@ -140,8 +144,42 @@ export function powerSfx(k, abilities = {}) {
   }
 }
 
+// ---------- เสียงท่าไม้ตาย (F2 ข้อ 6, คุณเป้ 9 ต.ค. 2569) ----------
+// ชาร์จพลังสั้น ๆ → ระเบิด/กระแทกหนัก → ก้องหาย รวม ~1.3 วิ ตรงกับคัตซีน ACTION_CUT_MS (ui.js)
+// สังเคราะห์ในโค้ดเหมือนเสียงอื่น (0 ไฟล์) · ผลรวม vol ตอนกระแทก ≈ 0.76 (คูณ AUDIO.sfx อีกชั้น) · ปิดเสียง = เงียบหมด (tone/noise เช็ก sfxEnabled เอง)
+// pitch ต่างกันตามท่า: ไฟ/ลมกลาง · น้ำแข็งแหลม · คำรามต่ำ — โครงเสียงเดียวกัน
+export const ULTIMATE_POWERS = Object.freeze({
+  flameCharge:1, windFan:1.25, rage:0.7, valkyrieSpear:1.15, ice:1.6, hypno:1.1,
+});
+export const isUltimatePower = k => Object.prototype.hasOwnProperty.call(ULTIMATE_POWERS, k);
+/** เสียงพากย์ ("ย๊าก"/ชื่อท่า) — เพิ่มทีหลังได้โดยไม่แตะโค้ดอื่น: วางไฟล์ในโฟลเดอร์ audio/voice/ แล้วเติมหนึ่งบรรทัดที่นี่
+ *  เช่น  flameCharge: 'audio/voice/flame-charge.mp3'  · ไม่มีรายการ = ไม่เล่นอะไร (ไม่ยิงขอไฟล์ จึงไม่มี 404) */
+export const VOICE_LINES = {};
+function playVoice(k) {
+  const url = VOICE_LINES[k];
+  if (!url || !sfxEnabled() || AUDIO.sfx <= 0 || typeof Audio === 'undefined') return;
+  try { const a = new Audio(url); a.volume = clamp01(AUDIO.sfx); a.play()?.catch?.(() => {}); } catch {}
+}
+export function playUltimate(k) {
+  if (!isUltimatePower(k)) return;
+  if (AC && sfxEnabled() && AUDIO.sfx > 0) {
+    const p = ULTIMATE_POWERS[k];
+    // 0.00–0.55 ชาร์จ: เสียงไต่ขึ้น + ลมซ่าไต่ขึ้น + ก้นหนักบวมขึ้น
+    tone({ f:70*p,  f2:430*p, t:0.55, type:'sawtooth', vol:0.20, attack:0.35 });
+    tone({ f:46,    f2:60,    t:0.58, type:'sine',     vol:0.22, attack:0.40 });
+    noise({ t:0.55, vol:0.14, hp:Math.round(500*p) });
+    // 0.55 ระเบิด/กระแทก
+    noise({ t:0.40, vol:0.28, hp:Math.round(180*p), delay:0.55 });
+    tone({ f:120*p, f2:34, t:0.75, type:'sine',   vol:0.30, delay:0.55 });
+    tone({ f:210*p, f2:60, t:0.30, type:'square', vol:0.18, delay:0.55 });
+    // 0.7–1.3 ก้องหาย
+    noise({ t:0.60, vol:0.10, hp:Math.round(900*p), delay:0.70 });
+  }
+  setTimeout(() => playVoice(k), 560);        // เสียงพากย์ (ถ้ามี) ตามหลังจังหวะกระแทกนิดเดียว
+}
+
 export function sfx(name) {
-  if (!AUDIO.on || !AC) return;
+  if (!sfxEnabled() || !AC) return;
   const fn = BANK[name];
   if (fn) try { fn(); } catch {}
 }
@@ -290,7 +328,7 @@ function applyVolumes() {
   for (const t of tracks.values()) sum += t.lvl;
   const k = Math.max(1, sum);
   for (const t of tracks.values())
-    t.el.volume = AUDIO.on ? clamp01(clamp01(AUDIO.bgm) * t.lvl / k) : 0;
+    t.el.volume = bgmEnabled() ? clamp01(clamp01(AUDIO.bgm) * t.lvl / k) : 0;
 }
 
 let ticker = 0, lastT = 0;

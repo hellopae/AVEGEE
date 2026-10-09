@@ -38,6 +38,8 @@ const TH = {
 
   'settings.title': 'ตั้งค่า',
   'settings.music': 'เสียงเพลง',
+  'settings.musicToggle': 'เปิด/ปิดเสียงเพลง',
+  'settings.soundsToggle': 'เปิด/ปิดเสียงเอฟเฟกต์',
   'settings.sounds': 'เสียงเอฟเฟกต์',
   'settings.language': 'ภาษา',
   'settings.save': 'บันทึก',
@@ -99,6 +101,7 @@ const TH = {
   'room.toSky': 'ส่งขึ้นสวรรค์',
   'room.lotus': 'มอบดอกบัวให้บุญ',
   'room.lotusHint': 'ลดกรรม 8 · มีดอกบัว {n}',
+  'room.lotusWhy': 'เพื่อลดกรรม',
   'room.mgBusy': 'กำลังเล่นมินิเกมอยู่',
   'room.mgMaxed': 'เร่งเต็มขั้นแล้ว',
   'room.mgLevel': 'ต้องเลื่อนขั้นยมบาทก่อน (ขั้น {n})',
@@ -394,6 +397,7 @@ const EN = {
   'room.toSky': 'Send to heaven',
   'room.lotus': 'Offer a lotus to Boon',
   'room.lotusHint': 'Reduces karma by 8 · Lotuses: {n}',
+  'room.lotusWhy': 'to reduce karma',
   'room.mgBusy': 'Mini-game in progress',
   'room.mgMaxed': 'Fully sped up',
   'room.mgLevel': 'Reach a higher Yama rank first (rank {n})',
@@ -470,6 +474,8 @@ const EN = {
 
   'settings.title': 'SETTING',
   'settings.music': 'MUSIC',
+  'settings.musicToggle': 'Turn music on/off',
+  'settings.soundsToggle': 'Turn sound effects on/off',
   'settings.sounds': 'SOUNDS',
   'settings.language': 'LANGUAGE',
   'settings.save': 'SAVE',

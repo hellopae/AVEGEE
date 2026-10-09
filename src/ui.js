@@ -25,7 +25,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
@@ -2092,6 +2092,11 @@ function crewCutsceneSrc(k) {
 // ยืดเป็น 1.3 วิ (อยู่ในช่วง 1.2–1.5 ที่ขอ) ให้ตรงกับ CSS .action-cutscene ใน index.html
 // (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
 const ACTION_CUT_MS = 1300;
+/** เสียงตอนลงมือ — ท่าไม้ตายที่ขึ้นคัตซีนใช้เสียงชาร์จ→ระเบิดยาวเท่าคัตซีน (F2 ข้อ 6) · ท่าอื่นใช้เสียงสั้นเดิม */
+function powerSound(k) {
+  if (isUltimatePower(k) && actionCutsceneSrc(k)) playUltimate(k);
+  else sfx(powerSfx(k, g.abilities));
+}
 function playActionCutscene(k, ultimate = null) {
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
@@ -2333,7 +2338,7 @@ function openTrial(initialError = '') {
         <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
         <div class="guide-card-grid">${guideCards(clockGuide)}</div>
-        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card"><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></section>`).join('')}
+        ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
       guide.querySelector('button').onclick=()=>guide.close();
@@ -2356,7 +2361,7 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      sfx(powerSfx(k, g.abilities)); paint(); refresh(); playActionCutscene(k);
+      powerSound(k); paint(); refresh(); playActionCutscene(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -3079,7 +3084,7 @@ function openBattle(after) {
         healFx = { amount: Math.round(g.battle.youHp - hpBefore), start: Date.now() + ACTION_CUT_MS - 200, ms: HEAL_GLOW_MS };
         scheduleHealFx();
       }
-      sfx(powerSfx(k, g.abilities));            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit'
+      powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }
@@ -3964,9 +3969,9 @@ function openStation(k, emergency = false) {
       <p>${esc(t(`room.${k}.desc`))}</p>
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
       ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
-      ${TRAINING_GAMES[k] ? `<button id="st-training" class="btn-gold" ${!R?.inTrainingReach() || mgOpen || st.build ? 'disabled' : ''}>ฝึกตัวละคร / Train character</button>` : ''}`);
-    const trainButton = dlg.querySelector('#st-training');
-    if (trainButton) trainButton.onclick = () => openTraining(k);
+      `);
+    // F2 ข้อ 1 (คุณเป้ 9 ต.ค.): ตัดปุ่ม "ฝึกตัวละคร" ออกจากการ์ดทุกห้อง/ทุกโซน — ระบบฝึกยังอยู่ (จุดฝึกบนพื้น → openTraining)
+    // ภายหลังจะมีปุ่มมินิเกมมาแทนตรงนี้
 
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
@@ -4029,11 +4034,11 @@ function openStation(k, emergency = false) {
         const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : '';
         const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
-        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:'', disabled:!!why });
+        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, disabled:!!why });
       }
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
-          ${x.hint ? `<small${x.disabled ? ' class="reason"' : ''}>${esc(x.hint)}</small>` : ''}</div>`).join(''));
+          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}</div>`).join(''));
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
       if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };
@@ -4866,15 +4871,17 @@ function openSettings() {
       <button class="settings-close" data-close aria-label="close"><img src="img/ui/icon-close.png" alt=""></button>
     </div>
 
-    <div class="settings-row">
-      <img class="settings-row-icon" src="img/ui/icon-music.png" alt="">
+    <div class="settings-row" data-off="${AUDIO.bgmOn === false}">
+      <button type="button" id="s-bgm-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.bgmOn === false}"
+        aria-label="${esc(t('settings.musicToggle'))}" title="${esc(t('settings.musicToggle'))}"><img src="img/ui/${AUDIO.bgmOn === false ? 'icon-music-close' : 'icon-music'}.png" alt=""></button>
       <div class="settings-row-body">
         <label data-t="settings.music"></label>
         <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
       </div>
     </div>
-    <div class="settings-row">
-      <img class="settings-row-icon" src="img/ui/icon-sound.png" alt="">
+    <div class="settings-row" data-off="${AUDIO.sfxOn === false}">
+      <button type="button" id="s-sfx-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.sfxOn === false}"
+        aria-label="${esc(t('settings.soundsToggle'))}" title="${esc(t('settings.soundsToggle'))}"><img src="img/ui/${AUDIO.sfxOn === false ? 'icon-sound-close' : 'icon-sound'}.png" alt=""></button>
       <div class="settings-row-body">
         <label data-t="settings.sounds"></label>
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
@@ -4910,6 +4917,19 @@ function openSettings() {
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
+      // F2 ข้อ 7 — ไอคอนหน้าแถบเลื่อนเป็นปุ่มปิด/เปิดเสียงเพลงและเสียงเอฟเฟกต์แยกกัน (เก็บใน AUDIO → localStorage 'avegee.audio')
+      const bindToggle = (id, key, onIcon, offIcon) => {
+        const b = d.querySelector(id), img = b.querySelector('img'), row = b.closest('.settings-row');
+        b.onclick = () => {
+          AUDIO[key] = AUDIO[key] === false;           // เปิด↔ปิด
+          const off = AUDIO[key] === false;
+          img.src = `img/ui/${off ? offIcon : onIcon}.png`; b.setAttribute('aria-pressed', String(off)); row.dataset.off = String(off);
+          syncBgm(); saveAudio();
+          if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
+        };
+      };
+      bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
+      bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
       d.querySelector('#s-mute').onclick = e => {
         AUDIO.on = !AUDIO.on; syncBgm(); saveAudio(); drawMute();
         e.currentTarget.setAttribute('aria-pressed', String(!AUDIO.on));
