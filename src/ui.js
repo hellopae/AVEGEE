@@ -3977,7 +3977,7 @@ function openStation(k, emergency = false) {
       const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
-        ['จัดเอกสาร', null, () => openMinigame(k), !mgReady, mgWhy],
+        ['room.sala.action2', null, () => openMinigame(k), !mgReady, mgWhy],
       ] : k === 'sawan' ? [
         ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
       ] : k === 'tea' ? [
@@ -3985,9 +3985,9 @@ function openStation(k, emergency = false) {
           !R?.sitting() && (!inside || g.mp >= g.mpMax),
           !R?.sitting() ? (g.mp >= g.mpMax ? 'MP เต็มแล้ว / MP full' : !inside ? t('room.nearTea') : '') : ''],
       ] : k === 'krajok' ? [
-        ['ปรับองศา', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed(), ''],
-        ['วางกระจก', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
-          g.powerLocked(mp) ? 'รับกระจกวิเศษจากเทวดาก่อน' : ''],
+        ['room.krajok.adjust', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed(), ''],
+        ['room.krajok.place', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
+          g.powerLocked(mp) ? t('room.krajok.needMirror') : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
       if (k === 'tea') {
         const owned = !!g.teaBeds[g.zone], asleep = R?.sleeping();
@@ -4444,8 +4444,10 @@ function openLevelUp(lv) {
 function renderStoryComic(root, story, onDone) {
   let page = 0, done = false;
   const stopVideo = () => root.querySelector('video')?.pause?.();
-  const finish = () => { if (!done) { done = true; stopVideo(); root.removeEventListener?.('close', stopVideo); onDone(); } };
-  root.addEventListener?.('close', stopVideo, { once:true });
+  // Battle interludes use a plain <div> overlay inside the battle <dialog>: 'close' never fires on the overlay, so also watch the host dialog.
+  const hosts = new Set([root, root.closest?.('dialog')].filter(Boolean));
+  const finish = () => { if (!done) { done = true; stopVideo(); hosts.forEach(h => h.removeEventListener?.('close', stopVideo)); onDone(); } };
+  hosts.forEach(h => h.addEventListener?.('close', stopVideo, { once:true }));
   const paint = () => {
     stopVideo();
     const p = story.pages[page];

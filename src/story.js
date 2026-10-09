@@ -4,7 +4,7 @@ import { BATTLE } from './data.js';
 const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
   video:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.mp4' : `img/deva-intro/deva-intro-${zone}-v1-web.mp4`, videoAspect:16/9,
-  image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.png' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
+  image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
 }] });
 export const STORY = {
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
@@ -27,8 +27,8 @@ export const STORY = {
     panel('asia-05-v2','พักก่อนนะ นิรา','นิราไปพักที่ศาลาน้ำชา แวะไปเยี่ยมเธอได้ พัก 3 วาระก็จะหายและกลับมาช่วยงานตามเดิม'),
   ]},
   'west-hypnosis': { title:'โซน 3 · ลูกทีมที่ถูกสะกดจิต', pages:[
-    { image:'img/frontier-west-hypnosis-v1.png', title:'วาลดริก · เจ้าแห่งแวมไพร์', line:'ลูกน้องสองระลอกล้มลงแล้วหรือ? ถ้าเช่นนั้น จงรับมือคนของเจ้าเอง!\nแวมไพร์สะกดจิตยมทูตและ Guard โซน 3 ทุกคนให้หันอาวุธเข้าหายมบาทน้อย' },
-    { image:'img/frontier-west-hypnosis-v1.png', title:'ช่วยทุกคนกลับมา', line:'ยมบาทน้อย: ตั้งสติไว้! ข้าจะทำลายมนต์สะกดและพาพวกเจ้ากลับมา\nเอาชนะยมทูตที่จัดทีมมาและ Guard ในระลอก 3 เพื่อปลดปล่อย ก่อนเข้าต่อสู้กับแวมไพร์' },
+    { image:'img/frontier-west-hypnosis-v1.webp', title:'วาลดริก · เจ้าแห่งแวมไพร์', line:'ลูกน้องสองระลอกล้มลงแล้วหรือ? ถ้าเช่นนั้น จงรับมือคนของเจ้าเอง!\nแวมไพร์สะกดจิตยมทูตและ Guard โซน 3 ทุกคนให้หันอาวุธเข้าหายมบาทน้อย' },
+    { image:'img/frontier-west-hypnosis-v1.webp', title:'ช่วยทุกคนกลับมา', line:'ยมบาทน้อย: ตั้งสติไว้! ข้าจะทำลายมนต์สะกดและพาพวกเจ้ากลับมา\nเอาชนะยมทูตที่จัดทีมมาและ Guard ในระลอก 3 เพื่อปลดปล่อย ก่อนเข้าต่อสู้กับแวมไพร์' },
   ]},
   west: { title:'โซน 3 · ของขวัญจากผู้พ่ายแพ้', reward:'ice', pages:[
     panel('west-01','ผู้ท้าชิงยอมรับ','เซเวอริน คู่แข่งของฮาลวาร์ที่เคยคิดยึดอำนาจ ยอมรับฝีมือยมบาทน้อยหลังพ่ายแพ้ และยอมให้ปกครองโซน 3'),
@@ -52,7 +52,7 @@ export const STORY = {
   ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', pages:[
     { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ ศึกสุดท้ายสิ้นสุดลงแล้ว'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584 },
     { ...panel('ending-02-v3','ผู้ปกครองทั้งสี่โซน','ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข โดยมีนิรา พ่อ และหัวหน้าโซน 2–4 ร่วมดูแลอยู่เคียงข้าง'), video:'img/story-ending-02-v1.mp4', videoAspect:1280/544 },
-    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่ายมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.png' },
+    { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.png' },
   ]},
 };
 export const ABILITY_REWARDS = {
