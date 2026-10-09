@@ -72,3 +72,14 @@ test('zone transition pauses before opening arrival and repeated change events d
   g.onChange(); finish(); await new Promise(r => setTimeout(r, 0));
   assert.equal(calls.at(-1), 'return');
 });
+
+test('image cache name follows catalog version and older avegee-images caches are deleted', async () => {
+  const { useImageCacheVersion } = await import('../src/asset-preload.js');
+  const store = new Set(['avegee-images-old', 'avegee-images-20261009-x', 'other-cache']);
+  globalThis.caches = { keys: async () => [...store], delete: async k => store.delete(k) };
+  await useImageCacheVersion('20261009-x');
+  assert.deepEqual([...store].sort(), ['avegee-images-20261009-x', 'other-cache']);
+  const src = readFileSync('src/preload.js', 'utf8');
+  assert(src.includes('useImageCacheVersion(CATALOG_VERSION)') && src.includes('?v=${CATALOG_VERSION}'));
+  delete globalThis.caches;
+});

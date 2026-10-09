@@ -100,9 +100,11 @@ test('30A: opening intro and both regional arrival pages keep text below the fra
 test('30A: crop geometry removes letterbox rows without horizontal cropping in the story frame', () => {
   for (const story of Object.values(STORY)) for (const panel of story.pages) {
     const png = readFileSync(new URL(`../${panel.image}`, import.meta.url));
-    const width = png.readUInt32BE(16), height = png.readUInt32BE(20);
+    // PNG: IHDR size; lossy WebP: VP8 keyframe header (14-bit width/height at byte 26/28).
+    const isWebp = panel.image.endsWith('.webp');
+    const width = isWebp ? png.readUInt16LE(26) & 0x3fff : png.readUInt32BE(16), height = isWebp ? png.readUInt16LE(28) & 0x3fff : png.readUInt32BE(20);
     const layout = comicImageLayout(panel.image, width, height);
-    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.png' || panel.image === 'img/frontier-west-hypnosis-v1.png') {
+    if (panel.image.startsWith('img/deva-intro/') || panel.image === 'img/story-ending-03-v1.png' || panel.image === 'img/frontier-west-hypnosis-v1.webp') {
       assert.deepEqual(layout, {aspect:width/height, top:0, height:100});
       continue;
     }

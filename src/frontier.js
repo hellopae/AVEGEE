@@ -16,9 +16,10 @@ import { actorStanding } from './actor-recovery.js';
 // อยู่ในหน่วยความจำ JS เฉย ๆ จึงอยู่รอดข้าม "เปิด/ปิดกล่องระหว่างไปสู้แล้วกลับมา" ได้ในหนึ่งเซสชันเล่น
 // (ui.js เปิด/ปิด <dialog> ใบเดียวกันสลับกับฉากต่อสู้ ไม่ใช่โหลดหน้าใหม่) แต่หายไปเมื่อโหลดหน้าใหม่จริง ๆ
 
-import { MOB, SCENE } from './data.js';
+import { MOB } from './data.js';
 import { drawStandee, drawHeroWalk } from './art.js';
 import { walkDirection } from './walk-direction.js';
+import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS } from './walk-motion.js';
 import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } from './frontier-navigation.js';
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
@@ -100,7 +101,8 @@ export function makeFrontierWalk(cv, g, opts) {
   let raf = 0, last = performance.now(), dead = false, nextSpawn = 500;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };
   let nearId = null;
-  let walkDistance = 0, direction = 'down', movedAt = 0;
+  let walkDistance = 0, direction = 'down', simClock = 0, movedSim = -1e9;   // F1: นาฬิกาของการเดินเอง ไม่ผูกกับเฟรมวาด
+  let bgCache = null;   // F1: ฉากที่ย่อ/ขยายตามจอแล้ว วาดทีเดียว (ดู draw)
 
   const bgRec = loadImg(bg);
 
@@ -151,7 +153,9 @@ export function makeFrontierWalk(cv, g, opts) {
 
   function step(dt) {
     const beforeX = P.x, beforeY = P.y;
-    const sp = (0.32 / SCENE.h) * Math.min(dt, 50);
+    simClock += dt;
+    // ความเร็ว = ความสูงตัวละคร/วินาที (walk-motion.js) แปลงเป็นหน่วยของด้านสูงฉาก — เท่ากับในห้องและบนแผนที่โซน
+    const sp = walkStridePx(unit() * HERO_H, dt) / box.h;
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -179,9 +183,9 @@ export function makeFrontierWalk(cv, g, opts) {
     }
     const actualX = (P.x - beforeX) * box.w, actualY = (P.y - beforeY) * box.h;
     if (Math.hypot(actualX, actualY) > .15) {
-      walkDistance += Math.hypot(actualX, actualY) * 14 / (unit() * HERO_H * (14 / (92 * .8)));
+      walkDistance += Math.hypot(actualX, actualY);   // พิกเซล — แปลงเป็นเฟรมตอนวาด (walkDrawDistance)
       direction = walkDirection(actualX, actualY, direction);
-      movedAt = performance.now();
+      movedSim = simClock;
     }
     // ศัตรูเดินจากขอบเข้ามาจุดในสนามทีละก้าว ถึงแล้วหยุดยืนรอ (ไม่ไล่ล่ายมบาทน้อย — ดูข้อ A6 ในรายงาน)
     for (const en of sess.enemies) {
@@ -224,10 +228,18 @@ export function makeFrontierWalk(cv, g, opts) {
       box = { ox: Math.max(W-w,Math.min(0,W/2-P.x*w)),
               oy: Math.max(H-h,Math.min(0,H/2-P.y*h)), w, h };
       ctx.fillStyle = '#0d0710'; ctx.fillRect(0, 0, W, H);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(im, 0, 0, sw, sh, box.ox, box.oy, box.w, box.h);
-      ctx.imageSmoothingEnabled = false;
+      // F1 — เดิมย่อ/ขยายภาพฉากด้วย smoothing 'high' ทุกเฟรม (ฉาก 1678px → 3516px บนจอ retina ≈ 40-80ms/เฟรม
+      // = ค้างที่ ~12fps ตามวิดีโอของเจ้าของ) ตอนนี้ปรับขนาดครั้งเดียวลง canvas นอกจอ แล้วคัดลอก 1:1 ทุกเฟรม
+      // คุณภาพภาพเท่าเดิม (ยังเป็น smoothing 'high' ครั้งเดียว) เปลี่ยนเฉพาะเมื่อขนาดจอเปลี่ยน
+      const bw2 = Math.max(1, Math.round(w)), bh2 = Math.max(1, Math.round(h));
+      if (!bgCache || bgCache.key !== `${bw2}x${bh2}:${bgRec.el.src}`) {
+        const c = document.createElement('canvas'); c.width = bw2; c.height = bh2;
+        const cc = c.getContext('2d');
+        cc.imageSmoothingEnabled = true; cc.imageSmoothingQuality = 'high';
+        cc.drawImage(im, 0, 0, sw, sh, 0, 0, bw2, bh2);
+        bgCache = { key: `${bw2}x${bh2}:${bgRec.el.src}`, c };
+      }
+      ctx.drawImage(bgCache.c, 0, 0, bw2, bh2, box.ox, box.oy, box.w, box.h);
     } else {
       box = { ox: 0, oy: 0, w: W, h: H };
       ctx.fillStyle = '#1c0f16'; ctx.fillRect(0, 0, W, H);
@@ -252,8 +264,8 @@ export function makeFrontierWalk(cv, g, opts) {
       } });
     }
     acts.push({ y: P.y, fn: () => {
-      const moving = t - movedAt < 120;
-      if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDistance : 0, P.face, direction))
+      const moving = simClock - movedSim < WALK_GRACE_MS;
+      if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDrawDistance(walkDistance, U * HERO_H) : 0, P.face, direction))
         drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face, moving);
     } });
     if(actorStanding(g.guard)) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
@@ -295,8 +307,9 @@ export function makeFrontierWalk(cv, g, opts) {
   function frame(now) {
     if (dead) return;
     if (!alive()) { api.destroy(); return; }
-    const dt = Math.min(80, now - last); last = now;
-    step(dt);
+    // F1 — ไล่เวลาจริงให้ครบ หั่นเป็นก้อนเล็ก (เดิมตัดที่ 50ms: เฟรมช้าแล้วเดินช้าลงอีก)
+    const dt = Math.min(250, now - last); last = now;
+    for (const s of walkSlices(dt)) step(s);
     if (now >= nextSpawn) { spawnOne(); nextSpawn = now + SPAWN_EVERY; }
     draw(now);
     raf = requestAnimationFrame(frame);

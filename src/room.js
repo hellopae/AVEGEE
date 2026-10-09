@@ -1,6 +1,7 @@
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
+import { potLayout, drawPotSoul } from './pot-souls.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
@@ -15,6 +16,7 @@ import { regenMp } from './mp-regen.js';
 // ไม่มีพิกัดพิกเซลฝังอยู่ในไฟล์นี้เลย
 
 import { walkDirection } from './walk-direction.js';
+import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawHeroWalk, drawSoul, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
@@ -152,7 +154,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
   let locked = false;
   // แอนิเมชันเดิน — ใช้สไปรท์เดินชุดเดียวกับบนแผนที่ (art.js drawHeroWalk) เฟรมเปลี่ยนตามระยะที่เดินจริง
-  let walkDist = 0, movedAt = -1e9, direction = 'down';
+  let walkDist = 0, simClock = 0, movedSim = -1e9, direction = 'down';
+  // F1 — "กำลังเดิน" นับด้วยนาฬิกาของการเดินเอง (ไม่ใช่นาฬิกาเฟรม) เฟรมช้า/กระตุกจะได้ไม่สลับท่ายืน↔ท่าเดินมั่ว
 
   // ---- พิกัดสัดส่วน (0-1 ของภาพฉาก) → พิกเซลบน canvas ----
   const px = u => box.ox + (mirrorRoom ? 1 - u : u) * box.w;
@@ -276,7 +279,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;
     }
-    const sp = 0.00022 * Math.min(dt, 50);                    // ความเร็วเดิน (สัดส่วนต่อมิลลิวินาที)
+    for (const slice of walkSlices(dt, Infinity)) walkStep(slice);   // F1: เดินทีละก้อนเล็ก (เวลานั่ง/นอนด้านบนใช้ dt เต็มเหมือนเดิม)
+  }
+
+  function walkStep(dt) {
+    simClock += dt;
+    // ความเร็วเดิน = ความสูงตัวละคร/วินาที (walk-motion.js) แปลงเป็นหน่วยของด้านสูงภาพฉาก — เท่ากันทุกจอ ทุกเฟรมเรต
+    const sp = walkStridePx(unit() * HERO_H, dt) / box.h;
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -299,7 +308,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       else if (walkSegmentInside(bx, by, bx, ny, inArea)) P.y = ny;
       else P.tx = null;
       const stepPx = Math.hypot((P.x - bx) * box.w, (P.y - by) * box.h);
-      if (stepPx > 0.05) { walkDist += stepPx; direction = walkDirection((P.x - bx) * box.w * (mirrorRoom ? -1 : 1), (P.y - by) * box.h, direction); movedAt = performance.now(); }
+      if (stepPx > 0.05) { walkDist += stepPx; direction = walkDirection((P.x - bx) * box.w * (mirrorRoom ? -1 : 1), (P.y - by) * box.h, direction); movedSim = simClock; }
       if (Math.abs(dx) > 0.001) P.face = (mirrorRoom ? -dx : dx) < 0 ? -1 : 1;
     }
     const ii = g.items.findIndex(it => it.from === def.k);
@@ -411,7 +420,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (!a) return;
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
-        drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
+        // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
+        const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
+        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
+        else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
         chains(x,y);
         const p = Math.min(1, sl.progress / sl.need);
         const bw = U * 0.09, bh2 = Math.max(4, U * 0.011);
@@ -421,7 +433,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
         const nm = sl.soul.who.length > 9 ? sl.soul.who.slice(0, 8) + '…' : sl.soul.who;
         if (def.k === 'tarang') soulNameplate(ctx, sl.soul.name || sl.soul.who, x, y, U, soulNameplateWidth(room.souls, i, box.w, U));
-        else label(ctx, nm, x, y + U * 0.035 + (i % 2) * U * 0.032, U * 0.026, '#ffe0c8');
+        else soulLabel(ctx, nm, x, y + U * 0.033 + (i % 2) * U * 0.024, U);
       } });
     });
 
@@ -441,7 +453,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           chains(x,y);
           if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
-          else label(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.04 + (i % 2) * U * 0.032, U * 0.025, '#ffe0c8');
+          else soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036 + (i % 2) * U * 0.024, U);
         } });
       });
     }
@@ -524,11 +536,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
                 : swinging && img('hero-yama-atk') ? 'hero-yama-atk' : 'hero-yama';
       // เดินอยู่จริง (ขยับตำแหน่งในช่วง 120ms ที่ผ่านมา) → ใช้สไปรท์เดิน 4 เฟรมเหมือนบนแผนที่
       // สไปรท์เดินวาดหันซ้าย drawHeroWalk พลิกให้ตามทิศ P.face เอง · ไม่มีไฟล์เดินก็ถอยไปท่ายืนเด้งเดิม
-      const moving = !sitting && !swinging && t - movedAt < 120;
+      const moving = !sitting && !swinging && simClock - movedSim < WALK_GRACE_MS;
       const heroH = U * HERO_H;
       if (swinging && def.k === 'dab' && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
           SWORD_DURATION_MS - (g.swingUntil - Date.now()), P.face)) return;
-      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDist * 14 / (heroH * 0.28), P.face, direction))) {
+      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDrawDistance(walkDist, heroH), P.face, direction))) {
         const gait = Math.floor(t / 180) % 4;
         const hop = moving && gait % 2 ? U * 0.010 : 0;
         const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;
@@ -553,7 +565,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // (event close ของ <dialog> ยิงแบบ async และมาถึงตอนกล่องใหม่เปิดไปแล้ว
     //  ผูกการเก็บกวาดไว้กับมันเมื่อไหร่ ห้องจะโดนทำลายทิ้งตั้งแต่เฟรมแรก)
     if (!alive()) { api.destroy(); return; }
-    const dt = Math.min(80, now - last); last = now;
+    // F1 — ไล่เวลาจริงให้ครบ (เพดาน 250ms) หั่นเป็นก้อนเล็ก ไม่ตัดที่ 50ms เหมือนเดิม ความเร็วไม่ตกตามเฟรมเรต
+    const dt = Math.min(WALK_MAX_CATCHUP_MS, now - last); last = now;
     step(dt);
     if (api.onFrame) api.onFrame(inReach());
     draw(now, api.st);
@@ -611,6 +624,16 @@ function label(ctx, text, x, y, size, color) {
   ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.8)';
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
+/** F2 ข้อ 3 — ชื่อวิญญาณใต้ตัว: เล็ก เรียบ ไม่เกะกะ (เดิมใช้ label() ขนาด U*0.025 ตัวใหญ่จนบังฉาก) */
+function soulLabel(ctx, text, x, y, U) {
+  const size = Math.max(10, U * 0.0155);
+  ctx.font = `500 ${Math.round(size)}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round'; ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(0,0,0,.7)';
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = 'rgba(255,224,200,.92)'; ctx.fillText(text, x, y);
 }
 
 function tag(ctx, x, y, text, color, U = 400) {

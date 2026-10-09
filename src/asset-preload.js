@@ -50,7 +50,16 @@ export function createAssetQueue(load, lanes = 3) {
   } };
 }
 
-const IMAGE_CACHE = 'avegee-images-20261008-zone3-ui';
+// Cache name follows the catalog version, so a bumped version never serves overwritten files from an old cache.
+const IMAGE_CACHE_PREFIX = 'avegee-images-';
+let IMAGE_CACHE = IMAGE_CACHE_PREFIX + 'unversioned';
+export function useImageCacheVersion(version) {
+  IMAGE_CACHE = IMAGE_CACHE_PREFIX + version;
+  if (!globalThis.caches) return Promise.resolve();
+  // Drop every older avegee-images-* cache; failures are harmless (storage is only an optimisation).
+  return caches.keys().then(keys => Promise.all(keys
+    .filter(k => k.startsWith(IMAGE_CACHE_PREFIX) && k !== IMAGE_CACHE).map(k => caches.delete(k)))).catch(() => {});
+}
 export async function loadImage(url, timeoutMs = 30000) {
   let cachedUrl, cache;
   // Unsupported/disabled storage falls back to normal HTTP image caching.

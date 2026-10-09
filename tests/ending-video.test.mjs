@@ -16,6 +16,7 @@ test('ending plays panorama then father acceptance, using shipped media and post
   assert.equal(pages[1].videoAspect,1280/544);assert.equal(pages[2].videoAspect,16/9);
   for(const p of pages)for(const path of [p.image,p.video,p.poster].filter(Boolean))assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   assert.match(pages[2].line,/ทำได้ดีมากลูกพ่อ/);
+  assert.match(pages[2].line,/ตบบ่าของยมบาทน้อย/);
 });
 test('ending video navigation pauses outgoing clips, keeps manual completion, and falls back on failure',()=>{
   const r=root();let done=0;render(r,STORY.ending,()=>done++);
@@ -31,6 +32,6 @@ test('ending video navigation pauses outgoing clips, keeps manual completion, an
 });
 test('additional clips attach to the right story events and retain matching fallback stills',()=>{
   const expected=[['deva-th-praise','deva-intro-th-beggar-v2'],['deva-th-warning','deva-intro-th-beggar-v2'],['cyber-control','story-cyberhell-02-v3'],['cyber-duel','story-cyberhell-03-v4'],['ending','story-ending-01-v4']];
-  for(const [key,name] of expected){const p=STORY[key].pages[0];assert.ok(p.video.endsWith(name+'.mp4'));assert.ok(p.image.endsWith(name+'.png'));assert.ok(p.videoAspect>0);assert.ok(existsSync(new URL('../'+p.video,import.meta.url)));}
+  for(const [key,name] of expected){const p=STORY[key].pages[0];assert.ok(p.video.endsWith(name+'.mp4'));assert.ok(p.image.endsWith(name+(name==='deva-intro-th-beggar-v2'?'.webp':'.png')));assert.ok(p.videoAspect>0);assert.ok(existsSync(new URL('../'+p.video,import.meta.url)));}
   for(const key of ['deva-west','deva-asia','deva-cyberhell'])assert.equal(STORY[key].pages[0].video,`img/deva-intro/deva-intro-${key.slice(5)}-v1-web.mp4`);
 });

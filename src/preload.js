@@ -1,11 +1,13 @@
-import { createAssetQueue, loadImage, zoneAssets, fetchWithTimeout } from './asset-preload.js';
+import { createAssetQueue, loadImage, zoneAssets, fetchWithTimeout, useImageCacheVersion } from './asset-preload.js';
 import { preloadBgm } from './sfx.js';
 
 const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url));
+const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-sala-books';
+if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
 async function catalog() {
-  if (!catalogPromise) catalogPromise = fetchWithTimeout('img/preload-catalog.json?v=20261008-zone3-hypnosis-ui-mirror-charge-sala-books', { cache:'no-cache' })
+  if (!catalogPromise) catalogPromise = fetchWithTimeout(`img/preload-catalog.json?v=${CATALOG_VERSION}`, { cache:'no-cache' })
     .then(async ({response:r, release}) => {
       try { if (!r.ok) throw new Error('catalog unavailable'); return await r.json(); }
       finally { release(); }

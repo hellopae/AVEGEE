@@ -646,6 +646,10 @@ dialog.settings-modal[open]{max-width:460px;border-color:var(--gold);
 .settings-close img{width:100%;height:100%;object-fit:contain}
 .settings-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .settings-row-icon{width:40px;height:40px;object-fit:contain;flex:none}
+.settings-row-toggle{all:unset;box-sizing:border-box;width:40px;height:40px;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.settings-row-toggle img{width:100%;height:100%;object-fit:contain}
+.settings-row-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.settings-row[data-off="true"] .settings-row-body{opacity:.55}   /* ปิดอยู่: แถบเลื่อนหรี่ลง ยังเลื่อนระดับเสียงไว้ล่วงหน้าได้ */
 .settings-row-icon--txt{display:flex;align-items:center;justify-content:center;width:40px;height:40px;
   flex:none;color:var(--gold);font-weight:700;font-size:1.1rem}
 .settings-row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
@@ -1967,9 +1971,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .st-exit[hidden]{display:none}
 </style>
 <link rel="stylesheet" href="src/command-wheel.css">
-<link rel="stylesheet" href="src/flow29c.css">
+<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge">
 <link rel="stylesheet" href="src/minigames/training/training.css">
-<link rel="stylesheet" href="src/compact-ui.css?v=20261009-sala-books">
+<link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-sala-books">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2169,6 +2173,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js"></script>
-<script type="module" src="src/ui.js"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-sala-books"></script>
 </body>
 </html>

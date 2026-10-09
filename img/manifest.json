@@ -59,7 +59,7 @@
 "rest": [
 "minigames/sala-books.png",
 "minigames/sala-book-gold.png",
-"frontier-west-hypnosis-v1.png",
+"frontier-west-hypnosis-v1.webp",
 "BG-Dab.webp",
 "BG-Krajok.webp",
 "BG-Krata.webp",
@@ -516,6 +516,7 @@
 "ui/icon-home.png",
 "ui/icon-justice.png",
 "ui/icon-lock.png",
+"ui/icon-music-close.png",
 "ui/icon-music.png",
 "ui/icon-new-game-glyph.png",
 "ui/icon-new-game.png",
@@ -531,6 +532,7 @@
 "ui/icon-setting2.png",
 "ui/icon-skip.png",
 "ui/icon-skull.png",
+"ui/icon-sound-close.png",
 "ui/icon-sound.png",
 "ui/logo-eng.png",
 "ui/logo-th.png"

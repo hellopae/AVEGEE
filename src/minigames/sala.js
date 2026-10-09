@@ -1,4 +1,5 @@
-import { createPuzzle, ROWS, COLS, COLORS, GOALS } from './document-puzzle.js';
+import { createPuzzle, ROWS, COLS, GOALS } from './document-puzzle.js';
+import { t } from '../i18n.js';
 
 // Viewports select the user's four books without altering the supplied artwork.
 const BOOK_X = [84, 457, 830, 1203];
@@ -8,19 +9,20 @@ function bookArt(color) {
 }
 
 export default {
- name:'จัดเอกสาร', icon:'',
- tip:'สลับหนังสือข้างกัน เรียงสีเดียวกัน 3 เล่มขึ้นไป เพื่อรวบรวมหมวดเอกสาร · ชนะได้ระเบียบ +8',
+ get name() { return t('room.sala.action2'); }, icon:'',
+ get tip() { return t('mg.sala.tip'); },
  run(host, { alive = () => true, paused = () => false, onWin, reward = () => 8, seed = Date.now() }) {
+  const COLORS = ['red','yellow','blue','purple'].map(k => t(`doc.${k}`));
   const game = createPuzzle(seed), root = document.createElement('div');
   root.className = 'doc-puzzle';
   root.innerHTML = `
-   <div class="doc-summary"><div class="doc-goals" aria-label="เป้าหมายหมวดเอกสาร"></div><div class="doc-reward">ระเบียบ <b>+8</b><small>เมื่อจัดครบทุกหมวด · สูงสุด 100</small></div></div>
-   <p class="doc-rule">สลับเล่มข้างกัน · เรียงสีเดียวกัน <b>3 เล่มขึ้นไป</b> = 1 หมวด · รวมต่อเนื่องได้คอมโบ</p>
-   <div class="doc-playfield"><div class="doc-scroll"><div class="doc-board" role="group" aria-label="กระดานจัดเอกสาร 5 แถว 14 คอลัมน์"></div></div>
-    <div class="doc-paused" hidden><b>พักจัดเอกสาร</b><span>กด “เล่นต่อ” เพื่อกลับมาที่กระดานเดิม</span></div>
-    <div class="doc-victory" hidden role="status"><div class="doc-trophy">${bookArt('gold')}</div><h3>จัดเอกสารสำเร็จ</h3><p>ครบทุกหมวดแล้ว!</p><button class="gold" data-claim type="button">รับระเบียบ</button></div>
+   <div class="doc-summary"><div class="doc-goals" aria-label="${t('doc.goals')}"></div><div class="doc-reward">${t('doc.order')} <b>+8</b><small>${t('doc.cap')}</small></div></div>
+   <p class="doc-rule">${t('doc.rule')}</p>
+   <div class="doc-playfield"><div class="doc-scroll"><div class="doc-board" role="group" aria-label="${t('doc.board')}"></div></div>
+    <div class="doc-paused" hidden><b>${t('doc.pauseTitle')}</b><span>${t('doc.pauseHint')}</span></div>
+    <div class="doc-victory" hidden role="status"><div class="doc-trophy">${bookArt('gold')}</div><h3>${t('doc.success')}</h3><p>${t('doc.successHint')}</p><button class="gold" data-claim type="button">${t('doc.claim')}</button></div>
    </div>
-   <div class="doc-footer"><p class="doc-status" role="status">แตะหนังสือ 2 เล่มที่ติดกัน หรือลากสลับได้เลย</p><div class="doc-tools"><span class="doc-moves">0 ครั้ง</span><button data-hint type="button">คำใบ้</button><button data-reset type="button">เริ่มใหม่</button></div></div>`;
+   <div class="doc-footer"><p class="doc-status" role="status">${t('doc.initial')}</p><div class="doc-tools"><span class="doc-moves">${t('doc.moves').replace('{n}',0)}</span><button data-hint type="button">${t('doc.hint')}</button><button data-reset type="button">${t('doc.restart')}</button></div></div>`;
   host.replaceChildren(root);
   const board = root.querySelector('.doc-board'), status = root.querySelector('.doc-status');
   const goals = root.querySelector('.doc-goals'), victory = root.querySelector('.doc-victory');
@@ -80,17 +82,17 @@ export default {
     b.className = `doc-book c${values[i]}`;
     b.style.removeProperty('transform'); b.style.removeProperty('--merge-x'); b.style.removeProperty('--merge-y');
     b.innerHTML = bookArt(values[i]);
-    b.setAttribute('aria-label',`หนังสือ${COLORS[values[i]]} แถว ${Math.floor(i/COLS)+1} คอลัมน์ ${i%COLS+1}`);
+    b.setAttribute('aria-label',t('doc.bookTile').replace('{color}',COLORS[values[i]]).replace('{row}',Math.floor(i/COLS)+1).replace('{col}',i%COLS+1));
    });
    selection();
   }
   function counters(collected) {
-   goals.innerHTML = COLORS.map((name,i) => `<div class="doc-goal c${i}${GOALS[i]>0 && collected[i]>=GOALS[i]?' complete':''}"><span class="doc-goal-book">${bookArt(i)}</span><span><small>${name}${GOALS[i]?'':' · โบนัส'}</small><b>${GOALS[i]?`${Math.min(collected[i],GOALS[i])}<em> / ${GOALS[i]}</em>`:collected[i]}</b></span>${GOALS[i]>0 && collected[i]>=GOALS[i]?'<i aria-label="ครบแล้ว">✓</i>':''}</div>`).join('');
+   goals.innerHTML = COLORS.map((name,i) => `<div class="doc-goal c${i}${GOALS[i]>0 && collected[i]>=GOALS[i]?' complete':''}"><span class="doc-goal-book">${bookArt(i)}</span><span><small>${name}${GOALS[i]?'':` · ${t('doc.bonus')}`}</small><b>${GOALS[i]?`${Math.min(collected[i],GOALS[i])}<em> / ${GOALS[i]}</em>`:collected[i]}</b></span>${GOALS[i]>0 && collected[i]>=GOALS[i]?`<i aria-label="${t('doc.complete')}">✓</i>`:''}</div>`).join('');
   }
   function controls() {
    hintButton.disabled = resetButton.disabled = busy || game.view().won;
    board.setAttribute('aria-busy',String(busy));
-   root.querySelector('.doc-moves').textContent = `สลับ ${game.view().moves} ครั้ง`;
+   root.querySelector('.doc-moves').textContent = t('doc.moves').replace('{n}',game.view().moves);
   }
   function wait(ms) {
    if (disposed || !alive()) return Promise.resolve(false);
@@ -106,14 +108,14 @@ export default {
    if (!await wait(170)) return;
    if (!result.ok) {
     tiles[a].style.removeProperty('transform'); tiles[b].style.removeProperty('transform');
-    status.textContent = 'ลองสลับคู่อื่น ให้สีเดียวกันเรียง 3 เล่มขึ้นไป · ไม่เสียจำนวนครั้ง';
+    status.textContent = t('doc.invalid');
     if (!await wait(170)) return;
     paintBoard(before.board); busy = false; controls(); return;
    }
    let combo = 0;
    for (const frame of result.frames) {
     paintBoard(frame.board); combo++;
-    status.textContent = combo>1 ? `คอมโบ ×${combo} · เอกสารเรียงต่อกัน!` : 'รวมเอกสารเป็นหมวด';
+    status.textContent = combo>1 ? t('doc.combo').replace('{n}',combo) : t('doc.match');
     for (const group of frame.groups) {
      const anchor = group.anchor ?? group.cells[Math.floor(group.cells.length/2)];
      const target = tiles[anchor].getBoundingClientRect();
@@ -135,10 +137,10 @@ export default {
    busy = false; controls();
    if (state.won) {
     victory.hidden = false;
-    root.querySelector('[data-claim]').textContent = `รับระเบียบ +${Math.max(0,Math.min(8,reward()))}`;
-    status.textContent = 'จัดครบทุกหมวดแล้ว รับรางวัลเพื่อกลับหอทะเบียนกรรม';
+    root.querySelector('[data-claim]').textContent = `${t('doc.claim')} +${Math.max(0,Math.min(8,reward()))}`;
+    status.textContent = t('doc.winStatus');
    } else {
-    status.textContent = result.reshuffled ? 'จัดกระดานใหม่ให้แล้ว · หมวดที่รวบรวมไว้ยังอยู่ครบ' : 'เก็บหมวดที่ยังไม่ครบต่อได้เลย · สีฟ้ารวมเป็นโบนัส';
+    status.textContent = result.reshuffled ? t('doc.reshuffled') : t('doc.continue');
    }
   }
   hintButton.onclick = () => {
@@ -146,19 +148,19 @@ export default {
    selected = null; selection();
    const pair = game.hint();
    pair?.forEach(i => tiles[i].classList.add('hint'));
-   status.textContent = pair ? 'ลองสลับหนังสือ 2 เล่มที่มีขอบสว่าง' : 'ครบทุกหมวดแล้ว';
+   status.textContent = pair ? t('doc.hintStatus') : t('doc.successHint');
   };
   resetButton.onclick = () => {
    if (!usable() || busy || game.view().won) return;
    selected = null; drag = null; const state = game.reset();
    paintBoard(state.board); counters(state.collected); controls();
-   status.textContent = 'เริ่มกระดานใหม่แล้ว · ไม่มีเวลาจำกัด';
+   status.textContent = t('doc.restartStatus');
   };
   root.querySelector('[data-claim]').onclick = () => {
    if (!usable() || busy || claimed || !game.view().won) return;
    claimed = true;
    if (onWin() === false && !disposed) {
-    claimed = false; status.textContent = 'ยังบันทึกรางวัลไม่ได้ กรุณาลองรับอีกครั้ง';
+    claimed = false; status.textContent = t('doc.saveFailed');
    }
   };
   function dispose() {
