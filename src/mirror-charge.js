@@ -1,3 +1,4 @@
+import { t, onLangChange } from './i18n.js';
 // Optical reflection in image coordinates: the mirror angle is its surface line.
 export const MIRROR_LAYOUT = { source:[.85,.61], pivot:[.735,.52], target:[.50,.27] };
 export const MIRROR_HOLD_MS = 1800;
@@ -25,11 +26,15 @@ export function mirrorSolution(aspect = 16/9, layout = MIRROR_LAYOUT) {
 /** Transparent in-room overlay keeps the real background and character anchors. */
 export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, onCharge, onState = () => {}, alive }) {
   const layer=document.createElement('div');layer.className='mirror-charge-layer';roomEl.append(layer);
-  layer.innerHTML='<img class="mirror-charge-base" src="img/mirror-charge-base.png" alt=""><img class="mirror-charge-pane" src="img/mirror-charge-pane.png" alt="กระจกสะท้อนแสงที่หมุนได้"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-ray-glow fill="none" stroke="#eeb743" stroke-width="1.1" opacity=".45"/><path data-ray fill="none" stroke="#fff1b6" stroke-width=".32"/><circle data-impact r=".7" fill="#fff7d5"/><circle data-target-glow r="1.2" fill="#ffd56c" opacity=".7"/></svg><img class="placed-mirror" src="img/item-mirror.png" alt="กระจกวิเศษที่วางไว้">';
+  layer.innerHTML='<img class="mirror-charge-base" src="img/mirror-charge-base.png" alt=""><img class="mirror-charge-pane" src="img/mirror-charge-pane.png" alt=""><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-ray-glow fill="none" stroke="#eeb743" stroke-width="1.1" opacity=".45"/><path data-ray fill="none" stroke="#fff1b6" stroke-width=".32"/><circle data-impact r=".7" fill="#fff7d5"/><circle data-target-glow r="1.2" fill="#ffd56c" opacity=".7"/></svg><img class="placed-mirror" src="img/item-mirror.png" alt="">';
   const ray=layer.querySelector('[data-ray]'),glow=layer.querySelector('[data-ray-glow]'),impact=layer.querySelector('[data-impact]'),targetGlow=layer.querySelector('[data-target-glow]'),base=layer.querySelector('.mirror-charge-base'),pane=layer.querySelector('.mirror-charge-pane'),item=layer.querySelector('.placed-mirror');
   const controls=document.createElement('div');controls.className='mirror-charge-controls';roomEl.append(controls);
-  controls.innerHTML='<label>องศากระจก <output>0°</output><input aria-label="ปรับองศากระจก" type="range" min="0" max="179" step="1" value="0"></label><div class="mirror-charge-stepper"><button type="button" data-turn="-1">↶ −1°</button><button type="button" data-turn="1">↷ +1°</button><button type="button" data-remove>เก็บกระจก</button></div><progress max="1800" value="0" aria-label="พลังแสง"></progress><small aria-live="polite"></small>';
+  controls.innerHTML='<label><span data-l="angle"></span> <output>0°</output><input type="range" min="0" max="179" step="1" value="0"></label><div class="mirror-charge-stepper"><button type="button" data-turn="-1">↶ −1°</button><button type="button" data-turn="1">↷ +1°</button><button type="button" data-remove></button></div><progress max="1800" value="0"></progress><small aria-live="polite"></small>';
   const range=controls.querySelector('input'), output=controls.querySelector('output'), progress=controls.querySelector('progress'), status=controls.querySelector('small');
+  const labels=()=>{controls.querySelector('[data-l="angle"]').textContent=t('mirror.angle');range.setAttribute('aria-label',t('mirror.angle.aria'));
+    controls.querySelector('[data-remove]').textContent=t('mirror.remove');progress.setAttribute('aria-label',t('mirror.power.aria'));
+    pane.setAttribute('alt',t('mirror.pane.alt'));item.setAttribute('alt',t('mirror.placed.alt'));};
+  labels();const offLang=onLangChange(labels);
   let placed=false, turning=false, angle=0, held=0, charged=false, frame=0, last=performance.now(), stopped=false;
   const turn = v => {angle=((Number(v)%180)+180)%180;range.value=angle;output.value=`${angle}°`;held=0;};
   range.oninput=()=>turn(range.value);
@@ -60,11 +65,11 @@ export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, onCharg
       pane.style.transform=`translate(-50%,-50%) rotate(${screenAngle}deg)`;
       item.style.left=`${p.target[0]*100}%`;item.style.top=`${p.target[1]*100}%`;item.classList.toggle('charged',charged);
       progress.value=held;
-      status.textContent=charged?'เติมพลังกระจกวิเศษ +1 สำเร็จ':!canCharge()?'พลังเต็มหรือกำลังรอเติมครั้งถัดไป':beam.hit?'แสงถึงกระจกแล้ว… ค้างไว้เพื่อเติมพลัง':'หมุนให้ลำแสงสะท้อนไปถึงกระจกวิเศษบนแท่น';
+      status.textContent=t(charged?'mirror.st.charged':!canCharge()?'mirror.st.full':beam.hit?'mirror.st.hit':'mirror.st.aim');
     }
     frame=requestAnimationFrame(draw);
   };
-  const destroy=()=>{if(stopped)return;stopped=true;cancelAnimationFrame(frame);layer.remove();controls.remove();};
+  const destroy=()=>{if(stopped)return;stopped=true;offLang();cancelAnimationFrame(frame);layer.remove();controls.remove();};
   remove();frame=requestAnimationFrame(draw);
   return { place(){if(!canPlace())return false;placed=true;layer.hidden=false;return true;},
     adjust(){if(!placed)return false;turning=true;controls.hidden=false;return true;},

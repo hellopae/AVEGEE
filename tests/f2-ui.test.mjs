@@ -65,18 +65,20 @@ test('2. ท่ายืนของยมบาททั้ง 4 ชุดไ�
   }
   assert.ok(TEAM_DRAWN_FACING_RIGHT.has('hero-yama-asia') && TEAM_DRAWN_FACING_RIGHT.has('hero-yama-cyberhell'));
 });
-test('2. ท่าเตรียม/ท่าคืนตัวของแอตลาสฟันดาบ: บูรพา/ปัจฉิม/นรกเครือข่ายใช้เฟรมที่หันขวา (1 และ 6) แทน 0/7 ที่หันซ้าย · โซน 1 คงเดิม · เวลาไม่เปลี่ยน', () => {
-  for (const style of ['asia', 'west', 'cyberhell']) {
-    assert.equal(swordDrawFrame(style, 0), 1, `${style} เฟรมแรก`);
-    assert.equal(swordDrawFrame(style, SWORD_DURATION_MS - 1), 6, `${style} เฟรมสุดท้าย (คืนตัว)`);
-    assert.equal(swordDrawFrame(style, 5000), 6);
-    for (let t = 0; t < SWORD_DURATION_MS; t += 5) assert.ok(![0, 7].includes(swordDrawFrame(style, t)), `${style} @${t}`);
+test('2. corrected sword atlases draw actual frames 0–7 for every outfit; timing remains 580ms', () => {
+  for (const style of ['th', 'asia', 'west', 'cyberhell', 'unknown']) {
+    assert.equal(swordDrawFrame(style, 0), 0, `${style} ready`);
+    assert.equal(swordDrawFrame(style, SWORD_DURATION_MS - 1), 7, `${style} recovery`);
+    assert.equal(swordDrawFrame(style, 5000), 7);
+    const seen = new Set();
+    for (let t = 0; t < SWORD_DURATION_MS; t++) {
+      assert.equal(swordDrawFrame(style, t), swordFrame(t));
+      seen.add(swordDrawFrame(style, t));
+    }
+    assert.deepEqual([...seen], [0, 1, 2, 3, 4, 5, 6, 7]);
   }
-  assert.equal(swordDrawFrame('th', 0), 0); assert.equal(swordDrawFrame('th', SWORD_DURATION_MS - 1), 7);   // โซน 1 ใช้ภาพ v3 ที่แก้หันขวาแล้ว
-  assert.equal(swordDrawFrame('unknown', 0), 0);
-  for (const t of [0, 100, 300, 579, 900]) if (![0, 7].includes(swordFrame(t))) for (const s of ['asia', 'west', 'cyberhell']) assert.equal(swordDrawFrame(s, t), swordFrame(t));
   assert.equal(SWORD_DURATION_MS, 580);
-  assert.deepEqual(Object.keys(FRAME_FACING_FIX).sort(), ['asia', 'cyberhell', 'west']);
+  assert.deepEqual(FRAME_FACING_FIX, {});
 });
 
 // ---------- ข้อ 3: ชื่อวิญญาณเล็กลง + "เพื่อลดกรรม" ----------

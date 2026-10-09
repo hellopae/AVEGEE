@@ -231,6 +231,7 @@
 ],
 "zones": {
 "asia": [
+"yama-sword-v4/hero-yama-asia-sword.webp",
 "Asia/BG-Dab-asia.webp",
 "Asia/BG-Frontier-asia.webp",
 "Asia/BG-Krajok-asia.webp",
@@ -318,6 +319,7 @@
 "Asia/spirit-elder-woman-asia-v2.png"
 ],
 "cyberhell": [
+"yama-sword-v4/hero-yama-cyberhell-sword.webp",
 "CyberHell/BG-Dab-cyberhell.webp",
 "CyberHell/BG-Frontier-cyberhell.webp",
 "CyberHell/BG-Krajok-cyberhell.webp",
@@ -405,6 +407,7 @@
 "CyberHell/st-sawan-cyberhell.png"
 ],
 "west": [
+"yama-sword-v4/hero-yama-west-sword.webp",
 "West/BG-Dab-west.webp",
 "West/BG-Frontier-west.webp",
 "West/BG-Krajok-west.webp",

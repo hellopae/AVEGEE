@@ -1,4 +1,4 @@
-import { SWORD_SHEETS } from './yama-sword-v2-assets.js';
+import { SWORD_SHEETS } from './yama-sword-v2-assets.js?v=20261009-f2-merge-f3-f4';
 
 // One physical slash, synchronized to the existing 580 ms battle lunge.
 // Wind up visibly, cut quickly through contact, hold the low follow-through, then recover.
@@ -13,10 +13,8 @@ export function swordFrame(elapsed) {
   }
   return SWORD_FRAME_MS.length - 1;
 }
-/** F2 ข้อ 2 — เฟรมท่าเตรียม (0) และท่าคืนตัว (7) ของแอตลาสบูรพา/ปัจฉิม/นรกเครือข่ายวาดสายตาหันซ้าย (ซ้ำรอยโซน 1 ที่แก้ไว้ใน v3)
- *  จนกว่าจะมีภาพที่วาดใหม่หันขวา ให้ใช้เฟรมที่หันขวาอยู่แล้วของแอตลาสเดียวกันแทน (ไม่แตะไฟล์ภาพ · ไม่แตะเวลา)
- *  เมื่อภาพแก้เสร็จ ให้ลบแถวของชุดนั้นออกจากตารางนี้ที่เดียว */
-export const FRAME_FACING_FIX = Object.freeze({ asia:{ 0:1, 7:6 }, west:{ 0:1, 7:6 }, cyberhell:{ 0:1, 7:6 } });
+// v3 (th) and v4 (asia/west/cyberhell) supply actual right-facing endpoints.
+export const FRAME_FACING_FIX = Object.freeze({});
 export function swordDrawFrame(style, elapsed) {
   const f = swordFrame(elapsed);
   const fix = FRAME_FACING_FIX[SWORD_SHEETS[style] ? style : 'th'];

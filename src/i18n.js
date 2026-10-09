@@ -145,6 +145,31 @@ const TH = {
   'room.sala.action2': 'จัดเอกสาร',
   'room.sala.hint2': 'เพื่อเพิ่มระดับระเบียบ',
   'mg.sala.tip': 'เลื่อนทั้งแถวหรือคอลัมน์ จัดหนังสือสีเดียวกันครบ 5 เล่มในแนวตั้ง ให้ได้แดง 1 หมวด เหลือง 3 หมวด ม่วง 2 หมวด และฟ้า 0 หมวด · ชนะได้ระเบียบ +8',
+  'mirror.pane.alt': 'กระจกสะท้อนแสงที่หมุนได้',
+  'mirror.placed.alt': 'กระจกวิเศษที่วางไว้',
+  'mirror.angle': 'องศากระจก',
+  'mirror.angle.aria': 'ปรับองศากระจก',
+  'mirror.remove': 'เก็บกระจก',
+  'mirror.power.aria': 'พลังแสง',
+  'mirror.st.charged': 'เติมพลังกระจกวิเศษ +1 สำเร็จ',
+  'mirror.st.full': 'พลังเต็มหรือกำลังรอเติมครั้งถัดไป',
+  'mirror.st.hit': 'แสงถึงกระจกแล้ว… ค้างไว้เพื่อเติมพลัง',
+  'mirror.st.aim': 'หมุนให้ลำแสงสะท้อนไปถึงกระจกวิเศษบนแท่น',
+  'mg.sala.rule': 'สีเดียวกันครบคอลัมน์ = 1 หมวด · แตะหนังสือแล้วใช้ลูกศร หรือลากแถว/คอลัมน์',
+  'mg.sala.board': 'กระดานจัดเอกสาร',
+  'mg.sala.left': 'เลื่อนแถวซ้าย',
+  'mg.sala.right': 'เลื่อนแถวขวา',
+  'mg.sala.up': 'เลื่อนคอลัมน์ขึ้น',
+  'mg.sala.down': 'เลื่อนคอลัมน์ลง',
+  'mg.sala.undo': 'ย้อนกลับ',
+  'mg.sala.reset': 'เริ่มใหม่',
+  'mg.sala.moves': 'เลื่อน {n} ครั้ง',
+  'mg.sala.status': 'จัดให้ตรงจำนวนทุกสี ไม่มีเวลาจำกัด',
+  'mg.sala.cell': '{color} แถว {r} คอลัมน์ {c}',
+  'mg.sala.color.0': 'แดง',
+  'mg.sala.color.1': 'เหลือง',
+  'mg.sala.color.2': 'ฟ้า',
+  'mg.sala.color.3': 'ม่วง',
   'room.sawan.desc': 'สถานที่สำหรับตรวจกรรมของดวงวิญญาณ ถ้ายังมีกรรมอยู่ จะส่งเข้าประตูสวรรค์ไปเกิดใหม่ แต่ถ้าหมดกรรมแล้ว จะส่งไปสวรรค์',
   'room.sawan.action': 'ตรวจกรรม',
   'room.sawan.hint': 'เพื่อตรวจและลดกรรม',
@@ -441,6 +466,31 @@ const EN = {
   'room.sala.action2': 'Sort records',
   'room.sala.hint2': 'Increase order',
   'mg.sala.tip': 'Slide whole rows or columns to line up 5 books of one colour in a column. Make 1 red set, 3 yellow sets, 2 purple sets and 0 blue sets · Win to gain +8 order',
+  'mirror.pane.alt': 'Rotating light-reflecting mirror',
+  'mirror.placed.alt': 'Placed magic mirror',
+  'mirror.angle': 'Mirror angle',
+  'mirror.angle.aria': 'Adjust mirror angle',
+  'mirror.remove': 'Take mirror back',
+  'mirror.power.aria': 'Light power',
+  'mirror.st.charged': 'Magic mirror charged +1',
+  'mirror.st.full': 'Power is full or waiting for the next charge',
+  'mirror.st.hit': 'The light reaches the mirror… hold it to charge',
+  'mirror.st.aim': 'Turn the mirror so the beam reflects onto the magic mirror on the stand',
+  'mg.sala.rule': 'A full column of one colour = 1 set · tap a book then use the arrows, or drag a row/column',
+  'mg.sala.board': 'Document sorting board',
+  'mg.sala.left': 'Slide row left',
+  'mg.sala.right': 'Slide row right',
+  'mg.sala.up': 'Slide column up',
+  'mg.sala.down': 'Slide column down',
+  'mg.sala.undo': 'Undo',
+  'mg.sala.reset': 'Restart',
+  'mg.sala.moves': '{n} moves',
+  'mg.sala.status': 'Match the target count for every colour · no time limit',
+  'mg.sala.cell': '{color}, row {r}, column {c}',
+  'mg.sala.color.0': 'Red',
+  'mg.sala.color.1': 'Yellow',
+  'mg.sala.color.2': 'Blue',
+  'mg.sala.color.3': 'Purple',
   'room.sawan.desc': 'Checks a soul’s karma. Those with karma are reborn; those free of karma ascend.',
   'room.sawan.action': 'Check karma',
   'room.sawan.hint': 'Check and reduce karma',
@@ -703,7 +753,11 @@ const DICT = { th: TH, en: EN };
 /** t('key') — คืนคำแปลของภาษาปัจจุบัน · ไม่มีคำอังกฤษ → ตกไปใช้ไทย (ตามข้อ C2/C3)
  *  ไม่มี key เลยในดิกชันนารีทั้งคู่ → คืน key ตรง ๆ (กันพัง) พร้อม warn ครั้งเดียวใน console */
 const warned = new Set();
-export function t(key) {
+export function t(key, vars) {
+  const out = lookup(key);
+  return vars ? out.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)) : out;
+}
+function lookup(key) {
   const row = DICT[lang] || TH;
   if (key in row) return row[key];
   if (key in TH) return TH[key];

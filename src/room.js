@@ -1,5 +1,5 @@
 import { actorStanding } from './actor-recovery.js';
-import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
+import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { potLayout, drawPotSoul } from './pot-souls.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
