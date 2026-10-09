@@ -2,7 +2,7 @@ import { createAssetQueue, loadImage, zoneAssets, fetchWithTimeout, useImageCach
 import { preloadBgm } from './sfx.js';
 
 const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url));
-const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-sala-books-mirror-art';
+const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art';
 if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };

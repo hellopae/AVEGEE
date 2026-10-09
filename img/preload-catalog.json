@@ -1,5 +1,7 @@
 {
   "shared": [
+    "img/mirror-charge-base.png",
+    "img/mirror-charge-pane.png",
     "img/Boss Zone1.png",
     "img/Intro-Boss-Zone1.png",
     "img/Zone1.webp",
@@ -428,7 +430,7 @@
       "img/theme-v4/map-asia.webp",
       "img/theme-v4/st-lokan-asia.webp",
       "img/theme-v4/st-tea-asia.webp",
-      "img/yama-sword-v2/hero-yama-asia-sword.webp"
+      "img/yama-sword-v4/hero-yama-asia-sword.webp"
     ],
     "west": [
       "img/West/BG-Dab-west.webp",
@@ -563,7 +565,7 @@
       "img/theme-v4/map-west.webp",
       "img/theme-v4/st-lokan-west.webp",
       "img/theme-v4/st-tea-west.webp",
-      "img/yama-sword-v2/hero-yama-west-sword.webp",
+      "img/yama-sword-v4/hero-yama-west-sword.webp",
       "img/frontier-west-hypnosis-v1.webp"
     ],
     "cyberhell": [
@@ -703,7 +705,7 @@
       "img/theme-v4/map-cyberhell.webp",
       "img/theme-v4/st-lokan-cyberhell.webp",
       "img/theme-v4/st-tea-cyberhell.webp",
-      "img/yama-sword-v2/hero-yama-cyberhell-sword.webp"
+      "img/yama-sword-v4/hero-yama-cyberhell-sword.webp"
     ]
   }
 }

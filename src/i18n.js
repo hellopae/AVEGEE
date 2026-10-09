@@ -155,6 +155,14 @@ const TH = {
   'mirror.wait': 'พลังเต็มหรือกำลังรอเติมครั้งถัดไป',
   'mirror.hold': 'แสงถึงกระจกแล้ว… ค้างไว้เพื่อเติมพลัง',
   'mirror.aim': 'หมุนให้ลำแสงสะท้อนไปถึงกระจกวิเศษบนแท่น',
+  'mirror.pane.alt': 'กระจกสะท้อนแสงที่หมุนได้',
+  'mirror.placed.alt': 'กระจกวิเศษที่วางไว้',
+  'mirror.angle.aria': 'ปรับองศากระจก',
+  'mirror.power.aria': 'พลังแสง',
+  'mirror.st.charged': 'เติมพลังกระจกวิเศษ +1 สำเร็จ',
+  'mirror.st.full': 'พลังเต็มหรือกำลังรอเติมครั้งถัดไป',
+  'mirror.st.hit': 'แสงถึงกระจกแล้ว… ค้างไว้เพื่อเติมพลัง',
+  'mirror.st.aim': 'หมุนให้ลำแสงสะท้อนไปถึงกระจกวิเศษบนแท่น',
   'doc.red': 'แดง',
   'doc.yellow': 'เหลือง',
   'doc.blue': 'ฟ้า',
@@ -494,6 +502,14 @@ const EN = {
   'mirror.wait': 'Mirror full or waiting for its next charge',
   'mirror.hold': 'Beam aligned… hold to charge',
   'mirror.aim': 'Turn the reflector to send the beam to the magic mirror on the altar',
+  'mirror.pane.alt': 'Rotating light-reflecting mirror',
+  'mirror.placed.alt': 'Placed magic mirror',
+  'mirror.angle.aria': 'Adjust mirror angle',
+  'mirror.power.aria': 'Light power',
+  'mirror.st.charged': 'Magic mirror charged +1',
+  'mirror.st.full': 'Power is full or waiting for the next charge',
+  'mirror.st.hit': 'The light reaches the mirror… hold it to charge',
+  'mirror.st.aim': 'Turn the mirror so the beam reflects onto the magic mirror on the stand',
   'doc.red': 'Red',
   'doc.yellow': 'Yellow',
   'doc.blue': 'Blue',
@@ -789,7 +805,11 @@ const DICT = { th: TH, en: EN };
 /** t('key') — คืนคำแปลของภาษาปัจจุบัน · ไม่มีคำอังกฤษ → ตกไปใช้ไทย (ตามข้อ C2/C3)
  *  ไม่มี key เลยในดิกชันนารีทั้งคู่ → คืน key ตรง ๆ (กันพัง) พร้อม warn ครั้งเดียวใน console */
 const warned = new Set();
-export function t(key) {
+export function t(key, vars) {
+  const out = lookup(key);
+  return vars ? out.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)) : out;
+}
+function lookup(key) {
   const row = DICT[lang] || TH;
   if (key in row) return row[key];
   if (key in TH) return TH[key];

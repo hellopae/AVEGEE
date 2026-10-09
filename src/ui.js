@@ -1,7 +1,7 @@
-import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js';
+import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
-import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js';
+import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { themeBackground } from './theme-assets.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';

@@ -18,9 +18,15 @@ function dimensions(src) {
       assert.equal(b.subarray(i + 11, i + 14).toString('hex'), '9d012a');
       return [b.readUInt16LE(i + 14) & 0x3fff, b.readUInt16LE(i + 16) & 0x3fff];
     }
+    // F3 local repairs use lossless WebP to preserve original pixels outside the patch.
+    if (b.toString('ascii', i, i + 4) === 'VP8L') {
+      assert.equal(b[i + 8], 0x2f);
+      const bits = b.readUInt32LE(i + 9);
+      return [(bits & 0x3fff) + 1, ((bits >>> 14) & 0x3fff) + 1];
+    }
     i += 8 + n + (n % 2);
   }
-  throw Error('Expected prep RGB/VP8 WebP: ' + src);
+  throw Error('Expected VP8/VP8L WebP: ' + src);
 }
 globalThis.Image = class {
   set src(v) {
