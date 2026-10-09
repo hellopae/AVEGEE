@@ -4444,8 +4444,10 @@ function openLevelUp(lv) {
 function renderStoryComic(root, story, onDone) {
   let page = 0, done = false;
   const stopVideo = () => root.querySelector('video')?.pause?.();
-  const finish = () => { if (!done) { done = true; stopVideo(); root.removeEventListener?.('close', stopVideo); onDone(); } };
-  root.addEventListener?.('close', stopVideo, { once:true });
+  // Battle interludes use a plain <div> overlay inside the battle <dialog>: 'close' never fires on the overlay, so also watch the host dialog.
+  const hosts = new Set([root, root.closest?.('dialog')].filter(Boolean));
+  const finish = () => { if (!done) { done = true; stopVideo(); hosts.forEach(h => h.removeEventListener?.('close', stopVideo)); onDone(); } };
+  hosts.forEach(h => h.addEventListener?.('close', stopVideo, { once:true }));
   const paint = () => {
     stopVideo();
     const p = story.pages[page];

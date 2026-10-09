@@ -10,6 +10,24 @@ const start=source.indexOf('function renderStoryComic('),end=source.indexOf('\n}
 const render=new Function('esc','prepareComicImages',`${source.slice(start,end+2)};return renderStoryComic;`)(String,()=>{});
 const emitter=()=>{const ev=new Map();return {ev,addEventListener(k,f){ev.set(k,f);},removeEventListener(k){ev.delete(k);},fire(k){ev.get(k)?.();}};};
 
+test('S6: interlude video stops when the host <dialog> closes (overlay root is a div)', () => {
+  const dialog=emitter(), video={pauses:0,pause(){this.pauses++;}};
+  const overlay={...emitter(),closest:sel=>sel==='dialog'?dialog:null,innerHTML:'',
+    querySelector(k){return k==='video'?video:{style:{}};}};
+  let done=0; render(overlay,STORY.ending,()=>done++);
+  const before=video.pauses; dialog.fire('close');
+  assert.equal(video.pauses,before+1);
+});
+
+test('S6: finishing the interlude removes the dialog close listener', () => {
+  const dialog=emitter(), video={pauses:0,pause(){this.pauses++;}}, buttons={};
+  const overlay={...emitter(),closest:()=>dialog,innerHTML:'',
+    querySelector(k){return k==='video'?video:(buttons[k]||=({style:{}}));}};
+  let done=0; render(overlay,STORY.ending,()=>done++);
+  buttons['[data-story-skip]'].onclick();
+  assert.equal(done,1); assert.equal(dialog.ev.has('close'),false);
+});
+
 test('S5: krajok/sala labels and sala tip have TH and EN text, no raw Thai literals in the specs', () => {
   const oldDocument=globalThis.document; globalThis.document={documentElement:{}};
   try {
