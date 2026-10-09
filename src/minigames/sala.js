@@ -1,11 +1,11 @@
 import { createPuzzle, ROWS, COLS, GOALS } from './document-puzzle.js';
 import { t } from '../i18n.js';
 
-// Viewports select the user's four books without altering the supplied artwork.
-const BOOK_X = [84, 457, 830, 1203];
+// Tight SVG viewports select the painted atlas without modifying its pixels.
+const BOOK_X = [87, 614, 1142, 1671];
 function bookArt(color) {
  const gold = color === 'gold';
- return `<svg viewBox="${gold ? '83 69 226 292' : `${BOOK_X[color]} 68 226 293`}" aria-hidden="true" focusable="false"><image href="img/minigames/sala-${gold ? 'book-gold' : 'books'}.png" width="${gold ? 390 : 1500}" height="438"/></svg>`;
+ return `<svg viewBox="${gold ? '198 87 838 1068' : `${BOOK_X[color]} 93 412 520`}" aria-hidden="true" focusable="false"><image href="img/minigames/sala-${gold ? 'book-gold' : 'books'}-v2.png" width="${gold ? 1223 : 2172}" height="${gold ? 1286 : 724}"/></svg>`;
 }
 
 export default {
