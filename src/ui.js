@@ -4932,7 +4932,7 @@ function buildTitle() {
     probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
     probe.onerror = () => probeCover(rest);
     probe.src = url;
-  })(['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
+  })(['img/cover-v5.webp', 'img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
 
   // โลโก้/ปุ่ม เปลี่ยนภาษาทันทีไม่ต้องรีโหลด (ข้อ C1) — สลับจริงทำที่หน้าตั้งค่า (ข้อ B)
   applyTitleLang();
