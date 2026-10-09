@@ -25,7 +25,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf } from './data.js';
-import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio } from './sfx.js';
+import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
@@ -2092,6 +2092,11 @@ function crewCutsceneSrc(k) {
 // ยืดเป็น 1.3 วิ (อยู่ในช่วง 1.2–1.5 ที่ขอ) ให้ตรงกับ CSS .action-cutscene ใน index.html
 // (คีย์เฟรม actionCut/actionRush/speedLines ต้องยืดเวลาให้เท่ากันที่นั่นด้วย — ดูคอมเมนต์ที่นั่น)
 const ACTION_CUT_MS = 1300;
+/** เสียงตอนลงมือ — ท่าไม้ตายที่ขึ้นคัตซีนใช้เสียงชาร์จ→ระเบิดยาวเท่าคัตซีน (F2 ข้อ 6) · ท่าอื่นใช้เสียงสั้นเดิม */
+function powerSound(k) {
+  if (isUltimatePower(k) && actionCutsceneSrc(k)) playUltimate(k);
+  else sfx(powerSfx(k, g.abilities));
+}
 function playActionCutscene(k, ultimate = null) {
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
@@ -2356,7 +2361,7 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      sfx(powerSfx(k, g.abilities)); paint(); refresh(); playActionCutscene(k);
+      powerSound(k); paint(); refresh(); playActionCutscene(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -3079,7 +3084,7 @@ function openBattle(after) {
         healFx = { amount: Math.round(g.battle.youHp - hpBefore), start: Date.now() + ACTION_CUT_MS - 200, ms: HEAL_GLOW_MS };
         scheduleHealFx();
       }
-      sfx(powerSfx(k, g.abilities));            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit'
+      powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }

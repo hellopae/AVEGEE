@@ -24,7 +24,7 @@ export function unlock() {
 }
 
 /** เสียงพื้นฐานหนึ่งชั้น — ใช้ประกอบกันเป็นเสียงจริงข้างล่าง */
-function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
+function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0, attack = 0.008 }) {
   if (!AC || !AUDIO.on || AUDIO.sfx <= 0) return;
   const t0 = AC.currentTime + delay;
   const o = AC.createOscillator(), g = AC.createGain();
@@ -32,7 +32,7 @@ function tone({ f = 220, f2, t = 0.18, type = 'sine', vol = 0.5, delay = 0 }) {
   o.frequency.setValueAtTime(f, t0);
   if (f2) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t0 + t);
   g.gain.setValueAtTime(0.0001, t0);
-  g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol * AUDIO.sfx), t0 + 0.008);
+  g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol * AUDIO.sfx), t0 + attack);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + t);
   o.connect(g).connect(AC.destination);
   o.start(t0); o.stop(t0 + t + 0.02);
@@ -138,6 +138,40 @@ export function powerSfx(k, abilities = {}) {
     case 'health': case 'tea': case 'holyWater': return 'star';
     default:              return 'hit';
   }
+}
+
+// ---------- เสียงท่าไม้ตาย (F2 ข้อ 6, คุณเป้ 9 ต.ค. 2569) ----------
+// ชาร์จพลังสั้น ๆ → ระเบิด/กระแทกหนัก → ก้องหาย รวม ~1.3 วิ ตรงกับคัตซีน ACTION_CUT_MS (ui.js)
+// สังเคราะห์ในโค้ดเหมือนเสียงอื่น (0 ไฟล์) · ผลรวม vol ตอนกระแทก ≈ 0.76 (คูณ AUDIO.sfx อีกชั้น) · ปิดเสียง = เงียบหมด (tone/noise เช็ก AUDIO.on เอง)
+// pitch ต่างกันตามท่า: ไฟ/ลมกลาง · น้ำแข็งแหลม · คำรามต่ำ — โครงเสียงเดียวกัน
+export const ULTIMATE_POWERS = Object.freeze({
+  flameCharge:1, windFan:1.25, rage:0.7, valkyrieSpear:1.15, ice:1.6, hypno:1.1,
+});
+export const isUltimatePower = k => Object.prototype.hasOwnProperty.call(ULTIMATE_POWERS, k);
+/** เสียงพากย์ ("ย๊าก"/ชื่อท่า) — เพิ่มทีหลังได้โดยไม่แตะโค้ดอื่น: วางไฟล์ในโฟลเดอร์ audio/voice/ แล้วเติมหนึ่งบรรทัดที่นี่
+ *  เช่น  flameCharge: 'audio/voice/flame-charge.mp3'  · ไม่มีรายการ = ไม่เล่นอะไร (ไม่ยิงขอไฟล์ จึงไม่มี 404) */
+export const VOICE_LINES = {};
+function playVoice(k) {
+  const url = VOICE_LINES[k];
+  if (!url || !AUDIO.on || AUDIO.sfx <= 0 || typeof Audio === 'undefined') return;
+  try { const a = new Audio(url); a.volume = clamp01(AUDIO.sfx); a.play()?.catch?.(() => {}); } catch {}
+}
+export function playUltimate(k) {
+  if (!isUltimatePower(k)) return;
+  if (AC && AUDIO.on && AUDIO.sfx > 0) {
+    const p = ULTIMATE_POWERS[k];
+    // 0.00–0.55 ชาร์จ: เสียงไต่ขึ้น + ลมซ่าไต่ขึ้น + ก้นหนักบวมขึ้น
+    tone({ f:70*p,  f2:430*p, t:0.55, type:'sawtooth', vol:0.20, attack:0.35 });
+    tone({ f:46,    f2:60,    t:0.58, type:'sine',     vol:0.22, attack:0.40 });
+    noise({ t:0.55, vol:0.14, hp:Math.round(500*p) });
+    // 0.55 ระเบิด/กระแทก
+    noise({ t:0.40, vol:0.28, hp:Math.round(180*p), delay:0.55 });
+    tone({ f:120*p, f2:34, t:0.75, type:'sine',   vol:0.30, delay:0.55 });
+    tone({ f:210*p, f2:60, t:0.30, type:'square', vol:0.18, delay:0.55 });
+    // 0.7–1.3 ก้องหาย
+    noise({ t:0.60, vol:0.10, hp:Math.round(900*p), delay:0.70 });
+  }
+  setTimeout(() => playVoice(k), 560);        // เสียงพากย์ (ถ้ามี) ตามหลังจังหวะกระแทกนิดเดียว
 }
 
 export function sfx(name) {
