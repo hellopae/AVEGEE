@@ -22,6 +22,7 @@ function context() {
   };
   return new Proxy(state, { get:(o,k)=>k in o ? o[k] : ()=>{} });
 }
+globalThis.document = { createElement: () => ({getContext:context}) };
 function draw(g) { const ctx=context(); render(ctx,g,1000,null,null); return ctx.calls; }
 function nameStyle(call) {
   assert.ok(call);

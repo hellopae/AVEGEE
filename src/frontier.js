@@ -1,3 +1,4 @@
+import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
 // src/frontier.js — แผนที่ชายแดน: เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569)
@@ -101,6 +102,8 @@ export function makeFrontierWalk(cv, g, opts) {
   let raf = 0, last = performance.now(), dead = false, nextSpawn = 500;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };
   let nearId = null;
+  let camera = null, cameraTime = performance.now();
+  const reducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
   let walkDistance = 0, direction = 'down', simClock = 0, movedSim = -1e9;   // F1: นาฬิกาของการเดินเอง ไม่ผูกกับเฟรมวาด
   let bgCache = null;   // F1: ฉากที่ย่อ/ขยายตามจอแล้ว วาดทีเดียว (ดู draw)
 
@@ -225,8 +228,8 @@ export function makeFrontierWalk(cv, g, opts) {
       // Fill the viewport without stretching the map. Narrow screens follow Yama;
       // pointer coordinates still map back to the same navigation polygons.
       const s = Math.max(W / sw, H / sh), w = sw * s, h = sh * s;
-      box = { ox: Math.max(W-w,Math.min(0,W/2-P.x*w)),
-              oy: Math.max(H-h,Math.min(0,H/2-P.y*h)), w, h };
+      camera = followCamera(camera,{w:W,h:H},{w,h},P,t-cameraTime,!!reducedMotion?.matches);
+      box = camera;
       ctx.fillStyle = '#0d0710'; ctx.fillRect(0, 0, W, H);
       // F1 — เดิมย่อ/ขยายภาพฉากด้วย smoothing 'high' ทุกเฟรม (ฉาก 1678px → 3516px บนจอ retina ≈ 40-80ms/เฟรม
       // = ค้างที่ ~12fps ตามวิดีโอของเจ้าของ) ตอนนี้ปรับขนาดครั้งเดียวลง canvas นอกจอ แล้วคัดลอก 1:1 ทุกเฟรม
@@ -246,6 +249,8 @@ export function makeFrontierWalk(cv, g, opts) {
       label(ctx, 'กำลังโหลดฉากชายแดน…', W / 2, H / 2, 16, 'rgba(240,225,215,.6)');
     }
 
+    cameraTime = t;
+    if (bgRec.ok) drawFrontierAtmosphere(ctx,g.zone,box,t,!!reducedMotion?.matches);
     const U = unit();
     const acts = [];
     for (const en of sess.enemies) {

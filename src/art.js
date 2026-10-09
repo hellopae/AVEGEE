@@ -1,3 +1,4 @@
+import { drawContactShadow } from './scene-style.js';
 import { yamaDownImage } from './tea-recovery.js';
 import { themeArt } from './theme-assets.js';
 import { reviewStationBox } from './map-art-v5.js';
@@ -282,17 +283,10 @@ export function bodyBoxOf(def) {
   return r;
 }
 
-/** 30D — กรอบ "ทั้งตัวอาคาร" ที่ยมบาท/ยมทูตเหยียบไม่ได้ [x1,y1,x2,y2] (พิกัดฉาก)
- *  เดิมกันแค่แถบฐานล่างสุด (footOf) ยมบาทเดินขึ้นไปยืนบนตัวอาคาร (กระทะทองแดงโซน 3) ได้ — ตัวละครถูกวาดซ้อนบนอาคาร
- *  ตอนนี้กันตั้งแต่ยอดเนื้อภาพ (bodyBoxOf) ลงมาถึงขอบหน้าของฐาน แคบเข้าข้างละ 10% จะได้เดินเฉียดชายคาได้
- *  ภาพยังไม่มา (footOf = null) → คืน null ให้ผู้เรียกลองใหม่รอบหน้า · ใช้พิกเซลจริงเหมือนเดิม วาดใหม่แล้วกรอบขยับตามเอง */
+/** Collision follows the ground footprint. Roof pixels may occlude actors behind
+ * the building but do not occupy walkable ground. Depth still uses its rear edge. */
 export function blockOf(def) {
-  const foot = footOf(def);
-  if (!foot) return null;
-  const body = bodyBoxOf(def);
-  if (!body) return foot;
-  const pad = (body[2] - body[0]) * 0.10;
-  return [Math.min(foot[0], body[0] + pad), Math.min(foot[1], body[1]), Math.max(foot[2], body[2] - pad), foot[3]];
+  return footOf(def);
 }
 
 /** ความลึกของอาคารสำหรับเรียงชั้นวาด — **ขอบหลังของแถบฐานที่ติดพื้น** ไม่ใช่ def.by
@@ -351,11 +345,11 @@ export function drawStationShadow(ctx, def) {
   const cx = (r[0] + r[2]) / 2, cy = r[3];
   const rw = Math.max(10, (r[2] - r[0]) / 2 * 1.1), rh = Math.max(5, rw * 0.24);
   ctx.save();
-  ctx.globalAlpha = 0.38;
-  ctx.fillStyle = '#000';
-  ctx.beginPath();
-  ctx.ellipse(cx + rw * 0.12, cy + rh * 0.35, rw, rh, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = '#09050d';
+  for (const [scale, alpha] of [[1,.08],[.85,.09],[.65,.12]]) {
+    ctx.globalAlpha=alpha; ctx.beginPath();
+    ctx.ellipse(cx+rw*.12,cy+rh*.35,rw*scale,rh*scale,0,0,Math.PI*2);ctx.fill();
+  }
   ctx.restore();
 }
 
@@ -409,8 +403,7 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
   h *= standeeFit(key, sourceZone || zoneOf());
   const gait = Math.floor(t / 105) % 2;
   const bob = walking ? (gait ? -h * 0.065 : 0) : Math.sin(t / 700 + x) * (h * 0.012);
-  ctx.fillStyle = 'rgba(0,0,0,.42)';
-  ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
+  drawContactShadow(ctx, x, y, h);
   const im = img(key, sourceZone);
   if (im) {
     if (walking) {
@@ -438,8 +431,7 @@ export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face 
     const box = (sheet.directions[direction] || sheet.directions.down)[phase];
     const height = h * sheet.heightScale, scale = height / sheet.frameSize.h;
     const width = sheet.frameSize.w * scale;
-    ctx.fillStyle = 'rgba(0,0,0,.42)';
-    ctx.beginPath(); ctx.ellipse(x, y, h * .24, h * .075, 0, 0, 7); ctx.fill();
+    drawContactShadow(ctx, x, y, h);
     // Every direction is drawn explicitly, including the book and asymmetric clothing.
     ctx.drawImage(four, box.x, box.y, box.w, box.h,
       x - width / 2 + box.ox * scale, y - h * sheet.footOffset - height + box.oy * scale,
@@ -451,8 +443,7 @@ export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face 
   const frameW = im.naturalWidth / 4;
   const frame = Math.floor(distance / HERO_WALK_STRIDE) % 4;
   const drawW = h * frameW / im.naturalHeight;
-  ctx.fillStyle = 'rgba(0,0,0,.42)';
-  ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
+  drawContactShadow(ctx, x, y, h);
   ctx.save();
   ctx.translate(x, y);
   // สไปรท์เดินทั้ง 4 ชุดวาดหันซ้าย (ต่างจากท่ายืนที่หันขวา) จึงกลับเครื่องหมาย: face>0 = ไปขวา ต้องพลิก
@@ -476,8 +467,7 @@ export function drawCrewWalk(ctx, key, x, y, h, distance, face = 1) {
   const size = sheet?.frameSize || box;
   const pixelScale = drawH / size.h;
   const drawW = pixelScale * size.w;
-  ctx.fillStyle = 'rgba(0,0,0,.42)';
-  ctx.beginPath(); ctx.ellipse(x, y, h * 0.24, h * 0.075, 0, 0, 7); ctx.fill();
+  drawContactShadow(ctx, x, y, h);
   ctx.save(); ctx.translate(x, footY);
   const direction = face < 0 ? -1 : 1;
   ctx.scale(sheet?.rightFacing === false ? -direction : direction, 1);

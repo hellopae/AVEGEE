@@ -43,7 +43,7 @@ test('outfit overrides branch and every direction selects its own row without mi
   zone = 'cyberhell'; outfit = 'asia';
   assert.equal(artUrl('hero-yama-walk-4dir'),heroWalkSheet('asia').src);
   img('hero-yama-walk-4dir'); await Promise.resolve();
-  const calls = [], ctx = {beginPath(){},ellipse(){},fill(){},drawImage(...a){calls.push(a);}};
+  const calls = [], ctx = {save(){},restore(){},beginPath(){},ellipse(){},fill(){},drawImage(...a){calls.push(a);}};
   const s = heroWalkSheet(outfit);
   for (const direction of ['down','left','right','up']) for (let i=0;i<4;i++) {
     calls.length=0;

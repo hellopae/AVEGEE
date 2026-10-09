@@ -1,3 +1,4 @@
+import { zoneStyle } from './scene-style.js';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
 const frac = n => n - Math.floor(n);
@@ -127,12 +128,17 @@ export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
   ctx.save();
   for(const p of ambientParticles(zone,time,W,H)){
     ctx.globalAlpha=p.alpha;
-    ctx.fillStyle=zone==='west'?'#e4f9ff':zone==='asia'?'#d66b43':zone==='th'?'#ffc674':'#b3dfff';
-    if(zone==='asia'){
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillRect(-p.size,-1,p.size*2,2);ctx.restore();
-    }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
+    ctx.fillStyle=zoneStyle(zone).particle;
+    ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
   }
   ctx.globalAlpha=1;
+  if(zone==='west'){
+    ctx.fillStyle='rgba(161,191,211,.035)';
+    for(let i=0;i<3;i++){
+      const x=mod(time*.012+i*W/3,W),y=H*(.44+i*.13);
+      ctx.beginPath();ctx.ellipse(x,y,W*.17,H*.025,0,0,Math.PI*2);ctx.fill();
+    }
+  }
   if(zone==='cyberhell'){
     const t=time/1000;
     for(const [i,point] of [[.09,.24],[.23,.19],[.72,.25],[.79,.31],[.86,.59],[.06,.51]].entries()){

@@ -2017,7 +2017,7 @@ const API = {
       const bottom = Math.max(st.def.y + R, r ? r[3] + 26 : st.def.y + R);
       holes.push([st.def.x - R, st.def.y - R, st.def.x + R, bottom]);
       if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
-      // 30D: กันทั้งตัวอาคาร (ยอดเนื้อภาพ → ขอบหน้าฐาน) ไม่ใช่แค่แถบฐาน — ยมบาทเดินขึ้นไปยืนบนกระทะ/หลังคาไม่ได้
+      // 2.5D: collide with the ground footprint; the roof occludes actors walking behind it.
       const blk = r ? blockOf(st.def) : null;
       if (blk) rects.push(blk); else waiting = true;
     }

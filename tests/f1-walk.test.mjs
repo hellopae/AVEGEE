@@ -24,7 +24,7 @@ globalThis.Image = class {
   get src() { return this._src; }
 };
 const calls = [];
-const ctx = new Proxy({ drawImage(...a) { calls.push(a); }, measureText: () => ({ width: 20 }) },
+const ctx = new Proxy({ drawImage(...a) { calls.push(a); }, createRadialGradient: () => ({addColorStop(){}}), measureText: () => ({ width: 20 }) },
   { get: (o, k) => k in o ? o[k] : () => {}, set: () => true });
 const mkCanvas = (w, h) => ({ width: 0, height: 0, getContext: () => ctx,
   getBoundingClientRect: () => ({ left: 0, top: 0, width: w, height: h }),
@@ -135,7 +135,7 @@ test('frontier: scene image is resampled once, then blitted from a cached canvas
   for (let i = 0; i < 20; i++) rafCb(clock += 16);
   performance.now = orig; FW.destroy();
   const full = calls.filter(c => c.length === 9 && c[0]?.src?.includes('frontier-cyberhell'));
-  const blits = calls.filter(c => c[0]?.isCache);
+  const blits = calls.filter(c => c[0]?.isCache && c.length === 9);
   assert.equal(full.length, 1, 'the 1678px scene image is scaled exactly once');
   assert.equal(blits.length, 20, 'one cached-canvas blit per frame');
 });

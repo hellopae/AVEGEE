@@ -1,3 +1,4 @@
+import { drawLocalLight } from './scene-style.js';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
@@ -9,7 +10,7 @@ import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawVignette, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
+         drawFire, drawVignette, drawStationShadow, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
@@ -30,6 +31,7 @@ let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
 const reducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
 let ambientTime = 0;
+const paintedGround = new WeakMap();
 /** Movement is sampled from coordinates, never from a pending path or idle time. */
 export function actorWalkMotion(actor, time, zone = 'th', position = null) {
   const [x, y] = position || [actor.x, actor.y];
@@ -128,7 +130,14 @@ export function render(ctx, g, t, hover, sel) {
   if (bg) {
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
+    let cached = paintedGround.get(bg);
+    if (!cached || cached.width !== SCENE.w || cached.height !== SCENE.h) {
+      cached = document.createElement('canvas'); cached.width=SCENE.w; cached.height=SCENE.h;
+      const ground = cached.getContext('2d'); ground.imageSmoothingEnabled=true;
+      ground.imageSmoothingQuality='high'; ground.drawImage(bg,0,0,SCENE.w,SCENE.h);
+      paintedGround.set(bg,cached);
+    }
+    ctx.drawImage(cached,0,0);
     ctx.imageSmoothingEnabled = false;
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
     // Painted gold and glowing details are decorative; navigation uses the original terrain mask.
@@ -139,6 +148,16 @@ export function render(ctx, g, t, hover, sel) {
 
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
   if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
+
+  // Ground shadows and pools of light are painted before the depth-sorted objects.
+  for (const st of g.stations) {
+    if (st.build) continue;
+    drawStationShadow(ctx, st.def);
+    if (['sala','sawan','krajok'].includes(st.def.k))
+      drawLocalLight(ctx,g.zone,st.def.bx,st.def.by,st.def.bw*.24,t,!!reducedMotion?.matches);
+  }
+  drawStationShadow(ctx, FRONTIER);
+  drawLocalLight(ctx,g.zone,FRONTIER.bx,FRONTIER.by,FRONTIER.bw*.3,t,!!reducedMotion?.matches);
 
   const rescue = westRescuePending(g), frozen = westSpiritsFrozen(g);
   const soulTime = frozen ? (g.westFreezeAt || 0) : t;

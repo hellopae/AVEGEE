@@ -1,0 +1,31 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="../../"><title>AVEGEE · ตรวจ 2.5D ทั้ง 4 โซน</title>
+<style>body{margin:0;background:#180e17;color:#f5dfb7;font:14px system-ui}header{padding:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}button,select{background:#38242b;color:#ffe4ac;border:1px solid #89683d;border-radius:8px;padding:9px}main{position:relative;height:calc(100vh - 62px);overflow:hidden}canvas{width:100%;height:100%;display:block}.float{position:absolute;transform:translate(-50%,-100%)}#map{display:none}</style>
+<header><b>AVEGEE · มาตรฐานภาพ 2.5D</b><select id="zone"><option value="th">ไทย</option><option value="asia">บูรพา</option><option value="west">ปัจฉิม</option><option value="cyberhell">นรกเครือข่าย</option></select><button id="mode">ดูแผนที่โซน</button><button id="depth" hidden>ยืนหลังศาลา</button><span>คลิกพื้นเพื่อเดิน · ชายแดนใช้ WASD / ลูกศรได้</span></header>
+<main><canvas id="frontier"></canvas><canvas id="map" width="1678" height="937"></canvas><button id="fight" class="float" hidden>เริ่มต่อสู้</button><button id="gate" class="float" hidden>กลับประตู</button><button id="nira" class="float" hidden>นิรา</button></main>
+<script type="module">
+import {makeFrontierWalk} from './src/frontier.js';
+import {createGame} from './src/game.js';
+import {bindZone,depthOf,bodyBoxOf} from './src/art.js';
+import {stepTo} from './src/walk.js';
+import {syncSceneZone,STATIONS} from './src/data.js';
+import {render} from './src/scene.js';
+import {themeBackground} from './src/theme-assets.js';
+const $=id=>document.getElementById(id);
+let g,walk,map=false,raf,behind=false;
+function reset(){
+ walk?.destroy();cancelAnimationFrame(raf);
+ g=createGame();g.zone=$('zone').value;syncSceneZone(g.zone);bindZone(()=>g.zone);
+ g.stations=STATIONS.map(def=>({def,build:0,slots:[],speedLv:0,capLv:0,fire:0}));
+ g.player.x=800;g.player.y=560;
+ $('frontier').style.display=map?'none':'block';$('map').style.display=map?'block':'none';
+ $('mode').textContent=map?'ดูชายแดน':'ดูแผนที่โซน';$('depth').hidden=!map;
+ if(map){let last=performance.now();function frame(t){
+ const dt=Math.min(50,t-last);last=t;
+ if(g.player.path?.length){const point=g.player.path[0],dx=point[0]-g.player.x,dy=point[1]-g.player.y,d=Math.hypot(dx,dy);if(d<5)g.player.path.shift();else{const stride=Math.min(d,190*dt/1000);stepTo(g.player,dx/d*stride,dy/d*stride,true);g.player.face=dx<0?-1:1}}
+ render($('map').getContext('2d'),g,t,null,null);raf=requestAnimationFrame(frame)}raf=requestAnimationFrame(frame)}
+ else {walk=makeFrontierWalk($('frontier'),g,{bg:themeBackground(g.zone,'frontier'),kinds:[0],wave:1,alive:()=>true,fab:$('fight'),gate:$('gate'),nira:$('nira')});walk.start()}
+}
+$('map').onpointerdown=e=>{const r=$('map').getBoundingClientRect();g.walkTo((e.clientX-r.left)/r.width*$('map').width,(e.clientY-r.top)/r.height*$('map').height)};
+$('depth').onclick=()=>{const def=STATIONS.find(d=>d.k==='sala'),body=bodyBoxOf(def);if(!body)return;behind=!behind;g.player.x=(body[0]+body[2])/2;g.player.y=depthOf(def)+(behind?-25:35);g.player.path=null;$('depth').textContent=behind?'ยืนหน้าศาลา':'ยืนหลังศาลา'};
+$('zone').onchange=reset;$('mode').onclick=()=>{map=!map;reset()};reset();
+</script></html>
