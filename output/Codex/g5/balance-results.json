@@ -1,0 +1,79 @@
+[
+  {
+    "name": "th prisonBreak",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "th devaTest",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "th frontierBreach",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "th borderBoss",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "asia rageBreach",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "asia zoneBoss",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "west vampireBreach",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "west devaTest",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "west zoneBoss",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "cyber rescue",
+    "runs": 200,
+    "baseline": 100,
+    "level3": 100,
+    "delta": 0
+  },
+  {
+    "name": "cyber breach",
+    "runs": 200,
+    "baseline": 98.5,
+    "level3": 99.5,
+    "delta": 1
+  }
+]
