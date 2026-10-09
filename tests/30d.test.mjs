@@ -125,12 +125,14 @@ test('2. ฉากชายแดน: เส้นทางอ้อมศัต
 
 // ---------- ข้อ 3: ปุ่ม "เข้าไป" ชิดอาคารจริง ----------
 import { stationButtonPos, mapInteractions } from '../src/proximity.js';
-test('3. ปุ่มของอาคารยึดขอบล่างไว้ที่ยอดเนื้อภาพจริง ไม่ขึ้นกับ bw · x = กึ่งกลางตัวอาคาร · รูปยังไม่มา = สูตรเดิม', () => {
+test('3. ปุ่มของอาคารอยู่บนหลังคา (F2 ข้อ 8: ลงมา 27% ของความสูงตัวอาคาร) ไม่ขึ้นกับ bw · x = กึ่งกลางตัวอาคาร · รูปยังไม่มา = สูตรเดิม', () => {
   const def = { k: 'tea', bx: 218, by: 674, bw: 460 };
-  const low = stationButtonPos(def, 543, [150, 543, 290, 674]);     // กระท่อมเตี้ย ยอดอยู่ที่ y=543
-  assert.deepEqual(low, { bx: 220, by: 543, anchor: 'top' });
+  const low = stationButtonPos(def, 543, [150, 543, 290, 674]);     // กระท่อมเตี้ย ยอดอยู่ที่ y=543 สูง 131
+  assert.equal(low.bx, 220); assert.equal(low.anchor, 'roof');
+  assert.ok(Math.abs(low.by - (543 + 131 * 0.27)) < 1e-9);
   const tall = stationButtonPos(def, 466, [150, 466, 290, 674]);
-  assert.equal(tall.by, 466);                                          // ตามยอดจริง ไม่ใช่ค่าคงที่
+  assert.ok(Math.abs(tall.by - (466 + 208 * 0.27)) < 1e-9);          // ตามยอดจริงและความสูงจริง ไม่ใช่ค่าคงที่
+  assert.ok(tall.by > 466 && tall.by < 674);                         // อยู่ในตัวอาคาร ไม่ลอยเหนือยอด
   const fallback = stationButtonPos(def, null, null);
   assert.deepEqual(fallback, { bx: 218, by: 674 - 460 - 24, anchor: 'center' });
 });

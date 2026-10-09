@@ -38,14 +38,16 @@ export function nearestInteraction(player, targets, reach = INTERACTION_REACH) {
   }
   return nearest;
 }
-/** 30D — ตำแหน่งปุ่มลอยของอาคาร: จุดที่ "ขอบล่างของปุ่ม" แตะเหนือยอดอาคารจริง (ui.js ยึดปุ่มด้วยขอบล่าง + เว้น 6px)
+/** ปุ่มลอยของอาคารวางกึ่งกลางที่ระดับนี้ของความสูงตัวอาคาร (0 = ยอดสุด · 1 = ฐาน) — F2 ข้อ 8 (คุณเป้ 9 ต.ค. 2569)
+ *  30D เคยวางขอบล่างปุ่มชิดยอดอาคาร → ปุ่มลอยเหนือยอดแหลมสูงเกินไป คุณเป้ให้เลื่อนลงมาอยู่บนหลังคา (วงที่วาดไว้ในภาพ 9) */
+export const BUTTON_ROOF_DROP = 0.27;
+/** 30D — ตำแหน่งปุ่มลอยของอาคาร: วัดยอดเนื้อภาพจากพิกเซลสไปรท์จริง (art.topOf) แล้วเลื่อนลงมาบนหลังคา · x = กึ่งกลางตัวอาคาร (กรอบเนื้อภาพ)
  *  เดิม by = def.by - def.bw - 24 ใช้ "ความกว้างอ้างอิง" bw เป็นความสูง — อาคารเตี้ย (กระท่อมไม้โซน 3) ปุ่มเลยลอยเหนือหลังคาเป็นร้อยพิกเซล
- *  ตอนนี้วัดยอดเนื้อภาพจากพิกเซลสไปรท์จริง (art.topOf) · x = กึ่งกลางตัวอาคาร (กรอบเนื้อภาพ)
- *  ยึดด้วยขอบล่างของปุ่ม (ไม่ใช่กึ่งกลาง) เพราะปุ่มมีขนาดเป็นพิกเซลหน้าจอคงที่ แต่ฉากย่อ/ขยายตามจอ — ยึดกึ่งกลางแล้วช่องไฟเพี้ยนตามขนาดจอ
- *  รูปยังโหลดไม่เสร็จ → ใช้สูตรเดิมไปก่อน (anchor 'center') รอบหน้าค่อยวัดใหม่ */
+ *  anchor 'roof' = ตำแหน่งนี้คือกึ่งกลางปุ่ม (ui.js ไม่ใส่ class anchor-top) · รูปยังโหลดไม่เสร็จ → ใช้สูตรเดิมไปก่อน (anchor 'center') รอบหน้าค่อยวัดใหม่ */
 export function stationButtonPos(def, top = topOf(def), body = bodyBoxOf(def)) {
   if (top == null) return { bx: def.bx, by: def.by - def.bw - 24, anchor: 'center' };
-  return { bx: body ? (body[0] + body[2]) / 2 : def.bx, by: top, anchor: 'top' };
+  const height = body ? Math.max(0, body[3] - body[1]) : 0;
+  return { bx: body ? (body[0] + body[2]) / 2 : def.bx, by: top + height * BUTTON_ROOF_DROP, anchor: 'roof' };
 }
 
 export function mapInteractions(g, merchant) {
