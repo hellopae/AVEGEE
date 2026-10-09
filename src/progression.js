@@ -61,7 +61,7 @@ export const medicineHp = (def, context) => (context === 'battle' && def?.battle
 export function medicineResult(k, hp, hpMax, mp, mpMax, context = 'bag') {
   const def = ITEMS[k];
   if (!def?.consumable) return null;
-  const hpGain = Math.max(0, Math.min(medicineHp(def, context), hpMax-hp));
-  const mpGain = Math.max(0, Math.min(def.mp || 0, mpMax-mp));
+  const hpGain = Math.max(0, Math.min(def.hpRatio ? Math.round(hpMax * def.hpRatio) : medicineHp(def, context), hpMax-hp));
+  const mpGain = Math.max(0, Math.min(def.mpRatio ? Math.round(mpMax * def.mpRatio) : def.mp || 0, mpMax-mp));
   return hpGain || mpGain ? { hp:hp+hpGain, mp:mp+mpGain, hpGain, mpGain } : null;
 }

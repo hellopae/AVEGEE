@@ -119,7 +119,7 @@ function prep(g) {
   assert.ok(b); b.youMax=1000; b.youHp=10; return b;
 }
 test('B3 medicine price/effect table and all three use paths agree for every zone item', () => {
-  const expected=[[42,30,40,12,55,45,24],[55,40,50,16,70,55,30],[70,50,60,20,85,65,35],[85,60,70,24,95,75,40]];
+  const expected=[[65,26,0,12,55,45,24],[65,26,0,12,70,55,30],[65,26,0,12,85,65,35],[65,26,0,12,95,75,40]];
   zones.forEach((zone,i) => {
     const stock=merchantStock(zone), [hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost]=expected[i];
     for (const [family,gainHp,gainMp,cost] of [['health',hp,0,hpCost],['holyWater',0,mp,mpCost],['tea',teaHp,teaMp,teaCost]]) {
@@ -132,11 +132,12 @@ test('B3 medicine price/effect table and all three use paths agree for every zon
         if (context === 'battle') { battle(g); g.battle.youHp=10; }
         if (context === 'prep') prep(g);
         assert.equal(context === 'bag' ? g.useBag(k) : context === 'battle' ? g.battleAct(k) : g.useMedicine(k,'prep'),true,`${k} ${context}`);
-        // น้ำชาโซน 1 กลางศึกฟื้น 24 (ค่าเดิม) ส่วนกระเป๋า/เตรียมศึกตามตาราง
-        const shown=context === 'battle' && k === 'tea' ? 24 : gainHp;
-        assert.equal(g.battle ? g.battle.youHp : g.hp,10+shown); assert.equal(g.mp,10+gainMp);
+        // G1: all contexts use the recipient's maximum; tea restores MP only.
+        const shown=Math.round((g.battle?.youMax || g.hpMax)*ITEMS[k].hpRatio);
+        const shownMp=Math.round(g.mpMax*ITEMS[k].mpRatio);
+        assert.equal(g.battle ? g.battle.youHp : g.hp,10+shown); assert.equal(g.mp,10+shownMp);
         assert.equal(g.inventory[k],undefined);
-        if (context === 'battle') assert.equal(BATTLE.items.find(x => x.k === k).heal,k === 'tea' ? 24 : (gainHp || undefined));
+        if (context === 'battle') assert.equal(BATTLE.items.find(x => x.k === k).heal,gainHp || undefined);
       }
     }
   });
@@ -144,7 +145,7 @@ test('B3 medicine price/effect table and all three use paths agree for every zon
 
 test('B3 medicines retain old-zone effects, cap gains, and do not consume when full or preparation is closed', () => {
   const [g]=game('cyberhell'); g.hpMax=g.mpMax=1000; g.hp=g.mp=10; g.inventory.tea=1;
-  assert.equal(g.useBag('tea'),true); assert.equal(g.hp,50); assert.equal(g.mp,22);
+  assert.equal(g.useBag('tea'),true); assert.equal(g.hp,10); assert.equal(g.mp,310);
   for (const k of Object.keys(ITEMS).filter(k => ITEMS[k].consumable)) {
     g.inventory[k]=2; g.hp=g.hpMax; g.mp=g.mpMax;
     assert.equal(g.useBag(k),false); assert.equal(g.inventory[k],2);

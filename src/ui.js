@@ -6,7 +6,7 @@ import { themeBackground } from './theme-assets.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
-import { specialCooldown } from './actor-recovery.js';
+import { actorStanding, specialCooldown } from './actor-recovery.js';
 import { trainingProgress, HERO_TRAINING_ID } from './training.js';
 import { TRAINING_GAMES } from './minigames/training/index.js';
 import { runTraining } from './minigames/training/host.js';
@@ -302,7 +302,7 @@ function explainBar(k) {
     <div class="tline"><b>หายเมื่อไหร่</b><div>คำตัดสินได้ 0 ดาว หรือลงทัณฑ์เกินกรรมสองวาระขึ้นไป = โดนลูกไฟ บารมีหาย 1 ใน 5 ·
       ได้ 1 ดาว = หาย 10</div></div>
     <div class="tline"><b>ได้คืนเมื่อไหร่</b><div>ตัดสินได้ห้าดาว (พ่อคืนให้นิดหน่อย — และคืนน้อยลงถ้ากรรมท่านสูง) ·
-      ${getLang() === 'en' ? `Pick up a <b>medicine chest</b> on the map for +${ITEMS.health.hp} authority` : `เดินไปเก็บ<b>หีบยาอายุวัฒนะ</b>ที่ตกอยู่บนแผนที่ +${ITEMS.health.hp}`}</div></div>
+      ${esc(itemText('health', 'desc'))}</div></div>
     <div class="tline bad"><b>ถ้าหมด</b><div>จบเกมทันที — พญายมเรียกตราคืนจากมือท่านต่อหน้าทุกคน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
@@ -780,6 +780,17 @@ function crewNote(c) {
  *  โต๊ะนิรา (openNiraOffice) · หน้าต่างสถานีที่มียมทูตคุม (openStation) · คุยกับยมทูตบนแผนที่ (talkCrew)
  *  c = ออบเจ็กต์ยมทูตจริงใน g.crew (มี .hunger) ไม่ใช่ CREW def เฉย ๆ
  *  ปุ่มมี data-feed="<k>" ให้ผู้เรียกไป bind onclick เอง (แต่ละที่ paint()/refresh() ไม่เหมือนกัน) */
+function guardRestWidget(c) {
+  if (!c) return '';
+  const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
+  const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/60000)) : 0;
+  return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
+    <span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
+    ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
+      : c.morale < 50 ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
+      : `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>`}
+    </div>`;
+}
 function hungerWidget(c) {
   const h = Math.round(c.hunger ?? 100);
   const empty = h <= 0;
@@ -795,6 +806,7 @@ function hungerWidget(c) {
 }
 /** bind ปุ่ม data-feed ทั้งหมดในกล่อง — เรียกซ้ำได้ (ปุ่มถูกวาดใหม่ทุก paint()) */
 function bindHungerWidgets(root, after) {
+  root.querySelectorAll('[data-guard-rest]').forEach(b => b.onclick = () => { if (g.restGuard(b.dataset.guardRest)) after(); });
   root.querySelectorAll('[data-feed]').forEach(b => b.onclick = () => {
     if (g.feedCrew(b.dataset.feed)) { sfx('coin'); after(); }
   });
@@ -2452,7 +2464,7 @@ function openNiraOffice() {
       <article class="shop-card">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small></span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${guardRestWidget(g.guard)}</span>
         ${g.guard
           ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม ${max} คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
@@ -2466,6 +2478,13 @@ function openNiraOffice() {
     if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
   };
   paint(); openDlg('nira-office');
+  const generation = dlgGen;
+  const restTimer = setInterval(() => {
+    if (!dlg.open || dlgGen !== generation) { clearInterval(restTimer); return; }
+    g.updateActorRecovery();
+    const status = dlg.querySelector('[data-guard-status]');
+    if (status && g.guard) { status.outerHTML = guardRestWidget(g.guard); bindHungerWidgets(dlg, () => { paint(); refresh(); }); }
+  }, 250);
 }
 
 function openMerchant() {
@@ -2480,7 +2499,7 @@ function openMerchant() {
       }).join('') : '<div class="hint">ยังไม่มีของสนามรบในกระเป๋า</div>'}</div>
       <h3>สินค้า</h3><div class="market-grid">${merchantStock(g.zone).map(s => {
         const d = ITEMS[s.k], lock = g.level < s.lv;
-        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · HP +${d.hp || 0} / MP +${d.mp || 0}` : ''}</small></span>
+        return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · ${esc(itemText(s.k, 'desc'))}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
       ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
@@ -2805,7 +2824,7 @@ function openBattle(after) {
     const waterFull = g.mp >= g.mpMax;
     const canWater = waterN > 0 && !waterFull;
     const extraPrepMedicines = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable && !['health','holyWater'].includes(k)).map(k =>
-      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'prep') ? '' : 'disabled'} title="HP +${ITEMS[k].hp || 0} / MP +${ITEMS[k].mp || 0}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
+      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'prep') ? '' : 'disabled'} title="${esc(itemText(k, 'desc'))}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
     const rest = g.zoneEventRestReady() && !phase;
     // ชุด 30B ข้อ 1 — เตรียมศึก (บอสโซน 2–4 · พักก่อนระลอก 4/8 โซน 4) ใช้หน้าตาเดียวกับหน้าต่างแจ้งเตือนอีเวนต์:
     // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
@@ -2832,10 +2851,10 @@ function openBattle(after) {
           <b>${esc(t('event.prep.medicine'))}</b>
           <span class="prep-chips">
             <button data-prep-med ${canMed ? '' : 'disabled'}
-              title="${esc(medN < 1 ? t('prep.med.none') : medFull ? t('bag.hpFull') : `${t('prep.med.gain')} ${ITEMS.health.hp} · ×${medN}`)}">
+              title="${esc(medN < 1 ? t('prep.med.none') : medFull ? t('bag.hpFull') : `${itemText('health', 'desc')} · ×${medN}`)}">
               ${itemImg('health', 'class="prep-ico"')} ${esc(t('prep.med'))} ×${medN}</button>
             <button data-prep-water ${canWater ? '' : 'disabled'}
-              title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${t('item.mpGain')} ${ITEMS.holyWater.mp} · ×${waterN}`)}">
+              title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${itemText('holyWater', 'desc')} · ×${waterN}`)}">
               ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))} ×${waterN}</button>${extraPrepMedicines}</span></div>
       </div></div></div></div>` : '';
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
@@ -2849,7 +2868,7 @@ function openBattle(after) {
       // น้ำมนต์ (28E): ต้องมีของ + MP ยังไม่เต็ม · โชว์จำนวนคงเหลือ ×N ใต้ปุ่ม
       const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0 && !!medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'battle')
         : !!((g.abilities?.[it.power] || (pw && !g.powerLocked(pw))) && mp >= BATTLE.mpCost[it.power]));
-      const note = consumable ? `×${g.inventory[k] || 0} · HP +${medicineHp(ITEMS[k], 'battle')} / MP +${ITEMS[k].mp || 0}` : `MP ${BATTLE.mpCost[it?.power] || 0}`;
+      const note = consumable ? `×${g.inventory[k] || 0} · ${itemText(k, 'desc')}` : `MP ${BATTLE.mpCost[it?.power] || 0}`;
       return battleChoice(k, icon, consumable ? itemName(k) : (it?.name || k), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
@@ -3364,7 +3383,7 @@ function openOutfit() {
 /** ชื่อไอเท็มตามภาษา — ไอเท็มที่มี nameKey ผ่าน i18n (น้ำมนต์) ที่เหลือใช้ชื่อไทยเดิมตามขอบเขตรอบ C2 */
 const crewAbility = actor => describeCrewAbility(typeof actor === 'string'
   ? actor === 'guard' ? g.guard || actor : g.crew.find(c => c.k === actor) || actor : actor, g.zone, g.training);
-const itemText = (k, field) => getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
+const itemText = (k, field) => ITEMS[k]?.[field+'Key'] ? t(ITEMS[k][field+'Key']) : getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
 // นับยาทุกระดับ (หีบยา/น้ำมนต์/น้ำชา ของทุกโซน) — ใช้บอกว่ากล่องยาเตรียมศึก "มีของ" หรือไม่
 const medicineCount = inv => Object.keys(inv || {}).reduce((n, k) => n + (ITEMS[k]?.consumable ? Math.max(0, inv[k] || 0) : 0), 0);
 const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (itemText(k, 'name') || k);
@@ -3394,7 +3413,7 @@ function bagUseWhy(k) {
   // จึงแทบไม่มีทางเห็นแถวนี้ในกระเป๋าอีก ยกเว้นเซฟเก่าที่ยังไมเกรตไม่ครบ — ปุ่มก็ยังต้องปิดเหมือนกัน)
   if (k === 'fire' || k === 'ice') return 'ใช้ในฉากต่อสู้';
   if (k === 'mirror') return 'ใช้ได้ในห้องสอบสวนเท่านั้น';
-  if (k === 'food') return 'นำไปให้นิราบนแผนที่เพื่อแจกทีม';
+
   if (k === 'lotus') return 'นำไปมอบให้บุญที่ประตูสวรรค์';
   if (d.material) return `สินค้า · พ่อค้านรกรับซื้อ ${d.sell} เบี้ยกรรม`;
   if (d.hp && g.hp >= g.hpMax && !(d.mp && g.mp < g.mpMax)) return 'บารมีเต็มแล้ว';
@@ -3431,12 +3450,14 @@ function openBag() {
   pauseForDlg();
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
   const itemCards = carried.length ? carried.map(([k, n]) => {
-    const d = ITEMS[k], why = bagUseWhy(k);
+    const d = ITEMS[k], targeted = !!d.hpRatio, recovery = targeted || !!d.mpRatio, why = targeted ? '' : bagUseWhy(k);
+    const line = why || (recovery ? itemText(k, 'desc') : itemText(k, 'say'));
     return `<div class="bag-item">
       ${itemImg(k, 'loading="lazy"')}
       <span class="n"><b>${esc(itemName(k))} ×${n}</b>
-        <small>${esc(why || itemText(k, 'say'))}</small></span>
-      <button class="gold" data-use-item="${k}" title="${esc(why || itemText(k, 'say'))}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : 'ใช้'}</button>
+        <small>${esc(line)}</small>
+        ${targeted ? `<select data-bag-target="${k}" aria-label="${esc(t('g1.target'))}"><option value="you">${esc(t('g1.you'))}</option>${Object.values(g.roster).filter(c => !c.reader && actorStanding(c)).map(c => `<option value="${esc(c.id)}">${esc(c.name || GUARD.name)} · HP ${Math.round(c.morale)}/100</option>`).join('')}</select>` : ''}</span>
+      <button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
 
@@ -3449,7 +3470,7 @@ function openBag() {
     <div class="row"><button class="gold" data-close>ปิดกระเป๋า</button></div>`, d => {
       d.classList.add('bag');
       d.querySelectorAll('[data-use-item]').forEach(b => b.onclick = () => {
-        if (!g.useBag(b.dataset.useItem)) return;
+        if (!g.useBag(b.dataset.useItem, d.querySelector(`[data-bag-target="${b.dataset.useItem}"]`)?.value || 'you')) return;
         sfx('gong'); openBag(); refresh();
       });
       d.querySelectorAll('[data-bag-outfit]').forEach(b => b.onclick = () => {
@@ -3966,7 +3987,7 @@ function openStation(k, emergency = false) {
     // ---- การ์ดหัวเรื่อง (ซ้ายบน) ----
     if (L) L.dataset.room = k;
     if (L) put(L, `<h2>${esc(def.name)}</h2>
-      <p>${esc(t(`room.${k}.desc`))}</p>
+      <p>${esc(t(`room.${k}.desc`))}</p>${k === 'tea' ? '<div data-tea-rest-panel></div>' : ''}
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
       ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
       `);
@@ -4022,6 +4043,10 @@ function openStation(k, emergency = false) {
 
     // ---- ปุ่มลอยข้างตัวละครประจำห้อง (ชุด 29C) — ตะราง: "จัดการรายชื่อ" บนหัวนิรา · ประตูสวรรค์: "ให้ดอกบัว" ข้างบุญ ----
     // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
+    const restPanel = dlg.querySelector('[data-tea-rest-panel]');
+    if (restPanel) {
+      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(guardRestWidget).join('');
+    }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {
       const tags = [];
@@ -4580,9 +4605,9 @@ function openDiscovery() {
   sfx('item');
   const icon = kind === 'item' ? itemImg(k, 'style="width:96px;height:96px;object-fit:contain"')
     : `<img src="${def.image || (def.glyph.startsWith('img/') ? def.glyph : k === 'mirror' ? 'img/item-mirror.png' : `img/fx-${k}.png`)}" alt="" style="width:96px;height:96px;object-fit:contain" onerror="this.onerror=null;this.src='${placeholderSrc('พลัง')}'">`;
-  modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(def.name)}</h2>
-    ${icon}<p><b>ใช้ทำอะไร:</b> ${esc(def.desc || def.text || def.say)}</p>
-    <p><b>วิธีใช้:</b> ${esc(def.howTo)}</p>
+  modal(`<h2>✨ ได้${kind === 'item' ? 'ไอเท็ม' : 'พลัง'}ใหม่ · ${esc(kind === 'item' ? itemName(k) : def.name)}</h2>
+    ${icon}<p><b>ใช้ทำอะไร:</b> ${esc(kind === 'item' ? itemText(k, 'desc') : def.desc || def.text || def.say)}</p>
+    <p><b>วิธีใช้:</b> ${esc(kind === 'item' ? itemText(k, 'howTo') : def.howTo)}</p>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`, null, 'discovery');
   const gen = dlgGen;
   const closed = () => {

@@ -23,10 +23,10 @@ export function actorFromLegacy(sv, zone, kind = sv.k) {
 
 const STATE_FIELDS = ['id', 'kind', 'homeZone', 'k', 'morale', 'hunger', 'upLv',
   'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt', 'helpRemainingMs',
-  'at', 'tired', 'x', 'y', 'buildK'];
+  'teaRest', 'at', 'tired', 'x', 'y', 'buildK'];
 export function snapshotRoster(roster) {
   return Object.fromEntries(listActors(roster).map(a => [a.id,
-    Object.fromEntries(STATE_FIELDS.filter(k => a[k] !== undefined).map(k => [k, k === 'statTraining' ? { ...a[k] } : a[k]]))]));
+    Object.fromEntries(STATE_FIELDS.filter(k => a[k] !== undefined).map(k => [k, k === 'teaRest' ? structuredClone(a[k]) : k === 'statTraining' ? { ...a[k] } : a[k]]))]));
 }
 
 export function teamIds(keys, roster, zone) {

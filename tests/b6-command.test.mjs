@@ -23,14 +23,14 @@ test('selection/cancel do not spend turns; selected actor attacks and duplicate 
 test('items reach chosen crew/Guard/Yama; full and MP-ineligible recipients cost nothing',()=>{
  const g=setup(),c=g.crewOf('taan');g.inventory.food=3;g.inventory.holyWater=2;g.inventory.health=2;
  c.morale=60;g.guard.morale=60;g.mp=0;
- g.selectBattleActor(g.guard.id);assert.equal(g.confirmBattleCommand('food',c.id),true);assert.equal(c.morale,80);
+ g.selectBattleActor(g.guard.id);assert.equal(g.confirmBattleCommand('food',c.id),true);assert.equal(c.morale,90);
  assert.equal(g.inventory.food,2);g.finishBattleCommand();
  assert.equal(g.confirmBattleCommand('health',g.guard.id),true);assert.ok(g.guard.morale>60);g.finishBattleCommand();
  c.morale=100;const turn=g.battle.turn;
  assert.equal(g.confirmBattleCommand('food',c.id),false);assert.equal(g.inventory.food,2);
  assert.equal(g.confirmBattleCommand('holyWater',c.id),false);assert.equal(g.inventory.holyWater,2);assert.equal(g.battle.turn,turn);
  assert.match(g.battleRecipientWhy('holyWater',c.id),/Yama only/);
- assert.equal(g.confirmBattleCommand('holyWater','you'),true);assert.equal(g.mp,30);
+ assert.equal(g.confirmBattleCommand('holyWater','you'),true);assert.equal(g.mp,26);
 });
 test('Boon heals chosen friend; special cooldown blocks repetition, ordinary crew attack is removed',()=>{
  const g=setup(),c=g.crewOf('boon'),friend=g.crewOf('taan');friend.morale=30;

@@ -18,7 +18,7 @@ import { regenMp } from './mp-regen.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
-import { drawStandee, drawHeroWalk, drawSoul, img, rr } from './art.js';
+import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -458,6 +458,17 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       });
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
+    if (def.k === 'tea') {
+      for (const c of Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone && c.teaRest.phase === 'rest')) {
+        const elapsed = Math.max(0, Date.now()-c.teaRest.startedAt), phase = (elapsed % 8000)/8000;
+        const x = .30 + .40*(phase < .5 ? phase*2 : (1-phase)*2), y = .72;
+        acts.push({y, fn:() => {
+          const h = U*CREW_H, key = 'crew-'+c.k;
+          if (!drawCrewWalk(ctx,key,px(x),py(y),h,elapsed*.04,phase < .5 ? 1 : -1))
+            drawStandee(ctx,key,px(x),py(y),h,t,c.glyph);
+        }});
+      }
+    }
     // NPC ประจำห้อง — นิรา (ตะราง) / บุญ (ประตูสวรรค์) / กานต์ (หอส่องกรรม ข้อ A-2 คุณเป้ 24 ก.ย. 2569)
     // กานต์เป็นยมทูตตัวเดียวกับใน CREW (ใช้ภาพ crew-kan เดิม ไม่วาดใหม่ — ตามข้อห้ามใบงาน "ห้ามใช้ภาพอื่นแทน")
     // ข้อ I-2 คุณเป้เจอ 25 ก.ย. 2569 — ประตูสวรรค์ (sawan) มอบหมายผู้คุมได้จริงผ่านระบบเดียวกับ
