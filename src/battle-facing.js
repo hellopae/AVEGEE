@@ -14,6 +14,9 @@ export const TEAM_DRAWN_FACING_RIGHT = new Set([
   'hero-yama-west', 'hero-yama-west-atk-R',
   'crew-guard', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
   'crew-plerng-cyberhell',                                                                    // โซน 4 (ตรงกับคัตซีน 30A ที่หันขวา)
+  // F2 ข้อ 2 (คุณเป้ 9 ต.ค.): ท่ายืนของยมบาทชุดบูรพา/นรกเครือข่ายวาดสายตาหันขวามาแต่ต้น (ผิดจากชุดโซน 1 ที่วาดหันซ้าย)
+  // เดิมถูกพลิกกระจกตามธรรมเนียม → หลังฟันดาบกลับมายืนแล้วหันซ้ายหนีศัตรู · ขึ้นทะเบียนเพื่อไม่ให้พลิก
+  'hero-yama-asia', 'hero-yama-cyberhell',
 ]);
 
 /** ภาพศัตรูที่วาดหันขวามา → พลิกให้หันซ้ายเข้าหาทีมเรา */
