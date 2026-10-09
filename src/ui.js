@@ -4381,7 +4381,8 @@ function openStation(k, emergency = false) {
   };
   if (k === 'krajok') {
     mirrorCharge = mountMirrorCharge(dlg.querySelector('.st-room'), {
-      anchor:(...p) => R.anchor(...p), alive:mine, onState:panels,
+      anchor:(...p) => R.anchor(...p), alive:mine, paused:() => g.paused,
+      onState:() => { const playing=!!mirrorCharge?.playing();mgOpen=playing;R.lock(playing);if(mine()) panels(); },
       canPlace:() => !g.powerLocked(g.powerOf('mirror')),
       canCharge:() => { const st=stationHere(), p=g.powerOf('mirror'); return !!st && !g.powerLocked(p) && p.ammo<p.max && g.tick >= (st.kanCd || 0); },
       onCharge:(angle,aspect) => { const ok=g.chargeMirror(angle,aspect); if(ok) {sfx('item');panels();refresh();} return ok; },
