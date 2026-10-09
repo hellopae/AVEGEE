@@ -13,6 +13,19 @@ test('all four outfits have shipped transparent atlases and consistent frame anc
   }
   assert.equal(swordSheet('unknown'), swordSheet('th'));
 });
+test('corrected v4 outfits are registered in both manifest and regional preload catalog', () => {
+  const manifest = JSON.parse(fs.readFileSync('img/manifest.json', 'utf8'));
+  const catalog = JSON.parse(fs.readFileSync('img/preload-catalog.json', 'utf8'));
+  for (const [style, height] of Object.entries({asia:352, west:346, cyberhell:320})) {
+    const sheet = swordSheet(style);
+    assert.equal(sheet.src, `img/yama-sword-v4/hero-yama-${style}-sword.webp`);
+    assert.equal(sheet.bodyHeight, height);
+    assert.ok(manifest.zones[style].includes(sheet.src.slice(4)), style);
+    assert.equal(catalog.zones[style].filter(url => url === sheet.src).length, 1, style);
+    assert.ok(!catalog.zones[style].includes(`img/yama-sword-v2/hero-yama-${style}-sword.webp`));
+  }
+  assert.equal(swordSheet('th').src, 'img/yama-sword-v3/hero-yama-th-sword.webp');
+});
 test('slash follows the lunge and stops on recovery, never wraps back into another strike', () => {
   assert.equal(SWORD_DURATION_MS,580);
   assert.equal(swordFrame(-1),0); assert.equal(swordFrame(84),0); assert.equal(swordFrame(85),1);
