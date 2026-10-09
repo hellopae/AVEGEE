@@ -36,7 +36,7 @@ import { MINIGAMES } from './minigames/index.js?v=20261009-book-art';   // ม�
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
-import { STORY, ABILITY_REWARDS } from './story.js';
+import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
@@ -4469,6 +4469,9 @@ function openLevelUp(lv) {
 /** Reuses the intro's page layout for both battle interludes and victory scenes. */
 function renderStoryComic(root, story, onDone) {
   let page = 0, done = false;
+  // ภาพแทนคัตซีน 16:9 ที่ยังไม่มีไฟล์จริง (p.fallback = glyph) — สีเท่า token --muted/--gold · มีแค่ glyph ไม่มีตัวอักษร
+  const placeholder = glyph => ('data:image/svg+xml,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1375 768"><rect width="1375" height="768" fill="#1d1016"/><rect x="40" y="40" width="1295" height="688" rx="28" fill="none" stroke="#d4a355" stroke-width="6" stroke-dasharray="22 14"/><text x="687" y="470" font-size="300" text-anchor="middle">${glyph}</text></svg>`)).replace(/'/g, '%27');
   const stopVideo = () => root.querySelector('video')?.pause?.();
   // Battle interludes use a plain <div> overlay inside the battle <dialog>: 'close' never fires on the overlay, so also watch the host dialog.
   const hosts = new Set([root, root.closest?.('dialog')].filter(Boolean));
@@ -4479,7 +4482,7 @@ function renderStoryComic(root, story, onDone) {
     const p = story.pages[page];
     const media = p.video
       ? `<video src="${esc(p.video)}" poster="${esc(p.poster || p.image)}" autoplay muted playsinline controls preload="auto" aria-label="${esc(p.title)}"></video>`
-      : `<img src="${p.image}" alt="${esc(p.title)}">`;
+      : `<img src="${p.image}" alt="${esc(p.title)}"${p.fallback ? ` onerror="this.onerror=null;this.src='${placeholder(p.fallback)}'"` : ''}>`;
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
       <div class="intro-comic-frame">${media}
         <div class="intro-comic-head"><span>${esc(story.title)}</span><span>${page + 1} / ${story.pages.length}</span></div>
@@ -4557,9 +4560,9 @@ function showPendingStory() {
     };
     dlg.addEventListener('close', handler);
   };
-  if (pending.stage === 'comic' && STORY[pending.key]) {
+  if (pending.stage === 'comic' && storyOf(pending.key)) {
     pauseForDlg(); openDlg('intro-comic-dialog');
-    renderStoryComic(dlg, STORY[pending.key], () => dlg.close());
+    renderStoryComic(dlg, storyOf(pending.key), () => dlg.close());
     closed(() => {
       g.completeStory();
     });
