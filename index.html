@@ -498,7 +498,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 }
 
 /* ---------- หน้าปก (ข้อ A ชุด 15 — ทำตามม็อกอัป files/UI-th.jpg / UI-eng.jpg) ----------
-   ภาพ img/cover-v4.webp เต็มจอ ไม่มีแผงมืดคาดขวาเหมือนเดิมแล้ว — โลโก้/ปุ่มลอยตรงบนภาพ
+   ภาพ img/cover-v5.webp เต็มจอ ไม่มีแผงมืดคาดขวาเหมือนเดิมแล้ว — โลโก้/ปุ่มลอยตรงบนภาพ
    ตำแหน่งอิงสัดส่วนที่วัดจากม็อกอัป 2500×1396 (ครอปดูจริงทีละจุดแล้วประมาณเป็น % ไม่ใช่เดาจากความจำ):
      เฟือง ⚙ กึ่งกลางที่ (94.4%, 6.5%) กว้าง ~5% ของจอ
      โลโก้กึ่งกลางแนวขวางที่ ~89% ของความกว้าง กว้างรวม ~30vw
@@ -2006,7 +2006,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .g5-closeup{position:relative;width:min(100%,800px,calc((100dvh - 150px) * 16 / 9));aspect-ratio:16/9;min-height:0;flex:0 0 auto;overflow:hidden;border:2px solid #dfba63;border-radius:14px;background:#180a11}
 .g5-portrait{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 .g5-orb{position:absolute;left:38%;top:52%;width:19%;aspect-ratio:1;transform:translate(-50%,-50%)}
-.g5-orb img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g5-orb img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 .g5-orb i{position:absolute;left:50%;top:50%;width:100%;height:100%;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%)}
 .g5-green{border:6px solid #20994da8}
 .g5-white{border:3px solid white}
@@ -2061,7 +2061,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 <div id="title">
   <div class="art" id="cover-art"></div>
-  <video class="cover-vfx" id="cover-vfx" hidden poster="img/cover-v4.webp"
+  <video class="cover-vfx" id="cover-vfx" hidden poster="img/cover-v5.webp"
     muted playsinline loop preload="none" aria-hidden="true"></video>
   <div class="scrim"></div>
 
@@ -2233,7 +2233,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 
 <dialog id="dlg"></dialog>
-<script type="module" src="src/preload.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-g5"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g5"></script>
+<script type="module" src="src/preload.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-g2b-cover-v5-g5"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-g5"></script>
 </body>
 </html>
