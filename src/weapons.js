@@ -2,6 +2,7 @@
 // ส่วนนี้เป็นฟังก์ชันล้วน ไม่แตะสถานะเกม: ตารางชื่อไฟล์ภาพ · สูตรฟาดปกติเมื่อถืออาวุธ · ผลพิเศษหลังฟาด
 // game.js เรียกใช้ตอน battleAct('atk') เท่านั้น — ลูกไฟ/ผนึกน้ำแข็ง/พุ่งชนเพลิง/ท่ายมทูตไม่ผ่านที่นี่
 import { WEAPONS, WEAPON_STACK_CAP, BATTLE } from './data.js';
+import { t } from './i18n.js';
 
 export const WEAPON_IDS = Object.keys(WEAPONS);
 export const OUTFIT_IDS = ['th', 'asia', 'west', 'cyberhell'];
@@ -53,4 +54,22 @@ export function weaponOnHit(weaponId, { dealt, targetMax, youHp, youMax }, rnd =
   else if (e.type === 'replay' && rnd() < e.chance)
     out.replay = Math.max(1, Math.round(dealt * e.ratio));
   return out;
+}
+
+// ---------- ข้อความอธิบายผล (สร้างจากตัวเลขใน data.js — เปลี่ยนสมดุลแล้วข้อความตามเอง) ----------
+/** บรรทัดอธิบายอาวุธ: ฟาดปกติ +X% แล้วตามด้วยผลพิเศษ */
+export function weaponEffectLines(id) {
+  const w = WEAPONS[id]; if (!w) return [];
+  const e = w.effect, pct = x => Math.round(x * 100);
+  const lines = [t('weapon.effect.atk', { pct:pct(w.atk) })];
+  if (e.type === 'burn') lines.push(t('weapon.effect.burn', { chance:pct(e.chance), hp:pct(e.pct), turns:e.turns, cap:e.cap }));
+  if (e.type === 'crit') lines.push(t('weapon.effect.crit', { pts:pct(e.bonus) }));
+  if (e.type === 'drain') lines.push(t('weapon.effect.drain', { pct:pct(e.pct), cap:e.cap }));
+  if (e.type === 'replay') lines.push(t('weapon.effect.replay', { chance:pct(e.chance), ratio:pct(e.ratio) }));
+  return lines;
+}
+/** ข้อความสั้นหลังฟาด (B.weaponNote จาก game.js) */
+export function weaponNoteText(note) {
+  if (!note) return '';
+  return t({ ignite:'battle.weapon.ignite', burn:'battle.weapon.burn', drain:'battle.weapon.drain', replay:'battle.weapon.replay' }[note.k], { n:note.n });
 }

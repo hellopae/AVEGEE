@@ -9,6 +9,10 @@ import { WEAPON_ART_FILES, WEAPON_IDS, meleeSwing, weaponCutsceneSrc, weaponIcon
 import { STORY, WEAPON_STORY, storyOf } from '../src/story.js';
 import { englishKeys, setLang, t } from '../src/i18n.js';
 import { standPoints } from '../src/npc-stand.js';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { GUARD_POST, SPOTS, ZONE_ENTRY, syncSceneZone } from '../src/data.js';
+import { buildWalk, canWalk, findPath, resetWalk, setBlocks, setNpcDiscs } from '../src/walk.js';
 import { weaponSheetFor, swordSheet } from '../src/yama-sword.js';
 import { capWithRage } from '../src/weapons.js';
 
@@ -196,8 +200,7 @@ test('รอบแรก: 10 wave → จุดพัก wave 5 บันทึ�
   g.battle.youHp = 1; for (const f of g.battle.foes) f.atk = [50, 50];
   g.battleAct('atk');
   assert.equal(g.battle.over, 'lose');
-  assert.equal(g.battle.talk, t('challenge.th.lose'));        // บทพูด "แพ้" ของทัณฑสูร (ร่าง Minnie)
-  assert.match(t('challenge.th.lose'), /ล้มแค่นี้เอง/);
+  assert.match(t('challenge.th.lose'), /ล้มแค่นี้เอง/);        // บทพูด "แพ้" ของทัณฑสูร (ร่าง Minnie) แสดงที่หน้าจบศึก
   g.endBattle();
   assert.equal(g.hp, Math.max(1, hpBefore - 8), 'บารมี -8');
   assert.equal(g.weapons.owned.fang, undefined);
@@ -228,7 +231,7 @@ test('รอบแรก: 10 wave → จุดพัก wave 5 บันทึ�
 
 test('ประลองซ้ำหลังได้อาวุธ: ไม่ได้อาวุธซ้ำ · เบี้ยกรรมครึ่งหนึ่ง + วัตถุดิบชายแดน · ไม่มี EXP/คัตซีนซ้ำ', () => {
   const g = unlocked('asia');
-  g.weapons.owned.chain = true; g.challenge.asia = { checkpoint:0, paidWave:10, wins:1, talked:true };
+  g.weapons.owned.chain = true; g.challenge.asia = { checkpoint:0, paidWave:10, wins:1 };
   g.storySeen['weapon-chain'] = true;
   const ev = challengeOf('asia'), full = ev.reward.coin + ev.waveCoin.reduce((a, c) => a + c, 0);
   const coin0 = g.coin, inv0 = { ...g.inventory };
@@ -249,7 +252,7 @@ test('ประลองซ้ำหลังได้อาวุธ: ไม่
 
 test('แพ้ตอนประลองซ้ำ: อาวุธไม่หาย · ไม่เสียความคืบหน้า', () => {
   const g = unlocked('west');
-  g.weapons.owned.cane = true; g.weapons.equipped = 'cane'; g.challenge.west = { checkpoint:0, paidWave:10, wins:1, talked:true };
+  g.weapons.owned.cane = true; g.weapons.equipped = 'cane'; g.challenge.west = { checkpoint:0, paidWave:10, wins:1 };
   g.startChallenge();
   g.battle.youHp = 1; for (const f of g.battle.foes) f.atk = [50, 50];
   g.battleAct('atk');
@@ -415,10 +418,10 @@ test('คัตซีน/ไอคอน/สไปรท์: ไม่มีไ�
 test('เซฟ/โหลด: อาวุธ ความคืบหน้าจุดพัก ชัยชนะ — โหลดซ้ำแล้วเหมือนเดิม', () => {
   const g = unlocked('th');
   g.weapons.owned = { fang:true, chain:true }; g.weapons.equipped = 'chain';
-  g.challenge = { th:{ checkpoint:5, paidWave:5, wins:0, talked:true }, asia:{ checkpoint:0, paidWave:10, wins:2, talked:true } };
+  g.challenge = { th:{ checkpoint:5, paidWave:5, wins:0 }, asia:{ checkpoint:0, paidWave:10, wins:2 } };
   const h = reload(g);
   assert.deepEqual(h.weapons, { owned:{ fang:true, chain:true }, equipped:'chain' });
-  assert.deepEqual(h.challenge.th, { checkpoint:5, paidWave:5, wins:0, talked:true });
+  assert.deepEqual(h.challenge.th, { checkpoint:5, paidWave:5, wins:0 });
   assert.equal(h.challenge.asia.wins, 2);
   assert.equal(h.challengeStartWave('th'), 6);
 });
@@ -433,7 +436,7 @@ test('เซฟเก่า (ก่อน G3b) โหลดได้ · ค่�
   snap.challenge = { th:{ checkpoint:99, paidWave:-4, wins:'x' }, moon:{ checkpoint:3 }, asia:7 };
   const k = createGame(); assert.equal(k.restore(snap), true);
   assert.deepEqual(k.weapons, { owned:{ fang:true }, equipped:null });
-  assert.deepEqual(k.challenge.th, { checkpoint:CHALLENGE_REST_WAVE, paidWave:0, wins:0, talked:false });
+  assert.deepEqual(k.challenge.th, { checkpoint:CHALLENGE_REST_WAVE, paidWave:0, wins:0 });
   assert.equal(k.challenge.moon, undefined); assert.equal(k.challenge.asia, undefined);
   // เซฟกลางศึกไม่มีฉากค้าง: โหลดแล้วไม่มีศึกประลอง และไม่มีสถานะ active ค้างในอีเวนต์เนื้อเรื่อง
   const m = unlocked('th'); m.startChallenge(); m.save();
@@ -445,4 +448,41 @@ test('ศึกประลองไม่ปนกับระบบเดิ�
   const before = JSON.stringify(g.zoneEvents) + JSON.stringify(g.bossCleared) + JSON.stringify(g.abilities);
   g.startChallenge(); winAll(g); g.endBattle();
   assert.equal(JSON.stringify(g.zoneEvents) + JSON.stringify(g.bossCleared) + JSON.stringify(g.abilities), before);
+});
+
+// ---------------------------------------------------------------- ตำแหน่งบอสบนแผนที่จริงของทั้ง 4 โซน
+// อ่านพิกเซลภาพฉากจริงแบบเดียวกับ tests/zone-entry29c.test.mjs เพื่อสร้าง walk mask
+test('ที่ยืนของบอสเดินได้จริงทั้ง 4 โซน · ไม่ทับยักษ์ทวารบาล/ซุ้มประตู · ไม่ขวางทางออกจากประตูขึ้นแท่น · เดินไปคุยถึง', () => {
+  const image = name => ({ naturalWidth:1678, naturalHeight:937, path:fileURLToPath(new URL(`../img/${name}.png`, import.meta.url)) });
+  const pixels = new Map();
+  const imagePixels = im => {
+    if (!pixels.has(im.path)) pixels.set(im.path, execFileSync('python3', ['-c',
+      'from PIL import Image; import sys; sys.stdout.buffer.write(Image.open(sys.argv[1]).convert("RGBA").tobytes())', im.path], { maxBuffer:7_000_000 }));
+    return pixels.get(im.path);
+  };
+  const oldDoc = globalThis.document;
+  globalThis.document = { documentElement:{}, createElement: () => { let source; return { width:0, height:0, getContext: () => ({
+    drawImage(im) { source = im; }, getImageData() { return { data:imagePixels(source) }; } }) }; } };
+  try {
+    const g = createGame();
+    for (const z of ZONES) {
+      g.zone = z.k; syncSceneZone(z.k); resetWalk(); setBlocks([], []);
+      const bg = image(z.scene);
+      assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
+      const { x, y } = CHALLENGE_STAND;
+      assert.equal(canWalk(x, y), true, `${z.k}: บอสยืนบนพื้นเดินได้`);
+      for (const [dx, dy] of [[-28, 0], [28, 0], [0, -18], [0, 18]]) assert.equal(canWalk(x + dx, y + dy), true, `${z.k}: รอบตัวบอสไม่ตกน้ำ ${dx},${dy}`);
+      assert.ok(Math.hypot(x - GUARD_POST[0], y - GUARD_POST[1]) > 150, 'ไม่ทับจุดเฝ้ายักษ์ทวารบาล');
+      assert.ok(x > FRONTIER.hit[2] && Math.abs(y - FRONTIER.y) < 80, 'ข้างซุ้มประตู ไม่ทับกรอบกดของซุ้ม');
+      // บอสวางวงกันทาง แล้วยมบาทกับนิราต้องยังเดินจากประตูขึ้นแท่นตัดสินได้ และเดินไปใกล้บอสจนคุยได้
+      setNpcDiscs([[x, y]]);
+      for (const [name, from, to] of [['gate→goal', ZONE_ENTRY.gate, ZONE_ENTRY.goal], ['nira→goal', ZONE_ENTRY.nira, ZONE_ENTRY.goal]]) {
+        const path = findPath(from[0], from[1], to[0], to[1], true), end = path?.at(-1);
+        assert.ok(end && Math.hypot(end[0] - to[0], end[1] - to[1]) < 2, `${z.k} ${name}`);
+      }
+      const toBoss = findPath(ZONE_ENTRY.gate[0], ZONE_ENTRY.gate[1], x - 60, y, true), near = toBoss?.at(-1);
+      assert.ok(near && Math.hypot(near[0] - x, near[1] - y) <= 100, `${z.k}: เดินไปถึงระยะคุย`);
+      setNpcDiscs([]);
+    }
+  } finally { globalThis.document = oldDoc; resetWalk(); }
 });

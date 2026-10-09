@@ -133,7 +133,7 @@ export function createGame() {
     zoneIntroSeen: {},
     outfit: 'th',                     // ชุด Yama ที่เลือก — ปลดตามโซน แต่ไม่บังคับให้ตรงโซนปัจจุบัน
     outfitsOwned: ['th'],
-    // G3b — ประลองปีศาจชายแดน + อาวุธประจำโซน: challenge[zone] = { checkpoint, paidWave, wins, talked } · weapons = { owned:{id:true}, equipped:id|null }
+    // G3b — ประลองปีศาจชายแดน + อาวุธประจำโซน: challenge[zone] = { checkpoint, paidWave, wins } · weapons = { owned:{id:true}, equipped:id|null }
     challenge: {}, weapons: { owned: {}, equipped: null },
     usedCases: [],                    // สำนวนที่มีชื่อซึ่งผ่านมาแล้ว — ไม่ส่งซ้ำจนกว่าจะหมดชุด
     fights: 0,                        // ฉากต่อสู้ที่เกิดขึ้นแล้ว (ใช้เป็นเงื่อนไขบทเรียน)
@@ -2541,7 +2541,7 @@ const API = {
   // ใช้ศึกแบบ zoneEvent เดิม (ZONE_EVENTS[zone] ตัวที่ challenge:true) แต่ไม่ผ่านสถานะ pending/active ของอีเวนต์เนื้อเรื่อง
   // ความคืบหน้าอยู่ที่ this.challenge[zone] เท่านั้น: checkpoint = wave ที่ผ่านจุดพักแล้ว · paidWave = wave ที่จ่ายรางวัลแล้ว · wins = ชนะครบกี่ครั้ง
   challengeOf(zone = this.zone) {
-    return (this.challenge[zone] ||= { checkpoint:0, paidWave:0, wins:0, talked:false });
+    return (this.challenge[zone] ||= { checkpoint:0, paidWave:0, wins:0 });
   },
   challengeEvent(zone = this.zone) {
     return (ZONE_EVENTS[zone] || []).find(e => e.challenge) || null;
@@ -2599,7 +2599,6 @@ const API = {
       this.coin += ev.reward.coin;
       B.reward = { coin:ev.reward.coin + (B.waveGain?.coin || 0), weapon:w };
       this.queueStory(`weapon-${w}`);
-      B.talk = t(`challenge.${B.zone}.win`);
     } else {
       const firstClearCoin = ev.reward.coin + (ev.waveCoin || []).reduce((a, c) => a + c, 0);
       const coin = Math.round(firstClearCoin * CHALLENGE_REPLAY.coinShare);
@@ -2610,17 +2609,15 @@ const API = {
         this.inventory[item] = (this.inventory[item] || 0) + 1; drops.push(item);
       }
       B.reward = { coin, drops };
-      B.talk = t('challenge.log.rematchWin');
     }
-    say(B.talk);
+    say(t(`challenge.${B.zone}.${B.rematch ? 'invite' : 'win'}`));
     this.log(`⚔️ ${t('challenge.title')} — ${B.rematch ? t('challenge.log.rematchWin') : t('challenge.log.firstWin')}`, 'good');
   },
   /** แพ้การประลอง — บารมี -8 (แบบ lose.hp) · ความคืบหน้าจุดพักไม่หาย · ไม่มีสถานะ pending ให้ตกค้าง */
   loseChallenge(B, say = () => {}) {
     const ev = this.challengeEvent(B.zone);
     this.hp = Math.max(1, this.hp - (ev?.lose?.hp || 8));
-    B.talk = t(`challenge.${B.zone}.lose`);
-    say(B.talk);
+    say(t(`challenge.${B.zone}.lose`));         // บทพูดแพ้แสดงที่หน้าจบศึก (ui.js challengeLine) ไม่ซ้ำในกล่องพูดกลางจอ
   },
   equipWeapon(id) {
     if (id !== null && !this.weapons.owned[id]) return false;
@@ -4548,7 +4545,7 @@ API.restore = function (d) {
   for (const zone of Object.keys(CHALLENGE_STORY_KEY)) {
     const c = d.challenge?.[zone];
     if (c && typeof c === 'object') this.challenge[zone] = { checkpoint:Math.max(0, Math.min(CHALLENGE_REST_WAVE, c.checkpoint | 0)),
-      paidWave:Math.max(0, c.paidWave | 0), wins:Math.max(0, c.wins | 0), talked:!!c.talked };
+      paidWave:Math.max(0, c.paidWave | 0), wins:Math.max(0, c.wins | 0) };
   }
   this.weapons = { owned:{}, equipped:null };
   for (const id of Object.keys(WEAPONS)) if (d.weapons?.owned?.[id]) this.weapons.owned[id] = true;
