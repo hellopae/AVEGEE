@@ -378,7 +378,7 @@ export function render(ctx, g, t, hover, sel) {
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
-  if (!rescue && actorStanding(g.guard)) {
+  if (!rescue && (actorStanding(g.guard) || g.guard?.teaRest?.phase === 'travel')) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
     at(g.guard.y, () => {
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);

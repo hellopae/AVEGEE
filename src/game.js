@@ -474,10 +474,44 @@ const API = {
     }
     return true;
   },
+  restGuard(id = this.guard?.id, now = Date.now()) {
+    const c = this.roster[id];
+    if (!c || c.k !== 'guard' || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 50 || this.battle) return false;
+    const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
+    if (!tea) return false;
+    const dest = nearestWalk(tea.def.sx ?? tea.def.x, tea.def.sy ?? tea.def.y);
+    if (!dest) return false;
+    const path = findPath(c.x, c.y, ...dest);
+    if (!path?.length && Math.hypot(c.x-dest[0],c.y-dest[1]) > 6) return false;
+    c.teaRest = { phase:'travel', zone:this.zone, dest, path:path || [], movedAt:now, returnAt:[c.x,c.y] };
+    c.path = null; c.target = null;
+    this.save(); this.onChange(); return true;
+  },
+  updateGuardRest(c, now) {
+    const rest = c.teaRest;
+    if (!rest) return false;
+    let changed = false;
+    if (rest.phase === 'travel') {
+      let distance = Math.max(0, now-rest.movedAt) * .075;
+      rest.movedAt = now;
+      while (rest.path.length) {
+        const [x,y] = rest.path[0], d = Math.hypot(x-c.x,y-c.y);
+        if (d > distance) { c.x += (x-c.x)*distance/d; c.y += (y-c.y)*distance/d; break; }
+        c.x=x; c.y=y; distance-=d; rest.path.shift();
+      }
+      if (!rest.path.length) { rest.phase='rest'; rest.startedAt=now-distance/.075; rest.until=rest.startedAt+60000; changed=true; }
+    }
+    if (rest.phase === 'rest' && now >= rest.until) {
+      c.morale=100; [c.x,c.y]=rest.returnAt; c.path=null; c.target=null; c.teaRest=null;
+      return true;
+    }
+    return changed;
+  },
   updateActorRecovery(now = Date.now()) {
     syncRoster(this);
     let changed = false;
     for (const actor of Object.values(this.roster)) {
+      if (actor.teaRest) { changed = this.updateGuardRest(actor, now) || changed; continue; }
       if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;
       if (actor.recoverUntil && now >= actor.recoverUntil) {
         if (this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
@@ -1969,8 +2003,19 @@ const API = {
   },
 
   /** ใช้ของที่พกอยู่ ผู้เล่นเป็นคนเลือกจังหวะเอง ไม่กินของทันทีที่เดินผ่าน */
-  useBag(k) {
-    if (ITEMS[k]?.consumable) return !this.battle && this.useMedicine(k);
+  useBag(k, recipientId = 'you') {
+    if (ITEMS[k]?.consumable) {
+      if (this.battle) return false;
+      if (recipientId === 'you') return this.useMedicine(k);
+      const c = this.roster[recipientId] || (recipientId === 'guard' ? this.guard : this.crewOf(recipientId));
+      if (!actorStanding(c) || !(this.inventory[k] > 0) || !ITEMS[k].hpRatio) return false;
+      const result = medicineResult(k, c.morale, 100, 0, 0);
+      if (!result && !(k === 'food' && (c.hunger ?? 100) < 100)) return false;
+      if (result) c.morale = result.hp;
+      if (k === 'food') c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
+      if (--this.inventory[k] <= 0) delete this.inventory[k];
+      this.save(); this.onChange(); return true;
+    }
     const def = ITEMS[k], n = this.inventory[k] || 0;
     if (!def || n < 1 || def.battleOnly) return false;
     // ข้อ H คุณเป้เจอ 25 ก.ย. 2569 — ลูกไฟ/คัมภีร์น้ำแข็งใช้ได้เฉพาะฉากต่อสู้เท่านั้น (ปุ่มในกระเป๋า
@@ -2811,7 +2856,7 @@ const API = {
     if (id !== 'you' && ITEMS[k]?.mp) return 'เฉพาะยมบาท / Yama only';
     if (k !== 'food' && !ITEMS[k]?.consumable) return 'ใช้ไม่ได้ / Unavailable';
     const hp = id === 'you' ? b.youHp : c.morale, max = id === 'you' ? b.youMax : 100;
-    if (k === 'food') return hp >= max ? 'เต็มแล้ว / Full' : '';
+    if (k === 'food') return hp >= max && (id === 'you' || (c.hunger ?? 100) >= 100) ? 'เต็มแล้ว / Full' : '';
     return medicineResult(k, hp, max, id === 'you' ? this.mp : 0, id === 'you' ? this.mpMax : 0, 'battle') ? '' : 'เต็มแล้ว / Full';
   },
   confirmBattleCommand(what, recipientId = 'you') {
@@ -2876,8 +2921,8 @@ const API = {
     if (itemCommand) {
       const hp = recipient.id === 'you' ? B.youHp : recipient.morale;
       const max = recipient.id === 'you' ? B.youMax : 100;
-      const result = what === 'food' ? { hp:Math.min(max, hp + 20), mp:this.mp }
-        : medicineResult(what, hp, max, recipient.id === 'you' ? this.mp : 0, recipient.id === 'you' ? this.mpMax : 0, 'battle');
+      const result = medicineResult(what, hp, max, recipient.id === 'you' ? this.mp : 0, recipient.id === 'you' ? this.mpMax : 0, 'battle') || { hp, mp:this.mp };
+      if (what === 'food' && recipient.id !== 'you') recipient.hunger = Math.min(100, (recipient.hunger ?? 100) + BAL.feedHunger);
       if (recipient.id === 'you') { B.youHp = result.hp; this.mp = result.mp; }
       else recipient.morale = result.hp;
       this.inventory[what]--; B.dmg.healActorId = recipient.id;
@@ -3942,7 +3987,7 @@ const API = {
     if (!actorStanding(c) || this.food < BAL.feedFoodCost) return false;
     this.food -= BAL.feedFoodCost;
     c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
-    c.morale = Math.min(100, c.morale + 10);
+    c.morale = Math.min(100, c.morale + Math.round(100 * ITEMS.food.hpRatio));
     this.log(`🍙 ป้อนข้าวปั้นให้${c.name}แล้ว`, 'act');
     this.save(); this.onChange(); return true;
   },

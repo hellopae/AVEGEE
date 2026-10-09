@@ -18,7 +18,7 @@ test('approved balance constants', () => {
   assert.equal(MOB.drain, 0.05);
   assert.equal(KARMA_TIERS[2].mob, 0.8);
   assert.equal(KARMA_TIERS[3].mob, 0.7);
-  assert.equal(ITEMS.health.hp, 42);
+  assert.equal(ITEMS.health.hp, 65);
 });
 
 test('every dossier deserves 1–5 terms and Thai level-five share falls', () => {

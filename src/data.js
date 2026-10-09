@@ -2086,8 +2086,26 @@ for (const [zone,suffix,th,en,hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost] of ZONE_M
     return costs[item.k] ? { ...item, k:item.k+suffix, cost:costs[item.k] } : { ...item };
   });
 }
-// น้ำชาโซน 1 กลางศึกฟื้น 24 (ค่าเดิมก่อน B3) ตั้งหลังสร้างน้ำชาโซนอื่นแล้ว เพื่อไม่ให้ถูกคัดลอกไปด้วย · ในกระเป๋า/เตรียมศึกยังเป็น ITEMS.tea.hp
-ITEMS.tea.battleHp = 24;
+// G1: restoration follows the recipient's maximum, across every zone variant.
+for (const [k, def] of Object.entries(ITEMS)) {
+  const base = k.replace(/Z[234]$/, '');
+  if (!['food','tea','health','holyWater'].includes(base)) continue;
+  const hp = base === 'food' || base === 'health';
+  const ratio = base === 'food' || base === 'tea' ? .30 : .65;
+  def.hp = hp ? Math.round(100 * ratio) : 0;
+  def.mp = hp ? 0 : Math.round(40 * ratio);
+  def.hpRatio = hp ? ratio : 0; def.mpRatio = hp ? 0 : ratio;
+  delete def.battleHp;
+  def.consumable = true;
+  def.nameKey = /Z[234]$/.test(k) ? undefined : base === 'holyWater' ? 'item.holyWater' : `g1.${base}.name`;
+  def.descKey = `g1.${base}.desc`; def.howToKey = 'g1.howTo'; def.sayKey = hp ? 'g1.hpSay' : 'g1.mpSay';
+  def.desc = hp ? `เติม HP ${ratio*100}% ของค่าสูงสุด${base === 'food' ? ' และเติมแถบหิวของยมทูต' : ''}` : `เติม MP ${ratio*100}% ของค่าสูงสุด`;
+  def.howTo = 'เลือกเป้าหมายในกระเป๋าหรือในศึก';
+  def.say = hp ? 'HP ฟื้นขึ้นมา' : 'MP ฟื้นขึ้นมา';
+  def.descEn = hp ? `Restore ${ratio*100}% of maximum HP${base === 'food' ? ' and reaper hunger' : ''}` : `Restore ${ratio*100}% of maximum MP`;
+  def.howToEn = 'Select a recipient in the bag or battle';
+  def.sayEn = hp ? 'HP restored' : 'MP restored';
+}
 // Compatibility metadata for existing battle item consumers, from ITEMS.
 for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
   const existing = BATTLE.items.find(item => item.k === k);

@@ -82,7 +82,7 @@ test('discovery modal waits for reward and existing dialogs, shows one entry, an
   const listeners=new Set(), renders=[];
   const ctx={g,ITEMS,POWERS,ABILITY_REWARDS,esc:String,pauseForDlg(){},sfx(){},itemImg:k=>`<img data-item="${k}">`,placeholderSrc:()=>'',
     dlg:{open:false,addEventListener:(_,f)=>listeners.add(f),removeEventListener:(_,f)=>listeners.delete(f)},
-    dlgGen:0,rewardOpen:false,setTimeout:()=>{}, modal(html){renders.push(html);ctx.dlg.open=true;ctx.dlgGen++;}};
+    itemText:(k,field)=>ITEMS[k][field],itemName:k=>ITEMS[k].name,dlgGen:0,rewardOpen:false,setTimeout:()=>{}, modal(html){renders.push(html);ctx.dlg.open=true;ctx.dlgGen++;}};
   vm.createContext(ctx); vm.runInContext(extract('openDiscovery','// ---------- เหตุการณ์เด้ง'),ctx);
   g.pendingReward={}; ctx.openDiscovery(); assert.equal(renders.length,0);
   g.pendingReward=null; ctx.dlg.open=true; ctx.openDiscovery(); assert.equal(renders.length,0);
