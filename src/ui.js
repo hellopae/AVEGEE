@@ -3964,9 +3964,9 @@ function openStation(k, emergency = false) {
       <p>${esc(t(`room.${k}.desc`))}</p>
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
       ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
-      ${TRAINING_GAMES[k] ? `<button id="st-training" class="btn-gold" ${!R?.inTrainingReach() || mgOpen || st.build ? 'disabled' : ''}>ฝึกตัวละคร / Train character</button>` : ''}`);
-    const trainButton = dlg.querySelector('#st-training');
-    if (trainButton) trainButton.onclick = () => openTraining(k);
+      `);
+    // F2 ข้อ 1 (คุณเป้ 9 ต.ค.): ตัดปุ่ม "ฝึกตัวละคร" ออกจากการ์ดทุกห้อง/ทุกโซน — ระบบฝึกยังอยู่ (จุดฝึกบนพื้น → openTraining)
+    // ภายหลังจะมีปุ่มมินิเกมมาแทนตรงนี้
 
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
     // spec = [ป้ายปุ่ม, คำใต้ปุ่ม, handler, กดไม่ได้?, คำแทนคำใต้ปุ่มตอนกดไม่ได้เพราะเงื่อนไขของเกม]
