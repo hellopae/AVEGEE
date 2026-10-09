@@ -38,12 +38,12 @@ export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, onCharg
   const panel=document.createElement('section');panel.className='mirror-puzzle';panel.setAttribute('aria-label',t('room.krajok.adjust'));roomEl.append(panel);
   panel.innerHTML=`<div class="mirror-puzzle-head"><div><b>${t('room.krajok.adjust')}</b><small>${t('mirror.rule')}</small></div><button type="button" data-close>${t('room.close')}</button></div>
    <div class="mirror-puzzle-stage"><img class="mirror-puzzle-art" src="img/minigames/mirror-room-v1.png" alt="">
-    <svg class="mirror-light" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-ray fill="none" stroke-width=".22"/><circle data-source r=".9" fill="#ffe9a7"/><circle data-target r="3.1" fill="none" stroke-width=".18"/></svg>
+    <svg class="mirror-light" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-ray-glow fill="none" stroke="#eeb743" stroke-width=".8" opacity=".45"/><path data-ray fill="none" stroke="#fff1b6" stroke-width=".22"/><circle data-source r=".9" fill="#ffe9a7"/><circle data-target r="3.1" fill="none" stroke-width=".18"/></svg>
     <img class="mirror-plate" src="img/minigames/mirror-plate-v1.png" alt="${t('mirror.reflector')}"><img class="mirror-receiver" src="img/item-mirror.png" alt="${t('mirror.item')}">
    </div><div class="mirror-puzzle-footer"><label>${t('mirror.angle')} <output>0°</output><input aria-label="${t('room.krajok.adjust')}" type="range" min="0" max="179" step="1" value="0"></label>
     <div class="mirror-charge-stepper"><button type="button" data-turn="-1">↶ −1°</button><button type="button" data-turn="1">↷ +1°</button><button type="button" data-remove>${t('mirror.remove')}</button></div>
     <progress max="1800" value="0" aria-label="${t('mirror.progress')}"></progress><small class="mirror-status" role="status"></small></div>`;
-  const stage=panel.querySelector('.mirror-puzzle-stage'), ray=panel.querySelector('[data-ray]'), source=panel.querySelector('[data-source]'), target=panel.querySelector('[data-target]');
+  const stage=panel.querySelector('.mirror-puzzle-stage'), ray=panel.querySelector('[data-ray]'), glow=panel.querySelector('[data-ray-glow]'), source=panel.querySelector('[data-source]'), target=panel.querySelector('[data-target]');
   const plate=panel.querySelector('.mirror-plate'), item=panel.querySelector('.mirror-receiver'), range=panel.querySelector('input'), output=panel.querySelector('output'), progress=panel.querySelector('progress'), status=panel.querySelector('.mirror-status');
   let placed=false, turning=false, angle=0, held=0, charged=false, frame=0, last=performance.now(), stopped=false;
   const turn = v => {if(paused() || charged)return;angle=((Number(v)%180)+180)%180;range.value=angle;output.value=`${angle}°`;held=0;};
@@ -72,7 +72,7 @@ export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, onCharg
       // Adapt the painted board's calibration to the existing game reward model.
       if(held>=MIRROR_HOLD_MS && !charged) {charged=!!onCharge(mirrorChargeAngle(angle,aspect),16/9);held=charged?MIRROR_HOLD_MS:0;}
       ray.setAttribute('d',`M${xy(MIRROR_ART_LAYOUT.source)} L${xy(MIRROR_ART_LAYOUT.pivot)} L${xy(beam.end)}`);
-      ray.setAttribute('stroke',beam.hit?'#aef9ff':'#ffe39b');target.setAttribute('stroke',beam.hit?'#aef9ff':'#dca452');
+      glow.setAttribute('d',ray.getAttribute('d'));ray.setAttribute('stroke',beam.hit?'#fff1b6':'#ffe39b');target.setAttribute('stroke',beam.hit?'#fff1b6':'#dca452');
       plate.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`;
       item.classList.toggle('charged',charged);panel.classList.toggle('mirror-hit',beam.hit);
       progress.value=held;range.disabled=charged || paused();

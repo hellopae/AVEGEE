@@ -11,7 +11,7 @@ export const SWORD_SHEETS = {
     "bodyHeight": 355
   },
   "asia": {
-    "src": "img/yama-sword-v2/hero-yama-asia-sword.webp",
+    "src": "img/yama-sword-v4/hero-yama-asia-sword.webp",
     "size": 640,
     "frames": 8,
     "anchor": {
@@ -21,7 +21,7 @@ export const SWORD_SHEETS = {
     "bodyHeight": 352
   },
   "west": {
-    "src": "img/yama-sword-v2/hero-yama-west-sword.webp",
+    "src": "img/yama-sword-v4/hero-yama-west-sword.webp",
     "size": 640,
     "frames": 8,
     "anchor": {
@@ -31,7 +31,7 @@ export const SWORD_SHEETS = {
     "bodyHeight": 346
   },
   "cyberhell": {
-    "src": "img/yama-sword-v2/hero-yama-cyberhell-sword.webp",
+    "src": "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
     "size": 640,
     "frames": 8,
     "anchor": {
