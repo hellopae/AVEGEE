@@ -1,7 +1,8 @@
 import { createPuzzle, ROWS, COLS, COLORS, GOALS } from './document-puzzle.js';
+import { t } from '../i18n.js';
 export default {
- name:'จัดเอกสาร', icon:'',
- tip:'เลื่อนทั้งแถวหรือคอลัมน์ จัดหนังสือสีเดียวกันครบ 5 เล่มในแนวตั้ง ให้ได้แดง 1 หมวด เหลือง 3 หมวด ม่วง 2 หมวด และฟ้า 0 หมวด · ชนะได้ระเบียบ +8',
+ get name() { return t('room.sala.action2'); }, icon:'',
+ get tip() { return t('mg.sala.tip'); },
  run(host,{alive,onWin}) {
   const game=createPuzzle(Date.now()),root=document.createElement('div');root.className='doc-puzzle';
   root.innerHTML='<div class="doc-goals" aria-live="polite"></div><p class="doc-rule">สีเดียวกันครบคอลัมน์ = 1 หมวด · แตะหนังสือแล้วใช้ลูกศร หรือลากแถว/คอลัมน์</p><div class="doc-scroll"><div class="doc-board" role="group" aria-label="กระดานจัดเอกสาร"></div></div><div class="doc-tools"><button data-direction="left" aria-label="เลื่อนแถวซ้าย">←</button><button data-direction="right" aria-label="เลื่อนแถวขวา">→</button><button data-direction="up" aria-label="เลื่อนคอลัมน์ขึ้น">↑</button><button data-direction="down" aria-label="เลื่อนคอลัมน์ลง">↓</button><button data-undo>ย้อนกลับ</button><button data-reset>เริ่มใหม่</button><span class="doc-moves"></span></div><p class="doc-status" role="status"></p>';
