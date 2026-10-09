@@ -1,6 +1,7 @@
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
+import { potLayout, drawPotSoul } from './pot-souls.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
@@ -411,7 +412,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (!a) return;
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
-        drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
+        // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
+        const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
+        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
+        else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
         chains(x,y);
         const p = Math.min(1, sl.progress / sl.need);
         const bw = U * 0.09, bh2 = Math.max(4, U * 0.011);
