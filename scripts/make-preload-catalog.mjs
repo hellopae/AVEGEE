@@ -7,6 +7,8 @@ const files = execFileSync('git', ['ls-files', '-z', 'img'], { encoding:'utf8' }
 for (const path of files) {
   // A local archive can move tracked files before the deletion is staged.
   if (!existsSync(path)) continue;
+  // Cover authoring master is retained for edits; the game loads the compressed WebP.
+  if (path === 'img/cover-v4-full.png') continue;
   // Only preload the corrected animation; authoring sources stay outside the catalog.
   if (path.startsWith('img/yama-sword-v1/') || path === 'img/yama-sword-v2/hero-yama-th-sword.webp') continue;
   if (/hero-yama-.*-roar-cutscene-v3\.png$/.test(path)) continue;

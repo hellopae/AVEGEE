@@ -474,7 +474,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
 }
 
 /* ---------- หน้าปก (ข้อ A ชุด 15 — ทำตามม็อกอัป files/UI-th.jpg / UI-eng.jpg) ----------
-   ภาพ img/cover-v3.webp เต็มจอ ไม่มีแผงมืดคาดขวาเหมือนเดิมแล้ว — โลโก้/ปุ่มลอยตรงบนภาพ
+   ภาพ img/cover-v4.webp เต็มจอ ไม่มีแผงมืดคาดขวาเหมือนเดิมแล้ว — โลโก้/ปุ่มลอยตรงบนภาพ
    ตำแหน่งอิงสัดส่วนที่วัดจากม็อกอัป 2500×1396 (ครอปดูจริงทีละจุดแล้วประมาณเป็น % ไม่ใช่เดาจากความจำ):
      เฟือง ⚙ กึ่งกลางที่ (94.4%, 6.5%) กว้าง ~5% ของจอ
      โลโก้กึ่งกลางแนวขวางที่ ~89% ของความกว้าง กว้างรวม ~30vw
@@ -488,8 +488,7 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     linear-gradient(160deg,#1a0a12 0%,#0b0508 60%);
   background-size:cover;background-position:center}
 #title .art.has{background-size:cover;background-position:center}
-/* วิดีโอพื้นหลัง Home เต็มจอ วนลูป แทนภาพปก — #cover-art (คุมสีไล่/webp) อยู่ชั้นล่าง
-   ทำหน้าที่ poster/fallback ระหว่างวิดีโอยังโหลดไม่เสร็จ/เล่นไม่ได้/reduced-motion */
+/* ลาวา เปลวไฟ และสะเก็ดไฟขยับบนปก v4; ภาพนิ่งอยู่ชั้นล่างและรองรับ reduced-motion */
 #title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 #splash{position:fixed;inset:0;z-index:110;background:#090407;overflow:hidden;
   display:grid;place-items:center;transition:opacity .35s ease}
@@ -534,6 +533,11 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
   gap:clamp(10px,2vh,18px);text-align:right;padding-right:clamp(30px,5vw,50px)}
 #title .agewarn,#title .disclaimer{margin-top:auto}
 #title .disclaimer{margin-top:2px}
+#title .title-menu{opacity:0;visibility:hidden;transform:translateY(18px);pointer-events:none;
+  transition:opacity 1.1s ease,transform 1.1s ease,visibility 0s linear 1.1s}
+#title.ready .title-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto;
+  transition-delay:0s}
+@media(prefers-reduced-motion:reduce){#title .title-menu{transition:none;transform:none}}
 #title .title-logo{width:100%;height:auto;display:block;
   filter:drop-shadow(0 4px 18px rgba(0,0,0,.55))}
 
@@ -2000,8 +2004,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 <div id="title">
   <div class="art" id="cover-art"></div>
-  <video class="cover-vfx" id="cover-vfx" src="img/home-animated.mp4" poster="img/cover-v3.webp"
-    muted playsinline loop preload="none" aria-hidden="true"></video>
+  <canvas class="cover-vfx" id="cover-vfx" aria-hidden="true"></canvas>
   <div class="scrim"></div>
 
   <!-- เฟืองตั้งค่ามุมขวาบน (ข้อ A.3) — ใช้ id เดิม #t-set ที่ ui.js ผูก openSettings() ไว้แล้ว -->
@@ -2172,7 +2175,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 
 <dialog id="dlg"></dialog>
-<script type="module" src="src/preload.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d"></script>
+<script type="module" src="src/preload.js?v=20261010-cover-v4"></script>
+<script type="module" src="src/ui.js?v=20261010-cover-v4-title-transition"></script>
 </body>
 </html>

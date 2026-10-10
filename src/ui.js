@@ -27,6 +27,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          CREW_HELP_LV, authorityOf } from './data.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js';
+import { createCoverAtmosphere } from './cover-atmosphere.js';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
@@ -4759,7 +4760,8 @@ addEventListener('pointerdown', e => {          // แตะที่อื่�
 const titleEl = $('#title');
 const splashEl = $('#splash');
 const splashVideo = $('#splash-video');
-const coverVfx = $('#cover-vfx');
+const coverVfx = createCoverAtmosphere($('#cover-vfx'));
+titleEl.inert = true;
 let started = false;
 let splashDone = false;
 
@@ -4768,14 +4770,14 @@ function revealTitle() {
   splashDone = true;
   splashVideo.pause();
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion) splashEl.hidden = true;
-  else {
-    splashEl.classList.add('leaving');
-    setTimeout(() => { splashEl.hidden = true; }, 380);
-  }
-  if (!reducedMotion) {
-    coverVfx.play().catch(() => {}); // ภาพปกนิ่งยังแสดงได้ถ้าวิดีโอเล่นไม่ได้
-  }
+  splashEl.classList.add('leaving');
+  setTimeout(() => {
+    splashEl.hidden = true;
+    if (started) return;
+    titleEl.inert = false;
+    titleEl.classList.add('ready');
+    coverVfx.play();
+  }, reducedMotion ? 0 : 380);
 }
 
 /** เริ่มเล่นจริง — เรียกได้ครั้งเดียว */
@@ -4828,20 +4830,16 @@ function buildTitle() {
   const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
   titleEl.addEventListener('pointerdown', wake);
 
-  // หน้าปกเป็น webp ตั้งแต่ 8 ก.ย. 2569 — png เดิม 1.3 MB คือไฟล์ใหญ่สุดของทั้งเกม
-  // และเป็นภาพแรกที่ต้องมาถึง (144 KB แล้ว) · ถ้าวันหลังดรอป cover.png กลับมาก็ยังใช้ได้
-  // ไม่มีสักไฟล์ก็ยังสวยอยู่ได้ด้วยไล่สีใน CSS
-  // cover-v3.webp = ปก version3 ที่เจ้าของอัปเดต 26 ก.ย. 2569 ~15:00 (ชุด 14 ข้อ D1)
-  // ลอง v3 ก่อนเสมอ ไม่มีค่อยถอยไป cover.webp (v2 เดิม) แล้ว cover.png ตามลำดับเดิม
+  // ปก v4 แก้เขาของ Yama โดยยังหันหลัง; ใช้ WebP และภาพเดิมเป็น fallback
   const art = $('#cover-art');
   (function probeCover(list) {
     if (!list.length) return;
     const [url, ...rest] = list;
     const probe = new Image();
-    probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
+    probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); coverVfx.setImage(probe); };
     probe.onerror = () => probeCover(rest);
     probe.src = url;
-  })(['img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
+  })(['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp']);
 
   // โลโก้/ปุ่ม เปลี่ยนภาษาทันทีไม่ต้องรีโหลด (ข้อ C1) — สลับจริงทำที่หน้าตั้งค่า (ข้อ B)
   applyTitleLang();
@@ -5007,7 +5005,7 @@ function playSplash() {
   splashEl.classList.add('playing');
   if (splashVideo.error) revealTitle();
   else splashVideo.play().catch(revealTitle);
-  setTimeout(revealTitle, 25000); // อินโทรโลโก้ + Yama ประมาณ 19 วินาที; ยังมีปุ่มข้ามและ fallback
+  // Reveal on ended, never a fixed duration: a replacement video may be longer.
 }
 function enterFromTap() {
   enterGate.hidden = true;
