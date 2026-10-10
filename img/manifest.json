@@ -4,6 +4,7 @@
 "mirror-charge-pane.png",
 "cover-v3.webp",
 "cover-v4.webp",
+"cover-v5.webp",
 "cover.webp",
 "crew-boon-cutscene.jpeg",
 "crew-boon-profile.png",
@@ -60,6 +61,14 @@
 "hero-yama-cyberhell-tea-clean.png"
 ],
 "rest": [
+"weapons/weapon-cutscene-fang.jpeg",
+"weapons/weapon-cutscene-chain.jpeg",
+"weapons/weapon-cutscene-cane.jpeg",
+"weapons/weapon-cutscene-trojan.jpeg",
+"weapons/weapon-icon-fang.png",
+"weapons/weapon-icon-chain.png",
+"weapons/weapon-icon-cane.png",
+"weapons/weapon-icon-trojan.png",
 "minigames/mirror-room-v1.png",
 "minigames/mirror-plate-v1.png",
 "minigames/sala-books.png",
