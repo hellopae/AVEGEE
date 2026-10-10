@@ -1,3 +1,4 @@
+import { drawSchoolProps } from './sword-school-props.js';
 import { mirrorObstacle } from './mirror-charge.js';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
@@ -430,6 +431,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
+        drawSchoolProps(ctx,def.k,x,y,U);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
         if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
         else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
@@ -496,9 +498,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'krata' && g.crew?.some(c=>c.k==='plerng') && st?.crewK !== 'plerng') {
       acts.push({y:room.crew[1],fn:()=>drawStandee(ctx,'crew-plerng',px(room.crew[0]),py(room.crew[1]),U*CREW_H,t,'')});
     }
-    if ((def.k === 'tarang' || def.k === 'sawan' || def.k === 'krajok')) {
-      const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : 'kan';
-      const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : 'กานต์';
+    if (['tarang','sawan','krajok','ngiw','dab'].includes(def.k)) {
+      const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : def.k === 'krajok' ? 'kan' : 'dam';
+      const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : def.k === 'krajok' ? 'กานต์' : 'ดำ';
       if (!(st && st.crewK === key)) {
         const a = room.crew || [0.30,0.80];
         acts.push({ y:a[1], fn:() => {
@@ -510,7 +512,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
-      const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
+      const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (['sawan','tarang','ngiw','dab'].includes(def.k) ? 0.13 : 0), room.crew[1]];
       if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
@@ -567,7 +569,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // สไปรท์เดินวาดหันซ้าย drawHeroWalk พลิกให้ตามทิศ P.face เอง · ไม่มีไฟล์เดินก็ถอยไปท่ายืนเด้งเดิม
       const moving = !sitting && !swinging && simClock - movedSim < WALK_GRACE_MS;
       const heroH = U * HERO_H;
-      if (swinging && def.k === 'dab' && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
+      if (swinging && ['dab','ngiw'].includes(def.k) && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
           SWORD_DURATION_MS - (g.swingUntil - Date.now()), P.face)) return;
       if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDrawDistance(walkDist, heroH), P.face, direction))) {
         const gait = Math.floor(t / 180) % 4;

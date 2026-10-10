@@ -2134,13 +2134,13 @@ export const TRAINING_RULES = {
   rewards:[{score:60, exp:20},{score:80, exp:30},{score:95, exp:40}],
 };
 export const TRAINING_STATIONS = {
-  dab:{ actors:['yama'], game:'sword', seconds:30 },
+  dab:{ actors:['yama'], game:'rhythm', seconds:24 },
   lan:{ actors:['taan','guard'], game:'stone', seconds:30 },
   krata:{ actors:['plerng'], game:'fire', seconds:30 },
   krajok:{ actors:['kan'], game:'mirror', seconds:45 },
   sawan:{ actors:['boon'], game:'breath', seconds:32 },
   sala:{ actors:['nira'], game:'documents', seconds:45 },
-  ngiw:{ actors:['dam'], game:'targets', seconds:30 },
+  ngiw:{ actors:['yama'], game:'slicing', seconds:30 },
   lokan:{ actors:['guard'], game:'stone', seconds:30 },
 };
 // Item identity fixes its effect, including when carried to another zone.

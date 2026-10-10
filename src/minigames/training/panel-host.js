@@ -1,12 +1,13 @@
 // B8 loop for training games that draw their own panel (def.ui). Same contract as the B4 host:
 // owns every listener/frame, freezes clock + input while paused/hidden, abandons when the room is gone.
 export function runPanel(host, def, engine, { session, paused, alive, onResult, onAbandon,
+  heroStyle=null, zone='th', weapon=()=>null, onSword=()=>{},
   raf = requestAnimationFrame, caf = cancelAnimationFrame }) {
   let stopped = false, frame = 0, previous = null, ui = null;
   const controller = new AbortController();
   const frozen = () => paused() || document.hidden;
   const ctx = {
-    seconds: def.seconds, frozen,
+    seconds: def.seconds, frozen, heroStyle, zone, weapon, onSword,
     input: a => { if (!stopped && !frozen()) engine.input(a); },
     listen: (target, name, fn) => target.addEventListener(name, fn, { signal: controller.signal }),
   };
