@@ -136,16 +136,16 @@ test('G5 balance: level 3 on both trainees increases each story encounter by at 
 
 test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, auto-misses and cleans animation', async()=>{
   const {runKrataQte}=await import('../src/minigames/krata-qte.js');
-  class Element {
-    constructor(){this.nodes=new Map();this.children=[];this.style={};this.disabled=false;}
-    set innerHTML(html){this.html=html;this.nodes.clear();for(const selector of ['.mg-x','.g5-content','.g5-choices','.g5-count','.g5-orb img','.g5-white','.g5-needle','[data-fire]','p'])this.nodes.set(selector,new Element());this.nodes.get('[data-fire]').disabled=html.includes('type="button" disabled');}
+  class Element extends EventTarget {
+    constructor(){super();this.classList={remove(){},toggle(){}};this.nodes=new Map();this.children=[];this.style={};this.disabled=false;}
+    set innerHTML(html){this.html=html;this.nodes.clear();for(const selector of ['.mg-x','.g5-content','.g5-choices','.g5-count','.g5-orb img','.g5-green','.g5-white','.g5-needle','[data-fire]','p'])this.nodes.set(selector,new Element());this.nodes.get('[data-fire]').disabled=html.includes('type="button" disabled');}
     querySelector(selector){return this.nodes.get(selector)||null;}
     append(el){this.children.push(el);}
     setAttribute(key,value){if(key==='disabled')this.disabled=true;else this[key]=value;}
   }
   const old={document:globalThis.document,requestAnimationFrame:globalThis.requestAnimationFrame,cancelAnimationFrame:globalThis.cancelAnimationFrame};
   let now=performance.now(),frame=null;
-  globalThis.document={documentElement:{},createElement:()=>new Element()};
+  globalThis.document=Object.assign(new EventTarget(),{hidden:false,documentElement:{},createElement:()=>new Element()});
   globalThis.requestAnimationFrame=fn=>{frame=fn;return 1;};globalThis.cancelAnimationFrame=()=>{frame=null;};
   const advance=ms=>{for(let elapsed=0;elapsed<ms;elapsed+=50){now+=50;const next=frame;frame=null;next?.(now);}};
   try {
@@ -161,7 +161,7 @@ test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, 
     body=host.querySelector('.g5-content');assert.equal(body.querySelector('.g5-choices').children.length,2);
     body.querySelector('.g5-choices').children[1].onclick();
     // Five independent contracting circles; match within the green tolerance each time.
-    for(let n=0;n<5;n++){advance(1600);body.querySelector('[data-fire]').onclick();}
+    for(let n=0;n<5;n++){advance(1600);if(n===0){train.paused=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);train.paused=false;globalThis.document.hidden=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);globalThis.document.hidden=false;}const fire=body.querySelector('[data-fire]');const event=new Event('pointerdown',{cancelable:true});Object.defineProperty(event,'button',{value:0});fire.dispatchEvent(event);fire.onclick({detail:1});}
     assert.equal(train.fireControlState(c).level,1);assert.equal(train.fireControlState().level,0);stop();assert.equal(frame,null);
     now=performance.now();
     stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>closed++});

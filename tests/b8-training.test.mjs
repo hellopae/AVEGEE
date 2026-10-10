@@ -348,6 +348,8 @@ test('B8 sala → nira: EXP reaches global Nira from any zone, nobody else; orde
 });
 
 // ================================================ ngiw / targets (→ dam) ==============================================
+import { runPanel } from '../src/minigames/training/panel-host.js';
+const runLegacyTargets=(host,opts)=>runPanel(host,{seconds:30,ui:targets.mount},targets.create(opts.session.seed),opts);
 import * as targets from '../src/minigames/training/targets.js';
 const atSlot = (e, i, off = .3) => advance(e, i * targets.SLOT + off);
 const tapKind = (e, kind) => { const spot = e.view().spots.find(s => s.kind === kind); if (spot) e.input({ type:'tap', slot:spot.slot, kind }); return spot; };
@@ -368,7 +370,7 @@ test('B8 ngiw: schedule — 12 slots in 30 s, 6 thorn slots, thorn never on the 
 
 test('B8 ngiw: perfect run = 12 cuts, score 100; 8 cuts completes; 7 does not; thorns cost half a mark', () => {
   const run = (cutSlots, thornSlots = []) => {
-    const e = createTrainingGame('ngiw', 2);
+    const e = targets.create(2);
     for (let i = 0; i < 12; i++) {
       atSlot(e, i);
       if (thornSlots.includes(i)) tapKind(e, 'thorn');
@@ -387,7 +389,7 @@ test('B8 ngiw: perfect run = 12 cuts, score 100; 8 cuts completes; 7 does not; t
 });
 
 test('B8 ngiw: only the visible spot counts — late, early, duplicate, wrong slot/kind and pause-cancel taps do nothing', () => {
-  const e = createTrainingGame('ngiw', 2);
+  const e = targets.create(2);
   assert.equal(e.view().spots.length >= 1, true, 'first mark is up immediately');
   advance(e, .2); assert.ok(tapKind(e, 'cut')); assert.equal(e.view().cuts, 1);
   e.input({ type:'tap', slot:1, kind:'cut' }); assert.equal(e.view().cuts, 1, 'wrong slot');
@@ -400,14 +402,14 @@ test('B8 ngiw: only the visible spot counts — late, early, duplicate, wrong sl
   advance(e, 2 * 2.5 + .1); const s3 = e.view().spots.find(s => s.kind === 'cut');
   e.input({ type:'tap', slot:s3.slot, kind:'cut' }); e.input({ type:'tap', slot:s3.slot, kind:'cut' }); assert.equal(e.view().cuts, 2, 'a mark cannot be cut twice');
   advance(e, 30); e.input({ type:'tap', slot:12, kind:'cut' }); assert.equal(e.view().cuts, 2);
-  const n = createTrainingGame('ngiw', 2); n.step(NaN); n.step(-1); assert.equal(n.view().time, 0);
+  const n = targets.create(2); n.step(NaN); n.step(-1); assert.equal(n.view().time, 0);
 });
 
 test('B8 ngiw: host — spots are real ≥ buttons, pointer + click both work once, pause blocks, abandon cleans up', () => withDom(doc => {
   const f = frames(), host = new FakeEl('div'), results = [];
   let paused = false, alive = true, abandoned = 0;
   const plan = targets.makeSchedule(2);
-  const stop = runTraining(host, { station:'ngiw', session:{ id:'n1', seed:2 }, paused:() => paused, alive:() => alive,
+  const stop = runLegacyTargets(host, { station:'ngiw', session:{ id:'n1', seed:2 }, paused:() => paused, alive:() => alive,
     onResult:r => results.push(r), onAbandon:() => abandoned++, raf:f.raf, caf:f.caf });
   const trunk = host.children[1], info = host.children[0];
   let t = 0; const run = until => { while (t < until) { t += 50; f.step(t); } };
@@ -425,23 +427,20 @@ test('B8 ngiw: host — spots are real ≥ buttons, pointer + click both work on
   assert.equal(results.length, 1); assert.equal(results[0].completed, true); assert.equal(results[0].score, 100); assert.equal(f.pending, false);
   stop();
   const g2 = frames(), h2 = new FakeEl('div'); let gone = 0;
-  runTraining(h2, { station:'ngiw', session:{ id:'n2', seed:2 }, paused:() => false, alive:() => false, onResult:() => assert.fail('result'), onAbandon:() => gone++, raf:g2.raf, caf:g2.caf });
+  runLegacyTargets(h2, { station:'ngiw', session:{ id:'n2', seed:2 }, paused:() => false, alive:() => false, onResult:() => assert.fail('result'), onAbandon:() => gone++, raf:g2.raf, caf:g2.caf });
   g2.step(0); assert.equal(gone, 1); assert.equal(g2.pending, false);
 }));
 
-test('B8 ngiw → dam: EXP reaches only the selected Dam; cancel/wrong id/repeat pay nothing; zones keep separate Dam', () => {
-  const g = game();
-  assert.deepEqual(g.trainingTargets('ngiw').map(a => a.id), ['th:dam']);
-  const s = g.startTraining('ngiw', 'th:dam');
-  assert.equal(g.finishTraining({ sessionId:s.id + 'x', completed:true, score:100 }), null);
-  assert.equal(g.cancelTraining(s.id).exp, 0); assert.equal(rec(g, 'th:dam').exp, 0);
-  g.tick = 30; assert.equal(win(g, 'ngiw', 'th:dam', 67).exp, 20);
-  for (const other of ['th:taan','th:kan','th:boon','th:plerng','th:guard',HERO_TRAINING_ID,'global:nira']) assert.equal(rec(g, other)?.exp ?? 0, 0, other);
-  const before = g.allyStats(g.roster['th:dam']).dmg;
-  g.tick = 130; win(g, 'ngiw', 'th:dam', 100);
-  assert.equal(rec(g, 'th:dam').exp, 60); assert.ok(g.trainingWhy('ngiw', 'th:dam').includes('cap'), 'zone 1 cap is level 2');
-  assert.ok(g.allyStats(g.roster['th:dam']).dmg > before, 'Dam attack follows the real progression');
-  const h = game('asia'); assert.deepEqual(h.trainingTargets('ngiw').map(a => a.id), ['asia:dam']);
+test('Sword schools share Yama progress, cooldown and quota without increasing Dam or station speed', () => {
+  const g=game(); assert.deepEqual(g.trainingTargets('ngiw').map(a=>a.id),[HERO_TRAINING_ID]);
+  const s=g.startTraining('ngiw',HERO_TRAINING_ID);
+  assert.equal(g.finishTraining({sessionId:s.id+'wrong',score:100,completed:true}),null);
+  const result={sessionId:s.id,score:100,completed:true};
+  assert.equal(g.finishTraining(result).exp,40);assert.equal(g.finishTraining(result),null);
+  assert.equal(rec(g,'th:dam')?.exp||0,0);assert.ok(g.trainingWhy('dab',HERO_TRAINING_ID));
+  g.tick=30;assert.equal(win(g,'dab',HERO_TRAINING_ID,100).exp,40);
+  assert.equal(rec(g,HERO_TRAINING_ID).exp,80);
+  const h=game('asia');assert.deepEqual(h.trainingTargets('ngiw').map(a=>a.id),[HERO_TRAINING_ID]);
 });
 
 test('B8 all 8 training stations are playable: registry, kinds, seconds, trainee kinds and mobile-safe durations', () => {
@@ -459,12 +458,12 @@ test('B8 all 8 training stations are playable: registry, kinds, seconds, trainee
     g.tick = 30; const s2 = g.startTraining(k, id), r = { sessionId:s2.id, completed:true, score:100 };
     assert.equal(g.finishTraining(r).exp, 40); assert.equal(g.finishTraining(r), null);
   }
-  const expTarget = { dab:HERO_TRAINING_ID, lan:'th:taan', lokan:'th:guard', krata:'th:plerng', krajok:'th:kan', sawan:'th:boon', sala:'global:nira', ngiw:'th:dam' };
+  const expTarget = { dab:HERO_TRAINING_ID, lan:'th:taan', lokan:'th:guard', krata:'th:plerng', krajok:'th:kan', sawan:'th:boon', sala:'global:nira', ngiw:HERO_TRAINING_ID };
   for (const [k, id] of Object.entries(expTarget)) assert.ok(game().trainingTargets(k).some(a => a.id === id), `${k} → ${id}`);
 });
 
 test('B8 every new game: closing mid-play leaves no frame/listener behind and an old save loads without B8 data', () => withDom(doc => {
-  for (const station of ['krajok','sawan','sala','ngiw']) {
+  for (const station of ['krajok','sawan','sala']) {
     const f = frames(), host = new FakeEl('div'); let alive = true, abandoned = 0;
     const stop = runTraining(host, { station, session:{ id:station, seed:3 }, paused:() => false, alive:() => alive, onResult:() => {}, onAbandon:() => abandoned++, raf:f.raf, caf:f.caf });
     f.step(0); f.step(50); stop(); assert.equal(f.pending, false, `${station}: frame cancelled`);
