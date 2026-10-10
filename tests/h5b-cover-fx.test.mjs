@@ -80,9 +80,9 @@ test('fx loads the v4 masks and the h5b module cache-busts with the intro-v3 suf
   assert.match(js,/img\/cover-fx\/\$\{kind\}-v4-mask\.png/);
   assert.doesNotMatch(js,/\$\{kind\}-mask\.png/);
   assert.match(html,/src\/cover-fx-h5b\.js\?v=h5b-intro-v3"/);
-  assert.match(html,/src\/ui\.js\?v=20261009[^"]*-zoom-intro-v3[^"]*"/);
-  assert.match(readFileSync('src/preload.js','utf8'),/CATALOG_VERSION = '20261008[^']*-zoom-intro-v3[^']*'/);
-  assert.match(readFileSync('src/art.js','utf8'),/manifest\.json\?v=20261009[^']*-h4-zoom-intro-v3'/);
+  assert.match(html,/src\/ui\.js\?v=20261009[^"]*-zoom-intro-v3(-[a-z0-9]+)*"/);   // I1-A: suffix ต่อท้ายได้ (-i1a)
+  assert.match(readFileSync('src/preload.js','utf8'),/CATALOG_VERSION = '20261008[^']*-zoom-intro-v3(-[a-z0-9]+)*'/);
+  assert.match(readFileSync('src/art.js','utf8'),/manifest\.json\?v=20261009[^']*-h4-zoom-intro-v3(-[a-z0-9]+)*'/);
 });
 test('shipped v4 masks are 688x384 binary alpha, never cover the characters or throne',()=>{
   const result=execFileSync('python3',['-c',`
