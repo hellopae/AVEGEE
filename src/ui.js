@@ -26,7 +26,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
-import { weaponEffectLines, weaponNoteText, weaponIconSrc } from './weapons.js';
+import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -782,15 +782,15 @@ function crewNote(c) {
  *  โต๊ะนิรา (openNiraOffice) · หน้าต่างสถานีที่มียมทูตคุม (openStation) · คุยกับยมทูตบนแผนที่ (talkCrew)
  *  c = ออบเจ็กต์ยมทูตจริงใน g.crew (มี .hunger) ไม่ใช่ CREW def เฉย ๆ
  *  ปุ่มมี data-feed="<k>" ให้ผู้เรียกไป bind onclick เอง (แต่ละที่ paint()/refresh() ไม่เหมือนกัน) */
-function guardRestWidget(c) {
+function guardRestWidget(c, showName = false) {
   if (!c) return '';
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
   const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/60000)) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
-    <span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
+    ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
       : c.morale < 50 ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>`}
+      : c.k === 'guard' ? `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>` : ''}
     </div>`;
 }
 function hungerWidget(c) {
@@ -1838,7 +1838,7 @@ function openHelp() {
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ·
           ห้าดาวยัง<b>ลดกรรมของท่าน</b>ให้ด้วยครั้งละ ${KARMA_RELIEF.star5}</li>
       <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
-          เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
+          เดินไปเก็บ<b>กล่องยา</b>เติมบารมีได้</li>
       <li><b>กรรมท่านลดได้</b> — ห้าดาว · เก็บ<b>ดอกบัว</b>ที่ตกบนแผนที่ตอนกรรมเกิน 40 ·
           หรือสร้าง<b>ศาลาน้ำชา</b>แล้วบูชาดอกบัวที่แท็บก่อสร้าง (${KARMA_RELIEF.lotusCost} เบี้ย ลด ${KARMA_RELIEF.lotusCut})</li>
       <li>ทุก ๆ ไม่กี่คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน (กรรมท่านยิ่งสูงยิ่งมาถี่) ปล่อยไว้ระเบียบตกเรื่อย ๆ —
@@ -2457,7 +2457,7 @@ function openNiraOffice() {
         return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
-          ${c ? hungerWidget(c) : ''}</span>
+          ${c ? hungerWidget(c) + guardRestWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
@@ -2485,8 +2485,11 @@ function openNiraOffice() {
   const restTimer = setInterval(() => {
     if (!dlg.open || dlgGen !== generation) { clearInterval(restTimer); return; }
     g.updateActorRecovery();
-    const status = dlg.querySelector('[data-guard-status]');
-    if (status && g.guard) { status.outerHTML = guardRestWidget(g.guard); bindHungerWidgets(dlg, () => { paint(); refresh(); }); }
+    const statuses = [...dlg.querySelectorAll('[data-guard-status]')];
+    if (statuses.length) {
+      for (const status of statuses) { const a = g.roster[status.dataset.guardStatus]; if (a) status.outerHTML = guardRestWidget(a); }
+      bindHungerWidgets(dlg, () => { paint(); refresh(); });
+    }
   }, 250);
 }
 
@@ -2908,12 +2911,14 @@ function openBattle(after) {
     if (!phase && b.actorId && b.actorId !== actor.id) { b.actorId = actor.id; b.command = null; }
     const isYama = actor.id === 'you';
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
-      battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice ball' : itemName(k), g.inventory[k] > 0,
+      battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
       + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : '1 ครั้งต่อชุด · ไม่ใช้ MP') : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
-    const attacks = isYama ? battleChoice('atk', 'img/fx-slash.png', 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) : '')
+    const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
+    const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
+    const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
@@ -2966,6 +2971,7 @@ function openBattle(after) {
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
+        ${weaponCd && !b.over ? `<div class="battle-buff weapon-cd${weaponCd.cd ? ' cooling' : ''}" role="status" data-weapon-cd="${weaponCd.cd}"><span class="wcd-ico">${weaponImg(weaponCd.id)}${weaponCd.cd ? `<em>${weaponCd.cd}</em>` : ''}</span>${esc(weaponCd.cd ? t('battle.weapon.cooling', { name:t(`weapon.${weaponCd.id}.name`), n:weaponCd.cd }) : t('battle.weapon.ready', { name:t(`weapon.${weaponCd.id}.name`) }))}</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
       </div>${prep}${prepLayer}`;
@@ -4111,7 +4117,7 @@ function openStation(k, emergency = false) {
     // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
     const restPanel = dlg.querySelector('[data-tea-rest-panel]');
     if (restPanel) {
-      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(guardRestWidget).join('');
+      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(c => guardRestWidget(c, true)).join('');
     }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {

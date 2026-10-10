@@ -15,7 +15,7 @@ test('case ten runs four minion fights, four fixed rulers, then final boss with 
     assert.equal(g.gameCompleted,false); g.endBattle();
     if (id!=='boss') {
       g.hp=20; g.inventory.health=2; assert.equal(g.useBag('health'),true); assert.ok(g.hp>20); assert.equal(g.inventory.health,1);
-      g.coin=500; assert.equal(g.buyMerchant('teaZ4'),true);
+      g.coin=500; assert.equal(g.buyMerchant('tea'),true);
       const c=g.finalTeamCandidates().find(c=>!g.finalTeamWhy(c));
       const on=(g.party.finalMembers || []).includes(c.id); assert.equal(g.toggleParty(c.id),true);
       assert.equal((g.party.finalMembers || []).includes(c.id),!on); acknowledge(g);

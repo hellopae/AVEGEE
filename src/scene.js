@@ -402,7 +402,7 @@ export function render(ctx, g, t, hover, sel) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of (rescue ? [] : g.crew)) {
-    if (!actorStanding(c)) continue;
+    if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
     if (c.x == null || c.escort) continue;
     const motion = actorWalkMotion(c, t, g.zone);
     at(c.y, () => {

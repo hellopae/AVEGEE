@@ -103,7 +103,7 @@ test('map preparation remains accessible between every fight and management is s
     assert.equal(g.walkTo(MERCHANT.x,MERCHANT.y),true);
     const n=g.crewOf('nira'); assert.equal(g.walkTo(n.x,n.y),true);
     const tea=STATIONS.find(s=>s.k==='tea'); assert.equal(g.walkTo(tea.x,tea.y),true);
-    g.coin=500; assert.equal(g.buyMerchant('teaZ4'),true);
+    g.coin=500; assert.equal(g.buyMerchant('tea'),true);
     const candidate=g.finalTeamCandidates().find(c=>!g.finalTeamWhy(c)); assert.equal(g.toggleParty(candidate.id),true);
     g.startFinalEncounter(`ruler:${z}`); win(g); g.endBattle(); acknowledge(g);
   }
