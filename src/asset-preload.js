@@ -44,6 +44,8 @@ const SPLIT_RULES = [
   [0, 0, /^img\/(item-[a-z-]+|icon-force-\d|icon-lock|icon-skip)\.png$/],
   // G5 (10 ต.ค.): ภาพมินิเกมห้องกระทะทองแดง (close-up + ลูกไฟ) — โหลดเบื้องหลัง ไม่กั้นหน้าโหลด · ต้องอยู่ก่อนกฎ cutscene ด้านล่าง
   [1, 4, /^img\/krata-minigame\//],
+  // H5b: มาสก์เอฟเฟกต์หน้าปก (เล็ก ~16KB รวม) — โหลดเบื้องหลัง ถ้ายังไม่มา cover-fx-h5b.js ดึงเองตอนปกนิ่ง · ต้องอยู่ก่อนกฎ cover ชั้นท้าย
+  [1, 4, /^img\/cover-fx\//],
   // ชั้นท้าย: ใหญ่และเปิดเมื่อมีเหตุการณ์เท่านั้น
   [2, 1, /cutscene|story-ending|story-.*-\d|story-.*reinforce/],
   [2, 2, /deva-intro|frontier-.*-(intro|hypnosis)|tea-.*recovery|unconscious|roar/],
