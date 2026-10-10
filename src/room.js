@@ -246,13 +246,18 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       P.tx = null; P.ty = null;
     } else {
       sitting = false;
+      // H2: จุดนั่งอยู่บนเบาะ (สูงกว่าขอบพื้นที่เดินได้) — ลุกขึ้นแล้วต้องย้ายกลับเข้าพื้นที่เดินได้ ไม่งั้นตัวละครขยับไม่ได้
+      const [sx, sy] = snap(P.x, P.y); P.x = sx; P.y = sy;
     }
     return true;
   }
 
+  // ตื่นแล้วยืนที่พื้นหน้าเตียง (ในพื้นที่เดินได้) — เตียงขยับขึ้นไปกลางฟูกแล้ว จึงไม่ใช้ bed.y+0.09 ตรง ๆ
+  const wakeY = () => Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0);
+
   function setSleep(emergency = false) {
     if (!canSit || lying || sitting || (!emergency &&
-        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
+        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
     sleepStartHp = g.hp;
@@ -267,7 +272,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
       if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
-        P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
+        P.x = room.bed[0]; P.y = wakeY();
         if (recoverySleep) g.completeTeaRecovery();
         else { g.hp = g.hpMax; g.save(); g.onChange(); }
       }
@@ -277,8 +282,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — เติม MP ด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.mp < g.mpMax) {
         regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
-        if (g.mp >= g.mpMax) sitting = false;
-      } else sitting = false;
+        if (g.mp >= g.mpMax) setSit(false);
+      } else setSit(false);
       const now = performance.now();
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;
@@ -542,7 +547,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
         ctx.save();
         ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
-        drawStandee(ctx,'hero-yama',px(P.x),py(room.bed[1]+0.09),U*HERO_H,t,'👑',P.face);
+        drawStandee(ctx,'hero-yama',px(P.x),py(wakeY()),U*HERO_H,t,'👑',P.face);
         ctx.restore(); return;
       }
       if (lying) {
@@ -649,7 +654,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     sitting: () => sitting,
     sleeping: () => lying,
     sleepPhase: () => lying ? teaSleepPhase(sleepElapsed) : null,
-    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
+    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) <= REACH,
     setSleep,
     setSit,
     lock: v => { locked = !!v; if (locked && (def.k === 'krata' || def.k === 'krajok')) { for (const key of Object.keys(KEY)) KEY[key]=false; P.tx=null; P.ty=null; } },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)

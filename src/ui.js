@@ -133,6 +133,51 @@ if (typeof ResizeObserver !== 'undefined') {
 }
 fitSceneBox();
 
+/** H2 (คุณเป้ 10 ต.ค.): "กล้องตามตัวละครอย่างนุ่มนวลในหน้าแผนที่เวลา zoom ด้วย"
+ *  ซูมแผนที่โซน = ขยายกล่อง .scene-box ด้วย CSS transform (พิกัดคลิกอ่านจาก getBoundingClientRect อยู่แล้ว จึงไม่เพี้ยน)
+ *  กล้องตามยมบาทด้วยสูตรเดียวกับกล้องชายแดน (scene-style.followCamera: exponential 130ms, ไม่เกินขอบภาพ)
+ *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับ 1× ↔ 2.5× */
+const MAP_ZOOM_LEVELS = [1, 2.5];
+const mapCam = { level: 0, z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
+const zoomBtn = document.getElementById('hud-zoom');
+function setMapZoom(level) {
+  mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
+  if (zoomBtn) {
+    zoomBtn.dataset.level = String(mapCam.level);
+    zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
+    zoomBtn.textContent = mapCam.level > 0 ? '−' : '+';
+  }
+}
+zoomBtn?.addEventListener('click', () => setMapZoom((mapCam.level + 1) % MAP_ZOOM_LEVELS.length));
+function updateMapCamera(now) {
+  const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
+  if (!stage || !box) return;
+  const dt = Math.max(0, Math.min(250, now - mapCam.at)); mapCam.at = now;
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const target = MAP_ZOOM_LEVELS[mapCam.level];
+  const blend = !mapCam.init || reduced ? 1 : 1 - Math.exp(-dt / 130);
+  mapCam.init = true;
+  mapCam.z += (target - mapCam.z) * blend;
+  // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
+  const wantX = mapCam.level > 0 ? g.player.x : SCENE.w / 2, wantY = mapCam.level > 0 ? g.player.y : SCENE.h / 2;
+  mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
+  if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) {
+    mapCam.z = 1;
+    if (box.style.transform) { box.style.transform = ''; box.style.transformOrigin = ''; }
+    return;
+  }
+  const cw = stage.clientWidth, ch = stage.clientHeight, bw = box.offsetWidth, bh = box.offsetHeight;
+  if (!cw || !ch || !bw || !bh) return;
+  const L = box.offsetLeft, T = box.offsetTop, z = mapCam.z, W = bw * z, H = bh * z;
+  const axis = (view, size, off, centerPx) => {                        // ไม่ให้เห็นขอบนอกภาพ · ภาพเล็กกว่าจอ = วางกลาง
+    if (size <= view) return (view - size) / 2 - off;
+    return Math.max(view - size - off, Math.min(-off, view / 2 - off - centerPx * z));
+  };
+  const tx = axis(cw, W, L, mapCam.x / SCENE.w * bw), ty = axis(ch, H, T, mapCam.y / SCENE.h * bh);
+  box.style.transformOrigin = '0 0';
+  box.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${z.toFixed(4)})`;
+}
+
 /** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
  *  ลูปเฟรมใช้ตัวนี้เปิดกล่องกลับให้ ถ้าฉากยังไม่จบแต่กล่องหายไป
  *  (มี close หลุดเข้ามาได้หลายทาง — โมดัลอื่นมาแทรก, Esc, เบราว์เซอร์เอง)
@@ -232,6 +277,7 @@ function frame(now) {
     const step = BAL.tickMs;
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
+  updateMapCamera(now);
   render(ctx, g, now, hover, sel);
   followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); drawPauseTag();
   requestAnimationFrame(frame);
@@ -3034,6 +3080,9 @@ function openBattle(after) {
       const foeFig = !multi && b.kind === 'soul' ? stage.querySelector('.fig.foe') : null;
       if (foeFig) { finRow.classList.add('fin-float', 'fin-foe'); foeFig.appendChild(finRow); }
       else if (multi || returnsToZone) { finRow.classList.add('fin-float', 'fin-center', 'fin-main'); stage.appendChild(finRow); }
+      // H2 (คุณเป้ 10 ต.ค.): "เก็บไอเท็มที่ตกอยู่" ของศึกชายแดนเดิมค้างอยู่ขวาล่างข้างการ์ดศัตรู → ยกขึ้นเหนือแถวการ์ด
+      // อยู่ในพื้นว่างระหว่างยมบาทกับศัตรู (ตำแหน่งดู .fin-above-cards ใน flow29c.css) ไม่บังตัวละคร
+      else if (b.kind === 'frontier') { finRow.classList.add('fin-float', 'fin-center', 'fin-main', 'fin-above-cards'); stage.appendChild(finRow); }
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
     applyHealFx();
@@ -3107,8 +3156,12 @@ function openBattle(after) {
         const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
         if (!area.width || !rect.width) return;
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
-        const cx = rect.left - area.left + rect.width * 0.5, cy = rect.top - area.top + rect.height * 0.4;
-        const left = Math.max(0, Math.min(area.width - w, cx - w * 0.41));
+        const cy = rect.top - area.top + rect.height * 0.4;
+        // H2 (คุณเป้ 10 ต.ค.): วงเดิมอยู่กลางตัวผู้ลงมือ จึงทับตัวยมบาท/เพื่อน → วางไว้ที่ช่องกลางถัดจากสมาชิกทีมคนขวาสุด
+        // (ก่อนถึงศัตรู) ทุกคนใช้ช่องเดียวกัน วงบอกว่าใครลงมือด้วยหน้าตรงกลางวงอยู่แล้ว
+        const teamRight = Math.max(rect.right, ...[...stage.querySelectorAll('.fig.you img, .battle-squad img, .fig.helper img, .fig.guard img')]
+          .map(e => e.getBoundingClientRect().right)) - area.left;
+        const left = Math.max(0, Math.min(area.width - w, teamRight + 6));
         const top = Math.max(0, Math.min(area.height - h, cy - h * 0.505 - Math.max(48, Math.min(84, area.height * 0.075))));
         wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.bottom = 'auto';
       };
