@@ -1993,11 +1993,48 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .intro-comic-controls .gold{color:#f3d18b;background:#3a2735}
 .st-exit{position:absolute;z-index:10;transform:translate(-50%,-100%);max-width:calc(100% - 16px);min-height:44px;padding:7px 12px;background:#35202a;color:#f5d18c;border:1px solid #c69a51;border-radius:8px;white-space:nowrap}
 .st-exit[hidden]{display:none}
+
+.st-hud[data-room="krata"] #st-actions{position:absolute;inset:0;display:block;pointer-events:none;z-index:2}
+.st-hud[data-room="krata"] .st-action{position:absolute;left:var(--action-x);top:var(--action-y);width:auto;transform:translate(-50%,-20%);pointer-events:auto}
+/* G5: room QTE controls remain outside the artwork and retain touch-sized targets. */
+.g5-overlay{z-index:125;background:rgba(18,7,13,.94);overflow:auto}
+.st-hud:has(.g5-overlay:not([hidden])) :is(#st-left,#st-actions,#st-npc,.st-bottom-left){visibility:hidden}
+.g5-content{display:flex;flex:1;min-height:0;flex-direction:column;align-items:center;gap:8px}
+.g5-content p{margin:0;text-align:center;flex:none}
+.g5-choices{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.g5-content [data-fire]{min-height:44px;min-width:110px;flex-shrink:0}
+.g5-closeup{position:relative;width:min(100%,800px,calc((100dvh - 150px) * 16 / 9));aspect-ratio:16/9;min-height:0;flex:0 0 auto;overflow:hidden;border:2px solid #dfba63;border-radius:14px;background:#180a11}
+.g5-portrait{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g5-orb{position:absolute;left:38%;top:52%;width:19%;aspect-ratio:1;transform:translate(-50%,-50%)}
+.g5-orb img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g5-orb i{position:absolute;left:50%;top:50%;width:100%;height:100%;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%)}
+.g5-green{border:6px solid #20994da8}
+.g5-white{border:3px solid white}
+.g5-stoke{background:transparent;pointer-events:none}
+.g5-stoke .mg-head,.g5-stoke .g5-content{pointer-events:auto}
+.g5-stoke .mg-head{background:#180a11dd;border-radius:10px;padding:6px}
+.g5-stoke .g5-content{justify-content:flex-end;flex:0 0 auto;margin-top:auto;background:#180a11dd;padding:10px;border-radius:10px}
+.g5-count{align-self:flex-start;font-weight:700;color:#ffe49c}
+.g5-bar{position:relative;width:min(85%,600px);height:22px;flex:0 0 22px;background:#26131b;border:1px solid #dfba63;border-radius:12px;overflow:hidden;margin-top:auto}
+.g5-zone{position:absolute;left:42%;width:16%;height:100%;background:#128e40}
+.g5-needle{position:absolute;left:50%;height:100%;width:3px;background:#fa3030}
+.g5-result{color:#ffe49c;font-weight:700}
+.g5-content:has(.g5-bar){padding-bottom:12px}
+@media(max-width:600px) and (orientation:portrait){
+ .g5-closeup{flex:0 0 auto;max-height:none;margin:auto 0;width:100%}
+ .g5-overlay .mg-head{flex-wrap:wrap}
+ .st-hud[data-room="krata"] #st-actions .st-action{left:70%;top:18%}
+ .st-hud[data-room="krata"] .st-action .btn-gold{min-width:100px;height:44px}
+ .st-hud[data-room="krata"] .st-action small{max-width:125px;font-size:11px}
+ .st-hud[data-room="krata"] .st-npc-tag{max-width:48%}
+ .st-hud[data-room="krata"] .btn-gold{font-size:14px;padding:9px 12px}
+}
+
 </style>
 <link rel="stylesheet" href="src/command-wheel.css">
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books">
 <link rel="stylesheet" href="src/minigames/training/training.css">
-<link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-h4">
+<link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2196,7 +2233,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 
 <dialog id="dlg"></dialog>
-<script type="module" src="src/preload.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-g2b-cover-v5-h4"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h4"></script>
+<script type="module" src="src/preload.js?v=h1-g5-h4"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h4"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import './h4-assets.js';
+import { runKrataQte } from './minigames/krata-qte.js';
 import { gateArrivals, gateKarma, gateTotalKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
@@ -29,13 +29,13 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
-import { preloadZone } from './preload.js';
+import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
-import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
+import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
@@ -3737,7 +3737,7 @@ function drawHeroProfile() {
     + row('img/ui/icon-book.png', g.casesDone, t('profile.cases'));
   const attack = `${BATTLE.atk[0] + (g.level - 1) * 2}–${BATTLE.atk[1] + (g.level - 1) * 2}`;
   const lvBonus = (g.level - 1) * 2;
-  const fireDmg = BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus;
+  const fireDmg = g.controlledFireDamage(BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus);
   const powerIcon = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png' };
   const abilityRows = [
     ['flameCharge', 'img/fx-flame-charge.png', `${65 + (g.level - 1) * 3}`, 'charge'],
@@ -3746,12 +3746,12 @@ function drawHeroProfile() {
     ['valkyrieSpear', 'img/fx-valkyrie-spear.png', 'MP ' + BATTLE.mpCost.spear, 'spear'],
   ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
   const powers = row('img/icon-sword.png', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
-    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo}`)
+    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo} · ${t('g5.level')} ${g.fireControlState().level}/3`)
     + abilityRows.join('')
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
-  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
   const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
@@ -3991,12 +3991,12 @@ function openStation(k, emergency = false) {
 
     // ข้อมูลมินิเกม "เร่งการทำงาน" ของสถานีนี้ (เหตุผลที่กดไม่ได้ → ใช้แทนคำใต้ปุ่มชั่วคราว)
     const mgOn = !!(cap && MINIGAMES[k]);
-    const mgWhy = k === 'sala' ? mgOpen ? t('room.mgBusy') : (st.documentCd || 0)>g.tick ? `พักอีก ${st.documentCd-g.tick} วาระ` : '' : !mgOn ? ''
+    const mgWhy = k === 'krata' ? mgOpen ? t('room.mgBusy') : t(g.stokeWhy(st) || 'g5.stokeHint') : k === 'sala' ? mgOpen ? t('room.mgBusy') : (st.documentCd || 0)>g.tick ? `พักอีก ${st.documentCd-g.tick} วาระ` : '' : !mgOn ? ''
       : mgOpen ? t('room.mgBusy')
       : (st.speedLv || 0) >= UPGRADES.max ? t('room.mgMaxed')
       : g.level < g.mgLevelNeed(st.speedLv || 0) ? t('room.mgLevel').replace('{n}', g.mgLevelNeed(st.speedLv || 0))
       : (st.mgCd || 0) > g.tick ? t('room.mgWait').replace('{n}', st.mgCd - g.tick) : '';
-    const mgReady = k === 'sala' ? !mgWhy && g.documentPuzzleReady(st) : mgOn && !mgWhy && g.mgReady(st);
+    const mgReady = k === 'krata' ? !mgOpen && !g.stokeWhy(st) : k === 'sala' ? !mgWhy && g.documentPuzzleReady(st) : mgOn && !mgWhy && g.mgReady(st);
 
     // ---- แผงด้านขวา (เปิดจากปุ่มในฉาก) ----
     let drawer = '';
@@ -4071,6 +4071,8 @@ function openStation(k, emergency = false) {
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
         ['room.sala.action2', null, () => openMinigame(k), !mgReady, mgWhy],
+      ] : k === 'krata' ? [
+        ['g5.stoke', 'g5.stokeHint', () => openKrata(false), !mgReady, mgWhy],
       ] : k === 'sawan' ? [
         ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
       ] : k === 'tea' ? [
@@ -4097,7 +4099,7 @@ function openStation(k, emergency = false) {
         : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
         const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_ROOM_LAYOUT.pivot[0], MIRROR_ROOM_LAYOUT.pivot[1]-.15] : [MIRROR_ROOM_LAYOUT.target[0], MIRROR_ROOM_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
-        const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala') && R ? R.anchor(u, v) : [u*100,v*100];
+        const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala' || k === 'krata') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
@@ -4117,6 +4119,10 @@ function openStation(k, emergency = false) {
     const N = dlg.querySelector('#st-npc');
     if (N && R) {
       const tags = [];
+      if (k === 'krata' && g.crew.some(c => c.k === 'plerng')) {
+        const [ax,ay] = R.anchor(...room.crew,R.crewHeight+.025);
+        tags.push({id:'fire-training',ax,ay,pos:'above',label:t('g5.train'),hint:t('g5.trainHint'),keep:true,disabled:mgOpen});
+      }
       if (k === 'tarang' && room.crew) {
         const [ax, ay] = R.anchor(room.crew[0], room.crew[1], R.crewHeight + 0.012);
         tags.push({ id:'manage', ax, ay, pos:'above', label:t('room.manage'), hint:t('room.manageHint'), pressed:drawerMode === 'roster' });
@@ -4131,6 +4137,8 @@ function openStation(k, emergency = false) {
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.totalKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
+      const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
+      if (fireTrainingBtn) fireTrainingBtn.onclick = () => openKrata(true);
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
       if (lotusBtn) lotusBtn.onclick = () => {
@@ -4277,7 +4285,20 @@ function openStation(k, emergency = false) {
    *  ระหว่างเล่น: ห้องล็อกอินพุต (R.lock) กันเว้นวรรค/ลูกศรชนกับปุ่มมินิเกม — ส่วนเกมหลัก (g.step()) เดินต่อ
    *  ตามปกติไม่พัก (หน้าสถานีนี้ไม่เคยเรียก pauseForDlg() อยู่แล้วตั้งแต่ต้น) เลือกแบบนี้เพราะปลอดภัยสุด
    *  ไม่ต้องแตะ pauseForDlg/releaseDlgPause ที่เคยมีบั๊กเกมค้างมาก่อน (ดูคอมเมนต์ยาวเหนือฟังก์ชันนั้น) */
+  function openKrata(training) {
+    const st=stationHere(), ov=dlg.querySelector('#mg-ov');
+    if (mgOpen || !st || !ov || (training ? !g.crew.some(c=>c.k==='plerng') : !!g.stokeWhy(st))) return;
+    mgOpen=true; R.lock(true); ov.hidden=false;
+    dlg.querySelector('#st-cv')?.scrollIntoView?.({block:'center'});   // จอเตี้ย (844×390) ห้องสูงกว่าจอ — เลื่อนให้เห็นยมบาทกับกระทะระหว่างเล่น
+    ov.classList.add('g5-overlay');
+    ov.classList.toggle('g5-stoke',!training);
+    const close=()=>{ minigameQuit?.(); minigameQuit=null; ov.hidden=true; ov.classList.remove('g5-overlay','g5-stoke'); R.walkTo(...R.pos().slice(0,2)); R.lock(false); mgOpen=false; if (mine()) panels(); };
+    minigameQuit=runKrataQte(ov,{g,st,room:R,training,alive:()=>mine() && g.stations.includes(st),onClose:close});
+    panels();
+  }
+
   function openMinigame(sk) {
+    if (sk === 'krata') { openKrata(false); return; }
     const stx = g.stations.find(x => x.def.k === sk);
     const game = MINIGAMES[sk];
     const ov = dlg.querySelector('#mg-ov');
@@ -4354,9 +4375,9 @@ function openStation(k, emergency = false) {
         <button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>
         <div class="st-arch" id="st-arch" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
-        <div class="st-npc" id="st-npc"></div></div>
+        <div class="st-npc" id="st-npc"></div>${k === 'krata' ? '<div id="st-actions"></div>' : ''}</div>
       <div class="st-card" id="st-left"></div>
-      <div id="st-actions"></div>
+      ${k !== 'krata' ? '<div id="st-actions"></div>' : ''}
       <div class="st-drawer" id="st-right" hidden></div>
       <div class="st-alert" id="st-alert"></div>
       <div class="st-controls">
@@ -4384,8 +4405,9 @@ function openStation(k, emergency = false) {
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
   R.onAct = () => {
+    if (k === 'krata') { openKrata(false); return; }
     if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
-    if (room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
+    if (k !== 'krata' && room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;
     if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }

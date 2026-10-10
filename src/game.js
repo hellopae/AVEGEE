@@ -1,4 +1,5 @@
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
+import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
@@ -149,7 +150,8 @@ export function createGame() {
   syncFrontierPos(g.zone);          // เกมใหม่เริ่มโซน 1 เสมอ — ตั้งขนาดฉากและล้าง walk mask
   g.player.x = SPOTS.bench.x + 60; g.player.y = SPOTS.bench.y;
 
-  Object.assign(g, API);
+  Object.assign(g, API, krataMethods);
+  g.fireControl = normalizeFireControl();
   g.teamLimits = { ...TEAM_LIMITS };
   syncRoster(g);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
@@ -3070,7 +3072,7 @@ const API = {
         say(`${c.name}สะกดจิตศัตรู — ตาถัดไปเขาจะฟาดใส่ตัวเอง`);
         B.talk = `${c.name}: "ผมสะกดให้เขาหลงตัวเองแล้ว ท่านลงมือได้เลย"`;
       } else {
-        dmg = pw.dmg;
+        dmg = c.k === 'plerng' ? this.controlledFireDamage(pw.dmg, c) : pw.dmg;
         say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
@@ -3094,7 +3096,7 @@ const API = {
       // ข้อ B ชุด 13 — 40 คงที่ ไม่สุ่มอีกต่อไป
       if (this.mp < BATTLE.mpCost.fire) return false;
       this.mp -= BATTLE.mpCost.fire;
-      dmg = BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2;
+      dmg = this.controlledFireDamage(BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2);
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'flameCharge') {
@@ -4307,7 +4309,7 @@ API.snapshot = function (withEntry = true) {
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 4, training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
+    v: 4, fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -4384,6 +4386,8 @@ API.restore = function (d) {
   d = migrateRosterSave(structuredClone(d));
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
+  this.fireControl = normalizeFireControl(d.fireControl);
+  this._krataSession = null;
   this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)
   this.teamLimits = { ...TEAM_LIMITS };
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&
