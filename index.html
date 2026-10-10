@@ -65,6 +65,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 /* ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569 — แถบหิว + ปุ่มป้อนข้าวปั้น ใช้ร่วมกัน 3 จุด (ดู hungerWidget ใน ui.js) */
 .hunger-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
 .hunger-line small{white-space:nowrap}
+.hunger-line .rest-name{flex-basis:100%;font-size:13px}
 
 /* ---------- เลย์เอาต์หลัก ----------
    ฉากกินเต็มความกว้าง แผงควบคุมกับบันทึกอยู่ใต้ฉาก
@@ -423,6 +424,14 @@ dialog.challenge-dialog[open]{max-width:460px;max-height:calc(100dvh - 24px);ove
 .challenge-boss-line small{display:block;margin-top:2px;color:var(--muted-foreground)}
 .weapon-card .outfit-info small{display:block}
 .weapon-note{border-color:#d4a355;color:#fff0c8}
+/* G4: คูลดาวน์ผลพิเศษอาวุธ — ไอคอนจางลงพร้อมเลขเทิร์นที่เหลือ (สถานะ UI เท่านั้น ไม่แก้ไฟล์ภาพ) */
+.weapon-cd{display:flex;align-items:center;gap:8px;border-color:#d4a355;color:#fff0c8}
+.wcd-ico{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px}
+.wcd-ico img{display:block;width:100%;height:100%;object-fit:contain}
+.wcd-ico em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:16px;color:#fff;text-shadow:0 1px 4px #000,0 0 6px #000}
+.weapon-cd.cooling .wcd-ico img,.orb-choice .wcd-ico img{opacity:.38;filter:grayscale(.7)}
+.orb-choice .wcd-ico{width:40px;height:40px;flex-basis:40px}
+.orb-choice .wcd-ico em{font-size:18px}
 @media(max-width:520px){.challenge-boss{width:min(40vw,150px);max-height:26dvh}}
 
 /* ---------- แผนที่เดินทางระหว่างโซน ---------- */
@@ -2239,6 +2248,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=h1-g5"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4"></script>
 </body>
 </html>

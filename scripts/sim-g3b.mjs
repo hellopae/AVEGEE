@@ -15,6 +15,7 @@ const realRandom = Math.random;
 const ABIL = ['bigFire', 'flameCharge', 'windFan', 'rage', 'ice', 'hypno', 'valkyrieSpear', 'cooldownClock'];
 const MELEE = process.env.G3B_BOT === 'melee', MIXED = process.env.G3B_BOT === 'mixed';
 const MIX_P = +(process.env.G3B_P || 0.5);
+const LARGE = process.env.G3B_LARGE !== 'none';   // G4: env G3B_LARGE=none → ผู้เล่นพกแต่ยาขนาดปกติ (ขอบล่าง)
 let botRnd = seeded(1);
 
 /** สถานะผู้เล่น ณ ตอนที่ถึงจุดนั้นในเนื้อเรื่อง (ระดับ/พลัง/ยา ตรงกับ balance28b) */
@@ -29,7 +30,9 @@ export function setup(zone, { level, abilities, chests }, weapon = null) {
   g.level = level; const L = LEVELS[level - 1];
   g.hpMax = g.hp = L.hpMax; g.mpMax = g.mp = L.mpMax;
   abilities.forEach(k => { g.abilities[k] = true; });
-  g.zone = zone; g.inventory.health = chests; g.inventory.holyWater = 3; g.coin = 400;
+  // G4: zone 2+ player carries Large medkit / Large holy water (same counts) — same assumption as tests/balance28b.test.mjs
+  const large = zone !== 'th' && LARGE ? 'Large' : '';
+  g.zone = zone; g.inventory['health' + large] = chests; g.inventory['holyWater' + large] = 3; g.coin = 400;
   for (const k of ['taan', 'plerng']) if (!g.crew.some(c => c.k === k)) g.hire(k);
   for (const c of g.crew) if (!c.reader) { c.homeZone = zone; c.id = `${zone}:${c.k}`; }
   g.party.members = ['taan', 'plerng'];
@@ -42,21 +45,22 @@ function botTurn(g) {
   const low = b.youHp <= b.youMax * 0.45;
   if (turnNo % 15 === 1) for (const c of g.crewHelpers()) c.helpReadyAt = 0;
   if (low && g.battleAct('crew:boon')) return true;
-  if (low && (g.inventory.health || 0) > 0) return g.battleAct('health');
+  for (const k of ['healthLarge', 'health']) if (low && (g.inventory[k] || 0) > 0) return g.battleAct(k);
   if (MELEE || (MIXED && botRnd() < MIX_P)) return g.battleAct('atk');
-  if (g.mp < BATTLE.mpCost.fire && (g.inventory.holyWater || 0) > 0 && g.battleAct('holyWater')) return true;
+  if (g.mp < BATTLE.mpCost.fire) for (const k of ['holyWaterLarge', 'holyWater']) if ((g.inventory[k] || 0) > 0 && g.battleAct(k)) return true;
   if (g.mp >= BATTLE.mpCost.fire) return g.battleAct('fire');
   for (const c of g.crewHelpers()) if (['taan', 'plerng', 'dam'].includes(c.k) && !g.crewHelpWhy(c) && g.battleAct('crew:' + c.k)) return true;
   return g.battleAct('atk');
 }
 function rest(g) {
   g.coin = 400;
-  const stock = merchantStock(g.zone);
-  const water = stock.find(s => s.k.startsWith('holyWater'));
-  const health = stock.find(s => s.k.startsWith('health'));
+  const stock = merchantStock(g.zone), find = k => stock.find(s => s.k === k), largeShelf = LARGE && !!find('healthLarge');
   for (let i = 0; i < 12; i++) {
-    if (g.mpMax - g.mp >= 20 && g.coin >= water.cost && g.buyMerchant(water.k) && g.useHolyWater(water.k)) continue;
-    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= health.cost && g.buyMerchant(health.k) && g.useBossMedicine(health.k)) continue;
+    const mpGap = g.mpMax - g.mp, hpGap = g.battle.youMax - g.battle.youHp;
+    if (largeShelf && mpGap >= g.mpMax * .65 && g.coin >= find('holyWaterLarge').cost && g.buyMerchant('holyWaterLarge') && g.useHolyWater('holyWaterLarge')) continue;
+    if (mpGap >= 20 && g.coin >= find('holyWater').cost && g.buyMerchant('holyWater') && g.useHolyWater('holyWater')) continue;
+    if (largeShelf && hpGap >= g.battle.youMax * .65 && g.coin >= find('healthLarge').cost && g.buyMerchant('healthLarge') && g.useBossMedicine('healthLarge')) continue;
+    if (hpGap >= 30 && g.coin >= find('health').cost && g.buyMerchant('health') && g.useBossMedicine('health')) continue;
     break;
   }
 }

@@ -11,6 +11,7 @@ function winBattle(g) {
       assert.equal(g.advanceZoneEventWave(), true);
       continue;
     }
+    for (const f of g.battle.foes) f.atk = [0, 0];   // G4: state transitions only — enemy attack strength is balance28b's job
     const foe = g.battle.foes.find(f => f.hp > 0);
     foe.hp = 1;
     g.battle.selectedFoeId = foe.id;
@@ -81,10 +82,10 @@ test('Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retri
   assert.equal(g.zoneCaptivesFree(), false);
   assert.equal(g.build('tea'), false);
   g.coin = 500;
-  assert.equal(g.buyMerchant('teaZ4'), false);
+  assert.equal(g.buyMerchant('tea'), false);
   g.startZoneEvent('cyberRescue'); winBattle(g);
   assert.equal(g.zoneCaptivesFree(), true);
-  assert.equal(g.buyMerchant('teaZ4'), true);
+  assert.equal(g.buyMerchant('tea'), true);
   assert.equal(g.crew.some(c => c.k === 'taan'), true);
   assert.equal(g.abilities.cooldownClock, true);
   g.zoneCases.cyberhell = 5; g.refreshZoneEvents();

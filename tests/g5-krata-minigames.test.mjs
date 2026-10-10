@@ -96,15 +96,15 @@ test('G5 training: both trainees, 5 hits +1, 3 misses no loss, individual 5-minu
   assert.ok(trainingHit(1));assert.equal(trainingHit(1.13),false);assert.ok(trainingRadius(0)>2);
 });
 
-test('G5 fire damage in actual battles follows 0/5/10/15% for Yama and Plerng, normal attacks unchanged',()=>{
+test('G5 fire damage in actual battles follows 0/3/6/9% for Yama and Plerng, normal attacks unchanged',()=>{
   for(const level of [0,1,2,3]) {
     const {g,c}=trainee();g.party.members=['plerng'];g.fireControl.actors.yama={level,readyAt:0};g.fireControl.actors[g.fireActorId(c)]={level,readyAt:0};
     const normal=g.normalAttack(20);
     g.mobs.push({id:999,kind:0});g.startMobBattle(0);g.battle.foes[0].hp=g.battle.foes[0].maxHp=10000;
-    assert.ok(g.battleAct('fire'));assert.equal(g.battle.dmg.foe,Math.round(BATTLE.fireDmg*(1+.05*level)));
+    assert.ok(g.battleAct('fire'));assert.equal(g.battle.dmg.foe,Math.round(BATTLE.fireDmg*(1+.03*level)));
     c.helpReadyAt=0;c.helpRemainingMs=0;c.morale=100;
     const damage=g.allyStats(c).dmg;
-    assert.ok(g.battleAct('crew:plerng'));assert.equal(g.battle.dmg.foe,Math.round(damage*(1+.05*level)));
+    assert.ok(g.battleAct('crew:plerng'));assert.equal(g.battle.dmg.foe,Math.round(damage*(1+.03*level)));
     assert.equal(g.normalAttack(20),normal);
   }
 });

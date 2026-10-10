@@ -1195,7 +1195,7 @@ export const TUTOR = [
 
   { k:'hp', boss:true, title:'บทที่ 5 — บารมี คือชีวิตของท่าน',
     text:'"ทุกคำตัดสินที่ห่วย ข้าหักบารมีเจ้า ศูนย์ดาวเมื่อไหร่ข้าซัดลูกไฟ ห้าลูกก็หมดตัว ' +
-         'บารมีหมดเมื่อไหร่ เจ้ากลับบ้านได้เลย" — เดินไปเก็บหีบยาบนแผนที่เติมบารมีได้',
+         'บารมีหมดเมื่อไหร่ เจ้ากลับบ้านได้เลย" — เดินไปเก็บกล่องยาบนแผนที่เติมบารมีได้',
     when: g => g.casesDone >= 1 },
 
   { k:'karma', boss:true, title:'บทที่ 6 — กรรมท่าน คือบัญชีของท่านเอง',
@@ -1748,9 +1748,12 @@ export const CHALLENGE_REST_WAVE = 5;
 export const WEAPONS = {
   fang:   { zone:'th',        atk:.20, effect:{ type:'burn',   chance:.15, pct:.05, turns:2, cap:8 } },
   chain:  { zone:'asia',      atk:.25, effect:{ type:'crit',   bonus:.07 } },
-  cane:   { zone:'west',      atk:.25, effect:{ type:'drain',  pct:.08, cap:4 } },
+  cane:   { zone:'west',      atk:.20, effect:{ type:'drain',  pct:.08, cap:4 } },
   trojan: { zone:'cyberhell', atk:.30, effect:{ type:'replay', chance:.10, ratio:.5 } },
 };
+/** G4: ผลพิเศษของอาวุธ (ติดไฟ/คริเพิ่ม/ดูดเลือด/ฟันซ้ำ) เกิดแล้วต้องรอกี่เทิร์นถึงจะเกิดได้อีก · โบนัสฟาด +% ติดตัวตลอด
+ *  นับต่อการต่อสู้ (battle.weaponCd) ไม่เซฟ · "เทิร์น" = ทุกคำสั่งที่ผู้เล่น/ทีมสั่งในศึก (จังหวะเดียวกับไฟลวก) */
+export const WEAPON_EFFECT_COOLDOWN = 3;
 export const WEAPON_OF_ZONE = Object.fromEntries(Object.entries(WEAPONS).map(([id, w]) => [w.zone, id]));
 /** เพดานรวมของฟาดปกติเมื่อถืออาวุธ: ต้องไม่เกิน 130% ของฟาดที่แรงที่สุดที่ไม่ถืออาวุธทำได้ในสภาพเดียวกัน (คริ ×1.7 · rage ×1.5) */
 export const WEAPON_STACK_CAP = 1.3;
@@ -1840,8 +1843,8 @@ export const ZONE_EVENTS = {
     { k:'cyberBreach', atCases:5, requires:['cyberRescue'], mode:'waves', team:'frontier',
       title:{ th:'ปีศาจฝ่าชายแดนสี่ระลอก', en:'Four frontier waves' },
       alert:{ th:'ปีศาจบุกชายแดนสี่ระลอก', en:'Demons attack in four waves.' },
-      waves:[[{ kind:11, count:2, hp:60, atk:[10,16] }], [{ kind:12, count:2, hp:65, atk:[11,17] }],
-        [{ kind:13, count:2, hp:70, atk:[12,18] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[15,23], boss:true }]],
+      waves:[[{ kind:11, count:2, hp:60, atk:[15,24] }], [{ kind:12, count:2, hp:65, atk:[17,26] }],
+        [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[23,35], boss:true }]],
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
     { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
@@ -1850,15 +1853,15 @@ export const ZONE_EVENTS = {
         en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
 
       waves:[
-        [{ kind:14, count:2, hp:60, atk:[10,16] }],
-        [{ kind:15, count:2, hp:65, atk:[11,17] }],
-        [{ kind:16, count:2, hp:70, atk:[12,18] }],
-        [{ kind:16, count:2, hp:75, atk:[13,19] }],
-        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[13,20], boss:true }],
-        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[14,21], boss:true }],
-        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[15,22], boss:true }],
-        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[16,23], boss:true }],
-        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[17,25], boss:true }],
+        [{ kind:14, count:2, hp:60, atk:[14,22] }],
+        [{ kind:15, count:2, hp:65, atk:[15,23] }],
+        [{ kind:16, count:2, hp:70, atk:[16,24] }],
+        [{ kind:16, count:2, hp:75, atk:[18,26] }],
+        [{ name:'พญายมบาท', sp:'leader-th-possessed', count:1, hp:145, atk:[18,27], boss:true }],
+        [{ name:'หัวหน้าสาขาบูรพา', sp:'leader-asia-possessed', count:1, hp:160, atk:[19,28], boss:true }],
+        [{ name:'หัวหน้าสาขาปัจฉิม', sp:'leader-west-possessed', count:1, hp:175, atk:[20,30], boss:true }],
+        [{ name:'หัวหน้านรกเครือข่าย', sp:'leader-cyberhell-possessed', count:1, hp:190, atk:[22,31], boss:true }],
+        [{ name:'จอมข้อมูลไซเบอร์', sp:'zone-boss-cyberhell', count:1, hp:220, atk:[23,34], boss:true }],
       ],
       // ชุด 28B: 25 → 40 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — บอส 4 ระลอกติดกันไม่มีจุดพักคั่น
       // ชุด 28E: 40 → 30 หลังมีน้ำมนต์กลางศึกและ HP ศัตรูอีเวนต์เพิ่มตามโซน (จำลองศึกสุดท้ายชนะ ~85%)
@@ -2142,53 +2145,54 @@ export const TRAINING_STATIONS = {
 };
 // Item identity fixes its effect, including when carried to another zone.
 export const MERCHANT_STOCK_BY_ZONE = { th: MERCHANT.stock };
-ITEMS.tea.mp = 12;
-ITEMS.health.nameEn = 'Longevity Chest';
-ITEMS.tea.nameEn = 'Tea';
-for (const k of ['health','tea','holyWater']) {
-  ITEMS[k].descEn = `Restore HP ${ITEMS[k].hp || 0} / MP ${ITEMS[k].mp || 0}`;
-  ITEMS[k].howToEn = 'Use in bag, battle or preparation';
-  ITEMS[k].sayEn = 'Power restored';
-}
 ITEMS.health.consumable = ITEMS.tea.consumable = ITEMS.holyWater.consumable = true;
-const ZONE_MEDICINES = [
-  ['asia','Z2','บูรพา','Eastern',55,40,50,16,70,55,30],
-  ['west','Z3','ปัจฉิม','Western',70,50,60,20,85,65,35],
-  ['cyberhell','Z4','เครือข่าย','Network',85,60,70,24,95,75,40],
+// G4: one name per restorative item in every zone (Tea / Rice ball / Holy water / Medkit). Zones differ only by
+// merchant price and by which sizes are on the shelf. Legacy zone-variant ids from old saves map to the base id.
+export const LEGACY_ITEM_IDS = {
+  healthZ2:'health', healthZ3:'health', healthZ4:'health',
+  holyWaterZ2:'holyWater', holyWaterZ3:'holyWater', holyWaterZ4:'holyWater',
+  teaZ2:'tea', teaZ3:'tea', teaZ4:'tea',
+};
+// [zone, medkit price, holy water price, tea price, large medkit price, large holy water price]
+// Large size = medkit/holy water price x ~1.8, rounded to 5. Not sold in the Thai zone.
+const ZONE_PRICES = [
+  ['asia',      70, 55, 30, 125, 100],
+  ['west',      85, 65, 35, 155, 115],
+  ['cyberhell', 95, 75, 40, 170, 135],
 ];
-for (const [zone,suffix,th,en,hp,mp,teaHp,teaMp,hpCost,mpCost,teaCost] of ZONE_MEDICINES) {
-  for (const [base,name,nameEn,gainHp,gainMp] of [
-    ['health',`หีบยาอายุวัฒนะ${th}`,`${en} Longevity Chest`,hp,0],
-    ['holyWater',`น้ำมนต์${th}`,`${en} Holy Water`,0,mp],
-    ['tea',`น้ำชา${th}`,`${en} Tea`,teaHp,teaMp],
-  ]) {
-    ITEMS[base+suffix] = { ...ITEMS[base], nameKey:undefined, name, nameEn,
-      hp:gainHp, mp:gainMp, desc:`ฟื้น HP ${gainHp} / MP ${gainMp}`, descEn:`Restore HP ${gainHp} / MP ${gainMp}`,
-      howTo:'ใช้จากกระเป๋า ในศึก หรือเตรียมศึก', howToEn:'Use in bag, battle or preparation',
-      say:'พลังฟื้นขึ้นมา', sayEn:'Power restored' };
-  }
-  MERCHANT_STOCK_BY_ZONE[zone] = MERCHANT.stock.map(item => {
-    const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };
-    return costs[item.k] ? { ...item, k:item.k+suffix, cost:costs[item.k] } : { ...item };
-  });
+ITEMS.healthLarge = { ...ITEMS.health, img:'item-health' };      // icon: normal-size art until a dedicated one is drawn
+ITEMS.holyWaterLarge = { ...ITEMS.holyWater, img:'item-holywater' };
+for (const [zone, hpCost, mpCost, teaCost, hpLargeCost, mpLargeCost] of ZONE_PRICES) {
+  MERCHANT_STOCK_BY_ZONE[zone] = [
+    ...MERCHANT.stock.map(item => {
+      const costs = { health:hpCost, holyWater:mpCost, tea:teaCost };
+      return costs[item.k] ? { ...item, cost:costs[item.k] } : { ...item };
+    }),
+    { k:'healthLarge', cost:hpLargeCost, lv:1 }, { k:'holyWaterLarge', cost:mpLargeCost, lv:1 },
+  ];
 }
-// G1: restoration follows the recipient's maximum, across every zone variant.
+// G1/G4: restoration follows the recipient's maximum, identical in every zone.
+const RESTORE_NAMES = {
+  food:['ข้าวปั้น','Rice Ball'], tea:['น้ำชา','Tea'], health:['กล่องยา','Medkit'], holyWater:['น้ำมนต์','Holy Water'],
+  healthLarge:['กล่องยาขนาดใหญ่','Large Medkit'], holyWaterLarge:['น้ำมนต์ขวดใหญ่','Large Holy Water'],
+};
+const RESTORE_RATIO = { food:.30, tea:.30, health:.65, holyWater:.65, healthLarge:1, holyWaterLarge:1 };
 for (const [k, def] of Object.entries(ITEMS)) {
-  const base = k.replace(/Z[234]$/, '');
-  if (!['food','tea','health','holyWater'].includes(base)) continue;
-  const hp = base === 'food' || base === 'health';
-  const ratio = base === 'food' || base === 'tea' ? .30 : .65;
+  const base = k;
+  if (!(base in RESTORE_RATIO)) continue;
+  const hp = base === 'food' || base === 'health' || base === 'healthLarge';
+  const ratio = RESTORE_RATIO[base], pct = Math.round(ratio * 100);
   def.hp = hp ? Math.round(100 * ratio) : 0;
   def.mp = hp ? 0 : Math.round(40 * ratio);
   def.hpRatio = hp ? ratio : 0; def.mpRatio = hp ? 0 : ratio;
   delete def.battleHp;
   def.consumable = true;
-  def.nameKey = /Z[234]$/.test(k) ? undefined : base === 'holyWater' ? 'item.holyWater' : `g1.${base}.name`;
+  def.nameKey = base === 'holyWater' ? 'item.holyWater' : `g1.${base}.name`; [def.name, def.nameEn] = RESTORE_NAMES[base];
   def.descKey = `g1.${base}.desc`; def.howToKey = 'g1.howTo'; def.sayKey = hp ? 'g1.hpSay' : 'g1.mpSay';
-  def.desc = hp ? `เติม HP ${ratio*100}% ของค่าสูงสุด${base === 'food' ? ' และเติมแถบหิวของยมทูต' : ''}` : `เติม MP ${ratio*100}% ของค่าสูงสุด`;
+  def.desc = hp ? `เติม HP ${pct}% ของค่าสูงสุด${base === 'food' ? ' และเติมแถบหิวของยมทูต' : ''}` : `เติม MP ${pct}% ของค่าสูงสุด`;
   def.howTo = 'เลือกเป้าหมายในกระเป๋าหรือในศึก';
   def.say = hp ? 'HP ฟื้นขึ้นมา' : 'MP ฟื้นขึ้นมา';
-  def.descEn = hp ? `Restore ${ratio*100}% of maximum HP${base === 'food' ? ' and reaper hunger' : ''}` : `Restore ${ratio*100}% of maximum MP`;
+  def.descEn = hp ? `Restore ${pct}% of maximum HP${base === 'food' ? ' and reaper hunger' : ''}` : `Restore ${pct}% of maximum MP`;
   def.howToEn = 'Select a recipient in the bag or battle';
   def.sayEn = hp ? 'HP restored' : 'MP restored';
 }

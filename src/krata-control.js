@@ -1,6 +1,7 @@
 // G5: real-time cooldowns; game ticks are work periods, not calendar days.
 export const STOKE_COOLDOWN = 20_000;
 export const TRAIN_COOLDOWN = 300_000;
+export const FIRE_BONUS_PER_LEVEL = .03;   // Claudy 10 ต.ค.: ลด .05 → .03 หลัง G4 ทำให้ cyber breach เป็นหน้าผา (สูงสุด 3 ระดับ = +9%)
 export const KRATA_WALK = [{poly:[[.12,.44],[.84,.44],[.84,.49],[.74,.52],[.73,.68],[.79,.72],[.79,.79],[.59,.79],[.59,1],[.41,1],[.41,.79],[.23,.79],[.21,.70],[.15,.66],[.15,.59],[.10,.58]]}];
 export function normalizeFireControl(value) {
   const out = { actors:{}, stokeReadyAt:0 };
@@ -26,7 +27,7 @@ export function trainingAttempt(state, hit) {
 export const krataMethods = {
   fireActorId(actor = 'yama') { return actor === 'yama' ? 'yama' : actor && typeof actor === 'object' && actor.k === 'plerng' ? actor.id || `${actor.homeZone || this.zone}:plerng` : null; },
   fireControlState(actor = 'yama') { return this.fireControl?.actors?.[this.fireActorId(actor)] || {level:0,readyAt:0}; },
-  controlledFireDamage(base, actor = 'yama') { return Math.round(base * (1 + .05 * this.fireControlState(actor).level)); },
+  controlledFireDamage(base, actor = 'yama') { return Math.round(base * (1 + FIRE_BONUS_PER_LEVEL * this.fireControlState(actor).level)); },
   krataSlots(st, now = Date.now()) {
     if (!st || !this.stations.includes(st) || st.def.k !== 'krata' || st.build || st.repair || st.fire >= 100) return [];
     return st.slots.filter(s => (!s.pendingUntil || s.pendingUntil <= now) && s.progress < s.need);
