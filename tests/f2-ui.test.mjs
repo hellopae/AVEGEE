@@ -50,7 +50,7 @@ test('1. ไม่มีปุ่มฝึกตัวละครในกา�
   assert.ok(!ui.includes('st-training'));
   assert.ok(!/Train character/.test(ui) && !ui.includes('ฝึกตัวละคร / '));
   assert.match(ui, /room\.training && R\.inTrainingReach\(\) && TRAINING_GAMES\[k\]\) \{ openTraining\(k\)/);
-  assert.match(ui, /function openTraining\(sk\)/);
+  assert.match(ui, /function openTraining\(sk, fromDam = false\)/);
 });
 
 // ---------- ข้อ 2: ยมบาทหันขวาหลังฟันดาบ ทุกชุด ----------

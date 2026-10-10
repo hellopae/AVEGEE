@@ -3,8 +3,10 @@ import { stokePosition, stokeHit, trainingRadius, trainingHit } from '../krata-c
 
 // One room-owned overlay. All input and animation are removed by stop().
 export function runKrataQte(host, {g, st, room, training=false, alive, onClose}) {
+  const events=new AbortController();
+  const frozen=()=>g.paused || document.hidden;
   let stopped=false, raf=0, session=null, elapsed=0, last=performance.now(), result=false;
-  const stop = () => { stopped=true; cancelAnimationFrame(raf); if (session) g.cancelKrata(session); };
+  const stop = () => { stopped=true; events.abort(); cancelAnimationFrame(raf); if (session) g.cancelKrata(session); };
   const close = () => { stop(); onClose(); };
   host.innerHTML=`<div class="mg-head"><b>${t(training?'g5.train':'g5.stoke')}</b><button class="mg-x" type="button">${t('g5.close')}</button></div><div class="g5-content"></div>`;
   host.querySelector('.mg-x').onclick=close;
@@ -31,20 +33,27 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         body.querySelector('.g5-count').textContent=`🔥 ${state.hits}/5 · ${t('g5.misses')} ${state.misses}/3`;
         body.querySelector('.g5-orb img').style.transform=`scale(${1+state.hits*.12})`;
         elapsed=0;
+        button.classList.remove('fire-ready');
+        body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
         if (state.done) finish(state.won);
       } else {
         g.finishStoke(session,hit); room.stokeEffect(hit); finish(hit);
       }
     };
-    button.onclick=() => {
-      if (stopped || result || !ready || g.paused) return;
+    const press=() => {
+      if (stopped || result || !ready || frozen()) return;
       attempt(training?trainingHit(trainingRadius(elapsed)):stokeHit(stokePosition(elapsed)));
     };
+    // Judge on press against the last painted state, never on mouse release.
+    button.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();press();},{signal:events.signal});
+    button.addEventListener('keydown',e=>{if([' ','Enter'].includes(e.key)){e.preventDefault();if(!e.repeat)press();}},{signal:events.signal});
+    button.onclick=e=>{if(!e || e.detail===0)press();};
+    document.addEventListener('visibilitychange',()=>{last=performance.now();},{signal:events.signal});
     function frame(now) {
       if (stopped) return;
       if (!alive()) { close(); return; }
       const dt=Math.min(100,now-last); last=now;
-      if (!g.paused && !result) {
+      if (!frozen() && !result) {
         if (!ready) {
           const pos=room.pos(), target=stApproach();
           if (Math.hypot(pos[0]-target[0],pos[1]-target[1])<.012) {
@@ -55,6 +64,10 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
           if (training) {
             const radius=trainingRadius(elapsed);
             body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${radius})`;
+            const green=trainingHit(radius);
+            button.textContent=green?'กดเลย! · ลูกไฟ':t('g5.fire');
+            button.classList.toggle('fire-ready',green);
+            body.querySelector('.g5-green').classList.toggle('fire-ready',green);
             if (radius < .86 || elapsed >= 2200) attempt(false);
           } else {
             body.querySelector('.g5-needle').style.left=`${stokePosition(elapsed)*100}%`;

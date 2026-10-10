@@ -44,9 +44,9 @@ test('canvas crops the selected frame and keeps the feet fixed when facing eithe
   assert.deepEqual(calls[0],['translate',100,200]); assert.deepEqual(calls[1],['scale',-1,1]);
   assert.deepEqual(calls[2],['draw',2560,0,640,640,-240,-570,640,640]);
 });
-test('sword training marks each accepted attempt once, resets on the next target', () => {
-  const e=createTrainingGame('dab',1);e.step(1);assert.equal(e.view().used,false);
-  e.input('hit');assert.equal(e.view().used,true);assert.equal(e.view().successes,1);
-  e.input('hit');assert.equal(e.view().successes,1);
-  e.step(1.6);assert.equal(e.view().used,false);
+test('sword training accepts each note once and exposes the next note', () => {
+  const e=createTrainingGame('dab',1),notes=e.view().notes;
+  e.step(notes[0].at);e.input({type:'note',lane:notes[0].lane});assert.equal(e.view().hits,1);
+  e.input({type:'note',lane:notes[0].lane});assert.equal(e.view().hits,1);
+  e.step(notes[1].at-e.view().time);e.input({type:'note',lane:notes[1].lane});assert.equal(e.view().hits,2);
 });
