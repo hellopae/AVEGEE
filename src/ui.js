@@ -145,7 +145,8 @@ function setMapZoom(level) {
   if (zoomBtn) {
     zoomBtn.dataset.level = String(mapCam.level);
     zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
-    zoomBtn.textContent = mapCam.level > 0 ? '−' : '+';
+    const zoomImg = zoomBtn.querySelector('img');
+    if (zoomImg) zoomImg.src = mapCam.level > 0 ? 'img/ui/icon-zoom-out.png' : 'img/ui/icon-zoom-in.png';   // ซูมอยู่ = แสดงปุ่มซูมออก
   }
 }
 zoomBtn?.addEventListener('click', () => setMapZoom((mapCam.level + 1) % MAP_ZOOM_LEVELS.length));
