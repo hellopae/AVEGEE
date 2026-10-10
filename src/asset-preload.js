@@ -27,7 +27,7 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
 // ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error: art.js วาด placeholder ส่วน <img> ใน modal โหลดเองตามปกติ
 const SPLIT_RULES = [
   // [tier, rank, regex] — ข้อแรกที่ตรงชนะ · rank ใช้เรียงลำดับในชั้น 1/2 (น้อย = ก่อน)
-  [0, 0, /^img\/cover-v5\.webp$/],  // ปกหน้าปัจจุบัน (cover-v4 และรุ่นเก่ากว่าเป็นแค่ fallback → ชั้นท้าย)
+  [0, 0, /^img\/cover-v4\.webp$/],  // ปกหน้าปัจจุบัน (อินโทร v3 จบที่ cover-v4 · cover-v5 และรุ่นเก่ากว่าเป็นแค่ fallback → ชั้นท้าย)
   [0, 0, /^img\/(scene|tile-|tex-)/],
   [0, 0, /^img\/map-v5\//],
   [0, 0, /^img\/theme-v4\/(map-|st-)/],

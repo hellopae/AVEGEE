@@ -1,4 +1,4 @@
-// H5b: registered 688×384 masks traced from cover-v5-full.png. No video ownership.
+// H5b: registered 688×384 masks (img/cover-fx/*-v4-mask.png) traced from cover-v4-full.png by scripts/h5b-cover-masks-v4.py. No video ownership.
 export const COVER_FX_SIZE = Object.freeze([688, 384]);
 export const COVER_FX_KINDS = Object.freeze(['lava', 'fire', 'volcano', 'soul']);
 export const COVER_FX_BUDGET = Object.freeze({lava:64, fire:40, volcano:24, soul:0});
@@ -111,7 +111,7 @@ export function installCoverFx(doc=document, win=window) {
       } catch (e) { reject(e); }
     };
     mask.onerror=reject;
-    mask.src=`img/cover-fx/${kind}-mask.png`;
+    mask.src=`img/cover-fx/${kind}-v4-mask.png`;
   })));
   const sync = () => {
     if (!active()) { clear(); return; }
