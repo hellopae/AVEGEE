@@ -76,6 +76,10 @@ const BANK = {
                     tone({ f, t:0.5, type:'sine', vol:0.28, delay:i * 0.09 })); },
   hurt:   () => { tone({ f:200, f2:52, t:0.5, type:'sawtooth', vol:0.34 });
                   noise({ t:0.16, vol:0.2, hp:300 }); },
+  // H4: original WebAudio sine tones, no sampled or licensed audio files.
+  gateScan: () => [1568,2093].forEach((f,i)=>tone({f,t:.45,vol:.10,delay:i*.13})),
+  gateReborn: () => [784,1046,1568].forEach((f,i)=>tone({f,f2:f*.5,t:.75,vol:.12,delay:i*.12})),
+  gateSky: () => [1046,1318,1568,2093].forEach((f,i)=>tone({f,t:.9,vol:.10,delay:i*.12,attack:.06})),
   heaven: () => { [1046, 1568].forEach((f, i) =>
                     tone({ f, t:1.5, type:'sine', vol:0.26, delay:i * 0.16 })); },
   win:    () => { [523, 659, 784, 1046].forEach((f, i) =>

@@ -1,3 +1,5 @@
+import { mirrorObstacle } from './mirror-charge.js';
+import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
@@ -138,6 +140,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
+  const gateEffects = new Map(), visibleGateSlots = new Map();
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
 
@@ -174,7 +177,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     return hit;
   };
-  const inArea = (x, y) => areas.some(a => a.poly ? insidePoly(x, y, a.poly)
+  const inArea = (x, y) => !(def.k === 'krajok' && api.mirrorPlaced?.() && mirrorObstacle(x,y)) && areas.some(a => a.poly ? insidePoly(x, y, a.poly)
                                                    : x >= a[0] && y >= a[1] && x <= a[2] && y <= a[3]);
   /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
   const snap = (x, y) => {
@@ -441,12 +444,15 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'tarang' || def.k === 'sawan') {
       const stage = def.k === 'tarang' ? 'prison' : 'gate';
       const occupied = st?.slots.length || 0;
+      const freeSlots=room.souls.slice(occupied).filter(at=>![...gateEffects.values()].some(fx=>(fx.kind==='reborn'||fx.kind==='sky') && !gateEffectPose(fx.kind,t-fx.start).done && fx.at[0]===at[0] && fx.at[1]===at[1]));
+      if(def.k === 'sawan')visibleGateSlots.clear();
       const waiting = [
         ...(def.k === 'tarang' ? (g.held || []).map(soul => ({ soul })) : []),
         ...(g.sentences || []).filter(x => x.zone === g.zone && x.stage === stage),
-      ].slice(0, Math.max(0, room.souls.length - occupied));
+      ].slice(0, freeSlots.length);
       waiting.forEach((entry, i) => {
-        const a = room.souls[i + occupied];
+        const a = freeSlots[i];
+        if(def.k === 'sawan')visibleGateSlots.set(entry.soul.id,a);
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
@@ -454,7 +460,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           chains(x,y);
           if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
-          else soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036 + (i % 2) * U * 0.024, U);
+          else {
+            soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036, U);
+            soulLabel(ctx, tr('room.karmaLeft').replace('{n}',gateKarma(entry)), x, y + U * .066, U);
+          }
         } });
       });
     }
@@ -570,6 +579,18 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
     } });
 
+    for(const [id,fx] of gateEffects) {
+      const pose=gateEffectPose(fx.kind,t-fx.start);
+      if(pose.done){gateEffects.delete(id);continue;}
+      acts.push({y:fx.at[1],fn:()=>{
+        const x=px(fx.at[0]),y=py(fx.at[1]),h=U*SOUL_H;
+        if(fx.kind==='reborn'||fx.kind==='sky'){
+          ctx.save();ctx.globalAlpha=pose.alpha;
+          drawSoul(ctx,x,y-U*pose.rise,h,t,'#fff1cf',fx.soul.sp || 7);ctx.restore();
+        }
+        drawGateEffect(ctx,x,y,h,fx.kind,pose,fx.cut);
+      }});
+    }
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
     const pots = def.k === 'krata' ? potLayout(bgSrc) : null;
     if (stokeFx && pots) {
@@ -608,6 +629,15 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach, inTrainingReach,
+    mirrorPlaced:null,
+    gateEffect(id,kind,cut=0) {
+      if(def.k !== 'sawan' || !GATE_EFFECT_MS[kind])return false;
+      const entries=gateArrivals(g),index=entries.findIndex(x=>x.soul.id===id),entry=entries[index];
+      if(!entry)return false;
+      const at=visibleGateSlots.get(id) || room.souls[Math.min(room.souls.length-1,index+(api.st?.slots.length || 0))];
+      if(!at)return false;
+      gateEffects.set(id,{kind,cut,soul:entry.soul,at:[...at],start:performance.now()});return true;
+    },
     /** ชุด 29C — จุดบนฉากเป็นเปอร์เซ็นต์ของ canvas (ไว้วางปุ่ม HTML ลอยเหนือตัวละคร)
      *  u,v = สัดส่วน 0-1 ของภาพฉากเหมือน ROOMS · up = ยกขึ้นกี่ส่วนของด้านสั้นของกรอบ (CREW_H = เหนือหัวคน) */
     anchor(u, v, up = 0) {
@@ -622,7 +652,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
     setSleep,
     setSit,
-    lock: v => { locked = !!v; if (locked && def.k === 'krata') { for (const key of Object.keys(KEY)) KEY[key]=false; P.tx=null; P.ty=null; } },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
+    lock: v => { locked = !!v; if (locked && (def.k === 'krata' || def.k === 'krajok')) { for (const key of Object.keys(KEY)) KEY[key]=false; P.tx=null; P.ty=null; } },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
     project: ([x, y]) => {
       const rect = cv.getBoundingClientRect();
       return [px(x) / cv.width * rect.width,

@@ -1,5 +1,6 @@
 import { runKrataQte } from './minigames/krata-qte.js';
-import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books';
+import { gateArrivals, gateKarma, gateTotalKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
+import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
@@ -34,7 +35,7 @@ import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuild
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
-import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
+import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
@@ -3957,6 +3958,8 @@ function roomFor(k) {
 function openStation(k, emergency = false) {
   const def = STATIONS.find(d => d.k === k);
   const room = roomFor(k);
+  // Only krajok gains access to the new stand; other rooms keep their paths.
+  if(k === 'krajok')room.walk=[{poly:[[.17,.51],[.81,.51],[.81,.81],[.68,.81],[.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}];
   const emergencyStation = emergency ? { def, slots:[], fire:0, build:0 } : null;
   const stationHere = () => g.stations.find(x => x.def.k === k) || emergencyStation;
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
@@ -4083,7 +4086,8 @@ function openStation(k, emergency = false) {
           !R?.sitting() && (!inside || g.mp >= g.mpMax),
           !R?.sitting() ? (g.mp >= g.mpMax ? 'MP เต็มแล้ว / MP full' : !inside ? t('room.nearTea') : '') : ''],
       ] : k === 'krajok' ? [
-        ['room.krajok.adjust', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed(), ''],
+        ['room.krajok.adjust', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed() || !nearMirror(R?.pos() || [0,0]),
+          mirrorCharge?.placed() && !nearMirror(R?.pos() || [0,0]) ? t('h4.mirrorNear') : ''],
         ['room.krajok.place', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
           g.powerLocked(mp) ? t('room.krajok.needMirror') : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
@@ -4101,7 +4105,7 @@ function openStation(k, emergency = false) {
         ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${100*g.hp/g.hpMax}%"></i></span><span class="st-hp">HP <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>`
         : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
-        const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_LAYOUT.pivot[0], MIRROR_LAYOUT.pivot[1]-.15] : [MIRROR_LAYOUT.target[0], MIRROR_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
+        const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_ROOM_LAYOUT.pivot[0], MIRROR_ROOM_LAYOUT.pivot[1]-.15] : [MIRROR_ROOM_LAYOUT.target[0], MIRROR_ROOM_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
         const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala' || k === 'krata') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
@@ -4132,19 +4136,25 @@ function openStation(k, emergency = false) {
       }
       if (k === 'sawan' && room.crew) {
         const lotus = g.inventory.lotus || 0;
-        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 ? t('room.lotusNoKarma') : '';
+        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 && gateTotalKarma(g) <= 0 ? t('room.lotusNoKarma') : '';
         const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
-        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, disabled:!!why });
+        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:gateTotalKarma(g), disabled:!!why });
       }
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
-          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}</div>`).join(''));
+          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.totalKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
       const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
       if (fireTrainingBtn) fireTrainingBtn.onclick = () => openKrata(true);
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
-      if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };
+      if (lotusBtn) lotusBtn.onclick = () => {
+        const before=gateArrivals(g).map(x=>({entry:x,karma:gateKarma(x)}));
+        if(g.offerLotusBoon()){
+          before.forEach(({entry,karma})=>{const cut=Math.round((karma-gateKarma(entry))*10)/10;if(cut>0)R.gateEffect(entry.soul.id,'relief',cut);});
+          sfx('gong');panels();refresh();
+        }
+      };
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
@@ -4154,8 +4164,14 @@ function openStation(k, emergency = false) {
     const afterCheck = ok => { if (ok) { sfx('stamp'); panels(); refresh(); } };
     dlg.querySelectorAll('[data-prison-check]').forEach(b => b.onclick = () => afterCheck(g.inspectPrison(+b.dataset.prisonCheck)));
     dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => afterCheck(g.moveFromPrison(+b.dataset.prisonSend)));
-    dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => afterCheck(g.inspectGate(+b.dataset.gateCheck)));
-    dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => afterCheck(g.resolveGate(+b.dataset.gateSend)));
+    dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => {
+      const id=+b.dataset.gateCheck;if(g.inspectGate(id)){R.gateEffect(id,'scan');sfx('gateScan');panels();refresh();}
+    });
+    dlg.querySelectorAll('[data-gate-send]').forEach(b => b.onclick = () => {
+      const id=+b.dataset.gateSend,entry=g.sentenceOf(id,'gate');if(!entry?.checked)return;
+      const kind=gateKarma(entry)>0?'reborn':'sky';R.gateEffect(id,kind);
+      if(g.resolveGate(id)){sfx(kind==='sky'?'gateSky':'gateReborn');panels();refresh();}
+    });
     // ชุดที่ 9 — "เร่งการทำงาน" เป็นมินิเกม (data-mg) ไม่ใช่การจ่ายเบี้ย
     dlg.querySelectorAll('[data-mg]').forEach(b => b.onclick = () => openMinigame(b.dataset.mg));
     // แถบบารมี/ดาวยศใน HUD ล่างซ้าย
@@ -4167,71 +4183,38 @@ function openStation(k, emergency = false) {
 
   /** แฟ้มทะเบียนกรรม — ประวัติทุกดวงที่เคยผ่านมือท่าน (เจ้าของสั่ง 10 ก.ย. 2569)
    *  ทับอยู่บนฉากในห้องเดียวกัน ไม่ใช่กล่องใหม่ — ปิดแล้วกลับมายืนที่เดิม */
+  let archiveFocus=null;
   function showArchive(on) {
-    const box = dlg.querySelector('#st-arch');
-    if (!box) return;
-    box.hidden = !on;
-    if (!on) return;
-    dlg.querySelector('.st-hud')?.scrollTo?.(0, 0);   // จอแคบ: แฟ้มเปิดทับทั้งจอ ต้องเลื่อนกลับบนสุดก่อน
-    const L = [...g.ledger].reverse();               // ล่าสุดอยู่บนสุด
-    const five = L.filter(x => x.stars === 5).length;
-    const over = L.filter(x => x.over > 0).length;
-    const short = L.filter(x => x.short > 0).length;
-    const wrong = L.filter(x => x.tham < 40).length;
-    // คำตัดสินของพ่อ — รวมทั้งแฟ้ม (ข้อ 2 ของเจ้าของ 11 ก.ย. 2569)
-    const byDad = {};
-    for (const x of L) { const k = dadGrade(x); byDad[k] = (byDad[k] || 0) + 1; }
-    const overVaras = L.reduce((a, x) => a + (x.over || 0), 0);
-    const shortVaras = L.reduce((a, x) => a + (x.short || 0), 0);
-    const passed = (byDad.great || 0) + (byDad.ok || 0);
-    const rows = L.map(x => {
-      const cl = g.closed.find(c => c.soul.id === x.id);
-      const stars = '★'.repeat(x.stars ?? 0) + '☆'.repeat(5 - (x.stars ?? 0));
-      const col = x.stars >= 4 ? 'var(--success)' : x.stars <= 1 ? 'var(--destructive)' : 'var(--gold)';
-      const deeds = cl ? cl.soul.deeds.map(d => esc(d.t)).join(' · ') : '';
-      const gr = dadGrade(x), tag = DAD_TAG[gr] || DAD_TAG.ok;
-      // คลาดไปกี่วาระ — เลขเดียวที่เจ้าของถามหาตรง ๆ ("เราตัดสินผิดไปเท่าไร")
-      const miss = (x.over || 0) - (x.short || 0);
-      const missTxt = miss > 0 ? `หนักเกินไป ${miss} วาระ`
-                    : miss < 0 ? `เบาไป ${-miss} วาระ`
-                    : 'จำนวนวาระตรงพอดี';
-      return `<div class="arch-row">
-        <div class="arch-top">
-          <b>#${String(x.id).padStart(3, '0')} ${esc(x.who)}</b>
-          <span style="color:${col}">${stars}</span>
-          <span class="arch-meta">${x.score} คะแนน · วาระที่ ${x.tick}</span>
-        </div>
-        <div class="arch-meta">สมควร ${x.deserved} วาระ · ท่านให้ไป ${x.deserved + x.over - x.short}
-          ${x.over > 0 ? `<b style="color:var(--destructive)">เกิน ${x.over} · กรรมตกมา +${x.karma}</b>` : ''}
-          ${x.short > 0 ? `<b style="color:var(--warning)">เบาไป ${x.short}</b>` : ''}
-          ${x.tham < 40 ? '<b style="color:var(--destructive)">ส่งผิดชนิดกรรม</b>' : ''}
-          ${x.back ? '<b style="color:var(--destructive)">กลับมารอบสอง</b>' : ''}</div>
-        ${deeds ? `<div class="arch-deed">${deeds}</div>` : ''}
-        <div class="arch-dad" style="border-left-color:${tag.c}">
-          <b style="color:${tag.c}">👑 ${tag.t}</b> · ${esc(missTxt)}
-          <span>${esc((BOSS_LINE[gr] || BOSS_LINE.ok).replace(/\s+—\s+.*$/, ''))}</span>
-        </div>
-      </div>`;
-    }).join('');
-    box.innerHTML = `
-      <div class="arch-head">
-        <b>📜 แฟ้มทะเบียนกรรม — โซน${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b>
-        <button id="s-arch-x">✕ ปิดแฟ้ม</button>
-      </div>
-      <div class="arch-sum">ปิดคดีแล้ว ${g.casesDone} เรื่อง · ห้าดาว ${five} ·
-        ลงเกินกรรม ${over} · เบาไป ${short} · ส่งผิดชนิดกรรม ${wrong} ·
-        กลับมาใหม่ ${g.returned}</div>
-      <div class="arch-dadsum">
-        <b>👑 พ่อว่าอย่างไรบ้าง</b>
-        ${L.length ? `ผ่านสายตาท่าน <b style="color:var(--success)">${passed}</b> จาก ${L.length} เรื่อง` +
-          ` (ตรงกรรม ${byDad.great || 0} · ใช้ได้ ${byDad.ok || 0})` +
-          ` · ท่านติงว่าลงเกินกรรม <b style="color:var(--destructive)">${byDad.cruel || 0}</b>` +
-          ` · ตีกลับ <b style="color:var(--destructive)">${(byDad.bad || 0) + (byDad.terrible || 0)}</b>` +
-          `<br>รวมแล้วท่านลงหนักเกินไป <b>${overVaras}</b> วาระ และเบาไป <b>${shortVaras}</b> วาระ`
-          : 'ยังไม่มีเรื่องให้ท่านอ่าน'}
-      </div>
-      <div class="arch-list">${rows || '<div class="arch-meta">แฟ้มยังว่างเปล่า — ท่านยังไม่ได้ตัดสินใครเลย</div>'}</div>`;
-    box.querySelector('#s-arch-x').onclick = () => showArchive(false);
+    const box=dlg.querySelector('#st-arch'),hud=dlg.querySelector('.st-hud');if(!box)return;
+    box.hidden=!on;hud?.classList.toggle('archive-open',on);R?.lock(on);
+    // Remove obscured HUD controls from keyboard navigation while the modal owns focus.
+    const covered=dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls,#st-exit');
+    covered.forEach(el=>el.inert=on);
+    if(!on){archiveFocus?.focus();return;}
+    archiveFocus=document.activeElement;
+    box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label',t('h4.archive'));
+    const records=[...g.ledger].reverse().map(x=>archiveRecord(x,x.archiveSoul || g.closed.find(c=>c.soul.id===x.id)?.soul));
+    const list=records.map((x,i)=>archiveCard(x,i,artUrl(typeof x.portrait==='number'?'spirit'+x.portrait:x.portrait))).join('');
+    box.innerHTML=`<div class="arch-head"><b>${esc(t('h4.archive'))}</b><button type="button" data-archive-close>${t('room.close')}</button></div>
+      <div class="arch-sum">${esc(t('h4.archiveSummary').replace('{n}',records.length).replace('{five}',records.filter(x=>x.stars===5).length).replace('{over}',records.filter(x=>x.over>0).length).replace('{short}',records.filter(x=>x.short>0).length))}</div>
+      <div class="arch-card-grid">${list || `<p>${t('h4.emptyArchive')}</p>`}</div><div class="arch-detail" hidden></div>`;
+    const close=box.querySelector('[data-archive-close]');close.onclick=()=>showArchive(false);close.focus();
+    const grid=box.querySelector('.arch-card-grid'),detail=box.querySelector('.arch-detail');
+    box.querySelectorAll('[data-archive-card]').forEach(button=>button.onclick=()=>{
+      const x=records[+button.dataset.archiveCard],tag=DAD_TAG[dadGrade(x)] || DAD_TAG.ok;
+      grid.hidden=true;detail.hidden=false;
+      detail.innerHTML=`<button type="button" data-archive-back>${t('h4.backCards')}</button><h3>${esc(x.name)}</h3><p>${t('h4.deserved')}: ${x.deserved} · ${t('h4.given')}: ${x.given} · ${esc(t('h4.'+x.verdict))}</p><p>${'★'.repeat(Math.max(0,Math.min(5,x.stars || 0)))} · ${t('h4.points')}: ${x.score ?? 0} · ${t('h4.turn')}: ${x.tick}</p><p>${t('h4.over')}: ${x.over || 0} · ${t('h4.short')}: ${x.short || 0} · ${t('h4.playerKarma')}: +${x.karma || 0}${x.back ? ' · '+t('h4.returned') : ''}</p><h4>${t('h4.deeds')}</h4><p>${esc(x.deeds)}</p><h4>${t('h4.father')}</h4><p style="color:${tag.c}">${esc(tag.t)}</p><p>${esc(BOSS_LINE[dadGrade(x)] || BOSS_LINE.ok)}</p>`;
+      const back=detail.querySelector('[data-archive-back]');back.onclick=()=>{detail.hidden=true;grid.hidden=false;button.focus();};back.focus();
+    });
+    box.onkeydown=e=>{
+      if(e.key==='Escape'){e.preventDefault();e.stopPropagation();showArchive(false);return;}
+      if(e.key==='Tab'){
+        const buttons=[...box.querySelectorAll('button')].filter(b=>!b.closest('[hidden]'));
+        const first=buttons[0],last=buttons[buttons.length-1];
+        if(e.shiftKey && document.activeElement===first){e.preventDefault();last?.focus();}
+        else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first?.focus();}
+      }
+    };
   }
 
   function openTraining(sk) {
@@ -4446,6 +4429,7 @@ function openStation(k, emergency = false) {
   if (exitBtn) exitBtn.onclick = () => {
     if (!mgOpen && nearRoomExit(R.pos(), exit)) dlg.close();
   };
+  let wasMirrorNear=false;
   R.onFrame = near => {
     if (exitBtn) {
       exitBtn.hidden = mgOpen || R.sleeping() || !nearRoomExit(R.pos(), exit);
@@ -4492,6 +4476,7 @@ function openStation(k, emergency = false) {
       const val = dlg.querySelector('#st-mp-value'); if (val) val.textContent = `${Math.round(g.mp)}/${g.mpMax}`;
       const fill = dlg.querySelector('#st-mp-fill'); if (fill) fill.style.width = `${100*g.mp/g.mpMax}%`;
     }
+    if(k === 'krajok') { const nearStand=nearMirror(R.pos()); if(nearStand!==wasMirrorNear){wasMirrorNear=nearStand;panels();} }
     const trainingNear = R.inTrainingReach();
     if (near === wasNear && trainingNear === wasTrainingNear) return;     // แตะ DOM เฉพาะตอนสถานะเปลี่ยนจริง
     wasNear = near; wasTrainingNear = trainingNear; panels();
@@ -4499,11 +4484,13 @@ function openStation(k, emergency = false) {
   if (k === 'krajok') {
     mirrorCharge = mountMirrorCharge(dlg.querySelector('.st-room'), {
       anchor:(...p) => R.anchor(...p), alive:mine, paused:() => g.paused,
-      onState:() => { const playing=!!mirrorCharge?.playing();mgOpen=playing;R.lock(playing);if(mine()) panels(); },
+      onState:() => { if(mine())panels(); },
+      canAdjust:()=>nearMirror(R.pos()),
       canPlace:() => !g.powerLocked(g.powerOf('mirror')),
       canCharge:() => { const st=stationHere(), p=g.powerOf('mirror'); return !!st && !g.powerLocked(p) && p.ammo<p.max && g.tick >= (st.kanCd || 0); },
       onCharge:(angle,aspect) => { const ok=g.chargeMirror(angle,aspect); if(ok) {sfx('item');panels();refresh();} return ok; },
     });
+    R.mirrorPlaced=()=>!!mirrorCharge?.placed();
     onDlgClose(() => mirrorCharge.destroy());
   }
   R.start();

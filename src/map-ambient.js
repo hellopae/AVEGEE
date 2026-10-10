@@ -1,3 +1,4 @@
+import { drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js';
 import { zoneStyle } from './scene-style.js';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
@@ -6,15 +7,33 @@ const seed = n => frac(Math.sin(n * 127.1 + 311.7) * 43758.5453);
 const mod = (n, d) => ((n % d) + d) % d;
 
 export function ambientPixelKind(r, g, b, y, zone, x = .5) {
+  if ((zone === 'th' || zone === 'asia') && !h3SurfaceContains(zone, x, y)) return null;
   const frozenChannel = (x > .312 && x < .522 && y > .153 && y < .282) ||
     (x > .308 && x < .397 && y > .25 && y < .7) ||
     (x > .37 && x < .657 && y > .60 && y < .697) ||
     (x > .626 && x < .708 && y > .648 && y < .765);
+  if ((zone==='th'||zone==='asia') && y<.77 && r>180 && g>25 && r>g*.94 && r>b*1.5 && b<190)return 'lava';
   if (zone !== 'west' && r > 190 && g > 65 && g < 225 && b < 100 && y < .77) return 'lava';
-  if ((y > .745 || zone === 'west' && frozenChannel) && b > 65 && b > r * 1.18 && b >= g * .92 &&
+  if ((y > ((zone === 'th' || zone === 'asia') ? .735 : .745) || zone === 'west' && frozenChannel) && b > 65 && b > r * 1.18 && b >= g * .92 &&
       (zone !== 'west' || r < 150 && g > r * 1.5)) return 'water';
   if (zone === 'cyberhell' && y < .74 && b > 160 && r > 75 && b > r * 1.3 && g < r * .8) return 'electric';
   return null;
+}
+
+export function strictSurfaceCells(data,sw,sh,width,height,zone) {
+  const result=new Array(width*height).fill(null);
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    let kind,valid=true;
+    for(let sy=Math.floor(y*sh/height);sy<Math.ceil((y+1)*sh/height)&&valid;sy++)
+      for(let sx=Math.floor(x*sw/width);sx<Math.ceil((x+1)*sw/width);sx++){
+        const i=(sy*sw+sx)*4;
+        const current=data[i+3]?ambientPixelKind(data[i],data[i+1],data[i+2],sy/sh,zone,sx/sw):null;
+        if(!current || kind&&current!==kind){valid=false;break;}
+        kind=current;
+      }
+    if(valid)result[y*width+x]=kind;
+  }
+  return result;
 }
 
 function masksFor(bg, zone) {
@@ -22,28 +41,48 @@ function masksFor(bg, zone) {
   if (!zones) { zones=new Map();cache.set(bg,zones); }
   if (zones.has(zone)) return zones.get(zone);
   if (!bg.naturalWidth || !bg.naturalHeight) return null;
-  // Sample once at quarter resolution; no pixel readback in the animation loop.
+  // Build quarter-resolution layers once; no pixel readback in the animation loop.
   const width=Math.ceil(bg.naturalWidth/4), height=Math.ceil(bg.naturalHeight/4);
-  const sample=document.createElement('canvas'); sample.width=width;sample.height=height;
+  const h3=zone==='th'||zone==='asia';
+  const sample=document.createElement('canvas');
+  sample.width=h3?bg.naturalWidth:width;sample.height=h3?bg.naturalHeight:height;
   const sc=sample.getContext('2d',{willReadFrequently:true});sc.imageSmoothingEnabled=false;
-  sc.drawImage(bg,0,0,width,height);
+  sc.drawImage(bg,0,0,sample.width,sample.height);
   let data;
-  try { data=sc.getImageData(0,0,width,height).data; }
+  try { data=sc.getImageData(0,0,sample.width,sample.height).data; }
   catch { zones.set(zone,null); return null; }
-  const layers={};
+  // H3 requires every original pixel covered by a coarse cell to be the same
+  // surface. Small painted rocks and railings cannot disappear in downsampling.
+  const cells=h3?strictSurfaceCells(data,sample.width,sample.height,width,height,zone):null;
+  const layers={}, layerPixels={};
   for (const kind of ['water','lava','electric']) {
     const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
     const c=canvas.getContext('2d'), pixels=c.createImageData(width,height);
     for(let y=0;y<height;y++)for(let x=0;x<width;x++){
       const i=(y*width+x)*4;
-      if(data[i+3] && ambientPixelKind(data[i],data[i+1],data[i+2],y/height,zone,x/width)===kind){
+      if(cells ? cells[y*width+x]===kind : data[i+3] && ambientPixelKind(data[i],data[i+1],data[i+2],y/height,zone,x/width)===kind){
         pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=pixels.data[i+3]=255;
       }
     }
-    c.putImageData(pixels,0,0);layers[kind]=canvas;
+    c.putImageData(pixels,0,0);layers[kind]=canvas;layerPixels[kind]=pixels.data;
   }
   const fx=document.createElement('canvas');fx.width=width;fx.height=height;
-  const result={...layers,fx,width,height};zones.set(zone,result);return result;
+  const points={water:[],lava:[]}, edges=[], tracks={};
+  if(zone==='th'||zone==='asia')for(const kind of ['water','lava']) {
+    const pixels=layerPixels[kind];
+    // Strict source-pixel coverage already keeps each cell inside painted banks.
+    const c=layers[kind].getContext('2d'), safe=c.createImageData(width,height);
+    for(let y=1;y<height-1;y++)for(let x=1;x<width-1;x++){
+      if(pixels[(y*width+x)*4+3]){const i=(y*width+x)*4;safe.data[i]=safe.data[i+1]=safe.data[i+2]=safe.data[i+3]=255;
+        points[kind].push([x/width,y/height]);
+        if(kind==='lava' && (x<3||y<3||x>=width-3||y>=height-3 ||
+          !pixels[((y-3)*width+x)*4+3]||!pixels[((y+3)*width+x)*4+3]||
+          !pixels[(y*width+x-3)*4+3]||!pixels[(y*width+x+3)*4+3]))edges.push([x/width,y/height]);}
+    }
+    c.putImageData(safe,0,0);
+    tracks[kind]=prepareH3SurfaceTracks(zone,kind,points[kind],edges);
+  }
+  const result={...layers,fx,width,height,tracks};zones.set(zone,result);return result;
 }
 
 function masked(ctx, masks, kind, W, H, draw) {
@@ -58,6 +97,11 @@ function masked(ctx, masks, kind, W, H, draw) {
 export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false) {
   if (reduced) return;
   const masks=masksFor(bg,zone);if(!masks)return;
+  if(zone==='th'||zone==='asia'){
+    ctx.save();
+    for(const kind of ['water','lava'])masked(ctx,masks,kind,W,H,c=>drawH3Surfaces(c,zone,kind,time,W,H,masks.tracks[kind]));
+    ctx.restore();return;
+  }
   const t=time/1000;
   ctx.save();
   masked(ctx,masks,'water',W,H,c=>{
