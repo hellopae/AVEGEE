@@ -4921,119 +4921,59 @@ addEventListener('pointerdown', e => {          // แตะที่อื่�
 const titleEl = $('#title');
 const splashEl = $('#splash');
 const splashVideo = $('#splash-video');
-const coverVfx = $('#cover-vfx');
+const coverArtEl = $('#cover-art');
 let started = false;
 let splashDone = false;
+let coverSettled = false;
 
-// ---- H5a: ลำดับเปิดเกม = สแปลช (โลโก้ไฟ ~4.9 วิ แรกของ intro-opening-v2) → มืด → วิดีโอปก → ค้างที่ภาพปก v5 ----
-// วิดีโอปกไม่อยู่ใน preload วิกฤต: เริ่มดึงตอนสแปลชเริ่มเล่น (มีเวลานำ ~5 วิ) · ตามไม่ทัน/เล่นไม่ได้/กระตุกค้าง = ภาพปกนิ่งทันที
-const COVER_VIDEO = 'img/home-intro-v5.mp4?v=h5a';
-const SPLASH_CUT = 4.9;        // วินาทีที่ไฟโลโก้ลุกสุด — ไฟล์เดิมตัดเป็นฉากมืดของพญายมที่ 5.0 จึงหยุดก่อนถึงตรงนั้น
-const COVER_WAIT_MS = 1500;    // รอวิดีโอปกพร้อมหลังโลโก้ดับได้อีกเท่านี้ ไม่งั้นแสดงปกนิ่ง
-const COVER_STALL_MS = 1800;   // กระตุกค้างระหว่างเล่นนานเท่านี้ = ตัดไปปกนิ่ง
-let coverPhase = 'idle';       // idle → loading → playing → settled (fallback ข้ามไป settled ได้ทุกจุด)
-let coverStallTimer = 0;
+// ---- อินโทร v3: intro-opening-v3.mp4 (~19 วิ: โลโก้ไฟ → มืด → ค่อยสว่าง → ยมบาทน้อยหันหลังเดินขึ้นบัลลังก์) เล่นจนจบครั้งเดียว ----
+// เฟรมสุดท้ายของวิดีโอคือองค์ประกอบเดียวกับภาพปก cover-v4 (#cover-art อยู่ใต้สแปลชอยู่แล้ว) → ค้างเฟรมสุดท้ายแล้ว dissolve เข้าปกนิ่ง
+// ปุ่มข้าม/error/reduced-motion/timeout สำรอง = dissolve เร็วเข้าปกเลย · เมนู/โลโก้ค่อยๆ โผล่หลังสแปลชหาย · H5b เริ่มเมื่อปกนิ่ง
+// (เลิกใช้วิดีโอปก H5a แล้ว — ยมฯ ในนั้นหันหน้า ขัดกับปก v4 ที่หันหลัง)
 
-const noCoverVideo = () => matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData;
-
-/** เริ่มดึงวิดีโอปกเบื้องหลัง (เรียกตอนสแปลชเริ่มเล่น) */
-function prepareCoverVideo() {
-  if (coverPhase !== 'idle' || noCoverVideo()) return;
-  coverPhase = 'loading';
-  coverVfx.preload = 'auto';
-  coverVfx.src = COVER_VIDEO;
-  coverVfx.addEventListener('error', () => settleCover(), { once:true });
-  coverVfx.load();
+/** ปกนิ่งพร้อมแล้ว — โชว์เมนู/โลโก้ (.ready) และแจ้ง H5b เริ่มเอฟเฟกต์ไฟ/ลาวา (.cover-settled) */
+function settleCover() {
+  if (coverSettled) return;
+  coverSettled = true;
+  titleEl.classList.add('ready', 'cover-settled');
+  document.dispatchEvent(new CustomEvent('avegee:cover-settled'));
 }
 
-/** จบที่ภาพปกนิ่ง — ภาพนิ่ง (#cover-art) อยู่ใต้วิดีโออยู่แล้ว แค่ dissolve วิดีโอออก (fast = ข้าม/ผิดพลาด) */
-function settleCover(fast = false) {
-  clearTimeout(coverStallTimer);
-  if (coverPhase === 'settled') return;
-  const wasShown = coverPhase === 'playing';
-  coverPhase = 'settled';
-  if (!coverVfx.hidden && wasShown) {
-    coverVfx.style.transitionDuration = fast ? '.3s' : '';
-    coverVfx.classList.add('fading');
-    setTimeout(() => { coverVfx.hidden = true; coverVfx.pause(); }, fast ? 340 : 540);
-  } else {
-    coverVfx.hidden = true;
-    coverVfx.pause();
-    coverVfx.removeAttribute('src');   // ยังไม่ได้เล่น = เลิกดึงไฟล์ที่เหลือ
-    coverVfx.load();
-  }
-  titleEl.classList.add('cover-settled');
-  document.dispatchEvent(new CustomEvent('avegee:cover-settled')); // H5b: เริ่มเอฟเฟกต์ไฟ/ลาวาบนปกได้
+/** เฟรมสุดท้ายของวิดีโอ = ปก v4 ที่ครอปบน/ล่างข้างละ ~1.2% (1300×708 เทียบ 1376×768) → บนจอสูง/จอ 16:9 วิดีโอซูมกว่าภาพปกนิ่ง ~2.5%
+ *  คืนค่า k = สเกลวิดีโอ ÷ สเกลปกนิ่ง (ตาม object-fit:cover ทั้งคู่) ให้ปกเริ่มที่ k แล้วค่อยถอยเป็น 1 ระหว่าง dissolve = ต่อภาพตรงเป๊ะ ไม่สะดุด */
+function coverMatchScale() {
+  const vw = splashEl.clientWidth, vh = splashEl.clientHeight;
+  const { videoWidth: w, videoHeight: h } = splashVideo;
+  if (!vw || !vh || !w || !h) return 1;
+  const COVER_W = 1376, COVER_H = 768;                      // อัตราส่วนปก v4 (1678×937 ≈ 1376×768)
+  const seenH = h * COVER_W / w;                            // ความสูงของปก (หน่วยพิกเซลปก) ที่เห็นในวิดีโอ
+  const k = Math.max(vw / COVER_W, vh / seenH) / Math.max(vw / COVER_W, vh / COVER_H);
+  return Number.isFinite(k) ? Math.min(1.06, Math.max(1, k)) : 1;
 }
 
-/** โลโก้ไฟดับแล้ว — เล่นวิดีโอปกถ้าพร้อม ไม่พร้อมภายใน COVER_WAIT_MS ก็ปกนิ่ง */
-function playCoverVideo() {
-  if (coverPhase !== 'loading') { hideSplash(); return settleCover(); }
-  const t0 = performance.now();
-  const tick = () => {
-    if (coverPhase !== 'loading') { hideSplash(); return settleCover(); }
-    if (coverVfx.readyState >= 3) return begin();            // HAVE_FUTURE_DATA
-    if (performance.now() - t0 > COVER_WAIT_MS) { hideSplash(); return settleCover(); }
-    setTimeout(tick, 80);
-  };
-  const begin = () => {
-    coverVfx.hidden = false;
-    coverVfx.play().then(() => {
-      coverPhase = 'playing';
-      hideSplash();          // เฟรมแรกของวิดีโอคือสี #090407 เดียวกับสแปลช — สลับแล้วตาไม่เห็นรอยต่อ
-      armStallWatch();
-    }).catch(() => { hideSplash(); settleCover(); });
-  };
-  tick();
-}
-
-function armStallWatch() {
-  coverVfx.addEventListener('waiting', () => {
-    clearTimeout(coverStallTimer);
-    coverStallTimer = setTimeout(() => settleCover(true), COVER_STALL_MS);
-  });
-  coverVfx.addEventListener('playing', () => clearTimeout(coverStallTimer));
-  coverVfx.addEventListener('ended', () => settleCover(), { once:true });
-}
-
-function hideSplash() {
+/** slow = วิดีโอเล่นจบ (dissolve ช้า + ปกถอยซูมเข้าที่) · ไม่ slow = ข้าม/ผิดพลาด/หมดเวลา */
+function hideSplash(slow = false) {
   if (splashEl.hidden) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) splashEl.hidden = true;
-  else {
-    splashEl.classList.add('leaving');
-    setTimeout(() => { splashEl.hidden = true; }, 380);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { splashEl.hidden = true; return settleCover(); }
+  if (slow && coverArtEl) {
+    coverArtEl.style.transition = 'none';
+    coverArtEl.style.transform = `scale(${coverMatchScale()})`;
+    void coverArtEl.offsetWidth;                            // บังคับ reflow ให้เริ่มจาก k จริง
+    coverArtEl.style.transition = 'transform .9s ease-in-out';
+    coverArtEl.style.transform = 'scale(1)';
   }
+  splashEl.classList.toggle('slow', slow);
+  splashEl.classList.add('leaving');
+  setTimeout(() => { splashEl.hidden = true; if (!started) settleCover(); }, slow ? 900 : 380);
 }
 
-/** ข้าม/ผิดพลาด/หมดเวลา → ปกนิ่งทันที (ไม่เล่นวิดีโอปก) */
-function revealTitle() {
+/** วิดีโอจบ/ข้าม/ผิดพลาด/หมดเวลา → ปกนิ่ง (เรียกซ้ำได้ ทำครั้งเดียว) */
+function revealTitle(slow = false) {
   if (splashDone) return;
   splashDone = true;
   splashVideo.pause();
-  hideSplash();
-  settleCover(true);
-}
-
-/** ไฟโลโก้ลุกสุดแล้ว (SPLASH_CUT) — ค้างเฟรมนั้น หรี่เข้า #090407 แล้วส่งต่อให้วิดีโอปก */
-function handoffToCoverVideo() {
-  if (splashDone) return;
-  if (coverPhase !== 'loading') return revealTitle();   // ไม่มีวิดีโอปก (ประหยัดดาต้า/ผิดพลาดแล้ว) → ปกนิ่งเลย
-  splashDone = true;
-  splashVideo.pause();
-  splashEl.classList.add('dim');
-  setTimeout(playCoverVideo, 500);
-}
-
-function watchSplashCut() {
-  if (splashDone) return;
-  if (splashVideo.currentTime >= SPLASH_CUT) return handoffToCoverVideo();
-  requestAnimationFrame(watchSplashCut);
-}
-
-/** แตะ/คลิกบนปกระหว่างวิดีโอเล่น = ข้ามไปภาพปก (ปุ่มยังทำงานตามปกติ ไม่ถือเป็นการข้าม) */
-function skipCoverVideo(e) {
-  if (coverPhase !== 'playing' || e.target.closest('button, a, .title-menu')) return;
-  settleCover(true);
+  hideSplash(slow);
 }
 
 /** เริ่มเล่นจริง — เรียกได้ครั้งเดียว */
@@ -5044,12 +4984,6 @@ function startPlay(fresh) {
   splashDone = true;
   splashVideo.pause();
   splashEl.hidden = true;
-  coverPhase = 'settled';
-  clearTimeout(coverStallTimer);
-  coverVfx.hidden = true;
-  coverVfx.pause();
-  coverVfx.removeAttribute('src');   // คืนหน่วยความจำ/ตัวถอดรหัส — ไม่ต้องใช้อีกจนกว่าจะโหลดหน้าใหม่
-  coverVfx.load();
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
@@ -5090,7 +5024,6 @@ function buildTitle() {
   // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ปลุกเพลงหน้าปกตอนแตะครั้งแรกที่ไหนก็ได้บนปก
   const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
   titleEl.addEventListener('pointerdown', wake);
-  titleEl.addEventListener('pointerdown', skipCoverVideo);
 
   // หน้าปกเป็น webp ตั้งแต่ 8 ก.ย. 2569 — png เดิม 1.3 MB คือไฟล์ใหญ่สุดของทั้งเกม
   // และเป็นภาพแรกที่ต้องมาถึง (144 KB แล้ว) · ถ้าวันหลังดรอป cover.png กลับมาก็ยังใช้ได้
@@ -5104,7 +5037,7 @@ function buildTitle() {
     probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
     probe.onerror = () => probeCover(rest);
     probe.src = url;
-  })(['img/cover-v5.webp', 'img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
+  })(['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);   // v4 = ยมฯ หันหลัง ตรงกับเฟรมสุดท้ายของ intro-opening-v3 (cover-v5 ยมฯ หันหน้า ไม่ใช้แล้ว)
 
   // โลโก้/ปุ่ม เปลี่ยนภาษาทันทีไม่ต้องรีโหลด (ข้อ C1) — สลับจริงทำที่หน้าตั้งค่า (ข้อ B)
   applyTitleLang();
@@ -5261,17 +5194,16 @@ const FRESH = sessionStorage.getItem('avegee.fresh');
 sessionStorage.removeItem('avegee.fresh');
 const enterGate = $('#enter-gate');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-$('#splash-skip').onclick = revealTitle;
-splashVideo.addEventListener('ended', revealTitle, { once:true });
-splashVideo.addEventListener('error', revealTitle, { once:true });
+$('#splash-skip').onclick = () => revealTitle();
+splashVideo.addEventListener('ended', () => revealTitle(true), { once:true });   // เล่นจบ = dissolve ช้า เข้าปก v4
+splashVideo.addEventListener('error', () => revealTitle(), { once:true });
 function playSplash() {
   if (splashDone) return;
   if (reducedMotion) return revealTitle();
   splashEl.classList.add('playing');
-  prepareCoverVideo();
   if (splashVideo.error) revealTitle();
-  else splashVideo.play().then(watchSplashCut, revealTitle);
-  setTimeout(revealTitle, 25000); // ไฟล์ 19 วินาที แต่ตัดส่งต่อวิดีโอปกที่ SPLASH_CUT; ยังมีปุ่มข้ามและ fallback
+  else splashVideo.play().catch(() => revealTitle());
+  setTimeout(() => revealTitle(), 25000); // วิดีโอ 19 วิ เล่นจนจบเอง · 25 วิ = สำรองถ้าค้าง (ยังมีปุ่มข้ามด้วย)
 }
 function enterFromTap() {
   enterGate.hidden = true;
@@ -5293,10 +5225,7 @@ async function afterBoot() {
 if (document.documentElement.dataset.bootReady === 'true' || !$('#boot')) afterBoot();
 else addEventListener('avegee:boot-ready', afterBoot, { once:true });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { coverVfx.pause(); pauseWhenLeaving(); }
-  else if (coverPhase === 'playing' && !started && !coverVfx.hidden) {
-    coverVfx.play().catch(() => settleCover(true));
-  }
+  if (document.hidden) pauseWhenLeaving();
   if (!document.hidden) setTimeout(showAutoPause, 0);
 });
 updatePlay();

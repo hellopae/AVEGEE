@@ -5,8 +5,10 @@ import {execFileSync} from 'node:child_process';
 import {coverFit, coverTracks, coverFxActive, installCoverFx, COVER_FX_SIZE, COVER_FX_BUDGET} from '../src/cover-fx-h5b.js';
 import {zoneTiers} from '../src/asset-preload.js';
 const html=readFileSync('index.html','utf8');
-test('new layer stays between video and scrim, crops with the art, cannot intercept buttons',()=>{
-  assert.ok(html.indexOf('id="cover-vfx"')<html.indexOf('id="cover-fx-h5b"'));
+test('fx layer stays between the still art and scrim, crops with the art, cannot intercept buttons (no cover video layer any more)',()=>{
+  assert.ok(html.indexOf('id="cover-art"')<html.indexOf('id="cover-fx-h5b"'));
+  assert.ok(!html.includes('id="cover-vfx"'));
+  assert.ok(html.indexOf('id="splash"')<html.indexOf('id="title"'));
   assert.ok(html.indexOf('id="cover-fx-h5b"')<html.indexOf('<div class="scrim">'));
   assert.match(html,/#cover-fx-h5b\{[^}]*object-fit:cover;object-position:center;pointer-events:none/);
   assert.match(html,/@media\(prefers-reduced-motion:reduce\)\{#cover-fx-h5b\{display:none\}\}/);
@@ -20,7 +22,8 @@ test('masks are background assets, manually registered in both manifests',()=>{
   const manifest=JSON.parse(readFileSync('img/manifest.json'));
   const tiers=zoneTiers(catalog,'th','th');
   for(const kind of ['lava','fire','volcano','soul']) {
-    const path=`img/cover-fx/${kind}-mask.png`;
+    const path=`img/cover-fx/${kind}-v4-mask.png`;
+    assert.ok(!catalog.shared.includes(`img/cover-fx/${kind}-mask.png`)&&!manifest.rest.includes(`cover-fx/${kind}-mask.png`),'old v5 masks are no longer registered');
     assert.ok(catalog.shared.includes(path)); assert.ok(manifest.rest.includes(path.slice(4)));
     assert.ok(tiers.background.includes(path)); assert.ok(!tiers.critical.includes(path));
   }
@@ -72,18 +75,28 @@ test('hidden and unsettled covers are inactive',()=>{
   const h=harness(); assert.equal(coverFxActive(h.title,h.doc,h.motion),false);
   h.classes.add('cover-settled');h.title.hidden=true;assert.equal(coverFxActive(h.title,h.doc,h.motion),false);h.dispose();
 });
-test('shipped masks are 688x384 binary alpha, never cover the characters or throne',()=>{
+test('fx loads the v4 masks and the h5b module cache-busts with the intro-v3 suffix',()=>{
+  const js=readFileSync('src/cover-fx-h5b.js','utf8');
+  assert.match(js,/img\/cover-fx\/\$\{kind\}-v4-mask\.png/);
+  assert.doesNotMatch(js,/\$\{kind\}-mask\.png/);
+  assert.match(html,/src\/cover-fx-h5b\.js\?v=h5b-intro-v3"/);
+  assert.match(html,/src\/ui\.js\?v=20261009[^"]*-zoom-intro-v3"/);
+  assert.match(readFileSync('src/preload.js','utf8'),/CATALOG_VERSION = '20261008[^']*-zoom-intro-v3'/);
+  assert.match(readFileSync('src/art.js','utf8'),/manifest\.json\?v=20261009[^']*-h4-zoom-intro-v3'/);
+});
+test('shipped v4 masks are 688x384 binary alpha, never cover the characters or throne',()=>{
   const result=execFileSync('python3',['-c',`
 from PIL import Image, ImageChops
 union=Image.new('L',(688,384))
 for kind in ['lava','fire','volcano','soul']:
- m=Image.open(f'img/cover-fx/{kind}-mask.png')
+ m=Image.open(f'img/cover-fx/{kind}-v4-mask.png')
  assert m.size==(688,384)
  a=m.getchannel('A')
  assert set(a.tobytes())=={0,255}
  union=ImageChops.lighter(union,a)
 # Main characters and throne remain untouched (cover-reference coordinates).
-for x,y in [(530,225),(290,405),(560,450),(880,405),(1040,475),(1394,331)]:
+# + cover-v4's back-facing Yama (hair, crown, back, robe, boots) — the figure that differs from cover-v5
+for x,y in [(530,225),(290,405),(560,450),(880,405),(1040,475),(1394,331),(545,330),(548,380),(545,430),(520,480),(580,480),(548,300)]:
  assert union.getpixel((round(x*688/1678),round(y*384/937)))==0
 print('masks ok')
 `],{encoding:'utf8'});
