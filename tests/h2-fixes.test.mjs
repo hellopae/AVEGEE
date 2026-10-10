@@ -47,6 +47,7 @@ test('H2-6: command wheel is placed beside the right-most team member (desktop) 
   assert.doesNotMatch(ui, /cx - w \* 0\.41/);
   assert.match(css, /not\(\.final-team\)>\.fig\.you\{left:28%\}/);
   assert.match(css, /not\(\.final-team\) \.actor-wheel\{bottom:33%\}/);
+  assert.match(css, /not\(\.final-team\) \.combat-wheel \.command-options\{left:5%;max-width:152px\}/);
 });
 
 // ข้อ 7 — ท่ายืนหลังฟาดหันขวา ตรงกับแผ่นดาบ
@@ -65,4 +66,34 @@ test('H2-2: map zoom control exists and the camera eases with the frontier formu
   assert.match(ui, /const MAP_ZOOM_LEVELS = \[1, 2\.5\]/);
   assert.match(ui, /1 - Math\.exp\(-dt \/ 130\)/);
   assert.match(ui, /updateMapCamera\(now\);\n\s+render\(ctx, g, now, hover, sel\);/);
+});
+
+// ข้อ 3 (ต่อ) — ลุกจากเบาะแล้วต้องกลับเข้าพื้นที่เดินได้ (จุดนั่งอยู่เหนือขอบพื้นที่เดินได้)
+import { createGame } from '../src/game.js';
+import { STATIONS } from '../src/data.js';
+import { makeRoom } from '../src/room.js';
+globalThis.Image ??= class {};
+test('H2-3: standing up from the cushion puts Yama back inside the walkable floor in every zone (manual and MP-full stand-up)', () => {
+  const prevWindow = globalThis.window, prevDocument = globalThis.document;
+  const noop = () => {};
+  const ctx = new Proxy({}, { get: (obj, key) => key in obj ? obj[key] : key === 'measureText' ? () => ({ width: 0 }) : () => new Proxy({}, { get: () => noop }) });
+  globalThis.window = { addEventListener: noop, removeEventListener: noop };
+  globalThis.devicePixelRatio = 1; globalThis.addEventListener = noop; globalThis.removeEventListener = noop;
+  globalThis.document = { createElement: () => ({ getContext: () => ctx }) };
+  const cv = { width: 900, height: 620, getContext: () => ctx, addEventListener: noop, removeEventListener: noop, getBoundingClientRect: () => ({ width: 900, height: 620 }) };
+  try {
+    for (const zone of ['th', 'asia', 'west', 'cyberhell']) {
+      for (const how of ['manual', 'mpFull']) {
+        const g = createGame(); g.save = () => true; g.onChange = () => {}; g.zone = zone; g.mp = 0;
+        const room = teaRoom(zone); room.me = [room.act[0] + .03, room.act[1] + .02];
+        const R = makeRoom(cv, g, STATIONS.find(d => d.k === 'tea'), room, `img/tea-${zone}-recovery.png`, null);
+        assert.equal(R.setSit(true), true, `${zone}: sits`);
+        assert.deepEqual(R.pos().slice(0, 2), room.act);
+        if (how === 'manual') R.setSit(false); else { g.mp = g.mpMax; R.tick(50); }
+        assert.equal(R.sitting(), false);
+        const [x, y] = R.pos(), [x1, y1, x2, y2] = room.walk;
+        assert.ok(x >= x1 && x <= x2 && y >= y1 && y <= y2, `${zone}/${how}: after standing up at ${x},${y} Yama is on the walkable floor`);
+      }
+    }
+  } finally { globalThis.window = prevWindow; globalThis.document = prevDocument; }
 });

@@ -242,6 +242,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       P.tx = null; P.ty = null;
     } else {
       sitting = false;
+      // H2: จุดนั่งอยู่บนเบาะ (สูงกว่าขอบพื้นที่เดินได้) — ลุกขึ้นแล้วต้องย้ายกลับเข้าพื้นที่เดินได้ ไม่งั้นตัวละครขยับไม่ได้
+      const [sx, sy] = snap(P.x, P.y); P.x = sx; P.y = sy;
     }
     return true;
   }
@@ -276,8 +278,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — เติม MP ด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.mp < g.mpMax) {
         regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
-        if (g.mp >= g.mpMax) sitting = false;
-      } else sitting = false;
+        if (g.mp >= g.mpMax) setSit(false);
+      } else setSit(false);
       const now = performance.now();
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;

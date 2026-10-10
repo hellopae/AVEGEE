@@ -470,4 +470,6 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 @media(max-width:700px){
   .arena.combat-arena:not(.final-team)>.fig.you{left:28%}
   .arena.combat-arena:not(.final-team) .actor-wheel{bottom:33%}
+  /* เมนูย่อย (ฟันดาบ/พลัง/ไอเท็ม) เดิมกางไปทางซ้ายของวงจนทับยมบาท → กางลงมาใต้วง ชิดขวาของยมบาท (แถวละ 2 ปุ่ม) */
+  .arena.combat-arena:not(.final-team) .combat-wheel .command-options{left:5%;max-width:152px}
 }
