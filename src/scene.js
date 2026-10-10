@@ -3,7 +3,7 @@ import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-e
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
-import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js';
+import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapfx';
 // scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
 // แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด

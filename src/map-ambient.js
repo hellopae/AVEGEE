@@ -1,4 +1,4 @@
-import { drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js';
+import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js?v=mapfx';
 import { zoneStyle } from './scene-style.js';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
@@ -34,6 +34,19 @@ export function strictSurfaceCells(data,sw,sh,width,height,zone) {
     if(valid)result[y*width+x]=kind;
   }
   return result;
+}
+
+let lanternSprite;
+/** One shared warm radial sprite, built lazily on the first H3 frame (after the allocation-free reduced-motion check). */
+function lanternGlow() {
+  if (lanternSprite !== undefined) return lanternSprite;
+  lanternSprite = null;
+  const cv = document.createElement('canvas'); cv.width = cv.height = 64;
+  const c = cv.getContext('2d'), g = c?.createRadialGradient?.(32,32,0,32,32,32);
+  if (typeof g?.addColorStop !== 'function') return lanternSprite;
+  g.addColorStop(0,'rgba(255,214,110,.95)'); g.addColorStop(.3,'rgba(255,140,40,.55)'); g.addColorStop(1,'rgba(255,60,0,0)');
+  c.fillStyle = g; c.fillRect(0,0,64,64);
+  return lanternSprite = cv;
 }
 
 function masksFor(bg, zone) {
@@ -100,6 +113,7 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
   if(zone==='th'||zone==='asia'){
     ctx.save();
     for(const kind of ['water','lava'])masked(ctx,masks,kind,W,H,c=>drawH3Surfaces(c,zone,kind,time,W,H,masks.tracks[kind]));
+    drawH3Lanterns(ctx,zone,time,W,H,lanternGlow());
     ctx.restore();return;
   }
   const t=time/1000;
