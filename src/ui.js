@@ -3863,17 +3863,30 @@ function goMenu() {
   location.reload();
 }
 
-/** ปุ่มปิด/เปิดเสียงรวม — สลับได้ทันทีโดยไม่ต้องเข้าหน้าตั้งค่า */
+/** ปุ่มปิด/เปิดเสียงด่วน — สลับได้ทันทีโดยไม่ต้องเข้าหน้าตั้งค่า (I1-B ข้อ 5: ใช้รูป icon-sound / icon-sound-close ไม่ใช้อีโมจิ)
+ *  โมเดลเสียงเหลือสวิตช์เดียวต่อชนิด: AUDIO.bgmOn (เพลง) · AUDIO.sfxOn (เอฟเฟกต์) — ปุ่มด่วนปิด/เปิดทั้งคู่พร้อมกัน
+ *  สวิตช์รวม AUDIO.on คงไว้ true เสมอ (ดู normalizeMasterMute) จึงไม่มีกรณี "ปิดรวมอยู่แต่ไอคอนบอกว่าเปิด" */
+const allMuted = () => AUDIO.bgmOn === false && AUDIO.sfxOn === false;
+/** เซฟเก่าที่ปิดเสียงรวม (on=false) ย้ายมาเป็นปิดเพลง+เอฟเฟกต์ — พฤติกรรมเงียบเท่าเดิม แต่ไอคอนทุกที่ตรงกัน */
+function normalizeMasterMute() {
+  if (AUDIO.on === false) { AUDIO.on = true; AUDIO.bgmOn = false; AUDIO.sfxOn = false; saveAudio(); }
+}
+normalizeMasterMute();
 function drawMute() {
   const b = $('#mute');
   if (!b) return;
-  b.textContent = AUDIO.on ? '🔊 เสียง' : '🔇 ปิดเสียงอยู่';
-  b.style.opacity = AUDIO.on ? '' : '.6';
+  const off = allMuted();
+  const img = b.querySelector('img');
+  if (img) img.src = `img/ui/${off ? 'icon-sound-close' : 'icon-sound'}.png`;
+  b.setAttribute('aria-pressed', String(off));
+  const label = off ? 'เปิดเสียง / Unmute' : 'ปิดเสียง / Mute';
+  b.title = label; b.setAttribute('aria-label', label);
 }
 $('#mute').onclick = () => {
-  AUDIO.on = !AUDIO.on;
+  const turnOn = allMuted();
+  AUDIO.on = true; AUDIO.bgmOn = turnOn; AUDIO.sfxOn = turnOn;
   syncBgm(); saveAudio(); drawMute();
-  if (AUDIO.on) { unlock(); bgm(g.battle ? 'bgm-battle' : 'bgm-zone'); sfx('crack'); }
+  if (turnOn) { unlock(); bgm(g.battle ? 'bgm-battle' : 'bgm-zone'); sfx('crack'); }
 };
 drawMute();
 
@@ -5130,7 +5143,6 @@ function openSettings() {
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
       </div>
     </div>
-    <button id="s-mute" type="button" aria-pressed="${!AUDIO.on}">${AUDIO.on ? '🔊 ปิดเสียง / Mute' : '🔇 เปิดเสียง / Unmute'}</button>
     <div class="hint" data-t="settings.audioHint"></div>
 
     <div class="settings-lang">
@@ -5167,19 +5179,12 @@ function openSettings() {
           AUDIO[key] = AUDIO[key] === false;           // เปิด↔ปิด
           const off = AUDIO[key] === false;
           img.src = `img/ui/${off ? offIcon : onIcon}.png`; b.setAttribute('aria-pressed', String(off)); row.dataset.off = String(off);
-          syncBgm(); saveAudio();
+          syncBgm(); saveAudio(); drawMute();
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };
       };
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
       bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
-      d.querySelector('#s-mute').onclick = e => {
-        AUDIO.on = !AUDIO.on; syncBgm(); saveAudio(); drawMute();
-        e.currentTarget.setAttribute('aria-pressed', String(!AUDIO.on));
-        e.currentTarget.textContent = AUDIO.on ? '🔊 ปิดเสียง / Mute' : '🔇 เปิดเสียง / Unmute';
-        if (AUDIO.on) { unlock(); sfx('stamp'); }
-      };
-
       // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
       d.querySelector('#s-lang-toggle').onclick = e => {
         const r = e.currentTarget.getBoundingClientRect();
