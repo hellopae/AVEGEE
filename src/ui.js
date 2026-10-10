@@ -20,6 +20,7 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
+import { placeWheel, placeFinButton } from './wheel-place.js?v=i1b';
 import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
@@ -27,7 +28,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
-import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState } from './weapons.js';
+import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -2053,10 +2054,10 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const charged = (fx?.key === 'rage' && fx.side === 'you') || hp?.rageTurns > 0;
   const showRage = charged && !hurtNow && !usingAtk;
   const raging = charged && !hurtNow;
-  const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
   // I1-B ข้อ 3 — ต้นเหตุ "ยมฯ หันซ้ายหลังโจมตีธรรมดา": class .atk ตัดการพลิก scaleX(-1) ของท่ายืน (index.html: .fig.you.atk img{transform:scaleX(1)})
   // ซึ่งตั้งไว้สำหรับรูปท่าฟาด hero-yama-atk ที่วาดหันขวา — แต่ตอนฟันดาบธรรมดา youImg คือ "ท่ายืน" (แอนิเมชันดาบวาดบน canvas ทับ 580ms)
   // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
+  const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
     : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
@@ -3086,7 +3087,26 @@ function openBattle(after) {
       else if (multi || returnsToZone) { finRow.classList.add('fin-float', 'fin-center', 'fin-main'); stage.appendChild(finRow); }
       // H2 (คุณเป้ 10 ต.ค.): "เก็บไอเท็มที่ตกอยู่" ของศึกชายแดนเดิมค้างอยู่ขวาล่างข้างการ์ดศัตรู → ยกขึ้นเหนือแถวการ์ด
       // อยู่ในพื้นว่างระหว่างยมบาทกับศัตรู (ตำแหน่งดู .fin-above-cards ใน flow29c.css) ไม่บังตัวละคร
-      else if (b.kind === 'frontier') { finRow.classList.add('fin-float', 'fin-center', 'fin-main', 'fin-above-cards'); stage.appendChild(finRow); }
+      // I1-B ข้อ 4 — ย่อปุ่มลง ~78% และย้ายไป "กลางด้านล่างของสนาม" (ช่องว่างระหว่างการ์ดทีมซ้ายกับการ์ดศัตรูขวา) ไม่ทับการ์ดตัวละคร/ศัตรู
+      else if (b.kind === 'frontier') {
+        finRow.classList.add('fin-float', 'fin-center', 'fin-main', 'fin-above-cards'); stage.appendChild(finRow);
+        // CSS วางกลางล่างเป็นค่าตั้งต้น · วัดการ์ด HUD ที่อยู่แถวเดียวกับปุ่มจริง แล้วจัดกลางในช่องว่างระหว่างกัน (จำนวนทีม/ขนาดจอเปลี่ยนการ์ดกว้างไม่เท่ากัน)
+        const placeFin = () => {
+          if (!finRow.isConnected) return;
+          const area = stage.getBoundingClientRect(), fr = finRow.getBoundingClientRect();
+          if (!area.width || !fr.width) return;
+          const rel = r => ({ l:r.left - area.left, r:r.right - area.left, t:r.top - area.top, b:r.bottom - area.top });
+          const cards = [...stage.querySelectorAll('.battle-team-hud .battle-portrait, .battle-boss-hud, .battle-scene-talk')].map(e => rel(e.getBoundingClientRect()));
+          // ตัวละครบนสนามก็ไม่ควรโดนทับ — ใช้กรอบรูปที่หดเข้า 15% ข้างละด้าน (img มีขอบโปร่งใส) เป็นสิ่งกีดขวางด้วย
+          const sprites = [...stage.querySelectorAll('.fig img:not(.fx), .battle-squad img')].map(e => rel(e.getBoundingClientRect()))
+            .map(r => ({ l:r.l + (r.r - r.l) * 0.15, r:r.r - (r.r - r.l) * 0.15, t:r.t, b:r.b }));
+          const obstacles = [...cards, ...sprites].filter(r => r.r > r.l);
+          const best = placeFinButton({ area:{ w:area.width, h:area.height }, btn:{ w:fr.width, h:fr.height }, obstacles });
+          finRow.style.left = `${best.x}px`; finRow.style.bottom = `${area.height - best.y}px`; finRow.style.top = 'auto';
+        };
+        placeFin(); requestAnimationFrame(placeFin); setTimeout(placeFin, 260);
+        if (typeof ResizeObserver === 'function') new ResizeObserver(placeFin).observe(stage);
+      }
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
     applyHealFx();
@@ -3153,23 +3173,26 @@ function openBattle(after) {
     const anchor = stage.querySelector(`[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
     wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) paint(); });
     if (wheel && anchor) {
-      // ยกวงเหนือผู้ลงมือเล็กน้อย ให้เห็นตัวละครมากขึ้น — วัดซ้ำหลังกล่องเปิดจริง
-      // เพราะ paint() รอบแรกรันก่อน openDlg() (กล่องยังไม่มีขนาด วงเลยไปชิดซ้ายล่าง)
+      // I1-B ข้อ 2 — วงคำสั่งอยู่ "ขวาบนของตัวละครที่ถึงตา" ใกล้พอให้รู้ว่าเป็นของตัวนั้น แต่ไม่ทับตัว (H2 เคยย้ายไปชิดคนขวาสุดทุกคน = ไกลจากตัวที่ถึงตา)
+      // กรอบภาพวงในแคนวาส 900×1100: ลายวงกินพื้นที่ x 9.4%–95% · y 5.8%–95% (ดูตาราง petals ใน command-wheel.js) — วัดซ้ำหลังกล่องเปิดจริง
+      // เพราะ paint() รอบแรกรันก่อน openDlg() (กล่องยังไม่มีขนาด)
       const place = () => {
-        if (!wheel.isConnected || !matchMedia('(min-width:701px)').matches) return;
-        const area = stage.getBoundingClientRect(), rect = anchor.getBoundingClientRect();
+        if (!wheel.isConnected) return;
+        const area = stage.getBoundingClientRect(), rect = (anchor.querySelector('img:not(.fx)') || anchor).getBoundingClientRect();
         if (!area.width || !rect.width) return;
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
-        const cy = rect.top - area.top + rect.height * 0.4;
-        // H2 (คุณเป้ 10 ต.ค.): วงเดิมอยู่กลางตัวผู้ลงมือ จึงทับตัวยมบาท/เพื่อน → วางไว้ที่ช่องกลางถัดจากสมาชิกทีมคนขวาสุด
-        // (ก่อนถึงศัตรู) ทุกคนใช้ช่องเดียวกัน วงบอกว่าใครลงมือด้วยหน้าตรงกลางวงอยู่แล้ว
-        const teamRight = Math.max(rect.right, ...[...stage.querySelectorAll('.fig.you img, .battle-squad img, .fig.helper img, .fig.guard img')]
-          .map(e => e.getBoundingClientRect().right)) - area.left;
-        const left = Math.max(0, Math.min(area.width - w, teamRight + 6));
-        const top = Math.max(0, Math.min(area.height - h, cy - h * 0.505 - Math.max(48, Math.min(84, area.height * 0.075))));
-        wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.bottom = 'auto';
+        const box = e => { const r = e.getBoundingClientRect(); return { l:r.left - area.left, t:r.top - area.top, r:r.right - area.left, b:r.bottom - area.top }; };
+        // ขอบขวาของ "ตัวภาพ" จริง (img เป็น object-fit:contain จึงมีขอบโปร่งใสสองข้าง) ให้วงชิดตัวละครไม่ห่างเกินไป
+        const im = anchor.querySelector('img:not(.fx)');
+        const me = box(im || anchor);
+        if (im && im.naturalWidth) { const vis = Math.min(me.r - me.l, (me.b - me.t) * im.naturalWidth / im.naturalHeight); me.l += (me.r - me.l - vis) / 2; me.r = me.l + vis; }
+        const boxes = (list, skip) => [...stage.querySelectorAll(list)].filter(e => e !== skip).map(box).filter(r => r.r - r.l > 0);
+        const { left, top } = placeWheel({ area:{ w:area.width, h:area.height }, wheel:{ w, h }, me,
+          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)') });
+        wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.right = 'auto'; wheel.style.bottom = 'auto';
       };
       place(); requestAnimationFrame(place); setTimeout(place, 260);
+      if (typeof ResizeObserver === 'function') new ResizeObserver(place).observe(stage);   // หมุนจอ/ย่อขยายกลางศึก วงตามตัวละคร
     }
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
@@ -3548,8 +3571,8 @@ function weaponCards() {
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' }, style = g.outfit || g.zone;
   const face = style === 'th' ? 'img/hero-yama.png' : `img/${folders[style]}/hero-yama-${style}.png`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
   const base = `<div class="outfit-card weapon-card${eq ? '' : ' selected'}">
-    <img src="${face}" alt="" loading="lazy">
-    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote'))}</small></span>
+    <img src="${baseSwordIconSrc}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${face}'">
+    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote', { n:baseSwordAttack(b => g.normalAttack(b)) }))}</small></span>
     ${eq ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>` : `<button class="sm" disabled>${esc(t('weapon.on'))}</button>`}</div>`;
   return base + Object.keys(WEAPONS).map(id => {
     const owned = !!g.weapons?.owned?.[id], on = eq === id, zone = ZONES.find(z => z.k === WEAPONS[id].zone);

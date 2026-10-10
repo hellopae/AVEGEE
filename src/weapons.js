@@ -12,6 +12,15 @@ export const CRIT_MULT = 1.7;   // ตัวคูณคริเดิมขอ
 /** สไปรท์ฟัน 8 เฟรม ต่ออาวุธ × ชุดยมบาท — ไม่มีไฟล์ = ใช้ดาบเดิมของชุดนั้นเอง (ดู yama-sword.js) */
 export const weaponSpriteSrc = (weapon, outfit) => `img/yama-sword-weapons/hero-yama-${outfit}-sword-${weapon}.webp`;
 export const weaponIconSrc = weapon => `img/weapons/weapon-icon-${weapon}.png`;
+/** I1-B ข้อ 1 — ไอคอนดาบธรรมดาของยมบาทน้อย (การ์ดแรกใน "อาวุธประจำโซน") · ครอปจาก img/icon-sword.png (ไอคอนดาบโจมตีปกติเดิม) ไม่แตะสี
+ *  Kittanate วาดดาบใหม่ทับชื่อไฟล์นี้ได้เลย (512×512 พื้นใส) */
+export const baseSwordIconSrc = 'img/weapons/weapon-icon-base.png';
+/** I1-B ข้อ 1 — ข้อความพลังโจมตีของดาบธรรมดา คำนวณสดจาก stat จริง (สูตรเดียวกับแผงโปรไฟล์): ฟาดสุ่มช่วง BATTLE.atk หลังคูณเลเวล/ชุด/ฝึก
+ *  normalAttackFn = g.normalAttack (ผูกกับสถานะเกม) · ค่าเดียวกันเมื่อ min=max จะแสดงเลขเดียว */
+export function baseSwordAttack(normalAttackFn) {
+  const lo = normalAttackFn(BATTLE.atk[0]), hi = normalAttackFn(BATTLE.atk[1]);
+  return lo === hi ? String(lo) : `${lo}–${hi}`;
+}
 export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}.jpeg`;
 /** รายชื่อไฟล์ทั้งหมดที่ต้องวาด (16 สไปรท์ + 4 ไอคอน + 4 คัตซีน) */
 export const WEAPON_ART_FILES = {

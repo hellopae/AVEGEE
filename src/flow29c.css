@@ -41,11 +41,16 @@
 .combat-arena .fin-main button{min-width:min(250px,72vw);min-height:60px;padding:12px 30px;font-size:clamp(18px,1.9vw,24px);
   font-family:var(--font-display);font-weight:700;border-radius:var(--radius);
   box-shadow:0 0 0 2px rgba(255,214,140,.55),0 6px 22px rgba(0,0,0,.65),0 0 28px rgba(255,190,90,.35)}
-/* H2: ปุ่ม "เก็บไอเท็มที่ตกอยู่" (ศึกชายแดนชนะ) — เหนือแถวการ์ดทีม/ศัตรู ในพื้นว่างระหว่างยมบาทกับศัตรู */
-.combat-arena .fin-float.fin-center.fin-main.fin-above-cards{left:61%;top:52%;bottom:auto;transform:translate(-50%,0)}
+/* I1-B ข้อ 4 (แทนที่ H2): ปุ่ม "เก็บไอเท็มที่ตกอยู่" (ศึกชายแดนชนะ) — ย่อเหลือ ~78% ของปุ่มหลักเดิม และอยู่กลางด้านล่างของสนาม
+   ตำแหน่งแนวนอนจริงจัดโดย ui.js placeFin() ให้อยู่กึ่งกลางช่องว่างระหว่างการ์ดทีม (ซ้าย) กับการ์ดศัตรู (ขวา) · ค่า left:50% นี้เป็นค่าตั้งต้นก่อนวัด */
+.combat-arena .fin-float.fin-center.fin-main.fin-above-cards{left:50%;top:auto;bottom:3.5%;transform:translateX(-50%)}
+.combat-arena .fin-main.fin-above-cards button{min-width:min(195px,56vw);min-height:47px;padding:9px 23px;font-size:clamp(14px,1.5vw,19px)}
+@media (max-height:480px) and (min-width:701px){   /* มือถือแนวนอน: ฉากเตี้ย การ์ดทีม+ศัตรูกินความกว้างเกือบหมด — ช่องกลางแคบ จึงย่อปุ่มให้พอดี */
+  .combat-arena .fin-main.fin-above-cards button{min-width:min(150px,30vw);min-height:38px;padding:6px 14px;font-size:14px}
+}
 @media (max-width:700px){
-  .combat-arena .fin-float.fin-center.fin-main.fin-above-cards{left:50%;top:47%;bottom:auto;transform:translate(-50%,0)}
-  .combat-arena .fin-main.fin-above-cards button{min-height:48px;padding:8px 22px}
+  .combat-arena .fin-float.fin-center.fin-main.fin-above-cards{left:68%;top:auto;bottom:3%;transform:translateX(-50%)}
+  .combat-arena .fin-main.fin-above-cards button{min-width:min(150px,44vw);min-height:40px;padding:7px 16px;font-size:15px}
 }
 @media (max-width:700px){
   .combat-arena .fin-float.fin-center.fin-main{left:52%;top:48%;bottom:auto}
