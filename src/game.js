@@ -23,7 +23,7 @@ import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
 import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
 import { DEVA_MAP } from './deva-map.js';
 import { standPoints } from './npc-stand.js';
-import { footOf, blockOf, artEpoch, hiddenAt, artUrl } from './art.js';
+import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
@@ -2065,9 +2065,9 @@ const API = {
       const bottom = Math.max(st.def.y + R, r ? r[3] + 26 : st.def.y + R);
       holes.push([st.def.x - R, st.def.y - R, st.def.x + R, bottom]);
       if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
-      // 2.5D: collide with the ground footprint; the roof occludes actors walking behind it.
-      const blk = r ? blockOf(st.def) : null;
-      if (blk) rects.push(blk); else waiting = true;
+      // H2: ตัวอาคารทั้งหลังเหยียบไม่ได้ (เงาจริงของสไปรท์ ไม่ใช่แค่แถบฐาน) — ดู art.blockRectsOf
+      const blk = r ? blockRectsOf(st.def) : null;
+      if (blk && blk.length) rects.push(...blk); else waiting = true;
     }
     setBlocks(rects, holes);
     // ถ้าอาคารเพิ่งสร้างครอบตำแหน่งผู้เล่น ให้ย้ายออกสู่พื้นเดินใกล้ที่สุดทันที
