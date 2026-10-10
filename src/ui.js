@@ -4080,7 +4080,8 @@ function openStation(k, emergency = false) {
           !R?.sitting() && (!inside || g.mp >= g.mpMax),
           !R?.sitting() ? (g.mp >= g.mpMax ? 'MP เต็มแล้ว / MP full' : !inside ? t('room.nearTea') : '') : ''],
       ] : k === 'krajok' ? [
-        ['room.krajok.adjust', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed() || !nearMirror(R?.pos() || [0,0]), t('h4.mirrorNear')],
+        ['room.krajok.adjust', null, () => mirrorCharge?.adjust(), !mirrorCharge?.placed() || !nearMirror(R?.pos() || [0,0]),
+          mirrorCharge?.placed() && !nearMirror(R?.pos() || [0,0]) ? t('h4.mirrorNear') : ''],
         ['room.krajok.place', null, () => { mirrorCharge?.place(); panels(); }, g.powerLocked(mp) || !!mirrorCharge?.placed(),
           g.powerLocked(mp) ? t('room.krajok.needMirror') : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];

@@ -42,9 +42,9 @@ export function gateEffectPose(kind,elapsed) {
 export function drawGateEffect(ctx,x,y,h,kind,pose,cut=0) {
   const {p}=pose;ctx.save();ctx.globalAlpha=1-p*.65;
   ctx.strokeStyle=kind==='reborn'?'#d9f5ff':'#ffe69d';ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=Math.max(2,h*.025);ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=h*.16;
-  if(kind==='scan'){const sy=y-h+p*h;ctx.fillRect(x-h*.38,sy,h*.76,h*.045);}
+  if(kind==='scan'){const sy=y-h+p*h,bar=Math.max(3,h*.07),trail=ctx.createLinearGradient(0,sy-h*.35,0,sy);trail.addColorStop(0,'rgba(255,214,90,0)');trail.addColorStop(1,'rgba(255,214,90,.5)');ctx.fillRect(x-h*.38,sy,h*.76,bar);ctx.fillStyle=trail;ctx.fillRect(x-h*.38,Math.max(y-h,sy-h*.35),h*.76,Math.min(h*.35,sy-(y-h))+bar*.2);}
   if(kind==='reborn')for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(x,y-h*.5+(i-1)*h*.23,h*(.38+p*.2),h*.12,p*Math.PI*4+i,0,Math.PI*1.6);ctx.stroke();}
-  if(kind==='sky'){const top=y-h*5;const gradient=ctx.createLinearGradient(x,top,x,y);gradient.addColorStop(0,'#fffbe3');gradient.addColorStop(1,'#ffc85022');ctx.fillStyle=gradient;ctx.beginPath();ctx.moveTo(x-h*.18,top);ctx.lineTo(x+h*.18,top);ctx.lineTo(x+h*.55,y);ctx.lineTo(x-h*.55,y);ctx.fill();}
-  if(kind==='relief'){ctx.font=`bold ${Math.max(15,h*.28)}px sans-serif`;ctx.textAlign='center';ctx.fillText(`−${cut}`,x,y-h*(1+p*.6));}
+  if(kind==='sky'){const top=y-h*5;const gradient=ctx.createLinearGradient(x,top,x,y);gradient.addColorStop(0,'rgba(255,226,120,.9)');gradient.addColorStop(1,'rgba(255,176,40,.7)');ctx.fillStyle=gradient;ctx.beginPath();ctx.moveTo(x-h*.18,top);ctx.lineTo(x+h*.18,top);ctx.lineTo(x+h*.55,y);ctx.lineTo(x-h*.55,y);ctx.fill();ctx.fillStyle='rgba(255,255,240,.9)';ctx.fillRect(x-h*.07,top,h*.14,y-top);}
+  if(kind==='relief'){ctx.font=`bold ${Math.max(15,h*.28)}px sans-serif`;ctx.textAlign='center';const ty=y-h*(1+p*.6);ctx.lineJoin='round';ctx.lineWidth=Math.max(3,h*.06);ctx.strokeStyle='rgba(60,25,0,.9)';ctx.strokeText(`−${cut}`,x,ty);ctx.fillStyle='#fff4c4';ctx.fillText(`−${cut}`,x,ty);}
   ctx.restore();
 }
