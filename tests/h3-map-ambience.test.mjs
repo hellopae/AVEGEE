@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {ambientPixelKind,drawMapAmbientGround,strictSurfaceCells} from '../src/map-ambient.js';
-import {H3_BUDGET,h3SurfaceContains,prepareH3SurfaceTracks,drawH3Surfaces} from '../src/map-fx-h3.js';
+import {H3_BUDGET,H3_LAVA_FILL,H3_LANTERNS,h3SurfaceContains,h3LavaVertical,prepareH3SurfaceTracks,drawH3Surfaces,drawH3Lanterns} from '../src/map-fx-h3.js';
 const recorder=()=>{
  const calls=[];
  const c=new Proxy({calls},{get:(o,k)=>k in o?o[k]:(...a)=>calls.push([k,...a]),set:(o,k,v)=>{calls.push(['set',k,v]);o[k]=v;return true;}});
@@ -32,16 +32,18 @@ test('H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mis
   assert.equal(tracks.sparks.length,kind==='lava'?H3_BUDGET.sparks:0);
   assert.equal(tracks.bubbles.length,kind==='lava'?H3_BUDGET.bubbles:0);
   assert.equal(tracks.edges.length,kind==='lava'?H3_BUDGET.edgeGlow:0);
-  assert.equal(tracks.falls.length,kind==='water'&&zone==='th'?0:18);
-  assert.equal(tracks.mist.length,kind==='water'&&zone==='asia'?12:0);
+  assert.equal(tracks.falls.length,kind==='lava'?H3_BUDGET.lavaFalls:zone==='asia'?H3_BUDGET.waterFalls:0);
+  assert.equal(tracks.blobs.length,kind==='lava'?H3_BUDGET.blobs:0);
+  assert.equal(tracks.twinkles.length,kind==='water'?H3_BUDGET.twinkles:0);
+  assert.equal(tracks.mist.length,kind==='water'&&zone==='asia'?H3_BUDGET.mist:0);
   assert.deepEqual(tracks,prepareH3SurfaceTracks(zone,kind,points,points));
   const c=recorder();drawH3Surfaces(c,zone,kind,1000,1678,937,tracks);
   const first=JSON.stringify(c.calls);c.calls.length=0;
   drawH3Surfaces(c,zone,kind,2500,1678,937,tracks);
   assert.notEqual(JSON.stringify(c.calls),first);
-  assert.ok(c.calls.filter(a=>['stroke','fill','fillRect'].includes(a[0])).length<=(kind==='lava'?91:94));
+  assert.ok(c.calls.filter(a=>['stroke','fill','fillRect'].includes(a[0])).length<=(kind==='lava'?420:330));
  }
- assert.equal(Object.values(H3_BUDGET).reduce((a,b)=>a+b),184);
+ assert.equal(Object.values(H3_BUDGET).reduce((a,b)=>a+b),448);
 });
 test('reduced motion skips mask allocation and all H3 drawing',()=>{
  const prev=globalThis.document;
@@ -74,7 +76,7 @@ test('mask readback and allocation are cached; both surfaces composite before sc
   const initial={reads,allocations};
   c.calls.length=0;drawMapAmbientGround(c,bg,'th',2500,839,468.5);
   assert.deepEqual({reads,allocations},initial,'no frame readback or allocation');
-  const images=c.calls.filter(a=>a[0]==='drawImage');assert.equal(images.length,2);
+  const images=c.calls.filter(a=>a[0]==='drawImage'&&a.length===6);assert.equal(images.length,2,'water + lava composites');
   for(const call of images)assert.deepEqual(call.slice(-4),[0,0,839,468.5]);
  }finally{globalThis.document=prev;}
 });
@@ -93,4 +95,30 @@ test('strict sampling rejects an entire cell when even one painted pixel is a ro
  const after=strictSurfaceCells(data,w,h,10,10,'th');
  assert.equal(after[82],null);
  assert.equal(after[83],'water');
+});
+
+test('map fx visibility floors: zones 1-2 must stay at least as lively as the generic zone 3-4 path (west/cyberhell)',()=>{
+ // generic path in map-ambient.js: 65 bubbles, 44 streaks, 100 waves, lava fill .08-.19
+ assert.ok(H3_BUDGET.bubbles>=50&&H3_BUDGET.waves>=90&&H3_BUDGET.lavaFlow>=44&&H3_BUDGET.edgeGlow>=40);
+ assert.ok(H3_LAVA_FILL.base>=.07&&H3_LAVA_FILL.base+H3_LAVA_FILL.pulse+H3_LAVA_FILL.shimmer>=.19,'old H3 peaked at .08');
+ const lamps=H3_LANTERNS;assert.ok(lamps.asia.length>=12&&lamps.th.length>=8);
+ for(const list of Object.values(lamps))for(const [u,v] of list){assert.ok(u>0&&u<1&&v>0&&v<1);}
+});
+test('lava glints run down the channel and drop, sideways along the pool and river',()=>{
+ assert.equal(h3LavaVertical(.34,.3),true);assert.equal(h3LavaVertical(.66,.7),true);
+ assert.equal(h3LavaVertical(.45,.25),false);assert.equal(h3LavaVertical(.5,.65),false);
+});
+test('lantern glow is additive, flickers between frames, and is skipped for zones without a lamp list or without a sprite',()=>{
+ const sprite={};const c=recorder();
+ drawH3Lanterns(c,'asia',1000,1678,937,sprite);
+ const first=c.calls.filter(a=>a[0]==='drawImage');
+ assert.equal(first.length,H3_LANTERNS.asia.length);
+ const setsFirst=JSON.stringify(c.calls);c.calls.length=0;
+ drawH3Lanterns(c,'asia',1130,1678,937,sprite);
+ assert.notEqual(JSON.stringify(c.calls),setsFirst);
+ assert.ok(c.calls.some(a=>a[0]==='set'&&a[1]==='globalCompositeOperation'&&a[2]==='lighter'));
+ const alphas=c.calls.filter(a=>a[0]==='set'&&a[1]==='globalAlpha').map(a=>a[2]);
+ assert.ok(Math.max(...alphas)>=.45&&Math.min(...alphas)>=.3);
+ c.calls.length=0;drawH3Lanterns(c,'west',1000,1678,937,sprite);drawH3Lanterns(c,'asia',1000,1678,937,null);
+ assert.deepEqual(c.calls.filter(a=>a[0]==='drawImage'),[]);
 });
