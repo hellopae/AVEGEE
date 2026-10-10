@@ -1,11 +1,11 @@
 import { drawSchoolProps } from './sword-school-props.js';
-import { mirrorObstacle } from './mirror-charge.js';
+import { mirrorObstacle, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { potLayout, drawPotSoul } from './pot-souls.js';
-import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox, sleepSpriteWidth } from './tea-recovery.js';
 import { regenMp } from './mp-regen.js';
 // room.js — ฉากภายในของสถานีหนึ่งหลัง (10 ก.ย. 2569)
 //
@@ -23,10 +23,44 @@ import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CAT
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
+import { ragePoseSrc } from './battle-facing.js';
+import { drawContactShadow } from './scene-style.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
 const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
+const MIRROR_W = 0.075;   // ความกว้างฐาน/แผ่นกระจกเทียบความกว้างภาพฉาก (เดิมกำหนดใน mirror-charge.js ผ่าน CSS)
+const GATE_DOOR = [0.5, 0.25];   // ประตูกลางของประตูสวรรค์ (สัดส่วนภาพฉาก) — ปลายทางของดวงไฟตอนไปเกิดใหม่
+const prefersReducedMotion = () => { try { return !!matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
+const poseCache = new Map();
+/** โหลดภาพท่าตรง ๆ จาก path (ท่า atk ของชุด) — คืน null ถ้ายังไม่โหลดเสร็จ/ไม่มีไฟล์ */
+function poseImg(src) {
+  if (!src) return null;
+  let r = poseCache.get(src);
+  if (!r) { r = { el: new Image(), ok: false }; r.el.onload = () => { r.ok = true; }; r.el.src = src; poseCache.set(src, r); }
+  return r.ok ? r.el : null;
+}
+const LYING_W_FALLBACK = 0.24;   // ความกว้างท่านอนเดิม (U) — ใช้เมื่อวัดพิกเซลไม่ได้เท่านั้น
+const solidCache = new WeakMap();
+/** สัดส่วนพิกเซลทึบ (alpha>200) ของภาพ 0-1 — วัดจากสำเนาย่อ ≤256px; คืน null ถ้าอ่านพิกเซลไม่ได้ */
+function solidFraction(el) {
+  if (solidCache.has(el)) return solidCache.get(el);
+  let out = null;
+  try {
+    const k = Math.min(1, 256 / Math.max(el.naturalWidth, el.naturalHeight)), w = Math.max(1, Math.round(el.naturalWidth * k)), h = Math.max(1, Math.round(el.naturalHeight * k));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(el, 0, 0, w, h);
+    const d = x.getImageData(0, 0, w, h).data; let n = 0;
+    for (let i = 3; i < d.length; i += 4) if (d[i] > 200) n++;
+    out = n / (w * h);
+  } catch { out = null; }
+  solidCache.set(el, out); return out;
+}
+/** ความกว้างท่านอน (หน่วย U) ให้ตัวเท่าท่ายืน */
+function lyingWidth(down, stand) {
+  if (!down?.naturalWidth || !stand?.naturalWidth) return LYING_W_FALLBACK;
+  return sleepSpriteWidth(solidFraction(stand), solidFraction(down), down.naturalHeight / down.naturalWidth, HERO_H) ?? LYING_W_FALLBACK;
+}
 const REACH  = 0.17;      // ระยะเอื้อมถึงจุดลงมือ — ยืนใกล้ ๆ ก็พอ ไม่ต้องเดินจ่อ
 
 /** ตรวจตลอดทางในหนึ่งเฟรม ไม่ให้ก้าวข้ามช่องที่ห้ามเดินซึ่งแคบกว่าระยะก้าว */
@@ -253,8 +287,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     return true;
   }
 
-  // ตื่นแล้วยืนที่พื้นหน้าเตียง (ในพื้นที่เดินได้) — เตียงขยับขึ้นไปกลางฟูกแล้ว จึงไม่ใช้ bed.y+0.09 ตรง ๆ
-  const wakeY = () => Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0);
+  // I1-A: ตื่นแล้วยืนที่ "พื้น" หน้าเตียง (room.wake — เท้าพ้นขอบหน้าเตียง อยู่ในพื้นที่เดินได้) ไม่ใช่บนขอบเตียง
+  // (เดิมใช้ bed.y+0.09 / ขอบบนของพื้นที่เดินได้ ซึ่งยังอยู่บนตัวเตียง) · ถ้าห้องไหนไม่มี wake ถอยกลับสูตรเดิม
+  const wakePoint = () => room.wake || [room.bed[0], Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0)];
 
   function setSleep(emergency = false) {
     if (!canSit || lying || sitting || (!emergency &&
@@ -273,7 +308,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
       if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
-        P.x = room.bed[0]; P.y = wakeY();
+        [P.x, P.y] = snap(...wakePoint()); P.tx = null; P.ty = null;
         if (recoverySleep) g.completeTeaRecovery();
         else { g.hp = g.hpMax; g.save(); g.onChange(); }
       }
@@ -451,7 +486,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'tarang' || def.k === 'sawan') {
       const stage = def.k === 'tarang' ? 'prison' : 'gate';
       const occupied = st?.slots.length || 0;
-      const freeSlots=room.souls.slice(occupied).filter(at=>![...gateEffects.values()].some(fx=>(fx.kind==='reborn'||fx.kind==='sky') && !gateEffectPose(fx.kind,t-fx.start).done && fx.at[0]===at[0] && fx.at[1]===at[1]));
+      const freeSlots=room.souls.slice(occupied).filter(at=>![...gateEffects.values()].some(fx=>(fx.kind==='reborn'||fx.kind==='sky') && !gateEffectPose(fx.kind,t-fx.start,fx.reduced).done && fx.at[0]===at[0] && fx.at[1]===at[1]));
       if(def.k === 'sawan')visibleGateSlots.clear();
       const waiting = [
         ...(def.k === 'tarang' ? (g.held || []).map(soul => ({ soul })) : []),
@@ -543,19 +578,53 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       } });
     }
 
-    acts.push({ y: P.y, fn: () => {
+    // I1-A: ฐาน+แผ่นกระจกวาดลง canvas นี้เอง เรียงลึกตามเส้นพื้นของฐานเทียบกับเท้ายมบาท
+    // (เดิมเป็น <img> ซ้อนทับ canvas เสมอ — ยมบาทที่ยืนหน้าแท่นจึงถูกฐานบังทั้งตัว)
+    if (def.k === 'krajok' && api.mirrorState?.().placed) {
+      acts.push({ y: MIRROR_SORT_Y, fn: () => {
+        const base = img('mirror-charge-base'), pane = img('mirror-charge-pane');
+        const dprK = cv.width / (cv.getBoundingClientRect().width || cv.width), w = MIRROR_W * box.w;
+        ctx.save(); ctx.imageSmoothingEnabled = true;
+        if (base) {
+          const bh = w * base.naturalHeight / base.naturalWidth;
+          ctx.shadowColor = 'rgba(33,22,36,.67)'; ctx.shadowBlur = 6 * dprK; ctx.shadowOffsetY = 3 * dprK;
+          ctx.drawImage(base, px(MIRROR_FOOT[0]) - w / 2, py(MIRROR_FOOT[1]) - bh * 0.7, w, bh);
+        }
+        if (pane) {
+          const ph = w * pane.naturalHeight / pane.naturalWidth;
+          ctx.shadowColor = '#ffd16d'; ctx.shadowBlur = 6 * dprK; ctx.shadowOffsetY = 0;
+          ctx.translate(px(MIRROR_ROOM_LAYOUT.pivot[0]), py(MIRROR_ROOM_LAYOUT.pivot[1]));
+          ctx.rotate(api.mirrorState().angle * Math.PI / 180);
+          ctx.drawImage(pane, -w / 2, -ph / 2, w, ph);
+        }
+        ctx.restore();
+      } });
+    }
+
+    acts.push({ y: def.k === 'krajok' && api.mirrorState?.().placed ? mirrorHeroSortY(P.x, P.y) : P.y, fn: () => {
+      // I1-A: เปิดแผงปรับองศากระจก = ยมบาทเปลี่ยนเป็นท่า atk (ยกมือชี้) ของชุดที่สวมอยู่ หันไปทางกระจก · ปิดแผง = กลับท่ายืน
+      if (def.k === 'krajok' && api.mirrorState?.().adjusting && !(simClock - movedSim < WALK_GRACE_MS)) {
+        const atk = poseImg(ragePoseSrc(g.outfit || g.zone));
+        if (atk) {
+          const h = U * HERO_H, x = px(P.x), y = py(P.y), flip = px(MIRROR_ROOM_LAYOUT.pivot[0]) < x;
+          drawContactShadow(ctx, x, y, h);
+          if (flip) { ctx.save(); ctx.translate(x, 0); ctx.scale(-1, 1); ctx.drawImage(atk, -h / 2, y - h, h, h); ctx.restore(); }
+          else ctx.drawImage(atk, x - h / 2, y - h, h, h);
+          return;
+        }
+      }
       // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
       if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
         ctx.save();
         ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
-        drawStandee(ctx,'hero-yama',px(P.x),py(wakeY()),U*HERO_H,t,'👑',P.face);
+        drawStandee(ctx,'hero-yama',px(wakePoint()[0]),py(wakePoint()[1]),U*HERO_H,t,'👑',P.face);
         ctx.restore(); return;
       }
       if (lying) {
         const down = img('hero-yama-unconscious');
         if (down) {
-          const width = U * 0.24, height = width * down.naturalHeight / down.naturalWidth;
+          const width = U * lyingWidth(down, img('hero-yama')), height = width * down.naturalHeight / down.naturalWidth;
           ctx.drawImage(down, px(P.x)-width/2, py(P.y)-height/2, width, height);
         }
         return;
@@ -587,15 +656,17 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     } });
 
     for(const [id,fx] of gateEffects) {
-      const pose=gateEffectPose(fx.kind,t-fx.start);
+      const pose=gateEffectPose(fx.kind,t-fx.start,fx.reduced);
       if(pose.done){gateEffects.delete(id);continue;}
       acts.push({y:fx.at[1],fn:()=>{
         const x=px(fx.at[0]),y=py(fx.at[1]),h=U*SOUL_H;
         if(fx.kind==='reborn'||fx.kind==='sky'){
+          // I1-A: ตัววิญญาณจางหายขึ้นด้านบน (ไปสวรรค์) หรือหดเข้าหาศูนย์กลางตัวเป็นดวงไฟ (ไปเกิดใหม่)
+          const hh=h*pose.scale, footY=y-h*.5+hh*.5-U*pose.rise;
           ctx.save();ctx.globalAlpha=pose.alpha;
-          drawSoul(ctx,x,y-U*pose.rise,h,t,'#fff1cf',fx.soul.sp || 7);ctx.restore();
+          drawSoul(ctx,x,footY,hh,t,'#fff1cf',fx.soul.sp || 7);ctx.restore();
         }
-        drawGateEffect(ctx,x,y,h,fx.kind,pose,fx.cut);
+        drawGateEffect(ctx,x,y,h,fx.kind,pose,fx.cut,{seed:fx.soul.id,to:[px(GATE_DOOR[0]),py(GATE_DOOR[1])]});
       }});
     }
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
@@ -637,13 +708,14 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach, inTrainingReach,
     mirrorPlaced:null,
+    mirrorState:null,       // ui.js ผูก: () => ({placed, angle, adjusting}) ให้ห้องวาดฐาน/แผ่นกระจกและเปลี่ยนท่ายมบาท
     gateEffect(id,kind,cut=0) {
       if(def.k !== 'sawan' || !GATE_EFFECT_MS[kind])return false;
       const entries=gateArrivals(g),index=entries.findIndex(x=>x.soul.id===id),entry=entries[index];
       if(!entry)return false;
       const at=visibleGateSlots.get(id) || room.souls[Math.min(room.souls.length-1,index+(api.st?.slots.length || 0))];
       if(!at)return false;
-      gateEffects.set(id,{kind,cut,soul:entry.soul,at:[...at],start:performance.now()});return true;
+      gateEffects.set(id,{kind,cut,soul:entry.soul,at:[...at],start:performance.now(),reduced:prefersReducedMotion()});return true;
     },
     /** ชุด 29C — จุดบนฉากเป็นเปอร์เซ็นต์ของ canvas (ไว้วางปุ่ม HTML ลอยเหนือตัวละคร)
      *  u,v = สัดส่วน 0-1 ของภาพฉากเหมือน ROOMS · up = ยกขึ้นกี่ส่วนของด้านสั้นของกรอบ (CREW_H = เหนือหัวคน) */

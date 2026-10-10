@@ -1,6 +1,6 @@
 import { runKrataQte } from './minigames/krata-qte.js?v=sword-schools-20261010-final';
-import { gateArrivals, gateKarma, gateTotalKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
-import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4';
+import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
+import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4-i1a';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
@@ -4195,14 +4195,14 @@ function openStation(k, emergency = false) {
       }
       if (k === 'sawan' && room.crew) {
         const lotus = g.inventory.lotus || 0;
-        const why = lotus <= 0 ? t('room.lotusNone') : g.karma <= 0 && gateTotalKarma(g) <= 0 ? t('room.lotusNoKarma') : '';
+        const why = lotus <= 0 ? t('room.lotusNone') : !(g.karma > 0) ? t('room.lotusNoKarma') : '';
         const boonAt = st.crewK === 'boon' ? room.guard || [room.crew[0] + .13, room.crew[1]] : room.crew;
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
-        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:gateTotalKarma(g), disabled:!!why });
+        tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:Math.round(g.karma*10)/10, disabled:!!why });
       }
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
-          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.totalKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
+          ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.yamaKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
       const swordTrainingBtn = N.querySelector('[data-npc="sword-training"]');
       if (swordTrainingBtn) swordTrainingBtn.onclick = () => openTraining(k,true);
       const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
@@ -4210,11 +4210,7 @@ function openStation(k, emergency = false) {
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
       if (lotusBtn) lotusBtn.onclick = () => {
-        const before=gateArrivals(g).map(x=>({entry:x,karma:gateKarma(x)}));
-        if(g.offerLotusBoon()){
-          before.forEach(({entry,karma})=>{const cut=Math.round((karma-gateKarma(entry))*10)/10;if(cut>0)R.gateEffect(entry.soul.id,'relief',cut);});
-          sfx('gong');panels();refresh();
-        }
+        if(g.offerLotusBoon()){ sfx('gong');panels();refresh(); }
       };
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
@@ -4564,6 +4560,7 @@ function openStation(k, emergency = false) {
       onCharge:(angle,aspect) => { const ok=g.chargeMirror(angle,aspect); if(ok) {sfx('item');panels();refresh();} return ok; },
     });
     R.mirrorPlaced=()=>!!mirrorCharge?.placed();
+    R.mirrorState=()=>({placed:!!mirrorCharge?.placed(), angle:mirrorCharge?.angle() || 0, adjusting:!!mirrorCharge?.panelOpen()});
     onDlgClose(() => mirrorCharge.destroy());
   }
   R.start();

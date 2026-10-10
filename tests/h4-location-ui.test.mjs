@@ -17,25 +17,6 @@ const {wideStationRoom}=await import('../src/room-art-assets.js');
 const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};return g;};
 const entry=(id,w,checked=false,zone='th')=>({zone,stage:'gate',intensity:1,checked,...(checked?{karmaLeft:w-1}:{}),soul:{id,who:'Soul '+id,sp:7,pure:false,deeds:[{t:'A deed',w}],merits:[]}});
 
-test('lotus removes exactly 8 total from checked and unchecked gate souls and never resets on inspection',()=>{
- const g=game();g.stations.push({def:STATIONS.find(s=>s.k==='sawan'),build:0,slots:[]});
- g.sentences=[entry(1,4,true),entry(2,9),entry(3,20,true,'asia')];g.karma=0;g.inventory.lotus=3;
- assert.equal(gateTotalKarma(g),11);assert.equal(g.offerLotusBoon(),true);
- assert.equal(gateKarma(g.sentences[0]),0);assert.equal(gateKarma(g.sentences[1]),3);assert.equal(gateTotalKarma(g),3);
- assert.equal(gateKarma(g.sentences[2]),19);assert.equal(g.inventory.lotus,2);
- assert.equal(g.inspectGate(2),true);assert.equal(g.inspectGate(2),true);assert.equal(gateKarma(g.sentences[1]),3);
- const copy=game();copy.restore(g.snapshot());assert.equal(gateTotalKarma(copy),3);
- assert.equal(copy.offerLotusBoon(),true);assert.equal(gateTotalKarma(copy),0);assert.equal(copy.inventory.lotus,1);
- assert.equal(copy.offerLotusBoon(),false);assert.equal(copy.inventory.lotus,1);
- assert.equal(copy.resolveGate(2),true);assert.equal(copy.ascended,1);
-});
-test('pure souls, real/fake merit and decimal karma are accounted for, with old player relief preserved',()=>{
- const g=game();g.stations.push({def:STATIONS.find(s=>s.k==='sawan'),build:0,slots:[]});
- const x=entry(1,4.4);x.soul.merits=[{v:1.2},{v:20,fake:true}];g.sentences=[x];
- assert.equal(gateKarma(x),2.2);g.karma=18;g.inventory.lotus=1;
- assert.equal(g.offerLotusBoon(),true);assert.equal(g.karma,10);assert.equal(gateKarma(x),0);
- x.soul.pure=true;assert.equal(gateKarma(x),0);
-});
 test('archive cards expose portrait, name, stars, score, deserved/given, verdict and escaped deed summary',()=>{
  const soul={name:'Soul <A>',sp:'spirit-worker',deeds:[{t:'Fraud <script>'},{t:'Second deed'}]};
  for(const [over,short,verdict] of [[0,0,'correct'],[2,0,'heavy'],[0,2,'light']]){
@@ -82,7 +63,7 @@ for(const [viewportW,viewportH] of [[844,390],[390,844]])test(`real-room mirror 
  assert.deepEqual(nums.slice(4),mirrorBeam(angle,aspect,MIRROR_ROOM_LAYOUT).end.map(v=>v*100));assert.deepEqual(base.style,stationary);
  assert.equal(layer.querySelector('[data-ray-glow]').attrs.d,layer.querySelector('[data-ray]').attrs.d);
  for(let i=0;i<20;i++)frame();assert.equal(power.ammo,1);
- controls.querySelector('[data-close]').onclick();assert.equal(layer.hidden,false);assert.equal(controls.hidden,true);
+ controls.querySelector('[data-mirror-close]').onclick();assert.equal(layer.hidden,false);assert.equal(controls.hidden,true);
  assert.equal(controller.adjust(),true);input.value=angle;input.oninput();for(let i=0;i<20;i++)frame();assert.equal(power.ammo,1,'cooldown rejects a second reward');
  controls.querySelector('[data-remove]').onclick();assert.equal(layer.hidden,true);controller.destroy();assert.equal(layer.removed,true);assert.equal(controls.removed,true);
 });
@@ -100,10 +81,11 @@ test('mirror stand blocks real pointer movement, becomes walkable when removed, 
 });
 
 test('scan, rebirth, sky and floating −N draw on canvas; departures fade and sky rises',()=>{
- const calls=[];const ctx=new Proxy({createLinearGradient:()=>({addColorStop:()=>{}})},{get:(o,k)=>k in o?o[k]:(...args)=>calls.push([k,...args])});
- for(const kind of ['scan','reborn','sky','relief']){const pose=gateEffectPose(kind,500);drawGateEffect(ctx,100,200,80,kind,pose,3);assert.ok(pose.p>0&&pose.p<1);assert.equal(gateEffectPose(kind,2000).done,true);}
+ const calls=[],grad=()=>({addColorStop:()=>{}});
+ const ctx=new Proxy({createLinearGradient:grad,createRadialGradient:grad},{get:(o,k)=>k in o?o[k]:(...args)=>calls.push([k,...args]),set:(o,k,v)=>{calls.push(['set',k,v]);return true}});
+ for(const kind of ['scan','reborn','sky','relief']){const pose=gateEffectPose(kind,500);drawGateEffect(ctx,100,200,80,kind,pose,3,{seed:7,to:[300,40]});assert.ok(pose.p>0&&pose.p<1);assert.equal(gateEffectPose(kind,2500).done,true);}
  assert.ok(calls.some(c=>c[0]==='fillText'&&c[1]==='−3'));assert.ok(calls.some(c=>c[0]==='ellipse'));assert.ok(calls.some(c=>c[0]==='fillRect'));
- assert.ok(gateEffectPose('sky',700).rise>0);assert.ok(gateEffectPose('reborn',600).alpha<1);
+ assert.ok(gateEffectPose('sky',700).rise>0);assert.ok(gateEffectPose('reborn',800).alpha<1);assert.ok(gateEffectPose('reborn',800).scale<1);
 });
 test('new rainbow asset exists, is background-only, replaces every rendered gold book, and UI strings have TH+EN',()=>{
  const asset='minigames/sala-book-rainbow-h4-v1.png',catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));

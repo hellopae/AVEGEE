@@ -36,13 +36,18 @@ export function mirrorChargeAngle(angle, aspect) {
 // H4 anchors are measured on the real wide room, not the F3 painted board.
 export const MIRROR_ROOM_LAYOUT = { source:[.86,.55], pivot:[.735,.56], target:[.50,.24] };
 export const MIRROR_FOOT = [.735,.615];
+// I1-A: เส้นพื้นของฐานกระจก = ก้นรีของพื้นที่กันเดิน (รัศมี y .032) — ยมบาทที่เท้าอยู่ต่ำกว่านี้ยืน "หน้า" แท่น วาดทับฐาน; สูงกว่านี้ยืน "หลัง" แท่น ถูกฐานบัง
+export const MIRROR_SORT_Y = MIRROR_FOOT[1] + .032;
+/** คีย์เรียงลึกของยมบาท (ตามแกน y ของเท้า) เมื่อมีแท่นกระจกในห้อง — ครึ่งหน้าของแท่น (เท้าต่ำกว่าจุดวางแท่นภายในความกว้างฐาน) ถือว่าอยู่หน้าแท่นเสมอ
+ *  ไม่ให้มีช่วงเฉียงขอบวงรีที่ยมบาทอยู่หน้าฐานแต่ถูกวาดไว้ข้างหลัง */
+export const mirrorHeroSortY = (x,y) => y > MIRROR_FOOT[1] && Math.abs(x-MIRROR_FOOT[0]) < .0375 + .01 ? Math.max(y, MIRROR_SORT_Y + 1e-4) : y;
 export const mirrorObstacle = (x,y) => Math.hypot((x-MIRROR_FOOT[0])/.045,(y-MIRROR_FOOT[1])/.032) < 1;
 export const nearMirror = ([x,y]) => Math.hypot(x-MIRROR_FOOT[0],(y-MIRROR_FOOT[1])*.7) <= .105;
 export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, canAdjust = () => true, onCharge, onState = () => {}, alive, paused = () => false }) {
   const layer=document.createElement('div');layer.className='mirror-room-layer';roomEl.append(layer);
   layer.innerHTML=`<svg class="mirror-light" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-ray-glow fill="none" stroke="#eeb743" stroke-width=".8" opacity=".45"/><path data-ray fill="none" stroke="#fff1b6" stroke-width=".22"/><circle data-source r=".9" fill="#ffe9a7"/><circle data-target r="3.1" fill="none" stroke="#dca452" stroke-width=".18"/></svg><img class="mirror-charge-base" src="img/mirror-charge-base.png" alt=""><img class="mirror-charge-pane" src="img/mirror-charge-pane.png" alt="${t('mirror.reflector')}" draggable="false">`;
   const panel=document.createElement('section');panel.className='mirror-room-controls';panel.setAttribute('aria-label',t('room.krajok.adjust'));roomEl.append(panel);
-  panel.innerHTML=`<div class="mirror-puzzle-footer"><label>${t('mirror.angle')} <output>0°</output><input aria-label="${t('room.krajok.adjust')}" type="range" min="0" max="179" step="1" value="0"></label><div class="mirror-charge-stepper"><button type="button" data-turn="-1">↶ −1°</button><button type="button" data-turn="1">↷ +1°</button><button type="button" data-remove>${t('mirror.remove')}</button><button type="button" data-close>${t('room.close')}</button></div><progress max="1800" value="0" aria-label="${t('mirror.progress')}"></progress><small class="mirror-status" role="status"></small></div>`;
+  panel.innerHTML=`<div class="mirror-puzzle-footer"><label>${t('mirror.angle')} <output>0°</output><input aria-label="${t('room.krajok.adjust')}" type="range" min="0" max="179" step="1" value="0"></label><div class="mirror-charge-stepper"><button type="button" data-turn="-1">↶ −1°</button><button type="button" data-turn="1">↷ +1°</button><button type="button" data-remove>${t('mirror.remove')}</button><button type="button" data-mirror-close>${t('room.close')}</button></div><progress max="1800" value="0" aria-label="${t('mirror.progress')}"></progress><small class="mirror-status" role="status"></small></div>`;
   const ray=layer.querySelector('[data-ray]'),glow=layer.querySelector('[data-ray-glow]'),source=layer.querySelector('[data-source]'),target=layer.querySelector('[data-target]');
   const base=layer.querySelector('.mirror-charge-base'),pane=layer.querySelector('.mirror-charge-pane'),range=panel.querySelector('input'),output=panel.querySelector('output'),progress=panel.querySelector('progress'),status=panel.querySelector('.mirror-status');
   let placed=false,angle=0,held=0,charged=false,frame=0,last=performance.now(),stopped=false,drag=null;
@@ -50,7 +55,7 @@ export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, canAdju
   range.oninput=()=>turn(range.value);
   panel.querySelectorAll('[data-turn]').forEach(b=>b.onclick=()=>turn(angle+Number(b.dataset.turn)));
   const close=()=>{drag=null;panel.hidden=true;onState();};
-  panel.querySelector('[data-close]').onclick=close;
+  panel.querySelector('[data-mirror-close]').onclick=close;   // I1-A: เดิมใช้ data-close ซึ่งตัวจับกลางใน ui.js ปิดทั้งห้องไปด้วย — ปิดแผงต้องปิดแค่แผง
   panel.querySelector('[data-remove]').onclick=()=>{placed=false;charged=false;held=0;layer.hidden=true;close();};
   const pointerAngle=e=>{const rect=pane.getBoundingClientRect();return Math.atan2(e.clientY-rect.top-rect.height/2,e.clientX-rect.left-rect.width/2)*180/Math.PI;};
   pane.onpointerdown=e=>{if(!placed || !canAdjust() || paused() || charged)return;e.preventDefault();drag={id:e.pointerId,start:pointerAngle(e),angle};pane.setPointerCapture(e.pointerId);panel.hidden=false;onState();};
@@ -90,5 +95,5 @@ export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, canAdju
   };
   const destroy=()=>{if(stopped)return;stopped=true;cancelAnimationFrame(frame);layer.remove();panel.remove();onState();};
   layer.hidden=true;panel.hidden=true;frame=requestAnimationFrame(draw);
-  return {place(){if(stopped || !canPlace())return false;placed=true;layer.hidden=false;onState();return true;},adjust(){if(stopped || !placed || !canAdjust())return false;panel.hidden=false;charged=false;held=0;last=performance.now();onState();return true;},placed:()=>placed,playing:()=>false,destroy};
+  return {angle:()=>angle,panelOpen:()=>placed && !panel.hidden,place(){if(stopped || !canPlace())return false;placed=true;layer.hidden=false;onState();return true;},adjust(){if(stopped || !placed || !canAdjust())return false;panel.hidden=false;charged=false;held=0;last=performance.now();onState();return true;},placed:()=>placed,playing:()=>false,destroy};
 }
