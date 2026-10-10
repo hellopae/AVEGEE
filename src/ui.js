@@ -1,3 +1,4 @@
+import { runKrataQte } from './minigames/krata-qte.js';
 import { mountMirrorCharge, MIRROR_LAYOUT } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
@@ -25,7 +26,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
-import { weaponEffectLines, weaponNoteText, weaponIconSrc } from './weapons.js';
+import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js';
@@ -33,7 +34,7 @@ import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuild
 import { makeRoom } from './room.js';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
-import { MINIGAMES } from './minigames/index.js?v=20261009-book-art';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
+import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
 import { ZONE_MAP, zoneMapRoute } from './zone-map.js';
@@ -827,15 +828,15 @@ function crewNote(c) {
  *  โต๊ะนิรา (openNiraOffice) · หน้าต่างสถานีที่มียมทูตคุม (openStation) · คุยกับยมทูตบนแผนที่ (talkCrew)
  *  c = ออบเจ็กต์ยมทูตจริงใน g.crew (มี .hunger) ไม่ใช่ CREW def เฉย ๆ
  *  ปุ่มมี data-feed="<k>" ให้ผู้เรียกไป bind onclick เอง (แต่ละที่ paint()/refresh() ไม่เหมือนกัน) */
-function guardRestWidget(c) {
+function guardRestWidget(c, showName = false) {
   if (!c) return '';
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
   const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/60000)) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
-    <span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
+    ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
       : c.morale < 50 ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>`}
+      : c.k === 'guard' ? `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>` : ''}
     </div>`;
 }
 function hungerWidget(c) {
@@ -1883,7 +1884,7 @@ function openHelp() {
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ·
           ห้าดาวยัง<b>ลดกรรมของท่าน</b>ให้ด้วยครั้งละ ${KARMA_RELIEF.star5}</li>
       <li><b>ศูนย์ดาว = โดนลูกไฟ</b> บารมีหาย 1 ใน 5 · โดนครบห้าครั้งจบเกม
-          เดินไปเก็บ<b>หีบยา</b>เติมบารมีได้</li>
+          เดินไปเก็บ<b>กล่องยา</b>เติมบารมีได้</li>
       <li><b>กรรมท่านลดได้</b> — ห้าดาว · เก็บ<b>ดอกบัว</b>ที่ตกบนแผนที่ตอนกรรมเกิน 40 ·
           หรือสร้าง<b>ศาลาน้ำชา</b>แล้วบูชาดอกบัวที่แท็บก่อสร้าง (${KARMA_RELIEF.lotusCost} เบี้ย ลด ${KARMA_RELIEF.lotusCut})</li>
       <li>ทุก ๆ ไม่กี่คดีจะมี <b>เปรต</b> ขึ้นมาก่อกวน (กรรมท่านยิ่งสูงยิ่งมาถี่) ปล่อยไว้ระเบียบตกเรื่อย ๆ —
@@ -2502,7 +2503,7 @@ function openNiraOffice() {
         return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
-          ${c ? hungerWidget(c) : ''}</span>
+          ${c ? hungerWidget(c) + guardRestWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
@@ -2530,8 +2531,11 @@ function openNiraOffice() {
   const restTimer = setInterval(() => {
     if (!dlg.open || dlgGen !== generation) { clearInterval(restTimer); return; }
     g.updateActorRecovery();
-    const status = dlg.querySelector('[data-guard-status]');
-    if (status && g.guard) { status.outerHTML = guardRestWidget(g.guard); bindHungerWidgets(dlg, () => { paint(); refresh(); }); }
+    const statuses = [...dlg.querySelectorAll('[data-guard-status]')];
+    if (statuses.length) {
+      for (const status of statuses) { const a = g.roster[status.dataset.guardStatus]; if (a) status.outerHTML = guardRestWidget(a); }
+      bindHungerWidgets(dlg, () => { paint(); refresh(); });
+    }
   }, 250);
 }
 
@@ -2953,12 +2957,14 @@ function openBattle(after) {
     if (!phase && b.actorId && b.actorId !== actor.id) { b.actorId = actor.id; b.command = null; }
     const isYama = actor.id === 'you';
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
-      battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice ball' : itemName(k), g.inventory[k] > 0,
+      battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
       + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : '1 ครั้งต่อชุด · ไม่ใช้ MP') : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
-    const attacks = isYama ? battleChoice('atk', 'img/fx-slash.png', 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) : '')
+    const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
+    const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
+    const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
@@ -3011,6 +3017,7 @@ function openBattle(after) {
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
+        ${weaponCd && !b.over ? `<div class="battle-buff weapon-cd${weaponCd.cd ? ' cooling' : ''}" role="status" data-weapon-cd="${weaponCd.cd}"><span class="wcd-ico">${weaponImg(weaponCd.id)}${weaponCd.cd ? `<em>${weaponCd.cd}</em>` : ''}</span>${esc(weaponCd.cd ? t('battle.weapon.cooling', { name:t(`weapon.${weaponCd.id}.name`), n:weaponCd.cd }) : t('battle.weapon.ready', { name:t(`weapon.${weaponCd.id}.name`) }))}</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? '⚔️ ตาของท่าน' : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
       </div>${prep}${prepLayer}`;
@@ -3788,7 +3795,7 @@ function drawHeroProfile() {
     + row('img/ui/icon-book.png', g.casesDone, t('profile.cases'));
   const attack = `${BATTLE.atk[0] + (g.level - 1) * 2}–${BATTLE.atk[1] + (g.level - 1) * 2}`;
   const lvBonus = (g.level - 1) * 2;
-  const fireDmg = BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus;
+  const fireDmg = g.controlledFireDamage(BATTLE.fireDmg + (g.abilities.bigFire ? 20 : 0) + lvBonus);
   const powerIcon = { roar:'img/icon-fang.png', mirror:'img/item-mirror.png', ice:'img/fx-ice.png', hypno:'img/fx-hypno.png' };
   const abilityRows = [
     ['flameCharge', 'img/fx-flame-charge.png', `${65 + (g.level - 1) * 3}`, 'charge'],
@@ -3797,12 +3804,12 @@ function drawHeroProfile() {
     ['valkyrieSpear', 'img/fx-valkyrie-spear.png', 'MP ' + BATTLE.mpCost.spear, 'spear'],
   ].filter(([k]) => g.abilities[k]).map(([, img, v, key]) => row(img, v, t('profile.ab.' + key)));
   const powers = row('img/icon-sword.png', `${g.normalAttack(BATTLE.atk[0])}–${g.normalAttack(BATTLE.atk[1])}`, t('profile.attack'))
-    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo}`)
+    + row('img/fx-fireball.png', fireDmg, `${t('profile.fire')} ×${g.fireAmmo} · ${t('g5.level')} ${g.fireControlState().level}/3`)
     + abilityRows.join('')
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
-  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small><small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
   const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
@@ -4040,12 +4047,12 @@ function openStation(k, emergency = false) {
 
     // ข้อมูลมินิเกม "เร่งการทำงาน" ของสถานีนี้ (เหตุผลที่กดไม่ได้ → ใช้แทนคำใต้ปุ่มชั่วคราว)
     const mgOn = !!(cap && MINIGAMES[k]);
-    const mgWhy = k === 'sala' ? mgOpen ? t('room.mgBusy') : (st.documentCd || 0)>g.tick ? `พักอีก ${st.documentCd-g.tick} วาระ` : '' : !mgOn ? ''
+    const mgWhy = k === 'krata' ? mgOpen ? t('room.mgBusy') : t(g.stokeWhy(st) || 'g5.stokeHint') : k === 'sala' ? mgOpen ? t('room.mgBusy') : (st.documentCd || 0)>g.tick ? `พักอีก ${st.documentCd-g.tick} วาระ` : '' : !mgOn ? ''
       : mgOpen ? t('room.mgBusy')
       : (st.speedLv || 0) >= UPGRADES.max ? t('room.mgMaxed')
       : g.level < g.mgLevelNeed(st.speedLv || 0) ? t('room.mgLevel').replace('{n}', g.mgLevelNeed(st.speedLv || 0))
       : (st.mgCd || 0) > g.tick ? t('room.mgWait').replace('{n}', st.mgCd - g.tick) : '';
-    const mgReady = k === 'sala' ? !mgWhy && g.documentPuzzleReady(st) : mgOn && !mgWhy && g.mgReady(st);
+    const mgReady = k === 'krata' ? !mgOpen && !g.stokeWhy(st) : k === 'sala' ? !mgWhy && g.documentPuzzleReady(st) : mgOn && !mgWhy && g.mgReady(st);
 
     // ---- แผงด้านขวา (เปิดจากปุ่มในฉาก) ----
     let drawer = '';
@@ -4120,6 +4127,8 @@ function openStation(k, emergency = false) {
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
         ['room.sala.action2', null, () => openMinigame(k), !mgReady, mgWhy],
+      ] : k === 'krata' ? [
+        ['g5.stoke', 'g5.stokeHint', () => openKrata(false), !mgReady, mgWhy],
       ] : k === 'sawan' ? [
         ['room.sawan.action', 'room.sawan.hint', toggle('inspect')],
       ] : k === 'tea' ? [
@@ -4146,7 +4155,7 @@ function openStation(k, emergency = false) {
         : `<span class="st-hpbar"><i id="st-mp-fill" style="background:#28b9db;width:${100*g.mp/g.mpMax}%"></i></span><span class="st-hp">MP <span id="st-mp-value">${Math.round(g.mp)}/${g.mpMax}</span></span>`;
       put(A, specs.map(([label, hint, , disabled, why], i) => {
         const [u, v] = k === 'krajok' ? (i === 0 ? [MIRROR_LAYOUT.pivot[0], MIRROR_LAYOUT.pivot[1]-.15] : [MIRROR_LAYOUT.target[0], MIRROR_LAYOUT.target[1]-.07]) : room.actions?.[i] || [0.5, 0.5];
-        const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala') && R ? R.anchor(u, v) : [u*100,v*100];
+        const [ax, ay] = (k === 'tea' || k === 'krajok' || k === 'sala' || k === 'krata') && R ? R.anchor(u, v) : [u*100,v*100];
         const x = Math.max(12, Math.min(88, ax))/100, y = Math.max(15, Math.min(80, ay))/100;
         const sub = k === 'tea' ? '' : why || (hint ? t(hint) : '');
         return `<div class="st-action" style="--action-x:${x * 100}%;--action-y:${y * 100}%">
@@ -4161,11 +4170,15 @@ function openStation(k, emergency = false) {
     // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
     const restPanel = dlg.querySelector('[data-tea-rest-panel]');
     if (restPanel) {
-      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(guardRestWidget).join('');
+      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(c => guardRestWidget(c, true)).join('');
     }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {
       const tags = [];
+      if (k === 'krata' && g.crew.some(c => c.k === 'plerng')) {
+        const [ax,ay] = R.anchor(...room.crew,R.crewHeight+.025);
+        tags.push({id:'fire-training',ax,ay,pos:'above',label:t('g5.train'),hint:t('g5.trainHint'),keep:true,disabled:mgOpen});
+      }
       if (k === 'tarang' && room.crew) {
         const [ax, ay] = R.anchor(room.crew[0], room.crew[1], R.crewHeight + 0.012);
         tags.push({ id:'manage', ax, ay, pos:'above', label:t('room.manage'), hint:t('room.manageHint'), pressed:drawerMode === 'roster' });
@@ -4180,6 +4193,8 @@ function openStation(k, emergency = false) {
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}</div>`).join(''));
+      const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
+      if (fireTrainingBtn) fireTrainingBtn.onclick = () => openKrata(true);
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
       if (manageBtn) manageBtn.onclick = () => { drawerMode = drawerMode === 'roster' ? null : 'roster'; panels(); if (drawerMode) dlg.querySelector('#st-right')?.scrollIntoView?.({ block:'nearest' }); };
       if (lotusBtn) lotusBtn.onclick = () => { if (g.offerLotusBoon()) { sfx('gong'); panels(); refresh(); } };
@@ -4347,7 +4362,20 @@ function openStation(k, emergency = false) {
    *  ระหว่างเล่น: ห้องล็อกอินพุต (R.lock) กันเว้นวรรค/ลูกศรชนกับปุ่มมินิเกม — ส่วนเกมหลัก (g.step()) เดินต่อ
    *  ตามปกติไม่พัก (หน้าสถานีนี้ไม่เคยเรียก pauseForDlg() อยู่แล้วตั้งแต่ต้น) เลือกแบบนี้เพราะปลอดภัยสุด
    *  ไม่ต้องแตะ pauseForDlg/releaseDlgPause ที่เคยมีบั๊กเกมค้างมาก่อน (ดูคอมเมนต์ยาวเหนือฟังก์ชันนั้น) */
+  function openKrata(training) {
+    const st=stationHere(), ov=dlg.querySelector('#mg-ov');
+    if (mgOpen || !st || !ov || (training ? !g.crew.some(c=>c.k==='plerng') : !!g.stokeWhy(st))) return;
+    mgOpen=true; R.lock(true); ov.hidden=false;
+    dlg.querySelector('#st-cv')?.scrollIntoView?.({block:'center'});   // จอเตี้ย (844×390) ห้องสูงกว่าจอ — เลื่อนให้เห็นยมบาทกับกระทะระหว่างเล่น
+    ov.classList.add('g5-overlay');
+    ov.classList.toggle('g5-stoke',!training);
+    const close=()=>{ minigameQuit?.(); minigameQuit=null; ov.hidden=true; ov.classList.remove('g5-overlay','g5-stoke'); R.walkTo(...R.pos().slice(0,2)); R.lock(false); mgOpen=false; if (mine()) panels(); };
+    minigameQuit=runKrataQte(ov,{g,st,room:R,training,alive:()=>mine() && g.stations.includes(st),onClose:close});
+    panels();
+  }
+
   function openMinigame(sk) {
+    if (sk === 'krata') { openKrata(false); return; }
     const stx = g.stations.find(x => x.def.k === sk);
     const game = MINIGAMES[sk];
     const ov = dlg.querySelector('#mg-ov');
@@ -4424,9 +4452,9 @@ function openStation(k, emergency = false) {
         <button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>
         <div class="st-arch" id="st-arch" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
-        <div class="st-npc" id="st-npc"></div></div>
+        <div class="st-npc" id="st-npc"></div>${k === 'krata' ? '<div id="st-actions"></div>' : ''}</div>
       <div class="st-card" id="st-left"></div>
-      <div id="st-actions"></div>
+      ${k !== 'krata' ? '<div id="st-actions"></div>' : ''}
       <div class="st-drawer" id="st-right" hidden></div>
       <div class="st-alert" id="st-alert"></div>
       <div class="st-controls">
@@ -4454,8 +4482,9 @@ function openStation(k, emergency = false) {
   R = makeRoom(cv2, g, def, room, stBg(k), artUrl('BG-Turn-Base', 'webp'), mine);
   R.st = stationHere();
   R.onAct = () => {
+    if (k === 'krata') { openKrata(false); return; }
     if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
-    if (room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
+    if (k !== 'krata' && room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;
     if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }
@@ -4908,19 +4937,115 @@ const coverVfx = $('#cover-vfx');
 let started = false;
 let splashDone = false;
 
-function revealTitle() {
-  if (splashDone) return;
-  splashDone = true;
-  splashVideo.pause();
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion) splashEl.hidden = true;
+// ---- H5a: ลำดับเปิดเกม = สแปลช (โลโก้ไฟ ~4.9 วิ แรกของ intro-opening-v2) → มืด → วิดีโอปก → ค้างที่ภาพปก v5 ----
+// วิดีโอปกไม่อยู่ใน preload วิกฤต: เริ่มดึงตอนสแปลชเริ่มเล่น (มีเวลานำ ~5 วิ) · ตามไม่ทัน/เล่นไม่ได้/กระตุกค้าง = ภาพปกนิ่งทันที
+const COVER_VIDEO = 'img/home-intro-v5.mp4?v=h5a';
+const SPLASH_CUT = 4.9;        // วินาทีที่ไฟโลโก้ลุกสุด — ไฟล์เดิมตัดเป็นฉากมืดของพญายมที่ 5.0 จึงหยุดก่อนถึงตรงนั้น
+const COVER_WAIT_MS = 1500;    // รอวิดีโอปกพร้อมหลังโลโก้ดับได้อีกเท่านี้ ไม่งั้นแสดงปกนิ่ง
+const COVER_STALL_MS = 1800;   // กระตุกค้างระหว่างเล่นนานเท่านี้ = ตัดไปปกนิ่ง
+let coverPhase = 'idle';       // idle → loading → playing → settled (fallback ข้ามไป settled ได้ทุกจุด)
+let coverStallTimer = 0;
+
+const noCoverVideo = () => matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData;
+
+/** เริ่มดึงวิดีโอปกเบื้องหลัง (เรียกตอนสแปลชเริ่มเล่น) */
+function prepareCoverVideo() {
+  if (coverPhase !== 'idle' || noCoverVideo()) return;
+  coverPhase = 'loading';
+  coverVfx.preload = 'auto';
+  coverVfx.src = COVER_VIDEO;
+  coverVfx.addEventListener('error', () => settleCover(), { once:true });
+  coverVfx.load();
+}
+
+/** จบที่ภาพปกนิ่ง — ภาพนิ่ง (#cover-art) อยู่ใต้วิดีโออยู่แล้ว แค่ dissolve วิดีโอออก (fast = ข้าม/ผิดพลาด) */
+function settleCover(fast = false) {
+  clearTimeout(coverStallTimer);
+  if (coverPhase === 'settled') return;
+  const wasShown = coverPhase === 'playing';
+  coverPhase = 'settled';
+  if (!coverVfx.hidden && wasShown) {
+    coverVfx.style.transitionDuration = fast ? '.3s' : '';
+    coverVfx.classList.add('fading');
+    setTimeout(() => { coverVfx.hidden = true; coverVfx.pause(); }, fast ? 340 : 540);
+  } else {
+    coverVfx.hidden = true;
+    coverVfx.pause();
+    coverVfx.removeAttribute('src');   // ยังไม่ได้เล่น = เลิกดึงไฟล์ที่เหลือ
+    coverVfx.load();
+  }
+  titleEl.classList.add('cover-settled');
+  document.dispatchEvent(new CustomEvent('avegee:cover-settled')); // H5b: เริ่มเอฟเฟกต์ไฟ/ลาวาบนปกได้
+}
+
+/** โลโก้ไฟดับแล้ว — เล่นวิดีโอปกถ้าพร้อม ไม่พร้อมภายใน COVER_WAIT_MS ก็ปกนิ่ง */
+function playCoverVideo() {
+  if (coverPhase !== 'loading') { hideSplash(); return settleCover(); }
+  const t0 = performance.now();
+  const tick = () => {
+    if (coverPhase !== 'loading') { hideSplash(); return settleCover(); }
+    if (coverVfx.readyState >= 3) return begin();            // HAVE_FUTURE_DATA
+    if (performance.now() - t0 > COVER_WAIT_MS) { hideSplash(); return settleCover(); }
+    setTimeout(tick, 80);
+  };
+  const begin = () => {
+    coverVfx.hidden = false;
+    coverVfx.play().then(() => {
+      coverPhase = 'playing';
+      hideSplash();          // เฟรมแรกของวิดีโอคือสี #090407 เดียวกับสแปลช — สลับแล้วตาไม่เห็นรอยต่อ
+      armStallWatch();
+    }).catch(() => { hideSplash(); settleCover(); });
+  };
+  tick();
+}
+
+function armStallWatch() {
+  coverVfx.addEventListener('waiting', () => {
+    clearTimeout(coverStallTimer);
+    coverStallTimer = setTimeout(() => settleCover(true), COVER_STALL_MS);
+  });
+  coverVfx.addEventListener('playing', () => clearTimeout(coverStallTimer));
+  coverVfx.addEventListener('ended', () => settleCover(), { once:true });
+}
+
+function hideSplash() {
+  if (splashEl.hidden) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) splashEl.hidden = true;
   else {
     splashEl.classList.add('leaving');
     setTimeout(() => { splashEl.hidden = true; }, 380);
   }
-  if (!reducedMotion && !coverVfx.hidden) {
-    coverVfx.play().catch(() => {}); // ภาพปกนิ่งยังแสดงได้ถ้าวิดีโอเล่นไม่ได้
-  }
+}
+
+/** ข้าม/ผิดพลาด/หมดเวลา → ปกนิ่งทันที (ไม่เล่นวิดีโอปก) */
+function revealTitle() {
+  if (splashDone) return;
+  splashDone = true;
+  splashVideo.pause();
+  hideSplash();
+  settleCover(true);
+}
+
+/** ไฟโลโก้ลุกสุดแล้ว (SPLASH_CUT) — ค้างเฟรมนั้น หรี่เข้า #090407 แล้วส่งต่อให้วิดีโอปก */
+function handoffToCoverVideo() {
+  if (splashDone) return;
+  if (coverPhase !== 'loading') return revealTitle();   // ไม่มีวิดีโอปก (ประหยัดดาต้า/ผิดพลาดแล้ว) → ปกนิ่งเลย
+  splashDone = true;
+  splashVideo.pause();
+  splashEl.classList.add('dim');
+  setTimeout(playCoverVideo, 500);
+}
+
+function watchSplashCut() {
+  if (splashDone) return;
+  if (splashVideo.currentTime >= SPLASH_CUT) return handoffToCoverVideo();
+  requestAnimationFrame(watchSplashCut);
+}
+
+/** แตะ/คลิกบนปกระหว่างวิดีโอเล่น = ข้ามไปภาพปก (ปุ่มยังทำงานตามปกติ ไม่ถือเป็นการข้าม) */
+function skipCoverVideo(e) {
+  if (coverPhase !== 'playing' || e.target.closest('button, a, .title-menu')) return;
+  settleCover(true);
 }
 
 /** เริ่มเล่นจริง — เรียกได้ครั้งเดียว */
@@ -4931,7 +5056,12 @@ function startPlay(fresh) {
   splashDone = true;
   splashVideo.pause();
   splashEl.hidden = true;
+  coverPhase = 'settled';
+  clearTimeout(coverStallTimer);
+  coverVfx.hidden = true;
   coverVfx.pause();
+  coverVfx.removeAttribute('src');   // คืนหน่วยความจำ/ตัวถอดรหัส — ไม่ต้องใช้อีกจนกว่าจะโหลดหน้าใหม่
+  coverVfx.load();
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
@@ -4972,6 +5102,7 @@ function buildTitle() {
   // เบราว์เซอร์ห้ามเล่นเสียงก่อนผู้ใช้แตะจอ — ปลุกเพลงหน้าปกตอนแตะครั้งแรกที่ไหนก็ได้บนปก
   const wake = () => { unlock(); bgm('bgm-title'); titleEl.removeEventListener('pointerdown', wake); };
   titleEl.addEventListener('pointerdown', wake);
+  titleEl.addEventListener('pointerdown', skipCoverVideo);
 
   // หน้าปกเป็น webp ตั้งแต่ 8 ก.ย. 2569 — png เดิม 1.3 MB คือไฟล์ใหญ่สุดของทั้งเกม
   // และเป็นภาพแรกที่ต้องมาถึง (144 KB แล้ว) · ถ้าวันหลังดรอป cover.png กลับมาก็ยังใช้ได้
@@ -5149,9 +5280,10 @@ function playSplash() {
   if (splashDone) return;
   if (reducedMotion) return revealTitle();
   splashEl.classList.add('playing');
+  prepareCoverVideo();
   if (splashVideo.error) revealTitle();
-  else splashVideo.play().catch(revealTitle);
-  setTimeout(revealTitle, 25000); // อินโทรโลโก้ + Yama ประมาณ 19 วินาที; ยังมีปุ่มข้ามและ fallback
+  else splashVideo.play().then(watchSplashCut, revealTitle);
+  setTimeout(revealTitle, 25000); // ไฟล์ 19 วินาที แต่ตัดส่งต่อวิดีโอปกที่ SPLASH_CUT; ยังมีปุ่มข้ามและ fallback
 }
 function enterFromTap() {
   enterGate.hidden = true;
@@ -5174,8 +5306,8 @@ if (document.documentElement.dataset.bootReady === 'true' || !$('#boot')) afterB
 else addEventListener('avegee:boot-ready', afterBoot, { once:true });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { coverVfx.pause(); pauseWhenLeaving(); }
-  else if (splashDone && !started && !coverVfx.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    coverVfx.play().catch(() => {});
+  else if (coverPhase === 'playing' && !started && !coverVfx.hidden) {
+    coverVfx.play().catch(() => settleCover(true));
   }
   if (!document.hidden) setTimeout(showAutoPause, 0);
 });

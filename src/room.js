@@ -18,7 +18,7 @@ import { regenMp } from './mp-regen.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
-import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, img, rr } from './art.js';
+import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -153,6 +153,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
   let locked = false;
+  let stokeFx = null;
   // แอนิเมชันเดิน — ใช้สไปรท์เดินชุดเดียวกับบนแผนที่ (art.js drawHeroWalk) เฟรมเปลี่ยนตามระยะที่เดินจริง
   let walkDist = 0, simClock = 0, movedSim = -1e9, direction = 'down';
   // F1 — "กำลังเดิน" นับด้วยนาฬิกาของการเดินเอง (ไม่ใช่นาฬิกาเฟรม) เฟรมช้า/กระตุกจะได้ไม่สลับท่ายืน↔ท่าเดินมั่ว
@@ -483,6 +484,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // (ตะราง/หอส่องกรรมไม่เจอเคสนี้: นิราเป็น reader ห้ามมอบหมาย · กานต์ที่หอส่องกรรม pow:0 ไม่เคยมี crewK)
     // ซ้ำกับผู้คุมเข้าเวรด้านล่างเฉพาะตอน "ตัวเดียวกัน" เข้าเวรอยู่จริง (เช่น บุญเข้าเวรที่ sawan เอง)
     // ถ้าเข้าเวรเป็นคนอื่น (เช่น ดำมาคุมแทน) NPC ประจำห้องยังต้องยืนอยู่ตามปกติ ไม่ใช่หายไปด้วย
+    if (def.k === 'krata' && g.crew?.some(c=>c.k==='plerng') && st?.crewK !== 'plerng') {
+      acts.push({y:room.crew[1],fn:()=>drawStandee(ctx,'crew-plerng',px(room.crew[0]),py(room.crew[1]),U*CREW_H,t,'')});
+    }
     if ((def.k === 'tarang' || def.k === 'sawan' || def.k === 'krajok')) {
       const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : 'kan';
       const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : 'กานต์';
@@ -497,7 +501,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
-      const guard = room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
+      const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
       if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
@@ -572,6 +576,17 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     } });
 
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+    const pots = def.k === 'krata' ? potLayout(bgSrc) : null;
+    if (stokeFx && pots) {
+      const age=t-stokeFx.at;
+      if (age > 2200) stokeFx=null;
+      else {
+        const f=Math.min(1,age/650), targetX=px(pots.cx[1]), targetY=py(pots.fireY);
+        const startX=px(P.x), startY=py(P.y)-U*HERO_H*.55;
+        if (stokeFx.hit) drawFire(ctx,startX+(targetX-startX)*f,startY+(targetY-startY)*f,U*.065,t,1);
+        if (age > 500) pots.cx.forEach(x=>drawFire(ctx,px(x),py(pots.fireY)+U*.04,U*(stokeFx.hit?.09:.035),t,stokeFx.hit?5:2));
+      }
+    }
 
   }
 
@@ -590,6 +605,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   }
 
   const api = {
+    krataApproach: room.act,
+    walkTo(x,y) { for (const key of Object.keys(KEY)) KEY[key]=false; [P.tx,P.ty]=snap(x,y); },
+    stokeEffect(hit) { stokeFx={at:performance.now(),hit}; g.swingUntil=Date.now()+900; },
     st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
@@ -609,7 +627,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) <= REACH,
     setSleep,
     setSit,
-    lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
+    lock: v => { locked = !!v; if (locked && def.k === 'krata') { for (const key of Object.keys(KEY)) KEY[key]=false; P.tx=null; P.ty=null; } },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
     project: ([x, y]) => {
       const rect = cv.getBoundingClientRect();
       return [px(x) / cv.width * rect.width,

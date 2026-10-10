@@ -1,9 +1,10 @@
+import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
-import { FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
+import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
 import { TEA_BED_COST } from './tea-recovery.js';
@@ -148,7 +149,8 @@ export function createGame() {
   syncFrontierPos(g.zone);          // เกมใหม่เริ่มโซน 1 เสมอ — ตั้งขนาดฉากและล้าง walk mask
   g.player.x = SPOTS.bench.x + 60; g.player.y = SPOTS.bench.y;
 
-  Object.assign(g, API);
+  Object.assign(g, API, krataMethods);
+  g.fireControl = normalizeFireControl();
   g.teamLimits = { ...TEAM_LIMITS };
   syncRoster(g);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
@@ -463,6 +465,11 @@ const API = {
     if (!actor || actor.recoverUntil) return false;
     actor.morale = 0; actor.recoverUntil = now + RECOVERY_MS;
     if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
+    this.releaseActorFromWork(actor);
+    return true;
+  },
+  /** ปล่อยตัวละครออกจากงานที่ทำอยู่ (สถานี/พาวิญญาณ/ก่อสร้าง) — ใช้ทั้งตอนล้มและตอนไปพักศาลา */
+  releaseActorFromWork(actor) {
     actor.at = null; actor.path = null; actor.escort = null;
     for (const walk of this.afterlifeWalks) if (walk.escort?.k === actor.k) walk.escort = null;
     for (const transit of this.transits) if (transit.crew === actor.k) { transit.crew = null; transit.crewName = ''; }
@@ -477,19 +484,24 @@ const API = {
     }
     return true;
   },
-  restGuard(id = this.guard?.id, now = Date.now()) {
+  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — HP < 50 เท่านั้น */
+  restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
-    if (!c || c.k !== 'guard' || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 50 || this.battle) return false;
+    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 50 || this.battle) return false;
     const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
     if (!tea) return false;
+    if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
+    if (c.x == null) return false;
     const dest = nearestWalk(tea.def.sx ?? tea.def.x, tea.def.sy ?? tea.def.y);
     if (!dest) return false;
     const path = findPath(c.x, c.y, ...dest);
     if (!path?.length && Math.hypot(c.x-dest[0],c.y-dest[1]) > 6) return false;
     c.teaRest = { phase:'travel', zone:this.zone, dest, path:path || [], movedAt:now, returnAt:[c.x,c.y] };
     c.path = null; c.target = null;
+    if (c.k !== 'guard') this.releaseActorFromWork(c);
     this.save(); this.onChange(); return true;
   },
+  restGuard(id = this.guard?.id, now = Date.now()) { return this.restActor(id, now); },
   updateGuardRest(c, now) {
     const rest = c.teaRest;
     if (!rest) return false;
@@ -3028,6 +3040,9 @@ const API = {
 
     let dmg = 0, stunFoe = 0, confuseFoe = 0, swing = null, rageMult = 1;
     B.weaponNote = null;
+    // G4 — คูลดาวน์ผลพิเศษของอาวุธ: ค่าตอนต้นคำสั่งนี้ (0 = พร้อมเกิด) · เกิดแล้วตั้ง WEAPON_EFFECT_COOLDOWN · ลดทีละ 1 ทุกคำสั่ง
+    const weaponCdStart = B.weaponCd || 0, weaponReady = weaponCdStart === 0;
+    let weaponProc = false;
     if (itemCommand) {
       const hp = recipient.id === 'you' ? B.youHp : recipient.morale;
       const max = recipient.id === 'you' ? B.youMax : 100;
@@ -3042,7 +3057,8 @@ const API = {
       // G3b — ถืออาวุธประจำโซนอยู่: ผลเฉพาะ "ฟาดปกติ" ของยมบาท (ลำดับสุ่มเท่าเดิมทุกประการเมื่อไม่ถืออาวุธ)
       const base = this.normalAttack(roll(BATTLE.atk));
       const r = Math.random();
-      swing = meleeSwing(base, this.normalAttack(BATTLE.atk[1]), r, this.weapons?.equipped);
+      swing = meleeSwing(base, this.normalAttack(BATTLE.atk[1]), r, this.weapons?.equipped, weaponReady);
+      weaponProc = !!swing.proc;
       dmg = swing.dmg;
       const crit = swing.crit;
       say(`⚔️ ท่านฟาดเข้าเต็มแรง — ${dmg} หน่วย${crit ? ' (เข้าเต็ม ๆ)' : ''}`);
@@ -3068,7 +3084,7 @@ const API = {
         say(`${c.name}สะกดจิตศัตรู — ตาถัดไปเขาจะฟาดใส่ตัวเอง`);
         B.talk = `${c.name}: "ผมสะกดให้เขาหลงตัวเองแล้ว ท่านลงมือได้เลย"`;
       } else {
-        dmg = pw.dmg;
+        dmg = c.k === 'plerng' ? this.controlledFireDamage(pw.dmg, c) : pw.dmg;
         say(`${c.name}${c.k === 'plerng' ? 'ปล่อยไฟ' : 'เข้าช่วยโจมตี'} — ${dmg} หน่วย`);
         B.talk = `${c.name}: "ท่านถอยไปก่อน เดี๋ยวผมจัดการเอง"`;
       }
@@ -3092,7 +3108,7 @@ const API = {
       // ข้อ B ชุด 13 — 40 คงที่ ไม่สุ่มอีกต่อไป
       if (this.mp < BATTLE.mpCost.fire) return false;
       this.mp -= BATTLE.mpCost.fire;
-      dmg = BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2;
+      dmg = this.controlledFireDamage(BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2);
       say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'flameCharge') {
@@ -3176,7 +3192,8 @@ const API = {
     let hit = null;
     if (swing && what === 'atk' && this.weapons?.equipped) {
       dmg = Math.min(dmg, capWithRage(swing.cap, rageMult));
-      hit = weaponOnHit(this.weapons.equipped, { dealt:Math.min(dmg, target.hp), targetMax:target.maxHp, youHp:B.youHp, youMax:B.youMax });
+      hit = weaponOnHit(this.weapons.equipped, { dealt:Math.min(dmg, target.hp), targetMax:target.maxHp, youHp:B.youHp, youMax:B.youMax }, Math.random, weaponReady);
+      if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
     const areaAttack = ['ice', 'windFan', 'hypno'].includes(what);
@@ -3197,6 +3214,7 @@ const API = {
       B.youHp += hit.heal; B.weaponNote = { k:'drain', n:hit.heal };
       say(`🩸 ดาบดูดเลือด — ฟื้นบารมี ${hit.heal}`);
     }
+    B.weaponCd = weaponProc ? WEAPON_EFFECT_COOLDOWN : Math.max(0, weaponCdStart - 1);
     B.dmg.foe = dmg;
     B.dmg.foeId = target.id;
     B.dmg.foeHits = affected.map(f => ({ id:f.id, damage:dmg }));
@@ -4304,7 +4322,7 @@ API.snapshot = function (withEntry = true) {
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 4, training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
+    v: 4, fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -4379,8 +4397,19 @@ API.restore = function (d) {
     this.saveBeforeRosterMigration = original;
   }
   d = migrateRosterSave(structuredClone(d));
+  // G4 — ไอเท็มฟื้นฟูรุ่นโซน (healthZ2, teaZ4 ฯลฯ) รวมเป็นชื่อเดียวทุกโซน: ยกจำนวนไปรวมกับไอเท็มชื่อใหม่ ไม่ให้หาย
+  if (d.inventory) for (const [old, to] of Object.entries(LEGACY_ITEM_IDS)) if (d.inventory[old] != null) {
+    d.inventory[to] = (d.inventory[to] || 0) + d.inventory[old];
+    delete d.inventory[old];
+  }
+  if (Array.isArray(d.items)) d.items = d.items.map(it => LEGACY_ITEM_IDS[it?.k] ? { ...it, k:LEGACY_ITEM_IDS[it.k] } : it);
+  const legacyDiscovery = id => { const m = /^item:(.+)$/.exec(id); return m && LEGACY_ITEM_IDS[m[1]] ? `item:${LEGACY_ITEM_IDS[m[1]]}` : id; };
+  if (d.discoverySeen) for (const id of Object.keys(d.discoverySeen)) if (legacyDiscovery(id) !== id) { d.discoverySeen[legacyDiscovery(id)] = true; delete d.discoverySeen[id]; }
+  if (d.discoveryQueue) d.discoveryQueue = [...new Set(d.discoveryQueue.map(legacyDiscovery))];
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
+  this.fireControl = normalizeFireControl(d.fireControl);
+  this._krataSession = null;
   this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)
   this.teamLimits = { ...TEAM_LIMITS };
   const legacyBossGate = !!d.legacyBossGate || (d.legacyBossGate == null &&

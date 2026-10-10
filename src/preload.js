@@ -8,7 +8,7 @@ const readySet = new Set();
 const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url), 3, readySet);
 // เบื้องหลัง: ดึงไฟล์ลงแคชโดยไม่ถอดรหัสภาพ · 2 เลนเพื่อไม่แย่งแบนด์วิดท์กับเกม
 const bgQueue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : warmImage(url), 2, readySet);
-const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1';
+const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb';
 if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };

@@ -65,6 +65,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 /* ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569 — แถบหิว + ปุ่มป้อนข้าวปั้น ใช้ร่วมกัน 3 จุด (ดู hungerWidget ใน ui.js) */
 .hunger-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
 .hunger-line small{white-space:nowrap}
+.hunger-line .rest-name{flex-basis:100%;font-size:13px}
 
 /* ---------- เลย์เอาต์หลัก ----------
    ฉากกินเต็มความกว้าง แผงควบคุมกับบันทึกอยู่ใต้ฉาก
@@ -423,6 +424,14 @@ dialog.challenge-dialog[open]{max-width:460px;max-height:calc(100dvh - 24px);ove
 .challenge-boss-line small{display:block;margin-top:2px;color:var(--muted-foreground)}
 .weapon-card .outfit-info small{display:block}
 .weapon-note{border-color:#d4a355;color:#fff0c8}
+/* G4: คูลดาวน์ผลพิเศษอาวุธ — ไอคอนจางลงพร้อมเลขเทิร์นที่เหลือ (สถานะ UI เท่านั้น ไม่แก้ไฟล์ภาพ) */
+.weapon-cd{display:flex;align-items:center;gap:8px;border-color:#d4a355;color:#fff0c8}
+.wcd-ico{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px}
+.wcd-ico img{display:block;width:100%;height:100%;object-fit:contain}
+.wcd-ico em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:16px;color:#fff;text-shadow:0 1px 4px #000,0 0 6px #000}
+.weapon-cd.cooling .wcd-ico img,.orb-choice .wcd-ico img{opacity:.38;filter:grayscale(.7)}
+.orb-choice .wcd-ico{width:40px;height:40px;flex-basis:40px}
+.orb-choice .wcd-ico em{font-size:18px}
 @media(max-width:520px){.challenge-boss{width:min(40vw,150px);max-height:26dvh}}
 
 /* ---------- แผนที่เดินทางระหว่างโซน ---------- */
@@ -512,13 +521,18 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     linear-gradient(160deg,#1a0a12 0%,#0b0508 60%);
   background-size:cover;background-position:center}
 #title .art.has{background-size:cover;background-position:center}
-/* วิดีโอพื้นหลัง Home เต็มจอ วนลูป แทนภาพปก — #cover-art (คุมสีไล่/webp) อยู่ชั้นล่าง
-   ทำหน้าที่ poster/fallback ระหว่างวิดีโอยังโหลดไม่เสร็จ/เล่นไม่ได้/reduced-motion */
-#title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+/* H5a: วิดีโอเปิดหน้าปก (img/home-intro-v5.mp4 ~12 วิ) เล่นครั้งเดียวหลังโลโก้ไฟ: มืด → ค่อยสว่าง → จบที่องค์ประกอบเดียวกับ cover-v5
+   แล้ว dissolve เข้าภาพนิ่ง — #cover-art (webp) อยู่ชั้นล่างเสมอ ทำหน้าที่ fallback เมื่อวิดีโอโหลดไม่ทัน/เล่นไม่ได้/reduced-motion
+   ผู้ใช้ H5b: วาง canvas เอฟเฟกต์ไว้ใน #title ต่อจาก #cover-vfx (ก่อน .scrim) แล้วรอ event avegee:cover-settled / คลาส .cover-settled บน #title */
+#title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;
+  background:#090407;transition:opacity .5s ease}
+#title .cover-vfx.fading{opacity:0}
 #splash{position:fixed;inset:0;z-index:110;background:#090407;overflow:hidden;
   display:grid;place-items:center;transition:opacity .35s ease}
 #splash[hidden]{display:none}
 #splash.leaving{opacity:0;pointer-events:none}
+/* H5a: โลโก้ไฟลุกสุดแล้วหรี่เข้าสี #090407 (สีเริ่มของ home-intro-v5.mp4 พอดี) ก่อนส่งต่อให้วิดีโอปก */
+#splash.dim video,#splash.dim .splash-logo,#splash.dim .splash-skip{opacity:0;pointer-events:none;transition:opacity .5s ease}
 #splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #splash .splash-logo{position:absolute;z-index:1;left:50%;top:71%;
   width:min(38vw,430px);max-height:23vh;
@@ -1999,11 +2013,48 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .intro-comic-controls .gold{color:#f3d18b;background:#3a2735}
 .st-exit{position:absolute;z-index:10;transform:translate(-50%,-100%);max-width:calc(100% - 16px);min-height:44px;padding:7px 12px;background:#35202a;color:#f5d18c;border:1px solid #c69a51;border-radius:8px;white-space:nowrap}
 .st-exit[hidden]{display:none}
+
+.st-hud[data-room="krata"] #st-actions{position:absolute;inset:0;display:block;pointer-events:none;z-index:2}
+.st-hud[data-room="krata"] .st-action{position:absolute;left:var(--action-x);top:var(--action-y);width:auto;transform:translate(-50%,-20%);pointer-events:auto}
+/* G5: room QTE controls remain outside the artwork and retain touch-sized targets. */
+.g5-overlay{z-index:125;background:rgba(18,7,13,.94);overflow:auto}
+.st-hud:has(.g5-overlay:not([hidden])) :is(#st-left,#st-actions,#st-npc,.st-bottom-left){visibility:hidden}
+.g5-content{display:flex;flex:1;min-height:0;flex-direction:column;align-items:center;gap:8px}
+.g5-content p{margin:0;text-align:center;flex:none}
+.g5-choices{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.g5-content [data-fire]{min-height:44px;min-width:110px;flex-shrink:0}
+.g5-closeup{position:relative;width:min(100%,800px,calc((100dvh - 150px) * 16 / 9));aspect-ratio:16/9;min-height:0;flex:0 0 auto;overflow:hidden;border:2px solid #dfba63;border-radius:14px;background:#180a11}
+.g5-portrait{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g5-orb{position:absolute;left:38%;top:52%;width:19%;aspect-ratio:1;transform:translate(-50%,-50%)}
+.g5-orb img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g5-orb i{position:absolute;left:50%;top:50%;width:100%;height:100%;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%)}
+.g5-green{border:6px solid #20994da8}
+.g5-white{border:3px solid white}
+.g5-stoke{background:transparent;pointer-events:none}
+.g5-stoke .mg-head,.g5-stoke .g5-content{pointer-events:auto}
+.g5-stoke .mg-head{background:#180a11dd;border-radius:10px;padding:6px}
+.g5-stoke .g5-content{justify-content:flex-end;flex:0 0 auto;margin-top:auto;background:#180a11dd;padding:10px;border-radius:10px}
+.g5-count{align-self:flex-start;font-weight:700;color:#ffe49c}
+.g5-bar{position:relative;width:min(85%,600px);height:22px;flex:0 0 22px;background:#26131b;border:1px solid #dfba63;border-radius:12px;overflow:hidden;margin-top:auto}
+.g5-zone{position:absolute;left:42%;width:16%;height:100%;background:#128e40}
+.g5-needle{position:absolute;left:50%;height:100%;width:3px;background:#fa3030}
+.g5-result{color:#ffe49c;font-weight:700}
+.g5-content:has(.g5-bar){padding-bottom:12px}
+@media(max-width:600px) and (orientation:portrait){
+ .g5-closeup{flex:0 0 auto;max-height:none;margin:auto 0;width:100%}
+ .g5-overlay .mg-head{flex-wrap:wrap}
+ .st-hud[data-room="krata"] #st-actions .st-action{left:70%;top:18%}
+ .st-hud[data-room="krata"] .st-action .btn-gold{min-width:100px;height:44px}
+ .st-hud[data-room="krata"] .st-action small{max-width:125px;font-size:11px}
+ .st-hud[data-room="krata"] .st-npc-tag{max-width:48%}
+ .st-hud[data-room="krata"] .btn-gold{font-size:14px;padding:9px 12px}
+}
+
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=h2">
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2">
 <link rel="stylesheet" href="src/minigames/training/training.css">
-<link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art">
+<link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2031,7 +2082,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <div id="title">
   <div class="art" id="cover-art"></div>
   <video class="cover-vfx" id="cover-vfx" hidden poster="img/cover-v5.webp"
-    muted playsinline loop preload="none" aria-hidden="true"></video>
+    muted playsinline preload="none" aria-hidden="true"></video>
   <div class="scrim"></div>
 
   <!-- เฟืองตั้งค่ามุมขวาบน (ข้อ A.3) — ใช้ id เดิม #t-set ที่ ui.js ผูก openSettings() ไว้แล้ว -->
@@ -2205,7 +2256,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </div>
 
 <dialog id="dlg"></dialog>
-<script type="module" src="src/preload.js?v=h1"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-h2"></script>
+<script type="module" src="src/preload.js?v=h1-g5"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h2"></script>
 </body>
 </html>

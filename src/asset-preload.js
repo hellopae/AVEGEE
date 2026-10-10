@@ -42,6 +42,8 @@ const SPLIT_RULES = [
   [0, 0, /^img\/(merchant|prop-boat|prop-lantern|prop-throne-platform)\.png$/],
   [0, 0, /^img\/(soul-[a-z]+|spirit\d+)\.png$/],
   [0, 0, /^img\/(item-[a-z-]+|icon-force-\d|icon-lock|icon-skip)\.png$/],
+  // G5 (10 ต.ค.): ภาพมินิเกมห้องกระทะทองแดง (close-up + ลูกไฟ) — โหลดเบื้องหลัง ไม่กั้นหน้าโหลด · ต้องอยู่ก่อนกฎ cutscene ด้านล่าง
+  [1, 4, /^img\/krata-minigame\//],
   // ชั้นท้าย: ใหญ่และเปิดเมื่อมีเหตุการณ์เท่านั้น
   [2, 1, /cutscene|story-ending|story-.*-\d|story-.*reinforce/],
   [2, 2, /deva-intro|frontier-.*-(intro|hypnosis)|tea-.*recovery|unconscious|roar/],
