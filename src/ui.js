@@ -20,7 +20,7 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
-import { teamFaceClass, foeFaceClass, ragePoseSrc } from './battle-facing.js';
+import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -2054,6 +2054,9 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const showRage = charged && !hurtNow && !usingAtk;
   const raging = charged && !hurtNow;
   const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
+  // I1-B ข้อ 3 — ต้นเหตุ "ยมฯ หันซ้ายหลังโจมตีธรรมดา": class .atk ตัดการพลิก scaleX(-1) ของท่ายืน (index.html: .fig.you.atk img{transform:scaleX(1)})
+  // ซึ่งตั้งไว้สำหรับรูปท่าฟาด hero-yama-atk ที่วาดหันขวา — แต่ตอนฟันดาบธรรมดา youImg คือ "ท่ายืน" (แอนิเมชันดาบวาดบน canvas ทับ 580ms)
+  // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
     : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
@@ -2086,7 +2089,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
-    <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${usingAtk || showRage ? ' atk' : ''}${raging ? ' raging' : ''}">
+    <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>

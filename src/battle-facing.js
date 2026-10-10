@@ -53,3 +53,12 @@ export function ragePoseSrc(style) {
     default: return null;
   }
 }
+
+/** I1-B ข้อ 3 — ใส่ class `.atk` ให้ .fig.you ไหม
+ *  `.atk` = "ยกเลิกการพลิกกระจกของรูป" (index.html: .fig.you.atk img{transform:scaleX(1)}) ใช้กับ "รูปท่าฟาด/ท่าชาร์จ" ที่วาดหันขวามาแต่ต้นเท่านั้น
+ *  ฟันดาบธรรมดา (sword) รูปที่โชว์คือ "ท่ายืน" (ซึ่งต้องถูกพลิกตามทะเบียนด้านบน) ส่วนแอนิเมชันดาบวาดบน canvas ทับแค่ 580ms
+ *  ถ้าใส่ .atk ตอนนี้ ท่ายืนจะโผล่หลัง canvas หายโดยไม่ถูกพลิกค้างจนจบเทิร์น = ยมฯ หันซ้าย (ต้นเหตุจริง ดู i1b-yama-facing.test.mjs) */
+export const figYouAtkClass = ({ usingAtk, sword, showRage }) => (!!usingAtk && !sword) || !!showRage;
+/** ท่ายืนที่โชว์อยู่ "หันขวา" ไหม (ศัตรูอยู่ขวา) — drawnRight = ไฟล์วาดหันขวามา · mirrored = ถูกพลิกกระจกจริงตอนแสดง (class .atk ยกเลิกการพลิก) */
+export const standingFacesRight = (src, { atkClass = false } = {}) =>
+  TEAM_DRAWN_FACING_RIGHT.has(spriteKey(src)) !== (teamNeedsMirror(src) && !atkClass);
