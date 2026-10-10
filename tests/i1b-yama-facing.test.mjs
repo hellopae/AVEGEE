@@ -36,7 +36,7 @@ test('I1-B-3: ท่าฟาด/ท่าชาร์จที่วาดห�
 
 test('I1-B-3: arena() ใช้ figYouAtkClass กับ fx จริง และ CSS ที่ตัดการพลิกยังผูกกับ .atk เท่านั้น', () => {
   const ui = read('src/ui.js'), html = read('index.html');
-  assert.match(ui, /figYouAtkClass\(\{ usingAtk, sword:isYamaSwordAttack\(fx\), showRage \}\)/);
+  assert.match(ui, /figYouAtkClass\(\{ usingAtk, sword:isYamaSwordAttack\(fx\), showRage, standing:youImg === heroFace\(\) \}\)/);   // west-hit: + standing
   assert.doesNotMatch(ui, /\$\{usingAtk \|\| showRage \? ' atk' : ''\}/);
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   // mountBattleSword อ่านทิศจาก transform จริงของท่ายืน — ต้องเห็นการพลิก (ไม่มี .atk) ตอนฟันดาบ
