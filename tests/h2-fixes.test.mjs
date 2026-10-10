@@ -32,19 +32,15 @@ test('H2-4: sala "sort documents" button moved up', () => {
   assert.match(read('src/room-art-assets.js'), /actions:key === 'sala' \? \[\[\.50,\.19\],\[\.74,\.51\]\]/);
 });
 
-// ข้อ 5 — ปุ่มเก็บไอเท็มของศึกชายแดน
-test('H2-5: frontier win button is floated above the card row (own class, not the bottom .pad)', () => {
-  const ui = read('src/ui.js'), css = read('src/flow29c.css');
-  assert.match(ui, /b\.kind === 'frontier'\) \{ finRow\.classList\.add\('fin-float', 'fin-center', 'fin-main', 'fin-above-cards'\)/);
-  assert.match(css, /\.fin-above-cards\{left:61%;top:52%/);
-  assert.match(css, /\.fin-above-cards\{left:50%;top:47%/);
+// ข้อ 5 — ปุ่มเก็บไอเท็มของศึกชายแดน (I1-B ข้อ 4 ย้ายตำแหน่ง/ย่อขนาดต่อจาก H2 — ตำแหน่งใหม่ทดสอบละเอียดใน i1b-battle-ui.test.mjs)
+test('H2-5: frontier win button keeps its own class (not the bottom .pad)', () => {
+  const ui = read('src/ui.js');
+  assert.match(ui, /b\.kind === 'frontier'\) \{\s*finRow\.classList\.add\('fin-float', 'fin-center', 'fin-main', 'fin-above-cards'\)/);
 });
 
-// ข้อ 6 — วงคำสั่งไม่ทับตัวละคร
-test('H2-6: command wheel is placed beside the right-most team member (desktop) and Yama moves left in portrait', () => {
-  const ui = read('src/ui.js'), css = read('src/command-wheel.css');
-  assert.match(ui, /teamRight \+ 6/);
-  assert.doesNotMatch(ui, /cx - w \* 0\.41/);
+// ข้อ 6 — วงคำสั่งไม่ทับตัวละคร (I1-B ข้อ 2 แทนที่ด้วย "ขวาบนของตัวที่ถึงตา" — ดู i1b-battle-ui.test.mjs) · ส่วน CSS จอแนวตั้งยังใช้ต่อ
+test('H2-6: Yama moves left in portrait and the portrait wheel rules stay', () => {
+  const css = read('src/command-wheel.css');
   assert.match(css, /not\(\.final-team\)>\.fig\.you\{left:28%\}/);
   assert.match(css, /not\(\.final-team\) \.actor-wheel\{bottom:33%\}/);
   assert.match(css, /not\(\.final-team\) \.combat-wheel \.command-options\{left:5%;max-width:152px\}/);
