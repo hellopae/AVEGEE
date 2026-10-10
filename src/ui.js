@@ -1,4 +1,4 @@
-import { runKrataQte } from './minigames/krata-qte.js';
+import { runKrataQte } from './minigames/krata-qte.js?v=sword-schools-20261010-final';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4-i1a';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
@@ -9,9 +9,9 @@ import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { actorStanding, specialCooldown } from './actor-recovery.js';
-import { trainingProgress, HERO_TRAINING_ID } from './training.js';
-import { TRAINING_GAMES } from './minigames/training/index.js';
-import { runTraining } from './minigames/training/host.js';
+import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=sword-schools-20261010-final';
+import { TRAINING_GAMES } from './minigames/training/index.js?v=sword-schools-20261010-final';
+import { runTraining } from './minigames/training/host.js?v=sword-schools-20261010-final';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
@@ -30,9 +30,9 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState } from './weapons.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=sword-schools-20261010';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
-import { makeRoom } from './room.js';
+import { makeRoom } from './room.js?v=sword-schools-20261010-final';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
@@ -4127,7 +4127,7 @@ function openStation(k, emergency = false) {
       const toggle = mode => () => { drawerMode = drawerMode === mode ? null : mode; panels(); };
       const mp = k === 'krajok' ? g.powerOf('mirror') : null;
 
-      const specs = k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
+      const specs = ['ngiw','dab'].includes(k) ? [] : k === 'tarang' ? [      // 29C: ปุ่มจัดการรายชื่อย้ายไปลอยบนหัวนิรา (npcTags) — กลางฉากไม่มีปุ่มแล้ว
       ] : k === 'sala' ? [
         ['room.sala.action', null, () => { showArchive(true); sfx('stamp'); }, !inside, !inside ? t('room.nearArch') : ''],
         ['room.sala.action2', null, () => openMinigame(k), !mgReady, mgWhy],
@@ -4180,6 +4180,11 @@ function openStation(k, emergency = false) {
     const N = dlg.querySelector('#st-npc');
     if (N && R) {
       const tags = [];
+      if (['ngiw','dab'].includes(k) && room.crew) {
+        const at = st.crewK === 'dam' ? room.guard || [room.crew[0]+.13,room.crew[1]] : room.crew;
+        const [ax,ay] = R.anchor(...at,R.crewHeight+.025);
+        tags.push({id:'sword-training',ax,ay,pos:'above',label:k==='ngiw'?'ฝึกฟันดาบ':'ฝึกวิชาดาบ',hint:'คุยกับดำ · เพิ่มพลังดาบ',keep:true,disabled:mgOpen});
+      }
       if (k === 'krata' && g.crew.some(c => c.k === 'plerng')) {
         const [ax,ay] = R.anchor(...room.crew,R.crewHeight+.025);
         tags.push({id:'fire-training',ax,ay,pos:'above',label:t('g5.train'),hint:t('g5.trainHint'),keep:true,disabled:mgOpen});
@@ -4198,6 +4203,8 @@ function openStation(k, emergency = false) {
       put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.yamaKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
+      const swordTrainingBtn = N.querySelector('[data-npc="sword-training"]');
+      if (swordTrainingBtn) swordTrainingBtn.onclick = () => openTraining(k,true);
       const fireTrainingBtn = N.querySelector('[data-npc="fire-training"]');
       if (fireTrainingBtn) fireTrainingBtn.onclick = () => openKrata(true);
       const manageBtn = N.querySelector('[data-npc="manage"]'), lotusBtn = N.querySelector('[data-npc="lotus"]');
@@ -4267,9 +4274,9 @@ function openStation(k, emergency = false) {
     };
   }
 
-  function openTraining(sk) {
+  function openTraining(sk, fromDam = false) {
     const ov = dlg.querySelector('#mg-ov'), game = TRAINING_GAMES[sk];
-    if (!ov || !game || mgOpen || !R?.inTrainingReach()) return;
+    if (!ov || !game || mgOpen || (!R?.inTrainingReach() && !(fromDam && ['dab','ngiw'].includes(sk)))) return;
     mgOpen = true;
     R.lock(true);
     ov.hidden = false; ov.classList.add('mg-train');
@@ -4302,10 +4309,20 @@ function openStation(k, emergency = false) {
       const why = g.trainingWhy(sk, select.value);
       const pr = trainingProgress(g, select.value);
       const progress = `Lv ${pr.level}/${pr.cap} · EXP ${pr.exp}`;
-      reason.textContent = `${progress} · ${why || (sk === 'dab' ? 'เพิ่มเฉพาะโจมตีปกติ / Normal attack only' : 'เพิ่มพลังผู้ฝึกคนที่เลือก / Selected trainee only')}`;
+      reason.textContent = `${progress} · ${why || (['dab','ngiw'].includes(sk) ? 'เพิ่มเฉพาะโจมตีปกติ / Normal attack only' : 'เพิ่มพลังผู้ฝึกคนที่เลือก / Selected trainee only')}`;
       start.disabled = !!why;
     };
     select.onchange = check; check();
+    if (['dab','ngiw'].includes(sk)) {
+      const label=document.createElement('label'); label.textContent='เปลี่ยนดาบ ';
+      const weapons=document.createElement('select'); weapons.setAttribute('aria-label','เปลี่ยนดาบ');
+      const ids=[null,...Object.keys(g.weapons?.owned || {}).filter(id=>g.weapons.owned[id])];
+      for(const id of ids){const option=document.createElement('option');option.value=id || '';option.textContent=id?t(`weapon.${id}.name`):'ดาบเริ่มต้น';weapons.append(option);}
+      weapons.value=g.weapons?.equipped || '';
+      weapons.onchange=()=>{g.equipWeapon(weapons.value || null);};
+      label.append(weapons);ov.querySelector('.mg-intro').prepend(label);
+      const help=document.createElement('p');help.textContent='ดำ: ฝึกแล้วได้ EXP พลังโจมตีปกติ · ดาบใหม่ได้จากการประลองชายแดน';label.after(help);
+    }
     ov.querySelector('.mg-x').onclick = teardown;
     const pauseButton = ov.querySelector('.training-pause');
     pauseButton.onclick = () => {
@@ -4321,6 +4338,7 @@ function openStation(k, emergency = false) {
       const stage = ov.querySelector('.mg-stage'); stage.hidden = false; pauseButton.hidden = false;
       try {
         stop = runTraining(stage, { station:sk, session, alive:mine, paused:() => g.paused,
+          zone:g.zone, weapon:()=>g.weapons?.equipped,
           heroStyle:session.actorId === HERO_TRAINING_ID ? g.outfit || g.zone : null,
           onSword:() => { g.swingUntil = Date.now() + SWORD_DURATION_MS; },
           onAbandon:teardown, onResult:result => {
@@ -4355,6 +4373,7 @@ function openStation(k, emergency = false) {
   }
 
   function openMinigame(sk) {
+    if (['dab','ngiw'].includes(sk)) { openTraining(sk,true); return; }
     if (sk === 'krata') { openKrata(false); return; }
     const stx = g.stations.find(x => x.def.k === sk);
     const game = MINIGAMES[sk];

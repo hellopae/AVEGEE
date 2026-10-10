@@ -1,13 +1,13 @@
-import { TRAINING_GAMES, createTrainingGame } from './index.js';
-import { runPanel } from './panel-host.js';
+import { TRAINING_GAMES, createTrainingGame } from './index.js?v=sword-schools-20261010-final';
+import { runPanel } from './panel-host.js?v=sword-schools-20261010-final';
 import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 
 // Own every listener/frame. Pausing and hidden tabs freeze both clock and input.
 export function runTraining(host, { station, session, paused, alive, onResult, onAbandon,
-  heroStyle = null, onSword = () => {},
+  heroStyle = null, zone = 'th', weapon = () => null, onSword = () => {},
   raf = requestAnimationFrame, caf = cancelAnimationFrame }) {
   const engine = createTrainingGame(station, session.seed);
-  if (TRAINING_GAMES[station].ui) return runPanel(host, TRAINING_GAMES[station], engine, { session, paused, alive, onResult, onAbandon, raf, caf });
+  if (TRAINING_GAMES[station].ui) return runPanel(host, TRAINING_GAMES[station], engine, { session, paused, alive, onResult, onAbandon, raf, caf, heroStyle, zone, weapon, onSword });
   let stopped = false, frame = 0, previous = null;
   const controller = new AbortController();
   const text = document.createElement('p'); text.setAttribute('aria-live', 'polite');

@@ -105,3 +105,20 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 .st-hud.archive-open .st-arch{z-index:160!important}
 .arch-card-grid{flex:1}.arch-detail{flex:1}.doc-trophy img{height:auto;aspect-ratio:1}.doc-book img{max-height:110px}
 @media(prefers-reduced-motion:reduce){.doc-book img{animation-duration:1ms!important}}
+/* Dam's two sword schools */
+.mg-stage.sword-practice{display:flex;flex-direction:column;gap:6px;min-height:0;width:100%}
+.sword-score{font-size:clamp(13px,1.6vw,21px);font-weight:700;color:#ffe4a6;text-align:center;flex:none}
+.sword-board{position:relative;flex:1;min-height:120px;overflow:hidden;border:2px solid #cba25b;border-radius:18px;background-size:cover;background-position:center}
+.sword-board canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.sword-keys{width:76.5%;margin:0 auto;display:flex;justify-content:center;gap:8px;text-align:center;font-size:12px;flex:none;color:#e1cfb4}
+.sword-keys button{flex:1;min-width:0;min-height:44px;max-width:none;background:var(--lane);border:2px solid #fff5b4;border-radius:8px;color:#1b101b;font-weight:bold;touch-action:none;box-shadow:inset 0 -6px #0003}
+.sword-keys button:active{filter:brightness(1.4);transform:translateY(2px)}
+.sword-feedback{text-align:center;min-height:20px;font-size:14px;color:#ffe7a5;flex:none}
+@media(max-height:500px){.mg-train .mg-head{padding:3px}.sword-score{font-size:13px}.sword-feedback{font-size:12px;min-height:14px}.sword-keys button{min-height:36px}.mg-stage.sword-practice{gap:3px}}
+.g5-green{border-width:clamp(9px,1.3vw,24px)!important;opacity:.8}
+.g5-green.fire-ready{border-color:#74f597!important;box-shadow:0 0 22px #4fe493;opacity:1}
+[data-fire].fire-ready{background:linear-gradient(#b9ffd1,#39ad66)!important;box-shadow:0 0 20px #61ed90;color:#102b1a}
+.st-hud:has(.mg-train:not([hidden])) :is(#st-npc,#st-right,.st-bottom-left){visibility:hidden}
+
+.mg-train .mg-stage.sword-practice{align-items:stretch;overflow:hidden}
+.sword-board{width:100%;box-sizing:border-box}

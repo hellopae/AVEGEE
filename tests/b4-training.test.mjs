@@ -123,14 +123,13 @@ test('B4 original station acceleration still works independently', () => {
   assert.deepEqual(g.training.zones,{});
 });
 
-test('B4 stone mechanics shared, sword timing/decoys, fire clock finishes at 30 seconds', () => {
+test('B4 stone mechanics shared, sword note timing, fire clock finishes at 30 seconds', () => {
   for (const station of ['lan','lokan']) {
     const e = createTrainingGame(station); e.input('hold'); e.step(1.4); e.input('release');
     assert.equal(e.view().successes,1); e.input('hold'); e.input('release'); assert.equal(e.view().successes,1);
     e.step(1.6); assert.equal(e.view().round,2);
   }
-  const e = createTrainingGame('dab',1); e.step(1); e.input('hit'); assert.equal(e.view().successes,1);
-  const decoy = createTrainingGame('dab',0); decoy.step(1); decoy.input('hit'); assert.equal(decoy.view().successes,0);
+  const e = createTrainingGame('dab',1); e.step(2.8); e.input({type:'note',lane:e.view().notes[0].lane}); assert.equal(e.view().hits,1);
   const fire = createTrainingGame('krata');
   for (let i = 0; i < 300; i++) { if (fire.view().heat < 45) fire.input('hit'); fire.step(.1); }
   fire.step(.001); assert.equal(fire.view().done,true); assert.ok(fire.score() >= 95);
@@ -154,7 +153,7 @@ test('B4 host freezes timers/input on pause/hidden, abandons and cancels frame/l
   try {
     let queue = new Map(), n = 0, paused = false, alive = true, abandoned = 0, result = 0;
     const host = new Element();
-    const stop = runTraining(host,{ station:'dab',session:{ id:'one', seed:1 },paused:() => paused,alive:() => alive,
+    const stop = runTraining(host,{ station:'lan',session:{ id:'one', seed:1 },paused:() => paused,alive:() => alive,
       onResult:() => result++,onAbandon:() => abandoned++,raf:fn => { queue.set(++n,fn); return n; },caf:id => queue.delete(id) });
     const frame = time => { const [id,fn] = queue.entries().next().value; queue.delete(id); fn(time); };
     frame(0); frame(100); const text = host.children[0].textContent;
