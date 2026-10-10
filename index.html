@@ -512,13 +512,18 @@ footer{color:var(--muted-foreground);font-size:var(--text-xs);text-align:center;
     linear-gradient(160deg,#1a0a12 0%,#0b0508 60%);
   background-size:cover;background-position:center}
 #title .art.has{background-size:cover;background-position:center}
-/* วิดีโอพื้นหลัง Home เต็มจอ วนลูป แทนภาพปก — #cover-art (คุมสีไล่/webp) อยู่ชั้นล่าง
-   ทำหน้าที่ poster/fallback ระหว่างวิดีโอยังโหลดไม่เสร็จ/เล่นไม่ได้/reduced-motion */
-#title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+/* H5a: วิดีโอเปิดหน้าปก (img/home-intro-v5.mp4 ~12 วิ) เล่นครั้งเดียวหลังโลโก้ไฟ: มืด → ค่อยสว่าง → จบที่องค์ประกอบเดียวกับ cover-v5
+   แล้ว dissolve เข้าภาพนิ่ง — #cover-art (webp) อยู่ชั้นล่างเสมอ ทำหน้าที่ fallback เมื่อวิดีโอโหลดไม่ทัน/เล่นไม่ได้/reduced-motion
+   ผู้ใช้ H5b: วาง canvas เอฟเฟกต์ไว้ใน #title ต่อจาก #cover-vfx (ก่อน .scrim) แล้วรอ event avegee:cover-settled / คลาส .cover-settled บน #title */
+#title .cover-vfx{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;
+  background:#090407;transition:opacity .5s ease}
+#title .cover-vfx.fading{opacity:0}
 #splash{position:fixed;inset:0;z-index:110;background:#090407;overflow:hidden;
   display:grid;place-items:center;transition:opacity .35s ease}
 #splash[hidden]{display:none}
 #splash.leaving{opacity:0;pointer-events:none}
+/* H5a: โลโก้ไฟลุกสุดแล้วหรี่เข้าสี #090407 (สีเริ่มของ home-intro-v5.mp4 พอดี) ก่อนส่งต่อให้วิดีโอปก */
+#splash.dim video,#splash.dim .splash-logo,#splash.dim .splash-skip{opacity:0;pointer-events:none;transition:opacity .5s ease}
 #splash video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #splash .splash-logo{position:absolute;z-index:1;left:50%;top:71%;
   width:min(38vw,430px);max-height:23vh;
@@ -2025,7 +2030,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <div id="title">
   <div class="art" id="cover-art"></div>
   <video class="cover-vfx" id="cover-vfx" hidden poster="img/cover-v5.webp"
-    muted playsinline loop preload="none" aria-hidden="true"></video>
+    muted playsinline preload="none" aria-hidden="true"></video>
   <div class="scrim"></div>
 
   <!-- เฟืองตั้งค่ามุมขวาบน (ข้อ A.3) — ใช้ id เดิม #t-set ที่ ui.js ผูก openSettings() ไว้แล้ว -->
