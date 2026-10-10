@@ -41,7 +41,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -283,10 +283,60 @@ export function bodyBoxOf(def) {
   return r;
 }
 
-/** Collision follows the ground footprint. Roof pixels may occlude actors behind
- * the building but do not occupy walkable ground. Depth still uses its rear edge. */
+/** H2 (10 ต.ค. 2569) — คุณเป้: "ให้เดินหน้า–หลังอาคาร และชนเฉพาะฐาน จะทำให้เดินทับอาคารได้ ... ช่วยปรับให้ไม่เดินทับอาคาร"
+ *  ตัวอาคารทั้งหลังต้องเหยียบไม่ได้ ไม่ใช่แค่แถบฐานบาง ๆ (ตอนนั้นยมบาทเดินขึ้นไปหายหลังหลังคา/ทะลุผนังได้)
+ *  กรอบเดียว (bodyBox) หยาบเกิน — หลังคาแหลม/ยอดสูงจะกินพื้นว่างข้าง ๆ ไปด้วย
+ *  จึงตัดเป็นแถบแนวนอนตามเงาจริงของภาพ (alpha) ทีละ BLOCK_ROWS แถว แต่ละแถบกว้างเท่าช่วงเนื้อภาพของแถบนั้น
+ *  วัดจากพิกเซลสไปรท์จริงเหมือน footOf — วาดรูปใหม่แล้วกรอบขยับตามเอง ไม่ต้องกรอกมือ
+ *  คืน null ถ้ารูปยังไม่โหลด (ผู้เรียกลองใหม่รอบหน้า) · คืนลิสต์ของ [x1,y1,x2,y2] */
+const BLOCK_ROWS = 3;
+const blockCache = new Map();
+export function blockRectsOf(def) {
+  if (def.bx == null) return null;
+  const box = stationBox(def);
+  if (!box || !box.im.naturalWidth) return null;
+  const im = box.im, ck = `${def.k}|${im.src}|${box.x | 0},${box.y | 0},${box.w | 0}|${box.flip ? 'f' : ''}`;
+  if (blockCache.has(ck)) return blockCache.get(ck);
+  const N = 72;
+  const c = document.createElement('canvas');
+  c.width = N; c.height = N;
+  const cx = c.getContext('2d', { willReadFrequently: true });
+  cx.drawImage(im, 0, 0, N, N);
+  let d;
+  try { d = cx.getImageData(0, 0, N, N).data; } catch { blockCache.set(ck, null); return null; }
+  const solid = (x, y) => d[(y * N + (box.flip ? N - 1 - x : x)) * 4 + 3] > 40;
+  const rows = [];                                 // ช่วงเนื้อภาพของแต่ละแถว [x1,x2] หรือ null
+  let top = -1, bot = -1;
+  for (let y = 0; y < N; y++) {
+    let x1 = -1, x2 = -1;
+    for (let x = 0; x < N; x++) if (solid(x, y)) { if (x1 < 0) x1 = x; x2 = x; }
+    rows.push(x1 < 0 ? null : [x1, x2]);
+    if (x1 >= 0) { if (top < 0) top = y; bot = y; }
+  }
+  if (top < 0) { blockCache.set(ck, null); return null; }
+  const sx = v => box.x + v / N * box.w;
+  const sy = v => box.y + v / N * box.h;
+  const out = [];
+  for (let y0 = top; y0 <= bot; y0 += BLOCK_ROWS) {
+    const y1 = Math.min(bot, y0 + BLOCK_ROWS - 1);
+    let a = N, b = -1;
+    for (let y = y0; y <= y1; y++) if (rows[y]) { a = Math.min(a, rows[y][0]); b = Math.max(b, rows[y][1]); }
+    if (b < a) continue;
+    // เผื่อขอบเข้ามานิดหนึ่ง (6% ของความกว้างแถบ) จะได้เดินเฉียดชายคา/ขอบบันไดได้ ไม่ใช่ชนอากาศ
+    const x1 = sx(a), x2 = sx(b + 1), pad = Math.min((x2 - x1) * 0.06, 6);
+    if (x2 - x1 - pad * 2 < 4) continue;
+    out.push([x1 + pad, sy(y0), x2 - pad, sy(y1 + 1)]);
+  }
+  blockCache.set(ck, out);
+  return out;
+}
+
+/** กรอบรวมของ blockRectsOf (ใช้ตรวจ "ภาพมาหรือยัง") — เดิมคืนแถบฐานอย่างเดียว */
 export function blockOf(def) {
-  return footOf(def);
+  const rs = blockRectsOf(def);
+  if (!rs || !rs.length) return null;
+  return [Math.min(...rs.map(r => r[0])), Math.min(...rs.map(r => r[1])),
+          Math.max(...rs.map(r => r[2])), Math.max(...rs.map(r => r[3]))];
 }
 
 /** ความลึกของอาคารสำหรับเรียงชั้นวาด — **ขอบหลังของแถบฐานที่ติดพื้น** ไม่ใช่ def.by
@@ -496,7 +546,7 @@ export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {
     ctx.save();
-    ctx.globalAlpha = 0.93;
+    ctx.globalAlpha *= 0.93;
     ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
     ctx.restore();
     if (tint !== '#bfe9ff') {          // รอนานแล้ว — ย้อมแดงเตือน

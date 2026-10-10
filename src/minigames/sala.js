@@ -4,8 +4,8 @@ import { t } from '../i18n.js';
 // Tight SVG viewports select the painted atlas without modifying its pixels.
 const BOOK_X = [87, 614, 1142, 1671];
 function bookArt(color) {
- const gold = color === 'gold';
- return `<svg viewBox="${gold ? '198 87 838 1068' : `${BOOK_X[color]} 93 412 520`}" aria-hidden="true" focusable="false"><image href="img/minigames/sala-${gold ? 'book-gold' : 'books'}-v2.png" width="${gold ? 1223 : 2172}" height="${gold ? 1286 : 724}"/></svg>`;
+ if(color === 'rainbow')return '<img src="img/minigames/sala-book-rainbow-h4-v1.png" alt="" draggable="false">';
+ return `<svg viewBox="${BOOK_X[color]} 93 412 520" aria-hidden="true" focusable="false"><image href="img/minigames/sala-books-v2.png" width="2172" height="724"/></svg>`;
 }
 
 export default {
@@ -20,7 +20,7 @@ export default {
    <p class="doc-rule">${t('doc.rule')}</p>
    <div class="doc-playfield"><div class="doc-scroll"><div class="doc-board" role="group" aria-label="${t('doc.board')}"></div></div>
     <div class="doc-paused" hidden><b>${t('doc.pauseTitle')}</b><span>${t('doc.pauseHint')}</span></div>
-    <div class="doc-victory" hidden role="status"><div class="doc-trophy">${bookArt('gold')}</div><h3>${t('doc.success')}</h3><p>${t('doc.successHint')}</p><button class="gold" data-claim type="button">${t('doc.claim')}</button></div>
+    <div class="doc-victory" hidden role="status"><div class="doc-trophy">${bookArt('rainbow')}</div><h3>${t('doc.success')}</h3><p>${t('doc.successHint')}</p><button class="gold" data-claim type="button">${t('doc.claim')}</button></div>
    </div>
    <div class="doc-footer"><p class="doc-status" role="status">${t('doc.initial')}</p><div class="doc-tools"><span class="doc-moves">${t('doc.moves').replace('{n}',0)}</span><button data-hint type="button">${t('doc.hint')}</button><button data-reset type="button">${t('doc.restart')}</button></div></div>`;
   host.replaceChildren(root);
@@ -122,7 +122,7 @@ export default {
      for (const index of group.cells) {
       const tile = tiles[index], rect = tile.getBoundingClientRect();
       tile.classList.add('matching');
-      if (index === anchor) { tile.innerHTML = bookArt('gold'); tile.classList.add('golden'); }
+      if (index === anchor) { tile.innerHTML = bookArt('rainbow'); tile.classList.add('golden'); }
       else { tile.style.setProperty('--merge-x',`${target.x-rect.x}px`); tile.style.setProperty('--merge-y',`${target.y-rect.y}px`); }
      }
     }

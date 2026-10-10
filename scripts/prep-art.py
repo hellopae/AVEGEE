@@ -275,6 +275,25 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
     stripped = 0
     OUT = out_dir                  # ทุกบรรทัดข้างล่างเซฟลง OUT — โฟลเดอร์โซนก็ใช้ทางเดียวกัน
 
+    # HUD zoom icons: 96px, centred with 4px padding; preserve real transparency.
+    # Call prep() directly for these assets; img/ui stays outside the zone pipeline.
+    if name in ('icon-zoom-in', 'icon-zoom-out'):
+        im = im.convert('RGBA')
+        alpha = im.getchannel('A').point(lambda v: 0 if v < alpha_threshold else v)
+        im.putalpha(alpha)
+        box = alpha.getbbox()
+        if not box:
+            raise ValueError(f'{name}: empty icon')
+        im = im.crop(box)
+        im.thumbnail((88, 88), Image.LANCZOS)
+        canvas = Image.new('RGBA', (96, 96), (0, 0, 0, 0))
+        canvas.alpha_composite(im, ((96 - im.width) // 2, (96 - im.height) // 2))
+        alpha = canvas.getchannel('A')
+        flat = canvas.convert('RGB').quantize(colors=COLORS, dither=Image.NONE).convert('RGBA')
+        flat.putalpha(alpha)
+        flat.save(os.path.join(OUT, name + '.png'), optimize=True)
+        return flat.size
+
     # ภาพเดินเป็นแถบ 4 เฟรมแนวนอนเท่ากันทุกช่อง (art.js หั่นด้วย naturalWidth/4 ตรง ๆ)
     # Dale ตรวจ 29 ก.ย. 2569: ต้นฉบับ gen มา 2172×724 (เฟรมละ 543×724) หนัก 0.9–1.3MB/ไฟล์
     # ทั้งที่ยมบนแผนที่สูงจริงแค่ ~90-130px — ครอปทีละเฟรมแล้วย่อแยกกัน (กันสีเฟรมข้างเคียง

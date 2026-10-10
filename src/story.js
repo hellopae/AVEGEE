@@ -1,11 +1,20 @@
 import { t } from './i18n.js';
-import { BATTLE } from './data.js';
+import { BATTLE, WEAPONS } from './data.js';
+import { weaponCutsceneSrc } from './weapons.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
   video:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.mp4' : `img/deva-intro/deva-intro-${zone}-v1-web.mp4`, videoAspect:16/9,
   image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
 }] });
+// G3b — คัตซีนรับอาวุธประจำโซน: ภาพ 16:9 วาดโดย Kittanate/Codex ที่ img/weapons/weapon-cutscene-<id>.jpeg
+// แยกจาก STORY ตั้งใจ: ภาพยังไม่มีไฟล์ได้ (renderStoryComic ใส่ภาพแทนให้เอง ไม่ error) · เทสต์ "ทุกหน้าเรื่องมีไฟล์จริง" จึงไม่ตีธงรายการนี้
+// ข้อความ = ชื่ออาวุธ + บทพูด "ชนะ" ของบอสโซนนั้น (ร่าง Minnie) · เล่นครั้งเดียวต่ออาวุธ (g.storySeen)
+const weaponStory = id => ({ get title() { return t('weapon.cutscene.title'); }, pages:[{
+  image:weaponCutsceneSrc(id), fallback:'🗡️', get title() { return t(`weapon.${id}.name`); },
+  get line() { return `${t(`challenge.${WEAPONS[id].zone}.win`)}\n\n${t('weapon.reward.hint')}`; },
+}] });
+export const WEAPON_STORY = Object.fromEntries(Object.keys(WEAPONS).map(id => [`weapon-${id}`, weaponStory(id)]));
 export const STORY = {
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
@@ -55,6 +64,8 @@ export const STORY = {
     { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.png' },
   ]},
 };
+/** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
+export const storyOf = key => STORY[key] || WEAPON_STORY[key];
 export const ABILITY_REWARDS = {
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้ MP', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },
   flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้ MP', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้ MP ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },

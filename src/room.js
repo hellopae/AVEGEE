@@ -1,5 +1,7 @@
+import { mirrorObstacle } from './mirror-charge.js';
+import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
-import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
+import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { fitSoulName, soulNameplateWidth } from './soul-nameplate.js';
 import { potLayout, drawPotSoul } from './pot-souls.js';
 import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, teaSleepPhase, teaRecoveredHp, roomImageBox } from './tea-recovery.js';
@@ -18,7 +20,7 @@ import { regenMp } from './mp-regen.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
-import { drawStandee, drawHeroWalk, drawSoul, img, rr } from './art.js';
+import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
@@ -138,6 +140,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
+  const gateEffects = new Map(), visibleGateSlots = new Map();
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
 
@@ -153,6 +156,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   // "เดินต่อได้ตามปกติแต่ไม่รับอินพุตซ้ำ" กันเว้นวรรค/ลูกศรของห้องไปชนกับปุ่มของมินิเกม
   // (คีย์บอร์ดผูกกับ window ทั้งคู่ ปิดจาก CSS อย่างเดียวไม่พอ) ui.js เรียก api.lock(true/false)
   let locked = false;
+  let stokeFx = null;
   // แอนิเมชันเดิน — ใช้สไปรท์เดินชุดเดียวกับบนแผนที่ (art.js drawHeroWalk) เฟรมเปลี่ยนตามระยะที่เดินจริง
   let walkDist = 0, simClock = 0, movedSim = -1e9, direction = 'down';
   // F1 — "กำลังเดิน" นับด้วยนาฬิกาของการเดินเอง (ไม่ใช่นาฬิกาเฟรม) เฟรมช้า/กระตุกจะได้ไม่สลับท่ายืน↔ท่าเดินมั่ว
@@ -173,7 +177,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     return hit;
   };
-  const inArea = (x, y) => areas.some(a => a.poly ? insidePoly(x, y, a.poly)
+  const inArea = (x, y) => !(def.k === 'krajok' && api.mirrorPlaced?.() && mirrorObstacle(x,y)) && areas.some(a => a.poly ? insidePoly(x, y, a.poly)
                                                    : x >= a[0] && y >= a[1] && x <= a[2] && y <= a[3]);
   /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
   const snap = (x, y) => {
@@ -242,13 +246,18 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       P.tx = null; P.ty = null;
     } else {
       sitting = false;
+      // H2: จุดนั่งอยู่บนเบาะ (สูงกว่าขอบพื้นที่เดินได้) — ลุกขึ้นแล้วต้องย้ายกลับเข้าพื้นที่เดินได้ ไม่งั้นตัวละครขยับไม่ได้
+      const [sx, sy] = snap(P.x, P.y); P.x = sx; P.y = sy;
     }
     return true;
   }
 
+  // ตื่นแล้วยืนที่พื้นหน้าเตียง (ในพื้นที่เดินได้) — เตียงขยับขึ้นไปกลางฟูกแล้ว จึงไม่ใช้ bed.y+0.09 ตรง ๆ
+  const wakeY = () => Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0);
+
   function setSleep(emergency = false) {
     if (!canSit || lying || sitting || (!emergency &&
-        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
+        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
     sleepStartHp = g.hp;
@@ -263,7 +272,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
       if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
-        P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
+        P.x = room.bed[0]; P.y = wakeY();
         if (recoverySleep) g.completeTeaRecovery();
         else { g.hp = g.hpMax; g.save(); g.onChange(); }
       }
@@ -273,8 +282,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       // นั่งนิ่ง ไม่รับอินพุตเดินเลย — เติม MP ด้วยเวลาจริง (ห้องนี้เดินต่อได้แม้กล่องโมดัลจะพัก g.step() ไว้)
       if (g.mp < g.mpMax) {
         regenMp(g, mpAcc, dt);   // ชุด 30B ข้อ 5 — MP เป็นจำนวนเต็มเสมอ (ดู mp-regen.js)
-        if (g.mp >= g.mpMax) sitting = false;
-      } else sitting = false;
+        if (g.mp >= g.mpMax) setSit(false);
+      } else setSit(false);
       const now = performance.now();
       if (now >= sipAt) { sipping = !sipping; sipAt = now + 1800 + Math.random() * 900; }
       return;
@@ -440,12 +449,15 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'tarang' || def.k === 'sawan') {
       const stage = def.k === 'tarang' ? 'prison' : 'gate';
       const occupied = st?.slots.length || 0;
+      const freeSlots=room.souls.slice(occupied).filter(at=>![...gateEffects.values()].some(fx=>(fx.kind==='reborn'||fx.kind==='sky') && !gateEffectPose(fx.kind,t-fx.start).done && fx.at[0]===at[0] && fx.at[1]===at[1]));
+      if(def.k === 'sawan')visibleGateSlots.clear();
       const waiting = [
         ...(def.k === 'tarang' ? (g.held || []).map(soul => ({ soul })) : []),
         ...(g.sentences || []).filter(x => x.zone === g.zone && x.stage === stage),
-      ].slice(0, Math.max(0, room.souls.length - occupied));
+      ].slice(0, freeSlots.length);
       waiting.forEach((entry, i) => {
-        const a = room.souls[i + occupied];
+        const a = freeSlots[i];
+        if(def.k === 'sawan')visibleGateSlots.set(entry.soul.id,a);
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
@@ -453,11 +465,25 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           chains(x,y);
           if (def.k === 'tarang') soulNameplate(ctx, entry.soul.name || entry.soul.who, x, y, U,
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
-          else soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036 + (i % 2) * U * 0.024, U);
+          else {
+            soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036, U);
+            soulLabel(ctx, tr('room.karmaLeft').replace('{n}',gateKarma(entry)), x, y + U * .066, U);
+          }
         } });
       });
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
+    if (def.k === 'tea') {
+      for (const c of Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone && c.teaRest.phase === 'rest')) {
+        const elapsed = Math.max(0, Date.now()-c.teaRest.startedAt), phase = (elapsed % 8000)/8000;
+        const x = .30 + .40*(phase < .5 ? phase*2 : (1-phase)*2), y = .72;
+        acts.push({y, fn:() => {
+          const h = U*CREW_H, key = 'crew-'+c.k;
+          if (!drawCrewWalk(ctx,key,px(x),py(y),h,elapsed*.04,phase < .5 ? 1 : -1))
+            drawStandee(ctx,key,px(x),py(y),h,t,c.glyph);
+        }});
+      }
+    }
     // NPC ประจำห้อง — นิรา (ตะราง) / บุญ (ประตูสวรรค์) / กานต์ (หอส่องกรรม ข้อ A-2 คุณเป้ 24 ก.ย. 2569)
     // กานต์เป็นยมทูตตัวเดียวกับใน CREW (ใช้ภาพ crew-kan เดิม ไม่วาดใหม่ — ตามข้อห้ามใบงาน "ห้ามใช้ภาพอื่นแทน")
     // ข้อ I-2 คุณเป้เจอ 25 ก.ย. 2569 — ประตูสวรรค์ (sawan) มอบหมายผู้คุมได้จริงผ่านระบบเดียวกับ
@@ -467,6 +493,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     // (ตะราง/หอส่องกรรมไม่เจอเคสนี้: นิราเป็น reader ห้ามมอบหมาย · กานต์ที่หอส่องกรรม pow:0 ไม่เคยมี crewK)
     // ซ้ำกับผู้คุมเข้าเวรด้านล่างเฉพาะตอน "ตัวเดียวกัน" เข้าเวรอยู่จริง (เช่น บุญเข้าเวรที่ sawan เอง)
     // ถ้าเข้าเวรเป็นคนอื่น (เช่น ดำมาคุมแทน) NPC ประจำห้องยังต้องยืนอยู่ตามปกติ ไม่ใช่หายไปด้วย
+    if (def.k === 'krata' && g.crew?.some(c=>c.k==='plerng') && st?.crewK !== 'plerng') {
+      acts.push({y:room.crew[1],fn:()=>drawStandee(ctx,'crew-plerng',px(room.crew[0]),py(room.crew[1]),U*CREW_H,t,'')});
+    }
     if ((def.k === 'tarang' || def.k === 'sawan' || def.k === 'krajok')) {
       const key = def.k === 'tarang' ? 'nira' : def.k === 'sawan' ? 'boon' : 'kan';
       const name = def.k === 'tarang' ? 'นิรา' : def.k === 'sawan' ? 'บุญ' : 'กานต์';
@@ -481,7 +510,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     if (st && st.crewK && room.crew) {
       const c = g.crewOf(st.crewK);
-      const guard = room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
+      const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (def.k === 'sawan' || def.k === 'tarang' ? 0.13 : 0), room.crew[1]];
       if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
         drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
@@ -518,7 +547,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
         ctx.save();
         ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
-        drawStandee(ctx,'hero-yama',px(P.x),py(room.bed[1]+0.09),U*HERO_H,t,'👑',P.face);
+        drawStandee(ctx,'hero-yama',px(P.x),py(wakeY()),U*HERO_H,t,'👑',P.face);
         ctx.restore(); return;
       }
       if (lying) {
@@ -555,7 +584,30 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
     } });
 
+    for(const [id,fx] of gateEffects) {
+      const pose=gateEffectPose(fx.kind,t-fx.start);
+      if(pose.done){gateEffects.delete(id);continue;}
+      acts.push({y:fx.at[1],fn:()=>{
+        const x=px(fx.at[0]),y=py(fx.at[1]),h=U*SOUL_H;
+        if(fx.kind==='reborn'||fx.kind==='sky'){
+          ctx.save();ctx.globalAlpha=pose.alpha;
+          drawSoul(ctx,x,y-U*pose.rise,h,t,'#fff1cf',fx.soul.sp || 7);ctx.restore();
+        }
+        drawGateEffect(ctx,x,y,h,fx.kind,pose,fx.cut);
+      }});
+    }
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+    const pots = def.k === 'krata' ? potLayout(bgSrc) : null;
+    if (stokeFx && pots) {
+      const age=t-stokeFx.at;
+      if (age > 2200) stokeFx=null;
+      else {
+        const f=Math.min(1,age/650), targetX=px(pots.cx[1]), targetY=py(pots.fireY);
+        const startX=px(P.x), startY=py(P.y)-U*HERO_H*.55;
+        if (stokeFx.hit) drawFire(ctx,startX+(targetX-startX)*f,startY+(targetY-startY)*f,U*.065,t,1);
+        if (age > 500) pots.cx.forEach(x=>drawFire(ctx,px(x),py(pots.fireY)+U*.04,U*(stokeFx.hit?.09:.035),t,stokeFx.hit?5:2));
+      }
+    }
 
   }
 
@@ -574,11 +626,23 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   }
 
   const api = {
+    krataApproach: room.act,
+    walkTo(x,y) { for (const key of Object.keys(KEY)) KEY[key]=false; [P.tx,P.ty]=snap(x,y); },
+    stokeEffect(hit) { stokeFx={at:performance.now(),hit}; g.swingUntil=Date.now()+900; },
     st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach, inTrainingReach,
+    mirrorPlaced:null,
+    gateEffect(id,kind,cut=0) {
+      if(def.k !== 'sawan' || !GATE_EFFECT_MS[kind])return false;
+      const entries=gateArrivals(g),index=entries.findIndex(x=>x.soul.id===id),entry=entries[index];
+      if(!entry)return false;
+      const at=visibleGateSlots.get(id) || room.souls[Math.min(room.souls.length-1,index+(api.st?.slots.length || 0))];
+      if(!at)return false;
+      gateEffects.set(id,{kind,cut,soul:entry.soul,at:[...at],start:performance.now()});return true;
+    },
     /** ชุด 29C — จุดบนฉากเป็นเปอร์เซ็นต์ของ canvas (ไว้วางปุ่ม HTML ลอยเหนือตัวละคร)
      *  u,v = สัดส่วน 0-1 ของภาพฉากเหมือน ROOMS · up = ยกขึ้นกี่ส่วนของด้านสั้นของกรอบ (CREW_H = เหนือหัวคน) */
     anchor(u, v, up = 0) {
@@ -590,10 +654,10 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     sitting: () => sitting,
     sleeping: () => lying,
     sleepPhase: () => lying ? teaSleepPhase(sleepElapsed) : null,
-    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
+    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) <= REACH,
     setSleep,
     setSit,
-    lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
+    lock: v => { locked = !!v; if (locked && (def.k === 'krata' || def.k === 'krajok')) { for (const key of Object.keys(KEY)) KEY[key]=false; P.tx=null; P.ty=null; } },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)
     project: ([x, y]) => {
       const rect = cv.getBoundingClientRect();
       return [px(x) / cv.width * rect.width,

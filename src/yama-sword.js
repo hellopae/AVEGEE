@@ -1,4 +1,5 @@
 import { SWORD_SHEETS } from './yama-sword-v2-assets.js?v=20261009-f2-merge-f3-f4-sala-books';
+import { weaponSpriteSrc } from './weapons.js';
 
 // One physical slash, synchronized to the existing 580 ms battle lunge.
 // Wind up visibly, cut quickly through contact, hold the low follow-through, then recover.
@@ -21,16 +22,42 @@ export function swordDrawFrame(style, elapsed) {
   return fix && f in fix ? fix[f] : f;
 }
 export const isYamaSwordAttack = fx => fx?.action === 'atk' && !fx.crew;
+// G3b — อาวุธประจำโซน × ชุดยมบาท: ตารางชื่อไฟล์อยู่ใน weapons.js (weaponSpriteSrc) · รูปแบบเดียวกับแผ่นเดิมทุกประการ
+// (8 เฟรม 640×640 พื้นใส จุดยึดและความสูงตัวเท่าแผ่นดาบเดิมของชุดนั้น) จึงใช้ geometry ของชุดต่อได้เลย
+// ไฟล์ยังไม่มี/โหลดไม่ขึ้น = ใช้ดาบเดิมของชุดโดยอัตโนมัติ · พอ Kittanate วางไฟล์จริงทับชื่อเดิมก็ขึ้นเอง ไม่ต้องแก้โค้ด
 const images = new Map();
-export function swordImage(style) {
-  const sheet = swordSheet(style);
+const weaponRecords = new Map();
+function weaponRecord(src) {
+  if (!weaponRecords.has(src)) {
+    const rec = { im:null, failed:false };
+    if (typeof Image === 'function') {
+      rec.im = new Image();
+      rec.im.onerror = () => { rec.failed = true; };
+      rec.im.src = src;
+    } else rec.failed = true;
+    weaponRecords.set(src, rec);
+  }
+  return weaponRecords.get(src);
+}
+function baseImage(sheet) {
   if (!images.has(sheet.src)) { const im = new Image(); im.src = sheet.src; images.set(sheet.src, im); }
   return images.get(sheet.src);
 }
+/** แผ่น+ภาพที่ใช้วาดจริง: อาวุธ+ชุดนี้ถ้ามีไฟล์และโหลดสำเร็จแล้ว ไม่งั้นแผ่นดาบเดิมของชุด */
+function resolveSword(style, weapon) {
+  const base = swordSheet(style);
+  if (weapon) {
+    const rec = weaponRecord(weaponSpriteSrc(weapon, SWORD_SHEETS[style] ? style : 'th'));
+    if (!rec.failed && rec.im?.complete && rec.im.naturalWidth) return { sheet:{ ...base, src:rec.im.src }, im:rec.im };
+  }
+  return { sheet:base, im:baseImage(base) };
+}
+export const weaponSheetFor = (style, weapon) => resolveSword(style, weapon).sheet;
+export function swordImage(style, weapon = null) { return resolveSword(style, weapon).im; }
 
 /** Fixed body height and feet anchor across all frames; blade may extend beyond the body. */
-export function drawYamaSword(ctx, style, x, feet, bodyHeight, elapsed = 0, face = 1) {
-  const sheet = swordSheet(style), im = swordImage(style);
+export function drawYamaSword(ctx, style, x, feet, bodyHeight, elapsed = 0, face = 1, weapon = null) {
+  const { sheet, im } = resolveSword(style, weapon);
   if (!im.complete || !im.naturalWidth) return false;
   const scale = bodyHeight / sheet.bodyHeight, frame = swordDrawFrame(style, elapsed);
   ctx.save(); ctx.translate(x, feet); ctx.scale(face < 0 ? -1 : 1, 1);
@@ -56,7 +83,7 @@ function standingBox(im) {
 }
 
 /** Keep the standing <img> as the team's size reference, overlay only during Yama's ordinary slash. */
-export function mountBattleSword(stage, style, startedAt) {
+export function mountBattleSword(stage, style, startedAt, weapon = null) {
   const actor = stage.querySelector('.fig.you'), standing = actor?.querySelector('img:not(.fx)');
   if (!standing) return;
   const canvas = document.createElement('canvas'); canvas.className = 'yama-sword-animation';
@@ -68,7 +95,7 @@ export function mountBattleSword(stage, style, startedAt) {
   const render = () => {
     const elapsed = Date.now() - startedAt;
     if (!canvas.isConnected || elapsed >= SWORD_DURATION_MS) { finish(); return; }
-    if (standing.complete && standing.naturalWidth && swordImage(style).naturalWidth) {
+    if (standing.complete && standing.naturalWidth && swordImage(style, weapon).naturalWidth) {
       const r = standing.getBoundingClientRect(), ar = actor.getBoundingClientRect();
       const box = standingBox(standing), scale = Math.min(r.width / standing.naturalWidth, r.height / standing.naturalHeight);
       const w = standing.naturalWidth * scale, h = standing.naturalHeight * scale;
@@ -77,7 +104,7 @@ export function mountBattleSword(stage, style, startedAt) {
       Object.assign(canvas.style, { left:`${x0-w}px`, top:`${y0-h}px`, width:`${w*3}px`, height:`${h*2}px` });
       const flipped = getComputedStyle(standing).transform.startsWith('matrix(-1');
       const center = flipped ? 1-box.center : box.center;
-      if (drawYamaSword(ctx, style, w*(1+center), h*(1+box.bottom), h*(box.bottom-box.top), elapsed)) {
+      if (drawYamaSword(ctx, style, w*(1+center), h*(1+box.bottom), h*(box.bottom-box.top), elapsed, 1, weapon)) {
         standing.style.visibility = 'hidden'; canvas.dataset.frame = String(swordFrame(elapsed));
       }
     }

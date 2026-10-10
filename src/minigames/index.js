@@ -18,8 +18,8 @@
 //     },
 //   };
 
-import sala from './sala.js?v=20261009-book-art';
-import krata from './krata.js';
+import sala from './sala.js?v=20261009-book-art-h4';
+import krata from './krata-qte.js';
 import dab from './dab.js';
 import lokan from './lokan.js';
 import ngiw from './ngiw.js';

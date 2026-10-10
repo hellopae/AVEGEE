@@ -1,3 +1,4 @@
+import { KRATA_WALK } from './krata-control.js';
 // Regional room backgrounds and shared image-space geometry.
 // Coordinates are normalized image-space visual suggestions; review collision per scene.
 export const WIDE_ROOM_ART = {
@@ -1431,10 +1432,10 @@ export function wideStationRoom(zone, key) {
   return {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
     me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
-    act:key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
-    training:art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
-    actions:key === 'sala' ? [[.50,.19],[.74,.57]] : [[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
-    walk:key === 'sala' ? SALA_WALK.map(a=>({poly:a.poly.map(p=>[...p])})) : [{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
+    act:key === 'krata' ? [.5,.54] : key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
+    training:key !== 'krata' && art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
+    actions:key === 'sala' ? [[.50,.19],[.74,.51]] : [[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
+    walk:key === 'krata' && zone === 'th' ? KRATA_WALK : key === 'sala' ? SALA_WALK.map(a=>({poly:a.poly.map(p=>[...p])})) : [{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
       [.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}],
   };
 }

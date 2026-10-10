@@ -57,13 +57,14 @@ test('1. ไม่มีปุ่มฝึกตัวละครในกา�
 import { teamNeedsMirror, TEAM_DRAWN_FACING_RIGHT } from '../src/battle-facing.js';
 import { swordDrawFrame, swordFrame, FRAME_FACING_FIX, SWORD_DURATION_MS } from '../src/yama-sword.js';
 test('2. ท่ายืนของยมบาททั้ง 4 ชุดไม่ถูกพลิกจนหันซ้าย: ภาพที่วาดหันขวา (บูรพา/ปัจฉิม/นรกเครือข่าย) ขึ้นทะเบียนไม่พลิก · ภาพโซน 1 วาดหันซ้าย → พลิก', () => {
-  // ทิศที่วาดมา (ตรวจจากพิกเซลตาและหัว): th = ซ้าย · asia/west/cyberhell = ขวา · ผลหลังพลิกต้องหันขวาทุกชุด
-  const drawn = { 'img/hero-yama.png':'L', 'img/Asia/hero-yama-asia.png':'R', 'img/West/hero-yama-west.png':'R', 'img/CyberHell/hero-yama-cyberhell.png':'R' };
+  // ทิศที่วาดมา (ตรวจจากพิกเซลตาและหัว): th/asia/cyberhell = ซ้าย (พลิก) · west = ขวา (ไม่พลิก) · ผลต้องหันขวาทุกชุด ตรงกับแผ่นดาบ (H2 แก้ asia/cyberhell)
+  const drawn = { 'img/hero-yama.png':'L', 'img/Asia/hero-yama-asia.png':'L', 'img/West/hero-yama-west.png':'R', 'img/CyberHell/hero-yama-cyberhell.png':'L' };
   for (const [file, dir] of Object.entries(drawn)) {
     const facing = teamNeedsMirror(file) ? (dir === 'L' ? 'R' : 'L') : dir;
     assert.equal(facing, 'R', `${file} ต้องหันขวาเข้าหาศัตรูหลังพลิก/ไม่พลิก`);
   }
-  assert.ok(TEAM_DRAWN_FACING_RIGHT.has('hero-yama-asia') && TEAM_DRAWN_FACING_RIGHT.has('hero-yama-cyberhell'));
+  // H2: asia/cyberhell standing art faces left (back of cap/hat points right) like th → mirrored; west stays native
+  assert.ok(!TEAM_DRAWN_FACING_RIGHT.has('hero-yama-asia') && !TEAM_DRAWN_FACING_RIGHT.has('hero-yama-cyberhell') && TEAM_DRAWN_FACING_RIGHT.has('hero-yama-west'));
 });
 test('2. corrected sword atlases draw actual frames 0–7 for every outfit; timing remains 580ms', () => {
   for (const style of ['th', 'asia', 'west', 'cyberhell', 'unknown']) {
@@ -96,7 +97,7 @@ test('3. ป้ายชื่อวิญญาณใต้ตัว (soulLabel
   const room = src('src/room.js');
   assert.match(room, /function soulLabel\(ctx, text, x, y, U\)/);
   assert.match(room, /const size = Math\.max\(10, U \* 0\.0155\)/);
-  assert.equal((room.match(/soulLabel\(ctx,/g) || []).length, 3);   // นิยาม 1 + ใช้ 2 ที่
+  assert.equal((room.match(/soulLabel\(ctx,/g) || []).length, 4);   // นิยาม 1 + ชื่อ 2 ที่ + กรรมประตูสวรรค์ H4
   assert.ok(!/label\(ctx, entry\.soul\.name/.test(room) && !/label\(ctx, nm,/.test(room));
 });
 

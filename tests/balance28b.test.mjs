@@ -97,12 +97,17 @@ test('บอสทุกตัว HP มากกว่าเดิม · ศั
 
 // ---------------------------------------------------------------- 2. ยังชนะได้ — จำลองผู้เล่นด้วยบอทกลยุทธ์เดียว (ลูกไฟตอนมี MP · ยมทูต/ตีธรรมดาตอนหมด · กินยาเมื่อเลือดต่ำ)
 const ABIL = ['bigFire', 'flameCharge', 'windFan', 'rage', 'ice', 'hypno', 'valkyrieSpear', 'cooldownClock'];
+// G4: zone 2+ sells Large medkit / Large holy water — the simulated player carries the SAME number of medkits
+// (and the same 3 holy waters) as before, upgraded to Large (best supply). Thai zone has no Large items.
+// See scripts/sim-g4.mjs for the sensitivity table (none / count / equal-coin).
 function setup(zone, level, abilityCount, chests) {
   const g = createGame();
   g.level = level; const L = LEVELS[level - 1];
   g.hpMax = g.hp = L.hpMax; g.mpMax = g.mp = L.mpMax;
   ABIL.slice(0, abilityCount).forEach(k => { g.abilities[k] = true; });
-  g.zone = zone; g.inventory.health = chests; g.inventory.holyWater = 3; g.coin = 400;   // สมมติฐาน 28E: พกน้ำมนต์ 3 ขวด
+  g.zone = zone; g.coin = 400;
+  const large = zone !== 'th' ? 'Large' : '';
+  g.inventory['health' + large] = chests; g.inventory['holyWater' + large] = 3;   // สมมติฐาน 28E: พกน้ำมนต์ 3 ขวด
   for (const k of ['taan', 'plerng']) if (!g.crew.some(c => c.k === k)) g.hire(k);
   for (const c of g.crew) if (!c.reader) { c.homeZone=zone; c.id=`${zone}:${c.k}`; }
   g.party.members = ['taan', 'plerng'];
@@ -114,9 +119,9 @@ function botTurn(g) {
   const low = b.youHp <= b.youMax * 0.45;
   if (turnNo % 15 === 1) for (const c of g.crewHelpers()) c.helpReadyAt = 0;
   if (low && g.battleAct('crew:boon')) return true;
-  if (low && (g.inventory.health || 0) > 0) return g.battleAct('health');
+  for (const k of ['healthLarge', 'health']) if (low && (g.inventory[k] || 0) > 0) return g.battleAct(k);
   // ชุด 28E: MP หมด + มีน้ำมนต์ → ดื่ม (เสียเทิร์น) แล้วลูกไฟต่อ
-  if (g.mp < BATTLE.mpCost.fire && (g.inventory.holyWater || 0) > 0 && g.battleAct('holyWater')) return true;
+  if (g.mp < BATTLE.mpCost.fire) for (const k of ['holyWaterLarge', 'holyWater']) if ((g.inventory[k] || 0) > 0 && g.battleAct(k)) return true;
   if (g.mp >= BATTLE.mpCost.fire) return g.battleAct('fire');
   for (const c of g.crewHelpers()) if (['taan', 'plerng', 'dam'].includes(c.k) && !g.crewHelpWhy(c) && g.battleAct('crew:' + c.k)) return true;
   return g.battleAct('atk');
@@ -124,12 +129,15 @@ function botTurn(g) {
 /** จุดพักศึกสุดท้าย: ซื้อน้ำมนต์/หีบยาจากพ่อค้าด้วยเบี้ยกรรม 400 แล้วใช้ผ่าน useHolyWater/useBossMedicine จริง */
 function rest(g) {
   g.coin = 400;
-  const stock = merchantStock(g.zone);
-  const water = stock.find(s => s.k.startsWith('holyWater'));
-  const health = stock.find(s => s.k.startsWith('health'));
+  const stock = merchantStock(g.zone), find = k => stock.find(s => s.k === k);
+  const largeShelf = !!find('healthLarge');
   for (let i = 0; i < 12; i++) {
-    if (g.mpMax - g.mp >= 20 && g.coin >= water.cost && g.buyMerchant(water.k) && g.useHolyWater(water.k)) continue;
-    if (g.battle.youMax - g.battle.youHp >= 30 && g.coin >= health.cost && g.buyMerchant(health.k) && g.useBossMedicine(health.k)) continue;
+    const mpGap = g.mpMax - g.mp, hpGap = g.battle.youMax - g.battle.youHp;
+    // ขนาดใหญ่ (โซน 2+) เมื่อช่องว่างเกิน 65% ของหลอด · นอกนั้นขนาดปกติ
+    if (largeShelf && mpGap >= g.mpMax * .65 && g.coin >= find('holyWaterLarge').cost && g.buyMerchant('holyWaterLarge') && g.useHolyWater('holyWaterLarge')) continue;
+    if (mpGap >= 20 && g.coin >= find('holyWater').cost && g.buyMerchant('holyWater') && g.useHolyWater('holyWater')) continue;
+    if (largeShelf && hpGap >= g.battle.youMax * .65 && g.coin >= find('healthLarge').cost && g.buyMerchant('healthLarge') && g.useBossMedicine('healthLarge')) continue;
+    if (hpGap >= 30 && g.coin >= find('health').cost && g.buyMerchant('health') && g.useBossMedicine('health')) continue;
     break;
   }
 }
@@ -171,7 +179,7 @@ function winRate([name, zone, level, ab, chests, start], runs, seed) {
   });
 }
 
-test('ยังชนะได้: อีเวนต์/บอสโซน โซน 1–3 ชนะ ≥ 90% · โซน 4 (ฝ่าชายแดน 4 ระลอก) อยู่ในช่วง 70–90% (เป้า 28E ≈ 75–85%)', () => {
+test('G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable', () => {
   for (const sc of SCEN.filter(x => !x[0].startsWith('cyber breach'))) {
     const rate = winRate(sc, 20, 28);
     if (process.env.BAL_VERBOSE) console.log(sc[0].padEnd(20), rate);
@@ -179,12 +187,13 @@ test('ยังชนะได้: อีเวนต์/บอสโซน โ�
   }
   const breach = winRate(SCEN.find(x => x[0] === 'cyber breach'), 100, 28);
   if (process.env.BAL_VERBOSE) console.log('cyber breach'.padEnd(20), breach);
+  // G4: enemy atk raised (cyberBreach x1.5) so the Large-item player is back in the pre-G1 70-90% band
   assert.ok(breach >= 0.7 && breach <= 0.9, `cyber breach win rate ${breach}`);
 });
 
-// Preserve the original eight-wave balance benchmark and its numeric assertions.
+// G1 65% HP items increase survival; retain the encounter and preparation sensitivity benchmark.
 // B2b's independent six-member encounters are simulated in scripts/sim-final-event.mjs.
-test('legacy eight-wave balance benchmark retains 70–90% and preparation sensitivity', () => {
+test('G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity', () => {
   const source=ZONE_EVENTS.cyberhell.find(e=>e.k==='cyberFinal');
   const legacy={ ...source,k:'legacyFinalBenchmark',restBeforeWaves:[4,8],waves:source.waves.filter((_,i)=>i!==3) };
   ZONE_EVENTS.cyberhell.push(legacy);
@@ -195,6 +204,7 @@ test('legacy eight-wave balance benchmark retains 70–90% and preparation sensi
     }];
     const rate=winRate(sc,100,28);
     if(process.env.BAL_VERBOSE) console.log('legacy final gauntlet win rate',rate);
+    // G4: cyberFinal enemy atk x1.35 — back to the pre-G1 70-90% band (Large items included)
     assert.ok(rate>=0.7 && rate<=0.9,`legacy final gauntlet win rate ${rate}`);
     const poor=['legacy cyber FINAL (no chests)','cyberhell',5,8,0,sc[5]];
     assert.ok(winRate(poor,30,28)<rate,'เตรียมตัวน้อยกว่าต้องชนะน้อยกว่า');
@@ -206,9 +216,9 @@ test('น้ำมนต์: พ่อค้านรกขาย · ราค�
   const stock = MERCHANT.stock.find(s => s.k === 'holyWater');
   assert.ok(stock, 'อยู่ในสต็อกพ่อค้า');
   const health = MERCHANT.stock.find(s => s.k === 'health');
-  assert.equal(ITEMS.holyWater.mp, 30);
+  assert.equal(ITEMS.holyWater.mp, 26);
   assert.ok(ITEMS.holyWater.mp < LEVELS[0].mpMax, 'ไม่เติมเต็มหลอด MP ขั้นแรกในขวดเดียว');
-  assert.ok(stock.cost / ITEMS.holyWater.mp <= health.cost / ITEMS.health.hp * 1.25, 'ต่อหน่วยไม่แพงกว่ายาเกินสมควร');
+  assert.equal(stock.cost,45); assert.equal(health.cost,55); // G1 changes effects, never merchant prices.
   assert.equal(ITEMS.holyWater.glyph, '', 'ห้ามใช้อีโมจิแทนภาพ');
   assert.ok(ITEMS.holyWater.img && ITEMS.holyWater.placeholder);
 
@@ -224,7 +234,7 @@ test('น้ำมนต์: พ่อค้านรกขาย · ราค�
   assert.equal(g.inventory.holyWater, 1);
   g.mp = 5;
   assert.equal(g.useBag('holyWater'), true);
-  assert.equal(g.mp, 35);
+  assert.equal(g.mp, 31);
   assert.equal(g.inventory.holyWater, undefined);
   g.mp = g.mpMax - 4; g.inventory.holyWater = 1;
   g.useBag('holyWater');
@@ -241,7 +251,7 @@ test('น้ำมนต์: ดื่มผ่านกระเป๋าบน
   win(g); g.endBattle();
   assert.equal(g.battle,null); g.inventory.holyWater=2;
   assert.equal(g.useBag('holyWater'),true);
-  assert.equal(g.mp, 40);
+  assert.equal(g.mp, 36);
   assert.equal(g.inventory.holyWater, 1);
   g.mp = g.mpMax;
   assert.equal(g.useBag('holyWater'), false, 'MP เต็มแล้ว');
@@ -250,7 +260,7 @@ test('น้ำมนต์: ดื่มผ่านกระเป๋าบน
   b.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared', asiaRageBreach:'cleared' };
   b.startZoneBoss(); b.inventory.holyWater = 1; b.mp = 0;
   assert.equal(b.useHolyWater(), true, 'เตรียมศึกบอสโซน');
-  assert.equal(b.mp, 30);
+  assert.equal(b.mp, 26);
   b.startBossFight();
   b.inventory.holyWater = 1; b.mp = 0;
   assert.equal(b.useHolyWater(), false, 'เริ่มสู้แล้วใช้ไม่ได้');

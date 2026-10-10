@@ -97,7 +97,7 @@ const inside=(x,y)=>SALA_WALK.some(({poly})=>{let hit=false;for(let i=0,j=poly.l
 test('sala floor reaches entrance and document desk while excluding furniture and side walls',()=>{
  for(const p of [[.5,.96],[.5,.75],[.6,.68],[.26,.56],[.5,.53]])assert.equal(inside(...p),true,`${p}`);
  for(const p of [[.75,.64],[.5,.48],[.07,.4],[.97,.7]])assert.equal(inside(...p),false,`${p}`);
- const r=wideStationRoom('th','sala');assert.deepEqual(r.actions,[[.5,.19],[.74,.57]]);assert.deepEqual(r.crew,[.6,.68]);assert.notEqual(r.walk,SALA_WALK);
+ const r=wideStationRoom('th','sala');assert.deepEqual(r.actions,[[.5,.19],[.74,.51]]);assert.deepEqual(r.crew,[.6,.68]);assert.notEqual(r.walk,SALA_WALK);
 });
 
 test('failed reward save leaves order and cooldown unchanged and permits retry',()=>{
