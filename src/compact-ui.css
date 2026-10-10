@@ -70,7 +70,9 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 /* H4: apparatus stays on the real room floor; only controls occupy the bottom edge. */
 .mirror-room-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
 .mirror-room-layer .mirror-charge-base{margin:0;transform:translate(-50%,-70%)}
-.mirror-room-layer .mirror-charge-pane{pointer-events:auto;touch-action:none;cursor:grab;z-index:6}
+/* I1-A: ฐาน+แผ่นกระจกถูกวาดลง canvas ของห้อง (เรียงลึกตามแกน y กับยมบาท) — แผ่นใน DOM คงไว้เป็นพื้นที่ลาก แต่ไม่วาดซ้ำ */
+.mirror-room-layer .mirror-charge-base{visibility:hidden}
+.mirror-room-layer .mirror-charge-pane{opacity:0;pointer-events:auto;touch-action:none;cursor:grab;z-index:6}
 .mirror-room-layer .mirror-charge-pane:active{cursor:grabbing}
 .mirror-room-controls{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:min(420px,calc(100% - 12px));z-index:30;border:1px solid #b98e50;border-radius:10px;padding:6px 10px;background:#211320ee;color:#ffe5ba}
 .mirror-room-controls .mirror-puzzle-footer{width:100%;font-size:12px}

@@ -1,4 +1,4 @@
-import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
+import { gateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
@@ -32,6 +32,7 @@ import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
+const LOTUS_BOON_CUT = 8;   // ดอกบัวหนึ่งดอกที่มอบให้บุญลดกรรมของยมบาทน้อย (ค่าเดิมของ offerLotusBoon)
 /** ชื่อกับคำบรรยายซ้ำกันไหม — ใช้ตัดบรรทัดล่างที่พูดซ้ำของเดิม */
 export const sameLabel = (a, b) => !a || !b || a.includes(b) || b.includes(a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -4072,12 +4073,13 @@ const API = {
     this.save(); this.onChange(); return true;
   },
 
+  /** I1-A: ดอกบัวที่มอบให้บุญลด "กรรมของยมบาทน้อย" (this.karma) เท่านั้น — ไม่แตะกรรมวิญญาณที่ประตู */
   offerLotusBoon() {
-    if (!(this.inventory.lotus > 0) || (this.karma <= 0 && gateTotalKarma(this) <= 0) || !this.has('sawan')) return false;
+    if (!(this.inventory.lotus > 0) || !(this.karma > 0) || !this.has('sawan')) return false;
     if (--this.inventory.lotus <= 0) delete this.inventory.lotus;
-    relieveGateKarma(this);
-    this.karma = Math.max(0, this.karma - 8);
-    this.log('🪷 บุญรับดอกบัวไว้ — กรรมในบัญชีเบาลง 8', 'good');
+    const cut = Math.min(this.karma, LOTUS_BOON_CUT);
+    this.karma = Math.round((this.karma - cut) * 10) / 10;
+    this.log(`🪷 บุญรับดอกบัวไว้ — กรรมของท่าน −${cut} (เหลือ ${this.karma.toFixed(1)})`, 'good');
     this.save(); this.onChange(); return true;
   },
 
