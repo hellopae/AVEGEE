@@ -41,7 +41,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-h4', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -496,7 +496,7 @@ export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   ctx.beginPath(); ctx.ellipse(x, y, h * 0.20, h * 0.055, 0, 0, 7); ctx.fill();
   if (im) {
     ctx.save();
-    ctx.globalAlpha = 0.93;
+    ctx.globalAlpha *= 0.93;
     ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
     ctx.restore();
     if (tint !== '#bfe9ff') {          // รอนานแล้ว — ย้อมแดงเตือน

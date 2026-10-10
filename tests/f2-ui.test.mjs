@@ -96,7 +96,7 @@ test('3. ป้ายชื่อวิญญาณใต้ตัว (soulLabel
   const room = src('src/room.js');
   assert.match(room, /function soulLabel\(ctx, text, x, y, U\)/);
   assert.match(room, /const size = Math\.max\(10, U \* 0\.0155\)/);
-  assert.equal((room.match(/soulLabel\(ctx,/g) || []).length, 3);   // นิยาม 1 + ใช้ 2 ที่
+  assert.equal((room.match(/soulLabel\(ctx,/g) || []).length, 4);   // นิยาม 1 + ชื่อ 2 ที่ + กรรมประตูสวรรค์ H4
   assert.ok(!/label\(ctx, entry\.soul\.name/.test(room) && !/label\(ctx, nm,/.test(room));
 });
 

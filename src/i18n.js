@@ -24,6 +24,30 @@ export function onLangChange(fn) { listeners.add(fn); return () => listeners.del
 // ---------- พจนานุกรม UI ----------
 // รูปแบบ key: 'จอ.ส่วน.ชื่อ' — ให้ Rae ตรวจสำนวนอังกฤษได้จากลิสต์เดียว (ดู C3)
 const TH = {
+  'h4.over': 'เกินกรรม',
+  'h4.short': 'ขาดกรรม',
+  'h4.playerKarma': 'กรรมที่ท่านได้รับ',
+  'h4.returned': 'กลับมารอบสอง',
+
+  'h4.mirrorNear': 'เดินไปใกล้แท่นกระจกก่อน',
+  'h4.noDeeds': 'ไม่มีรายละเอียดบาปในแฟ้มเดิม',
+  'h4.points': 'คะแนน',
+  'h4.deserved': 'สมควร',
+  'h4.given': 'ท่านให้ไป',
+  'h4.correct': 'ตรงกรรม',
+  'h4.heavy': 'หนักเกินไป',
+  'h4.light': 'เบาไป',
+  'h4.wrong': 'ส่งผิดชนิดกรรม',
+  'h4.details': 'กดดูรายละเอียด',
+  'h4.totalKarma': 'กรรมวิญญาณที่ประตูรวม {n}',
+  'h4.archive': 'แฟ้มทะเบียนกรรม',
+  'h4.archiveSummary': 'ปิดคดี {n} · ห้าดาว {five} · หนักเกิน {over} · เบาไป {short}',
+  'h4.emptyArchive': 'แฟ้มยังว่างเปล่า — ยังไม่ได้ตัดสินวิญญาณ',
+  'h4.backCards': 'กลับไปดูการ์ด',
+  'h4.turn': 'วาระ',
+  'h4.deeds': 'บาป',
+  'h4.father': 'คำพ่อ',
+
   'g1.food.name': 'ข้าวปั้น',
   'g1.tea.name': 'น้ำชา',
   'g1.health.name': 'กล่องยา',
@@ -435,6 +459,30 @@ const TH = {
 };
 
 const EN = {
+  'h4.over': 'Excess sentence',
+  'h4.short': 'Short sentence',
+  'h4.playerKarma': 'Your karma incurred',
+  'h4.returned': 'Returned for judgment',
+
+  'h4.mirrorNear': 'Walk up to the mirror stand',
+  'h4.noDeeds': 'No deed details in this saved record',
+  'h4.points': 'points',
+  'h4.deserved': 'Deserved',
+  'h4.given': 'Given',
+  'h4.correct': 'Correct',
+  'h4.heavy': 'Too harsh',
+  'h4.light': 'Too lenient',
+  'h4.wrong': 'Wrong destination',
+  'h4.details': 'View details',
+  'h4.totalKarma': 'Total soul karma at gate: {n}',
+  'h4.archive': 'Karmic records',
+  'h4.archiveSummary': 'Closed: {n} · Five stars: {five} · Too harsh: {over} · Too lenient: {short}',
+  'h4.emptyArchive': 'No records yet — no souls judged',
+  'h4.backCards': 'Back to cards',
+  'h4.turn': 'Turn',
+  'h4.deeds': 'Deeds',
+  'h4.father': 'Father’s verdict',
+
   'g1.food.name': 'Rice ball',
   'g1.tea.name': 'Tea',
   'g1.health.name': 'Medicine box',

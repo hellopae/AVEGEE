@@ -1,3 +1,4 @@
+import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
@@ -1092,7 +1093,10 @@ const API = {
                        over: r.over, short: r.short, karma: r.karma,
                        stars: r.stars, score: r.score, tham: r.tham,
                        boss: r.boss, heaven: !!r.heaven, right: !!r.right,
-                       deserved: soul.deserved, back: !!soul.back });
+                       deserved: soul.deserved, back: !!soul.back,
+                       // closed retains only 12 cases; keep card identity/deeds with the ledger.
+                       archiveSoul:{name:soul.name,who:soul.who,sp:soul.sp,case:soul.case,sex:soul.sex,
+                         deeds:(soul.deeds || []).map(d=>({t:d.t}))} });
     if (this.ledger.length > 300) this.ledger.shift();
     this.ensureDevaCase();
     if (this.zone === 'th' && this.zoneCases.th === 5 && soul.case === 'devaMonk' && this.devaTestStatus() !== 'cleared') {
@@ -1280,9 +1284,7 @@ const API = {
   inspectGate(id) {
     const x = this.sentenceOf(id, 'gate');
     if (!x) return false;
-    const sin = x.soul.deeds.reduce((n, d) => n + (d.w || 0), 0);
-    const merit = x.soul.merits.filter(m => !m.fake).reduce((n, m) => n + (m.v || 0), 0);
-    x.karmaLeft = x.soul.pure ? 0 : Math.max(0, Math.round((sin - merit - x.intensity) * 10) / 10);
+    x.karmaLeft = gateKarma(x);
     x.checked = true;
     this.log(`📜 บุญตรวจ${x.soul.who} — กรรมคงเหลือ ${x.karmaLeft}`, 'act');
     this.onChange();
@@ -4053,8 +4055,9 @@ const API = {
   },
 
   offerLotusBoon() {
-    if (!(this.inventory.lotus > 0) || this.karma <= 0 || !this.has('sawan')) return false;
+    if (!(this.inventory.lotus > 0) || (this.karma <= 0 && gateTotalKarma(this) <= 0) || !this.has('sawan')) return false;
     if (--this.inventory.lotus <= 0) delete this.inventory.lotus;
+    relieveGateKarma(this);
     this.karma = Math.max(0, this.karma - 8);
     this.log('🪷 บุญรับดอกบัวไว้ — กรรมในบัญชีเบาลง 8', 'good');
     this.save(); this.onChange(); return true;

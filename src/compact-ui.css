@@ -67,3 +67,38 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 @media(max-width:700px){.mirror-puzzle{position:fixed;inset:8px;padding:10px;justify-content:center}.mirror-puzzle-head b{font-size:17px}.mirror-puzzle-head small{font-size:11px}.mirror-puzzle-head button{min-height:44px}.mirror-puzzle-footer button{min-height:44px}.mirror-puzzle-stage{margin:10px 0}.mirror-puzzle-footer{font-size:12px}}
 /* F3: independent stationary pedestal and rotating optical surface. */
 .mirror-charge-base,.mirror-charge-pane{position:absolute;width:8%;height:auto;transform:translate(-50%,-50%);pointer-events:none}.mirror-charge-base{margin-top:3%;filter:drop-shadow(0 3px 3px #211624aa)}.mirror-charge-pane{filter:drop-shadow(0 0 3px #ffd16d);transform-origin:50% 50%}.mirror-charge-layer svg circle{filter:drop-shadow(0 0 3px #ffd16d)}
+/* H4: apparatus stays on the real room floor; only controls occupy the bottom edge. */
+.mirror-room-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.mirror-room-layer .mirror-charge-base{margin:0;transform:translate(-50%,-70%)}
+.mirror-room-layer .mirror-charge-pane{pointer-events:auto;touch-action:none;cursor:grab;z-index:6}
+.mirror-room-layer .mirror-charge-pane:active{cursor:grabbing}
+.mirror-room-controls{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:min(420px,calc(100% - 12px));z-index:30;border:1px solid #b98e50;border-radius:10px;padding:6px 10px;background:#211320ee;color:#ffe5ba}
+.mirror-room-controls .mirror-puzzle-footer{width:100%;font-size:12px}
+.mirror-room-controls .mirror-charge-stepper{display:flex;gap:4px;justify-content:center}
+.mirror-room-controls button{min-height:32px;padding:3px 9px}
+.mirror-room-controls progress{margin:3px 0;height:6px}
+.mirror-room-controls input{height:22px;margin:0}
+.mirror-room-controls .mirror-status{min-height:15px;font-size:11px}
+.st-hud.archive-open :is(#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls,#st-exit){visibility:hidden}
+.st-hud .st-arch{position:fixed;inset:8px;z-index:160;max-height:calc(100dvh - 16px);padding:12px;overflow:auto;background:#20131ff7;border:1px solid #b98e50;border-radius:12px}
+.arch-head{flex:none;gap:8px}.arch-head button,.arch-detail button{min-height:44px}
+.arch-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;overflow:auto;min-height:0;padding:4px}
+.arch-soul-card{display:flex;flex-direction:column;gap:7px;text-align:left;background:#342334;color:#f6e8d4;border:2px solid #96d59f;border-radius:12px;padding:12px;cursor:pointer;font:inherit}
+.arch-soul-card img{width:86px;height:90px;object-fit:contain;align-self:center}.arch-soul-card b{font-size:16px}
+.arch-soul-card.heavy,.arch-soul-card.wrong{border-color:#ec9393}.arch-soul-card.light{border-color:#e9c56f}
+.arch-soul-card.correct strong{color:#a8e4af}.arch-soul-card.heavy strong,.arch-soul-card.wrong strong{color:#ffaaaa}.arch-soul-card.light strong{color:#ffe19e}
+.arch-stars{color:#ffe19e}.arch-sin-summary{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;min-height:3em}
+.arch-detail{overflow:auto;line-height:1.7;max-width:850px;padding:12px}.gate-total-karma{color:#ffe3a0!important;font-variant-numeric:tabular-nums}
+@media(max-width:480px){.arch-card-grid{grid-template-columns:1fr}.st-hud .st-arch{padding:8px}.mirror-room-controls button{min-height:44px}.mirror-room-controls{padding:4px 6px}.arch-head b{font-size:16px}}
+@media(max-height:440px){.arch-card-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.mirror-room-controls{width:360px}.mirror-room-controls .mirror-puzzle-footer label{display:flex;gap:6px;align-items:center}.mirror-room-controls input{flex:1;min-width:0}.mirror-room-controls .mirror-status{font-size:10px}}
+/* Same merge/trophy footprint and animation for the new pearl rainbow art. */
+.doc-book img,.doc-trophy img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+.doc-book.golden img{animation:doc-gold 480ms ease-out forwards;filter:drop-shadow(0 0 12px #dcf5ff)}
+.doc-book.matching:not(.golden) img{animation:doc-merge 440ms ease-in forwards}.doc-book.settling img{animation:doc-drop 220ms ease-out both}.is-paused .doc-book img{animation-play-state:paused!important}
+/* Portrait controls sit below the room, leaving the whole small floor visible. */
+@media(max-width:700px){.st-hud:has(.mirror-room-controls:not([hidden])) .st-room{overflow:visible;margin-bottom:150px}.mirror-room-controls{bottom:auto;top:calc(100% + 5px)}}
+/* Fixed archive must escape the room's clipping and the HUD container. */
+.st-hud.archive-open{container-type:normal!important;overflow:visible!important}.st-hud.archive-open .st-room{overflow:visible!important}
+.st-hud.archive-open .st-arch{z-index:160!important}
+.arch-card-grid{flex:1}.arch-detail{flex:1}.doc-trophy img{height:auto;aspect-ratio:1}.doc-book img{max-height:110px}
+@media(prefers-reduced-motion:reduce){.doc-book img{animation-duration:1ms!important}}
