@@ -14,7 +14,7 @@ const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 test('I1-B-1: ชื่อ/ข้อความการ์ดดาบเดิม ตรงตามคุณเป้ (ไทย) และมีฉบับอังกฤษ', () => {
   globalThis.document ??= { documentElement:{} };   // setLang แตะ document.documentElement.lang
   setLang('th');
-  assert.equal(t('weapon.base'), 'ดาบของยมฑูตน้อย');
+  assert.equal(t('weapon.base'), 'ดาบของยมทูตน้อย');
   assert.equal(t('weapon.baseNote', { n:'11–19' }), 'พลังโจมตี 11–19');
   assert.doesNotMatch(t('weapon.base') + t('weapon.baseNote', { n:1 }), /ไม่ถืออาวุธใหม่|ดาบเดิมของชุด/);
   setLang('en');
