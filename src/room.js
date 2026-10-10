@@ -246,9 +246,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     return true;
   }
 
+  // ตื่นแล้วยืนที่พื้นหน้าเตียง (ในพื้นที่เดินได้) — เตียงขยับขึ้นไปกลางฟูกแล้ว จึงไม่ใช้ bed.y+0.09 ตรง ๆ
+  const wakeY = () => Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0);
+
   function setSleep(emergency = false) {
     if (!canSit || lying || sitting || (!emergency &&
-        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) > REACH || g.hp >= g.hpMax))) return false;
+        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
     sleepStartHp = g.hp;
@@ -263,7 +266,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (sleepElapsed >= TEA_SLEEP_MS + TEA_BLACKOUT_MS && recoverySleep && g.pendingRecovery?.stage !== 'wake') g.finishTeaSleep();
       if (sleepElapsed >= TEA_REST_TOTAL_MS) {
         lying = false;
-        P.x = room.bed[0]; P.y = room.bed[1] + 0.09;
+        P.x = room.bed[0]; P.y = wakeY();
         if (recoverySleep) g.completeTeaRecovery();
         else { g.hp = g.hpMax; g.save(); g.onChange(); }
       }
@@ -529,7 +532,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       if (lying && teaSleepPhase(sleepElapsed) === 'wake') {
         ctx.save();
         ctx.globalAlpha = Math.min(1,(sleepElapsed-TEA_SLEEP_MS-TEA_BLACKOUT_MS)/TEA_WAKE_MS);
-        drawStandee(ctx,'hero-yama',px(P.x),py(room.bed[1]+0.09),U*HERO_H,t,'👑',P.face);
+        drawStandee(ctx,'hero-yama',px(P.x),py(wakeY()),U*HERO_H,t,'👑',P.face);
         ctx.restore(); return;
       }
       if (lying) {
@@ -601,7 +604,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     sitting: () => sitting,
     sleeping: () => lying,
     sleepPhase: () => lying ? teaSleepPhase(sleepElapsed) : null,
-    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], P.y-room.bed[1]) <= REACH,
+    nearBed: () => !!room.bed && Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) <= REACH,
     setSleep,
     setSit,
     lock: v => { locked = !!v; },   // มินิเกม "เร่งการทำงาน" เปิดอยู่ — ห้องหยุดรับอินพุตชั่วคราว (ชุดที่ 9)

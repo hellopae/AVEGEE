@@ -1645,6 +1645,12 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .hud-icon-btn--lg{width:clamp(48px,6.6vw,64px);height:clamp(48px,6.6vw,64px)}
 #hud-zone[hidden]{display:none}
 
+/* H2: ปุ่มซูมแผนที่ — มุมขวาล่าง นิ้วโป้งถึง · ≥44px · ตัวอักษรชั่วคราวจนกว่าจะมีไอคอนวาดมือ */
+.hud-zoom{position:absolute;right:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
+  width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);background:rgba(20,10,14,.78);
+  color:#ffe9b0;font:700 28px/1 var(--font-display);display:grid;place-items:center;padding:0 0 3px;cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,.6);touch-action:manipulation}
+.hud-zoom[aria-pressed=true]{background:rgba(120,70,20,.85)}
 .hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
   display:flex;align-items:flex-end;gap:10px}
 .hud-avatar{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;
@@ -1994,8 +2000,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 .st-exit{position:absolute;z-index:10;transform:translate(-50%,-100%);max-width:calc(100% - 16px);min-height:44px;padding:7px 12px;background:#35202a;color:#f5d18c;border:1px solid #c69a51;border-radius:8px;white-space:nowrap}
 .st-exit[hidden]{display:none}
 </style>
-<link rel="stylesheet" href="src/command-wheel.css">
-<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books">
+<link rel="stylesheet" href="src/command-wheel.css?v=h2">
+<link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art">
 </head>
@@ -2117,6 +2123,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
         <img src="img/ui/icon-door.png" alt=""></button>
     </div>
 
+    <!-- H2: ซูมแผนที่โซน (1× ภาพรวม ↔ 2.5× กล้องตามยมบาท) · ตอนนี้ใช้ตัวอักษร +/− ชั่วคราว รอไอคอนจริงจาก Kittanate (img/ui/icon-zoom.png — สเปกในรายงาน H2) -->
+    <button id="hud-zoom" class="hud-zoom" type="button" aria-label="ซูมแผนที่ / Zoom map" aria-pressed="false" data-level="0">+</button>
+
     <!-- ล่างกลาง: คุมเวลาและเข้าสอบสวน -->
     <div class="map-controls">
       <button id="hud-open-court" class="btn-gold" type="button"></button>
@@ -2197,6 +2206,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=h1"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-h2"></script>
 </body>
 </html>

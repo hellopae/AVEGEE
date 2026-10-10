@@ -457,3 +457,17 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 .warning-fireball{position:absolute;width:85px;height:85px;object-fit:contain;left:32px;top:62px;animation:warn-burn .7s ease-in-out infinite alternate}
 @keyframes warn-burn{from{opacity:.65;transform:scale(.85)}to{opacity:1;transform:scale(1.1)}}
 @media(prefers-reduced-motion:reduce){.warning-fireball{animation:none}}
+
+/* H2 (10 ต.ค. 2569) — คุณเป้: "ปุ่มให้เลือกการโจมตี อยู่ใกล้ตัวละครมากไป ช่วยขยับออกมาหน่อย ไม่ให้ทับ"
+   วงคำสั่งต้องไม่ทับยมบาท/เพื่อนข้าง ๆ ทั้งแนวนอน (844×390) และแนวตั้ง (390×844) ทุกโซน
+   วัดจากกรอบเนื้อภาพจริง (alpha) ของตัวละครในเบราว์เซอร์ — ดูรายงาน Toby H2
+   แนวนอน: ยมบาทอยู่ซ้าย 34–49% เดิมวงเริ่มที่ 39% จึงคร่อมตัว → ย้ายวงไปอยู่ถัดจากตัวยมบาท ก่อนถึงศัตรู
+   แนวตั้ง: ยมบาทเลื่อนไปซ้ายเหมือนศึกสุดท้าย (28%) วงอยู่ขวา ต่ำลงให้พ้นเท้าศัตรู
+   ศึกสุดท้าย (final-team) ใช้ตำแหน่งของตัวเองเดิม ไม่แตะ */
+@media(min-width:701px){
+  .arena.combat-arena:not(.final-team) .combat-wheel{left:51%;width:clamp(170px,16vw,220px)}
+}
+@media(max-width:700px){
+  .arena.combat-arena:not(.final-team)>.fig.you{left:28%}
+  .arena.combat-arena:not(.final-team) .actor-wheel{bottom:33%}
+}
