@@ -25,13 +25,13 @@ test('every successful painted-board aim calibrates to the existing reward model
 });
 
 // A newly placed stand must push out a hero already standing in its footprint.
-test('mirror reserves sprite clearance and ejects existing overlapping positions', () => {
- for(const pos of [[.735,.615],[.70,.69],[.76,.50],[.735,.77]]) {
+test('mirror reserves only base clearance and ejects existing overlapping feet', () => {
+ for(const pos of [[.735,.615],[.72,.62],[.76,.61],[.735,.63]]) {
   assert.equal(mirrorObstacle(...pos),true);
   const clear=mirrorClearPosition(...pos);
   assert.equal(mirrorObstacle(...clear),false);
  }
- for(const pos of [[.64,.615],[.83,.615],[.735,.79]]) {
+ for(const pos of [[.64,.615],[.83,.615],[.735,.79],[.70,.69],[.76,.50]]) {
   assert.deepEqual(mirrorClearPosition(...pos),pos);
  }
 });

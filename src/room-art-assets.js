@@ -1426,14 +1426,21 @@ export const SALA_WALK = [
   {poly:[[.66,.43],[.81,.43],[.86,.53],[.66,.53]]},
   {poly:[[.91,.53],[.95,.74],[.90,.74],[.90,.54]]},
 ];
+// Feet on the centres of the three painted gate platforms (image coordinates).
+export const GATE_PLATFORMS = {
+  th:[[.385,.46],[.50,.46],[.615,.46]],
+  asia:[[.385,.455],[.50,.455],[.615,.455]],
+  west:[[.39,.46],[.505,.46],[.61,.46]],
+  cyberhell:[[.433,.485],[.53,.485],[.63,.485]],
+};
 export function wideStationRoom(zone, key) {
   const art = WIDE_ROOM_ART[zone]?.[key];
   if (!art) return null;
   return {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
-    me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
+    me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:key === 'sawan' ? GATE_PLATFORMS[zone].map(p=>[...p]) : art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
     act:key === 'krata' ? [.5,.54] : key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
-    training:!['krata','ngiw','dab'].includes(key) && art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
+    training:!['krata','ngiw','dab','sawan'].includes(key) && art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
     actions:key === 'sala' ? [[.50,.19],[.74,.51]] : [[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
     walk:key === 'krata' && zone === 'th' ? KRATA_WALK : key === 'sala' ? SALA_WALK.map(a=>({poly:a.poly.map(p=>[...p])})) : [{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
       [.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}],

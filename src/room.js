@@ -175,7 +175,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
-  const gateEffects = new Map(), visibleGateSlots = new Map();
+  const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map();
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
 
@@ -439,7 +439,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
-    if (room.training && !['sala','ngiw','dab'].includes(def.k)) {
+    if (room.training && !['sala','ngiw','dab','sawan'].includes(def.k)) {
       const [x,y] = room.training, ready = inTrainingReach();
       ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
       ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();
@@ -495,6 +495,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         ...(g.sentences || []).filter(x => x.zone === g.zone && x.stage === stage),
       ].slice(0, freeSlots.length);
       waiting.forEach((entry, i) => {
+        if(prisonEscorts.has(entry.soul.id)) return;
         const a = freeSlots[i];
         if(def.k === 'sawan')visibleGateSlots.set(entry.soul.id,a);
         acts.push({ y:a[1], fn:() => {
@@ -506,7 +507,6 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
             soulNameplateWidth(room.souls, i + occupied, box.w, U));
           else {
             soulLabel(ctx, entry.soul.name || entry.soul.who, x, y + U * 0.036, U);
-            soulLabel(ctx, tr('room.karmaLeft').replace('{n}',gateKarma(entry)), x, y + U * .066, U);
           }
         } });
       });
@@ -657,6 +657,17 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       }
     } });
 
+    for(const [id,fx] of prisonEscorts) {
+      const progress=Math.min(1,(t-fx.start)/2400);
+      if(progress>=1){prisonEscorts.delete(id);fx.done();continue;}
+      const x=fx.at[0]+(.5-fx.at[0])*progress, y=fx.at[1]+(.96-fx.at[1])*progress;
+      acts.push({y,fn:()=>{
+        if(!drawCrewWalk(ctx,'crew-dam',px(x),py(y),U*CREW_H,progress*240, x>=fx.at[0]?1:-1))
+          drawStandee(ctx,'crew-dam',px(x),py(y),U*CREW_H,t,'🦇');
+        drawSoul(ctx,px(x-.035),py(y-.025),U*SOUL_H,t,'#ffd9c0',fx.soul.sp||7);
+      }});
+    }
+
     for(const [id,fx] of gateEffects) {
       const pose=gateEffectPose(fx.kind,t-fx.start,fx.reduced);
       if(pose.done){gateEffects.delete(id);continue;}
@@ -711,6 +722,15 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     inReach, inTrainingReach,
     mirrorPlaced:null,
     mirrorState:null,       // ui.js ผูก: () => ({placed, angle, adjusting}) ให้ห้องวาดฐาน/แผ่นกระจกและเปลี่ยนท่ายมบาท
+    prisonEscorting: id => prisonEscorts.has(id),
+    prisonEscort(id,done) {
+      if(def.k!=='tarang' || prisonEscorts.has(id))return false;
+      const entries=[...(g.held||[]).map(soul=>({soul})),...(g.sentences||[]).filter(x=>x.zone===g.zone&&x.stage==='prison')];
+      const index=entries.findIndex(x=>x.soul.id===id), entry=entries[index];
+      const at=room.souls[Math.min(room.souls.length-1,index+(api.st?.slots.length||0))];
+      if(!entry || !at)return false;
+      prisonEscorts.set(id,{soul:entry.soul,at:[...at],start:performance.now(),done});return true;
+    },
     gateEffect(id,kind,cut=0) {
       if(def.k !== 'sawan' || !GATE_EFFECT_MS[kind])return false;
       const entries=gateArrivals(g),index=entries.findIndex(x=>x.soul.id===id),entry=entries[index];
@@ -748,6 +768,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       raf = requestAnimationFrame(frame); //  แตะฉากก่อนเฟรมแรกจะได้พิกัดเพี้ยน
     },
     destroy() {
+      const pending=[...prisonEscorts.values()];
+      prisonEscorts.clear();
+      for(const fx of pending) fx.done();
       dead = true;
       cancelAnimationFrame(raf);
       removeEventListener('keydown', onKey);
