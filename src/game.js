@@ -1122,7 +1122,7 @@ const API = {
   },
 
   /** Keep a soul outside the destination roster until its map walk is complete. */
-  startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null) {
+  startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null, courier = null) {
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -1133,7 +1133,7 @@ const API = {
     const path = [start, ...route];
     const length = path.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - path[i][0], p[1] - path[i][1]), 0);
     const walk = { soul, destination, entry, path, elapsed:0,
-      duration:Math.max(1100, length / 0.09), zone:this.zone };
+      duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
     this.afterlifeWalks.push(walk);
     return true;
@@ -1274,7 +1274,7 @@ const API = {
       const prison = this.stations.find(st => st.def.k === 'tarang');
       const gate = this.stations.find(st => st.def.k === 'sawan' && !st.build);
       if (prison && !prison.build) this.startAfterlifeWalk(x.soul,
-        [prison.def.x, prison.def.y], [gate.def.x, gate.def.y], 'gate', x);
+        [prison.def.x, prison.def.y], [gate.def.x, gate.def.y], 'gate', x, null, 'dam');
       else this.sentences.push(x);
       this.log(`🕊️ ส่ง${x.soul.who}จากตะรางไปประตูสวรรค์ ให้บุญตรวจกรรม`, 'act');
     } else {
@@ -1286,7 +1286,7 @@ const API = {
       const soul = this.mkReturnSoul(R);
       const prison = this.stations.find(st => st.def.k === 'tarang' && !st.build);
       const tail = QUEUE_LINE[Math.min(this.queue.length, QUEUE_LINE.length - 1)];
-      if (prison) this.startAfterlifeWalk(soul, [prison.def.x, prison.def.y], tail, 'queue');
+      if (prison) this.startAfterlifeWalk(soul, [prison.def.x, prison.def.y], tail, 'queue', null, null, 'dam');
       else { this.queue.push(soul); this.returned++; }
       this.log(`↩️ ${x.soul.who}ยังไม่เข็ด — นิราส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
     }

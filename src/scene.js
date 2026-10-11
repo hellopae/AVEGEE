@@ -275,8 +275,9 @@ export function render(ctx, g, t, hover, sel) {
       ctx.restore();
     });
     // ชุด 29C — ยมทูตนำวิญญาณไปตะราง: มารับ → เดินนำหน้า วิญญาณตามติด (ตำแหน่งจริงอยู่ที่ escort.js ที่เดียว)
-    if (walk.escort && actorStanding(g.crewOf(walk.escort.k))) {
-      const pos = escortCrewPosition(walk), crew = g.crewOf(walk.escort.k);
+    if (walk.courier || (walk.escort && actorStanding(g.crewOf(walk.escort.k)))) {
+      const pos = escortCrewPosition(walk.courier ? {...walk, escort:{k:walk.courier}} : walk);
+      const crew = walk.courier ? {k:walk.courier,glyph:'🦇'} : g.crewOf(walk.escort.k);
       if (pos && crew) {
         const motion = actorWalkMotion(walk, t, g.zone, [pos.x, pos.y]);
         at(pos.y + 1, () => {

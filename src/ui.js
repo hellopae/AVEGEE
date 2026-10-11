@@ -1,8 +1,8 @@
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
-import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011';
+import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
-import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011';
+import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -31,9 +31,9 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
-import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx';
-import { makeRoom } from './room.js?v=minigame-review-20261011';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j4';
+import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-j4';
+import { makeRoom } from './room.js?v=minigame-review-20261011-j4';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
@@ -442,7 +442,7 @@ function drawTab() {
       <div class="soul" data-soul="${s.id}">
         <div class="top"><b>${s.name ? esc(s.name) + ' · ' : ''}${esc(s.who)}${s.back ? ' <span style="color:var(--destructive);font-size:var(--text-xs)">↩️ ยังไม่สำนึก · กลับเข้าคิวก่อนเกิดใหม่</span>' : ''}</b><span class="id ${s.waited > 40 ? 'wait' : ''}">#${String(s.id).padStart(3, '0')} · รอ ${s.waited} วาระ</span></div>
         ${s.case ? publicDossier(s) : s.deeds.filter(d => d.known).map(d => `<div class="deed">${deedLine(d)}</div>`).join('')}
-        ${s.case ? '' : s.merits.filter(m => !m.exposed).map(publicMeritLine).join('')}
+        ${s.case ? '' : s.merits.filter(m => !m.exposed).map(m => publicMeritLine(m)).join('')}
       </div>`).join('');
     // คนที่ถูกขังอยู่ — ไม่นับในคิว ไม่กัดระเบียบ แต่กินค่าข้าวทุกวาระ เบิกตัวขึ้นแท่นได้ตลอด
     if (g.held.length) {
@@ -601,11 +601,11 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
   // เพราะเรื่องที่ซ่อนไว้ (ยังไม่สอบสวน) บังเอิญตรง ทั้งที่ผู้เล่นไม่เคยเห็นเรื่องนั้นเลย
   const hit = st && shownDeeds.some(d => st.tags.includes(d.s));
   const truth = shownDeeds.map(d =>
-    `<div class="row-truth ${d.known ? '' : 'hid'}">${SINS[d.s].name} · ${esc(d.t)} (น้ำหนัก ${d.w})${d.known ? '' : ' ← เรื่องที่สำนวนไม่ได้เขียนไว้'}</div>`).join('')
+    `<div class="row-truth ${d.known ? '' : 'hid'}" style="color:${sentenceColor(d.w).color}">${SINS[d.s].name} · ${esc(d.t)} (น้ำหนัก ${d.w})${d.known ? '' : ' ← เรื่องที่สำนวนไม่ได้เขียนไว้'}</div>`).join('')
     || '<div class="row-truth">สำนวนว่างเปล่า</div>';
   const shownMerits = closed ? soul.merits : soul.merits.filter(m => !m.fake || m.exposed);
   const merit = shownMerits.map(m =>
-    `<div class="row-truth ${m.fake ? 'fake' : ''}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
+    `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
   const diff = intensity - soul.deserved;
@@ -1867,7 +1867,6 @@ function openDadPunish(p) {
     });
 }
 
-let helpPage = 0;
 function guideCards(html) {
   const template = document.createElement('template'); template.innerHTML = html;
   const title = template.content.querySelector('h3');
@@ -1940,45 +1939,8 @@ function openHelp() {
       const intro = `<h2>วิธีเล่น</h2>${source.querySelector('h2 + p').outerHTML}
         ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
       const reader = d.querySelector('.help-reader');
-      const total = items.length + 1;
-      const show = next => {
-        helpPage = Math.max(0, Math.min(total - 1, next));
-        reader.innerHTML = `
-          <article class="help-page">${helpPage === 0 ? intro
-          : `<p class="help-chapter">ข้อ ${helpPage}</p><div class="help-item guide-card-grid">${guideCards(items[helpPage - 1])}</div>`}</article>
-          <nav class="help-nav" aria-label="หน้าคู่มือ">
-            <button type="button" data-help-prev ${helpPage === 0 ? 'disabled' : ''}>◀ ก่อนหน้า</button>
-            <span class="help-count" aria-live="polite">${helpPage + 1} / ${total}</span>
-            <button type="button" data-help-next ${helpPage === total - 1 ? 'disabled' : ''}>ถัดไป ▶</button>
-          </nav><div class="help-dots" aria-label="เลือกหน้าคู่มือ">${Array.from({length:total}, (_, i) =>
-            `<button type="button" data-help-page="${i}" aria-label="หน้า ${i + 1}" ${helpPage === i ? 'aria-current="page"' : ''}></button>`).join('')}</div>`;
-        reader.querySelector('[data-help-prev]').onclick = () => show(helpPage - 1);
-        reader.querySelector('[data-help-next]').onclick = () => show(helpPage + 1);
-        reader.querySelectorAll('[data-help-page]').forEach(b => b.onclick = () => show(+b.dataset.helpPage));
-        d.scrollTop = 0;
-        // Dale — รีวิว batch18B: คลิกปุ่ม ◀/▶/จุดหน้าด้วยเมาส์ย้ายโฟกัสไปที่ปุ่มนั้น แต่ reader.innerHTML
-        // ข้างบนลบปุ่มเดิมทิ้งทุกครั้งที่เปลี่ยนหน้า ปุ่มที่โฟกัสอยู่เลยหลุดจาก DOM แล้วโฟกัสเด้งไป <body>
-        // คีย์ลูกศรที่ผูกกับ dlg (bubble phase) เลยไม่ได้ยินอีกต่อไปเพราะ body ไม่ใช่ลูกของ dlg (เจอด้วย
-        // Playwright: คลิก "ถัดไป" หนึ่งครั้งแล้วกด ArrowRight ไม่ขยับหน้าเลย) — ดึงโฟกัสกลับมาที่ dlg เอง
-        // (element เดียวที่ไม่เคยถูกแทนที่) ทุกครั้งหลัง render ให้คีย์ลูกศรใช้ได้ต่อเนื่องไม่ว่าจะเพิ่งคลิกมาก่อนไหม
-        d.focus({ preventScroll: true });
-      };
-      let touchX = null;
-      reader.addEventListener('touchstart', e => { touchX = e.changedTouches[0]?.clientX ?? null; }, { passive: true });
-      reader.addEventListener('touchend', e => {
-        if (touchX === null) return;
-        const dx = (e.changedTouches[0]?.clientX ?? touchX) - touchX;
-        touchX = null;
-        if (Math.abs(dx) > 45) show(helpPage + (dx < 0 ? 1 : -1));
-      }, { passive: true });
-      const keys = e => {
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-          e.preventDefault(); e.stopPropagation(); show(helpPage + (e.key === 'ArrowRight' ? 1 : -1));
-        }
-      };
-      d.addEventListener('keydown', keys);
-      onDlgClose(() => d.removeEventListener('keydown', keys));
-      show(helpPage);
+      reader.innerHTML = `${intro}<div class="guide-card-grid">${items.map((html, i) =>
+        guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>`;
     }, 'help-modal');
 }
 
@@ -2388,8 +2350,7 @@ function openTrial(initialError = '') {
           <div class="hud-card hud-rec">
             <h4>${esc(t('trial.readAloud'))}</h4>
             ${s.face ? `<div class="deed allegation">${esc(s.face)}</div>` : ''}
-            ${claimed.map(m => `<div class="deed merit">🪷 ${esc(m.t)}
-              ${m.note ? `<i class="observation">— ${esc(m.note)}</i>` : ''}</div>`).join('')}
+            ${claimed.map(m => publicMeritLine(m, 'deed merit')).join('')}
             ${known.map(d => `<div class="deed allegation">${deedLine(d)}</div>`).join('')}
             ${!s.face && !claimed.length && !known.length ? '<div class="deed">สำนวนว่างเปล่า</div>' : ''}
             ${s.back ? `<div class="deed" style="color:var(--destructive)">↩️ ลงทัณฑ์ ${s.back.gave} วาระแล้วยังไม่สำนึก · ถูกส่งกลับเข้าคิวก่อนเกิดใหม่</div>` : ''}
@@ -4118,7 +4079,7 @@ function openStation(k, emergency = false) {
     let drawer = '';
     if (k === 'tarang') {
       const sentenced = g.sentences.filter(x => x.zone === g.zone && x.stage === 'prison');
-      // ปุ่มตรวจ/ส่งตัวต้องยืนใกล้นิราในห้องก่อนถึงจะกดได้ (ดู room.js inReach)
+      // ตรวจและส่งตัวจากรายชื่อได้ โดยไม่ต้องเดินไปหานิรา
       const rows = sentenced.map(x => {
         const name = esc(x.soul.name || x.soul.who), ready = g.tick >= (x.readyAt ?? x.until ?? 0);
         const needSawan = x.repentant && !g.stations.some(s => s.def.k === 'sawan' && !s.build);
@@ -4126,8 +4087,8 @@ function openStation(k, emergency = false) {
           : ready ? '' : t('room.wait').replace('{n}', (x.readyAt ?? x.until) - g.tick);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}` : ''}`;
         return row(label, x.inspected
-          ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${inside && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
-          : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${inside && ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
+          ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${!R?.prisonEscorting(x.soul.id) && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
+          : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
       }).join('');
       const heldHtml = g.held.length
         ? `<div class="st-pane-title">${esc(t('room.heldTitle').replace('{n}', g.held.length))}</div>`
@@ -4138,7 +4099,7 @@ function openStation(k, emergency = false) {
           <button class="st-drawer-x" type="button" data-drawer-close aria-label="${esc(t('room.close'))}">✕</button>
           ${heldHtml}
           <div class="st-pane-title">${esc(t('room.roster').replace('{n}', sentenced.length))}</div>
-          ${sentenced.length && !inside ? note(t('room.nearNira')) : ''}${rows}
+          ${rows}
           ${!sentenced.length && !g.held.length ? note(t('room.noneHeld')) : ''}
         </div>`;
     }
@@ -4274,9 +4235,9 @@ function openStation(k, emergency = false) {
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
     });
-    const afterCheck = ok => { if (ok) { sfx('stamp'); panels(); refresh(); } };
+    const afterCheck = ok => { if (ok) { sfx('stamp'); if(mine()) panels(); refresh(); } };
     dlg.querySelectorAll('[data-prison-check]').forEach(b => b.onclick = () => afterCheck(g.inspectPrison(+b.dataset.prisonCheck)));
-    dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => afterCheck(g.moveFromPrison(+b.dataset.prisonSend)));
+    dlg.querySelectorAll('[data-prison-send]').forEach(b => b.onclick = () => { const id=+b.dataset.prisonSend; if(R.prisonEscort(id, () => afterCheck(g.moveFromPrison(id)))) panels(); });
     dlg.querySelectorAll('[data-gate-check]').forEach(b => b.onclick = () => {
       const id=+b.dataset.gateCheck;if(g.inspectGate(id)){R.gateEffect(id,'scan');sfx('gateScan');panels();refresh();}
     });
