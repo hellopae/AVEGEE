@@ -33,7 +33,7 @@ import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate,
 import { preloadZone } from './preload.js?v=h1-skillatk';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx';
-import { makeRoom } from './room.js?v=minigame-review-20261011';
+import { makeRoom } from './room.js?v=minigame-review-20261011-j2';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569

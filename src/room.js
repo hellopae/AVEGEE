@@ -1,4 +1,4 @@
-import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011';
+import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2';
 import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
@@ -462,7 +462,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     };
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
-    for (const a of room.souls || []) acts.push({y:a[1],fn:()=>drawSchoolProps(ctx,def.k,px(a[0]),py(a[1]),U)});
+    for (const a of room.souls || []) acts.push({y:a[1] + (def.k === 'ngiw' ? 0.001 : 0),fn:()=>drawSchoolProps(ctx,def.k,px(a[0]),py(a[1]),U)});
     (st ? st.slots : []).forEach((sl, i) => {
       const a = room.souls[i] || room.souls[room.souls.length - 1];
       if (!a) return;

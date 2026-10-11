@@ -310,7 +310,8 @@
       "img/ui/icon-save-th.png",
       "img/ui/logo-th.png",
       "img/yama-sword-v3/hero-yama-th-sword.webp",
-      "img/deva-intro/deva-intro-th-beggar-v2.webp"
+      "img/deva-intro/deva-intro-th-beggar-v2.webp",
+      "img/hero-yama-rage.png"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",
@@ -442,7 +443,8 @@
       "img/theme-v4/map-asia.webp",
       "img/theme-v4/st-lokan-asia.webp",
       "img/theme-v4/st-tea-asia.webp",
-      "img/yama-sword-v4/hero-yama-asia-sword.webp"
+      "img/yama-sword-v4/hero-yama-asia-sword.webp",
+      "img/Asia/hero-yama-asia-rage.png"
     ],
     "west": [
       "img/krata-minigame/plerng-west-training-v2.png",
@@ -571,7 +573,8 @@
       "img/theme-v4/st-lokan-west.webp",
       "img/theme-v4/st-tea-west.webp",
       "img/yama-sword-v4/hero-yama-west-sword.webp",
-      "img/frontier-west-hypnosis-v1.webp"
+      "img/frontier-west-hypnosis-v1.webp",
+      "img/West/hero-yama-west-rage.png"
     ],
     "cyberhell": [
       "img/krata-minigame/plerng-cyberhell-training-v2.png",
@@ -705,7 +708,8 @@
       "img/theme-v4/map-cyberhell.webp",
       "img/theme-v4/st-lokan-cyberhell.webp",
       "img/theme-v4/st-tea-cyberhell.webp",
-      "img/yama-sword-v4/hero-yama-cyberhell-sword.webp"
+      "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
+      "img/CyberHell/hero-yama-cyberhell-rage.png"
     ]
   }
 }

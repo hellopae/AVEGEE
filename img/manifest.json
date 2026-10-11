@@ -62,7 +62,8 @@
 "hero-yama-west-unconscious.png",
 "hero-yama-west-tea-clean.png",
 "hero-yama-cyberhell-unconscious.png",
-"hero-yama-cyberhell-tea-clean.png"
+"hero-yama-cyberhell-tea-clean.png",
+"hero-yama-rage.png"
 ],
 "rest": [
 "cover-fx/lava-v4-mask.png",
@@ -332,7 +333,8 @@
 "Asia/st-tea-asia.png",
 "Asia/zone-boss-asia.png",
 "Asia/spirit-business-asia-v2.png",
-"Asia/spirit-elder-woman-asia-v2.png"
+"Asia/spirit-elder-woman-asia-v2.png",
+"Asia/hero-yama-asia-rage.png"
 ],
 "cyberhell": [
 "yama-sword-v4/hero-yama-cyberhell-sword.webp",
@@ -414,7 +416,8 @@
 "CyberHell/st-tea-cyberhell.png",
 "CyberHell/zone-boss-cyberhell.png",
 "CyberHell/spirit-business-cyberhell-v2.png",
-"CyberHell/spirit-elder-woman-cyberhell-v2.png"
+"CyberHell/spirit-elder-woman-cyberhell-v2.png",
+"CyberHell/hero-yama-cyberhell-rage.png"
 ],
 "west": [
 "yama-sword-v4/hero-yama-west-sword.webp",
@@ -492,7 +495,8 @@
 "West/zone-boss-west.png",
 "West/spirit-business-west-v2.png",
 "West/spirit-elder-woman-west-v2.png",
-"West/spirit-graduate-west-v3.png"
+"West/spirit-graduate-west-v3.png",
+"West/hero-yama-west-rage.png"
 ],
 "ui": [
 "ui/Button1.png",
