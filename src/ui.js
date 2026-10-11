@@ -827,12 +827,12 @@ function crewNote(c) {
 function guardRestWidget(c, showName = false) {
   if (!c) return '';
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
-  const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/60000)) : 0;
+  const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/(rest.until-rest.startedAt))) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
     ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
-      : c.morale < 50 ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : c.k === 'guard' ? `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>` : ''}
+      : c.morale < (c.k === 'guard' ? 100 : 50) ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
+      : ''}
     </div>`;
 }
 function hungerWidget(c) {
@@ -2507,6 +2507,16 @@ function doVerdict(soul, stK, crK, inten) {
 }
 
 // ---------- ศูนย์จัดทีม / ร้านค้า / ผู้ตรวจการ ----------
+function niraItemWidget(c) {
+  const h = Math.round(c.hunger ?? 100);
+  return `<div class="hunger-line"><small>🍙 หิว ${h}/100</small>${['food', 'health'].map(kind => {
+    const keys = Object.keys(ITEMS).filter(k => kind === 'food' ? /^food(Z[234])?$/.test(k) : /^health(Z[234]|Large)?$/.test(k));
+    const count = keys.reduce((n,k) => n + (g.inventory[k] || 0), 0), item = keys.find(k => g.inventory[k] > 0) || kind;
+    const ready = count > 0 && actorStanding(c) && (kind === 'food' ? h < 100 : c.morale < 100);
+    return `<button class="sm" data-nira-item="${item}" data-actor-id="${esc(c.id)}" ${ready ? '' : 'disabled'}>${kind === 'food' ? '🍙 ให้ข้าวปั้น' : '💊 ให้กล่องยา'} · มี ${count}</button>`;
+  }).join('')}</div>`;
+}
+
 function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
@@ -2524,14 +2534,13 @@ function openNiraOffice() {
     const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
       <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
-      <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
       <div class="market-grid">${candidates.map(def => {
         const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
         const why = final ? g.finalTeamWhy(c) : '';
         return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
-          ${c ? hungerWidget(c) + guardRestWidget(c) : ''}</span>
+          ${c ? niraItemWidget(c) + guardRestWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
@@ -2541,24 +2550,28 @@ function openNiraOffice() {
       <article class="shop-card">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${guardRestWidget(g.guard)}</span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
-          ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม ${max} คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา ${max} คน)</small></button>`
+          ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article></div>
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
-    dlg.querySelector('[data-gift-nira]')?.addEventListener('click', () => { if (g.giveOnigiriNira()) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
     if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
   };
   paint(); openDlg('nira-office');
   const generation = dlgGen;
+  const restState = () => Object.values(g.roster).map(c => `${c.id}:${c.teaRest?.phase || ''}`).join(',');
+  let paintedRestState = restState();
   const restTimer = setInterval(() => {
     if (!dlg.open || dlgGen !== generation) { clearInterval(restTimer); return; }
     g.updateActorRecovery();
+    const state = restState();
+    if (state !== paintedRestState) { paintedRestState = state; paint(); return; }
     const statuses = [...dlg.querySelectorAll('[data-guard-status]')];
     if (statuses.length) {
       for (const status of statuses) { const a = g.roster[status.dataset.guardStatus]; if (a) status.outerHTML = guardRestWidget(a); }
@@ -3620,13 +3633,12 @@ function openBag() {
   pauseForDlg();
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
   const itemCards = carried.length ? carried.map(([k, n]) => {
-    const d = ITEMS[k], targeted = !!d.hpRatio, recovery = targeted || !!d.mpRatio, why = targeted ? '' : bagUseWhy(k);
+    const d = ITEMS[k], recovery = !!d.hpRatio || !!d.mpRatio, why = bagUseWhy(k);
     const line = why || (recovery ? itemText(k, 'desc') : itemText(k, 'say'));
     return `<div class="bag-item">
       ${itemImg(k, 'loading="lazy"')}
       <span class="n"><b>${esc(itemName(k))} ×${n}</b>
-        <small>${esc(line)}</small>
-        ${targeted ? `<select data-bag-target="${k}" aria-label="${esc(t('g1.target'))}"><option value="you">${esc(t('g1.you'))}</option>${Object.values(g.roster).filter(c => !c.reader && actorStanding(c)).map(c => `<option value="${esc(c.id)}">${esc(c.name || GUARD.name)} · HP ${Math.round(c.morale)}/100</option>`).join('')}</select>` : ''}</span>
+        <small>${esc(line)}</small></span>
       <button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
@@ -3646,7 +3658,7 @@ function openBag() {
         sfx('gong'); openBag(); refresh();
       });
       d.querySelectorAll('[data-use-item]').forEach(b => b.onclick = () => {
-        if (!g.useBag(b.dataset.useItem, d.querySelector(`[data-bag-target="${b.dataset.useItem}"]`)?.value || 'you')) return;
+        if (!g.useBag(b.dataset.useItem)) return;
         sfx('gong'); openBag(); refresh();
       });
       d.querySelectorAll('[data-bag-outfit]').forEach(b => b.onclick = () => {

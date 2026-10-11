@@ -453,7 +453,7 @@ const API = {
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
   actorStanding(actor) { return actorStanding(actor); },
-  guardActive() { return this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard); },
+  guardActive() { return this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
   enemyGuard() {
     const b = this.battle;
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
@@ -466,7 +466,9 @@ const API = {
   },
   downActor(actor, now = Date.now()) {
     if (!actor || actor.recoverUntil) return false;
-    actor.morale = 0; actor.recoverUntil = now + RECOVERY_MS;
+    // Guard retains 1 map HP; absentActors keeps it knocked out for the rest of this battle.
+    const fallenGuard = actor.k === 'guard' && this.battle;
+    actor.morale = fallenGuard ? 1 : 0; actor.recoverUntil = fallenGuard ? 0 : now + RECOVERY_MS;
     if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
     this.releaseActorFromWork(actor);
     return true;
@@ -487,10 +489,10 @@ const API = {
     }
     return true;
   },
-  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — HP < 50 เท่านั้น */
+  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — Guard พักได้เมื่อ HP ไม่เต็ม */
   restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
-    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 50 || this.battle) return false;
+    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= (c.k === 'guard' ? 100 : 50) || this.battle) return false;
     const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
@@ -501,7 +503,7 @@ const API = {
     if (!path?.length && Math.hypot(c.x-dest[0],c.y-dest[1]) > 6) return false;
     c.teaRest = { phase:'travel', zone:this.zone, dest, path:path || [], movedAt:now, returnAt:[c.x,c.y] };
     c.path = null; c.target = null;
-    if (c.k !== 'guard') this.releaseActorFromWork(c);
+    this.releaseActorFromWork(c);
     this.save(); this.onChange(); return true;
   },
   restGuard(id = this.guard?.id, now = Date.now()) { return this.restActor(id, now); },
@@ -517,7 +519,7 @@ const API = {
         if (d > distance) { c.x += (x-c.x)*distance/d; c.y += (y-c.y)*distance/d; break; }
         c.x=x; c.y=y; distance-=d; rest.path.shift();
       }
-      if (!rest.path.length) { rest.phase='rest'; rest.startedAt=now-distance/.075; rest.until=rest.startedAt+60000; changed=true; }
+      if (!rest.path.length) { rest.phase='rest'; rest.startedAt=now-distance/.075; rest.until=rest.startedAt+(c.k === 'guard' ? 120000 : 60000); changed=true; }
     }
     if (rest.phase === 'rest' && now >= rest.until) {
       c.morale=100; [c.x,c.y]=rest.returnAt; c.path=null; c.target=null; c.teaRest=null;
@@ -2026,19 +2028,28 @@ const API = {
     return true;
   },
 
+  /** โต๊ะนิราใช้ของจากกระเป๋า: ข้าวปั้นเติมหิว กล่องยาเติม HP */
+  giveCrewItem(k, id) {
+    const c = this.roster[id], food = /^food(Z[234])?$/.test(k), health = /^health(Z[234]|Large)?$/.test(k);
+    if (this.battle || !c || c.reader || c.self || !actorStanding(c) || !(this.inventory[k] > 0) || !(food || health)) return false;
+    if (food) {
+      if ((c.hunger ?? 100) >= 100) return false;
+      c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
+    } else {
+      const result = medicineResult(k, c.morale, 100, 0, 0);
+      if (!result) return false;
+      c.morale = result.hp;
+    }
+    if (--this.inventory[k] <= 0) delete this.inventory[k];
+    this.save(); this.onChange(); return true;
+  },
+
   /** ใช้ของที่พกอยู่ ผู้เล่นเป็นคนเลือกจังหวะเอง ไม่กินของทันทีที่เดินผ่าน */
   useBag(k, recipientId = 'you') {
+    if (recipientId !== 'you') return false;
     if (ITEMS[k]?.consumable) {
       if (this.battle) return false;
-      if (recipientId === 'you') return this.useMedicine(k);
-      const c = this.roster[recipientId] || (recipientId === 'guard' ? this.guard : this.crewOf(recipientId));
-      if (!actorStanding(c) || !(this.inventory[k] > 0) || !ITEMS[k].hpRatio) return false;
-      const result = medicineResult(k, c.morale, 100, 0, 0);
-      if (!result && !(k === 'food' && (c.hunger ?? 100) < 100)) return false;
-      if (result) c.morale = result.hp;
-      if (k === 'food') c.hunger = Math.min(100, (c.hunger ?? 100) + BAL.feedHunger);
-      if (--this.inventory[k] <= 0) delete this.inventory[k];
-      this.save(); this.onChange(); return true;
+      return this.useMedicine(k);
     }
     const def = ITEMS[k], n = this.inventory[k] || 0;
     if (!def || n < 1 || def.battleOnly) return false;

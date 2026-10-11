@@ -107,8 +107,8 @@ test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama /
   g.hire('taan'); g.hireGuard();
   for (const c of [g.crewOf('taan'), g.guard]) {
     c.morale = 5; g.inventory.healthLarge = 1; g.inventory.holyWaterLarge = 1;
-    assert.equal(g.useBag('holyWaterLarge', c.id), false);
-    assert.equal(g.useBag('healthLarge', c.id), true); assert.equal(c.morale, 100);
+    assert.equal(g.giveCrewItem('holyWaterLarge', c.id), false);
+    assert.equal(g.giveCrewItem('healthLarge', c.id), true); assert.equal(c.morale, 100);
     assert.equal(g.inventory.healthLarge, undefined);
   }
   // in battle
@@ -165,7 +165,7 @@ test('G4 tea rest: Guard keeps working through the same method (restGuard alias)
   const g = game(); g.hireGuard(); tea(g); g.guard.morale = 20;
   assert.ok(g.restGuard()); assert.equal(g.guard.teaRest.phase, 'travel');
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /hungerWidget\(c\) \+ guardRestWidget\(c\)/, 'rest widget on every reaper card');
+  assert.match(ui, /niraItemWidget\(c\) \+ guardRestWidget\(c\)/, 'rest widget on every reaper card');
   assert.match(ui, /dlg\.querySelectorAll\('\[data-guard-status\]'\)/, 'live refresh for all cards');
   const scene = readFileSync(new URL('../src/scene.js', import.meta.url), 'utf8');
   assert.match(scene, /c\.teaRest\?\.phase !== 'travel'/, 'walking reaper is drawn on the map');
