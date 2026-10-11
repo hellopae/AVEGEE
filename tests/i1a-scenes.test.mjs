@@ -126,7 +126,7 @@ test('I1-A after waking, Yama stands at the wake point and can walk immediately'
 
 test('I1-A cache-bust: -i1a is appended (existing suffixes kept) on every changed file that carries a version query',()=>{
  const html=read('index.html'),ui=read('src/ui.js');
- assert.match(html,/src\/compact-ui\.css\?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4(-[a-z0-9]+)*-i1a"/);
+ assert.match(html,/src\/compact-ui\.css\?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4(-[a-z0-9]+)*-i1a(-[a-z0-9]+)*"/);
  assert.match(html,/src\/ui\.js\?v=20261009-f2-merge-[^"]*-h4-h2-zoom-intro-v3(-[a-z0-9]+)*-i1a(-[a-z0-9]+)*"/);
- assert.ok(ui.includes("./mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4-i1a'"));
+ assert.ok(ui.includes("./mirror-charge.js?v=minigame-review-20261011'"));
 });

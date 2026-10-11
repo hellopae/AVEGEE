@@ -64,6 +64,7 @@ async function fixture(key, zone) {
   const config = wideStationRoom(zone,key);
   const calls = [], handlers = {};
   const context = new Proxy({
+    createLinearGradient: () => ({addColorStop(){}}),
     drawImage(...args) { calls.push(args); },
     measureText: () => ({width:20}),
   }, {get:(o,k) => k in o ? o[k] : () => {}});

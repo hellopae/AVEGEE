@@ -63,6 +63,7 @@ async function fixture(key) {
   const config = {...ROOMS[key], ...ROOMS[key].zones.asia};
   const calls = [], handlers = {};
   const context = new Proxy({
+    createLinearGradient: () => ({addColorStop(){}}),
     drawImage(...args) { calls.push(args); },
     measureText: () => ({width:20}),
   }, {get:(o,k) => k in o ? o[k] : () => {}});

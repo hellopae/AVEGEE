@@ -1,7 +1,7 @@
 // Active-time engines; rendering and input share the same snapshot.
 export const SWORD_GOAL = 10;
 export const SWORD_MISSES = 10;
-export const NOTE_WINDOW = .21;
+export const NOTE_WINDOW = .38;
 export function segmentDistance(p, a, b) {
   const dx=b.x-a.x, dy=b.y-a.y, d=dx*dx+dy*dy;
   const f=d ? Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/d)) : 0;
@@ -9,11 +9,11 @@ export function segmentDistance(p, a, b) {
 }
 function random(seed) { let s=seed>>>0; return () => { s=(Math.imul(s,1664525)+1013904223)>>>0; return s/4294967296; }; }
 export function createRhythm(seed=1) {
-  const rand=random(seed), notes=Array.from({length:24},(_,id)=>({id,lane:Math.floor(rand()*5),at:2.8+id*.75,state:'waiting'}));
+  const rand=random(seed), notes=Array.from({length:24},(_,id)=>({id,lane:Math.floor(rand()*5),at:3.6+id*1.05,state:'waiting'}));
   let time=0,hits=0,misses=0,feedback='เตรียมพร้อม',lastHit=-10;
-  const done=()=>hits>=10||misses>=10||time>=24;
+  const done=()=>hits>=10||misses>=10||time>=34;
   return {
-    step(dt) { if(done()||!Number.isFinite(dt)||dt<=0)return; time+=Math.min(dt,24-time);
+    step(dt) { if(done()||!Number.isFinite(dt)||dt<=0)return; time+=Math.min(dt,34-time);
       for(const n of notes) if(n.state==='waiting' && time>n.at+NOTE_WINDOW){n.state='miss';misses++;feedback='พลาด';if(done())break;}
     },
     input(a) { if(done()||a?.type!=='note'||!Number.isInteger(a.lane)||a.lane<0||a.lane>4)return;

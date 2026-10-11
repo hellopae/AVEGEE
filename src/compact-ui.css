@@ -122,3 +122,18 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 
 .mg-train .mg-stage.sword-practice{align-items:stretch;overflow:hidden}
 .sword-board{width:100%;box-sizing:border-box}
+
+/* Illustrated, selectable training instructions. */
+.mg-train .sword-intro{justify-content:center;overflow:auto;gap:12px}
+.training-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:min(100%,1000px);text-align:left}
+.training-guide article{padding:16px;border:1px solid #a77c41;border-radius:16px;background:#34232de6}
+.training-guide h3{margin:0 0 10px;color:#eecb84;font-size:18px}
+.training-guide p{font-size:14px!important;line-height:1.7}
+.training-weapons,.training-actors{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.training-choice{flex:1;min-width:95px;display:flex;flex-direction:column;align-items:center;gap:6px;background:#1e141ded;color:#eadcc5;border:1px solid #775938;border-radius:12px;padding:10px;cursor:pointer}
+.training-choice img{width:76px;height:88px;object-fit:contain;pointer-events:none}.training-choice b{font-size:13px}.training-choice small{font-size:12px}
+.training-choice.selected{border:2px solid #f4cf77;box-shadow:0 0 14px #f4cf7733;background:#59402a}
+.training-rule{display:flex;flex-direction:column;gap:8px;padding:14px;margin:12px 0;background:#204334;border-radius:10px;color:#d6f5db}
+.sword-keys button{min-height:60px;font-size:18px}.g5-closeup{touch-action:none;cursor:pointer}
+@media(max-width:700px),(max-height:500px){.training-guide{grid-template-columns:repeat(3,minmax(150px,1fr));gap:8px}.training-guide article{padding:10px}.training-choice img{width:52px;height:60px}.mg-train .sword-intro{justify-content:flex-start}.sword-keys button{min-height:44px;font-size:14px}}
+@media(max-width:520px){.training-guide{grid-template-columns:1fr}.training-choice{flex:0 1 110px}}

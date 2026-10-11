@@ -2134,7 +2134,7 @@ export const TRAINING_RULES = {
   rewards:[{score:60, exp:20},{score:80, exp:30},{score:95, exp:40}],
 };
 export const TRAINING_STATIONS = {
-  dab:{ actors:['yama'], game:'rhythm', seconds:24 },
+  dab:{ actors:['yama'], game:'rhythm', seconds:34 },
   lan:{ actors:['taan','guard'], game:'stone', seconds:30 },
   krata:{ actors:['plerng'], game:'fire', seconds:30 },
   krajok:{ actors:['kan'], game:'mirror', seconds:45 },

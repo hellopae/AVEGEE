@@ -184,19 +184,29 @@ export function createCoverEngine(env) {
   const fallR = region(fall, alphaBounds(fall), 3, 3, 3, 3, 5);
   // fire: dilate (more upward) so the flame can lengthen, then label flames
   const fireSoft = blurAlpha(dilateAlpha(alphas.fire, MW, MH, 3, 3, 9, 1), MW, MH, 1);
+  const torchSoft = blurAlpha(dilateAlpha(alphas.fire, MW, MH, 3, 3, 16, 1), MW, MH, 3);
   const fireTint = blurAlpha(alphas.fire, MW, MH, 1);
   const flames = labelBlobs(dilateAlpha(alphas.fire, MW, MH, 4, 4, 4, 4), MW, MH, 10).map((b, i) => {
-    const r = region(fireSoft, {x0:b.x0 + 2, y0:b.y0 - 4, x1:b.x1 - 2, y1:b.y1 - 2}, 5, 5, 11, 4, 2);
+    const wide = b.y0 > MH * .45 && (b.x1 - b.x0) > 26, padTop = wide ? 11 : 20;
+    const r = region(wide ? fireSoft : torchSoft, {x0:b.x0 + 2, y0:b.y0 - 4, x1:b.x1 - 2, y1:b.y1 - 2}, 5, 5, padTop, 4, 2);
     if (!r) return null;
     // flicker tint follows the painted flame itself (not the dilated warp area) so it never becomes a glowing box
-    const tint = region(fireTint, {x0:b.x0 + 2, y0:b.y0 - 4, x1:b.x1 - 2, y1:b.y1 - 2}, 5, 5, 11, 4, 2);
+    const tint = region(fireTint, {x0:b.x0 + 2, y0:b.y0 - 4, x1:b.x1 - 2, y1:b.y1 - 2}, 5, 5, padTop, 4, 2);
     r.tint = mkCanvas(doc, r.bw, r.bh);
     const tc = r.tint.getContext('2d'); tc.fillStyle = 'rgb(255,120,24)'; tc.fillRect(0, 0, r.bw, r.bh);
     tc.globalCompositeOperation = 'destination-in'; tc.drawImage(tint.mask, 0, 0);
+    // Warp only flame pixels: stretching the unmasked cover also pulled sky/torch
+    // pixels into the tip, leaving a moving straight seam against the still art.
+    if (!wide) {
+      r.texture = mkCanvas(doc, r.bw, r.bh);
+      const fc = r.texture.getContext('2d');
+      fc.drawImage(base, -r.bx, -r.by);
+      fc.globalCompositeOperation = 'destination-in'; fc.drawImage(tint.mask, 0, 0);
+    }
     r.i = i; r.base = b.y1 - 2; r.cx = fit.x + ((b.x0 + b.x1) / 2) * sx; r.top = fit.y + b.y0 * sy;
     // only torch-sized flames get a halo; the wide dais glow in front of the throne must not light up the characters beside it
-    r.radius = (b.x1 - b.x0) <= 26 ? Math.max((b.x1 - b.x0) * sx, (b.y1 - b.y0) * sy) * .6 + 2 * s : 0;
-    r.mid = fit.y + ((b.y0 + b.y1) / 2) * sy; r.wide = (b.x1 - b.x0) > 26;
+    r.radius = !wide ? Math.max((b.x1 - b.x0) * sx, (b.y1 - b.y0) * sy) * .6 + 2 * s : 0;
+    r.mid = fit.y + ((b.y0 + b.y1) / 2) * sy; r.wide = wide;
     return r;
   }).filter(Boolean);
   // volcano
@@ -305,7 +315,8 @@ export function createCoverEngine(env) {
       for (let y = 0; y < bh; y += step) {
         const u = clamp(1 - y / baseY, 0, 1.4), srcY = baseY - (baseY - y) / stretch;
         const sway = lvl.warp.fire * s * Math.pow(u, 1.2) * (Math.sin(t * 5.2 + F.i * 2 + y * .09) + .6 * Math.sin(t * 8.9 + F.i + y * .17));
-        wc.drawImage(base, F.bx - sway, F.by + srcY, bw, step / stretch, 0, y, bw, step);
+        if (F.wide) wc.drawImage(base, F.bx - sway, F.by + srcY, bw, step / stretch, 0, y, bw, step);
+        else wc.drawImage(F.texture, -sway, srcY, bw, step / stretch, 0, y, bw, Math.min(step, bh - y));
       }
       maskIn(wc, F); paste(c, F, fade);
       const [a0, a1] = lvl.fireTint;
@@ -408,7 +419,7 @@ export function installCoverFx(doc = document, win = window) {
   const loadImage = src => new Promise((resolve, reject) => {
     const img = new win.Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = src;
   });
-  const load = () => Promise.all([loadImage(COVER_IMAGE.src), ...COVER_FX_KINDS.map(kind => loadImage(`img/cover-fx/${kind}-v4-mask.png`))])
+  const load = () => Promise.all([loadImage(COVER_IMAGE.src), ...COVER_FX_KINDS.map(kind => loadImage(`img/cover-fx/${kind}-v4-mask.png?v=h5b-i2a`))])
     .then(([image, ...masks]) => {
       const alphas = {};
       COVER_FX_KINDS.forEach((kind, i) => {

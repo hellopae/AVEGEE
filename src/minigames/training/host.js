@@ -1,5 +1,5 @@
-import { TRAINING_GAMES, createTrainingGame } from './index.js?v=sword-schools-20261010-final';
-import { runPanel } from './panel-host.js?v=sword-schools-20261010-final';
+import { TRAINING_GAMES, createTrainingGame } from './index.js?v=minigame-review-20261011';
+import { runPanel } from './panel-host.js?v=minigame-review-20261011';
 import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 
 // Own every listener/frame. Pausing and hidden tabs freeze both clock and input.
