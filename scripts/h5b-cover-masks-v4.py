@@ -32,7 +32,7 @@ REGIONS = {
   [(0,305),(0,227),(52,208),(84,309)],
   [(305,224),(309,161),(345,156),(345,224)],
   [(298,261),(299,231),(321,218),(327,261)],
-  [(708,232),(706,174),(730,178),(738,233)],
+  [(708,232),(698,151),(735,148),(747,233)],
   [(992,326),(994,290),(1014,285),(1025,326)],
   [(1580,331),(1588,289),(1618,280),(1650,333)],
   [(364,488),(389,495),(413,476),(462,479),(480,506),(498,542),(369,544)],
@@ -52,6 +52,9 @@ REGIONS = {
   [(1565,780),(1624,778),(1678,824),(1678,937),(1581,937)],
  ],
 }
+# I2-A: foreground cliff lip above the fifth soul is rock, including orange
+# reflected highlights. Do not translate those pixels with the lava texture.
+LAVA_ROCK = [[(1040,566),(1160,570),(1150,610),(1125,644),(1090,679),(1060,685),(1030,643)]]
 # Foreground envelopes (throne, Yama, ogre, flame kid, guard...) that fire/lava/volcano may never touch.
 PROTECTED = [
  [(217,278),(314,278),(368,431),(333,555),(217,557)],
@@ -72,12 +75,26 @@ def main():
         for p in polys: d.polygon(scaled(p), fill=1)
         if kind != 'soul':
             for p in PROTECTED + REGIONS['soul']: d.polygon(scaled(p), fill=0)
+        torch_px = None
+        if kind == 'fire':
+            # This torch sits in empty space beside the throne, but the broad
+            # character envelope accidentally erased it. Restore its traced
+            # flame only, including the tip above the old polygon's flat top.
+            d.polygon(scaled(REGIONS['fire'][3]), fill=1)
+            torch = Image.new('1', (W, H))
+            ImageDraw.Draw(torch).polygon(scaled(REGIONS['fire'][3]), fill=1)
+            torch_px = torch.load()
+        if kind == 'lava':
+            for p in LAVA_ROCK: d.polygon(scaled(p), fill=0)
         rp = region.load()
         mask = Image.new('L', (W, H)); mp = mask.load()
         for y in range(H):
             for x in range(W):
                 r, g, b = px[x, y]
                 hit = (g > r*1.08 and b > r*1.13 and b > 100) if kind == 'soul' else (r > 165 and r > g*1.12 and g > b*1.3 and g > 48)
+                if torch_px is not None and torch_px[x, y]:
+                    # Gold/white flame, excluding the red sky in the extra tip room.
+                    hit = r > 165 and g > 110 and g > r*.52 and r > g*.98 and b < g*.88
                 if rp[x, y] and hit: mp[x, y] = 255
         small = mask.resize((MW, MH), Image.Resampling.NEAREST)   # binary alpha stays exactly 0/255
         out = Image.new('RGBA', (MW, MH), (255, 255, 255, 0)); out.putalpha(small)
