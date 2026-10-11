@@ -20,8 +20,9 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
-import { placeWheel, placeFinButton } from './wheel-place.js?v=i1b';
-import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk';
+import { placeWheel, placeFinButton, courtWheelReference } from './wheel-place.js?v=i1b-j1';
+import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
+import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -31,9 +32,9 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j4';
-import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-j4';
-import { makeRoom } from './room.js?v=minigame-review-20261011-j4';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1';
+import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
@@ -134,23 +135,11 @@ if (typeof ResizeObserver !== 'undefined') {
 }
 fitSceneBox();
 
-/** H2 (คุณเป้ 10 ต.ค.): "กล้องตามตัวละครอย่างนุ่มนวลในหน้าแผนที่เวลา zoom ด้วย"
- *  ซูมแผนที่โซน = ขยายกล่อง .scene-box ด้วย CSS transform (พิกัดคลิกอ่านจาก getBoundingClientRect อยู่แล้ว จึงไม่เพี้ยน)
- *  กล้องตามยมบาทด้วยสูตรเดียวกับกล้องชายแดน (scene-style.followCamera: exponential 130ms, ไม่เกินขอบภาพ)
- *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับ 1× ↔ 2.5× */
-const MAP_ZOOM_LEVELS = [1, 2.5];
+/** M1 (คุณเป้ 11 ต.ค.): ตัดฟังก์ชันซูมแผนที่ออก ล็อกไว้ที่ 1× (ไม่ต้องเพิ่มไฟล์ภาพ)
+ *  canvas วาดตาม viewport × DPR (cap 2) เพื่อให้สไปรต์/อาคารคม; CSS transform ใช้เฉพาะชั้นป้าย DOM
+ *  mapCam ยังใช้สูตรเดียวกับกล้องชายแดน (exponential 130ms, ไม่เกินขอบภาพ) — ที่ 1× กล้องอยู่กลางภาพเสมอ */
+const MAP_ZOOM_LEVELS = [1];
 const mapCam = { level: 0, z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
-const zoomBtn = document.getElementById('hud-zoom');
-function setMapZoom(level) {
-  mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
-  if (zoomBtn) {
-    zoomBtn.dataset.level = String(mapCam.level);
-    zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
-    const zoomImg = zoomBtn.querySelector('img');
-    if (zoomImg) zoomImg.src = mapCam.level > 0 ? 'img/ui/icon-zoom-out.png' : 'img/ui/icon-zoom-in.png';   // ซูมอยู่ = แสดงปุ่มซูมออก
-  }
-}
-zoomBtn?.addEventListener('click', () => setMapZoom((mapCam.level + 1) % MAP_ZOOM_LEVELS.length));
 function updateMapCamera(now) {
   const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
   if (!stage || !box) return;
@@ -163,21 +152,25 @@ function updateMapCamera(now) {
   // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
   const wantX = mapCam.level > 0 ? g.player.x : SCENE.w / 2, wantY = mapCam.level > 0 ? g.player.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
-  if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) {
-    mapCam.z = 1;
-    if (box.style.transform) { box.style.transform = ''; box.style.transformOrigin = ''; }
-    return;
-  }
+  if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
   const cw = stage.clientWidth, ch = stage.clientHeight, bw = box.offsetWidth, bh = box.offsetHeight;
   if (!cw || !ch || !bw || !bh) return;
-  const L = box.offsetLeft, T = box.offsetTop, z = mapCam.z, W = bw * z, H = bh * z;
-  const axis = (view, size, off, centerPx) => {                        // ไม่ให้เห็นขอบนอกภาพ · ภาพเล็กกว่าจอ = วางกลาง
-    if (size <= view) return (view - size) / 2 - off;
-    return Math.max(view - size - off, Math.min(-off, view / 2 - off - centerPx * z));
-  };
-  const tx = axis(cw, W, L, mapCam.x / SCENE.w * bw), ty = axis(ch, H, T, mapCam.y / SCENE.h * bh);
-  box.style.transformOrigin = '0 0';
-  box.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${z.toFixed(4)})`;
+  // fractional offsets (not offsetLeft/Top, which round) so canvas pixels line up with the DOM overlay
+  const sRect = stage.getBoundingClientRect(), bRect = box.getBoundingClientRect();
+  const L = bRect.left - sRect.left, T = bRect.top - sRect.top;
+  const view = mapViewport(cw, ch, bw, bh, mapCam);
+  setMapViewport(cv, view);
+  // The canvas covers the stage; only DOM labels retain the old world-space scale.
+  cv.style.left = `${-L}px`; cv.style.top = `${-T}px`;
+  cv.style.width = `${cw}px`; cv.style.height = `${ch}px`;
+  const overlay = document.getElementById('ov');
+  overlay.style.transformOrigin = '0 0';
+  overlay.style.transform = `translate(${view.tx - L}px,${view.ty - T}px) scale(${mapCam.z})`;
+  const fabs = box.querySelector('.fabs');
+  if (fabs) {
+    fabs.style.transformOrigin = '0 0';
+    fabs.style.transform = `translate(${view.tx - L + (mapCam.z - 1) * fabs.offsetLeft}px,${view.ty - T + (mapCam.z - 1) * fabs.offsetTop}px) scale(${mapCam.z})`;
+  }
 }
 
 /** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
@@ -834,12 +827,12 @@ function crewNote(c) {
 function guardRestWidget(c, showName = false) {
   if (!c) return '';
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
-  const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/60000)) : 0;
+  const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/(rest.until-rest.startedAt))) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
     ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
-      : c.morale < 50 ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : c.k === 'guard' ? `<button class="sm" data-feed="guard" ${g.food >= BAL.feedFoodCost ? '' : 'disabled'}>${esc(t('g1.feed'))}</button>` : ''}
+      : c.morale < (c.k === 'guard' ? 100 : 50) ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
+      : ''}
     </div>`;
 }
 function hungerWidget(c) {
@@ -2048,7 +2041,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ซึ่งตั้งไว้สำหรับรูปท่าฟาด hero-yama-atk ที่วาดหันขวา — แต่ตอนฟันดาบธรรมดา youImg คือ "ท่ายืน" (แอนิเมชันดาบวาดบน canvas ทับ 580ms)
   // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
   const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
-    : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
+    : showRage ? (rageArtSrc(g.outfit || g.zone) || ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
@@ -2082,7 +2075,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
-      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
+      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
@@ -2155,6 +2148,7 @@ function powerSound(k) {
   else sfx(powerSfx(k, g.abilities));
 }
 function playActionCutscene(k, ultimate = null) {
+  if (k === 'rage') return;
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
@@ -2474,6 +2468,16 @@ function doVerdict(soul, stK, crK, inten) {
 }
 
 // ---------- ศูนย์จัดทีม / ร้านค้า / ผู้ตรวจการ ----------
+function niraItemWidget(c) {
+  const h = Math.round(c.hunger ?? 100);
+  return `<div class="hunger-line"><small>🍙 หิว ${h}/100</small>${['food', 'health'].map(kind => {
+    const keys = Object.keys(ITEMS).filter(k => kind === 'food' ? /^food(Z[234])?$/.test(k) : /^health(Z[234]|Large)?$/.test(k));
+    const count = keys.reduce((n,k) => n + (g.inventory[k] || 0), 0), item = keys.find(k => g.inventory[k] > 0) || kind;
+    const ready = count > 0 && actorStanding(c) && (kind === 'food' ? h < 100 : c.morale < 100);
+    return `<button class="sm" data-nira-item="${item}" data-actor-id="${esc(c.id)}" ${ready ? '' : 'disabled'}>${kind === 'food' ? '🍙 ให้ข้าวปั้น' : '💊 ให้กล่องยา'} · มี ${count}</button>`;
+  }).join('')}</div>`;
+}
+
 function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
@@ -2491,14 +2495,13 @@ function openNiraOffice() {
     const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
       <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
-      <div class="row"><button data-gift-nira ${g.inventory.food > 0 ? '' : 'disabled'}>🍙 ส่งข้าวปั้นให้นิราแจกทีม · มี ${g.inventory.food || 0}</button></div>
       <div class="market-grid">${candidates.map(def => {
         const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
         const why = final ? g.finalTeamWhy(c) : '';
         return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
-          ${c ? hungerWidget(c) + guardRestWidget(c) : ''}</span>
+          ${c ? niraItemWidget(c) + guardRestWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
         </article>`;
@@ -2508,24 +2511,28 @@ function openNiraOffice() {
       <article class="shop-card">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${guardRestWidget(g.guard)}</span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
-          ? `<button class="sm" disabled title="เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่กินโควตาทีม ${max} คนของยมทูต">✓ อยู่ในทีมเสมอ<small>(ไม่นับโควตา ${max} คน)</small></button>`
+          ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article></div>
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
-    dlg.querySelector('[data-gift-nira]')?.addEventListener('click', () => { if (g.giveOnigiriNira()) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });
     bindHungerWidgets(dlg, () => { paint(); refresh(); });
     const hireGuardBtn = dlg.querySelector('[data-hire-guard]');
     if (hireGuardBtn) hireGuardBtn.onclick = () => { if (g.hireGuard()) { sfx('coin'); paint(); refresh(); } };
   };
   paint(); openDlg('nira-office');
   const generation = dlgGen;
+  const restState = () => Object.values(g.roster).map(c => `${c.id}:${c.teaRest?.phase || ''}`).join(',');
+  let paintedRestState = restState();
   const restTimer = setInterval(() => {
     if (!dlg.open || dlgGen !== generation) { clearInterval(restTimer); return; }
     g.updateActorRecovery();
+    const state = restState();
+    if (state !== paintedRestState) { paintedRestState = state; paint(); return; }
     const statuses = [...dlg.querySelectorAll('[data-guard-status]')];
     if (statuses.length) {
       for (const status of statuses) { const a = g.roster[status.dataset.guardStatus]; if (a) status.outerHTML = guardRestWidget(a); }
@@ -2924,8 +2931,13 @@ function openBattle(after) {
       </div></div></div></div>` : '';
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
       <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
-    const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
-      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
+    const battleChoice = (k, icon, label, ok, note = '') => {
+      const remaining = yamaSkillRemaining(b, k);
+      const baseReady = ok;
+      ok = ok && !remaining;
+      return `<button class="orb-choice" data-base-ready="${baseReady}" data-act="${k}" ${ok ? '' : 'disabled'}
+      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
+    };
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
       const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
@@ -2940,7 +2952,7 @@ function openBattle(after) {
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `MP ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `MP ${BATTLE.mpCost.charge}`) : '')
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม', mp >= BATTLE.mpCost.wind, `MP ${BATTLE.mpCost.wind}`) : '')
-      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns && !b.rageCooldown, b.rageCooldown ? `พักพลังอีก ${b.rageCooldown} เทิร์น` : `MP ${BATTLE.mpCost.rage}`) : '')
+      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `MP ${BATTLE.mpCost.rage}`) : '')
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `MP ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
@@ -3163,6 +3175,7 @@ function openBattle(after) {
         if (!wheel.isConnected) return;
         const area = stage.getBoundingClientRect(), rect = (anchor.querySelector('img:not(.fx)') || anchor).getBoundingClientRect();
         if (!area.width || !rect.width) return;
+        wheel.classList.toggle('ally-wheel', !isYama);
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
         const box = e => { const r = e.getBoundingClientRect(); return { l:r.left - area.left, t:r.top - area.top, r:r.right - area.left, b:r.bottom - area.top }; };
         // ขอบขวาของ "ตัวภาพ" จริง (img เป็น object-fit:contain จึงมีขอบโปร่งใสสองข้าง) ให้วงชิดตัวละครไม่ห่างเกินไป
@@ -3171,7 +3184,8 @@ function openBattle(after) {
         if (im && im.naturalWidth) { const vis = Math.min(me.r - me.l, (me.b - me.t) * im.naturalWidth / im.naturalHeight); me.l += (me.r - me.l - vis) / 2; me.r = me.l + vis; }
         const boxes = (list, skip) => [...stage.querySelectorAll(list)].filter(e => e !== skip).map(box).filter(r => r.r - r.l > 0);
         const { left, top } = placeWheel({ area:{ w:area.width, h:area.height }, wheel:{ w, h }, me,
-          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)') });
+          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)'),
+          reference:courtWheelReference({ w:innerWidth, h:innerHeight }), above:!isYama });
         wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.right = 'auto'; wheel.style.bottom = 'auto';
       };
       place(); requestAnimationFrame(place); setTimeout(place, 260);
@@ -3180,7 +3194,7 @@ function openBattle(after) {
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
-      if (el.dataset.act === 'cooldownClock') { executeCommand('cooldownClock'); return; }
+      if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
       b.command = el.dataset.act; paint();
     });
     const finishWave = () => {
@@ -3314,6 +3328,13 @@ function openBattle(after) {
     const now = performance.now(), elapsed = now - crewClockAt; crewClockAt = now;
     g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
     g.updateActorRecovery();
+    dlg.querySelectorAll('[data-act][data-base-ready]').forEach(button => {
+      const remaining = yamaSkillRemaining(g.battle, button.dataset.act);
+      button.disabled = !!phase || !!g.battle?.over || button.dataset.baseReady !== 'true' || !!remaining;
+      let badge = button.querySelector('.skill-cooldown');
+      if (remaining && !badge) { badge = document.createElement('em'); badge.className = 'skill-cooldown'; badge.setAttribute('role', 'status'); button.append(badge); }
+      if (badge) { if (remaining) badge.textContent = `${remaining}s`; else badge.remove(); }
+    });
     for (const c of g.battleCrew()) {
       const remaining=g.crewCooldown(c), progress=100*(1-remaining/specialCooldown(c));
       const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
@@ -3573,13 +3594,12 @@ function openBag() {
   pauseForDlg();
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
   const itemCards = carried.length ? carried.map(([k, n]) => {
-    const d = ITEMS[k], targeted = !!d.hpRatio, recovery = targeted || !!d.mpRatio, why = targeted ? '' : bagUseWhy(k);
+    const d = ITEMS[k], recovery = !!d.hpRatio || !!d.mpRatio, why = bagUseWhy(k);
     const line = why || (recovery ? itemText(k, 'desc') : itemText(k, 'say'));
     return `<div class="bag-item">
       ${itemImg(k, 'loading="lazy"')}
       <span class="n"><b>${esc(itemName(k))} ×${n}</b>
-        <small>${esc(line)}</small>
-        ${targeted ? `<select data-bag-target="${k}" aria-label="${esc(t('g1.target'))}"><option value="you">${esc(t('g1.you'))}</option>${Object.values(g.roster).filter(c => !c.reader && actorStanding(c)).map(c => `<option value="${esc(c.id)}">${esc(c.name || GUARD.name)} · HP ${Math.round(c.morale)}/100</option>`).join('')}</select>` : ''}</span>
+        <small>${esc(line)}</small></span>
       <button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>
     </div>`;
   }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
@@ -3599,7 +3619,7 @@ function openBag() {
         sfx('gong'); openBag(); refresh();
       });
       d.querySelectorAll('[data-use-item]').forEach(b => b.onclick = () => {
-        if (!g.useBag(b.dataset.useItem, d.querySelector(`[data-bag-target="${b.dataset.useItem}"]`)?.value || 'you')) return;
+        if (!g.useBag(b.dataset.useItem)) return;
         sfx('gong'); openBag(); refresh();
       });
       d.querySelectorAll('[data-bag-outfit]').forEach(b => b.onclick = () => {
@@ -3872,8 +3892,11 @@ $('#mute').onclick = () => {
 };
 drawMute();
 
+// M1: the canvas now covers the whole stage (letterbox included) — only points inside the map count
+const insideScene = (sx, sy) => sx >= 0 && sy >= 0 && sx <= SCENE.w && sy <= SCENE.h;
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
+  if (!insideScene(sx, sy)) { hover = null; cv.style.cursor = 'default'; return; }
   const def = hitStation(sx, sy);
   const frontier = hitFrontier(g, sx, sy);
   const actor = hitActor(g, sx, sy);
@@ -3883,6 +3906,7 @@ cv.onmousemove = e => {
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
   const [sx, sy] = toScene(cv, e);
+  if (!insideScene(sx, sy)) return;
   onSceneClick(sx, sy);
 };
 

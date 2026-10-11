@@ -31,7 +31,96 @@ let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
 const reducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
 let ambientTime = 0;
-const paintedGround = new WeakMap();
+const mapViews = new WeakMap();
+export const setMapViewport = (cv, view) => mapViews.set(cv, view);
+
+/** One camera projection shared by canvas, pointer inversion and the DOM overlay. */
+export function mapViewport(width, height, bw, bh, camera) {
+  const z = camera.z;
+  const axis = (view, size, center) => size <= view ? (view - size) / 2
+    : Math.max(view - size, Math.min(0, view / 2 - center));
+  return { width, height, sx:bw / SCENE.w * z, sy:bh / SCENE.h * z,
+    tx:axis(width, bw * z, camera.x / SCENE.w * bw * z),
+    ty:axis(height, bh * z, camera.y / SCENE.h * bh * z) };
+}
+
+/** Resize only when viewport or DPR changes, never once per animation frame. */
+export function prepareMapCanvas(ctx) {
+  const cv = ctx.canvas, view = mapViews.get(cv);
+  const dpr = Math.min(2, globalThis.devicePixelRatio || 1);
+  const width = view ? Math.max(1, Math.round(view.width * dpr)) : SCENE.w;
+  const height = view ? Math.max(1, Math.round(view.height * dpr)) : SCENE.h;
+  if (cv.width !== width) cv.width = width;
+  if (cv.height !== height) cv.height = height;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  const dx = view ? width / view.width : 1, dy = view ? height / view.height : 1;
+  ctx.setTransform(view ? view.sx * dx : 1, 0, 0, view ? view.sy * dy : 1,
+    view ? view.tx * dx : 0, view ? view.ty * dy : 0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  if (typeof ctx.getTransform === 'function' && !Object.hasOwn(ctx, 'drawImage')) installSpriteCache(ctx);
+}
+
+/** Downscaled sprites (512px art drawn at ~90px) look dotted with plain bilinear, but 'high' quality
+ *  resampling every frame costs ~4x frame time at DPR 2. Resample each (image, source rect, device size)
+ *  once with 'high' quality, then blit the cached canvas ~1:1. Only plain scale/translate draws qualify. */
+const SPRITE_CACHE_MAX = 900;
+let spriteCache = new WeakMap(), spriteCacheCount = 0;
+export const spriteCacheStats = { built: 0, hits: 0 };
+function installSpriteCache(ctx) {
+  const raw = ctx.drawImage;
+  // Upscaled / ~1:1 draws (map layers, masks, glows) gain nothing from 'high' quality and it is very slow at DPR 2.
+  const plain = (self, im, a) => {
+    const q = self.imageSmoothingQuality; self.imageSmoothingQuality = 'low';
+    try { return raw.call(self, im, ...a); } finally { self.imageSmoothingQuality = q; }
+  };
+  ctx.drawImage = function (im, ...a) {
+    if (a.length !== 4 && a.length !== 8) return raw.call(this, im, ...a);
+    const m = this.getTransform();
+    if (!m || m.b || m.c) return raw.call(this, im, ...a);
+    const decoded = im instanceof HTMLImageElement ? im.complete && im.naturalWidth : im.width;
+    if (!decoded) return raw.call(this, im, ...a);
+    let sx = 0, sy = 0, sw = im.naturalWidth || im.width, sh = im.naturalHeight || im.height, dx, dy, dw, dh;
+    if (a.length === 4) [dx, dy, dw, dh] = a; else [sx, sy, sw, sh, dx, dy, dw, dh] = a;
+    const pw = Math.abs(dw * m.a), ph = Math.abs(dh * m.d);
+    if (pw < 1 || ph < 1 || !(im instanceof HTMLImageElement) || (sw <= pw * 1.4 && sh <= ph * 1.4)) return plain(this, im, a);
+    const qw = Math.ceil(pw / 2) * 2, qh = Math.ceil(ph / 2) * 2, key = `${sx},${sy},${sw},${sh},${qw},${qh}`;
+    let per = spriteCache.get(im);
+    if (!per) { per = new Map(); spriteCache.set(im, per); }
+    let c = per.get(key);
+    if (!c) {
+      if (spriteCacheCount >= SPRITE_CACHE_MAX) { spriteCache = new WeakMap(); spriteCacheCount = 0; per = new Map(); spriteCache.set(im, per); }
+      c = document.createElement('canvas'); c.width = qw; c.height = qh;
+      const g2 = c.getContext('2d');
+      g2.imageSmoothingEnabled = true; g2.imageSmoothingQuality = 'high';
+      g2.drawImage(im, sx, sy, sw, sh, 0, 0, qw, qh);
+      per.set(key, c); spriteCacheCount++; spriteCacheStats.built++;
+    } else spriteCacheStats.hits++;
+    return plain(this, c, [0, 0, qw, qh, dx, dy, dw, dh]);
+  };
+}
+const groundCache = new WeakMap();
+/** Map ground at the exact device size. Per-frame 'high' quality resampling of a 1678px image to a 2x
+ *  display is ~7x slower than a 1:1 blit, so resample once per (bg, size) and copy pixels afterwards.
+ *  Falls back to a direct draw when the transform is not a plain scale+translate. */
+function drawMapGround(ctx, bg) {
+  const m = ctx.getTransform ? ctx.getTransform() : null;
+  if (!m || m.b || m.c || m.a <= 0 || m.d <= 0) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); return; }
+  const w = Math.max(1, Math.round(SCENE.w * m.a)), h = Math.max(1, Math.round(SCENE.h * m.d));
+  let c = groundCache.get(bg);
+  if (!c || c.width !== w || c.height !== h) {
+    c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g2 = c.getContext('2d');
+    g2.imageSmoothingEnabled = true; g2.imageSmoothingQuality = 'high';
+    g2.drawImage(bg, 0, 0, w, h);
+    groundCache.set(bg, c);
+  }
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, Math.round(m.e), Math.round(m.f));
+  ctx.drawImage(c, 0, 0);
+  ctx.restore();
+}
 /** Movement is sampled from coordinates, never from a pending path or idle time. */
 export function actorWalkMotion(actor, time, zone = 'th', position = null) {
   const [x, y] = position || [actor.x, actor.y];
@@ -106,39 +195,15 @@ export function afterlifeWalkPosition(walk) {
 }
 
 export function render(ctx, g, t, hover, sel) {
-  const cv = ctx.canvas;
-  // ชุดที่ 15b (28 ก.ย. 2569, ตรวจโดย Dale) — canvas #cv ในมาร์กอัปยังคงแอตทริบิวต์เดิม
-  // width="1527" height="704" (สัดส่วน 2.17:1) ค้างจากก่อนเปลี่ยน SCENE เป็น scene-v2.png
-  // (1678×937, สัดส่วน 1.79:1) ผลคือ sc = cv.width/SCENE.w ตัวเดียวถูกใช้ทั้งสองแกน แล้ว
-  // เนื้อหาสูง SCENE.h*sc เกิน cv.height ไป ~149px — บัฟเฟอร์ canvas ตัดส่วนล่างสุดของแผนที่
-  // ทิ้งไปเงียบๆ (ท่าเรือ/ประตูชายแดน/บันไดส่วนล่างหายไปจริง ไม่ใช่แค่ภาพเพี้ยน) ก่อนที่ CSS
-  // จะยืดบัฟเฟอร์ที่ถูกตัดไปแล้วให้เต็มกล่อง .scene-box ซ้ำอีกชั้น (fitSceneBox() ใน ui.js
-  // ใช้ SCENE.w/h คำนวณกล่องถูกอยู่แล้ว ปัญหาอยู่ที่แอตทริบิวต์ของ <canvas> เท่านั้น)
-  // แก้โดยให้ความละเอียดจริงของ canvas ตามอัตราส่วน SCENE เสมอ (sc จะเป็น 1:1 พอดีสำหรับ
-  // โซน th) — ไม่แตะ index.html/ui.js ตามข้อห้ามของใบงาน ทำที่นี่แทนเพราะ render() เรียกทุกเฟรม
-  if (cv.width !== SCENE.w || cv.height !== SCENE.h) { cv.width = SCENE.w; cv.height = SCENE.h; }
-  const sc = scaleFor(cv);
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, cv.width, cv.height);
-  ctx.setTransform(sc, 0, 0, sc, 0, 0);   // ตั้งแต่บรรทัดนี้ วาดด้วยพิกัดฉากได้เลย
-  ctx.imageSmoothingEnabled = false;
+  prepareMapCanvas(ctx);
 
   // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
   const legacyBg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
   const bg = img('theme-map-' + g.zone) || legacyBg;
   if (bg) {
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    let cached = paintedGround.get(bg);
-    if (!cached || cached.width !== SCENE.w || cached.height !== SCENE.h) {
-      cached = document.createElement('canvas'); cached.width=SCENE.w; cached.height=SCENE.h;
-      const ground = cached.getContext('2d'); ground.imageSmoothingEnabled=true;
-      ground.imageSmoothingQuality='high'; ground.drawImage(bg,0,0,SCENE.w,SCENE.h);
-      paintedGround.set(bg,cached);
-    }
-    ctx.drawImage(cached,0,0);
-    ctx.imageSmoothingEnabled = false;
+    // Resample the original decoded map once per output size (high quality), then blit 1:1 each frame.
+    drawMapGround(ctx, bg);
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
     // Painted gold and glowing details are decorative; navigation uses the original terrain mask.
     const maskBg = g.zone === 'west' ? img('scene-v2-opt') : legacyBg;
@@ -172,7 +237,7 @@ export function render(ctx, g, t, hover, sel) {
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
         [988,937],[676,937],[704,872],[704,790],[770,755]];
       bridge.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
-      ctx.closePath(); ctx.clip(); ctx.drawImage(bg,0,0,SCENE.w,SCENE.h); ctx.restore();
+      ctx.closePath(); ctx.clip(); drawMapGround(ctx, bg); ctx.restore();
     }
   }
 
@@ -689,7 +754,11 @@ function label(ctx, text, x, y, size, color = '#fff', outline = 6) {
 /** แปลงพิกัดเมาส์ -> พิกัดฉาก */
 export function toScene(cv, e) {
   const r = cv.getBoundingClientRect();
-  return [(e.clientX - r.left) / r.width * SCENE.w, (e.clientY - r.top) / r.height * SCENE.h];
+  const view = mapViews.get(cv);
+  if (!view) return [(e.clientX - r.left) / r.width * SCENE.w, (e.clientY - r.top) / r.height * SCENE.h];
+  const x = (e.clientX - r.left) / r.width * view.width;
+  const y = (e.clientY - r.top) / r.height * view.height;
+  return [(x - view.tx) / view.sx, (y - view.ty) / view.sy];
 }
 
 /** คลิกโดนสถานีไหน (คืน def — จะสร้างแล้วหรือยังไม่สร้างก็ได้) */

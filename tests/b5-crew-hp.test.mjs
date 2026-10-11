@@ -17,19 +17,19 @@ test('weights are exactly Guard 3 / Yama 2 / each crew 1; recovery cannot be tar
  assert.deepEqual(counts, {you:200,'th:taan':100,'th:guard':300});
  c.recoverUntil=1;guard.morale=0;assert.equal(weightedTarget([c],guard,()=>.99).id,'you');
 });
-test('actual counters hit crew and Guard, down excludes actions, map discs and clicks',()=>{
+test('actual counters hit crew and Guard, down excludes actions; crew disappears until recovery, guard retains 1 map HP',()=>{
  for(const [random,key] of [[.4,'taan'],[.99,'guard']]){
  const g=battle(), actor=key==='guard'?g.guard:g.crewOf(key);actor.morale=5;
  const original=Math.random;Math.random=()=>random;
  try { assert.equal(g.battleAct('atk'),true); } finally {Math.random=original;}
- assert.equal(g.battle.dmg.targetActorId,actor.id);assert.equal(actor.morale,0);assert.ok(actor.recoverUntil>Date.now());
+ assert.equal(g.battle.dmg.targetActorId,actor.id);assert.equal(actor.morale,key === 'guard' ? 1 : 0);assert.ok(key === 'guard' ? !actor.recoverUntil : actor.recoverUntil>Date.now());
  assert.equal(g.battleAct(key==='guard'?'guard':'crew:taan'),false);
- assert.ok(!g.battleCrew().includes(actor));assert.ok(!standPoints(g).some(p=>p[0]===actor.x&&p[1]===actor.y));
- assert.equal(g.feedCrew(key),false);
- actor.x=500;actor.y=800;assert.notDeepEqual(hitActor(g,500,800),{kind:key==='guard'?'guard':'crew',key:key==='guard'?0:key});
+ assert.ok(!g.battleCrew().includes(actor));if (key !== 'guard') assert.ok(!standPoints(g).some(p=>p[0]===actor.x&&p[1]===actor.y));
+ if (key !== 'guard') assert.equal(g.feedCrew(key),false);
+ actor.x=500;actor.y=800;if (key !== 'guard') assert.notDeepEqual(hitActor(g,500,800),{kind:key==='guard'?'guard':'crew',key:key==='guard'?0:key});
  }
 });
-test('60 real seconds including reload, no regeneration/items, restore 50 exactly once and join next battle',()=>{
+test('crew recovers after 60 real seconds including reload; fallen guard retains 1 HP without regeneration',()=>{
  const g=battle(), c=g.crewOf('taan');const now=Date.now();g.downActor(c,now);g.food=10;
  const copy=game();copy.restore(g.snapshot());const actor=copy.roster[c.id];
  copy.updateActorRecovery(now+59999);assert.equal(actor.morale,0);assert.equal(copy.feedCrew('taan'),false);
@@ -40,8 +40,8 @@ test('60 real seconds including reload, no regeneration/items, restore 50 exactl
  g.updateActorRecovery(now+60000);assert.equal(c.morale,50);assert.ok(!g.battleCrew().includes(c));
  g.battle=null;g.startBattle({id:100,who:'next',deserved:4,resist:true});assert.ok(g.battleCrew().includes(c));
  const guard=g.guard;g.downActor(guard,now);const saved=game();saved.restore(g.snapshot());
- saved.updateActorRecovery(now+59999);assert.equal(saved.guard.morale,0);assert.equal(saved.hireGuard(),false);
- saved.updateActorRecovery(now+60000);assert.equal(saved.guard.morale,50);
+ saved.updateActorRecovery(now+59999);assert.equal(saved.guard.morale,1);assert.equal(saved.hireGuard(),false);
+ saved.updateActorRecovery(now+60000);assert.equal(saved.guard.morale,1);
  saved.guard.morale=47;saved.updateActorRecovery(now+90000);assert.equal(saved.guard.morale,47);
 });
 test('Yama loss stages persist through return, sleep, Nira wake; spare heart precedes loss',()=>{
