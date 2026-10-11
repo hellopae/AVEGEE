@@ -1,5 +1,6 @@
 {
   "shared": [
+    "img/minigames/thorn-platform-v2.png",
     "img/minigames/sword-log-v1.png",
     "img/cover-fx/lava-v4-mask.png",
     "img/cover-fx/fire-v4-mask.png",
@@ -337,6 +338,7 @@
       "img/deva-intro/deva-intro-th-beggar-v2.webp"
     ],
     "asia": [
+      "img/krata-minigame/plerng-asia-training-v2.png",
       "img/Asia/BG-Dab-asia.webp",
       "img/Asia/BG-Frontier-asia.webp",
       "img/Asia/BG-Krajok-asia.webp",
@@ -477,6 +479,7 @@
       "img/yama-sword-v4/hero-yama-asia-sword.webp"
     ],
     "west": [
+      "img/krata-minigame/plerng-west-training-v2.png",
       "img/West/BG-Dab-west.webp",
       "img/West/BG-Frontier-west.webp",
       "img/West/BG-Krajok-west.webp",
@@ -614,6 +617,7 @@
       "img/frontier-west-hypnosis-v1.webp"
     ],
     "cyberhell": [
+      "img/krata-minigame/plerng-cyberhell-training-v2.png",
       "img/CyberHell/BG-Dab-cyberhell.webp",
       "img/CyberHell/BG-Frontier-cyberhell.webp",
       "img/CyberHell/BG-Krajok-cyberhell.webp",

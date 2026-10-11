@@ -1,17 +1,17 @@
-import { runKrataQte } from './minigames/krata-qte.js?v=sword-schools-20261010-final';
+import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
-import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4-i1a';
+import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
-import { wideStationRoom } from './room-art-assets.js';
+import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { actorStanding, specialCooldown } from './actor-recovery.js';
-import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=sword-schools-20261010-final';
-import { TRAINING_GAMES } from './minigames/training/index.js?v=sword-schools-20261010-final';
-import { runTraining } from './minigames/training/host.js?v=sword-schools-20261010-final';
+import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-review-20261011';
+import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011';
+import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
@@ -31,9 +31,9 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=sword-schools-20261010';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx';
-import { makeRoom } from './room.js?v=sword-schools-20261010-final';
+import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
@@ -4353,14 +4353,25 @@ function openStation(k, emergency = false) {
     };
     select.onchange = check; check();
     if (['dab','ngiw'].includes(sk)) {
-      const label=document.createElement('label'); label.textContent='เปลี่ยนดาบ ';
-      const weapons=document.createElement('select'); weapons.setAttribute('aria-label','เปลี่ยนดาบ');
-      const ids=[null,...Object.keys(g.weapons?.owned || {}).filter(id=>g.weapons.owned[id])];
-      for(const id of ids){const option=document.createElement('option');option.value=id || '';option.textContent=id?t(`weapon.${id}.name`):'ดาบเริ่มต้น';weapons.append(option);}
-      weapons.value=g.weapons?.equipped || '';
-      weapons.onchange=()=>{g.equipWeapon(weapons.value || null);};
-      label.append(weapons);ov.querySelector('.mg-intro').prepend(label);
-      const help=document.createElement('p');help.textContent='ดำ: ฝึกแล้วได้ EXP พลังโจมตีปกติ · ดาบใหม่ได้จากการประลองชายแดน';label.after(help);
+      const intro=ov.querySelector('.mg-intro');intro.classList.add('sword-intro');
+      const targets=g.trainingTargets(sk);
+      intro.innerHTML=`<div class="training-guide"><article><h3>1 · เลือกดาบ</h3><p>ใช้ดาบที่มีในกระเป๋า · ได้ดาบใหม่จากการประลองชายแดน</p><div class="training-weapons"></div></article><article><h3>2 · เลือกผู้ฝึก</h3><p>ฝึกสำเร็จเพิ่ม EXP พลังโจมตีปกติ</p><div class="training-actors"></div></article><article><h3>3 · วิธีเล่น</h3><p>${sk==='ngiw'?'กดเมาส์ค้างแล้วลากผ่านท่อนไม้ที่ลอยขึ้นมา':'คลิกปุ่มสีหรือช่องบนลาน เมื่อโน้ตเข้าแถบทอง'}</p><div class="training-rule"><b>⚔ โดน 10 ครั้ง</b><span>ก่อนพลาด 10 ครั้ง</span></div><p>ฝึกได้ 2 ครั้งใน 100 วาระ · พัก 30 วาระหลังฝึก<br>เริ่มแล้วปิดเกมจะใช้สิทธิ์ 1 ครั้ง</p></article></div>`;
+      const weaponGrid=intro.querySelector('.training-weapons');
+      for(const id of [null,...Object.keys(g.weapons?.owned || {}).filter(id=>g.weapons.owned[id])]){
+        const b=document.createElement('button');b.type='button';b.className='training-choice';b.dataset.weapon=id || '';
+        b.innerHTML=`<img src="${id?weaponIconSrc(id):baseSwordIconSrc}" alt=""><b>${id?esc(t(`weapon.${id}.name`)):'ดาบเริ่มต้น'}</b>`;
+        const mark=()=>{for(const x of weaponGrid.querySelectorAll('button')){const on=x.dataset.weapon===(g.weapons?.equipped || '');x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on));}};
+        b.onclick=()=>{g.equipWeapon(id);mark();};weaponGrid.append(b);mark();
+      }
+      const actorGrid=intro.querySelector('.training-actors');
+      for(const actor of targets){
+        const b=document.createElement('button');b.type='button';b.className='training-choice';b.dataset.actor=actor.id;
+        const source=actor.id===HERO_TRAINING_ID?artUrl('hero-yama-profile'):artUrl(`crew-${actor.kind==='guard'?'guard':actor.k || actor.kind}-profile`);
+        b.innerHTML=`<img src="${source || artUrl('hero-yama')}" alt=""><b>${esc(actor.name || 'ยมบาทน้อย')}</b><small>เลือกใช้ฝึก</small>`;
+        b.onclick=()=>{select.value=actor.id;check();for(const x of actorGrid.querySelectorAll('button')){const on=x===b;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on));}};
+        actorGrid.append(b);if(actor.id===select.value){b.classList.add('selected');b.setAttribute('aria-pressed','true');}
+      }
+      select.hidden=true;intro.append(select,reason,start);check();
     }
     ov.querySelector('.mg-x').onclick = teardown;
     const pauseButton = ov.querySelector('.training-pause');

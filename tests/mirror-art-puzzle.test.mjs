@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MIRROR_ART_LAYOUT, mirrorBeam, mirrorSolution, mirrorChargeAngle } from '../src/mirror-charge.js';
+import { MIRROR_ART_LAYOUT, mirrorBeam, mirrorSolution, mirrorChargeAngle, mirrorObstacle, mirrorClearPosition } from '../src/mirror-charge.js';
 
 test('painted apparatus aligns at the measured centres and its integer angle is playable', () => {
  for (const aspect of [1,16/9,1.872,2.1]) {
@@ -21,5 +21,17 @@ test('every successful painted-board aim calibrates to the existing reward model
    assert.equal(mirrorBeam(calibrated,16/9).hit,true,`${aspect}: ${angle}`);
   }
   assert.ok(successes>10);
+ }
+});
+
+// A newly placed stand must push out a hero already standing in its footprint.
+test('mirror reserves sprite clearance and ejects existing overlapping positions', () => {
+ for(const pos of [[.735,.615],[.70,.69],[.76,.50],[.735,.77]]) {
+  assert.equal(mirrorObstacle(...pos),true);
+  const clear=mirrorClearPosition(...pos);
+  assert.equal(mirrorObstacle(...clear),false);
+ }
+ for(const pos of [[.64,.615],[.83,.615],[.735,.79]]) {
+  assert.deepEqual(mirrorClearPosition(...pos),pos);
  }
 });

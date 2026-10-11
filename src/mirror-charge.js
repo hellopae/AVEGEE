@@ -41,7 +41,13 @@ export const MIRROR_SORT_Y = MIRROR_FOOT[1] + .032;
 /** คีย์เรียงลึกของยมบาท (ตามแกน y ของเท้า) เมื่อมีแท่นกระจกในห้อง — ครึ่งหน้าของแท่น (เท้าต่ำกว่าจุดวางแท่นภายในความกว้างฐาน) ถือว่าอยู่หน้าแท่นเสมอ
  *  ไม่ให้มีช่วงเฉียงขอบวงรีที่ยมบาทอยู่หน้าฐานแต่ถูกวาดไว้ข้างหลัง */
 export const mirrorHeroSortY = (x,y) => y > MIRROR_FOOT[1] && Math.abs(x-MIRROR_FOOT[0]) < .0375 + .01 ? Math.max(y, MIRROR_SORT_Y + 1e-4) : y;
-export const mirrorObstacle = (x,y) => Math.hypot((x-MIRROR_FOOT[0])/.045,(y-MIRROR_FOOT[1])/.032) < 1;
+// Reserve the whole painted stand plus the width/height of Yama, not only its foot.
+export const mirrorObstacle = (x,y) => Math.abs(x-MIRROR_FOOT[0]) < .086 && y > .49 && y < .78;
+export function mirrorClearPosition(x,y) {
+  if(!mirrorObstacle(x,y))return [x,y];
+  const candidates=[[MIRROR_FOOT[0]-.087,y],[MIRROR_FOOT[0]+.087,y],[x,.489],[x,.781]];
+  return candidates.sort((a,b)=>Math.hypot(a[0]-x,a[1]-y)-Math.hypot(b[0]-x,b[1]-y))[0];
+}
 export const nearMirror = ([x,y]) => Math.hypot(x-MIRROR_FOOT[0],(y-MIRROR_FOOT[1])*.7) <= .105;
 export function mountMirrorCharge(roomEl, { anchor, canPlace, canCharge, canAdjust = () => true, onCharge, onState = () => {}, alive, paused = () => false }) {
   const layer=document.createElement('div');layer.className='mirror-room-layer';roomEl.append(layer);
