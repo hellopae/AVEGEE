@@ -32,7 +32,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j';
 import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js';
