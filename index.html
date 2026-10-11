@@ -276,30 +276,49 @@ dialog::backdrop{background:rgba(10,4,6,.78)}
    และหลุดออกจาก top layer จนหมุด/ปุ่มบนฉากลอยทับ (เจ้าของเจอ 10 ก.ย. 2569) */
 dialog:not([open]){display:none!important}
 dialog.event-alert[open]{width:min(1000px,calc(100% - 20px));max-width:1000px;max-height:94dvh;
-  padding:0;overflow-y:auto;background:#24131e;border-color:#c5a455;border-radius:10px}
+  padding:0;overflow-y:auto;background:transparent;border:0;border-radius:var(--radius);box-shadow:none}
 .event-alert-main{position:relative;min-height:min(53vh,440px);padding:24px 32px 18px;text-align:center;
   border-bottom:1px solid #c5a455;display:flex;flex-direction:column;align-items:center}
 .event-alert-main h2{margin:4px 0 8px;font-size:clamp(22px,3vw,34px);color:#efc357}
 .event-alert-main p{margin:0;color:#e8dde1;line-height:1.45}
-.event-alert-foe{display:block;min-height:0;max-height:295px;max-width:62%;object-fit:contain;flex:1;margin:12px auto 0}
+.event-alert-foe{display:block;min-height:0;max-height:min(33vh,295px);max-width:62%;object-fit:contain;flex:1;margin:12px auto 0}
 .event-alert-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;width:100%;margin-top:16px}
 .event-alert-actions button{min-height:44px}
 .event-alert-go{min-width:175px}
-.event-alert-prep{padding:16px 24px 20px}
-.event-alert-prep>p{margin:0 0 12px;color:#efe2e5}
-.event-alert-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.event-prep-card{min-width:0;display:grid;grid-template-columns:88px 1fr;grid-template-rows:86px auto;
-  align-items:center;gap:6px 10px;text-align:left;background:#2c1822;color:#f6e6df;
-  border:1px solid #a7864a;border-radius:6px;padding:10px;cursor:pointer}
-.event-prep-card img{width:88px;height:86px;object-fit:contain;grid-row:1;background:#1a1018}
-.event-prep-speech{border:1px solid #af8c50;border-radius:8px;padding:8px;line-height:1.35;font-size:13px}
-.event-prep-card b{grid-column:1 / -1;text-align:center}
-.event-prep-card:disabled{opacity:.45;cursor:not-allowed}
+.event-alert-prep{margin-top:var(--space-3);padding:var(--space-4) var(--space-5);
+  border:1px solid var(--gold);border-radius:var(--radius);background:var(--card)}
+.event-alert-prep>p{margin:0 0 var(--space-3);color:var(--foreground)}
+.event-alert-cards{display:grid;grid-template-columns:1fr 1.1fr 1.05fr;gap:var(--space-4)}
+.event-prep-card{min-width:0;display:grid;grid-template-columns:minmax(80px,42%) 1fr;grid-template-rows:auto auto;
+  align-items:start;gap:var(--space-2) var(--space-4);text-align:left;background:transparent;color:var(--foreground);
+  border:0;border-radius:0;padding:0 var(--space-4) 0 0;cursor:pointer}
+.event-alert-cards>:not(:last-child){border-right:1px solid var(--gold)}
+.event-prep-card img{width:100%;aspect-ratio:1;height:auto;object-fit:cover;grid-column:1;grid-row:1;
+  border:1px solid var(--gold);background:var(--background)}
+.event-prep-speech{position:relative;border:1px solid var(--gold);border-radius:var(--radius);
+  background:var(--background);padding:var(--space-2);line-height:1.45;font-size:var(--text-sm)}
+.event-prep-speech::before,.event-prep-speech::after{content:"";position:absolute;top:70%;width:0;height:0;
+  border-top:8px solid transparent;border-bottom:8px solid transparent}
+.event-prep-speech::before{left:-12px;border-right:12px solid var(--gold)}
+.event-prep-speech::after{left:-10px;border-right:11px solid var(--background)}
+.event-prep-card b{grid-column:1;grid-row:2;text-align:center;font-size:var(--text-sm)}
+.event-prep-card:disabled,.prep-item:disabled,.prep-fill:disabled{opacity:.45;cursor:not-allowed}
+.prep-box{min-width:0;display:flex;flex-direction:column;align-items:center;gap:var(--space-3)}
+.prep-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2);width:100%}
+.prep-items .prep-item{position:relative;min-width:0;width:100%;aspect-ratio:1;padding:var(--space-1);
+  border:1px solid var(--gold);border-radius:0;background:var(--background)}
+.prep-item img{display:block;width:100%;height:100%;object-fit:contain}
+.prep-item-count{position:absolute;right:4px;bottom:2px;color:var(--foreground);font-weight:700;
+  font-size:var(--text-base);text-shadow:0 1px 3px #000,0 0 4px #000}
+.prep-box .prep-fill{min-height:40px;padding:var(--space-2) var(--space-3);border:1px solid var(--gold);
+  border-radius:var(--radius);background:var(--background);color:var(--foreground);font-size:var(--text-sm)}
+dialog.event-alert>.event-alert-main,.prep-layer-card>.event-alert-main{border:1px solid var(--gold);
+  border-radius:var(--radius);background:var(--card)}
 @media(max-width:600px){.event-alert-main{min-height:330px;padding:18px 14px 14px}
   .event-alert-main h2{margin:0 0 8px;font-size:22px}.event-alert-foe{max-height:185px;max-width:90%}
-  .event-alert-prep{padding:12px}
-  .event-alert-cards{grid-template-columns:1fr}.event-prep-card{grid-template-columns:72px 1fr;grid-template-rows:64px auto}
-  .event-prep-card img{width:72px;height:64px}}
+  .event-alert-prep{padding:var(--space-3)}.event-alert-cards{grid-template-columns:1fr}
+  .event-alert-cards>:not(:last-child){border-right:0;border-bottom:1px solid var(--gold);padding-bottom:var(--space-3)}
+  .event-prep-card{grid-template-columns:100px 1fr;padding-right:0}.prep-items{max-width:330px}}
 /* กฎกันพลาดทั้งหน้า: อะไรที่ตั้ง hidden ไว้ต้องหายจริง
    เจอสองรอบแล้วว่ากฎ display ของเราเองไปทับ [hidden] ของเบราว์เซอร์เงียบ ๆ
    (10 ก.ย. 2569: .st-arch ตั้ง display:flex ไว้ แผงแฟ้มเลยคลุมฉากทุกห้องแบบมองไม่เห็น
@@ -1811,7 +1830,7 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
 .prep-layer{position:absolute;inset:0;z-index:30;overflow-y:auto;display:flex;padding:10px;
   background:rgba(10,4,6,.78);border-radius:inherit}
 .prep-layer[hidden]{display:none}
-.prep-layer-card{margin:auto;width:min(1000px,100%);background:#24131e;border:1px solid #c5a455;border-radius:10px}
+.prep-layer-card{margin:auto;width:min(1000px,100%)}
 .prep-layer .event-alert-main{min-height:min(40vh,360px)}
 .prep-layer .event-alert-foe{max-height:min(30vh,260px)}
 .prep-top-actions{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:2}
@@ -1819,9 +1838,6 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   background:rgba(12,6,9,.86);border:1px solid var(--gold);color:var(--gold);font-size:18px;line-height:1;
   display:grid;place-items:center;cursor:pointer}
 .prep-top-actions img{width:100%;height:100%;object-fit:contain}
-.event-prep-card.prep-box{cursor:default}
-.prep-chips{grid-column:1 / -1;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
-.prep-chips button{min-height:40px;padding:6px 12px;font-size:var(--text-sm)}
 @media(max-width:600px){.prep-layer{padding:6px}.prep-layer .event-alert-main{min-height:0;padding-top:58px}
   .prep-layer .event-alert-foe{max-height:150px}
   .prep-layer .event-alert-actions{justify-content:center}.prep-layer .event-alert-go{width:100%}}
@@ -2265,6 +2281,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk-i2c"></script>
 </body>
 </html>

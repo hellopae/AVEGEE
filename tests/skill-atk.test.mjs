@@ -78,7 +78,7 @@ test('skill atk: real artUrl and heroAtk select the outfit pose and face right d
 });
 
 test('skill atk: cache versions retain their previous tokens and append skillatk', () => {
-  assert.match(read('index.html'), /mapfx-westhit-skillatk"/);
+  assert.match(read('index.html'), /mapfx-westhit-skillatk-i2c"/);
   assert.match(read('index.html'), /preload\.js\?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk"/);
   assert.match(read('src/ui.js'), /battle-facing\.js\?v=i1b-westhit-skillatk/);
   assert.match(read('src/ui.js'), /preload\.js\?v=h1-skillatk/);

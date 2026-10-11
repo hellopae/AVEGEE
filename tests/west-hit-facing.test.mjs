@@ -56,5 +56,5 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you img,\.hud \.fig\.you img\{transform:scaleX\(-1\)\}/);
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
-  assert.match(html, /sword-schools[^"]*-westhit-skillatk"/);   // cache-bust
+  assert.match(html, /sword-schools[^"]*-westhit-skillatk-i2c"/);   // cache-bust
 });

@@ -68,7 +68,7 @@ test('29E: event alert has one close action, no pause/X; close dismisses and sta
       close() { this.open = false; afterClose(); },
     };
     const context = vm.createContext({
-      g, dlg, t, esc, artUrl:k => k, ITEMS:{health:{img:'health'}},
+      g, dlg, t, esc, artUrl:k => k, ITEMS:{health:{img:'health'}}, itemName:k => k, itemText:k => k, itemImg:k => `<img alt="${k}">`, medicineResult:() => null,
       pauseForDlg:() => { g.paused = true; },
       openDlg: cls => { dlg.className = cls; dlg.open = true; },
       onDlgClose: cb => { afterClose = cb; },
@@ -93,7 +93,7 @@ test('29E: event alert has one close action, no pause/X; close dismisses and sta
     let afterClose;
     const ack = {}, dlg = {open:false, innerHTML:'', querySelectorAll: s => s === '[data-close]' ? [ack] : [], querySelector: s => s === '[data-event-go]' ? ack : null,
       close() { this.open = false; afterClose(); }};
-    const context = vm.createContext({g, dlg, t, esc, artUrl:k => k, ITEMS:{health:{img:'health'}}, pauseForDlg:() => {}, openDlg:() => { dlg.open = true; }, onDlgClose:cb => { afterClose = cb; }});
+    const context = vm.createContext({g, dlg, t, esc, artUrl:k => k, ITEMS:{health:{img:'health'}}, itemName:k => k, itemText:k => k, itemImg:k => `<img alt="${k}">`, medicineResult:() => null, pauseForDlg:() => {}, openDlg:() => { dlg.open = true; }, onDlgClose:cb => { afterClose = cb; }});
     vm.runInContext(`${modalSource}\n${alertSource}`, context);
     context.openEventAlert('x', 'Event', 'Description', 'foe.png', 'Ack', () => dlg.close(), false, true);
     assert.equal((dlg.innerHTML.match(/data-close/g) || []).length, 1);
