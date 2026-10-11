@@ -39,10 +39,12 @@ test('Rage boosts exactly three damaging actions', () => {
   assert.equal(g.battle.rageTurns, 3);
   assert.equal(g.battleAct('rage'), false);
   for (let remaining = 2; remaining >= 0; remaining--) {
+    g.advanceBattleTime(12000, true);
     assert.equal(g.battleAct('fire'), true);
     assert.equal(g.battle.dmg.foe, 60);
     assert.equal(g.battle.rageTurns, remaining);
   }
+  g.advanceBattleTime(12000, true);
   assert.equal(g.battleAct('fire'), true);
   assert.equal(g.battle.dmg.foe, 40);
 });

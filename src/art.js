@@ -41,7 +41,7 @@ export function warmZone(z = zoneOf()) {
   for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -323,8 +323,8 @@ export function blockRectsOf(def) {
     for (let y = y0; y <= y1; y++) if (rows[y]) { a = Math.min(a, rows[y][0]); b = Math.max(b, rows[y][1]); }
     if (b < a) continue;
     // เผื่อขอบเข้ามานิดหนึ่ง (6% ของความกว้างแถบ) จะได้เดินเฉียดชายคา/ขอบบันไดได้ ไม่ใช่ชนอากาศ
-    const x1 = sx(a), x2 = sx(b + 1), pad = Math.min((x2 - x1) * 0.06, 6);
-    if (x2 - x1 - pad * 2 < 4) continue;
+    const x1 = sx(a), x2 = sx(b + 1), pad = Math.min((x2 - x1) * 0.06, 6 * (def.blockScale ?? 1));
+    if (x2 - x1 - pad * 2 < 4 * (def.blockScale ?? 1)) continue;
     out.push([x1 + pad, sy(y0), x2 - pad, sy(y1 + 1)]);
   }
   blockCache.set(ck, out);

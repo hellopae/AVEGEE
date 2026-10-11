@@ -56,10 +56,10 @@ test('H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces 
 });
 
 // ข้อ 2 — ซูมแผนที่ + กล้องตามนุ่ม
-test('H2-2: map zoom control exists and the camera eases with the frontier formula (130ms)', () => {
+test('H2-2 (M1): map zoom control is removed, the map is locked at 1x, and the camera keeps the frontier formula (130ms)', () => {
   const ui = read('src/ui.js'), html = read('index.html');
-  assert.match(html, /id="hud-zoom"/);
-  assert.match(ui, /const MAP_ZOOM_LEVELS = \[1, 2\.5\]/);
+  assert.doesNotMatch(html, /id="hud-zoom"/);
+  assert.match(ui, /const MAP_ZOOM_LEVELS = \[1\]/);
   assert.match(ui, /1 - Math\.exp\(-dt \/ 130\)/);
   assert.match(ui, /updateMapCamera\(now\);\n\s+render\(ctx, g, now, hover, sel\);/);
 });

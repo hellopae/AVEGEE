@@ -196,17 +196,12 @@ test('two builds approach concurrently and retain each owner and build-work rend
   for (const owner of ['taan','dam']) assert.ok(drawn.includes(`img/crew-${owner}-build-work.png`), owner);
 });
 
-test('Thai lan route reproduction records the reachable endpoint before bounded recovery', () => {
+test('M2: Thai lan worker reaches the land site without bounded recovery', () => {
   const g = setup(); allBuildings(g);
   const st = startJob(g, 'lan', 'build');
   const c = g.crewOf('taan'); c.x = 880; c.y = 455;
   for (let i = 0; i < 1800 && st.buildWait; i++) g.stepWorld(16);
-  assert.equal(st.buildWait, true, 'nearest walkable site is still unreachable');
-  assert.equal(canWalk(...c.workTarget), true, 'local walkability does not imply connectivity');
-  assert.equal(findPath(c.x,c.y,...c.workTarget), null, 'no further route from the reachable endpoint');
-  assert.ok(Math.hypot(c.x-c.workTarget[0],c.y-c.workTarget[1]) > 42);
-  console.log('Lan route evidence:', JSON.stringify({ worker:[c.x,c.y], target:c.workTarget,
-    pending:st.buildWait, elapsed:st.arrivalElapsed,
-    pathEnd:findPath(c.x,c.y,...c.workTarget)?.at(-1) }));
-  arrive(g,st,'build');
+  assert.equal(st.buildWait, false, 'worker reaches the new land site');
+  assert.ok(Math.hypot(c.x-st.def.x,c.y-st.def.y) <= 42);
+  assert.equal(st.arrivalRecovered, undefined, 'no fallback recovery');
 });

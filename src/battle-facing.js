@@ -12,8 +12,8 @@
 /** ภาพฝั่งเราที่วาดหันขวามาอยู่แล้ว → ห้ามพลิก */
 export const TEAM_DRAWN_FACING_RIGHT = new Set([
   'hero-yama-west', 'hero-yama-west-atk-R',
-  'crew-guard', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
-  'crew-plerng-cyberhell',                                                                    // โซน 4 (ตรงกับคัตซีน 30A ที่หันขวา)
+  'crew-guard', 'crew-taan-west', 'crew-plerng-west', 'crew-kan-west', 'crew-boon-west', 'crew-dam-west', 'crew-guard-west',   // โซน 3: ใบงาน 30B #12/#28
+  // J1: Turbo's standing PNG faces LEFT; leave it unregistered so the team renderer mirrors it.
   // H2 ข้อ 7 (คุณเป้ 10 ต.ค.): "หลังจาก yama กดโจมตีธรรมดา ยังหันหน้าไปทางซ้ายอยู่เลย" (โซน 2 ชุดบูรพา)
   // F2 เคยขึ้นทะเบียน hero-yama-asia / hero-yama-cyberhell ว่าวาดหันขวา (ไม่พลิก) แต่ต้นเหตุจริงตอนนั้นคือเฟรมดาบ 0/7 หันซ้าย (แก้แล้วใน F4)
   // เทียบภาพจริง: ท่ายืนดิบของสองชุดนี้มีส่วนหลัง (หางหมวกบูรพา · ยอดหมวกนรกเครือข่าย) ชี้ไปทางขวา = หันซ้าย
@@ -44,6 +44,10 @@ export const mirrorBox = box => box ? { ...box, l:1 - (box.l + box.w) } : box;
 
 /** ท่าชาร์จ/โจมตีของยมบาทที่หันขวามาแต่ต้น (ชุด 30B ข้อ 4 — พลังบ้าคลั่ง Rage แสดงที่ตัวยมบาท ไม่ใช่ที่ศัตรู)
  *  โซน 1–2 มี hero-yama[-asia]-atk · โซน 3–4 มีเฉพาะ atk-R (atk-L คือภาพกระจกหันซ้าย) · ไม่รู้จักชุด → null (ผู้เรียกถอยไปท่าเดิม) */
+export function rageArtSrc(style) {
+  return ({ th:'img/hero-yama-rage.png', asia:'img/Asia/hero-yama-asia-rage.png',
+    west:'img/West/hero-yama-west-rage.png', cyberhell:'img/CyberHell/hero-yama-cyberhell-rage.png' })[style] || null;
+}
 export function ragePoseSrc(style) {
   switch (style) {
     case 'th': return 'img/hero-yama-atk.png';

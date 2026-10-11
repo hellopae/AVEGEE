@@ -125,7 +125,7 @@ function grid() {
 }
 
 /** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
-function clearLine(a, b, walkable = canWalk) {
+export function clearLine(a, b, walkable = canWalk) {
   const dx = b[0] - a[0], dy = b[1] - a[1];
   const n = Math.ceil(Math.hypot(dx, dy) / (CELL / 2));
   for (let i = 1; i <= n; i++)
