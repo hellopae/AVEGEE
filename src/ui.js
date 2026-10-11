@@ -27,7 +27,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
+         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_REST_WAVE } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
@@ -1252,7 +1252,6 @@ function updateRepairFabs() {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
-      else if (now.kind === 'challenge') openChallenge();
       else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
       else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
       else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
@@ -2600,8 +2599,13 @@ function openMerchant() {
   paint(); openDlg('merchant');
 }
 
-/** G3b — คุยกับบอสชายแดนที่ประตูล่าง: บทพูด (ตอนคุย + ชวน) · รางวัล · ปุ่มประลอง 10 ระลอก / ประลองต่อ / ประลองซ้ำ */
-function openChallenge() {
+/** G3b — คุยกับบอสในฉากชายแดน: บทพูด (ตอนคุย + ชวน) · รางวัล · ปุ่มประลอง 10 ระลอก / ประลองต่อ / ประลองซ้ำ */
+function openChallenge(onReturn) {
+  const back = () => {
+    if (dlg.open) return;
+    dlg.removeEventListener('close', back);
+    if (!g.over && !g.battle) onReturn?.();
+  };
   const zone = g.zone, ev = g.challengeEvent(zone);
   if (!ev || !g.challengeUnlocked(zone) || g.battle) return;
   const w = ev.reward.weapon, name = BOSS_NAMES[zone].frontier, done = g.challengeDone(zone), wave = g.challengeStartWave(zone);
@@ -2617,8 +2621,9 @@ function openChallenge() {
       ${weaponEffectLines(w).map(l => `<small>${esc(l)}</small>`).join('')}<small>${esc(t('weapon.only'))}</small></span></div>
     ${info ? `<p class="hint">${esc(info)}</p>` : ''}
     <div class="row"><button data-close>${esc(t('challenge.later'))}</button><button class="gold" data-challenge-go>${go}</button></div></div>`, d => {
-      d.querySelector('[data-challenge-go]').onclick = () => { if (g.startChallenge()) { dlg.close(); openBattle(); } };
+      d.querySelector('[data-challenge-go]').onclick = () => { if (g.startChallenge()) { dlg.removeEventListener('close', back); dlg.close(); openBattle(onReturn); } };
     }, 'challenge-dialog');
+  dlg.addEventListener('close', back);
 }
 
 function openBossPier() {
@@ -2638,7 +2643,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
   if (['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
-  // An invasion still requires walking to the gate. The boss speaks on arrival,
+  // An invasion requires walking to the boss in the frontier scene. He speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
   const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
   if (intro) {
@@ -2748,6 +2753,7 @@ function openFrontierWalk(invasionKey = null) {
     <div class="frw-fullscreen">
       <div class="frw-map"><canvas id="frw-cv" width="1376" height="768"></canvas>
         <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
+        <button class="frw-fab" id="frw-challenge" type="button" hidden></button>
         <button class="frw-fab frw-gate" id="frw-gate" type="button" hidden>กลับเข้า${esc(gateName)}</button>
         <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
       <div class="frw-res" aria-label="ทรัพยากร">
@@ -2770,9 +2776,10 @@ function openFrontierWalk(invasionKey = null) {
   const fab = dlg.querySelector('#frw-fab');
   const gate = dlg.querySelector('#frw-gate');
   const nira = dlg.querySelector('#frw-nira');
+  const challenge = dlg.querySelector('#frw-challenge');
   const cv2 = dlg.querySelector('#frw-cv');
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, invasionKey });
+  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, invasionKey });
   FW.start();
   const menu = fn => {
     const zone=g.zone;
@@ -2784,6 +2791,11 @@ function openFrontierWalk(invasionKey = null) {
       if(started && !g.over && !g.battle && g.zone===zone) openFrontierWalk(invasionKey);
     };
     dlg.addEventListener('close',back);
+  };
+  challenge.onclick = () => {
+    if (!FW.canTalkChallenge()) return;
+    FW.destroy();
+    openChallenge(() => openFrontierWalk());
   };
   dlg.querySelector('#frw-pause').onclick = () => menu(() => openPause(true));
   dlg.querySelector('#frw-settings').onclick = () => menu(openSettings);
@@ -3972,10 +3984,6 @@ function onSceneClick(sx, sy) {
       g.walkTo(MERCHANT.x, MERCHANT.y); g.log(`เดินไปหา${MERCHANT.name} — ซื้อขายได้เมื่อยืนใกล้`, 'act'); return;
     }
     if (a.kind === 'bossPending') return openBossAlert();
-    if (a.kind === 'challengeBoss') {
-      if (Math.hypot(g.player.x - CHALLENGE_STAND.x, g.player.y - CHALLENGE_STAND.y) <= INTERACTION_REACH) return openChallenge();
-      g.walkTo(CHALLENGE_STAND.x, CHALLENGE_STAND.y); return;
-    }
     if (a.kind === 'eventRaider') {
       openRaiderAlert(a.key);
       return;

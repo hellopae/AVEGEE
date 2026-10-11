@@ -9,10 +9,10 @@ import { WEAPON_ART_FILES, WEAPON_IDS, meleeSwing, weaponCutsceneSrc, weaponIcon
 import { STORY, WEAPON_STORY, storyOf } from '../src/story.js';
 import { englishKeys, setLang, t } from '../src/i18n.js';
 import { standPoints } from '../src/npc-stand.js';
-import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { GUARD_POST, SPOTS, ZONE_ENTRY, syncSceneZone } from '../src/data.js';
-import { buildWalk, canWalk, findPath, resetWalk, setBlocks, setNpcDiscs } from '../src/walk.js';
+import { MERCHANT } from '../src/data.js';
+import { mapInteractions } from '../src/proximity.js';
+import { frontierPath, frontierWalkable, frontierSegmentClear } from '../src/frontier-navigation.js';
+import { breachApproachActors } from '../src/breach-approach.js';
 import { weaponSheetFor, swordSheet } from '../src/yama-sword.js';
 import { capWithRage } from '../src/weapons.js';
 
@@ -163,16 +163,21 @@ test('ต้องชนะบอสชายแดนในเนื้อเ�
   }
 });
 
-test('บอสยืนที่ประตูล่างข้างซุ้มชายแดน: กันทางเดินด้วยจุดยืน · คุยได้เมื่อเดินเข้าใกล้', () => {
-  const g = unlocked('th');
-  assert.ok(Math.abs(CHALLENGE_STAND.x - FRONTIER.x) < 200 && CHALLENGE_STAND.y > FRONTIER.y - 40, 'อยู่ข้างประตูล่าง');
-  assert.ok(standPoints(g).some(([x, y]) => x === CHALLENGE_STAND.x && y === CHALLENGE_STAND.y));
-  const lock = createGame();
-  assert.ok(!standPoints(lock).some(([x, y]) => x === CHALLENGE_STAND.x && y === CHALLENGE_STAND.y), 'ยังไม่ปลดล็อก = ไม่มีบอส');
-  g.player.x = CHALLENGE_STAND.x - 400; g.player.y = CHALLENGE_STAND.y;
-  assert.equal(g.challengeCanTalk(), false);
-  g.player.x = CHALLENGE_STAND.x - 80;
-  assert.equal(g.challengeCanTalk(), true);
+test('บอสประลองย้ายออกจากแผนที่โซนทั้ง 4 และคุยได้จากตำแหน่งผู้เล่นในฉากชายแดนเท่านั้น', () => {
+  for (const zone of ZONE_IDS) {
+    const g = unlocked(zone), {x,y} = CHALLENGE_STAND[zone];
+    assert.ok(!standPoints(g).some(([sx,sy]) => sx === x && sy === y));
+    assert.ok(!mapInteractions(g, MERCHANT).some(a => a.kind === 'challenge'));
+    g.player.x = 940; g.player.y = 886;
+    assert.equal(g.challengeCanTalk(), false, 'ตำแหน่งบนแผนที่โซนไม่เปิดปุ่มคุย');
+    assert.equal(g.challengeCanTalk({x:x-.2,y}), false);
+    assert.equal(g.challengeCanTalk({x:x-.06,y}), true);
+    g.pendingRecovery = true;
+    assert.equal(g.challengeCanTalk({x:x-.06,y}), false);
+    g.pendingRecovery = false;
+    g.zoneEvents[zone][CHALLENGE_STORY_KEY[zone]] = 'pending';
+    assert.equal(g.challengeCanTalk({x:x-.06,y}), false);
+  }
 });
 
 // ---------------------------------------------------------------- เล่นครบรอบ
@@ -450,39 +455,22 @@ test('ศึกประลองไม่ปนกับระบบเดิ�
   assert.equal(JSON.stringify(g.zoneEvents) + JSON.stringify(g.bossCleared) + JSON.stringify(g.abilities), before);
 });
 
-// ---------------------------------------------------------------- ตำแหน่งบอสบนแผนที่จริงของทั้ง 4 โซน
-// อ่านพิกเซลภาพฉากจริงแบบเดียวกับ tests/zone-entry29c.test.mjs เพื่อสร้าง walk mask
-test('ที่ยืนของบอสเดินได้จริงทั้ง 4 โซน · ไม่ทับยักษ์ทวารบาล/ซุ้มประตู · ไม่ขวางทางออกจากประตูขึ้นแท่น · เดินไปคุยถึง', () => {
-  const image = name => ({ naturalWidth:1678, naturalHeight:937, path:fileURLToPath(new URL(`../img/${name}.png`, import.meta.url)) });
-  const pixels = new Map();
-  const imagePixels = im => {
-    if (!pixels.has(im.path)) pixels.set(im.path, execFileSync('python3', ['-c',
-      'from PIL import Image; import sys; sys.stdout.buffer.write(Image.open(sys.argv[1]).convert("RGBA").tobytes())', im.path], { maxBuffer:7_000_000 }));
-    return pixels.get(im.path);
-  };
-  const oldDoc = globalThis.document;
-  globalThis.document = { documentElement:{}, createElement: () => { let source; return { width:0, height:0, getContext: () => ({
-    drawImage(im) { source = im; }, getImageData() { return { data:imagePixels(source) }; } }) }; } };
-  try {
-    const g = createGame();
-    for (const z of ZONES) {
-      g.zone = z.k; syncSceneZone(z.k); resetWalk(); setBlocks([], []);
-      const bg = image(z.scene);
-      assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
-      const { x, y } = CHALLENGE_STAND;
-      assert.equal(canWalk(x, y), true, `${z.k}: บอสยืนบนพื้นเดินได้`);
-      for (const [dx, dy] of [[-28, 0], [28, 0], [0, -18], [0, 18]]) assert.equal(canWalk(x + dx, y + dy), true, `${z.k}: รอบตัวบอสไม่ตกน้ำ ${dx},${dy}`);
-      assert.ok(Math.hypot(x - GUARD_POST[0], y - GUARD_POST[1]) > 150, 'ไม่ทับจุดเฝ้ายักษ์ทวารบาล');
-      assert.ok(x > FRONTIER.hit[2] && Math.abs(y - FRONTIER.y) < 80, 'ข้างซุ้มประตู ไม่ทับกรอบกดของซุ้ม');
-      // บอสวางวงกันทาง แล้วยมบาทกับนิราต้องยังเดินจากประตูขึ้นแท่นตัดสินได้ และเดินไปใกล้บอสจนคุยได้
-      setNpcDiscs([[x, y]]);
-      for (const [name, from, to] of [['gate→goal', ZONE_ENTRY.gate, ZONE_ENTRY.goal], ['nira→goal', ZONE_ENTRY.nira, ZONE_ENTRY.goal]]) {
-        const path = findPath(from[0], from[1], to[0], to[1], true), end = path?.at(-1);
-        assert.ok(end && Math.hypot(end[0] - to[0], end[1] - to[1]) < 2, `${z.k} ${name}`);
-      }
-      const toBoss = findPath(ZONE_ENTRY.gate[0], ZONE_ENTRY.gate[1], x - 60, y, true), near = toBoss?.at(-1);
-      assert.ok(near && Math.hypot(near[0] - x, near[1] - y) <= 100, `${z.k}: เดินไปถึงระยะคุย`);
-      setNpcDiscs([]);
+// ---------------------------------------------------------------- จุดยืนในฉากชายแดนและเส้นทางจาก navigation ที่เกมใช้จริง
+test('จุดยืนส่วนล่างทั้ง 4: เดินไปคุยถึง และบอสไม่ขวางแนวเดินจากบันไดล่างถึงประตูบน', () => {
+  for (const zone of ZONE_IDS) {
+    const {x,y} = CHALLENGE_STAND[zone];
+    assert.ok(y >= .65 && y <= .75, zone);
+    for (const [dx,dy] of [[0,0],[-.02,0],[.02,0],[0,-.015],[0,.015]])
+      assert.ok(frontierWalkable(zone,x+dx,y+dy), `${zone}: พื้นรอบเท้า`);
+    const blockers = [[x,y,.045*937/1678,.022]];
+    for (const [from,to] of [[[.5,.955],[.5,.19]],[[.485,.35],[x-.06,y]]]) {
+      let at = from;
+      const path = frontierPath(zone,from,to,blockers);
+      assert.ok(path.length, zone);
+      for (const next of path) { assert.ok(frontierSegmentClear(zone,at,next,blockers), zone); at=next; }
+      assert.ok(Math.hypot(at[0]-to[0],at[1]-to[1]) < 1e-8, `${zone}: ถึงปลายทางจริง`);
     }
-  } finally { globalThis.document = oldDoc; resetWalk(); }
+    const boss = breachApproachActors(zone,CHALLENGE_STORY_KEY[zone]).find(a => a.boss);
+    assert.deepEqual([boss.x,boss.y],[x,y], `${zone}: บอสอีเวนต์ใช้จุดยืนส่วนล่างด้วย`);
+  }
 });
