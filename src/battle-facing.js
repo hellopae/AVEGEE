@@ -66,12 +66,13 @@ export const standingFacesRight = (src, { atkClass = false } = {}) =>
   TEAM_DRAWN_FACING_RIGHT.has(spriteKey(src)) !== (teamNeedsMirror(src) && !atkClass);
 
 /** west-hit — ทิศที่ "วาดมา" ของทุกท่ายมบาทในฉากต่อสู้ (ดูภาพจริงทีละไฟล์ 11 ต.ค. 2569)
- *  ท่าฟาด/ท่าชาร์จ (atk) ที่วาดหันขวา: โซน 1-2 ใช้ไฟล์ไม่มี -R · โซน 3-4 ใช้ -R (-L คือภาพกระจกหันซ้าย)
+ *  ท่าสกิล (atk) ทั้ง 4 โซนใช้ไฟล์ไม่มี -R และวาดหันขวา · rage โซน 3-4 ยังใช้ -R (-L คือภาพกระจกหันซ้าย)
  *  ท่าโดนตี (cry) ทั้ง 4 ชุดวาดหัน "ซ้าย" (มือชี้ซ้าย) เหมือนกันหมด — รวมชุดปัจฉิมด้วย (ท่ายืนปัจฉิมวาดหันขวา แต่ท่า cry ไม่ใช่)
  *  จึงต้องพลิกกระจกทุกชุด (ไม่ขึ้นทะเบียน TEAM_DRAWN_FACING_RIGHT) · ถ้าวาด cry ใหม่ให้หันขวา ให้ขึ้นทะเบียนที่ TEAM_DRAWN_FACING_RIGHT */
 export const POSE_DRAWN_FACING_RIGHT = new Set([
   ...TEAM_DRAWN_FACING_RIGHT,
   'hero-yama-atk', 'hero-yama-asia-atk', 'hero-yama-west-atk-R', 'hero-yama-cyberhell-atk-R',
+  'hero-yama-west-atk', 'hero-yama-cyberhell-atk',
 ]);
 /** ท่าไหน (ไฟล์ภาพ) + มี .atk หรือไม่ → ที่จอหันขวาไหม · null = ไม่รู้จักไฟล์ (หันตรงเข้ากล้อง/ไม่อยู่ในทะเบียน) */
 export const heroPoseFacesRight = (src, { atkClass = false } = {}) =>
