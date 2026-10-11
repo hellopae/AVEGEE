@@ -83,6 +83,6 @@ test('skill atk: cache versions retain their previous tokens and append skillatk
   assert.match(read('src/ui.js'), /battle-facing\.js\?v=i1b-westhit-skillatk/);
   assert.match(read('src/ui.js'), /preload\.js\?v=h1-skillatk/);
   assert.match(read('src/preload.js'), /asset-preload\.js\?v=h1-h5b-skillatk/);
-  assert.match(read('src/preload.js'), /zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'/);
-  assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk'/);
+  assert.match(read('src/preload.js'), /zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011(?:-j2)?'/);
+  assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });
