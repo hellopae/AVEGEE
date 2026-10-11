@@ -21,7 +21,7 @@ import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearR
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
 import { placeWheel, placeFinButton } from './wheel-place.js?v=i1b';
-import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b';
+import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -2090,7 +2090,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
-    <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage }) ? ' atk' : ''}${raging ? ' raging' : ''}">
+    <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
       <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>

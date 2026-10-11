@@ -57,8 +57,22 @@ export function ragePoseSrc(style) {
 /** I1-B ข้อ 3 — ใส่ class `.atk` ให้ .fig.you ไหม
  *  `.atk` = "ยกเลิกการพลิกกระจกของรูป" (index.html: .fig.you.atk img{transform:scaleX(1)}) ใช้กับ "รูปท่าฟาด/ท่าชาร์จ" ที่วาดหันขวามาแต่ต้นเท่านั้น
  *  ฟันดาบธรรมดา (sword) รูปที่โชว์คือ "ท่ายืน" (ซึ่งต้องถูกพลิกตามทะเบียนด้านบน) ส่วนแอนิเมชันดาบวาดบน canvas ทับแค่ 580ms
- *  ถ้าใส่ .atk ตอนนี้ ท่ายืนจะโผล่หลัง canvas หายโดยไม่ถูกพลิกค้างจนจบเทิร์น = ยมฯ หันซ้าย (ต้นเหตุจริง ดู i1b-yama-facing.test.mjs) */
-export const figYouAtkClass = ({ usingAtk, sword, showRage }) => (!!usingAtk && !sword) || !!showRage;
+ *  ถ้าใส่ .atk ตอนนี้ ท่ายืนจะโผล่หลัง canvas หายโดยไม่ถูกพลิกค้างจนจบเทิร์น = ยมฯ หันซ้าย (ต้นเหตุจริง ดู i1b-yama-facing.test.mjs)
+ *  west-hit — กรณีเดียวกันอีกทาง: ท่า atk ของบางชุด (โซน 3 ลูกไฟ, โซน 4 ลูกไฟ) ยังไม่มีไฟล์ → ui.js ถอยไปโชว์ "ท่ายืน" (standing=true)
+ *  ห้ามใส่ .atk เหมือนกัน ไม่งั้นท่ายืนโซน 4 ถูกตัดการพลิก = หันซ้ายตลอดท่าสกิล */
+export const figYouAtkClass = ({ usingAtk, sword, showRage, standing = false }) => !standing && ((!!usingAtk && !sword) || !!showRage);
 /** ท่ายืนที่โชว์อยู่ "หันขวา" ไหม (ศัตรูอยู่ขวา) — drawnRight = ไฟล์วาดหันขวามา · mirrored = ถูกพลิกกระจกจริงตอนแสดง (class .atk ยกเลิกการพลิก) */
 export const standingFacesRight = (src, { atkClass = false } = {}) =>
   TEAM_DRAWN_FACING_RIGHT.has(spriteKey(src)) !== (teamNeedsMirror(src) && !atkClass);
+
+/** west-hit — ทิศที่ "วาดมา" ของทุกท่ายมบาทในฉากต่อสู้ (ดูภาพจริงทีละไฟล์ 11 ต.ค. 2569)
+ *  ท่าฟาด/ท่าชาร์จ (atk) ที่วาดหันขวา: โซน 1-2 ใช้ไฟล์ไม่มี -R · โซน 3-4 ใช้ -R (-L คือภาพกระจกหันซ้าย)
+ *  ท่าโดนตี (cry) ทั้ง 4 ชุดวาดหัน "ซ้าย" (มือชี้ซ้าย) เหมือนกันหมด — รวมชุดปัจฉิมด้วย (ท่ายืนปัจฉิมวาดหันขวา แต่ท่า cry ไม่ใช่)
+ *  จึงต้องพลิกกระจกทุกชุด (ไม่ขึ้นทะเบียน TEAM_DRAWN_FACING_RIGHT) · ถ้าวาด cry ใหม่ให้หันขวา ให้ขึ้นทะเบียนที่ TEAM_DRAWN_FACING_RIGHT */
+export const POSE_DRAWN_FACING_RIGHT = new Set([
+  ...TEAM_DRAWN_FACING_RIGHT,
+  'hero-yama-atk', 'hero-yama-asia-atk', 'hero-yama-west-atk-R', 'hero-yama-cyberhell-atk-R',
+]);
+/** ท่าไหน (ไฟล์ภาพ) + มี .atk หรือไม่ → ที่จอหันขวาไหม · null = ไม่รู้จักไฟล์ (หันตรงเข้ากล้อง/ไม่อยู่ในทะเบียน) */
+export const heroPoseFacesRight = (src, { atkClass = false } = {}) =>
+  POSE_DRAWN_FACING_RIGHT.has(spriteKey(src)) !== (teamNeedsMirror(src) && !atkClass);
