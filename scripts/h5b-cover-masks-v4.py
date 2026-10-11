@@ -1,4 +1,4 @@
-"""Rebuild the H5b cover-fx masks for cover-v4 (img/cover-v4-full.png, 1678x937).
+"""Rebuild the H5b cover-fx masks for cover-v4 (art-src/cover-v4-full.png, 1678x937).
 
 Same recipe as the cover-v5 masks: hand-traced regions (coordinates on 1678x937) AND-ed with a
 colour test on the full-res art, so only painted lava/fire/crater/soul pixels survive; the
@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parent.parent
-REFERENCE = ROOT / 'img' / 'cover-v4-full.png'
+REFERENCE = ROOT / 'art-src' / 'cover-v4-full.png'
 OUT = ROOT / 'img' / 'cover-fx'
 W, H = 1376, 768            # working size (colour test runs here, like the v5 recipe)
 MW, MH = 688, 384           # shipped mask size

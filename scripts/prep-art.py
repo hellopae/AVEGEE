@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """เตรียมรูปที่ gen มาให้พร้อมใช้ในเกม
 
-วางไฟล์ดิบไว้ที่  img/raw/<key>.png   แล้วรัน:
+วางไฟล์ดิบไว้ที่  art-src/raw/<key>.png   แล้วรัน:
     python3 scripts/prep-art.py
 
 ทำให้ 4 อย่าง (ต่อยอดจาก AGAPAE Agent/scripts/make-sprites.py):
@@ -19,13 +19,13 @@ crew-nira-profile) จะถูกครอปเป็นจัตุรัส�
 ไม่มีไฟล์โปรไฟล์ เกมจะถอยไปใช้รูป standee เดิมอัตโนมัติ
 
 โฟลเดอร์โซน (11 ก.ย. 2569) — รูปของโซน 2-3 วางต้นฉบับไว้ในโฟลเดอร์ย่อยของ raw:
-    img/raw/Asia/<key>-asia.png   →  img/Asia/<key>-asia.png     (โซนบูรพา · zone k = asia)
-    img/raw/West/<key>-west.png   →  img/West/<key>-west.png     (โซนปัจฉิม · zone k = west)
+    art-src/raw/Asia/<key>-asia.png   →  img/Asia/<key>-asia.png     (โซนบูรพา · zone k = asia)
+    art-src/raw/West/<key>-west.png   →  img/West/<key>-west.png     (โซนปัจฉิม · zone k = west)
   key ยึดตามคีย์ของโซน 1 เสมอ (st-krata · crew-taan · hero-yama · mob-kasha ...)
   ท่าพิเศษ/โปรไฟล์ ใส่ชื่อโซนก่อนคำท้าย:  hero-yama-asia-profile · crew-taan-asia-work
   ฉากในห้องสถานี BG-<Key>-asia.jpeg → แปลงเป็น img/Asia/BG-<Key>-asia.webp ให้เอง
   ไม่มีไฟล์ของโซนไหน เกมใช้รูปโซน 1 แทนเอง (src/art.js) — ขึ้นต้นด้วย _ = เก็บไว้ ไม่เอาเข้าเกม
-  วางต้นฉบับลง img/Asia/ ตรง ๆ ก็ได้ — สคริปต์ย้ายไป img/raw/Asia/ ให้เองก่อนทำ (ingest)
+  วางต้นฉบับลง img/Asia/ ตรง ๆ ก็ได้ — สคริปต์ย้ายไป art-src/raw/Asia/ ให้เองก่อนทำ (ingest)
 
 รันเฉย ๆ = ทำเฉพาะไฟล์ที่ต้นฉบับใหม่กว่าผลลัพธ์ (ของที่ทำไว้แล้วไม่ถูกแตะ)
     python3 scripts/prep-art.py --all      ทำใหม่ทุกไฟล์
@@ -44,13 +44,13 @@ ROOM_Q = 82        # คุณภาพ webp ที่ได้ขนาดเ�
 POSES = ('build-work', 'profile', 'work', 'atk', 'side', 'walk', 'cry')   # คำท้ายของท่าพิเศษ — ต้องตรงกับ POSE ใน src/art.js
 COLORS = 96
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-RAW = os.path.join(ROOT, 'img', 'raw')
+RAW = os.path.join(ROOT, 'art-src', 'raw')
 OUT = os.path.join(ROOT, 'img')
 
 # แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — img/ui/ ไม่ใช่โฟลเดอร์โซน (Asia/West/CyberHell)
 # เก็บไอคอนสำเร็จรูป (เช่น Button1.png) ที่ไม่ผ่าน pipeline ครอป/บีบสีของสคริปต์นี้เลย
 # ก่อนแก้: ingest()/raw_files() ปฏิบัติกับมันเหมือนโฟลเดอร์โซนทั่วไป ทำให้ ingest() เห็นว่า
-# img/ui/Button1.png ซ้ำไบต์ต่อไบต์กับ img/raw/ui/Button1.png แล้ว "ลบสำเนา" ทิ้งเงียบ ๆ
+# img/ui/Button1.png ซ้ำไบต์ต่อไบต์กับ art-src/raw/ui/Button1.png แล้ว "ลบสำเนา" ทิ้งเงียบ ๆ
 # (เข้าใจผิดว่าเป็นต้นฉบับที่หลงเหลืออยู่ ทั้งที่เป็นไฟล์ใช้งานจริงคนละบทบาทกับโฟลเดอร์โซน)
 # กันโฟลเดอร์นี้ไว้ไม่ให้เข้า pipeline เลยทั้งสองจุด — ต้องจัดการ img/ui/ ด้วยมือเหมือนเดิม
 NON_ZONE_DIRS = {'ui'}
@@ -224,10 +224,10 @@ def drop_specks(im):
 
 
 #  ต้นฉบับ raw สะกดผิด แต่คุณเป้สั่ง 17 ก.ย. 2569 ห้ามแก้ไฟล์ raw — แก้แค่ชื่อไฟล์ผลลัพธ์ที่จุดเดียวนี้
-#  คีย์ = 'sub/ชื่อไฟล์ (ไม่มีนามสกุล)' ตามที่อยู่จริงใน img/raw/ → ค่า = ชื่อที่ถูกก่อนต่อท้ายโซน
+#  คีย์ = 'sub/ชื่อไฟล์ (ไม่มีนามสกุล)' ตามที่อยู่จริงใน art-src/raw/ → ค่า = ชื่อที่ถูกก่อนต่อท้ายโซน
 RENAME = {
-    'Asia/Boos Zone2': 'Boss Zone2',   # img/raw/Asia/Boos Zone2.png → ผลลัพธ์ Boss Zone2-asia.png
-    # img/raw/CyberHell/zone-boss-cyber.png (18 ก.ย. 2569) — ชื่อดิบมี "cyber" ติดมาด้วย ทำให้ผลลัพธ์
+    'Asia/Boos Zone2': 'Boss Zone2',   # art-src/raw/Asia/Boos Zone2.png → ผลลัพธ์ Boss Zone2-asia.png
+    # art-src/raw/CyberHell/zone-boss-cyber.png (18 ก.ย. 2569) — ชื่อดิบมี "cyber" ติดมาด้วย ทำให้ผลลัพธ์
     # กลายเป็น zone-boss-cyber-cyberhell.png ขณะที่ src/scene.js เรียกคีย์ 'zone-boss' เฉย ๆ (ต่อท้าย
     # -cyberhell เองอัตโนมัติ) เกมจึงหาไฟล์นี้ไม่เจอ เงียบ ๆ ถอยไปใช้บอสโซน 1 แทน — ไม่แก้ไฟล์ raw
     'CyberHell/zone-boss-cyber': 'zone-boss',
@@ -446,7 +446,7 @@ def prep(path, name, out_dir=OUT, alpha_threshold=16):
     return flat.size
 
 def raw_files():
-    """(โฟลเดอร์ย่อย, ชื่อไฟล์) ทุกไฟล์ที่ต้องทำ — '' = โซน 1 ที่ img/raw/ ตรง ๆ
+    """(โฟลเดอร์ย่อย, ชื่อไฟล์) ทุกไฟล์ที่ต้องทำ — '' = โซน 1 ที่ art-src/raw/ ตรง ๆ
     ไฟล์/โฟลเดอร์ที่ขึ้นต้นด้วย _ = เก็บไว้อ้างอิง ไม่ต้องเอาเข้าเกม
     รับ jpeg ด้วย — รูปโปรไฟล์ที่ gen มามักเป็น jpeg และไม่ต้องใช้ alpha อยู่แล้ว"""
     ok = lambda f: f.lower().endswith(('.png', '.jpg', '.jpeg')) and not f.startswith(('_', '.'))
@@ -459,7 +459,7 @@ def raw_files():
 
 
 def ingest():
-    """ต้นฉบับที่เจ้าของวางไว้ใน img/<Zone>/ ตรง ๆ → ย้ายไป img/raw/<Zone>/ ให้เอง
+    """ต้นฉบับที่เจ้าของวางไว้ใน img/<Zone>/ ตรง ๆ → ย้ายไป art-src/raw/<Zone>/ ให้เอง
     (11 ก.ย. 2569 เจ้าของวางรูปใหม่ลง img/Asia/ ระหว่างที่กำลังต่อสายอยู่ — เป็นนิสัยที่ควรรองรับ
      ไม่ใช่ห้าม) · คืนเซตของไฟล์ที่ย้ายมา (ต้องทำใหม่แน่ ๆ ไม่ดูเวลาไฟล์ เพราะ Finder ก๊อปแล้วเวลาเดิมติดมา)
 
@@ -478,7 +478,7 @@ def ingest():
                 continue
             # scene-* และ Intro-Boss-Zone<N>[-โซน] เป็นภาพฉากเต็มใบ ไม่ถูกบีบเหลือ 512×512
             # เหมือนสไปรท์ตัวละคร (ดู prep()) เช็คขนาดอย่างเดียวเลยจับผิดว่าเป็นต้นฉบับ ย้ายมันไป
-            # img/raw/ ทั้งที่เป็นผลลัพธ์ที่ถูกต้องแล้ว (เจ้าของเจอ 17 ก.ย. 2569 — Intro-Boss ของ
+            # art-src/raw/ ทั้งที่เป็นผลลัพธ์ที่ถูกต้องแล้ว (เจ้าของเจอ 17 ก.ย. 2569 — Intro-Boss ของ
             # ทุกโซนหายไปจาก img/ หลังรันสคริปต์รอบถัดมา) เช็คชื่อไฟล์กันไว้เหมือน scene-*
             stem = os.path.splitext(f)[0]
             if (ext == '.webp' or f.startswith('scene') or stem.endswith('-walk')
@@ -493,10 +493,10 @@ def ingest():
             dst = os.path.join(RAW, sub, f)
             if os.path.exists(dst) and filecmp.cmp(p, dst, shallow=False):
                 os.remove(p)
-                print(f'  ↪ img/{sub}/{f} ซ้ำกับต้นฉบับใน img/raw/{sub}/ — ลบสำเนาออก')
+                print(f'  ↪ img/{sub}/{f} ซ้ำกับต้นฉบับใน art-src/raw/{sub}/ — ลบสำเนาออก')
             else:
                 shutil.move(p, dst)
-                print(f'  ↪ ย้ายต้นฉบับ img/{sub}/{f} → img/raw/{sub}/{f}')
+                print(f'  ↪ ย้ายต้นฉบับ img/{sub}/{f} → art-src/raw/{sub}/{f}')
             got.add(os.path.join(sub, f))
     return got
 
@@ -516,7 +516,7 @@ def main():
     fresh = ingest()
     files = raw_files()
     if not files:
-        sys.exit('ยังไม่มีไฟล์ใน img/raw/ — วาง <key>.png ไว้ก่อน')
+        sys.exit('ยังไม่มีไฟล์ใน art-src/raw/ — วาง <key>.png ไว้ก่อน')
     done = skipped = 0
     for sub, f in files:
         rel = os.path.join(sub, f) if sub else f
@@ -558,7 +558,7 @@ def check_orphans(files):
         extra = [f for f in sorted(os.listdir(d))
                  if not f.startswith('.') and os.path.splitext(f)[0] not in want.get(sub, set())]
         if extra:
-            print(f'\n⚠️  img/{sub}/ มีไฟล์ที่ไม่มีต้นฉบับใน img/raw/{sub}/ แล้ว — เกมยังใช้อยู่ ลบเองถ้าไม่ต้องการ:')
+            print(f'\n⚠️  img/{sub}/ มีไฟล์ที่ไม่มีต้นฉบับใน art-src/raw/{sub}/ แล้ว — เกมยังใช้อยู่ ลบเองถ้าไม่ต้องการ:')
             for f in extra:
                 print(f'   · img/{sub}/{f}')
 
@@ -581,7 +581,7 @@ def check_stations():
         print('\n⚠️  สถานีที่ยังไม่มีรูป (เกมจะวาดกรอบเปล่า):')
         for k in missing:
             stray = [f for f in os.listdir(RAW) if os.path.splitext(f)[0] == k]
-            hint = f'  ← เจอ img/raw/{stray[0]} เปลี่ยนชื่อเป็น st-{k}.png' if stray else ''
+            hint = f'  ← เจอ art-src/raw/{stray[0]} เปลี่ยนชื่อเป็น st-{k}.png' if stray else ''
             print(f'   · img/st-{k}.png{hint}')
         print('   (ชื่อไฟล์สถานีต้องขึ้นต้นด้วย st- เสมอ)')
     # โซนอื่น — ไม่ใช่ข้อผิดพลาด (เกมใช้รูปโซน 1 แทน) แค่บอกว่ายังขาดหลังไหน

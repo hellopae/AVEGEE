@@ -9,7 +9,6 @@
 "mirror-charge-pane.png",
 "cover-v3.webp",
 "cover-v4.webp",
-"cover-v5.webp",
 "cover.webp",
 "crew-boon-cutscene.jpeg",
 "crew-boon-profile.png",
@@ -100,10 +99,8 @@
 "yama-sword-weapons/hero-yama-cyberhell-sword-trojan.webp",
 "minigames/mirror-room-v1.png",
 "minigames/mirror-plate-v1.png",
-"minigames/sala-books.png",
-    "minigames/sala-books-v2.png",
-    "minigames/sala-book-gold-v2.png",
-"minigames/sala-book-gold.png",
+"minigames/sala-books-v2.png",
+"minigames/sala-book-gold-v2.png",
 "frontier-west-hypnosis-v1.webp",
 "BG-Dab.webp",
 "BG-Krajok.webp",
@@ -145,20 +142,10 @@
 "icon-lock.png",
 "icon-skip.png",
 "icon-sword.png",
-"intro-panel-01.png",
-"intro-panel-01.webp",
 "intro-panel-01-v2.webp",
-"intro-panel-02.png",
-"intro-panel-02.webp",
 "intro-panel-02-v2.webp",
-"intro-panel-03.png",
-"intro-panel-03.webp",
 "intro-panel-03-v2.webp",
-"intro-panel-04.png",
-"intro-panel-04.webp",
 "intro-panel-04-v2.webp",
-"intro-panel-05.png",
-"intro-panel-05.webp",
 "intro-panel-05-v2.webp",
 "item-demon-sword.png",
 "item-food.png",
@@ -179,15 +166,11 @@
 "prop-boat.png",
 "prop-lantern.png",
 "prop-throne-platform-v1.png",
-"prop-throne-platform.png",
 "scene-asia-v3.png",
-"scene-asia.png",
 "scene-cyberhell-v2.png",
-"scene-foreground.png",
 "scene-ground-v1.png",
 "scene-v2-opt.png",
 "scene-west-v2.png",
-"scene-west.png",
 "soul-boy.png",
 "soul-deva.png",
 "soul-gen.png",
@@ -210,16 +193,7 @@
 "spirit8.png",
 "spirit9.png",
 "st-building.png",
-"st-dab.png",
-"st-frontier.png",
-"st-krajok.png",
-"st-krata.png",
-"st-lan.png",
 "st-lokan.png",
-"st-ngiw.png",
-"st-sala.png",
-"st-sawan.png",
-"st-tarang.png",
 "st-tea.png",
 "tex-paper-hell.png",
 "zone-boss-cutscene.jpeg",
@@ -354,15 +328,7 @@
 "Asia/spirit-officer-asia-v2.png",
 "Asia/spirit-woman-asia-v2.png",
 "Asia/spirit-worker-asia-v2.png",
-"Asia/st-dab-asia.png",
-"Asia/st-krajok-asia.png",
-"Asia/st-krata-asia.png",
-"Asia/st-lan-asia.png",
 "Asia/st-lokan-asia.png",
-"Asia/st-ngiw-asia.png",
-"Asia/st-sala-asia.png",
-"Asia/st-sawan-asia.png",
-"Asia/st-tarang-asia.png",
 "Asia/st-tea-asia.png",
 "Asia/zone-boss-asia.png",
 "Asia/spirit-business-asia-v2.png",
@@ -444,18 +410,11 @@
 "CyberHell/spirit-officer-cyberhell-v2.png",
 "CyberHell/spirit-woman-cyberhell-v2.png",
 "CyberHell/spirit-worker-cyberhell-v2.png",
-"CyberHell/st-dab-cyberhell.png",
-"CyberHell/st-krajok-cyberhell.png",
-"CyberHell/st-krata-cyberhell.png",
 "CyberHell/st-lokan-cyberhell.png",
-"CyberHell/st-ngiw-cyberhell.png",
-"CyberHell/st-sala-cyberhell.png",
-"CyberHell/st-tarang-cyberhell.png",
 "CyberHell/st-tea-cyberhell.png",
 "CyberHell/zone-boss-cyberhell.png",
 "CyberHell/spirit-business-cyberhell-v2.png",
-"CyberHell/spirit-elder-woman-cyberhell-v2.png",
-"CyberHell/st-sawan-cyberhell.png"
+"CyberHell/spirit-elder-woman-cyberhell-v2.png"
 ],
 "west": [
 "yama-sword-v4/hero-yama-west-sword.webp",
@@ -528,15 +487,7 @@
 "West/spirit-officer-west-v2.png",
 "West/spirit-woman-west-v2.png",
 "West/spirit-worker-west-v2.png",
-"West/st-dab-west.png",
-"West/st-krajok-west.png",
-"West/st-krata-west.png",
-"West/st-lan-west.png",
 "West/st-lokan-west.png",
-"West/st-ngiw-west.png",
-"West/st-sala-west.png",
-"West/st-sawan-west.png",
-"West/st-tarang-west.png",
 "West/st-tea-west.png",
 "West/zone-boss-west.png",
 "West/spirit-business-west-v2.png",
@@ -615,61 +566,7 @@
 1.0,
 1.0
 ],
-"st-dab": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-frontier": [
-0.041,
-0.0273,
-0.9688,
-0.9707
-],
-"st-krajok": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-krata": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-lan": [
-0.0,
-0.0,
-1.0,
-0.9977
-],
 "st-lokan": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-ngiw": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-sala": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-sawan": [
-0.0,
-0.0,
-1.0,
-1.0
-],
-"st-tarang": [
 0.0,
 0.0,
 1.0,
@@ -861,45 +758,9 @@
 512,
 452
 ],
-"st-dab": [
-396,
-512
-],
-"st-frontier": [
-512,
-512
-],
-"st-krajok": [
-216,
-512
-],
-"st-krata": [
-512,
-242
-],
-"st-lan": [
-512,
-427
-],
 "st-lokan": [
 512,
 395
-],
-"st-ngiw": [
-356,
-512
-],
-"st-sala": [
-512,
-502
-],
-"st-sawan": [
-292,
-512
-],
-"st-tarang": [
-512,
-263
 ],
 "st-tea": [
 422,

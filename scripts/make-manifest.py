@@ -20,7 +20,7 @@ boxes — กรอบเนื้อภาพ (ส่วนที่ทึบ) 
   (รูปโซน 2 สัดส่วนไม่ตรงโซน 1 หลายหลัง — ถ้าวาดเต็มจัตุรัสจะล้นทับทางเดินกับหลังข้าง ๆ)
 stationSizes — ขนาดพิกเซลของภาพสถานีแต่ละไฟล์ ใช้รักษาสัดส่วนจริงขณะวางบนผัง
 """
-import json, os
+import json, os, sys
 from PIL import Image
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -30,6 +30,30 @@ EXT = ('.png', '.jpg', '.jpeg', '.webp')
 # ภาพที่ต้องมาก่อน — ขึ้นจอตั้งแต่เฟรมแรก (หน้าปก พื้น ฉากโซนแรก ทีมงาน)
 # อาคารสถานีไม่อยู่ในนี้เพราะ art.js วาดกล่องหินแทนให้อยู่แล้วถ้าไฟล์ยังไม่มา
 CRITICAL = ('cover', 'scene.png', 'tile-', 'hero-', 'crew-')
+
+
+def prune_missing():
+    """Keep curated tiers/zone registrations and walking metadata when pruning.
+
+    Full regeneration predates manually curated entries; pruning must not erase
+    those or reintroduce old files deliberately excluded from preload.
+    """
+    target = os.path.join(IMG, 'manifest.json')
+    with open(target) as fh:
+        out = json.load(fh)
+    present = lambda rel: os.path.isfile(os.path.join(IMG, rel))
+    for tier in ('critical', 'rest'):
+        out[tier] = [p for p in out[tier] if present(p)]
+    for zone, files in out['zones'].items():
+        out['zones'][zone] = [p for p in files if present(p)]
+    stems = {os.path.splitext(f)[0] for _, _, files in os.walk(IMG)
+             for f in files if f.lower().endswith(EXT)}
+    for field in ('boxes', 'stationSizes'):
+        out[field] = {k:v for k,v in out[field].items() if k in stems}
+    with open(target, 'w') as fh:
+        json.dump(out, fh, ensure_ascii=False, indent=0)
+        fh.write('\n')
+    print('Pruned missing entries; preserved curated tiers and walking metadata')
 
 
 def main():
@@ -77,4 +101,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if '--prune-missing' in sys.argv:
+        prune_missing()
+    else:
+        main()

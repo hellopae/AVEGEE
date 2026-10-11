@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""เตรียมไอคอน/ปุ่ม UI ของคุณเป้ (ชุด 15) จาก img/raw/ ไปใช้งานจริงที่ img/ui/
+"""เตรียมไอคอน/ปุ่ม UI ของคุณเป้ (ชุด 15) จาก art-src/raw/ ไปใช้งานจริงที่ img/ui/
 
-ไม่ทับ img/raw/ เด็ดขาด — อ่านอย่างเดียว เขียนผลลัพธ์ไป img/ui/ เท่านั้น
+ไม่ทับ art-src/raw/ เด็ดขาด — อ่านอย่างเดียว เขียนผลลัพธ์ไป img/ui/ เท่านั้น
 ตั้งชื่อ kebab-case คงที่ (icon-<name>.png) ให้ Kittanate/Dale วาดจริงมาทับได้
 โดยไม่ต้องแก้โค้ด
 
@@ -16,7 +16,7 @@ import argparse
 from collections import deque
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-RAW = os.path.join(ROOT, 'img', 'raw')
+RAW = os.path.join(ROOT, 'art-src', 'raw')
 OUT = os.path.join(ROOT, 'img', 'ui')
 os.makedirs(OUT, exist_ok=True)
 

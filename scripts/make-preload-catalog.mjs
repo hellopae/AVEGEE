@@ -1,6 +1,15 @@
 // Only shipped images: never include raw art, experiments or untracked references.
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, statSync, existsSync } from 'node:fs';
+// Preserve manually curated order/groups and exclusions during an asset prune.
+if (process.argv.includes('--prune-missing')) {
+  const current = JSON.parse(readFileSync('img/preload-catalog.json', 'utf8'));
+  current.shared = current.shared.filter(existsSync);
+  for (const zone of Object.keys(current.zones)) current.zones[zone] = current.zones[zone].filter(existsSync);
+  writeFileSync('img/preload-catalog.json', JSON.stringify(current, null, 2) + '\n');
+  console.log('Pruned missing entries; preserved curated order and groups');
+  process.exit(0);
+}
 const zones = ['th', 'asia', 'west', 'cyberhell'];
 const catalog = { shared: [], zones: Object.fromEntries(zones.map(z => [z, []])) };
 const files = execFileSync('git', ['ls-files', '-z', 'img'], { encoding:'utf8' }).split('\0');
