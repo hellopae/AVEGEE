@@ -17,7 +17,8 @@ import { actorStanding } from './actor-recovery.js';
 // อยู่ในหน่วยความจำ JS เฉย ๆ จึงอยู่รอดข้าม "เปิด/ปิดกล่องระหว่างไปสู้แล้วกลับมา" ได้ในหนึ่งเซสชันเล่น
 // (ui.js เปิด/ปิด <dialog> ใบเดียวกันสลับกับฉากต่อสู้ ไม่ใช่โหลดหน้าใหม่) แต่หายไปเมื่อโหลดหน้าใหม่จริง ๆ
 
-import { MOB } from './data.js';
+import { MOB, CHALLENGE_STAND, BOSS_NAMES } from './data.js';
+import { t as tr } from './i18n.js';
 import { drawStandee, drawHeroWalk } from './art.js';
 import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS } from './walk-motion.js';
@@ -90,10 +91,12 @@ function label(ctx, text, x, y, size, color) {
 export function makeFrontierWalk(cv, g, opts) {
   const {GATE,NIRA,GUARD} = frontierAnchors(g.zone);
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
-  const { bg, kinds, wave, alive, fab, gate, nira } = opts;
+  const { bg, kinds, wave, alive, fab, gate, nira, challenge } = opts;
   const invasion = breachApproachActors(g.zone, opts.invasionKey);
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
+  // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
+  const challengeBoss = !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
   let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);
@@ -115,6 +118,7 @@ export function makeFrontierWalk(cv, g, opts) {
   const blockers = () => {
     const rx = unit() * 0.045 / box.w, ry = unit() * 0.022 / box.h;
     const list = sess.enemies.map(en => [en.x, en.y, rx, ry]);
+    if (challengeBoss) list.push([challengeBoss.x, challengeBoss.y, rx, ry]);
     list.push([NIRA[0], NIRA[1], rx, ry]);
     if (actorStanding(g.guard)) list.push([GUARD[0], GUARD[1], rx, ry]);
     return list;
@@ -127,8 +131,10 @@ export function makeFrontierWalk(cv, g, opts) {
     const kindIdx = kinds[Math.floor(Math.random() * kinds.length)];
     const [ex, ey] = edgePoint();
     let [tx, ty] = insidePoint();
-    for (let tries=0; tries<50 && !frontierWalkable(g.zone,tx,ty); tries++) [tx,ty]=insidePoint();
-    if (!frontierWalkable(g.zone,tx,ty)) return;
+    // keep spawned enemies from stopping on top of the replay boss NPC
+    const free = (x,y) => frontierWalkable(g.zone,x,y) && (!challengeBoss || Math.hypot((x-challengeBoss.x)/.09,(y-challengeBoss.y)/.07) > 1);
+    for (let tries=0; tries<50 && !free(tx,ty); tries++) [tx,ty]=insidePoint();
+    if (!free(tx,ty)) return;
     sess.enemies.push({ id: sess.nextId++, kindIdx, x: ex, y: ey, tx, ty, arrived: false, level: wave });
   }
 
@@ -268,6 +274,10 @@ export function makeFrontierWalk(cv, g, opts) {
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
+    if (challengeBoss) acts.push({ y:challengeBoss.y, fn:() => {
+      drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * MOB_H * 1.5, t, '👹');
+      label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, U * .024, '#ffd27a');
+    } });
     acts.push({ y: P.y, fn: () => {
       const moving = simClock - movedSim < WALK_GRACE_MS;
       if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDrawDistance(walkDistance, U * HERO_H) : 0, P.face, direction))
@@ -285,11 +295,20 @@ export function makeFrontierWalk(cv, g, opts) {
         const en = sess.enemies.find(e => e.id === nearId);
         if (!en) { fab.hidden = true; }
         else {
+          fab.textContent = invasion.length ? tr('challenge.fab', {name:en.name}) : '⚔️ เริ่มต่อสู้';
           fab.hidden = false;
           fab.style.left = `${(px(en.x)) / W * 100}%`;
-          fab.style.top = `${(py(en.y) - U * MOB_H) / H * 100}%`;
+          fab.style.top = `${(py(en.y) - U * MOB_H * (en.boss ? 1.5 : 1)) / H * 100}%`;
           fab.dataset.enemyId = String(en.id);
         }
+      }
+    }
+    if (challenge) {
+      challenge.hidden = !challengeBoss || !g.challengeCanTalk(P);
+      if (!challenge.hidden) {
+        challenge.textContent = tr('challenge.fab', {name:BOSS_NAMES[g.zone].frontier});
+        challenge.style.left = `${px(challengeBoss.x) / W * 100}%`;
+        challenge.style.top = `${(py(challengeBoss.y) - U * MOB_H * 1.5) / H * 100}%`;
       }
     }
     for (const [button, shown, x, y] of [
@@ -322,6 +341,7 @@ export function makeFrontierWalk(cv, g, opts) {
 
   const api = {
     nearId: () => nearId,
+    canTalkChallenge: () => !!challengeBoss && g.challengeCanTalk(P),
     enemyCount: () => sess.enemies.length,
     getEnemy: id => sess.enemies.find(e => e.id === id),
     removeEnemy: id => { const i = sess.enemies.findIndex(e => e.id === id); if (i >= 0) sess.enemies.splice(i, 1); },
@@ -335,6 +355,7 @@ export function makeFrontierWalk(cv, g, opts) {
       if (fab) fab.hidden = true;
       if (gate) gate.hidden = true;
       if (nira) nira.hidden = true;
+      if (challenge) challenge.hidden = true;
     },
   };
   return api;

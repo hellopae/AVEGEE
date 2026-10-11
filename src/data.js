@@ -1760,9 +1760,12 @@ export const WEAPON_STACK_CAP = 1.3;
 /** ประลองซ้ำหลังได้อาวุธแล้ว: เบี้ยกรรมครึ่งหนึ่งของรอบแรก · วัตถุดิบชายแดนกี่ชิ้น · ไม่ได้ EXP */
 export const CHALLENGE_REPLAY = { coinShare:.5, drops:2, exp:0 };
 export const CHALLENGE_EXP = 60;
-/** ที่ยืนของบอสชายแดนหลังชนะในเนื้อเรื่อง — ข้างซุ้มประตูชายแดนด้านล่าง ฝั่งขวา (ฝั่งซ้ายคือจุดเฝ้าของยักษ์ทวารบาล GUARD_POST)
- *  วัดจากพื้นที่เดินได้จริงของทั้ง 4 โซน: แหลมหน้าประตูกว้าง x≈712–968 ที่ y≥876 · ผัง 1678×937 ร่วมกันทุกโซน (ดูเทสต์ tests/g3b-frontier-challenge.test.mjs) */
-export const CHALLENGE_STAND = { x:940, y:886 };
+/** จุดเท้าบอสในฉากชายแดน (พิกัดภาพ 0–1) — พื้นส่วนล่างข้างแนวเดินกลาง
+ *  ตรวจบน theme-v4/frontier ของแต่ละโซนและ frontierWalkable; ไม่ใช้พิกัดแผนที่โซน */
+export const CHALLENGE_STAND = {
+  th: { x:.39, y:.73 }, asia: { x:.39, y:.70 },
+  west: { x:.40, y:.70 }, cyberhell: { x:.40, y:.68 },
+};
 export const challengeKeyOf = zone => `${zone === 'cyberhell' ? 'cyber' : zone}Challenge`;
 const challengeEvent = (zone, extra) => ({
   k:challengeKeyOf(zone), challenge:true, atCases:999, mode:'waves',

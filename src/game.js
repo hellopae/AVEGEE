@@ -2597,7 +2597,7 @@ const API = {
     this.save(); this.onChange(); return this.battle;
   },
   // ---------- G3b · ประลองปีศาจชายแดน 10 wave + อาวุธประจำโซน ----------
-  // หลังชนะบอสชายแดนในเนื้อเรื่อง บอสโซนนั้นไปยืนที่ประตูล่าง (CHALLENGE_STAND) คุยได้ · ชนะครบ 10 wave ได้อาวุธประจำโซน
+  // หลังชนะบอสชายแดนในเนื้อเรื่อง บอสโซนนั้นไปยืนในฉากชายแดน (CHALLENGE_STAND) คุยได้ · ชนะครบ 10 wave ได้อาวุธประจำโซน
   // ใช้ศึกแบบ zoneEvent เดิม (ZONE_EVENTS[zone] ตัวที่ challenge:true) แต่ไม่ผ่านสถานะ pending/active ของอีเวนต์เนื้อเรื่อง
   // ความคืบหน้าอยู่ที่ this.challenge[zone] เท่านั้น: checkpoint = wave ที่ผ่านจุดพักแล้ว · paidWave = wave ที่จ่ายรางวัลแล้ว · wins = ชนะครบกี่ครั้ง
   challengeOf(zone = this.zone) {
@@ -2606,14 +2606,14 @@ const API = {
   challengeEvent(zone = this.zone) {
     return (ZONE_EVENTS[zone] || []).find(e => e.challenge) || null;
   },
-  /** บอสชายแดนของโซนนี้ไปยืนที่ประตูล่างแล้วไหม = ชนะบอสชายแดนในเนื้อเรื่องของโซนนั้นแล้ว */
+  /** บอสชายแดนของโซนนี้ปลดล็อกในฉากชายแดนแล้วไหม = ชนะบอสชายแดนในเนื้อเรื่องของโซนนั้นแล้ว */
   challengeUnlocked(zone = this.zone) {
     return this.zoneEvents[zone]?.[CHALLENGE_STORY_KEY[zone]] === 'cleared';
   },
   challengeDone(zone = this.zone) { return (this.challenge[zone]?.wins || 0) > 0; },
-  challengeCanTalk() {
+  challengeCanTalk(frontierPlayer) {
     return !this.battle && !this.over && !this.pendingRecovery && this.challengeUnlocked() &&
-      Math.hypot(this.player.x - CHALLENGE_STAND.x, this.player.y - CHALLENGE_STAND.y) <= 150;
+      !!frontierPlayer && Math.hypot(frontierPlayer.x - CHALLENGE_STAND[this.zone].x, frontierPlayer.y - CHALLENGE_STAND[this.zone].y) <= .09;
   },
   /** wave ที่จะเริ่มเมื่อกดประลอง — ผ่านจุดพักแล้วแพ้ทีหลัง = เริ่มที่ wave ถัดจากจุดพัก */
   challengeStartWave(zone = this.zone) {
