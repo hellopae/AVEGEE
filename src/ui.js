@@ -1281,7 +1281,6 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     }
   };
   const prep = prepCardHtml;
-  const medicine = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable).length;   // ยาทุกระดับ ไม่ใช่แค่หีบยาโซน 1
   const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
   modal(`${eventAlertMainHtml(title, description, art,
     `${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
@@ -1289,7 +1288,7 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
       ${prep('merchant', t('event.prep.merchant'), merchantOpen ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !merchantOpen)}
       ${prep('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
-      ${prep('medicine', t('event.prep.medicine'), medicine ? t('event.prep.medicineLine') : t('event.prep.none'), artUrl(ITEMS.health.img), !medicine)}
+      ${prepItemsHtml('bag')}
     </div></div>`, d => {
     d.querySelector('[data-event-go]').onclick = start;
     // เปิดกล่องร้าน/ห้องนิราแทนหน้าต่างนี้ แล้วกลับมาที่หน้าต่างนี้ตอนปิดกล่องนั้น
@@ -1307,9 +1306,7 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     };
     d.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => visit(openMerchant));
     d.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => visit(openNiraOffice));
-    d.querySelector('[data-event-prep="medicine"]')?.addEventListener('click', () => {
-      if (g.useBag('health')) reopen();
-    });
+    bindPrepItems(d, 'bag', reopen);
   }, 'event-alert');
   onDlgClose(() => {
     if (key === 'zoneBoss') {
@@ -1322,6 +1319,38 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
  *  แจ้งเตือนอีเวนต์ (openEventAlert) และหน้าเตรียมศึกในฉากต่อสู้ (openBattle) — แก้หน้าตาที่นี่ที่เดียว */
 const prepCardHtml = (which, label, line, image, disabled = false) => `<button class="event-prep-card" data-event-prep="${which}" ${disabled ? 'disabled' : ''}>
     <img src="${esc(image)}" alt=""><span class="event-prep-speech">${esc(line)}</span><b>${esc(label)}</b></button>`;
+/** I2-C — แสดงไอเท็มกระเป๋าแบบเดียวกันทั้งแจ้งเตือนและเตรียมศึก */
+function prepItemKeys() {
+  return ['tea', 'health', 'holyWater', ...Object.keys(g.inventory).filter(k =>
+    !['tea', 'health', 'holyWater'].includes(k) && g.inventory[k] > 0 && ITEMS[k]?.consumable)];
+}
+function prepItemReady(k, context) {
+  return g.inventory[k] > 0 && !!medicineResult(k, g.battle ? g.battle.youHp : g.hp,
+    g.battle ? g.battle.youMax : g.hpMax, g.mp, g.mpMax, context);
+}
+function prepItemsHtml(context) {
+  const keys = prepItemKeys();
+  const canFill = keys.some(k => ITEMS[k]?.hp && prepItemReady(k, context));
+  return `<div class="prep-box"><div class="prep-items">${keys.map(k => {
+    const n = g.inventory[k] || 0;
+    return `<button class="prep-item" data-prep-use="${k}" ${prepItemReady(k, context) ? '' : 'disabled'}
+      aria-label="${esc(itemName(k))} x ${n}" title="${esc(itemText(k, 'desc'))}">
+      ${itemImg(k)}<span class="prep-item-count">x ${n}</span></button>`;
+  }).join('')}</div><button class="prep-fill" data-prep-fill ${canFill ? '' : 'disabled'}>${esc(t('event.prep.medicineLine'))}</button></div>`;
+}
+function bindPrepItems(root, context, repaint) {
+  root.querySelectorAll('[data-prep-use]').forEach(button => button.onclick = () => {
+    if (g.useMedicine(button.dataset.prepUse, context)) { sfx('star'); repaint(); }
+  });
+  root.querySelector('[data-prep-fill]')?.addEventListener('click', () => {
+    let used = false;
+    // ใช้อัตราฟื้นฟู/จำนวนต่อชิ้นเดิม จนเต็มหรือของฟื้น HP หมด
+    for (const k of ['health', ...prepItemKeys().filter(k => k !== 'health' && ITEMS[k]?.hp)]) {
+      while (prepItemReady(k, context) && g.useMedicine(k, context)) used = true;
+    }
+    if (used) { sfx('star'); repaint(); }
+  });
+}
 /** กล่องบน: หัวข้อทอง ⚠ · คำอธิบาย · (หมายเหตุ) · ภาพศัตรู · แถวปุ่ม (actionsHtml) · extraTop = ปุ่มมุมขวาบน */
 const eventAlertMainHtml = (title, description, art, actionsHtml, { note = '', extraTop = '' } = {}) => `<div class="event-alert-main">
     ${extraTop}<h2>⚠ ${esc(title.replace(/^⚠️?\s*/, ''))}</h2><p>${esc(description)}</p>${note}
@@ -2896,14 +2925,6 @@ function openBattle(after) {
     // (openMerchant/openNiraOffice ใช้ <dialog> ใบเดียวกับฉากต่อสู้ — ปิดแล้วตัวเฝ้า battleUI ที่ท้ายไฟล์
     // เปิดฉากเตรียมศึกกลับให้เองอัตโนมัติภายใน 400ms ไม่ต้องเขียน callback พิเศษ ดูคอมเมนต์ตรง
     // setInterval บนสุดของไฟล์ "ถึงปิดไป ตัวเฝ้าก็เปิดกลับให้อยู่ดีถ้าฉากยังไม่จบ")
-    const medN = g.inventory.health || 0;
-    const medFull = b.youHp >= b.youMax;
-    const canMed = medN > 0 && !medFull;
-    const waterN = g.inventory.holyWater || 0;           // ชุด 28B — น้ำมนต์เติม MP ที่จุดพัก/เตรียมศึก
-    const waterFull = g.mp >= g.mpMax;
-    const canWater = waterN > 0 && !waterFull;
-    const extraPrepMedicines = Object.keys(g.inventory).filter(k => g.inventory[k] > 0 && ITEMS[k]?.consumable && !['health','holyWater'].includes(k)).map(k =>
-      `<button data-prep-item="${k}" ${medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'prep') ? '' : 'disabled'} title="${esc(itemText(k, 'desc'))}">${itemImg(k,'class="prep-ico"')} ${esc(itemName(k))} ×${g.inventory[k]}</button>`).join('');
     const rest = g.zoneEventRestReady() && !phase;
     // ชุด 30B ข้อ 1 — เตรียมศึก (บอสโซน 2–4 · พักก่อนระลอก 4/8 โซน 4) ใช้หน้าตาเดียวกับหน้าต่างแจ้งเตือนอีเวนต์:
     // กล่องบน = หัวข้อ + คำอธิบาย + ภาพศัตรู + ปุ่ม "เข้าสู้" · กล่องล่าง = 3 ช่อง พ่อค้า / นิรา / กล่องยา
@@ -2926,16 +2947,7 @@ function openBattle(after) {
       <div class="event-alert-prep"><p>${esc(t('event.prep.title'))}</p><div class="event-alert-cards">
         ${prepCardHtml('merchant', t('event.prep.merchant'), g.zoneCaptivesFree() ? t('event.prep.merchantLine') : t('event.prep.merchantLocked'), 'img/merchant-profile.jpeg', !g.zoneCaptivesFree())}
         ${prepCardHtml('nira', t('event.prep.nira'), t('event.prep.niraLine'), artUrl('crew-nira-profile'))}
-        <div class="event-prep-card prep-box"><img src="${esc(artUrl(ITEMS.health.img))}" alt="">
-          <span class="event-prep-speech">${esc(medicineCount(g.inventory) ? t('event.prep.medicineLine') : t('event.prep.none'))}</span>
-          <b>${esc(t('event.prep.medicine'))}</b>
-          <span class="prep-chips">
-            <button data-prep-med ${canMed ? '' : 'disabled'}
-              title="${esc(medN < 1 ? t('prep.med.none') : medFull ? t('bag.hpFull') : `${itemText('health', 'desc')} · ×${medN}`)}">
-              ${itemImg('health', 'class="prep-ico"')} ${esc(t('prep.med'))} ×${medN}</button>
-            <button data-prep-water ${canWater ? '' : 'disabled'}
-              title="${esc(waterN < 1 ? t('prep.water.none') : waterFull ? t('bag.mpFull') : `${itemText('holyWater', 'desc')} · ×${waterN}`)}">
-              ${itemImg('holyWater', 'class="prep-ico"')} ${esc(t('prep.water'))} ×${waterN}</button>${extraPrepMedicines}</span></div>
+        ${prepItemsHtml('prep')}
       </div></div></div></div>` : '';
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
       <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
@@ -3121,9 +3133,7 @@ function openBattle(after) {
     // ทันทีที่ merchant/nira ปิด (เหมือนที่คอมเมนต์บนสุดของไฟล์อธิบายไว้แล้วสำหรับกรณีทั่วไป)
     dlg.querySelector('[data-event-prep="merchant"]')?.addEventListener('click', () => openMerchant());
     dlg.querySelector('[data-event-prep="nira"]')?.addEventListener('click', () => openNiraOffice());
-    dlg.querySelectorAll('[data-prep-item]').forEach(button => button.onclick = () => { if (g.useMedicine(button.dataset.prepItem, 'prep')) { sfx('star'); paint(); refresh(); } });
-    dlg.querySelector('[data-prep-med]')?.addEventListener('click', () => { if (g.useBossMedicine()) { sfx('star'); paint(); refresh(); } });
-    dlg.querySelector('[data-prep-water]')?.addEventListener('click', () => { if (g.useHolyWater()) { sfx('star'); paint(); refresh(); } });
+    bindPrepItems(dlg, 'prep', () => { paint(); refresh(); });
     dlg.querySelector('[data-prep-pause]')?.addEventListener('click', () => openPause(true));
     dlg.querySelector('[data-prep-hide]')?.addEventListener('click', () => { prepHidden = true; paint(); });
     dlg.querySelector('[data-prep-show]')?.addEventListener('click', () => { prepHidden = false; paint(); });
@@ -3501,7 +3511,6 @@ const crewAbility = actor => describeCrewAbility(typeof actor === 'string'
   ? actor === 'guard' ? g.guard || actor : g.crew.find(c => c.k === actor) || actor : actor, g.zone, g.training);
 const itemText = (k, field) => ITEMS[k]?.[field+'Key'] ? t(ITEMS[k][field+'Key']) : getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
 // นับยาทุกระดับ (หีบยา/น้ำมนต์/น้ำชา ของทุกโซน) — ใช้บอกว่ากล่องยาเตรียมศึก "มีของ" หรือไม่
-const medicineCount = inv => Object.keys(inv || {}).reduce((n, k) => n + (ITEMS[k]?.consumable ? Math.max(0, inv[k] || 0) : 0), 0);
 const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (itemText(k, 'name') || k);
 /** ภาพชั่วคราวของไอเท็มที่ยังไม่มีไฟล์จริง ใช้ placeholder/glyph/fallback จากข้อมูลไอเท็ม
  *  พอวางไฟล์ img/<ITEMS[k].img>.png จริง ภาพนี้จะไม่ถูกใช้อีกเอง ไม่ต้องแก้โค้ด
