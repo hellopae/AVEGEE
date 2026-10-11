@@ -14,7 +14,7 @@ ANCHORS = {
 }
 metadata={}
 for style, anchors in ANCHORS.items():
- im=Image.open(ROOT/f'img/raw/yama-sword-v2/{style}.png').convert('RGBA'); data=np.asarray(im)
+ im=Image.open(ROOT/f'art-src/raw/yama-sword-v2/{style}.png').convert('RGBA'); data=np.asarray(im)
  labels,count=label(data[:,:,3]>30)
  groups=[]
  for number, box in enumerate(find_objects(labels),1):
@@ -32,13 +32,14 @@ for style, anchors in ANCHORS.items():
   assert x>=0 and y>=0 and x+sprite.width<=640 and y+sprite.height<=640,(style,i,x,y,sprite.size)
   frame=Image.new('RGBA',(640,640));frame.alpha_composite(sprite,(x,y));frames.append(frame)
   atlas.alpha_composite(frame,(i*640,0))
- out=ROOT/f'img/yama-sword-v2/hero-yama-{style}-sword.webp';atlas.save(out,lossless=True,method=6)
+ out=ROOT/f'art-src/yama-sword-v2/hero-yama-{style}-sword.webp';atlas.save(out,lossless=True,method=6)
  grid=Image.new('RGBA',(640*4,640*2))
  for i,frame in enumerate(frames):grid.alpha_composite(frame,((i%4)*640,(i//4)*640))
- grid.save(ROOT/f'img/raw/yama-sword-v2/{style}-aligned.png')
+ grid.save(ROOT/f'art-src/raw/yama-sword-v2/{style}-aligned.png')
  durations=[650,80,60,35,40,80,100,100]
  preview=[f.resize((320,320),Image.Resampling.NEAREST) for f in frames]
  preview[0].save(ROOT/f'output/yama-sword-v2/{style}.webp',save_all=True,append_images=preview[1:],duration=durations,loop=0,lossless=True)
  metadata[style]={'src':str(out.relative_to(ROOT)),'size':640,'frames':8,'anchor':{'x':240,'y':570},'bodyHeight':anchors[0][1]-groups[0][1][0].start}
  print(style,out.stat().st_size,metadata[style])
-(ROOT/'src/yama-sword-v2-assets.js').write_text('// Exported frame geometry; every outfit shares a fixed foot anchor.\nexport const SWORD_SHEETS = '+json.dumps(metadata,indent=2)+';\n')
+# This legacy export is authoring input; do not overwrite the current v3/v4 runtime table.
+(ROOT/'art-src/yama-sword-v2/frame-geometry.js').write_text('// Exported frame geometry; every outfit shares a fixed foot anchor.\nexport const SWORD_SHEETS = '+json.dumps(metadata,indent=2)+';\n')

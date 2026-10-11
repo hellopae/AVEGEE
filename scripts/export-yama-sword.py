@@ -14,7 +14,7 @@ ANCHORS = {
 }
 metadata={}
 for style, anchors in ANCHORS.items():
- im=Image.open(ROOT/f'img/raw/yama-sword-v1/{style}.png').convert('RGBA'); data=np.asarray(im)
+ im=Image.open(ROOT/f'art-src/raw/yama-sword-v1/{style}.png').convert('RGBA'); data=np.asarray(im)
  labels,count=label(data[:,:,3]>30)
  groups=[]
  for number, box in enumerate(find_objects(labels),1):
@@ -35,7 +35,7 @@ for style, anchors in ANCHORS.items():
  out=ROOT/f'img/yama-sword-v1/hero-yama-{style}-sword.webp';atlas.save(out,lossless=True,method=6)
  grid=Image.new('RGBA',(640*4,640*2))
  for i,frame in enumerate(frames):grid.alpha_composite(frame,((i%4)*640,(i//4)*640))
- grid.save(ROOT/f'img/raw/yama-sword-v1/{style}-aligned.png')
+ grid.save(ROOT/f'art-src/raw/yama-sword-v1/{style}-aligned.png')
  durations=[50,60,60,55,75,70,80,530]
  preview=[f.resize((320,320),Image.Resampling.NEAREST) for f in frames]
  preview[0].save(ROOT/f'output/yama-sword/{style}.webp',save_all=True,append_images=preview[1:],duration=durations,loop=0,lossless=True)

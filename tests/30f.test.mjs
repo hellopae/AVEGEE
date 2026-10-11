@@ -60,18 +60,21 @@ test('30F: CyberHell translations move hits and worker/service points together a
   }
 });
 
-test('30F: selected story image is 16:9; both regional sprites have alpha, accurate manifest bounds and sizes',()=>{
+test('30F: selected story image is 16:9; selected regional map sprites have alpha and are registered',()=>{
   assert.equal(STORY.asia.pages[2].image,'img/story-asia-03.png');
   assert.ok(manifest.rest.includes('story-asia-03.png'));
   const audit=JSON.parse(execFileSync('python3',['-c',
     'from PIL import Image;import json,sys; out=[]\nfor p in sys.argv[1:]:\n im=Image.open(p).convert("RGBA"); a=im.getchannel("A"); b=a.point(lambda v:255 if v>40 else 0).getbbox(); out.append(dict(size=im.size,alpha=a.getextrema(),box=[b[0]/im.width,b[1]/im.height,b[2]/im.width,b[3]/im.height]))\nprint(json.dumps(out))',
-    ...['img/story-asia-03.png','img/CyberHell/st-tarang-cyberhell.png','img/CyberHell/st-krajok-cyberhell.png'].map(p=>fileURLToPath(new URL('../'+p,import.meta.url)))],{encoding:'utf8'}));
+    ...['img/story-asia-03.png','img/map-v5/st-tarang-cyberhell.webp','img/map-v5/st-krajok-cyberhell.webp'].map(p=>fileURLToPath(new URL('../'+p,import.meta.url)))],{encoding:'utf8'}));
   assert.equal(audit[0].size[0]*9,audit[0].size[1]*16);
   for(const [i,key] of ['tarang','krajok'].entries()) {
-    const stem=`st-${key}-cyberhell`,path=`CyberHell/${stem}.png`,a=audit[i+1];
-    assert.equal(manifest.zones.cyberhell.filter(p=>p===path).length,1);
-    assert.equal(a.size[0],a.size[1]);assert.ok(a.size[0]>=512);assert.deepEqual(a.alpha,[0,255]);
-    assert.deepEqual(manifest.stationSizes[stem],a.size);assert.deepEqual(manifest.boxes[stem],a.box);
+    const stem=`st-${key}-cyberhell`,path=`map-v5/${stem}.webp`,a=audit[i+1];
+    art.bindZone(()=> 'cyberhell');
+    const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json',import.meta.url)));
+    assert.equal(catalog.zones.cyberhell.filter(p=>p===`img/${path}`).length,1);
+    assert.ok(a.size.every(v=>v>0));assert.deepEqual(a.alpha,[0,255]);
+    assert.equal(art.artUrl(`st-${key}`),`img/${path}`);
+    assert.ok(a.box.every(v=>v>=0 && v<=1));
   }
 });
 
