@@ -1,6 +1,11 @@
 import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js';
 import { sfx, unlock, AUDIO } from '../../sfx.js';
-const COLORS=['#42c77c','#ee625a','#f4d65c','#4fb9e4','#e6a248'];
+export const SWORD_THEMES={
+  th:{edge:'#d6ab65',text:'#fff0cf',lanes:['#315244','#693b3a','#7a6239','#354c60','#70503b']},
+  asia:{edge:'#c5a873',text:'#f7edda',lanes:['#324953','#703b37','#71613d','#355a54','#594258']},
+  west:{edge:'#b9a284',text:'#edf1ee',lanes:['#3d5350','#593d50','#726148','#3c5169','#5b5264']},
+  cyberhell:{edge:'#8e9ed0',text:'#e9ebff',lanes:['#405174','#613c66','#66594c','#345764','#52476d']}
+};
 const KEYS=['KeyD','KeyF','Space','KeyJ','KeyK'];
 const LABELS=['D','F','SPACE','J','K'];
 export function mount(host,engine,ctx) {
@@ -18,6 +23,8 @@ export function mount(host,engine,ctx) {
   const hud=document.createElement('div');hud.className='sword-score';hud.setAttribute('aria-live','polite');
   const board=document.createElement('div');board.className='sword-board';
   const zone=['th','asia','west','cyberhell'].includes(ctx.zone)?ctx.zone:'th';
+  const theme=SWORD_THEMES[zone],COLORS=theme.lanes;
+  host.style.setProperty('--sword-edge',theme.edge);host.style.setProperty('--sword-text',theme.text);
   const backdrop=new Image();backdrop.src=new URL(`../../../img/rooms-wide/${zone}-${slicing?'ngiw':'dab'}.webp`,import.meta.url).href;
   board.style.backgroundImage=`linear-gradient(#190d1670,#190d1640),url("img/rooms-wide/${zone}-${slicing?'ngiw':'dab'}.webp")`;
   const canvas=document.createElement('canvas');canvas.width=1000;canvas.height=560;canvas.setAttribute('aria-label',slicing?'ลากฟันท่อนไม้':'โน้ตดาบ 5 ช่อง');board.append(canvas);
@@ -66,8 +73,14 @@ export function mount(host,engine,ctx) {
         c.fillStyle='#ffe29a35';c.fillRect(laneX(0,470),421,laneX(5,470)-laneX(0,470),98);
         line([[laneX(0,470),470],[laneX(5,470),470]],'#fff3be',5);
         for(const n of v.notes){const progress=1-(n.at-v.time)/3.4;if(n.state!=='waiting'||progress<0||progress>1.15)continue;const y=30+progress*440,w=laneX(n.lane+1,y)-laneX(n.lane,y)-12;
-          c.fillStyle=COLORS[n.lane];c.shadowBlur=16;c.shadowColor=COLORS[n.lane];c.fillRect(laneX(n.lane,y)+6,y-22,w,44);c.shadowBlur=0;
-          c.fillStyle='#160d15';c.font='bold 18px sans-serif';c.textAlign='center';c.fillText(LABELS[n.lane],laneX(n.lane,y)+6+w/2,y+5);
+          const x=laneX(n.lane,y)+6;
+          c.save();c.shadowBlur=8;c.shadowColor=theme.edge;
+          const metal=c.createLinearGradient(0,y-22,0,y+22);metal.addColorStop(0,COLORS[n.lane]);metal.addColorStop(.5,'#241c2a');metal.addColorStop(1,COLORS[n.lane]);
+          c.fillStyle=metal;c.strokeStyle=theme.edge;c.lineWidth=2;
+          c.beginPath();c.moveTo(x+10,y-22);c.lineTo(x+w-10,y-22);c.lineTo(x+w,y-12);c.lineTo(x+w,y+12);c.lineTo(x+w-10,y+22);c.lineTo(x+10,y+22);c.lineTo(x,y+12);c.lineTo(x,y-12);c.closePath();c.fill();c.stroke();c.shadowBlur=0;
+          c.globalAlpha=.65;c.strokeRect(x+7,y-16,w-14,32);c.globalAlpha=1;
+          for(const cx of [x+15,x+w-15]){c.fillStyle=theme.edge;c.beginPath();c.moveTo(cx,y-4);c.lineTo(cx+4,y);c.lineTo(cx,y+4);c.lineTo(cx-4,y);c.closePath();c.fill();}
+          c.fillStyle=theme.text;c.font='bold 18px sans-serif';c.textAlign='center';c.fillText(LABELS[n.lane],x+w/2,y+5);c.restore();
         }
         const nextBeat=Math.floor(Math.max(0,v.time-.55)/1.05);if(!paused&&nextBeat!==beat){beat=nextBeat;swordBeat(beat%4);}
       }

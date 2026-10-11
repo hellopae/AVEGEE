@@ -1,5 +1,5 @@
-import { createRhythm, createSlicing } from './sword-engines.js?v=minigame-review-20261011';
-import { mount as swordPanel } from './sword-panel.js?v=minigame-review-20261011';
+import { createRhythm, createSlicing } from './sword-engines.js?v=minigame-review-20261011-fire-theme-v2';
+import { mount as swordPanel } from './sword-panel.js?v=minigame-review-20261011-fire-theme-v2';
 import * as mirror from './mirror.js';
 import * as breath from './breath.js';
 import * as documents from './documents.js';

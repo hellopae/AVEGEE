@@ -23,7 +23,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
     elapsed=0; last=performance.now();
     const zone=['th','asia','west','cyberhell'].includes(g.zone)?g.zone:'th';
     const portrait=actor==='yama'?(zone==='th'?'img/krata-minigame/yama-cutscene.jpeg':`img/hero-yama-${zone}-fire-cutscene-v3.png`):(zone==='th'?'img/krata-minigame/plerng-cutscene.jpeg':`img/krata-minigame/plerng-${zone}-training-v2.png`);
-    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.png" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button>`
+    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.png" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button><small class="g5-round-message" role="status">กดเมื่อวงเข้าพื้นที่สีเขียว · ปล่อยผ่านได้ ไม่นับพลาด</small>`
       : `<p>${t('g5.approach')}</p><div class="g5-bar"><i class="g5-zone"></i><i class="g5-needle"></i></div><button class="btn-gold" data-fire type="button" disabled>${t('g5.fire')}</button>`;
     if (!training) room.walkTo(...stApproach());
     let ready=training;
@@ -34,8 +34,11 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         if (!state) { close(); return; }
         body.querySelector('.g5-count').textContent=`🔥 ${state.hits}/5 · ${t('g5.misses')} ${state.misses}/3`;
         body.querySelector('.g5-orb img').style.transform=`scale(${1+state.hits*.12})`;
-        elapsed=0;
+        elapsed=-650;
+        button.disabled=true;
+        body.querySelector('.g5-round-message').textContent=hit?'สำเร็จ · เตรียมลูกไฟถัดไป':'กดผิดจังหวะ 1 ครั้ง · เตรียมลูกไฟถัดไป';
         button.classList.remove('fire-ready');
+        body.querySelector('.g5-green').classList.remove('fire-ready');
         body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
         if (state.done) finish(state.won);
       } else {
@@ -43,7 +46,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
       }
     };
     const press=() => {
-      if (stopped || result || !ready || frozen()) return;
+      if (stopped || result || !ready || frozen() || (training && elapsed<0)) return;
       attempt(training?trainingHit(trainingRadius(elapsed)):stokeHit(stokePosition(elapsed)));
     };
     // Judge on press against the last painted state, never on mouse release.
@@ -65,13 +68,21 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         } else {
           elapsed+=dt;
           if (training) {
+            button.disabled=elapsed<0;
+            if(elapsed<0){button.textContent='เตรียมลูกไฟ…';raf=requestAnimationFrame(frame);return;}
             const radius=trainingRadius(elapsed);
             body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${radius})`;
             const green=trainingHit(radius);
             button.textContent=green?'กดเลย! · ลูกไฟ':t('g5.fire');
             button.classList.toggle('fire-ready',green);
             body.querySelector('.g5-green').classList.toggle('fire-ready',green);
-            if (radius < .86 || elapsed >= 2200) attempt(false);
+            if (radius < .86 || elapsed >= 2200) {
+              // An untouched circle is a retry, not an extra wrong click.
+              elapsed=-650;button.disabled=true;button.classList.remove('fire-ready');
+              body.querySelector('.g5-green').classList.remove('fire-ready');
+              body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
+              body.querySelector('.g5-round-message').textContent='วงผ่านแล้ว · เริ่มใหม่ได้ ไม่นับพลาด';
+            }
           } else {
             body.querySelector('.g5-needle').style.left=`${stokePosition(elapsed)*100}%`;
             if (elapsed >= 8000) attempt(false);
