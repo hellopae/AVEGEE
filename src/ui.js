@@ -32,7 +32,7 @@ import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, 
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
-import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
@@ -134,23 +134,11 @@ if (typeof ResizeObserver !== 'undefined') {
 }
 fitSceneBox();
 
-/** H2 (คุณเป้ 10 ต.ค.): "กล้องตามตัวละครอย่างนุ่มนวลในหน้าแผนที่เวลา zoom ด้วย"
- *  ซูมแผนที่โซน = ขยายกล่อง .scene-box ด้วย CSS transform (พิกัดคลิกอ่านจาก getBoundingClientRect อยู่แล้ว จึงไม่เพี้ยน)
- *  กล้องตามยมบาทด้วยสูตรเดียวกับกล้องชายแดน (scene-style.followCamera: exponential 130ms, ไม่เกินขอบภาพ)
- *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับ 1× ↔ 2.5× */
-const MAP_ZOOM_LEVELS = [1, 2.5];
+/** M1 (คุณเป้ 11 ต.ค.): ตัดฟังก์ชันซูมแผนที่ออก ล็อกไว้ที่ 1× (ไม่ต้องเพิ่มไฟล์ภาพ)
+ *  canvas วาดตาม viewport × DPR (cap 2) เพื่อให้สไปรต์/อาคารคม; CSS transform ใช้เฉพาะชั้นป้าย DOM
+ *  mapCam ยังใช้สูตรเดียวกับกล้องชายแดน (exponential 130ms, ไม่เกินขอบภาพ) — ที่ 1× กล้องอยู่กลางภาพเสมอ */
+const MAP_ZOOM_LEVELS = [1];
 const mapCam = { level: 0, z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
-const zoomBtn = document.getElementById('hud-zoom');
-function setMapZoom(level) {
-  mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
-  if (zoomBtn) {
-    zoomBtn.dataset.level = String(mapCam.level);
-    zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
-    const zoomImg = zoomBtn.querySelector('img');
-    if (zoomImg) zoomImg.src = mapCam.level > 0 ? 'img/ui/icon-zoom-out.png' : 'img/ui/icon-zoom-in.png';   // ซูมอยู่ = แสดงปุ่มซูมออก
-  }
-}
-zoomBtn?.addEventListener('click', () => setMapZoom((mapCam.level + 1) % MAP_ZOOM_LEVELS.length));
 function updateMapCamera(now) {
   const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
   if (!stage || !box) return;
@@ -163,21 +151,25 @@ function updateMapCamera(now) {
   // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
   const wantX = mapCam.level > 0 ? g.player.x : SCENE.w / 2, wantY = mapCam.level > 0 ? g.player.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
-  if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) {
-    mapCam.z = 1;
-    if (box.style.transform) { box.style.transform = ''; box.style.transformOrigin = ''; }
-    return;
-  }
+  if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
   const cw = stage.clientWidth, ch = stage.clientHeight, bw = box.offsetWidth, bh = box.offsetHeight;
   if (!cw || !ch || !bw || !bh) return;
-  const L = box.offsetLeft, T = box.offsetTop, z = mapCam.z, W = bw * z, H = bh * z;
-  const axis = (view, size, off, centerPx) => {                        // ไม่ให้เห็นขอบนอกภาพ · ภาพเล็กกว่าจอ = วางกลาง
-    if (size <= view) return (view - size) / 2 - off;
-    return Math.max(view - size - off, Math.min(-off, view / 2 - off - centerPx * z));
-  };
-  const tx = axis(cw, W, L, mapCam.x / SCENE.w * bw), ty = axis(ch, H, T, mapCam.y / SCENE.h * bh);
-  box.style.transformOrigin = '0 0';
-  box.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${z.toFixed(4)})`;
+  // fractional offsets (not offsetLeft/Top, which round) so canvas pixels line up with the DOM overlay
+  const sRect = stage.getBoundingClientRect(), bRect = box.getBoundingClientRect();
+  const L = bRect.left - sRect.left, T = bRect.top - sRect.top;
+  const view = mapViewport(cw, ch, bw, bh, mapCam);
+  setMapViewport(cv, view);
+  // The canvas covers the stage; only DOM labels retain the old world-space scale.
+  cv.style.left = `${-L}px`; cv.style.top = `${-T}px`;
+  cv.style.width = `${cw}px`; cv.style.height = `${ch}px`;
+  const overlay = document.getElementById('ov');
+  overlay.style.transformOrigin = '0 0';
+  overlay.style.transform = `translate(${view.tx - L}px,${view.ty - T}px) scale(${mapCam.z})`;
+  const fabs = box.querySelector('.fabs');
+  if (fabs) {
+    fabs.style.transformOrigin = '0 0';
+    fabs.style.transform = `translate(${view.tx - L + (mapCam.z - 1) * fabs.offsetLeft}px,${view.ty - T + (mapCam.z - 1) * fabs.offsetTop}px) scale(${mapCam.z})`;
+  }
 }
 
 /** ตัววาดฉากต่อสู้ซ้ำ — openBattle ตั้งค่าไว้ ปิดฉากแล้วเคลียร์เป็น null
@@ -3911,8 +3903,11 @@ $('#mute').onclick = () => {
 };
 drawMute();
 
+// M1: the canvas now covers the whole stage (letterbox included) — only points inside the map count
+const insideScene = (sx, sy) => sx >= 0 && sy >= 0 && sx <= SCENE.w && sy <= SCENE.h;
 cv.onmousemove = e => {
   const [sx, sy] = toScene(cv, e);
+  if (!insideScene(sx, sy)) { hover = null; cv.style.cursor = 'default'; return; }
   const def = hitStation(sx, sy);
   const frontier = hitFrontier(g, sx, sy);
   const actor = hitActor(g, sx, sy);
@@ -3922,6 +3917,7 @@ cv.onmousemove = e => {
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
   const [sx, sy] = toScene(cv, e);
+  if (!insideScene(sx, sy)) return;
   onSceneClick(sx, sy);
 };
 
