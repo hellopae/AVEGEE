@@ -74,8 +74,8 @@ function fakeContext(log){
 function engineHarness(mobile=false,cw=1600,ch=900){
   const logs=[]; const canvases=[];
   const doc={createElement:()=>{const log=[];const cv={width:0,height:0,log,getContext(){return cv.c||(cv.c=fakeContext(log))}};canvases.push(cv);return cv;}};
-  const alphas={lava:block(300,200,560,380),fire:block(20,100,36,130),volcano:block(420,10,440,110),soul:block(240,230,280,290)};
-  const dais=block(120,150,200,175); for(let i=0;i<dais.length;i++) if(dais[i]) alphas.fire[i]=255; // wide dais glow
+  const alphas={lava:block(300,200,560,380),fire:block(20,100,60,130),volcano:block(420,10,440,110),soul:block(240,230,280,290)};
+  const dais=block(120,195,200,220); for(let i=0;i<dais.length;i++) if(dais[i]) alphas.fire[i]=255; // wide dais glow
   const eng=createCoverEngine({doc,cw,ch,cssW:cw,image:{},alphas,mobile});
   const out=fakeContext([]); const log=[]; const target=fakeContext(log);
   return {eng,target,log,canvases};
@@ -90,6 +90,19 @@ test('engine builds river, falls, flames, volcano and soul cut-out from the mask
   assert.ok(warped.length>=4,'river, falls and each flame paste their warped pixels back over the still');
   const strips=canvases.flatMap(c=>c.log).filter(e=>e.op==='drawImage'&&e.args.length===9).length;
   assert.ok(strips>150,'heat warp re-samples the cover in many thin strips, not a static copy');
+});
+test('torch warp samples a masked flame texture; the wide dais keeps its original cover source',()=>{
+  const {eng,target,canvases}=engineHarness();
+  const base=canvases[0];
+  const textures=canvases.filter(cv=>cv.log.some(e=>e.op==='drawImage'&&e.args[0]===base&&e.args.length===3)
+    &&cv.log.some(e=>e.op==='drawImage'&&e.gco==='destination-in'));
+  assert.equal(textures.length,1,'one torch gets an isolated texture; the wide dais does not');
+  const built=canvases.length;
+  eng.draw(target,1,1);
+  const strips=canvases.flatMap(cv=>cv.log).filter(e=>e.op==='drawImage'&&e.args.length===9);
+  assert.ok(strips.some(e=>e.args[0]===textures[0]),'torch samples its masked source');
+  assert.ok(strips.some(e=>e.args[0]===base),'dais and lava retain their original animation');
+  assert.equal(canvases.length,built,'no new canvas allocation in a frame');
 });
 test('frames 0.5s apart differ (the scene really moves) and nothing is added after the soul cut-out',()=>{
   const a=engineHarness(),b=engineHarness();
@@ -159,7 +172,8 @@ test('fx loads the v4 masks and the h5b module cache-busts with the intro-v3-cov
   const js=readFileSync('src/cover-fx-h5b.js','utf8');
   assert.match(js,/img\/cover-fx\/\$\{kind\}-v4-mask\.png/);
   assert.doesNotMatch(js,/\$\{kind\}-mask\.png/);
-  assert.match(html,/src\/cover-fx-h5b\.js\?v=h5b-intro-v3-coverfx"/);
+  assert.match(js,/v4-mask\.png\?v=h5b-i2a/);
+  assert.match(html,/src\/cover-fx-h5b\.js\?v=h5b-intro-v3-coverfx-i2a"/);
   assert.match(html,/src\/ui\.js\?v=20261009[^"]*-zoom-intro-v3(-[a-z0-9]+)*"/);   // I1-A: suffix ต่อท้ายได้ (-i1a)
   assert.match(readFileSync('src/preload.js','utf8'),/CATALOG_VERSION = '20261008[^']*-zoom-intro-v3(-[a-z0-9]+)*'/);
   assert.match(readFileSync('src/art.js','utf8'),/manifest\.json\?v=20261009[^']*-h4-zoom-intro-v3(-[a-z0-9]+)*'/);
@@ -178,6 +192,13 @@ for kind in ['lava','fire','volcano','soul']:
 # + cover-v4's back-facing Yama (hair, crown, back, robe, boots) — the figure that differs from cover-v5
 for x,y in [(530,225),(290,405),(560,450),(880,405),(1040,475),(1394,331),(545,330),(548,380),(545,430),(520,480),(580,480),(548,300)]:
  assert union.getpixel((round(x*688/1678),round(y*384/937)))==0
+# Orange reflections on the foreground cliff must stay still (I2-A).
+lava=Image.open('img/cover-fx/lava-v4-mask.png').getchannel('A')
+for p in [(473,235),(459,256),(455,262),(446,265),(447,275)]:
+ assert lava.getpixel(p)==0
+assert lava.getpixel((480,280))==255, 'river behind the cliff must remain alive'
+fire=Image.open('img/cover-fx/fire-v4-mask.png').getchannel('A')
+assert any(fire.getpixel((x,y)) for y in range(62,96) for x in range(287,308)), 'throne torch must not be erased by the character envelope'
 print('masks ok')
 `],{encoding:'utf8'});
   assert.match(result,/masks ok/);
