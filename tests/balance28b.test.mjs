@@ -116,6 +116,8 @@ function setup(zone, level, abilityCount, chests) {
 let turnNo = 0;
 function botTurn(g) {
   const b = g.battle; turnNo++;
+  // J1: simulate waiting for the active-time fire cooldown before the bot command.
+  g.advanceBattleTime(b.skillRemainingMs?.fire || 0, true);
   const low = b.youHp <= b.youMax * 0.45;
   if (turnNo % 15 === 1) for (const c of g.crewHelpers()) c.helpReadyAt = 0;
   if (low && g.battleAct('crew:boon')) return true;

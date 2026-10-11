@@ -706,7 +706,7 @@ export const isTrialDestination = def => !!def && def.pow > 0 && (!!def.heaven |
  *  ทุกโซนใช้พิกัดเดียวกันตามผัง 1678×937 */
 export const FRONTIER = {
   k:'frontier', name:'ด่านชายแดนนรก', glyph:'🏯', img:'st-frontier',
-  bx:835, by:840, bw:148, x:835, y:840, hit:[761,692,909,840], reach:105,
+  bx:835, by:840, bw:118.4, mapScale:0.8, blockScale:0.8, x:835, y:840, hit:[775.8,721.6,894.2,840], reach:84,
   bg:'img/BG-frontier.jpeg', teamMax:2,
   drops:['bladeShard','emberWood','ashStone'],
 };
@@ -1979,6 +1979,10 @@ export const STATION_FLIP = {
   west: ['krata', 'tea'], cyberhell: ['krata'],
 };
 
+// M2: dimensions and fallback hits shrink around the existing base; reset before each zone.
+export const MAP_BUILDING_SCALE = 0.8;
+const m2OriginalSites = STATIONS.map(def => ({def, bw:def.bw, hit:[...def.hit]}));
+
 // 30F: move complete station geometry together, including service/worker points.
 // Snapshot the shared sites once so leaving CyberHell never carries its offsets into another zone.
 const CYBERHELL_STATION_OFFSETS = { lokan:[73,41], krajok:[90,37], dab:[65,5], krata:[0,42] };
@@ -1992,6 +1996,9 @@ const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(ke
 export function syncSceneZone(zone) {
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
   SCENE.w = z.w; SCENE.h = z.h;
+  for (const {def,bw,hit} of m2OriginalSites) {
+    def.bw = bw; def.hit = [...hit]; def.mapScale = 1;
+  }
   // Bare floor beside the painted servers; no changes to the scene bitmap.
   for (const [key, site] of sharedStationSites) {
     const [dx, dy] = z.k === 'cyberhell' ? (key === 'lokan' ? [73, 6] : CYBERHELL_STATION_OFFSETS[key]) : (key === 'lokan' ? [0, -35] : [0,0]);
@@ -2010,11 +2017,11 @@ export function syncSceneZone(zone) {
     mirrorTower.x = mirrorTower.bx - 30;
     mirrorTower.y = mirrorTower.by + 10;
   }
-  // เกาะลานตรากตรำในภาพถูกธารล้อมครบ แม้ในโซน 1: ให้จุดบริการโซนใหม่อยู่ฝั่งซ้าย
-  // โดยคงตำแหน่งภาพสถานี/กรอบคลิกเดิมไว้ ไม่เปิดทางเดินข้ามธารที่ภาพไม่ได้วาด
+  // M2: all four painted islands are surrounded. Move the complete site onto the
+  // visible left bank; keep the service door beside its base, without opening lava/water.
   const lan = STATIONS.find(s => s.k === 'lan');
-  Object.assign(lan, z.k === 'th' ? { x:585, y:615, sx:590, sy:600 }
-                                 : { x:500, y:615, sx:500, sy:600 });
+  Object.assign(lan, {bx:460, by:590, x:455, y:605, sx:460, sy:566,
+    hit:[400,490,520,590]});
   // ดอกไม้แดงในฉากบูรพาถูกตัวอ่านสีมองเป็นลาวาตรงปลายเท้าจุดเดิม
   // Asia's painted gate occupies the old tea site. Place the pavilion on the open path beside it.
   // The other scenes keep the left-hand site, lowered clear of the rocks behind the roof.
@@ -2022,7 +2029,15 @@ export function syncSceneZone(zone) {
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
     ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
-  for (const s of STATIONS) s.flip = STATION_FLIP[z.k].includes(s.k);
+  for (const s of STATIONS) {
+    s.flip = STATION_FLIP[z.k].includes(s.k);
+    s.mapScale *= MAP_BUILDING_SCALE;
+    s.bw *= MAP_BUILDING_SCALE;
+    s.hit = s.hit.map((v,i) => (i % 2 ? s.by : s.bx) +
+      (v - (i % 2 ? s.by : s.bx)) * MAP_BUILDING_SCALE);
+    s.interactionReach = 100 * MAP_BUILDING_SCALE;
+    s.blockScale = MAP_BUILDING_SCALE;
+  }
 }
 
 // Seated rulers guide the player. ZONES[].bossName identifies the separate

@@ -76,6 +76,8 @@ test('ทีมยมบาทน้อย ทัณฑ์ เพลิง ใ�
       let ultimateCount = 0, turns = 0, medicineCount = 0;
       while (!g.battle.over && turns++ < 45) {
         const b = g.battle;
+        // J1: this deterministic battle simulation waits for fire readiness.
+        g.advanceBattleTime(b.skillRemainingMs?.fire || 0, true);
         const helper = g.battleCrew().find(c => !g.crewHelpWhy(c));
         const act = b.youHp <= b.youMax - 35 && g.inventory.health ? 'health'
           : helper ? `crew:${helper.k}` : g.mp >= BATTLE.mpCost.fire ? 'fire' : 'atk';

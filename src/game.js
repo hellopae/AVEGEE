@@ -1,6 +1,7 @@
 import { gateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
+import { YAMA_SKILL_SECONDS, yamaSkillRemaining } from './yama-cooldown.js?v=j1';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=minigame-review-20261011';
@@ -22,7 +23,7 @@ import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QU
          MERCHANT, BOON_SHOP, UPGRADES, authorityOf, fmtAuthority, BOSS_NAMES,
          syncSceneZone, ZONE_EVENTS, scaleFoeHp, scaleFoeAtk, ZONE_ENTRY, isTrialDestination, isFrontierBreachEvent } from './data.js';
 import { CASES_BY_ZONE, ALL_CASES, isPure, CASE_EVERY } from './cases.js';
-import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid } from './walk.js';
+import { canWalk, stepTo, nearestWalk, findPath, setBlocks, resetWalk, walkVersion, setNpcDiscs, canWalkAvoid, clearLine } from './walk.js';
 import { DEVA_MAP } from './deva-map.js';
 import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
@@ -541,6 +542,8 @@ const API = {
   },
   advanceBattleTime(dt, active = !this.paused) {
     if (!this.battle || this.battle.over || !active || globalThis.document?.hidden) return;
+    for (const key of Object.keys(this.battle.skillRemainingMs || {}))
+      this.battle.skillRemainingMs[key] = Math.max(0, this.battle.skillRemainingMs[key] - Math.max(0, dt));
     for (const actor of [...this.battleCrew(), this.guard].filter(Boolean))
       actor.helpRemainingMs = Math.max(0, (actor.helpRemainingMs || 0) - Math.max(0, dt));
   },
@@ -1668,7 +1671,10 @@ const API = {
     if (P.path && P.path.length) {
       const w = P.path[0];
       const dx = w[0] - P.x, dy = w[1] - P.y, d = Math.hypot(dx, dy);
-      if (d < 5) {
+      // M2: cut the corner only when the next leg is clear from where the hero stands. Skipping a waypoint 5px early
+      // beside a wall notch aims the hero straight into it (cyberhell/tea and west/krata from the zone gate got stuck).
+      const cutCorner = d < 5 && !(P.path.length > 1 && d > 0.6 && !clearLine([P.x, P.y], P.path[1]));
+      if (cutCorner) {
         P.path.shift();
         if (!P.path.length) { P.path = null; P.tx = null; }
       } else {
@@ -3010,6 +3016,8 @@ const API = {
     if (command && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
+    if (yamaSkillRemaining(B, what)) return false;
+    if (what === 'rage' && command && command.recipientId !== 'you') return false;
     const livingBefore = B.foes.filter(f => f.hp > 0).map(f => ({ id:f.id, hp:f.hp }));
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
@@ -3127,9 +3135,10 @@ const API = {
       say(`🌪️ พัดสายลมซัดศัตรูทุกคน — คนละ ${dmg} หน่วย`);
 
     } else if (what === 'rage') {
-      if (!this.abilities.rage || B.rageTurns > 0 || B.rageCooldown > 0 || this.mp < BATTLE.mpCost.rage) return false;
+      if (!this.abilities.rage || B.rageTurns > 0 || this.mp < BATTLE.mpCost.rage) return false;
       this.mp -= BATTLE.mpCost.rage;
       B.rageTurns = 3;
+      B.dmg.buffActorId = 'you';
       say('🔥 พลังบ้าคลั่งปกคลุมยมบาทน้อย — การโจมตี 3 ครั้งถัดไปแรงขึ้น');
 
     } else if (what === 'valkyrieSpear') {
@@ -3142,6 +3151,7 @@ const API = {
       if (!(this.abilities.cooldownClock || this.inventory.cooldownClock) || B.clockUsed) return false;
       B.clockUsed = true;
       B.rageCooldown = 0;
+      B.skillRemainingMs = {};
       if (this.isFinalBattle()) {
         const group = B.encounter.startsWith('minion:') ? 'minions' : B.encounter.startsWith('ruler:') ? 'rulers' : 'boss';
         (this.finalEventState().clockUsedByGroup ||= {})[group] = true;
@@ -3181,14 +3191,15 @@ const API = {
       if (it.stun) stunFoe = it.stun;
     }
 
-    if (B.rageCooldown > 0) B.rageCooldown--;
+    if (YAMA_SKILL_SECONDS[what])
+      (B.skillRemainingMs ||= {})[what] = YAMA_SKILL_SECONDS[what] * 1000;
 
     // Rage lasts for three damaging player actions. Healing, the clock and
     // activating Rage leave the remaining charges intact.
     if (dmg > 0 && B.rageTurns > 0 && (!actor || actor.id === 'you')) {
       dmg = Math.round(dmg * 1.5); rageMult = 1.5;
       B.rageTurns--;
-      if (!B.rageTurns) B.rageCooldown = 3;
+
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
     // G3b — เพดานรวมเมื่อซ้อนคริ/rage แล้วค่อยคิดผลพิเศษจากดาเมจจริงที่เข้าเป้า

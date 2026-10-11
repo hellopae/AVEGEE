@@ -61,18 +61,19 @@ test('Zone 3 wins grant ice and queue its two story panels', () => {
   assert.equal(g.storyQueue[0].key,'west'); assert.equal(STORY.west.pages.length,2);
 });
 
-test('Rage requires three recovery turns after its three boosted attacks', () => {
+test('Rage requires 60 active seconds and three boosted attacks before reuse', () => {
   const g = createGame(); g.abilities.rage = true; g.mp = g.mpMax = 500;
   const b = g.startBattle({id:123,deserved:100,who:'test'}); b.youHp = b.youMax = 1000;
   assert.equal(g.battleAct('rage'),true);
   for (let i=0;i<3;i++) assert.equal(g.battleAct('atk'),true);
-  assert.equal(b.rageTurns,0); assert.equal(b.rageCooldown,3);
+  assert.equal(b.rageTurns,0); assert.equal(b.skillRemainingMs.rage,60000);
   const mp = g.mp;
   for (let i=0;i<3;i++) {
     assert.equal(g.battleAct('rage'),false); assert.equal(g.mp,mp);
     assert.equal(g.battleAct('atk'),true);
   }
-  assert.equal(b.rageCooldown,0); assert.equal(g.battleAct('rage'),true);
+  g.advanceBattleTime(60000, true);
+  assert.equal(b.skillRemainingMs.rage,0); assert.equal(g.battleAct('rage'),true);
   assert.equal(g.mp,mp-BATTLE.mpCost.rage);
 });
 

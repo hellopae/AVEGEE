@@ -58,7 +58,7 @@ test('ทุกโซนใช้ผังและพิกัดเดีย�
     assert.deepEqual(STATIONS.filter(fixedSite).map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
     assert.deepEqual(STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x, s.y]), servicePos);
     assert.deepEqual([STATIONS.find(s => s.k === 'lan').x, STATIONS.find(s => s.k === 'lan').y],
-      z.k === 'th' ? [585,615] : [500,615]);
+      [455,605]);
     assert.deepEqual([STATIONS.find(s => s.k === 'tea').x, STATIONS.find(s => s.k === 'tea').y],
       z.k === 'asia' ? [365,650] : [218,653]);
     assert.deepEqual([SPOTS.bench.x, SPOTS.bench.y], [820, 455]);
