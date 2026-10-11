@@ -323,8 +323,8 @@ export function blockRectsOf(def) {
     for (let y = y0; y <= y1; y++) if (rows[y]) { a = Math.min(a, rows[y][0]); b = Math.max(b, rows[y][1]); }
     if (b < a) continue;
     // เผื่อขอบเข้ามานิดหนึ่ง (6% ของความกว้างแถบ) จะได้เดินเฉียดชายคา/ขอบบันไดได้ ไม่ใช่ชนอากาศ
-    const x1 = sx(a), x2 = sx(b + 1), pad = Math.min((x2 - x1) * 0.06, 6);
-    if (x2 - x1 - pad * 2 < 4) continue;
+    const x1 = sx(a), x2 = sx(b + 1), pad = Math.min((x2 - x1) * 0.06, 6 * (def.blockScale ?? 1));
+    if (x2 - x1 - pad * 2 < 4 * (def.blockScale ?? 1)) continue;
     out.push([x1 + pad, sy(y0), x2 - pad, sy(y1 + 1)]);
   }
   blockCache.set(ck, out);

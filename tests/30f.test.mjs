@@ -47,7 +47,7 @@ test('30F: CyberHell translations move hits and worker/service points together a
     for (const [key,[dx,dy]] of Object.entries(offsets)) {
       if(key==='krajok') {
         // E1 supersedes the old translation-only tower: moved, scaled hit, door below the stairs.
-        assert.deepEqual(once.krajok,{bx:1540,by:675,x:1510,y:685,hit:[1403.5,441,1676.5,675]});
+        assert.deepEqual(once.krajok,{bx:1540,by:675,x:1510,y:685,hit:[1430.8,675+(441-675)*.8,1649.2,675]});
         continue;
       }
       for (const [field,value] of Object.entries(original[key])) {
