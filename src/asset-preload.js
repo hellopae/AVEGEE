@@ -32,6 +32,7 @@ const SPLIT_RULES = [
   [0, 0, /^img\/map-v5\//],
   [0, 0, /^img\/theme-v4\/(map-|st-)/],
   [0, 0, /^img\/hero-yama(-atk(-[LR])?|-sit(-sip)?|-cry|-walk|-walk-4dir-v2|-profile)?\.(png|webp)$/],
+  [0, 0, /^img\/(Asia|West|CyberHell)\/hero-yama-(asia|west|cyberhell)-atk\.png$/],
   [0, 0, /^img\/hero-boss\.png$/],
   // พบจากการรันจริงด้วยแคตตาล็อกว่าง (10 ต.ค.): จอแรกขอภาพเหล่านี้ทันที — แถวโปรไฟล์ยมบาท/บอส และสไปรต์วิญญาณประจำโซนในคิว
   [0, 0, /^img\/(\w+\/)?hero-(yama|boss)(-(th|asia|west|cyberhell))?-profile\.(png|webp)$/],
