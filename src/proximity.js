@@ -34,7 +34,7 @@ export function nearestInteraction(player, targets, reach = INTERACTION_REACH) {
   let nearest = null, distance = Infinity;
   for (const target of targets) {
     const d = Math.hypot(player.x - target.x, player.y - target.y);
-    if (d <= reach && d < distance) { nearest = target; distance = d; }
+    if (d <= (target.kind === 'station' ? (target.reach ?? reach) : reach) && d < distance) { nearest = target; distance = d; }
   }
   return nearest;
 }
@@ -69,7 +69,7 @@ export function mapInteractions(g, merchant) {
     const repair = st.fire > 0 && !st.repair;
     const pos = stationButtonPos(def);
     targets.push({ id:def.k, key:def.k, kind:repair ? 'repair' : 'station',
-      x:def.x, y:def.y, bx:pos.bx, by:pos.by, anchor:pos.anchor,
+      x:def.x, y:def.y, reach:def.interactionReach, bx:pos.bx, by:pos.by, anchor:pos.anchor,
       label:repair ? `เรียก${g.availableBuilder()?.name || 'ทัณฑ์'}มาซ่อม` : 'เข้าไป' });
   }
   return targets;
