@@ -137,3 +137,9 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 .sword-keys button{min-height:60px;font-size:18px}.g5-closeup{touch-action:none;cursor:pointer}
 @media(max-width:700px),(max-height:500px){.training-guide{grid-template-columns:repeat(3,minmax(150px,1fr));gap:8px}.training-guide article{padding:10px}.training-choice img{width:52px;height:60px}.mg-train .sword-intro{justify-content:flex-start}.sword-keys button{min-height:44px;font-size:14px}}
 @media(max-width:520px){.training-guide{grid-template-columns:1fr}.training-choice{flex:0 1 110px}}
+
+/* Muted metal practice seals follow the room palette; lane labels remain distinct. */
+.sword-keys button{background:linear-gradient(180deg,var(--lane),#241c2a 55%,var(--lane));color:var(--sword-text,#fff0cf);border:2px solid var(--sword-edge,#d6ab65);border-radius:8px;box-shadow:inset 0 0 0 3px #15101a,inset 0 0 0 4px var(--sword-edge,#d6ab65);text-shadow:0 1px 2px #000}
+.sword-keys button::before,.sword-keys button::after{content:'◆';font-size:10px;opacity:.65;color:var(--sword-edge,#d6ab65);margin:0 8px}
+.sword-keys button:active{filter:brightness(1.35)}
+.g5-round-message{display:block;margin-top:10px;color:#eed4a5;text-align:center;font-size:13px}

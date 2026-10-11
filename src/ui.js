@@ -1,4 +1,4 @@
-import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011';
+import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
@@ -10,8 +10,8 @@ import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
 import { actorStanding, specialCooldown } from './actor-recovery.js';
 import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-review-20261011';
-import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011';
-import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011';
+import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011-fire-theme-v2';
+import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';
 import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
