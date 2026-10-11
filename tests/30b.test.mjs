@@ -10,10 +10,10 @@ test('30B-2: spriteKey ตัด path/นามสกุล/-v2/query', () => {
   assert.equal(spriteKey(null), '');
 });
 
-test('30B-2: ทีมโซน 3 ทั้ง 5 ตัวและเพลิงโซน 4 ไม่ถูกพลิก ส่วนโซน 1-2 พลิกตามธรรมเนียมเดิม', () => {
+test('30B-2: ทีมโซน 3 หันขวามาแล้ว; เทอร์โบโซน 4 ต้องพลิกตามภาพจริง J1', () => {
   for (const k of ['plerng', 'kan', 'boon', 'dam', 'guard'])
     assert.equal(teamNeedsMirror(`img/West/crew-${k}-west.png`), false, k);
-  assert.equal(teamNeedsMirror('img/CyberHell/crew-plerng-cyberhell.png'), false);
+  assert.equal(teamNeedsMirror('img/CyberHell/crew-plerng-cyberhell.png'), true);
   assert.equal(teamNeedsMirror('img/West/crew-guard-west-v2.png'), false);
   assert.equal(teamNeedsMirror('img/crew-plerng.png'), true);
   assert.equal(teamNeedsMirror('img/Asia/crew-guard-asia-v2.png'), true);

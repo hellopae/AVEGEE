@@ -473,3 +473,14 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   /* เมนูย่อย (ฟันดาบ/พลัง/ไอเท็ม) เดิมกางไปทางซ้ายของวงจนทับยมบาท → กางลงมาใต้วง ชิดขวาของยมบาท (แถวละ 2 ปุ่ม) */
   .arena.combat-arena:not(.final-team) .combat-wheel .command-options{left:5%;max-width:152px}
 }
+
+/* J1: remove inherited oval button shadow; keep names and MP in their own rows. */
+.combat-wheel .options-1 .orb-choice{box-shadow:none!important;border-radius:0;background:transparent!important}
+.skill-cooldown{position:absolute;top:36px;left:50%;transform:translateX(-50%);padding:2px 5px;background:#21121be8;color:#fff;font:bold 14px/1.2 sans-serif;font-style:normal}
+
+.arena.combat-arena .actor-wheel.ally-wheel{width:160px}
+
+.combat-wheel .options-1{row-gap:8px!important;column-gap:8px!important}
+.combat-wheel .options-1 .orb-choice:has(i){min-height:112px;gap:3px}
+.combat-wheel .orb-choice:has(.skill-cooldown){opacity:1!important;filter:none}
+.combat-wheel .orb-choice:has(.skill-cooldown) img{opacity:.35;filter:grayscale(.7)}
