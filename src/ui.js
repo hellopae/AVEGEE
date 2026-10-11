@@ -20,8 +20,9 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
-import { placeWheel, placeFinButton } from './wheel-place.js?v=i1b';
-import { teamFaceClass, foeFaceClass, ragePoseSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk';
+import { placeWheel, placeFinButton, courtWheelReference } from './wheel-place.js?v=i1b-j1';
+import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
+import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
 import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
@@ -31,7 +32,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-skillatk';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j1';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js';
@@ -2086,7 +2087,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ซึ่งตั้งไว้สำหรับรูปท่าฟาด hero-yama-atk ที่วาดหันขวา — แต่ตอนฟันดาบธรรมดา youImg คือ "ท่ายืน" (แอนิเมชันดาบวาดบน canvas ทับ 580ms)
   // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
   const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
-    : showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
+    : showRage ? (rageArtSrc(g.outfit || g.zone) || ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
@@ -2120,7 +2121,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}
-      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${artUrl('hero-yama-profile') || artUrl('hero-yama')}'">
+      <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
@@ -2193,6 +2194,7 @@ function powerSound(k) {
   else sfx(powerSfx(k, g.abilities));
 }
 function playActionCutscene(k, ultimate = null) {
+  if (k === 'rage') return;
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
@@ -2963,8 +2965,13 @@ function openBattle(after) {
       </div></div></div></div>` : '';
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
       <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
-    const battleChoice = (k, icon, label, ok, note = '') => `<button class="orb-choice" data-act="${k}" ${ok ? '' : 'disabled'}
-      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}</button>`;
+    const battleChoice = (k, icon, label, ok, note = '') => {
+      const remaining = yamaSkillRemaining(b, k);
+      const baseReady = ok;
+      ok = ok && !remaining;
+      return `<button class="orb-choice" data-base-ready="${baseReady}" data-act="${k}" ${ok ? '' : 'disabled'}
+      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
+    };
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
       const it = battleItem(k), pw = it?.power ? g.powerOf(it.power) : null;
@@ -2979,7 +2986,7 @@ function openBattle(after) {
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `MP ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `MP ${BATTLE.mpCost.charge}`) : '')
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม', mp >= BATTLE.mpCost.wind, `MP ${BATTLE.mpCost.wind}`) : '')
-      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns && !b.rageCooldown, b.rageCooldown ? `พักพลังอีก ${b.rageCooldown} เทิร์น` : `MP ${BATTLE.mpCost.rage}`) : '')
+      + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `MP ${BATTLE.mpCost.rage}`) : '')
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `MP ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
@@ -3202,6 +3209,7 @@ function openBattle(after) {
         if (!wheel.isConnected) return;
         const area = stage.getBoundingClientRect(), rect = (anchor.querySelector('img:not(.fx)') || anchor).getBoundingClientRect();
         if (!area.width || !rect.width) return;
+        wheel.classList.toggle('ally-wheel', !isYama);
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
         const box = e => { const r = e.getBoundingClientRect(); return { l:r.left - area.left, t:r.top - area.top, r:r.right - area.left, b:r.bottom - area.top }; };
         // ขอบขวาของ "ตัวภาพ" จริง (img เป็น object-fit:contain จึงมีขอบโปร่งใสสองข้าง) ให้วงชิดตัวละครไม่ห่างเกินไป
@@ -3210,7 +3218,8 @@ function openBattle(after) {
         if (im && im.naturalWidth) { const vis = Math.min(me.r - me.l, (me.b - me.t) * im.naturalWidth / im.naturalHeight); me.l += (me.r - me.l - vis) / 2; me.r = me.l + vis; }
         const boxes = (list, skip) => [...stage.querySelectorAll(list)].filter(e => e !== skip).map(box).filter(r => r.r - r.l > 0);
         const { left, top } = placeWheel({ area:{ w:area.width, h:area.height }, wheel:{ w, h }, me,
-          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)') });
+          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)'),
+          reference:courtWheelReference({ w:innerWidth, h:innerHeight }), above:!isYama });
         wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.right = 'auto'; wheel.style.bottom = 'auto';
       };
       place(); requestAnimationFrame(place); setTimeout(place, 260);
@@ -3219,7 +3228,7 @@ function openBattle(after) {
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
-      if (el.dataset.act === 'cooldownClock') { executeCommand('cooldownClock'); return; }
+      if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
       b.command = el.dataset.act; paint();
     });
     const finishWave = () => {
@@ -3353,6 +3362,13 @@ function openBattle(after) {
     const now = performance.now(), elapsed = now - crewClockAt; crewClockAt = now;
     g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
     g.updateActorRecovery();
+    dlg.querySelectorAll('[data-act][data-base-ready]').forEach(button => {
+      const remaining = yamaSkillRemaining(g.battle, button.dataset.act);
+      button.disabled = !!phase || !!g.battle?.over || button.dataset.baseReady !== 'true' || !!remaining;
+      let badge = button.querySelector('.skill-cooldown');
+      if (remaining && !badge) { badge = document.createElement('em'); badge.className = 'skill-cooldown'; badge.setAttribute('role', 'status'); button.append(badge); }
+      if (badge) { if (remaining) badge.textContent = `${remaining}s`; else badge.remove(); }
+    });
     for (const c of g.battleCrew()) {
       const remaining=g.crewCooldown(c), progress=100*(1-remaining/specialCooldown(c));
       const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
