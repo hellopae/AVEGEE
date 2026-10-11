@@ -1,12 +1,12 @@
-import { createRhythm, createSlicing } from './sword-engines.js';
-import { mount as swordPanel } from './sword-panel.js?v=20261010-final';
+import { createRhythm, createSlicing } from './sword-engines.js?v=minigame-review-20261011';
+import { mount as swordPanel } from './sword-panel.js?v=minigame-review-20261011';
 import * as mirror from './mirror.js';
 import * as breath from './breath.js';
 import * as documents from './documents.js';
 import * as targets from './targets.js';
 // B4 engine shared by lan/lokan; 30 seconds of active, unpaused play. B8 games carry create()/ui() instead of a kind.
 export const TRAINING_GAMES = Object.freeze({
-  dab:{ name:'ฝึกวิชาดาบ', tip:'กด D F Space J K หรือปุ่มสี เมื่อโน้ตถึงเส้นทอง · โดน 10 โน้ตก่อนพลาด 10 ครั้ง', kind:'rhythm', seconds:24, create:createRhythm, ui:swordPanel },
+  dab:{ name:'ฝึกวิชาดาบ', tip:'คลิกปุ่มสีหรือช่องบนลาน เมื่อโน้ตเข้าแถบทอง (ใช้ D F Space J K ได้ด้วย) · โดน 10 โน้ตก่อนพลาด 10 ครั้ง', kind:'rhythm', seconds:34, create:createRhythm, ui:swordPanel },
   lan:{ name:'ยกก้อนหิน / Stone lifting', tip:'กดค้างเพื่อยก ปล่อยที่ 55–75 · 10 ครั้ง / Hold to lift; release at 55–75 (10 lifts)', kind:'stone' },
   lokan:{ name:'ยกก้อนหิน / Stone lifting', tip:'กดค้างเพื่อยก ปล่อยที่ 55–75 · 10 ครั้ง / Hold to lift; release at 55–75 (10 lifts)', kind:'stone' },
   krajok:{ name:'ฝึกหอส่องกรรม / Mirror training', tip:'แตะกระจกแล้วลากหรือกด ±15° ให้แสงถึงทางออก ⛩ ค้าง 2 วิ · 45 วิ / Tap a mirror, drag or press ±15° so the light reaches the exit ⛩ and holds 2 s (45 s)', kind:'mirror', seconds:45, create:mirror.create, ui:mirror.mount },

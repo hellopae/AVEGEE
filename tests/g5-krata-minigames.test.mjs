@@ -138,7 +138,7 @@ test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, 
   const {runKrataQte}=await import('../src/minigames/krata-qte.js');
   class Element extends EventTarget {
     constructor(){super();this.classList={remove(){},toggle(){}};this.nodes=new Map();this.children=[];this.style={};this.disabled=false;}
-    set innerHTML(html){this.html=html;this.nodes.clear();for(const selector of ['.mg-x','.g5-content','.g5-choices','.g5-count','.g5-orb img','.g5-green','.g5-white','.g5-needle','[data-fire]','p'])this.nodes.set(selector,new Element());this.nodes.get('[data-fire]').disabled=html.includes('type="button" disabled');}
+    set innerHTML(html){this.html=html;this.nodes.clear();for(const selector of ['.mg-x','.g5-content','.g5-choices','.g5-count','.g5-closeup','.g5-orb img','.g5-green','.g5-white','.g5-needle','[data-fire]','p'])this.nodes.set(selector,new Element());this.nodes.get('[data-fire]').disabled=html.includes('type="button" disabled');}
     querySelector(selector){return this.nodes.get(selector)||null;}
     append(el){this.children.push(el);}
     setAttribute(key,value){if(key==='disabled')this.disabled=true;else this[key]=value;}
@@ -161,12 +161,25 @@ test('G5 QTE host: waits for walking, uses timing windows, stops after outcome, 
     body=host.querySelector('.g5-content');assert.equal(body.querySelector('.g5-choices').children.length,2);
     body.querySelector('.g5-choices').children[1].onclick();
     // Five independent contracting circles; match within the green tolerance each time.
-    for(let n=0;n<5;n++){advance(1600);if(n===0){train.paused=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);train.paused=false;globalThis.document.hidden=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);globalThis.document.hidden=false;}const fire=body.querySelector('[data-fire]');const event=new Event('pointerdown',{cancelable:true});Object.defineProperty(event,'button',{value:0});fire.dispatchEvent(event);fire.onclick({detail:1});}
+    for(let n=0;n<5;n++){advance(1600);if(n===0){train.paused=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);train.paused=false;globalThis.document.hidden=true;body.querySelector('[data-fire]').onclick();assert.equal(train._krataSession.hits,0);globalThis.document.hidden=false;}const fire=body.querySelector(n===0?'.g5-closeup':'[data-fire]');const event=new Event('pointerdown',{cancelable:true});Object.defineProperty(event,'button',{value:0});fire.dispatchEvent(event);if(fire.onclick)fire.onclick({detail:1});}
     assert.equal(train.fireControlState(c).level,1);assert.equal(train.fireControlState().level,0);stop();assert.equal(frame,null);
     now=performance.now();
     stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>closed++});
     body=host.querySelector('.g5-content');body.querySelector('.g5-choices').children[0].onclick();advance(6000);
     assert.equal(body.querySelector('[data-fire]').disabled,true);assert.equal(train.fireControlState().level,0);assert.equal(train._krataSession,null);
     host.querySelector('.mg-x').onclick();assert.equal(closed,1);assert.equal(frame,null);
+    for(const zone of ['asia','west','cyberhell']) {
+      train.zone=zone;train.beginFireTraining=()=>({actor:'yama'});train.cancelKrata=()=>{};
+      stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>{}});
+      body=host.querySelector('.g5-content');
+      body.querySelector('.g5-choices').children[0].onclick();
+      assert.ok(body.html.includes(`hero-yama-${zone}-fire-cutscene-v3.png`));
+      stop();
+      stop=runKrataQte(host,{g:train,st,room,training:true,alive:()=>true,onClose:()=>{}});
+      body=host.querySelector('.g5-content');
+      body.querySelector('.g5-choices').children[1].onclick();
+      assert.ok(body.html.includes(`plerng-${zone}-training-v2.png`));
+      stop();
+    }
   }finally{Object.assign(globalThis,old);}
 });

@@ -4,7 +4,7 @@
 // a finished session changes the real battle power with no second formula.
 // Record shape (B3): training.shared['global:yama'] | training.zones[zone][rosterId]
 //   { exp, level, readyAtTick, attempts:{ window, count } } · training.activeSession · training.sequence
-import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS } from './data.js?v=sword-schools-20261010';
+import { ALLY_ZONE_SCALE, TRAINING_RULES, TRAINING_STATIONS } from './data.js?v=minigame-review-20261011';
 import { trainingLevel as levelFromExp } from './progression.js';
 
 export const HERO_TRAINING_ID = 'global:yama';

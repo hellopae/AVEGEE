@@ -1,5 +1,5 @@
-import { drawSchoolProps } from './sword-school-props.js';
-import { mirrorObstacle, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js';
+import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011';
+import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
 import { drawYamaSword, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
@@ -216,6 +216,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
                                                    : x >= a[0] && y >= a[1] && x <= a[2] && y <= a[3]);
   /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
   const snap = (x, y) => {
+    if (def.k === 'krajok' && api.mirrorPlaced?.()) [x,y]=mirrorClearPosition(x,y);
     if (inArea(x, y)) return [x, y];
     let best = null, bd = Infinity;
     for (const a of areas) {
@@ -426,6 +427,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     const U = unit();
+    if (def.k === 'krajok' && api.mirrorPlaced?.() && mirrorObstacle(P.x,P.y)) { [P.x,P.y]=snap(P.x,P.y); P.tx=P.ty=null; }
 
     // ---- วงแหวนบอกจุดลงมือ ----
     const ax = px(room.act[0]), ay = py(room.act[1]);
@@ -433,11 +435,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     const near = inReach();
     ctx.strokeStyle = near ? `rgba(255,205,120,${0.55 + q * 0.45})` : 'rgba(255,205,120,.30)';
     ctx.lineWidth = 2.5;
-    if (!sitting && !lying) {
+    if (!sitting && !lying && !['ngiw','dab'].includes(def.k)) {
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
-    if (room.training && def.k !== 'sala') {
+    if (room.training && !['sala','ngiw','dab'].includes(def.k)) {
       const [x,y] = room.training, ready = inTrainingReach();
       ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
       ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();
@@ -460,13 +462,13 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     };
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
+    for (const a of room.souls || []) acts.push({y:a[1],fn:()=>drawSchoolProps(ctx,def.k,px(a[0]),py(a[1]),U)});
     (st ? st.slots : []).forEach((sl, i) => {
       const a = room.souls[i] || room.souls[room.souls.length - 1];
       if (!a) return;
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
-        drawSchoolProps(ctx,def.k,x,y,U);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
         if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
         else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);

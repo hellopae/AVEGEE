@@ -129,7 +129,7 @@ test('B4 stone mechanics shared, sword note timing, fire clock finishes at 30 se
     assert.equal(e.view().successes,1); e.input('hold'); e.input('release'); assert.equal(e.view().successes,1);
     e.step(1.6); assert.equal(e.view().round,2);
   }
-  const e = createTrainingGame('dab',1); e.step(2.8); e.input({type:'note',lane:e.view().notes[0].lane}); assert.equal(e.view().hits,1);
+  const e = createTrainingGame('dab',1); e.step(e.view().notes[0].at); e.input({type:'note',lane:e.view().notes[0].lane}); assert.equal(e.view().hits,1);
   const fire = createTrainingGame('krata');
   for (let i = 0; i < 300; i++) { if (fire.view().heat < 45) fire.input('hit'); fire.step(.1); }
   fire.step(.001); assert.equal(fire.view().done,true); assert.ok(fire.score() >= 95);
