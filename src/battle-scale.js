@@ -60,6 +60,15 @@ function drawnRect(img) {
            top:r.top + (r.height - h) * (Number.isFinite(pos[1]) ? pos[1] : .5), w, h };
 }
 
+/** Visible sprite bounds, excluding transparent padding and respecting CSS mirroring. */
+export async function battleSpriteRect(img) {
+  const raw = await measure(img), d = drawnRect(img);
+  const mirrored = getComputedStyle(img).transform.startsWith('matrix(-');
+  const b = (mirrored ? mirrorBox(raw) : raw) || { l:0, t:0, w:1, h:1 };
+  return { l:d.left + b.l*d.w, t:d.top + b.t*d.h,
+    r:d.left + (b.l+b.w)*d.w, b:d.top + (b.t+b.h)*d.h };
+}
+
 /** คำนวณแถวยมทูตจากตัวเลขล้วน (ไม่แตะ DOM) — แยกออกมาให้เทสต์ได้
  *  hero = { visH, oLeft, base } ความสูงตัวจริง · ขอบซ้ายตัวจริง · เส้นเท้า (พิกัดเดียวกับ stageLeft)
  *  crew = [{ box:{l,t,w,h}, aspect }] · คืน { items:[{boxW,boxH,left}], fit } (left = x ของกล่องภาพ) */

@@ -484,3 +484,11 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 .combat-wheel .options-1 .orb-choice:has(i){min-height:112px;gap:3px}
 .combat-wheel .orb-choice:has(.skill-cooldown){opacity:1!important;filter:none}
 .combat-wheel .orb-choice:has(.skill-cooldown) img{opacity:.35;filter:grayscale(.7)}
+
+/* Keep the final-battle guard in the same roster row as its portrait. */
+.arena.combat-arena.final-team .battle-squad>span.guard{position:static;transform:none;width:auto;height:100%}
+/* A compact wheel fits between the enemy and party on narrow portrait screens. */
+@media(max-width:520px){
+  .arena.combat-arena .actor-wheel,.arena.combat-arena .actor-wheel.ally-wheel{width:110px}
+  .arena.combat-arena .actor-wheel .command-label,.arena.combat-arena .actor-wheel .command-center-label{font-size:10px}
+}

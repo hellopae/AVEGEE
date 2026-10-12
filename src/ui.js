@@ -19,8 +19,8 @@ import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
-import { fitBattleSprites, fitCutsceneImage } from './battle-scale.js';
-import { placeWheel, placeFinButton, courtWheelReference } from './wheel-place.js?v=i1b-j1';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012';
+import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
 import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
 // ui.js — แผงควบคุม · โมดัล · ลูปวาด
@@ -2894,9 +2894,9 @@ function openBattle(after) {
     const mp = g.mp;
     const battleHelpers = g.battleCrew();
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าร่วมทุกฉากต่อสู้ให้เองถ้าจ้างไว้แล้ว ไม่กินโควตา
-    // ทีมยมทูต 2 คน ต่อท้ายแถว squad เสมอ (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
+    // ใช้ลำดับยักษ์ → ยมทูต → ยมบาทน้อย ให้ตรงกับการ์ด (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
-    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [...battleHelpers, { ...g.guard, name: GUARD.name }] : battleHelpers;
+    let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name: GUARD.name }, ...battleHelpers] : [...battleHelpers];
     if (phase === 'foe') for (const c of b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])) {
       if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || GUARD.name});
     }
@@ -3032,10 +3032,8 @@ function openBattle(after) {
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
     const meter = (value, max, type, label = '') => `<span class="battle-meter ${type}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.max(0, Math.round(value))}"><i style="width:${Math.max(0, Math.min(100, 100 * value / (max || 1)))}%"></i></span>`;
-    const team = [
-      ...(g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name:GUARD.name }] : []),
-      ...battleHelpers,
-    ];
+    // One roster drives both the battlefield and the portrait row, including hit actors.
+    const team = squadMembers;
     stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
       <div class="battle-team-hud">
         ${team.map(c => {
@@ -3107,8 +3105,9 @@ function openBattle(after) {
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
     applyHealFx();
-    if (!g.isFinalBattle()) fitBattleSprites(stage, heroFace());
-    if (!g.isFinalBattle() && typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
+    const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace());
+    if (!g.isFinalBattle()) fitTeam();
+    if (!g.isFinalBattle() && typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitTeam(); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
@@ -3165,28 +3164,32 @@ function openBattle(after) {
     });
 
     const wheel = stage.querySelector('.actor-wheel');
-    const anchor = stage.querySelector(`[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
+    const anchor = stage.querySelector(`.fig[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"], .battle-squad [data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
     wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) paint(); });
     if (wheel && anchor) {
+      wheel.style.visibility = 'hidden'; // Do not flash the old fixed CSS position while sprites load.
       // I1-B ข้อ 2 — วงคำสั่งอยู่ "ขวาบนของตัวละครที่ถึงตา" ใกล้พอให้รู้ว่าเป็นของตัวนั้น แต่ไม่ทับตัว (H2 เคยย้ายไปชิดคนขวาสุดทุกคน = ไกลจากตัวที่ถึงตา)
       // กรอบภาพวงในแคนวาส 900×1100: ลายวงกินพื้นที่ x 9.4%–95% · y 5.8%–95% (ดูตาราง petals ใน command-wheel.js) — วัดซ้ำหลังกล่องเปิดจริง
       // เพราะ paint() รอบแรกรันก่อน openDlg() (กล่องยังไม่มีขนาด)
-      const place = () => {
+      const place = async () => {
+        await stage._battleSpriteFit;
+        const im = anchor.querySelector('img:not(.fx)');
+        const teamImages = [...stage.querySelectorAll('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img')];
+        const foeImages = [...stage.querySelectorAll('.fig.foe img:not(.fx)')];
+        const [actorRect, teamRects, foeRects] = await Promise.all([
+          battleSpriteRect(im), Promise.all(teamImages.map(battleSpriteRect)), Promise.all(foeImages.map(battleSpriteRect))
+        ]);
         if (!wheel.isConnected) return;
-        const area = stage.getBoundingClientRect(), rect = (anchor.querySelector('img:not(.fx)') || anchor).getBoundingClientRect();
-        if (!area.width || !rect.width) return;
+        const area = stage.getBoundingClientRect();
+        if (!area.width || actorRect.r <= actorRect.l) return;
         wheel.classList.toggle('ally-wheel', !isYama);
         const w = wheel.offsetWidth, h = wheel.offsetHeight;
-        const box = e => { const r = e.getBoundingClientRect(); return { l:r.left - area.left, t:r.top - area.top, r:r.right - area.left, b:r.bottom - area.top }; };
-        // ขอบขวาของ "ตัวภาพ" จริง (img เป็น object-fit:contain จึงมีขอบโปร่งใสสองข้าง) ให้วงชิดตัวละครไม่ห่างเกินไป
-        const im = anchor.querySelector('img:not(.fx)');
-        const me = box(im || anchor);
-        if (im && im.naturalWidth) { const vis = Math.min(me.r - me.l, (me.b - me.t) * im.naturalWidth / im.naturalHeight); me.l += (me.r - me.l - vis) / 2; me.r = me.l + vis; }
-        const boxes = (list, skip) => [...stage.querySelectorAll(list)].filter(e => e !== skip).map(box).filter(r => r.r - r.l > 0);
+        const local = r => ({ l:r.l-area.left, r:r.r-area.left, t:r.t-area.top, b:r.b-area.top });
+        const me = local(actorRect);
         const { left, top } = placeWheel({ area:{ w:area.width, h:area.height }, wheel:{ w, h }, me,
-          team:[me, ...boxes('.fig.you img:not(.fx), .battle-squad img, .fig.helper img, .fig.guard img', im)], foes:boxes('.fig.foe img:not(.fx)'),
-          reference:courtWheelReference({ w:innerWidth, h:innerHeight }), above:!isYama });
-        wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.right = 'auto'; wheel.style.bottom = 'auto';
+          team:teamRects.map(local), foes:foeRects.map(local),
+          artBounds:isYama ? WHEEL_ART : { ...WHEEL_ART, y1:850/1100 } });
+        wheel.style.left = `${left}px`; wheel.style.top = `${top}px`; wheel.style.right = 'auto'; wheel.style.bottom = 'auto'; wheel.style.visibility = 'visible';
       };
       place(); requestAnimationFrame(place); setTimeout(place, 260);
       if (typeof ResizeObserver === 'function') new ResizeObserver(place).observe(stage);   // หมุนจอ/ย่อขยายกลางศึก วงตามตัวละคร

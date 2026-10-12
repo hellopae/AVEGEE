@@ -9,8 +9,8 @@ const overlaps = (a, b, m = 2) => a.l < b.r - m && a.r > b.l + m && a.t < b.b - 
 /** คืน { left, top } (px ในพิกัดของกรอบฉาก) ของกล่องวง
  *  area = { w, h } ขนาดฉาก · wheel = { w, h } ขนาดกล่องวง
  *  me = { l, t, r, b } กรอบรูปตัวละครที่ถึงตา (รูปจริง ไม่รวมขอบโปร่งใสด้านข้าง) · team/foes = กรอบรูปตัวละครฝั่งเรา/ศัตรู (รวม me ได้) */
-export function placeWheel({ area, wheel, me, team = [], foes = [], gap = 6, reference = null, above = false }) {
-  const { x0, x1, y0, y1 } = WHEEL_ART, { w, h } = wheel;
+export function placeWheel({ area, wheel, me, team = [], foes = [], gap = 6, reference = null, above = false, artBounds = WHEEL_ART }) {
+  const { x0, x1, y0, y1 } = artBounds, { w, h } = wheel;
   const clampL = v => Math.max(-x0 * w, Math.min(area.w - x1 * w, v));
   const clampT = v => Math.max(-y0 * h, Math.min(area.h - y1 * h, v));
   // J1: same centre-to-centre distance as the court. Rotate above allies,

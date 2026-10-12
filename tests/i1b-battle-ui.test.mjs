@@ -130,3 +130,26 @@ for (const [name, sc] of Object.entries(FIN_SCENES)) {
     }
   });
 }
+
+test('battle selection uses visible battlefield bounds and one roster for sprites and portraits', () => {
+  const ui = read('src/ui.js');
+  assert.match(ui, /const team = squadMembers;/);
+  assert.match(ui, /\? \[\{ \.\.\.g.guard, name: GUARD.name \}, \.\.\.battleHelpers\]/);
+  assert.match(ui, /\.fig\[data-crew-pick=/);
+  assert.match(ui, /battleSpriteRect\(im\)/);
+  assert.doesNotMatch(ui, /reference:courtWheelReference/);
+});
+
+test('battle wheel stays six pixels upper-right of each visible actor in a four-person row', () => {
+  for (const scale of [0.7, 1, 1.4]) {
+    const area = {w:1760*scale,h:880*scale}, wheel={w:220*scale,h:269*scale};
+    const team = [250,390,570,705].map(x=>({l:x*scale,r:(x+85)*scale,t:425*scale,b:625*scale}));
+    for (const me of team) {
+      const p=placeWheel({area,wheel,me,team});
+      assert.ok(Math.abs(p.art.l-me.r-6)<0.01);
+      assert.ok(p.art.b<=me.t+20*scale);
+      assert.ok(p.art.t<me.t);
+      for (const body of team) assert.ok(!overlap(p.art,body));
+    }
+  }
+});
