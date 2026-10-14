@@ -2060,6 +2060,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools">
+<link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01">
+<link rel="stylesheet" href="src/dungeon-view.css?v=20261014-dungeon-art-r4"><link rel="stylesheet" href="src/battle-turns.css?v=20261014-perspective-art-r4"><link rel="stylesheet" href="src/town-map.css?v=20261014-town-mainland-r2">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2135,6 +2137,17 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     <!-- กล่องนี้ล็อกอัตราส่วน 1527:704 ของฉากเสมอ (letterbox แทนการครอป — ดูเหตุผลในรายงาน Toby ข้อ D)
          #ov ต้องมีกรอบเท่าแคนวาสเป๊ะ ไม่งั้นบับเบิลคำพูด/หมุดตัวละครเพี้ยนตำแหน่ง -->
 
+    <details id="town-map-panel" class="town-map-panel" open hidden>
+      <summary data-t="town.title">เมืองอเวจี · โซน 1</summary>
+      <canvas id="town-minimap" width="240" height="160" aria-label="แผนที่ย่อเมืองอเวจี" role="img"></canvas>
+      <div class="town-camera-controls" aria-label="กล้องแผนที่">
+        <button id="town-zoom-less" type="button" aria-label="ซูมออก / Zoom out">−</button>
+        <button id="town-overview" type="button" data-t="town.overview">ทั้งแผนที่</button>
+        <button id="town-zoom-more" type="button" aria-label="ซูมเข้า / Zoom in">+</button>
+      </div>
+      <small data-t="town.hint">WASD / ลูกศร เดิน · E สร้างหรือเข้า · คลิกพื้นเพื่อเดิน</small>
+    </details>
+    <button id="town-action" class="town-action" hidden></button>
     <div class="scene-box">
       <canvas id="cv" width="1527" height="704"></canvas>
       <div id="ov"></div>
@@ -2204,7 +2217,12 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
           <img id="hero-profile-face" src="img/hero-yama-profile.png" alt="">
           <div id="hero-profile-intro"></div>
         </header>
+        <nav id="hero-profile-tabs" class="menu-tabs" role="tablist" aria-label="โปรไฟล์ยมบาท"></nav>
         <div id="hero-profile-columns" class="hero-profile-columns"></div>
+        <div class="hero-profile-shortcuts">
+          <button id="hero-profile-bag" class="gold" data-t="menu.openBag">จัดของและอุปกรณ์</button>
+          <button id="hero-profile-management" data-t="menu.more">งานบริหาร</button>
+        </div>
       </div>
     </div>
   </section>
@@ -2264,6 +2282,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-sword-schools"></script>
+<script type="module" src="src/ui.js?v=20261014-perspective-art-r4"></script>
 </body>
 </html>

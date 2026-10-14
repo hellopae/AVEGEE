@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-14",
+  "generator": "built-in image_gen",
+  "conversion": "WebP quality94, native dimensions retained, no crop/rescale",
+  "assets": [
+    {
+      "filename": "dungeon-th-asia-forest-edge-v1.webp",
+      "route": "th:asia",
+      "checkpoint": 0,
+      "location": "forest-edge",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: forest at the eastern border of the golden Thai underworld. A worn ochre stone trail runs through deep mossy forest, red ember leaves mingle with emerald banyans, gold-laced temple boundary markers and low naga railings on side terraces. Small lava crevices glow ONLY far along the left edge, and misty verdant hills hint at the next eastern realm. Warm amber lanterns hang from twisted roots at the edges; damp stones, leaf litter, distant waterfalls and cool green fog add depth. Distinct dense forest setting; the foreground central path is open and dry.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-f8a1f9d6-8219-4f09-933b-d1664fd66855.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-th-asia-forest-edge-v1.webp",
+      "sha256": "28630f3dddf4188c7135f3b73610fc9729a90e3e2584312d42162af9b4cb4541",
+      "bytes": 845860,
+      "source_sha256": "eed04e61ec506570a780567ba86db9710baec8ccbed66bb58361393a857cb8aa",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-th-asia-gorge-bridge-v1.webp",
+      "route": "th:asia",
+      "checkpoint": 1,
+      "location": "gorge-bridge",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: a monumental safe stone bridge crossing a deep eastern border gorge. Central corridor is a broad intact charcoal and ochre stone bridge deck with low gilded naga parapets along BOTH SIDES, extending bottom center into an open paved terrace in the upper center. Sheer basalt cliffs, turquoise river and thin waterfalls plunge far below along the left and right outside the deck. Thai carved gold joints, rope lanterns, mossy weathered masonry and broken shrine roofs at distant edges. Dramatic warm torchlight against cool mist. No gap, hole, stair obstacle or broken bridge across the central walking deck.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-3c93b9b5-b7d1-4625-81fa-131cdcbbeb0d.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-th-asia-gorge-bridge-v1.webp",
+      "sha256": "7b70dadf477e630d92d6f95ee9c2d9fe53d57aa522eefa72c8e3505086b223fc",
+      "bytes": 787778,
+      "source_sha256": "a45a8ba93c2d98f01f32606211d73d9269c64932ddf1c147f0acfbf7952d4fbe",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-th-asia-eastern-gate-v1.webp",
+      "route": "th:asia",
+      "checkpoint": 2,
+      "location": "eastern-gate",
+      "prompt": "Original AVEGEE 2D RPG environment artwork. Wide16:9, painterly detailed blackstone and agedgold Thai-inspired fantasy. CRITICAL COMPOSITION: true HIGH CAMERA at70 degrees looking DOWN at ground, game map style, no cinematic horizon. The image CENTER is continuous visible SAFE PAVED GROUND from bottomedge ALL THE WAY TO TOP EDGE. No mountains, sky, buildings, abyss, water or distant vista in the central36–64% vertical strip at any height. At pixel(relative)x50%,y19% MUST be plainly visible stone walking floor. Floor is broad, nearly constant width, only gentle bends x43%y65%,x53%y49%,x48%y35%,x50%y19%, thenCONTINUES STRAIGHT OFFTHE TOP EDGE. This center path is the purpose ofthe art. Scene represents an OPEN arrival gate: two magnificent gatepillars appear to LEFT and RIGHT OUTSIDE this road, centered at x25% andx75%, y35%; gateeaves decorate sides, NO archbeam acrossroad. Scene edges can contain cliffs/buildings/scenic vistas, butkeepcentralstrip entirely unobstructedstoneground. No people/creatures/UI/text/watermark/logos.\n arrival gate into the eastern realm. Broad dry jade-grey flagstone causeway centered, lined at the far left and right by vermilion lacquer pillars, old bronze bells and tall layered Thai-inspired golden eaves. At the UPPER CENTER a magnificent OPEN gate has a generous unobstructed passage, amber light inside, green mountain terraces beyond. Moss, flowering boundary trees and incense mist stay along edges. The road fills the foreground with readable smooth floor detail. Lush eastern palette of emerald, vermilion and aged gold, soft dawn light. Gate pillars must stand outside central36–64% so player passage remains clear.\nRepeat critical constraint: birdseye downwardlooking composition, uninterrupted centralwalkingfloor reachingthe veryTOPEDGE. Do NOT show a distant city or landscape behindgate incenter; the gate opensonto more continuousstonefloor. Any distantdistrict/mountains must stay at SIDEEDGES, outsidecentral36–64% strip.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-470f3f25-9152-467f-acae-bebd6922f002.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-th-asia-eastern-gate-v1.webp",
+      "sha256": "17f7b65b6c9f736483381e906cbec8025d0cb6766c3699d592894a66f3f2d388",
+      "bytes": 846076,
+      "discarded_candidates": [
+        {
+          "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-79377551-4e08-4e6c-8431-8d9a39ea43d1.png",
+          "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: arrival gate into the eastern realm. Broad dry jade-grey flagstone causeway centered, lined at the far left and right by vermilion lacquer pillars, old bronze bells and tall layered Thai-inspired golden eaves. At the UPPER CENTER a magnificent OPEN gate has a generous unobstructed passage, amber light inside, green mountain terraces beyond. Moss, flowering boundary trees and incense mist stay along edges. The road fills the foreground with readable smooth floor detail. Lush eastern palette of emerald, vermilion and aged gold, soft dawn light. Gate pillars must stand outside central36–64% so player passage remains clear.",
+          "reason": "Distant vista displaced upper-center walking floor at the normalized exit; regenerated with higher downward camera and road continuing to top edge."
+        }
+      ],
+      "source_sha256": "755de5bf9f41c08bf110e3f6141c94da23d14713e124f16bf6d81e58e55bcedd",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Elevated view; all corridor bends and exit remain on visible ground. Gate assets regenerated with high downward view to eliminate floor/horizon conflict."
+      }
+    },
+    {
+      "filename": "dungeon-asia-west-chain-pass-v1.webp",
+      "route": "asia:west",
+      "checkpoint": 0,
+      "location": "chain-pass",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: a forbidding chain mountain pass between the eastern jade realm and the western frozen underworld. Broad dark slate trail bends gently up the CENTER between tall steep black cliffs. Massive antique iron chains connect side cliff outcrops high along the upper-left and upper-right EDGES without crossing the central visible floor. Gilded Thai temple fragments, riveted bronze anchor rings, chain coils on side shelves. Emerald moss on the lower-left rock gives way to frost, icy blue crystals and snow on right ridges. Amber braziers mark side edges, wind mist behind cliffs. Cold distant mountains. No chain across player corridor; central stone surface stable and continuous.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-86c45f93-f67f-4359-80bd-025cf146202b.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-asia-west-chain-pass-v1.webp",
+      "sha256": "61f45079774e70130e5874229831e126a2a6d0b5e7f3632aaa4b01de5a221699",
+      "bytes": 779778,
+      "source_sha256": "9c65befbc44e02829ba322f105fbced3f7ff398c9cb6ddb4cbfe4b27e126a76b",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-asia-west-ruined-fort-v1.webp",
+      "route": "asia:west",
+      "checkpoint": 1,
+      "location": "ruined-fort",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: an abandoned border fortress on the threshold of the western ice realm. Wide centered uninterrupted flagstone avenue through a ruined fort courtyard. Broken ornate Thai-inspired black stone walls and collapsed gold eaves cluster on LEFT and RIGHT, rubble only at edges. Side watchtowers shattered but graceful, weathered bronze doors leaned against distant walls, pale frost and patches of snow cling to side stones and cracked masonry. Small restrained amber braziers contrast with desaturated blue-grey fog; distant icy peaks above upper edges. Moss fading beneath frost hints at east-to-west passage. Keep ALL middle36–64% walking floor unobstructed; no rubble heap across the path.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-b4d283e3-c689-4110-91e8-4eebc0388283.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-asia-west-ruined-fort-v1.webp",
+      "sha256": "25893f0f7044aa8acda1427beffaa2716b69f98c1c1efe18da3185c9eb21d5ee",
+      "bytes": 824754,
+      "source_sha256": "a5dcb4348bcc9d9d391b4ffa9848348f9e48f7417287a5effc635717cd1d5e5e",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-asia-west-western-gate-v1.webp",
+      "route": "asia:west",
+      "checkpoint": 2,
+      "location": "western-gate",
+      "prompt": "Original AVEGEE 2D RPG environment artwork. Wide16:9, painterly detailed blackstone and agedgold Thai-inspired fantasy. CRITICAL COMPOSITION: true HIGH CAMERA at70 degrees looking DOWN at ground, game map style, no cinematic horizon. The image CENTER is continuous visible SAFE PAVED GROUND from bottomedge ALL THE WAY TO TOP EDGE. No mountains, sky, buildings, abyss, water or distant vista in the central36–64% vertical strip at any height. At pixel(relative)x50%,y19% MUST be plainly visible stone walking floor. Floor is broad, nearly constant width, only gentle bends x43%y65%,x53%y49%,x48%y35%,x50%y19%, thenCONTINUES STRAIGHT OFFTHE TOP EDGE. This center path is the purpose ofthe art. Scene represents an OPEN arrival gate: two magnificent gatepillars appear to LEFT and RIGHT OUTSIDE this road, centered at x25% andx75%, y35%; gateeaves decorate sides, NO archbeam acrossroad. Scene edges can contain cliffs/buildings/scenic vistas, butkeepcentralstrip entirely unobstructedstoneground. No people/creatures/UI/text/watermark/logos.\n the open western gate into a majestic ice mountain underworld. A broad uninterrupted frost-dusted basalt causeway goes from bottom-center toward OPEN monumental gate at upper center. Two towering ornate black stone and aged gold Thai-inspired gate pillars stand far LEFT and RIGHT outside central corridor, crystal ice grows around their edges and roof ornament, deep sapphire shadows with warm gold lanterns. Passage in the upper center remains entirely OPEN with a clear stone walking terrace beyond; snowy serrated peaks, pale icy mist, frozen waterfalls down distant sides. Elegant blue-white winter realm, no barrier or giant ice crystal on walking floor.\nRepeat critical constraint: birdseye downwardlooking composition, uninterrupted centralwalkingfloor reachingthe veryTOPEDGE. Do NOT show a distant city or landscape behindgate incenter; the gate opensonto more continuousstonefloor. Any distantdistrict/mountains must stay at SIDEEDGES, outsidecentral36–64% strip.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-badcac16-9bfb-47b7-a73d-e2fd658c6efc.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-asia-west-western-gate-v1.webp",
+      "sha256": "ed054bc0da7c32a26e8bfe72ea51959281687724806f72eaf45d22411527719b",
+      "bytes": 797786,
+      "discarded_candidates": [
+        {
+          "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-4f009ba2-ea2c-470e-849c-790c41e3d7c9.png",
+          "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: the open western gate into a majestic ice mountain underworld. A broad uninterrupted frost-dusted basalt causeway goes from bottom-center toward OPEN monumental gate at upper center. Two towering ornate black stone and aged gold Thai-inspired gate pillars stand far LEFT and RIGHT outside central corridor, crystal ice grows around their edges and roof ornament, deep sapphire shadows with warm gold lanterns. Passage in the upper center remains entirely OPEN with a clear stone walking terrace beyond; snowy serrated peaks, pale icy mist, frozen waterfalls down distant sides. Elegant blue-white winter realm, no barrier or giant ice crystal on walking floor.",
+          "reason": "Distant vista displaced upper-center walking floor at the normalized exit; regenerated with higher downward camera and road continuing to top edge."
+        }
+      ],
+      "source_sha256": "dff763a8f031d08bee33c3b86585be51a2ef7ee60a635d7f8ab64313b9dee05b",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Elevated view; all corridor bends and exit remain on visible ground. Gate assets regenerated with high downward view to eliminate floor/horizon conflict."
+      }
+    },
+    {
+      "filename": "dungeon-west-cyber-mist-forest-v1.webp",
+      "route": "west:cyberhell",
+      "checkpoint": 0,
+      "location": "mist-forest",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: an uncanny mist forest on the outer edge of the western frozen realm, beginning its transition toward the cyber underworld. Wide central trail of dry cracked dark stone with fine old gold joints, intact and readable. On LEFT and RIGHT, tall winter-black pines and gnarled silver-barked trees rise among snow flecks, moss and blue-grey rocks. Thin layers of pale cold ground mist hang ALONG EDGES without hiding the player corridor. Ancient Thai-inspired black and gold trail shrines and amber lanterns stand off-path. At distant far right only, tiny cyan crystal circuitry embedded in a broken monolith subtly hints at machinery ahead. Deep atmospheric forest, no grand central building, no visible people. Central trail remains broad, floor lit softly by amber lantern spill.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-f22825c5-0672-4fc3-9bc0-ae322fccc49d.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-west-cyber-mist-forest-v1.webp",
+      "sha256": "be5c0098bc48eb1bdf384bf0a0b3a26951c6ca0af242062c1f2fa8119408c17d",
+      "bytes": 799954,
+      "source_sha256": "50df50a22f0c0b7e49257cfd0fdb6ec651feaff17dcb9238bad93b74f8c0d459",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-west-cyber-machine-road-v1.webp",
+      "route": "west:cyberhell",
+      "checkpoint": 1,
+      "location": "machine-road",
+      "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: machine road where the western ice realm transforms into cyberhell. A broad uninterrupted dark stone-and-metal central roadway, smooth worn basalt slabs with subtle gold seams, no rails or obstacles across it. Along LEFT and RIGHT, imposing ancient black/gold Thai temple buttresses merge with original fantasy brass gears, industrial pipes, contained turbine mechanisms and elegant cyan crystalline power conduits. Left outer ridges retain pine roots, frost and snow; right outer platforms develop arcane circuitry and enclosed mechanical works. Amber furnace lights, cyan machine glow and drifting cold mist, restrained dark bronze/cool charcoal palette. No cars, no robots, no characters, no words, no neon billboards. Machinery only along edges; readable safe centered walking floor extends toward uppercenter.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-1d01a08c-e8ff-4e21-acb8-0492106c8dbe.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-west-cyber-machine-road-v1.webp",
+      "sha256": "c22fb1bef541b0dffe63874887332a3a494d20749790e4c3a57b66931f06a7ce",
+      "bytes": 802624,
+      "source_sha256": "7b5e48a8a37b701204692c14989904c8f33bc6c44b26d5d24bf8cc5b29a12d43",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Distinct route environment; edge scenery leaves the broad central path clear."
+      }
+    },
+    {
+      "filename": "dungeon-west-cyber-cyber-gate-v1.webp",
+      "route": "west:cyberhell",
+      "checkpoint": 2,
+      "location": "cyber-gate",
+      "prompt": "Original AVEGEE 2D RPG environment artwork. Wide16:9, painterly detailed blackstone and agedgold Thai-inspired fantasy. CRITICAL COMPOSITION: true HIGH CAMERA at70 degrees looking DOWN at ground, game map style, no cinematic horizon. The image CENTER is continuous visible SAFE PAVED GROUND from bottomedge ALL THE WAY TO TOP EDGE. No mountains, sky, buildings, abyss, water or distant vista in the central36–64% vertical strip at any height. At pixel(relative)x50%,y19% MUST be plainly visible stone walking floor. Floor is broad, nearly constant width, only gentle bends x43%y65%,x53%y49%,x48%y35%,x50%y19%, thenCONTINUES STRAIGHT OFFTHE TOP EDGE. This center path is the purpose ofthe art. Scene represents an OPEN arrival gate: two magnificent gatepillars appear to LEFT and RIGHT OUTSIDE this road, centered at x25% andx75%, y35%; gateeaves decorate sides, NO archbeam acrossroad. Scene edges can contain cliffs/buildings/scenic vistas, butkeepcentralstrip entirely unobstructedstoneground. No people/creatures/UI/text/watermark/logos.\n monumental OPEN gate to the cyber underworld. Wide central matte obsidian floor inlaid with very fine geometric gold and cyan light seams, continuous from bottom center into the open passage at uppercenter. Tall black stone/bronze gate columns stand outside the36–64% central corridor; they fuse exquisite original Thai flame filigree and layered temple eaves with intricate sci-fantasy circuit lattices, small energy crystals, enclosed gears and deep turquoise inner glow. Passage is CLEAR AND OPEN, not filled by a solid portal forcefield; a cyber temple district glows distantly beyond. Cold mist, traces of frost on the far-left approach hint at the western realm just left. Architectural edges dramatic, centerfloor muted. Gold and cyan dominate, tiny magenta accents only at far edges. No people, guards, holographic faces, text or logo.\nRepeat critical constraint: birdseye downwardlooking composition, uninterrupted centralwalkingfloor reachingthe veryTOPEDGE. Do NOT show a distant city or landscape behindgate incenter; the gate opensonto more continuousstonefloor. Any distantdistrict/mountains must stay at SIDEEDGES, outsidecentral36–64% strip.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-85be753f-1683-44cd-bbb2-218831c942c2.png",
+      "native_dimensions": [
+        1672,
+        941
+      ],
+      "output": "img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp",
+      "sha256": "5de20944a7483ed70796bace37010dca85469ab07b34ec68bdc7513def04a8a1",
+      "bytes": 792280,
+      "discarded_candidates": [
+        {
+          "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-07a87934-82b2-4ad5-9852-b76da8a0c6dc.png",
+          "prompt": "Use case: stylized-concept. Asset: original AVEGEE 2D RPG dungeon environment backdrop, wide 16:9 landscape composition. Highly detailed painterly sprite-compatible fantasy scenery, ornate Thai-inspired black stone and aged gold craft, layered scenery and atmospheric depth, crisp material detail, restrained magical bloom. Camera elevated three-quarter bird's-eye, looking down at WALKABLE FLOOR, not a ground-level cinematic horizon. Composition MUST preserve a broad continuous empty safe stone/earth walking corridor in the central 36–64 percent of image width, from bottom center at y93% up to top center at y19%, with gentle bends via x43% at y65%, x53% at y49%, x48% at y35%. Keep this whole corridor unobstructed and relatively low contrast; no giant objects or water cutting across it. Scenery, cliffs, trees, waterways and architecture sit mainly along side edges and background. No people, creatures, statues shaped as people, UI, labels, letters, signage, watermarks or logos. This is a finished game background, not a map with icons or an illustration framed by a border.\nLocation: monumental OPEN gate to the cyber underworld. Wide central matte obsidian floor inlaid with very fine geometric gold and cyan light seams, continuous from bottom center into the open passage at uppercenter. Tall black stone/bronze gate columns stand outside the36–64% central corridor; they fuse exquisite original Thai flame filigree and layered temple eaves with intricate sci-fantasy circuit lattices, small energy crystals, enclosed gears and deep turquoise inner glow. Passage is CLEAR AND OPEN, not filled by a solid portal forcefield; a cyber temple district glows distantly beyond. Cold mist, traces of frost on the far-left approach hint at the western realm just left. Architectural edges dramatic, centerfloor muted. Gold and cyan dominate, tiny magenta accents only at far edges. No people, guards, holographic faces, text or logo.",
+          "reason": "Distant vista displaced upper-center walking floor at the normalized exit; regenerated with higher downward camera and road continuing to top edge."
+        }
+      ],
+      "source_sha256": "b421014ed88b123992747e8de66692750b221b8508c59c2125eadfdb7406ef81",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_ui_text": true,
+        "clear_central_walking_floor": true,
+        "normalized_exit_on_floor": true,
+        "notes": "Elevated view; all corridor bends and exit remain on visible ground. Gate assets regenerated with high downward view to eliminate floor/horizon conflict."
+      }
+    }
+  ],
+  "visual_qa_summary": "All nine final WebP files inspected. Six location scenes passed directly; three gate scenes were regenerated to keep central paved ground through the top edge, including normalized exit (0.50,0.19). No people, UI, text or foreground barrier in the central route. No crop or rescale; only format conversion."
+}

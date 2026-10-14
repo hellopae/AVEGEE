@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -7,6 +8,8 @@ import { createGame } from '../src/game.js';
 import { CREW, FRONTIER, GUARD_POST, MERCHANT, MOB, NO_WALK, QUEUE_LINE, SCENE,
          SPOTS, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
 import { buildWalk, canWalk, findPath, resetWalk, setBlocks, walkGridSize } from '../src/walk.js';
+
+import { TOWN_SIZE, TOWN_SPOTS, TOWN_GUARD_POST, TOWN_STATION_SITES, TOWN_HOUSES } from '../src/town-layout.js';
 
 globalThis.Image = class {};
 
@@ -38,46 +41,66 @@ function withImageCanvas(run) {
   try { run(); } finally { globalThis.document = old; }
 }
 
-test('ทุกโซนใช้ผังและพิกัดเดียวกัน และประตูย้ายโซนทำงาน', () => {
+test('zone1 uses its large city and zone2–4 retain shared legacy geometry when traveling', () => {
   const g = createGame();
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   const sceneRef = SCENE;
-  // 30F verifies CyberHell's four local relocations and restoration in its own regression file.
   const fixedSite = s => !['tea','lokan','krajok','dab','krata'].includes(s.k);
-  const stationPos = STATIONS.filter(fixedSite).map(s => [s.bx, s.by, s.bw, ...s.hit]);
-  const servicePos = STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x, s.y]);
+  assert.equal(harbourTravel(g, 'asia'), true);
+  const stationPos = STATIONS.filter(fixedSite).map(s => [s.bx,s.by,s.bw,...s.hit]);
+  const servicePos = STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x,s.y]);
   const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
   for (const z of ZONES) {
-    if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
-    assert.equal(SCENE, sceneRef);
-    assert.equal(z.scene, names[z.k]);
+    if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k),true);
+    assert.equal(SCENE,sceneRef);
+    assert.equal(z.scene,names[z.k]);
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
-    assert.deepEqual(size(), [1678, 937]);
-    assert.deepEqual(grid(), [210, 118]);
-    assert.deepEqual(STATIONS.filter(fixedSite).map(s => [s.bx, s.by, s.bw, ...s.hit]), stationPos);
-    assert.deepEqual(STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x, s.y]), servicePos);
-    assert.deepEqual([STATIONS.find(s => s.k === 'lan').x, STATIONS.find(s => s.k === 'lan').y],
-      z.k === 'th' ? [585,615] : [500,615]);
-    assert.deepEqual([STATIONS.find(s => s.k === 'tea').x, STATIONS.find(s => s.k === 'tea').y],
-      z.k === 'asia' ? [365,650] : [218,653]);
-    assert.deepEqual([SPOTS.bench.x, SPOTS.bench.y], [820, 455]);
-    assert.deepEqual(GUARD_POST, [720, 890]);
-    assert.deepEqual([FRONTIER.x, FRONTIER.y], [835, 840]);
-    assert.equal(NO_WALK[3][1], 695);
-    assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === 835));
-    assert.equal(canWalk(100, 700), false);
+    if (z.k === 'th') {
+      assert.deepEqual(size(),[TOWN_SIZE.w,TOWN_SIZE.h]);
+      assert.deepEqual(grid(),[240,160]);
+      for (const [key,d] of Object.entries(TOWN_STATION_SITES)) {
+        const actual=STATIONS.find(s=>s.k===key);
+        assert.deepEqual([actual.x,actual.y,actual.bx,actual.by],[d.x,d.y,d.bx,d.by],key);
+      }
+      assert.deepEqual(SPOTS.bench,TOWN_SPOTS.bench);
+      assert.deepEqual(GUARD_POST,TOWN_GUARD_POST);
+      assert.equal(canWalk(GUARD_POST[0],GUARD_POST[1]),true);
+      for (const [x1,y1,x2,y2] of TOWN_HOUSES)
+        assert.equal(canWalk((x1+x2)/2,(y1+y2)/2),false,'town houses stay blocked');
+      assert.equal(canWalk(900,2400),false,'river outside town gate stays blocked');
+    } else {
+      assert.deepEqual(size(),[1678,937]);
+      assert.deepEqual(grid(),[210,118]);
+      assert.deepEqual(STATIONS.filter(fixedSite).map(s=>[s.bx,s.by,s.bw,...s.hit]),stationPos);
+      assert.deepEqual(STATIONS.filter(s=>fixedSite(s)&&s.k!=='lan').map(s=>[s.x,s.y]),servicePos);
+      assert.deepEqual([STATIONS.find(s=>s.k==='lan').x,STATIONS.find(s=>s.k==='lan').y],[500,615]);
+      assert.deepEqual([STATIONS.find(s=>s.k==='tea').x,STATIONS.find(s=>s.k==='tea').y],z.k==='asia'?[365,650]:[218,653]);
+      assert.deepEqual([SPOTS.bench.x,SPOTS.bench.y],[820,455]);
+      assert.deepEqual(GUARD_POST,[720,890]);
+      assert.deepEqual([FRONTIER.x,FRONTIER.y],[835,840]);
+      assert.equal(NO_WALK[3][1],695);
+      assert.ok(QUEUE_LINE.slice(1).every(([x])=>x===835));
+      assert.equal(canWalk(100,700),false);
+    }
   }
-  const fresh = createGame();
-  assert.deepEqual([fresh.player.x, fresh.player.y], [880, 455]);
+  const fresh=createGame();
+  assert.deepEqual([fresh.player.x,fresh.player.y],[TOWN_SPOTS.bench.x+60,TOWN_SPOTS.bench.y]);
 });
+
+// Town geometry is declarative and independent of painted floor colors.
+function loadTerrain(z) {
+  if(z.k==='th') return;
+  const bg=image(z.scene);
+  assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
+}
 
 test('ภาพจริงกันธารโซน 2–4 และให้เดินข้ามสะพานถึงจุดงาน', () => withImageCanvas(() => {
   const g = createGame();
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES.slice(1)) {
-    if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
+    if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k), true);
     resetWalk(); setBlocks([], []);
     const bg = image(z.scene);
     const source = z.k === 'west' ? image('scene-v2-opt') : bg;
@@ -114,9 +137,13 @@ test('ยักษ์เดินกลับจุดเฝ้าจากท�
     syncSceneZone(z.k);
     resetWalk();
     g.syncBlocks(true);
-    const bg = image(z.scene);
-    assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
-    for (const [x, y] of starts) {
+    loadTerrain(z);
+    const zoneStarts=z.k==='th' ? [
+      [SPOTS.bossPier.x,SPOTS.bossPier.y],SPOTS.ferry.from,SPOTS.ferry.to,
+      [SPOTS.bench.x,SPOTS.bench.y],[MERCHANT.x,MERCHANT.y],
+      [STATIONS.find(s=>s.k==='tea').x,STATIONS.find(s=>s.k==='tea').y],
+    ] : starts;
+    for (const [x, y] of zoneStarts) {
       assert.equal(canWalk(x, y), true, `${z.k}: start ${x},${y}`);
       g.guard = { x, y };
       g.mobs = [];
@@ -143,8 +170,7 @@ test('spawnMob เลือกเฉพาะจุดขอบล่างท�
     syncSceneZone(z.k);
     resetWalk();
     g.syncBlocks(true);
-    const bg = image(z.scene);
-    assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
+    loadTerrain(z);
     g.mobs = [];
     for (let i = 0; i < 300; i++) g.spawnMob();
     // x=150 (ขอบล่างซ้าย) เดินได้แต่ใน CyberHell findPath ไปไม่ถึงจุดเฝ้า — ล็อกสุ่มให้ตกจุดนี้ตรง ๆ
@@ -166,10 +192,10 @@ test('ยักษ์ปราบปีศาจจากท่าเรือ�
     syncSceneZone(zone);
     resetWalk();
     g.syncBlocks(true);
-    const bg = image(ZONES.find(z => z.k === zone).scene);
-    assert.equal(buildWalk(bg), true, zone);
+    loadTerrain(ZONES.find(z=>z.k===zone));
     g.guard = { x:GUARD_POST[0], y:GUARD_POST[1] };
-    g.mobs = [{ id:1900, x:1380, y:682, hp:MOB.hp, kind:0 }];
+    const pier=zone==='th'?SPOTS.bossPier:{x:1380,y:682};
+    g.mobs = [{ id:1900, x:pier.x, y:pier.y, hp:MOB.hp, kind:0 }];
     let frames = 0;
     while (frames++ < 900 && g.mobs.length) g.stepWorld(120);
     assert.equal(g.mobs.length, 0, `${zone}: defeats pier mob in ${frames} frames`);
@@ -184,11 +210,10 @@ test('ยักษ์ snap จุดแวะขณะไล่ปีศาจ�
   const g = createGame();
   resetWalk();
   g.syncBlocks(true);
-  const bg = image(ZONES.find(z => z.k === 'th').scene);
-  assert.equal(buildWalk(bg), true);
+  loadTerrain(ZONES.find(z=>z.k==='th'));
   g.guard = { x:GUARD_POST[0], y:GUARD_POST[1] - 5,
-    path:[[...GUARD_POST]], target:[1380, 682] };
-  g.mobs = [{ id:1900, x:1380, y:682, hp:MOB.hp, kind:0 }];
+    path:[[...GUARD_POST]], target:[SPOTS.bossPier.x,SPOTS.bossPier.y] };
+  g.mobs = [{ id:1900, x:SPOTS.bossPier.x, y:SPOTS.bossPier.y, hp:MOB.hp, kind:0 }];
   g.stepWorld(16);
   assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
   let frames = 0;
@@ -233,7 +258,7 @@ test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่�
   const g = createGame();
   assert.equal(g.restore(saved), true);
   assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);
-  assert.deepEqual([g.zoneSave.asia.guard.x, g.zoneSave.asia.guard.y], GUARD_POST);
+  assert.deepEqual([g.zoneSave.asia.guard.x,g.zoneSave.asia.guard.y],[720,890],'stored Asia guard retains branch post');
   saved.guard = { x:700, y:795 };
   assert.equal(g.restore(saved), true);
   assert.deepEqual([g.guard.x, g.guard.y], GUARD_POST);

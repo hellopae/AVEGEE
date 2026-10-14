@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { teaRoom } from '../src/tea-recovery.js';
+import { townZoomLevels } from '../src/town-map.js';
 import { teamNeedsMirror } from '../src/battle-facing.js';
 
 const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
@@ -63,9 +64,12 @@ test('H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces 
 test('H2-2: map zoom control exists and the camera eases with the frontier formula (130ms)', () => {
   const ui = read('src/ui.js'), html = read('index.html');
   assert.match(html, /id="hud-zoom"/);
-  assert.match(ui, /const MAP_ZOOM_LEVELS = \[1, 2\.5\]/);
+  assert.match(ui, /let MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
+  assert.match(ui, /cameraZone = g\.zone; MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
+  assert.deepEqual(townZoomLevels('th'), [1, 3.5, 5, 6.5]);
+  for (const zone of ['asia', 'west', 'cyberhell']) assert.deepEqual(townZoomLevels(zone), [1, 2.5]);
   assert.match(ui, /1 - Math\.exp\(-dt \/ 130\)/);
-  assert.match(ui, /updateMapCamera\(now\);\n\s+render\(ctx, g, now, hover, sel\);/);
+  assert.match(ui, /updateMapCamera\(now\);\n\s+render\(ctx, g, now, hover, sel, mapCam\.view\);/);
 });
 
 // ข้อ 3 (ต่อ) — ลุกจากเบาะแล้วต้องกลับเข้าพื้นที่เดินได้ (จุดนั่งอยู่เหนือขอบพื้นที่เดินได้)

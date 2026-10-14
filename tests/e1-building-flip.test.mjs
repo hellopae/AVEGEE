@@ -31,11 +31,14 @@ test('E1: one final flip table toggles exactly the eight requested rendered orie
   syncSceneZone('th');
 });
 
-test('E1: CyberHell tower moves right, scales 1.3, updates service/hit, and restores outside zone 4', () => {
-  syncSceneZone('th');
+test('E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch', () => {
+  syncSceneZone('asia');
   const d=station('krajok');
   const geometry=()=>({bx:d.bx,by:d.by,bw:d.bw,x:d.x,y:d.y,hit:[...d.hit],mapScale:d.mapScale});
-  const shared=geometry();
+  const branches=Object.fromEntries(['asia','west','th','unknown'].map(zone => {
+    syncSceneZone(zone); return [zone,geometry()];
+  }));
+  syncSceneZone('asia');
   const im={naturalWidth:1240,naturalHeight:1240};
   const old=reviewStationBox({...d,bx:1360,by:650},im,'cyberhell');
   syncSceneZone('cyberhell');
@@ -51,7 +54,7 @@ test('E1: CyberHell tower moves right, scales 1.3, updates service/hit, and rest
   const cyber=geometry();
   syncSceneZone('cyberhell');assert.deepEqual(geometry(),cyber,'no cumulative move/scale');
   for(const zone of ['asia','west','th','unknown']) {
-    syncSceneZone(zone);assert.deepEqual(geometry(),shared,`${zone}: restores complete geometry`);
+    syncSceneZone(zone);assert.deepEqual(geometry(),branches[zone],`${zone}: restores complete branch geometry`);
     syncSceneZone('cyberhell');assert.deepEqual(geometry(),cyber);
   }
   syncSceneZone('th');

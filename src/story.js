@@ -4,7 +4,6 @@ import { weaponCutsceneSrc } from './weapons.js';
 // Story panels share the intro comic layout; rewards are granted by game logic.
 const panel = (id, title, line) => ({ image:`img/story-${id}.png`, title, line });
 const devaPanel = (zone, lineKey) => ({ get title() { return t('deva.intro.title'); }, pages:[{
-  video:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.mp4' : `img/deva-intro/deva-intro-${zone}-v1-web.mp4`, videoAspect:16/9,
   image:zone === 'th' ? 'img/deva-intro/deva-intro-th-beggar-v2.webp' : `img/deva-intro/deva-intro-${zone}-v1.png`, get title() { return t('deva.intro.title'); }, get line() { return t(lineKey); },
 }] });
 // G3b — คัตซีนรับอาวุธประจำโซน: ภาพ 16:9 วาดโดย Kittanate/Codex ที่ img/weapons/weapon-cutscene-<id>.jpeg
@@ -53,10 +52,10 @@ export const STORY = {
     panel('cyberhell-reinforcements-02','เปิดทางให้ยมบาทน้อย','กองหนุนพุ่งเข้ารับมือลูกน้องที่เหลือ ยมบาทน้อยกับนิราจึงหันไปช่วยหัวหน้าทั้งสี่ ก่อนเข้าถึงบอสใหญ่ · ช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน พัก ซื้อของ และจัดทีมระหว่างศึกได้'),
   ]},
   'cyber-control': { title:'โซน 4 · ผู้ถูกควบคุม', pages:[
-    { ...panel('cyberhell-02-v3','ช่วยหัวหน้าทั้งสี่','กองหนุนรับมือลูกน้องไว้ให้แล้ว ต้องปลดปล่อยพ่อและหัวหน้าโซน 2–4 จากการควบคุม ก่อนจะเข้าถึงตัวผู้ตรวจการโซน 4'), video:'img/story-cyberhell-02-v3.mp4', videoAspect:1276/536 },
+    { ...panel('cyberhell-02-v3','ช่วยหัวหน้าทั้งสี่','กองหนุนรับมือลูกน้องไว้ให้แล้ว ต้องปลดปล่อยพ่อและหัวหน้าโซน 2–4 จากการควบคุม ก่อนจะเข้าถึงตัวผู้ตรวจการโซน 4') },
   ]},
   'cyber-duel': { title:'โซน 4 · ตัดสายควบคุม', pages:[
-    { ...panel('cyberhell-03-v4','เหลือบอสคนสุดท้าย','หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและทีมที่เตรียมพร้อมก้าวเข้าสู่ศึกตัดสินกับผู้ตรวจการโซน 4'), video:'img/story-cyberhell-03-v4.mp4', videoAspect:1280/544 },
+    { ...panel('cyberhell-03-v4','เหลือบอสคนสุดท้าย','หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและทีมที่เตรียมพร้อมก้าวเข้าสู่ศึกตัดสินกับผู้ตรวจการโซน 4') },
   ]},
   ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', pages:[
     { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ ศึกสุดท้ายสิ้นสุดลงแล้ว'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584 },

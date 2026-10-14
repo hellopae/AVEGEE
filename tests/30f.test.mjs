@@ -29,7 +29,7 @@ globalThis.document = {documentElement:{}, createElement:() => ({getContext:() =
     },
   };
 }})};
-const {STATIONS,ZONES,syncSceneZone} = await import('../src/data.js');
+const {STATIONS,ZONES,ZONE_ENTRY,syncSceneZone} = await import('../src/data.js');
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
 const walk = await import('../src/walk.js');
@@ -37,8 +37,11 @@ const {STORY} = await import('../src/story.js');
 await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
-syncSceneZone('th');
+syncSceneZone('asia');
 const original=sites();
+const branchSites = Object.fromEntries(['th','asia','west','unknown'].map(zone => {
+  syncSceneZone(zone); return [zone,sites()];
+}));
 const offsets={lokan:[73,41],krajok:[90,37],dab:[65,5],krata:[0,42]};
 test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',()=>{
   for (const destination of ['th','asia','west','unknown']) {
@@ -56,7 +59,7 @@ test('30F: CyberHell translations move hits and worker/service points together a
       }
     }
     syncSceneZone(destination);
-    for(const key of Object.keys(offsets))assert.deepEqual(sites()[key],original[key],`${destination}/${key}: restore original geometry`);
+    for(const key of Object.keys(offsets))assert.deepEqual(sites()[key],branchSites[destination][key],`${destination}/${key}: restore branch geometry`);
   }
 });
 
@@ -106,15 +109,15 @@ test('30F review: new Rage image is full-bleed, so the old letterbox crop is gon
   assert.ok(Math.abs(l.aspect - 1664 / 936) < 1e-6 && l.top === 0 && Math.abs(l.height - 100) < 1e-6);
 });
 
-test('themed sprites keep every zone station reachable with the original terrain mask',()=>{
+test('themed sprites keep every zone station reachable with its terrain or town street layout',()=>{
  for(const zone of ['th','asia','west','cyberhell']){
   const g=createGame();g.zone=zone;syncSceneZone(zone);art.bindZone(()=>zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
   const src=zone==='west'?'img/scene-v2-opt.png':'img/'+g.zoneDef().scene+'.png';
-  walk.buildWalk({src,naturalWidth:1678,naturalHeight:937});g.syncBlocks(true);
+  assert.equal(walk.buildWalk({src,naturalWidth:1678,naturalHeight:937}), zone !== 'th', zone+': bitmap masks are regional; town streets are declarative');g.syncBlocks(true);
   for(const d of STATIONS){
-   const path=walk.findPath(835,680,d.x,d.y),end=path?.at(-1);
+   const path=walk.findPath(...ZONE_ENTRY.goal,d.x,d.y),end=path?.at(-1);
    assert.ok(end && Math.hypot(end[0]-d.x,end[1]-d.y)<=100,zone+'/'+d.k+': reachable interaction '+JSON.stringify(end));
   }
  }

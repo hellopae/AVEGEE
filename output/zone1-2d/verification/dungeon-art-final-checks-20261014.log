@@ -1,0 +1,32 @@
+✔ Thai map fights select biome at the encounter location (1.948671ms)
+✔ route encounters use forest while other realms keep their own art (2.009594ms)
+✔ normal party feet form a diagonal with room to step toward foes (1.701141ms)
+✔ eight-member party has two distinct diagonal files and stable back-to-front slots (0.341396ms)
+✔ มีภาพยมทูต/ยักษ์ให้ตรวจครบทุกโซน (1.693179ms)
+✔ ทุกโซน ทุกยมทูต (รวมยักษ์ทวารบาล): ความสูงตัวจริงใกล้เคียงยมบาทน้อยในขนาดจอเดสก์ท็อปและมือถือ (497.60386ms)
+✔ ภาพยมทูตที่กรอบตัวจริงเตี้ย/แคบต่างกัน ได้ความสูงตัวจริงเท่ากันหมด (ไม่ใช่ความสูงกล่องภาพ) (0.321627ms)
+✔ คัตซีนยมทูต/ยักษ์ทวารบาลทุกใบทุกโซน: ส่วนที่มีภาพจริงอยู่ในฉากครบและเต็มอย่างน้อยหนึ่งแกน (745.366105ms)
+✔ every named route checkpoint has its own shipped environment (2.026498ms)
+✔ arrival keeps the final gate backdrop and malformed/legacy routes safely fall back (0.37914ms)
+✔ Nira stays visible beside Yama even when both enter at progress zero (2.666038ms)
+✔ corridor click routing stays on its finite connected path at every point (3.790771ms)
+✔ clicks beyond an uncleared checkpoint stop at the current route gate (0.527696ms)
+✔ checkpoint battle requires real persisted position at the CURRENT checkpoint (1.019315ms)
+✔ exit requires all victories AND physical exit proximity (0.413993ms)
+✔ H1: three tiers partition the full zone bundle exactly (nothing dropped, nothing duplicated) (63.879289ms)
+✔ H1: critical tier holds the first-screen art and is far smaller than the whole zone (6.658025ms)
+✔ H1: intro panels gate only the first run; panel 1 is always ready; zone arrival gates the zone introduction (2.058209ms)
+✔ H1: loading screen rotates several TH+EN notes and only one preload instance owns the gate (0.643304ms)
+(node:20773) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ physical border, checkpoint and city exit guards are enforced by game methods (9.036881ms)
+✔ real dungeon victories unlock arrival then dock interaction, keeping local cities on boat return (58.977058ms)
+✔ dungeon encounter cleanup leaves ordinary city mobs intact and saves checkpoint position (10.658873ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1440.906556

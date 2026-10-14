@@ -1,3 +1,6 @@
+import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
+import {mountDungeonView} from './dungeon-view.js';
+import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js';
 import { runKrataQte } from './minigames/krata-qte.js?v=sword-schools-20261010-final';
 import { gateArrivals, gateKarma, gateTotalKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=20261009-f2-merge-f3-f4-sala-books-h4';
@@ -5,6 +8,7 @@ import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js';
 import { isYamaSwordAttack, mountBattleSword, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
+import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
@@ -28,13 +32,14 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState } from './weapons.js';
+import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=sword-schools-20261010';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js';
 import { makeRoom } from './room.js?v=sword-schools-20261010-final';
 import { stepTo, nearestWalk } from './walk.js';
-import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk } from './art.js';
+import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14
 import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG
@@ -136,23 +141,37 @@ fitSceneBox();
 /** H2 (คุณเป้ 10 ต.ค.): "กล้องตามตัวละครอย่างนุ่มนวลในหน้าแผนที่เวลา zoom ด้วย"
  *  ซูมแผนที่โซน = ขยายกล่อง .scene-box ด้วย CSS transform (พิกัดคลิกอ่านจาก getBoundingClientRect อยู่แล้ว จึงไม่เพี้ยน)
  *  กล้องตามยมบาทด้วยสูตรเดียวกับกล้องชายแดน (scene-style.followCamera: exponential 130ms, ไม่เกินขอบภาพ)
- *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับ 1× ↔ 2.5× */
-const MAP_ZOOM_LEVELS = [1, 2.5];
-const mapCam = { level: 0, z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
+ *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับภาพรวมกับกล้องตามตัวละคร; minimap ปรับระยะได้ */
+let cameraZone = g.zone;
+let MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
+const mapCam = { level: townDefaultZoom(g.zone), z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
 const zoomBtn = document.getElementById('hud-zoom');
 function setMapZoom(level) {
   mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
   if (zoomBtn) {
     zoomBtn.dataset.level = String(mapCam.level);
     zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
+    zoomBtn.setAttribute('aria-label',t(mapCam.level > 0 ? 'town.overview' : 'town.follow'));
+    const less=document.getElementById('town-zoom-less'),more=document.getElementById('town-zoom-more');
+    if(less)less.disabled=mapCam.level===0;
+    if(more)more.disabled=mapCam.level===MAP_ZOOM_LEVELS.length-1;
     const zoomImg = zoomBtn.querySelector('img');
     if (zoomImg) zoomImg.src = mapCam.level > 0 ? 'img/ui/icon-zoom-out.png' : 'img/ui/icon-zoom-in.png';   // ซูมอยู่ = แสดงปุ่มซูมออก
   }
 }
-zoomBtn?.addEventListener('click', () => setMapZoom((mapCam.level + 1) % MAP_ZOOM_LEVELS.length));
+setMapZoom(mapCam.level);
+zoomBtn?.addEventListener('click', () => setMapZoom(mapCam.level > 0 ? 0 : Math.max(1,townDefaultZoom(g.zone))));
+document.getElementById('town-zoom-less')?.addEventListener('click',()=>setMapZoom(mapCam.level-1));
+document.getElementById('town-zoom-more')?.addEventListener('click',()=>setMapZoom(mapCam.level+1));
+document.getElementById('town-overview')?.addEventListener('click',()=>setMapZoom(0));
 function updateMapCamera(now) {
+  if (cameraZone !== g.zone) {
+    cameraZone = g.zone; MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
+    mapCam.init = false; setMapZoom(townDefaultZoom(g.zone));
+  }
   const stage = document.querySelector('.stage'), box = document.querySelector('.scene-box');
   if (!stage || !box) return;
+  stage.classList.toggle('town-view',isTownZone(g.zone));
   const dt = Math.max(0, Math.min(250, now - mapCam.at)); mapCam.at = now;
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const target = MAP_ZOOM_LEVELS[mapCam.level];
@@ -163,7 +182,8 @@ function updateMapCamera(now) {
   const wantX = mapCam.level > 0 ? g.player.x : SCENE.w / 2, wantY = mapCam.level > 0 ? g.player.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) {
-    mapCam.z = 1;
+    mapCam.view={cx:SCENE.w/2,cy:SCENE.h/2,zoom:1};
+    mapCam.z = 1;box.style.setProperty('--map-label-scale','1');
     if (box.style.transform) { box.style.transform = ''; box.style.transformOrigin = ''; }
     return;
   }
@@ -175,6 +195,8 @@ function updateMapCamera(now) {
     return Math.max(view - size - off, Math.min(-off, view / 2 - off - centerPx * z));
   };
   const tx = axis(cw, W, L, mapCam.x / SCENE.w * bw), ty = axis(ch, H, T, mapCam.y / SCENE.h * bh);
+  mapCam.view={cx:(cw/2-L-tx)/z/bw*SCENE.w,cy:(ch/2-T-ty)/z/bh*SCENE.h,zoom:z};
+  box.style.setProperty('--map-label-scale',(1/mapCam.z).toFixed(4));
   box.style.transformOrigin = '0 0';
   box.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${z.toFixed(4)})`;
 }
@@ -279,7 +301,8 @@ function frame(now) {
     while (acc >= step) { acc -= step; g.step(); if (g.over || g.paused) break; }
   }
   updateMapCamera(now);
-  render(ctx, g, now, hover, sel);
+  render(ctx, g, now, hover, sel, mapCam.view);
+  updateTownHud(now);
   followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); drawPauseTag();
   requestAnimationFrame(frame);
 }
@@ -1219,8 +1242,8 @@ function updateFrontierFab() {
   if (!f) {
     f = document.createElement('button');
     f.className = 'frontierfab';
-    f.textContent = '🏯 เข้าด่านชายแดน';
-    f.onclick = ev => { ev.stopPropagation(); if (!g.battle && !dlg.open) openFrontier(); };
+    f.textContent = openDungeonRoutes(g).length?'ออกชายแดน · ดันเจี้ยน':'🏯 เข้าด่านชายแดน';
+    f.onclick = ev => { ev.stopPropagation(); if (!g.battle && !dlg.open) openBorder(); };
     ov.appendChild(f);
   }
   f.dataset.sx = FRONTIER.bx; f.dataset.sy = FRONTIER.by - FRONTIER.bw + 18;
@@ -1230,7 +1253,72 @@ function updateFrontierFab() {
 /** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
 function currentMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
-  return nearestInteraction(g.player, mapInteractions(g, MERCHANT));
+  const point=g.harbourPoint();
+  return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
+    {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y-90,label:'ท่าเรือ · Fast Travel'}]);
+}
+
+
+function activateMapInteraction(now) {
+      if (now.kind === 'repair') {
+        if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
+      } else if (now.kind === 'harbour') openHarbour();
+      else if (now.kind === 'nira') openNiraOffice();
+      else if (now.kind === 'merchant') openMerchant();
+      else if (now.kind === 'challenge') openChallenge();
+      else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
+      else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
+      else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
+      else if (now.kind === 'finalRest') openStation('tea', true);
+      else openStation(now.key);
+}
+
+const townPanel = document.getElementById('town-map-panel');
+const townMapCanvas = document.getElementById('town-minimap');
+const townActionButton = document.getElementById('town-action');
+let townHudAt = 0;
+function currentTownAction() {
+  if (!started || dlg.open || !heroProfile.hidden) return null;
+  return townNearbyAction(g, currentMapInteraction(), nearBuild(g,g.player.x,g.player.y));
+}
+function activateTownAction() {
+  const action=currentTownAction();
+  if (!action) return;
+  if (action.kind === 'build') openBuild(action.target);
+  else if (action.kind === 'frontier') openBorder();
+  else activateMapInteraction(action.target);
+}
+townActionButton.onclick = activateTownAction;
+function updateTownHud(now) {
+  const show=started && isTownZone(g.zone) && !g.over && !g.battle;
+  townPanel.hidden=!show;
+  const action=show ? currentTownAction() : null;
+  townActionButton.hidden=!action;
+  if (action) {
+    const label=action.kind==='build' ? `${t('town.build')} · ${action.target.name}`
+      : action.kind==='frontier' ? t('town.frontier')
+      : [action.target.label,STATIONS.find(s=>s.k===action.target.key)?.name].filter(Boolean).join(' · ');
+    townActionButton.innerHTML=`<kbd>E</kbd>${esc(label)}`;
+  }
+  if (!show || !townPanel.open || now-townHudAt<100) return;
+  townHudAt=now;
+  const c=townMapCanvas.getContext('2d'), w=townMapCanvas.width,h=townMapCanvas.height;
+  c.clearRect(0,0,w,h);
+  c.fillStyle='#271923';c.fillRect(0,0,w,h);
+  const image=img('theme-map-th');
+  if(image) {c.globalAlpha=.65;c.drawImage(image,0,0,w,h);c.globalAlpha=1;}
+  for(const site of townSites(g)) {
+    c.fillStyle=site.state==='built'?'#e9c789':site.state==='building'?'#ee9260':'#9b8d80';
+    c.fillRect(site.x/SCENE.w*w-2,site.y/SCENE.h*h-2,4,4);
+  }
+  // Visible camera rectangle is derived from the actual transformed DOM bounds.
+  const box=cv.getBoundingClientRect(), view=document.querySelector('.stage').getBoundingClientRect();
+  if(box.width&&box.height) {
+    const x=Math.max(0,(view.left-box.left)/box.width), y=Math.max(0,(view.top-box.top)/box.height);
+    const right=Math.min(1,(view.right-box.left)/box.width), bottom=Math.min(1,(view.bottom-box.top)/box.height);
+    c.strokeStyle='#f3d4a788';c.lineWidth=1;c.strokeRect(x*w,y*h,(right-x)*w,(bottom-y)*h);
+  }
+  c.fillStyle='#fff4d2';c.beginPath();c.arc(g.player.x/SCENE.w*w,g.player.y/SCENE.h*h,3,0,Math.PI*2);c.fill();
 }
 
 /** One nearby action, including repairs, survives refresh while the player taps. */
@@ -1247,16 +1335,7 @@ function updateRepairFabs() {
       ev.stopPropagation();
       const now = currentMapInteraction();
       if (!now || now.id !== f.dataset.target) return;
-      if (now.kind === 'repair') {
-        if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
-      } else if (now.kind === 'nira') openNiraOffice();
-      else if (now.kind === 'merchant') openMerchant();
-      else if (now.kind === 'challenge') openChallenge();
-      else if (now.kind === 'zoneEvent') openZoneEventAlert(ZONE_EVENTS[g.zone].find(ev => ev.k === now.key));
-      else if (now.kind === 'devaEncounter') openDevaEncounter(now.key);
-      else if (now.kind === 'finalEncounter') openFinalEncounter(now.key);
-      else if (now.kind === 'finalRest') openStation('tea', true);
-      else openStation(now.key);
+      activateMapInteraction(now);
     };
     ov.appendChild(f);
   }
@@ -2023,6 +2102,17 @@ function onDlgClose(fn) {
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
 const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
 const crewArt = (c, pose = '') => artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
+function battleTurnOrderHtml(b) {
+  if(!b.turnQueue||b.over)return '';
+  const units=g.battleTimeline(),currentRound=b.turnQueue.round;
+  const render=(list,next)=>`<section><small>${next?'รอบถัดไป / Next':'รอบ '+currentRound+' / Turn'}</small><ol class="battle-turn-queue" aria-label="${next?'คิวรอบถัดไป':'คิวรอบปัจจุบัน'}">${list.map((u,i)=>{
+    const c=g.battleActors().find(a=>a.id===u.id);
+    const portrait=u.side==='foe'?storyFoeArt(u.k):u.id==='you'?artUrl('hero-yama-profile'):u.k==='guard'?artUrl('crew-guard-profile'):crewArt(c,'-profile');
+    return `<li class="${u.side} ${!next&&i===0?'current':''}" title="${esc(u.name)}"><img src="${esc(portrait)}" alt="${esc(u.name)}"><b>${esc(u.name)}</b></li>`;
+  }).join('')}</ol></section>`;
+  return `<div class="battle-timeline">${render(units.filter(u=>u.round===currentRound),false)}${render(units.filter(u=>u.round!==currentRound),true)}</div>`;
+}
+
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
@@ -2058,7 +2148,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
   // ข้อ K คุณเป้เจอ 25 ก.ย. 2569 — ฉากต่อสู้สำรอง (ไม่มี bg เฉพาะทาง) ใช้ Turn-Base ตามโซนแล้ว
-  const bg = hp?.kind?.startsWith('frontier') ? themeBackground(g.zone, 'frontier') : artUrl('BG-Turn-Base', 'webp');
+  const bg = hp ? battleBackground(g.zone, hp, g.player) : artUrl('BG-Turn-Base', 'webp');
   // ข้อ E คุณเป้เจอ 25 ก.ย. 2569 — ยักษ์ทวารบาลเคย "อยู่ในทีม" จริง (อยู่ท้ายแถว squad มาตั้งแต่ข้อ C
   // ชุดที่ 10) แต่แถว .battle-squad เป็น column-reverse ซ้อนขึ้นจากล่าง ที่ขนาดภาพเดิม (clamp สูงสุด 165px)
   // พอมี 3 คน (ยมทูต 2 + ยักษ์) ตัวที่ 3 ถูกดันสูงจน y ติดลบ (ทดสอบจริงด้วย Playwright:
@@ -2424,7 +2514,7 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      powerSound(k); paint(); refresh(); playActionCutscene(k);
+      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -2822,7 +2912,8 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
-  let commandMenuOpen = true, authorityAttackScheduled = false;
+  let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
+  const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
   let healFx = null, healTimer = 0;
   const applyHealFx = () => {
@@ -2863,7 +2954,7 @@ function openBattle(after) {
     }
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — สะกดจิต (กานต์): ตา "เขา" ที่ถูกสะกด ฟาดเข้าตัวเอง
     // ไม่ใช่พุ่งเข้าใส่ยมบาทน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมบาทน้อย (ดู B.dmg.confuseSelf ใน game.js)
-    const confuseHit = !!(b.dmg && b.dmg.confuseSelf > 0);
+    const confuseHit = !!(b.dmg && (b.dmg.confuseSelf > 0 || b.dmg.burnSelf > 0 && !(b.dmg.you > 0 || b.dmg.crew > 0)));
     // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
     const view = phase === 'you' && b.mid
         ? { ...b, foes:b.mid.foes, selectedFoeId:b.mid.selectedFoeId,
@@ -2871,7 +2962,7 @@ function openBattle(after) {
             dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0, foeId: b.dmg?.foeId, foeHits:b.dmg?.foeHits } }
       : phase === 'foe'
         // foeId/counterFoeId/confuseSelf ต้องส่งต่อให้ arena() ใช้เลือกว่าศัตรูตัวไหนโดนตี/พุ่งเข้าใส่ (ฉากหลายศัตรู)
-        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
+        ? { ...b, dmg: confuseHit ? { foe: b.dmg.confuseSelf || b.dmg.burnSelf, you: 0, confuseSelf: b.dmg.confuseSelf, counterFoeId: b.dmg.counterFoeId, confuseHits:b.dmg.confuseHits }
                                   : { ...b.dmg, foe:0 } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
@@ -2955,6 +3046,7 @@ function openBattle(after) {
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `MP ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
+    const currentTurn = !prepOn ? g.beginBattleTurns() : null;
     const actor = g.battleActors().find(c => c.id === (b.actorId || 'you')) || g.battleActors()[0];
     if (!phase && b.actorId && b.actorId !== actor.id) { b.actorId = actor.id; b.command = null; }
     const isYama = actor.id === 'you';
@@ -2967,18 +3059,25 @@ function openBattle(after) {
     const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
     const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
-      : battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
+      : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const pending = b.command;
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
-    const choosingTarget = !!(pending && !needsReceiver && !phase && !b.over);
-    const selection = pending ? `<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
-    const acts = !commandMenuOpen || !!phase || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || (b.over && !phase) ? '' : commandWheel({battle:true,busy:!!phase,
+    const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
+    const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
+    const confirmedRecipient=b.commandRecipient;
+    const canConfirm=pending&&(selfCommand||(needsReceiver?confirmedRecipient: b.commandTarget===b.selectedFoeId));
+    const targetLabel=needsReceiver?g.battleActors().find(c=>c.id===confirmedRecipient)?.name:
+      selfCommand?actor.name:b.foes.find(f=>f.id===b.commandTarget)?.who;
+    const selection = pending ? `<p class="battle-command-preview">${esc(b.commandLabel||pending)}${targetLabel?` → ${esc(targetLabel)}`:''}</p>${canConfirm?`<button class="gold" data-execute="${esc(pending)}" data-recipient="${esc(confirmedRecipient||'you')}">ยืนยัน / Confirm</button>`:''}<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
+    const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' : commandWheel({battle:true,busy:!!phase,
       actorName:actor.name || GUARD.name, portrait:isYama ? artUrl('hero-yama-profile') : crewArt(actor, '-profile'),
       segments:[{id:'attack',label:'โจมตี / Attack',icon:'img/ui/Button7.png',choices:attacks},
         ...(isYama ? [{id:'power',label:'พลัง / Power',icon:'img/ui/Button8.png',choices:powerChoices}] : []),
-        {id:'item',label:'ไอเท็ม / Items',icon:'img/ui/Button10.png',choices:itemChoices}],selected:selection});
+        {id:'item',label:'ไอเท็ม / Items',icon:'img/ui/Button10.png',choices:itemChoices},
+        {id:'defense',label:'ป้องกัน / Defend',choices:battleChoice('defend','img/ui/icon-justice.png','ตั้งรับ / Defend',true,'ลดความเสียหาย 50% จนถึงเทิร์นถัดไป')},
+        {id:'escape',label:'หลบหนี / Flee',choices:battleChoice('flee','img/ui/icon-zoom-out.png','ถอนตัว / Retreat',['soul','mob','frontier'].includes(b.kind),'ออกจากศึกนี้โดยไม่ได้รางวัล')}],selected:selection});
 
-    const finLabel = b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
+    const finLabel = b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
@@ -3015,7 +3114,7 @@ function openBattle(after) {
                                : 'วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
             b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
-            acts, squadMembers) +
+            '', squadMembers) + acts +
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
@@ -3031,11 +3130,10 @@ function openBattle(after) {
     const sceneTitle = stage.querySelector('.ttl');
     if (sceneTitle) sceneTitle.textContent = sceneTitle.textContent.replace(/^[^\p{L}\p{N}]+/u, '');
     const meter = (value, max, type, label = '') => `<span class="battle-meter ${type}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.max(0, Math.round(value))}"><i style="width:${Math.max(0, Math.min(100, 100 * value / (max || 1)))}%"></i></span>`;
-    const team = [
-      ...(g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name:GUARD.name }] : []),
-      ...battleHelpers,
-    ];
+    // Same stable back-to-front order as the visible squad; Yama is the last/front slot.
+    const team = squadMembers;
     stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
+      ${battleTurnOrderHtml(b)}
       <div class="battle-team-hud">
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
@@ -3087,8 +3185,15 @@ function openBattle(after) {
     }
     // ชุด 29C ข้อ 7 — ยมทูตฝ่ายเราสูงใกล้เคียงยมบาทน้อย (วัดจากความสูงตัวจริงของภาพ ไม่ใช่ค่าตายตัว) · ทุกโซน ทุกยมทูตรวมยักษ์ทวารบาล
     applyHealFx();
-    if (!g.isFinalBattle()) fitBattleSprites(stage, heroFace());
-    if (!g.isFinalBattle() && typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace()); else ro.disconnect(); }); ro.observe(stage); }
+    const formationTurn = !b.over && !prepOn ? g.currentBattleTurn() : null;
+    const currentActor = formationTurn?.side==='ally' ? g.battleActors().find(a=>a.id===formationTurn.id) : null;
+    const activeKey = currentActor ? (currentActor.id==='you'?'you':crewBattleKey(currentActor)) : null;
+    if(activeKey!==formationMotion.activeKey){
+      formationMotion.previousKey=formationMotion.activeKey;
+      formationMotion.activeKey=activeKey;formationMotion.changedAt=Date.now();
+    }
+    fitBattleSprites(stage, heroFace(), 0, formationMotion);
+    if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitBattleSprites(stage, heroFace(), 0, formationMotion); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
     stage.querySelector('[data-arena-settings]').setAttribute('aria-label', t('battle.settings'));
@@ -3116,7 +3221,7 @@ function openBattle(after) {
         const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
         if (needsReceiver && chosen) {
           const reason = pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
-          if (!reason) executeCommand(pending, chosen.id);
+          if (!reason) {b.commandRecipient=chosen.id;paint();}
           return;
         }
         if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
@@ -3137,7 +3242,7 @@ function openBattle(after) {
       }
       const activate = () => {
         if (!available || phase || !g.selectFoe(el.dataset.foeId)) return;
-        if (choosingTarget) executeCommand(pending);
+        if (choosingTarget) {b.commandTarget=el.dataset.foeId;paint();}
         else paint();
       };
       el.onclick = activate;
@@ -3146,10 +3251,10 @@ function openBattle(after) {
       };
     });
 
-    const wheel = stage.querySelector('.actor-wheel');
+    const wheel = dlg.querySelector('.actor-wheel');
     const anchor = stage.querySelector(`[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
     wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) paint(); });
-    if (wheel && anchor) {
+    if (wheel && anchor && !wheel.classList.contains('battle-command-dock')) {
       // ยกวงเหนือผู้ลงมือเล็กน้อย ให้เห็นตัวละครมากขึ้น — วัดซ้ำหลังกล่องเปิดจริง
       // เพราะ paint() รอบแรกรันก่อน openDlg() (กล่องยังไม่มีขนาด วงเลยไปชิดซ้ายล่าง)
       const place = () => {
@@ -3171,8 +3276,7 @@ function openBattle(after) {
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
-      if (el.dataset.act === 'cooldownClock') { executeCommand('cooldownClock'); return; }
-      b.command = el.dataset.act; paint();
+      b.command = el.dataset.act;b.commandLabel=el.textContent.trim();b.commandTarget=null;b.commandRecipient=null;paint();
     });
     const finishWave = () => {
       if (!g.battle?.pendingWave) return;
@@ -3193,7 +3297,7 @@ function openBattle(after) {
         healFx = { amount: Math.round(g.battle.youHp - hpBefore), start: Date.now() + ACTION_CUT_MS - 200, ms: HEAL_GLOW_MS };
         scheduleHealFx();
       }
-      powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
+      if(k==='flee')sfx('step');else powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
       if (nb.storyFinale) { sfx('win'); finish(); return; }
@@ -3219,7 +3323,7 @@ function openBattle(after) {
         // เขาตายคาที่ หรือไม่ได้สวนกลับ (โดนสตัน/ท่านแพ้ไปแล้ว) → ไม่ต้องมีจังหวะที่ 2
         // ข้อ B ชุด 13 — ถูกสะกดจิตแล้วฟาดใส่ตัวเอง (confuseSelf) ก็ต้องมีจังหวะที่ 2 ให้เห็นด้วย
         const counter = (nb.dmg && (nb.dmg.you > 0 || nb.dmg.crew > 0 || nb.dmg.confuseSelf > 0));
-        if (!counter) { phase = null; fxNow = null; g.finishBattleCommand(); finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
+        if (!counter) { phase = null; fxNow = null; g.finishBattleCommand(); commandMenuOpen=true; finishWave(); paint(); if (nb.over) sfx(nb.over === 'win' ? 'win' : 'lose'); return; }
 
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
         // หน่วงเพิ่มอีก ~2 วิ ก่อนเริ่มจังหวะเขาสวนกลับ ผู้เล่นต้องเห็นดาเมจ/แถบเลือดของตัวเองนิ่งอยู่ก่อน
@@ -3242,6 +3346,18 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
     if (fin) fin.onclick = finish;
+    if(currentTurn?.side==='foe'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
+      enemyScheduled=true;
+      phaseTimer=setTimeout(()=>{
+        enemyScheduled=false;
+        if(g.battle!==b||phase||userPaused||pauseDlg.open||!dlg.open)return;
+        phase='foe';phaseAt=Date.now();
+        if(!g.runEnemyTurn()){phase=null;paint();return;}
+        fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
+        sfx('hurt');paint();if(b.ultimate)playActionCutscene('boss',b.ultimate);
+        phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
+      },600);
+    }
     if (b.kind === 'dad' && !b.over && !authorityAttackScheduled) {
       authorityAttackScheduled=true;
       phaseTimer=setTimeout(()=>{if(g.battle!==b)return;b.actorId='you';b.command='atk';executeCommand('atk');},900);
@@ -3305,6 +3421,7 @@ function openBattle(after) {
     const now = performance.now(), elapsed = now - crewClockAt; crewClockAt = now;
     g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
     g.updateActorRecovery();
+    if(!phase&&!enemyScheduled&&!userPaused&&!pauseDlg.open&&dlg.open&&g.currentBattleTurn()?.side==='foe')paint();
     for (const c of g.battleCrew()) {
       const remaining=g.crewCooldown(c), progress=100*(1-remaining/specialCooldown(c));
       const ready=dlg.querySelector(`[data-crew-ready="${crewBattleKey(c)}"] .battle-meter`);
@@ -3339,108 +3456,78 @@ function openBattle(after) {
 
 // ---------- ย้ายโซน: แผนที่ด้านนอกและทางเดินข้ามสะพาน ----------
 function openZone() {
-  const cur = g.zoneDef();
-  const markers = ZONES.map((z, i) => {
-    const here = z.k === g.zone;
-    const lock = !g.canMoveZone(z.k);
-    const prev = ZONES[i - 1];
-    const why = lock ? (z.k !== 'cyberhell' && g.level < z.level ? `ต้องเป็น ${LEVELS[z.level - 1].name}` : `ต้องชนะ${prev.bossName}ก่อน`)
-      : (z.sub || 'กดเพื่อเดินทาง');
-    const [x, y] = ZONE_MAP[z.k].marker;
-    return `<button class="world-zone${here ? ' here' : ''}${lock ? ' locked' : ''}"
-      style="left:${x}%;top:${y}%" data-zone="${z.k}" ${here || lock ? 'disabled' : ''}
-      aria-label="${esc(z.name)} — ${esc(here ? 'อยู่ที่นี่' : lock ? why : 'กดเพื่อเดินทาง')}"
-      title="${esc(here ? 'อยู่ที่นี่' : why)}">
-      <b>${here ? '📍 ' : lock ? '🔒 ' : ''}${esc(z.name)}</b>
-      <small>${esc(here ? 'อยู่ที่นี่' : lock ? why : 'กดเพื่อเดินทาง')}</small>
-    </button>`;
-  }).join('');
-  const [startX, startY] = ZONE_MAP[g.zone].gate;
-  modal(`<h2>🗺️ แผนที่อเวจี</h2>
-    <div class="world-map-note">ตอนนี้อยู่ <b style="color:var(--gold)">${esc(cur.name)}</b> · กดชื่อโซนที่เปิดแล้วเพื่อให้ยมบาทน้อยกับนิราเดินทางข้ามไป
-      <span class="world-pan-hint">· ปัดแผนที่ซ้าย–ขวาเพื่อดูทุกโซน</span></div>
-    <div class="world-map-scroll"><div class="world-map" role="group" aria-label="แผนที่เลือกโซน">
-      <img class="world-map-art" src="img/zone-world-map.webp" alt="เส้นทางเชื่อมสี่ดินแดนในอเวจี">
-      ${markers}
-      <div class="world-travelers" aria-hidden="true">
-        <canvas class="yama" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none;background:none"></canvas>
-        <canvas class="nira" width="160" height="160" style="left:${startX}%;top:${startY}%;width:auto;animation:none"></canvas>
-      </div>
-    </div></div>
-    <div class="world-map-note">ยมบาทน้อย นิรา เบี้ยกรรม และพลังติดตัวไป · สถานีและยมทูตประจำสาขาเดิมจะรออยู่เมื่อกลับมา</div>
-    <div class="row"><button class="gold" id="zone-enter" disabled>เข้าโซนนี้</button></div>`, d => {
-    const map = d.querySelector('.world-map'), scroll = d.querySelector('.world-map-scroll');
-    const yama = d.querySelector('.world-travelers .yama'), nira = d.querySelector('.world-travelers .nira');
-    let traveling = false, frame = 0, arrivedZone = null;
-    const enter = d.querySelector('#zone-enter');
-    enter.onclick = () => { if (arrivedZone && !traveling && g.moveZone(arrivedZone)) { sfx('gong'); refresh(); } };
-    const yamaCtx = yama.getContext('2d');
-    yamaCtx.imageSmoothingEnabled = false;
-    let yamaDirection = 'down', yamaLast = [startX, startY];
-    const paintYama = (distance = 0) => {
-      yamaCtx.clearRect(0, 0, 160, 160);
-      if (!drawHeroWalk(yamaCtx, 80, 150, 135, distance, 1, yamaDirection))
-        drawStandee(yamaCtx, 'hero-yama', 80, 150, 135, 0, '👑');
-    };
-    paintYama();
-    const heroReady = new Image();
-    heroReady.onload = () => { if (!traveling) paintYama(); };
-    heroReady.src = artUrl('hero-yama-walk-4dir');
-    const niraCtx = nira.getContext('2d');
-    niraCtx.imageSmoothingEnabled = false;
-    let niraFace = 1, niraLastX = startX;
-    const paintNira = (distance = 0, moving = false) => {
-      niraCtx.clearRect(0, 0, 160, 160);
-      if (moving && drawCrewWalk(niraCtx, 'crew-nira', 80, 150, 135, distance, niraFace)) return;
-      drawStandee(niraCtx, 'crew-nira', 80, 150, 135, 0, '📜', niraFace, false);
-    };
-    paintNira();
-    const niraStill = new Image();
-    niraStill.onload = () => { if (!traveling) paintNira(); };
-    niraStill.src = artUrl('crew-nira');
-    const niraWalk = new Image();
-    niraWalk.src = artUrl('crew-nira-walk');
-    const centerOn = x => { scroll.scrollLeft = map.clientWidth * x / 100 - scroll.clientWidth / 2; };
-    centerOn(startX);
-    onDlgClose(() => cancelAnimationFrame(frame));
-    d.querySelectorAll('.world-zone:not(:disabled)').forEach(b => b.onclick = () => {
-      if (traveling || !g.canMoveZone(b.dataset.zone)) return;
-      const route = zoneMapRoute(arrivedZone || g.zone, b.dataset.zone);
-      if (route.length < 2) return;
-      traveling = true; arrivedZone = null; enter.disabled = true;
-      map.classList.add('traveling');
-      d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = true; });
-      const path = travelPath(route, map.clientWidth / map.clientHeight);
-      const total = path.total;
-      const followGap = Math.min(6, total / 4);
-      const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 :
-        Math.min(10000, Math.max(3500, total * 90));
-      const started = performance.now();
-      const step = now => {
-        if (!d.open || !d.classList.contains('zonepick')) return;
-        const done = duration === 0 ? total + followGap : Math.min(total + followGap, (now - started) / duration * (total + followGap));
-        const [x, y] = path.at(done);
-        const [nx, ny] = path.at(done - followGap);
-        yama.style.left = `${x}%`; yama.style.top = `${y}%`;
-        yamaDirection = walkDirection((x - yamaLast[0]) * map.clientWidth / 100,
-          (y - yamaLast[1]) * map.clientHeight / 100, yamaDirection);
-        yamaLast = [x, y];
-        paintYama(done < total ? done * map.clientHeight / 100 : 0);
-        nira.style.left = `${nx}%`; nira.style.top = `${ny}%`;
-        if (Math.abs(nx - niraLastX) > .001) niraFace = nx > niraLastX ? 1 : -1;
-        niraLastX = nx;
-        paintNira(Math.max(0, done - followGap) * map.clientHeight / 100,
-          done > followGap && done < total + followGap);
-        centerOn(x);
-        if (done < total + followGap) { frame = requestAnimationFrame(step); return; }
-        map.classList.remove('traveling');
-        // Both travelers have arrived; entering still requires the explicit button.
-        traveling = false; arrivedZone = b.dataset.zone; enter.disabled = false;
-        d.querySelectorAll('.world-zone').forEach(btn => { btn.disabled = btn.dataset.zone === g.zone || !g.canMoveZone(btn.dataset.zone); });
-      };
-      frame = requestAnimationFrame(step);
+  const routes=openDungeonRoutes(g),ports=harbourDestinations(g);
+  modal(`<h2>แผนที่อเวจี</h2><img src="img/zone-world-map.webp" alt="สี่ดินแดนอเวจี" style="width:100%;border-radius:12px">
+    <p>ชนะบอส → เดินออกชายแดน → ผ่านดันเจี้ยน → ถึงเมืองใหม่ → เปิดท่าเรือ</p>
+    <div class="row">${ZONES.map(z=>`<span>${esc(z.name)} · ${g.zoneTravel.visited[z.k]?'ค้นพบแล้ว':'ยังไม่ถึง'}${g.zoneTravel.ports[z.k]?' · ท่าเรือเปิด':''}</span>`).join('')}</div>
+    <div class="row"><button id="walk-border" ${routes.length?'':'disabled'}>เดินไปชายแดน</button><button id="walk-port">เดินไปท่าเรือ</button><button data-close>ปิด</button></div>
+    <p>${ports.length?'เดินทางเรือได้ '+ports.map(k=>ZONES.find(z=>z.k===k).name).map(esc).join(' · '):'Fast Travel เปิดได้เมื่อค้นพบและเปิดท่าเรือปลายทางแล้ว'}</p>`,d=>{
+      d.querySelector('#walk-border').onclick=()=>{dlg.close();g.walkTo(FRONTIER.x,FRONTIER.y);};
+      d.querySelector('#walk-port').onclick=()=>{const p=g.harbourPoint();dlg.close();g.walkTo(p.x,p.y);};
+    },'zonepick');
+}
+function openBorder() {
+  if(Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y)>FRONTIER.reach)return;
+  const routes=openDungeonRoutes(g),active=dungeonStatus(g);
+  modal(`<h2>ประตูชายแดน</h2><p>${routes.length?'ปราบบอสแล้ว ทางออกสู่ดินแดนถัดไปเปิดแล้ว':'ปราบบอสประจำโซนก่อน จึงออกสู่ดินแดนถัดไปได้'}</p>
+    <div class="row">${routes.map(r=>`<button class="gold" data-dungeon="${r.to}">${active?'สำรวจต่อ':'ออกเดินทาง'} · ${esc(r.name)}</button>`).join('')}
+    <button id="border-defense">ป้องกันชายแดน / ประลอง</button><button data-close>ปิด</button></div>`,d=>{
+      d.querySelectorAll('[data-dungeon]').forEach(btn=>btn.onclick=()=>{
+        if(active||g.beginBorderDungeon(btn.dataset.dungeon))openDungeon();
+      });
+      d.querySelector('#border-defense').onclick=()=>openFrontier();
     });
-  }, 'zonepick');
+}
+function openDungeon() {
+  if(!dungeonStatus(g)||g.battle||g.pendingRecovery)return;
+  let destroy=null;
+  modal('<div id="dungeon-root"></div>',d=>{
+    destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
+      onEncounter:()=>{
+        destroy?.();destroy=null;
+        if(g.startDungeonEncounter())openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
+        else openDungeon();
+      },
+      onArrival:to=>{destroy?.();destroy=null;if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();},
+      onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())dlg.close();},
+      onMenu:()=>{destroy?.();destroy=null;openBag();
+        const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
+        dlg.addEventListener('close',back);
+      },
+    });
+    const generation=dlgGen;
+    const close=()=>{if(d.open&&generation===dlgGen)return;destroy?.();destroy=null;d.removeEventListener('close',close);};d.addEventListener('close',close);
+  },'dungeon-dialog');
+}
+function openHarbour() {
+  if(!g.atHarbour()||g.battle)return;
+  if(!g.zoneTravel.ports[g.zone])g.activatePort();
+  const destinations=harbourDestinations(g);
+  modal(`<h2>ท่าเรือรับวิญญาณ</h2><p>Yama และ Nira เดินทางด้วยเรือไปเมืองที่เปิดท่าเรือแล้ว</p>
+    <div class="row">${destinations.map(k=>`<button class="gold" data-sail="${k}">${esc(ZONES.find(z=>z.k===k).name)}</button>`).join('')||'<p>ยังไม่มีท่าเรือปลายทาง — ผ่านดันเจี้ยนไปค้นพบเมืองใหม่ก่อน</p>'}
+    <button data-close>ปิด</button></div>`,d=>{
+      d.querySelectorAll('[data-sail]').forEach(btn=>btn.onclick=()=>sailTo(btn.dataset.sail));
+    });
+}
+function sailTo(to) {
+  if(!g.atHarbour()||!harbourDestinations(g).includes(to))return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let frame=0,departed=false;
+  modal(`<h2>เรือสู่อเวจี · ${esc(ZONES.find(z=>z.k===to).name)}</h2><canvas id="sailing" width="960" height="360" style="width:100%;border-radius:12px" aria-label="Yama และ Nira กำลังเดินทางโดยเรือ"></canvas><p>Yama · Nira</p><button id="sail-skip">ข้ามฉากเดินเรือ</button>`,d=>{
+    const canvas=d.querySelector('canvas'),c=canvas.getContext('2d'),start=performance.now();
+    const arrive=()=>{if(departed)return;departed=true;cancelAnimationFrame(frame);if(g.moveZone(to)){dlg.close();g.save();refresh();}};
+    d.querySelector('#sail-skip').onclick=arrive;
+    const draw=now=>{if(!d.open||departed)return;const p=Math.min(1,(now-start)/(reduced?1:2600));
+      c.fillStyle='#252038';c.fillRect(0,0,960,360);
+      const bg=img('theme-map-'+g.zone);if(bg)c.drawImage(bg,0,bg.naturalHeight*.72,bg.naturalWidth,bg.naturalHeight*.25,0,0,960,360);
+      const x=160+p*640,y=260;
+      drawStandee(c,'hero-yama',x-12,y-48,62,now);drawStandee(c,'crew-nira',x+22,y-48,60,now);
+      drawBoat(c,x,y,now,0,false);
+      if(p>=1)arrive();else frame=requestAnimationFrame(draw);
+    };frame=requestAnimationFrame(draw);
+    const generation=dlgGen;
+    const close=()=>{if(d.open&&generation===dlgGen)return;cancelAnimationFrame(frame);d.removeEventListener('close',close);};d.addEventListener('close',close);
+  },'boat-dialog');
 }
 
 function openOutfit() {
@@ -3542,11 +3629,16 @@ const weaponImg = (id, attrs = '') =>
 /** การ์ดอาวุธในกระเป๋า — หน้าตาเดียวกับการ์ดชุด: ล็อก/เก็บอยู่/กำลังถือ + ปุ่มสวม·ถอด */
 function weaponCards() {
   const eq = g.weapons?.equipped || null;
+  const comparison = id => {
+    if (id === eq) return '';
+    const { current, next, delta } = weaponBonusComparison(WEAPONS, eq, id);
+    return `<small class="weapon-compare ${delta > 0 ? 'gain' : delta < 0 ? 'loss' : ''}">${esc(t('menu.bonusCompare', { current, next }))}<br>${esc(t('menu.bonusChange', { delta:delta > 0 ? `+${delta}` : delta }))}</small>`;
+  };
   const folders = { asia:'Asia', west:'West', cyberhell:'CyberHell' }, style = g.outfit || g.zone;
   const face = style === 'th' ? 'img/hero-yama.png' : `img/${folders[style]}/hero-yama-${style}.png`;   // ภาพยมบาทชุดที่สวมอยู่ = ถือดาบเดิมของชุดนั้น
   const base = `<div class="outfit-card weapon-card${eq ? '' : ' selected'}">
     <img src="${face}" alt="" loading="lazy">
-    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote'))}</small></span>
+    <span class="outfit-info"><b>${esc(t('weapon.base'))}</b><small>${esc(t('weapon.baseNote'))}</small>${comparison(null)}</span>
     ${eq ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>` : `<button class="sm" disabled>${esc(t('weapon.on'))}</button>`}</div>`;
   return base + Object.keys(WEAPONS).map(id => {
     const owned = !!g.weapons?.owned?.[id], on = eq === id, zone = ZONES.find(z => z.k === WEAPONS[id].zone);
@@ -3554,6 +3646,7 @@ function weaponCards() {
       ${weaponImg(id, 'loading="lazy"')}
       <span class="outfit-info"><b>${esc(t(`weapon.${id}.name`))}</b>
         ${weaponEffectLines(id).map(l => `<small>${esc(l)}</small>`).join('')}
+        ${owned ? comparison(id) : ''}
         <span>${owned ? esc(on ? t('weapon.on') : t('weapon.stored')) : esc(t('weapon.locked', { zone:zone.name.replace(/^โซน/, '') }))}</span></span>
       ${on ? `<button class="sm" data-bag-weapon="">${esc(t('weapon.unequip'))}</button>`
            : `<button class="sm" data-bag-weapon="${id}" ${owned ? '' : 'disabled'}>${owned ? esc(t('weapon.equip')) : '🔒'}</button>`}
@@ -3561,9 +3654,11 @@ function weaponCards() {
   }).join('');
 }
 
+let bagSection = 'items', bagFilter = 'all';
 function openBag() {
   pauseForDlg();
-  const carried = Object.entries(g.inventory || {}).filter(([k, n]) => ITEMS[k] && n > 0);
+  const allCarried = carriedItems(g.inventory, ITEMS);
+  const carried = carriedItems(g.inventory, ITEMS, bagFilter);
   const itemCards = carried.length ? carried.map(([k, n]) => {
     const d = ITEMS[k], targeted = !!d.hpRatio, recovery = targeted || !!d.mpRatio, why = targeted ? '' : bagUseWhy(k);
     const line = why || (recovery ? itemText(k, 'desc') : itemText(k, 'say'));
@@ -3574,18 +3669,33 @@ function openBag() {
         ${targeted ? `<select data-bag-target="${k}" aria-label="${esc(t('g1.target'))}"><option value="you">${esc(t('g1.you'))}</option>${Object.values(g.roster).filter(c => !c.reader && actorStanding(c)).map(c => `<option value="${esc(c.id)}">${esc(c.name || GUARD.name)} · HP ${Math.round(c.morale)}/100</option>`).join('')}</select>` : ''}</span>
       <button class="gold" data-use-item="${k}" title="${esc(line)}" ${why ? 'disabled' : ''}>${d.material ? 'รอขาย' : esc(t('g1.use'))}</button>
     </div>`;
-  }).join('') : '<div class="bag-empty">ยังไม่มีของในกระเป๋า<br><small>เดินเข้าใกล้ไอเทมตามฉากเพื่อเก็บ</small></div>';
+  }).join('') : `<div class="bag-empty">${esc(allCarried.length ? t('menu.emptyFilter') : t('profile.emptyBag'))}</div>`;
+  const counts = { items:allCarried.reduce((sum, [, n]) => sum + n, 0), outfits:g.outfitsOpen().length,
+    weapons:Object.values(g.weapons?.owned || {}).filter(Boolean).length };
 
-  modal(`<h2>🎒 กระเป๋าของยมบาทน้อย</h2>
-    <div class="hint">ของที่เก็บได้จะไม่ถูกใช้ทันที เลือกใช้เมื่อจำเป็น และติดตัวไปทุกโซน</div>
-    <div class="bag-title">ของใช้ · ${carried.reduce((s, [, n]) => s + n, 0)} ชิ้น</div>
-    <div class="bag-list">${itemCards}</div>
-    <div class="bag-title">ชุดที่ได้รับ</div>
-    <div class="outfit-list">${outfitCards()}</div>
-    <div class="bag-title">${esc(t('weapon.section'))}</div>
-    <div class="outfit-list weapon-list">${weaponCards()}</div>
-    <div class="row"><button class="gold" data-close>ปิดกระเป๋า</button></div>`, d => {
-      d.classList.add('bag');
+  modal(`<div class="menu-heading"><img src="img/ui/icon-bag.png" alt=""><div><h2>${esc(t('menu.bagTitle'))}</h2><p>${esc(t('menu.bagHint'))}</p></div></div>
+    <nav class="menu-tabs" role="tablist" aria-label="${esc(t('menu.bagTitle'))}">${BAG_SECTIONS.map(key => `<button id="bag-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="bag-panel-${key}" aria-selected="${key === bagSection}" tabindex="${key === bagSection ? 0 : -1}">${esc(t('menu.' + key))}<small>${counts[key]}</small></button>`).join('')}</nav>
+    <section id="bag-panel-items" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-items" ${bagSection === 'items' ? '' : 'hidden'}>
+      <div class="bag-filters" role="group" aria-label="${esc(t('menu.items'))}">${['all','recovery','material','other'].map(key => `<button data-bag-filter="${key}" aria-pressed="${bagFilter === key}">${esc(t('menu.' + key))}</button>`).join('')}</div>
+      <div class="bag-list">${itemCards}</div>
+    </section>
+    <section id="bag-panel-outfits" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-outfits" ${bagSection === 'outfits' ? '' : 'hidden'}><div class="outfit-list">${outfitCards()}</div></section>
+    <section id="bag-panel-weapons" class="menu-panel" role="tabpanel" aria-labelledby="bag-tab-weapons" ${bagSection === 'weapons' ? '' : 'hidden'}><div class="outfit-list weapon-list">${weaponCards()}</div></section>
+    <div class="menu-footer"><button class="gold" data-close>${esc(t('menu.closeBag'))}</button></div>`, d => {
+      const selectSection = key => {
+        if (!BAG_SECTIONS.includes(key)) return;
+        bagSection = key;
+        d.querySelectorAll('[data-menu-tab]').forEach(button => {
+          const active = button.dataset.menuTab === key;
+          button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
+        });
+        BAG_SECTIONS.forEach(section => { d.querySelector('#bag-panel-' + section).hidden = section !== key; });
+      };
+      bindMenuTabs(d, '[data-menu-tab]', selectSection);
+      d.querySelectorAll('[data-bag-filter]').forEach(button => button.onclick = () => {
+        bagFilter = button.dataset.bagFilter; openBag();
+        dlg.querySelector(`[data-bag-filter="${bagFilter}"]`).focus();
+      });
       d.querySelectorAll('[data-bag-weapon]').forEach(b => b.onclick = () => {
         if (!g.equipWeapon(b.dataset.bagWeapon || null)) return;
         sfx('gong'); openBag(); refresh();
@@ -3598,7 +3708,7 @@ function openBag() {
         if (!g.setOutfit(b.dataset.bagOutfit)) return;
         warmZone(b.dataset.bagOutfit); sfx('gong'); openBag(); refresh();
       });
-    });
+    }, 'bag');
 }
 
 // ---------- บทเรียนทีละขั้น ----------
@@ -3778,6 +3888,18 @@ const legacyDrawer = $('#legacy-drawer');
 function openLegacyDrawer() { legacyDrawer.hidden = false; }
 function closeLegacyDrawer() { legacyDrawer.hidden = true; }
 const heroProfile = $('#hero-profile');
+let profileSection = 'status';
+function selectProfileSection(key) {
+  if (!PROFILE_SECTIONS.includes(key)) return;
+  profileSection = key;
+  heroProfile.querySelectorAll('[data-menu-tab]').forEach(button => {
+    const active = button.dataset.menuTab === key;
+    button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
+  });
+  heroProfile.querySelectorAll('[data-profile-section]').forEach(panel => {
+    panel.hidden = panel.dataset.profileSection !== key;
+  });
+}
 function drawHeroProfile() {
   const face = artUrl('hero-yama-profile') || artUrl('hero-yama');
   $('#hero-profile-face').src = face;
@@ -3816,13 +3938,30 @@ function drawHeroProfile() {
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]
-  ].map(([title, content]) => `<section class="hero-profile-column"><h3>${esc(title)}</h3>${content}</section>`).join('');
+  ].map(([title, content], index) => `<section id="profile-panel-${PROFILE_SECTIONS[index]}" data-profile-section="${PROFILE_SECTIONS[index]}" class="hero-profile-column" role="tabpanel" aria-labelledby="profile-tab-${PROFILE_SECTIONS[index]}" ${profileSection === PROFILE_SECTIONS[index] ? '' : 'hidden'}><h3>${esc(title)}</h3>${content}</section>`).join('');
+  const tabs = $('#hero-profile-tabs');
+  if (tabs.dataset.lang !== getLang()) {
+    tabs.dataset.lang = getLang();
+    tabs.innerHTML = PROFILE_SECTIONS.map(key => `<button id="profile-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="profile-panel-${key}" aria-selected="${key === profileSection}" tabindex="${key === profileSection ? 0 : -1}">${esc(t('profile.' + key))}</button>`).join('');
+    bindMenuTabs(tabs, '[data-menu-tab]', selectProfileSection);
+  }
+  applyI18n(heroProfile);
 }
-function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; }
-function closeHeroProfile() { heroProfile.hidden = true; }
+function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; heroProfile.querySelector('[aria-selected=true]').focus(); }
+function closeHeroProfile() { heroProfile.hidden = true; $('#hud-avatar').focus({ preventScroll:true }); }
 $('#hud-avatar').onclick = openHeroProfile;
 $('#hero-profile-close').onclick = closeHeroProfile;
 $('#hero-profile-pause').onclick = () => { closeHeroProfile(); openPause(); };
+$('#hero-profile-bag').onclick = () => { closeHeroProfile(); openBag(); };
+$('#hero-profile-management').onclick = () => { closeHeroProfile(); openLegacyDrawer(); };
+heroProfile.addEventListener('keydown', event => {
+  if (event.key === 'Escape') { event.preventDefault(); closeHeroProfile(); }
+  if (event.key !== 'Tab') return;
+  const buttons = [...heroProfile.querySelectorAll('button:not([disabled])')].filter(button => button.tabIndex >= 0);
+  const first = buttons[0], last = buttons[buttons.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
 $('#legacy-drawer-close').onclick = closeLegacyDrawer;
 legacyDrawer.addEventListener('click', e => { if (e.target === legacyDrawer) closeLegacyDrawer(); });
 
@@ -3969,12 +4108,17 @@ function onSceneClick(sx, sy) {
 // เดินด้วยคีย์บอร์ดด้วยก็ได้
 const KEY = {};
 addEventListener('keydown', e => {
-  if (dlg.open || /input|textarea/i.test(e.target.tagName)) return;
+  if (dlg.open || !heroProfile.hidden || /input|textarea|select/i.test(e.target.tagName)) return;
+  if (e.key.toLowerCase() === 'e' && isTownZone(g.zone)) {
+    if (!e.repeat) activateTownAction();
+    e.preventDefault(); return;
+  }
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
   if (e.key === ' ' && !g.over) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
+addEventListener('blur', () => { for (const key in KEY) KEY[key] = false; });
 
 function keyWalk(dt) {
   const P = g.player, sp = 0.32 * dt;
@@ -4181,7 +4325,7 @@ function openStation(k, emergency = false) {
     if (N && R) {
       const tags = [];
       if (['ngiw','dab'].includes(k) && room.crew) {
-        const at = st.crewK === 'dam' ? room.guard || room.crew : room.crew;
+        const at = st.crewK === 'dam' ? room.guard || [room.crew[0]+.13,room.crew[1]] : room.crew;
         const [ax,ay] = R.anchor(...at,R.crewHeight+.025);
         tags.push({id:'sword-training',ax,ay,pos:'above',label:k==='ngiw'?'ฝึกฟันดาบ':'ฝึกวิชาดาบ',hint:'คุยกับดำ · เพิ่มพลังดาบ',keep:true,disabled:mgOpen});
       }
@@ -4657,7 +4801,8 @@ function renderStoryComic(root, story, onDone) {
   const paint = () => {
     stopVideo();
     const p = story.pages[page];
-    const media = p.video
+    const playVideo = p.video;
+    const media = playVideo
       ? `<video src="${esc(p.video)}" poster="${esc(p.poster || p.image)}" autoplay muted playsinline controls preload="auto" aria-label="${esc(p.title)}"></video>`
       : `<img src="${p.image}" alt="${esc(p.title)}"${p.fallback ? ` onerror="this.onerror=null;this.src='${placeholder(p.fallback)}'"` : ''}>`;
     root.innerHTML = `<div class="intro-comic" role="region" aria-label="${esc(story.title)} หน้า ${page + 1} จาก ${story.pages.length}">
@@ -4668,7 +4813,7 @@ function renderStoryComic(root, story, onDone) {
         <button data-story-back ${page ? '' : 'disabled'}>← ย้อนกลับ</button>
         <button class="gold" data-story-next>${page + 1 === story.pages.length ? 'ดำเนินเรื่องต่อ' : 'หน้าถัดไป →'}</button></div></div>`;
     prepareComicImages(root);
-    if (p.video) {
+    if (playVideo) {
       const video = root.querySelector('video');
       const frame = root.querySelector('.intro-comic-frame');
       if (frame.style) frame.style.aspectRatio = String(p.videoAspect || 16/9);
@@ -5178,7 +5323,7 @@ function openSettings() {
       <button type="button" id="s-bgm-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.bgmOn === false}"
         aria-label="${esc(t('settings.musicToggle'))}" title="${esc(t('settings.musicToggle'))}"><img src="img/ui/${AUDIO.bgmOn === false ? 'icon-music-close' : 'icon-music'}.png" alt=""></button>
       <div class="settings-row-body">
-        <label data-t="settings.music"></label>
+        <label for="s-bgm"><span data-t="settings.music"></span><output for="s-bgm" id="s-bgm-value">${Math.round(AUDIO.bgm * 100)}%</output></label>
         <input type="range" id="s-bgm" min="0" max="100" value="${Math.round(AUDIO.bgm * 100)}">
       </div>
     </div>
@@ -5186,7 +5331,7 @@ function openSettings() {
       <button type="button" id="s-sfx-toggle" class="settings-row-icon settings-row-toggle" aria-pressed="${AUDIO.sfxOn === false}"
         aria-label="${esc(t('settings.soundsToggle'))}" title="${esc(t('settings.soundsToggle'))}"><img src="img/ui/${AUDIO.sfxOn === false ? 'icon-sound-close' : 'icon-sound'}.png" alt=""></button>
       <div class="settings-row-body">
-        <label data-t="settings.sounds"></label>
+        <label for="s-sfx"><span data-t="settings.sounds"></span><output for="s-sfx" id="s-sfx-value">${Math.round(AUDIO.sfx * 100)}%</output></label>
         <input type="range" id="s-sfx" min="0" max="100" value="${Math.round(AUDIO.sfx * 100)}">
       </div>
     </div>
@@ -5201,13 +5346,13 @@ function openSettings() {
     </div>
 
     <div class="settings-actions">
-      ${inGame ? `<button id="s-home" class="settings-square" data-t-title="settings.home" aria-label="home">
-          <img src="img/ui/icon-home.png" alt=""></button>
-        <button id="s-restart" class="settings-square" data-t-title="settings.restart" aria-label="restart">
-          <img src="img/ui/icon-restart.png" alt=""></button>` : ''}
-      <button id="s-save" class="settings-square settings-square--save" aria-label="save">
+      ${inGame ? `<div class="settings-action-wrap"><button id="s-home" class="settings-square" data-t-title="settings.home" data-t-aria="settings.home" aria-label="home">
+          <img src="img/ui/icon-home.png" alt=""></button><small data-t="settings.home"></small></div>
+        <div class="settings-action-wrap"><button id="s-restart" class="settings-square" data-t-title="settings.restart" data-t-aria="settings.restart" aria-label="restart">
+          <img src="img/ui/icon-restart.png" alt=""></button><small data-t="settings.restart"></small></div>` : ''}
+      <div class="settings-action-wrap"><button id="s-save" class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
         <img id="s-save-img" src="img/ui/icon-save-th.png" alt="">
-      </button>
+      </button><small data-t="settings.save"></small></div>
     </div>
     <div class="hint" id="s-saved-hint" style="text-align:center;min-height:1.4em"></div>`,
     d => {
@@ -5216,7 +5361,7 @@ function openSettings() {
 
       const bind = (id, key) => {
         const r = d.querySelector(id);
-        r.oninput = () => { AUDIO[key] = r.value / 100; syncBgm(); };
+        r.oninput = () => { AUDIO[key] = r.value / 100; d.querySelector(id + '-value').textContent = r.value + '%'; syncBgm(); };
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
@@ -5356,3 +5501,6 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+
+// Review pages use the same production dialogs with isolated in-memory saves.
+export {openBattle,openDungeon,openHarbour,openBorder};

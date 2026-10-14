@@ -1,3 +1,7 @@
+import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
+import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
+import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
+import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y } from './town-layout.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
@@ -79,6 +83,7 @@ function prepareBattle(b, hp, maxHp = hp) {
 const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(s && s.case || '');
 
 export function createGame() {
+  syncFrontierPos('th'); // Set the city before crew/station instances capture their home geometry.
   const g = {
     training: normalizeTraining(),
     tick: 0, coin: BAL.startCoin, food: BAL.startFood,
@@ -156,6 +161,7 @@ export function createGame() {
   syncRoster(g);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
   g.spawnSoul();
+  initializeZoneTravel(g);
   return g;
 }
 
@@ -2259,14 +2265,14 @@ const API = {
 
   /** ฉากต่อสู้กับปีศาจที่ขึ้นมาก่อกวน — ทางต่อสู้ของผู้เล่นทุกตัว */
   startMobBattle(i) {
-    if (this.guardActive()) return null;
+    if (this.guardActive()&&!this.mobs[i]?.dungeonToken) return null;
     if (this.battle) return this.battle;
     const m = this.mobs[i];
     if (!m) return null;
     const kind = MOB.kinds[m.kind ?? 0] || MOB;
     this.fights++;
     this.battle = {
-      kind: 'mob', mobId: m.id ?? i, mobIndex: i,
+      kind: 'mob', mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
       who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
       foeAtk: scaleFoeAtk(this.zone, MOB.fightAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
@@ -2963,9 +2969,23 @@ const API = {
     return [{ id:'you', k:'yama', name:'ยมบาทน้อย / Yama' }, ...this.battleCrew(),
       ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : [])];
   },
+  battleTimeline() { return combatTimeline(this); },
+  currentBattleTurn() { return activeCombatUnit(this); },
+  beginBattleTurns() {
+    const turn=activeCombatUnit(this);
+    if(turn?.side==='ally'&&!this.battle.commandBusy&&!this.battle.turnAction) this.battle.actorId=turn.id;
+    return turn;
+  },
+  runEnemyTurn() {
+    const b=this.battle,turn=activeCombatUnit(this);
+    if(!b||b.over||b.commandBusy||turn?.side!=='foe')return false;
+    b.enemyActorId=turn.id;b.initiativeAction=true;
+    let ok;try {ok=this.battleAct('__enemy',{enemyOnly:true});} finally {delete b.initiativeAction;delete b.enemyActorId;}
+    if(ok){b.turnAction={...turn};b.commandBusy=true;}return ok;
+  },
   selectBattleActor(id) {
     const b = this.battle;
-    if (!b || b.over || b.commandBusy || !this.battleActors().some(c => c.id === id)) return false;
+    if (!b || b.over || b.commandBusy || (b.turnQueue && activeCombatUnit(this)?.id !== id) || !this.battleActors().some(c => c.id === id)) return false;
     b.actorId = id; b.command = null; this.onChange(); return true;
   },
   cancelBattleCommand() {
@@ -2985,13 +3005,22 @@ const API = {
   confirmBattleCommand(what, recipientId = 'you') {
     const b = this.battle;
     if (!b || b.commandBusy) return false;
+    const turn=b.turnQueue?this.beginBattleTurns():null;
+    if(turn&&turn.side!=='ally')return false;
     const actorId = b.actorId || 'you';
     if (!this.battleActors().some(c => c.id === actorId)) return false;
-    if (!this.battleAct(what, { actorId, recipientId })) return false;
+    b.initiativeAction=!!b.turnQueue;
+    let ok;try {ok=this.battleAct(what, { actorId, recipientId });} finally {delete b.initiativeAction;}
+    if(!ok)return false;
+    if(turn)b.turnAction={...turn};
     b.commandBusy = true; b.command = null; return true;
   },
   finishBattleCommand() {
-    if (this.battle) this.battle.commandBusy = false;
+    if (this.battle) {
+      const b=this.battle;b.commandBusy=false;
+      if(b.turnAction){completeCombatTurn(this,b.turnAction);delete b.turnAction;}
+      if(b.turnQueue)this.beginBattleTurns();
+    }
   },
 
   /** หนึ่งตาในฉากต่อสู้ — what = 'atk' | 'fire' | 'crew:<k>' | ชื่อของใน BATTLE.items
@@ -3000,15 +3029,17 @@ const API = {
     const B = this.battle;
     if (typeof what !== 'string') return false;
     if (!B || B.over || B.pendingWave || B.storyInterlude === 'west-hypnosis' || B.commandBusy) return false;
+    const enemyOnly=command?.enemyOnly===true&&B.initiativeAction===true;
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
     const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
-    if (command && !actor) return false;
+    if (command && !actor && !enemyOnly) return false;
     const itemCommand = command && (what === 'food' || ITEMS[what]?.consumable);
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
-    if (command && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
-    if (command && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
+    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
-    if (command && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
+    if (command && !enemyOnly && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
+    if(what==='flee'&&!['soul','mob','frontier'].includes(B.kind))return false;
     const livingBefore = B.foes.filter(f => f.hp > 0).map(f => ({ id:f.id, hp:f.hp }));
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
@@ -3045,7 +3076,17 @@ const API = {
     // G4 — คูลดาวน์ผลพิเศษของอาวุธ: ค่าตอนต้นคำสั่งนี้ (0 = พร้อมเกิด) · เกิดแล้วตั้ง WEAPON_EFFECT_COOLDOWN · ลดทีละ 1 ทุกคำสั่ง
     const weaponCdStart = B.weaponCd || 0, weaponReady = weaponCdStart === 0;
     let weaponProc = false;
-    if (itemCommand) {
+    let affected=[];
+    if(!enemyOnly) {
+    if(what==='flee') {B.over='flee';B.talk='ทีมถอนตัวกลับไปตั้งหลัก';this.onChange();return true;}
+    if (what === 'defend' && actor) {
+      (B.defending ||= {})[actor.id]=true;
+      B.talk=`${actor.name || 'ยมบาทน้อย'}ตั้งรับ — ลดความเสียหายจนถึงเทิร์นถัดไป`;
+    } else if (what === 'strike' && actor && actor.id!=='you') {
+      dmg=Math.max(8,Math.round((this.allyStats(actor).dmg || 18)*.6));
+      B.helper={...actor,at:Date.now(),lunge:true};
+      say(`${actor.name}โจมตี — ${dmg} หน่วย`);
+    } else if (itemCommand) {
       const hp = recipient.id === 'you' ? B.youHp : recipient.morale;
       const max = recipient.id === 'you' ? B.youMax : 100;
       const result = medicineResult(what, hp, max, recipient.id === 'you' ? this.mp : 0, recipient.id === 'you' ? this.mpMax : 0, 'battle') || { hp, mp:this.mp };
@@ -3180,6 +3221,7 @@ const API = {
       if (it.stun) stunFoe = it.stun;
     }
 
+    if(what!=='defend'&&actor&&B.defending)delete B.defending[actor.id];
     if (B.rageCooldown > 0) B.rageCooldown--;
 
     // Rage lasts for three damaging player actions. Healing, the clock and
@@ -3199,17 +3241,19 @@ const API = {
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
     const areaAttack = ['ice', 'windFan', 'hypno'].includes(what);
-    const affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
+    affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
       if (stunFoe) foe.stun = (foe.stun || 0) + stunFoe;
       if (confuseFoe) {
         foe.confuse = (foe.confuse || 0) + confuseFoe;
         if (what !== 'crew:kan') foe.confuseMultiplier = 1;
+        if(what==='hypno'&&B.initiativeAction)foe.confuseKind='group';
       }
     }
     // ไฟที่ติดมาจากตาก่อนหน้าลวกต่อ (ตาที่เพิ่งติดไฟยังไม่ลวกในตานี้) · ติดไฟใหม่จากฟาดนี้
-    const burns = this.tickFoeBurn(B, target, hit?.burn || null);
+    const burns = B.initiativeAction ? [] : this.tickFoeBurn(B, target, hit?.burn || null);
+    if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn};
     if (burns.length) B.weaponNote = { k:'burn', n:burns.reduce((a, x) => a + x.damage, 0), hits:burns };
     if (hit?.burn && target.hp > 0) B.weaponNote = { k:'ignite', n:hit.burn.dmg, turns:hit.burn.turns };
     if (hit?.heal) {
@@ -3231,6 +3275,7 @@ const API = {
       if (next) B.selectedFoeId = next.id;
     }
     B.mid.selectedFoeId = B.selectedFoeId;
+    }
 
     // แก้รอบ 1 ชุด 13 คุณเป้ 26 ก.ย. 2569 — แยกเป็นฟังก์ชันย่อย เพราะตอนนี้เช็คแพ้ชนะได้ 2 จังหวะ:
     // ตอนยมบาทน้อยฟาด (เดิม) และตอนศัตรูถูกสะกดจิตแล้วฟาดใส่ตัวเองตาย (จุดใหม่ด้านล่าง) เดิมเช็คแค่จังหวะแรก
@@ -3414,8 +3459,27 @@ const API = {
       return declareWin();
     }
 
+    if(B.initiativeAction&&!enemyOnly){this.onChange();return true;}
+    if(enemyOnly){
+      const acting=B.foes.find(f=>f.id===B.enemyActorId&&f.hp>0);
+      if(acting?.burn?.turns>0){
+        const damage=Math.min(acting.hp,acting.burn.dmg);acting.hp-=damage;acting.burn.turns--;
+        if(!acting.burn.turns)delete acting.burn;
+        B.dmg.burnSelf=damage;B.dmg.counterFoeId=acting.id;say(`${acting.who}ถูกไฟลวก — ${damage} หน่วย`);
+        if(acting.hp<=0){
+          if(awaitDeva())return true;
+          if(B.foes.every(f=>f.hp<=0)){
+            const ev=B.kind==='zoneEvent'?ZONE_EVENTS[B.zone]?.find(e=>e.k===B.eventKey):null;
+            if(B.kind==='frontierBreach'&&B.wave<ZONE_EVENTS.th[1].waves.length||!this.isFinalBattle(B)&&ev?.waves&&B.wave<ev.waves.length){B.pendingWave=B.wave+1;if(B.challenge)this.challengeWaveCleared(B);this.onChange();return true;}
+            return declareWin();
+          }
+          if(!B.foes.some(f=>f.id===B.selectedFoeId&&f.hp>0))B.selectedFoeId=B.foes.find(f=>f.hp>0).id;
+          B.turn++;this.onChange();return true;
+        }
+      }
+    }
     // ---- ตาของเขา ----
-    const counter = [...B.foes.slice(B.counterIndex), ...B.foes.slice(0, B.counterIndex)]
+    const counter = B.foes.find(f=>f.id===B.enemyActorId&&f.hp>0) || [...B.foes.slice(B.counterIndex), ...B.foes.slice(0, B.counterIndex)]
       .find(f => f.hp > 0);
     B.counterIndex = (B.foes.indexOf(counter) + 1) % B.foes.length;
     B.dmg.counterFoeId = counter.id;
@@ -3433,9 +3497,11 @@ const API = {
       // เลือกเป้าหมายจากภาพก่อนโจมตี ทุกคนออกท่าพร้อมกัน แม้โดนเพื่อนตีล้มในตานี้
       const attacks = confused.map((foe, i) => {
         foe.confuse = Math.max(0, (foe.confuse || 0) - 1);
-        const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length] : foe;
+        const groupVictims=B.foes.filter(f=>f.hp>0&&f.id!==foe.id);
+        const victim = what === 'hypno' && confused.length > 1 ? confused[(i+1)%confused.length]
+          : enemyOnly&&foe.confuseKind==='group'&&groupVictims.length?groupVictims[0]:foe;
         const damage = Math.round(foeAtkRoll(foe) * (what === 'hypno' ? 1 : foe.confuseMultiplier || 1));
-        if (!foe.confuse) delete foe.confuseMultiplier;
+        if (!foe.confuse) {delete foe.confuseMultiplier;delete foe.confuseKind;}
         return { attackerId:foe.id, id:victim.id, damage };
       });
       for (const attack of attacks) {
@@ -3514,10 +3580,11 @@ const API = {
       B.dmg.enemyHits = [];
       B.dmg.hitActors = [];
       for (const victim of victims) {
-        B.dmg.enemyHits.push({id:victim.id,damage:d});
+        const damage=B.defending?.[victim.id]?Math.max(1,Math.round(d*.5)):d;
+        B.dmg.enemyHits.push({id:victim.id,damage});
         if (victim.actor) B.dmg.hitActors.push({...victim.actor});
-        if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - d); B.dmg.you = d; }
-        else { victim.actor.morale = Math.max(0, victim.actor.morale - d); B.dmg.crew = d;
+        if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - damage); B.dmg.you = damage; }
+        else { victim.actor.morale = Math.max(0, victim.actor.morale - damage); B.dmg.crew = damage;
           if (!victim.actor.morale) this.downActor(victim.actor); }
       }
       B.dmg.targetActorId = victims[0].id;
@@ -3588,6 +3655,7 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
+    if(B.dungeonToken){resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);this.save();}
     if (B.over === 'lose') {
       this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };
       this.hp = Math.max(1, this.hp);
@@ -3705,7 +3773,7 @@ const API = {
       if (B.over === 'win') {
         const i = this.mobs.findIndex(m => (m.id ?? -1) === B.mobId);
         if (i >= 0) this.mobs.splice(i, 1);
-        else if (this.mobs[B.mobIndex]) this.mobs.splice(B.mobIndex, 1);
+        else if (!B.dungeonToken && this.mobs[B.mobIndex]) this.mobs.splice(B.mobIndex, 1);
         this.log(`⚔️ ปราบ${B.who}ลงได้`, 'good');
       } else {
         this.log(`⚔️ ${B.who}ยังอยู่ — ปล่อยไว้ระเบียบจะตกไปเรื่อย ๆ`, 'bad');
@@ -3819,7 +3887,24 @@ const API = {
     const i = ZONES.findIndex(z => z.k === k), z = ZONES[i];
     return !!z && (i === 0 || !!this.bossCleared[ZONES[i - 1].k]);
   },
-  zonesOpen() { return ZONES.filter(z => this.canMoveZone(z.k) && z.k !== this.zone); },
+  zonesOpen() { const keys=[...harbourDestinations(this),...openDungeonRoutes(this).map(r=>r.to)];return ZONES.filter(z=>keys.includes(z.k)); },
+  harbourPoint() { return {x:SPOTS.ferry.from[0],y:SPOTS.ferry.from[1]}; },
+  atHarbour() { const p=this.harbourPoint();return Math.hypot(this.player.x-p.x,this.player.y-p.y)<=105; },
+  activatePort() {if(!this.atHarbour()||!activateHarbour(this))return false;this.save();this.onChange();return true;},
+  beginBorderDungeon(to) {
+    if(Math.hypot(this.player.x-FRONTIER.x,this.player.y-FRONTIER.y)>FRONTIER.reach||!beginDungeon(this,to))return false;
+    this.player.path=null;this.save();this.onChange();return true;
+  },
+  startDungeonEncounter() {
+    if(!dungeonAtCheckpoint(this))return null;
+    const encounter=nextDungeonEncounter(this);if(!encounter)return null;
+    const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
+    this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
+    if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
+    return battle;
+  },
+  leaveBorderDungeon() {if(!leaveDungeon(this))return false;this.save();this.onChange();return true;},
+
 
   outfitsOpen() { return ZONES.filter(z => this.outfitsOwned?.includes(z.k)); },
 
@@ -3849,7 +3934,9 @@ const API = {
    *  ถ้ายกสถานีกับคนไปด้วย สาขาที่สองจะไม่มีอะไรให้ทำเลยนอกจากกดเดินวาระ */
   moveZone(k) {
     const z = ZONES.find(x => x.k === k);
-    if (!z || !this.canMoveZone(k) || z.k === this.zone) return false;
+    if (!z || !canTravelZone(this,k)) return false;
+    const from=this.zone,travelMode=dungeonStatus(this)?.ready?'dungeon':'boat';
+    if(travelMode==='boat'&&!this.atHarbour()||travelMode==='dungeon'&&!dungeonAtExit(this))return false;
 
     // A branch cannot keep drawing its walkers once another map is active.
     for (const walk of this.afterlifeWalks) {
@@ -3930,6 +4017,7 @@ const API = {
       this.coin += z.coin;                   // งบตั้งต้นให้ครั้งแรกที่มาสาขานี้เท่านั้น
     }
     this.crew.forEach(c => {
+      const home=CREW.find(d=>d.k===c.k);if(home) {c.hx=home.hx;c.hy=home.hy;}
       c.name = crewName(CREW.find(d => d.k === c.k) || c, k);
       c.at = null; c.path = null;
     });
@@ -3958,6 +4046,12 @@ const API = {
     refreshPendingSentences(this);
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
+    finishZoneArrival(this,from,k,travelMode);
+    if(travelMode==='boat'){
+      const p=this.harbourPoint(),at=nearestWalk(p.x,p.y)||[p.x,p.y];
+      Object.assign(this.player,{x:at[0],y:at[1],tx:null,ty:null,path:null});
+      const nira=this.crewOf('nira');if(nira)Object.assign(nira,{x:at[0]-24,y:at[1],path:null});
+    }
     // จุดเริ่มสาขาเก็บความคืบหน้าสาขาก่อนหน้าไว้ แต่ยังไม่รวมผลงานใหม่ในสาขานี้
     this.zoneEntry = JSON.parse(JSON.stringify(this.snapshot(false)));
     this.onChange();
@@ -3967,7 +4061,7 @@ const API = {
   spawnMob() {
     // สุ่มตามชายฝั่งขอบล่าง เหนือแม่น้ำเล็กน้อย เพื่อให้ทุกโซนเดินไปถึงได้
     // เลือกเฉพาะจุดที่ findPath เชื่อมถึงจุดเฝ้าได้ ไม่งั้นยักษ์/ผู้เล่นไปไล่ปีศาจไม่ถึง
-    const y = 675;
+    const y = this.zone === 'th' ? TOWN_RIVER_Y-50 : 675;
     const reach = p => {
       if (!p) return false;
       const path = findPath(p[0], p[1], GUARD_POST[0], GUARD_POST[1]);
@@ -4372,6 +4466,7 @@ API.snapshot = function (withEntry = true) {
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneIntroSeen: this.zoneIntroSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
+    townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
     zoneEntry: withEntry ? this.zoneEntry : undefined,
@@ -4529,6 +4624,7 @@ API.restore = function (d) {
   this.returned = d.returned || 0;
   this.zone = d.zone || 'th';
   syncFrontierPos(this.zone);
+  for(const actor of this.crew) {const home=CREW.find(d=>d.k===actor.k);if(home) {actor.hx=home.hx;actor.hy=home.hy;}}
   this.zoneCases = d.zoneCases || { [this.zone]: d.casesDone || 0 };
   this.zoneEvents = d.zoneEvents || {};
   this.eventMapClosed = d.eventMapClosed || {};
@@ -4551,7 +4647,7 @@ API.restore = function (d) {
     if (visit.phase === 'fighting' || visit.phase === 'descending') visit.phase = 'waiting';
     if (visit.phase === 'intro') this.queueStory('deva-cyberhell');
   }
-  if (d.bossCleared?.th) this.zoneEvents.th.thBorderBoss ||= 'cleared';
+  if (d.bossCleared?.th) (this.zoneEvents.th ||= {}).thBorderBoss ||= 'cleared';
   if (this.zoneEvents.th?.thBorderBoss === 'cleared') this.abilities.flameCharge = true;
   if (d.bossCleared?.asia) this.abilities.rage = true;
   if (d.bossCleared?.west) this.abilities.ice = true;
@@ -4636,32 +4732,33 @@ API.restore = function (d) {
   this.sweepMapItems();                // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่า เก็บเข้ากระเป๋าให้ (ระบบของตกถูกยกเลิก)
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
-  const moveOldGuardPost = guard => {
-    if (guard?.y === 795 && (guard.x === 895 || guard.x === 700)) [guard.x, guard.y] = GUARD_POST;
+  const guardPost = zone => zone==='th' ? TOWN_GUARD_POST : [720,890];
+  const moveOldGuardPost = (guard,zone) => {
+    if (guard?.y === 795 && (guard.x === 895 || guard.x === 700)) [guard.x, guard.y] = guardPost(zone);
   };
-  moveOldGuardPost(this.guard);
-  Object.values(this.zoneSave).forEach(saved => moveOldGuardPost(saved?.guard));
-  moveOldGuardPost(this.zoneEntry?.guard);
+  moveOldGuardPost(this.guard,this.zone);
+  Object.entries(this.zoneSave).forEach(([zone,saved]) => moveOldGuardPost(saved?.guard,zone));
+  moveOldGuardPost(this.zoneEntry?.guard,this.zoneEntry?.zone);
   if (!d.mapV3FixBranches) {
     // เซฟผัง 1527×704 ยังไม่มี mask ภาพตอน restore: ย้ายตำแหน่งที่ผูกกับผังเก่า
     // ไปจุดเกิดที่เดินได้ แล้วให้ syncBlocks ตรวจซ้ำเมื่อภาพฉากโหลดเสร็จ
-    const spawn = () => [SPOTS.bench.x + 60, SPOTS.bench.y];
-    const moveItems = items => (items || []).forEach(it => { [it.x, it.y] = spawn(); });
+    const spawn = zone => zone==='th' ? [TOWN_SPOTS.bench.x+60,TOWN_SPOTS.bench.y] : [880,455];
+    const moveItems = (items,zone) => (items || []).forEach(it => { [it.x, it.y] = spawn(zone); });
     for (const [zone, saved] of Object.entries(this.zoneSave)) {
       if (zone === 'th') continue;
-      moveItems(saved.items);
-      if (saved.guard) [saved.guard.x, saved.guard.y] = GUARD_POST;
+      moveItems(saved.items,zone);
+      if (saved.guard) [saved.guard.x, saved.guard.y] = guardPost(zone);
     }
     if (this.zoneEntry?.zone && this.zoneEntry.zone !== 'th') {
       const entry = this.zoneEntry;
-      if (entry.player) [entry.player.x, entry.player.y] = spawn();
-      moveItems(entry.items);
-      if (entry.guard) [entry.guard.x, entry.guard.y] = GUARD_POST;
+      if (entry.player) [entry.player.x, entry.player.y] = spawn(entry.zone);
+      moveItems(entry.items,entry.zone);
+      if (entry.guard) [entry.guard.x, entry.guard.y] = guardPost(entry.zone);
     }
     if (this.zone !== 'th') {
-      [this.player.x, this.player.y] = spawn();
+      [this.player.x, this.player.y] = spawn(this.zone);
       this.player.tx = null; this.player.ty = null; this.player.path = null;
-      moveItems(this.items);
+      moveItems(this.items,this.zone);
       this.crew.forEach(c => {
         const home = CREW.find(def => def.k === c.k);
         if (home) { c.hx = home.hx; c.hy = home.hy; }
@@ -4760,6 +4857,27 @@ API.restore = function (d) {
     entry.hp = entry.hpMax; entry.order = Math.max(72, entry.order); entry.reds = 0;
     this.zoneEntry = JSON.parse(JSON.stringify(entry));
   }
+  if ((d.townMapVersion || 0) < 2) {
+    const activeFollowers=this.zone==='th' ? [] : this.crew.filter(c=>CREW.find(d=>d.k===c.k)?.follow).map(c=>[c,Object.fromEntries(['x','y','hx','hy','path','tx','ty'].map(k=>[k,structuredClone(c[k])]))]);
+    const migrate = state => {
+      if (!state) return;
+      if(state.player) Object.assign(state.player,{x:TOWN_SPOTS.bench.x+60,y:TOWN_SPOTS.bench.y,tx:null,ty:null,path:null});
+      for(const c of state.crew || []) {
+        const home=TOWN_CREW[c.k];if(home) {c.hx=home[0];c.hy=home[1];c.x=null;c.y=null;c.path=null;}
+      }
+      if(state.guard) Object.assign(state.guard,{x:TOWN_GUARD_POST[0],y:TOWN_GUARD_POST[1],path:null,target:null});
+      for(const m of state.mobs || []) {m.x=1920;m.y=TOWN_RIVER_Y-50;m.path=null;}
+    };
+    if(this.zone==='th') migrate(this);
+    migrate(this.zoneSave.th);
+    for(const actor of Object.values(this.roster)) if(actor.homeZone==='th' && !(this.zone!=='th' && CREW.find(c=>c.k===(actor.k||actor.kind))?.follow)) {
+      const home=TOWN_CREW[actor.k || actor.kind];if(home) {actor.hx=home[0];actor.hy=home[1];actor.x=null;actor.y=null;actor.path=null;}
+      if(actor.kind==='guard') {actor.x=TOWN_GUARD_POST[0];actor.y=TOWN_GUARD_POST[1];}
+    }
+    for(const [actor,position] of activeFollowers) Object.assign(actor,position);
+    this.blockSig=null;
+  }
+  initializeZoneTravel(this,d.zoneTravel);
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
 };

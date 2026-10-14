@@ -1,0 +1,65 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="../../"><title>AVEGEE · แผนที่ 2D โซน 1</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#16111b;color:#ecd9b3;font:15px system-ui}header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px}h1{font-size:18px;margin:0 auto 0 0}button,a,select{color:inherit;background:#30232a;border:1px solid #826442;border-radius:8px;padding:8px;font:inherit;text-decoration:none}button[aria-pressed=true]{background:#735033}main{position:relative;width:min(100%,1536px,calc((100dvh - 150px)*1.5));margin:auto}#map{display:block;width:100%;height:auto;aspect-ratio:3/2;cursor:crosshair}#mini{position:absolute;bottom:14px;right:14px;width:180px;height:120px;border:1px solid #bd9557;background:#1a101d;box-shadow:0 3px 15px #0009;cursor:crosshair}@media(max-width:600px){#mini{width:120px;height:80px}}p{margin:8px 20px;color:#b8aa9c;font-size:13px}#error{color:#ff9f90}</style>
+<header><h1>อเวจี · สุวรรณภูมิ 2D</h1><button id="build" aria-pressed="true">อาคารครบ</button><button id="overview" aria-pressed="false">ดูทั้งแผนที่</button><select id="zoom" aria-label="ระดับซูม"><option value="3.5">ซูม 3.5×</option><option value="5" selected>ซูม 5×</option><option value="6.5">ซูม 6.5×</option></select><button id="roads" aria-pressed="false">เส้นทางเดิน</button><select id="destination" aria-label="เดินไปสถานที่"><option value="">เดินไปสถานที่…</option></select><a href="index.html?v=mainland2d">เข้าเกม</a></header>
+<main><canvas id="map" width="1536" height="1024" aria-label="แผนที่โซน 1 ใหม่ คลิกเพื่อเดิน"></canvas><canvas id="mini" width="360" height="240" aria-label="แผนที่ย่อ คลิกเพื่อเดิน"></canvas></main><p id="status">กำลังโหลดภาพ…</p><p>คลิกบนพื้นหรือแผนที่ย่อเพื่อเดิน · กล้องตาม Yama · ปุ่มดูทั้งแผนที่ใช้กลับมุมมองกว้าง · หน้านี้ทดลองภาพและเส้นทางโดยไม่บันทึกเซฟเกม</p><p id="error" role="alert"></p>
+<script type="module">
+import {createGame} from './src/game.js';
+import {render} from './src/scene.js';
+import {bindZone,warmZone} from './src/art.js';
+import {STATIONS,SPOTS,SCENE,FRONTIER} from './src/data.js';
+import {findPath,stepTo} from './src/walk.js';
+import {townCameraRect} from './src/town-map.js';
+import {TOWN_WALK_RECTS,TOWN_WALK_POLYS} from './src/town-layout.js';
+const g=createGame();bindZone(()=>g.zone);warmZone();g.paused=true;
+const initial=g.stations;const all=STATIONS.map(def=>({def,build:0,slots:[],fire:0,intensity:3,speedLv:0,capLv:0}));
+g.stations=all;
+const canvas=document.querySelector('#map'),ctx=canvas.getContext('2d'),status=document.querySelector('#status');
+const mini=document.querySelector('#mini'),mc=mini.getContext('2d');
+const world=document.createElement('canvas'),wc=world.getContext('2d');
+const roadLayer=document.createElement('canvas');roadLayer.width=SCENE.w;roadLayer.height=SCENE.h;
+const rc=roadLayer.getContext('2d');rc.fillStyle='rgba(105,232,190,.22)';
+for(const [x1,y1,x2,y2]of TOWN_WALK_RECTS)rc.fillRect(x1,y1,x2-x1,y2-y1);
+for(const p of TOWN_WALK_POLYS){rc.beginPath();p.forEach(([x,y],i)=>i?rc.lineTo(x,y):rc.moveTo(x,y));rc.closePath();rc.fill();}
+let roads=false,path=null,last=0,synced=0,painted=-Infinity,overview=false,zoom=5;
+let camera={x:g.player.x,y:g.player.y},view=townCameraRect(camera.x,camera.y,zoom);
+const selector=document.querySelector('#destination'),overviewButton=document.querySelector('#overview');
+for(const site of [...STATIONS,{...FRONTIER,k:'frontier',name:'ประตูชายแดน'},
+  {...SPOTS.bossPier,k:'harbour',name:'ท่าเรือรับวิญญาณ'}]){
+ const o=document.createElement('option');o.value=site.k;o.textContent=site.name;selector.append(o);
+}
+function walkTo(target){g.syncBlocks(true);path=findPath(g.player.x,g.player.y,target.x,target.y);
+ if(path?.length){g.player.tx=path.at(-1)[0];g.player.ty=path.at(-1)[1];status.textContent='กำลังเดินตามสะพานและทางเข้า…';}
+ else{g.player.tx=null;status.textContent='จุดนี้อยู่นอกเส้นทางเดิน';}}
+selector.onchange=()=>{const key=selector.value;if(!key)return;
+ const target=STATIONS.find(d=>d.k===key)||(key==='frontier'?FRONTIER:SPOTS.bossPier);walkTo(target);};
+canvas.onclick=e=>{const r=canvas.getBoundingClientRect();walkTo({x:view.x+(e.clientX-r.left)/r.width*view.w,y:view.y+(e.clientY-r.top)/r.height*view.h});};
+mini.onclick=e=>{const r=mini.getBoundingClientRect();walkTo({x:(e.clientX-r.left)/r.width*SCENE.w,y:(e.clientY-r.top)/r.height*SCENE.h});};
+overviewButton.onclick=()=>{overview=!overview;overviewButton.setAttribute('aria-pressed',overview);overviewButton.textContent=overview?'ติดตาม Yama':'ดูทั้งแผนที่';};
+document.querySelector('#zoom').onchange=e=>{zoom=Number(e.target.value);overview=false;overviewButton.setAttribute('aria-pressed','false');overviewButton.textContent='ดูทั้งแผนที่';};
+document.querySelector('#roads').onclick=e=>{roads=!roads;e.target.setAttribute('aria-pressed',roads);};
+document.querySelector('#build').onclick=e=>{g.stations=g.stations===all?initial:all;g.blockSig=null;path=null;g.player.tx=null;e.target.setAttribute('aria-pressed',g.stations===all);painted=-Infinity;};
+function present(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=true;
+ ctx.drawImage(world,view.x,view.y,view.w,view.h,0,0,canvas.width,canvas.height);
+ if(roads)ctx.drawImage(roadLayer,view.x,view.y,view.w,view.h,0,0,canvas.width,canvas.height);
+ mc.drawImage(world,0,0,mini.width,mini.height);
+ const sx=mini.width/SCENE.w,sy=mini.height/SCENE.h;
+ mc.strokeStyle='#ffe4a7';mc.lineWidth=2;mc.strokeRect(view.x*sx,view.y*sy,view.w*sx,view.h*sy);
+ mc.fillStyle='#fff';mc.beginPath();mc.arc(g.player.x*sx,g.player.y*sy,4,0,Math.PI*2);mc.fill();
+}
+function frame(t){try{
+ const dt=Math.min(50,t-last||16);last=t;
+ if(t-synced>1000){g.syncBlocks(true);synced=t;}
+ if(path?.length){const [x,y]=path[0],dx=x-g.player.x,dy=y-g.player.y,d=Math.hypot(dx,dy),step=Math.min(d,dt*.45);
+  if(d<3)path.shift();else{if(dx)g.player.face=dx<0?-1:1;
+   if(!stepTo(g.player,dx/d*step,dy/d*step)){path=null;g.player.tx=null;status.textContent='ทางนี้ติดสิ่งกีดขวาง กรุณาเลือกจุดหมายใหม่';}}
+  if(path&&!path.length){g.player.tx=null;status.textContent='ถึงจุดหมายแล้ว';}
+ }
+ const alpha=1-Math.exp(-dt/160);camera.x+=(g.player.x-camera.x)*alpha;camera.y+=(g.player.y-camera.y)*alpha;
+ view=townCameraRect(camera.x,camera.y,overview?1:zoom);
+ // Limit expensive full-world compositing to 20fps; the camera still eases each animation frame.
+ if(t-painted>=50){render(wc,g,t,null,null,{cx:view.x+view.w/2,cy:view.y+view.h/2,zoom:overview?1:zoom});painted=t;if(status.textContent==='กำลังโหลดภาพ…')status.textContent='เลือกจุดหมายหรือคลิกบนทางเดินเพื่อสำรวจแผนที่';}
+ present();requestAnimationFrame(frame);
+ }catch(e){document.querySelector('#error').textContent=e.message;console.error(e);}}
+requestAnimationFrame(frame);
+</script></html>

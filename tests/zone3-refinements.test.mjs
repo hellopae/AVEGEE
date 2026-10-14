@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -8,7 +9,7 @@ import { teamNeedsMirror } from '../src/battle-facing.js';
 import { createAssetQueue } from '../src/asset-preload.js';
 globalThis.Image ??= class {};
 function west(pair, guard=true) {
- const g=createGame();g.bossCleared.asia=true;g.moveZone('west');g.coin=10000;g.level=5;
+ const g=createGame();g.bossCleared.asia=true;harbourTravel(g, 'west');g.coin=10000;g.level=5;
  g.zoneEvents.west.westHypnotized='cleared';g.zoneEvents.west.westVampireBreach='pending';
  for(const k of pair) if(!g.crewOf(k)) g.hire(k);
  g.frontierOf().team=[...pair];if(guard)g.hireGuard();

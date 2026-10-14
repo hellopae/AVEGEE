@@ -7,12 +7,17 @@ import { fileURLToPath } from 'node:url';
 // Load the same manifest, scene masks and building alpha footprints as the browser.
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
 globalThis.fetch = async () => ({ ok:true, json:async () => manifest });
+const dimensions = new Map();
 globalThis.Image = class {
   set src(src) {
     this._src = src;
-    const key = src.split('/').at(-1).replace(/\.png$/, '');
-    [this.naturalWidth, this.naturalHeight] = manifest.stationSizes[key] || [1678,937];
-    if (existsSync(new URL(`../${src}`, import.meta.url))) this.onload?.();
+    const path=new URL(`../${src}`, import.meta.url);
+    if (!existsSync(path)) return;
+    if (!dimensions.has(src)) dimensions.set(src,JSON.parse(execFileSync('python3', ['-c',
+      'from PIL import Image; import json,sys; print(json.dumps(Image.open(sys.argv[1]).size))',
+      fileURLToPath(path)],{encoding:'utf8'})));
+    [this.naturalWidth,this.naturalHeight]=dimensions.get(src);
+    this.onload?.();
   }
   get src() { return this._src; }
 };
@@ -22,6 +27,7 @@ globalThis.document = { documentElement:{}, createElement: () => ({ getContext: 
   return new Proxy({
     drawImage(im, x, y, w, h) { source = im.src; width = w; height = h; },
     createImageData(w, h) { return { data:new Uint8ClampedArray(w * h * 4) }; },
+    createLinearGradient() { return { addColorStop() {} }; },
     putImageData() {},
     getImageData() {
       const key = `${source}:${width}:${height}`;
@@ -33,7 +39,7 @@ globalThis.document = { documentElement:{}, createElement: () => ({ getContext: 
   }, { get: (target, key) => key in target ? target[key] : () => {} });
 } }) };
 const { createGame } = await import('../src/game.js');
-const { STATIONS, ZONES, BUILD_TIME, REPAIR_TIME, syncSceneZone } = await import('../src/data.js');
+const { STATIONS, ZONES, SPOTS, SCENE, BUILD_TIME, REPAIR_TIME, syncSceneZone } = await import('../src/data.js');
 const { render } = await import('../src/scene.js');
 const { bindZone, hiddenAt } = await import('../src/art.js');
 const { buildWalk, canWalk, findPath, nearestWalk, resetWalk, setBlocks } = await import('../src/walk.js');
@@ -48,7 +54,8 @@ function setup(zone = 'th') {
   assert.equal(g.hire('dam'), true);
   const image = src => ({ src:`img/${src}.png`, naturalWidth:1678, naturalHeight:937 });
   const bg = image(ZONES.find(z => z.k === zone).scene);
-  assert.equal(buildWalk(bg, zone === 'west' ? image('scene-v2-opt') : bg), true);
+  assert.equal(buildWalk(bg, zone === 'west' ? image('scene-v2-opt') : bg), zone !== 'th');
+  assert.equal(canWalk(SPOTS.bench.x, SPOTS.bench.y), true, 'town streets or scene mask provide navigation');
   return g;
 }
 function allBuildings(g) {
@@ -91,7 +98,7 @@ test('all stations in all four zones: both builders arrive for build and repair 
       const g = setup(zone.k); allBuildings(g);
       const st = startJob(g, key, mode, owner);
       const c = g.crewOf(owner);
-      [c.x,c.y] = nearestWalk(880,455); c.path = null;
+      [c.x,c.y] = nearestWalk(SPOTS.bench.x, SPOTS.bench.y); c.path = null;
       arrive(g, st, mode);
       assert.equal(g.stations.some(s => !s.build && hiddenAt(s.def, c.x, c.y)), false,
         `${zone.k}/${key}: worker visible`);
@@ -110,9 +117,9 @@ test('blocked definition point plus mob: build and repair reach a walkable visib
     g.syncBlocks = () => { sync(true); setBlocks([[x-24,y-24,x+24,y+24]], []); };
     g.syncBlocks();
     assert.equal(canWalk(x,y), false);
-    const c = g.crewOf('taan'); c.x = 584; c.y = 660; c.path = null; c.wait = 3000;
+    const c = g.crewOf('taan'); [c.x,c.y] = nearestWalk(SPOTS.bench.x, SPOTS.bench.y); c.path = null; c.wait = 3000;
     // Repair is requested before the mob appears, as canRepair intentionally requires a clear map.
-    g.mobs = [{ id:1900, x:710, y:674, hp:100, kind:0 }];
+    g.mobs = [{ id:1900, x:SPOTS.bench.x+100, y:SPOTS.bench.y, hp:100, kind:0 }];
     arrive(g, st, mode);
     assert.ok(Math.hypot(c.x-x,c.y-y) >= 24);
   }
@@ -124,11 +131,11 @@ test('disconnected route recovers after 30 active seconds, preserving elapsed ti
     let st = startJob(g, 'lan', mode);
     const trap = game => {
       game.syncBlocks = () => setBlocks([
-        [850,430,870,490], [910,430,930,490], [850,430,930,450], [850,470,930,490],
+        [1890,1140,1910,1200], [1950,1140,1970,1200], [1890,1140,1970,1160], [1890,1180,1970,1200],
       ], []);
       game.syncBlocks();
     };
-    const c = g.crewOf('taan'); c.x = 890; c.y = 460; c.path = null;
+    const c = g.crewOf('taan'); c.x = 1930; c.y = 1170; c.path = null;
     trap(g);
     assert.equal(canWalk(c.x,c.y), true, `trap start ${mode}`);
     for (let i = 0; i < 100; i++) g.stepWorld(120);
@@ -156,7 +163,7 @@ test('escort suspends arrival, then releases the worker; battle help keeps the j
   for (const mode of ['build','repair']) {
     const g = setup(); allBuildings(g);
     const st = startJob(g, 'lan', mode);
-    const c = g.crewOf('taan'); c.x = 880; c.y = 455;
+    const c = g.crewOf('taan'); c.x = SPOTS.bench.x; c.y = SPOTS.bench.y;
     g.party.members = ['taan'];
     g.startBattle({ id:701, name:'คู่ซ้อม', who:'คู่ซ้อม', sp:1, deserved:20 });
     g.battle.foeHp = 10000;
@@ -178,7 +185,7 @@ test('escort suspends arrival, then releases the worker; battle help keeps the j
 test('two builds approach concurrently and retain each owner and build-work render state', () => {
   const g = setup();
   assert.equal(g.build('lan'), true); assert.equal(g.build('krajok'), true);
-  for (const c of g.builders()) { c.x = 880; c.y = 455; }
+  for (const c of g.builders()) { c.x = SPOTS.bench.x; c.y = SPOTS.bench.y; }
   const sites = ['lan','krajok'].map(k => g.stations.find(st => st.def.k === k));
   for (let i = 0; i < 1877 && sites.some(st => st.buildWait); i++) g.stepWorld(16);
   for (const [i,st] of sites.entries()) {
@@ -186,7 +193,7 @@ test('two builds approach concurrently and retain each owner and build-work rend
     assert.equal(g.crewOf(i === 0 ? 'taan' : 'dam').buildK, st.def.k);
   }
   const drawn = [];
-  const ctx = new Proxy({ canvas:{ width:1678, height:937 },
+  const ctx = new Proxy({ canvas:{ width:SCENE.w, height:SCENE.h },
     drawImage(im) { drawn.push(im.src); },
     measureText() { return { width:10 }; },
     createRadialGradient() { return { addColorStop() {} }; },
@@ -196,17 +203,13 @@ test('two builds approach concurrently and retain each owner and build-work rend
   for (const owner of ['taan','dam']) assert.ok(drawn.includes(`img/crew-${owner}-build-work.png`), owner);
 });
 
-test('Thai lan route reproduction records the reachable endpoint before bounded recovery', () => {
+test('Thai city quarry is reachable from the civic square before bounded recovery', () => {
   const g = setup(); allBuildings(g);
   const st = startJob(g, 'lan', 'build');
-  const c = g.crewOf('taan'); c.x = 880; c.y = 455;
-  for (let i = 0; i < 1800 && st.buildWait; i++) g.stepWorld(16);
-  assert.equal(st.buildWait, true, 'nearest walkable site is still unreachable');
-  assert.equal(canWalk(...c.workTarget), true, 'local walkability does not imply connectivity');
-  assert.equal(findPath(c.x,c.y,...c.workTarget), null, 'no further route from the reachable endpoint');
-  assert.ok(Math.hypot(c.x-c.workTarget[0],c.y-c.workTarget[1]) > 42);
-  console.log('Lan route evidence:', JSON.stringify({ worker:[c.x,c.y], target:c.workTarget,
-    pending:st.buildWait, elapsed:st.arrivalElapsed,
-    pathEnd:findPath(c.x,c.y,...c.workTarget)?.at(-1) }));
-  arrive(g,st,'build');
+  const c = g.crewOf('taan');
+  [c.x,c.y] = nearestWalk(SPOTS.bench.x, SPOTS.bench.y); c.path = null;
+  arrive(g, st, 'build');
+  assert.ok(st.arrivalElapsed < 30000, 'connected city streets allow natural arrival');
+  assert.equal(canWalk(...c.workTarget), true, 'work target lies on the declared city floor');
+  assert.ok(Math.hypot(c.x-c.workTarget[0],c.y-c.workTarget[1]) <= 42);
 });

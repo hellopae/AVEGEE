@@ -1,15 +1,10 @@
-// battle-scale.js — ปรับขนาดยมทูตฝ่ายเราในฉากต่อสู้ให้สูงใกล้เคียงยมบาทน้อย (ชุด 29C ข้อ 7)
-//
-// ภาพตัวละครทุกใบเป็นผืน 512×512 แต่ส่วนที่ "มีตัวจริง" (alpha > 0) กินพื้นที่ต่างกัน และกล่องภาพถูกบีบด้วย CSS ต่างกัน
-// (ยมบาทน้อยสูงตาม clamp(vh) · ยมทูตในแถวทีมสูง 100% ของแถวที่เตี้ยกว่า) → ตัวที่วาดออกมาเล็กกว่ายมบาทน้อยมาก (~0.6 เท่า)
-// ค่าตายตัวใน CSS แก้ไม่ได้เพราะทุกจอ/ทุกโซน/ทุกภาพขนาดต่างกัน จึง "วัดจากภาพจริง":
-//   1) วัดกรอบส่วนที่ไม่โปร่งใสของแต่ละภาพ (canvas alpha, แคชตาม src)
-//   2) วัดความสูงตัวจริงที่ยมบาทน้อยถูกวาดอยู่บนจอตอนนี้ (ส่วนมีตัว × ขนาดที่วาดจริง)
-//   3) ตั้งขนาดภาพยมทูตแต่ละตัวให้ความสูง "ตัวจริง" = ความสูงตัวจริงของยมบาทน้อย × TARGET
-//   4) เรียงเป็นแถวชิดซ้ายยมบาทน้อย เส้นเท้าเดียวกัน ให้ตัวจริงห่างกันนิดหน่อย (กล่องภาพซ้อนกันได้เพราะขอบโปร่งใส)
-// ไม่ยุ่งกับตัวภาพ ไม่ย้อมสี ไม่ใส่ฟิลเตอร์ — ปรับแค่ขนาด/ตำแหน่งกล่อง
+// Measure visible sprite alpha so allied heights match across outfits and poses.
+// Combat uses stable perspective slots: squad order then Yama, shared with profiles.
+// The current actor steps forward for its turn; final parties use two diagonal files.
+// No sprite pixels are altered. Legacy row/cutscene planners remain exported.
 
 import { mirrorBox } from './battle-facing.js';
+import { planBattleFormation } from './battle-formation.js';
 
 /** ความสูงตัวจริงของยมทูตเทียบยมบาทน้อย — 1 = เท่ากัน · ยมบาทน้อยเป็นตัวเอกยังต้องเด่นกว่าเล็กน้อย */
 export const CREW_SCALE_TARGET = 0.96;
@@ -92,13 +87,13 @@ export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 18 } = {})
 }
 
 /** ปรับยมทูตทีมในฉากต่อสู้ — เรียกหลังวาดฉากทุกครั้ง (วัดภาพครั้งแรกอาจรอโหลดเล็กน้อย) */
-export function fitBattleSprites(stage, heroRefSrc = null, tries = 0) {
+export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {}) {
   const seq = stage._fitSeq = (stage._fitSeq || 0) + 1;   // ผลของรอบเก่าที่เสร็จทีหลังต้องไม่ทับรอบใหม่
   const hero = stage.querySelector('.fig.you img:not(.fx)');  // .fx = เอฟเฟกต์โดนตีซ้อนอยู่ใน .fig เดียวกัน ไม่ใช่ตัวยมบาทน้อย
   const squad = stage.querySelector('.battle-squad');
   const crewImgs = squad ? [...squad.querySelectorAll('img')] : [];
   const helperImg = stage.querySelector('.fig.helper img:not(.fx)');
-  if (!hero || (!crewImgs.length && !helperImg)) return Promise.resolve(false);
+  if (!hero) return Promise.resolve(false);
   // ท่าของยมบาทน้อยเปลี่ยนตลอดการต่อสู้ (ยืน · ฟาด · โดนตี) แต่ละท่ามีกรอบตัวจริงต่างกัน — ใช้ท่ายืนเป็นหลักเสมอ
   // ไม่งั้นยมทูตจะขยับขนาดตามท่าทุกครั้งที่วาดฉากใหม่
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
@@ -110,27 +105,39 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0) {
     const hd = drawnRect(hero), sr = stage.getBoundingClientRect();
     // ภาพท่าของยมบาทน้อยกำลังโหลด (กล่องยุบเป็น 0×0) → ยังวัดไม่ได้ อย่าตั้งขนาดยมทูตเป็นศูนย์ รอบหน้าลองใหม่
     if (!(hd.w > 4 && hd.h > 4)) {
-      if (tries < 25) setTimeout(() => { if (stage.isConnected && stage._fitSeq === seq) fitBattleSprites(stage, heroRefSrc, tries + 1); }, 80);
+      if (tries < 25) setTimeout(() => { if (stage.isConnected && stage._fitSeq === seq) fitBattleSprites(stage, heroRefSrc, tries + 1, motion); }, 80);
       return false;
     }
     const heroVis = { visH:hd.h * hb.h, oLeft:hd.left + hb.l * hd.w, base:hd.top + (hb.t + hb.h) * hd.h };
     const local = { visH:heroVis.visH, oLeft:heroVis.oLeft - sr.left, base:heroVis.base - sr.top };
-    if (crewImgs.length && crewBoxes.every(Boolean)) {
-      const plan = planSquad(local, crewBoxes.map((box, i) => ({ box, aspect:crewImgs[i].naturalWidth / (crewImgs[i].naturalHeight || 1) })),
-        { stageLeft:0 });
-      const put = (el, props) => { for (const [k, v] of Object.entries(props)) el.style.setProperty(k, v, 'important'); };
-      // เส้นเท้า: ขอบล่างของส่วนมีตัว = เส้นเท้ายมบาทน้อย → ขอบล่างกล่องภาพ = เท้า + ส่วนโปร่งใสด้านล่างของภาพนั้น
-      put(squad, { position:'absolute', left:'0', top:'0', width:'0', height:'0', 'max-width':'none', transform:'none',
-                   display:'block', gap:'0', overflow:'visible' });
-      crewImgs.forEach((img, i) => {
-        const p = plan.items[i], box = crewBoxes[i];
-        const span = img.closest('[data-crew-pick]') || img.parentElement;
-        const footGap = (1 - (box.t + box.h)) * p.boxH;
-        put(span, { position:'absolute', left:`${p.left}px`, top:`${local.base + footGap - p.boxH}px`, width:`${p.boxW}px`, height:`${p.boxH}px`,
-                    flex:'none', margin:'0', 'clip-path':`inset(${Math.max(0, box.t * p.boxH - 5)}px ${Math.max(0, (1 - box.l - box.w) * p.boxW - 5)}px ${Math.max(0, (1 - box.t - box.h) * p.boxH - 5)}px ${Math.max(0, box.l * p.boxW - 5)}px)` });
-        put(img, { width:`${p.boxW}px`, height:`${p.boxH}px`, 'max-width':'none', 'max-height':'none', 'object-fit':'fill' });
+    if (stage.classList.contains('combat-arena') && crewBoxes.every(Boolean)) {
+      const put = (el, props) => { for (const [k,v] of Object.entries(props)) el.style.setProperty(k,v,'important'); };
+      const heroBox = hero.classList.contains('face-native') ? hb : mirrorBox(hb);
+      const images = [...crewImgs,hero], actorBoxes = [...crewBoxes,heroBox];
+      const plan = planBattleFormation(images.length, sr.width, sr.height);
+      if(squad) put(squad,{position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
+        'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'});
+      images.forEach((image,i)=>{
+        const box=actorBoxes[i], slot=plan[i];
+        const h=local.visH * slot.scale * (image===hero?1:CREW_SCALE_TARGET)/box.h;
+        const w=h*(image===hero?refImg.naturalWidth/refImg.naturalHeight:image.naturalWidth/image.naturalHeight);
+        const root=image.closest('[data-crew-pick]');
+        const key=root.dataset.crewPick, active=key===motion.activeKey;
+        put(image,{width:`${w}px`,height:`${h}px`,'max-width':'none','max-height':'none','object-fit':'fill'});
+        put(root,{position:'absolute',left:`${slot.x-box.l*w}px`,top:`${slot.y-(box.t+box.h)*h}px`,bottom:'auto',
+          width:`${w}px`,height:`${h}px`,margin:'0',flex:'none',display:'block','clip-path':'none',
+          'z-index':String(active?30:slot.depth),'pointer-events':'auto',
+          '--turn-step-x':`${slot.stepX}px`,'--turn-step-y':`${slot.stepY}px`,
+          '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
+          '--formation-shadow-width':`${box.w*w*.82}px`,
+          '--turn-motion-delay':`${-Math.max(0,Date.now()-(motion.changedAt||0))}ms`});
+        root.classList.add('formation-member');
+        root.classList.toggle('turn-forward',active);
+        root.classList.toggle('turn-enter',active&&motion.changedAt>0);
+        root.classList.toggle('turn-return',!active&&key===motion.previousKey);
+        root.dataset.formationSlot=String(i);
       });
-      squad.dataset.fit = plan.fit.toFixed(2);
+      stage.dataset.formation='perspective';
     }
     if (helperImg && helperBox) {       // ยมทูตที่กระโดดเข้าช่วยโจมตีก็ต้องสูงเท่ากัน
       const boxH = local.visH * CREW_SCALE_TARGET / helperBox.h;

@@ -1,3 +1,4 @@
+import { clearedDungeonTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -5,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { CREW, FRONTIER, GUARD_POST, MERCHANT, QUEUE_LINE, SPOTS, STATIONS, ZONES, ZONE_ENTRY, syncSceneZone } from '../src/data.js';
 import { buildWalk, canWalk, findPath, resetWalk, setBlocks } from '../src/walk.js';
+import { TOWN_ENTRY } from '../src/town-layout.js';
 
 globalThis.Image = class {};
 
@@ -35,8 +37,9 @@ function withImageCanvas(run) {
 }
 const buildMask = z => {
   resetWalk(); setBlocks([], []);
+  if(z.k==='th') return; // City navigation uses declared streets, not the legacy color mask.
   const bg = image(z.scene);
-  assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
+  assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
 };
 const reaches = (from, to) => {
   const path = findPath(from[0], from[1], to[0], to[1]);
@@ -49,18 +52,15 @@ test('จุดเกิด/ปลายทางตอนเข้าโซน 
   for (const z of ZONES) {
     g.zone = z.k; syncSceneZone(z.k);
     buildMask(z);
+    if(z.k==='th')assert.deepEqual(ZONE_ENTRY,TOWN_ENTRY,'city arrivals use the new gate and plaza');
     // ประตูชายแดน · จุดของนิรา · แท่นตัดสิน ต้องเหยียบได้จริง ไม่ใช่ลอยในช่องที่อ่านสีแล้วเป็นลาวา/หน้าผา
     for (const [name, p] of Object.entries(ZONE_ENTRY)) assert.equal(canWalk(p[0], p[1]), true, `${z.k}: ZONE_ENTRY.${name} ${p}`);
     const points = [
       ['bench', [SPOTS.bench.x, SPOTS.bench.y]], ['goal', ZONE_ENTRY.goal], ['bossPier', [SPOTS.bossPier.x, SPOTS.bossPier.y]],
       ['guardPost', GUARD_POST], ['merchant', [MERCHANT.x, MERCHANT.y]], ['frontier', [FRONTIER.x, FRONTIER.y]],
       ...QUEUE_LINE.map((p, i) => [`queue${i}`, p]),
-      // โซน 1 มีจุดยืนเดิมบางจุดที่ตกลาวา (ลานตรากตรำ 585,615) ระบบเดินเลื่อนไปจุดใกล้สุดเองมาตลอด — ไม่ใช่ขอบเขตงานนี้
-      // โซน 2–4 ตรวจเข้มทุกสถานี/จุดประจำยมทูต (ตรงกับ tests/scene-zones.test.mjs)
-      ...(z.k === 'th' ? [] : [
-        ...STATIONS.map(s => [`station ${s.k}`, [s.x, s.y]]),
-        ...CREW.map(c => [`crew ${c.k} home`, [c.hx, c.hy]]),
-      ]),
+      ...STATIONS.map(s=>[`station ${s.k}`,[s.x,s.y]]),
+      ...CREW.map(c=>[`crew ${c.k} home`,[c.hx,c.hy]]),
     ];
     for (const [name, p] of points) {
       assert.equal(canWalk(p[0], p[1]), true, `${z.k}: ${name} ${p} อยู่ในพื้นที่เดินได้`);
@@ -75,7 +75,7 @@ test('เข้าโซน 2–4 ครั้งแรก: ยมบาทก�
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES.slice(1)) {
-    assert.equal(g.moveZone(z.k), true);
+    assert.equal(clearedDungeonTravel(g, z.k), true);
     // เบราว์เซอร์เดินเกมหลายเฟรมก่อนที่ภาพ mask ของโซนใหม่จะโหลดเสร็จ — เส้นทางที่วางไว้ตอนนั้นเป็นเส้นตรงข้ามลาวา
     // (นี่คือสาเหตุที่นิราค้างริมลาวาในเบราว์เซอร์จริง) จึงเดินก่อนสร้าง mask แล้วค่อยสร้างตามลำดับเดียวกัน
     for (let i = 0; i < 8; i++) g.stepWorld(16);

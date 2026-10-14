@@ -1,3 +1,4 @@
+import { TOWN_SIZE, townContains } from './town-layout.js';
 // walk.js — พื้นที่ที่เดินได้ (6 ก.ย. 2569)
 // เดิมยมบาทเดินทะลุลาวากับแม่น้ำวิญญาณได้ ทำให้ฉากเสียความหมาย
 //
@@ -8,7 +9,7 @@
 
 import { SCENE, NO_WALK, WALK_OK, WALK_OK_POLY } from './data.js';
 
-const CELL = 8;                                   // ความละเอียดตาราง (พิกัดฉาก)
+let CELL = 8;                                   // ความละเอียดตาราง (พิกัดฉาก)
 let COLS = Math.ceil(SCENE.w / CELL);
 let ROWS = Math.ceil(SCENE.h / CELL);
 let mask = null;                                  // null = ยังไม่สร้าง · 'off' = อ่านพิกเซลไม่ได้
@@ -17,6 +18,7 @@ let maskImage = null;
 /** ล้างตารางภาพ/เส้นทางของโซนเดิมก่อนใช้ขนาดและภาพฉากใหม่ */
 export function resetWalk() {
   version++; blocksSig = null;
+  CELL = SCENE.w === TOWN_SIZE.w ? 16 : 8;
   COLS = Math.ceil(SCENE.w / CELL);
   ROWS = Math.ceil(SCENE.h / CELL);
   mask = null;
@@ -53,6 +55,7 @@ const isLava = (d, x, y) => {
 
 /** สร้างตารางจากภาพที่แสดง หรือภาพผังลาวาเดียวกัน (โซนหิมะใช้อย่างหลัง) */
 export function buildWalk(im, maskSource = im) {
+  if (SCENE.w === TOWN_SIZE.w) return false; // Explicit town streets govern navigation; no color guessing.
   if (!im || !im.naturalWidth || !maskSource || !maskSource.naturalWidth
       || (mask && maskImage === maskSource)) return false;
   maskImage = maskSource;
@@ -127,7 +130,7 @@ function grid() {
 /** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
 function clearLine(a, b, walkable = canWalk) {
   const dx = b[0] - a[0], dy = b[1] - a[1];
-  const n = Math.ceil(Math.hypot(dx, dy) / (CELL / 2));
+  const n = Math.ceil(Math.hypot(dx, dy) / Math.min(4, CELL / 2));
   for (let i = 1; i <= n; i++)
     if (!walkable(a[0] + dx * i / n, a[1] + dy * i / n)) return false;
   return true;
@@ -137,6 +140,7 @@ function clearLine(a, b, walkable = canWalk) {
  *  คืนลิสต์จุดแวะ (ไม่รวมจุดเริ่ม) · null ถ้าขยับไม่ได้เลย
  *  ไปไม่ถึงจริง ๆ จะพาไปช่องที่เดินถึงและใกล้ปลายทางที่สุดแทน — ดีกว่ายืนนิ่งเฉย
  *  ใช้ BFS เพราะแผนที่แค่ 191×88 ช่อง ไม่ต้องถึง A* */
+const edgeCaches=new WeakMap();
 export function findPath(fx, fy, tx, ty, avoid = false) {
   const G = avoid ? gridAvoid(fx, fy) : grid();
   const live = avoid ? discs.filter(d => !inDisc(fx, fy, d)) : [];
@@ -145,7 +149,8 @@ export function findPath(fx, fy, tx, ty, avoid = false) {
   const sx = cell(fx, COLS), sy = cell(fy, ROWS);
   const gx = cell(tx, COLS), gy = cell(ty, ROWS);
   const start = sy * COLS + sx, goal = gy * COLS + gx;
-  if (start === goal) return [[tx, ty]];
+  if (start === goal) return clearLine([fx,fy],[tx,ty],walkable)?[[tx,ty]]:null;
+  let edges=edgeCaches.get(G);if(!edges){edges=new Uint8Array(G.length*9);edgeCaches.set(G,edges);}
 
   const prev = new Int32Array(COLS * ROWS).fill(-2);
   prev[start] = -1;
@@ -174,6 +179,15 @@ export function findPath(fx, fy, tx, ty, avoid = false) {
       if (prev[nk] !== -2 || !G[nk]) continue;
       // ห้ามตัดมุมทะแยงลอดกำแพง
       if (dx && dy && (!G[cy * COLS + nx] || !G[ny * COLS + cx])) continue;
+      // Cell centers alone can straddle a narrow river/wall gap. Validate the
+      // entire edge; cache fixed-grid edges until terrain/blocks change.
+      const edge=cur*9+(dy+1)*3+dx+1,cacheable=!avoid&&cur!==start;
+      let safe=cacheable?edges[edge]:0;
+      if(!safe){
+        safe=clearLine(cur===start?[fx,fy]:[(cx+.5)*CELL,(cy+.5)*CELL],[(nx+.5)*CELL,(ny+.5)*CELL],walkable)?1:2;
+        if(cacheable)edges[edge]=safe;
+      }
+      if(safe!==1)continue;
       prev[nk] = cur; q.push(nk);
     }
   }
@@ -184,7 +198,7 @@ export function findPath(fx, fy, tx, ty, avoid = false) {
   while (node !== start && node >= 0) { cells.push(node); node = prev[node]; }
   cells.reverse();
   const pts = cells.map(k => [(k % COLS) * CELL + CELL / 2, (k / COLS | 0) * CELL + CELL / 2]);
-  if (found >= 0) pts[pts.length - 1] = [tx, ty];        // ปลายทางใช้พิกัดที่คลิกจริง
+  if (found >= 0 && clearLine(pts.length>1?pts.at(-2):[fx,fy],[tx,ty],walkable)) pts[pts.length - 1] = [tx, ty];        // ปลายทางใช้พิกัดที่คลิกจริง
 
   // ดัดเส้นทาง: มองข้ามจุดแวะที่เดินตรงข้ามไปได้เลย (มองไกลสุด 40 ช่อง กันช้า)
   const all = [[fx, fy], ...pts], out = [];
@@ -252,6 +266,11 @@ export function setBlocks(rects, keepOpen) {
 /** จุดนี้เหยียบได้ไหม */
 export function canWalk(x, y) {
   if (x < 0 || y < 0 || x > SCENE.w || y > SCENE.h) return false;
+  if (SCENE.w === TOWN_SIZE.w) {
+    if (!townContains(x,y)) return false;
+    for(const h of holes) if(inRect(x,y,h)) return true;
+    return !blocks.some(r=>inRect(x,y,r));
+  }
   for (const r of WALK_OK) if (inRect(x, y, r)) return true;   // สะพาน/ท่าเรือ ทับกรอบห้ามได้
   for (const p of WALK_OK_POLY) if (inPoly(x, y, p)) return true; // 30D: สะพาน+เกาะหน้าประตูชายแดน (ไม่รวมน้ำสองข้าง)
   // NO_WALK (แม่น้ำวิญญาณ · ผาหิน) ต้องมาก่อน holes เสมอ

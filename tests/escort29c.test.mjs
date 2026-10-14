@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -10,7 +11,7 @@ globalThis.Image = class {};
 
 const soul = id => ({ id, who:`ผู้ทดสอบ${id}`, sp:1, sex:'m', deserved:3,
   deeds:[{ w:3, s:'kong', t:'กรรม', known:true }], merits:[] });
-// เกมที่มีกระทะ + ตะราง และยมทูตสองคน (เพลิง · กานต์) ยืนประจำจุดของตัวเอง
+// เกมที่มีกระทะ + ตะราง และยมทูตยืนประจำจุดของตัวเอง
 function setup() {
   resetWalk();
   const g = createGame();
@@ -77,10 +78,14 @@ test('ยมทูตผู้คุมยังมีดวงอื่นใ�
   assert.equal(g.assign(7102, 'krata', 'plerng', 3), true);
   arrived(g, 'plerng');
   const st = g.stations.find(x => x.def.k === 'krata');
+  const expected = g.crew.filter(c => !c.self && !c.reader && !c.escort && !c.buildK && !c.at)
+    .sort((a,b) => Math.hypot((a.x ?? a.hx)-st.def.x,(a.y ?? a.hy)-st.def.y)
+      - Math.hypot((b.x ?? b.hx)-st.def.x,(b.y ?? b.hy)-st.def.y))[0];
   g.finish(st, st.slots.find(x => x.soul.id === 7101));
   const walk = g.afterlifeWalks.find(w => w.soul.id === 7101);
-  assert.equal(walk.escort.k, 'kan', 'เพลิงยังคุมดวงที่สองอยู่ จึงใช้กานต์');
-  assert.ok(walk.delay > 0, 'กานต์ต้องเดินมารับก่อน วิญญาณยืนรอ');
+  assert.equal(walk.escort.k, expected.k, 'เลือกยมทูตว่างที่อยู่ใกล้จุดรับที่สุด');
+  assert.notEqual(walk.escort.k, 'plerng', 'ผู้คุมดวงที่สองยังอยู่ประจำสถานี');
+  assert.ok(walk.delay > 0, 'ยมทูตต้องเดินมารับก่อน วิญญาณยืนรอ');
   assert.equal(g.crewOf('plerng').escort ?? null, null);
   // ช่วงรอ: วิญญาณยังอยู่ที่ต้นทาง
   g.advanceAfterlife(walk.delay * 0.5);
@@ -120,7 +125,7 @@ test('ย้ายโซน / เซฟ-โหลดระหว่างนำ�
   assert.equal(restored.sentences.some(x => x.soul.id === 7301), true, 'โหลดแล้ววิญญาณเข้าตะรางครบ');
   assert.equal(restored.afterlifeWalks.length, 0);
 
-  assert.equal(g.moveZone('asia'), true);
+  assert.equal(harbourTravel(g, 'asia'), true);
   assert.equal(keeper.escort ?? null, null);
   assert.equal(g.afterlifeWalks.length, 0);
 });

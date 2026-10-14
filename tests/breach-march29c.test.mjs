@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -95,7 +96,7 @@ test('ระลอกชายแดนของโซน 2–4: ใช้ flow 
 
   const g = thGame();
   g.bossCleared.th = true;
-  assert.equal(g.moveZone('asia'), true);
+  assert.equal(harbourTravel(g, 'asia'), true);
   g.hire('plerng'); g.hire('kan');
   g.zoneCases.asia = 7;
   g.zoneEvents.asia = { asiaPrisonFire:'cleared', asiaDevaTest:'cleared' };

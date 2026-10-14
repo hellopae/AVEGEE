@@ -52,6 +52,18 @@ const petals = {
   }
 };
 export function commandWheel({battle=false, ready=true, busy=false, groups=[], selected='', missing='', segments=null, actorName='ยมบาทน้อย', portrait='img/ui/Button6.png'}) {
+  if (battle && segments) {
+    const label = text => {
+      const parts = String(text).split(' / ');
+      return getLang() === 'en' ? parts[1] || parts[0] : parts[0];
+    };
+    return `<section class="command-wheel combat-wheel actor-wheel battle-command-dock ${busy?'busy':''}" aria-label="${esc(t('menu.commands'))} ${esc(actorName)}">
+      <div class="battle-command-heading"><img src="${esc(portrait)}" alt=""><div><small>${esc(t('menu.commands'))}</small><b>${esc(actorName)}</b></div></div>
+      <div class="battle-command-tabs">${segments.map(g => `<button class="actor-segment" data-command="${esc(g.id)}" aria-expanded="false" aria-label="${esc(label(g.label))}" ${busy||g.disabled?'disabled':''}>${esc(label(g.label))}</button>`).join('')}</div>
+      ${segments.map(g => `<div class="command-options" data-options="${esc(g.id)}" inert aria-label="${esc(label(g.label))}">${g.choices || ''}</div>`).join('')}
+      ${selected}
+    </section>`;
+  }
   if (segments) {
     // A two-command actor uses the right item petal; Yama keeps the bottom item petal.
     const slotById = {attack:0, power:1, item:segments.length === 2 ? 1 : 3};
@@ -99,12 +111,16 @@ export function bindCommandWheel(root) {
     // "ผู้ใช้ต้องการปิด" ทันที วงเลยกะพริบเปิดแล้วปิดในคลิกเดียว ตัวเลือกที่กดไม่ทันติด (ข้อ A/B 24 ก.ย. 2569)
     // แก้โดยแยกพฤติกรรม: มีเมาส์ → คลิกแค่ "ตรึงให้เปิดอยู่" (ปิดด้วยการย้ายไปวงอื่น/Esc/ปิดกล่อง)
     //                     ไม่มี hover (ทัช/คีย์บอร์ด) → คลิกสลับเปิด-ปิดเหมือนเดิม เพราะไม่มี hover เปิดล่วงหน้า
-    const hasHover = typeof matchMedia === 'function' && matchMedia('(hover:hover) and (pointer:fine)').matches;
+    const hasHover = !wheel.classList.contains('battle-command-dock') && typeof matchMedia === 'function' && matchMedia('(hover:hover) and (pointer:fine)').matches;
     wheel.querySelectorAll('[data-command]').forEach(b=>{
       b.onclick=()=>set(hasHover ? b.dataset.command : (b.getAttribute('aria-expanded')==='true'?null:b.dataset.command));
       b.onpointerenter=e=>{if(e.pointerType==='mouse'&&!b.disabled)set(b.dataset.command);};
     });
     wheel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();set(null);}});
+    if (wheel.classList.contains('battle-command-dock') && !wheel.classList.contains('busy')) {
+      const first = wheel.querySelector('[data-command]:not(:disabled)');
+      if (first) set(first.dataset.command);
+    }
   });
 }
 

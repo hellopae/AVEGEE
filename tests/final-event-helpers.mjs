@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
+import { syncSceneZone, CREW, SPOTS } from '../src/data.js';
 export function finalGame() {
   const g = createGame(); g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
+  // Direct zone assignment must also select that branch's world geometry.
+  syncSceneZone(g.zone);
+  Object.assign(g.player,SPOTS.bench,{tx:null,ty:null,path:null});
+  for(const c of g.crew) {
+    const home=CREW.find(d=>d.k===c.k);
+    if(home)Object.assign(c,{hx:home.hx,hy:home.hy,x:null,y:null});
+  }
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
   g.refreshZoneEvents(); return g;
 }

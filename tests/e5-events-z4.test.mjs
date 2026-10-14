@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
@@ -167,10 +168,10 @@ test('E5 old nonempty rewards acknowledge once; serialized battles resume; seen 
 });
 test('E5 restore outside Zone 4 must queue Lumen intro on later arrival, and preserve cleared rescue on return',()=>{
   let g=createGame();g=roundTrip(g);g.bossCleared.west=true;
-  assert.equal(g.moveZone('cyberhell'),true);
+  assert.equal(harbourTravel(g, 'cyberhell'),true);
   assert.equal(g.storyQueue[0].key,'deva-cyberhell');g.completeStory();
   g.startZoneEvent('cyberRescue');win(g);g.endBattle();
-  g.moveZone('th');g=roundTrip(g);g.moveZone('cyberhell');
+  harbourTravel(g, 'th');g=roundTrip(g);harbourTravel(g, 'cyberhell');
   assert.equal(g.zoneEventStatus('cyberRescue'),'cleared');
   assert.equal(g.storyQueue.some(p=>p.key==='deva-cyberhell'),false);
 });

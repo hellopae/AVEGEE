@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
@@ -34,7 +35,7 @@ test('ทุกโซน: ตัวเลือกสถานที่ทุก
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'cleared', thBorderBoss:'cleared' };
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES) {
-    if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
+    if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k), true);
     resetWalk();
     // สร้างสถานีที่ลงทัณฑ์ได้ครบทุกหลังที่เกมมีให้ (ตรงกับเมนูก่อสร้างที่ cost > 0)
     for (const def of STATIONS.filter(d => d.cost > 0 && !g.stations.some(s => s.def.k === d.k)))

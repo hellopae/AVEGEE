@@ -1,5 +1,6 @@
 import { drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js';
 import { zoneStyle } from './scene-style.js';
+import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
 const frac = n => n - Math.floor(n);
@@ -7,6 +8,12 @@ const seed = n => frac(Math.sin(n * 127.1 + 311.7) * 43758.5453);
 const mod = (n, d) => ((n % d) + d) % d;
 
 export function ambientPixelKind(r, g, b, y, zone, x = .5) {
+  if (zone==='town-th') {
+    if(townContains(x*TOWN_SIZE.w,y*TOWN_SIZE.h)) return null;
+    if((y>TOWN_RIVER_Y/TOWN_SIZE.h || x>.58) && b>65 && b>r*1.18 && b>=g*.92) return 'water';
+    if(x<.39 && r>180 && g>25 && g<r*.65 && r>b*1.5) return 'lava';
+    return null;
+  }
   if ((zone === 'th' || zone === 'asia') && !h3SurfaceContains(zone, x, y)) return null;
   const frozenChannel = (x > .312 && x < .522 && y > .153 && y < .282) ||
     (x > .308 && x < .397 && y > .25 && y < .7) ||

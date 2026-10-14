@@ -1,4 +1,5 @@
-// ชุด 27D — สะพานเดินข้ามได้ทุกโซน · พญายมนั่งตรงเก้าอี้ · ตะรางมีฟรี · ของได้จากการปราบ ไม่ตกบนแผนที่
+import { harbourTravel } from './helpers/travel.mjs';
+// Town avenues and legacy branch bridges remain traversable; throne and reward rules stay intact.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -6,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { MOB, ITEMS, SPOTS, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
 import { buildWalk, canWalk, resetWalk, setBlocks, stepTo } from '../src/walk.js';
+
+import { TOWN_PATHS,TOWN_HOUSES,TOWN_SPOTS,TOWN_MERCHANT } from '../src/town-layout.js';
 
 globalThis.Image = class {};
 
@@ -33,8 +36,9 @@ function withImageCanvas(run) {
 }
 const loadZone = z => {
   syncSceneZone(z.k); resetWalk(); setBlocks([], []);
-  const bg = image(z.scene);
-  assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true, z.k);
+  if(z.k==='th') return; // Town roads replace the legacy pixel-color bridges.
+  const bg=image(z.scene);
+  assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
 };
 
 /** เดินด้วย stepTo ก้าวละ step พิกัด จากจุดเริ่มไปจุดสิ้นสุด (เหมือน stepWorld ในเกม) — true ถ้าถึงปลายทาง */
@@ -46,9 +50,20 @@ function walkLine(a, b, step = 2.4) {
   return Math.hypot(p.x - b[0], p.y - b[1]) < 1;
 }
 
-test('เดินข้ามสะพานใหญ่หน้าแท่นได้ตลอดความกว้างพื้นไม้ ทุกโซน', () => withImageCanvas(() => {
+test('town main avenue and zone2–4 main bridges can be crossed in both directions', () => withImageCanvas(() => {
   for (const z of ZONES) {
     loadZone(z);
+    if(z.k==='th') {
+      const y1=SPOTS.bench.y+60,y2=FRONTIER.y;
+      for(let x=SPOTS.bench.x-24;x<=SPOTS.bench.x+24;x+=4)
+        for(let y=Math.ceil(y1);y<=y2;y++)assert.equal(canWalk(x,y),true,`th: main avenue ${x},${y}`);
+      for(const x of [SPOTS.bench.x-20,SPOTS.bench.x,SPOTS.bench.x+20]) {
+        assert.equal(walkLine([x,y1],[x,y2]),true,'town avenue reaches gate');
+        assert.equal(walkLine([x,y2],[x,y1]),true,'town gate reaches plaza');
+      }
+      for(const [x,y] of [[900,2400],[2900,2400]])assert.equal(canWalk(x,y),false,'river beside town gate remains blocked');
+      continue;
+    }
     // ทุกพิกเซลบนแนวเดินตั้งแต่บันไดแท่นถึงฝั่งใต้ต้องเหยียบได้ (เดิมมีเส้นลาวาลอดไม้ขวางที่ y≈608-613)
     for (let x = 812; x <= 860; x += 4)
       for (let y = 520; y <= 700; y++) assert.equal(canWalk(x, y), true, `${z.k}: main bridge ${x},${y}`);
@@ -62,9 +77,27 @@ test('เดินข้ามสะพานใหญ่หน้าแท่�
   }
 }));
 
-test('เดินข้ามสะพานเล็กซ้ายแท่นได้ตลอดความกว้างพื้นไม้ ทุกโซน', () => withImageCanvas(() => {
+test('town lava bridge polyline and zone2–4 western bridges remain wide and traversable', () => withImageCanvas(() => {
   for (const z of ZONES) {
     loadZone(z);
+    if(z.k==='th') {
+      const road=TOWN_PATHS.find(p=>p.key==='lava-bridge');
+      assert.ok(road,'new west-to-city bridge exists');
+      // Every bent segment has a traversable center and two pedestrian lanes.
+      // A single straight legacy cross-street would cut across the painted lava.
+      for(let i=1;i<road.points.length;i++) {
+        const a=road.points[i-1],b=road.points[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);
+        const nx=-(b[1]-a[1])/length,ny=(b[0]-a[0])/length;
+        for(const offset of [-20,0,20]) {
+          const from=[a[0]+nx*offset,a[1]+ny*offset],to=[b[0]+nx*offset,b[1]+ny*offset];
+          assert.equal(walkLine(from,to),true,`lava bridge segment ${i} east lane ${offset}`);
+          assert.equal(walkLine(to,from),true,`lava bridge segment ${i} west lane ${offset}`);
+        }
+      }
+      for(const [x1,y1,x2,y2] of TOWN_HOUSES.slice(0,2))
+        assert.equal(canWalk((x1+x2)/2,(y1+y2)/2),false,'house blocks beside cross street stay blocked');
+      continue;
+    }
     for (let y = 436; y <= 476; y += 2)
       for (let x = 590; x <= 690; x++) assert.equal(canWalk(x, y), true, `${z.k}: small bridge ${x},${y}`);
     for (const y of [440, 455, 470]) {
@@ -76,11 +109,16 @@ test('เดินข้ามสะพานเล็กซ้ายแท่�
   }
 }));
 
-test('พญายมนั่งตรงเก้าอี้บนแท่น (กึ่งกลาง x≈836 ปลายขา y≈447) และไม่ใช่ตำแหน่งเดิม', () => {
-  assert.deepEqual([SPOTS.throne.x, SPOTS.throne.y], [836, 447]);
-  // กรอบเก้าอี้ที่วัดจากภาพฉากทั้ง 4 โซน: x 807–865 · y 347–447
-  assert.ok(SPOTS.throne.x >= 807 && SPOTS.throne.x <= 865);
-  assert.ok(SPOTS.throne.y >= 347 && SPOTS.throne.y <= 450);
+test('ruler throne follows the new city platform and original branch chairs',()=>{
+  for(const z of ZONES) {
+    syncSceneZone(z.k);
+    if(z.k==='th')assert.deepEqual(SPOTS.throne,TOWN_SPOTS.throne);
+    else {
+      assert.deepEqual([SPOTS.throne.x,SPOTS.throne.y],[836,447]);
+      assert.ok(SPOTS.throne.x>=807&&SPOTS.throne.x<=865);
+      assert.ok(SPOTS.throne.y>=347&&SPOTS.throne.y<=450);
+    }
+  }
 });
 
 test('ตะรางรอวาระมีตั้งแต่เกมใหม่ทุกโซน ไม่ต้องซื้อ และสร้างซ้ำไม่ได้', () => {
@@ -98,13 +136,13 @@ test('ตะรางรอวาระมีตั้งแต่เกมใ�
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES.slice(1)) {
-    assert.equal(g.moveZone(z.k), true, z.k);
+    assert.equal(harbourTravel(g, z.k), true, z.k);
     assert.equal(mine().length, 1, `${z.k}: new zone has the prison`);
     assert.equal(mine()[0].build, 0);
   }
   // กลับสาขาเดิมที่เซฟไว้ก่อนมีตะราง → ได้ตะราง
   g.zoneSave.asia.stations = g.zoneSave.asia.stations.filter(sv => sv.k !== 'tarang');
-  assert.equal(g.moveZone('asia'), true);
+  assert.equal(harbourTravel(g, 'asia'), true);
   assert.equal(mine().length, 1);
 });
 
@@ -213,7 +251,7 @@ const freshIn = zone => {
   const g = createGame();
   g.level = 5; g.hpMax = 9999; g.hp = 9999;
   g.inventory = {};
-  if (zone !== 'th') { for (const z of ZONES) g.bossCleared[z.k] = true; g.moveZone(zone); g.inventory = {}; g.paused = false; }
+  if (zone !== 'th') { for (const z of ZONES) g.bossCleared[z.k] = true; harbourTravel(g, zone); g.inventory = {}; g.paused = false; }
   return g;
 };
 
@@ -316,11 +354,11 @@ test('พญายมโผล่บนเก้าอี้ — ยมบาท
   for (const z of ZONES) {
     const g = createGame();
     g.zone = z.k; syncSceneZone(z.k); resetWalk(); g.syncBlocks(true);
-    const bg = image(z.scene);
-    assert.equal(buildWalk(bg, z.k === 'west' ? image('scene-v2-opt') : bg), true);
+    if(z.k!=='th') {const bg=image(z.scene);assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true);}
     g.mobs = [];
     const T = SPOTS.throne;
-    for (const start of [[880, 455], [820, 455], [836, 470]]) {
+    const starts=z.k==='th'?[[T.x+44,T.y+8],[T.x-16,T.y+8],[T.x,T.y+23]]:[[880,455],[820,455],[836,470]];
+    for (const start of starts) {
       g.player.x = start[0]; g.player.y = start[1]; g.player.path = null; g.player.tx = null;
       g.bossUntil = performance.now() + 7000; g.bossDodged = null;
       for (let i = 0; i < 400; i++) g.stepWorld(16);
@@ -329,10 +367,11 @@ test('พญายมโผล่บนเก้าอี้ — ยมบาท
       assert.equal(canWalk(g.player.x, g.player.y), true);
     }
     // ยืนไกลอยู่แล้ว → ไม่ถูกลากไปไหน
-    g.player.x = 400; g.player.y = 600; g.player.path = null;
+    const far=z.k==='th'?[TOWN_MERCHANT.x,TOWN_MERCHANT.y]:[400,600];
+    g.player.x=far[0];g.player.y=far[1];g.player.path=null;
     g.bossUntil = performance.now() + 7000; g.bossDodged = null;
     g.stepWorld(16);
-    assert.deepEqual([g.player.x, g.player.y, g.player.path], [400, 600, null]);
+    assert.deepEqual([g.player.x,g.player.y,g.player.path],[...far,null]);
     // เดินกลับมาทับเองระหว่างพญายมยังอยู่ → ไม่ถูกฉุดซ้ำ
     g.player.x = T.x; g.player.y = T.y; g.player.path = null;
     g.stepWorld(16);

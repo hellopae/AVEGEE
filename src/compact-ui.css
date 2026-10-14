@@ -117,3 +117,6 @@ dialog :is(.soul,.crew,.shop,.bag-item){font-size:13px}
 .g5-green.fire-ready{border-color:#74f597!important;box-shadow:0 0 22px #4fe493;opacity:1}
 [data-fire].fire-ready{background:linear-gradient(#b9ffd1,#39ad66)!important;box-shadow:0 0 20px #61ed90;color:#102b1a}
 .st-hud:has(.mg-train:not([hidden])) :is(#st-npc,#st-right,.st-bottom-left){visibility:hidden}
+
+.mg-train .mg-stage.sword-practice{align-items:stretch;overflow:hidden}
+.sword-board{width:100%;box-sizing:border-box}
