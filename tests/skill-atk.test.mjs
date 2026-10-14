@@ -83,14 +83,14 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
   const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
   assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'));
-  assert.match(uiVersion,/-2d-pages-20261014-r1$/);
+  assert.match(uiVersion,/-layered-battle9-20261015-r1$/);
   assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(indexPreload,/-2d-pages-20261014-r1$/);
+  assert.match(indexPreload,/-layered-battle9-20261015-r1$/);
   assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
   assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
   assert.match(preload, /asset-preload\.js\?v=h1-h5b-skillatk/);
   const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
   assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(catalogVersion,/-2d-pages-20261014-r1$/);
+  assert.match(catalogVersion,/-layered-battle9-20261015-r1$/);
   assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });

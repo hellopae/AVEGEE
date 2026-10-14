@@ -42,11 +42,18 @@ export function setup(zone) {
   const bg={src:'img/'+g.zoneDef().scene+'.png',naturalWidth:1678,naturalHeight:937};
   walk.buildWalk(bg,zone==='west'?{...bg,src:'img/scene-v2-opt.png'}:bg);
   const terrainWidth=SCENE.w,terrainHeight=SCENE.h;
-  const terrain=new Uint8Array(terrainWidth*terrainHeight);
-  for(let y=0;y<terrainHeight;y++)for(let x=0;x<terrainWidth;x++)terrain[y*terrainWidth+x]=(zone==='th'?townContains(x,y):walk.canWalk(x,y))?1:0;
+  // The town uses continuous corridor polygons, not a painted pixel mask.
+  // Rounding a legal foot position down can put the sampled pixel outside a
+  // slanted corridor. Test the exact coordinate against its floor authority.
+  // Legacy zones retain a terrain-only raster captured before building blocks.
+  const terrain=zone==='th'?null:new Uint8Array(terrainWidth*terrainHeight);
+  if(terrain)for(let y=0;y<terrainHeight;y++)for(let x=0;x<terrainWidth;x++)terrain[y*terrainWidth+x]=walk.canWalk(x,y)?1:0;
+  const terrainContains=zone==='th'?townContains:(x,y)=>Number.isFinite(x)&&Number.isFinite(y)
+    &&x>=0&&y>=0&&x<terrainWidth&&y<terrainHeight
+    &&terrain[Math.floor(y)*terrainWidth+Math.floor(x)]===1;
   const spawn=[g.player.x,g.player.y];
   g.syncBlocks(true);
-  return {g,terrain,terrainWidth,spawn};
+  return {g,terrain,terrainWidth,terrainContains,spawn};
 }
 export function geometry(d) {
   const im=art.img('st-'+d.k);

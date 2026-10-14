@@ -26,6 +26,7 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
 //   2 = late       โหลดท้ายสุด/เมื่อว่าง (คัตซีนใหญ่ ฉากจบ intro/ปกสำรอง ฉากสลบ) — ไม่ได้ยกเลิก แค่ไม่แย่งแบนด์วิดท์
 // ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error: art.js วาด placeholder ส่วน <img> ใน modal โหลดเองตามปกติ
 const SPLIT_RULES = [
+  [0, 0, /^img\/map-zone1\/(terrain-|prop-)/],
   [0, 0, /^img\/map-zone1\/mainland-v\d+\.webp$/],
   [1, 1, /^img\/map-zone1\/(arena|battle-)/],
   [1, 4, /^img\/map-zone1\/dungeon-/],

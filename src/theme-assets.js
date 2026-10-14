@@ -8,6 +8,8 @@ export function themeBackground(zone, kind) {
   return `img/theme-v4/${kind}-${THEME_ZONES.includes(zone) ? zone : 'th'}.webp`;
 }
 export function themeArt(key, zone) {
+  if(key.startsWith('town-prop-'))return `img/map-zone1/prop-${key.slice(10)}-${key==='town-prop-waterfall'?'v2':'v1'}.webp`;
+  if(key.startsWith('town-terrain-'))return `img/map-zone1/terrain-${key.slice(13)}-v1.webp`;
   const houses = ['front-one','right-two','left-two','right-one'];
   if (key.startsWith('town-residence-') && houses.includes(key.slice(15)))
     return `img/town-district/house-${key.slice(15)}-v1.webp`;

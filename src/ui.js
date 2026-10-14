@@ -1,3 +1,4 @@
+import { drawTownTerrain } from './town-terrain.js';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
 import {mountDungeonView} from './dungeon-view.js';
 import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js';
@@ -36,7 +37,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
-import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-2d-pages-20261014-r1';
+import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j';
 import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
@@ -1311,8 +1312,7 @@ function updateTownHud(now) {
   const c=townMapCanvas.getContext('2d'), w=townMapCanvas.width,h=townMapCanvas.height;
   c.clearRect(0,0,w,h);
   c.fillStyle='#271923';c.fillRect(0,0,w,h);
-  const image=img('theme-map-th');
-  if(image) {c.globalAlpha=.65;c.drawImage(image,0,0,w,h);c.globalAlpha=1;}
+  c.save();c.scale(w/SCENE.w,h/SCENE.h);c.globalAlpha=.65;drawTownTerrain(c,key=>img(key));c.restore();
   for(const site of townSites(g)) {
     c.fillStyle=site.state==='built'?'#e9c789':site.state==='building'?'#ee9260':'#9b8d80';
     c.fillRect(site.x/SCENE.w*w-2,site.y/SCENE.h*h-2,4,4);
@@ -2103,12 +2103,12 @@ const crewArt = (c, pose = '') => artUrl('crew-' + c.k + pose, 'png', c.homeZone
 function battleTurnOrderHtml(b) {
   if(!b.turnQueue||b.over)return '';
   const units=g.battleTimeline(),currentRound=b.turnQueue.round;
-  const render=(list,next)=>`<section><small>${next?'รอบถัดไป / Next':'รอบ '+currentRound+' / Turn'}</small><ol class="battle-turn-queue" aria-label="${next?'คิวรอบถัดไป':'คิวรอบปัจจุบัน'}">${list.map((u,i)=>{
+  const portrait = u => {
     const c=g.battleActors().find(a=>a.id===u.id);
-    const portrait=u.side==='foe'?storyFoeArt(u.k):u.id==='you'?artUrl('hero-yama-profile'):u.k==='guard'?artUrl('crew-guard-profile'):crewArt(c,'-profile');
-    return `<li class="${u.side} ${!next&&i===0?'current':''}" title="${esc(u.name)}"><img src="${esc(portrait)}" alt="${esc(u.name)}"><b>${esc(u.name)}</b></li>`;
-  }).join('')}</ol></section>`;
-  return `<div class="battle-timeline">${render(units.filter(u=>u.round===currentRound),false)}${render(units.filter(u=>u.round!==currentRound),true)}</div>`;
+    return u.side==='foe' ? (bossProfileOverride(u.k,g.zone)||storyFoeArt(u.k)) : u.id==='you'?artUrl('hero-yama-profile'):u.k==='guard'?artUrl('crew-guard-profile'):crewArt(c,'-profile');
+  };
+  const render=(list,next)=>`<section class="${next?'timeline-next':'timeline-active'}"><small>${next?'ลำดับถัดไป / Next':'รอบ '+currentRound+' / Turn'}</small><ol class="battle-turn-queue" aria-label="${next?'ลำดับถัดไป':'ผู้ที่กำลังลงมือ'}">${list.map(u=>`<li class="${u.side} ${next?'':'current'}" title="${esc(u.name)}"><img src="${esc(portrait(u))}" alt="${esc(u.name)}"><b>${esc(u.name)}</b></li>`).join('')}</ol></section>`;
+  return `<div class="battle-timeline">${render(units.slice(0,1),false)}${render(units.slice(1,6),true)}</div>`;
 }
 
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
@@ -2161,7 +2161,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
-  return `<div class="arena${hp ? ' combat-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}" style="background-image:url('${esc(bg)}')">
+  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}" style="background-image:url('${esc(bg)}')">
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -2298,12 +2298,13 @@ function openTrial(initialError = '') {
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
-  let trialError = initialError;
+  let trialError = initialError, courtPanel = null;
   const blockText = block => block ? t('trial.' + block.key) + (block.station ? block.station : '') : '';
 
   const paint = () => {
     // เปลี่ยนแท็บแล้ววาดเนื้อหาห้องสอบสวนใหม่ แต่บนมือถืออย่ากระโดดกลับไปหัวกล่อง
     const scrollAt = dlg.querySelector('.hud')?.scrollTop || 0;
+    const dossierScroll = dlg.querySelector('.hud-right')?.scrollTop || 0;
     const known   = s.deeds.filter(d => d.known && d.visible !== false);
     const claimed = s.merits.filter(m => !m.exposed);
     const dests   = g.trialDestinations();       // 29C: ไม่รวมหอทะเบียนกรรม (ส่งไปแล้วไม่มีอะไรเกิด)
@@ -2405,10 +2406,21 @@ function openTrial(initialError = '') {
     // สถานีที่ผู้คุมประจำส่งไม่ได้ตอนนี้ — บอกเหตุผลในบรรทัดสถานะ (จอแคบไม่มีที่พอสำหรับป้ายเล็กใต้ไอคอน)
     const stationNotes = dests.filter(x => x.slots.length && g.stFree(x) > 0).map(x => [x, g.assignBlock(s.id, x.def.k, x.crewK)])
       .filter(([, bk]) => bk).map(([x, bk]) => `${x.def.name}: ${blockText(bk)}`).join(' · ');
-    const trialWheel = commandWheel({ready, selected,
-      missing: trialError || blockText(blocked) || [missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', stationNotes].filter(Boolean).join(' · '), groups:[
-      {choices:powerChoices},{choices:destinationChoices},{choices:crewChoices},{choices:forceChoices,disabled:heaven}
-    ]});
+    const missing = trialError || blockText(blocked) || [missingParts.length ? `${t('trial.missing')} ${missingParts.join(' · ')}` : '', stationNotes].filter(Boolean).join(' · ');
+    const courtGroups = [
+      {id:'power',label:'พลัง / Power',choices:powerChoices},
+      {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
+      {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
+      {id:'force',label:'ความแรง / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
+    ];
+    const trialWheel = `<section class="comment8-menu" aria-label="คำสั่งออกหมาย">
+      <div class="comment8-commands">${courtGroups.map((v,i)=>`<button type="button" class="court-command ${v.selected?'has-selection':''}" data-court-panel="${v.id}" style="--command-index:${i}" aria-expanded="${courtPanel===v.id}" ${v.disabled?'disabled':''}>${esc(v.label.split(' / ')[getLang()==='en'?1:0])}</button>`).join('')}
+        <button type="button" id="t-go" class="court-command court-issue ${ready?'ready':''}" style="--command-index:4" ${ready?'':'disabled'}>${esc(t('trial.warrant'))}</button>
+      </div>
+      ${courtGroups.map(v=>`<div class="court-options ${courtPanel===v.id?'is-open':''}" data-court-options="${v.id}" ${courtPanel===v.id?'':'inert'} aria-label="${esc(v.label)}">${v.choices}</div>`).join('')}
+      ${missing?`<small class="court-missing" role="status">${esc(missing)}</small>`:''}
+    </section>`;
+
 
     // ข้อความไต่สวนอยู่ขวาตลอดเวลา ส่วนตัวเลือกคำตัดสินย้ายไปเป็นวงไอคอนแล้ว
     const roarHint = s.roarHint != null ? g.roarTarget(s)?.i : null;
@@ -2420,7 +2432,7 @@ function openTrial(initialError = '') {
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
     dlg.innerHTML = `
-    <div class="hud trial-hud" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
+    <div class="hud trial-hud trial-comment8" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
@@ -2469,7 +2481,7 @@ function openTrial(initialError = '') {
         <div class="port you">
           <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
-          <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(t('trial.hp'))} ${Math.round(g.hp)}/${g.hpMax}</small><span class="trial-hpbar"><i style="width:${Math.max(0,Math.min(100,100*g.hp/g.hpMax))}%"></i></span></span>
+          <span class="who2"><b>${esc(HERO_NAME)}</b><small>${esc(t('trial.hp'))} ${Math.round(g.hp)}/${g.hpMax}</small><small>MP ${Math.round(g.mp)}/${g.mpMax}</small><span class="trial-mpbar"><i style="width:${Math.max(0,Math.min(100,100*g.mp/g.mpMax))}%"></i></span><span class="trial-hpbar"><i style="width:${Math.max(0,Math.min(100,100*g.hp/g.hpMax))}%"></i></span></span>
         </div>
         <!-- การ์ดรูป+ชื่อวิญญาณ (.port.foe) เอาออก 18 ก.ย. 2569 (ข้อ A ของคุณเป้) — บนจอแคบมันทับ
              .hud-log ด้านบน และข้อมูลตัวตนซ้ำกับ .fig.foe ที่อยู่บนเวทีอยู่แล้ว (รูป+ชื่อเดียวกัน)
@@ -2478,9 +2490,24 @@ function openTrial(initialError = '') {
     </div>`;
 
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
+    if(dossierScroll)dlg.querySelector('.hud-right').scrollTop=dossierScroll;
+
+    // Keep flying lists inside the interrogation half, including narrow portrait screens.
+    requestAnimationFrame(()=>{
+      const stage=dlg.querySelector('.trial-comment8 .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
+      if(!stage?.isConnected||!pane)return;
+      const gap=window.innerWidth<=700?5:7;
+      const left=Math.max(0,Math.min(menu.offsetWidth+gap,stage.clientWidth-menu.offsetLeft-pane.offsetWidth-8));
+      pane.style.left=`${left}px`;
+      const initialTop=pane.offsetTop;
+      const remaining=Math.max(90,stage.clientHeight-menu.offsetTop-initialTop-18);
+      pane.style.maxHeight=`${Math.min(pane.offsetHeight,remaining)}px`;
+    });
 
     // ---- ผูกปุ่ม ----
-    bindCommandWheel(dlg);
+    dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;paint();});
+    dlg.querySelectorAll('.court-options .orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i));
+    dlg.querySelector('.comment8-menu')?.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();courtPanel=null;paint();}});
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
@@ -2939,6 +2966,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
+  let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
@@ -3079,18 +3107,24 @@ function openBattle(after) {
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
-    const confirmedRecipient=b.commandRecipient;
-    const canConfirm=pending&&(selfCommand||(needsReceiver?confirmedRecipient: b.commandTarget===b.selectedFoeId));
-    const targetLabel=needsReceiver?g.battleActors().find(c=>c.id===confirmedRecipient)?.name:
-      selfCommand?actor.name:b.foes.find(f=>f.id===b.commandTarget)?.who;
-    const selection = pending ? `<p class="battle-command-preview">${esc(b.commandLabel||pending)}${targetLabel?` → ${esc(targetLabel)}`:''}</p>${canConfirm?`<button class="gold" data-execute="${esc(pending)}" data-recipient="${esc(confirmedRecipient||'you')}">ยืนยัน / Confirm</button>`:''}<button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
-    const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' : commandWheel({battle:true,busy:!!phase,
-      actorName:actor.name || GUARD.name, portrait:isYama ? artUrl('hero-yama-profile') : crewArt(actor, '-profile'),
-      segments:[{id:'attack',label:'โจมตี / Attack',icon:'img/ui/Button7.png',choices:attacks},
-        ...(isYama ? [{id:'power',label:'พลัง / Power',icon:'img/ui/Button8.png',choices:powerChoices}] : []),
-        {id:'item',label:'ไอเท็ม / Items',icon:'img/ui/Button10.png',choices:itemChoices},
-        {id:'defense',label:'ป้องกัน / Defend',choices:battleChoice('defend','img/ui/icon-justice.png','ตั้งรับ / Defend',true,'ลดความเสียหาย 50% จนถึงเทิร์นถัดไป')},
-        {id:'escape',label:'หลบหนี / Flee',choices:battleChoice('flee','img/ui/icon-zoom-out.png','ถอนตัว / Retreat',['soul','mob','frontier'].includes(b.kind),'ออกจากศึกนี้โดยไม่ได้รางวัล')}],selected:selection});
+    const selection = pending ? `<p class="battle-command-preview">${esc(b.commandLabel||pending)}</p><small>${needsReceiver?'คลิกผู้รับบนสนามหรือการ์ดทีมเพื่อใช้':'คลิกศัตรูบนสนามเพื่อโจมตีทันที'}</small><button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
+    if (commandPanelActor !== actor.id) { commandPanel = null; commandPanelActor = actor.id; }
+    const battle9Label = text => String(text).split(' / ')[getLang()==='en'?1:0] || String(text).split(' / ')[0];
+    const segments = [
+      {id:'attack',label:'โจมตี / Attack',action:isYama?'atk':'strike'},
+      {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:battleChoice(special,crewArt(actor,'-profile'),crewAbility(actor),!why,why||'ท่าพิเศษ / Special')},
+      {id:'item',label:'ไอเท็ม / Items',choices:itemChoices},
+      {id:'defense',label:'ป้องกัน / Defend',action:'defend'},
+      {id:'escape',label:'หนี / Flee',action:'flee',disabled:!['soul','mob','frontier'].includes(b.kind)},
+    ];
+    const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
+      `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
+        <div class="battle-command-heading"><b>${esc(actor.name)}</b></div>
+        <div class="battle-command-tabs">${segments.map((v,i)=>`<button class="actor-segment" style="--command-index:${i}" data-command="${v.id}" ${v.action?`data-primary-action="${v.action}"`:''} aria-expanded="${commandPanel===v.id}" ${phase||v.disabled?'disabled':''}>${esc(battle9Label(v.label))}</button>`).join('')}</div>
+        ${segments.filter(v=>v.choices).map(v=>`<div class="command-options ${commandPanel===v.id&&!pending?'is-open':''}" data-options="${v.id}" ${commandPanel===v.id&&!pending?'':'inert'} aria-label="${esc(battle9Label(v.label))}">${v.choices}</div>`).join('')}
+        <div class="battle9-confirm" ${pending?'':'hidden'}>${selection}</div>
+      </section>`;
+
 
     const finLabel = b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
@@ -3129,7 +3163,7 @@ function openBattle(after) {
                                : 'วิญญาณขัดขืน',
             { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
             b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
-            '', squadMembers) + acts +
+            '', squadMembers) +
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
         ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
@@ -3139,6 +3173,7 @@ function openBattle(after) {
       </div>${prep}${prepLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
+    stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
@@ -3243,7 +3278,7 @@ function openBattle(after) {
     dlg.querySelector('[data-prep-hide]')?.addEventListener('click', () => { prepHidden = true; paint(); });
     dlg.querySelector('[data-prep-show]')?.addEventListener('click', () => { prepHidden = false; paint(); });
     dlg.querySelectorAll('[data-prep-go]').forEach(prepGo => prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { prepHidden = false; sfx('gong'); paint(); refresh(); } });
-    bindCommandWheel(dlg);
+    if (!dlg.querySelector('.battle9-menu')) bindCommandWheel(dlg);
     dlg.querySelectorAll('[data-crew-pick]').forEach(el => {
       el.setAttribute('aria-pressed', String(el.dataset.crewPick === (isYama ? 'you' : crewBattleKey(actor))));
       el.setAttribute('aria-disabled', String(!!phase));
@@ -3254,7 +3289,7 @@ function openBattle(after) {
         const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
         if (needsReceiver && chosen) {
           const reason = pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
-          if (!reason) {b.commandRecipient=chosen.id;paint();}
+          if (!reason) {b.commandRecipient=chosen.id;executeCommand(pending,chosen.id);}
           return;
         }
         if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
@@ -3275,7 +3310,7 @@ function openBattle(after) {
       }
       const activate = () => {
         if (!available || phase || !g.selectFoe(el.dataset.foeId)) return;
-        if (choosingTarget) {b.commandTarget=el.dataset.foeId;paint();}
+        if (choosingTarget) {b.commandTarget=el.dataset.foeId;executeCommand(pending,'you');}
         else paint();
       };
       el.onclick = activate;
@@ -3286,7 +3321,36 @@ function openBattle(after) {
 
     const wheel = dlg.querySelector('.actor-wheel');
     const anchor = stage.querySelector(`.fig[data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"], .battle-squad [data-crew-pick="${isYama ? 'you' : crewBattleKey(actor)}"]`);
-    wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) paint(); });
+    wheel?.addEventListener('keydown', e => { if (e.key === 'Escape' && !phase && g.cancelBattleCommand()) {commandPanel=null;paint();} });
+    if (wheel?.classList.contains('battle9-menu')) {
+      const setCommand = (action,label) => { b.command=action;b.commandLabel=label;b.commandTarget=null;b.commandRecipient=null;paint(); };
+      wheel.querySelectorAll('[data-command]').forEach(button => button.onclick = () => {
+        if(phase||button.disabled)return;
+        if(button.dataset.primaryAction){commandPanel=null;if(['defend','flee'].includes(button.dataset.primaryAction))executeCommand(button.dataset.primaryAction,'you');else setCommand(button.dataset.primaryAction,button.textContent.trim());}
+        else {g.cancelBattleCommand();commandPanel=commandPanel===button.dataset.command?null:button.dataset.command;paint();}
+      });
+      wheel.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i));
+      const placeMenu = async () => {
+        await stage._battleSpriteFit;
+        if(!wheel.isConnected||!anchor)return;
+        const area=stage.getBoundingClientRect(),sprite=anchor.querySelector('img:not(.fx)');
+        const rect=await battleSpriteRect(sprite);if(!wheel.isConnected)return;
+        const menuWidth=wheel.offsetWidth,menuHeight=wheel.offsetHeight;
+        // Adjacent to the active actor, above the bottom profiles. Reserve room for the right submenu.
+        const pane=wheel.querySelector('.command-options.is-open, .battle9-confirm:not([hidden])');
+        const paneWidth=pane?.offsetWidth||0,paneGap=paneWidth?7:0;
+        const maxX=Math.max(8,area.width-menuWidth-paneWidth-paneGap-8);
+        const left=Math.min(maxX,Math.max(8,rect.r-area.left+12));
+        const paneHeight=pane ? pane.offsetHeight+(pane.classList.contains('command-options')?45:0) : 0;
+        const maxY=Math.max(12,area.height*.83-Math.max(menuHeight,paneHeight));
+        const minY=Math.min(area.height*.36,maxY);
+        const top=Math.max(minY,Math.min(maxY,rect.t-area.top+12));
+        wheel.style.setProperty('--menu-x',`${left}px`);wheel.style.setProperty('--menu-y',`${top}px`);
+        wheel.classList.remove('submenu-left');
+      };
+      placeMenu();requestAnimationFrame(placeMenu);
+      if(typeof ResizeObserver==='function'){const ro=new ResizeObserver(()=>{if(wheel.isConnected)placeMenu();else ro.disconnect();});ro.observe(stage);}
+    }
     if (wheel && anchor && !wheel.classList.contains('battle-command-dock')) {
       wheel.style.visibility = 'hidden'; // Do not flash the old fixed CSS position while sprites load.
       // I1-B ข้อ 2 — วงคำสั่งอยู่ "ขวาบนของตัวละครที่ถึงตา" ใกล้พอให้รู้ว่าเป็นของตัวนั้น แต่ไม่ทับตัว (H2 เคยย้ายไปชิดคนขวาสุดทุกคน = ไกลจากตัวที่ถึงตา)
@@ -5493,4 +5557,4 @@ function openIntro(fromTitle = false) {
 window.G = g;
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder};
+export {openBattle,openDungeon,openHarbour,openBorder,openTrial};

@@ -1,4 +1,5 @@
 import { drawLocalLight } from './scene-style.js';
+import { drawTownTerrain } from './town-terrain.js';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseLots, townHouseKey } from './town-map.js';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
@@ -6,8 +7,7 @@ import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
 import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapfx';
-// scene.js — ฉากเป็นภาพวาดใบเดียว โค้ดวางตัวละคร/คิว/เอฟเฟกต์ทับตามพิกัด
-// แทนระบบ tile grid เดิมทั้งหมด (6 ก.ย. 2569) เหตุผลอยู่ใน CONCEPT.md §เทคนิค
+// Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
@@ -206,7 +206,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
   const legacyBg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
   const bg = img('theme-map-' + g.zone) || legacyBg;
-  if (bg) {
+  if (isTownZone(g.zone)) {
+    drawTownTerrain(ctx,img,t,!!reducedMotion?.matches);
+  } else if (bg) {
     // Resample the original decoded map once per output size (high quality), then blit 1:1 each frame.
     drawMapGround(ctx, bg);
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
@@ -217,14 +219,14 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
-  if (bg) drawMapAmbientGround(ctx, bg, isTownZone(g.zone) ? 'town-th' : g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
+  if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
   const sceneryHouse = town ? img('town-house-th') : null;
   const sceneryTree = town ? img('town-tree-th') : null;
   const sceneryWaterfall = town ? img('town-waterfall-th') : null;
   if(town) {
-    drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced);
-    drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced);
+    drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced,img);
+    drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   drawTownGround(ctx, g);
   if (isTownZone(g.zone)) {
@@ -233,7 +235,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if(dais) {
       ctx.save();ctx.imageSmoothingEnabled=true;
       if(newDais){
-        const w=540,h=w*dais.naturalHeight/dais.naturalWidth,top=SPOTS.throne.y-55;
+        const w=440,h=w*dais.naturalHeight/dais.naturalWidth,top=1230-h;
         ctx.fillStyle='rgba(10,5,15,.24)';ctx.beginPath();
         ctx.ellipse(SPOTS.throne.x+14,top+h-18,w*.46,30,0,0,Math.PI*2);ctx.fill();
         ctx.drawImage(dais,SPOTS.throne.x-w/2,top,w,h);
@@ -298,7 +300,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,lot] of townHouseLots().entries())
     at(townHouseDepth(lot), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, lot));
-  if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced);
+  if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว

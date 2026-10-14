@@ -6,7 +6,7 @@ import {nearestInteraction,mapInteractions,stationButtonPos,INTERACTION_REACH} f
 
 test('M2: every zone has an exact door route from both spawns; 1px stepTo movement stays on terrain',async t=>{
  for(const {k:zone} of ZONES){
-  const {g,terrain,terrainWidth,spawn}=setup(zone);
+  const {g,terrainContains,spawn}=setup(zone);
   for(const d of [...STATIONS,FRONTIER])for(const start of [spawn,ZONE_ENTRY.gate])await t.test(`${zone}/${d.k} from ${start}`,()=>{
    const path=walk.findPath(...start,d.x,d.y);
    assert.ok(path?.length,`${zone}/${d.k}: path`);
@@ -22,7 +22,7 @@ test('M2: every zone has an exact door route from both spawns; 1px stepTo moveme
      queue=walk.findPath(p.x,p.y,d.x,d.y,true);
      assert.ok(queue?.length,`${zone}/${d.k}: game cannot replan`);
     }
-    assert.equal(terrain[Math.floor(p.y)*terrainWidth+Math.floor(p.x)],1,`${zone}/${d.k}: actual step on terrain`);
+    assert.equal(terrainContains(p.x,p.y),true,`${zone}/${d.k}: actual step on terrain at ${p.x},${p.y}`);
    }
    assert.ok(steps<20000,`${zone}/${d.k}: bounded game movement`);
    assert.ok(Math.hypot(p.x-d.x,p.y-d.y)<5,`${zone}/${d.k}: walks to door`);

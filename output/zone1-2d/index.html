@@ -4,7 +4,7 @@
 <main><canvas id="map" width="1536" height="1024" aria-label="แผนที่โซน 1 ใหม่ คลิกเพื่อเดิน"></canvas><canvas id="mini" width="360" height="240" aria-label="แผนที่ย่อ คลิกเพื่อเดิน"></canvas></main><p id="status">กำลังโหลดภาพ…</p><p>คลิกบนพื้นหรือแผนที่ย่อเพื่อเดิน · กล้องตาม Yama · ปุ่มดูทั้งแผนที่ใช้กลับมุมมองกว้าง · หน้านี้ทดลองภาพและเส้นทางโดยไม่บันทึกเซฟเกม</p><p id="error" role="alert"></p>
 <script type="module">
 import {createGame} from './src/game.js';
-import {render} from './src/scene.js';
+import {render,setMapViewport} from './src/scene.js';
 import {bindZone,warmZone} from './src/art.js';
 import {STATIONS,SPOTS,SCENE,FRONTIER} from './src/data.js';
 import {findPath,stepTo} from './src/walk.js';
@@ -16,6 +16,7 @@ g.stations=all;
 const canvas=document.querySelector('#map'),ctx=canvas.getContext('2d'),status=document.querySelector('#status');
 const mini=document.querySelector('#mini'),mc=mini.getContext('2d');
 const world=document.createElement('canvas'),wc=world.getContext('2d');
+setMapViewport(world,{width:360,height:240,sx:360/SCENE.w,sy:240/SCENE.h,tx:0,ty:0});
 const roadLayer=document.createElement('canvas');roadLayer.width=SCENE.w;roadLayer.height=SCENE.h;
 const rc=roadLayer.getContext('2d');rc.fillStyle='rgba(105,232,190,.22)';
 for(const [x1,y1,x2,y2]of TOWN_WALK_RECTS)rc.fillRect(x1,y1,x2-x1,y2-y1);
@@ -38,10 +39,11 @@ overviewButton.onclick=()=>{overview=!overview;overviewButton.setAttribute('aria
 document.querySelector('#zoom').onchange=e=>{zoom=Number(e.target.value);overview=false;overviewButton.setAttribute('aria-pressed','false');overviewButton.textContent='ดูทั้งแผนที่';};
 document.querySelector('#roads').onclick=e=>{roads=!roads;e.target.setAttribute('aria-pressed',roads);};
 document.querySelector('#build').onclick=e=>{g.stations=g.stations===all?initial:all;g.blockSig=null;path=null;g.player.tx=null;e.target.setAttribute('aria-pressed',g.stations===all);painted=-Infinity;};
-function present(){
- ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=true;
- ctx.drawImage(world,view.x,view.y,view.w,view.h,0,0,canvas.width,canvas.height);
- if(roads)ctx.drawImage(roadLayer,view.x,view.y,view.w,view.h,0,0,canvas.width,canvas.height);
+function present(t){
+ const r=canvas.getBoundingClientRect();
+ setMapViewport(canvas,{width:r.width,height:r.height,sx:r.width/view.w,sy:r.height/view.h,tx:-view.x*r.width/view.w,ty:-view.y*r.height/view.h});
+ render(ctx,g,t,null,null,{cx:view.x+view.w/2,cy:view.y+view.h/2,zoom:overview?1:zoom});
+ if(roads)ctx.drawImage(roadLayer,0,0,SCENE.w,SCENE.h);
  mc.drawImage(world,0,0,mini.width,mini.height);
  const sx=mini.width/SCENE.w,sy=mini.height/SCENE.h;
  mc.strokeStyle='#ffe4a7';mc.lineWidth=2;mc.strokeRect(view.x*sx,view.y*sy,view.w*sx,view.h*sy);
@@ -58,8 +60,8 @@ function frame(t){try{
  const alpha=1-Math.exp(-dt/160);camera.x+=(g.player.x-camera.x)*alpha;camera.y+=(g.player.y-camera.y)*alpha;
  view=townCameraRect(camera.x,camera.y,overview?1:zoom);
  // Limit expensive full-world compositing to 20fps; the camera still eases each animation frame.
- if(t-painted>=50){render(wc,g,t,null,null,{cx:view.x+view.w/2,cy:view.y+view.h/2,zoom:overview?1:zoom});painted=t;if(status.textContent==='กำลังโหลดภาพ…')status.textContent='เลือกจุดหมายหรือคลิกบนทางเดินเพื่อสำรวจแผนที่';}
- present();requestAnimationFrame(frame);
+ if(t-painted>=200){render(wc,g,t,null,null,{cx:view.x+view.w/2,cy:view.y+view.h/2,zoom:overview?1:zoom});painted=t;if(status.textContent==='กำลังโหลดภาพ…')status.textContent='เลือกจุดหมายหรือคลิกบนทางเดินเพื่อสำรวจแผนที่';}
+ present(t);requestAnimationFrame(frame);
  }catch(e){document.querySelector('#error').textContent=e.message;console.error(e);}}
 requestAnimationFrame(frame);
 </script></html>

@@ -1,0 +1,509 @@
+{
+  "date": "2026-10-15",
+  "generator": "built-in image_gen",
+  "conversion": "WebP quality97, native dimensions retained, no crop or upscale",
+  "assets": [
+    {
+      "filename": "terrain-earth-v1.webp",
+      "kind": "terrain",
+      "biome": "earth",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game terrain material tile. SQUARE seamless repeatable TEXTURE, native2048x2048 or highest available native square detail, finely detailed hand-painted 2D fantasy RPG material matching ornate Thai darkgold sprite artwork. This image is ONLY flat WALKABLE GROUND seen straight down, orthographic topdown, no perspective, no horizon, no relief towers. Must tile horizontally AND vertically with matching opposite edges; uniform average color and illumination across tile, no center spotlight, no vignette, no directional long shadows, no frames or borders. Fine material variations should be evenly distributed, not one distinctive focal object. No buildings, houses, temples, trees, bushes, foliage objects, pebbles or rocks sitting on the floor, mountains, cliffs, waterfalls, rivers, lava streams, paths, stairs, people, creatures, icons, text, UI, logo or watermark. No copied game assets. High native micro-detail suitable for camera zoom; avoid blur.\nMaterial: gently worn compact ochre-brown EARTH, fine mineral grain, understated shallow cracks, irregular but lowcontrast earthy patches and weathered dust. Warm subdued amberbrown with neutral deeper shadows, fully dry smooth walkable ground. No individual gravel objects or grass clumps. Natural broad area ground for a Thai underworld town.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-93b7e3cb-984d-4e08-8267-34b53f8022dd.png",
+      "output": "img/map-zone1/terrain-earth-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "6d00af298aa52381496353a13b9e5200bc0021fbbe5d99cca2af74fbbb111c93",
+      "source_sha256": "d85b9b1675f8c80d6e3a74f8d2f718d8c5537871f76fb5a0f6a0a7d4db58e55b",
+      "bytes": 1007052,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 13.04,
+        "vertical_join_mean_rgb_difference": 13.92,
+        "interior_horizontal_neighbor_mean": 10.77,
+        "interior_vertical_neighbor_mean": 11.93,
+        "pixel_perfect_seamless": false
+      },
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      },
+      "runtime_alias": "town-terrain-earth"
+    },
+    {
+      "filename": "terrain-plaza-v1.webp",
+      "kind": "terrain",
+      "biome": "plaza",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game terrain material tile. SQUARE seamless repeatable TEXTURE, native2048x2048 or highest available native square detail, finely detailed hand-painted 2D fantasy RPG material matching ornate Thai darkgold sprite artwork. This image is ONLY flat WALKABLE GROUND seen straight down, orthographic topdown, no perspective, no horizon, no relief towers. Must tile horizontally AND vertically with matching opposite edges; uniform average color and illumination across tile, no center spotlight, no vignette, no directional long shadows, no frames or borders. Fine material variations should be evenly distributed, not one distinctive focal object. No buildings, houses, temples, trees, bushes, foliage objects, pebbles or rocks sitting on the floor, mountains, cliffs, waterfalls, rivers, lava streams, paths, stairs, people, creatures, icons, text, UI, logo or watermark. No copied game assets. High native micro-detail suitable for camera zoom; avoid blur.\nMaterial: ancient charcoal-brown FLAGSTONE PAVING, densely fitted rectangular and mildly irregular stone slabs, thin subtle muted oldgold seams at a few joins, weathered limestone/basalt grain with small worn scratches, no prominent medallions or central emblem. Even scale and lighting, restrained warmgrey/goldenbrown palette. Tile layout must connect at opposite edges. Walkable civic plaza floor, NO raised curbs or steps.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-a0e5f893-5c78-4ab8-86c6-418761ad46ab.png",
+      "output": "img/map-zone1/terrain-plaza-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "7fce2974cc40456cc35f96ebf9f0d8ec6fdd37781611c6ceb8ba5480ed504d6e",
+      "source_sha256": "0faaaf9c8d557870923ffd480f460d7dc24432af961cba0f93f5a359426b51a5",
+      "bytes": 987594,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 16.28,
+        "vertical_join_mean_rgb_difference": 15.38,
+        "interior_horizontal_neighbor_mean": 13.06,
+        "interior_vertical_neighbor_mean": 13.48,
+        "pixel_perfect_seamless": false
+      },
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      },
+      "runtime_alias": "town-terrain-plaza"
+    },
+    {
+      "filename": "terrain-volcanic-v1.webp",
+      "kind": "terrain",
+      "biome": "volcanic",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game terrain material tile. SQUARE seamless repeatable TEXTURE, native2048x2048 or highest available native square detail, finely detailed hand-painted 2D fantasy RPG material matching ornate Thai darkgold sprite artwork. This image is ONLY flat WALKABLE GROUND seen straight down, orthographic topdown, no perspective, no horizon, no relief towers. Must tile horizontally AND vertically with matching opposite edges; uniform average color and illumination across tile, no center spotlight, no vignette, no directional long shadows, no frames or borders. Fine material variations should be evenly distributed, not one distinctive focal object. No buildings, houses, temples, trees, bushes, foliage objects, pebbles or rocks sitting on the floor, mountains, cliffs, waterfalls, rivers, lava streams, paths, stairs, people, creatures, icons, text, UI, logo or watermark. No copied game assets. High native micro-detail suitable for camera zoom; avoid blur.\nMaterial: dry volcanic basalt ground, subtle irregular charcoal and burntumber polygon plates, shallow fine cracks with minute restrained rusty ember pigment deep inside cracks. NO active moltenlava, NO bright orange lines crossing tile, NO erupting surfaces or rocks risingup. Fully WALKABLE matte darkground. Relativelylow contrast fine grain, warm darkgrey/brown palette, even illumination and edges seamlessly repeat.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-7b9fad17-6a60-4cad-8828-c6c4218e67f5.png",
+      "output": "img/map-zone1/terrain-volcanic-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "4bab025ce0d4f6ae8ecf1ac63d0c40170d4f808237b0306af0cd59663b678869",
+      "source_sha256": "c0a45367843dda13355897f22bab188076da6907aecb4dcb562e5681e4bdbd88",
+      "bytes": 971438,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 11.82,
+        "vertical_join_mean_rgb_difference": 13.6,
+        "interior_horizontal_neighbor_mean": 10.58,
+        "interior_vertical_neighbor_mean": 11.36,
+        "pixel_perfect_seamless": false
+      },
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      },
+      "runtime_alias": "town-terrain-volcanic"
+    },
+    {
+      "filename": "terrain-frost-v1.webp",
+      "kind": "terrain",
+      "biome": "frost",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game terrain material tile. SQUARE seamless repeatable TEXTURE, native2048x2048 or highest available native square detail, finely detailed hand-painted 2D fantasy RPG material matching ornate Thai darkgold sprite artwork. This image is ONLY flat WALKABLE GROUND seen straight down, orthographic topdown, no perspective, no horizon, no relief towers. Must tile horizontally AND vertically with matching opposite edges; uniform average color and illumination across tile, no center spotlight, no vignette, no directional long shadows, no frames or borders. Fine material variations should be evenly distributed, not one distinctive focal object. No buildings, houses, temples, trees, bushes, foliage objects, pebbles or rocks sitting on the floor, mountains, cliffs, waterfalls, rivers, lava streams, paths, stairs, people, creatures, icons, text, UI, logo or watermark. No copied game assets. High native micro-detail suitable for camera zoom; avoid blur.\nMaterial: smooth pale slate ground dusted with powder frost, tightly woven muted desaturated sage grass texture nearlyflush with floor, small translucent icegrain speckles and restrained snowdust patches. This is WALKABLE GROUND, not boulders or snowdrifts; no tall tufts, no foliage/bush objects. Cool bluegrey and very subdued sage, evenly distributed fine crystalline frost grain. Do not paint entiretile as glossy water. Square seamless repeatable microtexture.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-46d5c312-61e0-46e9-8fd8-506e1b5c2efb.png",
+      "output": "img/map-zone1/terrain-frost-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "0e69f18bf869beed4df5876409ae8c0c2a3188c5a350122c32337f3576c4dae3",
+      "source_sha256": "92e8030a04e2b2446bcbac0a159496dd40f79a3e3a421bbe5e4bf96e5fda0751",
+      "bytes": 1116468,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 29.43,
+        "vertical_join_mean_rgb_difference": 27.19,
+        "interior_horizontal_neighbor_mean": 20.75,
+        "interior_vertical_neighbor_mean": 22.26,
+        "pixel_perfect_seamless": false
+      },
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      },
+      "runtime_alias": "town-terrain-frost"
+    },
+    {
+      "filename": "prop-volcano-v1.webp",
+      "kind": "prop",
+      "biome": "volcano",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game MAP PROP SPRITE. ONE separate isolated object on a truly transparent background, alpha transparency, no white/grey checkerboard painted into the image. Native highestavailable detail, wide landscape canvas about3:2. Highly detailed hand-painted fantasy 2D RPG art, realistic illustrative darkbasalt/ochre materials, warm upper-left lighting consistent with ornate Thai darkgold game sprites. Elevated threequarter orthographic/isometric map camera (NOT photorealistic drone photograph, NOT lowcamera landscape). Entire object includingbase fitsinside frame with transparentpadding on all4sides, crisp clean alpha outline, no squareground slab and no horizon/backdrop. No trees, bushes, houses, buildings, temples, stairs, bridges, people, creatures, signs, UI, letters, logos, watermark or surrounding landscape. No solidbackground. Sprite will be placed as separate independent depthsorted mapdecoration; shape should have distinct visiblefoot/base.\nSubject: one large volcanic cone of rugged darkblack basalt, glowing orange molten crater, a few slender lava rivulets trickling down theside, naturalsharp rock ridges at base. Subtle heatglow tightlywithinobject, one small wispyashplume above crater entirelyinsideframe. The mountain occupies about80% canvas width andheight, no othermountains behindit. Rich darkred ember highlights and fine cragtexture, painterly ornate fantasygame quality but no manmade adornments. Keep ONLYthe volcano and itsattached base rocks; no broadpainted lavapool or groundrectangle.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-f857d5bc-b0be-47d0-94fb-412e0eb6fc50.png",
+      "output": "img/map-zone1/prop-volcano-v1.webp",
+      "native_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "256585da59d64570384398476dd57f3f3ddb3328b831e81ca40fa8b282c307d7",
+      "source_sha256": "45b56ea858039db4181435277efeacd154ddc283840af4021b0f8f4fe88b3d63",
+      "bytes": 659796,
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1522,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      },
+      "alpha_core_bounds": [
+        17,
+        4,
+        1520,
+        1018
+      ],
+      "runtime_alias": "town-prop-volcano"
+    },
+    {
+      "filename": "prop-ice-ridge-v1.webp",
+      "kind": "prop",
+      "biome": "ice",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game MAP PROP SPRITE. ONE separate isolated object on a truly transparent background, alpha transparency, no white/grey checkerboard painted into the image. Native highestavailable detail, wide landscape canvas about3:2. Highly detailed hand-painted fantasy 2D RPG art, realistic illustrative darkbasalt/ochre materials, warm upper-left lighting consistent with ornate Thai darkgold game sprites. Elevated threequarter orthographic/isometric map camera (NOT photorealistic drone photograph, NOT lowcamera landscape). Entire object includingbase fitsinside frame with transparentpadding on all4sides, crisp clean alpha outline, no squareground slab and no horizon/backdrop. No trees, bushes, houses, buildings, temples, stairs, bridges, people, creatures, signs, UI, letters, logos, watermark or surrounding landscape. No solidbackground. Sprite will be placed as separate independent depthsorted mapdecoration; shape should have distinct visiblefoot/base.\nSubject: one compact alpine ice ridge, three connected jagged pale blue-grey crystalline/rocky peaks, thin snowcaps and translucent blue iceedges, deep coolstone crevices. The ridge has a clear narrowfoot/base madeof same attachedrock, isolatedtogether as ONE sprite. Crisp frosty native details, no scatterediceobjects faroutsidebase, no backdropmountainrange, no mistcoveringouteralphapadding. Only bareice/rockmountain, no treesorstructures.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-62f9cb0d-7af9-47b7-acd7-1342ee066cdd.png",
+      "output": "img/map-zone1/prop-ice-ridge-v1.webp",
+      "native_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "977a29785120d78e8dc7a019b5216941d4f66d480a6a5bb9ffcd9ead1f099046",
+      "source_sha256": "678a040533aedc1eee8d4721f542f782be51ec4a9a7adaa315e38d78fb43d648",
+      "bytes": 616778,
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bounds": [
+        27,
+        0,
+        1520,
+        1008
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      },
+      "alpha_core_bounds": [
+        31,
+        39,
+        1516,
+        990
+      ],
+      "runtime_alias": "town-prop-ice-ridge"
+    },
+    {
+      "filename": "prop-mountain-ridge-v1.webp",
+      "kind": "prop",
+      "biome": "mountain",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game MAP PROP SPRITE. ONE separate isolated object on a truly transparent background, alpha transparency, no white/grey checkerboard painted into the image. Native highestavailable detail, wide landscape canvas about3:2. Highly detailed hand-painted fantasy 2D RPG art, realistic illustrative darkbasalt/ochre materials, warm upper-left lighting consistent with ornate Thai darkgold game sprites. Elevated threequarter orthographic/isometric map camera (NOT photorealistic drone photograph, NOT lowcamera landscape). Entire object includingbase fitsinside frame with transparentpadding on all4sides, crisp clean alpha outline, no squareground slab and no horizon/backdrop. No trees, bushes, houses, buildings, temples, stairs, bridges, people, creatures, signs, UI, letters, logos, watermark or surrounding landscape. No solidbackground. Sprite will be placed as separate independent depthsorted mapdecoration; shape should have distinct visiblefoot/base.\nSubject: one bare rugged granite anddarkochre mountain ridge, three connected rockyheights, weathered stratifiedfaces, finely paintedstone detail, verylightmoss color in crevices only (no plants/treesorfoliage objects). Warmbrown/charcoal palette, elegantfantasymap silhouette, clearconnectedgroundroot/narrowbase. Standalone mountaincluster occupies80%canvas, no terrainbackground behindorunderit beyond attachedbase rock.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-aa166738-0944-4438-811e-ff00e03f1a5b.png",
+      "output": "img/map-zone1/prop-mountain-ridge-v1.webp",
+      "native_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "e12ec45befb117b0e25a23fa6dd56b952a3fb12563efb472f4614a0746600c00",
+      "source_sha256": "cbd97941c8a41adfe9f4b35d6efb8aec41b3d36490296ea1e02a6ff7154e640c",
+      "bytes": 714168,
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "alpha_corners": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      },
+      "alpha_core_bounds": [
+        10,
+        8,
+        1526,
+        1018
+      ],
+      "runtime_alias": "town-prop-mountain-ridge"
+    },
+    {
+      "filename": "prop-waterfall-v2.webp",
+      "kind": "prop",
+      "biome": "waterfall",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game MAP PROP SPRITE. ONE separate isolated object on a truly transparent background, alpha transparency, no white/grey checkerboard painted into the image. Native highestavailable detail, wide landscape canvas about3:2. Highly detailed hand-painted fantasy 2D RPG art, realistic illustrative darkbasalt/ochre materials, warm upper-left lighting consistent with ornate Thai darkgold game sprites. Elevated threequarter orthographic/isometric map camera (NOT photorealistic drone photograph, NOT lowcamera landscape). Entire object includingbase fitsinside frame with transparentpadding on all4sides, crisp clean alpha outline, no squareground slab and no horizon/backdrop. No trees, bushes, houses, buildings, temples, stairs, bridges, people, creatures, signs, UI, letters, logos, watermark or surrounding landscape. No solidbackground. Sprite will be placed as separate independent depthsorted mapdecoration; shape should have distinct visiblefoot/base.\nSubject: one standalone two-tier waterfall flowingdown a compact rockyterracedcliff, turquoise clearwater andsoftwhite foam, fine flowingwhitewaterstrands and mistcontained close toobject. Baregrey-brown mosscolored rock base and smallattached turquoise plungepool atfoot; the pool belongs tothis singlewaterfallobject, no extendingriver or surroundingland. NOtrees/bushes/plants. Distinct elevatedisometric silhouette sizedformap, transparentouterpadding. Finelypainted detail in stone andwater, no opaquebackgroundwaterrectangle.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-9f5518c7-44fc-48f2-bf7e-a6d4d1470920.png",
+      "output": "img/map-zone1/prop-waterfall-v2.webp",
+      "native_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "f56cb80d917f25dcac9b0b2c5a7a922d69e436c5d13e7cc518e657d795a60842",
+      "source_sha256": "f9bb5fc89429c8917d0766a31d38b8e5e1e62de836712ba89de3bc610c14650c",
+      "bytes": 632440,
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1508,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      },
+      "alpha_core_bounds": [
+        199,
+        3,
+        1365,
+        1021
+      ],
+      "runtime_alias": "town-prop-waterfall"
+    },
+    {
+      "filename": "prop-bush-v1.webp",
+      "kind": "prop",
+      "biome": "bush",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE 2D RPG standalone map decoration sprite: ONE small LOW emeraldgreen shrub with a few layeredleafbranches, dense but airy rounded/broad silhouette. Crisp intricately hand-painted leafdetail matching sophisticated ornateThai darkgoldfantasygame spriteart, warm upperleft light, darkgreen undersides and subtle ambergreenleafedgeglints. Nativehighestavailabledetail, squarecanvas, elevatedthree-quarterorthographic mapcamera, shrubseen fromslightlyabove. Entirebush includingnarrowroot/base fitsinsidecanvas withlarge cleantransparentpadding allfoursides. Truly TRANSPARENT background withalpha, no white/greycheckerboard paintedin, no coloredambientrectangle, no darkgradientbackground. Onlythebush, noothertrees/foliage, rocks, buildings, grassfield, groundtile, shadowoval, characters, text, UI, logo or watermark. Itwill beplaced as anindependent depthsortedprop; keepheightlow so itdoesnot resembleatree.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-49aed854-7932-4b3c-91a7-a7acf630aee8.png",
+      "output": "img/map-zone1/prop-bush-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "e44d47440b663b8bac9ef25dedeb8d02aff742eeee4feacc2d43784c1d79f6ba",
+      "source_sha256": "8f7db8b9ce58e7508fab9e15817eaee88e03715f9c27784db26a0ce87116836e",
+      "bytes": 408278,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        0,
+        20,
+        1240,
+        1236
+      ],
+      "alpha_core_bounds": [
+        102,
+        284,
+        1152,
+        976
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "runtime_alias": "town-prop-bush",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      }
+    },
+    {
+      "filename": "prop-rock-v1.webp",
+      "kind": "prop",
+      "biome": "rock",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. New original AVEGEE 2D RPG standalone map decoration sprite: ONE compact clusterofthree connected LOW darkweathered basalt/graniterocks, angularsculptedshapes with finely hand-paintedgrain/smallcrevices, warm mutedochreupperleft highlights and charcoalundersides. Sophisticated ornateThai darkgoldfantasygame spriteart palette, but naturalbarestone withno ornaments. Nativehighestavailabledetail, squarecanvas, elevatedthree-quarterorthographic mapcamera, rocksseen fromslightlyabove. Entirecluster fitsinsidecanvas withlarge cleantransparentpadding allfoursides andclearlyvisiblecompactfoot/base. Truly TRANSPARENT background withalpha, no white/greycheckerboard paintedin, no coloredambientrectangle, no darkgradientbackground. Onlythe threeconnectedrocks asONEprop; no terrainfloor, soilpatch, grass, mossplants, bushes, trees, mountain, buildings, characters, text, UI, logo or watermark. Lowwaistheightgameprop, not tallmountain.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-de60c089-d5fc-4b08-a6e8-d8ad94b36eb8.png",
+      "output": "img/map-zone1/prop-rock-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "15e3cb673dfc8536ad5223ea73e3621e16a3bb9af49d7bcb144b6b3feb37161a",
+      "source_sha256": "6c16874d29aa008f0b14af72daa16b2bbad5ea63ec8b88043339a13d7fd4036c",
+      "bytes": 461262,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        0,
+        37,
+        1234,
+        1228
+      ],
+      "alpha_core_bounds": [
+        108,
+        170,
+        1159,
+        1085
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "runtime_alias": "town-prop-rock",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "standalone_true_alpha": true,
+        "notes": "Separate isolated map object with alpha. No rectangular ground/background. Alpha bounds and threshold40 core bounds supplied; original soft illumination preserved."
+      }
+    },
+    {
+      "filename": "terrain-grass-v1.webp",
+      "kind": "terrain",
+      "biome": "grass",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. New original AVEGEE game TERRAIN MATERIAL TILE. Square seamless repeatable TEXTURE, nativehighestavailable square1254+ detail. Finely detailed hand-painted 2D fantasy RPG material matching ornateThai darkgold game sprite artwork. Thisimage is ONLYflat WALKABLE GROUND seen straightdown, orthographic topdown, no perspective, nohorizon. Material: lush butLOW shortmoss and closelycropped tendergrass covering earth, bright MUTED emerald/sage/olivegreens with subtlefinefibergrain, evenlydistributed littlepatches ofdarker moistsoil just barelyvisible. OverallclearlyGREEN forestground, softwarmupperleftambientlightbut UNIFORMillumination, no centralspotlight/vignette. Seamless repeat horizontallyANDvertically with matchingoppositeedges; evenlydistributed finepattern, no singledistinct focalobject. NO tallgrassclumps, leafyshrubs, bushes, trees, rocks, pebbles, flowers, buildings, temples, shadows fromobjects, mountains, cliffs, waterfalls, rivers, lavastreams, paths, stairs, people, creatures, text, UI, logos or watermark. No bordertile seams orframes. Native crisptexturedetail, no blur. Green materialwill bepatternfilled under separatelyplaced tree/bush sprites.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-8f969ec3-020a-4266-aaeb-fcf2e73639ba.png",
+      "output": "img/map-zone1/terrain-grass-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "4707449d8356da85752735d404670e58a170d74c0b209b1c88c8c7cc23c8f701",
+      "source_sha256": "17a4b1aeda3731996acc317494eba564e2e6a52f3c908cdb866e541a1feab92b",
+      "bytes": 1168960,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 19.96,
+        "vertical_join_mean_rgb_difference": 20.27,
+        "pixel_perfect_seamless": false
+      },
+      "runtime_alias": "town-terrain-grass",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      }
+    },
+    {
+      "filename": "terrain-water-v1.webp",
+      "kind": "terrain",
+      "biome": "water",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Original AVEGEE 2D fantasyRPG terrainMATERIAL TEXTURE TILE. Square, highestavailable native square1254+ pixels, finely detailed hand-painted gameasset matching sophisticated Thai darkgoldillustratedsprites. ONLY surface material seen STRAIGHTDOWN, orthographictopdown, no perspectiveorhorizon. Must repeat horizontallyANDvertically with matchedoppositeedges, even illumination/averagecolor, fine distributedvariation, NOcenter focalobject/vignette/border. No shores, islands, land, trees, bushes, rocks standingaboveit, structures, people, creatures, icons, UI, text, watermark orlogo. No copied gameassets. Native crispfluiddetail, not blurry, no flatcolor placeholder.\nMaterial: blue-teal flowingriver WATER SURFACE, deepmutednavy base and turquoise/coolblue ripples, fine interlocking softwavelets and delicate silverwhiteglints, subtle sense ofslowcurrent frombottomleft toupperright. Tightlycontrolledcolorcontrast, no giant breakingwaves or foamcentralring, no circularpoolshape, uniformflatriverfluidtexture. Surface fills entire squaretile edge-to-edge. Darkbeautifulfantasyriver that complements warmlylit goldstonebuildings andgreenforest.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-e55fdba1-3927-47e5-af6b-f36bf3a09423.png",
+      "output": "img/map-zone1/terrain-water-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "aa21baa310328e24a4ee47867faa16ecba786c8576a968134010533b024dcdda",
+      "source_sha256": "f91c758189aaa295c7a69d33f2d2a7b44eb9b1e90812305f29010f54e433d084",
+      "bytes": 647074,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 11.18,
+        "vertical_join_mean_rgb_difference": 12.43,
+        "pixel_perfect_seamless": false
+      },
+      "runtime_alias": "town-terrain-water",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      }
+    },
+    {
+      "filename": "terrain-lava-v1.webp",
+      "kind": "terrain",
+      "biome": "lava",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Original AVEGEE 2D fantasyRPG terrainMATERIAL TEXTURE TILE. Square, highestavailable native square1254+ pixels, finely detailed hand-painted gameasset matching sophisticated Thai darkgoldillustratedsprites. ONLY surface material seen STRAIGHTDOWN, orthographictopdown, no perspectiveorhorizon. Must repeat horizontallyANDvertically with matchedoppositeedges, even illumination/averagecolor, fine distributedvariation, NOcenter focalobject/vignette/border. No shores, islands, land, trees, bushes, rocks standingaboveit, structures, people, creatures, icons, UI, text, watermark orlogo. No copied gameassets. Native crispfluiddetail, not blurry, no flatcolor placeholder.\nMaterial: moltenorange LAVA SURFACE, richdeepcrimsonunderlayer, orange/yellowmoltenveins and small darkcharcoal crustflakes smoothlyembeddedFLUSHwithflow. Fine marbled liquidcurrentpatterns, bright restrainedgoldhotspots evenlyspread, mostlywarmorange fluid. NO solid raisedrocks, NOvolcano/crater, NO islandsorlandshape, no surroundingterrain; flowingmoltenmaterialfills entire squaretile edge-to-edge. Detailedpainterlyfantasyfluidtexture thatmatches gold/blackunderworldsprites, notphotorealphoto, notflatneonorange.",
+      "source": "/Users/agapae/.codex/generated_images/01a139ce-bcb7-75e3-86df-b8015eff20ea/exec-e325c753-b8ee-4778-abce-d7009525e4c6.png",
+      "output": "img/map-zone1/terrain-lava-v1.webp",
+      "native_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "31af37302753f4a4e3c54e3ac85e38688b3c8f9cd7997d5a82b51102c288fdcf",
+      "source_sha256": "5a352b7c846c147ab4fa36b7d8712b0245b52312829c4fcd377b37a4dcdf2f8e",
+      "bytes": 807784,
+      "edge_qa": {
+        "horizontal_join_mean_rgb_difference": 11.7,
+        "vertical_join_mean_rgb_difference": 14.32,
+        "pixel_perfect_seamless": false
+      },
+      "runtime_alias": "town-terrain-lava",
+      "visual_qa": {
+        "inspected": true,
+        "no_people_text_ui": true,
+        "no_baked_buildings_trees": true,
+        "native_detail_retained": true,
+        "material_only": true,
+        "notes": "Distributed high-detail surface without scene objects. Seamless repeat requested; edge pixels not exactly identical. Native image unchanged; runtime blending can soften repeat joins."
+      }
+    }
+  ],
+  "visual_qa_summary": "13 original native assets: seven independent terrain/fluid materials and six separate transparent map props. All outputs inspected and SHA/dimensions verified. Terrain tile opposing edge pixels are not perfectly matched; use runtime blending if seams become visible. No crop/upscale or pixel editing.",
+  "total_bytes": 10199092
+}
