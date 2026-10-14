@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -114,8 +115,8 @@ test('two repair jobs keep separate owners when leaving and returning to a branc
   }
   const owners = g.builders().map(c => [c.k,c.buildK]);
   g.bossCleared.th = true;
-  assert.equal(g.moveZone('asia'), true);
-  assert.equal(g.moveZone('th'), true);
+  assert.equal(harbourTravel(g, 'asia'), true);
+  assert.equal(harbourTravel(g, 'th'), true);
   for (const [k,site] of owners) assert.equal(g.crewOf(k).buildK, site);
   assert.equal(g.stations.filter(st => st.repairWait).length, 2);
 });

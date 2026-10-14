@@ -4,6 +4,8 @@ import { createGame } from '../src/game.js';
 import { GUARD_POST, MOB, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
 import { canWalk, findPath, resetWalk } from '../src/walk.js';
 
+import { TOWN_RIVER_Y } from '../src/town-layout.js';
+
 globalThis.Image = class {};
 
 test('closed court finishes punishment and afterlife walk without advancing punitive clocks', () => {
@@ -82,16 +84,18 @@ test('closed court admits a returning case without spawning a new soul', () => {
   assert.equal(g.nextArrive, 1);
 });
 
-test('hired guard crosses the river route and defeats a mob without player combat', () => {
+test('hired guard crosses the city waterfront route and defeats a mob without player combat', () => {
   const g = createGame();
   g.coin = 1000;
-  g.mobs = [{ id:1900, x:1300, y:675, hp:MOB.hp, kind:0 }];
+  const shore=g.harbourPoint();
+  assert.equal(canWalk(shore.x,shore.y),true,'mob starts on the harbour walking floor');
+  g.mobs = [{ id:1900, ...shore, hp:MOB.hp, kind:0 }];
   assert.equal(g.hireGuard(), true);
   assert.equal(g.attack(), false);
   assert.equal(g.startMobBattle(0), null);
   assert.equal(g.battle, null);
   assert.equal(g.huntMob, undefined);
-  assert.ok(findPath(GUARD_POST[0], GUARD_POST[1], 1300, 675));
+  assert.ok(findPath(GUARD_POST[0], GUARD_POST[1], shore.x, shore.y));
   g.paused = true;
   const guardAtPause = [g.guard.x, g.guard.y];
   g.stepWorld(120);
@@ -116,7 +120,9 @@ test('without guard player combat remains available and mobs spawn on reachable 
     g.spawnMob();
     const mob = g.mobs[0];
     assert.ok(mob, zone.k);
-    assert.ok(mob.y >= 650 && mob.y <= 700, zone.k);
+    if (zone.k === 'th') {
+      assert.ok(mob.y >= TOWN_RIVER_Y-100 && mob.y <= TOWN_RIVER_Y, zone.k);
+    } else assert.ok(mob.y >= 650 && mob.y <= 700, zone.k);
     assert.equal(canWalk(mob.x, mob.y), true, zone.k);
     assert.ok(findPath(GUARD_POST[0], GUARD_POST[1], mob.x, mob.y), zone.k);
   }

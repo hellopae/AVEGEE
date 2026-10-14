@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -21,7 +22,7 @@ const renderChoices = g => vm.runInNewContext(`${choicesSource}\ndestinationChoi
 test('29E: fresh zone shows TH/EN next steps; build and manual jail hold are real actions', () => {
   const g = createGame();
   g.canMoveZone = () => true;
-  assert.equal(g.moveZone('asia'), true);
+  assert.equal(harbourTravel(g, 'asia'), true);
   assert.deepEqual(g.stations.map(st => st.def.k), ['sala', 'tarang']);
   g.queue.push({id:29001, name:'Test soul'});
   assert.equal(g.trialDestinations().length, 0);

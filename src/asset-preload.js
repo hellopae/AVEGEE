@@ -13,7 +13,7 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
   const own = catalog.zones[zone] || catalog.zones.th || [];
   const hero = (catalog.zones[outfit] || []).filter(p => /\/hero-|\/yama-/.test(p));
   // Thai portraits are used as fallbacks in all branches.
-  const fallback = zone === 'th' ? [] : (catalog.zones.th || []).filter(p => !/BG-|scene|intro|cutscene|rooms-wide|tea-/.test(p));
+  const fallback = zone === 'th' ? [] : (catalog.zones.th || []).filter(p => !/BG-|scene|intro|cutscene|rooms-wide|tea-/.test(p) && !p.startsWith('img/map-zone1/'));
   const firstFrame = p => /scene|\/st-|profile|walk/.test(p) ? 1 : 0;
   // Warm map/sprites last, so small mobile image caches retain the first visible scene.
   return [...new Set([...catalog.shared, ...own, ...hero, ...fallback])]
@@ -26,6 +26,10 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
 //   2 = late       โหลดท้ายสุด/เมื่อว่าง (คัตซีนใหญ่ ฉากจบ intro/ปกสำรอง ฉากสลบ) — ไม่ได้ยกเลิก แค่ไม่แย่งแบนด์วิดท์
 // ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error: art.js วาด placeholder ส่วน <img> ใน modal โหลดเองตามปกติ
 const SPLIT_RULES = [
+  [0, 0, /^img\/map-zone1\/mainland-v\d+\.webp$/],
+  [1, 1, /^img\/map-zone1\/(arena|battle-)/],
+  [1, 4, /^img\/map-zone1\/dungeon-/],
+  [0, 0, /^img\/town-district\/house-(front-one|right-one|left-two|right-two)-v1\.webp$/],
   // [tier, rank, regex] — ข้อแรกที่ตรงชนะ · rank ใช้เรียงลำดับในชั้น 1/2 (น้อย = ก่อน)
   [0, 0, /^img\/cover-v4\.webp$/],  // ปกหน้าปัจจุบัน (อินโทร v3 จบที่ cover-v4 · cover-v5 และรุ่นเก่ากว่าเป็นแค่ fallback → ชั้นท้าย)
   [0, 0, /^img\/(scene|tile-|tex-)/],

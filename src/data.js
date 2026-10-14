@@ -1,3 +1,4 @@
+import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY } from './town-layout.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
 
@@ -295,7 +296,7 @@ export const SPOTS = {
 // ธารลาวาไม่ต้องวัด — src/walk.js อ่านสีจาก img/scene-v2.png เอง (ดูเหตุผลในไฟล์นั้น)
 // ที่ต้องกำหนดมือคือของที่เป็นเส้นตรง: ชายฝั่งแม่น้ำวิญญาณ กับผาหินรอบโซน
 // ชุดที่ 15b — วัดเส้นริมตลิ่งใหม่จาก img/scene-v2.png จริง (เกือบเป็นเส้นตรงตลอดความกว้างภาพ)
-export const RIVER_Y = 695;                  // ต่ำกว่านี้คือแม่น้ำวิญญาณ ลงไปไม่ได้
+export let RIVER_Y = 695;                  // ต่ำกว่านี้คือแม่น้ำวิญญาณ ลงไปไม่ได้
 
 /** กรอบห้ามเหยียบ [x1,y1,x2,y2] — ชุดที่ 15b วัดใหม่จาก img/scene-v2.png จริง */
 export const NO_WALK = [
@@ -1914,7 +1915,7 @@ export const ZONES = [
   // ไฟล์ใหม่ img/scene-v2-opt.png แยกต่างหาก (ย่อสี 256 สี แบบเดียวกับที่ prep-art.py ทำกับไฟล์
   // ขึ้นต้น scene- ทุกไฟล์ — ไม่ resize เพราะกว้าง 1678 < SCENE_W 2000 อยู่แล้ว, 1.9MB → 853KB)
   // แล้วชี้โค้ดมาไฟล์นี้แทน — img/scene-v2.png ต้นฉบับยังอยู่ครบ ไม่ถูกทับ/ลบ (กู้คืนได้จาก 6d7f47e)
-  { k:'th', scene:'scene-v2-opt', w:1678, h:937, level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
+  { k:'th', scene:'scene-v2-opt', w:TOWN_SIZE.w, h:TOWN_SIZE.h, level:1, name:'โซนสุวรรณภูมิ', sub:'สาขาย่อยแถบประเทศไทย',
     bossName:'ยมทัต', bossSub:'ยมราชพี่ใหญ่ · พี่ชายของยมบาทน้อย · ผู้ตรวจการสาขาสุวรรณภูมิ',
     bossArrive:[
       'ยมทัต: "ได้ยินว่าน้องเก่งขึ้นเยอะนะ วันนี้พี่มาดูของจริง"',
@@ -1992,8 +1993,33 @@ const sharedStationSites = new Map(Object.keys(CYBERHELL_STATION_OFFSETS).map(ke
     .filter(field => d[field] != null).map(field => [field, Array.isArray(d[field]) ? [...d[field]] : d[field]]))];
 }));
 
-/** ทุกโซนใช้ผัง 1678×937; คง SCENE object ที่โมดูลอื่น import ไว้ */
+// Preserve regional layouts before applying Zone 1's independent city coordinates.
+const originalTownGeometry = {
+  stations:STATIONS.map(d=>({k:d.k,...Object.fromEntries(['bx','by','bw','x','y','sx','sy','hit','mapScale'].filter(k=>d[k]!=null).map(k=>[k,structuredClone(d[k])]))})),
+  spots:structuredClone(SPOTS), crew:CREW.map(c=>({k:c.k,hx:c.hx,hy:c.hy})),
+  frontier:Object.fromEntries(['bx','by','bw','x','y','hit','mapScale','blockScale','reach'].map(k=>[k,structuredClone(FRONTIER[k])])),
+  merchant:{x:MERCHANT.x,y:MERCHANT.y}, guard:[...GUARD_POST], challenge:{...CHALLENGE_STAND},
+  queue:structuredClone(QUEUE_LINE), noWalk:structuredClone(NO_WALK), entry:structuredClone(ZONE_ENTRY),
+};
+function resetRegionalGeometry() {
+  for(const site of originalTownGeometry.stations) {
+    const d=STATIONS.find(d=>d.k===site.k);
+    delete d.sx;delete d.sy;delete d.mapScale;delete d.blockScale;delete d.interactionReach;Object.assign(d,structuredClone(site));
+  }
+  for(const key of Object.keys(SPOTS)) delete SPOTS[key];Object.assign(SPOTS,structuredClone(originalTownGeometry.spots));
+  for(const c of CREW) Object.assign(c,originalTownGeometry.crew.find(d=>d.k===c.k));
+  delete FRONTIER.sx;delete FRONTIER.sy;delete FRONTIER.mapScale;
+  Object.assign(FRONTIER,structuredClone(originalTownGeometry.frontier));
+  Object.assign(MERCHANT,originalTownGeometry.merchant);Object.assign(CHALLENGE_STAND,originalTownGeometry.challenge);
+  GUARD_POST.splice(0,GUARD_POST.length,...originalTownGeometry.guard);
+  QUEUE_LINE.splice(0,QUEUE_LINE.length,...structuredClone(originalTownGeometry.queue));
+  NO_WALK.splice(0,NO_WALK.length,...structuredClone(originalTownGeometry.noWalk));
+  for(const key of Object.keys(ZONE_ENTRY)) delete ZONE_ENTRY[key];
+  Object.assign(ZONE_ENTRY,structuredClone(originalTownGeometry.entry));RIVER_Y=695;
+}
+/** Zone 1 has its own town; all shared object identities survive branch changes. */
 export function syncSceneZone(zone) {
+  resetRegionalGeometry();
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
   SCENE.w = z.w; SCENE.h = z.h;
   for (const {def,bw,hit} of m2OriginalSites) {
@@ -2029,14 +2055,25 @@ export function syncSceneZone(zone) {
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
     ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
+  if (z.k === 'th') {
+    for(const d of STATIONS) Object.assign(d,TOWN_STATION_SITES[d.k]);
+    Object.assign(SPOTS,structuredClone(TOWN_SPOTS));
+    for(const c of CREW) if(TOWN_CREW[c.k]) [c.hx,c.hy]=TOWN_CREW[c.k];
+    Object.assign(FRONTIER,structuredClone(TOWN_FRONTIER));delete FRONTIER.blockScale;Object.assign(MERCHANT,TOWN_MERCHANT);
+    GUARD_POST.splice(0,GUARD_POST.length,...TOWN_GUARD_POST);
+    Object.assign(CHALLENGE_STAND,{x:TOWN_CHALLENGE[0],y:TOWN_CHALLENGE[1]});
+    QUEUE_LINE.splice(0,QUEUE_LINE.length,...structuredClone(TOWN_QUEUE));
+    Object.assign(ZONE_ENTRY,structuredClone(TOWN_ENTRY));
+    RIVER_Y=TOWN_RIVER_Y;NO_WALK.splice(0,NO_WALK.length,[0,0,SCENE.w,100],[0,0,100,SCENE.h],[SCENE.w-100,0,SCENE.w,SCENE.h],[0,RIVER_Y,SCENE.w,SCENE.h]);
+  }
   for (const s of STATIONS) {
     s.flip = STATION_FLIP[z.k].includes(s.k);
-    s.mapScale *= MAP_BUILDING_SCALE;
-    s.bw *= MAP_BUILDING_SCALE;
-    s.hit = s.hit.map((v,i) => (i % 2 ? s.by : s.bx) +
-      (v - (i % 2 ? s.by : s.bx)) * MAP_BUILDING_SCALE);
-    s.interactionReach = 100 * MAP_BUILDING_SCALE;
-    s.blockScale = MAP_BUILDING_SCALE;
+    if(z.k!=='th') {
+      s.mapScale *= MAP_BUILDING_SCALE;
+      s.bw *= MAP_BUILDING_SCALE;
+      s.hit=s.hit.map((v,i)=>(i%2?s.by:s.bx)+(v-(i%2?s.by:s.bx))*MAP_BUILDING_SCALE);
+      s.interactionReach=100*MAP_BUILDING_SCALE;s.blockScale=MAP_BUILDING_SCALE;
+    }
   }
 }
 

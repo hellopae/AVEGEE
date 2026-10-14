@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 // ข้อ C ชุด 14 คุณเป้ 26 ก.ย. 2569 — ชื่อยมทูตโซนปัจฉิม (west) / นรกเครือข่าย (cyberhell)
 // ที่มา: Output/Rae/2026-09-26-avegee-crew-names-west-cyberhell.md (Reese ตรวจแล้ว, คุณเป้อนุมัติ)
 import test from 'node:test';
@@ -40,7 +41,7 @@ test('g.crew[].name อัปเดตเป็นชื่อโซน west/cyb
   g.coin = 99999;
   g.bossCleared = { th: true, asia: true };
   assert.equal(g.canMoveZone('west'), true, 'เตรียมเงื่อนไขให้ย้ายโซน west ได้จริงก่อนเช็คชื่อ');
-  g.moveZone('west');
+  harbourTravel(g, 'west');
   assert.equal(g.crew.some(c => c.k === 'taan'), true, 'สาขาใหม่มีทัณฑ์รอสร้างสถานที่');
   const taan = g.crew.find(c => c.k === 'taan');
   assert.ok(taan);

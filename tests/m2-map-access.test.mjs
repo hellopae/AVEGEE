@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {setup,STATIONS,ZONES,FRONTIER,ZONE_ENTRY,art,walk,syncSceneZone} from './helpers/m2-map.mjs';
 import {reviewStationBox} from '../src/map-art-v5.js';
-import {nearestInteraction,mapInteractions,stationButtonPos} from '../src/proximity.js';
+import {nearestInteraction,mapInteractions,stationButtonPos,INTERACTION_REACH} from '../src/proximity.js';
 
 test('M2: every zone has an exact door route from both spawns; 1px stepTo movement stays on terrain',async t=>{
  for(const {k:zone} of ZONES){
-  const {g,terrain,spawn}=setup(zone);
+  const {g,terrain,terrainWidth,spawn}=setup(zone);
   for(const d of [...STATIONS,FRONTIER])for(const start of [spawn,ZONE_ENTRY.gate])await t.test(`${zone}/${d.k} from ${start}`,()=>{
    const path=walk.findPath(...start,d.x,d.y);
    assert.ok(path?.length,`${zone}/${d.k}: path`);
@@ -22,7 +22,7 @@ test('M2: every zone has an exact door route from both spawns; 1px stepTo moveme
      queue=walk.findPath(p.x,p.y,d.x,d.y,true);
      assert.ok(queue?.length,`${zone}/${d.k}: game cannot replan`);
     }
-    assert.equal(terrain[Math.floor(p.y)*1678+Math.floor(p.x)],1,`${zone}/${d.k}: actual step on terrain`);
+    assert.equal(terrain[Math.floor(p.y)*terrainWidth+Math.floor(p.x)],1,`${zone}/${d.k}: actual step on terrain`);
    }
    assert.ok(steps<20000,`${zone}/${d.k}: bounded game movement`);
    assert.ok(Math.hypot(p.x-d.x,p.y-d.y)<5,`${zone}/${d.k}: walks to door`);
@@ -31,7 +31,7 @@ test('M2: every zone has an exact door route from both spawns; 1px stepTo moveme
  syncSceneZone('th');
 });
 
-test('M2: map-v5 dimensions shrink 20%, preserve the base, scale H2 bands, and follow the roof button',()=>{
+test('M2: map-v5 preserves bases and roof buttons; regional shrink bands do not leak into the new town',()=>{
  for(const {k:zone} of ZONES){
   const {g}=setup(zone);
   for(const d of [...STATIONS,FRONTIER]){
@@ -43,7 +43,10 @@ test('M2: map-v5 dimensions shrink 20%, preserve the base, scale H2 bands, and f
    assert.equal(box.x+box.w/2,d.bx);assert.equal(box.y+box.h,d.by);
    const bands=art.blockRectsOf(d),prior=art.blockRectsOf({...d,mapScale:d.mapScale/.8,blockScale:1});
    assert.equal(bands.length,prior.length);
-   for(let i=0;i<bands.length;i++)for(let j=0;j<4;j++){
+   if(zone==='th') {
+    assert.equal(d.blockScale,undefined,'regional padding does not leak into town');
+    for(const [x1,y1,x2,y2] of bands){assert.ok(x2>x1&&y2>y1);assert.ok(x1>=box.x-1e-6&&x2<=box.x+box.w+1e-6);}
+   } else for(let i=0;i<bands.length;i++)for(let j=0;j<4;j++){
     const base=j%2?d.by:d.bx;
     assert.ok(Math.abs((bands[i][j]-base)-(prior[i][j]-base)*.8)<1e-6,`${zone}/${d.k}: band`);
    }
@@ -51,9 +54,10 @@ test('M2: map-v5 dimensions shrink 20%, preserve the base, scale H2 bands, and f
    assert.equal(pos.bx,(body[0]+body[2])/2);assert.ok(pos.by>=body[1]&&pos.by<=body[3]);
   }
   const target=mapInteractions(g,{x:0,y:0}).find(t=>t.key==='lan');
-  assert.equal(target.reach,80);
-  assert.equal(nearestInteraction({x:target.x+80,y:target.y},[target]),target);
-  assert.equal(nearestInteraction({x:target.x+80.01,y:target.y},[target]),null);
+  const reach=zone==='th'?100:80;
+  assert.equal(target.reach??INTERACTION_REACH,reach);
+  assert.equal(nearestInteraction({x:target.x+reach,y:target.y},[target]),target);
+  assert.equal(nearestInteraction({x:target.x+reach+.01,y:target.y},[target]),null);
   const first=STATIONS.map(d=>JSON.stringify(d));syncSceneZone(zone);
   assert.deepEqual(STATIONS.map(d=>JSON.stringify(d)),first,'zone sync never accumulates scale');
  }

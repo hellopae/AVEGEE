@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { SCENE } from '../src/data.js';
+import {isTownZone,townZoomLevels,townDefaultZoom} from '../src/town-map.js';
 import { mapViewport, setMapViewport, prepareMapCanvas, toScene } from '../src/scene.js';
 
 test('M1: camera edges and pointer round trips at both zoom levels, with letterboxing', () => {
@@ -45,19 +46,19 @@ test('M1: backing follows viewport and capped DPR; redraw does not resize; smoot
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
-test('M1: UI camera keeps DOM anchors and pointers aligned at the locked 1x zoom', () => {
+test('M1: UI camera keeps DOM anchors and pointers aligned through town follow zoom and overview', () => {
   const ui = readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
   const source = ui.slice(ui.indexOf('function updateMapCamera(now)'),ui.indexOf('\n/** ตัววาดฉากต่อสู้ซ้ำ'));
   for(const [width,height] of [[1440,820],[720,1100]]) {
     const ratio=Math.min(width/SCENE.w,height/SCENE.h);
     const bw=Math.round(SCENE.w*ratio),bh=Math.round(SCENE.h*ratio);
     const fabs={offsetLeft:100,offsetTop:200,style:{}};
-    const box={querySelector:()=>fabs,offsetWidth:bw,offsetHeight:bh,offsetLeft:(width-bw)/2,offsetTop:(height-bh)/2,style:{},getBoundingClientRect(){return {left:this.offsetLeft,top:this.offsetTop};}};
-    const stage={clientWidth:width,clientHeight:height,getBoundingClientRect:()=>({left:0,top:0})}; const overlay={style:{}};
+    const box={querySelector:()=>fabs,offsetWidth:bw,offsetHeight:bh,offsetLeft:(width-bw)/2,offsetTop:(height-bh)/2,style:{setProperty(){}},getBoundingClientRect(){return {left:this.offsetLeft,top:this.offsetTop};}};
+    const stage={clientWidth:width,clientHeight:height,classList:{toggle(){}},getBoundingClientRect:()=>({left:0,top:0})}; const overlay={style:{}};
     const cv={style:{},getBoundingClientRect:()=>({left:0,top:0,width,height})};
     const mapCam={level:0,z:1,x:SCENE.w/2,y:SCENE.h/2,at:0,init:false};
-    const g={player:{x:880,y:455}};
-    const sandbox={SCENE,mapCam,g,cv,MAP_ZOOM_LEVELS:[1],mapViewport,setMapViewport,matchMedia:()=>({matches:false}),document:{querySelector:s=>s==='.stage'?stage:box,getElementById:()=>overlay}};
+    const g={zone:'th',player:{x:880,y:455}};
+    const sandbox={SCENE,mapCam,g,cv,cameraZone:'th',isTownZone,townZoomLevels,townDefaultZoom,setMapZoom:level=>mapCam.level=level,MAP_ZOOM_LEVELS:townZoomLevels('th'),mapViewport,setMapViewport,matchMedia:()=>({matches:false}),document:{querySelector:s=>s==='.stage'?stage:box,getElementById:()=>overlay}};
     vm.createContext(sandbox);vm.runInContext(source,sandbox);
     let now=0;
     const check=()=>{
@@ -80,6 +81,7 @@ test('M1: UI camera keeps DOM anchors and pointers aligned at the locked 1x zoom
     for(let i=0;i<100;i++)check();
     g.player={x:SCENE.w,y:SCENE.h};for(let i=0;i<100;i++)check();
     assert.equal(mapCam.z,1);
+    for(const level of [1,2,3,0]){mapCam.level=level;for(let i=0;i<100;i++)check();assert.ok(Math.abs(mapCam.z-townZoomLevels('th')[level])<.002);}
   }
 });
 

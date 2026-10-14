@@ -22,3 +22,6 @@ output/Toby/
 
 # Local recoverable archive; never ship obsolete assets.
 /AVEGEE-backup/
+
+# Recoverable local 3D archive; exclude from deployment and version control.
+/Backup/

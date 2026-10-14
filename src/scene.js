@@ -1,4 +1,6 @@
 import { drawLocalLight } from './scene-style.js';
+import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseLots, townHouseKey } from './town-map.js';
+import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
@@ -108,6 +110,9 @@ function drawMapGround(ctx, bg) {
   const m = ctx.getTransform ? ctx.getTransform() : null;
   if (!m || m.b || m.c || m.a <= 0 || m.d <= 0) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); return; }
   const w = Math.max(1, Math.round(SCENE.w * m.a)), h = Math.max(1, Math.round(SCENE.h * m.d));
+  // Close town zoom can project a 20k-pixel map; do not allocate an offscreen canvas
+  // for that whole world. Let the viewport clip a decoded-image draw instead.
+  if(w>4096||h>4096) {ctx.drawImage(bg,0,0,SCENE.w,SCENE.h);return;}
   let c = groundCache.get(bg);
   if (!c || c.width !== w || c.height !== h) {
     c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -194,7 +199,7 @@ export function afterlifeWalkPosition(walk) {
   return soulWalkPosition(walk);          // ชุด 29C: หักช่วงที่วิญญาณยืนรอยมทูตมารับ (walk.delay) ออกให้แล้ว
 }
 
-export function render(ctx, g, t, hover, sel) {
+export function render(ctx, g, t, hover, sel, cameraView = null) {
   prepareMapCanvas(ctx);
 
   // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
@@ -212,7 +217,46 @@ export function render(ctx, g, t, hover, sel) {
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
-  if (bg) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
+  if (bg) drawMapAmbientGround(ctx, bg, isTownZone(g.zone) ? 'town-th' : g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
+  const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
+  const sceneryHouse = town ? img('town-house-th') : null;
+  const sceneryTree = town ? img('town-tree-th') : null;
+  const sceneryWaterfall = town ? img('town-waterfall-th') : null;
+  if(town) {
+    drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced);
+    drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced);
+  }
+  drawTownGround(ctx, g);
+  if (isTownZone(g.zone)) {
+    const newDais=img('town-judgment-th');
+    const dais=newDais||img('prop-throne-platform-v1');
+    if(dais) {
+      ctx.save();ctx.imageSmoothingEnabled=true;
+      if(newDais){
+        const w=540,h=w*dais.naturalHeight/dais.naturalWidth,top=SPOTS.throne.y-55;
+        ctx.fillStyle='rgba(10,5,15,.24)';ctx.beginPath();
+        ctx.ellipse(SPOTS.throne.x+14,top+h-18,w*.46,30,0,0,Math.PI*2);ctx.fill();
+        ctx.drawImage(dais,SPOTS.throne.x-w/2,top,w,h);
+        for(const side of [-1,1]){
+          const x=SPOTS.throne.x+side*w*.207,y=top+h*.112;
+          drawLocalLight(ctx,'th',x,y,w*.065,t,reduced);
+          if(!reduced){
+            ctx.fillStyle='rgba(255,197,86,.6)';
+            for(let i=0;i<3;i++){
+              const phase=(t/1700+i/3+(side+1)*.13)%1;
+              ctx.globalAlpha=(1-phase)*.6;ctx.beginPath();
+              ctx.ellipse(x+Math.sin(i*9+t/900)*4,y-phase*22,1.1,1.8,0,0,Math.PI*2);ctx.fill();
+            }
+            ctx.globalAlpha=1;
+          }
+        }
+      }else{
+        const size=440;ctx.drawImage(dais,SPOTS.throne.x-size*.508,SPOTS.throne.y-size*.20,size,size);
+      }
+      ctx.restore();
+      ctx.imageSmoothingEnabled=false;
+    }
+  }
 
   // Ground shadows and pools of light are painted before the depth-sorted objects.
   for (const st of g.stations) {
@@ -232,7 +276,7 @@ export function render(ctx, g, t, hover, sel) {
     const f = SPOTS.ferry, ph = soulTime / 5200, inbound = Math.cos(ph) > 0;
     const fx = f.from[0] + (f.to[0] - f.from[0]) * (Math.sin(ph) + 1) / 2;
     drawBoat(ctx, fx, f.from[1] + 120, soulTime, !rescue && inbound ? Math.min(2, g.queue.length) : 0, inbound);
-    if (bg) {
+    if (bg && !isTownZone(g.zone)) {
       ctx.save(); ctx.beginPath();
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
         [988,937],[676,937],[704,872],[704,790],[770,755]];
@@ -251,6 +295,10 @@ export function render(ctx, g, t, hover, sel) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
+  if (archiveHouse) for (const [index,lot] of townHouseLots().entries())
+    at(townHouseDepth(lot), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, lot));
+  if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced);
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว
@@ -525,7 +573,7 @@ export function render(ctx, g, t, hover, sel) {
   // ตัวเราวาดท้ายสุดเสมอ — เจ้าของสั่ง 10 ก.ย. 2569 ว่าเดินไปตรงไหนก็ต้องเห็นตัวเอง
   // (บันไดกับพญานาคของหอทะเบียนกินพื้นที่ลงมาเยอะ ยืนตรงนั้นแล้วหายไปทั้งตัว)
   // ตัวละครอื่นกับอาคารยังเรียงตามพิกัด y กันเองเหมือนเดิม
-  at(Infinity, () => {
+  at(isTownZone(g.zone) ? P.y : Infinity, () => {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
     const walking = t < heroMovingUntil;
@@ -536,6 +584,7 @@ export function render(ctx, g, t, hover, sel) {
 
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+  if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
 
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
@@ -568,6 +617,7 @@ export function render(ctx, g, t, hover, sel) {
 
   if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
 
+  if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);

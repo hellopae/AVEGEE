@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -36,7 +37,7 @@ test('all new zones clear previous bridge and walk commands; first souls are new
  const g=createGame();g.level=5;for(const z of ZONES)g.bossCleared[z.k]=true;
  for(const zone of ['asia','west','cyberhell']){
   g.bossWalk={started:1};g.huntMob=true;g.player.path=[[1,1]];
-  assert.equal(g.moveZone(zone),true);assert.equal(g.bossWalk,null);assert.equal(g.huntMob,false);
+  assert.equal(harbourTravel(g, zone),true);assert.equal(g.bossWalk,null);assert.equal(g.huntMob,false);
   assert.ok(g.queue.length);assert.ok(g.queue.every(s=>!s.back));
   g.paused=false;assert.equal(g.walkTo(g.player.x+20,g.player.y),true);
   const before=g.player.x;g.stepWorld(100);assert.notEqual(g.player.x,before);
@@ -45,7 +46,7 @@ test('all new zones clear previous bridge and walk commands; first souls are new
 
 const record=zone=>({fromId:900,gave:3,who:'ผู้ทดสอบ',sex:'f',sp:1,zone,at:0,deeds:[{t:'หลอกเอาเงิน',s:'kong',w:4}],merits:[]});
 test('delayed returns stay in original zone, including legacy saves',()=>{
- const g=createGame();g.level=5;g.bossCleared.th=true;g.bossCleared.asia=true;g.zoneEvents.th={thBorderBoss:'cleared'};g.moveZone('west');g.paused=false;g.courtClosed=true;
+ const g=createGame();g.level=5;g.bossCleared.th=true;g.bossCleared.asia=true;g.zoneEvents.th={thBorderBoss:'cleared'};harbourTravel(g, 'west');g.paused=false;g.courtClosed=true;
  g.returning=[record('th'),record(undefined),record('asia')];g.step();
  assert.ok(g.queue.every(s=>!s.back));assert.equal(g.zoneSave.th.queue.filter(s=>s.back).length,2);
  assert.equal(g.returning.length,1); // unvisited source cannot spill into the active zone

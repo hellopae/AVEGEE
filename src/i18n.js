@@ -24,6 +24,16 @@ export function onLangChange(fn) { listeners.add(fn); return () => listeners.del
 // ---------- พจนานุกรม UI ----------
 // รูปแบบ key: 'จอ.ส่วน.ชื่อ' — ให้ Rae ตรวจสำนวนอังกฤษได้จากลิสต์เดียว (ดู C3)
 const TH = {
+  'town.overview':'ทั้งแผนที่', 'town.follow':'ตาม Yama', 'town.title':'เมืองอเวจี · โซน 1', 'town.hint':'WASD / ลูกศร เดิน · E สร้างหรือเข้า · คลิกพื้นเพื่อเดิน', 'town.build':'สร้าง', 'town.frontier':'เข้าด่านชายแดน',
+  'menu.items':'ของใช้', 'menu.outfits':'ชุด', 'menu.weapons':'อาวุธ',
+  'menu.bagTitle':'กระเป๋าของยมบาทน้อย',
+  'menu.bagHint':'เลือกของใช้ ชุด หรืออาวุธ · ของติดตัวไปทุกโซน',
+  'menu.all':'ทั้งหมด', 'menu.recovery':'ฟื้นพลัง', 'menu.material':'สินค้า', 'menu.other':'อื่น ๆ',
+  'menu.emptyFilter':'ไม่มีของในหมวดนี้', 'menu.closeBag':'ปิดกระเป๋า',
+  'menu.bonusCompare':'โบนัสฟาดปกติ {current}% → {next}%',
+  'menu.bonusChange':'เปลี่ยน {delta} จุดเปอร์เซ็นต์',
+  'menu.openBag':'จัดของและอุปกรณ์', 'menu.more':'งานบริหาร',
+  'menu.commands':'คำสั่งของ', 'menu.language':'ภาษา',
   'h4.over': 'เกินกรรม',
   'h4.short': 'ขาดกรรม',
   'h4.playerKarma': 'กรรมที่ท่านได้รับ',
@@ -124,7 +134,7 @@ const TH = {
   'settings.restart.confirmOk': 'ยืนยันเริ่มใหม่',
   'settings.close': 'ปิด',
   'settings.saved': 'บันทึกแล้ว',
-  'settings.audioHint': 'เสียงเอฟเฟกต์สังเคราะห์ในโค้ด ไม่ต้องโหลดไฟล์ · เพลงอ่านจาก audio/ ไม่มีไฟล์ก็เล่นได้ตามปกติ เงียบเฉยๆ',
+  'settings.audioHint': 'ปรับระดับเสียงเพลงและเอฟเฟกต์แยกกัน หรือปิดเสียงทั้งหมดได้',
 
   'hud.pause': 'หยุด',
   'hud.settings': 'ตั้งค่า',
@@ -486,6 +496,16 @@ const TH = {
 };
 
 const EN = {
+  'town.overview':'Full map', 'town.follow':'Follow Yama', 'town.title':'Avegee Town · Zone 1', 'town.hint':'WASD / arrows: walk · E: build or enter · Click ground to walk', 'town.build':'Build', 'town.frontier':'Enter frontier',
+  'menu.items':'Items', 'menu.outfits':'Outfits', 'menu.weapons':'Weapons',
+  'menu.bagTitle':'Young Yama’s bag',
+  'menu.bagHint':'Choose items, outfits or weapons · carried across all zones',
+  'menu.all':'All', 'menu.recovery':'Recovery', 'menu.material':'Trade goods', 'menu.other':'Other',
+  'menu.emptyFilter':'No items in this category', 'menu.closeBag':'Close bag',
+  'menu.bonusCompare':'Normal-attack bonus {current}% → {next}%',
+  'menu.bonusChange':'Change {delta} percentage points',
+  'menu.openBag':'Items & equipment', 'menu.more':'Management',
+  'menu.commands':'Commands for', 'menu.language':'Language',
   'h4.over': 'Excess sentence',
   'h4.short': 'Short sentence',
   'h4.playerKarma': 'Your karma incurred',
@@ -735,7 +755,7 @@ const EN = {
   'settings.restart.confirmOk': 'Confirm restart',
   'settings.close': 'Close',
   'settings.saved': 'Saved',
-  'settings.audioHint': 'Sound effects are synthesized in code, nothing to load · music streams from audio/ — no file yet plays fine, just silent.',
+  'settings.audioHint': 'Adjust music and sound effects separately, or mute all audio.',
 
   'hud.pause': 'Pause',
   'hud.settings': 'Settings',

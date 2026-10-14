@@ -1,9 +1,12 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { MERCHANT, MOB, QUEUE_LINE, SPOTS, STATIONS, ZONES } from '../src/data.js';
-import { canWalk } from '../src/walk.js';
+import { canWalk, findPath } from '../src/walk.js';
 import { hitActor, hitStation } from '../src/scene.js';
+
+import { TOWN_QUEUE } from '../src/town-layout.js';
 
 globalThis.Image = class {};
 
@@ -60,9 +63,13 @@ test('ทุกโซนคิวอยู่แนวสะพานและ�
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES) {
-    if (g.zone !== z.k) assert.equal(g.moveZone(z.k), true);
-    const bridgeX = 835;
-    assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === bridgeX));
+    if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k), true);
+    if (z.k === 'th') assert.deepEqual(QUEUE_LINE, TOWN_QUEUE);
+    else assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === 835));
+    for (const [x,y] of QUEUE_LINE) {
+      assert.equal(canWalk(x,y), true, `${z.k}: queue stands on accessible ground`);
+      assert.ok(findPath(SPOTS.bench.x, SPOTS.bench.y, x, y), `${z.k}: queue reachable from court`);
+    }
     assert.ok(canWalk(MERCHANT.x, MERCHANT.y), `${z.k}: merchant on pier`);
     assert.ok(canWalk(SPOTS.bossPier.x, SPOTS.bossPier.y), `${z.k}: boss on pier`);
     assert.deepEqual(hitActor(g, SPOTS.bossPier.x, SPOTS.bossPier.y), { kind:'boss', key:z.k });
@@ -73,13 +80,14 @@ test('ทุกโซนคิวอยู่แนวสะพานและ�
   }
 });
 
-test('CyberHell เปิดหลังชนะบอสโซน 3 โดยไม่ต้องรอระดับ 5', () => {
+test('CyberHell มีสิทธิ์เปิดหลังชนะบอสโซน 3 และเดินเรือกลับได้เมื่อค้นพบท่าแล้ว โดยไม่ต้องรอระดับ 5', () => {
   const g = createGame();
   g.level = 4;
   assert.equal(g.canMoveZone('cyberhell'), false);
   g.bossCleared.west = true;
   assert.equal(g.canMoveZone('cyberhell'), true);
-  assert.equal(g.moveZone('cyberhell'), true);
+  assert.equal(g.moveZone('cyberhell'), false, 'boss eligibility alone cannot skip the connecting dungeon');
+  assert.equal(harbourTravel(g, 'cyberhell'), true);
   assert.equal(g.zone, 'cyberhell');
-  assert.equal(g.moveZone('th'), true);
+  assert.equal(harbourTravel(g, 'th'), true);
 });

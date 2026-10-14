@@ -56,5 +56,7 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you img,\.hud \.fig\.you img\{transform:scaleX\(-1\)\}/);
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
-  assert.match(html, /sword-schools[^"]*-westhit-skillatk-minigame-review-20261011(?:-i2c)?-i2b(?:-fire-theme-v2)?(?:-m1)?(?:-m2)?(?:-j)?(?:-battle-anchor-20261012)?"/);   // cache-bust
+  const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
+  assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'),'release retains facing and skill sprite cache tokens');
+  assert.match(uiVersion,/-2d-pages-20261014-r1$/,'new 2D release invalidates the prior module cache');
 });

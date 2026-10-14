@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, statSync } from 'node:fs';
+import { mapReviewArt } from '../src/map-art-v5.js';
+import { themeBackground } from '../src/theme-assets.js';
 import { zoneAssets, zoneTiers, assetTier } from '../src/asset-preload.js';
 
 const catalog = JSON.parse(readFileSync('img/preload-catalog.json'));
@@ -18,7 +20,7 @@ test('H1: three tiers partition the full zone bundle exactly (nothing dropped, n
 
 test('H1: critical tier holds the first-screen art and is far smaller than the whole zone', () => {
   const t = zoneTiers(catalog, 'th', 'th');
-  for (const p of ['img/scene-v2-opt.png', 'img/cover-v4.webp', 'img/hero-yama-walk-4dir-v2.png', 'img/map-v5/st-sala-th.webp',
+  for (const p of ['img/scene-v2-opt.png', 'img/cover-v4.webp', 'img/hero-yama-walk-4dir-v2.png', mapReviewArt('st-sala','th'), themeBackground('th','map'),
     'img/crew-nira-walk-v2.png', 'img/ui/logo-th.png', 'img/spirit1.png', 'img/Thai/spirit-worker-th-v2.png', 'img/icon-fang.png'])
     assert(t.critical.includes(p), p);
   assert(mb(t.critical) < mb(zoneAssets(catalog, 'th')) * 0.5, 'critical must be < 50% of the old gate');

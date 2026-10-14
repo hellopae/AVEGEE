@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -39,7 +40,7 @@ test('โซนบูรพาไม่มีคำโปรยประเท�
   for (const z of ZONES.filter(z => z.k !== 'asia')) assert.ok(z.sub, z.k);
   const g = createGame();
   g.canMoveZone = () => true;
-  g.moveZone('asia');
+  harbourTravel(g, 'asia');
   assert.ok(g.logs.some(l => /โซนบูรพา · งบตั้งต้น/.test(l.t || l.text || l.msg || JSON.stringify(l))),
     'log ย้ายโซนไม่มีตัวคั่น " — " ค้างเมื่อไม่มีคำโปรย');
   const ui = read('src/ui.js');

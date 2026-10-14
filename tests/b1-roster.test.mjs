@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -66,11 +67,11 @@ test('B1 dormant actors share roster state; moveZone round trip preserves stats 
   const thai = g.roster['th:taan'];
   thai.morale = 7; thai.hunger = 9; thai.upLv = 8; thai.recoverUntil = 777;
   const cyber = g.crewOf('taan'); cyber.morale = 13;
-  assert.equal(g.moveZone('th'),true);
+  assert.equal(harbourTravel(g, 'th'),true);
   assert.equal(g.crewOf('taan'),thai);
   assert.equal(g.crewOf('nira'),nira);
   assert.equal(g.guard,g.roster['th:guard']);
-  assert.equal(g.moveZone('cyberhell'),true);
+  assert.equal(harbourTravel(g, 'cyberhell'),true);
   assert.equal(g.crewOf('taan'),cyber);
   assert.equal(cyber.morale,13);
   assert.equal(thai.morale,7); assert.equal(thai.hunger,9);

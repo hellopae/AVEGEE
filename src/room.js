@@ -469,6 +469,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
+        drawSchoolProps(ctx,def.k,x,y,U);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
         if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
         else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);

@@ -216,5 +216,6 @@ test('8. ปุ่ม "เข้าไป" เลื่อนลงจากย�
 test('ไม่แตะ walk*/room walking และมินิเกมกระจก (ใบ F1/F3) · เวอร์ชัน cache-bust ขยับแล้ว', () => {
   assert.match(src('index.html'), /compact-ui\.css\?v=20261009-f2/);
   assert.match(src('index.html'), /flow29c\.css\?v=20261009-f2/);
-  assert.match(src('index.html'), /src\/ui\.js\?v=20261009-f2/);
+  const uiVersion=src('index.html').match(/src="src\/ui\.js\?v=(\d{8})-[^"]+"/);
+  assert.ok(uiVersion && Number(uiVersion[1])>=20261009,'UI module keeps a dated cache version after the facing fix');
 });

@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -110,12 +111,12 @@ test('B2 art uses source zone for both standee/profile and keeps default lookup'
 test('B2 returning to a repair branch keeps its original builder even when sv aliases actor', () => {
   const before = globalThis.Image; globalThis.Image = class { set src(value) {} };
   try {
-    const g = finalGame(); assert.equal(g.moveZone('th'), true);
+    const g = finalGame(); assert.equal(harbourTravel(g, 'th'), true);
     const actor = g.crewOf('dam'), st = g.stations[0];
     st.repair = Date.now() + 60000; st.repairWait = true; actor.buildK = st.def.k;
-    assert.equal(g.moveZone('cyberhell'), true);
+    assert.equal(harbourTravel(g, 'cyberhell'), true);
     assert.equal(g.zoneSave.th.crew.find(c => c.k === 'dam'), actor);
-    assert.equal(g.moveZone('th'), true);
+    assert.equal(harbourTravel(g, 'th'), true);
     assert.equal(g.crewOf('dam'), actor); assert.equal(actor.buildK, st.def.k);
     assert.equal(g.crew.find(c => c.buildK === st.def.k), actor);
   } finally { if (before) globalThis.Image = before; else delete globalThis.Image; }

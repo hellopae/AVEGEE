@@ -29,7 +29,7 @@ globalThis.document = {documentElement:{}, createElement:() => ({getContext:() =
     },
   };
 }})};
-const {STATIONS,syncSceneZone} = await import('../src/data.js');
+const {STATIONS,SPOTS,QUEUE_LINE,syncSceneZone} = await import('../src/data.js');
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
 const walk = await import('../src/walk.js');
@@ -95,11 +95,12 @@ test('H2: the service door of every building stays walkable and reachable on eve
     setup(zone);
     for(const d of STATIONS){
       assert.equal(walk.canWalk(d.x,d.y),true,`${zone}/${d.k}: door point still walkable`);
-      const path=walk.findPath(835,680,d.x,d.y),end=path?.at(-1);
+      const path=walk.findPath(SPOTS.bench.x,SPOTS.bench.y,d.x,d.y),end=path?.at(-1);
       assert.ok(end && Math.hypot(end[0]-d.x,end[1]-d.y)<=100,`${zone}/${d.k}: reachable ${JSON.stringify(end)}`);
     }
+    if(zone==='th')for(const p of QUEUE_LINE)assert.equal(walk.canWalk(...p),true,'queue avoids complete building silhouettes');
     // the judge's platform, the bridge stairs and the queue line must remain open
-    for(const [x,y] of [[836,447],[835,560],[835,670],[880,440]])assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
+    for(const [x,y] of (zone==='th'?[[1920,1250],[1920,1500],[1920,1700],[1920,1430]]:[[836,447],[835,560],[835,670],[880,440]]))assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
   }
   syncSceneZone('th');
 });

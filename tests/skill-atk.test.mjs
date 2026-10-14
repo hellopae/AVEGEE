@@ -77,12 +77,20 @@ test('skill atk: real artUrl and heroAtk select the outfit pose and face right d
   }
 });
 
-test('skill atk: cache versions retain their previous tokens and append skillatk', () => {
-  assert.match(read('index.html'), /mapfx-westhit-skillatk-minigame-review-20261011(?:-i2c)?-i2b(?:-fire-theme-v2)?(?:-m1)?(?:-m2)?(?:-j)?(?:-battle-anchor-20261012)?"/);
-  assert.match(read('index.html'), /preload\.js\?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011(?:-i2c)?(?:-m2)?(?:-j)?"/);
-  assert.match(read('src/ui.js'), /battle-facing\.js\?v=i1b-westhit-skillatk/);
-  assert.match(read('src/ui.js'), /preload\.js\?v=h1-skillatk/);
-  assert.match(read('src/preload.js'), /asset-preload\.js\?v=h1-h5b-skillatk/);
-  assert.match(read('src/preload.js'), /zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011(?:-j2)?'/);
+test('skill atk: release cache retains facing tokens and shares one preload module URL', () => {
+  const html=read('index.html'),ui=read('src/ui.js'),preload=read('src/preload.js');
+  const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
+  const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
+  const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
+  assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'));
+  assert.match(uiVersion,/-2d-pages-20261014-r1$/);
+  assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
+  assert.match(indexPreload,/-2d-pages-20261014-r1$/);
+  assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
+  assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
+  assert.match(preload, /asset-preload\.js\?v=h1-h5b-skillatk/);
+  const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
+  assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
+  assert.match(catalogVersion,/-2d-pages-20261014-r1$/);
   assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });

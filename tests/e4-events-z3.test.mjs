@@ -1,3 +1,4 @@
+import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -14,7 +15,7 @@ import { breachApproachActors } from '../src/breach-approach.js';
 import { frontierIntroduction } from '../src/narrative-cutscenes.js';
 globalThis.Image = class {};
 globalThis.document = { documentElement:{} };
-function west() { const g=createGame();g.bossCleared.asia=true;assert.equal(g.moveZone('west'),true);return g; }
+function west() { const g=createGame();g.bossCleared.asia=true;assert.equal(harbourTravel(g, 'west'),true);return g; }
 function reload(g) { const copy=createGame();copy.restore(JSON.parse(JSON.stringify(g.snapshot())));return copy; }
 function win(g) {
  g.battle.youHp=100000;
