@@ -53,3 +53,6 @@ dialog.hudwrap:has(.trial-comment8)[open]{inset:0!important;margin:auto!importan
  .trial-comment8 .who2 small{display:block;font-size:10px;margin:0}
  .trial-comment8 .trial-hpbar,.trial-comment8 .trial-mpbar{margin-top:2px;height:5px}
 }
+/* The generic HUD child rule must not put decorative layers in the flex flow. */
+.trial-comment8>.corner-tick,.trial-comment8>.hud-scrim{position:absolute}
+.trial-comment8>.hud-scrim{background:linear-gradient(180deg,rgba(19,9,14,.08),transparent 35%,rgba(19,9,14,.10))}

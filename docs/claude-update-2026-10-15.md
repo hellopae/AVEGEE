@@ -26,7 +26,9 @@ Tests cover compact ellipse roots, off-route scenery, facility/crew/queue walkab
 
 - `output/zone1-2d/index.html`: map review, full buildings toggle, camera zoom, route overlay and destination walking; no actual-save writes.
 - `output/game-review/index.html`: battle/dungeon/port review with in-memory save.
-- Cache marker: `20261015-layered-battle9-r1`. Keep index preload URL and ui.js preload import identical.
+- Cache marker: `20261015-layered-battle9-r2`. Keep index preload URL and ui.js preload import identical.
 - Publish to `main` because GitHub Pages uses `main` root. Verify Pages built commit before claiming the live site is updated.
 
 Validation: main suite 915/917 passed; the only two failures were assertions for the retired cache suffix. Updated cache assertions and preload catalog version: 8/8 pass. Affected interrogation/progression suites: 79/79 pass. Earlier render-context and continuous terrain checks were repaired and retested. Browser checks verified power→enemy click damage/MP exactly once and Where→Keeper→Intensity→Issue resulting in the expected resistance battle. Deployment SHA/Pages evidence is recorded in the local handoff note after publishing.
+
+Comment8 layout fix: decorative HUD scrim/corner ticks must be absolute; the generic `.hud > *` rule otherwise inserts four unwanted rows and pushes dossier/title downward. Trial stylesheet cache revision is r2.
