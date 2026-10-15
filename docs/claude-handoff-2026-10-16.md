@@ -1,6 +1,6 @@
 # Claude → Codex app handoff, 16 ต.ค. 2569 ~00:05 (Claude ใกล้ชนลิมิต — คุณเป้สั่งส่งงานให้ Codex)
 
-main ตอนเขียน = `1b7ab52` · ทำตามลำดับ · `git pull` ก่อนเริ่มและก่อน push ทุกครั้ง · `node --test tests/*.test.mjs`
+main ตอนเขียน = `1b7ab52` → อัปเดต 00:30: `a511143`+ · ทำตามลำดับ · `git pull` ก่อนเริ่มและก่อน push ทุกครั้ง · `node --test tests/*.test.mjs`
 ใบงานต้นฉบับทั้งหมดอยู่ใน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/briefs/2026-10-15-avegee-*.md` · คิวรวม `.../2026-10-15-avegee-l-queue.md`
 
 ## ขึ้น main แล้ววันนี้ (ฝั่ง Claude)
@@ -9,9 +9,7 @@ L3 ปุ่มพักยมทูต + สะกดจิตเป็นร�
 L2 ป้องกัน (โล่ x0.5)/หนี (หน้าต่างยืนยัน, `g.fleeBattle`, `openFleeConfirm`)/ตัวที่ถึงเทิร์นไม่ทับ/ตัดกล่องคำแนะนำทั้งหมด/สอบสวนรูปที่เลือก/พลังเวท/pause ไม่มีขอบทอง/เอฟเฟกต์เติมเลือด `src/heal-fx.js`
 
 ## งานที่ส่งต่อให้ Codex (เรียงลำดับ)
-1. **merge L5** — branch `toby/l5-encounter` `9dccf0f` (ศัตรูในดันเจี้ยนชายแดนเห็นยม → ❗ → ไล่ → เข้าศึกเอง · หนี/แพ้ → ถอย + cooldown 4 วิ · โค้ด `src/dungeon-chase.js`)
-   ถ้า main ยังไม่มี `9dccf0f`: merge เข้า main — ชนเฉพาะ cache-bust (`src/ui.js` import game.js, `index.html`, `output/game-review/index.html` ui.js `?v=`) → ใช้ token ของ main ต่อ `-l5` · รายงาน Toby: `.../Output/Toby/2026-10-15-avegee-l5-auto-encounter.md`
-   (Claude Dale อาจ merge ไปแล้ว — เช็ก `git branch -a --contains 9dccf0f` / log main ก่อน)
+1. ~~merge L5~~ — **เสร็จแล้ว** Claude Dale merge ที่ `a511143` (Pages built) ไม่ต้องทำซ้ำ · main ตอนนี้มี L1/L2/L3/L5 ครบ · เทสต์แดงเหลือ 6 ข้อ (ข้อ 5)
 2. **ปรับแสงโซน 1 ที่ค้าง** (งานของ Codex เอง) → push · ทิศเงาของ Claude อยู่ที่ `SUN` ใน `src/town-shade.js` ให้ตรงกัน
 3. **L1b เคลียร์พื้นใต้อาคาร/ต้นไม้ที่วางบนแผนที่** — ใบงาน `.../briefs/2026-10-15-avegee-l1b-map-clear.md`
    มาสก์ล่าสุด (รวมเสาไฟ 10 ต้นของ Codex): `/Users/agapae/agapae-work/backup/avegee-l1-clear-mask-v2/` (สคริปต์ `scripts/l1-clear-mask.py` สร้างใหม่ได้ถ้าผังเปลี่ยน) · ภาพแผนที่ต้นฉบับ `/Users/agapae/agapae-work/backup/avegee-k1b-map-v2-2026-10-15/zone1-terrain-v2-full.png`
