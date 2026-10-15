@@ -1824,8 +1824,10 @@ const API = {
         c.wait -= dt;
       } else {
         // อยู่ไกลบ้าน = กลับเข้าที่ก่อน · อยู่แถวบ้านแล้ว = เดินเล่นรอบ ๆ
-        const tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
-        const ty = far ? hy : hy + (Math.random() - 0.5) * roam;
+        let tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
+        let ty = far ? hy : hy + (Math.random() - 0.5) * roam;
+        // L1: a crew member with a stage (Nira on the Zone 1 dais) never strolls outside that rectangle
+        if (c.stage && !onDuty) { tx = clamp(tx, c.stage[0], c.stage[2]); ty = clamp(ty, c.stage[1], c.stage[3]); }
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
         if (ok) {
