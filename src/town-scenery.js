@@ -2,6 +2,7 @@
 // Ground painting contains no object silhouettes; foot depth governs occlusion.
 import { TOWN_HOUSE_SITES, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawLocalLight } from './scene-style.js';
+import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 export const TOWN_TREES = TOWN_PROP_SITES.filter(p=>p.kind==='tree');
@@ -80,9 +81,13 @@ function torchSprite() {
 }
 const propArt = (p,tree,waterfall,resolveArt) =>
   p.kind==='torch'?torchSprite():p.key?(resolveArt?.(p.key)||(p.kind==='tree'?tree:null)):null;
-function contactShadow(ctx,p) {
-  ctx.save();ctx.fillStyle='rgba(10,6,15,.22)';ctx.beginPath();
-  ctx.ellipse(p.x+4,p.y+2,p.rx*1.2,p.ry*.8,0,0,Math.PI*2);ctx.fill();ctx.restore();
+// L1: soft contact shade (AO) under the base so nothing floats; the cast shadow itself comes from town-shade.js.
+function contactShadow(ctx,p,art) {
+  if(art){
+    const b=visibleBase(art,p.x,p.y,p.w,p.w*(art.naturalHeight||art.height)/(art.naturalWidth||art.width));
+    const rx=Math.max(b.w*.7,p.rx*1.4);
+    drawContactAO(ctx,b.x+3,b.y-1,rx,Math.max(p.ry,rx*.38),1);
+  }else drawContactAO(ctx,p.x+3,p.y-1,p.kind==='palm'?p.w*.16:p.rx*1.6,p.ry*1.1,.9);
 }
 // Placeholders drawn in code until Kittanate's drawings arrive (palm, gold lantern, torch);
 // small bush / rock outlines also stand in while a cutout is still loading.
@@ -127,8 +132,7 @@ export function drawTownSceneryShadows(ctx,house,tree,waterfall,view,reduced,res
   for(const p of TOWN_PROP_SITES){
     const art=propArt(p,tree,waterfall,resolveArt);
     if(!onScreen(ctx,p,art))continue;
-    contactShadow(ctx,p);
-    drawTownCastShadow(ctx,art,p.x,p.y,p.w);
+    contactShadow(ctx,p,art);
   }
 }
 export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,reduced,resolveArt) {

@@ -58,5 +58,5 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
   const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
   assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'),'release retains facing and skill sprite cache tokens');
-  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5)$/,'new 2D release invalidates the prior module cache');
+  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5|l1)$/,'new 2D release invalidates the prior module cache');
 });

@@ -83,9 +83,10 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
   const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
   assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'));
-  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5)$/);
-  assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(indexPreload,/-layered-battle9-20261015-r1-k3m$/);
+  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5|l1)$/);
+  // 8f82178 (Codex yama-live) renamed the preload token to yama-live-...-hellN; both schemes keep one shared module URL
+  assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011')||/preload\.js\?v=yama-live-20261015-hell\d+$/.test(indexPreload));
+  assert.match(indexPreload,/-layered-battle9-20261015-r1-k3m$|yama-live-20261015-hell\d+$/);
   assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
   assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
   assert.match(preload, /asset-preload\.js\?v=h1-h5b-skillatk/);

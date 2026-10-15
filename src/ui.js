@@ -2,7 +2,7 @@ import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
 import {mountDungeonView} from './dungeon-view.js';
-import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=k1d';
+import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
@@ -41,7 +41,7 @@ import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bi
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d';
-import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1-k1d';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -1039,7 +1039,8 @@ const ov = $('#ov'), deckBar = $('#deck');
 let pick = { st: null, cr: null, inten: null }; // ต้องเลือกสถานที่ ผู้คุม และความแรงก่อนออกหมาย
 let fx = null;                                  // คะแนน + เสียงพญายม (โชว์ชั่วคราว)
 
-const CH = 82;                                  // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
+const CH_BASE = 82;                             // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
+const charH = () => CH_BASE * mapCharK();      // L1: ตัวละครในเมืองโซน 1 ย่อลง หมุดตามลงด้วย
 const pctX = x => (x / SCENE.w * 100) + '%';
 const pctY = y => (y / SCENE.h * 100) + '%';
 
@@ -1098,7 +1099,7 @@ function followMarks() {
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
     d.dataset.sx = c.x + Number(d.dataset.followDx || 0);
-    d.dataset.sy = c.y - CH - 8;
+    d.dataset.sy = c.y - charH() - 8;
     place(d);
   }
 }
@@ -1136,7 +1137,7 @@ function drawOverlay() {
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
       `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
     ov.appendChild(d); place(d);
-    mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
+    mark('boss', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
   const nira = g.crewOf('nira');
@@ -1149,7 +1150,7 @@ function drawOverlay() {
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
   // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
-  const nm = mark('', nx, ny - CH - 8, '📜',
+  const nm = mark('', nx, ny - charH() - 8, '📜',
     `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.name || s.who)}</b>${rec}`);
   if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
 
@@ -1157,7 +1158,7 @@ function drawOverlay() {
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
     || '<div class="line">...เขาก้มหน้าไม่พูดอะไร</div>';
   const hasNew = s.said.some(x => x.kind === 'truth' || x.kind === 'confess' || x.kind === 'false');
-  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - CH - 8, hasNew ? '❗' : '💬',
+  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - charH() - 8, hasNew ? '❗' : '💬',
     `<span class="who">${esc(s.who)}</span>${said}`);
 }
 
