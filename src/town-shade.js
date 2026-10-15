@@ -137,6 +137,7 @@ function sig(resolve, houseKey, stations, propArt) {
   let s = stations.map(d => d.k).join(',') + '|';
   if (propArt) { const t = TOWN_PROP_SITES.find(p => p.kind === 'torch'); const a = t && propArt(t); s += a && (a.naturalWidth || a.width) ? 'T1' : 'T0'; }
   for (const k of ['town-tree-th', 'town-judgment-th', 'town-house-th', 'town-prop-rock', 'town-prop-palm', 'town-prop-lamp', 'town-prop-torch',
+                   'town-prop-lamp-gold', 'town-tree-red-th', 'town-tree-snow-th',   // K1e sprites load async: rebuild the shadow field when they arrive
                    ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(houseKey)]) { const a = resolve(k); s += a && (a.naturalWidth || a.width) ? '1' : '0'; }
   for (const d of stations) { const b = stationBox(d); s += b ? '1' : '0'; }
   return s;
