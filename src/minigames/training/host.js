@@ -1,6 +1,6 @@
 import { TRAINING_GAMES, createTrainingGame } from './index.js?v=sword-schools-20261010-final';
 import { runPanel } from './panel-host.js?v=sword-schools-20261010-final';
-import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
+import { drawYamaSword, drawYamaSwordIdle, SWORD_DURATION_MS } from '../../yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books';
 
 // Own every listener/frame. Pausing and hidden tabs freeze both clock and input.
 export function runTraining(host, { station, session, paused, alive, onResult, onAbandon,
@@ -58,7 +58,8 @@ export function runTraining(host, { station, session, paused, alive, onResult, o
     if (swordCanvas) {
       const ctx = swordCanvas.getContext('2d'); ctx.clearRect(0, 0, swordCanvas.width, swordCanvas.height);
       const elapsed = (v.time - swordAt) * 1000;
-      drawYamaSword(ctx, heroStyle, 145, 230, 175, elapsed < SWORD_DURATION_MS ? elapsed : 0);
+      if(elapsed>=0 && elapsed<SWORD_DURATION_MS)drawYamaSword(ctx,heroStyle,145,230,175,elapsed);
+      else if(!drawYamaSwordIdle(ctx,heroStyle,145,230,175,v.time*1000))drawYamaSword(ctx,heroStyle,145,230,175,0);
     }
     action.disabled = cool.disabled = pause;
     gauge.value = v.kind === 'fire' ? v.heat : v.kind === 'stone' ? v.lift : v.green ? 100 : 0;

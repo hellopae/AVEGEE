@@ -351,7 +351,10 @@
       "img/map-zone1/battle-forest-v1.webp",
       "img/map-zone1/dungeon-th-asia-forest-edge-v1.webp",
       "img/map-zone1/dungeon-th-asia-gorge-bridge-v1.webp",
-      "img/map-zone1/dungeon-th-asia-eastern-gate-v1.webp"
+      "img/map-zone1/dungeon-th-asia-eastern-gate-v1.webp",
+      "img/yama-animation-v1/th/book-idle.webp",
+      "img/yama-animation-v1/th/book-walk.webp",
+      "img/yama-animation-v1/th/sword-idle.webp"
     ],
     "asia": [
       "img/Asia/BG-Dab-asia.webp",
@@ -494,7 +497,10 @@
       "img/yama-sword-v4/hero-yama-asia-sword.webp",
       "img/map-zone1/dungeon-asia-west-chain-pass-v1.webp",
       "img/map-zone1/dungeon-asia-west-ruined-fort-v1.webp",
-      "img/map-zone1/dungeon-asia-west-western-gate-v1.webp"
+      "img/map-zone1/dungeon-asia-west-western-gate-v1.webp",
+      "img/yama-animation-v1/asia/book-idle.webp",
+      "img/yama-animation-v1/asia/book-walk.webp",
+      "img/yama-animation-v1/asia/sword-idle.webp"
     ],
     "west": [
       "img/West/BG-Dab-west.webp",
@@ -633,7 +639,10 @@
       "img/frontier-west-hypnosis-v1.webp",
       "img/map-zone1/dungeon-west-cyber-mist-forest-v1.webp",
       "img/map-zone1/dungeon-west-cyber-machine-road-v1.webp",
-      "img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp"
+      "img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp",
+      "img/yama-animation-v1/west/book-idle.webp",
+      "img/yama-animation-v1/west/book-walk.webp",
+      "img/yama-animation-v1/west/sword-idle.webp"
     ],
     "cyberhell": [
       "img/CyberHell/BG-Dab-cyberhell.webp",
@@ -772,7 +781,10 @@
       "img/theme-v4/map-cyberhell.webp",
       "img/theme-v4/st-lokan-cyberhell.webp",
       "img/theme-v4/st-tea-cyberhell.webp",
-      "img/yama-sword-v4/hero-yama-cyberhell-sword.webp"
+      "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
+      "img/yama-animation-v1/cyberhell/book-idle.webp",
+      "img/yama-animation-v1/cyberhell/book-walk.webp",
+      "img/yama-animation-v1/cyberhell/sword-idle.webp"
     ]
   }
 }

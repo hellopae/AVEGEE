@@ -571,7 +571,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const heroH = U * HERO_H;
       if (swinging && ['dab','ngiw'].includes(def.k) && drawYamaSword(ctx, g.outfit || g.zone, px(P.x), py(P.y), heroH,
           SWORD_DURATION_MS - (g.swingUntil - Date.now()), P.face)) return;
-      if (!(moving && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, walkDrawDistance(walkDist, heroH), P.face, direction))) {
+      if (!(!sitting && !swinging && drawHeroWalk(ctx, px(P.x), py(P.y), heroH, moving ? walkDrawDistance(walkDist, heroH) : 0, P.face, direction, moving))) {
         const gait = Math.floor(t / 180) % 4;
         const hop = moving && gait % 2 ? U * 0.010 : 0;
         const stretch = moving ? (gait % 2 ? 1.045 : 0.965) : 1;

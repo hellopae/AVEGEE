@@ -9,6 +9,7 @@ import { reviewStationBox } from './map-art-v5.js';
 import { regionalSpiritAliases, SPIRIT_ARCHETYPES } from './regional-spirits.js';
 import { crewWalkSheet } from './crew-walk-assets.js';
 import { heroWalkSheet } from './hero-walk-assets.js';
+import { drawYamaBook } from './yama-animation.js?v=20261015-live-v1';
 
 const CACHE = new Map();
 const HERO_WALK_STRIDE = 14; // world units per sprite frame; walk speed stays unchanged
@@ -472,8 +473,11 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
   ctx.fillText(glyph, x, y - h * 0.1 + bob);
 }
 
-/** สี่เฟรมในภาพแถบเดียว; คืน false เมื่อชุดที่สวมยังไม่มีภาพเดิน */
-export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face < 0 ? 'left' : 'right') {
+/** Eight drawn walk poses or animated book idle; retain legacy art while a sheet loads. */
+export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face < 0 ? 'left' : 'right', moving = distance > 0) {
+  if (drawYamaBook(ctx, heroStyleOf() || zoneOf(), x, y, h, distance, direction, moving)) {
+    return true;
+  }
   const sheet = heroWalkSheet(heroStyleOf() || zoneOf());
   const four = img('hero-yama-walk-4dir');
   if (four?.naturalWidth && four?.naturalHeight) {
