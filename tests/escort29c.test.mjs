@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
-import { resetWalk } from '../src/walk.js';
+import { resetWalk } from '../src/walk.js?v=k1d';
 import { afterlifeWalkPosition } from '../src/scene.js';
 import { escortCrewPosition, ESCORT_LEAD } from '../src/escort.js';
 

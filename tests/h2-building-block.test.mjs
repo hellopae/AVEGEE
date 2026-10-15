@@ -32,7 +32,7 @@ globalThis.document = {documentElement:{}, createElement:() => ({getContext:() =
 const {STATIONS,SPOTS,QUEUE_LINE,syncSceneZone} = await import('../src/data.js');
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
-const walk = await import('../src/walk.js');
+const walk = await import('../src/walk.js?v=k1d');
 await new Promise(resolve=>setImmediate(resolve));
 
 // H2 (10 ต.ค. 2569) — คุณเป้: ตัวละครเดินทับตัวอาคารไม่ได้ (เดิม 2.5D ชนแค่แถบฐาน เดินเข้า "หลัง" อาคารได้)

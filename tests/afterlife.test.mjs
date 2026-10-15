@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS, syncSceneZone } from '../src/data.js';
-import { canWalk, resetWalk } from '../src/walk.js';
+import { canWalk, resetWalk } from '../src/walk.js?v=k1d';
 import { afterlifeWalkPosition, hitActor } from '../src/scene.js';
 
 const station = k => ({ def:STATIONS.find(x => x.k === k), slots:[], crewK:null, build:0 });

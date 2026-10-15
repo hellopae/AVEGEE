@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
 import {STATIONS,FRONTIER} from '../src/data.js';
-import {townDefaultZoom,townZoomLevels,townNearbyAction,townSites} from '../src/town-map.js';
+import {townDefaultZoom,townZoomLevels,townNearbyAction,townSites} from '../src/town-map.js?v=k1d';
 globalThis.Image=class {};
 test('only zone1 opens in town follow view; other branches retain overview and zoom',()=>{
  assert.equal(townDefaultZoom('th'),2);assert.equal(townZoomLevels('th')[1],3.5);

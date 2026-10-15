@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TOWN_PROP_SITES, TOWN_PROP_COLLIDERS, TOWN_HOUSE_SITES, TOWN_HOUSES, TOWN_STATION_SITES,
   TOWN_SPOTS, TOWN_CREW, TOWN_QUEUE, TOWN_WALK_MASK, townFloorAt, townInRect, townInPolygon,
-  townContains, townPropBlocks } from '../src/town-layout.js';
+  townContains, townPropBlocks } from '../src/town-layout.js?v=k1d';
 
 // K1d: scenery stands where the owner drew it on the painted map. Roots are tiny, so the foot may sit on
 // the edge of a plaza, but never on a door, crew post or queue spot.

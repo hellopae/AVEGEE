@@ -7,9 +7,9 @@ import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { CREW, FRONTIER, GUARD_POST, MERCHANT, MOB, NO_WALK, QUEUE_LINE, SCENE,
          SPOTS, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
-import { buildWalk, canWalk, findPath, resetWalk, setBlocks, walkGridSize } from '../src/walk.js';
+import { buildWalk, canWalk, findPath, resetWalk, setBlocks, walkGridSize } from '../src/walk.js?v=k1d';
 
-import { TOWN_SIZE, TOWN_SPOTS, TOWN_GUARD_POST, TOWN_STATION_SITES, TOWN_HOUSES } from '../src/town-layout.js';
+import { TOWN_SIZE, TOWN_SPOTS, TOWN_GUARD_POST, TOWN_STATION_SITES, TOWN_HOUSES } from '../src/town-layout.js?v=k1d';
 
 globalThis.Image = class {};
 

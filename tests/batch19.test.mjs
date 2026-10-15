@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { GUARD_POST, MOB, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
-import { canWalk, findPath, resetWalk } from '../src/walk.js';
+import { canWalk, findPath, resetWalk } from '../src/walk.js?v=k1d';
 
-import { TOWN_RIVER_Y } from '../src/town-layout.js';
+import { TOWN_RIVER_Y } from '../src/town-layout.js?v=k1d';
 
 globalThis.Image = class {};
 

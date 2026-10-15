@@ -32,7 +32,7 @@ globalThis.document = {documentElement:{}, createElement:() => ({getContext:() =
 const {STATIONS,ZONES,ZONE_ENTRY,syncSceneZone} = await import('../src/data.js');
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
-const walk = await import('../src/walk.js');
+const walk = await import('../src/walk.js?v=k1d');
 const {STORY} = await import('../src/story.js');
 await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
 import {soulPortrait} from '../src/soul-portraits.js';
 import {SPOTS} from '../src/data.js';
-import {resetWalk,setBlocks,setNpcDiscs,canWalk,findPath} from '../src/walk.js';
+import {resetWalk,setBlocks,setNpcDiscs,canWalk,findPath} from '../src/walk.js?v=k1d';
 globalThis.Image=class {};
 const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};return g;};
 test('mirrors unlock only after beating zone-one tester and preserve the reward through save/restore',()=>{

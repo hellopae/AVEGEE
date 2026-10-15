@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { STATIONS, ROOMS, ZONES, isTrialDestination } from '../src/data.js';
-import { resetWalk } from '../src/walk.js';
+import { resetWalk } from '../src/walk.js?v=k1d';
 
 globalThis.Image = class {};
 

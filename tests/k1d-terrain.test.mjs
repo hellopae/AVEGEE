@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { TOWN_SIZE } from '../src/town-layout.js';
+import { TOWN_SIZE } from '../src/town-layout.js?v=k1d';
 import { townChunkRect, townChunkUrl, TOWN_TERRAIN_COLS, TOWN_TERRAIN_ROWS, TOWN_TERRAIN_PREVIEW } from '../src/town-terrain.js';
 
 const file = u => fileURLToPath(new URL('../' + u, import.meta.url));

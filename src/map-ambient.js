@@ -1,6 +1,6 @@
 import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js?v=mapfx';
 import { zoneStyle } from './scene-style.js';
-import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js';
+import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js?v=k1d';
 // Decorative motion over painted map art. Never changes collision or gameplay state.
 const cache = new WeakMap();
 const frac = n => n - Math.floor(n);

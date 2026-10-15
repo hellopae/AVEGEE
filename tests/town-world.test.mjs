@@ -14,8 +14,8 @@ Object.defineProperty(globalThis,'localStorage',{ configurable:true,value:{
 
 const { createGame } = await import('../src/game.js');
 const { SCENE,SPOTS,STATIONS,CREW,FRONTIER,MERCHANT,GUARD_POST,ZONES,MAP_BUILDING_SCALE } = await import('../src/data.js');
-const { TOWN_SIZE,TOWN_STATION_SITES,TOWN_SPOTS,TOWN_CREW,TOWN_HOUSES } = await import('../src/town-layout.js');
-const { canWalk,findPath,resetWalk,setBlocks,setNpcDiscs } = await import('../src/walk.js');
+const { TOWN_SIZE,TOWN_STATION_SITES,TOWN_SPOTS,TOWN_CREW,TOWN_HOUSES } = await import('../src/town-layout.js?v=k1d');
+const { canWalk,findPath,resetWalk,setBlocks,setNpcDiscs } = await import('../src/walk.js?v=k1d');
 const clone = value => structuredClone(value);
 
 test('new game starts in the large city with city station and NPC anchors',()=>{

@@ -3,10 +3,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { MERCHANT, MOB, QUEUE_LINE, SPOTS, STATIONS, ZONES } from '../src/data.js';
-import { canWalk, findPath } from '../src/walk.js';
+import { canWalk, findPath } from '../src/walk.js?v=k1d';
 import { hitActor, hitStation } from '../src/scene.js';
 
-import { TOWN_QUEUE } from '../src/town-layout.js';
+import { TOWN_QUEUE } from '../src/town-layout.js?v=k1d';
 
 globalThis.Image = class {};
 

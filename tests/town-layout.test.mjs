@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TOWN_SIZE, TOWN_PLAZA, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW,
   TOWN_GUARD_POST,TOWN_CHALLENGE,TOWN_MERCHANT,TOWN_FRONTIER,
-  TOWN_QUEUE,TOWN_ENTRY,TOWN_HOUSES,TOWN_STAIRS,TOWN_MAP_VERSION,townContains } from '../src/town-layout.js';
+  TOWN_QUEUE,TOWN_ENTRY,TOWN_HOUSES,TOWN_STAIRS,TOWN_MAP_VERSION,townContains } from '../src/town-layout.js?v=k1d';
 
 test('large city has connected avenues, yards and waterfront entrances',()=>{
   assert.ok(TOWN_SIZE.w*TOWN_SIZE.h>1678*937*6,'world has at least six times the old area');

@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { FRONTIER, ZONES, ZONE_EVENTS, isFrontierBreachEvent } from '../src/data.js';
-import { resetWalk } from '../src/walk.js';
+import { resetWalk } from '../src/walk.js?v=k1d';
 
 globalThis.Image = class {};
 

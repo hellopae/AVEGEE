@@ -39,7 +39,7 @@ globalThis.document = { documentElement:{}, createElement:() => ({ getContext:()
 const { createGame } = await import('../src/game.js');
 const { SCENE, SPOTS, STATIONS, MERCHANT, FRONTIER } = await import('../src/data.js');
 const { bindZone, blockRectsOf } = await import('../src/art.js');
-const { canWalk, findPath, resetWalk, setBlocks, setNpcDiscs } = await import('../src/walk.js');
+const { canWalk, findPath, resetWalk, setBlocks, setNpcDiscs } = await import('../src/walk.js?v=k1d');
 const { INTERACTION_REACH } = await import('../src/proximity.js');
 const { BUILD_REACH } = await import('../src/scene.js');
 await new Promise(resolve => setImmediate(resolve));

@@ -5,8 +5,8 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { CREW, FRONTIER, GUARD_POST, MERCHANT, QUEUE_LINE, SPOTS, STATIONS, ZONES, ZONE_ENTRY, syncSceneZone } from '../src/data.js';
-import { buildWalk, canWalk, findPath, resetWalk, setBlocks } from '../src/walk.js';
-import { TOWN_ENTRY } from '../src/town-layout.js';
+import { buildWalk, canWalk, findPath, resetWalk, setBlocks } from '../src/walk.js?v=k1d';
+import { TOWN_ENTRY } from '../src/town-layout.js?v=k1d';
 
 globalThis.Image = class {};
 

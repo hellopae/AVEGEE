@@ -1,4 +1,4 @@
-import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY } from './town-layout.js';
+import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY } from './town-layout.js?v=k1d';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
 

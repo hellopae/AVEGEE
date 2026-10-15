@@ -2,7 +2,7 @@
 // cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
-import {TOWN_SIZE} from './town-layout.js';
+import {TOWN_SIZE} from './town-layout.js?v=k1d';
 
 export const TOWN_TERRAIN_DIR = 'img/map-zone1/v2/';
 export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v2-preview.webp';

@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { SCENE, SPOTS, FRONTIER, GUARD_POST, ZONE_ENTRY } from '../src/data.js';
-import { canWalk, canWalkAvoid, findPath, stepTo, nearestWalk, setBlocks, setNpcDiscs, resetWalk, inNpcDisc, NPC_RX, NPC_RY } from '../src/walk.js';
+import { canWalk, canWalkAvoid, findPath, stepTo, nearestWalk, setBlocks, setNpcDiscs, resetWalk, inNpcDisc, NPC_RX, NPC_RY } from '../src/walk.js?v=k1d';
 import { standPoints } from '../src/npc-stand.js';
 import { frontierPath, frontierSegmentClear, frontierWalkable } from '../src/frontier-navigation.js';
 

@@ -42,7 +42,7 @@ const { createGame } = await import('../src/game.js');
 const { STATIONS, ZONES, SPOTS, SCENE, BUILD_TIME, REPAIR_TIME, syncSceneZone } = await import('../src/data.js');
 const { render } = await import('../src/scene.js');
 const { bindZone, hiddenAt } = await import('../src/art.js');
-const { buildWalk, canWalk, findPath, nearestWalk, resetWalk, setBlocks } = await import('../src/walk.js');
+const { buildWalk, canWalk, findPath, nearestWalk, resetWalk, setBlocks } = await import('../src/walk.js?v=k1d');
 await new Promise(resolve => setImmediate(resolve));
 
 function setup(zone = 'th') {

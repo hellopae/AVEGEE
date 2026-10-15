@@ -1,6 +1,6 @@
 // Every scenery object has its own sprite, ground shadow and collision root.
 // Ground painting contains no object silhouettes; foot depth governs occlusion.
-import { TOWN_HOUSE_SITES, TOWN_PROP_SITES } from './town-layout.js';
+import { TOWN_HOUSE_SITES, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawLocalLight } from './scene-style.js';
 
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));

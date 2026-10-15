@@ -27,10 +27,10 @@ globalThis.document = {documentElement:{}, createElement:() => ({getContext:() =
   };
 }})};
 const {STATIONS,ZONES,FRONTIER,ZONE_ENTRY,SCENE,SPOTS,syncSceneZone} = await import('../../src/data.js');
-const {townContains} = await import('../../src/town-layout.js');
+const {townContains} = await import('../../src/town-layout.js?v=k1d');
 const {createGame} = await import('../../src/game.js');
 const art = await import('../../src/art.js');
-const walk = await import('../../src/walk.js');
+const walk = await import('../../src/walk.js?v=k1d');
 await new Promise(resolve=>setImmediate(resolve));
 
 

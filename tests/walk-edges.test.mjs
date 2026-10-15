@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {createGame} from '../src/game.js';import {canWalk,findPath,resetWalk,setBlocks} from '../src/walk.js';
-import {TOWN_PROP_SITES} from '../src/town-layout.js';
+import {createGame} from '../src/game.js';import {canWalk,findPath,resetWalk,setBlocks} from '../src/walk.js?v=k1d';
+import {TOWN_PROP_SITES} from '../src/town-layout.js?v=k1d';
 globalThis.Image=class {};
 // K1d: the narrow closed gap is now the root of the banyan beside the great stair (a solid ellipse on open plaza).
 test('adjacent coarse cells cannot shortcut the narrow closed root between two open sides',()=>{

@@ -1,20 +1,20 @@
 import { drawLocalLight } from './scene-style.js';
-import { TOWN_DAIS } from './town-layout.js';
+import { TOWN_DAIS } from './town-layout.js?v=k1d';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
-import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js';
+import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=k1d';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js?v=k1d';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
-import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapfx';
+import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapfx-k1d';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawVignette, drawStationShadow, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
-import { buildWalk } from './walk.js';
+import { buildWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';

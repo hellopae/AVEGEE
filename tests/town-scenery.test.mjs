@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {TOWN_TREES,TOWN_WATERFALL,TOWN_EDGE_HOMES,sceneryPoint} from '../src/town-scenery.js';
-import {townContains,TOWN_PLAZA,TOWN_SIZE} from '../src/town-layout.js';
-import {townCameraRect,townHouseDepth} from '../src/town-map.js';
+import {townContains,TOWN_PLAZA,TOWN_SIZE} from '../src/town-layout.js?v=k1d';
+import {townCameraRect,townHouseDepth} from '../src/town-map.js?v=k1d';
 
 test('camera world rectangle stays inside the map at edges, with a true full-map overview',()=>{
   for(const zoom of [1,3.5,5,6.5])for(const [x,y]of [[0,0],[3840,2560],[1920,1250]]){

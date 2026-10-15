@@ -9,7 +9,7 @@ import { AUDIO, saveAudio, unlock, sfx, powerSfx, bgm, syncBgm, primeAudio, warm
 import { createGame, loadSave, clearSave, sameLabel } from '../../src/game.js';
 import { render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from '../../src/scene.js';
 import { makeRoom } from '../../src/room.js';
-import { stepTo, nearestWalk } from '../../src/walk.js';
+import { stepTo, nearestWalk } from '../../src/walk.js?v=k1d';
 import { soulKey, artUrl, zoneImg, bindZone, bindHeroStyle, warmZone } from '../../src/art.js';
 import { MINIGAMES } from '../../src/minigames/index.js';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
 import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from '../../src/frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14

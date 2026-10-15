@@ -3,7 +3,7 @@
 // (k1-placement-Kittanate.jpg, 2500x1667 -> world = x * 1.536).
 // Ground is painted; here live only invisible rules: what can be walked on (mask), where each
 // building / house / decoration stands (foot point), and the anchors used by the game.
-import { TOWN_WALK_CELL, TOWN_WALK_COLS, TOWN_WALK_ROWS, TOWN_WALK_RUNS } from './town-walkmask.js';
+import { TOWN_WALK_CELL, TOWN_WALK_COLS, TOWN_WALK_ROWS, TOWN_WALK_RUNS } from './town-walkmask.js?v=k1d';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.

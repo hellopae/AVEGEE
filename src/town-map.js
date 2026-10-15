@@ -1,6 +1,6 @@
 // Zone 1 town presentation. Existing world coordinates, collision and save data stay authoritative.
 import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
-import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js';
+import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
 
 export const isTownZone = zone => zone === 'th';
 export const townZoomLevels = zone => isTownZone(zone) ? [1, 3.5, 5, 6.5] : [1, 2.5];

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { SCENE } from '../src/data.js';
-import {isTownZone,townZoomLevels,townDefaultZoom} from '../src/town-map.js';
+import {isTownZone,townZoomLevels,townDefaultZoom} from '../src/town-map.js?v=k1d';
 import { mapViewport, setMapViewport, prepareMapCanvas, toScene } from '../src/scene.js';
 
 test('M1: camera edges and pointer round trips at both zoom levels, with letterboxing', () => {

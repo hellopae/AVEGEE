@@ -1,4 +1,4 @@
-import { TOWN_SIZE, townContains } from './town-layout.js';
+import { TOWN_SIZE, townContains } from './town-layout.js?v=k1d';
 // walk.js — พื้นที่ที่เดินได้ (6 ก.ย. 2569)
 // เดิมยมบาทเดินทะลุลาวากับแม่น้ำวิญญาณได้ ทำให้ฉากเสียความหมาย
 //
