@@ -1,5 +1,7 @@
 import { SWORD_SHEETS } from './yama-sword-v2-assets.js?v=20261009-f2-merge-f3-f4-sala-books';
 import { weaponSpriteSrc } from './weapons.js';
+import { drawYamaSwordIdle } from './yama-animation.js?v=20261015-live-v1';
+export { drawYamaSwordIdle } from './yama-animation.js?v=20261015-live-v1';
 
 // One physical slash, synchronized to the existing 580 ms battle lunge.
 // Wind up visibly, cut quickly through contact, hold the low follow-through, then recover.
@@ -106,6 +108,34 @@ export function mountBattleSword(stage, style, startedAt, weapon = null) {
       const center = flipped ? 1-box.center : box.center;
       if (drawYamaSword(ctx, style, w*(1+center), h*(1+box.bottom), h*(box.bottom-box.top), elapsed, 1, weapon)) {
         standing.style.visibility = 'hidden'; canvas.dataset.frame = String(swordFrame(elapsed));
+      }
+    }
+    requestAnimationFrame(render);
+  };
+  render();
+}
+
+/** Resting battle pose uses the same standing image only as a size/feet reference. */
+export function mountBattleSwordIdle(stage, style) {
+  const actor=stage?.querySelector('.fig.you'),standing=actor?.querySelector('img:not(.fx)');
+  if(!standing || actor.classList.contains('atk') || actor.classList.contains('raging'))return;
+  const canvas=document.createElement('canvas');canvas.className='yama-sword-idle';canvas.setAttribute('aria-hidden','true');
+  Object.assign(canvas.style,{position:'absolute',pointerEvents:'none',maxWidth:'none',zIndex:'1'});
+  actor.append(canvas);const ctx=canvas.getContext('2d');
+  const render=()=>{
+    if(!canvas.isConnected)return;
+    if(standing.complete && standing.naturalWidth){
+      const r=standing.getBoundingClientRect(),ar=actor.getBoundingClientRect(),box=standingBox(standing);
+      const scale=Math.min(r.width/standing.naturalWidth,r.height/standing.naturalHeight);
+      const w=standing.naturalWidth*scale,h=standing.naturalHeight*scale;
+      const x0=r.left-ar.left+(r.width-w)/2,y0=r.top-ar.top+r.height-h;
+      const width=Math.ceil(w*3),height=Math.ceil(h*2);
+      if(canvas.width!==width || canvas.height!==height){canvas.width=width;canvas.height=height}
+      ctx.clearRect(0,0,width,height);
+      Object.assign(canvas.style,{left:`${x0-w}px`,top:`${y0-h}px`,width:`${w*3}px`,height:`${h*2}px`});
+      const flipped=getComputedStyle(standing).transform.startsWith('matrix(-1');
+      if(drawYamaSwordIdle(ctx,style,w*(1+(flipped?1-box.center:box.center)),h*(1+box.bottom),h*(box.bottom-box.top))){
+        standing.style.visibility='hidden';canvas.dataset.animated='true';
       }
     }
     requestAnimationFrame(render);

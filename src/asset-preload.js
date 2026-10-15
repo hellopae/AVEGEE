@@ -38,6 +38,8 @@ const SPLIT_RULES = [
   [0, 0, /^img\/(scene|tile-|tex-)/],
   [0, 0, /^img\/map-v5\//],
   [0, 0, /^img\/theme-v4\/(map-|st-)/],
+  [0, 0, /^img\/yama-animation-v1\/[^/]+\/book-/],
+  [1, 0, /^img\/yama-animation-v1\//],
   [0, 0, /^img\/hero-yama(-atk(-[LR])?|-sit(-sip)?|-cry|-walk|-walk-4dir-v2|-profile)?\.(png|webp)$/],
   [0, 0, /^img\/(Asia|West|CyberHell)\/hero-yama-(asia|west|cyberhell)-atk\.png$/],
   [0, 0, /^img\/hero-boss\.png$/],

@@ -105,7 +105,7 @@ test('frontier: speed and walk frames independent of frame rate; background resa
       const seq = [];
       for (let t = 0; t < 600; t += frame) {
         calls.length = 0; rafCb(clock += Math.min(frame, 600 - t));
-        const w = calls.find(c => c.length === 9 && c[0]?.src?.includes('walk-4dir'));
+        const w = calls.find(c => c.length === 9 && /walk-4dir|book-walk\.webp/.test(c[0]?.src || ''));
         seq.push(!!w);
       }
       key('keyup', 's');

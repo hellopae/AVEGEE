@@ -1,4 +1,4 @@
-import { drawYamaSword, SWORD_DURATION_MS } from '../../yama-sword.js';
+import { drawYamaSword, drawYamaSwordIdle, SWORD_DURATION_MS } from '../../yama-sword.js';
 import { sfx, unlock, AUDIO } from '../../sfx.js';
 export const SWORD_THEMES={
   th:{edge:'#d6ab65',text:'#fff0cf',lanes:['#315244','#693b3a','#7a6239','#354c60','#70503b']},
@@ -86,7 +86,8 @@ export function mount(host,engine,ctx) {
       }
       const elapsed=(v.time-slashAt)*1000;
       c.save();c.translate(slicing?190:500,slicing?530:370);c.scale(aspect,1);if(!slicing)c.globalAlpha=.85;
-      drawYamaSword(c,ctx.heroStyle||zone,0,0,slicing?230:185,elapsed<SWORD_DURATION_MS?elapsed:0,1,ctx.weapon?.());c.restore();
+      if(elapsed>=0 && elapsed<SWORD_DURATION_MS)drawYamaSword(c,ctx.heroStyle||zone,0,0,slicing?230:185,elapsed,1,ctx.weapon?.());
+      else if(!drawYamaSwordIdle(c,ctx.heroStyle||zone,0,0,slicing?230:185,v.time*1000))drawYamaSword(c,ctx.heroStyle||zone,0,0,slicing?230:185,0,1,ctx.weapon?.());c.restore();
       if(slicing)for(const p of v.logs){c.save();c.translate(p.x*1000,p.y*560);c.scale(aspect,1);c.rotate(p.angle+p.age*.55);const split=p.state==='hit',off=split?(v.time-p.hitAt)*160:0;c.globalAlpha=split?Math.max(0,1-(v.time-p.hitAt)/.4):1;
         if(log.complete&&log.naturalWidth){if(split){c.drawImage(log,0,0,log.width/2,log.height,-85-off,-50,85,100);c.drawImage(log,log.width/2,0,log.width/2,log.height,off,-50,85,100);}else c.drawImage(log,-85,-50,170,100);}
         else {c.fillStyle='#76482b';c.fillRect(-55,-24,110,48);c.fillStyle='#d5a96a';c.beginPath();c.ellipse(-55,0,12,24,0,0,Math.PI*2);c.fill();}c.restore();

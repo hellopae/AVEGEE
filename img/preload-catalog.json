@@ -339,7 +339,10 @@
       "img/town-district/house-right-one-v1.webp",
       "img/town-district/house-right-two-v1.webp",
       "img/map-zone1/prop-rock-v1.webp",
-      "img/map-zone1/v2/zone1-terrain-v2-preview.webp"
+      "img/map-zone1/v2/zone1-terrain-v2-preview.webp",
+      "img/yama-animation-v1/th/book-idle.webp",
+      "img/yama-animation-v1/th/book-walk.webp",
+      "img/yama-animation-v1/th/sword-idle.webp"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",
@@ -472,7 +475,10 @@
       "img/theme-v4/st-lokan-asia.webp",
       "img/theme-v4/st-tea-asia.webp",
       "img/yama-sword-v4/hero-yama-asia-sword.webp",
-      "img/Asia/hero-yama-asia-rage.png"
+      "img/Asia/hero-yama-asia-rage.png",
+      "img/yama-animation-v1/asia/book-idle.webp",
+      "img/yama-animation-v1/asia/book-walk.webp",
+      "img/yama-animation-v1/asia/sword-idle.webp"
     ],
     "west": [
       "img/krata-minigame/plerng-west-training-v2.png",
@@ -602,7 +608,10 @@
       "img/theme-v4/st-tea-west.webp",
       "img/yama-sword-v4/hero-yama-west-sword.webp",
       "img/frontier-west-hypnosis-v1.webp",
-      "img/West/hero-yama-west-rage.png"
+      "img/West/hero-yama-west-rage.png",
+      "img/yama-animation-v1/west/book-idle.webp",
+      "img/yama-animation-v1/west/book-walk.webp",
+      "img/yama-animation-v1/west/sword-idle.webp"
     ],
     "cyberhell": [
       "img/krata-minigame/plerng-cyberhell-training-v2.png",
@@ -737,7 +746,10 @@
       "img/theme-v4/st-lokan-cyberhell.webp",
       "img/theme-v4/st-tea-cyberhell.webp",
       "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
-      "img/CyberHell/hero-yama-cyberhell-rage.png"
+      "img/CyberHell/hero-yama-cyberhell-rage.png",
+      "img/yama-animation-v1/cyberhell/book-idle.webp",
+      "img/yama-animation-v1/cyberhell/book-walk.webp",
+      "img/yama-animation-v1/cyberhell/sword-idle.webp"
     ]
   }
 }
