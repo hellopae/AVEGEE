@@ -81,7 +81,9 @@ export function drawTownTerrain(ctx,resolve=()=>null,time=0,reduced=true) {
   const m=ctx.getTransform();
   if(!m||m.b||m.c||!Number.isFinite(m.a)||!Number.isFinite(m.d)||m.a<=0||m.d<=0){paintTerrain(ctx,resolve,time,reduced);return;}
   const density=Math.max(m.a,m.d),level=density<=.5?.5:density<=1?1:density<=2?2:density<=4?4:8;
-  const CHUNK=level<=1?512:level<=2?256:128;
+  // K3: every chunk repaints the whole world vector scene (~25-50 ms each), so the overview, which shows the
+  // entire world, used 40 chunks of 512 (1-2.6 s stall on first open). 1280 gives 6 chunks, same pixel density.
+  const CHUNK=level<=1?1280:level<=2?256:128;
   const left=Math.max(0,Math.floor(-m.e/m.a/CHUNK)),top=Math.max(0,Math.floor(-m.f/m.d/CHUNK));
   const right=Math.min(Math.ceil(TOWN_SIZE.w/CHUNK),Math.ceil((ctx.canvas.width-m.e)/m.a/CHUNK));
   const bottom=Math.min(Math.ceil(TOWN_SIZE.h/CHUNK),Math.ceil((ctx.canvas.height-m.f)/m.d/CHUNK));
