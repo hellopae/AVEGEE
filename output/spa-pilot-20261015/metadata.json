@@ -1,0 +1,88 @@
+{
+  "generator": "Python/Pillow assembly; NOT exported by SPA",
+  "source": "img/yama-sword-v3/hero-yama-th-sword.webp",
+  "source_sha256": "10c6eb8e9d65d3ebd1d0e7bd01ba5b200c372bdcbef968dcbf983e2dc1875178",
+  "sheet": {
+    "file": "attack-sheet.png",
+    "width": 5120,
+    "height": 640
+  },
+  "anchor": {
+    "x": 240,
+    "y": 570
+  },
+  "bodyHeight": 355,
+  "frames": [
+    {
+      "file": "frames/attack-00.png",
+      "x": 0,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 85
+    },
+    {
+      "file": "frames/attack-01.png",
+      "x": 640,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 80
+    },
+    {
+      "file": "frames/attack-02.png",
+      "x": 1280,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 60
+    },
+    {
+      "file": "frames/attack-03.png",
+      "x": 1920,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 35
+    },
+    {
+      "file": "frames/attack-04.png",
+      "x": 2560,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 40
+    },
+    {
+      "file": "frames/attack-05.png",
+      "x": 3200,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 80
+    },
+    {
+      "file": "frames/attack-06.png",
+      "x": 3840,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 100
+    },
+    {
+      "file": "frames/attack-07.png",
+      "x": 4480,
+      "y": 0,
+      "w": 640,
+      "h": 640,
+      "duration_ms": 100
+    }
+  ],
+  "duration_ms": 580,
+  "checks": {
+    "source_dimensions": true,
+    "binary_pixels_roundtrip": true,
+    "binary_timing_roundtrip": true,
+    "aseprite_runtime_verified": false
+  }
+}

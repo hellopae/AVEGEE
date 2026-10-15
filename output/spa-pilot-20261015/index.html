@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yama · Animation pilot</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;color:#eee8dc;background:#10131c}*{box-sizing:border-box}body{margin:0 auto;max-width:1120px;padding:36px 24px}small,.eyebrow{color:#d0ae6b;letter-spacing:.15em}h1{font-size:clamp(26px,5vw,42px);margin:12px 0}p{color:#b8bcc9;line-height:1.8}.status{border-left:3px solid #d0ae6b;background:#202334;padding:12px 16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}.card{background:#191e2c;border:1px solid #30384a;border-radius:16px;overflow:hidden}.card h2,.card p{margin:16px 20px}.card p{font-size:14px;min-height:48px}canvas{display:block;width:100%;height:auto;background:radial-gradient(ellipse at 45% 70%,#303346,#181d2a 70%)}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:22px 0}button,select,a.download{background:#d2b276;color:#151923;border:0;padding:11px 18px;border-radius:8px;font:inherit;cursor:pointer;text-decoration:none}label{color:#c9cbd3}.meta{font-size:14px}img{width:100%;border-radius:12px}footer{margin-top:30px;color:#9fa6b7;font-size:14px;line-height:1.9}@media(max-width:700px){.grid{grid-template-columns:1fr}}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid white;outline-offset:3px}
+</style>
+<div class="eyebrow">AVEGEE / ISOLATED ART EXPERIMENT</div>
+<h1>Yama — ลองจังหวะการเคลื่อนไหว</h1><p><a href="map-book-v1/" style="color:#ddbd7e">ดูท่ายืนกอดหนังสือและเปรียบเทียบท่าเดินบนแผนที่ →</a></p>
+<p>ท่ายืนพักวาดใหม่ 6 เฟรม พร้อมท่าฟันดาบเดิม 8 เฟรม สำหรับเปรียบเทียบ</p>
+<div class="status">ท่ายืนพัก: วาดเฟรมใหม่ด้วย ImageGen · เล่นภาพแต่ละท่าโดยไม่มีการยืด–หดตัวละคร · ยังไม่ได้ส่งออกด้วย SPA</div>
+<div class="controls"><button id="pause">หยุดภาพ</button><button id="replay">เล่นโจมตีใหม่</button><label>ความเร็ว <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></label><label><input type="checkbox" id="fx" checked> ประกายดาบ</label><label><input type="checkbox" id="anchor" checked> จุดยึดเท้า</label></div>
+<div class="grid"><section class="card"><h2>01 / ยืนหายใจ</h2><canvas id="idle" width="640" height="640" aria-label="พรีวิว Yama ยืนหายใจ"></canvas><p>เฟรมวาดใหม่: เปลี่ยนท่าไหล่ แขน มุมดาบ และกะพริบตา · ไม่ยืด–หดภาพ</p></section><section class="card"><h2>02 / ฟันดาบ</h2><canvas id="attack" width="640" height="640" aria-label="พรีวิว Yama ฟันดาบ"></canvas><p id="frame">กำลังโหลดภาพ…</p></section></div>
+<p class="meta">8 เฟรม · ท่าโจมตี 580 ms · เว้นจังหวะ 900 ms ระหว่างรอบ · ประกายเพิ่มจาก Canvas แยกจากภาพต้นฉบับ</p>
+<h2>ท่ายืนพักวาดใหม่ทั้ง 6 เฟรม</h2><img src="idle-v2/contact.jpg" alt="Yama ท่ายืนพักวาดใหม่ 6 เฟรม"><div class="controls"><a class="download" href="idle-v2/idle-preview.gif" download>GIF ท่ายืนพักใหม่</a><a class="download" href="idle-v2/idle-sheet.png" download>Sprite sheet ท่ายืนพัก</a></div><h2>ท่าฟันดาบเดิมทั้ง 8 เฟรม</h2><img src="contact.jpg" alt="ภาพท่าฟันดาบ Yama ทั้ง 8 เฟรมเรียงตามเวลา">
+<div class="controls"><a class="download" href="attack-preview.gif" download>ดาวน์โหลด GIF</a><a class="download" href="attack-sheet.png" download>Sprite sheet PNG</a><a class="download" href="metadata.json" download>ข้อมูลเฟรม JSON</a></div>
+<footer>ไฟล์ทดลองอยู่ใน output/spa-pilot-20261015 เท่านั้น · ไม่เชื่อมกับเกมจริง แผนที่ UI หรือเซฟ<br>ท่ายืนพักใหม่: ImageGen อ้างอิง Yama เดิม · ท่าฟันดาบ: img/yama-sword-v3/hero-yama-th-sword.webp</footer>
+<script>
+const image=new Image();image.src='attack-sheet.png';
+const idleImage=new Image();idleImage.src='idle-v2/idle-sheet.png';
+const idleMs=[1000,240,420,100,100,260];
+const idle=document.querySelector('#idle').getContext('2d'), attack=document.querySelector('#attack').getContext('2d');
+const durations=[85,80,60,35,40,80,100,100], total=580, rest=900;
+let playing=!matchMedia('(prefers-reduced-motion: reduce)').matches, elapsed=0,last=null,speed=1;
+const pause=document.querySelector('#pause');function label(){pause.textContent=playing?'หยุดภาพ':'เล่นภาพ'}label();
+pause.onclick=()=>{playing=!playing;label()};document.querySelector('#replay').onclick=()=>{elapsed=0;playing=true;label()};document.querySelector('#speed').onchange=e=>speed=Number(e.target.value);
+function ground(c){c.clearRect(0,0,640,640);c.fillStyle='#10141f';c.beginPath();c.ellipse(240,577,112,15,0,0,Math.PI*2);c.fill()}
+function cross(c){if(!document.querySelector('#anchor').checked)return;c.strokeStyle='#73d9c0';c.lineWidth=1;c.beginPath();c.moveTo(229,570);c.lineTo(251,570);c.moveTo(240,559);c.lineTo(240,581);c.stroke()}
+// Each pose is newly drawn. Fixed canvas placement; no per-frame deformation.
+function drawIdle(c,time){
+if(!idleImage.complete||!idleImage.naturalWidth)return;
+let t=time%idleMs.reduce((a,b)=>a+b,0),end=0,frame=0;
+for(let i=0;i<idleMs.length;i++){end+=idleMs[i];if(t<end){frame=i;break}}
+c.drawImage(idleImage,frame*640,0,640,640,0,0,640,640);
+c.canvas.dataset.frame=String(frame+1);
+}
+function tick(now){if(last!==null&&playing&&!document.hidden)elapsed+=Math.min(now-last,50)*speed;last=now;
+if(image.complete&&image.naturalWidth){ground(idle);drawIdle(idle,elapsed);cross(idle);
+ground(attack);let t=elapsed%(total+rest),f=0,end=0;for(let i=0;i<8;i++){end+=durations[i];if(t<end){f=i;break}}attack.drawImage(image,f*640,0,640,640,0,0,640,640);
+if(document.querySelector('#fx').checked&&t>=225&&t<440){const a=(t-225)/215;attack.save();attack.globalAlpha=1-a;attack.strokeStyle='#ffe3a1';attack.lineWidth=3;for(let i=0;i<7;i++){let angle=-.8+i*.23,r=25+a*110;let x=460+Math.cos(angle)*r,y=330+Math.sin(angle)*r;attack.beginPath();attack.moveTo(x,y);attack.lineTo(x+Math.cos(angle)*12,y+Math.sin(angle)*12);attack.stroke()}attack.restore()}cross(attack);document.querySelector('#frame').textContent=`${t>=total?'พักระหว่างรอบ':'เฟรม '+(f+1)+' / 8'} · ${Math.min(Math.round(t),total)} / ${total} ms`;}
+requestAnimationFrame(tick)}image.onerror=()=>document.querySelector('#frame').textContent='โหลดภาพไม่สำเร็จ';idleImage.onerror=()=>{idle.canvas.setAttribute('aria-label','โหลดท่ายืนพักใหม่ไม่สำเร็จ')};requestAnimationFrame(tick);
+</script></html>

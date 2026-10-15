@@ -1,0 +1,61 @@
+{
+  "down": [
+    {
+      "frame": 1,
+      "red_foot_components": [
+        {
+          "area": 1101,
+          "cx": 131.61,
+          "max_y": 438
+        },
+        {
+          "area": 190,
+          "cx": 171.06,
+          "max_y": 413
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "red_foot_components": [
+        {
+          "area": 1110,
+          "cx": 168.08,
+          "max_y": 438
+        },
+        {
+          "area": 181,
+          "cx": 133.46,
+          "max_y": 413
+        }
+      ]
+    }
+  ],
+  "up": [
+    {
+      "frame": 1,
+      "red_foot_components": [
+        {
+          "area": 766,
+          "cx": 140.71,
+          "max_y": 428
+        },
+        {
+          "area": 200,
+          "cx": 176.99,
+          "max_y": 414
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "red_foot_components": [
+        {
+          "area": 857,
+          "cx": 165.37,
+          "max_y": 430
+        }
+      ]
+    }
+  ]
+}

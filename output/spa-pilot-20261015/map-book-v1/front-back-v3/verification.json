@@ -1,0 +1,14 @@
+{
+  "new_frames": 16,
+  "front_back_uniform_scale": 0.7843137254901961,
+  "left_right_atlas_pixels_identical": true,
+  "protected_files_byte_identical": true,
+  "alpha_preserved": true,
+  "near_foot_switches_screen_side_between_frames_1_and_5": {
+    "down": true,
+    "up": true
+  },
+  "front_right_foot_depth_change_px": 25,
+  "rear_right_foot_depth_change_px": 16,
+  "crown_vertical_range_px": 4
+}

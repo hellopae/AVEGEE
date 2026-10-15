@@ -1,0 +1,110 @@
+{
+  "generator": "Built-in ImageGen; technical packing with Pillow",
+  "source_sha256": "4f486e5e8f0e520462b7628009045ece944da613eba9a8aacffbd48d2ecabad4",
+  "scale_uniform_all_frames": 0.7785087719298246,
+  "frame_size": 640,
+  "durations_ms": [
+    1000,
+    240,
+    420,
+    100,
+    100,
+    260
+  ],
+  "anchor": {
+    "x": 240,
+    "y": 570
+  },
+  "frames": [
+    {
+      "frame": 0,
+      "size": [
+        306,
+        354
+      ],
+      "placement": [
+        132,
+        216
+      ],
+      "feet": [
+        108.0,
+        354
+      ]
+    },
+    {
+      "frame": 1,
+      "size": [
+        300,
+        353
+      ],
+      "placement": [
+        132,
+        218
+      ],
+      "feet": [
+        108.0,
+        352
+      ]
+    },
+    {
+      "frame": 2,
+      "size": [
+        293,
+        355
+      ],
+      "placement": [
+        131,
+        216
+      ],
+      "feet": [
+        109.0,
+        354
+      ]
+    },
+    {
+      "frame": 3,
+      "size": [
+        302,
+        346
+      ],
+      "placement": [
+        130,
+        224
+      ],
+      "feet": [
+        110.0,
+        346
+      ]
+    },
+    {
+      "frame": 4,
+      "size": [
+        292,
+        344
+      ],
+      "placement": [
+        132,
+        226
+      ],
+      "feet": [
+        107.5,
+        344
+      ]
+    },
+    {
+      "frame": 5,
+      "size": [
+        299,
+        347
+      ],
+      "placement": [
+        130,
+        223
+      ],
+      "feet": [
+        110.0,
+        347
+      ]
+    }
+  ]
+}

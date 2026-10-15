@@ -1,0 +1,1 @@
+{"status":"failure","operation":"spa info","code":"executable_not_found","category":"environment","message":"Aseprite executable was not found or is not executable","details":{"kind":"executable_not_found","requested_path":null,"searched":["SPA_ASEPRITE_EXECUTABLE","PATH:aseprite"]},"diagnostics":{"stdout":"","stderr":"","exit_status":null}}
