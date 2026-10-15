@@ -79,6 +79,8 @@ function torchSprite() {
   }
   return torchArt?.complete && torchArt.naturalWidth ? torchArt : null;
 }
+export const townPropArt = (p,tree,waterfall,resolveArt) =>
+  propArt(p,tree,waterfall,resolveArt);
 const propArt = (p,tree,waterfall,resolveArt) =>
   p.kind==='torch'?torchSprite():p.key?(resolveArt?.(p.key)||(p.kind==='tree'?tree:null)):null;
 // L1: soft contact shade (AO) under the base so nothing floats; the cast shadow itself comes from town-shade.js.

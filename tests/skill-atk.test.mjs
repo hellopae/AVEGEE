@@ -89,9 +89,9 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   assert.match(indexPreload,/-layered-battle9-20261015-r1-k3m$|yama-live-20261015-hell\d+$/);
   assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
   assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
-  assert.match(preload, /asset-preload\.js\?v=h1-h5b-skillatk/);
+  assert.match(preload, /asset-preload\.js\?v=(?:h1-h5b-skillatk|yama-live-20261015)/);   // Codex yama-live bump
   const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
   assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(catalogVersion,/-layered-battle9-20261015-r1$/);
+  assert.match(catalogVersion,/-layered-battle9-20261015-r1(?:-yama-live-hell\d+)?$/);
   assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });

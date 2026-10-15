@@ -7,7 +7,10 @@
 //  * a 1/4-resolution "shadow field" (all silhouettes unioned, baked only when the set of casters changes)
 //    answers "is this actor standing in a shadow?"; only then is the actor drawn through a small offscreen
 //    layer and darkened where the field overlaps it (cheap: usually zero actors are in shade).
-import { img as artImg, stationBox } from './art.js';
+// Relation to town-lighting.js (Codex): that file grades the painted ground and owns emissive lava + torch glow.
+// This file never re-grades anything; it only multiplies a dark, soft shadow on top of the graded ground, and the
+// torch pillars it lights are casters here too (their sprite comes from the same resolver the scenery draws with).
+import { stationBox } from './art.js';
 import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE } from './town-layout.js?v=k1d';
 
 // Shadow offset per unit of height. A point H above the foot lands (KX*H, KY*H) right/below the foot.
@@ -79,11 +82,12 @@ function spriteCaster(art, x, y, w, h, flip, lift) {   // anchor the shadow on t
   const off = ((flip ? 1 - b.cx : b.cx) - .5) * w;
   return { kind:'sprite', art, x:x + off, y:y - h * (1 - b.b) - h * SINK, left:-w / 2 - off, top:-h * b.b + h * SINK, w, h, flip, lift };
 }
-const treeArt = (p, resolve) => p.key ? (resolve(p.key) || (p.kind === 'tree' ? resolve('town-tree-th') : null)) : null;
-export function listCasters(resolve, houseKey, stations) {
+// propArt(p) = the scenery's own resolver (town-scenery.js: tree / rock / torch-pillar sprite), so shadow == what is drawn
+const treeArt = (p, resolve, propArt) => propArt ? propArt(p) : (p.key ? (resolve(p.key) || (p.kind === 'tree' ? resolve('town-tree-th') : null)) : null);
+export function listCasters(resolve, houseKey, stations, propArt) {
   const out = [];
   for (const p of TOWN_PROP_SITES) {
-    const art = treeArt(p, resolve);
+    const art = treeArt(p, resolve, propArt);
     if (art) {
       const h = p.w * (art.naturalHeight || art.height) / (art.naturalWidth || art.width);
       out.push(spriteCaster(art, p.x, p.y, p.w, h, false, 1));
@@ -129,8 +133,9 @@ function paintCaster(ctx, c, level, fill) {
 
 // ---------- state: caster list + shadow field, rebuilt only when the set of ready art changes ----------
 let casters = [], signature = '', field = null, fieldAlpha = null, fieldTint = null;
-function sig(resolve, houseKey, stations) {
+function sig(resolve, houseKey, stations, propArt) {
   let s = stations.map(d => d.k).join(',') + '|';
+  if (propArt) { const t = TOWN_PROP_SITES.find(p => p.kind === 'torch'); const a = t && propArt(t); s += a && (a.naturalWidth || a.width) ? 'T1' : 'T0'; }
   for (const k of ['town-tree-th', 'town-judgment-th', 'town-house-th', 'town-prop-rock', 'town-prop-palm', 'town-prop-lamp', 'town-prop-torch',
                    ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(houseKey)]) { const a = resolve(k); s += a && (a.naturalWidth || a.width) ? '1' : '0'; }
   for (const d of stations) { const b = stationBox(d); s += b ? '1' : '0'; }
@@ -149,10 +154,10 @@ function rebuildField() {
   t.globalCompositeOperation = 'source-over';
 }
 /** Call once per frame before drawing shadows / actors (cheap when nothing changed). */
-export function updateTownShade(resolve, houseKey, stations) {
-  const s = sig(resolve, houseKey, stations);
+export function updateTownShade(resolve, houseKey, stations, propArt) {
+  const s = sig(resolve, houseKey, stations, propArt);
   if (s === signature) return;
-  signature = s; casters = listCasters(resolve, houseKey, stations); rebuildField();
+  signature = s; casters = listCasters(resolve, houseKey, stations, propArt); rebuildField();
 }
 export const townShadeStats = () => ({ casters:casters.length, field:!!fieldAlpha });
 
