@@ -17,8 +17,9 @@ test('scenery and its shadows skip props outside the camera rectangle', () => {
   assert.equal((scenery.match(/if\(!onScreen\(ctx,p,art\)\)continue;/g) || []).length, 2);
 });
 
-test('terrain chunk cache is never smaller than the visible chunk count and patterns are shared', () => {
-  assert.match(terrain, /MAX_CHUNKS=Math\.max\(48,\(right-left\+2\)\*\(bottom-top\+2\)\*2\)/);
-  assert.doesNotMatch(terrain, /MAX_CHUNKS=48;/);
-  assert.match(terrain, /const patterns=new WeakMap\(\);\nfunction material[\s\S]*?patterns\.has\(image\)/);
+test('K1d terrain: painted chunks are lazy, culled to the camera, and nothing is repainted per frame', () => {
+  assert.doesNotMatch(terrain, /createPattern|paintTerrain|getContext\(/, 'no per-chunk vector repainting any more');
+  assert.match(terrain, /MAX_LOADING\s*=\s*3/, 'bounded concurrent chunk loads');
+  assert.match(terrain, /if \(r\.x > vx1 \|\| r\.x \+ r\.w < vx0/, 'chunks outside the camera are skipped');
+  assert.match(terrain, /DETAIL_FROM/, 'overview and minimap use the 1536px preview alone');
 });

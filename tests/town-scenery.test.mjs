@@ -16,11 +16,12 @@ test('residential facade occlusion sorts by its ground base',()=>{
   assert.equal(townHouseDepth([100,200,300,400]),400);
 });
 
-test('decorative roots and waterfall occupy closed scenery ground, leaving civic center walkable',()=>{
-  for(const p of [...TOWN_TREES,TOWN_WATERFALL])assert.equal(townContains(p.x,p.y),false,JSON.stringify(p));
+test('decorative roots occupy closed scenery ground, leaving civic center walkable',()=>{
+  assert.equal(TOWN_WATERFALL,null,'waterfalls are painted into the ground now');
+  for(const p of TOWN_TREES)assert.equal(townContains(p.x,p.y),false,JSON.stringify(p));
   for(const [x,y]of TOWN_EDGE_HOMES)assert.equal(townContains(x,y),false);
   assert.equal(townContains(...TOWN_PLAZA),true);
-  assert.ok(Math.abs(TOWN_PLAZA[0]-TOWN_SIZE.w/2)<10);
+  assert.ok(Math.abs(TOWN_PLAZA[0]-TOWN_SIZE.w/2)<100,'the painted plaza sits near the middle of the world');
 });
 test('near scenery travels faster and distant scenery slower than the clamped camera',()=>{
   const a={cx:300,cy:400,zoom:3.5},b={cx:400,cy:500,zoom:3.5};

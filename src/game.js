@@ -1,7 +1,7 @@
 import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
-import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y } from './town-layout.js';
+import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
@@ -1814,7 +1814,10 @@ const API = {
         const dx = w[0] - c.x, dy = w[1] - c.y, d = Math.hypot(dx, dy);
         if (d < 5) c.path.shift();
         else {
-          if (!stepTo(c, dx / d * sp, dy / d * sp)) c.path = null;
+          // K1d: never step past the waypoint. A 13-unit step over a 5..13-unit hop used to overshoot and
+          // bounce forever (found on the painted map where waypoints are 8 units apart near stairs).
+          const hop = Math.min(sp, d);
+          if (!stepTo(c, dx / d * hop, dy / d * hop)) c.path = null;
           if (Math.abs(dx) > 1) c.face = dx < 0 ? -1 : 1;
         }
       } else if (c.wait > 0) {
@@ -2105,7 +2108,14 @@ const API = {
       if (st.build) continue;                     // ยังเป็นนั่งร้าน เดินผ่านได้อยู่
       // H2: ตัวอาคารทั้งหลังเหยียบไม่ได้ (เงาจริงของสไปรท์ ไม่ใช่แค่แถบฐาน) — ดู art.blockRectsOf
       const blk = r ? blockRectsOf(st.def) : null;
-      if (blk && blk.length) rects.push(...blk); else waiting = true;
+      if (blk && blk.length) {
+        // K1d: in the painted city the player may walk BEHIND a building (roof and spires are drawn over
+        // Yama by foot depth). Only the lower 40% of the silhouette is solid; the plaza stays reachable.
+        if (this.zone === 'th') {
+          const top = Math.min(...blk.map(b => b[1])), bot = Math.max(...blk.map(b => b[3])), cut = top + (bot - top) * .6;
+          for (const b of blk) if (b[3] > cut) rects.push([b[0], Math.max(b[1], cut), b[2], b[3]]);
+        } else rects.push(...blk);
+      } else waiting = true;
     }
     setBlocks(rects, holes);
     // ถ้าอาคารเพิ่งสร้างครอบตำแหน่งผู้เล่น ให้ย้ายออกสู่พื้นเดินใกล้ที่สุดทันที
@@ -4091,9 +4101,15 @@ const API = {
       const end = path?.[path.length - 1];
       return !!end && end[0] === GUARD_POST[0] && end[1] === GUARD_POST[1];
     };
-    const x0 = 110 + Math.random() * (SCENE.w - 220);
+    // K1d: the painted city only has a few open stretches on its north bank; draw x from those.
+    const pickX = () => {
+      if (this.zone !== 'th') return 110 + Math.random() * (SCENE.w - 220);
+      const [a, b] = TOWN_SHORE_SPANS[Math.floor(Math.random() * TOWN_SHORE_SPANS.length)];
+      return a + Math.random() * (b - a);
+    };
+    const x0 = pickX();
     let p = nearestWalk(x0, y);
-    for (let i = 0; i < 6 && !reach(p); i++) p = nearestWalk(110 + Math.random() * (SCENE.w - 220), y);
+    for (let i = 0; i < 6 && !reach(p); i++) p = nearestWalk(pickX(), y);
     if (!reach(p)) {                 // สุ่มไม่โดน → กวาดหาจุดที่เชื่อมได้ใกล้ x0 ที่สุด
       p = null;
       for (let d = 0; d <= SCENE.w && !p; d += 40)

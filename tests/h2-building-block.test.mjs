@@ -47,12 +47,15 @@ function setup(zone){
   return g;
 }
 /** จุดกลางตัวอาคาร: กลางแถบหลังคา/ผนัง (ไม่ใช่แถบฐานที่ติดพื้น) และไม่อยู่ในช่องบริการของผู้คุม */
-function bodyPoints(d){
+function bodyPoints(d,zone='th'){
   const rects=art.blockRectsOf(d),foot=art.footOf(d);
+  // K1d: in the painted city only the lower 40% of a silhouette is solid (Yama may walk behind roofs and spires).
+  const all=art.blockOf(d),cut=zone==='th'?all[1]+(all[3]-all[1])*.6:-Infinity;
   const holes=[d.x-16,d.y-16,d.x+16,Math.max(d.y+16,foot[3]+26)];
   const pts=[];
   for(const r of rects){
     const x=(r[0]+r[2])/2,y=(r[1]+r[3])/2;
+    if(y<cut)continue;                              // K1d: upper silhouette is walk-behind in the city
     if(r[3]>foot[1])continue;                       // เฉพาะส่วนที่อยู่เหนือแถบฐาน = ส่วน "หลังอาคาร" ที่ 2.5D เคยปล่อยให้เดินเข้า
     if(inRect(x,y,holes))continue;
     if(r[2]-r[0]<24)continue;                       // ยอดแหลมแคบ ๆ ไม่นับ
@@ -66,7 +69,7 @@ test('H2: every zone — points inside the painted building body (above the grou
     setup(zone);
     let checked=0;
     for(const d of STATIONS){
-      const pts=bodyPoints(d);
+      const pts=bodyPoints(d,zone);
       if(!pts.length)continue;
       for(const [x,y] of pts)assert.equal(walk.canWalk(x,y),false,`${zone}/${d.k}: body point ${x|0},${y|0} must be blocked`);
       checked++;
@@ -100,17 +103,18 @@ test('H2: the service door of every building stays walkable and reachable on eve
     }
     if(zone==='th')for(const p of QUEUE_LINE)assert.equal(walk.canWalk(...p),true,'queue avoids complete building silhouettes');
     // the judge's platform, the bridge stairs and the queue line must remain open
-    for(const [x,y] of (zone==='th'?[[1920,1250],[1920,1500],[1920,1700],[1920,1430]]:[[836,447],[835,560],[835,670],[880,440]]))assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
+    for(const [x,y] of (zone==='th'?[[1860,1090],[1920,1544],[1920,1700],[1920,1944]]:[[836,447],[835,560],[835,670],[880,440]]))assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
   }
   syncSceneZone('th');
 });
 
 test('H2: a player standing where a newly built body appears is moved out of it',()=>{
   const g=setup('th');
-  const d=STATIONS.find(s=>s.k==='sala'),pts=bodyPoints(d);
+  const d=STATIONS.find(s=>s.k==='sala'),pts=bodyPoints(d,'th');
   g.player.x=pts[0][0];g.player.y=pts[0][1];
   g.syncBlocks(true);
   assert.equal(walk.canWalk(g.player.x,g.player.y),true,'player pushed onto open ground');
-  assert.equal(art.blockRectsOf(d).some(r=>inRect(g.player.x,g.player.y,r)),false);
+  const all=art.blockOf(d),cut=all[1]+(all[3]-all[1])*.6; // K1d: only the lower 40% is solid in the city
+  assert.equal(art.blockRectsOf(d).some(r=>r[3]>cut&&inRect(g.player.x,g.player.y,[r[0],Math.max(r[1],cut),r[2],r[3]])),false);
   syncSceneZone('th');
 });

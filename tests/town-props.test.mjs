@@ -1,48 +1,70 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TOWN_PROP_SITES, TOWN_PROP_COLLIDERS, TOWN_WALK_RECTS,
-  TOWN_WALK_POLYS, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_QUEUE,
-  townInRect, townInPolygon, townContains, townPropBlocks } from '../src/town-layout.js';
+import { TOWN_PROP_SITES, TOWN_PROP_COLLIDERS, TOWN_HOUSE_SITES, TOWN_HOUSES, TOWN_STATION_SITES,
+  TOWN_SPOTS, TOWN_CREW, TOWN_QUEUE, TOWN_WALK_MASK, townFloorAt, townInRect, townInPolygon,
+  townContains, townPropBlocks } from '../src/town-layout.js';
 
-const unoccupiedFloor = (x,y) => TOWN_WALK_RECTS.some(r=>townInRect(x,y,r))
-  || TOWN_WALK_POLYS.some(p=>townInPolygon(x,y,p));
-
-test('standalone scenery has unique rooted art metadata and solid compact feet',()=>{
-  assert.ok(TOWN_PROP_SITES.length>=50,'large world has independently placed scenery');
+// K1d: scenery stands where the owner drew it on the painted map. Roots are tiny, so the foot may sit on
+// the edge of a plaza, but never on a door, crew post or queue spot.
+test('decorations have unique ids, art or a placeholder height, and a small solid root', () => {
+  assert.ok(TOWN_PROP_SITES.length>=60,'owner marks: trees, lava trees, snow trees, rocks, lanterns, torches');
   assert.equal(new Set(TOWN_PROP_SITES.map(p=>p.id)).size,TOWN_PROP_SITES.length);
   assert.equal(TOWN_PROP_COLLIDERS.length,TOWN_PROP_SITES.length);
   const kinds=new Set(TOWN_PROP_SITES.map(p=>p.kind));
-  for(const kind of ['tree','bush','rock','volcano','ice-ridge','waterfall'])assert.ok(kinds.has(kind),kind);
+  for(const kind of ['tree','rock','palm','lamp','torch'])assert.ok(kinds.has(kind),kind);
+  const count=(kind,biome)=>TOWN_PROP_SITES.filter(p=>p.kind===kind&&(!biome||p.biome===biome)).length;
+  assert.equal(count('lamp'),10,'ten gold lanterns round the heaven gate');
+  assert.equal(count('torch'),14,'fourteen torches round the cauldron courtyard');
+  assert.equal(count('tree','lava'),8,'red trees by the lava');
+  assert.equal(count('tree','ice'),2,'snow trees by the ice gate');
   for(const p of TOWN_PROP_SITES){
-    assert.ok(p.key.startsWith('town-'),p.id+' has an independently resolved sprite');
     assert.ok([p.x,p.y,p.w,p.rx,p.ry].every(Number.isFinite),p.id);
-    assert.ok(p.w>0&&p.rx>0&&p.ry>0&&p.rx*2<=p.w,p.id+' collision stays narrower than silhouette');
+    assert.ok(p.key||p.h>0,p.id+' has art or a placeholder height (see the K1d asset list)');
+    assert.ok(p.rx*2<=p.w,p.id+' collision stays narrower than silhouette');
     assert.equal(townPropBlocks(p.x,p.y),true,p.id+' root is solid');
     assert.equal(townContains(p.x,p.y),false,p.id+' cannot be walked through');
-    assert.equal(unoccupiedFloor(p.x,p.y),false,p.id+' is placed beside the established route');
-    assert.ok(p.y<=1940,p.id+' stays on the terrestrial side of the coast');
+    assert.ok(p.y<=1900,p.id+' stays on the terrestrial side of the soul river');
   }
 });
 
-test('mountain and waterfall collisions use ground roots rather than their tall art bounds',()=>{
-  assert.equal(townPropBlocks(220,480),true,'volcano foot');
-  assert.equal(townPropBlocks(340,480),true,'closed horizontal edge');
-  assert.equal(townPropBlocks(341,480),false,'one pixel past root boundary');
-  assert.equal(townPropBlocks(340,430),false,'empty corner of the root bounding rectangle');
-  assert.equal(townPropBlocks(3230,1700),true,'waterfall pool root');
-  assert.equal(townPropBlocks(3300,1700),true,'pool edge');
-  assert.equal(townPropBlocks(3301,1700),false,'outside pool footprint');
-  assert.equal(townPropBlocks(3420,360),true,'ice ridge foot');
-  assert.equal(townPropBlocks(3420,270),false,'visible ridge height does not enlarge ground collision');
+test('placeholders are only the three drawings still to be made', () => {
+  const placeholder=new Set(TOWN_PROP_SITES.filter(p=>!p.key).map(p=>p.kind));
+  assert.deepEqual([...placeholder].sort(),['lamp','palm','torch']);
 });
 
-test('rooted props leave service doors, civic platform, crew and queue anchors accessible',()=>{
-  const anchors=[...Object.entries(TOWN_STATION_SITES).map(([k,p])=>[k,p.x,p.y]),
+test('houses: only the ground floor blocks', () => {
+  assert.equal(TOWN_HOUSE_SITES.length,12);
+  assert.equal(TOWN_HOUSES.length,12);
+  const keys=new Set(TOWN_HOUSE_SITES.map(h=>h.key));
+  for(const k of ['front-one','left-two','right-one','right-two'])assert.ok(keys.has(k),k);
+  for(const [i,h] of TOWN_HOUSE_SITES.entries()){
+    const [x1,y1,x2,y2]=TOWN_HOUSES[i];
+    assert.equal(townContains((x1+x2)/2,(y1+y2)/2),false,'house '+i+' base blocks');
+    assert.ok(y2-y1>0&&y2-y1<=h.h*.4,'only the ground floor is solid');
+  }
+});
+
+test('walk mask covers a sensible share of the world and blocks the soul river and lava', () => {
+  const {cols,rows,data}=TOWN_WALK_MASK;
+  assert.equal(cols*rows,data.length);
+  let on=0;for(const v of data)on+=v;
+  const share=on/data.length;
+  assert.ok(share>.12&&share<.3,'walkable share '+share.toFixed(3));
+  assert.equal(townFloorAt(1300,1860),false,'river');
+  assert.equal(townFloorAt(900,840),false,'lava stream beside the west bank');
+  assert.equal(townFloorAt(1862,1090),true,'central plaza');
+  assert.equal(townFloorAt(NaN,10),false);
+});
+
+test('rooted props leave service doors, crew, dais and queue anchors accessible', () => {
+  const anchors=[...Object.entries(TOWN_STATION_SITES).map(([k,p])=>['door '+k,p.x,p.y]),
     ...Object.entries(TOWN_CREW).map(([k,p])=>[k,...p]),
     ...Object.entries(TOWN_SPOTS).filter(([,p])=>p.x!=null).map(([k,p])=>[k,p.x,p.y]),
     ...TOWN_QUEUE.map((p,i)=>['queue '+i,...p])];
-  for(const [key,x,y]of anchors){
+  for(const [key,x,y] of anchors){
     assert.equal(townPropBlocks(x,y),false,key+' stays outside solid roots');
-    assert.equal(townContains(x,y),true,key+' remains on the route');
+    assert.equal(townContains(x,y),true,key+' remains on walkable ground');
   }
+  assert.equal(townInRect(5,5,[0,0,10,10]),true);
+  assert.equal(townInPolygon(5,5,[[0,0],[10,0],[10,10],[0,10]]),true);
 });

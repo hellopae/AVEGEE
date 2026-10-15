@@ -9,7 +9,7 @@ import {bindZone,warmZone} from './src/art.js';
 import {STATIONS,SPOTS,SCENE,FRONTIER} from './src/data.js';
 import {findPath,stepTo} from './src/walk.js';
 import {townCameraRect} from './src/town-map.js';
-import {TOWN_WALK_RECTS,TOWN_WALK_POLYS} from './src/town-layout.js';
+import {TOWN_WALK_MASK} from './src/town-layout.js';
 const g=createGame();bindZone(()=>g.zone);warmZone();g.paused=true;
 const initial=g.stations;const all=STATIONS.map(def=>({def,build:0,slots:[],fire:0,intensity:3,speedLv:0,capLv:0}));
 g.stations=all;
@@ -19,8 +19,9 @@ const world=document.createElement('canvas'),wc=world.getContext('2d');
 setMapViewport(world,{width:360,height:240,sx:360/SCENE.w,sy:240/SCENE.h,tx:0,ty:0});
 const roadLayer=document.createElement('canvas');roadLayer.width=SCENE.w;roadLayer.height=SCENE.h;
 const rc=roadLayer.getContext('2d');rc.fillStyle='rgba(105,232,190,.22)';
-for(const [x1,y1,x2,y2]of TOWN_WALK_RECTS)rc.fillRect(x1,y1,x2-x1,y2-y1);
-for(const p of TOWN_WALK_POLYS){rc.beginPath();p.forEach(([x,y],i)=>i?rc.lineTo(x,y):rc.moveTo(x,y));rc.closePath();rc.fill();}
+// Walk overlay = the real walk mask (1 cell = 8 world units): exactly what pathfinding and collision use.
+{const {cell,cols,rows,data}=TOWN_WALK_MASK;
+ for(let y=0;y<rows;y++){let x=0;while(x<cols){if(!data[y*cols+x]){x++;continue;}let e=x;while(e<cols&&data[y*cols+e])e++;rc.fillRect(x*cell,y*cell,(e-x)*cell,cell);x=e;}}}
 let roads=false,path=null,last=0,synced=0,painted=-Infinity,overview=false,zoom=5;
 let camera={x:g.player.x,y:g.player.y},view=townCameraRect(camera.x,camera.y,zoom);
 const selector=document.querySelector('#destination'),overviewButton=document.querySelector('#overview');

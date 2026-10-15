@@ -1,7 +1,8 @@
 import { drawLocalLight } from './scene-style.js';
-import { drawTownTerrain } from './town-terrain.js?v=k3';
-import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseLots, townHouseKey } from './town-map.js';
-import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js?v=k3';
+import { TOWN_DAIS } from './town-layout.js';
+import { drawTownTerrain } from './town-terrain.js?v=k1d';
+import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js';
+import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js?v=k1d';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
@@ -235,12 +236,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if(dais) {
       ctx.save();ctx.imageSmoothingEnabled=true;
       if(newDais){
-        const w=440,h=w*dais.naturalHeight/dais.naturalWidth,top=1230-h;
+        // K1d: the dais is placed by the owner's drawing (foot centre + width), not by the old throne spot.
+        const w=TOWN_DAIS.w,h=w*dais.naturalHeight/dais.naturalWidth,top=TOWN_DAIS.y-h;
         ctx.fillStyle='rgba(10,5,15,.24)';ctx.beginPath();
-        ctx.ellipse(SPOTS.throne.x+14,top+h-18,w*.46,30,0,0,Math.PI*2);ctx.fill();
-        ctx.drawImage(dais,SPOTS.throne.x-w/2,top,w,h);
+        ctx.ellipse(TOWN_DAIS.x+10,top+h-12,w*.46,22,0,0,Math.PI*2);ctx.fill();
+        ctx.drawImage(dais,TOWN_DAIS.x-w/2,top,w,h);
         for(const side of [-1,1]){
-          const x=SPOTS.throne.x+side*w*.207,y=top+h*.112;
+          const x=TOWN_DAIS.x+side*w*.207,y=top+h*.112;
           drawLocalLight(ctx,'th',x,y,w*.065,t,reduced);
           if(!reduced){
             ctx.fillStyle='rgba(255,197,86,.6)';
@@ -298,8 +300,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
   const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
-  if (archiveHouse) for (const [index,lot] of townHouseLots().entries())
-    at(townHouseDepth(lot), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, lot));
+  if (archiveHouse) for (const [index,site] of townHouseSites().entries())
+    at(townHouseDepth(site), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, site));
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์

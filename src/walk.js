@@ -129,10 +129,17 @@ function grid() {
 
 /** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
 export function clearLine(a, b, walkable = canWalk) {
-  const dx = b[0] - a[0], dy = b[1] - a[1];
-  const n = Math.ceil(Math.hypot(dx, dy) / Math.min(4, CELL / 2));
-  for (let i = 1; i <= n; i++)
-    if (!walkable(a[0] + dx * i / n, a[1] + dy * i / n)) return false;
+  const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy);
+  const n = Math.ceil(len / Math.min(4, CELL / 2));
+  // K1d: the painted city's walkable ground has stair-stepped diagonal edges (bridges, stairs). A sight line that
+  // grazes such an edge would pass the check yet leave the character stuck on a notch, so the town also
+  // requires a 3-unit margin on both sides of the line.
+  const margin = SCENE.w === TOWN_SIZE.w && len > 0 ? 3 : 0, nx = margin ? -dy / len * margin : 0, ny = margin ? dx / len * margin : 0;
+  for (let i = 1; i <= n; i++) {
+    const x = a[0] + dx * i / n, y = a[1] + dy * i / n;
+    if (!walkable(x, y)) return false;
+    if (margin && (!walkable(x + nx, y + ny) || !walkable(x - nx, y - ny))) return false;
+  }
   return true;
 }
 

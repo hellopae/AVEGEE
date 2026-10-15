@@ -26,9 +26,9 @@ test('K2 changed entry URLs match, including review imports',()=>{
  for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
   const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
   const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/-k2b?$|-k3m$|-k4$/,file);assert.equal(a,b,file);
+  assert.match(a||'',/-k2b?$|-k3m$|-k4$|-k1d$/,file);assert.equal(a,b,file);
  }
- assert.match(review,/from '\.\/src\/ui\.js\?v=[^']+-(?:k3m|k4)'/);
+ assert.match(review,/from '\.\/src\/ui\.js\?v=[^']+-(?:k3m|k4|k1d)'/);
 });
 
 test('K2 pointerdown captures primary input, leaves activation to one native click',async()=>{

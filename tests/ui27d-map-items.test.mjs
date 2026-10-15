@@ -6,9 +6,9 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createGame } from '../src/game.js';
 import { MOB, ITEMS, SPOTS, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
-import { buildWalk, canWalk, resetWalk, setBlocks, stepTo } from '../src/walk.js';
+import { buildWalk, canWalk, findPath, resetWalk, setBlocks, stepTo } from '../src/walk.js';
 
-import { TOWN_PATHS,TOWN_HOUSES,TOWN_SPOTS,TOWN_MERCHANT } from '../src/town-layout.js';
+import { TOWN_STAIRS,TOWN_HOUSES,TOWN_SPOTS,TOWN_MERCHANT } from '../src/town-layout.js';
 
 globalThis.Image = class {};
 
@@ -54,13 +54,16 @@ test('town main avenue and zone2–4 main bridges can be crossed in both directi
   for (const z of ZONES) {
     loadZone(z);
     if(z.k==='th') {
-      const y1=SPOTS.bench.y+60,y2=FRONTIER.y;
-      for(let x=SPOTS.bench.x-24;x<=SPOTS.bench.x+24;x+=4)
-        for(let y=Math.ceil(y1);y<=y2;y++)assert.equal(canWalk(x,y),true,`th: main avenue ${x},${y}`);
-      for(const x of [SPOTS.bench.x-20,SPOTS.bench.x,SPOTS.bench.x+20]) {
-        assert.equal(walkLine([x,y1],[x,y2]),true,'town avenue reaches gate');
-        assert.equal(walkLine([x,y2],[x,y1]),true,'town gate reaches plaza');
+      // K1d: the painted avenue bends (plaza -> stairs -> bridge -> south plaza); the route must be walkable both ways.
+      const there=findPath(SPOTS.bench.x,SPOTS.bench.y,FRONTIER.x,FRONTIER.y),back=findPath(FRONTIER.x,FRONTIER.y,SPOTS.bench.x,SPOTS.bench.y);
+      assert.ok(there?.length&&back?.length,'avenue route exists both ways');
+      assert.ok(Math.hypot(there.at(-1)[0]-FRONTIER.x,there.at(-1)[1]-FRONTIER.y)<=FRONTIER.reach,'avenue reaches the gate');
+      assert.ok(Math.hypot(back.at(-1)[0]-SPOTS.bench.x,back.at(-1)[1]-SPOTS.bench.y)<=24,'gate reaches the plaza');
+      for(const [route,start] of [[there,[SPOTS.bench.x,SPOTS.bench.y]],[back,[FRONTIER.x,FRONTIER.y]]]) {
+        let from=start;
+        for(const to of route) { assert.equal(walkLine(from,to),true,'avenue segment stays on ground'); from=to; }
       }
+      assert.equal(canWalk(1920,1850),true,'the central bridge is walkable over the soul river');
       for(const [x,y] of [[900,2400],[2900,2400]])assert.equal(canWalk(x,y),false,'river beside town gate remains blocked');
       continue;
     }
@@ -81,18 +84,15 @@ test('town lava bridge polyline and zone2–4 western bridges remain wide and tr
   for (const z of ZONES) {
     loadZone(z);
     if(z.k==='th') {
-      const road=TOWN_PATHS.find(p=>p.key==='lava-bridge');
-      assert.ok(road,'new west-to-city bridge exists');
-      // Every bent segment has a traversable center and two pedestrian lanes.
-      // A single straight legacy cross-street would cut across the painted lava.
-      for(let i=1;i<road.points.length;i++) {
-        const a=road.points[i-1],b=road.points[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);
-        const nx=-(b[1]-a[1])/length,ny=(b[0]-a[0])/length;
-        for(const offset of [-20,0,20]) {
-          const from=[a[0]+nx*offset,a[1]+ny*offset],to=[b[0]+nx*offset,b[1]+ny*offset];
-          assert.equal(walkLine(from,to),true,`lava bridge segment ${i} east lane ${offset}`);
-          assert.equal(walkLine(to,from),true,`lava bridge segment ${i} west lane ${offset}`);
-        }
+      // K1d: the painted bridges and stairs are in the walk mask; each landmark must be reachable from the plaza
+      // and the route must stay on walkable ground end to end.
+      for(const stair of TOWN_STAIRS) {
+        const route=findPath(TOWN_SPOTS.plaza.x,TOWN_SPOTS.plaza.y,...stair.point);
+        assert.ok(route?.length,`${stair.key}: route exists`);
+        const end=route.at(-1);
+        assert.ok(Math.hypot(end[0]-stair.point[0],end[1]-stair.point[1])<=16,`${stair.key}: route reaches it`);
+        let from=[TOWN_SPOTS.plaza.x,TOWN_SPOTS.plaza.y];
+        for(const to of route) { assert.equal(walkLine(from,to),true,`${stair.key}: route segment stays on ground`); from=to; }
       }
       for(const [x1,y1,x2,y2] of TOWN_HOUSES.slice(0,2))
         assert.equal(canWalk((x1+x2)/2,(y1+y2)/2),false,'house blocks beside cross street stay blocked');

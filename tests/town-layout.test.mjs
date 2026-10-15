@@ -2,10 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TOWN_SIZE, TOWN_PLAZA, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW,
   TOWN_GUARD_POST,TOWN_CHALLENGE,TOWN_MERCHANT,TOWN_FRONTIER,
-  TOWN_QUEUE,TOWN_ENTRY,TOWN_HOUSES,TOWN_STAIRS,townContains } from '../src/town-layout.js';
+  TOWN_QUEUE,TOWN_ENTRY,TOWN_HOUSES,TOWN_STAIRS,TOWN_MAP_VERSION,townContains } from '../src/town-layout.js';
 
 test('large city has connected avenues, yards and waterfront entrances',()=>{
   assert.ok(TOWN_SIZE.w*TOWN_SIZE.h>1678*937*6,'world has at least six times the old area');
+  assert.equal(TOWN_MAP_VERSION,3,'K1d painted-terrain layout');
   // Flood the actual floor geometry, avoiding diagonal corner shortcuts.
   const cell=10,cols=Math.ceil(TOWN_SIZE.w/cell),rows=Math.ceil(TOWN_SIZE.h/cell);
   const reachable=new Set(),queue=[TOWN_PLAZA];
@@ -28,22 +29,24 @@ test('large city has connected avenues, yards and waterfront entrances',()=>{
     ['challenge',...TOWN_CHALLENGE],
     ...TOWN_QUEUE.map((p,i)=>['queue'+i,...p]),
     ...Object.entries(TOWN_ENTRY).map(([key,p])=>['entry '+key,...p]),
-    ['west quay',...TOWN_SPOTS.ferry.from],['east quay',...TOWN_SPOTS.ferry.to],
+    ['harbour dock',...TOWN_SPOTS.ferry.from], // ferry.to is open river: only the boat sails there
+    ...TOWN_STAIRS.map(s=>['stair/bridge '+s.key,...s.point]),
   ];
   for(const [label,x,y] of targets) {
     assert.equal(townContains(x,y),true,label+' is walkable');
-    const gx=Math.round(x/cell)*cell,gy=Math.round(y/cell)*cell;
-    assert.ok(reachable.has(key(gx,gy)),label+' connects to plaza');
+    // The flood runs on a 10-unit lattice: accept the lattice points around the target.
+    const gx=Math.floor(x/cell)*cell,gy=Math.floor(y/cell)*cell;
+    assert.ok([[0,0],[cell,0],[0,cell],[cell,cell]].some(([dx,dy])=>reachable.has(key(gx+dx,gy+dy))),label+' connects to plaza');
   }
-  for(const {key:label,rect:[x1,y1,x2,y2]} of TOWN_STAIRS)
-    assert.equal(townContains((x1+x2)/2,(y1+y2)/2),true,label+' stair connects to city');
 });
 
 test('housing, river outside the frontier island and world edges cannot be crossed',()=>{
   for(const [x1,y1,x2,y2] of TOWN_HOUSES)
     assert.equal(townContains((x1+x2)/2,(y1+y2)/2),false,'occupied house is blocked');
-  for(const [x,y] of [[900,2400],[2900,2400],[1950,2450],[50,1200],[3800,1200],
-    [1920,50],[1920,2520],[NaN,1250],[1920,Infinity]])
+  for(const [x,y] of [[900,2400],[2900,2400],[1950,2570],[50,1200],[3800,1200],
+    [1920,50],[1920,2570],[NaN,1250],[1920,Infinity]])
     assert.equal(townContains(x,y),false,`${x},${y} is outside city floor`);
-  assert.equal(townContains(TOWN_FRONTIER.x,TOWN_FRONTIER.y+30),true,'frontier island extends over river');
+  assert.equal(townContains(1920,1850),true,'the central bridge crosses the soul river');
+  assert.equal(townContains(1300,1860),false,'soul river beside the bridge is blocked');
+  assert.equal(townContains(TOWN_FRONTIER.x,TOWN_FRONTIER.y),true,'frontier gate plaza is walkable');
 });

@@ -1,6 +1,6 @@
 // Zone 1 town presentation. Existing world coordinates, collision and save data stay authoritative.
 import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
-import { TOWN_HOUSES, TOWN_SIZE } from './town-layout.js';
+import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js';
 
 export const isTownZone = zone => zone === 'th';
 export const townZoomLevels = zone => isTownZone(zone) ? [1, 3.5, 5, 6.5] : [1, 2.5];
@@ -12,19 +12,20 @@ export function townCameraRect(x,y,zoom=1) {
   const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
   return {x:clamp(x-w/2,0,TOWN_SIZE.w-w),y:clamp(y-h/2,0,TOWN_SIZE.h-h),w,h};
 }
-// Tall facades share the occupied residential lots. Their bases stay inside
-// existing non-walkable geometry; roof height affects only presentation.
+// Small dark houses stand where the owner drew them (TOWN_HOUSE_SITES: foot centre, width, sprite, facing).
+// Only their ground floor is solid (TOWN_HOUSES); roofs are drawn in the shared depth queue by foot y.
 export const townHouseLots = () => TOWN_HOUSES;
-export function drawTownHouse(ctx, house, lot = TOWN_HOUSES[0]) {
+export const townHouseSites = () => TOWN_HOUSE_SITES;
+export function drawTownHouse(ctx, house, site = TOWN_HOUSE_SITES[0]) {
   if (!house) return;
-  const [left,,right,bottom] = lot;
-  const w = right-left, h = w * house.naturalHeight/house.naturalWidth;
+  const w = site.w, h = w * house.naturalHeight/house.naturalWidth;
   ctx.save(); ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
   ctx.fillStyle='rgba(9,5,13,.28)';ctx.beginPath();
-  ctx.ellipse((left+right)/2,bottom-4,w*.44,w*.075,0,0,Math.PI*2);ctx.fill();
-  ctx.drawImage(house,left,bottom-h,w,h);ctx.restore();
+  ctx.ellipse(site.x,site.y-4,w*.44,w*.075,0,0,Math.PI*2);ctx.fill();
+  if (site.flip) { ctx.translate(site.x*2,0); ctx.scale(-1,1); }
+  ctx.drawImage(house,site.x-w/2,site.y-h,w,h);ctx.restore();
 }
-export const townHouseDepth = (lot = TOWN_HOUSES[0]) => lot[3];
+export const townHouseDepth = (site = TOWN_HOUSE_SITES[0]) => Array.isArray(site) ? site[3] : site.y;
 // Three compositing passes from the aligned painting: distant roofs, walking floor,
 // then edge walls/foliage over actors. World anchors do not drift with decoration.
 export function drawTownBackdrop(ctx, painting) {
@@ -34,8 +35,7 @@ export function drawTownFloor(ctx, painting) { ctx.drawImage(painting,0,0); }
 export function drawTownForeground(ctx, painting) {
   // The painted mountains remain behind actors; separate sprites own occlusion.
 }
-export const townHouseKey = index => ['town-residence-front-one',
-  'town-residence-right-two','town-residence-left-two','town-residence-right-one'][index % 4];
+export const townHouseKey = index => 'town-residence-' + TOWN_HOUSE_SITES[index % TOWN_HOUSE_SITES.length].key;
 export function townSites(g) {
   return STATIONS.map(def => {
     const station = g.stations.find(s => s.def.k === def.k);

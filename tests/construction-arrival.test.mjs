@@ -130,12 +130,13 @@ test('disconnected route recovers after 30 active seconds, preserving elapsed ti
     let g = setup(); allBuildings(g);
     let st = startJob(g, 'lan', mode);
     const trap = game => {
+      // K1d: a closed ring of blocks on the painted central plaza (the old ring sat on the retired plaza).
       game.syncBlocks = () => setBlocks([
-        [1890,1140,1910,1200], [1950,1140,1970,1200], [1890,1140,1970,1160], [1890,1180,1970,1200],
+        [1830,1070,1850,1130], [1890,1070,1910,1130], [1830,1070,1910,1090], [1830,1110,1910,1130],
       ], []);
       game.syncBlocks();
     };
-    const c = g.crewOf('taan'); c.x = 1930; c.y = 1170; c.path = null;
+    const c = g.crewOf('taan'); c.x = 1870; c.y = 1100; c.path = null;
     trap(g);
     assert.equal(canWalk(c.x,c.y), true, `trap start ${mode}`);
     for (let i = 0; i < 100; i++) g.stepWorld(120);

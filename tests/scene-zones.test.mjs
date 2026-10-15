@@ -139,7 +139,7 @@ test('ยักษ์เดินกลับจุดเฝ้าจากท�
     g.syncBlocks(true);
     loadTerrain(z);
     const zoneStarts=z.k==='th' ? [
-      [SPOTS.bossPier.x,SPOTS.bossPier.y],SPOTS.ferry.from,SPOTS.ferry.to,
+      [SPOTS.bossPier.x,SPOTS.bossPier.y],SPOTS.ferry.from,
       [SPOTS.bench.x,SPOTS.bench.y],[MERCHANT.x,MERCHANT.y],
       [STATIONS.find(s=>s.k==='tea').x,STATIONS.find(s=>s.k==='tea').y],
     ] : starts;
