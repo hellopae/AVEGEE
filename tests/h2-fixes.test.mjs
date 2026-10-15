@@ -59,7 +59,8 @@ test('H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces 
 // ข้อ 2 — ซูมแผนที่ + กล้องตามนุ่ม
 test('H2-2: town zoom/follow control retains the smooth frontier formula (130ms)', () => {
   const ui = read('src/ui.js'), html = read('index.html');
-  assert.match(html, /id="hud-zoom"/);
+  assert.doesNotMatch(html, /id="hud-zoom"/);   // K4: ปุ่มมุมขวาล่างถูกตัด — ใช้ minimap (− / ทั้งแผนที่ / +)
+  assert.match(html, /id="town-overview"/);
   assert.match(ui, /let MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
   assert.match(ui, /cameraZone = g\.zone; MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
   assert.deepEqual(townZoomLevels('th'), [1, 3.5, 5, 6.5]);

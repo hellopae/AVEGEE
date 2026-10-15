@@ -145,26 +145,17 @@ fitSceneBox();
 /** H2 (คุณเป้ 10 ต.ค.): "กล้องตามตัวละครอย่างนุ่มนวลในหน้าแผนที่เวลา zoom ด้วย"
  *  ซูมแผนที่โซน = ขยายกล่อง .scene-box ด้วย CSS transform (พิกัดคลิกอ่านจาก getBoundingClientRect อยู่แล้ว จึงไม่เพี้ยน)
  *  กล้องตามยมบาทด้วยสูตรเดียวกับกล้องชายแดน (scene-style.followCamera: exponential 130ms, ไม่เกินขอบภาพ)
- *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปุ่ม #hud-zoom สลับภาพรวมกับกล้องตามตัวละคร; minimap ปรับระยะได้ */
+ *  ซูมออก (1×) = มุมมองภาพรวมเหมือนเดิมทุกประการ · ปรับระยะ/กลับภาพรวมจาก minimap (− / ทั้งแผนที่ / +) เท่านั้น (K4: ตัดปุ่ม #hud-zoom มุมขวาล่างที่ไอคอนหายแล้ว) */
 let cameraZone = g.zone;
 let MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
 const mapCam = { level: townDefaultZoom(g.zone), z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
-const zoomBtn = document.getElementById('hud-zoom');
 function setMapZoom(level) {
   mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
-  if (zoomBtn) {
-    zoomBtn.dataset.level = String(mapCam.level);
-    zoomBtn.setAttribute('aria-pressed', mapCam.level > 0 ? 'true' : 'false');
-    zoomBtn.setAttribute('aria-label',t(mapCam.level > 0 ? 'town.overview' : 'town.follow'));
-    const less=document.getElementById('town-zoom-less'),more=document.getElementById('town-zoom-more');
-    if(less)less.disabled=mapCam.level===0;
-    if(more)more.disabled=mapCam.level===MAP_ZOOM_LEVELS.length-1;
-    const zoomImg = zoomBtn.querySelector('img');
-    if (zoomImg) zoomImg.src = mapCam.level > 0 ? 'img/ui/icon-zoom-out.png' : 'img/ui/icon-zoom-in.png';   // ซูมอยู่ = แสดงปุ่มซูมออก
-  }
+  const less=document.getElementById('town-zoom-less'),more=document.getElementById('town-zoom-more');
+  if(less)less.disabled=mapCam.level===0;
+  if(more)more.disabled=mapCam.level===MAP_ZOOM_LEVELS.length-1;
 }
 setMapZoom(mapCam.level);
-zoomBtn?.addEventListener('click', () => setMapZoom(mapCam.level > 0 ? 0 : Math.max(1,townDefaultZoom(g.zone))));
 document.getElementById('town-zoom-less')?.addEventListener('click',()=>setMapZoom(mapCam.level-1));
 document.getElementById('town-zoom-more')?.addEventListener('click',()=>setMapZoom(mapCam.level+1));
 document.getElementById('town-overview')?.addEventListener('click',()=>setMapZoom(0));
