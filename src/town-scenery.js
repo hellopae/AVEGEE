@@ -24,7 +24,7 @@ function cachedSprite(image,kind) {
 // frame, on-screen or not (~90 ms per frame on Intel iGPU at DPR 2). The very same filter is now
 // baked once per (image, biome) into a canvas; pixels are identical, the per-frame cost is a blit.
 const TREE_TINT = {
-  city:'sepia(1) saturate(2.6) hue-rotate(310deg) brightness(.60)',
+  city:'sepia(1) saturate(3.3) hue-rotate(310deg) brightness(.74)',
   lava:'hue-rotate(305deg) saturate(1.05) brightness(.78)',
   ice:'saturate(.25) brightness(1.4)',
   heaven:'saturate(.7) brightness(1.12)',
@@ -143,7 +143,20 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       if(art){
         sprite(ctx,p.kind==='tree'?tintedArt(art,p.biome):art,p.x,p.y,p.w);
       }else fallbackProp(ctx,p,time,reduced);
-      if(p.kind==='torch') drawLocalLight(ctx,'th',p.x,p.y-h*.85,52,time,reduced);
+      if(p.kind==='torch') {
+        const fy=p.y-h*.85;
+        ctx.save();ctx.globalCompositeOperation='screen';
+        drawLocalLight(ctx,'th',p.x,fy,85,time,reduced);
+        drawLocalLight(ctx,'th',p.x,p.y-4,48,time,reduced);
+        if(!reduced)for(let i=0;i<4;i++){
+          const age=((time/1800+i*.25+p.x*.001)%1+1)%1;
+          const x=p.x+Math.sin(age*5+i+p.x)*9,y=fy-age*40;
+          const alpha=Math.sin(age*Math.PI)*(.55+.25*Math.sin(time/110+i));
+          ctx.globalAlpha=alpha;ctx.fillStyle=i%2?'#fff0a0':'#ff9b38';
+          ctx.fillRect(x-1,y-2,2,4);
+        }
+        ctx.restore();
+      }
       ctx.restore();
     });
   }

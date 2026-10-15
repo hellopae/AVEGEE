@@ -3,6 +3,7 @@
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
+import {drawHellTerrain} from './town-lighting.js?v=fire-v2';
 
 export const TOWN_TERRAIN_DIR = 'img/map-zone1/v2/';
 export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v2-preview.webp';
@@ -20,23 +21,6 @@ export const townChunkUrl = (row,col) => `${TOWN_TERRAIN_DIR}r${row}-c${col}.web
 const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
 const MAX_LOADING = 3;
 
-// Cache the night lighting once per decoded tile, never filter the full viewport per frame.
-const nightTiles = new WeakMap();
-function nightTerrain(image) {
-  if (typeof document === 'undefined') return image;
-  let canvas = nightTiles.get(image);
-  if (!canvas) {
-    canvas = document.createElement('canvas');
-    canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
-    const p = canvas.getContext('2d');
-    p.filter = 'brightness(.60) saturate(.78) sepia(.28) hue-rotate(350deg) contrast(1.12)';
-    p.drawImage(image,0,0); p.filter = 'none';
-    p.globalCompositeOperation = 'multiply';
-    p.fillStyle = 'rgba(120,57,70,.24)'; p.fillRect(0,0,canvas.width,canvas.height);
-    nightTiles.set(image,canvas);
-  }
-  return canvas;
-}
 const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
 let preview = null, loading = 0, frame = 0;
 function ensurePreview() {
@@ -66,7 +50,7 @@ export const townTerrainStats = () => {
 };
 
 /** Draw the visible part of the painted ground. `resolve` and `time` are accepted for the old call sites. */
-export function drawTownTerrain(ctx) {
+export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   ensurePreview();
   const m = ctx.getTransform ? ctx.getTransform() : null;
   const scale = m && Number.isFinite(m.a) && m.a > 0 ? m.a : 1;
@@ -79,9 +63,9 @@ export function drawTownTerrain(ctx) {
   }
   ctx.save();
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'low';
-  const pv = preview?.ready ? nightTerrain(preview.image) : null;
+  const pv = preview?.ready ? preview.image : null;
   if (scale < DETAIL_FROM) {
-    if (pv) ctx.drawImage(pv, 0, 0, TOWN_SIZE.w, TOWN_SIZE.h);
+    if (pv) drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
     ctx.restore();
     return;
   }
@@ -94,11 +78,11 @@ export function drawTownTerrain(ctx) {
     const c = request(row,col);
     if (c.state === 'ready') {
       c.at = frame;
-      ctx.drawImage(nightTerrain(c.image), r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
+      drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
     } else if (pv) {
       // Stand-in: the matching slice of the preview until the sharp chunk has decoded.
-      const sx = r.x/TOWN_SIZE.w*pv.width, sy = r.y/TOWN_SIZE.h*pv.height;
-      ctx.drawImage(pv, sx, sy, r.w/TOWN_SIZE.w*pv.width, r.h/TOWN_SIZE.h*pv.height, r.x, r.y, r.w, r.h);
+      const sx = r.x/TOWN_SIZE.w*pv.naturalWidth, sy = r.y/TOWN_SIZE.h*pv.naturalHeight;
+      drawHellTerrain(ctx,pv,time,reduced, sx, sy, r.w/TOWN_SIZE.w*pv.naturalWidth, r.h/TOWN_SIZE.h*pv.naturalHeight, r.x, r.y, r.w, r.h);
     }
   }
   // Prefetch the ring around the camera so walking never reveals a blurry patch.
