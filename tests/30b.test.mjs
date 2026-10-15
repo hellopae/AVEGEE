@@ -127,7 +127,7 @@ test('30B-9: โค้ดเรืองแสงเติมบารมีข�
   const ms = Number(ui.match(/const HEAL_GLOW_MS = (\d+)/)[1]);
   assert.ok(ms >= 600 && ms <= 1000, `HEAL_GLOW_MS=${ms}`);
   // L2: the effect now covers every heal (items, boon, drain ...) through vitalGains(), not just crew:boon -> Yama
-  assert.match(ui, /showHeals\(vitalsBefore, \(k\.startsWith\('crew:'\) \|\| k === 'guard'\) \? ACTION_CUT_MS - 200 : 120\)/);
+  assert.match(ui, /showHeals\(vitalsBefore, \(k\.startsWith\('crew:'\) \|\| k === 'guard'\) \? ACTION_CUT_MS \+ 80 : 120\)/);
   assert.match(css, /\.arena \.fig\.you\.healing::after/);
   assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{\s*\.arena \.fig\.you\.healing::after\{animation:none/);
 });

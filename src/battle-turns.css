@@ -129,7 +129,7 @@ dialog.rpg:has(.battle9-arena)>.pad{position:absolute;left:44%;bottom:2%;z-index
 .defend-shield::before,.defend-shield::after{content:"";position:absolute;clip-path:polygon(50% 0,92% 14%,92% 52%,50% 100%,8% 52%,8% 14%)}
 .defend-shield::before{inset:0;background:linear-gradient(#fff1c2,#d9a441 55%,#8f5f1d)}
 .defend-shield::after{inset:14% 16% 20%;background:linear-gradient(#5b2230,#2c0f17)}
-html.defend-shield-art .defend-shield{background:url(img/ui/icon-defend-shield.png) center/contain no-repeat}
+html.defend-shield-art .defend-shield{background:url(../img/ui/icon-defend-shield.png) center/contain no-repeat}
 html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shield::after{display:none}
 .formation-member>.defend-shield,.fig>.defend-shield{left:var(--formation-mid,50%);top:calc(var(--formation-head,0px) - clamp(30px,3.1vw,50px));translate:-50% 0}
 .battle-portrait{position:relative}
@@ -157,7 +157,7 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 
 /* L2 — heal effect: green/gold sparkles rising, a light ring at the feet and a +HP number for ~1 s (blue for MP).
    Transform/opacity only (no filters), placed from the sprite's measured head/foot/mid so it hugs the visible body. */
-.heal-fx{position:absolute;left:var(--formation-mid,50%);top:var(--formation-head,0px);width:0;height:calc(var(--formation-foot,100%) - var(--formation-head,0px));pointer-events:none;
+.heal-fx{position:absolute;z-index:45;isolation:isolate;left:var(--formation-mid,50%);top:var(--formation-head,0px);width:0;height:calc(var(--formation-foot,100%) - var(--formation-head,0px));pointer-events:none;
   --c1:#f3d36b;--c2:#58d68d;--ring:#7fffc1}
 .heal-fx.mp{--c1:#bfe8ff;--c2:#3fa7f5;--ring:#6cc6ff}
 .heal-fx i{position:absolute;display:block;font-style:normal;z-index:44}

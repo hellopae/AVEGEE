@@ -3180,7 +3180,7 @@ const API = {
         const receiver = recipient || { id:'you' };
         const heal = Math.min(pw.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale);
         if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
-        B.dmg.healActorId = receiver.id;
+        B.dmg.healActorId = receiver.id; B.dmg.healAmount = heal;
         say(`${c.name}ฟื้นบารมีให้ ${heal} หน่วย`);
         B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
       } else if (c.k === 'kan') {

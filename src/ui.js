@@ -1,3 +1,4 @@
+import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
@@ -1327,29 +1328,32 @@ function updateTownHud(now) {
   c.fillStyle='#fff4d2';c.beginPath();c.arc(g.player.x/SCENE.w*w,g.player.y/SCENE.h*h,3,0,Math.PI*2);c.fill();
 }
 
-/** One nearby action, including repairs, survives refresh while the player taps. */
+/** NPC actions stay on the actual head; nearby building actions stay at the building centre. */
 function updateRepairFabs() {
-  const target = currentMapInteraction();
-  for (const f of ov.querySelectorAll('.repairfab'))
-    if (!target || f.dataset.target !== target.id) f.remove();
-  if (!target) return;
-  let f = ov.querySelector('.repairfab');
-  if (!f) {
-    f = document.createElement('button'); f.className = 'repairfab';
-    f.dataset.target = target.id;
-    f.onclick = ev => {
-      ev.stopPropagation();
-      const now = currentMapInteraction();
-      if (!now || now.id !== f.dataset.target) return;
-      activateMapInteraction(now);
-    };
-    ov.appendChild(f);
+  const active=started&&!g.over&&!g.battle&&!dlg.open;
+  const near=active?currentMapInteraction():null;
+  const targets=active?mapInteractions(g,MERCHANT).filter(t=>t.kind==='nira'||t.kind==='merchant'):[];
+  if(near&&!targets.some(t=>t.id===near.id))targets.push(near);
+  for(const f of ov.querySelectorAll('.repairfab'))if(!targets.some(t=>t.id===f.dataset.target))f.remove();
+  for(const target of targets){
+    let f=[...ov.querySelectorAll('.repairfab')].find(e=>e.dataset.target===target.id);
+    if(!f){
+      f=document.createElement('button');f.className='repairfab';f.dataset.target=target.id;
+      f.onclick=ev=>{
+        ev.stopPropagation();
+        const now=mapInteractions(g,MERCHANT).find(t=>t.id===f.dataset.target)||currentMapInteraction();
+        if(!now)return;
+        if(Math.hypot(g.player.x-now.x,g.player.y-now.y)>(now.reach||INTERACTION_REACH)){g.walkTo(now.x,now.y);return;}
+        activateMapInteraction(now);
+      };
+      ov.appendChild(f);
+    }
+    f.textContent=target.label;f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
+    f.dataset.sx=target.bx;f.dataset.sy=target.by;f.classList.toggle('anchor-top', target.anchor === 'top');
+    place(f);
+    const v=mapCam.viewport;
+    if(v?.sx&&v?.sy){const x=target.bx*v.sx+v.tx,y=target.by*v.sy+v.ty;f.hidden=x<0||x>v.width||y<0||y>v.height;}
   }
-  f.textContent = target.label;
-  f.disabled = target.kind === 'repair' && !g.canRepair(target.key);
-  f.dataset.sx = target.bx; f.dataset.sy = target.by;
-  f.classList.toggle('anchor-top', target.anchor === 'top');   // 30D: ปุ่มของอาคารยึดขอบล่างไว้ที่ยอดหลังคา
-  place(f);
 }
 
 // ackOnly = ปุ่มหลักแค่ "รับทราบ" (ปิดหน้าต่าง) อยู่แล้ว → ไม่ต้องมีปุ่ม "ปิด" ซ้ำอีกอัน
@@ -2152,7 +2156,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
   const fxAt = side => {
-    if (!fx || fx.side !== side || fx.key === 'defend') return '';   // L2: defending is a stance, not an attack — no slash/claw effect
+    if (!fx || fx.side !== side || fx.key === 'defend') return '';
+    if(side==='you'&&fx.key==='health'&&fx.recipient&&fx.recipient!=='you')return '';    // L2: defending is a stance, not an attack — no slash/claw effect
     const d = FX_OF[fx.key] || FX_OF.atk;
     return `<img class="fx" src="img/${d.img}.png" alt=""
       onerror="this.onerror=null;this.outerHTML='<span class=&quot;fx glyph&quot;>${d.glyph}</span>'">`;
@@ -3047,6 +3052,8 @@ function openBattle(after) {
   const showHeals = (before, delayMs = 120) => {
     const keyOf = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
     const gains = vitalGains(before, vitalsOf(g));
+    const healed=g.battle?.dmg;
+    if(healed?.healAmount>0&&!gains.some(a=>a.id===healed.healActorId))gains.push({id:healed.healActorId,hp:healed.healAmount,mp:0});
     if (!gains.length) return;
     const start = Date.now() + delayMs;
     for (const gn of gains) healFx.push({ ...gn, key: keyOf(gn.id), start, ms: HEAL_GLOW_MS });
@@ -3331,8 +3338,33 @@ function openBattle(after) {
       formationMotion.previousKey=formationMotion.activeKey;
       formationMotion.activeKey=activeKey;formationMotion.changedAt=Date.now();
     }
-    const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion);
+    const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
+    stage._battleSpriteFit.then(() => {
+      if(!stage.isConnected)return;
+      const entries=[], hits=new Set([
+        ...(b.dmg?.enemyHits||[]).filter(h=>h.damage>0).map(h=>h.id),
+        ...(b.dmg?.hitActors||[]).map(a=>a.id),b.dmg?.hitActor?.id,
+        ...(b.dmg?.crew>0?[b.dmg?.targetActorId]:[])
+      ].filter(Boolean));
+      for(const c of g.battleActors()){
+        if(c.id==='you'||c.k==='nira')continue;
+        const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
+        const attacking=phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
+        const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
+        entries.push({root,key:`crew:${c.homeZone||g.zone}:${c.k}`,mode,startedAt:mode==='idle'?key.length*271:phaseAt});
+      }
+      if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:phaseAt});
+      const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
+      for(const root of stage.querySelectorAll('.fig.foe')){
+        if(root.classList.contains('down'))continue;
+        const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone);
+        if(!key)continue;
+        const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!attacker||id===attacker)?'attack':'idle';
+        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:phaseAt});
+      }
+      mountCombatSprites(stage,entries);
+    });
     if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitTeam(); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
     stage.querySelector('[data-arena-settings]').title = t('battle.settings');
@@ -3462,14 +3494,15 @@ function openBattle(after) {
         if(pane){
           const command=wheel.querySelector(`[data-command="${pane.dataset.options}"]`);
           const natW=pane.offsetWidth,h=pane.offsetHeight,cmdTop=top+command.offsetTop;
-          const ys=[cmdTop,bounds.b-h,...hard.flatMap(r=>[r.b+10,r.t-h-10])];
+          const preferredTop=pane.dataset.options==='item'?Math.min(bounds.b-h,Math.max(cmdTop,area.height*.48)):cmdTop;
+          const ys=[preferredTop,bounds.b-h,...hard.flatMap(r=>[r.b+10,r.t-h-10])];
           // Narrower widths (names ellipsize) before moving away from the tab it belongs to.
           let best=null;
           const minW=Math.min(natW,pane.dataset.options==='power'?215:265);   // item rows carry a wide stock note, keep names readable
           for(const w of [...new Set([natW,minW])]){
             const candidates=ys.flatMap(y=>[
-              {key:'right',x:left+menuWidth-12+command.offsetLeft,y,penalty:Math.abs(y-cmdTop)*3+(natW-w)*2},
-              {key:'left',x:left+command.offsetLeft+12-w,y,penalty:Math.abs(y-cmdTop)*3+400+(natW-w)*2}]);
+              {key:'right',x:left+menuWidth-12+command.offsetLeft,y,penalty:Math.abs(y-preferredTop)*3+(natW-w)*2},
+              {key:'left',x:left+command.offsetLeft+12-w,y,penalty:Math.abs(y-preferredTop)*3+400+(natW-w)*2}]);
             const plan=planPlacement({size:{w,h},candidates,hard,soft,bounds});
             if(plan&&(!best||plan.cost<best.plan.cost))best={plan,w};
           }
@@ -3562,7 +3595,7 @@ function openBattle(after) {
       }
       // L2 (ต่อจากชุด 30B ข้อ 9) — ใครได้เติมเลือด/พลังเวทจากคำสั่งนี้ (ไอเท็ม พลังของบุญ ดาบดูดเลือด ...) ขึ้นประกาย+วงแสง+ตัวเลข
       // ท่าที่มีภาพคั่น (ยมทูต/ยักษ์) เริ่มตอนภาพคั่นจางลงพอดี ไม่งั้นอยู่ใต้ภาพที่ทับเต็มกรอบ
-      showHeals(vitalsBefore, (k.startsWith('crew:') || k === 'guard') ? ACTION_CUT_MS - 200 : 120);
+      showHeals(vitalsBefore, (k.startsWith('crew:') || k === 'guard') ? ACTION_CUT_MS + 80 : 120);
       if(k==='flee')sfx('step');else powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
@@ -3579,7 +3612,7 @@ function openBattle(after) {
       const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
-      fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow };
+      fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
       paint();
       playActionCutscene(action);
 

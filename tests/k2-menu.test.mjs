@@ -13,8 +13,8 @@ test('K2 interactive rows keep a stationary hit area through pointerdown and cli
 });
 test('K2 normal formation compresses both diagonal axes to 60–65% and advances group',()=>{
  const slots=planBattleFormation(4,1678,937);
- assert.ok(slots[0].x/1678>=.19);
- assert.ok(slots.at(-1).x/1678<=.38);
+ assert.ok(slots[0].x/1678>=.14);
+ assert.ok(slots.at(-1).x/1678<=.33);
  assert.ok((slots[3].x-slots[0].x)/(1678*.275)>=.60);
  assert.ok((slots[3].x-slots[0].x)/(1678*.275)<=.65);
  assert.ok((slots[3].y-slots[0].y)/(937*.155)>=.60);
@@ -26,9 +26,9 @@ test('K2 changed entry URLs match, including review imports',()=>{
  for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
   const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
   const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
+  assert.match(a||'',/^20261016-night-city-v1$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
  }
- assert.match(review,/from '\.\/src\/ui\.js\?v=(?:[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
+ assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-night-city-v1|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
 });
 
 test('K2 pointerdown captures primary input, leaves activation to one native click',async()=>{

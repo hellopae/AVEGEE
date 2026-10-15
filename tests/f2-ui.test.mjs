@@ -205,10 +205,10 @@ test('7. สวิตช์เสียงเพลง/เอฟเฟกต์�
 
 // ---------- ข้อ 8: ปุ่ม "เข้าไป" ----------
 import { stationButtonPos, BUTTON_ROOF_DROP } from '../src/proximity.js';
-test('8. ปุ่ม "เข้าไป" เลื่อนลงจากยอดแหลมมาอยู่บนหลังคา (27% ของความสูงอาคาร) และไม่ใช้ class anchor-top', () => {
-  assert.equal(BUTTON_ROOF_DROP, 0.27);
+test('8. ปุ่ม "เข้าไป" เลื่อนลงจากยอดแหลมมาอยู่บนหลังคา (48% ของความสูงอาคาร) และไม่ใช้ class anchor-top', () => {
+  assert.equal(BUTTON_ROOF_DROP, 0.48);
   const p = stationButtonPos({ k: 'sala', bx: 1477, by: 309, bw: 196 }, 124, [1379, 124, 1575, 309]);
-  assert.equal(p.anchor, 'roof'); assert.ok(Math.abs(p.by - (124 + 185 * 0.27)) < 1e-9); assert.equal(p.bx, 1477);
+  assert.equal(p.anchor, 'roof'); assert.ok(Math.abs(p.by - (124 + 185 * 0.48)) < 1e-9); assert.equal(p.bx, 1477);
   assert.match(src('src/ui.js'), /toggle\('anchor-top', target\.anchor === 'top'\)/);
 });
 

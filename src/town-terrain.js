@@ -5,8 +5,8 @@
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain} from './town-lighting.js?v=fire-v2';
 
-export const TOWN_TERRAIN_DIR = 'img/map-zone1/v2/';
-export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v2-preview.webp';
+export const TOWN_TERRAIN_DIR = 'img/map-zone1/v3/';
+export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v3-preview.webp';
 export const TOWN_TERRAIN_FULL_PX = {w:4915,h:3277};
 export const TOWN_TERRAIN_CHUNK_PX = 1024;
 export const TOWN_TERRAIN_COLS = 5, TOWN_TERRAIN_ROWS = 4;
@@ -20,6 +20,7 @@ export function townChunkRect(row,col) {
 export const townChunkUrl = (row,col) => `${TOWN_TERRAIN_DIR}r${row}-c${col}.webp`;
 const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
 const MAX_LOADING = 3;
+export const townTerrainImage = () => preview?.ready ? preview.image : null;
 
 const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
 let preview = null, loading = 0, frame = 0;

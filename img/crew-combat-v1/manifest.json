@@ -1,0 +1,1706 @@
+{
+  "crew:th:dam": {
+    "src": "img/crew-combat-v1/th/dam.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 355,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:taan": {
+    "src": "img/crew-combat-v1/th/taan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 331,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:plerng": {
+    "src": "img/crew-combat-v1/th/plerng.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 387,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:boon": {
+    "src": "img/crew-combat-v1/th/boon.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 357,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:kan": {
+    "src": "img/crew-combat-v1/th/kan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 376,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:guard": {
+    "src": "img/crew-combat-v1/th/guard.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 380,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:th:dam:idle": {
+    "src": "img/crew-combat-v1/th/dam-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 249,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:th:taan:idle": {
+    "src": "img/crew-combat-v1/th/taan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 267,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:th:plerng:idle": {
+    "src": "img/crew-combat-v1/th/plerng-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 275,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:th:boon:idle": {
+    "src": "img/crew-combat-v1/th/boon-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 252,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:th:kan:idle": {
+    "src": "img/crew-combat-v1/th/kan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 269,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:th:guard:idle": {
+    "src": "img/crew-combat-v1/th/guard-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 268,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:dam": {
+    "src": "img/crew-combat-v1/asia/dam.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 352,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:taan": {
+    "src": "img/crew-combat-v1/asia/taan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 334,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:plerng": {
+    "src": "img/crew-combat-v1/asia/plerng.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 353,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:boon": {
+    "src": "img/crew-combat-v1/asia/boon.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 356,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:kan": {
+    "src": "img/crew-combat-v1/asia/kan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 393,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:guard": {
+    "src": "img/crew-combat-v1/asia/guard.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 388,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:asia:dam:idle": {
+    "src": "img/crew-combat-v1/asia/dam-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 248,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:taan:idle": {
+    "src": "img/crew-combat-v1/asia/taan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 268,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:plerng:idle": {
+    "src": "img/crew-combat-v1/asia/plerng-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 273,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:boon:idle": {
+    "src": "img/crew-combat-v1/asia/boon-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 269,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:kan:idle": {
+    "src": "img/crew-combat-v1/asia/kan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 274,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:asia:guard:idle": {
+    "src": "img/crew-combat-v1/asia/guard-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 276,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:dam": {
+    "src": "img/crew-combat-v1/west/dam.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 376,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:taan": {
+    "src": "img/crew-combat-v1/west/taan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 360,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:plerng": {
+    "src": "img/crew-combat-v1/west/plerng.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 382,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:boon": {
+    "src": "img/crew-combat-v1/west/boon.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 411,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:kan": {
+    "src": "img/crew-combat-v1/west/kan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 419,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:guard": {
+    "src": "img/crew-combat-v1/west/guard.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 428,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:west:dam:idle": {
+    "src": "img/crew-combat-v1/west/dam-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 257,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:taan:idle": {
+    "src": "img/crew-combat-v1/west/taan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 278,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:plerng:idle": {
+    "src": "img/crew-combat-v1/west/plerng-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 280,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:boon:idle": {
+    "src": "img/crew-combat-v1/west/boon-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 277,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:kan:idle": {
+    "src": "img/crew-combat-v1/west/kan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 276,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:west:guard:idle": {
+    "src": "img/crew-combat-v1/west/guard-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 279,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:dam": {
+    "src": "img/crew-combat-v1/cyberhell/dam.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 389,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:taan": {
+    "src": "img/crew-combat-v1/cyberhell/taan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 329,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:plerng": {
+    "src": "img/crew-combat-v1/cyberhell/plerng.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 421,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:boon": {
+    "src": "img/crew-combat-v1/cyberhell/boon.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 389,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:kan": {
+    "src": "img/crew-combat-v1/cyberhell/kan.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 383,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:guard": {
+    "src": "img/crew-combat-v1/cyberhell/guard.webp",
+    "frameWidth": 384,
+    "frameHeight": 512,
+    "cols": 4,
+    "rows": 2,
+    "anchor": [
+      192,
+      484
+    ],
+    "bodyHeight": 374,
+    "modes": {
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          100,
+          90,
+          100,
+          120,
+          100,
+          140
+        ]
+      },
+      "hurt": {
+        "frames": [
+          6,
+          7
+        ],
+        "durations": [
+          160,
+          260
+        ]
+      }
+    }
+  },
+  "crew:cyberhell:dam:idle": {
+    "src": "img/crew-combat-v1/cyberhell/dam-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 248,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:taan:idle": {
+    "src": "img/crew-combat-v1/cyberhell/taan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 265,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:plerng:idle": {
+    "src": "img/crew-combat-v1/cyberhell/plerng-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 272,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:boon:idle": {
+    "src": "img/crew-combat-v1/cyberhell/boon-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 265,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:kan:idle": {
+    "src": "img/crew-combat-v1/cyberhell/kan-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 280,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  },
+  "crew:cyberhell:guard:idle": {
+    "src": "img/crew-combat-v1/cyberhell/guard-idle.webp",
+    "frameWidth": 256,
+    "frameHeight": 384,
+    "cols": 4,
+    "rows": 1,
+    "anchor": [
+      128,
+      356
+    ],
+    "bodyHeight": 280,
+    "modes": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          1100,
+          320,
+          110,
+          430
+        ],
+        "loop": true
+      }
+    }
+  }
+}

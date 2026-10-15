@@ -40,7 +40,7 @@ export function nearestInteraction(player, targets, reach = INTERACTION_REACH) {
 }
 /** ปุ่มลอยของอาคารวางกึ่งกลางที่ระดับนี้ของความสูงตัวอาคาร (0 = ยอดสุด · 1 = ฐาน) — F2 ข้อ 8 (คุณเป้ 9 ต.ค. 2569)
  *  30D เคยวางขอบล่างปุ่มชิดยอดอาคาร → ปุ่มลอยเหนือยอดแหลมสูงเกินไป คุณเป้ให้เลื่อนลงมาอยู่บนหลังคา (วงที่วาดไว้ในภาพ 9) */
-export const BUTTON_ROOF_DROP = 0.27;
+export const BUTTON_ROOF_DROP = 0.48;
 /** 30D — ตำแหน่งปุ่มลอยของอาคาร: วัดยอดเนื้อภาพจากพิกเซลสไปรท์จริง (art.topOf) แล้วเลื่อนลงมาบนหลังคา · x = กึ่งกลางตัวอาคาร (กรอบเนื้อภาพ)
  *  เดิม by = def.by - def.bw - 24 ใช้ "ความกว้างอ้างอิง" bw เป็นความสูง — อาคารเตี้ย (กระท่อมไม้โซน 3) ปุ่มเลยลอยเหนือหลังคาเป็นร้อยพิกเซล
  *  anchor 'roof' = ตำแหน่งนี้คือกึ่งกลางปุ่ม (ui.js ไม่ใส่ class anchor-top) · รูปยังโหลดไม่เสร็จ → ใช้สูตรเดิมไปก่อน (anchor 'center') รอบหน้าค่อยวัดใหม่ */
@@ -60,9 +60,9 @@ export function mapInteractions(g, merchant) {
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
-    bx:nira.x, by:nira.y - 96, label:'จัดทีมยมทูต' });
+    bx:nira.x, by:nira.y - (g.zone==='th'?62:78), anchor:'top', label:'จัดทีมยมทูต' });
   if (g.zoneCaptivesFree()) targets.push({ id:'merchant', kind:'merchant', x:merchant.x, y:merchant.y,
-    bx:merchant.x, by:merchant.y - 96, label:'ซื้อขาย' });
+    bx:merchant.x, by:merchant.y - (g.zone==='th'?72:92), anchor:'top', label:'ซื้อขาย' });
   for (const st of g.stations) {
     if (st.build) continue;
     const def = st.def;

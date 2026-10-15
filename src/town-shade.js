@@ -17,7 +17,7 @@ import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE } from './town-
 export const SUN = { kx:.42, ky:.3 };
 const SINK = .08;                      // fraction of sprite height the shadow root sits above the lowest visible pixel
 const FIELD_RES = .25;                 // shadow-field pixels per world unit
-const SHADE_ALPHA = .32;               // how much darker an actor gets inside a shadow
+const SHADE_ALPHA = .58;               // how much darker an actor gets inside a shadow
 const SHADE_RGB = '16,8,34';
 const GROUND = { tight:'rgba(14,8,26,.20)', soft:'rgba(14,8,26,.15)' };
 

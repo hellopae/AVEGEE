@@ -55,8 +55,12 @@ const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);
   for(const run of TOWN_WALK_RUNS){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
 }
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
+export const TOWN_LAVA_EAST_CLIFF = [[1090,1005],[1160,1000],[1420,1130],[1450,1235],[1370,1230],[1250,1130],[1120,1080]];
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  // The middle lava bridge does not connect through the cliff face on its east bank.
+  // Use the northern bridge and the painted western stairs to reach these terraces.
+  if(townInPolygon(x,y,TOWN_LAVA_EAST_CLIFF))return false;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.

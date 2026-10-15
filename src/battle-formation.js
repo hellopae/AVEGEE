@@ -6,7 +6,7 @@ export function planBattleFormation(count, width, height) {
   return Array.from({length:count},(_,i)=>{
     const row=Math.floor(i/columns),column=i%columns;
     const t=columns===1?1:column/(columns-1);
-    return {x:width*(.20+.172*t+(count>4&&row===1?.025:0)),
+    return {x:width*(.145+.172*t+(count>4&&row===1?.025:0)),
       y:height*(.615+.097*t+(count>4?(row===0?-.09:.065):0)),
       scale:.94+.06*t,depth:5+row*columns+column,
       stepX:width*.065,stepY:-height*.025};

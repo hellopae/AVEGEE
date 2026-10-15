@@ -1,6 +1,8 @@
+import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
-import { drawTownTerrain } from './town-terrain.js?v=k1d';
+import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
+import { drawTownNightEffects } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
 import { updateTownShade, drawTownShadows, drawContactAO, drawActorShadow, withTownShade, visibleBase } from './town-shade.js?v=l1';
@@ -245,6 +247,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
+  if(town&&townTerrainImage())drawMapAmbientGround(ctx,townTerrainImage(),'town-th',t,SCENE.w,SCENE.h,reduced);
   drawTownGround(ctx, g);
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
@@ -562,7 +565,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       shade(c.x, c.y, CREW_H, cx => {
         const animated = !buildingHere && motion.moving &&
           drawCrewWalk(cx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
-        if (!animated) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
+        const idleNira=c.k==='nira'&&!working&&!motion.moving&&drawAnimatedSprite(cx,'nira:'+g.zone,'idle',c.x,c.y,CREW_H,t,motion.face);
+        if (!animated&&!idleNira) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
           c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
@@ -632,6 +636,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
+  if(town)drawTownNightEffects(ctx,t,reduced);
 
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)

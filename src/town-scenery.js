@@ -27,7 +27,7 @@ function cachedSprite(image,kind) {
 // K1e: lava (red) and ice (snow) trees now have their own art, so only the shared green tree is tinted
 // (city = infernal dark red, heaven = pale gold).
 const TREE_TINT = {
-  city:'sepia(1) saturate(3.3) hue-rotate(310deg) brightness(.74)',
+  city:'brightness(.78) saturate(1.08)',
   heaven:'saturate(.7) brightness(1.12)',
 };
 const tinted = new WeakMap();
@@ -160,6 +160,16 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       }else fallbackProp(ctx,p,time,reduced);
       if(p.kind==='torch') {
         const fy=p.y-h*.85;
+        if(!reduced){
+          ctx.save();
+          for(let j=0;j<3;j++){
+            const base=p.x+(j-1)*3,tip=fy-10-4*Math.sin(time/170+j+p.x),sway=3*Math.sin(time/210+j);
+            ctx.fillStyle=j===1?'rgba(255,240,150,.8)':'rgba(255,128,35,.7)';
+            ctx.beginPath();ctx.moveTo(base-3,fy+7);ctx.quadraticCurveTo(base-6,fy-3,base+sway,tip);
+            ctx.quadraticCurveTo(base+6,fy-2,base+3,fy+7);ctx.fill();
+          }
+          ctx.restore();
+        }
         ctx.save();ctx.globalCompositeOperation='screen';
         drawLocalLight(ctx,'th',p.x,fy,85,time,reduced);
         drawLocalLight(ctx,'th',p.x,p.y-4,48,time,reduced);

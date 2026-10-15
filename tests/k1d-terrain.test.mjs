@@ -38,8 +38,8 @@ test('old tile terrain and removed scenery art are no longer preloaded; the prev
   const th = catalog.zones.th.join('\n');
   assert.doesNotMatch(th, /map-zone1\/terrain-/);
   assert.doesNotMatch(th, /map-zone1\/prop-(bush|ice-ridge|mountain-ridge|volcano|waterfall)/);
-  assert.match(th, /map-zone1\/v2\/zone1-terrain-v2-preview\.webp/);
-  assert.doesNotMatch(th, /map-zone1\/v2\/r\d-c\d\.webp/, 'sharp chunks stream lazily, never preloaded');
+  assert.match(th, /map-zone1\/v3\/zone1-terrain-v3-preview\.webp/);
+  assert.doesNotMatch(th, /map-zone1\/v3\/r\d-c\d\.webp/, 'sharp chunks stream lazily, never preloaded');
 });
 
 test('the heavy 4915x3277 master is not committed', () => {
