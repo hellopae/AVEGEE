@@ -23,10 +23,10 @@ function cachedSprite(image,kind) {
 // K3: ctx.filter (hue-rotate / saturate) re-ran a full filter layer for every tinted tree on every
 // frame, on-screen or not (~90 ms per frame on Intel iGPU at DPR 2). The very same filter is now
 // baked once per (image, biome) into a canvas; pixels are identical, the per-frame cost is a blit.
+// K1e: lava (red) and ice (snow) trees now have their own art, so only the shared green tree is tinted
+// (city = infernal dark red, heaven = pale gold).
 const TREE_TINT = {
   city:'sepia(1) saturate(3.3) hue-rotate(310deg) brightness(.74)',
-  lava:'hue-rotate(305deg) saturate(1.05) brightness(.78)',
-  ice:'saturate(.25) brightness(1.4)',
   heaven:'saturate(.7) brightness(1.12)',
 };
 const tinted = new WeakMap();
@@ -78,14 +78,22 @@ function torchSprite() {
   }
   return torchArt?.complete && torchArt.naturalWidth ? torchArt : null;
 }
-const propArt = (p,tree,waterfall,resolveArt) =>
-  p.kind==='torch'?torchSprite():p.key?(resolveArt?.(p.key)||(p.kind==='tree'?tree:null)):null;
+// K1e: dedicated art per kind/biome. Torches stay on the Codex Thai fire pillar (torch-pillar-v1).
+export function townPropArtKey(p) {
+  if(p.kind==='tree'&&p.biome==='lava')return 'town-tree-red-th';
+  if(p.kind==='tree'&&p.biome==='ice')return 'town-tree-snow-th';
+  return ({palm:'town-prop-palm',lamp:'town-prop-lamp-gold'})[p.kind]||p.key;
+}
+const propArt = (p,tree,waterfall,resolveArt) => {
+  if(p.kind==='torch')return torchSprite();
+  const key=townPropArtKey(p);
+  return key?(resolveArt?.(key)||(key==='town-tree-th'?tree:null)):null;
+};
 function contactShadow(ctx,p) {
   ctx.save();ctx.fillStyle='rgba(10,6,15,.22)';ctx.beginPath();
   ctx.ellipse(p.x+4,p.y+2,p.rx*1.2,p.ry*.8,0,0,Math.PI*2);ctx.fill();ctx.restore();
 }
-// Placeholders drawn in code until Kittanate's drawings arrive (palm, gold lantern, torch);
-// small bush / rock outlines also stand in while a cutout is still loading.
+// Loading/error fallbacks only; K1e resolves palm and gold lantern to dedicated sprites, torches use the fire pillar.
 function fallbackProp(ctx,p,time=0,reduced=true) {
   ctx.save();ctx.translate(p.x,p.y);
   const w=p.w,flick=reduced?0:Math.sin(time/170+p.x*.07);
@@ -141,7 +149,7 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       // Fade only the crown/roof when the player's feet are behind this prop.
       if(Math.abs(g.player.x-p.x)<p.w*.45&&g.player.y<p.y&&g.player.y>p.y-h)ctx.globalAlpha=.4;
       if(art){
-        sprite(ctx,p.kind==='tree'?tintedArt(art,p.biome):art,p.x,p.y,p.w);
+        sprite(ctx,p.kind==='tree'&&townPropArtKey(p)==='town-tree-th'?tintedArt(art,p.biome):art,p.x,p.y,p.w);
       }else fallbackProp(ctx,p,time,reduced);
       if(p.kind==='torch') {
         const fy=p.y-h*.85;
