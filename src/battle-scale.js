@@ -140,7 +140,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       });
       const stepRight = foeBounds.length ? Math.min(...foeBounds.map(r => r.l)) - 8 : sr.width * .7;
       const steps = sizes.map((sz,i) => planTurnStep({ active:sz.bounds, others:sizes.filter((_,j) => j!==i).map(o => o.bounds), foes:foeBounds,
-        base:{ x:plan[i].stepX, y:plan[i].stepY }, bounds:{ l:0, t:sr.height * .3, r:stepRight, b:sr.height } }));
+        base:{ x:plan[i].stepX, y:plan[i].stepY }, gap:14, bounds:{ l:0, t:sr.height * .3, r:stepRight, b:sr.height } }));
       images.forEach((image,i)=>{
         const box=actorBoxes[i], slot=plan[i];
         const { w, h } = sizes[i];

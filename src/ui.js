@@ -2104,6 +2104,35 @@ function battleTurnOrderHtml(b) {
   return `<div class="battle-timeline">${render(units.slice(0,1),false)}${render(units.slice(1,6),true)}</div>`;
 }
 
+/** L2: "หนีจากการต่อสู้" confirmation — markup, wiring and a stand-alone opener so any screen (battle, frontier walk ...) asks the same way.
+ *  kind: battle kind (frontier -> "back to the frontier", anything else -> "back to the map"). */
+export function fleeConfirmHtml(kind = 'mob') {
+  return `<div class="flee-layer" data-flee-layer><div class="flee-card" role="alertdialog" aria-modal="true" aria-labelledby="flee-title">
+    <h3 id="flee-title">${esc(t('battle.flee.title'))}</h3>
+    <p>${esc(t(kind === 'frontier' ? 'battle.flee.textFrontier' : 'battle.flee.textMap'))}</p>
+    <div class="flee-actions"><button data-flee-cancel>${esc(t('battle.flee.cancel'))}</button><button class="gold" data-flee-ok>${esc(t('battle.flee.ok'))}</button></div></div></div>`;
+}
+export function bindFleeConfirm(layer, { onConfirm, onCancel }) {
+  layer.addEventListener('click', e => { if (e.target === layer) onCancel?.(); });
+  layer.querySelector('[data-flee-cancel]').onclick = () => onCancel?.();
+  layer.querySelector('[data-flee-ok]').onclick = () => onConfirm?.();
+  layer.querySelector('[data-flee-cancel]').focus();
+}
+/** Opens the flee confirmation on top of `container` (default: the page). Returns close(). onConfirm / onCancel are called after it closes. */
+export function openFleeConfirm({ container = document.body, kind = 'mob', onConfirm, onCancel } = {}) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = fleeConfirmHtml(kind);
+  const layer = wrap.firstElementChild;
+  layer.style.position = container === document.body ? 'fixed' : 'absolute';
+  const close = () => { layer.remove(); document.removeEventListener('keydown', onKey, true); };
+  const onKey = e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(); onCancel?.(); } };
+  document.addEventListener('keydown', onKey, true);
+  bindFleeConfirm(layer, { onConfirm:() => { close(); onConfirm?.(); }, onCancel:() => { close(); onCancel?.(); } });
+  container.appendChild(layer);
+  layer.querySelector('[data-flee-cancel]').focus();
+  return close;
+}
+
 /** L2: shield over the head / on the portrait of whoever is in the defend stance.
  *  Real art goes in img/ui/icon-defend-shield.png (see Output/Toby note); until it exists the CSS shield underneath shows. */
 function defendShieldHtml() {
@@ -3129,7 +3158,7 @@ function openBattle(after) {
     if (commandPanelActor !== actor.id) { commandPanel = null; commandPanelActor = actor.id; }
     const battle9Label = text => String(text).split(' / ')[getLang()==='en'?1:0] || String(text).split(' / ')[0];
     // L2: only plain fights can be fled (matches battleAct); bosses and story/event fights say why the button is dim.
-    const fleeWhy = ['soul','mob','frontier'].includes(b.kind) ? '' : ['zoneBoss','yama','dad'].includes(b.kind) ? t('battle.flee.noBoss') : t('battle.flee.noEvent');
+    const fleeCode = g.fleeWhy(b.kind), fleeWhy = fleeCode ? t('battle.flee.' + fleeCode) : '';
     const segments = [
       {id:'attack',label:'โจมตี / Attack',action:isYama?'atk':'strike'},
       {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:battleChoice(special,crewArt(actor,'-profile'),crewAbility(actor),!why,why||'ท่าพิเศษ / Special')},
@@ -3167,10 +3196,7 @@ function openBattle(after) {
       ? `${challengeLine}<div class="row"><button class="${b.over === 'win' ? 'gold' : ''}" data-fin>${finLabel}</button></div>` : '';
 
     if (fleeConfirm && (b.over || phase || prepOn || fleeWhy)) fleeConfirm = false;
-    const fleeLayer = fleeConfirm ? `<div class="flee-layer" data-flee-layer><div class="flee-card" role="alertdialog" aria-modal="true" aria-labelledby="flee-title">
-        <h3 id="flee-title">${esc(t('battle.flee.title'))}</h3>
-        <p>${esc(t(b.kind === 'frontier' ? 'battle.flee.textFrontier' : 'battle.flee.textMap'))}</p>
-        <div class="flee-actions"><button data-flee-cancel>${esc(t('battle.flee.cancel'))}</button><button class="gold" data-flee-ok>${esc(t('battle.flee.ok'))}</button></div></div></div>` : '';
+    const fleeLayer = fleeConfirm ? fleeConfirmHtml(b.kind) : '';
     dlg.innerHTML =
       arena(b.kind === 'yama' ? 'พญายมลงมาเอง'
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 เป็นหัวหน้าที่บัลลังก์ของโซนนั้นลงมาเอง ไม่ใช่ "พ่อ" ของโซน 1
@@ -3477,12 +3503,7 @@ function openBattle(after) {
     dlg.querySelector('[data-command-cancel]')?.addEventListener('click', () => { if (!phase && g.cancelBattleCommand()) paint(); });
     // L2: flee confirmation — confirm leaves the fight (no reward), cancel / backdrop just closes the layer
     const fleeLayerEl = dlg.querySelector('[data-flee-layer]');
-    if (fleeLayerEl) {
-      fleeLayerEl.addEventListener('click', e => { if (e.target === fleeLayerEl) { fleeConfirm = false; paint(); } });
-      dlg.querySelector('[data-flee-cancel]').onclick = () => { fleeConfirm = false; paint(); };
-      dlg.querySelector('[data-flee-ok]').onclick = () => { fleeConfirm = false; executeCommand('flee', 'you'); };
-      dlg.querySelector('[data-flee-cancel]').focus();
-    }
+    if (fleeLayerEl) bindFleeConfirm(fleeLayerEl, { onCancel:() => { fleeConfirm = false; paint(); }, onConfirm:() => { fleeConfirm = false; performFlee(); } });
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
       if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
@@ -3493,16 +3514,21 @@ function openBattle(after) {
       if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
       else g.advanceFrontierBreachWave();
     };
+    /** L2: leave the fight right now (no reward) — the single place the Flee result is applied. Call after the player confirmed. */
+    const performFlee = () => {
+      if (phase || !g.fleeBattle()) { paint(); return; }
+      sfx('step'); clearTimeout(phaseTimer); finish();
+    };
     const executeCommand = (action, recipient = 'you') => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
       const hpBefore = g.battle.youHp;
+      if (action === 'flee') { performFlee(); return; }
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
       if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
       commandMenuOpen = false;
       // L2: flee and defend are not attacks — no lunge, no slash effect, no counter-attack cutscene
-      if (action === 'flee') { sfx('step'); clearTimeout(phaseTimer); g.finishBattleCommand(); finish(); return; }
       if (action === 'defend') {
         sfx('item'); phase = 'you'; phaseAt = Date.now(); fxNow = { key:'defend', action:'defend', side:'you' }; paint();
         clearTimeout(phaseTimer);

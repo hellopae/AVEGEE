@@ -76,7 +76,9 @@ test('L2 flee: plain fights can be fled (no reward, battle over); boss/event fig
 
 test('L2 wiring: defend/flee never fall into the attack animation; flee asks first; target hint box is gone',()=>{
  const ui=read('src/ui.js');
- assert.match(ui,/if \(action === 'flee'\) \{ sfx\('step'\)[^}]*finish\(\); return; \}/,'flee leaves the fight directly');
+ assert.match(ui,/const performFlee = \(\) => \{\s*if \(phase \|\| !g\.fleeBattle\(\)\) \{ paint\(\); return; \}\s*sfx\('step'\); clearTimeout\(phaseTimer\); finish\(\);/,'one function applies a confirmed flee');
+ assert.match(ui,/if \(action === 'flee'\) \{ performFlee\(\); return; \}/);
+ assert.match(ui,/export function openFleeConfirm\(/);assert.match(ui,/export function fleeConfirmHtml\(/);assert.match(ui,/export function bindFleeConfirm\(/);
  assert.match(ui,/if \(action === 'defend'\) \{\s*sfx\('item'\); phase = 'you'; phaseAt = Date\.now\(\); fxNow = \{ key:'defend'/);
  assert.match(ui,/if\(action==='flee'\)\{fleeConfirm=true;paint\(\);\}/,'the tab only opens the confirmation');
  assert.match(ui,/fxNow\?\.key === 'defend' \? null/,'defend plays no lunge');
@@ -87,7 +89,7 @@ test('L2 wiring: defend/flee never fall into the attack animation; flee asks fir
  assert.match(ui,/else if\(b\.command===action\)\{g\.cancelBattleCommand\(\);paint\(\);\}/,'same tab again cancels');
  assert.match(ui,/addEventListener\('contextmenu', cancelGesture\)/);
  assert.match(ui,/e\.key !== 'Escape'/);
- assert.match(ui,/fleeWhy = \['soul','mob','frontier'\]/);
+ assert.match(ui,/fleeCode = g\.fleeWhy\(b\.kind\)/);
  assert.match(read('src/battle-scale.js'),/planTurnStep\(\{ active:sz\.bounds/,'formation asks the planner for each actor’s step');
  assert.match(read('src/battle-scale.js'),/'--turn-step-x':`\$\{steps\[i\]\.x\}px`/);
 });
@@ -113,4 +115,16 @@ test('L2 wording: Thai UI says พลังเวท where it said MP, English k
  }
  const ui=read('src/ui.js');
  assert.equal(ui.split('\n').filter(l=>/(['"`>])MP\b(?!_)/.test(l)&&!/^\s*(\/\/|\*)/.test(l)&&!/MP full/.test(l)).length,0,'ui.js hard-codes no Thai-visible MP label');
+});
+
+test('L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list lives in game.js)',async()=>{
+ const {FLEEABLE_KINDS}=await import('../src/game.js');
+ assert.deepEqual(FLEEABLE_KINDS,['soul','mob','frontier']);
+ const g=mk();
+ assert.equal(g.fleeWhy('soul'),'');assert.equal(g.fleeWhy('mob'),'');assert.equal(g.fleeWhy('frontier'),'');
+ assert.equal(g.fleeWhy('zoneBoss'),'noBoss');assert.equal(g.fleeWhy('dad'),'noBoss');assert.equal(g.fleeWhy('zoneEvent'),'noEvent');
+ assert.equal(g.fleeBattle(),true);assert.equal(g.battle.over,'flee');assert.equal(g.battle.commandBusy,false);
+ assert.equal(g.fleeBattle(),false,'already over');
+ const boss=createGame();boss.save=()=>true;boss.onChange=()=>{};boss.bossReady=()=>true;boss.startZoneBoss();
+ assert.equal(boss.fleeBattle(),false);assert.ok(!boss.battle.over);
 });

@@ -37,6 +37,8 @@ import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
 export const DEFEND_DAMAGE_RATIO = 0.5;
+/** L2: battle kinds the team may run away from (everything else is a boss / story / event fight). One list, used by battleAct and the UI. */
+export const FLEEABLE_KINDS = ['soul', 'mob', 'frontier'];
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const LOTUS_BOON_CUT = 8;   // ดอกบัวหนึ่งดอกที่มอบให้บุญลดกรรมของยมบาทน้อย (ค่าเดิมของ offerLotusBoon)
@@ -3022,6 +3024,20 @@ const API = {
     if (!b || b.over || b.commandBusy || (b.turnQueue && activeCombatUnit(this)?.id !== id) || !this.battleActors().some(c => c.id === id)) return false;
     b.actorId = id; b.command = null; this.onChange(); return true;
   },
+  /** L2: why the team cannot flee this fight — '' (can) | 'noBoss' | 'noEvent'. Single source for the Flee button, battleAct and any caller that wants to offer a flee. */
+  fleeWhy(kind = this.battle?.kind) {
+    if (FLEEABLE_KINDS.includes(kind)) return '';
+    return ['zoneBoss', 'yama', 'dad'].includes(kind) ? 'noBoss' : 'noEvent';
+  },
+  /** L2: the one function that actually flees the current battle (no reward). Returns false when fleeing is not allowed right now.
+   *  ui.js openBattle() calls it from the confirmed Flee window; ending the battle screen is endBattle()/finish() as for any other result. */
+  fleeBattle() {
+    const b = this.battle;
+    if (!b || b.over || this.fleeWhy(b.kind)) return false;
+    if (!this.confirmBattleCommand('flee', 'you')) return false;
+    this.finishBattleCommand();
+    return true;
+  },
   cancelBattleCommand() {
     if (!this.battle || this.battle.commandBusy) return false;
     this.battle.command = null; this.onChange(); return true;
@@ -3075,7 +3091,7 @@ const API = {
     if (command && !enemyOnly && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if (yamaSkillRemaining(B, what)) return false;
     if (what === 'rage' && command && command.recipientId !== 'you') return false;
-    if (what === 'flee' && !['soul','mob','frontier'].includes(B.kind)) return false;
+    if (what === 'flee' && this.fleeWhy(B.kind)) return false;
     const livingBefore = B.foes.filter(f => f.hp > 0).map(f => ({ id:f.id, hp:f.hp }));
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
     if (!target) return false;
