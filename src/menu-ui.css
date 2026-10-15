@@ -113,3 +113,8 @@ dialog.rpg:has(.battle-command-dock)>.combat-arena{grid-column:1;grid-row:1;min-
  .battle-command-dock .command-options .orb-choice i{font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.menu-tabs button,.battle-command-dock *{transition:none!important}}
+
+/* L2 — pause window: no gold outline/border on the action buttons. Hover and keyboard focus read as a lighter fill instead. */
+.pause-actions button{border:0;box-shadow:none;transition:background .12s}
+.pause-actions button:hover,.pause-actions button:focus-visible,.pause-modal .pause-actions button:focus-visible{outline:none;background:#4b2f3e}
+.pause-actions button:active{background:#5a3849}

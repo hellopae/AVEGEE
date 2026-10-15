@@ -89,7 +89,7 @@ test('an occupied matching station recommends only its assigned keeper', () => {
 test('hypnosis confesses every hidden deed and reveals only the matching station', () => {
   const g = createGame();
   const soul = caseAtCourt(g);
-  g.level = 4;
+  g.level = 4; g.abilities.hypno = true;   // L3: unlocked by the zone-3 boss reward
   g.powerOf('hypno').ammo = 1;
   assert.ok(g.usePower('hypno', soul));
   assert.ok(soul.deeds.every(d => d.known));

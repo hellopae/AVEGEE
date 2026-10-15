@@ -5,6 +5,7 @@
 
 import { mirrorBox } from './battle-facing.js';
 import { planBattleFormation } from './battle-formation.js?v=20261015-k2';
+import { planTurnStep } from './battle-turn-step.js?v=20261015-l2';
 
 /** ความสูงตัวจริงของยมทูตเทียบยมบาทน้อย — 1 = เท่ากัน · ยมบาทน้อยเป็นตัวเอกยังต้องเด่นกว่าเล็กน้อย */
 export const CREW_SCALE_TARGET = 0.96;
@@ -106,7 +107,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
   // ท่าของยมบาทน้อยเปลี่ยนตลอดการต่อสู้ (ยืน · ฟาด · โดนตี) แต่ละท่ามีกรอบตัวจริงต่างกัน — ใช้ท่ายืนเป็นหลักเสมอ
   // ไม่งั้นยมทูตจะขยับขนาดตามท่าทุกครั้งที่วาดฉากใหม่
   const refImg = heroRefSrc && heroRefSrc !== (hero.getAttribute('src') || '') ? refImage(heroRefSrc) : hero;
-  return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null]).then(([hb, ...rest]) => {
+  return Promise.all([measure(refImg), ...crewImgs.map(measure), helperImg ? measure(helperImg) : null]).then(async ([hb, ...rest]) => {
     if (!stage.isConnected || !hb || stage._fitSeq !== seq) return false;
     // ภาพที่ถูกพลิกกระจก (ทุกใบที่ไม่ใช่ .face-native — ดู battle-facing.js) ขอบซ้าย/ขวาของส่วนมีตัวสลับข้างกัน
     const crewBoxes = rest.slice(0, crewImgs.length).map((box, i) => crewImgs[i].classList.contains('face-native') ? box : mirrorBox(box));
@@ -124,20 +125,33 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       const heroBox = hero.classList.contains('face-native') ? hb : mirrorBox(hb);
       const images = [...crewImgs,hero], actorBoxes = [...crewBoxes,heroBox];
       const plan = planBattleFormation(images.length, sr.width, sr.height);
+      // L2: the actor on turn steps out until its visible bounds touch no teammate and no enemy (measured, not a fixed offset)
+      const foeBounds = (await Promise.all([...stage.querySelectorAll('.fig.foe img:not(.fx)')].map(im => battleSpriteRect(im)
+        .then(r => ({ l:r.l - sr.left, r:r.r - sr.left, t:r.t - sr.top, b:r.b - sr.top })).catch(() => null))))
+        .filter(r => r && r.r - r.l > 4 && r.b - r.t > 4);
+      if (!stage.isConnected || stage._fitSeq !== seq) return false;
       if(squad) put(squad,{position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
         'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'});
-      images.forEach((image,i)=>{
+      const sizes = images.map((image,i) => {
         const box=actorBoxes[i], slot=plan[i];
         const h=local.visH * slot.scale * (image===hero?1:CREW_SCALE_TARGET)/box.h;
         const w=h*(image===hero?refImg.naturalWidth/refImg.naturalHeight:image.naturalWidth/image.naturalHeight);
+        return { w, h, bounds:{ l:slot.x, r:slot.x + box.w*w, b:slot.y, t:slot.y - box.h*h } };
+      });
+      const stepRight = foeBounds.length ? Math.min(...foeBounds.map(r => r.l)) - 8 : sr.width * .7;
+      const steps = sizes.map((sz,i) => planTurnStep({ active:sz.bounds, others:sizes.filter((_,j) => j!==i).map(o => o.bounds), foes:foeBounds,
+        base:{ x:plan[i].stepX, y:plan[i].stepY }, gap:14, bounds:{ l:0, t:sr.height * .3, r:stepRight, b:sr.height } }));
+      images.forEach((image,i)=>{
+        const box=actorBoxes[i], slot=plan[i];
+        const { w, h } = sizes[i];
         const root=image.closest('[data-crew-pick]');
         const key=root.dataset.crewPick, active=key===motion.activeKey;
         put(image,{width:`${w}px`,height:`${h}px`,'max-width':'none','max-height':'none','object-fit':'fill'});
         put(root,{position:'absolute',left:`${slot.x-box.l*w}px`,top:`${slot.y-(box.t+box.h)*h}px`,bottom:'auto',
           width:`${w}px`,height:`${h}px`,margin:'0',flex:'none',display:'block','clip-path':'none',
           'z-index':String(active?30:slot.depth),'pointer-events':'auto',
-          '--turn-step-x':`${slot.stepX}px`,'--turn-step-y':`${slot.stepY}px`,
-          '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
+          '--turn-step-x':`${steps[i].x}px`,'--turn-step-y':`${steps[i].y}px`,
+          '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-head':`${box.t*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
           '--formation-shadow-width':`${box.w*w*.82}px`,
           '--turn-motion-delay':`${-Math.max(0,Date.now()-(motion.changedAt||0))}ms`});
         root.classList.add('formation-member');

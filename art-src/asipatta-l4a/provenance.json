@@ -1,0 +1,36 @@
+{
+  "generator": "built-in image_gen, transparent_background=true",
+  "referenceCropPixels": {
+    "th": [
+      800,
+      0,
+      1020,
+      290
+    ],
+    "asia": [
+      650,
+      0,
+      1020,
+      290
+    ],
+    "west": [
+      740,
+      20,
+      950,
+      330
+    ],
+    "cyberhell": [
+      720,
+      0,
+      1130,
+      320
+    ]
+  },
+  "outputs": {
+    "th": "Generated images are saved to /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed as /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed/exec-04e982c0-4025-42df-9f26-3c2f47e32887.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "asia": "Generated images are saved to /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed as /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed/exec-7f542ba8-538e-480d-bca9-e64a890a2e25.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "west": "Generated images are saved to /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed as /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed/exec-921c2652-2962-4e4f-90f3-a0f29b9cf6fe.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "cyberhell": "Generated images are saved to /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed as /Users/agapae/.codex/generated_images/01a13e6a-fbd9-72f1-8814-5824e84642ed/exec-363a445b-7f2e-40df-b95d-3fa7591a3a38.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  },
+  "processing": "Split each sheet into two equal columns; crop to alpha >128 bounds plus 2px margin; fit to 160x512 without recoloring. Preserve generated RGBA alpha."
+}

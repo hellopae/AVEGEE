@@ -1,6 +1,7 @@
 // Zone 1 town presentation. Existing world coordinates, collision and save data stay authoritative.
 import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
 import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
+import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 
 export const isTownZone = zone => zone === 'th';
 export const townZoomLevels = zone => isTownZone(zone) ? [1, 3.5, 5, 6.5] : [1, 2.5];
@@ -20,8 +21,8 @@ export function drawTownHouse(ctx, house, site = TOWN_HOUSE_SITES[0]) {
   if (!house) return;
   const w = site.w, h = w * house.naturalHeight/house.naturalWidth;
   ctx.save(); ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
-  ctx.fillStyle='rgba(9,5,13,.28)';ctx.beginPath();
-  ctx.ellipse(site.x,site.y-4,w*.44,w*.075,0,0,Math.PI*2);ctx.fill();
+  { const b=visibleBase(house,site.x,site.y,w,h,!!site.flip); // L1: soft contact shade under the visible base; the cast shadow is town-shade.js
+    drawContactAO(ctx,b.x+3,b.y-2,b.w*.58,Math.max(8,b.w*.1)); }
   if (site.flip) { ctx.translate(site.x*2,0); ctx.scale(-1,1); }
   ctx.drawImage(house,site.x-w/2,site.y-h,w,h);ctx.restore();
 }

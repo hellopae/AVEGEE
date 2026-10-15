@@ -125,12 +125,12 @@ test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama /
 
 // ---------------------------------------------------------------- 3. every reaper can rest
 const tea = g => g.stations.push({ def:STATIONS.find(s => s.k === 'tea'), build:0, slots:[], fire:0 });
-test('G4 tea rest for a regular reaper: needs pavilion + HP < 50 + standing; travel, 60 s rest, save/load, full HP, back to post', () => {
+test('G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 60 s rest, save/load, full HP, back to post', () => {
   const g = game(); g.hire('taan'); g.hire('dam');
   const taan = g.crewOf('taan'); taan.morale = 30;
   assert.equal(g.restActor(taan.id), false, 'no pavilion');
   tea(g);
-  taan.morale = 50; assert.equal(g.restActor(taan.id), false, 'HP not low');
+  taan.morale = 100; assert.equal(g.restActor(taan.id), false, 'HP full');   // L3: any HP below 100 may rest (was < 50)
   taan.morale = 30;
   assert.equal(g.restActor(g.crewOf('nira').id), false, 'Nira is a reader, not a worker');
   assert.equal(g.restActor('nope'), false);

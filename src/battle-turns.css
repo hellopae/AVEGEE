@@ -122,3 +122,64 @@ dialog.rpg:has(.battle9-arena)>.pad{position:absolute;left:44%;bottom:2%;z-index
 .battle9-arena .battle9-menu .battle9-confirm .battle-command-preview{flex:1 1 100%;margin:0;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .battle9-arena .battle9-menu .battle9-confirm small{flex:1 1 auto;margin:0;font-size:12px;line-height:1.35}
 .battle9-arena .battle9-menu .battle9-confirm .battle-command-cancel{flex:none;margin:0;min-height:28px;padding:2px 12px}
+
+/* L2 — defend stance shield: above the head of whoever defends (and on their profile card).
+   The CSS shield is the placeholder; once img/ui/icon-defend-shield.png exists ui.js sets html.defend-shield-art and the PNG replaces it with no code change. */
+.defend-shield{position:absolute;z-index:40;width:clamp(26px,2.8vw,46px);aspect-ratio:1;pointer-events:none;filter:drop-shadow(0 2px 3px #000);animation:defendPop .35s cubic-bezier(.2,1.4,.4,1) both}
+.defend-shield::before,.defend-shield::after{content:"";position:absolute;clip-path:polygon(50% 0,92% 14%,92% 52%,50% 100%,8% 52%,8% 14%)}
+.defend-shield::before{inset:0;background:linear-gradient(#fff1c2,#d9a441 55%,#8f5f1d)}
+.defend-shield::after{inset:14% 16% 20%;background:linear-gradient(#5b2230,#2c0f17)}
+html.defend-shield-art .defend-shield{background:url(img/ui/icon-defend-shield.png) center/contain no-repeat}
+html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shield::after{display:none}
+.formation-member>.defend-shield,.fig>.defend-shield{left:var(--formation-mid,50%);top:calc(var(--formation-head,0px) - clamp(30px,3.1vw,50px));translate:-50% 0}
+.battle-portrait{position:relative}
+.battle-portrait>.defend-shield{right:2px;top:2px;width:clamp(16px,1.6vw,26px)}
+.battle-portrait.is-defending{outline:2px solid #e4bf77;outline-offset:1px}
+@keyframes defendPop{from{opacity:0;scale:.3}to{opacity:1;scale:1}}
+@media(prefers-reduced-motion:reduce){.defend-shield{animation:none}}
+
+/* L2 — flee: dimmed tab with its reason, and the confirmation layer */
+.battle9-arena .battle9-menu .actor-segment:disabled,.battle9-arena .battle9-menu .actor-segment[aria-disabled=true]{opacity:.5;cursor:not-allowed;filter:grayscale(.4)}
+.battle9-arena .battle9-menu .actor-segment .segment-reason{display:block;font-style:normal;font-size:.78em;line-height:1.1;color:#ffd9a0;opacity:.95;white-space:nowrap}
+.battle9-arena .battle9-menu .actor-segment:has(.segment-reason){height:auto;min-height:clamp(34px,4.3vh,48px)}
+.flee-layer{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:#0b060acc;padding:12px}
+.flee-card{width:min(420px,100%);padding:18px 20px;border:1px solid var(--gold);border-radius:10px;background:var(--card,#200d14);color:#fff1d2;text-align:center;box-shadow:0 8px 30px #000b}
+.flee-card h3{margin:0 0 8px;font-size:clamp(18px,2vw,26px);color:var(--gold)}
+.flee-card p{margin:0 0 16px;line-height:1.5}
+.flee-actions{display:flex;gap:10px;justify-content:center}
+.flee-actions button{flex:1;min-height:44px;font:inherit}
+
+/* L2 — choosing a teammate as the receiver: eligible ones light up with the same "เลือกเป้าหมาย" tag as enemies, the rest dim */
+.arena.combat-arena .recipient-off{opacity:.45;cursor:not-allowed}
+.arena.combat-arena .formation-member .target-prompt{bottom:auto;top:calc(var(--formation-head,0px) - 32px);left:var(--formation-mid,50%);transform:translateX(-50%);z-index:41;white-space:nowrap}
+.arena.combat-arena .formation-member:has(.defend-shield) .target-prompt{top:calc(var(--formation-head,0px) - clamp(62px,5.9vw,96px))}
+.arena.combat-arena .battle-portrait.choose-recipient{outline:2px solid #80ebac;outline-offset:2px}
+
+/* L2 — heal effect: green/gold sparkles rising, a light ring at the feet and a +HP number for ~1 s (blue for MP).
+   Transform/opacity only (no filters), placed from the sprite's measured head/foot/mid so it hugs the visible body. */
+.heal-fx{position:absolute;left:var(--formation-mid,50%);top:var(--formation-head,0px);width:0;height:calc(var(--formation-foot,100%) - var(--formation-head,0px));pointer-events:none;
+  --c1:#f3d36b;--c2:#58d68d;--ring:#7fffc1}
+.heal-fx.mp{--c1:#bfe8ff;--c2:#3fa7f5;--ring:#6cc6ff}
+.heal-fx i{position:absolute;display:block;font-style:normal;z-index:44}
+.heal-fx .hf-glow{left:0;top:50%;width:clamp(64px,6.6vw,112px);height:112%;translate:-50% -50%;border-radius:50%;
+  z-index:-1;background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--c1) 80%,transparent) 0,color-mix(in srgb,var(--c2) 60%,transparent) 45%,transparent 74%);
+  animation:hfGlow 1s ease-in-out both;animation-delay:var(--fx-el,0ms)}
+.hf-ring{left:0;top:100%;width:clamp(56px,5.6vw,98px);height:clamp(16px,1.7vw,30px);translate:-50% -50%;border-radius:50%;border:2px solid var(--ring);box-shadow:0 0 8px var(--ring);
+  animation:hfRing .9s ease-out both;animation-delay:var(--fx-el,0ms)}
+.hf-ring.r2{animation-delay:calc(var(--fx-el,0ms) + 220ms);opacity:0}
+.hf-sp{left:calc(var(--sx) * clamp(3px,.42vw,7px));top:100%;width:clamp(6px,.6vw,10px);height:clamp(6px,.6vw,10px);background:var(--c1);
+  clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);opacity:0;
+  animation:hfSpark 1s ease-out both;animation-delay:calc(var(--fx-el,0ms) + var(--d,0ms))}
+.hf-sp.mp{background:#bfe8ff}
+.hf-num{left:0;top:0;translate:-50% 0;font:700 clamp(18px,2.4vw,34px)/1 var(--font-display);color:var(--c2);white-space:nowrap;
+  text-shadow:0 2px 0 #000c,0 0 12px #000e;animation:hfNum 1s ease-out both;animation-delay:var(--fx-el,0ms)}
+.hf-num.hp{color:#7be39d}
+.hf-num.mp{color:#7fcbff;font-size:clamp(14px,1.8vw,26px)}
+.hf-num.mp.second{top:clamp(24px,2.9vw,42px)}
+@keyframes hfGlow{0%{opacity:0;scale:.6}35%{opacity:1;scale:1.05}100%{opacity:0;scale:1.2}}
+@keyframes hfRing{0%{opacity:0;scale:.3}25%{opacity:1}100%{opacity:0;scale:1.35}}
+@keyframes hfSpark{0%{opacity:0;transform:translateY(0) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translateY(calc(-1 * clamp(60px,7vw,120px))) scale(1)}}
+@keyframes hfNum{0%{opacity:0;transform:translateY(12px) scale(.8)}22%{opacity:1;transform:translateY(0) scale(1.15)}100%{opacity:0;transform:translateY(-44px) scale(1)}}
+@media(prefers-reduced-motion:reduce){.heal-fx :is(.hf-glow,.hf-ring,.hf-sp,.hf-num){animation:none}.heal-fx .hf-sp,.heal-fx .hf-ring.r2{opacity:0}.heal-fx .hf-glow{opacity:.6}.heal-fx .hf-ring,.heal-fx .hf-num{opacity:1}}
+.arena.combat-arena .formation-member .target-prompt{font-size:clamp(10px,.8vw,12px);padding:2px 8px}
+.battle9-menu.targeting .battle-command-heading{visibility:hidden}   /* the receiver tag sits where the heading is */

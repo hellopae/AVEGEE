@@ -55,6 +55,6 @@ test('ทุกจุดในโค้ดเรียกหัวหน้า�
   assert.match(src('ui.js'), /punish-dad"><img src="\$\{artUrl\('hero-boss'\)\}/);
   // ป้ายเตือนบอส · เดินเข้าแผนที่ · ศึกบอสโซน = บอส
   assert.match(src('ui.js'), /openEventAlert\('zoneBoss', z\.bossName, z\.bossSub, artUrl\('zone-boss'\)/);
-  assert.match(src('scene.js'), /drawStandee\(ctx, 'zone-boss'/);
+  assert.match(src('scene.js'), /drawStandee\((?:ctx|c), 'zone-boss'/);   // L1: the call sits inside the town shade callback (c)
   assert.match(src('game.js'), /sp:'zone-boss', boss:true/);
 });

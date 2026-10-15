@@ -114,7 +114,7 @@ test('frontier crew and hired guard use the existing combat powers', () => {
 
 test('battle hypnosis makes the target strike itself, unlike ice stun', () => {
   const g = createGame();
-  g.level = 4;
+  g.level = 4; g.abilities.hypno = true;   // L3: hypnosis comes from the zone-3 boss reward, not level
   g.powerOf('hypno').ammo = 1;
   g.startBattle({ id:900, name:'test', who:'test', sp:1 });
   const hp = g.battle.youHp;
