@@ -116,3 +116,9 @@ dialog.rpg:has(.battle9-arena)>.pad{position:absolute;left:44%;bottom:2%;z-index
 .battle9-arena .battle9-menu .battle-command-heading,.battle9-arena .battle9-menu .battle9-confirm{pointer-events:none}
 .battle9-arena .battle9-menu .battle9-confirm{width:clamp(170px,15vw,240px)}
 .battle9-arena .battle9-menu .battle9-confirm .battle-command-cancel{pointer-events:auto;width:auto;min-height:32px;margin-top:6px;padding:4px 14px}
+/* K5: heading stays on one line (the column narrows beside crowded enemy rows); the hint becomes a thin strip placed from measured enemy positions (ui.js placeMenu). */
+.battle9-arena .battle9-menu .battle-command-heading{white-space:nowrap}
+.battle9-arena .battle9-menu .battle9-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;padding:6px 10px;box-sizing:border-box;max-width:calc(100vw - 16px)}
+.battle9-arena .battle9-menu .battle9-confirm .battle-command-preview{flex:1 1 100%;margin:0;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.battle9-arena .battle9-menu .battle9-confirm small{flex:1 1 auto;margin:0;font-size:12px;line-height:1.35}
+.battle9-arena .battle9-menu .battle9-confirm .battle-command-cancel{flex:none;margin:0;min-height:28px;padding:2px 12px}

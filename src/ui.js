@@ -26,6 +26,7 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2';
+import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
 import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
@@ -3331,25 +3332,76 @@ function openBattle(after) {
         if(!wheel.isConnected||!anchor)return;
         const area=stage.getBoundingClientRect(),sprite=anchor.querySelector('img:not(.fx)');
         const rect=await battleSpriteRect(sprite);if(!wheel.isConnected)return;
-        const menuWidth=wheel.offsetWidth,menuHeight=wheel.offsetHeight;
-        // Adjacent to the active actor, above the bottom profiles. Reserve room for the right submenu.
-        const pane=wheel.querySelector('.command-options.is-open, .battle9-confirm:not([hidden])');
-        const paneWidth=pane?.offsetWidth||0,paneGap=paneWidth?-12:0;
-        if(pane?.classList.contains('command-options')){
-          const command=wheel.querySelector(`[data-command="${pane.dataset.options}"]`);
-          pane.style.top=`${command.offsetTop}px`;
-          pane.style.left=`${menuWidth-12+command.offsetLeft}px`;
+        // K5: measure what must stay readable (enemies, their name/HP plates, boss HUD) and what we would rather not cover.
+        const loc=r=>({l:r.l-area.left,t:r.t-area.top,r:r.r-area.left,b:r.b-area.top});
+        const box=el=>{const r=el.getBoundingClientRect();return r.width&&r.height?loc({l:r.left,t:r.top,r:r.right,b:r.bottom}):null;};
+        // Opaque-pixel bounds when measurable; the <img> box when the measure fails or collapses (zone-boss art did once).
+        const sprites=async sel=>(await Promise.all([...stage.querySelectorAll(sel)].map(async img=>{
+          const r=await battleSpriteRect(img).catch(()=>null);
+          return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);
+        }))).filter(Boolean);
+        const [foeSprites,allySprites]=await Promise.all([sprites('.fig.foe img:not(.fx)'),sprites('.fig.you img:not(.fx), .battle-squad img:not(.fx), .formation-member img:not(.fx)')]);
+        if(!wheel.isConnected)return;
+        const hard=[...foeSprites,...[...stage.querySelectorAll('.fig.foe .plate, .battle-boss-hud')].map(box)].filter(Boolean);
+        const soft=[...allySprites,...[...stage.querySelectorAll('.battle-team-hud, .battle-scene-talk, .battle-timeline')].map(box)].filter(Boolean);
+        wheel.style.removeProperty('width');
+        const pane=wheel.querySelector('.command-options.is-open');
+        const confirm=wheel.querySelector('.battle9-confirm:not([hidden])');
+        if(pane){pane.style.removeProperty('top');pane.style.removeProperty('left');pane.style.removeProperty('max-height');pane.style.removeProperty('width');}
+        if(confirm){confirm.style.removeProperty('top');confirm.style.removeProperty('left');confirm.style.removeProperty('right');confirm.style.removeProperty('width');}
+        const naturalW=wheel.offsetWidth,menuHeight=wheel.offsetHeight;
+        const left=Math.min(Math.max(8,area.width-naturalW-8),Math.max(8,rect.r-area.left+12));
+        const bounds={l:6,t:6,r:area.width-6,b:area.height-12};
+        const maxY=Math.max(12,area.height*.83-menuHeight);
+        const top0=Math.max(Math.min(area.height*.36,maxY),Math.min(maxY,rect.t-area.top+12));
+        // K5: the stepped rows reach ~36px past the column width. Keep them clear of enemy sprites/plates/HP bars:
+        // narrow the column first, then drop it below the enemy row if the actor is hemmed in.
+        const widths=[...new Set([naturalW,Math.min(naturalW,168),Math.min(naturalW,132)])];
+        const ys=[top0,...hard.map(r=>r.b+6),bounds.b-menuHeight];
+        let menuPlan=null;
+        for(const w of widths){
+          const plan=planPlacement({size:{w:w+36,h:menuHeight},bounds,hard,soft,minH:menuHeight,
+            candidates:ys.map(y=>({key:w,x:left,y,penalty:Math.abs(y-top0)*3+(naturalW-w)*40}))});
+          if(plan&&(!menuPlan||plan.cost<menuPlan.cost))menuPlan=plan;
         }
-        const maxX=Math.max(8,area.width-menuWidth-paneWidth-paneGap-8);
-        const left=Math.min(maxX,Math.max(8,rect.r-area.left+12));
-        const paneHeight=pane ? pane.offsetHeight+pane.offsetTop : 0;
-        const maxY=Math.max(12,area.height*.83-Math.max(menuHeight,paneHeight));
-        const minY=Math.min(area.height*.36,maxY);
-        const top=Math.max(minY,Math.min(maxY,rect.t-area.top+12));
+        const menuWidth=menuPlan?menuPlan.key:naturalW,top=menuPlan?menuPlan.y:top0;
+        if(menuWidth!==naturalW)wheel.style.setProperty('width',`${menuWidth}px`,'important');
         wheel.style.setProperty('--menu-x',`${left}px`);wheel.style.setProperty('--menu-y',`${top}px`);
         wheel.classList.remove('submenu-left');
+        const apply=(el,plan)=>{el.style.left=`${plan.x-left}px`;el.style.top=`${plan.y-top}px`;el.style.right='auto';};
+        if(pane){
+          const command=wheel.querySelector(`[data-command="${pane.dataset.options}"]`);
+          const natW=pane.offsetWidth,h=pane.offsetHeight,cmdTop=top+command.offsetTop;
+          const ys=[cmdTop,bounds.b-h,...hard.flatMap(r=>[r.b+10,r.t-h-10])];
+          // Narrower widths (names ellipsize) before moving away from the tab it belongs to.
+          let best=null;
+          const minW=Math.min(natW,pane.dataset.options==='power'?215:265);   // item rows carry a wide stock note, keep names readable
+          for(const w of [...new Set([natW,minW])]){
+            const candidates=ys.flatMap(y=>[
+              {key:'right',x:left+menuWidth-12+command.offsetLeft,y,penalty:Math.abs(y-cmdTop)*3+(natW-w)*2},
+              {key:'left',x:left+command.offsetLeft+12-w,y,penalty:Math.abs(y-cmdTop)*3+400+(natW-w)*2}]);
+            const plan=planPlacement({size:{w,h},candidates,hard,soft,bounds});
+            if(plan&&(!best||plan.cost<best.plan.cost))best={plan,w};
+          }
+          if(best){apply(pane,best.plan);pane.style.setProperty('max-height',`${Math.floor(best.plan.h)}px`);pane.style.width=`${best.w}px`;pane.dataset.place=best.plan.key;}
+        }
+        if(confirm){
+          // Thin hint strip: below the menu if it fits, else beside it; narrower on phones.
+          const rowsR=left+menuWidth+40,ownRows={l:left,t:top,r:rowsR,b:top+menuHeight};
+          let best=null;
+          for(const w of [...new Set([Math.max(menuWidth,200),170])]){
+            confirm.style.width=`${w}px`;
+            const h=confirm.offsetHeight,belowY=top+menuHeight+6;
+            const candidates=[{key:'below',x:left,y:belowY},{key:'above',x:left,y:top-h-6,penalty:300},
+              ...[top,...hard.map(r=>r.b+10)].map(y=>({key:'right',x:rowsR+6,y,penalty:600+Math.abs(y-top)*3})),
+              {key:'left',x:left-w-8,y:top,penalty:900}].map(c=>({...c,penalty:(c.penalty||0)+(200-w>0?(200-w)*10:0)}));
+            const plan=planPlacement({size:{w,h},candidates,hard:[...hard,ownRows],soft,bounds});
+            if(plan&&(!best||plan.cost<best.plan.cost))best={plan,w};
+          }
+          if(best){confirm.style.width=`${best.w}px`;apply(confirm,best.plan);confirm.dataset.place=best.plan.key;}
+        }
       };
-      placeMenu();requestAnimationFrame(placeMenu);
+      placeMenu();requestAnimationFrame(placeMenu);setTimeout(placeMenu,500);   // K5: re-measure once pop-in animations have settled
       if(typeof ResizeObserver==='function'){const ro=new ResizeObserver(()=>{if(wheel.isConnected)placeMenu();else ro.disconnect();});ro.observe(stage);}
     }
     if (wheel && anchor && !wheel.classList.contains('battle-command-dock')) {
@@ -3384,7 +3436,7 @@ function openBattle(after) {
     dlg.querySelectorAll('[data-act]').forEach(el => el.onclick = () => {
       if (phase || el.disabled) return;
       if (el.dataset.act === 'cooldownClock' || immediateSelfSkill(el.dataset.act)) { executeCommand(el.dataset.act, 'you'); return; }
-      b.command = el.dataset.act;b.commandLabel=el.textContent.trim();b.commandTarget=null;b.commandRecipient=null;paint();
+      b.command = el.dataset.act;b.commandLabel=(el.querySelector("b")?.textContent||el.textContent).trim();b.commandTarget=null;b.commandRecipient=null;paint();
     });
     const finishWave = () => {
       if (!g.battle?.pendingWave) return;

@@ -83,7 +83,7 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
   const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
   assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'));
-  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d)$/);
+  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5)$/);
   assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
   assert.match(indexPreload,/-layered-battle9-20261015-r1-k3m$/);
   assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
