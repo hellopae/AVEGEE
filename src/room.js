@@ -1,4 +1,4 @@
-import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2';
+import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
 import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
 import { actorStanding } from './actor-recovery.js';
@@ -462,14 +462,14 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     };
     // ---- คนทั้งห้อง เรียงจากหลังมาหน้า ----
     const acts = [];
-    for (const a of room.souls || []) acts.push({y:a[1] + (def.k === 'ngiw' ? 0.001 : 0),fn:()=>drawSchoolProps(ctx,def.k,px(a[0]),py(a[1]),U)});
+    for (const a of room.souls || []) acts.push({y:a[1] + (def.k === 'ngiw' ? 0.001 : 0),fn:()=>drawSchoolProps(ctx,def.k,px(a[0]),py(a[1]),U,g.zone)});
     (st ? st.slots : []).forEach((sl, i) => {
       const a = room.souls[i] || room.souls[room.souls.length - 1];
       if (!a) return;
       acts.push({ y: a[1], fn: () => {
         const x = px(a[0]), y = py(a[1]);
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
-        drawSchoolProps(ctx,def.k,x,y,U);
+        drawSchoolProps(ctx,def.k,x,y,U,g.zone);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
         if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
         else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
