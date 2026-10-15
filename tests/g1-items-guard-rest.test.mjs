@@ -70,6 +70,6 @@ test('G1 translated controls, bag targets, HP/progress widgets and animated pavi
  const previous=globalThis.document;globalThis.document={documentElement:{}};
  try{for(const lang of ['th','en']){setLang(lang);for(const key of ['g1.rest','g1.needTea','g1.travel','g1.resting','g1.target','g1.food.desc','g1.tea.desc','g1.health.desc','g1.holyWater.desc'])assert.notEqual(t(key),key);}}finally{setLang('th');globalThis.document=previous;}
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),room=readFileSync(new URL('../src/room.js',import.meta.url),'utf8');
- assert.doesNotMatch(ui,/data-bag-target/);assert.match(ui,/c\.morale < \(c\.k === 'guard' \? 100 : 50\)/);assert.match(ui,/data-tea-rest-panel/);assert.match(ui,/guardRestWidget\(g\.guard\)/);
+ assert.doesNotMatch(ui,/data-bag-target/);assert.match(ui,/const full = c\.morale >= 100/);assert.match(ui,/data-tea-rest-panel/);assert.match(ui,/guardRestWidget\(g\.guard\)/);
  assert.match(room,/c\.teaRest\.phase === 'rest'/);assert.match(room,/drawCrewWalk\(ctx,key/);
 });

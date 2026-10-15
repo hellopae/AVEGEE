@@ -83,7 +83,7 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
   const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
   // Codex release scheme (importmap): fresh entry tokens, old ui.js import URLs are remapped in index.html.
-  assert.match(uiVersion,/^yama-live-20261015-main(?:-l4b)?$/);
+  assert.match(uiVersion,/^yama-live-20261015-main(?:-l4b|-l3)*$/);
   assert.match(indexPreload,/^src\/preload\.js\?v=yama-live-20261015-hell1(?:-k1e)?(?:-[a-z0-9]+)*$/);
   const map=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   assert.equal(map['./'+uiPreload?.replace(/^\.\//,'src/')],'./'+indexPreload,'ui.js preload import is remapped to the one index preload URL');

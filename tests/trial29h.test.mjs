@@ -82,7 +82,7 @@ test('29H: used target, no matching issue, pure souls and exhausted attempts do 
 
 test('29H: hypnosis renders the station on the wheel with no force/keeper reveal, even before construction', () => {
   for (const built of [true,false]) {
-    const g=createGame(),s=courtSoul(g);g.level=4;
+    const g=createGame(),s=courtSoul(g);g.level=4;g.abilities.hypno=true;
     if(!built)g.stations=g.stations.filter(st=>st.def.k!=='krata');
     assert.ok(g.usePower('hypno',s));
     const rendered=renderChoices(g,s);

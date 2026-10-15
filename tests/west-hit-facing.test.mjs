@@ -57,5 +57,5 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
   const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
-  assert.match(uiVersion,/^yama-live-20261015-main(?:-l4b)?$/,'new release entry token invalidates the prior module cache');
+  assert.match(uiVersion,/^yama-live-20261015-main(?:-l4b|-l3)*$/,'new release entry token invalidates the prior module cache');
 });

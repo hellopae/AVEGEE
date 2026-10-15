@@ -40,7 +40,7 @@ import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, 
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3';
 import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1-k1d';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
@@ -684,7 +684,7 @@ function sideBody() {
     const pw = POWERS.map(p => {
       const q = g.powerOf(p.k), ready = g.powerReady(p.k);
       const ammo = q.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
-      const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})`
+      const state = g.powerLocked(p) ? (p.k === 'hypno' ? 'ล็อก (ชนะบอสชายแดนโซน 3)' : `ล็อก (ขั้น ${p.lv})`)
                   : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
                   : ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${ammo}`;
       return `<div class="row-truth">${p.glyph.startsWith('img/') ? `<img class="power-glyph" src="${p.glyph}" alt="">` : esc(p.glyph)} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
@@ -860,8 +860,12 @@ function guardRestWidget(c, showName = false) {
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
     ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
-      : c.morale < (c.k === 'guard' ? 100 : 50) ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : ''}
+      : (() => {
+        // L3: ปุ่มพักมีทุกคนที่ไม่ใช่ผู้อ่าน — จางพร้อมบอกเหตุผลเมื่อ HP เต็ม / ยังไม่มีศาลาน้ำชา / ล้มอยู่ / อยู่ในศึก
+        const full = c.morale >= 100, why = full ? t('g1.full') : !ready ? t('g1.needTea') : g.battle ? t('g1.inBattle') : !actorStanding(c) ? t('g1.down') : '';
+        const inTeam = c.k !== 'guard' && (g.party?.members || []).includes(c.k);
+        return `<button class="sm" data-guard-rest="${esc(c.id)}" ${why ? 'disabled' : ''}>${esc(t('g1.rest'))}</button>${why ? `<small data-rest-why>${esc(why)}</small>` : inTeam ? `<small data-rest-team>${esc(t('g1.inTeam'))}</small>` : ''}`;
+      })()}
     </div>`;
 }
 function hungerWidget(c) {
@@ -2345,11 +2349,11 @@ function openTrial(initialError = '') {
       const pw = g.powerOf(p.k), noIssue = p.k === 'roar' && g.roarWhy(s), ok = g.powerReady(p.k) && !noIssue;
       const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
-      // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno ซื้ออย่างเดียว)
+      // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno L3: ปลดด้วยชนะบอสชายแดนโซน 3)
       const outOfAmmoHint = p.k === 'mirror' ? 'หมดแล้ว — เดินเก็บบนแผนที่ หรือคุยกับกานต์ที่หอส่องกรรม'
                            : 'หมดแล้ว — เดินไปเก็บบนแผนที่';
       const mpPower = p.k === 'hypno' || p.k === 'ice';
-      const why = noIssue || (locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
+      const why = noIssue || (locked ? (p.k === 'hypno' ? 'ล็อก · ชนะบอสชายแดนโซน 3 ก่อน' : `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`)
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
                 : mpPower && g.mp < BATTLE.mpCost[p.k] ? `MP ไม่พอ · ใช้ ${BATTLE.mpCost[p.k]}`
                 : !mpPower && ammo <= 0 ? outOfAmmoHint

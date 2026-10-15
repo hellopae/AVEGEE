@@ -495,10 +495,11 @@ const API = {
     }
     return true;
   },
-  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — Guard พักได้เมื่อ HP ไม่เต็ม */
+  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — พักได้เมื่อ HP ไม่เต็ม (L3: เดิมยมทูตต้อง <50 ตอนนี้กดได้ทุกคนที่ไม่เต็ม)
+   *  ระหว่างเดิน/พัก actorStanding=false → ไม่ร่วมต่อสู้ (ยังอยู่ในรายชื่อทีม) แล้วกลับจุดทำงานเองตอนเต็ม */
   restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
-    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= (c.k === 'guard' ? 100 : 50) || this.battle) return false;
+    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 100 || this.battle) return false;
     const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
@@ -725,7 +726,8 @@ const API = {
     if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
     for (const [k, n] of Object.entries(this.inventory)) if (n > 0 && ITEMS[k]) this.discover('item', k);
     for (const p of this.powers) if (!this.powerLocked(p)) this.discover('power', p.k);
-    for (const [k, yes] of Object.entries(this.abilities)) if (yes && k !== 'cooldownClock' && ABILITY_REWARDS[k]) this.discover('ability', k);
+    // hypno: ใช้ popup 'power:hypno' (บอกทั้งสอบสวน+ต่อสู้) แทน 'ability:hypno' จะได้ไม่เด้งซ้ำสองครั้ง
+    for (const [k, yes] of Object.entries(this.abilities)) if (yes && k !== 'cooldownClock' && k !== 'hypno' && ABILITY_REWARDS[k]) this.discover('ability', k);
   },
   acknowledgeDiscovery(id) {
     if (this.discoveryQueue[0] !== id) return false;
@@ -1649,7 +1651,11 @@ const API = {
   },
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
-  powerLocked(p) { return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared'; },
+  powerLocked(p) {
+    // L3 (คุณเป้ 15 ต.ค. 2569): สะกดจิตได้จากการชนะบอสชายแดนโซน 3 (westVampireBreach → abilities.hypno) เท่านั้น ไม่ผูกกับเลเวล
+    if (p?.k === 'hypno') return !this.abilities.hypno;
+    return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared';
+  },
   /** เรียกยมทูตมาช่วยในฉากต่อสู้ได้หรือยัง */
   canCallCrew() { return this.level >= CREW_HELP_LV; },
 
@@ -4508,6 +4514,7 @@ API.snapshot = function (withEntry = true) {
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
     townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
+    hypnoGateL3: true,       // L3 — marker: เซฟใหม่ไม่ต้อง grandfather สะกดจิตตามเลเวล (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -4697,6 +4704,8 @@ API.restore = function (d) {
       if (events[ev.k] === 'cleared' && ev.reward?.ability) this.abilities[ev.reward.ability] = true;
     }
   }
+  // L3: เซฟเก่า (ก่อน marker hypnoGateL3) ที่เคยปลดสะกดจิตด้วยเลเวล 4 / มีวงสะกดจิตแล้ว — คงไว้ ไม่ริบของผู้เล่น
+  if (!d.hypnoGateL3 && !this.abilities.hypno && (this.level >= 4 || (this.inventory.hypno || 0) > 0 || d.discoverySeen?.['power:hypno'])) this.abilities.hypno = true;
   // เซฟก่อนชุด event ที่ไปถึงบอสแล้วคงสิทธิ์เดิม ไม่บังคับให้ย้อนกลับมาทำสามเหตุการณ์
   this.legacyBossGate = legacyBossGate;
   this.miniGoals = d.miniGoals || {};
