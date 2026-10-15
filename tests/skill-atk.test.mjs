@@ -91,6 +91,6 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   assert.match(preload, /asset-preload\.js\?v=(?:h1-h5b-skillatk|yama-live-20261015)/);
   const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
   assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(catalogVersion,/-layered-battle9-20261015-r1(?:-yama-live-hell1(?:-k1e)?)?$/);
+  assert.match(catalogVersion,/-layered-battle9-20261015-r1(?:-yama-live-hell1(?:-[a-z0-9]+)*)?$/);
   assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });

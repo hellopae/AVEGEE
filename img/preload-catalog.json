@@ -347,7 +347,9 @@
       "img/yama-animation-v1/th/book-idle.webp",
       "img/yama-animation-v1/th/book-walk.webp",
       "img/yama-animation-v1/th/sword-idle.webp",
-      "img/map-zone1/torch-pillar-v1.webp"
+      "img/map-zone1/torch-pillar-v1.webp",
+      "img/asipatta-l4a/th-sword-1-l4a.png",
+      "img/asipatta-l4a/th-sword-2-l4a.png"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",
@@ -483,7 +485,9 @@
       "img/Asia/hero-yama-asia-rage.png",
       "img/yama-animation-v1/asia/book-idle.webp",
       "img/yama-animation-v1/asia/book-walk.webp",
-      "img/yama-animation-v1/asia/sword-idle.webp"
+      "img/yama-animation-v1/asia/sword-idle.webp",
+      "img/asipatta-l4a/asia-sword-1-l4a.png",
+      "img/asipatta-l4a/asia-sword-2-l4a.png"
     ],
     "west": [
       "img/krata-minigame/plerng-west-training-v2.png",
@@ -616,7 +620,9 @@
       "img/West/hero-yama-west-rage.png",
       "img/yama-animation-v1/west/book-idle.webp",
       "img/yama-animation-v1/west/book-walk.webp",
-      "img/yama-animation-v1/west/sword-idle.webp"
+      "img/yama-animation-v1/west/sword-idle.webp",
+      "img/asipatta-l4a/west-sword-1-l4a.png",
+      "img/asipatta-l4a/west-sword-2-l4a.png"
     ],
     "cyberhell": [
       "img/krata-minigame/plerng-cyberhell-training-v2.png",
@@ -754,7 +760,9 @@
       "img/CyberHell/hero-yama-cyberhell-rage.png",
       "img/yama-animation-v1/cyberhell/book-idle.webp",
       "img/yama-animation-v1/cyberhell/book-walk.webp",
-      "img/yama-animation-v1/cyberhell/sword-idle.webp"
+      "img/yama-animation-v1/cyberhell/sword-idle.webp",
+      "img/asipatta-l4a/cyberhell-sword-1-l4a.png",
+      "img/asipatta-l4a/cyberhell-sword-2-l4a.png"
     ]
   }
 }
