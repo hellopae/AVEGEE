@@ -1,0 +1,53 @@
+{
+  "asia": {
+    "counts": {
+      "book-idle": 16,
+      "book-walk": 32,
+      "sword-idle": 6,
+      "sword-attack": 8
+    },
+    "total_frames": 62,
+    "all_generated_poses_inside_canvas": true,
+    "transparent_atlases": true,
+    "native_attack_pixels_identical": true,
+    "unique_frames": 62
+  },
+  "west": {
+    "counts": {
+      "book-idle": 16,
+      "book-walk": 32,
+      "sword-idle": 6,
+      "sword-attack": 8
+    },
+    "total_frames": 62,
+    "all_generated_poses_inside_canvas": true,
+    "transparent_atlases": true,
+    "native_attack_pixels_identical": true,
+    "unique_frames": 62
+  },
+  "cyberhell": {
+    "counts": {
+      "book-idle": 16,
+      "book-walk": 32,
+      "sword-idle": 6,
+      "sword-attack": 8
+    },
+    "total_frames": 62,
+    "all_generated_poses_inside_canvas": true,
+    "transparent_atlases": true,
+    "native_attack_pixels_identical": true,
+    "unique_frames": 62
+  },
+  "browser": {
+    "zone_direction_combinations": 16,
+    "all_four_canvases_match_selection": true,
+    "console_errors": 0,
+    "scrub_last_frames": {
+      "book-idle": 4,
+      "book-walk": 8,
+      "sword-idle": 6,
+      "sword-attack": 8
+    },
+    "pause_resume_verified": true
+  }
+}

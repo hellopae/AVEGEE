@@ -1,0 +1,482 @@
+[
+  {
+    "zone": "th",
+    "direction": "down",
+    "canvases": [
+      {
+        "direction": "down",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "down",
+        "frame": "3",
+        "id": "book-walk",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "th"
+      }
+    ]
+  },
+  {
+    "zone": "th",
+    "direction": "left",
+    "canvases": [
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-walk",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "sword-attack",
+        "zone": "th"
+      }
+    ]
+  },
+  {
+    "zone": "th",
+    "direction": "right",
+    "canvases": [
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "th"
+      }
+    ]
+  },
+  {
+    "zone": "th",
+    "direction": "up",
+    "canvases": [
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "up",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "th"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "th"
+      }
+    ]
+  },
+  {
+    "zone": "asia",
+    "direction": "down",
+    "canvases": [
+      {
+        "direction": "down",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "down",
+        "frame": "3",
+        "id": "book-walk",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "4",
+        "id": "sword-attack",
+        "zone": "asia"
+      }
+    ]
+  },
+  {
+    "zone": "asia",
+    "direction": "left",
+    "canvases": [
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "left",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "sword-attack",
+        "zone": "asia"
+      }
+    ]
+  },
+  {
+    "zone": "asia",
+    "direction": "right",
+    "canvases": [
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "sword-attack",
+        "zone": "asia"
+      }
+    ]
+  },
+  {
+    "zone": "asia",
+    "direction": "up",
+    "canvases": [
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-walk",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "asia"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-attack",
+        "zone": "asia"
+      }
+    ]
+  },
+  {
+    "zone": "west",
+    "direction": "down",
+    "canvases": [
+      {
+        "direction": "down",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "down",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "west"
+      }
+    ]
+  },
+  {
+    "zone": "west",
+    "direction": "left",
+    "canvases": [
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "left",
+        "frame": "3",
+        "id": "book-walk",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "4",
+        "id": "sword-attack",
+        "zone": "west"
+      }
+    ]
+  },
+  {
+    "zone": "west",
+    "direction": "right",
+    "canvases": [
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "west"
+      }
+    ]
+  },
+  {
+    "zone": "west",
+    "direction": "up",
+    "canvases": [
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-walk",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "west"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-attack",
+        "zone": "west"
+      }
+    ]
+  },
+  {
+    "zone": "cyberhell",
+    "direction": "down",
+    "canvases": [
+      {
+        "direction": "down",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "down",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "sword-attack",
+        "zone": "cyberhell"
+      }
+    ]
+  },
+  {
+    "zone": "cyberhell",
+    "direction": "left",
+    "canvases": [
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "left",
+        "frame": "1",
+        "id": "book-walk",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "2",
+        "id": "sword-attack",
+        "zone": "cyberhell"
+      }
+    ]
+  },
+  {
+    "zone": "cyberhell",
+    "direction": "right",
+    "canvases": [
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "book-walk",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-attack",
+        "zone": "cyberhell"
+      }
+    ]
+  },
+  {
+    "zone": "cyberhell",
+    "direction": "up",
+    "canvases": [
+      {
+        "direction": "up",
+        "frame": "1",
+        "id": "book-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "up",
+        "frame": "2",
+        "id": "book-walk",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "1",
+        "id": "sword-idle",
+        "zone": "cyberhell"
+      },
+      {
+        "direction": "right",
+        "frame": "3",
+        "id": "sword-attack",
+        "zone": "cyberhell"
+      }
+    ]
+  }
+]

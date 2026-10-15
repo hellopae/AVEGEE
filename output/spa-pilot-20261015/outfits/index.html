@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yama · ชุดแอนิเมชัน 4 โซน</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#10131c;color:#eee8dc}*{box-sizing:border-box}body{max-width:1400px;margin:auto;padding:28px 22px}a{color:#dfbd78}h1{font-size:clamp(26px,4vw,42px)}p{line-height:1.8;color:#b7c0d0}.eyebrow{color:#dfbd78;letter-spacing:.14em;font-size:13px}.controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin:26px 0}label{display:flex;gap:8px;align-items:center}button,select{font:inherit;padding:10px 14px;border:1px solid #566076;border-radius:8px;background:#232b3b;color:#eee8dc}button{background:#dfbd78;color:#131923}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.card{border:1px solid #343c50;border-radius:14px;background:#191e2c;overflow:hidden}.card h2{font-size:18px;margin:18px 16px 0}.card p{font-size:13px;margin:10px 16px}.card canvas{display:block;width:100%;height:auto}.downloads{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;padding:0 16px 18px}.notice{border-left:3px solid #dfbd78;background:#202736;padding:12px 18px}input[type=range]{width:120px}a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid white;outline-offset:3px}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.grid{grid-template-columns:1fr}.card canvas{max-height:480px;object-fit:contain}}
+</style>
+<a href="../map-book-v1/">← ท่าเดินไทย / เทียบกับชุดเดิม</a>
+<p class="eyebrow">AVEGEE / CHARACTER ANIMATION LIBRARY</p><h1>Yama · ชุดแอนิเมชัน 4 โซน</h1>
+<p>ท่ายืนกอดหนังสือและเดินครบ 4 ทิศ พร้อมท่ายืนถือดาบและโจมตี เลือกชุดและหยุดดูทีละเฟรมได้</p>
+<p class="notice">พรีวิวไฟล์แอนิเมชันแยกจากเกม · ท่าโจมตีใช้ภาพเดิมของแต่ละชุด · ยังไม่เปลี่ยนแผนที่หรือ UI ที่ Claude กำลังทำ</p>
+<div class="controls">
+<label>ชุด <select id="zone"><option value="th">1 · ไทย</option><option value="asia" selected>2 · Asia</option><option value="west">3 · West</option><option value="cyberhell">4 · CyberHell</option></select></label>
+<label>ทิศบนแผนที่ <select id="direction"><option value="down">หน้า</option><option value="left">ซ้าย</option><option value="right">ขวา</option><option value="up">หลัง</option></select></label>
+<label>ความเร็ว <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option></select></label>
+<button id="pause">หยุดภาพ</button><label>เลื่อนดูเฟรม <input id="phase" type="range" min="0" max="1" step="0.001" value="0" aria-label="ตำแหน่งในวงรอบแอนิเมชัน"></label>
+</div><p id="status" role="status">กำลังโหลด…</p><main class="grid" id="cards"></main>
+<p><a id="metadata" href="asia/metadata.json" download>ดาวน์โหลดข้อมูลเฟรมและจุดยึดของชุดนี้</a></p>
+<script type="module">
+const modes=['book-idle','book-walk','sword-idle','sword-attack'];
+const names=['ยืนกอดหนังสือ','เดินกอดหนังสือ','ยืนถือดาบ','โจมตี'];
+const cards=document.querySelector('#cards');
+cards.innerHTML=modes.map((m,i)=>`<section class="card"><h2>0${i+1} / ${names[i]}</h2><canvas id="${m}" width="320" height="480" aria-label="${names[i]}"></canvas><p id="${m}-status"></p><div class="downloads"><a id="${m}-png" download>Sprite sheet</a><a id="${m}-gif" download>GIF</a></div></section>`).join('');
+const canvases=Object.fromEntries(modes.map(m=>[m,document.getElementById(m)]));
+for(const m of modes.filter(m=>m.startsWith('sword'))){canvases[m].width=640;canvases[m].height=640}
+let data={},images={},ready=false,elapsed=0,last=null,version=0,direction='down',speed=1,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pause=document.querySelector('#pause'),phase=document.querySelector('#phase');
+function label(){pause.textContent=playing?'หยุดภาพ':'เล่นภาพ'}label();
+pause.onclick=()=>{playing=!playing;label()};
+document.querySelector('#speed').onchange=e=>speed=Number(e.target.value);
+document.querySelector('#direction').onchange=e=>{direction=e.target.value;elapsed=0;updateLinks()};
+phase.oninput=()=>{playing=false;label()};
+function image(src){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(Error('โหลดภาพไม่สำเร็จ: '+src));im.src=src+'?v=outfits-v1-ear-v6'})}
+async function load(zone){
+ const own=++version;ready=false;document.querySelector('#status').textContent='กำลังโหลด…';
+ try{
+ let next;
+ if(zone==='th'){
+ const map=await fetch('../map-book-v1/metadata.json?v=ear-v6').then(r=>r.json());
+ next=Object.fromEntries(['idle','walk'].map(m=>['book-'+m,{sheet:'../map-book-v1/'+m+'-sheet.png',frameWidth:320,frameHeight:480,columns:m==='idle'?4:8,rows:4,directions:['down','left','right','up'],durations:map.modes[m].durations_ms}]));
+ next['sword-idle']={sheet:'../idle-v2/idle-sheet.png',frameWidth:640,frameHeight:640,columns:6,rows:1,durations:[1000,240,420,100,100,260],directions:['right']};
+ next['sword-attack']={sheet:'../attack-sheet.png',frameWidth:640,frameHeight:640,columns:8,rows:1,durations:[85,80,60,35,40,80,100,100],directions:['right']};
+ }else{const response=await fetch(zone+'/metadata.json');if(!response.ok)throw Error('โหลดข้อมูลไม่สำเร็จ');next=(await response.json()).modes}
+ const loaded=await Promise.all(modes.map(m=>image(next[m].sheet)));
+ if(own!==version)return;
+ data=next;images=Object.fromEntries(modes.map((m,i)=>[m,loaded[i]]));elapsed=0;phase.value=0;ready=true;updateLinks();
+ document.querySelector('#metadata').href=zone==='th'?'../map-book-v1/metadata.json':zone+'/metadata.json';
+ document.querySelector('#status').textContent='โหลดครบ 4 แอนิเมชัน · ยืน 16 + เดิน 32 + ถือดาบ 6 + โจมตี 8 เฟรม';
+ }catch(e){if(own===version)document.querySelector('#status').textContent=e.message}
+}
+function updateLinks(){if(!ready)return;const zone=document.querySelector('#zone').value;for(const m of modes){document.getElementById(m+'-png').href=data[m].sheet;const d=m.startsWith('book')?direction:'right';document.getElementById(m+'-gif').href=zone==='th'?(m.startsWith('book')?'../map-book-v1/'+m.slice(5)+'-'+d+'.gif':m==='sword-idle'?'../idle-v2/idle-preview.gif':'../attack-preview.gif'):zone+'/'+m+'-'+d+'.gif'}}
+function at(t,d){let sum=0;for(let i=0;i<d.length;i++){sum+=d[i];if(t<sum)return i}return d.length-1}
+function draw(m){const spec=data[m],canvas=canvases[m],c=canvas.getContext('2d');
+ const total=spec.durations.reduce((a,b)=>a+b,0),t=playing?elapsed%total:Number(phase.value)*Math.max(0,total-1),frame=at(t,spec.durations),row=m.startsWith('book')?spec.directions.indexOf(direction):0;
+ c.clearRect(0,0,320,480);c.fillStyle='#202b35';c.fillRect(0,410,320,70);c.fillStyle='#111a23';c.beginPath();c.ellipse(160,441,48,7,0,0,Math.PI*2);c.fill();
+ if(m.startsWith('book'))c.drawImage(images[m],frame*spec.frameWidth,row*spec.frameHeight,spec.frameWidth,spec.frameHeight,0,0,320,480);
+ else {c.clearRect(0,0,640,640);c.fillStyle='#202b35';c.fillRect(0,540,640,100);c.fillStyle='#111a23';c.beginPath();c.ellipse(240,571,64,9,0,0,Math.PI*2);c.fill();c.drawImage(images[m],frame*640,0,640,640,0,0,640,640)}
+ canvas.dataset.frame=String(frame+1);canvas.dataset.direction=m.startsWith('book')?direction:'right';canvas.dataset.zone=document.querySelector('#zone').value;
+ document.getElementById(m+'-status').textContent=`เฟรม ${frame+1}/${spec.columns} · ${total} ms / รอบ`;
+}
+function tick(now){if(last!==null&&playing&&!document.hidden)elapsed+=Math.min(50,now-last)*speed;last=now;if(ready){if(playing)phase.value=(elapsed%800)/800;for(const m of modes)draw(m)}requestAnimationFrame(tick)}
+document.querySelector('#zone').onchange=e=>load(e.target.value);load(document.querySelector('#zone').value);requestAnimationFrame(tick);
+</script></html>

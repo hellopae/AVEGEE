@@ -57,3 +57,8 @@ build.py ตัดเฟรมจาก img/yama-sword-v3/hero-yama-th-sword.web
 อเวจีมี sprite sheet และตัวเล่นท่าโจมตีอยู่แล้ว จึงไม่ควรเปลี่ยนระบบเกมเพื่อทดลอง SPA ประโยชน์ที่ยังควรพิสูจน์คือการแก้เฟรม/เวลา/เลเยอร์และส่งออกซ้ำหลายตัวอย่างสม่ำเสมอ การขยับหายใจและประกายเล็กน้อยทำใน Canvas เดิมได้ ผลรอบนี้เป็น baseline สำหรับเปรียบเทียบ SPA ภายหลัง
 
 แหล่งข้อมูล: https://github.com/aigengame/aseprite-automation และ https://github.com/aseprite/aseprite/blob/main/docs/ase-file-specs.md
+
+
+## Zone 2–4 animation suite and final ear cleanup
+
+`outfits/index.html` previews all four zones and four animation types. Asia, West and CyberHell each include 16 book-idle + 32 book-walk + 6 sword-idle + 8 reused sword-attack frames, atlases, GIFs and metadata. See `outfits/README.md` and `outfits/verification.json`. Thai walking now uses ear-v6 cleanup, which protects the real ear ridge and all existing body/leg pixels; evidence is in `map-book-v1/ear-v6/`. These are isolated pilot assets and do not change the production game.

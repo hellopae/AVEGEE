@@ -1,8 +1,11 @@
 """Assemble ImageGen's cleaned temple patches; preserve all other sprite pixels."""
 from pathlib import Path
 from PIL import Image,ImageFilter,ImageChops
-import hashlib,json
-HERE=Path(__file__).resolve().parent;PILOT=HERE.parent
+import hashlib,json,sys
+V5=Path(__file__).resolve().parent
+REPAIR_EAR='--repair-ear' in sys.argv
+HERE=V5.parent/'ear-v6' if REPAIR_EAR else V5
+PILOT=HERE.parent
 FRAMES=[0,1,3,4,5,7]
 source=Image.open(HERE/'heads-cleaned.png').convert('RGBA')
 assert source.getextrema()[3][0]==0
@@ -42,7 +45,8 @@ for n,i in enumerate(FRAMES):
     x=round(75+(tc[0]+tc[2])/2-((sc[0]+sc[2])/2-sb[0])*scale)
     y=round(110+tc[1]-(sc[1]-sb[1])*scale)
     aligned=Image.new('RGBA',original.size);aligned.alpha_composite(art,(x,y))
-    groups=red_groups(original)
+    anatomy=Image.open(V5/f'before-down-{i:02}.png').convert('RGBA') if REPAIR_EAR else original
+    groups=red_groups(anatomy)
     main=min([g for g in groups if min(y for x,y in g)<=197],key=lambda g:-len(g))
     mainleft=min(x for x,y in main)
     lobes=[g for g in groups if min(x for x,y in g)<mainleft and min(y for x,y in g)>197]
@@ -50,34 +54,52 @@ for n,i in enumerate(FRAMES):
     core=Image.new('L',original.size);cp=core.load()
     for g in lobes:
         for x,y in g:cp[x,y]=255
-    mask=core.filter(ImageFilter.MaxFilter(7))
+    mask=core.filter(ImageFilter.MaxFilter(15 if REPAIR_EAR else 7))
     protect=Image.new('L',original.size);pp=protect.load()
     for x,y in main:pp[x,y]=255
     protect=protect.filter(ImageFilter.MaxFilter(3))
+    if REPAIR_EAR:
+        # Preserve the face/main horn; use only ImageGen's black-hair repair plate.
+        face=Image.new('L',original.size);fp=face.load()
+        for g0 in groups:
+            if g0 is main or g0 in lobes:continue
+            for xx,yy in g0:fp[xx,yy]=255
+        protect=ImageChops.lighter(protect,face.filter(ImageFilter.MaxFilter(3)))
     mask=ImageChops.subtract(mask,protect)
-    # Preserve the actual ear (below239) and crown/main horn above198.
+    # Preserve the real ear's upper ridge. v5's flat y239 cut copied a small
+    # piece of the generated ear above the original one, making a duplicate nub.
+    tipx,tipy=90,240
+    if REPAIR_EAR:
+        candidates=[]
+        for yy in range(240,258):
+            for xx in range(85,108):
+                r,g,b,a=anatomy.getpixel((xx,yy))
+                if a>80 and r>110 and r>g*2 and r>b*1.6:candidates.append((xx,yy))
+        assert candidates
+        tipx=min(xx for xx,yy in candidates);tipy=min(yy for xx,yy in candidates if xx==tipx)
     mp=mask.load()
     for y0 in range(original.height):
         for x0 in range(original.width):
-            if y0<198 or y0>=239:mp[x0,y0]=0
+            limit=min(248,tipy+(x0-tipx)*.65-1) if REPAIR_EAR else 239
+            if y0<198 or y0>=limit or (REPAIR_EAR and x0>=109):mp[x0,y0]=0
     result=original.copy();result.paste(aligned,(0,0),mask)
     assert result.crop((0,290,320,480)).tobytes()==original.crop((0,290,320,480)).tobytes()
     inverse=ImageChops.invert(mask)
     for old,new in zip(original.split(),result.split()):
         assert ImageChops.multiply(ImageChops.difference(old,new),inverse).getbbox() is None
-    before=sum(core.getdata())//255;after=0
+    before=core.histogram()[255];after=0
     for x0 in range(85,116):
         for y0 in range(198,239):
-            if not cp[x0,y0]:continue
+            if not (mp[x0,y0] if REPAIR_EAR else cp[x0,y0]):continue
             r,g,b,a=result.getpixel((x0,y0))
             if a>80 and r>110 and r>g*2 and r>b*1.6:after+=1
     assert after<=max(8,before*.08),(i,'Unwanted flesh remains',before,after)
     result.save(PILOT/f'walk-down-{i:02}.png');mask.save(HERE/f'mask-{i:02}.png')
     aligned.save(HERE/f'aligned-cleaned-head-{i:02}.png')
     atlas.paste(result,(i*320,0))
-    facts.append({'frame':i+1,'patch_bounds':mask.getbbox(),'unwanted_red_pixels_before':before,'after':after,'body_legs_identical':True})
+    facts.append({'frame':i+1,'patch_bounds':mask.getbbox(),'unwanted_red_pixels_before':before,'after':after,'body_legs_identical':True,'ear_ridge_protected':REPAIR_EAR})
 atlas.save(PILOT/'walk-sheet.png')
-meta['modes']['walk']['temple_cleanup']={'version':'v5','source':'temple-v5/heads-cleaned.png','source_sha256':hashlib.sha256((HERE/'heads-cleaned.png').read_bytes()).hexdigest(),'frames':facts,'all_body_legs_preserved':True}
+meta['modes']['walk']['temple_cleanup']={'version':'v6' if REPAIR_EAR else 'v5','source':HERE.name+'/heads-cleaned.png','source_sha256':hashlib.sha256((HERE/'heads-cleaned.png').read_bytes()).hexdigest(),'frames':facts,'all_body_legs_preserved':True}
 (PILOT/'metadata.json').write_text(json.dumps(meta,indent=2))
 for name,digest in json.loads((HERE/'protected-hashes.json').read_text()).items():assert hashlib.sha256((PILOT/name).read_bytes()).hexdigest()==digest,name
 gif=[]

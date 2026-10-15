@@ -880,81 +880,87 @@
         "protected_frames_unchanged": true
       },
       "temple_cleanup": {
-        "version": "v5",
-        "source": "temple-v5/heads-cleaned.png",
-        "source_sha256": "f757d19227832c7311632f3f579ea8362e4b56f12beeb13d62b7414436da81cf",
+        "version": "v6",
+        "source": "ear-v6/heads-cleaned.png",
+        "source_sha256": "01230f969ff58df71801e22a521c49ba1c6701bd900a175f483f70c44c6062de",
         "frames": [
           {
             "frame": 1,
             "patch_bounds": [
-              90,
-              200,
-              107,
-              237
+              86,
+              198,
+              109,
+              241
             ],
             "unwanted_red_pixels_before": 178,
             "after": 0,
-            "body_legs_identical": true
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           },
           {
             "frame": 2,
             "patch_bounds": [
-              91,
-              202,
-              108,
-              239
+              87,
+              198,
+              109,
+              243
             ],
             "unwanted_red_pixels_before": 185,
             "after": 0,
-            "body_legs_identical": true
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           },
           {
             "frame": 4,
             "patch_bounds": [
-              90,
-              199,
-              107,
-              239
+              86,
+              198,
+              109,
+              246
             ],
             "unwanted_red_pixels_before": 192,
-            "after": 11,
-            "body_legs_identical": true
+            "after": 0,
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           },
           {
             "frame": 5,
             "patch_bounds": [
-              92,
-              200,
-              108,
-              239
+              88,
+              198,
+              109,
+              246
             ],
             "unwanted_red_pixels_before": 181,
-            "after": 9,
-            "body_legs_identical": true
+            "after": 0,
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           },
           {
             "frame": 6,
             "patch_bounds": [
-              91,
-              202,
-              108,
-              239
+              87,
+              198,
+              109,
+              243
             ],
             "unwanted_red_pixels_before": 179,
-            "after": 1,
-            "body_legs_identical": true
+            "after": 0,
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           },
           {
             "frame": 8,
             "patch_bounds": [
-              93,
-              199,
+              89,
+              198,
               109,
-              236
+              240
             ],
             "unwanted_red_pixels_before": 166,
             "after": 0,
-            "body_legs_identical": true
+            "body_legs_identical": true,
+            "ear_ridge_protected": true
           }
         ],
         "all_body_legs_preserved": true

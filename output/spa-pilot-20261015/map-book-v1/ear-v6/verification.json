@@ -1,0 +1,85 @@
+{
+  "frames": [
+    {
+      "frame": 1,
+      "patch_bounds": [
+        86,
+        198,
+        109,
+        241
+      ],
+      "unwanted_red_pixels_before": 178,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    },
+    {
+      "frame": 2,
+      "patch_bounds": [
+        87,
+        198,
+        109,
+        243
+      ],
+      "unwanted_red_pixels_before": 185,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    },
+    {
+      "frame": 4,
+      "patch_bounds": [
+        86,
+        198,
+        109,
+        246
+      ],
+      "unwanted_red_pixels_before": 192,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    },
+    {
+      "frame": 5,
+      "patch_bounds": [
+        88,
+        198,
+        109,
+        246
+      ],
+      "unwanted_red_pixels_before": 181,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    },
+    {
+      "frame": 6,
+      "patch_bounds": [
+        87,
+        198,
+        109,
+        243
+      ],
+      "unwanted_red_pixels_before": 179,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    },
+    {
+      "frame": 8,
+      "patch_bounds": [
+        89,
+        198,
+        109,
+        240
+      ],
+      "unwanted_red_pixels_before": 166,
+      "after": 0,
+      "body_legs_identical": true,
+      "ear_ridge_protected": true
+    }
+  ],
+  "all_32_walk_leg_regions_identical": true,
+  "other26_frames_unchanged": true,
+  "image_edits": "ImageGen; code only aligns/extracts/assembles generated patches"
+}
