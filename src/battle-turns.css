@@ -122,3 +122,29 @@ dialog.rpg:has(.battle9-arena)>.pad{position:absolute;left:44%;bottom:2%;z-index
 .battle9-arena .battle9-menu .battle9-confirm .battle-command-preview{flex:1 1 100%;margin:0;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .battle9-arena .battle9-menu .battle9-confirm small{flex:1 1 auto;margin:0;font-size:12px;line-height:1.35}
 .battle9-arena .battle9-menu .battle9-confirm .battle-command-cancel{flex:none;margin:0;min-height:28px;padding:2px 12px}
+
+/* L2 — defend stance shield: above the head of whoever defends (and on their profile card).
+   The CSS shield is the placeholder; once img/ui/icon-defend-shield.png exists ui.js sets html.defend-shield-art and the PNG replaces it with no code change. */
+.defend-shield{position:absolute;z-index:40;width:clamp(26px,2.8vw,46px);aspect-ratio:1;pointer-events:none;filter:drop-shadow(0 2px 3px #000);animation:defendPop .35s cubic-bezier(.2,1.4,.4,1) both}
+.defend-shield::before,.defend-shield::after{content:"";position:absolute;clip-path:polygon(50% 0,92% 14%,92% 52%,50% 100%,8% 52%,8% 14%)}
+.defend-shield::before{inset:0;background:linear-gradient(#fff1c2,#d9a441 55%,#8f5f1d)}
+.defend-shield::after{inset:14% 16% 20%;background:linear-gradient(#5b2230,#2c0f17)}
+html.defend-shield-art .defend-shield{background:url(img/ui/icon-defend-shield.png) center/contain no-repeat}
+html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shield::after{display:none}
+.formation-member>.defend-shield,.fig>.defend-shield{left:var(--formation-mid,50%);top:calc(var(--formation-head,0px) - clamp(30px,3.1vw,50px));translate:-50% 0}
+.battle-portrait{position:relative}
+.battle-portrait>.defend-shield{right:2px;top:2px;width:clamp(16px,1.6vw,26px)}
+.battle-portrait.is-defending{outline:2px solid #e4bf77;outline-offset:1px}
+@keyframes defendPop{from{opacity:0;scale:.3}to{opacity:1;scale:1}}
+@media(prefers-reduced-motion:reduce){.defend-shield{animation:none}}
+
+/* L2 — flee: dimmed tab with its reason, and the confirmation layer */
+.battle9-arena .battle9-menu .actor-segment:disabled,.battle9-arena .battle9-menu .actor-segment[aria-disabled=true]{opacity:.5;cursor:not-allowed;filter:grayscale(.4)}
+.battle9-arena .battle9-menu .actor-segment .segment-reason{display:block;font-style:normal;font-size:.78em;line-height:1.1;color:#ffd9a0;opacity:.95;white-space:nowrap}
+.battle9-arena .battle9-menu .actor-segment:has(.segment-reason){height:auto;min-height:clamp(34px,4.3vh,48px)}
+.flee-layer{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:#0b060acc;padding:12px}
+.flee-card{width:min(420px,100%);padding:18px 20px;border:1px solid var(--gold);border-radius:10px;background:var(--card,#200d14);color:#fff1d2;text-align:center;box-shadow:0 8px 30px #000b}
+.flee-card h3{margin:0 0 8px;font-size:clamp(18px,2vw,26px);color:var(--gold)}
+.flee-card p{margin:0 0 16px;line-height:1.5}
+.flee-actions{display:flex;gap:10px;justify-content:center}
+.flee-actions button{flex:1;min-height:44px;font:inherit}

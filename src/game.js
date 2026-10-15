@@ -35,6 +35,8 @@ import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
+/** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
+export const DEFEND_DAMAGE_RATIO = 0.5;
 
 const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
 const LOTUS_BOON_CUT = 8;   // ดอกบัวหนึ่งดอกที่มอบให้บุญลดกรรมของยมบาทน้อย (ค่าเดิมของ offerLotusBoon)
@@ -1527,7 +1529,7 @@ const API = {
     if (this.has('krajok') && this.tick % KRAJOK.every === 0) {
       if (this.mp < this.mpMax) {
         this.mp = Math.min(this.mpMax, this.mp + 5);
-        this.log('🪞 หอส่องกรรมเติม MP ให้ 5', 'good');
+        this.log(`🪞 หอส่องกรรมเติม${t('battle.mp')}ให้ 5`, 'good');
       }
     }
 
@@ -2018,10 +2020,10 @@ const API = {
     // (ปุ่ม "ใช้" ในกระเป๋าปิดถาวรสำหรับสองไอเทมนี้แล้ว ดู bagUseWhy ใน ui.js)
     if (it.k === 'fire') {
       this.mp = Math.min(this.mpMax, this.mp + BATTLE.mpCost.fire);
-      this.log(`${def.glyph} เก็บ${def.name} — MP ${Math.round(this.mp)}/${this.mpMax}`, 'good');
+      this.log(`${def.glyph} เก็บ${def.name} — ${t('battle.mp')} ${Math.round(this.mp)}/${this.mpMax}`, 'good');
     } else if (it.k === 'ice') {
       this.mp = Math.min(this.mpMax, this.mp + BATTLE.mpCost.ice);
-      this.log(`${def.glyph} เก็บ${def.name} — MP ${Math.round(this.mp)}/${this.mpMax}`, 'good');
+      this.log(`${def.glyph} เก็บ${def.name} — ${t('battle.mp')} ${Math.round(this.mp)}/${this.mpMax}`, 'good');
     } else {
       // พลังยังไม่ปลดล็อก (เช่นเก็บคัมภีร์น้ำแข็งก่อนถึงขั้นที่ปลดล็อก) หรือของชิ้นอื่นที่ไม่ใช่สองชิ้นนี้
       // — เก็บเข้ากระเป๋าตามปกติเหมือนเดิมทุกกรณี
@@ -3001,7 +3003,11 @@ const API = {
   currentBattleTurn() { return activeCombatUnit(this); },
   beginBattleTurns() {
     const turn=activeCombatUnit(this);
-    if(turn?.side==='ally'&&!this.battle.commandBusy&&!this.battle.turnAction) this.battle.actorId=turn.id;
+    if(turn?.side==='ally'&&!this.battle.commandBusy&&!this.battle.turnAction) {
+      this.battle.actorId=turn.id;
+      // L2: the defend stance lasts until this actor's next turn begins
+      if(this.battle.defending?.[turn.id]) delete this.battle.defending[turn.id];
+    }
     return turn;
   },
   runEnemyTurn() {
@@ -3182,13 +3188,13 @@ const API = {
       if (this.mp < BATTLE.mpCost.fire) return false;
       this.mp -= BATTLE.mpCost.fire;
       dmg = this.controlledFireDamage(BATTLE.fireDmg + (this.abilities.bigFire ? 20 : 0) + (this.level - 1) * 2);
-      say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
+      say(`🔥 ลูกไฟพุ่งเข้ากลางตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'flameCharge') {
       if (!this.abilities.flameCharge || this.mp < BATTLE.mpCost.charge) return false;
       this.mp -= BATTLE.mpCost.charge;
       dmg = 65 + (this.level - 1) * 3;
-      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (MP ${this.mp}/${this.mpMax})`);
+      say(`🔥 ยมบาทน้อยพุ่งชนด้วยเพลิงทั่วตัว — ${dmg} หน่วย (${t('battle.mp')} ${this.mp}/${this.mpMax})`);
 
     } else if (what === 'windFan') {
       if (!this.abilities.windFan || this.mp < BATTLE.mpCost.wind) return false;
@@ -3613,8 +3619,10 @@ const API = {
       B.dmg.enemyHits = [];
       B.dmg.hitActors = [];
       for (const victim of victims) {
-        const damage=B.defending?.[victim.id]?Math.max(1,Math.round(d*.5)):d;
-        B.dmg.enemyHits.push({id:victim.id,damage});
+        const guarded=!!B.defending?.[victim.id];
+        const damage=guarded?Math.max(1,Math.round(d*DEFEND_DAMAGE_RATIO)):d;
+        B.dmg.enemyHits.push({id:victim.id,damage,...(guarded?{reduced:true,before:d}:{})});
+        if(guarded){B.dmg.guarded=true;say(`🛡️ ${victim.actor?.name||'ยมบาทน้อย'}ตั้งรับไว้ — ความเสียหายลดจาก ${d} เหลือ ${damage}`);}
         if (victim.actor) B.dmg.hitActors.push({...victim.actor});
         if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - damage); B.dmg.you = damage; }
         else { victim.actor.morale = Math.max(0, victim.actor.morale - damage); B.dmg.crew = damage;
@@ -3623,7 +3631,8 @@ const API = {
       B.dmg.targetActorId = victims[0].id;
       B.dmg.hitActor = B.dmg.hitActors[0];
       if (victims.some(v => v.actor)) this.save();
-      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${d}` : `เขาสวนกลับ — บารมีท่านหาย ${d}`);
+      const dealt = B.dmg.enemyHits[0]?.damage ?? d;     // L2: the number after the defend stance, not before
+      say(ultimate ? `${B.who}ใช้${ultimate.name} — บารมีท่านหาย ${dealt}` : `เขาสวนกลับ — บารมีท่านหาย ${dealt}`);
       if (!B.over) talk('hit');
       if (ultimate) B.talk = `${B.who}ใช้${ultimate.name}!`;
     }

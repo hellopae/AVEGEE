@@ -2064,8 +2064,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b">
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1">
-<link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01">
-<link rel="stylesheet" href="src/dungeon-view.css?v=20261014-dungeon-art-r4"><link rel="stylesheet" href="src/battle-turns.css?v=20261015-battle9-direct-r1-k5"><link rel="stylesheet" href="src/trial-comment8.css?v=20261015-comment8-r2-k2b"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1">
+<link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2">
+<link rel="stylesheet" href="src/dungeon-view.css?v=20261014-dungeon-art-r4"><link rel="stylesheet" href="src/battle-turns.css?v=20261015-battle9-direct-r1-l2"><link rel="stylesheet" href="src/trial-comment8.css?v=20261015-comment8-r2-l2"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1">
 <style>#title,#splash,#enter-button{display:none!important}.review-toolbar{position:fixed;top:0;left:0;right:0;z-index:9000;background:#211820;border-bottom:1px solid #ae874f;display:flex;gap:8px;padding:8px;align-items:center}.review-toolbar small{margin-right:auto}.review-toolbar button{padding:7px;font:13px system-ui;min-height:30px}body{padding-top:48px}</style></head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2184,7 +2184,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
           </span>
         </span>
         <span class="hud-hpbar"><i id="hud-hp-fill"></i></span>
-        <span class="hud-hpbar mp" title="MP"><i id="hud-mp-fill"></i></span>
+        <span class="hud-hpbar mp" title="พลังเวท"><i id="hud-mp-fill"></i></span>
         <small id="hud-ava-name">ยมบาทน้อย</small>
       </button>
       <button id="hud-book" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.book">
@@ -2283,9 +2283,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk-minigame-review-20261011-i2c-i2b-fire-theme-v2-m1-m2-j-battle-anchor-20261012-layered-battle9-20261015-r1-k5"></script>
+<script type="module" src="src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk-minigame-review-20261011-i2c-i2b-fire-theme-v2-m1-m2-j-battle-anchor-20261012-layered-battle9-20261015-r1-l2"></script>
 <div class="review-toolbar"><small>AVEGEE · ตรวจระบบ · ใช้เซฟในหน่วยความจำ</small><select id="review-biome" aria-label="ฉากต่อสู้"><option value="">เมือง</option><option value="volcano">ภูเขาไฟ</option><option value="ice">น้ำแข็ง</option><option value="forest">ป่า</option></select><button id="review-battle">คิวต่อสู้</button><button id="review-trial">สอบสวน</button><button id="review-dungeon">ดันเจี้ยน</button><button id="review-port">ท่าเรือ</button><a href="output/zone1-2d/index.html">แผนที่</a></div><script type="module">
-import {openBattle,openDungeon,openHarbour,openTrial} from './src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk-minigame-review-20261011-i2c-i2b-fire-theme-v2-m1-m2-j-battle-anchor-20261012-layered-battle9-20261015-r1-k5';
+import {openBattle,openDungeon,openHarbour,openTrial} from './src/ui.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b-g2-g2b-cover-v5-h1-g5-h5a-g4-h4-h2-zoom-intro-v3-sword-schools-i1a-i1b-mapfx-westhit-skillatk-minigame-review-20261011-i2c-i2b-fire-theme-v2-m1-m2-j-battle-anchor-20261012-layered-battle9-20261015-r1-l2';
 import {DUNGEON_CHECKPOINTS} from './src/dungeon-view.js';
 import {FRONTIER,MOB,STATIONS} from './src/data.js';
 const g=window.G;g.save=()=>true;g.coin=10000;
