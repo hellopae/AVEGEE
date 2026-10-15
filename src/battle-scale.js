@@ -4,7 +4,7 @@
 // No sprite pixels are altered. Legacy row/cutscene planners remain exported.
 
 import { mirrorBox } from './battle-facing.js';
-import { planBattleFormation } from './battle-formation.js';
+import { planBattleFormation } from './battle-formation.js?v=20261015-k2';
 
 /** ความสูงตัวจริงของยมทูตเทียบยมบาทน้อย — 1 = เท่ากัน · ยมบาทน้อยเป็นตัวเอกยังต้องเด่นกว่าเล็กน้อย */
 export const CREW_SCALE_TARGET = 0.96;

@@ -85,3 +85,34 @@ dialog.rpg:has(.battle9-arena)>.pad{position:absolute;left:44%;bottom:2%;z-index
 @keyframes battle9MenuOut{to{opacity:0;translate:-18px 0}}
 @media(max-height:500px) and (min-width:701px){.battle9-arena .battle9-menu .actor-segment{height:27px;min-height:27px;padding:3px 10px!important;font-size:12px}.battle9-arena .battle-command-heading{font-size:12px;margin-bottom:3px}.battle9-arena .battle9-menu .command-options{top:35px;max-height:40vh}.battle9-arena .battle9-menu .command-options .orb-choice{min-height:35px!important;padding:3px 6px!important}.battle9-arena .battle9-menu .command-options .orb-choice>img{height:28px;width:28px}}
 @media(max-width:700px){.arena.battle9-arena>.ttl{left:8px!important;right:112px!important;top:12px!important;width:auto!important;max-width:none!important;transform:none!important;text-align:center;white-space:normal;font-size:clamp(13px,3.8vw,18px);line-height:1.3;overflow-wrap:anywhere;text-wrap:balance}}
+/* K2: stationary parallelogram hit areas; only the contents counter-skew. */
+.battle9-arena .battle9-menu :is(.actor-segment,.orb-choice,.command-options){animation:none!important;transition:none!important;translate:none!important}
+.battle9-arena .battle9-menu .actor-segment{margin-left:calc(var(--command-index)*clamp(4px,.48vw,8px));transform:skewX(-10deg);border-radius:3px!important;background:var(--card)!important;border-color:var(--gold)!important}
+.battle9-arena .battle9-menu .actor-segment>span{display:block;transform:skewX(10deg);pointer-events:none}
+.battle9-arena .battle9-menu .actor-segment:is([aria-expanded=true],[aria-pressed=true]){background:linear-gradient(#ffe7a2,var(--gold))!important;color:var(--gold-foreground)!important}
+.battle9-arena .battle9-menu .command-options{left:calc(100% - 12px);padding:4px 28px 4px 8px;background:none;border:0;border-radius:0;overflow-x:hidden;pointer-events:none}
+.battle9-arena .battle9-menu .command-options.is-open{pointer-events:auto;align-items:stretch;flex-wrap:nowrap;gap:4px!important}
+.battle9-arena .battle9-menu .command-options .orb-choice{display:grid!important;position:relative!important;flex:none!important;width:100%!important;max-width:none!important;height:40px!important;min-height:40px!important;grid-template-columns:30px minmax(0,1fr) auto;grid-template-rows:1fr;align-items:center;opacity:1;transform:skewX(-10deg)!important;margin-left:calc(var(--choice-index)*clamp(2px,.36vw,6px));width:calc(100% - var(--choice-index)*clamp(2px,.36vw,6px))!important;padding:3px 8px!important;background:var(--card)!important;border:1px solid var(--gold)!important;border-radius:3px!important;box-shadow:none!important}
+.battle9-arena .battle9-menu .command-options .orb-choice>*{transform:skewX(10deg);pointer-events:none}
+.battle9-arena .battle9-menu .command-options .orb-choice>img,.battle9-arena .battle9-menu .command-options .orb-choice>span{width:30px;height:30px;grid-row:1;object-fit:contain;border:0;border-radius:0}
+.battle9-arena .battle9-menu .command-options .orb-choice b{grid-column:2;grid-row:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0}
+.battle9-arena .battle9-menu .command-options .orb-choice i{grid-column:3;grid-row:1;white-space:nowrap;max-width:100px;overflow:hidden;text-overflow:ellipsis}
+.battle9-arena .battle9-menu .command-options .orb-choice:disabled{opacity:.5!important}
+.battle9-arena .battle9-menu .command-options .skill-cooldown{position:absolute;right:8px;bottom:0;font-size:9px}
+.battle9-arena .battle9-menu .command-options .orb-choice:hover:not(:disabled),.battle9-arena .battle9-menu .command-options .orb-choice:focus-visible{background:var(--accent)!important;outline:2px solid var(--gold)}
+/* Match portrait scale without losing to the earlier .arena.combat-arena rules. */
+.arena.combat-arena.battle9-arena .battle-team-hud{left:8%;max-width:58%;gap:8px}
+.arena.combat-arena.battle9-arena .battle-portrait{width:clamp(70px,6.8vw,114px);max-width:none;flex:0 0 clamp(70px,6.8vw,114px);padding:3px}
+.arena.combat-arena.battle9-arena .battle-portrait img{width:100%;height:clamp(62px,9.6vh,90px);object-fit:cover}
+.arena.combat-arena.battle9-arena .battle-portrait b{font-size:clamp(10px,.9vw,15px);line-height:1.2}
+.arena.combat-arena.battle9-arena .battle-meter{height:7px}
+.arena.combat-arena.battle9-arena .battle-numbered-meter{position:relative;margin:3px 0;gap:0}
+.arena.combat-arena.battle9-arena .battle-numbered-meter small{position:absolute;right:2px;top:-2px;font-size:8px;text-shadow:0 1px 2px #000}
+.arena.combat-arena.battle9-arena .battle-boss-hud>img{width:clamp(80px,7vw,120px);height:clamp(80px,7vw,120px)}
+@media(max-width:700px){.arena.combat-arena.battle9-arena .battle-portrait{width:55px;flex-basis:55px}.arena.combat-arena.battle9-arena .battle-portrait img{height:48px}.arena.combat-arena.battle9-arena .battle-team-hud{left:2%;gap:3px}.battle9-arena .battle9-menu .command-options .orb-choice{height:36px!important;min-height:36px!important;grid-template-columns:24px minmax(0,1fr) auto;gap:3px}.battle9-arena .battle9-menu .command-options .orb-choice>img{width:24px;height:24px}.battle9-arena .battle9-menu .command-options .orb-choice i{max-width:55px;font-size:9px!important}}
+/* K2 review: lift the global .orb-choice b{max-width:88px} so skill names are not cut mid-word. */
+.battle9-arena .battle9-menu .command-options .orb-choice b{max-width:none;font-size:14px;line-height:1.3}
+/* K2 review: the "click an enemy" hint box and heading sat on top of the foe and swallowed the click; only the cancel button stays interactive. */
+.battle9-arena .battle9-menu .battle-command-heading,.battle9-arena .battle9-menu .battle9-confirm{pointer-events:none}
+.battle9-arena .battle9-menu .battle9-confirm{width:clamp(170px,15vw,240px)}
+.battle9-arena .battle9-menu .battle9-confirm .battle-command-cancel{pointer-events:auto;width:auto;min-height:32px;margin-top:6px;padding:4px 14px}

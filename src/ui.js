@@ -1,3 +1,4 @@
+import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
 import {mountDungeonView} from './dungeon-view.js';
@@ -24,7 +25,7 @@ import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
-import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
 import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';
@@ -2414,8 +2415,8 @@ function openTrial(initialError = '') {
       {id:'force',label:'ความแรง / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
     ];
     const trialWheel = `<section class="comment8-menu" aria-label="คำสั่งออกหมาย">
-      <div class="comment8-commands">${courtGroups.map((v,i)=>`<button type="button" class="court-command ${v.selected?'has-selection':''}" data-court-panel="${v.id}" style="--command-index:${i}" aria-expanded="${courtPanel===v.id}" ${v.disabled?'disabled':''}>${esc(v.label.split(' / ')[getLang()==='en'?1:0])}</button>`).join('')}
-        <button type="button" id="t-go" class="court-command court-issue ${ready?'ready':''}" style="--command-index:4" ${ready?'':'disabled'}>${esc(t('trial.warrant'))}</button>
+      <div class="comment8-commands">${courtGroups.map((v,i)=>`<button type="button" class="court-command ${v.selected?'has-selection':''}" data-court-panel="${v.id}" style="--command-index:${i}" aria-expanded="${courtPanel===v.id}" ${v.disabled?'disabled':''}><span>${esc(v.label.split(' / ')[getLang()==='en'?1:0])}</span></button>`).join('')}
+        <button type="button" id="t-go" class="court-command court-issue ${ready?'ready':''}" style="--command-index:4" ${ready?'':'disabled'}><span>${esc(t('trial.warrant'))}</span></button>
       </div>
       ${courtGroups.map(v=>`<div class="court-options ${courtPanel===v.id?'is-open':''}" data-court-options="${v.id}" ${courtPanel===v.id?'':'inert'} aria-label="${esc(v.label)}">${v.choices}</div>`).join('')}
       ${missing?`<small class="court-missing" role="status">${esc(missing)}</small>`:''}
@@ -2496,17 +2497,20 @@ function openTrial(initialError = '') {
     requestAnimationFrame(()=>{
       const stage=dlg.querySelector('.trial-comment8 .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
       if(!stage?.isConnected||!pane)return;
-      const gap=window.innerWidth<=700?5:7;
+      const command=menu.querySelector(`[data-court-panel="${pane.dataset.courtOptions}"]`);
+      const gap=-12+command.offsetLeft;
       const left=Math.max(0,Math.min(menu.offsetWidth+gap,stage.clientWidth-menu.offsetLeft-pane.offsetWidth-8));
       pane.style.left=`${left}px`;
+      pane.style.top=`${command.offsetTop}px`;
       const initialTop=pane.offsetTop;
       const remaining=Math.max(90,stage.clientHeight-menu.offsetTop-initialTop-18);
       pane.style.maxHeight=`${Math.min(pane.offsetHeight,remaining)}px`;
     });
 
+    bindCommandPress(dlg.querySelector('.trial-comment8'));
     // ---- ผูกปุ่ม ----
     dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;paint();});
-    dlg.querySelectorAll('.court-options .orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i));
+    dlg.querySelectorAll('.court-options').forEach(pane=>pane.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i)));
     dlg.querySelector('.comment8-menu')?.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();courtPanel=null;paint();}});
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
@@ -3120,7 +3124,7 @@ function openBattle(after) {
     const acts = currentTurn?.side==='foe' || (!commandMenuOpen && !phase) || rest || (b.kind === 'zoneBoss' && !b.prepStarted) || b.over ? '' :
       `<section class="command-wheel actor-wheel battle-command-dock battle9-menu ${phase?'busy':''} ${pending?'targeting':''}" aria-label="${esc(actor.name)} — คำสั่งต่อสู้">
         <div class="battle-command-heading"><b>${esc(actor.name)}</b></div>
-        <div class="battle-command-tabs">${segments.map((v,i)=>`<button class="actor-segment" style="--command-index:${i}" data-command="${v.id}" ${v.action?`data-primary-action="${v.action}"`:''} aria-expanded="${commandPanel===v.id}" ${phase||v.disabled?'disabled':''}>${esc(battle9Label(v.label))}</button>`).join('')}</div>
+        <div class="battle-command-tabs">${segments.map((v,i)=>`<button class="actor-segment" style="--command-index:${i}" data-command="${v.id}" ${v.action?`data-primary-action="${v.action}"`:''} aria-expanded="${commandPanel===v.id}" aria-pressed="${commandPanel===v.id||!!(v.action&&pending===v.action)}" ${phase||v.disabled?'disabled':''}><span>${esc(battle9Label(v.label))}</span></button>`).join('')}</div>
         ${segments.filter(v=>v.choices).map(v=>`<div class="command-options ${commandPanel===v.id&&!pending?'is-open':''}" data-options="${v.id}" ${commandPanel===v.id&&!pending?'':'inert'} aria-label="${esc(battle9Label(v.label))}">${v.choices}</div>`).join('')}
         <div class="battle9-confirm" ${pending?'':'hidden'}>${selection}</div>
       </section>`;
@@ -3278,6 +3282,7 @@ function openBattle(after) {
     dlg.querySelector('[data-prep-hide]')?.addEventListener('click', () => { prepHidden = true; paint(); });
     dlg.querySelector('[data-prep-show]')?.addEventListener('click', () => { prepHidden = false; paint(); });
     dlg.querySelectorAll('[data-prep-go]').forEach(prepGo => prepGo.onclick = () => { if (rest ? g.advanceZoneEventWave(true) : g.startBossFight()) { prepHidden = false; sfx('gong'); paint(); refresh(); } });
+    bindCommandPress(stage);
     if (!dlg.querySelector('.battle9-menu')) bindCommandWheel(dlg);
     dlg.querySelectorAll('[data-crew-pick]').forEach(el => {
       el.setAttribute('aria-pressed', String(el.dataset.crewPick === (isYama ? 'you' : crewBattleKey(actor))));
@@ -3329,7 +3334,7 @@ function openBattle(after) {
         if(button.dataset.primaryAction){commandPanel=null;if(['defend','flee'].includes(button.dataset.primaryAction))executeCommand(button.dataset.primaryAction,'you');else setCommand(button.dataset.primaryAction,button.textContent.trim());}
         else {g.cancelBattleCommand();commandPanel=commandPanel===button.dataset.command?null:button.dataset.command;paint();}
       });
-      wheel.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i));
+      wheel.querySelectorAll('.command-options').forEach(pane=>pane.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i)));
       const placeMenu = async () => {
         await stage._battleSpriteFit;
         if(!wheel.isConnected||!anchor)return;
@@ -3338,10 +3343,15 @@ function openBattle(after) {
         const menuWidth=wheel.offsetWidth,menuHeight=wheel.offsetHeight;
         // Adjacent to the active actor, above the bottom profiles. Reserve room for the right submenu.
         const pane=wheel.querySelector('.command-options.is-open, .battle9-confirm:not([hidden])');
-        const paneWidth=pane?.offsetWidth||0,paneGap=paneWidth?7:0;
+        const paneWidth=pane?.offsetWidth||0,paneGap=paneWidth?-12:0;
+        if(pane?.classList.contains('command-options')){
+          const command=wheel.querySelector(`[data-command="${pane.dataset.options}"]`);
+          pane.style.top=`${command.offsetTop}px`;
+          pane.style.left=`${menuWidth-12+command.offsetLeft}px`;
+        }
         const maxX=Math.max(8,area.width-menuWidth-paneWidth-paneGap-8);
         const left=Math.min(maxX,Math.max(8,rect.r-area.left+12));
-        const paneHeight=pane ? pane.offsetHeight+(pane.classList.contains('command-options')?45:0) : 0;
+        const paneHeight=pane ? pane.offsetHeight+pane.offsetTop : 0;
         const maxY=Math.max(12,area.height*.83-Math.max(menuHeight,paneHeight));
         const minY=Math.min(area.height*.36,maxY);
         const top=Math.max(minY,Math.min(maxY,rect.t-area.top+12));
