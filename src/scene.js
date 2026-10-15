@@ -1,8 +1,9 @@
 import { drawLocalLight } from './scene-style.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
-import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=k1d';
-import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js?v=k1d';
+import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
+import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
+import { updateTownShade, drawTownShadows, drawContactAO, drawActorShadow, withTownShade, visibleBase } from './town-shade.js?v=l1';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
@@ -13,7 +14,7 @@ import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapf
 
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
-         drawFire, drawVignette, drawStationShadow, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
+         drawFire, drawVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
 import { buildWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
@@ -22,11 +23,20 @@ import { waitingEvents } from './npc-stand.js';
 
 export const UI_SCALE_MAP = 1.2;
 const MAP_NAME_SIZE = 8; // Character names and floating dialogue share the same map type size.
-export const CHAR_SCALE_MAP = 0.8;
+const CHAR_SCALE_BASE = 0.8;
+// L1: on the Zone 1 painted map the actors read too big next to the buildings (owner, 15 Oct 2569):
+// Yama stood ~42% of a tall small house (h = 1.46 w) and ~65% of a low one; target 1/3-2/5 -> -25%.
+// Town zone only; other maps keep 0.8.
+export const TOWN_CHAR_K = 0.75;
+export let CHAR_SCALE_MAP = CHAR_SCALE_BASE;   // live binding: ui.js hit padding / pins read the current value
+let CREW_H = 82 * CHAR_SCALE_MAP, HERO_H = 92 * CHAR_SCALE_MAP, SOUL_H = 64 * CHAR_SCALE_MAP;
+/** Relative actor size of the zone being drawn (1 everywhere except the Zone 1 town). */
+export const mapCharK = () => CHAR_SCALE_MAP / CHAR_SCALE_BASE;
+export function setMapCharScale(zone) {
+  CHAR_SCALE_MAP = CHAR_SCALE_BASE * (isTownZone(zone) ? TOWN_CHAR_K : 1);
+  CREW_H = 82 * CHAR_SCALE_MAP; HERO_H = 92 * CHAR_SCALE_MAP; SOUL_H = 64 * CHAR_SCALE_MAP;
+}
 const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
-const CREW_H = 82 * CHAR_SCALE_MAP;
-const HERO_H = 92 * CHAR_SCALE_MAP;
-const SOUL_H = 64 * CHAR_SCALE_MAP;
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
   drawStandee(ctx, key, x, y, h * CHAR_SCALE_MAP, t, ...rest);
 let lastHeroX = NaN, lastHeroY = NaN, heroMovingUntil = 0, heroWalkDistance = 0, heroDirection = 'down';
@@ -173,6 +183,7 @@ function tag(ctx, x, y, t, [text, color]) {
 }
 
 function ring(ctx, x, y, t, w = 30) {
+  w *= mapCharK();
   const q = 0.5 + 0.5 * Math.sin(t / 260);
   ctx.strokeStyle = `rgba(255,210,140,${0.5 + q * 0.4})`; ctx.lineWidth = 2.5;
   ctx.beginPath(); ctx.ellipse(x, y, w, w * 0.34, 0, 0, 7); ctx.stroke();
@@ -202,6 +213,7 @@ export function afterlifeWalkPosition(walk) {
 
 export function render(ctx, g, t, hover, sel, cameraView = null) {
   prepareMapCanvas(ctx);
+  setMapCharScale(g.zone);
 
   // ฉากใหม่ของโซนมาก่อนภาพในโฟลเดอร์รุ่นเก่า
   const zk = g.zoneDef ? g.zoneDef().scene : 'scene';
@@ -227,6 +239,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const sceneryWaterfall = town ? img('town-waterfall-th') : null;
   if(town) {
     drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced,img);
+    // L1: one sun for the whole town. Casters = props + houses + built stations + gate + dais (baked once).
+    updateTownShade(img, townHouseKey, [...g.stations.filter(st=>!st.build).map(st=>st.def), FRONTIER],
+      p=>townPropArt(p,sceneryTree,sceneryWaterfall,img));
+    drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   drawTownGround(ctx, g);
@@ -238,8 +254,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if(newDais){
         // K1d: the dais is placed by the owner's drawing (foot centre + width), not by the old throne spot.
         const w=TOWN_DAIS.w,h=w*dais.naturalHeight/dais.naturalWidth,top=TOWN_DAIS.y-h;
-        ctx.fillStyle='rgba(10,5,15,.24)';ctx.beginPath();
-        ctx.ellipse(TOWN_DAIS.x+10,top+h-12,w*.46,22,0,0,Math.PI*2);ctx.fill();
+        { const b=visibleBase(dais,TOWN_DAIS.x,TOWN_DAIS.y,w,h); drawContactAO(ctx,b.x+6,b.y-4,b.w*.56,26); }
         ctx.drawImage(dais,TOWN_DAIS.x-w/2,top,w,h);
         for(const side of [-1,1]){
           const x=TOWN_DAIS.x+side*w*.207,y=top+h*.112;
@@ -265,11 +280,11 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // Ground shadows and pools of light are painted before the depth-sorted objects.
   for (const st of g.stations) {
     if (st.build) continue;
-    drawStationShadow(ctx, st.def);
+    if (town) drawStationAO(ctx, st.def); else drawStationShadow(ctx, st.def);
     if (['sala','sawan','krajok'].includes(st.def.k))
       drawLocalLight(ctx,g.zone,st.def.bx,st.def.by,st.def.bw*.24,t,!!reducedMotion?.matches);
   }
-  drawStationShadow(ctx, FRONTIER);
+  if (town) drawStationAO(ctx, FRONTIER); else drawStationShadow(ctx, FRONTIER);
   drawLocalLight(ctx,g.zone,FRONTIER.bx,FRONTIER.by,FRONTIER.bw*.3,t,!!reducedMotion?.matches);
 
   const rescue = westRescuePending(g), frozen = westSpiritsFrozen(g);
@@ -299,6 +314,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  // L1: actors on the Zone 1 map get a cast shadow on the ground and go darker inside building / tree shadows.
+  const actorSpots = [];
+  const shade = (x, y, h, fn) => town ? withTownShade(ctx, x, y, h, fn) : fn(ctx);
+  const spot_ = (x, y, h) => { if (town) actorSpots.push([x, y, h]); };
   const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, site));
@@ -328,8 +347,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const p = QUEUE_LINE[i];
     if (!p) return;
     if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
-    drawSoul(ctx, p[0], p[1], i === 0 ? SOUL_H * 1.12 : SOUL_H, soulTime + s.id * 300,
-             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7);
+    const qh = i === 0 ? SOUL_H * 1.12 : SOUL_H;
+    spot_(p[0], p[1], qh);
+    shade(p[0], p[1], qh, c => drawSoul(c, p[0], p[1], qh, soulTime + s.id * 300,
+             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7));
     if (frozen) tag(ctx, p[0], p[1]-SOUL_H-16, 0, ['!!!','#ff9a7a']);
   });
 
@@ -346,8 +367,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const crewAt = escorted ? (waiting ? pointOnPath(v.pickup, crewProgress)
                                        : pointOnPath(v.outbound, travelProgress)) : null;
     const x = soulAt[0], y = soulAt[1];
+    spot_(x, y, SOUL_H * .82);
     at(y, () => {
-      drawSoul(ctx, x, y, SOUL_H * .82, soulTime + v.id * 300, '#d9eaff', v.sp || 7);
+      shade(x, y, SOUL_H * .82, c => drawSoul(c, x, y, SOUL_H * .82, soulTime + v.id * 300, '#d9eaff', v.sp || 7));
       if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
       else if (waiting && v.crew) tag(ctx, x, y - SOUL_H - 12, t,
         [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
@@ -357,11 +379,14 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const escortFace = waiting ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1) : (x < crewAt[0] ? -1 : 1);
       const position = [crewAt[0] - (waiting ? 0 : 24 * escortFace), crewAt[1]];
       const motion = actorWalkMotion(v, t, g.zone, position);
+      spot_(position[0], position[1], CREW_H);
       at(crewAt[1] + 1, () => {
         const key = `crew-${v.crew}`;
-        if (motion.moving && drawCrewWalk(ctx, key, position[0], position[1], CREW_H, motion.distance, motion.face)) return;
-        drawStandee(ctx, motion.moving ? key : poseOr(`${key}-work`, key), position[0], position[1], CREW_H, t,
-          v.crewGlyph || '👹', motion.face, motion.moving);
+        shade(position[0], position[1], CREW_H, c => {
+          if (motion.moving && drawCrewWalk(c, key, position[0], position[1], CREW_H, motion.distance, motion.face)) return;
+          drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), position[0], position[1], CREW_H, t,
+            v.crewGlyph || '👹', motion.face, motion.moving);
+        });
       });
     }
   }
@@ -370,6 +395,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const walk of (rescue ? [] : g.afterlifeWalks || []).slice(0, 24)) {
     if (walk.zone !== g.zone) continue;
     const [x, y] = afterlifeWalkPosition(walk);
+    spot_(x, y, SOUL_H * .82);
     at(y, () => {
       const exit = walk.destination === 'exit';
       const progress = Math.min(1, walk.elapsed / walk.duration);
@@ -383,8 +409,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         ctx.beginPath(); ctx.arc(x, y - 26, 44, 0, Math.PI * 2); ctx.fill();
       }
       if (sel?.kind === 'soul' && sel.key === walk.soul.id) ring(ctx, x, y, t, 24);
-      drawSoul(ctx, x, y - (exit ? progress * 20 : 0), SOUL_H * .82,
-        soulTime + walk.soul.id * 300, '#d9eaff', walk.soul.sp || 7);
+      shade(x, y, SOUL_H * .82, c => drawSoul(c, x, y - (exit ? progress * 20 : 0), SOUL_H * .82,
+        soulTime + walk.soul.id * 300, '#d9eaff', walk.soul.sp || 7));
       if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
       else if (!exit) tag(ctx, x, y - SOUL_H - 10, t,
         [walk.destination === 'prison' ? '⛓️ ไปตะราง'
@@ -397,11 +423,14 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const crew = walk.courier ? {k:walk.courier,glyph:'🦇'} : g.crewOf(walk.escort.k);
       if (pos && crew) {
         const motion = actorWalkMotion(walk, t, g.zone, [pos.x, pos.y]);
+        spot_(pos.x, pos.y, CREW_H);
         at(pos.y + 1, () => {
           const key = `crew-${crew.k}`;
-          if (motion.moving && drawCrewWalk(ctx, key, pos.x, pos.y, CREW_H, motion.distance, motion.face)) return;
-          drawStandee(ctx, motion.moving ? key : poseOr(`${key}-work`, key), pos.x, pos.y, CREW_H, t,
-            crew.glyph || '👹', motion.moving ? motion.face : pos.face, motion.moving);
+          shade(pos.x, pos.y, CREW_H, c => {
+            if (motion.moving && drawCrewWalk(c, key, pos.x, pos.y, CREW_H, motion.distance, motion.face)) return;
+            drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), pos.x, pos.y, CREW_H, t,
+              crew.glyph || '👹', motion.moving ? motion.face : pos.face, motion.moving);
+          });
         });
       }
     }
@@ -420,7 +449,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // ปีศาจบนแผนที่เข้าฉากต่อสู้เสมอ; ลูกไฟใช้ได้เฉพาะในฉากต่อสู้
   // ผีวาดทับอาคารเสมอ (แต่ยังอยู่ใต้ตัวเรา) — เจ้าของเจอ 10 ก.ย. 2569 ว่ามันไปยืนหลังอาคาร
   // แล้วหายไปทั้งตัว ทั้งที่เป็นสิ่งเดียวที่ต้องรีบหาให้เจอ
-  (rescue ? [] : g.mobs).forEach((m, i) => at(1e6 + m.y, () => {
+  (rescue ? [] : g.mobs).forEach((m, i) => (spot_(m.x, m.y, MOB.h * CHAR_SCALE_MAP), at(1e6 + m.y, () => {
     if (sel && sel.kind === 'mob' && sel.key === i) ring(ctx, m.x, m.y, t, 28);
     const d = Math.hypot(m.x - g.player.x, m.y - g.player.y);
     const near = d <= MOB.fabReach;
@@ -429,13 +458,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       ctx.strokeStyle = `rgba(224,74,47,${0.55 + q * 0.45})`; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
-    mapStandee(ctx, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹');
+    shade(m.x, m.y, MOB.h * CHAR_SCALE_MAP, c => mapStandee(c, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹'));
     // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
     // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
     if (d <= MOB.fabReach || actorStanding(g.guard)) return;
     tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
         ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
-  }));
+  })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
   if (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone]) {
@@ -444,9 +473,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const cleared = !walk && g.bossCleared?.[g.zone];
     const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
     const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
+    spot_(x, y, HERO_H * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
-      drawStandee(ctx, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1);
+      shade(x, y, HERO_H * 1.12, c => drawStandee(c, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1));
       tag(ctx, x, y - HERO_H * 1.12 - 15, t,
           [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : cleared ? `คุยกับ${g.zoneDef().bossName}` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
@@ -455,7 +485,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const ev of waitingEvents(g)) at(1e5 + ev.y, () => {
     ring(ctx, ev.x, ev.y, t, 28);
     mapStandee(ctx, ev.art, ev.x, ev.y, 90, t, '⚠️');
-    tag(ctx, ev.x, ev.y - 90, t, ['⚠️', '#f7c371']);
+    tag(ctx, ev.x, ev.y - 90 * mapCharK(), t, ['⚠️', '#f7c371']);
   });
 
   // ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก (รับทราบแล้ว รอให้ยมบาทเดินไป): เครื่องหมายเรืองแสงที่ประตูชายแดน
@@ -489,20 +519,26 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       drawCaptiveLightning(ctx, t);
       tag(ctx, 1002, 256, t, ['🔒 ช่วยทัณฑ์และพ่อค้า', '#f7c371']);
     });
-  } else if (!rescue) at(1e5 + MERCHANT.y, () => {
-    mapStandee(ctx, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph);
-  });
+  } else if (!rescue) {
+    spot_(MERCHANT.x, MERCHANT.y, MERCHANT.h * CHAR_SCALE_MAP);
+    at(1e5 + MERCHANT.y, () => {
+      shade(MERCHANT.x, MERCHANT.y, MERCHANT.h * CHAR_SCALE_MAP, c => mapStandee(c, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph));
+    });
+  }
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
   if (!rescue && (actorStanding(g.guard) || g.guard?.teaRest?.phase === 'travel')) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
+    spot_(g.guard.x, g.guard.y, GUARD.h * CHAR_SCALE_MAP);
     at(g.guard.y, () => {
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-      if (motion.moving && drawCrewWalk(ctx, GUARD.img, g.guard.x, g.guard.y,
-          GUARD.h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
-      mapStandee(ctx, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️', motion.face, motion.moving);
+      shade(g.guard.x, g.guard.y, GUARD.h * CHAR_SCALE_MAP, c => {
+        if (motion.moving && drawCrewWalk(c, GUARD.img, g.guard.x, g.guard.y,
+            GUARD.h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
+        mapStandee(c, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️', motion.face, motion.moving);
+      });
     });
   }
 
@@ -513,6 +549,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
     if (c.x == null || c.escort) continue;
     const motion = actorWalkMotion(c, t, g.zone);
+    spot_(c.x, c.y, CREW_H);
     at(c.y, () => {
       const base = 'crew-' + c.k;
       if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
@@ -522,10 +559,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
-      const animated = !buildingHere && motion.moving &&
-        drawCrewWalk(ctx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
-      if (!animated) drawStandee(ctx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
-        c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
+      shade(c.x, c.y, CREW_H, cx => {
+        const animated = !buildingHere && motion.moving &&
+          drawCrewWalk(cx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
+        if (!animated) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
+          c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
+      });
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
@@ -543,13 +582,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       ctx.save(); drawArrivalWarp(ctx, a, arrival.warpElapsed || 0);
       ctx.globalAlpha = Math.min(1, (arrival.warpElapsed || 0) / 900);
     }
-    drawStandee(ctx, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone);
+    shade(a.x, a.y, 78 * CHAR_SCALE_MAP, c => drawStandee(c, a.art, a.x, a.y, 78 * CHAR_SCALE_MAP, t, a.reinforcement ? '🛡️' : '⚔️', 1, false, a.sourceZone));
     const above = !a.reinforcement && Math.round((a.x - 1110) / 80) % 2 === 1;
     mapName(ctx, `${a.name}${a.reinforcement || !a.enabled ? '' : ' · พร้อมสู้'}`, a.x, above ? a.y - 78 * CHAR_SCALE_MAP - 6 : a.y + 10, a.enabled ? '#f7c371' : '#ddd');
     if (arrival.presentation === 'warp') ctx.restore();
   });
   for (const a of devaMapActors(g)) at(a.y, () => {
-    drawStandee(ctx, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, !!a.moving, a.sourceZone);
+    shade(a.x, a.y, 100 * CHAR_SCALE_MAP, c => drawStandee(c, a.art, a.x, a.y, 100 * CHAR_SCALE_MAP, t, '🪽', 1, !!a.moving, a.sourceZone));
     if (a.enabled) label(ctx, a.label, a.x, a.y + 18, 12, '#f7c371');
   });
   // ---- ตัวเรา — เดินไปไหนก็ได้ ----
@@ -581,12 +620,16 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
     const walking = t < heroMovingUntil;
-    if (!swinging && drawHeroWalk(ctx, P.x, P.y, HERO_H, walking ? heroWalkDistance : 0, P.face, heroDirection)) return;
-    drawStandee(ctx, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
-                P.x, P.y, HERO_H, t, '👑', P.face, walking && !swinging);
+    shade(P.x, P.y, HERO_H, c => {
+      if (!swinging && drawHeroWalk(c, P.x, P.y, HERO_H, walking ? heroWalkDistance : 0, P.face, heroDirection)) return;
+      drawStandee(c, swinging ? poseOr('hero-yama-atk', 'hero-yama') : 'hero-yama',
+                  P.x, P.y, HERO_H, t, '👑', P.face, walking && !swinging);
+    });
   });
+  spot_(P.x, P.y, HERO_H);
 
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
+  for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
 
@@ -625,6 +668,14 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+/** L1: soft contact shade under a building's measured ground band (town map only). */
+function drawStationAO(ctx, def) {
+  if (def.bx == null) return;
+  const f = footOf(def) || [def.bx - def.bw * .32, def.by - def.bw * .05, def.bx + def.bw * .32, def.by];
+  const rx = (f[2] - f[0]) / 2 * 1.08;
+  drawContactAO(ctx, (f[0] + f[2]) / 2 + 4, f[3] - 2, rx, Math.max(10, rx * .22));
 }
 
 /** อาคารหนึ่งหลังบนแผนที่ — รวมนั่งร้านตอนกำลังสร้าง และไฟไหม้ตอนผีมาเผา */

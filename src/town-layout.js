@@ -27,8 +27,14 @@ export const TOWN_SPOTS = {
   plaza:{x:1862,y:1090}, bench:{x:1862,y:1078}, throne:{x:1862,y:917},
   bossPier:{x:2240,y:1680}, ferry:{from:[2225,1780],to:[2640,1780]},
 };
+// L1: Nira stands ON the judgement dais (the old spot was hidden behind a banyan). The platform floor is
+// x 1760-1965 / y 905-980 (measured on town-judgment-th-v2); the throne seat is at (1862,917), the stairs at
+// x 1822-1898 and the soul queue starts at y 1100, so she strolls only inside TOWN_NIRA_STAGE (right of the throne).
+export const TOWN_NIRA_STAGE = [1914,934,1962,968];
+// Zone 1 only: crew who stroll inside a rectangle instead of a radius around home.
+export const TOWN_CREW_STAGE = { nira:TOWN_NIRA_STAGE };
 export const TOWN_CREW = {
-  nira:[1990,1074], taan:[3150,972], dam:[470,1092],
+  nira:[1938,950], taan:[3150,972], dam:[470,1092],
   plerng:[542,640], kan:[2304,1397], boon:[2460,470],
 };
 export const TOWN_GUARD_POST = [1720,2190];
@@ -40,7 +46,7 @@ export const TOWN_FRONTIER = {...site(1917,2510,292,1.82,0,-310),reach:105,
 export const TOWN_QUEUE = [[1856,1100],[1856,1190],[1856,1260],[1860,1330],
   [1880,1400],[1910,1470],[1924,1540]];
 export const TOWN_ENTRY = {gate:[1917,2200],nira:[1870,2200],
-  goal:[1922,1078],niraGoal:[1990,1074]};
+  goal:[1922,1078],niraGoal:[1938,950]};
 
 // ---- walkable ground: plazas, roads, stairs, bridges and the dock (traced from the painting) ----
 const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);

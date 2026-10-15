@@ -1,7 +1,7 @@
 import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
-import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
+import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
@@ -499,10 +499,11 @@ const API = {
     }
     return true;
   },
-  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — Guard พักได้เมื่อ HP ไม่เต็ม */
+  /** ไปพักที่ศาลาน้ำชา (G1: Guard · G4: ยมทูตทุกคนที่ไม่ใช่ผู้อ่าน/ตัวผู้เล่น) — พักได้เมื่อ HP ไม่เต็ม (L3: เดิมยมทูตต้อง <50 ตอนนี้กดได้ทุกคนที่ไม่เต็ม)
+   *  ระหว่างเดิน/พัก actorStanding=false → ไม่ร่วมต่อสู้ (ยังอยู่ในรายชื่อทีม) แล้วกลับจุดทำงานเองตอนเต็ม */
   restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
-    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= (c.k === 'guard' ? 100 : 50) || this.battle) return false;
+    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 100 || this.battle) return false;
     const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
@@ -729,7 +730,8 @@ const API = {
     if (this.abilities.cooldownClock) this.inventory.cooldownClock = 1;
     for (const [k, n] of Object.entries(this.inventory)) if (n > 0 && ITEMS[k]) this.discover('item', k);
     for (const p of this.powers) if (!this.powerLocked(p)) this.discover('power', p.k);
-    for (const [k, yes] of Object.entries(this.abilities)) if (yes && k !== 'cooldownClock' && ABILITY_REWARDS[k]) this.discover('ability', k);
+    // hypno: ใช้ popup 'power:hypno' (บอกทั้งสอบสวน+ต่อสู้) แทน 'ability:hypno' จะได้ไม่เด้งซ้ำสองครั้ง
+    for (const [k, yes] of Object.entries(this.abilities)) if (yes && k !== 'cooldownClock' && k !== 'hypno' && ABILITY_REWARDS[k]) this.discover('ability', k);
   },
   acknowledgeDiscovery(id) {
     if (this.discoveryQueue[0] !== id) return false;
@@ -1653,7 +1655,11 @@ const API = {
   },
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
-  powerLocked(p) { return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared'; },
+  powerLocked(p) {
+    // L3 (คุณเป้ 15 ต.ค. 2569): สะกดจิตได้จากการชนะบอสชายแดนโซน 3 (westVampireBreach → abilities.hypno) เท่านั้น ไม่ผูกกับเลเวล
+    if (p?.k === 'hypno') return !this.abilities.hypno;
+    return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared';
+  },
   /** เรียกยมทูตมาช่วยในฉากต่อสู้ได้หรือยัง */
   canCallCrew() { return this.level >= CREW_HELP_LV; },
 
@@ -1828,8 +1834,11 @@ const API = {
         c.wait -= dt;
       } else {
         // อยู่ไกลบ้าน = กลับเข้าที่ก่อน · อยู่แถวบ้านแล้ว = เดินเล่นรอบ ๆ
-        const tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
-        const ty = far ? hy : hy + (Math.random() - 0.5) * roam;
+        let tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
+        let ty = far ? hy : hy + (Math.random() - 0.5) * roam;
+        // L1: a crew member with a Zone 1 stage (Nira on the dais) never strolls outside that rectangle
+        const stage = this.zone === 'th' ? TOWN_CREW_STAGE[c.k] : null;
+        if (stage && !onDuty) { tx = clamp(tx, stage[0], stage[2]); ty = clamp(ty, stage[1], stage[3]); }
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
         if (ok) {
@@ -4722,6 +4731,9 @@ API.restore = function (d) {
       if (events[ev.k] === 'cleared' && ev.reward?.ability) this.abilities[ev.reward.ability] = true;
     }
   }
+  // L3: สะกดจิตได้เฉพาะเซฟที่ชนะแวมไพร์โซน 3 แล้ว (abilities.hypno จากเซฟ / ZONE_EVENTS cleared ด้านบน) — เซฟเก่าที่ปลดด้วยเลเวลถูกริบ
+  // ล้างสถานะ 'เคยเห็น popup สะกดจิต' ที่ได้จากเลเวล เพื่อให้ได้ popup ตอนชนะบอสจริง
+  if (!this.abilities.hypno) { delete this.discoverySeen['power:hypno']; this.discoveryQueue = this.discoveryQueue.filter(id => id !== 'power:hypno'); }
   // เซฟก่อนชุด event ที่ไปถึงบอสแล้วคงสิทธิ์เดิม ไม่บังคับให้ย้อนกลับมาทำสามเหตุการณ์
   this.legacyBossGate = legacyBossGate;
   this.miniGoals = d.miniGoals || {};

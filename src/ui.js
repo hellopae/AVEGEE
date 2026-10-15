@@ -2,7 +2,7 @@ import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
 import {mountDungeonView} from './dungeon-view.js';
-import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=k1d';
+import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
@@ -41,8 +41,8 @@ import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, 
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l2';
-import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1-k1d';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -685,7 +685,7 @@ function sideBody() {
     const pw = POWERS.map(p => {
       const q = g.powerOf(p.k), ready = g.powerReady(p.k);
       const ammo = q.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
-      const state = g.powerLocked(p) ? `ล็อก (ขั้น ${p.lv})`
+      const state = g.powerLocked(p) ? (p.k === 'hypno' ? 'ล็อก (ชนะบอสชายแดนโซน 3)' : `ล็อก (ขั้น ${p.lv})`)
                   : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
                   : ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${ammo}`;
       return `<div class="row-truth">${p.glyph.startsWith('img/') ? `<img class="power-glyph" src="${p.glyph}" alt="">` : esc(p.glyph)} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
@@ -861,8 +861,12 @@ function guardRestWidget(c, showName = false) {
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
     ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
-      : c.morale < (c.k === 'guard' ? 100 : 50) ? `<button class="sm" data-guard-rest="${esc(c.id)}" ${ready && actorStanding(c) ? '' : 'disabled'}>${esc(t('g1.rest'))}</button>${!ready ? `<small>${esc(t('g1.needTea'))}</small>` : ''}`
-      : ''}
+      : (() => {
+        // L3: ปุ่มพักมีทุกคนที่ไม่ใช่ผู้อ่าน — จางพร้อมบอกเหตุผลเมื่อ HP เต็ม / ยังไม่มีศาลาน้ำชา / ล้มอยู่ / อยู่ในศึก
+        const full = c.morale >= 100, why = full ? t('g1.full') : !ready ? t('g1.needTea') : g.battle ? t('g1.inBattle') : !actorStanding(c) ? t('g1.down') : '';
+        const inTeam = c.k !== 'guard' && (g.party?.members || []).includes(c.k);
+        return `<button class="sm" data-guard-rest="${esc(c.id)}" ${why ? 'disabled' : ''}>${esc(t('g1.rest'))}</button>${why ? `<small data-rest-why>${esc(why)}</small>` : inTeam ? `<small data-rest-team>${esc(t('g1.inTeam'))}</small>` : ''}`;
+      })()}
     </div>`;
 }
 function hungerWidget(c) {
@@ -1040,7 +1044,8 @@ const ov = $('#ov'), deckBar = $('#deck');
 let pick = { st: null, cr: null, inten: null }; // ต้องเลือกสถานที่ ผู้คุม และความแรงก่อนออกหมาย
 let fx = null;                                  // คะแนน + เสียงพญายม (โชว์ชั่วคราว)
 
-const CH = 82;                                  // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
+const CH_BASE = 82;                             // ความสูงตัวละครบนฉาก ต้องตรงกับ CREW_H ใน scene.js
+const charH = () => CH_BASE * mapCharK();      // L1: ตัวละครในเมืองโซน 1 ย่อลง หมุดตามลงด้วย
 const pctX = x => (x / SCENE.w * 100) + '%';
 const pctY = y => (y / SCENE.h * 100) + '%';
 
@@ -1099,7 +1104,7 @@ function followMarks() {
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
     d.dataset.sx = c.x + Number(d.dataset.followDx || 0);
-    d.dataset.sy = c.y - CH - 8;
+    d.dataset.sy = c.y - charH() - 8;
     place(d);
   }
 }
@@ -1137,7 +1142,7 @@ function drawOverlay() {
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
       `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
     ov.appendChild(d); place(d);
-    mark('boss', SPOTS.throne.x, SPOTS.throne.y - CH - 8, '👑',
+    mark('boss', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
   const nira = g.crewOf('nira');
@@ -1150,7 +1155,7 @@ function drawOverlay() {
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
   // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
-  const nm = mark('', nx, ny - CH - 8, '📜',
+  const nm = mark('', nx, ny - charH() - 8, '📜',
     `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.name || s.who)}</b>${rec}`);
   if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
 
@@ -1158,7 +1163,7 @@ function drawOverlay() {
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
     || '<div class="line">...เขาก้มหน้าไม่พูดอะไร</div>';
   const hasNew = s.said.some(x => x.kind === 'truth' || x.kind === 'confess' || x.kind === 'false');
-  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - CH - 8, hasNew ? '❗' : '💬',
+  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - charH() - 8, hasNew ? '❗' : '💬',
     `<span class="who">${esc(s.who)}</span>${said}`);
 }
 
@@ -2385,11 +2390,11 @@ function openTrial(initialError = '') {
       const pw = g.powerOf(p.k), noIssue = p.k === 'roar' && g.roarWhy(s), ok = g.powerReady(p.k) && !noIssue;
       const ammo = pw.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
       const locked = g.powerLocked(p);
-      // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno ซื้ออย่างเดียว)
+      // ข้อ A-2/A-3 คุณเป้ 24 ก.ย. 2569 — บอกแหล่งของให้ตรงจริงต่อพลัง (mirror ได้สองทาง · hypno L3: ปลดด้วยชนะบอสชายแดนโซน 3)
       const outOfAmmoHint = p.k === 'mirror' ? 'หมดแล้ว — เดินเก็บบนแผนที่ หรือคุยกับกานต์ที่หอส่องกรรม'
                            : 'หมดแล้ว — เดินไปเก็บบนแผนที่';
       const mpPower = p.k === 'hypno' || p.k === 'ice';
-      const why = noIssue || (locked ? `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`
+      const why = noIssue || (locked ? (p.k === 'hypno' ? 'ล็อก · ชนะบอสชายแดนโซน 3 ก่อน' : `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`)
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
                 : mpPower && g.mp < BATTLE.mpCost[p.k] ? `${t('battle.mp')}ไม่พอ · ใช้ ${BATTLE.mpCost[p.k]}`
                 : !mpPower && ammo <= 0 ? outOfAmmoHint
@@ -2731,7 +2736,7 @@ function openMerchant() {
         return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · ${esc(itemText(s.k, 'desc'))}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
-      ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><span class="shop-glyph">👘</span><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
+      ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><img src="img/item-outfit-${g.zone}-l4b.png" class="shop-item-img" alt="ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}"><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
       <div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });

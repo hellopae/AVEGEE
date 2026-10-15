@@ -66,6 +66,7 @@ h1 small{display:block;font-family:var(--font-sans);font-size:var(--text-xs);col
 /* ข้อ D ชุด 13 คุณเป้ 26 ก.ย. 2569 — แถบหิว + ปุ่มป้อนข้าวปั้น ใช้ร่วมกัน 3 จุด (ดู hungerWidget ใน ui.js) */
 .hunger-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
 .hunger-line small{white-space:nowrap}
+.hunger-line small[data-rest-why],.hunger-line small[data-rest-team]{white-space:normal;flex-basis:100%;line-height:1.6}
 .hunger-line .rest-name{flex-basis:100%;font-size:13px}
 
 /* ---------- เลย์เอาต์หลัก ----------
@@ -2284,11 +2285,13 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <script type="importmap">{
   "imports": {
     "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=hell-fire-v2",
-    "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=hell-fire-v2",
-    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=hell-fire-v2",
+    "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=hell-fire-v2-k1e",
+    "./src/theme-assets.js": "./src/theme-assets.js?v=k1e",
+    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=hell-fire-v2-l1",
     "./src/art.js": "./src/art.js?v=yama-live-20261015",
-    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=yama-live-20261015-hell1",
-    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=yama-live-20261015",
+    "./src/i18n.js": "./src/i18n.js?v=l2",
+    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=yama-live-20261015-hell1-k1e-l4a-l4b",
+    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=yama-live-20261015-l4a",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
     "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
     "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015",
@@ -2296,8 +2299,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015"
   }
 }</script>
-<script type="module" src="src/preload.js?v=yama-live-20261015-hell1"></script>
+<script type="module" src="src/preload.js?v=yama-live-20261015-hell1-k1e-l4a-l4b"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=yama-live-20261015-main-l2"></script>
+<script type="module" src="src/ui.js?v=yama-live-20261015-main-l4b-l3-l1-l2"></script>
 </body>
 </html>

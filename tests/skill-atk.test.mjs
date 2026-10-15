@@ -82,15 +82,15 @@ test('skill atk: release cache retains facing tokens and shares one preload modu
   const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
   const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
   const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
-  assert.ok(uiVersion?.includes('mapfx-westhit-skillatk-minigame-review-20261011'));
-  assert.match(uiVersion,/-layered-battle9-20261015-r1-(?:k3m|k4|k1d|k5|l2)$/);
-  assert.ok(indexPreload?.includes('h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(indexPreload,/-layered-battle9-20261015-r1-k3m$/);
-  assert.equal('src/'+uiPreload?.replace(/^\.\//,''),indexPreload,'preload imports share one module instance');
+  // Codex release scheme (importmap): fresh entry tokens, old ui.js import URLs are remapped in index.html.
+  assert.match(uiVersion,/^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2)*$/);
+  assert.match(indexPreload,/^src\/preload\.js\?v=yama-live-20261015-hell1(?:-k1e)?(?:-[a-z0-9]+)*$/);
+  const map=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
+  assert.equal(map['./'+uiPreload?.replace(/^\.\//,'src/')],'./'+indexPreload,'ui.js preload import is remapped to the one index preload URL');
   assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
-  assert.match(preload, /asset-preload\.js\?v=h1-h5b-skillatk/);
+  assert.match(preload, /asset-preload\.js\?v=(?:h1-h5b-skillatk|yama-live-20261015)/);
   const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
   assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(catalogVersion,/-layered-battle9-20261015-r1$/);
+  assert.match(catalogVersion,/-layered-battle9-20261015-r1(?:-yama-live-hell1(?:-[a-z0-9]+)*)?$/);
   assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
 });
