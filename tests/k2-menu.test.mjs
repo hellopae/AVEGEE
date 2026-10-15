@@ -26,7 +26,7 @@ test('K2 changed entry URLs match, including review imports',()=>{
  for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
   const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
   const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/-k2b?$|-k3m$|-k4$|-k1d$|-k5$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2)*$/,file);assert.equal(a,b,file);
+  assert.match(a||'',/-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2)*$/,file);assert.equal(a,b,file);
  }
  assert.match(review,/from '\.\/src\/ui\.js\?v=(?:[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2)*)'/);
 });
