@@ -1,0 +1,79 @@
+{
+  "frames": [
+    {
+      "frame": 1,
+      "patch_bounds": [
+        90,
+        200,
+        107,
+        237
+      ],
+      "unwanted_red_pixels_before": 178,
+      "after": 0,
+      "body_legs_identical": true
+    },
+    {
+      "frame": 2,
+      "patch_bounds": [
+        91,
+        202,
+        108,
+        239
+      ],
+      "unwanted_red_pixels_before": 185,
+      "after": 0,
+      "body_legs_identical": true
+    },
+    {
+      "frame": 4,
+      "patch_bounds": [
+        90,
+        199,
+        107,
+        239
+      ],
+      "unwanted_red_pixels_before": 192,
+      "after": 11,
+      "body_legs_identical": true
+    },
+    {
+      "frame": 5,
+      "patch_bounds": [
+        92,
+        200,
+        108,
+        239
+      ],
+      "unwanted_red_pixels_before": 181,
+      "after": 9,
+      "body_legs_identical": true
+    },
+    {
+      "frame": 6,
+      "patch_bounds": [
+        91,
+        202,
+        108,
+        239
+      ],
+      "unwanted_red_pixels_before": 179,
+      "after": 1,
+      "body_legs_identical": true
+    },
+    {
+      "frame": 8,
+      "patch_bounds": [
+        93,
+        199,
+        109,
+        236
+      ],
+      "unwanted_red_pixels_before": 166,
+      "after": 0,
+      "body_legs_identical": true
+    }
+  ],
+  "all_32_walk_leg_regions_identical": true,
+  "other26_frames_unchanged": true,
+  "image_edits": "ImageGen; code only aligns/extracts/assembles generated patches"
+}
