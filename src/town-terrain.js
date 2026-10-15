@@ -2,16 +2,17 @@
 // Texture pixels repeat at 6.67 source pixels per world pixel, including close zoom.
 import {TOWN_SIZE,TOWN_WALK_RECTS,TOWN_WALK_POLYS,TOWN_STAIRS} from './town-layout.js';
 
+// K3: patterns are keyed by image only. Every chunk used to own a fresh context, so each new chunk
+// re-created (and re-snapshotted) all seven 1254px patterns; a CanvasPattern can be shared across contexts.
 const patterns=new WeakMap();
 function material(ctx,resolve,key,fallback) {
   const image=resolve(key);if(!image)return fallback;
-  let cache=patterns.get(ctx);if(!cache){cache=new Map();patterns.set(ctx,cache);}
-  if(!cache.has(image)){
+  if(!patterns.has(image)){
     const pattern=ctx.createPattern(image,'repeat');
     if(pattern?.setTransform)pattern.setTransform({a:.15,b:0,c:0,d:.15,e:0,f:0});
-    cache.set(image,pattern);
+    patterns.set(image,pattern);
   }
-  return cache.get(image)||fallback;
+  return patterns.get(image)||fallback;
 }
 function polygon(ctx,points){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();}
 function fillRegion(ctx,points,fill){polygon(ctx,points);ctx.fillStyle=fill;ctx.fill();}
@@ -80,22 +81,39 @@ export function drawTownTerrain(ctx,resolve=()=>null,time=0,reduced=true) {
   const m=ctx.getTransform();
   if(!m||m.b||m.c||!Number.isFinite(m.a)||!Number.isFinite(m.d)||m.a<=0||m.d<=0){paintTerrain(ctx,resolve,time,reduced);return;}
   const density=Math.max(m.a,m.d),level=density<=.5?.5:density<=1?1:density<=2?2:density<=4?4:8;
-  const CHUNK=level<=1?512:level<=2?256:128,MAX_CHUNKS=48;
+  const CHUNK=level<=1?512:level<=2?256:128;
   const left=Math.max(0,Math.floor(-m.e/m.a/CHUNK)),top=Math.max(0,Math.floor(-m.f/m.d/CHUNK));
   const right=Math.min(Math.ceil(TOWN_SIZE.w/CHUNK),Math.ceil((ctx.canvas.width-m.e)/m.a/CHUNK));
   const bottom=Math.min(Math.ceil(TOWN_SIZE.h/CHUNK),Math.ceil((ctx.canvas.height-m.f)/m.d/CHUNK));
+  // K3: the cap must exceed the visible chunk count. A fixed 48 was smaller than the ~54+ chunks seen at
+  // 3.5x zoom on a DPR2 screen, so every frame evicted and repainted all of them (hundreds of canvases/s).
+  const MAX_CHUNKS=Math.max(48,(right-left+2)*(bottom-top+2)*2);
+  const build=(x,y,key)=>{
+    const tile=document.createElement('canvas');tile.width=tile.height=CHUNK*level;
+    const c=tile.getContext('2d');c.setTransform(level,0,0,level,-x*CHUNK*level,-y*CHUNK*level);
+    paintTerrain(c,resolve,0,true);
+    chunks.set(key,tile);
+    if(chunks.size>MAX_CHUNKS)chunks.delete(chunks.keys().next().value);
+    return tile;
+  };
+  let built=0;
   ctx.save();ctx.imageSmoothingEnabled=true;
   for(let y=top;y<bottom;y++)for(let x=left;x<right;x++){
     const key=level+':'+x+':'+y;
     let tile=chunks.get(key);
-    if(!tile){
-      tile=document.createElement('canvas');tile.width=tile.height=CHUNK*level;
-      const c=tile.getContext('2d');c.setTransform(level,0,0,level,-x*CHUNK*level,-y*CHUNK*level);
-      paintTerrain(c,resolve,0,true);
-      chunks.set(key,tile);
-      if(chunks.size>MAX_CHUNKS)chunks.delete(chunks.keys().next().value);
-    }else{chunks.delete(key);chunks.set(key,tile);}
+    if(!tile){tile=build(x,y,key);built++;}
+    else{chunks.delete(key);chunks.set(key,tile);}
     ctx.drawImage(tile,x*CHUNK,y*CHUNK,CHUNK,CHUNK);
   }
   ctx.restore();
+  // K3: paint at most ONE not-yet-visible neighbour chunk per frame (only on frames that built nothing
+  // else), so walking onto fresh ground finds it ready instead of stalling ~70 ms for a whole row.
+  if(!built){
+    const maxX=Math.ceil(TOWN_SIZE.w/CHUNK),maxY=Math.ceil(TOWN_SIZE.h/CHUNK);
+    for(let y=Math.max(0,top-1);y<Math.min(maxY,bottom+1);y++)for(let x=Math.max(0,left-1);x<Math.min(maxX,right+1);x++){
+      const key=level+':'+x+':'+y;
+      if(chunks.has(key))continue;
+      build(x,y,key);return;
+    }
+  }
 }

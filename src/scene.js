@@ -1,7 +1,7 @@
 import { drawLocalLight } from './scene-style.js';
-import { drawTownTerrain } from './town-terrain.js';
+import { drawTownTerrain } from './town-terrain.js?v=k3';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseLots, townHouseKey } from './town-map.js';
-import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js';
+import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights } from './town-scenery.js?v=k3';
 import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-events.js';
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
@@ -86,7 +86,7 @@ function installSpriteCache(ctx) {
     let sx = 0, sy = 0, sw = im.naturalWidth || im.width, sh = im.naturalHeight || im.height, dx, dy, dw, dh;
     if (a.length === 4) [dx, dy, dw, dh] = a; else [sx, sy, sw, sh, dx, dy, dw, dh] = a;
     const pw = Math.abs(dw * m.a), ph = Math.abs(dh * m.d);
-    if (pw < 1 || ph < 1 || !(im instanceof HTMLImageElement) || (sw <= pw * 1.4 && sh <= ph * 1.4)) return plain(this, im, a);
+    if (pw < 1 || ph < 1 || !(im instanceof HTMLImageElement || im.__sprite) || (sw <= pw * 1.4 && sh <= ph * 1.4)) return plain(this, im, a);
     const qw = Math.ceil(pw / 2) * 2, qh = Math.ceil(ph / 2) * 2, key = `${sx},${sy},${sw},${sh},${qw},${qh}`;
     let per = spriteCache.get(im);
     if (!per) { per = new Map(); spriteCache.set(im, per); }
