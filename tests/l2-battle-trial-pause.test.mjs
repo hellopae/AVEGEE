@@ -128,3 +128,56 @@ test('L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list 
  const boss=createGame();boss.save=()=>true;boss.onChange=()=>{};boss.bossReady=()=>true;boss.startZoneBoss();
  assert.equal(boss.fleeBattle(),false);assert.ok(!boss.battle.over);
 });
+
+// ---------- L2 round 2: receiver picking without a text box + heal effect ----------
+import {vitalsOf,vitalGains,healFxHtml,HEAL_FX_MS} from '../src/heal-fx.js';
+const party=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
+ g.hire('boon');g.hire('plerng');g.party.members=['boon','plerng'];g.hireGuard();
+ g.startBattle({id:99,who:'t',deserved:4,resist:true});g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[0,0];});g.beginBattleTurns();return g;};
+
+test('L2 heal fx: item on a teammate, holy water on Yama and a boon heal each produce one gain entry; nothing else does',()=>{
+ const g=party(),c=g.crewOf('plerng');c.morale=40;g.battle.youHp=50;g.mp=5;g.inventory.health=2;g.inventory.holyWater=2;
+ const b1=vitalsOf(g);assert.equal(g.confirmBattleCommand('health',c.id),true);
+ const gain1=vitalGains(b1,vitalsOf(g));
+ assert.equal(gain1.length,1);assert.equal(gain1[0].id,c.id);assert.ok(gain1[0].hp>0);assert.equal(gain1[0].mp,0);
+ g.finishBattleCommand();
+ let guard=0;while(g.currentBattleTurn().side==='foe'&&guard++<4){g.runEnemyTurn();g.finishBattleCommand();}
+ g.selectBattleActor('you');
+ const b2=vitalsOf(g);assert.equal(g.confirmBattleCommand('holyWater','you'),true);
+ const gain2=vitalGains(b2,vitalsOf(g));
+ assert.deepEqual(gain2.map(x=>[x.id,x.hp>0,x.mp>0]),[['you',false,true]],'holy water is MP only -> blue');
+ assert.deepEqual(vitalGains(vitalsOf(g),vitalsOf(g)),[],'no change, no effect');
+});
+test('L2 heal fx: several heals at once all get an entry; losses never do',()=>{
+ const before={you:{hp:40,mp:5},a:{hp:30,mp:0},b:{hp:60,mp:0},c:{hp:50,mp:0}};
+ const after ={you:{hp:58,mp:14},a:{hp:52,mp:0},b:{hp:60,mp:0},c:{hp:44,mp:0}};
+ assert.deepEqual(vitalGains(before,after),[{id:'you',hp:18,mp:9},{id:'a',hp:22,mp:0}]);
+});
+test('L2 heal fx markup: ring + glow + sparkles + number(s), MP uses its own theme, never an <img>',()=>{
+ const hp=healFxHtml({hp:30,mp:0},0,'พลังเวท'),mp=healFxHtml({hp:0,mp:12},0,'พลังเวท'),both=healFxHtml({hp:30,mp:12},250,'พลังเวท');
+ for(const h of [hp,mp,both]){assert.doesNotMatch(h,/<img/);assert.match(h,/hf-ring/);assert.match(h,/hf-glow/);assert.ok((h.match(/hf-sp /g)||[]).length>=5);}
+ assert.match(hp,/class="heal-fx hp"/);assert.match(hp,/hf-num hp">\+30</);assert.doesNotMatch(hp,/hf-num mp/);
+ assert.match(mp,/class="heal-fx mp"/);assert.match(mp,/\+12 พลังเวท/);
+ assert.match(both,/heal-fx hp both/);assert.match(both,/hf-num mp second/);assert.match(both,/--fx-el:-250ms/,'a repaint resumes the effect instead of restarting it');
+ assert.ok(HEAL_FX_MS>=800&&HEAL_FX_MS<=1200);
+ assert.equal(Number(read('src/ui.js').match(/const HEAL_GLOW_MS = (\d+)/)[1]),HEAL_FX_MS,'ui.js and heal-fx.js agree on the duration');
+});
+test('L2 heal fx wiring/CSS: every command snapshots vitals, all healed actors are drawn, CSS animates transform/opacity only',()=>{
+ const ui=read('src/ui.js'),css=read('src/battle-turns.css');
+ assert.match(ui,/const vitalsBefore = vitalsOf\(g\);/);assert.match(ui,/for \(const gn of gains\) healFx\.push/);
+ assert.match(ui,/showHeals\(vitalsBeforeFoe,400\)/,'enemy-turn recoveries (e.g. spare heart) show too');
+ const block=css.slice(css.indexOf('/* L2 — heal effect'));
+ assert.doesNotMatch(block,/filter:/,'no filter animations');assert.doesNotMatch(block,/ctx\.filter/);
+ assert.match(block,/@keyframes hfNum/);assert.match(block,/prefers-reduced-motion:reduce/);
+ assert.doesNotMatch(read('src/heal-fx.js'),/ctx\.|drawStandee/);
+});
+test('L2 receiver picking: no hint box at all, eligible teammates get the same tag as enemies, others dim, cancel like the attack side',()=>{
+ const ui=read('src/ui.js'),css=read('src/battle-turns.css');
+ assert.match(ui,/const selection = '';/);
+ assert.doesNotMatch(ui,/คลิกผู้รับบนสนามหรือการ์ดทีมเพื่อใช้/);assert.doesNotMatch(ui,/เลือกผู้รับ/);
+ assert.match(ui,/el\.classList\.toggle\('choose-recipient', !!recipient && !why\)/);
+ assert.match(ui,/el\.classList\.toggle\('recipient-off', !!recipient && !!why\)/);
+ assert.match(ui,/Choose target' : 'เลือกเป้าหมาย'/);
+ assert.match(css,/\.recipient-off\{opacity:\.45/);
+ assert.match(ui,/e\.key !== 'Escape'/);assert.match(ui,/addEventListener\('contextmenu', cancelGesture\)/);
+});

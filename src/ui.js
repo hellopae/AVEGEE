@@ -25,6 +25,7 @@ import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
+import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
@@ -106,7 +107,7 @@ const INTENSITY = INTENSITY_NAME;
 // ข้อ C ชุดที่ 7 (24 ก.ย. 2569 เย็น) — 2000ms (รวมกับอนิเมชัน 780ms ของเรา ≈2.8 วิ) ทำให้ดูค้างเกินไป
 // ลดเหลือ 800ms (รวม ≈1.58 วิ) — ยังพอเห็นดาเมจ/แถบเลือดของเรานิ่งอยู่ก่อนโดนตีสวน แต่ไม่รู้สึกหยุดเกม
 const COUNTER_WAIT_MS = 800;
-const HEAL_GLOW_MS = 900;   // ชุด 30B ข้อ 9 — เรืองแสง 0.6–1 วินาที
+const HEAL_GLOW_MS = 1000;   // L2: เอฟเฟกต์ได้เติมเลือด/พลังเวท ~1 วินาที (ทุกตัวที่ได้รับ — ดู src/heal-fx.js; ค่าเดียวกับ HEAL_FX_MS)
 const PHASE_GUARD_MS = 3000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS(800) + 780(อนิเมชันเขา) ≈2360 พอมีระยะปลอดภัย
 
 const g = createGame();
@@ -3013,27 +3014,38 @@ function openBattle(after) {
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
-  // เอฟเฟกต์เติมบารมีของบุญ — เก็บเวลาไว้ให้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
-  let healFx = null, healTimer = 0;
+  // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
+  let healFx = [], healTimers = [];
+  const healRoot = key => key === 'you' ? dlg.querySelector('.fig.you')
+    : dlg.querySelector(`.battle-squad [data-crew-pick="${key}"], .formation-member[data-crew-pick="${key}"]`);
   const applyHealFx = () => {
-    const h = healFx, fig = dlg.querySelector('.fig.you');
-    if (!h || !fig) return;
-    const el = Date.now() - h.start;
-    if (el < 0 || el >= h.ms) { if (el >= h.ms) healFx = null; return; }
-    fig.classList.add('healing');
-    fig.style.setProperty('--heal-delay', `${-el}ms`);
-    if (!fig.querySelector('.heal-num')) fig.insertAdjacentHTML('beforeend', `<span class="heal-num" style="animation-delay:${-el}ms">+${h.amount}</span>`);
+    const now = Date.now();
+    healFx = healFx.filter(h => now < h.start + h.ms);
+    for (const h of healFx) {
+      const root = healRoot(h.key);
+      if (!root) continue;
+      root.querySelector(':scope > .heal-fx')?.remove();
+      if (now >= h.start) root.insertAdjacentHTML('beforeend', healFxHtml(h, now - h.start, t('battle.mp')));
+    }
   };
   const scheduleHealFx = () => {
-    clearTimeout(healTimer);
-    healTimer = setTimeout(() => {
-      applyHealFx();
-      healTimer = setTimeout(() => {          // ครบเวลา — เก็บ class/ตัวเลขออก (กรณีไม่มีการวาดใหม่มาเก็บให้)
-        healFx = null;
-        const fig = dlg.querySelector('.fig.you');
-        fig?.classList.remove('healing'); fig?.querySelector('.heal-num')?.remove();
-      }, healFx ? healFx.ms : 0);
-    }, Math.max(0, healFx.start - Date.now()));
+    healTimers.forEach(clearTimeout); healTimers = [];
+    for (const h of healFx) {
+      healTimers.push(setTimeout(applyHealFx, Math.max(0, h.start - Date.now())));
+      healTimers.push(setTimeout(() => {      // ครบเวลา — เก็บออก (กรณีไม่มีการวาดใหม่มาเก็บให้)
+        healRoot(h.key)?.querySelector(':scope > .heal-fx')?.remove();
+        healFx = healFx.filter(x => x !== h);
+      }, Math.max(0, h.start + h.ms - Date.now())));
+    }
+  };
+  /** after a command / enemy turn changed our side's vitals: show the effect on everyone who gained HP or MP */
+  const showHeals = (before, delayMs = 120) => {
+    const keyOf = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
+    const gains = vitalGains(before, vitalsOf(g));
+    if (!gains.length) return;
+    const start = Date.now() + delayMs;
+    for (const gn of gains) healFx.push({ ...gn, key: keyOf(gn.id), start, ms: HEAL_GLOW_MS });
+    scheduleHealFx();
   };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
@@ -3152,9 +3164,10 @@ function openBattle(after) {
     const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
-    // L2: choosing an enemy target shows no box at all (enemies carry the "เลือกเป้าหมาย" tag; the tab stays pressed).
-    // Cancel = press the same tab again / Esc / right-click. Picking a *receiver* (items) keeps its short hint + cancel button.
-    const selection = pending && needsReceiver ? `<p class="battle-command-preview">${esc(b.commandLabel||pending)}</p><small>คลิกผู้รับบนสนามหรือการ์ดทีมเพื่อใช้</small><button class="battle-command-cancel" data-command-cancel ${phase?'disabled':''}>ยกเลิก / Cancel</button>` : '';
+    // L2: choosing a target — enemy OR teammate (items / healing powers) — shows no text box at all.
+    // Enemies / eligible teammates carry the "เลือกเป้าหมาย" tag and highlight; the tab stays pressed.
+    // Cancel = press the same tab again / Esc / right-click.
+    const selection = '';
     if (commandPanelActor !== actor.id) { commandPanel = null; commandPanelActor = actor.id; }
     const battle9Label = text => String(text).split(' / ')[getLang()==='en'?1:0] || String(text).split(' / ')[0];
     // L2: only plain fights can be fled (matches battleAct); bosses and story/event fights say why the button is dim.
@@ -3347,8 +3360,12 @@ function openBattle(after) {
         }
         if (chosen && g.selectBattleActor(chosen.id)) { commandMenuOpen = true; paint(); }
       };
-      el.classList.toggle('choose-recipient', !!needsReceiver && !phase);
-      if (needsReceiver && !phase) el.insertAdjacentHTML('beforeend', '<span class="target-prompt">เลือกผู้รับ</span>');
+      // L2: only teammates who can actually receive it light up (same "เลือกเป้าหมาย" tag as the enemy side); the others dim
+      const recipient = needsReceiver && !phase ? g.battleActors().find(c => c.id === el.dataset.crewPick || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === el.dataset.crewPick) : null;
+      const why = recipient ? (pending === special ? ((recipient.id === 'you' ? b.youHp >= b.youMax : recipient.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, recipient.id)) : '';
+      el.classList.toggle('choose-recipient', !!recipient && !why);
+      el.classList.toggle('recipient-off', !!recipient && !!why);
+      if (recipient && !why && !el.classList.contains('battle-portrait')) el.insertAdjacentHTML('beforeend', `<span class="target-prompt">${getLang() === 'en' ? 'Choose target' : 'เลือกเป้าหมาย'}</span>`);
       el.onclick = activate;
       el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
     });
@@ -3523,7 +3540,7 @@ function openBattle(after) {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
-      const hpBefore = g.battle.youHp;
+      const vitalsBefore = vitalsOf(g);
       if (action === 'flee') { performFlee(); return; }
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
       if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
@@ -3538,12 +3555,9 @@ function openBattle(after) {
         }, DEFEND_STANCE_MS);
         return;
       }
-      // ชุด 30B ข้อ 9 — บุญ (ยมทูตสายเติมเลือด) เติมบารมี: ยมบาทน้อยเรืองแสงเขียว-ทอง + เลข +HP ลอยขึ้น
-      // เริ่มตอนภาพคั่นท่าพิเศษจางลงพอดี (ไม่งั้นอยู่ใต้ภาพคั่นที่ทับเต็มกรอบ)
-      if (k === 'crew:boon' && g.battle.youHp > hpBefore) {
-        healFx = { amount: Math.round(g.battle.youHp - hpBefore), start: Date.now() + ACTION_CUT_MS - 200, ms: HEAL_GLOW_MS };
-        scheduleHealFx();
-      }
+      // L2 (ต่อจากชุด 30B ข้อ 9) — ใครได้เติมเลือด/พลังเวทจากคำสั่งนี้ (ไอเท็ม พลังของบุญ ดาบดูดเลือด ...) ขึ้นประกาย+วงแสง+ตัวเลข
+      // ท่าที่มีภาพคั่น (ยมทูต/ยักษ์) เริ่มตอนภาพคั่นจางลงพอดี ไม่งั้นอยู่ใต้ภาพที่ทับเต็มกรอบ
+      showHeals(vitalsBefore, (k.startsWith('crew:') || k === 'guard') ? ACTION_CUT_MS - 200 : 120);
       if(k==='flee')sfx('step');else powerSound(k);                            // ท่าไม้ตายทุกท่ามีเสียงของตัวเอง (28C) · ท่าอื่น = 'hit' · F2: ท่าไม้ตายที่มีคัตซีน = เสียงชาร์จ→ระเบิด ~1.3 วิ
       if (k.startsWith('crew:')) refresh();     // กำลังใจของเขาลด แผงข้างล่างต้องอัปเดตด้วย
       const nb = g.battle;
@@ -3599,7 +3613,9 @@ function openBattle(after) {
         enemyScheduled=false;
         if(g.battle!==b||phase||userPaused||pauseDlg.open||!dlg.open)return;
         phase='foe';phaseAt=Date.now();
+        const vitalsBeforeFoe=vitalsOf(g);
         if(!g.runEnemyTurn()){phase=null;paint();return;}
+        showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         sfx('hurt');paint();if(b.ultimate)playActionCutscene('boss',b.ultimate);
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
@@ -3622,6 +3638,7 @@ function openBattle(after) {
     battleUI = null;
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
+    healTimers.forEach(clearTimeout);
     clearInterval(phaseGuard);
     clearInterval(crewTimer);
     dlg.removeEventListener('cancel', noEsc);
