@@ -1,7 +1,7 @@
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
-import {mountDungeonView} from './dungeon-view.js';
+import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=k1d';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
@@ -40,7 +40,7 @@ import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, 
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l5';
 import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP } from './scene.js?v=mapfx-m1-k1d';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
@@ -3651,10 +3651,10 @@ function openDungeon() {
   let destroy=null;
   modal('<div id="dungeon-root"></div>',d=>{
     destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
-      onEncounter:()=>{
+      onEncounter:(_,opts)=>{
         destroy?.();destroy=null;
-        if(g.startDungeonEncounter())openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
-        else openDungeon();
+        if(g.startDungeonEncounter(opts))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
+        else{g.dungeonChaseCooldown=true;openDungeon();}
       },
       onArrival:to=>{destroy?.();destroy=null;if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();},
       onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())dlg.close();},

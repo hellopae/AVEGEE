@@ -1,4 +1,5 @@
-import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
+import {dungeonAtCheckpoint,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL} from './dungeon-view.js?v=l5';
+import {retreatS} from './dungeon-chase.js?v=l5';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
@@ -3688,7 +3689,12 @@ const API = {
     const B = this.battle;
     if (!B || (this.isFinalBattle(B) && !B.over)) return null;
     this.battle = null;
-    if(B.dungeonToken){resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);this.save();}
+    if(B.dungeonToken){
+      resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);
+      // L5: the single hook for "fled / lost a route fight": step back from the enemy and give it a short rest from chasing.
+      if(B.over!=='win')this.retreatFromDungeonFoe();
+      this.save();
+    }
     if (B.over === 'lose') {
       this.pendingRecovery = { zone:this.zone, outfit:this.outfit || this.zone, stage:'return', foe:B.who, bg:B.bg };
       this.hp = Math.max(1, this.hp);
@@ -3928,13 +3934,21 @@ const API = {
     if(Math.hypot(this.player.x-FRONTIER.x,this.player.y-FRONTIER.y)>FRONTIER.reach||!beginDungeon(this,to))return false;
     this.player.path=null;this.save();this.onChange();return true;
   },
-  startDungeonEncounter() {
-    if(!dungeonAtCheckpoint(this))return null;
+  /** opts.chased (L5): the enemy walked up to Yama, so proximity to its post is checked by dungeonChaseReach instead of the checkpoint button reach. */
+  startDungeonEncounter(opts={}) {
+    if(!(opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this)))return null;
     const encounter=nextDungeonEncounter(this);if(!encounter)return null;
     const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
     this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
     if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
     return battle;
+  },
+  /** L5: put Yama back on the corridor outside the current enemy's sight; dungeon-view reads dungeonChaseCooldown once on mount. */
+  retreatFromDungeonFoe() {
+    const st=dungeonStatus(this),a=this.zoneTravel?.active;
+    if(!st||st.ready||!a)return false;
+    const p=dungeonPoint(retreatS(DUNGEON_PROGRESS[st.checkpoint]*DUNGEON_TOTAL)/DUNGEON_TOTAL);
+    a.position={x:p[0],y:p[1]};this.dungeonChaseCooldown=true;return true;
   },
   leaveBorderDungeon() {if(!leaveDungeon(this))return false;this.save();this.onChange();return true;},
 

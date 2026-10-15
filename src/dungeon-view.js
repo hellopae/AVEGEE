@@ -3,12 +3,14 @@ import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
 import { MOB } from './data.js';
+import { CHASE, newChase, stepChase, chaseAlerted, chaseInReach } from './dungeon-chase.js?v=l5';
 
 // Explicit connected corridor through the existing frontier illustration.
 export const DUNGEON_CORRIDOR = Object.freeze([[.5,.925],[.5,.78],[.43,.65],[.53,.49],[.48,.35],[.5,.19]].map(Object.freeze));
 export const DUNGEON_PROGRESS = Object.freeze([.25,.52,.79]);
 const lengths=DUNGEON_CORRIDOR.slice(1).map((p,i)=>Math.hypot(p[0]-DUNGEON_CORRIDOR[i][0],p[1]-DUNGEON_CORRIDOR[i][1]));
 const total=lengths.reduce((a,b)=>a+b,0);
+export const DUNGEON_TOTAL=total;
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 export function dungeonPoint(progress) {
   let d=clamp(Number.isFinite(progress)?progress:0,0,1)*total;
@@ -44,6 +46,12 @@ export function dungeonAtCheckpoint(g) {
   const s=dungeonStatus(g),p=activePosition(g),at=DUNGEON_CHECKPOINTS[s?.checkpoint];
   return !!(s&&!s.ready&&p&&at&&Math.hypot(p[0]-at[0],p[1]-at[1])<=.045);
 }
+/** L5: true when the hero stands where this checkpoint's enemy could legitimately have chased them (guards a chased encounter). */
+export function dungeonChaseReach(g) {
+  const s=dungeonStatus(g),p=activePosition(g);
+  if(!s||s.ready||!p)return false;
+  return chaseInReach(DUNGEON_PROGRESS[s.checkpoint]*total,dungeonProjection(p).progress*total);
+}
 export function dungeonAtExit(g) {
   const s=dungeonStatus(g),p=activePosition(g);
   return !!(s?.ready&&p&&Math.hypot(p[0]-DUNGEON_EXIT[0],p[1]-DUNGEON_EXIT[1])<=.026);
@@ -67,6 +75,7 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
+  let cooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0,chase=null,chaseCheckpoint=-1,cut=0,cutFired=false,alertAt=-1;g.dungeonChaseCooldown=false;
   let destroyed=false,frame=0,last=0,progress=0,target=null,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
@@ -117,7 +126,7 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
     const old=progress; const max=limit();
-    if(g.battle||g.pendingRecovery||status.pending) {target=null;keys.clear();}
+    if(g.battle||g.pendingRecovery||status.pending||cut>0) {target=null;keys.clear();}
     else if(keys.size) {
       target=null;const dx=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0);
       const dy=(keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0);
@@ -130,6 +139,16 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
     progress=clamp(progress,0,max);moving=Math.abs(progress-old)>1e-7;
     if(moving){const a=dungeonPoint(old),b=dungeonPoint(progress);if(Math.abs(b[0]-a[0])>.00001)face=b[0]<a[0]?-1:1;direction=Math.abs(b[1]-a[1])>Math.abs(b[0]-a[0])?(b[1]<a[1]?'up':'down'):(face<0?'left':'right');walkDistance+=Math.abs(progress-old)*total*world().h;dirty=true;remember();}
     if(wasMoving&&!moving)save();wasMoving=moving;
+    // L5: the checkpoint enemy notices Yama, walks the corridor toward them and starts the battle on contact.
+    if(!status.ready){
+      if(!chase||chaseCheckpoint!==status.checkpoint){chaseCheckpoint=status.checkpoint;chase=newChase(DUNGEON_PROGRESS[status.checkpoint]*total);}
+      const locked=!!(g.battle||g.pendingRecovery||status.pending);
+      const ev=stepChase(chase,progress*total,dt,{hold:locked||cooldown>0||cut>0});
+      if(cooldown>0)cooldown=Math.max(0,cooldown-dt);
+      if(ev==='alert')alertAt=performance.now();
+      if(ev==='contact'){target=null;keys.clear();save();cut=.001;}
+      else if(cut>0){cut+=dt;if(cut>=CHASE.transitionMs&&!cutFired){cutFired=true;onEncounter(status.location,{chased:true});return;}}
+    }
     saveClock+=dt;if(dirty&&saveClock>2500){save();saveClock=0;}
     heading.textContent=status.route.name;
     const near=status.ready?dungeonAtExit(g):dungeonAtCheckpoint(g);
@@ -150,15 +169,18 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
     });
     const hero=dungeonPoint(progress),nira=dungeonCompanionPoint(progress);
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
-    if(!status.ready){const at=dungeonPoint(DUNGEON_PROGRESS[status.checkpoint]);actors.push({p:[at[0]-.028,at[1]],kind:'enemy'});}
+    if(!status.ready){const at=dungeonPoint(chase?chase.s/total:DUNGEON_PROGRESS[status.checkpoint]);actors.push({p:[at[0]-.028,at[1]],kind:'enemy'});}
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
-      if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);return;}
+      if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
+        if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}
+        return;}
       if(a.kind==='nira') {if(moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,walkDistance,face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',face,false,g.zone);return;}
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);
     });
     const exit=screenPoint(dungeonPoint(1));ctx.fillStyle=status.ready?'#d8ffbc':'#d4b688';ctx.fillText(status.ready?'ประตูเมือง — เดินเข้ามาใกล้':'ประตูเมืองยังปิด',exit[0],exit[1]-14);
+    if(cut>0){const k=Math.min(1,cut/CHASE.transitionMs);ctx.fillStyle=`rgba(20,6,10,${(k*.92).toFixed(3)})`;ctx.fillRect(0,0,width,height);if(!reduced.matches&&k<.35){ctx.fillStyle=`rgba(255,236,200,${((.35-k)*1.4).toFixed(3)})`;ctx.fillRect(0,0,width,height);}}
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
     mc.strokeStyle='#ffd27a';mc.lineWidth=2;mc.beginPath();DUNGEON_CORRIDOR.forEach((p,i)=>i?mc.lineTo(p[0]*180,p[1]*110):mc.moveTo(p[0]*180,p[1]*110));mc.stroke();
     mc.fillStyle='#fff';mc.beginPath();mc.arc(hero[0]*180,hero[1]*110,3,0,Math.PI*2);mc.fill();
@@ -167,21 +189,21 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
   }
   const tick=t=>{if(destroyed)return;const dt=last?Math.min(50,t-last):16;last=t;update(dt);camera(dt);render(t);frame=requestAnimationFrame(tick);};
   listen(canvas,'pointerdown',e=>{
-    if(g.battle||g.pendingRecovery||dungeonStatus(g)?.pending)return;
+    if(g.battle||g.pendingRecovery||dungeonStatus(g)?.pending||cut>0)return;
     canvas.focus();const r=canvas.getBoundingClientRect(),w=world();
     const p=[(e.clientX-r.left-cam.x)/(w.w*cam.scale),(e.clientY-r.top-cam.y)/(w.h*cam.scale)];
     const projected=dungeonProjection(p,limit());if(projected.distance<=.12)target=projected.progress;
   });
-  listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();keys.add(k);}});
+  listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();if(!cut)keys.add(k);}});
   listen(window,'keyup',e=>keys.delete(e.key.toLowerCase()));
   listen(window,'blur',()=>{keys.clear();target=null;save();});listen(canvas,'blur',()=>{keys.clear();target=null;});
   listen(action,'click',()=>{
-    const s=dungeonStatus(g);if(!s||g.battle||g.pendingRecovery||s.pending||!(s.ready?dungeonAtExit(g):dungeonAtCheckpoint(g)))return;
+    const s=dungeonStatus(g);if(!s||cut>0||g.battle||g.pendingRecovery||s.pending||!(s.ready?dungeonAtExit(g):dungeonAtCheckpoint(g)))return;
     target=null;keys.clear();save();if(s.ready)onArrival(s.route.to);else onEncounter(s.location);
   });
-  listen(root.querySelector('[data-action="leave"]'),'click',()=>{if(g.battle||dungeonStatus(g)?.pending)return;save();onLeave();});
+  listen(root.querySelector('[data-action="leave"]'),'click',()=>{if(cut>0||g.battle||dungeonStatus(g)?.pending)return;save();onLeave();});
   listen(overviewButton,'click',()=>{overview=!overview;overviewButton.setAttribute('aria-pressed',String(overview));overviewButton.textContent=overview?'ตาม Yama':'ดูทั้งเส้นทาง';});
-  listen(root.querySelector('[data-action="menu"]'),'click',()=>{save();onMenu();});
+  listen(root.querySelector('[data-action="menu"]'),'click',()=>{if(cut>0)return;save();onMenu();});
   remember();frame=requestAnimationFrame(tick);canvas.focus();
   return function destroy(){if(destroyed)return;destroyed=true;save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
 }
