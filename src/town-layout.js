@@ -31,6 +31,8 @@ export const TOWN_SPOTS = {
 // x 1760-1965 / y 905-980 (measured on town-judgment-th-v2); the throne seat is at (1862,917), the stairs at
 // x 1822-1898 and the soul queue starts at y 1100, so she strolls only inside TOWN_NIRA_STAGE (right of the throne).
 export const TOWN_NIRA_STAGE = [1914,934,1962,968];
+// Zone 1 only: crew who stroll inside a rectangle instead of a radius around home.
+export const TOWN_CREW_STAGE = { nira:TOWN_NIRA_STAGE };
 export const TOWN_CREW = {
   nira:[1938,950], taan:[3150,972], dam:[470,1092],
   plerng:[542,640], kan:[2304,1397], boon:[2460,470],

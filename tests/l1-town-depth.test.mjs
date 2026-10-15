@@ -62,7 +62,7 @@ test('L1: Nira strolls slowly but only inside her stage (simulated 5 minutes)', 
   const { TOWN_NIRA_STAGE } = await import('../src/town-layout.js?v=k1d');
   const g = createGame();
   const nira = g.crewOf('nira');
-  assert.deepEqual(nira.stage, TOWN_NIRA_STAGE);
+  assert.equal(g.zone, 'th');
   const [x1, y1, x2, y2] = TOWN_NIRA_STAGE; let moved = 0, px = nira.x ?? nira.hx, py = nira.y ?? nira.hy;
   for (let i = 0; i < 3000; i++) {
     g.stepWorld(100);

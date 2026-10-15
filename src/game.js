@@ -1,7 +1,7 @@
 import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
-import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
+import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
@@ -1826,8 +1826,9 @@ const API = {
         // อยู่ไกลบ้าน = กลับเข้าที่ก่อน · อยู่แถวบ้านแล้ว = เดินเล่นรอบ ๆ
         let tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
         let ty = far ? hy : hy + (Math.random() - 0.5) * roam;
-        // L1: a crew member with a stage (Nira on the Zone 1 dais) never strolls outside that rectangle
-        if (c.stage && !onDuty) { tx = clamp(tx, c.stage[0], c.stage[2]); ty = clamp(ty, c.stage[1], c.stage[3]); }
+        // L1: a crew member with a Zone 1 stage (Nira on the dais) never strolls outside that rectangle
+        const stage = this.zone === 'th' ? TOWN_CREW_STAGE[c.k] : null;
+        if (stage && !onDuty) { tx = clamp(tx, stage[0], stage[2]); ty = clamp(ty, stage[1], stage[3]); }
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
         if (ok) {

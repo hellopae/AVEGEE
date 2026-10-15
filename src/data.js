@@ -1,4 +1,4 @@
-import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, TOWN_NIRA_STAGE } from './town-layout.js?v=k1d';
+import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY } from './town-layout.js?v=k1d';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
 
@@ -2007,7 +2007,7 @@ function resetRegionalGeometry() {
     delete d.sx;delete d.sy;delete d.mapScale;delete d.blockScale;delete d.interactionReach;Object.assign(d,structuredClone(site));
   }
   for(const key of Object.keys(SPOTS)) delete SPOTS[key];Object.assign(SPOTS,structuredClone(originalTownGeometry.spots));
-  for(const c of CREW) { Object.assign(c,originalTownGeometry.crew.find(d=>d.k===c.k)); delete c.stage; }
+  for(const c of CREW) Object.assign(c,originalTownGeometry.crew.find(d=>d.k===c.k));
   delete FRONTIER.sx;delete FRONTIER.sy;delete FRONTIER.mapScale;
   Object.assign(FRONTIER,structuredClone(originalTownGeometry.frontier));
   Object.assign(MERCHANT,originalTownGeometry.merchant);Object.assign(CHALLENGE_STAND,originalTownGeometry.challenge);
@@ -2059,7 +2059,6 @@ export function syncSceneZone(zone) {
     for(const d of STATIONS) Object.assign(d,TOWN_STATION_SITES[d.k]);
     Object.assign(SPOTS,structuredClone(TOWN_SPOTS));
     for(const c of CREW) if(TOWN_CREW[c.k]) [c.hx,c.hy]=TOWN_CREW[c.k];
-    CREW.find(c=>c.k==='nira').stage=[...TOWN_NIRA_STAGE];   // L1: strolls only on the dais platform
     Object.assign(FRONTIER,structuredClone(TOWN_FRONTIER));delete FRONTIER.blockScale;Object.assign(MERCHANT,TOWN_MERCHANT);
     GUARD_POST.splice(0,GUARD_POST.length,...TOWN_GUARD_POST);
     Object.assign(CHALLENGE_STAND,{x:TOWN_CHALLENGE[0],y:TOWN_CHALLENGE[1]});
