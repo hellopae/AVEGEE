@@ -66,15 +66,15 @@ export const STORY = {
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
 export const storyOf = key => STORY[key] || WEAPON_STORY[key];
 export const ABILITY_REWARDS = {
-  bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้ MP', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },
-  flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้ MP', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้ MP ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
-  rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้ MP', name:'พลังบ้าคลั่ง', image:'img/fx-rage.png', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้ MP ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },
-  ice:{ howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้ MP', name:'ผนึกน้ำแข็ง', image:'img/fx-ice.png', text:`โจมตีศัตรูทุกคน คนละ 30 หน่วยและหยุด 1 เทิร์น · ใช้ MP ${BATTLE.mpCost.ice}` },
+  bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },
+  flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
+  rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้พลังเวท', name:'พลังบ้าคลั่ง', image:'img/fx-rage.png', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },
+  ice:{ howTo:'ในฉากต่อสู้ กดผนึกน้ำแข็งบนวงคำสั่ง ใช้พลังเวท', name:'ผนึกน้ำแข็ง', image:'img/fx-ice.png', text:`โจมตีศัตรูทุกคน คนละ 30 หน่วยและหยุด 1 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.ice}` },
 };
 
 Object.assign(ABILITY_REWARDS, {
- windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.png', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้ MP'},
- hypno:{name:'สะกดจิต', image:'img/fx-hypno.png', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้ MP'},
- valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'โจมตีศัตรูด้วยหอก', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้ MP'},
- cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้ MP · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
+ windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.png', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้พลังเวท'},
+ hypno:{name:'สะกดจิต', image:'img/fx-hypno.png', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้พลังเวท'},
+ valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'โจมตีศัตรูด้วยหอก', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
+ cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
 });
