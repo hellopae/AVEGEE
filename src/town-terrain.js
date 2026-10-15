@@ -20,6 +20,23 @@ export const townChunkUrl = (row,col) => `${TOWN_TERRAIN_DIR}r${row}-c${col}.web
 const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
 const MAX_LOADING = 3;
 
+// Cache the night lighting once per decoded tile, never filter the full viewport per frame.
+const nightTiles = new WeakMap();
+function nightTerrain(image) {
+  if (typeof document === 'undefined') return image;
+  let canvas = nightTiles.get(image);
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+    const p = canvas.getContext('2d');
+    p.filter = 'brightness(.60) saturate(.78) sepia(.28) hue-rotate(350deg) contrast(1.12)';
+    p.drawImage(image,0,0); p.filter = 'none';
+    p.globalCompositeOperation = 'multiply';
+    p.fillStyle = 'rgba(120,57,70,.24)'; p.fillRect(0,0,canvas.width,canvas.height);
+    nightTiles.set(image,canvas);
+  }
+  return canvas;
+}
 const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
 let preview = null, loading = 0, frame = 0;
 function ensurePreview() {
@@ -62,7 +79,7 @@ export function drawTownTerrain(ctx) {
   }
   ctx.save();
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'low';
-  const pv = preview?.ready ? preview.image : null;
+  const pv = preview?.ready ? nightTerrain(preview.image) : null;
   if (scale < DETAIL_FROM) {
     if (pv) ctx.drawImage(pv, 0, 0, TOWN_SIZE.w, TOWN_SIZE.h);
     ctx.restore();
@@ -77,11 +94,11 @@ export function drawTownTerrain(ctx) {
     const c = request(row,col);
     if (c.state === 'ready') {
       c.at = frame;
-      ctx.drawImage(c.image, r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
+      ctx.drawImage(nightTerrain(c.image), r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
     } else if (pv) {
       // Stand-in: the matching slice of the preview until the sharp chunk has decoded.
-      const sx = r.x/TOWN_SIZE.w*pv.naturalWidth, sy = r.y/TOWN_SIZE.h*pv.naturalHeight;
-      ctx.drawImage(pv, sx, sy, r.w/TOWN_SIZE.w*pv.naturalWidth, r.h/TOWN_SIZE.h*pv.naturalHeight, r.x, r.y, r.w, r.h);
+      const sx = r.x/TOWN_SIZE.w*pv.width, sy = r.y/TOWN_SIZE.h*pv.height;
+      ctx.drawImage(pv, sx, sy, r.w/TOWN_SIZE.w*pv.width, r.h/TOWN_SIZE.h*pv.height, r.x, r.y, r.w, r.h);
     }
   }
   // Prefetch the ring around the camera so walking never reveals a blurry patch.

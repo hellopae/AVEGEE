@@ -14,7 +14,7 @@ test('decorations have unique ids, art or a placeholder height, and a small soli
   for(const kind of ['tree','rock','palm','lamp','torch'])assert.ok(kinds.has(kind),kind);
   const count=(kind,biome)=>TOWN_PROP_SITES.filter(p=>p.kind===kind&&(!biome||p.biome===biome)).length;
   assert.equal(count('lamp'),10,'ten gold lanterns round the heaven gate');
-  assert.equal(count('torch'),14,'fourteen torches round the cauldron courtyard');
+  assert.equal(count('torch'),24,'fourteen courtyard torches and ten civic/entry fire pillars');
   assert.equal(count('tree','lava'),8,'red trees by the lava');
   assert.equal(count('tree','ice'),2,'snow trees by the ice gate');
   for(const p of TOWN_PROP_SITES){
@@ -23,7 +23,7 @@ test('decorations have unique ids, art or a placeholder height, and a small soli
     assert.ok(p.rx*2<=p.w,p.id+' collision stays narrower than silhouette');
     assert.equal(townPropBlocks(p.x,p.y),true,p.id+' root is solid');
     assert.equal(townContains(p.x,p.y),false,p.id+' cannot be walked through');
-    assert.ok(p.y<=1900,p.id+' stays on the terrestrial side of the soul river');
+    assert.ok(p.y<=1900||(p.id.startsWith('hell-pillar-')&&p.y>=2000&&p.x>=1700&&p.x<=2120),p.id+' stays on land or the entry island');
   }
 });
 

@@ -24,7 +24,8 @@ function cachedSprite(image,kind) {
 // frame, on-screen or not (~90 ms per frame on Intel iGPU at DPR 2). The very same filter is now
 // baked once per (image, biome) into a canvas; pixels are identical, the per-frame cost is a blit.
 const TREE_TINT = {
-  lava:'hue-rotate(305deg) saturate(1.15)',
+  city:'sepia(1) saturate(2.6) hue-rotate(310deg) brightness(.60)',
+  lava:'hue-rotate(305deg) saturate(1.05) brightness(.78)',
   ice:'saturate(.25) brightness(1.4)',
   heaven:'saturate(.7) brightness(1.12)',
 };
@@ -70,8 +71,15 @@ export function drawTownCastShadow(ctx,image,x,y,w) {
   ctx.drawImage(cachedSprite(image,'shadow'),-w/2,-h,w,h);
   ctx.restore();
 }
+let torchArt = null;
+function torchSprite() {
+  if (!torchArt && typeof Image !== 'undefined') {
+    torchArt = new Image(); torchArt.src = 'img/map-zone1/torch-pillar-v1.webp';
+  }
+  return torchArt?.complete && torchArt.naturalWidth ? torchArt : null;
+}
 const propArt = (p,tree,waterfall,resolveArt) =>
-  p.key?(resolveArt?.(p.key)||(p.kind==='tree'?tree:null)):null;
+  p.kind==='torch'?torchSprite():p.key?(resolveArt?.(p.key)||(p.kind==='tree'?tree:null)):null;
 function contactShadow(ctx,p) {
   ctx.save();ctx.fillStyle='rgba(10,6,15,.22)';ctx.beginPath();
   ctx.ellipse(p.x+4,p.y+2,p.rx*1.2,p.ry*.8,0,0,Math.PI*2);ctx.fill();ctx.restore();
@@ -135,6 +143,7 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       if(art){
         sprite(ctx,p.kind==='tree'?tintedArt(art,p.biome):art,p.x,p.y,p.w);
       }else fallbackProp(ctx,p,time,reduced);
+      if(p.kind==='torch') drawLocalLight(ctx,'th',p.x,p.y-h*.85,52,time,reduced);
       ctx.restore();
     });
   }

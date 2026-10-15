@@ -109,6 +109,10 @@ export const TOWN_PROP_SITES = [
   deco('banyan','tree',2068,1663,167,'city',16,11),
   // rocks beside the quarry
   ...[[3014,868,77],[3496,887,119],[3312,981,79],[3241,996,52]].map(([x,y,w],i)=>deco(`rock-${i}`,'rock',x,y,w,'ice',w*.34,w*.14)),
+  // Additional fire pillars flank the civic stairs, river approach and entry plaza.
+  ...[[1710,1080],[2100,1080],[1788,1405],[2050,1405],[1790,1560],[2050,1560],
+      [1770,2080],[2070,2080],[1770,2250],[2070,2250]]
+    .map(([x,y],i)=>deco(`hell-pillar-${i}`,'torch',x,y,34,'lava',7,5,null,112)),
   // gold lanterns around the heaven gate (owner: yellow marks)
   ...[[2356,397],[2398,349],[2388,474],[2429,509],[2490,497],[2605,522],[2678,518],[2726,490],[2723,409],[2675,365]]
     .map(([x,y],i)=>deco(`lamp-${i}`,'lamp',x,y,34,'heaven',7,5,null,74)),
