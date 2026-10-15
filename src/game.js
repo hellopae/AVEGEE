@@ -4514,7 +4514,6 @@ API.snapshot = function (withEntry = true) {
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
     townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
-    hypnoGateL3: true,       // L3 — marker: เซฟใหม่ไม่ต้อง grandfather สะกดจิตตามเลเวล (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
@@ -4704,8 +4703,9 @@ API.restore = function (d) {
       if (events[ev.k] === 'cleared' && ev.reward?.ability) this.abilities[ev.reward.ability] = true;
     }
   }
-  // L3: เซฟเก่า (ก่อน marker hypnoGateL3) ที่เคยปลดสะกดจิตด้วยเลเวล 4 / มีวงสะกดจิตแล้ว — คงไว้ ไม่ริบของผู้เล่น
-  if (!d.hypnoGateL3 && !this.abilities.hypno && (this.level >= 4 || (this.inventory.hypno || 0) > 0 || d.discoverySeen?.['power:hypno'])) this.abilities.hypno = true;
+  // L3: สะกดจิตได้เฉพาะเซฟที่ชนะแวมไพร์โซน 3 แล้ว (abilities.hypno จากเซฟ / ZONE_EVENTS cleared ด้านบน) — เซฟเก่าที่ปลดด้วยเลเวลถูกริบ
+  // ล้างสถานะ 'เคยเห็น popup สะกดจิต' ที่ได้จากเลเวล เพื่อให้ได้ popup ตอนชนะบอสจริง
+  if (!this.abilities.hypno) { delete this.discoverySeen['power:hypno']; this.discoveryQueue = this.discoveryQueue.filter(id => id !== 'power:hypno'); }
   // เซฟก่อนชุด event ที่ไปถึงบอสแล้วคงสิทธิ์เดิม ไม่บังคับให้ย้อนกลับมาทำสามเหตุการณ์
   this.legacyBossGate = legacyBossGate;
   this.miniGoals = d.miniGoals || {};

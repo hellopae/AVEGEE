@@ -70,13 +70,18 @@ test('L3 hypnosis data: reward on the boss event, no "buy from boon" wording lef
   assert.doesNotMatch(data, /ซื้อ 🌀 วงสะกดจิต|บุญยังขาย/);
 });
 
-test('L3 old saves keep hypnosis; new saves do not get it from level alone', () => {
-  const g = game(); levelTo(g, 4);
+test('L3 old saves: hypnosis from level 4 is revoked; only saves that beat the zone-3 boss keep it', () => {
+  const g = game(); levelTo(g, 4); g.syncDiscoveries();
+  g.discoverySeen['power:hypno'] = true;   // as an old build would have recorded
   const snap = JSON.parse(JSON.stringify(g.snapshot()));
-  assert.equal(snap.hypnoGateL3, true);
-  const fresh = game(); fresh.restore(snap); assert.equal(fresh.abilities.hypno, undefined, 'marker present: no grandfather');
-  const legacy = { ...snap }; delete legacy.hypnoGateL3;
-  const old = game(); old.restore(legacy); assert.equal(old.abilities.hypno, true, 'level-4 legacy save keeps it');
-  const low = game(); const s1 = JSON.parse(JSON.stringify(low.snapshot())); delete s1.hypnoGateL3;
-  const o2 = game(); o2.restore(s1); assert.notEqual(o2.abilities.hypno, true, 'level-1 legacy save does not get it');
+  const old = game(); old.restore(snap);
+  assert.notEqual(old.abilities.hypno, true, 'level-4 old save loses it');
+  assert.equal(old.powerLocked(old.powerOf('hypno')), true);
+  assert.equal(old.discoverySeen['power:hypno'], undefined, 'popup will fire on the real win');
+  const won = game(); won.abilities.hypno = true;
+  const w2 = game(); w2.restore(JSON.parse(JSON.stringify(won.snapshot())));
+  assert.equal(w2.abilities.hypno, true, 'save that won the boss keeps it');
+  const cleared = game(); cleared.zoneEvents.west = { westHypnotized:'cleared', westVampireBreach:'cleared' };
+  const c2 = game(); c2.restore(JSON.parse(JSON.stringify(cleared.snapshot())));
+  assert.equal(c2.abilities.hypno, true, 'cleared event flag restores it');
 });
