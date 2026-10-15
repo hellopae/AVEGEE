@@ -3,15 +3,7 @@
 // hard = rectangles that must stay readable (enemy sprites, name plates, HP bars)
 // soft = things we would rather not cover (allies, team HUD, talk box) but may if nothing else fits.
 const area = (a, b) => Math.max(0, Math.min(a.r, b.r) - Math.max(a.l, b.l)) * Math.max(0, Math.min(a.b, b.b) - Math.max(a.t, b.t));
-export const rectOverlap = area;
-export const padRect = (r, p) => ({ l:r.l - p, t:r.t - p, r:r.r + p, b:r.b + p });
-
-/** Union of several rects (null when none). */
-export function unionRect(rects) {
-  const list = rects.filter(Boolean);
-  return list.length ? { l:Math.min(...list.map(r => r.l)), t:Math.min(...list.map(r => r.t)),
-    r:Math.max(...list.map(r => r.r)), b:Math.max(...list.map(r => r.b)) } : null;
-}
+const padRect = (r, p) => ({ l:r.l - p, t:r.t - p, r:r.r + p, b:r.b + p });
 
 /** candidates: [{ key, x, y, penalty? }] top-left corners of a box of `size` ({w,h}).
  *  Returns the lowest-cost candidate with its (possibly shortened) height, or null.
