@@ -103,7 +103,8 @@ test('camera cue mapping mirrors docs/battle-camera-api.md: attack 360, skill 52
 });
 
 test('camera adapter: the engine hands shake/dim/flash to the M1 camera when present and never moves .cam-* itself', () => {
-  assert.match(fxSrc, /if \(E\.camera \|\| E\.reduce\) return;/);
+  assert.match(fxSrc, /if \(E\.camera \|\| E\.reduce[^)]*\) return;/);
+  assert.match(fxSrc, /if \(E\.camera \|\| !FX_TUNE\.dim\) return;/);
   assert.match(fxSrc, /E\.camera\.layer\('fx'\)/);
   assert.match(fxSrc, /export function setBattleCamera/);
   assert.ok(!/\.cam-world|cam-world/.test(fxSrc.replace(/\/\/.*$/gm, '')), 'engine does not touch .cam-world');
