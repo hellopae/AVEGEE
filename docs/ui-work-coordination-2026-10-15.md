@@ -3,6 +3,8 @@
 คุณเป้แบ่งงานให้ทำคู่ขนานโดยไม่ชนกัน: **Codex app ทำ animation ของยมบาทน้อย** · **Claude ทำแผนที่ Zone1 ใหม่ (ชุด K)**
 อ่านไฟล์นี้ก่อนเริ่ม และ `git pull` ก่อน push ทุกครั้ง (ทั้งสองฝั่ง push `main` ได้)
 
+> กติกา push กลาง (ใครเข้า `main` ได้ · ลำดับ fetch/rebase/เทสต์ · ชื่อ branch · Codex worker): [`docs/git-push-protocol.md`](git-push-protocol.md)
+
 ## สถานะล่าสุดบน main (`7cafbdb`)
 
 - K2 เมนูต่อสู้/สอบสวนเอียงแบบ Battle9/Comment8 + แก้คลิกไม่ติด — merge แล้ว (`6d36dcb`)
