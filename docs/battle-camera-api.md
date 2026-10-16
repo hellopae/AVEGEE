@@ -108,6 +108,7 @@ camera.cue(kind: 'select'|'attack'|'skill'|'foe-attack'|'heal'|'interrogate-ask'
                   power?: 1|2|3;                          // hit weight: 1 light, 2 heavy, 3 crit/finisher
                   crit?: boolean; scope?: 'single'|'all'; // 'all' = wide pull-back instead of a pan to one target
                   cutMs?: number;                         // length of a full-screen action cutscene covering the stage (0 if none)
+                  impactAt?: number;                      // 'attack' / 'foe-attack': ms from now to the hit (windup / pan / recover re-time around it); ui.js derives it from the attacker's drawn animation (see below)
                   dim?: boolean;                          // darken the background (default: true for 'skill')
                   flash?: boolean }): { done: Promise<void>, cancel(): void, impactAt: number }
 ```
@@ -165,6 +166,12 @@ Hit-stop pauses the timeline clock, so steps after a hit-stop slide by that amou
 `power` (1..3) is derived from the hit's share of the target's max morale (≥ 15 % = 2, ≥ 30 % = 3; skills are at least 2) because the game rules store no crit flag. The camera never reads or changes game values.
 
 Interrogation scene: the world is the whole `.trial-comment8` (behind the right panels); targets are `'you'` and `'suspect'` (`[data-cam]`). The command menu and cards stay above the world.
+
+### Sync with the drawn combat animations (Codex `combat-sprites.js`, read-only)
+
+`img/combat-animation-v1/manifest.json` has no explicit hit frame, so `strikeTime(durations)` (exported from `battle-camera.js`) takes the contact at the start of the frame ~55 % through the attack sequence (6 frames → frame 4, e.g. Dam = 410 ms). `ui.js` looks the attacker up (`crew:<zone>:<k>` / `boss:<zone>:<name>`), subtracts the time already elapsed since the phase began (the sprites' clock is `Date.now() - phaseAt`) and passes the result as `impactAt`. Attackers without an attack atlas (Yama's sword, ordinary spirits) keep the default timing. If Codex adds an explicit `hit` frame later, only `strikeTime()` needs to change.
+
+`combat-sprites.js` measures its roots with `getBoundingClientRect()`; ui.js hands it roots whose rect is the un-zoomed one (a thin Proxy), so the atlas canvases stay aligned at any zoom without touching that file.
 
 ## 6. Interaction / input guarantees
 

@@ -27,7 +27,9 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
-import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
@@ -2203,13 +2205,15 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
-  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}" style="background-image:url('${esc(bg)}')">
+  // M1: in a fight the background + sprites live in .cam-world (the only thing the camera zooms); HUD / menus stay outside it
+  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"
       style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
     <div class="ttl">${esc(title)}</div>
+    ${hp ? `<div class="cam-world" style="background-image:url('${esc(bg)}')">` : ''}
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
       <img src="${crewArt(helper)}" class="${teamFaceClass(crewArt(helper))}" alt=""
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
@@ -2247,6 +2251,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}
+    ${hp ? '</div>' : ''}
     ${controls}
   </div>`;
 }
@@ -2294,13 +2299,13 @@ function powerSound(k) {
   if (isUltimatePower(k) && actionCutsceneSrc(k)) playUltimate(k);
   else sfx(powerSfx(k, g.abilities));
 }
-function playActionCutscene(k, ultimate = null) {
+function playActionCutscene(k, ultimate = null) {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
   if (k === 'rage') return;
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
   const src = ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));
-  if (!src || !dlg.open) return;
+  if (!src || !dlg.open) return false;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
@@ -2324,6 +2329,7 @@ function playActionCutscene(k, ultimate = null) {
   dlg.appendChild(cut);
   fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
   setTimeout(finish, ACTION_CUT_MS);
+  return true;
 }
 
 // ---------- ห้องสอบสวน (HUD แบบเกม Turn-based RPG) ----------
@@ -2484,6 +2490,14 @@ function openTrial(initialError = '') {
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
     dlg.innerHTML = `
     <div class="hud trial-hud trial-comment8" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
+      <div class="cam-world" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')"><div class="hud-stage cam-stage-box">
+        <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
+               onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
+          <span class="nm">${esc(HERO_NAME)}</span></div>
+        <div class="fig foe" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+               onerror="this.onerror=null;this.src='img/spirit7.png'">
+          <span class="nm">${esc(s.name || s.who)}</span></div>
+      </div></div>
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
@@ -2497,12 +2511,6 @@ function openTrial(initialError = '') {
       <div class="hud-body">
         <div class="hud-stage">
           <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
-          <div class="fig you"><img src="${heroFace()}" alt=""
-                 onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
-            <span class="nm">${esc(HERO_NAME)}</span></div>
-          <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
-                 onerror="this.onerror=null;this.src='img/spirit7.png'">
-            <span class="nm">${esc(s.name || s.who)}</span></div>
           ${trialWheel}
         </div>
 
@@ -2558,8 +2566,9 @@ function openTrial(initialError = '') {
     });
 
     bindCommandPress(dlg.querySelector('.trial-comment8'));
+    trialCameraAttach();
     // ---- ผูกปุ่ม ----
-    dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;paint();});
+    dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;camera.cue('idle');paint();});   // M1: picking a menu goes back to the wide shot
     dlg.querySelectorAll('.court-options').forEach(pane=>pane.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i)));
     dlg.querySelector('.comment8-menu')?.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();courtPanel=null;paint();}});
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
@@ -2590,13 +2599,16 @@ function openTrial(initialError = '') {
     });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
       const r = g.press(s, +el.dataset.line);
-      if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
+      const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
+      if (r) sfx(revealed ? 'crack' : 'deny');
       paint(); refresh();
+      if (r) camera.cue(revealed ? 'interrogate-reveal' : 'interrogate-ask', { targets:'suspect' });   // M1: lean in on the suspect; harder + flash on a reveal / confession
     });
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
       if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k);
+      camera.cue('interrogate-reveal', { targets:'suspect', action:k });   // M1: hypnosis / mirror / roar = the big lean-in
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -2638,7 +2650,30 @@ function openTrial(initialError = '') {
     if (badge) badge.textContent = ok ? '✓' : fmtCountdown(g.powerOf('roar').readyAt);
     b.title = ok ? 'ตวาดข่มขู่ — พร้อมใช้ — ไม่ต้องใช้ item' : `ตวาดข่มขู่ — รออีก ${fmtCountdown(g.powerOf('roar').readyAt)}`;
   }, 1000);
-  onDlgClose(() => { clearInterval(roarTick); bgm('bgm-zone'); refresh(); });
+  onDlgClose(() => { clearInterval(roarTick); camera.detach(); bgm('bgm-zone'); refresh(); });
+}
+
+/** M1: bind the camera to the interrogation scene. The world is the whole .trial-comment8 (behind the panels); the two figures live in a
+ *  stage-sized box inside it that is placed over the real .hud-stage, so every % position in the CSS stays valid. Only the scene zooms —
+ *  the right-hand panels, menu, cards and bottom bar are above the world. */
+function trialCameraAttach() {
+  const hud = dlg.querySelector('.trial-comment8');
+  const box = hud?.querySelector('.cam-stage-box'), real = hud?.querySelector('.hud-body > .hud-stage');
+  if (!hud || !box || !real) return;
+  const place = () => {
+    if (!hud.isConnected) return;
+    const h = hud.getBoundingClientRect(), r = real.getBoundingClientRect();
+    if (camera.stageEl() !== hud) return;
+    const z = camera.applied().z, o = { x:h.left + hud.clientLeft, y:h.top + hud.clientTop };
+    // the real stage is not transformed, so its rect is already "at rest"; the world is positioned at the hud origin with identity layout
+    void z;
+    for (const [k, v] of Object.entries({ left:r.left - o.x, top:r.top - o.y, width:r.width, height:r.height }))
+      box.style.setProperty(k, `${v}px`, 'important');
+    box.style.setProperty('min-height', '0', 'important');
+  };
+  camera.attach(hud);
+  place(); requestAnimationFrame(place);
+  if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (hud.isConnected) place(); else ro.disconnect(); }); ro.observe(hud); ro.observe(real); }
 }
 
 /** ออกหมายจริง — ใช้ร่วมกันระหว่างแถบบัญชาการกับห้องสอบสวน */
@@ -3059,6 +3094,58 @@ function openBattle(after) {
     for (const gn of gains) healFx.push({ ...gn, key: keyOf(gn.id), start, ms: HEAL_GLOW_MS });
     scheduleHealFx();
   };
+  // ---- M1: camera hooks (see src/battle-camera.js · docs/battle-camera-api.md) ----
+  // The camera never changes game rules or timers: it only reacts to the same phase changes the fight already has.
+  // Codex's drawn combat animations (img/combat-animation-v1): read-only — only used to time the camera impact to the attack's contact frame.
+  let animSprites = null;
+  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
+  const strikeOf = key => { const rec = animSprites && key && (animSprites[`${key}:attack`] || animSprites[key]); return strikeTime(rec?.modes?.attack?.durations); };
+  const impactLead = key => { const t = strikeOf(key); return t == null ? undefined : Math.max(150, t - (Date.now() - phaseAt)); };
+  const actorKeyOf = a => !a ? 'you' : a.id === 'you' ? 'you' : crewBattleKey(a);
+  const actorKeyById = id => actorKeyOf(g.battleActors().find(a => a.id === id) || { id });
+  const livingFoeIds = () => (g.battle?.foes || []).filter(f => f.hp > 0).map(f => f.id);
+  /** weight of the hit that just landed: 1 light · 2 heavy · 3 crit-sized (share of the target's max morale) */
+  const hitPower = (b, floor = 1) => {
+    const id = b.dmg?.foeId ?? b.selectedFoeId, f = b.foes?.find(x => x.id === id) || b.foes?.[0];
+    const share = f?.maxHp ? (b.dmg?.foe || 0) / f.maxHp : 0;
+    return Math.max(floor, share >= .3 ? 3 : share >= .15 ? 2 : 1);
+  };
+  /** start the action choreography for the phase that was just entered (called right after paint(), once per phase) */
+  const startActionCue = (cutMs = 0) => {
+    const b = g.battle;
+    if (!b || !camera.stageEl()) return;
+    if (phase === 'you') {
+      const a = fxNow?.action || '', userKey = actorKeyById(b.actorId || 'you');
+      if (fxNow?.key === 'defend') return;
+      const hitIds = (b.dmg?.foeHits || []).filter(h => h.damage > 0).map(h => h.id);
+      const foeIds = hitIds.length ? hitIds : [b.dmg?.foeId ?? b.selectedFoeId ?? livingFoeIds()[0]].filter(Boolean);
+      const targets = foeIds.map(id => `foe:${id}`);
+      const scope = foeIds.length > 1 ? 'all' : 'single';
+      if (fxNow?.key === 'rage') camera.cue('skill', { user:userKey, targets:userKey, action:a, power:1, scope:'single', cutMs });
+      else if (fxNow?.key === 'health') camera.cue('heal', { user:userKey, targets:actorKeyById(fxNow.recipient || 'you'), action:a });
+      else if (a === 'atk' || a === 'strike') {
+        const who = g.battleActors().find(x => x.id === (b.actorId || 'you')), atlas = who && who.id !== 'you' ? `crew:${who.homeZone || g.zone}:${who.k}` : `yama:${g.outfit || g.zone}`;
+        camera.cue('attack', { user:userKey, targets, action:a, power:hitPower(b), scope, impactAt:impactLead(atlas) });
+      }
+      else camera.cue('skill', { user:userKey, targets, action:a, power:hitPower(b, 2), scope, cutMs });
+    } else if (phase === 'foe') {
+      if (b.dmg?.confuseSelf > 0) return;
+      const attacker = b.dmg?.counterFoeId || g.currentBattleTurn()?.id || livingFoeIds()[0];
+      const hit = [...(b.dmg?.you > 0 ? ['you'] : []), ...(b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])).map(a => actorKeyOf(a))];
+      const targets = hit.length ? [...new Set(hit)] : ['you'];
+      const atkRoot = camera.stageEl()?.querySelector(`[data-foe-id="${attacker}"]`), atkImg = atkRoot?.querySelector('img:not(.fx)');
+      const atkKey = atkImg && bossSpriteKey(atkImg.getAttribute('src') || '', b.zone || g.zone);
+      camera.cue('foe-attack', { impactAt:impactLead(atkKey), user:`foe:${attacker}`, targets, action:'foe', power:b.ultimate ? 3 : (b.dmg?.you || b.dmg?.crew || 0) >= (b.youMax || 100) * .2 ? 2 : 1, scope:targets.length > 1 ? 'all' : 'single', cutMs });
+    }
+  };
+  /** after every paint: park the camera for the state the fight is in (action cues are started by executeCommand / enemy turn) */
+  const cameraSync = (b, parked, activeKey) => {
+    if (!camera.stageEl()) return;
+    if (parked) { if (camera.currentCue !== 'idle') camera.cue('idle'); return; }
+    if (phase) return;
+    if (activeKey) { if (camera.currentCue !== `select:${JSON.stringify(activeKey)}`) camera.cue('select', { user:activeKey }); }
+    else if (camera.currentCue !== 'idle') camera.cue('idle');
+  };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
   const paint = () => {
@@ -3249,6 +3336,7 @@ function openBattle(after) {
       </div>${prep}${prepLayer}${fleeLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
+    camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
@@ -3319,7 +3407,7 @@ function openBattle(after) {
           const rel = r => ({ l:r.left - area.left, r:r.right - area.left, t:r.top - area.top, b:r.bottom - area.top });
           const cards = [...stage.querySelectorAll('.battle-team-hud .battle-portrait, .battle-boss-hud, .battle-scene-talk')].map(e => rel(e.getBoundingClientRect()));
           // ตัวละครบนสนามก็ไม่ควรโดนทับ — ใช้กรอบรูปที่หดเข้า 15% ข้างละด้าน (img มีขอบโปร่งใส) เป็นสิ่งกีดขวางด้วย
-          const sprites = [...stage.querySelectorAll('.fig img:not(.fx), .battle-squad img')].map(e => rel(e.getBoundingClientRect()))
+          const sprites = [...stage.querySelectorAll('.fig img:not(.fx), .battle-squad img')].map(e => rel(camera.rectOf(e, 'settled')))
             .map(r => ({ l:r.l + (r.r - r.l) * 0.15, r:r.r - (r.r - r.l) * 0.15, t:r.t, b:r.b }));
           const obstacles = [...cards, ...sprites].filter(r => r.r > r.l);
           const best = placeFinButton({ area:{ w:area.width, h:area.height }, btn:{ w:fr.width, h:fr.height }, obstacles });
@@ -3340,6 +3428,7 @@ function openBattle(after) {
     }
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
+    cameraSync(b, !!(b.over || prepOn), activeKey);
     stage._battleSpriteFit.then(() => {
       if(!stage.isConnected)return;
       const entries=[], hits=new Set([
@@ -3363,7 +3452,10 @@ function openBattle(after) {
         const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!attacker||id===attacker)?'attack':'idle';
         entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:phaseAt});
       }
-      mountCombatSprites(stage,entries);
+      // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
+      // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)
+      const camRoot=el=>el&&new Proxy(el,{get:(t,k)=>k==='getBoundingClientRect'?()=>camera.rectOf(t):typeof t[k]==='function'?t[k].bind(t):t[k],set:(t,k,v)=>{t[k]=v;return true;}});
+      mountCombatSprites(stage,entries.map(e=>({...e,root:camRoot(e.root)})));
     });
     if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitTeam(); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
@@ -3448,17 +3540,17 @@ function openBattle(after) {
         const area=stage.getBoundingClientRect(),sprite=anchor.querySelector('img:not(.fx)');
         // K5: measure what must stay readable (enemies, their name/HP plates, boss HUD) and what we would rather not cover.
         const loc=r=>({l:r.l-area.left,t:r.t-area.top,r:r.r-area.left,b:r.b-area.top});
-        const box=el=>{const r=el.getBoundingClientRect();return r.width&&r.height?loc({l:r.left,t:r.top,r:r.right,b:r.bottom}):null;};
+        const box=el=>{const r=camera.rectOf(el,'settled');return r.width&&r.height?loc({l:r.left,t:r.top,r:r.right,b:r.bottom}):null;};   // M1: where it will be once the camera settles
         // Opaque-pixel bounds when measurable; the <img> box when the measure fails or collapses (zone-boss art did once).
         const sprites=async sel=>(await Promise.all([...stage.querySelectorAll(sel)].map(async img=>{
-          const r=await battleSpriteRect(img).catch(()=>null);
+          const r=await battleSpriteRect(img,'settled').catch(()=>null);
           return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);
         }))).filter(Boolean);
         // L2: the actor's own teammates are obstacles too (hard) — the menu opens beside the actor but never on top of another ally.
         const allyEls=[...new Set(stage.querySelectorAll('.fig.you img:not(.fx), .battle-squad img:not(.fx), .formation-member img:not(.fx)'))].filter(img=>img!==sprite);
         await Promise.all(anchor.getAnimations({subtree:true}).filter(a=>Number.isFinite(a.effect?.getComputedTiming().endTime)).map(a=>a.finished.catch(()=>{})));   // measure the stepped-out position, not mid-animation
-        const rect=await battleSpriteRect(sprite);if(!wheel.isConnected)return;
-        const [foeSprites,allySprites]=await Promise.all([sprites('.fig.foe img:not(.fx)'),Promise.all(allyEls.map(async img=>{const r=await battleSpriteRect(img).catch(()=>null);return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);})).then(a=>a.filter(Boolean))]);
+        const rect=await battleSpriteRect(sprite,'settled');if(!wheel.isConnected)return;
+        const [foeSprites,allySprites]=await Promise.all([sprites('.fig.foe img:not(.fx)'),Promise.all(allyEls.map(async img=>{const r=await battleSpriteRect(img,'settled').catch(()=>null);return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);})).then(a=>a.filter(Boolean))]);
         if(!wheel.isConnected)return;
         const hard=[...foeSprites,...allySprites,...[...stage.querySelectorAll('.fig.foe .plate, .battle-boss-hud')].map(box)].filter(Boolean);
         const soft=[...[...stage.querySelectorAll('.battle-team-hud, .battle-scene-talk, .battle-timeline')].map(box)].filter(Boolean);
@@ -3602,7 +3694,7 @@ function openBattle(after) {
       if (nb.storyFinale) { sfx('win'); finish(); return; }
       if (nb.kind === 'dad') {
         phase='foe'; phaseAt=Date.now(); fxNow={key:'foe',side:'you'}; paint();
-        playActionCutscene('boss',nb.ultimate); sfx('hurt');
+        startActionCue(playActionCutscene('boss',nb.ultimate) ? ACTION_CUT_MS : 0); sfx('hurt');
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();finish();},ACTION_CUT_MS+400);
         return;
       }
@@ -3614,7 +3706,7 @@ function openBattle(after) {
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
       paint();
-      playActionCutscene(action);
+      startActionCue(playActionCutscene(action) ? ACTION_CUT_MS : 0);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -3634,7 +3726,7 @@ function openBattle(after) {
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
           paint();
-          if (nb.ultimate) playActionCutscene('boss', nb.ultimate);
+          startActionCue(nb.ultimate && playActionCutscene('boss', nb.ultimate) ? ACTION_CUT_MS : 0);
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
             if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
@@ -3655,7 +3747,7 @@ function openBattle(after) {
         if(!g.runEnemyTurn()){phase=null;paint();return;}
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
-        sfx('hurt');paint();if(b.ultimate)playActionCutscene('boss',b.ultimate);
+        sfx('hurt');paint();startActionCue(b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0);
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
       },600);
     }
@@ -3673,6 +3765,7 @@ function openBattle(after) {
   function finish() {
     if (finished) return;
     finished = true;
+    camera.detach();
     battleUI = null;
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
@@ -5610,6 +5703,12 @@ function openSettings() {
     </div>
     <div class="hint" data-t="settings.audioHint"></div>
 
+    <label class="settings-row cam-row" for="s-cam">
+      <span data-t="settings.camera"></span>
+      <input type="checkbox" id="s-cam" ${camera.enabled ? 'checked' : ''}>
+    </label>
+    <div class="hint" data-t="settings.cameraHint"></div>
+
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
@@ -5648,6 +5747,7 @@ function openSettings() {
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };
       };
+      d.querySelector('#s-cam').onchange = e => { camera.setEnabled(e.currentTarget.checked); sfx('stamp'); };   // M1: battle / interrogation camera effects
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
       bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
       // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
@@ -5762,6 +5862,7 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
 export {openBattle,openDungeon,openHarbour,openBorder,openTrial,startPlay};

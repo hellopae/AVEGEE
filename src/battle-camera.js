@@ -39,6 +39,14 @@ export function viewTransform(W, H, z, cx, cy) {
   return { z, tx:W / 2 - z * c.cx, ty:H / 2 - z * c.cy, cx:c.cx, cy:c.cy };
 }
 
+/** Contact time of a drawn attack animation (ms from its start). The manifest has no explicit hit frame, so the strike is taken at the
+ *  start of the frame ~55 % of the way through the sequence (e.g. 6 frames -> frame 4). Used to line the camera impact up with combat-sprites. */
+export function strikeTime(durations) {
+  if (!Array.isArray(durations) || !durations.length) return null;
+  const idx = Math.min(durations.length - 1, Math.max(1, Math.ceil(durations.length * .55)));
+  return durations.slice(0, idx).reduce((a, b) => a + b, 0);
+}
+
 export const unionRect = rs => {
   const a = rs.filter(Boolean);
   if (!a.length) return null;
@@ -414,8 +422,13 @@ export function createBattleCamera() {
       cueKey = key; return { ...r, impactAt:0 };
     }
     cueKey = kind;
+    // optional: ctx.impactAt (ms from the cue start) re-times windup / pan / impact / recover around a drawn animation's contact frame
+    const retime = c => {
+      const impactAt = clamp(ctx.impactAt ?? c.impactAt, 200, 1100);
+      return { ...c, impactAt, windup:Math.min(c.windup, impactAt - 100), panAt:Math.max(40, impactAt - c.panMs), recoverAt:impactAt + (c.recoverAt - c.impactAt) };
+    };
     if (kind === 'attack') {
-      const c = T.attack, steps = [
+      const c = retime(T.attack), steps = [
         { at:0, focus:{ target:ctx.user, zoom:c.zoom, ms:c.ms, keepVisible:ctx.targets } },
         { at:c.windup, emit:'windup', info },
         { at:c.panAt, focus:{ target:ctx.targets, zoom:c.zoom, ms:c.panMs } },
@@ -424,7 +437,7 @@ export function createBattleCamera() {
       return { ...play(steps), impactAt:c.impactAt };
     }
     if (kind === 'foe-attack') {
-      const c = T.foeAttack, steps = [
+      const c = retime(T.foeAttack), steps = [
         { at:0, focus:{ target:ctx.user, zoom:c.zoom, ms:c.ms, keepVisible:ctx.targets } },
         { at:c.windup, emit:'windup', info },
         { at:c.panAt, focus:ctx.scope === 'all' ? { target:'all', ms:c.panMs + 60 } : { target:ctx.targets, zoom:c.zoom, ms:c.panMs } },

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   clampCenter, viewTransform, planCamera, mapRect, unmapRect, shakeSpec, shakeAt, unionRect, ease,
-  CAMERA_TIMING, createBattleCamera, MIN_ZOOM, MAX_ZOOM,
+  CAMERA_TIMING, createBattleCamera, MIN_ZOOM, MAX_ZOOM, strikeTime,
 } from '../src/battle-camera.js';
 
 const read = f => readFileSync(new URL('../' + f, import.meta.url), 'utf8');
@@ -194,4 +194,21 @@ test('M1 wiring: only .cam-world is transformed; HUD stays outside; cache-bust -
     assert.match(h, /src\/battle-camera\.css\?v=[^"]*m1"/, f);
   }
   assert.match(read('docs/battle-camera-api.md'), /camera\.focus\(target/);
+});
+
+test('M1 strikeTime: contact frame of a drawn attack (Codex combat-animation-v1) and camera impact retimed to it', async () => {
+  assert.equal(strikeTime([100, 90, 100, 120, 100, 140]), 410, '6 frames -> start of frame 4');
+  assert.equal(strikeTime([100, 100]), 100, 'short sequences strike on the last frame');
+  assert.equal(strikeTime([]), null); assert.equal(strikeTime(undefined), null);
+  const m = JSON.parse(readFileSync(new URL('../img/combat-animation-v1/manifest.json', import.meta.url), 'utf8')).sprites;
+  const attacks = Object.entries(m).filter(([, r]) => r.modes?.attack);
+  assert.ok(attacks.length > 10, 'manifest has attack animations');
+  for (const [k, r] of attacks) { const t = strikeTime(r.modes.attack.durations), total = r.modes.attack.durations.reduce((a, b) => a + b, 0); assert.ok(t > 0 && t < total, k); }
+  const { stage } = fakeDom();
+  const cam = createBattleCamera(); cam.attach(stage);
+  let at = 0; const t0 = Date.now(); cam.on('impact', () => { at = Date.now() - t0; });
+  cam.cue('attack', { user:'you', targets:['foe:f1'], action:'atk', power:2, impactAt:700 });
+  await wait(900);
+  assert.ok(at >= 690 && at < 850, `impact followed the drawn contact frame (700 ms), got ${at}`);
+  cam.detach();
 });

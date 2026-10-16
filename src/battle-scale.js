@@ -39,6 +39,12 @@ function measure(img) {
   });
 }
 
+// M1: the combat scene can be zoomed by the battle camera. ui.js registers a mapper that returns rects "as if the camera were at rest"
+// (mode 'layout', used by all layout maths here) or as they will look once the camera settles (mode 'settled', used for menu placement).
+let rectMapper = null;
+export function setBattleRectMapper(fn) { rectMapper = typeof fn === 'function' ? fn : null; }
+const rectOfEl = (el, mode) => (rectMapper ? rectMapper(el, mode) : el.getBoundingClientRect());
+
 const refs = new Map();
 function refImage(src) {
   if (!refs.has(src)) { const im = new Image(); im.src = src; refs.set(src, im); }
@@ -46,8 +52,8 @@ function refImage(src) {
 }
 
 /** ภาพถูกวาดจริงตรงไหนในกล่อง <img> (object-fit: contain + object-position) — พิกัดจอ */
-function drawnRect(img) {
-  const r = img.getBoundingClientRect();
+function drawnRect(img, mode = 'layout') {
+  const r = rectOfEl(img, mode);
   const nw = img.naturalWidth || 1, nh = img.naturalHeight || 1;
   const s = Math.min(r.width / nw, r.height / nh);
   const w = nw * s, h = nh * s;
@@ -57,8 +63,8 @@ function drawnRect(img) {
 }
 
 /** Visible sprite bounds, excluding transparent padding and respecting CSS mirroring. */
-export async function battleSpriteRect(img) {
-  const raw = await measure(img), d = drawnRect(img);
+export async function battleSpriteRect(img, mode = 'layout') {
+  const raw = await measure(img), d = drawnRect(img, mode);
   const mirrored = getComputedStyle(img).transform.startsWith('matrix(-');
   const b = (mirrored ? mirrorBox(raw) : raw) || { l:0, t:0, w:1, h:1 };
   return { l:d.left + b.l*d.w, t:d.top + b.t*d.h,
@@ -149,7 +155,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
         put(image,{width:`${w}px`,height:`${h}px`,'max-width':'none','max-height':'none','object-fit':'fill'});
         put(root,{position:'absolute',left:`${slot.x-box.l*w}px`,top:`${slot.y-(box.t+box.h)*h}px`,bottom:'auto',
           width:`${w}px`,height:`${h}px`,margin:'0',flex:'none',display:'block','clip-path':'none',
-          'z-index':String(active?30:slot.depth),'pointer-events':'auto',
+          'z-index':root.classList.contains('cam-lit')?'40':String(active?30:slot.depth),'pointer-events':'auto',
           '--turn-step-x':`${steps[i].x}px`,'--turn-step-y':`${steps[i].y}px`,
           '--formation-foot':`${(box.t+box.h)*h}px`,'--formation-head':`${box.t*h}px`,'--formation-mid':`${(box.l+box.w/2)*w}px`,
           '--formation-shadow-width':`${box.w*w*.82}px`,
