@@ -12,7 +12,10 @@ function root() {
     addEventListener(k,f){events.set(k,f);},removeEventListener(k){events.delete(k);},close(){events.get('close')?.();}};
 }
 test('ending plays panorama then father acceptance, using shipped media and posters',()=>{
-  const pages=STORY.ending.pages;assert.equal(pages.length,3);
+  assert.equal(STORY['ending-capture'].pages.length,1);
+  assert.match(STORY['ending-capture'].pages[0].video,/ending-01-v4/);
+  const pages=[...STORY['ending-capture'].pages,...STORY.ending.pages];assert.equal(pages.length,3);
+  assert.equal(STORY.ending.pages.length,2);
   assert.equal(pages[1].videoAspect,1280/544);assert.equal(pages[2].videoAspect,16/9);
   for(const p of pages)for(const path of [p.image,p.video,p.poster].filter(Boolean))assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   assert.match(pages[2].line,/ทำได้ดีมากลูกพ่อ/);
@@ -20,7 +23,6 @@ test('ending plays panorama then father acceptance, using shipped media and post
 });
 test('ending video navigation pauses outgoing clips, keeps manual completion, and falls back on failure',()=>{
   const r=root();let done=0;render(r,STORY.ending,()=>done++);
-  r.querySelector('[data-story-next]').onclick();
   assert.match(r.innerHTML,/<video[^>]*autoplay muted playsinline controls/);
   const first=r.querySelector('video');
   assert.equal(r.querySelector('.intro-comic-frame').style.aspectRatio,String(1280/544));
@@ -33,7 +35,7 @@ test('ending video navigation pauses outgoing clips, keeps manual completion, an
 test('only the post-zone4 ending uses video; boss and deva stories have shipped stills',()=>{
   for(const [key,story] of Object.entries(STORY)) for(const p of story.pages) {
     assert.ok(existsSync(new URL('../'+p.image,import.meta.url)),p.image);
-    if(key==='ending') { assert.ok(p.video); assert.ok(existsSync(new URL('../'+p.video,import.meta.url))); }
+    if(key==='ending'||key==='ending-capture') { assert.ok(p.video); assert.ok(existsSync(new URL('../'+p.video,import.meta.url))); }
     else { assert.equal(p.video,undefined,key); assert.equal(p.videoAspect,undefined,key); }
   }
   const r=root();let done=0;render(r,STORY['cyber-duel'],()=>done++);

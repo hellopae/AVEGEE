@@ -36,6 +36,7 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
       Array.isArray(a.cleared) && a.cleared.length === a.checkpoint &&
       a.cleared.every((id,i) => id === r.checkpoints[i].id)) {
     result.active = { route:r.id, checkpoint:a.checkpoint, cleared:[...a.cleared], defeated:[...new Set([...a.cleared,...(Array.isArray(a.defeated)?a.defeated.filter(id=>r.checkpoints.some(c=>c.id===id)):[])])],
+      guidePosition:a.guidePosition&&Number.isFinite(a.guidePosition.x)&&Number.isFinite(a.guidePosition.y)?{x:a.guidePosition.x,y:a.guidePosition.y}:null,
       position:a.position&&Number.isFinite(a.position.x)&&Number.isFinite(a.position.y)?{x:a.position.x,y:a.position.y}:null,
       roamTime:Number.isFinite(a.roamTime)&&a.roamTime>=0?a.roamTime:0,
       attempt:Number.isSafeInteger(a.attempt) && a.attempt >= 0 ? a.attempt : 0, pending:null };
@@ -50,7 +51,11 @@ export function openDungeonRoutes(g) {
 export function beginDungeon(g, to) {
   const s = state(g), r = openDungeonRoutes(g).find(r => r.to === to);
   if (!r || busy(g) || s.active) return false;
-  s.active = { route:r.id, checkpoint:0, cleared:[], defeated:[], attempt:0, pending:null };
+  const docket=Object.values(g.bossJustice?.ledger||{}).reverse().find(c=>c.phase==='released'&&!c.routeRestored&&c.suspendedRoute?.route===r.id);
+  const saved=docket?.suspendedRoute;
+  const valid=saved&&Number.isInteger(saved.checkpoint)&&saved.checkpoint>=0&&saved.checkpoint<=r.checkpoints.length&&Array.isArray(saved.cleared)&&saved.cleared.length===saved.checkpoint&&saved.cleared.every((id,i)=>r.checkpoints[i]?.id===id);
+  s.active=valid?{...structuredClone(saved),position:null,guidePosition:null,pending:null,pendingIndex:null}:{route:r.id,checkpoint:0,cleared:[],defeated:[],attempt:0,pending:null};
+  if(valid)docket.routeRestored=true;
   return true;
 }
 export function dungeonStatus(g) {

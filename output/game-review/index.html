@@ -2,7 +2,7 @@
 <html lang="th">
 <head><base href="../../"><script>const reviewMemory=new Map();Object.defineProperty(window,"localStorage",{value:{getItem:k=>reviewMemory.get(k)??null,setItem:(k,v)=>reviewMemory.set(k,String(v)),removeItem:k=>reviewMemory.delete(k),clear:()=>reviewMemory.clear(),key:i=>[...reviewMemory.keys()][i]??null,get length(){return reviewMemory.size}}});</script>
 <meta charset="utf-8">
-<meta name="avegee-build" content="20261016-border-nira-v2">
+<meta name="avegee-build" content="20261016-boss-justice-workers-v1">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>อเวจี — นรกโซนสุวรรณภูมิ</title>
 <meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
@@ -2066,7 +2066,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2">
-<link rel="stylesheet" href="src/dungeon-view.css?v=20261016-border-nira-v2"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-border-nira-v2"><link rel="stylesheet" href="src/trial-comment8.css?v=20261015-comment8-r2-l2"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1">
+<link rel="stylesheet" href="src/dungeon-view.css?v=20261016-boss-justice-workers-v1"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-boss-justice-workers-v1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261015-comment8-r2-l2"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1">
 <style>#title,#splash,#enter-button{display:none!important}.review-toolbar{position:fixed;top:0;left:0;right:0;z-index:9000;background:#211820;border-bottom:1px solid #ae874f;display:flex;gap:8px;padding:8px;align-items:center}.review-toolbar small{margin-right:auto}.review-toolbar button{padding:7px;font:13px system-ui;min-height:30px}body{padding-top:48px}</style></head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2284,59 +2284,65 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="importmap">{
   "imports": {
-    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261016-border-nira-v2",
-    "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261016-border-nira-v2",
-    "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-border-nira-v2",
-    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261016-border-nira-v2",
+    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1",
+    "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261016-boss-justice-workers-v1",
     "./src/art.js": "./src/art.js?v=yama-live-20261015",
     "./src/i18n.js": "./src/i18n.js?v=l2",
-    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261016-border-nira-v2",
+    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261016-boss-justice-workers-v1",
     "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=yama-live-20261015-l4a",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
     "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
     "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015",
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books": "./src/yama-sword.js?v=yama-live-20261015",
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015",
-    "./src/town-layout.js": "./src/town-layout.js?v=20261016-border-nira-v2",
-    "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261016-border-nira-v2",
-    "./src/scene.js": "./src/scene.js?v=20261016-border-nira-v2",
-    "./src/town-terrain.js": "./src/town-terrain.js?v=20261016-border-nira-v2",
-    "./src/proximity.js": "./src/proximity.js?v=20261016-border-nira-v2",
-    "./src/town-shade.js": "./src/town-shade.js?v=20261016-border-nira-v2",
-    "./src/town-lighting.js": "./src/town-lighting.js?v=20261016-border-nira-v2",
-    "./src/battle-formation.js": "./src/battle-formation.js?v=20261016-border-nira-v2",
-    "./src/town-scenery.js": "./src/town-scenery.js?v=20261016-border-nira-v2",
-    "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261016-border-nira-v2",
-    "./src/game.js": "./src/game.js?v=20261016-border-nira-v2",
-    "./src/preload.js": "./src/preload.js?v=20261016-border-nira-v2",
-    "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-border-nira-v2",
-    "./src/ui.js": "./src/ui.js?v=20261016-border-nira-v2",
-    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-border-nira-v2",
-    "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261016-border-nira-v2",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261016-border-nira-v2",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261016-border-nira-v2",
-    "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-border-nira-v2",
-    "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261016-border-nira-v2",
-    "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261016-border-nira-v2",
-    "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261016-border-nira-v2",
-    "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261016-border-nira-v2",
-    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261016-border-nira-v2",
-    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261016-border-nira-v2",
-    "./src/data.js": "./src/data.js?v=20261016-border-nira-v2",
-    "./src/battle-turns.js": "./src/battle-turns.js?v=20261016-border-nira-v2",
-    "./src/battle-background.js": "./src/battle-background.js?v=20261016-border-nira-v2",
-    "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261016-border-nira-v2",
-    "./src/frontier.js": "./src/frontier.js?v=20261016-border-nira-v2",
-    "./src/zone-travel.js": "./src/zone-travel.js?v=20261016-border-nira-v2",
-    "./src/npc-stand.js": "./src/npc-stand.js?v=20261016-border-nira-v2",
-    "./src/nira-combat.js": "./src/nira-combat.js?v=20261016-border-nira-v2"
+    "./src/town-layout.js": "./src/town-layout.js?v=20261016-boss-justice-workers-v1",
+    "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261016-boss-justice-workers-v1",
+    "./src/scene.js": "./src/scene.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-terrain.js": "./src/town-terrain.js?v=20261016-boss-justice-workers-v1",
+    "./src/proximity.js": "./src/proximity.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-shade.js": "./src/town-shade.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-lighting.js": "./src/town-lighting.js?v=20261016-boss-justice-workers-v1",
+    "./src/battle-formation.js": "./src/battle-formation.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-scenery.js": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1",
+    "./src/game.js": "./src/game.js?v=20261016-boss-justice-workers-v1",
+    "./src/preload.js": "./src/preload.js?v=20261016-boss-justice-workers-v1",
+    "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1",
+    "./src/ui.js": "./src/ui.js?v=20261016-boss-justice-workers-v1",
+    "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1",
+    "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261016-boss-justice-workers-v1",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261016-boss-justice-workers-v1",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261016-boss-justice-workers-v1",
+    "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261016-boss-justice-workers-v1",
+    "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261016-boss-justice-workers-v1",
+    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261016-boss-justice-workers-v1",
+    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261016-boss-justice-workers-v1",
+    "./src/data.js": "./src/data.js?v=20261016-boss-justice-workers-v1",
+    "./src/battle-turns.js": "./src/battle-turns.js?v=20261016-boss-justice-workers-v1",
+    "./src/battle-background.js": "./src/battle-background.js?v=20261016-boss-justice-workers-v1",
+    "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261016-boss-justice-workers-v1",
+    "./src/frontier.js": "./src/frontier.js?v=20261016-boss-justice-workers-v1",
+    "./src/zone-travel.js": "./src/zone-travel.js?v=20261016-boss-justice-workers-v1",
+    "./src/npc-stand.js": "./src/npc-stand.js?v=20261016-boss-justice-workers-v1",
+    "./src/nira-combat.js": "./src/nira-combat.js?v=20261016-boss-justice-workers-v1",
+    "./src/boss-guides.js": "./src/boss-guides.js?v=20261016-boss-justice-workers-v1",
+    "./src/boss-justice.js": "./src/boss-justice.js?v=20261016-boss-justice-workers-v1",
+    "./src/workers.js": "./src/workers.js?v=20261016-boss-justice-workers-v1",
+    "./src/worker-ui.js": "./src/worker-ui.js?v=20261016-boss-justice-workers-v1",
+    "./src/story.js": "./src/story.js?v=20261016-boss-justice-workers-v1",
+    "./src/final-event.js": "./src/final-event.js?v=20261016-boss-justice-workers-v1"
   }
 }</script>
-<script type="module" src="src/preload.js?v=20261016-border-nira-v2"></script>
+<script type="module" src="src/preload.js?v=20261016-boss-justice-workers-v1"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js"></script>
+<script type="module" src="src/ui.js?v=20261016-boss-justice-workers-v1"></script>
 <div class="review-toolbar"><small>AVEGEE · ตรวจระบบ · ใช้เซฟในหน่วยความจำ</small><select id="review-biome" aria-label="ฉากต่อสู้"><option value="">เมือง</option><option value="volcano">ภูเขาไฟ</option><option value="ice">น้ำแข็ง</option><option value="forest">ป่า</option></select><button id="review-battle">คิวต่อสู้</button><button id="review-trial">สอบสวน</button><button id="review-dungeon">ดันเจี้ยน</button><button id="review-port">ท่าเรือ</button><a href="output/zone1-2d/index.html">แผนที่</a></div><script type="module">
-import {openBattle,openDungeon,openHarbour,openTrial} from './src/ui.js?v=20261016-border-nira-v2';
+import {openBattle,openDungeon,openHarbour,openTrial} from './src/ui.js?v=20261016-boss-justice-workers-v1';
 import {DUNGEON_CHECKPOINTS} from './src/dungeon-view.js';
 import {FRONTIER,MOB,STATIONS} from './src/data.js';
 const g=window.G;g.save=()=>true;g.coin=10000;

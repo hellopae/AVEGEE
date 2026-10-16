@@ -1,3 +1,4 @@
+import {bossJusticeCase,interrogateBoss,mirrorBoss,bossJusticeAnswer,sentenceBoss,advanceBossJustice,releaseBoss} from '../src/boss-justice.js';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { syncSceneZone, CREW, SPOTS } from '../src/data.js';
@@ -34,4 +35,14 @@ export function acknowledge(g) {
 }
 export function clearMinions(g) {
   for (let i=1;i<=4;i++) { assert.ok(g.startFinalEncounter(`minion:${i}`)); win(g); g.endBattle(); acknowledge(g); }
+}
+
+export function finishBossJustice(g) {
+  assert.equal(g.finalEvent.phase,'justice');assert.equal(g.gameCompleted,false);
+  while(g.storyQueue.length)g.completeStory();
+  interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),false);
+  mirrorBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);
+  for(let i=0;i<2000&&bossJusticeCase(g)?.phase!=='sentenceScene';i++)advanceBossJustice(g,100);
+  assert.equal(bossJusticeCase(g).phase,'sentenceScene');assert.equal(g.gameCompleted,false);
+  assert.equal(releaseBoss(g),true);
 }

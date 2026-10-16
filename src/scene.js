@@ -1,3 +1,5 @@
+import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
+import {zoneWorkers,drawWorker} from './workers.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
@@ -318,6 +320,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
   // L1: actors on the Zone 1 map get a cast shadow on the ground and go darker inside building / tree shadows.
+  const justice=bossJusticeCase(g);
   const actorSpots = [];
   const shade = (x, y, h, fn) => town ? withTownShade(ctx, x, y, h, fn) : fn(ctx);
   const spot_ = (x, y, h) => { if (town) actorSpots.push([x, y, h]); };
@@ -392,6 +395,29 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         });
       });
     }
+  }
+
+  // Hired assistants share actor depth and ground collision, but never enter combat parties.
+  for(const actor of bossJusticeActors(g)) {
+    const h=actor.id==='justice-boss'?CREW_H*1.2:CREW_H;
+    spot_(actor.x,actor.y,h);
+    at(actor.y+2,()=>shade(actor.x,actor.y,h,cx=>{
+      drawStandee(cx,actor.art,actor.x,actor.y,h,t,'⚖️',1,!!actor.moving,actor.sourceZone);
+      if(actor.bound){
+        cx.save();cx.strokeStyle='#dfbf78';cx.lineWidth=3.5;cx.setLineDash([5,2]);
+        for(const slope of [-1,1]){cx.beginPath();cx.moveTo(actor.x-h*.2,actor.y-h*(slope<0?.48:.62));cx.lineTo(actor.x+h*.2,actor.y-h*(slope<0?.62:.48));cx.stroke();}
+        cx.restore();
+      }
+      mapName(cx,actor.name,actor.x,actor.y+12,'#ffe2a8');
+      if(actor.id==='justice-boss'&&justice?.phase==='punishment'){
+        cx.save();cx.strokeStyle='#ffd279';cx.globalAlpha=.5+.4*Math.sin(t/110);cx.lineWidth=2;
+        cx.beginPath();cx.ellipse(actor.x,actor.y-h*.45,h*.45,h*.6,0,0,Math.PI*2);cx.stroke();cx.restore();
+      }
+    }));
+  }
+  for (const worker of (rescue ? [] : zoneWorkers(g))) {
+    spot_(worker.x,worker.y,CREW_H*.85);
+    at(worker.y+1,()=>shade(worker.x,worker.y,CREW_H*.85,c=>drawWorker(c,worker,t,CREW_H*.85)));
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -470,7 +496,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
-  if (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone]) {
+  if (!(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
@@ -549,6 +575,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of (rescue ? [] : g.crew)) {
+    if(justice && (c.k===justice.pick?.crew || c.k==='nira' && ['dais','trial'].includes(justice.phase)))continue;
     if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
     if (c.x == null || c.escort) continue;
     const motion = actorWalkMotion(c, t, g.zone);

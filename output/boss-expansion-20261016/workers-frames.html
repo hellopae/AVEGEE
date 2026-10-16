@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><base href="../../"><title>Worker animation sampling QA</title>
+<style>body{background:#151017;color:#edd7ae;font:16px system-ui;margin:16px}h1{font-size:20px;margin:0 0 12px}canvas{width:1536px;height:1152px;background:#211920;border:1px solid #795d3e}</style>
+<h1>Actual runtime worker sprites · 4 zones × 4 animation rows × 4 frames</h1><canvas id="frames" width="1536" height="1152"></canvas>
+<script type="module">
+import {drawWorker,workerSheet} from './src/workers.js';
+const zones=['th','asia','west','cyberhell'],canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d');
+await Promise.all(zones.map(homeZone=>new Promise(resolve=>{const image=new Image();image.onload=resolve;image.onerror=()=>{throw Error(workerSheet(homeZone));};image.src=workerSheet(homeZone);})));
+for(const homeZone of zones)drawWorker(ctx,{homeZone,x:0,y:0,face:1},0,103);
+await new Promise(resolve=>setTimeout(resolve,500));ctx.clearRect(0,0,1536,1152);
+for(const [z,homeZone]of zones.entries()){
+ const zx=(z%2)*768,zy=Math.floor(z/2)*576;ctx.fillStyle='#f2d79b';ctx.font='20px sans-serif';ctx.fillText(homeZone,zx+15,zy+25);
+ for(let row=0;row<4;row++)for(let col=0;col<4;col++){
+  const x=zx+col*192,y=zy+36+row*135;ctx.strokeStyle='#493647';ctx.strokeRect(x,y,192,135);ctx.font='12px sans-serif';ctx.fillStyle='#ddc8a5';ctx.fillText(`${['idle','walk','repair','escort'][row]} ${col+1}`,x+8,y+16);
+  drawWorker(ctx,{homeZone,x:x+96,y:y+128,job:row===2?{kind:'repair'}:row===3?{kind:'escort'}:null,arrived:true,moving:row===1,face:1},col*160,103);
+ }
+}
+document.body.dataset.ready='true';
+</script>

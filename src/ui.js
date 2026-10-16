@@ -1,3 +1,6 @@
+import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
+import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
+import {workersPanelHtml,bindWorkersPanel} from './worker-ui.js';
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
@@ -178,7 +181,9 @@ function updateMapCamera(now) {
   mapCam.init = true;
   mapCam.z += (target - mapCam.z) * blend;
   // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
-  const wantX = mapCam.level > 0 ? g.player.x : SCENE.w / 2, wantY = mapCam.level > 0 ? g.player.y : SCENE.h / 2;
+  const court=bossJusticeCase(g),escortView=court&&['escort','punishment','return','sentenceScene'].includes(court.phase)?bossJusticeActors(g).find(a=>a.id==='justice-boss'):null;
+  const focus=escortView||g.player;
+  const wantX = mapCam.level > 0 ? focus.x : SCENE.w / 2, wantY = mapCam.level > 0 ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
   const cw = stage.clientWidth, ch = stage.clientHeight, bw = box.offsetWidth, bh = box.offsetHeight;
@@ -2340,6 +2345,7 @@ function playActionCutscene(k, ultimate = null) {
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 function openTrial(initialError = '') {
+  if(g.bossJustice?.active && bossJusticeActive(g)){openBossJustice();return;}
   if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s) return;
@@ -2706,7 +2712,9 @@ function openNiraOffice() {
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article></div>
+      ${workersPanelHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
+    bindWorkersPanel(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });
@@ -2758,6 +2766,18 @@ function openMerchant() {
 }
 
 /** G3b — คุยกับบอสในฉากชายแดน: บทพูด (ตอนคุย + ชวน) · รางวัล · ปุ่มประลอง 10 ระลอก / ประลองต่อ / ประลองซ้ำ */
+function runBossGuideStory(beat,onDone) {
+  const queued=beat==='farewell'?g.farewellBossGuide():g.inviteBossGuide();
+  if(!queued){onDone?.();return;}
+  if(dlg.open)dlg.close();g.save();g.onChange();
+  const resume=()=>{
+    if(g.over||g.battle)return;
+    if(dlg.open||storyPlaying||g.storyQueue.length||g.pendingReward||rewardOpen){setTimeout(resume,200);return;}
+    onDone?.();
+  };
+  setTimeout(resume,200);
+}
+
 function openChallenge(onReturn) {
   const back = () => {
     if (dlg.open) return;
@@ -2911,6 +2931,7 @@ function openFrontierWalk(invasionKey = null) {
     <div class="frw-fullscreen">
       <div class="frw-map"><canvas id="frw-cv" width="1376" height="768"></canvas>
         <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
+        <button class="frw-fab" id="frw-guide" type="button" hidden>คุยกับผู้ตรวจการ · ไปดินแดนใหม่</button>
         <button class="frw-fab" id="frw-challenge" type="button" hidden></button>
         <button class="frw-fab frw-gate" id="frw-gate" type="button" hidden>กลับเข้า${esc(gateName)}</button>
         <button class="frw-fab" id="frw-exit" type="button" hidden>ออกนอกชายแดน · เส้นทางโซน 2</button>
@@ -2936,12 +2957,13 @@ function openFrontierWalk(invasionKey = null) {
   const gate = dlg.querySelector('#frw-gate');
   const nira = dlg.querySelector('#frw-nira');
   const challenge = dlg.querySelector('#frw-challenge');
+  const guide=dlg.querySelector('#frw-guide');
   const exit = dlg.querySelector('#frw-exit');
   if(!openDungeonRoutes(g).length)exit.textContent='ทางนอกชายแดน · ยังไม่เปิด';
   else if(g.zone!=='th')exit.textContent='ออกนอกชายแดน · ดินแดนถัดไป';
   const cv2 = dlg.querySelector('#frw-cv');
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, exit, invasionKey });
+  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, exit, guide, invasionKey });
   FW.start();
   const menu = fn => {
     const zone=g.zone;
@@ -2954,6 +2976,7 @@ function openFrontierWalk(invasionKey = null) {
     };
     dlg.addEventListener('close',back);
   };
+  guide.onclick=()=>{if(!FW.canTalkGuide())return;FW.destroy();runBossGuideStory('welcome',()=>openFrontierWalk());};
   challenge.onclick = () => {
     if (!FW.canTalkChallenge()) return;
     FW.destroy();
@@ -2985,6 +3008,7 @@ function openFrontierWalk(invasionKey = null) {
   // แล้วกลับมาสู้ต่อได้โดยไม่ต้องเริ่มใหม่ ตัวที่ปราบไปแล้วก็ไม่ฟื้นคืนชีพ (ข้อ 8 ในใบงานอนุญาตแค่
   // "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่กดปุ่มนี้)
   exit.onclick = () => {
+    if(g.zone!=='th'&&g.bossGuideWaiting?.()){FW.destroy();runBossGuideStory('welcome',()=>openFrontierWalk());return;}
     const route=openDungeonRoutes(g)[0];
     if(!route){
       FW.destroy();
@@ -3019,7 +3043,7 @@ function afterBreachBattle(_, done) {
   const zone = g.zone;
   const go = () => {
     if (g.over || g.battle || g.zone !== zone) return;
-    if (dlg.open || storyPlaying || g.storyQueue.length || g.pendingLevel || g.pendingZone) { setTimeout(go, 400); return; }
+    if (dlg.open || storyPlaying || g.storyQueue.length || g.pendingLevel || g.pendingZone || g.bossJustice?.active) { setTimeout(go, 400); return; }
     openFrontierWalk();
   };
   setTimeout(go, 0);
@@ -3167,14 +3191,14 @@ function openBattle(after) {
       const ok = !!it && (consumable ? (g.inventory[k] || 0) > 0 && !!medicineResult(k,b.youHp,b.youMax,mp,g.mpMax,'battle')
         : !!((g.abilities?.[it.power] || (pw && !g.powerLocked(pw))) && mp >= BATTLE.mpCost[it.power]));
       const note = consumable ? `×${g.inventory[k] || 0} · ${itemText(k, 'desc')}` : `${t('battle.mp')} ${BATTLE.mpCost[it?.power] || 0}`;
-      return battleChoice(k, icon, consumable ? itemName(k) : (it?.name || k), ok, note);
+      return battleChoice(k, icon, (consumable ? itemName(k) : (it?.name || k)) + (['ice','hypno'].includes(k)?' · ทุกเป้าหมาย':''), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
-      + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
+      + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม · ทุกเป้าหมาย', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
       + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `${t('battle.mp')} ${BATTLE.mpCost.rage}`) : '')
-      + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาคิวรี', mp >= BATTLE.mpCost.spear, `${t('battle.mp')} ${BATTLE.mpCost.spear}`) : '')
+      + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาลคีรี · ทุกเป้าหมาย', mp >= BATTLE.mpCost.spear, `${t('battle.mp')} ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
       + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
     const currentTurn = !prepOn ? g.beginBattleTurns() : null;
@@ -3817,13 +3841,23 @@ function openDungeon() {
   let destroy=null;
   modal('<div id="dungeon-root"></div>',d=>{
     destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
+      onGuide:()=>{destroy?.();destroy=null;runBossGuideStory('welcome',()=>openDungeon());},
       onChallenge:()=>{destroy?.();destroy=null;openChallenge(()=>{if(!g.pendingRecovery)openDungeon();});},
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
         if(g.startDungeonEncounter(opts?.chased?opts:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
         else{g.dungeonChaseCooldown=true;openDungeon();}
       },
-      onArrival:to=>{destroy?.();destroy=null;if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();},
+      onArrival:to=>{
+        destroy?.();destroy=null;
+        const arrive=()=>{if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();};
+        if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
+        else if(g.bossGuideWaiting?.()){
+          const place=dungeonStatus(g)?.route.id==='th:asia'?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
+          modal(`<h2>ผู้ตรวจการรอที่${place}</h2><p>ย้อนกลับไปคุยกับผู้ตรวจการที่${place} เพื่อให้เขาพาเดินทางไปยังดินแดนใหม่</p><button data-return-guide>กลับไปตามหา</button>`,d=>{d.querySelector('[data-return-guide]').onclick=()=>openDungeon();});
+        }
+        else arrive();
+      },
       onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())openFrontierWalk();},
       onMenu:()=>{destroy?.();destroy=null;openBag();
         const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
@@ -4349,6 +4383,7 @@ cv.onmousemove = e => {
 };
 cv.onmouseleave = () => { hover = null; };
 cv.onclick = e => {
+  if(g.bossJustice?.active && bossJusticeActive(g))return;
   const [sx, sy] = toScene(cv, e);
   if (!insideScene(sx, sy)) return;
   onSceneClick(sx, sy);
@@ -4467,6 +4502,7 @@ addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 addEventListener('blur', () => { for (const key in KEY) KEY[key] = false; });
 
 function keyWalk(dt) {
+  if(bossJusticeActive(g))return;
   const P = g.player, sp = 0.32 * dt;
   let dx = 0, dy = 0;
   if (KEY.a || KEY.arrowleft) dx -= 1;
@@ -5201,9 +5237,9 @@ function openBattleReward() {
   for (const it of r.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
   for (const id of r.weapons || []) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
   for (const k of r.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
-  if (!r.items.length && !r.abilities.length && !(r.weapons || []).length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
-  modal(`<h2>${esc(t('reward.title'))}</h2>
-    <p class="reward-who">${esc(r.who || '')}</p>
+  if (!r.guideZone && !r.items.length && !r.abilities.length && !(r.weapons || []).length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
+  modal(`<h2>${esc(r.title || t('reward.title'))}</h2>
+    <p class="reward-who">${esc(r.who || '')}</p>${r.description?`<p>${esc(r.description)}</p>`:''}
     <div class="reward-list">${rows.join('')}</div>
     <div class="row"><button class="gold" data-close>${esc(t('reward.claim'))}</button></div>`, null, 'battle-reward');
   // ระวัง: event 'close' ของฉากต่อสู้ที่เพิ่งปิด (dlg.close() ใน finish) มาถึง "หลัง" กล่องนี้เปิดแล้ว (ยิงแบบ async)
@@ -5214,12 +5250,50 @@ function openBattleReward() {
     dlg.removeEventListener('close', closed);
     rewardOpen = false;
     if (r.encounter) { if (!g.acknowledgeFinalReward()) { g.onChange(); return; } }
-    else g.pendingReward = null;
+    else {if(r.guideZone){acknowledgeBossGuideGrant(g,r.guideZone);g.save();}g.pendingReward = null;}
     const next = rewardAfter; rewardAfter = null;
     g.onChange();                                   // ปล่อยหน้าต่างถัดไปในคิว (เลื่อนขั้น/โซน/...)
     if (next) { if (dlg.open) onDlgClose(next); else next(); }
   };
   dlg.addEventListener('close', closed);
+}
+
+function openBossJustice() {
+  const c=bossJusticeCase(g);if(!c||!['dais','trial','sentenceScene'].includes(c.phase))return;
+  const persist=()=>{g.save();};
+  if(c.phase==='sentenceScene') {
+    modal(`<div class="intro-comic"><div class="intro-comic-frame"><img src="img/boss-justice/final-sentence-v1.webp" alt="ผู้คุมพาบอสโซน 4 ไปรับโทษ"></div><div class="intro-comic-caption"><h2>คำตัดสินสุดท้าย</h2><p>ผู้คุมรับหมายและพาบอสโซน 4 ไปรับโทษตามคำตัดสินของยมบาทน้อย นิราบันทึกคดีเรียบร้อยแล้ว</p></div><button class="gold" id="justice-end">ดำเนินเรื่องต่อ</button></div>`,d=>{
+      d.querySelector('#justice-end').onclick=()=>{if(releaseBoss(g)){persist();d.close();setTimeout(()=>g.onChange(),0);}};
+    },'intro-comic-dialog');return;
+  }
+  const paint=()=>{
+    const dests=bossJusticeStations(g),crew=bossJusticeCrew(g),a=bossJusticeAnswer(g),p=c.pick;
+    const image=c.final?'img/boss-justice/final-bound-v1.webp':artUrl('BG-Turn-Base','webp');
+    const selected=(value,current)=>value===current?'selected':'';
+    const valid=p.station&&p.crew&&Number.isInteger(p.intensity)&&c.asked&&(!c.final||c.mirror&&p.station===a.station&&p.crew===a.crew&&p.intensity===5);
+    const choices=c.phase==='dais'?`<p>นิรา: จับกุม ${esc(c.name)} มาถึงแท่นตัดสินแล้ว ขอให้ท่านสอบสวนและเลือกบทลงโทษ</p><button id="justice-enter" class="gold">เริ่มสอบสวน</button>`:`<div class="row"><button id="justice-ask">${c.asked?'ถามเพิ่มเติม':'สอบสวนข้อกล่าวหา'}</button><button id="justice-mirror" ${c.asked?'':'disabled'}>ใช้กระจกวิเศษ${c.final?' · จำเป็น':''}</button></div>
+      ${c.asked?`<p>นิราอ่านสำนวน: ใช้อำนาจข่มเหงวิญญาณ ปิดกั้นเส้นทางชายแดน และก่อความเดือดร้อน บอสยอมรับต่อหน้าศาลแล้ว</p>`:'<p>สอบสวนก่อนออกหมายลงทัณฑ์</p>'}
+      ${c.mirror?`<p class="hint" data-justice-answer>กระจกวิเศษเฉลย: ${esc(dests.find(s=>s.def.k===a.station)?.def.name||'')} · ผู้คุม ${esc(crew.find(v=>v.k===a.crew)?.name||'')} · ความแรงสูงสุด ${INTENSITY[5]}</p>`:''}
+      <div class="row"><label>สถานที่ลงทัณฑ์ <select data-justice-pick="station"><option value="">เลือกสถานที่</option>${dests.map(s=>`<option value="${s.def.k}" ${selected(s.def.k,p.station)}>${esc(s.def.name)}</option>`).join('')}</select></label>
+      <label>ผู้คุม <select data-justice-pick="crew"><option value="">เลือกผู้คุม</option>${crew.map(v=>`<option value="${v.k}" ${selected(v.k,p.crew)}>${esc(v.name)}</option>`).join('')}</select></label>
+      <label>ความแรง <select data-justice-pick="intensity"><option value="">เลือกความแรง</option>${[1,2,3,4,5].map(n=>`<option value="${n}" ${selected(n,p.intensity)}>${INTENSITY[n]}</option>`).join('')}</select></label></div>
+      ${c.final?'<p>คดีสุดท้ายต้องใช้กระจกวิเศษ แล้วเลือกสถานที่ ผู้คุม และความแรงสูงสุดตามที่กระจกเฉลย</p>':''}
+      <button id="justice-sentence" class="gold" ${valid?'':'disabled'}>ออกหมาย · ให้ผู้คุมพาไปลงทัณฑ์</button>`;
+    dlg.innerHTML=`<div class="boss-justice-court" data-justice-phase="${c.phase}"><h2>แท่นตัดสิน · ${esc(c.name)}</h2><div style="position:relative;min-height:240px;background:linear-gradient(transparent,#160d13),url('${image}') center/cover;border:1px solid #a78143;border-radius:12px;display:flex;align-items:flex-end;justify-content:center;gap:65px;padding:24px">${c.final?'':`<img style="height:140px" src="${artUrl('hero-yama')}" alt="ยมบาทน้อย"><div style="position:relative"><img style="height:140px" src="${artUrl(c.art)}" alt="${esc(c.name)} ถูกจับมัด"><span style="position:absolute;left:10%;right:10%;top:55%;border-top:9px double #d1b798;transform:rotate(-15deg)" aria-hidden="true"></span></div><img style="height:140px" src="${artUrl('crew-nira')}" alt="นิรา">`}</div>${choices}</div>`;
+    dlg.querySelector('#justice-enter')?.addEventListener('click',()=>{c.phase='trial';persist();paint();});
+    dlg.querySelector('#justice-ask')?.addEventListener('click',()=>{interrogateBoss(g);persist();paint();});
+    dlg.querySelector('#justice-mirror')?.addEventListener('click',()=>{mirrorBoss(g);persist();paint();});
+    dlg.querySelectorAll('[data-justice-pick]').forEach(el=>el.onchange=()=>{c.pick[el.dataset.justicePick]=el.dataset.justicePick==='intensity'?Number(el.value)||null:el.value||null;persist();paint();});
+    dlg.querySelector('#justice-sentence')?.addEventListener('click',()=>{if(sentenceBoss(g,c.pick)){persist();dlg.close();setTimeout(()=>g.onChange(),0);}});
+  };
+  pauseForDlg();openDlg('boss-justice-dialog');paint();
+}
+function showBossJusticeMapStatus() {
+  const c=bossJusticeCase(g);let el=ov.querySelector('[data-justice-status]');
+  if(!c||!['escort','punishment','return'].includes(c.phase)){el?.remove();return false;}
+  if(!el){el=document.createElement('div');el.dataset.justiceStatus='';el.className='final-continue';el.style.cssText='position:absolute;bottom:100px;left:50%;transform:translateX(-50%);padding:12px 22px;background:#27171f;border:1px solid #bc9250;border-radius:12px;color:#ffe0a4;pointer-events:none';ov.appendChild(el);}
+  el.textContent=c.phase==='escort'?`ผู้คุมกำลังพา ${c.name} ไปลงทัณฑ์`:c.phase==='punishment'?`${c.name} กำลังรับทัณฑ์ · ความแรง ${INTENSITY[c.pick.intensity]}`:`ผู้คุมกำลังปล่อย ${c.name} กลับชายแดน`;
+  return true;
 }
 
 function showPendingStory() {
@@ -5312,6 +5386,7 @@ g.onChange = () => {
     return;
   }
   g.syncDiscoveries();
+  if(!g.pendingReward)g.pendingReward=pendingBossGuideGrant(g);
   refresh();
   if (g.battle?.kind === 'devaTest' && g.devaVisits?.th?.phase === 'fighting' && !dlg.open) { openBattle(); return; }
   if (storyPlaying) return;
@@ -5345,6 +5420,11 @@ g.onChange = () => {
     }
     return;
   }
+  if (!g.battle && !dlg.open && g.bossJustice?.active && bossJusticeActive(g)) {
+    const c=bossJusticeCase(g);
+    if (['dais','trial','sentenceScene'].includes(c.phase)) { openBossJustice(); return; }
+    if (showBossJusticeMapStatus()) return;
+  } else if (g.bossJustice && !bossJusticeActive(g)) ov.querySelector('[data-justice-status]')?.remove();
   if (!g.battle && !dlg.open && g.finalEventOnMap()) {
     if (g.beginFinalArrival()) { refresh(); return; }
     const s = g.finalEventState();

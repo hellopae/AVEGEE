@@ -7,7 +7,7 @@ function fight(hp=100) {
  g.startBattle({id:700,name:'คู่ซ้อม',who:'คู่ซ้อม',sp:1,deserved:20});
  g.battle.foes=[0,1,2].map(i=>({id:`foe-${i}`,hp,maxHp:hp,atk:[7+i,7+i],stun:0,confuse:0,who:`คู่ซ้อม ${i}`,sp:1}));
  g.battle.selectedFoeId='foe-1';g.battle.counterIndex=0;
- g.mp=g.mpMax=100;g.abilities.ice=g.abilities.windFan=g.abilities.hypno=true;
+ g.mp=g.mpMax=100;g.abilities.ice=g.abilities.windFan=g.abilities.hypno=g.abilities.valkyrieSpear=true;
  return g;
 }
 test('ice deals immediate damage to all living foes and suppresses exactly one counter turn',()=>{
@@ -43,4 +43,18 @@ test('area kills finish battle; hypnosis handles simultaneous kills and a single
  }
  const g=fight();g.battle.foes=g.battle.foes.slice(1,2);
  g.battleAct('hypno');assert.equal(g.battle.foes[0].hp,92);
+});
+
+test('Valkyrie spear hits every living target at the original damage, MP cost and cooldown',async()=>{
+ const {yamaSkillRemaining,YAMA_SKILL_SECONDS}=await import('../src/yama-cooldown.js');
+ const g=fight(200),b=g.battle;b.foes.push({id:'down',hp:0,maxHp:200});
+ assert.equal(g.battleAct('valkyrieSpear'),true);
+ assert.deepEqual(b.foes.map(f=>f.hp),[112,112,112,0]);assert.equal(b.dmg.area,true);
+ assert.equal(b.dmg.foeHits.length,3);assert.equal(g.mp,100-BATTLE.mpCost.spear);
+ assert.equal(yamaSkillRemaining(b,'valkyrieSpear'),YAMA_SKILL_SECONDS.valkyrieSpear);
+ const mp=g.mp;assert.equal(g.battleAct('valkyrieSpear'),false);assert.equal(g.mp,mp);
+});
+test('spear area kills all targets and single-target sword/fire stay unchanged',()=>{
+ const spear=fight(40);spear.battleAct('valkyrieSpear');assert.equal(spear.battle.over,'win');
+ for(const key of ['atk','fire']){const g=fight(1000),b=g.battle;g.battleAct(key);assert.equal(b.foes[0].hp,1000);assert.equal(b.foes[2].hp,1000);assert.ok(b.foes[1].hp<1000);assert.equal(b.dmg.area,false);}
 });

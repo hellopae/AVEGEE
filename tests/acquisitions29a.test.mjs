@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { createGame, primarySinOf } from '../src/game.js';
 import { ALL_CASES } from '../src/cases.js';
 import { ITEMS, POWERS, ZONES, LEVELS } from '../src/data.js';
+import { pendingBossGuideGrant } from '../src/boss-guides.js';
 import { ABILITY_REWARDS } from '../src/story.js';
 const ui = fs.readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
 const extract = (name, next) => ui.slice(ui.indexOf(`function ${name}(`), ui.indexOf(next, ui.indexOf(`function ${name}(`)));
@@ -136,7 +137,7 @@ test('outfit cards use the same ownership rule as equipping, show a visible lock
 test('ordinary close dispatch preserves reward and level priority before explanations', () => {
   const g=createGame(), calls=[];
   g.discoveryQueue=['item:lotus']; g.syncDiscoveries=()=>{};
-  const ctx={g,refresh(){},storyPlaying:false,storyScheduled:false,rewardOpen:false,
+  const ctx={g,pendingBossGuideGrant,refresh(){},storyPlaying:false,storyScheduled:false,rewardOpen:false,
     dlg:{open:false},openBattleReward:()=>calls.push('reward'),openDiscovery:()=>calls.push('discovery'),
     openLevelUp:()=>calls.push('level'),drawCoach(){},setTimeout(){}};
   vm.createContext(ctx);

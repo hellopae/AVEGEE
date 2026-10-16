@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { createGame } from '../src/game.js';
-import { finalGame, win, roundTrip } from './final-event-helpers.mjs';
+import { finalGame, win, roundTrip, finishBossJustice } from './final-event-helpers.mjs';
 import { finalEventActors, finalPreparationTargets, migrateFinalEvent } from '../src/final-event.js';
 import { devaMapActors } from '../src/deva-map.js';
 import { breachApproachActors } from '../src/breach-approach.js';
@@ -46,7 +46,9 @@ test('E5 a→e: warp before approach/preparation, four waves, reinforcement map,
   for(const z of ['th','asia','west','cyberhell']) encounter(g,`ruler:${z}`);
   g=roundTrip(g);story(g,'cyber-duel',images);assert.equal(g.finalEvent.presentation,'prepare');
   assert.deepEqual(finalEventActors(g).filter(a=>!a.reinforcement).map(a=>a.id),['boss']);
-  g.dismissFinalPreparation();encounter(g,'boss');story(g,'ending',images);
+  g.dismissFinalPreparation();encounter(g,'boss');story(g,'ending-capture',images);
+  assert.equal(g.gameCompleted,false);
+  finishBossJustice(g);story(g,'ending',images);
   assert.deepEqual(images,['story-cyberhell-01-v2.png','story-cyberhell-reinforcements-01.png',
     'story-cyberhell-reinforcements-02.png','story-cyberhell-02-v3.png','story-cyberhell-03-v4.png',
     'story-ending-01-v4.png','story-ending-02-v3.png','story-ending-03-v1.png']);

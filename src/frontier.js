@@ -1,3 +1,4 @@
+import {bossGuideWaiting} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
@@ -90,15 +91,29 @@ function label(ctx, text, x, y, size, color) {
 /** แผนที่ชายแดนหนึ่งโซน — เรียก destroy() ทุกครั้งที่ปิดหน้า/จะไปสู้ ไม่งั้นลูปเฟรมค้าง
  *  cv = canvas · g = instance เกม · opts = { bg, kinds (MOB.kinds ที่กรองแล้วของโซนนี้),
  *  wave, alive, fab (ปุ่ม DOM "เริ่มต่อสู้" ที่ ui.js สร้างไว้ให้ — ไฟล์นี้แค่โชว์/ซ่อน/จัดตำแหน่ง) } */
+/** A sentenced frontier captain returns as a friendly post NPC, never as another spawned foe. */
+export function releasedFrontierBoss(g, { guide = false, invasion = false } = {}) {
+  if(invasion || g.bossJustice?.active)return null;
+  const cases=Object.values(g.bossJustice?.ledger||{});
+  const c=cases.reverse().find(c=>c.zone===g.zone&&c.phase==='released'&&!c.final&&
+    (c.frontierBoss || /^boss-frontier(?:-|$)/.test(c.art||'')));
+  if(!c)return null;
+  const post=guide?{x:.64,y:.60}:CHALLENGE_STAND[g.zone];
+  if(!post)return null;
+  return {id:`released:${c.id}`,docket:c.id,art:c.art,name:c.name,sourceZone:c.zone,...post};
+}
+
 export function makeFrontierWalk(cv, g, opts) {
   const {GATE,NIRA,GUARD} = frontierAnchors(g.zone);
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
-  const { bg, kinds, wave, alive, fab, gate, nira, challenge, exit } = opts;
+  const { bg, kinds, wave, alive, fab, gate, nira, challenge, exit, guide } = opts;
   const invasion = breachApproachActors(g.zone, opts.invasionKey);
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
-  const challengeBoss = g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  const guideBoss=g.zone!=='th'&&!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
+  const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  const releasedBoss=releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
   let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);
@@ -276,7 +291,12 @@ export function makeFrontierWalk(cv, g, opts) {
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
-    if (challengeBoss) acts.push({ y:challengeBoss.y, fn:() => {
+    if(guideBoss)acts.push({y:guideBoss.y,fn:()=>{drawStandee(ctx,'zone-boss',px(guideBoss.x),py(guideBoss.y),U*MOB_H*1.5,t,'👑',1,false,g.zone);}});
+    if(releasedBoss)acts.push({y:releasedBoss.y,fn:()=>{
+      drawStandee(ctx,releasedBoss.art,px(releasedBoss.x),py(releasedBoss.y),U*MOB_H*1.5,t,'👹',1,false,releasedBoss.sourceZone);
+      label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,U*.024,'#c0e6ba');
+    }});
+    if (challengeBoss && !releasedBoss) acts.push({ y:challengeBoss.y, fn:() => {
       drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * MOB_H * 1.5, t, '👹');
       label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, U * .024, '#ffd27a');
     } });
@@ -305,6 +325,7 @@ export function makeFrontierWalk(cv, g, opts) {
         }
       }
     }
+    if(guide){guide.hidden=!guideBoss||Math.hypot(P.x-guideBoss.x,P.y-guideBoss.y)>.09;if(!guide.hidden){guide.style.left=`${px(guideBoss.x)/W*100}%`;guide.style.top=`${(py(guideBoss.y)-U*MOB_H*1.5)/H*100}%`;}}
     if (challenge) {
       challenge.hidden = !challengeBoss || !g.challengeCanTalk(P);
       if (!challenge.hidden) {
@@ -344,7 +365,9 @@ export function makeFrontierWalk(cv, g, opts) {
 
   const api = {
     nearId: () => nearId,
+    canTalkGuide:()=>!!guideBoss&&Math.hypot(P.x-guideBoss.x,P.y-guideBoss.y)<=.09,
     canTalkChallenge: () => !!challengeBoss && g.challengeCanTalk(P),
+    releasedBoss:()=>releasedBoss,
     enemyCount: () => sess.enemies.length,
     getEnemy: id => sess.enemies.find(e => e.id === id),
     removeEnemy: id => { const i = sess.enemies.findIndex(e => e.id === id); if (i >= 0) sess.enemies.splice(i, 1); },
@@ -359,6 +382,7 @@ export function makeFrontierWalk(cv, g, opts) {
       if (gate) gate.hidden = true;
       if (nira) nira.hidden = true;
       if (challenge) challenge.hidden = true;
+      if (guide) guide.hidden=true;
     },
   };
   return api;

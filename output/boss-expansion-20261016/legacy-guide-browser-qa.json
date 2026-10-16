@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "zone": "asia",
+      "interaction": "keyboard E",
+      "restoredLegacyActiveRoute": true,
+      "following": true
+    },
+    {
+      "zone": "west",
+      "interaction": "visible button",
+      "restoredLegacyActiveRoute": true,
+      "following": true
+    }
+  ],
+  "errors": []
+}

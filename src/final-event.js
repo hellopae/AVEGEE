@@ -60,7 +60,7 @@ export function winFinalEncounter(s, id, reward) {
 export function acknowledgeFinalReward(s) {
   if (!s.pendingReward) return false;
   s.pendingReward = null;
-  if (s.phase === 'completed' || s.phase === 'ending') return true;
+  if (s.phase === 'completed' || s.phase === 'ending' || s.phase === 'justice') return true;
   s.phase = s.minionsCleared === 4 && !s.reinforcementsSeen ? 'reinforcementCutscene'
     : s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
   return true;
@@ -71,7 +71,7 @@ export function finalEventActors(g) {
   if (g.zone !== 'cyberhell') return [];
   const s = g.finalEventState?.();
   if (!s) return [];
-  if (['locked','completed'].includes(s.phase)) return [];
+  if (['locked','completed','justice'].includes(s.phase)) return [];
   const next = nextFinalEncounter(s), waves = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal').waves;
   const reinforcements = s.reinforcementsSeen ? RULER_ORDER.map((zone,i) => ({ id:`reinforcement:${zone}`,
     x:FINAL_EVENT.reinforcementPositions[i][0], y:FINAL_EVENT.reinforcementPositions[i][1],

@@ -1,3 +1,4 @@
+import {finishBossJustice} from './final-event-helpers.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { finalGame, win, roundTrip, acknowledge, clearMinions } from './final-event-helpers.mjs';
@@ -60,6 +61,7 @@ test('fixed ruler order, individual persisted wins, boss gate, ending only after
   assert.equal(g.finalEvent.phase,'bossReady');
   assert.ok(g.startFinalEncounter('boss')); assert.equal(g.battle.foes.length,1+FINAL_EVENT.bossAdds);
   win(g); assert.equal(g.gameCompleted,false); g=roundTrip(g); g.endBattle();
+  finishBossJustice(g);
   assert.equal(g.gameCompleted,true); assert.equal(g.over.k,'finalWin');
   assert.equal(g.zoneEventStatus('cyberFinal'),'cleared');
   g=roundTrip(g); assert.equal(g.finalEvent.phase,'completed'); assert.equal(g.gameCompleted,true);

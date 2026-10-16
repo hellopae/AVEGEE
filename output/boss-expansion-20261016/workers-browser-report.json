@@ -1,0 +1,173 @@
+{
+  "hired": {
+    "count": 3,
+    "coin": 9280,
+    "ids": [
+      "worker:1",
+      "worker:2",
+      "worker:3"
+    ]
+  },
+  "before": {
+    "workers": [
+      {
+        "id": "worker:1",
+        "x": 1771.8885438199984,
+        "y": 1127.566191478555,
+        "job": {
+          "kind": "supervise",
+          "station": "krata"
+        }
+      },
+      {
+        "id": "worker:2",
+        "x": 1832,
+        "y": 1158,
+        "job": {
+          "kind": "repair",
+          "station": "tarang"
+        }
+      },
+      {
+        "id": "worker:3",
+        "x": 1838,
+        "y": 1158,
+        "job": {
+          "kind": "escort",
+          "soulId": 9911
+        }
+      }
+    ],
+    "walk": {
+      "k": "worker:3",
+      "workerId": "worker:3",
+      "pickup": [
+        [
+          1838,
+          1158
+        ],
+        [
+          1838,
+          1158
+        ]
+      ]
+    },
+    "progress": 7.8488880000000005
+  },
+  "moving": [
+    {
+      "id": "worker:1",
+      "x": 1804.3965193346194,
+      "y": 911.4827891706933,
+      "moving": true,
+      "arrived": false,
+      "job": {
+        "kind": "supervise",
+        "station": "krata"
+      }
+    },
+    {
+      "id": "worker:2",
+      "x": 1825.1479986177512,
+      "y": 939.5924559406046,
+      "moving": true,
+      "arrived": false,
+      "job": {
+        "kind": "repair",
+        "station": "tarang"
+      }
+    },
+    {
+      "id": "worker:3",
+      "x": 1828.829567524849,
+      "y": 945.4127017124054,
+      "moving": true,
+      "arrived": false,
+      "job": {
+        "kind": "escort",
+        "soulId": 9911
+      }
+    }
+  ],
+  "effects": {
+    "mult": 1.2,
+    "progressGain": 9.3197403,
+    "repairSaved": 24,
+    "workers": [
+      {
+        "id": "worker:1",
+        "x": 434.02076771789564,
+        "y": 586.8676793734099,
+        "arrived": true,
+        "job": {
+          "kind": "supervise",
+          "station": "krata"
+        },
+        "walkable": true
+      },
+      {
+        "id": "worker:2",
+        "x": 1672,
+        "y": 504,
+        "arrived": true,
+        "job": {
+          "kind": "repair",
+          "station": "tarang"
+        },
+        "walkable": true
+      },
+      {
+        "id": "worker:3",
+        "x": 1667,
+        "y": 493,
+        "arrived": false,
+        "job": null,
+        "walkable": true
+      }
+    ],
+    "delivered": 1,
+    "ledger": {
+      "hired": 3,
+      "hireSpent": 720,
+      "wagesPaid": 0,
+      "supervisionTicks": 1,
+      "repairMs": 24,
+      "escortsDone": 1
+    }
+  },
+  "frames": [
+    {
+      "zone": "th",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "zone": "asia",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "zone": "west",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "zone": "cyberhell",
+      "width": 1280,
+      "height": 1280
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "layout": {
+    "desktopThumbnailOverlap": false,
+    "mobileThumbnailOverlap": false
+  },
+  "atlasVerification": {
+    "sourceFrames": 64,
+    "guardedFrames": 38,
+    "allCharacterToolComponentsPreserved": true,
+    "gallery": "workers-all-64-frames.png",
+    "sourceInvariantTest": "tests/workers.test.mjs"
+  }
+}

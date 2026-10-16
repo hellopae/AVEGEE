@@ -1,3 +1,4 @@
+import {finishBossJustice} from './final-event-helpers.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { finalGame, win, acknowledge, roundTrip } from './final-event-helpers.mjs';
@@ -23,6 +24,7 @@ test('case ten runs four minion fights, four fixed rulers, then final boss with 
   }
   assert.deepEqual(names,['พญายมบาท','จ้าวเหวิน','ฮาลวาร์','เน็กซาร','อาร์คอน-ศูนย์']);
   assert.deepEqual(sprites,['leader-th-possessed','leader-asia-possessed','leader-west-possessed','leader-cyberhell-possessed','zone-boss-cyberhell']);
+  finishBossJustice(g);
   assert.equal(g.gameCompleted,true); assert.equal(g.over.k,'finalWin'); assert.equal(g.zoneEventStatus('cyberFinal'),'cleared');
   g.over=null; g.kpiPassed=BAL.kpiWin; g.checkEnd(); assert.equal(g.over,null);
   const h=roundTrip(g); assert.equal(h.gameCompleted,true); assert.equal(h.zoneEventStatus('cyberFinal'),'cleared');

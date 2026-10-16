@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "zone": "th",
+      "amount": 500,
+      "art": "img/boss-guide/th-farewell-v1.webp",
+      "receiptVisible": true,
+      "reloadNoDuplicate": true,
+      "journey": {
+        "zone": "asia",
+        "coin": 1900,
+        "guide": {
+          "won": true,
+          "praised": true,
+          "welcomed": true,
+          "following": false,
+          "farewell": true,
+          "grantPaid": true,
+          "grantNotice": false,
+          "grantAmount": 500
+        },
+        "journal": "💰 ยมทัต มอบเงิน 500 เบี้ยกรรม ให้ดูแลดินแดนใหม่"
+      }
+    },
+    {
+      "zone": "asia",
+      "amount": 800,
+      "art": "img/boss-guide/asia-farewell-v2.webp",
+      "receiptVisible": true,
+      "reloadNoDuplicate": true,
+      "journey": {
+        "zone": "west",
+        "coin": 2600,
+        "guide": {
+          "won": true,
+          "praised": true,
+          "welcomed": true,
+          "following": false,
+          "farewell": true,
+          "grantPaid": true,
+          "grantNotice": false,
+          "grantAmount": 800
+        },
+        "journal": "💰 เหลียนกัง มอบเงิน 800 เบี้ยกรรม ให้ดูแลดินแดนใหม่"
+      }
+    },
+    {
+      "zone": "west",
+      "amount": 1200,
+      "art": "img/boss-guide/west-farewell-v2.webp",
+      "receiptVisible": true,
+      "reloadNoDuplicate": true,
+      "journey": {
+        "zone": "cyberhell",
+        "coin": 3400,
+        "guide": {
+          "won": true,
+          "praised": true,
+          "welcomed": true,
+          "following": false,
+          "farewell": true,
+          "grantPaid": true,
+          "grantNotice": false,
+          "grantAmount": 1200
+        },
+        "journal": "💰 เซเวอริน มอบเงิน 1200 เบี้ยกรรม ให้ดูแลดินแดนใหม่"
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,3 +1,4 @@
+import {bossGuideStory} from './boss-guides.js';
 import { t } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
 import { weaponCutsceneSrc } from './weapons.js';
@@ -57,14 +58,16 @@ export const STORY = {
   'cyber-duel': { title:'โซน 4 · ตัดสายควบคุม', pages:[
     { ...panel('cyberhell-03-v4','เหลือบอสคนสุดท้าย','หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและทีมที่เตรียมพร้อมก้าวเข้าสู่ศึกตัดสินกับผู้ตรวจการโซน 4') },
   ]},
+  'ending-capture': { title:'อเวจี · คำตัดสินสุดท้าย', pages:[
+    { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ แต่เขายังต้องตอบต่อกรรมของตนที่แท่นตัดสิน'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584 },
+  ]},
   ending: { title:'อเวจี · สันติสุขทั้งสี่สาขา', pages:[
-    { ...panel('ending-01-v4','จบการควบคุม','บอสใหญ่พ่ายแพ้ ทุกคนเป็นอิสระ ศึกสุดท้ายสิ้นสุดลงแล้ว'), video:'img/story-ending-01-v4.mp4', videoAspect:1276/584 },
     { ...panel('ending-02-v3','ผู้ปกครองทั้งสี่โซน','ยมบาทน้อยปกครองทั้ง 4 โซนด้วยความสงบสุข โดยมีนิรา พ่อ และหัวหน้าโซน 2–4 ร่วมดูแลอยู่เคียงข้าง'), video:'img/story-ending-02-v1.mp4', videoAspect:1280/544 },
     { ...panel('ending-03-v1','พ่อยอมรับ','พ่อเดินมาตบบ่าของยมบาทน้อยเบาๆ แล้วพูดว่า “ทำได้ดีมากลูกพ่อ” ขณะที่นิรายืนยิ้มอยู่ข้างๆ ด้วยความภูมิใจ'), video:'img/story-ending-03-v1.mp4', videoAspect:16/9, poster:'img/story-ending-03-start-v1.png' },
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || WEAPON_STORY[key];
+export const storyOf = key => STORY[key] || WEAPON_STORY[key] || bossGuideStory(key);
 export const ABILITY_REWARDS = {
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },
   flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
@@ -75,6 +78,6 @@ export const ABILITY_REWARDS = {
 Object.assign(ABILITY_REWARDS, {
  windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.png', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้พลังเวท'},
  hypno:{name:'สะกดจิต', image:'img/fx-hypno.png', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้พลังเวท'},
- valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'โจมตีศัตรูด้วยหอก', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
+ valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'กวาดแทงศัตรูทุกคนด้วยหอก ความเสียหายต่อคนเท่าเดิม', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
  cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
 });

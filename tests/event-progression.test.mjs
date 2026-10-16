@@ -1,3 +1,4 @@
+import {bossJusticeCase,interrogateBoss,bossJusticeAnswer,sentenceBoss,advanceBossJustice} from '../src/boss-justice.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -69,6 +70,11 @@ test('Zone 3 blocks building until hypnotized spirits are freed, then awards hyp
   g.zoneCases.west = 3; g.refreshZoneEvents();
   g.startZoneEvent('westVampireBreach'); winBattle(g);
   assert.equal(g.abilities.hypno, true);
+  assert.ok(bossJusticeCase(g));g.paused=false;
+  while(g.storyQueue.length)g.completeStory();
+  interrogateBoss(g);assert.equal(sentenceBoss(g,{...bossJusticeAnswer(g),intensity:1}),true);
+  for(let i=0;i<2000&&bossJusticeCase(g);i++)advanceBossJustice(g,100);
+  assert.equal(g.bossJustice.active,null);
   g.zoneCases.west = 7; g.refreshZoneEvents();
   g.startZoneEvent('westDevaTest'); winBattle(g);
   assert.equal(g.abilities.valkyrieSpear, true);

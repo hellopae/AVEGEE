@@ -1,3 +1,6 @@
+import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
+import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
+import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonAtCheckpoint,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
@@ -114,6 +117,7 @@ export function createGame() {
     items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
     mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [],
+    workerState:normalizeWorkers(),
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -135,7 +139,7 @@ export function createGame() {
     zoneCases: {}, zoneEvents: {}, eventMapClosed: {}, legacyBossGate:false, bossCleared: {}, bossRetryAt: {}, bossPending: false,
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
-    bossGuarding: {}, bossWalk: null, zoneEntry: null,
+    bossGuides:{version:1,zones:{}}, bossGuarding: {}, bossWalk: null, zoneEntry: null,
     frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
     party: { members: [], guard: false },
     upgrades: { powers: {} },
@@ -1154,6 +1158,13 @@ const API = {
     const walk = { soul, destination, entry, path, elapsed:0,
       duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
+    else if (['gate','queue'].includes(destination)) {
+      // Assistants can cover Nira's other delivery routes too. Preserve the
+      // existing courier if none is free; do not pull keepers off their posts.
+      const fallbackCourier=walk.courier;
+      delete walk.courier;
+      if (!assignWorkerEscort(this,walk) && fallbackCourier) walk.courier=fallbackCourier;
+    }
     this.afterlifeWalks.push(walk);
     return true;
   },
@@ -1163,6 +1174,7 @@ const API = {
    *  ไม่มีใครว่างเลย → วิญญาณเดินคนเดียวเหมือนเดิม · ท่านเอง (self) กับนิรา (reader) ไม่ถูกเรียกใช้
    *  ตำแหน่งยมทูตขยับใน advanceAfterlife · ส่งเสร็จปล่อยตัว (releaseEscort) ให้ระบบเดินปกติพากลับไปทำงานเอง */
   assignEscort(walk, keeperK = null) {
+    if (assignWorkerEscort(this,walk)) return true;
     const start = walk.path[0];
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
     const free = this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
@@ -1188,6 +1200,7 @@ const API = {
 
   /** ส่งตัวเสร็จ (หรือเลิกกลางคัน) — คืนยมทูตให้ระบบเดินปกติ: ยืนที่ปลายทางแล้วเดินกลับจุดประจำเอง */
   releaseEscort(walk) {
+    if (releaseWorkerEscort(this,walk)) return;
     const c = walk.escort && this.crewOf(walk.escort.k);
     if (!actorStanding(c) || c.self) return;
     if (c.escort === walk.soul.id) c.escort = null;
@@ -1207,11 +1220,13 @@ const API = {
   },
 
   advanceAfterlife(dt) {
+    if (bossJusticeActive(this)) return;
     if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
       walk.elapsed += dt;
       if (walk.elapsed < walk.duration) {
+        advanceWorkerEscort(this,walk);
         const c = walk.escort && this.crewOf(walk.escort.k);
         if (actorStanding(c) && !c.self) {               // ยมทูตที่นำทางอยู่ — ตำแหน่งจริงตามเส้นทาง (ให้ตำแหน่งที่คลิกเลือก/ที่เซฟตรงกับที่เห็นบนจอ)
           const pos = escortCrewPosition(walk);
@@ -1369,8 +1384,9 @@ const API = {
   // ---------- หนึ่งวาระ ----------
   step() {
     this.updateActorRecovery();
-    if (this.paused || this.over || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
+    if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
     this.tick++;
+    stepWorkers(this);
     if (this.niraRest && --this.niraRest.remaining <= 0) {
       this.niraRest = null;
       const nira = this.crewOf('nira');
@@ -1471,7 +1487,7 @@ const API = {
       // ข้อ D ชุด 13 — หมดแถบหิวส่วนตัว (0) โดนช้าเพิ่มอีกชั้น เฉพาะคนนั้น แยกจาก foodMul ของทั้งทีม
       const hungerMul = (c.hunger ?? 100) > 0 ? 1 : BAL.hungerPenalty;
       for (const slot of [...activeSlots]) {
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul;
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * workerSupervisionMultiplier(this,st);
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -1581,6 +1597,7 @@ const API = {
   },
 
   checkEnd() {
+    if (bossJusticeActive(this)) return;
     // ---- ระเบียบหมด: ตักเตือนก่อนสามครั้ง ----
     // เดิมแตะศูนย์ปุ๊บจบเกมปั๊บ ผู้เล่นใหม่ไม่ทันรู้ด้วยซ้ำว่าตัวเองพลาดตรงไหน
     if (this.order <= 0 && !this.over && !this.battle
@@ -1668,6 +1685,7 @@ const API = {
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    if(bossJusticeActive(this)){advanceBossJustice(this,dt);return;}
     this.updateActorRecovery();
     if (this.paused || this.over) return;
     this.syncBlocks();                 // อาคารที่สร้างเสร็จ/ถูกเผาพัง กันทางเดินให้ตรงเสมอ
@@ -1686,7 +1704,7 @@ const API = {
       if (Math.hypot(P.x - T.x, (P.y - T.y) * 1.6) < 70) this.walkTo(T.x + 116, T.y + 52);
     }
     // 30D — จุดเท้าของตัวละครที่ยืนนิ่ง: ยมบาทเดินทับไม่ได้ (walk.js วงรอบตัว ใช้กับยมบาทอย่างเดียว)
-    setNpcDiscs(standPoints(this));
+    setNpcDiscs([...standPoints(this),...workerDiscs(this)]);
     // เดินตามเส้นทางที่ findPath วางไว้ — อ้อมลาวาเองได้ ไม่ไปยืนจ่อกำแพงแล้วค้าง
     if (P.path && P.path.length) {
       const w = P.path[0];
@@ -1721,6 +1739,7 @@ const API = {
       return;
     }
 
+    advanceWorkers(this,dt);
     this.advanceWestDeva(dt);
 
     // ยืนตรงนี้แล้วยังเห็นตัวไหม — จุดที่ "ลึกกว่าฐานอาคาร" คือจุดที่อาคารวาดทับทั้งตัว
@@ -2285,6 +2304,7 @@ const API = {
   },
 
   startBattle(soul) {
+    if (bossJusticeActive(this)) return null;
     if (this.battle) return this.battle;
     applySoulPortrait(soul, this.zone);
     const hp = scaleFoeHp(this.zone, Math.max(46, Math.round((soul.deserved || 3) * BATTLE.hpPerLv)));
@@ -2308,6 +2328,7 @@ const API = {
 
   /** ฉากต่อสู้กับปีศาจที่ขึ้นมาก่อกวน — ทางต่อสู้ของผู้เล่นทุกตัว */
   startMobBattle(i) {
+    if (bossJusticeActive(this)) return null;
     if (this.guardActive()&&!this.mobs[i]?.dungeonToken) return null;
     if (this.battle) return this.battle;
     const m = this.mobs[i];
@@ -2349,6 +2370,7 @@ const API = {
    *  ข้อ A ชุด 14 — target = ศัตรูตัวที่ผู้เล่นเลือกเองบนแผนที่ชายแดน (src/frontier.js)
    *  { kindIdx, id, level } ไม่ใส่ target (เรียกเฉย ๆ) = พฤติกรรมเดิมทุกประการ (สุ่มตัว) เผื่อเรียกที่อื่น */
   startFrontierBattle(target) {
+    if (bossJusticeActive(this)) return null;
     if (this.battle || this.over) return null;
     const state = this.frontierOf();
     const nira = this.crewOf('nira');
@@ -2403,6 +2425,7 @@ const API = {
   },
 
   startZoneBoss(retry = false) {
+    if (bossJusticeActive(this)) return null;
     const rematch = retry === 'rematch';
     if (this.battle || !(rematch ? this.bossPierCanTalk() : retry === 'alert'
       ? (this.bossReady() || (!!this.bossGuarding[this.zone] && this.zoneEventGateReady()))
@@ -2484,6 +2507,7 @@ const API = {
   /** กดปุ่ม "เข้าสู้" แยกจากปุ่มเตรียมศึก (ข้อ C ชุด 13) — เลือกเตรียมศึกไปแล้วกี่อย่างก็ได้ (0-3)
    *  กดปุ่มนี้เมื่อไหร่ค่อยเปิดวงคำสั่งต่อสู้จริง จะได้ไม่พลาดกดแค่ทีเดียวแล้วเข้าเลย */
   startBossFight() {
+    if (bossJusticeActive(this)) return null;
     const b = this.battle;
     if (!b || b.kind !== 'zoneBoss' || b.prepStarted || b.turn !== 1) return false;
     b.prepStarted = true;
@@ -2493,6 +2517,7 @@ const API = {
 
   /** ฉากที่ไม่มีทางชนะ — บารมีหมดแล้วพ่อลงมาเอง (แทนหน้าจอจบเกมแบบเดิม) */
   startYamaFight() {
+    if (bossJusticeActive(this)) return null;
     if (this.battle) return this.battle;
     this.battle = {
       kind: 'yama', who: 'พญายมบาท', sub: 'ผู้เป็นพ่อของท่าน', sp: 'hero-boss',
@@ -2507,6 +2532,7 @@ const API = {
   /** พ่อลงมาตบเองเพราะตัดสินพลาดติดกันสามสำนวน — ไม่ใช่จบเกม
    *  ตบทีเดียวเหลือบารมี DAD.hpLeft แล้วเกมเดินต่อ (เจ้าของสั่ง 9 ก.ย. 2569) */
   startDadFight() {
+    if (bossJusticeActive(this)) return null;
     if (this.battle) return this.battle;
     const reason = typeof this.dadFight === 'string' ? this.dadFight : 'verdict';
     this.dadFight = false;
@@ -2614,6 +2640,7 @@ const API = {
     }));
   },
   startZoneEvent(key) {
+    if (bossJusticeActive(this)) return null;
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
     if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
@@ -2670,6 +2697,7 @@ const API = {
     return Math.min(this.challengeEvent(zone)?.waves.length || 1, (this.challenge[zone]?.checkpoint || 0) + 1);
   },
   startChallenge() {
+    if (bossJusticeActive(this)) return null;
     const zone = this.zone, ev = this.challengeEvent(zone);
     if (!ev || this.battle || this.over || !this.challengeUnlocked(zone)) return null;
     const st = this.challengeOf(zone), wave = this.challengeStartWave(zone);
@@ -2759,7 +2787,7 @@ const API = {
     return this.finalEvent;
   },
   finalEventOnMap() {
-    return this.zone === 'cyberhell' && !['locked','completed'].includes(this.finalEventState().phase);
+    return this.zone === 'cyberhell' && !['locked','completed','justice'].includes(this.finalEventState().phase);
   },
   persistFinalEvent() {
     const ok = this.save();
@@ -2768,6 +2796,7 @@ const API = {
     return !this.finalSaveFailed;
   },
   startFinalEncounter(id = null) {
+    if (bossJusticeActive(this)) return null;
     if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || this.pendingRecovery) return null;
     const s = this.finalEventState(), next = nextFinalEncounter(s);
     if (s.presentation || !next || (id && id !== next) || !this.persistFinalEvent()) return null;
@@ -2888,6 +2917,7 @@ const API = {
     b.storyInterlude=null; this.save(); return true;
   },
   startDevaTest() {
+    if (bossJusticeActive(this)) return null;
     if (this.zone !== 'th' || this.battle || this.over || this.devaTestStatus() !== 'pending' ||
         this.prisonBreakStatus() !== 'cleared' && this.devaVisits.th?.phase !== 'fighting') return null;
     const event = ZONE_EVENTS.th[2];
@@ -2916,6 +2946,7 @@ const API = {
       }));
   },
   startFrontierBreach() {
+    if (bossJusticeActive(this)) return null;
     if (this.zone !== 'th' || this.battle || this.over || this.frontierBreachStatus() !== 'pending' ||
         this.devaTestStatus() !== 'cleared') return null;
     const team = this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k));
@@ -2947,6 +2978,7 @@ const API = {
     return true;
   },
   startPrisonBreak() {
+    if (bossJusticeActive(this)) return null;
     if (this.zone !== 'th' || this.battle || this.over || this.prisonBreakStatus() !== 'pending') return null;
     const event = ZONE_EVENTS.th[0];
     const spirits = [1, 2, 3, 4, 5, 6, 7];
@@ -3247,7 +3279,7 @@ const API = {
       if (!this.abilities.valkyrieSpear || this.mp < BATTLE.mpCost.spear) return false;
       this.mp -= BATTLE.mpCost.spear;
       dmg = 88 + (this.level - 1) * 3;
-      say(`🔱 หอกวาคิวรีแทงตรงไปยังศัตรู — ${dmg} หน่วย`);
+      say(`🔱 หอกวาลคีรีกวาดแทงศัตรูทุกคน — คนละ ${dmg} หน่วย`);
 
     } else if (what === 'cooldownClock') {
       if (!(this.abilities.cooldownClock || this.inventory.cooldownClock) || B.clockUsed) return false;
@@ -3313,7 +3345,7 @@ const API = {
       if (hit.burn || hit.heal > 0 || hit.replay) weaponProc = true;
       if (hit.replay) { dmg += hit.replay; B.weaponNote = { k:'replay', n:hit.replay }; say(`🔁 ย้อนแพ็กเก็ต — ฟันซ้ำอีก ${hit.replay} หน่วย`); }
     }
-    const areaAttack = ['ice', 'windFan', 'hypno'].includes(what);
+    const areaAttack = ['ice', 'windFan', 'hypno', 'valkyrieSpear'].includes(what);
     affected = areaAttack ? B.foes.filter(f => f.hp > 0) : [target];
     for (const foe of affected) {
       foe.hp = Math.max(0, foe.hp - dmg);
@@ -3334,6 +3366,7 @@ const API = {
       say(`🩸 ดาบดูดเลือด — ฟื้นบารมี ${hit.heal}`);
     }
     B.weaponCd = weaponProc ? WEAPON_EFFECT_COOLDOWN : Math.max(0, weaponCdStart - 1);
+    B.dmg.area=areaAttack;
     B.dmg.foe = dmg;
     B.dmg.foeId = target.id;
     B.dmg.foeHits = affected.map(f => ({ id:f.id, damage:dmg }));
@@ -3745,6 +3778,10 @@ const API = {
       this.huntMob = false;
       this.player.tx = null; this.player.ty = null; this.player.path = null;
     }
+    if (B.over === 'win' && !this.isFinalBattle(B)) {
+      recordBossGuideWin(this,B);
+      if(queueBossJustice(this,B))this.save();
+    }
     // ชุด 28B — ตั้งก่อน onChange ทุกทางออกของฟังก์ชันนี้ ui.js จะเด้งหน้าต่างรางวัลจากค่านี้ (หลังเรื่องราว/พลังใหม่)
     this.pendingReward = B.over === 'win' && B.summary ? B.summary : null;
     // คุณเป้ 4 ต.ค. 2569: หมดแรงจากศึกนี้ก็กลับไปนอนพักฟื้นเหมือนศึกอื่น
@@ -3810,10 +3847,10 @@ const API = {
         s.activeEncounter = null;
         s.phase = s.minionsCleared < 4 ? 'ready' : s.rulersCleared.length === 4 ? 'bossReady' : 'staging';
       } else if (B.encounter === 'boss') {
-        s.phase = 'completed'; this.gameCompleted = true;
-        this.zoneEvents.cyberhell.cyberFinal = 'cleared'; this.bossCleared.cyberhell = true;
-        this.bossGuarding.cyberhell = false; this.queueStory('ending');
-        this.over = { k:'finalWin', title:'ยมบาทน้อยพิชิตนรกทั้งสี่สาขา', text:'หัวหน้าทั้งสี่เป็นอิสระแล้ว ยมบาทน้อยและกำลังเสริมชนะบอสโซน 4' };
+        s.phase = 'justice'; this.gameCompleted = false;
+        this.bossGuarding.cyberhell = false;
+        queueBossJustice(this,B,{final:true}); this.queueStory('ending-capture');
+        this.over = null;
       }
       this.pendingReward = s.pendingReward;
       this.persistFinalEvent(); this.onChange(); return B;
@@ -3916,6 +3953,10 @@ const API = {
     }
     this.save(); return true;
   },
+  bossGuideWaiting() {return bossGuideWaiting(this);},
+  bossGuideFollowing() {return bossGuideFollowing(this);},
+  inviteBossGuide() {if(!queueBossGuideStory(this,'welcome'))return false;this.save();this.onChange();return true;},
+  farewellBossGuide() {if(!queueBossGuideStory(this,'farewell'))return false;this.save();this.onChange();return true;},
   queueStory(key, reward = null) {
     if (this.storySeen[key] || this.storyQueue.some(p => p.key === key)) return;
     this.storyQueue.push({ key, reward, stage:storyOf(key) ? 'comic' : 'reward' });
@@ -3923,6 +3964,8 @@ const API = {
   completeStory() {
     const next = this.storyQueue.shift();
     if (next) this.storySeen[next.key] = true;
+    completeBossGuideStory(this,next?.key);
+    completeBossJusticeStory(this,next?.key);
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
       Object.assign(this.devaVisits.west, { phase:'descending', arrived:true, elapsed:0 });
     if (next?.key === 'deva-cyberhell') {
@@ -3977,6 +4020,7 @@ const API = {
     this.player.path=null;this.save();this.onChange();return true;
   },
   startDungeonEncounter(checkpoint=null) {
+    if (bossJusticeActive(this)) return null;
     const opts=checkpoint && typeof checkpoint==='object'?checkpoint:{};
     checkpoint=Number.isInteger(checkpoint)?checkpoint:null;
     if(!(opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
@@ -4034,6 +4078,7 @@ const API = {
     const z = ZONES.find(x => x.k === k);
     if (!z || !canTravelZone(this,k)) return false;
     const from=this.zone,travelMode=dungeonStatus(this)?.ready?'dungeon':'boat';
+    if(travelMode==='dungeon'&&(bossGuideFollowing(this)||bossGuideWaiting(this)))return false;
     if(travelMode==='boat'&&!this.atHarbour()||travelMode==='dungeon'&&!dungeonAtExit(this))return false;
 
     // A branch cannot keep drawing its walkers once another map is active.
@@ -4049,7 +4094,7 @@ const API = {
     this.zoneSave = this.zoneSave || {};
     this.zoneSave[this.zone] = {
       stations: this.stations.map(st => ({
-        k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
+        k: st.def.k, bossCourtTemporary:!!st.bossCourtTemporary, bossCourtConstruction:st.bossCourtConstruction, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
         repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
         repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
@@ -4459,6 +4504,12 @@ const API = {
     return true;
   },
 
+  workers() { return zoneWorkers(this); },
+  workerHireWhy() { return workerHireWhy(this); },
+  hireWorker() { const result=hireWorker(this);if(result){this.save();this.onChange();}return result; },
+  setWorkerMode(id,mode) { const ok=setWorkerMode(this,id,mode);if(ok){this.save();this.onChange();}return ok; },
+  dismissWorker(id) { const ok=dismissWorker(this,id);if(ok){this.save();this.onChange();}return ok; },
+
   builders() {
     return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam'));
   },
@@ -4524,9 +4575,10 @@ API.snapshot = function (withEntry = true) {
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
   return {
-    v: 4, fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
+    v: 4, bossJustice:structuredClone(this.bossJustice || {version:1,active:null,ledger:{}}), fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
+    workerState:normalizeWorkers(this.workerState),
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, exp: this.exp, mp: this.mp, mpMax: this.mpMax,
@@ -4542,7 +4594,7 @@ API.snapshot = function (withEntry = true) {
     fireAmmo: this.fireAmmo, fireAmmoMax: this.fireAmmoMax,
     abilities: this.abilities,
     discoverySeen: { ...this.discoverySeen }, discoveryQueue: [...this.discoveryQueue],
-    westFreezeAt:this.westFreezeAt, devaVisits:this.devaVisits, storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
+    westFreezeAt:this.westFreezeAt, devaVisits:this.devaVisits, bossGuides:structuredClone(this.bossGuides), storyQueue:this.storyQueue, storySeen:this.storySeen, niraRest:this.niraRest,
     outfitsOwned: this.outfitsOwned,
     challenge: this.challenge, weapons: this.weapons,
     crew: this.crew.map(c => ({ id:c.id, kind:c.kind, homeZone:c.homeZone, recoverUntil:c.recoverUntil || 0, k: c.k, morale: c.morale, hunger: c.hunger ?? 100, at: c.at, x: c.x, y: c.y, helpReadyAt: c.helpReadyAt || 0,
@@ -4611,6 +4663,7 @@ API.restore = function (d) {
   if (d.discoveryQueue) d.discoveryQueue = [...new Set(d.discoveryQueue.map(legacyDiscovery))];
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
+  this.workerState = normalizeWorkers(d.workerState);
   this.fireControl = normalizeFireControl(d.fireControl);
   this._krataSession = null;
   this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)
@@ -4672,6 +4725,7 @@ API.restore = function (d) {
   this.stations = (d.stations || []).map(sv => {
     const st = mkStation(sv.k);
     if (!st.def) return null;
+    st.bossCourtTemporary=!!sv.bossCourtTemporary;st.bossCourtConstruction=sv.bossCourtConstruction;
     st.crewK = sv.crewK; st.intensity = sv.intensity ?? 3; st.fire = sv.fire || 0;
     st.visitCd = sv.visitCd || 0; st.kanCd = sv.kanCd || 0;
     st.build = sv.build ? Date.now() + sv.build : 0;
@@ -4881,7 +4935,10 @@ API.restore = function (d) {
   this.afterlifeWalks = [];
   for (const walk of d.afterlifeWalks || []) {
     if (walk?.soul && westSpiritsFrozen(this) && walk.zone === 'west') this.afterlifeWalks.push(structuredClone(walk));
-    else if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination)) this.finishAfterlifeWalk(walk);
+    else if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination)) {
+      releaseWorkerEscort(this,{...walk,elapsed:walk.duration});
+      this.finishAfterlifeWalk(walk);
+    }
   }
   this.usedCases = d.usedCases || [];
   this.fights = d.fights || 0;
@@ -4896,6 +4953,7 @@ API.restore = function (d) {
     this.coin += this.offlineGrant;
     this.log(`⏳ ระหว่างที่ท่านไม่อยู่ ยมทูตคุมงานต่อ · +${this.offlineGrant} เบี้ยกรรม`, 'good');
   }
+  initializeBossJustice(this,d.bossJustice);
   this.finalEvent = migrateFinalEvent(d);
   this.pendingReward = this.finalEvent.pendingReward;
   this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
@@ -4920,6 +4978,9 @@ API.restore = function (d) {
     reinforcementAdvance:'cyber-reinforcements-advance', control:'cyber-control', duel:'cyber-duel' }[this.finalEvent.presentation];
   if (finalStory && !this.storyQueue.some(p => p.key === finalStory)) {
     delete this.storySeen[finalStory]; this.queueStory(finalStory);
+  }
+  if (this.finalEvent.phase === 'justice' && bossJusticeCase(this)?.phase === 'capture' && !this.storyQueue.some(p=>p.key==='ending-capture')) {
+    delete this.storySeen['ending-capture']; this.queueStory('ending-capture');
   }
   if (this.finalEvent.phase === 'completed' && !this.storySeen.ending) this.queueStory('ending');
   // ฉากต่อสู้ไม่เซฟ — เปิดเกมมาแล้วเขายืนรออยู่ในคิวเหมือนเดิม
@@ -4986,6 +5047,7 @@ API.restore = function (d) {
     this.blockSig=null;
   }
   initializeZoneTravel(this,d.zoneTravel);
+  initializeBossGuides(this,d.bossGuides);
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
 };

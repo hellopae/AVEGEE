@@ -1,3 +1,4 @@
+import { bossJusticeCase,interrogateBoss,bossJusticeAnswer,sentenceBoss } from '../src/boss-justice.js';
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -55,7 +56,10 @@ test('case 3 freezes all walkers and management until vampire win; thaw resumes 
  g=reload(g);assert.equal(westSpiritsFrozen(g),true);assert.equal(g.afterlifeWalks[0].elapsed,250);
  g.startZoneEvent('westVampireBreach');g.advanceAfterlife(1000);assert.equal(g.afterlifeWalks[0].elapsed,250);
  win(g);assert.equal(g.abilities.hypno,true);assert.equal(westSpiritsFrozen(g),false);
- g.advanceAfterlife(100);assert.equal(g.afterlifeWalks[0].elapsed,350);
+ g.advanceAfterlife(100);assert.equal(g.afterlifeWalks[0].elapsed,250,'captured vampire remains under court supervision');
+ interrogateBoss(g);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);g.paused=false;
+ for(let n=0;n<10000&&bossJusticeCase(g);n++)g.stepWorld(100);
+ assert.equal(bossJusticeCase(g),null);g.advanceAfterlife(100);assert.equal(g.afterlifeWalks[0].elapsed,350);
 });
 test('vampire approach uses zone art and existing intro; two minion waves, hypnotized party wave, then vampire reward',()=>{
  const actors=breachApproachActors('west','westVampireBreach');assert.equal(actors.length,3);

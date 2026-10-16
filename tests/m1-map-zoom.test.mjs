@@ -58,7 +58,7 @@ test('M1: UI camera keeps DOM anchors and pointers aligned through town follow z
     const cv={style:{},getBoundingClientRect:()=>({left:0,top:0,width,height})};
     const mapCam={level:0,z:1,x:SCENE.w/2,y:SCENE.h/2,at:0,init:false};
     const g={zone:'th',player:{x:880,y:455}};
-    const sandbox={SCENE,mapCam,g,cv,cameraZone:'th',isTownZone,townZoomLevels,townDefaultZoom,setMapZoom:level=>mapCam.level=level,MAP_ZOOM_LEVELS:townZoomLevels('th'),mapViewport,setMapViewport,matchMedia:()=>({matches:false}),document:{querySelector:s=>s==='.stage'?stage:box,getElementById:()=>overlay}};
+    const sandbox={bossJusticeCase:()=>null,bossJusticeActors:()=>[],SCENE,mapCam,g,cv,cameraZone:'th',isTownZone,townZoomLevels,townDefaultZoom,setMapZoom:level=>mapCam.level=level,MAP_ZOOM_LEVELS:townZoomLevels('th'),mapViewport,setMapViewport,matchMedia:()=>({matches:false}),document:{querySelector:s=>s==='.stage'?stage:box,getElementById:()=>overlay}};
     vm.createContext(sandbox);vm.runInContext(source,sandbox);
     let now=0;
     const check=()=>{

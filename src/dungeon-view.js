@@ -1,3 +1,4 @@
+import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus } from './zone-travel.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
@@ -128,13 +129,13 @@ export function dungeonChaseReach(g) {
   return chaseInReach(dungeonCheckpointProgress(s.route.id)[s.checkpoint]*t,dungeonProjection(p,1,s.route.id).progress*t);
 }
 /** Mount inside a dialog/panel. All city player coordinates remain untouched. */
-function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{}}={}) {
+function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{},onGuide=()=>{}}={}) {
   if(!dungeonStatus(g)) throw new Error('An unlocked active dungeon route is required');
   const routeId=dungeonStatus(g).route.id,points=dungeonCheckpointProgress(routeId);
   const {total,corridor}=geometry(routeId);
   const point=v=>dungeonPoint(v,routeId);
   const root=document.createElement('section'); root.className='dungeon-view';
-  root.innerHTML='<header class="dungeon-toolbar"><button type="button" data-action="leave">← กลับด่านชายแดน</button><strong></strong><button type="button" data-action="overview" aria-pressed="false">ดูทั้งเส้นทาง</button><button type="button" data-action="menu">เมนู</button></header><div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p></div><footer><button type="button" class="dungeon-challenge" hidden>ประลองบอสชายแดนในถ้ำ</button><p class="dungeon-status" aria-live="polite"></p><button type="button" class="dungeon-interact" disabled>เดินไปหาศัตรู</button><small>คลิก/แตะเพื่อเดิน · WASD / ลูกศร · เข้าใกล้ปีศาจเพื่อเริ่มต่อสู้อัตโนมัติ · เดินเข้าประตูเมื่อผ่านถ้ำแล้ว</small></footer>';
+  root.innerHTML='<header class="dungeon-toolbar"><button type="button" data-action="leave">← กลับด่านชายแดน</button><strong></strong><button type="button" data-action="overview" aria-pressed="false">ดูทั้งเส้นทาง</button><button type="button" data-action="menu">เมนู</button></header><div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p></div><footer><button type="button" class="dungeon-guide" hidden>คุยกับผู้ตรวจการ · ออกเดินทาง</button><button type="button" class="dungeon-challenge" hidden>ประลองบอสชายแดนในถ้ำ</button><p class="dungeon-status" aria-live="polite"></p><button type="button" class="dungeon-interact" disabled>เดินไปหาศัตรู</button><small>คลิก/แตะเพื่อเดิน · WASD / ลูกศร · เข้าใกล้ปีศาจเพื่อเริ่มต่อสู้อัตโนมัติ · เดินเข้าประตูเมื่อผ่านถ้ำแล้ว</small></footer>';
   container.append(root);
   const canvas=root.querySelector('.dungeon-stage > canvas'),mini=root.querySelector('.dungeon-minimap');
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),action=root.querySelector('.dungeon-interact'),loading=root.querySelector('.dungeon-load');
@@ -142,15 +143,19 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
-  let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
+  let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guideTrail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
   const saved=g.zoneTravel.active.position;
   position=saved&&dungeonWalkable([saved.x,saved.y],routeId)?[saved.x,saved.y]:point(0);
   follower=[position[0]-.018,position[1]+.008];
+  guidePosition=g.zoneTravel.active.guidePosition?[g.zoneTravel.active.guidePosition.x,g.zoneTravel.active.guidePosition.y]:[position[0]+.04,position[1]+.014];
+  if(Math.hypot(guidePosition[0]-position[0],guidePosition[1]-position[1])>.12)guidePosition=[position[0]-.025,position[1]+.012];
+  if(!dungeonWalkable(guidePosition,routeId))guidePosition=dungeonProjection(guidePosition,1,routeId).point;
   const remember=()=>{
     if(!g.zoneTravel.active)return;
     g.zoneTravel.active.position={x:position[0],y:position[1]};g.zoneTravel.active.roamTime=enemyTime;
+    if(bossGuideFollowing(g)&&guidePosition)g.zoneTravel.active.guidePosition={x:guidePosition[0],y:guidePosition[1]};
   };
   const save=()=>{remember();if(dirty){g.save?.();dirty=false;}};
   remember();
@@ -209,8 +214,17 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       direction=Math.abs(dy)>Math.abs(dx)?(dy<0?'up':'down'):(face<0?'left':'right');
       walkDistance+=Math.hypot(dx*1.79,dy)*world().h;dirty=true;remember();
       trail.push([...old]);if(trail.length>100)trail.shift();
+      guideTrail.push([...old]);if(guideTrail.length>350)guideTrail.shift();
     }
     if(trail.length){const next=trail[0],distance=Math.hypot(position[0]-next[0],position[1]-next[1]);if(distance>.025){const dx=next[0]-follower[0],dy=next[1]-follower[1],d=Math.hypot(dx,dy),step=Math.min(d,dt*.00024);if(d>.001)follower=dungeonMove(follower,[follower[0]+dx/d*step,follower[1]+dy/d*step],routeId);if(d<.009)trail.shift();}}
+    if(bossGuideFollowing(g)&&guideTrail.length){
+      const wanted=bossGuideFollowPoint(guideTrail,position),dx=wanted[0]-guidePosition[0],dy=wanted[1]-guidePosition[1],d=Math.hypot(dx,dy);
+      if(d>.004){
+        const step=Math.min(d,dt*.0002),next=[guidePosition[0]+dx/d*step,guidePosition[1]+dy/d*step];
+        if(dungeonSegmentClear(guidePosition,next,routeId))guidePosition=next;
+        else{const route=dungeonPath(guidePosition,wanted,routeId),waypoint=route[0];if(waypoint){const wx=waypoint[0]-guidePosition[0],wy=waypoint[1]-guidePosition[1],wd=Math.hypot(wx,wy)||1;guidePosition=dungeonMove(guidePosition,[guidePosition[0]+wx/wd*Math.min(step,wd),guidePosition[1]+wy/wd*Math.min(step,wd)],routeId);}}
+      }
+    }
     if(wasMoving&&!moving)save();wasMoving=moving;
     saveClock+=dt;if(dirty&&saveClock>2500){save();saveClock=0;}
     const nearby=dungeonAutoEncounter(g,position,enemyTime);
@@ -218,7 +232,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter({...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
     }
     heading.textContent=status.route.name;
-    root.querySelector('.dungeon-challenge').hidden=routeId!=='th:asia'||!g.challengeCanTalk?.();
+    root.querySelector('.dungeon-challenge').hidden=routeId!=='th:asia'||bossGuideWaiting(g)||!g.challengeCanTalk?.();
+    root.querySelector('.dungeon-guide').hidden=!bossGuideWaiting(g)||Math.hypot(position[0]-point(points[2])[0],position[1]-point(points[2])[1])>.09;
     const near=status.ready?dungeonAtExit(g):dungeonAtCheckpoint(g);
     action.hidden=!status.ready;
     action.disabled=!near||!!(g.battle||g.pendingRecovery||status.pending)||(routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th&&g.zoneEvents?.th?.thBorderBoss!=='pending');
@@ -244,9 +259,12 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const hero=position,nira=follower;
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
-    if(routeId==='th:asia'&&g.challengeUnlocked?.()){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
+    if(routeId==='th:asia'&&bossGuideWaiting(g)){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'guide'});}
+    else if(routeId==='th:asia'&&g.challengeUnlocked?.()&&!g.bossCleared?.th){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
+    if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
+      if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[a.enemy.kindIdx]||MOB;const boss=a.enemy.boss;drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,true,g.zone);if(a.enemy.locked){ctx.fillStyle='#ffe2a0';ctx.fillText(status.checkpoint<2?'ผ่านปีศาจตามทางก่อน':'ผ่านคดีที่ 10 ก่อน',p[0],p[1]+20);}return;}
       if(a.kind==='nira') {if(moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,walkDistance,face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',face,false,g.zone);return;}
@@ -270,6 +288,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();keys.add(k);}});
   listen(window,'keyup',e=>keys.delete(e.key.toLowerCase()));
   listen(window,'blur',()=>{keys.clear();target=null;save();});listen(canvas,'blur',()=>{keys.clear();target=null;});
+  listen(root.querySelector('.dungeon-guide'),'click',()=>{if(!bossGuideWaiting(g))return;target=null;keys.clear();save();onGuide();});
   listen(root.querySelector('.dungeon-challenge'),'click',()=>{if(!g.challengeCanTalk?.())return;target=null;keys.clear();save();onChallenge();});
   listen(action,'click',()=>{
     const s=dungeonStatus(g);if(!s||g.battle||g.pendingRecovery||s.pending||!(s.ready?dungeonAtExit(g):dungeonAtCheckpoint(g)))return;
@@ -282,8 +301,19 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   return function destroy(){if(destroyed)return;destroyed=true;save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
 }
 
+/** Old active journeys can meet the newly migrated guide without leaving the route. */
+export function dungeonGuideAnchor(g){
+  const s=dungeonStatus(g);if(!s)return null;
+  const p=dungeonPoint(s.route.id==='th:asia'?dungeonCheckpointProgress(s.route.id)[2]:0,s.route.id);
+  return s.route.id==='th:asia'?[p[0]+.055,p[1]+.01]:[p[0]+.045,p[1]-.006];
+}
+export function dungeonCanTalkGuide(g,position=null){
+  const anchor=dungeonGuideAnchor(g),p=position||activePosition(g);
+  return !!(anchor&&p&&bossGuideWaiting(g)&&!g.battle&&!g.pendingRecovery&&!dungeonStatus(g)?.pending&&Math.hypot(p[0]-anchor[0],p[1]-anchor[1])<=.09);
+}
+
 const globalDungeonPoint=dungeonPoint,globalDungeonProjection=dungeonProjection;
-function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{}}={}) {
+function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onGuide=()=>{}}={}) {
   const routeId=dungeonStatus(g)?.route.id;
   const {corridor:DUNGEON_CORRIDOR,lengths,total}=geometry(routeId);
   const DUNGEON_PROGRESS=dungeonCheckpointProgress(routeId);
@@ -294,16 +324,18 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
   const dungeonCompanionPoint=progress=>{const p=dungeonPoint(Math.max(0,progress-.055));return [p[0]-.038,Math.min(.96,p[1]+.007)];};
   if(!dungeonStatus(g)) throw new Error('An unlocked active dungeon route is required');
   const root=document.createElement('section'); root.className='dungeon-view';
-  root.innerHTML='<header class="dungeon-toolbar"><button type="button" data-action="leave">← กลับเมือง</button><strong></strong><button type="button" data-action="overview" aria-pressed="false">ดูทั้งเส้นทาง</button><button type="button" data-action="menu">เมนู</button></header><div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p></div><footer><p class="dungeon-status" aria-live="polite"></p><button type="button" class="dungeon-interact" disabled>เดินไปหาศัตรู</button><small>คลิก/แตะเพื่อเดิน · WASD / ลูกศร · ต้องเข้าใกล้ศัตรูและประตู</small></footer>';
+  root.innerHTML='<header class="dungeon-toolbar"><button type="button" data-action="leave">← กลับเมือง</button><strong></strong><button type="button" data-action="overview" aria-pressed="false">ดูทั้งเส้นทาง</button><button type="button" data-action="menu">เมนู</button></header><div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p></div><footer><button type="button" class="dungeon-guide" hidden>คุยกับผู้ตรวจการ · กด E</button><p class="dungeon-status" aria-live="polite"></p><button type="button" class="dungeon-interact" disabled>เดินไปหาศัตรู</button><small>คลิก/แตะเพื่อเดิน · WASD / ลูกศร · ต้องเข้าใกล้ศัตรูและประตู</small></footer>';
   container.append(root);
   const canvas=root.querySelector('.dungeon-stage > canvas'),mini=root.querySelector('.dungeon-minimap');
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),action=root.querySelector('.dungeon-interact'),loading=root.querySelector('.dungeon-load');
+  const guideButton=root.querySelector('.dungeon-guide');
   const heading=root.querySelector('strong'),overviewButton=root.querySelector('[data-action="overview"]');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
   const alertArt=new Image();alertArt.src='img/ui/alert-mark.png';
   let cooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0,chase=null,chaseCheckpoint=-1,cut=0,cutFired=false,alertAt=-1;g.dungeonChaseCooldown=false;
+  let guideDispatched=false;
   let destroyed=false,frame=0,last=0,progress=0,target=null,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
@@ -379,10 +411,11 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     }
     saveClock+=dt;if(dirty&&saveClock>2500){save();saveClock=0;}
     heading.textContent=status.route.name;
+    guideButton.hidden=!dungeonCanTalkGuide(g,dungeonPoint(progress));
     const near=status.ready?dungeonAtExit(g):dungeonAtCheckpoint(g);
     action.disabled=!near||!!(g.battle||g.pendingRecovery||status.pending);
     action.textContent=status.ready?'เข้าเมืองถัดไป':status.pending?'กำลังต่อสู้…':near?'เริ่มต่อสู้':'เดินไปหาศัตรู';
-    const text=status.ready?'ผ่านดันเจี้ยนแล้ว — เดินไปประตูเมือง':`จุดที่ ${status.checkpoint+1}/3 · ${status.location.name}`;
+    const text=bossGuideWaiting(g)?'ผู้ตรวจการรอที่ทางเข้าเส้นทางชายแดน · ย้อนกลับไปคุยเพื่อออกเดินทางด้วยกัน':status.ready?'ผ่านดันเจี้ยนแล้ว — เดินไปประตูเมือง':`จุดที่ ${status.checkpoint+1}/3 · ${status.location.name}`;
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {
@@ -397,9 +430,12 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     });
     const hero=dungeonPoint(progress),nira=dungeonCompanionPoint(progress);
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
+    if(bossGuideWaiting(g))actors.push({p:dungeonGuideAnchor(g),kind:'guide',following:false});
+    if(bossGuideFollowing(g))actors.push({p:dungeonPoint(Math.max(0,progress-.09)),kind:'guide',following:true});
     if(!status.ready){const at=dungeonPoint(chase?chase.s/total:DUNGEON_PROGRESS[status.checkpoint]);actors.push({p:[at[0]-.028,at[1]],kind:'enemy'});}
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
+      if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);if(!a.following){ctx.fillStyle='#ffe2a0';ctx.fillText('ผู้ตรวจการ · คุยเพื่อออกเดินทาง',p[0],p[1]+21);}return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
         if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();if(alertArt.complete&&alertArt.naturalWidth){ctx.drawImage(alertArt,p[0]-17,p[1]-h*1.15-35+bob,34,34);ctx.restore();}else{ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}}
         return;}
@@ -422,7 +458,9 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     const p=[(e.clientX-r.left-cam.x)/(w.w*cam.scale),(e.clientY-r.top-cam.y)/(w.h*cam.scale)];
     const projected=dungeonProjection(p,limit());if(projected.distance<=.12)target=projected.progress;
   });
-  listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();if(!cut)keys.add(k);}});
+  const talkGuide=()=>{if(guideDispatched||cut>0||!dungeonCanTalkGuide(g,dungeonPoint(progress)))return;guideDispatched=true;target=null;keys.clear();save();onGuide();};
+  listen(guideButton,'click',talkGuide);
+  listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(k==='e'&&!e.repeat){e.preventDefault();talkGuide();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();if(!cut)keys.add(k);}});
   listen(window,'keyup',e=>keys.delete(e.key.toLowerCase()));
   listen(window,'blur',()=>{keys.clear();target=null;save();});listen(canvas,'blur',()=>{keys.clear();target=null;});
   listen(action,'click',()=>{

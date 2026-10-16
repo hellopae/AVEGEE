@@ -1,0 +1,86 @@
+{
+  "terrainDir": "img/map-zone1/v5/",
+  "preview": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+  "upperActualTile": "img/map-zone1/v5/r1-c2.webp",
+  "tilePresent": true,
+  "previewPresent": true,
+  "upper": [
+    [
+      1050,
+      675
+    ],
+    [
+      1130,
+      743
+    ],
+    [
+      1485,
+      505
+    ],
+    [
+      1420,
+      455
+    ]
+  ],
+  "upperLanding": [
+    [
+      1380,
+      480
+    ],
+    [
+      1510,
+      490
+    ],
+    [
+      1510,
+      550
+    ],
+    [
+      1380,
+      550
+    ]
+  ],
+  "lower": [
+    [
+      1080,
+      1070
+    ],
+    [
+      1110,
+      1125
+    ],
+    [
+      1480,
+      1025
+    ],
+    [
+      1440,
+      965
+    ]
+  ],
+  "lowerLanding": [
+    [
+      1045,
+      985
+    ],
+    [
+      1090,
+      995
+    ],
+    [
+      1145,
+      1080
+    ],
+    [
+      1100,
+      1115
+    ],
+    [
+      1040,
+      1030
+    ]
+  ],
+  "regressionLog": "/private/tmp/avegee-workers-focused.log",
+  "regressionPassed": true,
+  "coverage": "Both circled approaches checked at 4-unit intervals on centre and ±8-unit walking lanes, initial and all-built town using real sprite silhouettes; pointer routes and every service entrance also verified."
+}

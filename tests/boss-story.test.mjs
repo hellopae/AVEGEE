@@ -1,3 +1,4 @@
+import {bossJusticeCase,interrogateBoss,bossJusticeAnswer,sentenceBoss,advanceBossJustice} from '../src/boss-justice.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
@@ -30,7 +31,8 @@ test('Zone 1 finale triggers even on a lethal hit, injures the hero and awards f
   const reloaded = createGame(); reloaded.restore(loaded.snapshot());
   assert.equal(reloaded.storyQueue[0].stage, 'reward');
   reloaded.completeStory(); reloaded.queueStory('th','flameCharge');
-  assert.equal(reloaded.storyQueue.length, 0);
+  assert.equal(reloaded.storyQueue.some(p=>p.key==='th'),false);
+  assert.equal(reloaded.storyQueue.some(p=>p.key==='boss-guide-th-praise'),true);
 });
 
 test('Zone 2 finale saves Nira, unlocks Rage and allows a visit during three turns of rest', () => {
@@ -48,7 +50,14 @@ test('Zone 2 finale saves Nira, unlocks Rage and allows a visit during three tur
   assert.equal(g.visitNira(),true); assert.equal(g.visitNira(),false);
   const loaded = createGame(); loaded.restore(g.snapshot());
   assert.equal(loaded.niraRest.visited,true);
-  loaded.paused = false; loaded.step(); loaded.step();
+  loaded.paused = false;
+  // The captured boss docket suspends normal city turns until the keeper releases him.
+  loaded.step(); assert.equal(loaded.niraRest.remaining,3);
+  while(loaded.storyQueue.length)loaded.completeStory();
+  interrogateBoss(loaded);sentenceBoss(loaded,{...bossJusticeAnswer(loaded),intensity:1});
+  for(let i=0;i<2000&&bossJusticeCase(loaded);i++)advanceBossJustice(loaded,100);
+  assert.equal(loaded.bossJustice.active,null);
+  loaded.step(); loaded.step();
   assert.equal(loaded.niraRest.remaining,1);
   loaded.step(); assert.equal(loaded.niraRest,null);
 });
