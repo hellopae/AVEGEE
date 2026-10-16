@@ -2603,9 +2603,10 @@ function openTrial(initialError = '') {
         const stage = dlg.querySelector('.hud-stage'); if (!stage) return;
         attachBattleFx(stage);
         const sr = stage.getBoundingClientRect(), kk = sr.width / (stage.offsetWidth || sr.width) || 1;
+        const cam = hasBattleCamera();   // M1 camera: battleSpriteRect / rectOf already return stage-local, un-zoomed px
         const rectOf = async sel => { const im = stage.querySelector(sel); if (!im) return null; let r = null; try { r = await battleSpriteRect(im); } catch (e) { r = null; }
-          if (!r || !(r.r > r.l)) { const e = im.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
-          return { l:(r.l - sr.left) / kk, t:(r.t - sr.top) / kk, r:(r.r - sr.left) / kk, b:(r.b - sr.top) / kk }; };
+          if (!r || !(r.r > r.l)) { if (cam) return cameraRectOf(im); const e = im.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
+          return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / kk, t:(r.t - sr.top) / kk, r:(r.r - sr.left) / kk, b:(r.b - sr.top) / kk }; };
         const you = await rectOf('.fig.you img'), foe = await rectOf('.fig.foe img');
         if (!you) return;
         const delay = dlg.querySelector('.action-cutscene') ? ACTION_CUT_MS - 120 : 0;
