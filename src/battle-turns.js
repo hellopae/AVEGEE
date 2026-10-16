@@ -1,5 +1,5 @@
 // Deterministic round queue shared by the combat rules and visible timeline.
-const ALLY_SPEED = {yama:12,kan:11,dam:10,boon:8,plerng:8,taan:7,guard:6};
+const ALLY_SPEED = {yama:12,nira:10,kan:11,dam:10,boon:8,plerng:8,taan:7,guard:6};
 export function combatUnits(game) {
   const b=game.battle;if(!b)return [];
   return [...game.battleActors().filter(a=>a.id!=='you'||b.youHp>0)

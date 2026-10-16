@@ -31,7 +31,7 @@ export function standPoints(g) {
   else pts.push([966, 350], [1038, 350]);        // ทัณฑ์กับพ่อค้าที่ถูกขังหน้าตะราง (โซน 4)
   if (actorStanding(g.guard)) pts.push([g.guard.x, g.guard.y]);
   if (!g.bossWalk && (g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) pts.push([SPOTS.bossPier.x, SPOTS.bossPier.y]);
-  if (g.challengeUnlocked?.()) pts.push([CHALLENGE_STAND.x, CHALLENGE_STAND.y]);   // G3b — บอสชายแดนยืนข้างประตูล่าง
+  if (g.zone !== 'th' && g.challengeUnlocked?.()) pts.push([CHALLENGE_STAND.x, CHALLENGE_STAND.y]);   // Zone 1 rematches now live in the border cave.
   for (const ev of waitingEvents(g)) pts.push([ev.x, ev.y]);
   for (const a of devaMapActors(g)) if (a.enabled) pts.push([a.x,a.y]);
   for (const a of finalEventActors(g)) pts.push([a.x,a.y]);

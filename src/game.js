@@ -1,4 +1,4 @@
-import {dungeonAtCheckpoint,dungeonAtExit} from './dungeon-view.js';
+import {dungeonAtCheckpoint,dungeonAtExit,dungeonPoint,DUNGEON_PROGRESS} from './dungeon-view.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y } from './town-layout.js';
@@ -7,6 +7,7 @@ import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { actorStanding, specialCooldown, weightedTarget, targetWeight, recoverActor, RECOVERY_MS } from './actor-recovery.js';
 import { effectiveAllyStats, normalAttack, normalizeTraining, migrateStatTraining, merchantStock, medicineResult } from './progression.js';
+import { isFrontierDuoBattle } from './nira-combat.js';
 import { trainingTargets, trainingWhy, beginTraining, finishTraining } from './training.js?v=sword-schools-20261010-final';
 import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFinalReward, RULER_ORDER } from './final-event.js';
 import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
@@ -457,7 +458,7 @@ const API = {
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
   actorStanding(actor) { return actorStanding(actor); },
-  guardActive() { return this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard); },
+  guardActive() { return !isFrontierDuoBattle(this.battle) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard); },
   enemyGuard() {
     const b = this.battle;
     return this.guardActive() && !(b?.absentActors || []).includes(this.guard.id) ? this.guard : null;
@@ -2308,10 +2309,7 @@ const API = {
   startFrontierBattle(target) {
     if (this.battle || this.over) return null;
     const state = this.frontierOf();
-    const available = this.crew.filter(c => !c.reader && !c.self && actorStanding(c));
-    state.team = (state.team || []).filter(k => available.some(c => c.k === k));
-    if (!state.team.length && available[0]) state.team = [available[0].k];
-    if (!state.team.length) return null;
+    const nira = this.crewOf('nira');
     // ระดับของตัวนั้นจับตอนมันโผล่บนแผนที่ชายแดน (src/frontier.js en.level) ไม่ใช่ตอนกดเริ่มสู้ —
     // ตัวที่ยืนรออยู่นานไม่ควรยากขึ้นย้อนหลังเพราะเราไปปราบตัวอื่นก่อนหน้าจนระลอกขยับ
     const wave = target?.level || (state.clears || 0) + 1;
@@ -2323,7 +2321,7 @@ const API = {
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:[...state.team],
+      kind:'frontier', zone:this.zone, wave, team:actorStanding(nira) ? ['nira'] : [],
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
@@ -2617,6 +2615,11 @@ const API = {
   },
   challengeDone(zone = this.zone) { return (this.challenge[zone]?.wins || 0) > 0; },
   challengeCanTalk() {
+    if(this.zone==='th') {
+      const status=dungeonStatus(this),p=this.zoneTravel?.active?.position;
+      const cave=dungeonPoint(DUNGEON_PROGRESS[2]);
+      return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&status?.route.id==='th:asia'&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=.065);
+    }
     return !this.battle && !this.over && !this.pendingRecovery && this.challengeUnlocked() &&
       Math.hypot(this.player.x - CHALLENGE_STAND.x, this.player.y - CHALLENGE_STAND.y) <= 150;
   },
@@ -2633,7 +2636,7 @@ const API = {
     this.fights++;
     // ทีมที่จัดไว้ที่ชายแดน (ถ้ามี) ไม่งั้นใช้ทีมปกติของเกม — เหมือนศึกระลอกชายแดนเดิม
     const team = this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k));
-    this.battle = prepareBattle({ kind:'zoneEvent', eventKey:ev.k, zone, challenge:true, rematch:st.wins > 0,
+    this.battle = prepareBattle({ ...(zone==='th'?{sceneBiome:'cave'}:{}), kind:'zoneEvent', eventKey:ev.k, zone, challenge:true, rematch:st.wins > 0,
       ...(team.length ? { team:[...team] } : {}), bg:artUrl('BG-Frontier', 'webp', zone),
       wave, startWave:wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -2935,6 +2938,10 @@ const API = {
     return this.crew.filter(c => !c.reader && !c.self && actorStanding(c));
   },
   battleCrew() {
+    if (isFrontierDuoBattle(this.battle)) {
+      const nira = this.crewOf('nira');
+      return actorStanding(nira) && !(this.battle.absentActors || []).includes(nira.id) ? [nira] : [];
+    }
     const keys = this.battle?.team || this.party?.members || [];
     if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
       .map(id => this.roster[id]).filter(c => actorStanding(c) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.teamLimits.finalTeamMax);
@@ -3038,7 +3045,7 @@ const API = {
     if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
     if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
-    if (command && !enemyOnly && actor.k === 'boon' && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
+    if (command && !enemyOnly && ['boon','nira'].includes(actor.k) && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if(what==='flee'&&!['soul','mob','frontier'].includes(B.kind))return false;
     const livingBefore = B.foes.filter(f => f.hp > 0).map(f => ({ id:f.id, hp:f.hp }));
     const target = B.foes.find(f => f.id === B.selectedFoeId && f.hp > 0);
@@ -3113,14 +3120,16 @@ const API = {
       c.morale = Math.max(0, c.morale - BATTLE.crewMorale);
       const pw = this.allyStats(c);
       // ข้อ A ชุด 13 — กานต์/บุญ ร่ายจากที่เดิม ไม่พุ่งเข้าใส่ (lunge:false) ui เอาไปกันไม่ให้วาดท่าพุ่ง
-      B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !(c.k === 'boon' || c.k === 'kan') };
-      if (c.k === 'boon') {
+      B.helper = { id:c.id, homeZone:c.homeZone, k: c.k, name: c.name, at: Date.now(), lunge: !['boon','kan','nira'].includes(c.k), pose:c.k === 'nira' ? 'heal' : undefined };
+      if (c.k === 'boon' || c.k === 'nira') {
         const receiver = recipient || { id:'you' };
         const heal = Math.min(pw.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale);
         if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
         B.dmg.healActorId = receiver.id;
+        B.dmg.healAmount = heal;
         say(`${c.name}ฟื้นบารมีให้ ${heal} หน่วย`);
-        B.talk = `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
+        B.talk = c.k === 'nira' ? `${c.name}: "ตั้งสตินะคะท่าน ดิฉันจะช่วยฟื้นบารมีให้ค่ะ"`
+          : `${c.name}: "ตั้งสติก่อนนะครับท่าน ผมช่วยฟื้นบารมีให้แล้ว"`;
       } else if (c.k === 'kan') {
         confuseFoe = pw.confuse || 1;
         target.confuseMultiplier = pw.confuseMultiplier;
@@ -3895,11 +3904,18 @@ const API = {
     if(Math.hypot(this.player.x-FRONTIER.x,this.player.y-FRONTIER.y)>FRONTIER.reach||!beginDungeon(this,to))return false;
     this.player.path=null;this.save();this.onChange();return true;
   },
-  startDungeonEncounter() {
-    if(!dungeonAtCheckpoint(this))return null;
-    const encounter=nextDungeonEncounter(this);if(!encounter)return null;
+  startDungeonEncounter(checkpoint=null) {
+    if(!dungeonAtCheckpoint(this,checkpoint))return null;
+    const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
+    if(encounter.boss) {
+      const battle=this.startZoneEvent('thBorderBoss');
+      if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';this.save();}
+      else resolveDungeonEncounter(this,encounter.token,false);
+      return battle;
+    }
     const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
     this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
+    if(battle&&this.zone==='th')battle.sceneBiome='border';
     if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
     return battle;
   },

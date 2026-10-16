@@ -354,7 +354,12 @@
       "img/map-zone1/dungeon-th-asia-eastern-gate-v1.webp",
       "img/yama-animation-v1/th/book-idle.webp",
       "img/yama-animation-v1/th/book-walk.webp",
-      "img/yama-animation-v1/th/sword-idle.webp"
+      "img/yama-animation-v1/th/sword-idle.webp",
+      "img/map-zone1/mainland-stairs-v2.webp",
+      "img/frontier-route/zone1-2-v1.webp",
+      "img/frontier-route/battle-border-v1.webp",
+      "img/frontier-route/battle-cave-v1.webp",
+      "img/nira-combat/nira-th-sheet-v1.webp"
     ],
     "asia": [
       "img/Asia/BG-Dab-asia.webp",
@@ -500,7 +505,8 @@
       "img/map-zone1/dungeon-asia-west-western-gate-v1.webp",
       "img/yama-animation-v1/asia/book-idle.webp",
       "img/yama-animation-v1/asia/book-walk.webp",
-      "img/yama-animation-v1/asia/sword-idle.webp"
+      "img/yama-animation-v1/asia/sword-idle.webp",
+      "img/nira-combat/nira-asia-sheet-v1.webp"
     ],
     "west": [
       "img/West/BG-Dab-west.webp",
@@ -642,7 +648,8 @@
       "img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp",
       "img/yama-animation-v1/west/book-idle.webp",
       "img/yama-animation-v1/west/book-walk.webp",
-      "img/yama-animation-v1/west/sword-idle.webp"
+      "img/yama-animation-v1/west/sword-idle.webp",
+      "img/nira-combat/nira-west-sheet-v1.webp"
     ],
     "cyberhell": [
       "img/CyberHell/BG-Dab-cyberhell.webp",
@@ -784,7 +791,8 @@
       "img/yama-sword-v4/hero-yama-cyberhell-sword.webp",
       "img/yama-animation-v1/cyberhell/book-idle.webp",
       "img/yama-animation-v1/cyberhell/book-walk.webp",
-      "img/yama-animation-v1/cyberhell/sword-idle.webp"
+      "img/yama-animation-v1/cyberhell/sword-idle.webp",
+      "img/nira-combat/nira-cyberhell-sheet-v1.webp"
     ]
   }
 }

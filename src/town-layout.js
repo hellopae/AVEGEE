@@ -32,6 +32,11 @@ export const TOWN_ENTRY = {gate:[1950,2360],nira:[1916,2352],
 export const TOWN_PATHS = [
   {key:'west-forest',width:180,points:[[550,580],[540,950],[530,1150],[570,1710]]},
   {key:'lava-bridge',width:135,points:[[530,1150],[800,1150],[1150,1090],[1360,990],[1560,1030],[1650,1160],[1920,1250]]},
+  // The west terrace has a second, southern stair approach. Previously the
+  // painted stairs ended outside every floor polygon, trapping actors at the
+  // edge. The tea facade fills the west side of the lower terrace, so the
+  // approach bends around its east wall before reaching the tea courtyard.
+  {key:'west-terrace-stairs',width:110,points:[[1560,1030],[1635,1155],[1890,1190],[1890,1590],[1750,1610],[1670,1640]]},
   {key:'volcano-bridge',width:120,points:[[550,580],[850,620],[1040,660],[1240,760],[1440,800],[1650,800],[1920,960]]},
   {key:'city-spine',width:170,points:[[1700,530],[1700,750],[1920,960],[1920,1250],[1920,1560],[1950,1950],[1950,2360]]},
   {key:'tea-garden',width:150,points:[[1920,1470],[1750,1450],[1670,1640],[1680,1720],[1920,1750]]},
@@ -63,6 +68,8 @@ export const TOWN_WALK_POLYS = [
 for(const {points,width} of TOWN_PATHS)for(const [x,y] of points)
   TOWN_WALK_RECTS.push([x-width/2,y-width/2,x+width/2,y+width/2]);
 export const TOWN_STAIRS = [
+  {key:'west-bridge',rect:[1510,980,1600,1100],steps:6},
+  {key:'west-terrace',rect:[1850,1460,1930,1580],steps:7},
   {key:'prison',rect:[1630,530,1770,750],steps:5},
   {key:'sanctuary',rect:[2520,560,2680,640],steps:5},
   {key:'ice',rect:[3400,740,3560,820],steps:5},

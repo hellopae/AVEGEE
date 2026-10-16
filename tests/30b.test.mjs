@@ -121,12 +121,12 @@ test('30B-8: หัวใจสำรองไม่ใช้ภาพกล่�
   assert.equal(ITEMS.spareHeart.revive, true);
 });
 
-test('30B-9: โค้ดเรืองแสงเติมบารมีของบุญ — เฉพาะ crew:boon, 0.6–1 วิ, เคารพ reduced-motion', () => {
+test('30B-9: บุญและนิราเติมบารมีมีแสง 0.6–1 วิ และเคารพ reduced-motion', () => {
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const ms = Number(ui.match(/const HEAL_GLOW_MS = (\d+)/)[1]);
   assert.ok(ms >= 600 && ms <= 1000, `HEAL_GLOW_MS=${ms}`);
-  assert.match(ui, /k === 'crew:boon' && g\.battle\.youHp > hpBefore/);
+  assert.match(ui, /\['crew:boon','crew:nira'\]\.includes\(k\) && g\.battle\.youHp > hpBefore/);
   assert.match(css, /\.arena \.fig\.you\.healing::after/);
   assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{\s*\.arena \.fig\.you\.healing::after\{animation:none/);
 });

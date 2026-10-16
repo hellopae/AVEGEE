@@ -1,5 +1,5 @@
 import { initializeZoneTravel, DUNGEON_ROUTES } from '../../src/zone-travel.js';
-import { DUNGEON_EXIT } from '../../src/dungeon-view.js';
+import { dungeonPoint } from '../../src/dungeon-view.js';
 
 /** Established harbour fixture for tests of branch gameplay, not discovery gates.
  * Keep all gameplay state intact and call the real guarded moveZone method.
@@ -24,7 +24,7 @@ export function clearedDungeonTravel(g, to) {
   travel.active = {
     route: route.id, checkpoint: route.checkpoints.length,
     cleared: route.checkpoints.map(c => c.id), attempt: route.checkpoints.length,
-    pending: null, position: { x: DUNGEON_EXIT[0], y: DUNGEON_EXIT[1] },
+    pending: null, position: { x: dungeonPoint(1,route.id)[0], y: dungeonPoint(1,route.id)[1] },
   };
   return g.moveZone(to);
 }

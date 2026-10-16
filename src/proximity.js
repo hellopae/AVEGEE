@@ -60,7 +60,7 @@ export function mapInteractions(g, merchant) {
   const rest = finalRestSpot(g);
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
   // G3b — บอสชายแดนที่ประตูล่าง: ปุ่มคุยลอยเหนือหัวเมื่อเดินเข้าใกล้ (เหมือนนิรา/พ่อค้า)
-  if (g.challengeUnlocked?.()) targets.push({ id:'challenge', key:g.zone, kind:'challenge', x:CHALLENGE_STAND.x, y:CHALLENGE_STAND.y,
+  if (g.zone !== 'th' && g.challengeUnlocked?.()) targets.push({ id:'challenge', key:g.zone, kind:'challenge', x:CHALLENGE_STAND.x, y:CHALLENGE_STAND.y,
     bx:CHALLENGE_STAND.x, by:CHALLENGE_STAND.y - 110, label:t('challenge.fab', { name:BOSS_NAMES[g.zone].frontier }) });
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,

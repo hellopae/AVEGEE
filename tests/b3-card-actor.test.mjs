@@ -8,7 +8,11 @@ const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
 test('B3 battle helper buttons, cooldown title and final-team cards pass the actor object to crewAbility', () => {
   // B6 selects one actor before showing their special; retain identity and description checks.
   assert.match(ui, /const special = actor\.k === 'guard' \? 'guard' : `crew:\$\{crewBattleKey\(actor\)\}`/);
-  assert.match(ui, /battleChoice\(special, crewArt\(actor, '-profile'\), crewAbility\(actor\)/);
+  const specialChoice = ui.match(/const specialChoice = ([^\n]+)/)?.[1];
+  assert.ok(specialChoice, 'selected special belongs to the current actor');
+  assert.match(specialChoice, /battleChoice\(special, crewArt\(actor, '-profile'\)/);
+  assert.match(specialChoice, /actor\.k === 'nira' \? .*g\.allyStats\(actor\)\.heal.* : crewAbility\(actor\)/,
+    'Nira healing and ordinary helper descriptions both use the actual actor');
   assert.match(ui, /button\.title=g\.crewHelpWhy\(c\)\|\|crewAbility\(c\);/);
   assert.match(ui, /ท่าสู้: \$\{crewAbility\(c\)\} · คูลดาวน์/);
   assert.doesNotMatch(ui, /crewAbility\(c\.k\)\}<\/small>`;\s*\n\s*\}\)\.join/);

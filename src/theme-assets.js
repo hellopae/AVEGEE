@@ -4,7 +4,7 @@ export const THEME_ZONES = ['th', 'asia', 'west', 'cyberhell'];
 export const THEME_STATIONS = ['sala', 'krata', 'dab', 'lokan', 'ngiw', 'lan', 'tea', 'sawan', 'tarang', 'frontier', 'krajok'];
 export function themeBackground(zone, kind) {
   if (kind === 'arena' && zone === 'th') return 'img/map-zone1/arena-v1.webp';
-  if (kind === 'map' && zone === 'th') return 'img/map-zone1/mainland-v1.webp';
+  if (kind === 'map' && zone === 'th') return 'img/map-zone1/mainland-stairs-v2.webp';
   return `img/theme-v4/${kind}-${THEME_ZONES.includes(zone) ? zone : 'th'}.webp`;
 }
 export function themeArt(key, zone) {
