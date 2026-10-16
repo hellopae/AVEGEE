@@ -1,4 +1,5 @@
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
+import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
@@ -2540,6 +2541,8 @@ function openTrial(initialError = '') {
       </div>
     </div>`;
 
+    // N2: Yama stands (map idle pose) instead of bobbing — the suspect keeps floating
+    mountYamaTrialIdle(dlg.querySelector('.trial-hud .hud-stage .fig.you img'), g.outfit || g.zone);
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
     if(dossierScroll)dlg.querySelector('.hud-right').scrollTop=dossierScroll;
 

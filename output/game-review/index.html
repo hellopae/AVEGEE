@@ -803,11 +803,11 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   text-shadow:0 2px 6px #000,0 0 14px rgba(0,0,0,.9);z-index:3}
 .arena .fig{position:absolute;bottom:6%;z-index:2;display:flex;flex-direction:column;
   align-items:center;gap:5px;width:min(34%,240px)}
-.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{
+.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig.foe{
   animation:battleBreath 2.4s ease-in-out infinite}
 .arena.combat-arena .fig.foe{animation-delay:-1.1s}
 @keyframes battleBreath{0%,100%{translate:0 0}50%{translate:0 -5px}}
-@media(prefers-reduced-motion:reduce){.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig{animation:none}}
+@media(prefers-reduced-motion:reduce){.arena.combat-arena .fig.you,.arena.combat-arena .fig.foe,.trial-hud .hud-stage .fig.foe{animation:none}}
 /* ข้อ D คุณเป้ 24 ก.ย. 2569 — ยมบาทน้อยต้องอยู่หน้าสุดเสมอ ไม่มีตัวไหนบังหัวได้
    (เจอ: ยมทูตที่เข้ามาช่วย .fig.helper วาด z-index:3 ทับหัวยมบาทน้อยซึ่งเดิม z-index:2 ตามค่า .fig ฐาน) */
 .arena .fig.you{left:4%;z-index:4} .arena .fig.foe{right:4%}
@@ -2284,9 +2284,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="module" src="src/preload.js?v=20261016-map-polish-v1"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261016-map-polish-v1"></script>
+<script type="module" src="src/ui.js?v=20261016-map-polish-v1-n2"></script>
 <div class="review-toolbar"><small>AVEGEE · ตรวจระบบ · ใช้เซฟในหน่วยความจำ</small><select id="review-biome" aria-label="ฉากต่อสู้"><option value="">เมือง</option><option value="volcano">ภูเขาไฟ</option><option value="ice">น้ำแข็ง</option><option value="forest">ป่า</option></select><label>Boss <input type="checkbox" id="review-boss"></label><select id="review-map" aria-label="จุดตรวจแผนที่"><option value="">จุดตรวจแผนที่</option><option value="plaza">ลานนิรา</option><option value="ice">ปราสาทน้ำแข็ง</option><option value="quarry">ลานหิน</option><option value="stairs">บันไดใหม่</option></select><button id="review-battle">คิวต่อสู้</button><button id="review-trial">สอบสวน</button><button id="review-dungeon">ดันเจี้ยน</button><button id="review-port">ท่าเรือ</button><a href="output/zone1-2d/index.html">แผนที่</a></div><script type="module">
-import {openBattle,openDungeon,openHarbour,openTrial,startPlay} from './src/ui.js?v=20261016-map-polish-v1';
+import {openBattle,openDungeon,openHarbour,openTrial,startPlay} from './src/ui.js?v=20261016-map-polish-v1-n2';
 import {DUNGEON_CHECKPOINTS} from './src/dungeon-view.js';
 import {FRONTIER,MOB,STATIONS} from './src/data.js';
 const g=window.G;g.save=()=>true;g.coin=10000;
