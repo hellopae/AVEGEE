@@ -27,6 +27,8 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
+import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf } from './battle-fx.js?v=m2';
+import { recipeFor, foeTier, cueKindFor, cueImpactAt } from './battle-fx-map.js?v=m2';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
@@ -2593,10 +2595,27 @@ function openTrial(initialError = '') {
       if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
       paint(); refresh();
     });
+    // M2: a repaint replaces the stage — keep an effect that is still playing (interrogation hypnosis / mirror) on the new one
+    if (!fxIdle()) attachBattleFx(dlg.querySelector('.hud-stage'));
+    const trialFx = async k => {
+      try {
+        if (k !== 'hypno' && k !== 'mirror') return;
+        const stage = dlg.querySelector('.hud-stage'); if (!stage) return;
+        attachBattleFx(stage);
+        const sr = stage.getBoundingClientRect(), kk = sr.width / (stage.offsetWidth || sr.width) || 1;
+        const rectOf = async sel => { const im = stage.querySelector(sel); if (!im) return null; let r = null; try { r = await battleSpriteRect(im); } catch (e) { r = null; }
+          if (!r || !(r.r > r.l)) { const e = im.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
+          return { l:(r.l - sr.left) / kk, t:(r.t - sr.top) / kk, r:(r.r - sr.left) / kk, b:(r.b - sr.top) / kk }; };
+        const you = await rectOf('.fig.you img'), foe = await rectOf('.fig.foe img');
+        if (!you) return;
+        const delay = dlg.querySelector('.action-cutscene') ? ACTION_CUT_MS - 120 : 0;
+        playBattleFx(k === 'hypno' && foe ? { recipe:'hypno', src:you, targets:[{ rect:foe, dmg:0 }], side:'foe', delay } : { recipe:'mirror', src:you, targets:[{ rect:you, dmg:0 }], side:'foe', delay });
+      } catch (e) { /* effect only */ }
+    };
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k);
+      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k); trialFx(k);
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -3025,6 +3044,68 @@ function openBattle(after) {
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
+  // ---- M2: battle effects (src/battle-fx.js). Rects are measured after the paint that follows, in stage-local px. ----
+  let fxHandled = false;       // true while an effect owns damage numbers + the old static .fx image for the current phase
+  const keyOfActor = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
+  const allyImg = key => dlg.querySelector(`[data-crew-pick="${key}"]:not(.battle-portrait) img:not(.fx)`);
+  const foeImg = id => (id && dlg.querySelector(`.fig.foe[data-foe-id="${id}"] img:not(.fx)`)) || dlg.querySelector('.fig.foe img:not(.fx)');
+  const fxRect = async img => {
+    const stage = dlg.querySelector('.combat-arena');
+    if (!stage || !img) return null;
+    const cam = hasBattleCamera();   // M1 camera: battleSpriteRect / rectOf already return stage-local, un-zoomed px
+    const sr = stage.getBoundingClientRect(), k = sr.width / (stage.offsetWidth || sr.width) || 1;
+    let r = null;
+    try { r = await battleSpriteRect(img); } catch (e) { r = null; }
+    if (!r || !(r.r > r.l)) { if (cam) return cameraRectOf(img); const e = img.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
+    return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
+  };
+  const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
+  /** one move's effect. phase 'you' = our action (k = command key), 'foe' = their turn. Never throws: on any trouble the old numbers come back. */
+  const startMoveFx = async (phaseKind, k, extraDelay = 0, cutMs = 0) => {
+    try {
+      const b = g.battle; if (!b || !dlg.querySelector('.combat-arena')) { stopFxHandled(); return; }
+      const d = b.dmg || {}, plays = [];
+      if (phaseKind === 'you') {
+        const replay = b.weaponNote?.k === 'replay' ? b.weaponNote.n : 0;
+        const recipe = recipeFor(k, { dmg:d.foe, crit:d.crit, replay });
+        if (!recipe) { stopFxHandled(); return; }
+        if (recipe === 'heal') return;      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
+        const src = await fxRect(allyImg(keyOfActor(b.actorId || 'you')));
+        const self = ['rage', 'clock', 'mirror'].includes(recipe);
+        const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
+        const targets = self ? [{ rect:src, dmg:0 }] : (await Promise.all(hits.map(async h => ({ rect:await fxRect(foeImg(h.id)), dmg:h.damage || 0, label:d.crit && recipe.startsWith('slash') ? t('battle.fx.crit') : '' })))).filter(x => x.rect);
+        if (!src || !targets.length) { stopFxHandled(); return; }
+        const hitDelay = /^(slash|club)/.test(recipe) ? 110 : 0;
+        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, delay:extraDelay + hitDelay, impactAt:cueImpactAt(cueKindFor('you', k), cutMs) });
+      } else {
+        const delay = extraDelay;
+        if (d.confuseSelf > 0 || (d.burnSelf > 0 && !(d.you > 0 || d.crew > 0))) {
+          const list = d.confuseHits?.length ? d.confuseHits : [{ attackerId:d.counterFoeId, id:d.counterFoeId, damage:d.confuseSelf || d.burnSelf }];
+          for (const h of list) {
+            const src = await fxRect(foeImg(h.attackerId || h.id)), tg = await fxRect(foeImg(h.id));
+            if (src && tg) plays.push({ recipe:d.confuseSelf > 0 ? 'slash' : 'burn', src, targets:[{ rect:tg, dmg:h.damage || 0 }], side:'foe', delay:delay + 110 });
+          }
+        } else {
+          const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you', damage:d.you || d.crew || 0 }];
+          const src = await fxRect(foeImg(d.counterFoeId));
+          const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', delay:delay + (b.ultimate ? 0 : 60), impactAt:cueImpactAt('foe-attack', cutMs) });
+        }
+      }
+      if (!plays.length) { stopFxHandled(); return; }
+      for (const p of plays) playBattleFx(p);
+    } catch (e) { stopFxHandled(); }
+  };
+  /** healing: one soft ring around the team + flowers/petals per healed actor (the L2 CSS glow stays) */
+  const playHealBattleFx = async (gains, delayMs) => {
+    try {
+      const targets = (await Promise.all(gains.map(async gn => ({ rect:await fxRect(allyImg(keyOfActor(gn.id))), dmg:0 })))).filter(x => x.rect);
+      if (!targets.length) return;
+      const mpOnly = gains.every(gn => !(gn.hp > 0));
+      const src = targets[0].rect;
+      playBattleFx({ recipe:'heal', src, targets, side:'you', numbers:false, opts:{ mp:mpOnly }, delay:delayMs });
+    } catch (e) { /* the L2 glow already shows */ }
+  };
   let healFx = [], healTimers = [];
   const healRoot = key => key === 'you' ? dlg.querySelector('.fig.you')
     : dlg.querySelector(`.battle-squad [data-crew-pick="${key}"], .formation-member[data-crew-pick="${key}"]`);
@@ -3050,7 +3131,7 @@ function openBattle(after) {
   };
   /** after a command / enemy turn changed our side's vitals: show the effect on everyone who gained HP or MP */
   const showHeals = (before, delayMs = 120) => {
-    const keyOf = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
+    const keyOf = keyOfActor;
     const gains = vitalGains(before, vitalsOf(g));
     const healed=g.battle?.dmg;
     if(healed?.healAmount>0&&!gains.some(a=>a.id===healed.healActorId))gains.push({id:healed.healActorId,hp:healed.healAmount,mp:0});
@@ -3058,6 +3139,7 @@ function openBattle(after) {
     const start = Date.now() + delayMs;
     for (const gn of gains) healFx.push({ ...gn, key: keyOf(gn.id), start, ms: HEAL_GLOW_MS });
     scheduleHealFx();
+    playHealBattleFx(gains, delayMs);   // M2: ring of light + sparkles on top of the L2 glow
   };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
@@ -3249,6 +3331,7 @@ function openBattle(after) {
       </div>${prep}${prepLayer}${fleeLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
+    attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
@@ -3576,6 +3659,7 @@ function openBattle(after) {
     };
     const executeCommand = (action, recipient = 'you') => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
+      fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
       const vitalsBefore = vitalsOf(g);
@@ -3613,8 +3697,10 @@ function openBattle(after) {
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
+      fxHandled = true;                         // M2: the canvas effect owns the numbers + old static image from this paint on
       paint();
       playActionCutscene(action);
+      { const cutMs = dlg.querySelector('.action-cutscene') ? ACTION_CUT_MS : 0; startMoveFx('you', k, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs); }
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -3633,8 +3719,10 @@ function openBattle(after) {
           phase = 'foe'; phaseAt = Date.now();
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
+          fxHandled = true;
           paint();
           if (nb.ultimate) playActionCutscene('boss', nb.ultimate);
+          startMoveFx('foe', null, nb.ultimate ? ACTION_CUT_MS - 120 : 0, nb.ultimate ? ACTION_CUT_MS : 0);
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
             if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
@@ -3655,7 +3743,9 @@ function openBattle(after) {
         if(!g.runEnemyTurn()){phase=null;paint();return;}
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
+        fxHandled=true;
         sfx('hurt');paint();if(b.ultimate)playActionCutscene('boss',b.ultimate);
+        startMoveFx('foe',null,b.ultimate?ACTION_CUT_MS-120:0,b.ultimate?ACTION_CUT_MS:0);
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
       },600);
     }
@@ -3677,6 +3767,7 @@ function openBattle(after) {
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
     healTimers.forEach(clearTimeout);
+    stopBattleFx();
     clearInterval(phaseGuard);
     clearInterval(crewTimer);
     dlg.removeEventListener('cancel', noEsc);
