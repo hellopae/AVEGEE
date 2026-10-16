@@ -54,6 +54,20 @@ for (const allBuilt of [false, true]) {
     g.syncBlocks(true);
     // A missing sprite must not quietly turn this into a terrain-only test.
     for (const st of g.stations) assert.ok(blockRectsOf(st.def)?.length, `${st.def.k}: real building collision loaded`);
+    // The two circled west bridge approaches must be usable with real buildings.
+    for (const [key,trail] of [
+      ['upper bridge stairs',[[1080,690],[1150,697],[1400,492],[1470,525]]],
+      ['lower bridge stairs',[[1060,1000],[1110,1090],[1460,1000]]],
+    ]) {
+      for(let n=1;n<trail.length;n++) {
+        const a=trail[n-1],b=trail[n],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);
+        for(let step=0;step<=Math.ceil(len/4);step++)for(const lane of [-8,0,8]) {
+          const u=Math.min(1,step*4/len),x=a[0]+dx*u-dy/len*lane,y=a[1]+dy*u+dx/len*lane;
+          assert.equal(canWalk(x,y),true,`${key}: walking lane at ${x},${y}`);
+        }
+      }
+      assert.ok(findPath(...trail[0],...trail.at(-1))?.length,`${key}: pointer route exists`);
+    }
     const start = [SPOTS.bench.x, SPOTS.bench.y];
     assert.equal(canWalk(...start), true, 'town plaza remains walkable');
     const targets = [

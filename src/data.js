@@ -380,6 +380,7 @@ export const crewName = (c, zone = 'th') => c?.names?.[zone] || c?.name || '—'
 // trainDmg = ดาเมจที่เพิ่มต่อขั้นฝึก "แรง" (upgradeCrew ใน game.js, c.upLv) — ระบบฝึกเดิมยังอยู่
 // แค่ต่อยอดบนฐานใหม่แทนสูตรเดิมที่ผูกกับ raeng ตรง ๆ
 export const CREW_POWER = {
+  nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี' },
   taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง' },
   plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ' },
   dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย' },

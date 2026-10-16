@@ -55,12 +55,15 @@ const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);
   for(const run of TOWN_WALK_RUNS){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
 }
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
+// Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
+export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
+export const TOWN_UPPER_BRIDGE_LANDING = [[1380,480],[1510,490],[1510,550],[1380,550]];
 export const TOWN_LAVA_EAST_CLIFF = [[1090,1005],[1160,1000],[1420,1130],[1450,1235],[1370,1230],[1250,1130],[1120,1080]];
 export const TOWN_LAVA_STAIRS = [[1080,1070],[1110,1125],[1480,1025],[1440,965]];
 export const TOWN_LAVA_STAIR_LANDING = [[1045,985],[1090,995],[1145,1080],[1100,1115],[1040,1030]];
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
-  if(townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING))return true;
+  if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING))return true;
   // The new stair flight crosses only its painted corridor; the surrounding cliff stays solid.
   // Use the northern bridge and the painted western stairs to reach these terraces.
   if(townInPolygon(x,y,TOWN_LAVA_EAST_CLIFF))return false;
@@ -68,7 +71,7 @@ export const townFloorAt = (x,y) => {
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.
 export const TOWN_STAIRS = [
-  {key:'lava-east-stairs',point:[1270,1050]}, {key:'krata-descent',point:[516,670]}, {key:'krata-lower',point:[480,800]},
+  {key:'upper-bridge-stairs',point:[1280,600]}, {key:'lava-east-stairs',point:[1270,1050]}, {key:'krata-descent',point:[516,670]}, {key:'krata-lower',point:[480,800]},
   {key:'dab-descent',point:[524,1172]}, {key:'ngiw-descent',point:[596,1280]}, {key:'ngiw-mid',point:[610,1570]},
   {key:'tarang',point:[1744,560]}, {key:'civic-north',point:[1854,770]}, {key:'civic-south',point:[1854,1160]},
   {key:'west-terrace',point:[1656,1484]}, {key:'east-terrace',point:[2212,1484]},

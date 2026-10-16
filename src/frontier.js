@@ -29,6 +29,8 @@ const HERO_H = 0.085;
 const MOB_H = 0.115;
 const REACH = 0.09;                 // ระยะเดินเข้าใกล้ศัตรูแล้วปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้น
 const GATE = [0.5, 0.19], NIRA = [0.575, 0.265], GUARD = [0.43, 0.265];
+export const FRONTIER_EXIT = Object.freeze([.5,.90]);
+export const nearFrontierExit = p => Math.hypot(p.x-FRONTIER_EXIT[0],p.y-FRONTIER_EXIT[1])<=REACH;
 export const nearFrontierGate = p => Math.hypot(p.x - GATE[0], p.y - GATE[1]) <= REACH;
 export const frontierAnchors = zone => ({ GATE, NIRA:zone === 'cyberhell' ? [0.548,0.30] : NIRA, GUARD:zone === 'cyberhell' ? [0.46,0.30] : GUARD });
 export const nearFrontierNira = (p, zone = 'th') => { const {NIRA} = frontierAnchors(zone); return Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH; };
@@ -91,12 +93,12 @@ function label(ctx, text, x, y, size, color) {
 export function makeFrontierWalk(cv, g, opts) {
   const {GATE,NIRA,GUARD} = frontierAnchors(g.zone);
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
-  const { bg, kinds, wave, alive, fab, gate, nira, challenge } = opts;
+  const { bg, kinds, wave, alive, fab, gate, nira, challenge, exit } = opts;
   const invasion = breachApproachActors(g.zone, opts.invasionKey);
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
-  const challengeBoss = !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  const challengeBoss = g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
   let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);
@@ -313,6 +315,7 @@ export function makeFrontierWalk(cv, g, opts) {
     }
     for (const [button, shown, x, y] of [
       [gate, nearFrontierGate(P), GATE[0], GATE[1]],
+      [exit, !invasion.length && nearFrontierExit(P), FRONTIER_EXIT[0], FRONTIER_EXIT[1]],
       [nira, nearFrontierNira(P,g.zone), NIRA[0], NIRA[1]],
     ]) {
       if (!button) continue;

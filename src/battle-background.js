@@ -11,6 +11,8 @@ export function battleBiomeFor(zone,battle,position={}) {
   return null;
 }
 export function battleBackground(zone,battle,position) {
+  if(zone==='th' && (battle?.sceneBiome==='cave' || battle?.sceneBiome==='border' || battle?.dungeonToken || battle?.kind?.startsWith('frontier')))
+    return `img/frontier-route/battle-${battle?.sceneBiome==='cave'?'cave':'border'}-v1.webp`;
   const biome=battleBiomeFor(zone,battle,position);
   return biome?`img/map-zone1/battle-${biome}-v1.webp`:
     themeBackground(zone,battle?.kind?.startsWith('frontier')?'frontier':'arena');

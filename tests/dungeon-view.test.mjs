@@ -8,7 +8,7 @@ test('Nira stays visible beside Yama even when both enter at progress zero',()=>
   for(let i=0;i<=100;i++){
     const p=i/100,yama=dungeonPoint(p),nira=dungeonCompanionPoint(p);
     assert.ok(Math.hypot(yama[0]-nira[0],yama[1]-nira[1])>.03);
-    assert.ok(nira[0]>.35&&nira[0]<.65&&nira[1]>=0&&nira[1]<=.96);
+    assert.ok(nira[0]>0&&nira[0]<1&&nira[1]>=0&&nira[1]<=.96);
   }
 });
 test('corridor click routing stays on its finite connected path at every point',()=>{

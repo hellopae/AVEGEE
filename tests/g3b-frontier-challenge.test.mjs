@@ -163,8 +163,21 @@ test('ต้องชนะบอสชายแดนในเนื้อเ�
   }
 });
 
+test('zone 1 challenge boss waits by the cave, other zones keep their town stand', async () => {
+  const {initializeZoneTravel,beginDungeon}=await import('../src/zone-travel.js');
+  const {dungeonPoint,DUNGEON_PROGRESS}=await import('../src/dungeon-view.js');
+  const g=unlocked('th');
+  assert.ok(!standPoints(g).some(([x,y])=>x===CHALLENGE_STAND.x&&y===CHALLENGE_STAND.y));
+  g.player.x=CHALLENGE_STAND.x;g.player.y=CHALLENGE_STAND.y;
+  assert.equal(g.challengeCanTalk(),false);
+  initializeZoneTravel(g);assert.equal(beginDungeon(g,'asia'),true);
+  const [x,y]=dungeonPoint(DUNGEON_PROGRESS[2]);g.zoneTravel.active.position={x,y};
+  assert.equal(g.challengeCanTalk(),true);
+  g.zoneTravel.active.position={x:.12,y:.24};assert.equal(g.challengeCanTalk(),false);
+});
+
 test('บอสประลองย้ายออกจากแผนที่โซนทั้ง 4 และคุยได้จากตำแหน่งผู้เล่นในฉากชายแดนเท่านั้น', () => {
-  for (const zone of ZONE_IDS) {
+  for (const zone of ZONE_IDS.filter(z=>z!=='th')) {
     const g = unlocked(zone), {x,y} = CHALLENGE_STAND[zone];
     assert.ok(!standPoints(g).some(([sx,sy]) => sx === x && sy === y));
     assert.ok(!mapInteractions(g, MERCHANT).some(a => a.kind === 'challenge'));
@@ -203,7 +216,9 @@ test('รอบแรก: 10 wave → จุดพัก wave 5 บันทึ�
   assert.equal(g.battle.wave, 7);
   const hpBefore = g.hp;
   g.battle.youHp = 1; for (const f of g.battle.foes) f.atk = [50, 50];
-  g.battleAct('atk');
+  // Nira now accompanies this cave rematch. Target Yama deterministically so
+  // this remains a defeat/checkpoint test rather than a random target test.
+  withRandom([0], () => g.battleAct('atk'));
   assert.equal(g.battle.over, 'lose');
   assert.match(t('challenge.th.lose'), /ล้มแค่นี้เอง/);        // บทพูด "แพ้" ของทัณฑสูร (ร่าง Minnie) แสดงที่หน้าจบศึก
   g.endBattle();

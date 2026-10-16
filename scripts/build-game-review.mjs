@@ -17,4 +17,6 @@ document.querySelector('#review-dungeon').onclick=()=>{if(g.battle)return;seed()
 document.querySelector('#review-port').onclick=()=>{if(g.battle)return;seed();g.zoneTravel.active=null;g.zoneTravel.visited.asia=true;g.zoneTravel.ports.asia=true;const p=g.harbourPoint();g.player.x=p.x;g.player.y=p.y;openHarbour();};
 setInterval(lock,500);
 </script></body>`);
+const reviewUiVersion=html.match(/<script type="module" src="src\/ui\.js\?v=([^" ]+)"/)?.[1] || html.match(/"\.\/src\/ui\.js": "\.\/src\/ui\.js\?v=([^" ]+)"/)?.[1];
+if(reviewUiVersion)html=html.replace("from './src/ui.js';",`from './src/ui.js?v=${reviewUiVersion}';`);
 mkdirSync('output/game-review',{recursive:true});writeFileSync('output/game-review/index.html',html);

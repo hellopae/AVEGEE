@@ -121,7 +121,7 @@ test('30B-8: หัวใจสำรองไม่ใช้ภาพกล่�
   assert.equal(ITEMS.spareHeart.revive, true);
 });
 
-test('30B-9: โค้ดเรืองแสงเติมบารมีของบุญ — เฉพาะ crew:boon, 0.6–1 วิ, เคารพ reduced-motion', () => {
+test('30B-9: บุญและนิราเติมบารมีมีแสง 0.6–1 วิ และเคารพ reduced-motion', () => {
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const ms = Number(ui.match(/const HEAL_GLOW_MS = (\d+)/)[1]);

@@ -27,7 +27,7 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
 // ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error: art.js วาด placeholder ส่วน <img> ใน modal โหลดเองตามปกติ
 const SPLIT_RULES = [
   [0, 0, /^img\/map-zone1\/prop-rock-v1\.webp$/],
-  [0, 0, /^img\/map-zone1\/v[234]\/zone1-terrain-v[234]-preview\.webp$/],
+  [0, 0, /^img\/map-zone1\/v[2345]\/zone1-terrain-v[2345]-preview\.webp$/],
   // K1d: the 20 sharp ground chunks (img/map-zone1/v2/r*-c*.webp) are fetched lazily by town-terrain.js, never preloaded.
   [0, 0, /^img\/map-zone1\/mainland-v\d+\.webp$/],
   [1, 1, /^img\/map-zone1\/(arena|battle-)/],
