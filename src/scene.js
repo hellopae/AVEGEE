@@ -4,6 +4,7 @@ import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
+import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownNightEffects } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
@@ -249,7 +250,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
-  if(town&&townTerrainImage())drawMapAmbientGround(ctx,townTerrainImage(),'town-th',t,SCENE.w,SCENE.h,reduced);
+  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced);   // N4: lava / rivers / falls flow over the painted ground
   drawTownGround(ctx, g);
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
