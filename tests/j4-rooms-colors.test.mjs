@@ -37,7 +37,7 @@ test('J4 gate souls shift onto raised platforms and training is removed only the
   const gate=wideStationRoom(zone,'sawan');assert.equal(gate.training,false);
   assert.ok(gate.souls.every(p=>p[1]>=.455 && p[1]<=.485));
   if(zone==='cyberhell') assert.deepEqual(gate.souls,[[.433,.485],[.53,.485],[.63,.485]]);
-  assert.ok(wideStationRoom(zone,'krajok').training);
+  assert.ok(!wideStationRoom(zone,'krajok').training,'N1: หอส่องกรรมไม่มีจุดฝึกบนพื้น (คุณเป้ 16 ต.ค.)');
  }
 });
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
