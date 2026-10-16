@@ -57,5 +57,5 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
   const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
-  assert.match(uiVersion,/^(?:20261016-(?:night-city-v1|map-polish-v1)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)$/,'new release entry token invalidates the prior module cache');
+  assert.match(uiVersion,/^(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)$/,'new release entry token invalidates the prior module cache');
 });

@@ -48,7 +48,7 @@ test('K5 wiring: ui.js measures enemies, hint strip is thin, cache-bust is -k5 i
  assert.match(css,/battle-command-heading\{white-space:nowrap\}/);
  assert.match(css,/battle-command-cancel\{pointer-events:auto/,'K2 click-through stays');
  for(const f of ['index.html','output/game-review/index.html']){
-  assert.match(read(f),/src\/battle-turns\.css\?v=[^"]*(?:-(?:k5|l2)|20261016-(?:night-city-v1|map-polish-v1))"/,f);
-  assert.match(read(f),/src\/ui\.js\?v=[^"']*(?:-(?:k5|l1|l2)|20261016-(?:night-city-v1|map-polish-v1))/,f);
+  assert.match(read(f),/src\/battle-turns\.css\?v=[^"]*(?:-(?:k5|l2)|20261016-(?:night-city-v1|map-polish-v1|border-nira-v2))"/,f);
+  assert.match(read(f),/src\/ui\.js\?v=[^"']*(?:-(?:k5|l1|l2)|20261016-(?:night-city-v1|map-polish-v1|border-nira-v2))/,f);
  }
 });

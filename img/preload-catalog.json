@@ -345,7 +345,7 @@
       "img/town-district/house-right-one-v1.webp",
       "img/town-district/house-right-two-v1.webp",
       "img/map-zone1/prop-rock-v1.webp",
-      "img/map-zone1/v4/zone1-terrain-v4-preview.webp",
+      "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
       "img/yama-animation-v1/th/book-idle.webp",
       "img/yama-animation-v1/th/book-walk.webp",
       "img/yama-animation-v1/th/sword-idle.webp",
@@ -370,7 +370,11 @@
       "img/crew-combat-v1/th/boon-idle.webp",
       "img/crew-combat-v1/th/kan-idle.webp",
       "img/crew-combat-v1/th/guard-idle.webp",
-      "img/boss-combat-v1/th/leader-possessed.webp"
+      "img/boss-combat-v1/th/leader-possessed.webp",
+      "img/frontier-route/zone1-2-v1.webp",
+      "img/frontier-route/battle-border-v1.webp",
+      "img/frontier-route/battle-cave-v1.webp",
+      "img/nira-combat/nira-th-sheet-v1.webp"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",
@@ -528,7 +532,8 @@
       "img/crew-combat-v1/asia/boon-idle.webp",
       "img/crew-combat-v1/asia/kan-idle.webp",
       "img/crew-combat-v1/asia/guard-idle.webp",
-      "img/boss-combat-v1/asia/leader-possessed.webp"
+      "img/boss-combat-v1/asia/leader-possessed.webp",
+      "img/nira-combat/nira-asia-sheet-v1.webp"
     ],
     "west": [
       "img/krata-minigame/plerng-west-training-v2.png",
@@ -683,7 +688,8 @@
       "img/crew-combat-v1/west/boon-idle.webp",
       "img/crew-combat-v1/west/kan-idle.webp",
       "img/crew-combat-v1/west/guard-idle.webp",
-      "img/boss-combat-v1/west/leader-possessed.webp"
+      "img/boss-combat-v1/west/leader-possessed.webp",
+      "img/nira-combat/nira-west-sheet-v1.webp"
     ],
     "cyberhell": [
       "img/krata-minigame/plerng-cyberhell-training-v2.png",
@@ -843,7 +849,8 @@
       "img/crew-combat-v1/cyberhell/boon-idle.webp",
       "img/crew-combat-v1/cyberhell/kan-idle.webp",
       "img/crew-combat-v1/cyberhell/guard-idle.webp",
-      "img/boss-combat-v1/cyberhell/leader-possessed.webp"
+      "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+      "img/nira-combat/nira-cyberhell-sheet-v1.webp"
     ]
   }
 }

@@ -6,12 +6,13 @@ const route = (from, to, name, checkpoints, foes) => Object.freeze({
   checkpoints:Object.freeze(checkpoints.map((name,i) => Object.freeze({ id:`${from}:${to}:${i}`, name, foe:foes[i] }))),
 });
 export const DUNGEON_ROUTES = Object.freeze([
-  route('th','asia','ทางชายแดนสุวรรณภูมิ–บูรพา',['ป่าริมชายแดน','สะพานหุบเขา','ประตูบูรพา'],[2,3,5]),
+  route('th','asia','ทางชายแดนสุวรรณภูมิ–บูรพา',['ป่าริมชายแดนและน้ำตก','หุบเขาและสะพานข้ามเหว','ถ้ำบอสโซน 1'],[2,3,5]),
   route('asia','west','ทางชายแดนบูรพา–ปัจฉิม',['ช่องเขาตรวน','ซากป้อมชายแดน','ประตูปัจฉิม'],[6,7,9]),
   route('west','cyberhell','ทางชายแดนปัจฉิม–ไซเบอร์',['ป่าหมอก','เส้นทางเครื่องจักร','ประตูไซเบอร์'],[10,11,12]),
 ]);
 const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
+const routeAvailable = (g,r) => !!g.bossCleared?.[r.from] || r.id === 'th:asia' && (g.zoneEvents?.th?.frontierBreach==='cleared' || ['pending','active'].includes(g.zoneEvents?.th?.thBorderBoss));
 const busy = g => !!(g.battle || g.over || g.pendingRecovery);
 const state = g => g.zoneTravel || initializeZoneTravel(g);
 
@@ -30,12 +31,13 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
   for (const k of TRAVEL_ZONES) if (visited[k] && (legacy || saved.ports?.[k] === true)) ports[k] = true;
   const result = { version:TRAVEL_VERSION, visited, ports, active:null };
   const a = saved?.active, r = definition(a?.route);
-  if (r && r.from === g.zone && g.bossCleared?.[r.from] &&
+  if (r && r.from === g.zone && routeAvailable(g,r) &&
       Number.isInteger(a.checkpoint) && a.checkpoint >= 0 && a.checkpoint <= r.checkpoints.length &&
       Array.isArray(a.cleared) && a.cleared.length === a.checkpoint &&
       a.cleared.every((id,i) => id === r.checkpoints[i].id)) {
-    result.active = { route:r.id, checkpoint:a.checkpoint, cleared:[...a.cleared],
+    result.active = { route:r.id, checkpoint:a.checkpoint, cleared:[...a.cleared], defeated:[...new Set([...a.cleared,...(Array.isArray(a.defeated)?a.defeated.filter(id=>r.checkpoints.some(c=>c.id===id)):[])])],
       position:a.position&&Number.isFinite(a.position.x)&&Number.isFinite(a.position.y)?{x:a.position.x,y:a.position.y}:null,
+      roamTime:Number.isFinite(a.roamTime)&&a.roamTime>=0?a.roamTime:0,
       attempt:Number.isSafeInteger(a.attempt) && a.attempt >= 0 ? a.attempt : 0, pending:null };
     // Do not resurrect a battle token: combat itself is not persisted by game.snapshot.
   }
@@ -43,38 +45,52 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
   return result;
 }
 export function openDungeonRoutes(g) {
-  return DUNGEON_ROUTES.filter(r => r.from === g.zone && !!g.bossCleared?.[r.from]);
+  return DUNGEON_ROUTES.filter(r => r.from === g.zone && routeAvailable(g,r));
 }
 export function beginDungeon(g, to) {
   const s = state(g), r = openDungeonRoutes(g).find(r => r.to === to);
   if (!r || busy(g) || s.active) return false;
-  s.active = { route:r.id, checkpoint:0, cleared:[], attempt:0, pending:null };
+  s.active = { route:r.id, checkpoint:0, cleared:[], defeated:[], attempt:0, pending:null };
   return true;
 }
 export function dungeonStatus(g) {
   const a = state(g).active, r = definition(a?.route);
-  if (!r || r.from !== g.zone || !g.bossCleared?.[r.from] ||
+  if (!r || r.from !== g.zone || !routeAvailable(g,r) ||
       !Number.isInteger(a.checkpoint) || a.checkpoint < 0 || a.checkpoint > r.checkpoints.length ||
       !Array.isArray(a.cleared) || a.cleared.length !== a.checkpoint ||
       !a.cleared.every((id,i) => id === r.checkpoints[i].id)) return null;
   return { route:r, checkpoint:a.checkpoint, location:r.checkpoints[a.checkpoint] || null,
-    ready:a.checkpoint === r.checkpoints.length, pending:a.pending };
+    ready:a.checkpoint === r.checkpoints.length && !!g.bossCleared?.[r.from], pending:a.pending, defeated:a.defeated || a.cleared };
 }
+const routedBoss = (status,g) => status.route.id === 'th:asia' && status.checkpoint === 2 && !g.bossCleared?.th;
 /** Request encounter only after the player reaches the current checkpoint. */
-export function nextDungeonEncounter(g) {
+export function nextDungeonEncounter(g,checkpoint=null) {
   const status = dungeonStatus(g), a = state(g).active;
   if (!status || status.ready || busy(g) || a.pending) return null;
-  const location = status.location;
-  const token = `${a.route}:${a.checkpoint}:${++a.attempt}`;
+  const index=checkpoint??status.checkpoint;
+  if(!Number.isInteger(index)||!status.route.checkpoints[index]||(a.defeated||a.cleared).includes(status.route.checkpoints[index].id))return null;
+  if(status.route.id==='th:asia'&&index===2&&status.checkpoint<2)return null;
+  const location = status.route.checkpoints[index];
+  const token = `${a.route}:${index}:${++a.attempt}`;
+  a.pendingIndex=index;
   a.pending = token;
-  return { token, checkpoint:location.id, name:location.name, kindIdx:location.foe, level:a.checkpoint + 1 };
+  return { token, checkpoint:location.id, name:location.name, kindIdx:location.foe, level:index + 1, boss:routedBoss({...status,checkpoint:index},g) };
 }
 /** Only the battle carrying this token may resolve this checkpoint. */
 export function resolveDungeonEncounter(g, token, won) {
   const status = dungeonStatus(g), a = state(g).active;
   if (!status || status.ready || !a.pending || a.pending !== token || typeof won !== 'boolean') return false;
+  const index=a.pendingIndex??status.checkpoint,location=status.route.checkpoints[index];
+  if(!location)return false;
+  if (won && routedBoss({...status,checkpoint:index},g)) return false;
   a.pending = null;
-  if (won) { a.cleared.push(status.location.id); a.checkpoint++; }
+  a.pendingIndex=null;
+  if (won) {
+    a.defeated=[...new Set([...(a.defeated||a.cleared),location.id])];
+    while(a.checkpoint<status.route.checkpoints.length&&a.defeated.includes(status.route.checkpoints[a.checkpoint].id)){
+      a.cleared.push(status.route.checkpoints[a.checkpoint].id);a.checkpoint++;
+    }
+  }
   return true;
 }
 export function leaveDungeon(g) {

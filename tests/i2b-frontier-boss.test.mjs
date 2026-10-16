@@ -29,7 +29,7 @@ const {makeFrontierWalk,clearFrontierSession,frontierSession}=await import('../s
 const button=()=>({hidden:true,style:{},dataset:{}});
 
 for (const zone of Object.keys(CHALLENGE_STAND)) {
-  test(`${zone}: walk to replay boss shows talk button and starts existing challenge`, async()=>{
+  test(`${zone}: replay boss uses its current frontier or cave location`, async()=>{
     clearFrontierSession(); labels.length=0;
     const g=createGame();g.zone=zone;
     g.zoneEvents[zone]={[CHALLENGE_STORY_KEY[zone]]:'cleared'};
@@ -40,6 +40,16 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
       assert.equal(challenge.hidden,true);
       assert.equal(fw.canTalkChallenge(),false);
       assert.equal(fw.enemyCount(),0,'NPC does not consume an enemy slot');
+      if(zone==='th') {
+        assert.ok(!labels.includes(BOSS_NAMES.th.frontier),'zone1 replay boss is removed from checkpoint');
+        const travel=await import('../src/zone-travel.js'),d=await import('../src/dungeon-view.js');
+        travel.initializeZoneTravel(g);assert.equal(travel.beginDungeon(g,'asia'),true);
+        const at=d.dungeonPoint(d.DUNGEON_PROGRESS[2]);g.zoneTravel.active.position={x:at[0],y:at[1]};
+        assert.equal(g.challengeCanTalk(),true,'cave proximity opens replay');
+        const battle=g.startChallenge();assert.equal(battle.challenge,true);assert.equal(battle.sceneBiome,'cave');
+        assert.deepEqual(g.battleActors().map(a=>a.id),['you','global:nira']);
+        return;
+      }
       assert.ok(labels.includes(BOSS_NAMES[zone].frontier),'boss rendered in frontier');
       const {x,y}=CHALLENGE_STAND[zone];
       cv.pointerdown({clientX:(x-.06)*1678,clientY:y*937});

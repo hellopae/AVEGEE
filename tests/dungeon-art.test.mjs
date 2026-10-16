@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
 import {DUNGEON_ART,dungeonBackground} from '../src/dungeon-art.js';
 import {DUNGEON_ROUTES} from '../src/zone-travel.js';
-test('every named route checkpoint has its own shipped environment',()=>{
+test('zone 1 uses a continuous map; later routes keep their checkpoint environments',()=>{
   const paths=[];
   for(const route of DUNGEON_ROUTES){
     assert.equal(DUNGEON_ART[route.id].length,route.checkpoints.length);
@@ -12,7 +12,7 @@ test('every named route checkpoint has its own shipped environment',()=>{
       assert.ok(existsSync(path),path);paths.push(path);
     }
   }
-  assert.equal(new Set(paths).size,9);
+  assert.equal(new Set(paths).size,7);
 });
 test('arrival keeps the final gate backdrop and malformed/legacy routes safely fall back',()=>{
   assert.equal(dungeonBackground('th','th:asia',3),dungeonBackground('th','th:asia',2));

@@ -55,6 +55,7 @@ import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
+import { mountNiraCombatSprite, playNiraHealingCutscene } from './nira-combat.js';
 import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
 import { frontierIntroduction } from './narrative-cutscenes.js';
 
@@ -1249,7 +1250,7 @@ function updateFrontierFab() {
   if (!f) {
     f = document.createElement('button');
     f.className = 'frontierfab';
-    f.textContent = openDungeonRoutes(g).length?'ออกชายแดน · ดันเจี้ยน':'🏯 เข้าด่านชายแดน';
+    f.textContent = '🏯 เข้าด่านชายแดน';
     f.onclick = ev => { ev.stopPropagation(); if (!g.battle && !dlg.open) openBorder(); };
     ov.appendChild(f);
   }
@@ -1581,6 +1582,10 @@ function openZoneEventAlert(ev) {
   const foe = ev.foe || ev.foes?.[0] || ev.waves?.[0]?.[0];
   const foeArt = foe?.sp && foe.sp !== 'spirit' ? storyFoeArt(foe.sp)
     : foe?.kind != null ? artUrl(MOB.kinds[foe.kind].img) : 'img/spirit7.png';
+  if(ev.k==='thBorderBoss') {
+    openEventAlert(ev.k,title,'บอสโซน 1 รออยู่ในถ้ำนอกชายแดน — เดินผ่านป่า น้ำตก หุบเขา และเหวเพื่อไปพบ',foeArt,'เดินไปด่านชายแดน',()=>{dlg.close();g.walkTo(FRONTIER.x,FRONTIER.y);},false,true);
+    return;
+  }
   if (ev.team === 'frontier') {              // ชุด 29C ข้อ 9 — ระลอกชายแดนของโซน 2–4: แจ้งเตือน → เดินไปชายแดนเอง → เตรียมทีม → สู้
     openEventAlert(ev.k, title, ev.k === 'westVampireBreach' ? zoneEventText(ev.alert) : t('event.frontierBreach.march'), foeArt, t('event.frontierBreach.ack'), () => dlg.close(), false, true);
     return;
@@ -2908,6 +2913,7 @@ function openFrontierWalk(invasionKey = null) {
         <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
         <button class="frw-fab" id="frw-challenge" type="button" hidden></button>
         <button class="frw-fab frw-gate" id="frw-gate" type="button" hidden>กลับเข้า${esc(gateName)}</button>
+        <button class="frw-fab" id="frw-exit" type="button" hidden>ออกนอกชายแดน · เส้นทางโซน 2</button>
         <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
       <div class="frw-res" aria-label="ทรัพยากร">
         ${[['img/ui/icon-coin.png',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.png',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.png',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.png',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
@@ -2930,9 +2936,12 @@ function openFrontierWalk(invasionKey = null) {
   const gate = dlg.querySelector('#frw-gate');
   const nira = dlg.querySelector('#frw-nira');
   const challenge = dlg.querySelector('#frw-challenge');
+  const exit = dlg.querySelector('#frw-exit');
+  if(!openDungeonRoutes(g).length)exit.textContent='ทางนอกชายแดน · ยังไม่เปิด';
+  else if(g.zone!=='th')exit.textContent='ออกนอกชายแดน · ดินแดนถัดไป';
   const cv2 = dlg.querySelector('#frw-cv');
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, invasionKey });
+  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, exit, invasionKey });
   FW.start();
   const menu = fn => {
     const zone=g.zone;
@@ -2975,6 +2984,16 @@ function openFrontierWalk(invasionKey = null) {
   // กด "กลับแผนที่โซน" แค่ปิดกล่อง ไม่ล้างสนามรบ — เดินออกไปทำธุระอื่น (ป้อนข้าวปั้น/ซื้อของ)
   // แล้วกลับมาสู้ต่อได้โดยไม่ต้องเริ่มใหม่ ตัวที่ปราบไปแล้วก็ไม่ฟื้นคืนชีพ (ข้อ 8 ในใบงานอนุญาตแค่
   // "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่กดปุ่มนี้)
+  exit.onclick = () => {
+    const route=openDungeonRoutes(g)[0];
+    if(!route){
+      FW.destroy();
+      modal('<h2>ทางนอกชายแดนยังไม่เปิด</h2><p>ผ่านภารกิจประจำโซนและการทดสอบเทวดาก่อน แล้วจึงออกไปตามหาบอสในถ้ำได้</p><button data-close>กลับด่านชายแดน</button>');
+      const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);
+      return;
+    }
+    if(dungeonStatus(g)||g.beginBorderDungeon(route.to)){FW.destroy();openDungeon();}
+  };
   gate.onclick = () => {
     FW.destroy();
     dlg.close();
@@ -3170,10 +3189,11 @@ function openBattle(after) {
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
     const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
     const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
+    const specialChoice = battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
-      : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + battleChoice(special, crewArt(actor, '-profile'), crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
+      : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
-    const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && actor.k === 'boon' && pending === special));
+    const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && pending === special));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
     // L2: choosing a target — enemy OR teammate (items / healing powers) — shows no text box at all.
@@ -3186,7 +3206,7 @@ function openBattle(after) {
     const fleeCode = g.fleeWhy(b.kind), fleeWhy = fleeCode ? t('battle.flee.' + fleeCode) : '';
     const segments = [
       {id:'attack',label:'โจมตี / Attack',action:isYama?'atk':'strike'},
-      {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:battleChoice(special,crewArt(actor,'-profile'),crewAbility(actor),!why,why||'ท่าพิเศษ / Special')},
+      {id:'power',label:'พลัง / Power',choices:isYama?powerChoices:specialChoice},
       {id:'item',label:'ไอเท็ม / Items',choices:itemChoices},
       {id:'defense',label:'ป้องกัน / Defend',action:'defend'},
       {id:'escape',label:'หนี / Flee',action:'flee',disabled:!!fleeWhy,reason:fleeWhy},
@@ -3199,12 +3219,11 @@ function openBattle(after) {
         <div class="battle9-confirm" ${selection?'':'hidden'}>${selection}</div>
       </section>`;
 
-
-    const finLabel = b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
+    const finLabel = b.over==='win' && b.dungeonToken ? 'เก็บไอเท็มที่ตก' : b.over==='flee'?'กลับไปตั้งหลัก':b.kind === 'zoneEvent' ? (b.over === 'win' ? t('battle.reward') : 'กลับไปพักแล้วท้าใหม่')
       : b.kind === 'devaTest' ? t('event.devaTest.return') : b.kind === 'frontierBreach' ? t('event.frontierBreach.return') : b.kind === 'prisonBreak'
       ? t('event.prisonBreak.return') :
         // ข้อ F คุณเป้ 24 ก.ย. 2569: เปลี่ยนคำเท่านั้น กลไกรางวัลเดิมทั้งหมด (ดู endBattle kind:'frontier')
-        b.over === 'win'  ? (b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : b.kind === 'frontier' ? 'เก็บไอเท็มที่ตกอยู่' : b.kind === 'mob' ? 'กลับไปคุมโซน' : 'ลากเข้าสถานี')
+        b.over === 'win'  ? (b.dungeonToken || b.kind === 'frontier' || b.kind === 'mob' ? 'เก็บไอเท็มที่ตก' : b.kind === 'zoneBoss' ? 'เปิดทางไปโซนถัดไป' : 'ลากเข้าสถานี')
       : b.over === 'lose' ? (b.kind === 'yama' ? t('battle.verdict')
                           : b.kind === 'dad'  ? t('battle.verdict')
                           : b.kind === 'zoneBoss' ? 'กลับไปตั้งหลักที่สะพาน'
@@ -3340,6 +3359,7 @@ function openBattle(after) {
     }
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
+    mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam);
     stage._battleSpriteFit.then(() => {
       if(!stage.isConnected)return;
       const entries=[], hits=new Set([
@@ -3609,12 +3629,13 @@ function openBattle(after) {
 
       // ---- จังหวะที่ 1: ตาของท่าน ----
       phase = 'you'; phaseAt = Date.now();
-      const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','holyWater':'health'})[k] || k;
+      const effect = ITEMS[k]?.consumable ? 'health' : ({'crew:plerng':'fire','crew:kan':'hypno','crew:boon':'health','crew:nira':'health','holyWater':'health'})[k] || k;
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
       paint();
-      playActionCutscene(action);
+      if (k === 'crew:nira') playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS);
+      else playActionCutscene(action);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -3789,28 +3810,21 @@ function openZone() {
 }
 function openBorder() {
   if(Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y)>FRONTIER.reach)return;
-  const routes=openDungeonRoutes(g),active=dungeonStatus(g);
-  modal(`<h2>ประตูชายแดน</h2><p>${routes.length?'ปราบบอสแล้ว ทางออกสู่ดินแดนถัดไปเปิดแล้ว':'ปราบบอสประจำโซนก่อน จึงออกสู่ดินแดนถัดไปได้'}</p>
-    <div class="row">${routes.map(r=>`<button class="gold" data-dungeon="${r.to}">${active?'สำรวจต่อ':'ออกเดินทาง'} · ${esc(r.name)}</button>`).join('')}
-    <button id="border-defense">ป้องกันชายแดน / ประลอง</button><button data-close>ปิด</button></div>`,d=>{
-      d.querySelectorAll('[data-dungeon]').forEach(btn=>btn.onclick=()=>{
-        if(active||g.beginBorderDungeon(btn.dataset.dungeon))openDungeon();
-      });
-      d.querySelector('#border-defense').onclick=()=>openFrontier();
-    });
+  openFrontierWalk();
 }
 function openDungeon() {
   if(!dungeonStatus(g)||g.battle||g.pendingRecovery)return;
   let destroy=null;
   modal('<div id="dungeon-root"></div>',d=>{
     destroy=mountDungeonView(d.querySelector('#dungeon-root'),g,{
-      onEncounter:(_,opts)=>{
+      onChallenge:()=>{destroy?.();destroy=null;openChallenge(()=>{if(!g.pendingRecovery)openDungeon();});},
+      onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
-        if(g.startDungeonEncounter(opts))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
+        if(g.startDungeonEncounter(opts?.chased?opts:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
         else{g.dungeonChaseCooldown=true;openDungeon();}
       },
       onArrival:to=>{destroy?.();destroy=null;if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();},
-      onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())dlg.close();},
+      onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())openFrontierWalk();},
       onMenu:()=>{destroy?.();destroy=null;openBag();
         const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
         dlg.addEventListener('close',back);

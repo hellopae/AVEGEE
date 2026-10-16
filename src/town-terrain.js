@@ -1,12 +1,12 @@
-// Zone 1 ground = the painted map img/map-zone1/v4 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
+// Zone 1 ground = the painted map img/map-zone1/v5 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
 // cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain} from './town-lighting.js?v=fire-v2';
 
-export const TOWN_TERRAIN_DIR = 'img/map-zone1/v4/';
-export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v4-preview.webp';
+export const TOWN_TERRAIN_DIR = 'img/map-zone1/v5/';
+export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v5-preview.webp';
 export const TOWN_TERRAIN_FULL_PX = {w:4915,h:3277};
 export const TOWN_TERRAIN_CHUNK_PX = 1024;
 export const TOWN_TERRAIN_COLS = 5, TOWN_TERRAIN_ROWS = 4;
