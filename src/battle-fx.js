@@ -444,19 +444,19 @@ R.heal = X => {
   const all = X.tg;
   all.forEach((t, i) => {
     const d = i * 70, ch = t.h;
-    spr(aura, { x:t.x, y:t.y, w:ch * 2.1, h:ch * 2.1, dur:1000, delay:d, a:kf([[0, 0], [.25, .95], [.7, .6], [1, 0]]), sx:[.5, 1.15, 'out'], sy:[.5, 1.15, 'out'] });
-    spr(floor, { x:t.x, y:t.feet, w:ch * 3, h:ch * .94, dur:800, delay:d, a:kf([[0, 0], [.15, 1], [.8, .7], [1, 0]]), sx:[.3, 1.1, 'out'], sy:[.3, 1.1, 'out'] });
-    spr(floor, { x:t.x, y:t.feet, w:ch * 3, h:ch * .94, dur:700, delay:d + 200, a:kf([[0, 0], [.15, .8], [1, 0]]), sx:[.2, 1.4, 'out'], sy:[.2, 1.4, 'out'] });
-    spr('fx-heal-flower', { x:t.x, y:t.top - ch * .1, w:ch * .8, h:ch * .8, rot:k => k * 2, dur:900, delay:d + 120, a:kf([[0, 0], [.2, 1], [.7, .9], [1, 0]]), sx:[.4, 1, 'out'], sy:[.4, 1, 'out'] });
+    spr(aura, { x:t.x, y:t.y, w:ch * 3, h:ch * 3, dur:1000, delay:d, a:kf([[0, 0], [.25, .95], [.7, .6], [1, 0]]), sx:[.5, 1.15, 'out'], sy:[.5, 1.15, 'out'] });
+    spr(floor, { x:t.x, y:t.feet, w:ch * 3.8, h:ch * 1.2, dur:800, delay:d, a:kf([[0, 0], [.15, 1], [.8, .7], [1, 0]]), sx:[.3, 1.1, 'out'], sy:[.3, 1.1, 'out'] });
+    spr(floor, { x:t.x, y:t.feet, w:ch * 3.8, h:ch * 1.2, dur:700, delay:d + 200, a:kf([[0, 0], [.15, .8], [1, 0]]), sx:[.2, 1.4, 'out'], sy:[.2, 1.4, 'out'] });
+    spr('fx-heal-flower', { x:t.x, y:t.top - ch * .15, w:ch * 1.1, h:ch * 1.1, rot:k => k * 2, dur:900, delay:d + 120, a:kf([[0, 0], [.2, 1], [.7, .9], [1, 0]]), sx:[.4, 1, 'out'], sy:[.4, 1, 'out'] });
     at(d + 80, () => {
-      for (let n = 0; n < 14; n++) emit({ tex:n % 3 ? sp : 'fx-heal-petals', cell:n % 4, x:t.x + rnd(-1, 1) * t.w * .6, y:t.feet - rnd(0, .4) * ch, vx:rnd(-15, 15), vy:-rnd(60, 170), s0:rnd(10, 22), s1:5, life:rnd(700, 1200), a:1, env:'pop', sway:rnd(5, 14), delay:rnd(0, 500) });
+      for (let n = 0; n < 16; n++) emit({ tex:n % 3 ? sp : 'fx-heal-petals', cell:n % 4, x:t.x + rnd(-1, 1) * t.w * .8, y:t.feet - rnd(0, .4) * ch, vx:rnd(-15, 15), vy:-rnd(70, 200), s0:rnd(14, 28), s1:6, life:rnd(700, 1200), a:1, env:'pop', sway:rnd(5, 14), delay:rnd(0, 500) });
     });
   });
   if (all.length > 1) {   // a ring of light around the whole team
     const l = Math.min(...all.map(t => t.l)), r = Math.max(...all.map(t => t.r)), top = Math.min(...all.map(t => t.top)), fe = Math.max(...all.map(t => t.feet)), w = (r - l) * 1.15 + 40, cx = (l + r) / 2;
     spr(ring, { x:cx, y:(top + fe) / 2, w, h:w, dur:900, delay:60, a:kf([[0, 0], [.2, 1], [1, 0]]), sx:[.3, 1, 'out'], sy:[.2, Math.max(.35, (fe - top) / w * 1.2), 'out'] });
   } else {
-    const t = all[0]; if (t) spr(ring, { x:t.x, y:t.y, w:t.h * 2.6, h:t.h * 2.6, dur:700, delay:40, a:kf([[0, 0], [.2, 1], [1, 0]]), sx:[.2, 1, 'out'], sy:[.2, 1, 'out'] });
+    const t = all[0]; if (t) spr(ring, { x:t.x, y:t.y, w:t.h * 3.4, h:t.h * 3.4, dur:700, delay:40, a:kf([[0, 0], [.2, 1], [1, 0]]), sx:[.2, 1, 'out'], sy:[.2, 1, 'out'] });
   }
   cam.dim(.18, 1000);
   return 1300;
