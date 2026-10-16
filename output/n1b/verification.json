@@ -1,0 +1,76 @@
+{
+  "backgrounds": {
+    "th": {
+      "size": [
+        1717,
+        916
+      ],
+      "changed_pixels": 4187,
+      "changed_bbox_xyxy_exclusive": [
+        821,
+        180,
+        897,
+        250
+      ],
+      "changed_outside_mask": 0,
+      "original_bytes": 2360142,
+      "final_bytes": 2339772
+    },
+    "asia": {
+      "size": [
+        1716,
+        917
+      ],
+      "changed_pixels": 5767,
+      "changed_bbox_xyxy_exclusive": [
+        817,
+        196,
+        902,
+        284
+      ],
+      "changed_outside_mask": 0,
+      "original_bytes": 2363020,
+      "final_bytes": 2350210
+    },
+    "cyberhell": {
+      "size": [
+        1716,
+        917
+      ],
+      "changed_pixels": 5451,
+      "changed_bbox_xyxy_exclusive": [
+        822,
+        230,
+        895,
+        329
+      ],
+      "changed_outside_mask": 0,
+      "original_bytes": 2374490,
+      "final_bytes": 2358178
+    }
+  },
+  "encoding": "RGB WebP lossless; decoded pixels outside feather mask identical to HEAD",
+  "tool": "built-in image_gen",
+  "mirror": {
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "frames": 1,
+    "alpha_min_max": [
+      0,
+      255
+    ],
+    "bottom_center_alpha_max": 140
+  },
+  "preview": {
+    "foot_xy": [
+      859,
+      246
+    ],
+    "sprite_size": 94,
+    "kind": "art placement preview; not runtime verification"
+  },
+  "west_unchanged": true
+}
