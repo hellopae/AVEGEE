@@ -9,7 +9,7 @@ import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS, SWORD_FRAME_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -27,8 +27,8 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
-import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf } from './battle-fx.js?v=m2';
-import { recipeFor, foeTier, cueKindFor, cueImpactAt } from './battle-fx-map.js?v=m2';
+import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations } from './battle-fx.js?v=m2';
+import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs } from './battle-fx-map.js?v=m2';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
@@ -3076,7 +3076,11 @@ function openBattle(after) {
         const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
         const targets = self ? [{ rect:src, dmg:0 }] : (await Promise.all(hits.map(async h => ({ rect:await fxRect(foeImg(h.id)), dmg:h.damage || 0, label:d.crit && recipe.startsWith('slash') ? t('battle.fx.crit') : '' })))).filter(x => x.rect);
         if (!src || !targets.length) { stopFxHandled(); return; }
-        const hitDelay = /^(slash|club)/.test(recipe) ? 110 : 0;
+        // timing from the attacker's own animation: Yama's sword frames, or the Codex pose atlas of the crew member (contact frame)
+        const actor = g.battleActors().find(a => a.id === (b.actorId || 'you'));
+        const contact = !actor || actor.id === 'you' ? (isYamaSwordAttack({ action:k }) ? swordContactMs(SWORD_FRAME_MS) : 0)
+          : poseContactMs(poseDurations(`crew:${actor.homeZone || g.zone}:${actor.k}`));
+        const hitDelay = leadInMs(recipe, contact);
         plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, delay:extraDelay + hitDelay, impactAt:cueImpactAt(cueKindFor('you', k), cutMs) });
       } else {
         const delay = extraDelay;
@@ -3090,7 +3094,9 @@ function openBattle(after) {
           const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you', damage:d.you || d.crew || 0 }];
           const src = await fxRect(foeImg(d.counterFoeId));
           const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
-          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', delay:delay + (b.ultimate ? 0 : 60), impactAt:cueImpactAt('foe-attack', cutMs) });
+          const fi = foeImg(d.counterFoeId), fk = fi && bossSpriteKey(fi.getAttribute('src') || '', b.zone || g.zone);
+          const fc = fk ? poseContactMs(poseDurations(fk)) : 0;   // the foe's own attack-pose contact frame (Codex atlas), if it has one
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', delay:delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:cueImpactAt('foe-attack', cutMs) });
         }
       }
       if (!plays.length) { stopFxHandled(); return; }

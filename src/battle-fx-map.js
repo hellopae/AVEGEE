@@ -74,9 +74,9 @@ export const ALL_ACTIONS = Object.freeze([
 /** Per-recipe metadata. `hit` = ms from the recipe's own start to the moment damage lands (damage numbers + shake line up with it).
  *  `camera` = what the M1 battle camera should do for this move (docs/battle-camera-api.md §5.1): hit weight, single/all targets, dim the background, flash. */
 export const RECIPE_META = Object.freeze({
-  slash:       { hit:240, camera:{ power:1, scope:'single', dim:false, flash:false } },
-  slash_cross: { hit:280, camera:{ power:3, scope:'single', dim:true,  flash:true } },
-  slash_multi: { hit:525, camera:{ power:2, scope:'single', dim:false, flash:false } },
+  slash:       { hit:130, camera:{ power:1, scope:'single', dim:false, flash:false } },
+  slash_cross: { hit:170, camera:{ power:3, scope:'single', dim:true,  flash:true } },
+  slash_multi: { hit:415, camera:{ power:2, scope:'single', dim:false, flash:false } },
   club:        { hit:110, camera:{ power:2, scope:'single', dim:false, flash:false } },
   club_big:    { hit:110, camera:{ power:3, scope:'single', dim:true,  flash:true } },
   fire_s:      { hit:200, camera:{ power:1, scope:'single', dim:true,  flash:false } },
@@ -110,4 +110,19 @@ export function cueKindFor(phaseKind, action) {
 export function cueImpactAt(kind, cutMs = 0, timing = DEFAULT_CUE_TIMING) {
   if (kind === 'skill' || kind === 'foe-attack' && cutMs > 0) return cutMs > 0 ? cutMs + (timing.skillCutExtra ?? 60) : timing.skill;
   return timing[kind] ?? 0;
+}
+
+/** Melee recipes: their hit moment is lined up with the attacker's contact frame (Codex combat-sprites atlases / the sword animation).
+ *  Everything else (projectiles, area spells) is launched at about half of the contact time, so the cast pose leads into it. */
+export const MELEE_RECIPES = new Set(['slash', 'slash_cross', 'slash_multi', 'club', 'club_big']);
+/** ms from the start of an attack pose to its contact frame: the manifest has no explicit hit frame, so use the end of the first half of the frames
+ *  (6 frames [100,90,100,...] -> 290 ms). Pure; undefined/empty -> 0 (unknown). */
+export const poseContactMs = durations => Array.isArray(durations) && durations.length ? durations.slice(0, Math.ceil(durations.length / 2)).reduce((a, b) => a + b, 0) : 0;
+/** Sword swing (yama-sword.js SWORD_FRAME_MS): contact is the end of frame 4 (cut + follow-through start). */
+export const swordContactMs = frameMs => Array.isArray(frameMs) ? frameMs.slice(0, 4).reduce((a, b) => a + b, 0) : 0;
+/** start delay of a recipe so it lines up with the attacker's animation. contactMs = 0 when unknown (falls back to a small fixed lead-in). */
+export function leadInMs(recipe, contactMs, fallbackMelee = 110) {
+  const hit = RECIPE_META[recipe]?.hit ?? 0;
+  if (MELEE_RECIPES.has(recipe)) return contactMs > 0 ? Math.max(0, contactMs - hit) : fallbackMelee;
+  return contactMs > 0 ? Math.round(contactMs * .5) : 0;
 }

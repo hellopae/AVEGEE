@@ -551,6 +551,18 @@ export function playBattleFx(spec) {
   return go();
 }
 
+/** Codex pose atlases (img/combat-animation-v1/manifest.json): read-only, same URL combat-sprites.js uses so the browser cache serves it. Used only to find an attack pose's contact time. */
+let poseCatalog = null, poseRequested = false;
+export function loadPoseCatalog() {
+  if (!poseRequested && typeof fetch === 'function') {
+    poseRequested = true;
+    fetch('img/combat-animation-v1/manifest.json?v=night-v1').then(r => r.ok ? r.json() : null).then(j => { poseCatalog = j?.sprites || null; }).catch(() => {});
+  }
+  return poseCatalog;
+}
+/** attack-pose durations for a combat-sprites key ('crew:th:kan', 'boss:th:zone-boss'); [] when unknown */
+export const poseDurations = (key, mode = 'attack') => { const r = loadPoseCatalog(); const rec = r && (r[key + ':' + mode] || r[key]); return rec?.modes?.[mode]?.durations || []; };
+
 /** warm every texture (used by tests/tools; the game warms lazily) */
 export const warmAllFx = () => preloadTex(TEX_KEYS);
 export { RECIPE_IDS, recipeFor, RECIPE_META };

@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { RECIPE_IDS, recipeFor, ALL_ACTIONS, fireTier, foeTier, FIRE_TIER_MEDIUM, FIRE_TIER_LARGE, slashColorOf, WEAPON_SLASH, RECIPE_META, cueKindFor, cueImpactAt, DEFAULT_CUE_TIMING } from '../src/battle-fx-map.js';
+import { RECIPE_IDS, recipeFor, ALL_ACTIONS, fireTier, foeTier, FIRE_TIER_MEDIUM, FIRE_TIER_LARGE, slashColorOf, WEAPON_SLASH, RECIPE_META, cueKindFor, cueImpactAt, DEFAULT_CUE_TIMING, poseContactMs, swordContactMs, leadInMs, MELEE_RECIPES } from '../src/battle-fx-map.js';
 import { TEX, TEX_KEYS, blendOf, cellsOf } from '../src/battle-fx-tex.js';
 import { IMPLEMENTED_RECIPES, MAX_PARTICLES } from '../src/battle-fx.js';
 import { CREW_POWER, BATTLE, ITEMS, WEAPONS } from '../src/data.js';
@@ -108,4 +108,22 @@ test('camera adapter: the engine hands shake/dim/flash to the M1 camera when pre
   assert.match(fxSrc, /E\.camera\.layer\('fx'\)/);
   assert.match(fxSrc, /export function setBattleCamera/);
   assert.ok(!/\.cam-world|cam-world/.test(fxSrc.replace(/\/\/.*$/gm, '')), 'engine does not touch .cam-world');
+});
+
+test('melee effects line up with the attacker animation (Codex pose atlas / sword frames); projectiles launch at half contact', () => {
+  assert.equal(poseContactMs([100, 90, 100, 120, 100, 140]), 290);
+  assert.equal(poseContactMs([100, 110, 100, 130, 100, 140]), 310);
+  assert.equal(poseContactMs([]), 0); assert.equal(poseContactMs(undefined), 0);
+  assert.equal(swordContactMs([85, 80, 60, 35, 40, 80, 100, 100]), 260);
+  assert.equal(leadInMs('slash', 290), 290 - RECIPE_META.slash.hit);
+  assert.equal(leadInMs('club', 50), 0, 'never negative');
+  assert.equal(leadInMs('slash', 0), 110, 'unknown contact -> small fixed lead-in');
+  assert.equal(leadInMs('fire_m', 290), 145); assert.equal(leadInMs('ice', 0), 0);
+  for (const r of MELEE_RECIPES) assert.ok(RECIPE_IDS.includes(r));
+  assert.match(ui, /poseDurations\(/); assert.match(ui, /SWORD_FRAME_MS/);
+});
+
+test('M2 does not modify Codex files (combat-sprites.js, the combat manifest)', () => {
+  const sprites = read('src/combat-sprites.js');
+  assert.ok(!/battle-fx|fxStats|playBattleFx/.test(sprites));
 });
