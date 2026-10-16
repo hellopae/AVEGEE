@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><base href="../../">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVEGEE — Battle FX lab (M2)</title>
+<style>
+html,body{margin:0;background:#140a0e;color:#f2e6dd;font-family:"IBM Plex Sans Thai",system-ui,sans-serif}
+#wrap{max-width:430px;margin:0 auto;padding:6px}
+.arena{position:relative;width:100%;aspect-ratio:390/560;overflow:hidden;border:1px solid #d4a355;border-radius:10px;background:#000 url(img/BG-Turn-Base.webp) center/cover}
+.fig{position:absolute}.fig img{display:block;height:100%;width:auto}
+#you{left:14%;bottom:24%;height:17%}#foe1{right:10%;bottom:30%;height:19%}#foe2{right:30%;bottom:20%;height:19%}
+#c1{left:30%;bottom:15%;height:15%}#c2{left:4%;bottom:12%;height:15%}
+#btns{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+button{background:#33202a;color:#f2e6dd;border:1px solid #54353f;border-radius:6px;padding:7px 9px;font-size:12px;min-height:36px}
+#stats{font:11px monospace;margin-top:6px;white-space:pre-wrap}
+</style></head><body><div id="wrap">
+<div class="arena" id="arena">
+ <div class="fig" id="foe2"><img src="img/mob-pret.png" alt=""></div>
+ <div class="fig" id="foe1"><img src="img/spirit7.png" alt=""></div>
+ <div class="fig" id="c2"><img src="img/crew-boon.png" alt=""></div>
+ <div class="fig" id="c1"><img src="img/crew-plerng.png" alt=""></div>
+ <div class="fig" id="you"><img src="img/hero-yama.png" alt=""></div>
+</div>
+<div id="btns"></div><div id="stats"></div></div>
+<script type="module">
+import { attachBattleFx, playBattleFx, fxStats, fxIdle, fxAdvance, resetFxStats, IMPLEMENTED_RECIPES, warmAllFx } from './src/battle-fx.js?v=m2';
+const arena=document.getElementById('arena');attachBattleFx(arena);
+const rel=id=>{const r=document.getElementById(id).getBoundingClientRect(),a=arena.getBoundingClientRect();return{l:r.left-a.left,t:r.top-a.top,r:r.right-a.left,b:r.bottom-a.top}};
+// trim transparent padding roughly (sprites are padded) — shrink rect to the middle 60% width
+const body=id=>{const r=rel(id),w=r.r-r.l;return{l:r.l+w*.2,r:r.r-w*.2,t:r.t,b:r.b}};
+const heroRecipes=new Set(['heal','rage','clock','mirror']);
+function play(name,o={}){
+  const you=body('you'),f1=body('foe1'),f2=body('foe2');
+  const area=['ice','wind','hypno'].includes(name);
+  const foeSide=name.startsWith('foe');
+  const tg=foeSide?[{rect:you,dmg:o.dmg??14,side:'you'}]:heroRecipes.has(name)?[{rect:you,dmg:0},{rect:body('c1'),dmg:0},{rect:body('c2'),dmg:0}]
+   :area?[{rect:f1,dmg:o.dmg??36},{rect:f2,dmg:o.dmg??36}]:[{rect:f1,dmg:o.dmg??({fire_s:40,fire_m:62,fire_l:96}[name]??28),label:o.label}];
+  return playBattleFx({recipe:name,src:foeSide?f1:you,targets:tg,side:foeSide?'you':'foe',opts:{weapon:o.weapon,mp:o.mp}});
+}
+window.labPlay=play;window.fxAdvance=fxAdvance;window.fxStats=fxStats;window.fxIdle=fxIdle;window.resetFxStats=resetFxStats;
+const box=document.getElementById('btns');
+for(const n of IMPLEMENTED_RECIPES){const b=document.createElement('button');b.textContent=n;b.onclick=()=>play(n);box.appendChild(b)}
+const q=new URLSearchParams(location.search);
+if(q.get('r'))setTimeout(()=>play(q.get('r'),{weapon:q.get('w')||undefined,label:q.get('l')||undefined}),+q.get('d')||600);
+setInterval(()=>{const s=fxStats();document.getElementById('stats').textContent=`frames ${s.frames} avg ${s.avgMs.toFixed(1)}ms max ${s.maxMs.toFixed(0)}ms peakP ${s.peakParticles} live ${s.live}`},500);
+window.warm=warmAllFx;
+</script></body></html>
