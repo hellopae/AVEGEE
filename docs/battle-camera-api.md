@@ -64,9 +64,13 @@ Reading state / geometry:
 
 ```ts
 camera.pointOf(target): {x:number, y:number} | null    // stage-local px, zoom-1 space
-camera.rectOf(el: Element): {left,top,right,bottom,width,height}   // like getBoundingClientRect but un-zoomed, stage-local
+camera.rectOf(el: Element, mode?: 'layout'|'settled'): {left,top,right,bottom,width,height}
+                                                       // like getBoundingClientRect but as if the camera were at rest ('layout', default),
+                                                       // or as the element will look once the running move ends ('settled' — used to place menus)
 camera.size(): {w:number, h:number}                    // stage size in px
-camera.state(): { zoom:number, cx:number, cy:number, dim:number, moving:boolean, enabled:boolean, reduced:boolean }
+camera.state(): { zoom:number, cx:number, cy:number, dim:number, moving:boolean, enabled:boolean, reduced:boolean, pending:number, running:boolean }
+camera.currentCue: string                              // 'select:"<key>"' | 'attack' | 'skill' | 'foe-attack' | 'heal' | 'idle' | 'interrogate-…'
+camera.stageEl(): Element | null                        // the stage the camera is attached to
 camera.layer(name: 'fx' | string): HTMLElement          // world-space layer (above sprites). Created on demand, kept across repaints.
 camera.screenLayer(name?: string): HTMLElement          // stage-space layer (not zoomed, under HUD).
 ```
@@ -114,7 +118,7 @@ Timeline (ms from `cue()` call, speed ×1; `CAMERA_TIMING` exports these numbers
 |---|---|---|---|---|
 | `select` | ease to the active ally, zoom 1.10, all foes kept visible (240ms) | – | – | – (stays until next cue) |
 | `attack` | push to user zoom 1.16 (200ms) | 220 | 360 (pan to target 160ms) | 760 |
-| `skill` | dim on, push to user zoom 1.26 (260ms) | 300 | `cutMs>0 ? cutMs+60 : 520`; pan to target (or wide pull-back if `scope:'all'`) | impactAt + 560 |
+| `skill` | dim on, push to user zoom 1.26 (260ms) | 300 | `cutMs>0 ? max(windup+120, cutMs-60) : 520` (the hit lands as the full-screen cutscene fades out); starts the pan to the target 200ms earlier (or a wide pull-back if `scope:'all'`) | impactAt + 560 |
 | `foe-attack` | push to the foe zoom 1.14 | 200 | 340 (pan to the hit ally) | 740 |
 | `heal` | push to the healed ally 1.18, green-friendly (no shake) | 160 | 300 | 700 |
 | `interrogate-ask` | zoom to the suspect 1.18 | – | – | stays |
@@ -122,7 +126,9 @@ Timeline (ms from `cue()` call, speed ×1; `CAMERA_TIMING` exports these numbers
 
 At `impact`: `shake(power)` (power≥2 also `hitStop(power>=3?90:70)`), `flash()` if `ctx.flash` or power 3. Total added game time = **0** (cue runs inside the existing `phase` timers; the only change to game flow is `ACTION_CUT` wait is not extended). Recover always finishes ≤ 280ms after `recover`.
 
-`cue()` **replaces** any running cue (cancels its remaining steps). `camera.cue('idle')` = `reset()`.
+`cue()` **replaces** any running cue (cancels its remaining camera moves). **A replaced cue still owes its sync events:** every `windup` / `impact` / `recover` that had not fired yet is emitted immediately, once, in order — so FX listening to `impact` never hang when the fight moves on early (e.g. no counter-attack → the next turn's `select` cue arrives ~100ms after the impact). `camera.cue('idle')` = `reset()` as a cue.
+
+A cue's clock starts at its first rendered frame (a long paint right before it cannot swallow the lead-in), and runs on the camera's virtual clock (a hit-stop pushes later steps back).
 
 ### Lower level: your own timeline
 
@@ -142,11 +148,27 @@ Hit-stop pauses the timeline clock, so steps after a hit-stop slide by that amou
 2. Draw the actual effect on `camera.on('impact', …)`: get the position with `camera.pointOf(info.targets)` and draw into `camera.layer('fx')` (follows the scene) or `camera.screenLayer()` (screen-sized: flash, speed lines, big numbers).
 3. For a bespoke show (e.g. Grand-Trinity style multi-hit), build your own with `camera.play([...])` and `camera.punch()`; it replaces the running cue.
 4. Never write `transform` on `.cam-world`, `.cam-fx`, `.cam-screen`, `.cam-dim` or on `.arena` — camera owns them. Don't use `filter`/`blur` that animates per frame (project rule); use opacity.
-5. z-order inside the world: background (0) < sprites (1..30, formation depth) < dim overlay (z 31) < **lit actors (z 40)** < `cam-fx` (z 50). The dim overlay therefore covers the background and the non-lit sprites only.
+5. z-order inside the world: background (0) < sprites (1..30, formation depth) < dim overlay (z 31) < **lit actors (z 40, set inline `!important` by `dim(true,{lit})` and restored by `dim(false)`; `fitBattleSprites` keeps 40 for `.cam-lit`)** < `cam-fx` (z 50) < click shield (z 99). The dim overlay therefore covers the background and the non-lit sprites only.
+
+## 5b. Where `ui.js` calls the cues (M1 — read before adding a second caller)
+
+| moment | cue |
+|---|---|
+| after every battle `paint()`: our turn, menu open | `select` (user = active ally, `keepVisible:['foes', user]`), only if the target changed |
+| after every battle `paint()`: enemy's turn / prep / battle over | `idle` |
+| `executeCommand` → phase `'you'` | normal attack/strike → `attack`; item/power that heals → `heal` (targets = receiver); rage → `skill` on self; everything else → `skill` (`scope:'all'` when `b.dmg.foeHits` has more than one entry) |
+| phase `'foe'` (counter-attack or enemy turn) | `foe-attack` (user = `foe:<id>`, targets = who was hit) |
+| interrogation: line pressed | `interrogate-ask` (`interrogate-reveal` when the answer exposed a truth/confession) |
+| interrogation: power used (roar / mirror / hypnosis) | `interrogate-reveal` |
+| interrogation: any court menu panel opened | `idle` |
+
+`power` (1..3) is derived from the hit's share of the target's max morale (≥ 15 % = 2, ≥ 30 % = 3; skills are at least 2) because the game rules store no crit flag. The camera never reads or changes game values.
+
+Interrogation scene: the world is the whole `.trial-comment8` (behind the right panels); targets are `'you'` and `'suspect'` (`[data-cam]`). The command menu and cards stay above the world.
 
 ## 6. Interaction / input guarantees
 
-- Browser hit-testing already honours transforms, so clicking foes/crew works at any zoom. While the camera is *moving* (`state().moving`), `.cam-world` gets `pointer-events:none` (the existing "busy" feel); HUD buttons are not affected.
+- Browser hit-testing already honours transforms, so clicking foes/crew works at any zoom. While the camera is *moving* (`state().moving`) a transparent shield (`.cam-world.cam-busy::after`) sits over the scene so scene clicks are ignored; HUD buttons, the command menu and the portraits are not affected.
 - The command-select zoom keeps every living foe fully visible, so target picking never needs a pan.
 - `fitBattleSprites`, `placeMenu`, `place`, `placeFin` measure through `camera.rectOf`, so the K2/K5/L2 layout is identical at any zoom.
 
@@ -154,4 +176,13 @@ Hit-stop pauses the timeline clock, so steps after a hit-stop slide by that amou
 
 - `src/battle-camera.js` — controller + pure planners (`planCamera`, `clampCenter`, `ease`) — exports `camera`, `CAMERA_TIMING`, planners for tests.
 - `src/battle-camera.css` — `.cam-world`, `.cam-dim`, `.cam-fx`, `.cam-screen`, `.cam-lit`.
-- `tests/battle-camera.test.mjs` — pure-math tests.
+- `tests/battle-camera.test.mjs` — pure-math + fake-DOM controller tests (transform maths, reduced-motion, settings toggle, speed knob, impact-once guarantee, wiring).
+- `src/battle-scale.js` — `setBattleRectMapper()` lets `fitBattleSprites` / `battleSpriteRect(img, mode)` measure through `camera.rectOf` (ui.js registers it once).
+- Debug handle: `window.__camera` (like `window.G`).
+
+## 8. Known limits (so M2 does not trip on them)
+
+- Full-screen **action cutscenes** (`.action-cutscene`, 1.3 s) cover the whole dialog, camera included. For skills with a cutscene the lead-in (push + dim) is hidden under it and the impact is timed to land as it fades. M2 FX that must be seen before the cutscene ends belong in the cutscene itself.
+- The hero's own sword slash (`yama-sword.js`) and the combat sprite canvases live in the world and zoom with it (bitmap scaling, not re-rendered).
+- `hitStop` pauses CSS animations inside the world and the camera clock only. Canvas/rAF animations and game timers keep running (by design: it must add no wait).
+- Reduced-motion / camera-off: the scene stays on the wide shot; `dim()` still applies instantly; `flash`, `shake`, `punch`, `hitStop` are no-ops. M2 should treat its own flashes the same way (`camera.state().reduced`).
