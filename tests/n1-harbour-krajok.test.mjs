@@ -36,15 +36,25 @@ test('N1-root counter-scaled map buttons scale around their anchor (0 0) — oth
   assert.match(css, /#ov > button\.repairfab,\.town-view #ov > button\.bossfab,\.town-view #ov > button\.mobfab,\.town-view #ov > button\.frontierfab\{transform-origin:0 0\}/);
 });
 
-test('N1-4 krajok room: the floor "จุดฝึก" ring/label is gone and cannot come back', () => {
-  for (const zone of ['th','asia','west','cyberhell']) {
-    const room = wideStationRoom(zone, 'krajok');
-    assert.ok(!room.training, `${zone}: no floor training spot`);
+test('N1-4 no room in any zone has a floor "จุดฝึก" (ring, label or entry) and it cannot come back; training minigame code stays', async () => {
+  const { STATIONS } = await import('../src/data.js');
+  let rooms = 0;
+  for (const zone of ['th','asia','west','cyberhell']) for (const st of STATIONS) {
+    const room = wideStationRoom(zone, st.k);
+    if (!room) continue;
+    rooms++;
+    assert.ok(!room.training, `${zone}/${st.k}: no floor training spot`);
   }
-  // the drawing/trigger code only runs when room.training exists, and krajok never has one (other rooms keep theirs)
-  assert.match(read('src/room-art-assets.js'), /training:!\['krata','ngiw','dab','sawan','krajok'\]\.includes\(key\)/);
-  assert.match(read('src/room.js'), /if \(room\.training && !\['sala','ngiw','dab','sawan'\]\.includes\(def\.k\)\)/);
-  assert.doesNotMatch(read('src/ui.js'), /ฝึกตัวละคร \/ Train character/);
+  assert.ok(rooms >= 36, `checked every regional room (${rooms})`);
+  const roomJs = read('src/room.js'), ui = read('src/ui.js'), art = read('src/room-art-assets.js');
+  assert.doesNotMatch(roomJs, /fillText\('จุดฝึก'/);
+  assert.doesNotMatch(roomJs, /room\.training/);
+  assert.doesNotMatch(ui, /room\.training/);
+  assert.match(art, /\n    training:false,\n/);
+  assert.doesNotMatch(ui, /ฝึกตัวละคร \/ Train character/);
+  // minigame code is kept, just unreachable from the floor
+  assert.match(ui, /function openTraining\(sk, fromDam = false\)/);
+  assert.ok(fs.existsSync(new URL('../src/minigames/training/index.js', import.meta.url)));
 });
 
 test('N1-5 krajok room: adjustable-mirror stand is always in the room; magic mirror appears only after "วางกระจก"', () => {

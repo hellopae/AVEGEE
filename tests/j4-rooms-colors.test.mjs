@@ -32,7 +32,7 @@ test('J4 mirror only blocks its foot, with reachable front and back depth orderi
  assert.ok(mirrorHeroSortY(x,y-.033)<MIRROR_SORT_Y);
  for(const point of [[x,y],[x+.01,y+.01],[x-.02,y-.01]]) assert.equal(mirrorObstacle(...mirrorClearPosition(...point)),false);
 });
-test('J4 gate souls shift onto raised platforms and training is removed only there',()=>{
+test('J4 gate souls shift onto raised platforms (N1: and no room has a floor training spot)',()=>{
  for(const zone of ['th','asia','west','cyberhell']){
   const gate=wideStationRoom(zone,'sawan');assert.equal(gate.training,false);
   assert.ok(gate.souls.every(p=>p[1]>=.455 && p[1]<=.485));

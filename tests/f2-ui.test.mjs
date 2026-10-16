@@ -45,11 +45,11 @@ const gainPeak = n => { let x = n; while (x) { if (x.kind === 'gain') return x.p
 const src = f => fs.readFileSync(new URL('../' + f, import.meta.url), 'utf8');
 
 // ---------- ข้อ 1: ปุ่ม "ฝึกตัวละคร / Train character" ----------
-test('1. ไม่มีปุ่มฝึกตัวละครในการ์ดห้องแล้ว แต่จุดฝึกบนพื้น → openTraining ยังอยู่ (ระบบฝึกเบื้องหลังไม่ถูกลบ)', () => {
+test('1. ไม่มีปุ่มฝึกตัวละครในการ์ดห้อง และ (N1 16 ต.ค.) ไม่มีจุดฝึกบนพื้นทุกห้อง — แต่โค้ดมินิเกมฝึก openTraining ยังอยู่ ไม่ถูกลบ', () => {
   const ui = src('src/ui.js');
   assert.ok(!ui.includes('st-training'));
   assert.ok(!/Train character/.test(ui) && !ui.includes('ฝึกตัวละคร / '));
-  assert.match(ui, /room\.training && R\.inTrainingReach\(\) && TRAINING_GAMES\[k\]\) \{ openTraining\(k\)/);
+  assert.doesNotMatch(ui, /room\.training/, 'N1: ไม่มีทางเข้า openTraining จากจุดฝึกบนพื้นแล้ว');
   assert.match(ui, /function openTraining\(sk, fromDam = false\)/);
 });
 

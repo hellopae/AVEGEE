@@ -101,9 +101,7 @@ test('all 36 regional rooms draw their new background and allow service, trainin
       assert.equal(nearRoomExit(f.room.pos(),exit),false);
       await walkTo([.5,.78]); await walkTo(f.config.act); assert.ok(f.room.inReach());
       await walkTo([.5,.78]);
-      if(f.config.training) {
-        await walkTo(f.config.training); assert.ok(f.room.inTrainingReach()); await walkTo([.5,.78]);
-      }
+      assert.ok(!f.config.training,`${zone}/${key}: N1 — no floor training spot`);
       await walkTo([exit.x,exit.y]); assert.ok(nearRoomExit(f.room.pos(),exit));
       assert.equal(walkSegmentInside(.5,.94,.1,.94,allowed),false);
     } finally { f.room.destroy(); }

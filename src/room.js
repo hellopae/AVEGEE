@@ -244,10 +244,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   };
 
   /** ยืนถึงจุดลงมือหรือยัง — ผู้เรียกใช้ตัดสินว่าปุ่มกดได้ไหม */
-  const inTrainingReach = () => {
-    const at = room.training || room.act;
-    return Math.hypot(P.x-at[0], (P.y-at[1])*.7) <= REACH;
-  };
+  // เดิมวัดจากจุดฝึกบนพื้น — ตอนนี้ไม่มีจุดฝึกแล้ว เหลือไว้ให้ศาลา (sala) ที่ใช้จุดลงมือเป็นทางเข้ามินิเกมเอกสาร
+  const inTrainingReach = () => Math.hypot(P.x-room.act[0], (P.y-room.act[1])*.7) <= REACH;
   const inReach = () => Math.hypot(P.x - room.act[0], (P.y - room.act[1]) * 0.7) <= REACH;
 
   // ---- คีย์บอร์ด: กล่องโมดัลกินคีย์ของเกมหลักไปหมด ห้องนี้จึงต้องดักเอง ----
@@ -445,13 +443,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.beginPath(); ctx.ellipse(ax, ay, U * 0.075, U * 0.028, 0, 0, 7); ctx.stroke();
     }
 
-    if (room.training && !['sala','ngiw','dab','sawan'].includes(def.k)) {
-      const [x,y] = room.training, ready = inTrainingReach();
-      ctx.strokeStyle = ready ? '#ffe29a' : 'rgba(255,226,154,.65)';
-      ctx.beginPath(); ctx.ellipse(px(x),py(y),U*.065,U*.022,0,0,Math.PI*2); ctx.stroke();
-      ctx.font = `${Math.max(12,U*.023)}px sans-serif`; ctx.textAlign = 'center';
-      ctx.fillStyle = '#ffe29a'; ctx.fillText('จุดฝึก',px(x),py(y)+U*.045);
-    }
+    // N1 (คุณเป้ 16 ต.ค.): ไม่มี "จุดฝึก" บนพื้นทุกห้อง — ถอดวงทอง+ป้าย+ทางเข้า (โค้ดมินิเกมฝึกยังอยู่ใน src/minigames/training)
     const chains = (x,y) => {
       if(def.k !== 'tarang') return;
       ctx.save();ctx.strokeStyle='#a7a4a1';ctx.lineWidth=Math.max(1,U*.0018);

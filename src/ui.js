@@ -4597,7 +4597,7 @@ function openStation(k, emergency = false) {
       ${def.tags.length ? `<p>${esc(t('room.karma').replace('{sins}', t(`room.${k}.sins`)))}</p>` : ''}
       ${def.tags.length ? `<p>${esc(t('room.capacity').replace('{n}', cap))}</p>` : ''}
       `);
-    // F2 ข้อ 1 (คุณเป้ 9 ต.ค.): ตัดปุ่ม "ฝึกตัวละคร" ออกจากการ์ดทุกห้อง/ทุกโซน — ระบบฝึกยังอยู่ (จุดฝึกบนพื้น → openTraining)
+    // F2 ข้อ 1 (คุณเป้ 9 ต.ค.): ตัดปุ่ม "ฝึกตัวละคร" ออกจากการ์ดทุกห้อง/ทุกโซน — ระบบฝึกยังอยู่ (openTraining) · N1 16 ต.ค.: จุดฝึกบนพื้นถอดทุกห้อง เหลือทางเข้าฝึกดาบผ่านดำ (dab/ngiw) เท่านั้น
     // ภายหลังจะมีปุ่มมินิเกมมาแทนตรงนี้
 
     // ---- ปุ่มทองกลางฉาก (ตำแหน่ง = room.actions สัดส่วน 0-1 ของกรอบ) ----
@@ -4973,7 +4973,6 @@ function openStation(k, emergency = false) {
   R.onAct = () => {
     if (k === 'krata') { openKrata(false); return; }
     if (k === 'sala' && R.inTrainingReach()) { openMinigame(k); return; }
-    if (k !== 'krata' && room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;
     if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }
@@ -4996,7 +4995,7 @@ function openStation(k, emergency = false) {
       const width = cv2.getBoundingClientRect().width;
       const bw = exitBtn.offsetWidth, bh = exitBtn.offsetHeight, half = bw / 2 + 8;
       const clampX = x => Math.max(half, Math.min(width - half, x));
-      // ห้องที่จอแคบ (390px) ฉากเตี้ย — ปุ่ม 44px เหนือหัวยมบาทไปทับวงทองจุดฝึก/จุดลงมือ ทำให้แตะเดินไปจุดนั้นไม่ได้
+      // ห้องที่จอแคบ (390px) ฉากเตี้ย — ปุ่ม 44px เหนือหัวยมบาทไปทับวงทองจุดลงมือ ทำให้แตะเดินไปจุดนั้นไม่ได้
       // ลองเลื่อนไปซ้าย/ขวาข้างตัวละครก่อน แล้วค่อยลอยเหนือวงทอง (จอกว้างที่ไม่ทับยังอยู่ที่เดิมเหนือหัวเหมือนเดิม)
       const [actX, actY] = R.project(room.act);
       const base = Math.max(bh + 8, top - 42);
