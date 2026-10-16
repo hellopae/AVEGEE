@@ -68,7 +68,7 @@ for(const [viewportW,viewportH] of [[844,390],[390,844]])test(`real-room mirror 
  controls.querySelector('[data-remove]').onclick();assert.equal(layer.hidden,true);controller.destroy();assert.equal(layer.removed,true);assert.equal(controls.removed,true);
 });
 
-test('mirror stand blocks real pointer movement, becomes walkable when removed, and can be approached',async()=>{
+test('mirror stand blocks real pointer movement (before and after placing) and can be approached',async()=>{
  const context=new Proxy({measureText:()=>({width:20})},{get:(o,k)=>k in o?o[k]:()=>{}}),handlers={};
  const canvas={width:844,height:450,getContext:()=>context,getBoundingClientRect:()=>({left:0,top:0,width:844,height:450}),addEventListener:(k,f)=>handlers[k]=f,removeEventListener:()=>{}};
  const config=wideStationRoom('th','krajok');config.walk=[[.17,.51,.81,1]];config.me=[.64,MIRROR_FOOT[1]];
@@ -77,7 +77,8 @@ test('mirror stand blocks real pointer movement, becomes walkable when removed, 
  const target=[.80,MIRROR_FOOT[1]],click=()=>{const [clientX,clientY]=room.project(target);handlers.pointerdown({clientX,clientY});};
  click();for(let i=0;i<300;i++){room.tick(16);assert.equal(mirrorObstacle(...room.pos()),false);}
  assert.ok(room.pos()[0]<MIRROR_FOOT[0]);assert.equal(nearMirror(room.pos()),true);
- placed=false;click();for(let i=0;i<300;i++)room.tick(16);assert.ok(Math.abs(room.pos()[0]-.8)<.01);room.destroy();
+ placed=false;click();for(let i=0;i<300;i++){room.tick(16);assert.equal(mirrorObstacle(...room.pos()),false);}   // N1: the stand is part of the room even before "วางกระจก" — still solid
+ assert.ok(room.pos()[0]<MIRROR_FOOT[0]);room.destroy();
 });
 
 test('scan, rebirth, sky and floating −N draw on canvas; departures fade and sky rises',()=>{

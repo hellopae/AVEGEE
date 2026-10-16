@@ -71,6 +71,6 @@ test('wiring: view uses chase + ❗ + cut-in, ui hands chased opts to the game, 
   const view=readFileSync(new URL('../src/dungeon-view.js',import.meta.url),'utf8'),ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   assert.match(view,/stepChase\(chase,progress\*total/);assert.match(view,/❗/);assert.match(view,/onEncounter\(status\.location,\{chased:true\}\)/);
   assert.match(ui,/onEncounter:\(_,opts\)=>/);assert.match(ui,/startDungeonEncounter\(opts\)/);assert.match(ui,/dungeon-view\.js\?v=l5/);
-  assert.match(html,/src\/ui\.js\?v=(?:[^"]+-l5|20261016-(?:night-city-v1|map-polish-v1))"/);
+  assert.match(html,/src\/ui\.js\?v=(?:[^"]+-l5|20261016-(?:night-city-v1|map-polish-v1(?:-n1)?))"/);
   assert.doesNotMatch(readFileSync(new URL('../src/frontier.js',import.meta.url),'utf8'),/dungeon-chase/,'frontier defence / city mobs untouched');
 });

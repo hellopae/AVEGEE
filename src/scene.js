@@ -480,8 +480,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       shade(x, y, HERO_H * 1.12, c => drawStandee(c, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1));
-      tag(ctx, x, y - HERO_H * 1.12 - 15, t,
-          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : cleared ? `คุยกับ${g.zoneDef().bossName}` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
+      // N1 (คุณเป้ 16 ต.ค.): ชนะแล้ว = ไม่มีป้ายดำ "คุยกับ…" บนหัว — ปุ่มเหลือง 💬 (ui.js updateBossFab) วางบนหัวแทนตอนเดินเข้าใกล้
+      if (!cleared) tag(ctx, x, y - HERO_H * 1.12 - 15, t,
+          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
 

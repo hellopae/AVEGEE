@@ -40,7 +40,7 @@ test('I1-A mirror stand is drawn in the room canvas, depth-sorted against Yama b
  const front=await krajok([MIRROR_FOOT[0],MIRROR_FOOT[1]+.09],state);
  assert.ok(idx(front,HERO_DRAW)>lastIdx(front,/mirror-charge-pane/),'Yama in front of the stand is drawn on top of base and pane — never covered');
  const none=await krajok([MIRROR_FOOT[0],MIRROR_FOOT[1]+.09],{placed:false,angle:0,adjusting:false});
- assert.equal(idx(none,/mirror-charge/),-1,'no stand drawn until placed');
+ assert.ok(idx(none,/mirror-charge-base/)>=0&&idx(none,/mirror-charge-pane/)>=0,'N1: the adjustable stand stands in the room before "วางกระจก" too');
 });
 test('I1-A depth key: every spot in front of the stand foot is drawn over it, every spot behind is drawn under it',()=>{
  let front=0,behind=0;
