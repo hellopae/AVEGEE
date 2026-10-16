@@ -29,15 +29,16 @@ async function krajok(heroAt,state){
   draws.length=0;room.tick(0);room.destroy();
   return draws;
 }
+const HERO_DRAW= /hero-yama|yama-animation-v1\/[^/]+\/book-(?:idle|walk)\.webp/;
 const idx=(d,re)=>d.findIndex(u=>re.test(u));
 const lastIdx=(d,re)=>d.reduce((n,u,i)=>re.test(u)?i:n,-1);
 test('I1-A mirror stand is drawn in the room canvas, depth-sorted against Yama by feet y',async()=>{
  const state={placed:true,angle:20,adjusting:false};
  const behind=await krajok([MIRROR_FOOT[0],MIRROR_FOOT[1]-.07],state);
  assert.ok(idx(behind,/mirror-charge-base/)>=0&&idx(behind,/mirror-charge-pane/)>=0,'base and pane are drawn on canvas');
- assert.ok(idx(behind,/hero-yama/)<idx(behind,/mirror-charge-base/),'Yama behind the stand is drawn first (stand covers him)');
+ assert.ok(idx(behind,HERO_DRAW)<idx(behind,/mirror-charge-base/),'Yama behind the stand is drawn first (stand covers him)');
  const front=await krajok([MIRROR_FOOT[0],MIRROR_FOOT[1]+.09],state);
- assert.ok(idx(front,/hero-yama/)>lastIdx(front,/mirror-charge-pane/),'Yama in front of the stand is drawn on top of base and pane — never covered');
+ assert.ok(idx(front,HERO_DRAW)>lastIdx(front,/mirror-charge-pane/),'Yama in front of the stand is drawn on top of base and pane — never covered');
  const none=await krajok([MIRROR_FOOT[0],MIRROR_FOOT[1]+.09],{placed:false,angle:0,adjusting:false});
  assert.equal(idx(none,/mirror-charge/),-1,'no stand drawn until placed');
 });
@@ -56,7 +57,7 @@ test('I1-A adjusting panel switches Yama to the atk pose facing the mirror; clos
  assert.ok(open.includes(ragePoseSrc('th')),'atk pose file of the worn outfit is drawn');
  assert.ok(!open.some(u=>/hero-yama\.png|hero-yama-th\.png/.test(u)),'standing pose not drawn while adjusting');
  const closed=await krajok([.66,.66],{placed:true,angle:0,adjusting:false});
- assert.ok(!closed.includes(ragePoseSrc('th')));assert.ok(closed.some(u=>/hero-yama/.test(u)));
+ assert.ok(!closed.includes(ragePoseSrc('th')));assert.ok(closed.some(u=>HERO_DRAW.test(u)));
  for(const style of ['th','asia','west','cyberhell'])assert.match(ragePoseSrc(style),/atk/,style+' has an atk pose');
 });
 test('I1-A mirror DOM: stand no longer painted in DOM (only drag area), close button no longer closes the whole room',()=>{
@@ -127,6 +128,8 @@ test('I1-A after waking, Yama stands at the wake point and can walk immediately'
 test('I1-A cache-bust: -i1a is appended (existing suffixes kept) on every changed file that carries a version query',()=>{
  const html=read('index.html'),ui=read('src/ui.js');
  assert.match(html,/src\/compact-ui\.css\?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4(-[a-z0-9]+)*-i1a(-[a-z0-9]+)*"/);
- assert.match(html,/src\/ui\.js\?v=20261009-f2-merge-[^"]*-h4-h2-zoom-intro-v3(-[a-z0-9]+)*-i1a(-[a-z0-9]+)*"/);
+ const entry=html.match(/src="(src\/ui\.js\?v=[^"]+)"/)?.[1];
+ assert.ok(entry);const imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;assert.equal(imports['./src/ui.js'],'./'+entry);
+ assert.match(ui,/mirror-charge\.js\?v=minigame-review-20261011-j4/);
  assert.ok(ui.includes("./mirror-charge.js?v=minigame-review-20261011-j4'"));
 });

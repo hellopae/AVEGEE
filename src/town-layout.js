@@ -56,16 +56,19 @@ const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);
 }
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 export const TOWN_LAVA_EAST_CLIFF = [[1090,1005],[1160,1000],[1420,1130],[1450,1235],[1370,1230],[1250,1130],[1120,1080]];
+export const TOWN_LAVA_STAIRS = [[1080,1070],[1110,1125],[1480,1025],[1440,965]];
+export const TOWN_LAVA_STAIR_LANDING = [[1045,985],[1090,995],[1145,1080],[1100,1115],[1040,1030]];
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
-  // The middle lava bridge does not connect through the cliff face on its east bank.
+  if(townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING))return true;
+  // The new stair flight crosses only its painted corridor; the surrounding cliff stays solid.
   // Use the northern bridge and the painted western stairs to reach these terraces.
   if(townInPolygon(x,y,TOWN_LAVA_EAST_CLIFF))return false;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.
 export const TOWN_STAIRS = [
-  {key:'krata-descent',point:[516,670]}, {key:'krata-lower',point:[480,800]},
+  {key:'lava-east-stairs',point:[1270,1050]}, {key:'krata-descent',point:[516,670]}, {key:'krata-lower',point:[480,800]},
   {key:'dab-descent',point:[524,1172]}, {key:'ngiw-descent',point:[596,1280]}, {key:'ngiw-mid',point:[610,1570]},
   {key:'tarang',point:[1744,560]}, {key:'civic-north',point:[1854,770]}, {key:'civic-south',point:[1854,1160]},
   {key:'west-terrace',point:[1656,1484]}, {key:'east-terrace',point:[2212,1484]},
@@ -100,7 +103,7 @@ const trees = (list,tag)=>list.map(([x,y,w,biome],i)=>deco(`${tag}-${i}`,'tree',
 export const TOWN_PROP_SITES = [
   // green / orange trees (owner: green marks)
   ...trees([
-    [1436,691,136,'city'],[1738,835,156,'city'],[2060,743,136,'city'],[1463,1016,136,'city'],
+    [1436,691,136,'city'],[1738,835,156,'city'],[2060,743,136,'city'],
     [1757,1133,159,'city'],[1962,1137,159,'city'],[2185,977,136,'city'],[2945,1146,202,'city'],
     [1413,1457,175,'city'],[1818,1478,161,'city'],[2016,1478,161,'city'],[2314,1453,161,'city'],
     [2346,1678,159,'city'],[3231,1453,198,'city'],[3567,1632,200,'city'],

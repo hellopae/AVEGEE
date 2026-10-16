@@ -5764,4 +5764,4 @@ function openIntro(fromTitle = false) {
 window.G = g;
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder,openTrial};
+export {openBattle,openDungeon,openHarbour,openBorder,openTrial,startPlay};

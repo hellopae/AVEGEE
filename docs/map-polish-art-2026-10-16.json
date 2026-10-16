@@ -1,0 +1,29 @@
+{
+  "tool": "Codex built-in imagegen",
+  "sources": {
+    "nw": "exec-a6d452ea-4ae6-4311-9ede-fb8c7f148ed8.png",
+    "ne": "exec-01c080fe-2364-427e-b689-a72d1becae1e.png",
+    "sw": "exec-3ecc0eca-f503-407c-980f-7da2e3181ac2.png",
+    "se": "exec-54d31d54-e1c3-4da1-b9da-6462cbcb8c11.png",
+    "stairs_short": "exec-1552504b-37f4-459a-8c57-ccd1a5d1bc8c.png",
+    "alert": "exec-250012b9-bb38-497f-960b-e28133056187.png",
+    "plaza_tips": "exec-7a409441-4340-497a-9c90-9506fb4bd630.png"
+  },
+  "terrain": "v4: 4915x3277, 1024px crops, 5 columns/4 rows, preview1536x1024",
+  "compositing": "Expanded foliage/footprint cleanup masks plus staircase repair corridor; source unchanged exactly outside final edit mask. Unedited landmarks registered with ORB/RANSAC; translations less than 1.1px.",
+  "stairs": {
+    "lowerBridgeLanding": [
+      1060,
+      1000
+    ],
+    "foot": [
+      1110,
+      1090
+    ],
+    "upperLanding": [
+      1460,
+      1000
+    ]
+  },
+  "newIcon": "img/ui/alert-mark.png"
+}

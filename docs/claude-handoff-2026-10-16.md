@@ -1,3 +1,5 @@
+> Update: Codex completed handoff items 2–5 in the night-city/map-polish releases. All five old failing tests now pass; integrated suite 996/996. See [current handoff](claude-update-2026-10-16.md). Items below are retained as original context.
+
 # Claude → Codex app handoff, 16 ต.ค. 2569 ~00:05 (Claude ใกล้ชนลิมิต — คุณเป้สั่งส่งงานให้ Codex)
 
 main ตอนเขียน = `1b7ab52` → อัปเดต 00:30: `a511143`+ · ทำตามลำดับ · `git pull` ก่อนเริ่มและก่อน push ทุกครั้ง · `node --test tests/*.test.mjs`

@@ -25,15 +25,16 @@ const pixels = new Map();
 globalThis.document = { documentElement:{}, createElement: () => ({ getContext: () => {
   let source, width, height;
   return new Proxy({
-    drawImage(im, x, y, w, h) { source = im.src; width = w; height = h; },
+    drawImage(im, x, y, w, h) { source = im.src; width = w ?? im.naturalWidth ?? im.width; height = h ?? im.naturalHeight ?? im.height; },
     createImageData(w, h) { return { data:new Uint8ClampedArray(w * h * 4) }; },
     createLinearGradient() { return { addColorStop() {} }; },
     putImageData() {},
-    getImageData() {
+    getImageData(x,y,rw,rh) {
+      if(!source)return {data:new Uint8ClampedArray((rw||width||1)*(rh||height||1)*4)};
       const key = `${source}:${width}:${height}`;
       if (!pixels.has(key)) pixels.set(key, execFileSync('python3', ['-c',
         'from PIL import Image; import sys; im=Image.open(sys.argv[1]).convert("RGBA"); sys.stdout.buffer.write(im.resize((int(sys.argv[2]),int(sys.argv[3])), Image.Resampling.BILINEAR).tobytes())',
-        fileURLToPath(new URL(`../${source}`, import.meta.url)), `${width}`, `${height}`], { maxBuffer:7_000_000 }));
+        fileURLToPath(new URL(`../${source}`, import.meta.url)), `${width}`, `${height}`], { maxBuffer:64_000_000 }));
       return { data:pixels.get(key) };
     },
   }, { get: (target, key) => key in target ? target[key] : () => {} });

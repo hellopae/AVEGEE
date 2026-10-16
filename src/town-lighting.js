@@ -1,4 +1,4 @@
-// Vivid night: cool ambient light, warm pools around actual town fixtures, emissive lava.
+// Clear night: neutral ambient light matching placed scenery, warm pools around actual town fixtures, emissive lava.
 // Pixel grading and fixture falloff are cached; animation only blits two layers.
 import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES,TOWN_DAIS,TOWN_SIZE} from './town-layout.js?v=k1d';
 const cache=new WeakMap(),clamp=x=>Math.max(0,Math.min(1,x));
@@ -19,8 +19,8 @@ export function hellColor(r,g,b,out=[0,0,0],light=0){
  const fire=fireStrength(r,g,b),l=.299*r+.587*g+.114*b;
  for(let i=0;i<3;i++){
   const v=i===0?r:i===1?g:b;
-  const shade=(i===0?.43:i===1?.48:.66)+light*(i===0?.62:i===1?.40:.12);
-  const base=(l+(v-l)*.92)*shade,boost=i===0?1.13:i===1?1.08:1;
+  const shade=(i===0?.74:i===1?.73:.76)+light*(i===0?.30:i===1?.24:.12);
+  const base=(l+(v-l)*1.03)*shade,boost=i===0?1.13:i===1?1.08:1;
   out[i]=Math.round(Math.max(0,Math.min(255,base*(1-fire)+v*boost*fire)));
  }
  return out;

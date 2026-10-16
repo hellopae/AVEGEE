@@ -25,8 +25,11 @@ test('the 20 painted chunks exist and tile the whole 3840x2560 world without gap
 test('chunk pixel sizes match the world scale (1.28 painted px per unit) and the preview is the whole map', () => {
   const size = u => JSON.parse(execFileSync('python3', ['-c',
     'from PIL import Image; import json,sys; print(json.dumps(Image.open(sys.argv[1]).size))', file(u)], { encoding:'utf8' }));
-  assert.deepEqual(size('img/map-zone1/v2/r1-c1.webp'), [1024,1024]);
-  assert.deepEqual(size('img/map-zone1/v2/r4-c5.webp'), [819,205]);
+  assert.deepEqual(size(townChunkUrl(1,1)), [1024,1024]);
+  assert.deepEqual(size(townChunkUrl(4,5)), [819,205]);
+  const urls=[];for(let r=1;r<=4;r++)for(let c=1;c<=5;c++)urls.push(townChunkUrl(r,c));
+  const dims=JSON.parse(execFileSync('python3',['-c','from PIL import Image;import sys,json;print(json.dumps([Image.open(p).size for p in sys.argv[1:]]))',...urls.map(file)],{encoding:'utf8'}));
+  urls.forEach((u,i)=>assert.deepEqual(dims[i],[Math.min(1024,4915-(i%5)*1024),Math.min(1024,3277-Math.floor(i/5)*1024)],u+' must use the renderer crop geometry'));
   const [pw, ph] = size(TOWN_TERRAIN_PREVIEW);
   assert.ok(Math.abs(pw / ph - TOWN_SIZE.w / TOWN_SIZE.h) < .01, 'preview keeps the world aspect');
   const bytes = (() => { let n = 0; for (let r = 1; r <= 4; r++) for (let c = 1; c <= 5; c++) n += statSync(file(townChunkUrl(r,c))).size; return n; })();
@@ -38,8 +41,8 @@ test('old tile terrain and removed scenery art are no longer preloaded; the prev
   const th = catalog.zones.th.join('\n');
   assert.doesNotMatch(th, /map-zone1\/terrain-/);
   assert.doesNotMatch(th, /map-zone1\/prop-(bush|ice-ridge|mountain-ridge|volcano|waterfall)/);
-  assert.match(th, /map-zone1\/v3\/zone1-terrain-v3-preview\.webp/);
-  assert.doesNotMatch(th, /map-zone1\/v3\/r\d-c\d\.webp/, 'sharp chunks stream lazily, never preloaded');
+  assert.match(th, /map-zone1\/v4\/zone1-terrain-v4-preview\.webp/);
+  assert.doesNotMatch(th, /map-zone1\/v4\/r\d-c\d\.webp/, 'sharp chunks stream lazily, never preloaded');
 });
 
 test('the heavy 4915x3277 master is not committed', () => {

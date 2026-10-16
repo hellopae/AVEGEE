@@ -104,7 +104,7 @@ export function listCasters(resolve, houseKey, stations, propArt) {
   });
   for (const d of stations) {
     const b = stationBox(d); if (!b) continue;
-    out.push({ kind:'sprite', art:b.im, x:d.bx, y:d.by, left:b.x - d.bx, top:b.y - d.by, w:b.w, h:b.h, flip:!!b.flip, lift:1 });
+    out.push(spriteCaster(b.im,b.x+b.w/2,b.y+b.h,b.w,b.h,!!b.flip,.48));
   }
   const dais = resolve('town-judgment-th');
   if (dais) {   // a flat platform: its sprite height is mostly ground, so it throws a short shadow

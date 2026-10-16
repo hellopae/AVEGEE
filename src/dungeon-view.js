@@ -75,6 +75,7 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
+  const alertArt=new Image();alertArt.src='img/ui/alert-mark.png';
   let cooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0,chase=null,chaseCheckpoint=-1,cut=0,cutFired=false,alertAt=-1;g.dungeonChaseCooldown=false;
   let destroyed=false,frame=0,last=0,progress=0,target=null,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
   const keys=new Set(),handlers=[];
@@ -173,7 +174,7 @@ export function mountDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
       if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
-        if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}
+        if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();if(alertArt.complete&&alertArt.naturalWidth){ctx.drawImage(alertArt,p[0]-17,p[1]-h*1.15-35+bob,34,34);ctx.restore();}else{ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}}
         return;}
       if(a.kind==='nira') {if(moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,walkDistance,face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',face,false,g.zone);return;}
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;

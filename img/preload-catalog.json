@@ -179,7 +179,8 @@
     "img/zone-boss-cutscene.jpeg",
     "img/zone-boss.png",
     "img/zone-world-map.webp",
-    "img/ui/icon-defend-shield.png"
+    "img/ui/icon-defend-shield.png",
+    "img/ui/alert-mark.png"
   ],
   "zones": {
     "th": [
@@ -344,7 +345,7 @@
       "img/town-district/house-right-one-v1.webp",
       "img/town-district/house-right-two-v1.webp",
       "img/map-zone1/prop-rock-v1.webp",
-      "img/map-zone1/v3/zone1-terrain-v3-preview.webp",
+      "img/map-zone1/v4/zone1-terrain-v4-preview.webp",
       "img/yama-animation-v1/th/book-idle.webp",
       "img/yama-animation-v1/th/book-walk.webp",
       "img/yama-animation-v1/th/sword-idle.webp",

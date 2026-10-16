@@ -36,6 +36,10 @@ test('boss lookup keeps home identity including possessed rulers and excludes mi
  assert.equal(bossSpriteKey('img/zone-boss.png','asia'),'boss:asia:zone-boss');
  assert.equal(bossSpriteKey('img/mob-vampire.png','west'),null);
 });
-test('the middle lava bridge cannot exit through the cliff face',()=>{
- for(const [x,y]of [[1200,1070],[1300,1120],[1400,1190]])assert.equal(townContains(x,y),false,`${x},${y}`);
+test('the cliff stays solid outside the new painted stairs',()=>{
+ for(const [x,y]of [[1200,1150],[1300,1120],[1400,1190]])assert.equal(townContains(x,y),false,`${x},${y}`);
+});
+
+test('new lava stairs and lower landing are continuously walkable, without walking through an overlay tree',()=>{
+ for(const [a,b] of [[[1060,1000],[1110,1090]],[[1110,1090],[1460,1000]]])for(let i=0;i<=24;i++){const t=i/24,x=a[0]*(1-t)+b[0]*t,y=a[1]*(1-t)+b[1]*t;assert.equal(townContains(x,y),true,`${x},${y}`);}
 });

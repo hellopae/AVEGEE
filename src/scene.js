@@ -641,7 +641,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
   for (const c of (rescue ? [] : g.crew))
-    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - 34);
+    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 20 : 34), c.k === 'nira' ? .74 : 1);
 
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
@@ -837,16 +837,18 @@ export function hitBuildPrompt(ctx, def, sx, sy) {
 }
 
 /** บทพูดสั้น ๆ ลอยเหนือหัว — แบบเดียวกับ ofcSay ในผังออฟฟิศ */
-function bubble(ctx, text, x, y) {
+function bubble(ctx, text, x, y, scale=1) {
+  const originX=x;ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);x=0;y=0;
   ctx.font = `600 ${MAP_NAME_SIZE * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
   const w = Math.min(180 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
-  const bx = Math.max(6, Math.min(SCENE.w - w - 6, x - w / 2));
+  const bx = Math.max((6-originX)/scale,Math.min((SCENE.w-6-originX)/scale-w,-w/2));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 7);
   ctx.fillStyle = 'rgba(20,9,14,.92)'; ctx.fill();
   ctx.fillStyle = '#f2e6dd'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText(text, bx + w / 2, y - h / 2 + 1, w - 10 * UI_SCALE_MAP);
+  ctx.restore();
 }
 
 function mapName(ctx, text, x, y, color) {
