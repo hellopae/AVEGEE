@@ -190,7 +190,7 @@ test('M1 wiring: only .cam-world is transformed; HUD stays outside; cache-bust -
   assert.match(read('src/battle-scale.js'), /setBattleRectMapper/);
   for (const f of ['index.html', 'output/game-review/index.html']) {
     const h = read(f);
-    assert.match(h, /src\/ui\.js\?v=[^"]*-m1(?:-m2)?(?:-n2)?(?:-n1)?"/, f);
+    assert.match(h, /src\/ui\.js\?v=[^"]*-m1(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?"/, f);
     assert.match(h, /src\/battle-camera\.css\?v=[^"]*m1"/, f);
   }
   assert.match(read('docs/battle-camera-api.md'), /camera\.focus\(target/);

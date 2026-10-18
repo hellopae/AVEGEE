@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="avegee-build" content="20261018-claude-takeover-n1-n4-v1">
+<meta name="avegee-build" content="20261018-claude-takeover-m5-v1">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>อเวจี — นรกโซนสุวรรณภูมิ</title>
 <meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
@@ -858,9 +858,10 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
    ข้อ E คุณเป้ 24 ก.ย. 2569: เดิม .56s เร็วเกินจะทันเห็น ยืดเป็น 1.3s ให้ตรงกับ ACTION_CUT_MS ใน ui.js
    (แตะที่ภาพข้ามได้ทันทีอยู่แล้ว ไม่ต้องรอครบก็ได้ — ผูก onclick ไว้ใน playActionCutscene) */
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
-  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
+  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both;
+  clip-path:polygon(0 4%,100% 0,100% 96%,0 100%)}
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;
-  image-rendering:auto;filter:saturate(1.18) contrast(1.1);animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
+  image-rendering:auto;animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
   /* ภาพคัตซีนเดิมวาดยมบาทน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
   transform:scaleX(-1)}
 /* ชุด 30B ข้อ 10 — คัตซีนยมทูต/ยักษ์ (ภาพ 16:9 ทึบ): จอกว้างให้ภาพเต็มกรอบ (ดู planCutsceneCover ใน battle-scale.js)
@@ -869,18 +870,30 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
 .action-cutscene.right-facing img{transform:none;animation-name:actionRushRight}
 .action-cutscene.enemy-facing img{transform:none;animation-name:actionRushEnemy}
 .action-cutscene:before{content:'';position:absolute;inset:-30%;z-index:2;pointer-events:none;
-  background:repeating-linear-gradient(104deg,transparent 0 7%,rgba(255,221,160,.22) 7.3% 7.8%,transparent 8.1% 13%);
+  background:repeating-linear-gradient(104deg,transparent 0 7%,color-mix(in srgb,var(--cut-b,#ffe0a4) 28%,transparent) 7.3% 7.8%,transparent 8.1% 13%);
   mix-blend-mode:screen;animation:speedLines 1.3s ease-out both}
-.action-cutscene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 45px rgba(0,0,0,.72);
-  border:1px solid var(--gold);pointer-events:none}
+.action-cutscene:after{content:'';position:absolute;inset:0;z-index:5;border:2px solid var(--cut-a,var(--gold));pointer-events:none;animation:cutEdge 1.3s ease both}
+.action-cutscene .cutscene-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
+.action-cutscene .cutscene-sweep{position:absolute;inset:-20% -35%;z-index:3;pointer-events:none;
+  background:linear-gradient(104deg,transparent 41%,color-mix(in srgb,var(--cut-b,#fff) 72%,transparent) 49%,transparent 57%);
+  transform:translateX(-70%);animation:cutSweep 1.3s ease-in-out both;mix-blend-mode:screen}
+.action-cutscene .cutscene-title{position:absolute;z-index:4;left:clamp(14px,5vw,72px);bottom:clamp(18px,8%,72px);
+  max-width:min(72%,720px);padding:8px 22px 9px;color:#fff5cf;background:linear-gradient(90deg,rgba(27,8,18,.94),rgba(27,8,18,.58),transparent);
+  border-left:4px solid var(--cut-a,var(--gold));font-family:var(--font-display);font-size:clamp(22px,4vw,48px);line-height:1.05;
+  transform:translateX(-32px);opacity:0;animation:cutTitle 1.3s cubic-bezier(.2,.8,.2,1) both}
+.action-cutscene .cutscene-title small{display:block;margin-bottom:4px;color:var(--cut-b,#ffe9a4);font:600 clamp(11px,1.4vw,16px)/1.2 var(--font-sans);letter-spacing:.06em}
 @keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
-@keyframes actionRush{0%{transform:scaleX(-1) scale(.96);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scaleX(-1) scale(.98)}88%,100%{transform:scaleX(-1) scale(1);filter:brightness(1.25)}}
-@keyframes actionRushRight{0%{transform:scale(.96);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(.98)}88%,100%{transform:scale(1);filter:brightness(1.25)}}
-@keyframes actionRushEnemy{0%{transform:scale(.96);filter:brightness(1.8) saturate(1.35)}
-  18%{transform:scale(.98)}88%,100%{transform:scale(1);filter:brightness(1.25)}}
+@keyframes actionRush{0%{transform:scaleX(-1) scale(.95) translateX(3%)}18%{transform:scaleX(-1) scale(1)}88%,100%{transform:scaleX(-1) scale(1.035) translateX(-1%)}}
+@keyframes actionRushRight{0%{transform:scale(.95) translateX(-3%)}18%{transform:scale(1)}88%,100%{transform:scale(1.035) translateX(1%)}}
+@keyframes actionRushEnemy{0%{transform:scale(.95) translateX(3%)}18%{transform:scale(1)}88%,100%{transform:scale(1.035) translateX(-1%)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
+@keyframes cutSweep{0%,25%{opacity:0;transform:translateX(-70%)}42%{opacity:.8}62%,100%{opacity:0;transform:translateX(70%)}}
+@keyframes cutTitle{0%,10%{opacity:0;transform:translateX(-32px)}22%,84%{opacity:1;transform:none}100%{opacity:0;transform:translateX(18px)}}
+@keyframes cutEdge{0%{opacity:0}10%,82%{opacity:1}100%{opacity:0}}
+@media(max-width:520px){.action-cutscene .cutscene-title{left:12px;bottom:16px;max-width:88%;padding:7px 14px 8px;font-size:clamp(19px,7vw,30px)}}
+@media(prefers-reduced-motion:reduce){.action-cutscene,.action-cutscene img,.action-cutscene:before,.action-cutscene:after,.action-cutscene .cutscene-title,.action-cutscene .cutscene-sweep{animation:none}.action-cutscene .cutscene-fx{display:none}.action-cutscene .cutscene-title{opacity:1;transform:none}}
+.action-cutscene.cutscene-reduced,.action-cutscene.cutscene-reduced img,.action-cutscene.cutscene-reduced:before,.action-cutscene.cutscene-reduced:after,.action-cutscene.cutscene-reduced .cutscene-title,.action-cutscene.cutscene-reduced .cutscene-sweep{animation:none}
+.action-cutscene.cutscene-reduced .cutscene-fx,.action-cutscene.cutscene-reduced:before,.action-cutscene.cutscene-reduced .cutscene-sweep{display:none}.action-cutscene.cutscene-reduced .cutscene-title{opacity:1;transform:none}
 
 .plate{background:linear-gradient(180deg,rgba(74,31,61,.55) 0%,rgba(20,10,14,.92) 100%);
   border:1px solid var(--gold);border-radius:var(--radius-sm);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
@@ -2311,7 +2324,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/game.js": "./src/game.js?v=20261016-boss-justice-workers-v1-m2-n3b",
     "./src/preload.js": "./src/preload.js?v=20261016-boss-justice-workers-v1",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1",
-    "./src/ui.js": "./src/ui.js?v=20261016-boss-justice-workers-v1-m1-m2-n2-n1",
+    "./src/ui.js": "./src/ui.js?v=20261016-boss-justice-workers-v1-m1-m2-n2-m5-n1",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261016-boss-justice-workers-v1",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261016-boss-justice-workers-v1-m2-n3b",
@@ -2344,6 +2357,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 }</script>
 <script type="module" src="src/preload.js?v=20261016-boss-justice-workers-v1"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261016-boss-justice-workers-v1-m1-m2-n2-n1"></script>
+<script type="module" src="src/ui.js?v=20261016-boss-justice-workers-v1-m1-m2-n2-m5-n1"></script>
 </body>
 </html>

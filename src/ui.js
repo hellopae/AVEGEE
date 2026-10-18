@@ -36,6 +36,7 @@ import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapp
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
 import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs } from './battle-fx-map.js?v=m2';
+import { actionCutsceneTheme, actionCutsceneLabel, mountActionCutsceneFx } from './action-cutscene-fx.js?v=m5';
 setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
@@ -2333,15 +2334,21 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
-  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม">${ultimate ? `<strong style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);z-index:3;color:#fff;text-shadow:0 3px 8px #000;font-size:clamp(22px,4vw,48px)">${esc(ultimate.name)}</strong>` : ''}`;
+  const actorName = crewKey ? (g.roster[crewKey]?.name || CREW[crewKey]?.name || 'ยมทูต') : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
+  const crewMove = ({kan:'พลังสะกดจิต',boon:'พลังฟื้นฟู',plerng:'เพลิงพิพากษา',taan:'กระบองทัณฑ์',guard:'กระบองพิทักษ์',dam:'คมดาบ'})[crewKey];
+  const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
+  const theme = actionCutsceneTheme(k, ultimate, crewKey);
+  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><div class="cutscene-sweep" aria-hidden="true"></div><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
   img.onerror = () => {
     if (fallback) { img.onerror = () => cut.remove(); img.src = fallback; }
     else cut.remove();
   };
+  const reduced = !camera.enabled || (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const stopCutFx = mountActionCutsceneFx(cut, theme, { duration:ACTION_CUT_MS, reduced });
   let done = false;
-  const finish = () => { if (done) return; done = true; cut.remove(); };
+  const finish = () => { if (done) return; done = true; stopCutFx(); cut.remove(); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
   fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
