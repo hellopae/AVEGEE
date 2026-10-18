@@ -42,7 +42,7 @@ test('H2-5: frontier win button keeps its own class (not the bottom .pad)', () =
 // ข้อ 6 — วงคำสั่งไม่ทับตัวละคร (I1-B ข้อ 2 แทนที่ด้วย "ขวาบนของตัวที่ถึงตา" — ดู i1b-battle-ui.test.mjs) · ส่วน CSS จอแนวตั้งยังใช้ต่อ
 test('H2-6: Yama moves left in portrait and the portrait wheel rules stay', () => {
   const css = read('src/command-wheel.css');
-  assert.match(css, /not\(\.final-team\)>\.fig\.you\{left:28%\}/);
+  assert.match(css, /not\(\.final-team\)(?:>:where\(\.cam-world\))?>\.fig\.you\{left:28%\}/);
   assert.match(css, /not\(\.final-team\) \.actor-wheel\{bottom:33%\}/);
   assert.match(css, /not\(\.final-team\) \.combat-wheel \.command-options\{left:5%;max-width:152px\}/);
 });

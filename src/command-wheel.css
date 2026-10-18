@@ -63,7 +63,7 @@
 .arena.combat-arena{min-height:470px;aspect-ratio:16/8}.combat-wheel{left:34%;bottom:17%;width:clamp(220px,24vw,300px)}
 /* ข้อ D คุณเป้ 24 ก.ย. 2569 — ยมบาทน้อยต้องอยู่ชั้นบนสุดเสมอ ไม่มีตัวไหนบังหัวได้ (ของเดิมไม่ตั้ง z-index
    ตรงนี้เลย เลยใช้ค่า 2 จาก .arena .fig ฐานเท่า .battle-squad ที่ z-index:3 — ยมทูตช่วยเลยวาดทับหัวได้) */
-.arena.combat-arena>.fig.you{left:19%;width:17%;bottom:9%;z-index:4}.arena.combat-arena>.fig.foe{right:2%;width:23%;bottom:9%}
+.arena.combat-arena>:where(.cam-world)>.fig.you{left:19%;width:17%;bottom:9%;z-index:4}.arena.combat-arena>:where(.cam-world)>.fig.foe{right:2%;width:23%;bottom:9%}
 /* ข้อ D คุณเป้ 24 ก.ย. 2569 — ต้นเหตุจริง: (1) left:2%+width:19% ชนขอบซ้ายของยมบาทน้อยที่ left:19% พอดี
    (2) ตัวที่สองถูกสั่ง margin-left:-10% (ทับตัวแรก) และ transform:translateY(-100px) (ลอยขึ้นสูง)
    ลอยไปทับหัวยมบาทน้อยตรง ๆ (3) img สูงคงที่ 190px ไม่ล้อกับยมบาทน้อยที่ยืดตาม clamp(140px,24vh,215px)
@@ -99,7 +99,7 @@
 @media(max-width:900px){.trial-hud .hud-body{grid-template-columns:1fr;grid-template-areas:'stage' 'right';grid-template-rows:auto auto}.trial-hud .hud-stage{height:460px;min-height:460px}.court-wheel{left:24%;bottom:70px;width:250px}.command-options{max-width:290px}.court-wheel .command-options{left:0;top:auto;bottom:98%}.court-wheel .options-3{bottom:-45px}.trial-hud .hud-stage .fig.you{width:23%}.trial-hud .hud-stage .fig.foe{width:23%}.arena.combat-arena{min-height:450px}.combat-wheel{left:32%;width:220px;bottom:17%}.combat-wheel .command-options{left:68%;top:8%;bottom:auto}}
 /* จอแคบ ≤520px (ครอบคลุม 390×844) — ต่อเนื่องจากข้อ D ด้านบน (วางซ้อนแนวตั้งอยู่แล้วในกฎฐาน)
    แค่ย่อขนาด/ระยะให้เข้ากับยมบาทน้อยที่ตัวเล็กลงตามจอ (clamp(105px,19vh,165px) ที่ index.html) ~85% เท่าเดิม */
-@media(max-width:520px){.court-wheel{left:18%;width:210px}.command-selected{width:44px}.command-selected img,.command-selected strong{width:42px;height:42px}.trial-hud .hud-stage{height:410px;min-height:410px}.trial-hud .trial-top-actions button{font-size:10px}.combat-wheel{left:31%;width:180px;bottom:19%}.arena.combat-arena{min-height:500px}.arena .battle-squad{bottom:15%;max-width:15%;gap:4px}.arena .battle-squad img{height:clamp(80px,14vh,120px)}.arena .battle-squad.trio img{height:clamp(56px,9vh,85px)}.arena .battle-squad.trio>span{font-size:9px}.arena.combat-arena>.fig.you{left:17%;bottom:8%;width:23%}.arena.combat-arena>.fig.foe{width:29%;bottom:45%}.arena.combat-arena>.fig.guard{left:8%;width:24%;bottom:28%}.arena.combat-arena>.fig.guard img{height:clamp(90px,16vh,130px)}.command-options{max-width:240px}.combat-wheel .command-options{left:-55%;top:10%}}
+@media(max-width:520px){.court-wheel{left:18%;width:210px}.command-selected{width:44px}.command-selected img,.command-selected strong{width:42px;height:42px}.trial-hud .hud-stage{height:410px;min-height:410px}.trial-hud .trial-top-actions button{font-size:10px}.combat-wheel{left:31%;width:180px;bottom:19%}.arena.combat-arena{min-height:500px}.arena .battle-squad{bottom:15%;max-width:15%;gap:4px}.arena .battle-squad img{height:clamp(80px,14vh,120px)}.arena .battle-squad.trio img{height:clamp(56px,9vh,85px)}.arena .battle-squad.trio>span{font-size:9px}.arena.combat-arena>:where(.cam-world)>.fig.you{left:17%;bottom:8%;width:23%}.arena.combat-arena>:where(.cam-world)>.fig.foe{width:29%;bottom:45%}.arena.combat-arena>:where(.cam-world)>.fig.guard{left:8%;width:24%;bottom:28%}.arena.combat-arena>:where(.cam-world)>.fig.guard img{height:clamp(90px,16vh,130px)}.command-options{max-width:240px}.combat-wheel .command-options{left:-55%;top:10%}}
 @media(prefers-reduced-motion:reduce){.command-wheel *{transition:none!important}}
 
 /* Three selectable opponents occupy the upper right of the battle stage. */
@@ -121,8 +121,8 @@
 #ov .breachfab{position:absolute;right:8px;top:54px;z-index:8;pointer-events:auto;background:#41212c;color:#ffe398;border:1px solid #eac579;border-radius:10px;padding:8px 12px;cursor:pointer;font:700 13px var(--font-display)}
 #ov .devafab{position:absolute;right:8px;top:100px;z-index:8;pointer-events:auto;background:#41212c;color:#ffe398;border:1px solid #eac579;border-radius:10px;padding:8px 12px;cursor:pointer;font:700 13px var(--font-display)}
 .deva-alert-art{display:block;height:clamp(150px,28vh,240px);max-width:90%;object-fit:contain;margin:12px auto}
-.arena.combat-arena>.fig.foe.boss-foe{width:29%}
-.arena.combat-arena>.fig.foe.boss-foe img{height:clamp(210px,34vh,310px);max-width:100%;object-fit:contain}
+.arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe{width:29%}
+.arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe img{height:clamp(210px,34vh,310px);max-width:100%;object-fit:contain}
 /* Battle7 / Battle7-1 field HUD */
 /* เมนูพลัง: ชื่อพลังอยู่บนไอคอน ใต้ไอคอนเป็น "MP N" ล้วน (ไม่มีป้ายกลมมุมไอคอน) */
 .combat-wheel .command-options .orb-choice:has(i){display:flex!important;flex-direction:column;align-items:center}
@@ -135,10 +135,10 @@
 .arena.combat-arena .battle-pause{position:absolute;z-index:13;top:3%;right:calc(3% + 52px);width:46px;height:46px;
   min-height:0;padding:2px;border:0;background:transparent}
 .arena.combat-arena .battle-pause img{width:100%;height:100%;object-fit:contain}
-.arena.combat-arena>.fig.you{left:30%;bottom:28%;width:15%}
-.arena.combat-arena>.fig.foe{right:12%;bottom:28%;width:20%}
-.arena.combat-arena>.fig.foe.boss-foe{width:24%}
-.arena.combat-arena>.fig.you .plate,.arena.combat-arena>.fig.foe .plate{display:none}
+.arena.combat-arena>:where(.cam-world)>.fig.you{left:30%;bottom:28%;width:15%}
+.arena.combat-arena>:where(.cam-world)>.fig.foe{right:12%;bottom:28%;width:20%}
+.arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe{width:24%}
+.arena.combat-arena>:where(.cam-world)>.fig.you .plate,.arena.combat-arena>:where(.cam-world)>.fig.foe .plate{display:none}
 .arena.combat-arena .battle-squad{left:10%;bottom:28%;max-width:none;width:21%;height:36%;
   top:auto;flex-direction:row;align-items:flex-end;justify-content:space-around;gap:3px}
 .arena.combat-arena .battle-squad>span,.arena.combat-arena .battle-squad.trio>span{flex:1 1 0;min-width:0;
@@ -187,10 +187,10 @@
   .arena.combat-arena .ttl{top:2%;left:12%;right:27%;font-size:clamp(14px,4vw,21px)}
   .arena.combat-arena .icon-settings-mini{top:2%;right:2%!important;width:34px;height:34px}
   .arena.combat-arena .battle-pause{top:2%;right:calc(2% + 36px);width:34px;height:34px}
-  .arena.combat-arena>.fig.you{left:24%;bottom:30%;width:22%}
-  .arena.combat-arena>.fig.foe{right:12%;bottom:53%;width:36%}
-  .arena.combat-arena>.fig.foe.boss-foe{width:36%}
-  .arena.combat-arena>.fig.foe.boss-foe img{height:auto;max-height:24vh}
+  .arena.combat-arena>:where(.cam-world)>.fig.you{left:24%;bottom:30%;width:22%}
+  .arena.combat-arena>:where(.cam-world)>.fig.foe{right:12%;bottom:53%;width:36%}
+  .arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe{width:36%}
+  .arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe img{height:auto;max-height:24vh}
   .arena.combat-arena .battle-squad,.arena.combat-arena .battle-squad.trio{left:2%;bottom:29%;width:15%;height:24%;top:auto;
     flex-direction:column;align-items:center;justify-content:flex-end;gap:0}
   .arena.combat-arena .battle-squad>span,.arena.combat-arena .battle-squad.trio>span{flex:1 1 0;width:100%;height:auto;min-height:0;align-items:center}
@@ -216,7 +216,7 @@
 @media(min-width:821px){#ov .prisonfab{top:172px}}
 @media(min-width:821px){#ov .breachfab{top:218px}}
 @media(min-width:821px){#ov .devafab{top:264px}}
-@media(max-width:520px){.arena.combat-arena>.fig.foe.boss-foe{width:34%;right:1%;bottom:42%}.arena.combat-arena>.fig.foe.boss-foe img{height:clamp(155px,23vh,205px)}}
+@media(max-width:520px){.arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe{width:34%;right:1%;bottom:42%}.arena.combat-arena>:where(.cam-world)>.fig.foe.boss-foe img{height:clamp(155px,23vh,205px)}}
 @media(max-width:520px){/* 27B: ตำแหน่งวงคำสั่ง/กลุ่มศัตรูบนมือถือย้ายไปบล็อก Battle7 ด้านบนแล้ว */.arena.combat-arena .target-arrow{font-size:10px}}
 .merchant-heading{display:flex;align-items:center;gap:15px;margin-bottom:18px}.merchant-heading img{width:88px;height:88px;object-fit:cover;border:2px solid #c69b5c;border-radius:14px}.merchant-heading h2{margin:0}.merchant-heading .hint{margin:4px 0 0}
 
@@ -446,8 +446,8 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
 .combat-wheel .command-options .orb-choice:has(i) b{position:static!important;min-height:2.8em;line-height:1.4;white-space:normal;margin:0!important}
 .combat-wheel .command-options .orb-choice:has(i) i{position:static!important;line-height:1.4;margin:0!important}
 .choose-recipient{cursor:pointer;outline:2px solid #80ebac;outline-offset:4px}
-@media(min-width:701px){.arena.combat-arena:not(.final-team)>.fig.you{left:34%}.arena.combat-arena:not(.final-team)>.fig.foe{right:9%}.arena.combat-arena .foe-group{gap:22px}}
-@media(max-width:700px){.arena.combat-arena:not(.final-team)>.fig.you{left:50%}}
+@media(min-width:701px){.arena.combat-arena:not(.final-team)>:where(.cam-world)>.fig.you{left:34%}.arena.combat-arena:not(.final-team)>:where(.cam-world)>.fig.foe{right:9%}.arena.combat-arena .foe-group{gap:22px}}
+@media(max-width:700px){.arena.combat-arena:not(.final-team)>:where(.cam-world)>.fig.you{left:50%}}
 .battle-squad .choose-recipient .target-prompt{bottom:18%;left:50%;transform:translateX(-50%);font-size:11px;z-index:5}
 .choose-recipient img{filter:drop-shadow(0 0 5px #7fffc1)}
 .trial-first-lesson{position:fixed;z-index:60;left:0;right:0;top:5vh;margin-inline:auto;width:min(560px,90vw);max-height:90vh;overflow:auto;padding:22px;border:2px solid var(--gold);border-radius:16px;background:#211219;box-shadow:0 0 0 100vmax #0009;color:#f4e5ca;line-height:1.65}.trial-first-lesson h3{margin:0 0 12px}.trial-first-lesson button{margin-top:8px}
@@ -468,7 +468,7 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .arena.combat-arena:not(.final-team) .combat-wheel{left:51%;width:clamp(170px,16vw,220px)}
 }
 @media(max-width:700px){
-  .arena.combat-arena:not(.final-team)>.fig.you{left:28%}
+  .arena.combat-arena:not(.final-team)>:where(.cam-world)>.fig.you{left:28%}
   .arena.combat-arena:not(.final-team) .actor-wheel{bottom:33%}
   /* เมนูย่อย (ฟันดาบ/พลัง/ไอเท็ม) เดิมกางไปทางซ้ายของวงจนทับยมบาท → กางลงมาใต้วง ชิดขวาของยมบาท (แถวละ 2 ปุ่ม) */
   .arena.combat-arena:not(.final-team) .combat-wheel .command-options{left:5%;max-width:152px}

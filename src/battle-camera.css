@@ -1,0 +1,33 @@
+/* M1 — battle camera. Only .cam-world is transformed (by src/battle-camera.js). No filters; the dim is an opacity overlay. */
+/* The world is the scene: background + sprites. It fills the arena exactly, so every % position inside it is unchanged. */
+.arena .cam-world{position:absolute;inset:0;transform-origin:0 0;overflow:visible;
+  background:#221324 center 38%/cover no-repeat}
+.battle9-arena .cam-world{background-position:center}
+/* the arena's own vignette (.arena:before) sits under the world now, so repeat it inside the world */
+.arena .cam-world::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 120%,rgba(0,0,0,.55),transparent 60%),
+             linear-gradient(180deg,rgba(36,17,41,.5),transparent 38%,rgba(11,5,8,.75))}
+.cam-world.cam-will{will-change:transform}
+/* dim overlay: above the background and ordinary sprites, below lit actors */
+.cam-world>.cam-dim{position:absolute;inset:-2px;z-index:31;background:#05030a;opacity:0;pointer-events:none;transition:opacity 180ms ease-out}
+.cam-world .cam-lit{z-index:40!important}
+.cam-world>.cam-layer{position:absolute;inset:0;z-index:50;pointer-events:none}
+/* things above the world but under the HUD: not zoomed */
+.arena>.cam-screen{position:absolute;inset:0;z-index:3;pointer-events:none}
+/* while the camera moves the scene ignores clicks (the HUD is not covered) */
+.cam-world.cam-busy::after{content:'';position:absolute;inset:0;z-index:99}
+/* hit-stop: freeze CSS animations inside the scene */
+.cam-world.cam-frozen *,.cam-world.cam-frozen *::before,.cam-world.cam-frozen *::after{animation-play-state:paused!important}
+
+/* ---- interrogation (trial) : world = whole hud, behind the panels ---- */
+.trial-comment8{isolation:isolate}
+.trial-comment8>.cam-world{position:absolute;inset:0;z-index:-1;transform-origin:0 0;pointer-events:none;background:#221324 center 42%/cover no-repeat}
+.trial-comment8>.cam-world>.cam-stage-box{position:absolute}
+.trial-comment8>.cam-world>.cam-stage-box>.fig{pointer-events:none}
+.trial-comment8>.cam-screen{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+@media(prefers-reduced-motion:reduce){.cam-world>.cam-dim{transition:none}}
+
+/* settings row */
+.settings-row.cam-row{justify-content:space-between;cursor:pointer}
+.settings-row.cam-row input{width:24px;height:24px;accent-color:var(--gold);flex:none}
