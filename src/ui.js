@@ -12,7 +12,7 @@ import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS, SWORD_FRAME_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -30,7 +30,12 @@ import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } 
 import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
-import { fitBattleSprites, fitCutsceneImage, battleSpriteRect } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';
+import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
+setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
+import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
+import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs } from './battle-fx-map.js?v=m2';
+setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
 import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';
@@ -2213,13 +2218,15 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ยมทูต" (ซึ่งก็คือ "ยืนร่วมกับยมทูตในทีม" ตามที่คุณเป้ขอเป๊ะ ๆ อีกความหมายหนึ่ง) แค่ย่อขนาดทั้งคอลัมน์
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
-  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}" style="background-image:url('${esc(bg)}')">
+  // M1: in a fight the background + sprites live in .cam-world (the only thing the camera zooms); HUD / menus stay outside it
+  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
     <button class="icon-settings-mini" data-arena-settings title="ตั้งค่า"
       style="right:${closable ? '50px' : '8px'}"><img src="img/ui/icon-setting2.png" alt=""></button>
     <div class="ttl">${esc(title)}</div>
+    ${hp ? `<div class="cam-world" style="background-image:url('${esc(bg)}')">` : ''}
     ${helper && !squad.length ? `<div class="fig helper${act && act.lunge === 'you' && helper.lunge !== false ? ' lunge' : ''}">
       <img src="${crewArt(helper)}" class="${teamFaceClass(crewArt(helper))}" alt=""
            onerror="this.onerror=null;this.src='${crewArt(helper, '-profile') || crewArt(helper)}'">
@@ -2257,6 +2264,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}
+    ${hp ? '</div>' : ''}
     ${controls}
   </div>`;
 }
@@ -2304,13 +2312,13 @@ function powerSound(k) {
   if (isUltimatePower(k) && actionCutsceneSrc(k)) playUltimate(k);
   else sfx(powerSfx(k, g.abilities));
 }
-function playActionCutscene(k, ultimate = null) {
+function playActionCutscene(k, ultimate = null) {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
   if (k === 'rage') return;
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
   const src = ultimate?.image || (cs ? cs.src : actionCutsceneSrc(k));
-  if (!src || !dlg.open) return;
+  if (!src || !dlg.open) return false;
   dlg.querySelector('.action-cutscene')?.remove();
   const cut = document.createElement('div');
   // คัตซีนพลังใหม่วาดให้หันขวาตามตำแหน่งศัตรูอยู่แล้ว
@@ -2334,6 +2342,7 @@ function playActionCutscene(k, ultimate = null) {
   dlg.appendChild(cut);
   fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
   setTimeout(finish, ACTION_CUT_MS);
+  return true;
 }
 
 // ---------- ห้องสอบสวน (HUD แบบเกม Turn-based RPG) ----------
@@ -2495,6 +2504,14 @@ function openTrial(initialError = '') {
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
     dlg.innerHTML = `
     <div class="hud trial-hud trial-comment8" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
+      <div class="cam-world" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')"><div class="hud-stage cam-stage-box">
+        <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
+               onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
+          <span class="nm">${esc(HERO_NAME)}</span></div>
+        <div class="fig foe" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+               onerror="this.onerror=null;this.src='img/spirit7.png'">
+          <span class="nm">${esc(s.name || s.who)}</span></div>
+      </div></div>
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
       <span class="corner-tick bl"></span><span class="corner-tick br"></span>
@@ -2508,12 +2525,6 @@ function openTrial(initialError = '') {
       <div class="hud-body">
         <div class="hud-stage">
           <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
-          <div class="fig you"><img src="${heroFace()}" alt=""
-                 onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
-            <span class="nm">${esc(HERO_NAME)}</span></div>
-          <div class="fig foe"><img src="${esc(foeSrc)}" alt=""
-                 onerror="this.onerror=null;this.src='img/spirit7.png'">
-            <span class="nm">${esc(s.name || s.who)}</span></div>
           ${trialWheel}
         </div>
 
@@ -2569,8 +2580,9 @@ function openTrial(initialError = '') {
     });
 
     bindCommandPress(dlg.querySelector('.trial-comment8'));
+    trialCameraAttach();
     // ---- ผูกปุ่ม ----
-    dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;paint();});
+    dlg.querySelectorAll('[data-court-panel]').forEach(button=>button.onclick=()=>{courtPanel=courtPanel===button.dataset.courtPanel?null:button.dataset.courtPanel;camera.cue('idle');paint();});   // M1: picking a menu goes back to the wide shot
     dlg.querySelectorAll('.court-options').forEach(pane=>pane.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i)));
     dlg.querySelector('.comment8-menu')?.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();courtPanel=null;paint();}});
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
@@ -2601,13 +2613,34 @@ function openTrial(initialError = '') {
     });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
       const r = g.press(s, +el.dataset.line);
-      if (r) sfx(r.some(x => x.kind === 'truth' || x.kind === 'confess') ? 'crack' : 'deny');
+      const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
+      if (r) sfx(revealed ? 'crack' : 'deny');
       paint(); refresh();
+      if (r) camera.cue(revealed ? 'interrogate-reveal' : 'interrogate-ask', { targets:'suspect' });   // M1: lean in on the suspect; harder + flash on a reveal / confession
     });
+    // M2: a repaint replaces the stage — keep an effect that is still playing (interrogation hypnosis / mirror) on the new one
+    if (!fxIdle()) attachBattleFx(dlg.querySelector('.hud-stage'));
+    const trialFx = async k => {
+      try {
+        if (k !== 'hypno' && k !== 'mirror') return;
+        const stage = dlg.querySelector('.hud-stage'); if (!stage) return;
+        attachBattleFx(stage);
+        const sr = stage.getBoundingClientRect(), kk = sr.width / (stage.offsetWidth || sr.width) || 1;
+        const cam = hasBattleCamera();   // M1 camera: battleSpriteRect / rectOf already return stage-local, un-zoomed px
+        const rectOf = async sel => { const im = stage.querySelector(sel); if (!im) return null; let r = null; try { r = await battleSpriteRect(im); } catch (e) { r = null; }
+          if (!r || !(r.r > r.l)) { if (cam) return cameraRectOf(im); const e = im.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
+          return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / kk, t:(r.t - sr.top) / kk, r:(r.r - sr.left) / kk, b:(r.b - sr.top) / kk }; };
+        const you = await rectOf('.fig.you img'), foe = await rectOf('.fig.foe img');
+        if (!you) return;
+        const delay = dlg.querySelector('.action-cutscene') ? ACTION_CUT_MS - 120 : 0;
+        playBattleFx(k === 'hypno' && foe ? { recipe:'hypno', src:you, targets:[{ rect:foe, dmg:0 }], side:'foe', delay } : { recipe:'mirror', src:you, targets:[{ rect:you, dmg:0 }], side:'foe', delay });
+      } catch (e) { /* effect only */ }
+    };
     dlg.querySelectorAll('[data-pw]').forEach(el => el.onclick = () => {
       const k = el.dataset.pw;
       if (!g.usePower(k, s)) return;
-      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k);
+      if(k==='flee')sfx('step');else powerSound(k); paint(); refresh(); playActionCutscene(k); trialFx(k);
+      camera.cue('interrogate-reveal', { targets:'suspect', action:k });   // M1: hypnosis / mirror / roar = the big lean-in
     });
 
     const sk = dlg.querySelector('#t-skip');
@@ -2649,7 +2682,30 @@ function openTrial(initialError = '') {
     if (badge) badge.textContent = ok ? '✓' : fmtCountdown(g.powerOf('roar').readyAt);
     b.title = ok ? 'ตวาดข่มขู่ — พร้อมใช้ — ไม่ต้องใช้ item' : `ตวาดข่มขู่ — รออีก ${fmtCountdown(g.powerOf('roar').readyAt)}`;
   }, 1000);
-  onDlgClose(() => { clearInterval(roarTick); bgm('bgm-zone'); refresh(); });
+  onDlgClose(() => { clearInterval(roarTick); camera.detach(); bgm('bgm-zone'); refresh(); });
+}
+
+/** M1: bind the camera to the interrogation scene. The world is the whole .trial-comment8 (behind the panels); the two figures live in a
+ *  stage-sized box inside it that is placed over the real .hud-stage, so every % position in the CSS stays valid. Only the scene zooms —
+ *  the right-hand panels, menu, cards and bottom bar are above the world. */
+function trialCameraAttach() {
+  const hud = dlg.querySelector('.trial-comment8');
+  const box = hud?.querySelector('.cam-stage-box'), real = hud?.querySelector('.hud-body > .hud-stage');
+  if (!hud || !box || !real) return;
+  const place = () => {
+    if (!hud.isConnected) return;
+    const h = hud.getBoundingClientRect(), r = real.getBoundingClientRect();
+    if (camera.stageEl() !== hud) return;
+    const z = camera.applied().z, o = { x:h.left + hud.clientLeft, y:h.top + hud.clientTop };
+    // the real stage is not transformed, so its rect is already "at rest"; the world is positioned at the hud origin with identity layout
+    void z;
+    for (const [k, v] of Object.entries({ left:r.left - o.x, top:r.top - o.y, width:r.width, height:r.height }))
+      box.style.setProperty(k, `${v}px`, 'important');
+    box.style.setProperty('min-height', '0', 'important');
+  };
+  camera.attach(hud);
+  place(); requestAnimationFrame(place);
+  if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (hud.isConnected) place(); else ro.disconnect(); }); ro.observe(hud); ro.observe(real); }
 }
 
 /** ออกหมายจริง — ใช้ร่วมกันระหว่างแถบบัญชาการกับห้องสอบสวน */
@@ -3068,6 +3124,76 @@ function openBattle(after) {
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
   const formationMotion = {activeKey:null,previousKey:null,changedAt:0};
   // L2: เอฟเฟกต์ตอนได้เติมเลือด/พลังเวท (ไอเท็ม พลัง การดูดเลือด ฯลฯ) ทุกตัวที่ได้รับพร้อมกัน — เก็บเวลาไว้วาดซ้ำได้ถ้าฉากถูกวาดใหม่กลางทาง (innerHTML ถูกแทนที่ทุก paint)
+  // ---- M2: battle effects (src/battle-fx.js). Rects are measured after the paint that follows, in stage-local px. ----
+  let fxHandled = false;       // true while an effect owns damage numbers + the old static .fx image for the current phase
+  const keyOfActor = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
+  const allyImg = key => dlg.querySelector(`[data-crew-pick="${key}"]:not(.battle-portrait) img:not(.fx)`);
+  const foeImg = id => (id && dlg.querySelector(`.fig.foe[data-foe-id="${id}"] img:not(.fx)`)) || dlg.querySelector('.fig.foe img:not(.fx)');
+  const fxRect = async img => {
+    const stage = dlg.querySelector('.combat-arena');
+    if (!stage || !img) return null;
+    const cam = hasBattleCamera();   // M1 camera: battleSpriteRect / rectOf already return stage-local, un-zoomed px
+    const sr = stage.getBoundingClientRect(), k = sr.width / (stage.offsetWidth || sr.width) || 1;
+    let r = null;
+    try { r = await battleSpriteRect(img); } catch (e) { r = null; }
+    if (!r || !(r.r > r.l)) { if (cam) return cameraRectOf(img); const e = img.getBoundingClientRect(); r = { l:e.left, t:e.top, r:e.right, b:e.bottom }; }
+    return cam ? { l:r.l, t:r.t, r:r.r, b:r.b } : { l:(r.l - sr.left) / k, t:(r.t - sr.top) / k, r:(r.r - sr.left) / k, b:(r.b - sr.top) / k };
+  };
+  const stopFxHandled = () => { fxHandled = false; dlg.querySelector('.combat-arena')?.classList.remove('fx-handled'); };
+  /** one move's effect. phase 'you' = our action (k = command key), 'foe' = their turn. Never throws: on any trouble the old numbers come back. */
+  const startMoveFx = async (phaseKind, k, extraDelay = 0, cutMs = 0) => {
+    const camHit = cueImpactAtMs;   // read before any await: the cue just started by startActionCue (null = no cue / camera parked)
+    const impactIn = (fallbackKind) => camHit != null ? Math.max(0, (camHit - performance.now()) * (camera.timeScale || 1)) : cueImpactAt(fallbackKind, cutMs);
+    try {
+      const b = g.battle; if (!b || !dlg.querySelector('.combat-arena')) { stopFxHandled(); return; }
+      const d = b.dmg || {}, plays = [];
+      if (phaseKind === 'you') {
+        const replay = b.weaponNote?.k === 'replay' ? b.weaponNote.n : 0;
+        const recipe = recipeFor(k, { dmg:d.foe, crit:d.crit, replay });
+        if (!recipe) { stopFxHandled(); return; }
+        if (recipe === 'heal') return;      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
+        const src = await fxRect(allyImg(keyOfActor(b.actorId || 'you')));
+        const self = ['rage', 'clock', 'mirror'].includes(recipe);
+        const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
+        const targets = self ? [{ rect:src, dmg:0 }] : (await Promise.all(hits.map(async h => ({ rect:await fxRect(foeImg(h.id)), dmg:h.damage || 0, label:d.crit && recipe.startsWith('slash') ? t('battle.fx.crit') : '' })))).filter(x => x.rect);
+        if (!src || !targets.length) { stopFxHandled(); return; }
+        // timing from the attacker's own animation: Yama's sword frames, or the Codex pose atlas of the crew member (contact frame)
+        const actor = g.battleActors().find(a => a.id === (b.actorId || 'you'));
+        const contact = !actor || actor.id === 'you' ? (isYamaSwordAttack({ action:k }) ? swordContactMs(SWORD_FRAME_MS) : 0)
+          : poseContactMs(poseDurations(`crew:${actor.homeZone || g.zone}:${actor.k}`));
+        const hitDelay = leadInMs(recipe, contact);
+        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, delay:extraDelay + hitDelay, impactAt:impactIn(cueKindFor('you', k)) });
+      } else {
+        const delay = extraDelay;
+        if (d.confuseSelf > 0 || (d.burnSelf > 0 && !(d.you > 0 || d.crew > 0))) {
+          const list = d.confuseHits?.length ? d.confuseHits : [{ attackerId:d.counterFoeId, id:d.counterFoeId, damage:d.confuseSelf || d.burnSelf }];
+          for (const h of list) {
+            const src = await fxRect(foeImg(h.attackerId || h.id)), tg = await fxRect(foeImg(h.id));
+            if (src && tg) plays.push({ recipe:d.confuseSelf > 0 ? 'slash' : 'burn', src, targets:[{ rect:tg, dmg:h.damage || 0 }], side:'foe', delay:delay + 110 });
+          }
+        } else {
+          const hits = d.enemyHits?.length ? d.enemyHits : [{ id:'you', damage:d.you || d.crew || 0 }];
+          const src = await fxRect(foeImg(d.counterFoeId));
+          const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
+          const fi = foeImg(d.counterFoeId), fk = fi && bossSpriteKey(fi.getAttribute('src') || '', b.zone || g.zone);
+          const fc = fk ? poseContactMs(poseDurations(fk)) : 0;   // the foe's own attack-pose contact frame (Codex atlas), if it has one
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', delay:delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
+        }
+      }
+      if (!plays.length) { stopFxHandled(); return; }
+      for (const p of plays) playBattleFx(p);
+    } catch (e) { stopFxHandled(); }
+  };
+  /** healing: one soft ring around the team + flowers/petals per healed actor (the L2 CSS glow stays) */
+  const playHealBattleFx = async (gains, delayMs) => {
+    try {
+      const targets = (await Promise.all(gains.map(async gn => ({ rect:await fxRect(allyImg(keyOfActor(gn.id))), dmg:0 })))).filter(x => x.rect);
+      if (!targets.length) return;
+      const mpOnly = gains.every(gn => !(gn.hp > 0));
+      const src = targets[0].rect;
+      playBattleFx({ recipe:'heal', src, targets, side:'you', numbers:false, opts:{ mp:mpOnly }, delay:delayMs });
+    } catch (e) { /* the L2 glow already shows */ }
+  };
   let healFx = [], healTimers = [];
   const healRoot = key => key === 'you' ? dlg.querySelector('.fig.you')
     : dlg.querySelector(`.battle-squad [data-crew-pick="${key}"], .formation-member[data-crew-pick="${key}"]`);
@@ -3093,7 +3219,7 @@ function openBattle(after) {
   };
   /** after a command / enemy turn changed our side's vitals: show the effect on everyone who gained HP or MP */
   const showHeals = (before, delayMs = 120) => {
-    const keyOf = id => { const c = id === 'you' ? null : g.battleActors().find(a => a.id === id); return id === 'you' ? 'you' : c ? (c.k === 'guard' ? 'guard' : crewBattleKey(c)) : id; };
+    const keyOf = keyOfActor;
     const gains = vitalGains(before, vitalsOf(g));
     const healed=g.battle?.dmg;
     if(healed?.healAmount>0&&!gains.some(a=>a.id===healed.healActorId))gains.push({id:healed.healActorId,hp:healed.healAmount,mp:0});
@@ -3101,6 +3227,62 @@ function openBattle(after) {
     const start = Date.now() + delayMs;
     for (const gn of gains) healFx.push({ ...gn, key: keyOf(gn.id), start, ms: HEAL_GLOW_MS });
     scheduleHealFx();
+    playHealBattleFx(gains, delayMs);   // M2: ring of light + sparkles on top of the L2 glow
+  };
+  // ---- M1: camera hooks (see src/battle-camera.js · docs/battle-camera-api.md) ----
+  // The camera never changes game rules or timers: it only reacts to the same phase changes the fight already has.
+  // Codex's drawn combat animations (img/combat-animation-v1): read-only — only used to time the camera impact to the attack's contact frame.
+  let animSprites = null;
+  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
+  const strikeOf = key => { const rec = animSprites && key && (animSprites[`${key}:attack`] || animSprites[key]); return strikeTime(rec?.modes?.attack?.durations); };
+  const impactLead = key => { const t = strikeOf(key); return t == null ? undefined : Math.max(150, t - (Date.now() - phaseAt)); };
+  const actorKeyOf = a => !a ? 'you' : a.id === 'you' ? 'you' : crewBattleKey(a);
+  const actorKeyById = id => actorKeyOf(g.battleActors().find(a => a.id === id) || { id });
+  const livingFoeIds = () => (g.battle?.foes || []).filter(f => f.hp > 0).map(f => f.id);
+  /** weight of the hit that just landed: 1 light · 2 heavy · 3 crit-sized (share of the target's max morale) */
+  const hitPower = (b, floor = 1) => {
+    const id = b.dmg?.foeId ?? b.selectedFoeId, f = b.foes?.find(x => x.id === id) || b.foes?.[0];
+    const share = f?.maxHp ? (b.dmg?.foe || 0) / f.maxHp : 0;
+    return Math.max(floor, share >= .3 ? 3 : share >= .15 ? 2 : 1);
+  };
+  /** start the action choreography for the phase that was just entered (called right after paint(), once per phase) */
+  let cueImpactAtMs = null;   // M-merge: wall-clock time (performance.now) the running action cue's impact lands — M2's canvas effect starts so its own hit moment meets it
+  const cue = (kind, ctx) => { const c = camera.cue(kind, ctx); cueImpactAtMs = performance.now() + (c.impactAt || 0) / (camera.timeScale || 1); return c; };
+  const startActionCue = (cutMs = 0) => {
+    const b = g.battle;
+    cueImpactAtMs = null;
+    if (!b || !camera.stageEl()) return;
+    if (phase === 'you') {
+      const a = fxNow?.action || '', userKey = actorKeyById(b.actorId || 'you');
+      if (fxNow?.key === 'defend') return;
+      const hitIds = (b.dmg?.foeHits || []).filter(h => h.damage > 0).map(h => h.id);
+      const foeIds = hitIds.length ? hitIds : [b.dmg?.foeId ?? b.selectedFoeId ?? livingFoeIds()[0]].filter(Boolean);
+      const targets = foeIds.map(id => `foe:${id}`);
+      const scope = foeIds.length > 1 ? 'all' : 'single';
+      if (fxNow?.key === 'rage') cue('skill', { user:userKey, targets:userKey, action:a, power:1, scope:'single', cutMs });
+      else if (fxNow?.key === 'health') cue('heal', { user:userKey, targets:actorKeyById(fxNow.recipient || 'you'), action:a });
+      else if (a === 'atk' || a === 'strike') {
+        const who = g.battleActors().find(x => x.id === (b.actorId || 'you')), atlas = who && who.id !== 'you' ? `crew:${who.homeZone || g.zone}:${who.k}` : `yama:${g.outfit || g.zone}`;
+        cue('attack', { user:userKey, targets, action:a, power:hitPower(b), scope, impactAt:impactLead(atlas) });
+      }
+      else cue('skill', { user:userKey, targets, action:a, power:hitPower(b, 2), scope, cutMs });
+    } else if (phase === 'foe') {
+      if (b.dmg?.confuseSelf > 0) return;
+      const attacker = b.dmg?.counterFoeId || g.currentBattleTurn()?.id || livingFoeIds()[0];
+      const hit = [...(b.dmg?.you > 0 ? ['you'] : []), ...(b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])).map(a => actorKeyOf(a))];
+      const targets = hit.length ? [...new Set(hit)] : ['you'];
+      const atkRoot = camera.stageEl()?.querySelector(`[data-foe-id="${attacker}"]`), atkImg = atkRoot?.querySelector('img:not(.fx)');
+      const atkKey = atkImg && bossSpriteKey(atkImg.getAttribute('src') || '', b.zone || g.zone);
+      cue('foe-attack', { impactAt:impactLead(atkKey), user:`foe:${attacker}`, targets, action:'foe', power:b.ultimate ? 3 : (b.dmg?.you || b.dmg?.crew || 0) >= (b.youMax || 100) * .2 ? 2 : 1, scope:targets.length > 1 ? 'all' : 'single', cutMs });
+    }
+  };
+  /** after every paint: park the camera for the state the fight is in (action cues are started by executeCommand / enemy turn) */
+  const cameraSync = (b, parked, activeKey) => {
+    if (!camera.stageEl()) return;
+    if (parked) { if (camera.currentCue !== 'idle') camera.cue('idle'); return; }
+    if (phase) return;
+    if (activeKey) { if (camera.currentCue !== `select:${JSON.stringify(activeKey)}`) camera.cue('select', { user:activeKey }); }
+    else if (camera.currentCue !== 'idle') camera.cue('idle');
   };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
@@ -3292,6 +3474,8 @@ function openBattle(after) {
       </div>${prep}${prepLayer}${fleeLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
+    camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
+    attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
     if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
@@ -3362,7 +3546,7 @@ function openBattle(after) {
           const rel = r => ({ l:r.left - area.left, r:r.right - area.left, t:r.top - area.top, b:r.bottom - area.top });
           const cards = [...stage.querySelectorAll('.battle-team-hud .battle-portrait, .battle-boss-hud, .battle-scene-talk')].map(e => rel(e.getBoundingClientRect()));
           // ตัวละครบนสนามก็ไม่ควรโดนทับ — ใช้กรอบรูปที่หดเข้า 15% ข้างละด้าน (img มีขอบโปร่งใส) เป็นสิ่งกีดขวางด้วย
-          const sprites = [...stage.querySelectorAll('.fig img:not(.fx), .battle-squad img')].map(e => rel(e.getBoundingClientRect()))
+          const sprites = [...stage.querySelectorAll('.fig img:not(.fx), .battle-squad img')].map(e => rel(camera.rectOf(e, 'settled')))
             .map(r => ({ l:r.l + (r.r - r.l) * 0.15, r:r.r - (r.r - r.l) * 0.15, t:r.t, b:r.b }));
           const obstacles = [...cards, ...sprites].filter(r => r.r > r.l);
           const best = placeFinButton({ area:{ w:area.width, h:area.height }, btn:{ w:fr.width, h:fr.height }, obstacles });
@@ -3384,6 +3568,7 @@ function openBattle(after) {
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
     mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam);
+    cameraSync(b, !!(b.over || prepOn), activeKey);
     stage._battleSpriteFit.then(() => {
       if(!stage.isConnected)return;
       const entries=[], hits=new Set([
@@ -3407,7 +3592,10 @@ function openBattle(after) {
         const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!attacker||id===attacker)?'attack':'idle';
         entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:phaseAt});
       }
-      mountCombatSprites(stage,entries);
+      // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
+      // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)
+      const camRoot=el=>el&&new Proxy(el,{get:(t,k)=>k==='getBoundingClientRect'?()=>camera.rectOf(t):typeof t[k]==='function'?t[k].bind(t):t[k],set:(t,k,v)=>{t[k]=v;return true;}});
+      mountCombatSprites(stage,entries.map(e=>({...e,root:camRoot(e.root)})));
     });
     if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (stage.isConnected) fitTeam(); else ro.disconnect(); }); ro.observe(stage); }
     stage.querySelector('[data-battle-pause]')?.addEventListener('click', () => openPause(true));
@@ -3492,17 +3680,17 @@ function openBattle(after) {
         const area=stage.getBoundingClientRect(),sprite=anchor.querySelector('img:not(.fx)');
         // K5: measure what must stay readable (enemies, their name/HP plates, boss HUD) and what we would rather not cover.
         const loc=r=>({l:r.l-area.left,t:r.t-area.top,r:r.r-area.left,b:r.b-area.top});
-        const box=el=>{const r=el.getBoundingClientRect();return r.width&&r.height?loc({l:r.left,t:r.top,r:r.right,b:r.bottom}):null;};
+        const box=el=>{const r=camera.rectOf(el,'settled');return r.width&&r.height?loc({l:r.left,t:r.top,r:r.right,b:r.bottom}):null;};   // M1: where it will be once the camera settles
         // Opaque-pixel bounds when measurable; the <img> box when the measure fails or collapses (zone-boss art did once).
         const sprites=async sel=>(await Promise.all([...stage.querySelectorAll(sel)].map(async img=>{
-          const r=await battleSpriteRect(img).catch(()=>null);
+          const r=await battleSpriteRect(img,'settled').catch(()=>null);
           return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);
         }))).filter(Boolean);
         // L2: the actor's own teammates are obstacles too (hard) — the menu opens beside the actor but never on top of another ally.
         const allyEls=[...new Set(stage.querySelectorAll('.fig.you img:not(.fx), .battle-squad img:not(.fx), .formation-member img:not(.fx)'))].filter(img=>img!==sprite);
         await Promise.all(anchor.getAnimations({subtree:true}).filter(a=>Number.isFinite(a.effect?.getComputedTiming().endTime)).map(a=>a.finished.catch(()=>{})));   // measure the stepped-out position, not mid-animation
-        const rect=await battleSpriteRect(sprite);if(!wheel.isConnected)return;
-        const [foeSprites,allySprites]=await Promise.all([sprites('.fig.foe img:not(.fx)'),Promise.all(allyEls.map(async img=>{const r=await battleSpriteRect(img).catch(()=>null);return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);})).then(a=>a.filter(Boolean))]);
+        const rect=await battleSpriteRect(sprite,'settled');if(!wheel.isConnected)return;
+        const [foeSprites,allySprites]=await Promise.all([sprites('.fig.foe img:not(.fx)'),Promise.all(allyEls.map(async img=>{const r=await battleSpriteRect(img,'settled').catch(()=>null);return r&&r.r-r.l>=4&&r.b-r.t>=4?loc(r):box(img);})).then(a=>a.filter(Boolean))]);
         if(!wheel.isConnected)return;
         const hard=[...foeSprites,...allySprites,...[...stage.querySelectorAll('.fig.foe .plate, .battle-boss-hud')].map(box)].filter(Boolean);
         const soft=[...[...stage.querySelectorAll('.battle-team-hud, .battle-scene-talk, .battle-timeline')].map(box)].filter(Boolean);
@@ -3620,6 +3808,7 @@ function openBattle(after) {
     };
     const executeCommand = (action, recipient = 'you') => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
+      fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
       const vitalsBefore = vitalsOf(g);
@@ -3646,7 +3835,7 @@ function openBattle(after) {
       if (nb.storyFinale) { sfx('win'); finish(); return; }
       if (nb.kind === 'dad') {
         phase='foe'; phaseAt=Date.now(); fxNow={key:'foe',side:'you'}; paint();
-        playActionCutscene('boss',nb.ultimate); sfx('hurt');
+        startActionCue(playActionCutscene('boss',nb.ultimate) ? ACTION_CUT_MS : 0); sfx('hurt');
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();finish();},ACTION_CUT_MS+400);
         return;
       }
@@ -3657,9 +3846,12 @@ function openBattle(after) {
       // crew = คีย์ยมทูต/ยักษ์ที่กำลังลงมือ ใช้กันไม่ให้ยมบาทน้อยสลับเป็นท่าโจมตีของตัวเอง (ดู usingAtk ใน arena())
       const crewNow = g.battle.actorId && g.battle.actorId !== 'you' ? g.battleActors().find(c => c.id === g.battle.actorId)?.k || nb.helper?.k : null;
       fxNow = { key: FX_OF[effect] ? effect : 'atk', action:k, side: (effect === 'health' || effect === 'tea' || effect === 'rage') ? 'you' : 'foe', crew: crewNow, recipient };
+      fxHandled = true;                         // M2: the canvas effect owns the numbers + old static image from this paint on
       paint();
-      if (k === 'crew:nira') playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS);
-      else playActionCutscene(action);
+      let cutMs = 0;
+      if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS); cutMs = ACTION_CUT_MS; }
+      else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
+      startActionCue(cutMs); startMoveFx('you', k, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs);
 
       clearTimeout(phaseTimer);
       phaseTimer = setTimeout(() => {
@@ -3678,8 +3870,9 @@ function openBattle(after) {
           phase = 'foe'; phaseAt = Date.now();
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
           sfx('hurt');
+          fxHandled = true;
           paint();
-          if (nb.ultimate) playActionCutscene('boss', nb.ultimate);
+          { const cutMs = nb.ultimate && playActionCutscene('boss', nb.ultimate) ? ACTION_CUT_MS : 0; startActionCue(cutMs); startMoveFx('foe', null, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs); }
           phaseTimer = setTimeout(() => {
             phase = null; fxNow = null; g.finishBattleCommand();
             if (g.battle) { finishWave(); paint(); if (g.battle.over) sfx(g.battle.over === 'win' ? 'win' : 'lose'); }
@@ -3700,7 +3893,8 @@ function openBattle(after) {
         if(!g.runEnemyTurn()){phase=null;paint();return;}
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
-        sfx('hurt');paint();if(b.ultimate)playActionCutscene('boss',b.ultimate);
+        fxHandled=true;
+        sfx('hurt');paint();{const cutMs=b.ultimate&&playActionCutscene('boss',b.ultimate)?ACTION_CUT_MS:0;startActionCue(cutMs);startMoveFx('foe',null,cutMs?ACTION_CUT_MS-120:0,cutMs);}
         phaseTimer=setTimeout(()=>{phase=null;fxNow=null;g.finishBattleCommand();commandMenuOpen=true;finishWave();paint();},b.ultimate?ACTION_CUT_MS+120:900);
       },600);
     }
@@ -3718,10 +3912,12 @@ function openBattle(after) {
   function finish() {
     if (finished) return;
     finished = true;
+    camera.detach();
     battleUI = null;
     lastBattleEnd = Date.now();
     clearTimeout(phaseTimer);
     healTimers.forEach(clearTimeout);
+    stopBattleFx();
     clearInterval(phaseGuard);
     clearInterval(crewTimer);
     dlg.removeEventListener('cancel', noEsc);
@@ -5704,6 +5900,12 @@ function openSettings() {
     </div>
     <div class="hint" data-t="settings.audioHint"></div>
 
+    <label class="settings-row cam-row" for="s-cam">
+      <span data-t="settings.camera"></span>
+      <input type="checkbox" id="s-cam" ${camera.enabled ? 'checked' : ''}>
+    </label>
+    <div class="hint" data-t="settings.cameraHint"></div>
+
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
@@ -5742,6 +5944,7 @@ function openSettings() {
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };
       };
+      d.querySelector('#s-cam').onchange = e => { camera.setEnabled(e.currentTarget.checked); sfx('stamp'); };   // M1: battle / interrogation camera effects
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
       bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');
       // ปุ่มสองช่อง ไทย/อังกฤษ ในภาพเดียว (icon_change-*.png) — คลิกครึ่งซ้าย/ขวาสลับภาษา (ข้อ B.3)
@@ -5856,6 +6059,7 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
 export {openBattle,openDungeon,openHarbour,openBorder,openTrial,startPlay};

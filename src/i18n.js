@@ -139,6 +139,8 @@ const TH = {
   'settings.close': 'ปิด',
   'settings.saved': 'บันทึกแล้ว',
   'settings.audioHint': 'ปรับระดับเสียงเพลงและเอฟเฟกต์แยกกัน หรือปิดเสียงทั้งหมดได้',
+  'settings.camera': 'เอฟเฟกต์กล้อง',            // M1 placeholder copy — Rae to review
+  'settings.cameraHint': 'ซูมเข้า-ออกตัวละคร สั่นจอ และหรี่ฉากหลังตอนโจมตี ปิดได้ถ้าเวียนหัว',
 
   'hud.pause': 'หยุด',
   'hud.settings': 'ตั้งค่า',
@@ -442,6 +444,7 @@ const TH = {
   'battle.hp': 'บารมี',
   'battle.mp': 'พลังเวท',
   'battle.defend.on': 'ตั้งรับ — ความเสียหายที่โดนลดลงครึ่งหนึ่ง',
+  'battle.fx.crit': 'คริติคอล!',
   'battle.flee.title': 'หนีจากการต่อสู้',
   'battle.flee.textMap': 'ทีมจะถอนตัวออกจากการต่อสู้นี้และกลับไปที่แผนที่ จะไม่ได้รับรางวัลใดๆ',
   'battle.flee.textFrontier': 'ทีมจะถอนตัวออกจากการต่อสู้นี้และกลับไปที่ชายแดน จะไม่ได้รับรางวัลใดๆ',
@@ -772,6 +775,8 @@ const EN = {
   'settings.close': 'Close',
   'settings.saved': 'Saved',
   'settings.audioHint': 'Adjust music and sound effects separately, or mute all audio.',
+  'settings.camera': 'CAMERA EFFECTS',            // M1 placeholder copy — Rae to review
+  'settings.cameraHint': 'Zoom, screen shake and background dimming during attacks. Turn off if it feels dizzy.',
 
   'hud.pause': 'Pause',
   'hud.settings': 'Settings',
@@ -926,6 +931,7 @@ const EN = {
   'battle.hp': 'Authority',
   'battle.mp': 'MP',
   'battle.defend.on': 'Guarding — damage taken is halved',
+  'battle.fx.crit': 'CRITICAL!',
   'battle.flee.title': 'Flee the battle',
   'battle.flee.textMap': 'The team withdraws from this fight and returns to the map. No reward will be earned.',
   'battle.flee.textFrontier': 'The team withdraws from this fight and returns to the frontier. No reward will be earned.',

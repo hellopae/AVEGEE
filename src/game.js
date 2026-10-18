@@ -3368,6 +3368,7 @@ const API = {
     B.weaponCd = weaponProc ? WEAPON_EFFECT_COOLDOWN : Math.max(0, weaponCdStart - 1);
     B.dmg.area=areaAttack;
     B.dmg.foe = dmg;
+    B.dmg.crit = !!(swing && what === 'atk' && swing.crit);   // M2: display only — picks the cross-slash + CRITICAL label
     B.dmg.foeId = target.id;
     B.dmg.foeHits = affected.map(f => ({ id:f.id, damage:dmg }));
     if (dmg > 0) talk(dmg >= 26 ? 'crit' : target.hp <= target.maxHp * 0.3 ? 'low' : 'hurt');
