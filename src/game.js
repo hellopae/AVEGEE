@@ -247,17 +247,21 @@ function mkSoul(tags, hiddenBonus = 0, g) {
     const h = pick(POOL);
     if (!deeds.some(x => x.t === h.t)) deeds.push({ ...h, known: false });
   }
+  // เลือกตัวตนก่อนสุ่มบุญ — บุญบางข้อผูกเพศ (เช่น "บวชให้แม่" = ชาย) ต้องกรองตามเพศของคนที่ได้รับ
+  const who = pick(WHO);
+  const sex = SEX_OF[who] || 'm';
+  const meritPool = MERITS.filter(m => !m.sex || m.sex === sex);
+  const asMerit = ({ sex: _sex, ...m }, fake) => ({ ...m, fake });
   // บุญ: บางอันเป็นของจริง บางอันเขากุขึ้นเอง
   const merits = [];
-  if (Math.random() < 0.65) merits.push({ ...pick(MERITS), fake: false });
+  if (Math.random() < 0.65) merits.push(asMerit(pick(meritPool), false));
   if (Math.random() < BAL.fakeMeritChance) {
-    const f = pick(MERITS);
-    if (!merits.some(m => m.t === f.t)) merits.push({ ...f, fake: true });
+    const f = pick(meritPool);
+    if (!merits.some(m => m.t === f.t)) merits.push(asMerit(f, true));
   }
 
-  const who = pick(WHO);
   const soul = {
-    id: SEQ++, who, sex: SEX_OF[who] || 'm', deeds, merits, waited: 0,
+    id: SEQ++, who, sex, deeds, merits, waited: 0,
     said: [],          // สิ่งที่ปรากฏบนโต๊ะแล้ว (คำแก้ตัว/คำสารภาพ/ผลของพลัง)
     denied: null,      // เรื่องที่เขาปฏิเสธ
   };
