@@ -29,10 +29,10 @@ import { drawContactShadow } from './scene-style.js';
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
 const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
-const MAGIC_MIRROR_W = 0.07;   // N1: กระจกวิเศษบนฐานดอกบัว (img/krajok-magic-mirror.png = ตัวแทนชั่วคราว สำเนาไอคอน item-mirror.png · ภาพวาดจริงทับชื่อเดิมได้เลย)
+const MAGIC_MIRROR_W = 0.07;   // N1/N1b: กระจกวิเศษภาพจริงบนฐานดอกบัว (แยกจากฉากหลัง เพื่อให้ปรากฏหลังผู้เล่นวางกระจกเท่านั้น)
 let magicMirror = null;
 function magicMirrorImg() {
-  if (!magicMirror) { magicMirror = { el:new Image(), ok:false }; magicMirror.el.onload = () => { magicMirror.ok = true; }; magicMirror.el.src = 'img/krajok-magic-mirror.png'; }
+  if (!magicMirror) { magicMirror = { el:new Image(), ok:false }; magicMirror.el.onload = () => { magicMirror.ok = true; }; magicMirror.el.src = 'img/krajok-magic-mirror.png?v=20261018-n1b'; }
   return magicMirror.ok ? magicMirror.el : null;
 }
 const MIRROR_W = 0.075;   // ความกว้างฐาน/แผ่นกระจกเทียบความกว้างภาพฉาก (เดิมกำหนดใน mirror-charge.js ผ่าน CSS)

@@ -26,9 +26,9 @@ test('K2 changed entry URLs match, including review imports',()=>{
  for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
   const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
   const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/^20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
+  assert.match(a||'',/^20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1(?:-n1)?)$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
  }
- assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
+ assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1(?:-n1)?)|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
 });
 
 test('K2 pointerdown captures primary input, leaves activation to one native click',async()=>{

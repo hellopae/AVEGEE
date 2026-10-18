@@ -245,7 +245,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/th-krajok.webp",
+      "image": "img/rooms-wide/th-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
@@ -596,7 +596,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/asia-krajok.webp",
+      "image": "img/rooms-wide/asia-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
@@ -1298,7 +1298,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/cyberhell-krajok.webp",
+      "image": "img/rooms-wide/cyberhell-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
