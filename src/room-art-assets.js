@@ -245,7 +245,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/th-krajok.webp",
+      "image": "img/rooms-wide/th-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
@@ -596,7 +596,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/asia-krajok.webp",
+      "image": "img/rooms-wide/asia-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
@@ -1298,7 +1298,7 @@ export const WIDE_ROOM_ART = {
       }
     },
     "krajok": {
-      "image": "img/rooms-wide/cyberhell-krajok.webp",
+      "image": "img/rooms-wide/cyberhell-krajok.webp?v=20261018-n1b",
       "entrance": [
         0.5,
         0.88
@@ -1440,7 +1440,8 @@ export function wideStationRoom(zone, key) {
     image:art.image, cover:true, crop:null, mirror:false, bright:1, light:null,
     me:[...art.entrance], crew:key === 'sala' ? [.60,.68] : [...art.crew], souls:key === 'sawan' ? GATE_PLATFORMS[zone].map(p=>[...p]) : art.displaySlots.map(p => [p[0], p[1] + (key === 'tarang' ? .06 : 0)]),
     act:key === 'krata' ? [.5,.54] : key === 'sala' ? [.50,.53] : key === 'tarang' || key === 'sawan' ? [...art.crew] : [.5,.62],
-    training:!['krata','ngiw','dab','sawan'].includes(key) && art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
+    // N1 (คุณเป้ 16 ต.ค. ภาพ 10): หอส่องกรรมไม่มี "จุดฝึก" บนพื้นแล้ว (ถอดทั้งวง+ป้าย+ทางเข้า) — กันกลับด้วย tests/n1-harbour-krajok.test.mjs
+    training:!['krata','ngiw','dab','sawan','krajok'].includes(key) && art.trainingApproach && [art.trainingApproach[0], Math.min(.78,art.trainingApproach[1])],
     actions:key === 'sala' ? [[.50,.19],[.74,.51]] : [[.50,.30],[.64,.30]], exit:{x:.5,y:.96,reach:.05},
     walk:key === 'krata' && zone === 'th' ? KRATA_WALK : key === 'sala' ? SALA_WALK.map(a=>({poly:a.poly.map(p=>[...p])})) : [{poly:[[.17,.51],[.71,.51],[.71,.69],[.80,.69],[.80,.81],[.68,.81],
       [.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}],

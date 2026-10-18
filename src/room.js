@@ -29,6 +29,12 @@ import { drawContactShadow } from './scene-style.js';
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
 const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
+const MAGIC_MIRROR_W = 0.07;   // N1/N1b: กระจกวิเศษภาพจริงบนฐานดอกบัว (แยกจากฉากหลัง เพื่อให้ปรากฏหลังผู้เล่นวางกระจกเท่านั้น)
+let magicMirror = null;
+function magicMirrorImg() {
+  if (!magicMirror) { magicMirror = { el:new Image(), ok:false }; magicMirror.el.onload = () => { magicMirror.ok = true; }; magicMirror.el.src = 'img/krajok-magic-mirror.png?v=20261018-n1b'; }
+  return magicMirror.ok ? magicMirror.el : null;
+}
 const MIRROR_W = 0.075;   // ความกว้างฐาน/แผ่นกระจกเทียบความกว้างภาพฉาก (เดิมกำหนดใน mirror-charge.js ผ่าน CSS)
 const GATE_DOOR = [0.5, 0.25];   // ประตูกลางของประตูสวรรค์ (สัดส่วนภาพฉาก) — ปลายทางของดวงไฟตอนไปเกิดใหม่
 const prefersReducedMotion = () => { try { return !!matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
@@ -212,11 +218,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     return hit;
   };
-  const inArea = (x, y) => !(def.k === 'krajok' && api.mirrorPlaced?.() && mirrorObstacle(x,y)) && areas.some(a => a.poly ? insidePoly(x, y, a.poly)
+  const inArea = (x, y) => !(def.k === 'krajok' && mirrorObstacle(x,y)) && areas.some(a => a.poly ? insidePoly(x, y, a.poly)
                                                    : x >= a[0] && y >= a[1] && x <= a[2] && y <= a[3]);
   /** จุดที่เดินได้ซึ่งใกล้ (x,y) ที่สุด — ใช้ตอนแตะนอกพื้นที่ */
   const snap = (x, y) => {
-    if (def.k === 'krajok' && api.mirrorPlaced?.()) [x,y]=mirrorClearPosition(x,y);
+    if (def.k === 'krajok') [x,y]=mirrorClearPosition(x,y);   // N1: แท่นกระจกปรับองศาตั้งอยู่ในห้องเสมอ (ไม่ต้องรอกดวางกระจก)
     if (inArea(x, y)) return [x, y];
     let best = null, bd = Infinity;
     for (const a of areas) {
@@ -427,7 +433,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     const U = unit();
-    if (def.k === 'krajok' && api.mirrorPlaced?.() && mirrorObstacle(P.x,P.y)) { [P.x,P.y]=snap(P.x,P.y); P.tx=P.ty=null; }
+    if (def.k === 'krajok' && mirrorObstacle(P.x,P.y)) { [P.x,P.y]=snap(P.x,P.y); P.tx=P.ty=null; }
 
     // ---- วงแหวนบอกจุดลงมือ ----
     const ax = px(room.act[0]), ay = py(room.act[1]);
@@ -583,7 +589,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     // I1-A: ฐาน+แผ่นกระจกวาดลง canvas นี้เอง เรียงลึกตามเส้นพื้นของฐานเทียบกับเท้ายมบาท
     // (เดิมเป็น <img> ซ้อนทับ canvas เสมอ — ยมบาทที่ยืนหน้าแท่นจึงถูกฐานบังทั้งตัว)
-    if (def.k === 'krajok' && api.mirrorState?.().placed) {
+    // N1 (คุณเป้ 16 ต.ค. ภาพ 10): แท่น+แผ่นกระจกปรับองศาตั้งรออยู่ที่วงขวาเสมอ · "วางกระจก" = กระจกวิเศษมาวางบนฐานดอกบัวด้านบน + เปิดให้ปรับองศาได้
+    if (def.k === 'krajok') {
       acts.push({ y: MIRROR_SORT_Y, fn: () => {
         const base = img('mirror-charge-base'), pane = img('mirror-charge-pane');
         const dprK = cv.width / (cv.getBoundingClientRect().width || cv.width), w = MIRROR_W * box.w;
@@ -597,14 +604,25 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
           const ph = w * pane.naturalHeight / pane.naturalWidth;
           ctx.shadowColor = '#ffd16d'; ctx.shadowBlur = 6 * dprK; ctx.shadowOffsetY = 0;
           ctx.translate(px(MIRROR_ROOM_LAYOUT.pivot[0]), py(MIRROR_ROOM_LAYOUT.pivot[1]));
-          ctx.rotate(api.mirrorState().angle * Math.PI / 180);
+          ctx.rotate((api.mirrorState?.().angle || 0) * Math.PI / 180);
           ctx.drawImage(pane, -w / 2, -ph / 2, w, ph);
         }
         ctx.restore();
       } });
     }
 
-    acts.push({ y: def.k === 'krajok' && api.mirrorState?.().placed ? mirrorHeroSortY(P.x, P.y) : P.y, fn: () => {
+    if (def.k === 'krajok' && api.mirrorState?.().placed) {
+      acts.push({ y: MIRROR_ROOM_LAYOUT.target[1], fn: () => {
+        const m = magicMirrorImg(); if (!m) return;
+        const w = MAGIC_MIRROR_W * box.w, h = w * m.naturalHeight / m.naturalWidth, x = px(MIRROR_ROOM_LAYOUT.target[0]), y = py(MIRROR_ROOM_LAYOUT.target[1]);
+        const bob = Math.sin(t / 700) * h * 0.01;
+        ctx.save(); ctx.imageSmoothingEnabled = true;
+        ctx.shadowColor = '#ffd16d'; ctx.shadowBlur = 14; ctx.drawImage(m, x - w / 2, y - h * 0.62 + bob, w, h);
+        ctx.restore();
+      } });
+    }
+
+    acts.push({ y: def.k === 'krajok' ? mirrorHeroSortY(P.x, P.y) : P.y, fn: () => {
       // I1-A: เปิดแผงปรับองศากระจก = ยมบาทเปลี่ยนเป็นท่า atk (ยกมือชี้) ของชุดที่สวมอยู่ หันไปทางกระจก · ปิดแผง = กลับท่ายืน
       if (def.k === 'krajok' && api.mirrorState?.().adjusting && !(simClock - movedSim < WALK_GRACE_MS)) {
         const atk = poseImg(ragePoseSrc(g.outfit || g.zone));

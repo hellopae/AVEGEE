@@ -12,8 +12,8 @@ import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
-import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS, SWORD_FRAME_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -1247,8 +1247,9 @@ function updateBossFab() {
     ov.appendChild(f);
   }
   f.textContent = pier ? `💬 คุยกับ${g.zoneDef().bossName}` : `⚔️ ท้าสู้${g.zoneDef().bossName}`;
+  // N1: ขอบล่างปุ่ม (translate -100%) ชิดเหนือหัวบอส — ตำแหน่งเดียวกับที่ป้ายดำเดิมเคยอยู่ (ความสูงบอส = 92*1.12 เท่าของยมบาท ดู scene.js)
   f.dataset.sx = SPOTS.bossPier.x;
-  f.dataset.sy = SPOTS.bossPier.y - 115;
+  f.dataset.sy = SPOTS.bossPier.y - 92 * 1.12 * CHAR_SCALE_MAP - 12;
   place(f);
 }
 
@@ -1274,7 +1275,9 @@ function currentMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
   const point=g.harbourPoint();
   return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
-    {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y-90,label:'ท่าเรือ · Fast Travel'}]);
+    // N1 (คุณเป้ 16 ต.ค. ภาพ 7 ลูกศรชี้ไปที่เท้ายมบาทปลายท่า): ปุ่มกึ่งกลางอยู่ที่ปลายท่าใต้เท้า (หน้าหินหัวท่า) ไม่ลอยกลางน้ำ
+    // และไม่ทับป้ายบอสที่อยู่เหนือท่า (ท่าอยู่ห่างบอสแค่ ~100 หน่วย — วางเหนือหัวแล้วปุ่มสองอันซ้อนกันบนจอแคบ)
+    {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y+26,label:'ท่าเรือ · Fast Travel'}]);
 }
 
 
