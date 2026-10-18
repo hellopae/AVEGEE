@@ -1,0 +1,1423 @@
+[
+{
+"atlas": "img/crew-combat-v1/th/dam.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 34,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/dam.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 16,
+"clipped_rows_right": 8
+},
+{
+"atlas": "img/crew-combat-v1/th/dam.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 27,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/taan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 64,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/taan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 173,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/taan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 20
+},
+{
+"atlas": "img/crew-combat-v1/th/plerng.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 56,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/plerng.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 14,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/boon.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 63
+},
+{
+"atlas": "img/crew-combat-v1/th/kan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 46,
+"clipped_rows_right": 33
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 28,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 137,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 192,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 84
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 17
+},
+{
+"atlas": "img/crew-combat-v1/th/guard.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 39
+},
+{
+"atlas": "img/yama-animation-v1/th/sword-hurt.webp",
+"frame": 2,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 12
+},
+{
+"atlas": "img/boss-combat-v1/th/hero-boss.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 44,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/th/hero-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 111
+},
+{
+"atlas": "img/boss-combat-v1/th/hero-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 82
+},
+{
+"atlas": "img/boss-combat-v1/th/hero-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 22
+},
+{
+"atlas": "img/boss-combat-v1/th/hero-boss.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 62
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 32
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 18
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 24,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 134
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 76
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 14
+},
+{
+"atlas": "img/boss-combat-v1/th/zone-boss.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 27
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 44
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 38,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 91
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 122
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 81
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-frontier.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 1,
+"clipped_rows_right": 114
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 0,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 77
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 112
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 13,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 167
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 53,
+"clipped_rows_right": 40
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 65
+},
+{
+"atlas": "img/boss-combat-v1/th/boss-tester.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 111
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 22
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 14,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 154
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 66
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 50
+},
+{
+"atlas": "img/boss-combat-v1/th/leader-possessed.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 74
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 43,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 101,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 157,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 80
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 51
+},
+{
+"atlas": "img/crew-combat-v1/asia/dam.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 91
+},
+{
+"atlas": "img/crew-combat-v1/asia/taan.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 37,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/taan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 51,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/taan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 133,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/taan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 50
+},
+{
+"atlas": "img/crew-combat-v1/asia/plerng.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 60
+},
+{
+"atlas": "img/crew-combat-v1/asia/plerng.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 41,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/boon.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 18,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/boon.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 17,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/boon.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 13
+},
+{
+"atlas": "img/crew-combat-v1/asia/kan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 55
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 210,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 167,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 131,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 20
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 20,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/asia/guard.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 98,
+"clipped_rows_right": 37
+},
+{
+"atlas": "img/boss-combat-v1/asia/hero-boss.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 19,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/asia/hero-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 171
+},
+{
+"atlas": "img/boss-combat-v1/asia/hero-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 159
+},
+{
+"atlas": "img/boss-combat-v1/asia/hero-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 128
+},
+{
+"atlas": "img/boss-combat-v1/asia/zone-boss.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 45
+},
+{
+"atlas": "img/boss-combat-v1/asia/zone-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 206
+},
+{
+"atlas": "img/boss-combat-v1/asia/zone-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 89
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 89
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 44
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 65,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 222
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 141
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 209
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-frontier.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 31
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 0,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 20
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 68
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 79,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 245
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 184
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 8,
+"mode": "attack",
+"clipped_rows_left": 145,
+"clipped_rows_right": 5
+},
+{
+"atlas": "img/boss-combat-v1/asia/boss-tester.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 39
+},
+{
+"atlas": "img/boss-combat-v1/asia/leader-possessed.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 52,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/asia/leader-possessed.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 146
+},
+{
+"atlas": "img/boss-combat-v1/asia/leader-possessed.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 146
+},
+{
+"atlas": "img/boss-combat-v1/asia/leader-possessed.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 18
+},
+{
+"atlas": "img/crew-combat-v1/west/dam.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 56,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/dam.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 127,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/dam.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 10,
+"clipped_rows_right": 29
+},
+{
+"atlas": "img/crew-combat-v1/west/taan.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 45,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/taan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 109,
+"clipped_rows_right": 225
+},
+{
+"atlas": "img/crew-combat-v1/west/taan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 224,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/taan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 55
+},
+{
+"atlas": "img/crew-combat-v1/west/taan.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 54,
+"clipped_rows_right": 51
+},
+{
+"atlas": "img/crew-combat-v1/west/plerng.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 24,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/plerng.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 143,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/plerng.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 109,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/plerng.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 35
+},
+{
+"atlas": "img/crew-combat-v1/west/plerng.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 31
+},
+{
+"atlas": "img/crew-combat-v1/west/boon.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 107,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/boon.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 47
+},
+{
+"atlas": "img/crew-combat-v1/west/kan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 130,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/kan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 211,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/kan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 34
+},
+{
+"atlas": "img/crew-combat-v1/west/kan.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 12,
+"clipped_rows_right": 22
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 274,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 243,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 214,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 17
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 17,
+"clipped_rows_right": 58
+},
+{
+"atlas": "img/crew-combat-v1/west/guard.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 87,
+"clipped_rows_right": 21
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 0,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 99
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 1,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 48
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 123
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 104
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 20,
+"clipped_rows_right": 168
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 113
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 35
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 25
+},
+{
+"atlas": "img/boss-combat-v1/west/hero-boss.webp",
+"frame": 11,
+"mode": "hurt",
+"clipped_rows_left": 34,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/west/zone-boss.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 76
+},
+{
+"atlas": "img/boss-combat-v1/west/zone-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 127
+},
+{
+"atlas": "img/boss-combat-v1/west/zone-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 17
+},
+{
+"atlas": "img/boss-combat-v1/west/zone-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 13
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-frontier.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 25
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-frontier.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 64
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-frontier.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 5,
+"clipped_rows_right": 109
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-tester.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 26
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-tester.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 75
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-tester.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 23,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-tester.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 111
+},
+{
+"atlas": "img/boss-combat-v1/west/boss-tester.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 82
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 0,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 65
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 133
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 77
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 25,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 185
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 197
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 48
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 91
+},
+{
+"atlas": "img/boss-combat-v1/west/leader-possessed.webp",
+"frame": 11,
+"mode": "hurt",
+"clipped_rows_left": 26,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/dam.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 45,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/dam.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 107,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/dam.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 62
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/dam.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 52
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/dam.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 8,
+"clipped_rows_right": 84
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/taan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 24,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/taan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 122,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/taan.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 48
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/plerng.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 78,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/plerng.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 154,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/plerng.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 311,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/plerng.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 60
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/boon.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 51,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/boon.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 75,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/kan.webp",
+"frame": 1,
+"mode": "attack",
+"clipped_rows_left": 38,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/kan.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 111,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/kan.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 101,
+"clipped_rows_right": 66
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/kan.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 24,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 0,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 61
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 2,
+"mode": "attack",
+"clipped_rows_left": 58,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 100,
+"clipped_rows_right": 10
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 6,
+"clipped_rows_right": 72
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 89
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 6,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 88
+},
+{
+"atlas": "img/crew-combat-v1/cyberhell/guard.webp",
+"frame": 7,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 12
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 0,
+"mode": "idle",
+"clipped_rows_left": 0,
+"clipped_rows_right": 13
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 215
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 83
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 71,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 225
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 243
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 8,
+"mode": "attack",
+"clipped_rows_left": 245,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 73
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/hero-boss.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 52
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/zone-boss.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 44
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/zone-boss.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 230
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/zone-boss.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 238
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 25
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 74
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 207
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 204,
+"clipped_rows_right": 183
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 107
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 79
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-tester.webp",
+"frame": 5,
+"mode": "attack",
+"clipped_rows_left": 119,
+"clipped_rows_right": 0
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-tester.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 138
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-tester.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 95
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/boss-tester.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 32
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 3,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 18
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 4,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 49
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 6,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 197
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 7,
+"mode": "attack",
+"clipped_rows_left": 0,
+"clipped_rows_right": 170
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 9,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 34
+},
+{
+"atlas": "img/boss-combat-v1/cyberhell/leader-possessed.webp",
+"frame": 10,
+"mode": "hurt",
+"clipped_rows_left": 0,
+"clipped_rows_right": 102
+}
+]
