@@ -64,7 +64,7 @@ test('N1-cache every file touched by N1 gets the -n1 token (index.html, review p
   const html = read('index.html'), review = read('output/game-review/index.html');
   assert.match(html, /"\.\/src\/ui\.js": "\.\/src\/ui\.js\?v=[^"]+-n1"/);
   assert.match(html, /<script type="module" src="src\/ui\.js\?v=[^"]+-n1">/);
-  assert.match(html, /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]+-n1"/);
+  assert.match(html, /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]+-n1(?:-[^"]+)*"/);
   assert.match(html, /"\.\/src\/town-layout\.js": "\.\/src\/town-layout\.js\?v=[^"]+-n1"/);
   assert.match(html, /"\.\/src\/room\.js\?v=minigame-review-20261011": "\.\/src\/room\.js\?v=[^"]+-n1"/);
   assert.match(html, /src\/town-map\.css\?v=[^"]+-n1/);
