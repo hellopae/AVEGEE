@@ -18,7 +18,9 @@ export function queueBossJustice(g,b,{final=false}={}) {
     frontier=b.kind==='frontierBreach'||b.kind==='zoneEvent'&&isFrontierBreachEvent(zone,b.eventKey)||challenge;
   if(b.over!=='win'||(!final&&b.kind!=='zoneBoss'&&b.eventKey!=='thBorderBoss'&&!frontier))return false;
   const state=g.bossJustice||initializeBossJustice(g), base=final?'final:cyberhell':`${zone}:${b.eventKey==='thBorderBoss'?'frontier':b.kind==='zoneBoss'?'ruler':b.eventKey||'frontierBreach'}`;
-  if(state.active || b.justiceDocket || final&&state.ledger[base])return false;
+  // A named boss answers to the court once. Rematches may still be fought,
+  // but a fresh battle object must not bypass the persistent court ledger.
+  if(state.active || b.justiceDocket || state.ledger[base])return false;
   let id=base,attempt=1;while(state.ledger[id])id=`${base}:${++attempt}`;
   b.justiceDocket=id;
   const boss=b.foes?.find(f=>f.boss)||b.foes?.find(f=>String(f.sp).includes('boss-frontier'));

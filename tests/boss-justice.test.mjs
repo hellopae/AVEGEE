@@ -42,7 +42,7 @@ test('lost battles and ordinary mobs never start a boss docket',()=>{
  const g=game();assert.equal(queueBossJustice(g,{kind:'zoneBoss',over:'lose'}),false);
  assert.equal(queueBossJustice(g,{kind:'mob',over:'win'}),false);assert.equal(g.bossJustice,undefined);
 });
-test('all four frontier bosses and a completed rematch receive independent dockets',()=>{
+test('all four frontier bosses receive one persistent docket and rematches do not repeat sentencing',()=>{
  for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],['west','westVampireBreach'],['cyberhell','cyberBreach']]){
   const g=game();g.zone=zone;syncSceneZone(zone);
   const b={kind:zone==='th'?'frontierBreach':'zoneEvent',zone,eventKey,over:'win',foes:[{who:'ลูกน้อง',sp:'spirit1'},{who:'หัวหน้าชายแดน',sp:`boss-frontier-${zone}`,boss:true}]};
@@ -50,8 +50,8 @@ test('all four frontier bosses and a completed rematch receive independent docke
   interrogateBoss(g);sentenceBoss(g,{...bossJusticeAnswer(g),intensity:2});advance(g,'return');
   for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
   assert.equal(queueBossJustice(g,b),false);
-  assert.equal(queueBossJustice(g,{...b,justiceDocket:null,challenge:true,rematch:true}),true);
-  assert.equal(Object.keys(g.bossJustice.ledger).length,2);
+  assert.equal(queueBossJustice(g,{...b,justiceDocket:null,challenge:true,rematch:true}),false);
+  assert.equal(Object.keys(g.bossJustice.ledger).length,1);
  }
 });
 test('partial saves with no station or keeper requisition court resources and can finish finale',()=>{
