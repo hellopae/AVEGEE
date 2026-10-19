@@ -210,17 +210,17 @@ test('E1 supersedes 30D orientations; zone round trips restore geometry', () => 
   const pos = () => STATIONS.map(s => [s.k, s.bx, s.by, s.x, s.y, s.hit.join()].join('|'));
   syncSceneZone('th');
   const thPos = pos();
-  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['krata']);
+  assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['krata','dab','lokan','tarang']);
   syncSceneZone('asia');
   assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['krata']);
   syncSceneZone('west');
   assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k).sort(), ['krata', 'tea']);
   syncSceneZone('cyberhell');
   assert.deepEqual(STATIONS.filter(s => s.flip).map(s => s.k), ['krata']);
-  assert.deepEqual(STATION_FLIP, { th:['krata'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] });
+  assert.deepEqual(STATION_FLIP, { th:['krata','dab','tarang','lokan'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] });
   syncSceneZone('th');
   assert.deepEqual(pos(), thPos, 'การเปลี่ยนโซนวนกลับต้องได้ตำแหน่งเดิม ไม่ค้าง flip');
-  assert.equal(STATIONS.find(s => s.k === 'lokan').flip, false);
+  assert.equal(STATIONS.find(s => s.k === 'lokan').flip, true);
   // ไฟล์ภาพจริงอยู่ครบ (flip ตอนวาด ไม่แตะไฟล์ของ Kittanate)
   for (const f of ['img/Asia/st-lokan-asia.png', 'img/map-v5/st-sala-west.webp'])
     assert.ok(readFileSync(new URL('../' + f, import.meta.url)).length > 1000, f);

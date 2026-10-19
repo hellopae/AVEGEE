@@ -33,8 +33,8 @@ test('placeholders are only the three drawings still to be made', () => {
 });
 
 test('houses: only the ground floor blocks', () => {
-  assert.equal(TOWN_HOUSE_SITES.length,12);
-  assert.equal(TOWN_HOUSES.length,12);
+  assert.equal(TOWN_HOUSE_SITES.length,11,'waterfall event clearing no longer contains a residence');
+  assert.equal(TOWN_HOUSES.length,11);
   const keys=new Set(TOWN_HOUSE_SITES.map(h=>h.key));
   for(const k of ['front-one','left-two','right-one','right-two'])assert.ok(keys.has(k),k);
   for(const [i,h] of TOWN_HOUSE_SITES.entries()){

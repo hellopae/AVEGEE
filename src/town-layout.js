@@ -58,15 +58,17 @@ export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:T
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
 export const TOWN_UPPER_BRIDGE_LANDING = [[1380,480],[1510,490],[1510,550],[1380,550]];
-export const TOWN_LAVA_EAST_CLIFF = [[1090,1005],[1160,1000],[1420,1130],[1450,1235],[1370,1230],[1250,1130],[1120,1080]];
-export const TOWN_LAVA_STAIRS = [[1080,1070],[1110,1125],[1480,1025],[1440,965]];
-export const TOWN_LAVA_STAIR_LANDING = [[1045,985],[1090,995],[1145,1080],[1100,1115],[1040,1030]];
+// The two west-city links are visibly paved in the production painting.  Keep their complete
+// lanes open rather than trying to infer cliff colour from the bitmap (the orange flowers were
+// previously read as rock and cut both routes in half).
+export const TOWN_LAVA_STAIRS = [[1018,954],[1095,950],[1500,995],[1505,1072],[1434,1092],[1120,1142],[1044,1115],[1004,1018]];
+export const TOWN_LAVA_STAIR_LANDING = [[1018,954],[1095,955],[1156,1010],[1112,1095],[1042,1082],[1004,1018]];
+export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,1178],[1432,1160],[1480,1218],[1250,1250],[1060,1196],[790,1196],[700,1172]];
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
-  if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING))return true;
-  // The new stair flight crosses only its painted corridor; the surrounding cliff stays solid.
-  // Use the northern bridge and the painted western stairs to reach these terraces.
-  if(townInPolygon(x,y,TOWN_LAVA_EAST_CLIFF))return false;
+  if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
+    ||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING)
+    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD))return true;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.
@@ -85,9 +87,9 @@ const HOUSE_RATIO = {'front-one':1122/1402,'right-one':1094/1438,'left-two':1518
 const house = (key,x,y,w,flip=false) => ({key,x,y,w,flip,h:w*HOUSE_RATIO[key]});
 export const TOWN_HOUSE_SITES = [
   house('front-one',1551,655,142), house('left-two',1945,699,119), house('front-one',2118,766,129),
-  house('left-two',1536,960,98),   house('front-one',1546,1073,129), house('right-one',2239,1014,147,true),
-  house('front-one',2010,1294,138), house('right-two',1551,1661,120), house('right-two',2283,1588,114),
-  house('front-one',3016,1607,129), house('front-one',639,751,142),  house('right-one',710,1204,149),
+  house('left-two',1536,960,98,true), house('front-one',1546,1073,129), house('right-one',2239,1014,147,true),
+  house('front-one',2010,1294,138), house('right-two',1551,1661,120,true), house('right-two',2283,1588,114,true),
+  house('front-one',639,751,142),  house('right-one',710,1204,149),
 ];
 // Only the ground floor of a house is solid; the roof can be walked behind and is faded by scenery.
 export const TOWN_HOUSES = TOWN_HOUSE_SITES.map(h=>{
@@ -110,7 +112,8 @@ export const TOWN_PROP_SITES = [
     [1757,1133,159,'city'],[1962,1137,159,'city'],[2185,977,136,'city'],[2945,1146,202,'city'],
     [1413,1457,175,'city'],[1818,1478,161,'city'],[2016,1478,161,'city'],[2314,1453,161,'city'],
     [2346,1678,159,'city'],[3231,1453,198,'city'],[3567,1632,200,'city'],
-    [1421,455,96,'city'],[1482,480,100,'city'],[1540,493,106,'city'],[1584,493,106,'city'],
+    // The upper bridge landing is a route, not a grove.  Four old trees here made Yama walk
+    // through trunks and could close the corridor entirely once their root colliders loaded.
     [1805,493,106,'city'],[1837,499,106,'city'],[1939,470,115,'city'],
   ],'tree'),
   // red leaves beside the lava (owner: red marks)

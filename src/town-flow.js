@@ -35,7 +35,7 @@ const SPEED = [null, [13, 9], [16, 14], [105, 60], [30, 16], [110, 70]];
 // [type, cumulative probability] per surface kind.
 const MIX = [null,
   [[T_STREAK, .45], [T_WAVE, .62], [T_SPARK, 1]],
-  [[T_STREAK, .55], [T_GLOW, .80], [T_BUBBLE, 1]],
+  [[T_STREAK, .43], [T_GLOW, .69], [T_BUBBLE, 1]],
   [[T_STREAK, 1]],
   [[T_STREAK, .6], [T_WAVE, .72], [T_SPARK, 1]],
   [[T_STREAK, 1]],
@@ -73,7 +73,10 @@ export function buildFlowSprites() {
   return {
     streak: COLOR.map(c => c ? streak(c.join(',')) : null),
     spark: paint(16, 16, c => { c.strokeStyle = '#fff'; c.lineWidth = 2; c.beginPath(); c.moveTo(1, 8); c.lineTo(15, 8); c.moveTo(8, 1); c.lineTo(8, 15); c.stroke(); }),
-    ring: paint(32, 32, c => { c.strokeStyle = '#ffec96'; c.lineWidth = 3; c.beginPath(); c.arc(16, 16, 12, 0, 6.2832); c.stroke(); }),
+    ring: paint(40, 24, c => {
+      c.strokeStyle = '#ffec96'; c.lineWidth = 2.2;c.beginPath();c.ellipse(20,13,15,6.5,-.08,.15,5.9);c.stroke();
+      c.globalAlpha=.55;c.strokeStyle='#fff2bd';c.beginPath();c.ellipse(18,11,8.5,3.5,.12,3.25,5.9);c.stroke();
+    }),
     glow: radial('rgba(255,214,110,.95)', 'rgba(255,120,30,.45)'),
     mist: radial('rgba(255,255,255,.9)', 'rgba(190,235,255,.4)'),
   };
@@ -251,7 +254,7 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
         const r = size[i] * (.35 + f) * 2;
         ctx.globalAlpha = (1 - f) * .7;
         ctx.setTransform(ma, 0, 0, md, me, mf);
-        put(sp.ring, px[i] - r, py[i] - r * .6, r * 2, r * 1.2);
+        put(sp.ring, px[i] - r, py[i] - r * .45, r * 2.15, r * .9);
       } else if (ty === T_SPRAY) {
         const img = k === 3 ? sp.glow : sp.mist;
         if (!img) continue;

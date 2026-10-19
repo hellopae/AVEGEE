@@ -1974,7 +1974,8 @@ export const ZONES = [
  * Asia lokan/tea and west tarang were already mirrored: E1 removes their mirrors.
  */
 export const STATION_FLIP = {
-  th: ['krata'], asia: ['krata'],
+  // Map-Zone1-3 review arrows: each facade opens toward its approach road.
+  th: ['krata', 'dab', 'tarang', 'lokan'], asia: ['krata'],
   west: ['krata', 'tea'], cyberhell: ['krata'],
 };
 

@@ -104,7 +104,9 @@ export function listCasters(resolve, houseKey, stations, propArt) {
   });
   for (const d of stations) {
     const b = stationBox(d); if (!b) continue;
-    out.push(spriteCaster(b.im,b.x+b.w/2,b.y+b.h,b.w,b.h,!!b.flip,.48));
+    // Full facade silhouette: the former .48 lift cut the roof and crane shadows in half,
+    // leaving the large punishment buildings looking detached from their ground plane.
+    out.push(spriteCaster(b.im,b.x+b.w/2,b.y+b.h,b.w,b.h,!!b.flip,.92));
   }
   const dais = resolve('town-judgment-th');
   if (dais) {   // a flat platform: its sprite height is mostly ground, so it throws a short shadow

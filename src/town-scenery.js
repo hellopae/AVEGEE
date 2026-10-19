@@ -162,12 +162,19 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
         const fy=p.y-h*.85;
         if(!reduced){
           ctx.save();
-          for(let j=0;j<3;j++){
-            const base=p.x+(j-1)*3,tip=fy-10-4*Math.sin(time/170+j+p.x),sway=3*Math.sin(time/210+j);
-            ctx.fillStyle=j===1?'rgba(255,240,150,.8)':'rgba(255,128,35,.7)';
-            ctx.beginPath();ctx.moveTo(base-3,fy+7);ctx.quadraticCurveTo(base-6,fy-3,base+sway,tip);
-            ctx.quadraticCurveTo(base+6,fy-2,base+3,fy+7);ctx.fill();
+          // Layered pointed tongues cover the old geometric diamond at the top of the pillar.
+          // Every tongue has a different phase and shoulder, producing a natural flame silhouette.
+          for(let j=0;j<5;j++){
+            const lane=(j-2)*2.6,base=p.x+lane,phase=time/(145+j*19)+p.x*.071+j*1.7;
+            const tip=fy-12-(j%2)*5-3*Math.sin(phase),sway=3.6*Math.sin(phase*.73);
+            ctx.fillStyle=j===2?'rgba(255,246,174,.94)':j%2?'rgba(255,174,53,.86)':'rgba(255,91,23,.74)';
+            ctx.beginPath();ctx.moveTo(base-3.8,fy+8);
+            ctx.bezierCurveTo(base-8,fy+1,base-2+sway,fy-7,base+sway,tip);
+            ctx.bezierCurveTo(base+5+sway,fy-5,base+7,fy+2,base+3.8,fy+8);ctx.closePath();ctx.fill();
           }
+          ctx.globalAlpha=.9;ctx.fillStyle='#fff7bd';ctx.beginPath();ctx.moveTo(p.x-2,fy+7);
+          ctx.quadraticCurveTo(p.x-3,fy,p.x+Math.sin(time/120)*1.8,fy-7);
+          ctx.quadraticCurveTo(p.x+4,fy,p.x+2,fy+7);ctx.fill();
           ctx.restore();
         }
         ctx.save();ctx.globalCompositeOperation='screen';

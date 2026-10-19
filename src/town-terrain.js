@@ -71,20 +71,26 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
     return;
   }
   frame++;
+  const visible=[];
+  for (let row = 1; row <= TOWN_TERRAIN_ROWS; row++) for (let col = 1; col <= TOWN_TERRAIN_COLS; col++) {
+    const r=townChunkRect(row,col);
+    if (r.x > vx1 || r.x + r.w < vx0 || r.y > vy1 || r.y + r.h < vy0) continue;
+    visible.push({row,col,r,c:request(row,col)});
+  }
+  // Never mix preview pixels and sharp chunks in one camera frame.  Their different source
+  // resolutions used to expose 1024px rectangles under buildings and trees while streaming.
+  // The preview is a complete clean painting, so keep it until every visible chunk is ready,
+  // then switch the whole camera footprint to sharp art at once.
+  if(!visible.every(v=>v.c.state==='ready')) {
+    if(pv)drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
+    ctx.restore();
+    return;
+  }
   // 1 device px of overlap hides hairline seams between neighbouring chunks at fractional scales.
   const eps = 1/scale;
-  for (let row = 1; row <= TOWN_TERRAIN_ROWS; row++) for (let col = 1; col <= TOWN_TERRAIN_COLS; col++) {
-    const r = townChunkRect(row,col);
-    if (r.x > vx1 || r.x + r.w < vx0 || r.y > vy1 || r.y + r.h < vy0) continue;
-    const c = request(row,col);
-    if (c.state === 'ready') {
-      c.at = frame;
-      drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
-    } else if (pv) {
-      // Stand-in: the matching slice of the preview until the sharp chunk has decoded.
-      const sx = r.x/TOWN_SIZE.w*pv.naturalWidth, sy = r.y/TOWN_SIZE.h*pv.naturalHeight;
-      drawHellTerrain(ctx,pv,time,reduced, sx, sy, r.w/TOWN_SIZE.w*pv.naturalWidth, r.h/TOWN_SIZE.h*pv.naturalHeight, r.x, r.y, r.w, r.h);
-    }
+  for (const {row,col,r,c} of visible) {
+    c.at = frame;
+    drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
   }
   // Prefetch the ring around the camera so walking never reveals a blurry patch.
   const padX = 400, padY = 300;

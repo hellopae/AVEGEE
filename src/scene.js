@@ -5,7 +5,7 @@ import { drawLocalLight } from './scene-style.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
-import { drawTownNightEffects } from './town-night-effects.js?v=night-v1';
+import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
 import { drawTownDistantScenery, drawTownSceneryShadows, addTownSceneryLayers, drawTownHouseLights, townPropArt } from './town-scenery.js?v=l1';
 import { updateTownShade, drawTownShadows, drawContactAO, drawActorShadow, withTownShade, visibleBase } from './town-shade.js?v=l1';
@@ -243,6 +243,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const sceneryTree = town ? img('town-tree-th') : null;
   const sceneryWaterfall = town ? img('town-waterfall-th') : null;
   if(town) {
+    drawTownClouds(ctx,t,reduced);
     drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced,img);
     // L1: one sun for the whole town. Casters = props + houses + built stations + gate + dais (baked once).
     updateTownShade(img, townHouseKey, [...g.stations.filter(st=>!st.build).map(st=>st.def), FRONTIER],
