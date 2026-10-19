@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';
-import {isFrontierDuoBattle,niraCombatFrame,niraCombatSheet,playNiraHealingCutscene} from '../src/nira-combat.js';
+import {isFrontierDuoBattle,niraCombatFrame,niraCombatSheet,niraHealingCutscene,playNiraHealingCutscene} from '../src/nira-combat.js';
 
 function setup() {
   const game=createGame();game.save=()=>true;game.onChange=()=>{};game.coin=10000;
@@ -83,7 +83,10 @@ test('downed Nira leaves the queue without admitting another companion',()=>{
 });
 
 test('combat art uses all four regional sheets and the four animation rows',()=>{
-  for(const zone of ['th','asia','west','cyberhell']) assert.equal(niraCombatSheet(zone),`img/nira-combat/nira-${zone}-sheet-v1.webp`);
+  for(const zone of ['th','asia','west','cyberhell']) {
+    assert.equal(niraCombatSheet(zone),`img/nira-combat/nira-${zone}-sheet-v1.webp`);
+    assert.equal(niraHealingCutscene(zone),`img/nira-combat/nira-${zone}-heal-cutscene-v1.webp`);
+  }
   for(const [row,pose] of ['idle','attack','hurt','heal'].entries()) {
     assert.deepEqual(niraCombatFrame(pose,0),{row,column:0});
     assert.deepEqual(niraCombatFrame(pose,450),{row,column:3});
@@ -101,6 +104,8 @@ test('healing cutscene has an accessible fallback, visible title and immediate s
     let overlay;const dialog={open:true,querySelector:()=>null,appendChild:node=>{overlay=node;}};
     playNiraHealingCutscene(dialog,'asia','img/Asia/crew-nira-asia.png');
     assert.equal(overlay.role,'status');assert.match(overlay['aria-label'],/นิรา/);
+    assert.equal(overlay.children[0].src,'img/nira-combat/nira-asia-heal-cutscene-v1.webp');
+    overlay.children[0].onerror();
     assert.equal(overlay.children[0].src,'img/Asia/crew-nira-asia.png');
     assert.equal(overlay.children[1].textContent,'นิรา · แสงฟื้นบารมี');
     assert.equal(overlay.children[2].tag,'button');
