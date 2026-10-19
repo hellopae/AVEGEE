@@ -1167,6 +1167,9 @@ const API = {
 
   /** Keep a soul outside the destination roster until its map walk is complete. */
   startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null, courier = null) {
+    // Optional harbour/site deliveries cannot start without an assistant.
+    // Check before grid pathfinding, especially during new-game creation.
+    if(['arrival','station'].includes(destination)&&!zoneWorkers(this).some(w=>['auto','escort'].includes(w.mode)&&!w.recovering&&w.stamina>0))return false;
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
