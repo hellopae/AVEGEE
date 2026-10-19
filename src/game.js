@@ -751,7 +751,7 @@ const API = {
     const z = ZONES.find(z => z.k === k);
     if (!z) return 'ไม่รู้จักชุดนี้';
     if (this.outfitsOwned?.includes(k)) return '';
-    return this.zone !== k ? `ใช้ได้เมื่อถึง${z.name} และซื้อชุดจากพ่อค้านรกแล้ว` : 'ซื้อชุดจากพ่อค้านรกก่อน';
+    return `ได้รับเมื่อผู้ตรวจการพาไปถึงประตู${z.name}`;
   },
 
   powerOf(k) { return this.powers.find(p => p.k === k); },
@@ -4055,6 +4055,8 @@ const API = {
 
   outfitsOpen() { return ZONES.filter(z => this.outfitsOwned?.includes(z.k)); },
 
+  // Legacy save/test API. The merchant UI no longer exposes this purchase;
+  // outfits are awarded by the guide farewell flow.
   buyZoneOutfit() {
     const k = this.zone;
     if (k === 'th' || this.outfitsOwned?.includes(k) || this.coin < 180) return false;

@@ -408,6 +408,19 @@ function proc(key) {
   const d = TEX[key]; if (!d || !GEN[key] || typeof document === 'undefined') return null;
   const k = Math.min(1, 384 / Math.max(d.w, d.h)), c = mk(d.w * k, d.h * k); GEN[key](c.getContext('2d'), c.width, c.height); return c;
 }
+function transparentLightTexture(image,key){
+  if(TEX[key]?.blend!=='lighter')return image;
+  try{
+    const c=mk(image.naturalWidth,image.naturalHeight),x=c.getContext('2d',{willReadFrequently:true});
+    x.drawImage(image,0,0);const frame=x.getImageData(0,0,c.width,c.height),d=frame.data;
+    // The supplied glow/slash textures use an opaque black matte. Canvas
+    // "lighter" keeps that matte's alpha, so it becomes a black rectangle
+    // when the effect canvas is composited over the arena. Turn luminance into
+    // coverage while retaining the painted colour.
+    for(let i=0;i<d.length;i+=4){const light=Math.max(d[i],d[i+1],d[i+2]);d[i+3]=Math.round(d[i+3]*light/255);}
+    x.putImageData(frame,0,0);return c;
+  }catch{return image;}
+}
 function record(key) {
   let r = records.get(key);
   if (r) return r;
@@ -415,7 +428,7 @@ function record(key) {
   records.set(key, r);
   if (typeof Image === 'function') {
     r.im = new Image();
-    r.im.onload = () => { if (r.im.naturalWidth > 0) r.ok = true; };
+    r.im.onload = () => { if (r.im.naturalWidth > 0) {r.realCanvas=transparentLightTexture(r.im,key);r.ok = true;} };
     r.im.onerror = () => { r.failed = true; };
     r.im.src = `${FX_DIR}${key}.webp${suffix}`;
   }
@@ -424,7 +437,7 @@ function record(key) {
 /** Resolve a texture: the real file when loaded, otherwise the gradient stand-in. Returns { src, sx, sy, sw, sh, real, blend } for the given cell. */
 export function texCell(key, cell = 0) {
   const d = TEX[key], r = record(key);
-  let src = r.ok ? r.im : (r.procCanvas ||= proc(key));
+  let src = r.ok ? (r.realCanvas||r.im) : (r.procCanvas ||= proc(key));
   if (!src) return null;
   const W = src.naturalWidth || src.width, H = src.naturalHeight || src.height, n = d?.cells || 1, cw = W / n;
   return { src, sx:Math.floor(cell % n) * cw, sy:0, sw:cw, sh:H, real:r.ok, blend:d?.blend || 'lighter' };

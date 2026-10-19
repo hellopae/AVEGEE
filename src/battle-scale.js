@@ -161,6 +161,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
           '--formation-shadow-width':`${box.w*w*.82}px`,
           '--turn-motion-delay':`${-Math.max(0,Date.now()-(motion.changedAt||0))}ms`});
         root.classList.add('formation-member');
+        root.classList.toggle('attack-lunge',motion.attackKey===key);
         root.classList.toggle('turn-forward',active);
         root.classList.toggle('turn-enter',active&&motion.changedAt>0);
         root.classList.toggle('turn-return',!active&&key===motion.previousKey);

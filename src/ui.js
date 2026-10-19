@@ -36,7 +36,7 @@ import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapp
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
 import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs } from './battle-fx-map.js?v=m2';
-import { actionCutsceneTheme, actionCutsceneLabel, mountActionCutsceneFx } from './action-cutscene-fx.js?v=m5';
+import { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';
 setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
 import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';
@@ -74,7 +74,8 @@ const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 /** ชื่อตัวผู้เล่น — "Yama" คือชื่อฝรั่งของพญายมซึ่งเป็น "พ่อ" ของเรา ไม่ใช่ตัวเรา
  *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมบาทน้อย" ให้ต่างจากพ่อชัด ๆ
  *  (เจ้าของถามว่าเขียนไทยว่าอะไรดี 8 ก.ย. 2569 — เปลี่ยนที่นี่ที่เดียวได้ทั้งเกม) */
-const HERO_NAME = 'ยมบาทน้อย';
+const HERO_NAME = 'ยามา';
+const HERO_TITLE = 'ยมบาทน้อย';
 let storyPlaying = false, storyScheduled = false;
 
 /** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม
@@ -2244,7 +2245,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}
       <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
-      <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">ยมบาทประจำ${esc(g.zoneDef().name)}</span>
+      <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">${esc(HERO_TITLE)} · ประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
     </div>
     ${hp?.foes?.length > 1 ? `<div class="foe-group">${hp.foes.map(f => {
@@ -2337,18 +2338,15 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   const actorName = crewKey ? (g.roster[crewKey]?.name || CREW[crewKey]?.name || 'ยมทูต') : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
   const crewMove = ({kan:'พลังสะกดจิต',boon:'พลังฟื้นฟู',plerng:'เพลิงพิพากษา',taan:'กระบองทัณฑ์',guard:'กระบองพิทักษ์',dam:'คมดาบ'})[crewKey];
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
-  const theme = actionCutsceneTheme(k, ultimate, crewKey);
-  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><div class="cutscene-sweep" aria-hidden="true"></div><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
+  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
   const img = cut.querySelector('img');
   const fallback = cs && cs.fallback;
   img.onerror = () => {
     if (fallback) { img.onerror = () => cut.remove(); img.src = fallback; }
     else cut.remove();
   };
-  const reduced = !camera.enabled || (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const stopCutFx = mountActionCutsceneFx(cut, theme, { duration:ACTION_CUT_MS, reduced });
   let done = false;
-  const finish = () => { if (done) return; done = true; stopCutFx(); cut.remove(); };
+  const finish = () => { if (done) return; done = true; cut.remove(); camera.cue('idle'); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
   fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
@@ -2823,13 +2821,10 @@ function openMerchant() {
         return `<article class="shop-card">${itemImg(s.k, 'class="shop-item-img"')}<span><b>${esc(itemName(s.k))}${s.qty ? ` ×${s.qty}` : ''}</b><small>${lock ? `ปลดล็อกที่ขั้น ${LEVELS[s.lv - 1].name}` : `${s.cost} เบี้ยกรรม`}${d.consumable ? ` · ${esc(itemText(s.k, 'desc'))}` : ''}</small></span>
           <button data-buy="${s.k}" class="gold" ${lock || g.coin < s.cost ? 'disabled' : ''}>ซื้อ</button></article>`;
       }).join('')}</div>
-      ${g.zone !== 'th' && !g.outfitsOwned?.includes(g.zone) ? `<h3>ชุดประจำโซน</h3><div class="market-grid"><article class="shop-card"><img src="img/item-outfit-${g.zone}-l4b.png" class="shop-item-img" alt="ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}"><span><b>ชุด${esc(g.zoneDef().name.replace(/^โซน/, ''))}</b><small>180 เบี้ยกรรม · ซื้อได้ที่โซนนี้</small></span><button data-buy-outfit class="gold" ${g.coin < 180 ? 'disabled' : ''}>ซื้อ</button></article></div>` : ''}
       <div class="row"><button class="gold" data-close>กลับแผนที่</button></div>`;
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
-    const outfitBuy = dlg.querySelector('[data-buy-outfit]');
-    if (outfitBuy) outfitBuy.onclick = () => { if (g.buyZoneOutfit()) { sfx('coin'); paint(); refresh(); } };
   };
   paint(); openDlg('merchant');
 }
@@ -3578,6 +3573,8 @@ function openBattle(after) {
       formationMotion.previousKey=formationMotion.activeKey;
       formationMotion.activeKey=activeKey;formationMotion.changedAt=Date.now();
     }
+    formationMotion.attackKey=phase==='you'&&fxNow?.crew&&fxNow?.key!=='health'&&fxNow?.key!=='defend'
+      ? crewBattleKey(g.battleActors().find(c=>c.id===b.actorId)||b.helper||{}) : null;
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
     mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam);
@@ -3713,7 +3710,9 @@ function openBattle(after) {
         if(pane){pane.style.removeProperty('top');pane.style.removeProperty('left');pane.style.removeProperty('max-height');pane.style.removeProperty('width');}
         if(confirm){confirm.style.removeProperty('top');confirm.style.removeProperty('left');confirm.style.removeProperty('right');confirm.style.removeProperty('width');}
         const naturalW=wheel.offsetWidth,menuHeight=wheel.offsetHeight;
-        const left0=Math.min(Math.max(8,area.width-naturalW-8),Math.max(8,rect.r-area.left+12));
+        // The skewed first-level rows extend left of their layout box. Leave a
+        // full sprite-safe gutter so the menu never covers Yama/Nira.
+        const left0=Math.min(Math.max(8,area.width-naturalW-8),Math.max(8,rect.r-area.left+44));
         let left=left0;
         const bounds={l:6,t:6,r:area.width-6,b:area.height-12};
         const maxY=Math.max(12,area.height*.83-menuHeight);
@@ -3724,7 +3723,7 @@ function openBattle(after) {
         const ys=[top0,...hard.map(r=>r.b+6),bounds.b-menuHeight];
         let menuPlan=null;
         // L2: besides "right of the actor", try "right of each teammate" so the menu clears the whole squad.
-        const lefts=[...new Set([left0,...allySprites.map(r=>Math.round(r.r+12))])].filter(x=>x>=left0-0.5&&x<=Math.max(8,area.width-naturalW-8));
+        const lefts=[...new Set([left0,...allySprites.map(r=>Math.round(r.r+44))])].filter(x=>x>=left0-0.5&&x<=Math.max(8,area.width-naturalW-8));
         for(const w of widths)for(const x of lefts){
           const plan=planPlacement({size:{w:w+36,h:menuHeight},bounds,hard,soft,minH:menuHeight,
             candidates:ys.map(y=>({key:w,x,y,penalty:Math.abs(y-top0)*3+(naturalW-w)*40+Math.abs(x-left0)*1.5}))});
@@ -3862,7 +3861,7 @@ function openBattle(after) {
       fxHandled = true;                         // M2: the canvas effect owns the numbers + old static image from this paint on
       paint();
       let cutMs = 0;
-      if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS); cutMs = ACTION_CUT_MS; }
+      if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS,()=>camera.cue('idle')); cutMs = ACTION_CUT_MS; }
       else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
       startActionCue(cutMs); startMoveFx('you', k, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs);
 
@@ -4480,7 +4479,7 @@ function drawHeroProfile() {
   const face = artUrl('hero-yama-profile') || artUrl('hero-yama');
   $('#hero-profile-face').src = face;
   $('#hero-profile-standee').src = artUrl('hero-yama');
-  $('#hero-profile-intro').innerHTML = `<h2>${esc(HERO_NAME)}</h2>
+  $('#hero-profile-intro').innerHTML = `<h2>${esc(HERO_NAME)}</h2><p class="hero-title">${esc(HERO_TITLE)}</p>
     <div class="profile-stars" aria-label="${esc(t('profile.rank'))}">${'★'.repeat(g.level)}${'☆'.repeat(Math.max(0, LEVELS.length - g.level))}</div>
     <strong>${esc(t('profile.rank'))} ${g.level}/${LEVELS.length} - ${esc(LEVELS[g.level - 1].name)}</strong>
     <p>${esc(t('profile.story'))}${esc(g.zoneDef().name)}</p><p>${esc(t('profile.duty'))}</p>`;

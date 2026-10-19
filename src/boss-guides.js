@@ -2,10 +2,10 @@ import {ZONES} from './data.js';
 export const BOSS_GUIDE_ZONES=Object.freeze(['th','asia','west']);
 export const BOSS_GUIDE_GRANTS=Object.freeze({th:500,asia:800,west:1200});
 const nextZone={th:'asia',asia:'west',west:'cyberhell'};
-const blank=()=>({won:false,praised:false,welcomed:false,following:false,farewell:false,grantPaid:false,grantNotice:false,grantAmount:0});
+const blank=()=>({won:false,praised:false,welcomed:false,following:false,farewell:false,grantPaid:false,grantNotice:false,grantAmount:0,outfitGranted:false});
 export function initializeBossGuides(g,saved){
   if(arguments.length<2)saved=g.bossGuides;
-  const valid=saved?.version===1,state={version:1,zones:{}};
+  const valid=saved?.version===1||saved?.version===2,state={version:2,zones:{}};
   for(const zone of BOSS_GUIDE_ZONES){
     const entry=blank(),old=valid?saved.zones?.[zone]:null;
     if(old){for(const key of Object.keys(entry))entry[key]=key==='grantAmount'?(Number.isSafeInteger(old[key])&&old[key]>=0?old[key]:0):old[key]===true;}
@@ -24,6 +24,13 @@ export function initializeBossGuides(g,saved){
       // Farewells acknowledged before grants existed are already settled.
       // A new pending receipt survives reload, but old players get no retroactive money.
       if(!entry.grantPaid){entry.grantPaid=true;entry.grantNotice=false;}
+      // Outfit rewards were introduced after the first guide release. Give an
+      // already-earned outfit to old saves once, without replaying the money.
+      const outfit=nextZone[zone];
+      if(!entry.outfitGranted){
+        g.outfitsOwned=[...new Set(['th',...(g.outfitsOwned||[]),outfit])];
+        entry.outfitGranted=true;
+      }
     }
     state.zones[zone]=entry;
   }
@@ -33,7 +40,7 @@ export function initializeBossGuides(g,saved){
 }
 export function bossGuideState(g,zone=g.zone){
   if(!BOSS_GUIDE_ZONES.includes(zone))return null;
-  if(!g.bossGuides||g.bossGuides.version!==1)initializeBossGuides(g);
+  if(!g.bossGuides||![1,2].includes(g.bossGuides.version))initializeBossGuides(g);
   return g.bossGuides.zones[zone] ||= blank();
 }
 export function recordBossGuideWin(g,battle){
@@ -58,6 +65,11 @@ export function completeBossGuideStory(g,key){
   if(match[2]==='welcome')Object.assign(state,{welcomed:true,following:true});
   if(match[2]==='farewell'){
     Object.assign(state,{farewell:true,following:false});
+    const outfit=nextZone[match[1]];
+    if(!state.outfitGranted){
+      g.outfitsOwned=[...new Set(['th',...(g.outfitsOwned||[]),outfit])];
+      state.outfitGranted=true;
+    }
     if(!state.grantPaid){
       const amount=BOSS_GUIDE_GRANTS[match[1]],name=ZONES.find(z=>z.k===match[1]).bossName;
       Object.assign(state,{grantPaid:true,grantNotice:true,grantAmount:amount});
@@ -72,7 +84,10 @@ export function bossGuideStory(key){
   const match=/^boss-guide-(th|asia|west)-(praise|welcome|farewell)$/.exec(key||'');if(!match)return null;
   const [,zone,beat]=match,name=ZONES.find(z=>z.k===zone).bossName;
   const line=beat==='praise'?'มีฝีมือเก่งมาก เจ้าน่าจะดูแลโซนนี้ได้':beat==='welcome'?'ข้ายอมรับฝีมือเจ้าแล้ว ดินแดนข้างหน้ายังรอเจ้าอยู่ มาเถอะ ข้าจะเดินไปส่งเจ้ากับนิราถึงประตูดินแดนใหม่':'พามาส่งถึงที่แล้ว ที่เหลือฝากดินแดนนี้ด้วย';
-  return {title:beat==='praise'?'ผู้ตรวจการยอมรับฝีมือ':beat==='welcome'?'ออกเดินทางสู่ดินแดนใหม่':'คำฝากฝังหน้าประตู',pages:[{title:name,line:`${name}: “${line}”`,image:`img/boss-guide/${zone}-${beat==='farewell'?'farewell':'welcome'}-v${beat==='farewell'&&zone!=='th'?2:1}.webp`}]};
+  const image=`img/boss-guide/${zone}-${beat==='farewell'?'farewell':'welcome'}-v${beat==='farewell'&&zone!=='th'?2:1}.webp`;
+  const pages=[{title:name,line:`${name}: “${line}”`,image}];
+  if(beat==='farewell')pages.push({title:'ของฝากสำหรับดินแดนใหม่',line:`${name}มอบเงิน ${BOSS_GUIDE_GRANTS[zone]} เบี้ยกรรม และชุดประจำดินแดนใหม่ให้ยามา`,image});
+  return {title:beat==='praise'?'ผู้ตรวจการยอมรับฝีมือ':beat==='welcome'?'ออกเดินทางสู่ดินแดนใหม่':'คำฝากฝังหน้าประตู',pages};
 }
 /** Follow recorded player footsteps rather than cutting across scenery. */
 export function bossGuideFollowPoint(history,hero,distance=.055){
@@ -86,7 +101,7 @@ export function pendingBossGuideGrant(g){
   for(const zone of BOSS_GUIDE_ZONES){
     const state=bossGuideState(g,zone);if(!state?.grantPaid||!state.grantNotice||state.grantAmount<=0)continue;
     const name=ZONES.find(z=>z.k===zone).bossName;
-    return {guideZone:zone,title:'ทุนดูแลดินแดนใหม่',who:`${name} มอบเงินให้ดูแลดินแดนใหม่`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมแล้ว ใช้สร้างสถานี จ้างผู้คุม และดูแลสาขาใหม่`,coin:state.grantAmount,exp:0,items:[],abilities:[],weapons:[]};
+    return {guideZone:zone,title:'ทุนและชุดสำหรับดินแดนใหม่',who:`${name} มอบเงินและชุดประจำดินแดนใหม่`,description:`ได้รับ ${state.grantAmount} เบี้ยกรรมและชุดประจำดินแดนใหม่แล้ว`,coin:state.grantAmount,outfit:nextZone[zone],exp:0,items:[],abilities:[],weapons:[]};
   }
   return null;
 }

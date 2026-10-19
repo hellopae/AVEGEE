@@ -41,12 +41,15 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit) {
   const image = stage.querySelector('.battle-squad [data-crew-pick="nira"] img, .battle-squad [data-crew-pick="global:nira"] img');
   if (!image) return;
   const niraActing = phase === 'you' && battle.helper?.k === 'nira';
-  const hurt = phase === 'foe' && (battle.dmg?.hitActors || []).some(actor => actor.k === 'nira');
+  const hurtIds=new Set([...(battle.dmg?.hitActors||[]).map(actor=>actor.id),battle.dmg?.hitActor?.id,battle.dmg?.targetActorId].filter(Boolean));
+  const hurt = phase === 'foe' && (hurtIds.has('nira')||hurtIds.has('global:nira')||(battle.dmg?.crew>0&&battle.dmg?.hitActor?.k==='nira'));
   const pose = niraActing ? battle.helper.pose || 'attack' : hurt ? 'hurt' : 'idle';
   const start = Date.now(), reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   loadSheet(zone).then(frames => {
     if (!frames || !image.isConnected) return;
-    image.classList.add('face-native'); image.dataset.niraPose = pose;
+    // Nira's sheets are drawn facing left. Keep the normal allied mirror so
+    // she faces the enemies on the right.
+    image.classList.remove('face-native'); image.dataset.niraPose = pose;
     let previous = -1;
     const tick = () => {
       if (!image.isConnected) return;
@@ -62,7 +65,7 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit) {
   });
 }
 
-export function playNiraHealingCutscene(dialog, zone, fallback, duration = 1300) {
+export function playNiraHealingCutscene(dialog, zone, fallback, duration = 1300, onDone = null) {
   if (!dialog?.open) return;
   dialog.querySelector('.action-cutscene')?.remove();
   const overlay = document.createElement('div');
@@ -77,6 +80,8 @@ export function playNiraHealingCutscene(dialog, zone, fallback, duration = 1300)
   const skip = document.createElement('button'); skip.type='button';skip.textContent='ข้าม / Skip';
   Object.assign(skip.style,{position:'absolute',right:'5%',bottom:'5%',zIndex:'4'});
   overlay.append(image,title,skip); dialog.appendChild(overlay);
-  let timer,done=false;const finish=()=>{if(done)return;done=true;clearTimeout(timer);overlay.remove();};
+  let timer,done=false;const finish=()=>{if(done)return;done=true;clearTimeout(timer);overlay.remove();onDone?.();};
   overlay.onclick=finish; timer=setTimeout(finish,duration);
+  // Keep the full cutscene artwork. Replacing it with a square sprite frame
+  // enlarged Nira to fill the screen after the opening frame.
 }

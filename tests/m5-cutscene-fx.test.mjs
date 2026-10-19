@@ -32,12 +32,13 @@ test('M5 cut-in uses one capped canvas and avoids animated filters or shadow blu
   assert.doesNotMatch(css, /filter:/);
 });
 
-test('M5 runtime mounts themed motion, labels the move, and keeps reduced mode simple', () => {
+test('classic cut-in labels the move without mounting the M5 grid runtime', () => {
   const ui = read('src/ui.js');
-  assert.match(ui, /mountActionCutsceneFx\(cut, theme/);
-  assert.match(ui, /!camera\.enabled/);
-  assert.match(ui, /prefers-reduced-motion: reduce/);
+  assert.doesNotMatch(ui, /mountActionCutsceneFx\(cut, theme/);
+  assert.doesNotMatch(ui, /class="cutscene-sweep"/);
   assert.match(ui, /class="cutscene-title"/);
   assert.match(ui, /ACTION_CUT_MS = 1300/);
-  assert.match(read('index.html'), /\.action-cutscene\.cutscene-reduced \.cutscene-fx[^}]*display:none/);
+  const html = read('index.html');
+  assert.match(html, /\.action-cutscene:before\{content:none\}/);
+  assert.match(html, /\.cutscene-fx,\.cutscene-sweep\{display:none\}/);
 });
