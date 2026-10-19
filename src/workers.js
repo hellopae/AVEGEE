@@ -1,16 +1,16 @@
 import {canWalk,nearestWalk,findPath,stepTo} from './walk.js?v=k1d';
-import {SPOTS,MOB} from './data.js';
+import {SPOTS,MOB,MERCHANT} from './data.js';
 import {actorStanding} from './actor-recovery.js';
 import {escortCrewPosition,pathLength,ESCORT_PICKUP_SPEED} from './escort.js';
 
 export const WORKER_RULES=Object.freeze({capacity:6,hireBase:180,hireExtra:60,wage:2,wageEvery:30,food:.03,supervise:.2,repair:.2,perStation:2});
-export const WORKER_MODES=Object.freeze({auto:'ช่วยงานอัตโนมัติ',supervise:'ช่วยคุมวิญญาณ',repair:'ช่วยซ่อมอาคาร',escort:'นำส่งวิญญาณ',rest:'พักงาน'});
+export const WORKER_MODES=Object.freeze({auto:'ช่วยงานอัตโนมัติ',gather:'เก็บวัสดุขาย',supervise:'ช่วยคุมวิญญาณ',build:'ช่วยสร้างอาคาร',repair:'ช่วยซ่อมอาคาร',escort:'นำส่งวิญญาณ',rest:'พักงาน'});
 const zones=['th','asia','west','cyberhell'];
 const names={th:'อสูรผู้ช่วย',asia:'โอนิผู้ช่วย',west:'อิมป์ผู้ช่วย',cyberhell:'ไซเบอร์อสูร'};
 const number=(v,fallback=0)=>Number.isFinite(v)?v:fallback;
-const emptyLedger=()=>({hired:0,hireSpent:0,wagesPaid:0,supervisionTicks:0,repairMs:0,escortsDone:0});
+const emptyLedger=()=>({hired:0,hireSpent:0,wagesPaid:0,supervisionTicks:0,buildMs:0,repairMs:0,escortsDone:0,ngiwWood:0,dabShards:0,sales:0,income:0,offlineIncome:0});
 export function normalizeWorkers(value) {
-  const out={version:1,nextId:1,workers:[],ledger:emptyLedger()},seen=new Set();
+  const out={version:2,nextId:1,lastAt:Math.max(0,number(value?.lastAt,Date.now())),workers:[],ledger:emptyLedger()},seen=new Set();
   for(const raw of Array.isArray(value?.workers)?value.workers:[]) {
     if(!zones.includes(raw?.homeZone)||typeof raw.id!=='string'||seen.has(raw.id)||out.workers.filter(w=>w.homeZone===raw.homeZone).length>=WORKER_RULES.capacity)continue;
     seen.add(raw.id);
@@ -19,7 +19,8 @@ export function normalizeWorkers(value) {
       mode:Object.hasOwn(WORKER_MODES,raw.mode)?raw.mode:'auto',x:number(raw.x,SPOTS.bench.x),y:number(raw.y,SPOTS.bench.y),face:raw.face===-1?-1:1,
       stamina:Math.max(0,Math.min(100,number(raw.stamina,100))),recovering:!!raw.recovering,
       workTicks:Math.max(0,Math.min(WORKER_RULES.wageEvery,Math.floor(number(raw.workTicks)))),funded:false,
-      job:raw.job?.kind==='escort'&&raw.job.soulId!=null?{kind:'escort',soulId:raw.job.soulId}:raw.job&&['supervise','repair'].includes(raw.job.kind)&&typeof raw.job.station==='string'?{kind:raw.job.kind,station:raw.job.station}:null});
+      cargo:raw.cargo==='ngiwWood'||raw.cargo==='dabShards'?raw.cargo:null,
+      job:raw.job?.kind==='escort'&&raw.job.soulId!=null?{kind:'escort',soulId:raw.job.soulId}:raw.job?.kind==='gather'?{kind:'gather',material:raw.job.material==='dabShards'?'dabShards':'ngiwWood',phase:raw.job.phase==='sell'?'sell':'collect',worked:Math.max(0,number(raw.job.worked))}:raw.job&&['supervise','build','repair'].includes(raw.job.kind)&&typeof raw.job.station==='string'?{kind:raw.job.kind,station:raw.job.station}:null});
   }
   out.nextId=Math.max(out.nextId,Math.max(1,Math.floor(number(value?.nextId,1))));
   for(const key of Object.keys(out.ledger))out.ledger[key]=Math.max(0,number(value?.ledger?.[key]));
@@ -60,6 +61,7 @@ const keeper=(g,st)=>g.crewOf(st?.crewK);
 function repairReady(g,st) {
   return !!st?.repair&&g.crew.some(c=>actorStanding(c)&&['taan','dam'].includes(c.k)&&c.buildK===st.def.k);
 }
+function buildReady(g,st) { return !!st?.build&&g.crew.some(c=>actorStanding(c)&&['taan','dam'].includes(c.k)&&c.buildK===st.def.k); }
 function superviseReady(g,st) {
   const c=keeper(g,st);
   return !!st&&!st.build&&!st.repair&&st.fire<MOB.burnMax&&st.slots.some(slot=>!slot.pendingUntil||Date.now()>=slot.pendingUntil)&&actorStanding(c)&&!c.self&&!c.escort;
@@ -67,20 +69,34 @@ function superviseReady(g,st) {
 function jobValid(g,w) {
   if(!w.job)return false;
   if(w.job.kind==='escort')return (g.afterlifeWalks||[]).some(walk=>walk.escort?.workerId===w.id);
-  const st=stationOf(g,w);return w.job.kind==='repair'?repairReady(g,st):superviseReady(g,st);
+  if(w.job.kind==='gather')return true;
+  const st=stationOf(g,w);return w.job.kind==='repair'?repairReady(g,st):w.job.kind==='build'?buildReady(g,st):superviseReady(g,st);
 }
 function assignJob(g,w) {
-  for(const kind of w.mode==='auto'?['repair','supervise']:[w.mode]) {
-    if(!['repair','supervise'].includes(kind))continue;
+  for(const kind of w.mode==='auto'?['build','repair','supervise','gather']:[w.mode]) {
+    if(kind==='gather'){
+      const material=Number(w.id.split(':').at(-1))%2?'ngiwWood':'dabShards';
+      w.job={kind:'gather',material,phase:w.cargo?'sell':'collect',worked:0};w.path=null;return;
+    }
+    if(!['build','repair','supervise'].includes(kind))continue;
     for(const st of g.stations.slice().sort((a,b)=>a.def.k.localeCompare(b.def.k))) {
       const occupied=zoneWorkers(g).filter(x=>x.job?.kind===kind&&x.job.station===st.def.k).length;
-      if(occupied>=WORKER_RULES.perStation||!(kind==='repair'?repairReady(g,st):superviseReady(g,st)))continue;
+      if(occupied>=WORKER_RULES.perStation||!(kind==='repair'?repairReady(g,st):kind==='build'?buildReady(g,st):superviseReady(g,st)))continue;
       w.job={kind,station:st.def.k};w.path=null;return;
     }
   }
 }
 export function stepWorkers(g) {
   if(g.paused||g.over||g.battle||g.zoneTravel?.active)return;
+  const s=state(g),now=Date.now(),away=Math.min(6*60*60*1000,Math.max(0,now-s.lastAt));
+  // Long tab closes still produce a modest, bounded result. One worker cannot
+  // silently mint more than 6 hours of ten-minute gathering trips.
+  if(away>=60_000){
+    const trips=Math.floor(away/600_000),active=zoneWorkers(g).filter(w=>['auto','gather'].includes(w.mode)).length;
+    const earned=Math.min(180,trips*active*5);
+    if(earned){g.coin+=earned;s.ledger.offlineIncome+=earned;s.ledger.income+=earned;}
+  }
+  s.lastAt=now;
   for(const w of zoneWorkers(g)) {
     w.funded=false;
     if(w.mode==='rest'||w.recovering||w.stamina<=0) {
@@ -105,6 +121,12 @@ export function workerSupervisionMultiplier(g,st) {
   return 1+Math.min(WORKER_RULES.perStation,count)*WORKER_RULES.supervise;
 }
 function target(g,w) {
+  if(w.job?.kind==='gather'){
+    if(w.job.phase==='sell')return nearestWalk(MERCHANT.x,MERCHANT.y);
+    const key=w.job.material==='dabShards'?'dab':'ngiw';
+    const st=g.stations.find(st=>st.def.k===key&&!st.build);
+    return nearestWalk(st?.def.x??(key==='dab'?520:610),st?.def.y??(key==='dab'?1080:1510));
+  }
   const st=stationOf(g,w);if(!st)return null;
   const peers=zoneWorkers(g).filter(x=>x.job?.station===st.def.k).sort((a,b)=>a.id.localeCompare(b.id));
   const offset=peers.indexOf(w)%2===0?-34:34;
@@ -124,9 +146,21 @@ export function advanceWorkers(g,dt,now=Date.now()) {
         const next=w.path[0],dx=next[0]-w.x,dy=next[1]-w.y,d=Math.hypot(dx,dy);
         if(d<2)w.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);w.moving=stepTo(w,dx/d*speed,dy/d*speed);w.face=dx<0?-1:1;if(!w.moving)w.path=null;}
       }
-    } else if(w.job.kind==='repair') {
+    } else if(w.job.kind==='gather') {
+      w.job.worked=(w.job.worked||0)+Math.min(dt,120);
+      if(w.job.worked>=1800){
+        if(w.job.phase==='collect'){
+          w.cargo=w.job.material;w.job.phase='sell';w.job.worked=0;w.path=null;w.arrived=false;
+          state(g).ledger[w.cargo]++;
+        }else{
+          const earned=w.cargo==='dabShards'?7:5;g.coin+=earned;state(g).ledger.sales++;state(g).ledger.income+=earned;
+          w.cargo=null;w.job.phase='collect';w.job.worked=0;w.path=null;w.arrived=false;
+        }
+      }
+    } else if(w.job.kind==='repair'||w.job.kind==='build') {
       const st=stationOf(g,w);
-      if(repairReady(g,st)&&!st.repairWait&&st.repair>now){const gain=Math.min(Math.min(dt,120)*WORKER_RULES.repair,st.repair-now);st.repair-=gain;state(g).ledger.repairMs+=gain;}
+      const field=w.job.kind==='build'?'build':'repair',ready=w.job.kind==='build'?buildReady(g,st):repairReady(g,st);
+      if(ready&&!st[`${field}Wait`]&&st[field]>now){const gain=Math.min(Math.min(dt,120)*WORKER_RULES.repair,st[field]-now);st[field]-=gain;state(g).ledger[`${field}Ms`]+=gain;}
     }
   }
 }
@@ -176,7 +210,7 @@ export function drawWorker(ctx,w,time,height=48) {
   ctx.fillStyle='rgba(14,8,18,.28)';ctx.beginPath();ctx.ellipse(w.x,w.y-2,height*.22,height*.065,0,0,Math.PI*2);ctx.fill();
   if(image?.complete&&image.naturalWidth) {
     const fw=image.naturalWidth/4,fh=image.naturalHeight/4;
-    const row=w.job?.kind==='escort'?3:w.moving?1:w.arrived&&w.job?.kind==='repair'?2:0,col=Math.floor(time/160)%4,width=height*fw/fh;
+    const row=w.job?.kind==='escort'?3:w.moving?1:w.arrived&&['build','repair','gather'].includes(w.job?.kind)?2:0,col=Math.floor(time/160)%4,width=height*fw/fh;
     ctx.translate(w.x,w.y);if(w.face===-1)ctx.scale(-1,1);
     const frame=workerFrameRect(w.homeZone,row,col);
     ctx.drawImage(image,frame.x*fw,frame.y*fh,frame.w*fw,frame.h*fh,

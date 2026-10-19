@@ -174,12 +174,13 @@ export const scaleFor = cv => cv.width / SCENE.w;
 /** วงแหวนใต้เท้าตัวที่เลือกอยู่ในแผงข้อมูล */
 /** ป้ายลอยเหนือหัว — พื้นทึบ + ขอบสี อ่านออกบนฉากมืด ๆ ได้ทุกจุด
  *  ใช้กับเปรตเป็นหลัก แต่เขียนให้ทั่วไปไว้ เผื่อของอย่างอื่นต้องบอกว่า "กดได้" */
-function tag(ctx, x, y, t, [text, color]) {
+function tag(ctx, x, y, t, [text, color], small=false) {
   const bob = Math.sin(t / 420) * 2;
   ctx.save();
-  ctx.font = `600 ${13 * UI_SCALE_MAP}px "IBM Plex Sans Thai", system-ui, sans-serif`;
+  const fontSize=(small?10.5:13)*UI_SCALE_MAP;
+  ctx.font = `600 ${fontSize}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  const w = ctx.measureText(text).width + 16 * UI_SCALE_MAP, h = 21 * UI_SCALE_MAP, yy = y + bob;
+  const w = ctx.measureText(text).width + (small?12:16) * UI_SCALE_MAP, h = (small?17:21) * UI_SCALE_MAP, yy = y + bob;
   ctx.fillStyle = 'rgba(20,10,14,.88)';
   rr(ctx, x - w / 2, yy - h / 2, w, h, 7 * UI_SCALE_MAP); ctx.fill();
   ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
@@ -351,7 +352,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
 
   // ---- คิววิญญาณ ยืนเรียงขึ้นสะพานมาที่แท่นพิพากษา ----
+  const arriving=new Set((g.afterlifeWalks||[]).filter(w=>w.destination==='arrival').map(w=>w.soul.id));
   (rescue ? [] : g.queue).forEach((s, i) => {
+    if(arriving.has(s.id))return;
     const p = QUEUE_LINE[i];
     if (!p) return;
     if (sel && sel.kind === 'soul' && sel.key === s.id) ring(ctx, p[0], p[1], t, 24);
@@ -380,8 +383,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       shade(x, y, SOUL_H * .82, c => drawSoul(c, x, y, SOUL_H * .82, soulTime + v.id * 300, '#d9eaff', v.sp || 7));
       if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
       else if (waiting && v.crew) tag(ctx, x, y - SOUL_H - 12, t,
-        [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371']);
-      else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371']);
+        [clock < v.departAt - 650 ? `รอ ${v.crewName} มารับ` : `${v.crewName}มารับแล้ว`, '#f7c371'], true);
+      else if (travelProgress < .25) tag(ctx, x, y - SOUL_H - 12, t, [`→ ${v.name}`, '#f7c371'], true);
     });
     if (crewAt && actorStanding(g.crewOf(v.crew))) {
       const escortFace = waiting ? (QUEUE_LINE[0][0] < crewAt[0] ? -1 : 1) : (x < crewAt[0] ? -1 : 1);
@@ -671,7 +674,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
   // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
   for (const c of (rescue ? [] : g.crew))
-    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 20 : 34), c.k === 'nira' ? .74 : 1);
+    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 54 : 48), c.k === 'nira' ? .74 : 1);
 
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
@@ -871,7 +874,8 @@ function bubble(ctx, text, x, y, scale=1) {
   const originX=x;ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);x=0;y=0;
   ctx.font = `600 ${MAP_NAME_SIZE * UI_SCALE_MAP}px "IBM Plex Sans Thai",sans-serif`;
   const w = Math.min(180 * UI_SCALE_MAP, ctx.measureText(text).width + 10 * UI_SCALE_MAP), h = 16 * UI_SCALE_MAP;
-  const bx = Math.max((6-originX)/scale,Math.min((SCENE.w-6-originX)/scale-w,-w/2));
+  const preferred=originX>SCENE.w*.58 ? -w-18*UI_SCALE_MAP : 18*UI_SCALE_MAP;
+  const bx = Math.max((6-originX)/scale,Math.min((SCENE.w-6-originX)/scale-w,preferred));
   ctx.fillStyle = 'rgba(20,9,14,.92)'; rr(ctx, bx, y - h, w, h, 8); ctx.fill();
   ctx.strokeStyle = 'rgba(212,163,85,.55)'; ctx.lineWidth = 1.5; ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 7);

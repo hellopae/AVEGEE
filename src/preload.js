@@ -1,6 +1,7 @@
 import { createAssetQueue, loadImage, warmImage, zoneTiers, fetchWithTimeout, useImageCacheVersion } from './asset-preload.js?v=yama-live-20261015';
 import { preloadBgm } from './sfx.js';
 import { getLang } from './i18n.js';
+import { TOWN_TERRAIN_PREVIEW } from './town-terrain.js';
 
 // H1 (10 ต.ค. 2569) — หน้าโหลดรอเฉพาะ "ชั้น critical" (ดู zoneTiers ใน asset-preload.js)
 // ที่เหลือของโซนโหลดเงียบๆ ตอนเครื่องว่างหลังเข้าเกม · ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error
@@ -81,6 +82,9 @@ function hasSave() {
 /** ชั้น critical (กั้นหน้าโหลด) + เพลงหน้าปก · ชั้นที่เหลือ (เพลงโซน/ศึกเป็นอันดับแรกของเบื้องหลัง) */
 async function tiersFor(zone, outfit, opts) {
   const t = zoneTiers(await catalog(), zone, outfit, opts);
+  // The renderer reads this exact file while sharp chunks stream in. Keep it in
+  // the blocking tier even if a stale generated catalog accidentally omitted it.
+  if (zone === 'th' && !t.critical.includes(TOWN_TERRAIN_PREVIEW)) t.critical.unshift(TOWN_TERRAIN_PREVIEW);
   const background = ['audio:bgm-zone', ...t.background];
   background.splice(Math.min(25, background.length), 0, 'audio:bgm-battle');
   return { critical:[...t.critical, 'audio:bgm-title'], background, late:t.late };

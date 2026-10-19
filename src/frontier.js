@@ -27,7 +27,8 @@ import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } fr
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
 const HERO_H = 0.085;
-const MOB_H = 0.115;
+const MOB_H = 0.088;
+const BOSS_H = 0.1725; // authored/boss scale stays at the former 0.115 * 1.5
 const REACH = 0.09;                 // ระยะเดินเข้าใกล้ศัตรูแล้วปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้น
 const GATE = [0.5, 0.19], NIRA = [0.575, 0.265], GUARD = [0.43, 0.265];
 export const FRONTIER_EXIT = Object.freeze([.5,.90]);
@@ -37,7 +38,7 @@ export const frontierAnchors = zone => ({ GATE, NIRA:zone === 'cyberhell' ? [0.5
 export const nearFrontierNira = (p, zone = 'th') => { const {NIRA} = frontierAnchors(zone); return Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH; };
 const SPAWN_EVERY = 2600;           // ลองสร้างศัตรูใหม่ทุกเท่านี้ (ms) ถ้ายังไม่เต็มจอ
 const MOVE_SPEED = 0.00015;         // สัดส่วนพื้นที่เดินต่อ ms — ศัตรูเดินจากขอบเข้ามาจุดในสนาม
-export const maxOnScreen = wave => Math.min(5, 3 + Math.floor(wave / 4));
+export const maxOnScreen = wave => wave >= 4 ? 3 : 2;
 
 // เซสชันเดียวต่อโซน — สลับโซนแล้วเริ่มใหม่ (ของเก่าทิ้ง ตรงกับกติกาเดิมที่แต่ละโซนมีชายแดนแยกกัน)
 let session = null;   // { zone, player:{x,y,tx,ty,face}, enemies:[{id,kindIdx,x,y,tx,ty,arrived,level}], nextId }
@@ -281,7 +282,7 @@ export function makeFrontierWalk(cv, g, opts) {
         const x = px(en.x), y = py(en.y);
         const inReach = en.id === nearId;
         const kd = MOB.kinds[en.kindIdx] || MOB;
-        drawStandee(ctx, en.art || kd.img, x, y, U * MOB_H * (en.boss ? 1.5 : 1), t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
+        drawStandee(ctx, en.art || kd.img, x, y, U * (en.boss ? BOSS_H : MOB_H), t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
         if (inReach) {
           ctx.strokeStyle = `rgba(255,205,120,${0.55 + 0.35 * Math.sin(t / 260)})`;
           ctx.lineWidth = 2.5;

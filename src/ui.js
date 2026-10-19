@@ -4436,6 +4436,7 @@ function updatePlay() {
 function toggleCourt() {
   if (g.over) return;
   g.courtClosed = !g.courtClosed;
+  if(!g.courtClosed&&!g.queue.length)g.spawnSoul();
   updatePlay();
   refresh();
 }

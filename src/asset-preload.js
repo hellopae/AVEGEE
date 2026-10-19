@@ -161,7 +161,18 @@ export async function loadImage(url, timeoutMs = 30000) {
     } catch { cache = null; }
   }
   try { return await decodeImage(cachedUrl || url, timeoutMs); }
-  catch (error) { try { await cache?.delete(url); } catch {} throw error; }
+  catch (error) {
+    // A truncated response can survive both the HTTP cache and Cache Storage.
+    // Evict it, then make one real network request with a cache-busting query and
+    // decode that response before giving up. This keeps the town from opening on
+    // a black canvas after an interrupted deploy/download.
+    try { await cache?.delete(url); } catch {}
+    if (cachedUrl && /^img\//.test(url)) {
+      const retry = `${url}${url.includes('?') ? '&' : '?'}recover=${Date.now()}`;
+      return decodeImage(retry, timeoutMs);
+    }
+    throw error;
+  }
   finally { if (cachedUrl) URL.revokeObjectURL(cachedUrl); }
 }
 function decodeImage(url, timeoutMs) {

@@ -187,7 +187,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   observer?.observe(canvas.parentElement);listen(window,'resize',resize);resize();
   const world=()=>({w:Math.max(width,height*1.79),h:Math.max(height,width/1.79)});
   function camera(dt) {
-    const p=position,w=world(),scale=overview?Math.min(width/w.w,height/w.h):1.9;
+    const p=position,w=world(),scale=overview?Math.min(width/w.w,height/w.h):1.55;
     const x=overview?(width-w.w*scale)/2:clamp(width/2-p[0]*w.w*scale,width-w.w*scale,0);
     const y=overview?(height-w.h*scale)/2:clamp(height*.6-p[1]*w.h*scale,height-w.h*scale,0);
     const f=reduced.matches?1:1-Math.exp(-dt/110);cam.x+=(x-cam.x)*f;cam.y+=(y-cam.y)*f;cam.scale+=(scale-cam.scale)*f;
@@ -245,17 +245,9 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     ctx.clearRect(0,0,width,height);const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     const status=dungeonStatus(g);if(!status)return;
-    // Labels identify actual route places; scenery comes from raster art.
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';
-    if(routeId==='th:asia'){
-      for(const [name,at] of [['ประตูโซน 1',corridor[0]],['ป่า',corridor[4]],['น้ำตก',corridor[7]],['หุบเขา',corridor[10]],['เหว',corridor[15]],['ถ้ำบอสโซน 1',corridor[23]]]){
-        const p=screenPoint(at);ctx.fillStyle='#fff0ca';ctx.strokeStyle='#160d18';ctx.lineWidth=4;ctx.strokeText(name,p[0],p[1]-24);ctx.fillText(name,p[0],p[1]-24);
-      }
-    }
-    points.forEach((value,i)=>{
-      const p=screenPoint(point(value));ctx.fillStyle=status.defeated.includes(status.route.checkpoints[i].id)?'#aeeab8':'#ffe2a0';
-      ctx.fillText(`${status.defeated.includes(status.route.checkpoints[i].id)?'✓ ':''}${status.route.checkpoints[i].name}`,p[0],p[1]+23);
-    });
+    // The painted road already communicates forest/waterfall/gorge/cave. Keep
+    // the playfield clear of geographic captions and use the footer/minimap for progress.
     const hero=position,nira=follower;
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
@@ -263,15 +255,14 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     else if(routeId==='th:asia'&&g.challengeUnlocked?.()&&!g.bossCleared?.th){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
-      const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
+      const p=screenPoint(a.p),h=w.h*cam.scale*.060,animationTime=reduced.matches?0:t;
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
-      if(a.kind==='enemy'){const foe=MOB.kinds[a.enemy.kindIdx]||MOB;const boss=a.enemy.boss;drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,true,g.zone);if(a.enemy.locked){ctx.fillStyle='#ffe2a0';ctx.fillText(status.checkpoint<2?'ผ่านปีศาจตามทางก่อน':'ผ่านคดีที่ 10 ก่อน',p[0],p[1]+20);}return;}
+      if(a.kind==='enemy'){const foe=MOB.kinds[a.enemy.kindIdx]||MOB;const boss=a.enemy.boss;drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',1,true,g.zone);return;}
       if(a.kind==='nira') {if(moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,walkDistance,face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',face,false,g.zone);return;}
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);
     });
-    const exit=screenPoint(point(1));ctx.fillStyle=status.ready?'#d8ffbc':'#d4b688';ctx.fillText(routeId==='th:asia'?(status.ready?'ประตูโซน 2 — เดินเข้ามาใกล้':'ประตูโซน 2 · ต้องผ่านถ้ำบอสก่อน'):(status.ready?'ประตูเมือง — เดินเข้ามาใกล้':'ประตูเมืองยังปิด'),exit[0],exit[1]-14);
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
     mc.strokeStyle='#ffd27a';mc.lineWidth=2;mc.beginPath();corridor.forEach((p,i)=>i?mc.lineTo(p[0]*180,p[1]*110):mc.moveTo(p[0]*180,p[1]*110));mc.stroke();
     mc.fillStyle='#fff';mc.beginPath();mc.arc(hero[0]*180,hero[1]*110,3,0,Math.PI*2);mc.fill();

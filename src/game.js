@@ -421,6 +421,11 @@ const API = {
     else this.log(`วิญญาณเข้าคิว — ${s.who} (สำนวน #${String(s.id).padStart(3, '0')})`);
     applySoulPortrait(s, this.zone);
     this.queue.push(s);
+    // New cases visibly arrive at the harbour. They are in the queue at once so
+    // the player can open the trial immediately; the map only delays where the
+    // spirit is drawn while a hired assistant escorts it to the dais.
+    const dock=this.harbourPoint?.(),tail=QUEUE_LINE[Math.min(this.queue.length-1,QUEUE_LINE.length-1)];
+    if(dock&&tail)this.startAfterlifeWalk(s,[dock.x,dock.y],tail,'arrival',null,null,'worker');
   },
 
   /** ถึงคิวของสำนวนที่เขียนมือหรือยัง — คืน null ถ้ายังไม่ถึง หรือไม่มีเรื่องไหนที่โซนนี้รับได้
@@ -1162,7 +1167,7 @@ const API = {
     const walk = { soul, destination, entry, path, elapsed:0,
       duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
-    else if (['gate','queue'].includes(destination)) {
+    else if (['gate','queue','arrival'].includes(destination)) {
       // Assistants can cover Nira's other delivery routes too. Preserve the
       // existing courier if none is free; do not pull keepers off their posts.
       const fallbackCourier=walk.courier;

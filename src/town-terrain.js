@@ -27,7 +27,10 @@ let preview = null, loading = 0, frame = 0;
 function ensurePreview() {
   if (preview || typeof Image === 'undefined') return;
   preview = {image:new Image(), ready:false};
-  preview.image.onload = () => { preview.ready = true; };
+  preview.image.onload = async () => {
+    try { if (preview.image.decode) await preview.image.decode(); } catch { return; }
+    preview.ready = true;
+  };
   preview.image.src = TOWN_TERRAIN_PREVIEW;
 }
 function request(row,col) {
