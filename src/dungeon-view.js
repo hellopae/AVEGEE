@@ -1,3 +1,4 @@
+import {drawFrontierAmbient} from './frontier-ambient.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus } from './zone-travel.js';
 import { themeBackground } from './theme-assets.js';
@@ -141,6 +142,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),action=root.querySelector('.dungeon-interact'),loading=root.querySelector('.dungeon-load');
   const heading=root.querySelector('strong'),overviewButton=root.querySelector('[data-action="overview"]');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const frontierTree=new Image();frontierTree.src='img/theme-v4/town-tree-th-v1.webp';
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
   let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guideTrail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
@@ -242,8 +244,9 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {
-    ctx.clearRect(0,0,width,height);const w=world();
+    ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
+    if(routeId==='th:asia')drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,tree:frontierTree});
     const status=dungeonStatus(g);if(!status)return;
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';
     // The painted road already communicates forest/waterfall/gorge/cave. Keep
@@ -256,6 +259,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.060,animationTime=reduced.matches?0:t;
+      ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[a.enemy.kindIdx]||MOB;const boss=a.enemy.boss;drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',1,true,g.zone);return;}
@@ -322,6 +326,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
   const guideButton=root.querySelector('.dungeon-guide');
   const heading=root.querySelector('strong'),overviewButton=root.querySelector('[data-action="overview"]');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const frontierTree=new Image();frontierTree.src='img/theme-v4/town-tree-th-v1.webp';
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
   const alertArt=new Image();alertArt.src='img/ui/alert-mark.png';
@@ -410,7 +415,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {
-    ctx.clearRect(0,0,width,height);const w=world();
+    ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     const status=dungeonStatus(g);if(!status)return;
     // Labels identify actual route places; scenery comes from raster art.
@@ -426,6 +431,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     if(!status.ready){const at=dungeonPoint(chase?chase.s/total:DUNGEON_PROGRESS[status.checkpoint]);actors.push({p:[at[0]-.028,at[1]],kind:'enemy'});}
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
+      ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);if(!a.following){ctx.fillStyle='#ffe2a0';ctx.fillText('ผู้ตรวจการ · คุยเพื่อออกเดินทาง',p[0],p[1]+21);}return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
         if(chase&&chaseAlerted(chase)){const bob=reduced.matches?0:Math.sin((t-alertAt)/90)*3;ctx.save();if(alertArt.complete&&alertArt.naturalWidth){ctx.drawImage(alertArt,p[0]-17,p[1]-h*1.15-35+bob,34,34);ctx.restore();}else{ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.lineWidth=4;ctx.strokeStyle='#2a0d10';ctx.fillStyle='#ff4a3d';ctx.strokeText('❗',p[0],p[1]-h*1.15-8+bob);ctx.fillText('❗',p[0],p[1]-h*1.15-8+bob);ctx.restore();}}

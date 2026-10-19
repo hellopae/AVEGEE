@@ -292,13 +292,13 @@ export function makeFrontierWalk(cv, g, opts) {
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
-    if(guideBoss)acts.push({y:guideBoss.y,fn:()=>{drawStandee(ctx,'zone-boss',px(guideBoss.x),py(guideBoss.y),U*MOB_H*1.5,t,'👑',1,false,g.zone);}});
+    if(guideBoss)acts.push({y:guideBoss.y,fn:()=>{drawStandee(ctx,'zone-boss',px(guideBoss.x),py(guideBoss.y),U*BOSS_H,t,'👑',1,false,g.zone);}});
     if(releasedBoss)acts.push({y:releasedBoss.y,fn:()=>{
-      drawStandee(ctx,releasedBoss.art,px(releasedBoss.x),py(releasedBoss.y),U*MOB_H*1.5,t,'👹',1,false,releasedBoss.sourceZone);
+      drawStandee(ctx,releasedBoss.art,px(releasedBoss.x),py(releasedBoss.y),U*BOSS_H,t,'👹',1,false,releasedBoss.sourceZone);
       label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,U*.024,'#c0e6ba');
     }});
     if (challengeBoss && !releasedBoss) acts.push({ y:challengeBoss.y, fn:() => {
-      drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * MOB_H * 1.5, t, '👹');
+      drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * BOSS_H, t, '👹');
       label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, U * .024, '#ffd27a');
     } });
     acts.push({ y: P.y, fn: () => {
@@ -321,18 +321,18 @@ export function makeFrontierWalk(cv, g, opts) {
           fab.textContent = invasion.length ? tr('challenge.fab', {name:en.name}) : '⚔️ เริ่มต่อสู้';
           fab.hidden = false;
           fab.style.left = `${(px(en.x)) / W * 100}%`;
-          fab.style.top = `${(py(en.y) - U * MOB_H * (en.boss ? 1.5 : 1)) / H * 100}%`;
+          fab.style.top = `${(py(en.y) - U * (en.boss ? BOSS_H : MOB_H)) / H * 100}%`;
           fab.dataset.enemyId = String(en.id);
         }
       }
     }
-    if(guide){guide.hidden=!guideBoss||Math.hypot(P.x-guideBoss.x,P.y-guideBoss.y)>.09;if(!guide.hidden){guide.style.left=`${px(guideBoss.x)/W*100}%`;guide.style.top=`${(py(guideBoss.y)-U*MOB_H*1.5)/H*100}%`;}}
+    if(guide){guide.hidden=!guideBoss||Math.hypot(P.x-guideBoss.x,P.y-guideBoss.y)>.09;if(!guide.hidden){guide.style.left=`${px(guideBoss.x)/W*100}%`;guide.style.top=`${(py(guideBoss.y)-U*BOSS_H)/H*100}%`;}}
     if (challenge) {
       challenge.hidden = !challengeBoss || !g.challengeCanTalk(P);
       if (!challenge.hidden) {
         challenge.textContent = tr('challenge.fab', {name:BOSS_NAMES[g.zone].frontier});
         challenge.style.left = `${px(challengeBoss.x) / W * 100}%`;
-        challenge.style.top = `${(py(challengeBoss.y) - U * MOB_H * 1.5) / H * 100}%`;
+        challenge.style.top = `${(py(challengeBoss.y) - U * BOSS_H) / H * 100}%`;
       }
     }
     for (const [button, shown, x, y] of [

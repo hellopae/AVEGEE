@@ -10,7 +10,7 @@ function cloudSprite(){
  const c=document.createElement('canvas');c.width=256;c.height=96;const p=c.getContext('2d');
  const blobs=[[42,59,42,25],[82,43,52,36],[132,49,62,34],[184,57,51,26],[220,66,31,18]];
  for(const [x,y,rx,ry]of blobs){
-  const g=p.createRadialGradient(x,y,2,x,y,rx);g.addColorStop(0,'rgba(255,249,235,.62)');
+  const g=p.createRadialGradient(x,y,2,x,y,rx);if(!g?.addColorStop)return null;g.addColorStop(0,'rgba(255,249,235,.62)');
   g.addColorStop(.56,'rgba(244,239,226,.28)');g.addColorStop(1,'rgba(236,231,224,0)');
   p.save();p.translate(x,y);p.scale(1,ry/rx);p.fillStyle=g;p.beginPath();p.arc(0,0,rx,0,Math.PI*2);p.fill();p.restore();
  }

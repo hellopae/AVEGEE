@@ -1,7 +1,7 @@
+import {preloadTownTerrainPreview,TOWN_TERRAIN_PREVIEW} from './town-terrain.js?v=k1d';
 import { createAssetQueue, loadImage, warmImage, zoneTiers, fetchWithTimeout, useImageCacheVersion } from './asset-preload.js?v=yama-live-20261015';
 import { preloadBgm } from './sfx.js';
 import { getLang } from './i18n.js';
-import { TOWN_TERRAIN_PREVIEW } from './town-terrain.js';
 
 // H1 (10 ต.ค. 2569) — หน้าโหลดรอเฉพาะ "ชั้น critical" (ดู zoneTiers ใน asset-preload.js)
 // ที่เหลือของโซนโหลดเงียบๆ ตอนเครื่องว่างหลังเข้าเกม · ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error
@@ -9,7 +9,7 @@ const readySet = new Set();
 const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url), 3, readySet);
 // เบื้องหลัง: ดึงไฟล์ลงแคชโดยไม่ถอดรหัสภาพ · 2 เลนเพื่อไม่แย่งแบนด์วิดท์กับเกม
 const bgQueue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : warmImage(url), 2, readySet);
-const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-j2-layered-battle9-20261015-r1-yama-live-hell1-k1e-l4a-l4b-night-city-v1-map-polish-v1-border-nira-v2-boss-justice-workers-v1';
+const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-j2-layered-battle9-20261015-r1-yama-live-hell1-k1e-l4a-l4b-night-city-v1-map-polish-v1-border-nira-v2-boss-justice-workers-v1-r6';
 if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
@@ -116,7 +116,7 @@ async function run(zone, outfit, boot) {
   const opts = { firstRun: !hasSave(), arrival: !boot };
   let tiers;
   try { tiers = await tiersFor(zone, outfit, opts); } catch {}
-  if (tiers && !queue.missing(tiers.critical).length) { boot?.remove(); warmRest(tiers); return; }
+  if (tiers && !queue.missing(tiers.critical).length) { try { if(zone==='th')await preloadTownTerrainPreview(); boot?.remove(); warmRest(tiers); return; } catch {} }
   const el = screen(boot);
   const notes = rotateNotes(el, zone);
   const siblings = boot ? [...document.body.children].filter(n => n !== boot && !n.inert) : [];
@@ -131,6 +131,7 @@ async function run(zone, outfit, boot) {
           el.querySelector('.bar i').style.width = `${percent}%`;
           el.querySelector('.pct').textContent = `${percent}% · ${done}/${total}${failed ? ` · ต้องลองใหม่ ${failed}` : ''}`;
         });
+        if(!failed.length&&zone==='th'){try{await preloadTownTerrainPreview();}catch{failed.push(TOWN_TERRAIN_PREVIEW);}}
       } catch { failed = ['catalog']; }
       if (!failed.length) break;
       if (!await choose(el, `ยังโหลดไม่สำเร็จ ${failed.length} รายการ ตรวจการเชื่อมต่อแล้วลองใหม่ได้ครับ`, notes)) break;

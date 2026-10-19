@@ -177,10 +177,10 @@ export const scaleFor = cv => cv.width / SCENE.w;
 function tag(ctx, x, y, t, [text, color], small=false) {
   const bob = Math.sin(t / 420) * 2;
   ctx.save();
-  const fontSize=(small?10.5:13)*UI_SCALE_MAP;
+  const fontSize=small ? 10.5 * UI_SCALE_MAP : 13 * UI_SCALE_MAP;
   ctx.font = `600 ${fontSize}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  const w = ctx.measureText(text).width + (small?12:16) * UI_SCALE_MAP, h = (small?17:21) * UI_SCALE_MAP, yy = y + bob;
+  const w = ctx.measureText(text).width + (small?12:16) * UI_SCALE_MAP, h = 21 * UI_SCALE_MAP * (small?17/21:1), yy = y + bob;
   ctx.fillStyle = 'rgba(20,10,14,.88)';
   rr(ctx, x - w / 2, yy - h / 2, w, h, 7 * UI_SCALE_MAP); ctx.fill();
   ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
@@ -448,7 +448,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       if (frozen) tag(ctx, x, y-SOUL_H-16, 0, ['!!!','#ff9a7a']);
       else if (!exit) tag(ctx, x, y - SOUL_H - 10, t,
         [walk.destination === 'prison' ? '⛓️ ไปตะราง'
-          : walk.destination === 'gate' ? '🕊️ ไปสวรรค์' : '↩️ กลับคิว', '#f7c371']);
+          : walk.destination === 'gate' ? '🕊️ ไปสวรรค์' : walk.destination === 'arrival' ? '⛵ จากท่าเรือไปแท่นตัดสิน' : walk.destination === 'station' ? `⚖️ ไป${walk.entry?.name||'สถานที่ลงทัณฑ์'}` : '↩️ กลับคิว', '#f7c371']);
       ctx.restore();
     });
     // ชุด 29C — ยมทูตนำวิญญาณไปตะราง: มารับ → เดินนำหน้า วิญญาณตามติด (ตำแหน่งจริงอยู่ที่ escort.js ที่เดียว)

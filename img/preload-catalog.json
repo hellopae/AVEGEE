@@ -180,7 +180,8 @@
     "img/zone-boss.png",
     "img/zone-world-map.webp",
     "img/ui/icon-defend-shield.png",
-    "img/ui/alert-mark.png"
+    "img/ui/alert-mark.png",
+    "img/frontier-route/zone1-2-v2.webp"
   ],
   "zones": {
     "th": [
@@ -377,7 +378,8 @@
       "img/nira-combat/nira-th-sheet-v1.webp",
       "img/boss-guide/th-welcome-v1.webp",
       "img/boss-guide/th-farewell-v1.webp",
-      "img/workers/worker-th-sheet-v1.webp"
+      "img/workers/worker-th-sheet-v1.webp",
+      "img/nira-combat/nira-th-heal-cutscene-v1.webp"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",
@@ -539,7 +541,8 @@
       "img/nira-combat/nira-asia-sheet-v1.webp",
       "img/boss-guide/asia-welcome-v1.webp",
       "img/boss-guide/asia-farewell-v2.webp",
-      "img/workers/worker-asia-sheet-v1.webp"
+      "img/workers/worker-asia-sheet-v1.webp",
+      "img/nira-combat/nira-asia-heal-cutscene-v1.webp"
     ],
     "west": [
       "img/krata-minigame/plerng-west-training-v2.png",
@@ -698,7 +701,8 @@
       "img/nira-combat/nira-west-sheet-v1.webp",
       "img/boss-guide/west-welcome-v1.webp",
       "img/boss-guide/west-farewell-v2.webp",
-      "img/workers/worker-west-sheet-v1.webp"
+      "img/workers/worker-west-sheet-v1.webp",
+      "img/nira-combat/nira-west-heal-cutscene-v1.webp"
     ],
     "cyberhell": [
       "img/krata-minigame/plerng-cyberhell-training-v2.png",
@@ -862,7 +866,8 @@
       "img/nira-combat/nira-cyberhell-sheet-v1.webp",
       "img/boss-justice/final-bound-v1.webp",
       "img/boss-justice/final-sentence-v1.webp",
-      "img/workers/worker-cyberhell-sheet-v1.webp"
+      "img/workers/worker-cyberhell-sheet-v1.webp",
+      "img/nira-combat/nira-cyberhell-heal-cutscene-v1.webp"
     ]
   }
 }

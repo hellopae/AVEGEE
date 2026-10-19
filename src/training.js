@@ -15,7 +15,7 @@ export const scoreExp = score => {
   return TRAINING_RULES.rewards.reduce((exp, r) => score >= r.score ? r.exp : exp, 0);
 };
 
-const hero = () => ({ id:HERO_TRAINING_ID, kind:'yama', homeZone:'global', name:'ยมบาทน้อย / Young Yama' });
+const hero = () => ({ id:HERO_TRAINING_ID, kind:'yama', homeZone:'global', name:'ยามา / Yama' });
 const actorOf = (g, id) => id === HERO_TRAINING_ID ? hero() : g.roster?.[id] || null;
 const isShared = actor => actor.kind === 'yama' || actor.kind === 'nira';
 const homeOf = (g, actor) => isShared(actor) ? 'global' : actor.homeZone || g.zone;

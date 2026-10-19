@@ -24,15 +24,25 @@ export const townTerrainImage = () => preview?.ready ? preview.image : null;
 
 const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
 let preview = null, loading = 0, frame = 0;
-function ensurePreview() {
-  if (preview || typeof Image === 'undefined') return;
-  preview = {image:new Image(), ready:false};
-  preview.image.onload = async () => {
-    try { if (preview.image.decode) await preview.image.decode(); } catch { return; }
-    preview.ready = true;
-  };
-  preview.image.src = TOWN_TERRAIN_PREVIEW;
+let previewWait = null;
+export function preloadTownTerrainPreview(timeoutMs=30000) {
+  if(preview?.ready)return Promise.resolve(preview.image);
+  if(previewWait)return previewWait;
+  previewWait=new Promise((resolve,reject)=>{
+    let ended=false,active;
+    const timer=setTimeout(()=>finish(new Error('town preview timeout')),timeoutMs);
+    function finish(error,image){if(ended)return;ended=true;clearTimeout(timer);if(active)active.onload=active.onerror=null;if(error){preview=null;reject(error);}else{preview={image,ready:true};resolve(image);}}
+    function attempt(fresh){
+      const image=new Image();active=image;preview={image,ready:false};image.decoding='async';
+      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,image);}catch(error){if(!fresh)attempt(true);else finish(error);}};
+      image.onerror=()=>{if(!fresh)attempt(true);else finish(new Error('town preview unavailable'));};
+      image.src=TOWN_TERRAIN_PREVIEW+(fresh?'?recover='+Date.now():'');
+    }
+    attempt(false);
+  }).finally(()=>{previewWait=null;});
+  return previewWait;
 }
+function ensurePreview(){if(!preview&&typeof Image!=='undefined')preloadTownTerrainPreview().catch(()=>{});}
 function request(row,col) {
   const key = row+','+col;
   let c = chunks.get(key);

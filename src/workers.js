@@ -167,7 +167,7 @@ export function advanceWorkers(g,dt,now=Date.now()) {
 export function assignWorkerEscort(g,walk) {
   if(!walk?.path?.length||walk.escort||walk.courier||g.food<WORKER_RULES.food)return false;
   const start=walk.path[0];
-  const candidates=zoneWorkers(g).filter(w=>['auto','escort'].includes(w.mode)&&(!w.job||w.mode==='auto'&&w.job.kind==='supervise')&&!w.recovering&&w.stamina>0&&(w.workTicks<WORKER_RULES.wageEvery||g.coin>=WORKER_RULES.wage))
+  const candidates=zoneWorkers(g).filter(w=>['auto','escort'].includes(w.mode)&&(!w.job||w.mode==='auto'&&['supervise','gather'].includes(w.job.kind))&&!w.recovering&&w.stamina>0&&(w.workTicks<WORKER_RULES.wageEvery||g.coin>=WORKER_RULES.wage))
     .sort((a,b)=>Math.hypot(a.x-start[0],a.y-start[1])-Math.hypot(b.x-start[0],b.y-start[1])||a.id.localeCompare(b.id));
   for(const w of candidates) {
     const route=findPath(w.x,w.y,...start);

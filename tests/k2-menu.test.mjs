@@ -11,14 +11,14 @@ test('K2 interactive rows keep a stationary hit area through pointerdown and cli
   assert.match(css,/pointer-events:none/,'closed flyouts cannot intercept input');
  }
 });
-test('K2 normal formation compresses both diagonal axes to 60–65% and advances group',()=>{
+test('K2 normal formation keeps allies closer on both diagonal axes',()=>{
  const slots=planBattleFormation(4,1678,937);
  assert.ok(slots[0].x/1678>=.14);
  assert.ok(slots.at(-1).x/1678<=.33);
- assert.ok((slots[3].x-slots[0].x)/(1678*.275)>=.60);
- assert.ok((slots[3].x-slots[0].x)/(1678*.275)<=.65);
- assert.ok((slots[3].y-slots[0].y)/(937*.155)>=.60);
- assert.ok((slots[3].y-slots[0].y)/(937*.155)<=.65);
+ assert.ok((slots[3].x-slots[0].x)/(1678*.275)>=.43);
+ assert.ok((slots[3].x-slots[0].x)/(1678*.275)<=.47);
+ assert.ok((slots[3].y-slots[0].y)/(937*.155)>=.43);
+ assert.ok((slots[3].y-slots[0].y)/(937*.155)<=.47);
  assert.equal(slots[0].stepX,1678*.065);
 });
 test('K2 changed entry URLs match, including review imports',()=>{
@@ -26,9 +26,9 @@ test('K2 changed entry URLs match, including review imports',()=>{
  for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
   const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
   const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/^20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
+  assert.match(a||'',/^20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
  }
- assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
+ assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
 });
 
 test('K2 pointerdown captures primary input, leaves activation to one native click',async()=>{

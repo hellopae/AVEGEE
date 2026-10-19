@@ -424,8 +424,17 @@ const API = {
     // New cases visibly arrive at the harbour. They are in the queue at once so
     // the player can open the trial immediately; the map only delays where the
     // spirit is drawn while a hired assistant escorts it to the dais.
-    const dock=this.harbourPoint?.(),tail=QUEUE_LINE[Math.min(this.queue.length-1,QUEUE_LINE.length-1)];
-    if(dock&&tail)this.startAfterlifeWalk(s,[dock.x,dock.y],tail,'arrival',null,null,'worker');
+    if(!this.courtClosed)this.startCourtArrival(s);
+  },
+
+  startCourtArrival(soul) {
+    if(!soul||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
+    const dock=this.harbourPoint(),tail=QUEUE_LINE[Math.min(Math.max(0,this.queue.indexOf(soul)),QUEUE_LINE.length-1)];
+    return this.startAfterlifeWalk(soul,[dock.x,dock.y],tail,'arrival');
+  },
+  cancelCourtArrival(id) {
+    const i=this.afterlifeWalks.findIndex(w=>w.destination==='arrival'&&w.soul.id===id);
+    if(i<0)return;const [walk]=this.afterlifeWalks.splice(i,1);this.releaseEscort(walk);
   },
 
   /** ถึงคิวของสำนวนที่เขียนมือหรือยัง — คืน null ถ้ายังไม่ถึง หรือไม่มีเรื่องไหนที่โซนนี้รับได้
@@ -933,6 +942,7 @@ const API = {
   },
   assign(soulId, stKey, crewK, intensity) {
     if (this.assignBlock(soulId, stKey, crewK)) return false;
+    this.cancelCourtArrival(soulId);
     const st = this.stations.find(s => s.def.k === stKey);
     const si = this.queue.findIndex(s => s.id === soulId);
     // สถานีที่มีผู้คุมประจำอยู่แล้ว ดวงถัดไปเข้าเวรของคนเดิม (หนึ่งหลังหนึ่งผู้คุม)
@@ -946,7 +956,9 @@ const API = {
     let arriveAt = now;
     if (route?.length) {
       const outbound = [QUEUE_LINE[0], ...route];
-      if (!c.self && !st.slots.length) {
+      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name});
+      if(delivered){const walk=this.afterlifeWalks.findLast(w=>w.destination==='station'&&w.soul.id===soul.id);arriveAt=now+(walk?.duration||0);}
+      else if (!c.self && !st.slots.length) {
         const from = [c.x ?? c.hx, c.y ?? c.hy];
         const pickupRoute = findPath(from[0], from[1], QUEUE_LINE[0][0], QUEUE_LINE[0][1]);
         const pickup = [from, ...(pickupRoute?.length ? pickupRoute : [QUEUE_LINE[0]])];
@@ -1167,12 +1179,14 @@ const API = {
     const walk = { soul, destination, entry, path, elapsed:0,
       duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
-    else if (['gate','queue','arrival'].includes(destination)) {
+    else if (['gate','queue','arrival','station'].includes(destination)) {
       // Assistants can cover Nira's other delivery routes too. Preserve the
       // existing courier if none is free; do not pull keepers off their posts.
       const fallbackCourier=walk.courier;
       delete walk.courier;
-      if (!assignWorkerEscort(this,walk) && fallbackCourier) walk.courier=fallbackCourier;
+      const assigned=assignWorkerEscort(this,walk);
+      if(!assigned&&['arrival','station'].includes(destination))return false;
+      if(!assigned&&fallbackCourier)walk.courier=fallbackCourier;
     }
     this.afterlifeWalks.push(walk);
     return true;
@@ -1710,7 +1724,10 @@ const API = {
     if (this.bossUntil && this.bossUntil !== this.bossDodged && performance.now() < this.bossUntil) {
       this.bossDodged = this.bossUntil;
       const T = SPOTS.throne;
-      if (Math.hypot(P.x - T.x, (P.y - T.y) * 1.6) < 70) this.walkTo(T.x + 116, T.y + 52);
+      if (Math.hypot(P.x - T.x, (P.y - T.y) * 1.6) < 90) {
+        const exits=[[T.x-100,T.y+65],[T.x+116,T.y+80],[T.x,T.y+120]];
+        for(const [x,y] of exits){const target=nearestWalk(x,y);if(target&&Math.hypot(target[0]-T.x,(target[1]-T.y)*1.6)>=100&&this.walkTo(...target))break;}
+      }
     }
     // 30D — จุดเท้าของตัวละครที่ยืนนิ่ง: ยมบาทเดินทับไม่ได้ (walk.js วงรอบตัว ใช้กับยมบาทอย่างเดียว)
     setNpcDiscs([...standPoints(this),...workerDiscs(this)]);
@@ -3056,7 +3073,7 @@ const API = {
   },
 
   battleActors() {
-    return [{ id:'you', k:'yama', name:'ยมบาทน้อย / Yama' }, ...this.battleCrew(),
+    return [{ id:'you', k:'yama', name:'ยามา / Yama' }, ...this.battleCrew(),
       ...(this.guardActive() && !(this.battle?.absentActors || []).includes(this.guard.id) ? [this.guard] : [])];
   },
   battleTimeline() { return combatTimeline(this); },
@@ -4947,7 +4964,7 @@ API.restore = function (d) {
   this.afterlifeWalks = [];
   for (const walk of d.afterlifeWalks || []) {
     if (walk?.soul && westSpiritsFrozen(this) && walk.zone === 'west') this.afterlifeWalks.push(structuredClone(walk));
-    else if (walk?.soul && ['prison', 'gate', 'queue'].includes(walk.destination)) {
+    else if (walk?.soul && ['prison', 'gate', 'queue','arrival','station'].includes(walk.destination)) {
       releaseWorkerEscort(this,{...walk,elapsed:walk.duration});
       this.finishAfterlifeWalk(walk);
     }

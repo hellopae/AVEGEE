@@ -3,7 +3,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 export function workersPanelHtml(game) {
   const list=zoneWorkers(game),why=workerHireWhy(game);
   return `<section class="worker-office"><h3>อสูรผู้ช่วยประจำโซน ${list.length}/${WORKER_RULES.capacity}</h3>
-    <p class="hint">จ้างได้หลายคน · ช่วยผู้คุมทำงานเร็วขึ้นคนละ 20% (สูงสุด 2 คนต่อสถานี) · ช่วยทัณฑ์/ดำซ่อมหลังถึงไซต์ · นำวิญญาณที่รับทัณฑ์แล้วไปส่ง</p>
+    <p class="hint">จ้างได้หลายคน · ช่วยผู้คุมทำงานเร็วขึ้นคนละ 20% (สูงสุด 2 คนต่อสถานี) · ช่วยทัณฑ์/ดำสร้างและซ่อม · นำวิญญาณจากท่าเรือและแท่นตัดสินไปส่ง · ตัดกิ่งงิ้ว/เก็บเศษดาบไปขาย</p>
     <p class="hint">ค่าจ้าง ${WORKER_RULES.wage} เบี้ยกรรม / ${WORKER_RULES.wageEvery} วาระที่ทำงาน · ใช้เสบียง ${WORKER_RULES.food} / วาระ · เหนื่อยแล้วพักอัตโนมัติ · อยู่ประจำโซนเดิม</p>
     <button class="gold" data-hire-worker ${why?'disabled':''} title="${esc(why)}">จ้างผู้ช่วย ${workerHireCost(game)} เบี้ยกรรม</button>
     ${why?`<small>${esc(why)}</small>`:''}<div class="market-grid">${list.map(w=>{

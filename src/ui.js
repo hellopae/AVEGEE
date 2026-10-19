@@ -1157,7 +1157,7 @@ function drawOverlay() {
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
       `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
     ov.appendChild(d); place(d);
-    mark('boss', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
+    mark('boss speech-side', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
       `<span class="who">พญายม</span>${esc(fx.line)}`, true);
   }
   const nira = g.crewOf('nira');
@@ -1170,7 +1170,7 @@ function drawOverlay() {
     .map(d => `<div class="line">${deedLine(d)}</div>`).join('')
     || '<div class="line">สำนวนว่างเปล่า ดิฉันเองก็ยังไม่รู้ว่าเขาทำอะไรมา</div>';
   // หมุดของนิราต้องตามตัวจริงไปด้วย — เธอเดินเตร็ดเตร่ และย้ายที่ถ้าไปรับเวรที่สถานี
-  const nm = mark('', nx, ny - charH() - 8, '📜',
+  const nm = mark('case speech-side', nx, ny - charH() - 8, '📜',
     `<span class="who">นิรา · สำนวน #${String(s.id).padStart(3, '0')}</span>ผู้ตายเป็น<b>${esc(s.name || s.who)}</b>${rec}`);
   if (nira) nm.dataset.follow = 'nira';        // เธอเดินเตร็ดเตร่ หมุดต้องตามหัวไปทุกเฟรม
 
@@ -1178,7 +1178,7 @@ function drawOverlay() {
     `<div class="line ${SAID_STYLE[x.kind] || ''}">${SAID_ICON[x.kind] || ''} ${esc(x.text)}</div>`).join('')
     || '<div class="line">...เขาก้มหน้าไม่พูดอะไร</div>';
   const hasNew = s.said.some(x => x.kind === 'truth' || x.kind === 'confess' || x.kind === 'false');
-  mark('soul', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - charH() - 8, hasNew ? '❗' : '💬',
+  mark('soul speech-side', QUEUE_LINE[0][0], QUEUE_LINE[0][1] - charH() - 8, hasNew ? '❗' : '💬',
     `<span class="who">${esc(s.who)}</span>${said}`);
 }
 
@@ -4436,7 +4436,7 @@ function updatePlay() {
 function toggleCourt() {
   if (g.over) return;
   g.courtClosed = !g.courtClosed;
-  if(!g.courtClosed&&!g.queue.length)g.spawnSoul();
+  if(!g.courtClosed){if(!g.queue.length)g.spawnSoul();else g.startCourtArrival(g.queue[0]);}
   updatePlay();
   refresh();
 }

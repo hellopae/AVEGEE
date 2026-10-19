@@ -37,7 +37,7 @@ test('boss lookup keeps home identity including possessed rulers and excludes mi
  assert.equal(bossSpriteKey('img/mob-vampire.png','west'),null);
 });
 test('the cliff stays solid outside the new painted stairs',()=>{
- for(const [x,y]of [[1200,1150],[1300,1120],[1400,1190]])assert.equal(townContains(x,y),false,`${x},${y}`);
+ for(const [x,y]of [[1400,980],[1400,1100],[1200,1140]])assert.equal(townContains(x,y),false,`${x},${y}`);
 });
 
 test('new lava stairs and lower landing are continuously walkable, without walking through an overlay tree',()=>{

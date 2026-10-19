@@ -62,11 +62,11 @@ test('N1-5 krajok room: adjustable-mirror stand is always in the room; magic mir
 
 test('N1-cache every file touched by N1 gets the -n1 token (index.html, review page, direct imports)', () => {
   const html = read('index.html'), review = read('output/game-review/index.html');
-  assert.match(html, /"\.\/src\/ui\.js": "\.\/src\/ui\.js\?v=[^"]+-n1"/);
-  assert.match(html, /<script type="module" src="src\/ui\.js\?v=[^"]+-n1">/);
+  assert.match(html, /"\.\/src\/ui\.js": "\.\/src\/ui\.js\?v=[^"]+-n1(?:-r6)?"/);
+  assert.match(html, /<script type="module" src="src\/ui\.js\?v=[^"]+-n1(?:-r6)?">/);
   assert.match(html, /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]+-n1(?:-[^"]+)*"/);
-  assert.match(html, /"\.\/src\/town-layout\.js": "\.\/src\/town-layout\.js\?v=[^"]+-n1"/);
-  assert.match(html, /"\.\/src\/room\.js\?v=minigame-review-20261011": "\.\/src\/room\.js\?v=[^"]+-n1"/);
+  assert.match(html, /"\.\/src\/town-layout\.js": "\.\/src\/town-layout\.js\?v=[^"]+-n1(?:-r6)?"/);
+  assert.match(html, /"\.\/src\/room\.js\?v=minigame-review-20261011": "\.\/src\/room\.js\?v=[^"]+-n1(?:-r6)?"/);
   assert.match(html, /src\/town-map\.css\?v=[^"]+-n1/);
   assert.match(review, /src\/ui\.js\?v=[^"']+-n1/);
   assert.match(read('src/town-layout.js'), /town-walkmask\.js\?v=k1d-n1/);

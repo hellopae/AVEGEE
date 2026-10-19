@@ -154,7 +154,7 @@ test('N4: scene.js hands the town ground to town-flow and the old colour-guess a
   const flow = readFileSync('src/town-flow.js', 'utf8');
   assert.match(scene, /drawTownFlow\(ctx,t,reduced\)/);
   assert.doesNotMatch(scene, /drawMapAmbientGround\(ctx,townTerrainImage\(\),'town-th'/);
-  assert.match(readFileSync('index.html', 'utf8'), /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]*-n4"/);
+  assert.match(readFileSync('index.html', 'utf8'), /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]*-n4(?:-r6)?"/);
   assert.doesNotMatch(flow, /TMPDEBUG|globalThis\.__(?:dens|fp|noFlow)/, 'release has no debug flow controls');
   assert(readdirSync('img/map-zone1/v4').includes('flow-v4.png'));
 });
