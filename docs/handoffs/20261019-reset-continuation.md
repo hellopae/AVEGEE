@@ -1,5 +1,108 @@
 # Handoff after usage reset — 2026-10-19
 
+## Latest checkpoint — read this section first
+
+### Published batches — 2026-10-20 (read first; supersedes older local-only labels)
+
+1. `c0ae54c` — owner-reference Zone 1 navigation, removed upper stair tree, pier edge limits, guard reachable rest point. Isolated staged snapshot 27/27 passed. Pages 39426271527 SUCCESS; live marker verified `20261020-zone1-navigation`.
+2. `b84b78a` — dedicated money/outfit handover illustrations for guide bosses in th/asia/west; all three visually inspected with Yama/Nira in zone 1 outfits. Isolated guide/preload suite 23/23 passed. Pages 39427434448 SUCCESS; live marker verified `20261020-zone1-gifts`.
+3. `b18a8d2` — persistent court ferries, case availability after disembarkation, workers escort from dock, UI/save integration and regressions. Isolated gameplay suite 31/31 passed; ui.js/scene.js syntax checked. Manual test: opening court changed disabled TRIAL RECESS to enabled TRIAL BEGINS and entered case 001. The local save had no workers, testing dock availability. Screenshot `docs/handoffs/20261020-ferry-trial-open.png`. Deployment verification pending at this checkpoint.
+
+Remaining local files are not part of those releases: new outside-route art + dungeon-art/view changes, pending R7 index/preload/catalog edits, handoff/experiment docs, screenshots, and terrain candidate.
+
+Terrain repair candidate is `output/terrain-review/r2-c3-repair-candidate.png` (generated from v5/r2-c3.webp). It removes the pasted rectangular paving visually, but modifies texture along tile edges and must NOT be integrated without stitching/alignment validation. Original production tile unchanged. This repairs only one tile candidate, not all reported ground seams.
+
+Continue with: validate repaired terrain against adjacent tiles/overview, outside map route alignment/scale/encounters, full battle acceptance list, workers jobs/escort manual checks, boss justice end-to-end, preload cold/slow cases and dialogue placements. The later interrogation expansion remains queued after existing fixes. Legacy tests still contain exact historic cache-token assertions; full-suite acceptance is not claimed.
+
+### Partial navigation release — 2026-10-20 (newest)
+
+- Owner authorized pushing independently completed work. Committed/pushed c0ae54c34ec5e6c49befb478f79e3575681bf5ed to main: exact owner-reference Zone 1 navigation data, removed upper stair tree, solid pier edges, reachable guard tea-rest endpoint, and navigation regressions.
+- Isolated staged snapshot (without pending ferry/UI/art work) passed 27/27: town navigation, owner map review, afterlife, zone entry, guard rest, town world. Build marker 20261020-zone1-navigation. Pages run 39426271527 was in progress at dispatch; confirm success/live marker before reporting published.
+- Remaining local index.html still carries pending R7 imports. Preserve that unstaged work. All ferry/gift/frontier art changes remain uncommitted.
+- Terrain repair started: image tool editing r2-c3.webp as a separate candidate, fixing baked rectangular pasted paving, keeping geometry and tile border. Do not integrate until visual comparison and seam checks pass.
+
+### Active continuation — 2026-10-20 (latest)
+
+- Owner prioritizes existing repairs; defer complicated/token-heavy Shado/Hunyuan trials. Shado 2D Fire template was opened; export supports sprite sheet/JSON in its UI but requires an account. Nothing exported or integrated, no account created, AI link not enabled. Experiment details in enhancement-experiments.md.
+- New navigation DATA extracted from the exact Desktop/map/Map-Zone1-3.jpg with 621 registration inliers. `scripts/extract-town-owner-mask.py` -> `src/town-owner-walkmask.js`; these remain untracked and must ship with runtime import if accepted.
+- `src/town-layout.js` now consumes owner mask. It filters tiny red flower/JPEG flecks, retains 8-world-unit edge tolerance for the existing path grid, small 48-unit interaction pads where screenshot footprints cover anchors, and merchant UI-obscured paving. Prop/building collisions remain active. No walk.js runtime change retained.
+- Focused exact navigation/afterlife/zone-entry suite now 12/12 passed. Town navigation test now probes all TOWN_STAIRS as well as every station with initial/all buildings. Red-region blocking test added; rerun with final checks.
+- Full suite was run DURING mask iteration: 1121 total, 1094 pass, 27 fail. Do not cite this as final acceptance. Many navigation failures now fixed by interaction-pad connectivity; recheck of the 19 failed files is running, output `/tmp/avegee-failed-recheck.log` (session 20150). Some other failures assert obsolete cache tokens; inspect before updating tests.
+- Local server restarted on 127.0.0.1:8765 (session 58571). Browser IAB 3 tab 1, variable gameTab, `/index.html?test=owner-mask`; resumed a test save. Cold preload reached title and town rendered. Screenshot visibly STILL has rectangular baked terrain seams under props, so that art issue remains open. No claim of a complete manual navigation pass.
+- All map/ferry/gift changes remain LOCAL, UNCOMMITTED, UNPUSHED. Only prior boss duplicate-sentencing hotfix is live. Keep all old acceptance checklist below.
+
+### Follow-up verification after navigation correction
+
+- Latest focused gameplay verification: 33/33 passed (navigation, red-area blocking, afterlife, zone entry, guard recovery, keeper capacity and dock). The obsolete N1-cache assertion was explicitly excluded; this is not a full-suite pass. `git diff --check` passed.
+
+- Failed-file recheck: 213 tests, 200 passed, 13 failed. Navigation/afterlife/zone-entry failures from the first full run cleared. Remaining actual findings fixed: pier edge tolerance no longer opens water/front edge; tea rest records the reachable path endpoint rather than an unreachable requested point. Keeper-capacity fixture now disembarks ferry passengers before assigning them, matching the new arrival requirement.
+- The 17-test focused rest/keeper/dock suite has 16 passes; only its obsolete N1 cache-token assertion fails. Other old token assertions across battle/layout/flow tests still need replacement with meaningful release-cache consistency checks. Do not describe full suite as passing.
+- Screenshot saved at docs/handoffs/20261020-town-review.png. Full-map click moved the player marker from centre toward the upper-west bridge; this is one manual route, not all-branch acceptance.
+- Confirmed later queue from the other chat “ออกแบบระบบหน้าสอบสวน” and original checkout BACKLOG.md: AFTER existing repair release, add purple/Kan, red/Pleng, green/Boon spirit traits with text/icons; traits change through interrogation; distinct roles/costs for five keepers; worker support; impact cards; supervisor evaluation/rewards and existing three punishment steps. Retrieve the earlier detailed agreement before implementation. Do not confuse this with already implemented boss-justice flow.
+
+### Partial release on 2026-10-20 — supersedes deployment status below
+
+- User asked whether completed work could be pushed before the next reset. Pushed ONLY the duplicate boss sentencing fix and its regression tests, plus the build/cache marker in index.html.
+- Remote main now `048f3a6f3ba59741e90456ee1561c5d015fbf2c8` (`Prevent duplicate boss sentencing on rematches`). Build marker `20261020-boss-justice-hotfix`.
+- Focused boss justice suite rerun: 11/11 passed. GitHub Pages run `39296041532` completed successfully. Live URL verified with build marker `20261020-boss-justice-hotfix`.
+- All other product changes below remain local and uncommitted. `index.html` is intentionally still modified locally for future R7; only the hotfix build marker and boss-justice import version were staged for this partial release.
+- The documentation-only prior commit `8afe0b1` also reached main. This latest handoff update itself is still local.
+- Resume with the remaining checklist. Do not redo the duplicate-docket fix, and do not claim map/ferry/gift changes are published.
+
+User requested a durable summary before the next usage reset. This checkpoint supersedes the older status labels below; the older checklist remains as the full requirements inventory.
+
+### Repository and deployment
+
+- Work only in `/Users/agapae/Documents/Work PAE/Claude/AVEGEE/release-worktree-20261019`, branch `codex/release-20261019`. Preserve the original dirty checkout and other agents' work.
+- Remote `main` was checked directly with `git ls-remote origin refs/heads/main`: `06beabc5dc97602b4b0fa889809d62456f537ea0`.
+- Local HEAD is `8afe0b1` (documentation-only checkpoint), ahead of main. Product changes listed below are still UNCOMMITTED and UNPUSHED. Do not tell the user they are visible on production.
+- Pending build marker: `20261019-map-ferry-justice-r7`. Index import mappings and preload script/catalog versions were updated to avoid stale modules.
+- User authorizes push after the requested work and verification are complete. Do not push merely because automated tests pass.
+
+### Implemented locally during the latest session — not pushed
+
+1. Zone 1: removed the blocking tree at `(1436,691)` in `src/town-layout.js`; strengthened tests to use `townContains` (terrain plus prop blockers) on upper stairs/landing and western paths. This is a LOCAL correction, not proof that the entire reference mask is complete.
+2. Ferry/court/workers: added persistent `courtArrivals` in `src/game.js`. Ferry starts with pending court cases, pauses when court is closed, disembarks at the harbour, enables the case immediately after disembarkation, and assigns available workers to escort souls. Without a worker the soul waits at the harbour. Scene/UI/save-restore integration and regression tests were added. Live visual acceptance remains.
+3. Outside map: created genuinely redrawn `img/frontier-route/zone1-2-v3.webp`, connected through `src/dungeon-art.js` and preload catalog. Removed geographic labels from dungeon footer in `src/dungeon-view.js`. Camera sharpness/scale and route alignment still need live checking; enemy count has NOT been increased yet.
+4. Boss gifts: created `img/boss-guide/th-gift-v1.webp`, `asia-gift-v1.webp`, `west-gift-v1.webp`. Second farewell page uses the new gift illustration. Boss hands money and next-zone outfit; Yama/Nira use zone 1 outfits as requested. Story and preload references plus tests updated.
+5. Boss justice: prevented repeat sentencing on rematches by checking the persistent ledger in `queueBossJustice`. Regression test now requires one docket per boss.
+6. Cache versions: `index.html`, `src/preload.js`, and `img/preload-catalog.json` updated for new assets/modules. The final preload URL bump occurred AFTER the last focused test run, so rerun affected checks.
+
+Changed tracked files: `img/preload-catalog.json`, `index.html`, `src/boss-guides.js`, `src/boss-justice.js`, `src/dungeon-art.js`, `src/dungeon-view.js`, `src/game.js`, `src/i18n.js`, `src/preload.js`, `src/scene.js`, `src/town-layout.js`, `src/ui.js`, `tests/boss-guides.test.mjs`, `tests/boss-justice.test.mjs`, `tests/release-20261019.test.mjs`, `tests/zone1-map-review.test.mjs`. Four new WebP files are untracked; include them in the eventual commit.
+
+### Important correction to the older checklist
+
+The expanded boss interrogation/sentencing system is ALREADY substantially implemented in `src/boss-justice.js`, UI, scene, story, assets and tests. Do not rebuild it from scratch. Audit found capture -> regional dais -> interrogation -> location/keeper/severity -> escort -> punishment -> release to border. Final boss has ending 01 -> bound interrogation -> forced mirror/correct choices/max severity 5 -> sentence cutscene -> ending 02/03. Save/reload coverage exists. The remaining work is a live end-to-end verification of all four zones, repairing any discovered defect, and confirming art/order. The duplicate-docket defect was fixed locally above.
+
+### Still open or not accepted — must not be marked complete
+
+- Walk every major branch of `Map-Zone1-3.jpg`; verify full mask connectivity and blocking of red areas. Current local stairs/prop fixes do not establish full compliance.
+- Repair/verify baked rectangular ground seams (images 6/8/11) and incomplete prop shadows (6/11/12). Atomic terrain loading does not repair baked art. No targeted repaint was performed in this latest session.
+- Visually check mirrored buildings and removed waterfall house/event location (3.5/4).
+- Visually check clouds, hot/boiling lava, detailed flames and leaf shapes (5/5.5).
+- Check outside map camera, route alignment, sharpness, normal-town character scale, trees/shadows/water/leaves; increase actual outside roaming encounters and verify proximity battles. Border checkpoint should remain 2–3 small normal enemies.
+- Test workers cutting thorn trees, collecting sword fragments, selling to merchant, escorting souls to prison/punishment/heaven, and assisting Taan repair/construction. Test new ferry with court closed/open and no worker.
+- Test all battle comments against the supplied recording: allied forward lunge, Nira facing right, hurt poses for both, closer formation, menu not overlapping Yama, original-style ultimate transition, no black hit-effect rectangle, no giant Nira zoom after cutscene, all four Nira ultimate/heal scenes.
+- Test preload cold/warm/slow loading; map must be ready before play and must not remain black.
+- Check Nira/King Yom dialogue placement, team button above Nira, and smaller spirit text at different camera/viewport sizes.
+- Play bosses 1–3 praise/invitation, border guide joining Yama/Nira, gate gift/farewell, money/outfit reward once only, and merchant outfit removal. Latest gift requirement supersedes the earlier request to buy outfits from merchant.
+- Play border boss sentencing in every zone and final boss ending sequence; test save/reload boundaries, no duplicate rewards/dockets, no ending skip/deadlock.
+- Run full automated suite, final diff review, commit, push, verify Pages success and live build marker. None of these final release gates is complete for R7.
+
+### Verification and exact restart point
+
+- Last focused run: 49 tests passed, 0 failed (boss guides/justice, frontier cave, dungeon art/view, zone1 map/navigation, release checks). Ferry agent separately reported 38/38; navigation agent 25/25. These are focused results, not the full suite or visual acceptance.
+- A local server was started in the release checkout on `127.0.0.1:8765` (exec session `81435`; verify it still exists before reuse).
+- IAB browser id `3`, tab id `5`, URL `http://127.0.0.1:8765/index.html?test=r7`. Latest tab inventory confirmed it exists. Browser variable from prior work was `tab`; rebind if needed. Latest UI was the first tutorial after new-game intro, with “รับทราบ”. Obtain fresh AX state before interacting.
+- Continue by entering the map and visually checking loading, ferry and marked map locations. Rebuild `node scripts/build-game-review.mjs` and use the generated review page for other scene checks where appropriate.
+- Full test command: `node --test --test-reporter=spec tests/*.test.mjs`. Also run `git diff --check` and review asset references/import mappings.
+- Browser/imagegen skills were already read; follow their tool rules. Use imagegen for any raster repaint. Do not fabricate visual test results or use decorative enemy copies as a substitute for real encounters.
+- No automatic resume schedule has been created. When the user resumes after reset, continue from this checkpoint, inspect git status first, and avoid overlapping other agents.
+
+---
+
+## Earlier requirements inventory (status labels below are historical)
+
 Repository: `/Users/agapae/Documents/Work PAE/Claude/AVEGEE/release-worktree-20261019`
 
 Branch: `codex/release-20261019`
