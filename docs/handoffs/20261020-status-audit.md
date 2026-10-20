@@ -1,55 +1,38 @@
-# 2026-10-21 continuation checkpoint — read first
+# AVEGEE current handoff — 2026-10-21
 
-- `c611daa` pushed and Pages 39468148254 succeeded: six real optional roaming patrols on zone 1–2, alongside three story checkpoints. Persistent victories, real combat/result cleanup, anti-remote-start checks, safe retreat and gate separation. Focused release tests 70/70 passed. Local preview verified proximity callback and separate patrol count; it auto-resolves the callback and is NOT a full battle UI acceptance.
-- Town repair batch: generated restoration for three painted patches within tile r2-c3. Renderer blends only those areas and preserves the original outer 80px; browser pixel comparison reports zero changed border pixels. Preview and detail share the repair. It is not a repaint of every reported terrain tile. Optional art failure/timeout retains original terrain, never a blank map.
-- Workers: court cancellation preserves the worker's current visible position; auto gather finishes/sells its cargo then yields to newly available build/repair/supervise jobs. Escort work cannot be interrupted by auto scheduling. Worker/escort/afterlife suite 50/50 passed.
-- Supervisor praise now reports real star bonus (five stars60/four stars25), with no false40-coin or guaranteed-heal claim. Focused authority/narrative/archive18/18 passed.
-- Real battle UI review found and fixed missing guide portrait (do not request nonexistent profile file). Small 2/3-member parties now use a tighter formation. Formation/anchor/party/Nira follow-up19/19 passed.
-- Replaced ten obsolete historic cache-token assertions with module identity/import-map/entry consistency tests; gameplay assertions retained. L5 tests actual dispatch for patrol/checkpoint/chase. Focused90/90 passed.
-- Browser real combat UI review: Yama normal attack reduced enemy450→436; Nira healing played the zone1 full-screen scene, healed65→91, returned to normal camera/actor scale, and handed the next turn to the guide. No broken guide portrait remained. Review fixture used memory-only save; this is zone1 acceptance, not all four regions.
-- Full suite after cache-test updates: 1144/1144 passed. Small formation/guide-portrait adjustment followed that run and has focused19/19 pass; do not claim all later visual acceptance complete.
-- Interrogation expansion is still queued AFTER old map repairs. Exact approved source agreement is saved in `20261021-interrogation-spec-audit.md`; no new trait/keeper/supervisor expansion has been implemented.
-- Remaining: other terrain tiles and all marked shadows; all-route manual map/guide checks; four-zone battle animations/cutscene acceptance; full worker choreography/cold-load/dialogue checks; then the approved interrogation expansion. Shado/Hunyuan remains deferred.
+## Latest verified release state
 
-# Current status audit — 2026-10-20
+- `c611daa`: real outside patrols (Pages39468148254 SUCCESS). Six optional roaming encounters supplement three story checkpoints on zone1–2. Patrol wins persist separately, cannot unlock gates, cannot start remotely, and fleeing retreats with a grace period. Focused70/70.
+- `a0d1550`: town paving repairs, worker handoffs, closer small battle teams, working guide portrait, accurate supervisor reward text and release-test modernization. Pages39474624521 SUCCESS, live marker verified `20261021-town-repairs`.
+- New completed candidate build `20261021-flames-ground-r2`: another upper-house ground repair and detailed painted torch flames. Publish/verify this batch next. New repair textures use WebP (~1MB total rather than ~6MB PNG) to limit loading cost.
 
-This current table supersedes stale local-only and pending-cache labels in earlier historical handoffs. Do not report all work complete.
+## What changed and was checked
 
-## Release
+- Ground: r2-c3 restores three earlier rectangular patches around the civic plaza; r1-c3 restores pasted paving below the upper houses. Renderer blends generated restored texture only over the damaged areas, preserving original road geometry and exact tile borders. Browser pixel comparisons report zero changed border pixels for both tiles. Overview/detail share the repair; art failure or8-second timeout falls back to original terrain rather than a black loading screen. Other ground regions remain subject to visual inspection.
+- Fire: close gameplay-zoom inspection showed the old coded tongues still looked flat. Replaced them with three existing detailed flame images, crossfaded with gentle scale/sway. They have opaque black backgrounds, so additive compositing is required; no black box can cover the ground. At most two flame blits per torch per frame, three images loaded once. Reduced motion is static. Actual close view now visibly shows curling flames rather than beige diamonds. Targeted torch/ground/preload/effect checks46/46.
+- Workers: cancelling dock→dais escort when a trial starts immediately after disembarking preserves the worker's visible position. Auto gatherers complete and sell current cargo before taking newly available build→repair→supervision jobs; escorts are not interrupted. Worker/escort/afterlife50/50; gathering simulation collected both materials and sold them.
+- Battle: guide portrait uses actual standing art rather than nonexistent profile files. Two/three-member parties occupy a closer formation. Real zone1 UI review: Yama strike reduced enemy450→436, Nira healed65→91 with full-screen scene, returned to normal camera/actor scale and handed the turn to guide. Menu was below the team and guide portraits loaded. Memory-only review fixture; not full four-zone UI acceptance. Follow-up formation/anchor/party/Nira19/19.
+- Supervisor praise: displays actual existing star bonus (five stars60, four stars25). No false40 coins or guaranteed healing when karma blocks it. Authority/narrative/archive18/18.
+- Tests: replaced ten historic token whitelist assertions with versioned module identity, alias, importer, entry and stylesheet checks. Behavior assertions retained; actual chased/checkpoint/patrol dispatch expression tested. Full suite1144/1144 after modernization; later narrow battle follow-up99/99 and fire/ground follow-up46/46. No claim that every later change was rerun in the full suite.
+- Manual map routes: center→ice gate, ice gate→quarry/crane, quarry→cauldron all reached physical destinations. Inspected crane's attached base/cast shadow at zoom3.5/5 and cauldron torches at zoom6.5. This does not yet validate every branch/prop.
 
-- Latest product commit: edfb70a, pushed to origin/main. Build: 20261020-border-party.
-- Original Pages run 39443245777 stalled in git fetch for about 22 minutes (14:52:49–15:15:11 UTC), without a game compilation failure. Cancelled and requested rerun; then requested a direct Pages build because rerun stayed queued. Direct build run 39447916481 succeeded (Checkout 26 seconds), deployment completed 15:25:02 UTC. Live build marker verified 20261020-border-party. No game code change was needed for this recovery.
-- Current live build: 20261020-border-party (edfb70a).
+## Existing work not to lose
 
-## Effect audit (source present in committed production history)
+- Owner-reference Zone1 walkmask/stairs/tree fixes: c0ae54c. Native-scale outside map/actors, decoration trees/water and geographic caption removal:44f6c78.
+- Bosses1–3 money/outfit illustrations and rewards: b84b78a, gift scene uses zone1 outfits. Merchant outfit purchase removed from UI.
+- Persistent court ferry arrivals and immediate trial availability after disembarkation: b18a8d2,61544ce.
+- Ordinary border uses selected keepers+guard; guided interzone expedition uses Yama+Nira+previous-zone boss: edfb70a, isolated103/103.
+- Boss sentencing and final ending flow exist with persistent ledger and duplicate-sentence prevention. Do not rebuild as though absent.
+- Leaf silhouettes/midribs, floating cloud banks, lava/water flow/bubbles and waterfall strokes exist in shipped code. Fire specifically refined further above. Effects checks now14/14 after obsolete cache assertion was repaired.
 
-| Request | Implementation | Acceptance still required |
-| --- | --- | --- |
-| Floating clouds | town-night-effects.js drawTownClouds, scene ground pass | Compare cloud plateau at gameplay zoom |
-| Detailed fire | town-scenery.js torch layer: five curved flame tongues, bright core, embers and local light | Compare all marked torches, not only one |
-| Leaf shapes | town-night-effects.js pointed leaf silhouettes and midribs below trees; frontier-ambient.js falling leaves | Check size, visibility and canopy placement |
-| Flowing water/waterfalls | town-flow.js baked direction mask and flow particles; frontier-ambient.js waterfall strokes | Check actual channels, bridges and camera motion |
-| Hot/boiling lava | town-flow.js flow/glow/bubbles on painted lava; map-ambient.js and map-fx-h3.js regional surfaces | Compare heat, bubbles and falls against images 5/5.5 |
+## Still open — do not report everything complete
 
-No Shado or Hunyuan assets were integrated. Their experiments remain deferred at the owner's request unless quick and useful.
+1. Inspect remaining ground under lava-side houses/trees, all marked shadows and every major map branch against owner images6/8/11/12 and Map-Zone1-3. Two repaired tiles are not the whole map.
+2. Complete visual/gameplay acceptance of all four regional battle/cutscene/hurt paths, boss guide routes/farewell and boss-justice/final ending save boundaries. One common zone1 healing flow is verified, not four complete runs.
+3. Full worker/ferry choreography in live UI, dialogue placement across viewports, cold/slow preload, clouds/water/lava/leaves in each marked area. Systems have integration coverage but not all visual acceptance.
+4. Then implement approved expanded interrogation. Exact agreement, source turns, role/cost distinctions and non-spoiler UI rules: `20261021-interrogation-spec-audit.md`. New evolving traits, Kan one-clue help, distinct five-keeper roles/costs, conditional impact cards and team reports are NOT yet implemented. Reuse existing supervisor rewards and three sanction stages; do not add duplicate counters.
+5. Shado/Hunyuan experiments remain deferred. No external assets integrated or account created.
 
-Effects/scenery test run: 14 tests, 13 pass; one existing test fails because it hard-codes an old scene import cache suffix (-n4), whereas current release uses 20261020-court-ferry. Do not claim the full suite passes or treat this as visual acceptance.
+## Workspace
 
-## Remaining work
-
-- Repair baked rectangular terrain patches and inspect all incomplete building shadows. One isolated terrain candidate exists but is not integrated.
-- Add more real persistent roaming encounters outside the border (currently three checkpoint encounters), then verify proximity battles and all exit/guide routes.
-- Manually replay all 12 battle-video comments, including four regional Nira cutscenes, facing/lunging/hurt, menus and post-cutscene framing. Logic tests are not a substitute for this pass.
-- Manually verify all requested map paths, building flips/removal, dialogue placement and slow/cold preload.
-- Worker jobs exist but still need full gameplay acceptance: wood/sword resources, sale, prison/punishment/heaven escort, repair and construction.
-- Ferry/court code shipped and dock case availability tested; worker arrival choreography still requires acceptance.
-- Four-zone boss sentencing/final ending and boss reward/escort stories need complete manual save/reload acceptance. Gift art shipped for bosses 1–3.
-- Expanded spirit-trait/keeper-role/supervisor interrogation system is queued after these repairs; retrieve the approved detailed agreement before implementing.
-
-## Completed recent batches
-
-- Owner-reference Zone 1 navigation, stairs/tree correction (c0ae54c).
-- Three money/outfit gift illustrations (b84b78a).
-- Court ferry arrivals and workers/dock availability (b18a8d2, 61544ce).
-- Native-scale outside map and town-equivalent actors; geographic labels removed (44f6c78).
-- Ordinary border selected keepers/guard versus guided Yama/Nira/previous boss party (edfb70a), isolated regression 103/103.
+Work in release-worktree-20261019 on codex/release-20261019. Preserve the dirty original checkout. Local review harnesses and raw image candidates under output/ are not shipped runtime assets. No automatic resume schedule has been created.

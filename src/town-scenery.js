@@ -72,6 +72,17 @@ export function drawTownCastShadow(ctx,image,x,y,w) {
   ctx.drawImage(cachedSprite(image,'shadow'),-w/2,-h,w,h);
   ctx.restore();
 }
+let flameFrames=null;
+// These painted FX have black RGB backgrounds; additive compositing keeps them invisible.
+export function drawTorchFlame(ctx,x,base,time,reduced){
+  if(!flameFrames&&typeof Image!=='undefined')flameFrames=['a','b','c'].map(key=>{const im=new Image();im.src=`img/fx/fx-fire-flame-${key}.webp`;return im;});
+  const frames=(flameFrames||[]).filter(im=>im.complete&&im.naturalWidth);if(!frames.length)return;
+  const phase=reduced?0:time/180+x*.021,index=Math.floor(phase)%frames.length,blend=phase-Math.floor(phase);
+  const h=reduced?37:37+Math.sin(time/150+x)*3,w=h*.57,sway=reduced?0:Math.sin(time/210+x)*1.6;
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(const [offset,alpha]of [[0,1-blend],[1,blend]]){ctx.globalAlpha=alpha*.95;ctx.drawImage(frames[(index+offset)%frames.length],x-w/2+sway,base-h,w,h);}
+  ctx.restore();
+}
 let torchArt = null;
 function torchSprite() {
   if (!torchArt && typeof Image !== 'undefined') {
@@ -160,23 +171,7 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
       }else fallbackProp(ctx,p,time,reduced);
       if(p.kind==='torch') {
         const fy=p.y-h*.85;
-        if(!reduced){
-          ctx.save();
-          // Layered pointed tongues cover the old geometric diamond at the top of the pillar.
-          // Every tongue has a different phase and shoulder, producing a natural flame silhouette.
-          for(let j=0;j<5;j++){
-            const lane=(j-2)*2.6,base=p.x+lane,phase=time/(145+j*19)+p.x*.071+j*1.7;
-            const tip=fy-12-(j%2)*5-3*Math.sin(phase),sway=3.6*Math.sin(phase*.73);
-            ctx.fillStyle=j===2?'rgba(255,246,174,.94)':j%2?'rgba(255,174,53,.86)':'rgba(255,91,23,.74)';
-            ctx.beginPath();ctx.moveTo(base-3.8,fy+8);
-            ctx.bezierCurveTo(base-8,fy+1,base-2+sway,fy-7,base+sway,tip);
-            ctx.bezierCurveTo(base+5+sway,fy-5,base+7,fy+2,base+3.8,fy+8);ctx.closePath();ctx.fill();
-          }
-          ctx.globalAlpha=.9;ctx.fillStyle='#fff7bd';ctx.beginPath();ctx.moveTo(p.x-2,fy+7);
-          ctx.quadraticCurveTo(p.x-3,fy,p.x+Math.sin(time/120)*1.8,fy-7);
-          ctx.quadraticCurveTo(p.x+4,fy,p.x+2,fy+7);ctx.fill();
-          ctx.restore();
-        }
+        drawTorchFlame(ctx,p.x,fy+9,time,reduced);
         ctx.save();ctx.globalCompositeOperation='screen';
         drawLocalLight(ctx,'th',p.x,fy,85,time,reduced);
         drawLocalLight(ctx,'th',p.x,p.y-4,48,time,reduced);

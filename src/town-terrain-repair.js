@@ -1,17 +1,21 @@
-// Restore painted ground only where earlier object removal left rectangular patches.
-// The original tile edges and road geometry remain the authority for adjoining tiles.
-export const TOWN_REPAIR_URL='img/map-zone1/repairs/r2-c3-v1.png';
-export const TOWN_REPAIR_BOXES=Object.freeze([[590,115,975,345],[365,515,1024,870],[110,710,365,940]].map(Object.freeze));
-let repairPromise,overlay;
-function loadRepair(){
-  return repairPromise ||= new Promise((resolve,reject)=>{
-    const im=new Image(),timer=setTimeout(()=>{im.onload=im.onerror=null;reject(new Error('ground repair timeout'));},8000);im.onload=()=>{clearTimeout(timer);resolve(im);};im.onerror=error=>{clearTimeout(timer);reject(error);};im.src=TOWN_REPAIR_URL;
-  }).catch(error=>{repairPromise=null;throw error;});
+// Blend restored ground only over earlier object-removal patches. Original borders
+// remain untouched so generated artwork cannot move a neighboring tile or staircase.
+export const TOWN_TERRAIN_REPAIRS=Object.freeze([
+  {row:2,col:3,url:'img/map-zone1/repairs/r2-c3-v1.webp',border:80,fade:48,boxes:[[590,115,975,345],[365,515,1024,870],[110,710,365,940]]},
+  {row:1,col:3,url:'img/map-zone1/repairs/r1-c3-v1.webp',border:16,fade:16,boxes:[[290,775,850,1024]]},
+].map(d=>Object.freeze({...d,boxes:Object.freeze(d.boxes.map(Object.freeze))})));
+const loads=new Map(),overlays=new Map();
+function loadRepair(url){
+  if(!loads.has(url))loads.set(url,new Promise((resolve,reject)=>{
+    const im=new Image(),timer=setTimeout(()=>{im.onload=im.onerror=null;reject(new Error('ground repair timeout'));},8000);
+    im.onload=()=>{clearTimeout(timer);resolve(im);};im.onerror=error=>{clearTimeout(timer);reject(error);};im.src=url;
+  }).catch(error=>{loads.delete(url);throw error;}));
+  return loads.get(url);
 }
-function repairOverlay(art){
-  if(overlay)return overlay;
+function repairOverlay(art,def){
+  if(overlays.has(def.url))return overlays.get(def.url);
   const mask=document.createElement('canvas');mask.width=mask.height=1024;const m=mask.getContext('2d');
-  for(const [x0,y0,x1,y1]of TOWN_REPAIR_BOXES){
+  for(const [x0,y0,x1,y1]of def.boxes){
     const part=document.createElement('canvas');part.width=x1-x0;part.height=y1-y0;const c=part.getContext('2d');
     const g=c.createLinearGradient(0,0,part.width,0),edge=42/part.width;
     g.addColorStop(0,'transparent');g.addColorStop(edge,'white');g.addColorStop(1-edge,'white');g.addColorStop(1,'transparent');c.fillStyle=g;c.fillRect(0,0,part.width,part.height);
@@ -21,23 +25,25 @@ function repairOverlay(art){
   }
   const out=document.createElement('canvas');out.width=out.height=1024;const c=out.getContext('2d');c.drawImage(art,0,0,1024,1024);
   c.globalCompositeOperation='destination-in';c.drawImage(mask,0,0);
-  // Keep an exact 80px original border; fade in over the next 48px so no new tile seam is introduced.
   for(const vertical of [false,true]){
-    const edge=c.createLinearGradient(0,0,vertical?0:1024,vertical?1024:0);
-    for(const [at,color]of [[0,'transparent'],[80/1024,'transparent'],[128/1024,'white'],[896/1024,'white'],[944/1024,'transparent'],[1,'transparent']])edge.addColorStop(at,color);
+    const edge=c.createLinearGradient(0,0,vertical?0:1024,vertical?1024:0),a=def.border,b=a+def.fade;
+    for(const [at,color]of [[0,'transparent'],[a/1024,'transparent'],[b/1024,'white'],[(1024-b)/1024,'white'],[(1024-a)/1024,'transparent'],[1,'transparent']])edge.addColorStop(at,color);
     c.fillStyle=edge;c.fillRect(0,0,1024,1024);
   }
-  return overlay=out;
+  overlays.set(def.url,out);return out;
 }
-/** Compose once after decode, including the overview so detail never pops into a different painting. */
+/** Compose once after decode; overview and detail share the same restoration. */
 export async function repairTownTerrain(source,{row=null,col=null}={}){
-  if(typeof HTMLImageElement==='undefined'||typeof document==='undefined'||!(source instanceof HTMLImageElement)||row!==null&&(row!==2||col!==3))return source;
+  if(typeof HTMLImageElement==='undefined'||typeof document==='undefined'||!(source instanceof HTMLImageElement))return source;
+  const defs=TOWN_TERRAIN_REPAIRS.filter(d=>row===null||d.row===row&&d.col===col);if(!defs.length)return source;
   try{
-    const art=await loadRepair(),patch=repairOverlay(art),out=document.createElement('canvas');out.width=source.naturalWidth;out.height=source.naturalHeight;
-    const c=out.getContext('2d');c.drawImage(source,0,0);
-    if(row===2)c.drawImage(patch,0,0,out.width,out.height);
-    else c.drawImage(patch,1024/4915*out.width,1024/3277*out.height,1024/4915*out.width,1024/3277*out.height);
-    // Existing lighting code consumes decoded Images, including their natural dimensions.
+    const layers=await Promise.all(defs.map(async d=>{try{return {def:d,patch:repairOverlay(await loadRepair(d.url),d)};}catch{return null;}}));
+    if(!layers.some(Boolean))return source;
+    const out=document.createElement('canvas');out.width=source.naturalWidth;out.height=source.naturalHeight;const c=out.getContext('2d');c.drawImage(source,0,0);
+    for(const layer of layers){if(!layer)continue;const {def:d,patch}=layer;
+      if(row!==null)c.drawImage(patch,0,0,out.width,out.height);
+      else c.drawImage(patch,(d.col-1)*1024/4915*out.width,(d.row-1)*1024/3277*out.height,1024/4915*out.width,1024/3277*out.height);
+    }
     const result=new Image();result.src=out.toDataURL('image/png');await result.decode();return result;
-  }catch{return source;} // Optional art cannot strand the town on a loading screen.
+  }catch{return source;} // Optional art must never strand a town on a loading screen.
 }
