@@ -86,7 +86,7 @@ export function bossGuideStory(key){
   const line=beat==='praise'?'มีฝีมือเก่งมาก เจ้าน่าจะดูแลโซนนี้ได้':beat==='welcome'?'ข้ายอมรับฝีมือเจ้าแล้ว ดินแดนข้างหน้ายังรอเจ้าอยู่ มาเถอะ ข้าจะเดินไปส่งเจ้ากับนิราถึงประตูดินแดนใหม่':'พามาส่งถึงที่แล้ว ที่เหลือฝากดินแดนนี้ด้วย';
   const image=`img/boss-guide/${zone}-${beat==='farewell'?'farewell':'welcome'}-v${beat==='farewell'&&zone!=='th'?2:1}.webp`;
   const pages=[{title:name,line:`${name}: “${line}”`,image}];
-  if(beat==='farewell')pages.push({title:'ของฝากสำหรับดินแดนใหม่',line:`${name}มอบเงิน ${BOSS_GUIDE_GRANTS[zone]} เบี้ยกรรม และชุดประจำดินแดนใหม่ให้ยามา`,image});
+  if(beat==='farewell')pages.push({title:'ของฝากสำหรับดินแดนใหม่',line:`${name}มอบเงิน ${BOSS_GUIDE_GRANTS[zone]} เบี้ยกรรม และชุดประจำดินแดนใหม่ให้ยามา`,image:`img/boss-guide/${zone}-gift-v1.webp`});
   return {title:beat==='praise'?'ผู้ตรวจการยอมรับฝีมือ':beat==='welcome'?'ออกเดินทางสู่ดินแดนใหม่':'คำฝากฝังหน้าประตู',pages};
 }
 /** Follow recorded player footsteps rather than cutting across scenery. */

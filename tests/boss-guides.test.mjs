@@ -9,7 +9,15 @@ test('first boss victory praises once, invitation follows, farewell dismisses on
  assert.equal(bossGuideWaiting(g),true);completeBossGuideStory(g,g.storyQueue[0]);
  assert.equal(queueBossGuideStory(g,'welcome'),true);completeBossGuideStory(g,'boss-guide-th-welcome');assert.equal(bossGuideFollowing(g),true);assert.equal(bossGuideWaiting(g),false);
  assert.equal(queueBossGuideStory(g,'farewell'),true);assert.match(bossGuideStory('boss-guide-th-farewell').pages[0].line,/พามาส่งถึงที่แล้ว ที่เหลือฝากดินแดนนี้ด้วย/);
+ assert.equal(bossGuideStory('boss-guide-th-farewell').pages[1].image,'img/boss-guide/th-gift-v1.webp');
  completeBossGuideStory(g,'boss-guide-th-farewell');assert.equal(bossGuideFollowing(g),false);assert.equal(completeBossGuideStory(g,'boss-guide-th-welcome'),false);assert.equal(bossGuideFollowing(g),false);assert.equal(queueBossGuideStory(g,'farewell'),false);assert.equal(queueBossGuideStory(g,'welcome'),false);
+});
+test('each guide farewell uses dedicated money and outfit handover artwork',()=>{
+ for(const zone of ['th','asia','west']){
+  const story=bossGuideStory(`boss-guide-${zone}-farewell`);
+  assert.equal(story.pages.length,2);assert.equal(story.pages[1].image,`img/boss-guide/${zone}-gift-v1.webp`);
+  assert.notEqual(story.pages[1].image,story.pages[0].image);
+ }
 });
 test('migration skips past praise and completed journeys without deleting unfinished invitations',()=>{
  const g={zone:'asia',bossCleared:{th:true,asia:true},zoneTravel:{visited:{th:true,asia:true}}};initializeBossGuides(g);
