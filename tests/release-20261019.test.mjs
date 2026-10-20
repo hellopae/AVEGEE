@@ -9,12 +9,38 @@ const setup=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=1
 test('worker delivers harbour arrivals immediately available for trial, then hands the judged soul to its keeper',()=>{
  const g=setup(),w=g.hireWorker();g.setWorkerMode(w.id,'escort');const soul=g.queue[0];
  assert.equal(g.startCourtArrival(soul),true);assert.equal(g.queue[0].id,soul.id);
+ assert.equal(g.caseReady(soul),false,'the trial stays closed while the ferry is inbound');
+ g.advanceAfterlife(3600);
+ assert.equal(g.caseReady(soul),true,'the case opens as soon as the soul disembarks');
  assert.equal(g.afterlifeWalks[0].escort.workerId,w.id);
  assert.equal(g.assign(soul.id,'krata','taan',3),true);
  assert.equal(g.afterlifeWalks.some(w=>w.destination==='arrival'),false);
  const walk=g.afterlifeWalks.find(w=>w.destination==='station');assert.ok(walk);assert.equal(walk.escort.workerId,w.id);
  assert.equal(g.crewOf('taan').at,'krata');g.advanceAfterlife(1e7);assert.equal(w.job,null);
  assert.equal(g.queue.some(s=>s.id===soul.id),false);
+});
+test('court ferry waits for an open court and leaves a soul at the harbour when no worker is free',()=>{
+ const g=setup(),soul=g.queue[0];g.courtClosed=true;
+ assert.equal(g.startCourtArrival(soul),true);g.advanceAfterlife(5000);
+ assert.equal(g.courtArrivals[0].phase,'ferry');assert.equal(g.courtArrivals[0].elapsed,0);
+ assert.equal(g.caseReady(soul),false);
+ g.courtClosed=false;g.advanceAfterlife(3600);
+ assert.equal(g.courtArrivals[0].phase,'dock');assert.equal(g.afterlifeWalks.length,0);
+ assert.equal(g.caseReady(soul),true,'trial is available while the soul safely waits at the dock');
+ const w=g.hireWorker();g.setWorkerMode(w.id,'escort');g.advanceAfterlife(1);
+ assert.equal(g.courtArrivals[0].phase,'escort');
+ assert.equal(g.afterlifeWalks[0].escort.workerId,w.id);
+});
+test('saving an inbound or escorted ferry case never restores the soul on the dais stairs',()=>{
+ for(const withWorker of [false,true]){
+  const g=setup(),soul=g.queue[0];
+  if(withWorker){const w=g.hireWorker();g.setWorkerMode(w.id,'escort');}
+  g.startCourtArrival(soul);g.advanceAfterlife(withWorker?3600:1200);
+  const restored=setup();assert.equal(restored.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+  const arrival=restored.courtArrivals.find(a=>a.soulId===soul.id);assert.ok(arrival);
+  assert.ok(['ferry','dock'].includes(arrival.phase));
+  assert.equal(restored.queue.some(s=>s.id===soul.id),true);
+ }
 });
 test('gatherers physically visit the resource site and merchant before income is paid',()=>{
  const g=setup(),w=g.hireWorker();g.setWorkerMode(w.id,'gather');stepWorkers(g);

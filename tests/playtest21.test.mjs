@@ -66,6 +66,9 @@ test('nonfinite verdict rewards cannot poison economy values', () => {
 test('one keeper can accept three souls while the first escort is still travelling', () => {
  const g=createGame();g.coin=1000;g.hire('dam');
  while(g.queue.length<4)g.spawnSoul();g.queue.forEach(s=>{s.resist=false;s.beaten=true;});
+ // This tests keeper capacity after arrival; newly spawned souls first disembark.
+ g.courtClosed=false;
+ for(let i=0;i<g.queue.length;i++)g.advanceCourtArrivals(4000);
  const st=g.stations.find(st=>st.def.k==='krata');
  for(let i=0;i<3;i++){
   const soul=g.queue[0];assert.equal(g.assignBlock(soul.id,'krata','dam'),null);

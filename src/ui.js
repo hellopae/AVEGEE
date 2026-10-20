@@ -999,7 +999,7 @@ document.querySelectorAll('.tabs [data-tab]').forEach(el =>
 $('#atk').onclick = tryFight;
 $('#fab-atk').onclick = tryFight;
 function goTrial() {
-  if (!g.queue[0] || g.over || g.battle) return;
+  if (!g.queue[0] || !g.caseReady(g.queue[0]) || g.over || g.battle) return;
   openTrial();
 }
 
@@ -1146,7 +1146,7 @@ function drawOverlay() {
   if (keepDevaFab) ov.appendChild(keepDevaFab);
   for (const f of keepZoneEventFabs) ov.appendChild(f);
   if (g.over) return;
-  const s = g.queue[0];
+  const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
   if (fx) {
     const col = fx.score >= 78 ? 'var(--success)' : fx.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
@@ -1184,7 +1184,8 @@ function drawOverlay() {
 
 /** อัปเดตทางเข้าศาลตามคิววิญญาณทุกเฟรม */
 function updateTrialBtn() {
-  const s = g.queue[0];
+  const awaiting=!!g.queue[0]&&!g.caseReady(g.queue[0]);
+  const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
   const b = deckBar.querySelector('#d-trial');
   if (b) {
     b.disabled = !s || !!g.over || !!g.battle;
@@ -1198,7 +1199,7 @@ function updateTrialBtn() {
   if (trial) {
     trial.disabled = !s || !!g.over || !!g.battle;
     trial.textContent = t(trial.disabled ? 'hud.trialRecess' : 'hud.trialBegins');
-    trial.title = trial.disabled ? t('hud.noCourt') : t('hud.trialBegins');
+    trial.title = trial.disabled ? t(awaiting?'trial.soulArriving':'hud.noCourt') : t('hud.trialBegins');
     trial.setAttribute('aria-label', trial.disabled ? `${trial.textContent} — ${trial.title}` : trial.title);
   }
 }
@@ -1654,9 +1655,10 @@ function updateZoneEventFabs() {
  *    ออกหมาย/ประทับตรา      → #t-go (เส้นทางตัดสินจริงคือ doVerdict ที่เดียวกันอยู่แล้ว)
  *  ทางเข้าหลักอยู่ที่ปุ่มเริ่มพิจารณาคดีล่างกลาง; ปุ่มนี้เป็นทางเข้าเดียวกันจากแผงเดิม */
 function drawDeck() {
-  const s = g.queue[0];
+  const awaiting=!!g.queue[0]&&!g.caseReady(g.queue[0]);
+  const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
   if (!s || g.over || g.battle) {
-    deckBar.innerHTML = `<div class="idle">${esc(t('hud.noCourt'))}</div>`;
+    deckBar.innerHTML = `<div class="idle">${esc(t(awaiting?'trial.soulArriving':'hud.noCourt'))}</div>`;
     return;
   }
   deckBar.innerHTML = `
@@ -2366,7 +2368,7 @@ function openTrial(initialError = '') {
   if(g.bossJustice?.active && bossJusticeActive(g)){openBossJustice();return;}
   if (g.over || g.battle) return;
   const s = g.queue[0];
-  if (!s) return;
+  if (!s || !g.caseReady(s)) return;
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
@@ -5794,6 +5796,7 @@ function startPlay(fresh) {
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
+  if(fresh&&g.queue[0])g.startCourtArrival(g.queue[0]); // เรือรออยู่นอกฉากจนกดเปิดศาล
   updatePlay();
   if (fresh) {
     // เพลงชื่อเรื่องเริ่มตั้งแต่ splash และเล่นต่อคลุมฉากเปิดของพญายม

@@ -300,9 +300,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // Ferry sits in the river; the painted bridge/island occludes it.
   // Draw before characters and buildings so the gate and bridge retain their foreground.
   {
-    const f = SPOTS.ferry, ph = soulTime / 5200, inbound = Math.cos(ph) > 0;
-    const fx = f.from[0] + (f.to[0] - f.from[0]) * (Math.sin(ph) + 1) / 2;
-    drawBoat(ctx, fx, f.from[1] + 120, soulTime, !rescue && inbound ? Math.min(2, g.queue.length) : 0, inbound);
+    const f = SPOTS.ferry;
+    const ferry=(g.courtArrivals||[]).find(a=>a.zone===g.zone&&a.phase==='ferry');
+    const progress=ferry?Math.max(0,Math.min(1,ferry.elapsed/ferry.duration)):0;
+    const eased=progress*progress*(3-2*progress);
+    const fx=f.to[0]+(f.from[0]-f.to[0])*eased;
+    const riders=ferry&&!rescue?Math.min(2,(g.courtArrivals||[]).filter(a=>a.zone===g.zone&&a.phase==='ferry').length):0;
+    drawBoat(ctx,fx,f.from[1]+120,soulTime,riders,true);
     if (bg && !isTownZone(g.zone)) {
       ctx.save(); ctx.beginPath();
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
@@ -352,7 +356,18 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
 
   // ---- คิววิญญาณ ยืนเรียงขึ้นสะพานมาที่แท่นพิพากษา ----
-  const arriving=new Set((g.afterlifeWalks||[]).filter(w=>w.destination==='arrival').map(w=>w.soul.id));
+  const arriving=new Set([
+    ...(g.courtArrivals||[]).filter(a=>a.zone===g.zone).map(a=>a.soulId),
+    ...(g.afterlifeWalks||[]).filter(w=>w.destination==='arrival').map(w=>w.soul.id),
+  ]);
+  const docked=(g.courtArrivals||[]).filter(a=>a.zone===g.zone&&a.phase==='dock');
+  docked.forEach((arrival,i)=>{
+    const s=g.queue.find(q=>q.id===arrival.soulId);if(!s)return;
+    const x=SPOTS.ferry.from[0]+(i%3-1)*24,y=SPOTS.ferry.from[1]-Math.floor(i/3)*22;
+    const qh=SOUL_H*.9;spot_(x,y,qh);
+    shade(x,y,qh,c=>drawSoul(c,x,y,qh,soulTime+s.id*300,'#d9eaff',s.sp||7));
+    tag(ctx,x,y-SOUL_H-10,t,['⛵ รอคนงานที่ท่าเรือ','#f7c371']);
+  });
   (rescue ? [] : g.queue).forEach((s, i) => {
     if(arriving.has(s.id))return;
     const p = QUEUE_LINE[i];

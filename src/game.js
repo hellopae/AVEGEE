@@ -116,7 +116,7 @@ export function createGame() {
     player: { x: SPOTS.bench.x + 60, y: SPOTS.bench.y, tx: null, ty: null, face: 1, path: null },
     items: [],                         // ของที่วางอยู่บนพื้นของสาขาปัจจุบัน
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
-    mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [],
+    mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [], courtArrivals: [],
     workerState:normalizeWorkers(),
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
@@ -173,6 +173,9 @@ export function createGame() {
   syncRoster(g);
   g.log(`พญายม: "โซนนี้เละมาสามร้อยปีแล้ว นี่เบี้ยกรรม ${BAL.startCoin} ไปสร้างที่ลงทัณฑ์กับหาคนเอาเอง"`, 'boss');
   g.spawnSoul();
+  // The opening case waits off-map until the player explicitly opens the court.
+  // UI.toggleCourt() then dispatches the real ferry instead of showing the soul on the dais stairs.
+  g.courtArrivals=[];
   initializeZoneTravel(g);
   return g;
 }
@@ -428,13 +431,40 @@ const API = {
   },
 
   startCourtArrival(soul) {
-    if(!soul||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
-    const dock=this.harbourPoint(),tail=QUEUE_LINE[Math.min(Math.max(0,this.queue.indexOf(soul)),QUEUE_LINE.length-1)];
-    return this.startAfterlifeWalk(soul,[dock.x,dock.y],tail,'arrival');
+    if(!soul||this.courtArrivals.some(a=>a.soulId===soul.id)||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
+    const phase=this.courtArrivals.some(a=>a.phase==='ferry')?'queued':'ferry';
+    this.courtArrivals.push({soulId:soul.id,phase,elapsed:0,duration:3600,zone:this.zone});
+    return true;
   },
   cancelCourtArrival(id) {
+    this.courtArrivals=this.courtArrivals.filter(a=>a.soulId!==id);
     const i=this.afterlifeWalks.findIndex(w=>w.destination==='arrival'&&w.soul.id===id);
     if(i<0)return;const [walk]=this.afterlifeWalks.splice(i,1);this.releaseEscort(walk);
+  },
+
+  /** Cases remain off the judgment stairs until their ferry has reached the harbour. */
+  caseReady(soul=this.queue[0]) {
+    if(!soul)return false;
+    return !this.courtArrivals.some(a=>a.soulId===soul.id&&['queued','ferry'].includes(a.phase));
+  },
+
+  advanceCourtArrivals(dt) {
+    if(this.courtClosed||!Number.isFinite(dt)||dt<=0)return;
+    let ferry=this.courtArrivals.find(a=>a.zone===this.zone&&a.phase==='ferry');
+    if(!ferry){
+      ferry=this.courtArrivals.find(a=>a.zone===this.zone&&a.phase==='queued');
+      if(ferry){ferry.phase='ferry';ferry.elapsed=0;}
+    }
+    if(ferry){
+      ferry.elapsed=Math.min(ferry.duration,ferry.elapsed+dt);
+      if(ferry.elapsed>=ferry.duration)ferry.phase='dock';
+    }
+    for(const arrival of this.courtArrivals.filter(a=>a.zone===this.zone&&a.phase==='dock')){
+      const soul=this.queue.find(s=>s.id===arrival.soulId);
+      if(!soul){this.courtArrivals=this.courtArrivals.filter(a=>a!==arrival);continue;}
+      const dock=this.harbourPoint(),tail=QUEUE_LINE[Math.min(Math.max(0,this.queue.indexOf(soul)),QUEUE_LINE.length-1)];
+      if(this.startAfterlifeWalk(soul,[dock.x,dock.y],tail,'arrival'))arrival.phase='escort';
+    }
   },
 
   /** ถึงคิวของสำนวนที่เขียนมือหรือยัง — คืน null ถ้ายังไม่ถึง หรือไม่มีเรื่องไหนที่โซนนี้รับได้
@@ -930,6 +960,7 @@ const API = {
   assignBlock(soulId, stKey, crewK) {
     const reservedCase = this.zone === 'th' && this.zoneCases.th === 4 && this.devaTestStatus() !== 'cleared' && this.queue.some(s => s.case === 'devaMonk');
     const selectedSoul = this.queue.find(s => s.id === soulId);
+    if(selectedSoul&&!this.caseReady(selectedSoul))return {key:'soulArriving'};
     if (reservedCase && selectedSoul && selectedSoul.case !== 'devaMonk') return { key:'devaCaseFirst' };
     const st = this.stations.find(s => s.def.k === stKey);
     if (!st || !isTrialDestination(st.def)) return { key: 'stationMissing' };
@@ -1244,12 +1275,15 @@ const API = {
     } else if (destination === 'queue') {
       if (!this.queue.some(x => x.id === soul.id)) this.queue.push(soul);
       this.returned++;
+    } else if(destination==='arrival') {
+      this.courtArrivals=this.courtArrivals.filter(a=>a.soulId!==soul.id);
     }
   },
 
   advanceAfterlife(dt) {
     if (bossJusticeActive(this)) return;
     if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
+    this.advanceCourtArrivals(dt);
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
       walk.elapsed += dt;
@@ -4118,7 +4152,10 @@ const API = {
     // A branch cannot keep drawing its walkers once another map is active.
     for (const walk of this.afterlifeWalks) {
       this.releaseEscort(walk);
-      if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
+      if(walk.destination==='arrival'){
+        const arrival=this.courtArrivals.find(a=>a.soulId===walk.soul.id);
+        if(arrival){arrival.phase='dock';arrival.elapsed=arrival.duration;}
+      }else if (walk.destination !== 'exit') this.finishAfterlifeWalk(walk);
     }
     this.afterlifeWalks = [];
 
@@ -4134,7 +4171,7 @@ const API = {
         repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
         speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       })),
-      queue: this.queue, held: this.held, items: this.items,
+      queue: this.queue, held: this.held, items: this.items, courtArrivals:this.courtArrivals,
       // ยมทูตที่จ้างไว้กับยักษ์ทวารบาลเป็นคนของสาขานี้ ฝากไว้กับสาขา ไม่ตามท่านไป
       // เก็บแค่สิ่งที่เปลี่ยนได้ ค่านิยามประกอบใหม่จาก CREW ตอนย้ายกลับ (แนวเดียวกับ restore)
       crew: this.crew.filter(c => !c.follow)
@@ -4166,6 +4203,7 @@ const API = {
         return st;
       }).filter(Boolean);
       this.queue = back.queue || []; this.held = back.held || []; this.items = back.items || [];
+      this.courtArrivals=(back.courtArrivals||[]).filter(a=>this.queue.some(s=>s.id===a.soulId));
       // เซฟบูรพารุ่นเก่าเคยรับสำนวนกองไทยร่วมกัน — ไม่ยกคดีผิดสาขากลับมาอีก
       this.queue = this.queue.filter(s => soulFitsZone(s, k));
       this.held = this.held.filter(s => soulFitsZone(s, k));
@@ -4187,7 +4225,7 @@ const API = {
       this.ensureTarang();
       this.sweepMapItems();
     } else {
-      this.queue = []; this.items = []; this.held = [];
+      this.queue = []; this.items = []; this.held = []; this.courtArrivals=[];
       this.stations = [mkStation('sala'), mkStation('tarang')];
       this.crew = k === 'cyberhell' ? keep : [...keep, mkCrew(CREW.find(c => c.k === 'taan'), k)];
       this.guard = null;
@@ -4642,7 +4680,7 @@ API.snapshot = function (withEntry = true) {
       slots: st.slots,
     })),
     queue: this.queue, held: this.held, sentences:this.sentences,
-    afterlifeWalks:this.afterlifeWalks, reborn:this.reborn, ascended:this.ascended,
+    afterlifeWalks:this.afterlifeWalks, courtArrivals:this.courtArrivals, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
     mobRosterV18: true,
     guard: this.guard, player: this.player, closed: this.closed, taught: this.taught,
@@ -4730,6 +4768,8 @@ API.restore = function (d) {
     this[k] = Number.isFinite(d[k]) ? d[k] : k === 'coin' ? BAL.startCoin : k === 'order' ? 72 : 0;
   }
   this.courtClosed = !!d.courtClosed;
+  this.courtArrivals=(d.courtArrivals||[]).filter(a=>a&&Number.isFinite(a.soulId))
+    .map(a=>({...a,zone:a.zone||d.zone||'th',phase:['queued','ferry','dock','escort'].includes(a.phase)?a.phase:'dock',elapsed:Math.max(0,a.elapsed||0),duration:Math.max(1,a.duration||3600)}));
   SEQ = d.seq || SEQ;
 
   // ข้อ L คุณเป้เจอ 25 ก.ย. 2569 — บารมีสูงสุดตอนนี้ผูกกับขั้นตรง ๆ ผ่าน LEVELS.hpMax (เดิมกระโดด
@@ -4969,7 +5009,12 @@ API.restore = function (d) {
   this.afterlifeWalks = [];
   for (const walk of d.afterlifeWalks || []) {
     if (walk?.soul && westSpiritsFrozen(this) && walk.zone === 'west') this.afterlifeWalks.push(structuredClone(walk));
-    else if (walk?.soul && ['prison', 'gate', 'queue','arrival','station'].includes(walk.destination)) {
+    else if(walk?.soul&&walk.destination==='arrival'){
+      releaseWorkerEscort(this,{...walk,elapsed:Math.min(walk.elapsed||0,Math.max(0,walk.duration-1))});
+      let arrival=this.courtArrivals.find(a=>a.soulId===walk.soul.id);
+      if(!arrival){arrival={soulId:walk.soul.id,zone:walk.zone||this.zone,duration:3600};this.courtArrivals.push(arrival);}
+      Object.assign(arrival,{phase:'dock',elapsed:arrival.duration});
+    } else if (walk?.soul && ['prison', 'gate', 'queue','station'].includes(walk.destination)) {
       releaseWorkerEscort(this,{...walk,elapsed:walk.duration});
       this.finishAfterlifeWalk(walk);
     }
