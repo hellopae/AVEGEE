@@ -1,6 +1,6 @@
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
-import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
+import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonAtCheckpoint,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
@@ -2407,6 +2407,8 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
+      expeditionParty:!!m.dungeonToken&&bossGuideFollowing(this),
+      ...(m.dungeonToken?{team:[...this.frontierOf().team]}:{}),
       who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
       foeAtk: scaleFoeAtk(this.zone, MOB.fightAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
       youHp: Math.max(20, Math.round(this.hp)), youMax: this.hpMax,
@@ -2443,7 +2445,6 @@ const API = {
     if (bossJusticeActive(this)) return null;
     if (this.battle || this.over) return null;
     const state = this.frontierOf();
-    const nira = this.crewOf('nira');
     // ระดับของตัวนั้นจับตอนมันโผล่บนแผนที่ชายแดน (src/frontier.js en.level) ไม่ใช่ตอนกดเริ่มสู้ —
     // ตัวที่ยืนรออยู่นานไม่ควรยากขึ้นย้อนหลังเพราะเราไปปราบตัวอื่นก่อนหน้าจนระลอกขยับ
     const wave = target?.level || (state.clears || 0) + 1;
@@ -2455,7 +2456,7 @@ const API = {
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:actorStanding(nira) ? ['nira'] : [],
+      kind:'frontier', zone:this.zone, wave, team:[...state.team],
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
@@ -2571,6 +2572,7 @@ const API = {
   },
 
   allyStats(actor) {
+    if(actor?.guestGuide)return {...effectiveAllyStats('taan',actor.homeZone,this.training),desc:'พลังผู้ตรวจการ'};
     return effectiveAllyStats(actor, this.zone, this.training);
   },
 
@@ -2777,6 +2779,7 @@ const API = {
     // ทีมที่จัดไว้ที่ชายแดน (ถ้ามี) ไม่งั้นใช้ทีมปกติของเกม — เหมือนศึกระลอกชายแดนเดิม
     const team = this.frontierOf().team.filter(k => this.crewHelpers().some(c => c.k === k));
     this.battle = prepareBattle({ ...(zone==='th'?{sceneBiome:'cave'}:{}), kind:'zoneEvent', eventKey:ev.k, zone, challenge:true, rematch:st.wins > 0,
+      expeditionParty:!!this.zoneTravel?.active&&bossGuideFollowing(this),
       ...(team.length ? { team:[...team] } : {}), bg:artUrl('BG-Frontier', 'webp', zone),
       wave, startWave:wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
@@ -3084,7 +3087,7 @@ const API = {
   battleCrew() {
     if (isFrontierDuoBattle(this.battle)) {
       const nira = this.crewOf('nira');
-      return actorStanding(nira) && !(this.battle.absentActors || []).includes(nira.id) ? [nira] : [];
+      return [nira,bossGuideCombatant(this)].filter(c=>actorStanding(c)&&!(this.battle.absentActors||[]).includes(c.id));
     }
     const keys = this.battle?.team || this.party?.members || [];
     if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
@@ -3360,7 +3363,7 @@ const API = {
         const group = B.encounter.startsWith('minion:') ? 'minions' : B.encounter.startsWith('ruler:') ? 'rulers' : 'boss';
         (this.finalEventState().clockUsedByGroup ||= {})[group] = true;
       }
-      for (const c of (this.isFinalBattle() ? this.battleCrew() : this.crew)) { c.helpReadyAt = 0; c.helpRemainingMs = 0; }
+      for (const c of (this.isFinalBattle() || isFrontierDuoBattle(B) ? this.battleCrew() : this.crew)) { c.helpReadyAt = 0; c.helpRemainingMs = 0; }
       if (this.guard) { this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 0; }
       for (const p of this.powers) if (p.readyAt) p.readyAt = 0;
       say('⏱️ นาฬิกาย้อนคูลดาวน์ — ยมทูตและยักษ์พร้อมช่วยอีกครั้ง');
@@ -4098,7 +4101,7 @@ const API = {
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
     if(encounter.boss) {
       const battle=this.startZoneEvent('thBorderBoss');
-      if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';this.save();}
+      if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';battle.expeditionParty=false;this.save();}
       else resolveDungeonEncounter(this,encounter.token,false);
       return battle;
     }

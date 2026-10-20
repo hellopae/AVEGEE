@@ -64,7 +64,9 @@ export async function mountCombatSprites(stage,entries){
    if(a.canvas.width!==rec.frameWidth||a.canvas.height!==rec.frameHeight){a.canvas.width=rec.frameWidth;a.canvas.height=rec.frameHeight;}
    Object.assign(a.canvas.style,{left:`${a.foot.x-rec.anchor[0]*s}px`,top:`${a.foot.y-rec.anchor[1]*s}px`,width:`${w}px`,height:`${h}px`});
    const c=a.canvas.getContext('2d');c.clearRect(0,0,rec.frameWidth,rec.frameHeight);
+   if(a.face===-1){c.save();c.translate(rec.frameWidth,0);c.scale(-1,1);}
    c.drawImage(im,frame%rec.cols*rec.frameWidth,Math.floor(frame/rec.cols)*rec.frameHeight,rec.frameWidth,rec.frameHeight,0,0,rec.frameWidth,rec.frameHeight);
+   if(a.face===-1)c.restore();
    a.image.style.opacity='0';for(const old of a.root.querySelectorAll('canvas:not(.combat-pose-atlas)'))old.style.opacity='0';a.root.dataset.poseMode=a.mode;a.root.dataset.poseFrame=String(frame);a.root.dataset.poseKey=a.key;
   }
   requestAnimationFrame(tick);

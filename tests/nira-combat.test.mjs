@@ -8,7 +8,7 @@ function setup() {
   game.hire('taan');game.hire('boon');game.hireGuard();game.party.members=['taan','boon'];
   game.startBattle({id:900,who:'test',deserved:4,resist:true});
   game.battle.foes.forEach(foe=>{foe.hp=foe.maxHp=10000;foe.atk=[1,1];});
-  game.battle.dungeonToken='th:asia:test';
+  game.battle.dungeonToken='th:asia:test';game.battle.expeditionParty=true;
   return game;
 }
 const niraTurn=game=>{
@@ -27,11 +27,11 @@ test('outside frontier fights use only Yama and Nira despite the selected party 
     assert.equal(game.battleAct('guard'),false);
     assert.equal(game.battleAct('crew:taan'),false);
   }
-  delete game.battle.dungeonToken;
+  delete game.battle.dungeonToken;delete game.battle.expeditionParty;
   assert.ok(game.battleActors().some(actor=>actor.k==='taan'));
   assert.equal(game.guardActive(),true,'ordinary town battles retain selected party');
-  assert.equal(isFrontierDuoBattle({kind:'frontier'}),true);
-  assert.equal(isFrontierDuoBattle({challenge:true,sceneBiome:'cave'}),true);
+  assert.equal(isFrontierDuoBattle({kind:'frontier'}),false);
+  assert.equal(isFrontierDuoBattle({challenge:true,sceneBiome:'cave'}),false);
   assert.equal(isFrontierDuoBattle({kind:'zoneEvent'}),false);
 });
 
@@ -44,12 +44,12 @@ test('Nira gets a distinct turn and normal attack without spending healing coold
   game.finishBattleCommand();assert.equal(game.currentBattleTurn().side,'foe');
 });
 
-test('outside battles need no hired office helper or selected frontier team',()=>{
+test('ordinary border with no hired office helper or selected team keeps Yama alone',()=>{
   const game=createGame();game.save=()=>true;game.onChange=()=>{};
   game.crew=game.crew.filter(actor=>actor.k==='nira');game.frontierOf().team=[];
   assert.ok(game.startFrontierBattle());
-  assert.deepEqual(game.battle.team,['nira']);
-  assert.deepEqual(game.battleActors().map(actor=>actor.id),['you','global:nira']);
+  assert.deepEqual(game.battle.team,[]);
+  assert.deepEqual(game.battleActors().map(actor=>actor.id),['you']);
 });
 
 test('Nira heals Yama or herself with capped HP, animation metadata and cooldown',()=>{

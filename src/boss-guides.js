@@ -32,6 +32,9 @@ export function initializeBossGuides(g,saved){
         entry.outfitGranted=true;
       }
     }
+    if(old?.combat)entry.combat={morale:Number.isFinite(old.combat.morale)?Math.max(0,Math.min(100,old.combat.morale)):100,
+      helpRemainingMs:Number.isFinite(old.combat.helpRemainingMs)?Math.max(0,Math.min(120000,old.combat.helpRemainingMs)):0,
+      recoverUntil:Number.isFinite(old.combat.recoverUntil)?Math.max(0,old.combat.recoverUntil):0};
     state.zones[zone]=entry;
   }
   g.bossGuides=state;
@@ -52,6 +55,14 @@ export function recordBossGuideWin(g,battle){
 const justiceHolding=(g,zone)=>Object.values(g.bossJustice?.ledger||{}).some(entry=>entry.zone===zone&&entry.phase!=='released');
 export function bossGuideWaiting(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&!s.following&&!s.farewell&&!justiceHolding(g,zone));}
 export function bossGuideFollowing(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&s.following&&!s.farewell&&!justiceHolding(g,zone));}
+/** A guest combatant belongs to the journey, never to the hireable office roster. */
+export function bossGuideCombatant(g) {
+  if(!bossGuideFollowing(g))return null;
+  const state=bossGuideState(g),actor=state.combat ||= {morale:100,helpRemainingMs:0,recoverUntil:0};
+  if(actor.recoverUntil&&Date.now()>=actor.recoverUntil){actor.recoverUntil=0;actor.morale=50;}
+  return Object.assign(actor,{id:`guide:${g.zone}`,k:'guide',kind:'guide',guestGuide:true,homeZone:g.zone,
+    name:ZONES.find(z=>z.k===g.zone)?.bossName || 'ผู้ตรวจการนำทาง',speed:9});
+}
 export function queueBossGuideStory(g,beat,zone=g.zone){
   const state=bossGuideState(g,zone);if(!state?.won||justiceHolding(g,zone))return false;
   if(beat==='welcome'&&(state.welcomed||state.farewell)||beat==='farewell'&&(!state.following||state.farewell))return false;

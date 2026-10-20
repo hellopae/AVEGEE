@@ -1,12 +1,33 @@
+## 2026-10-20 — latest border party correction
+
+- Latest user requirement implemented: ordinary border patrols use the selected keeper team and guard; only an active boss-guided interzone expedition uses Yama, Nira and the previous-zone boss.
+- Guide boss has a real initiative turn, attacks, damage, healing, cooldown and saved combat state. It never enters the hired roster. Returning from an expedition restores the ordinary selected party.
+- Relevant regression tests: 103/103 pass (party, turn order, Nira, combat, boss justice and cave progression). No claim of full manual end-to-end acceptance.
+- Release build: `20261020-border-party`. Deployment verification recorded after push.
+- Earlier frontier build `20261020-frontier-scale` / commit `44f6c78`: Pages run 39439146482 succeeded and live build marker was verified.
+- Existing outstanding work below remains open; this correction does not complete the entire historical backlog.
+
 # Handoff after usage reset — 2026-10-19
 
 ## Latest checkpoint — read this section first
+
+### Frontier scale release — 2026-10-20 (newest)
+
+- `44f6c78` pushed: zone1-2-v3 painting, fixed native 1672x941 world, normal camera at native scale rather than viewport-dependent 1.55x enlargement, town-equivalent Yama/Nira/normal enemy heights, removed geographic footer labels, decoration trunks moved off walkable road, water streaks restricted to painted waterfall channels.
+- Isolated staged suite 23/23 passed (camera/actor metrics, decoration road clearance, dungeon view/art/cave progression, preload). Browser preview used production mountDungeonView with a separate temporary game object, not the real save. Clicked from entry to checkpoint 0: Yama walked with Nira, camera followed, encounter callback fired, defeated count changed to 1/3. This verifies encounter dispatch, not a full real combat playthrough.
+- Screenshot: docs/handoffs/20261020-frontier-scale-review.png. Reusable local preview: output/frontier-review/index.html (untracked, no save writes).
+- Build marker 20261020-frontier-scale. Pages run 39439146482 succeeded; live marker verification follows.
+- NOT completed by this batch: more independently persistent roaming enemy encounters (still three checkpoint encounters); all route branches/exit/boss escort manual acceptance; battle comments; terrain seam stitching; supervisor/keeper interrogation expansion. Keep those open.
+- Removed obsolete local-only R7 cache-marker edits after checking that catalog asset sets match HEAD; working index/preload/catalog now match the released batches. No gameplay edits were discarded.
+- Battle follow-up static/logic suites (Nira combat, cutscene FX, formation) passed 13/13; recording-based manual battle acceptance is still open.
+- Prior ferry r2 Pages succeeded and live marker 20261020-court-ferry-r2 was verified.
 
 ### Published batches — 2026-10-20 (read first; supersedes older local-only labels)
 
 1. `c0ae54c` — owner-reference Zone 1 navigation, removed upper stair tree, pier edge limits, guard reachable rest point. Isolated staged snapshot 27/27 passed. Pages 39426271527 SUCCESS; live marker verified `20261020-zone1-navigation`.
 2. `b84b78a` — dedicated money/outfit handover illustrations for guide bosses in th/asia/west; all three visually inspected with Yama/Nira in zone 1 outfits. Isolated guide/preload suite 23/23 passed. Pages 39427434448 SUCCESS; live marker verified `20261020-zone1-gifts`.
-3. `b18a8d2` — persistent court ferries, case availability after disembarkation, workers escort from dock, UI/save integration and regressions. Isolated gameplay suite 31/31 passed; ui.js/scene.js syntax checked. Manual test: opening court changed disabled TRIAL RECESS to enabled TRIAL BEGINS and entered case 001. The local save had no workers, testing dock availability. Screenshot `docs/handoffs/20261020-ferry-trial-open.png`. Deployment verification pending at this checkpoint.
+3. `b18a8d2` — persistent court ferries, case availability after disembarkation, workers escort from dock, UI/save integration and regressions. Isolated gameplay suite 31/31 passed; ui.js/scene.js syntax checked. Manual test: opening court changed disabled TRIAL RECESS to enabled TRIAL BEGINS and entered case 001. The local save had no workers, testing dock availability. Screenshot `docs/handoffs/20261020-ferry-trial-open.png`. Pages 39428716743 succeeded.
+4. `61544ce` — prevent a soul already disembarked from being put back on the ferry when court is reopened; queue state persists through save/restore. Related suite 32/32 passed. Build marker `20261020-court-ferry-r2`, Pages run 39429240719 succeeded; live build marker verified.
 
 Remaining local files are not part of those releases: new outside-route art + dungeon-art/view changes, pending R7 index/preload/catalog edits, handoff/experiment docs, screenshots, and terrain candidate.
 

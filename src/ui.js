@@ -2125,7 +2125,9 @@ function onDlgClose(fn) {
  *  ไม่มีไฟล์ก็ยังใช้ได้ พื้นหลังจะเป็นสีทึบตาม token แทน
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
 const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
-const crewArt = (c, pose = '') => artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
+const crewArt = (c, pose = '') => c.k==='guide'
+  ? artUrl('zone-boss'+pose,'png',c.homeZone)||artUrl('zone-boss','png',c.homeZone)
+  : artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
 function battleTurnOrderHtml(b) {
   if(!b.turnQueue||b.over)return '';
   const units=g.battleTimeline(),currentRound=b.turnQueue.round;
@@ -2305,6 +2307,7 @@ function actionCutsceneSrc(k) {
 
 /** Crew and Guard use their branch's action art, regardless of Yama's outfit. */
 function crewCutsceneSrc(k) {
+  if(k==='guide')return null;
   const actor = g.roster[k], kind = actor?.kind || k, zone = actor?.homeZone || g.zone;
   const scene = regionalCrewCutscene(kind, zone);
   return { src:scene.src, fallback:scene.regional ? artUrl(`crew-${kind}`, 'png', zone) : null };
@@ -3593,7 +3596,7 @@ function openBattle(after) {
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
         const attacking=phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
         const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:`crew:${c.homeZone||g.zone}:${c.k}`,mode,startedAt:mode==='idle'?key.length*271:phaseAt});
+        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:phaseAt});
       }
       if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:phaseAt});
       const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
@@ -4137,8 +4140,10 @@ function openOutfit() {
 
 // ---------- ภาพ/ชื่อไอเท็ม (ชุด 28B) ----------
 /** ชื่อไอเท็มตามภาษา — ไอเท็มที่มี nameKey ผ่าน i18n (น้ำมนต์) ที่เหลือใช้ชื่อไทยเดิมตามขอบเขตรอบ C2 */
-const crewAbility = actor => describeCrewAbility(typeof actor === 'string'
-  ? actor === 'guard' ? g.guard || actor : g.crew.find(c => c.k === actor) || actor : actor, g.zone, g.training);
+const crewAbility = actor => {
+  const c=typeof actor==='string'?(actor==='guard'?g.guard||actor:g.battleCrew().find(c=>c.k===actor)||g.crew.find(c=>c.k===actor)||actor):actor;
+  return c?.guestGuide?`พลังผู้ตรวจการ · โจมตี ${g.allyStats(c).dmg}`:describeCrewAbility(c,g.zone,g.training);
+};
 const itemText = (k, field) => ITEMS[k]?.[field+'Key'] ? t(ITEMS[k][field+'Key']) : getLang() === 'en' && ITEMS[k]?.[field+'En'] ? ITEMS[k][field+'En'] : ITEMS[k]?.[field];
 // นับยาทุกระดับ (หีบยา/น้ำมนต์/น้ำชา ของทุกโซน) — ใช้บอกว่ากล่องยาเตรียมศึก "มีของ" หรือไม่
 const itemName = k => ITEMS[k]?.nameKey ? t(ITEMS[k].nameKey) : (itemText(k, 'name') || k);

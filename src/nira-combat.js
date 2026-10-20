@@ -1,7 +1,6 @@
-// Outside the town, Nira accompanies Yama independently of the selected office team.
-export const isFrontierDuoBattle = battle => !!battle &&
-  (!!battle.dungeonToken || battle.kind === 'frontier' ||
-    !!battle.challenge && battle.sceneBiome === 'cave');
+// The traveling party is explicit: ordinary border patrols retain their selected team.
+// Retain the export name for existing Nira animation callers; expeditions also include the guide.
+export const isFrontierDuoBattle = battle => battle?.expeditionParty === true;
 
 export const niraCombatSheet = zone => `img/nira-combat/nira-${['th','asia','west','cyberhell'].includes(zone) ? zone : 'th'}-sheet-v1.webp`;
 export const niraHealingCutscene = zone => `img/nira-combat/nira-${['th','asia','west','cyberhell'].includes(zone) ? zone : 'th'}-heal-cutscene-v1.webp`;

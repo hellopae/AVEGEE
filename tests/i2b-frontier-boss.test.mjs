@@ -47,7 +47,7 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
         const at=d.dungeonPoint(d.DUNGEON_PROGRESS[2]);g.zoneTravel.active.position={x:at[0],y:at[1]};
         assert.equal(g.challengeCanTalk(),true,'cave proximity opens replay');
         const battle=g.startChallenge();assert.equal(battle.challenge,true);assert.equal(battle.sceneBiome,'cave');
-        assert.deepEqual(g.battleActors().map(a=>a.id),['you','global:nira']);
+        assert.equal(g.battleActors().some(a=>a.k==='nira'),false,'ordinary cave replay keeps the selected team');
         return;
       }
       assert.ok(labels.includes(BOSS_NAMES[zone].frontier),'boss rendered in frontier');

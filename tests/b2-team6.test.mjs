@@ -59,7 +59,7 @@ test('B2 map rests apply ID team edits and keep six into the next encounter', ()
   assert.equal(g.battleCrew().length, 6);
 });
 
-test('B2 town keeps two local helpers while frontier uses Yama and Nira despite final selection', () => {
+test('B2 town keeps two local helpers while ordinary frontier retains the selected local team', () => {
   const g = finalGame(); for (const id of ids) g.toggleParty(id);
   g.zoneEvents.cyberhell.cyberFinal = 'locked'; g.party.members = []; g.frontierOf().team = [];
   assert.equal(g.toggleParty('taan'), true); assert.equal(g.toggleParty('kan'), true);
@@ -67,10 +67,11 @@ test('B2 town keeps two local helpers while frontier uses Yama and Nira despite 
   g.party.members.push('boon'); assert.equal(g.battleCrew().length, 2);
   assert.equal(g.setFrontierTeam('taan'), true); assert.equal(g.setFrontierTeam('kan'), true);
   assert.equal(g.setFrontierTeam('boon'), false);
-  assert.deepEqual(g.startFrontierBattle().team, ['nira']);
-  assert.deepEqual(g.battleCrew().map(actor => actor.id), ['global:nira']);
-  assert.deepEqual(g.battleActors().map(actor => actor.id), ['you','global:nira']);
-  assert.equal(g.guardActive(), false, 'town guard remains in town');
+  assert.deepEqual(g.startFrontierBattle().team, ['taan','kan']);
+  assert.deepEqual(g.battleCrew().map(actor => actor.k), ['taan','kan']);
+  assert.ok(g.battleActors().some(actor=>actor.k==='taan'));
+  assert.equal(g.battleActors().some(actor=>actor.k==='nira'),false);
+  assert.equal(g.guardActive(), !!g.guard && g.guard.morale>0, 'ordinary border retains its guard');
 });
 
 test('B2 helper morale, cooldown and trained damage belong to the source ID after battle/save', () => {
