@@ -69,3 +69,17 @@ test('renderer preload retains the decoded image and retries a broken browser re
  const mod=await import('../src/town-terrain.js?test-retained-preview');let ready=false;
  const pending=mod.preloadTownTerrainPreview(1000).then(()=>{ready=true;});await new Promise(r=>setTimeout(r,0));assert.equal(ready,false);assert.match(urls[1],/recover=/);finish();await pending;assert.ok(mod.townTerrainImage());globalThis.Image=saved;
 });
+
+// Reopening a court must never send an already delivered soul back onto the ferry.
+test('delivered court souls remain ashore across reopening and save restore',()=>{
+ for(const withWorker of [false,true]){
+  const g=setup(),soul=g.queue[0];
+  if(withWorker){const w=g.hireWorker();g.setWorkerMode(w.id,'escort');}
+  assert.equal(g.startCourtArrival(soul),true);g.advanceAfterlife(3600);g.advanceAfterlife(1e7);
+  assert.equal(soul.courtDisembarked,true);
+  assert.equal(g.startCourtArrival(soul),false);assert.equal(g.caseReady(soul),true);
+  const restored=setup();assert.equal(restored.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+  const saved=restored.queue.find(s=>s.id===soul.id);
+  assert.equal(restored.startCourtArrival(saved),false);assert.equal(restored.caseReady(saved),true);
+ }
+});

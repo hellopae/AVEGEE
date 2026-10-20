@@ -431,7 +431,7 @@ const API = {
   },
 
   startCourtArrival(soul) {
-    if(!soul||this.courtArrivals.some(a=>a.soulId===soul.id)||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
+    if(!soul||soul.courtDisembarked||this.courtArrivals.some(a=>a.soulId===soul.id)||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
     const phase=this.courtArrivals.some(a=>a.phase==='ferry')?'queued':'ferry';
     this.courtArrivals.push({soulId:soul.id,phase,elapsed:0,duration:3600,zone:this.zone});
     return true;
@@ -457,7 +457,11 @@ const API = {
     }
     if(ferry){
       ferry.elapsed=Math.min(ferry.duration,ferry.elapsed+dt);
-      if(ferry.elapsed>=ferry.duration)ferry.phase='dock';
+      if(ferry.elapsed>=ferry.duration){
+        ferry.phase='dock';
+        const soul=this.queue.find(s=>s.id===ferry.soulId);
+        if(soul)soul.courtDisembarked=true;
+      }
     }
     for(const arrival of this.courtArrivals.filter(a=>a.zone===this.zone&&a.phase==='dock')){
       const soul=this.queue.find(s=>s.id===arrival.soulId);
@@ -1276,6 +1280,7 @@ const API = {
       if (!this.queue.some(x => x.id === soul.id)) this.queue.push(soul);
       this.returned++;
     } else if(destination==='arrival') {
+      soul.courtDisembarked=true;
       this.courtArrivals=this.courtArrivals.filter(a=>a.soulId!==soul.id);
     }
   },
