@@ -3,7 +3,8 @@
 // (k1-placement-Kittanate.jpg, 2500x1667 -> world = x * 1.536).
 // Ground is painted; here live only invisible rules: what can be walked on (mask), where each
 // building / house / decoration stands (foot point), and the anchors used by the game.
-import { TOWN_WALK_CELL, TOWN_WALK_COLS, TOWN_WALK_ROWS, TOWN_WALK_RUNS } from './town-walkmask.js?v=k1d-n1';
+import { TOWN_WALK_CELL, TOWN_WALK_COLS, TOWN_WALK_ROWS } from './town-walkmask.js?v=k1d-n1';
+import { TOWN_OWNER_WALK_RUNS } from './town-owner-walkmask.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -52,7 +53,7 @@ export const TOWN_ENTRY = {gate:[1917,2200],nira:[1870,2200],
 const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);
 {
   let i=0,on=0;
-  for(const run of TOWN_WALK_RUNS){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
+  for(const run of TOWN_OWNER_WALK_RUNS){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
 }
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
@@ -64,8 +65,18 @@ export const TOWN_UPPER_BRIDGE_LANDING = [[1380,480],[1510,490],[1510,550],[1380
 export const TOWN_LAVA_STAIRS = [[1018,954],[1095,950],[1500,995],[1505,1072],[1434,1092],[1120,1142],[1044,1115],[1004,1018]];
 export const TOWN_LAVA_STAIR_LANDING = [[1018,954],[1095,955],[1156,1010],[1112,1095],[1042,1082],[1004,1018]];
 export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,1178],[1432,1160],[1480,1218],[1250,1250],[1060,1196],[790,1196],[700,1172]];
+const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  // Keep feet on the pier top; edge tolerance must never open its front face or water.
+  if(x>=2150&&x<2350&&y>=1700&&y<1860
+    &&(x<2188||x>2292||y>1796))return false;
+  // Screenshot overlays and the red building footprints cover some interaction
+  // anchors. Keep only their small door pads; prop collision remains authoritative.
+  // The shop speech/button banner obscures a strip of the paved merchant court
+  // in the reference screenshot; it is UI, not a terrain barrier.
+  if(x>=1620&&x<=1730&&y>=1508&&y<=1560)return true;
+  if(interactionPads.some(s=>(x-s.x)**2+(y-s.y)**2<48**2))return true;
   if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
     ||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING)
     ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD))return true;
@@ -108,7 +119,10 @@ const trees = (list,tag)=>list.map(([x,y,w,biome],i)=>deco(`${tag}-${i}`,'tree',
 export const TOWN_PROP_SITES = [
   // green / orange trees (owner: green marks)
   ...trees([
-    [1436,691,136,'city'],[1738,835,156,'city'],[2060,743,136,'city'],
+    // The tree that used to stand at 1436,691 is intentionally omitted.  Its canopy sat over
+    // the newly painted upper-west stair and made the shortest route appear to cut through the
+    // trunk.  Map-Zone1-3 keeps this whole landing clear so movement follows the stone flight.
+    [1738,835,156,'city'],[2060,743,136,'city'],
     [1757,1133,159,'city'],[1962,1137,159,'city'],[2185,977,136,'city'],[2945,1146,202,'city'],
     [1413,1457,175,'city'],[1818,1478,161,'city'],[2016,1478,161,'city'],[2314,1453,161,'city'],
     [2346,1678,159,'city'],[3231,1453,198,'city'],[3567,1632,200,'city'],

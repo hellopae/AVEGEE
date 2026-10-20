@@ -40,6 +40,7 @@ const { createGame } = await import('../src/game.js');
 const { SCENE, SPOTS, STATIONS, MERCHANT, FRONTIER } = await import('../src/data.js');
 const { bindZone, blockRectsOf } = await import('../src/art.js');
 const { canWalk, findPath, resetWalk, setBlocks, setNpcDiscs } = await import('../src/walk.js?v=k1d');
+const { TOWN_STAIRS } = await import('../src/town-layout.js');
 const { INTERACTION_REACH } = await import('../src/proximity.js');
 const { BUILD_REACH } = await import('../src/scene.js');
 await new Promise(resolve => setImmediate(resolve));
@@ -71,6 +72,7 @@ for (const allBuilt of [false, true]) {
     const start = [SPOTS.bench.x, SPOTS.bench.y];
     assert.equal(canWalk(...start), true, 'town plaza remains walkable');
     const targets = [
+      ...TOWN_STAIRS.map(s=>({key:s.key,x:s.point[0],y:s.point[1],reach:36})),
       ...STATIONS.map(def => ({ key:def.k, x:def.x, y:def.y,
         built:g.stations.some(st => st.def.k === def.k),
         reach:g.stations.some(st => st.def.k === def.k) ? INTERACTION_REACH : BUILD_REACH })),

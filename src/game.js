@@ -532,10 +532,12 @@ const API = {
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
     if (c.x == null) return false;
-    const dest = nearestWalk(tea.def.sx ?? tea.def.x, tea.def.sy ?? tea.def.y);
-    if (!dest) return false;
-    const path = findPath(c.x, c.y, ...dest);
-    if (!path?.length && Math.hypot(c.x-dest[0],c.y-dest[1]) > 6) return false;
+    const requested = nearestWalk(tea.def.sx ?? tea.def.x, tea.def.sy ?? tea.def.y);
+    if (!requested) return false;
+    const path = findPath(c.x, c.y, ...requested);
+    if (!path?.length && Math.hypot(c.x-requested[0],c.y-requested[1]) > 6) return false;
+    const dest = path?.at(-1) || requested;
+    if (Math.hypot(dest[0]-requested[0],dest[1]-requested[1]) > 100) return false;
     c.teaRest = { phase:'travel', zone:this.zone, dest, path:path || [], movedAt:now, returnAt:[c.x,c.y] };
     c.path = null; c.target = null;
     this.releaseActorFromWork(c);
