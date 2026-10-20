@@ -25,3 +25,11 @@ test('eight-member party has two distinct diagonal files and stable back-to-fron
   }
   assert.ok(slots.at(-1).y<665*.85,'front row stays above profiles');
 });
+
+test('Yama and companions in two/three-member parties stay within a compact shared file',()=>{
+ for(const count of [2,3])for(const width of [367,930,1280]){
+  const feet=planBattleFormation(count,width,665);
+  assert.ok(feet.at(-1).x-feet[0].x<=width*.08,'small parties remain closer than the former 12.5% spread');
+  assert.ok(feet.at(-1).x+feet.at(-1).stepX<width*.5,'active member still leaves space before enemy side');
+ }
+});

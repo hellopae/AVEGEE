@@ -1,10 +1,11 @@
+import {readReleaseFile,assertModuleRelease,assertStylesheetRelease} from './helpers/release-imports.mjs';
 // N1 — ท่าเรือ (ขอบเดิน/ปุ่ม Fast Travel/ป้ายบอส) + หอส่องกรรม (จุดฝึก/กระจก) · ใบงาน Output/Claudy/briefs/2026-10-16-avegee-n1-harbour-krajok.md
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { townFloorAt, TOWN_SPOTS, TOWN_STAIRS } from '../src/town-layout.js';
 import { wideStationRoom } from '../src/room-art-assets.js';
-const read = f => fs.readFileSync(new URL('../' + f, import.meta.url), 'utf8');
+const read = readReleaseFile;
 
 test('N1-1 dock: feet cannot leave the painted pier (front face, right post and open water are blocked)', () => {
   // painted pier v4: stone top x≈2200-2305, front edge y≈1800; stairs above it
@@ -60,15 +61,13 @@ test('N1-5 krajok room: adjustable-mirror stand is always in the room; magic mir
   for (const zone of ['th','asia','cyberhell']) assert.match(art, new RegExp(`img/rooms-wide/${zone}-krajok\\.webp\\?v=20261018-n1b`));
 });
 
-test('N1-cache every file touched by N1 gets the -n1 token (index.html, review page, direct imports)', () => {
-  const html = read('index.html'), review = read('output/game-review/index.html');
-  assert.match(html, /"\.\/src\/ui\.js": "\.\/src\/ui\.js\?v=[^"]+-n1(?:-r6)?"/);
-  assert.match(html, /<script type="module" src="src\/ui\.js\?v=[^"]+-n1(?:-r6)?">/);
-  assert.match(html, /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]+-n1(?:-[^"]+)*"/);
-  assert.match(html, /"\.\/src\/town-layout\.js": "\.\/src\/town-layout\.js\?v=[^"]+-n1(?:-r6)?"/);
-  assert.match(html, /"\.\/src\/room\.js\?v=minigame-review-20261011": "\.\/src\/room\.js\?v=[^"]+-n1(?:-r6)?"/);
-  assert.match(html, /src\/town-map\.css\?v=[^"]+-n1/);
-  assert.match(review, /src\/ui\.js\?v=[^"']+-n1/);
-  assert.match(read('src/town-layout.js'), /town-walkmask\.js\?v=k1d-n1/);
-  assert.match(read('src/ui.js'), /room-art-assets\.js\?v=minigame-review-20261011-j4-n1/);
+test('N1 release entries, module aliases and direct imports use coherent versioned URLs', () => {
+  const html=read('index.html'),review=read('output/game-review/index.html');
+  assert.equal(assertModuleRelease('src/ui.js',html,null,{entry:true}),assertModuleRelease('src/ui.js',review,null,{entry:true}));
+  assertModuleRelease('src/scene.js',html,'src/ui.js');
+  assertModuleRelease('src/town-layout.js',html,'src/scene.js');
+  assertModuleRelease('src/room.js',html,'src/ui.js');
+  assert.equal(assertStylesheetRelease('src/town-map.css',html),assertStylesheetRelease('src/town-map.css',review));
+  assertModuleRelease('src/town-walkmask.js',html,'src/town-layout.js');
+  assertModuleRelease('src/room-art-assets.js',html,'src/ui.js');
 });

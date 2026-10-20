@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="avegee-build" content="20261021-frontier-patrols">
+<meta name="avegee-build" content="20261021-town-repairs">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>อเวจี — นรกโซนสุวรรณภูมิ</title>
 <meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
@@ -2299,14 +2299,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="importmap">{
   "imports": {
-    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261021-town-repairs",
     "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-boss-justice-workers-v1",
     "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/art.js": "./src/art.js?v=yama-live-20261015",
     "./src/i18n.js": "./src/i18n.js?v=20261020-court-ferry",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261020-frontier-scale",
+    "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261021-town-repairs",
     "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=yama-live-20261015-l4a-n1",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
     "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
@@ -2316,17 +2316,18 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-layout.js": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party",
     "./src/scene.js": "./src/scene.js?v=20261020-court-ferry",
-    "./src/town-terrain.js": "./src/town-terrain.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-town-repairs",
+    "./src/town-terrain.js": "./src/town-terrain.js?v=20261021-town-repairs",
     "./src/proximity.js": "./src/proximity.js?v=20261016-boss-justice-workers-v1-r6b",
     "./src/town-shade.js": "./src/town-shade.js?v=20261016-boss-justice-workers-v1-r6b",
     "./src/town-lighting.js": "./src/town-lighting.js?v=20261016-boss-justice-workers-v1",
-    "./src/battle-formation.js": "./src/battle-formation.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/battle-formation.js": "./src/battle-formation.js?v=20261021-town-repairs",
     "./src/town-scenery.js": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/game.js": "./src/game.js?v=20261021-frontier-patrols",
-    "./src/preload.js": "./src/preload.js?v=20261020-frontier-scale",
+    "./src/preload.js": "./src/preload.js?v=20261021-town-repairs",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/ui.js": "./src/ui.js?v=20261021-frontier-patrols",
+    "./src/ui.js": "./src/ui.js?v=20261021-town-repairs",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-frontier-patrols",
@@ -2335,7 +2336,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261016-boss-justice-workers-v1-r6b",
     "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261016-boss-justice-workers-v1",
-    "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261021-town-repairs",
     "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261021-frontier-patrols",
     "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261021-frontier-patrols",
     "./src/data.js": "./src/data.js?v=20261016-boss-justice-workers-v1-n3b-r6",
@@ -2351,7 +2352,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/nira-combat.js": "./src/nira-combat.js?v=20261020-border-party",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261020-boss-justice-hotfix",
-    "./src/workers.js": "./src/workers.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/workers.js": "./src/workers.js?v=20261021-town-repairs",
     "./src/worker-ui.js": "./src/worker-ui.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/story.js": "./src/story.js?v=20261016-boss-justice-workers-v1",
     "./src/final-event.js": "./src/final-event.js?v=20261016-boss-justice-workers-v1",
@@ -2365,8 +2366,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/training.js?v=minigame-review-20261011": "./src/training.js?v=20261019-r6b"
   }
 }</script>
-<script type="module" src="src/preload.js?v=20261020-frontier-scale"></script>
+<script type="module" src="src/preload.js?v=20261021-town-repairs"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-frontier-patrols"></script>
+<script type="module" src="src/ui.js?v=20261021-town-repairs"></script>
 </body>
 </html>

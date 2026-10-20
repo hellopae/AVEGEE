@@ -1,3 +1,4 @@
+import {repairTownTerrain} from './town-terrain-repair.js';
 // Zone 1 ground = the painted map img/map-zone1/v5 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
 // cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
@@ -34,7 +35,7 @@ export function preloadTownTerrainPreview(timeoutMs=30000) {
     function finish(error,image){if(ended)return;ended=true;clearTimeout(timer);if(active)active.onload=active.onerror=null;if(error){preview=null;reject(error);}else{preview={image,ready:true};resolve(image);}}
     function attempt(fresh){
       const image=new Image();active=image;preview={image,ready:false};image.decoding='async';
-      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,image);}catch(error){if(!fresh)attempt(true);else finish(error);}};
+      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,await repairTownTerrain(image));}catch(error){if(!fresh)attempt(true);else finish(error);}};
       image.onerror=()=>{if(!fresh)attempt(true);else finish(new Error('town preview unavailable'));};
       image.src=TOWN_TERRAIN_PREVIEW+(fresh?'?recover='+Date.now():'');
     }
@@ -51,7 +52,7 @@ function request(row,col) {
   c.state = 'loading'; loading++;
   const image = new Image(); c.image = image; image.decoding = 'async';
   const done = ok => { c.state = ok ? 'ready' : 'error'; loading--; };
-  image.onload = () => { (image.decode ? image.decode().catch(()=>{}) : Promise.resolve()).then(()=>done(true)); };
+  image.onload = () => { (image.decode ? image.decode().catch(()=>{}) : Promise.resolve()).then(()=>repairTownTerrain(image,{row,col})).then(ready=>{c.image=ready;done(true);},()=>done(false)); };
   image.onerror = () => done(false);
   image.src = townChunkUrl(row,col);
   return c;

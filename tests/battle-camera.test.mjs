@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease,assertStylesheetRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -6,7 +7,7 @@ import {
   CAMERA_TIMING, createBattleCamera, MIN_ZOOM, MAX_ZOOM, strikeTime,
 } from '../src/battle-camera.js';
 
-const read = f => readFileSync(new URL('../' + f, import.meta.url), 'utf8');
+const read = readReleaseFile;
 const near = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) <= eps, `${a} ≈ ${b}`);
 
 // ---------- pure maths ----------
@@ -180,9 +181,9 @@ test('M1 cue emits impact exactly once even when a newer cue replaces it mid-way
 });
 
 // ---------- wiring (source level) ----------
-test('M1 wiring: only .cam-world is transformed; HUD stays outside; cache-bust -m1 in both entry pages', () => {
+test('M1 wiring: only .cam-world is transformed; HUD stays outside; release module and stylesheet identities agree in both entry pages', () => {
   const ui = read('src/ui.js'), cam = read('src/battle-camera.js'), css = read('src/battle-camera.css');
-  assert.match(ui, /from '\.\/battle-camera\.js\?v=[^']*m1'/);
+  assertModuleRelease('src/battle-camera.js',read('index.html'),'src/ui.js');
   assert.match(ui, /\$\{hp \? `<div class="cam-world"/, 'combat arena wraps scene in .cam-world');
   assert.match(ui, /\$\{hp \? '<\/div>' : ''\}\s*\n\s*\$\{controls\}/, 'world closes before controls/HUD');
   assert.doesNotMatch(cam, /\.filter\s*=|filter:\s*blur|style\.filter/, 'no per-frame filters');
@@ -190,8 +191,8 @@ test('M1 wiring: only .cam-world is transformed; HUD stays outside; cache-bust -
   assert.match(read('src/battle-scale.js'), /setBattleRectMapper/);
   for (const f of ['index.html', 'output/game-review/index.html']) {
     const h = read(f);
-    assert.match(h, /src\/ui\.js\?v=[^"]*-m1(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?"/, f);
-    assert.match(h, /src\/battle-camera\.css\?v=[^"]*m1"/, f);
+    assertModuleRelease('src/ui.js',h,null,{entry:true});
+    assertStylesheetRelease('src/battle-camera.css',h);
   }
   assert.match(read('docs/battle-camera-api.md'), /camera\.focus\(target/);
 });

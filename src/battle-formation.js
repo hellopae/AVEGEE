@@ -2,11 +2,11 @@
 // Eight-member parties use two staggered diagonal files, without changing turn order.
 export function planBattleFormation(count, width, height) {
   if(!Number.isInteger(count)||count<1||!(width>0&&height>0))return [];
-  const columns=count>4?Math.ceil(count/2):count;
+  const columns=count>4?Math.ceil(count/2):count,compact=count<=3;
   return Array.from({length:count},(_,i)=>{
     const row=Math.floor(i/columns),column=i%columns;
     const t=columns===1?1:column/(columns-1);
-    return {x:width*(.18+.125*t+(count>4&&row===1?.02:0)),
+    return {x:width*((compact?.245:.18)+(compact?.075:.125)*t+(count>4&&row===1?.02:0)),
       y:height*(.62+.068*t+(count>4?(row===0?-.075:.05):0)),
       scale:.94+.06*t,depth:5+row*columns+column,
       stepX:width*.065,stepY:-height*.025};

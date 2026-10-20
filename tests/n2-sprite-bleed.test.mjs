@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease} from './helpers/release-imports.mjs';
 // N2 — (1) no neighbour-frame bleed left in the drawn combat atlases, (2) Yama stands still in the interrogation room.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,7 +9,7 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {TRIAL_IDLE_TIMING} from '../src/yama-trial-idle.js';
 const root=fileURLToPath(new URL('..',import.meta.url));
-const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+const read=readReleaseFile;
 const haveScipy=spawnSync('python3',['-c','import PIL,numpy,scipy']).status===0;
 
 test('N2: every drawn combat frame is free of neighbour bleed (edge pieces, stray tops, specks)',{skip:!haveScipy&&'python3 PIL/numpy/scipy missing'},()=>{
@@ -32,7 +33,7 @@ test('N2: interrogation Yama no longer bobs; the suspect still floats',()=>{
     const h=read(f);
     assert.match(h,/\.arena\.combat-arena \.fig\.you,\.arena\.combat-arena \.fig\.foe,\.trial-hud \.hud-stage \.fig\.foe\{\s*animation:battleBreath/,f);
     assert.doesNotMatch(h,/\.trial-hud \.hud-stage \.fig\{\s*animation:battleBreath/,f);
-    assert.match(h,/src\/ui\.js\?v=20261016-(?:map-polish-v1|boss-justice-workers-v1(?:-m1)?(?:-m2)?)-n2/,f);
+    assertModuleRelease('src/ui.js',h,null,{entry:true});
   }
 });
 

@@ -1,8 +1,9 @@
+import {readReleaseFile,assertModuleRelease,assertStylesheetRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {planBattleFormation} from '../src/battle-formation.js';
-const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=readReleaseFile;
 test('K2 interactive rows keep a stationary hit area through pointerdown and click',()=>{
  for(const f of ['src/battle-turns.css','src/trial-comment8.css']){
   const css=read(f).split('/* K2:')[1]||'';
@@ -23,12 +24,14 @@ test('K2 normal formation keeps allies closer on both diagonal axes',()=>{
 });
 test('K2 changed entry URLs match, including review imports',()=>{
  const main=read('index.html'),review=read('output/game-review/index.html');
- for(const file of ['battle-turns.css','trial-comment8.css','ui.js']){
-  const re=new RegExp('src/'+file.replace('.','\\.')+'\\?v=([^"\\s]+)');
-  const a=main.match(re)?.[1],b=review.match(re)?.[1];
-  assert.match(a||'',/^20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?$|-k2b?$|-k3m$|-k4$|-k1d$|-k5$|-l2$|^yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*$/,file);assert.equal(a,b,file);
- }
- assert.match(review,/from '\.\/src\/ui\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?|[^']+-(?:k3m|k4|k1d|k5)|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)'/);
+ for(const file of ['battle-turns.css','trial-comment8.css'])
+  assert.equal(assertStylesheetRelease('src/'+file,main),assertStylesheetRelease('src/'+file,review),file);
+ assert.equal(assertModuleRelease('src/ui.js',main,null,{entry:true}),assertModuleRelease('src/ui.js',review,null,{entry:true}));
+ const canonical=assertModuleRelease('src/ui.js',main,null,{entry:true});
+ const entry=new URL(canonical).pathname.split('/').slice(2).join('/')+new URL(canonical).search;
+ assert.throws(()=>assertModuleRelease('src/ui.js',main.replace(`src="${entry}"`,'src="src/ui.js"'),null,{entry:true}),/entry script matches/,'an unversioned entry cannot bypass the import map');
+ assert.throws(()=>assertModuleRelease('src/ui.js',main.replace(`src="${entry}"`,'src="src/ui.js?v=stale-fixture"'),null,{entry:true}),/entry script matches/,'a stale entry cannot create a second UI instance');
+
 });
 
 test('K2 pointerdown captures primary input, leaves activation to one native click',async()=>{

@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease} from './helpers/release-imports.mjs';
 // west-hit — ยมบาทต้อง "หันขวา" (เข้าหาศัตรู) ทุกท่า × ทุกชุด ในฉากต่อสู้ — เทสต์กันถอยกลับ
 // ข้อมูลวัดจริงใน browser (390x844, 10-11 ต.ค. 2569) อยู่ใน Output/Toby/2026-10-10-avegee-west-hit.md
 // ตารางทิศที่ภาพวาดมา (POSE_DRAWN_FACING_RIGHT) มาจากการเปิดดูภาพจริงทุกไฟล์ ไม่ใช่เดา
@@ -6,7 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { figYouAtkClass, heroPoseFacesRight, teamNeedsMirror, TEAM_DRAWN_FACING_RIGHT, POSE_DRAWN_FACING_RIGHT, ragePoseSrc } from '../src/battle-facing.js';
 
-const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
+const read = readReleaseFile;
 const STYLES = {
   th:        { stand:'img/hero-yama.png',                        atk:'img/hero-yama-atk.png',                         cry:'img/hero-yama-cry.png' },
   asia:      { stand:'img/Asia/hero-yama-asia.png',              atk:'img/Asia/hero-yama-asia-atk.png',               cry:'img/Asia/hero-yama-asia-cry.png' },
@@ -56,6 +57,6 @@ test('west-hit: arena() — ท่าโดนตีไม่เคยได้ 
   assert.match(html, /\.arena \.fig\.you img,\.hud \.fig\.you img\{transform:scaleX\(-1\)\}/);
   assert.match(html, /\.arena \.fig\.you\.atk img,\.hud \.fig\.you\.atk img\{transform:scaleX\(1\)\}/);
   assert.match(html, /\.arena \.fig\.you img\.face-native[^{]*\{transform:none\}/);
-  const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
-  assert.match(uiVersion,/^(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)$/,'new release entry token invalidates the prior module cache');
+  assertModuleRelease('src/ui.js',html,null,{entry:true});
+  assertModuleRelease('src/battle-facing.js',html,'src/ui.js');
 });

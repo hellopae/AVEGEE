@@ -66,6 +66,39 @@ test('repair helpers accelerate the actual countdown only after Taan arrives and
   stepWorkers(g);assert.equal(w.job,null);
 });
 
+for(const kind of ['build','repair','supervise'])test(`auto gatherer sells its cargo before taking newly available ${kind} work`,()=>{
+  const g=game();g.stations=[];
+  const w=g.hireWorker();stepWorkers(g);
+  assert.equal(w.job.kind,'gather');
+  for(let i=0;i<20000&&!w.cargo;i++)advanceWorkers(g,120);
+  assert.equal(w.cargo,'ngiwWood');assert.equal(w.job.phase,'sell');
+  const st=station(g,kind!=='supervise');
+  if(kind==='build'){st.build=st.repair;st.buildWait=false;st.repair=0;}
+  const cargo=w.cargo,coin=g.coin;
+  stepWorkers(g);
+  assert.equal(w.job.kind,'gather','a ready station cannot discard a collected load');
+  assert.equal(w.cargo,cargo);assert.equal(g.workerState.ledger.sales,0);
+  for(let i=0;i<20000&&!g.workerState.ledger.sales;i++)advanceWorkers(g,120);
+  assert.equal(g.workerState.ledger.sales,1);assert.equal(g.workerState.ledger.ngiwWood,1);
+  assert.equal(g.workerState.ledger.income,5);assert.equal(g.coin,coin+5);assert.equal(w.cargo,null);
+  stepWorkers(g);
+  assert.equal(w.job.kind,kind);assert.equal(w.job.station,st.def.k);
+  assert.equal(g.workerState.ledger.sales,1,'changing jobs cannot pay the sale twice');
+});
+
+test('auto priority changes never pull a worker away from its soul escort',()=>{
+  const g=game(),w=g.hireWorker();
+  const start=nearestWalk(SPOTS.bench.x,SPOTS.bench.y+40),end=nearestWalk(SPOTS.bench.x,SPOTS.bench.y+130);
+  const soul={id:902,who:'escort priority'},entry={soul,zone:'th',status:'prison'};
+  assert.equal(g.startAfterlifeWalk(soul,start,end,'prison',entry),true);
+  const walk=g.afterlifeWalks[0];station(g,true);stepWorkers(g);
+  assert.equal(w.job.kind,'escort');assert.equal(w.job.soulId,soul.id);
+  assert.equal(walk.escort.workerId,w.id);
+  g.advanceAfterlife(walk.duration);
+  assert.equal(g.sentences.filter(x=>x.soul.id===soul.id).length,1);
+  stepWorkers(g);assert.equal(w.job.kind,'repair');
+});
+
 test('assistants pick up and escort a real afterlife walk, release it once and keep souls out of the roster until arrival',()=>{
   const g=game(),w=g.hireWorker();g.setWorkerMode(w.id,'escort');
   const start=nearestWalk(SPOTS.bench.x,SPOTS.bench.y+40),end=nearestWalk(SPOTS.bench.x,SPOTS.bench.y+130);

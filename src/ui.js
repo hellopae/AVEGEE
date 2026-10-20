@@ -1693,12 +1693,19 @@ function dadGrade(x) {
 }
 
 const BOSS_LINE = {
-  great:    '"นี่แหละที่เรียกว่าตรงกรรม" — ท่านคืนบารมีให้ส่วนหนึ่ง และสั่งจ่ายเบี้ยพิเศษ 40',
+  great:    '"นี่แหละที่เรียกว่าตรงกรรม" — หัวหน้าชมคำตัดสินของท่าน',
   ok:       'ท่านอ่านคำตัดสินจนจบ วางลง แล้วมองไปทางอื่น — ใช้ได้ ไม่ถึงกับดี',
   cruel:    '"ถูกฝาถูกตัว แต่เจ้าใส่เกินไปสองวาระ ส่วนเกินนั้นไม่ได้หายไปไหน มันมาอยู่ที่เจ้า"',
   bad:      '"เจ้าอ่านสำนวน หรือเจ้าเดา" — บารมีถูกหักต่อหน้าทุกคน',
   terrible: '"คำตัดสินแบบนี้ ทำให้คนที่เขาเจ็บมาแล้ว เจ็บซ้ำอีกครั้ง" — บารมีถูกหักหนัก',
 };
+
+// The praise grade starts below five stars; only five stars can heal, and high karma may prevent that heal.
+// Report the existing star bonus without promising a restoration the verdict did not grant.
+function verdictComment(v) {
+  const bonus = v.stars === 5 ? 60 : v.stars === 4 ? 25 : 0;
+  return (BOSS_LINE[v.boss] || BOSS_LINE.ok) + (bonus ? ` · เบี้ยพิเศษ +${bonus}` : '');
+}
 
 let bossBridgeTimer = 0;
 function beginBossBridgeWalk() {
@@ -1802,7 +1809,7 @@ function openZoneArrival(z) {
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
-  fx = { ...v, line: BOSS_LINE[v.boss] || BOSS_LINE.ok };
+  fx = { ...v, line: verdictComment(v) };
   g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
   showVerdict.t = setTimeout(() => {
@@ -2126,7 +2133,7 @@ function onDlgClose(fn) {
  *  hp = null → โหมดสอบสวน (ไม่มีหลอดเลือด) · hp = ออบเจ็กต์ฉากต่อสู้ → โชว์หลอด */
 const crewBattleKey = c => c.k === 'guard' ? 'guard' : g.isFinalBattle() ? c.id : c.k;
 const crewArt = (c, pose = '') => c.k==='guide'
-  ? artUrl('zone-boss'+pose,'png',c.homeZone)||artUrl('zone-boss','png',c.homeZone)
+  ? artUrl('zone-boss','png',c.homeZone)
   : artUrl('crew-' + c.k + pose, 'png', c.homeZone) || artUrl('crew-' + c.k, 'png', c.homeZone);
 function battleTurnOrderHtml(b) {
   if(!b.turnQueue||b.over)return '';

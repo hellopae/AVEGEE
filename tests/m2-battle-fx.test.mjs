@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease} from './helpers/release-imports.mjs';
 // M2: battle effect system — every move maps to a recipe, every recipe is implemented, no per-frame filter/shadow, pool cap.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -7,7 +8,7 @@ import { TEX, TEX_KEYS, blendOf, cellsOf } from '../src/battle-fx-tex.js';
 import { IMPLEMENTED_RECIPES, MAX_PARTICLES } from '../src/battle-fx.js';
 import { CREW_POWER, BATTLE, ITEMS, WEAPONS } from '../src/data.js';
 
-const read = f => readFileSync(new URL('../' + f, import.meta.url), 'utf8');
+const read = readReleaseFile;
 const fxSrc = read('src/battle-fx.js'), texSrc = read('src/battle-fx-tex.js'), mapSrc = read('src/battle-fx-map.js'), ui = read('src/ui.js');
 
 test('every move the battle can issue maps to a known recipe (defend/flee are not effects)', () => {
@@ -71,11 +72,11 @@ test('every texture has a stand-in generator so the game looks right before real
   for (const k of TEX_KEYS) assert.ok(texSrc.includes(`GEN['${k}']`), `${k} has GEN`);
 });
 
-test('ui.js attaches the canvas, starts the move effect at all three phase starts, stops on finish, and bumps cache tokens', () => {
-  assert.match(ui, /from '\.\/battle-fx\.js\?v=m2'/);
+test('ui.js attaches the canvas, starts the move effect at all three phase starts, stops on finish, and shares the release module identity', () => {
+  assertModuleRelease('src/battle-fx.js',read('index.html'),'src/ui.js');
   assert.equal((ui.match(/startMoveFx\('(you|foe)'/g) || []).length, 3);
   assert.match(ui, /attachBattleFx\(stage\)/); assert.match(ui, /stopBattleFx\(\)/); assert.match(ui, /playHealBattleFx\(gains, delayMs\)/);
-  for (const f of ['index.html', 'output/game-review/index.html']) assert.ok(/src\/ui\.js\?v=[^"']*-m2/.test(read(f)), `${f} ui.js token ends -m2`);
+  for (const f of ['index.html', 'output/game-review/index.html']) assertModuleRelease('src/ui.js',read(f),null,{entry:true});
 });
 
 test('crit flag is display-only and exposed for the CRITICAL label', () => {

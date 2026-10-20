@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -6,7 +7,7 @@ import { runInNewContext } from 'node:vm';
 import { assetTier, zoneTiers } from '../src/asset-preload.js';
 import { figYouAtkClass, heroPoseFacesRight, POSE_DRAWN_FACING_RIGHT } from '../src/battle-facing.js';
 
-const read = p => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
+const read = readReleaseFile;
 const manifest = JSON.parse(read('img/manifest.json'));
 const catalog = JSON.parse(read('img/preload-catalog.json'));
 const poses = {
@@ -77,20 +78,15 @@ test('skill atk: real artUrl and heroAtk select the outfit pose and face right d
   }
 });
 
-test('skill atk: release cache retains facing tokens and shares one preload module URL', () => {
-  const html=read('index.html'),ui=read('src/ui.js'),preload=read('src/preload.js');
-  const uiVersion=html.match(/src="src\/ui\.js\?v=([^"]+)"/)?.[1];
-  const indexPreload=html.match(/src="(src\/preload\.js\?v=[^"]+)"/)?.[1];
-  const uiPreload=ui.match(/import \{ preloadZone \} from '(\.\/preload\.js\?v=[^']+)'/)?.[1];
-  // Codex release scheme (importmap): fresh entry tokens, old ui.js import URLs are remapped in index.html.
-  assert.match(uiVersion,/^(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?|yama-live-20261015-main(?:-l4b|-l3|-l1|-l2|-l5)*)$/);
-  assert.match(indexPreload,/^src\/preload\.js\?v=(?:20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-r6)?|yama-live-20261015-hell1(?:-k1e)?(?:-[a-z0-9]+)*)$/);
-  const map=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
-  assert.equal(map['./'+uiPreload?.replace(/^\.\//,'src/')],'./'+indexPreload,'ui.js preload import is remapped to the one index preload URL');
-  assert.match(ui, /battle-facing\.js\?v=i1b-westhit-skillatk/);
-  assert.match(preload, /asset-preload\.js\?v=(?:h1-h5b-skillatk|yama-live-20261015)/);
+test('skill atk: release imports share the preload owner and use a versioned image catalog', () => {
+  const html=read('index.html'),preload=read('src/preload.js');
+  assertModuleRelease('src/ui.js',html,null,{entry:true});
+  assertModuleRelease('src/preload.js',html,'src/ui.js',{entry:true});
+  assertModuleRelease('src/battle-facing.js',html,'src/ui.js');
+  assertModuleRelease('src/asset-preload.js',html,'src/preload.js');
   const catalogVersion=preload.match(/const CATALOG_VERSION = '([^']+)'/)?.[1];
-  assert.ok(catalogVersion?.includes('zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011'));
-  assert.match(catalogVersion,/-layered-battle9-20261015-r1(?:-yama-live-hell1(?:-[a-z0-9]+)*)?$/);
-  assert.match(read('src/art.js'), /h4-zoom-intro-v3-skillatk(?:-j2)?'/);
+  assert.ok(catalogVersion?.trim(),'image catalog has a nonempty cache version');
+  assert.match(preload,/useImageCacheVersion\(CATALOG_VERSION\)/,'decoded images share the catalog invalidation version');
+  assert.ok(preload.includes('img/preload-catalog.json?v=${CATALOG_VERSION}'),'catalog fetch uses the same version');
+  assertModuleRelease('src/art.js',html,'src/ui.js');
 });

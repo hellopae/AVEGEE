@@ -1,3 +1,4 @@
+import {assertModuleRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {CHASE,newChase,stepChase,chaseAlerted,retreatS,chaseInReach} from '../src/dungeon-chase.js';
@@ -67,10 +68,19 @@ test('game: winning clears the checkpoint with no retreat; losing also steps bac
   const before={...g.zoneTravel.active.position};g.endBattle();assert.equal(g.zoneTravel.active.checkpoint,1);assert.deepEqual(g.zoneTravel.active.position,before);assert.notEqual(g.dungeonChaseCooldown,true);
   const h=setup();at(h,HOME-.1);b=h.startDungeonEncounter({chased:true});b.over='lose';h.endBattle();assert.equal(h.zoneTravel.active.checkpoint,0);assert.equal(h.dungeonChaseCooldown,true);
 });
-test('wiring: view uses chase + ❗ + cut-in, ui hands chased opts to the game, cache-bust -l5',()=>{
+test('wiring: view uses chase + ❗ + cut-in, ui hands chased opts to the game, release import consistency',()=>{
   const view=readFileSync(new URL('../src/dungeon-view.js',import.meta.url),'utf8'),ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8'),html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   assert.match(view,/stepChase\(chase,progress\*total/);assert.match(view,/❗/);assert.match(view,/onEncounter\(status\.location,\{chased:true\}\)/);
-  assert.match(ui,/onEncounter:\(location,opts\)=>/);assert.match(ui,/startDungeonEncounter\(opts\?\.chased\?opts:location\?\.checkpoint\)/);assert.match(ui,/dungeon-view\.js\?v=l5/);
-  assert.match(html,/src\/ui\.js\?v=(?:[^"]+-l5|20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-m5)?(?:-n1)?(?:-r6)?)"/);
+  assert.match(ui,/onEncounter:\(location,opts\)=>/);
+  const forwarded=ui.match(/startDungeonEncounter\((opts\?\.chased[^;\n]+?)\)\)openBattle/)?.[1];
+  assert.ok(forwarded,'encounter callback forwards its selection expression');
+  const choose=new Function('location','opts',`return (${forwarded});`);
+  const chased={chased:true},post={checkpoint:2},patrol={id:'patrol-a'};
+  assert.equal(choose(post,chased),chased,'chase keeps the chase options');
+  assert.equal(choose(post),2,'checkpoint button forwards its checkpoint');
+  assert.deepEqual(choose({checkpoint:2,patrol}),{patrol},'roaming enemy forwards its own patrol identity');
+  assert.equal(choose(undefined),undefined,'no encounter data does not invent a checkpoint');
+  assertModuleRelease('src/dungeon-view.js',html,'src/ui.js');
+  assertModuleRelease('src/ui.js',html,null,{entry:true});
   assert.doesNotMatch(readFileSync(new URL('../src/frontier.js',import.meta.url),'utf8'),/dungeon-chase/,'frontier defence / city mobs untouched');
 });

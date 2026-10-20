@@ -72,18 +72,23 @@ function jobValid(g,w) {
   if(w.job.kind==='gather')return true;
   const st=stationOf(g,w);return w.job.kind==='repair'?repairReady(g,st):w.job.kind==='build'?buildReady(g,st):superviseReady(g,st);
 }
+function availableStationJob(g,kind) {
+  if(!['build','repair','supervise'].includes(kind))return null;
+  for(const st of g.stations.slice().sort((a,b)=>a.def.k.localeCompare(b.def.k))) {
+    const occupied=zoneWorkers(g).filter(x=>x.job?.kind===kind&&x.job.station===st.def.k).length;
+    if(occupied>=WORKER_RULES.perStation||!(kind==='repair'?repairReady(g,st):kind==='build'?buildReady(g,st):superviseReady(g,st)))continue;
+    return {kind,station:st.def.k};
+  }
+  return null;
+}
 function assignJob(g,w) {
   for(const kind of w.mode==='auto'?['build','repair','supervise','gather']:[w.mode]) {
     if(kind==='gather'){
       const material=Number(w.id.split(':').at(-1))%2?'ngiwWood':'dabShards';
       w.job={kind:'gather',material,phase:w.cargo?'sell':'collect',worked:0};w.path=null;return;
     }
-    if(!['build','repair','supervise'].includes(kind))continue;
-    for(const st of g.stations.slice().sort((a,b)=>a.def.k.localeCompare(b.def.k))) {
-      const occupied=zoneWorkers(g).filter(x=>x.job?.kind===kind&&x.job.station===st.def.k).length;
-      if(occupied>=WORKER_RULES.perStation||!(kind==='repair'?repairReady(g,st):kind==='build'?buildReady(g,st):superviseReady(g,st)))continue;
-      w.job={kind,station:st.def.k};w.path=null;return;
-    }
+    const job=availableStationJob(g,kind);
+    if(job){w.job=job;w.path=null;return;}
   }
 }
 export function stepWorkers(g) {
@@ -105,6 +110,12 @@ export function stepWorkers(g) {
       w.stamina=Math.min(100,w.stamina+4);if(w.stamina>=40)w.recovering=false;continue;
     }
     if(!jobValid(g,w))cancelJob(g,w);
+    // Reconsider auto work between gathering trips. Finish collecting/selling
+    // any current load first; a new construction must not strand its cargo.
+    if(w.mode==='auto'&&w.job?.kind==='gather'&&!w.cargo&&w.job.phase==='collect'&&!w.job.worked) {
+      const next=['build','repair','supervise'].map(kind=>availableStationJob(g,kind)).find(Boolean);
+      if(next){cancelJob(g,w);w.job=next;}
+    }
     if(!w.job)assignJob(g,w);
     if(!w.job){w.stamina=Math.min(100,w.stamina+1);continue;}
     if(w.workTicks>=WORKER_RULES.wageEvery) {
@@ -185,9 +196,14 @@ export function advanceWorkerEscort(g,walk) {
 }
 export function releaseWorkerEscort(g,walk) {
   const w=state(g).workers.find(w=>w.id===walk.escort?.workerId);if(!w)return false;
-  const end=walk.path.at(-1);if(end)[w.x,w.y]=end;
+  const completed=walk.elapsed>=walk.duration;
+  // Starting a trial can cancel the harbour walk before the worker reaches it.
+  // Release at the visible position so the next delivery begins there, rather
+  // than teleporting the assistant to the judgment dais.
+  if(completed){const end=walk.path.at(-1);if(end)[w.x,w.y]=end;}
+  else {const pos=escortCrewPosition(walk);if(pos){w.x=pos.x;w.y=pos.y;w.face=pos.face;}}
   w.job=null;w.path=null;w.moving=false;w.arrived=false;w.target=null;w.reason='';
-  if(walk.elapsed>=walk.duration)state(g).ledger.escortsDone++;
+  if(completed)state(g).ledger.escortsDone++;
   return true;
 }
 export const workerDiscs=g=>zoneWorkers(g).filter(w=>!w.moving&&w.mode!=='rest').map(w=>[w.x,w.y]);

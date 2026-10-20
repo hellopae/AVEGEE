@@ -1,8 +1,9 @@
+import {readReleaseFile,assertModuleRelease,assertStylesheetRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {planPlacement} from '../src/battle-menu-layout.js';
-const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=readReleaseFile;
 const bounds={l:6,t:6,r:1600,b:860};
 const foe={l:900,t:420,r:1100,b:640};            // sprite + name plate + HP bar of the first enemy
 
@@ -39,16 +40,16 @@ test('K5 safety margin: a box that only touches the padded enemy rect still coun
  const plan=planPlacement({size:{w:50,h:50},bounds,hard:[enemy],candidates:[{key:'x',x:202,y:100}]});
  assert.ok(plan.hardHit>0);
 });
-test('K5 wiring: ui.js measures enemies, hint strip is thin, cache-bust is -k5 in both entry pages',()=>{
+test('K5 wiring: ui.js measures enemies, hint strip is thin, release entries stay consistent in both entry pages',()=>{
  const ui=read('src/ui.js'),css=read('src/battle-turns.css');
- assert.match(ui,/from '\.\/battle-menu-layout\.js\?v=[^']*k5'/);
+ assertModuleRelease('src/battle-menu-layout.js',read('index.html'),'src/ui.js');
  assert.match(ui,/planPlacement\(/);
  assert.match(ui,/\.fig\.foe \.plate, \.battle-boss-hud/,'enemy plates and boss HUD are obstacles');
  assert.match(css,/\.battle9-confirm\{display:flex;flex-wrap:wrap/);
  assert.match(css,/battle-command-heading\{white-space:nowrap\}/);
  assert.match(css,/battle-command-cancel\{pointer-events:auto/,'K2 click-through stays');
  for(const f of ['index.html','output/game-review/index.html']){
-  assert.match(read(f),/src\/battle-turns\.css\?v=[^"]*(?:-(?:k5|l2)|20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-r6)?)"/,f);
-  assert.match(read(f),/src\/ui\.js\?v=[^"']*(?:-(?:k5|l1|l2)|20261016-(?:night-city-v1|map-polish-v1|border-nira-v2|boss-justice-workers-v1)(?:-m1)?(?:-m2)?(?:-n2)?(?:-r6)?)/,f);
+  assertStylesheetRelease('src/battle-turns.css',read(f));
+  assertModuleRelease('src/ui.js',read(f),null,{entry:true});
  }
 });

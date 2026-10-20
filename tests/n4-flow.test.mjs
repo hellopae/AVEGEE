@@ -1,3 +1,4 @@
+import {readReleaseFile,assertModuleRelease} from './helpers/release-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -154,7 +155,8 @@ test('N4: scene.js hands the town ground to town-flow and the old colour-guess a
   const flow = readFileSync('src/town-flow.js', 'utf8');
   assert.match(scene, /drawTownFlow\(ctx,t,reduced\)/);
   assert.doesNotMatch(scene, /drawMapAmbientGround\(ctx,townTerrainImage\(\),'town-th'/);
-  assert.match(readFileSync('index.html', 'utf8'), /"\.\/src\/scene\.js": "\.\/src\/scene\.js\?v=[^"]*-n4(?:-r6)?"/);
+  assertModuleRelease('src/scene.js',readReleaseFile('index.html'),'src/ui.js');
+  assertModuleRelease('src/town-flow.js',readReleaseFile('index.html'),'src/scene.js');
   assert.doesNotMatch(flow, /TMPDEBUG|globalThis\.__(?:dens|fp|noFlow)/, 'release has no debug flow controls');
   assert(readdirSync('img/map-zone1/v4').includes('flow-v4.png'));
 });
