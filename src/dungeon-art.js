@@ -5,7 +5,7 @@ export const DUNGEON_ART=Object.freeze({
   'west:cyberhell':Object.freeze(['west-cyber-mist-forest','west-cyber-machine-road','west-cyber-cyber-gate']),
 });
 export function dungeonBackground(zone,routeId,checkpoint=0) {
-  if(routeId==='th:asia')return 'img/frontier-route/zone1-2-v2.webp';
+  if(routeId==='th:asia')return 'img/frontier-route/zone1-2-v3.webp';
   const places=DUNGEON_ART[routeId];
   if(!places)return themeBackground(zone,'frontier');
   const index=Math.max(0,Math.min(places.length-1,Number.isInteger(checkpoint)?checkpoint:0));

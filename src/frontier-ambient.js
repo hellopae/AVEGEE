@@ -1,5 +1,6 @@
 // Small world-space props and animation over the painted frontier road.
-export const FRONTIER_TREES=Object.freeze([[.16,.20],[.24,.28],[.30,.34],[.39,.39],[.50,.32],[.57,.32],[.66,.40],[.76,.49],[.71,.57],[.64,.61],[.57,.70],[.66,.76],[.81,.83]]);
+export const FRONTIER_TREES=Object.freeze([[.15,.16],[.24,.25],[.30,.30],[.39,.36],[.50,.29],[.57,.28],[.66,.36],[.81,.46],[.71,.55],[.64,.58],[.55,.69],[.66,.73],[.81,.80]]);
+export const FRONTIER_WATERFALLS=Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.43,.075],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]]);
 export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=null}) {
   ctx.save();ctx.translate(x,y);ctx.scale(w,h);
   for(const [tx,ty] of FRONTIER_TREES){
@@ -9,7 +10,7 @@ export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=n
   if(!reduced){
     // Narrow translucent strokes follow the waterfall channels; banks stay visible.
     ctx.lineCap='round';ctx.lineWidth=.0011;
-    for(let i=0;i<18;i++){const u=((time/900+i*.137)%1),rx=.46+(i%5)*.052,ry=.37+u*.34;ctx.strokeStyle=`rgba(205,250,255,${.12+.12*Math.sin(u*Math.PI)})`;ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(rx+.001,ry+.009);ctx.stroke();}
+    for(let i=0;i<18;i++){const u=((time/900+i*.137)%1),[wx,wy,length]=FRONTIER_WATERFALLS[i%FRONTIER_WATERFALLS.length],rx=wx+(i%3-1)*.003,ry=wy+u*length;ctx.strokeStyle=`rgba(205,250,255,${.12+.12*Math.sin(u*Math.PI)})`;ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(rx+.001,ry+.009);ctx.stroke();}
     for(let i=0;i<26;i++){const px=(i*.173+time*.000009)%1,py=(i*.109+time*.000021)%1;ctx.save();ctx.translate(px,py);ctx.rotate(time/900+i);ctx.fillStyle=i%2?'rgba(223,153,58,.65)':'rgba(135,176,100,.55)';ctx.beginPath();ctx.moveTo(-.002,0);ctx.quadraticCurveTo(0,-.003,.003,0);ctx.quadraticCurveTo(0,.002,-.002,0);ctx.fill();ctx.restore();}
   }
   ctx.restore();

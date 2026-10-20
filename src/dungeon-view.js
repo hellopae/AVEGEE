@@ -1,4 +1,5 @@
 import {drawFrontierAmbient} from './frontier-ambient.js';
+import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus } from './zone-travel.js';
 import { themeBackground } from './theme-assets.js';
@@ -187,11 +188,9 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   };
   const observer=typeof ResizeObserver!=='undefined'?new ResizeObserver(resize):null;
   observer?.observe(canvas.parentElement);listen(window,'resize',resize);resize();
-  const world=()=>({w:Math.max(width,height*1.79),h:Math.max(height,width/1.79)});
+  const world=()=>FRONTIER_WORLD;
   function camera(dt) {
-    const p=position,w=world(),scale=overview?Math.min(width/w.w,height/w.h):1.55;
-    const x=overview?(width-w.w*scale)/2:clamp(width/2-p[0]*w.w*scale,width-w.w*scale,0);
-    const y=overview?(height-w.h*scale)/2:clamp(height*.6-p[1]*w.h*scale,height-w.h*scale,0);
+    const {x,y,scale}=frontierCameraTarget(width,height,position,overview);
     const f=reduced.matches?1:1-Math.exp(-dt/110);cam.x+=(x-cam.x)*f;cam.y+=(y-cam.y)*f;cam.scale+=(scale-cam.scale)*f;
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
@@ -240,7 +239,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     action.hidden=!status.ready;
     action.disabled=!near||!!(g.battle||g.pendingRecovery||status.pending)||(routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th&&g.zoneEvents?.th?.thBorderBoss!=='pending');
     action.textContent=status.ready?(routeId==='th:asia'?'เข้าประตูโซน 2':'เข้าเมืองถัดไป'):status.pending?'กำลังต่อสู้…':routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th&&!['pending','active'].includes(g.zoneEvents?.th?.thBorderBoss)?'บอสโซน 1 · กลับไปผ่านคดีที่ 10 ก่อน':near?(routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th?'ท้าสู้บอสในถ้ำ':'เริ่มต่อสู้'):'เดินไปหาศัตรู';
-    const text=status.ready?'ผ่านดันเจี้ยนแล้ว — เดินไปประตูเมือง':`กำจัดปีศาจ ${status.defeated.length}/3 · ${status.location.name}`;
+    const text=status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`กำจัดปีศาจ ${status.defeated.length}/3`;
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {
@@ -258,7 +257,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     else if(routeId==='th:asia'&&g.challengeUnlocked?.()&&!g.bossCleared?.th){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
-      const p=screenPoint(a.p),h=w.h*cam.scale*.060,animationTime=reduced.matches?0:t;
+      const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
@@ -411,7 +410,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     const near=status.ready?dungeonAtExit(g):dungeonAtCheckpoint(g);
     action.disabled=!near||!!(g.battle||g.pendingRecovery||status.pending);
     action.textContent=status.ready?'เข้าเมืองถัดไป':status.pending?'กำลังต่อสู้…':near?'เริ่มต่อสู้':'เดินไปหาศัตรู';
-    const text=bossGuideWaiting(g)?'ผู้ตรวจการรอที่ทางเข้าเส้นทางชายแดน · ย้อนกลับไปคุยเพื่อออกเดินทางด้วยกัน':status.ready?'ผ่านดันเจี้ยนแล้ว — เดินไปประตูเมือง':`จุดที่ ${status.checkpoint+1}/3 · ${status.location.name}`;
+    const text=bossGuideWaiting(g)?'ผู้ตรวจการรอที่ทางเข้าเส้นทางชายแดน · ย้อนกลับไปคุยเพื่อออกเดินทางด้วยกัน':status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`กำจัดปีศาจ ${status.checkpoint}/3`;
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {
