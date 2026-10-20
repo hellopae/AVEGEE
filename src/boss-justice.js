@@ -8,6 +8,18 @@ export function initializeBossJustice(g, saved = g.bossJustice) {
   state.ledger ||= {};
   if (!state.ledger[state.active] || !JUSTICE_PHASES.includes(state.ledger[state.active].phase)) state.active=null;
   g.bossJustice=state;
+  // Station snapshots omit court-only flags. Keep requisitions on the persisted
+  // docket so a reload cannot turn a temporary chamber into a free building.
+  const active=state.ledger[state.active];
+  if(active&&active.zone===g.zone&&active.phase!=='released'){
+    for(const key of active.courtResources?.temporary||[]){
+      const st=g.stations?.find(s=>s.def.k===key);if(st)st.bossCourtTemporary=true;
+    }
+    for(const held of active.courtResources?.construction||[]){
+      const st=g.stations?.find(s=>s.def.k===held.key);
+      if(st)st.bossCourtConstruction={build:held.build,buildWait:held.buildWait};
+    }
+  }
   return state;
 }
 export function bossJusticeCase(g) { return g.bossJustice?.ledger?.[g.bossJustice.active] || null; }
@@ -24,17 +36,18 @@ export function queueBossJustice(g,b,{final=false}={}) {
   let id=base,attempt=1;while(state.ledger[id])id=`${base}:${++attempt}`;
   b.justiceDocket=id;
   const boss=b.foes?.find(f=>f.boss)||b.foes?.find(f=>String(f.sp).includes('boss-frontier'));
+  const courtResources={temporary:[],construction:[]};
   if(!bossJusticeStations(g).length){
     const def=STATIONS.find(d=>d.k==='krata'&&!g.stations.some(st=>st.def.k===d.k))||STATIONS.find(d=>!d.heaven&&!['tea','sala','krajok','tarang'].includes(d.k)&&!g.stations.some(st=>st.def.k===d.k));
-    if(def)g.stations.push({def,slots:[],crewK:null,intensity:3,build:0,repair:0,fire:0,bossCourtTemporary:true});
+    if(def){g.stations.push({def,slots:[],crewK:null,intensity:3,build:0,repair:0,fire:0,bossCourtTemporary:true});courtResources.temporary.push(def.k);}
     else {
       const held=g.stations.find(st=>!st.def.heaven&&!['tea','sala','krajok','tarang'].includes(st.def.k));
-      if(held){held.bossCourtConstruction={build:held.build,buildWait:held.buildWait};held.build=0;held.buildWait=false;}
+      if(held){held.bossCourtConstruction={build:held.build||0,buildWait:!!held.buildWait};courtResources.construction.push({key:held.def.k,...held.bossCourtConstruction});held.build=0;held.buildWait=false;}
     }
   }
   const throne=SPOTS.throne;
   const c={id, frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, phase:final?'capture':'dais', elapsed:0,
-    asked:false, mirror:false, pick:{station:null,crew:null,intensity:null},
+    asked:false, mirror:false, pick:{station:null,crew:null,intensity:null}, courtResources,
     dais:[throne.x,throne.y+55], suspendedRoute:g.zoneTravel?.active?structuredClone(g.zoneTravel.active):null};
   state.ledger[id]=c;state.active=id;
   if(g.zoneTravel)g.zoneTravel.active=null;
@@ -104,7 +117,9 @@ export function releaseBoss(g) {
 }
 export function completeBossJusticeStory(g,key) {
   const c=bossJusticeCase(g);
-  if(c?.final&&key==='ending-capture')c.phase='dais';
+  // A delayed acknowledgement may be delivered again after a saved trial/escort.
+  // Capture is a one-way transition; later sentencing phases must never rewind.
+  if(c?.final&&c.phase==='capture'&&key==='ending-capture')c.phase='dais';
 }
 export function bossJusticeActors(g) {
   const c=bossJusticeCase(g);if(!c||c.zone!==g.zone||['capture','released'].includes(c.phase))return [];

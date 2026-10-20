@@ -100,3 +100,22 @@ for(const [zone,to] of [['asia','west'],['west','cyberhell']])test(`a restored a
  restored.zoneTravel.active.position={x:exit[0],y:exit[1]};assert.equal(restored.farewellBossGuide(),true);restored.completeStory();
  assert.equal(restored.moveZone(to),true);assert.equal(restored.zone,to);
 });
+
+for(const [zone,amount] of Object.entries(BOSS_GUIDE_GRANTS))test(`${zone} actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries`,()=>{
+ let g=createGame();g.zone=zone;g.save=()=>true;g.onChange=()=>{};g.bossCleared[zone]=true;
+ const before=g.coin;
+ const reload=()=>{const h=createGame();h.save=()=>true;h.onChange=()=>{};assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);g=h;};
+ assert.equal(recordBossGuideWin(g,{zone,kind:'zoneBoss',over:'win'}),true);reload();
+ assert.equal(g.coin,before);g.completeStory();assert.equal(bossGuideState(g,zone).praised,true);
+ assert.equal(g.inviteBossGuide(),true);reload();assert.equal(bossGuideFollowing(g),false);
+ g.completeStory();reload();assert.equal(bossGuideFollowing(g),true);assert.equal(g.coin,before);
+ assert.equal(g.farewellBossGuide(),true);reload();assert.equal(g.coin,before,'unacknowledged gift cannot pay');
+ g.completeStory();assert.equal(g.coin,before+amount);reload();
+ assert.equal(g.coin,before+amount);assert.equal(g.pendingReward.guideZone,zone);
+ assert.equal(g.pendingReward.coin,amount);assert.equal(g.pendingReward.outfit,{th:'asia',asia:'west',west:'cyberhell'}[zone]);
+ assert.equal(g.outfitsOwned.filter(o=>o===g.pendingReward.outfit).length,1);
+ assert.equal(completeBossGuideStory(g,`boss-guide-${zone}-farewell`),false);
+ assert.equal(acknowledgeBossGuideGrant(g,zone),true);g.pendingReward=null;reload();
+ assert.equal(g.coin,before+amount);assert.equal(g.pendingReward,null);assert.equal(pendingBossGuideGrant(g),null);
+ assert.equal(g.farewellBossGuide(),false);assert.equal(g.inviteBossGuide(),false);
+});

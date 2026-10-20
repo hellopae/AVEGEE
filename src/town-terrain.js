@@ -21,6 +21,7 @@ export function townChunkRect(row,col) {
 export const townChunkUrl = (row,col) => `${TOWN_TERRAIN_DIR}r${row}-c${col}.webp`;
 const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
 const MAX_LOADING = 3;
+const CHUNK_TIMEOUT_MS = 15000, RETRY_BASE_MS = 1000, RETRY_MAX_MS = 30000;
 export const townTerrainImage = () => preview?.ready ? preview.image : null;
 
 const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
@@ -47,14 +48,32 @@ function ensurePreview(){if(!preview&&typeof Image!=='undefined')preloadTownTerr
 function request(row,col) {
   const key = row+','+col;
   let c = chunks.get(key);
-  if (!c) { c = {image:null, state:'idle', at:0}; chunks.set(key,c); }
+  if (!c) { c = {image:null, state:'idle', at:0, failures:0, retryAt:0, generation:0}; chunks.set(key,c); }
+  if (c.state === 'error' && Date.now() >= c.retryAt) c.state = 'idle';
   if (c.state !== 'idle' || loading >= MAX_LOADING || typeof Image === 'undefined') return c;
   c.state = 'loading'; loading++;
+  const generation=++c.generation;
   const image = new Image(); c.image = image; image.decoding = 'async';
-  const done = ok => { c.state = ok ? 'ready' : 'error'; loading--; };
-  image.onload = () => { (image.decode ? image.decode().catch(()=>{}) : Promise.resolve()).then(()=>repairTownTerrain(image,{row,col})).then(ready=>{c.image=ready;done(true);},()=>done(false)); };
+  let settled=false;
+  const timer=setTimeout(()=>done(false),CHUNK_TIMEOUT_MS);
+  const current=()=>!settled&&c.generation===generation;
+  const done = (ok,ready=null) => {
+    if(!current())return;
+    settled=true;clearTimeout(timer);image.onload=image.onerror=null;loading--;
+    c.state=ok?'ready':'error';c.image=ok?ready:null;
+    if(ok){c.failures=0;c.retryAt=0;}
+    else {c.failures++;c.retryAt=Date.now()+Math.min(RETRY_MAX_MS,RETRY_BASE_MS*2**Math.min(5,c.failures-1));}
+  };
+  image.onload = async () => {
+    if(!current())return;
+    try {
+      if(image.decode)await image.decode();
+      if(!current())return;
+      done(true,await repairTownTerrain(image,{row,col}));
+    } catch {done(false);}
+  };
   image.onerror = () => done(false);
-  image.src = townChunkUrl(row,col);
+  image.src = townChunkUrl(row,col)+(c.failures?`?recover=${Date.now()}`:'');
   return c;
 }
 /** Test / tool hook: how many chunks are decoded or on their way. */

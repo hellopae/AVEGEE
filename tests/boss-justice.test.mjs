@@ -135,3 +135,75 @@ test('actual completed tenth-wave frontier challenges enter court in every zone;
   const c=bossJusticeCase(g);assert.ok(c,zone);assert.equal(c.frontierBoss,true);assert.equal(c.art,`boss-frontier-${zone}`);
  }
 });
+
+test('a replayed final capture acknowledgement cannot rewind an already sentenced boss after reload',()=>{
+ const g=game();g.zone='cyberhell';syncSceneZone(g.zone);g.zoneEvents.cyberhell={cyberFinal:'active'};g.finalEventState().phase='justice';
+ queueBossJustice(g,{kind:'zoneEvent',zone:'cyberhell',who:'อาร์คอน-ศูนย์',over:'win'},{final:true});
+ completeBossJusticeStory(g,'ending-capture');interrogateBoss(g);mirrorBoss(g);sentenceBoss(g,bossJusticeAnswer(g));
+ advance(g,'sentenceScene');
+ const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+ const before=structuredClone(bossJusticeCase(h));
+ completeBossJusticeStory(h,'ending-capture');
+ assert.deepEqual(bossJusticeCase(h),before,'late/duplicate story completion must preserve sentence choices and phase');
+ assert.equal(releaseBoss(h),true);assert.equal(releaseBoss(h),false);
+ assert.equal(h.storyQueue.filter(p=>p.key==='ending').length,1);
+});
+
+for(const [zone,eventKey] of [['th','frontierBreach'],['asia','asiaRageBreach'],['west','westVampireBreach'],['cyberhell','cyberBreach']])test(`${zone} court resumes every saved phase without duplicate docket, money or temporary chamber`,()=>{
+ let g=game();g.zone=zone;syncSceneZone(zone);g.stations=[];
+ const battle={kind:'frontierBreach',zone,eventKey,over:'win',who:'ผู้คุมชายแดน',sp:`boss-frontier-${zone}`};
+ assert.equal(queueBossJustice(g,battle),true);const money=g.coin;
+ assert.equal(g.stations.length,1);assert.equal(g.stations[0].bossCourtTemporary,true);
+ const reload=phase=>{
+  const before=structuredClone(bossJusticeCase(g)),copy=game();assert.equal(copy.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+  assert.equal(bossJusticeCase(copy)?.phase,phase);assert.deepEqual(bossJusticeCase(copy),before);assert.equal(copy.coin,money);
+  assert.equal(copy.stations.find(st=>st.def.k==='krata').bossCourtTemporary,true);g=copy;
+ };
+ reload('dais');interrogateBoss(g);reload('trial');mirrorBoss(g);reload('trial');
+ const pick={...bossJusticeAnswer(g),intensity:2};assert.equal(sentenceBoss(g,pick),true);
+ advanceBossJustice(g,100);reload('escort');assert.equal(sentenceBoss(g,pick),false,'saved sentence cannot be issued twice');
+ advance(g,'punishment');advanceBossJustice(g,100);reload('punishment');
+ advance(g,'return');advanceBossJustice(g,100);reload('return');
+ for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
+ assert.equal(g.bossJustice.active,null);assert.equal(g.stations.some(st=>st.def.k==='krata'),false);assert.equal(g.coin,money);
+ const copy=game();assert.equal(copy.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+ assert.equal(copy.bossJustice.active,null);assert.equal(copy.stations.some(st=>st.def.k==='krata'),false);
+ assert.equal(queueBossJustice(copy,{...battle}),false);assert.equal(releaseBoss(copy),false);
+ assert.equal(Object.keys(copy.bossJustice.ledger).length,1);assert.equal(copy.coin,money);
+});
+
+test('a requisitioned construction site resumes its original build state after a saved court sentence',()=>{
+ let g=game();const deadline=Date.now()+60_000;
+ g.stations=STATIONS.filter(def=>!def.heaven&&!['tea','sala','krajok','tarang'].includes(def.k))
+   .map(def=>({def,slots:[],crewK:null,build:deadline,buildWait:true,repair:0,fire:0}));
+ queueBossJustice(g,{kind:'zoneBoss',zone:'th',who:'บอส',over:'win'});
+ const key=bossJusticeCase(g).courtResources.construction[0].key;
+ const original=g.stations.find(st=>st.def.k===key).bossCourtConstruction;
+ assert.deepEqual(original,{build:deadline,buildWait:true});
+ const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);g=h;
+ const chamber=g.stations.find(st=>st.def.k===key);
+ assert.deepEqual(chamber.bossCourtConstruction,original);assert.equal(chamber.build,0);assert.equal(chamber.buildWait,false);
+ interrogateBoss(g);sentenceBoss(g,bossJusticeAnswer(g));advance(g,'return');
+ for(let i=0;i<2000&&g.bossJustice.active;i++)advanceBossJustice(g,100);
+ assert.equal(chamber.build,deadline);assert.equal(chamber.buildWait,true);assert.equal(chamber.bossCourtConstruction,undefined);
+ assert.equal(chamber.bossCourtTemporary,false,'the owned construction site remains owned');
+});
+
+test('final court survives capture, mirror, escort and sentencing saves before one ending acknowledgement',()=>{
+ let g=game();g.zone='cyberhell';syncSceneZone(g.zone);g.zoneEvents.cyberhell={cyberFinal:'active'};g.finalEventState().phase='justice';
+ queueBossJustice(g,{kind:'zoneEvent',zone:'cyberhell',who:'อาร์คอน-ศูนย์',over:'win'},{final:true});
+ const money=g.coin;
+ const reload=phase=>{const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);g=h;
+  assert.equal(bossJusticeCase(g).phase,phase);assert.equal(g.gameCompleted,false);assert.equal(g.coin,money);
+  assert.equal(g.storyQueue.some(p=>p.key==='ending'),false);
+ };
+ reload('capture');while(bossJusticeCase(g).phase==='capture'&&g.storyQueue.length)g.completeStory();reload('dais');interrogateBoss(g);reload('trial');
+ assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),false);mirrorBoss(g);reload('trial');
+ assert.equal(bossJusticeCase(g).mirror,true);assert.equal(sentenceBoss(g,bossJusticeAnswer(g)),true);reload('escort');
+ advance(g,'punishment');reload('punishment');advance(g,'sentenceScene');reload('sentenceScene');
+ assert.equal(releaseBoss(g),true);assert.equal(g.gameCompleted,true);assert.equal(g.coin,money);
+ const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);
+ assert.equal(h.gameCompleted,true);assert.equal(h.storyQueue.filter(p=>p.key==='ending').length,1);
+ assert.equal(releaseBoss(h),false);assert.equal(queueBossJustice(h,{kind:'zoneEvent',zone:'cyberhell',over:'win'},{final:true}),false);
+ assert.equal(h.coin,money);
+});

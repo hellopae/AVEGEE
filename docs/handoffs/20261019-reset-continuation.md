@@ -1,9 +1,13 @@
+## 2026-10-21 latest continuation — supersedes historical deployment status below
+
+Current clean audit: docs/handoffs/20261020-status-audit.md. Latest production c5c5357 / build20261021-flames-ground-r2, Pages39478936267 SUCCESS and live marker verified. Three new published batches: c611daa patrols, a0d1550 ground/worker/battle repairs, c5c5357 detailed fire/upper-house paving. Full suite1144/1144 at the first repair batch plus focused later99/99 and46/46. Worker city UI confirmed material gathering, merchant sales and ferry deliveries. Remaining acceptance and approved expanded interrogation are explicitly open in current audit; no claim of all historical work complete. Close temporary review tabs after screenshots; fixtures remain under output/ and do not write real saves.
+
 ## 2026-10-20 — latest border party correction
 
 - Latest user requirement implemented: ordinary border patrols use the selected keeper team and guard; only an active boss-guided interzone expedition uses Yama, Nira and the previous-zone boss.
 - Guide boss has a real initiative turn, attacks, damage, healing, cooldown and saved combat state. It never enters the hired roster. Returning from an expedition restores the ordinary selected party.
 - Relevant regression tests: 103/103 pass (party, turn order, Nira, combat, boss justice and cave progression). No claim of full manual end-to-end acceptance.
-- Release build: `20261020-border-party`. Deployment verification recorded after push.
+- Release commit `edfb70a` pushed to main; build `20261020-border-party`. Isolated committed snapshot also passed 103/103. Original Pages run 39443245777 stalled in git fetch; direct Pages rebuild 39447916481 succeeded. Live site verified `20261020-border-party` at 2026-10-20 15:25 UTC. Current audit: docs/handoffs/20261020-status-audit.md.
 - Earlier frontier build `20261020-frontier-scale` / commit `44f6c78`: Pages run 39439146482 succeeded and live build marker was verified.
 - Existing outstanding work below remains open; this correction does not complete the entire historical backlog.
 
@@ -222,3 +226,5 @@ This checklist is the source of truth for the continuation. Do not report the wo
 - Working tree clean after commit; push branch/main as authorized.
 - Confirm remote `main` SHA, successful Pages run, and the same build marker from the live URL.
 
+
+2026-10-21 continuation: prepared20261021-resume-loading with two proven boss save/resume fixes and terrain detail retry/timeout recovery;70+30focused tests pass. Regional Nira healing UI now exercised2–4 as well as earlierzone1. Exact remaining priorities and new interrogation spec remain in20261020-status-audit.md; do not mark expansion implemented.
