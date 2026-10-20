@@ -1,9 +1,9 @@
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
-import {dungeonAtCheckpoint,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
+import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
-import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival} from './zone-travel.js';
+import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
@@ -3841,7 +3841,7 @@ const API = {
     if(B.dungeonToken){
       resolveDungeonEncounter(this,B.dungeonToken,B.over==='win');this.mobs=this.mobs.filter(m=>m.dungeonToken!==B.dungeonToken);
       // L5: the single hook for "fled / lost a route fight": step back from the enemy and give it a short rest from chasing.
-      if(B.over!=='win')this.retreatFromDungeonFoe();
+      if(B.over!=='win')this.retreatFromDungeonFoe(B.dungeonRetreatProgress);
       this.save();
     }
     if (B.over === 'lose') {
@@ -4096,8 +4096,8 @@ const API = {
   startDungeonEncounter(checkpoint=null) {
     if (bossJusticeActive(this)) return null;
     const opts=checkpoint && typeof checkpoint==='object'?checkpoint:{};
-    checkpoint=Number.isInteger(checkpoint)?checkpoint:null;
-    if(!(opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
+    checkpoint=typeof opts.patrol==='string'?opts.patrol:Number.isInteger(checkpoint)?checkpoint:null;
+    if(!(typeof checkpoint==='string'?dungeonAtPatrol(this,checkpoint):opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
     if(encounter.boss) {
       const battle=this.startZoneEvent('thBorderBoss');
@@ -4107,16 +4107,16 @@ const API = {
     }
     const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
     this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
-    if(battle&&this.zone==='th')battle.sceneBiome='border';
+    if(battle){if(this.zone==='th')battle.sceneBiome='border';if(encounter.patrol)battle.dungeonRetreatProgress=dungeonPatrols('th:asia').find(p=>p.id===encounter.patrol)?.progress;}
     if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
     return battle;
   },
   /** L5: put Yama back on the corridor outside the current enemy's sight; dungeon-view reads dungeonChaseCooldown once on mount. */
-  retreatFromDungeonFoe() {
+  retreatFromDungeonFoe(patrolProgress=null) {
     const st=dungeonStatus(this),a=this.zoneTravel?.active;
-    if(!st||st.ready||!a)return false;
+    if(!st||st.ready&&patrolProgress===null||!a)return false;
     const routeId=st.route.id,total=dungeonRouteTotal(routeId);
-    const p=dungeonPoint(retreatS(dungeonCheckpointProgress(routeId)[st.checkpoint]*total)/total,routeId);
+    const p=dungeonPoint(retreatS((patrolProgress??dungeonCheckpointProgress(routeId)[st.checkpoint])*total)/total,routeId);
     a.position={x:p[0],y:p[1]};this.dungeonChaseCooldown=true;return true;
   },
   leaveBorderDungeon() {if(!leaveDungeon(this))return false;this.save();this.onChange();return true;},

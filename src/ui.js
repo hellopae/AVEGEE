@@ -4058,7 +4058,7 @@ function openDungeon() {
       onChallenge:()=>{destroy?.();destroy=null;openChallenge(()=>{if(!g.pendingRecovery)openDungeon();});},
       onEncounter:(location,opts)=>{
         destroy?.();destroy=null;
-        if(g.startDungeonEncounter(opts?.chased?opts:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
+        if(g.startDungeonEncounter(opts?.chased?opts:location?.patrol?{patrol:location.patrol}:location?.checkpoint))openBattle(()=>{if(!g.pendingRecovery)openDungeon();});
         else{g.dungeonChaseCooldown=true;openDungeon();}
       },
       onArrival:to=>{

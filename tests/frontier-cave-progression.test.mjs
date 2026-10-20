@@ -69,14 +69,14 @@ test('free movement supports broad clearings, blocks ravines, and routes around 
 });
 test('several enemies roam; proximity starts an available encounter once and future victories persist',()=>{
  const g={zone:'th',bossCleared:{},zoneEvents:{th:{frontierBreach:'cleared',thBorderBoss:'pending'}}};initializeZoneTravel(g);beginDungeon(g,'asia');
- const foes=dungeonEnemyPositions(g,0);assert.equal(foes.length,3);assert.equal(foes[2].locked,true);
+ const foes=dungeonEnemyPositions(g,0);assert.equal(foes.length,9);assert.equal(foes[2].locked,true);
  assert.notDeepEqual(dungeonEnemyPositions(g,1000)[0].position,foes[0].position);
  assert.equal(dungeonAutoEncounter(g,DUNGEON_CORRIDOR[0]),null);
  const second=foes[1];assert.equal(dungeonAutoEncounter(g,second.position).checkpoint,1);
  const e=nextDungeonEncounter(g,1);assert.ok(e);assert.equal(dungeonAutoEncounter(g,second.position),null,'pending token prevents repeated dispatch');
  resolveDungeonEncounter(g,e.token,true);assert.equal(dungeonStatus(g).checkpoint,0);
  const saved=JSON.parse(JSON.stringify(g.zoneTravel));initializeZoneTravel(g,saved);
- assert.equal(dungeonEnemyPositions(g).length,2,'defeated mob stays gone after restoring');
+ assert.equal(dungeonEnemyPositions(g).length,8,'defeated mob stays gone after restoring');
  const first=nextDungeonEncounter(g,0);resolveDungeonEncounter(g,first.token,true);
  assert.equal(dungeonStatus(g).checkpoint,2);assert.equal(dungeonEnemyPositions(g)[0].locked,false);
 });

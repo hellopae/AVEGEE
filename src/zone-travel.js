@@ -10,6 +10,11 @@ export const DUNGEON_ROUTES = Object.freeze([
   route('asia','west','ทางชายแดนบูรพา–ปัจฉิม',['ช่องเขาตรวน','ซากป้อมชายแดน','ประตูปัจฉิม'],[6,7,9]),
   route('west','cyberhell','ทางชายแดนปัจฉิม–ไซเบอร์',['ป่าหมอก','เส้นทางเครื่องจักร','ประตูไซเบอร์'],[10,11,12]),
 ]);
+// Optional patrols live between the three story checkpoints. Their victories never unlock a gate.
+export const DUNGEON_PATROLS = Object.freeze([.08,.19,.32,.48,.66,.90].map((progress,i)=>Object.freeze({
+  id:`th:asia:patrol:${i}`,progress,foe:[2,3,2,5,3,5][i],name:'ปีศาจลาดตระเวน',level:1+Math.floor(i/2),
+})));
+export const dungeonPatrols = routeId => routeId==='th:asia'?DUNGEON_PATROLS:[];
 const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
 const routeAvailable = (g,r) => !!g.bossCleared?.[r.from] || r.id === 'th:asia' && (g.zoneEvents?.th?.frontierBreach==='cleared' || ['pending','active'].includes(g.zoneEvents?.th?.thBorderBoss));
@@ -35,7 +40,7 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
       Number.isInteger(a.checkpoint) && a.checkpoint >= 0 && a.checkpoint <= r.checkpoints.length &&
       Array.isArray(a.cleared) && a.cleared.length === a.checkpoint &&
       a.cleared.every((id,i) => id === r.checkpoints[i].id)) {
-    result.active = { route:r.id, checkpoint:a.checkpoint, cleared:[...a.cleared], defeated:[...new Set([...a.cleared,...(Array.isArray(a.defeated)?a.defeated.filter(id=>r.checkpoints.some(c=>c.id===id)):[])])],
+    result.active = { patrolDefeated:[...new Set((Array.isArray(a.patrolDefeated)?a.patrolDefeated:[]).filter(id=>dungeonPatrols(r.id).some(p=>p.id===id)))], route:r.id, checkpoint:a.checkpoint, cleared:[...a.cleared], defeated:[...new Set([...a.cleared,...(Array.isArray(a.defeated)?a.defeated.filter(id=>r.checkpoints.some(c=>c.id===id)):[])])],
       guidePosition:a.guidePosition&&Number.isFinite(a.guidePosition.x)&&Number.isFinite(a.guidePosition.y)?{x:a.guidePosition.x,y:a.guidePosition.y}:null,
       position:a.position&&Number.isFinite(a.position.x)&&Number.isFinite(a.position.y)?{x:a.position.x,y:a.position.y}:null,
       roamTime:Number.isFinite(a.roamTime)&&a.roamTime>=0?a.roamTime:0,
@@ -54,7 +59,7 @@ export function beginDungeon(g, to) {
   const docket=Object.values(g.bossJustice?.ledger||{}).reverse().find(c=>c.phase==='released'&&!c.routeRestored&&c.suspendedRoute?.route===r.id);
   const saved=docket?.suspendedRoute;
   const valid=saved&&Number.isInteger(saved.checkpoint)&&saved.checkpoint>=0&&saved.checkpoint<=r.checkpoints.length&&Array.isArray(saved.cleared)&&saved.cleared.length===saved.checkpoint&&saved.cleared.every((id,i)=>r.checkpoints[i]?.id===id);
-  s.active=valid?{...structuredClone(saved),position:null,guidePosition:null,pending:null,pendingIndex:null}:{route:r.id,checkpoint:0,cleared:[],defeated:[],attempt:0,pending:null};
+  s.active=valid?{...structuredClone(saved),position:null,guidePosition:null,pending:null,pendingIndex:null,pendingPatrol:null}:{route:r.id,checkpoint:0,cleared:[],defeated:[],patrolDefeated:[],attempt:0,pending:null};
   if(valid)docket.routeRestored=true;
   return true;
 }
@@ -71,12 +76,20 @@ const routedBoss = (status,g) => status.route.id === 'th:asia' && status.checkpo
 /** Request encounter only after the player reaches the current checkpoint. */
 export function nextDungeonEncounter(g,checkpoint=null) {
   const status = dungeonStatus(g), a = state(g).active;
-  if (!status || status.ready || busy(g) || a.pending) return null;
+  if (!status || busy(g) || a.pending) return null;
+  if(typeof checkpoint==='string'){
+    const patrol=dungeonPatrols(a.route).find(p=>p.id===checkpoint);
+    if(!patrol||(a.patrolDefeated||[]).includes(patrol.id))return null;
+    const token=`${patrol.id}:${++a.attempt}`;a.pending=token;a.pendingPatrol=patrol.id;a.pendingIndex=null;
+    return {token,patrol:patrol.id,name:patrol.name,kindIdx:patrol.foe,level:patrol.level,boss:false};
+  }
+  if(status.ready)return null;
   const index=checkpoint??status.checkpoint;
   if(!Number.isInteger(index)||!status.route.checkpoints[index]||(a.defeated||a.cleared).includes(status.route.checkpoints[index].id))return null;
   if(status.route.id==='th:asia'&&index===2&&status.checkpoint<2)return null;
   const location = status.route.checkpoints[index];
   const token = `${a.route}:${index}:${++a.attempt}`;
+  a.pendingPatrol=null;
   a.pendingIndex=index;
   a.pending = token;
   return { token, checkpoint:location.id, name:location.name, kindIdx:location.foe, level:index + 1, boss:routedBoss({...status,checkpoint:index},g) };
@@ -84,7 +97,13 @@ export function nextDungeonEncounter(g,checkpoint=null) {
 /** Only the battle carrying this token may resolve this checkpoint. */
 export function resolveDungeonEncounter(g, token, won) {
   const status = dungeonStatus(g), a = state(g).active;
-  if (!status || status.ready || !a.pending || a.pending !== token || typeof won !== 'boolean') return false;
+  if (!status || !a.pending || a.pending !== token || typeof won !== 'boolean') return false;
+  if(a.pendingPatrol){
+    const patrol=dungeonPatrols(a.route).find(p=>p.id===a.pendingPatrol);if(!patrol)return false;
+    if(won)a.patrolDefeated=[...new Set([...(a.patrolDefeated||[]),patrol.id])];
+    a.pending=null;a.pendingPatrol=null;a.pendingIndex=null;return true;
+  }
+  if(status.ready)return false;
   const index=a.pendingIndex??status.checkpoint,location=status.route.checkpoints[index];
   if(!location)return false;
   if (won && routedBoss({...status,checkpoint:index},g)) return false;

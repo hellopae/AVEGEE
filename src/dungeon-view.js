@@ -1,7 +1,7 @@
 import {drawFrontierAmbient} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
-import { dungeonStatus } from './zone-travel.js';
+import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
@@ -103,8 +103,8 @@ export function dungeonPath(from,to,routeId='th:asia') {
   return path;
 }
 export function dungeonEnemyPositions(g,time=0) {
-  const s=dungeonStatus(g);if(!s||s.ready)return [];
-  return s.route.checkpoints.flatMap((location,index)=>{
+  const s=dungeonStatus(g);if(!s)return [];
+  const checkpoints=s.ready?[]:s.route.checkpoints.flatMap((location,index)=>{
     if(s.defeated.includes(location.id))return [];
     const anchor=dungeonPoint(dungeonCheckpointProgress(s.route.id)[index],s.route.id),phase=(Number.isFinite(time)?time:0)/1700+index*2;
     const p=[anchor[0]+Math.sin(phase)*.009,anchor[1]+Math.cos(phase*.8)*.006];
@@ -112,11 +112,23 @@ export function dungeonEnemyPositions(g,time=0) {
     const locked=s.route.id==='th:asia'&&index===2&&(s.checkpoint<2||boss&&g.zoneEvents?.th?.thBorderBoss!=='pending');
     return [{id:location.id,checkpoint:index,kindIdx:location.foe,boss,locked,position:dungeonWalkable(p,s.route.id)?p:anchor}];
   });
+  const patrols=dungeonPatrols(s.route.id).filter(p=>!(g.zoneTravel.active.patrolDefeated||[]).includes(p.id)).map((p,i)=>({
+    id:p.id,patrol:p.id,kindIdx:p.foe,boss:false,locked:false,
+    position:dungeonPoint(p.progress+Math.sin((Number.isFinite(time)?time:0)/2300+i*1.7)*.007,s.route.id),
+  }));
+  return [...checkpoints,...patrols];
+}
+export function dungeonAtPatrol(g,id,position=null){
+  const s=dungeonStatus(g),p=position||activePosition(g),patrol=s&&dungeonPatrols(s.route.id).find(a=>a.id===id);
+  if(!p||!patrol||(g.zoneTravel.active.patrolDefeated||[]).includes(id))return false;
+  // Match the entire short roaming lane, not an untrusted supplied enemy position.
+  const projected=dungeonProjection(p,1,s.route.id);
+  return projected.distance<=.026&&Math.abs(projected.progress-patrol.progress)*geometry(s.route.id).total<=.045;
 }
 export function dungeonAutoEncounter(g,position,time=0) {
   const s=dungeonStatus(g);
-  if(!s||s.ready||s.pending||g.battle||g.pendingRecovery)return null;
-  return dungeonEnemyPositions(g,time).find(enemy=>!enemy.locked&&Math.hypot(position[0]-enemy.position[0],position[1]-enemy.position[1])<=.032&&Math.hypot(position[0]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[0],position[1]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[1])<=.045)||null;
+  if(!s||s.pending||g.battle||g.pendingRecovery||g.dungeonChaseCooldown)return null;
+  return dungeonEnemyPositions(g,time).find(enemy=>!enemy.locked&&Math.hypot(position[0]-enemy.position[0],position[1]-enemy.position[1])<=.032&&(enemy.patrol?dungeonAtPatrol(g,enemy.patrol,position):Math.hypot(position[0]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[0],position[1]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[1])<=.045))||null;
 }
 
 // Give Nira a lateral lane even at the entry, where follow progress is clamped to zero.
@@ -147,6 +159,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
   let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guideTrail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,overview=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
+  let encounterCooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0;g.dungeonChaseCooldown=false;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
   const saved=g.zoneTravel.active.position;
@@ -228,9 +241,10 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     }
     if(wasMoving&&!moving)save();wasMoving=moving;
     saveClock+=dt;if(dirty&&saveClock>2500){save();saveClock=0;}
-    const nearby=dungeonAutoEncounter(g,position,enemyTime);
+    encounterCooldown=Math.max(0,encounterCooldown-dt);
+    const nearby=encounterCooldown?null:dungeonAutoEncounter(g,position,enemyTime);
     if(!encounterDispatch&&nearby){
-      encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter({...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
+      encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter(nearby.patrol?{patrol:nearby.patrol}:{...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
     }
     heading.textContent=status.route.name;
     root.querySelector('.dungeon-challenge').hidden=routeId!=='th:asia'||bossGuideWaiting(g)||!g.challengeCanTalk?.();
@@ -239,7 +253,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     action.hidden=!status.ready;
     action.disabled=!near||!!(g.battle||g.pendingRecovery||status.pending)||(routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th&&g.zoneEvents?.th?.thBorderBoss!=='pending');
     action.textContent=status.ready?(routeId==='th:asia'?'เข้าประตูโซน 2':'เข้าเมืองถัดไป'):status.pending?'กำลังต่อสู้…':routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th&&!['pending','active'].includes(g.zoneEvents?.th?.thBorderBoss)?'บอสโซน 1 · กลับไปผ่านคดีที่ 10 ก่อน':near?(routeId==='th:asia'&&status.checkpoint===2&&!g.bossCleared.th?'ท้าสู้บอสในถ้ำ':'เริ่มต่อสู้'):'เดินไปหาศัตรู';
-    const text=status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`กำจัดปีศาจ ${status.defeated.length}/3`;
+    const text=status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`ผ่านด่าน ${status.defeated.length}/3 · ปีศาจลาดตระเวนที่ปราบ ${(g.zoneTravel.active.patrolDefeated||[]).length}/${dungeonPatrols(routeId).length}`;
     if(info.textContent!==text)info.textContent=text;
   }
   function render(t) {

@@ -64,3 +64,9 @@ At the harbour's physical interaction point call `activateHarbour(g)` and save, 
 Run `node --test tests/zone-travel.test.mjs`. Eight tests cover boss-only unlock rejection, adjacent route gates, losses/retries/stale results, first arrival vs port activation, boat return, checkpoint persistence, legacy migrations, malformed state, busy gates and the complete four-city chain.
 
 The helpers reject malformed indices/evidence and unknown routes/ports. As a local game they do not claim tamper-proof saves: a user editing the entire save can fabricate progress. Physical checkpoint/harbour proximity must be enforced by the caller that knows map coordinates.
+
+## 2026-10-21 patrol extension
+
+Zone 1–2 now has six optional real patrol encounters between the three story checkpoints. They roam short lanes on the authored road, use proximity dispatch with a second game-side physical position check, and use normal combat/reward/cleanup hooks. Patrol victories persist in `active.patrolDefeated`, independent of `cleared` and `checkpoint`; they cannot unlock a gate. Remaining patrols can still be fought after the cave is cleared, including during the boss-guided expedition. Fleeing retreats away from that patrol and grants the existing four-second grace period. Restore sanitizes patrol IDs and clears interrupted battle tokens for a fresh retry.
+
+Browser preview verified movement, proximity callback and one separate patrol victory; it resolves the callback automatically, so it is not proof of playing the full battle UI. Gameplay tests exercise real battle creation, result cleanup, save/restore, loss, stale results and gate separation.
