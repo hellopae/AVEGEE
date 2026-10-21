@@ -425,7 +425,7 @@ function explainBar(k) {
       ? (g.fed ? ' · <span style="color:var(--success)">อิ่ม ทำงานไว</span>' : ' · <span style="color:var(--destructive)">หิว ทำงานช้า</span>') : ''}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
-    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> — ไม่หยุดสนิท แค่คดีคืบหน้าช้าลง</div></div>
+    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ในโต๊ะนิรา</div></div>
     <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
     <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs in Build for ${BAL.foodPrice * 10} coins, or pick up food packs on the map` : `ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือเดินไปเก็บ<b>ห่อเสบียง</b>บนแผนที่`}</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
@@ -1243,7 +1243,7 @@ function updateMobFab() {
 function updateBossFab() {
   const gone = () => { const e = ov.querySelector('.bossfab'); if (e) e.remove(); };
   const pier = g.bossPierCanTalk();
-  if (g.over || g.battle || dlg.open || (!g.bossCanChallenge() && !pier)) return gone();
+  if (g.zone==='th'&&g.bossCleared.th || g.over || g.battle || dlg.open || (!g.bossCanChallenge() && !pier)) return gone();
   let f = ov.querySelector('.bossfab');
   if (!f) {
     f = document.createElement('button');
@@ -1264,20 +1264,15 @@ function updateBossFab() {
 }
 
 /** ประตูชายแดนเปิดได้เมื่อเดินมาถึงเท่านั้น เหมือนสถานที่อื่นในฉาก */
+let borderGateLatched=false;
 function updateFrontierFab() {
   const gone = () => { const e = ov.querySelector('.frontierfab'); if (e) e.remove(); };
   const near = Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
-  if (!near || g.over || g.battle || dlg.open) return gone();
-  let f = ov.querySelector('.frontierfab');
-  if (!f) {
-    f = document.createElement('button');
-    f.className = 'frontierfab';
-    f.textContent = '🏯 เข้าด่านชายแดน';
-    f.onclick = ev => { ev.stopPropagation(); if (!g.battle && !dlg.open) openBorder(); };
-    ov.appendChild(f);
-  }
-  f.dataset.sx = FRONTIER.bx; f.dataset.sy = FRONTIER.by - FRONTIER.bw + 18;
-  place(f);
+  gone();
+  if(!near){borderGateLatched=false;return;}
+  if(!started||g.over||g.battle||dlg.open||borderGateLatched)return;
+  borderGateLatched=true;
+  openBorder();
 }
 
 /** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
@@ -3075,7 +3070,19 @@ function openFrontierWalk(invasionKey = null) {
     };
     dlg.addEventListener('close',back);
   };
-  guide.onclick=()=>{if(!FW.canTalkGuide())return;FW.destroy();runBossGuideStory('welcome',()=>openFrontierWalk());};
+  const guidedDeparture=()=>{
+    const route=openDungeonRoutes(g)[0];
+    if(!route){openFrontierWalk();return;}
+    runBossGuideStory('welcome',()=>{if(dungeonStatus(g)||g.beginBorderDungeon(route.to))openDungeon();else openFrontierWalk();});
+  };
+  const askGuide=()=>{
+    FW.destroy();
+    modal(`<h2>${esc(g.zoneDef().bossName)}</h2><p>จะออกนอกเขตชายแดนไหม? ข้าจะนำทางและร่วมต่อสู้กับยามาและนิรา จนถึงประตูดินแดนใหม่</p><div class="row"><button class="gold" data-guide-depart>ตกลง · ออกเดินทางด้วยกัน</button><button data-guide-stay>ไว้ก่อน</button></div>`,d=>{
+      d.querySelector('[data-guide-depart]').onclick=guidedDeparture;
+      d.querySelector('[data-guide-stay]').onclick=()=>openFrontierWalk();
+    });
+  };
+  guide.onclick=()=>{if(FW.canTalkGuide())askGuide();};
   challenge.onclick = () => {
     if (!FW.canTalkChallenge()) return;
     FW.destroy();
@@ -3107,7 +3114,7 @@ function openFrontierWalk(invasionKey = null) {
   // แล้วกลับมาสู้ต่อได้โดยไม่ต้องเริ่มใหม่ ตัวที่ปราบไปแล้วก็ไม่ฟื้นคืนชีพ (ข้อ 8 ในใบงานอนุญาตแค่
   // "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่กดปุ่มนี้)
   exit.onclick = () => {
-    if(g.zone!=='th'&&g.bossGuideWaiting?.()){FW.destroy();runBossGuideStory('welcome',()=>openFrontierWalk());return;}
+    if(g.bossGuideWaiting?.()){askGuide();return;}
     const route=openDungeonRoutes(g)[0];
     if(!route){
       FW.destroy();
@@ -4077,6 +4084,7 @@ function openZone() {
 }
 function openBorder() {
   if(Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y)>FRONTIER.reach)return;
+  borderGateLatched=true;
   openFrontierWalk();
 }
 function openDungeon() {
@@ -5484,10 +5492,10 @@ function openBattleReward() {
   for (const id of r.weapons || []) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
   for (const k of r.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
   if (!r.guideZone && !r.items.length && !r.abilities.length && !(r.weapons || []).length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
-  modal(`<h2>${esc(r.title || t('reward.title'))}</h2>
+  modal(`${r.background?`<img class="reward-world-image" src="${esc(r.background)}" alt="บริเวณที่ต่อสู้"><section class="reward-world-panel">`:''}<h2>${esc(r.title || t('reward.title'))}</h2>
     <p class="reward-who">${esc(r.who || '')}</p>${r.description?`<p>${esc(r.description)}</p>`:''}
     <div class="reward-list">${rows.join('')}</div>
-    <div class="row"><button class="gold" data-close>${esc(t('reward.claim'))}</button></div>`, null, 'battle-reward');
+    <div class="row"><button class="gold" data-close>${esc(t('reward.claim'))}</button></div>${r.background?'</section>':''}`, null, r.background?'battle-reward reward-world':'battle-reward');
   // ระวัง: event 'close' ของฉากต่อสู้ที่เพิ่งปิด (dlg.close() ใน finish) มาถึง "หลัง" กล่องนี้เปิดแล้ว (ยิงแบบ async)
   // onDlgClose ธรรมดาจึงตีความว่ากล่องรางวัลปิดทันที — ต้องข้ามเมื่อกล่องยังเปิดอยู่และเป็นรุ่นเดียวกัน (เหมือน showPendingStory)
   const gen = dlgGen;
@@ -6136,4 +6144,4 @@ window.G = g;
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder,openTrial,startPlay};
+export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay};

@@ -112,7 +112,7 @@ export function makeFrontierWalk(cv, g, opts) {
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
-  const guideBoss=g.zone!=='th'&&!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
+  const guideBoss=!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
   const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const releasedBoss=releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
   const P = sess.player;

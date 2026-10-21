@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="avegee-build" content="20261021-interrogation-roles">
+<meta name="avegee-build" content="20261021-workers-guide">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>อเวจี — นรกโซนสุวรรณภูมิ</title>
 <meta name="description" content="เกมบริหารนรกโซนไทย — ยมบาทมือใหม่ที่ต้องพิพากษาให้ตรงกรรม">
@@ -356,6 +356,9 @@ dialog h2{font-family:var(--font-display);color:var(--gold);margin:0 0 var(--spa
 .gain .n span{display:block;font-size:var(--text-xs);color:var(--muted-foreground);line-height:1.55;margin-top:1px}
 /* ---------- หน้าต่างรางวัลหลังชนะ (ชุด 28B) — มือถือ 390 เป็นหลัก ---------- */
 dialog.battle-reward[open]{max-width:420px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+dialog.battle-reward.reward-world[open]{width:100vw;height:100dvh;max-width:none;max-height:none;inset:0;margin:0;border:0;border-radius:0;display:grid;place-items:center;padding:20px;background:#160e16;isolation:isolate}
+.reward-world-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.62;z-index:-1}
+.reward-world-panel{width:min(420px,100%);max-height:calc(100dvh - 40px);overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
 .reward-who{margin:-6px 0 var(--space-3);color:var(--muted-foreground);font-size:var(--text-sm)}
 .reward-list{margin-bottom:var(--space-3)}
 .reward-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;
@@ -2316,7 +2319,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015",
     "./src/town-layout.js": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party",
-    "./src/scene.js": "./src/scene.js?v=20261020-court-ferry",
+    "./src/scene.js": "./src/scene.js?v=20261021-workers-guide",
     "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-flames-ground-r2",
     "./src/town-terrain.js": "./src/town-terrain.js?v=20261021-resume-loading",
     "./src/proximity.js": "./src/proximity.js?v=20261016-boss-justice-workers-v1-r6b",
@@ -2327,21 +2330,21 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/interrogation.js": "./src/interrogation.js?v=20261021-interrogation-roles",
     "./src/interrogation-ui.js": "./src/interrogation-ui.js?v=20261021-interrogation-roles",
-    "./src/game.js": "./src/game.js?v=20261021-interrogation-roles",
+    "./src/game.js": "./src/game.js?v=20261021-workers-guide",
     "./src/preload.js": "./src/preload.js?v=20261021-interrogation-roles",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/ui.js": "./src/ui.js?v=20261021-interrogation-roles",
+    "./src/ui.js": "./src/ui.js?v=20261021-workers-guide",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-interrogation-roles",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261020-court-ferry",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-workers-guide",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-workers-guide",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-flames-ground-r2",
     "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261016-boss-justice-workers-v1-r6b",
     "./src/town-lighting.js?v=fire-v2": "./src/town-lighting.js?v=20261016-boss-justice-workers-v1",
     "./src/battle-formation.js?v=20261015-k2": "./src/battle-formation.js?v=20261021-town-repairs",
-    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261021-interrogation-roles",
-    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261021-interrogation-roles",
+    "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261021-workers-guide",
+    "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261021-workers-guide",
     "./src/data.js": "./src/data.js?v=20261021-interrogation-roles",
     "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261021-interrogation-roles",
     "./src/cases.js": "./src/cases.js?v=n3b",
@@ -2349,14 +2352,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/battle-turns.js": "./src/battle-turns.js?v=20261016-boss-justice-workers-v1",
     "./src/battle-background.js": "./src/battle-background.js?v=20261016-boss-justice-workers-v1",
     "./src/dungeon-art.js": "./src/dungeon-art.js?v=20261020-frontier-scale",
-    "./src/frontier.js": "./src/frontier.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/frontier.js": "./src/frontier.js?v=20261021-workers-guide",
     "./src/zone-travel.js": "./src/zone-travel.js?v=20261021-interrogation-roles",
     "./src/npc-stand.js": "./src/npc-stand.js?v=20261016-boss-justice-workers-v1",
     "./src/nira-combat.js": "./src/nira-combat.js?v=20261020-border-party",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading",
-    "./src/workers.js": "./src/workers.js?v=20261021-town-repairs",
-    "./src/worker-ui.js": "./src/worker-ui.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/workers.js": "./src/workers.js?v=20261021-workers-guide",
+    "./src/worker-ui.js": "./src/worker-ui.js?v=20261021-workers-guide",
     "./src/story.js": "./src/story.js?v=20261016-boss-justice-workers-v1",
     "./src/final-event.js": "./src/final-event.js?v=20261016-boss-justice-workers-v1",
     "./src/town-flow.js": "./src/town-flow.js?v=20261016-boss-justice-workers-v1-r6",
@@ -2371,6 +2374,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 }</script>
 <script type="module" src="src/preload.js?v=20261021-interrogation-roles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-interrogation-roles"></script>
+<script type="module" src="src/ui.js?v=20261021-workers-guide"></script>
 </body>
 </html>

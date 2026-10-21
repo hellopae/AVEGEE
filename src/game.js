@@ -2,6 +2,8 @@ import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive
 import {spiritTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
+import {dungeonBackground} from './dungeon-art.js';
+import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
@@ -451,13 +453,13 @@ const API = {
   },
 
   advanceCourtArrivals(dt) {
-    if(this.courtClosed||!Number.isFinite(dt)||dt<=0)return;
+    if(!Number.isFinite(dt)||dt<=0)return;
     let ferry=this.courtArrivals.find(a=>a.zone===this.zone&&a.phase==='ferry');
-    if(!ferry){
+    if(!ferry&&!this.courtClosed){
       ferry=this.courtArrivals.find(a=>a.zone===this.zone&&a.phase==='queued');
       if(ferry){ferry.phase='ferry';ferry.elapsed=0;}
     }
-    if(ferry){
+    if(ferry&&!this.courtClosed){
       ferry.elapsed=Math.min(ferry.duration,ferry.elapsed+dt);
       if(ferry.elapsed>=ferry.duration){
         ferry.phase='dock';
@@ -1264,6 +1266,8 @@ const API = {
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
     if (!route?.length || Math.hypot(route.at(-1)[0] - end[0], route.at(-1)[1] - end[1]) > 18) {
+      // A docked passenger must wait for a valid physical delivery route.
+      if(destination==='arrival')return false;
       this.finishAfterlifeWalk({ soul, destination, entry });
       return false;
     }
@@ -2488,6 +2492,7 @@ const API = {
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
       expeditionParty:!!m.dungeonToken&&bossGuideFollowing(this),
+      worldBackground:m.dungeonToken?dungeonBackground(this.zone,this.zoneTravel?.active?.route,this.zoneTravel?.active?.checkpoint):null,
       ...(m.dungeonToken?{team:[...this.frontierOf().team]}:{}),
       who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
       foeAtk: scaleFoeAtk(this.zone, MOB.fightAtk),   // ชุด 28B — ตัวคูณโซนอยู่ใน FOE_SCALE
@@ -2536,7 +2541,7 @@ const API = {
     const hp = scaleFoeHp(this.zone, 64 + wave * 14);   // ชุด 28B — คูณตามโซน
     this.fights++;
     this.battle = {
-      kind:'frontier', zone:this.zone, wave, team:[...state.team],
+      kind:'frontier', zone:this.zone, wave, team:[...state.team],worldBackground:themeBackground(this.zone,'frontier'),
       frontierMobId: target?.id ?? null,   // ui.js ใช้ตอนจบฉาก — ชนะแล้วลบตัวนี้ออกจากแผนที่ชายแดน
       bg: artUrl('BG-Frontier', 'webp', this.zone),
       who:kind.nameKey ? t(kind.nameKey) : kind.name, sub:`ผู้บุกรุกระลอกที่ ${wave}`, sp:kind.img,
@@ -3657,7 +3662,11 @@ const API = {
         const items = Object.keys(this.inventory).filter(k => (this.inventory[k] || 0) > (before.inv[k] || 0))
           .map(k => ({ k, n:this.inventory[k] - (before.inv[k] || 0) }));
         for (const [k, n] of Object.entries(gain.items)) { const row = items.find(x => x.k === k); if (row) row.n += n; else items.push({ k, n }); }
-        B.summary = { kind:B.kind, who:B.who, zone:B.zone || this.zone, coin:this.coin - before.coin + gain.coin, exp:expGain, items,
+        const borderReward=['frontier','frontierBreach'].includes(B.kind)||
+          B.kind==='zoneEvent'&&(ZONE_EVENTS[B.zone||this.zone]||[]).some(ev=>ev.k===B.eventKey&&ev.team==='frontier');
+        B.summary = { kind:B.kind, who:B.who, zone:B.zone || this.zone,
+          background:B.worldBackground||(B.dungeonToken?dungeonBackground(this.zone,this.zoneTravel?.active?.route,this.zoneTravel?.active?.checkpoint):borderReward?themeBackground(B.zone||this.zone,'frontier'):null),
+          coin:this.coin - before.coin + gain.coin, exp:expGain, items,
           weapons:B.challenge && B.reward?.weapon ? [B.reward.weapon] : [],
           abilities:Object.keys(this.abilities).filter(k => this.abilities[k] && !before.ab[k]) };
       }

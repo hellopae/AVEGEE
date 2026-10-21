@@ -22,7 +22,8 @@ test('closed court finishes punishment and afterlife walk without advancing puni
   g.nextArrive = g.nextPay = g.nextEvent = g.nextKpi = 1;
   const before = { spawns:g.spawns, queue:g.queue.length, coin:g.coin, order:g.order };
 
-  g.step();
+  // A resistant soul may consume two operational resistance ticks before work advances.
+  for(let n=0;n<3&&slot.progress<=0;n++)g.step();
   assert.ok(slot.progress > 0);
   g.paused = true;
   const pausedProgress = slot.progress;
@@ -61,7 +62,8 @@ test('an escort already dispatched keeps delivering souls while court is closed'
   g.transits[0].arriveAt = Date.now() - 1;
   g.stepWorld(120);
   assert.equal(g.crewOf('taan').escort, null);
-  g.step();
+  // A resistant soul may consume two operational resistance ticks before work advances.
+  for(let n=0;n<3&&slot.progress<=0;n++)g.step();
   assert.ok(slot.progress > 0);
 });
 

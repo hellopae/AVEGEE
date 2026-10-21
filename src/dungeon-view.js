@@ -106,15 +106,15 @@ export function dungeonEnemyPositions(g,time=0) {
   const s=dungeonStatus(g);if(!s)return [];
   const checkpoints=s.ready?[]:s.route.checkpoints.flatMap((location,index)=>{
     if(s.defeated.includes(location.id))return [];
-    const anchor=dungeonPoint(dungeonCheckpointProgress(s.route.id)[index],s.route.id),phase=(Number.isFinite(time)?time:0)/1700+index*2;
-    const p=[anchor[0]+Math.sin(phase)*.009,anchor[1]+Math.cos(phase*.8)*.006];
+    const progress=dungeonCheckpointProgress(s.route.id)[index],phase=(Number.isFinite(time)?time:0)/6500+index*2;
+    const anchor=dungeonPoint(progress,s.route.id),p=dungeonPoint(progress+Math.sin(phase)*.008,s.route.id);
     const boss=s.route.id==='th:asia'&&index===2&&!g.bossCleared?.th;
     const locked=s.route.id==='th:asia'&&index===2&&(s.checkpoint<2||boss&&g.zoneEvents?.th?.thBorderBoss!=='pending');
     return [{id:location.id,checkpoint:index,kindIdx:location.foe,boss,locked,position:dungeonWalkable(p,s.route.id)?p:anchor}];
   });
   const patrols=dungeonPatrols(s.route.id).filter(p=>!(g.zoneTravel.active.patrolDefeated||[]).includes(p.id)).map((p,i)=>({
     id:p.id,patrol:p.id,kindIdx:p.foe,boss:false,locked:false,
-    position:dungeonPoint(p.progress+Math.sin((Number.isFinite(time)?time:0)/2300+i*1.7)*.007,s.route.id),
+    position:dungeonPoint(p.progress+Math.sin((Number.isFinite(time)?time:0)/8000+i*1.7)*.007,s.route.id),
   }));
   return [...checkpoints,...patrols];
 }
@@ -275,7 +275,12 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
-      if(a.kind==='enemy'){const foe=MOB.kinds[a.enemy.kindIdx]||MOB;const boss=a.enemy.boss;drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',1,true,g.zone);return;}
+      if(a.kind==='enemy'){
+        const foe=MOB.kinds[a.enemy.kindIdx]||MOB,boss=a.enemy.boss;
+        const next=dungeonEnemyPositions(g,enemyTime+100).find(e=>e.id===a.enemy.id),facing=next&&next.position[0]<a.p[0]?-1:1;
+        ctx.save();if(!reduced.matches&&!boss)ctx.translate(0,Math.sin(animationTime/180)*h*.012);
+        drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',facing,false,g.zone);ctx.restore();return;
+      }
       if(a.kind==='nira') {if(moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,walkDistance,face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',face,false,g.zone);return;}
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);

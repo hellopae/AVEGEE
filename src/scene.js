@@ -177,10 +177,10 @@ export const scaleFor = cv => cv.width / SCENE.w;
 function tag(ctx, x, y, t, [text, color], small=false) {
   const bob = Math.sin(t / 420) * 2;
   ctx.save();
-  const fontSize=small ? 10.5 * UI_SCALE_MAP : 13 * UI_SCALE_MAP;
+  const fontSize=MAP_NAME_SIZE * UI_SCALE_MAP * (small ? .9 : 1);
   ctx.font = `600 ${fontSize}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  const w = ctx.measureText(text).width + (small?12:16) * UI_SCALE_MAP, h = 21 * UI_SCALE_MAP * (small?17/21:1), yy = y + bob;
+  const w = ctx.measureText(text).width + 10 * UI_SCALE_MAP, h = fontSize * 1.6, yy = y + bob;
   ctx.fillStyle = 'rgba(20,10,14,.88)';
   rr(ctx, x - w / 2, yy - h / 2, w, h, 7 * UI_SCALE_MAP); ctx.fill();
   ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
@@ -516,7 +516,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
-  if (!(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
+  if (!(g.zone==='th'&&g.bossCleared?.th) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
@@ -956,7 +956,7 @@ export function hitActor(g, sx, sy) {
   if (!westRescuePending(g) && g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
   if (westRescueActors(g).some(a => near(a.x,a.y,radius(60))))
     return { kind:'zoneEvent', key:'westHypnotized' };
-  if (g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
+  if (g.zone!=='th' && g.bossCleared?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   if (westRescuePending(g)) return null;
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return g.mobs[i].eventKey

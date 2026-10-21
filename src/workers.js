@@ -92,7 +92,7 @@ function assignJob(g,w) {
   }
 }
 export function stepWorkers(g) {
-  if(g.paused||g.over||g.battle||g.zoneTravel?.active)return;
+  if(g.paused||g.over||g.battle)return;
   const s=state(g),now=Date.now(),away=Math.min(6*60*60*1000,Math.max(0,now-s.lastAt));
   // Long tab closes still produce a modest, bounded result. One worker cannot
   // silently mint more than 6 hours of ten-minute gathering trips.
@@ -144,7 +144,7 @@ function target(g,w) {
   return nearestWalk(st.def.x+offset,st.def.y+36);
 }
 export function advanceWorkers(g,dt,now=Date.now()) {
-  if(g.paused||g.over||g.battle||g.finalEventOnMap?.()||g.zoneTravel?.active||!Number.isFinite(dt)||dt<=0)return;
+  if(g.paused||g.over||g.battle||g.finalEventOnMap?.()||!Number.isFinite(dt)||dt<=0)return;
   for(const w of zoneWorkers(g)) {
     w.moving=false;
     if(!canWalk(w.x,w.y)){const safe=nearestWalk(w.x,w.y);if(safe){[w.x,w.y]=safe;w.path=null;}}

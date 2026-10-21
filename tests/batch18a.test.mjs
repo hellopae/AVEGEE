@@ -72,7 +72,7 @@ test('ทุกโซนคิวอยู่แนวสะพานและ�
     }
     assert.ok(canWalk(MERCHANT.x, MERCHANT.y), `${z.k}: merchant on pier`);
     assert.ok(canWalk(SPOTS.bossPier.x, SPOTS.bossPier.y), `${z.k}: boss on pier`);
-    assert.deepEqual(hitActor(g, SPOTS.bossPier.x, SPOTS.bossPier.y), { kind:'boss', key:z.k });
+    assert.deepEqual(hitActor(g, SPOTS.bossPier.x, SPOTS.bossPier.y), z.k==='th'?null:{ kind:'boss', key:z.k }, 'Zone 1 ruler now waits in the frontier, without an invisible town hit target');
     for (const st of STATIONS) {
       const [x1, y1, x2, y2] = st.hit;
       assert.equal(hitStation((x1 + x2) / 2, (y1 + y2) / 2), st, `${z.k}: ${st.k} clickable`);

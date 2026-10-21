@@ -82,10 +82,10 @@ test('final wave, reinforcement, ruler and warp boss names use the same map styl
   }
 });
 
-test('interaction tags and deva skill prompt retain their original sizes',()=>{
+test('map status tags use compact map type while deva skill prompts keep their own size',()=>{
   const tag=source.slice(source.indexOf('function tag('),source.indexOf('function ring('));
-  assert.match(tag,/13 \* UI_SCALE_MAP/);
-  assert.match(tag,/h = 21 \* UI_SCALE_MAP/);
+  assert.match(tag,/MAP_NAME_SIZE \* UI_SCALE_MAP/);
+  assert.match(tag,/h = fontSize \* 1\.6/);
   assert.ok(source.includes("if (a.enabled) label(ctx, a.label, a.x, a.y + 18, 12, '#f7c371');"));
   assert.ok(source.includes("label(ctx, `${n}`, x + BADGE_R - 2, cy + BADGE_R - 5, 15, '#ffe7c4');"));
 });
