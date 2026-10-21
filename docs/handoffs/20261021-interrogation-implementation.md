@@ -1,5 +1,8 @@
 # Interrogation expansion — implementation and remaining queue
 
+
+Latest status: `../claude-handoff-2026-10-21-workers-guide.md` records the subsequently shipped worker/S1–S5 batch and the remaining manual acceptance/experiment queue. The original queue below is historical.
+
 Build: `20261021-interrogation-roles`. Release checkout only; shared original checkout preserved.
 
 ## Implemented
