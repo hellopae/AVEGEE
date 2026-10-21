@@ -113,7 +113,8 @@ export function makeFrontierWalk(cv, g, opts) {
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
   const guideBoss=!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
-  const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && !bossGuideDismissed(g) && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  // Zone 1's replay boss used to live in the cave; once the guide has said farewell he stands at the frontier stand like the others.
+  const challengeBoss = !guideBoss&&(g.zone!=='th'||bossGuideDismissed(g)) && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const releasedBoss=releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }

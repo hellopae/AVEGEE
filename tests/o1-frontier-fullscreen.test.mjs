@@ -127,7 +127,7 @@ test('wiring: both route views enter by the latch and neither can be triggered b
   assert.doesNotMatch(js,/listen\(action,/);
 });
 
-test('farewell dismisses the guide everywhere: route, replay stand, pier, invisible hit spots',()=>{
+test('farewell dismisses the guide from the city pier (talk spot, rematch menu, walk blocker)',()=>{
   for(const zone of ['th','asia','west']){
     const waiting=game(zone,'waiting'),following=game(zone,'following'),gone=game(zone,'farewell');
     assert.equal(bossGuideDismissed(waiting),false);assert.equal(bossGuideDismissed(following),false);assert.equal(bossGuideDismissed(gone),true,zone);
@@ -142,26 +142,32 @@ test('farewell dismisses the guide everywhere: route, replay stand, pier, invisi
   }
 });
 
-test('farewell removes the replay boss from the frontier stand (CHALLENGE_STAND) and the cave button',async()=>{
-  for(const zone of ['asia','west','cyberhell']){
-    for(const [mode,expectBoss] of [['following',true],['farewell',false]]){
-      if(zone==='cyberhell'&&mode==='farewell')continue; // no guide in the last land
+test('after the farewell the boss stays at the frontier stand (visible + talkable, every zone) and has no hidden spot on the route',async()=>{
+  const {frontierSession}=await import('../src/frontier.js');
+  for(const zone of ['th','asia','west','cyberhell']){
+    for(const mode of zone==='cyberhell'?['none']:['following','farewell']){
       clearFrontierSession();labels.length=0;
-      const g=zone==='cyberhell'?(()=>{const x=newGame();x.zone=zone;x.zoneEvents[zone]={[CHALLENGE_STORY_KEY[zone]]:'cleared'};return x;})():game(zone,mode);
-      const challenge={hidden:true,style:{},dataset:{}},cv=canvas();
-      const fw=makeFrontierWalk(cv,g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,challenge});
+      const g=mode==='none'?(()=>{const x=newGame();x.zone=zone;x.zoneEvents[zone]={[CHALLENGE_STORY_KEY[zone]]:'cleared'};return x;})():game(zone,mode);
+      const {x,y}=CHALLENGE_STAND[zone],P=frontierSession(zone).player;P.x=x-.06;P.y=y;
+      const challenge={hidden:true,style:{},dataset:{}},fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,challenge});
       try{
         await Promise.resolve();fw.start();
-        const shown=labels.includes(BOSS_NAMES[zone].frontier);
-        if(zone==='cyberhell')assert.equal(shown,true,'no guide in the last land: replay boss unchanged');
-        else assert.equal(shown,expectBoss,`${zone}/${mode}: replay boss at the stand`);
+        const stands=mode==='farewell'||mode==='none'||zone!=='th'&&mode==='following';
+        assert.equal(labels.includes(BOSS_NAMES[zone].frontier),stands,`${zone}/${mode}: boss drawn at the stand`);
+        assert.equal(fw.canTalkChallenge(),stands,`${zone}/${mode}: talk spot exists exactly when the boss is drawn`);
+        assert.equal(challenge.hidden,!stands);
+        assert.equal(g.challengeCanTalk(P),stands);
+        if(stands)assert.equal(g.startChallenge()?.challenge,true,`${zone}/${mode}: the 10-wave trial still starts`);
       }finally{fw.destroy();}
     }
   }
-  // Cave button of zone 1 (hidden hit spot on the route): gone after farewell, kept before.
-  const before=game('th','following'),after=game('th','farewell');
-  for(const g of [before,after]){toGate(g);const cave=view.dungeonPoint(view.DUNGEON_PROGRESS[2]);g.zoneTravel.active.position={x:cave[0],y:cave[1]};}
-  assert.equal(before.challengeCanTalk(),true);assert.equal(after.challengeCanTalk(),false);
+  // Outer route: no hidden hit spot. A talk button may exist only while the boss is drawn there (never after the farewell).
+  const after=game('th','farewell');toGate(after);const cave=view.dungeonPoint(view.DUNGEON_PROGRESS[2]);
+  after.zoneTravel.active.position={x:cave[0],y:cave[1]};
+  assert.equal(after.challengeCanTalk(),false,'cave spot gone after the farewell');
+  const js=read('../src/dungeon-view.js');
+  assert.match(js,/\.dungeon-challenge'\)\.hidden=!challengeStandeeShown\(\)/,'cave button is tied to the drawn standee');
+  assert.match(js,/else if\(challengeStandeeShown\(\)\)\{/,'and the same predicate draws the boss');
 });
 
 test('route again after the farewell: Yama + Nira only (no hired keepers, guard or guide); first escort keeps the guide',()=>{

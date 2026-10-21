@@ -216,6 +216,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const f=reduced.matches?1:1-Math.exp(-dt/110);cam.x+=(x-cam.x)*f;cam.y+=(y-cam.y)*f;cam.scale+=(scale-cam.scale)*f;
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
+  // The cave talk button exists only while the boss is really drawn there (no invisible hit spot).
+  const challengeStandeeShown=()=>routeId==='th:asia'&&!bossGuideWaiting(g)&&!bossGuideDismissed(g)&&!!g.challengeUnlocked?.()&&!g.bossCleared?.th;
   function update(dt) {
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
@@ -255,7 +257,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(!encounterDispatch&&nearby){
       encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter(nearby.patrol?{patrol:nearby.patrol}:{...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
     }
-    root.querySelector('.dungeon-challenge').hidden=routeId!=='th:asia'||bossGuideWaiting(g)||bossGuideDismissed(g)||!g.challengeCanTalk?.();
+    root.querySelector('.dungeon-challenge').hidden=!challengeStandeeShown()||!g.challengeCanTalk?.();
     root.querySelector('.dungeon-guide').hidden=!bossGuideWaiting(g)||Math.hypot(position[0]-point(points[2])[0],position[1]-point(points[2])[1])>.09;
     // O1: reaching the gate enters the land by itself (no button). Same reach the button used to need.
     const arrival=dungeonExitArrival(g,exitLatch,{destroyed});exitLatch=arrival.latched;
@@ -275,7 +277,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
     if(routeId==='th:asia'&&bossGuideWaiting(g)){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'guide'});}
-    else if(routeId==='th:asia'&&g.challengeUnlocked?.()&&!g.bossCleared?.th&&!bossGuideDismissed(g)){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
+    else if(challengeStandeeShown()){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
