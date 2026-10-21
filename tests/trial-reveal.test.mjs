@@ -25,7 +25,7 @@ test('no power keeps the case answer hidden while the same station still earns i
   assert.ok(verdict.bonus > 0);
 });
 
-test('mirror reveals the bonus station, deserved intensity and highest scoring assignable keeper for this case', () => {
+test('mirror reveals the bonus station, deserved intensity and operationally recommended keeper without changing justice', () => {
   const g = createGame();
   const soul = caseAtCourt(g);
   g.level = 2; (g.zoneEvents.th ||= {}).devaTest = 'cleared'; g.powerOf('mirror').ammo = 1;
@@ -38,7 +38,8 @@ test('mirror reveals the bonus station, deserved intensity and highest scoring a
   assert.equal(answer.intensity, soul.deserved);
   const station = g.stations.find(st => st.def.k === answer.station.k);
   const scores = ['taan', 'kan'].map(k => ({ k, score:g.judge({ ...station, crewK:k }, { soul, intensity:soul.deserved }).score }));
-  assert.equal(answer.crew.k, scores.sort((a, b) => b.score - a.score)[0].k);
+  assert.equal(scores[0].score, scores[1].score, 'keeper skill does not change justice');
+  assert.equal(answer.crew.k, 'kan', 'operational advice remains separate from justice');
   assert.equal(answer.unavailable, null);
   assert.equal(g.logs.length, logsBefore);
 

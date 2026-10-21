@@ -1,4 +1,5 @@
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
+import {spiritTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
@@ -118,6 +119,7 @@ export function createGame() {
     inventory: {},                    // ของที่เก็บเข้ากระเป๋าแล้ว — ติดตัวข้ามโซน
     mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [], courtArrivals: [],
     workerState:normalizeWorkers(),
+    interrogationSupport:{version:1,kanReadyAt:{},insights:0},teamReports:[],nextTeamReportId:1,
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -936,10 +938,53 @@ const API = {
 
   freeCrew() { return this.crew.filter(c => actorStanding(c) && !c.at && !c.reader); },
 
+  spiritTrait(soul) { return spiritTrait(soul); },
+  kanClueCost() {
+    return {mp:this.interrogationSupport.insights>0?0:KAN_SUPPORT.mpCost,morale:KAN_SUPPORT.moraleCost,
+      cooldownSeconds:KAN_SUPPORT.cooldownMs/1000,insight:this.interrogationSupport.insights>0};
+  },
+  kanClueWhy(soul) {
+    if(this.over||this.battle)return 'รอให้จบการต่อสู้ก่อน';
+    if(!soul||!this.queue.includes(soul)||!this.caseReady(soul))return 'ต้องมีวิญญาณมาถึงแท่นสอบสวนก่อน';
+    const c=this.crewOf('kan');
+    if(!actorStanding(c))return 'กานต์ยังไม่พร้อม · ต้องจ้างและให้พักฟื้นก่อน';
+    if(c.at||c.buildK||c.escort)return 'กานต์กำลังทำงาน · ต้องว่างจากงานคุม สร้าง ซ่อม หรือนำส่งก่อน';
+    if(!hiddenIssues(soul).length)return 'ไม่มีข้อเท็จจริงที่ยังไม่เปิดเผยเหลือแล้ว';
+    const wait=Math.ceil(((this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]||0)-Date.now())/1000);
+    if(wait>0)return `กานต์พักพลัง · รออีก ${wait} วินาที`;
+    const cost=this.kanClueCost();
+    if(this.mp<cost.mp)return `พลังเวทไม่พอ · ต้องใช้ MP ${cost.mp}`;
+    if(c.morale<=cost.morale)return `กานต์ต้องมีบารมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
+    return '';
+  },
+  kanRevealClue(soul) {
+    if(this.kanClueWhy(soul))return null;
+    const c=this.crewOf('kan'),cost=this.kanClueCost(),line=revealOneIssue(soul);if(!line)return null;
+    this.mp-=cost.mp;c.morale-=cost.morale;
+    if(cost.insight)this.interrogationSupport.insights--;
+    this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]=Date.now()+KAN_SUPPORT.cooldownMs;
+    (soul.said||=[]).push(line);
+    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · บารมีกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
+    this.save();this.onChange();return line;
+  },
+  keeperTrialInfo(soul,c,stationKey) {
+    const role=keeperRole(c?.k),trait=spiritTrait(soul);
+    let why=!actorStanding(c)?'กำลังพักฟื้น':c.buildK?'กำลังสร้างหรือซ่อมอาคาร':c.escort?'กำลังนำส่งวิญญาณ':c.at&&c.at!==stationKey?'กำลังคุมงานที่สถานีอื่น':'';
+    if(!why&&c?.k==='plerng'&&this.food<2)why='เสบียงไม่พอ · เพลิงใช้เพิ่ม 2 หน่วยต่อหมาย';
+    const support=zoneWorkers(this).filter(w=>w.mode!=='rest'&&w.stamina>0&&!w.recovering);
+    const stationed=support.filter(w=>w.funded&&w.arrived&&w.job?.kind==='supervise'&&w.job.station===stationKey).length;
+    const workerNote=c?.k==='dam'?` · คนงานถึงสถานีที่เลือก ${stationed} คน; ว่าง ${support.filter(w=>!w.job).length} คน` : '';
+    return {benefit:role.benefit,cost:role.cost+workerNote,matching:trait.keeper===c?.k,why,available:!why};
+  },
+  acknowledgeTeamReport(id) {
+    const report=this.teamReports.find(r=>String(r.id)===String(id));if(!report||report.seen)return false;
+    report.seen=true;this.save();return true;
+  },
+
   /** สถานีที่เลือกเป็น "สถานที่" ในห้องสอบสวนได้ (เฉพาะที่รับวิญญาณไปลงทัณฑ์/ส่งสวรรค์จริง — ดู isTrialDestination) */
   trialDestinations() { return this.stations.filter(x => isTrialDestination(x.def)); },
 
-  /** เฉลยเฉพาะคดีที่ใช้พลังแล้ว; ผู้คุมคิดคะแนนจาก judge() ที่สถานีเฉลย/วาระสมควร
+  /** เฉลยเฉพาะคดีที่ใช้พลังแล้ว; แนะนำบทบาทผู้คุมแยกจากความถูกต้องของคำตัดสิน
    *  เลือกคะแนนสูงสุดในกลุ่มที่รับหมายได้ตอนนี้ก่อน ถ้าไม่มีให้แสดงคนคะแนนสูงสุดพร้อมเหตุผล */
   trialAnswer(soul) {
     if (!soul?.revealed?.mirror && !soul?.revealed?.hypno) return null;
@@ -950,10 +995,9 @@ const API = {
     // สถานีที่มีดวงอยู่แล้วเปลี่ยนผู้คุมไม่ได้ จึงพิจารณาเฉพาะผู้คุมประจำ
     const candidates = this.crew.filter(c => !c.reader && !c.self && actorStanding(c) && (!st.slots.length || c.k === st.crewK));
     const available = candidates.filter(c => !this.assignBlock(soul.id, st.def.k, c.k));
-    const scoring = Object.create(this);
-    scoring.log = () => {}; // judge() ของเพลิงอาจเขียน log แม้คะแนนไม่เปลี่ยน
+    // Operational recommendation only; keeper skill never changes justice.
     const ranked = (available.length ? available : candidates).map(c => ({ c,
-      score: this.judge.call(scoring, { ...st, crewK:c.k }, { soul, intensity:soul.deserved || 1 }).score,
+      score: (spiritTrait(soul).keeper===c.k?100:0)+c.rabiab+c.panya,
     })).sort((a, b) => b.score - a.score);
     answer.crew = ranked[0]?.c || null;
     if (answer.crew && !available.length) answer.unavailable = this.assignBlock(soul.id, st.def.k, answer.crew.k) || { key:'crewMissing' };
@@ -975,6 +1019,7 @@ const API = {
     if (c.escort && !(st.slots.length && st.crewK === c.k && c.at === stKey)) return { key: 'crewEscort' };
     if (c.buildK) return { key: 'crewBuilding' };
     if (c.at && c.at !== stKey) return { key: 'crewAt', station: STATIONS.find(s => s.k === c.at)?.name || c.at };
+    if(c.k==='plerng'&&this.food<2)return {key:'keeperCost',text:'เพลิงต้องใช้เสบียงเพิ่ม 2 หน่วยก่อนรับหมาย'};
     return null;
   },
   assign(soulId, stKey, crewK, intensity) {
@@ -986,6 +1031,8 @@ const API = {
     const useK = st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK;
     const c = this.crewOf(useK);
     const soul = this.queue.splice(si, 1)[0];
+    const work={...keeperWorkPlan(soul,useK),keeperId:c.id||c.k,keeperName:c.name,assistedTicks:0};
+    this.food-=work.foodCost;
     // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
     // เส้นทางทั้งสองช่วงใช้พื้นเดินจริง จึงไม่ลอยตัดลาวา/แม่น้ำเหมือน animation รุ่นแรก
     const route = findPath(QUEUE_LINE[0][0], QUEUE_LINE[0][1], st.def.x, st.def.y);
@@ -1021,7 +1068,8 @@ const API = {
     // อย่าตัดรายการเก่าทิ้งตามจำนวน: แต่ละรายการผูกกับผู้คุมที่กำลังเดินไปรับจริง
     // scene.js จะเก็บกวาดเองเมื่อเดินถึง จึงไม่มีรายการสะสมถาวร
     const slot = { soul, intensity: clamp(intensity, 1, 5), progress: 0, need: 0,
-      verdict: null, pendingUntil: arriveAt };
+      verdict: null, pendingUntil: arriveAt, work,
+      resistanceTicks:work.trait==='resisting'&&!work.resistanceControl?2:0 };
     slot.need = 18 + soul.deserved * 8 + slot.intensity * 7;
     st.slots.push(slot);
     st.crewK = useK;
@@ -1049,12 +1097,13 @@ const API = {
       const rab = rabOf();
       const tham = right ? 100 : 0;
       const ked  = right ? 100 : 0;
-      const score = Math.round(0.50 * tham + 0.33 * ked + 0.17 * rab);
+      const score = right?100:0;
       // ลงทัณฑ์คนที่ไม่มีกรรม = กรรมทั้งก้อนตกที่ผู้ตัดสิน ไม่มีส่วนลดจากเมตตาของผู้คุม
       const karma = soul.pure && !st.def.heaven ? 14
                   : st.def.heaven && !soul.pure ? 8 : 0;
       const coin = right ? Math.round(BAL.coinPerCase * 1.4 * this.orderTier().coin) : 0;
-      return { tham, ked, rab, score, karma, coin, short: 0, over: 0, heaven: true, right };
+      return { tham, ked, rab, score, karma, coin, short: 0, over: 0, heaven: true, right,
+        destinationCorrect:right,reason:right?'ส่งผู้บริสุทธิ์ไปประตูสวรรค์โดยไม่ลงทัณฑ์':'เลือกปลายทางผิด · ผู้บริสุทธิ์ต้องไม่รับทัณฑ์ และผู้มีกรรมยังส่งสวรรค์ไม่ได้' };
     }
     const positive = soul.deeds.filter(d => d.w > 0);
     const totalW = positive.reduce((s, d) => s + d.w, 0);
@@ -1063,7 +1112,6 @@ const API = {
     let tham = tags.length === 0 || totalW === 0 ? 42
       : !Number.isFinite(totalW) || !Number.isFinite(hitW) ? 0
       : clamp(Math.round(100 * hitW / totalW), 0, 100);
-    if (c.panya >= 7) tham = Math.min(100, tham + 6);
 
     const short = Math.max(0, soul.deserved - slot.intensity);
     const over = Math.max(0, slot.intensity - soul.deserved);
@@ -1072,15 +1120,15 @@ const API = {
     const ked = clamp(100 - short * 26 - over * 28, 0, 100);
     const rab = clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
 
-    const score = Math.round(0.50 * tham + 0.33 * ked + 0.17 * rab);
+    const destinationCorrect=tags.includes(primarySinOf(soul));
+    // Justice depends on destination and sentence, never on the keeper or crowd.
+    let score = Math.round((0.50 * tham + 0.33 * ked)/.83);
+    if(!destinationCorrect||short||over)score=Math.min(77,score);
 
     // บาปตกที่ยมบาท — กลไกหลักของเกม
     let karma = 0;
-    if (over > 0) karma += over * Math.max(1.2, 5 * (1 - c.metta / 25));
+    if (over > 0) karma += over * 5;
     if (tham < 40) karma += 4;                       // ลงทัณฑ์ผิดฝาผิดตัว
-    if (c.k === 'plerng' && Math.random() < 0.35) {  // เพลิงชอบบวกเอง
-      karma += 3; this.log('เพลิงบวกวาระให้เองอีกนิด "เดี๋ยวมันไม่จำ"', 'bad');
-    }
     karma = Math.round(karma * 10) / 10;
 
     // ระเบียบของโซนคูณเข้ากับรายได้ — นี่คือเหตุผลที่ต้องแคร์แถบระเบียบทุกวาระ
@@ -1088,7 +1136,12 @@ const API = {
                             * this.orderTier().coin);
     const bonus = baseCoin > 0 && tags.includes(primarySinOf(soul))
       ? Math.round(baseCoin * BAL.matchBonus) : 0;
-    return { tham, ked, rab, score, karma, coin: baseCoin + bonus, bonus, short, over };
+    const reason=[!destinationCorrect?'สถานที่ไม่ตรงกรรมหลัก':null,
+      over?`ลงทัณฑ์เกินกรรม ${over} ระดับ${soul.deeds.some(d=>d.w<0)?' · ต้องคำนึงถึงเหตุบรรเทาโทษด้วย':''}`:null,
+      short?`ระดับทัณฑ์เบากว่ากรรม ${short} ระดับ`:null,
+      destinationCorrect&&!short&&!over?'เลือกสถานที่และระดับทัณฑ์ตรงกรรม':null,
+      soul.merits?.some(m=>m.fake&&m.exposed)?'เปิดโปงคำอ้างบุญปลอมแล้ว':null].filter(Boolean).join(' · ');
+    return { tham, ked, rab, score, karma, coin: baseCoin + bonus, bonus, short, over,destinationCorrect,reason };
   },
 
   /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
@@ -1313,6 +1366,26 @@ const API = {
     if (i < 0) return;
     const soul = slot.soul, c = this.crewOf(st.crewK);
     const r = slot.verdict || this.judge(st, slot);
+    const work=slot.work,correct=justiceCorrect(r),benefits=[];
+    const sameKeeper=work&&work.keeperId===(c?.id||c?.k);
+    if(correct&&sameKeeper&&!st.def.heaven){
+      if(work.completionOrder){const before=this.order;this.order=clamp(this.order+work.completionOrder,0,100);benefits.push(`ระเบียบเมือง +${Math.round((this.order-before)*10)/10}`);}
+      if(work.completionKarma){const before=this.karma;this.karma=clamp(this.karma+work.completionKarma,0,100);benefits.push(`กรรมยามา −${Math.round((before-this.karma)*10)/10}`);}
+      if(work.resistanceControl){soul.fear=true;benefits.push('วิญญาณเข็ดจากทัณฑ์ · ยังต้องตรวจการสำนึกที่ตะราง');}
+      if(work.keeper==='kan'){
+        const before=this.interrogationSupport.insights;
+        this.interrogationSupport.insights=Math.min(3,before+1);
+        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้บารมีและพักพลัง');
+      }
+    }
+    if(work?.assistedTicks>0)benefits.push(`ดำประสานคนงานช่วยคุมหมู่ ${work.assistedTicks} วาระ`);
+    if(work?.foodCost)benefits.push(`ใช้เสบียงเพิ่ม ${work.foodCost} หน่วยเมื่อรับหมาย`);
+    if(work&& !sameKeeper)benefits.push('เปลี่ยนผู้คุมระหว่างงาน · ไม่รับโบนัสผู้คุมเดิม');
+    if(!correct)benefits.push('ไม่รับโบนัสจากคำตัดสินที่ผิดหรือระดับทัณฑ์ไม่ตรงกรรม');
+    const report={id:this.nextTeamReportId++,soulName:soul.name||soul.who,keeperName:c?.name||work?.keeperName||'ผู้คุม',correct,
+      summary:st.def.heaven?'นำส่งประตูสวรรค์เสร็จแล้ว':'ลงทัณฑ์ครบวาระแล้ว · ส่งต่อให้ตะรางตรวจการสำนึก',benefits,tick:this.tick,zone:this.zone,seen:false};
+    this.teamReports.unshift(report);this.teamReports=this.teamReports.slice(0,20);
+    this.log(`รายงานทีม #${soul.id} · ${report.keeperName} · ${benefits.join(' · ')||'คุมงานได้ตามปกติ'}`,'act');
     let toPrison = null;
     if (st.def.heaven && !r.right) {
       soul.beaten = false;
@@ -1554,7 +1627,14 @@ const API = {
       // ข้อ D ชุด 13 — หมดแถบหิวส่วนตัว (0) โดนช้าเพิ่มอีกชั้น เฉพาะคนนั้น แยกจาก foodMul ของทั้งทีม
       const hungerMul = (c.hunger ?? 100) > 0 ? 1 : BAL.hungerPenalty;
       for (const slot of [...activeSlots]) {
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * workerSupervisionMultiplier(this,st);
+        if(slot.resistanceTicks>0){slot.resistanceTicks--;continue;}
+        const work=slot.work,sameKeeper=work?.keeperId===(c.id||c.k);
+        const assisted=workerSupervisionMultiplier(this,st),crowd=!!(sameKeeper&&work.crowdSupport&&activeSlots.length>1&&assisted>1);
+        if(crowd)work.assistedTicks++;
+        const roleSpeed=sameKeeper?work.speedMultiplier:1;
+        // Dam coordinates the same exclusive, physically arrived workers; no second passive workforce.
+        const crowdMul=crowd?1.25:1;
+        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * assisted * roleSpeed * crowdMul;
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -4659,6 +4739,8 @@ API.snapshot = function (withEntry = true) {
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
     workerState:normalizeWorkers(this.workerState),
+    interrogationSupport:structuredClone(this.interrogationSupport),
+    teamReports:structuredClone(this.teamReports), nextTeamReportId:this.nextTeamReportId,
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
     karma: this.karma, hp: this.hp, hpMax: this.hpMax, hits: this.hits,
     star5: this.star5, level: this.level, exp: this.exp, mp: this.mp, mpMax: this.mpMax,
@@ -4744,6 +4826,15 @@ API.restore = function (d) {
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
   this.workerState = normalizeWorkers(d.workerState);
+  const support=d.interrogationSupport||{};
+  this.interrogationSupport={version:1,
+    insights:Number.isFinite(support.insights)?Math.max(0,Math.min(3,Math.floor(support.insights))):0,
+    kanReadyAt:Object.fromEntries(Object.entries(support.kanReadyAt||{}).filter(([,v])=>Number.isFinite(v)&&v>0))};
+  this.teamReports=(Array.isArray(d.teamReports)?d.teamReports:[])
+    .filter(r=>r&&Number.isSafeInteger(r.id)&&r.id>0).slice(0,20).map(r=>({...r,
+      benefits:Array.isArray(r.benefits)?r.benefits.filter(v=>typeof v==='string'):[],seen:!!r.seen}));
+  this.nextTeamReportId=Math.max(1,Number.isSafeInteger(d.nextTeamReportId)?d.nextTeamReportId:1,
+    ...this.teamReports.map(r=>r.id+1));
   this.fireControl = normalizeFireControl(d.fireControl);
   this._krataSession = null;
   this.training.activeSession = null;   // B4: รอบฝึกที่ค้างตอนโหลดไม่ให้ผล (ครั้ง/คูลดาวน์ที่หักไปแล้วยังอยู่)

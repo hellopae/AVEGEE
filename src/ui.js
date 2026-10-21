@@ -1,6 +1,8 @@
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,bindWorkersPanel} from './worker-ui.js';
+import {mountInterrogationStyles,spiritTraitHtml,keeperImpactHtml,kanClueHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
+mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
@@ -669,8 +671,9 @@ function drawSide() {
 
   if (side === 'log') {
     box.className = 'log';
-    box.innerHTML = g.logs.map(l =>
+    box.innerHTML = teamReportsHtml(g)+g.logs.map(l =>
       `<div class="${l.kind}"><span style="opacity:.45">[${String(l.t).padStart(3, '0')}]</span> ${esc(l.text)}</div>`).join('');
+    bindTeamReports(box,g,refresh);
     return;
   }
   box.className = 'sidebody';
@@ -684,7 +687,9 @@ function drawSide() {
   let html = `<div class="picker">${chips.join('')}</div>`;
 
   html += sideBody();
+  html += teamReportsHtml(g);
   box.innerHTML = html;
+  bindTeamReports(box,g,refresh);
   box.querySelectorAll('[data-sel]').forEach(el => el.onclick = () => {
     const [kind, key] = el.dataset.sel.split(':');
     select({ kind, key: /^\d+$/.test(key) ? +key : key });
@@ -1158,8 +1163,9 @@ function drawOverlay() {
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
       `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
     ov.appendChild(d); place(d);
-    mark('boss speech-side', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
-      `<span class="who">พญายม</span>${esc(fx.line)}`, true);
+    const feedback=mark('boss speech-side', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
+      `<span class="who">${esc(authorityOf(g.zone).title)}</span>${esc(fx.line)}<button type="button" class="verdict-dismiss" data-dismiss-verdict>รับทราบ · ข้ามข้อความ</button>`, true);
+    feedback.querySelector('[data-dismiss-verdict]').onclick=()=>showVerdict.dismiss?.();
   }
   const nira = g.crewOf('nira');
   const post = nira?.at ? STATIONS.find(d => d.k === nira.at) : null;
@@ -1705,7 +1711,7 @@ const BOSS_LINE = {
 // Report the existing star bonus without promising a restoration the verdict did not grant.
 function verdictComment(v) {
   const bonus = v.stars === 5 ? 60 : v.stars === 4 ? 25 : 0;
-  return (BOSS_LINE[v.boss] || BOSS_LINE.ok) + (bonus ? ` · เบี้ยพิเศษ +${bonus}` : '');
+  return (v.reason || BOSS_LINE[v.boss] || BOSS_LINE.ok) + (bonus ? ` · เบี้ยพิเศษ +${bonus}` : '');
 }
 
 let bossBridgeTimer = 0;
@@ -1813,10 +1819,13 @@ function showVerdict(v) {
   fx = { ...v, line: verdictComment(v) };
   g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
-  showVerdict.t = setTimeout(() => {
-    fx = null; drawOverlay();
+  const current=fx;
+  showVerdict.dismiss=onceFeedbackDismiss(() => {
+    if(fx!==current)return;
+    clearTimeout(showVerdict.t);g.bossUntil=0;fx = null; drawOverlay();
     if (g.over && (g.over.k !== 'finalWin' || (!g.pendingReward?.encounter && !g.storyQueue.length))) { g.paused = true; updatePlay(); openEnding(g.over); }
-  }, 7000);
+  });
+  showVerdict.t = setTimeout(showVerdict.dismiss, 7000);
 }
 
 function openEnding(o) {
@@ -2383,8 +2392,8 @@ function openTrial(initialError = '') {
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
-  let trialError = initialError, courtPanel = null;
-  const blockText = block => block ? t('trial.' + block.key) + (block.station ? block.station : '') : '';
+  let trialError = initialError, courtPanel = null, kanClueResult = '';
+  const blockText = block => block ? block.text || t('trial.' + block.key) + (block.station ? block.station : '') : '';
 
   const paint = () => {
     // เปลี่ยนแท็บแล้ววาดเนื้อหาห้องสอบสวนใหม่ แต่บนมือถืออย่ากระโดดกลับไปหัวกล่อง
@@ -2465,12 +2474,14 @@ function openTrial(initialError = '') {
       ? [...available, answer.crew] : available;
     const crewChoices = shownCrew.length ? shownCrew.map(c => {
       const revealed = !!answer?.crew && c.k === answer.crew.k;
-      const unavailable = revealed && (answer.unavailable || !available.some(x => x.k === c.k) && { key:'chooseRevealedStation' });
+      const role=g.keeperTrialInfo?.(s,c,pick.st);
+      const unavailable = revealed && (answer.unavailable || !available.some(x => x.k === c.k) && { key:'chooseRevealedStation' })
+        || role?.available===false&&{text:role.why||'ยังรับหมายนี้ไม่ได้'};
       const why = unavailable ? blockText(unavailable) : '';
-      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${c.k}" data-pickkey="cr" ${unavailable ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-        title="${esc(c.name + ' · แรง ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta + (revealed ? ' · ' + t('trial.revealedCrew') : '') + (why ? ' · ' + why : ''))}">
+      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${unavailable ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+        title="${esc(c.name + ' · กำลังทำงาน ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta + (role?' · '+role.benefit+' · ภาระ: '+role.cost:'') + (revealed ? ' · ' + t('trial.revealedCrew') : '') + (why ? ' · ' + why : ''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${esc(c.name)}</b><small>${unavailable ? esc(t('trial.unavailable') + ' · ' + why) : `แรง ${c.raeng} · ระเบียบ ${c.rabiab}`}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        <b>${esc(c.name)}</b><small>${unavailable ? esc(t('trial.unavailable') + ' · ' + why) : `กำลังทำงาน ${c.raeng} · ระเบียบ ${c.rabiab}`}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
@@ -2496,7 +2507,7 @@ function openTrial(initialError = '') {
       {id:'power',label:'พลัง / Power',choices:powerChoices},
       {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
       {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
-      {id:'force',label:'ความแรง / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
+      {id:'force',label:'ระดับทัณฑ์ / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
     ];
     // L2: what is chosen under Where / Keeper / Intensity shows as a thumbnail + name to the right of that command until it changes or the warrant goes out
     const forceNow = heaven || answer?.intensity === 0 ? null : pick.inten;
@@ -2554,6 +2565,7 @@ function openTrial(initialError = '') {
           <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
             <h4>${esc(t('trial.readAloud'))}</h4>
+            ${spiritTraitHtml(g.spiritTrait?.(s))}
             ${s.face ? `<div class="deed allegation">${esc(s.face)}</div>` : ''}
             ${claimed.map(m => publicMeritLine(m, 'deed merit')).join('')}
             ${known.map(d => `<div class="deed allegation">${deedLine(d)}</div>`).join('')}
@@ -2562,6 +2574,8 @@ function openTrial(initialError = '') {
           </div>
 
           <div class="hud-card hud-opt">${opt}</div>
+          ${kanClueHtml(g,s,kanClueResult)}
+          ${keeperImpactHtml(g,s,crewNow,pick.st)}
 
           <div class="hud-card">
             <h4>${esc(t('trial.saveRecord'))}</h4>
@@ -2612,6 +2626,7 @@ function openTrial(initialError = '') {
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
+    bindKanClue(dlg,g,s,clue=>{kanClueResult=clue.text;sfx('crack');g.save();paint();refresh();camera.cue('interrogate-reveal',{targets:'suspect'});});
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
@@ -2695,6 +2710,11 @@ function openTrial(initialError = '') {
   // เคลียร์ทิ้งตอนปิดกล่อง ไม่งั้น interval ค้างวิ่งทั้งเกม
   const roarTick = setInterval(() => {
     if (!dlg.open || !dlg.querySelector('.trial-hud')) { clearInterval(roarTick); return; }
+    const kan=dlg.querySelector('[data-kan-clue]');
+    if(kan){
+      const why=g.kanClueWhy(s),note=dlg.querySelector('[data-kan-clue-why]');kan.disabled=!!why;
+      if(note){note.textContent=why;note.hidden=!why;}
+    }
     const b = dlg.querySelector('[data-pw="roar"]');
     if (!b) return;
     const why = g.roarWhy(s);
@@ -2793,8 +2813,10 @@ function openNiraOffice() {
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article></div>
       ${workersPanelHtml(g)}
+      ${teamReportsHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
+    bindTeamReports(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });

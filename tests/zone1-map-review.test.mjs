@@ -53,7 +53,8 @@ test('map ambience uses shaped leaves, moving clouds, boiling lava and full buil
   assert.match(night,/export function drawTownClouds/);
   assert.match(night,/bezierCurveTo/,'falling foliage has pointed leaf contours');
   assert.match(flow,/T_BUBBLE/);assert.match(flow,/ellipse\(20,13,15,6\.5/);
-  assert.match(scenery,/Layered pointed tongues/);
+  assert.match(scenery,/fx-fire-flame-/,'torches use painted flame frames');
+  assert.match(scenery,/globalCompositeOperation='lighter'/,'black flame backing blends out');
   assert.match(shade,/\.92\)/,'station shadows retain almost the complete facade height');
   assert.match(terrain,/visible\.every\(v=>v\.c\.state==='ready'\)/,'preview and sharp chunks switch atomically');
 });

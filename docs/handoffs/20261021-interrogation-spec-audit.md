@@ -1,4 +1,6 @@
-# Approved interrogation expansion — read-only audit, 2026-10-21
+# Approved interrogation expansion — historical read-only audit, 2026-10-21
+
+Implementation status and superseding owner priority: see `20261021-interrogation-implementation.md`. The source observations below describe the pre-implementation baseline.
 
 Scope: audit only. No source or tests changed by this audit. Existing map/release repairs must be completed first. This is a new feature queue, distinct from the already implemented boss-justice/captured-boss sentencing flow.
 
