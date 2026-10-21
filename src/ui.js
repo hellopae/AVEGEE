@@ -1,6 +1,6 @@
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
-import {workersPanelHtml,bindWorkersPanel} from './worker-ui.js';
+import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
 import {mountInterrogationStyles,spiritTraitHtml,keeperImpactHtml,kanClueHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
@@ -352,8 +352,10 @@ function drawRes() {
     <span class="chip tap" data-ex="food"><img src="img/item-food.png" alt=""><b>${Math.round(g.food)}</b></span>
     <span class="chip tap" data-ex="order"><img src="img/ui/icon-justice.png" alt=""><b>${Math.round(g.order)}</b></span>
     <span class="chip tap" data-ex="karma"><img src="img/ui/icon-skull.png" alt=""><b>${g.karma.toFixed(1)}</b></span>
+    ${workerSupplyBlocked(g) ? '<button class="chip tap" data-worker-supply-alert style="color:#ffb3a8">คนงานหยุด · เติมเสบียง</button>' : ''}
     ${g.mobs.length ? `<span class="chip mob-warn">👹 <b>${g.mobs.length}</b></span>` : ''}`;
   $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
+  $('#res').querySelector('[data-worker-supply-alert]')?.addEventListener('click',()=>explainBar('food'));
   $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
 }
 
@@ -421,14 +423,19 @@ function explainBar(k) {
     <div class="tline bad"><b>ถ้าเต็ม (100)</b><div>พญายมลงมาปราบด้วยตัวเอง แพ้แล้วถูกส่งลงกระทะทองแดง บารมีเหลือ 1 และกรรมลดลงหลังชดใช้บางส่วน</div></div>
     <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
 
-  if (k === 'food') return modal(`<h2>🍙 เสบียง — ${Math.round(g.food)} ห่อ${g.workingCrew?.size
+  if (k === 'food') {
+    modal(`<h2>🍙 เสบียง — ${Math.round(g.food)} ห่อ${g.workingCrew?.size
       ? (g.fed ? ' · <span style="color:var(--success)">อิ่ม ทำงานไว</span>' : ' · <span style="color:var(--destructive)">หิว ทำงานช้า</span>') : ''}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
     <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ในโต๊ะนิรา</div></div>
     <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
     <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs in Build for ${BAL.foodPrice * 10} coins, or pick up food packs on the map` : `ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือเดินไปเก็บ<b>ห่อเสบียง</b>บนแผนที่`}</div></div>
-    <div class="row"><button class="gold" data-close>เข้าใจแล้ว</button></div>`);
+    ${workerSuppliesHtml(g)}
+    <div class="row"><button class="gold" data-close>กลับไปทำงาน</button></div>`);
+    bindWorkersPanel(dlg,g,()=>explainBar('food'));
+    return;
+  }
 
   return modal(`<h2>🪙 เบี้ยกรรม — ${Math.round(g.coin)}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">

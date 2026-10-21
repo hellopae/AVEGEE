@@ -1,17 +1,21 @@
 import {WORKER_RULES,WORKER_MODES,zoneWorkers,workerHireCost,workerHireWhy,workerSheet,workerFrameRect} from './workers.js';
 import {BAL,ITEMS} from './data.js';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const workerSupplyBlocked=game=>zoneWorkers(game).some(w=>w.mode!=='rest')&&(game.food||0)<WORKER_RULES.food;
+export function workerSuppliesHtml(game) {
+  return `<div class="worker-supplies"><b>เสบียงกลาง ${Math.round((game.food||0)*100)/100} ห่อ</b>
+      <p class="hint">เสบียงกลางใช้เลี้ยงคนงาน แยกจากข้าวปั้นในกระเป๋าที่ให้ตัวละครกินโดยตรง · งานคุมและซ่อมจะเริ่มเมื่อมีงานนั้น ส่วนคนงานอัตโนมัติจะเก็บวัสดุขายระหว่างรอ</p>
+      ${(game.food||0)<WORKER_RULES.food?'<p role="status" style="color:var(--warning)">เสบียงกลางหมด — คนงานหยุดงานและยังไปรับวิญญาณไม่ได้ เติมเสบียงแล้วทำงานต่ออัตโนมัติ</p>':''}
+      <button class="sm gold" data-worker-buy-food ${(game.coin||0)<BAL.foodPrice*10?'disabled':''}>ซื้อเสบียง 10 ห่อ · ${BAL.foodPrice*10} เบี้ยกรรม</button>
+      ${(game.inventory?.food||0)>0?`<button class="sm" data-worker-share-food>ให้นิราแจกข้าวปั้น 1 ชิ้น · เสบียง +${ITEMS.food.food}</button>`:''}
+    </div>`;
+}
 export function workersPanelHtml(game) {
   const list=zoneWorkers(game),why=workerHireWhy(game);
   return `<section class="worker-office"><h3>อสูรผู้ช่วยประจำโซน ${list.length}/${WORKER_RULES.capacity}</h3>
     <p class="hint">จ้างได้หลายคน · ช่วยผู้คุมทำงานเร็วขึ้นคนละ 20% (สูงสุด 2 คนต่อสถานี) · ช่วยทัณฑ์/ดำสร้างและซ่อม · นำวิญญาณจากท่าเรือและแท่นตัดสินไปส่ง · ตัดกิ่งงิ้ว/เก็บเศษดาบไปขาย</p>
     <p class="hint">ค่าจ้าง ${WORKER_RULES.wage} เบี้ยกรรม / ${WORKER_RULES.wageEvery} วาระที่ทำงาน · ใช้เสบียง ${WORKER_RULES.food} / วาระ · เหนื่อยแล้วพักอัตโนมัติ · อยู่ประจำโซนเดิม</p>
-    <div class="worker-supplies"><b>เสบียงกลาง ${Math.round((game.food||0)*100)/100} ห่อ</b>
-      <p class="hint">เสบียงกลางใช้เลี้ยงคนงาน แยกจากข้าวปั้นในกระเป๋าที่ให้ตัวละครกินโดยตรง · งานคุมและซ่อมจะเริ่มเมื่อมีงานนั้น ส่วนคนงานอัตโนมัติจะเก็บวัสดุขายระหว่างรอ</p>
-      ${(game.food||0)<WORKER_RULES.food?'<p role="status" style="color:var(--warning)">เสบียงกลางหมด — คนงานหยุดงานและยังไปรับวิญญาณไม่ได้ เติมเสบียงแล้วทำงานต่ออัตโนมัติ</p>':''}
-      <button class="sm gold" data-worker-buy-food ${(game.coin||0)<BAL.foodPrice*10?'disabled':''}>ซื้อเสบียง 10 ห่อ · ${BAL.foodPrice*10} เบี้ยกรรม</button>
-      ${(game.inventory?.food||0)>0?`<button class="sm" data-worker-share-food>ให้นิราแจกข้าวปั้น 1 ชิ้น · เสบียง +${ITEMS.food.food}</button>`:''}
-    </div>
+    ${workerSuppliesHtml(game)}
     <button class="gold" data-hire-worker ${why?'disabled':''} title="${esc(why)}">จ้างผู้ช่วย ${workerHireCost(game)} เบี้ยกรรม</button>
     ${why?`<small>${esc(why)}</small>`:''}<div class="market-grid">${list.map(w=>{
       const station=game.stations.find(st=>st.def.k===w.job?.station);
