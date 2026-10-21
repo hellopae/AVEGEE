@@ -54,6 +54,8 @@ export function recordBossGuideWin(g,battle){
 }
 const justiceHolding=(g,zone)=>Object.values(g.bossJustice?.ledger||{}).some(entry=>entry.zone===zone&&entry.phase!=='released');
 export function bossGuideWaiting(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&!s.following&&!s.farewell&&!justiceHolding(g,zone));}
+/** O1: once the guide has said farewell at the new land's gate the boss is gone for good — route, frontier stand, city pier and every hidden hit spot. */
+export function bossGuideDismissed(g,zone=g.zone){return !!bossGuideState(g,zone)?.farewell;}
 export function bossGuideFollowing(g,zone=g.zone){const s=bossGuideState(g,zone);return !!(s?.won&&s.following&&!s.farewell&&!justiceHolding(g,zone));}
 /** A guest combatant belongs to the journey, never to the hireable office roster. */
 export function bossGuideCombatant(g) {

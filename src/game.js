@@ -1,7 +1,7 @@
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
-import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
+import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
@@ -2491,7 +2491,7 @@ const API = {
     this.fights++;
     this.battle = {
       kind: 'mob', mobId: m.id ?? i, mobIndex: i, dungeonToken:m.dungeonToken || null,
-      expeditionParty:!!m.dungeonToken&&bossGuideFollowing(this),
+      expeditionParty:!!m.dungeonToken&&(bossGuideFollowing(this)||bossGuideDismissed(this)),// O1: first escort = Yama+Nira+guide; walking the route again after the farewell = Yama+Nira only
       worldBackground:m.dungeonToken?dungeonBackground(this.zone,this.zoneTravel?.active?.route,this.zoneTravel?.active?.checkpoint):null,
       ...(m.dungeonToken?{team:[...this.frontierOf().team]}:{}),
       who: kind.nameKey ? t(kind.nameKey) : kind.name, sub: t('mob.fromRiver'), sp: kind.img,
@@ -2576,7 +2576,7 @@ const API = {
   },
 
   bossPierCanTalk() {
-    return !this.battle && !this.over && !!this.bossCleared[this.zone] &&
+    return !this.battle && !this.over && !!this.bossCleared[this.zone] && !bossGuideDismissed(this) &&
       Math.hypot(this.player.x - SPOTS.bossPier.x, this.player.y - SPOTS.bossPier.y) <= 150;
   },
 
@@ -2841,7 +2841,9 @@ const API = {
   },
   challengeDone(zone = this.zone) { return (this.challenge[zone]?.wins || 0) > 0; },
   challengeCanTalk(frontierPlayer) {
-    if(this.zone==='th') {
+    // O1 (Kittanate 22 Oct): after the farewell the boss stays at the frontier stand (every zone, zone 1 included)
+    // and is gone from the outer route; before it, zone 1 keeps the cave talk spot.
+    if(this.zone==='th'&&!bossGuideDismissed(this)) {
       const status=dungeonStatus(this),p=this.zoneTravel?.active?.position;
       const cave=dungeonPoint(DUNGEON_PROGRESS[2]);
       return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&status?.route.id==='th:asia'&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=.065);
