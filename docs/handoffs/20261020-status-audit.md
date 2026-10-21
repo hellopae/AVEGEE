@@ -6,7 +6,7 @@
 - `a0d1550`: town paving repairs, worker handoffs, closer small battle teams, working guide portrait, accurate supervisor reward text and release-test modernization. Pages39474624521 SUCCESS, live marker verified `20261021-town-repairs`.
 - `c5c5357` pushed: another upper-house ground repair and detailed painted torch flames. Pages39478936267 SUCCESS; live marker verified `20261021-flames-ground-r2`. New repair textures use WebP (~1MB total rather than ~6MB PNG) to limit loading cost.
 
-- Pending release `20261021-resume-loading`: boss capture acknowledgement is one-way; temporary/requisitioned court resources survive snapshot/reload; failed/stalled terrain detail requests retry without losing preview or blocking loading lanes. Focused combined release checks70/70 plus release/import/camera/power checks30/30.
+- Latest production `6a6927c` / `20261021-resume-loading`, Pages39517943546 SUCCESS and live marker/module URLs verified: boss capture acknowledgement is one-way; temporary/requisitioned court resources survive snapshot/reload; failed/stalled terrain detail requests retry without losing preview or blocking loading lanes. Focused combined release checks70/70 plus release/import/camera/power checks30/30.
 
 ## What changed and was checked
 
@@ -24,6 +24,8 @@
 - Asset audit decoded21actual files: four Nira4x4sheets (64nonemptyframes), four regional healing illustrations, four Yama hurt atlases (16nonemptyframes), nine guide welcome/farewell/gift scenes; all correctly catalogued. This is file/animation-content evidence, not every gameplay choreography accepted.
 
 - Final court real UI exercised: bound-boss illustration, interrogation enables mandatory mirror; only the revealed station/keeper/maximum intensity enable the warrant; issuing it closes the trial and displays actual escort status. Full ending transport/scene boundary remains covered by snapshot/stepWorld regressions, not a full live campaign playthrough. Proof20261021-final-court-review.png.
+
+- Additional map acceptance: fixed the local review-only mask overlay to use the same post-render camera transform (initial screenshot overlay was misaligned; it was not a game collision fault). Corrected overview matches owner road/island layout; saved20261021-owner-route-review.png. Real paths plaza→upper prison and upper prison→thorn grove reached their goals with all buildings present; thorn-grove station/red-tree bases inspected at5×, no floating base or hard rectangular ground seam observed there. Additional town-navigation/walk-edge/scenery/torch checks9/9.
 
 ## Existing work not to lose
 

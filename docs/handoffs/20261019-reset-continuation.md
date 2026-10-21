@@ -1,6 +1,6 @@
 ## 2026-10-21 latest continuation — supersedes historical deployment status below
 
-Current clean audit: docs/handoffs/20261020-status-audit.md. Latest production c5c5357 / build20261021-flames-ground-r2, Pages39478936267 SUCCESS and live marker verified. Three new published batches: c611daa patrols, a0d1550 ground/worker/battle repairs, c5c5357 detailed fire/upper-house paving. Full suite1144/1144 at the first repair batch plus focused later99/99 and46/46. Worker city UI confirmed material gathering, merchant sales and ferry deliveries. Remaining acceptance and approved expanded interrogation are explicitly open in current audit; no claim of all historical work complete. Close temporary review tabs after screenshots; fixtures remain under output/ and do not write real saves.
+Current authoritative audit: docs/handoffs/20261020-status-audit.md. Latest production6a6927c /20261021-resume-loading, Pages39517943546 SUCCESS and live marker/module URLs verified. Latest fixes: persistent final sentencing/court requisitions and retry/timeout for terrain detail loads;100focused release tests pass plus9map checks. Regional Nira healing UI exercised1–4, final forced-mirror court UI exercised, full campaign/remaining visual matrix and approved interrogation expansion still open. Older entries below are historical; use the current audit for shipped vs remaining status.
 
 ## 2026-10-20 — latest border party correction
 
