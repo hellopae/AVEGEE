@@ -228,3 +228,5 @@ This checklist is the source of truth for the continuation. Do not report the wo
 
 
 2026-10-21 continuation: prepared20261021-resume-loading with two proven boss save/resume fixes and terrain detail retry/timeout recovery;70+30focused tests pass. Regional Nira healing UI now exercised2–4 as well as earlierzone1. Exact remaining priorities and new interrogation spec remain in20261020-status-audit.md; do not mark expansion implemented.
+
+2026-10-21 final-court v2: owner judge3 correction implemented with normal full trial HUD, generated bound/kneeling boss sprite and mandatory mirror prompt/three marked choice panels.77focused tests and actual narrow/wide UI checks passed; prepared for publishing. Current source/guidance remains in20261020-status-audit.md. Broader interrogation traits/keeper-role expansion remains unimplemented.

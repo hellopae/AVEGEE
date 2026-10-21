@@ -66,6 +66,7 @@ import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-intro
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
 import { mountNiraCombatSprite, playNiraHealingCutscene } from './nira-combat.js';
+import { mountFinalBossCourt } from './boss-court-view.js';
 import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
 import { frontierIntroduction } from './narrative-cutscenes.js';
 
@@ -5488,6 +5489,29 @@ function openBossJustice() {
     modal(`<div class="intro-comic"><div class="intro-comic-frame"><img src="img/boss-justice/final-sentence-v1.webp" alt="ผู้คุมพาบอสโซน 4 ไปรับโทษ"></div><div class="intro-comic-caption"><h2>คำตัดสินสุดท้าย</h2><p>ผู้คุมรับหมายและพาบอสโซน 4 ไปรับโทษตามคำตัดสินของยมบาทน้อย นิราบันทึกคดีเรียบร้อยแล้ว</p></div><button class="gold" id="justice-end">ดำเนินเรื่องต่อ</button></div>`,d=>{
       d.querySelector('#justice-end').onclick=()=>{if(releaseBoss(g)){persist();d.close();setTimeout(()=>g.onChange(),0);}};
     },'intro-comic-dialog');return;
+  }
+  if(c.final){
+    pauseForDlg();bgm('bgm-trial');openDlg('hudwrap');
+    mountFinalBossCourt(dlg,g,{
+      assets:{background:artUrl('BG-Turn-Base','webp'),hero:heroFace(),portrait:artUrl('hero-yama-profile')||heroFace(),
+        station:stBg,crew:k=>artUrl(`crew-${k}-profile`)||artUrl(`crew-${k}`)},
+      onPaint:()=>{
+        mountYamaTrialIdle(dlg.querySelector('.fig.you img'),g.outfit||g.zone);
+        bindCommandPress(dlg.querySelector('.trial-comment8'));trialCameraAttach();
+        requestAnimationFrame(()=>{
+          const stage=dlg.querySelector('.hud-body>.hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
+          if(!stage?.isConnected||!pane)return;
+          const command=menu.querySelector(`[data-court-panel="${pane.dataset.courtOptions}"]`);
+          pane.style.left=`${Math.max(0,Math.min(menu.offsetWidth-12+command.offsetLeft,stage.clientWidth-menu.offsetLeft-pane.offsetWidth-8))}px`;
+          pane.style.top=`${command.offsetTop}px`;
+          pane.style.maxHeight=`${Math.max(90,stage.clientHeight-menu.offsetTop-command.offsetTop-18)}px`;
+        });
+      },
+      onPause:()=>openPause(true),
+      onMirror:()=>{powerSound('mirror');playActionCutscene('mirror');},
+      onSentence:()=>{sfx('stamp');dlg.close();setTimeout(()=>g.onChange(),0);},
+    });
+    return;
   }
   const paint=()=>{
     const dests=bossJusticeStations(g),crew=bossJusticeCrew(g),a=bossJusticeAnswer(g),p=c.pick;

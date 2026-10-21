@@ -8,6 +8,8 @@
 
 - Latest production `6a6927c` / `20261021-resume-loading`, Pages39517943546 SUCCESS and live marker/module URLs verified: boss capture acknowledgement is one-way; temporary/requisitioned court resources survive snapshot/reload; failed/stalled terrain detail requests retry without losing preview or blocking loading lanes. Focused combined release checks70/70 plus release/import/camera/power checks30/30.
 
+- Prepared `20261021-final-court-v2`: owner explicitly requested final boss courtroom to match judge3 (ordinary full interrogation arena). New shared trial HUD/style-based screen, transparent kneeling/bound boss sprite, mandatory mirror coaching window, explicit player selection with revealed ✓ choices and persisted picks. Old small final-boss select form is bypassed; ordinary frontier-boss form remains unchanged.
+
 ## What changed and was checked
 
 - Ground: r2-c3 restores three earlier rectangular patches around the civic plaza; r1-c3 restores pasted paving below the upper houses. Renderer blends generated restored texture only over the damaged areas, preserving original road geometry and exact tile borders. Browser pixel comparisons report zero changed border pixels for both tiles. Overview/detail share the repair; art failure or8-second timeout falls back to original terrain rather than a black loading screen. Other ground regions remain subject to visual inspection.
@@ -26,6 +28,8 @@
 - Final court real UI exercised: bound-boss illustration, interrogation enables mandatory mirror; only the revealed station/keeper/maximum intensity enable the warrant; issuing it closes the trial and displays actual escort status. Full ending transport/scene boundary remains covered by snapshot/stepWorld regressions, not a full live campaign playthrough. Proof20261021-final-court-review.png.
 
 - Additional map acceptance: fixed the local review-only mask overlay to use the same post-render camera transform (initial screenshot overlay was misaligned; it was not a game collision fault). Corrected overview matches owner road/island layout; saved20261021-owner-route-review.png. Real paths plaza→upper prison and upper prison→thorn grove reached their goals with all buildings present; thorn-grove station/red-tree bases inspected at5×, no floating base or hard rectangular ground seam observed there. Additional town-navigation/walk-edge/scenery/torch checks9/9.
+
+- Final-court v2 validation: focused77/77 (new view/model plus boss/guide/final gauntlet/ending/power/asset/preload/menu/flow regressions). Actual memory-only UI at574px width: coaching→power→mirror cutscene→where/keeper/revealed severity; choosing4kept warrant disabled, choosing5enabled it, clicking issued actual escort status. Snapshot restore retains mirror and partial picks in regression. Also inspected1280×720 layout in a scaled iframe (same source, no altered game architecture). No full campaign ending replay claimed. Narrow proof20261021-final-court-v2-narrow.png. New bound sprite1254×1254RGBA, ~255KB, alpha0–255 validated; imagegen prompt saved beside asset.
 
 ## Existing work not to lose
 

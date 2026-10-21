@@ -95,3 +95,19 @@ dialog.hudwrap:has(.trial-comment8)[open]{inset:0!important;margin:auto!importan
 .trial-comment8 .court-command .court-picked>strong{font-size:1.3em;line-height:1;flex:none;padding:0 2px}
 .trial-comment8 .court-command[aria-expanded=true] .court-picked{display:none}   /* the flyout takes this spot while it is open */
 @media(max-width:700px){.trial-comment8 .court-command .court-picked{max-width:112px;left:calc(100% + 4px)}}
+
+/* Final boss uses the same arena, menus and dossier as an ordinary interrogation. */
+.final-boss-court .bound-boss img{animation:none!important;transform:none!important;object-fit:contain;image-rendering:auto}
+.final-boss-court .trial-top-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.final-boss-court [data-justice-answer]{line-height:1.9;color:#ffe4a2}
+.final-boss-court .hud-card p{margin:8px 0;font-size:clamp(12px,1.05vw,17px);line-height:1.6}
+.final-boss-court .final-court-prompt{position:absolute;z-index:70;left:50%;top:23%;transform:translateX(-50%);width:min(420px,86%);padding:20px 24px;border:2px solid #d5b471;border-radius:12px;background:#281522f5;box-shadow:0 10px 45px #000b;color:#fff0d4;pointer-events:auto}
+.final-boss-court .final-court-prompt h3{margin:0 0 12px;color:#ffe4a2}
+.final-boss-court .final-court-prompt p{font-size:15px;line-height:1.7;margin:0 0 16px}
+.final-boss-court .final-court-prompt button{width:100%}
+.final-boss-court .court-options .orb-choice.is-revealed{border-color:#ffe599!important;box-shadow:inset 0 0 0 1px #ffe599}
+.final-boss-court .court-options .reveal-mark{color:#b8ffc4;background:#193526;border-radius:50%;width:20px;height:20px;text-align:center;font-weight:800}
+@media(max-width:700px){.final-boss-court .final-court-prompt{top:100px;padding:16px}.final-boss-court .final-court-prompt p{font-size:13px}}
+.final-boss-court .court-options[data-court-options=power] .orb-choice{grid-template-columns:26px minmax(0,1fr)}
+.final-boss-court .court-options[data-court-options=power] .orb-choice b{white-space:normal;overflow:visible;text-overflow:clip;font-size:12px}
+.final-boss-court .court-options[data-court-options=power] .orb-choice i{display:none}
