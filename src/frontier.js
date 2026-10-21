@@ -1,4 +1,4 @@
-import {bossGuideWaiting} from './boss-guides.js';
+import {bossGuideWaiting,bossGuideDismissed} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
@@ -113,7 +113,7 @@ export function makeFrontierWalk(cv, g, opts) {
   if (invasion.length) sess.enemies = invasion;
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
   const guideBoss=!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
-  const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && !bossGuideDismissed(g) && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
   const releasedBoss=releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }

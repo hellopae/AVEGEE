@@ -5,6 +5,7 @@ import { finalEventActors } from './final-event.js';
 // npc-stand.js — ตัวละครบนแผนที่ที่ยมบาทเดินทับไม่ได้ (30D)
 // ยมบาทเดินทับตัวเขาไม่ได้ (src/walk.js วงรอบตัว) · พิกัดตรงกับที่ scene.js วาด จึงอยู่ที่เดียวไม่ให้คลาดกัน
 import { SPOTS, MOB, MERCHANT, ZONE_EVENTS } from './data.js';
+import { bossGuideDismissed } from './boss-guides.js';
 
 /** อีเวนต์ที่รออยู่ที่ท่าเรือ (ผู้ท้าทายยืนรอให้ยมบาทเดินไปหา) — scene.js วาด, game.js กันทาง */
 export const waitingEvents = g => {
@@ -30,7 +31,7 @@ export function standPoints(g) {
   if (g.zoneCaptivesFree()) pts.push([MERCHANT.x, MERCHANT.y]);
   else pts.push([966, 350], [1038, 350]);        // ทัณฑ์กับพ่อค้าที่ถูกขังหน้าตะราง (โซน 4)
   if (actorStanding(g.guard)) pts.push([g.guard.x, g.guard.y]);
-  if (!g.bossWalk && (g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) pts.push([SPOTS.bossPier.x, SPOTS.bossPier.y]);
+  if (!g.bossWalk && !bossGuideDismissed(g) && (g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) pts.push([SPOTS.bossPier.x, SPOTS.bossPier.y]);
   for (const ev of waitingEvents(g)) pts.push([ev.x, ev.y]);
   for (const a of devaMapActors(g)) if (a.enabled) pts.push([a.x,a.y]);
   for (const a of finalEventActors(g)) pts.push([a.x,a.y]);

@@ -31,11 +31,13 @@ for(const zone of ['th','asia','west'])test(`${zone} guide joins Yama and Nira a
  assert.deepEqual(Object.keys(g.roster),roster);assert.deepEqual(g.party.members,party);
  g.battle=null;g.startFrontierBattle();assert.equal(g.battleActors().some(c=>c.k==='guide'||c.k==='nira'),false);
 });
-test('guide cannot attack while down and no office replacement is added; farewell removes the guest',()=>{
+test('guide cannot attack while down and no office replacement is added; farewell removes the guest and the route stays Yama + Nira',()=>{
  const g=setup();journey(g);encounter(g);const guide=bossGuideCombatant(g);g.downActor(guide);
  assert.deepEqual(g.battleActors().map(c=>c.k),['yama','nira']);assert.equal(g.battleAct('crew:guide'),false);
  g.battle=null;completeBossGuideStory(g,'boss-guide-th-farewell');assert.equal(bossGuideCombatant(g),null);
- encounter(g);assert.equal(isFrontierDuoBattle(g.battle),false);assert.equal(g.guardActive(),true);
+ // O1 (Kittanate 21 Oct): walking the route again after the farewell is Yama + Nira only. The hired keepers and the guard
+ // stay with the frontier station (see the ordinary-patrol test above), not on the outer route.
+ g.battle=null;g.mobs=[];encounter(g);assert.equal(isFrontierDuoBattle(g.battle),true);assert.deepEqual(g.battleActors().map(c=>c.k),['yama','nira']);assert.equal(g.guardActive(),false);
 });
 test('the guide receives a selectable turn and Nira can heal the guide',()=>{
  const g=setup();journey(g);encounter(g);g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[1,1];});
