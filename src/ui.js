@@ -2401,7 +2401,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.helpCdMs / 1000) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}
@@ -4286,11 +4286,11 @@ function openBattle(after) {
       if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c);
         const note=button.querySelector('i');if(note)note.textContent=g.crewHelpWhy(c) ? `${g.crewHelpWhy(c)} / Cooldown or low morale` : 'ท่าพิเศษ / Special';}
     }
-    // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.battleCd) แยกจากยมทูต
+    // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.helpCdMs · ค่าที่ battleAct ตั้งจริง) แยกจากยมทูต
     if (g.guard) {
-      const remaining=g.guardCooldown(), progress=100*(1-remaining/GUARD.battleCd);
+      const cdSec=GUARD.helpCdMs/1000, remaining=g.guardCooldown(), progress=100*(1-remaining/cdSec);
       const ready=dlg.querySelector('[data-crew-ready="guard"] .battle-meter');
-      if(ready){ready.setAttribute('aria-valuenow',Math.round(GUARD.battleCd-remaining));ready.querySelector('i').style.width=progress+'%';}
+      if(ready){ready.setAttribute('aria-valuenow',Math.round(cdSec-remaining));ready.querySelector('i').style.width=progress+'%';}
       const bar=dlg.querySelector('[data-cooldown="guard"]');
       if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
       const label=dlg.querySelector('[data-cooldown-label="guard"]');
