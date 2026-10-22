@@ -39,7 +39,7 @@ function orderHtml(m) {
   const diff = o.diff;
   const verdict = diff === null ? '' : diff === 0 ? `<b class="ok">✓ ${esc(t('diag.order.exact'))}</b>`
     : diff > 0 ? `<b class="bad">▲ ${esc(t('diag.order.over', { n: diff }))}</b>` : `<b class="warn">▼ ${esc(t('diag.order.short', { n: -diff }))}</b>`;
-  const dots = Array.from({ length: 5 }, (_, i) => `<i class="${i < o.intensity ? 'on' : ''} ${o.deserved !== null && i + 1 === o.deserved ? 'mark' : ''}"></i>`).join('');
+  const dots = Array.from({ length: 5 }, (_, i) => `<i class="${i < o.intensity ? 'on' : ''} ${o.deserved !== null && i + 1 === o.deserved ? 'fit' : ''}"></i>`).join('');
   return `<p>${o.stationName ? esc(t('diag.order.sentTo', { name: o.stationName })) : `<span class="diag-nodata">${esc(t('diag.order.noData'))}</span>`}
       · ${o.keeperName ? esc(t('diag.order.keeper', { name: o.keeperName })) : ''}</p>
     <p class="diag-tier"><span class="diag-dots" aria-hidden="true">${dots}</span> ${esc(t('diag.order.level', { n: o.intensity, name: o.intensityName }))}
@@ -117,8 +117,8 @@ export function diagnosisHtml(m, { pos, total, portraitSrc, escorting = false, m
         <button type="button" data-diag-prev aria-label="${esc(t('diag.prev'))}" ${total < 2 ? 'disabled' : ''}>‹</button>
         <span class="diag-pos" aria-live="polite">${pos}/${total}</span>
         <button type="button" data-diag-next aria-label="${esc(t('diag.next'))}" ${total < 2 ? 'disabled' : ''}>›</button>
+        <button type="button" class="diag-x" data-diag-close aria-label="${esc(t('diag.closeSheet'))}">✕</button>
       </span>
-      <button type="button" class="diag-x" data-diag-close aria-label="${esc(t('diag.closeSheet'))}">✕</button>
     </header>
     <div class="diag-body">
       <section class="diag-who">

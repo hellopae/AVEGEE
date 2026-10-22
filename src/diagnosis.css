@@ -56,8 +56,8 @@
 .diag-merit b{color:#62d891;font-variant-numeric:tabular-nums}
 .diag-tier{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
 .diag-dots{display:inline-flex;align-items:center;gap:5px}.diag-dots i{display:block;width:14px;height:14px;border-radius:50%;border:2px solid #6b4a37;background:transparent;box-sizing:border-box}
-.diag-dots i.on{background:#d4a355;border-color:#d4a355}.diag-dots i.mark{outline:2px solid #62d891;outline-offset:2px}
-.ok{color:#62d891}.bad{color:#ff7385}.warn{color:#f2d36b}
+.diag-dots i.on{background:#d4a355;border-color:#d4a355}.diag-dots i.fit{outline:2px solid #62d891;outline-offset:2px}
+.diag .ok{color:#62d891}.diag .bad{color:#ff7385}.diag .warn{color:#f2d36b}
 .diag-served{color:var(--muted-foreground,#b09a92);font-size:13px}
 .diag-boss,.diag-said{font-style:italic;color:#ffe9c4}
 .diag-meter{margin-top:8px}
@@ -111,7 +111,8 @@
 }
 @media(max-width:480px){
   .st-hud .st-diag{padding:4px}
-  .diag-head{gap:6px;padding:6px 8px}.diag-title{font-size:16px}
+  .diag-head{gap:4px 6px;padding:6px 8px}.diag-title{font-size:15px}.diag-chip{font-size:12px;padding:1px 8px}
+  .diag-nav{gap:3px}.diag-pos{min-width:2.6em}
   .diag-body{padding:8px}
   .diag-who{grid-template-columns:84px 1fr}.diag-portrait{width:84px;height:116px}
   .diag-part{grid-template-columns:6em 1fr auto}

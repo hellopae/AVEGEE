@@ -14,8 +14,9 @@
 .frontier-card .pw-av{width:48px;height:48px}
 @media(max-width:680px){.shop-card .pw-av{width:46px;height:46px}}
 .shop-card>.pw-av{margin-right:6px}
-.hero-profile-row .pw-av{width:44px;height:44px;margin-right:8px}
-.hero-profile-row .pw-av>img{width:44px;height:44px}
+.hero-profile-row .pw-av{margin-right:8px}
+.hero-profile-row.crew .pw-av{width:clamp(40px,3.6vw,56px);height:clamp(40px,3.6vw,56px)}
+.hero-profile-row.crew .pw-av>img{width:100%;height:100%;border-radius:50%;border:1px solid #b98b42;object-fit:cover;object-position:top;display:block}
 .crew .pw-av{width:46px;height:46px}
 .prof .pw-av{width:132px;height:132px}
 @media(max-width:640px){.prof .pw-av{width:96px;height:96px}}
