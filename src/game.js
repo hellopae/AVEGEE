@@ -956,7 +956,7 @@ const API = {
     if(wait>0)return `กานต์พักพลัง · รออีก ${wait} วินาที`;
     const cost=this.kanClueCost();
     if(this.mp<cost.mp)return `พลังเวทไม่พอ · ต้องใช้ MP ${cost.mp}`;
-    if(c.morale<=cost.morale)return `กานต์ต้องมีบารมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
+    if(c.morale<=cost.morale)return `กำลังใจกานต์ไม่พอ · ต้องมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
     return '';
   },
   kanRevealClue(soul) {
@@ -966,7 +966,7 @@ const API = {
     if(cost.insight)this.interrogationSupport.insights--;
     this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]=Date.now()+KAN_SUPPORT.cooldownMs;
     (soul.said||=[]).push(line);
-    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · บารมีกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
+    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · กำลังใจกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
     this.save();this.onChange();return line;
   },
   keeperTrialInfo(soul,c,stationKey) {
@@ -1379,7 +1379,7 @@ const API = {
       if(work.keeper==='kan'){
         const before=this.interrogationSupport.insights;
         this.interrogationSupport.insights=Math.min(3,before+1);
-        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้บารมีและพักพลัง');
+        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้กำลังใจและพักพลัง');
       }
     }
     if(work?.assistedTicks>0)benefits.push(`ดำประสานคนงานช่วยคุมหมู่ ${work.assistedTicks} วาระ`);

@@ -1,18 +1,18 @@
 // Public courtroom presentation only. Never inspect hidden case facts or judge a preview.
+import { traitForKeeper } from './interrogation.js';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeColor=color=>/^#[\da-f]{3,8}$/i.test(color||'')?color:'#d4a355';
 
 export function mountInterrogationStyles(){
   if(typeof document==='undefined'||document.getElementById('interrogation-role-styles'))return;
   const link=document.createElement('link');link.id='interrogation-role-styles';link.rel='stylesheet';
-  link.href=new URL('./interrogation-ui.css?v=20261021-interrogation-roles',import.meta.url).href;document.head.appendChild(link);
+  link.href=new URL('./interrogation-ui.css?v=20261022-p2',import.meta.url).href;document.head.appendChild(link);
 }
 
-export function spiritTraitHtml(trait){
-  if(!trait)return '';
-  return `<div class="spirit-trait" data-spirit-trait="${esc(trait.key)}" style="--trait-color:${safeColor(trait.color)}" role="status" aria-live="polite">
-    <span class="trait-symbol" aria-hidden="true">${esc(trait.icon)}</span><span><small>ลักษณะวิญญาณ</small><b>${esc(trait.label)}</b></span></div>
-    <p class="trait-explanation">ลักษณะนี้บอกพฤติกรรม ไม่ได้บอกน้ำหนักกรรมหรือระดับทัณฑ์</p>`;
+/** P2: the trait lives on the spirit's name tag — icon first (never colour alone), colour second. */
+export function spiritNameHtml(trait,name){
+  const label=trait?`ลักษณะ: ${trait.label}`:'';
+  return `<span class="nm spirit-name"${trait?` data-spirit-trait="${esc(trait.key)}" style="--trait-color:${safeColor(trait.color)}" aria-label="${esc(`${name} · ${label}`)}" title="${esc(label)}"`:''}>${trait?`<span class="trait-symbol" aria-hidden="true">${esc(trait.icon)}</span>`:''}<span class="spirit-name-text">${esc(name)}</span></span>`;
 }
 
 export function keeperCurrentJob(game,keeper){
@@ -24,38 +24,50 @@ export function keeperCurrentJob(game,keeper){
   return 'ว่าง · รอรับเวร';
 }
 
-export function keeperRoleHtml(game,soul,keeper,stationKey,{selected=false,choose=false}={}){
-  const info=game.keeperTrialInfo?.(soul,keeper,stationKey);if(!info)return '';
-  const trait=game.spiritTrait?.(soul),matching=!!info.matching;
-  const block=stationKey?game.assignBlock?.(soul.id,stationKey,keeper.k):null;
-  const why=block?.text||info.why||(block?'ยังรับหมายนี้ไม่ได้':'');
-  const available=info.available!==false&&!block;
-  return `<article class="keeper-role-card${matching?' is-trait-match':''}${selected?' is-selected':''}" data-keeper-role="${esc(keeper.k)}" style="--trait-color:${safeColor(trait?.color)}">
-    <div class="keeper-role-heading"><b>${esc(keeper.name||keeper.k)}</b><span>${matching?'เหมาะกับลักษณะนี้':'คุมได้ตามปกติ'}</span></div>
-    <p class="keeper-role-benefit">${esc(info.benefit)}</p><p class="keeper-role-cost"><b>ภาระและต้นทุน:</b> ${esc(info.cost)}</p>
-    <small>งานปัจจุบัน: ${esc(keeperCurrentJob(game,keeper))}</small>${why?`<small class="keeper-role-why">${esc(why)}</small>`:''}
-    ${choose?`<button type="button" data-pickkey="cr" data-k="${esc(keeper.k)}" ${available?'':'disabled'} aria-pressed="${selected}">${selected?'✓ เลือกแล้ว':`เลือก ${esc(keeper.name||keeper.k)}`}</button>`:''}</article>`;
-}
-
-export function keeperImpactHtml(game,soul,keeper,stationKey){
-  const workers=game.workers?.()||[],busy=workers.filter(w=>w.job).length;
+/** Compact keeper picker for the interrogation page (the long explanations live in the handbook: keeperTeamGuide). */
+export function keeperBarHtml(game,soul,selected,stationKey,artOf=()=>''){
   const candidates=(game.crew||[]).filter(c=>!c.reader&&!c.self);
-  return `<section class="hud-card keeper-impact"><h4>ผลของทีมดูแลคดี</h4>
-    <p class="keeper-impact-rule">สถานที่และระดับทัณฑ์ตัดสินความยุติธรรม · ผู้คุมช่วยให้งานดำเนินต่างกัน</p>
-    ${keeper?keeperRoleHtml(game,soul,keeper,stationKey,{selected:true}):'<p class="hint">เลือกผู้คุมเพื่อดูประโยชน์ ต้นทุน และภาระก่อนออกหมาย</p>'}
-    <p class="worker-impact">อสูรผู้ช่วยในโซน ${workers.length} คน · มีงานแล้ว ${busy} คน · ว่าง ${workers.length-busy} คน<br>คนงานหนึ่งคนทำได้ทีละงาน เมื่อย้ายมาช่วยสถานีจะหยุดงานเดิม</p>
-    <details class="keeper-role-roster"><summary>หน้าที่และต้นทุนของผู้คุมทั้งหมด</summary>
-      <div>${candidates.map(c=>keeperRoleHtml(game,soul,c,stationKey,{selected:c.k===keeper?.k,choose:true})).join('')||'<p>ยังไม่มียมทูตในสังกัด</p>'}</div></details></section>`;
+  const workers=game.workers?.()||[],busy=workers.filter(w=>w.job).length;
+  const notes=[];
+  const chips=candidates.map(c=>{
+    const info=game.keeperTrialInfo?.(soul,c,stationKey)||{};
+    const block=stationKey?game.assignBlock?.(soul.id,stationKey,c.k):null;
+    const why=block?.text||info.why||(block?'ยังรับหมายนี้ไม่ได้':'');
+    const ok=info.available!==false&&!block,on=c.k===selected?.k,match=!!info.matching,suit=traitForKeeper(c.k);
+    if(why)notes.push(`${c.name}: ${why}`);
+    const tip=[c.name,match?'เหมาะกับลักษณะนี้':'',info.benefit,info.cost?`ภาระ: ${info.cost}`:'',why].filter(Boolean).join(' · ');
+    return `<button type="button" class="keeper-chip${match?' is-trait-match':''}${on?' is-selected':''}" data-keeper-role="${esc(c.k)}" data-pickkey="cr" data-k="${esc(c.k)}"
+      ${suit?`style="--trait-color:${safeColor(suit.color)}"`:''} ${ok?'':'disabled'} aria-pressed="${on}" title="${esc(tip)}"
+      aria-label="${esc(`${c.name}${match?' · เหมาะกับลักษณะนี้':''}${why?' · '+why:''}`)}">
+      ${artOf(c)?`<img src="${esc(artOf(c))}" alt="">`:''}<b>${esc(c.name||c.k)}</b>${suit?`<span class="keeper-chip-suit" aria-hidden="true">${esc(suit.icon)}</span>`:''}</button>`;
+  }).join('');
+  return `<section class="hud-card keeper-bar" aria-label="เลือกผู้คุม"><h4>เลือกผู้คุม <small>ดูผลดีและต้นทุนในคู่มือ</small></h4>
+    <div class="keeper-bar-row" role="group">${chips||'<p class="hint">ยังไม่มียมทูตในสังกัด</p>'}</div>
+    <p class="worker-impact">อสูรผู้ช่วยในโซน ${workers.length} คน · มีงานแล้ว ${busy} คน · ว่าง ${workers.length-busy} คน</p>
+    ${notes.length?`<small class="keeper-role-why">${esc(notes.join(' · '))}</small>`:''}</section>`;
 }
 
-export function kanClueHtml(game,soul,result=''){
+/** Texts by Rae. Prices come from game.kanClueCost(); disabled reasons come from game.kanClueWhy() (the fuller original set). */
+export const KAN_BUTTON_COPY=Object.freeze({
+  label:'ช่วยเปิดความจริง',
+  ariaLabel:'ช่วยเปิดความจริง · กานต์เปิดข้อเท็จจริง 1 ประเด็น',
+  tipLine1:'กานต์ช่วยเปิดข้อเท็จจริงที่ยังซ่อนอยู่ 1 ประเด็น อาจเป็นข้อกล่าวหา เหตุบรรเทาโทษ บุญที่แต่งขึ้น หรือความลับของคดี',
+  tipPriceMp:'ใช้พลังเวท {mp} · กำลังใจกานต์ {morale} · พักพลัง {cooldownSeconds} วินาที',
+  tipPriceInsight:'ใช้เบาะแสที่สะสม 1 ประเด็น · กำลังใจกานต์ {morale} · พักพลัง {cooldownSeconds} วินาที',
+});
+const fill=(text,v)=>text.replace(/\{(\w+)\}/g,(_,k)=>v[k]);
+/** Round Kan icon beside Yama; only exists once Kan is hired. Pressing it does exactly what the old box button did. */
+export function kanOrbHtml(game,soul,src='',result=''){
   if(!game.kanClueWhy)return '';
+  if(game.crewOf&&!game.crewOf('kan'))return '';
   const why=game.kanClueWhy(soul),cost=game.kanClueCost?.()||{mp:4,morale:4,cooldownSeconds:30};
-  const price=`${cost.insight?'ใช้เบาะแสที่สะสม 1 ประเด็น':`ใช้ MP ${cost.mp}`} · กำลังใจ ${cost.morale} · พักพลัง ${cost.cooldownSeconds} วินาที`;
-  return `<section class="hud-card kan-clue"><h4>กานต์ · เปิดความจริงทีละประเด็น</h4>
-    <p>ช่วยเปิดข้อเท็จจริงที่ยังไม่เปิดเผย 1 ประเด็น อาจเป็นทั้งข้อกล่าวหาหรือเหตุบรรเทาโทษ</p>
-    <button type="button" data-kan-clue ${why?'disabled':''}>ขอเบาะแส 1 ประเด็น</button><small class="kan-clue-cost">${esc(price)}</small>
-    <small class="keeper-role-why" data-kan-clue-why ${why?'':'hidden'}>${esc(why)}</small>${result?`<p class="kan-clue-result" role="status">${esc(result)}</p>`:''}</section>`;
+  const price=fill(cost.insight?KAN_BUTTON_COPY.tipPriceInsight:KAN_BUTTON_COPY.tipPriceMp,cost);
+  return `<div class="kan-orb${why?' is-off':''}" data-kan-orb>
+    <button type="button" class="kan-orb-btn" data-kan-clue ${why?'disabled':''} aria-label="${esc(KAN_BUTTON_COPY.ariaLabel)}" aria-describedby="kan-orb-tip" title="${esc(KAN_BUTTON_COPY.tipLine1+'\n'+price)}">${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:'🧿'}</button>
+    <b class="kan-orb-label">${esc(KAN_BUTTON_COPY.label)}</b>
+    <small class="keeper-role-why kan-orb-why" data-kan-clue-why ${why?'':'hidden'}>${esc(why)}</small>
+    <span class="kan-orb-tip" id="kan-orb-tip" role="tooltip">${esc(KAN_BUTTON_COPY.tipLine1)}<br>${esc(price)}</span>
+    ${result?`<span class="sr-only" role="status">${esc(result)}</span>`:''}</div>`;
 }
 
 export function bindKanClue(root,game,soul,onReveal){

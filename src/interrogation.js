@@ -4,6 +4,8 @@ const traits=Object.freeze({
   resisting:Object.freeze({key:'resisting',icon:'🔥',label:'ดื้อและต่อต้าน',color:'#ef7777',keeper:'plerng'}),
   accepting:Object.freeze({key:'accepting',icon:'🍃',label:'ยอมรับและพร้อมแก้ไข',color:'#83ca96',keeper:'boon'}),
 });
+/** Which colour a keeper is suited to (taan / dam are deliberately not tied to a colour). */
+export const traitForKeeper=k=>Object.values(traits).find(t=>t.keeper===(k==='pleng'?'plerng':k))||null;
 export const KAN_SUPPORT=Object.freeze({mpCost:4,moraleCost:4,cooldownMs:30_000});
 const roles=Object.freeze({
   taan:Object.freeze({key:'taan',name:'ทัณฑ์ · คุมงานเป็นระเบียบ',
