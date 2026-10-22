@@ -40,7 +40,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         elapsed=-650;
         // P6: ปุ่มไม่ถูก disable ระหว่างรอวงถัดไป (ปุ่มที่ disabled กลืนการกดเงียบๆ) — แค่ดูจางและกดแล้วขึ้นข้อความรอ
         button.classList.toggle('fire-wait',true); button.classList.remove('fire-ready');
-        setText(body.querySelector('.g5-round-message'),t(hit?'g5.hit':radius>1?'g5.missEarly':'g5.missLate'));
+        setText(body.querySelector('.g5-round-message'),t((hit?'g5.hit':radius>1?'g5.missEarly':'g5.missLate')+(state.done?'Last':'')));
         body.querySelector('.g5-green').classList.remove('fire-ready');
         body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
         flash(body.querySelector('.g5-closeup'),hit?'g5-hit':'g5-miss');

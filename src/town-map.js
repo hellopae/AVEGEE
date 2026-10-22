@@ -1,5 +1,6 @@
 // Zone 1 town presentation. Existing world coordinates, collision and save data stay authoritative.
 import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
+import { t } from './i18n.js';
 import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 
@@ -55,7 +56,7 @@ export function townNearbyAction(g, interaction, build, reach = 105) {
 }
 
 /** Construction sites are visible; roads and stairs are supplied by the new town painting.
- *  P1: a site whose unlock level is not reached yet is only a dark footprint ("shadow") with a lock + Lv.N;
+ *  P1: a site whose unlock level is not reached yet is only a dark footprint ("shadow") with a lock + rank N;
  *  the next recommended site gets a brighter pulsing ring and a star. Buildings already built are never touched. */
 export function drawTownGround(ctx,g,now=Date.now()) {
   if (!isTownZone(g.zone)) return;
@@ -76,7 +77,7 @@ export function drawTownGround(ctx,g,now=Date.now()) {
     ctx.setLineDash([6,5]); ctx.beginPath(); ctx.ellipse(d.bx,cy,rx,20,0,0,Math.PI*2);ctx.stroke();
     ctx.setLineDash([]); ctx.shadowBlur=0;
     ctx.fillStyle=locked?'rgba(24,12,18,.78)':'rgba(33,16,23,.9)';
-    const label=locked?`🔒 ขั้น ${g.buildUnlockLv(d.k)}`:isRec?'★ +':'+';
+    const label=locked?`🔒 ${t('unlock.lockShort',{n:g.buildUnlockLv(d.k)})}`:isRec?'★ +':'+';
     ctx.font=`600 ${locked||isRec?13:12}px sans-serif`;
     const w=Math.max(20,ctx.measureText(label).width+10);
     ctx.fillRect(d.x-w/2,d.y-22,w,18);
