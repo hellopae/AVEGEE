@@ -137,3 +137,11 @@ test('CREW_POWER metadata: every fighter has name/icon/tint/kind and the icon fi
   }
   assert.deepEqual([CREW_POWER.taan.dmg,CREW_POWER.plerng.dmg,CREW_POWER.dam.dmg,CREW_POWER.guard.dmg,CREW_POWER.boon.heal,CREW_POWER.nira.heal,CREW_POWER.kan.confuse],[35,40,35,60,50,32,1]);
 });
+
+test('CREW_POWER job icons ship for every keeper (nira + taan/plerng/kan/boon/dam)',()=>{
+  for(const k of ['nira','taan','plerng','dam','kan','boon']){
+    assert.match(CREW_POWER[k].jobIcon,/^img\/ui\/job-[a-z]+\.webp$/);
+    readFileSync(new URL('../'+CREW_POWER[k].jobIcon,import.meta.url));
+  }
+  assert.equal(CREW_POWER.guard.jobIcon,undefined);
+});

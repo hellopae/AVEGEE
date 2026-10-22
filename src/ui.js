@@ -14,6 +14,7 @@ import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyActio
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';
 import { mountDiagnosis } from './diagnosis-ui.js';
+import { powerBadgeHtml, powerSheetHtml } from './crew-power-ui.js';
 import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
@@ -533,7 +534,7 @@ function drawTab() {
     const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).sort((a, b) => hireRank(a.k) - hireRank(b.k));   // P1: ตามลำดับแนะนำจ้าง
     b.innerHTML = g.crew.map(c => `
       <div class="crew">
-        ${face('crew-' + c.k, c.glyph)}
+        <span class="pw-av">${face('crew-' + c.k, c.glyph)}${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span>
         <span class="n"><b>${c.name}</b>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'}${g.workingCrew?.has(c.k)
@@ -544,7 +545,7 @@ function drawTab() {
            ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${Math.round(g.coin)}</div>`
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
-        ${face('crew-' + c.k, c.glyph)}
+        <span class="pw-av">${face('crew-' + c.k, c.glyph)}${powerBadgeHtml(c.k, { zone: g.zone })}</span>
         <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>${hireRank(c.k) ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank(c.k) }))}${nextHireTab === c.k ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">${esc(c.line)}</div></span>
@@ -554,7 +555,7 @@ function drawTab() {
       // (เดิมตัวจัดการปุ่มไปรออยู่แท็บก่อสร้าง แต่ไม่เคยมีใครวาดปุ่มให้ เลยจ้างไม่ได้เลย)
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
-        ${face(GUARD.img, '🛡️')}
+        <span class="pw-av">${face(GUARD.img, '🛡️')}${powerBadgeHtml('guard', { zone: g.zone })}</span>
         <span class="n"><b>${GUARD.name}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
           <div class="st">${esc(GUARD.line)}</div></span>
@@ -618,14 +619,15 @@ const nameOfSt = k => STATIONS.find(d => d.k === k)?.name ?? '—';
  *  ลองรูปโปรไฟล์เต็มใบก่อน (img/<key>-profile.png) ไม่มีค่อยถอยไปใช้รูป standee เดิม
  *  → gen รูปโปรไฟล์ตัวไหนมาใหม่ ก็แค่วางไว้ img/raw/<key>-profile.jpeg แล้วรัน scripts/prep-art.py
  *    ไม่ต้องแตะโค้ดสักบรรทัด (7 ก.ย. 2569) */
-function profile(imgKey, name, duty, now) {
+function profile(imgKey, name, duty, now, badge = '') {
   // ไม่มีทั้งรูปโปรไฟล์และรูป standee ก็ซ่อนกรอบไปเลย อย่าปล่อยไอคอนรูปแตกไว้
   const std = artUrl(imgKey);
   const fallback = `this.onerror=function(){this.style.visibility='hidden'};`
                  + `this.src='${std}';this.classList.remove('full')`;
+  const picture = `<img class="full" src="${artUrl(imgKey + '-profile') || std}" alt=""
+         onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">`;
   return `<div class="prof">
-    <img class="full" src="${artUrl(imgKey + '-profile') || std}" alt=""
-         onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">
+    ${badge ? `<span class="pw-av">${picture}${badge}</span>` : picture}
     <div class="hd"><b>${esc(name)}</b>
       <div class="duty">${esc(duty)}</div>
       <div class="now">${now}</div></div></div>`;
@@ -774,7 +776,7 @@ function sideBody() {
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — โชว์ท่าสู้/ตัวเลขจริงตรงกับโต๊ะนิรา (ดึงจาก CREW_POWER ที่เดียวกัน)
     const battleLine = !c.reader
       ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : `<div class="row-truth">${crewAbility(c)}</div>`;
-    return profile('crew-' + c.k, c.name, c.duty, now)
+    return profile('crew-' + c.k, c.name, c.duty, now, powerBadgeHtml(c.k, { zone: g.zone, actor: c }))
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
       + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.reader ? g.allyStats(c).order : c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
             `กำลังใจ ${Math.round(c.morale)}`,
@@ -2854,6 +2856,41 @@ function niraItemWidget(c) {
   }).join('')}</div>`;
 }
 
+/** P4 §3.3 — แผ่นรายละเอียดพลัง · เปิดทับกล่องที่เปิดอยู่ (โต๊ะนิรา/ทีมชายแดน) เป็นชั้นเล็ก ๆ ไม่แทนกล่อง จึงกลับมาที่เดิมเสมอ
+ *  ไม่มีกล่องเปิดอยู่ (โปรไฟล์/แท็บ/แผงข้อมูล) → ใช้ modal() ปกติ */
+let afterPowerSheet = null;
+function openPowerSheet(k) {
+  const html = powerSheetHtml(g, k);
+  if (!html) return;
+  const bind = (root, close) => {
+    root.querySelectorAll('[data-power-close]').forEach(b => b.onclick = close);
+    const done = ok => { close(); if (ok) { sfx('coin'); afterPowerSheet?.(); refresh(); } };
+    root.querySelectorAll('[data-power-hire]').forEach(b => b.onclick = () => done(b.dataset.powerHire === 'guard' ? g.hireGuard() : g.hire(b.dataset.powerHire)));
+    root.querySelectorAll('[data-power-party]').forEach(b => b.onclick = () => { const ok = g.toggleParty(b.dataset.powerParty); if (ok) sfx('crack'); done(ok); });
+    root.querySelector('button:not(:disabled)')?.focus();
+  };
+  if (dlg.open) {
+    dlg.querySelector('.power-sheet-layer')?.remove();
+    const layer = document.createElement('div'); layer.className = 'power-sheet-layer'; layer.innerHTML = html;
+    const close = () => { layer.remove(); };
+    layer.addEventListener('click', e => { if (e.target === layer) close(); });
+    layer.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(); } });
+    dlg.append(layer); bind(layer, close);
+  } else modal(`<div class="power-sheet-wrap">${html}</div>`, d => bind(d, () => d.close()), 'power-dialog');
+}
+// ป้ายไอคอนพลังอยู่ในปุ่ม/การ์ดหลายแบบ — ดักตอน capture เพื่อไม่ให้ปุ่มแม่ (เลือกเข้าทีมชายแดน ฯลฯ) ทำงานไปด้วย
+document.addEventListener('click', e => {
+  const b = e.target.closest?.('[data-power]');
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const b = e.target.closest?.('[data-power]');
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
+}, true);
+
 function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
@@ -2880,7 +2917,7 @@ function openNiraOffice() {
       const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
       const why = final ? g.finalTeamWhy(c) : '';
       const rank = final ? 0 : hireRank(def.k);
-      return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><img src="${crewArt(c || def, '-profile')}" alt="">
+      return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><span class="pw-av"><img src="${crewArt(c || def, '-profile')}" alt="">${powerBadgeHtml(def.k, { zone: g.zone, actor: c })}</span>
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
@@ -2892,7 +2929,7 @@ function openNiraOffice() {
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาวด้านล่างเดิม
     // (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน)
     cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
-        <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
+        <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
         ${hireTag('guard', !!g.guard)}
         <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
@@ -2918,6 +2955,7 @@ function openNiraOffice() {
   };
   paint(); openDlg('nira-office');
   const generation = dlgGen;
+  afterPowerSheet = () => { if (dlg.open && dlgGen === generation) paint(); };
   const restState = () => Object.values(g.roster).map(c => `${c.id}:${c.teaRest?.phase || ''}`).join(',');
   let paintedRestState = restState();
   const restTimer = setInterval(() => {
@@ -3068,7 +3106,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
             return `<button data-frontier-crew="${c.k}" class="frontier-card${on ? ' selected' : ''}" ${full ? 'disabled' : ''}>
-              <img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">
+              <span class="pw-av"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span>
               <span><b>${esc(c.name)}</b><small>แรง ${c.raeng} · กำลังใจ ${Math.round(c.morale)}</small></span>
               <i>${on ? '✓ เข้าทีม' : 'เลือก'}</i></button>`;
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
@@ -4661,8 +4699,8 @@ function drawHeroProfile() {
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
-  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
-  const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
+  const guard = `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]

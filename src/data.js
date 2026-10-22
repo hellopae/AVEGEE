@@ -381,18 +381,18 @@ export const crewName = (c, zone = 'th') => c?.names?.[zone] || c?.name || '—'
 // แค่ต่อยอดบนฐานใหม่แทนสูตรเดิมที่ผูกกับ raeng ตรง ๆ
 export const CREW_POWER = {
   nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี',
-            name:'แสงฟื้นบารมี', icon:'img/ui/power-heal-light.webp', tint:'#e8c870', kind:'heal' },
+            name:'แสงฟื้นบารมี', icon:'img/ui/power-heal-light.webp', jobIcon:'img/ui/job-scroll.webp', tint:'#e8c870', kind:'heal' },
   taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง',
-            name:'กระบองทัณฑ์', icon:'img/ui/power-club.webp', tint:'#e0623a', kind:'strike' },
+            name:'กระบองทัณฑ์', icon:'img/ui/power-club.webp', jobIcon:'img/ui/job-order.webp', tint:'#e0623a', kind:'strike' },
   plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ',
-            name:'เพลิงพิพากษา', icon:'img/ui/power-fire.webp', tint:'#e8832e', kind:'fire' },
+            name:'เพลิงพิพากษา', icon:'img/ui/power-fire.webp', jobIcon:'img/ui/job-subdue.webp', tint:'#e8832e', kind:'fire' },
   dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย',
-            name:'คมดาบ', icon:'img/ui/power-blade.webp', tint:'#6f93b5', kind:'strike' },
+            name:'คมดาบ', icon:'img/ui/power-blade.webp', jobIcon:'img/ui/job-crowd.webp', tint:'#6f93b5', kind:'strike' },
   // สะกดจิต — ไม่ได้ทำดาเมจตรง แต่ทำให้ศัตรูมึน 1 เทิร์น (ฟาดใส่ตัวเองแทนฟาดยมบาทน้อย)
   kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น',
-            name:'พลังสะกดจิต', icon:'img/ui/power-hypno.webp', tint:'#8a5fc7', kind:'hypno' },
+            name:'พลังสะกดจิต', icon:'img/ui/power-hypno.webp', jobIcon:'img/ui/job-reveal.webp', tint:'#8a5fc7', kind:'hypno' },
   boon:   { heal: 50, desc: 'ฟื้นบารมี',
-            name:'พลังฟื้นฟู', icon:'img/ui/power-heal-lotus.webp', tint:'#4fae78', kind:'heal' },
+            name:'พลังฟื้นฟู', icon:'img/ui/power-heal-lotus.webp', jobIcon:'img/ui/job-cleanse.webp', tint:'#4fae78', kind:'heal' },
   guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง',
             name:'กระบองพิทักษ์', icon:'img/ui/power-heavy.webp', tint:'#d4a355', kind:'strike' },
 };
