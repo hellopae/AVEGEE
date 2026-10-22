@@ -86,6 +86,9 @@ const TH = {
   "g5.hit": "ถูกจังหวะ · เตรียมลูกไฟถัดไป",
   "g5.missEarly": "เร็วไป · พลาด 1 ครั้ง · เตรียมลูกไฟถัดไป",
   "g5.missLate": "ช้าไป · พลาด 1 ครั้ง · เตรียมลูกไฟถัดไป",
+  "g5.hitLast": "ถูกจังหวะ · ครบ 5 ครั้งแล้ว",
+  "g5.missEarlyLast": "เร็วไป · พลาดครบ 3 ครั้ง",
+  "g5.missLateLast": "ช้าไป · พลาดครบ 3 ครั้ง",
   "g5.btnWait": "เตรียมลูกไฟ…",
   "g5.btnGo": "กดเลย!",
 
@@ -582,6 +585,9 @@ const EN = {
   "g5.hit": "On time · next fireball coming",
   "g5.missEarly": "Too early · 1 miss · next fireball coming",
   "g5.missLate": "Too late · 1 miss · next fireball coming",
+  "g5.hitLast": "On time · all 5 hits done",
+  "g5.missEarlyLast": "Too early · 3 misses, training over",
+  "g5.missLateLast": "Too late · 3 misses, training over",
   "g5.btnWait": "Get ready…",
   "g5.btnGo": "Now!",
 
@@ -1227,6 +1233,7 @@ Object.assign(EN, {
 Object.assign(TH, {
   'sleep.needTea':'สร้างศาลาน้ำชาเพื่อนอนพัก',
   'unlock.lockedAt':'ปลดล็อกที่ขั้น {n}',
+  'unlock.lockShort':'ขั้น {n}',
   'unlock.recommend':'แนะนำสร้างถัดไป',
   'unlock.next':'แนะนำสร้างถัดไป: {name}',
   'unlock.levelRow':'ปลดล็อกแล้ว: {name}',
@@ -1238,13 +1245,14 @@ Object.assign(TH, {
   'unlock.why.ngiw':'เปิดคดีผิดกามเข้าคิว คดีที่กรรมหนักสุดเป็นเรื่องนี้ต้องส่งมาที่นี่',
   'unlock.why.lan':'เปิดคดีเบียดเบียนเข้าคิว คดีที่กรรมหนักสุดเป็นเรื่องนี้ต้องส่งมาที่นี่',
   'unlock.why.lokan':'เปิดคดีอกตัญญูเข้าคิว คดีที่กรรมหนักสุดเป็นเรื่องนี้ต้องส่งมาที่นี่',
-  'unlock.why.krajok':'รับกระจกวิเศษจากกานต์เป็นระยะ ใช้ส่องเฉลยคดี',
+  'unlock.why.krajok':'เติมกระจกวิเศษด้วยแสงสะท้อนเป็นระยะ ใช้ส่องเฉลยคดี',
   'hire.recommend':'แนะนำ',
   'hire.rank':'ลำดับจ้างที่ {n}',
 });
 Object.assign(EN, {
   'sleep.needTea':'Build the Tea Pavilion to rest',
   'unlock.lockedAt':'Unlocks at rank {n}',
+  'unlock.lockShort':'Rank {n}',
   'unlock.recommend':'Recommended next',
   'unlock.next':'Recommended next: {name}',
   'unlock.levelRow':'Unlocked: {name}',
@@ -1256,7 +1264,7 @@ Object.assign(EN, {
   'unlock.why.ngiw':'Brings sexual-misconduct cases into the queue · cases whose worst sin is this one must be sent here',
   'unlock.why.lan':'Brings exploitation cases into the queue · cases whose worst sin is this one must be sent here',
   'unlock.why.lokan':'Brings ingratitude cases into the queue · cases whose worst sin is this one must be sent here',
-  'unlock.why.krajok':'Kan hands you a magic mirror every so often · use it to reveal a case’s answer',
+  'unlock.why.krajok':'Bounce light onto the magic mirror to recharge it every so often · use it to reveal a case’s answer',
   'hire.recommend':'Recommended',
   'hire.rank':'Hire #{n}',
 });
