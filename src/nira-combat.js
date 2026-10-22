@@ -96,10 +96,10 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit, holdUnt
   const start = Date.now(), reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   loadSheet(zone).then(frames => {
     if (!frames || !image.isConnected) return;
-    // O2: all four regional sheets (idle / attack / hurt / heal rows) are drawn facing RIGHT, toward the enemies.
-    // The squad CSS mirrors every ally image (the older stand-ups face left), so the sheet frames must opt out
-    // of the mirror (.face-native) — otherwise her attack beam fires away from the enemy and she looks left.
-    image.classList.add('face-native'); image.dataset.niraPose = pose;
+    // O2: facing. The attack row (beam / book to the right) and the heal row are drawn facing RIGHT, toward the enemies — they must opt out of
+    // the squad's ally mirror (.face-native) or her beam fires away from the enemy. The idle and hurt rows are drawn looking LEFT / to the
+    // camera (stamp held on the left), so they keep the normal ally mirror and she faces the enemy in every pose.
+    image.classList.toggle('face-native', pose === 'attack' || pose === 'heal'); image.dataset.niraPose = pose;
     let previous = -1;
     const hold = pose === 'hurt' && typeof holdUntil === 'function' ? Number(holdUntil()) || 0 : 0;
     const tick = () => {

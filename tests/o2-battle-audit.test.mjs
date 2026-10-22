@@ -32,9 +32,9 @@ test('O2 I: pieces that do not continue the neighbour, and clean sheets, are lef
   assert.equal(stripNeighbourLeaks(d,W,H,2,1),0);
   assert.equal(d[(1*W+8)*4+3],255);
 });
-test('O2 B: Nira sheet frames opt out of the ally mirror (the four sheets are drawn facing right)',()=>{
+test('O2 B: Nira attack/heal rows opt out of the ally mirror; idle/hurt rows keep it (drawn facing left)',()=>{
   const s=read('src/nira-combat.js');
-  assert.match(s,/image\.classList\.add\('face-native'\)/);
+  assert.match(s,/classList\.toggle\('face-native', pose === 'attack' \|\| pose === 'heal'\)/);
   assert.doesNotMatch(s,/image\.classList\.remove\('face-native'\)/);
 });
 test('O2 B: Yama own slash / flame charge sets the formation attack key (forward lunge)',()=>{
