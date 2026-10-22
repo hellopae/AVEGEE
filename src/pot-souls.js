@@ -26,54 +26,135 @@ export const SINK = 0.3;
 
 const flick = (t, i, k) => 0.5 + 0.5 * Math.sin(t / (170 + k * 37) + i * 2.3 + k * 1.7);
 
-/** วาดวิญญาณลงกระทะใบที่ i พร้อมไฟ — drawSoulAt(x, y) คือฟังก์ชันวาดตัววิญญาณเดิมของห้อง (ไม่ดัดแปลงภาพ)
- *  ลำดับ: ไฟหลังตัว → ตัววิญญาณ (ตัดที่ขอบหน้าปากกระทะ ให้ท่อนล่างจมอยู่ในกระทะ) → แสงกองไฟใต้ท้อง + ประกายไฟลอย */
-export function drawPotSoul(ctx, pot, i, { px, py, U, t }, drawSoulAt) {
+// ---- P6: วิญญาณโดนไฟ — ไฟหลัง/ไฟหน้าจากภาพไฟวาดมือ (img/fx) · แดงกะพริบ · เหงื่อตก · ไอร้อน/ประกายลอย ----
+// ภาพ fx เป็นพื้นดำ RGB → วาดแบบ 'lighter' (บวกแสง) พื้นดำจึงหายไปเอง · ไม่มี ctx.filter · ไม่สร้างของใหม่ทุกเฟรม
+const FX = {};
+const fxImg = name => {
+  if (!FX[name] && typeof Image !== 'undefined') { const im = new Image(); im.src = `img/fx/${name}.webp`; FX[name] = im; }
+  const im = FX[name]; return im && im.complete && im.naturalWidth ? im : null;
+};
+const FLAMES = ['fx-fire-flame-a', 'fx-fire-flame-b', 'fx-fire-flame-c'];
+const SWEAT_CELLS = [0, 1, 3];      // แผ่นเหงื่อ 512×128 = 4 ช่อง 128×128: 0 หยดคู่ · 1 หยดใหญ่ · 2 กระเด็น · 3 หยดตก
+let haze = null;                    // ไอร้อน: วงแสงนุ่มวาดครั้งเดียว ใช้ซ้ำ
+const hazeSprite = () => {
+  if (haze !== null) return haze;
+  haze = false;
+  try {
+    const c = typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(48, 48) : document.createElement('canvas');
+    c.width = c.height = 48;
+    const g = c.getContext('2d'), rg = g.createRadialGradient(24, 24, 0, 24, 24, 24);
+    rg.addColorStop(0, 'rgba(255,214,160,.5)'); rg.addColorStop(1, 'rgba(255,150,70,0)');
+    g.fillStyle = rg; g.fillRect(0, 0, 48, 48); haze = c;
+  } catch { haze = false; }
+  return haze;
+};
+const bufs = [];                    // ผืนวาดตัววิญญาณชั่วคราวต่อกระทะ — ใช้เติมสีแดง (source-atop) โดยไม่แตะรูปวิญญาณ
+const bufFor = (i, w, h) => {
+  let b = bufs[i];
+  if (!b || b.width !== w || b.height !== h) {
+    try {
+      b = typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(w, h) : document.createElement('canvas');
+      b.width = w; b.height = h; bufs[i] = b;
+    } catch { return null; }
+  }
+  return b;
+};
+
+/** ลิ้นไฟวาดมือ n ลิ้นเรียงตามปากกระทะ ฐานอยู่ที่ (cx±spread, baseY) สูง soulH*hMul — ส่ายและยืดหด ไม่พร้อมกัน */
+function flameRow(ctx, i, { cx, baseY, spread, n, hMul, soulH, t, alpha, reduced, salt }) {
+  for (let k = 0; k < n; k++) {
+    const im = fxImg(FLAMES[(k + i + salt) % 3]); if (!im) continue;
+    const f = flick(t, i + salt, k + 1), ph = t / (210 + k * 29) + k * 1.9 + i * 1.3 + salt;
+    const h = soulH * hMul * (reduced ? 0.78 : 0.62 + 0.5 * f) * (k === (n >> 1) ? 1.15 : 0.85 + 0.15 * (k % 2));
+    const w = h * 0.5, x = cx + (n === 1 ? 0 : (k / (n - 1) - 0.5) * 2 * spread), sway = reduced ? 0 : Math.sin(ph) * w * 0.14;
+    ctx.globalAlpha = alpha * (reduced ? 0.85 : 0.7 + 0.3 * f);
+    ctx.save(); ctx.translate(x, baseY); ctx.transform(1, 0, sway / h, 1, 0, 0);
+    ctx.drawImage(im, -w / 2, -h, w, h); ctx.restore();
+  }
+}
+
+/** วาดวิญญาณลงกระทะใบที่ i พร้อมไฟ — drawSoulAt(x, y, target) คือฟังก์ชันวาดตัววิญญาณเดิมของห้อง (ไม่ดัดแปลงภาพ)
+ *  ลำดับ: ไฟหลังตัว → ตัววิญญาณ (ตัดที่ขอบหน้าปากกระทะ · เติมแดงกะพริบ) → ไฟหน้าทับท่อนล่าง → แสงกองไฟใต้ท้อง
+ *  → เหงื่อตก + ไอร้อน + ประกายลอย  (reduced = ไม่กะพริบ/ไม่ขยับ เหลือแดงคงที่กับไฟนิ่ง) */
+export function drawPotSoul(ctx, pot, i, { px, py, U, t, reduced = false }, drawSoulAt) {
   const cx = px(potSoulX(pot, i)), x = cx;
   const mouthY = py(pot.mouthY), rxPx = Math.abs(px(pot.rx) - px(0)), ryPx = py(pot.frontY) - mouthY;
-  const soulH = U * 0.085, y = py(pot.frontY) + soulH * SINK;
+  const soulH = U * 0.085, y = py(pot.frontY) + soulH * SINK, frontPx = py(pot.frontY);
+  const pulse = reduced ? 0 : Math.max(0, Math.sin(t / 190 + i * 2.1)) ** 2;       // จังหวะแดงกะพริบ ~1.2 วิ/รอบ เหลื่อมกันทีละใบ
+  const redA = reduced ? 0.22 : 0.08 + 0.58 * pulse;
 
-  // 1) ลิ้นไฟหลังตัววิญญาณ ไล่สูงต่ำไม่พร้อมกัน — ตัดไว้ในปากกระทะ
+  // 1) ไฟหลังตัว: แสงกองไฟในปากกระทะ + ลิ้นไฟวาดมือสามแบบซ้อนกัน (เดิมเป็นลิ่มสามเหลี่ยมโค้ดวาด ดูแปะ) — ตัดไว้ในปากกระทะ
   ctx.save();
-  ctx.beginPath(); ctx.rect(cx - rxPx * 1.1, mouthY - soulH * 0.8, rxPx * 2.2, soulH * 0.8); ctx.ellipse(cx, mouthY, rxPx, ryPx, 0, 0, Math.PI * 2);
+  ctx.beginPath(); ctx.rect(cx - rxPx * 1.1, mouthY - soulH * 1.3, rxPx * 2.2, soulH * 1.3); ctx.ellipse(cx, mouthY, rxPx, ryPx, 0, 0, Math.PI * 2);
   ctx.clip();
   ctx.globalCompositeOperation = 'lighter';
   const glow = ctx.createRadialGradient(cx, mouthY + ryPx * 0.5, 1, cx, mouthY + ryPx * 0.2, rxPx * 1.05);
   glow.addColorStop(0, `rgba(255,125,30,${0.5 + 0.2 * flick(t, i, 0)})`); glow.addColorStop(1, 'rgba(255,80,20,0)');
   ctx.fillStyle = glow; ctx.fillRect(cx - rxPx * 1.2, mouthY - soulH, rxPx * 2.4, soulH * 1.6 + ryPx);
-  const tongues = 7;
-  for (let k = 0; k < tongues; k++) {
-    const bx = cx + (k - (tongues - 1) / 2) * rxPx * 0.28 + Math.sin(t / 260 + k * 1.9 + i) * rxPx * 0.05;
-    const h = soulH * (0.3 + 0.4 * flick(t, i, k + 1)), w = rxPx * 0.32;
-    const by = mouthY + ryPx * 0.75, sway = Math.sin(t / 210 + k * 2.1 + i * 1.3) * w * 0.5;
-    const grad = ctx.createLinearGradient(0, by, 0, by - h);
-    grad.addColorStop(0, 'rgba(255,100,15,.8)'); grad.addColorStop(0.5, 'rgba(255,150,40,.55)'); grad.addColorStop(1, 'rgba(255,200,90,0)');
-    ctx.fillStyle = grad;
-    ctx.beginPath(); ctx.moveTo(bx - w, by);
-    ctx.quadraticCurveTo(bx - w * 0.9, by - h * 0.55, bx + sway, by - h);
-    ctx.quadraticCurveTo(bx + w * 0.9, by - h * 0.55, bx + w, by); ctx.closePath(); ctx.fill();
-  }
+  flameRow(ctx, i, { cx, baseY: mouthY + ryPx * 0.7, spread: rxPx * 0.62, n: 4, hMul: 1.15, soulH, t, alpha: 0.85, reduced, salt: 0 });
   ctx.restore();
 
-  // 2) ตัววิญญาณ ตัดที่ขอบหน้าปากกระทะ (วงรี) ท่อนล่างจึงจมอยู่ในกระทะ
+  // 2) ตัววิญญาณ ตัดที่ขอบหน้าปากกระทะ (วงรี) ท่อนล่างจึงจมอยู่ในกระทะ · แดงกะพริบ = ทับสีแดงบนสำเนาตัววิญญาณ (source-atop) ไม่ใช้ ctx.filter
   ctx.save();
   ctx.beginPath(); ctx.rect(cx - rxPx * 1.5, mouthY - soulH * 2, rxPx * 3, soulH * 2); ctx.ellipse(cx, mouthY, rxPx, ryPx, 0, 0, Math.PI * 2);
   ctx.clip();
-  drawSoulAt(x, y);
+  const m = ctx.getTransform?.(), k = (m && m.a) || 1, bw = Math.ceil(soulH * 1.4), bh = Math.ceil(soulH * 1.4);
+  const buf = bufFor(i, Math.ceil(bw * k), Math.ceil(bh * k)), bctx = buf && buf.getContext('2d');
+  const shake = reduced ? 0 : (pulse > 0.2 ? Math.sin(t / 23 + i * 5) * U * 0.0014 : 0);          // สั่นนิดตอนไฟลวก
+  if (bctx) {
+    const ox = bw / 2, oy = soulH * 1.18;
+    bctx.setTransform(1, 0, 0, 1, 0, 0); bctx.clearRect(0, 0, buf.width, buf.height); bctx.setTransform(k, 0, 0, k, 0, 0);
+    drawSoulAt(ox, oy, bctx);
+    bctx.globalCompositeOperation = 'source-atop'; bctx.fillStyle = `rgba(255,32,20,${redA.toFixed(3)})`; bctx.fillRect(0, 0, bw, bh);
+    bctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(buf, x - ox + shake, y - oy, bw, bh);
+  } else drawSoulAt(x, y);          // ไม่มีผืนวาดชั่วคราว (เช่นในเทสต์) → วาดตรง ไม่เติมแดง
   ctx.restore();
 
-  // 3) แสงกองไฟใต้ท้องกระทะกะพริบ (ทับภาพไฟเดิมแบบบวกแสง) + ประกายไฟลอยขึ้นจากปากกระทะ
+  // 3) ไฟหน้า: ลิ้นไฟเตี้ยกว่าไฟหลัง ฐานที่ขอบหน้าปากกระทะ ลอยทับท่อนล่างของวิญญาณ (ตัดไว้ในปากกระทะ)
+  ctx.save();
+  ctx.beginPath(); ctx.rect(cx - rxPx * 1.1, mouthY - soulH * 0.8, rxPx * 2.2, soulH * 0.8); ctx.ellipse(cx, mouthY, rxPx, ryPx, 0, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.globalCompositeOperation = 'lighter';
+  flameRow(ctx, i, { cx, baseY: frontPx - ryPx * 0.12, spread: rxPx * 0.8, n: 5, hMul: 0.42, soulH, t, alpha: 0.9, reduced, salt: 1 });
+  ctx.restore();
+
+  // 4) แสงกองไฟใต้ท้องกระทะกะพริบ (ทับภาพไฟเดิมแบบบวกแสง)
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
   const fyp = py(pot.fireY), fr = rxPx * 1.5;
   const bed = ctx.createRadialGradient(cx, fyp, 1, cx, fyp, fr);
   bed.addColorStop(0, `rgba(255,170,60,${0.38 + 0.3 * flick(t, i, 7)})`); bed.addColorStop(1, 'rgba(255,90,20,0)');
   ctx.fillStyle = bed; ctx.beginPath(); ctx.ellipse(cx, fyp, fr, fr * 0.45, 0, 0, Math.PI * 2); ctx.fill();
-  for (let k = 0; k < 4; k++) {
-    const life = ((t / 1400 + k * 0.25 + i * 0.13) % 1);
-    const ex = cx + Math.sin(life * 6 + k * 2 + i) * rxPx * 0.55, ey = mouthY - life * soulH * 1.1;
-    ctx.fillStyle = `rgba(255,${180 + k * 15},80,${0.85 * (1 - life)})`;
-    const s = Math.max(1.5, U * 0.004); ctx.fillRect(ex, ey, s, s);
+
+  // 5) ไอร้อนลอยขึ้นจากปากกระทะ (วงนุ่มซีดๆ จางหายไปตามความสูง) + ประกายไฟจากแผ่น embers วาดมือ
+  const hz = hazeSprite();
+  if (hz && !reduced) for (let n = 0; n < 3; n++) {
+    const life = (t / 2600 + n / 3 + i * 0.21) % 1, hx = cx + Math.sin(life * 5 + n * 2.4 + i) * rxPx * 0.45, hy = mouthY - soulH * 0.35 - life * soulH * 1.25;
+    const hs = soulH * (0.5 + life * 0.5); ctx.globalAlpha = 0.5 * Math.sin(life * Math.PI);
+    ctx.drawImage(hz, hx - hs / 2, hy - hs / 2, hs, hs);
+  }
+  ctx.globalAlpha = 1;
+  const emb = fxImg('fx-fire-embers');
+  for (let n = 0; n < 5; n++) {
+    const life = reduced ? n * 0.2 + 0.15 : ((t / 1400 + n * 0.2 + i * 0.13) % 1), ex = cx + Math.sin(life * 6 + n * 2 + i) * rxPx * 0.7, ey = mouthY + ryPx * 0.3 - life * soulH * 1.3;
+    const a = reduced ? 0.5 : 0.9 * (1 - life);
+    if (emb) { const es = Math.max(5, U * 0.016); ctx.globalAlpha = a; ctx.drawImage(emb, (n % 4) * 64, 0, 64, 64, ex - es / 2, ey - es / 2, es, es); }
+    else { ctx.fillStyle = `rgba(255,${180 + n * 15},80,${a})`; const s = Math.max(1.5, U * 0.004); ctx.fillRect(ex, ey, s, s); }
   }
   ctx.restore();
+
+  // 6) เหงื่อตก: หยดออกจากหัว/ขมับ ตกลงและจาง (เหลื่อมกันสามหยด · reduced = หยดนิ่งหยดเดียว)
+  const sw = fxImg('fx-soul-sweat-drops');
+  if (sw) {
+    ctx.save();
+    const ds = Math.max(7, U * 0.018), headY = y - soulH * 0.82;
+    for (let n = 0; n < (reduced ? 1 : 3); n++) {
+      const life = reduced ? 0.35 : (t / 900 + n / 3 + i * 0.29) % 1, side = n % 2 ? 1 : -1;
+      const dx = cx + side * soulH * (0.2 + 0.07 * n), dy = headY + life * life * soulH * 0.5;
+      ctx.globalAlpha = reduced ? 0.9 : Math.min(1, life * 6) * (1 - life * life);
+      ctx.drawImage(sw, SWEAT_CELLS[(n + i) % 3] * 128, 0, 128, 128, dx - ds / 2, dy - ds / 2, ds, ds);
+    }
+    ctx.restore();
+  }
 }
