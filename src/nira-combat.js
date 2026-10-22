@@ -8,6 +8,47 @@ export const niraCombatFrame = (pose = 'idle', elapsed = 0) => ({
   row:({idle:0,attack:1,hurt:2,heal:3})[pose] ?? 0,
   column:Math.floor(Math.max(0,elapsed) / 150) % 4,
 });
+/** O2 I: the 4x4 sheets were cut from one strip, so a pose wider than its cell leaks into the NEXT cell: frame 7 carries the tip of
+ *  frame 6's beam on its left edge, hurt-row papers land in the following frame, and so on (seen as a ghost diamond beside Nira).
+ *  Pure function over an RGBA buffer (whole sheet, alpha channel only is touched): in every cell, a piece that is not the main
+ *  figure, touches the LEFT edge, and continues the previous cell's RIGHT edge (same rows, within 2px) is erased. The previous
+ *  cell keeps its own (clipped) piece — only a redraw can restore that — and the art file itself is never modified.
+ *  Returns the number of erased pieces. */
+export function stripNeighbourLeaks(data, width, height, cols = 4, rows = 4, threshold = 8) {
+  const cw = width / cols, ch = height / rows, alphaAt = (x, y) => data[(y * width + x) * 4 + 3];
+  let erased = 0;
+  for (let r = 0; r < rows; r++) for (let c = 1; c < cols; c++) {
+    const x0 = c * cw, y0 = r * ch, seen = new Uint8Array(cw * ch), pieces = [];
+    for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
+      if (seen[y * cw + x] || alphaAt(x0 + x, y0 + y) <= threshold) continue;
+      const stack = [[x, y]], px = []; seen[y * cw + x] = 1;
+      let touchesLeft = false, minY = ch, maxY = 0;
+      while (stack.length) {
+        const [cx, cy] = stack.pop(); px.push(cx, cy);
+        if (cx === 0) touchesLeft = true;
+        if (cy < minY) minY = cy; if (cy > maxY) maxY = cy;
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+          const nx = cx + dx, ny = cy + dy;
+          if (nx < 0 || ny < 0 || nx >= cw || ny >= ch || seen[ny * cw + nx] || alphaAt(x0 + nx, y0 + ny) <= threshold) continue;
+          seen[ny * cw + nx] = 1; stack.push([nx, ny]);
+        }
+      }
+      pieces.push({ px, touchesLeft, minY, maxY, area: px.length / 2 });
+    }
+    if (pieces.length < 2) continue;
+    const main = pieces.reduce((a, b) => b.area > a.area ? b : a);
+    for (const piece of pieces) {
+      if (piece === main || !piece.touchesLeft) continue;
+      let continues = false;
+      for (let y = Math.max(0, piece.minY - 2); y <= Math.min(ch - 1, piece.maxY + 2) && !continues; y++)
+        if (alphaAt(x0 - 1, y0 + y) > threshold) continues = true;
+      if (!continues) continue;
+      for (let i = 0; i < piece.px.length; i += 2) data[((y0 + piece.px[i + 1]) * width + x0 + piece.px[i]) * 4 + 3] = 0;
+      erased++;
+    }
+  }
+  return erased;
+}
 const sheetCache = new Map();
 function loadSheet(zone) {
   const source = niraCombatSheet(zone);
@@ -20,11 +61,19 @@ function loadSheet(zone) {
       const canvas = document.createElement('canvas');
       canvas.width = image.naturalWidth / 4; canvas.height = image.naturalHeight / 4;
       const ctx = canvas.getContext('2d'), frames = [];
+      // O2 I: drop the neighbour-cell leaks (see stripNeighbourLeaks) from an in-memory copy; unreadable canvas = use the sheet as is.
+      let source = image;
+      try {
+        const whole = document.createElement('canvas'); whole.width = image.naturalWidth; whole.height = image.naturalHeight;
+        const wctx = whole.getContext('2d'); wctx.drawImage(image,0,0);
+        const pixels = wctx.getImageData(0,0,whole.width,whole.height);
+        if (stripNeighbourLeaks(pixels.data,whole.width,whole.height)) { wctx.putImageData(pixels,0,0); source = whole; }
+      } catch {}
       for(let row=0;row<4;row++) {
         frames[row] = [];
         for(let col=0;col<4;col++) {
           ctx.clearRect(0,0,canvas.width,canvas.height);
-          ctx.drawImage(image,col*canvas.width,row*canvas.height,canvas.width,canvas.height,0,0,canvas.width,canvas.height);
+          ctx.drawImage(source,col*canvas.width,row*canvas.height,canvas.width,canvas.height,0,0,canvas.width,canvas.height);
           frames[row].push(canvas.toDataURL());
         }
       }
@@ -35,7 +84,8 @@ function loadSheet(zone) {
   return sheetCache.get(source);
 }
 
-export function mountNiraCombatSprite(stage, zone, battle, phase, refit) {
+/** holdUntil (optional) = () => epoch ms before which the hurt row must not start (a full-screen cutscene card is covering the arena). */
+export function mountNiraCombatSprite(stage, zone, battle, phase, refit, holdUntil = null) {
   if (!isFrontierDuoBattle(battle)) return;
   const image = stage.querySelector('.battle-squad [data-crew-pick="nira"] img, .battle-squad [data-crew-pick="global:nira"] img');
   if (!image) return;
@@ -46,15 +96,19 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit) {
   const start = Date.now(), reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   loadSheet(zone).then(frames => {
     if (!frames || !image.isConnected) return;
-    // Nira's sheets are drawn facing left. Keep the normal allied mirror so
-    // she faces the enemies on the right.
-    image.classList.remove('face-native'); image.dataset.niraPose = pose;
+    // O2: all four regional sheets (idle / attack / hurt / heal rows) are drawn facing RIGHT, toward the enemies.
+    // The squad CSS mirrors every ally image (the older stand-ups face left), so the sheet frames must opt out
+    // of the mirror (.face-native) — otherwise her attack beam fires away from the enemy and she looks left.
+    image.classList.add('face-native'); image.dataset.niraPose = pose;
     let previous = -1;
+    const hold = pose === 'hurt' && typeof holdUntil === 'function' ? Number(holdUntil()) || 0 : 0;
     const tick = () => {
       if (!image.isConnected) return;
-      const frame = niraCombatFrame(pose,reduced ? 0 : Date.now()-start);
-      if (frame.column !== previous) {
-        const first = previous < 0; previous = frame.column;
+      const now = Date.now(), waiting = now < hold;
+      const frame = waiting ? niraCombatFrame('idle',reduced ? 0 : now-start) : niraCombatFrame(pose,reduced ? 0 : now-(hold || start));
+      const cell = frame.row * 4 + frame.column;
+      if (cell !== previous) {
+        const first = previous < 0; previous = cell;
         if(first) image.addEventListener('load',() => refit?.(),{once:true});
         image.src = frames[frame.row][frame.column];
       }

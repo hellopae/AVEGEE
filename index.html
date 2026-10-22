@@ -867,8 +867,9 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
    ข้อ E คุณเป้ 24 ก.ย. 2569: เดิม .56s เร็วเกินจะทันเห็น ยืดเป็น 1.3s ให้ตรงกับ ACTION_CUT_MS ใน ui.js
    (แตะที่ภาพข้ามได้ทันทีอยู่แล้ว ไม่ต้องรอครบก็ได้ — ผูก onclick ไว้ใน playActionCutscene) */
 .action-cutscene{position:absolute;inset:0;z-index:40;display:grid;place-items:center;overflow:hidden;
-  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both;
-  clip-path:polygon(0 4%,100% 0,100% 96%,0 100%)}
+  pointer-events:auto;cursor:pointer;background:#090407;border-radius:inherit;animation:actionCut 1.3s cubic-bezier(.2,.85,.25,1) both}
+/* O2 J: the old slanted clip-path (0 4% / 100% 0 / 100% 96% / 0 100%) cut wedges off the top and bottom edges, so the battle scene showed
+   through as a ragged gap above/below the artwork. The card is a clean rectangle now. */
 .action-cutscene img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;
   image-rendering:auto;animation:actionRush 1.3s cubic-bezier(.16,.8,.25,1) both;
   /* ภาพคัตซีนเดิมวาดยมบาทน้อยอยู่ขวา ปล่อยพลังไปซ้าย จึงพลิกให้หันเข้าหาศัตรู */
@@ -888,9 +889,10 @@ dialog#dlg.rpg:has(.combat-arena)>.modal-corner-close{display:none}
   transform:translateX(-32px);opacity:0;animation:cutTitle 1.3s cubic-bezier(.2,.8,.2,1) both}
 .action-cutscene .cutscene-title small{display:block;margin-bottom:4px;color:var(--cut-b,#ffe9a4);font:600 clamp(11px,1.4vw,16px)/1.2 var(--font-sans);letter-spacing:.06em}
 @keyframes actionCut{0%{opacity:0}8%,88%{opacity:1}100%{opacity:0}}
-@keyframes actionRush{0%{transform:scaleX(-1) scale(.95) translateX(3%)}18%{transform:scaleX(-1) scale(1)}88%,100%{transform:scaleX(-1) scale(1.035) translateX(-1%)}}
-@keyframes actionRushRight{0%{transform:scale(.95) translateX(-3%)}18%{transform:scale(1)}88%,100%{transform:scale(1.035) translateX(1%)}}
-@keyframes actionRushEnemy{0%{transform:scale(.95) translateX(3%)}18%{transform:scale(1)}88%,100%{transform:scale(1.035) translateX(-1%)}}
+/* O2 J: the push-in only ever zooms IN (never below scale 1 / never slides sideways), so no edge of the artwork or black gap shows during the move */
+@keyframes actionRush{0%{transform:scaleX(-1) scale(1)}100%{transform:scaleX(-1) scale(1.035)}}
+@keyframes actionRushRight{0%{transform:scale(1)}100%{transform:scale(1.035)}}
+@keyframes actionRushEnemy{0%{transform:scale(1)}100%{transform:scale(1.035)}}
 @keyframes speedLines{0%{opacity:0;transform:translateX(-18%) skewX(-10deg)}14%,80%{opacity:1}100%{opacity:0;transform:translateX(22%) skewX(-10deg)}}
 @keyframes cutSweep{0%,25%{opacity:0;transform:translateX(-70%)}42%{opacity:.8}62%,100%{opacity:0;transform:translateX(70%)}}
 @keyframes cutTitle{0%,10%{opacity:0;transform:translateX(-32px)}22%,84%{opacity:1;transform:none}100%{opacity:0;transform:translateX(18px)}}
@@ -2309,14 +2311,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/art.js": "./src/art.js?v=yama-live-20261015",
     "./src/i18n.js": "./src/i18n.js?v=20261020-court-ferry",
-    "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261021-interrogation-roles",
     "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=yama-live-20261015-l4a-n1",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
     "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
-    "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015",
-    "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books": "./src/yama-sword.js?v=yama-live-20261015",
-    "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015",
+    "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015-o2",
+    "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books": "./src/yama-sword.js?v=yama-live-20261015-o2",
+    "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/town-layout.js": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party",
     "./src/scene.js": "./src/scene.js?v=20261021-worker-supplies-o1",
@@ -2333,9 +2335,9 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/game.js": "./src/game.js?v=20261021-worker-supplies-o1",
     "./src/preload.js": "./src/preload.js?v=20261021-interrogation-roles",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies",
+    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies-o2",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party",
+    "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-worker-supplies-o1",
     "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-worker-supplies-o1",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
@@ -2356,7 +2358,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/frontier.js": "./src/frontier.js?v=20261021-worker-supplies-o1",
     "./src/zone-travel.js": "./src/zone-travel.js?v=20261021-interrogation-roles",
     "./src/npc-stand.js": "./src/npc-stand.js?v=20261016-boss-justice-workers-v1-o1",
-    "./src/nira-combat.js": "./src/nira-combat.js?v=20261020-border-party",
+    "./src/nira-combat.js": "./src/nira-combat.js?v=20261020-border-party-o2",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading",
     "./src/workers.js": "./src/workers.js?v=20261021-worker-supplies",
@@ -2365,7 +2367,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/final-event.js": "./src/final-event.js?v=20261016-boss-justice-workers-v1",
     "./src/town-flow.js": "./src/town-flow.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-flow.js?v=n4": "./src/town-flow.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/battle-scale.js": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6",
+    "./src/battle-scale.js": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2",
     "./src/battle-fx-tex.js": "./src/battle-fx-tex.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/battle-fx-tex.js?v=m2": "./src/battle-fx-tex.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/frontier-ambient.js": "./src/frontier-ambient.js?v=20261020-frontier-scale",
@@ -2375,6 +2377,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 }</script>
 <script type="module" src="src/preload.js?v=20261021-interrogation-roles"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-worker-supplies"></script>
+<script type="module" src="src/ui.js?v=20261021-worker-supplies-o2"></script>
 </body>
 </html>

@@ -68,6 +68,8 @@ export function drawYamaSword(ctx, style, x, feet, bodyHeight, elapsed = 0, face
   ctx.restore();
   return true;
 }
+/** O2 K: device-pixel ratio for the overlay canvases (capped so a 3x phone does not allocate a huge bitmap) */
+export const canvasScale = () => Math.min(3, Math.max(1, Number(globalThis.devicePixelRatio) || 1));
 const standingBoxes = new Map();
 function standingBox(im) {
   if (standingBoxes.has(im.src)) return standingBoxes.get(im.src);
@@ -102,7 +104,9 @@ export function mountBattleSword(stage, style, startedAt, weapon = null) {
       const box = standingBox(standing), scale = Math.min(r.width / standing.naturalWidth, r.height / standing.naturalHeight);
       const w = standing.naturalWidth * scale, h = standing.naturalHeight * scale;
       const x0 = r.left - ar.left + (r.width-w)/2, y0 = r.top - ar.top + r.height-h;
-      canvas.width = Math.ceil(w*3); canvas.height = Math.ceil(h*2);
+      // O2 K: back the canvas at device resolution (it used to be CSS px, so a Retina screen stretched it 2x and Yama looked soft next to the crew)
+      const dpr = canvasScale(); canvas.width = Math.ceil(w*3*dpr); canvas.height = Math.ceil(h*2*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
       Object.assign(canvas.style, { left:`${x0-w}px`, top:`${y0-h}px`, width:`${w*3}px`, height:`${h*2}px` });
       const flipped = getComputedStyle(standing).transform.startsWith('matrix(-1');
       const center = flipped ? 1-box.center : box.center;
@@ -129,9 +133,11 @@ export function mountBattleSwordIdle(stage, style) {
       const scale=Math.min(r.width/standing.naturalWidth,r.height/standing.naturalHeight);
       const w=standing.naturalWidth*scale,h=standing.naturalHeight*scale;
       const x0=r.left-ar.left+(r.width-w)/2,y0=r.top-ar.top+r.height-h;
-      const width=Math.ceil(w*3),height=Math.ceil(h*2);
+      const dpr=canvasScale(),width=Math.ceil(w*3*dpr),height=Math.ceil(h*2*dpr);
+      // O2 K: device-resolution backing store + high-quality downscale (the 640px frames are drawn ~3x smaller than their source)
       if(canvas.width!==width || canvas.height!==height){canvas.width=width;canvas.height=height}
-      ctx.clearRect(0,0,width,height);
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+      ctx.clearRect(0,0,w*3,h*2);
       Object.assign(canvas.style,{left:`${x0-w}px`,top:`${y0-h}px`,width:`${w*3}px`,height:`${h*2}px`});
       const flipped=getComputedStyle(standing).transform.startsWith('matrix(-1');
       if(drawYamaSwordIdle(ctx,style,w*(1+(flipped?1-box.center:box.center)),h*(1+box.bottom),h*(box.bottom-box.top))){

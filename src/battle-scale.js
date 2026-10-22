@@ -212,7 +212,7 @@ export function fitCutsceneImage(cut, img) {
     const r = cut.getBoundingClientRect();
     const dims = { cw:r.width, ch:r.height }, nat = { nw:img.naturalWidth, nh:img.naturalHeight };
     // คัตซีนยมทูต/ยักษ์ (crew-cut) ภาพทึบเต็มเฟรม → เต็มกรอบไม่มีแถบดำ ถ้าตัดขอบไม่เกินเกณฑ์ (ดู planCutsceneCover)
-    const p = (cut.classList.contains('crew-cut') && planCutsceneCover(dims, nat, box)) || planCutscene(dims, nat, box);
+    const p = planCutsceneCover(dims, nat, box) || planCutscene(dims, nat, box);   // O2 J: every solid full-frame card (Yama / crew / guard / boss), not only crew-cut
     img.style.setProperty('position', 'absolute', 'important');
     img.style.setProperty('inset', 'auto', 'important');          // ต้องมาก่อน left/top (inset เป็นตัวย่อที่ล้างค่าทั้งสี่ด้าน)
     for (const [k, v] of Object.entries({ left:p.left, top:p.top, width:p.width, height:p.height }))

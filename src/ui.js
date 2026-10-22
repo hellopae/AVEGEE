@@ -3622,14 +3622,21 @@ function openBattle(after) {
       formationMotion.previousKey=formationMotion.activeKey;
       formationMotion.activeKey=activeKey;formationMotion.changedAt=Date.now();
     }
+    // O2: Yama's own melee (sword slash / flame charge) lunges at the enemy too. Only the crew branch used to set attackKey,
+    // and the old .fig.lunge keyframes are overridden by the formation-member rules, so Yama never moved toward the target.
     formationMotion.attackKey=phase==='you'&&fxNow?.crew&&fxNow?.key!=='health'&&fxNow?.key!=='defend'
-      ? crewBattleKey(g.battleActors().find(c=>c.id===b.actorId)||b.helper||{}) : null;
+      ? crewBattleKey(g.battleActors().find(c=>c.id===b.actorId)||b.helper||{})
+      : phase==='you'&&!fxNow?.crew&&fxNow?.side==='foe'&&['atk','flameCharge'].includes(fxNow?.action) ? 'you' : null;
     const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
     fitTeam();
-    mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam);
+    mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam,()=>{const cut=dlg.querySelector('.action-cutscene');return cut?Date.now()+Math.max(0,Math.round(ACTION_CUT_MS*.88)-(Date.now()-phaseAt)):0;});
     cameraSync(b, !!(b.over || prepOn), activeKey);
     stage._battleSpriteFit.then(() => {
       if(!stage.isConnected)return;
+      // O2 A/E: when a full-screen cutscene card covers the arena (boss ultimate, Yama's/crew's special), the hurt poses used to play
+      // underneath it and were over by the time the card faded. Hold them until the card is nearly gone (it fades from ~88%).
+      const hurtHold=dlg.querySelector('.action-cutscene')?Math.max(0,Math.round(ACTION_CUT_MS*.88)-(Date.now()-phaseAt)):0;
+      const hurtStart=()=>hurtHold>0?Date.now()+hurtHold:phaseAt;
       const entries=[], hits=new Set([
         ...(b.dmg?.enemyHits||[]).filter(h=>h.damage>0).map(h=>h.id),
         ...(b.dmg?.hitActors||[]).map(a=>a.id),b.dmg?.hitActor?.id,
@@ -3640,16 +3647,16 @@ function openBattle(after) {
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
         const attacking=phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
         const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:phaseAt});
+        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:mode==='hurt'?hurtStart():phaseAt});
       }
-      if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:phaseAt});
+      if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});
       const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
       for(const root of stage.querySelectorAll('.fig.foe')){
         if(root.classList.contains('down'))continue;
         const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone);
         if(!key)continue;
         const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!attacker||id===attacker)?'attack':'idle';
-        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:phaseAt});
+        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():phaseAt});
       }
       // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
       // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)
@@ -3769,10 +3776,14 @@ function openBattle(after) {
         // K5: the stepped rows reach ~36px past the column width. Keep them clear of enemy sprites/plates/HP bars:
         // narrow the column first, then drop it below the enemy row if the actor is hemmed in.
         const widths=[...new Set([naturalW,Math.min(naturalW,168),Math.min(naturalW,132)])];
-        const ys=[top0,...hard.map(r=>r.b+6),bounds.b-menuHeight];
+        // O2: on a phone the gap between the squad and the enemy is narrower than the menu, so the column used to land on top of the
+        // enemy (hard obstacle, but nowhere else to go). Also offer "under the squad, at the left edge".
+        const narrowStage=area.width<=520;
+        const ys=[top0,...hard.map(r=>r.b+6),...(narrowStage?allySprites.map(r=>Math.round(r.b+6)):[]),bounds.b-menuHeight];
         let menuPlan=null;
         // L2: besides "right of the actor", try "right of each teammate" so the menu clears the whole squad.
         const lefts=[...new Set([left0,...allySprites.map(r=>Math.round(r.r+44))])].filter(x=>x>=left0-0.5&&x<=Math.max(8,area.width-naturalW-8));
+        if(narrowStage&&!lefts.includes(8))lefts.push(8);
         for(const w of widths)for(const x of lefts){
           const plan=planPlacement({size:{w:w+36,h:menuHeight},bounds,hard,soft,minH:menuHeight,
             candidates:ys.map(y=>({key:w,x,y,penalty:Math.abs(y-top0)*3+(naturalW-w)*40+Math.abs(x-left0)*1.5}))});
