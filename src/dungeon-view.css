@@ -12,10 +12,9 @@
 .dungeon-load{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;color:#ffe9bd;background:#211523d9;padding:10px;border-radius:8px}
 .dungeon-load[hidden]{display:none}
 
-/* Floating round icons: >= 44px touch targets in the top-left corner. */
+/* Floating round icon: >= 44px touch target in the top-left corner (P5: the back arrow is gone — walk back to the route start). */
 .dungeon-view button.dungeon-icon{position:absolute;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:3;width:48px;height:48px;min-width:48px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:24px;line-height:1;color:#ffe9bd;background:rgba(22,14,24,.55);border:1px solid rgba(231,191,110,.75);touch-action:manipulation}
-.dungeon-back{left:calc(env(safe-area-inset-left,0px) + 8px)}
-.dungeon-menu{left:calc(env(safe-area-inset-left,0px) + 64px)}
+.dungeon-menu{left:calc(env(safe-area-inset-left,0px) + 8px)}
 
 /* Progress is a small translucent chip under the minimap, not a bar. */
 .dungeon-status{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 124px);z-index:2;box-sizing:border-box;width:180px;margin:0;padding:3px 6px;border-radius:6px;font-size:11px;line-height:1.35;text-align:center;background:rgba(22,14,24,.5);pointer-events:none}

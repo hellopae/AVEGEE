@@ -30,7 +30,8 @@ import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from '.
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
-import { INTERACTION_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
+import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
+import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
 import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';
@@ -3034,8 +3035,6 @@ function openFrontierWalk(invasionKey = null) {
         <button class="frw-fab" id="frw-fab" type="button" hidden>⚔️ เริ่มต่อสู้</button>
         <button class="frw-fab" id="frw-guide" type="button" hidden>คุยกับผู้ตรวจการ · ไปดินแดนใหม่</button>
         <button class="frw-fab" id="frw-challenge" type="button" hidden></button>
-        <button class="frw-fab frw-gate" id="frw-gate" type="button" hidden>กลับเข้า${esc(gateName)}</button>
-        <button class="frw-fab" id="frw-exit" type="button" hidden>ออกนอกชายแดน · เส้นทางโซน 2</button>
         <button class="frw-fab" id="frw-nira" type="button" hidden>📋 คุยกับนิรา</button></div>
       <div class="frw-res" aria-label="ทรัพยากร">
         ${[['img/ui/icon-coin.png',Math.round(g.coin),'เบี้ยกรรม'],['img/item-food.png',Math.round(g.food),'เสบียง'],['img/ui/icon-justice.png',Math.round(g.order),'ระเบียบ'],['img/ui/icon-skull.png',g.karma.toFixed(1),'กรรม']].map(([src,value,name])=>`<span title="${name}"><img src="${src}" alt="${name}"><b>${value}</b></span>`).join('')}
@@ -3055,16 +3054,30 @@ function openFrontierWalk(invasionKey = null) {
   openDlg('frontier-map-dialog');
   myGen = dlgGen;
   const fab = dlg.querySelector('#frw-fab');
-  const gate = dlg.querySelector('#frw-gate');
   const nira = dlg.querySelector('#frw-nira');
   const challenge = dlg.querySelector('#frw-challenge');
   const guide=dlg.querySelector('#frw-guide');
-  const exit = dlg.querySelector('#frw-exit');
-  if(!openDungeonRoutes(g).length)exit.textContent='ทางนอกชายแดน · ยังไม่เปิด';
-  else if(g.zone!=='th')exit.textContent='ออกนอกชายแดน · ดินแดนถัดไป';
+  // P5: ไม่มีปุ่ม "กลับเข้าโซน" / "ออกนอกชายแดน" — เดินถึงลูกศรบนพื้น (ประตูบน / ทางล่าง) แล้วออกเอง (src/frontier.js)
+  // ป้ายบนพื้นใช้ข้อความเดิมของปุ่มทุกคำ
+  const routeOpen = () => openDungeonRoutes(g).length > 0;
+  const exitLabel = !routeOpen() ? 'ทางนอกชายแดน · ยังไม่เปิด' : g.zone !== 'th' ? 'ออกนอกชายแดน · ดินแดนถัดไป' : 'ออกนอกชายแดน · เส้นทางโซน 2';
   const cv2 = dlg.querySelector('#frw-cv');
 
-  const FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, gate, nira, challenge, exit, guide, invasionKey });
+  let FW = null;
+  const leaveToZone = () => { FW.destroy(); dlg.close(); };
+  const leaveToRoute = () => {
+    if(g.bossGuideWaiting?.()){askGuide();return;}
+    const route=openDungeonRoutes(g)[0];
+    if(!route){
+      FW.destroy();
+      modal('<h2>ทางนอกชายแดนยังไม่เปิด</h2><p>ผ่านภารกิจประจำโซนและการทดสอบเทวดาก่อน แล้วจึงออกไปตามหาบอสในถ้ำได้</p><button data-close>กลับด่านชายแดน</button>');
+      const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);
+      return;
+    }
+    if(dungeonStatus(g)||g.beginBorderDungeon(route.to)){FW.destroy();openDungeon();}
+  };
+  FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, nira, challenge, guide, invasionKey,
+    onGate: leaveToZone, onExit: leaveToRoute, gateLabel: `กลับเข้า${gateName}`, exitLabel, exitOpen: routeOpen });
   FW.start();
   const menu = fn => {
     const zone=g.zone;
@@ -3117,24 +3130,8 @@ function openFrontierWalk(invasionKey = null) {
     });
   };
 
-  // กด "กลับแผนที่โซน" แค่ปิดกล่อง ไม่ล้างสนามรบ — เดินออกไปทำธุระอื่น (ป้อนข้าวปั้น/ซื้อของ)
-  // แล้วกลับมาสู้ต่อได้โดยไม่ต้องเริ่มใหม่ ตัวที่ปราบไปแล้วก็ไม่ฟื้นคืนชีพ (ข้อ 8 ในใบงานอนุญาตแค่
-  // "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่กดปุ่มนี้)
-  exit.onclick = () => {
-    if(g.bossGuideWaiting?.()){askGuide();return;}
-    const route=openDungeonRoutes(g)[0];
-    if(!route){
-      FW.destroy();
-      modal('<h2>ทางนอกชายแดนยังไม่เปิด</h2><p>ผ่านภารกิจประจำโซนและการทดสอบเทวดาก่อน แล้วจึงออกไปตามหาบอสในถ้ำได้</p><button data-close>กลับด่านชายแดน</button>');
-      const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);
-      return;
-    }
-    if(dungeonStatus(g)||g.beginBorderDungeon(route.to)){FW.destroy();openDungeon();}
-  };
-  gate.onclick = () => {
-    FW.destroy();
-    dlg.close();
-  };
+  // P5: เดินออกประตูบน = ปิดกล่องกลับแผนที่โซน แค่ปิดกล่อง ไม่ล้างสนามรบ — ออกไปทำธุระอื่นแล้วกลับมาสู้ต่อได้ ตัวที่ปราบไปแล้วไม่ฟื้น
+  // (ข้อ 8 ในใบงานเดิมอนุญาตแค่ "ออกจากเกมกลางชายแดนแล้วกลับมา = เริ่มใหม่ได้" เป็นข้อยกเว้นตอนโหลดหน้าใหม่ ไม่ใช่ทุกครั้งที่ออก)
   nira.onclick = () => {
     FW.destroy();
     dlg.close();
@@ -5043,7 +5040,7 @@ function openStation(k, emergency = false) {
     const box=dlg.querySelector('#st-arch'),hud=dlg.querySelector('.st-hud');if(!box)return;
     box.hidden=!on;hud?.classList.toggle('archive-open',on);R?.lock(on);
     // Remove obscured HUD controls from keyboard navigation while the modal owns focus.
-    const covered=dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls,#st-exit');
+    const covered=dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls');
     covered.forEach(el=>el.inert=on);
     if(!on){archiveFocus?.focus();return;}
     archiveFocus=document.activeElement;
@@ -5257,7 +5254,6 @@ function openStation(k, emergency = false) {
   dlg.innerHTML = `
     <div class="hud st-hud zone1-room" data-room="${k}">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
-        <button id="st-exit" class="st-exit" hidden>ออกไปแผนที่</button>
         <div class="st-arch" id="st-arch" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
         <div class="st-npc" id="st-npc"></div>${k === 'krata' ? '<div id="st-actions"></div>' : ''}</div>
@@ -5303,29 +5299,17 @@ function openStation(k, emergency = false) {
   if (emergency) R.setSleep(true);
   let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping();
   const exit = roomExit(k, g.zone, room);
-  const exitBtn = dlg.querySelector('#st-exit');
-  if (exitBtn) exitBtn.onclick = () => {
-    if (!mgOpen && nearRoomExit(R.pos(), exit)) dlg.close();
-  };
+  // P5: ไม่มีปุ่ม "ออกไปแผนที่" แล้ว — เดินถึงวงทางออกบนพื้น (บันไดล่างของห้อง) = ออกเลย
+  // latch: เข้าห้องแล้วยืนตรงทางออกอยู่ (ห้องส่วนใหญ่เกิดที่ทางออกเอง) ไม่เด้งออก ต้องเดินออกจากวงก่อน
+  // ไม่ออกระหว่าง: มินิเกม/หอทะเบียน (R.isLocked) · ฝึก · หลับ · ต่อสู้
+  R.exitSpot = { x: exit.x, y: exit.y, reach: exit.reach ?? ROOM_EXIT_REACH, label: 'ออกไปแผนที่' };
+  let exitLatched = true;
   let wasMirrorNear=false;
   R.onFrame = near => {
-    if (exitBtn) {
-      exitBtn.hidden = mgOpen || R.sleeping() || !nearRoomExit(R.pos(), exit);
-      const [left, top] = R.project(R.pos());
-      const width = cv2.getBoundingClientRect().width;
-      const bw = exitBtn.offsetWidth, bh = exitBtn.offsetHeight, half = bw / 2 + 8;
-      const clampX = x => Math.max(half, Math.min(width - half, x));
-      // ห้องที่จอแคบ (390px) ฉากเตี้ย — ปุ่ม 44px เหนือหัวยมบาทไปทับวงทองจุดฝึก/จุดลงมือ ทำให้แตะเดินไปจุดนั้นไม่ได้
-      // ลองเลื่อนไปซ้าย/ขวาข้างตัวละครก่อน แล้วค่อยลอยเหนือวงทอง (จอกว้างที่ไม่ทับยังอยู่ที่เดิมเหนือหัวเหมือนเดิม)
-      const [actX, actY] = R.project(room.act);
-      const base = Math.max(bh + 8, top - 42);
-      const covers = (x, bottom) => Math.abs(x - actX) < bw / 2 + 36 && bottom > actY - 20 && bottom - bh < actY + 20;
-      const spots = [[clampX(left), base], [clampX(left - bw / 2 - 56), base], [clampX(left + bw / 2 + 56), base],
-        [clampX(left), Math.max(bh + 8, actY - 30)]];
-      const [bx, by] = spots.find(([x, y]) => !covers(x, y)) || spots[0];
-      exitBtn.style.left = `${bx}px`;
-      exitBtn.style.top = `${k === 'tea' ? Math.min(cv2.getBoundingClientRect().height - 8, top + bh + 24) : by}px`;
-    }
+    const leave = exitStep({ at: nearRoomExit(R.pos(), exit), latched: exitLatched,
+      blocked: mgOpen || R.isLocked() || R.sleeping() || !!g.battle || !!trainingQuit || !!minigameQuit });
+    exitLatched = leave.latched;
+    if (leave.fire) { dlg.close(); return; }
     // นั่งอยู่ — บารมีขยับทุกเฟรมจริง (room.js เขียนตรงที่ g.hp โดยไม่ผ่าน onChange/refresh()
     // เพราะตั้งใจให้ฟื้นต่อได้แม้เกมพักอยู่กับกล่องโมดัล — ดู room.js setSit) อัปเดตเฉพาะตัวเลข
     // แบบเบา ๆ ไม่วาดทั้งแผงใหม่ทุกเฟรม แต่ต้องอัปเดต "ทั้งสองที่" พร้อมกัน:

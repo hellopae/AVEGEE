@@ -149,15 +149,15 @@ test('3. mapInteractions ส่งตำแหน่งปุ่มของส�
 // ---------- ข้อ 4: ฉากชายแดน ปุ่มกลับโซนเหลือปุ่มเดียว สีทอง ขึ้นเมื่อเข้าใกล้ทางออก ----------
 import { readFileSync } from 'node:fs';
 import { nearFrontierGate,nearFrontierExit } from '../src/frontier.js';
-test('4. ฉากชายแดน: ไม่มีแถบกลับโซนถาวร เหลือปุ่ม #frw-gate ปุ่มเดียว สีทอง (token --gold) และปุ่มโผล่เฉพาะตอนเข้าใกล้ทางออก', () => {
+test('4. ฉากชายแดน: P5 — ไม่มีปุ่ม #frw-gate / #frw-exit แล้ว เดินถึงวงบนพื้นแล้วออกเอง (วงเดิมของปุ่มยังเป็นจุดเดียวกัน)', () => {
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  assert.equal((ui.match(/กลับเข้า\$\{esc\(gateName\)\}/g) || []).length, 1, 'ข้อความ "กลับเข้า<โซน>" ต้องมีปุ่มเดียว');
-  assert.match(ui,/id="frw-exit" type="button" hidden/,'ทางออกนอกชายแดนแสดงเมื่อเดินเข้าใกล้เท่านั้น');
+  assert.ok(!/id="frw-gate"|id="frw-exit"/.test(ui), 'ไม่มีปุ่มกลับโซน/ออกนอกชายแดนใน markup');
+  assert.ok(!/\.frw-fab\.frw-gate|\.frw-exit\{/.test(html), 'CSS ของปุ่มที่ตัดแล้วถูกลบ');
+  assert.match(ui, /onGate: leaveToZone, onExit: leaveToRoute/, 'ฉากชายแดนส่ง callback ออกให้ makeFrontierWalk');
   assert.equal(nearFrontierExit({x:.485,y:.35}),false);assert.equal(nearFrontierExit({x:.5,y:.9}),true);
-  assert.match(html, /\.frw-fab\.frw-gate\{background:var\(--gold\)/);
-  assert.equal(nearFrontierGate({ x: .485, y: .35 }), false, 'จุดเริ่มเดินยังไม่ใกล้ทางออก → ไม่มีปุ่ม');
-  assert.equal(nearFrontierGate({ x: .5, y: .25 }), true, 'เดินเข้าใกล้ประตูบน → ปุ่มขึ้น');
+  assert.equal(nearFrontierGate({ x: .485, y: .35 }), false, 'จุดเริ่มเดินยังไม่ใกล้ทางออก');
+  assert.equal(nearFrontierGate({ x: .5, y: .25 }), true, 'เดินเข้าใกล้ประตูบน (ระยะเดิม)');
 });
 
 // ---------- ข้อ 5: ไอคอนอีเวนต์ปีศาจบุก = รูปปีศาจ ไม่ใช่วิญญาณขาว ----------

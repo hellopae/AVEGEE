@@ -51,12 +51,13 @@ const toGate=g=>{
   const p=view.dungeonPoint(1,a.route);a.position={x:p[0],y:p[1]};return a;
 };
 
-test('markup: the route is one full-bleed map with only floating controls (no header, footer or gate button)',()=>{
+test('markup: the route is one full-bleed map with only floating controls (no header, footer, gate button or back button)',()=>{
   const js=read('../src/dungeon-view.js'),css=read('../src/dungeon-view.css').replace(/\/\*[\s\S]*?\*\//g,'');
   for(const gone of ['dungeon-toolbar','<footer','</footer>','dungeon-interact','data-action="overview"','ดูทั้งเส้นทาง'])
     assert.ok(!js.includes(gone),`dungeon-view.js no longer contains ${gone}`);
   for(const gone of ['.dungeon-toolbar','footer','.dungeon-interact'])assert.ok(!css.includes(gone),`dungeon-view.css no longer styles ${gone}`);
-  assert.match(js,/class="dungeon-icon dungeon-back" data-action="leave" aria-label="กลับด่านชายแดน"/);
+  // P5: the ← back button is gone - going back is walking onto the route start (tests/p5-map-exits.test.mjs)
+  assert.ok(!js.includes('dungeon-back')&&!js.includes('data-action="leave"'),'no back button in the route shell');
   assert.match(js,/data-action="menu"/);
   assert.equal((js.match(/root\.innerHTML=dungeonShell\(/g)||[]).length,2,'wilderness and legacy views share the shell');
   // Touch targets, safe areas, no colour frame, no duplicate corner X.

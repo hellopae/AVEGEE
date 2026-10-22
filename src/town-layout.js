@@ -65,6 +65,12 @@ export const TOWN_UPPER_BRIDGE_LANDING = [[1380,480],[1510,490],[1510,550],[1380
 export const TOWN_LAVA_STAIRS = [[1018,954],[1095,950],[1500,995],[1505,1072],[1434,1092],[1120,1142],[1044,1115],[1004,1018]];
 export const TOWN_LAVA_STAIR_LANDING = [[1018,954],[1095,955],[1156,1010],[1112,1095],[1042,1082],[1004,1018]];
 export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,1178],[1432,1160],[1480,1218],[1250,1250],[1060,1196],[790,1196],[700,1172]];
+// P5: the cobbled east half of the cauldron (krata) courtyard.  The owner-reference mask (town-owner-walkmask.js) paints it
+// blocked as one big lobe between the cauldron's own footprint and the torch ring, so Yama stopped dead at the torch line and the
+// east bridge could not be entered from the plaza (owner image 10, 22 Oct).  The painting shows plain open pavement there.
+// Only the pavement is opened: the west edge stays 12 units clear of the cauldron's masked footprint (x <= 570), the cauldron
+// body itself is still solid through the station blocks, and torch/prop colliders still apply.
+export const TOWN_CAULDRON_COURT = [[582,412],[686,412],[696,444],[696,492],[712,502],[712,596],[516,596],[516,560],[582,556]];
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
@@ -79,7 +85,7 @@ export const townFloorAt = (x,y) => {
   if(interactionPads.some(s=>(x-s.x)**2+(y-s.y)**2<48**2))return true;
   if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
     ||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING)
-    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD))return true;
+    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD)||townInPolygon(x,y,TOWN_CAULDRON_COURT))return true;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.

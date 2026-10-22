@@ -76,12 +76,92 @@ export function drawContactAO(ctx, x, y, rx, ry, alpha = 1) {
 // ---------- casters ----------
 // caster: {kind:'sprite', art, x, y (foot), left, top (offset of the drawn box from the foot), w, h, flip, lift}
 //         {kind:'post', x, y, h, crown}   // lamp / torch / palm placeholders still drawn in code
-function spriteCaster(art, x, y, w, h, flip, lift) {   // anchor the shadow on the visible base, not on the anchor point
+function spriteCaster(art, x, y, w, h, flip, lift, contour = false) {   // anchor the shadow on the visible base, not on the anchor point
   const b = baseOf(art);
   // the cast shadow starts a little INSIDE the sprite's lowest rows (SINK) so it is attached to the object, not under it
   const off = ((flip ? 1 - b.cx : b.cx) - .5) * w;
-  return { kind:'sprite', art, x:x + off, y:y - h * (1 - b.b) - h * SINK, left:-w / 2 - off, top:-h * b.b + h * SINK, w, h, flip, lift };
+  return { kind:'sprite', art, x:x + off, y:y - h * (1 - b.b) - h * SINK, left:-w / 2 - off, top:-h * b.b + h * SINK, w, h, flip, lift, contour };
 }
+
+// ---------- P5: buildings cast from their whole ground contour ----------
+// A building is painted in 3/4 view: its footprint is a diamond, so the lowest pixel of each COLUMN of the sprite differs
+// (the right wall meets the ground well above the front corner).  Rooting the whole shadow at the single lowest point (the old
+// spriteCaster root) left a strip of bare pavement between the right wall and its shadow - the building looked like it floated
+// (owner image 6, 22 Oct).  Here every column casts from its own lowest opaque pixel (contact line) instead.
+// Only buildings (stations, houses) use it; trees/rocks keep the single trunk root (their canopy columns are not ground contact).
+const CONTOUR_SINK = .022;              // fraction of sprite height the contact line sits inside the lowest rows
+const contourProfiles = new WeakMap();  // art -> Float32Array of per-column lowest opaque row (0..1 of height), 192 columns
+function contourProfile(art) {
+  let p = contourProfiles.get(art); if (p) return p;
+  const s = silhouette(art, 'tight'), cw = s.width, ch = s.height;
+  let d; try { d = s.getContext('2d', { willReadFrequently:true }).getImageData(0, 0, cw, ch).data; } catch { d = null; }
+  const raw = new Float32Array(cw).fill(-1);
+  if (d) for (let x = 0; x < cw; x++) for (let y = ch - 1; y >= 0; y--) if (d[(y * cw + x) * 4 + 3] > 40) { raw[x] = (y + 1) / ch; break; }
+  // gaps (spires, doorways) borrow the nearest column's contact; a +-2 column maximum keeps hairline columns attached
+  p = new Float32Array(cw);
+  let any = -1; for (let x = 0; x < cw; x++) if (raw[x] >= 0) { any = raw[x]; break; }
+  let last = any;
+  for (let x = 0; x < cw; x++) { if (raw[x] >= 0) last = raw[x]; p[x] = raw[x] >= 0 ? raw[x] : last; }
+  const out = new Float32Array(cw);
+  for (let x = 0; x < cw; x++) { let m = 0; for (let k = -2; k <= 2; k++) m = Math.max(m, p[Math.min(cw - 1, Math.max(0, x + k))]); out[x] = m; }
+  contourProfiles.set(art, out); return out;
+}
+const BAKE = .6;                        // baked shadow pixels per world unit
+const contourCache = new WeakMap();     // art -> Map(key -> baked | null)
+/** Pure core of the contour shadow (exported for tests): inverse-maps every shadow pixel to the sprite.
+ *  a shadow pixel (x,y) relative to the foot comes from the sprite point (X, yb(X) - v) with v = (y - yb(X)) / ky, X = x - kx*v,
+ *  where yb(X) is the ground-contact row of the sprite column under X (no per-column strips, so no hatching).
+ *  alpha = silhouette alpha (sw*sh, 0..255) · prof = per-column contact (0..1 of height, any column count) ·
+ *  c = {left, top, w, h, flip, lift} foot-relative sprite box · returns {W,H,x,y,data (RGBA, white)} in bake pixels. */
+export function contourShadowPixels(alpha, sw, sh, prof, c, bake = BAKE) {
+  const pw = prof.length, kx = SUN.kx * c.lift, ky = SUN.ky * c.lift, sink = c.h * CONTOUR_SINK;
+  const cols = new Float32Array(sw); let minY = 1e9, maxY = -1e9;
+  for (let i = 0; i < sw; i++) {
+    const k = Math.min(pw - 1, Math.max(0, Math.floor((c.flip ? 1 - (i + .5) / sw : (i + .5) / sw) * pw)));
+    cols[i] = c.top + prof[k] * c.h - sink; minY = Math.min(minY, cols[i]); maxY = Math.max(maxY, cols[i]);
+  }
+  const ybAt = X => { const f = Math.min(sw - 1, Math.max(0, (X - c.left) / c.w * sw - .5)), i = Math.floor(f), j = Math.min(sw - 1, i + 1), t = f - i;
+    return cols[i] * (1 - t) + cols[j] * t; };
+  const x0 = c.left, x1 = c.left + c.w + kx * c.h, y0 = minY, y1 = maxY + ky * c.h + 2;
+  const W = Math.max(2, Math.ceil((x1 - x0) * bake)), H = Math.max(2, Math.ceil((y1 - y0) * bake));
+  const data = new Uint8ClampedArray(W * H * 4);
+  const alphaAt = (fx, fy) => { // bilinear alpha of the silhouette at fractional pixel (fx,fy)
+    if (fx < 0 || fy < 0 || fx > sw - 1 || fy > sh - 1) return 0;
+    const ix = Math.floor(fx), iy = Math.floor(fy), tx = fx - ix, ty = fy - iy, jx = Math.min(sw - 1, ix + 1), jy = Math.min(sh - 1, iy + 1);
+    const a = alpha[iy * sw + ix], b = alpha[iy * sw + jx], d = alpha[jy * sw + ix], e = alpha[jy * sw + jx];
+    return (a * (1 - tx) + b * tx) * (1 - ty) + (d * (1 - tx) + e * tx) * ty;
+  };
+  for (let py = 0; py < H; py++) for (let px = 0; px < W; px++) {
+    const xw = x0 + (px + .5) / bake, yw = y0 + (py + .5) / bake;
+    let X = xw, v = 0;
+    for (let it = 0; it < 4; it++) { v = (yw - ybAt(X)) / ky; X = xw - kx * v; }
+    if (v < 0 || X < c.left || X > c.left + c.w) continue;
+    const Y = ybAt(X) - v;                               // foot-relative sprite row
+    if (Y < c.top || Y > c.top + c.h) continue;
+    let fx = (X - c.left) / c.w * sw - .5; if (c.flip) fx = sw - 1 - fx;
+    const a = alphaAt(fx, (Y - c.top) / c.h * sh - .5);
+    if (a <= 0) continue;
+    const o = (py * W + px) * 4; data[o] = data[o + 1] = data[o + 2] = 255; data[o + 3] = a;
+  }
+  return { W, H, x:x0, y:y0, data, bake };
+}
+function bakeContour(c, level) {
+  const key = [level, c.w | 0, c.h | 0, c.flip ? 1 : 0, c.lift, c.left | 0, c.top | 0].join('|');
+  let per = contourCache.get(c.art); if (!per) { per = new Map(); contourCache.set(c.art, per); }
+  if (per.has(key)) return per.get(key);
+  let baked = null;
+  try {
+    const s = silhouette(c.art, level), sw = s.width, sh = s.height;
+    const px = s.getContext('2d', { willReadFrequently:true }).getImageData(0, 0, sw, sh).data;
+    const alpha = new Uint8Array(sw * sh); for (let i = 0; i < alpha.length; i++) alpha[i] = px[i * 4 + 3];
+    const r = contourShadowPixels(alpha, sw, sh, contourProfile(c.art), c);
+    const cv = document.createElement('canvas'); cv.width = r.W; cv.height = r.H;
+    const p = cv.getContext('2d'), img = p.createImageData(r.W, r.H); img.data.set(r.data); p.putImageData(img, 0, 0);
+    baked = { canvas:cv, x:r.x, y:r.y, w:r.W / BAKE, h:r.H / BAKE };
+  } catch { baked = null; }
+  per.set(key, baked); return baked;
+}
+
 // propArt(p) = the scenery's own resolver (town-scenery.js: tree / rock / torch-pillar sprite), so shadow == what is drawn
 const treeArt = (p, resolve, propArt) => propArt ? propArt(p) : (p.key ? (resolve(p.key) || (p.kind === 'tree' ? resolve('town-tree-th') : null)) : null);
 export function listCasters(resolve, houseKey, stations, propArt) {
@@ -100,13 +180,13 @@ export function listCasters(resolve, houseKey, stations, propArt) {
   const houseFallback = resolve('town-house-th');
   TOWN_HOUSE_SITES.forEach((s, i) => {
     const art = resolve(houseKey(i)) || houseFallback; if (!art) return;
-    out.push(spriteCaster(art, s.x, s.y, s.w, s.h, !!s.flip, 1));
+    out.push(spriteCaster(art, s.x, s.y, s.w, s.h, !!s.flip, 1, true));
   });
   for (const d of stations) {
     const b = stationBox(d); if (!b) continue;
     // Full facade silhouette: the former .48 lift cut the roof and crane shadows in half,
     // leaving the large punishment buildings looking detached from their ground plane.
-    out.push(spriteCaster(b.im,b.x+b.w/2,b.y+b.h,b.w,b.h,!!b.flip,.92));
+    out.push(spriteCaster(b.im,b.x+b.w/2,b.y+b.h,b.w,b.h,!!b.flip,.92,true));
   }
   const dais = resolve('town-judgment-th');
   if (dais) {   // a flat platform: its sprite height is mostly ground, so it throws a short shadow
@@ -124,6 +204,8 @@ function paintCaster(ctx, c, level, fill) {
     if (c.crown) { ctx.beginPath(); ctx.ellipse(tx, ty, c.crown, c.crown * .38, 0, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore(); return;
   }
+  const baked = c.contour ? bakeContour(c, level) : null;
+  if (baked) { ctx.drawImage(baked.canvas, c.x + baked.x, c.y + baked.y, baked.w, baked.h); return; }
   const s = silhouette(c.art, level);
   ctx.save();
   // (u,v) with v up from the foot -> (x + kx*|v|, y + ky*|v|): sheared and flattened, mirrored vertically
@@ -198,6 +280,12 @@ export function drawTownShadows(ctx) {
 // Silhouettes are baked white; tint them dark with one small scratch canvas per level instead of per-sprite colour variants.
 const dark = new WeakMap();
 function paintTinted(ctx, c, level) {
+  const b = c.contour ? bakeContour(c, level) : null;
+  if (b) {
+    if (!b.dark) { const d = document.createElement('canvas'); d.width = b.canvas.width; d.height = b.canvas.height; const p = d.getContext('2d');
+      if (p) { p.drawImage(b.canvas, 0, 0); p.globalCompositeOperation = 'source-in'; p.fillStyle = '#0e081a'; p.fillRect(0, 0, d.width, d.height); } b.dark = d; }
+    ctx.drawImage(b.dark, c.x + b.x, c.y + b.y, b.w, b.h); return;
+  }
   let per = dark.get(c.art); if (!per) { per = {}; dark.set(c.art, per); }
   if (!per[level]) {
     const s = silhouette(c.art, level), d = document.createElement('canvas'); d.width = s.width; d.height = s.height;

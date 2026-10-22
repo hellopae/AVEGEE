@@ -25,6 +25,7 @@ import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } 
 import { t as tr } from './i18n.js';
 import { ragePoseSrc } from './battle-facing.js';
 import { drawContactShadow } from './scene-style.js';
+import { drawExitMarker } from './exit-marker.js';
 
 const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
@@ -452,6 +453,11 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       ctx.font = `${Math.max(12,U*.023)}px sans-serif`; ctx.textAlign = 'center';
       ctx.fillStyle = '#ffe29a'; ctx.fillText('จุดฝึก',px(x),py(y)+U*.045);
     }
+    // P5 — จุดออกบนพื้น: ไม่มีปุ่มแล้ว เดินถึงวงนี้ = ออกจากห้อง (ui.js ตั้ง api.exitSpot = {x,y,reach,label})
+    if (api.exitSpot && !lying) {
+      const e = api.exitSpot, r = e.reach ?? 0.10;
+      drawExitMarker(ctx, px(e.x), py(e.y), { rx: r * box.w, ry: r * box.h, dir: [0, 1], u: U, t, label: e.label || '', alpha: 0.9, reduced: prefersReducedMotion() });
+    }
     const chains = (x,y) => {
       if(def.k !== 'tarang') return;
       ctx.save();ctx.strokeStyle='#a7a4a1';ctx.lineWidth=Math.max(1,U*.0018);
@@ -737,6 +743,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     st: null,               // สถานีที่กำลังเปิดอยู่ (ผู้เรียกอัปเดตให้)
     onAct: null,            // กดเว้นวรรคตอนยืนถึง
     onFrame: null,          // แจ้งผู้เรียกว่ายืนถึงหรือยัง (ไว้เปิด/ปิดปุ่ม)
+    exitSpot: null,         // P5: จุดออก {x,y,reach,label} — วาดลูกศรบนพื้น (ui.js เป็นคนตั้งและเป็นคนตัดสินว่าออก)
+    isLocked: () => locked, // มินิเกม/หอทะเบียนเปิดทับอยู่ — ห้ามออกอัตโนมัติ
     onCollect: null,        // เก็บของในห้องแล้ว ให้แผงข้อมูลด้านข้างวาดใหม่
     inReach, inTrainingReach,
     mirrorPlaced:null,

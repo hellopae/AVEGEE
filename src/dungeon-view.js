@@ -5,6 +5,7 @@ import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
+import { exitStep, drawExitMarker } from './exit-marker.js';
 import { MOB } from './data.js';
 import { CHASE, newChase, stepChase, chaseAlerted, chaseInReach } from './dungeon-chase.js?v=l5';
 
@@ -142,14 +143,34 @@ export function dungeonChaseReach(g) {
   const t=geometry(s.route.id).total;
   return chaseInReach(dungeonCheckpointProgress(s.route.id)[s.checkpoint]*t,dungeonProjection(p,1,s.route.id).progress*t);
 }
-/** O1: the route is one full-bleed map. Only floating controls remain: back, bag, minimap, status chip and the two talk buttons. */
-const dungeonShell=guideLabel=>'<div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p><button type="button" class="dungeon-icon dungeon-back" data-action="leave" aria-label="กลับด่านชายแดน">←</button><button type="button" class="dungeon-icon dungeon-menu" data-action="menu" aria-label="เมนู · กระเป๋า">☰</button><p class="dungeon-status" aria-live="polite"></p><div class="dungeon-actions"><button type="button" class="dungeon-guide" hidden>'+guideLabel+'</button><button type="button" class="dungeon-challenge" hidden>ประลองบอสชายแดนในถ้ำ</button></div></div>';
+/** O1/P5: the route is one full-bleed map. Only floating controls remain: bag, minimap, status chip and the two talk buttons.
+ *  Going back to the frontier post is done by walking back onto the route start (arrow on the ground), not by a button. */
+const dungeonShell=guideLabel=>'<div class="dungeon-stage"><canvas tabindex="0" aria-label="เส้นทางดันเจี้ยน เดินด้วย WASD หรือปุ่มลูกศร หรือคลิกจุดหมาย"></canvas><canvas class="dungeon-minimap" aria-label="แผนที่ย่อเส้นทาง"></canvas><p class="dungeon-load" role="status">กำลังโหลดฉากชายแดน…</p><button type="button" class="dungeon-icon dungeon-menu" data-action="menu" aria-label="เมนู · กระเป๋า">☰</button><p class="dungeon-status" aria-live="polite"></p><div class="dungeon-actions"><button type="button" class="dungeon-guide" hidden>'+guideLabel+'</button><button type="button" class="dungeon-challenge" hidden>ประลองบอสชายแดนในถ้ำ</button></div></div>';
 /** Reaching the gate enters the next land by itself; the latch needs a step away before it can fire again. */
 export function dungeonExitArrival(g,latched,{cut=0,destroyed=false}={}) {
   const s=dungeonStatus(g),at=!!(s?.ready&&dungeonAtExit(g));
   if(!at)return {latched:false,enter:false};
   const idle=!latched&&!destroyed&&cut<=0&&!g.battle&&!g.pendingRecovery&&!s.pending;
   return {latched:latched||idle,enter:idle};
+}
+/** P5: the route start (the frontier-post side) is an exit like the far gate: walking back onto it returns to the post, no button.
+ *  Same latch as the gate — arriving at the start (the route always begins there) does not bounce out; step away first. */
+export const DUNGEON_START_REACH=.026;
+export function dungeonAtStart(g) {
+  const s=dungeonStatus(g),p=activePosition(g);
+  if(!s||!p)return false;
+  const a=dungeonPoint(0,s.route.id);
+  return Math.hypot(p[0]-a[0],p[1]-a[1])<=DUNGEON_START_REACH;
+}
+export function dungeonStartDeparture(g,latched,{cut=0,destroyed=false}={}) {
+  const s=dungeonStatus(g);
+  const r=exitStep({at:!!(s&&dungeonAtStart(g)),latched,blocked:destroyed||cut>0||!!g.battle||!!g.pendingRecovery||!!s?.pending});
+  return {latched:r.latched,leave:r.fire};
+}
+/** Ground arrow at the route start (dir = backwards along the road). */
+function drawStartMarker(ctx,routeId,screen,reach,w,cam,t,reduced){
+  const {corridor}=geometry(routeId),a=corridor[0],b=corridor[1],p=screen(a);
+  drawExitMarker(ctx,p[0],p[1],{rx:reach*w.w*cam.scale,ry:reach*w.h*cam.scale,dir:[a[0]-b[0],a[1]-b[1]],u:Math.min(w.w,w.h)*cam.scale,t,label:'กลับด่านชายแดน',alpha:.9,reduced});
 }
 /** Mount inside a dialog/panel. All city player coordinates remain untouched. */
 function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{},onGuide=()=>{}}={}) {
@@ -184,6 +205,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const save=()=>{remember();if(dirty){g.save?.();dirty=false;}};
   remember();
   let exitLatch=!!(dungeonStatus(g)?.ready&&dungeonAtExit(g));// standing at the gate on mount (reload / failed arrival) must step away first
+  let startLatch=true;// the route begins on the start arrow: no bounce back to the post until Yama steps away and returns
   const syncBackground=status=>{
     const src=dungeonBackground(g.zone,status.route.id,status.checkpoint);
     if(src===backgroundSrc)return;
@@ -262,6 +284,9 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     // O1: reaching the gate enters the land by itself (no button). Same reach the button used to need.
     const arrival=dungeonExitArrival(g,exitLatch,{destroyed});exitLatch=arrival.latched;
     if(arrival.enter){target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onArrival(status.route.to);});}
+    // P5: walking back onto the route start returns to the frontier post (the old ← button is gone).
+    const back=dungeonStartDeparture(g,startLatch,{destroyed:destroyed||arrival.enter||encounterDispatch});startLatch=back.latched;
+    if(back.leave){target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onLeave();});}
     const text=status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`ผ่านด่าน ${status.defeated.length}/3 · ปีศาจลาดตระเวนที่ปราบ ${(g.zoneTravel.active.patrolDefeated||[]).length}/${dungeonPatrols(routeId).length}`;
     if(info.textContent!==text)info.textContent=text;
   }
@@ -270,6 +295,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     if(routeId==='th:asia')drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,tree:frontierTree});
     const status=dungeonStatus(g);if(!status)return;
+    drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';
     // The painted road already communicates forest/waterfall/gorge/cave. Keep
     // the playfield clear of geographic captions and use the footer/minimap for progress.
@@ -312,7 +338,6 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   listen(window,'blur',()=>{keys.clear();target=null;save();});listen(canvas,'blur',()=>{keys.clear();target=null;});
   listen(root.querySelector('.dungeon-guide'),'click',()=>{if(!bossGuideWaiting(g))return;target=null;keys.clear();save();onGuide();});
   listen(root.querySelector('.dungeon-challenge'),'click',()=>{if(!g.challengeCanTalk?.())return;target=null;keys.clear();save();onChallenge();});
-  listen(root.querySelector('[data-action="leave"]'),'click',()=>{if(g.battle||dungeonStatus(g)?.pending)return;save();onLeave();});
   listen(root.querySelector('[data-action="menu"]'),'click',()=>{save();onMenu();});
   remember();frame=requestAnimationFrame(tick);canvas.focus();
   return function destroy(){if(destroyed)return;destroyed=true;save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
@@ -366,6 +391,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
   const save=()=>{remember();if(dirty){g.save?.();dirty=false;}};
   remember();
   let exitLatch=!!(dungeonStatus(g)?.ready&&dungeonAtExit(g));// standing at the gate on mount (reload / failed arrival) must step away first
+  let startLatch=true;// the route begins on the start arrow: no bounce back to the post until Yama steps away and returns
   const syncBackground=status=>{
     const src=dungeonBackground(g.zone,status.route.id,status.checkpoint);
     if(src===backgroundSrc)return;
@@ -431,6 +457,8 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     guideButton.hidden=!dungeonCanTalkGuide(g,dungeonPoint(progress));
     const arrival=dungeonExitArrival(g,exitLatch,{cut,destroyed});exitLatch=arrival.latched;
     if(arrival.enter){target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onArrival(status.route.to);});}
+    const back=dungeonStartDeparture(g,startLatch,{cut,destroyed:destroyed||arrival.enter||guideDispatched});startLatch=back.latched;
+    if(back.leave){target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onLeave();});}
     const text=bossGuideWaiting(g)?'ผู้ตรวจการรอที่ทางเข้าเส้นทางชายแดน · ย้อนกลับไปคุยเพื่อออกเดินทางด้วยกัน':status.ready?'ผ่านเส้นทางแล้ว — เดินไปประตูเมือง':`กำจัดปีศาจ ${status.checkpoint}/3`;
     if(info.textContent!==text)info.textContent=text;
   }
@@ -438,6 +466,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     const status=dungeonStatus(g);if(!status)return;
+    drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
     // Labels identify actual route places; scenery comes from raster art.
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';
     DUNGEON_PROGRESS.forEach((value,i)=>{
@@ -480,7 +509,6 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
   listen(canvas,'keydown',e=>{const k=e.key.toLowerCase();if(k==='e'&&!e.repeat){e.preventDefault();talkGuide();return;}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();if(!cut)keys.add(k);}});
   listen(window,'keyup',e=>keys.delete(e.key.toLowerCase()));
   listen(window,'blur',()=>{keys.clear();target=null;save();});listen(canvas,'blur',()=>{keys.clear();target=null;});
-  listen(root.querySelector('[data-action="leave"]'),'click',()=>{if(cut>0||g.battle||dungeonStatus(g)?.pending)return;save();onLeave();});
   listen(root.querySelector('[data-action="menu"]'),'click',()=>{if(cut>0)return;save();onMenu();});
   remember();frame=requestAnimationFrame(tick);canvas.focus();
   return function destroy(){if(destroyed)return;destroyed=true;save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
