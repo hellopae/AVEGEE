@@ -72,7 +72,7 @@ test('P6 cauldron: wired into the room, no per-frame ctx.filter, assets present,
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /src\/room\.js\?v=[^"]*-p6"/);
   assert.match(html, /src\/pot-souls\.js\?v=[^"]*-p6"/);
-  assert.match(html, /src\/minigames\/krata-qte\.js\?v=[^"]*-p6"/);
+  assert.match(html, /src\/minigames\/krata-qte\.js\?v=[^"]*-p6(-[a-z0-9]+)*"/);
   assert.match(html, /src\/ui\.js\?v=[^"]*-o2"/, 'ui.js keeps the -o2 ending');
 });
 
@@ -149,7 +149,7 @@ test('P6 minigame: Space keydown + the keyup click it spawns count once; Close b
   try {
     s.advance(1600);
     globalThis.document.dispatchEvent(key(' ', { target: new El() })); s.button.onclick({ detail: 0 });
-    assert.equal(hitsOf(s), 1); assert.equal(s.msg.textContent, 'สำเร็จ · เตรียมลูกไฟถัดไป', 'keyup click did not overwrite the result with a wait message');
+    assert.equal(hitsOf(s), 1); assert.equal(s.msg.textContent, 'ถูกจังหวะ · เตรียมลูกไฟถัดไป', 'keyup click did not overwrite the result with a wait message');
     s.advance(700 + 1600 - 700);
     const closeBtn = new El(); closeBtn.closest = sel => sel.includes('.mg-head') ? closeBtn : null;
     globalThis.document.dispatchEvent(key('Enter', { target: closeBtn })); assert.equal(hitsOf(s), 1);

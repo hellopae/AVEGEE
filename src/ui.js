@@ -589,7 +589,7 @@ function drawTab() {
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
           <button class="sm" data-build="${s.k}" ${built || lockedS || g.coin < s.cost || builderBusy ? 'disabled' : ''}
-            ${!built && !lockedS && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : lockedS ? '🔒 Lv.' + g.buildUnlockLv(s.k) : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
+            ${!built && !lockedS && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : lockedS ? '🔒 ขั้น ' + g.buildUnlockLv(s.k) : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
     const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
@@ -673,7 +673,7 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     <div class="row-truth">ส่ง<b>${esc(st?.name ?? '—')}</b> ${hit ? '<span style="color:var(--success)">ตรงชนิดกรรม</span>' : '<span style="color:var(--destructive)">ไม่ตรงชนิดกรรม</span>'}
       · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? crewName(CREW.find(c => c.k === crewK), g.zone))}</div>
     <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · สมควรได้รับ <b>${soul.deserved}</b> → ${judgement}</div>
-    ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `ระเบียบ ${r.rab}`, `รวม ${r.score}`,
+    ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `รวม ${r.score}`,
           '★'.repeat(r.stars ?? 0) + '☆'.repeat(5 - (r.stars ?? 0))])}`;
 }
 
@@ -877,10 +877,10 @@ function pickStable(arr, key) {
 
 /** ข้อสังเกตว่าคนนี้เหมาะกับงานแบบไหน — อ่านจากสเตตัสจริง */
 function crewNote(c) {
-  if (c.panya >= 8) return 'ปัญญาสูง — ส่งไปคุมคดีที่สำนวนคลุมเครือ จะได้คะแนนธรรมเพิ่ม';
-  if (c.metta >= 8) return 'เมตตาสูง — ถึงเผลอสั่งเกินกรรม กรรมที่ตกใส่ท่านก็เบากว่าคนอื่น';
-  if (c.raeng >= 8) return 'แรงเยอะ — ทัณฑ์เสร็จเร็ว แต่เมตตาต่ำ เผลอสั่งเกินแล้วกรรมตกหนัก';
-  if (c.rabiab >= 8) return 'ระเบียบสูง — คะแนนแกนระเบียบดีขึ้นทุกคดีที่เขาคุม';
+  if (c.panya >= 8) return 'ปัญญาสูง — ไม่เปลี่ยนคะแนนคำตัดสิน กระจกวิเศษใช้ค่านี้จัดอันดับผู้คุมที่แนะนำ';
+  if (c.metta >= 8) return 'เมตตาสูง — ไม่เปลี่ยนคะแนน และไม่ลดกรรมที่ตกจากการลงทัณฑ์เกิน';
+  if (c.raeng >= 8) return 'แรงสูง — ทัณฑ์เสร็จเร็ว ไม่เปลี่ยนคะแนนคำตัดสิน';
+  if (c.rabiab >= 8) return 'ระเบียบสูง — ไม่เปลี่ยนคะแนนคำตัดสิน กระจกวิเศษใช้ค่านี้จัดอันดับผู้คุมที่แนะนำ';
   return 'สเตตัสกลาง ๆ ใช้ได้ทั่วไป';
 }
 
@@ -2091,8 +2091,7 @@ function openHelp() {
           <b>ต้องกดเข้าไปสู้ในฉากต่อสู้ทุกครั้ง</b> — ใช้ปุ่ม <b>⚔️</b> ที่แถบล่าง · กด <b>เว้นวรรค</b> · หรือคลิกที่ตัวมัน<br>
           ไม่มีการฟาดฟรีหรือขว้างลูกไฟบนแผนที่ · อีกทางคือจ้าง<b>ยักษ์ทวารบาล</b>ให้ไล่ปราบแทน</li>
       <li><b>เร่งทัณฑ์เอง</b> — ไปยืนที่สถานีที่กำลังลงทัณฑ์ แล้วกด <b>เว้นวรรค</b>
-          — แต่<b>ลงมือเองก็เป็นกรรมของท่าน</b> ครั้งละนิดหน่อย
-          ส่งคนเมตตาสูงอย่างบุญไปคุม กรรมจะตกใส่ท่านครึ่งเดียว</li>
+          — แต่<b>ลงมือเองก็เป็นกรรมของท่าน</b> ครั้งละนิดหน่อย</li>
       <li><b>กดตัวละครหรือวิญญาณบนฉาก</b> แล้วดูรายละเอียดที่แผง <b>ข้อมูล</b> ด้านขวา —
           <b>คดีที่ปิดแล้วจะเฉลยความจริงทั้งหมด</b>ว่าเราตัดสินถูกหรือพลาดตรงไหน</li>
       <li>บางคดี<b>ถูกกับผิดปนกัน</b> จนสำนวนด้านเดียวตัดสินไม่ได้ — พวกนี้ต้องใช้พลังก่อน</li>

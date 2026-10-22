@@ -76,7 +76,7 @@ export function drawTownGround(ctx,g,now=Date.now()) {
     ctx.setLineDash([6,5]); ctx.beginPath(); ctx.ellipse(d.bx,cy,rx,20,0,0,Math.PI*2);ctx.stroke();
     ctx.setLineDash([]); ctx.shadowBlur=0;
     ctx.fillStyle=locked?'rgba(24,12,18,.78)':'rgba(33,16,23,.9)';
-    const label=locked?`🔒 Lv.${g.buildUnlockLv(d.k)}`:isRec?'★ +':'+';
+    const label=locked?`🔒 ขั้น ${g.buildUnlockLv(d.k)}`:isRec?'★ +':'+';
     ctx.font=`600 ${locked||isRec?13:12}px sans-serif`;
     const w=Math.max(20,ctx.measureText(label).width+10);
     ctx.fillRect(d.x-w/2,d.y-22,w,18);
