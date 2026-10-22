@@ -2,6 +2,7 @@
 // remain untouched so generated artwork cannot move a neighboring tile or staircase.
 export const TOWN_TERRAIN_REPAIRS=Object.freeze([
   {row:2,col:3,url:'img/map-zone1/repairs/r2-c3-v1.webp',border:80,fade:48,boxes:[[590,115,975,345],[365,515,1024,870],[110,710,365,940]]},
+  {row:3,col:3,url:'img/map-zone1/repairs/r3-c3-pier-v1.webp',border:16,fade:16,boxes:[[630,40,1000,360]]},
   {row:1,col:3,url:'img/map-zone1/repairs/r1-c3-v1.webp',border:16,fade:16,boxes:[[290,775,850,1024]]},
 ].map(d=>Object.freeze({...d,boxes:Object.freeze(d.boxes.map(Object.freeze))})));
 const loads=new Map(),overlays=new Map();

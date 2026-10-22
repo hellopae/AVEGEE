@@ -21,7 +21,9 @@ export function baseSwordAttack(normalAttackFn) {
   const lo = normalAttackFn(BATTLE.atk[0]), hi = normalAttackFn(BATTLE.atk[1]);
   return lo === hi ? String(lo) : `${lo}–${hi}`;
 }
-export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}.jpeg`;
+/** P5b — คัตซีนที่วาดใหม่ลงชื่อไฟล์ -vN (ไฟล์เก่ายังอยู่ ไม่ทับ) · cane v2 = เคานต์ยื่นดาบทั้งฝัก ไม่ชักดาบ */
+export const WEAPON_CUTSCENE_VERSION = { cane: 'v2' };
+export const weaponCutsceneSrc = weapon => `img/weapons/weapon-cutscene-${weapon}${WEAPON_CUTSCENE_VERSION[weapon] ? '-' + WEAPON_CUTSCENE_VERSION[weapon] : ''}.jpeg`;
 /** รายชื่อไฟล์ทั้งหมดที่ต้องวาด (16 สไปรท์ + 4 ไอคอน + 4 คัตซีน) */
 export const WEAPON_ART_FILES = {
   sprites: WEAPON_IDS.flatMap(w => OUTFIT_IDS.map(o => weaponSpriteSrc(w, o))),

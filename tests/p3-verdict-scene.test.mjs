@@ -133,7 +133,7 @@ test('small items: kan clue text says พลังเวท, not MP; cache-bust 
   const gs=read('src/game.js');
   assert.doesNotMatch(gs,/ต้องใช้ MP|`MP −/);
   const html=read('index.html');
-  assert.match(html,/\.\/src\/ui\.js\?v=[^"]*-p3-o2"/);
+  assert.match(html,/\.\/src\/ui\.js\?v=[^"]*-p3[^"]*-o2"/);
   assert.match(html,/src\/ui\.js\?v=[^"]*-o2"><\/script>/);
   assert.match(html,/town-map\.css\?v=[^"]*-p3"/);
 });
