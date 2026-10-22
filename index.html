@@ -1658,6 +1658,15 @@ dialog.intro-comic-dialog{max-width:1000px;width:min(96vw,1000px);max-height:95d
   padding:10px 14px;background:var(--card)}
 .zone-arrival-band{position:static;background:var(--card)}
 .zone-arrival .intro-comic-controls .hint{font-size:var(--text-xs);line-height:1.4}
+/* P3: head's verdict scene (praise / rebuke) — reuses the arrival layout, adds the result strip under the quote */
+/* size the box by height too, so a short laptop window shows the whole 16:9 painting instead of a squeezed crop */
+dialog.intro-comic-dialog.verdict-dialog{width:min(96vw,1000px,max(420px,calc((95dvh - 250px) * 1.7778)))}
+.verdict-scene .verdict-line{font-size:clamp(.95rem,2vw,1.15rem);font-style:italic}
+.verdict-scene .verdict-stats{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin-top:8px}
+.verdict-scene .verdict-stars{font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px}
+.verdict-scene .verdict-stats small{font-size:var(--text-xs)}
+.verdict-scene .verdict-reward{margin-top:6px;color:var(--gold);font-size:var(--text-sm);font-weight:600}
+.verdict-scene.is-blame .intro-comic-head span:first-child{color:var(--destructive)}
 .ending-thumbnail{position:relative;width:150px;height:150px;flex:none;overflow:hidden;
   border:1px solid var(--gold);border-radius:var(--radius-sm);background:var(--muted)}
 .final-ending .ending-thumbnail img{position:absolute;left:0;top:0;width:100%;height:100%;
@@ -2084,7 +2093,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2">
-<link rel="stylesheet" href="src/dungeon-view.css?v=20261022-p5"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-boss-justice-workers-v1-m1-r6"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1">
+<link rel="stylesheet" href="src/dungeon-view.css?v=20261022-p5"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-boss-justice-workers-v1-m1-r6"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2338,13 +2347,13 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/sentence-colors.js": "./src/sentence-colors.js?v=20261022-p2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1-hf1",
+    "./src/game.js": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1-hf1-p3",
     "./src/preload.js": "./src/preload.js?v=20261021-interrogation-roles-p2",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies-p2-p5-p1-o2",
+    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies-p2-p5-p1-p3-o2",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1-hf1",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1-hf1-p3",
     "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-worker-supplies-o1-p1",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-flames-ground-r2",
@@ -2354,8 +2363,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/frontier-view-metrics.js": "./src/frontier-view-metrics.js?v=20261021-worker-supplies-o1",
     "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261022-p5",
     "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261022-p5",
-    "./src/data.js": "./src/data.js?v=20261021-interrogation-roles-p1",
-    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261021-interrogation-roles-p1",
+    "./src/data.js": "./src/data.js?v=20261021-interrogation-roles-p1-p3",
+    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261021-interrogation-roles-p1-p3",
     "./src/cases.js": "./src/cases.js?v=n3b-p2",
     "./src/cases-asia.js": "./src/cases-asia.js?v=n3b",
     "./src/battle-turns.js": "./src/battle-turns.js?v=20261016-boss-justice-workers-v1",
@@ -2384,6 +2393,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 }</script>
 <script type="module" src="src/preload.js?v=20261021-interrogation-roles-p2"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-worker-supplies-p2-p5-p1-o2"></script>
+<script type="module" src="src/ui.js?v=20261021-worker-supplies-p2-p5-p1-p3-o2"></script>
 </body>
 </html>

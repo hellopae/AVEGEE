@@ -14,6 +14,9 @@
 .town-view #ov > .mark,.town-view #ov > button,.town-view #ov > .score{scale:var(--map-label-scale,1);transform-origin:center bottom}
 /* N1: ปุ่มลอยเหนือหัว/อาคารใช้ translate(-50%,-50%|-100%) ผูกกับจุดสมอ (left/top) — ย่อกลับ 1/zoom ต้องย่อรอบ "จุดสมอ" (0 0) เท่านั้น
    ถ้าย่อรอบ center bottom ปุ่มจะเลื่อนออกจากจุดสมอ ~ (1-1/zoom)*ความกว้าง/2 (zoom 5 = ไปขวา ~2 เท่าความกว้างปุ่ม: ลอยกลางน้ำข้างท่าเรือ / ข้างหัวบอสและนิรา) */
+/* P3: the verdict star badge (.score, translate(-50%,-100%)) has the same anchor problem — scaling around its own centre pushed it
+   (width/2)*(1-1/zoom) right and down, so at high zoom the stars landed far from the throne (feedback 5.png). Scale around the anchor. */
+.town-view #ov > .score{transform-origin:0 0}
 .town-view #ov > button.repairfab,.town-view #ov > button.bossfab,.town-view #ov > button.mobfab,.town-view #ov > button.frontierfab{transform-origin:0 0}
 
 .town-camera-controls{display:flex;gap:4px;margin:6px 0}

@@ -23,6 +23,7 @@ import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLega
 import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
+import { buildVerdictScene } from './verdict-scene.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
@@ -969,7 +970,7 @@ const API = {
     const wait=Math.ceil(((this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]||0)-Date.now())/1000);
     if(wait>0)return `กานต์พักพลัง · รออีก ${wait} วินาที`;
     const cost=this.kanClueCost();
-    if(this.mp<cost.mp)return `พลังเวทไม่พอ · ต้องใช้ MP ${cost.mp}`;
+    if(this.mp<cost.mp)return `พลังเวทไม่พอ · ต้องใช้พลังเวท ${cost.mp}`;
     if(c.morale<=cost.morale)return `กำลังใจกานต์ไม่พอ · ต้องมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
     return '';
   },
@@ -980,7 +981,7 @@ const API = {
     if(cost.insight)this.interrogationSupport.insights--;
     this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]=Date.now()+KAN_SUPPORT.cooldownMs;
     (soul.said||=[]).push(line);
-    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · กำลังใจกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
+    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`พลังเวท −${cost.mp}`} · กำลังใจกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
     this.save();this.onChange();return line;
   },
   keeperTrialInfo(soul,c,stationKey) {
@@ -1095,7 +1096,7 @@ const API = {
     this.log(`${c.name} รับสำนวน #${String(soul.id).padStart(3, '0')} เข้า${st.def.name} · วาระ ${slot.intensity}`
              + (st.slots.length > 1 ? ` (คุมอยู่ ${st.slots.length} ดวง)` : ''), 'act');
     slot.verdict = this.judge(st, slot);   // คำตัดสินให้คะแนนทันทีที่ออกหมาย ไม่ใช่ตอนทัณฑ์จบ
-    this.applyVerdict(slot.verdict, soul);
+    this.applyVerdict(slot.verdict, soul, st.def.name);
     return true;
   },
 
@@ -1161,7 +1162,7 @@ const API = {
   },
 
   /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
-  applyVerdict(r, soul) {
+  applyVerdict(r, soul, stationName = '') {
     if (Number.isFinite(r.karma)) this.karma = clamp(this.karma + r.karma, 0, 100);
     if (Number.isFinite(r.score)) this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; if (Number.isFinite(r.score)) this.scoreSum += r.score;
@@ -1194,6 +1195,10 @@ const API = {
     if (tag === 'good') { this.greens++; this.reds = 0; }
     else if (tag === 'bad') {
       this.reds++;
+      // P3: the head rebukes on exactly the verdicts that count as red (score < 50); the rebuke tier follows the red streak, not the stars
+      const redStep = Math.min(this.reds, DAD.redsToCome);
+      this.pendingVerdictScene = buildVerdictScene({ kind:'blame', zone:this.zone, step:redStep, who:soul.who,
+        station:stationName, score:r.score, tham:r.tham, ked:r.ked, id:soul.id });
       if (this.reds < DAD.redsToCome) {
         // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — โซน 2-4 ใช้ชื่อผู้ตรวจการของตัวเอง ไม่ใช่ "พญายม" ของโซน 1
         const warnText = fmtAuthority(DAD.warn[this.reds - 1] || DAD.warn[0], this.zone);
@@ -1207,7 +1212,8 @@ const API = {
           this.fxHits.push({ t: Date.now(), x: this.player.x, y: this.player.y });
           this.log(fmtAuthority(`🔥 พญายมปล่อยลูกไฟลงมาเตือน — บารมีเหลือ ${Math.max(0, Math.round(this.hp))}`, this.zone), 'bad');
         }
-        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: warnText, fireball: withFireball };
+        // P3: tier 1 — the rebuke scene already spoke, so the "looks down and says nothing" line would contradict it
+        this.pendingWarn = { n: this.reds, of: DAD.redsToCome, text: this.reds === 1 ? '' : warnText, fireball: withFireball };
       } else {
         this.pendingWarn = { n:this.reds, of:DAD.redsToCome, text:fmtAuthority(DAD.line1, this.zone), fireball:false };
         this.reds = 0; this.dadFight = true;
@@ -1228,6 +1234,7 @@ const API = {
     else if (r.score < 50)  r.boss = 'bad';
     else if (r.score >= 82) r.boss = 'great';
     else                    r.boss = 'ok';
+    if (this.pendingVerdictScene && this.pendingVerdictScene.id === soul.id) this.pendingVerdictScene.stars = r.stars;   // P3: the scene shows the same stars as the verdict
 
     if (tag !== 'bad' && r.stars === 0) this.fireball('คำตัดสินนี้ไม่มีดาวสักดวง');
     else if (tag !== 'bad' && r.boss === 'cruel') this.fireball('เกินกรรมไปสองวาระ');
@@ -1236,11 +1243,17 @@ const API = {
       this.star5++;
       // กรรมของท่านเองสูงเท่าไหร่ พ่อก็ยิ่งไม่อยากคืนบารมีให้ (ดู KARMA_TIERS)
       const heal = BAL.hpGoodHeal * this.karmaTier().heal;
+      const hpBefore = this.hp;
       if (heal > 0) this.hp = Math.min(this.hpMax, this.hp + heal);
       this.coin += 60;
       // ห้าดาวคือทางลดกรรมที่ไม่ต้องจ่ายเงิน — ตัดสินให้ตรงกรรมคือการล้างกรรมของตัวเอง
       const cut = Math.min(this.karma, KARMA_RELIEF.star5);
       if (cut > 0) this.karma = Math.round((this.karma - cut) * 10) / 10;
+      // P3: the praise scene only reports what was already granted above (nothing is paid out when the scene opens, so a reload cannot repeat it)
+      const healed = Math.round((this.hp - hpBefore) * 10) / 10;
+      this.pendingVerdictScene = buildVerdictScene({ kind:'praise', zone:this.zone, who:soul.who, station:stationName,
+        reward:['เบี้ยกรรม +60', cut > 0 ? `กรรมท่าน −${cut}` : '', healed > 0 ? `บารมี +${healed}` : ''].filter(Boolean).join(' · '),
+        stars:5, score:r.score, tham:r.tham, ked:r.ked, id:soul.id });
       this.log(`⭐⭐⭐⭐⭐ ห้าดาว! (${this.star5} ครั้งแล้ว) +60 เบี้ยกรรม`
                + (cut > 0 ? ` · กรรมท่าน −${cut}` : '')
                + (heal > 0 ? '' : ' · กรรมท่านสูงเกินกว่าที่พ่อจะคืนบารมีให้'), 'good');
@@ -1393,7 +1406,7 @@ const API = {
       if(work.keeper==='kan'){
         const before=this.interrogationSupport.insights;
         this.interrogationSupport.insights=Math.min(3,before+1);
-        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้กำลังใจและพักพลัง');
+        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสียพลังเวท แต่ยังใช้กำลังใจและพักพลัง');
       }
     }
     if(work?.assistedTicks>0)benefits.push(`ดำประสานคนงานช่วยคุมหมู่ ${work.assistedTicks} วาระ`);
@@ -4782,7 +4795,7 @@ API.snapshot = function (withEntry = true) {
     star5: this.star5, level: this.level, exp: this.exp, mp: this.mp, mpMax: this.mpMax,
     casesDone: this.casesDone, scoreSum: this.scoreSum,
     greens: this.greens, reds: this.reds,
-    pendingWarn:this.pendingWarn || null, dadFight:this.dadFight || (this.battle?.kind === 'dad' && !this.pendingRecovery ? this.battle.reason || true : false), pendingDadPunish:this.pendingDadPunish || null,
+    pendingWarn:this.pendingWarn || null, pendingVerdictScene:this.pendingVerdictScene || null, dadFight:this.dadFight || (this.battle?.kind === 'dad' && !this.pendingRecovery ? this.battle.reason || true : false), pendingDadPunish:this.pendingDadPunish || null,
     kpiPassed: this.kpiPassed, nextArrive: this.nextArrive, nextEvent: this.nextEvent,
     nextPay: this.nextPay, nextKpi: this.nextKpi,
     seq: SEQ,
@@ -4999,6 +5012,7 @@ API.restore = function (d) {
   this.teaBeds = d.teaBeds || {};
   this.pendingRecovery = d.pendingRecovery || null;
   this.pendingWarn = d.pendingWarn || null;
+  this.pendingVerdictScene = d.pendingVerdictScene || null;
   this.dadFight = d.dadFight || false;
   this.pendingDadPunish = d.pendingDadPunish || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';

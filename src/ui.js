@@ -73,6 +73,7 @@ import { mountNiraCombatSprite, playNiraHealingCutscene } from './nira-combat.js
 import { mountFinalBossCourt } from './boss-court-view.js';
 import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
 import { frontierIntroduction } from './narrative-cutscenes.js';
+import { verdictSceneImage } from './verdict-scene.js';
 
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -259,7 +260,8 @@ setInterval(() => {
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
   // ชุดเก่าจะมาปิดกล่องกระทะทองแดงทิ้งทันทีที่ฉากต่อสู้จบ (ดู CONCEPT §22.6)
-  if (g.dadFight && !g.pendingWarn && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
+  if (started && g.pendingVerdictScene && !g.battle && !g.over && !dlg.open && !storyPlaying && !g.assetsLoading) g.onChange();
+  if (g.dadFight && !g.pendingWarn && !g.pendingVerdictScene && !g.battle && !g.over && !dlg.open && !fx && Date.now() - lastBattleEnd > 1600) {
     g.startDadFight();
   }
   if (started && g.prisonBreakStatus() === 'pending' && !prisonAlertSeen && !g.battle && !g.over &&
@@ -1165,7 +1167,7 @@ function drawOverlay() {
   if (g.over) return;
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
-  if (fx) {
+  if (fx && !fx.quiet) {     // P3: praise/rebuke verdicts show their stars and score inside the head's scene instead
     const col = fx.score >= 78 ? 'var(--success)' : fx.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
     const d = document.createElement('div');
     d.className = 'score';
@@ -1822,7 +1824,7 @@ function openZoneArrival(z) {
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
-  fx = { ...v, line: verdictComment(v) };
+  fx = { ...v, line: verdictComment(v), quiet: !!g.pendingVerdictScene };
   g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
   const current=fx;
@@ -1966,7 +1968,7 @@ function openAuthorityWarning() {
   g.pendingWarn=null; g.save();
   const auth=authorityOf(g.zone);
   bossModal(`คำตัดสินแดง ${w.n}/${w.of} · ${auth.full}`,
-    `${w.text}\n\n${w.n===w.of ? 'หัวหน้าจะตรวจและลงโทษท่านด้วยตนเอง' : `อีก ${w.of-w.n} คำตัดสินแดงติดกัน หัวหน้าจะลงมาด้วยตนเอง`}\nตัดสินได้สีเขียวจะล้างคำตัดสินแดงที่สะสม`, 'รับทราบ');
+    `${w.text ? `${w.text}\n\n` : ''}${w.n===w.of ? 'หัวหน้าจะตรวจและลงโทษท่านด้วยตนเอง' : `อีก ${w.of-w.n} คำตัดสินแดงติดกัน หัวหน้าจะลงมาด้วยตนเอง`}\nตัดสินได้สีเขียวจะล้างคำตัดสินแดงที่สะสม`, 'รับทราบ');
   if(w.fireball) {
     const hit=document.createElement('div');hit.className='warning-yama';
     hit.innerHTML=`<img src="${heroCry()}" alt="Yama ถูกลูกไฟ"><img class="warning-fireball" src="img/fx-fireball.png" alt="ลูกไฟ"><p>HP ${Math.round(g.hp)}/${g.hpMax}</p>`;
@@ -1975,6 +1977,32 @@ function openAuthorityWarning() {
     sfx('fire');
   }
   onDlgClose(()=>g.onChange());
+}
+
+/** P3 — the zone head reacts to the verdict: praise (five stars, shows what was granted) or rebuke (red verdict).
+ *  Queued ahead of the red-streak warning / Yama fight so the words come first; skippable; consumed on open (nothing is granted here). */
+function openVerdictScene() {
+  const sc = g.pendingVerdictScene; if (!sc) return;
+  g.pendingVerdictScene = null; g.save();
+  pauseForDlg();
+  const col = sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
+  const stars = '★'.repeat(sc.stars) + '☆'.repeat(Math.max(0, 5 - sc.stars));
+  dlg.innerHTML = `<div class="intro-comic zone-arrival verdict-scene is-${sc.kind}" role="region" aria-label="${esc(sc.title)}">
+    <div class="intro-comic-frame">
+      <img src="${esc(verdictSceneImage(sc.zone, sc.kind))}" alt="${esc(sc.speaker)}" onerror="this.onerror=null;this.src='${artUrl('hero-boss')}'">
+      <div class="intro-comic-head"><span>${esc(sc.title)}</span></div>
+    </div>
+    <div class="zone-arrival-band">
+      <div class="intro-comic-caption"><h2>${esc(sc.speaker)}</h2><p class="verdict-line">${esc(sc.line)}</p>
+        <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)} · เข็ด ${esc(sc.ked)}</small></div>
+        ${sc.reward ? `<div class="verdict-reward">${esc(sc.reward)}</div>` : ''}</div>
+      <div class="intro-comic-controls"><button class="gold" data-verdict-scene-done>รับทราบ · ข้าม</button></div>
+    </div>
+  </div>`;
+  openDlg('intro-comic-dialog verdict-dialog');
+  prepareComicImages(dlg);
+  dlg.querySelector('[data-verdict-scene-done]').onclick = () => dlg.close();
+  onDlgClose(() => g.onChange());
 }
 
 function openDadPunish(p) {
@@ -5738,6 +5766,7 @@ g.onChange = () => {
     if (!dlg.open) openDefeatRecovery();
     return;
   }
+  if (g.pendingVerdictScene && !g.battle && !dlg.open) { openVerdictScene(); return; }
   if (g.pendingWarn && !g.battle && !dlg.open) { openAuthorityWarning(); return; }
   // ฉากพญายมลงมาเอง (บารมีหมด/ตัดสินแดงครบสาม) เปิดอัตโนมัติ
   // ฉากต่อสู้กับวิญญาณเปิดจากปุ่มออกหมาย · ฉากต่อสู้กับผีเปิดจากปุ่มบนแผนที่เท่านั้น
