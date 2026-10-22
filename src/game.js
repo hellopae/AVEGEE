@@ -1,5 +1,5 @@
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
-import {spiritTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
+import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
@@ -41,7 +41,7 @@ import { standPoints } from './npc-stand.js';
 import { footOf, blockRectsOf, artEpoch, hiddenAt, artUrl } from './art.js';
 import { t } from './i18n.js';
 import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
-import { applySoulPortrait, reconcileSoulPortraits } from './soul-portraits.js';
+import { applySoulPortrait, reconcileSoulPortraits, reconcileSoulTraits } from './soul-portraits.js';
 import { escortCrewPosition, pathLength, ESCORT_PICKUP_SPEED } from './escort.js';
 /** L2: share of damage that still gets through while the target is in the defend stance (was an inline .5) */
 export const DEFEND_DAMAGE_RATIO = 0.5;
@@ -223,7 +223,7 @@ function mkHardSoul(tags, g) {
   soul.said.push({ kind: 'deny', text: c.line });
   soul.lines = mkLines(soul, g);
   soul.presses = BAL.presses;
-  return soul;
+  return lockSoulTrait(soul);   // P2: colour fixed once, on entering court
 }
 
 /** สำนวนที่ส่งมาต้องเป็นกรรมที่โซนนี้ "มีที่ลง" อยู่จริง
@@ -286,7 +286,7 @@ function mkSoul(tags, hiddenBonus = 0, g) {
   for (const m of merits) soul.said.push({ kind: 'claim', text: `"${m.t}" (เขาอ้างเอง ยังไม่มีใครยืนยัน)` });
   soul.lines = mkLines(soul, g);
   soul.presses = BAL.presses;
-  return soul;
+  return lockSoulTrait(soul);   // P2: colour fixed once, on entering court
 }
 
 /** สำนวนที่มีชื่อ มีหน้า มีเรื่อง — เขียนมือไว้ที่ src/cases.js
@@ -313,7 +313,7 @@ function mkCaseSoul(c) {
   soul.lines = (c.claims || []).map((l, i) => ({
     ...l, t: voice(l.t, c.sex), ...(l.reveal ? { reveal: voice(l.reveal, c.sex) } : {}), i, used: false }));
   soul.presses = BAL.presses;
-  return soul;
+  return lockSoulTrait(soul, c);   // P2: colour fixed once, on entering court
 }
 
 /** คำให้การ 4 บรรทัดของวิญญาณ — หัวใจของมินิเกมไต่สวน
@@ -956,7 +956,7 @@ const API = {
     if(wait>0)return `กานต์พักพลัง · รออีก ${wait} วินาที`;
     const cost=this.kanClueCost();
     if(this.mp<cost.mp)return `พลังเวทไม่พอ · ต้องใช้ MP ${cost.mp}`;
-    if(c.morale<=cost.morale)return `กานต์ต้องมีบารมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
+    if(c.morale<=cost.morale)return `กำลังใจกานต์ไม่พอ · ต้องมีมากกว่า ${cost.morale} เพื่อเปิดเบาะแส`;
     return '';
   },
   kanRevealClue(soul) {
@@ -966,7 +966,7 @@ const API = {
     if(cost.insight)this.interrogationSupport.insights--;
     this.interrogationSupport.kanReadyAt[c.id||`${this.zone}:kan`]=Date.now()+KAN_SUPPORT.cooldownMs;
     (soul.said||=[]).push(line);
-    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · บารมีกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
+    this.log(`กานต์เปิดข้อเท็จจริง 1 ประเด็น · ${cost.insight?'ใช้เบาะแสที่เตรียมไว้':`MP −${cost.mp}`} · กำลังใจกานต์ −${cost.morale} · พักพลัง 30 วินาที`,'act');
     this.save();this.onChange();return line;
   },
   keeperTrialInfo(soul,c,stationKey) {
@@ -1379,7 +1379,7 @@ const API = {
       if(work.keeper==='kan'){
         const before=this.interrogationSupport.insights;
         this.interrogationSupport.insights=Math.min(3,before+1);
-        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้บารมีและพักพลัง');
+        if(this.interrogationSupport.insights>before)benefits.push('กานต์เตรียมเบาะแสคดีถัดไป 1 ครั้ง · ไม่เสีย MP แต่ยังใช้กำลังใจและพักพลัง');
       }
     }
     if(work?.assistedTicks>0)benefits.push(`ดำประสานคนงานช่วยคุมหมู่ ${work.assistedTicks} วาระ`);
@@ -1522,6 +1522,7 @@ const API = {
       `"ท่านให้{i}ไป ${R.gave} วาระ แต่{i}ยังไม่สำนึก{p} เลยถูกส่งกลับมา ก่อนจะไปเกิดใหม่"`, soul.sex) });
     soul.lines = mkLines(soul, this);
     soul.presses = BAL.presses;
+    lockSoulTrait(soul);   // P2: everything is known on the way back, so this reads resist / accept only
     return applySoulPortrait(soul, R.zone || this.zone);
   },
 
@@ -4357,6 +4358,7 @@ const API = {
              + (back ? ' · สถานีและยมทูตที่ทิ้งไว้ยังอยู่ครบ'
                      : ` · งบตั้งต้น +${z.coin} เบี้ยกรรม · ยังไม่มียมทูตประจำสาขา ต้องจ้างใหม่`), 'event');
     reconcileSoulPortraits(this);
+    reconcileSoulTraits(this);
     refreshPendingSentences(this);
     this.pendingZone = { ...z, back: !!back };
     if (!this.queue.length) this.spawnSoul();
@@ -5190,6 +5192,7 @@ API.restore = function (d) {
   if (this.devaVisits.asia?.battle && this.zoneEvents.asia?.asiaPrisonFire !== 'cleared') this.zoneEvents.asia.asiaPrisonFire = 'active';
   this.ensureDevaCase();
   reconcileSoulPortraits(this);
+  reconcileSoulTraits(this);
   refreshPendingSentences(this);
   Object.values(this.zoneSave).forEach(refreshPendingSentences);
   // Remove prematurely granted mirrors in old saves, before the tester reward.

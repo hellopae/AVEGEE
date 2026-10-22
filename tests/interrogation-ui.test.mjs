@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {spiritTraitHtml,keeperRoleHtml,keeperImpactHtml,kanClueHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss,mountInterrogationStyles} from '../src/interrogation-ui.js';
+import {spiritNameHtml,keeperBarHtml,kanOrbHtml,KAN_BUTTON_COPY,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss,mountInterrogationStyles} from '../src/interrogation-ui.js';
 
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const keeper={k:'taan',name:'ทัณฑ์',morale:100};
@@ -10,37 +10,50 @@ const game=()=>({zone:'th',crew:[keeper,{k:'kan',name:'กานต์',morale:1
   spiritTrait:()=>({key:'concealing',label:'ปิดบังความจริง',icon:'🧿',color:'#b78ae5',keeper:'kan'}),
   keeperTrialInfo:(s,c)=>({benefit:'หากตัดสินถูกและงานจบ ระเบียบ +2',cost:'ต้องอยู่คุมงานจนจบ',matching:c.k==='kan',available:true,why:''}),assignBlock:()=>null});
 
-test('trait badges include readable labels and symbols, independent of severity colors',()=>{
-  for(const trait of [{key:'concealing',label:'ปิดบังความจริง',icon:'🧿',color:'#b78ae5'},
-    {key:'resisting',label:'ดื้อและต่อต้าน',icon:'🔥',color:'#ef7777'},{key:'accepting',label:'ยอมรับและพร้อมแก้ไข',icon:'🍃',color:'#83ca96'}]){
-    const html=spiritTraitHtml(trait);assert.ok(html.includes(trait.label));assert.ok(html.includes(trait.icon));
-    assert.match(html,/role="status" aria-live="polite"/);assert.match(html,/ไม่ได้บอกน้ำหนักกรรมหรือระดับทัณฑ์/);
+const TRAITS=[{key:'concealing',label:'ปิดบังความจริง',icon:'🧿',color:'#b78ae5'},
+  {key:'resisting',label:'ดื้อและต่อต้าน',icon:'🔥',color:'#ef7777'},{key:'accepting',label:'ยอมรับและพร้อมแก้ไข',icon:'🍃',color:'#83ca96'}];
+
+test('P2: the trait sits on the spirit name tag with the icon first and an accessible label — never colour alone',()=>{
+  for(const trait of TRAITS){
+    const html=spiritNameHtml(trait,'พลทหารเกณฑ์หนุ่ม');
+    assert.ok(html.indexOf(`>${trait.icon}<`)>0&&html.indexOf(`>${trait.icon}<`)<html.indexOf('spirit-name-text'),'icon leads the name');
+    assert.match(html,new RegExp(`aria-label="พลทหารเกณฑ์หนุ่ม · ลักษณะ: ${trait.label}"`));assert.ok(html.includes(`--trait-color:${trait.color}`));assert.match(html,/data-spirit-trait=/);
+    assert.doesNotMatch(html,/ลักษณะวิญญาณ<\/small>|trait-explanation/,'the old trait box is gone');
   }
-  assert.doesNotMatch(spiritTraitHtml({key:'x',label:'<script>',icon:'<img>',color:'red;position:fixed'}),/<script>|<img>|position:fixed/);
+  assert.doesNotMatch(spiritNameHtml({key:'x',label:'<script>',icon:'<img>',color:'red;position:fixed'},'<b>x</b>'),/<script>|<img>|<b>x|position:fixed/);
+  assert.equal(spiritNameHtml(null,'ชื่อ').includes('data-spirit-trait'),false);
+  assert.match(ui,/spiritNameHtml\(g\.spiritTrait\?\.\(s\)/);assert.doesNotMatch(ui,/spiritTraitHtml/);
 });
 
-test('keeper previews expose conditional benefit, cost and current workload without reading hidden answers',()=>{
+test('P2: the compact keeper bar lists keepers as picture + name + the colour they suit, and never reads hidden answers',()=>{
   const g=game(),soul={id:11};
   for(const key of ['deeds','merits','secret','deserved','pure'])Object.defineProperty(soul,key,{get(){throw Error('preview read hidden '+key);}});
-  const ordinary=keeperRoleHtml(g,soul,keeper,'krata',{choose:true});
-  assert.match(ordinary,/คุมได้ตามปกติ/);assert.match(ordinary,/หากตัดสินถูกและงานจบ/);assert.match(ordinary,/ภาระและต้นทุน/);assert.match(ordinary,/งานปัจจุบัน/);
-  assert.doesNotMatch(ordinary,/disabled|สมควรได้รับ|เฉลย|คะแนน|secret|deserved/,'nonmatching keepers remain eligible');
-  const matching=keeperRoleHtml(g,soul,g.crew[1],'krata',{choose:true});assert.match(matching,/is-trait-match/);assert.match(matching,/เหมาะกับลักษณะนี้/);
-  const html=keeperImpactHtml(g,soul,keeper,'krata');assert.match(html,/มีงานแล้ว 1 คน · ว่าง 1 คน/);assert.match(html,/คนงานหนึ่งคนทำได้ทีละงาน/);
+  g.crew=[keeper,{k:'kan',name:'กานต์',morale:100},{k:'plerng',name:'เพลิง',morale:100}];
+  const html=keeperBarHtml(g,soul,keeper,'krata',c=>`img/crew-${c.k}-profile.png`);
+  assert.match(html,/data-pickkey="cr" data-k="taan"/);assert.match(html,/data-pickkey="cr" data-k="kan"/);
+  assert.match(html,/aria-pressed="true"[^>]*title="[^"]*ทัณฑ์/s);
+  assert.match(html,/is-trait-match/);assert.match(html,/คุมได้|เหมาะกับลักษณะนี้/);
+  assert.match(html,/data-k="kan"[\s\S]*?🧿/);assert.match(html,/data-k="plerng"[\s\S]*?🔥/);assert.doesNotMatch(html.split('data-k="taan"')[1].split('</button>')[0],/🧿|🔥|🍃/,'taan is not tied to a colour');
+  assert.match(html,/มีงานแล้ว 1 คน · ว่าง 1 คน/);
+  assert.doesNotMatch(html,/คนงานหนึ่งคนทำได้ทีละงาน|keeper-role-roster|ภาระและต้นทุน:/,'long explanations moved to the handbook');
   g.assignBlock=()=>({key:'keeperCost',text:'ต้องใช้เสบียงเพิ่ม 2'});
-  const blocked=keeperRoleHtml(g,soul,keeper,'krata',{choose:true});assert.match(blocked,/disabled/);assert.match(blocked,/ต้องใช้เสบียงเพิ่ม 2/);
+  const blocked=keeperBarHtml(g,soul,keeper,'krata');assert.match(blocked,/disabled/);assert.match(blocked,/ต้องใช้เสบียงเพิ่ม 2/);
 });
 
-test('Kan clue shows the exact resource price and uses a single guarded action, separate from Yama powers',()=>{
+test('P2: Kan is a round icon with the owner label, shown only when Kan is hired, with the exact price and one guarded action',()=>{
   const g=game();let used=false,reveals=0,announcements=0;
-  g.kanClueWhy=()=>used?'พักพลังอีก 30 วินาที':'';
+  g.kanClueWhy=()=>used?'กานต์กำลังพักพลัง · อีก 30 วินาที':'';
   g.kanClueCost=()=>({mp:4,morale:4,cooldownSeconds:30});
   g.kanRevealClue=()=>{used=true;reveals++;return {kind:'truth',text:'เหตุบรรเทาหนึ่งข้อ'};};
-  assert.match(kanClueHtml(g,{id:1}),/ใช้ MP 4 · กำลังใจ 4 · พักพลัง 30 วินาที/);
+  g.crewOf=k=>g.crew.find(c=>c.k===k);
+  const html=kanOrbHtml(g,{id:1},'img/crew-kan-profile.png');
+  assert.match(html,/ช่วยเปิดความจริง/);assert.equal(KAN_BUTTON_COPY.label,'ช่วยเปิดความจริง');assert.match(html,/<img src="img\/crew-kan-profile\.png"/);
+  assert.match(html,/ใช้พลังเวท 4 · กำลังใจกานต์ 4 · พักพลัง 30 วินาที/);assert.doesNotMatch(html,/ขอเบาะแส 1 ประเด็น|kan-clue"|กานต์ · เปิดความจริงทีละประเด็น/,'the old box is gone');
   const button={};bindKanClue({querySelector:()=>button},g,{id:1},()=>announcements++);button.onclick();button.onclick();
-  assert.equal(reveals,1);assert.equal(announcements,1);assert.match(kanClueHtml(g,{id:1},'เหตุบรรเทาหนึ่งข้อ'),/disabled/);
+  assert.equal(reveals,1);assert.equal(announcements,1);assert.match(kanOrbHtml(g,{id:1},'x','เหตุบรรเทาหนึ่งข้อ'),/data-kan-clue disabled/);assert.match(kanOrbHtml(g,{id:1},'x'),/กานต์กำลังพักพลัง · อีก 30 วินาที/);
   g.kanClueCost=()=>({mp:0,morale:4,cooldownSeconds:30,insight:true});
-  assert.match(kanClueHtml(g,{id:1}),/ใช้เบาะแสที่สะสม 1 ประเด็น/);assert.doesNotMatch(kanClueHtml(g,{id:1}),/ใช้ MP 4/);
+  assert.match(kanOrbHtml(g,{id:1},'x'),/ใช้เบาะแสที่สะสม 1 ประเด็น/);assert.doesNotMatch(kanOrbHtml(g,{id:1},'x'),/ใช้พลังเวท 4/);
+  g.crew=g.crew.filter(c=>c.k!=='kan');assert.equal(kanOrbHtml(g,{id:1},'x'),'','not hired = no icon');
   assert.match(ui,/\['roar', 'mirror', 'hypno'\]/,'existing powers are still offered separately');
 });
 

@@ -4,6 +4,8 @@ const traits=Object.freeze({
   resisting:Object.freeze({key:'resisting',icon:'🔥',label:'ดื้อและต่อต้าน',color:'#ef7777',keeper:'plerng'}),
   accepting:Object.freeze({key:'accepting',icon:'🍃',label:'ยอมรับและพร้อมแก้ไข',color:'#83ca96',keeper:'boon'}),
 });
+/** Which colour a keeper is suited to (taan / dam are deliberately not tied to a colour). */
+export const traitForKeeper=k=>Object.values(traits).find(t=>t.keeper===(k==='pleng'?'plerng':k))||null;
 export const KAN_SUPPORT=Object.freeze({mpCost:4,moraleCost:4,cooldownMs:30_000});
 const roles=Object.freeze({
   taan:Object.freeze({key:'taan',name:'ทัณฑ์ · คุมงานเป็นระเบียบ',
@@ -20,7 +22,7 @@ const roles=Object.freeze({
     cost:'ต้องมีคนงานมาช่วยจริง คนงานคนนั้นจะไม่ว่างเก็บวัสดุหรือซ่อมอาคาร'}),
   kan:Object.freeze({key:'kan',name:'กานต์ · เปิดความจริง',
     benefit:'ก่อนออกหมาย ช่วยเปิดข้อเท็จจริง 1 ประเด็น รวมเหตุบรรเทาโทษ หากคุมทัณฑ์ถูกต้องจนจบ เตรียมเบาะแสได้ 1 ครั้ง สะสมสูงสุด 3 ครั้ง',
-    cost:'การขอเบาะแสใช้ MP 4 และกำลังใจ 4 พักพลัง 30 วินาที ใช้เบาะแสที่เตรียมไว้แทน MP ได้ แต่ยังเสียกำลังใจและพักพลัง',...KAN_SUPPORT}),
+    cost:'การขอเบาะแสใช้พลังเวท 4 และกำลังใจ 4 พักพลัง 30 วินาที ใช้เบาะแสที่เตรียมไว้แทนพลังเวทได้ แต่ยังเสียกำลังใจและพักพลัง',...KAN_SUPPORT}),
 });
 const keyOf=k=>k==='pleng'?'plerng':typeof k==='string'&&k?k:'ordinary';
 const ordinary=Object.freeze({key:'ordinary',name:'ผู้คุม · คุมงานตามปกติ',benefit:'คุมงานได้ตามปกติ',cost:'ใช้กำลังใจและเสบียงตามปกติ'});
@@ -53,12 +55,39 @@ export function revealOneIssue(soul){
   return {kind:'truth',text};
 }
 
-/** Re-evaluated after questioning; stored evidence flags already survive ordinary save/restore. */
+/** Trait distribution rule (P2). Everything is read from the case data a soul carries on entering court —
+ *  never from evidence the player has since uncovered — so the colour is the same before and after questioning.
+ *  Priority: ดื้อ (แดง) → ปิดบัง (ม่วง) → ปฏิเสธเสียงแข็ง (แดง) → ยอมรับ (เขียว). */
+export const TRAIT_RULE=Object.freeze({heavyHidden:5,hardDenial:5});
+export const TRAIT_KEYS=Object.freeze(Object.keys(traits));
+const heavyHiddenOf=(deeds,hiddenFlag)=>(Array.isArray(deeds)?deeds:[]).filter(hiddenFlag).reduce((m,d)=>Math.max(m,Number(d?.w)||0),0);
+/** `def` = the hand-written case definition (cases.js) when the soul came from one; it is the only source that still
+ *  remembers which deeds were hidden once the player has opened them (old saves). */
+export function traitKeyFor(soul,def=null){
+  const s=soul||{},kind=def?.kind??s.kind;
+  const hiddenDeeds=def?(def.hidden||[]):(s.deeds||[]).filter(d=>d&&d.known===false);
+  const merits=def?(def.merits||[]):(s.merits||[]);
+  const secret=def?def.secret:s.secret;
+  const resist=def?def.resist:s.resist,calm=def?def.calm:s.calm;
+  const pure=def?(kind==='innocent'||kind==='deva'):s.pure;
+  const denies=def?(Array.isArray(def.claims)&&def.claims.some(l=>l?.kind==='deny')):false;
+  if(resist&&!calm&&!pure)return 'resisting';
+  if(merits.some(m=>m?.fake===true)||(typeof secret==='string'&&secret.trim())||heavyHiddenOf(hiddenDeeds,()=>true)>=TRAIT_RULE.heavyHidden)return 'concealing';
+  const deniesNow=denies||(Array.isArray(s.lines)&&s.lines.some(l=>l?.kind==='deny'));
+  const seenDeeds=def?(def.seen||[]):(s.deeds||[]).filter(d=>d&&d.known!==false);
+  const heaviestSeen=seenDeeds.reduce((m,d)=>Math.max(m,Number(d?.w)||0),0);
+  if(kind==='twist'&&deniesNow&&heaviestSeen>=TRAIT_RULE.hardDenial)return 'resisting';   // hand-written cases: a hard denial of the heaviest charge
+  if(!kind&&!pure&&!s.hard&&!!s.denied)return 'resisting';   // generated cases: denied the heaviest charge on entry
+  return 'accepting';
+}
+/** Locks the colour once. Existing values (saved or locked earlier) are never recomputed. */
+export function lockSoulTrait(soul,def=null){
+  if(soul&&typeof soul==='object'&&!(soul.traitKey in traits))soul.traitKey=traitKeyFor(soul,def);
+  return soul;
+}
+/** Locked at court entry (`soul.traitKey`); a soul that was never locked reads the same rule without storing it. */
 export function spiritTrait(soul){
-  if(hiddenIssues(soul).length)return traits.concealing;
-  const denial=!!soul?.denied||(Array.isArray(soul?.lines)&&soul.lines.some(l=>l?.kind==='deny'&&!l.used));
-  const resistance=!!soul?.resist&&!soul?.calm&&!soul?.pure;
-  return denial||resistance?traits.resisting:traits.accepting;
+  return traits[soul?.traitKey]||traits[traitKeyFor(soul)];
 }
 
 /** Operational bonuses cannot turn a wrong destination or excessive/short sentence into justice. */

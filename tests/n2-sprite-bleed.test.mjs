@@ -38,7 +38,7 @@ test('N2: interrogation Yama no longer bobs; the suspect still floats',()=>{
 });
 
 test('N2: trial render mounts the map idle pose with the same timing as yama-animation.js',()=>{
-  assert.match(read('src/ui.js'),/mountYamaTrialIdle\(dlg\.querySelector\('\.trial-hud \.hud-stage \.fig\.you img'\),\s*g\.outfit \|\| g\.zone\)/);
+  assert.match(read('src/ui.js'),/const yamaImg = dlg\.querySelector\('\.trial-hud \.hud-stage \.fig\.you img'\);[\s\S]*?mountYamaTrialIdle\(yamaImg, g\.outfit \|\| g\.zone\)/);
   const src=read('src/yama-animation.js').match(/book:\[([\d,]+)\]/)[1].split(',').map(Number);
   assert.deepEqual([...TRIAL_IDLE_TIMING],src);
   const m=read('src/yama-trial-idle.js');

@@ -7,7 +7,7 @@ import {bossJusticeCase,bossJusticeActors,bossJusticeAnswer,interrogateBoss,mirr
 import {bossGuideState,BOSS_GUIDE_GRANTS,acknowledgeBossGuideGrant} from '../src/boss-guides.js';
 import {releasedFrontierBoss} from '../src/frontier.js';
 import {finalCourtModel,finalCourtMarkup,FINAL_BOUND_SPRITE} from '../src/boss-court-view.js';
-import {keeperRoleHtml,teamReportsHtml} from '../src/interrogation-ui.js';
+import {keeperBarHtml,teamReportsHtml} from '../src/interrogation-ui.js';
 import {storyOf} from '../src/story.js';
 import {finalGame,acknowledge} from './final-event-helpers.mjs';
 
@@ -72,11 +72,11 @@ for(const [zone] of regions)test(`${zone}: Kan opens mitigation, Boon completes 
   let g=setup(zone);g.hire('kan');g.hire('boon');g.karma=10;g.mp=20;g.order=70;
   const st=g.stations.find(s=>s.def.k==='krata');
   const soul={id:81001,case:zone==='asia'?'A1':undefined,who:'วิญญาณตรวจรับ',name:'วิญญาณตรวจรับ',sp:0,sex:'m',deeds:[{s:st.def.tags[0],w:3,t:'กรรมที่ทราบ',known:true},{s:st.def.tags[0],w:-1,t:'เหตุบรรเทาเฉพาะสำนวน',known:false}],
-   merits:[],deserved:2,said:[],lines:[],courtDisembarked:true,resist:false};
+   merits:[],deserved:2,said:[],lines:[],courtDisembarked:true,resist:false,traitKey:'concealing'};
   g.queue=[soul];assert.equal(g.spiritTrait(soul).key,'concealing');
-  assert.ok(!keeperRoleHtml(g,soul,g.crewOf('boon'),'krata').includes('เหตุบรรเทาเฉพาะสำนวน'),'role card cannot leak the clue');
+  assert.ok(!keeperBarHtml(g,soul,g.crewOf('boon'),'krata').includes('เหตุบรรเทาเฉพาะสำนวน'),'role card cannot leak the clue');
   const morale=g.crewOf('kan').morale;assert.match(g.kanRevealClue(soul).text,/เหตุบรรเทาเฉพาะสำนวน/);
-  assert.equal(g.mp,16);assert.equal(g.crewOf('kan').morale,morale-4);assert.equal(g.spiritTrait(soul).key,'accepting');
+  assert.equal(g.mp,16);assert.equal(g.crewOf('kan').morale,morale-4);assert.equal(g.spiritTrait(soul).key,'concealing','P2: the colour is locked at court entry, opening the truth does not change it');
   g=reload(g);assert.match(g.kanClueWhy(g.queue[0]),/ไม่มีข้อเท็จจริง|พักพลัง/);
   assert.equal(g.assign(g.queue[0].id,'krata','boon',2),true);
   const afterVerdictKarma=g.karma,afterVerdictCoins=g.coin;

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spiritTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from '../src/interrogation.js';
+import {spiritTrait,lockSoulTrait,traitKeyFor,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from '../src/interrogation.js';
 
 const caseSoul=()=>({deeds:[{t:'กรรมที่เปิดแล้ว',s:'kong',w:4,known:true},
   {t:'เหตุบรรเทาที่ซ่อน',s:'kong',w:-1,known:false},{t:'สำนวนชั้นแรก',s:'bian',w:2,known:true,visible:false}],
@@ -30,15 +30,16 @@ test('Kan opens one issue at a time, including mitigation, sealed records, false
  assert.deepEqual(hiddenIssues(soul),[]);assert.equal(revealOneIssue(soul),null);
 });
 
-test('trait evolution follows disclosed facts and answered denials, persists in JSON, and remains separate from fear',()=>{
- let soul=caseSoul();while(hiddenIssues(soul).length)revealOneIssue(soul);
- assert.equal(spiritTrait(soul).key,'resisting','evidence can be exposed before a spirit admits it');
- soul=JSON.parse(JSON.stringify(soul));assert.equal(spiritTrait(soul).key,'resisting');
- soul.denied=null;soul.lines[0].used=true;assert.equal(spiritTrait(soul).key,'accepting');
- soul.resist=true;assert.equal(spiritTrait(soul).key,'resisting');soul.beaten=true;
- assert.equal(spiritTrait(soul).key,'resisting','losing a fight does not demonstrate acceptance');soul.denied='ยังปฏิเสธ';
- assert.equal(spiritTrait(soul).key,'resisting','being beaten alone does not erase continuing denial');
+test('P2: the trait is locked on court entry — opening the truth, answering denials or losing a fight never changes it',()=>{
+ let soul=caseSoul();soul.traitKey='concealing';
+ while(hiddenIssues(soul).length)revealOneIssue(soul);
+ assert.equal(spiritTrait(soul).key,'concealing','evidence can be exposed and the colour stays');
+ soul=JSON.parse(JSON.stringify(soul));assert.equal(spiritTrait(soul).key,'concealing','survives save/load');
+ soul.denied=null;soul.lines[0].used=true;soul.resist=true;soul.beaten=true;assert.equal(spiritTrait(soul).key,'concealing');
  assert.equal(soul.repentant,undefined,'the behavior badge cannot claim repentance');
+ const fresh={deeds:[],merits:[],resist:true};assert.equal(spiritTrait(fresh).key,'resisting','a never-locked soul reads the same rule');
+ assert.equal(lockSoulTrait(fresh).traitKey,'resisting');fresh.resist=false;assert.equal(lockSoulTrait(fresh).traitKey,'resisting','locking twice keeps the first value');
+ const junk={traitKey:'nonsense',deeds:[],merits:[]};assert.equal(spiritTrait(junk).key,'accepting');assert.equal(lockSoulTrait(junk).traitKey,'accepting');
 });
 
 test('justice requires the appropriate destination and exact sentence; keeper stats or high scores do not excuse errors',()=>{

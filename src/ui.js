@@ -1,7 +1,7 @@
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
-import {mountInterrogationStyles,spiritTraitHtml,keeperImpactHtml,kanClueHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
+import {mountInterrogationStyles,spiritNameHtml,keeperBarHtml,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
@@ -20,7 +20,7 @@ import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
-import { sentencingChapters, clockGuide, firstTrialLesson } from './sentencing-guide.js';
+import { sentencingChapters, clockGuide, firstTrialLesson, firstInterrogationLesson } from './sentencing-guide.js';
 import { actorStanding, specialCooldown } from './actor-recovery.js';
 import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-review-20261011';
 import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011-fire-theme-v2';
@@ -2005,6 +2005,11 @@ function guideCards(html) {
   for (const p of template.content.querySelectorAll('p')) {
     const tile=document.createElement('div');tile.className='guide-tile';tile.innerHTML=p.innerHTML;p.replaceWith(tile);
   }
+  // P2: keeper-team page — each article carries a slot for that keeper's drawn profile (assets/crew-<k>-profile.png)
+  for (const slot of template.content.querySelectorAll('[data-profile-slot]')) {
+    const src = artUrl(`crew-${slot.dataset.profileSlot}-profile`);
+    if (src) slot.innerHTML = `<img class="guide-portrait" src="${esc(src)}" alt="" loading="lazy" onerror="this.remove()">`;
+  }
   const content = template.innerHTML;
   return `<section class="guide-card"><h3>${esc(heading)}</h3>${content}</section>`;
 }
@@ -2384,6 +2389,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
 //   บน = แถบสถานะ · ซ้าย = แถวคำสั่งแนวตั้ง · ขวาบน = สำนวน+คำให้การ
 //   ล่างซ้าย = โปรไฟล์ยมบาทน้อย + ของ · ล่างขวา = โปรไฟล์วิญญาณ
 // เปิดได้จากแท่นพิพากษาเท่านั้น (ดู drawDeck) — แท็บ "ไต่สวน" เดิมถูกถอดออกแล้ว
+const FEAR_BEAT_MS = 1100, FEAR_AFTER_MS = 650;   // P2: close-in + fright before the confession lands · then the camera stays a beat and relaxes
 let trialCmd = 'ask';        // แผงขวาเป็นการไต่สวนเสมอ; ตัวเลือกคำตัดสินอยู่ในวงคำสั่งบนเวที
 
 function openTrial(initialError = '') {
@@ -2394,7 +2400,15 @@ function openTrial(initialError = '') {
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
-  let trialError = initialError, courtPanel = null, kanClueResult = '';
+  let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false;
+  // P2: the three-page "read the name colour" lesson, once per save (after the first-warrant lesson)
+  const traitLessonHtml = page => {
+    const n = firstInterrogationLesson.length, step = firstInterrogationLesson[page];
+    return `<div class="trial-first-lesson trait-lesson" role="dialog" aria-modal="true" aria-label="สีของวิญญาณ" data-trait-lesson="${page}">
+      <h3>${esc(step.title)}</h3><p>${esc(step.body)}</p>
+      <div class="trait-lesson-nav"><span class="trait-lesson-count" aria-label="หน้า ${page + 1} จาก ${n}">${page + 1}/${n}</span>
+      <button class="gold" data-trait-lesson-next>${esc(step.next)}</button></div></div>`;
+  };
   const blockText = block => block ? block.text || t('trial.' + block.key) + (block.station ? block.station : '') : '';
 
   const paint = () => {
@@ -2537,15 +2551,18 @@ function openTrial(initialError = '') {
     }).join('');
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+    // P2: a menu click repaints the whole room — carry Yama's live idle <img> across so the sprite never falls back to the painting
+    const keepYama = dlg.querySelector('.trial-hud .hud-stage .fig.you img[data-yama-idle]');
     dlg.innerHTML = `
-    <div class="hud trial-hud trial-comment8" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
+    <div class="hud trial-hud trial-comment8${Date.now() < fearUntil ? ' is-fear-zoom' : ''}" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
       <div class="cam-world" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')"><div class="hud-stage cam-stage-box">
         <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
-        <div class="fig foe" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+        <div class="fig foe${Date.now() < fearUntil ? ' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
                onerror="this.onerror=null;this.src='img/spirit7.png'">
-          <span class="nm">${esc(s.name || s.who)}</span></div>
+          ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
+          <div class="soul-fear" aria-hidden="true"><i class="fear-gloom"></i><i class="fear-burst"></i><i class="fear-sweat s1"></i><i class="fear-sweat s2"></i><i class="fear-sweat s3"></i><i class="fear-tremble l"></i><i class="fear-tremble r"></i></div></div>
       </div></div>
       <div class="hud-scrim"></div>
       <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
@@ -2556,10 +2573,12 @@ function openTrial(initialError = '') {
       </div>
       <button class="trial-close" data-close aria-label="${esc(t('trial.close'))}"><img src="img/ui/icon-close.png" alt=""></button>
 
-      ${!g.taught.includes('trial-calculation') ? `<div class="trial-first-lesson" role="dialog" aria-label="วิธีออกหมายครั้งแรก">${firstTrialLesson}<button class="gold" data-lesson-done>เข้าใจแล้ว เริ่มสอบสวน</button></div>` : ''}
+      ${!g.taught.includes('trial-calculation') ? `<div class="trial-first-lesson" role="dialog" aria-label="วิธีออกหมายครั้งแรก">${firstTrialLesson}<button class="gold" data-lesson-done>เข้าใจแล้ว เริ่มสอบสวน</button></div>`
+        : !g.taught.includes('interrogation-traits') ? traitLessonHtml(traitLessonPage) : ''}
       <div class="hud-body">
         <div class="hud-stage">
           <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
+          ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}
           ${trialWheel}
         </div>
 
@@ -2567,7 +2586,6 @@ function openTrial(initialError = '') {
           <div class="trial-top-actions" aria-label="คำสั่งคดี">${topActions}</div>
           <div class="hud-card hud-rec">
             <h4>${esc(t('trial.readAloud'))}</h4>
-            ${spiritTraitHtml(g.spiritTrait?.(s))}
             ${s.face ? `<div class="deed allegation">${esc(s.face)}</div>` : ''}
             ${claimed.map(m => publicMeritLine(m, 'deed merit')).join('')}
             ${known.map(d => `<div class="deed allegation">${deedLine(d)}</div>`).join('')}
@@ -2576,8 +2594,7 @@ function openTrial(initialError = '') {
           </div>
 
           <div class="hud-card hud-opt">${opt}</div>
-          ${kanClueHtml(g,s,kanClueResult)}
-          ${keeperImpactHtml(g,s,crewNow,pick.st)}
+          ${keeperBarHtml(g,s,crewNow,pick.st,c=>artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`))}
 
           <div class="hud-card">
             <h4>${esc(t('trial.saveRecord'))}</h4>
@@ -2601,7 +2618,9 @@ function openTrial(initialError = '') {
     </div>`;
 
     // N2: Yama stands (map idle pose) instead of bobbing — the suspect keeps floating
-    mountYamaTrialIdle(dlg.querySelector('.trial-hud .hud-stage .fig.you img'), g.outfit || g.zone);
+    const yamaImg = dlg.querySelector('.trial-hud .hud-stage .fig.you img');
+    if (keepYama && yamaImg) { yamaImg.replaceWith(keepYama); mountYamaTrialIdle(keepYama, g.outfit || g.zone); }
+    else mountYamaTrialIdle(yamaImg, g.outfit || g.zone);
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
     if(dossierScroll)dlg.querySelector('.hud-right').scrollTop=dossierScroll;
 
@@ -2626,9 +2645,14 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('.court-options').forEach(pane=>pane.querySelectorAll('.orb-choice').forEach((button,i)=>button.style.setProperty('--choice-index',i)));
     dlg.querySelector('.comment8-menu')?.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();courtPanel=null;paint();}});
     dlg.querySelector('[data-lesson-done]')?.addEventListener('click', () => { g.taught.push('trial-calculation'); g.save(); paint(); });
+    dlg.querySelector('[data-trait-lesson-next]')?.addEventListener('click', () => {
+      if (traitLessonPage < firstInterrogationLesson.length - 1) traitLessonPage++;
+      else { g.taught.push('interrogation-traits'); g.save(); }
+      paint();
+    });
     dlg.querySelector('[data-trial-pause]').onclick = () => openPause(true);
     dlg.querySelector('[data-cmd="ask"]').onclick = () => dlg.querySelector('[data-line]:not(:disabled)')?.focus();
-    bindKanClue(dlg,g,s,clue=>{kanClueResult=clue.text;sfx('crack');g.save();paint();refresh();camera.cue('interrogate-reveal',{targets:'suspect'});});
+    bindKanClue(dlg,g,s,clue=>{kanClueResult=clue.text;sfx('crack');g.save();paint();refresh();});
     dlg.querySelector('#t-guide').onclick = () => {
       const guide = document.createElement('dialog');
       guide.className = 'court-guide';
@@ -2653,11 +2677,24 @@ function openTrial(initialError = '') {
       paint();
     });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
+      if (fearBusy) return;
+      const hit = s.lines[+el.dataset.line]?.kind !== 'solid';   // the ✓ lines: deny / boast / plea — a "solid" line is the wrong one to press
       const r = g.press(s, +el.dataset.line);
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
-      paint(); refresh();
-      if (r) camera.cue(revealed ? 'interrogate-reveal' : 'interrogate-ask', { targets:'suspect' });   // M1: lean in on the suspect; harder + flash on a reveal / confession
+      if (!r) return;
+      if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
+      // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
+      fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS;
+      // portrait: the ✓ lines sit below the fold, so bring the stage into view for the beat and put the reader back afterwards
+      const backTo = dlg.scrollTop; if (backTo > 40) dlg.scrollTo({ top:0, behavior:'smooth' });
+      const hud = dlg.querySelector('.trial-comment8');
+      hud?.classList.add('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.add('is-frightened');
+      camera.cue('interrogate-reveal', { targets:'suspect' });
+      setTimeout(() => { fearBusy = false; if (!dlg.open || !dlg.querySelector('.trial-hud')) return; paint(); refresh(); }, FEAR_BEAT_MS);
+      setTimeout(() => { if (!dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0;
+        dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened');
+        if (backTo > 40) dlg.scrollTo({ top:backTo, behavior:'smooth' }); }, FEAR_BEAT_MS + FEAR_AFTER_MS);
     });
     // M2: a repaint replaces the stage — keep an effect that is still playing (interrogation hypnosis / mirror) on the new one
     if (!fxIdle()) attachBattleFx(dlg.querySelector('.hud-stage'));
@@ -2714,7 +2751,7 @@ function openTrial(initialError = '') {
     if (!dlg.open || !dlg.querySelector('.trial-hud')) { clearInterval(roarTick); return; }
     const kan=dlg.querySelector('[data-kan-clue]');
     if(kan){
-      const why=g.kanClueWhy(s),note=dlg.querySelector('[data-kan-clue-why]');kan.disabled=!!why;
+      const why=g.kanClueWhy(s),note=dlg.querySelector('[data-kan-clue-why]');kan.disabled=!!why;kan.closest('[data-kan-orb]')?.classList.toggle('is-off',!!why);
       if(note){note.textContent=why;note.hidden=!why;}
     }
     const b = dlg.querySelector('[data-pw="roar"]');

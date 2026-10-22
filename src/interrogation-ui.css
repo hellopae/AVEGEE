@@ -1,14 +1,56 @@
-.spirit-trait{display:flex;align-items:center;gap:10px;border:1px solid var(--trait-color,#d4a355);border-left-width:5px;background:#211423;padding:9px 12px;border-radius:9px;margin:0 0 5px;color:#f6e9df}
-.spirit-trait .trait-symbol{font-size:25px}.spirit-trait small,.spirit-trait b{display:block}.spirit-trait small{font-size:11px;color:#c9b7c8}.spirit-trait b{font-size:15px;color:var(--trait-color,#d4a355);line-height:1.5}
-.trait-explanation,.keeper-impact-rule,.worker-impact,.team-report-note{font-size:12px;line-height:1.6;color:#cbbac4;margin:5px 0 10px}
-.keeper-role-card{border:1px solid #71583f;background:#21131c;border-radius:8px;margin:8px 0;padding:10px;overflow-wrap:anywhere}
-.keeper-role-card.is-trait-match{border-color:var(--trait-color,#d4a355);border-left-width:4px}.keeper-role-card.is-selected{box-shadow:inset 0 0 0 1px #d4a355}
-.keeper-role-heading{display:flex;flex-wrap:wrap;align-items:center;gap:5px 10px}.keeper-role-heading b{color:#f5dfb3}.keeper-role-heading>span{font-size:11px;color:#cabcc5}.is-trait-match .keeper-role-heading>span{color:var(--trait-color,#d4a355)}
-.keeper-role-card p,.kan-clue p{font-size:12px;line-height:1.6;margin:6px 0}.keeper-role-card small,.kan-clue small{display:block;font-size:11px;line-height:1.6;color:#d0bdc8}.keeper-role-cost b{color:#e6cc9e}.keeper-role-why{color:#f1ad98!important}
-.keeper-role-card button,.kan-clue button,.team-report button{font-size:12px;padding:6px 10px;min-height:34px;margin-top:6px}.keeper-role-card button[aria-pressed=true]{border-color:#f6d991;color:#ffeac0}.keeper-role-roster summary,.team-reports summary{cursor:pointer;color:#e5c789;padding:6px 0;font-size:13px;line-height:1.5}
-.kan-clue-result{border-left:3px solid #b78ae5;padding-left:9px;color:#e2cef3}.kan-clue button:focus-visible,.keeper-role-card button:focus-visible,.team-report button:focus-visible,.verdict-dismiss:focus-visible{outline:2px solid #ffdf93;outline-offset:3px}
+.trait-explanation,.worker-impact,.team-report-note{font-size:12px;line-height:1.6;color:#cbbac4;margin:5px 0 10px}
+.team-report button{font-size:12px;padding:6px 10px;min-height:34px;margin-top:6px}.team-reports summary{cursor:pointer;color:#e5c789;padding:6px 0;font-size:13px;line-height:1.5}
+.team-report button:focus-visible,.verdict-dismiss:focus-visible{outline:2px solid #ffdf93;outline-offset:3px}
+.keeper-role-why{color:#f1ad98!important}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* P2: spirit trait = icon + colour on the spirit's name tag (never colour alone) */
+.trial-comment8 .hud-stage .fig .nm.spirit-name,.trial-hud .fig .nm.spirit-name{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--trait-color,#d4a355);color:var(--trait-color,#d4a355);background:rgba(12,6,9,.86);padding:2px 12px 2px 8px;max-width:100%;white-space:nowrap;box-shadow:0 0 0 1px #0008,0 2px 8px #000a;font-weight:650}
+.spirit-name .trait-symbol{font-size:1.25em;line-height:1}
+/* P2: compact keeper picker (long explanations live in the handbook) */
+.keeper-bar h4{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.keeper-bar h4 small{font-size:11px;color:#a99aa6;font-weight:400}
+.keeper-bar-row{display:flex;flex-wrap:wrap;gap:8px}
+.keeper-chip{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:4px 10px 4px 5px;border:1.5px solid #71583f;border-radius:999px;background:#21131c;color:#f1dab2;font-size:13px;cursor:pointer}
+.keeper-chip img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center top;border:1px solid #98713d;background:#201720}
+.keeper-chip b{font-weight:600}.keeper-chip-suit{font-size:15px;line-height:1}
+.keeper-chip.is-trait-match{border-color:var(--trait-color,#d4a355);box-shadow:inset 0 0 0 1px var(--trait-color,#d4a355),0 0 10px -2px var(--trait-color,#d4a355)}
+.keeper-chip.is-selected{background:linear-gradient(#ffe5a2,#cc9c4a);color:#26120c;border-color:#ffe3a6}.keeper-chip.is-selected img{border-color:#4a2916}
+.keeper-chip:disabled{opacity:.5;cursor:not-allowed}.keeper-chip:focus-visible,.kan-orb-btn:focus-visible{outline:2px solid #ffdf93;outline-offset:3px}
+/* P2: Kan = a round icon beside Yama, with a short label underneath */
+.trial-comment8 .hud-stage .kan-orb{position:absolute;left:1%;top:30%;z-index:26;display:flex;flex-direction:column;align-items:center;gap:3px;width:92px;pointer-events:auto}
+.kan-orb-btn{width:60px;height:60px;padding:0;border-radius:50%;border:2.5px solid #b78ae5;background:#201720;overflow:hidden;cursor:pointer;display:grid;place-items:center;font-size:28px;box-shadow:0 0 12px -2px #b78ae5,0 3px 8px #000a}
+.kan-orb-btn img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.kan-orb.is-off .kan-orb-btn{filter:grayscale(.85);opacity:.7;border-color:#7a6a86;box-shadow:0 3px 8px #000a;cursor:not-allowed}
+.kan-orb-label{font-size:12px;line-height:1.2;color:#f3e3ff;text-align:center;text-shadow:0 1px 3px #000,0 0 6px #000;font-weight:600}
+.kan-orb-why{max-width:92px;font-size:10px;line-height:1.25;text-align:center;text-shadow:0 1px 3px #000}.kan-orb-why[hidden]{display:none}
+.kan-orb-tip{position:absolute;left:0;top:100%;z-index:30;width:230px;margin-top:6px;padding:8px 10px;border:1px solid #b78ae5;border-radius:8px;background:#1d1022;color:#f0e4f7;font-size:11.5px;line-height:1.5;display:none;pointer-events:none;box-shadow:0 6px 18px #000a}
+.kan-orb:hover .kan-orb-tip,.kan-orb:focus-within .kan-orb-tip{display:block}
+/* P2: lesson + counter */
+.trait-lesson-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.trait-lesson-count{color:#cdbeb9;font-size:13px}.trait-lesson button{margin-top:0}
+/* P2: correct press = fright beat (camera closes on the spirit, Yama steps out of frame) */
+.trial-comment8 .cam-stage-box .fig.you{transition:opacity .2s}.trial-comment8.is-fear-zoom .cam-stage-box .fig.you{opacity:0}
+.soul-fear{position:absolute;inset:0;pointer-events:none;display:none;z-index:3}
+.fig.foe.is-frightened .soul-fear{display:block}
+.fig.foe.is-frightened>img{transform-origin:50% 100%;animation:soulFearTilt .55s ease-out both,soulFearShake .08s linear .55s infinite alternate}
+.soul-fear i{position:absolute;display:block;background-repeat:no-repeat}
+.soul-fear .fear-burst{left:50%;top:-6%;width:84%;aspect-ratio:1;translate:-50% 0;background:url(../img/fx/fx-soul-shock-burst.webp) center/contain;animation:soulFearBurst .6s ease-out both}
+.soul-fear .fear-gloom{left:50%;top:-24%;width:100%;aspect-ratio:2/1;translate:-50% 0;background:url(../img/fx/fx-soul-gloom-lines.webp) center/contain;opacity:0;animation:soulFearGloom 1.6s ease-out .1s both}
+.soul-fear .fear-sweat{width:19%;aspect-ratio:1;background-image:url(../img/fx/fx-soul-sweat-drops.webp);background-size:400% 100%;opacity:0;animation:soulFearSweat .9s ease-in infinite}
+.soul-fear .s1{left:2%;top:8%;background-position:0 0}.soul-fear .s2{right:2%;top:2%;background-position:66.67% 0;animation-delay:.25s}.soul-fear .s3{left:62%;top:20%;background-position:100% 0;animation-delay:.5s}
+.soul-fear .fear-tremble{top:34%;width:40%;aspect-ratio:2/1;background-image:url(../img/fx/fx-soul-tremble-marks.webp);background-size:200% 100%;animation:soulFearMarks .16s steps(2) infinite alternate}
+.soul-fear .fear-tremble.l{left:-30%;background-position:0 0}.soul-fear .fear-tremble.r{right:-30%;background-position:100% 0}
+@keyframes soulFearTilt{from{transform:none}to{transform:rotate(-5deg) translateX(7%) scale(.97)}}
+@keyframes soulFearShake{from{translate:-2px 0}to{translate:2px 1px}}
+@keyframes soulFearBurst{0%{opacity:0;scale:.4}25%{opacity:1;scale:1}100%{opacity:0;scale:1.25}}
+@keyframes soulFearGloom{0%{opacity:0;translate:-50% -10%}30%{opacity:.95;translate:-50% 0}100%{opacity:.55;translate:-50% 0}}
+@keyframes soulFearSweat{0%{opacity:0;translate:0 -6px}25%{opacity:1}100%{opacity:0;translate:0 22px}}
+@keyframes soulFearMarks{from{opacity:1;translate:-2px 0}to{opacity:.55;translate:2px 0}}
+@media(prefers-reduced-motion:reduce){.fig.foe.is-frightened>img{animation:none;transform:rotate(-5deg) translateX(7%)}.soul-fear i{animation:none!important}.soul-fear .fear-burst{opacity:.9}.soul-fear .fear-gloom{opacity:.7}.soul-fear .fear-sweat{opacity:1}}
 .team-reports{margin:10px 0;padding:10px;border:1px solid #71583f;border-radius:8px;background:#21131c}.team-report{border-top:1px solid #594033;padding:10px 0;font-size:12px;line-height:1.6}.team-report p,.team-report ul{margin:5px 0}.team-report ul{padding-left:20px}.team-report b{display:block;color:#f1dab2}.team-report.is-seen{opacity:.75}
 .trial-comment8 .court-options .orb-choice.is-trait-match{--keeper-match-color:#d4a355;border-color:var(--keeper-match-color)!important;box-shadow:inset 0 0 0 1px var(--keeper-match-color)}
 .trial-comment8 .court-options .orb-choice.is-trait-match[data-k=kan]{--keeper-match-color:#b78ae5}.trial-comment8 .court-options .orb-choice.is-trait-match[data-k=plerng]{--keeper-match-color:#ef7777}.trial-comment8 .court-options .orb-choice.is-trait-match[data-k=boon]{--keeper-match-color:#83ca96}
 .verdict-dismiss{display:block;pointer-events:auto;margin:8px 0 0;padding:5px 10px;min-height:30px;font-size:12px}
-@media(max-width:700px){.keeper-role-card{padding:9px}.spirit-trait b{font-size:14px}.keeper-role-heading{display:block}.keeper-role-heading>span{display:block;margin-top:3px}}
+@media(max-width:700px){.trial-comment8 .hud-stage .fig.foe .nm.spirit-name{align-self:flex-end;width:max-content;max-width:150px;white-space:normal;line-height:1.25;text-align:left;font-size:12px;padding:3px 10px 3px 7px;border-radius:14px}.trial-comment8 .hud-stage .kan-orb{left:0;top:6%;width:76px}.kan-orb-btn{width:50px;height:50px}.kan-orb-label{font-size:11px}.kan-orb-why{max-width:76px}.keeper-chip{min-height:44px}}
+/* P2: handbook — each keeper article = profile picture on the left, text on the right */
+.guide-keeper{display:grid;grid-template-columns:88px minmax(0,1fr);column-gap:12px;align-items:start;margin:12px 0}.guide-keeper>*{grid-column:2;min-width:0}.guide-keeper>[data-profile-slot]{grid-column:1;grid-row:1/span 6}.guide-keeper>h4{margin:0 0 4px}
+.guide-trait>h4{margin:14px 0 4px}
+@media(max-width:520px){.guide-keeper{grid-template-columns:64px minmax(0,1fr);column-gap:10px}}
