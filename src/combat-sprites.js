@@ -58,6 +58,7 @@ export async function mountCombatSprites(stage,entries){
   const now=Date.now();
   for(const a of actors){
    const rec=recordFor(a.key,a.mode),anim=rec?.modes?.[a.mode];if(!rec||!anim)continue;
+   if(a.mode==='hurt'&&now<(a.startedAt||0))continue;   // O2: a hurt pose held back until a cutscene card clears — the stand-up stays meanwhile
    const im=imageFor(rec.src);if(!im)continue;
    const s=a.foot.h/rec.bodyHeight,w=rec.frameWidth*s,h=rec.frameHeight*s;
    const frame=poseFrame(now-(a.startedAt||0),anim.frames,anim.durations,!!anim.loop);
