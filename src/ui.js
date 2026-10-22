@@ -13,6 +13,9 @@ import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
+import { mountDiagnosis } from './diagnosis-ui.js';
+import { diagnosisSubjects, subjectKey, diagnosisModel } from './diagnosis.js';
+import { GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
@@ -56,9 +59,9 @@ import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, 
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
-import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
+import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-p4';
 import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
-import { makeRoom } from './room.js?v=minigame-review-20261011';
+import { makeRoom } from './room.js?v=minigame-review-20261011-p4';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
 import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569
@@ -4905,6 +4908,7 @@ function openStation(k, emergency = false) {
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let trainingQuit = null, minigameQuit = null, mirrorCharge = null;
+  let diag = null;                      // P4: ใบวินิจฉัยวิญญาณ (เฉพาะตะราง/ประตูสวรรค์) — mountDiagnosis() ตอนสร้างห้องเสร็จ
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
@@ -4925,6 +4929,9 @@ function openStation(k, emergency = false) {
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'),
           A = dlg.querySelector('#st-actions'), AL = dlg.querySelector('#st-alert');
     const row = (label, btn) => `<div class="st-row"><span>${label}</span>${btn}</div>`;
+    // P4: แถวรายชื่อตะราง/ประตูสวรรค์ — กดชื่อหรือปุ่ม "วินิจฉัย" เปิดใบวินิจฉัย · ปุ่มเดิม (ตรวจ/ส่ง) อยู่ข้างกัน
+    const drow = (key, name, label, btn) => `<div class="st-row"><span class="st-row-name" role="button" tabindex="0" data-diag="${key}">${label}</span>
+      <span class="st-row-diag"><button type="button" class="btn-diag" data-diag="${key}" aria-label="${esc(t('diag.openAria', { name }))}">🔍 ${esc(t('diag.open'))}</button>${btn}</span></div>`;
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
     // 29M: ปุ่มซ่อมย้ายไปอยู่บนแผนที่ทุกสถานที่แล้ว (รวมตะราง/ประตูสวรรค์) — ในห้องเหลือแค่ปุ่มเยี่ยมนิรา
@@ -4955,13 +4962,13 @@ function openStation(k, emergency = false) {
         const status = x.inspected ? t(x.repentant ? 'room.repentant' : 'room.notRepentant')
           : ready ? '' : t('room.wait').replace('{n}', (x.readyAt ?? x.until) - g.tick);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}${g.buildLocked('sawan') ? ` (${esc(t('unlock.lockedAt', { n: g.buildUnlockLv('sawan') }))})` : ''}` : ''}`;
-        return row(label, x.inspected
+        return drow(`prison:${x.soul.id}`, name, label, x.inspected
           ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${!R?.prisonEscorting(x.soul.id) && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
           : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
       }).join('');
       const heldHtml = g.held.length
         ? `<div class="st-pane-title">${esc(t('room.heldTitle').replace('{n}', g.held.length))}</div>`
-          + g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
+          + g.held.map(h => drow(`held:${h.id}`, esc(h.name || h.who), esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
         : '';
       // 29C: ปุ่ม "ตรวจความเข็ดหลาบ" ถูกตัด — งานตรวจ/ส่งไปประตูสวรรค์ย้ายมารวมในหน้าต่างเดียวกับรายชื่อ
       drawer = `<div class="st-pane" data-pane="roster">
@@ -4977,7 +4984,7 @@ function openStation(k, emergency = false) {
       const rows = arrivals.map(x => {
         const name = esc(x.soul.name || x.soul.who);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name} · ${esc(x.checked ? t('room.karmaLeft').replace('{n}', x.karmaLeft) : t('room.gateWait'))}`;
-        return row(label, x.checked
+        return drow(`gate:${x.soul.id}`, name, label, x.checked
           ? `<button class="btn-gold" data-gate-send="${x.soul.id}">${esc(t(x.karmaLeft > 0 ? 'room.toReborn' : 'room.toSky'))}</button>`
           : `<button class="btn-gold" data-gate-check="${x.soul.id}">${esc(t('room.gateCheck'))}</button>`);
       }).join('');
@@ -5085,7 +5092,13 @@ function openStation(k, emergency = false) {
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
         tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:Math.round(g.karma*10)/10, disabled:!!why });
       }
-      put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
+      // P4: ปุ่ม "ใบวินิจฉัย" ลอยเหนือหัววิญญาณที่ยืนรออยู่บนจอ (สูงสุด 3 ดวง — เกินนั้นใช้แผงรายชื่อ)
+      if (diag) for (const sub of diagnosisSubjects(g, k)) {
+        const at = R.soulAnchor(sub.soul.id);
+        if (at) tags.push({ diag: subjectKey(sub), name: sub.soul.name || sub.soul.who, ax: at[0], ay: at[1] });
+      }
+      put(N, tags.map(x => x.diag ? `<div class="st-npc-tag above" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%"><button type="button" class="btn-diag" data-diag="${x.diag}" aria-label="${esc(t('diag.openAria', { name: x.name }))}">🔍 ${esc(t('diag.openTag'))}</button></div>`
+        : `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.yamaKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
       const swordTrainingBtn = N.querySelector('[data-npc="sword-training"]');
@@ -5099,6 +5112,11 @@ function openStation(k, emergency = false) {
       };
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
+    dlg.querySelectorAll('[data-diag]').forEach(el => {
+      const open = () => diag?.show(el.dataset.diag, el);
+      el.onclick = open;
+      if (el.getAttribute('role') === 'button') el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
+    });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
@@ -5345,6 +5363,7 @@ function openStation(k, emergency = false) {
     <div class="hud st-hud zone1-room" data-room="${k}">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
         <div class="st-arch" id="st-arch" hidden></div>
+        <div class="st-diag" id="st-diag" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
         <div class="st-npc" id="st-npc"></div>${k === 'krata' ? '<div id="st-actions"></div>' : ''}</div>
       <div class="st-card" id="st-left"></div>
@@ -5386,6 +5405,46 @@ function openStation(k, emergency = false) {
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
   R.onCollect = () => { panels(); refresh(); };
+  if (k === 'tarang' || k === 'sawan') {
+    // P4 ใบวินิจฉัยวิญญาณ — ปุ่มหลักเรียกฟังก์ชันเดิมทั้งหมด (release / inspectPrison / moveFromPrison / inspectGate / resolveGate)
+    // พร้อมแอนิเมชันห้องเดิม · เปิดใบ = พักเกม (ปล่อยคืนตอนปิดใบ ผ่าน userPaused เหมือนกล่องอื่น)
+    const sheet = dlg.querySelector('#st-diag'), hud = dlg.querySelector('.st-hud');
+    const covered = () => dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls');
+    const after = ok => { if (ok) { sfx('stamp'); if (mine()) panels(); refresh(); } return ok; };
+    diag = mountDiagnosis({
+      g, roomK: k, box: sheet,
+      portrait: m => artUrl(soulKey(m.sp || 7)) || 'img/spirit7.png',
+      escorting: id => !!R?.prisonEscorting(id),
+      onOpen: () => { pauseForDlg(); hud?.classList.add('diag-open'); R.lock(true); covered().forEach(el => el.inert = true); },
+      onClose: () => {
+        hud?.classList.remove('diag-open'); covered().forEach(el => el.inert = false);
+        if (mine()) { R.lock(false); panels(); }
+        if (!userPaused && !g.bossWalk && !g.over) { g.paused = false; updatePlay(); }
+      },
+      onAct: (m, api) => {
+        const id = m.id;
+        switch (m.action.kind) {
+          case 'release': return g.release(id) ? (after(true), { result: 'close', next: 'now' }) : null;
+          case 'inspectPrison': return after(g.inspectPrison(id)) ? { result: 'stay' } : null;
+          case 'moveFromPrison':
+            return R.prisonEscort(id, () => { after(g.moveFromPrison(id)); api.openNext(); }) ? (panels(), { result: 'close', next: 'manual' }) : null;
+          case 'inspectGate':
+            if (!g.inspectGate(id)) return null;
+            R.gateEffect(id, 'scan'); sfx('gateScan'); panels(); refresh(); return { result: 'stay' };
+          case 'resolveGate': {
+            const entry = g.sentenceOf(id, 'gate'); if (!entry?.checked) return null;
+            const kind = gateKarma(entry) > 0 ? 'reborn' : 'sky'; R.gateEffect(id, kind);
+            if (!g.resolveGate(id)) return null;
+            sfx(kind === 'sky' ? 'gateSky' : 'gateReborn'); panels(); refresh();
+            const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            return { result: 'close', next: reduced ? GATE_EFFECT_REDUCED_MS : GATE_EFFECT_MS[kind] };
+          }
+        }
+        return null;
+      },
+    });
+    onDlgClose(() => diag?.close(true));
+  }
   if (emergency) R.setSleep(true);
   let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping();
   const exit = roomExit(k, g.zone, room);
