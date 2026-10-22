@@ -396,8 +396,23 @@ export const CREW_POWER = {
   guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง',
             name:'กระบองพิทักษ์', icon:'img/ui/power-heavy.webp', tint:'#d4a355', kind:'strike' },
 };
-// P4: ความสำนึกของวิญญาณ (0–100) — สุ่มตอนจบทัณฑ์ (game.js rollRemorse) · ผ่านเกณฑ์ = เข็ดแล้ว (ใบวินิจฉัยวาดเส้นเกณฑ์นี้)
-export const REMORSE_PASS = 60;
+// P4 (คุณเป้ 23 ต.ค. 2569 · D1): ความสำนึกของวิญญาณ 0–100 "คำนวณตายตัว" ไม่สุ่ม — ค่าน้ำหนักทั้งหมดอยู่ที่นี่ที่เดียว (สูตรอยู่ remorse.js)
+//   total = keeper + intensity + trait  (เต็ม weights.* รวม 100) · ผ่านเมื่อ total >= pass = เข็ดแล้ว
+//   keeper    = weights.keeper × ( keeperFit×(1−stationShare) + ความตรงสถานี(tham/100)×stationShare )
+//               keeperFit: ผู้คุมที่ผูกกับสีนิสัย (กานต์=ม่วง เพลิง=แดง บุญ=เขียว) ตรงสี=match · คนละสี=mismatch · ทัณฑ์/ดำ=neutral
+//   intensity = weights.intensity × max(0, 1 − เบาไป×shortPenalty − หนักเกิน×overPenalty)   (เบาไป/เกิน = วาระที่สมควร เทียบวาระที่ให้ เหมือน judge())
+//   trait     = weights.trait × trait[traitKey]   (traitKey จาก interrogation.js — สีของวิญญาณที่เกมมีอยู่แล้ว)
+// จูนด้วย tests/p4-remorse.test.mjs จำลองคดีใน cases.js ทุกคดี × ผู้คุม 5 × วาระ 1–5: ตรงวาระผ่าน ~100% · เบาไปผ่าน ~30% (เดิม 30%) · หนักเกินผ่าน ~29% (เดิม 100%)
+export const REMORSE = Object.freeze({
+  pass: 60,
+  weights: Object.freeze({ keeper: 25, intensity: 45, trait: 30 }),
+  keeperFit: Object.freeze({ match: 1, neutral: 0.6, mismatch: 0.15 }),
+  stationShare: 0.3,
+  shortPenalty: 0.25,
+  overPenalty: 0.45,
+  trait: Object.freeze({ accepting: 1, concealing: 0.6, resisting: 0.35 }),
+});
+export const REMORSE_PASS = REMORSE.pass;
 
 
 // ---------- คำแก้ตัว (วิญญาณพูดเองตอนขึ้นแท่น — โกหกได้) ----------
