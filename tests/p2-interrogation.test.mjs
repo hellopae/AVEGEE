@@ -93,9 +93,9 @@ test('P2 Kan icon appears only once Kan is hired and keeps the original reasons 
 
 test('P2 camera: a correct press closes in on the spirit with a fright beat; a wrong press never moves the camera',()=>{
  const ui=read('src/ui.js'),start=ui.indexOf("dlg.querySelectorAll('[data-line]')"),block=ui.slice(start,ui.indexOf('// M2: a repaint replaces the stage',start));
- const wrong=block.slice(block.indexOf('if (!revealed)'),block.indexOf('// P2: a correct press'));
+ const wrong=block.slice(block.indexOf('if (!hit)'),block.indexOf('// P2: a correct press'));
  assert.match(wrong,/paint\(\); refresh\(\); return;/);assert.doesNotMatch(wrong,/camera\./);
- assert.match(block,/camera\.cue\('interrogate-reveal', \{ targets:'suspect' \}\)/);assert.match(block,/is-frightened/);assert.match(block,/camera\.cue\('idle'\)/);
+ assert.match(block,/const hit = s\.lines\[\+el\.dataset\.line\]\?\.kind !== 'solid'/);assert.match(block,/camera\.cue\('interrogate-reveal', \{ targets:'suspect' \}\)/);assert.match(block,/is-frightened/);assert.match(block,/camera\.cue\('idle'\)/);
  assert.doesNotMatch(block,/interrogate-ask/);assert.match(ui,/bindKanClue\(dlg,g,s,clue=>\{[^}]*\}\);/);
  assert.doesNotMatch(/bindKanClue\(dlg,g,s,clue=>\{[^}]*\}\);/.exec(ui)[0],/camera\./,'Kan\'s reveal is not a fright beat');
  const css=read('src/interrogation-ui.css');

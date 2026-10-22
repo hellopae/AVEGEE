@@ -49,4 +49,8 @@
 .trial-comment8 .court-options .orb-choice.is-trait-match{--keeper-match-color:#d4a355;border-color:var(--keeper-match-color)!important;box-shadow:inset 0 0 0 1px var(--keeper-match-color)}
 .trial-comment8 .court-options .orb-choice.is-trait-match[data-k=kan]{--keeper-match-color:#b78ae5}.trial-comment8 .court-options .orb-choice.is-trait-match[data-k=plerng]{--keeper-match-color:#ef7777}.trial-comment8 .court-options .orb-choice.is-trait-match[data-k=boon]{--keeper-match-color:#83ca96}
 .verdict-dismiss{display:block;pointer-events:auto;margin:8px 0 0;padding:5px 10px;min-height:30px;font-size:12px}
-@media(max-width:700px){.trial-comment8 .hud-stage .kan-orb{left:0;top:6%;width:76px}.kan-orb-btn{width:50px;height:50px}.kan-orb-label{font-size:11px}.kan-orb-why{max-width:76px}.keeper-chip{min-height:44px}}
+@media(max-width:700px){.trial-comment8 .hud-stage .fig.foe .nm.spirit-name{align-self:flex-end;width:max-content;max-width:150px;white-space:normal;line-height:1.25;text-align:left;font-size:12px;padding:3px 10px 3px 7px;border-radius:14px}.trial-comment8 .hud-stage .kan-orb{left:0;top:6%;width:76px}.kan-orb-btn{width:50px;height:50px}.kan-orb-label{font-size:11px}.kan-orb-why{max-width:76px}.keeper-chip{min-height:44px}}
+/* P2: handbook — each keeper article = profile picture on the left, text on the right */
+.guide-keeper{display:grid;grid-template-columns:88px minmax(0,1fr);column-gap:12px;align-items:start;margin:12px 0}.guide-keeper>*{grid-column:2;min-width:0}.guide-keeper>[data-profile-slot]{grid-column:1;grid-row:1/span 6}.guide-keeper>h4{margin:0 0 4px}
+.guide-trait>h4{margin:14px 0 4px}
+@media(max-width:520px){.guide-keeper{grid-template-columns:64px minmax(0,1fr);column-gap:10px}}

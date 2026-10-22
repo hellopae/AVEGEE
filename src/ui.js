@@ -2678,19 +2678,23 @@ function openTrial(initialError = '') {
     });
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
       if (fearBusy) return;
+      const hit = s.lines[+el.dataset.line]?.kind !== 'solid';   // the ✓ lines: deny / boast / plea — a "solid" line is the wrong one to press
       const r = g.press(s, +el.dataset.line);
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
       if (!r) return;
-      if (!revealed) { paint(); refresh(); return; }   // a wrong press never moves the camera
+      if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
       // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
       fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS;
+      // portrait: the ✓ lines sit below the fold, so bring the stage into view for the beat and put the reader back afterwards
+      const backTo = dlg.scrollTop; if (backTo > 40) dlg.scrollTo({ top:0, behavior:'smooth' });
       const hud = dlg.querySelector('.trial-comment8');
       hud?.classList.add('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.add('is-frightened');
       camera.cue('interrogate-reveal', { targets:'suspect' });
       setTimeout(() => { fearBusy = false; if (!dlg.open || !dlg.querySelector('.trial-hud')) return; paint(); refresh(); }, FEAR_BEAT_MS);
       setTimeout(() => { if (!dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0;
-        dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened'); }, FEAR_BEAT_MS + FEAR_AFTER_MS);
+        dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened');
+        if (backTo > 40) dlg.scrollTo({ top:backTo, behavior:'smooth' }); }, FEAR_BEAT_MS + FEAR_AFTER_MS);
     });
     // M2: a repaint replaces the stage — keep an effect that is still playing (interrogation hypnosis / mirror) on the new one
     if (!fxIdle()) attachBattleFx(dlg.querySelector('.hud-stage'));
