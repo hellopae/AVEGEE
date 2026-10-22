@@ -396,6 +396,12 @@ dialog.battle-reward.reward-world[open]{width:100vw;height:100dvh;max-width:none
 .shop-card button{padding:6px 8px;font-size:10px}.shop-glyph{font-size:30px;text-align:center}
 dialog.merchant[open],dialog.nira-office[open]{width:min(900px,calc(100% - 24px));max-width:900px;max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 @media(max-width:680px){.market-grid{grid-template-columns:1fr}.shop-card{grid-template-columns:46px minmax(0,1fr) auto auto}.shop-card img{width:46px;height:46px}}
+/* P1: ลำดับแนะนำจ้าง/สร้าง — ตัวถัดไปขอบทอง · ที่ล็อกหรี่ลง (ใช้ token สีเดิมเท่านั้น) */
+.hire-recommended{border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold) inset}
+.worker-office.hire-recommended{border:1px solid var(--gold);border-radius:var(--radius-sm);padding:8px}
+.hire-rank{color:var(--gold)} .shop-card .hire-rank b{display:inline;font-weight:700}
+.shop.build-recommended{border-color:var(--gold)}
+.profile-hint{color:var(--gold)}
 /* กระเป๋า: ของใช้และชุดรางวัลอยู่ในหน้าต่างเดียวกัน อ่านง่ายทั้งจอใหญ่และมือถือ */
 dialog.bag[open]{max-width:680px;max-height:calc(100dvh - 24px);overflow-y:auto;
   -webkit-overflow-scrolling:touch}
@@ -2235,7 +2241,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
         <div id="hero-profile-columns" class="hero-profile-columns"></div>
         <div class="hero-profile-shortcuts">
           <button id="hero-profile-bag" class="gold" data-t="menu.openBag">จัดของและอุปกรณ์</button>
-          <button id="hero-profile-management" data-t="menu.more">งานบริหาร</button>
         </div>
       </div>
     </div>
@@ -2296,16 +2301,19 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <dialog id="dlg"></dialog>
 <script type="importmap">{
   "imports": {
+    "./src/unlocks.js": "./src/unlocks.js?v=20261022-p1",
+    "./src/tea-recovery.js": "./src/tea-recovery.js?v=20261022-p1",
+    "./src/town-map.js?v=l1": "./src/town-map.js?v=20261022-p1",
     "./src/boss-court-view.js": "./src/boss-court-view.js?v=20261021-interrogation-roles",
     "./src/town-terrain.js?v=k1d": "./src/town-terrain.js?v=20261021-resume-loading",
     "./src/town-scenery.js?v=k1d": "./src/town-scenery.js?v=20261021-flames-ground-r2",
     "./src/theme-assets.js": "./src/theme-assets.js?v=20261016-boss-justice-workers-v1",
     "./src/town-layout.js?v=k1d": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/art.js": "./src/art.js?v=yama-live-20261015",
-    "./src/i18n.js": "./src/i18n.js?v=20261020-court-ferry",
+    "./src/i18n.js": "./src/i18n.js?v=20261020-court-ferry-p1",
     "./src/battle-scale.js?v=battle-anchor-20261012-k2-l2": "./src/battle-scale.js?v=20261016-boss-justice-workers-v1-r6-o2",
     "./src/preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m": "./src/preload.js?v=20261021-interrogation-roles-p2",
-    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261022-p5",
+    "./src/room.js?v=minigame-review-20261011": "./src/room.js?v=20261022-p5-p1",
     "./src/minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/host.js?v=yama-live-20261015",
     "./src/minigames/training/sword-panel.js?v=minigame-review-20261011-fire-theme-v2": "./src/minigames/training/sword-panel.js?v=yama-live-20261015",
     "./src/yama-sword.js": "./src/yama-sword.js?v=yama-live-20261015-o2",
@@ -2313,7 +2321,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b": "./src/yama-sword.js?v=yama-live-20261015-o2",
     "./src/town-layout.js": "./src/town-layout.js?v=20261020-zone1-navigation",
     "./src/combat-sprites.js": "./src/combat-sprites.js?v=20261020-border-party",
-    "./src/scene.js": "./src/scene.js?v=20261021-worker-supplies-o1",
+    "./src/scene.js": "./src/scene.js?v=20261021-worker-supplies-o1-p1",
     "./src/town-terrain-repair.js": "./src/town-terrain-repair.js?v=20261021-flames-ground-r2",
     "./src/town-terrain.js": "./src/town-terrain.js?v=20261021-resume-loading",
     "./src/proximity.js": "./src/proximity.js?v=20261016-boss-justice-workers-v1-r6b",
@@ -2328,14 +2336,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/sentence-colors.js": "./src/sentence-colors.js?v=20261022-p2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261021-worker-supplies-o1-p2",
+    "./src/game.js": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1",
     "./src/preload.js": "./src/preload.js?v=20261021-interrogation-roles-p2",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
-    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies-p2-p5-o2",
+    "./src/ui.js": "./src/ui.js?v=20261021-worker-supplies-p2-p5-p1-o2",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-worker-supplies-o1-p2",
-    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-worker-supplies-o1",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-worker-supplies-o1-p2-p1",
+    "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-worker-supplies-o1-p1",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-flames-ground-r2",
     "./src/town-shade.js?v=l1": "./src/town-shade.js?v=20261016-boss-justice-workers-v1-r6b",
@@ -2344,8 +2352,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/frontier-view-metrics.js": "./src/frontier-view-metrics.js?v=20261021-worker-supplies-o1",
     "./src/dungeon-view.js": "./src/dungeon-view.js?v=20261022-p5",
     "./src/dungeon-view.js?v=l5": "./src/dungeon-view.js?v=20261022-p5",
-    "./src/data.js": "./src/data.js?v=20261021-interrogation-roles",
-    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261021-interrogation-roles",
+    "./src/data.js": "./src/data.js?v=20261021-interrogation-roles-p1",
+    "./src/data.js?v=minigame-review-20261011": "./src/data.js?v=20261021-interrogation-roles-p1",
     "./src/cases.js": "./src/cases.js?v=n3b-p2",
     "./src/cases-asia.js": "./src/cases-asia.js?v=n3b",
     "./src/battle-turns.js": "./src/battle-turns.js?v=20261016-boss-justice-workers-v1",
@@ -2359,7 +2367,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading",
     "./src/workers.js": "./src/workers.js?v=20261021-worker-supplies",
-    "./src/worker-ui.js": "./src/worker-ui.js?v=20261021-worker-supplies",
+    "./src/worker-ui.js": "./src/worker-ui.js?v=20261021-worker-supplies-p1",
     "./src/story.js": "./src/story.js?v=20261016-boss-justice-workers-v1",
     "./src/final-event.js": "./src/final-event.js?v=20261016-boss-justice-workers-v1",
     "./src/town-flow.js": "./src/town-flow.js?v=20261016-boss-justice-workers-v1-r6",
@@ -2374,6 +2382,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 }</script>
 <script type="module" src="src/preload.js?v=20261021-interrogation-roles-p2"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-worker-supplies-p2-p5-o2"></script>
+<script type="module" src="src/ui.js?v=20261021-worker-supplies-p2-p5-p1-o2"></script>
 </body>
 </html>

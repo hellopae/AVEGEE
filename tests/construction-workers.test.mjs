@@ -7,7 +7,7 @@ import { STATIONS, BUILD_TIME } from '../src/data.js';
 globalThis.Image = class {};
 const setup = () => {
   const g = createGame();
-  g.coin = 10000;
+  g.coin = 10000; g.level = 5;   // P1: สถานีปลดล็อกตามขั้น — ชุดนี้ทดสอบกลไกช่าง ไม่ใช่การล็อก
   assert.equal(g.hire('dam'), true);
   return g;
 };

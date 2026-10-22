@@ -1206,3 +1206,41 @@ Object.assign(EN, {
   'challenge.cyberhell.win':'[10 of 10 cleared] For the first time, the gift in my belly holds no trap. Compartment open. Take it.',
   'weapon.cutscene.title':'Zone weapon',
 });
+
+// P1 (22 ต.ค. 2569) — ช่วงต้นเกม: นอนที่ศาลาน้ำชา · ปลดล็อกสถานที่ทีละขั้น · ลำดับแนะนำจ้าง
+Object.assign(TH, {
+  'sleep.needTea':'สร้างศาลาน้ำชาเพื่อพักนอน',
+  'unlock.lockedAt':'ปลดล็อกที่ Lv.{n}',
+  'unlock.recommend':'แนะนำสร้างถัดไป',
+  'unlock.next':'แนะนำสร้างถัดไป: {name}',
+  'unlock.levelRow':'ปลดล็อก{name}',
+  'unlock.levelRowDesc':'สร้างได้แล้ว · {why}',
+  'unlock.why.krata':'ที่ลงทัณฑ์แห่งแรก รับคดีฉ้อโกงกับมัวเมา',
+  'unlock.why.tea':'ที่พักนอนฟื้นบารมีและเติมพลังเวท — สร้างเสร็จแล้วนอนได้เลย',
+  'unlock.why.dab':'เปิดคดีฆ่า/ทำร้ายและวจีทุจริต ที่ลงทัณฑ์แรงที่สุดของช่วงต้น',
+  'unlock.why.sawan':'ปิดวงจรคดี: ดวงที่สำนึกแล้วและผู้บริสุทธิ์ไปรอรางวัลที่นี่ · เริ่มมีคดีผู้บริสุทธิ์เข้าคิว',
+  'unlock.why.ngiw':'เปิดคดีผิดกาม — คดีที่ซ่อนบาปนี้ต้องมีที่ลงรองรับ',
+  'unlock.why.lan':'เปิดคดีเบียดเบียน — คดีที่บาปหนักสุดเป็นเรื่องนี้ต้องมีที่ลงรองรับ',
+  'unlock.why.lokan':'เปิดคดีอกตัญญู — คดีหนักช่วงปลายขั้น',
+  'unlock.why.krajok':'เติมกระจกวิเศษให้เป็นระยะ ใช้คู่พลังกระจกและกานต์',
+  'hire.recommend':'แนะนำ',
+  'hire.rank':'ลำดับจ้าง {n}',
+});
+Object.assign(EN, {
+  'sleep.needTea':'Build the Tea Pavilion to rest and sleep',
+  'unlock.lockedAt':'Unlocks at Lv.{n}',
+  'unlock.recommend':'Recommended next',
+  'unlock.next':'Recommended next: {name}',
+  'unlock.levelRow':'Unlocked: {name}',
+  'unlock.levelRowDesc':'You can build it now · {why}',
+  'unlock.why.krata':'First punishment site — takes fraud and intoxication cases',
+  'unlock.why.tea':'A place to sleep and recover HP and MP — sleep as soon as it is built',
+  'unlock.why.dab':'Opens violence and verbal-abuse cases — the strongest early punishment site',
+  'unlock.why.sawan':'Closes the case loop: repentant and innocent souls wait here for rewards · innocent cases start to arrive',
+  'unlock.why.ngiw':'Opens adultery cases — cases that hide this sin need a place to go',
+  'unlock.why.lan':'Opens harassment cases — cases whose worst sin is this one need a place to go',
+  'unlock.why.lokan':'Opens ingratitude cases — heavy cases late in the rank',
+  'unlock.why.krajok':'Recharges the magic mirror over time — pairs with the mirror power and Kan',
+  'hire.recommend':'Recommended',
+  'hire.rank':'Hire order {n}',
+});

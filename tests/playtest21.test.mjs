@@ -89,7 +89,7 @@ test('keeper assigned elsewhere reports its station and builder cannot be reassi
   assert.equal(g.build('sawan'), false);
   g.crewOf('taan').at = null;
   g.stations.pop();
-  g.coin = 1000;
+  g.coin = 1000; g.level = 3;   // P1: ประตูสวรรค์ปลดล็อกที่ขั้น 3
   assert.equal(g.build('sawan'), true);
   assert.deepEqual(g.assignBlock(soul.id, 'krata', 'taan'), { key:'crewBuilding' });
 });

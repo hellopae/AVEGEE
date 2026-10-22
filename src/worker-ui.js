@@ -1,5 +1,7 @@
 import {WORKER_RULES,WORKER_MODES,zoneWorkers,workerHireCost,workerHireWhy,workerSheet,workerFrameRect} from './workers.js';
 import {BAL,ITEMS} from './data.js';
+import {hireRank,recommendedHire} from './unlocks.js';
+import {t} from './i18n.js';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const workerSupplyBlocked=game=>zoneWorkers(game).some(w=>w.mode!=='rest')&&(game.food||0)<WORKER_RULES.food;
 export function workerSuppliesHtml(game) {
@@ -12,7 +14,10 @@ export function workerSuppliesHtml(game) {
 }
 export function workersPanelHtml(game) {
   const list=zoneWorkers(game),why=workerHireWhy(game);
-  return `<section class="worker-office"><h3>อสูรผู้ช่วยประจำโซน ${list.length}/${WORKER_RULES.capacity}</h3>
+  // P1: คนงานคนแรกอยู่ในลำดับแนะนำจ้าง (ลำดับ 2) — คนถัดไปเป็นของเสริมตามใจผู้เล่น ไม่ติดป้าย
+  const rank=list.length?0:hireRank('worker'),next=recommendedHire(game)==='worker';
+  const badge=rank?` <small class="hire-rank">${esc(t('hire.rank',{n:rank}))}${next?` · <b>★ ${esc(t('hire.recommend'))}</b>`:''}</small>`:'';
+  return `<section class="worker-office${next?' hire-recommended':''}"><h3>อสูรผู้ช่วยประจำโซน ${list.length}/${WORKER_RULES.capacity}${badge}</h3>
     <p class="hint">จ้างได้หลายคน · ช่วยผู้คุมทำงานเร็วขึ้นคนละ 20% (สูงสุด 2 คนต่อสถานี) · ช่วยทัณฑ์/ดำสร้างและซ่อม · นำวิญญาณจากท่าเรือและแท่นตัดสินไปส่ง · ตัดกิ่งงิ้ว/เก็บเศษดาบไปขาย</p>
     <p class="hint">ค่าจ้าง ${WORKER_RULES.wage} เบี้ยกรรม / ${WORKER_RULES.wageEvery} วาระที่ทำงาน · ใช้เสบียง ${WORKER_RULES.food} / วาระ · เหนื่อยแล้วพักอัตโนมัติ · อยู่ประจำโซนเดิม</p>
     ${workerSuppliesHtml(game)}

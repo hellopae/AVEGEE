@@ -21,7 +21,7 @@ import { migrateFinalEvent, nextFinalEncounter, winFinalEncounter, acknowledgeFi
 import { LEGACY_ITEM_IDS, FINAL_EVENT, TEAM_PRESSURE, BOSS_BALANCE, BOSS_ULTIMATE, WEAPONS, WEAPON_EFFECT_COOLDOWN, CHALLENGE_STORY_KEY, CHALLENGE_REST_WAVE, CHALLENGE_REPLAY, CHALLENGE_EXP, CHALLENGE_STAND, challengeKeyOf } from './data.js';
 import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLegacy, snapshotRoster, teamIds, teamKeys, migrateRosterSave, syncRoster } from './roster.js';
 import { mirrorBeam } from './mirror-charge.js';
-import { TEA_BED_COST } from './tea-recovery.js';
+import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -508,7 +508,9 @@ const API = {
     const ok = left.filter(c => {
       if (isPure(c)) return this.has('sawan');
       if (!tags.length) return true;
-      return c.seen.some(d => tags.includes(d.s));
+      // P1: สำนวนที่เห็นในแฟ้มตรงที่ลงอยู่แล้ว "และ" บาปหนักสุดของเขา (ที่อาจซ่อนอยู่) ต้องมีที่ลงด้วย
+      // ไม่งั้นสถานีที่ยังล็อกอยู่ (เช่น ดงต้นงิ้ว) จะเป็นคำตอบของคดีที่ผู้เล่นสร้างให้ไม่ได้
+      return c.seen.some(d => tags.includes(d.s)) && tags.includes(primarySinOf({ deeds:[...c.seen, ...(c.hidden || [])] }));
     });
     if (!ok.length) return null;
     const c = pick(ok);
@@ -1821,6 +1823,10 @@ const API = {
     // เลเวลอัพปลดล็อกพลังนั้น ไม่ต้องรอ reload
     this.migrateBagCombatItems();
     this.log(`🎖️ เลื่อนขั้นเป็น "${nx.name}" — ${nx.bonus}`, 'good');
+    for (const k of unlockedAtLevel(this.level)) {       // P1: แจ้งปลดล็อกสถานที่ (ครั้งเดียวต่อขั้น — ขั้นขึ้นได้ครั้งเดียว)
+      const def = STATIONS.find(s => s.k === k);
+      if (def) this.log(`🔓 ปลดล็อก${def.name} — สร้างได้แล้วที่ขั้นนี้`, 'good');
+    }
     this.pendingLevel = nx;
     // การเดินทางปลดด้วยบอสประจำสาขา เลเวลใช้เพิ่มค่าพลังเท่านั้น
   },
@@ -2431,13 +2437,15 @@ const API = {
     if (!this.stations.some(st => st.def.k === 'tarang')) this.stations.push(mkStation('tarang'));
   },
 
-  buyTeaBed() {
-    if (this.teaBeds[this.zone] || this.coin < TEA_BED_COST ||
-        !this.stations.some(st => st.def.k === 'tea' && !st.build)) return false;
-    this.coin -= TEA_BED_COST;
-    this.teaBeds[this.zone] = true;
-    this.save(); this.onChange(); return true;
-  },
+  // P1 (22 ต.ค. 2569): ไม่มีการซื้อเตียงแล้ว — สร้างศาลาน้ำชาเสร็จก็นอนได้เลย (ดู teaBedReady)
+  // teaBeds ใน state/เซฟยังอยู่เป็นข้อมูลเก่า (เซฟที่เคยซื้อเตียงไว้ไม่เสียอะไร ไม่คืนเงิน) แต่ไม่มีใครอ่านเพื่อกั้นการนอนอีก
+  /** นอนได้ไหม = ศาลาน้ำชาของโซนนี้สร้างเสร็จแล้ว */
+  teaBedReady() { return this.stations.some(st => st.def.k === 'tea' && !st.build); },
+  /** สถานีนี้ยังล็อกอยู่ไหม (level ยังไม่ถึง และยังไม่เคยสร้าง) — เซฟเก่าที่สร้างไปแล้วไม่ล็อก */
+  buildLocked(k) { return buildLocked(this, k); },
+  buildUnlockLv(k) { return buildUnlockLv(k); },
+  /** สถานีที่แนะนำให้สร้างถัดไป (key) หรือ null */
+  recommendedBuild() { return recommendedBuild(this); },
   finishTeaSleep() {
     if (this.pendingRecovery) { this.pendingRecovery.stage = 'wake'; this.save(); this.onChange(); }
   },
@@ -4659,6 +4667,7 @@ const API = {
     const def = STATIONS.find(s => s.k === k);
     if (!def || this.coin < def.cost) return false;
     if (this.stations.some(s => s.def.k === k)) return false;
+    if (this.buildLocked(k)) return false;            // P1: ยังไม่ถึงขั้นปลดล็อก
     const before = this.activeTags();
     const worker = this.availableBuilder();
     if (!worker) return false;
