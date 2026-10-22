@@ -38,7 +38,8 @@ function magicMirrorImg() {
 }
 const MIRROR_W = 0.075;   // ความกว้างฐาน/แผ่นกระจกเทียบความกว้างภาพฉาก (เดิมกำหนดใน mirror-charge.js ผ่าน CSS)
 const GATE_DOOR = [0.5, 0.25];   // ประตูกลางของประตูสวรรค์ (สัดส่วนภาพฉาก) — ปลายทางของดวงไฟตอนไปเกิดใหม่
-const prefersReducedMotion = () => { try { return !!matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
+let reducedQuery;   // P6: เรียกทุกเฟรมจากฉากกระทะ → เก็บ MediaQueryList ไว้ใช้ซ้ำ ไม่สร้างใหม่ทุกครั้ง
+const prefersReducedMotion = () => { try { return !!(reducedQuery ||= matchMedia('(prefers-reduced-motion: reduce)')).matches; } catch { return false; } };
 const poseCache = new Map();
 /** โหลดภาพท่าตรง ๆ จาก path (ท่า atk ของชุด) — คืน null ถ้ายังไม่โหลดเสร็จ/ไม่มีไฟล์ */
 function poseImg(src) {
@@ -483,7 +484,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
         drawSchoolProps(ctx,def.k,x,y,U,g.zone);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
-        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t }, (sx, sy) => drawSoul(ctx, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
+        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t, reduced:prefersReducedMotion() }, (sx, sy, c = ctx) => drawSoul(c, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
         else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
         chains(x,y);
         const p = Math.min(1, sl.progress / sl.need);

@@ -136,7 +136,7 @@ test('5. drawPotSoul: วาดไฟหลังตัว → ตัววิ�
   assert.equal(order.length, 1);
   assert.ok(Math.abs(soulAt[0] - env.px(POTS.asia.cx[1])) < 1e-9);
   assert.ok(soulAt[1] > env.py(POTS.asia.frontY));                       // เท้าจมต่ำกว่าขอบหน้ากระทะ → ท่อนล่างถูกตัดทิ้ง
-  assert.ok(calls.includes('clip') && calls.indexOf('fill') < calls.indexOf('SOUL') && calls.lastIndexOf('fill') > calls.indexOf('SOUL'));
+  assert.ok(calls.includes('clip') && calls.indexOf('fillRect') < calls.indexOf('SOUL') && calls.lastIndexOf('fill') > calls.indexOf('SOUL'));
   const room = src('src/room.js');
   assert.match(room, /const pot = def\.k === 'krata' \? potLayout\(bgSrc\) : null;/);
 });
