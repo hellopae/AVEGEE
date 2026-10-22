@@ -81,7 +81,10 @@ export function mountYamaTrialIdle(img, style) {
   if (!img || typeof window === 'undefined') return;
   if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;   // painting stays, perfectly still
   style = yamaAnimationStyle(style);
-  const attach = urls => { img._yamaIdle = urls; img.dataset.yamaIdle = style; img.dataset.yamaIdleFrame = ''; live.add(img); if (!timer) tick(); };
+  const attach = urls => { img._yamaIdle = urls; img.dataset.yamaIdle = style; img.dataset.yamaIdleFrame = ''; live.add(img);
+    // P2: draw the current frame NOW (not at the next timer wake) — a re-render used to show the static painting for up to a second
+    if (timer) { clearTimeout(timer); timer = 0; }
+    tick(); };
   if (ready.has(style)) { attach(ready.get(style)); return; }
   const start = () => {
     if (!img.isConnected || !img.naturalWidth) return;

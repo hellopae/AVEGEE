@@ -2537,6 +2537,8 @@ function openTrial(initialError = '') {
     }).join('');
 
     const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+    // P2: a menu click repaints the whole room — carry Yama's live idle <img> across so the sprite never falls back to the painting
+    const keepYama = dlg.querySelector('.trial-hud .hud-stage .fig.you img[data-yama-idle]');
     dlg.innerHTML = `
     <div class="hud trial-hud trial-comment8" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')">
       <div class="cam-world" style="background-image:url('${artUrl('BG-Turn-Base', 'webp')}')"><div class="hud-stage cam-stage-box">
@@ -2601,7 +2603,9 @@ function openTrial(initialError = '') {
     </div>`;
 
     // N2: Yama stands (map idle pose) instead of bobbing — the suspect keeps floating
-    mountYamaTrialIdle(dlg.querySelector('.trial-hud .hud-stage .fig.you img'), g.outfit || g.zone);
+    const yamaImg = dlg.querySelector('.trial-hud .hud-stage .fig.you img');
+    if (keepYama && yamaImg) { yamaImg.replaceWith(keepYama); mountYamaTrialIdle(keepYama, g.outfit || g.zone); }
+    else mountYamaTrialIdle(yamaImg, g.outfit || g.zone);
     if (scrollAt) dlg.querySelector('.hud').scrollTop = scrollAt;
     if(dossierScroll)dlg.querySelector('.hud-right').scrollTop=dossierScroll;
 
