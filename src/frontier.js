@@ -2,6 +2,7 @@ import {bossGuideWaiting,bossGuideDismissed} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
+import { exitStep, drawExitMarker } from './exit-marker.js';
 // src/frontier.js — แผนที่ชายแดน: เดินสำรวจ + เลือกศัตรูเข้าสู้เอง (ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569)
 //
 // เดิม: กดเข้าชายแดน → จัดทีม → ตัดเข้าฉากสู้ทันที (สุ่มศัตรู) → ชนะ เก็บของ → กลับ "แผนที่โซน"
@@ -34,6 +35,11 @@ const GATE = [0.5, 0.19], NIRA = [0.575, 0.265], GUARD = [0.43, 0.265];
 export const FRONTIER_EXIT = Object.freeze([.5,.90]);
 export const nearFrontierExit = p => Math.hypot(p.x-FRONTIER_EXIT[0],p.y-FRONTIER_EXIT[1])<=REACH;
 export const nearFrontierGate = p => Math.hypot(p.x - GATE[0], p.y - GATE[1]) <= REACH;
+// P5: ปุ่มกลับเข้าโซน/ออกนอกชายแดนถูกตัดแล้ว — เดินถึงวงนี้ = ออกเลย · วงแคบกว่า REACH เดิม
+// (REACH .09 ของประตูบนทับระยะคุยกับนิรา — ยืนคุยนิราแล้วโดนเตะออกไม่ได้) ยังเป็นจุดเดียวกับที่ปุ่มเคยอยู่
+export const FRONTIER_EXIT_TRIGGER = 0.055;
+export const atFrontierGate = p => Math.hypot(p.x - GATE[0], p.y - GATE[1]) <= FRONTIER_EXIT_TRIGGER;
+export const atFrontierExit = p => Math.hypot(p.x - FRONTIER_EXIT[0], p.y - FRONTIER_EXIT[1]) <= FRONTIER_EXIT_TRIGGER;
 export const frontierAnchors = zone => ({ GATE, NIRA:zone === 'cyberhell' ? [0.548,0.30] : NIRA, GUARD:zone === 'cyberhell' ? [0.46,0.30] : GUARD });
 export const nearFrontierNira = (p, zone = 'th') => { const {NIRA} = frontierAnchors(zone); return Math.hypot(p.x - NIRA[0], p.y - NIRA[1]) <= REACH; };
 const SPAWN_EVERY = 2600;           // ลองสร้างศัตรูใหม่ทุกเท่านี้ (ms) ถ้ายังไม่เต็มจอ
@@ -107,7 +113,7 @@ export function releasedFrontierBoss(g, { guide = false, invasion = false } = {}
 export function makeFrontierWalk(cv, g, opts) {
   const {GATE,NIRA,GUARD} = frontierAnchors(g.zone);
   // kinds = ดัชนีของ MOB.kinds ที่ใช้ได้ในโซนนี้ (g.zoneDef().mobs — ui.js กรองมาให้แล้ว)
-  const { bg, kinds, wave, alive, fab, gate, nira, challenge, exit, guide } = opts;
+  const { bg, kinds, wave, alive, fab, nira, challenge, guide, onGate, onExit } = opts;
   const invasion = breachApproachActors(g.zone, opts.invasionKey);
   const sess = frontierSession(invasion.length ? `${g.zone}:${opts.invasionKey}` : g.zone);
   if (invasion.length) sess.enemies = invasion;
@@ -143,6 +149,8 @@ export function makeFrontierWalk(cv, g, opts) {
     return list;
   };
   let replanAt = 0;
+  // P5: เปิดหน้ามายืนที่จุดออกอยู่แล้ว (เพิ่งกลับจากเส้นทาง/ศึก) ไม่เด้งออก — ต้องเดินออกจากวงก่อน
+  let gateLatched = true, exitLatched = true;
 
   function spawnOne() {
     if (invasion.length) return;
@@ -234,6 +242,15 @@ export function makeFrontierWalk(cv, g, opts) {
       if (dd <= REACH && dd < bestD) { bestD = dd; bestId = en.id; }
     }
     nearId = bestId;
+    // P5: เดินถึงประตูบน = กลับโซน · เดินถึงทางล่าง = ออกนอกชายแดน (ไม่ trigger ขณะสู้/ฟื้นตัว/ถูกทำลายแล้ว)
+    const blocked = dead || !!g.battle || !!g.pendingRecovery;
+    const gs = exitStep({ at: atFrontierGate(P), latched: gateLatched, blocked });
+    gateLatched = gs.latched;
+    const es = exitStep({ at: !invasion.length && atFrontierExit(P), latched: exitLatched, blocked });
+    exitLatched = es.latched;
+    const fire = gs.fire ? onGate : es.fire ? onExit : null;
+    if (gs.fire) { P.x = .485; P.y = .35; }   // ออกทางประตูบน → เข้าครั้งหน้าเริ่มที่จุดเริ่มเดิม ไม่ใช่ยืนค้างที่ประตู
+    if (fire) { P.tx = null; P.ty = null; route = []; for (const k of Object.keys(KEY)) KEY[k] = false; queueMicrotask(() => { if (!dead) fire(); }); }
   }
 
   function draw(t) {
@@ -277,6 +294,10 @@ export function makeFrontierWalk(cv, g, opts) {
     cameraTime = t;
     if (bgRec.ok) drawFrontierAtmosphere(ctx,g.zone,box,t,!!reducedMotion?.matches);
     const U = unit();
+    // P5: ลูกศรทางออกบนพื้น (ไม่มีปุ่ม) — ประตูบนชี้ขึ้น · ทางล่างชี้ลง · ทางล่างจางกว่าถ้าเส้นทางนอกชายแดนยังไม่เปิด
+    const reduced = !!reducedMotion?.matches, r = FRONTIER_EXIT_TRIGGER;
+    drawExitMarker(ctx, px(GATE[0]), py(GATE[1]), { rx: r * box.w, ry: r * box.h, dir: [0, -1], u: U, t, label: opts.gateLabel || '', alpha: 0.9, reduced });
+    if (!invasion.length) drawExitMarker(ctx, px(FRONTIER_EXIT[0]), py(FRONTIER_EXIT[1]), { rx: r * box.w, ry: r * box.h, dir: [0, 1], u: U, t, label: opts.exitLabel || '', alpha: opts.exitOpen?.() === false ? 0.45 : 0.9, reduced });
     const acts = [];
     for (const en of sess.enemies) {
       acts.push({ y: en.y, fn: () => {
@@ -336,16 +357,12 @@ export function makeFrontierWalk(cv, g, opts) {
         challenge.style.top = `${(py(challengeBoss.y) - U * BOSS_H) / H * 100}%`;
       }
     }
-    for (const [button, shown, x, y] of [
-      [gate, nearFrontierGate(P), GATE[0], GATE[1]],
-      [exit, !invasion.length && nearFrontierExit(P), FRONTIER_EXIT[0], FRONTIER_EXIT[1]],
-      [nira, nearFrontierNira(P,g.zone), NIRA[0], NIRA[1]],
-    ]) {
-      if (!button) continue;
-      button.hidden = !shown;
+    if (nira) {
+      const shown = nearFrontierNira(P, g.zone);
+      nira.hidden = !shown;
       if (shown) {
-        button.style.left = `${px(x) / W * 100}%`;
-        button.style.top = `${(py(y) - U * HERO_H) / H * 100}%`;
+        nira.style.left = `${px(NIRA[0]) / W * 100}%`;
+        nira.style.top = `${(py(NIRA[1]) - U * HERO_H) / H * 100}%`;
       }
     }
 
@@ -381,7 +398,6 @@ export function makeFrontierWalk(cv, g, opts) {
       removeEventListener('keyup', onKey);
       cv.removeEventListener('pointerdown', onDown);
       if (fab) fab.hidden = true;
-      if (gate) gate.hidden = true;
       if (nira) nira.hidden = true;
       if (challenge) challenge.hidden = true;
       if (guide) guide.hidden=true;
