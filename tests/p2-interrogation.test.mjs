@@ -114,11 +114,11 @@ test('P2 lesson: three pages, shown once per save after the first-warrant lesson
 
 test('P2 handbook: trait page + keeper-team page exist, carry five keeper profile slots, and match the code',()=>{
  assert.ok(sentencingChapters.includes(soulTraitGuide));assert.ok(sentencingChapters.includes(keeperTeamGuide));
- assert.ok(sentencingChapters.indexOf(soulTraitGuide)>sentencingChapters.findIndex(c=>c.includes('3. เลือกยมทูตคนไหน')));
+ assert.ok(sentencingChapters.indexOf(soulTraitGuide)>sentencingChapters.findIndex(c=>c.includes('3. เลือกผู้คุมคนไหน')));
  for(const k of ['taan','boon','plerng','dam','kan'])assert.ok(keeperTeamGuide.includes(`data-profile-slot="${k}"`),k);
  for(const k of ['taan','boon','plerng','dam','kan'])assert.ok(existsSync(new URL(`../img/crew-${k}-profile.png`,import.meta.url)),k);
  assert.match(keeperTeamGuide,/สถานีเดียวกัน/);assert.match(soulTraitGuide,/สถานีเดียวกัน/);
- const chapter3=sentencingChapters.find(c=>c.includes('3. เลือกยมทูตคนไหน'));assert.doesNotMatch(chapter3,/มีโอกาสเพิ่มกรรมของเราเอง/);
+ const chapter3=sentencingChapters.find(c=>c.includes('3. เลือกผู้คุมคนไหน'));assert.doesNotMatch(chapter3,/มีโอกาสเพิ่มกรรมของเราเอง/);
  assert.match(keeperTeamGuide,/ไม่มีการสุ่มบวกโทษหรือกรรม/);assert.doesNotMatch(read('src/game.js'),/Math\.random\(\)[^\n]*karma|karma[^\n]*Math\.random\(\)/,'no random karma mechanism exists');
  assert.doesNotMatch(soulTraitGuide+keeperTeamGuide,/\bMP\b|บารมี/);
  assert.match(soulTraitGuide,/ขัดขืนไม่ยอมเดินเอง/);assert.doesNotMatch(soulTraitGuide,/ชื่อจะเป็นสีม่วง สีม่วงหมายถึง/);

@@ -26,7 +26,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
     elapsed=0; last=performance.now();
     const zone=['th','asia','west','cyberhell'].includes(g.zone)?g.zone:'th';
     const portrait=actor==='yama'?(zone==='th'?'img/krata-minigame/yama-cutscene.jpeg':`img/hero-yama-${zone}-fire-cutscene-v3.png`):(zone==='th'?'img/krata-minigame/plerng-cutscene.jpeg':`img/krata-minigame/plerng-${zone}-training-v2.png`);
-    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.png" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button><small class="g5-round-message" role="status">กดเมื่อวงเข้าพื้นที่สีเขียว · ปล่อยผ่านได้ ไม่นับพลาด</small>`
+    body.innerHTML=training ? `<div class="g5-count" aria-live="polite">🔥 0/5 · ${t('g5.misses')} 0/3</div><div class="g5-closeup"><img class="g5-portrait" src="${portrait}" alt=""><div class="g5-orb" style="left:${actor === 'yama' ? 39 : 31}%;top:${actor === 'yama' ? 49 : 54}%"><img src="img/krata-minigame/fireball.png" alt=""><i class="g5-green"></i><i class="g5-white"></i></div></div><button class="btn-gold" data-fire type="button">${t('g5.fire')}</button><small class="g5-round-message" role="status">${t('g5.hintIdle')}</small>`
       : `<p>${t('g5.approach')}</p><div class="g5-bar"><i class="g5-zone"></i><i class="g5-needle"></i></div><button class="btn-gold" data-fire type="button" disabled>${t('g5.fire')}</button>`;
     if (!training) room.walkTo(...stApproach());
     let ready=training;
@@ -40,7 +40,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         elapsed=-650;
         // P6: ปุ่มไม่ถูก disable ระหว่างรอวงถัดไป (ปุ่มที่ disabled กลืนการกดเงียบๆ) — แค่ดูจางและกดแล้วขึ้นข้อความรอ
         button.classList.toggle('fire-wait',true); button.classList.remove('fire-ready');
-        setText(body.querySelector('.g5-round-message'),hit?'สำเร็จ · เตรียมลูกไฟถัดไป':`กดผิดจังหวะ 1 ครั้ง (${radius>1?'เร็วไป':'ช้าไป'}) · เตรียมลูกไฟถัดไป`);
+        setText(body.querySelector('.g5-round-message'),t(hit?'g5.hit':radius>1?'g5.missEarly':'g5.missLate'));
         body.querySelector('.g5-green').classList.remove('fire-ready');
         body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
         flash(body.querySelector('.g5-closeup'),hit?'g5-hit':'g5-miss');
@@ -52,7 +52,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
     // P6: ตัดสินที่เวลาของ "ตอนกดจริง" (e.timeStamp) ไม่ใช่เฟรมสุดท้ายที่วาด — ไม่ให้เสียเวลาที่ค้างระหว่างเฟรม
     const press=ev => {
       if (stopped || result || !ready || frozen()) return;
-      if (training && elapsed<0) { setText(body.querySelector('.g5-round-message'),'ลูกไฟถัดไปกำลังมา · รอวงใหม่ก่อน (ไม่นับพลาด)'); flash(body.querySelector('.g5-closeup'),'g5-wait'); return; }
+      if (training && elapsed<0) { setText(body.querySelector('.g5-round-message'),t('g5.wait')); flash(body.querySelector('.g5-closeup'),'g5-wait'); return; }
       const lag=ev && Number.isFinite(ev.timeStamp) && frameAt ? Math.min(100,Math.max(0,ev.timeStamp-frameAt)) : 0;
       const at=Math.min(training?2199:7999,elapsed+lag);
       if (training) { const radius=trainingRadius(at); attempt(trainingHit(radius),radius); }
@@ -90,11 +90,11 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
           elapsed+=dt;
           if (training) {
             button.classList.toggle('fire-wait',elapsed<0);
-            if(elapsed<0){setText(button,'เตรียมลูกไฟ…');raf=requestAnimationFrame(frame);return;}
+            if(elapsed<0){setText(button,t('g5.btnWait'));raf=requestAnimationFrame(frame);return;}
             const radius=trainingRadius(elapsed);
             body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${radius})`;
             const green=trainingHit(radius);
-            setText(button,green?'กดเลย! · ลูกไฟ':t('g5.fire'));
+            setText(button,green?t('g5.btnGo'):t('g5.fire'));
             button.classList.toggle('fire-ready',green);
             body.querySelector('.g5-green').classList.toggle('fire-ready',green);
             if (radius < .86 || elapsed >= 2200) {
@@ -102,7 +102,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
               elapsed=-650;button.classList.toggle('fire-wait',true);button.classList.remove('fire-ready');
               body.querySelector('.g5-green').classList.remove('fire-ready');
               body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
-              setText(body.querySelector('.g5-round-message'),'วงผ่านแล้ว · เริ่มใหม่ได้ ไม่นับพลาด');
+              setText(body.querySelector('.g5-round-message'),t('g5.passed'));
             }
           } else {
             body.querySelector('.g5-needle').style.left=`${stokePosition(elapsed)*100}%`;
