@@ -181,11 +181,9 @@ const TH = {
   'room.nearBoon': 'เดินเข้าไปยืนใกล้บุญในห้องก่อน ปุ่มถึงจะกดได้',
   'room.nearArch': 'เดินขึ้นบันไดไปยืนหน้าคัมภีร์ก่อน',
   'room.nearTea': 'เดินเข้าไปยืนตรงจุดในศาลาก่อน',
-  'room.nearKan': 'เดินเข้าไปยืนใกล้กานต์ก่อน',
   'room.teaFull': 'พลังเวทเต็มแล้ว — ไม่ต้องดื่มชา',
   'room.kanLocked': 'ล็อก · ต้องเป็น{lv}ก่อน',
   'room.kanFull': 'กระจกวิเศษเต็มแล้ว',
-  'room.kanWait': 'กานต์ยังไม่มีของใหม่ให้ — อีก {n} วาระ',
   'room.repentant': 'เข็ดแล้ว',
   'room.notRepentant': 'ยังไม่เข็ด',
   'room.wait': 'รออีก {n} วาระ',
@@ -636,11 +634,9 @@ const EN = {
   'room.nearBoon': 'Walk up next to Boon first to use the buttons',
   'room.nearArch': 'Climb the stairs to the scripture first',
   'room.nearTea': 'Walk to the spot in the pavilion first',
-  'room.nearKan': 'Walk up next to Kan first',
   'room.teaFull': 'MP full — no need to drink tea',
   'room.kanLocked': 'Locked - reach {lv} first',
   'room.kanFull': 'The magic mirror is full',
-  'room.kanWait': 'Kan has nothing new yet - {n} more turns',
   'room.repentant': 'Repentant',
   'room.notRepentant': 'Not repentant',
   'room.wait': '{n} more turns',
@@ -1493,4 +1489,18 @@ Object.assign(EN, {
   'power.nira.name':'Light of Authority',
   'power.dam.name':'Keen Blade',
   'power.guard.name':'Guardian Club',
+});
+
+// P4 — กดคุยตัวละครบนแผนที่ (ปุ่ม/บับเบิล · ข้อความตามสเปก Vera ยังไม่ผ่าน Rae · บทพูดทั้งหมดเป็นไทยจาก Rae)
+Object.assign(TH, {
+  'talk.with':'คุยกับ {name}',
+  'talk.next':'ถัดไป ›',
+  'talk.close':'ปิด',
+  'talk.aria':'คุย',
+});
+Object.assign(EN, {
+  'talk.with':'Talk to {name}',
+  'talk.next':'Next ›',
+  'talk.close':'Close',
+  'talk.aria':'Talk',
 });

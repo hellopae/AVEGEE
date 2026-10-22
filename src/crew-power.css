@@ -32,3 +32,20 @@
 .pw-foot button{min-height:44px;padding:6px 16px;border-radius:10px;font:inherit}
 dialog.power-dialog{background:transparent;border:0;padding:0;box-shadow:none;max-width:none}
 .power-sheet-wrap{display:grid;place-items:center}
+/* ---------- กดคุยตัวละคร (P4 §4) ---------- */
+/* .mark มี transform → position:fixed ของบับเบิลมือถือเดิมใช้ไม่ได้ (ลูกของ transform) · บับเบิลคุยจึงเป็น absolute เหนือหัว
+   กว้างไม่เกิน 250px (มือถือ ≤ 64vw) และ ui.js (clampTalk) เลื่อนด้วย --bshift ไม่ให้ตกขอบจอ / พลิกลงล่างหัวถ้าชนแถบบน */
+.mark.talk .pin{width:32px;height:32px;background:none;border:0;box-shadow:none;animation:none;pointer-events:auto}
+.mark.talk .talk-pin{display:block;width:32px;height:32px}
+#ov .mark.talk .bub{position:absolute;display:block;left:50%;right:auto;bottom:40px;top:auto;
+  transform:translateX(calc(-50% + var(--bshift,0px)));width:min(250px,64vw);max-height:none;overflow:visible;z-index:30;
+  font-size:13px;line-height:1.6;color:#f2e6dd;padding:8px 10px}
+#ov .mark.talk.below .bub{bottom:auto;top:40px}
+#ov .mark.talk .bub:after{display:block;left:calc(50% - var(--bshift,0px))}
+#ov .mark.talk.below .bub:after{bottom:auto;top:-8px;border-top-color:transparent;border-bottom-color:rgba(24,11,17,.96)}
+.mark.talk .bub .who{font-size:11px}
+.mark.talk .talk-text{display:block;font-size:13px;line-height:1.6;color:#f2e6dd}
+.talk-next{display:block;margin:6px 0 0 auto;min-height:36px;min-width:72px;padding:2px 12px;border-radius:10px;border:1px solid #b98e50;background:#3a2230;color:#ffe1a1;font:inherit;font-size:13px;cursor:pointer}
+@media(max-width:700px){.talk-next{min-height:44px}}
+.repairfab .talk-ico{display:inline-block;vertical-align:-4px;margin-right:4px}
+.talk-greet{margin:0 0 8px;padding:6px 10px;border-left:3px solid #d4a355;background:rgba(212,163,23,.08);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;color:#f2e6dd}

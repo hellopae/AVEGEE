@@ -124,6 +124,7 @@ export function createGame() {
     mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [], courtArrivals: [],
     workerState:normalizeWorkers(),
     interrogationSupport:{version:1,kanReadyAt:{},insights:0},teamReports:[],nextTeamReportId:1,
+    talk: { seen: {} },        // P4: ธงว่าเคยคุยบท "ครั้งแรก" ของตัวละครแล้ว (บรรยากาศล้วน ไม่มีผลต่อเกม)
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -1058,7 +1059,7 @@ const API = {
     let arriveAt = now;
     if (route?.length) {
       const outbound = [QUEUE_LINE[0], ...route];
-      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name});
+      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name,intensity});
       if(delivered){const walk=this.afterlifeWalks.findLast(w=>w.destination==='station'&&w.soul.id===soul.id);arriveAt=now+(walk?.duration||0);}
       else if (!c.self && !st.slots.length) {
         const from = [c.x ?? c.hx, c.y ?? c.hy];
@@ -4552,20 +4553,6 @@ const API = {
     this.log('🪞 แสงสะท้อนถึงกระจกวิเศษ — เติมพลัง +1','good');
     this.save(); this.onChange(); return true;
   },
-  talkKan() {
-    const st = this.stations.find(s => s.def.k === 'krajok');
-    if (!st || st.build) return false;
-    if (this.tick < (st.kanCd || 0)) return false;
-    const p = this.powerOf('mirror');
-    if (this.powerLocked(p) || p.ammo >= p.max) return false;
-    this.discover('item', 'mirror');
-    p.ammo = Math.min(p.max, p.ammo + 1);
-    st.kanCd = this.tick + KRAJOK.kanCool;
-    this.log('🪞 กานต์: "ส่องดูเถอะครับ เดี๋ยวผมมีให้อีก" — ได้กระจกวิเศษมาหนึ่งบาน', 'good');
-    this.save(); this.onChange();
-    return true;
-  },
-
   /** ข้อ A-3 คุณเป้ 24 ก.ย. 2569 — ซื้อของจากบุญในห้องประตูสวรรค์ (ตอนนี้มีแต่วงสะกดจิต)
    *  ต้องยืนใกล้บุญในห้องก่อน (ui.js เช็ค inside ก่อนโชว์ปุ่ม) · กลไกซื้อเหมือน buyMerchant ทุกอย่าง
    *  ต่างแค่คนละสต็อก/คนละที่ยืน — ของเข้ากระเป๋าเหมือนกัน ใช้ทีหลังผ่าน useBag() */
@@ -4825,6 +4812,7 @@ API.snapshot = function (withEntry = true) {
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       slots: st.slots,
     })),
+    talk: { seen: this.talk?.seen || {} },
     queue: this.queue, held: this.held, sentences:this.sentences,
     afterlifeWalks:this.afterlifeWalks, courtArrivals:this.courtArrivals, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
@@ -4980,6 +4968,7 @@ API.restore = function (d) {
   this.queue = (d.queue || []).filter(dropRetired);
   this.held = (d.held || []).filter(dropRetired);
   this.sentences = d.sentences || [];
+  this.talk = { seen: { ...(d.talk?.seen || {}) } };
   this.reborn = d.reborn || 0;
   this.ascended = d.ascended || 0;
   this.items = d.items || [];

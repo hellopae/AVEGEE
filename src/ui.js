@@ -34,7 +34,8 @@ import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from '.
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
-import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
+import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';
+import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
@@ -60,7 +61,7 @@ import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bi
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
-import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -259,6 +260,7 @@ setInterval(() => {
   updateBossFab();
   updateFrontierFab();
   updateRepairFabs();
+  updateTalk();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
@@ -329,7 +331,7 @@ function frame(now) {
   updateMapCamera(now);
   render(ctx, g, now, hover, sel, mapCam.view);
   updateTownHud(now);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); updateTalk(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -1137,9 +1139,82 @@ function clampInView(d) {
   }
 }
 
+// ---------- P4 §4 · กดคุยตัวละครบนแผนที่ (บรรยากาศล้วน — ไม่ให้ทรัพยากร/เบาะแส ไม่หยุดเกม) ----------
+const talkHelpers = { walkPosition: afterlifeWalkPosition };
+let talkSess = null;        // { id, n, until } บับเบิลที่เปิดอยู่
+let pendingTalk = null;     // { id, at } แตะตัวละครไกล → เดินเข้าหา แล้วเปิดเองเมื่อถึง (D9) · ผู้เล่นเดินเอง/แตะที่อื่น = ยกเลิก
+function closeTalk() { ov.querySelectorAll('.mark.talk').forEach(e => e.remove()); talkSess = null; }
+function showTalkLine() {
+  const tg = talkSess && findTalkTarget(g, talkSess.id, talkHelpers);
+  const line = tg && pickTalk(g, tg, { heroName: HERO_NAME, heroTitle: HERO_TITLE });
+  if (!line) return closeTalk();
+  talkSess.n++; talkSess.until = Date.now() + TALK_MS;
+  const more = talkSess.n < TALK_MAX_LINES;
+  ov.querySelectorAll('.mark.talk').forEach(e => e.remove());
+  const pin = line.first ? 'pin-talk-new' : more ? 'pin-talk-more' : 'pin-talk';
+  const el = mark('talk', tg.x, tg.y - charH() * tg.top - 8, `<img class="talk-pin" src="img/ui/${pin}.webp" alt="" width="32" height="32">`,
+    `<span class="who">${esc(line.who)}</span><span class="talk-text" role="status">${esc(line.text)}</span><button type="button" class="talk-next">${esc(t(more ? 'talk.next' : 'talk.close'))}</button>`, true);
+  el.dataset.talkId = tg.id;
+  clampTalk(el);
+  const next = ev => { ev.stopPropagation(); if (more) showTalkLine(); else closeTalk(); };
+  el.querySelector('.talk-next').onclick = next;
+  el.querySelector('.bub').onclick = next;       // แตะบับเบิลเองก็ไปบทถัดไป
+}
+/** บับเบิลคุยต้องอยู่ในจอเสมอ: เลื่อนซ้ายขวาด้วย --bshift · ชนแถบทรัพยากรด้านบน (84px) → พลิกลงใต้หัว */
+function clampTalk(d) {
+  const bub = d.querySelector('.bub'); if (!bub) return;
+  const m = 8, shift = parseFloat(d.style.getPropertyValue('--bshift')) || 0, r = bub.getBoundingClientRect();
+  if (!r.width) return;
+  const left = r.left - shift, right = r.right - shift;
+  const next = left < m ? m - left : right > innerWidth - m ? innerWidth - m - right : 0;
+  if (Math.abs(next - shift) > .5) d.style.setProperty('--bshift', `${next}px`);
+  const flipped = d.classList.contains('below'), pinTop = d.getBoundingClientRect().top;
+  const needH = bub.offsetHeight + 46;
+  d.classList.toggle('below', flipped ? pinTop - needH - 0 < 84 + 40 : pinTop - needH < 84);
+}
+function advanceTalk() {
+  if (!talkSess) return;
+  if (talkSess.n < TALK_MAX_LINES) showTalkLine(); else closeTalk();
+}
+function openTalk(id) { pendingTalk = null; talkSess = { id, n: 0, until: 0 }; showTalkLine(); }
+/** แตะ/กดคุย: ใกล้ (≤ INTERACTION_REACH) เปิดทันที · ไกล เดินเข้าหาแล้วเปิดเองเมื่อถึง
+ *  @param {boolean} fromButton ปุ่ม 💬/E อยู่ในระยะคุยแล้วเสมอ */
+function talkTo(id, fromButton = false) {
+  const tg = findTalkTarget(g, id, talkHelpers);
+  if (!tg) return false;
+  if (fromButton || talkDistance(g, tg) <= INTERACTION_REACH) { openTalk(id); return true; }
+  if (g.walkTo(tg.x, tg.y)) pendingTalk = { id, at: Date.now() };
+  return true;
+}
+function updateTalk() {
+  const now = Date.now();
+  if (pendingTalk) {
+    const tg = findTalkTarget(g, pendingTalk.id, talkHelpers);
+    if (!tg || now - pendingTalk.at > 15000 || dlg.open || g.over || g.battle) pendingTalk = null;
+    else {
+      const d = talkDistance(g, tg), moving = g.player.tx != null || !!g.player.path?.length;
+      if (d <= 80 || (!moving && d <= 140)) openTalk(pendingTalk.id);
+      else if (!moving && now - pendingTalk.at > 800) pendingTalk = null;
+    }
+  }
+  if (!talkSess) return;
+  const tg = findTalkTarget(g, talkSess.id, talkHelpers);
+  if (!tg || now > talkSess.until || talkDistance(g, tg) > TALK_DISMISS || dlg.open || g.over || g.battle) closeTalk();
+}
+/** บรรทัดทักบนหัวโต๊ะนิรา / ร้านพ่อค้า (ชุดบทของ Rae) — เลือกครั้งเดียวตอนเปิดกล่อง ไม่เปลี่ยนตามการวาดซ้ำ */
+function greetLine(target, extra) {
+  const line = pickTalk(g, target, { heroName: HERO_NAME, heroTitle: HERO_TITLE, ...extra });
+  return line ? `<p class="talk-greet"><b>${esc(line.who)}</b> “${esc(line.text)}”</p>` : '';
+}
+
 /** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
 function followMarks() {
   for (const d of ov.children) {
+    if (d.dataset.talkId) {                      // P4: บับเบิลคุยตามตัวที่คุยด้วย (ยมทูต/คนงาน/วิญญาณเดินได้)
+      const tg = findTalkTarget(g, d.dataset.talkId, talkHelpers);
+      if (tg) { d.dataset.sx = tg.x; d.dataset.sy = tg.y - charH() * tg.top - 8; place(d); clampTalk(d); }
+      continue;
+    }
     if (!d.dataset.follow) continue;
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
@@ -1161,6 +1236,7 @@ function drawOverlay() {
   const keepBreachFab = ov.querySelector('.breachfab');
   const keepDevaFab = ov.querySelector('.devafab');
   const keepZoneEventFabs = [...ov.querySelectorAll('.zone-eventfab')];
+  const keepTalk = ov.querySelector('.mark.talk');   // P4: บับเบิลคุยตัวละครต้องรอดการล้างชั้นซ้อน (เหมือนปุ่มสู้)
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
@@ -1170,6 +1246,7 @@ function drawOverlay() {
   if (keepBreachFab) ov.appendChild(keepBreachFab);
   if (keepDevaFab) ov.appendChild(keepDevaFab);
   for (const f of keepZoneEventFabs) ov.appendChild(f);
+  if (keepTalk) ov.appendChild(keepTalk);
   if (g.over) return;
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
@@ -1294,8 +1371,9 @@ function updateFrontierFab() {
   openBorder();
 }
 
-/** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
-function currentMapInteraction() {
+/** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง
+ *  P4: ปุ่มคุยตัวละคร (kind 'talk') มีสิทธิ์ต่ำสุด — โผล่เมื่อไม่มี interaction อื่นในระยะ และไม่ได้ยืนที่จุดสร้าง/ประตูชายแดน */
+function baseMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
   const point=g.harbourPoint();
   return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
@@ -1303,12 +1381,19 @@ function currentMapInteraction() {
     // และไม่ทับป้ายบอสที่อยู่เหนือท่า (ท่าอยู่ห่างบอสแค่ ~100 หน่วย — วางเหนือหัวแล้วปุ่มสองอันซ้อนกันบนจอแคบ)
     {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y+26,label:'ท่าเรือ · Fast Travel'}]);
 }
+function talkInteraction() {
+  if (g.over || g.battle || dlg.open || !started || talkSess) return null;   // บับเบิลเปิดอยู่ → ซ่อนปุ่ม 💬 (E/Enter = บทถัดไป · Esc = ปิด)
+  if (nearBuild(g, g.player.x, g.player.y) || Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y) <= 105) return null;
+  return nearestInteraction(g.player, talkInteractions(talkTargets(g, talkHelpers), charH()), TALK_REACH);
+}
+function currentMapInteraction() { return baseMapInteraction() || talkInteraction(); }
 
 
 function activateMapInteraction(now) {
       if (now.kind === 'repair') {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'harbour') openHarbour();
+      else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
       else if (now.kind === 'challenge') openChallenge();
@@ -1325,9 +1410,13 @@ const townActionButton = document.getElementById('town-action');
 let townHudAt = 0;
 function currentTownAction() {
   if (!started || dlg.open || !heroProfile.hidden) return null;
-  return townNearbyAction(g, currentMapInteraction(), nearBuild(g,g.player.x,g.player.y));
+  const act = townNearbyAction(g, baseMapInteraction(), nearBuild(g,g.player.x,g.player.y));
+  if (act) return act;
+  const talk = isTownZone(g.zone) ? talkInteraction() : null;
+  return talk ? { kind:'interaction', target:talk } : null;
 }
 function activateTownAction() {
+  if (talkSess) return advanceTalk();
   const action=currentTownAction();
   if (!action) return;
   if (action.kind === 'build') openBuild(action.target);
@@ -1387,7 +1476,8 @@ function updateRepairFabs() {
       };
       ov.appendChild(f);
     }
-    f.textContent=target.label;f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
+    if(target.kind==='talk')f.innerHTML=`<img class="talk-ico" src="img/ui/icon-talk.webp" alt="" width="20" height="20">${esc(target.label)}`;else f.textContent=target.label;
+    f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
     f.dataset.sx=target.bx;f.dataset.sy=target.by;f.classList.toggle('anchor-top', target.anchor === 'top');
     place(f);
     const v=mapCam.viewport;
@@ -2902,6 +2992,7 @@ function openNiraOffice() {
     return;
   }
   pauseForDlg();
+  const niraGreet = greetLine({ kind: 'nira', name: g.crewOf('nira')?.name || 'นิรา' });   // P4: บรรทัดทักจากชุดบทของ Rae (ไม่มีผลต่อเกม)
   const paint = () => {
     const final = g.finalTeamSelection(), max = final ? g.teamLimits.finalTeamMax : g.teamLimits.normalTeamMax;
     const party = (final ? g.party?.finalMembers : g.party?.members) || [];
@@ -2938,7 +3029,7 @@ function openNiraOffice() {
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${final ? '' : niraGreet}
       <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
@@ -2974,9 +3065,12 @@ function openNiraOffice() {
 function openMerchant() {
   if (!g.zoneCaptivesFree()) return;
   pauseForDlg();
+  const stock0 = merchantStock(g.zone);
+  const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
+      ${merchantGreet}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -4791,6 +4885,7 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
+  pendingTalk = null;                         // แตะที่อื่น = ยกเลิกการเดินเข้าหาตัวละครที่จะคุย
   if (hitFrontier(g, sx, sy)) {
     const near = Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
     if (near) return openFrontier();
@@ -4861,7 +4956,11 @@ function onSceneClick(sx, sy) {
       if (c && Math.hypot(g.player.x - c.x, g.player.y - c.y) <= INTERACTION_REACH) return openNiraOffice();
       if (c) { g.walkTo(c.x, c.y); return; }
     }
+    if (a.kind === 'worker') { talkTo(`worker:${a.key}`); return; }   // P4: คนงานคลิกได้แล้ว (เดิมไม่มี hit-test)
     select(a);
+    if (a.kind === 'crew') talkTo(`crew:${a.key}`);
+    else if (a.kind === 'guard') talkTo('guard:0');
+    else if (a.kind === 'soul') talkTo(`soul:${a.key}`);     // หัวคิว (กำลังไต่สวน) ไม่อยู่ในรายการคุย → talkTo คืน false เฉย ๆ
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
     return;
@@ -4890,6 +4989,10 @@ function onSceneClick(sx, sy) {
 const KEY = {};
 addEventListener('keydown', e => {
   if (dlg.open || !heroProfile.hidden || /input|textarea|select/i.test(e.target.tagName)) return;
+  if (talkSess && !e.repeat) {                       // P4: บับเบิลคุยเปิดอยู่ — Esc ปิด · Enter/E บทถัดไป
+    if (e.key === 'Escape') { closeTalk(); e.preventDefault(); return; }
+    if (e.key === 'Enter' || e.key.toLowerCase() === 'e') { advanceTalk(); e.preventDefault(); return; }
+  }
   if (e.key.toLowerCase() === 'e' && isTownZone(g.zone)) {
     if (!e.repeat) activateTownAction();
     e.preventDefault(); return;
@@ -4910,6 +5013,7 @@ function keyWalk(dt) {
   if (KEY.w || KEY.arrowup) dy -= 1;
   if (KEY.s || KEY.arrowdown) dy += 1;
   if (!dx && !dy) return;
+  pendingTalk = null;                              // เดินเอง = ยกเลิกการเดินเข้าหาตัวละครที่จะคุย
   const d = Math.hypot(dx, dy);
   stepTo(P, dx / d * sp, dy / d * sp, true);    // ลาวา/แม่น้ำ/ตัวยมทูตที่ยืนอยู่กันไว้ ชนแล้วไถลไปตามขอบ
   P.tx = null; P.path = null; g.huntMob = false; // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้ (รวมคำสั่งไล่เปรต)
@@ -6341,6 +6445,11 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
+  const v = mapCam.viewport, r = cv.getBoundingClientRect();
+  return v?.sx ? [r.left + (x * v.sx + v.tx) / v.width * r.width, r.top + (y * v.sy + v.ty) / v.height * r.height]
+    : [r.left + x / SCENE.w * r.width, r.top + y / SCENE.h * r.height];
+};
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
