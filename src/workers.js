@@ -221,7 +221,17 @@ export const workerSheet=zone=>`img/workers/worker-${zones.includes(zone)?zone:'
 // P5b — v2 sheets (12 rows x 4 frames of 320px). A zone listed here draws from its v2 sheet; every other
 // zone keeps the 4-row v1 sheet and the old pose logic. To switch another zone: drop worker-<zone>-sheet-v2.webp
 // next to the others, add the zone here with its inset table (rows 0-2 are v1 copies and keep v1 insets).
-export const WORKER_SHEETS_V2=Object.freeze({th:Object.freeze({rows:12,insets:Object.freeze([...WORKER_FRAME_INSETS.th.slice(0,12),...Array.from({length:36},()=>[0,0,0,0])])})});
+// P5c — optional `fit` table per zone: row -> {scale,dx} that cancels the drawing drift of a v2 sheet without touching
+// the image. scale = on-screen size multiplier about the foot baseline (the cell bottom stays put); dx = source px the
+// art moves right so the feet land on the cell centre (x 160). A zone with no `fit`, or a row with no entry, is drawn
+// as-is (scale 1, dx 0). Measured by scripts/measure-worker-sheet.py: standing height of v1 (308 px) / foot centre x 160.
+export const WORKER_FIT_TH_V2=Object.freeze({
+  3:{scale:1.109,dx:7},4:{scale:1.063,dx:27},5:{scale:1.122,dx:13},6:{scale:1.083,dx:58},7:{scale:1.129,dx:65},
+  8:{scale:1.083,dx:68},9:{scale:1.12,dx:1},10:{scale:1.089,dx:-21},11:{scale:1.065,dx:2}
+});
+export const WORKER_SHEETS_V2=Object.freeze({th:Object.freeze({rows:12,insets:Object.freeze([...WORKER_FRAME_INSETS.th.slice(0,12),...Array.from({length:36},()=>[0,0,0,0])]),fit:WORKER_FIT_TH_V2})});
+/** Fit of one row of a v2 sheet. No table / no entry means no compensation. */
+export const workerFit=(v2,row)=>{const f=v2?.fit?.[row];return {scale:f?.scale??1,dx:f?.dx??0};};
 export const workerSheetV2=zone=>WORKER_SHEETS_V2[zone]?`img/workers/worker-${zone}-sheet-v2.webp`:null;
 /** v2 row map (Mind spec section 4). Rows 12-16 (rest, vertical carry) are not drawn yet, so they are never used. */
 export const WORKER_ROW_V2=Object.freeze({idle:0,walk:1,build:2,escort:3,down:4,up:5,chopThorns:6,collectShards:7,repair:8,supervise:9,carryThorns:10,carryShards:11});
@@ -256,9 +266,11 @@ export function drawWorker(ctx,w,time,height=48) {
     const rows=v2?v2.rows:4,fw=image.naturalWidth/4,fh=image.naturalHeight/rows;
     const row=workerRow(w,!!v2),col=Math.floor(time/160)%4,width=height*fw/fh;
     ctx.translate(w.x,w.y);if(w.face===-1)ctx.scale(-1,1);
-    const frame=workerFrameRect(w.homeZone,row,col,v2?.insets);
+    const frame=workerFrameRect(w.homeZone,row,col,v2?.insets),fit=workerFit(v2,row);
+    // scale about the foot baseline (cell bottom, x=0 after the shift); dx re-centres the feet on the cell middle
+    const sx=width*fit.scale,sy=height*fit.scale,shift=fit.dx/320*sx;
     ctx.drawImage(image,frame.x*fw,frame.y*fh,frame.w*fw,frame.h*fh,
-      -width/2+frame.left*width,-height+frame.top*height,width*frame.w,height*frame.h);
+      -sx/2+shift+frame.left*sx,-sy+frame.top*sy,sx*frame.w,sy*frame.h);
   } else {
     ctx.fillStyle={th:'#7b9d55',asia:'#a74a64',west:'#8061a3',cyberhell:'#479dba'}[w.homeZone]||'#7b9d55';
     ctx.fillRect(w.x-height*.16,w.y-height*.65,height*.32,height*.6);

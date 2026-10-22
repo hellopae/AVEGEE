@@ -62,7 +62,7 @@ test('P5b worker sheet v2: th only, 1280x3840, v1 stays for every zone and for t
   assert.equal(WORKER_SHEETS_V2.th.insets.length,48);
   assert.deepEqual(workerFrameRect('th',3,0,WORKER_SHEETS_V2.th.insets),{left:0,top:0,right:0,bottom:0,x:0,y:3,w:1,h:1});
   assert.ok(allCatalogFiles.includes('img/workers/worker-th-sheet-v2.webp'));
-  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*p5b"/);
+  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*p5b[^"]*"/);
   assert.match(html,/src\/ui\.js\?v=[^"]*p5b-o2"/,'ui.js suffix still ends -o2');
 });
 
