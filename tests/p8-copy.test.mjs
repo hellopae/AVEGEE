@@ -62,5 +62,5 @@ test('P8 lock badges go through i18n (rank in EN)',()=>{
 test('P8 index.html cache-bust carries -p8 on every touched file',()=>{
   const h=read('index.html');
   for(const f of ['data.js','ui.js','i18n.js','town-map.js','minigames/krata-qte.js','sentencing-guide.js'])
-    assert.match(h,new RegExp(`src/${f.replace(/[./]/g,m=>'\\'+m)}\\?v=[^"]*-p8(-o2)?"`),f);
+    assert.match(h,new RegExp(`src/${f.replace(/[./]/g,m=>'\\'+m)}\\?v=[^"]*-p8(-p4)?(-o2)?"`),f);
 });

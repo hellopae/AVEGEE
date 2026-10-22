@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { STORY } from '../src/story.js';
-import { ZONES, BAL } from '../src/data.js';
+import { ZONES, BAL, CREW_POWER } from '../src/data.js';
 import { zoneIntroduction } from '../src/zone-introductions.js';
 import { comicImageLayout, prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from '../src/cutscene-presentation.js';
 
@@ -150,7 +150,7 @@ test('30A: only the two requested action sources opt out of mirroring; runtime a
     const cut = {className:'',classList:{add(cls) {cut.className += ` ${cls}`;}},querySelector:() => ({}),remove() {}};
     const dlg = {open:true,querySelector:() => null,appendChild(node) {assert.equal(node, cut);}};
     renderer('playActionCutscene', {dlg, document:{createElement:() => cut}, esc, ACTION_CUTSCENE_PRESENTATION,
-      g:{roster:{guard:{name:'ยักษ์ทวารบาล'}}},CREW:{},camera:{enabled:true},matchMedia:() => ({matches:false}),
+      g:{roster:{guard:{name:'ยักษ์ทวารบาล'}}},CREW:{},CREW_POWER,camera:{enabled:true},matchMedia:() => ({matches:false}),
       actionCutsceneTheme:() => 'club',actionCutsceneLabel:() => 'กระบองพิทักษ์',mountActionCutsceneFx:() => () => {},
       crewCutsceneSrc:() => ({src}), actionCutsceneSrc:() => null, fitCutsceneImage() {},setTimeout() {},ACTION_CUT_MS:1300})('crew:guard');
     assert.equal(cut.className.includes('right-facing'), ACTION_CUTSCENE_PRESENTATION[src]?.flip === false);
