@@ -1268,3 +1268,11 @@ Object.assign(EN, {
   'hire.recommend':'Recommended',
   'hire.rank':'Hire #{n}',
 });
+
+// P4 — ปุ่ม "?" ในโปรไฟล์ยามา (คุณเป้ 23 ต.ค. 2569)
+Object.assign(TH, {
+  'profile.help.hp':'อธิบายบารมี',
+});
+Object.assign(EN, {
+  'profile.help.hp':'What is Authority?',
+});

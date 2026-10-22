@@ -51,6 +51,8 @@ dialog.bag[open]{width:min(900px,calc(100vw - 24px));max-width:900px;padding:24p
 .hero-profile-row small{font-size:13px;line-height:1.6;color:var(--menu-muted)}
 .hero-profile-row>img,.profile-emoji{width:44px;height:44px;flex:none}
 .hero-profile-hp{height:8px;margin-top:8px;max-width:220px}
+.hero-profile-row .profile-help{flex:none;margin-left:auto;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;border-radius:50%;font-weight:700;font-size:16px;line-height:1;color:#ffe1a1;background:#3a2230;border:1px solid #8f6840;cursor:pointer}
+.hero-profile-row .profile-help:hover{background:#4b2d3d}
 .hero-profile-shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}
 .hero-profile-shortcuts button{min-height:44px;font-size:14px}
 .hero-profile-actions{top:20px;right:20px}

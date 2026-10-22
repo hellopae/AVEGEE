@@ -4631,11 +4631,12 @@ function drawHeroProfile() {
     <div class="profile-stars" aria-label="${esc(t('profile.rank'))}">${'★'.repeat(g.level)}${'☆'.repeat(Math.max(0, LEVELS.length - g.level))}</div>
     <strong>${esc(t('profile.rank'))} ${g.level}/${LEVELS.length} - ${esc(LEVELS[g.level - 1].name)}</strong>
     <p>${esc(t('profile.story'))}${esc(g.zoneDef().name)}</p><p>${esc(t('profile.duty'))}</p>`;
-  const row = (img, value, label, extra = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span></div>`;
+  // help = ชื่อแถบที่ explainBar() รู้จัก → ปุ่ม "?" ท้ายแถว (P4: บารมีเปิดกล่องอธิบายที่ P8 แก้ข้อความแล้ว)
+  const row = (img, value, label, extra = '', help = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span>${help ? `<button type="button" class="profile-help" data-profile-help="${help}" aria-label="${esc(t('profile.help.' + help))}" title="${esc(t('profile.help.' + help))}">?</button>` : ''}</div>`;
   const hpBar = `<span class="hero-profile-hp"><i style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>`;
   // P1: ยังไม่มีศาลาน้ำชา = ยังไม่มีที่นอน — บอกทางไปที่นอนตรงบรรทัดบารมี (หายเองเมื่อสร้างเสร็จ หรือเมื่อบารมีเต็ม)
   const sleepHint = !g.teaBedReady() && g.hp < g.hpMax ? `<small class="profile-hint">${esc(t('sleep.needTea'))}</small>` : '';
-  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint)
+  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint, 'hp')
     + row('<span class="profile-emoji">🔹</span>', `${Math.round(g.mp)}/${g.mpMax}`, t('battle.mp'), `<span class="hero-profile-hp profile-mp"><i style="width:${Math.max(0, Math.min(100, 100 * g.mp / g.mpMax))}%"></i></span>`)
     + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
     + row('img/item-food.png', Math.round(g.food), t('profile.food'))
@@ -4670,6 +4671,8 @@ function drawHeroProfile() {
     tabs.innerHTML = PROFILE_SECTIONS.map(key => `<button id="profile-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="profile-panel-${key}" aria-selected="${key === profileSection}" tabindex="${key === profileSection ? 0 : -1}">${esc(t('profile.' + key))}</button>`).join('');
     bindMenuTabs(tabs, '[data-menu-tab]', selectProfileSection);
   }
+  // กล่องอธิบายเป็น <dialog> โมดัล → ขึ้นทับโปรไฟล์ได้เสมอ ปิดแล้วกลับมาที่โปรไฟล์เดิม (ไม่ต้องปิดโปรไฟล์ก่อน จึงไม่ค้าง)
+  heroProfile.querySelectorAll('[data-profile-help]').forEach(b => b.onclick = () => explainBar(b.dataset.profileHelp));
   applyI18n(heroProfile);
 }
 function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; heroProfile.querySelector('[aria-selected=true]').focus(); }
