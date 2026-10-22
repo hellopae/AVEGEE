@@ -24,6 +24,7 @@ import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { buildVerdictScene } from './verdict-scene.js';
+import { rollRemorse, remorseOf, isRepentant } from './remorse.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
@@ -1424,11 +1425,15 @@ const API = {
       this.log(`↩️ ${soul.who}ยังมีกรรม — ประตูสวรรค์ส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
     } else if (st.def.heaven) {
       this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
-        stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right });
+        stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right,
+        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need, servedAt:this.tick });
       this.log(`🕊️ ${soul.who}ถึงประตูสวรรค์ — รอให้บุญตรวจกรรมคงเหลือ`, 'act');
     } else {
+      // P4: เก็บสถานี/ผู้คุม/วาระเต็ม/ความสำนึกไว้ให้ใบวินิจฉัย · remorse สุ่มตรงนี้ครั้งเดียว (ความน่าจะเป็นเท่าเดิม ดู remorse.js)
       const entry = { soul, verdict:r, intensity:slot.intensity,
-        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone };
+        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone,
+        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null,
+        need:slot.need, servedAt:this.tick, remorse:rollRemorse(r.short) };
       const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
       // 29C: ออกเดินหลังปลดผู้คุมออกจากเวร (ด้านล่าง) เพื่อให้รู้ว่ายมทูตคนนั้นว่างไปส่งได้ไหม
       toPrison = prison ? { soul, entry, from:[st.def.x, st.def.y], to:[prison.def.x, prison.def.y] } : null;
@@ -1462,7 +1467,9 @@ const API = {
     if (!x || this.tick < x.readyAt) return false;
     if (x.inspected) return true;
     x.inspected = true;
-    x.repentant = x.verdict.short <= 0 || Math.random() > RETURN.chance;
+    // P4: ตัดสินจากตัวเลขความสำนึกที่สุ่มไว้ตอนจบทัณฑ์ · เซฟเก่าที่ไม่มี remorse ใช้การสุ่มแบบเดิม
+    const rem = remorseOf(x);
+    x.repentant = rem !== undefined ? isRepentant(rem) : x.verdict.short <= 0 || Math.random() > RETURN.chance;
     this.log(`📋 นิราตรวจ ${x.soul.who} — ${x.repentant ? 'สำนึกแล้ว ส่งไปประตูสวรรค์ได้' : 'ยังไม่เข็ด ต้องกลับเข้าคิว'}`, x.repentant ? 'good' : 'bad');
     this.onChange();
     return true;

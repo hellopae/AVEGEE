@@ -51,7 +51,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
+         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
@@ -2404,7 +2404,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
   const actorName = crewKey ? (g.roster[crewKey]?.name || CREW[crewKey]?.name || 'ยมทูต') : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
-  const crewMove = ({kan:'พลังสะกดจิต',boon:'พลังฟื้นฟู',plerng:'เพลิงพิพากษา',taan:'กระบองทัณฑ์',guard:'กระบองพิทักษ์',dam:'คมดาบ'})[crewKey];
+  const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
   const img = cut.querySelector('img');
@@ -4853,7 +4853,7 @@ addEventListener('keydown', e => {
   }
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
-  if (e.key === ' ' && !g.over) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
+  if (e.key === ' ' && !g.over && !document.querySelector('#mg-ov:not([hidden]), .st-diag:not([hidden])')) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 addEventListener('blur', () => { for (const key in KEY) KEY[key] = false; });

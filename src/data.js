@@ -380,15 +380,24 @@ export const crewName = (c, zone = 'th') => c?.names?.[zone] || c?.name || '—'
 // trainDmg = ดาเมจที่เพิ่มต่อขั้นฝึก "แรง" (upgradeCrew ใน game.js, c.upLv) — ระบบฝึกเดิมยังอยู่
 // แค่ต่อยอดบนฐานใหม่แทนสูตรเดิมที่ผูกกับ raeng ตรง ๆ
 export const CREW_POWER = {
-  nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี' },
-  taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง' },
-  plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ' },
-  dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย' },
+  nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี',
+            name:'แสงฟื้นบารมี', icon:'img/ui/power-heal-light.webp', tint:'#e8c870', kind:'heal' },
+  taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง',
+            name:'กระบองทัณฑ์', icon:'img/ui/power-club.webp', tint:'#e0623a', kind:'strike' },
+  plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ',
+            name:'เพลิงพิพากษา', icon:'img/ui/power-fire.webp', tint:'#e8832e', kind:'fire' },
+  dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย',
+            name:'คมดาบ', icon:'img/ui/power-blade.webp', tint:'#6f93b5', kind:'strike' },
   // สะกดจิต — ไม่ได้ทำดาเมจตรง แต่ทำให้ศัตรูมึน 1 เทิร์น (ฟาดใส่ตัวเองแทนฟาดยมบาทน้อย)
-  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น' },
-  boon:   { heal: 50, desc: 'ฟื้นบารมี' },
-  guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง' },
+  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น',
+            name:'พลังสะกดจิต', icon:'img/ui/power-hypno.webp', tint:'#8a5fc7', kind:'hypno' },
+  boon:   { heal: 50, desc: 'ฟื้นบารมี',
+            name:'พลังฟื้นฟู', icon:'img/ui/power-heal-lotus.webp', tint:'#4fae78', kind:'heal' },
+  guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง',
+            name:'กระบองพิทักษ์', icon:'img/ui/power-heavy.webp', tint:'#d4a355', kind:'strike' },
 };
+// P4: ความสำนึกของวิญญาณ (0–100) — สุ่มตอนจบทัณฑ์ (game.js rollRemorse) · ผ่านเกณฑ์ = เข็ดแล้ว (ใบวินิจฉัยวาดเส้นเกณฑ์นี้)
+export const REMORSE_PASS = 60;
 
 
 // ---------- คำแก้ตัว (วิญญาณพูดเองตอนขึ้นแท่น — โกหกได้) ----------

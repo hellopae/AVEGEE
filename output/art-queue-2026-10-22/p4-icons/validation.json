@@ -1,0 +1,288 @@
+[
+  {
+    "file": "img/ui/power-club.webp",
+    "meaning": "กระบองทัณฑ์ — ทัณฑ์",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "ccd7c3665aed95ed8469e28a2e8e2803ba19765ea1d3ca3330613efa6c7ea62f"
+  },
+  {
+    "file": "img/ui/power-fire.webp",
+    "meaning": "เพลิงพิพากษา — เพลิง",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "a62daf15ba76936fb0b3cd36c81af2f654220787472da93ba2b20c37c1c2c363"
+  },
+  {
+    "file": "img/ui/power-hypno.webp",
+    "meaning": "พลังสะกดจิต — กานต์",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "59a50980af05dd28d45f3e6d9c53c2394fff6e1f45da74e73a6987daa75caee4"
+  },
+  {
+    "file": "img/ui/power-heal-lotus.webp",
+    "meaning": "พลังฟื้นฟู — บุญ",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "eb2acd2a79d009000c32b241629c6286c5baf46797e4ec5d81f1e6b26cf5b0f1"
+  },
+  {
+    "file": "img/ui/power-heal-light.webp",
+    "meaning": "แสงฟื้นบารมี — นิรา",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "9373c99d042f5f96a0f57ccfcbc5450717f609ca1cb70bcf4741ed59afef26d2"
+  },
+  {
+    "file": "img/ui/power-blade.webp",
+    "meaning": "คมดาบ — ดำ",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "74b84b84efa9523c271665509140a4143f19a83b6250862017fba2cb6e5f66a9"
+  },
+  {
+    "file": "img/ui/power-heavy.webp",
+    "meaning": "กระบองพิทักษ์ — ยักษ์",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "e445d735da40bc82451501f4b83c98ead3d40e40a621621d5267596f7b904ff7"
+  },
+  {
+    "file": "img/ui/job-order.webp",
+    "meaning": "คุมงานเป็นระเบียบ — ทัณฑ์",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "f98cc0d122b70cb4d8c3dcbf3aaec902d56ff21e3ba4bbbe9b5f1f529136f479"
+  },
+  {
+    "file": "img/ui/job-cleanse.webp",
+    "meaning": "ชำระกรรม — บุญ",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "8b34cd4da4e15abccd8656f46746768e343f44946dbdc95fe70227b28f683c68"
+  },
+  {
+    "file": "img/ui/job-subdue.webp",
+    "meaning": "ปราบความดื้อ — เพลิง",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "658539af6d6e28a117fb034661cae3e2fef37e558d2d50b3e355b4a9ec222c59"
+  },
+  {
+    "file": "img/ui/job-crowd.webp",
+    "meaning": "คุมงานหมู่ — ดำ",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "f1c30468133f3cfd6ecfdc00ac6515777220afada5c33e44bce687dbcd1344d4"
+  },
+  {
+    "file": "img/ui/job-reveal.webp",
+    "meaning": "เปิดความจริง — กานต์",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "8db0d263c8be5e597caa241273c1268943cc3764383f38d7b4383bac00b1e356"
+  },
+  {
+    "file": "img/ui/job-scroll.webp",
+    "meaning": "อ่านสำนวน/ฟื้นระเบียบ — นิรา",
+    "size": [
+      128,
+      128
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "50a51233f82666434a729cee729feced38e99e786ac6504c8fcc704b012e5437"
+  },
+  {
+    "file": "img/ui/icon-remorse.webp",
+    "meaning": "มาตรวัดความสำนึก — มือพนม",
+    "size": [
+      96,
+      96
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "55745c26bfa5bcc959305960391c1e546790480f64d725a12f48e3f1808c8c61"
+  },
+  {
+    "file": "img/ui/icon-deterrence.webp",
+    "meaning": "มาตรวัดความเข็ด — มือถอยจากไฟ",
+    "size": [
+      96,
+      96
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "7f280f1e2bca31e20f6c049a7fb70b88e0b39cc4b0dfbf8bdf4ed6e232bab5c7"
+  },
+  {
+    "file": "img/ui/seal-heaven.webp",
+    "meaning": "พร้อมไปสวรรค์ — ปีกยกขึ้น",
+    "size": [
+      192,
+      192
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "6c7e8ec2179e0bc288bf1499591c4088904465de9e236c6a73e7e3723e523a7c"
+  },
+  {
+    "file": "img/ui/seal-reborn.webp",
+    "meaning": "ไปเกิดใหม่ — ต้นอ่อน",
+    "size": [
+      192,
+      192
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "8a592bd2d173d8144d829b43fa9c7d1e351e60565d4af6d2627f1a95e60435e3"
+  },
+  {
+    "file": "img/ui/seal-return.webp",
+    "meaning": "ส่งกลับคิวตัดสินใหม่ — ลูกศรย้อน",
+    "size": [
+      192,
+      192
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "f717a59b8d61d36fd25dc7f8cfad06a6e41fabbfa43cdcd70b83ac465d4f474b"
+  },
+  {
+    "file": "img/ui/icon-talk.webp",
+    "meaning": "ปุ่มคุย — กรอบคำพูด",
+    "size": [
+      64,
+      64
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "f10eddf3152fdfedf80e6f48553e8c7c9c46c6f8de57c868204a70deadfab7ea"
+  },
+  {
+    "file": "img/ui/pin-talk.webp",
+    "meaning": "คุยได้ — จุดเดียว",
+    "size": [
+      48,
+      48
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "a770ae4712aa3ca1c23802acdc4c437bd3def6f304f42f2e4d95efca26a51fe6"
+  },
+  {
+    "file": "img/ui/pin-talk-more.webp",
+    "meaning": "มีบทต่อ — ลูกศรไปข้างหน้า",
+    "size": [
+      48,
+      48
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "f304857f273b90ce94cf107de57ba226dbae27e7bc4dbd0aa6b9ce09cf16189b"
+  },
+  {
+    "file": "img/ui/pin-talk-new.webp",
+    "meaning": "มีบทใหม่/ครั้งแรก — ประกายสี่แฉก",
+    "size": [
+      48,
+      48
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "c5fae208e29eed73897fd570b08359e8d1ed7378407c51061df5ded6e41acfc4"
+  }
+]
