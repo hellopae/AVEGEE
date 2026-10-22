@@ -8,7 +8,7 @@
     "img/cover-fx/soul-v4-mask.png",
     "img/weapons/weapon-cutscene-fang.jpeg",
     "img/weapons/weapon-cutscene-chain.jpeg",
-    "img/weapons/weapon-cutscene-cane.jpeg",
+    "img/weapons/weapon-cutscene-cane-v2.jpeg",
     "img/weapons/weapon-cutscene-trojan.jpeg",
     "img/weapons/weapon-icon-fang.png",
     "img/weapons/weapon-icon-chain.png",
@@ -379,10 +379,12 @@
       "img/boss-guide/th-welcome-v1.webp",
       "img/boss-guide/th-farewell-v1.webp",
       "img/workers/worker-th-sheet-v1.webp",
+      "img/workers/worker-th-sheet-v2.webp",
       "img/nira-combat/nira-th-heal-cutscene-v1.webp",
       "img/boss-guide/th-gift-v1.webp",
       "img/map-zone1/repairs/r2-c3-v1.webp",
-      "img/map-zone1/repairs/r1-c3-v1.webp"
+      "img/map-zone1/repairs/r1-c3-v1.webp",
+      "img/map-zone1/repairs/r3-c3-pier-v1.webp"
     ],
     "asia": [
       "img/krata-minigame/plerng-asia-training-v2.png",

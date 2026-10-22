@@ -155,7 +155,7 @@ export function advanceWorkers(g,dt,now=Date.now()) {
       if(!w.path?.length||w.target?.[0]!==goal[0]||w.target?.[1]!==goal[1]){w.path=findPath(w.x,w.y,...goal);w.target=goal;}
       if(w.path?.length) {
         const next=w.path[0],dx=next[0]-w.x,dy=next[1]-w.y,d=Math.hypot(dx,dy);
-        if(d<2)w.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);w.moving=stepTo(w,dx/d*speed,dy/d*speed);w.face=dx<0?-1:1;if(!w.moving)w.path=null;}
+        if(d<2)w.path.shift();else {const speed=Math.min(d,Math.min(dt,120)*.11);w.moving=stepTo(w,dx/d*speed,dy/d*speed);w.face=dx<0?-1:1;w.heading=workerHeading(dx,dy);if(!w.moving)w.path=null;}
       }
     } else if(w.job.kind==='gather') {
       w.job.worked=(w.job.worked||0)+Math.min(dt,120);
@@ -211,24 +211,52 @@ export const workerDiscs=g=>zoneWorkers(g).filter(w=>!w.moving&&w.mode!=='rest')
 // remove disconnected neighbouring-cell fragments; the character/tool component
 // has at least 3 source pixels of clearance. Never shift the original foot anchor.
 export const WORKER_FRAME_INSETS=Object.freeze({"th":[[0,0,0,0],[5,0,0,0],[0,0,0,0],[0,0,0,0],[0,14,0,0],[17,11,0,0],[21,12,0,0],[0,13,0,0],[0,11,0,0],[42,11,0,0],[21,12,0,0],[0,12,0,0],[0,0,0,0],[21,0,0,0],[29,0,0,0],[6,0,0,0]],"asia":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,4,0,0],[5,5,0,0],[0,4,0,0],[0,4,0,0],[0,0,0,0],[16,5,0,0],[0,5,0,0],[0,6,0,0],[0,0,0,0],[0,0,0,0],[5,0,0,0],[0,0,0,0]],"west":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,7,0,0],[6,7,0,0],[5,7,0,0],[0,7,0,0],[0,14,0,0],[0,16,0,0],[21,18,0,0],[23,16,0,0],[0,0,0,0],[0,0,0,0],[30,0,0,0],[25,0,0,0]],"cyberhell":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[8,0,0,0],[0,0,0,0],[0,7,0,0],[0,9,0,0],[0,10,0,0],[0,8,0,0],[0,0,0,0],[28,0,0,0],[25,0,0,0],[6,0,0,0]]});
-export function workerFrameRect(zone,row=0,column=0) {
-  const table=WORKER_FRAME_INSETS[zone]||WORKER_FRAME_INSETS.th;
+export function workerFrameRect(zone,row=0,column=0,insets=null) {
+  const table=insets||WORKER_FRAME_INSETS[zone]||WORKER_FRAME_INSETS.th;
   const [l,t,r,b]=table[row*4+column]||[0,0,0,0];
   return {left:l/320,top:t/320,right:r/320,bottom:b/320,
     x:column+l/320,y:row+t/320,w:1-(l+r)/320,h:1-(t+b)/320};
 }
 export const workerSheet=zone=>`img/workers/worker-${zones.includes(zone)?zone:'th'}-sheet-v1.webp`;
+// P5b — v2 sheets (12 rows x 4 frames of 320px). A zone listed here draws from its v2 sheet; every other
+// zone keeps the 4-row v1 sheet and the old pose logic. To switch another zone: drop worker-<zone>-sheet-v2.webp
+// next to the others, add the zone here with its inset table (rows 0-2 are v1 copies and keep v1 insets).
+export const WORKER_SHEETS_V2=Object.freeze({th:Object.freeze({rows:12,insets:Object.freeze([...WORKER_FRAME_INSETS.th.slice(0,12),...Array.from({length:36},()=>[0,0,0,0])])})});
+export const workerSheetV2=zone=>WORKER_SHEETS_V2[zone]?`img/workers/worker-${zone}-sheet-v2.webp`:null;
+/** v2 row map (Mind spec section 4). Rows 12-16 (rest, vertical carry) are not drawn yet, so they are never used. */
+export const WORKER_ROW_V2=Object.freeze({idle:0,walk:1,build:2,escort:3,down:4,up:5,chopThorns:6,collectShards:7,repair:8,supervise:9,carryThorns:10,carryShards:11});
+/** Screen heading of a step: vertical only when clearly more vertical than horizontal, otherwise the side-view row (flipped by face). */
+export const workerHeading=(dx,dy)=>Math.abs(dy)>Math.abs(dx)*1.2?(dy>0?'down':'up'):'side';
+/** Which row of the sheet a worker draws. v1 sheets (4 rows) keep the original choice; v2 chooses by what the worker is really doing. */
+export function workerRow(w,v2=false) {
+  if(!v2)return w.job?.kind==='escort'?3:w.moving?1:w.arrived&&['build','repair','gather'].includes(w.job?.kind)?2:0;
+  const R=WORKER_ROW_V2;
+  if(w.job?.kind==='escort')return R.escort;
+  if(w.moving) {
+    if(w.cargo==='ngiwWood')return R.carryThorns;
+    if(w.cargo==='dabShards')return R.carryShards;
+    return w.heading==='down'?R.down:w.heading==='up'?R.up:R.walk;
+  }
+  if(w.arrived) {
+    const kind=w.job?.kind;
+    if(kind==='build')return R.build;
+    if(kind==='repair')return R.repair;
+    if(kind==='supervise')return R.supervise;
+    if(kind==='gather'&&w.job.phase==='collect'&&!w.cargo)return w.job.material==='dabShards'?R.collectShards:R.chopThorns;
+  }
+  return R.idle;
+}
 const sheets=new Map();
 export function drawWorker(ctx,w,time,height=48) {
-  const source=workerSheet(w.homeZone);let image=sheets.get(source);
+  const v2=WORKER_SHEETS_V2[w.homeZone],source=v2?workerSheetV2(w.homeZone):workerSheet(w.homeZone);let image=sheets.get(source);
   if(!image&&typeof Image!=='undefined'){image=new Image();image.src=source;sheets.set(source,image);}
   ctx.save();
   ctx.fillStyle='rgba(14,8,18,.28)';ctx.beginPath();ctx.ellipse(w.x,w.y-2,height*.22,height*.065,0,0,Math.PI*2);ctx.fill();
   if(image?.complete&&image.naturalWidth) {
-    const fw=image.naturalWidth/4,fh=image.naturalHeight/4;
-    const row=w.job?.kind==='escort'?3:w.moving?1:w.arrived&&['build','repair','gather'].includes(w.job?.kind)?2:0,col=Math.floor(time/160)%4,width=height*fw/fh;
+    const rows=v2?v2.rows:4,fw=image.naturalWidth/4,fh=image.naturalHeight/rows;
+    const row=workerRow(w,!!v2),col=Math.floor(time/160)%4,width=height*fw/fh;
     ctx.translate(w.x,w.y);if(w.face===-1)ctx.scale(-1,1);
-    const frame=workerFrameRect(w.homeZone,row,col);
+    const frame=workerFrameRect(w.homeZone,row,col,v2?.insets);
     ctx.drawImage(image,frame.x*fw,frame.y*fh,frame.w*fw,frame.h*fh,
       -width/2+frame.left*width,-height+frame.top*height,width*frame.w,height*frame.h);
   } else {
