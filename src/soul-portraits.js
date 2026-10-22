@@ -1,4 +1,5 @@
 import { ALL_CASES } from './cases.js';
+import { lockSoulTrait } from './interrogation.js';
 import { SEX_OF } from './data.js';
 
 const CASE_BY_KEY = new Map(ALL_CASES.map(c => [c.k, c]));
@@ -68,12 +69,12 @@ export function applySoulPortrait(soul, zone = 'th') {
   return soul;
 }
 
-/** Reconcile old saves once, including souls outside the visible queue. */
-export function reconcileSoulPortraits(game) {
+/** Visit every soul the game holds, wherever it is (queue, held, stations, sentences, closed, walks, returning, other zones). */
+export function forEachSoul(game, fn) {
   const seen = new WeakSet();
   const apply = (soul, zone) => {
     if (!soul || typeof soul !== 'object' || seen.has(soul)) return;
-    seen.add(soul); applySoulPortrait(soul, zone);
+    seen.add(soul); fn(soul, zone);
   };
   const branch = (state, zone) => {
     (state.queue || []).forEach(s => apply(s, zone));
@@ -86,4 +87,14 @@ export function reconcileSoulPortraits(game) {
   (game.closed || []).forEach(entry => apply(entry.soul, entry.zone || game.zone));
   (game.afterlifeWalks || []).forEach(entry => apply(entry.soul, entry.zone || game.zone));
   (game.returning || []).forEach(entry => apply(entry, entry.zone || game.zone));
+}
+
+/** Reconcile old saves once, including souls outside the visible queue. */
+export function reconcileSoulPortraits(game) {
+  forEachSoul(game, (soul, zone) => applySoulPortrait(soul, zone));
+}
+
+/** P2: old saves have no locked colour — lock it once, from the case data (hand-written cases) or the soul itself. */
+export function reconcileSoulTraits(game) {
+  forEachSoul(game, soul => lockSoulTrait(soul, soul.case && !soul.back ? CASE_BY_KEY.get(soul.case) : null));
 }
