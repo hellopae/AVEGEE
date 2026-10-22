@@ -54,17 +54,33 @@ export function townNearbyAction(g, interaction, build, reach = 105) {
   return null;
 }
 
-/** Construction sites are visible; roads and stairs are supplied by the new town painting. */
-export function drawTownGround(ctx,g) {
+/** Construction sites are visible; roads and stairs are supplied by the new town painting.
+ *  P1: a site whose unlock level is not reached yet is only a dark footprint ("shadow") with a lock + Lv.N;
+ *  the next recommended site gets a brighter pulsing ring and a star. Buildings already built are never touched. */
+export function drawTownGround(ctx,g,now=Date.now()) {
   if (!isTownZone(g.zone)) return;
   // Vacant construction pads help the player discover destinations before approaching.
+  const rec = g.recommendedBuild?.();
   for(const site of townSites(g)) {
     if(site.state!=='plot' || site.def.cost<=0) continue;
-    const d=site.def;
-    ctx.save(); ctx.strokeStyle='rgba(212,170,104,.55)'; ctx.lineWidth=2;
-    ctx.setLineDash([6,5]); ctx.beginPath(); ctx.ellipse(d.bx,d.by-14,Math.min(62,d.bw*.32),20,0,0,Math.PI*2);ctx.stroke();
-    ctx.setLineDash([]);ctx.fillStyle='rgba(33,16,23,.9)';ctx.fillRect(d.x-10,d.y-20,20,16);
-    ctx.strokeStyle='#ad8656';ctx.strokeRect(d.x-10,d.y-20,20,16);
-    ctx.fillStyle='#e9c68e';ctx.font='600 12px sans-serif';ctx.textAlign='center';ctx.fillText('+',d.x,d.y-7);ctx.restore();
+    const d=site.def, locked=!!g.buildLocked?.(d.k), isRec=!locked && rec===d.k;
+    const rx=Math.min(62,d.bw*.32), cy=d.by-14, q=.5+.5*Math.sin(now/420);
+    ctx.save();
+    if(locked) {
+      ctx.fillStyle='rgba(6,3,6,.42)'; ctx.beginPath(); ctx.ellipse(d.bx,cy,rx+6,24,0,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='rgba(150,130,120,.42)'; ctx.lineWidth=2;
+    } else {
+      ctx.strokeStyle=isRec?`rgba(255,214,130,${.6+q*.4})`:'rgba(212,170,104,.55)'; ctx.lineWidth=isRec?3.5:2;
+      if(isRec) { ctx.shadowColor='rgba(255,200,110,.9)'; ctx.shadowBlur=10+q*8; }
+    }
+    ctx.setLineDash([6,5]); ctx.beginPath(); ctx.ellipse(d.bx,cy,rx,20,0,0,Math.PI*2);ctx.stroke();
+    ctx.setLineDash([]); ctx.shadowBlur=0;
+    ctx.fillStyle=locked?'rgba(24,12,18,.78)':'rgba(33,16,23,.9)';
+    const label=locked?`🔒 Lv.${g.buildUnlockLv(d.k)}`:isRec?'★ +':'+';
+    ctx.font=`600 ${locked||isRec?13:12}px sans-serif`;
+    const w=Math.max(20,ctx.measureText(label).width+10);
+    ctx.fillRect(d.x-w/2,d.y-22,w,18);
+    ctx.strokeStyle=locked?'#7d6a5c':isRec?'#ffd68a':'#ad8656';ctx.lineWidth=1.5;ctx.strokeRect(d.x-w/2,d.y-22,w,18);
+    ctx.fillStyle=locked?'#b09a92':isRec?'#ffe7b0':'#e9c68e';ctx.textAlign='center';ctx.fillText(label,d.x,d.y-8);ctx.restore();
   }
 }

@@ -300,8 +300,9 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const wakePoint = () => room.wake || [room.bed[0], Math.max(room.bed[1] + 0.09, areas[0]?.[1] ?? 0)];
 
   function setSleep(emergency = false) {
+    // P1: ไม่มีเตียงให้ซื้อแล้ว — ห้องนี้ (canSit) มีก็ต่อเมื่อศาลาน้ำชาสร้างเสร็จ จึงนอนได้เลยเมื่อยืนใกล้ที่นอนและบารมียังไม่เต็ม
     if (!canSit || lying || sitting || (!emergency &&
-        (!g.teaBeds[g.zone] || Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
+        (Math.hypot(P.x-room.bed[0], (P.y-room.bed[1])*.7) > REACH || g.hp >= g.hpMax))) return false;
     lying = true; recoverySleep = emergency;
     sleepElapsed = emergency && g.pendingRecovery?.stage === 'wake' ? TEA_SLEEP_MS : 0;
     sleepStartHp = g.hp;

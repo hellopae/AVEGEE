@@ -1,6 +1,7 @@
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
+import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
 import {mountInterrogationStyles,spiritNameHtml,keeperBarHtml,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
@@ -29,7 +30,7 @@ import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';
 import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
-import { TEA_BED_COST, DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
+import { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
 import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
@@ -522,7 +523,8 @@ function drawTab() {
       });
 
   } else if (tab === 'crew') {
-    const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k));
+    const nextHireTab = recommendedHire(g);
+    const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).sort((a, b) => hireRank(a.k) - hireRank(b.k));   // P1: ตามลำดับแนะนำจ้าง
     b.innerHTML = g.crew.map(c => `
       <div class="crew">
         ${face('crew-' + c.k, c.glyph)}
@@ -537,7 +539,7 @@ function drawTab() {
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
         ${face('crew-' + c.k, c.glyph)}
-        <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>
+        <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>${hireRank(c.k) ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank(c.k) }))}${nextHireTab === c.k ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">${esc(c.line)}</div></span>
         <button class="sm" data-hire="${c.k}" ${g.coin < c.hire ? 'disabled' : ''}>จ้าง ${c.hire}</button>
@@ -547,7 +549,7 @@ function drawTab() {
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
         ${face(GUARD.img, '🛡️')}
-        <span class="n"><b>${GUARD.name}</b>
+        <span class="n"><b>${GUARD.name}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
           <div class="st">${esc(GUARD.line)}</div></span>
         ${g.guard ? '<button class="sm" disabled>จ้างแล้ว</button>'
@@ -574,17 +576,18 @@ function drawTab() {
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">
            สถานีทัณฑ์ — <b>สร้างแนวไหน สำนวนแนวนั้นถึงจะถูกส่งเข้าคิว</b><br>
            ตอนนี้โซนนี้รับได้: ${g.activeTags().map(t => `<span class="tag" style="background:${SINS[t].color}22;color:${SINS[t].color}">${SINS[t].name}</span>`).join(' ') || 'ยังไม่มีเลย'}</div>`
-      + STATIONS.filter(s => s.cost > 0).map(s => {
+      + [...STATIONS.filter(s => s.cost > 0)].sort((a, b) => g.buildUnlockLv(a.k) - g.buildUnlockLv(b.k) || BUILD_PLAN.findIndex(p => p.k === a.k) - BUILD_PLAN.findIndex(p => p.k === b.k)).map(s => {
         const built = g.stations.some(x => x.def.k === s.k);
         const bt = g.availableBuilder(), builderBusy = !bt;
+        const lockedS = !built && g.buildLocked(s.k), recS = !built && g.recommendedBuild() === s.k;
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
-        return `<div class="shop"><span class="g">${s.glyph}</span>
-          <span class="n"><b>${s.name}</b><div>${esc(s.desc)}</div>
+        return `<div class="shop${lockedS ? ' build-locked' : ''}${recS ? ' build-recommended' : ''}" ${lockedS ? 'style="opacity:.62"' : ''}><span class="g">${s.glyph}</span>
+          <span class="n"><b>${s.name}</b>${recS ? ` <span class="tag" style="background:#d4a35533;color:var(--gold)">★ ${esc(t('unlock.recommend'))}</span>` : ''}${lockedS ? ` <span class="tag">🔒 ${esc(t('unlock.lockedAt', { n: g.buildUnlockLv(s.k) }))}</span>` : ''}<div>${esc(s.desc)}</div>
             ${s.use ? `<div style="color:var(--gold)">${esc(s.use)}</div>` : ''}
             <div>${s.tags.length ? 'ตรงกรรม: ' + s.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}</div>
             ${!built && open.length ? `<div style="color:var(--gold)">สร้างแล้วจะเริ่มมีสำนวน "${open.join(' · ')}" ส่งเข้าคิว</div>` : ''}</span>
-          <button class="sm" data-build="${s.k}" ${built || g.coin < s.cost || builderBusy ? 'disabled' : ''}
-            ${!built && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
+          <button class="sm" data-build="${s.k}" ${built || lockedS || g.coin < s.cost || builderBusy ? 'disabled' : ''}
+            ${!built && !lockedS && builderBusy ? `title="${esc(g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่' : 'ต้องจ้างช่างก่อน')}"` : ''}>${built ? 'สร้างแล้ว' : lockedS ? '🔒 Lv.' + g.buildUnlockLv(s.k) : builderBusy ? 'ช่างไม่ว่าง' : 'สร้าง ' + s.cost}</button>
         </div>`;
       }).join('');
     const bf = $('#buyfood'); if (bf) bf.onclick = () => { g.buy('food', 1); refresh(); };
@@ -922,7 +925,7 @@ function bindHungerWidgets(root, after) {
 /** ป้ายบนหัวแท็บ — บอกว่ามีอะไรให้กดบ้าง ไม่ต้องเปิดดูเอง */
 function drawTabHeads() {
   const hire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).length + (g.guard ? 0 : 1);
-  const build = STATIONS.filter(s => s.cost > 0 && !g.stations.some(x => x.def.k === s.k)).length;
+  const build = STATIONS.filter(s => s.cost > 0 && !g.stations.some(x => x.def.k === s.k) && !g.buildLocked(s.k)).length;   // P1: ที่ล็อกอยู่ไม่นับว่า 'สร้างได้'
   $('#tab-queue').textContent = `คิววิญญาณ${g.queue.length ? ` (${g.queue.length})` : ''}`
     + (g.held.length ? ` · 🔒${g.held.length}` : '');
   $('#tab-crew').textContent  = `ยมทูต${hire ? ` · จ้างได้ ${hire}` : ''}`;
@@ -1330,7 +1333,7 @@ function updateTownHud(now) {
   const action=show ? currentTownAction() : null;
   townActionButton.hidden=!action;
   if (action) {
-    const label=action.kind==='build' ? `${t('town.build')} · ${action.target.name}`
+    const label=action.kind==='build' ? (g.buildLocked(action.target.k) ? `🔒 ${action.target.name} · ${t('unlock.lockedAt',{n:g.buildUnlockLv(action.target.k)})}` : `${g.recommendedBuild()===action.target.k ? '★ ' : ''}${t('town.build')} · ${action.target.name}`)
       : action.kind==='frontier' ? t('town.frontier')
       : [action.target.label,STATIONS.find(s=>s.k===action.target.key)?.name].filter(Boolean).join(' · ');
     townActionButton.innerHTML=`<kbd>E</kbd>${esc(label)}`;
@@ -2047,6 +2050,8 @@ function openHelp() {
       <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
       <li><b>สถานีที่มี = สำนวนที่จะได้รับ</b> — โซนนี้รับได้เฉพาะกรรมที่ท่านมีที่ลง
           มีแต่กระทะทองแดง ก็มีแต่คดีฉ้อโกงกับมัวเมา · สร้างป่าดาบเพิ่ม คดีฆ่า/ทำร้ายกับวจีทุจริตถึงจะเริ่มเข้าคิว
+          · ที่ลงใหม่<b>ปลดล็อกทีละขั้น</b> แนะนำเริ่มจากศาลาน้ำชา → ป่าดาบ (ขั้น 2) → ประตูสวรรค์ (ขั้น 3) ·
+          ที่ยังล็อกจะเห็นเป็นเงาพร้อมบอกว่าปลดล็อกที่ขั้นไหน
           (แท็บ <b>ก่อสร้าง</b> บอกไว้ทุกหลังว่าสร้างแล้วเปิดแนวไหน)</li>
       <li>พญายมให้ดาว 0–5 ดวงทุกคดี · <b>ห้าดาวครบห้าครั้ง = เลื่อนขั้น</b> ·
           ห้าดาวยัง<b>ลดกรรมของท่าน</b>ให้ด้วยครั้งละ ${KARMA_RELIEF.star5}</li>
@@ -2829,29 +2834,41 @@ function openNiraOffice() {
     const final = g.finalTeamSelection(), max = final ? g.teamLimits.finalTeamMax : g.teamLimits.normalTeamMax;
     const party = (final ? g.party?.finalMembers : g.party?.members) || [];
     const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
-      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
-      <div class="market-grid">${candidates.map(def => {
-        const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
-        const why = final ? g.finalTeamWhy(c) : '';
-        return `<article class="shop-card"><img src="${crewArt(c || def, '-profile')}" alt="">
+    // P1: การ์ดเรียงตามลำดับแนะนำจ้าง (unlocks.js HIRE_PLAN) — ป้าย "ลำดับจ้าง N" + "★ แนะนำ" ที่ตัวถัดไป
+    // ลำดับ 0 (ทัณฑ์ที่มีตั้งแต่เริ่ม / ทีมศึกสุดท้าย) ขึ้นก่อน · sort เสถียร จึงไม่สลับกันเอง
+    const nextHire = recommendedHire(g);
+    const hireTag = (id, hired) => {
+      const rank = hireRank(id);
+      return rank && !hired ? `<small class="hire-rank">${esc(t('hire.rank', { n: rank }))}${nextHire === id ? ` · <b>★ ${esc(t('hire.recommend'))}</b>` : ''}</small>` : '';
+    };
+    const cardList = candidates.map(def => {
+      const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
+      const why = final ? g.finalTeamWhy(c) : '';
+      const rank = final ? 0 : hireRank(def.k);
+      return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><img src="${crewArt(c || def, '-profile')}" alt="">
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
+          ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? niraItemWidget(c) + guardRestWidget(c) : ''}</span>
           ${c ? `<button data-party="${key}" class="sm" title="${esc(why)}" ${!on && (party.length >= max || why) ? 'disabled' : ''}>${on ? '✓ อยู่ในทีมสู้' : 'เข้าทีมสู้'}</button>`
               : `<button data-hire="${def.k}" class="sm gold" ${g.coin < def.hire ? 'disabled' : ''}>จ้าง</button>`}
-        </article>`;
-      }).join('')}
-      <!-- ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาว
-           ด้านล่างเดิม (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน) -->
-      <article class="shop-card">
+        </article>` };
+    });
+    // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาวด้านล่างเดิม
+    // (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน)
+    cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
         <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
+        ${hireTag('guard', !!g.guard)}
         <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
-      </article></div>
+      </article>` });
+    const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
+      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
+      <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
       ${teamReportsHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
@@ -4583,7 +4600,9 @@ function drawHeroProfile() {
     <p>${esc(t('profile.story'))}${esc(g.zoneDef().name)}</p><p>${esc(t('profile.duty'))}</p>`;
   const row = (img, value, label, extra = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span></div>`;
   const hpBar = `<span class="hero-profile-hp"><i style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>`;
-  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar)
+  // P1: ยังไม่มีศาลาน้ำชา = ยังไม่มีที่นอน — บอกทางไปที่นอนตรงบรรทัดบารมี (หายเองเมื่อสร้างเสร็จ หรือเมื่อบารมีเต็ม)
+  const sleepHint = !g.teaBedReady() && g.hp < g.hpMax ? `<small class="profile-hint">${esc(t('sleep.needTea'))}</small>` : '';
+  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint)
     + row('<span class="profile-emoji">🔹</span>', `${Math.round(g.mp)}/${g.mpMax}`, t('battle.mp'), `<span class="hero-profile-hp profile-mp"><i style="width:${Math.max(0, Math.min(100, 100 * g.mp / g.mpMax))}%"></i></span>`)
     + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
     + row('img/item-food.png', Math.round(g.food), t('profile.food'))
@@ -4626,7 +4645,6 @@ $('#hud-avatar').onclick = openHeroProfile;
 $('#hero-profile-close').onclick = closeHeroProfile;
 $('#hero-profile-pause').onclick = () => { closeHeroProfile(); openPause(); };
 $('#hero-profile-bag').onclick = () => { closeHeroProfile(); openBag(); };
-$('#hero-profile-management').onclick = () => { closeHeroProfile(); openLegacyDrawer(); };
 heroProfile.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.preventDefault(); closeHeroProfile(); }
   if (event.key !== 'Tab') return;
@@ -4737,7 +4755,7 @@ function onSceneClick(sx, sy) {
   // เป็นทางเลือกที่สอง: ยืนใกล้พอ (nearBuild) แล้วคลิกโดนป้ายจริงที่วาดบนจอ ก็ให้เปิดกล่องสร้างได้เหมือนกัน
   if (def && !st && nearBuild(g, g.player.x, g.player.y)?.k === def.k) return openBuild(def);
   const buildSpot = nearBuild(g, g.player.x, g.player.y);
-  if (buildSpot && (!def || def.k !== buildSpot.k) && hitBuildPrompt(ctx, buildSpot, sx, sy)) return openBuild(buildSpot);
+  if (buildSpot && (!def || def.k !== buildSpot.k) && hitBuildPrompt(ctx, buildSpot, sx, sy, g)) return openBuild(buildSpot);
 
   // คลิกโดนตัวไหนสักตัว = เอาขึ้นแผงข้อมูล (มาก่อนสถานี เพราะตัวละครยืนทับกรอบสถานีได้)
   const a = hitActor(g, sx, sy);
@@ -4900,7 +4918,7 @@ function openStation(k, emergency = false) {
         const needSawan = x.repentant && !g.stations.some(s => s.def.k === 'sawan' && !s.build);
         const status = x.inspected ? t(x.repentant ? 'room.repentant' : 'room.notRepentant')
           : ready ? '' : t('room.wait').replace('{n}', (x.readyAt ?? x.until) - g.tick);
-        const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}` : ''}`;
+        const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}${g.buildLocked('sawan') ? ` (${esc(t('unlock.lockedAt', { n: g.buildUnlockLv('sawan') }))})` : ''}` : ''}`;
         return row(label, x.inspected
           ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${!R?.prisonEscorting(x.soul.id) && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
           : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
@@ -4978,14 +4996,13 @@ function openStation(k, emergency = false) {
           g.powerLocked(mp) ? t('room.krajok.needMirror') : ''],
       ] : [[`room.${k}.action`, `room.${k}.hint`, () => openMinigame(k), !mgReady, mgWhy]];
       if (k === 'tea') {
-        const owned = !!g.teaBeds[g.zone], asleep = R?.sleeping();
+        // P1 (22 ต.ค. 2569): ไม่มีปุ่มซื้อที่นอนแล้ว — สร้างศาลาน้ำชาเสร็จก็นอนได้เลย (ปุ่มนี้อยู่ในห้องศาลา จึงมีเฉพาะหลังสร้างเสร็จ)
+        const asleep = R?.sleeping();
         specs[0][3] ||= !!asleep;
-        specs.push([asleep ? 'กำลังนอนพัก…' : owned ? 'นอนพัก' : `ซื้อที่นอน · ${TEA_BED_COST} เบี้ยกรรม`,
-          null, () => { if (owned) R.setSleep(); else g.buyTeaBed(); panels(); },
-          !!asleep || !!R?.sitting() || (owned ? !R?.nearBed() || g.hp >= g.hpMax
-            : g.coin < TEA_BED_COST || !g.stations.some(st => st.def.k === 'tea' && !st.build)),
-          asleep ? 'HP ค่อย ๆ ฟื้นระหว่างนอน' : owned ? (R?.nearBed() ? 'HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที' : 'เดินไปที่นอนก่อน')
-            : 'อัปเกรดประจำโซน · HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที']);
+        specs.push([asleep ? 'กำลังนอนพัก…' : 'นอนพัก',
+          null, () => { R.setSleep(); panels(); },
+          !!asleep || !!R?.sitting() || !R?.nearBed() || g.hp >= g.hpMax,
+          asleep ? 'HP ค่อย ๆ ฟื้นระหว่างนอน' : g.hp >= g.hpMax ? 'บารมีเต็มแล้ว' : R?.nearBed() ? 'HP ค่อย ๆ ฟื้นระหว่างนอน 5 วินาที' : 'เดินไปที่นอนก่อน']);
       }
       const resourceLine = i => k !== 'tea' ? '' : i === 1
         ? `<span class="st-hpbar"><i id="st-hp-fill" style="width:${100*g.hp/g.hpMax}%"></i></span><span class="st-hp">HP <span id="st-hp-value">${Math.round(g.hp)}/${g.hpMax}</span></span>`
@@ -5328,7 +5345,7 @@ function openStation(k, emergency = false) {
     if (k !== 'krata' && room.training && R.inTrainingReach() && TRAINING_GAMES[k]) { openTraining(k); return; }
     // ศาลาน้ำชา: เว้นวรรค/ปุ่มขวาที่จุดนั่งสลับนั่ง-ลุกได้เลย ไม่ต้องไล่กดปุ่มในแผงขวา (ข้อ A 24 ก.ย. 2569)
     if (R.sleeping()) return;
-    if (R.canSit && R.nearBed() && g.teaBeds[g.zone]) { R.setSleep(); panels(); return; }
+    if (R.canSit && R.nearBed()) { R.setSleep(); panels(); return; }
     if (R.canSit) { R.setSit(!R.sitting()); panels(); return; }
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
@@ -5420,7 +5437,8 @@ function openBuild(def) {
   const worker = g.availableBuilder();
   const zoneBlock = g.zone === 'west' && g.zoneEventStatus('westHypnotized') !== 'cleared' ? t('build.westBlocked')
                   : !g.zoneCaptivesFree() ? t('build.captivesBlocked') : '';
-  const afford = g.coin >= def.cost && !!worker && !zoneBlock;
+  const locked = g.buildLocked(def.k), recommended = g.recommendedBuild() === def.k;
+  const afford = g.coin >= def.cost && !!worker && !zoneBlock && !locked;
   const builderNames = ['taan', 'dam'].map(k => crewName(CREW.find(c => c.k === k), g.zone)).join(' / ');
   const builderHint = worker ? `${worker.name}จะเดินมาสร้างให้`
     : g.builders().length ? 'ช่างทุกคนติดงานอื่นอยู่ — รอคนใดคนหนึ่งว่างก่อน'
@@ -5430,8 +5448,10 @@ function openBuild(def) {
     <div class="hint">${def.tags.length ? 'ตรงกรรม: ' + def.tags.map(t => SINS[t].name).join(' · ') : 'ไม่ใช้ลงทัณฑ์'}
       · แรง ${def.pow} · ${esc(builderHint)}</div>
     ${zoneBlock ? `<div class="hint" style="color:var(--gold)">${esc(zoneBlock)}</div>` : ''}
+    ${locked ? `<div class="hint build-lock" style="color:var(--gold)">🔒 ${esc(t('unlock.lockedAt', { n: g.buildUnlockLv(def.k) }))} — ${esc(t('unlock.why.' + def.k))}</div>`
+      : recommended ? `<div class="hint build-recommend" style="color:var(--gold)">★ ${esc(t('unlock.recommend'))} — ${esc(t('unlock.why.' + def.k))}</div>` : ''}
     <div class="row"><button data-close>ยังไม่สร้าง</button>
-      <button class="gold" id="bd" ${afford ? '' : 'disabled'}>สร้าง ${def.cost} เบี้ยกรรม</button></div>`,
+      <button class="gold" id="bd" ${afford ? '' : 'disabled'}>${locked ? esc(t('unlock.lockedAt', { n: g.buildUnlockLv(def.k) })) : `สร้าง ${def.cost} เบี้ยกรรม`}</button></div>`,
     d => { const b = d.querySelector('#bd'); if (b) b.onclick = () => { g.build(def.k); dlg.close(); refresh(); }; });
 }
 
@@ -5445,8 +5465,16 @@ function openLevelUp(lv) {
   const prev = LEVELS[g.level - 2];
   const zonesNew = g.pendingZoneOpen || [];
   g.pendingZoneOpen = null;                 // บอกในกล่องนี้แล้ว ไม่ต้องเด้งซ้ำอีกกล่อง
+  // P1: สถานที่ลงทัณฑ์ที่เพิ่งปลดล็อก — แจ้งในกล่องเลื่อนขั้นนี้ครั้งเดียว + ชี้ว่าแนะนำสร้างอะไรถัดไป
+  const unlockRows = unlockedAtLevel(g.level).map(k => {
+    const d = STATIONS.find(x => x.k === k);
+    return { g: '🔓', t: t('unlock.levelRow', { name: d.name }), d: t('unlock.levelRowDesc', { why: t('unlock.why.' + k) }) };
+  });
+  const nextBuild = STATIONS.find(x => x.k === g.recommendedBuild());
+  if (nextBuild) unlockRows.push({ g: '★', t: t('unlock.next', { name: nextBuild.name }), d: t('unlock.why.' + nextBuild.k) });
   const rows = [
     ...(lv.gains || []),
+    ...unlockRows,
     ...zonesNew.map(z => ({ g: '🗺️', t: `เปิด${z.name}ให้ท่านคุม`,
                             d: `${z.sub ? `${z.sub} · ` : ''}กดปุ่ม 🗺️ ย้ายโซน ใต้ฉากเมื่อไหร่ก็ได้ ` +
                                'สาขาที่ทิ้งไว้ถูกเก็บไว้ให้ ย้ายกลับมาเมื่อไหร่ก็ยังอยู่' })),

@@ -2,20 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { STATIONS } from '../src/data.js';
-import { TEA_BED_COST, TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
+import { TEA_SLEEP_MS, TEA_BLACKOUT_MS, TEA_WAKE_MS, TEA_REST_TOTAL_MS, roomImageBox, teaRoom, yamaDownImage } from '../src/tea-recovery.js';
 import { makeRoom } from '../src/room.js';
 globalThis.Image ??= class {};
 const game = () => { const g=createGame(); g.save=()=>true; g.onChange=()=>{}; return g; };
-test('bed purchases are per zone, charged once and require a completed tea pavilion', () => {
+test('P1: there is no bed to buy — sleeping needs only a finished tea pavilion; old teaBeds data is kept but never read', () => {
  const g=game(); g.coin=1000;
- assert.equal(g.buyTeaBed(),false);
+ assert.equal(g.buyTeaBed,undefined,'the purchase API is gone');
+ assert.equal(g.teaBedReady(),false);
  g.stations.push({def:STATIONS.find(d=>d.k==='tea'),build:1,slots:[]});
- assert.equal(g.buyTeaBed(),false); g.stations.at(-1).build=0;
- for(const z of ['th','asia','west','cyberhell']) {g.zone=z; const before=g.coin;
-  assert.equal(g.buyTeaBed(),true); assert.equal(g.coin,before-TEA_BED_COST);
-  assert.equal(g.buyTeaBed(),false); assert.equal(g.coin,before-TEA_BED_COST);
- }
- const copy=game(); copy.restore(g.snapshot()); assert.deepEqual(copy.teaBeds,g.teaBeds);
+ assert.equal(g.teaBedReady(),false,'still under construction'); g.stations.at(-1).build=0;
+ assert.equal(g.teaBedReady(),true); assert.equal(g.coin,1000,'nothing is charged');
+ // a save from before P1 that bought beds restores unchanged (no refund, no loss)
+ const old=game(); old.restore({...g.snapshot(),teaBeds:{th:true,asia:true}});
+ assert.deepEqual(old.teaBeds,{th:true,asia:true});
+ const fresh=game(); fresh.restore(g.snapshot()); assert.deepEqual(fresh.teaBeds,{});
 });
 test('losses queue recovery without ending the game; recovery survives saving and restores full HP', () => {
  for(const kind of ['frontierBreach','devaTest','prisonBreak','zoneEvent','zoneBoss','mob','frontier','soul','yama','dad']) {
@@ -72,6 +73,6 @@ test('tea restores only MP; sleep gradually restores HP without blackout and wak
    assert.equal(resumed.hp,resumed.hpMax);assert.equal(resumed.pendingRecovery,null);assert.equal(room.sleeping(),false);
   }
   g.pendingRecovery=null;
-  g.hp=1;g.teaBeds.th=true;assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);const mp=g.mp;R.tick(TEA_REST_TOTAL_MS);assert.equal(g.hp,g.hpMax);assert.equal(g.mp,mp);
+  g.hp=1;assert.deepEqual(g.teaBeds,{},'P1: no bed was bought');assert.equal(R.setSleep(),true);assert.deepEqual(R.pos().slice(0,2),teaRoom().bed);const mp=g.mp;R.tick(TEA_REST_TOTAL_MS);assert.equal(g.hp,g.hpMax);assert.equal(g.mp,mp);
  } finally {globalThis.window=prevWindow;globalThis.document=prevDocument;}
 });

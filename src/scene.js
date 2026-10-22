@@ -254,7 +254,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced);   // N4: lava / rivers / falls flow over the painted ground
-  drawTownGround(ctx, g);
+  drawTownGround(ctx, g, t);
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
     const dais=newDais||img('prop-throne-platform-v1');
@@ -716,7 +716,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if (!rescue && frozen) { const [x,y] = badgePos(st.def); tag(ctx,x,y-BADGE_R-18,0,['!!!','#ff9a7a']); }
   }
 
-  if (spot) buildPrompt(ctx, spot, t, g.coin >= spot.cost);
+  if (spot) buildPrompt(ctx, spot, t, g);
 
   if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
@@ -842,10 +842,18 @@ export function nearBuild(g, x, y) {
  *  (ชุดที่ 10 คุณเป้ 25 ก.ย. 2569 ข้อ E3 — เดิมกรอบคลิกจริงคือ def.hit ที่ระดับพื้น แต่ป้ายลอยอยู่
  *  เหนือหัวตัวละคร cy = def.y-122 ซึ่งบางหลัง (โดยเฉพาะหลังเตี้ย/แคบ) ป้ายลอยพ้นกรอบ def.hit ไปเลย
  *  ผู้เล่นเห็นป้าย "กดตรงนี้" แล้วกดตรงป้ายจริง ๆ แต่กรอบคลิกจริงอยู่คนละที่ กดเท่าไหร่ก็ไม่ติด) */
-function buildPromptRect(ctx, def, afford) {
+/** P1: ข้อความป้ายสร้าง — ล็อกอยู่ (level ยังไม่ถึง) / แนะนำถัดไป / ปกติ · ใช้ร่วมกันทั้งวาดและเช็คคลิก */
+function promptInfo(g, def, afford) {
+  const locked = !!g?.buildLocked?.(def.k), rec = !locked && g?.recommendedBuild?.() === def.k;
+  const l1 = `${rec ? '★ ' : ''}${def.glyph} ${def.name}`;
+  const l2 = locked ? `🔒 ${tr('unlock.lockedAt', { n: g.buildUnlockLv(def.k) })}`
+    : afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
+  return { l1, l2, locked, rec, afford };
+}
+
+function buildPromptRect(ctx, def, info) {
   const cx = def.x, cy = Math.max(46, (topOf(def) ?? def.by - def.bw) - 40 * UI_SCALE_MAP);
-  const l1 = `${def.glyph} ${def.name}`;
-  const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
+  const { l1, l2 } = info;
   ctx.font = `700 ${15 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   const w1 = ctx.measureText(l1).width;
   ctx.font = `600 ${11 * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
@@ -856,32 +864,31 @@ function buildPromptRect(ctx, def, afford) {
 }
 
 /** ป้าย "กดเพื่อสร้าง" ที่โผล่เฉพาะตอนยมบาทยืนอยู่ในเขตนั้น */
-function buildPrompt(ctx, def, t, afford) {
+function buildPrompt(ctx, def, t, g) {
   const [x1, y1, x2, y2] = def.hit;
   const q = 0.5 + 0.5 * Math.sin(t / 420);
+  const info = promptInfo(g, def, g.coin >= def.cost);
+  const { locked, rec, afford } = info;
 
-  // เส้นประวิ่งรอบเขต บอกว่าอาคารจะลงตรงไหน
+  // เส้นประวิ่งรอบเขต บอกว่าอาคารจะลงตรงไหน — ล็อกอยู่ = หรี่ลง ไม่วิ่ง · แนะนำ = สว่างกว่าปกติ
   ctx.save();
-  ctx.strokeStyle = `rgba(255,205,120,${0.28 + q * 0.30})`;
-  ctx.lineWidth = 2.5; ctx.setLineDash([11, 9]); ctx.lineDashOffset = -t / 55;
+  ctx.strokeStyle = locked ? 'rgba(150,130,120,.32)' : `rgba(255,205,120,${(rec ? 0.45 : 0.28) + q * (rec ? 0.45 : 0.30)})`;
+  ctx.lineWidth = rec ? 3.5 : 2.5; ctx.setLineDash([11, 9]); ctx.lineDashOffset = locked ? 0 : -t / 55;
   rr(ctx, x1 + 6, y1 + 6, x2 - x1 - 12, y2 - y1 - 12, 10); ctx.stroke();
   ctx.restore();
 
-  const { bx, by, w, h } = buildPromptRect(ctx, def, afford);
-  const l1 = `${def.glyph} ${def.name}`;
-  const l2 = afford ? `⚒ กดตรงนี้เพื่อสร้าง — ${def.cost} เบี้ยกรรม` : `🔒 ต้องมี ${def.cost} เบี้ยกรรม`;
-
-  ctx.fillStyle = 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
-  ctx.strokeStyle = afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
+  const { bx, by, w, h } = buildPromptRect(ctx, def, info);
+  ctx.fillStyle = locked ? 'rgba(18,8,13,.8)' : 'rgba(18,8,13,.93)'; rr(ctx, bx, by, w, h, 10); ctx.fill();
+  ctx.strokeStyle = locked ? 'rgba(120,100,92,.6)' : afford ? `rgba(212,163,85,${0.60 + q * 0.40})` : 'rgba(150,116,96,.65)';
   ctx.lineWidth = 2; ctx.stroke();
-  label(ctx, l1, bx + w / 2, by + 14 * UI_SCALE_MAP, 15, '#ffe7c4');
-  label(ctx, l2, bx + w / 2, by + 31 * UI_SCALE_MAP, 11, afford ? '#d4a355' : '#b09a92');
+  label(ctx, info.l1, bx + w / 2, by + 14 * UI_SCALE_MAP, 15, locked ? '#b09a92' : '#ffe7c4');
+  label(ctx, info.l2, bx + w / 2, by + 31 * UI_SCALE_MAP, 11, locked ? '#b09a92' : afford ? '#d4a355' : '#b09a92');
 }
 
 /** คลิกโดนป้าย "กดเพื่อสร้าง" ของ def ไหม — ใช้กรอบเดียวกับที่วาดจริงเป๊ะ (buildPromptRect ข้างบน)
- *  afford ไม่ผลต่อขนาดกรอบจริง (ข้อความสองแบบยาวใกล้กัน) ใส่ true ไปตรง ๆ ได้เสมอ */
-export function hitBuildPrompt(ctx, def, sx, sy) {
-  const { bx, by, w, h } = buildPromptRect(ctx, def, true);
+ *  afford ไม่ผลต่อขนาดกรอบจริง (ข้อความสองแบบยาวใกล้กัน) ใส่ true ไปตรง ๆ ได้เสมอ · g ทำให้ล็อก/แนะนำนับด้วย */
+export function hitBuildPrompt(ctx, def, sx, sy, g) {
+  const { bx, by, w, h } = buildPromptRect(ctx, def, promptInfo(g, def, g?.coin >= def.cost));
   return sx >= bx && sx <= bx + w && sy >= by && sy <= by + h;
 }
 

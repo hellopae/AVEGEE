@@ -1,5 +1,4 @@
 // Shared rules for all four tea pavilions and all four wearable outfits.
-export const TEA_BED_COST = 180;
 export const TEA_SLEEP_MS = 5000;
 export const TEA_BLACKOUT_MS = 0;
 export const TEA_WAKE_MS = 600;

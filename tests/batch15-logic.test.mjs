@@ -113,7 +113,7 @@ test('ผู้สร้างอยู่ข้างไซต์จนงา�
   globalThis.Image = class {};
   try {
     const g = createGame();
-    g.coin = 1000;
+    g.coin = 1000; g.level = 5;   // P1: ลานตรากตรำปลดล็อกที่ขั้น 4
     assert.equal(g.build('lan'), true);
     const st = g.stations.find(x => x.def.k === 'lan');
     const builder = g.crew.find(x => x.k === 'taan');
