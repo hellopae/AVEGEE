@@ -36,7 +36,17 @@ test('sheet: numbers come from the same functions as the office card; hire / tea
   assert.doesNotMatch(html,/data-power-hire/);assert.match(html,/data-power-party="kan"/);
   assert.match(html,/job-reveal\.webp/);
   html=powerSheetHtml(g,'guard');
-  assert.ok(html.includes(`${GUARD.battleCd}`));assert.match(html,/data-power-hire="guard"/);assert.doesNotMatch(html,/job-/);
+  assert.ok(html.includes(`คูลดาวน์ ${GUARD.helpCdMs/1000} วินาที`),'guard cooldown = what battleAct really sets (20 s), not the old 120');
+  assert.ok(html.includes(`กำลังใจ −${GUARD.helpMorale}`));assert.equal(GUARD.helpCdMs,20000);assert.equal(GUARD.helpMorale,8);
+  assert.match(html,/data-power-hire="guard"/);assert.doesNotMatch(html,/job-/);
   html=powerSheetHtml(g,'nira');assert.doesNotMatch(html,/data-power-hire|data-power-party/,'nira is staff, not hirable or teamable');
+  assert.ok(html.includes(`ฟื้นบารมี ${CREW_POWER.nira.heal}`),'nira effect = the heal she really casts');
+  assert.ok(html.includes('อ่านสำนวนให้ท่านฟัง'),'duty row uses CREW.duty, not the ordinary keeper text');
+  assert.doesNotMatch(html,/คุมงานตามปกติ|job-scroll/);assert.match(html,/ศึกคู่ที่ชายแดน/);
   g.coin=0;assert.match(powerSheetHtml(g,'boon'),/data-power-hire="boon"[^>]*disabled/);
+});
+
+test('game.js uses the same guard constants the sheet shows (no balance change)',()=>{
+  const gs=readFileSync(new URL('../src/game.js',import.meta.url),'utf8');
+  assert.match(gs,/helpRemainingMs = GUARD\.helpCdMs/);assert.match(gs,/this\.guard\.morale - GUARD\.helpMorale/);assert.match(gs,/this\.guard\.morale < GUARD\.helpMorale/);
 });

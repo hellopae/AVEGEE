@@ -3023,7 +3023,7 @@ function openNiraOffice() {
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
         ${hireTag('guard', !!g.guard)}
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}

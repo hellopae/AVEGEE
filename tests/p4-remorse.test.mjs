@@ -32,6 +32,15 @@ export function simulate(tham=null){
     }}
   return rows;
 }
+/** innocents / devas (deserved 0) wrongly sentenced at a punishing station: judge() gives tham 0 */
+export function simulatePure(){
+  const rows=[];
+  for(const c of ALL_CASES){const s=caseSoul(c);if(!s.pure)continue;
+    for(const keeperK of KEEPERS)for(let intensity=1;intensity<=5;intensity++){
+      const r=calcRemorse({soul:s,keeperK,intensity,verdict:{tham:0}});
+      rows.push({case:c.k,traitKey:r.detail.traitKey,keeperK,intensity,over:r.detail.over,total:r.total,pass:r.total>=REMORSE_PASS});}}
+  return rows;
+}
 const rate=rows=>rows.length?rows.filter(r=>r.pass).length/rows.length:NaN;
 
 test('REMORSE constants live in data.js: weights sum to 100, pass = 60',()=>{
@@ -144,4 +153,19 @@ test('CREW_POWER job icons ship for every keeper (nira + taan/plerng/kan/boon/da
     readFileSync(new URL('../'+CREW_POWER[k].jobIcon,import.meta.url));
   }
   assert.equal(CREW_POWER.guard.jobIcon,undefined);
+});
+
+test('innocents wrongly sentenced (Reese N1): sentence tier 1 CAN pass for neutral/matching keepers; tier 2+ never does — table printed',()=>{
+  const rows=simulatePure();
+  assert.ok(rows.length>0,'there are innocent/deva cases');
+  const pct=x=>(100*x).toFixed(1)+'%';
+  const lines=[`innocent cases=${new Set(rows.map(r=>r.case)).size} combos=${rows.length} (tham 0)`,'tier (=over)  n   pass',
+    ...[1,2,3,4,5].map(i=>{const a=rows.filter(r=>r.intensity===i);return `  ${i}          ${String(a.length).padStart(3)}  ${pct(rate(a))}`;}),
+    'by keeper at tier 1: '+KEEPERS.map(k=>`${k} ${pct(rate(rows.filter(r=>r.intensity===1&&r.keeperK===k)))}`).join(' · '),
+    'by trait at tier 1: '+[...new Set(rows.map(r=>r.traitKey))].map(t=>`${t} ${pct(rate(rows.filter(r=>r.intensity===1&&r.traitKey===t)))}`).join(' · ')];
+  console.log('\n'+lines.join('\n'));
+  assert.ok(rate(rows.filter(r=>r.intensity===1))>0,'tier 1 passes for some combinations (documented, owner accepted)');
+  assert.ok(rows.filter(r=>r.intensity===1&&r.keeperK==='boon'&&r.traitKey==='accepting').every(r=>r.pass),'accepting soul + Boon at tier 1 = 72 -> passes');
+  assert.ok(rows.filter(r=>r.intensity>=2).every(r=>!r.pass),'tier 2 and above never pass');
+  assert.ok(rows.filter(r=>r.intensity===1&&['plerng','kan'].includes(r.keeperK)&&r.traitKey==='accepting').every(r=>!r.pass),'a mismatching-colour keeper at tier 1 does not');
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createGame} from '../src/game.js';
 import {diagnosisModel,diagnosisSubjects,subjectKey,nextTodo} from '../src/diagnosis.js';
-import {closingLine} from '../src/diagnosis-ui.js';
+import {closingLine,diagnosisHtml} from '../src/diagnosis-ui.js';
 import {gateKarma} from '../src/h4-location-ui.js';
 import {TALK_LINES} from '../src/talk-lines.js';
 // the helper only reads the base TH/EN tables; P4 keys live in Object.assign(TH|EN, {...}) blocks at the end of i18n.js
@@ -109,4 +109,42 @@ test('i18n: every diag.* key used by the sheet exists in TH and EN',()=>{
   for(const f of ['accepting','concealing','resisting'])used.add('diag.part.trait.'+f);
   for(const key of used){if(/\.$/.test(key))continue;assert.ok(key in TH_DICT,'TH missing '+key);assert.ok(key in EN_DICT,'EN missing '+key);}
   assert.ok(used.size>40);
+});
+
+test('Reese F2: an innocent sent straight to the Heaven Gate shows no sentence lines (no "too harsh", no "served 100%", no sentence row)',()=>{
+  const g=game();
+  const e=entry(soul(20,{pure:true,deserved:0,deeds:[]}),{stage:'gate',checked:false,stationK:'sawan',intensity:1,verdict:{...verdict,heaven:true,right:true,tham:100,ked:100},remorse:undefined});
+  g.sentences=[e];
+  const m=diagnosisModel(g,diagnosisSubjects(g,'sawan')[0]);
+  assert.equal(m.order.direct,true);assert.equal(m.order.diff,null);assert.equal(m.karma.direct,true);assert.equal(m.karma.intensity,0);
+  const html=diagnosisHtml(m,{pos:1,total:1,portraitSrc:'x.png'});
+  assert.ok(html.includes('ส่งตรงประตูสวรรค์ · ไม่มีทัณฑ์'));
+  assert.doesNotMatch(html,/หนักเกินไป|รับทัณฑ์ครบแล้ว|ทัณฑ์ที่รับ|ระดับวาระ/);
+  const normal=diagnosisHtml(diagnosisModel(game(),{kind:'prison',soul:soul(21),entry:entry(soul(21))}),{pos:1,total:1,portraitSrc:'x.png'});
+  assert.match(normal,/รับทัณฑ์ครบแล้ว/);assert.match(normal,/ทัณฑ์ที่รับ/);
+});
+
+test('Reese F4/W2/W3: prison destinations are conditional; wording says "สำนึก"; gate banner uses the zone\'s Boon name',()=>{
+  const g=game();
+  const html=e=>{g.sentences=[e];return diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'tarang')[0]),{pos:1,total:1,portraitSrc:'x.png'});};
+  const before=html(entry(soul(30)));
+  assert.match(before,/ถ้าถึงประตูสวรรค์: /);assert.doesNotMatch(before,/→ ขึ้นสวรรค์|→ ไปเกิดใหม่|หมดกรรม → |ยังเหลือกรรม → /);
+  const back=html(entry(soul(31),{inspected:true,repentant:false,remorse:{total:41,parts:{keeper:10,intensity:20,trait:11},detail:{}}}));
+  assert.doesNotMatch(back,/ถ้าถึงประตูสวรรค์|ขึ้นสวรรค์|ไปเกิดใหม่/,'sent back to the queue → no destination line');
+  assert.match(back,/ยังไม่สำนึก · ส่งกลับคิวตัดสินใหม่/);assert.doesNotMatch(back,/ยังไม่เข็ด/);
+  const ok=html(entry(soul(32),{inspected:true,repentant:true}));
+  assert.match(ok,/สำนึกแล้ว · พร้อมไปประตูสวรรค์/);assert.match(ok,/ถึงเกณฑ์ 60 = สำนึกแล้ว/);
+  g.zone='asia';
+  g.sentences=[entry(soul(33),{stage:'gate',checked:false,zone:'asia'})];
+  const gate=diagnosisHtml(diagnosisModel(g,diagnosisSubjects(g,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.png'});
+  assert.match(gate,/รอเมกุมิตรวจกรรมคงเหลือ/);
+  const zoneG=game();zoneG.sentences=[entry(soul(34),{stage:'gate',checked:false})];
+  assert.match(diagnosisHtml(diagnosisModel(zoneG,diagnosisSubjects(zoneG,'sawan')[0]),{pos:1,total:1,portraitSrc:'x.png'}),/รอบุญตรวจกรรมคงเหลือ/);
+});
+
+test('Reese F1: neutral keeper wording no longer says "half"',()=>{
+  const th=readFileSync(new URL('../src/i18n.js',import.meta.url),'utf8');
+  const lines=th.split('\n').filter(l=>l.includes("'diag.part.keeper.neutral'"));
+  assert.equal(lines.length,2);assert.ok(lines.every(l=>!/ครึ่งทาง|half marks/.test(l)));
+  assert.ok(lines.some(l=>l.includes('ได้คะแนนกลาง ๆ'))&&lines.some(l=>l.includes('neutral score')));
 });

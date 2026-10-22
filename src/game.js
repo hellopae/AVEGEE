@@ -3244,7 +3244,7 @@ const API = {
   },
   guardHelpWhy() {
     if (!this.guardActive() || (this.battle?.absentActors || []).includes(this.guard.id)) return 'พักฟื้น / Recovering';
-    if (this.guard.morale < 8) return 'กำลังใจไม่พอ / Low morale';
+    if (this.guard.morale < GUARD.helpMorale) return 'กำลังใจไม่พอ / Low morale';
     const remaining = this.guardCooldown();
     if (remaining) return `รออีก ${remaining} วินาที`;
     return '';
@@ -3443,8 +3443,8 @@ const API = {
     } else if (what === 'guard') {
       // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
       if (this.guardHelpWhy()) return false;
-      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 20000;
-      this.guard.morale = Math.max(0, this.guard.morale - 8);
+      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = GUARD.helpCdMs;
+      this.guard.morale = Math.max(0, this.guard.morale - GUARD.helpMorale);
       if (!this.guard.morale) this.downActor(this.guard);
       B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
       dmg = this.allyStats(this.guard).dmg;

@@ -4,7 +4,7 @@
 //   · ดวงที่ยังขังรอวาระ (g.held) เปิดใบได้ แต่เห็นเฉพาะข้อมูลสาธารณะ และตัวชี้วัดทั้งหมดล็อก "ยังไม่ตัดสิน"
 //   · ดวงที่รับทัณฑ์ครบแล้ว เผยความจริงทั้งหมด (ปิดคดีแล้ว เหมือนแฟ้มปิดคดี)
 //   · ความสำนึกล็อก "ยังไม่ตรวจ" จนกว่านิราจะตรวจ — หลังตรวจจึงเห็นตัวเลข + breakdown 3 ส่วน (ผู้คุม / ความแรงทัณฑ์ / นิสัย)
-import { SINS, STATIONS, INTENSITY_NAME, CREW, REMORSE } from './data.js';
+import { SINS, STATIONS, INTENSITY_NAME, CREW, REMORSE, crewName } from './data.js';
 import { gateKarma } from './h4-location-ui.js';
 import { remorseOf } from './remorse.js';
 
@@ -59,7 +59,10 @@ export function diagnosisModel(g, subject) {
     deserved: soul.deserved ?? null, diff: Number.isFinite(soul.deserved) ? entry.intensity - soul.deserved : null,
     need: entry.need ?? null, stars: v?.stars ?? null, score: v?.score ?? null,
     boss: v?.boss ?? null, legacy: !stK,
+    // ส่งตรงประตูสวรรค์ (ผู้บริสุทธิ์ที่ตัดสินถูก) = ไม่มีทัณฑ์จริง — entry.intensity ถูก clamp ≥ 1 จึงห้ามเอาไปเทียบ "หนักเกิน"
+    direct: stK === 'sawan' || v?.heaven === true,
   };
+  if (order?.direct) { order.diff = null; }
 
   // ---- ตัวชี้วัด ----
   const ked = { locked: held, value: held ? null : Number.isFinite(v?.ked) ? v.ked : null, fear: !!soul.fear };
@@ -80,7 +83,9 @@ export function diagnosisModel(g, subject) {
     const relief = -deedsAll.filter(d => d.w < 0).reduce((n, d) => n + d.w, 0);
     const merit = meritsAll.filter(m => !m.fake).reduce((n, m) => n + (m.v || 0), 0);
     const left = gateKarma(entry);
-    karma = { locked: false, expected: !(mode === 'gate' && entry.checked), sin: sinPos, relief, merit, intensity: entry.intensity || 0,
+    const direct = !!order?.direct;
+    karma = { locked: false, mode, direct, hideDest: mode === 'prison' && entry.inspected === true && entry.repentant === false,
+      expected: !(mode === 'gate' && entry.checked), sin: sinPos, relief, merit, intensity: direct ? 0 : entry.intensity || 0,
       lotus: entry.lotusRelief || 0, left, pure: !!soul.pure,
       paid: Math.max(0, sinPos - left) };
   }
@@ -107,7 +112,7 @@ export function diagnosisModel(g, subject) {
       action = { kind: 'moveFromPrison', label: 'room.toQueue' };
     }
   } else if (!entry.checked) {
-    banner = { id: 'gateWait', tone: 'neutral', n: karma.left };
+    banner = { id: 'gateWait', tone: 'neutral', n: karma.left, name: crewName(CREW.find(c => c.k === 'boon'), g.zone) };   // บุญ เปลี่ยนชื่อตามโซน
     action = { kind: 'inspectGate', label: 'room.gateCheck' };
   } else if (entry.karmaLeft > 0) {
     banner = { id: 'gateReborn', tone: 'info', n: entry.karmaLeft };

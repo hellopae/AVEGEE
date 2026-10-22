@@ -37,14 +37,14 @@ function orderHtml(m) {
   const o = m.order;
   if (!o) return '';
   const diff = o.diff;
-  const verdict = diff === null ? '' : diff === 0 ? `<b class="ok">✓ ${esc(t('diag.order.exact'))}</b>`
+  const verdict = diff === null || o.direct ? '' : diff === 0 ? `<b class="ok">✓ ${esc(t('diag.order.exact'))}</b>`
     : diff > 0 ? `<b class="bad">▲ ${esc(t('diag.order.over', { n: diff }))}</b>` : `<b class="warn">▼ ${esc(t('diag.order.short', { n: -diff }))}</b>`;
   const dots = Array.from({ length: 5 }, (_, i) => `<i class="${i < o.intensity ? 'on' : ''} ${o.deserved !== null && i + 1 === o.deserved ? 'fit' : ''}"></i>`).join('');
   return `<p>${o.stationName ? esc(t('diag.order.sentTo', { name: o.stationName })) : `<span class="diag-nodata">${esc(t('diag.order.noData'))}</span>`}
       · ${o.keeperName ? esc(t('diag.order.keeper', { name: o.keeperName })) : ''}</p>
-    <p class="diag-tier"><span class="diag-dots" aria-hidden="true">${dots}</span> ${esc(t('diag.order.level', { n: o.intensity, name: o.intensityName }))}
-      ${o.deserved !== null ? `· ${esc(t('diag.order.deserved', { n: o.deserved }))}` : ''} ${verdict}</p>
-    <p class="diag-served">${esc(t('diag.order.served'))}${o.score !== null ? ` · ${'★'.repeat(o.stars ?? 0)}${'☆'.repeat(5 - (o.stars ?? 0))} ${esc(t('diag.order.score', { n: o.score }))}` : ''}</p>
+    ${o.direct ? `<p class="diag-tier">${esc(t('diag.order.direct'))}</p>` : `<p class="diag-tier"><span class="diag-dots" aria-hidden="true">${dots}</span> ${esc(t('diag.order.level', { n: o.intensity, name: o.intensityName }))}
+      ${o.deserved !== null ? `· ${esc(t('diag.order.deserved', { n: o.deserved }))}` : ''} ${verdict}</p>`}
+    <p class="diag-served">${o.direct ? '' : esc(t('diag.order.served'))}${o.score !== null ? ` · ${'★'.repeat(o.stars ?? 0)}${'☆'.repeat(5 - (o.stars ?? 0))} ${esc(t('diag.order.score', { n: o.score }))}` : ''}</p>
     ${o.boss ? `<p class="diag-boss">“${esc(o.boss)}”</p>` : ''}`;
 }
 
@@ -81,11 +81,14 @@ function karmaHtml(m) {
   if (k.locked) return `<p class="diag-lock" role="status">🔒 ${esc(t('diag.locked.held'))}</p><small>${esc(t('diag.locked.hint'))}</small>`;
   const row = (label, val, cls) => `<div class="diag-fall ${cls}"><span>${esc(label)}</span><b>${val}</b></div>`;
   const total = k.sin;
-  return `<div class="diag-karma-big ${k.left > 0 ? 'reborn' : 'heaven'}"><b>${k.left}</b><span>${esc(k.left > 0 ? t('diag.karma.toReborn') : t('diag.karma.toHeaven'))}</span></div>
+  // ปลายทางพูดได้เฉพาะที่ประตูสวรรค์ · ในตะรางยังไม่รู้ (ถ้านิราตรวจว่ายังไม่สำนึก ดวงนี้ไปกลับคิว จึงไม่แสดงปลายทางเลย)
+  const dest = k.mode === 'gate' ? t(k.left > 0 ? 'diag.karma.toReborn' : 'diag.karma.toHeaven')
+    : k.hideDest ? '' : t(k.left > 0 ? 'diag.karma.ifGateRemains' : 'diag.karma.ifGateClear');
+  return `<div class="diag-karma-big ${k.left > 0 ? 'reborn' : 'heaven'}"><b>${k.left}</b><span>${esc(dest)}</span></div>
     <small class="diag-expect">${esc(k.expected ? t('diag.karma.expected', { n: k.left }) : t('diag.karma.actual', { n: k.left }))}</small>
     <div class="diag-fall-list">
       ${row(t('diag.karma.sin'), k.sin, 'sin')}${k.relief ? row(t('diag.karma.relief'), '−' + k.relief, 'rel') : ''}
-      ${row(t('diag.karma.merit'), '−' + k.merit, 'mer')}${row(t('diag.karma.intensity'), '−' + k.intensity, 'int')}${k.lotus ? row(t('diag.karma.lotus'), '−' + k.lotus, 'lot') : ''}
+      ${row(t('diag.karma.merit'), '−' + k.merit, 'mer')}${k.direct ? '' : row(t('diag.karma.intensity'), '−' + k.intensity, 'int')}${k.lotus ? row(t('diag.karma.lotus'), '−' + k.lotus, 'lot') : ''}
       ${row(t('diag.karma.left'), k.left, 'left')}
     </div>
     ${total > 0 ? bar(100 * k.paid / total, 'paid') + `<small>${esc(t('diag.karma.paid', { a: Math.round(k.paid * 10) / 10, b: total }))}</small>` : ''}`;
@@ -94,7 +97,7 @@ function karmaHtml(m) {
 /** HTML ทั้งใบ */
 export function diagnosisHtml(m, { pos, total, portraitSrc, escorting = false, mobile = false }) {
   const b = m.banner, seal = SEAL[b.id];
-  const bannerText = b.id === 'gateHeaven' ? t(b.reward ? 'diag.b.gateHeavenReward' : 'diag.b.gateHeaven') : t('diag.b.' + b.id, { n: b.n });
+  const bannerText = b.id === 'gateHeaven' ? t(b.reward ? 'diag.b.gateHeavenReward' : 'diag.b.gateHeaven') : t('diag.b.' + b.id, { n: b.n, name: b.name });
   const act = m.action;
   const actDisabled = act.disabled || escorting;
   const actReason = escorting ? t('diag.act.escorting') : act.disabled && act.reason ? t(act.reason, { n: act.n }) : '';

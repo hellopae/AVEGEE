@@ -30,9 +30,13 @@ export function powerSheetHtml(g, k) {
   const def = k === 'guard' ? null : CREW.find(c => c.k === k);
   const actor = k === 'guard' ? g.guard : g.crewOf(k);
   const name = powerName(k), who = crewLabel(k, g.zone);
-  const ability = crewAbility(actor || k, g.zone);
-  const cd = k === 'guard' ? GUARD.battleCd : BATTLE.crewCd;
-  const role = k === 'guard' ? null : keeperRole(k);
+  // นิรา: ท่า "แสงฟื้นบารมี" ฟื้นบารมีให้ยามา/ยมทูต (CREW_POWER.nira.heal) — ผลแสดงตัวฟื้นก่อน แล้วต่อด้วยบรรทัดระเบียบเดิม
+  const base = crewAbility(actor || k, g.zone);
+  const ability = k === 'nira' ? `${t('power.heal', { n: g.allyStats(actor || 'nira').heal })} · ${base}` : base;
+  const cd = k === 'guard' ? GUARD.helpCdMs / 1000 : BATTLE.crewCd;      // ค่าที่ battleAct ใช้จริง (ยักษ์ 20 วิ · ยมทูต 120 วิ)
+  const moraleCost = k === 'guard' ? GUARD.helpMorale : BATTLE.crewMorale;
+  const reader = !!def?.reader;                                           // นิรา: อ่านสำนวนให้ท่าน ไม่รับเวร — ไม่มีหน้าที่คุมงาน
+  const role = k === 'guard' || reader ? null : keeperRole(k);
   const hired = k === 'guard' ? !!g.guard : !!actor;
   const price = k === 'guard' ? GUARD.hire : def?.hire;
   const inParty = !!actor && k !== 'guard' && (g.party?.members || []).includes(k);
@@ -45,7 +49,8 @@ export function powerSheetHtml(g, k) {
       <div><h3>${esc(name)}</h3><p>${esc(t('power.of', { name: who }))}</p></div></header>
     <dl class="pw-rows">
       <div><dt>${esc(t('power.effect'))}</dt><dd>${esc(ability)}</dd></div>
-      <div><dt>${esc(t('power.cooldown'))}</dt><dd>${esc(t('power.cooldownLine', { n: cd }))}${k === 'guard' ? '' : esc(t('power.moraleLine', { n: BATTLE.crewMorale }))}</dd></div>
+      <div><dt>${esc(t('power.cooldown'))}</dt><dd>${esc(t('power.cooldownLine', { n: cd }))}${esc(t('power.moraleLine', { n: moraleCost }))}</dd></div>
+      ${reader ? `<div><dt>${esc(t('power.job'))}</dt><dd>${esc(def.duty)}</dd></div><div><dt>${esc(t('power.where'))}</dt><dd>${esc(t('power.niraOnly'))}</dd></div>` : ''}
       ${role ? `<div><dt>${esc(t('power.job'))}</dt><dd>${p.jobIcon ? `<img class="pw-job" src="${esc(p.jobIcon)}" alt="">` : ''}<b>${esc(role.name)}</b><br>${esc(role.benefit)}<br><small>${esc(role.cost)}</small></dd></div>` : ''}
     </dl>
     <footer class="pw-foot"><button type="button" data-power-close>${esc(t('power.close'))}</button>${buttons}</footer>
