@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
-import { ZONE_EVENTS, scaleFoeHp } from '../src/data.js';
+import { ZONE_EVENTS, STATIONS, scaleFoeHp } from '../src/data.js';
 
 const ready = () => {
   const g = createGame();
@@ -52,9 +52,13 @@ test('a failed deva test can be retried, and an active save restarts the test', 
 
 test('case five schedules deva after prison; case eight schedules frontier after deva', () => {
   const g = createGame();
+  g.stations.push({ def:STATIONS.find(d => d.k === 'sawan'), crewK:null, intensity:3, fire:0, build:0, slots:[] });   // HOTFIX: คดีเทวดารอประตูสวรรค์
   g.zoneCases.th = 4;
   g.zoneEvents.th = { prisonBreak:'cleared' };
-  g.applyVerdict({ score:55, karma:0 }, { said:[] });
+  g.ensureDevaCase();
+  const monk = g.queue[0];
+  assert.equal(monk.case, 'devaMonk');
+  g.applyVerdict({ score:55, karma:0 }, monk);
   assert.equal(g.devaTestStatus(), 'pending');
   g.startDevaTest().foes[0].hp = 1;
   g.battleAct('atk');
