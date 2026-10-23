@@ -32,17 +32,17 @@ const ZONE1_ART = Object.freeze({
 // Z2: change any filename on one row when the replacement art arrives. Coordinates live in town-layout.js.
 export const ASIA_TOWN_SPRITES = {
   stations: {
-    sala:'img/map-v5/st-sala-asia.webp',
-    tea:'img/theme-v4/st-tea-asia.webp',
-    sawan:'img/map-v5/st-sawan-asia.webp',
-    krajok:'img/map-v5/st-krajok-asia.webp',
+    sala:'img/map-v5/st-sala-asia-v3.webp',
+    tea:'img/theme-v4/st-tea-asia-v3.webp',
+    sawan:'img/map-v5/st-sawan-asia-v3.webp',
+    krajok:'img/map-v5/st-krajok-asia-v3.webp',
   },
-  judgment: {'town-judgment-th':'img/theme-v4/town-judgment-asia-v2.webp'},
+  judgment: {'town-judgment-th':'img/theme-v4/town-judgment-asia-v3.webp'},
   houses: {
-    'town-residence-front-one':'img/town-district/house-front-one-asia-v1.webp',
-    'town-residence-right-one':'img/town-district/house-right-one-asia-v1.webp',
-    'town-residence-left-two':'img/town-district/house-left-two-asia-v1.webp',
-    'town-residence-right-two':'img/town-district/house-right-two-asia-v1.webp',
+    'town-residence-front-one':'img/town-district/house-front-one-asia-v3.webp',
+    'town-residence-right-one':'img/town-district/house-right-one-asia-v3.webp',
+    'town-residence-left-two':'img/town-district/house-left-two-asia-v3.webp',
+    'town-residence-right-two':'img/town-district/house-right-two-asia-v3.webp',
   },
   trees: {
     'town-tree-th':'img/theme-v4/town-tree-asia-v1.webp',
@@ -52,8 +52,8 @@ export const ASIA_TOWN_SPRITES = {
     'town-tree-sakura':'img/theme-v4/town-tree-sakura-asia-v1.webp',
     'town-tree-willow':'img/theme-v4/town-tree-willow-asia-v1.webp',
   },
-  lamp: {'town-prop-lamp-gold':'img/theme-v4/town-lamp-asia-v1.webp'},
-  torch: {'town-prop-torch-pillar':'img/map-zone2/torch-pillar-v1.webp'},
+  lamp: {'town-prop-lamp-gold':'img/theme-v4/town-lamp-asia-v3.webp'},
+  torch: {'town-prop-torch-pillar':'img/map-zone2/torch-pillar-v3.webp'},
 };
 
 /** File naming convention for a zone's sprites (Mind's art spec, M1).  k = asia | west | cyberhell, folder = map-zone2/3/4. */
