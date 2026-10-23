@@ -24,7 +24,7 @@ test('Zone 1 skin resolves to exactly the files the hard-coded keys used to', ()
   };
   for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, 'th'), file, key);
   // zones that still use the old map system get the Zone 1 file for these keys, as before
-  for (const z of ['asia','west','cyberhell']) for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, z), file, z + ' ' + key);
+  for (const z of ['west','cyberhell']) for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, z), file, z + ' ' + key);
   assert.equal(ZONE_SKIN.th.art['town-prop-torch-pillar'], 'img/map-zone1/torch-pillar-v1.webp');
   assert.equal(TOWN_TERRAIN_DIR, 'img/map-zone1/v5/');
   assert.equal(TOWN_TERRAIN_PREVIEW, 'img/map-zone1/v5/zone1-terrain-v5-preview.webp');
@@ -46,7 +46,7 @@ test('Zone 1 station art: facade v2 only for the four listed stations, same box 
   assert.equal(old.w, Math.min(MAP_REVIEW_SIZES.krata[0] / 1000, MAP_REVIEW_SIZES.krata[1] / 1000) * 1000 * 2);
 });
 
-test('zones 2-4 are off by default: old map system, no skin, no town', () => {
+test('disabled zones retain the old map system, no skin, no town', () => {
   reset();
   for (const z of ['asia','west','cyberhell']) { assert.equal(isTownZone(z), false); assert.equal(townSkinOf(z), null); }
   assert.equal(isTownZone('th'), true);
@@ -63,7 +63,7 @@ test('switching a skin on is data: `use` lists the finished groups, the rest fal
   assert.equal(P.torch['town-prop-torch-pillar'], 'img/map-zone2/torch-pillar-v1.webp');
   assert.equal(P.houses['town-residence-left-two'], 'img/town-district/house-left-two-asia-v1.webp');
   assert.equal(P.trees['town-tree-red-th'], 'img/theme-v4/town-tree-b-asia-v1.webp');
-  enableTownSkin('asia', { use:['judgment','houses'] });
+  enableTownSkin('asia', { use:['judgment','houses'], terrain:{dir:'img/map-zone2/v1/',preview:'img/map-zone2/v1/zone2-terrain-v1-preview.webp',fullPx:{w:4915,h:3277},chunk:1024,repairs:false} });
   try {
     assert.equal(isTownZone('asia'), true);
     assert.equal(themeArt('town-judgment-th', 'asia'), 'img/theme-v4/town-judgment-asia-v2.webp');
@@ -165,7 +165,7 @@ test('index.html: M2 modules are pinned in the import map and the touched ones c
   const { readFileSync } = await import('node:fs');
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const f of ['zone-skin.js', 'route-geometry.js', 'town-owner-walkmask-asia.js', 'town-owner-walkmask-west.js', 'town-owner-walkmask-cyberhell.js'])
-    assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}": "\\./src/${f.replace('.', '\\.')}\\?v=m2"`), f);
+    assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}": "\\./src/${f.replace('.', '\\.')}\\?v=m2(?:-[^" ]+)?"`), f);
   // inserted after the date (not appended): older tests pin the leading date and the endings -o2 / -p8 / -p4
   for (const f of ['town-layout.js', 'town-terrain.js', 'town-scenery.js', 'town-lighting.js', 'town-shade.js', 'town-flow.js', 'scene.js', 'data.js', 'game.js', 'ui.js', 'dungeon-view.js', 'zone-travel.js', 'theme-assets.js'])
     assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}": "\\./src/${f.replace('.', '\\.')}\\?v=(?:m2-|\\d{8}-m2-)`), f);

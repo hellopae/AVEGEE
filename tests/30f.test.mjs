@@ -33,11 +33,12 @@ const {STATIONS,ZONES,ZONE_ENTRY,syncSceneZone} = await import('../src/data.js')
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
 const walk = await import('../src/walk.js?v=k1d');
+const {isTownZone} = await import('../src/zone-skin.js');
 const {STORY} = await import('../src/story.js');
 await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
-syncSceneZone('asia');
+syncSceneZone('west'); // legacy regional geometry, independent of the enabled Asia town skin
 const original=sites();
 const branchSites = Object.fromEntries(['th','asia','west','unknown'].map(zone => {
   syncSceneZone(zone); return [zone,sites()];
@@ -118,7 +119,7 @@ test('themed sprites keep every zone station reachable with its terrain or town 
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);walk.setNpcDiscs([]);
   const src=zone==='west'?'img/scene-v2-opt.png':'img/'+g.zoneDef().scene+'.png';
-  assert.equal(walk.buildWalk({src,naturalWidth:1678,naturalHeight:937}), zone !== 'th', zone+': bitmap masks are regional; town streets are declarative');g.syncBlocks(true);
+  assert.equal(walk.buildWalk({src,naturalWidth:1678,naturalHeight:937}), !isTownZone(zone), zone+': bitmap masks are regional; town streets are declarative');g.syncBlocks(true);
   for(const d of STATIONS){
    const path=walk.findPath(...ZONE_ENTRY.goal,d.x,d.y),end=path?.at(-1);
    assert.ok(end && Math.hypot(end[0]-d.x,end[1]-d.y)<=100,zone+'/'+d.k+': reachable interaction '+JSON.stringify(end));

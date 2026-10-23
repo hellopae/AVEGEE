@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -64,7 +65,7 @@ test('H2-2: town zoom/follow control retains the smooth frontier formula (130ms)
   assert.match(ui, /let MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
   assert.match(ui, /cameraZone = g\.zone; MAP_ZOOM_LEVELS = townZoomLevels\(g\.zone\)/);
   assert.deepEqual(townZoomLevels('th'), [1, 3.5, 5, 6.5]);
-  for (const zone of ['asia', 'west', 'cyberhell']) assert.deepEqual(townZoomLevels(zone), [1, 2.5]);
+  for (const zone of ['asia', 'west', 'cyberhell']) assert.deepEqual(townZoomLevels(zone), isTownZone(zone) ? [1,3.5,5,6.5] : [1,2.5]);
   assert.match(ui, /1 - Math\.exp\(-dt \/ 130\)/);
   assert.match(ui, /updateMapCamera\(now\);\n\s+render\(ctx, g, now, hover, sel, mapCam\.view\);/);
 });

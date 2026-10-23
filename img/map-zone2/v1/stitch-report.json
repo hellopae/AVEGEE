@@ -1,0 +1,55 @@
+{
+ "zone": "asia",
+ "sheet": [
+  4915,
+  3277
+ ],
+ "chunks": 20,
+ "preview": "zone2-terrain-v1-preview.webp",
+ "quadrants": {
+  "nw": [
+   1536,
+   1024
+  ],
+  "ne": [
+   1536,
+   1024
+  ],
+  "sw": [
+   1536,
+   1024
+  ],
+  "se": [
+   1536,
+   1024
+  ]
+ },
+ "upscale": {
+  "nw": 1.8,
+  "ne": 1.8,
+  "sw": 1.8,
+  "se": 1.8
+ },
+ "sha256": {
+  "r1-c1.webp": "2c7be20d411e1373",
+  "r1-c2.webp": "799b6e81b082661d",
+  "r1-c3.webp": "52158b76406fe30c",
+  "r1-c4.webp": "22606eedcb7bc4d0",
+  "r1-c5.webp": "eff817c6766c9c6a",
+  "r2-c1.webp": "3fd9ca874021a20b",
+  "r2-c2.webp": "d00f4cff4f81d09e",
+  "r2-c3.webp": "374532bb27d063e9",
+  "r2-c4.webp": "841f2abbb442412b",
+  "r2-c5.webp": "b91bc3fe29efffc0",
+  "r3-c1.webp": "c09f0adef0f85c30",
+  "r3-c2.webp": "540f658296916ba3",
+  "r3-c3.webp": "170bb6d57f9c2939",
+  "r3-c4.webp": "16d659bce22f302a",
+  "r3-c5.webp": "b1f69eb3d26ac200",
+  "r4-c1.webp": "15ee4c148841fb92",
+  "r4-c2.webp": "75716472216a182b",
+  "r4-c3.webp": "4e9625b4ddc5aae4",
+  "r4-c4.webp": "705af040d60886b3",
+  "r4-c5.webp": "c3e715be4dc82311"
+ }
+}

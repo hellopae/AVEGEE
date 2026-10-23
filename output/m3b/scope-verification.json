@@ -1,0 +1,17 @@
+{
+  "base": "0f95200",
+  "th_skin_deep_equal": true,
+  "west_cyberhell_deep_equal": true,
+  "protectedPaths": [
+    "img/map-zone1",
+    "src/game.js",
+    "src/data.js",
+    "src/town-layout.js",
+    "src/town-owner-walkmask.js",
+    "src/town-owner-walkmask-asia.js",
+    "src/town-walkmask.js"
+  ],
+  "protected_paths_unchanged": true,
+  "asia_tree_tint": false,
+  "asia_flow": null
+}

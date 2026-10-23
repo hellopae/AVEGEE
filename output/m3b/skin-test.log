@@ -1,0 +1,23 @@
+✔ Zone 1 skin resolves to exactly the files the hard-coded keys used to (3.191803ms)
+✔ Zone 1 station art: facade v2 only for the four listed stations, same box limits (0.492987ms)
+✔ disabled zones retain the old map system, no skin, no town (2.373693ms)
+✔ switching a skin on is data: `use` lists the finished groups, the rest falls back to Zone 1 (0.945495ms)
+✔ syncSceneZone puts a skin-enabled zone on the 3840x2560 city, same station sites as Zone 1, then restores (46.405076ms)
+✔ town layout per zone: overrides apply in place and Zone 1 comes back exactly (51.982228ms)
+✔ generated zone masks start as null (= inherit Zone 1) and the default table keeps Zone 1 patches on (37.452728ms)
+✔ light emitters: Zone 1 fire reader unchanged; ice / cyan / violet need their hue range (0.577817ms)
+✔ index.html: M2 modules are pinned in the import map and the touched ones carry the m2 cache-bust token (4.423846ms)
+(node:64872) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or tree tint (2.562949ms)
+✔ M3: Asia retains Zone 1 temporary floor and leaving restores Zone 1 station geometry (150.52465ms)
+✔ M3: an old Asia save migrates once with the production skin and preserves progress (271.482858ms)
+✔ M3: title uses existing town copy in Zone 1 and the legacy Asia label without inventing copy (1.698602ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 723.814611

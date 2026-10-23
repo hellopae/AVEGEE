@@ -76,10 +76,12 @@ export const ZONE_SKIN = {
     light: { emit:[FIRE], flame:FLAME_FIRE },
   },
   asia: {
-    enabled: false,
+    enabled: true,
+    // M3b: Q5 repaired ground; never apply Zone 1's terrain repairs or flow to this art.
     terrain: terrain('map-zone2', 'zone2'),
-    flowUrl: null,                     // 'img/map-zone2/v1/flow-v1.png' once baked (scripts/bake-town-flow.py --zone)
-    use: [],
+    flowUrl: null, // Optional effects wait for a profile traced against the new water/lava.
+    use: ['judgment','houses','trees','lamp','torch','rock'],
+    // Own Asia tree sprites disable TREE_TINT through finalize().
     stations: { suffix:'asia', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
     light: { emit:[FIRE], flame:FLAME_FIRE },

@@ -1,0 +1,13 @@
+{
+  "size": [
+    1536,
+    1024
+  ],
+  "ground_matches_q5_preview": true,
+  "layer_matches_current_floor": true,
+  "overlay_matches_composite": true,
+  "asia_floor_equals_zone1_temporary_floor": true,
+  "walkable_preview_pixels": 354590,
+  "blocked_preview_pixels": 1218274,
+  "game_mask_files_unchanged": true
+}

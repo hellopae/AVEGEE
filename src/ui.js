@@ -11,7 +11,7 @@ import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
 import {routeBossCave} from './route-geometry.js';
 import {mountDungeonView} from './dungeon-view.js?v=l5';
-import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
+import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';
 import { mountDiagnosis } from './diagnosis-ui.js';
@@ -1428,6 +1428,9 @@ townActionButton.onclick = activateTownAction;
 function updateTownHud(now) {
   const show=started && isTownZone(g.zone) && !g.over && !g.battle;
   townPanel.hidden=!show;
+  const title=townTitle(g.zone, g.zoneDef().name);
+  const summary=townPanel.querySelector('summary');
+  if (summary.textContent!==title) summary.textContent=title;
   const action=show ? currentTownAction() : null;
   townActionButton.hidden=!action;
   if (action) {

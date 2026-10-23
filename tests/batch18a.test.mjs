@@ -1,5 +1,6 @@
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
+import { isTownZone } from '../src/zone-skin.js';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { MERCHANT, MOB, QUEUE_LINE, SPOTS, STATIONS, ZONES } from '../src/data.js';
@@ -64,7 +65,7 @@ test('ทุกโซนคิวอยู่แนวสะพานและ�
   for (const z of ZONES) g.bossCleared[z.k] = true;
   for (const z of ZONES) {
     if (g.zone !== z.k) assert.equal(harbourTravel(g, z.k), true);
-    if (z.k === 'th') assert.deepEqual(QUEUE_LINE, TOWN_QUEUE);
+    if (isTownZone(z.k)) assert.deepEqual(QUEUE_LINE, TOWN_QUEUE);
     else assert.ok(QUEUE_LINE.slice(1).every(([x]) => x === 835));
     for (const [x,y] of QUEUE_LINE) {
       assert.equal(canWalk(x,y), true, `${z.k}: queue stands on accessible ground`);
