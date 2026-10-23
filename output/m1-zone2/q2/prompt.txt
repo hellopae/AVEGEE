@@ -1,0 +1,36 @@
+You are re-theming a game ground map and continuing a painting. Attached images, in order:
+[1] LAYOUT: a crop of the finished Zone 1 map, painted, 3/4 elevated RPG view.
+[2] WALK: a schematic of the same crop. Light grey = flat walkable stone ground, dark = not walkable.
+[3] THEME: the old Zone 2 "East Asia" map. Use it ONLY for palette, materials and mood, never for layout.
+[4] SEED: a 1536x1024 canvas. The LEFT 341 pixels are ALREADY PAINTED in the final Zone 2 style (they
+    are the right edge of the neighbouring north-west quarter). The rest is flat grey #808080.
+
+Paint the complete 1536x1024 image. Keep the painted left strip of [4] unchanged, same colours and
+same content, and continue it seamlessly into the grey area: roads, cliff edges, water edges and
+mist must run on across the join with no visible seam, step or colour shift.
+Keep the EXACT geometry of [1] for everything else: every road, staircase, bridge, plaza, oval pad,
+cliff edge, stream and river bank stays in the same place, same size, same camera and perspective.
+This crop is the NORTH-EAST quarter: at upper left a high plateau above a sea of mist with a stone
+stairway up to an oval pad; a stone arch bridge at the top centre; at upper right a big oval pad
+with stairs; a mountain stream with waterfalls running from the top right down to the river; a
+round plaza edge at the lower left; a small bridge over the stream; the start of a forest belt at the
+bottom right.
+
+Re-theme as follows:
+- All walkable ground (light grey in [2]) becomes pale jade-grey flagstone (#9AA79F), large irregular
+  slabs with thin dark seams, matte, LOW contrast, slightly darker worn patch in the middle of each
+  oval pad. Pads stay completely empty and flat.
+- Where [1] has an ICE stream and ice waterfalls, paint a clear jade-teal mountain stream with white
+  foam and white waterfalls, same channel and falls positions. NO snow and NO ice anywhere.
+- Around it: grey-green limestone pillar rocks with moss, cool drifting mist, clumps of bamboo and
+  jade-green pines, a few crimson maple trees. The sea of mist at the top centre is pale cool white
+  with a few pale-gold ginkgo trees on the cliff tops, only on non-walkable ground.
+- The stone arch bridge keeps its place and arch, with red lacquer railings and gold-capped posts.
+  The small stream bridge becomes a wooden plank bridge with red railings.
+- Stairs and cliff faces: grey-jade stone, dark slate-green cliffs with moss, crisp dark outlines.
+- Distant misty mountains and a cool blush-pink dawn sky at the top edge.
+Lighting: warm soft key light from the upper left. No long cast shadows from objects.
+Paint to all four edges; no vignette, no frame, no border. There is no lava and no glowing orange
+anywhere in this quarter.
+
+Negative: buildings, houses, huts, pavilion, temple, pagoda, tents, statues, Buddha, deity figure, halo, swastika, manji lattice, people, animals, boats, torches, standing lamps, signposts, text, letters, Chinese characters, labels, watermark, logo, colored guide overlay, green fill, yellow rectangles, red circles, magenta ring, white bars, UI, frame, border, vignette, changed road layout, extra bridges, missing bridges, different camera angle, flat top-down map, rotated isometric view, saturated orange on non-lava, glowing floor, fog covering the paths, snow, ice, blue or purple glow, low resolution, blur, smooth airbrush, snow, ice, glacier, frost, blue glow, changed seed strip, visible seam, different colour in the left strip, repeated copy of the left strip
