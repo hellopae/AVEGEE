@@ -1,0 +1,152 @@
+{
+  "measurement_note": "Flame mask within recorded ROI: H 5..43 (Pillow 0..255), S>150,V>240,A>200. Bright core measurement, not game-lighting verification. Key residue threshold: minimum(key channels)-other channel >45.",
+  "assets": {
+    "lamp": {
+      "raw_size": [
+        851,
+        1847
+      ],
+      "raw_mode": "RGB",
+      "key_matte_crop": [
+        218,
+        18,
+        633,
+        1804
+      ],
+      "destination": "img/theme-v4/town-lamp-asia-v1.webp",
+      "size": [
+        512,
+        1112
+      ],
+      "mode": "RGBA",
+      "reference_bbox": [
+        4,
+        4,
+        507,
+        1108
+      ],
+      "output_bbox": [
+        5,
+        5,
+        506,
+        1107
+      ],
+      "edge_delta_fraction": [
+        0.001953125,
+        0.0008992805755395684,
+        -0.001953125,
+        -0.0008992805755395684
+      ],
+      "key_residual_pixels": 0,
+      "sha256": "7ddd9f68b5c0e9a469330bb8dfb20c6f4f2f3b484a3f583e6366d9dfcf935871",
+      "webp_lossless_chunk": "VP8L",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "flame_centroid": [
+        256.776566995031,
+        295.208177142359
+      ],
+      "flame_mask_pixels": 11471,
+      "flame_delta_y_px": -12.227089209630208,
+      "flame_delta_height_fraction": -0.0109955838216099
+    },
+    "torch": {
+      "raw_size": [
+        949,
+        1657
+      ],
+      "raw_mode": "RGB",
+      "key_matte_crop": [
+        259,
+        15,
+        700,
+        1601
+      ],
+      "destination": "img/map-zone2/torch-pillar-v1.webp",
+      "size": [
+        240,
+        419
+      ],
+      "mode": "RGBA",
+      "reference_bbox": [
+        46,
+        0,
+        213,
+        419
+      ],
+      "output_bbox": [
+        47,
+        0,
+        212,
+        419
+      ],
+      "edge_delta_fraction": [
+        0.004166666666666667,
+        0.0,
+        -0.004166666666666667,
+        0.0
+      ],
+      "key_residual_pixels": 0,
+      "sha256": "453baad2379b8ecec9bdc26ca666b5ee439f382a8a2fe7c903c3c121291b82b6",
+      "webp_lossless_chunk": "VP8L",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "flame_centroid": [
+        128.0370074547391,
+        56.20766773162939
+      ],
+      "flame_mask_pixels": 3756,
+      "flame_delta_y_px": -9.090213624302812,
+      "flame_delta_height_fraction": -0.021695020583061605
+    },
+    "rock": {
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGB",
+      "key_matte_crop": [
+        107,
+        164,
+        1160,
+        1089
+      ],
+      "destination": "img/map-zone2/prop-rock-v1.webp",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "reference_bbox": [
+        0,
+        37,
+        1234,
+        1228
+      ],
+      "output_bbox": [
+        0,
+        38,
+        1233,
+        1227
+      ],
+      "edge_delta_fraction": [
+        0.0,
+        0.0007974481658692185,
+        -0.0007974481658692185,
+        -0.0007974481658692185
+      ],
+      "key_residual_pixels": 0,
+      "sha256": "befd4f4c7e7a0b239926cbd727c72b86e3b43cc5a0af1f2542ea097eada34fad",
+      "webp_lossless_chunk": "VP8L",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bright_orange_pixels": 23
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "torch": {
+    "raw_size": [
+      949,
+      1657
+    ],
+    "raw_mode": "RGB",
+    "key_matte_crop": [
+      259,
+      15,
+      700,
+      1601
+    ],
+    "destination": "img/map-zone2/torch-pillar-v1.webp",
+    "size": [
+      240,
+      419
+    ],
+    "mode": "RGBA",
+    "reference_bbox": [
+      46,
+      0,
+      213,
+      419
+    ],
+    "output_bbox": [
+      47,
+      0,
+      212,
+      419
+    ],
+    "edge_delta_fraction": [
+      0.004166666666666667,
+      0.0,
+      -0.004166666666666667,
+      0.0
+    ]
+  },
+  "rock": {
+    "raw_size": [
+      1254,
+      1254
+    ],
+    "raw_mode": "RGB",
+    "key_matte_crop": [
+      107,
+      164,
+      1160,
+      1089
+    ],
+    "destination": "img/map-zone2/prop-rock-v1.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "reference_bbox": [
+      0,
+      37,
+      1234,
+      1228
+    ],
+    "output_bbox": [
+      0,
+      38,
+      1233,
+      1227
+    ],
+    "edge_delta_fraction": [
+      0.0,
+      0.0007974481658692185,
+      -0.0007974481658692185,
+      -0.0007974481658692185
+    ]
+  },
+  "lamp": {
+    "raw_size": [
+      851,
+      1847
+    ],
+    "raw_mode": "RGB",
+    "key_matte_crop": [
+      218,
+      18,
+      633,
+      1804
+    ],
+    "destination": "img/theme-v4/town-lamp-asia-v1.webp",
+    "size": [
+      512,
+      1112
+    ],
+    "mode": "RGBA",
+    "reference_bbox": [
+      4,
+      4,
+      507,
+      1108
+    ],
+    "output_bbox": [
+      5,
+      5,
+      506,
+      1107
+    ],
+    "edge_delta_fraction": [
+      0.001953125,
+      0.0008992805755395684,
+      -0.001953125,
+      -0.0008992805755395684
+    ]
+  }
+}

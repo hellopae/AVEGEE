@@ -1,0 +1,12 @@
+Attached: [1] STRUCTURE: a Zone 1 boulder-cluster sprite (three rocks). [2] THEME: the old Zone 2 map;
+look at its grey-green cracked rocks.
+Redraw as the Zone 2 version, same canvas, same three-boulder arrangement, size and silhouette as [1]:
+fractured grey-green limestone boulders (#4B5A57 shade, #7C8C86 mid, highlights #A9B7B0) with sharp
+angular facets, patches of moss (#5E7A4A) on the upper faces and a few fallen crimson maple leaves at
+the base. No embers, no glow, no gold light. Painted game-asset style: crisp dark outline,
+hand-painted texture, warm key light from the upper left, no ground shadow. Plain flat magenta
+#FF00FF background.
+
+Negative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, embers, lava, glowing cracks, flame outside the bowl or cage, extra flames, smoke, skull
+
+Production framing: square canvas. Reference alpha bbox (0,37)-(1234,1228) on 1254x1254. Match the tall large rear-left rock, mid-height right rock, low front-centre rock. Exactly three primary boulders, not a landscape. No religious motifs.

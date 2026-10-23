@@ -1,0 +1,83 @@
+{
+  "lamp": {
+    "reference": "img/theme-v4/town-lamp-gold-th-v1.webp",
+    "before": [
+      4,
+      4,
+      507,
+      1108
+    ],
+    "reference_threshold_16": [
+      125,
+      8,
+      400,
+      1107
+    ],
+    "after": [
+      5,
+      5,
+      506,
+      1107
+    ],
+    "delta_fraction": [
+      0.001953125,
+      0.0008992805755395684,
+      -0.001953125,
+      -0.0008992805755395684
+    ]
+  },
+  "torch": {
+    "reference": "img/map-zone1/torch-pillar-v1.webp",
+    "before": [
+      46,
+      0,
+      213,
+      419
+    ],
+    "reference_threshold_16": [
+      68,
+      0,
+      180,
+      417
+    ],
+    "after": [
+      47,
+      0,
+      212,
+      419
+    ],
+    "delta_fraction": [
+      0.004166666666666667,
+      0.0,
+      -0.004166666666666667,
+      0.0
+    ]
+  },
+  "rock": {
+    "reference": "img/map-zone1/prop-rock-v1.webp",
+    "before": [
+      0,
+      37,
+      1234,
+      1228
+    ],
+    "reference_threshold_16": [
+      108,
+      169,
+      1159,
+      1085
+    ],
+    "after": [
+      0,
+      38,
+      1233,
+      1227
+    ],
+    "delta_fraction": [
+      0.0,
+      0.0007974481658692185,
+      -0.0007974481658692185,
+      -0.0007974481658692185
+    ]
+  }
+}

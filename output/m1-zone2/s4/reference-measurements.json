@@ -1,0 +1,174 @@
+{
+  "lamp": {
+    "path": "img/theme-v4/town-lamp-gold-th-v1.webp",
+    "size": [
+      512,
+      1112
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      4,
+      4,
+      507,
+      1108
+    ],
+    "flame_roi": [
+      160,
+      170,
+      350,
+      400
+    ],
+    "flame_pixels": 14830,
+    "flame_centroid": [
+      256.5552258934592,
+      307.4352663519892
+    ],
+    "flame_y_fraction": 0.2764705632661773,
+    "alpha_bbox_thresholds": {
+      "1": [
+        4,
+        4,
+        507,
+        1108
+      ],
+      "16": [
+        125,
+        8,
+        400,
+        1107
+      ],
+      "128": [
+        125,
+        9,
+        400,
+        1106
+      ],
+      "250": [
+        127,
+        14,
+        399,
+        1106
+      ]
+    }
+  },
+  "torch": {
+    "path": "img/map-zone1/torch-pillar-v1.webp",
+    "size": [
+      240,
+      419
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      46,
+      0,
+      213,
+      419
+    ],
+    "flame_roi": [
+      65,
+      0,
+      165,
+      98
+    ],
+    "flame_pixels": 2360,
+    "flame_centroid": [
+      123.84533898305085,
+      65.2978813559322
+    ],
+    "flame_y_fraction": 0.15584219894017232,
+    "alpha_bbox_thresholds": {
+      "1": [
+        46,
+        0,
+        213,
+        419
+      ],
+      "16": [
+        68,
+        0,
+        180,
+        417
+      ],
+      "128": [
+        69,
+        1,
+        179,
+        417
+      ],
+      "250": [
+        69,
+        3,
+        179,
+        416
+      ]
+    }
+  },
+  "rock": {
+    "path": "img/map-zone1/prop-rock-v1.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      37,
+      1234,
+      1228
+    ],
+    "alpha_bbox_thresholds": {
+      "1": [
+        0,
+        37,
+        1234,
+        1228
+      ],
+      "16": [
+        108,
+        169,
+        1159,
+        1085
+      ],
+      "128": [
+        109,
+        170,
+        1158,
+        1085
+      ],
+      "250": [
+        110,
+        172,
+        1157,
+        1084
+      ]
+    }
+  },
+  "material": {
+    "path": "img/map-v5/st-krata-asia.webp",
+    "size": [
+      1254,
+      1219
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1219
+    ]
+  },
+  "theme": {
+    "path": "img/theme-v4/map-asia.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "alpha_bbox": [
+      0,
+      0,
+      1678,
+      937
+    ]
+  }
+}

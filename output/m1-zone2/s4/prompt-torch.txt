@@ -1,0 +1,12 @@
+Attached: [1] STRUCTURE: a Zone 1 small torch pillar sprite (dark pillar with gold ornament and a
+flaming bowl on top). [2] MATERIAL: a Zone 2 building with grey carved stone bases, bronze fire bowls
+and red lacquer details.
+Redraw as the Zone 2 version, same canvas, silhouette and proportions as [1]: a square grey-jade
+stone pillar (#7C8C86) with a red lacquer band and thin gold trim, a gold-capped top, and a bronze
+bowl holding a painted orange flame at the same height and size as the flame in [1]. Bold simple
+readable shapes, because the sprite is shown small. Painted game-asset style: crisp dark outline,
+warm key light from upper left, no ground shadow. Plain flat cyan #00FFFF background.
+
+Negative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, embers, lava, glowing cracks, flame outside the bowl or cage, extra flames, smoke, skull
+
+Production framing: render at least 720x1257 (3x final 240x419), tall portrait same aspect. Reference alpha bbox (46,0)-(213,419) on final 240x419. One flame centre at x=123.85,y=65.30 (15.58% down canvas). Flame remains seated inside the bronze bowl opening, never a second detached flame. No lotus motif. Gold trim muted, only flame bright orange-yellow.

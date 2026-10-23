@@ -1,0 +1,12 @@
+Attached: [1] STRUCTURE: a Zone 1 tall slim gold lamp-post sprite with a painted flame in a lotus-shaped
+bowl. [2] MATERIAL: a Zone 2 building with red lanterns, gold caps and grey carved stone bases.
+Redraw as the Zone 2 version, same canvas, same slim proportions and silhouette height as [1]: a tall
+slim lamp pillar with a round stepped grey-jade stone base (#7C8C86), an octagonal slender stone shaft
+with thin gold bands, and at the top a red lacquer (#B3201E) and gold open lantern cage holding a
+painted orange flame whose centre is at the same height as the flame in [1], crowned by a small gold
+finial. Painted game-asset style: crisp dark outline, hand-painted texture, warm key light from the
+upper left, no ground shadow. Plain flat cyan #00FFFF background.
+
+Negative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, embers, lava, glowing cracks, flame outside the bowl or cage, extra flames, smoke, skull
+
+Production framing: portrait 512:1112 canvas ratio. Match reference alpha bounding box (4,4)-(507,1108) on final 512x1112 canvas. One flame centre at x=256.56,y=307.44 (27.65% down canvas), inside the open cage. Keep the silhouette broad enough at cage and base to match reference. No lotus-shaped ornament, no religious motifs. Gold is muted, only flame is bright orange-yellow.
