@@ -95,3 +95,19 @@ test('P9 drawWorker: asia/west/cyberhell read v2 rows by what the worker does (r
 test('P9 cache-bust: workers.js ends -p9',()=>{
   assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*-p9"/);
 });
+
+test('P9 Trojan horse: cyberhell boss-frontier atlas reads the v2 file (same geometry, only attack f6/f7 redrawn), v1 stays; every other zone untouched',()=>{
+  const sprites=JSON.parse(readFileSync('img/combat-animation-v1/manifest.json','utf8')).sprites;
+  const rec=sprites['boss:cyberhell:boss-frontier'];
+  assert.equal(rec.src,'img/boss-combat-v1/cyberhell/boss-frontier-v2.webp');
+  assert.deepEqual([rec.frameWidth,rec.frameHeight,rec.cols,rec.rows],[384,512,3,4]);
+  assert.deepEqual(rec.modes.attack.frames,[3,4,5,6,7,8],'attack f3-f8 still play in order, f6/f7 are the redrawn cells');
+  assert.deepEqual(webpSize(rec.src),[rec.frameWidth*rec.cols,rec.frameHeight*rec.rows]);
+  assert.ok(existsSync('img/boss-combat-v1/cyberhell/boss-frontier.webp'),'v1 kept');
+  assert.ok(allCatalogFiles.includes(rec.src)&&!allCatalogFiles.includes('img/boss-combat-v1/cyberhell/boss-frontier.webp'));
+  for(const z of ['th','asia','west'])assert.equal(sprites[`boss:${z}:boss-frontier`].src,`img/boss-combat-v1/${z}/boss-frontier.webp`);
+});
+
+test('P9 manifest fetch carries a new cache key in all three readers, so returning players do not keep the old atlas path',()=>{
+  for(const f of ['src/ui.js','src/battle-fx.js','src/combat-sprites.js'])assert.match(readFileSync(f,'utf8'),/combat-animation-v1\/manifest\.json\?v=night-v1-p9'?/,f);
+});
