@@ -1,0 +1,257 @@
+{
+  "note": "Image measurements only; acceptance remains with reviewer. No runtime tests or integration performed.",
+  "sprites": [
+    {
+      "file": "img/town-district/house-front-one-asia-v1.webp",
+      "size": [
+        1402,
+        1122
+      ],
+      "mode": "RGBA",
+      "before_bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "after_bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "changed_pixels": 121,
+      "changed_bbox": [
+        7,
+        117,
+        1382,
+        1122
+      ],
+      "contour_despill_pixels": 121,
+      "sha256": "a9d2b495b390996414647030a99af2b058d73c7b424c7d7b9a87354b5e9ebd37",
+      "source_sha256": "c293c1a668c5a847e665bd0b7e2a315c926913f7dcf44e8d28c3ecfbbc3f5cda",
+      "lossless_vp8l": true,
+      "removed_isolated_matte_pixels": [],
+      "contour_tiles": 62,
+      "bytes": 1795240,
+      "alpha_changed_pixels": 0,
+      "reference_bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "visible_key_excess_gt45": 0
+    },
+    {
+      "file": "img/town-district/house-left-two-asia-v1.webp",
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "before_bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "after_bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "changed_pixels": 127,
+      "changed_bbox": [
+        7,
+        87,
+        1032,
+        1518
+      ],
+      "contour_despill_pixels": 127,
+      "sha256": "bbd6d312825a55a5a11c0f944d22b10a8a24c7c679309709eab80247f4c0fa82",
+      "source_sha256": "3d65043ab46811d3a8378c4001d77a68054a8da3d5dc414c40112018939e0510",
+      "lossless_vp8l": true,
+      "removed_isolated_matte_pixels": [],
+      "contour_tiles": 53,
+      "bytes": 2011182,
+      "alpha_changed_pixels": 0,
+      "reference_bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "visible_key_excess_gt45": 1
+    },
+    {
+      "file": "img/town-district/house-right-one-asia-v1.webp",
+      "size": [
+        1438,
+        1094
+      ],
+      "mode": "RGBA",
+      "before_bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "after_bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "changed_pixels": 2948,
+      "changed_bbox": [
+        4,
+        5,
+        1429,
+        1053
+      ],
+      "contour_despill_pixels": 163,
+      "sha256": "759cad64e7bd38dab52cddf889eda5ee053197523764605ef2da31ea5bffa4ce",
+      "source_sha256": "b6b69488af91093cb817cb12f5aa48accfd154b50c7d06ca5b84526852de670f",
+      "lossless_vp8l": true,
+      "removed_isolated_matte_pixels": [
+        [
+          274,
+          107
+        ],
+        [
+          274,
+          108
+        ],
+        [
+          111,
+          266
+        ],
+        [
+          112,
+          266
+        ],
+        [
+          114,
+          266
+        ],
+        [
+          111,
+          267
+        ],
+        [
+          112,
+          267
+        ],
+        [
+          114,
+          267
+        ],
+        [
+          111,
+          268
+        ],
+        [
+          112,
+          268
+        ],
+        [
+          112,
+          269
+        ],
+        [
+          113,
+          269
+        ]
+      ],
+      "contour_tiles": 63,
+      "bytes": 1749226,
+      "alpha_changed_pixels": 2703,
+      "reference_bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "visible_key_excess_gt45": 0,
+      "target_1014_187_before": [
+        248,
+        198,
+        252,
+        255
+      ],
+      "target_1014_187_after": [
+        127,
+        42,
+        42,
+        6
+      ],
+      "target_composites": {
+        "32": [
+          34,
+          32,
+          32
+        ],
+        "224": [
+          222,
+          220,
+          220
+        ]
+      }
+    },
+    {
+      "file": "img/town-district/house-right-two-asia-v1.webp",
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "before_bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "after_bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "changed_pixels": 0,
+      "changed_bbox": null,
+      "contour_despill_pixels": 0,
+      "sha256": "18b49ee3acdf889ac3814bd33c7b64076dcfcbf1379cab27cf1c2646e15831cf",
+      "source_sha256": "18b49ee3acdf889ac3814bd33c7b64076dcfcbf1379cab27cf1c2646e15831cf",
+      "lossless_vp8l": true,
+      "removed_isolated_matte_pixels": [],
+      "contour_tiles": 57,
+      "bytes": 1873076,
+      "alpha_changed_pixels": 0,
+      "reference_bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "visible_key_excess_gt45": 1
+    }
+  ],
+  "visual_inspection": {
+    "backgrounds": [
+      "#202020",
+      "#E0E0E0"
+    ],
+    "scale": 4,
+    "resampling": "nearest neighbour",
+    "contour_pages_inspected": 44,
+    "contour_tiles_per_background": 235,
+    "limitation": "Visual artist inspection only; no QA acceptance or game integration asserted."
+  },
+  "test_history": [
+    "Initial alpha==0 assertion failed: antialias alpha is 6 at target.",
+    "Second background-deviation<=3 assertion failed: light-background composite is [222,220,220], four levels below background.",
+    "Final check uses alpha<=8 and RGB chroma spread<=3 on both backgrounds, alongside actual visual review; no assertion errors. No image was changed to satisfy these assertions."
+  ]
+}
