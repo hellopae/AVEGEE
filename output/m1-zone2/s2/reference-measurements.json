@@ -1,0 +1,74 @@
+[
+  {
+    "name": "front-one",
+    "reference": "img/town-district/house-front-one-v1.webp",
+    "destination": "img/town-district/house-front-one-asia-v1.webp",
+    "size": [
+      1402,
+      1122
+    ],
+    "mode": "RGBA",
+    "bbox": [
+      0,
+      17,
+      1399,
+      1122
+    ],
+    "sha256": "dbb23aa9c84e74d3bc211ad9355f0b37c228c7f436c09be8855166a9297ccb80",
+    "prompt": "Attached: [1] STRUCTURE: a finished Zone 1 small house sprite (single storey, front-facing and symmetric, central gabled porch, open veranda with balusters on both sides). [2] MATERIAL: the Zone 2 \"Sala\"\nbuilding sprite (dark jade-teal glazed curved tile roofs with upturned eaves, red lacquer columns and\nbeams, gold ornament, grey mossy stone base, red paper lanterns, stone guardian-lion statues).\n[3] MATERIAL 2: another Zone 2 building with grey carved stone walls, lion-head door rings, red banners\nwith gold emblems (emblem must not be copied) and glowing red lanterns.\n\nRedraw [1] as the Zone 2 East-Asian version of the SAME house. KEEP from [1] exactly: the camera angle,\nthe building's massing and silhouette proportions, the number of storeys, the positions of the door,\nporch, balcony and windows, the stair at the front, and the transparent-background framing (the house\nfills the canvas the same way, bottom centre of the base at the bottom centre of the canvas).\nCHANGE the style: roofs become dark jade-teal glazed curved tiles (#1F5B5E with #2E7F7C highlights)\nwith gently upturned eaves and small gold roof-end ornaments (no dragon, no figure); columns, beams\nand balustrades become red lacquer (#B3201E) with thin gold bands; walls become grey-jade stone\nbase (#7C8C86, moss) below and warm dark timber above; door and windows with open square-lattice\nscreens (plain square grid only) glowing warm amber from inside; a few hanging red paper lanterns\nwith gold caps and tassels; small gold brackets under the eaves. Painted game-asset style like [2]:\ncrisp dark outlines, hand-painted texture, warm key light from upper left, no ground shadow.\nPlain flat magenta #FF00FF background, nothing else in the picture.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, temple hall, shrine, altar, incense burner, bell tower, torii gate, wan lattice, round window with symbol, banner with text, dragon"
+  },
+  {
+    "name": "right-one",
+    "reference": "img/town-district/house-right-one-v1.webp",
+    "destination": "img/town-district/house-right-one-asia-v1.webp",
+    "size": [
+      1438,
+      1094
+    ],
+    "mode": "RGBA",
+    "bbox": [
+      0,
+      0,
+      1438,
+      1078
+    ],
+    "sha256": "ff32a5823b99317ac56ed7bb318a3c600ef811bd0c5b13783b859e61a777df60",
+    "prompt": "Attached: [1] STRUCTURE: a finished Zone 1 small house sprite (single storey, three-quarter view, gabled front porch at the right, long side wall at the left). [2] MATERIAL: the Zone 2 \"Sala\"\nbuilding sprite (dark jade-teal glazed curved tile roofs with upturned eaves, red lacquer columns and\nbeams, gold ornament, grey mossy stone base, red paper lanterns, stone guardian-lion statues).\n[3] MATERIAL 2: another Zone 2 building with grey carved stone walls, lion-head door rings, red banners\nwith gold emblems (emblem must not be copied) and glowing red lanterns.\n\nRedraw [1] as the Zone 2 East-Asian version of the SAME house. KEEP from [1] exactly: the camera angle,\nthe building's massing and silhouette proportions, the number of storeys, the positions of the door,\nporch, balcony and windows, the stair at the front, and the transparent-background framing (the house\nfills the canvas the same way, bottom centre of the base at the bottom centre of the canvas).\nCHANGE the style: roofs become dark jade-teal glazed curved tiles (#1F5B5E with #2E7F7C highlights)\nwith gently upturned eaves and small gold roof-end ornaments (no dragon, no figure); columns, beams\nand balustrades become red lacquer (#B3201E) with thin gold bands; walls become grey-jade stone\nbase (#7C8C86, moss) below and warm dark timber above; door and windows with open square-lattice\nscreens (plain square grid only) glowing warm amber from inside; a few hanging red paper lanterns\nwith gold caps and tassels; small gold brackets under the eaves. Painted game-asset style like [2]:\ncrisp dark outlines, hand-painted texture, warm key light from upper left, no ground shadow.\nPlain flat magenta #FF00FF background, nothing else in the picture.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, temple hall, shrine, altar, incense burner, bell tower, torii gate, wan lattice, round window with symbol, banner with text, dragon"
+  },
+  {
+    "name": "left-two",
+    "reference": "img/town-district/house-left-two-v1.webp",
+    "destination": "img/town-district/house-left-two-asia-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "mode": "RGBA",
+    "bbox": [
+      0,
+      0,
+      1036,
+      1518
+    ],
+    "sha256": "203b6a5cf512bfe1c69a61bd7588930fa85084593476dc8103a8230550465706",
+    "prompt": "Attached: [1] STRUCTURE: a finished Zone 1 small house sprite (two storeys, three-quarter view, upper balcony with banners and lanterns, door at ground level left of centre, tall tiled roof). [2] MATERIAL: the Zone 2 \"Sala\"\nbuilding sprite (dark jade-teal glazed curved tile roofs with upturned eaves, red lacquer columns and\nbeams, gold ornament, grey mossy stone base, red paper lanterns, stone guardian-lion statues).\n[3] MATERIAL 2: another Zone 2 building with grey carved stone walls, lion-head door rings, red banners\nwith gold emblems (emblem must not be copied) and glowing red lanterns.\n\nRedraw [1] as the Zone 2 East-Asian version of the SAME house. KEEP from [1] exactly: the camera angle,\nthe building's massing and silhouette proportions, the number of storeys, the positions of the door,\nporch, balcony and windows, the stair at the front, and the transparent-background framing (the house\nfills the canvas the same way, bottom centre of the base at the bottom centre of the canvas).\nCHANGE the style: roofs become dark jade-teal glazed curved tiles (#1F5B5E with #2E7F7C highlights)\nwith gently upturned eaves and small gold roof-end ornaments (no dragon, no figure); columns, beams\nand balustrades become red lacquer (#B3201E) with thin gold bands; walls become grey-jade stone\nbase (#7C8C86, moss) below and warm dark timber above; door and windows with open square-lattice\nscreens (plain square grid only) glowing warm amber from inside; a few hanging red paper lanterns\nwith gold caps and tassels; small gold brackets under the eaves. Painted game-asset style like [2]:\ncrisp dark outlines, hand-painted texture, warm key light from upper left, no ground shadow.\nPlain flat magenta #FF00FF background, nothing else in the picture.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, temple hall, shrine, altar, incense burner, bell tower, torii gate, wan lattice, round window with symbol, banner with text, dragon"
+  },
+  {
+    "name": "right-two",
+    "reference": "img/town-district/house-right-two-v1.webp",
+    "destination": "img/town-district/house-right-two-asia-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "mode": "RGBA",
+    "bbox": [
+      0,
+      0,
+      1036,
+      1500
+    ],
+    "sha256": "11ba6460e04d904c976d959f6466f47a32a1f98418302dc621ecc5f3be5e49c1",
+    "prompt": "Attached: [1] STRUCTURE: a finished Zone 1 small house sprite (two storeys, three-quarter view, upper balcony with lanterns at the right, door at ground level right of centre, tall tiled roof). [2] MATERIAL: the Zone 2 \"Sala\"\nbuilding sprite (dark jade-teal glazed curved tile roofs with upturned eaves, red lacquer columns and\nbeams, gold ornament, grey mossy stone base, red paper lanterns, stone guardian-lion statues).\n[3] MATERIAL 2: another Zone 2 building with grey carved stone walls, lion-head door rings, red banners\nwith gold emblems (emblem must not be copied) and glowing red lanterns.\n\nRedraw [1] as the Zone 2 East-Asian version of the SAME house. KEEP from [1] exactly: the camera angle,\nthe building's massing and silhouette proportions, the number of storeys, the positions of the door,\nporch, balcony and windows, the stair at the front, and the transparent-background framing (the house\nfills the canvas the same way, bottom centre of the base at the bottom centre of the canvas).\nCHANGE the style: roofs become dark jade-teal glazed curved tiles (#1F5B5E with #2E7F7C highlights)\nwith gently upturned eaves and small gold roof-end ornaments (no dragon, no figure); columns, beams\nand balustrades become red lacquer (#B3201E) with thin gold bands; walls become grey-jade stone\nbase (#7C8C86, moss) below and warm dark timber above; door and windows with open square-lattice\nscreens (plain square grid only) glowing warm amber from inside; a few hanging red paper lanterns\nwith gold caps and tassels; small gold brackets under the eaves. Painted game-asset style like [2]:\ncrisp dark outlines, hand-painted texture, warm key light from upper left, no ground shadow.\nPlain flat magenta #FF00FF background, nothing else in the picture.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, temple hall, shrine, altar, incense burner, bell tower, torii gate, wan lattice, round window with symbol, banner with text, dragon"
+  }
+]

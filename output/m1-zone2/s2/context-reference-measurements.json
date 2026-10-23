@@ -1,0 +1,62 @@
+[
+  {
+    "path": "img/map-v5/st-sala-asia.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "8858e09a2f0c34f239447bd32619824769f0f13f0e7c843231d7603bcf0be7a9"
+  },
+  {
+    "path": "img/map-v5/st-tarang-asia.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "e5c1ed9199b50b3cd62f19dee81bf662e57b3da84f8ab4345aa6e2e1e93c9171"
+  },
+  {
+    "path": "img/theme-v4/map-asia.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "2c98170256f5bf5561e0a8911c3e88d198ed1f40b0f5fd68578ca2b0457490a9"
+  },
+  {
+    "path": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "7a58d38d9bd17653e4f6c6d5978c84261fd1c25c48771a47e31efbd42949764d"
+  },
+  {
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Toby/2026-10-23-avegee-m0-map-survey/zone1-layout-guide.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "0ae725ce7faf6b04e2417306911e57b52cf9ba4a34efb6eae78356a2def740c4"
+  }
+]

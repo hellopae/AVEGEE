@@ -1,0 +1,20 @@
+Attached: [1] STRUCTURE: a finished Zone 1 small house sprite (single storey, three-quarter view, gabled front porch at the right, long side wall at the left). [2] MATERIAL: the Zone 2 "Sala"
+building sprite (dark jade-teal glazed curved tile roofs with upturned eaves, red lacquer columns and
+beams, gold ornament, grey mossy stone base, red paper lanterns, stone guardian-lion statues).
+[3] MATERIAL 2: another Zone 2 building with grey carved stone walls, lion-head door rings, red banners
+with gold emblems (emblem must not be copied) and glowing red lanterns.
+
+Redraw [1] as the Zone 2 East-Asian version of the SAME house. KEEP from [1] exactly: the camera angle,
+the building's massing and silhouette proportions, the number of storeys, the positions of the door,
+porch, balcony and windows, the stair at the front, and the transparent-background framing (the house
+fills the canvas the same way, bottom centre of the base at the bottom centre of the canvas).
+CHANGE the style: roofs become dark jade-teal glazed curved tiles (#1F5B5E with #2E7F7C highlights)
+with gently upturned eaves and small gold roof-end ornaments (no dragon, no figure); columns, beams
+and balustrades become red lacquer (#B3201E) with thin gold bands; walls become grey-jade stone
+base (#7C8C86, moss) below and warm dark timber above; door and windows with open square-lattice
+screens (plain square grid only) glowing warm amber from inside; a few hanging red paper lanterns
+with gold caps and tassels; small gold brackets under the eaves. Painted game-asset style like [2]:
+crisp dark outlines, hand-painted texture, warm key light from upper left, no ground shadow.
+Plain flat magenta #FF00FF background, nothing else in the picture.
+
+Negative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, temple hall, shrine, altar, incense burner, bell tower, torii gate, wan lattice, round window with symbol, banner with text, dragon

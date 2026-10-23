@@ -1,0 +1,213 @@
+{
+  "task": "ART-m1-zone2-s2",
+  "sprites": [
+    {
+      "name": "front-one",
+      "reference": "img/town-district/house-front-one-v1.webp",
+      "destination": "img/town-district/house-front-one-asia-v1.webp",
+      "raw": "output/m1-zone2/raw/house-front-one-asia-v1.png",
+      "raw_size": [
+        1402,
+        1122
+      ],
+      "reference_bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "keyed_bbox": [
+        23,
+        59,
+        1380,
+        1038
+      ],
+      "eroded_bbox": [
+        24,
+        61,
+        1379,
+        1037
+      ],
+      "final_bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "bbox_edge_delta_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "resize_scale": [
+        1.0324723247232472,
+        1.132172131147541
+      ],
+      "mode": "RGBA",
+      "size": [
+        1402,
+        1122
+      ],
+      "visible_key_pixels": 0,
+      "lossless_pixel_roundtrip": true,
+      "sha256": "c293c1a668c5a847e665bd0b7e2a315c926913f7dcf44e8d28c3ecfbbc3f5cda"
+    },
+    {
+      "name": "right-one",
+      "reference": "img/town-district/house-right-one-v1.webp",
+      "destination": "img/town-district/house-right-one-asia-v1.webp",
+      "raw": "output/m1-zone2/raw/house-right-one-asia-v1.png",
+      "raw_size": [
+        1438,
+        1094
+      ],
+      "reference_bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "keyed_bbox": [
+        8,
+        17,
+        1427,
+        1047
+      ],
+      "eroded_bbox": [
+        9,
+        18,
+        1426,
+        1046
+      ],
+      "final_bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "bbox_edge_delta_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "resize_scale": [
+        1.014820042342978,
+        1.04863813229572
+      ],
+      "mode": "RGBA",
+      "size": [
+        1438,
+        1094
+      ],
+      "visible_key_pixels": 0,
+      "lossless_pixel_roundtrip": true,
+      "sha256": "b6b69488af91093cb817cb12f5aa48accfd154b50c7d06ca5b84526852de670f"
+    },
+    {
+      "name": "left-two",
+      "reference": "img/town-district/house-left-two-v1.webp",
+      "destination": "img/town-district/house-left-two-asia-v1.webp",
+      "raw": "output/m1-zone2/raw/house-left-two-asia-v1.png",
+      "raw_size": [
+        1036,
+        1518
+      ],
+      "reference_bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "keyed_bbox": [
+        6,
+        11,
+        1032,
+        1518
+      ],
+      "eroded_bbox": [
+        7,
+        12,
+        1031,
+        1518
+      ],
+      "final_bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "bbox_edge_delta_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "resize_scale": [
+        1.01171875,
+        1.0079681274900398
+      ],
+      "mode": "RGBA",
+      "size": [
+        1036,
+        1518
+      ],
+      "visible_key_pixels": 0,
+      "lossless_pixel_roundtrip": true,
+      "sha256": "3d65043ab46811d3a8378c4001d77a68054a8da3d5dc414c40112018939e0510"
+    },
+    {
+      "name": "right-two",
+      "reference": "img/town-district/house-right-two-v1.webp",
+      "destination": "img/town-district/house-right-two-asia-v1.webp",
+      "raw": "output/m1-zone2/raw/house-right-two-asia-edit2.png",
+      "raw_size": [
+        1036,
+        1518
+      ],
+      "reference_bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "keyed_bbox": [
+        8,
+        10,
+        1028,
+        1494
+      ],
+      "eroded_bbox": [
+        10,
+        12,
+        1027,
+        1493
+      ],
+      "final_bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "bbox_edge_delta_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "resize_scale": [
+        1.0186823992133727,
+        1.012829169480081
+      ],
+      "mode": "RGBA",
+      "size": [
+        1036,
+        1518
+      ],
+      "visible_key_pixels": 0,
+      "lossless_pixel_roundtrip": true,
+      "sha256": "18b49ee3acdf889ac3814bd33c7b64076dcfcbf1379cab27cf1c2646e15831cf"
+    }
+  ]
+}

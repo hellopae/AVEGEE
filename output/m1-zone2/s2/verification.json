@@ -1,0 +1,146 @@
+{
+  "checks": [
+    {
+      "file": "img/town-district/house-front-one-asia-v1.webp",
+      "size": [
+        1402,
+        1122
+      ],
+      "mode": "RGBA",
+      "webp_chunks": [
+        "VP8L"
+      ],
+      "bbox": [
+        0,
+        17,
+        1399,
+        1122
+      ],
+      "max_bbox_delta_fraction": 0.0,
+      "visible_key_like_pixels": 0,
+      "reference_sha256_unchanged": true,
+      "raw_corner_rgb": [
+        235,
+        11,
+        237
+      ],
+      "sha256": "c293c1a668c5a847e665bd0b7e2a315c926913f7dcf44e8d28c3ecfbbc3f5cda"
+    },
+    {
+      "file": "img/town-district/house-right-one-asia-v1.webp",
+      "size": [
+        1438,
+        1094
+      ],
+      "mode": "RGBA",
+      "webp_chunks": [
+        "VP8L"
+      ],
+      "bbox": [
+        0,
+        0,
+        1438,
+        1078
+      ],
+      "max_bbox_delta_fraction": 0.0,
+      "visible_key_like_pixels": 0,
+      "reference_sha256_unchanged": true,
+      "raw_corner_rgb": [
+        230,
+        11,
+        235
+      ],
+      "sha256": "b6b69488af91093cb817cb12f5aa48accfd154b50c7d06ca5b84526852de670f"
+    },
+    {
+      "file": "img/town-district/house-left-two-asia-v1.webp",
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "webp_chunks": [
+        "VP8L"
+      ],
+      "bbox": [
+        0,
+        0,
+        1036,
+        1518
+      ],
+      "max_bbox_delta_fraction": 0.0,
+      "visible_key_like_pixels": 0,
+      "reference_sha256_unchanged": true,
+      "raw_corner_rgb": [
+        235,
+        10,
+        239
+      ],
+      "sha256": "3d65043ab46811d3a8378c4001d77a68054a8da3d5dc414c40112018939e0510"
+    },
+    {
+      "file": "img/town-district/house-right-two-asia-v1.webp",
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "webp_chunks": [
+        "VP8L"
+      ],
+      "bbox": [
+        0,
+        0,
+        1036,
+        1500
+      ],
+      "max_bbox_delta_fraction": 0.0,
+      "visible_key_like_pixels": 0,
+      "reference_sha256_unchanged": true,
+      "raw_corner_rgb": [
+        231,
+        12,
+        238
+      ],
+      "sha256": "18b49ee3acdf889ac3814bd33c7b64076dcfcbf1379cab27cf1c2646e15831cf"
+    }
+  ],
+  "existing_tracked_files_modified": [],
+  "scope": "4 new house WebP paths and output/m1-zone2 only",
+  "game_tests_run": false,
+  "game_integration_checked": false,
+  "acceptance_owner": "Toby",
+  "result": "Measured image properties recorded; no QA acceptance claimed",
+  "final_changed_files": [
+    "img/town-district/house-front-one-asia-v1.webp",
+    "img/town-district/house-left-two-asia-v1.webp",
+    "img/town-district/house-right-one-asia-v1.webp",
+    "img/town-district/house-right-two-asia-v1.webp",
+    "output/m1-zone2/raw/house-front-one-asia-v1.png",
+    "output/m1-zone2/raw/house-left-two-asia-v1.png",
+    "output/m1-zone2/raw/house-right-one-asia-v1.png",
+    "output/m1-zone2/raw/house-right-two-asia-edit1-rejected.png",
+    "output/m1-zone2/raw/house-right-two-asia-edit2.png",
+    "output/m1-zone2/raw/house-right-two-asia-v1.png",
+    "output/m1-zone2/s2.md",
+    "output/m1-zone2/s2/contact-sheet.png",
+    "output/m1-zone2/s2/context-reference-measurements.json",
+    "output/m1-zone2/s2/edge-400-front-one.png",
+    "output/m1-zone2/s2/edge-400-left-two.png",
+    "output/m1-zone2/s2/edge-400-right-one.png",
+    "output/m1-zone2/s2/edge-400-right-two.png",
+    "output/m1-zone2/s2/prompt-front-one.txt",
+    "output/m1-zone2/s2/prompt-left-two.txt",
+    "output/m1-zone2/s2/prompt-right-one.txt",
+    "output/m1-zone2/s2/prompt-right-two-edit1.txt",
+    "output/m1-zone2/s2/prompt-right-two-edit2.txt",
+    "output/m1-zone2/s2/prompt-right-two.txt",
+    "output/m1-zone2/s2/reference-measurements.json",
+    "output/m1-zone2/s2/right-two-interior-before-after.png",
+    "output/m1-zone2/s2/verification.json",
+    "output/m1-zone2/s2/zone1-comparison.png",
+    "output/m1-zone2/sprite-bbox.json"
+  ],
+  "readme_contains_all_six_actual_prompts": true,
+  "evidence_png_decode_checked": true
+}
