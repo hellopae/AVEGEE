@@ -1,0 +1,39 @@
+[
+  {
+    "path": "img/theme-v4/town-judgment-th-v2.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1492,
+      1008
+    ]
+  },
+  {
+    "path": "img/map-v5/st-sala-asia.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  {
+    "path": "img/theme-v4/map-asia.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "size": [
+    1536,
+    1024
+  ],
+  "mode": "RGBA",
+  "lossless_roundtrip_equal": true,
+  "bbox_delta_px": [
+    21,
+    11,
+    1,
+    1
+  ],
+  "bbox_within_2_percent": true,
+  "visible_magenta_pixels": 0,
+  "transparent_pixels": 566823,
+  "partial_alpha_pixels": 15170,
+  "sha256": "c1e641cb28d71defbb85d117118c7479a8b8fb7220315c067b6b8e4ace70b463",
+  "scope": "Asset-only inspection; no game integration, culture approval or QA verdict.",
+  "geometry": {
+    "zone1": {
+      "flame_centroids_px": [
+        [
+          450.39870490286773,
+          124.94819611470861
+        ],
+        [
+          1084.8635437881874,
+          125.69857433808554
+        ]
+      ],
+      "method": "orange-yellow threshold R>210,100<G<235,B<100,A>128; left ROI x380:530/right ROI x1000:1160, y20:145; excludes bowls"
+    },
+    "zone2": {
+      "flame_centroids_px": [
+        [
+          431.9828030954428,
+          97.70249355116079
+        ],
+        [
+          1078.7418213969938,
+          98.24491600353669
+        ]
+      ],
+      "method": "orange-yellow threshold R>210,100<G<235,B<100,A>128; left ROI x380:530/right ROI x1000:1160, y20:145; excludes bowls"
+    },
+    "centroid_delta_px": [
+      [
+        -18.415901807424916,
+        -27.245702563547823
+      ],
+      [
+        -6.1217223911935434,
+        -27.453658334548848
+      ]
+    ],
+    "throne_crest_visual_px": {
+      "zone1": [
+        768,
+        16
+      ],
+      "zone2": [
+        755,
+        15
+      ],
+      "method": "visual estimate, not segmentation"
+    },
+    "stair_tread_visual_x_px": {
+      "zone1": [
+        600,
+        938
+      ],
+      "zone2": [
+        583,
+        940
+      ],
+      "method": "visual estimate of treads excluding flanking newels; perspective means width varies with height"
+    }
+  }
+}

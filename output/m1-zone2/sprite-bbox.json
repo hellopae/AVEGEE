@@ -1,0 +1,72 @@
+{
+  "S1": {
+    "reference": {
+      "path": "img/theme-v4/town-judgment-th-v2.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_bbox": [
+        0,
+        0,
+        1492,
+        1008
+      ],
+      "alpha_gt8_bbox": [
+        48,
+        10,
+        1488,
+        990
+      ]
+    },
+    "generated": {
+      "raw_path": "output/m1-zone2/raw/town-judgment-asia-v2-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "key": "#FF00FF",
+      "keyed_bbox_before_framing": [
+        43,
+        10,
+        1494,
+        1002
+      ]
+    },
+    "final": {
+      "path": "img/theme-v4/town-judgment-asia-v2.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_bbox": [
+        21,
+        11,
+        1491,
+        1007
+      ],
+      "bbox_delta_px": [
+        21,
+        11,
+        1,
+        1
+      ],
+      "bbox_tolerance_px": [
+        30.72,
+        20.48,
+        30.72,
+        20.48
+      ],
+      "alpha_inset_px": 1,
+      "framing_target_before_inset": [
+        20,
+        10,
+        1492,
+        1008
+      ]
+    },
+    "note": "Reference low-alpha spill extends beyond the visible object. Bbox uses all nonzero alpha, exactly as requested."
+  }
+}
