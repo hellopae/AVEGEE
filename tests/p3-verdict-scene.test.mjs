@@ -113,7 +113,7 @@ test('lines: variables are filled, never leak braces, and unmet variables fall b
   assert.equal(VERDICT_LINES.th.blame.length,DAD.redsToCome,'one blame pool per red tier');
 });
 
-test('art slots exist for every zone and kind (zone 1 pair is Codex final; others reuse existing head art)',()=>{
+test('art slots exist for every zone and kind (P9: all four zones have their own Codex praise/scold pair)',()=>{
   for(const z of Object.keys(ZONES)){
     for(const k of ['praise','blame']){const p=verdictSceneImage(z,k);assert.ok(p,`${z}/${k}`);assert.ok(existsSync(new URL('../'+p,import.meta.url)),p+' exists on disk');}
   }

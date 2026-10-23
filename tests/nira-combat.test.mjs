@@ -84,7 +84,7 @@ test('downed Nira leaves the queue without admitting another companion',()=>{
 
 test('combat art uses all four regional sheets and the four animation rows',()=>{
   for(const zone of ['th','asia','west','cyberhell']) {
-    assert.equal(niraCombatSheet(zone),`img/nira-combat/nira-${zone}-sheet-v1.webp`);
+    assert.equal(niraCombatSheet(zone),`img/nira-combat/nira-${zone}-sheet-v2.webp`);   // P9: v2 sheets, all rows facing right
     assert.equal(niraHealingCutscene(zone),`img/nira-combat/nira-${zone}-heal-cutscene-v1.webp`);
   }
   for(const [row,pose] of ['idle','attack','hurt','heal'].entries()) {

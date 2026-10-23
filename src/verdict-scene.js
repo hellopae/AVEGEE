@@ -3,14 +3,13 @@
 // Pure data/logic: no DOM. The scene object is built once in game.applyVerdict and saved, so a reload shows the same words.
 import { VERDICT_LINES, authorityOf } from './data.js';
 
-/** Stable art slots. Codex's zone 1 pair is final; zones 2-4 reuse the head art that already exists
- *  (arrival portrait for praise, punishment cutscene for rebuke) until dedicated pairs are drawn —
- *  then only these paths change, never the logic. */
+/** Stable art slots. All four zones now have their own praise/rebuke pair (zone 1: Codex 22 Oct, zones 2-4: Codex 23 Oct round two,
+ *  inspected in P9). The files keep Codex's `scold` name; the scene kind is `blame`. A future redraw only overwrites the file. */
 export const VERDICT_ART = {
   th:{ praise:'img/head-th-praise-cutscene-v1.png', blame:'img/head-th-scold-cutscene-v1.png' },
-  asia:{ praise:'img/Asia/intro-head-asia-v2.png', blame:'img/head-asia-punish-cutscene-v1.png' },
-  west:{ praise:'img/West/intro-head-west-v2.png', blame:'img/head-west-punish-cutscene-v1.png' },
-  cyberhell:{ praise:'img/CyberHell/intro-head-cyberhell-v2.png', blame:'img/head-cyberhell-punish-cutscene-v1.png' },
+  asia:{ praise:'img/head-asia-praise-cutscene-v1.png', blame:'img/head-asia-scold-cutscene-v1.png' },
+  west:{ praise:'img/head-west-praise-cutscene-v1.png', blame:'img/head-west-scold-cutscene-v1.png' },
+  cyberhell:{ praise:'img/head-cyberhell-praise-cutscene-v1.png', blame:'img/head-cyberhell-scold-cutscene-v1.png' },
 };
 export const verdictSceneImage = (zone, kind) => (VERDICT_ART[zone] || VERDICT_ART.th)[kind];
 

@@ -2903,7 +2903,7 @@
       }
     },
     "boss:cyberhell:boss-frontier": {
-      "src": "img/boss-combat-v1/cyberhell/boss-frontier.webp",
+      "src": "img/boss-combat-v1/cyberhell/boss-frontier-v2.webp",
       "frameWidth": 384,
       "frameHeight": 512,
       "cols": 3,

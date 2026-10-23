@@ -2,7 +2,16 @@
 // Retain the export name for existing Nira animation callers; expeditions also include the guide.
 export const isFrontierDuoBattle = battle => battle?.expeditionParty === true;
 
-export const niraCombatSheet = zone => `img/nira-combat/nira-${['th','asia','west','cyberhell'].includes(zone) ? zone : 'th'}-sheet-v1.webp`;
+/** P9: the four v2 combat sheets (23 Oct Codex round): every row is drawn facing RIGHT and every pose keeps >= 8 px of clear margin
+ *  inside its cell. A zone listed here draws `...-sheet-v2.webp`, needs no ally mirror in any pose and no neighbour-leak strip.
+ *  A zone that is not listed (a future redraw that fails inspection) keeps the v1 sheet with the old mirror / strip behaviour. */
+export const NIRA_SHEETS_V2 = Object.freeze(['th','asia','west','cyberhell']);
+const niraZone = zone => ['th','asia','west','cyberhell'].includes(zone) ? zone : 'th';
+export const niraSheetIsV2 = zone => NIRA_SHEETS_V2.includes(niraZone(zone));
+export const niraCombatSheet = zone => `img/nira-combat/nira-${niraZone(zone)}-sheet-${niraSheetIsV2(zone) ? 'v2' : 'v1'}.webp`;
+/** True when the pose is drawn facing the enemy (right) and must opt out of the squad's ally mirror (.face-native).
+ *  v2: every pose. v1: only attack/heal (idle and hurt were drawn looking left, so the ally mirror turns them to the enemy). */
+export const niraPoseFacesRight = (zone, pose) => niraSheetIsV2(zone) || pose === 'attack' || pose === 'heal';
 export const niraHealingCutscene = zone => `img/nira-combat/nira-${['th','asia','west','cyberhell'].includes(zone) ? zone : 'th'}-heal-cutscene-v1.webp`;
 export const niraCombatFrame = (pose = 'idle', elapsed = 0) => ({
   row:({idle:0,attack:1,hurt:2,heal:3})[pose] ?? 0,
@@ -67,7 +76,7 @@ function loadSheet(zone) {
         const whole = document.createElement('canvas'); whole.width = image.naturalWidth; whole.height = image.naturalHeight;
         const wctx = whole.getContext('2d'); wctx.drawImage(image,0,0);
         const pixels = wctx.getImageData(0,0,whole.width,whole.height);
-        if (stripNeighbourLeaks(pixels.data,whole.width,whole.height)) { wctx.putImageData(pixels,0,0); source = whole; }
+        if (!niraSheetIsV2(zone) && stripNeighbourLeaks(pixels.data,whole.width,whole.height)) { wctx.putImageData(pixels,0,0); source = whole; }
       } catch {}
       for(let row=0;row<4;row++) {
         frames[row] = [];
@@ -96,10 +105,9 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit, holdUnt
   const start = Date.now(), reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   loadSheet(zone).then(frames => {
     if (!frames || !image.isConnected) return;
-    // O2: facing. The attack row (beam / book to the right) and the heal row are drawn facing RIGHT, toward the enemies — they must opt out of
-    // the squad's ally mirror (.face-native) or her beam fires away from the enemy. The idle and hurt rows are drawn looking LEFT / to the
-    // camera (stamp held on the left), so they keep the normal ally mirror and she faces the enemy in every pose.
-    image.classList.toggle('face-native', pose === 'attack' || pose === 'heal'); image.dataset.niraPose = pose;
+    // O2/P9: facing. v2 sheets are drawn facing RIGHT, toward the enemies, in every row, so every pose opts out of the squad's ally mirror
+    // (.face-native). A v1 sheet only had attack/heal facing right; its idle and hurt rows look LEFT, so they keep the ally mirror.
+    image.classList.toggle('face-native', niraPoseFacesRight(zone,pose)); image.dataset.niraPose = pose;
     let previous = -1;
     const hold = pose === 'hurt' && typeof holdUntil === 'function' ? Number(holdUntil()) || 0 : 0;
     const tick = () => {
