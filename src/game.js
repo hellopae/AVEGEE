@@ -6,6 +6,7 @@ import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
+import { routeBossCave } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
@@ -4236,14 +4237,14 @@ const API = {
     if(!(typeof checkpoint==='string'?dungeonAtPatrol(this,checkpoint):opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
     if(encounter.boss) {
-      const battle=this.startZoneEvent('thBorderBoss');
+      const battle=this.startZoneEvent(routeBossCave(dungeonStatus(this)?.route.id)?.eventKey||'thBorderBoss');
       if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';battle.expeditionParty=false;this.save();}
       else resolveDungeonEncounter(this,encounter.token,false);
       return battle;
     }
     const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
     this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
-    if(battle){if(this.zone==='th')battle.sceneBiome='border';if(encounter.patrol)battle.dungeonRetreatProgress=dungeonPatrols('th:asia').find(p=>p.id===encounter.patrol)?.progress;}
+    if(battle){if(this.zone==='th')battle.sceneBiome='border';if(encounter.patrol)battle.dungeonRetreatProgress=dungeonPatrols(dungeonStatus(this)?.route.id).find(p=>p.id===encounter.patrol)?.progress;}
     if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
     return battle;
   },
@@ -4833,6 +4834,7 @@ API.snapshot = function (withEntry = true) {
     townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
+    townSkinMigrated: { ...this.townSkinMigrated },   // M2 T3 — zones whose painted-town skin already moved the save's positions
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,

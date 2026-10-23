@@ -9,6 +9,7 @@ import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
 import { bindCommandPress } from './command-press.js?v=20261015-k2';
 import { drawTownTerrain } from './town-terrain.js?v=k1d';
 import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';
+import {routeBossCave} from './route-geometry.js';
 import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
@@ -4340,7 +4341,7 @@ function openDungeon() {
         const arrive=()=>{if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();};
         if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
         else if(g.bossGuideWaiting?.()){
-          const place=dungeonStatus(g)?.route.id==='th:asia'?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
+          const place=routeBossCave(dungeonStatus(g)?.route.id)?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
           modal(`<h2>ผู้ตรวจการรอที่${place}</h2><p>ย้อนกลับไปคุยกับผู้ตรวจการที่${place} เพื่อให้เขาพาเดินทางไปยังดินแดนใหม่</p><button data-return-guide>กลับไปตามหา</button>`,d=>{d.querySelector('[data-return-guide]').onclick=()=>openDungeon();});
         }
         else arrive();

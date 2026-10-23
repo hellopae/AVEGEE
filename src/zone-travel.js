@@ -1,4 +1,5 @@
 /** Persisted travel rules; rendering and combat remain owned by the game. */
+import { ROUTE_GEOMETRY, routeRow, isWildernessRoute, routeBossCave } from './route-geometry.js';
 export const TRAVEL_VERSION = 1;
 export const TRAVEL_ZONES = Object.freeze(['th', 'asia', 'west', 'cyberhell']);
 const route = (from, to, name, checkpoints, foes) => Object.freeze({
@@ -11,13 +12,17 @@ export const DUNGEON_ROUTES = Object.freeze([
   route('west','cyberhell','ทางชายแดนปัจฉิม–ไซเบอร์',['ป่าหมอก','เส้นทางเครื่องจักร','ประตูไซเบอร์'],[10,11,12]),
 ]);
 // Optional patrols live between the three story checkpoints. Their victories never unlock a gate.
-export const DUNGEON_PATROLS = Object.freeze([.08,.19,.32,.48,.66,.90].map((progress,i)=>Object.freeze({
-  id:`th:asia:patrol:${i}`,progress,foe:[2,3,2,5,3,5][i],name:'ปีศาจลาดตระเวน',level:1+Math.floor(i/2),
+// M2 R1: patrol progress / foes are columns of ROUTE_GEOMETRY; only routes using the trail system (enabled rows) have patrols.
+const patrolsOf = routeId => Object.freeze(routeRow(routeId).patrolProgress.map((progress,i)=>Object.freeze({
+  id:`${routeId}:patrol:${i}`,progress,foe:routeRow(routeId).patrolFoe[i],name:'ปีศาจลาดตระเวน',level:1+Math.floor(i/2),
 })));
-export const dungeonPatrols = routeId => routeId==='th:asia'?DUNGEON_PATROLS:[];
+const PATROLS = Object.fromEntries(Object.keys(ROUTE_GEOMETRY).map(id => [id, patrolsOf(id)]));
+export const DUNGEON_PATROLS = PATROLS['th:asia'];
+export const dungeonPatrols = routeId => isWildernessRoute(routeId)?PATROLS[routeId]:[];
 const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
-const routeAvailable = (g,r) => !!g.bossCleared?.[r.from] || r.id === 'th:asia' && (g.zoneEvents?.th?.frontierBreach==='cleared' || ['pending','active'].includes(g.zoneEvents?.th?.thBorderBoss));
+// A route with a boss cave opens early once that zone's breach is cleared or its cave boss is waiting (Zone 1-2 only).
+const routeAvailable = (g,r) => { const cave = routeBossCave(r.id); return !!g.bossCleared?.[r.from] || !!cave && (g.zoneEvents?.[cave.zone]?.[cave.breachKey]==='cleared' || ['pending','active'].includes(g.zoneEvents?.[cave.zone]?.[cave.eventKey])); };
 const busy = g => !!(g.battle || g.over || g.pendingRecovery);
 const state = g => g.zoneTravel || initializeZoneTravel(g);
 
@@ -72,7 +77,7 @@ export function dungeonStatus(g) {
   return { route:r, checkpoint:a.checkpoint, location:r.checkpoints[a.checkpoint] || null,
     ready:a.checkpoint === r.checkpoints.length && !!g.bossCleared?.[r.from], pending:a.pending, defeated:a.defeated || a.cleared };
 }
-const routedBoss = (status,g) => status.route.id === 'th:asia' && status.checkpoint === 2 && !g.bossCleared?.th;
+const routedBoss = (status,g) => { const cave = routeBossCave(status.route.id); return !!cave && status.checkpoint === cave.checkpoint && !g.bossCleared?.[cave.zone]; };
 /** Request encounter only after the player reaches the current checkpoint. */
 export function nextDungeonEncounter(g,checkpoint=null) {
   const status = dungeonStatus(g), a = state(g).active;
@@ -86,7 +91,7 @@ export function nextDungeonEncounter(g,checkpoint=null) {
   if(status.ready)return null;
   const index=checkpoint??status.checkpoint;
   if(!Number.isInteger(index)||!status.route.checkpoints[index]||(a.defeated||a.cleared).includes(status.route.checkpoints[index].id))return null;
-  if(status.route.id==='th:asia'&&index===2&&status.checkpoint<2)return null;
+  { const cave = routeBossCave(status.route.id); if(cave&&index===cave.checkpoint&&status.checkpoint<cave.checkpoint)return null; }
   const location = status.route.checkpoints[index];
   const token = `${a.route}:${index}:${++a.attempt}`;
   a.pendingPatrol=null;
