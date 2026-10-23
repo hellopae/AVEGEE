@@ -10,8 +10,8 @@ import { routeBossCave } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
-import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
+import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { YAMA_SKILL_SECONDS, yamaSkillRemaining } from './yama-cooldown.js?v=j1';
@@ -2890,9 +2890,9 @@ const API = {
     // O1 (Kittanate 22 Oct): after the farewell the boss stays at the frontier stand (every zone, zone 1 included)
     // and is gone from the outer route; before it, zone 1 keeps the cave talk spot.
     if(this.zone==='th'&&!bossGuideDismissed(this)) {
-      const status=dungeonStatus(this),p=this.zoneTravel?.active?.position;
-      const cave=dungeonPoint(DUNGEON_PROGRESS[2]);
-      return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&status?.route.id==='th:asia'&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=.065);
+      const status=dungeonStatus(this),p=this.zoneTravel?.active?.position,bossCave=routeBossCave(status?.route.id);
+      const cave=dungeonPoint(DUNGEON_PROGRESS[bossCave?.checkpoint??2],status?.route.id);
+      return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&bossCave?.zone===this.zone&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=(bossCave.interactReach??.065));
     }
     return !this.battle && !this.over && !this.pendingRecovery && this.challengeUnlocked() &&
       !!frontierPlayer && Math.hypot(frontierPlayer.x - CHALLENGE_STAND[this.zone].x, frontierPlayer.y - CHALLENGE_STAND[this.zone].y) <= .09;
@@ -4847,6 +4847,30 @@ API.save = function () {
   catch { return false; }
 };
 
+/** M2 T3 — one-off position move for a zone whose painted-town skin is now on (see restore()). Exported for tests. */
+export function migrateTownSkinZone(g, k) {
+  const spawn = [TOWN_SPOTS.bench.x + 60, TOWN_SPOTS.bench.y];
+  const settle = state => {
+    if (!state) return;
+    if (state.player) Object.assign(state.player, { x:spawn[0], y:spawn[1], tx:null, ty:null, path:null });
+    for (const it of state.items || []) [it.x, it.y] = spawn;
+    if (state.guard) Object.assign(state.guard, { x:TOWN_GUARD_POST[0], y:TOWN_GUARD_POST[1], path:null, target:null });
+    for (const m of state.mobs || []) { m.x = 1920; m.y = TOWN_RIVER_Y - 50; m.path = null; }
+    for (const c of state.crew || []) {
+      const home = TOWN_CREW[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }
+      c.x = null; c.y = null; c.path = null;
+    }
+  };
+  if (g.zone === k) settle(g);
+  settle(g.zoneSave?.[k]);
+  if (g.zoneEntry?.zone === k) settle(g.zoneEntry);
+  for (const actor of Object.values(g.roster || {})) if (actor.homeZone === k) {
+    const home = TOWN_CREW[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }
+    actor.x = null; actor.y = null; actor.path = null;
+    if (actor.kind === 'guard') { actor.x = TOWN_GUARD_POST[0]; actor.y = TOWN_GUARD_POST[1]; }
+  }
+  g.blockSig = null;
+}
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3 && d.v !== 4)) return false;
   if (d.rosterVersion !== ROSTER_VERSION) {
@@ -5273,6 +5297,15 @@ API.restore = function (d) {
     }
     for(const [actor,position] of activeFollowers) Object.assign(actor,position);
     this.blockSig=null;
+  }
+  // M2 T3 — a zone whose painted-town skin was switched on after the save was made keeps coordinates of its old
+  // 1678x937 map. Move them to the town spawn ONCE per zone (same idea as mapV2FixTh / townMapVersion<2). Progress,
+  // items carried, stations and crew levels are untouched — only where things stand. Nothing runs while a zone is off.
+  this.townSkinMigrated = { ...(d.townSkinMigrated || {}) };
+  for (const k of TOWN_SKIN_ZONES) {
+    if (k === 'th' || !isTownZone(k) || this.townSkinMigrated[k]) continue;
+    migrateTownSkinZone(this, k);
+    this.townSkinMigrated[k] = true;
   }
   initializeZoneTravel(this,d.zoneTravel);
   initializeBossGuides(this,d.bossGuides);
