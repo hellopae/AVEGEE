@@ -21,7 +21,7 @@ import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -3623,6 +3623,8 @@ function openBattle(after) {
       onHit:() => {
         dash.hit = true; phaseAt = Date.now(); b.commandBusy = false;
         if (!onHit()) { dash = null; phase = null; fxNow = null; commandMenuOpen = true; paint(); return false; }
+        // Asia's deva interlude removes the battle at contact; close this UI before returning to the story.
+        if (g.battle !== b) { b.commandBusy = false; dash = null; phase = null; fxNow = null; finish(); return false; }
         powerSound(side === 'you' ? action : 'foe');
         paint();
         // Use the actual contact instant; the recipe's own delay must not add a second hit delay.
@@ -3633,7 +3635,9 @@ function openBattle(after) {
       onFinish:() => {
         dash = null; phase = null; fxNow = null;
         onFinish(); g.finishBattleCommand(); commandMenuOpen = true;
-        if (g.battle) { finishWaveAfterDash(); paint(); }
+        // Preserve the original boss-finale flow after the attacker has returned home.
+        if (b.storyFinale) { sfx('win'); finish(); return; }
+        if (g.battle) { finishWaveAfterDash(); paint(); if (b.over) sfx(b.over === 'win' ? 'win' : 'lose'); }
       }
     });
     const tick = () => {
