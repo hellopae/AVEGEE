@@ -185,3 +185,10 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 @media(prefers-reduced-motion:reduce){.heal-fx :is(.hf-glow,.hf-ring,.hf-sp,.hf-num){animation:none}.heal-fx .hf-sp,.heal-fx .hf-ring.r2{opacity:0}.heal-fx .hf-glow{opacity:.6}.heal-fx .hf-ring,.heal-fx .hf-num{opacity:1}}
 .arena.combat-arena .formation-member .target-prompt{font-size:clamp(10px,.8vw,12px);padding:2px 8px}
 .battle9-menu.targeting .battle-command-heading{visibility:hidden}   /* the receiver tag sits where the heading is */
+
+/* B1: measured dash owns translation; retain the turn's standing step in transform. */
+.arena.combat-arena .battle-dashing{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+ .arena.combat-arena .formation-member.attack-lunge{animation:none!important}
+}
+.arena.combat-arena:has(.battle-dashing) .foe-group{z-index:auto}

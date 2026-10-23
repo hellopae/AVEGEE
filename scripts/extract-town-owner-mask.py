@@ -46,7 +46,14 @@ if args.layer is not None:
     dil = 0 if args.dilate is None else args.dilate
     if dil:
         cells = cv2.dilate(cells.astype(np.uint8), np.ones((2*dil+1, 2*dil+1), np.uint8)).astype(bool)
-    metadata = {'source_sha256': hashlib.sha256(args.layer.read_bytes()).hexdigest(), 'mode': 'layer', 'threshold': args.threshold, 'dilate': dil,
+    # Area downsampling can leave isolated 2-3-cell flecks along a diagonal edge.
+    # Discard only sub-8-cell islands, never dilate/open the owner's red barriers.
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(cells.astype(np.uint8), connectivity=4)
+    tiny = [i for i in range(1, count) if stats[i, cv2.CC_STAT_AREA] < 8]
+    removed = int(sum(stats[i, cv2.CC_STAT_AREA] for i in tiny))
+    if tiny:
+        cells[np.isin(labels, tiny)] = False
+    metadata = {'removed_island_cells': removed, 'source_sha256': hashlib.sha256(args.layer.read_bytes()).hexdigest(), 'mode': 'layer', 'threshold': args.threshold, 'dilate': dil,
                 'walkable_cells': int(cells.sum()), 'total_cells': int(cells.size)}
     runs, last, count = [], False, 0
     for value in cells.flat:
