@@ -1,0 +1,21 @@
+(node:95734) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ held soul (D4): sheet opens but shows public facts only and every meter is locked (17.202859ms)
+✔ prison soul before inspection (D2): remorse locked, no number and no breakdown; truth is revealed (D5) (4.543323ms)
+✔ prison soul: countdown, then after inspection the number + 3-part breakdown appear and banner follows repentant (3.892802ms)
+✔ gate soul: expected karma before the check equals gateKarma and the waterfall adds up; reborn / heaven banners (2.996496ms)
+✔ innocent soul gets the "pure" closing; old saves without station/keeper/remorse say "no data" instead of guessing (2.148393ms)
+✔ rooms: tarang lists prison + held, sawan lists gate only; nextTodo skips the soul just handled and disabled actions (1.949781ms)
+✔ closing lines come from Rae's diagnosisClosing set and go through voice() (0.532548ms)
+✔ i18n: every diag.* key used by the sheet exists in TH and EN (5.842757ms)
+✔ Reese F2: an innocent sent straight to the Heaven Gate shows no sentence lines (no "too harsh", no "served 100%", no sentence row) (9.936892ms)
+✔ Reese F4/W2/W3: prison destinations are conditional; wording says "สำนึก"; gate banner uses the zone's Boon name (5.643351ms)
+✔ Reese F1: neutral keeper wording no longer says "half" (1.247331ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 512.582079

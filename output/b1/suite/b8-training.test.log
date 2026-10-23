@@ -1,0 +1,34 @@
+(node:93694) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B8 krajok: every level is solvable (brute-force solver), starts unsolved, and the planted solution works (396.615986ms)
+✔ B8 krajok: solving needs the 2 s hold; moving away resets it; score by solve time (4.009301ms)
+✔ B8 krajok: rotate snaps to 15°, wraps, ignores bad input, cancel/strings do nothing (0.718816ms)
+✔ B8 krajok: host runs the real mirror UI, freezes on pause/hidden, abandons and cleans up (14.632327ms)
+✔ B8 krajok: host reports one result when solved (planted answer, real UI path) (3.153353ms)
+✔ B8 krajok → kan: EXP reaches only the selected Kan; cancel, wrong id, repeat give nothing (22.472231ms)
+✔ B8 sawan: 8 breaths fit exactly in 32 s and perfect timing scores 100 (20.536621ms)
+✔ B8 sawan: tolerance edges, accuracy-based score, 6 of 8 needed (39.936932ms)
+✔ B8 sawan: stray presses, repeats, cancel and unreleased holds never score (7.590682ms)
+✔ B8 sawan: host buttons, pause freezes and cancels the hold, abandon cleans up (4.345599ms)
+✔ B8 sawan: host plays a perfect session through pointer events and reports once (23.95993ms)
+✔ B8 sawan → boon: EXP reaches only the selected Boon; cancel gives nothing; heal follows the real progression (4.936622ms)
+✔ B8 sala: every board is solvable by adjacent swaps, starts unsorted, 3–6 swaps, numbers/categories valid (52.227482ms)
+✔ B8 sala: engine rules — select, deselect, reselect, non-adjacent, swaps counted, 2 sets then done, perfect = 100 (4.622618ms)
+✔ B8 sala: wasted swaps lower the score (5% each, floor 70% of a set); partial/unsolved never completes (1.593289ms)
+✔ B8 sala: host UI — buttons ≥6, pause blocks taps, solve through real clicks reports once (2.383231ms)
+✔ B8 sala → nira: EXP reaches global Nira from any zone, nobody else; order/regeneration follow her level (3.658989ms)
+✔ B8 ngiw: schedule — 12 slots in 30 s, 6 thorn slots, thorn never on the mark, no repeated mark cell (8.750881ms)
+✔ B8 ngiw: perfect run = 12 cuts, score 100; 8 cuts completes; 7 does not; thorns cost half a mark (17.46792ms)
+✔ B8 ngiw: only the visible spot counts — late, early, duplicate, wrong slot/kind and pause-cancel taps do nothing (2.287159ms)
+✔ B8 ngiw: host — spots are real ≥ buttons, pointer + click both work once, pause blocks, abandon cleans up (6.940752ms)
+✔ Sword schools share Yama progress, cooldown and quota without increasing Dam or station speed (5.318827ms)
+✔ B8 all 8 training stations are playable: registry, kinds, seconds, trainee kinds and mobile-safe durations (38.52243ms)
+✔ B8 every new game: closing mid-play leaves no frame/listener behind and an old save loads without B8 data (21.024255ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1332.722843

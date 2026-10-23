@@ -1,0 +1,18 @@
+(node:95498) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ outside frontier fights use only Yama and Nira despite the selected party and hired guard (22.992685ms)
+✔ Nira gets a distinct turn and normal attack without spending healing cooldown (6.639299ms)
+✔ ordinary border with no hired office helper or selected team keeps Yama alone (3.583361ms)
+✔ Nira heals Yama or herself with capped HP, animation metadata and cooldown (6.080771ms)
+✔ full recipient and excluded party targets cannot consume Nira healing (2.647175ms)
+✔ downed Nira leaves the queue without admitting another companion (2.764784ms)
+✔ combat art uses all four regional sheets and the four animation rows (1.453021ms)
+✔ healing cutscene has an accessible fallback, visible title and immediate skip (1.283901ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 478.992

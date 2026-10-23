@@ -1,0 +1,11 @@
+✔ four directions follow actual displacement and retain facing when stopped (2.260403ms)
+✔ all 64 frames exist inside RGBA PNG sheets registered in the manifest (10.07415ms)
+✔ outfit overrides branch and every direction selects its own row without mirroring (5.910863ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 270.388072

@@ -1,0 +1,10 @@
+✔ new-game and menu intro navigation render all five shipped G2 panels (19.451163ms)
+✔ cover selects the v4 art before fallbacks and no cover video layer exists (2.74415ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 294.715826

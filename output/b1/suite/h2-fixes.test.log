@@ -1,0 +1,17 @@
+(node:94480) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ H2-3: tea pavilion seat and bed sit on the cushion / mattress and stay within reach of the walkable floor in all 4 zones (2.392586ms)
+✔ H2-4: sala "sort documents" button moved up (0.996577ms)
+✔ H2-5: frontier win button keeps its own class (not the bottom .pad) (4.348247ms)
+✔ H2-6: Yama moves left in portrait and the portrait wheel rules stay (3.577763ms)
+✔ H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces right after the slash; west stays native (1.216362ms)
+✔ H2-2: town zoom/follow control retains the smooth frontier formula (130ms) (5.81876ms)
+✔ H2-3: standing up from the cushion puts Yama back inside the walkable floor in every zone (manual and MP-full stand-up) (32.469835ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 527.588228

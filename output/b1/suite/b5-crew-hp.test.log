@@ -1,0 +1,16 @@
+(node:93674) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ weights are exactly Guard 3 / Yama 2 / each crew 1; recovery cannot be targeted (6.216825ms)
+✔ actual counters hit crew and Guard, down excludes actions; crew disappears until recovery, guard retains 1 map HP (27.483923ms)
+✔ crew recovers after 60 real seconds including reload; fallen guard retains 1 HP without regeneration (26.00636ms)
+✔ Yama loss stages persist through return, sleep, Nira wake; spare heart precedes loss (16.728199ms)
+✔ six final actors retain distinct HP and CD; cooldown stops paused/hidden and survives reload (23.537409ms)
+✔ down worker stops station progress and movement; last special action still resolves at zero morale (158.351783ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 865.675895

@@ -1,0 +1,17 @@
+✔ H3 spatial masks include painted channels and exclude orange buildings and paths (4.524134ms)
+✔ H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mist with changing frames (22.772309ms)
+✔ reduced motion skips mask allocation and all H3 drawing (0.91803ms)
+✔ mask readback and allocation are cached; both surfaces composite before scaling to scene size (51.37954ms)
+✔ ground effects remain below depth sorted buildings and actors in existing scene renderer (1.028566ms)
+✔ strict sampling rejects an entire cell when even one painted pixel is a rock (1.565842ms)
+✔ map fx visibility floors: zones 1-2 must stay at least as lively as the generic zone 3-4 path (west/cyberhell) (0.500269ms)
+✔ lava glints run down the channel and drop, sideways along the pool and river (0.297994ms)
+✔ lantern glow is additive, flickers between frames, and is skipped for zones without a lamp list or without a sprite (1.0901ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 361.316118

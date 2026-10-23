@@ -1,0 +1,14 @@
+(node:94175) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1 case 10 boss with two demons awards flame charge and opens Zone 2 (23.726287ms)
+✔ Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for the zone boss (12.072216ms)
+✔ Zone 3 blocks building until hypnotized spirits are freed, then awards hypnosis and spear (730.045031ms)
+✔ Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retries from wave one (4.737695ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1255.474786

@@ -1,0 +1,12 @@
+✔ Zone 1-2 preserves story anchors and uses owner mask/tree layout (46.1088ms)
+✔ routes 2-3 and 3-4 are off: old vertical corridor, no patrols, no cave (nothing changes for them) (0.5445ms)
+✔ switching route 2-3 on is data: original trail, pads and checkpoint vertices, six patrols, own picture, NO boss cave (19.045668ms)
+✔ Zone 1-2 cave rules still come from its row: boss at checkpoint 2, locked until checkpoint 1 is won and the boss event is pending (1.134556ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 407.354344

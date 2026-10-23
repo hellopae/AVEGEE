@@ -1,0 +1,25 @@
+(node:94860) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ J1 fire: rejects reuse without cost; ready exactly after 12 active seconds (22.504933ms)
+✔ J1 windFan: rejects reuse without cost; ready exactly after 18 active seconds (3.962097ms)
+✔ J1 ice: rejects reuse without cost; ready exactly after 16 active seconds (2.90924ms)
+✔ J1 hypno: rejects reuse without cost; ready exactly after 24 active seconds (3.026398ms)
+✔ J1 flameCharge: rejects reuse without cost; ready exactly after 28 active seconds (2.06804ms)
+✔ J1 valkyrieSpear: rejects reuse without cost; ready exactly after 40 active seconds (1.582408ms)
+✔ J1 rage: rejects reuse without cost; ready exactly after 60 active seconds (2.209486ms)
+✔ J1 cooldown clock shares pause/hidden rules with team, resets powers; sword has no cooldown (2.401142ms)
+✔ J1 Rage targets only Yama, does no enemy damage, consumes three boosted strikes (10.345669ms)
+✔ J1 rage assets expect J2 filenames and retain real charge pose fallback (3.173147ms)
+✔ J1 direction audit: every standing team sprite renders right using independent image audit (1.804779ms)
+✔ J1 court distance reused at 1600x900; ally wheel above without overlaps (0.911014ms)
+✔ J1 court distance reused at 1280x720; ally wheel above without overlaps (0.24285ms)
+✔ J1 power menu removes inherited oval shadows, compacts rows, shows and updates cooldown numbers (2.891754ms)
+✔ J1 reference numbers are derived from the final court CSS, not an arbitrary battle gap (0.704605ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 472.914993

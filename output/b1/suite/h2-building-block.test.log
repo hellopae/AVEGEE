@@ -1,0 +1,14 @@
+(node:94471) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ H2: every zone — points inside the painted building body (above the ground strip) cannot be walked, for at least 3 buildings per zone (11581.868712ms)
+✔ H2: the ground strip is still blocked and the whole silhouette is covered (roof, wall and base rows are contiguous) (9.406033ms)
+✔ H2: the service door of every building stays walkable and reachable on every zone; free ground beside buildings stays open (2734.853746ms)
+✔ H2: a player standing where a newly built body appears is moved out of it (3.771113ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14723.067916

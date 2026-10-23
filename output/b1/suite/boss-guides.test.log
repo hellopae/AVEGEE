@@ -1,0 +1,27 @@
+(node:93819) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ first boss victory praises once, invitation follows, farewell dismisses once (7.209059ms)
+✔ each guide farewell uses dedicated money and outfit handover artwork (0.551277ms)
+✔ migration skips past praise and completed journeys without deleting unfinished invitations (2.778687ms)
+✔ captured bosses cannot guide until their sentencing has finished (0.487208ms)
+✔ follow positions stay on recorded bends instead of cutting across a ravine (2.093529ms)
+✔ guide state and acknowledged cutscenes survive real game snapshot/restore (39.880304ms)
+✔ acknowledged guide stories repair a partial guide save instead of locking the gate (1.073156ms)
+✔ th farewell grants 500 once on acknowledgment, with a persistent receipt (1.061528ms)
+✔ asia farewell grants 800 once on acknowledgment, with a persistent receipt (0.876483ms)
+✔ west farewell grants 1200 once on acknowledgment, with a persistent receipt (1.18119ms)
+✔ legacy acknowledged farewells and repaired partial saves never retroactively grant money (0.969306ms)
+✔ a real reload before farewell acknowledgment pays exactly once and saves the unpaid receipt (20.17978ms)
+✔ a restored active asia route can meet its waiting guide and finish the journey (126.477605ms)
+✔ a restored active west route can meet its waiting guide and finish the journey (54.492895ms)
+✔ th actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (38.097397ms)
+✔ asia actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (44.927565ms)
+✔ west actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (30.165174ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 926.385263

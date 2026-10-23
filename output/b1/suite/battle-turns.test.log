@@ -1,0 +1,16 @@
+(node:93798) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ each living ally and enemy gets a distinct turn; commands cannot bypass the active unit (29.603283ms)
+✔ dead foes drop out and every remaining enemy acts once per round (4.180657ms)
+✔ defense lasts through enemy turns, reduces damage and expires on actor next action (3.514155ms)
+✔ queue survives JSON save shape and a new wave starts a fresh round (3.219797ms)
+✔ queued hypnosis redirects each enemy on its own turn, and burns tick only on that enemy turn (38.732307ms)
+✔ retreat cannot skip a dungeon checkpoint or bypass a story boss (4.607164ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 602.960028

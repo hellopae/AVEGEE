@@ -1,0 +1,11 @@
+✔ normal party feet form a diagonal with room to step toward foes (3.125766ms)
+✔ eight-member party has two distinct diagonal files and stable back-to-front slots (0.454671ms)
+✔ Yama and companions in two/three-member parties stay within a compact shared file (2.135777ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 269.209374

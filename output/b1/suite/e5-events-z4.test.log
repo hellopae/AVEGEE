@@ -1,0 +1,19 @@
+(node:94060) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ E5 a→e: warp before approach/preparation, four waves, reinforcement map, control, four rulers, duel and ending exactly once (225.279071ms)
+✔ E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win (22.156177ms)
+✔ E5 cyber breach uses walk-to-boss before existing intro; four waves and spare heart unchanged (4.756899ms)
+✔ E5 three preparation destinations produce reachable paths to merchant, Nira and existing tea pavilion/fallback (192.736531ms)
+✔ E5 every legacy final phase normalizes to a resumable map, reward, story or ending without changing ledger (99.67959ms)
+✔ E5 interrupted presentation reloads each cutscene and map/preparation without repeating rewards (26.75869ms)
+✔ E5 runtime intro is preloaded only in CyberHell, cache bumped, canvas lightning stops with release (1.508513ms)
+✔ E5 old nonempty rewards acknowledge once; serialized battles resume; seen reinforcement saves cannot lock the gate (33.498701ms)
+✔ E5 restore outside Zone 4 must queue Lumen intro on later arrival, and preserve cleared rescue on return (45.834857ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1174.845961

@@ -1,0 +1,18 @@
+(node:93675) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ selection/cancel do not spend turns; selected actor attacks and duplicate confirmation is locked (24.205418ms)
+✔ items reach chosen crew/Guard/Yama; full and MP-ineligible recipients cost nothing (4.753152ms)
+✔ Boon heals chosen friend; special cooldown blocks repetition, ordinary crew attack is removed (4.926096ms)
+✔ one successful command schedules exactly one enemy counter (3.03106ms)
+✔ data-driven petals carry actor identity; court retains old four segments and warrant (3.004165ms)
+✔ actor ownership is rechecked; down recipient and actor cannot execute (3.008323ms)
+✔ Kan applies hypnosis to the selected enemy (2.869527ms)
+✔ final battle exposes eight actors and dispatches to the selected cross-zone twin (25.551913ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 556.049293

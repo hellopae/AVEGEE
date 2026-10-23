@@ -1,0 +1,19 @@
+(node:95871) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ P6 cauldron: painted flames behind AND in front of the soul, sweat drawn, red tint via source-atop (never ctx.filter) (5.708452ms)
+✔ P6 cauldron: red flash pulses over time; reduced-motion = constant tint, static flames/sweat/embers (3.839511ms)
+✔ P6 cauldron: wired into the room, no per-frame ctx.filter, assets present, cache-bust suffixes (5.546467ms)
+✔ P6 minigame: every input counts a hit inside the green window (mouse, touch, portrait tap, tap anywhere, Space/Enter without focus) (34.140246ms)
+✔ P6 minigame: a press never vanishes — wait period gives feedback without a miss, the button is never disabled (3.186928ms)
+✔ P6 minigame: Space keydown + the keyup click it spawns count once; Close button keys are ignored; non-primary mouse buttons ignored (3.235278ms)
+✔ P6 minigame: judged at the moment of the press (event time), not the last painted frame; early/late is reported (3.910157ms)
+✔ P6 minigame: reward/difficulty numbers unchanged (window ±0.12 radius, 5 hits / 3 misses, 650 ms retry) (1.04032ms)
+✔ P6 minigame: cleanup — stop() removes every listener and pending flash timer (2.976671ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 480.448792

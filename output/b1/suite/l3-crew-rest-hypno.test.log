@@ -1,0 +1,17 @@
+(node:94919) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L3 rest: HP 97 reaper can walk to the tea pavilion, rests, returns to post at full HP (498.177855ms)
+✔ L3 rest: crew in the battle team may rest; he sits out while resting but stays on the team (346.932214ms)
+✔ L3 rest UI: button for everyone below full HP, disabled with a reason for full HP / no pavilion / battle (4.168285ms)
+✔ L3 hypnosis: level 4 in zone 1 no longer unlocks it (no power, no discovery popup, interrogation/battle blocked) (2.319272ms)
+✔ L3 hypnosis: unlocked after winning the zone-3 frontier boss, announced once (60.52409ms)
+✔ L3 hypnosis data: reward on the boss event, no "buy from boon" wording left (2.141517ms)
+✔ L3 old saves: hypnosis from level 4 is revoked; only saves that beat the zone-3 boss keep it (22.672817ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1377.202729

@@ -1,0 +1,10 @@
+✔ all cutscene and story assets preserve proportions and keep visible content inside varied viewports (5.766386ms)
+✔ cutscene CSS cannot crop or zoom beyond the frame; every battle cutscene uses fitted layout (7.380377ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7881.390985

@@ -1,0 +1,22 @@
+
+lines over 60 chars after fill (worst case, long names): 1
+TALK_LINES.crew.dam.supervise[0] (62) ลุงมี มั่นคง อยู่ที่กระทะทองแดงนะครับ ผมแค่ยืนดู ไม่ได้ยืนหลับ
+(node:95845) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ who can be talked to: crew (not Nira), guard, workers, queue ranks 2+ and walking souls — not the head of the queue (16.273674ms)
+✔ crew states: first line once (and saved), then hungry / tired / escort / build / supervise / idle with real values (15.635283ms)
+✔ workers: group follows the real job/reason, gather lines follow the material (N2), no leftover tokens (3.029467ms)
+✔ queue + walking souls: group follows wait/back/queue length/destination; pronouns filled; monks skip the "back again" lines (N7) (3.015874ms)
+✔ Nira / merchant greetings come from Rae lines and need real state (2.076743ms)
+✔ TALK = ATMOSPHERE ONLY (D8): talking never changes any resource, state or the verdict inputs (9.104439ms)
+✔ lines: every one of Rae's 174 lines fills with no leftover token, Thai-only voice words are resolved, and length stays readable (4.60939ms)
+✔ proximity: talk interactions sit above the head, use the 70 reach; click hit-test: workers are clickable and the NEAREST figure wins (5.589039ms)
+✔ wiring: ui.js uses 💬 for far taps (walks then opens), cancels on own movement, never pauses the game for talk (4.190154ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 569.963299

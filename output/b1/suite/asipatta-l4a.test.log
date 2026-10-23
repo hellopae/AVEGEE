@@ -1,0 +1,10 @@
+✔ L4a: all regional sword variants ship in manifest and zone preload (8.689634ms)
+✔ L4a: cold/failed images are safe; warm images retain original tips and angles without filters (1.407639ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 269.211177

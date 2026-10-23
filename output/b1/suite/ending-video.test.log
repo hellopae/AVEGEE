@@ -1,0 +1,13 @@
+(node:94073) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ending plays panorama then father acceptance, using shipped media and posters (2.79169ms)
+✔ ending video navigation pauses outgoing clips, keeps manual completion, and falls back on failure (1.862849ms)
+✔ only the post-zone4 ending uses video; boss and deva stories have shipped stills (1.51189ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 325.464207

@@ -1,0 +1,18 @@
+(node:95470) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new powers require their event unlock and enough MP (20.006122ms)
+✔ wind fan damages every foe and allows the ordinary counter (4.877225ms)
+✔ Rage boosts exactly three damaging actions (4.709057ms)
+✔ Valkyrie spear is a strong MP attack (2.063988ms)
+✔ clock resets helper cooldowns once per battle (2.038959ms)
+✔ event hypnosis can be used before the old level gate (2.053032ms)
+✔ event boss stronger counter exposes its cutscene metadata (2.33257ms)
+✔ spare heart revives Yama once when a counterattack would defeat him (1.857479ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 466.608495

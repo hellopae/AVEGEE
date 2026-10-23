@@ -1,0 +1,16 @@
+(node:94204) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ speed is hero-heights/second whatever the frame length (3.39429ms)
+✔ long frames are consumed in small slices, never clamped to 50ms (1.929589ms)
+✔ walk phase follows distance in hero heights and matches the art.js frame counter (0.838049ms)
+✔ room: same distance walked at 60fps, 12fps and 4fps; speed = 2.5 hero heights/s (20.159957ms)
+✔ frontier: speed and walk frames independent of frame rate; background resampled once; always walk frames while moving (43.044803ms)
+✔ frontier: scene image is resampled once, then blitted from a cached canvas every frame (4.699968ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 422.283294

@@ -1,0 +1,18 @@
+(node:93516) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30A: every story page puts caption and controls after the image; navigation finishes once (12.429208ms)
+✔ 30A: back navigation retains the separate caption (0.793583ms)
+✔ 30A: zones 2–4 choose real arrival scenes even with a loaded boss profile; zone 1 keeps resolver behavior (4.018401ms)
+✔ 30A: opening intro and both regional arrival pages keep text below the frame (5.025662ms)
+✔ 30A: crop geometry removes letterbox rows without horizontal cropping in the story frame (35.64683ms)
+✔ 30A: crop updates cached, newly loaded and fallback images; thumbnail stays square (1.125277ms)
+✔ 30A: ending popup uses a clipped cover thumbnail, with crop preparation (1.660375ms)
+✔ 30A: only the two requested action sources opt out of mirroring; runtime adds right-facing class (1.855197ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 398.036745

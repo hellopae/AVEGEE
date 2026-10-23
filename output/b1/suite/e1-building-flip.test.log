@@ -1,0 +1,10 @@
+✔ E1: one final flip table toggles exactly the eight requested rendered orientations (9.681664ms)
+✔ E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch (11.052699ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 319.252116

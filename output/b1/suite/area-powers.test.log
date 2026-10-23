@@ -1,0 +1,16 @@
+(node:93565) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ice deals immediate damage to all living foes and suppresses exactly one counter turn (25.999434ms)
+✔ wind damages every foe once, charges MP once, and does not freeze them (3.877447ms)
+✔ hypnosis makes every foe attack a different foe in the same enemy phase (3.686327ms)
+✔ area kills finish battle; hypnosis handles simultaneous kills and a single survivor (12.049568ms)
+✔ Valkyrie spear hits every living target at the original damage, MP cost and cooldown (4.833317ms)
+✔ spear area kills all targets and single-target sword/fire stay unchanged (9.33601ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 536.250417

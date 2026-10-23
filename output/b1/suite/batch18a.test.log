@@ -1,0 +1,15 @@
+(node:93730) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ปีศาจบนแผนที่ไม่เสียเลือดหรือกระสุนจากการฟาด/ขว้างหรือเดินถึง (421.252539ms)
+✔ ยักษ์ทวารบาลยังปราบปีศาจบนแผนที่ได้ (2.786271ms)
+✔ เซฟเก่าทิ้งปีศาจชนิดที่ถอดออกและเลื่อน index ชนิดอื่นเพียงครั้งเดียว (26.765153ms)
+✔ ทุกโซนคิวอยู่แนวสะพานและท่าเรือกับจุดคุยบอสเดินถึงได้ (802.928209ms)
+✔ CyberHell มีสิทธิ์เปิดหลังชนะบอสโซน 3 และเดินเรือกลับได้เมื่อค้นพบท่าแล้ว โดยไม่ต้องรอระดับ 5 (28.748593ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1968.762867

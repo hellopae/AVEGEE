@@ -1,0 +1,13 @@
+✔ K2 interactive rows keep a stationary hit area through pointerdown and click (5.028231ms)
+✔ K2 normal formation keeps allies closer on both diagonal axes (0.960305ms)
+✔ K2 changed entry URLs match, including review imports (197.567221ms)
+✔ K2 pointerdown captures primary input, leaves activation to one native click (1.995975ms)
+✔ K2 review: hint box cannot swallow enemy clicks and flyout names are not width-capped (0.667111ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 436.021441

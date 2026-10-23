@@ -1,0 +1,14 @@
+(node:94868) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ J3 bag rejects other recipients; Nira food restores hunger only and medicine HP only (16.745194ms)
+✔ J3 fallen guard stays out of current battle, returns to map/reload at HP 1 without auto healing (26.66889ms)
+✔ J3 guard travels on map, rests exactly 120 s across saves, resumes original post and automatic combat slot (452.656252ms)
+✔ J3 UI exposes per actor bag-stock controls and current zone guard, without old bag or Nira bulk controls (5.483618ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 932.223046

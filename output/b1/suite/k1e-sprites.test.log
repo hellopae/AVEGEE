@@ -1,0 +1,11 @@
+✔ K1e: all placed replacement sprites resolve to shipped and preloaded art (5.474868ms)
+✔ K1e: depth queue draws new sprites directly, without a tint canvas or layout changes (3.412203ms)
+✔ K1e: torches keep the shared fire pillar, not a K1e sprite (0.391481ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 319.837413

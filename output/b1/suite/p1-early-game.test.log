@@ -1,0 +1,19 @@
+(node:95587) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ unlock table: tea Lv1 -> dab Lv2 -> sawan Lv3 -> ngiw/lan Lv4 -> lokan/krajok Lv5, every plan entry is a real buildable station (5.827223ms)
+✔ g.build refuses a locked station without charging, and accepts it the moment the level is reached (13.764281ms)
+✔ old saves: buildings already standing stay usable even when the level is below their unlock level (16.182077ms)
+✔ recommended build follows tea -> dab -> sawan, never recommends a locked station, and starts with krata in a new zone (4.135522ms)
+✔ level-up that unlocks a station logs it once (2.642657ms)
+✔ sleep needs a finished tea pavilion, not a bought bed (2.259849ms)
+✔ named cases never surface when their worst sin has no place to go yet (locked stations stay out of the queue) (89.592939ms)
+✔ hiring order: dam -> helper -> plerng -> guard -> boon -> kan, recommendation moves to the next un-hired entry (4.0227ms)
+✔ profile page has no management shortcut; the pause menu still reaches the management drawer (6.890578ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 560.130409

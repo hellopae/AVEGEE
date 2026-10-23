@@ -1,0 +1,12 @@
+✔ the 20 painted chunks exist and tile the whole 3840x2560 world without gaps (3.693258ms)
+✔ chunk pixel sizes match the world scale (1.28 painted px per unit) and the preview is the whole map (677.363211ms)
+✔ old tile terrain and removed scenery art are no longer preloaded; the preview is (0.968067ms)
+✔ the heavy 4915x3277 master is not committed (0.315918ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 975.566101

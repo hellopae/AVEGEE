@@ -1,0 +1,16 @@
+(node:95860) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ P5b boss zone 3: cane cutscene points at the v2 art, other zones unchanged, file is 1375x768 (5.488209ms)
+✔ P5b pier: r3-c3 repair registered once, box covers the pier plus feather, file is a full 1024 chunk (3.003556ms)
+✔ P5b walk mask is untouched: pier floor strip still walkable, water beside it not (7.133003ms)
+✔ P5b worker sheet v2: 1280x3840, v1 stays for every zone and for thumbnails (P9: all four zones now have a v2 entry) (5.682553ms)
+✔ P5b worker rows follow what the worker is doing (v2) and stay the old 4-row logic on v1 (1.086443ms)
+✔ P5b drawWorker reads the 12-row v2 sheet by row and the 4-row v1 sheet for a zone without v2 (P9: only an unknown zone falls back now) (1.27084ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 312.802833

@@ -1,0 +1,15 @@
+(node:94661) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ I1-B-3: ฟันดาบธรรมดาไม่ใส่ .atk (ไม่ยกเลิกการพลิกท่ายืน) — ท่ายืนหันขวาทุกชุด ทั้งก่อน/ระหว่าง/หลังแอนิเมชันดาบ (3.325156ms)
+✔ I1-B-3: กันถอยกลับ — ถ้ายัง .atk ตอนฟันดาบ ชุดโซน 1/2/4 จะหันซ้าย (นี่คืออาการเดิมที่คุณเป้เห็น) (0.454116ms)
+✔ I1-B-3: ท่าฟาด/ท่าชาร์จที่วาดหันขวามาแต่ต้น (ไม่ใช่ฟันดาบ) ยังได้ .atk เหมือนเดิม (0.55658ms)
+✔ I1-B-3: arena() ใช้ figYouAtkClass กับ fx จริง และ CSS ที่ตัดการพลิกยังผูกกับ .atk เท่านั้น (5.572044ms)
+✔ I1-B-3: แผ่นดาบทุกชุด (ดาบเดิมและดาบโซน) ใช้เฟรมที่หันขวา — ไม่มีตารางซ่อมทิศเหลือ (1.834654ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 299.025613

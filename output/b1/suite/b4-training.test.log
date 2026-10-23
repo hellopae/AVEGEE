@@ -1,0 +1,27 @@
+(node:93663) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B4 EXP thresholds, caps, zone IDs and global hero identity (22.238223ms)
+✔ B4 lan rewards only the selected trainee; station speed remains unchanged (3.572955ms)
+✔ B4 cancel, interruption, wrong ID and duplicate callbacks cannot reward (20.017883ms)
+✔ B4 successful result only pays once and survives JSON save/load (11.222379ms)
+✔ B4 Guard shares lan/lokan cooldown and two attempts per 100 ticks (2.642205ms)
+✔ B4 no quota before start; unavailable station/actor, pause, and storage failure block start (2.292914ms)
+✔ B4 failed result save rolls back and retry pays exactly once (2.215287ms)
+✔ B4 sword affects actual normal battle attack only; MP abilities/items unchanged (22.960031ms)
+✔ B4 selected helper damage uses its progression, not another branch (1.83745ms)
+✔ B4 original station acceleration still works independently (2.181318ms)
+✔ B4 stone mechanics shared, sword note timing, fire clock finishes at 30 seconds (2.689528ms)
+✔ B4 cancellation input never changes sword/fire score or heat (0.665561ms)
+✔ B4 host freezes timers/input on pause/hidden, abandons and cancels frame/listeners (3.608647ms)
+✔ B4 paused fire host preserves heat and stops exactly once after 30 active seconds (4.062349ms)
+✔ B4 actual helper combat reads only selected actor progression including Guard (8.103578ms)
+✔ B4 finished sessions feed the real B3 power: hero normal attack and selected ally stats rise (2.17718ms)
+✔ B4 in-progress session survives snapshot (needed to report the result) and is cleared on load (6.793747ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 653.315325

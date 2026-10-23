@@ -1,0 +1,20 @@
+(node:95563) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ markup: the route is one full-bleed map with only floating controls (no header, footer, gate button or back button) (4.444462ms)
+✔ camera: the map always covers the viewport (portrait, landscape, laptop, large display) (1.245388ms)
+✔ gate: reaching the exit enters automatically, once, and only after stepping out of range again (16.259624ms)
+✔ gate: never enters during a fight, recovery, pending encounter, cut-in or after the view was destroyed (4.083422ms)
+✔ gate: a route that is not finished never auto-enters even when Yama stands on the exit (3.559177ms)
+✔ wiring: both route views enter by the latch and neither can be triggered by a button (0.983508ms)
+✔ farewell dismisses the guide from the city pier (talk spot, rematch menu, walk blocker) (16.461662ms)
+✔ after the farewell the boss stays at the frontier stand (visible + talkable, every zone) and has no hidden spot on the route (25.806149ms)
+✔ route again after the farewell: Yama + Nira only (no hired keepers, guard or guide); first escort keeps the guide (6.58368ms)
+✔ an old save that already said farewell never shows the guide again and keeps money and outfits (14.944125ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 499.042943

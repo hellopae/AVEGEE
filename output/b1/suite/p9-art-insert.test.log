@@ -1,0 +1,18 @@
+✔ P9 Nira: all four zones draw the v2 sheet (1280x1280, 4x4); v1 files stay on disk untouched (9.568081ms)
+✔ P9 Nira: v2 faces right in every pose so nothing is mirrored by the squad; a v1 sheet keeps the old rule (0.743447ms)
+✔ P9 cache-bust: nira-combat.js ends -p9 (0.405929ms)
+✔ P9 workers: asia/west/cyberhell draw the 12-row v2 sheet (1280x3840); th unchanged; v1 files stay (9.433872ms)
+✔ P9 workers: upright rows end within 2 % of the zone own v1 standing height; crouch/lean rows 6-8 are deliberately not scaled (0.751303ms)
+✔ P9 drawWorker: asia/west/cyberhell read v2 rows by what the worker does (repair=8, carry shards=11) and apply their scale about the foot baseline (1.348854ms)
+✔ P9 cache-bust: workers.js ends -p9 (0.452385ms)
+✔ P9 Trojan horse: cyberhell boss-frontier atlas reads the v2 file (same geometry, only attack f6/f7 redrawn), v1 stays; every other zone untouched (2.18157ms)
+✔ P9 manifest fetch carries a new cache key in all three readers, so returning players do not keep the old atlas path (4.465293ms)
+✔ P9 verdict scene: every zone draws its own praise/scold pair (1672x941 PNG); the scene kind `blame` points at the `scold` file; no placeholder left (13.769453ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 302.534146

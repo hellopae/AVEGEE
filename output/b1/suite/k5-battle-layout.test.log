@@ -1,0 +1,16 @@
+✔ K5 flyout stays beside its tab when nothing is in the way (2.530743ms)
+✔ K5 flyout never lands on an enemy HP bar: it moves below the enemy row (0.522827ms)
+✔ K5 flyout opens to the other side when the near side is blocked and moving costs more (0.37252ms)
+✔ K5 a covered enemy costs more than covering an ally or the talk box (0.575873ms)
+✔ K5 a tall flyout is shortened (it scrolls) instead of running off the stage (0.39562ms)
+✔ K5 candidates outside the stage or with no usable height are skipped (0.362884ms)
+✔ K5 safety margin: a box that only touches the padded enemy rect still counts as a hit (0.406131ms)
+✔ K5 wiring: ui.js measures enemies, hint strip is thin, release entries stay consistent in both entry pages (187.581754ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 420.335352

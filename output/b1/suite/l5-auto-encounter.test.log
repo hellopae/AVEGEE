@@ -1,0 +1,21 @@
+(node:94928) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ enemy stays put outside its sight radius (3.763016ms)
+✔ hero inside sight: ❗ first, then the enemy walks in and contact fires exactly once (0.692968ms)
+✔ Yama can still walk away: faster hero escapes, enemy gives up and walks home (2.102619ms)
+✔ hold (cooldown / locked) stops the chase and never produces contact (0.417029ms)
+✔ enemy only ever moves along the corridor (corridor distance), so it cannot cross unwalkable ground (4.885633ms)
+✔ route start is outside the first enemy sight; flee spot is outside sight too (0.404935ms)
+✔ game: chased encounter needs reach of the enemy post; old checkpoint button path is unchanged (98.068216ms)
+✔ game: not in a dungeon -> chased start refused, city mobs keep the normal flow (4.471544ms)
+✔ game: fleeing a chased fight puts Yama back outside sight, enemy stays, cooldown armed (2.515355ms)
+✔ game: winning clears the checkpoint with no retreat; losing also steps back (12.520231ms)
+✔ wiring: view uses chase + ❗ + cut-in, ui hands chased opts to the game, release import consistency (15.163816ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 568.251474

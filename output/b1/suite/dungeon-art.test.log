@@ -1,0 +1,10 @@
+✔ zone 1 uses a continuous map; later routes keep their checkpoint environments (2.792383ms)
+✔ arrival keeps the final gate backdrop and malformed/legacy routes safely fall back (0.492808ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 282.293831

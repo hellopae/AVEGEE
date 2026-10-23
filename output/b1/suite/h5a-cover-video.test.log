@@ -1,0 +1,14 @@
+✔ splash ships intro-opening-v3.mp4: faststart H.264, 1300x708, ~19 s, <= 6 MB (8.672287ms)
+✔ still cover is cover-v4 everywhere (css note, probe order, critical preload) and cover-v5 is not the cover (3.065225ms)
+✔ home-intro-v5 (front-facing Yama) is no longer referenced, and there is no #cover-vfx video layer (2.622987ms)
+✔ sequence: plays to the end (ended -> slow dissolve), skip / error / reduced motion / 25 s timeout all reach the cover (2.257593ms)
+✔ runtime: hideSplash/revealTitle/settleCover behave (ended slow, skip fast, only once, reduced motion immediate) (2.497094ms)
+✔ end-of-video handoff: cover art starts at the video scale (k) and eases back to 1 during the dissolve (1.511882ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 277.359064

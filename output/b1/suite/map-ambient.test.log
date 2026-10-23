@@ -1,0 +1,11 @@
+✔ map masks select lava and water, avoiding snow, bridges and red ground (2.646452ms)
+✔ all four zone effects move deterministically, stay bounded, and use small particle budgets (6.42085ms)
+✔ sky renders different frames and reduced motion avoids all drawing and mask work (3.628549ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 283.634503

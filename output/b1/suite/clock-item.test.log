@@ -1,0 +1,14 @@
+(node:93842) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ clock is a reusable item, works with zero MP, persists unlock and cannot be consumed from map bag (58.912769ms)
+✔ clock cannot refresh between ordinary event waves (12.201965ms)
+✔ finale clock shared by all minions, then all four rulers, then final boss, including save/load (143.773937ms)
+✔ handbook worked example agrees with actual punishment calculation (0.435565ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 742.962871

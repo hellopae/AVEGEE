@@ -1,0 +1,12 @@
+✔ P5c every measured v2 row ends at v1 height +-2% and feet on the cell centre (4.07393ms)
+✔ P5c rows without an entry, and zones without a table, are not compensated (0.53973ms)
+✔ P5c drawWorker applies the row fit: bigger, feet shifted, baseline unchanged; v1 sheets and fit-less rows untouched (1.425931ms)
+✔ P5c cache-bust: workers.js ends -p5c, nothing else of the importmap touched by this round (0.915511ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 297.802683

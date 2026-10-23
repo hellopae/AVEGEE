@@ -1,0 +1,11 @@
+✔ frontier follow camera keeps native texture scale on phone and laptop, and scales up (never letterboxes) on a large display (2.673831ms)
+✔ overview contains the complete map and scales every actor with the terrain (0.449566ms)
+✔ frontier decoration trunks stay outside the walkable road (160.929471ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 407.989197

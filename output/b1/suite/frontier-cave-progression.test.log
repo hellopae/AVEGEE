@@ -1,0 +1,14 @@
+(node:94386) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ outer trail opens after border defense; the cave boss still gates zone 2 (3.847011ms)
+✔ cave victory returns to court, then guide invitation and farewell unlock the next city (804.236235ms)
+✔ free movement supports broad clearings, blocks ravines, and routes around the painted bends (83.044119ms)
+✔ several enemies roam; proximity starts an available encounter once and future victories persist (3.872322ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1335.598362

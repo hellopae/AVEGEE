@@ -1,0 +1,28 @@
+(node:93828) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ captured zone boss is tried, escorted along map route, punished and released exactly once (910.388474ms)
+✔ final boss requires asked dossier, mandatory mirror and all correct maximum choices before ending02 (99.865917ms)
+✔ saved escort and sentence choices resume without receiving another battle reward (489.01014ms)
+✔ lost battles and ordinary mobs never start a boss docket (2.783749ms)
+✔ all four frontier bosses receive one persistent docket and rematches do not repeat sentencing (1270.592985ms)
+✔ partial saves with no station or keeper requisition court resources and can finish finale (40.007596ms)
+✔ interrupted final sentencing does not auto-complete or skip back to ending02 on load (9.866932ms)
+✔ actual stepWorld drives court escort, punishment and release; dialog pause release resumes it (597.904127ms)
+✔ released frontier NPC selects newest returned captain without duplicating a ruler guide or active invasion (3.844802ms)
+✔ final world sentencing keeps ending02 locked until mirror, actual punishment and sentencing cutscene acknowledgement (35.037899ms)
+✔ actual completed tenth-wave frontier challenges enter court in every zone; unfinished wave does not (22.169106ms)
+✔ a replayed final capture acknowledgement cannot rewind an already sentenced boss after reload (31.405088ms)
+✔ th court resumes every saved phase without duplicate docket, money or temporary chamber (971.96135ms)
+✔ asia court resumes every saved phase without duplicate docket, money or temporary chamber (909.444667ms)
+✔ west court resumes every saved phase without duplicate docket, money or temporary chamber (105.353897ms)
+✔ cyberhell court resumes every saved phase without duplicate docket, money or temporary chamber (102.926947ms)
+✔ a requisitioned construction site resumes its original build state after a saved court sentence (578.201783ms)
+✔ final court survives capture, mirror, escort and sentencing saves before one ending acknowledgement (120.484466ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6870.797842

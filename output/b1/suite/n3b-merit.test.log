@@ -1,0 +1,15 @@
+(node:95426) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ N3b สุ่ม 2000 วิญญาณ: ไม่มีวิญญาณหญิง (f/g) ได้ "บวชให้แม่" ทั้งบุญจริงและบุญที่อ้างเอง (174.535844ms)
+✔ N3b merit ผูกเพศมีเฉพาะ "บวชให้แม่" และมีแท็ก sex:m ส่วนที่เหลือใช้ได้ทุกเพศ (1.867599ms)
+✔ N3b ข้อความบุญใหม่ครบ 8 ข้อ และข้อความเดิมไม่เหลือในซอร์ส (14.040246ms)
+✔ N3b MERITS สุ่ม: ปล่อยปลาเป็นบุญปกติ v:1 ไม่มีวงเล็บ · ญาติอุทิศถูกแทนด้วยบุญที่วิญญาณทำเอง (0.643768ms)
+✔ N3b ข้อความบุญใหม่ไม่ยาวเกินค่าอ้างอิง (HARD ≤45, ที่เหลือ ≤60) (0.579466ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 625.375736

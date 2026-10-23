@@ -1,0 +1,14 @@
+(node:95010) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ skin off: restoring an old save changes nothing and sets no marker for zones 2-4 (111.564662ms)
+✔ skin on: positions move to the town spawn once; coins kept; second restore does not move again (49.830816ms)
+✔ skin on: a zone left behind in zoneSave and the zone-entry snapshot are moved too, other zones are not (40.269221ms)
+✔ migrateTownSkinZone only touches positions (0.438338ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 647.919038

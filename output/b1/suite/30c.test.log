@@ -1,0 +1,19 @@
+(node:93519) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pause is idempotent and restores map after one resume (18.454857ms)
+✔ pause is idempotent and restores battle after one resume (2.498531ms)
+✔ pause is idempotent and restores popup after one resume (4.497924ms)
+✔ pause is idempotent and restores cutscene after one resume (4.034051ms)
+✔ stale native close event cannot consume new dialog close handler (2.557376ms)
+✔ all new zones clear previous bridge and walk commands; first souls are new (747.78932ms)
+✔ delayed returns stay in original zone, including legacy saves (56.392086ms)
+✔ a soul actually punished in its branch can still return (165.064128ms)
+✔ voice fraud uses existing kong category and generates contradictory claim (3.513561ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1544.940297

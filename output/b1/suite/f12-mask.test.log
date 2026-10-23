@@ -1,0 +1,16 @@
+✔ F12: exact source dimensions, connected white surface, every cell gets finite geodesic progress (19.527766ms)
+✔ F12: every corrected vertex and every segment stays within owner mask (2.482538ms)
+✔ F12: red ground rejects clicks and movement never tunnels through a cliff (6.997023ms)
+✔ F12: all six branch endpoints have click paths and keyboard-sized steps reach them (100.469111ms)
+✔ F12: checkpoint locks apply to every surface cell including branches and cannot be clicked around (73.388156ms)
+✔ F12: old saves snap to closest allowed pixel and valid branch positions survive unchanged (73.05945ms)
+✔ F12: 80 owner roots outside mask, three sprite types, base and big sizes (0.927918ms)
+✔ F12: route 2–3 preserves original corridor, pad behavior and disabled vertical travel (16.223949ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 753.353958

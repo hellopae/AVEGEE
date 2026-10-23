@@ -1,0 +1,15 @@
+(node:94357) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ final docket renders the normal illustrated interrogation arena with bound sprite and four command panels (22.255453ms)
+✔ mandatory mirror reveals selectable answers without auto-selecting or spending the ordinary inventory (83.341554ms)
+✔ saved partially selected final court resumes its revealed answers without queue or coin changes (20.050225ms)
+✔ docket names are escaped and the final UI does not mount for ordinary court cases (3.574803ms)
+✔ bound boss asset is shipped and all entry aliases resolve the new court and shared trial styles (20.41975ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 629.155433

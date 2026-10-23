@@ -1,0 +1,14 @@
+(node:94938) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M1: camera edges and pointer round trips at both zoom levels, with letterboxing (3.48847ms)
+✔ M1: backing follows viewport and capped DPR; redraw does not resize; smoothing stays high (1.018193ms)
+✔ M1: UI camera keeps DOM anchors and pointers aligned through town follow zoom and overview (38.934801ms)
+✔ M1: downscaled sprites are resampled once per device size, then blitted from the cache (1.112018ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 430.063581

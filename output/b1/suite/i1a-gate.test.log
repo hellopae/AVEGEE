@@ -1,0 +1,14 @@
+(node:94629) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ I1-A lotus lowers only little Yama karma (8 per lotus, floor 0) and never touches gate souls (33.091364ms)
+✔ I1-A lotus line shows little Yama karma, not the gate total, and needs the heaven gate (6.80285ms)
+✔ I1-A sky = soft additive gold light (gradients, sparkles, petals); rebirth = rotating ring that condenses into an orb and flies to the centre gate (5.191946ms)
+✔ I1-A reduced motion: departure is a plain fade, no light drawn, shorter, soul stays put (0.997033ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 419.804429

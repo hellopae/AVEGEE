@@ -1,0 +1,17 @@
+(node:95899) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ P8 TUTOR.fight hint numbers match BATTLE (mp cost, lose hp, lose order) and no map-pickup claim (4.905528ms)
+✔ P8 stale claims are gone from TUTOR / explainBar / openHelp / meThought (8.117325ms)
+✔ P8 ending text removed per owner decision (no "ทายาทบัลลังก์" / "ต่ำกว่า 25") (7.628163ms)
+✔ P8 krajok copy has no Kan and matches the mirror minigame (TH + EN) (0.854764ms)
+✔ P8 g5 final-attempt messages exist in TH and EN; krata-qte picks them via state.done (0.983668ms)
+✔ P8 lock badges go through i18n (rank in EN) (3.495484ms)
+✔ P8 index.html cache-bust carries -p8 on every touched file (3.253566ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 293.898875

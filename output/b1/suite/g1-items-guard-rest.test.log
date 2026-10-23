@@ -1,0 +1,17 @@
+(node:94404) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G1 all four item families restore only the specified resource, round and cap by maximum (14.034895ms)
+✔ G1 rice balls and medicine feed/heal real crew and Guard at Nira; hunger and stock remain correct (2.689198ms)
+✔ G1 battle recipient commands heal crew/Guard, also feed hunger, never give MP to crew (11.181629ms)
+✔ G1 Guard rest requires built pavilion, HP below full and available actor (520.250606ms)
+✔ G1 travel, save/load, 120-second rest, inactivity, full HP and original post survive real serialization (382.139267ms)
+✔ G1 old saves load without rest fields; offline completion and dormant branch rest remain valid (372.214522ms)
+✔ G1 translated controls, bag targets, HP/progress widgets and animated pavilion use real shared state (6.406233ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1761.142888

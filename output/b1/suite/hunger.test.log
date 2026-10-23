@@ -1,0 +1,18 @@
+(node:94617) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ยมทูตเริ่มอิ่มเต็ม (hunger 100) ตอนสร้างเกมใหม่ (13.955886ms)
+✔ ป้อนข้าวปั้น — หักเสบียงกองกลาง 1 ห่อ เพิ่มแถบหิวของคนนั้นจริง (2.402545ms)
+✔ ป้อนข้าวปั้น ไม่เกิน 100 (เพดาน) (1.963705ms)
+✔ เสบียงกองกลางหมด — ป้อนข้าวปั้นไม่ได้ คืน false (1.905193ms)
+✔ นิรา (reader) กินไม่ได้ ป้อนไม่ได้ — เธอไม่ใช่ยมทูตสายทำงาน (2.345335ms)
+✔ ยมทูตที่กำลังทำงานจริง หิวลดลงทุกวาระ ไม่ทำงาน (ว่าง) หิวไม่ลด (6.824816ms)
+✔ เซฟเก่าก่อนชุด 13 (ไม่มี hunger ในตัวยมทูตเลย) โหลดได้ไม่พัง — ได้ค่าเริ่มต้น 100 (15.059444ms)
+✔ หมดแถบหิว (0) ทำงานช้าลงจริง (hungerPenalty) เทียบกับตอนอิ่ม (6.516182ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 474.344452

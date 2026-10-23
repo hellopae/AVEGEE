@@ -1,0 +1,21 @@
+(node:94425) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G4 item ids: zone variants are gone; every zone shelf sells the same four ids (3.048039ms)
+✔ G4 names: Thai and English names are identical across zones (4 names), from one source (2.369091ms)
+✔ G4 old saves: zone-variant ids merge into the new items, counts add up, nothing lost (inventory, map drops, codex) (27.322175ms)
+✔ G4 Large items: restore 100%, zone 2+ shelf only, ~1.8x price (0.88309ms)
+✔ G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama / reaper / Guard / in battle (13.361308ms)
+✔ G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 60 s rest, save/load, full HP, back to post (921.335396ms)
+✔ G4 tea rest: Guard keeps working through the same method (restGuard alias) and the dialog lists regular reapers too (324.185586ms)
+✔ G4 enemy atk: cyber breach and the final-line waves hit harder than before G4 (0.807778ms)
+✔ G4 weapon cooldown: drain triggers, then rests 3 turns, strike bonus never stops; new battle starts ready (20.540243ms)
+✔ G4 weapon cooldown: nothing happens (and nothing is rolled) while resting, for burn / crit / replay (3.473029ms)
+✔ G4 weapon cooldown is shown on screen: HUD badge + attack button, TH and EN text, effect line mentions it (3.924723ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1801.754977

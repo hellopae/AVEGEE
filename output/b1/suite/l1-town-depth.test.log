@@ -1,0 +1,16 @@
+(node:94910) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L1: actors shrink on enabled town maps, and come back elsewhere (2.26734ms)
+✔ L1: one sun - shadows fall to the lower right for every caster (0.288797ms)
+✔ L1: withTownShade is a plain pass-through while no shadow field is baked (no DOM, battle/rooms untouched) (0.773771ms)
+✔ L1: scene.js keeps drawStandee untouched and shades actors via callbacks (no ctx.filter / shadowBlur per frame) (1.623411ms)
+✔ L1: Nira lives on the dais, away from the throne, the stairs, the queue and the player entry goal (3.668843ms)
+✔ L1: Nira strolls slowly but only inside her stage (simulated 5 minutes) (10845.62455ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11297.716405

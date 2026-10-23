@@ -1,0 +1,12 @@
+(node:93807) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ battle HUD labels exist in Thai and English (2.542218ms)
+✔ frontier breach wave count comes from event data, not a hardcoded 3 (15.73699ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 515.866602

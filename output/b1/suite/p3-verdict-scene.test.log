@@ -1,0 +1,24 @@
+(node:95657) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ praise only on five stars; the in-between and low stars are not praised (25.655653ms)
+✔ rebuke exactly where DAD.redsToCome counts red (score < 50), not by star count (9.732703ms)
+✔ rebuke tier follows the red streak 1 -> 2 -> 3, and a green verdict resets it (6.826109ms)
+✔ tier 1 drops the silent-look line that would contradict the rebuke; tiers 2 and 3 keep the original warning (5.48899ms)
+✔ rebuke scene shows the same stars the verdict got (30 points = 1 star, not 0) (3.866626ms)
+✔ a middle verdict on a soul without an id neither builds a scene nor throws (1.723ms)
+✔ praise reports the reward the game already granted and changes no numbers (3.274433ms)
+✔ reward line is hidden when there is no reward text (0.422307ms)
+✔ save then load while the scene is pending: same scene, nothing granted again (21.53309ms)
+✔ queued: scene opens before the red warning / Yama fight and never over another dialog; skippable (3.236635ms)
+✔ lines: variables are filled, never leak braces, and unmet variables fall back to a plain line (1.572882ms)
+✔ art slots exist for every zone and kind (P9: all four zones have their own Codex praise/scold pair) (1.087558ms)
+✔ star badge is anchored: the .score badge scales around its own anchor and quiet verdicts skip it (4.184557ms)
+✔ small items: kan clue text says พลังเวท, not MP; cache-bust suffixes (2.831243ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 534.799704

@@ -1,0 +1,26 @@
+(node:94911) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L2 turn step: the stepping sprite ends clear of every teammate and enemy (bounds, not a fixed offset) (5.814282ms)
+✔ L2 turn step: no room at all returns the least-bad spot and says it is not clear (0.348501ms)
+✔ L2 defend: the defender takes DEFEND_DAMAGE_RATIO of the hit, others take it in full, and the log says so (21.369017ms)
+✔ L2 defend: the stance ends when that actor’s next turn begins, not before (3.149014ms)
+✔ L2 defend and flee are not attacks: no damage dealt, no enemy HP lost (2.062483ms)
+✔ L2 flee: plain fights can be fled (no reward, battle over); boss/event fights refuse (7.484066ms)
+✔ L2 wiring: defend/flee never fall into the attack animation; flee asks first; target hint box is gone (7.583543ms)
+✔ L2 wiring: Where/Keeper/Intensity picks render as thumbnail + name beside their command (3.180211ms)
+✔ L2 pause buttons: no gold border and no gold focus ring, hover/focus is a lighter fill (1.310955ms)
+✔ L2 wording: Thai UI says พลังเวท where it said MP, English keeps MP (10.220229ms)
+✔ L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list lives in game.js) (4.081916ms)
+✔ L2 heal fx: item on a teammate, holy water on Yama and a boon heal each produce one gain entry; nothing else does (26.597779ms)
+✔ L2 heal fx: several heals at once all get an entry; losses never do (0.534631ms)
+✔ L2 heal fx markup: ring + glow + sparkles + number(s), MP uses its own theme, never an <img> (3.398265ms)
+✔ L2 heal fx wiring/CSS: every command snapshots vitals, all healed actors are drawn, CSS animates transform/opacity only (3.896849ms)
+✔ L2 receiver picking: no hint box at all, eligible teammates get the same tag as enemies, others dim, cancel like the attack side (2.883682ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 541.696645

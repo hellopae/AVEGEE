@@ -1,0 +1,12 @@
+✔ H1: three tiers partition the full zone bundle exactly (nothing dropped, nothing duplicated) (98.097641ms)
+✔ H1: critical tier holds the first-screen art and is far smaller than the whole zone (11.894589ms)
+✔ H1: intro panels gate only the first run; panel 1 is always ready; zone arrival gates the zone introduction (3.209618ms)
+✔ H1: loading screen rotates several TH+EN notes and only one preload instance owns the gate (0.68933ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 345.452

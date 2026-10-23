@@ -1,0 +1,14 @@
+(node:93812) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary frontier reward keeps its frontier backdrop and selected office team (32.873622ms)
+✔ accepted guide journey starts with three actual combatants and preserves outside-map reward scene (87.250315ms)
+✔ enemy patrols travel smoothly along the road without snapping back to an anchor (110.91955ms)
+✔ worker office explains empty supplies and offers actual paid or inventory refill paths (8.050679ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 753.072384

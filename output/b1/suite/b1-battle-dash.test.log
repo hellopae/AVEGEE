@@ -1,0 +1,16 @@
+(node:93615) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B1 measured endpoint leaves a sprite-width-aware gap in either direction and aligns feet (2.20371ms)
+✔ B1 outbound, contact hold, return and exact home position (1.98311ms)
+✔ B1 real command damages exactly once at contact and holds the turn until home (reduced=false) (23.572277ms)
+✔ B1 real command damages exactly once at contact and holds the turn until home (reduced=true) (5.499091ms)
+✔ B1 a delayed tick still dispatches pose, one hit, return then finish in order (0.607158ms)
+✔ B1 only physical melee recipes opt in; ranged, magic, healing and items stay on their existing path (0.423911ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 571.45308

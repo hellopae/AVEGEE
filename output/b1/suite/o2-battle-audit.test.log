@@ -1,0 +1,19 @@
+(node:95578) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ O2 I: a piece on a cell left edge that continues the previous cell right edge is erased (3.104789ms)
+✔ O2 I: pieces that do not continue the neighbour, and clean sheets, are left alone (0.384598ms)
+✔ O2 B: Nira attack/heal rows opt out of the ally mirror; on a v1 sheet idle/hurt rows keep it (drawn facing left) — P9: v2 sheets face right in every row (0.722201ms)
+✔ O2 B: Yama own slash / flame charge sets the formation attack key (forward lunge) (3.045008ms)
+✔ O2 A/E: hurt poses wait for a covering cutscene card; Nira hurt row takes the same hold (3.841574ms)
+✔ O2 D: on a narrow stage the command column may sit under the squad at the left edge (2.782991ms)
+✔ O2 J: cutscene card is a clean rectangle and the push-in never scales below 1 (2.431814ms)
+✔ O2 K: Yama overlay canvases use a device-resolution backing store (0.749756ms)
+✔ O2: touched modules carry the -o2 cache-bust suffix (2.838083ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 318.91889

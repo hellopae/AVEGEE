@@ -1,0 +1,10 @@
+✔ I1-B-5: ไม่มีปุ่มข้อความ Mute — ปุ่มด่วนใช้รูป icon-sound / icon-sound-close ไม่ใช้อีโมจิ (10.575082ms)
+✔ I1-B-5: ปุ่มด่วน + ไอคอนในหน้าตั้งค่า + AUDIO สถานะตรงกัน (ไม่มีกรณีปิดรวมแต่ไอคอนเปิด) (2.655759ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 245.316362

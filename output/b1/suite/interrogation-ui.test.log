@@ -1,0 +1,14 @@
+✔ P2: the trait sits on the spirit name tag with the icon first and an accessible label — never colour alone (4.859147ms)
+✔ P2: the compact keeper bar lists keepers as picture + name + the colour they suit, and never reads hidden answers (1.718304ms)
+✔ P2: Kan is a round icon with the owner label, shown only when Kan is hired, with the exact price and one guarded action (1.165937ms)
+✔ completion reports remain a bounded unobtrusive regional list and acknowledging only marks read (1.116282ms)
+✔ production supervisor feedback displays the specific reason and skips once without repeating judgment or rewards (3.373683ms)
+✔ interrogation styles mount once and remain scoped to the new controls (1.38936ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 257.098548

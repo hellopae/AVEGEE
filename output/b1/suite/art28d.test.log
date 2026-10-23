@@ -1,0 +1,13 @@
+(node:93572) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 28D revisions and MP icon exist and are preloaded by their consumers (2.195028ms)
+✔ ruler lookup selects v2 in both zones, with an old-manifest fallback (37.997237ms)
+✔ prep-art preserves story letterboxing, revision names and real asset formats (454.820441ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 828.119178

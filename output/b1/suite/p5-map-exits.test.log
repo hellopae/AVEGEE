@@ -1,0 +1,22 @@
+(node:95853) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ latch: arriving on the exit never fires, stepping away re-arms, walking back in fires once (4.630116ms)
+✔ latch: blocked states (cutscene, fight, mini-game, dialog) never fire and stay armed (0.631343ms)
+✔ no exit buttons are left anywhere (markup, css, handlers) (16.368066ms)
+✔ station rooms: the exit zone never swallows the working spot, training spot or bed (no accidental exits) (2.588922ms)
+✔ frontier post: exits sit on the old button spots; start is not on an exit; labels reuse the old copy (2.743131ms)
+✔ route start: stepping back onto the start returns to the post - once, latched, never during fights/cut-ins (13.927103ms)
+✔ route start works on the legacy (vertical) routes too (3.756112ms)
+✔ cauldron courtyard: the pavement east/south-east of the cauldron is walkable, the cauldron footprint is not (1.961405ms)
+✔ cauldron courtyard: the opened area stays on the courtyard (no lava, cliff or neighbour opened) (0.859674ms)
+✔ cauldron courtyard: Yama can path from the torch line across the courtyard and to the stair below (146.930575ms)
+✔ building shadow: every column of a 3/4-view base casts from its own ground contact (no bare strip under raised walls) (7.39355ms)
+✔ building shadow: only buildings use the contour; trees/rocks keep the trunk root (0.7685ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 605.49313

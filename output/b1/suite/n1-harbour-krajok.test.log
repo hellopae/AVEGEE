@@ -1,0 +1,15 @@
+✔ N1-1 dock: feet cannot leave the painted pier (front face, right post and open water are blocked) (9.9466ms)
+✔ N1-2 Fast Travel button sits at the pier standing point (below the feet), not floating over the water (3.810923ms)
+✔ N1-3 cleared zone boss: no black "คุยกับ…" tag; the yellow button is anchored over the head (2.949135ms)
+✔ N1-root counter-scaled map buttons scale around their anchor (0 0) — otherwise they drift ~(1-1/zoom)*w/2 from it (1.383389ms)
+✔ N1-4 krajok room: the floor "จุดฝึก" ring/label is gone and cannot come back (2.741063ms)
+✔ N1-5 krajok room: adjustable-mirror stand is always in the room; magic mirror appears only after "วางกระจก" (2.952156ms)
+✔ N1 release entries, module aliases and direct imports use coherent versioned URLs (201.667279ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 492.311437

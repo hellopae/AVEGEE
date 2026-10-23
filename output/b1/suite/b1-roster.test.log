@@ -1,0 +1,17 @@
+(node:93618) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B1 IDs are unique across all kinds/zones; Nira has one global identity (18.140031ms)
+✔ B1 actual v3 branch topology loads all owned actors and preserves every value (33.136328ms)
+✔ B1 migration is idempotent including zero morale, entry snapshots and invalid team keys (42.070656ms)
+✔ B1 dormant actors share roster state; moveZone round trip preserves stats and ownership (40.766589ms)
+✔ B1 backup precedes migration, remains unchanged on repeat, and failed backup stops restore (19.634232ms)
+✔ B1 new hires and guards get IDs immediately; normal party remains limited to two (2.801298ms)
+✔ B1 migration supplies missing hunger, keeps guard morale/training/CD and supports v2 (18.548811ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 682.291935

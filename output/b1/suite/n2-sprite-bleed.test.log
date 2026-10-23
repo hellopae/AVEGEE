@@ -1,0 +1,12 @@
+✔ N2: every drawn combat frame is free of neighbour bleed (edge pieces, stray tops, specks) (9759.427801ms)
+✔ N2: the atlases still match the manifest geometry (cleaning never resizes a sheet) (468.155252ms)
+✔ N2: interrogation Yama no longer bobs; the suspect still floats (176.097638ms)
+✔ N2: trial render mounts the map idle pose with the same timing as yama-animation.js (5.474431ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10982.76403

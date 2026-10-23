@@ -1,0 +1,15 @@
+(node:93533) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30F: CyberHell translations move hits and worker/service points together and restore on every branch change (13.92208ms)
+✔ 30F: selected story image is 16:9; selected regional map sprites have alpha and are registered (408.269462ms)
+✔ 30F: real alpha footprints and lava mask allow paths to every station with all buildings present; old saves restore (3744.295637ms)
+✔ 30F review: new Rage image is full-bleed, so the old letterbox crop is gone from cutscene-presentation (2.034316ms)
+✔ themed sprites keep every zone station reachable with its terrain or town street layout (12836.362826ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17462.610512

@@ -1,0 +1,16 @@
+(node:94880) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ J4 real dossier renderers use numeric colours for merits, karma and relief, including blood donation (2.651446ms)
+✔ J4 mirror only blocks its foot, with reachable front and back depth ordering (3.807102ms)
+✔ J4 gate souls shift onto raised platforms and training is removed only there (70.065584ms)
+✔ J4 prison escort keeps soul until walking completes, rejects duplicate and transfers exactly once (29.843802ms)
+✔ J4 prison controls have no proximity gate and handbook renders all chapters together (1.093841ms)
+✔ J4 both prison outcomes carry Dam along the map route, arriving only after the walk (373.728696ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 803.058717

@@ -1,0 +1,18 @@
+(node:94056) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ arrival: only rescue actors/interactions; yama + Taan; unchanged stats/reward; building unlocks (119.513076ms)
+✔ case 3 freezes all walkers and management until vampire win; thaw resumes elapsed position (125.305792ms)
+✔ vampire approach uses zone art and existing intro; two minion waves, hypnotized party wave, then vampire reward (0.867023ms)
+✔ case 7: run from bottom → saved intro with five bilingual lines → move right → wait → fight → spear once (53.109914ms)
+✔ old cleared rescue save is never replayed; interrupted deva battle retries on map (34.170292ms)
+✔ west intro preloads in west only; new cache token and rescue proximity UI are wired (6.945943ms)
+✔ frozen transit deadlines resume from same point and vampire loss leaves spirits frozen (25.158348ms)
+✔ deva defeat returns to waiting actor and permits another challenge without replaying intro (25.728768ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1040.630184

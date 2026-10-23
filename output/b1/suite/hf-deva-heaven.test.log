@@ -1,0 +1,18 @@
+(node:94599) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ bug repro: no gate at case four must NOT queue the beggar or block anything (22.838232ms)
+✔ no gate: cases five..ten keep flowing, the beggar never appears, deva event stays locked, ordinary pool never yields it (426.217738ms)
+✔ gate still under scaffolding does not count; finished gate queues the beggar exactly once, others wait behind it (4.678841ms)
+✔ beggar arriving late (gate built at case seven) is judged once; the deva test + story start only then (287.948425ms)
+✔ prison break cleared after the beggar was judged still opens the deva test (no double lock) (1.598968ms)
+✔ old save: beggar forced into the queue at case four with no gate is pulled out, not left as an unjudgeable case (13.17253ms)
+✔ old save: beggar queued while the gate already exists is kept as is (5.21658ms)
+✔ old save past the deva case (judged, test pending/cleared) is untouched and gets no second beggar (8.622385ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1259.544384

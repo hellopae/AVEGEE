@@ -1,0 +1,13 @@
+(node:93714) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ กระจกในกระเป๋าไม่ถูกใช้บนแผนที่ แต่พลังในห้องสอบสวนยังทำงาน (20.808009ms)
+✔ อาคารถูกเผาอยู่รอซ่อม และทัณฑ์ติดงานหรือมีเปรตสั่งซ่อมไม่ได้ (3.783001ms)
+✔ ทัณฑ์เดินถึงก่อนเริ่มซ่อม เซฟ/โหลดระหว่างรอและระหว่างซ่อม แล้วกลับจุดประจำ (327.753038ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 882.9387

@@ -1,0 +1,15 @@
+(node:93529) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30E: regional prison row stays on the landing, separated from Nira and the guard at both requested sizes (3.844036ms)
+✔ 30E: long Thai/English names fit without splitting combining marks; short names stay intact (43.691424ms)
+✔ 30E: real manifest resolves every popup to its own zone image and anchors, including fallback (23.850019ms)
+✔ 30E: renderer uses bounded nameplates for both occupied and waiting prison slots (313.299519ms)
+✔ 30E: all new popup strings are present in Thai and English (2.782286ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 798.804218

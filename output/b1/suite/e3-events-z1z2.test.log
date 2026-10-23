@@ -1,0 +1,21 @@
+(node:94022) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case five monk → praise → test → mirror once (480.831316ms)
+✔ case five monk → warning → test → mirror once (252.945099ms)
+✔ Asia: two kills → saved descent → intro → deva defeats third → waiting actor → test → disappears (42.618805ms)
+✔ legacy active fire restarts safely, cleared fire waits, completed tester never repeats (18.344564ms)
+✔ breaches keep thresholds, waves, bosses and saved marching state (12.568545ms)
+✔ area damage and self-hit still leave the third spirit to the deva (12.500037ms)
+✔ case five cannot be deferred or replaced; old case-four saves receive the monk (7.374454ms)
+✔ breach actors stand on navigable ground with a reachable boss; UI waits for approach (177.40768ms)
+✔ both deva intro images preload only in their zones and cache version changed (1.306513ms)
+✔ temple beggar deity stays separate from the abbot and old saves load (389.92942ms)
+✔ legacy case-five monk is refreshed as the innocent temple beggar without changing soul id (1.825161ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1901.660063

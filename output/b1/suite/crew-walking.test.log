@@ -1,0 +1,15 @@
+(node:93953) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all 28 native PNG sheets exist and every crop stays inside its image (53.704652ms)
+✔ all seven crew walk assets resolve the current zone before manifest loads (2.292628ms)
+✔ four crop frames retain the foot anchor, mirror right-facing art and use distance phase (3.882789ms)
+✔ crew and Guard movement advances only with displacement, preserves direction and stops at rest (0.93773ms)
+✔ escort travel reads its actual timeline position without changing game coordinates (0.668863ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 500.624708

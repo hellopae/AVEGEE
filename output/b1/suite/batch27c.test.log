@@ -1,0 +1,15 @@
+(node:93734) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 27C: เรียกยมทูตช่วยในฉากสู้ได้ตั้งแต่เลเวล 1 และหน้าต่างเลื่อนขั้นไม่มีข้อเรียกยมทูต (19.080677ms)
+✔ 27C: ตวาดข่มขู่ใช้ไอคอนเขี้ยวและไม่มี cutscene ลูกไฟ (8.571572ms)
+✔ 27C: บทสอนไม่อ้างแถบแดง และไม่อ้าง emoji ⏭️/🔒 ที่เปลี่ยนเป็นไอคอนใหม่ (0.418614ms)
+✔ 27C: frontierBreach โซน 1 มี 2 ระลอก และข้อความไทย/อังกฤษไม่บอกว่า 3 (1.29005ms)
+✔ 27C: key i18n ใหม่มีทั้งไทยและอังกฤษ (4.651224ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 546.015496

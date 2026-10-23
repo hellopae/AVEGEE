@@ -1,0 +1,15 @@
+✔ N4: baked flow map has every surface kind in the right part of the painting (158.082039ms)
+✔ N4: flow directions are unit vectors, river runs left to right, falls point down (137.989557ms)
+✔ N4: the baked surfaces keep off bridges, stairs and the dock (walkable floor) (205.040707ms)
+✔ N4: particles stay on their painted surface and follow its flow (17.177116ms)
+✔ N4: nothing is simulated when the camera sees no water, and walkable floor kills particles (4.920714ms)
+✔ N4: drawing is plain sprite quads (no ctx.filter / shadowBlur) and reduced motion draws nothing (6.580995ms)
+✔ N4: scene.js hands the town ground to town-flow and the old colour-guess ambience is off for the town (17.538475ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 837.660526

@@ -1,0 +1,19 @@
+(node:95356) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ชนะมินิเกม — speedLv +1 ไม่หักเบี้ยกรรม และตั้งคูลดาวน์ (13.716911ms)
+✔ แพ้มินิเกม — ไม่ได้ขั้น แต่ยังติดคูลดาวน์เหมือนชนะ (กันเล่นรัว) (2.576397ms)
+✔ คูลดาวน์หมดอายุตามวาระ (g.tick) — เล่นซ้ำได้เมื่อถึงเวลา (2.280345ms)
+✔ คูลดาวน์ยาวขึ้นตามขั้นที่ทำได้แล้ว (mgCooldownStep) (1.900118ms)
+✔ เพดานขั้น UPGRADES.max — ชนะซ้ำไม่ทะลุ และ mgReady เป็นเท็จเมื่อเต็มขั้น (3.048306ms)
+✔ ต้องเลื่อนขั้นยมบาทถึงระดับที่กำหนดก่อนเล่นขั้นสูง (mgLevelNeed) (1.983709ms)
+✔ สถานีที่ไม่รับวิญญาณ (pow=0 เช่นศาลาน้ำชา) ไม่มีมินิเกมเร่งการทำงาน (1.760531ms)
+✔ เซฟ/โหลด: mgCd และ speedLv รอดผ่าน snapshot -> restore (14.207755ms)
+✔ เซฟเก่าที่มี speed 4 โหลดด้วยความเร็วปกติ โดยคง speedLv สถานี (7.61585ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 492.243814

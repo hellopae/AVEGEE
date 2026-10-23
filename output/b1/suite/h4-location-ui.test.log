@@ -1,0 +1,18 @@
+(node:94508) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ archive cards expose portrait, name, stars, score, deserved/given, verdict and escaped deed summary (8.567747ms)
+✔ real-room mirror beam, slider, drag and reward at viewport 844x390 (simulated DOM) (26.428648ms)
+✔ real-room mirror beam, slider, drag and reward at viewport 390x844 (simulated DOM) (8.322852ms)
+✔ mirror stand blocks real pointer movement (before and after placing) and can be approached (67.744119ms)
+✔ scan, rebirth, sky and floating −N draw on canvas; departures fade and sky rises (3.812703ms)
+✔ new rainbow asset exists, is background-only, replaces every rendered gold book, and UI strings have TH+EN (4.535318ms)
+✔ gate sound companions create distinct soft WebAudio tones and obey mute (5.372107ms)
+✔ ledger keeps card identity and complete deeds after closed-case history rolls off and saving (17.858833ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 539.927395

@@ -1,0 +1,12 @@
+(node:93684) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B7 uses top/right/bottom Yama petals and top/right crew or Guard petals (4.229036ms)
+✔ B7 petal files are registered manually in the manifest (1.336135ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 316.844766

@@ -1,0 +1,21 @@
+(node:95606) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ P2 lock: every named case and every generated soul gets a trait the moment it enters court (45.413514ms)
+✔ P2 spread: all three colours are common, for named cases and for generated souls (263.725939ms)
+✔ P2 rule: priority is resist → concealment (fake merit / secret / heavy hidden deed) → hard denial → accepting (0.851544ms)
+✔ P2 lock survives the whole interrogation, a save/load and a returned verdict (30.048295ms)
+✔ P2 old saves: a soul without a locked colour is locked from its case data on load, and never changes again (12.996962ms)
+✔ P2 keeper plan and recommendation use the locked colour, not what the player has since uncovered (3.49948ms)
+✔ P2 Kan icon appears only once Kan is hired and keeps the original reasons for a disabled state (4.813349ms)
+✔ P2 camera: a correct press closes in on the spirit with a fright beat; a wrong press never moves the camera (4.424143ms)
+✔ P2 lesson: three pages, shown once per save after the first-warrant lesson (9.004965ms)
+✔ P2 handbook: trait page + keeper-team page exist, carry five keeper profile slots, and match the code (2.569187ms)
+✔ P2 case 15: the false-charity merit and its boast claim replace the old chanting merit; Kan can expose it (4.823602ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 794.04203

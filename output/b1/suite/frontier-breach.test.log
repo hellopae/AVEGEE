@@ -1,0 +1,17 @@
+(node:94381) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case eight waits for deva test before frontier breach (21.45591ms)
+✔ two waves keep one battle, heal at transition, and reward after both (11.494104ms)
+✔ loss leaves one authority and retry starts at wave one; active save restores pending (21.410703ms)
+✔ cleared deva save at case eight schedules the breach on load (6.839756ms)
+✔ frontier crew and hired guard use the existing combat powers (3.114073ms)
+✔ battle hypnosis makes the target strike itself, unlike ice stun (5.336209ms)
+✔ a confused foe dying to its own counter queues the next wave (2.636992ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 510.806201

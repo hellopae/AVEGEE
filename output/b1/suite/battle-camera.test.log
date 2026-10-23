@@ -1,0 +1,23 @@
+(node:93754) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M1 clampCenter keeps the view inside the world (no edge ever shows) (3.683665ms)
+✔ M1 viewTransform: the focus point lands in the middle of the stage, edges stay covered (0.735514ms)
+✔ M1 planCamera lowers the zoom (never below 1) so every keepVisible rect stays on screen (1.322596ms)
+✔ M1 click after transform: mapRect / unmapRect are exact inverses (hit points still land on the sprite) (0.534304ms)
+✔ M1 shake: 2–4 px per axis, 150–250 ms, decays to zero (4.225571ms)
+✔ M1 timing contract: values in the brief (zoom 1.08–1.12 select, 1.2–1.3 skill, dim 35–50 %, hit-stop 60–90 ms) (0.758909ms)
+✔ M1 camera zooms and re-centres, flags busy while moving, and lands exactly on the plan (76.810026ms)
+✔ M1 reduced-motion: no zoom, no pan, no shake — events still fire on schedule, dim still works (406.98655ms)
+✔ M1 settings toggle: off = same as reduced motion, persisted in localStorage; on again restores moves (19.226475ms)
+✔ M1 single speed knob: timeScale shortens every camera duration (106.779258ms)
+✔ M1 cue emits impact exactly once even when a newer cue replaces it mid-way (594.018921ms)
+✔ M1 wiring: only .cam-world is transformed; HUD stays outside; release module and stylesheet identities agree in both entry pages (240.691959ms)
+✔ M1 strikeTime: contact frame of a drawn attack (Codex combat-animation-v1) and camera impact retimed to it (902.394495ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2668.830072

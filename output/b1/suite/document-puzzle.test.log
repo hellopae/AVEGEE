@@ -1,0 +1,19 @@
+(node:93985) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 300 seeded boards have no initial matches, always have a legal swap, and are reproducible (471.555962ms)
+✔ only adjacent matching swaps count as moves; invalid and no-match swaps preserve state (5.037805ms)
+✔ crossing and long runs count once per connected category, with no wrapped row matches (1.344309ms)
+✔ cascades expose each matched frame, count groups rather than books, and preserve gravity order (9.03137ms)
+✔ blue can be matched despite its zero goal and winning requires the other three categories (290.949247ms)
+✔ dead boards and impossible color distributions recover to a stable playable board (47.351176ms)
+✔ sala win awards order once, caps at 100, persists cooldown, does not award speed (31.625472ms)
+✔ sala floor reaches entrance and document desk while excluding furniture and side walls (1.465099ms)
+✔ failed reward save leaves order and cooldown unchanged and permits retry (4.312855ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1363.309005

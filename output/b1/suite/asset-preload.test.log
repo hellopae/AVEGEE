@@ -1,0 +1,13 @@
+✔ zone bundle covers rooms, intro and chosen outfit without downloading every branch (21.038262ms)
+✔ bounded concurrency, retries, failed URLs retried on next run, successes reused (18.970465ms)
+✔ image gate waits for decoding and rejects missing/stalled images (10.227134ms)
+✔ zone transition pauses before opening arrival and repeated change events do not duplicate loading (11.284228ms)
+✔ image cache name follows catalog version and older avegee-images caches are deleted (1.959533ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 342.778774

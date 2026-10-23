@@ -1,0 +1,22 @@
+(node:94021) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: runtime start, NPC feet, top gate and bottom spawn connect (95.471025ms)
+✔ th: sampled runtime enemy destinations connect from the spawn stairs (2519.723911ms)
+✔ th: source-mask discrepancy remains below 3% (3.388657ms)
+✔ asia: runtime start, NPC feet, top gate and bottom spawn connect (146.313844ms)
+✔ asia: sampled runtime enemy destinations connect from the spawn stairs (8062.885951ms)
+✔ asia: source-mask discrepancy remains below 3% (0.842711ms)
+✔ west: runtime start, NPC feet, top gate and bottom spawn connect (149.579114ms)
+✔ west: sampled runtime enemy destinations connect from the spawn stairs (9709.215019ms)
+✔ west: source-mask discrepancy remains below 3% (1.023721ms)
+✔ cyberhell: runtime start, NPC feet, top gate and bottom spawn connect (83.293995ms)
+✔ cyberhell: sampled runtime enemy destinations connect from the spawn stairs (6488.273758ms)
+✔ cyberhell: source-mask discrepancy remains below 3% (0.484385ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27663.707785

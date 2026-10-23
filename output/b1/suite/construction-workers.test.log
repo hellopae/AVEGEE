@@ -1,0 +1,17 @@
+(node:93868) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ dam builds while taan is on duty, escorting, or building; busy crew cannot take another job (25.744003ms)
+✔ two simultaneous builds preserve their owners on reload and release each worker independently (176.998924ms)
+✔ dam repairs independently while taan builds, keeping ownership through walking, reload and completion (702.986174ms)
+✔ repair never interrupts an escort and still requires enemies to be cleared (2.426862ms)
+✔ loading a dam-owned repair does not assign taan to the same site (15.009867ms)
+✔ two repair jobs keep separate owners when leaving and returning to a branch (238.706207ms)
+✔ a builder stopped 45 units from lan approaches instead of roaming forever, with a mob present (270.579504ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1953.791098

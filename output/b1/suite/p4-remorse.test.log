@@ -1,0 +1,52 @@
+
+cases=42 (non-pure) combos=1050
+group            n   old    new
+exact sentence  210  100.0% 100.0%
+short (เบาไป)    540   30.0%  29.3%
+over (หนักเกิน)  300  100.0%  28.7%
+  short 1         185   30.0%  67.6%
+  short 2         175   30.0%  18.9%
+  short 3         150   30.0%   0.0%
+  short 4          30   30.0%   0.0%
+  over  1         180  100.0%  43.3%
+  over  2          60  100.0%  13.3%
+  over  3          35  100.0%   0.0%
+  over  4          25  100.0%   0.0%
+  exact · accepting   55  100.0% 100.0%
+  exact · concealing  95  100.0% 100.0%
+  exact · resisting   60  100.0% 100.0%
+  exact · keeper taan    42  100.0% 100.0%
+  exact · keeper plerng  42  100.0% 100.0%
+  exact · keeper kan     42  100.0% 100.0%
+  exact · keeper boon    42  100.0% 100.0%
+  exact · keeper dam     42  100.0% 100.0%
+
+innocent cases=3 combos=75 (tham 0)
+tier (=over)  n   pass
+  1           15  33.3%
+  2           15  0.0%
+  3           15  0.0%
+  4           15  0.0%
+  5           15  0.0%
+by keeper at tier 1: taan 33.3% · plerng 0.0% · kan 66.7% · boon 33.3% · dam 33.3%
+by trait at tier 1: concealing 20.0% · accepting 60.0%
+(node:95825) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ REMORSE constants live in data.js: weights sum to 100, pass = 60 (3.296804ms)
+✔ calcRemorse is deterministic and returns {total,parts:{keeper,intensity,trait}} in 0..100 (7.737102ms)
+✔ keeper fit: matching colour > neutral (taan/dam) > mismatching colour (0.658716ms)
+✔ intensity fit: exact beats short beats nothing; cruel (over) is never high (0.533166ms)
+✔ pass rates over every case × keeper × intensity vs the old rule (printed table) (11.713504ms)
+✔ finish() stores station/keeper/need/servedAt and the computed remorse; inspect reads it; reload keeps it (902.978874ms)
+✔ legacy entries without remorse keep the old inspect roll (2.515637ms)
+✔ CREW_POWER metadata: every fighter has name/icon/tint/kind and the icon file ships; balance numbers untouched (4.872906ms)
+✔ CREW_POWER job icons ship for every keeper (nira + taan/plerng/kan/boon/dam) (3.640555ms)
+✔ innocents wrongly sentenced (Reese N1): sentence tier 1 CAN pass for neutral/matching keepers; tier 2+ never does — table printed (2.409407ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1377.642678

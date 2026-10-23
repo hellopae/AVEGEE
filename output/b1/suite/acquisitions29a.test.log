@@ -1,0 +1,17 @@
+(node:93548) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ roar points to an unexamined evidence claim in every authored case, without RNG (21.543343ms)
+✔ discovery queue covers pickups, shops, levels, abilities and survives save; legacy saves seed owned items (32.160593ms)
+✔ discovery modal waits for reward and existing dialogs, shows one entry, and acknowledges only on close (8.070298ms)
+✔ all item icons have files or usable error fallback; sword shares the helper and lotus name has no duplicated emoji (5.257113ms)
+✔ outfit cards use the same ownership rule as equipping, show a visible lock reason and enable owned outfits (6.049415ms)
+✔ ordinary close dispatch preserves reward and level priority before explanations (8.176532ms)
+✔ roar handles generated cases and exhausted interrogation attempts without inventing evidence (78.272421ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 673.080899

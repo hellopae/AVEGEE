@@ -1,0 +1,14 @@
+(node:93976) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the zone-one border boss waits for deva and frontier events (21.891324ms)
+✔ a failed deva test can be retried, and an active save restarts the test (21.548214ms)
+✔ case five schedules deva after prison; case eight schedules frontier after deva (5.574058ms)
+✔ a pre-event save already at the boss keeps its old access; a new save does not (12.346997ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 536.701513

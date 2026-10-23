@@ -1,0 +1,17 @@
+(node:93630) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B2 Nira selects six IDs across zones, duplicate kinds, no truncation; Guard is separate (62.19982ms)
+✔ B2 zero morale, resting and locked branches cannot join; removal remains possible (12.421315ms)
+✔ B2 map rests apply ID team edits and keep six into the next encounter (23.663375ms)
+✔ B2 town keeps two local helpers while ordinary frontier retains the selected local team (13.935106ms)
+✔ B2 helper morale, cooldown and trained damage belong to the source ID after battle/save (27.060859ms)
+✔ B2 art uses source zone for both standee/profile and keeps default lookup (21.794075ms)
+✔ B2 returning to a repair branch keeps its original builder even when sv aliases actor (32.956772ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 682.555401

@@ -1,0 +1,17 @@
+(node:94688) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kan charges once for one clue and retains cooldown and evidence after reload (30.482951ms)
+✔ earned Kan insight replaces only MP and failed actions never consume resources (2.680739ms)
+✔ completion benefits and reports apply once, with no repeated reward after reload (1424.976316ms)
+✔ wrong or excessive sentences and legacy assignments earn no new role bonuses (1199.816411ms)
+✔ old saves default safely and malformed report state cannot corrupt the report counter (8.638016ms)
+✔ Pleng assignment charges food once and refuses without supplies (375.101525ms)
+✔ justice and karma are identical across keeper skills and queue crowding (2.163107ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3469.422723

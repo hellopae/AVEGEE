@@ -1,0 +1,13 @@
+✔ Nira stays visible beside Yama even when both enter at progress zero (3.926817ms)
+✔ corridor click routing stays on its finite connected path at every point (6.791374ms)
+✔ clicks beyond an uncleared checkpoint stop at the current route gate (0.892607ms)
+✔ checkpoint battle requires real persisted position at the CURRENT checkpoint (2.707577ms)
+✔ exit requires all victories AND physical exit proximity (0.856905ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 435.396388

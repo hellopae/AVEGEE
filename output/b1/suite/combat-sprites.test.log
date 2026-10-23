@@ -1,0 +1,14 @@
+✔ each fighting crew/guard has attack and hurt art; Nira is non-combat (3.807792ms)
+✔ frame timing holds recovery at end of hit/attack and loops idle naturally (0.551862ms)
+✔ every crop fits the declared atlas and source ships with fixed feet geometry (2.95194ms)
+✔ boss lookup keeps home identity including possessed rulers and excludes minions (1.182603ms)
+✔ the cliff stays solid outside the new painted stairs (0.954275ms)
+✔ new lava stairs and lower landing are continuously walkable, without walking through an overlay tree (2.841469ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 311.357023

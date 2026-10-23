@@ -1,0 +1,12 @@
+(node:93926) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ early trial preserves the worker's pickup position before station delivery (753.847777ms)
+✔ early trial preserves the worker's lead position before station delivery (528.517239ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1829.844942

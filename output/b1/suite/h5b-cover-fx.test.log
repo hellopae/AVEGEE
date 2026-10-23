@@ -1,0 +1,23 @@
+✔ fx layer stays between the still art and scrim, crops with the art, cannot intercept buttons (no cover video layer any more) (5.92751ms)
+✔ masks are background assets, manually registered in both manifests (12.031761ms)
+✔ mask helpers: lava is split into river and falls, dilation grows, blobs are labelled, anchors skip the keep-out box (97.571838ms)
+✔ timing helpers: flow cross-fade is seamless, flicker and pulse stay irregular and in range, canvas size is capped (2.869526ms)
+✔ visibility floors: nobody tones the effect back down to the H5b-v1 whisper (alpha<=.17, pulse<=.047) (0.386425ms)
+✔ engine builds river, falls, flames, volcano and soul cut-out from the masks, and a frame uses additive light at visible strength (252.604912ms)
+✔ torch warp samples a masked flame texture; the wide dais keeps its original cover source (155.874482ms)
+✔ frames 0.5s apart differ (the scene really moves) and nothing is added after the soul cut-out (318.582649ms)
+✔ mobile uses fewer particles than desktop but keeps the same layers; off-screen layers are culled in portrait (503.547426ms)
+✔ empty or off-screen masks build no layers and draw nothing without throwing (121.282844ms)
+✔ settle starts once, exits cancel RAF, resume fades again, reduced motion and hidden tab stop (174.37985ms)
+✔ exit during async mask load and mask failure cannot start a background loop (13.960138ms)
+✔ hidden and unsettled covers are inactive (0.418245ms)
+✔ fx loads the v4 masks and the h5b module cache-busts with the intro-v3-coverfx suffix (2.237392ms)
+✔ shipped v4 masks are 688x384 binary alpha, never cover the characters or throne (258.240923ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2187.078188

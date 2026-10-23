@@ -1,0 +1,17 @@
+(node:94192) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary border patrol keeps the selected keepers and hired guard even while a guide is available (26.344924ms)
+✔ a dungeon before the guiding journey retains its selected team (4.551208ms)
+✔ th guide joins Yama and Nira as a real combatant only on the journey (24.273363ms)
+✔ asia guide joins Yama and Nira as a real combatant only on the journey (12.083774ms)
+✔ west guide joins Yama and Nira as a real combatant only on the journey (13.068169ms)
+✔ guide cannot attack while down and no office replacement is added; farewell removes the guest and the route stays Yama + Nira (3.049891ms)
+✔ the guide receives a selectable turn and Nira can heal the guide (31.96277ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 600.975176

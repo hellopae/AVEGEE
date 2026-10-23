@@ -1,0 +1,16 @@
+(node:93660) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ I2-C: both surfaces share icon markup; empty base items and owned higher tiers remain visible (19.246492ms)
+✔ I2-C: bag clicks consume once, fill caps HP using existing item rates, and exhausted/full actions do nothing (6.318486ms)
+✔ I2-C: prep clicks consume once, fill caps HP using existing item rates, and exhausted/full actions do nothing (6.202881ms)
+✔ I2-C: fill stops when HP supplies run out; higher-tier HP supplies still work (4.344751ms)
+✔ I2-C: frontier rest uses the same handlers; entering the next wave prevents further preparation use (7.649671ms)
+✔ I2-C: no inventory disables all three icons and the fill action (5.046044ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 541.980803

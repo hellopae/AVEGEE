@@ -1,0 +1,20 @@
+(node:93650) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B3 zone tables and actual damage/heal match the displayed ability at every training level (182.089831ms)
+✔ B3 paid discipline/intelligence/mercy upgrades do not add attack; strength does (2.841279ms)
+✔ B3 training follows roster IDs and home zone, with shared Yama/Nira and EXP-derived caps (2.569486ms)
+✔ B3 Yama training scales only normal attack, before critical, leaving MP powers unchanged (9.887833ms)
+✔ B3 Kan scales enemy self damage but player hypnosis resets the source multiplier (8.853425ms)
+✔ B3 medicine price/effect table and all three use paths agree for every zone item (72.09559ms)
+✔ B3 medicines retain old-zone effects, cap gains, and do not consume when full or preparation is closed (2.8404ms)
+✔ B3 legacy upLv migration keeps active/dormant crew and Guard bonuses across repeated save/load (22.164381ms)
+✔ B3 all eight training stations are declared without wiring training into minigames (2.395383ms)
+✔ B3 Nira order and active registry recovery use shared training; construction and recovery disable it (12.677313ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 836.743001

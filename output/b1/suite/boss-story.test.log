@@ -1,0 +1,15 @@
+(node:93834) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1 finale triggers even on a lethal hit, injures the hero and awards flame charge once (53.869696ms)
+✔ Zone 2 finale saves Nira, unlocks Rage and allows a visit during three turns of rest (942.194143ms)
+✔ Zone 3 wins grant ice and queue its two story panels (7.5797ms)
+✔ Rage requires 60 active seconds and three boosted attacks before reuse (4.233677ms)
+✔ old saves keep earned powers and derive the revised milestone rewards (7.194083ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1540.780363

@@ -1,0 +1,23 @@
+(node:94634) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ I1-A mirror stand is drawn in the room canvas, depth-sorted against Yama by feet y (22.505608ms)
+✔ I1-A depth key: every spot in front of the stand foot is drawn over it, every spot behind is drawn under it (22.887809ms)
+th: width 0.24 -> 0.1763 (x0.735), linear size lying/standing 1.36 -> 1.00
+asia: width 0.24 -> 0.1984 (x0.827), linear size lying/standing 1.21 -> 1.00
+west: width 0.24 -> 0.1711 (x0.713), linear size lying/standing 1.40 -> 1.00
+cyberhell: width 0.24 -> 0.1841 (x0.767), linear size lying/standing 1.30 -> 1.00
+✔ I1-A adjusting panel switches Yama to the atk pose facing the mirror; closing returns the standing pose (5.242763ms)
+✔ I1-A mirror DOM: stand no longer painted in DOM (only drag area), close button no longer closes the whole room (5.27057ms)
+✔ I1-A lying sprite is scaled so its silhouette area equals the standing one, measured from real pixels, all four outfits (2962.698505ms)
+✔ I1-A room.js sizes the lying sprite from pixels and wakes Yama on the floor (room.wake), not on the bed (0.828868ms)
+✔ I1-A wake point is on the floor in front of the bed, inside the walkable area and within bed reach, every zone (0.711717ms)
+✔ I1-A after waking, Yama stands at the wake point and can walk immediately (13.446747ms)
+✔ I1-A cache-bust: -i1a is appended (existing suffixes kept) on every changed file that carries a version query (4.898801ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3365.442483

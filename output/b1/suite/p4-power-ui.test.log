@@ -1,0 +1,14 @@
+(node:95814) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ badge: one per fighter, role=button with data-power, keyboard reachable, image comes from CREW_POWER only (4.614806ms)
+✔ badges are wired into the five places (office cards, hero profile crew, crew tab, frontier card, side panel) (0.831551ms)
+✔ sheet: numbers come from the same functions as the office card; hire / team buttons follow state (13.168909ms)
+✔ game.js uses the same guard constants the sheet shows (no balance change) (2.239926ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 424.760953

@@ -1,0 +1,14 @@
+(node:93993) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ six extra patrols move only on the walkable road and proximity chooses their real encounter (149.145772ms)
+✔ patrols cannot start remotely or via forged ids and stale results cannot grant victory (3.755723ms)
+✔ patrol victories persist but never impersonate story checkpoints, including after the cave (5.684834ms)
+✔ restore clears interrupted patrol tokens for retry and rejects unknown saved patrol evidence (2.7703ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 653.026047

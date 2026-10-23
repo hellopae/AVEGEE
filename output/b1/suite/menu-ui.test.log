@@ -1,0 +1,14 @@
+(node:95347) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ inventory filters only known carried items and separates recovery from trade goods (4.464032ms)
+✔ weapon comparison distinguishes additive attack bonus from different special effects (0.529939ms)
+✔ menu arrows wrap and Home/End move both selected section and focus (0.911448ms)
+✔ busy battle command dock keeps every tab disabled until the command completes (1.881343ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 304.48651

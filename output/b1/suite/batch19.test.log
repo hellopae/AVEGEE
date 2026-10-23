@@ -1,0 +1,16 @@
+(node:93731) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ closed court finishes punishment and afterlife walk without advancing punitive clocks (936.214976ms)
+✔ an escort already dispatched keeps delivering souls while court is closed (736.131873ms)
+✔ closed court admits a returning case without spawning a new soul (2.917803ms)
+✔ hired guard crosses the city waterfront route and defeats a mob without player combat (2589.900981ms)
+✔ without guard player combat remains available and mobs spawn on reachable lower shore in every zone (1012.262064ms)
+✔ older saves without court status restore with an open court (17.984346ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5820.042402

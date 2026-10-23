@@ -1,0 +1,15 @@
+✔ th: bottom entrance reaches top gate without crossing obstacles (87.135098ms)
+✔ asia: bottom entrance reaches top gate without crossing obstacles (101.666979ms)
+✔ west: bottom entrance reaches top gate without crossing obstacles (124.630723ms)
+✔ cyberhell: bottom entrance reaches top gate without crossing obstacles (76.467038ms)
+✔ Thai annotated fences and tower block walking; clicks route around the tower (33.427233ms)
+✔ Zone-specific water, buildings and machinery block movement and destination clicks (5.259072ms)
+✔ approved cyber frontier mask blocks structures and connects side floor, gate and stairs (6.776061ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 717.826728
