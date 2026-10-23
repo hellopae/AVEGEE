@@ -229,7 +229,15 @@ export const WORKER_FIT_TH_V2=Object.freeze({
   3:{scale:1.109,dx:7},4:{scale:1.063,dx:27},5:{scale:1.122,dx:13},6:{scale:1.083,dx:58},7:{scale:1.129,dx:65},
   8:{scale:1.083,dx:68},9:{scale:1.12,dx:1},10:{scale:1.089,dx:-21},11:{scale:1.065,dx:2}
 });
-export const WORKER_SHEETS_V2=Object.freeze({th:Object.freeze({rows:12,insets:Object.freeze([...WORKER_FRAME_INSETS.th.slice(0,12),...Array.from({length:36},()=>[0,0,0,0])]),fit:WORKER_FIT_TH_V2})});
+// P9 — the other three zones' v2 sheets (23 Oct Codex round). Rows 0-2 are byte copies of v1 (checked), so they keep the zone's v1 insets; rows 3-11
+// were drawn with >= 6 px of clear margin (no insets needed). Only the upright rows that miss the zone's own v1 standing height by more than 2 % carry a
+// scale (scripts/measure-worker-fit.py <zone>); crouch/lean rows (6-8) are left at 1.0 on purpose and no foot dx is applied (feet of rows 3-11 sit
+// within ~15 px of the cell centre, the v1 rows 0-2 of west/cyberhell are the ones drawn right of it).
+export const WORKER_FIT_ASIA_V2=Object.freeze({4:{scale:0.974},5:{scale:1.022},11:{scale:0.977}});
+export const WORKER_FIT_WEST_V2=Object.freeze({});
+export const WORKER_FIT_CYBERHELL_V2=Object.freeze({3:{scale:0.98},5:{scale:1.026},10:{scale:0.976},11:{scale:0.98}});
+const v2Entry=(zone,fit)=>Object.freeze({rows:12,insets:Object.freeze([...WORKER_FRAME_INSETS[zone].slice(0,12),...Array.from({length:36},()=>[0,0,0,0])]),fit});
+export const WORKER_SHEETS_V2=Object.freeze({th:v2Entry('th',WORKER_FIT_TH_V2),asia:v2Entry('asia',WORKER_FIT_ASIA_V2),west:v2Entry('west',WORKER_FIT_WEST_V2),cyberhell:v2Entry('cyberhell',WORKER_FIT_CYBERHELL_V2)});
 /** Fit of one row of a v2 sheet. No table / no entry means no compensation. */
 export const workerFit=(v2,row)=>{const f=v2?.fit?.[row];return {scale:f?.scale??1,dx:f?.dx??0};};
 export const workerSheetV2=zone=>WORKER_SHEETS_V2[zone]?`img/workers/worker-${zone}-sheet-v2.webp`:null;

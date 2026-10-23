@@ -53,10 +53,11 @@ test('P5b walk mask is untouched: pier floor strip still walkable, water beside 
   assert.ok(!townFloorAt(2150,1700),'water left of the pier');
 });
 
-test('P5b worker sheet v2: th only, 1280x3840, v1 stays for every zone and for thumbnails',()=>{
-  assert.deepEqual(Object.keys(WORKER_SHEETS_V2),['th']);
+test('P5b worker sheet v2: 1280x3840, v1 stays for every zone and for thumbnails (P9: all four zones now have a v2 entry)',()=>{
+  assert.deepEqual(Object.keys(WORKER_SHEETS_V2),['th','asia','west','cyberhell']);
   assert.equal(workerSheetV2('th'),'img/workers/worker-th-sheet-v2.webp');
-  for(const z of ['asia','west','cyberhell'])assert.equal(workerSheetV2(z),null);
+  for(const z of ['asia','west','cyberhell'])assert.equal(workerSheetV2(z),`img/workers/worker-${z}-sheet-v2.webp`);
+  assert.equal(workerSheetV2('nowhere'),null);
   for(const z of ['th','asia','west','cyberhell'])assert.equal(workerSheet(z),`img/workers/worker-${z}-sheet-v1.webp`);
   assert.deepEqual(webpSize('img/workers/worker-th-sheet-v2.webp'),[1280,3840]);
   assert.equal(WORKER_SHEETS_V2.th.insets.length,48);
@@ -88,17 +89,17 @@ test('P5b worker rows follow what the worker is doing (v2) and stay the old 4-ro
   assert.equal(workerHeading(1,10),'down');assert.equal(workerHeading(1,-10),'up');assert.equal(workerHeading(10,3),'side');assert.equal(workerHeading(-5,5),'side');
 });
 
-test('P5b drawWorker reads the 12-row th sheet by row and the 4-row v1 sheet elsewhere',()=>{
+test('P5b drawWorker reads the 12-row v2 sheet by row and the 4-row v1 sheet for a zone without v2 (P9: only an unknown zone falls back now)',()=>{
   const prevImage=globalThis.Image,srcs=[];
   globalThis.Image=class{constructor(){this.complete=true;}set src(v){this._s=v;srcs.push(v);this.naturalWidth=1280;this.naturalHeight=v.includes('-v2')?3840:1280;}get src(){return this._s;}};
   const calls=[];
   const ctx=new Proxy({},{get:(_,k)=>k==='drawImage'?(...a)=>calls.push(a):()=>{},set:()=>true});
   const mk=(homeZone,extra)=>({homeZone,x:100,y:100,face:1,job:null,moving:false,arrived:false,cargo:null,...extra});
   drawWorker(ctx,mk('th',{arrived:true,job:{kind:'repair'}}),0,48);
-  drawWorker(ctx,mk('asia',{arrived:true,job:{kind:'repair'}}),0,48);
+  drawWorker(ctx,mk('nowhere',{arrived:true,job:{kind:'repair'}}),0,48);
   globalThis.Image=prevImage;
-  assert.ok(srcs.includes('img/workers/worker-th-sheet-v2.webp')&&srcs.includes('img/workers/worker-asia-sheet-v1.webp'));
+  assert.ok(srcs.includes('img/workers/worker-th-sheet-v2.webp')&&srcs.includes('img/workers/worker-th-sheet-v1.webp'));
   const th=calls[0],asia=calls[1];
   assert.equal(th[2],8*320,'th repair = v2 row 8 (source y in pixels)');assert.equal(th[4],320);
-  assert.equal(asia[2],2*320,'asia keeps v1 build row 2');
+  assert.equal(Math.floor(asia[2]/320),2,'a zone without a v2 entry keeps v1 build row 2 (th inset table adds a few px of top inset)');
 });

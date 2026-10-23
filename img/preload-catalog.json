@@ -547,6 +547,7 @@
       "img/boss-guide/asia-welcome-v1.webp",
       "img/boss-guide/asia-farewell-v2.webp",
       "img/workers/worker-asia-sheet-v1.webp",
+      "img/workers/worker-asia-sheet-v2.webp",
       "img/nira-combat/nira-asia-heal-cutscene-v1.webp",
       "img/boss-guide/asia-gift-v1.webp"
     ],
@@ -708,6 +709,7 @@
       "img/boss-guide/west-welcome-v1.webp",
       "img/boss-guide/west-farewell-v2.webp",
       "img/workers/worker-west-sheet-v1.webp",
+      "img/workers/worker-west-sheet-v2.webp",
       "img/nira-combat/nira-west-heal-cutscene-v1.webp",
       "img/boss-guide/west-gift-v1.webp"
     ],
@@ -875,6 +877,7 @@
       "img/boss-justice/final-bound-sprite-v1.webp",
       "img/boss-justice/final-sentence-v1.webp",
       "img/workers/worker-cyberhell-sheet-v1.webp",
+      "img/workers/worker-cyberhell-sheet-v2.webp",
       "img/nira-combat/nira-cyberhell-heal-cutscene-v1.webp"
     ]
   }

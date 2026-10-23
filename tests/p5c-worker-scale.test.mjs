@@ -38,7 +38,7 @@ test('P5c drawWorker applies the row fit: bigger, feet shifted, baseline unchang
   const H=48;
   drawWorker(ctx,mk('th',{arrived:true,job:{kind:'repair'}}),0,H);   // v2 row 8 (has a fit)
   drawWorker(ctx,mk('th',{}),0,H);                                    // v2 row 0 (no fit)
-  drawWorker(ctx,mk('asia',{arrived:true,job:{kind:'repair'}}),0,H);  // v1 sheet
+  drawWorker(ctx,mk('nowhere',{arrived:true,job:{kind:'repair'}}),0,H);  // unknown zone -> v1 sheet (P9: every real zone has a v2 entry)
   globalThis.Image=prevImage;
   const [row8,row0,v1]=calls,f=WORKER_FIT_TH_V2[8],w=H; // cell is square, so width===height at scale 1
   const near=(a,b,m)=>assert.ok(Math.abs(a-b)<1e-9,m+` (${a} vs ${b})`);
@@ -50,5 +50,5 @@ test('P5c drawWorker applies the row fit: bigger, feet shifted, baseline unchang
 });
 
 test('P5c cache-bust: workers.js ends -p5c, nothing else of the importmap touched by this round',()=>{
-  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*p5b-p5c"/);
+  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*p5b-p5c(?:-[a-z0-9]+)*"/);
 });

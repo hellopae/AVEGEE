@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import {niraCombatSheet,niraPoseFacesRight,niraSheetIsV2,NIRA_SHEETS_V2} from '../src/nira-combat.js';
+import {WORKER_SHEETS_V2,WORKER_FRAME_INSETS,workerFit,workerSheetV2,workerRow,drawWorker} from '../src/workers.js';
 
 const html=readFileSync('index.html','utf8'),catalog=JSON.parse(readFileSync('img/preload-catalog.json','utf8'));
 const allCatalogFiles=Object.values(catalog).flatMap(function walk(v){return Array.isArray(v)?v:v&&typeof v==='object'?Object.values(v).flatMap(walk):[];});
@@ -38,4 +39,59 @@ test('P9 Nira: v2 faces right in every pose so nothing is mirrored by the squad;
 
 test('P9 cache-bust: nira-combat.js ends -p9',()=>{
   assert.match(html,/"\.\/src\/nira-combat\.js": "\.\/src\/nira-combat\.js\?v=[^"]*-p9"/);
+});
+
+// output of: python3 -I scripts/measure-worker-fit.py <zone>   (row mean alpha height px; v1 standing height of the same zone)
+const WORKER_MEASURED={
+  asia:{stand:303.0,rows:{3:303.0,4:311.0,5:296.5,6:280.5,7:305.0,8:304.5,9:297.0,10:299.8,11:310.0}},
+  west:{stand:305.25,rows:{3:307.5,4:306.5,5:306.5,6:300.8,7:284.0,8:284.0,9:299.5,10:306.8,11:306.0}},
+  cyberhell:{stand:304.75,rows:{3:311.0,4:306.5,5:297.0,6:300.2,7:298.5,8:293.2,9:303.8,10:312.2,11:311.0}},
+};
+const UPRIGHT=[3,4,5,9,10,11];
+
+test('P9 workers: asia/west/cyberhell draw the 12-row v2 sheet (1280x3840); th unchanged; v1 files stay',()=>{
+  assert.deepEqual(Object.keys(WORKER_SHEETS_V2),ZONES);
+  for(const z of ['asia','west','cyberhell']) {
+    const f=`img/workers/worker-${z}-sheet-v2.webp`;
+    assert.equal(workerSheetV2(z),f);assert.deepEqual(webpSize(f),[1280,3840]);
+    assert.ok(existsSync(`img/workers/worker-${z}-sheet-v1.webp`));assert.ok(allCatalogFiles.includes(f),`${z} v2 preloaded`);
+    const v2=WORKER_SHEETS_V2[z];
+    assert.equal(v2.rows,12);assert.equal(v2.insets.length,48);
+    assert.deepEqual(v2.insets.slice(0,12),WORKER_FRAME_INSETS[z].slice(0,12),'rows 0-2 are v1 copies and keep the zone v1 insets');
+    assert.ok(v2.insets.slice(12).every(i=>i.every(n=>n===0)),'rows 3-11 were drawn with >= 6 px margin, no insets');
+  }
+});
+
+test('P9 workers: upright rows end within 2 % of the zone own v1 standing height; crouch/lean rows 6-8 are deliberately not scaled',()=>{
+  for(const [z,{stand,rows}] of Object.entries(WORKER_MEASURED)) {
+    for(const [row,h] of Object.entries(rows)) {
+      const f=workerFit(WORKER_SHEETS_V2[z],Number(row));
+      assert.equal(f.dx,0,'no foot shift measured/needed');
+      if(UPRIGHT.includes(Number(row))) assert.ok(Math.abs(h*f.scale/stand-1)<=0.0205,`${z} row ${row}: ${(h*f.scale/stand*100).toFixed(1)} %`);
+      else assert.equal(f.scale,1,`${z} row ${row} (crouch/lean) is not scaled`);
+    }
+    for(const row of [0,1,2,12])assert.deepEqual(workerFit(WORKER_SHEETS_V2[z],row),{scale:1,dx:0});
+  }
+});
+
+test('P9 drawWorker: asia/west/cyberhell read v2 rows by what the worker does (repair=8, carry shards=11) and apply their scale about the foot baseline',()=>{
+  const prevImage=globalThis.Image;
+  globalThis.Image=class{constructor(){this.complete=true;}set src(v){this._s=v;this.naturalWidth=1280;this.naturalHeight=v.includes('-v2')?3840:1280;}get src(){return this._s;}};
+  const calls=[],ctx=new Proxy({},{get:(_,k)=>k==='drawImage'?(...a)=>calls.push(a):()=>{},set:()=>true});
+  const mk=(homeZone,extra)=>({homeZone,x:100,y:100,face:1,job:null,moving:false,arrived:false,cargo:null,...extra});
+  drawWorker(ctx,mk('asia',{arrived:true,job:{kind:'repair'}}),0,48);                 // row 8, no scale
+  drawWorker(ctx,mk('asia',{moving:true,cargo:'dabShards'}),0,48);                    // row 11, scale 0.977
+  drawWorker(ctx,mk('cyberhell',{moving:true,cargo:'ngiwWood'}),0,48);                // row 10, scale 0.976
+  drawWorker(ctx,mk('west',{moving:true,cargo:'dabShards'}),0,48);                    // row 11, west has no scale
+  globalThis.Image=prevImage;
+  const [a8,a11,c10,w11]=calls;
+  assert.equal(Math.floor(a8[2]/320),8);assert.equal(Math.floor(a11[2]/320),11);assert.equal(Math.floor(c10[2]/320),10);assert.equal(Math.floor(w11[2]/320),11);
+  const near=(a,b,m)=>assert.ok(Math.abs(a-b)<1e-9,m+` (${a} vs ${b})`);
+  near(a8[7],48,'asia row 8 plain width');near(a11[7],48*0.977,'asia row 11 drawn at fit scale');near(a11[6]+a11[8],0,'row 11 baseline stays on the foot');
+  near(c10[7],48*0.976,'cyberhell row 10 at fit scale');near(w11[7],48,'west row 11 plain');
+  assert.equal(workerRow(mk('asia',{moving:true,cargo:'dabShards'}),true),11);
+});
+
+test('P9 cache-bust: workers.js ends -p9',()=>{
+  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*-p9"/);
 });
