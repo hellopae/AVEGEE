@@ -1,0 +1,34 @@
+[
+  {
+    "id": "s3a",
+    "reference": "img/theme-v4/town-tree-th-v1.webp",
+    "theme": "img/theme-v4/map-asia.webp",
+    "destination": "img/theme-v4/town-tree-asia-v1.webp",
+    "key": "#FF00FF",
+    "prompt": "Attached: [1] STRUCTURE: a Zone 1 broad game tree sprite. [2] THEME: the old Zone 2 map for mood.\nRedraw as a Zone 2 East-Asian tree filling the canvas the same way as [1] (canopy spanning nearly the\nfull width, roots and trunk base at the bottom centre, a little margin at the bottom): an ancient\ngnarled pine in layered \"cloud-pruned\" tiers, dark jade-green needle pads (#2C5E3A, #4E9A5B, highlights\n#8BC06A) stacked in rounded horizontal tiers, twisting reddish-brown trunk with visible roots, a few\npale wisps of moss. Painted game-asset style: crisp dark outline, hand-painted texture, warm key light\nfrom the upper left, no ground shadow. Plain flat magenta #FF00FF background.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, snow, ice, bodhi leaf, pipal tree, lotus, fruit, flowers (S3a/b/c), blue glow, glowing leaves"
+  },
+  {
+    "id": "s3b",
+    "reference": "img/theme-v4/town-tree-red-th-v1.webp",
+    "theme": "img/theme-v4/map-asia.webp",
+    "destination": "img/theme-v4/town-tree-b-asia-v1.webp",
+    "key": "#00FFFF",
+    "prompt": "Attached: [1] STRUCTURE: a Zone 1 red-leaf tree sprite. [2] THEME: the old Zone 2 map; look at its\ncrimson maple trees.\nRedraw as a Zone 2 Japanese-maple style tree filling the canvas the same way as [1]: spreading canopy\nnearly the full width, a twisting dark-brown trunk with roots at the bottom centre, small deeply-lobed\ncrimson maple leaves (#C4202B, #E5502A, shade #7A1220), a few fallen red leaves among the roots.\nThe reds are rich but NOT glowing: duller and darker than flames. Painted game-asset style: crisp dark\noutline, hand-painted texture, warm key light from the upper left, no ground shadow. Plain flat cyan\n#00FFFF background.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, snow, ice, bodhi leaf, pipal tree, lotus, fruit, flowers (S3a/b/c), blue glow, glowing leaves"
+  },
+  {
+    "id": "s3c",
+    "reference": "img/theme-v4/town-tree-snow-th-v1.webp",
+    "theme": "img/theme-v4/map-asia.webp",
+    "destination": "img/theme-v4/town-tree-c-asia-v1.webp",
+    "key": "#FF00FF",
+    "prompt": "Attached: [1] STRUCTURE: a Zone 1 snow-covered tree sprite. [2] THEME: the old Zone 2 map for mood.\nRedraw as a Zone 2 big bamboo clump filling the canvas the same way as [1]: dozens of jade-green and\nyellow-green bamboo canes (#4E9A5B, #8BC06A, shade #2C5E3A) with visible nodes, arching outward and\nupward, dense leaf sprays forming a broad rounded crown nearly the full canvas width, roots and cane\nbases at the bottom centre, a few cool mist-blue highlights in the shade. NO snow, NO ice. Painted\ngame-asset style: crisp dark outline, hand-painted texture, warm key light from the upper left, no\nground shadow. Plain flat magenta #FF00FF background.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, snow, ice, bodhi leaf, pipal tree, lotus, fruit, flowers (S3a/b/c), blue glow, glowing leaves"
+  },
+  {
+    "id": "s3d",
+    "reference": "img/theme-v4/town-palm-th-v1.webp",
+    "theme": "img/theme-v4/map-asia.webp",
+    "destination": "img/theme-v4/town-landmark-asia-v1.webp",
+    "key": "#FF00FF",
+    "prompt": "Attached: [1] STRUCTURE: a Zone 1 landmark palm tree sprite, tall and slender. [2] THEME: the old Zone 2\nmap for mood.\nRedraw as a Zone 2 tall ginkgo tree filling the canvas the same way as [1]: a tall straight trunk with\na few exposed roots at the bottom centre, a rounded conical crown of fan-shaped pale-gold ginkgo\nleaves (#E9C65A, #F6E08C, shade #A8832E), a few leaves drifting down. Painted game-asset style: crisp\ndark outline, hand-painted texture, warm key light from the upper left, no ground shadow. Plain flat\nmagenta #FF00FF background.\n\nNegative: text, letters, Chinese characters, kanji, watermark, logo, Buddha, deity statue, halo, cross, swastika, manji fret lattice, pagoda tower, stupa, ground shadow, floor, background scenery, magenta fringe, cyan fringe, red fringe, white halo, cropped edges, people, animals, flat vector, 3D render, photorealistic, low-poly, blur, smooth airbrush, snow, ice, bodhi leaf, pipal tree, lotus, fruit, flowers (S3a/b/c), blue glow, glowing leaves"
+  }
+]

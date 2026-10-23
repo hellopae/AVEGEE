@@ -1,0 +1,26 @@
+[
+  {
+    "id": "s3a",
+    "prompt": "Precise local geometry correction to this tree sprite: edit ONLY the lower quarter of the image (y=985 to 1312 of this 1199x1312 canvas). Keep EVERY pixel in the upper three quarters unchanged, including the canopy, branches and their colors. Translate the entire exposed ROOT SYSTEM and trunk base in the bottom quarter 32 pixels LEFT, reconnecting the short lower trunk smoothly. The root system currently sits right of center; its visual center must sit on vertical x=599.5. Keep bottom margin, root width and root details. Fill vacated space on the right with the same perfectly flat magenta #FF00FF background. The canopy must not move at all. Do not introduce ground, shadow, text or extra objects; do not brighten any colors.",
+    "output_hint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e as /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e/exec-3e593cea-3132-4d1a-828b-75e73d5065f4.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "selected": false
+  },
+  {
+    "id": "s3b",
+    "prompt": "Precise local geometry correction to this tree sprite: edit ONLY the lower quarter of the image (y=985 to 1312 of this 1199x1312 canvas). Keep EVERY pixel in the upper three quarters unchanged, including the canopy, branches and their colors. Translate the entire exposed ROOT SYSTEM and trunk base in the bottom quarter 48 pixels LEFT, reconnecting the short lower trunk smoothly. The root system currently sits right of center; its visual center must sit on vertical x=599.5. Keep bottom margin, root width and root details. Fill vacated space on the right with the same perfectly flat cyan #00FFFF background. The canopy must not move at all. Do not introduce ground, shadow, text or extra objects; do not brighten any colors.",
+    "output_hint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e as /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e/exec-5ae7bbab-6c01-4c4a-b669-85a72a07f63b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "selected": true
+  },
+  {
+    "id": "s3c",
+    "prompt": "Precise local correction to this bamboo sprite. Edit ONLY the lowest quarter (y=985 through 1312). The upper three quarters must remain unchanged. Shift the entire exposed root cluster and cane bases 32 pixels LEFT, reconnecting cane stems smoothly only inside this lower quarter. The root cluster's left and right outer tips must have midpoint x=599.5 on this 1199px-wide canvas; right now their midpoint is around x=627. Keep the root width and detail, broad canopy silhouette, same jade-green palette and plain flat magenta #FF00FF background. No new objects, no ground, no shadow, no text. Do not brighten the colors.",
+    "output_hint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e as /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e/exec-282a26dc-714c-44fc-8b2d-ef5fdfdc93d6.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "selected": true
+  },
+  {
+    "id": "s3d",
+    "prompt": "Precise local correction to this ginkgo tree sprite. Edit ONLY the lowest quarter of the 1101x1429 image. Keep every pixel in the upper three quarters unchanged, including pale-gold fan leaves, branches and straight trunk. Shift the ENTIRE exposed root system and the very bottom of the trunk 32 pixels LEFT; smoothly reconnect the short bottom of the trunk only inside the lower quarter. The midpoint between leftmost and rightmost exposed root tips in the bottom 8% must be x=550.5; currently it is around x=580. Preserve root width, detailed bark, pale cream-gold leaves, muted brown bark, bottom margin and flat magenta #FF00FF background. No ground, no shadow, no text, no new objects, no bright orange or glow.",
+    "output_hint": "Generated images are saved to /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e as /Users/agapae/.codex/generated_images/01a1672c-8d80-7121-ac0f-acf9155f703e/exec-78085ddd-4169-44c2-8f5d-89a56c8e5a7e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "selected": false
+  }
+]

@@ -1,0 +1,181 @@
+{
+  "scope": "S3 only",
+  "sprites": [
+    {
+      "id": "s3a",
+      "file": "img/theme-v4/town-tree-asia-v1.webp",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "raw_size": [
+        1199,
+        1312
+      ],
+      "raw_extracted_bbox": [
+        10,
+        10,
+        1192,
+        1298
+      ],
+      "reference_bbox": [
+        0,
+        0,
+        1199,
+        1312
+      ],
+      "final_bbox": [
+        1,
+        6,
+        1188,
+        1286
+      ],
+      "edge_delta_percent": [
+        0.08340283569641367,
+        0.45731707317073167,
+        -0.9174311926605505,
+        -1.9817073170731707
+      ],
+      "bottom_margin_percent": 1.9817073170731707,
+      "canopy_width_percent": 98.99916597164304,
+      "lower_8_percent_root_midpoint_x": 619.5,
+      "root_midpoint_offset_percent": 1.6680567139282736,
+      "flame_like_pixel_count": 2,
+      "opaque_key_dominance_pixel_count": 0,
+      "lossless_pixel_roundtrip": true
+    },
+    {
+      "id": "s3b",
+      "file": "img/theme-v4/town-tree-b-asia-v1.webp",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "raw_size": [
+        1199,
+        1312
+      ],
+      "raw_extracted_bbox": [
+        11,
+        9,
+        1188,
+        1295
+      ],
+      "reference_bbox": [
+        4,
+        5,
+        1195,
+        1308
+      ],
+      "final_bbox": [
+        25,
+        6,
+        1193,
+        1286
+      ],
+      "edge_delta_percent": [
+        1.7514595496246872,
+        0.07621951219512195,
+        -0.16680567139282734,
+        -1.676829268292683
+      ],
+      "bottom_margin_percent": 1.9817073170731707,
+      "canopy_width_percent": 97.41451209341118,
+      "lower_8_percent_root_midpoint_x": 578.5,
+      "root_midpoint_offset_percent": -1.7514595496246872,
+      "flame_like_pixel_count": 2,
+      "opaque_key_dominance_pixel_count": 0,
+      "lossless_pixel_roundtrip": true
+    },
+    {
+      "id": "s3c",
+      "file": "img/theme-v4/town-tree-c-asia-v1.webp",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "raw_size": [
+        1199,
+        1312
+      ],
+      "raw_extracted_bbox": [
+        8,
+        3,
+        1194,
+        1300
+      ],
+      "reference_bbox": [
+        4,
+        5,
+        1195,
+        1308
+      ],
+      "final_bbox": [
+        6,
+        6,
+        1193,
+        1286
+      ],
+      "edge_delta_percent": [
+        0.16680567139282734,
+        0.07621951219512195,
+        -0.16680567139282734,
+        -1.676829268292683
+      ],
+      "bottom_margin_percent": 1.9817073170731707,
+      "canopy_width_percent": 98.99916597164304,
+      "lower_8_percent_root_midpoint_x": 583.5,
+      "root_midpoint_offset_percent": -1.3344453711426187,
+      "flame_like_pixel_count": 333,
+      "opaque_key_dominance_pixel_count": 0,
+      "lossless_pixel_roundtrip": true
+    },
+    {
+      "id": "s3d",
+      "file": "img/theme-v4/town-landmark-asia-v1.webp",
+      "size": [
+        1024,
+        1328
+      ],
+      "mode": "RGBA",
+      "raw_size": [
+        1101,
+        1429
+      ],
+      "raw_extracted_bbox": [
+        17,
+        12,
+        1087,
+        1404
+      ],
+      "reference_bbox": [
+        4,
+        6,
+        1020,
+        1324
+      ],
+      "final_bbox": [
+        1,
+        8,
+        1001,
+        1301
+      ],
+      "edge_delta_percent": [
+        -0.29296875,
+        0.15060240963855423,
+        -1.85546875,
+        -1.7319277108433735
+      ],
+      "bottom_margin_percent": 2.033132530120482,
+      "canopy_width_percent": 97.65625,
+      "lower_8_percent_root_midpoint_x": 527.5,
+      "root_midpoint_offset_percent": 1.513671875,
+      "flame_like_pixel_count": 137,
+      "opaque_key_dominance_pixel_count": 0,
+      "lossless_pixel_roundtrip": true
+    }
+  ]
+}

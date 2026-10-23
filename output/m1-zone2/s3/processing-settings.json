@@ -1,0 +1,57 @@
+{
+  "purpose": "Art-only key extraction/framing; temporary processing and verification scripts removed from deliverables.",
+  "key_dominance_threshold": 25,
+  "key_test": "magenta min(R,B)-G; cyan min(G,B)-R",
+  "inward_alpha_pixels": 1,
+  "resize_filter": "Lanczos",
+  "edge_despill": "nearest interior RGB; post-resize chroma cleanup",
+  "canvases": {
+    "s3a": [
+      1199,
+      1312
+    ],
+    "s3b": [
+      1199,
+      1312
+    ],
+    "s3c": [
+      1199,
+      1312
+    ],
+    "s3d": [
+      1024,
+      1328
+    ]
+  },
+  "fit_bboxes": {
+    "s3a": [
+      1,
+      6,
+      1188,
+      1286
+    ],
+    "s3b": [
+      25,
+      6,
+      1193,
+      1286
+    ],
+    "s3c": [
+      6,
+      6,
+      1193,
+      1286
+    ],
+    "s3d": [
+      1,
+      8,
+      1001,
+      1301
+    ]
+  },
+  "webp": {
+    "lossless": true,
+    "method": 6,
+    "exact": true
+  }
+}
