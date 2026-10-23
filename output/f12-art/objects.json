@@ -1,0 +1,680 @@
+{
+  "coordinate_system": "top-left origin; x/1672, y/941",
+  "objects": [
+    {
+      "id": 1,
+      "type": "stone-lantern",
+      "xy_normalized": [
+        0.206938,
+        0.319872
+      ],
+      "bbox_normalized": [
+        0.197368,
+        0.294368,
+        0.216507,
+        0.345377
+      ],
+      "bbox_pixels": [
+        330,
+        277,
+        362,
+        325
+      ],
+      "note": "upper-left lantern silhouette",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 46
+    },
+    {
+      "id": 2,
+      "type": "grass",
+      "xy_normalized": [
+        0.245813,
+        0.35441
+      ],
+      "bbox_normalized": [
+        0.236244,
+        0.339001,
+        0.255383,
+        0.369819
+      ],
+      "bbox_pixels": [
+        395,
+        319,
+        427,
+        348
+      ],
+      "note": "tuft at stair landing",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 122
+    },
+    {
+      "id": 3,
+      "type": "grass",
+      "xy_normalized": [
+        0.307416,
+        0.378852
+      ],
+      "bbox_normalized": [
+        0.296053,
+        0.366631,
+        0.31878,
+        0.391073
+      ],
+      "bbox_pixels": [
+        495,
+        345,
+        533,
+        368
+      ],
+      "note": "tufts on upper linking path",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 68
+    },
+    {
+      "id": 4,
+      "type": "tree",
+      "xy_normalized": [
+        0.326555,
+        0.394261
+      ],
+      "bbox_normalized": [
+        0.312799,
+        0.370882,
+        0.340311,
+        0.417641
+      ],
+      "bbox_pixels": [
+        523,
+        349,
+        569,
+        393
+      ],
+      "note": "small tree intruding into upper linking path",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 730
+    },
+    {
+      "id": 5,
+      "type": "rock",
+      "xy_normalized": [
+        0.361244,
+        0.421892
+      ],
+      "bbox_normalized": [
+        0.352273,
+        0.410202,
+        0.370215,
+        0.433581
+      ],
+      "bbox_pixels": [
+        589,
+        386,
+        619,
+        408
+      ],
+      "note": "stones on linking path",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 350,
+      "outside_mask_plus_6_pixels_in_bbox": 76
+    },
+    {
+      "id": 6,
+      "type": "tree",
+      "xy_normalized": [
+        0.465012,
+        0.443146
+      ],
+      "bbox_normalized": [
+        0.449761,
+        0.420829,
+        0.480263,
+        0.465462
+      ],
+      "bbox_pixels": [
+        752,
+        396,
+        803,
+        438
+      ],
+      "note": "small tree at middle fork",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 542
+    },
+    {
+      "id": 7,
+      "type": "rock",
+      "xy_normalized": [
+        0.48116,
+        0.455367
+      ],
+      "bbox_normalized": [
+        0.473086,
+        0.443146,
+        0.489234,
+        0.467588
+      ],
+      "bbox_pixels": [
+        791,
+        417,
+        818,
+        440
+      ],
+      "note": "loose stones at middle fork",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 79,
+      "outside_mask_plus_6_pixels_in_bbox": 298
+    },
+    {
+      "id": 8,
+      "type": "tree",
+      "xy_normalized": [
+        0.502093,
+        0.426674
+      ],
+      "bbox_normalized": [
+        0.488038,
+        0.400638,
+        0.516148,
+        0.45271
+      ],
+      "bbox_pixels": [
+        816,
+        377,
+        863,
+        426
+      ],
+      "note": "tree over middle descent",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 55,
+      "outside_mask_plus_6_pixels_in_bbox": 1360
+    },
+    {
+      "id": 9,
+      "type": "rock",
+      "xy_normalized": [
+        0.528409,
+        0.543571
+      ],
+      "bbox_normalized": [
+        0.517344,
+        0.527099,
+        0.539474,
+        0.560043
+      ],
+      "bbox_pixels": [
+        865,
+        496,
+        902,
+        527
+      ],
+      "note": "loose stones above cave roof",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 649,
+      "outside_mask_plus_6_pixels_in_bbox": 175
+    },
+    {
+      "id": 10,
+      "type": "rock",
+      "xy_normalized": [
+        0.507775,
+        0.54729
+      ],
+      "bbox_normalized": [
+        0.502392,
+        0.537726,
+        0.513158,
+        0.556854
+      ],
+      "bbox_pixels": [
+        840,
+        506,
+        858,
+        524
+      ],
+      "note": "small stone above cave roof",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 322,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 11,
+      "type": "rock",
+      "xy_normalized": [
+        0.543959,
+        0.557386
+      ],
+      "bbox_normalized": [
+        0.538278,
+        0.546227,
+        0.549641,
+        0.568544
+      ],
+      "bbox_pixels": [
+        900,
+        514,
+        919,
+        535
+      ],
+      "note": "stone on cave roof approach",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 260,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 12,
+      "type": "grass",
+      "xy_normalized": [
+        0.246411,
+        0.484591
+      ],
+      "bbox_normalized": [
+        0.238038,
+        0.472901,
+        0.254785,
+        0.496281
+      ],
+      "bbox_pixels": [
+        398,
+        445,
+        426,
+        467
+      ],
+      "note": "growth on left descent",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 503,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 13,
+      "type": "tree",
+      "xy_normalized": [
+        0.259868,
+        0.496281
+      ],
+      "bbox_normalized": [
+        0.25,
+        0.479277,
+        0.269737,
+        0.513284
+      ],
+      "bbox_pixels": [
+        418,
+        451,
+        451,
+        483
+      ],
+      "note": "red growth crossing left descent",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 205,
+      "outside_mask_plus_6_pixels_in_bbox": 154
+    },
+    {
+      "id": 14,
+      "type": "rock",
+      "xy_normalized": [
+        0.299641,
+        0.597768
+      ],
+      "bbox_normalized": [
+        0.289474,
+        0.584485,
+        0.309809,
+        0.611052
+      ],
+      "bbox_pixels": [
+        484,
+        550,
+        518,
+        575
+      ],
+      "note": "stones on lower left landing",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 15,
+      "type": "grass",
+      "xy_normalized": [
+        0.319677,
+        0.623804
+      ],
+      "bbox_normalized": [
+        0.312201,
+        0.612115,
+        0.327153,
+        0.635494
+      ],
+      "bbox_pixels": [
+        522,
+        576,
+        547,
+        598
+      ],
+      "note": "tuft on lower left path",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 16,
+      "type": "grass",
+      "xy_normalized": [
+        0.371711,
+        0.646652
+      ],
+      "bbox_normalized": [
+        0.364833,
+        0.636557,
+        0.378589,
+        0.656748
+      ],
+      "bbox_pixels": [
+        610,
+        599,
+        633,
+        618
+      ],
+      "note": "tuft on lower left path end",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 17,
+      "type": "rock",
+      "xy_normalized": [
+        0.582835,
+        0.306057
+      ],
+      "bbox_normalized": [
+        0.578349,
+        0.294368,
+        0.587321,
+        0.317747
+      ],
+      "bbox_pixels": [
+        967,
+        277,
+        982,
+        299
+      ],
+      "note": "loose stone in upper hairpin",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 121,
+      "outside_mask_plus_6_pixels_in_bbox": 33
+    },
+    {
+      "id": 18,
+      "type": "rock",
+      "xy_normalized": [
+        0.592105,
+        0.319872
+      ],
+      "bbox_normalized": [
+        0.586124,
+        0.308183,
+        0.598086,
+        0.331562
+      ],
+      "bbox_pixels": [
+        980,
+        290,
+        1000,
+        312
+      ],
+      "note": "loose stones in upper hairpin",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 440,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 19,
+      "type": "rock",
+      "xy_normalized": [
+        0.575359,
+        0.33847
+      ],
+      "bbox_normalized": [
+        0.568182,
+        0.327311,
+        0.582536,
+        0.349628
+      ],
+      "bbox_pixels": [
+        950,
+        308,
+        974,
+        329
+      ],
+      "note": "stones at bridge junction",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 495,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 20,
+      "type": "grass",
+      "xy_normalized": [
+        0.52811,
+        0.352816
+      ],
+      "bbox_normalized": [
+        0.519139,
+        0.341126,
+        0.537081,
+        0.364506
+      ],
+      "bbox_pixels": [
+        868,
+        321,
+        898,
+        343
+      ],
+      "note": "growth at central bend",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 21,
+      "type": "grass",
+      "xy_normalized": [
+        0.55622,
+        0.361849
+      ],
+      "bbox_normalized": [
+        0.547847,
+        0.349628,
+        0.564593,
+        0.37407
+      ],
+      "bbox_pixels": [
+        916,
+        329,
+        944,
+        352
+      ],
+      "note": "growth at central bend edge",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 0
+    },
+    {
+      "id": 22,
+      "type": "tree",
+      "xy_normalized": [
+        0.558911,
+        0.784272
+      ],
+      "bbox_normalized": [
+        0.546053,
+        0.763018,
+        0.57177,
+        0.805526
+      ],
+      "bbox_pixels": [
+        913,
+        718,
+        956,
+        758
+      ],
+      "note": "canopy intruding above lower plaza stair",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 2
+    },
+    {
+      "id": 23,
+      "type": "tree",
+      "xy_normalized": [
+        0.480562,
+        0.772582
+      ],
+      "bbox_normalized": [
+        0.464713,
+        0.74814,
+        0.496411,
+        0.797024
+      ],
+      "bbox_pixels": [
+        777,
+        704,
+        830,
+        750
+      ],
+      "note": "canopy intruding at lower plaza edge",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 253
+    },
+    {
+      "id": 24,
+      "type": "tree",
+      "xy_normalized": [
+        0.508971,
+        0.788523
+      ],
+      "bbox_normalized": [
+        0.495813,
+        0.768332,
+        0.522129,
+        0.808714
+      ],
+      "bbox_pixels": [
+        829,
+        723,
+        873,
+        761
+      ],
+      "note": "canopy intruding at lower plaza edge",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 52
+    },
+    {
+      "id": 25,
+      "type": "tree",
+      "xy_normalized": [
+        0.75,
+        0.869819
+      ],
+      "bbox_normalized": [
+        0.733852,
+        0.85441,
+        0.766148,
+        0.885228
+      ],
+      "bbox_pixels": [
+        1227,
+        804,
+        1281,
+        833
+      ],
+      "note": "canopy intruding at southeast path",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 55
+    },
+    {
+      "id": 26,
+      "type": "grass",
+      "xy_normalized": [
+        0.828648,
+        0.571732
+      ],
+      "bbox_normalized": [
+        0.819976,
+        0.55898,
+        0.837321,
+        0.584485
+      ],
+      "bbox_pixels": [
+        1371,
+        526,
+        1400,
+        550
+      ],
+      "note": "growth at right descent",
+      "action": "preserved: boundary/structure conflict; not removed",
+      "selected_for_edit": false,
+      "composited_pixels_in_bbox": 0,
+      "outside_mask_plus_6_pixels_in_bbox": 301
+    },
+    {
+      "id": 27,
+      "type": "rock",
+      "xy_normalized": [
+        0.852572,
+        0.585547
+      ],
+      "bbox_normalized": [
+        0.8439,
+        0.572795,
+        0.861244,
+        0.5983
+      ],
+      "bbox_pixels": [
+        1411,
+        539,
+        1440,
+        563
+      ],
+      "note": "stones at right path bend",
+      "action": "local inpaint composite",
+      "selected_for_edit": true,
+      "composited_pixels_in_bbox": 443,
+      "outside_mask_plus_6_pixels_in_bbox": 44
+    }
+  ]
+}

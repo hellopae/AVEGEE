@@ -1,0 +1,92 @@
+{
+  "source": "img/frontier-route/zone1-2-v3.webp",
+  "output": "img/frontier-route/zone1-2-v4.webp",
+  "width": 1672,
+  "height": 941,
+  "mode": "RGB",
+  "encoding": "WebP lossless",
+  "feather_support_pixels": 2,
+  "mask_dilation": "Chebyshev radius 6px (13x13 max filter)",
+  "changed_pixels": 4931,
+  "outside_mask_plus_6_changed_pixels": 0,
+  "outside_mask_plus_6_max_channel_diff": 0,
+  "outside_original_mask_changed_pixels": 0,
+  "protected_boxes": [
+    [
+      450,
+      562,
+      710,
+      640
+    ],
+    [
+      375,
+      350,
+      452,
+      433
+    ],
+    [
+      444,
+      493,
+      503,
+      557
+    ],
+    [
+      831,
+      452,
+      872,
+      506
+    ],
+    [
+      882,
+      768,
+      920,
+      829
+    ],
+    [
+      932,
+      870,
+      969,
+      898
+    ],
+    [
+      976,
+      596,
+      1094,
+      674
+    ],
+    [
+      1032,
+      597,
+      1108,
+      642
+    ],
+    [
+      1195,
+      522,
+      1286,
+      580
+    ],
+    [
+      1276,
+      476,
+      1336,
+      528
+    ],
+    [
+      1333,
+      829,
+      1394,
+      862
+    ],
+    [
+      1454,
+      744,
+      1583,
+      785
+    ]
+  ],
+  "protected_boxes_changed_pixels": 0,
+  "source_sha256": "d919bf62c43d16e8a4b76ad9a6f34a62c9a694fca5b596b930471e8cc9de995b",
+  "output_sha256": "a040a7280c7020bf9a357f8aa3f800fa65b2edfea35cb42570650cb606c1270d",
+  "visual_review": "Human acceptance required; object completeness is not established by pixel assertions."
+}
