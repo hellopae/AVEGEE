@@ -1,0 +1,13 @@
+✔ F12 input 1280: real view click handler reaches six branches, key and joystick use 2D positions (703.490439ms)
+✔ F12 input 390: real view click handler reaches six branches, key and joystick use 2D positions (424.501691ms)
+✔ F12 input: held directional keys can traverse all six branch paths (4136.498048ms)
+✔ F12 input: mount migrates old save to allowed cell; click and held key cannot bypass first checkpoint (117.474004ms)
+✔ F12 rendering: trees and Yama share root-y draw ordering at an occlusion position (23.656328ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5763.852652

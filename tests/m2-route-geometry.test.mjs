@@ -9,7 +9,7 @@ import { dungeonBackground } from '../src/dungeon-art.js';
 
 const game = () => { const g = { zone:'th', bossCleared:{}, zoneSave:{}, zoneEvents:{} }; initializeZoneTravel(g); return g; };
 
-test('Zone 1-2 row keeps every number it had hard-coded', () => {
+test('Zone 1-2 preserves story anchors and uses owner mask/tree layout', () => {
   assert.equal(DUNGEON_CORRIDOR.length, 31);
   assert.deepEqual(DUNGEON_CORRIDOR[0], [.12,.22]); assert.deepEqual(DUNGEON_CORRIDOR[30], [.91,.79]);
   const r = ROUTE_GEOMETRY['th:asia'];
@@ -20,9 +20,9 @@ test('Zone 1-2 row keeps every number it had hard-coded', () => {
     [0,1,2,3,4,5].map(i => [`th:asia:patrol:${i}`, [.08,.19,.32,.48,.66,.90][i], [2,3,2,5,3,5][i], 1 + Math.floor(i / 2), 'ปีศาจลาดตระเวน']));
   assert.deepEqual(dungeonPatrols('th:asia'), DUNGEON_PATROLS);
   assert.equal(dungeonBackground('th', 'th:asia', 1), 'img/frontier-route/zone1-2-v3.webp');
-  assert.equal(r.ambient.trees.length, 13); assert.equal(r.ambient.waterfalls.length, 6);
+  assert.equal(r.ambient.trees.length, 80); assert.equal(r.ambient.waterfalls.length, 6);
   // checkpoints sit on the trail at vertices 7 / 15 / 23 (the cave is the third)
-  assert.deepEqual(DUNGEON_CHECKPOINTS.map(p => p.map(v => +v.toFixed(2))), [[.42,.43],[.79,.51],[.53,.75]]);
+  assert.deepEqual(DUNGEON_CHECKPOINTS.map(p => p.map(v => +v.toFixed(2))), [[.42,.43],[.79,.50],[.53,.75]]);
   assert.deepEqual(dungeonCheckpointProgress('th:asia'), DUNGEON_PROGRESS);
   assert.deepEqual(r.bossCave, { zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 });
   assert.deepEqual(routeBossCave('th:asia'), r.bossCave);
@@ -40,13 +40,13 @@ test('routes 2-3 and 3-4 are off: old vertical corridor, no patrols, no cave (no
   assert.equal(dungeonBackground('west', 'west:cyberhell', 2), 'img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp');
 });
 
-test('switching route 2-3 on is data: same trail, pads and checkpoints as 1-2, six patrols, own picture, NO boss cave', () => {
+test('switching route 2-3 on is data: original trail, pads and checkpoint vertices, six patrols, own picture, NO boss cave', () => {
   enableRoute('asia:west');
   try {
     assert.equal(isWildernessRoute('asia:west'), true); assert.equal(routeBossCave('asia:west'), null);
     assert.equal(dungeonBackground('asia', 'asia:west', 1), 'img/frontier-route/zone2-3-v1.webp');
-    assert.deepEqual(dungeonCheckpointProgress('asia:west'), DUNGEON_PROGRESS);
-    assert.ok(Math.abs(dungeonRouteTotal('asia:west') - dungeonRouteTotal('th:asia')) < 1e-12);
+    assert.deepEqual(dungeonCheckpointProgress('asia:west'), [.2384894694625893,.5179136387786373,.7394968166019052]);
+    assert.ok(Math.abs(dungeonRouteTotal('asia:west') - 1.7019399196563785) < 1e-12);
     assert.deepEqual(dungeonPoint(1, 'asia:west'), [.91,.79]);
     const p = dungeonPatrols('asia:west');
     assert.deepEqual(p.map(x => [x.id, x.progress, x.foe]), [0,1,2,3,4,5].map(i => [`asia:west:patrol:${i}`, [.08,.19,.32,.48,.66,.90][i], [6,7,6,9,7,9][i]]));

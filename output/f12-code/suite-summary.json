@@ -1,0 +1,10 @@
+{
+  "files": 208,
+  "completed": 207,
+  "reportedTests": 1397,
+  "reportedFailures": 0,
+  "timeouts": [
+    "tests/construction-arrival.test.mjs"
+  ],
+  "otherFailures": []
+}

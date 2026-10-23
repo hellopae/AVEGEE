@@ -25,5 +25,5 @@ test('overview contains the complete map and scales every actor with the terrain
 test('frontier decoration trunks stay outside the walkable road',async()=>{
  const {FRONTIER_TREES}=await import('../src/frontier-ambient.js');
  const {dungeonWalkable}=await import('../src/dungeon-view.js');
- for(const p of FRONTIER_TREES)assert.equal(dungeonWalkable(p),false,`tree trunk ${p}`);
+ for(const p of FRONTIER_TREES)assert.equal(dungeonWalkable([p.x,p.y]),false,`tree trunk ${p.x},${p.y}`);
 });

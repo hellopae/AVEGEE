@@ -1,0 +1,22 @@
+{
+  "screenshots": [],
+  "pageerrorMeasured": false,
+  "attempts": [
+    {
+      "surface": "Playwright headless Chromium",
+      "result": "sandbox denied MachPort rendezvous",
+      "log": "browser-log.txt"
+    },
+    {
+      "surface": "built-in browser (iab)",
+      "result": "Browser is not available: iab"
+    },
+    {
+      "surface": "connected Brave via extension / documented Playwright API",
+      "url": "http://127.0.0.1:8765/output/f12-code/browser-harness.html",
+      "result": "origin approval denied",
+      "reason": "The user declined permission for this action. Browser use could not acquire authority to trigger network egress.",
+      "continuedAfterDenial": false
+    }
+  ]
+}

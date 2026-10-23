@@ -62,7 +62,7 @@ test('free movement supports broad clearings, blocks ravines, and routes around 
  const entry=DUNGEON_CORRIDOR[0],cave=DUNGEON_CHECKPOINTS[2];
  assert.equal(dungeonWalkable([cave[0]+.05,cave[1]]),true,'can move sideways across cave clearing');
  assert.equal(dungeonWalkable([.65,.53]),false,'cannot walk into waterfall chasm');
- assert.deepEqual(dungeonMove(entry,[.65,.53]),entry,'a large step cannot cross a ravine');
+ assert.equal(dungeonWalkable(dungeonMove(entry,[.65,.53])),true,'large input slides along the mask bank without entering the ravine');
  const path=dungeonPath(entry,DUNGEON_EXIT);assert.ok(path.length>4);
  let at=entry;for(const p of path){assert.equal(dungeonSegmentClear(at,p),true);at=p;}
  assert.deepEqual(path.at(-1),DUNGEON_EXIT);

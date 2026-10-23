@@ -1,0 +1,13 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="/"><link rel="stylesheet" href="src/dungeon-view.css"><style>html,body,#stage{margin:0;width:100%;height:100%;overflow:hidden}.dungeon-view{position:fixed;inset:0}.dungeon-stage{height:100%}</style><div id="stage"></div><script type="module">
+import * as view from './src/dungeon-view.js';
+import * as travel from './src/zone-travel.js';
+import {ROUTE_GEOMETRY} from './src/route-geometry.js';
+import {frontierCameraTarget} from './src/frontier-view-metrics.js';
+const g={zone:'th',bossCleared:{th:true},zoneEvents:{th:{thBorderBoss:'cleared'}},save(){}};
+travel.initializeZoneTravel(g);travel.beginDungeon(g,'asia');
+for(let i=0;i<3;i++){const e=travel.nextDungeonEncounter(g);travel.resolveDungeonEncounter(g,e.token,true);}
+g.zoneTravel.active.patrolDefeated=travel.dungeonPatrols('th:asia').map(p=>p.id);
+let destroy;window.mount=(p)=>{destroy?.();g.zoneTravel.active.position={x:p[0],y:p[1]};destroy=view.mountDungeonView(document.querySelector('#stage'),g);};
+window.api={g,view,travel,frontierCameraTarget,trees:ROUTE_GEOMETRY['th:asia'].ambient.trees};
+window.mount(view.dungeonPoint(0));window.ready=true;
+</script></html>

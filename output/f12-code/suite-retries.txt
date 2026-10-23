@@ -1,0 +1,9 @@
+tests/e2-frontier-nav.test.mjs 0 29.52
+tests/m2-map-access.test.mjs 0 26.52
+tests/m2-zone-skin.test.mjs 0 0.79
+tests/scene-zones.test.mjs 0 72.37
+tests/worker-regional-acceptance.test.mjs 0 26.97
+tests/f12-input.test.mjs 0 6.55
+tests/f12-mask.test.mjs 0 0.96
+tests/m2-route-geometry.test.mjs 0 0.72
+tests/construction-arrival.test.mjs timeout 240
