@@ -1,3 +1,4 @@
+import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
@@ -20,7 +21,7 @@ import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
-import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
+import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';
 import { themeBackground } from './theme-assets.js';
 import { battleBackground } from './battle-background.js';
 import { sentenceColor } from './sentence-colors.js';
@@ -3398,6 +3399,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
+  let dash = null;
   let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
@@ -3431,7 +3433,7 @@ function openBattle(after) {
         const recipe = recipeFor(k, { dmg:d.foe, crit:d.crit, replay });
         if (!recipe) { stopFxHandled(); return; }
         if (recipe === 'heal') return;      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
-        const src = await fxRect(allyImg(keyOfActor(b.actorId || 'you')));
+        const src = await fxRect(allyImg(dash?.side === 'you' ? dash.key : keyOfActor(b.actorId || 'you')));
         const self = ['rage', 'clock', 'mirror'].includes(recipe);
         const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
         const targets = self ? [{ rect:src, dmg:0 }] : (await Promise.all(hits.map(async h => ({ rect:await fxRect(foeImg(h.id)), dmg:h.damage || 0, label:d.crit && recipe.startsWith('slash') ? t('battle.fx.crit') : '' })))).filter(x => x.rect);
@@ -3441,7 +3443,7 @@ function openBattle(after) {
         const contact = !actor || actor.id === 'you' ? (isYamaSwordAttack({ action:k }) ? swordContactMs(SWORD_FRAME_MS) : 0)
           : poseContactMs(poseDurations(`crew:${actor.homeZone || g.zone}:${actor.k}`));
         const hitDelay = leadInMs(recipe, contact);
-        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, delay:extraDelay + hitDelay, impactAt:impactIn(cueKindFor('you', k)) });
+        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, ...(dash ? {numberDelay:0} : {}), delay:dash ? 0 : extraDelay + hitDelay, impactAt:impactIn(cueKindFor('you', k)) });
       } else {
         const delay = extraDelay;
         if (d.confuseSelf > 0 || (d.burnSelf > 0 && !(d.you > 0 || d.crew > 0))) {
@@ -3456,7 +3458,7 @@ function openBattle(after) {
           const targets = (await Promise.all(hits.map(async h => ({ rect:await fxRect(allyImg(keyOfActor(h.id))), dmg:h.damage || 0 })))).filter(x => x.rect);
           const fi = foeImg(d.counterFoeId), fk = fi && bossSpriteKey(fi.getAttribute('src') || '', b.zone || g.zone);
           const fc = fk ? poseContactMs(poseDurations(fk)) : 0;   // the foe's own attack-pose contact frame (Codex atlas), if it has one
-          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', delay:delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
+          if (src && targets.length) plays.push({ recipe:b.ultimate ? 'foe_ult' : foeTier(Math.max(...hits.map(h => h.damage || 0))), src, targets, side:'you', ...(dash ? {numberDelay:-120} : {}), delay:dash ? 0 : delay + (b.ultimate ? 0 : fc > 0 ? Math.max(0, fc - 170) : 60), impactAt:impactIn('foe-attack') });
         }
       }
       if (!plays.length) { stopFxHandled(); return; }
@@ -3565,6 +3567,93 @@ function openBattle(after) {
   };
   let prepHidden = false;   // ชุด 30B — ผู้เล่นพับหน้าต่างเตรียมศึกเพื่อดูฉากต่อสู้ (เปิดกลับได้ก่อนกดเข้าสู้)
 
+  const dashRoot = () => dash && (dash.side === 'you'
+    ? allyImg(dash.key)?.closest('[data-crew-pick]') : foeImg(dash.key)?.closest('.fig.foe'));
+  const applyDashPosition = () => {
+    const root = dashRoot(); if (!root) return;
+    root.classList.add('battle-dashing');
+    root.dataset.dashPhase = dash.returning ? 'return' : dash.hit ? 'hit' : dash.posed ? 'attack' : 'outbound';
+    root.style.setProperty('translate', `${dash.position.x}px ${dash.position.y}px`, 'important');
+    // The foot determines occlusion while crossing the formation (HUD remains above the world).
+    const stage = dlg.querySelector('.combat-arena');
+    const depth = foot => String(5 + Math.round(20 * foot / (stage?.offsetHeight || 1)));
+    for (const item of dash.depths) {
+      const el = item.side === 'you' ? allyImg(item.key)?.closest('[data-crew-pick]') : foeImg(item.key)?.closest('.fig.foe');
+      el?.style.setProperty('z-index', depth(item.foot), 'important');
+    }
+    root.style.setProperty('z-index', depth(dash.source.b + dash.position.y), 'important');
+  };
+  const runDash = async ({ side = 'you', key, targetImage, contact, pose, onHit, onFinish, action, crew }) => {
+    const b = g.battle, stage = dlg.querySelector('.combat-arena');
+    if (!b || !stage) return;
+    phase = side; phaseAt = Date.now(); commandMenuOpen = false;
+    // Lock synchronously before the asynchronous opaque-bound measurement.
+    b.commandBusy = true;
+    dash = { side, key, source:{ b:0 }, depths:[], position:{ x:0, y:0 }, posed:false, hit:false };
+    const bounded = (promise, fallback) => new Promise(resolve => {
+      const timer = setTimeout(() => resolve(fallback()), 1500);
+      Promise.resolve(promise).then(value => { clearTimeout(timer); resolve(value); }, () => { clearTimeout(timer); resolve(fallback()); });
+    });
+    await bounded(stage._battleSpriteFit, () => false);
+    const initialRoot = dashRoot();
+    await bounded(Promise.all((initialRoot?.getAnimations({subtree:true}) || [])
+      .filter(a => Number.isFinite(a.effect?.getComputedTiming().endTime)).map(a => a.finished.catch(() => {}))), () => []);
+    const measureDash = image => image ? bounded(fxRect(image), () => cameraRectOf(image)) : Promise.resolve(null);
+    const source = await measureDash(side === 'you' ? allyImg(key) : foeImg(key));
+    const target = await measureDash(targetImage);
+    if (g.battle !== b || !dlg.open) { b.commandBusy = false; dash = null; phase = null; return; }
+    const reduced = !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const delta = source && target && !reduced ? planDash(source, target) : { x:0, y:0 };
+    const timing = dashTiming({ contact, pose, reduced });
+    const depths = (await Promise.all([
+      ...g.battleActors().map(a => ({ side:'you', key:keyOfActor(a.id), image:allyImg(keyOfActor(a.id)) })),
+      ...b.foes.map(f => ({ side:'foe', key:f.id, image:foeImg(f.id) }))
+    ].map(async item => { const rect = await measureDash(item.image); return rect ? { ...item, image:undefined, foot:rect.b } : null; }))).filter(Boolean);
+    dash = { side, key, depths, actor:side === 'you' ? g.battleActors().find(a => keyOfActor(a.id) === key) : null, source:source || { b:0 }, position:{ x:0, y:0 }, posed:false, hit:false };
+    fxNow = null; fxHandled = true; b.dmg = {}; b.mid = null; b.helper = null; paint();
+    let clockAt = performance.now(), elapsed = 0;
+    const advance = createDashSequence({ timing, delta,
+      onPosition:position => { dash.position = position; applyDashPosition(); },
+      onPose:() => {
+        dash.posed = true; phaseAt = Date.now(); dash.poseAt = phaseAt;
+        if (crew === 'nira') b.helper = { k:'nira', pose:'attack' };
+        fxNow = side === 'you' ? { key:'atk', action, side:'foe', crew } : { key:'foe', side:'you' };
+        paint();
+      },
+      onHit:() => {
+        dash.hit = true; phaseAt = Date.now(); b.commandBusy = false;
+        if (!onHit()) { dash = null; phase = null; fxNow = null; commandMenuOpen = true; paint(); return false; }
+        // Asia's deva interlude removes the battle at contact; close this UI before returning to the story.
+        if (g.battle !== b) { b.commandBusy = false; dash = null; phase = null; fxNow = null; finish(); return false; }
+        powerSound(side === 'you' ? action : 'foe');
+        paint();
+        // Use the actual contact instant; the recipe's own delay must not add a second hit delay.
+        cueImpactAtMs = performance.now();
+        startMoveFx(side, action, 0, 0);
+      },
+      onReturn:() => { if (dash) { dash.returning = true; applyDashPosition(); } },
+      onFinish:() => {
+        dash = null; phase = null; fxNow = null;
+        onFinish(); g.finishBattleCommand(); commandMenuOpen = true;
+        // Preserve the original boss-finale flow after the attacker has returned home.
+        if (b.storyFinale) { sfx('win'); finish(); return; }
+        if (g.battle) { finishWaveAfterDash(); paint(); if (b.over) sfx(b.over === 'win' ? 'win' : 'lose'); }
+      }
+    });
+    const tick = () => {
+      if (!dash || g.battle !== b || !dlg.open) return;
+      const now = performance.now();
+      if (!userPaused && !pauseDlg.open) elapsed += now - clockAt;
+      clockAt = now; advance(elapsed);
+      if (dash) phaseTimer = setTimeout(tick, 16);
+    };
+    clearTimeout(phaseTimer); tick();
+  };
+  const finishWaveAfterDash = () => {
+    if (!g.battle?.pendingWave) return;
+    if (g.battle.kind === 'zoneEvent') g.advanceZoneEventWave();
+    else g.advanceFrontierBreachWave();
+  };
   const paint = () => {
     const b = g.battle;
     if (!b || storyActive) return;
@@ -3593,7 +3682,7 @@ function openBattle(after) {
                                   : { ...b.dmg, foe:0 } }
         : { ...b, dmg: { foe: 0, you: 0 } };
     // พลังบ้าคลั่งไม่ใช่การโจมตี — ยมบาทน้อยไม่พุ่ง ศัตรูไม่สะดุ้ง (ดู arena(): raging)
-    const act = phase === 'you' && fxNow?.key === 'rage' ? null
+    const act = dash && !dash.hit ? null : phase === 'you' && fxNow?.key === 'rage' ? null
               : phase === 'you' && fxNow?.key === 'defend' ? null      // L2: defending is not an attack — nobody lunges or flinches
               : phase === 'you' ? { lunge: 'you', struck: 'foe' }
               : phase === 'foe' ? (confuseHit ? { struck: 'foe' } : { lunge: 'foe', struck: 'you' }) : null;
@@ -3603,6 +3692,7 @@ function openBattle(after) {
     // ใช้ลำดับยักษ์ → ยมทูต → ยมบาทน้อย ให้ตรงกับการ์ด (การ์ดคูลดาวน์ใช้ระบบเดียวกับยมทูตใน arena() ด้านล่าง
     // แค่แยกแหล่งเวลา/ระยะคูลดาวน์เป็น GUARD.battleCd ผ่าน c.k==='guard')
     let squadMembers = g.guardActive() && !(b.absentActors || []).includes(g.guard.id) ? [{ ...g.guard, name: GUARD.name }, ...battleHelpers] : [...battleHelpers];
+    if (dash?.actor && dash.actor.id !== 'you' && !squadMembers.some(c => c.id === dash.actor.id)) squadMembers.push(dash.actor);
     if (phase === 'foe') for (const c of b.dmg?.hitActors || (b.dmg?.hitActor ? [b.dmg.hitActor] : [])) {
       if (!squadMembers.some(s => s.id === c.id)) squadMembers.push({...c,name:c.name || GUARD.name});
     }
@@ -3754,10 +3844,11 @@ function openBattle(after) {
 
     const stage = dlg.querySelector('.combat-arena');
     camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
+    applyDashPosition();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
-    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, phaseAt, g.weapons?.equipped);
+    if (phase === 'you' && isYamaSwordAttack(fxNow)) mountBattleSword(stage, g.outfit || g.zone, dash?.poseAt || phaseAt, g.weapons?.equipped);
     else if (!phase && !b.over) mountBattleSwordIdle(stage, g.outfit || g.zone);
     // ชื่อฉากตัวทองล้วน ตามแบบ — ตัดอีโมจิ/สัญลักษณ์นำหน้าออก (⚠️ ฯลฯ)
     const sceneTitle = stage.querySelector('.ttl');
@@ -3839,7 +3930,7 @@ function openBattle(after) {
     applyHealFx();
     const formationTurn = !b.over && !prepOn ? g.currentBattleTurn() : null;
     const currentActor = formationTurn?.side==='ally' ? g.battleActors().find(a=>a.id===formationTurn.id) : null;
-    const activeKey = currentActor ? (currentActor.id==='you'?'you':crewBattleKey(currentActor)) : null;
+    const activeKey = dash?.side === 'you' ? dash.key : currentActor ? (currentActor.id==='you'?'you':crewBattleKey(currentActor)) : null;
     if(activeKey!==formationMotion.activeKey){
       formationMotion.previousKey=formationMotion.activeKey;
       formationMotion.activeKey=activeKey;formationMotion.changedAt=Date.now();
@@ -3849,9 +3940,11 @@ function openBattle(after) {
     formationMotion.attackKey=phase==='you'&&fxNow?.crew&&fxNow?.key!=='health'&&fxNow?.key!=='defend'
       ? crewBattleKey(g.battleActors().find(c=>c.id===b.actorId)||b.helper||{})
       : phase==='you'&&!fxNow?.crew&&fxNow?.side==='foe'&&['atk','flameCharge'].includes(fxNow?.action) ? 'you' : null;
-    const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); return result; });
+    if (dash) formationMotion.attackKey = null;
+    const fitTeam = () => stage._battleSpriteFit = fitBattleSprites(stage, heroFace(), 0, formationMotion).then(result => { stage._combatResize?.(); applyDashPosition(); return result; });
     fitTeam();
     mountNiraCombatSprite(stage,g.zone,b,phase,fitTeam,()=>{const cut=dlg.querySelector('.action-cutscene');return cut?Date.now()+Math.max(0,Math.round(ACTION_CUT_MS*.88)-(Date.now()-phaseAt)):0;});
+    if (dash) stage.querySelectorAll('.lunge').forEach(el => el.classList.remove('lunge'));
     cameraSync(b, !!(b.over || prepOn), activeKey);
     stage._battleSpriteFit.then(() => {
       if(!stage.isConnected)return;
@@ -3864,12 +3957,14 @@ function openBattle(after) {
         ...(b.dmg?.hitActors||[]).map(a=>a.id),b.dmg?.hitActor?.id,
         ...(b.dmg?.crew>0?[b.dmg?.targetActorId]:[])
       ].filter(Boolean));
-      for(const c of g.battleActors()){
+      const poseActors = g.battleActors();
+      if (dash?.actor && !poseActors.some(c => c.id === dash.actor.id)) poseActors.push(dash.actor);
+      for(const c of poseActors){
         if(c.id==='you'||c.k==='nira')continue;
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
-        const attacking=phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
+        const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
         const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
-        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:mode==='hurt'?hurtStart():phaseAt});
+        entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       if(phase==='foe'&&b.dmg?.you>0)entries.push({root:stage.querySelector('.fig.you'),key:`yama:${g.outfit||g.zone}`,mode:'hurt',startedAt:hurtStart()});
       const attacker=b.dmg?.counterFoeId||(currentTurn?.side==='foe'?currentTurn.id:null);
@@ -3877,8 +3972,8 @@ function openBattle(after) {
         if(root.classList.contains('down'))continue;
         const image=root.querySelector('img:not(.fx)'),key=image&&bossSpriteKey(image.getAttribute('src'),b.zone||g.zone);
         if(!key)continue;
-        const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!attacker||id===attacker)?'attack':'idle';
-        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():phaseAt});
+        const id=root.dataset.foeId,mode=root.classList.contains('struck')?'hurt':phase==='foe'&&(!dash||dash.posed)&&(!attacker||id===attacker)?'attack':'idle';
+        entries.push({root,key,mode,startedAt:mode==='idle'?key.length*331:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
       // combat-sprites.js (Codex, read-only) measures roots with getBoundingClientRect(); while the camera is zoomed that rect is scaled, so hand it
       // roots whose rect is the un-zoomed one (everything else passes straight through to the real element)
@@ -4107,6 +4202,19 @@ function openBattle(after) {
       const k = actor ? 'crew:' + actor.k : action;
       const vitalsBefore = vitalsOf(g);
       if (action === 'flee') { performFlee(); return; }
+      if (isMeleeAction(k) && g.battle.turnQueue && !['dad','yama'].includes(g.battle.kind)) {
+        const who = g.battleActors().find(a => a.id === (g.battle.actorId || 'you'));
+        if (!who || g.battle.commandBusy || g.currentBattleTurn()?.side !== 'ally') return;
+        const atlas = `crew:${who.homeZone || g.zone}:${who.k}`;
+        const contact = who.id === 'you' ? swordContactMs(SWORD_FRAME_MS) : poseContactMs(poseDurations(atlas)) || 260;
+        const durations = poseDurations(atlas);
+        runDash({ key:keyOfActor(who.id), targetImage:foeImg(g.battle.selectedFoeId), action:k,
+          crew:who.id === 'you' ? null : who.k, contact,
+          pose:who.id === 'you' ? SWORD_DURATION_MS : durations?.reduce((a,b)=>a+b,0) || 580,
+          onHit:() => g.confirmBattleCommand(action, recipient),
+          onFinish:() => showHeals(vitalsBefore, 0) });
+        return;
+      }
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
       if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
       commandMenuOpen = false;
@@ -4176,12 +4284,23 @@ function openBattle(after) {
     };
     dlg.querySelectorAll('[data-execute]').forEach(el => el.onclick = () => executeCommand(el.dataset.execute, el.dataset.recipient || 'you'));
     const fin = dlg.querySelector('[data-fin]');
-    if (fin) fin.onclick = finish;
+    if (fin) fin.onclick = () => { if (!phase) finish(); };
     if(currentTurn?.side==='foe'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;
       phaseTimer=setTimeout(()=>{
         enemyScheduled=false;
         if(g.battle!==b||phase||userPaused||pauseDlg.open||!dlg.open)return;
+        const attacker = b.foes.find(f => f.id === currentTurn.id);
+        // A solo receiver is known without drawing an extra random target. Boss ultimates,
+        // confusion, burns and skipped turns retain their existing choreography.
+        if (g.battleActors().length === 1 && attacker && !attacker.boss && !attacker.stun && !attacker.confuse && !attacker.burn) {
+          const image = foeImg(attacker.id), atlas = image && bossSpriteKey(image.getAttribute('src') || '', b.zone || g.zone);
+          const durations = atlas && poseDurations(atlas), vitalsBeforeDash = vitalsOf(g);
+          runDash({ side:'foe', key:attacker.id, targetImage:allyImg('you'),
+            contact:poseContactMs(durations) || 260, pose:durations?.reduce((a,b)=>a+b,0) || 580,
+            onHit:() => g.runEnemyTurn(), onFinish:() => showHeals(vitalsBeforeDash, 0) });
+          return;
+        }
         phase='foe';phaseAt=Date.now();
         const vitalsBeforeFoe=vitalsOf(g);
         if(!g.runEnemyTurn()){phase=null;paint();return;}
@@ -4256,7 +4375,7 @@ function openBattle(after) {
   // (ยกจาก 4000 → 6000ms ข้อ C 24 ก.ย. 2569 — จังหวะ 'you' ตอนนี้กินเวลาเองถึง 780+COUNTER_WAIT_MS
   //  ก่อนสลับเป็น 'foe' ต้องเผื่อระยะปลอดภัยไม่ให้ guard ตัดตอนกลางจังหวะที่ตั้งใจหน่วงไว้)
   const phaseGuard = setInterval(() => {
-    if (storyActive || !phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
+    if (dash || storyActive || !phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
     clearTimeout(phaseTimer);
     phase = null; fxNow = null; g.finishBattleCommand();
     if (g.battle) { if (g.battle.pendingWave) {
