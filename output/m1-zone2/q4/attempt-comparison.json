@@ -1,0 +1,17 @@
+[
+  {
+    "attempt": 1,
+    "seed_mae": 30.770562680033375,
+    "exact_rgb_fraction": 5.791095868374825e-05
+  },
+  {
+    "attempt": 2,
+    "seed_mae": 26.818630920591207,
+    "exact_rgb_fraction": 0.00016729832508638383
+  },
+  {
+    "attempt": 3,
+    "seed_mae": 27.22096087149558,
+    "exact_rgb_fraction": 0.00012225646833235744
+  }
+]

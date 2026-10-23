@@ -1,0 +1,39 @@
+You are re-theming a game ground map and continuing a painting. Attached images, in order:
+[1] LAYOUT: a crop of the finished Zone 1 map, painted, 3/4 elevated RPG view.
+[2] WALK: a schematic of the same crop. Light grey = flat walkable stone ground, dark = not walkable.
+[3] THEME: the old Zone 2 "East Asia" map. Use it ONLY for palette, materials and mood, never for layout.
+[4] SEED: a 1536x1024 canvas. The TOP 228 pixels and the LEFT 341 pixels (an L shape) are ALREADY
+    PAINTED in the final Zone 2 style, taken from the neighbouring quarters. The rest is flat grey #808080.
+
+Paint the complete 1536x1024 image. Keep the painted L-shaped area of [4] unchanged and continue it
+seamlessly right and down: stairs, bridge, plaza ring, road, cliff edges, stream and river edges
+must run on across both joins with no visible seam, step, misalignment or colour shift. The big round
+plaza and the straight bridge are cut by the join on the left, so continue their curves and
+straight edges exactly.
+Keep the EXACT geometry of [1] for everything else: every road, staircase, bridge, plaza, pad, cliff
+edge, stream and river bank stays in the same place, same size, camera and perspective.
+This crop is the SOUTH-EAST quarter: at upper left a plateau and the right side of a long staircase
+and bridge; a small symmetric stone pier on the north bank near the left; at upper right a big
+oval plateau; a mountain stream with a waterfall and a small wooden bridge entering the wide river
+on the right; a belt of forest on the right; the wide river; the south bank with the right half of
+a large round stone plaza and open ground with rock spires and trees to its right.
+
+Re-theme as follows:
+- All walkable ground (light grey in [2]) becomes pale jade-grey flagstone (#9AA79F), large irregular
+  slabs with thin dark seams, matte, LOW contrast; plateaus stay empty and flat.
+- Stream and waterfall: clear jade-teal water with white foam, NO ice, NO snow. The small bridge over
+  it is a wooden plank bridge with red lacquer railings.
+- Forest belt on the right: dense bamboo, jade-green pines and a few crimson maples, only on
+  non-walkable ground, no single trees on plazas or paths.
+- River: deep green-blue water with white foam waves along rocks and banks. In the river on the right
+  float the half-submerged bleached skeleton of a giant sea serpent (ribs and spine) and one skull,
+  as in the lower right of [3], never touching the banks or any walkable ground.
+- The pier is perfectly SYMMETRIC around one vertical axis, same width as its stairs, two parallel
+  vertical balustrades, two equal corner posts with gold caps; position and size match [1].
+- Straight bridge in the centre: dark grey stone posts with thin gold bands and gold-capped ends.
+- South bank: cracked grey-jade ground, low contrast, crimson maple groves and grey-green limestone
+  rock spires on the edges, a few bleached bones, all outside walkable ground.
+Lighting: warm soft key light from the upper left. No long cast shadows from objects.
+Paint to all four edges; no vignette, no frame, no border.
+
+Negative: buildings, houses, huts, pavilion, temple, pagoda, tents, statues, Buddha, deity figure, halo, swastika, manji lattice, people, animals, boats, torches, standing lamps, signposts, text, letters, Chinese characters, labels, watermark, logo, colored guide overlay, green fill, yellow rectangles, red circles, magenta ring, white bars, UI, frame, border, vignette, changed road layout, extra bridges, missing bridges, different camera angle, flat top-down map, rotated isometric view, saturated orange on non-lava, glowing floor, fog covering the paths, snow, ice, blue or purple glow, low resolution, blur, smooth airbrush, leaning rails, diagonal railings, asymmetric pier, boat, ship, ferry, a figure on the bridge, purple water, changed seed strip, visible seam, ice stream, snow, glowing blue water, ship, boat, living sea serpent, monster, fish

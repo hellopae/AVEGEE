@@ -1,0 +1,299 @@
+{
+  "images": [
+    {
+      "path": "img/raw/map-zone2/q-se.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "d881bc466962c11a7810b1942d03a1c738ac1ef818fbf650a0360514ed86fe8d"
+    },
+    {
+      "path": "output/m1-zone2/q4/attempt1-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "defce4b58f3a2abdb3d5ce57a6669472cb7fc8126386be4b9a68f742dd420382"
+    },
+    {
+      "path": "output/m1-zone2/q4/attempt2-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "05c9cbdc00ed296e8d6e5d509ec4371db01bcbfe85ad340e7c9b45ece802d8ed"
+    },
+    {
+      "path": "output/m1-zone2/q4/attempt3-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "46bdf07913572ea64060394f2253e4f9b379fec54f8544ac0cdb1a043c317055"
+    },
+    {
+      "path": "output/m1-zone2/q4/composite-four-native.png",
+      "size": [
+        2731,
+        1820
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "7f46308791bf05cc2c6576b30d74325cf4b28bc481622465f95aaadc6e562c43"
+    },
+    {
+      "path": "output/m1-zone2/q4/composite-guide-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "531f173aee6795f582884544f17e0cc03e187b3b5423b97e2ddbcc19fa25b6b9"
+    },
+    {
+      "path": "output/m1-zone2/q4/composite-preview.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "2969ed6284139f8ef0dbb870e7e6b94b2c48ecdb76e95269a1d99ff4027a8a92"
+    },
+    {
+      "path": "output/m1-zone2/q4/composite-three-native.png",
+      "size": [
+        2731,
+        1820
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "f07b2492704230e3a585a558438890b811854ce69237c17a6a0a8bf8a14e82a7"
+    },
+    {
+      "path": "output/m1-zone2/q4/composite-three-preview.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "cd3d329252d9d3006c896bb2a66aa73daa1b41e8108e6d0588422ece15d7dafa"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/q-ne-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "6c872acec73aa881183f05642a8191d3e62f3876aba81261c79035e5811061ef"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/q-nw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/q-sw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "2d13e7f75ae175f6b63cf402cda2ee7350b4826b056aa83f6480e894139a9a90"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/ref-q-se-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "653f57b0fba71b3bd5ed13095f6aaf62e24505cdbacf63c9307292892d306549"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/ref-q-se-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "26857a588f33a0b3584c31b3829a79317c4636aaab060ed5d1c6d83ab0f802fd"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/ref-q-se-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "3a81d4934743d5cf376b926742feb798eb27185aa43f0fdc1cd65e8a0d4d43c3"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/ref-theme-asia.png",
+      "size": [
+        1678,
+        937
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb"
+    },
+    {
+      "path": "output/m1-zone2/q4/inputs/seed-q-se.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "089e1a53886fd2baff4ecd2cd951e8e0a0472ff138238b5e57e9d176c0b9440f"
+    },
+    {
+      "path": "output/m1-zone2/q4/layout-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "33cf6389096795cb54681ed06ace987d801f1325cf0014dea2b450b5ee6f826f"
+    },
+    {
+      "path": "output/m1-zone2/q4/q-se-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "d881bc466962c11a7810b1942d03a1c738ac1ef818fbf650a0360514ed86fe8d"
+    },
+    {
+      "path": "output/m1-zone2/q4/seam-ne-detail.png",
+      "size": [
+        1536,
+        430
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "c16cbd143b74466f1a4f5b5bf21804b989b49b776ec9895d4b9417024b1ae6a0"
+    },
+    {
+      "path": "output/m1-zone2/q4/seam-sw-detail.png",
+      "size": [
+        530,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "1a9a41bf2ccb6a2caf937ec68222c0e1fdcfe32621bb94fc00668bb09e2586c7"
+    },
+    {
+      "path": "output/m1-zone2/q4/upscale-100pct-bridge.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "ca68088d1dea75b4a9fb0b7f34a68d0fccbd89ae68fee1d21afe5ad27f47e26b"
+    },
+    {
+      "path": "output/m1-zone2/q4/upscale-100pct-paving.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "e018cce3724f97c046ec4e8eef5a0dc6ea76a33d12d3001f5adb2f5c0c0c02b3"
+    },
+    {
+      "path": "output/m1-zone2/q4/upscale-100pct-pier.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "5a64d43ee54272e103a77b9f06e31a3a8a49573eac207d4de0e8b8ba6ac7b227"
+    },
+    {
+      "path": "output/m1-zone2/q4/upscale-100pct-rock-maple.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "eb273c6272c476e40813ce39073e732f4ed8d6f7e1ae47f957e54b472376e775"
+    },
+    {
+      "path": "output/m1-zone2/q4/upscale-2765x1843.png",
+      "size": [
+        2765,
+        1843
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "c62d8fb8203d18f3781c86564e102ad23858a083e091fcea2ac953f1b3af2648"
+    },
+    {
+      "path": "output/m1-zone2/q4/walk-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 588,
+      "sha256": "c00502787c9a7d7253b3214b638a9f9b923458ae80623af53394b0d07aee8183"
+    },
+    {
+      "path": "output/m1-zone2/qa/q-se-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "991c45ba4d89496892dda2d22cab75b492531fe866d511c461e1d4a980cfa8e1"
+    },
+    {
+      "path": "output/m1-zone2/qa/q-se-seam.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_bytes": 0,
+      "sha256": "a31a8f723d5e7ae8cf59c763b47d72fcb769b20869b82e62c0ecb2d733bf7b4c"
+    }
+  ],
+  "raw_output_byte_identical": true,
+  "selected_pixels_unchanged": true,
+  "seed_blank_region_exact": true,
+  "source_copies_byte_identical": true,
+  "prompt_body_exact_section_3_8": true
+}
