@@ -32,9 +32,10 @@ test('O2 I: pieces that do not continue the neighbour, and clean sheets, are lef
   assert.equal(stripNeighbourLeaks(d,W,H,2,1),0);
   assert.equal(d[(1*W+8)*4+3],255);
 });
-test('O2 B: Nira attack/heal rows opt out of the ally mirror; idle/hurt rows keep it (drawn facing left)',()=>{
+test('O2 B: Nira attack/heal rows opt out of the ally mirror; on a v1 sheet idle/hurt rows keep it (drawn facing left) — P9: v2 sheets face right in every row',()=>{
   const s=read('src/nira-combat.js');
-  assert.match(s,/classList\.toggle\('face-native', pose === 'attack' \|\| pose === 'heal'\)/);
+  assert.match(s,/classList\.toggle\('face-native', niraPoseFacesRight\(zone,pose\)\)/);
+  assert.match(s,/niraSheetIsV2\(zone\) \|\| pose === 'attack' \|\| pose === 'heal'/);
   assert.doesNotMatch(s,/image\.classList\.remove\('face-native'\)/);
 });
 test('O2 B: Yama own slash / flame charge sets the formation attack key (forward lunge)',()=>{
@@ -73,5 +74,5 @@ test('O2 K: Yama overlay canvases use a device-resolution backing store',()=>{
 });
 test('O2: touched modules carry the -o2 cache-bust suffix',()=>{
   const h=read('index.html');
-  for(const f of ['ui.js','nira-combat.js','combat-sprites.js','yama-sword.js','battle-scale.js'])assert.match(h,new RegExp(`src/${f.replace('.','\\.')}\\?v=[^"]*-o2"`));
+  for(const f of ['ui.js','nira-combat.js','combat-sprites.js','yama-sword.js','battle-scale.js'])assert.match(h,new RegExp(`src/${f.replace('.','\\.')}\\?v=[^"]*-o2(?:-p9)?"`));
 });
