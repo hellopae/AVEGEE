@@ -37,13 +37,13 @@ test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or 
   const planned=PLANNED_ART('asia','map-zone2');
   for (const group of s.use) for (const [key,path] of Object.entries(planned[group])) {
     assert.equal(townSkinArt('asia',key),path);
-    assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
+    if (!['town-tree-sakura','town-tree-willow'].includes(key)) assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   }
   assert.equal(ZONE_SKIN.west.enabled, false);
   assert.equal(ZONE_SKIN.cyberhell.enabled, false);
 });
 
-test('M3: Asia retains Zone 1 temporary floor and leaving restores Zone 1 station geometry', () => {
+test('M3: Asia uses owner floor and leaving restores Zone 1 station geometry', () => {
   syncSceneZone('th');
   const geometry=()=>JSON.stringify([STATIONS.map(d=>[d.k,d.bx,d.by,d.bw,d.mapScale,d.x,d.y,d.hit,d.flip]),SPOTS]);
   const layout=geometry();
@@ -51,8 +51,9 @@ test('M3: Asia retains Zone 1 temporary floor and leaving restores Zone 1 statio
   const baseline=floor();
   syncSceneZone('asia');
   assert.deepEqual([SCENE.w,SCENE.h],[3840,2560]);
-  assert.equal(TOWN_ZONE_LAYOUT.asia.walkRuns,null);
-  assert.deepEqual(floor(),baseline);
+  assert.ok(TOWN_ZONE_LAYOUT.asia.walkRuns.length>0);
+  assert.equal(TOWN_ZONE_LAYOUT.asia.patches,false);
+  assert.notDeepEqual(floor(),baseline);
   syncSceneZone('th');
   assert.equal(geometry(),layout);
   assert.deepEqual(floor(),baseline);

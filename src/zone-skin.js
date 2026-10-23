@@ -29,6 +29,33 @@ const ZONE1_ART = Object.freeze({
   'town-residence-right-two':'img/town-district/house-right-two-v1.webp',
 });
 
+// Z2: change any filename on one row when the replacement art arrives. Coordinates live in town-layout.js.
+export const ASIA_TOWN_SPRITES = {
+  stations: {
+    sala:'img/map-v5/st-sala-asia.webp',
+    tea:'img/theme-v4/st-tea-asia.webp',
+    sawan:'img/map-v5/st-sawan-asia.webp',
+    krajok:'img/map-v5/st-krajok-asia.webp',
+  },
+  judgment: {'town-judgment-th':'img/theme-v4/town-judgment-asia-v2.webp'},
+  houses: {
+    'town-residence-front-one':'img/town-district/house-front-one-asia-v1.webp',
+    'town-residence-right-one':'img/town-district/house-right-one-asia-v1.webp',
+    'town-residence-left-two':'img/town-district/house-left-two-asia-v1.webp',
+    'town-residence-right-two':'img/town-district/house-right-two-asia-v1.webp',
+  },
+  trees: {
+    'town-tree-th':'img/theme-v4/town-tree-asia-v1.webp',
+    'town-tree-red-th':'img/theme-v4/town-tree-b-asia-v1.webp',
+    'town-tree-snow-th':'img/theme-v4/town-tree-c-asia-v1.webp',
+    'town-prop-palm':'img/theme-v4/town-landmark-asia-v1.webp',
+    'town-tree-sakura':'img/theme-v4/town-tree-sakura-asia-v1.webp',
+    'town-tree-willow':'img/theme-v4/town-tree-willow-asia-v1.webp',
+  },
+  lamp: {'town-prop-lamp-gold':'img/theme-v4/town-lamp-asia-v1.webp'},
+  torch: {'town-prop-torch-pillar':'img/map-zone2/torch-pillar-v1.webp'},
+};
+
 /** File naming convention for a zone's sprites (Mind's art spec, M1).  k = asia | west | cyberhell, folder = map-zone2/3/4. */
 export const PLANNED_ART = (k, folder) => Object.freeze({
   judgment: { 'town-judgment-th':        `img/theme-v4/town-judgment-${k}-v2.webp` },
@@ -43,6 +70,7 @@ export const PLANNED_ART = (k, folder) => Object.freeze({
   lamp:     { 'town-prop-lamp-gold':     `img/theme-v4/town-lamp-${k}-v1.webp` },
   torch:    { 'town-prop-torch-pillar':  `img/${folder}/torch-pillar-v1.webp` },
   rock:     { 'town-prop-rock':          `img/${folder}/prop-rock-v1.webp` },
+  ...(k==='asia'?Object.fromEntries(Object.entries(ASIA_TOWN_SPRITES).filter(([group])=>group!=='stations')):{}),
 });
 
 const FLAME_FIRE = 'img/fx/fx-fire-flame-{k}.webp';            // frames a, b, c
@@ -82,7 +110,7 @@ export const ZONE_SKIN = {
     flowUrl: null, // Optional effects wait for a profile traced against the new water/lava.
     use: ['judgment','houses','trees','lamp','torch','rock'],
     // Own Asia tree sprites disable TREE_TINT through finalize().
-    stations: { suffix:'asia', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
+    stations: { suffix:'asia', facade:{...ASIA_TOWN_SPRITES.stations}, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
     light: { emit:[FIRE], flame:FLAME_FIRE },
   },
