@@ -16,7 +16,7 @@ test('accepted guide journey starts with three actual combatants and preserves o
  Object.assign(g.player,{x:FRONTIER.x,y:FRONTIER.y});assert.equal(g.beginBorderDungeon('asia'),true);
  const patrol=DUNGEON_PATROLS[0],p=dungeonPoint(patrol.progress);g.zoneTravel.active.position={x:p[0],y:p[1]};assert.ok(g.startDungeonEncounter({patrol:patrol.id}));
  assert.equal(g.battle.expeditionParty,true);const actors=g.battleActors();assert.equal(actors.length,3);assert.ok(actors.some(c=>c.k==='nira'));assert.ok(actors.some(c=>c.k==='guide'));
- win(g);assert.equal(g.pendingReward.background,'img/frontier-route/zone1-2-v3.webp');
+ win(g);assert.equal(g.pendingReward.background,'img/frontier-route/zone1-2-v4.webp');
 });
 test('enemy patrols travel smoothly along the road without snapping back to an anchor',()=>{
  const g=game();g.bossCleared.th=true;Object.assign(g.player,{x:FRONTIER.x,y:FRONTIER.y});assert.equal(g.beginBorderDungeon('asia'),true);

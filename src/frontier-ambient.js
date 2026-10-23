@@ -1,10 +1,12 @@
+import {FRONTIER_OWNER_TREES} from './frontier-walkmask-th-asia.js';
 // Small world-space props and animation over the painted frontier road.
 // M2 R1: the Zone 1-2 trees / waterfalls are the ambient column of its ROUTE_GEOMETRY row; kept exported for tests and as the defaults.
-export const FRONTIER_TREES=Object.freeze([[.15,.16],[.24,.25],[.30,.30],[.39,.36],[.50,.29],[.57,.28],[.66,.36],[.81,.46],[.71,.55],[.64,.58],[.55,.69],[.66,.73],[.81,.80]]);
+export const FRONTIER_TREES=FRONTIER_OWNER_TREES;
 export const FRONTIER_WATERFALLS=Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.43,.075],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]]);
 export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=null,trees=FRONTIER_TREES,waterfalls=FRONTIER_WATERFALLS}) {
   ctx.save();ctx.translate(x,y);ctx.scale(w,h);
-  for(const [tx,ty] of trees){
+  for(const item of trees){
+    const [tx,ty]=Array.isArray(item)?item:[item.x,item.y];
     ctx.fillStyle='rgba(10,16,17,.24)';ctx.beginPath();ctx.ellipse(tx+.009,ty+.006,.014,.004,-.3,0,Math.PI*2);ctx.fill();
     if(tree?.complete&&tree.naturalWidth){const th=.052,tw=th*tree.naturalWidth/tree.naturalHeight*h/w;ctx.drawImage(tree,tx-tw/2,ty-th,tw,th);}
   }
@@ -15,4 +17,11 @@ export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=n
     for(let i=0;i<26;i++){const px=(i*.173+time*.000009)%1,py=(i*.109+time*.000021)%1;ctx.save();ctx.translate(px,py);ctx.rotate(time/900+i);ctx.fillStyle=i%2?'rgba(223,153,58,.65)':'rgba(135,176,100,.55)';ctx.beginPath();ctx.moveTo(-.002,0);ctx.quadraticCurveTo(0,-.003,.003,0);ctx.quadraticCurveTo(0,.002,-.002,0);ctx.fill();ctx.restore();}
   }
   ctx.restore();
+}
+
+/** Tree roots share the actor depth sort; size is measured against background height. */
+export function drawFrontierTree(ctx,tree,{x,y,height,image}) {
+  if(!image?.complete||!image.naturalWidth)return;
+  const h=height*.052*(tree.big?1.4:1),w=h*image.naturalWidth/image.naturalHeight;
+  ctx.drawImage(image,x-w/2,y-h,w,h);
 }
