@@ -5,6 +5,10 @@
 // building / house / decoration stands (foot point), and the anchors used by the game.
 import { TOWN_WALK_CELL, TOWN_WALK_COLS, TOWN_WALK_ROWS } from './town-walkmask.js?v=k1d-n1';
 import { TOWN_OWNER_WALK_RUNS } from './town-owner-walkmask.js';
+// M2: walk masks the owner draws for zones 2-4 (null until drawn = the zone uses Zone 1's mask). Generated files, see town-zone layout below.
+import { TOWN_OWNER_WALK_RUNS as ASIA_WALK_RUNS } from './town-owner-walkmask-asia.js';
+import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-west.js';
+import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -51,10 +55,15 @@ export const TOWN_ENTRY = {gate:[1917,2200],nira:[1870,2200],
 
 // ---- walkable ground: plazas, roads, stairs, bridges and the dock (traced from the painting) ----
 const mask = new Uint8Array(TOWN_WALK_COLS*TOWN_WALK_ROWS);
-{
+const fillMask = runs => {
+  mask.fill(0);
   let i=0,on=0;
-  for(const run of TOWN_OWNER_WALK_RUNS){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
-}
+  for(const run of runs){ if(on)mask.fill(1,i,i+run); i+=run; on^=1; }
+};
+fillMask(TOWN_OWNER_WALK_RUNS);
+// Zone-1 hand patches (stairs, lava road, cauldron court) were added on top of the owner's mask. A zone whose mask the
+// owner drew from the full overlay (which already contains them) switches them off: townZoneLayout({patches:false}).
+let usePatches = true;
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
@@ -71,6 +80,7 @@ export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,117
 // Only the pavement is opened: the west edge stays 12 units clear of the cauldron's masked footprint (x <= 570), the cauldron
 // body itself is still solid through the station blocks, and torch/prop colliders still apply.
 export const TOWN_CAULDRON_COURT = [[582,412],[686,412],[696,444],[696,492],[712,502],[712,596],[516,596],[516,560],[582,556]];
+// Rebuilt by applyTownZoneLayout when a zone moves a station / spot (the array itself is never replaced).
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
@@ -83,9 +93,9 @@ export const townFloorAt = (x,y) => {
   // in the reference screenshot; it is UI, not a terrain barrier.
   if(x>=1620&&x<=1730&&y>=1508&&y<=1560)return true;
   if(interactionPads.some(s=>(x-s.x)**2+(y-s.y)**2<48**2))return true;
-  if(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
+  if(usePatches&&(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
     ||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING)
-    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD)||townInPolygon(x,y,TOWN_CAULDRON_COURT))return true;
+    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD)||townInPolygon(x,y,TOWN_CAULDRON_COURT)))return true;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.
@@ -109,10 +119,11 @@ export const TOWN_HOUSE_SITES = [
   house('front-one',639,751,142),  house('right-one',710,1204,149),
 ];
 // Only the ground floor of a house is solid; the roof can be walked behind and is faded by scenery.
-export const TOWN_HOUSES = TOWN_HOUSE_SITES.map(h=>{
+const houseRect = h=>{
   const band=Math.min(46,h.h*.34);
   return [h.x-h.w/2+h.w*.06,h.y-band,h.x+h.w/2-h.w*.06,h.y];
-});
+};
+export const TOWN_HOUSES = TOWN_HOUSE_SITES.map(houseRect);
 
 // ---- decorations (the owner's marks): each owns one foot point, art width and a small ground root ----
 // kind: tree | rock | palm | lamp | torch. biome picks the baked tint (lava = red leaves, ice = snow).
@@ -159,10 +170,11 @@ export const TOWN_PROP_SITES = [
   ...[[470,359],[557,378],[305,403],[261,455],[300,518],[349,566],[417,599],[492,614],[605,422],[662,436],[712,484],[733,541],[599,618],[664,599]]
     .map(([x,y],i)=>deco(`torch-${i}`,'torch',x,y,34,'lava',7,5,null,70)),
 ];
-export const TOWN_PROP_COLLIDERS = TOWN_PROP_SITES.map(p=>({
+const propCollider = p=>({
   id:p.id,x:p.x,y:p.y,rx:p.rx,ry:p.ry,
   bounds:[p.x-p.rx,p.y-p.ry,p.x+p.rx,p.y+p.ry],
-}));
+});
+export const TOWN_PROP_COLLIDERS = TOWN_PROP_SITES.map(propCollider);
 export function townPropBlocks(x,y) {
   return TOWN_PROP_COLLIDERS.some(p=>x>=p.bounds[0]&&x<=p.bounds[2]
     &&y>=p.bounds[1]&&y<=p.bounds[3]&&((x-p.x)/p.rx)**2+((y-p.y)/p.ry)**2<=1);
@@ -183,4 +195,57 @@ export function townContains(x,y) {
   if(!Number.isFinite(x)||!Number.isFinite(y))return false;
   if(!townFloorAt(x,y))return false;
   return !TOWN_HOUSES.some(r=>townInRect(x,y,r))&&!townPropBlocks(x,y);
+}
+
+// ================= M2: layout per zone =================
+// Zones 2-4 use Zone 1's whole city (same roads, stations, dais, houses, props). A zone's entry below only lists what
+// differs; `null` / missing = inherit Zone 1.  Everything is applied IN PLACE into the shared objects above (same pattern as
+// syncSceneZone in data.js), so the ~12 modules that import TOWN_* never have to change.
+//   walkRuns : run-length mask (see town-owner-walkmask-<zone>.js, written by scripts/extract-town-owner-mask.py --zone)
+//   patches  : false = leave out Zone 1's hand-made walkable polygons (the zone's own mask already contains the stairs)
+//   stations : { key: {x,y,bx,by,bw,mapScale,sx,sy,hit} }   patch per station site
+//   spots    : { key: {...} }                                 patch per spot (bench, throne, bossPier, ...)
+//   dais     : { x, y, w }
+//   houses   : [{key,x,y,w,flip}, ...]                        replaces the whole house list
+//   props    : [...]                                          replaces the whole decoration list (same shape as TOWN_PROP_SITES)
+export const TOWN_ZONE_LAYOUT = {
+  th:        {},
+  asia:      { walkRuns:ASIA_WALK_RUNS,      patches:ASIA_WALK_RUNS?false:true },
+  west:      { walkRuns:WEST_WALK_RUNS,      patches:WEST_WALK_RUNS?false:true },
+  cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
+};
+const clone = v => structuredClone(v);
+const BASE = {
+  runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS},
+  houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})),
+};
+const layoutListeners = new Set();
+/** Call fn() after a zone layout was applied (light field, shadow field, ...). */
+export const onTownLayoutChange = fn => { layoutListeners.add(fn); return () => layoutListeners.delete(fn); };
+let appliedZone = 'th';
+export const townLayoutZone = () => appliedZone;
+export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = false) {
+  const L = table[zone] || {};
+  // Same zone again: nothing to do (syncSceneZone runs on every zone change).
+  if (!force && table === TOWN_ZONE_LAYOUT && zone === appliedZone) return false;
+  appliedZone = zone;
+  // mask + patches
+  fillMask(L.walkRuns || BASE.runs);
+  usePatches = L.patches !== false;
+  // stations: back to Zone 1, then this zone's patches
+  for (const k of Object.keys(TOWN_STATION_SITES)) Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
+  for (const [k, patch] of Object.entries(L.stations || {})) if (TOWN_STATION_SITES[k]) Object.assign(TOWN_STATION_SITES[k], clone(patch));
+  for (const k of Object.keys(TOWN_SPOTS)) Object.assign(TOWN_SPOTS[k], clone(BASE.spots[k]));
+  for (const [k, patch] of Object.entries(L.spots || {})) if (TOWN_SPOTS[k]) Object.assign(TOWN_SPOTS[k], clone(patch));
+  Object.assign(TOWN_DAIS, BASE.dais, L.dais || {});
+  // houses / props: lists keep their identity
+  const houses = (L.houses || BASE.houses).map(h => ({...h, h:h.w*HOUSE_RATIO[h.key]}));
+  TOWN_HOUSE_SITES.splice(0, TOWN_HOUSE_SITES.length, ...houses);
+  TOWN_HOUSES.splice(0, TOWN_HOUSES.length, ...TOWN_HOUSE_SITES.map(houseRect));
+  TOWN_PROP_SITES.splice(0, TOWN_PROP_SITES.length, ...(L.props || BASE.props).map(p => ({...p})));
+  TOWN_PROP_COLLIDERS.splice(0, TOWN_PROP_COLLIDERS.length, ...TOWN_PROP_SITES.map(propCollider));
+  interactionPads.splice(0, interactionPads.length,
+    ...[...Object.values(TOWN_STATION_SITES), ...Object.values(TOWN_SPOTS)].filter(s => typeof s.x === 'number'));
+  for (const fn of layoutListeners) fn(zone);
+  return true;
 }

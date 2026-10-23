@@ -1,5 +1,6 @@
 // Night weather is attached to biomes and visible scenery, never to the UI or navigation.
 import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES} from './town-layout.js?v=k1d';
+import {activeTownZone} from './zone-skin.js';
 import {drawLocalLight} from './scene-style.js';
 const windows=[...TOWN_HOUSE_SITES,...Object.values(TOWN_STATION_SITES)];
 const frac=n=>n-Math.floor(n),seed=n=>frac(Math.sin(n*127.1+311.7)*43758.5453),mod=(n,d)=>((n%d)+d)%d;
@@ -37,7 +38,7 @@ export function drawTownNightEffects(ctx,time,reduced=false){
  for(const p of windows){
   const x=p.bx??p.x,y=(p.by??p.y)-(p.h||p.bw*.6)*.25,w=p.w||p.bw;
   if(!inside(x,y,w))continue;
-  drawLocalLight(ctx,'th',x,y,w*.32,time+x*3,reduced);
+  drawLocalLight(ctx,activeTownZone(),x,y,w*.32,time+x*3,reduced);
  }
  ctx.restore();if(reduced)return;
  const t=time/1000;ctx.save();

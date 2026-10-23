@@ -11,7 +11,8 @@
 // This file never re-grades anything; it only multiplies a dark, soft shadow on top of the graded ground, and the
 // torch pillars it lights are casters here too (their sprite comes from the same resolver the scenery draws with).
 import { stationBox } from './art.js';
-import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE } from './town-layout.js?v=k1d';
+import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE, onTownLayoutChange } from './town-layout.js?v=k1d';
+import { activeTownZone } from './zone-skin.js';
 
 // Shadow offset per unit of height. A point H above the foot lands (KX*H, KY*H) right/below the foot.
 export const SUN = { kx:.42, ky:.3 };
@@ -218,7 +219,7 @@ function paintCaster(ctx, c, level, fill) {
 // ---------- state: caster list + shadow field, rebuilt only when the set of ready art changes ----------
 let casters = [], signature = '', field = null, fieldAlpha = null, fieldTint = null;
 function sig(resolve, houseKey, stations, propArt) {
-  let s = stations.map(d => d.k).join(',') + '|';
+  let s = activeTownZone() + '|' + stations.map(d => d.k).join(',') + '|';   // M2: the zone is part of the signature (each zone has its own sprites)
   if (propArt) { const t = TOWN_PROP_SITES.find(p => p.kind === 'torch'); const a = t && propArt(t); s += a && (a.naturalWidth || a.width) ? 'T1' : 'T0'; }
   for (const k of ['town-tree-th', 'town-judgment-th', 'town-house-th', 'town-prop-rock', 'town-prop-palm',
                    'town-prop-lamp-gold', 'town-tree-red-th', 'town-tree-snow-th',   // K1e sprites load async: rebuild the shadow field when they arrive
@@ -244,6 +245,7 @@ export function updateTownShade(resolve, houseKey, stations, propArt) {
   if (s === signature) return;
   signature = s; casters = listCasters(resolve, houseKey, stations, propArt); rebuildField();
 }
+onTownLayoutChange(() => { signature = ''; });   // M2: casters follow the placed objects of the active zone layout
 export const townShadeStats = () => ({ casters:casters.length, field:!!fieldAlpha });
 
 const fieldAt = (x, y) => {

@@ -15,6 +15,12 @@ every surface pixel takes the direction of its nearest centre line, falls always
 
     python3 scripts/bake-town-flow.py [--debug /tmp/dir]
 
+M2 — other zones:  --zone asia|west|cyberhell --profile scripts/flow-profiles/<zone>.json [--ground-dir DIR] [--out FILE]
+The hand-made data below (boxes, falls, centre lines, river colour rule) is Zone 1's; a zone supplies its own in a JSON profile
+with the same field names (lowercase): lava_exclude, lava_x_max, lava_falls, ice_falls, ice_allow, lava_paths, ice_paths,
+purple_dir, river {hue:[lo,hi], sat_min, val_min, b_over_r, b_over_g, y:[lo,hi]}.  Missing fields keep Zone 1's value.
+Default (no --zone) is byte-identical to before.  Then set flowUrl in src/zone-skin.js.
+
 Needs numpy, scipy and opencv-python (cv2).
 """
 import sys, os
@@ -23,6 +29,7 @@ from scipy.spatial import cKDTree
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'img/map-zone1/v4/flow-v4.png')
+GROUND_DIR = os.path.join(ROOT, 'img/map-zone1/v4')
 W, H = 1536, 1024
 KIND = {'purple': 1, 'lava': 2, 'lavafall': 3, 'ice': 4, 'icefall': 5}
 
@@ -66,6 +73,20 @@ ICE_PATHS = [
 ]
 # Purple river flows left -> right.
 PURPLE_DIR = (1.0, 0.0)
+# River colour rule (Zone 1: saturated violet band between y 660 and 830).
+RIVER = {'hue': [240, 310], 'sat_min': 110, 'val_min': 70, 'b_over_r': 10, 'b_over_g': 1.6, 'y': [660, 830]}
+
+
+def apply_profile(path):
+    import json
+    global LAVA_EXCLUDE, LAVA_X_MAX, LAVA_FALLS, ICE_FALLS, ICE_ALLOW, LAVA_PATHS, ICE_PATHS, PURPLE_DIR, RIVER
+    p = json.load(open(path))
+    tup = lambda paths: [[tuple(pt) for pt in line] for line in paths]
+    LAVA_EXCLUDE = p.get('lava_exclude', LAVA_EXCLUDE); LAVA_X_MAX = p.get('lava_x_max', LAVA_X_MAX)
+    LAVA_FALLS = p.get('lava_falls', LAVA_FALLS); ICE_FALLS = p.get('ice_falls', ICE_FALLS); ICE_ALLOW = p.get('ice_allow', ICE_ALLOW)
+    LAVA_PATHS = tup(p['lava_paths']) if 'lava_paths' in p else LAVA_PATHS
+    ICE_PATHS = tup(p['ice_paths']) if 'ice_paths' in p else ICE_PATHS
+    PURPLE_DIR = tuple(p.get('purple_dir', PURPLE_DIR)); RIVER = {**RIVER, **p.get('river', {})}
 # ----------------------------------------------------------------------------------------------
 
 
@@ -74,7 +95,7 @@ def load_full():
     full = Image.new('RGB', (4915, 3277))
     for r in range(1, 5):
         for c in range(1, 6):
-            full.paste(Image.open(os.path.join(ROOT, f'img/map-zone1/v4/r{r}-c{c}.webp')).convert('RGB'),
+            full.paste(Image.open(os.path.join(GROUND_DIR, f'r{r}-c{c}.webp')).convert('RGB'),
                        ((c - 1) * 1024, (r - 1) * 1024))
     rgb = np.asarray(full.resize((W, H), Image.LANCZOS))
     return rgb[..., ::-1].copy()  # BGR
@@ -114,8 +135,8 @@ def build_masks(im):
     lava = keep_big(lava, 350)
 
     # purple river: saturated violet band
-    purple = (b > r + 10) & (b > g * 1.6) & (r > g) & (val > 70) & (sat > 110) & (hue > 240) & (hue < 310) \
-        & (yy > 660) & (yy < 830)
+    purple = (b > r + RIVER['b_over_r']) & (b > g * RIVER['b_over_g']) & (r > g) & (val > RIVER['val_min']) & (sat > RIVER['sat_min']) \
+        & (hue > RIVER['hue'][0]) & (hue < RIVER['hue'][1]) & (yy > RIVER['y'][0]) & (yy < RIVER['y'][1])
     # lava running on into the river looks lit-up violet/orange; take it as river water below the bank
     reflect = rect_mask([[345, 695, 432, 790], [445, 695, 545, 792]]).astype(bool) & (val > 110)
     purple |= reflect
@@ -179,7 +200,17 @@ def smooth(fx, fy, mask, sigma=7):
 
 
 def main():
-    debug = sys.argv[sys.argv.index('--debug') + 1] if '--debug' in sys.argv else None
+    global OUT, GROUND_DIR
+    arg = lambda name: sys.argv[sys.argv.index(name) + 1] if name in sys.argv else None
+    debug = arg('--debug')
+    zone = arg('--zone')
+    if zone:
+        if not arg('--profile'): sys.exit('--zone needs --profile <json> (the hand-made data of that zone)')
+        apply_profile(arg('--profile'))
+        folder = {'asia': 'map-zone2', 'west': 'map-zone3', 'cyberhell': 'map-zone4'}[zone]
+        GROUND_DIR = arg('--ground-dir') or os.path.join(ROOT, 'img', folder, 'v1')
+        OUT = arg('--out') or os.path.join(ROOT, 'img', folder, 'v1', 'flow-v1.png')
+    elif arg('--out'): OUT = arg('--out')
     im = load_full()
     masks = build_masks(im)
     kind = np.zeros((H, W), np.uint8)

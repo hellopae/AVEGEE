@@ -3,6 +3,7 @@ import {zoneWorkers,drawWorker} from './workers.js';
 import {bossGuideDismissed} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
+import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
@@ -267,7 +268,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         ctx.drawImage(dais,TOWN_DAIS.x-w/2,top,w,h);
         for(const side of [-1,1]){
           const x=TOWN_DAIS.x+side*w*.207,y=top+h*.112;
-          drawLocalLight(ctx,'th',x,y,w*.065,t,reduced);
+          drawLocalLight(ctx,activeTownZone(),x,y,w*.065,t,reduced);
           if(!reduced){
             ctx.fillStyle='rgba(255,197,86,.6)';
             for(let i=0;i<3;i++){

@@ -6,9 +6,11 @@ import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
+import { routeBossCave } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
+import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
@@ -2052,7 +2054,7 @@ const API = {
         let tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
         let ty = far ? hy : hy + (Math.random() - 0.5) * roam;
         // L1: a crew member with a Zone 1 stage (Nira on the dais) never strolls outside that rectangle
-        const stage = this.zone === 'th' ? TOWN_CREW_STAGE[c.k] : null;
+        const stage = isTownZone(this.zone) ? TOWN_CREW_STAGE[c.k] : null;
         if (stage && !onDuty) { tx = clamp(tx, stage[0], stage[2]); ty = clamp(ty, stage[1], stage[3]); }
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
@@ -2339,7 +2341,7 @@ const API = {
       if (blk && blk.length) {
         // K1d: in the painted city the player may walk BEHIND a building (roof and spires are drawn over
         // Yama by foot depth). Only the lower 40% of the silhouette is solid; the plaza stays reachable.
-        if (this.zone === 'th') {
+        if (isTownZone(this.zone)) {
           const top = Math.min(...blk.map(b => b[1])), bot = Math.max(...blk.map(b => b[3])), cut = top + (bot - top) * .6;
           for (const b of blk) if (b[3] > cut) rects.push([b[0], Math.max(b[1], cut), b[2], b[3]]);
         } else rects.push(...blk);
@@ -2888,9 +2890,9 @@ const API = {
     // O1 (Kittanate 22 Oct): after the farewell the boss stays at the frontier stand (every zone, zone 1 included)
     // and is gone from the outer route; before it, zone 1 keeps the cave talk spot.
     if(this.zone==='th'&&!bossGuideDismissed(this)) {
-      const status=dungeonStatus(this),p=this.zoneTravel?.active?.position;
-      const cave=dungeonPoint(DUNGEON_PROGRESS[2]);
-      return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&status?.route.id==='th:asia'&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=.065);
+      const status=dungeonStatus(this),p=this.zoneTravel?.active?.position,bossCave=routeBossCave(status?.route.id);
+      const cave=dungeonPoint(DUNGEON_PROGRESS[bossCave?.checkpoint??2],status?.route.id);
+      return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&bossCave?.zone===this.zone&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=(bossCave.interactReach??.065));
     }
     return !this.battle && !this.over && !this.pendingRecovery && this.challengeUnlocked() &&
       !!frontierPlayer && Math.hypot(frontierPlayer.x - CHALLENGE_STAND[this.zone].x, frontierPlayer.y - CHALLENGE_STAND[this.zone].y) <= .09;
@@ -4235,14 +4237,14 @@ const API = {
     if(!(typeof checkpoint==='string'?dungeonAtPatrol(this,checkpoint):opts.chased?dungeonChaseReach(this):dungeonAtCheckpoint(this,checkpoint)))return null;
     const encounter=nextDungeonEncounter(this,checkpoint);if(!encounter)return null;
     if(encounter.boss) {
-      const battle=this.startZoneEvent('thBorderBoss');
+      const battle=this.startZoneEvent(routeBossCave(dungeonStatus(this)?.route.id)?.eventKey||'thBorderBoss');
       if(battle){battle.dungeonToken=encounter.token;battle.sceneBiome='cave';battle.expeditionParty=false;this.save();}
       else resolveDungeonEncounter(this,encounter.token,false);
       return battle;
     }
     const mob={id:`dungeon-${encounter.token}`,dungeonToken:encounter.token,kind:encounter.kindIdx,x:this.player.x,y:this.player.y};
     this.mobs.push(mob);const battle=this.startMobBattle(this.mobs.length-1);
-    if(battle){if(this.zone==='th')battle.sceneBiome='border';if(encounter.patrol)battle.dungeonRetreatProgress=dungeonPatrols('th:asia').find(p=>p.id===encounter.patrol)?.progress;}
+    if(battle){if(this.zone==='th')battle.sceneBiome='border';if(encounter.patrol)battle.dungeonRetreatProgress=dungeonPatrols(dungeonStatus(this)?.route.id).find(p=>p.id===encounter.patrol)?.progress;}
     if(!battle){this.mobs=this.mobs.filter(m=>m!==mob);resolveDungeonEncounter(this,encounter.token,false);}
     return battle;
   },
@@ -4420,7 +4422,7 @@ const API = {
   spawnMob() {
     // สุ่มตามชายฝั่งขอบล่าง เหนือแม่น้ำเล็กน้อย เพื่อให้ทุกโซนเดินไปถึงได้
     // เลือกเฉพาะจุดที่ findPath เชื่อมถึงจุดเฝ้าได้ ไม่งั้นยักษ์/ผู้เล่นไปไล่ปีศาจไม่ถึง
-    const y = this.zone === 'th' ? TOWN_RIVER_Y-50 : 675;
+    const y = isTownZone(this.zone) ? TOWN_RIVER_Y-50 : 675;
     const reach = p => {
       if (!p) return false;
       const path = findPath(p[0], p[1], GUARD_POST[0], GUARD_POST[1]);
@@ -4429,7 +4431,7 @@ const API = {
     };
     // K1d: the painted city only has a few open stretches on its north bank; draw x from those.
     const pickX = () => {
-      if (this.zone !== 'th') return 110 + Math.random() * (SCENE.w - 220);
+      if (!isTownZone(this.zone)) return 110 + Math.random() * (SCENE.w - 220);
       const [a, b] = TOWN_SHORE_SPANS[Math.floor(Math.random() * TOWN_SHORE_SPANS.length)];
       return a + Math.random() * (b - a);
     };
@@ -4832,6 +4834,7 @@ API.snapshot = function (withEntry = true) {
     townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
+    townSkinMigrated: { ...this.townSkinMigrated },   // M2 T3 — zones whose painted-town skin already moved the save's positions
     zoneEntry: withEntry ? this.zoneEntry : undefined,
     usedCases: this.usedCases, fights: this.fights, yamaDone: !!this.yamaDone,
     spawns: this.spawns,
@@ -4844,6 +4847,30 @@ API.save = function () {
   catch { return false; }
 };
 
+/** M2 T3 — one-off position move for a zone whose painted-town skin is now on (see restore()). Exported for tests. */
+export function migrateTownSkinZone(g, k) {
+  const spawn = [TOWN_SPOTS.bench.x + 60, TOWN_SPOTS.bench.y];
+  const settle = state => {
+    if (!state) return;
+    if (state.player) Object.assign(state.player, { x:spawn[0], y:spawn[1], tx:null, ty:null, path:null });
+    for (const it of state.items || []) [it.x, it.y] = spawn;
+    if (state.guard) Object.assign(state.guard, { x:TOWN_GUARD_POST[0], y:TOWN_GUARD_POST[1], path:null, target:null });
+    for (const m of state.mobs || []) { m.x = 1920; m.y = TOWN_RIVER_Y - 50; m.path = null; }
+    for (const c of state.crew || []) {
+      const home = TOWN_CREW[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }
+      c.x = null; c.y = null; c.path = null;
+    }
+  };
+  if (g.zone === k) settle(g);
+  settle(g.zoneSave?.[k]);
+  if (g.zoneEntry?.zone === k) settle(g.zoneEntry);
+  for (const actor of Object.values(g.roster || {})) if (actor.homeZone === k) {
+    const home = TOWN_CREW[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }
+    actor.x = null; actor.y = null; actor.path = null;
+    if (actor.kind === 'guard') { actor.x = TOWN_GUARD_POST[0]; actor.y = TOWN_GUARD_POST[1]; }
+  }
+  g.blockSig = null;
+}
 API.restore = function (d) {
   if (!d || (d.v !== 2 && d.v !== 3 && d.v !== 4)) return false;
   if (d.rosterVersion !== ROSTER_VERSION) {
@@ -5113,7 +5140,7 @@ API.restore = function (d) {
   this.sweepMapItems();                // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่า เก็บเข้ากระเป๋าให้ (ระบบของตกถูกยกเลิก)
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
-  const guardPost = zone => zone==='th' ? TOWN_GUARD_POST : [720,890];
+  const guardPost = zone => isTownZone(zone) ? TOWN_GUARD_POST : [720,890];
   const moveOldGuardPost = (guard,zone) => {
     if (guard?.y === 795 && (guard.x === 895 || guard.x === 700)) [guard.x, guard.y] = guardPost(zone);
   };
@@ -5270,6 +5297,15 @@ API.restore = function (d) {
     }
     for(const [actor,position] of activeFollowers) Object.assign(actor,position);
     this.blockSig=null;
+  }
+  // M2 T3 — a zone whose painted-town skin was switched on after the save was made keeps coordinates of its old
+  // 1678x937 map. Move them to the town spawn ONCE per zone (same idea as mapV2FixTh / townMapVersion<2). Progress,
+  // items carried, stations and crew levels are untouched — only where things stand. Nothing runs while a zone is off.
+  this.townSkinMigrated = { ...(d.townSkinMigrated || {}) };
+  for (const k of TOWN_SKIN_ZONES) {
+    if (k === 'th' || !isTownZone(k) || this.townSkinMigrated[k]) continue;
+    migrateTownSkinZone(this, k);
+    this.townSkinMigrated[k] = true;
   }
   initializeZoneTravel(this,d.zoneTravel);
   initializeBossGuides(this,d.bossGuides);

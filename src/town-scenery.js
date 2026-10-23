@@ -1,11 +1,13 @@
 // Every scenery object has its own sprite, ground shadow and collision root.
 // Ground painting contains no object silhouettes; foot depth governs occlusion.
-import { TOWN_HOUSE_SITES, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
+import { TOWN_HOUSE_SITES, TOWN_PROP_SITES, onTownLayoutChange } from './town-layout.js?v=k1d';
+import { activeTownSkin, activeTownZone, ZONE1_TOWN_ART } from './zone-skin.js';
 import { drawLocalLight } from './scene-style.js';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 export const TOWN_TREES = TOWN_PROP_SITES.filter(p=>p.kind==='tree');
+onTownLayoutChange(()=>TOWN_TREES.splice(0,TOWN_TREES.length,...TOWN_PROP_SITES.filter(p=>p.kind==='tree')));
 export const TOWN_WATERFALL = null; // the waterfalls are painted into the ground now
 export const TOWN_EDGE_HOMES = [];
 const variants = new WeakMap();
@@ -32,7 +34,7 @@ const TREE_TINT = {
 };
 const tinted = new WeakMap();
 function tintedArt(image,biome) {
-  const filter=TREE_TINT[biome];
+  const filter=activeTownSkin().treeTint?TREE_TINT[biome]:null;   // M2: a zone with its own tree art is not darkened in code
   if(!filter||!image||!image.naturalWidth)return image;
   let per=tinted.get(image);if(!per){per=new Map();tinted.set(image,per);}
   let c=per.get(biome);
@@ -72,23 +74,29 @@ export function drawTownCastShadow(ctx,image,x,y,w) {
   ctx.drawImage(cachedSprite(image,'shadow'),-w/2,-h,w,h);
   ctx.restore();
 }
-let flameFrames=null;
+const flameSets=new Map();   // flame url template -> [Image a,b,c]; a zone may light its torches with another colour (zone-skin light.flame)
+const flameFor=template=>{
+  let set=flameSets.get(template);
+  if(!set&&typeof Image!=='undefined'){set=['a','b','c'].map(key=>{const im=new Image();im.src=template.replace('{k}',key);return im;});flameSets.set(template,set);}
+  return set;
+};
 // These painted FX have black RGB backgrounds; additive compositing keeps them invisible.
 export function drawTorchFlame(ctx,x,base,time,reduced){
-  if(!flameFrames&&typeof Image!=='undefined')flameFrames=['a','b','c'].map(key=>{const im=new Image();im.src=`img/fx/fx-fire-flame-${key}.webp`;return im;});
-  const frames=(flameFrames||[]).filter(im=>im.complete&&im.naturalWidth);if(!frames.length)return;
+  const frames=(flameFor(activeTownSkin().light.flame)||[]).filter(im=>im.complete&&im.naturalWidth);if(!frames.length)return;
   const phase=reduced?0:time/180+x*.021,index=Math.floor(phase)%frames.length,blend=phase-Math.floor(phase);
   const h=reduced?37:37+Math.sin(time/150+x)*3,w=h*.57,sway=reduced?0:Math.sin(time/210+x)*1.6;
   ctx.save();ctx.globalCompositeOperation='lighter';
   for(const [offset,alpha]of [[0,1-blend],[1,blend]]){ctx.globalAlpha=alpha*.95;ctx.drawImage(frames[(index+offset)%frames.length],x-w/2+sway,base-h,w,h);}
   ctx.restore();
 }
-let torchArt = null;
+const torchArts = new Map();   // url -> Image (one per zone skin)
 function torchSprite() {
-  if (!torchArt && typeof Image !== 'undefined') {
-    torchArt = new Image(); torchArt.src = 'img/map-zone1/torch-pillar-v1.webp';
+  const url = activeTownSkin().art['town-prop-torch-pillar'] || ZONE1_TOWN_ART['town-prop-torch-pillar'];
+  let art = torchArts.get(url);
+  if (!art && typeof Image !== 'undefined') {
+    art = new Image(); art.src = url; torchArts.set(url, art);
   }
-  return torchArt?.complete && torchArt.naturalWidth ? torchArt : null;
+  return art?.complete && art.naturalWidth ? art : null;
 }
 // K1e: dedicated art per kind/biome. Torches stay on the Codex Thai fire pillar (torch-pillar-v1).
 export function townPropArtKey(p) {
@@ -173,8 +181,8 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
         const fy=p.y-h*.85;
         drawTorchFlame(ctx,p.x,fy+9,time,reduced);
         ctx.save();ctx.globalCompositeOperation='screen';
-        drawLocalLight(ctx,'th',p.x,fy,85,time,reduced);
-        drawLocalLight(ctx,'th',p.x,p.y-4,48,time,reduced);
+        drawLocalLight(ctx,activeTownZone(),p.x,fy,85,time,reduced);
+        drawLocalLight(ctx,activeTownZone(),p.x,p.y-4,48,time,reduced);
         if(!reduced)for(let i=0;i<4;i++){
           const age=((time/1800+i*.25+p.x*.001)%1+1)%1;
           const x=p.x+Math.sin(age*5+i+p.x)*9,y=fy-age*40;
@@ -190,7 +198,7 @@ export function addTownSceneryLayers(at,ctx,house,tree,waterfall,g,time,view,red
 }
 export function drawTownHouseLights(ctx,time,reduced) {
   for(const {x,y,w} of TOWN_HOUSE_SITES){
-    drawLocalLight(ctx,'th',x-w*.14,y-w*.36,w*.14,time,reduced);
-    drawLocalLight(ctx,'th',x+w*.14,y-w*.36,w*.14,time,reduced);
+    drawLocalLight(ctx,activeTownZone(),x-w*.14,y-w*.36,w*.14,time,reduced);
+    drawLocalLight(ctx,activeTownZone(),x+w*.14,y-w*.36,w*.14,time,reduced);
   }
 }

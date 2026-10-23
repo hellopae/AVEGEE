@@ -3,8 +3,10 @@ import { SCENE, STATIONS, SPOTS, FRONTIER } from './data.js';
 import { t } from './i18n.js';
 import { TOWN_HOUSES, TOWN_HOUSE_SITES, TOWN_SIZE } from './town-layout.js?v=k1d';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
+import { isTownZone } from './zone-skin.js';
 
-export const isTownZone = zone => zone === 'th';
+// M2: which zones use the painted-town map system is decided by the zone skin table (zone-skin.js), not by a zone name.
+export { isTownZone };
 export const townZoomLevels = zone => isTownZone(zone) ? [1, 3.5, 5, 6.5] : [1, 2.5];
 export const townDefaultZoom = zone => isTownZone(zone) ? 2 : 0;
 /** Shared world rectangle for preview camera, click mapping and minimap frame. */

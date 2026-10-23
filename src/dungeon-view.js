@@ -2,6 +2,7 @@ import {drawFrontierAmbient} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint,bossGuideDismissed} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
+import { DUNGEON_CORRIDOR, LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave } from './route-geometry.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
@@ -9,23 +10,24 @@ import { exitStep, drawExitMarker } from './exit-marker.js';
 import { MOB } from './data.js';
 import { CHASE, newChase, stepChase, chaseAlerted, chaseInReach } from './dungeon-chase.js?v=l5';
 
-// A continuous trail aligned to the authored zone 1–2 map. Other routes keep
-// their original vertical corridors and backgrounds.
-export const DUNGEON_CORRIDOR = Object.freeze([[.12,.22],[.19,.25],[.21,.28],[.20,.31],[.26,.33],[.32,.38],[.37,.43],[.42,.43],[.47,.40],[.48,.36],[.54,.35],[.59,.34],[.63,.39],[.69,.43],[.74,.47],[.79,.51],[.77,.55],[.74,.58],[.72,.62],[.67,.63],[.63,.64],[.60,.68],[.58,.72],[.53,.75],[.62,.77],[.67,.80],[.72,.85],[.78,.87],[.84,.85],[.88,.80],[.91,.79]].map(Object.freeze));
-const LEGACY_CORRIDOR = [[.5,.925],[.5,.78],[.43,.65],[.53,.49],[.48,.35],[.5,.19]];
+// M2 R1: trails, checkpoint vertices, pads and boss caves are rows of ROUTE_GEOMETRY (route-geometry.js); a route whose row is
+// not enabled keeps the original vertical corridor.
+export {DUNGEON_CORRIDOR};
 const geometryCache=new Map();
 const geometry = (routeId='th:asia') => {
-  const key=routeId==='th:asia'?'th:asia':'legacy';
+  const row=routeRow(routeId),wild=isWildernessRoute(routeId),key=wild?routeId:'legacy';
   if(geometryCache.has(key))return geometryCache.get(key);
-  const corridor=routeId==='th:asia'?DUNGEON_CORRIDOR:LEGACY_CORRIDOR;
+  const corridor=wild?row.corridor:LEGACY_CORRIDOR;
   const lengths=corridor.slice(1).map((p,i)=>Math.hypot(p[0]-corridor[i][0],p[1]-corridor[i][1]));
-  const result={corridor,lengths,total:lengths.reduce((a,b)=>a+b,0)};geometryCache.set(key,result);return result;
+  const total=lengths.reduce((a,b)=>a+b,0);
+  const progress=wild?Object.freeze(row.checkpointVertex.map(i=>lengths.slice(0,i).reduce((a,b)=>a+b,0)/total)):LEGACY_CHECKPOINT_PROGRESS;
+  const result={corridor,lengths,total,progress};geometryCache.set(key,result);return result;
 };
-const {lengths,total}=geometry();
+const {lengths,total,progress:REF_PROGRESS}=geometry();
 export const DUNGEON_TOTAL=total;
 export const dungeonRouteTotal=routeId=>geometry(routeId).total;
-export const DUNGEON_PROGRESS = Object.freeze([7,15,23].map(i=>lengths.slice(0,i).reduce((a,b)=>a+b,0)/total));
-export const dungeonCheckpointProgress = routeId => routeId==='th:asia'?DUNGEON_PROGRESS:[.25,.52,.79];
+export const DUNGEON_PROGRESS = REF_PROGRESS;
+export const dungeonCheckpointProgress = routeId => geometry(routeId).progress;
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 export function dungeonPoint(progress,routeId='th:asia') {
   const {corridor,lengths,total}=geometry(routeId);
@@ -74,8 +76,8 @@ export function dungeonAtExit(g) {
 export function dungeonWalkable(p,routeId='th:asia') {
   if(!Array.isArray(p)||p.length!==2||!p.every(Number.isFinite)||p.some(v=>v<.02||v>.98))return false;
   if(dungeonProjection(p,1,routeId).distance<=.026)return true;
-  if(routeId!=='th:asia')return false;
-  return [[.12,.22,.052,.036],[.26,.33,.062,.035],[.42,.43,.042,.028],[.53,.75,.085,.042],[.91,.79,.042,.033]].some(([x,y,rx,ry])=>((p[0]-x)/rx)**2+((p[1]-y)/ry)**2<=1);
+  if(!isWildernessRoute(routeId))return false;
+  return routeRow(routeId).pads.some(([x,y,rx,ry])=>((p[0]-x)/rx)**2+((p[1]-y)/ry)**2<=1);
 }
 export function dungeonSegmentClear(a,b,routeId='th:asia') {
   const steps=Math.max(1,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/.004));
@@ -109,8 +111,9 @@ export function dungeonEnemyPositions(g,time=0) {
     if(s.defeated.includes(location.id))return [];
     const progress=dungeonCheckpointProgress(s.route.id)[index],phase=(Number.isFinite(time)?time:0)/6500+index*2;
     const anchor=dungeonPoint(progress,s.route.id),p=dungeonPoint(progress+Math.sin(phase)*.008,s.route.id);
-    const boss=s.route.id==='th:asia'&&index===2&&!g.bossCleared?.th;
-    const locked=s.route.id==='th:asia'&&index===2&&(s.checkpoint<2||boss&&g.zoneEvents?.th?.thBorderBoss!=='pending');
+    const cave=routeBossCave(s.route.id),atCave=!!cave&&index===cave.checkpoint;
+    const boss=atCave&&!g.bossCleared?.[cave.zone];
+    const locked=atCave&&(s.checkpoint<cave.checkpoint||boss&&g.zoneEvents?.[cave.zone]?.[cave.eventKey]!=='pending');
     return [{id:location.id,checkpoint:index,kindIdx:location.foe,boss,locked,position:dungeonWalkable(p,s.route.id)?p:anchor}];
   });
   const patrols=dungeonPatrols(s.route.id).filter(p=>!(g.zoneTravel.active.patrolDefeated||[]).includes(p.id)).map((p,i)=>({
@@ -239,7 +242,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
   // The cave talk button exists only while the boss is really drawn there (no invisible hit spot).
-  const challengeStandeeShown=()=>routeId==='th:asia'&&!bossGuideWaiting(g)&&!bossGuideDismissed(g)&&!!g.challengeUnlocked?.()&&!g.bossCleared?.th;
+  const cave0=routeBossCave(routeId),challengeStandeeShown=()=>!!cave0&&!bossGuideWaiting(g)&&!bossGuideDismissed(g)&&!!g.challengeUnlocked?.()&&!g.bossCleared?.[cave0.zone];
   function update(dt) {
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
@@ -280,7 +283,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter(nearby.patrol?{patrol:nearby.patrol}:{...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
     }
     root.querySelector('.dungeon-challenge').hidden=!challengeStandeeShown()||!g.challengeCanTalk?.();
-    root.querySelector('.dungeon-guide').hidden=!bossGuideWaiting(g)||Math.hypot(position[0]-point(points[2])[0],position[1]-point(points[2])[1])>.09;
+    root.querySelector('.dungeon-guide').hidden=!bossGuideWaiting(g)||(cave0?Math.hypot(position[0]-point(points[cave0.checkpoint])[0],position[1]-point(points[cave0.checkpoint])[1])>.09:!dungeonCanTalkGuide(g,position));
     // O1: reaching the gate enters the land by itself (no button). Same reach the button used to need.
     const arrival=dungeonExitArrival(g,exitLatch,{destroyed});exitLatch=arrival.latched;
     if(arrival.enter){target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onArrival(status.route.to);});}
@@ -293,7 +296,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   function render(t) {
     ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
-    if(routeId==='th:asia')drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,tree:frontierTree});
+    if(isWildernessRoute(routeId)&&routeRow(routeId).ambient.trees.length+routeRow(routeId).ambient.waterfalls.length)drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,tree:frontierTree,...routeRow(routeId).ambient});
     const status=dungeonStatus(g);if(!status)return;
     drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';
@@ -302,8 +305,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const hero=position,nira=follower;
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'}];
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
-    if(routeId==='th:asia'&&bossGuideWaiting(g)){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'guide'});}
-    else if(challengeStandeeShown()){const cave=point(points[2]);actors.push({p:[cave[0]+.055,cave[1]+.01],kind:'challenge'});}
+    if(bossGuideWaiting(g)){actors.push({p:dungeonGuideAnchor(g),kind:'guide'});}
+    else if(challengeStandeeShown()){actors.push({p:dungeonGuideAnchor(g),kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
@@ -346,8 +349,9 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
 /** Old active journeys can meet the newly migrated guide without leaving the route. */
 export function dungeonGuideAnchor(g){
   const s=dungeonStatus(g);if(!s)return null;
-  const p=dungeonPoint(s.route.id==='th:asia'?dungeonCheckpointProgress(s.route.id)[2]:0,s.route.id);
-  return s.route.id==='th:asia'?[p[0]+.055,p[1]+.01]:[p[0]+.045,p[1]-.006];
+  const cave=routeBossCave(s.route.id);
+  const p=dungeonPoint(cave?dungeonCheckpointProgress(s.route.id)[cave.checkpoint]:0,s.route.id);
+  return cave?[p[0]+cave.guide[0],p[1]+cave.guide[1]]:[p[0]+.045,p[1]-.006];
 }
 export function dungeonCanTalkGuide(g,position=null){
   const anchor=dungeonGuideAnchor(g),p=position||activePosition(g);
@@ -515,5 +519,5 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
 }
 
 export function mountDungeonView(container,g,options={}) {
-  return dungeonStatus(g)?.route.id==='th:asia'?mountWildernessView(container,g,options):mountLegacyDungeonView(container,g,options);
+  return isWildernessRoute(dungeonStatus(g)?.route.id)?mountWildernessView(container,g,options):mountLegacyDungeonView(container,g,options);
 }

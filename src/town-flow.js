@@ -8,8 +8,9 @@
 // they leave the painted surface, so banks, bridges, piers and boats are never covered. No ctx.filter, no
 // shadowBlur, no per-frame pixel work. Reduced motion draws nothing (the painting stays still).
 import { TOWN_SIZE, townFloorAt } from './town-layout.js?v=k1d';
+import { ZONE_SKIN, activeTownSkin, activeTownZone } from './zone-skin.js';
 
-export const TOWN_FLOW_URL = 'img/map-zone1/v4/flow-v4.png';
+export const TOWN_FLOW_URL = ZONE_SKIN.th.flowUrl;   // Zone 1; other zones: zone-skin.js flowUrl (null = no flowing surface)
 export const FLOW_W = 1536, FLOW_H = 1024;
 export const FLOW_KIND = { NONE: 0, PURPLE: 1, LAVA: 2, LAVA_FALL: 3, ICE: 4, ICE_FALL: 5 };
 export const FLOW_MAX_PARTICLES = 420;
@@ -272,30 +273,36 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
     kindAt };
 }
 
-// ---- singleton wiring for the game ----
-let engine = null, loading = false, failed = false, lastT = 0;
-function load() {
-  if (loading || engine || failed || typeof Image === 'undefined' || typeof document === 'undefined') return;
-  loading = true;
+// ---- wiring for the game: one flow engine per zone skin ----
+const engines = new Map();   // zone -> {engine, loading, failed}
+let lastT = 0;
+const slot = zone => { let e = engines.get(zone); if (!e) { e = { engine:null, loading:false, failed:false }; engines.set(zone, e); } return e; };
+function load(zone, url) {
+  const e = slot(zone);
+  if (e.loading || e.engine || e.failed || typeof Image === 'undefined' || typeof document === 'undefined') return;
+  e.loading = true;
   const img = new Image();
   img.onload = () => {
     try {
       const cv = document.createElement('canvas'); cv.width = img.naturalWidth; cv.height = img.naturalHeight;
       const c = cv.getContext('2d', { willReadFrequently: true });
       c.drawImage(img, 0, 0);
-      engine = createFlowEngine(decodeFlow(c.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height));
-    } catch { failed = true; }
-    loading = false;
+      e.engine = createFlowEngine(decodeFlow(c.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height));
+    } catch { e.failed = true; }
+    e.loading = false;
   };
-  img.onerror = () => { failed = true; loading = false; };
-  img.src = TOWN_FLOW_URL;
+  img.onerror = () => { e.failed = true; e.loading = false; };
+  img.src = url;
 }
-export const townFlowEngine = () => engine;
+export const townFlowEngine = () => slot(activeTownZone()).engine;
 
 /** Call once per frame with the world transform active (after the terrain, before characters). */
 export function drawTownFlow(ctx, time, reduced = false) {
   if (reduced) return;
-  load();
+  const url = activeTownSkin().flowUrl;
+  if (!url) return;
+  load(activeTownZone(), url);
+  const engine = townFlowEngine();
   if (!engine) return;
   const m = ctx.getTransform ? ctx.getTransform() : null;
   const scale = m && Number.isFinite(m.a) && m.a > 0 ? m.a : 1;
