@@ -1,0 +1,39 @@
+You are re-theming a game ground map and continuing a painting. Attached images, in order:
+[1] LAYOUT: a crop of the finished Zone 1 map, painted, 3/4 elevated RPG view.
+[2] WALK: a schematic of the same crop. Light grey = flat walkable stone ground, dark = not walkable.
+[3] THEME: the old Zone 2 "East Asia" map. Use it ONLY for palette, materials and mood, never for layout.
+[4] SEED: a 1536x1024 canvas. The TOP 228 pixels are ALREADY PAINTED in the final Zone 2 style (they
+    are the bottom edge of the neighbouring north-west quarter). The rest is flat grey #808080.
+
+Paint the complete 1536x1024 image. Keep the painted top strip of [4] unchanged and continue it
+seamlessly downward: roads, cliff edges, lava channels and mist must run on across the join with no
+visible seam, step or colour shift.
+Keep the EXACT geometry of [1] for everything else: every road, staircase, bridge, plaza, pad,
+cliff edge, river bank and lava channel stays in the same place, same size, camera and perspective.
+This crop is the SOUTH-WEST quarter: on the left two oval plateaus and lava falling over a cliff
+into a wide river; two more oval plateaus in the middle; a long straight stone staircase and
+a straight stone bridge with balustrades running down the centre and crossing the wide river; a
+small stone pier on the north bank to the right of the bridge; the south river bank with a large
+round stone plaza at the bottom centre, the road continuing down to the bottom edge, and open
+ground with rock spires and trees to the left of the plaza.
+
+Re-theme as follows:
+- All walkable ground (light grey in [2]) becomes pale jade-grey flagstone (#9AA79F), large irregular
+  slabs with thin dark seams, matte, LOW contrast. The big round plaza gets a thin gold-line ring
+  and a faint carved cloud-scroll pattern, still low contrast. Pads stay completely empty.
+- Lava (same channels and falls as [1]): bright molten yellow-orange with a dark cracked crust. Where
+  the lava falls into the river, the water shows a warm orange reflection streak. This is the ONLY
+  strongly glowing orange in the image.
+- The river becomes deep green-blue water (#0F3D4D to #1B6F80) with white foam waves along the
+  rocks and banks, like the sea in [3]. The stone bridge in the centre keeps its width, stairs and
+  balustrades, with dark grey stone posts, thin gold bands and gold-capped ends.
+- The small pier is perfectly SYMMETRIC around one vertical axis: five stone steps down to a
+  rectangular deck of the same width, two parallel vertical balustrades that are mirror images,
+  two corner posts of equal height with gold caps. Its position and size match [1].
+- The three flat shore spans on the north bank (see [2]) stay low flat shore, not tall cliffs.
+- South bank: cracked grey-jade ground, low contrast; crimson maple groves and grey-green limestone
+  rock spires in the background and on the edges, a few bleached bones; all outside walkable ground.
+Lighting: warm soft key light from the upper left. No long cast shadows from objects.
+Paint to all four edges; no vignette, no frame, no border.
+
+Negative: buildings, houses, huts, pavilion, temple, pagoda, tents, statues, Buddha, deity figure, halo, swastika, manji lattice, people, animals, boats, torches, standing lamps, signposts, text, letters, Chinese characters, labels, watermark, logo, colored guide overlay, green fill, yellow rectangles, red circles, magenta ring, white bars, UI, frame, border, vignette, changed road layout, extra bridges, missing bridges, different camera angle, flat top-down map, rotated isometric view, saturated orange on non-lava, glowing floor, fog covering the paths, snow, ice, blue or purple glow, low resolution, blur, smooth airbrush, leaning rails, diagonal railings, asymmetric pier, boat, ship, ferry, a figure on the bridge, purple water, changed seed strip, visible seam

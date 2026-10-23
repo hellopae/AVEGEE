@@ -1,0 +1,67 @@
+{
+  "seed": "NW crop (0,796,1536,1024) pasted at SW (0,0), remaining RGB #808080",
+  "vertical_overlap_exact_canvas": 227.55555555555554,
+  "rounded_overlap": 228,
+  "inputs": [
+    {
+      "file": "q-nw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+      "identical_to_q1_source": true
+    },
+    {
+      "file": "ref-q-sw-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "aeeeb50dffb3ed28c1bfd8634efcb44201b70a4a0e3ff2b0fd6929e2196f56bb",
+      "identical_to_q1_source": true
+    },
+    {
+      "file": "ref-q-sw-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "2f794a69ef6ee568949f3285ab8813af9e65b6ca95ebef4d2f601135a85e44c0",
+      "identical_to_q1_source": true
+    },
+    {
+      "file": "ref-q-sw-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "beee77dd2581edb03f05aa2eb04fce5d5fe72783592359d910b6bbfcce2f3b85",
+      "identical_to_q1_source": true
+    },
+    {
+      "file": "ref-theme-asia.png",
+      "size": [
+        1678,
+        937
+      ],
+      "mode": "RGB",
+      "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb",
+      "identical_to_q1_source": true
+    },
+    {
+      "file": "seed-q-sw.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "9671015cf87c97b5c992408db79676f52f710886d16c4a8ea0570f194cccc957",
+      "identical_to_q1_source": null
+    }
+  ]
+}
