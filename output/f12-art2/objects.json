@@ -1,0 +1,308 @@
+[
+  {
+    "id": 1,
+    "silhouette_bbox": [
+      330,
+      277,
+      362,
+      346
+    ],
+    "allowed_bbox": [
+      318,
+      265,
+      374,
+      358
+    ],
+    "action": "retain structure",
+    "reason": "Rail-connected lantern tower: visible rails join its base; a structural post, not freestanding clutter.",
+    "changed_pixels_in_frame": 0
+  },
+  {
+    "id": 2,
+    "silhouette_bbox": [
+      398,
+      320,
+      432,
+      363
+    ],
+    "allowed_bbox": [
+      386,
+      308,
+      444,
+      375
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 1677
+  },
+  {
+    "id": 3,
+    "silhouette_bbox": [
+      469,
+      340,
+      555,
+      439
+    ],
+    "allowed_bbox": [
+      457,
+      328,
+      567,
+      451
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 9726
+  },
+  {
+    "id": 4,
+    "silhouette_bbox": [
+      527,
+      355,
+      594,
+      432
+    ],
+    "allowed_bbox": [
+      515,
+      343,
+      606,
+      444
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 6381
+  },
+  {
+    "id": 6,
+    "silhouette_bbox": [
+      746,
+      396,
+      808,
+      445
+    ],
+    "allowed_bbox": [
+      734,
+      384,
+      820,
+      457
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 3258
+  },
+  {
+    "id": 8,
+    "silhouette_bbox": [
+      815,
+      364,
+      886,
+      431
+    ],
+    "allowed_bbox": [
+      803,
+      352,
+      898,
+      443
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 4704
+  },
+  {
+    "id": 13,
+    "silhouette_bbox": [
+      412,
+      434,
+      481,
+      515
+    ],
+    "allowed_bbox": [
+      400,
+      422,
+      493,
+      527
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 4801
+  },
+  {
+    "id": 14,
+    "silhouette_bbox": [
+      484,
+      550,
+      518,
+      575
+    ],
+    "allowed_bbox": [
+      472,
+      538,
+      530,
+      587
+    ],
+    "action": "retain structure",
+    "reason": "Integral vertical rock pinnacle continuous with cliff face below the landing, not a loose stone.",
+    "changed_pixels_in_frame": 156
+  },
+  {
+    "id": 15,
+    "silhouette_bbox": [
+      523,
+      578,
+      549,
+      601
+    ],
+    "allowed_bbox": [
+      511,
+      566,
+      561,
+      613
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 1087
+  },
+  {
+    "id": 16,
+    "silhouette_bbox": [
+      604,
+      585,
+      643,
+      626
+    ],
+    "allowed_bbox": [
+      592,
+      573,
+      655,
+      638
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 1170
+  },
+  {
+    "id": 20,
+    "silhouette_bbox": [
+      868,
+      321,
+      907,
+      359
+    ],
+    "allowed_bbox": [
+      856,
+      309,
+      919,
+      371
+    ],
+    "action": "retain structure",
+    "reason": "Integral cliff pinnacle rising from continuous rock face on inside of bend.",
+    "changed_pixels_in_frame": 18
+  },
+  {
+    "id": 21,
+    "silhouette_bbox": [
+      916,
+      329,
+      944,
+      352
+    ],
+    "allowed_bbox": [
+      904,
+      317,
+      956,
+      364
+    ],
+    "action": "retain structure",
+    "reason": "Rock teeth continuous with cliff rim beside bend; removal would change cliff/road boundary.",
+    "changed_pixels_in_frame": 0
+  },
+  {
+    "id": 22,
+    "silhouette_bbox": [
+      913,
+      716,
+      955,
+      763
+    ],
+    "allowed_bbox": [
+      901,
+      704,
+      967,
+      775
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 1663
+  },
+  {
+    "id": 23,
+    "silhouette_bbox": [
+      768,
+      701,
+      836,
+      764
+    ],
+    "allowed_bbox": [
+      756,
+      689,
+      848,
+      776
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 4870
+  },
+  {
+    "id": 24,
+    "silhouette_bbox": [
+      818,
+      722,
+      878,
+      781
+    ],
+    "allowed_bbox": [
+      806,
+      710,
+      890,
+      793
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 4626
+  },
+  {
+    "id": 25,
+    "silhouette_bbox": [
+      1207,
+      798,
+      1301,
+      921
+    ],
+    "allowed_bbox": [
+      1195,
+      786,
+      1313,
+      933
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 8998
+  },
+  {
+    "id": 26,
+    "silhouette_bbox": [
+      1352,
+      522,
+      1415,
+      621
+    ],
+    "allowed_bbox": [
+      1340,
+      510,
+      1427,
+      633
+    ],
+    "action": "remove whole vegetation",
+    "reason": null,
+    "changed_pixels_in_frame": 4788
+  }
+]

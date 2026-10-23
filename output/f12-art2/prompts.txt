@@ -1,0 +1,46 @@
+CALL 1 — built-in image_gen
+Use case: precise-object-edit.
+Input image 1 is the clean edit target (1672x941); input image 2 is ONLY a numbered location guide. Return the clean image, same camera and EXACT layout and proportions, without any boxes or numbers.
+Remove the following 13 entire vegetation objects, including foliage, branches, trunks and roots. Reconstruct matching painted stone path where on path and matching exposed cliff/background where hanging over cliff. Preserve every rail, stair tread, water area and road boundary. Preserve all other objects, including the ten small patches already repaired.
+Target pixel boxes in original 1672x941 coordinates:
+2 (398,323)-(430,362): yellow shrub beside upper left stair landing.
+3 (489,340)-(527,376): small yellow vegetation tuft at linking path edge, not the adjacent railing.
+4 (527,355)-(594,432): entire green tree at linking path cliff edge. Preserve neighboring yellow tree left.
+6 (746,396)-(806,443): entire green tree standing at middle path fork.
+8 (815,364)-(886,427): entire two-toned green/yellow tree and both trunks above middle stairs; preserve rail below.
+13 (412,434)-(481,513): entire red tree across left descending path, all red canopy and its trunk.
+15 (523,578)-(549,601): tiny shrub on lower left path, preserve railing.
+16 (604,585)-(643,626): small green tree at lower left path end, entire trunk.
+22 (913,716)-(955,763): small green tree above lower plaza stair. Preserve the orange/gold lantern and rail in front.
+23 (768,701)-(836,764) and 24 (818,722)-(878,781): two entire green trees at lower plaza near cliff edge, remove both trees and all their trunks, preserve rocky cliff and pink flowers below.
+25 (1220,798)-(1301,912): entire bamboo clump southeast of road bend, ALL long hanging stems to rock base, replace with cliff, mist and existing ground only. Preserve the pavilion and the bridge beside it.
+26 (1352,522)-(1415,621): entire bamboo clump under the right descending stair, all stems and roots, preserve stairs, water, rocks and rails behind.
+Retain the rail-connected tower at (346,300), and integral cliff rock pinnacles at (501,562),(883,332),(930,340). Do not remove these structures.
+Highly detailed fantasy game painted map, seamless texture and lighting matching source. Do not add objects, redraw map, shift geometry, widen road or alter stairs, bridges, rails, water. No labels.
+
+CALL 2 — built-in image_gen
+Use case precise-object-edit. Edit this image at exactly same 1672x941 pixel layout.
+The first removal left thin bare branches, trunks and bits of foliage. Finish removal of ALL tree remains within the following boxes. Replace each whole tree with matching painted rock cliff or stone paving appropriate to its location. No bare trunks, skeletal trees, stumps, floating leaves, roots or sprouts. Do not add a tree to replace a removed tree.
+(469,340)-(594,439): remove entire vegetation trees at upper left linking path edge, especially remaining green crowns and pale branching trunk at x550,y399, yellow-green sprouts at x510,y355, and trunk x480,y374. Reconstruct rocky cliff below existing railing.
+(746,396)-(808,445): remove the skeletal tree, ALL trunk and tiny green crown on middle fork. Reconstruct open ground and path.
+(815,364)-(886,431): remove ALL skeletal branches and trunks of both small trees at this middle cliff edge. Reconstruct natural cliff and path. Keep rail.
+(398,320)-(432,363): remove yellow shrub remnants upper stair landing, keep rail and stairs.
+(412,434)-(481,513): remove red tree and trunk remnants left descent.
+(604,585)-(643,626): remove green tree/sprout remnants on lower left path end.
+(1220,798)-(1301,912): remove ALL bamboo stalks and yellow dry remnants down to the base. Reconstruct cliff face and mist.
+(1352,522)-(1415,621): remove ALL bamboo stalks, dry branches and roots under right stair, replace cliff backdrop.
+Keep the cleared plaza trees cleared. Keep every other pixel arrangement. Existing bridges, railings, stair treads, lanterns, water, cliff outlines and road shapes must stay. Same detailed painted fantasy map. No labels.
+
+CALL 3 — built-in image_gen
+Use case precise-object-edit. This is a 720x1200 contact sheet of 3 cropped game map details. Keep EXACT canvas size, panel positions, text headers, black empty areas, and existing cliff/stair/rail geometry. In each panel, completely erase the unwanted thin bare trees. This means REMOVE their trunks and branches too, filling with the ground or rock behind. Do not merely strip leaves.
+Panel A top: erase the brown Y-shaped bare tree at panel x185,y285 to y345, the pale curving trunk at x375,y155, and pale forked trunk at x300,y135. Erase all bare tree remains against the cliff while preserving the curved gold rails and their posts. Replace central tree base with flat brown ground, and back trees with rock cliff texture.
+Panel B middle: erase the dark branching stump standing in front of the stairs, panel x110,y675 to y756. Fill with the continuation of stone cliff and steps behind. Keep staircase.
+Panel C bottom: erase the dangling thin yellow bamboo stems down the middle of the grey rock face, panel x115,y920 to y1085. Fill solid grey rock texture. Preserve all other details.
+Every removed trunk is GONE, NO twig or stump or bare tree is left. Same painted fantasy map aesthetic.
+
+CALL 4 — built-in image_gen
+Precise-object-edit. Edit these three panels. Preserve exact 720x1200 sheet proportions and black areas, headers and panel positions.
+A top panel: completely remove the SMALLER tree in center, at panel x170-225 y150-280, including every leaf, trunk and root; replace with the same stone paving and low natural ground behind. Keep larger tree at far left, water, shore, rail and bridge.
+B middle panel: remove remaining floating green leaf clumps in the plaza: little dot panel x195 y515, clump x336 y520, and clump x550 y590. These are remnants of removed trees, remove completely and replace with stone paving. Keep lanterns, railings, rocks, moss below rails, pink flowers and stairs.
+C bottom: completely remove ALL thin bamboo stems and foliage at the FAR LEFT edge of this cliff panel, from x0 to x75 y920-1155. Fill with continuous cliff face, mist and existing waterfall behind. Keep the right-hand green plant, rock outline, railing and road.
+No branches or stumps or floating foliage left where removed. No new objects. Same painted map.
