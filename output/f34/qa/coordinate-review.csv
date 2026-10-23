@@ -1,0 +1,32 @@
+vertex,target_x,target_y,observed_center_x_px_approx,observed_center_y_px_approx,delta_x_normalized,delta_y_normalized,review
+0,0.120,0.220,201,198,+0.0002,-0.0096,within estimate; not certified
+1,0.190,0.250,317,239,-0.0004,+0.0040,within estimate; not certified
+2,0.210,0.280,350,262,-0.0007,-0.0016,within estimate; not certified
+3,0.200,0.310,337,287,+0.0016,-0.0050,within estimate; not certified
+4,0.260,0.330,435,300,+0.0002,-0.0112,within estimate; not certified
+5,0.320,0.380,535,353,-0.0000,-0.0049,within estimate; not certified
+6,0.370,0.430,619,393,+0.0002,-0.0124,within estimate; not certified
+7,0.420,0.430,702,400,-0.0001,-0.0049,within estimate; not certified
+8,0.470,0.400,786,375,+0.0001,-0.0015,within estimate; not certified
+9,0.480,0.360,808,344,+0.0033,+0.0056,within estimate; not certified
+10,0.540,0.350,903,317,+0.0001,-0.0131,within estimate; not certified
+11,0.590,0.340,986,316,-0.0003,-0.0042,within estimate; not certified
+12,0.630,0.390,1053,365,-0.0002,-0.0021,within estimate; not certified
+13,0.690,0.430,1154,407,+0.0002,+0.0025,within estimate; not certified
+14,0.740,0.470,1237,447,-0.0002,+0.0050,within estimate; not certified
+15,0.790,0.510,1321,495,+0.0001,+0.0160,outside estimate
+16,0.770,0.550,1312,519,+0.0147,+0.0015,within estimate; not certified
+17,0.740,0.580,1257,565,+0.0118,+0.0204,outside estimate
+18,0.720,0.620,1204,600,+0.0001,+0.0176,outside estimate
+19,0.670,0.630,1120,608,-0.0001,+0.0161,outside estimate
+20,0.630,0.640,1053,615,-0.0002,+0.0136,within estimate; not certified
+21,0.600,0.680,1003,648,-0.0001,+0.0086,within estimate; not certified
+22,0.580,0.720,970,680,+0.0001,+0.0026,within estimate; not certified
+23,0.530,0.750,886,693,-0.0001,-0.0135,within estimate; not certified
+24,0.620,0.770,1037,735,+0.0002,+0.0111,within estimate; not certified
+25,0.670,0.800,1120,762,-0.0001,+0.0098,within estimate; not certified
+26,0.720,0.850,1204,818,+0.0001,+0.0193,outside estimate
+27,0.780,0.870,1304,822,-0.0001,+0.0035,within estimate; not certified
+28,0.840,0.850,1404,811,-0.0003,+0.0118,within estimate; not certified
+29,0.880,0.800,1471,782,-0.0002,+0.0310,outside estimate
+30,0.910,0.790,1522,782,+0.0003,+0.0410,outside estimate

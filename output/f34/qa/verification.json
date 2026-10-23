@@ -1,0 +1,35 @@
+{
+  "asset": "img/frontier-route/zone3-4-v1.webp",
+  "format": "WEBP",
+  "size": [
+    1672,
+    941
+  ],
+  "mode": "RGB",
+  "bytes": 1027050,
+  "sha256": "1ba06783b97763dc3d03b5f0dd4673f1a95828ea3c52a5053dbea9e6d4a31a70",
+  "corridor_vertices": 31,
+  "pads": 5,
+  "overlay_size": [
+    1672,
+    941
+  ],
+  "coordinate_review_method": "manual visual estimate, uncertainty approximately 8 px; no certification",
+  "estimated_outside_per_axis_0_015": [
+    15,
+    17,
+    18,
+    19,
+    26,
+    29,
+    30
+  ],
+  "minimum_road_width": "not confirmed; visible overlap with rails/cliffs",
+  "game_tests": "not run; art-only task",
+  "selected_generation": "exec-52027294-0431-425b-ab86-073c07cdbe55.png",
+  "export": {
+    "quality": 96,
+    "method": 6
+  },
+  "review_outcome": "known coordinate/width discrepancies remain"
+}
