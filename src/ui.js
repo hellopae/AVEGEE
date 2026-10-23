@@ -3433,7 +3433,7 @@ function openBattle(after) {
         const recipe = recipeFor(k, { dmg:d.foe, crit:d.crit, replay });
         if (!recipe) { stopFxHandled(); return; }
         if (recipe === 'heal') return;      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
-        const src = await fxRect(allyImg(keyOfActor(b.actorId || 'you')));
+        const src = await fxRect(allyImg(dash?.side === 'you' ? dash.key : keyOfActor(b.actorId || 'you')));
         const self = ['rage', 'clock', 'mirror'].includes(recipe);
         const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
         const targets = self ? [{ rect:src, dmg:0 }] : (await Promise.all(hits.map(async h => ({ rect:await fxRect(foeImg(h.id)), dmg:h.damage || 0, label:d.crit && recipe.startsWith('slash') ? t('battle.fx.crit') : '' })))).filter(x => x.rect);
@@ -4295,10 +4295,10 @@ function openBattle(after) {
         // confusion, burns and skipped turns retain their existing choreography.
         if (g.battleActors().length === 1 && attacker && !attacker.boss && !attacker.stun && !attacker.confuse && !attacker.burn) {
           const image = foeImg(attacker.id), atlas = image && bossSpriteKey(image.getAttribute('src') || '', b.zone || g.zone);
-          const durations = atlas && poseDurations(atlas);
+          const durations = atlas && poseDurations(atlas), vitalsBeforeDash = vitalsOf(g);
           runDash({ side:'foe', key:attacker.id, targetImage:allyImg('you'),
             contact:poseContactMs(durations) || 260, pose:durations?.reduce((a,b)=>a+b,0) || 580,
-            onHit:() => g.runEnemyTurn(), onFinish:() => {} });
+            onHit:() => g.runEnemyTurn(), onFinish:() => showHeals(vitalsBeforeDash, 0) });
           return;
         }
         phase='foe';phaseAt=Date.now();
