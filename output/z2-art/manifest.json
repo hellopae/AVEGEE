@@ -1,0 +1,418 @@
+[
+  {
+    "key": "judgment",
+    "old": "img/theme-v4/town-judgment-asia-v2.webp",
+    "new": "img/theme-v4/town-judgment-asia-v3.webp",
+    "pair": "img/theme-v4/town-judgment-th-v2.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "bbox": [
+      21,
+      11,
+      1491,
+      1007
+    ],
+    "base": [
+      755.0,
+      1006
+    ],
+    "note": "",
+    "sha256": "c1e641cb28d71defbb85d117118c7479a8b8fb7220315c067b6b8e4ace70b463",
+    "raw_base": [
+      755.0,
+      1006
+    ],
+    "visible_bbox": [
+      21,
+      12,
+      1491,
+      1007
+    ]
+  },
+  {
+    "key": "house-front-one",
+    "old": "img/town-district/house-front-one-asia-v1.webp",
+    "new": "img/town-district/house-front-one-asia-v3.webp",
+    "pair": "img/town-district/house-front-one-v1.webp",
+    "size": [
+      1402,
+      1122
+    ],
+    "bbox": [
+      0,
+      17,
+      1399,
+      1122
+    ],
+    "base": [
+      698.5,
+      1121
+    ],
+    "note": "",
+    "sha256": "a9d2b495b390996414647030a99af2b058d73c7b424c7d7b9a87354b5e9ebd37",
+    "raw_base": [
+      698.5,
+      1121
+    ],
+    "visible_bbox": [
+      0,
+      17,
+      1399,
+      1122
+    ]
+  },
+  {
+    "key": "house-right-one",
+    "old": "img/town-district/house-right-one-asia-v1.webp",
+    "new": "img/town-district/house-right-one-asia-v3.webp",
+    "pair": "img/town-district/house-right-one-v1.webp",
+    "size": [
+      1438,
+      1094
+    ],
+    "bbox": [
+      0,
+      0,
+      1438,
+      1078
+    ],
+    "base": [
+      421.0,
+      1077
+    ],
+    "note": "",
+    "sha256": "759cad64e7bd38dab52cddf889eda5ee053197523764605ef2da31ea5bffa4ce",
+    "raw_base": [
+      422.5,
+      1077
+    ],
+    "visible_bbox": [
+      0,
+      0,
+      1438,
+      1078
+    ]
+  },
+  {
+    "key": "house-left-two",
+    "old": "img/town-district/house-left-two-asia-v1.webp",
+    "new": "img/town-district/house-left-two-asia-v3.webp",
+    "pair": "img/town-district/house-left-two-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "bbox": [
+      0,
+      0,
+      1036,
+      1518
+    ],
+    "base": [
+      783.5,
+      1517
+    ],
+    "note": "",
+    "sha256": "bbd6d312825a55a5a11c0f944d22b10a8a24c7c679309709eab80247f4c0fa82",
+    "raw_base": [
+      779.0,
+      1517
+    ],
+    "visible_bbox": [
+      0,
+      0,
+      1036,
+      1518
+    ]
+  },
+  {
+    "key": "house-right-two",
+    "old": "img/town-district/house-right-two-asia-v1.webp",
+    "new": "img/town-district/house-right-two-asia-v3.webp",
+    "pair": "img/town-district/house-right-two-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "bbox": [
+      0,
+      0,
+      1036,
+      1500
+    ],
+    "base": [
+      375.0,
+      1499
+    ],
+    "note": "",
+    "sha256": "18b49ee3acdf889ac3814bd33c7b64076dcfcbf1379cab27cf1c2646e15831cf",
+    "raw_base": [
+      380.5,
+      1499
+    ],
+    "visible_bbox": [
+      0,
+      0,
+      1036,
+      1500
+    ]
+  },
+  {
+    "key": "lamp",
+    "old": "img/theme-v4/town-lamp-asia-v1.webp",
+    "new": "img/theme-v4/town-lamp-asia-v3.webp",
+    "pair": "img/theme-v4/town-lamp-gold-th-v1.webp",
+    "size": [
+      512,
+      1112
+    ],
+    "bbox": [
+      5,
+      5,
+      506,
+      1107
+    ],
+    "base": [
+      256.0,
+      1106
+    ],
+    "note": "",
+    "sha256": "7ddd9f68b5c0e9a469330bb8dfb20c6f4f2f3b484a3f583e6366d9dfcf935871",
+    "raw_base": [
+      256.0,
+      1106
+    ],
+    "visible_bbox": [
+      5,
+      5,
+      506,
+      1107
+    ]
+  },
+  {
+    "key": "torch",
+    "old": "img/map-zone2/torch-pillar-v1.webp",
+    "new": "img/map-zone2/torch-pillar-v3.webp",
+    "pair": "img/map-zone1/torch-pillar-v1.webp",
+    "size": [
+      240,
+      419
+    ],
+    "bbox": [
+      47,
+      0,
+      212,
+      419
+    ],
+    "base": [
+      129.5,
+      418
+    ],
+    "note": "",
+    "sha256": "453baad2379b8ecec9bdc26ca666b5ee439f382a8a2fe7c903c3c121291b82b6",
+    "raw_base": [
+      129.0,
+      418
+    ],
+    "visible_bbox": [
+      47,
+      3,
+      212,
+      419
+    ]
+  },
+  {
+    "key": "sala",
+    "old": "img/map-v5/st-sala-asia.webp",
+    "new": "img/map-v5/st-sala-asia-v3.webp",
+    "pair": "img/map-v5/st-sala-th-v2.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "base": [
+      820.5,
+      1211
+    ],
+    "note": "",
+    "sha256": "8858e09a2f0c34f239447bd32619824769f0f13f0e7c843231d7603bcf0be7a9",
+    "raw_base": [
+      0.0,
+      1253
+    ],
+    "visible_bbox": [
+      12,
+      7,
+      1250,
+      1212
+    ]
+  },
+  {
+    "key": "tea",
+    "old": "img/theme-v4/st-tea-asia.webp",
+    "new": "img/theme-v4/st-tea-asia-v3.webp",
+    "pair": "img/map-v5/st-tea-th-v2.webp",
+    "size": [
+      365,
+      375
+    ],
+    "bbox": [
+      8,
+      8,
+      357,
+      367
+    ],
+    "base": [
+      196.0,
+      365
+    ],
+    "note": "tea: no map-v5 Asia file; uses existing theme-v4 reference",
+    "sha256": "10fb1046ca2d78201065238411737deec9563684cc1550382d9468e1d8625b0c",
+    "raw_base": [
+      196.0,
+      366
+    ],
+    "visible_bbox": [
+      9,
+      9,
+      356,
+      366
+    ]
+  },
+  {
+    "key": "sawan",
+    "old": "img/map-v5/st-sawan-asia.webp",
+    "new": "img/map-v5/st-sawan-asia-v3.webp",
+    "pair": "img/map-v5/st-sawan-th-v2.webp",
+    "size": [
+      1240,
+      1249
+    ],
+    "bbox": [
+      0,
+      0,
+      1240,
+      1249
+    ],
+    "base": [
+      626.5,
+      1240
+    ],
+    "note": "",
+    "sha256": "2b5687e39afd6fcfed1e19c569e1ec7183b10087a5d2bfdd5af4354dcdf8b884",
+    "raw_base": [
+      464.5,
+      1248
+    ],
+    "visible_bbox": [
+      16,
+      4,
+      1238,
+      1241
+    ]
+  },
+  {
+    "key": "krajok",
+    "old": "img/map-v5/st-krajok-asia.webp",
+    "new": "img/map-v5/st-krajok-asia-v3.webp",
+    "pair": "img/map-v5/st-krajok-th-v2.webp",
+    "size": [
+      1187,
+      1216
+    ],
+    "bbox": [
+      0,
+      0,
+      1187,
+      1216
+    ],
+    "base": [
+      650.5,
+      1212
+    ],
+    "note": "",
+    "sha256": "40d1036626c0a0e8282b3e943131672c7fc45d8fb931416f14e3f119bf926a85",
+    "raw_base": [
+      648.5,
+      1215
+    ],
+    "visible_bbox": [
+      3,
+      3,
+      1184,
+      1213
+    ]
+  },
+  {
+    "key": "sakura",
+    "old": "img/theme-v4/town-tree-asia-v1.webp",
+    "new": "img/theme-v4/town-tree-sakura-asia-v1.webp",
+    "pair": "img/theme-v4/town-tree-th-v1.webp",
+    "size": [
+      1199,
+      1312
+    ],
+    "bbox": [
+      1,
+      6,
+      1188,
+      1286
+    ],
+    "base": [
+      591.5,
+      1285
+    ],
+    "note": "new species; reference size/base only",
+    "sha256": "e63446319135cf8112ca8a82c41fb50f9fc14d400066e0f2d8351dfeb1be3d70",
+    "raw_base": [
+      619.5,
+      1285
+    ],
+    "visible_bbox": [
+      1,
+      6,
+      1188,
+      1286
+    ]
+  },
+  {
+    "key": "willow",
+    "old": "img/theme-v4/town-tree-asia-v1.webp",
+    "new": "img/theme-v4/town-tree-willow-asia-v1.webp",
+    "pair": "img/theme-v4/town-tree-th-v1.webp",
+    "size": [
+      1199,
+      1312
+    ],
+    "bbox": [
+      1,
+      6,
+      1188,
+      1286
+    ],
+    "base": [
+      591.5,
+      1285
+    ],
+    "note": "new species; reference size/base only",
+    "sha256": "e63446319135cf8112ca8a82c41fb50f9fc14d400066e0f2d8351dfeb1be3d70",
+    "raw_base": [
+      619.5,
+      1285
+    ],
+    "visible_bbox": [
+      1,
+      6,
+      1188,
+      1286
+    ]
+  }
+]
