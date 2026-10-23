@@ -1,0 +1,14 @@
+(node:31644) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M3: Asia ships enabled with reviewed sprite groups, no tree tint, and explicit rejected-ground fallback (3.491393ms)
+✔ M3: Asia retains Zone 1 temporary floor and leaving restores Zone 1 station geometry (277.703811ms)
+✔ M3: an old Asia save migrates once with the production skin and preserves progress (328.266043ms)
+✔ M3: title uses existing town copy in Zone 1 and the legacy Asia label without inventing copy (12.418806ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1018.561043

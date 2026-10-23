@@ -1,0 +1,358 @@
+(node:20725) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Arrival matrix: 160 walked, 0 recovered at timeout
+✔ all stations in all four zones: both builders arrive for build and repair among other buildings (76653.105582ms)
+✔ blocked definition point plus mob: build and repair reach a walkable visible work point (166815.593385ms)
+✔ disconnected route recovers after 30 active seconds, preserving elapsed time on reload and pause (7212.970477ms)
+✔ escort suspends arrival, then releases the worker; battle help keeps the job owner (140.080276ms)
+✔ two builds approach concurrently and retain each owner and build-work render state (6762.554667ms)
+✔ Thai city quarry is reachable from the civic square before bounded recovery (335.157415ms)
+✔ E1: one final flip table toggles exactly the eight requested rendered orientations (10.887826ms)
+✔ E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch (9.341782ms)
+(node:20727) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ H2: every zone — points inside the painted building body (above the ground strip) cannot be walked, for at least 3 buildings per zone (8248.136098ms)
+✔ H2: the ground strip is still blocked and the whole silhouette is covered (roof, wall and base rows are contiguous) (6.698743ms)
+✔ H2: the service door of every building stays walkable and reachable on every zone; free ground beside buildings stays open (1700.448492ms)
+✔ H2: a player standing where a newly built body appears is moved out of it (3.289816ms)
+(node:20728) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ H2-3: tea pavilion seat and bed sit on the cushion / mattress and stay within reach of the walkable floor in all 4 zones (3.153151ms)
+✔ H2-4: sala "sort documents" button moved up (9.178242ms)
+✔ H2-5: frontier win button keeps its own class (not the bottom .pad) (8.972528ms)
+✔ H2-6: Yama moves left in portrait and the portrait wheel rules stay (2.468537ms)
+✔ H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces right after the slash; west stays native (1.090478ms)
+✔ H2-2: town zoom/follow control retains the smooth frontier formula (130ms) (13.339659ms)
+✔ H2-3: standing up from the cushion puts Yama back inside the walkable floor in every zone (manual and MP-full stand-up) (27.881954ms)
+(node:20729) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L1: actors shrink on enabled town maps, and come back elsewhere (1.961412ms)
+✔ L1: one sun - shadows fall to the lower right for every caster (0.365908ms)
+✔ L1: withTownShade is a plain pass-through while no shadow field is baked (no DOM, battle/rooms untouched) (0.798736ms)
+✔ L1: scene.js keeps drawStandee untouched and shades actors via callbacks (no ctx.filter / shadowBlur per frame) (2.671875ms)
+✔ L1: Nira lives on the dais, away from the throne, the stairs, the queue and the player entry goal (4.030594ms)
+✔ L1: Nira strolls slowly but only inside her stage (simulated 5 minutes) (6535.365984ms)
+(node:20730) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+▶ M2: every zone has an exact door route from both spawns; 1px stepTo movement stays on terrain
+  ✔ th/sala from 1922,1078 (295.210883ms)
+  ✔ th/sala from 1917,2200 (73.618004ms)
+  ✔ th/krata from 1922,1078 (153.672242ms)
+  ✔ th/krata from 1917,2200 (48.479775ms)
+  ✔ th/dab from 1922,1078 (17.079645ms)
+  ✔ th/dab from 1917,2200 (21.629596ms)
+  ✔ th/lokan from 1922,1078 (39.023594ms)
+  ✔ th/lokan from 1917,2200 (89.559131ms)
+  ✔ th/ngiw from 1922,1078 (63.47977ms)
+  ✔ th/ngiw from 1917,2200 (67.168572ms)
+  ✔ th/lan from 1922,1078 (28.801825ms)
+  ✔ th/lan from 1917,2200 (69.642082ms)
+  ✔ th/tea from 1922,1078 (8.490674ms)
+  ✔ th/tea from 1917,2200 (15.732826ms)
+  ✔ th/tarang from 1922,1078 (7.804515ms)
+  ✔ th/tarang from 1917,2200 (14.741016ms)
+  ✔ th/krajok from 1922,1078 (30.348628ms)
+  ✔ th/krajok from 1917,2200 (55.270534ms)
+  ✔ th/sawan from 1922,1078 (16.24648ms)
+  ✔ th/sawan from 1917,2200 (33.331438ms)
+  ✔ th/frontier from 1922,1078 (11.212842ms)
+  ✔ th/frontier from 1917,2200 (0.191187ms)
+  ✔ asia/sala from 1922,1078 (93.956803ms)
+  ✔ asia/sala from 1917,2200 (47.072387ms)
+  ✔ asia/krata from 1922,1078 (163.31663ms)
+  ✔ asia/krata from 1917,2200 (48.71936ms)
+  ✔ asia/dab from 1922,1078 (11.175276ms)
+  ✔ asia/dab from 1917,2200 (31.617465ms)
+  ✔ asia/lokan from 1922,1078 (33.862636ms)
+  ✔ asia/lokan from 1917,2200 (68.715103ms)
+  ✔ asia/ngiw from 1922,1078 (28.512349ms)
+  ✔ asia/ngiw from 1917,2200 (33.430485ms)
+  ✔ asia/lan from 1922,1078 (22.085521ms)
+  ✔ asia/lan from 1917,2200 (55.017028ms)
+  ✔ asia/tea from 1922,1078 (7.924791ms)
+  ✔ asia/tea from 1917,2200 (8.843079ms)
+  ✔ asia/tarang from 1922,1078 (5.177258ms)
+  ✔ asia/tarang from 1917,2200 (8.267934ms)
+  ✔ asia/krajok from 1922,1078 (31.221121ms)
+  ✔ asia/krajok from 1917,2200 (50.092842ms)
+  ✔ asia/sawan from 1922,1078 (10.526517ms)
+  ✔ asia/sawan from 1917,2200 (37.285176ms)
+  ✔ asia/frontier from 1922,1078 (6.963616ms)
+  ✔ asia/frontier from 1917,2200 (0.156323ms)
+  ✔ west/sala from 880,455 (165.316011ms)
+  ✔ west/sala from 835,840 (15.591287ms)
+  ✔ west/krata from 880,455 (2.238657ms)
+  ✔ west/krata from 835,840 (2.989331ms)
+  ✔ west/dab from 880,455 (1.865685ms)
+  ✔ west/dab from 835,840 (2.054094ms)
+  ✔ west/lokan from 880,455 (1.773495ms)
+  ✔ west/lokan from 835,840 (3.314993ms)
+  ✔ west/ngiw from 880,455 (2.578733ms)
+  ✔ west/ngiw from 835,840 (3.278738ms)
+  ✔ west/lan from 880,455 (2.181443ms)
+  ✔ west/lan from 835,840 (2.345335ms)
+  ✔ west/tea from 880,455 (8.117181ms)
+  ✔ west/tea from 835,840 (3.963131ms)
+  ✔ west/tarang from 880,455 (1.118238ms)
+  ✔ west/tarang from 835,840 (3.035201ms)
+  ✔ west/krajok from 880,455 (3.821491ms)
+  ✔ west/krajok from 835,840 (5.877994ms)
+  ✔ west/sawan from 880,455 (0.764566ms)
+  ✔ west/sawan from 835,840 (1.459408ms)
+  ✔ west/frontier from 880,455 (1.930422ms)
+  ✔ west/frontier from 835,840 (0.064925ms)
+  ✔ cyberhell/sala from 880,455 (68.854557ms)
+  ✔ cyberhell/sala from 835,840 (26.738518ms)
+  ✔ cyberhell/krata from 880,455 (2.672632ms)
+  ✔ cyberhell/krata from 835,840 (4.242747ms)
+  ✔ cyberhell/dab from 880,455 (2.238443ms)
+  ✔ cyberhell/dab from 835,840 (3.600016ms)
+  ✔ cyberhell/lokan from 880,455 (2.983821ms)
+  ✔ cyberhell/lokan from 835,840 (5.753157ms)
+  ✔ cyberhell/ngiw from 880,455 (5.050216ms)
+  ✔ cyberhell/ngiw from 835,840 (8.402708ms)
+  ✔ cyberhell/lan from 880,455 (4.216239ms)
+  ✔ cyberhell/lan from 835,840 (4.023268ms)
+  ✔ cyberhell/tea from 880,455 (12.604666ms)
+  ✔ cyberhell/tea from 835,840 (4.193435ms)
+  ✔ cyberhell/tarang from 880,455 (1.097694ms)
+  ✔ cyberhell/tarang from 835,840 (2.661977ms)
+  ✔ cyberhell/krajok from 880,455 (6.400574ms)
+  ✔ cyberhell/krajok from 835,840 (9.495277ms)
+  ✔ cyberhell/sawan from 880,455 (2.390973ms)
+  ✔ cyberhell/sawan from 835,840 (2.998301ms)
+  ✔ cyberhell/frontier from 880,455 (4.235554ms)
+  ✔ cyberhell/frontier from 835,840 (0.089265ms)
+✔ M2: every zone has an exact door route from both spawns; 1px stepTo movement stays on terrain (14666.224688ms)
+✔ M2: map-v5 preserves bases and roof buttons; regional shrink bands do not leak into the new town (1789.082023ms)
+(node:20731) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ zone1 uses its large city and zone2–4 retain shared legacy geometry when traveling (317.604347ms)
+✖ ภาพจริงกันธารโซน 2–4 และให้เดินข้ามสะพานถึงจุดงาน (115.450982ms)
+✔ ยักษ์เดินกลับจุดเฝ้าจากท่าเรือและขอบล่างในทุกโซน แล้วหยุดนิ่ง (12796.233779ms)
+✔ spawnMob เลือกเฉพาะจุดขอบล่างที่ findPath เชื่อมถึงจุดเฝ้า ทุกโซน (40679.873338ms)
+✔ ยักษ์ปราบปีศาจจากท่าเรือขวาแล้วกลับจุดเฝ้าในโซนไทยและบูรพา (7881.566846ms)
+✔ ยักษ์ snap จุดแวะขณะไล่ปีศาจที่เฟรม 16ms แล้วเดินถึงเป้าหมาย (2335.068355ms)
+✔ เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว (75.749394ms)
+✔ เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน (10.207648ms)
+(node:20732) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ enabled town skins open in follow view; legacy branches retain overview and zoom (3.362071ms)
+✔ town action preserves NPC/event priority, construction access, and frontier reach (12.698896ms)
+✔ minimap reads current construction status without changing world or saves (7.33925ms)
+✔ new game starts in the large city with city station and NPC anchors (248.912426ms)
+✔ old city save preserves progress and migrates positions only once (17.247194ms)
+✔ travel restores legacy branch geometry and returns to the city without moving other zones (83.548408ms)
+✔ loading an old save in another branch migrates its stored city without relocating the active branch (27.352997ms)
+✔ city routes reach every plot, built doorway, merchant and frontier through walkable ground (772.574371ms)
+✔ city exploration retains previous-boss gates for zone travel (1.564812ms)
+(node:20734) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ town main avenue and zone2–4 main bridges can be crossed in both directions (1100.026285ms)
+✔ town lava bridge polyline and zone2–4 western bridges remain wide and traversable (740.940754ms)
+✔ ruler throne follows the new city platform and original branch chairs (3.274785ms)
+✔ ตะรางรอวาระมีตั้งแต่เกมใหม่ทุกโซน ไม่ต้องซื้อ และสร้างซ้ำไม่ได้ (155.000421ms)
+✔ เซฟเก่าที่ไม่มีตะรางและมีของวางบนแผนที่ → ได้ตะราง + ของเข้ากระเป๋า (11.808298ms)
+✔ ไม่มีของโผล่บนแผนที่ แม้ MP หมดและมีเปรตบุก (167.668784ms)
+✔ ปราบเปรตบนแผนที่ → ได้ของ 1 ชิ้นจากรายการ เข้ากระเป๋าตรง ๆ พร้อมแจ้งชื่อ (62.884328ms)
+✔ ชนะฉากต่อสู้กับเปรต/วิญญาณขัดขืน → ได้ของ 1 ชิ้น · แพ้ไม่ได้ (9.391182ms)
+✔ ศึกบอส/เทวดา/อีเวนต์ทุกตัวในเกม ให้ EXP จริงและไม่ได้ winLoot (384.151979ms)
+✔ บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot (90.680791ms)
+✔ ชายแดน: ชนะกิจกรรมอิสระได้ winLoot เพิ่ม 1 ชิ้นจากตาราง 6 อย่าง (2.218426ms)
+✔ ชายแดน: ศึก event หลายระลอกได้ winLoot ครั้งเดียวต่อศึก (th breach + โซน 2–4) (114.773446ms)
+✔ ดอกบัวมีขายที่พ่อค้านรกอยู่แล้ว (65 เบี้ย) และซื้อได้ (1.900616ms)
+✔ พญายมโผล่บนเก้าอี้ — ยมบาทที่ยืนทับถอยไปข้างแท่น ไม่ทับกัน และถอยครั้งเดียวต่อการปรากฏ (2035.928044ms)
+(node:20735) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ จุดเกิด/ปลายทางตอนเข้าโซน และจุดสำคัญของทุกโซน อยู่ในพื้นที่เดินได้และเดินถึงกัน (2637.875047ms)
+✔ เข้าโซน 2–4 ครั้งแรก: ยมบาทกับนิราออกจากประตูชายแดน ถึงแท่นและจุดประจำ ไม่ติดกลางทาง (872.34544ms)
+ℹ tests 148
+ℹ suites 0
+ℹ pass 146
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 258308.659245
+
+✖ failing tests:
+
+test at tests/scene-zones.test.mjs:45:1
+✖ zone1 uses its large city and zone2–4 retain shared legacy geometry when traveling (317.604347ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+  +     1477,
+  +     309,
+  +     156.8,
+  +     1398.6,
+  +     155.39999999999998,
+  +     1555.4,
+  +     309
+  -     2252,
+  -     1382,
+  -     209,
+  -     2147.5,
+  -     1193.9,
+  -     2356.5,
+  -     1382
+      ],
+      [
+  +     1268,
+  +     654,
+  +     180,
+  +     1205.6,
+  +     474,
+  +     1330.4,
+  +     654
+  -     551,
+  -     1496,
+  -     286,
+  -     408,
+  -     1238.6,
+  -     694,
+  -     1496
+      ],
+      [
+  +     460,
+  +     590,
+  +     96,
+  +     412,
+  +     510,
+  +     508,
+  +     590
+  -     3232,
+  -     912,
+  -     283,
+  -     3090.5,
+  -     657.3,
+  -     3373.5,
+  -     912
+      ],
+      [
+  +     1007,
+  +     295,
+  +     184.8,
+  +     915,
+  +     199.8,
+  +     1099,
+  +     295
+  -     1651,
+  -     449,
+  -     292,
+  -     1505,
+  -     186.2,
+  -     1797,
+  -     449
+      ],
+      [
+  +     752,
+  +     336,
+  +     188,
+  +     698.4,
+  +     148,
+  +     805.6,
+  +     336
+  -     2536,
+  -     412,
+  -     237,
+  -     2417.5,
+  -     198.7,
+  -     2654.5,
+  -     412
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:76:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      [ 1477, 309, 156.8, 1398.6, 155.39999999999998, 1555.4, 309 ],
+      [
+        1268,    654,
+         180, 1205.6,
+         474, 1330.4,
+         654
+      ],
+      [
+        460, 590,  96,
+        412, 510, 508,
+        590
+      ],
+      [
+         1007,  295,
+        184.8,  915,
+        199.8, 1099,
+          295
+      ],
+      [
+        752,   336,
+        188, 698.4,
+        148, 805.6,
+        336
+      ]
+    ],
+    expected: [
+      [
+          2252,   1382,
+           209, 2147.5,
+        1193.9, 2356.5,
+          1382
+      ],
+      [
+           551, 1496,
+           286,  408,
+        1238.6,  694,
+          1496
+      ],
+      [
+         3232,    912,
+          283, 3090.5,
+        657.3, 3373.5,
+          912
+      ],
+      [
+         1651,  449,
+          292, 1505,
+        186.2, 1797,
+          449
+      ],
+      [
+         2536,    412,
+          237, 2417.5,
+        198.7, 2654.5,
+          412
+      ]
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/scene-zones.test.mjs:99:1
+✖ ภาพจริงกันธารโซน 2–4 และให้เดินข้ามสะพานถึงจุดงาน (115.450982ms)
+  AssertionError [ERR_ASSERTION]: asia
+  
+  false !== true
+  
+      at file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:108:12
+      at withImageCanvas (file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:42:9)
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:99:65)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

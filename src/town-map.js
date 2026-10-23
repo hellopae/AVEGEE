@@ -8,6 +8,8 @@ import { isTownZone } from './zone-skin.js';
 // M2: which zones use the painted-town map system is decided by the zone skin table (zone-skin.js), not by a zone name.
 export { isTownZone };
 export const townZoomLevels = zone => isTownZone(zone) ? [1, 3.5, 5, 6.5] : [1, 2.5];
+// No zone-name i18n key exists yet: retain the existing zone label until copy is supplied.
+export const townTitle = (zone, legacyName) => zone === 'th' ? t('town.title') : legacyName;
 export const townDefaultZoom = zone => isTownZone(zone) ? 2 : 0;
 /** Shared world rectangle for preview camera, click mapping and minimap frame. */
 export function townCameraRect(x,y,zoom=1) {

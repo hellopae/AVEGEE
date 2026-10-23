@@ -1,3 +1,4 @@
+import { isTownZone, disableTownSkin, enableTownSkin } from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -41,13 +42,13 @@ function withImageCanvas(run) {
   try { run(); } finally { globalThis.document = old; }
 }
 
-test('zone1 uses its large city and zone2–4 retain shared legacy geometry when traveling', () => {
+test('enabled towns use large city geometry and legacy zones retain their geometry when traveling', () => {
   const g = createGame();
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
   const sceneRef = SCENE;
   const fixedSite = s => !['tea','lokan','krajok','dab','krata'].includes(s.k);
-  assert.equal(harbourTravel(g, 'asia'), true);
+  assert.equal(harbourTravel(g, 'west'), true);
   const stationPos = STATIONS.filter(fixedSite).map(s => [s.bx,s.by,s.bw,...s.hit]);
   const servicePos = STATIONS.filter(s => fixedSite(s) && s.k !== 'lan').map(s => [s.x,s.y]);
   const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url)));
@@ -56,7 +57,7 @@ test('zone1 uses its large city and zone2–4 retain shared legacy geometry when
     assert.equal(SCENE,sceneRef);
     assert.equal(z.scene,names[z.k]);
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
-    if (z.k === 'th') {
+    if (isTownZone(z.k)) {
       assert.deepEqual(size(),[TOWN_SIZE.w,TOWN_SIZE.h]);
       assert.deepEqual(grid(),[240,160]);
       for (const [key,d] of Object.entries(TOWN_STATION_SITES)) {
@@ -90,12 +91,12 @@ test('zone1 uses its large city and zone2–4 retain shared legacy geometry when
 
 // Town geometry is declarative and independent of painted floor colors.
 function loadTerrain(z) {
-  if(z.k==='th') return;
+  if(isTownZone(z.k)) return;
   const bg=image(z.scene);
   assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
 }
 
-test('ภาพจริงกันธารโซน 2–4 และให้เดินข้ามสะพานถึงจุดงาน', () => withImageCanvas(() => {
+test('พื้นเมืองและภาพจริงของโซนเดิมกันธารและให้เดินข้ามสะพานถึงจุดงาน', () => withImageCanvas(() => {
   const g = createGame();
   g.level = 5;
   for (const z of ZONES) g.bossCleared[z.k] = true;
@@ -104,15 +105,16 @@ test('ภาพจริงกันธารโซน 2–4 และให้�
     resetWalk(); setBlocks([], []);
     const bg = image(z.scene);
     const source = z.k === 'west' ? image('scene-v2-opt') : bg;
-    assert.equal(buildWalk(bg, source), true, z.k);
-    for (const [x, y] of [[580,250],[665,610],[1150,670]])
+    assert.equal(buildWalk(bg, source), !isTownZone(z.k), z.k);
+    for (const [x, y] of (isTownZone(z.k) ? [[900,2400]] : [[580,250],[665,610],[1150,670]]))
       assert.equal(canWalk(x, y), false, `${z.k}: stream ${x},${y}`);
     const blocked = [];
     for (const [x,y] of [
       [SPOTS.bench.x, SPOTS.bench.y], [SPOTS.bossPier.x, SPOTS.bossPier.y],
       [MERCHANT.x, MERCHANT.y], GUARD_POST, [FRONTIER.x, FRONTIER.y],
       ...QUEUE_LINE, ...STATIONS.map(s => [s.x, s.y]),
-      ...STATIONS.map(s => [s.sx ?? s.x, s.sy ?? s.y]), ...CREW.map(c => [c.hx, c.hy]),
+      // Legacy sx/sy are visual offsets inside town facades; city navigation uses x/y.
+      ...(!isTownZone(z.k) ? STATIONS.map(s => [s.sx ?? s.x, s.sy ?? s.y]) : []), ...CREW.map(c => [c.hx, c.hy]),
     ]) if (!canWalk(x, y)) blocked.push([x,y]);
     assert.deepEqual(blocked, [], `${z.k}: blocked work points`);
     const path = findPath(SPOTS.bench.x, SPOTS.bench.y, GUARD_POST[0], GUARD_POST[1]);
@@ -138,7 +140,7 @@ test('ยักษ์เดินกลับจุดเฝ้าจากท�
     resetWalk();
     g.syncBlocks(true);
     loadTerrain(z);
-    const zoneStarts=z.k==='th' ? [
+    const zoneStarts=isTownZone(z.k) ? [
       [SPOTS.bossPier.x,SPOTS.bossPier.y],SPOTS.ferry.from,
       [SPOTS.bench.x,SPOTS.bench.y],[MERCHANT.x,MERCHANT.y],
       [STATIONS.find(s=>s.k==='tea').x,STATIONS.find(s=>s.k==='tea').y],
@@ -194,7 +196,7 @@ test('ยักษ์ปราบปีศาจจากท่าเรือ�
     g.syncBlocks(true);
     loadTerrain(ZONES.find(z=>z.k===zone));
     g.guard = { x:GUARD_POST[0], y:GUARD_POST[1] };
-    const pier=zone==='th'?SPOTS.bossPier:{x:1380,y:682};
+    const pier=isTownZone(zone)?SPOTS.bossPier:{x:1380,y:682};
     g.mobs = [{ id:1900, x:pier.x, y:pier.y, hp:MOB.hp, kind:0 }];
     let frames = 0;
     while (frames++ < 900 && g.mobs.length) g.stepWorld(120);
@@ -221,7 +223,10 @@ test('ยักษ์ snap จุดแวะขณะไล่ปีศาจ�
   assert.equal(g.mobs.length, 0, `defeats pier mob in ${frames} small frames`);
 }));
 
-test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว', () => {
+test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว', t => {
+  // Legacy migration fixture; production-enabled skin migration is covered in m3-asia-skin.
+  disableTownSkin('asia');
+  t.after(()=>{enableTownSkin('asia');syncSceneZone('th');});
   for (const zone of ['asia', 'west', 'cyberhell']) {
     const saved = createGame().snapshot();
     saved.zone = zone; saved.level = 5;
@@ -251,7 +256,10 @@ test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล�
   }
 });
 
-test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน', () => {
+test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน', t => {
+  // Legacy migration fixture; production-enabled skin migration is covered in m3-asia-skin.
+  disableTownSkin('asia');
+  t.after(()=>{enableTownSkin('asia');syncSceneZone('th');});
   const saved = createGame().snapshot();
   saved.guard = { x:895, y:795 };
   saved.zoneSave = { asia:{ guard:{ x:895, y:795 } } };

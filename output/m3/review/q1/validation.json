@@ -1,0 +1,28 @@
+{
+  "automated_structural_checks": {
+    "refs_count_13": true,
+    "refs_hash_size_mode": true,
+    "walk_exact_two_colours": true,
+    "20_source_images_unchanged": true,
+    "final_png_size_rgb": true,
+    "final_embedded_srgb": true,
+    "pixels_unretouched": true,
+    "deliverable_copy_identical": true,
+    "upscale_dimensions": true,
+    "all_images_decode": true,
+    "no_tracked_changes": true,
+    "untracked_scope": true
+  },
+  "decoded_image_count": 27,
+  "source_image_count": 20,
+  "refs_image_count": 13,
+  "tracked_changes": [],
+  "staged_changes": [],
+  "branch": "codex/20261023T051200Z-34708b2f",
+  "limitations": [
+    "These checks verify file structure and scope only; no gameplay QA.",
+    "1.8x upscale visibly softens leaves and stone seams at 100%.",
+    "Local lower-bridge correlation is ambiguous; whole mask tolerance not certified.",
+    "No neighbour quadrants exist for seam testing."
+  ]
+}

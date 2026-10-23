@@ -1,0 +1,78 @@
+(node:28444) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ enabled towns use large city geometry and legacy zones retain their geometry when traveling (211.523172ms)
+✖ พื้นเมืองและภาพจริงของโซนเดิมกันธารและให้เดินข้ามสะพานถึงจุดงาน (59.775899ms)
+✔ ยักษ์เดินกลับจุดเฝ้าจากท่าเรือและขอบล่างในทุกโซน แล้วหยุดนิ่ง (11309.327948ms)
+✔ spawnMob เลือกเฉพาะจุดขอบล่างที่ findPath เชื่อมถึงจุดเฝ้า ทุกโซน (53452.775662ms)
+✔ ยักษ์ปราบปีศาจจากท่าเรือขวาแล้วกลับจุดเฝ้าในโซนไทยและบูรพา (2660.809351ms)
+✔ ยักษ์ snap จุดแวะขณะไล่ปีศาจที่เฟรม 16ms แล้วเดินถึงเป้าหมาย (1162.857287ms)
+✔ เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว (30.547422ms)
+✔ เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน (7.342916ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69198.566509
+
+✖ failing tests:
+
+test at tests/scene-zones.test.mjs:99:1
+✖ พื้นเมืองและภาพจริงของโซนเดิมกันธารและให้เดินข้ามสะพานถึงจุดงาน (59.775899ms)
+  AssertionError [ERR_ASSERTION]: asia: blocked work points
+  + actual - expected
+  
+  + [
+  +   [
+  +     470,
+  +     495
+  +   ],
+  +   [
+  +     465,
+  +     968
+  +   ],
+  +   [
+  +     551,
+  +     1426
+  +   ],
+  +   [
+  +     3232,
+  +     842
+  +   ],
+  +   [
+  +     1527,
+  +     1328
+  +   ],
+  +   [
+  +     1667,
+  +     379
+  +   ],
+  +   [
+  +     3482,
+  +     1429
+  +   ],
+  +   [
+  +     2536,
+  +     342
+  +   ]
+  + ]
+  - []
+  
+      at file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:118:12
+      at withImageCanvas (file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:42:9)
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/tests/scene-zones.test.mjs:99:79)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 470, 495 ], [ 465, 968 ], [ 551, 1426 ], [ 3232, 842 ], [ 1527, 1328 ], [ 1667, 379 ], [ 3482, 1429 ], [ 2536, 342 ] ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

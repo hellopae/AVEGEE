@@ -1,0 +1,39 @@
+(node:17256) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30F: CyberHell translations move hits and worker/service points together and restore on every branch change (7.049862ms)
+✔ 30F: selected story image is 16:9; selected regional map sprites have alpha and are registered (268.064317ms)
+✔ 30F: real alpha footprints and lava mask allow paths to every station with all buildings present; old saves restore (2207.058806ms)
+✔ 30F review: new Rage image is full-bleed, so the old letterbox crop is gone from cutscene-presentation (1.31711ms)
+✔ themed sprites keep every zone station reachable with its terrain or town street layout (6478.513376ms)
+(node:17257) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ปีศาจบนแผนที่ไม่เสียเลือดหรือกระสุนจากการฟาด/ขว้างหรือเดินถึง (172.537125ms)
+✔ ยักษ์ทวารบาลยังปราบปีศาจบนแผนที่ได้ (2.494896ms)
+✔ เซฟเก่าทิ้งปีศาจชนิดที่ถอดออกและเลื่อน index ชนิดอื่นเพียงครั้งเดียว (14.742777ms)
+✔ ทุกโซนคิวอยู่แนวสะพานและท่าเรือกับจุดคุยบอสเดินถึงได้ (305.995975ms)
+✔ CyberHell มีสิทธิ์เปิดหลังชนะบอสโซน 3 และเดินเรือกลับได้เมื่อค้นพบท่าแล้ว โดยไม่ต้องรอระดับ 5 (13.54257ms)
+(node:17258) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ closed court finishes punishment and afterlife walk without advancing punitive clocks (370.446643ms)
+✔ an escort already dispatched keeps delivering souls while court is closed (250.488526ms)
+✔ closed court admits a returning case without spawning a new soul (1.620726ms)
+✔ hired guard crosses the city waterfront route and defeats a mob without player combat (1083.933346ms)
+✔ without guard player combat remains available and mobs spawn on reachable lower shore in every zone (612.623821ms)
+✔ older saves without court status restore with an open court (7.677979ms)
+✔ Zone 1 skin resolves to exactly the files the hard-coded keys used to (2.522496ms)
+✔ Zone 1 station art: facade v2 only for the four listed stations, same box limits (0.381396ms)
+✔ disabled zones retain the old map system, no skin, no town (1.888982ms)
+✔ switching a skin on is data: `use` lists the finished groups, the rest falls back to Zone 1 (0.765963ms)
+✔ syncSceneZone puts a skin-enabled zone on the 3840x2560 city, same station sites as Zone 1, then restores (48.23313ms)
+✔ town layout per zone: overrides apply in place and Zone 1 comes back exactly (57.810531ms)
+✔ generated zone masks start as null (= inherit Zone 1) and the default table keeps Zone 1 patches on (60.786931ms)
+✔ light emitters: Zone 1 fire reader unchanged; ice / cyan / violet need their hue range (0.660561ms)
+✔ index.html: M2 modules are pinned in the import map and the touched ones carry the m2 cache-bust token (4.177809ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9216.446821

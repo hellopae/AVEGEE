@@ -77,7 +77,7 @@ test('travel restores legacy branch geometry and returns to the city without mov
   const g=createGame();
   for(const z of ZONES)g.bossCleared[z.k]=true;
   const cityBuildings=g.stations.map(s=>s.def.k);
-  for(const zone of ['asia','west','cyberhell']) {
+  for(const zone of ['west','cyberhell']) {
     assert.equal(harbourTravel(g, zone),true);
     assert.deepEqual(SCENE,{w:1678,h:937},zone+' keeps its original world');
     assert.deepEqual(SPOTS.bench,{x:820,y:455});
@@ -108,12 +108,12 @@ test('loading an old save in another branch migrates its stored city without rel
   const source=createGame();source.bossCleared.th=true;
   source.zoneEvents.th={thBorderBoss:'cleared'};
   const cityBuildings=source.stations.map(s=>s.def.k);
-  assert.equal(harbourTravel(source, 'asia'),true);
+  assert.equal(harbourTravel(source, 'west'),true);
   source.player.x=880;source.player.y=455;source.player.path=null;
   const old=clone(source.snapshot());delete old.townMapVersion;delete old.zoneTravel;
   for(const actor of Object.values(old.roster))if(actor.homeZone==='th') {actor.x=463;actor.y=443;}
   const restored=createGame();assert.equal(restored.restore(old),true);
-  assert.equal(restored.zone,'asia');
+  assert.equal(restored.zone,'west');
   assert.deepEqual(SCENE,{w:1678,h:937});
   assert.deepEqual([restored.player.x,restored.player.y],[880,455]);
   const nira=restored.crewOf('nira'),branchHome=CREW.find(c=>c.k==='nira');

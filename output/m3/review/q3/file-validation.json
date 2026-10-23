@@ -1,0 +1,259 @@
+{
+  "chosen_attempt": 1,
+  "generation_count": 3,
+  "redraw_count": 2,
+  "delivery_byte_identical": true,
+  "conversion_pixels_unchanged": true,
+  "files": [
+    {
+      "path": "img/raw/map-zone2/q-sw.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": true,
+      "sha256": "2d13e7f75ae175f6b63cf402cda2ee7350b4826b056aa83f6480e894139a9a90"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt1-q-sw-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "baa3e9d983bad609bb46302b6ce3d466dd64ff49fe97d533fffdc810cb8590f8"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt1-q-sw-layout-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "aa3395af259274cb6501bdc1a578cf850befee97b1d38f96cb34baf65d14a422"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt1-q-sw-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "0e1445c9a3d9ec13937a67629d048356d7743e3feac3138f91114f4bfe7705c3"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt1-q-sw-seam.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "a3c2ea4401abc054c98f3d63dd781790044233f1daa5660ab7623d93854ea5c6"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt1-seam-overlap-50pct.png",
+      "size": [
+        1536,
+        228
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "5cebc5914c0e32d3a15fb37abffac2cb642171d11cb12c853863605f497f135d"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt2-q-sw-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "6f97f332d5e85e9c5f7852e7913a150869a6477f709e93808288c53376af934a"
+    },
+    {
+      "path": "output/m1-zone2/q3/attempt3-q-sw-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "fbdda369d4e3aa3df95944ef28f4521ae3d67c75b17aac5c2850bba7e9fae07a"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/q-nw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": true,
+      "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/ref-q-sw-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "aeeeb50dffb3ed28c1bfd8634efcb44201b70a4a0e3ff2b0fd6929e2196f56bb"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/ref-q-sw-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "2f794a69ef6ee568949f3285ab8813af9e65b6ca95ebef4d2f601135a85e44c0"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/ref-q-sw-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "beee77dd2581edb03f05aa2eb04fce5d5fe72783592359d910b6bbfcce2f3b85"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/ref-theme-asia.png",
+      "size": [
+        1678,
+        937
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb"
+    },
+    {
+      "path": "output/m1-zone2/q3/inputs/seed-q-sw.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "9671015cf87c97b5c992408db79676f52f710886d16c4a8ea0570f194cccc957"
+    },
+    {
+      "path": "output/m1-zone2/q3/nw-sw-join-detail.png",
+      "size": [
+        1536,
+        430
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "7e2321ef990c9d6f168561bc24bbfa3c6b2f150985de70a000a48d9ad97f7435"
+    },
+    {
+      "path": "output/m1-zone2/q3/q-sw-layout-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "aa3395af259274cb6501bdc1a578cf850befee97b1d38f96cb34baf65d14a422"
+    },
+    {
+      "path": "output/m1-zone2/q3/q-sw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": true,
+      "sha256": "2d13e7f75ae175f6b63cf402cda2ee7350b4826b056aa83f6480e894139a9a90"
+    },
+    {
+      "path": "output/m1-zone2/q3/q-sw-upscale-2765x1843.png",
+      "size": [
+        2765,
+        1843
+      ],
+      "mode": "RGB",
+      "icc": true,
+      "sha256": "c28be3a07ee14601a748241ea1e7346c46d187c3bf2584b5d42a6ebfc35ccc06"
+    },
+    {
+      "path": "output/m1-zone2/q3/seam-overlap-50pct.png",
+      "size": [
+        1536,
+        228
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "5cebc5914c0e32d3a15fb37abffac2cb642171d11cb12c853863605f497f135d"
+    },
+    {
+      "path": "output/m1-zone2/q3/upscale-100pct-bridge.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "bbc4da61a18de3e28acbb22768761639ec3f2d4b6aef7c0cf83331f794dc5f1f"
+    },
+    {
+      "path": "output/m1-zone2/q3/upscale-100pct-paving.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "f70727fcaf17271e4d8cbb7369e2a682b380a61662bbd4ea1d50af0dc97aec40"
+    },
+    {
+      "path": "output/m1-zone2/q3/upscale-100pct-rock-maple.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "10c0cb39916ac62d5d8dbf07733f1b0e5b632c1e8acd0461d500c4c22a12f7af"
+    },
+    {
+      "path": "output/m1-zone2/qa/q-sw-nw-composite.png",
+      "size": [
+        1536,
+        1820
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "116ded5e497dcd9fca83f14551d63634db6ca7178c1b5e8a17a82db795e9442a"
+    },
+    {
+      "path": "output/m1-zone2/qa/q-sw-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "0e1445c9a3d9ec13937a67629d048356d7743e3feac3138f91114f4bfe7705c3"
+    },
+    {
+      "path": "output/m1-zone2/qa/q-sw-seam.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc": false,
+      "sha256": "a3c2ea4401abc054c98f3d63dd781790044233f1daa5660ab7623d93854ea5c6"
+    }
+  ]
+}

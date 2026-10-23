@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {setup,STATIONS,ZONES,FRONTIER,ZONE_ENTRY,art,walk,syncSceneZone} from './helpers/m2-map.mjs';
@@ -43,7 +44,7 @@ test('M2: map-v5 preserves bases and roof buttons; regional shrink bands do not 
    assert.equal(box.x+box.w/2,d.bx);assert.equal(box.y+box.h,d.by);
    const bands=art.blockRectsOf(d),prior=art.blockRectsOf({...d,mapScale:d.mapScale/.8,blockScale:1});
    assert.equal(bands.length,prior.length);
-   if(zone==='th') {
+   if(isTownZone(zone)) {
     assert.equal(d.blockScale,undefined,'regional padding does not leak into town');
     for(const [x1,y1,x2,y2] of bands){assert.ok(x2>x1&&y2>y1);assert.ok(x1>=box.x-1e-6&&x2<=box.x+box.w+1e-6);}
    } else for(let i=0;i<bands.length;i++)for(let j=0;j<4;j++){
@@ -54,7 +55,7 @@ test('M2: map-v5 preserves bases and roof buttons; regional shrink bands do not 
    assert.equal(pos.bx,(body[0]+body[2])/2);assert.ok(pos.by>=body[1]&&pos.by<=body[3]);
   }
   const target=mapInteractions(g,{x:0,y:0}).find(t=>t.key==='lan');
-  const reach=zone==='th'?100:80;
+  const reach=isTownZone(zone)?100:80;
   assert.equal(target.reach??INTERACTION_REACH,reach);
   assert.equal(nearestInteraction({x:target.x+reach,y:target.y},[target]),target);
   assert.equal(nearestInteraction({x:target.x+reach+.01,y:target.y},[target]),null);

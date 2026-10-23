@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 // Town avenues and legacy branch bridges remain traversable; throne and reward rules stay intact.
 import test from 'node:test';
@@ -36,7 +37,7 @@ function withImageCanvas(run) {
 }
 const loadZone = z => {
   syncSceneZone(z.k); resetWalk(); setBlocks([], []);
-  if(z.k==='th') return; // Town roads replace the legacy pixel-color bridges.
+  if(isTownZone(z.k)) return; // Town roads replace the legacy pixel-color bridges.
   const bg=image(z.scene);
   assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
 };
@@ -53,7 +54,7 @@ function walkLine(a, b, step = 2.4) {
 test('town main avenue and zone2–4 main bridges can be crossed in both directions', () => withImageCanvas(() => {
   for (const z of ZONES) {
     loadZone(z);
-    if(z.k==='th') {
+    if(isTownZone(z.k)) {
       // K1d: the painted avenue bends (plaza -> stairs -> bridge -> south plaza); the route must be walkable both ways.
       const there=findPath(SPOTS.bench.x,SPOTS.bench.y,FRONTIER.x,FRONTIER.y),back=findPath(FRONTIER.x,FRONTIER.y,SPOTS.bench.x,SPOTS.bench.y);
       assert.ok(there?.length&&back?.length,'avenue route exists both ways');
@@ -83,7 +84,7 @@ test('town main avenue and zone2–4 main bridges can be crossed in both directi
 test('town lava bridge polyline and zone2–4 western bridges remain wide and traversable', () => withImageCanvas(() => {
   for (const z of ZONES) {
     loadZone(z);
-    if(z.k==='th') {
+    if(isTownZone(z.k)) {
       // K1d: the painted bridges and stairs are in the walk mask; each landmark must be reachable from the plaza
       // and the route must stay on walkable ground end to end.
       for(const stair of TOWN_STAIRS) {
@@ -112,7 +113,7 @@ test('town lava bridge polyline and zone2–4 western bridges remain wide and tr
 test('ruler throne follows the new city platform and original branch chairs',()=>{
   for(const z of ZONES) {
     syncSceneZone(z.k);
-    if(z.k==='th')assert.deepEqual(SPOTS.throne,TOWN_SPOTS.throne);
+    if(isTownZone(z.k))assert.deepEqual(SPOTS.throne,TOWN_SPOTS.throne);
     else {
       assert.deepEqual([SPOTS.throne.x,SPOTS.throne.y],[836,447]);
       assert.ok(SPOTS.throne.x>=807&&SPOTS.throne.x<=865);
@@ -354,10 +355,10 @@ test('พญายมโผล่บนเก้าอี้ — ยมบาท
   for (const z of ZONES) {
     const g = createGame();
     g.zone = z.k; syncSceneZone(z.k); resetWalk(); g.syncBlocks(true);
-    if(z.k!=='th') {const bg=image(z.scene);assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true);}
+    if(!isTownZone(z.k)) {const bg=image(z.scene);assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true);}
     g.mobs = [];
     const T = SPOTS.throne;
-    const starts=z.k==='th'?[[T.x+44,T.y+8],[T.x-16,T.y+8],[T.x,T.y+23]]:[[880,455],[820,455],[836,470]];
+    const starts=isTownZone(z.k)?[[T.x+44,T.y+8],[T.x-16,T.y+8],[T.x,T.y+23]]:[[880,455],[820,455],[836,470]];
     for (const start of starts) {
       g.player.x = start[0]; g.player.y = start[1]; g.player.path = null; g.player.tx = null;
       g.bossUntil = performance.now() + 7000; g.bossDodged = null;
@@ -367,7 +368,7 @@ test('พญายมโผล่บนเก้าอี้ — ยมบาท
       assert.equal(canWalk(g.player.x, g.player.y), true);
     }
     // ยืนไกลอยู่แล้ว → ไม่ถูกลากไปไหน
-    const far=z.k==='th'?[TOWN_MERCHANT.x,TOWN_MERCHANT.y]:[400,600];
+    const far=isTownZone(z.k)?[TOWN_MERCHANT.x,TOWN_MERCHANT.y]:[400,600];
     g.player.x=far[0];g.player.y=far[1];g.player.path=null;
     g.bossUntil = performance.now() + 7000; g.bossDodged = null;
     g.stepWorld(16);

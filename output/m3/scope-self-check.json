@@ -1,0 +1,41 @@
+{
+  "branch": "codex/20261023T054046Z-d88c803d",
+  "base_head": "0f952002e72c4f570f589a82261cd62643722e13",
+  "zone1_skin_block_byte_identical_to_0f95200": true,
+  "zone1_assets_modified": false,
+  "game_data_i18n_source_unchanged": true,
+  "forbidden_modified": [],
+  "tracked_changed_files": [
+    "index.html",
+    "src/town-map.js",
+    "src/ui.js",
+    "src/zone-skin.js",
+    "tests/30f.test.mjs",
+    "tests/batch18a.test.mjs",
+    "tests/batch19.test.mjs",
+    "tests/construction-arrival.test.mjs",
+    "tests/e1-building-flip.test.mjs",
+    "tests/h2-building-block.test.mjs",
+    "tests/h2-fixes.test.mjs",
+    "tests/helpers/m2-map.mjs",
+    "tests/l1-town-depth.test.mjs",
+    "tests/m2-map-access.test.mjs",
+    "tests/m2-zone-skin.test.mjs",
+    "tests/scene-zones.test.mjs",
+    "tests/town-map.test.mjs",
+    "tests/town-world.test.mjs",
+    "tests/ui27d-map-items.test.mjs",
+    "tests/zone-entry29c.test.mjs"
+  ],
+  "note": "Read-only Git checks; untracked delivery assets are listed separately in README. No browser QA assertion.",
+  "final_test_command": "node --test tests/*.test.mjs",
+  "final_tests": {
+    "tests": 1390,
+    "pass": 1390,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 252868.38565,
+    "log": "output/m3/tests-final-3.log"
+  }
+}

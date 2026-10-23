@@ -1,0 +1,94 @@
+{
+  "selected_attempt": 1,
+  "seed_stats": {
+    "attempt": 1,
+    "seed_mae": 30.770562680033375,
+    "exact_rgb_fraction": 5.791095868374825e-05
+  },
+  "local_matches": [
+    {
+      "name": "top-stair",
+      "box_canvas": [
+        55,
+        30,
+        130,
+        120
+      ],
+      "offset_canvas": [
+        0,
+        -1
+      ],
+      "correlation": 0.8183397650718689
+    },
+    {
+      "name": "top-stream",
+      "box_canvas": [
+        680,
+        40,
+        180,
+        130
+      ],
+      "offset_canvas": [
+        0,
+        -1
+      ],
+      "correlation": 0.34613290429115295
+    },
+    {
+      "name": "top-right-road",
+      "box_canvas": [
+        1150,
+        35,
+        160,
+        140
+      ],
+      "offset_canvas": [
+        0,
+        0
+      ],
+      "correlation": 0.6613664627075195
+    },
+    {
+      "name": "left-bridge",
+      "box_canvas": [
+        110,
+        345,
+        140,
+        160
+      ],
+      "offset_canvas": [
+        0,
+        -1
+      ],
+      "correlation": 0.8400822281837463
+    },
+    {
+      "name": "left-plaza",
+      "box_canvas": [
+        90,
+        675,
+        190,
+        120
+      ],
+      "offset_canvas": [
+        0,
+        -1
+      ],
+      "correlation": 0.45905259251594543
+    },
+    {
+      "name": "left-exit",
+      "box_canvas": [
+        110,
+        870,
+        130,
+        120
+      ],
+      "offset_canvas": [
+        0,
+        0
+      ],
+      "correlation": 0.8712233901023865
+    }
+  ]
+}

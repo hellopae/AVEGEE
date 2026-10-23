@@ -1,0 +1,275 @@
+{
+  "size": [
+    1536,
+    1024
+  ],
+  "mode": "RGB",
+  "raw_output_sha256_equal": true,
+  "seed_source_crop": [
+    1195,
+    0,
+    1536,
+    1024
+  ],
+  "overlap_canvas_pixels": 341,
+  "exact_overlap_pixel_fraction": 0.00015751008064516129,
+  "overlap_channel_MAE": 16.56468391418457,
+  "overlap_phase_correlation": [
+    {
+      "box": [
+        0,
+        0,
+        341,
+        256
+      ],
+      "dx": 0.12821548921175463,
+      "dy": -0.12422450250554107,
+      "response": 0.9581493082973692,
+      "displacement": 0.17852433642660248
+    },
+    {
+      "box": [
+        0,
+        256,
+        341,
+        512
+      ],
+      "dx": 0.3181623008544534,
+      "dy": -0.16475684066230656,
+      "response": 0.966780893670188,
+      "displacement": 0.35829047744815157
+    },
+    {
+      "box": [
+        0,
+        512,
+        341,
+        768
+      ],
+      "dx": 0.5897480052281026,
+      "dy": -0.08884340767596655,
+      "response": 0.9205821053021483,
+      "displacement": 0.5964024318847166
+    },
+    {
+      "box": [
+        0,
+        768,
+        341,
+        1024
+      ],
+      "dx": 0.7770699742988256,
+      "dy": -0.19266272825922215,
+      "response": 0.9755562305450439,
+      "displacement": 0.8005976966098918
+    }
+  ],
+  "notes": "Regional displacement estimates are not proof that every cliff and path is within tolerance. No retouch or seed replacement applied to deliverable.",
+  "copied_sources_byte_identical": {
+    "output/m1-zone2/q2/inputs/q-nw-srgb.png": true,
+    "output/m1-zone2/q2/inputs/ref-q-ne-layout.png": true,
+    "output/m1-zone2/q2/inputs/ref-q-ne-walk.png": true,
+    "output/m1-zone2/q2/inputs/ref-q-ne-guide.png": true,
+    "output/m1-zone2/q2/inputs/ref-theme-asia.png": true
+  },
+  "decoded_images": [
+    {
+      "path": "img/raw/map-zone2/q-ne.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3535074,
+      "sha256": "6c872acec73aa881183f05642a8191d3e62f3876aba81261c79035e5811061ef",
+      "icc": "sRGB built-in"
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/q-nw-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3593410,
+      "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+      "icc": "sRGB built-in"
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/ref-q-ne-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3084783,
+      "sha256": "afd986c542ebeedacc060a28e54a12b16b482658140faf7559af0e0eb0390de6",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/ref-q-ne-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3162823,
+      "sha256": "b82007080696f05d2790a8a72ad1a21ee598a2f153df63e0d96269608c082c90",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/ref-q-ne-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 10327,
+      "sha256": "0822f0889deb1daf19b6a6c70016b40a1f7642a91996e587ac1e2adb8ae17144",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/ref-theme-asia.png",
+      "size": [
+        1678,
+        937
+      ],
+      "mode": "RGB",
+      "bytes": 3366702,
+      "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/inputs/seed-q-ne.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 821174,
+      "sha256": "1a07cfef3057f71b2d6bb33d82cba6ba78839cf60f13773f11a89175da17f939",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/q-ne-generated.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3913341,
+      "sha256": "ce9fa267d932de4a870703942d20858d45a64949f371cd736ce26d89b5400da9",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/q-ne-layout-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3229961,
+      "sha256": "52241071019ed43e039051b6011df9cb0ac31d25a4a29bb94a85c7d189218216",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/q-ne-srgb.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3535074,
+      "sha256": "6c872acec73aa881183f05642a8191d3e62f3876aba81261c79035e5811061ef",
+      "icc": "sRGB built-in"
+    },
+    {
+      "path": "output/m1-zone2/q2/q-ne-upscale-2765x1843.png",
+      "size": [
+        2765,
+        1843
+      ],
+      "mode": "RGB",
+      "bytes": 9298041,
+      "sha256": "96c52cf4a5fda93c65826801103c740a2d7d0cbdcc7eaf87d236d3ae34b1e38b",
+      "icc": "sRGB built-in"
+    },
+    {
+      "path": "output/m1-zone2/q2/upscale-100pct-arch-bridge.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 472001,
+      "sha256": "909f6901a3f3324a9c837ac1c109832fce337b0a2ee13d68c0c30fb24f5297c6",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/upscale-100pct-paving.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 492374,
+      "sha256": "a6be6102e05814958db1f2b1b7dea2536f9365748b60da618abc4a9c0d12baad",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/q2/upscale-100pct-seed-join.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 503012,
+      "sha256": "708b213b551d05a613b9bb6c816df3f4914df1a3c101d102ce90b352e515e98a",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/qa/q-ne-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3214565,
+      "sha256": "043d74f215e3bb37d5aa2aa211adac772da4b8132b143548dbf99858e228f76c",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/qa/q-ne-seam-unblended.png",
+      "size": [
+        2731,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 6357429,
+      "sha256": "9bf7d256fbc9c723598d01265b313266add8757c7dd11f3796d0f387d950cb35",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/qa/q-ne-seam.png",
+      "size": [
+        2731,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 6336642,
+      "sha256": "7858c941911c12183ff49941e3ff1c87938259cfb24b56295e4a61fc1b8805e5",
+      "icc": null
+    },
+    {
+      "path": "output/m1-zone2/qa/q-ne-seed-overlay.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 3508934,
+      "sha256": "4adaa6a6fe5e7bb036a98cce9ce0150d3d253074df6032a44f4a13c7fef1bf91",
+      "icc": null
+    }
+  ]
+}

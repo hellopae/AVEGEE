@@ -76,10 +76,13 @@ export const ZONE_SKIN = {
     light: { emit:[FIRE], flame:FLAME_FIRE },
   },
   asia: {
-    enabled: false,
-    terrain: terrain('map-zone2', 'zone2'),
-    flowUrl: null,                     // 'img/map-zone2/v1/flow-v1.png' once baked (scripts/bake-town-flow.py --zone)
-    use: [],
+    enabled: true,
+    // M3: Q3/Q4 failed the ground checklist. Keep the complete reference ground/flow
+    // until Q5 repairs are reviewed; never mix incompatible quadrant seams in play.
+    terrain: { dir:'img/map-zone1/v5/', preview:'img/map-zone1/v5/zone1-terrain-v5-preview.webp',
+               fullPx:{ w:4915, h:3277 }, chunk:1024, repairs:true },
+    flowUrl: 'img/map-zone1/v4/flow-v4.png',
+    use: ['judgment','trees','lamp','torch','rock'],
     stations: { suffix:'asia', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
     light: { emit:[FIRE], flame:FLAME_FIRE },

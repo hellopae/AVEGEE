@@ -1,0 +1,46 @@
+{
+  "generated_size": [
+    1536,
+    1024
+  ],
+  "seed_overlap_mae": 20.583183898330898,
+  "seed_overlap_identical_pixel_fraction": 0.00023985745614035086,
+  "seed_local_template_matching_search_radius": 24,
+  "seed_local_matches": [
+    {
+      "feature": "west_cliff",
+      "dx": 0,
+      "dy": -1,
+      "distance": 1.0,
+      "correlation": 0.8579930067062378
+    },
+    {
+      "feature": "left_stairs",
+      "dx": 0,
+      "dy": 0,
+      "distance": 0.0,
+      "correlation": 0.8708784580230713
+    },
+    {
+      "feature": "lava",
+      "dx": 0,
+      "dy": 0,
+      "distance": 0.0,
+      "correlation": 0.9167985320091248
+    },
+    {
+      "feature": "right_stairs",
+      "dx": 0,
+      "dy": 0,
+      "distance": 0.0,
+      "correlation": 0.8331258296966553
+    },
+    {
+      "feature": "east_path",
+      "dx": 0,
+      "dy": 0,
+      "distance": 0.0,
+      "correlation": 0.5555070042610168
+    }
+  ]
+}

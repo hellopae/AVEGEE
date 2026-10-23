@@ -1,0 +1,9 @@
+{
+  "source_sha256": "e577e2f53dac697227aeee5791fc5b55345b52228b3ac8d3931b7c56b9929dfc",
+  "mode": "layer",
+  "threshold": 64,
+  "dilate": 0,
+  "walkable_cells": 34526,
+  "total_cells": 153600
+}
+wrote output/m3/mask-roundtrip.mjs

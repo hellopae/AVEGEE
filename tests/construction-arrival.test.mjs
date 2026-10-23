@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -55,7 +56,7 @@ function setup(zone = 'th') {
   assert.equal(g.hire('dam'), true);
   const image = src => ({ src:`img/${src}.png`, naturalWidth:1678, naturalHeight:937 });
   const bg = image(ZONES.find(z => z.k === zone).scene);
-  assert.equal(buildWalk(bg, zone === 'west' ? image('scene-v2-opt') : bg), zone !== 'th');
+  assert.equal(buildWalk(bg, zone === 'west' ? image('scene-v2-opt') : bg), !isTownZone(zone));
   assert.equal(canWalk(SPOTS.bench.x, SPOTS.bench.y), true, 'town streets or scene mask provide navigation');
   return g;
 }

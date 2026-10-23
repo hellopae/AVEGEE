@@ -1,0 +1,55 @@
+{
+  "checks": "dimensions, RGBA, VP8L lossless, bbox tolerance, canopy width, transparent borders, key removal, unchanged references, allowed change scope, root midpoint tolerance",
+  "assets": [
+    {
+      "id": "s3a",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "sha256": "e63446319135cf8112ca8a82c41fb50f9fc14d400066e0f2d8351dfeb1be3d70",
+      "root_offset_percent": 1.6680567139282736,
+      "root_offset_within_2_percent": true,
+      "flame_like_pixels": 2
+    },
+    {
+      "id": "s3b",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "sha256": "5e4f8a7ce9e0059c7e4bdf388add06b03d9e95618b5af3a8b64a95082058b2e9",
+      "root_offset_percent": -1.7514595496246872,
+      "root_offset_within_2_percent": true,
+      "flame_like_pixels": 2
+    },
+    {
+      "id": "s3c",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "sha256": "aa9318a2d6f498fb0b0a18d3e030d2917f4aefd5f544021289b591b57fd36561",
+      "root_offset_percent": -1.3344453711426187,
+      "root_offset_within_2_percent": true,
+      "flame_like_pixels": 333
+    },
+    {
+      "id": "s3d",
+      "size": [
+        1024,
+        1328
+      ],
+      "mode": "RGBA",
+      "sha256": "bcc8d2ad07f83b68ceaa51e2ec5899da1782358812faa53e84e0a8e7d372872d",
+      "root_offset_percent": 1.513671875,
+      "root_offset_within_2_percent": true,
+      "flame_like_pixels": 137
+    }
+  ],
+  "game_tests_run": false,
+  "integration_review": "Pending Toby; visual/cultural review is not automated."
+}
