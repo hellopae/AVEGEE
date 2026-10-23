@@ -1,3 +1,4 @@
+import { isTownZone } from './zone-skin.js';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { t } from './i18n.js';
 import { devaMapActors } from './deva-map.js';
@@ -60,9 +61,9 @@ export function mapInteractions(g, merchant) {
   if (rest) targets.push({ id:'final-rest', kind:'finalRest', ...rest,bx:rest.x,by:rest.y-80,label:'นอนพักในค่าย' });
   const nira = g.crewOf('nira');
   if (nira && nira.x != null) targets.push({ id:'nira', kind:'nira', x:nira.x, y:nira.y,
-    bx:nira.x, by:nira.y - (g.zone==='th'?104:112), anchor:'top', label:'จัดทีมยมทูต' });
+    bx:nira.x, by:nira.y - (isTownZone(g.zone)?104:112), anchor:'top', label:'จัดทีมยมทูต' });
   if (g.zoneCaptivesFree()) targets.push({ id:'merchant', kind:'merchant', x:merchant.x, y:merchant.y,
-    bx:merchant.x, by:merchant.y - (g.zone==='th'?72:92), anchor:'top', label:'ซื้อขาย' });
+    bx:merchant.x, by:merchant.y - (isTownZone(g.zone)?72:92), anchor:'top', label:'ซื้อขาย' });
   for (const st of g.stations) {
     if (st.build) continue;
     const def = st.def;

@@ -1,4 +1,5 @@
-import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY } from './town-layout.js?v=k1d';
+import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
+import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
 
@@ -2131,11 +2132,15 @@ function resetRegionalGeometry() {
   for(const key of Object.keys(ZONE_ENTRY)) delete ZONE_ENTRY[key];
   Object.assign(ZONE_ENTRY,structuredClone(originalTownGeometry.entry));RIVER_Y=695;
 }
-/** Zone 1 has its own town; all shared object identities survive branch changes. */
+/** A zone with a painted-town skin (zone-skin.js; Zone 1 always) gets the city layout of town-layout.js; the other
+ *  zones keep their old single-picture map. All shared object identities survive branch changes. */
 export function syncSceneZone(zone) {
   resetRegionalGeometry();
   const z = ZONES.find(x => x.k === zone) || ZONES[0];
-  SCENE.w = z.w; SCENE.h = z.h;
+  const town = isTownZone(z.k), skin = townSkinOf(z.k);
+  setActiveTownZone(z.k);
+  applyTownZoneLayout(town ? z.k : 'th');
+  SCENE.w = town ? TOWN_SIZE.w : z.w; SCENE.h = town ? TOWN_SIZE.h : z.h;
   for (const {def,bw,hit} of m2OriginalSites) {
     def.bw = bw; def.hit = [...hit]; def.mapScale = 1;
   }
@@ -2169,7 +2174,7 @@ export function syncSceneZone(zone) {
   Object.assign(STATIONS.find(s => s.k === 'tea'), z.k === 'asia'
     ? { bx:365, by:670, x:365, y:650, hit:[261,462,469,670] }
     : { bx:218, by:674, x:218, y:653, hit:[114,466,322,674] });
-  if (z.k === 'th') {
+  if (town) {
     for(const d of STATIONS) Object.assign(d,TOWN_STATION_SITES[d.k]);
     Object.assign(SPOTS,structuredClone(TOWN_SPOTS));
     for(const c of CREW) if(TOWN_CREW[c.k]) [c.hx,c.hy]=TOWN_CREW[c.k];
@@ -2181,8 +2186,8 @@ export function syncSceneZone(zone) {
     RIVER_Y=TOWN_RIVER_Y;NO_WALK.splice(0,NO_WALK.length,[0,0,SCENE.w,100],[0,0,100,SCENE.h],[SCENE.w-100,0,SCENE.w,SCENE.h],[0,RIVER_Y,SCENE.w,SCENE.h]);
   }
   for (const s of STATIONS) {
-    s.flip = STATION_FLIP[z.k].includes(s.k);
-    if(z.k!=='th') {
+    s.flip = (skin?.stationFlip || STATION_FLIP[z.k]).includes(s.k);
+    if(!town) {
       s.mapScale *= MAP_BUILDING_SCALE;
       s.bw *= MAP_BUILDING_SCALE;
       s.hit=s.hit.map((v,i)=>(i%2?s.by:s.bx)+(v-(i%2?s.by:s.bx))*MAP_BUILDING_SCALE);

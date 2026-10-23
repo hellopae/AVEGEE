@@ -53,7 +53,9 @@ test('map ambience uses shaped leaves, moving clouds, boiling lava and full buil
   assert.match(night,/export function drawTownClouds/);
   assert.match(night,/bezierCurveTo/,'falling foliage has pointed leaf contours');
   assert.match(flow,/T_BUBBLE/);assert.match(flow,/ellipse\(20,13,15,6\.5/);
-  assert.match(scenery,/fx-fire-flame-/,'torches use painted flame frames');
+  const skin=readFileSync(new URL('../src/zone-skin.js',import.meta.url),'utf8');   // M2: the flame frame names live in the zone skin table
+  assert.match(skin,/fx-fire-flame-/,'torches use painted flame frames');
+  assert.match(scenery,/flameFor\(activeTownSkin\(\)\.light\.flame\)/,'torch flame comes from the active skin');
   assert.match(scenery,/globalCompositeOperation='lighter'/,'black flame backing blends out');
   assert.match(shade,/\.92(,true)?\)/,'station shadows retain almost the complete facade height');
   assert.match(terrain,/visible\.every\(v=>v\.c\.state==='ready'\)/,'preview and sharp chunks switch atomically');

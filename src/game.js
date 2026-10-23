@@ -10,6 +10,7 @@ import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDu
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
+import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
 import { westSpiritsFrozen, WEST_DEVA_RUN_MS, WEST_DEVA_EXIT_MS } from './west-events.js';
 import { YAMA_SKILL_SECONDS, yamaSkillRemaining } from './yama-cooldown.js?v=j1';
@@ -2052,7 +2053,7 @@ const API = {
         let tx = far ? hx : hx + (Math.random() - 0.5) * roam * 2;
         let ty = far ? hy : hy + (Math.random() - 0.5) * roam;
         // L1: a crew member with a Zone 1 stage (Nira on the dais) never strolls outside that rectangle
-        const stage = this.zone === 'th' ? TOWN_CREW_STAGE[c.k] : null;
+        const stage = isTownZone(this.zone) ? TOWN_CREW_STAGE[c.k] : null;
         if (stage && !onDuty) { tx = clamp(tx, stage[0], stage[2]); ty = clamp(ty, stage[1], stage[3]); }
         // จุดหมายต้องเป็นจุดที่ "เห็นตัว" ด้วย ไม่ใช่แค่เดินได้ — ไม่งั้นเดินเล่นไปหลังอาคารแล้วหายไปเฉย ๆ
         const ok = canWalk(tx, ty) && seen(tx, ty) ? [tx, ty] : nearestWalk(tx, ty, seen);
@@ -2339,7 +2340,7 @@ const API = {
       if (blk && blk.length) {
         // K1d: in the painted city the player may walk BEHIND a building (roof and spires are drawn over
         // Yama by foot depth). Only the lower 40% of the silhouette is solid; the plaza stays reachable.
-        if (this.zone === 'th') {
+        if (isTownZone(this.zone)) {
           const top = Math.min(...blk.map(b => b[1])), bot = Math.max(...blk.map(b => b[3])), cut = top + (bot - top) * .6;
           for (const b of blk) if (b[3] > cut) rects.push([b[0], Math.max(b[1], cut), b[2], b[3]]);
         } else rects.push(...blk);
@@ -4420,7 +4421,7 @@ const API = {
   spawnMob() {
     // สุ่มตามชายฝั่งขอบล่าง เหนือแม่น้ำเล็กน้อย เพื่อให้ทุกโซนเดินไปถึงได้
     // เลือกเฉพาะจุดที่ findPath เชื่อมถึงจุดเฝ้าได้ ไม่งั้นยักษ์/ผู้เล่นไปไล่ปีศาจไม่ถึง
-    const y = this.zone === 'th' ? TOWN_RIVER_Y-50 : 675;
+    const y = isTownZone(this.zone) ? TOWN_RIVER_Y-50 : 675;
     const reach = p => {
       if (!p) return false;
       const path = findPath(p[0], p[1], GUARD_POST[0], GUARD_POST[1]);
@@ -4429,7 +4430,7 @@ const API = {
     };
     // K1d: the painted city only has a few open stretches on its north bank; draw x from those.
     const pickX = () => {
-      if (this.zone !== 'th') return 110 + Math.random() * (SCENE.w - 220);
+      if (!isTownZone(this.zone)) return 110 + Math.random() * (SCENE.w - 220);
       const [a, b] = TOWN_SHORE_SPANS[Math.floor(Math.random() * TOWN_SHORE_SPANS.length)];
       return a + Math.random() * (b - a);
     };
@@ -5113,7 +5114,7 @@ API.restore = function (d) {
   this.sweepMapItems();                // ชุด 27D — ของที่ค้างบนแผนที่ในเซฟเก่า เก็บเข้ากระเป๋าให้ (ระบบของตกถูกยกเลิก)
   // เซฟที่ยักษ์ยืนตรงจุดเฝ้าเก่าจะยังบังประตูอยู่ทันทีหลังโหลด;
   // ย้ายเฉพาะตัวที่ยืน ณ จุดเก่า ตัวที่กำลังวิ่งไล่ปีศาจให้เดินต่อเอง
-  const guardPost = zone => zone==='th' ? TOWN_GUARD_POST : [720,890];
+  const guardPost = zone => isTownZone(zone) ? TOWN_GUARD_POST : [720,890];
   const moveOldGuardPost = (guard,zone) => {
     if (guard?.y === 795 && (guard.x === 895 || guard.x === 700)) [guard.x, guard.y] = guardPost(zone);
   };

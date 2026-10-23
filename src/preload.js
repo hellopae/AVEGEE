@@ -1,4 +1,5 @@
 import {preloadTownTerrainPreview,TOWN_TERRAIN_PREVIEW} from './town-terrain.js?v=k1d';
+import { townSkinOf, isTownZone } from './zone-skin.js';
 import { createAssetQueue, loadImage, warmImage, zoneTiers, fetchWithTimeout, useImageCacheVersion } from './asset-preload.js?v=yama-live-20261015';
 import { preloadBgm } from './sfx.js';
 import { getLang } from './i18n.js';
@@ -84,7 +85,15 @@ async function tiersFor(zone, outfit, opts) {
   const t = zoneTiers(await catalog(), zone, outfit, opts);
   // The renderer reads this exact file while sharp chunks stream in. Keep it in
   // the blocking tier even if a stale generated catalog accidentally omitted it.
-  if (zone === 'th' && !t.critical.includes(TOWN_TERRAIN_PREVIEW)) t.critical.unshift(TOWN_TERRAIN_PREVIEW);
+  // M2: every painted-town zone keeps its own preview (and the sprites of its skin) in the blocking tier, whatever the
+  // generated catalog says, so switching a zone's skin on is data only.
+  const skin = townSkinOf(zone);
+  if (skin && !t.critical.includes(skin.terrain.preview)) t.critical.unshift(skin.terrain.preview);
+  if (skin && zone !== 'th') {   // Zone 1's tiers stay exactly as the catalog gives them
+    const own = Object.values(skin.art);
+    t.background = t.background.filter(u => !own.includes(u)); t.late = t.late.filter(u => !own.includes(u));
+    for (const url of own) if (!t.critical.includes(url)) t.critical.push(url);
+  }
   const background = ['audio:bgm-zone', ...t.background];
   background.splice(Math.min(25, background.length), 0, 'audio:bgm-battle');
   return { critical:[...t.critical, 'audio:bgm-title'], background, late:t.late };
@@ -116,7 +125,7 @@ async function run(zone, outfit, boot) {
   const opts = { firstRun: !hasSave(), arrival: !boot };
   let tiers;
   try { tiers = await tiersFor(zone, outfit, opts); } catch {}
-  if (tiers && !queue.missing(tiers.critical).length) { try { if(zone==='th')await preloadTownTerrainPreview(); boot?.remove(); warmRest(tiers); return; } catch {} }
+  if (tiers && !queue.missing(tiers.critical).length) { try { if(isTownZone(zone))await preloadTownTerrainPreview(30000,zone); boot?.remove(); warmRest(tiers); return; } catch {} }
   const el = screen(boot);
   const notes = rotateNotes(el, zone);
   const siblings = boot ? [...document.body.children].filter(n => n !== boot && !n.inert) : [];
@@ -131,7 +140,7 @@ async function run(zone, outfit, boot) {
           el.querySelector('.bar i').style.width = `${percent}%`;
           el.querySelector('.pct').textContent = `${percent}% · ${done}/${total}${failed ? ` · ต้องลองใหม่ ${failed}` : ''}`;
         });
-        if(!failed.length&&zone==='th'){try{await preloadTownTerrainPreview();}catch{failed.push(TOWN_TERRAIN_PREVIEW);}}
+        if(!failed.length&&isTownZone(zone)){try{await preloadTownTerrainPreview(30000,zone);}catch{failed.push(townSkinOf(zone).terrain.preview);}}
       } catch { failed = ['catalog']; }
       if (!failed.length) break;
       if (!await choose(el, `ยังโหลดไม่สำเร็จ ${failed.length} รายการ ตรวจการเชื่อมต่อแล้วลองใหม่ได้ครับ`, notes)) break;

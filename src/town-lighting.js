@@ -1,22 +1,47 @@
 // Clear night: neutral ambient light matching placed scenery, warm pools around actual town fixtures, emissive lava.
 // Pixel grading and fixture falloff are cached; animation only blits two layers.
-import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES,TOWN_DAIS,TOWN_SIZE} from './town-layout.js?v=k1d';
+import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES,TOWN_DAIS,TOWN_SIZE,onTownLayoutChange} from './town-layout.js?v=k1d';
+import {activeTownSkin} from './zone-skin.js';
 const cache=new WeakMap(),clamp=x=>Math.max(0,Math.min(1,x));
 export function fireStrength(r,g,b){return clamp((r-160)/70)*clamp((r-b-70)/90)*clamp((g-b-20)/60)*clamp((100-b)/65);}
-const fixtures=[
- ...TOWN_PROP_SITES.filter(p=>p.kind==='torch'||p.kind==='lamp').map(p=>({x:p.x,y:p.y-25,r:p.kind==='torch'?135:95,power:.9})),
- ...TOWN_HOUSE_SITES.map(p=>({x:p.x,y:p.y-p.h*.25,r:p.w*.95,power:.65})),
- ...Object.values(TOWN_STATION_SITES).map(p=>({x:p.bx,y:p.by-35,r:p.bw*.75,power:.60})),
- {x:TOWN_DAIS.x-65,y:TOWN_DAIS.y-40,r:150,power:.7},{x:TOWN_DAIS.x+65,y:TOWN_DAIS.y-40,r:150,power:.7},
-];
-const CELL=32,COLS=Math.ceil(TOWN_SIZE.w/CELL),ROWS=Math.ceil(TOWN_SIZE.h/CELL),field=new Float32Array(COLS*ROWS);
-for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
- let sum=0;for(const f of fixtures){const d=Math.hypot((x+.5)*CELL-f.x,(y+.5)*CELL-f.y)/f.r;if(d<1)sum+=f.power*(1-d)*(1-d);}
- field[y*COLS+x]=Math.min(1,sum);
+// M2: a zone may list extra light sources (zone-skin.js light.emit). A 'hue' source marks bright, saturated pixels inside
+// its hue range as glowing, exactly the way fireStrength() marks orange fire. Zone 1 lists only the fire reader.
+export function hueStrength(r,g,b,e){
+ const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(!d)return 0;
+ const v=mx/255,sat=d/mx;
+ if(v<e.vMin-.2||sat<e.sMin-.25)return 0;
+ const h=(mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4)*60,hue=(h+360)%360;
+ if(hue<e.hue[0]||hue>e.hue[1])return 0;
+ return clamp((v-(e.vMin-.2))/.2)*clamp((sat-(e.sMin-.25))/.25);
 }
+// Strongest emitter at a pixel and its glow colour (rgb), for zones with more than the fire reader.
+export function emitAt(emit,r,g,b,out=[0,0,0,0]){
+ let best=0,col=null;
+ for(const e of emit){
+  const s=e.type==='fire'?fireStrength(r,g,b):hueStrength(r,g,b,e);
+  if(s>best){best=s;col=e.type==='fire'?null:e.color;}
+ }
+ out[0]=best;out[1]=col?col[0]:255;out[2]=col?col[1]:Math.min(230,g);out[3]=col?col[2]:20;return out;
+}
+const CELL=32,COLS=Math.ceil(TOWN_SIZE.w/CELL),ROWS=Math.ceil(TOWN_SIZE.h/CELL),field=new Float32Array(COLS*ROWS);
+// The pools of light follow the placed lamps / torches / houses / stations / dais of the active zone layout.
+function rebuildField(){
+ const fixtures=[
+  ...TOWN_PROP_SITES.filter(p=>p.kind==='torch'||p.kind==='lamp').map(p=>({x:p.x,y:p.y-25,r:p.kind==='torch'?135:95,power:.9})),
+  ...TOWN_HOUSE_SITES.map(p=>({x:p.x,y:p.y-p.h*.25,r:p.w*.95,power:.65})),
+  ...Object.values(TOWN_STATION_SITES).map(p=>({x:p.bx,y:p.by-35,r:p.bw*.75,power:.60})),
+  {x:TOWN_DAIS.x-65,y:TOWN_DAIS.y-40,r:150,power:.7},{x:TOWN_DAIS.x+65,y:TOWN_DAIS.y-40,r:150,power:.7},
+ ];
+ for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
+  let sum=0;for(const f of fixtures){const d=Math.hypot((x+.5)*CELL-f.x,(y+.5)*CELL-f.y)/f.r;if(d<1)sum+=f.power*(1-d)*(1-d);}
+  field[y*COLS+x]=Math.min(1,sum);
+ }
+}
+rebuildField();
+onTownLayoutChange(()=>rebuildField());
 export function townLightAt(x,y){return field[Math.max(0,Math.min(ROWS-1,Math.floor(y/CELL)))*COLS+Math.max(0,Math.min(COLS-1,Math.floor(x/CELL)))];}
-export function hellColor(r,g,b,out=[0,0,0],light=0){
- const fire=fireStrength(r,g,b),l=.299*r+.587*g+.114*b;
+export function hellColor(r,g,b,out=[0,0,0],light=0,strength=null){
+ const fire=strength===null?fireStrength(r,g,b):strength,l=.299*r+.587*g+.114*b;
  for(let i=0;i<3;i++){
   const v=i===0?r:i===1?g:b;
   const shade=(i===0?.74:i===1?.73:.76)+light*(i===0?.30:i===1?.24:.12);
@@ -33,11 +58,20 @@ function layers(image,rect){
  const pixels=p.getImageData(0,0,ground.width,ground.height),glow=f.createImageData(ground.width,ground.height),rgb=[0,0,0];
  // Preview crops use the whole-world transform; streamed tiles use their own world rectangle.
  const [ox,oy,ww,wh]=rect.length===8?[0,0,TOWN_SIZE.w,TOWN_SIZE.h]:rect;
+ const emit=activeTownSkin().light.emit,fireOnly=emit.length===1&&emit[0].type==='fire',em=[0,0,0,0];
  for(let y=0;y<ground.height;y++)for(let x=0;x<ground.width;x++){
-  const i=(y*ground.width+x)*4,r=pixels.data[i],g=pixels.data[i+1],b=pixels.data[i+2],s=fireStrength(r,g,b);
-  hellColor(r,g,b,rgb,townLightAt(ox+x/ground.width*ww,oy+y/ground.height*wh));
-  pixels.data[i]=rgb[0];pixels.data[i+1]=rgb[1];pixels.data[i+2]=rgb[2];
-  glow.data[i]=255;glow.data[i+1]=Math.min(230,g);glow.data[i+2]=20;glow.data[i+3]=Math.round(255*s);
+  const i=(y*ground.width+x)*4,r=pixels.data[i],g=pixels.data[i+1],b=pixels.data[i+2];
+  if(fireOnly){
+   const s=fireStrength(r,g,b);
+   hellColor(r,g,b,rgb,townLightAt(ox+x/ground.width*ww,oy+y/ground.height*wh));
+   pixels.data[i]=rgb[0];pixels.data[i+1]=rgb[1];pixels.data[i+2]=rgb[2];
+   glow.data[i]=255;glow.data[i+1]=Math.min(230,g);glow.data[i+2]=20;glow.data[i+3]=Math.round(255*s);
+  }else{
+   emitAt(emit,r,g,b,em);
+   hellColor(r,g,b,rgb,townLightAt(ox+x/ground.width*ww,oy+y/ground.height*wh),em[0]);
+   pixels.data[i]=rgb[0];pixels.data[i+1]=rgb[1];pixels.data[i+2]=rgb[2];
+   glow.data[i]=em[1];glow.data[i+1]=em[2];glow.data[i+2]=em[3];glow.data[i+3]=Math.round(255*em[0]);
+  }
  }
  p.putImageData(pixels,0,0);f.putImageData(glow,0,0);entry={ground,fire};cache.set(image,entry);return entry;
 }

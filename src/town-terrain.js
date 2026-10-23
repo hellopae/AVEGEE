@@ -5,48 +5,62 @@ import {repairTownTerrain} from './town-terrain-repair.js';
 // not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain} from './town-lighting.js?v=fire-v2';
+import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
 
-export const TOWN_TERRAIN_DIR = 'img/map-zone1/v5/';
-export const TOWN_TERRAIN_PREVIEW = TOWN_TERRAIN_DIR + 'zone1-terrain-v5-preview.webp';
-export const TOWN_TERRAIN_FULL_PX = {w:4915,h:3277};
+// Zone 1 constants stay exported (preload, tests); every function below reads the ACTIVE zone skin (zone-skin.js)
+// so a zone with its own painted ground reuses the same chunk loader.
+export const TOWN_TERRAIN_DIR = ZONE_SKIN.th.terrain.dir;
+export const TOWN_TERRAIN_PREVIEW = ZONE_SKIN.th.terrain.preview;
+export const TOWN_TERRAIN_FULL_PX = ZONE_SKIN.th.terrain.fullPx;
 export const TOWN_TERRAIN_CHUNK_PX = 1024;
 export const TOWN_TERRAIN_COLS = 5, TOWN_TERRAIN_ROWS = 4;
-const UNIT_X = TOWN_SIZE.w / TOWN_TERRAIN_FULL_PX.w, UNIT_Y = TOWN_SIZE.h / TOWN_TERRAIN_FULL_PX.h;
+const grid = (t=activeTownSkin().terrain) => {
+  const c = t.chunk || TOWN_TERRAIN_CHUNK_PX;
+  return {chunk:c, cols:Math.ceil(t.fullPx.w/c), rows:Math.ceil(t.fullPx.h/c), full:t.fullPx,
+    unitX:TOWN_SIZE.w/t.fullPx.w, unitY:TOWN_SIZE.h/t.fullPx.h};
+};
+export const townTerrainGrid = zone => grid((townSkinOf(zone)||ZONE_SKIN.th).terrain);
 // World rectangle of chunk (row,col), 1-based like the file names r{row}-c{col}.webp.
-export function townChunkRect(row,col) {
-  const x0 = (col-1)*TOWN_TERRAIN_CHUNK_PX, y0 = (row-1)*TOWN_TERRAIN_CHUNK_PX;
-  const x1 = Math.min(TOWN_TERRAIN_FULL_PX.w, x0+TOWN_TERRAIN_CHUNK_PX), y1 = Math.min(TOWN_TERRAIN_FULL_PX.h, y0+TOWN_TERRAIN_CHUNK_PX);
-  return {x:x0*UNIT_X, y:y0*UNIT_Y, w:(x1-x0)*UNIT_X, h:(y1-y0)*UNIT_Y};
+export function townChunkRect(row,col,zone=activeTownZone()) {
+  const G = townTerrainGrid(zone), x0 = (col-1)*G.chunk, y0 = (row-1)*G.chunk;
+  const x1 = Math.min(G.full.w, x0+G.chunk), y1 = Math.min(G.full.h, y0+G.chunk);
+  return {x:x0*G.unitX, y:y0*G.unitY, w:(x1-x0)*G.unitX, h:(y1-y0)*G.unitY};
 }
-export const townChunkUrl = (row,col) => `${TOWN_TERRAIN_DIR}r${row}-c${col}.webp`;
+export const townChunkUrl = (row,col,zone=activeTownZone()) => `${(townSkinOf(zone)||ZONE_SKIN.th).terrain.dir}r${row}-c${col}.webp`;
 const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
 const MAX_LOADING = 3;
 const CHUNK_TIMEOUT_MS = 15000, RETRY_BASE_MS = 1000, RETRY_MAX_MS = 30000;
-export const townTerrainImage = () => preview?.ready ? preview.image : null;
+export const townTerrainImage = () => store().preview?.ready ? store().preview.image : null;
 
-const chunks = new Map();         // "r,c" -> {image, state:'idle'|'loading'|'ready'|'error', at}
-let preview = null, loading = 0, frame = 0;
-let previewWait = null;
-export function preloadTownTerrainPreview(timeoutMs=30000) {
-  if(preview?.ready)return Promise.resolve(preview.image);
-  if(previewWait)return previewWait;
-  previewWait=new Promise((resolve,reject)=>{
+// One store per zone skin: its 1536x1024 preview and its chunks (a zone switch never mixes ground).
+const stores = new Map();
+const store = (zone=activeTownZone()) => {
+  let st = stores.get(zone);
+  if (!st) { st = {chunks:new Map(), preview:null, previewWait:null}; stores.set(zone,st); }
+  return st;
+};
+let loading = 0, frame = 0;
+export function preloadTownTerrainPreview(timeoutMs=30000,zone=activeTownZone()) {
+  const st = store(zone), url = (townSkinOf(zone)||ZONE_SKIN.th).terrain.preview, repairs = !!(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs;
+  if(st.preview?.ready)return Promise.resolve(st.preview.image);
+  if(st.previewWait)return st.previewWait;
+  st.previewWait=new Promise((resolve,reject)=>{
     let ended=false,active;
     const timer=setTimeout(()=>finish(new Error('town preview timeout')),timeoutMs);
-    function finish(error,image){if(ended)return;ended=true;clearTimeout(timer);if(active)active.onload=active.onerror=null;if(error){preview=null;reject(error);}else{preview={image,ready:true};resolve(image);}}
+    function finish(error,image){if(ended)return;ended=true;clearTimeout(timer);if(active)active.onload=active.onerror=null;if(error){st.preview=null;reject(error);}else{st.preview={image,ready:true};resolve(image);}}
     function attempt(fresh){
-      const image=new Image();active=image;preview={image,ready:false};image.decoding='async';
-      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,await repairTownTerrain(image));}catch(error){if(!fresh)attempt(true);else finish(error);}};
+      const image=new Image();active=image;st.preview={image,ready:false};image.decoding='async';
+      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,repairs?await repairTownTerrain(image):image);}catch(error){if(!fresh)attempt(true);else finish(error);}};
       image.onerror=()=>{if(!fresh)attempt(true);else finish(new Error('town preview unavailable'));};
-      image.src=TOWN_TERRAIN_PREVIEW+(fresh?'?recover='+Date.now():'');
+      image.src=url+(fresh?'?recover='+Date.now():'');
     }
     attempt(false);
-  }).finally(()=>{previewWait=null;});
-  return previewWait;
+  }).finally(()=>{st.previewWait=null;});
+  return st.previewWait;
 }
-function ensurePreview(){if(!preview&&typeof Image!=='undefined')preloadTownTerrainPreview().catch(()=>{});}
+function ensurePreview(){if(!store().preview&&typeof Image!=='undefined')preloadTownTerrainPreview().catch(()=>{});}
 function request(row,col) {
-  const key = row+','+col;
+  const key = row+','+col, zone = activeTownZone(), chunks = store(zone).chunks;
   let c = chunks.get(key);
   if (!c) { c = {image:null, state:'idle', at:0, failures:0, retryAt:0, generation:0}; chunks.set(key,c); }
   if (c.state === 'error' && Date.now() >= c.retryAt) c.state = 'idle';
@@ -69,18 +83,18 @@ function request(row,col) {
     try {
       if(image.decode)await image.decode();
       if(!current())return;
-      done(true,await repairTownTerrain(image,{row,col}));
+      done(true,(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs?await repairTownTerrain(image,{row,col}):image);
     } catch {done(false);}
   };
   image.onerror = () => done(false);
-  image.src = townChunkUrl(row,col)+(c.failures?`?recover=${Date.now()}`:'');
+  image.src = townChunkUrl(row,col,zone)+(c.failures?`?recover=${Date.now()}`:'');
   return c;
 }
 /** Test / tool hook: how many chunks are decoded or on their way. */
 export const townTerrainStats = () => {
   const s = {idle:0, loading:0, ready:0, error:0};
-  for (const c of chunks.values()) s[c.state]++;
-  return {...s, preview:!!preview?.ready};
+  for (const c of store().chunks.values()) s[c.state]++;
+  return {...s, preview:!!store().preview?.ready};
 };
 
 /** Draw the visible part of the painted ground. `resolve` and `time` are accepted for the old call sites. */
@@ -97,7 +111,8 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   }
   ctx.save();
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'low';
-  const pv = preview?.ready ? preview.image : null;
+  const pv = store().preview?.ready ? store().preview.image : null;
+  const G = grid();
   if (scale < DETAIL_FROM) {
     if (pv) drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
     ctx.restore();
@@ -105,7 +120,7 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   }
   frame++;
   const visible=[];
-  for (let row = 1; row <= TOWN_TERRAIN_ROWS; row++) for (let col = 1; col <= TOWN_TERRAIN_COLS; col++) {
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
     const r=townChunkRect(row,col);
     if (r.x > vx1 || r.x + r.w < vx0 || r.y > vy1 || r.y + r.h < vy0) continue;
     visible.push({row,col,r,c:request(row,col)});
@@ -123,11 +138,11 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   const eps = 1/scale;
   for (const {row,col,r,c} of visible) {
     c.at = frame;
-    drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < TOWN_TERRAIN_COLS ? eps : 0), r.h + (row < TOWN_TERRAIN_ROWS ? eps : 0));
+    drawHellTerrain(ctx,c.image,time,reduced, r.x, r.y, r.w + (col < G.cols ? eps : 0), r.h + (row < G.rows ? eps : 0));
   }
   // Prefetch the ring around the camera so walking never reveals a blurry patch.
   const padX = 400, padY = 300;
-  for (let row = 1; row <= TOWN_TERRAIN_ROWS; row++) for (let col = 1; col <= TOWN_TERRAIN_COLS; col++) {
+  for (let row = 1; row <= G.rows; row++) for (let col = 1; col <= G.cols; col++) {
     const r = townChunkRect(row,col);
     if (r.x > vx1+padX || r.x + r.w < vx0-padX || r.y > vy1+padY || r.y + r.h < vy0-padY) continue;
     if (loading >= MAX_LOADING) break;
