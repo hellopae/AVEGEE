@@ -1,0 +1,133 @@
+{
+  "method": "PIL native-pixel raster inspection using 50px grid, clean preview and guide; manual bounds, not inferred from brief. Bounds exclude vertical cliff/front faces. Uncertainty 4px edges, 8px natural banks. Code limits distinguished from painted edges.",
+  "coordinates_preview": {
+    "pier": {
+      "painted_deck_bbox": [
+        875,
+        697,
+        923,
+        724
+      ],
+      "axis_x": 899,
+      "code_walk_x": [
+        875.2,
+        916.8
+      ],
+      "code_walk_y_max": 718.4
+    },
+    "shore": {
+      "code_spans_x": [
+        [
+          208,
+          288
+        ],
+        [
+          648,
+          728
+        ],
+        [
+          824,
+          900
+        ]
+      ],
+      "code_y": 676
+    },
+    "central_bridge": {
+      "deck_bbox": [
+        747,
+        600,
+        797,
+        790
+      ],
+      "river_band_y": [
+        690,
+        790
+      ]
+    },
+    "central_plaza": {
+      "paving_bbox": [
+        620,
+        336,
+        865,
+        453
+      ],
+      "centre": [
+        742.5,
+        394.5
+      ],
+      "radii": [
+        122.5,
+        58.5
+      ],
+      "difference": "Brief centre x768 and rx140 are rough; retain raster geometry."
+    },
+    "south_plaza": {
+      "paving_bbox": [
+        614,
+        787,
+        924,
+        930
+      ],
+      "centre": [
+        769,
+        858.5
+      ],
+      "radii": [
+        155,
+        71.5
+      ]
+    },
+    "south_gate_road": {
+      "x": [
+        745,
+        795
+      ]
+    },
+    "lava_river_mouth": {
+      "x": [
+        343,
+        472
+      ],
+      "y": [
+        664,
+        695
+      ]
+    },
+    "lava_bridges": {
+      "upper_deck_bbox": [
+        305,
+        241,
+        426,
+        272
+      ],
+      "upper_centre": [
+        365.5,
+        256.5
+      ],
+      "lower_deck_bbox": [
+        315,
+        373,
+        415,
+        401
+      ],
+      "lower_centre": [
+        365,
+        387
+      ]
+    },
+    "north_arch_bridge": {
+      "deck_bbox": [
+        1132,
+        151,
+        1238,
+        184
+      ],
+      "centre": [
+        1185,
+        167.5
+      ],
+      "difference": "y185 in brief is near front/underside, not centre of walking deck."
+    }
+  },
+  "scope": "Only lava bridges and central plaza occur in NW. Other approximate anchors measured now for shared refs; no NE/SW/SE painting."
+}

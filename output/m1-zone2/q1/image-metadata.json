@@ -1,0 +1,34 @@
+{
+  "generated_size": [
+    1536,
+    1024
+  ],
+  "generated_mode": "RGB",
+  "final_size": [
+    1536,
+    1024
+  ],
+  "final_mode": "RGB",
+  "final_icc": "embedded sRGB",
+  "final_sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+  "painting_edits": "none; RGB conversion and sRGB ICC tagging only, no crop/retouch/sharpen",
+  "upscale": {
+    "method": "Pillow Lanczos",
+    "destination": [
+      2765,
+      1843
+    ],
+    "world_extent": [
+      2160,
+      1440
+    ],
+    "target_px_per_world_unit": 1.28,
+    "scale_xy": [
+      1.8001302083333333,
+      1.7998046875
+    ],
+    "sharpen": false
+  },
+  "seed": null,
+  "seam_image_note": "Q1 has no neighbouring seed. Identity blend supplied for filename completeness; not seam verification."
+}

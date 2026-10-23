@@ -1,0 +1,34 @@
+You are re-theming a game ground map. Attached images, in order:
+[1] LAYOUT: a crop of the finished Zone 1 map, painted, 3/4 elevated RPG view.
+[2] WALK: a schematic of the same crop. Light grey = flat walkable stone ground, dark = not walkable.
+[3] THEME: the old Zone 2 "East Asia" map. Use it ONLY for palette, materials and mood, never for layout.
+
+Paint ONE new 3:2 landscape image, 1536x1024, that keeps the EXACT geometry of [1]: every road,
+staircase, bridge, plaza ellipse, oval pad, cliff edge, river bank and lava channel stays in the same
+place, same size, same camera angle, same perspective. Only the world's look changes, into the
+Zone 2 East-Asian world. This crop is the NORTH-WEST quarter of the map: a big lava mountain on the
+far left, three lava streams with lava falls, two small plank bridges over lava, four flat oval
+plateaus on the left, stone stairs between terraces, a diagonal staircase climbing to a plateau at
+upper centre, and the top part of a large round stone plaza at the lower right.
+
+Re-theme as follows:
+- All walkable ground (light grey in [2]) becomes pale jade-grey flagstone (#9AA79F), large irregular
+  slabs with thin dark seams, matte, LOW contrast, with a slightly darker worn patch in the middle of
+  each oval plateau. The plateaus stay completely empty and flat.
+- Cliff faces: dark slate-green stone with vertical striations and moss, crisp dark outline.
+- Lava (same channels as [1]): bright molten yellow-orange with a dark cracked crust on the banks.
+  The lava is the ONLY strongly glowing orange in the picture. The lava mountain peak becomes a jagged
+  jade-grey limestone pillar mountain with a molten lava seam near its crown as the source.
+- The two small bridges over lava become wooden plank bridges with red lacquer railings and small
+  gold-capped end posts, as in [3].
+- Stairs: grey-jade stone, same count and direction as [1], thin gold-capped newel posts only where
+  [1] already has posts.
+- Background decoration only on non-walkable ground: grey-green limestone pillar rocks, clumps of
+  crimson maple trees (darker and duller than the lava), cool drifting mist at the top edge, a few
+  bleached bones on cliff shoulders (never on walking routes). Distant misty mountains in cool
+  blue-grey with a faint blush-pink dawn sky at the very top.
+Lighting: warm soft key light from the upper left, same as [1]. No long cast shadows from objects,
+only soft occlusion under cliffs.
+Paint all the way to all four edges; no vignette, no frame, no fade, no border.
+
+Negative: buildings, houses, huts, pavilion, temple, pagoda, tents, statues, Buddha, deity figure, halo, swastika, manji lattice, people, animals, boats, torches, standing lamps, signposts, text, letters, Chinese characters, labels, watermark, logo, colored guide overlay, green fill, yellow rectangles, red circles, magenta ring, white bars, UI, frame, border, vignette, changed road layout, extra bridges, missing bridges, different camera angle, flat top-down map, rotated isometric view, saturated orange on non-lava, glowing floor, fog covering the paths, snow, ice, blue or purple glow, low resolution, blur, smooth airbrush

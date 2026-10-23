@@ -1,0 +1,247 @@
+{
+  "method": "Local normalized cross-correlation of Sobel edge magnitude in +/-28 canvas-pixel search. Measures matching stair/deck features only; not whole walkmask conformance or gameplay. Colour/material changes can lower correlation. Inspect accompanying overlays.",
+  "samples": [
+    {
+      "feature": "upper-left-stair",
+      "reference_bbox_canvas": [
+        239,
+        207,
+        284,
+        245
+      ],
+      "local_edge_correlation": 0.4579,
+      "best_shift_canvas": [
+        0,
+        1
+      ],
+      "best_shift_preview": [
+        0.0,
+        0.562
+      ],
+      "distance_preview": 0.562
+    },
+    {
+      "feature": "krata-descent",
+      "reference_bbox_canvas": [
+        349,
+        457,
+        388,
+        493
+      ],
+      "local_edge_correlation": 0.6276,
+      "best_shift_canvas": [
+        -2,
+        -7
+      ],
+      "best_shift_preview": [
+        -1.125,
+        -3.938
+      ],
+      "distance_preview": 4.095
+    },
+    {
+      "feature": "krata-lower",
+      "reference_bbox_canvas": [
+        313,
+        553,
+        352,
+        587
+      ],
+      "local_edge_correlation": 0.7218,
+      "best_shift_canvas": [
+        -1,
+        0
+      ],
+      "best_shift_preview": [
+        -0.562,
+        0.0
+      ],
+      "distance_preview": 0.562
+    },
+    {
+      "feature": "dab-descent",
+      "reference_bbox_canvas": [
+        344,
+        803,
+        389,
+        839
+      ],
+      "local_edge_correlation": 0.5916,
+      "best_shift_canvas": [
+        1,
+        0
+      ],
+      "best_shift_preview": [
+        0.562,
+        0.0
+      ],
+      "distance_preview": 0.562
+    },
+    {
+      "feature": "ngiw-descent",
+      "reference_bbox_canvas": [
+        407,
+        893,
+        452,
+        935
+      ],
+      "local_edge_correlation": 0.7285,
+      "best_shift_canvas": [
+        -1,
+        0
+      ],
+      "best_shift_preview": [
+        -0.562,
+        0.0
+      ],
+      "distance_preview": 0.562
+    },
+    {
+      "feature": "upper-lava-bridge",
+      "reference_bbox_canvas": [
+        600,
+        440,
+        711,
+        457
+      ],
+      "local_edge_correlation": 0.3495,
+      "best_shift_canvas": [
+        0,
+        -2
+      ],
+      "best_shift_preview": [
+        0.0,
+        -1.125
+      ],
+      "distance_preview": 1.125
+    },
+    {
+      "feature": "lower-lava-bridge",
+      "reference_bbox_canvas": [
+        590,
+        680,
+        700,
+        694
+      ],
+      "local_edge_correlation": 0.4302,
+      "best_shift_canvas": [
+        -28,
+        -1
+      ],
+      "best_shift_preview": [
+        -15.75,
+        -0.562
+      ],
+      "distance_preview": 15.76
+    },
+    {
+      "feature": "diagonal-upper-stair",
+      "reference_bbox_canvas": [
+        849,
+        403,
+        927,
+        467
+      ],
+      "local_edge_correlation": 0.5298,
+      "best_shift_canvas": [
+        0,
+        -1
+      ],
+      "best_shift_preview": [
+        0.0,
+        -0.562
+      ],
+      "distance_preview": 0.562
+    },
+    {
+      "feature": "tarang-stair",
+      "reference_bbox_canvas": [
+        1220,
+        382,
+        1255,
+        423
+      ],
+      "local_edge_correlation": 0.7669,
+      "best_shift_canvas": [
+        -1,
+        1
+      ],
+      "best_shift_preview": [
+        -0.562,
+        0.562
+      ],
+      "distance_preview": 0.795
+    },
+    {
+      "feature": "civic-north-stair",
+      "reference_bbox_canvas": [
+        1301,
+        531,
+        1338,
+        564
+      ],
+      "local_edge_correlation": 0.6666,
+      "best_shift_canvas": [
+        5,
+        5
+      ],
+      "best_shift_preview": [
+        2.812,
+        2.812
+      ],
+      "distance_preview": 3.977
+    },
+    {
+      "feature": "civic-south-stair",
+      "reference_bbox_canvas": [
+        1290,
+        810,
+        1336,
+        851
+      ],
+      "local_edge_correlation": 0.5881,
+      "best_shift_canvas": [
+        -1,
+        12
+      ],
+      "best_shift_preview": [
+        -0.562,
+        6.75
+      ],
+      "distance_preview": 6.773
+    }
+  ],
+  "max_sample_distance_preview": 15.76,
+  "caveat": "Lower-lava-bridge correlation is weak and reaches search boundary (-28px); ambiguous because red rails replace the original thin rail. Do not treat this number as proof of registration. Manual deck/cliff overlay inspection remains required.",
+  "manual_bridge_bounds_canvas": {
+    "uncertainty_px": 5,
+    "upper": {
+      "reference": [
+        590,
+        427,
+        746,
+        481
+      ],
+      "generated": [
+        588,
+        418,
+        751,
+        487
+      ]
+    },
+    "lower": {
+      "reference": [
+        573,
+        668,
+        722,
+        716
+      ],
+      "generated": [
+        573,
+        661,
+        718,
+        721
+      ]
+    }
+  }
+}

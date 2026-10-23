@@ -1,0 +1,313 @@
+[
+  {
+    "path": "output/m1-zone2/q1/anchor-measurements.json",
+    "bytes": 2364,
+    "sha256": "103e8eaa91b2c1352c43538760048d9a74413f27e4810e83614ffd05fbec5be6"
+  },
+  {
+    "path": "output/m1-zone2/q1/contact-sheet.png",
+    "bytes": 3193663,
+    "sha256": "b6983c4ee7e8a9a594c34d09b6739e30ec3af39ca1d46fc85e818e5a874dcd03",
+    "size": [
+      1536,
+      1072
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/coordinate-inspection.png",
+    "bytes": 3641038,
+    "sha256": "018f104a91b637f38790598e1eb20d9ea9994b3293743a07619de05cb6f4a9d1",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/image-metadata.json",
+    "bytes": 780,
+    "sha256": "d961b11979f0857cbb7a895f98ba16a338c23cd135ef251e462af293b18e0e8e"
+  },
+  {
+    "path": "output/m1-zone2/q1/landmark-comparison.json",
+    "bytes": 4781,
+    "sha256": "23805d8c80aaa038e2f89fce881bd70cb12e8b18b56b732b1ea47e3a434686bb"
+  },
+  {
+    "path": "output/m1-zone2/q1/landmark-comparison.png",
+    "bytes": 3596687,
+    "sha256": "8dc5dfbeb2e5dd3e2f16ed79b9ed8d59d9fb527948e0ee274de4e7d56b084f72",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/measured-anchors.png",
+    "bytes": 3705151,
+    "sha256": "b86d743b3a963d142a8cad455cd751091c4422a7e7c226f254ad27b99f34c51d",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/prompt.txt",
+    "bytes": 3158,
+    "sha256": "8612bc2c719b77a6fb30df7e90690014fe1d603d79168bd5065ce4cd786168a9"
+  },
+  {
+    "path": "output/m1-zone2/q1/q-nw-generated.png",
+    "bytes": 4020216,
+    "sha256": "627deaada41cbe80e8c0bb1ef98ab6fda1eed008dbe3398ab10165099225c2ec",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/q-nw-layout-overlay.png",
+    "bytes": 3215049,
+    "sha256": "e912f6e11ed022a7967ff371861d4c51abf2b80bbe0b3a9eddc78299e4e91084",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/q-nw-srgb.png",
+    "bytes": 3593410,
+    "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/q-nw-upscale-2765x1843.png",
+    "bytes": 9493586,
+    "sha256": "f4585e493b3f444076aea73f22e532554412feecfe8f88075e8b38bab2ca2420",
+    "size": [
+      2765,
+      1843
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/source-measurements.json",
+    "bytes": 5383,
+    "sha256": "7ef2d771e491d9613c9adcd69c062ae59314752f5beefbcd98311d256cea7e39"
+  },
+  {
+    "path": "output/m1-zone2/q1/upscale-100pct-bridge.png",
+    "bytes": 497117,
+    "sha256": "da60ec1932e3f484b68c0479fcd74c7bfe3272139ff4fb2ad2acee1dab8a506c",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/upscale-100pct-paving.png",
+    "bytes": 496767,
+    "sha256": "88d77095947d7b7b8a42b9b6eafb181632292fa21ee4e95466964fdf848eaf35",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/upscale-100pct-rock-maple.png",
+    "bytes": 505969,
+    "sha256": "4e015a693bf5530a6b8bd660101ffd47e549b3c07b62af5f1e2c8724650f3505",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/q1/validation.json",
+    "bytes": 924,
+    "sha256": "f7badabbb031b3c110ff721548ee022d08f80445e81cb35a8c1a74a4cc96787c"
+  },
+  {
+    "path": "output/m1-zone2/q1.md",
+    "bytes": 16320,
+    "sha256": "dcd048dcbb88dd2d12a0f82f6234de2b7fffed64ad1aeaf6179f330b3bd91987"
+  },
+  {
+    "path": "output/m1-zone2/qa/q-nw-overlay.png",
+    "bytes": 3200263,
+    "sha256": "aee3b3208170be60eade63f50d9dea3e62a97233a8e2788d755297b876219ee1",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/qa/q-nw-seam.png",
+    "bytes": 3593024,
+    "sha256": "92560c92a7c67c3f30515b383226abe93912b2cdb463dff9717f41b3c7132174",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-ne-guide.png",
+    "bytes": 3084783,
+    "sha256": "afd986c542ebeedacc060a28e54a12b16b482658140faf7559af0e0eb0390de6",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-ne-layout.png",
+    "bytes": 3162823,
+    "sha256": "b82007080696f05d2790a8a72ad1a21ee598a2f153df63e0d96269608c082c90",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-ne-walk.png",
+    "bytes": 10327,
+    "sha256": "0822f0889deb1daf19b6a6c70016b40a1f7642a91996e587ac1e2adb8ae17144",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-nw-guide.png",
+    "bytes": 2942224,
+    "sha256": "ca38a8574a82c235020333af15f435a3bd3bc5338c8c08a3e85e7c2e382ffcb0",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-nw-layout.png",
+    "bytes": 3029078,
+    "sha256": "fc870c326a30cf802877ba5b958928027f77da2948c12daf66da2fb8e245e61f",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-nw-walk.png",
+    "bytes": 10278,
+    "sha256": "c39841ff5875d83e4bdcbcd5e4cb86aa30da2142ad80ab6f9e4c2150364721f3",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-se-guide.png",
+    "bytes": 2993890,
+    "sha256": "653f57b0fba71b3bd5ed13095f6aaf62e24505cdbacf63c9307292892d306549",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-se-layout.png",
+    "bytes": 3063507,
+    "sha256": "26857a588f33a0b3584c31b3829a79317c4636aaab060ed5d1c6d83ab0f802fd",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-se-walk.png",
+    "bytes": 9356,
+    "sha256": "3a81d4934743d5cf376b926742feb798eb27185aa43f0fdc1cd65e8a0d4d43c3",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-sw-guide.png",
+    "bytes": 2911013,
+    "sha256": "aeeeb50dffb3ed28c1bfd8634efcb44201b70a4a0e3ff2b0fd6929e2196f56bb",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-sw-layout.png",
+    "bytes": 2983122,
+    "sha256": "2f794a69ef6ee568949f3285ab8813af9e65b6ca95ebef4d2f601135a85e44c0",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-q-sw-walk.png",
+    "bytes": 9265,
+    "sha256": "beee77dd2581edb03f05aa2eb04fce5d5fe72783592359d910b6bbfcce2f3b85",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/ref-theme-asia.png",
+    "bytes": 3366702,
+    "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB"
+  },
+  {
+    "path": "output/m1-zone2/refs/refs-manifest.json",
+    "bytes": 3264,
+    "sha256": "e31878b854aca2a2e1bcbe63be1b19865cf66adf164f242716e959c4520f562e"
+  },
+  {
+    "path": "img/raw/map-zone2/q-nw.png",
+    "bytes": 3593410,
+    "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "gitignored": true
+  }
+]

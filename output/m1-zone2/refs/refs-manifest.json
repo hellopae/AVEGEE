@@ -1,0 +1,159 @@
+{
+  "frames_preview": {
+    "nw": [
+      0,
+      0,
+      864,
+      576
+    ],
+    "ne": [
+      672,
+      0,
+      1536,
+      576
+    ],
+    "sw": [
+      0,
+      448,
+      864,
+      1024
+    ],
+    "se": [
+      672,
+      448,
+      1536,
+      1024
+    ]
+  },
+  "world_per_preview_pixel": 2.5,
+  "canvas_per_preview_pixel": 1.7777777777777777,
+  "mask": {
+    "function": "townContains(x+4,y+4)",
+    "world_cell": 8,
+    "grid": [
+      480,
+      320
+    ],
+    "walkable_cells": 34056,
+    "resampling": "nearest-neighbor (preserves exact two schematic colours)"
+  },
+  "files": [
+    {
+      "file": "ref-q-ne-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "afd986c542ebeedacc060a28e54a12b16b482658140faf7559af0e0eb0390de6"
+    },
+    {
+      "file": "ref-q-ne-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "b82007080696f05d2790a8a72ad1a21ee598a2f153df63e0d96269608c082c90"
+    },
+    {
+      "file": "ref-q-ne-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "0822f0889deb1daf19b6a6c70016b40a1f7642a91996e587ac1e2adb8ae17144"
+    },
+    {
+      "file": "ref-q-nw-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "ca38a8574a82c235020333af15f435a3bd3bc5338c8c08a3e85e7c2e382ffcb0"
+    },
+    {
+      "file": "ref-q-nw-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "fc870c326a30cf802877ba5b958928027f77da2948c12daf66da2fb8e245e61f"
+    },
+    {
+      "file": "ref-q-nw-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "c39841ff5875d83e4bdcbcd5e4cb86aa30da2142ad80ab6f9e4c2150364721f3"
+    },
+    {
+      "file": "ref-q-se-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "653f57b0fba71b3bd5ed13095f6aaf62e24505cdbacf63c9307292892d306549"
+    },
+    {
+      "file": "ref-q-se-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "26857a588f33a0b3584c31b3829a79317c4636aaab060ed5d1c6d83ab0f802fd"
+    },
+    {
+      "file": "ref-q-se-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "3a81d4934743d5cf376b926742feb798eb27185aa43f0fdc1cd65e8a0d4d43c3"
+    },
+    {
+      "file": "ref-q-sw-guide.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "aeeeb50dffb3ed28c1bfd8634efcb44201b70a4a0e3ff2b0fd6929e2196f56bb"
+    },
+    {
+      "file": "ref-q-sw-layout.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "2f794a69ef6ee568949f3285ab8813af9e65b6ca95ebef4d2f601135a85e44c0"
+    },
+    {
+      "file": "ref-q-sw-walk.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "beee77dd2581edb03f05aa2eb04fce5d5fe72783592359d910b6bbfcce2f3b85"
+    },
+    {
+      "file": "ref-theme-asia.png",
+      "size": [
+        1678,
+        937
+      ],
+      "mode": "RGB",
+      "sha256": "cd88aee1d0c1d552b82bbb7d556041159701b61dcf6e820857853b072ce99bcb"
+    }
+  ]
+}

@@ -1,0 +1,287 @@
+[
+  {
+    "path": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "7a58d38d9bd17653e4f6c6d5978c84261fd1c25c48771a47e31efbd42949764d"
+  },
+  {
+    "path": "img/theme-v4/map-asia.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "2c98170256f5bf5561e0a8911c3e88d198ed1f40b0f5fd68578ca2b0457490a9"
+  },
+  {
+    "path": "img/Zone2.webp",
+    "size": [
+      508,
+      512
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      508,
+      512
+    ],
+    "sha256": "2f259fbbc52c84639aa56225245e8d7840a289230838313e4198142a724f5acb"
+  },
+  {
+    "path": "img/map-v5/st-sala-asia.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "8858e09a2f0c34f239447bd32619824769f0f13f0e7c843231d7603bcf0be7a9"
+  },
+  {
+    "path": "img/map-v5/st-krata-asia.webp",
+    "size": [
+      1254,
+      1219
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1219
+    ],
+    "sha256": "9b307f4d2e7ebc49c47569b32733110951c9e18146b5c2a06393018490597d4f"
+  },
+  {
+    "path": "img/map-v5/st-tarang-asia.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "e5c1ed9199b50b3cd62f19dee81bf662e57b3da84f8ab4345aa6e2e1e93c9171"
+  },
+  {
+    "path": "img/map-v5/st-ngiw-asia.webp",
+    "size": [
+      1248,
+      1253
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1248,
+      1253
+    ],
+    "sha256": "948bdf2736a7922277a1fab42b2b51ffb0a7130441b10555f32dd1bc0059e6b1"
+  },
+  {
+    "path": "img/theme-v4/town-judgment-th-v2.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1492,
+      1008
+    ],
+    "sha256": "7fca7575b33c05731d7fa0dd7e0f465c573c729f3fddc1b4ce026bf787f96c55"
+  },
+  {
+    "path": "img/town-district/house-front-one-v1.webp",
+    "size": [
+      1402,
+      1122
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      17,
+      1399,
+      1122
+    ],
+    "sha256": "dbb23aa9c84e74d3bc211ad9355f0b37c228c7f436c09be8855166a9297ccb80"
+  },
+  {
+    "path": "img/town-district/house-right-one-v1.webp",
+    "size": [
+      1438,
+      1094
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1438,
+      1078
+    ],
+    "sha256": "ff32a5823b99317ac56ed7bb318a3c600ef811bd0c5b13783b859e61a777df60"
+  },
+  {
+    "path": "img/town-district/house-left-two-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1036,
+      1518
+    ],
+    "sha256": "203b6a5cf512bfe1c69a61bd7588930fa85084593476dc8103a8230550465706"
+  },
+  {
+    "path": "img/town-district/house-right-two-v1.webp",
+    "size": [
+      1036,
+      1518
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1036,
+      1500
+    ],
+    "sha256": "11ba6460e04d904c976d959f6466f47a32a1f98418302dc621ecc5f3be5e49c1"
+  },
+  {
+    "path": "img/theme-v4/town-tree-th-v1.webp",
+    "size": [
+      1199,
+      1312
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      0,
+      1199,
+      1312
+    ],
+    "sha256": "3fd5aec6dd2785d148fd3f574d116c72928f033bb01583451e43bee0ca8d6e83"
+  },
+  {
+    "path": "img/theme-v4/town-tree-red-th-v1.webp",
+    "size": [
+      1199,
+      1312
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      4,
+      5,
+      1195,
+      1308
+    ],
+    "sha256": "b33248ab8c7ccb9f00fcc8347b46d64f850492185dd299f708450e3ca6de6043"
+  },
+  {
+    "path": "img/theme-v4/town-tree-snow-th-v1.webp",
+    "size": [
+      1199,
+      1312
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      4,
+      5,
+      1195,
+      1308
+    ],
+    "sha256": "061c4fa3248f22788c9a7243fab12d28106656467be3c189f71183aa2d22bc43"
+  },
+  {
+    "path": "img/theme-v4/town-palm-th-v1.webp",
+    "size": [
+      1024,
+      1328
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      4,
+      6,
+      1020,
+      1324
+    ],
+    "sha256": "4b6c330b428a3337a9627dcf025f893bf4269de15530d576e3163591517c6612"
+  },
+  {
+    "path": "img/theme-v4/town-lamp-gold-th-v1.webp",
+    "size": [
+      512,
+      1112
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      4,
+      4,
+      507,
+      1108
+    ],
+    "sha256": "8e2e028afb5878f626e3ceaa845090cd466648a00484fc5f5ec93e367456d9e8"
+  },
+  {
+    "path": "img/map-zone1/torch-pillar-v1.webp",
+    "size": [
+      240,
+      419
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      46,
+      0,
+      213,
+      419
+    ],
+    "sha256": "00f8efc02c03bcade4877921932b9e71d20d8663ebe39d82ab8a6e56a071532f"
+  },
+  {
+    "path": "img/map-zone1/prop-rock-v1.webp",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_bbox": [
+      0,
+      37,
+      1234,
+      1228
+    ],
+    "sha256": "15e3cb673dfc8536ad5223ea73e3621e16a3bb9af49d7bcb144b6b3feb37161a"
+  },
+  {
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Toby/2026-10-23-avegee-m0-map-survey/zone1-layout-guide.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "alpha_bbox": null,
+    "sha256": "0ae725ce7faf6b04e2417306911e57b52cf9ba4a34efb6eae78356a2def740c4"
+  }
+]
