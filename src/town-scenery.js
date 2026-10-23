@@ -107,7 +107,7 @@ export function townPropArtKey(p) {
 const propArt = (p,tree,waterfall,resolveArt) => {
   if(p.kind==='torch')return torchSprite();
   const key=townPropArtKey(p);
-  return key?(resolveArt?.(key)||(key==='town-tree-th'?tree:null)):null;
+  return key?(resolveArt?.(key)||(p.fallbackKey?resolveArt?.(p.fallbackKey):null)||(key==='town-tree-th'?tree:null)):null;
 };
 // L1: town-shade.js casts shadows from exactly the art the scenery draws (incl. K1e sprites).
 export const townPropArt = (p,tree,waterfall,resolveArt) =>

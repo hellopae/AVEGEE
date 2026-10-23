@@ -59,7 +59,7 @@ test('enabled towns use large city geometry and legacy zones retain their geomet
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
     if (isTownZone(z.k)) {
       assert.deepEqual(size(),[TOWN_SIZE.w,TOWN_SIZE.h]);
-      assert.deepEqual(grid(),[240,160]);
+      assert.deepEqual(grid(),z.k==='asia'?[480,320]:[240,160]); // Z2: asia paths on an 8-unit grid (narrow bridges in the owner mask)
       for (const [key,d] of Object.entries(TOWN_STATION_SITES)) {
         const actual=STATIONS.find(s=>s.k===key);
         assert.deepEqual([actual.x,actual.y,actual.bx,actual.by],[d.x,d.y,d.bx,d.by],key);
