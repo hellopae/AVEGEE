@@ -12,7 +12,10 @@ import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel
 import {mountDungeonView} from './dungeon-view.js?v=l5';
 import { isTownZone, townZoomLevels, townDefaultZoom, townSites, townNearbyAction } from './town-map.js?v=l1';
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
-import { gateKarma, archiveRecord, archiveCard } from './h4-location-ui.js';
+import { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';
+import { mountDiagnosis } from './diagnosis-ui.js';
+import { powerBadgeHtml, powerSheetHtml } from './crew-power-ui.js';
+import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
 import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';
@@ -31,7 +34,8 @@ import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from '.
 import { punishmentScene } from './punishment-scene.js';
 import { merchantStock, medicineResult, medicineHp } from './progression.js';
 import { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';
-import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit } from './proximity.js';
+import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';
+import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';
 import { exitStep } from './exit-marker.js';
 import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';
 import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';
@@ -51,13 +55,13 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
-         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE } from './data.js';
+         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';
 import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
-import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
+import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -256,6 +260,7 @@ setInterval(() => {
   updateBossFab();
   updateFrontierFab();
   updateRepairFabs();
+  updateTalk();
   // พ่อลงมาตบเพราะตัดสินพลาดติดกันสามสำนวน — รอจนกว่าโมดัลอื่นจะปิดก่อน
   // startDadFight() เรียก this.onChange() เองอยู่แล้ว ซึ่งเปิดฉากต่อสู้ให้เองในตัว (ดู g.onChange ท้ายไฟล์)
   // ห้ามเรียก openBattle() ซ้ำตรงนี้ — เจอ 17 ก.ย. 2569 ว่าเรียกซ้ำทำให้มี onClose สองชุดค้างอยู่บน dlg
@@ -326,7 +331,7 @@ function frame(now) {
   updateMapCamera(now);
   render(ctx, g, now, hover, sel, mapCam.view);
   updateTownHud(now);
-  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); drawPauseTag();
+  followMarks(); drawAtk(); updateTrialBtn(); updateMobFab(); updateBossFab(); updateFrontierFab(); updateRepairFabs(); updateTalk(); drawPauseTag();
   requestAnimationFrame(frame);
 }
 
@@ -531,7 +536,7 @@ function drawTab() {
     const canHire = CREW.filter(c => !g.crew.some(x => x.k === c.k)).sort((a, b) => hireRank(a.k) - hireRank(b.k));   // P1: ตามลำดับแนะนำจ้าง
     b.innerHTML = g.crew.map(c => `
       <div class="crew">
-        ${face('crew-' + c.k, c.glyph)}
+        <span class="pw-av">${face('crew-' + c.k, c.glyph)}${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span>
         <span class="n"><b>${c.name}</b>
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">กำลังใจ ${Math.round(c.morale)} · ${c.reader ? '<b style="color:var(--gold)">อ่านสำนวนให้ท่าน — ไม่รับเวรลงทัณฑ์</b>' : c.at ? 'ประจำ' + (STATIONS.find(s => s.k === c.at)?.name ?? '') : 'ว่าง — รอรับเวร'}${g.workingCrew?.has(c.k)
@@ -542,7 +547,7 @@ function drawTab() {
            ยังจ้างได้ · เบี้ยกรรมของท่านตอนนี้ ${Math.round(g.coin)}</div>`
       + (canHire.length ? canHire.map(c => `
       <div class="crew">
-        ${face('crew-' + c.k, c.glyph)}
+        <span class="pw-av">${face('crew-' + c.k, c.glyph)}${powerBadgeHtml(c.k, { zone: g.zone })}</span>
         <span class="n"><b>${crewName(c, g.zone)}</b> <span class="st" style="display:inline">— ${esc(c.duty)}</span>${hireRank(c.k) ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank(c.k) }))}${nextHireTab === c.k ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</div>
           <div class="st">${esc(c.line)}</div></span>
@@ -552,7 +557,7 @@ function drawTab() {
       // (เดิมตัวจัดการปุ่มไปรออยู่แท็บก่อสร้าง แต่ไม่เคยมีใครวาดปุ่มให้ เลยจ้างไม่ได้เลย)
       + `<div style="font-size:var(--text-xs);color:var(--muted-foreground);margin:12px 0 6px">ยามประจำโซน</div>
       <div class="crew">
-        ${face(GUARD.img, '🛡️')}
+        <span class="pw-av">${face(GUARD.img, '🛡️')}${powerBadgeHtml('guard', { zone: g.zone })}</span>
         <span class="n"><b>${GUARD.name}</b>${!g.guard ? ` <span class="tag hire-rank">${esc(t('hire.rank', { n: hireRank('guard') }))}${nextHireTab === 'guard' ? ` · ★ ${esc(t('hire.recommend'))}` : ''}</span>` : ''}
           <div class="st">${esc(GUARD.desc)} · ค่าแรง ${GUARD.pay}</div>
           <div class="st">${esc(GUARD.line)}</div></span>
@@ -616,14 +621,15 @@ const nameOfSt = k => STATIONS.find(d => d.k === k)?.name ?? '—';
  *  ลองรูปโปรไฟล์เต็มใบก่อน (img/<key>-profile.png) ไม่มีค่อยถอยไปใช้รูป standee เดิม
  *  → gen รูปโปรไฟล์ตัวไหนมาใหม่ ก็แค่วางไว้ img/raw/<key>-profile.jpeg แล้วรัน scripts/prep-art.py
  *    ไม่ต้องแตะโค้ดสักบรรทัด (7 ก.ย. 2569) */
-function profile(imgKey, name, duty, now) {
+function profile(imgKey, name, duty, now, badge = '') {
   // ไม่มีทั้งรูปโปรไฟล์และรูป standee ก็ซ่อนกรอบไปเลย อย่าปล่อยไอคอนรูปแตกไว้
   const std = artUrl(imgKey);
   const fallback = `this.onerror=function(){this.style.visibility='hidden'};`
                  + `this.src='${std}';this.classList.remove('full')`;
+  const picture = `<img class="full" src="${artUrl(imgKey + '-profile') || std}" alt=""
+         onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">`;
   return `<div class="prof">
-    <img class="full" src="${artUrl(imgKey + '-profile') || std}" alt=""
-         onerror="${fallback}" onload="if(!this.src.includes('-profile'))this.classList.remove('full')">
+    ${badge ? `<span class="pw-av">${picture}${badge}</span>` : picture}
     <div class="hd"><b>${esc(name)}</b>
       <div class="duty">${esc(duty)}</div>
       <div class="now">${now}</div></div></div>`;
@@ -772,7 +778,7 @@ function sideBody() {
     // ข้อ B ชุด 13 คุณเป้ 26 ก.ย. 2569 — โชว์ท่าสู้/ตัวเลขจริงตรงกับโต๊ะนิรา (ดึงจาก CREW_POWER ที่เดียวกัน)
     const battleLine = !c.reader
       ? `<div class="row-truth">⚔️ ท่าสู้: <b>${crewAbility(c)}</b> · คูลดาวน์ ${BATTLE.crewCd} วินาที</div>` : `<div class="row-truth">${crewAbility(c)}</div>`;
-    return profile('crew-' + c.k, c.name, c.duty, now)
+    return profile('crew-' + c.k, c.name, c.duty, now, powerBadgeHtml(c.k, { zone: g.zone, actor: c }))
       + think(c.say && Date.now() < c.sayUntil ? c.say : pickStable(c.says, c.k))
       + kv([`แรง ${c.raeng}`, `ระเบียบ ${c.reader ? g.allyStats(c).order : c.rabiab}`, `ปัญญา ${c.panya}`, `เมตตา ${c.metta}`,
             `กำลังใจ ${Math.round(c.morale)}`,
@@ -1133,9 +1139,82 @@ function clampInView(d) {
   }
 }
 
+// ---------- P4 §4 · กดคุยตัวละครบนแผนที่ (บรรยากาศล้วน — ไม่ให้ทรัพยากร/เบาะแส ไม่หยุดเกม) ----------
+const talkHelpers = { walkPosition: afterlifeWalkPosition };
+let talkSess = null;        // { id, n, until } บับเบิลที่เปิดอยู่
+let pendingTalk = null;     // { id, at } แตะตัวละครไกล → เดินเข้าหา แล้วเปิดเองเมื่อถึง (D9) · ผู้เล่นเดินเอง/แตะที่อื่น = ยกเลิก
+function closeTalk() { ov.querySelectorAll('.mark.talk').forEach(e => e.remove()); talkSess = null; }
+function showTalkLine() {
+  const tg = talkSess && findTalkTarget(g, talkSess.id, talkHelpers);
+  const line = tg && pickTalk(g, tg, { heroName: HERO_NAME, heroTitle: HERO_TITLE });
+  if (!line) return closeTalk();
+  talkSess.n++; talkSess.until = Date.now() + TALK_MS;
+  const more = talkSess.n < TALK_MAX_LINES;
+  ov.querySelectorAll('.mark.talk').forEach(e => e.remove());
+  const pin = line.first ? 'pin-talk-new' : more ? 'pin-talk-more' : 'pin-talk';
+  const el = mark('talk', tg.x, tg.y - charH() * tg.top - 8, `<img class="talk-pin" src="img/ui/${pin}.webp" alt="" width="32" height="32">`,
+    `<span class="who">${esc(line.who)}</span><span class="talk-text" role="status">${esc(line.text)}</span><button type="button" class="talk-next">${esc(t(more ? 'talk.next' : 'talk.close'))}</button>`, true);
+  el.dataset.talkId = tg.id;
+  clampTalk(el);
+  const next = ev => { ev.stopPropagation(); if (more) showTalkLine(); else closeTalk(); };
+  el.querySelector('.talk-next').onclick = next;
+  el.querySelector('.bub').onclick = next;       // แตะบับเบิลเองก็ไปบทถัดไป
+}
+/** บับเบิลคุยต้องอยู่ในจอเสมอ: เลื่อนซ้ายขวาด้วย --bshift · ชนแถบทรัพยากรด้านบน (84px) → พลิกลงใต้หัว */
+function clampTalk(d) {
+  const bub = d.querySelector('.bub'); if (!bub) return;
+  const m = 8, shift = parseFloat(d.style.getPropertyValue('--bshift')) || 0, r = bub.getBoundingClientRect();
+  if (!r.width) return;
+  const left = r.left - shift, right = r.right - shift;
+  const next = left < m ? m - left : right > innerWidth - m ? innerWidth - m - right : 0;
+  if (Math.abs(next - shift) > .5) d.style.setProperty('--bshift', `${next}px`);
+  const flipped = d.classList.contains('below'), pinTop = d.getBoundingClientRect().top;
+  const needH = bub.offsetHeight + 46;
+  d.classList.toggle('below', flipped ? pinTop - needH - 0 < 84 + 40 : pinTop - needH < 84);
+}
+function advanceTalk() {
+  if (!talkSess) return;
+  if (talkSess.n < TALK_MAX_LINES) showTalkLine(); else closeTalk();
+}
+function openTalk(id) { pendingTalk = null; talkSess = { id, n: 0, until: 0 }; showTalkLine(); }
+/** แตะ/กดคุย: ใกล้ (≤ INTERACTION_REACH) เปิดทันที · ไกล เดินเข้าหาแล้วเปิดเองเมื่อถึง
+ *  @param {boolean} fromButton ปุ่ม 💬/E อยู่ในระยะคุยแล้วเสมอ */
+function talkTo(id, fromButton = false) {
+  const tg = findTalkTarget(g, id, talkHelpers);
+  if (!tg) return false;
+  if (fromButton || talkDistance(g, tg) <= INTERACTION_REACH) { openTalk(id); return true; }
+  if (g.walkTo(tg.x, tg.y)) pendingTalk = { id, at: Date.now() };
+  return true;
+}
+function updateTalk() {
+  const now = Date.now();
+  if (pendingTalk) {
+    const tg = findTalkTarget(g, pendingTalk.id, talkHelpers);
+    if (!tg || now - pendingTalk.at > 15000 || dlg.open || g.over || g.battle) pendingTalk = null;
+    else {
+      const d = talkDistance(g, tg), moving = g.player.tx != null || !!g.player.path?.length;
+      if (d <= 80 || (!moving && d <= 140)) openTalk(pendingTalk.id);
+      else if (!moving && now - pendingTalk.at > 800) pendingTalk = null;
+    }
+  }
+  if (!talkSess) return;
+  const tg = findTalkTarget(g, talkSess.id, talkHelpers);
+  if (!tg || now > talkSess.until || talkDistance(g, tg) > TALK_DISMISS || dlg.open || g.over || g.battle) closeTalk();
+}
+/** บรรทัดทักบนหัวโต๊ะนิรา / ร้านพ่อค้า (ชุดบทของ Rae) — เลือกครั้งเดียวตอนเปิดกล่อง ไม่เปลี่ยนตามการวาดซ้ำ */
+function greetLine(target, extra) {
+  const line = pickTalk(g, target, { heroName: HERO_NAME, heroTitle: HERO_TITLE, ...extra });
+  return line ? `<p class="talk-greet"><b>${esc(line.who)}</b> “${esc(line.text)}”</p>` : '';
+}
+
 /** หมุดที่ผูกกับตัวละครที่เดินได้ — อัปเดตพิกัดทุกเฟรม ไม่ต้องรอ refresh */
 function followMarks() {
   for (const d of ov.children) {
+    if (d.dataset.talkId) {                      // P4: บับเบิลคุยตามตัวที่คุยด้วย (ยมทูต/คนงาน/วิญญาณเดินได้)
+      const tg = findTalkTarget(g, d.dataset.talkId, talkHelpers);
+      if (tg) { d.dataset.sx = tg.x; d.dataset.sy = tg.y - charH() * tg.top - 8; place(d); clampTalk(d); }
+      continue;
+    }
     if (!d.dataset.follow) continue;
     const c = g.crewOf(d.dataset.follow);
     if (!c || c.x == null) continue;
@@ -1157,6 +1236,7 @@ function drawOverlay() {
   const keepBreachFab = ov.querySelector('.breachfab');
   const keepDevaFab = ov.querySelector('.devafab');
   const keepZoneEventFabs = [...ov.querySelectorAll('.zone-eventfab')];
+  const keepTalk = ov.querySelector('.mark.talk');   // P4: บับเบิลคุยตัวละครต้องรอดการล้างชั้นซ้อน (เหมือนปุ่มสู้)
   ov.innerHTML = '';
   if (keepFab) ov.appendChild(keepFab);
   if (keepBossFab) ov.appendChild(keepBossFab);
@@ -1166,6 +1246,7 @@ function drawOverlay() {
   if (keepBreachFab) ov.appendChild(keepBreachFab);
   if (keepDevaFab) ov.appendChild(keepDevaFab);
   for (const f of keepZoneEventFabs) ov.appendChild(f);
+  if (keepTalk) ov.appendChild(keepTalk);
   if (g.over) return;
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
@@ -1290,8 +1371,9 @@ function updateFrontierFab() {
   openBorder();
 }
 
-/** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง */
-function currentMapInteraction() {
+/** เรียกช่างที่ว่างจากแผนที่ได้เมื่ออาคารพัง
+ *  P4: ปุ่มคุยตัวละคร (kind 'talk') มีสิทธิ์ต่ำสุด — โผล่เมื่อไม่มี interaction อื่นในระยะ และไม่ได้ยืนที่จุดสร้าง/ประตูชายแดน */
+function baseMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
   const point=g.harbourPoint();
   return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
@@ -1299,12 +1381,19 @@ function currentMapInteraction() {
     // และไม่ทับป้ายบอสที่อยู่เหนือท่า (ท่าอยู่ห่างบอสแค่ ~100 หน่วย — วางเหนือหัวแล้วปุ่มสองอันซ้อนกันบนจอแคบ)
     {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y+26,label:'ท่าเรือ · Fast Travel'}]);
 }
+function talkInteraction() {
+  if (g.over || g.battle || dlg.open || !started || talkSess) return null;   // บับเบิลเปิดอยู่ → ซ่อนปุ่ม 💬 (E/Enter = บทถัดไป · Esc = ปิด)
+  if (nearBuild(g, g.player.x, g.player.y) || Math.hypot(g.player.x-FRONTIER.x,g.player.y-FRONTIER.y) <= 105) return null;
+  return nearestInteraction(g.player, talkInteractions(talkTargets(g, talkHelpers), charH()), TALK_REACH);
+}
+function currentMapInteraction() { return baseMapInteraction() || talkInteraction(); }
 
 
 function activateMapInteraction(now) {
       if (now.kind === 'repair') {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'harbour') openHarbour();
+      else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
       else if (now.kind === 'challenge') openChallenge();
@@ -1321,9 +1410,13 @@ const townActionButton = document.getElementById('town-action');
 let townHudAt = 0;
 function currentTownAction() {
   if (!started || dlg.open || !heroProfile.hidden) return null;
-  return townNearbyAction(g, currentMapInteraction(), nearBuild(g,g.player.x,g.player.y));
+  const act = townNearbyAction(g, baseMapInteraction(), nearBuild(g,g.player.x,g.player.y));
+  if (act) return act;
+  const talk = isTownZone(g.zone) ? talkInteraction() : null;
+  return talk ? { kind:'interaction', target:talk } : null;
 }
 function activateTownAction() {
+  if (talkSess) return advanceTalk();
   const action=currentTownAction();
   if (!action) return;
   if (action.kind === 'build') openBuild(action.target);
@@ -1383,7 +1476,8 @@ function updateRepairFabs() {
       };
       ov.appendChild(f);
     }
-    f.textContent=target.label;f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
+    if(target.kind==='talk')f.innerHTML=`<img class="talk-ico" src="img/ui/icon-talk.webp" alt="" width="20" height="20">${esc(target.label)}`;else f.textContent=target.label;
+    f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
     f.dataset.sx=target.bx;f.dataset.sy=target.by;f.classList.toggle('anchor-top', target.anchor === 'top');
     place(f);
     const v=mapCam.viewport;
@@ -2307,7 +2401,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.battleCd) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.helpCdMs / 1000) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}
@@ -2404,7 +2498,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
   const actorName = crewKey ? (g.roster[crewKey]?.name || CREW[crewKey]?.name || 'ยมทูต') : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
-  const crewMove = ({kan:'พลังสะกดจิต',boon:'พลังฟื้นฟู',plerng:'เพลิงพิพากษา',taan:'กระบองทัณฑ์',guard:'กระบองพิทักษ์',dam:'คมดาบ'})[crewKey];
+  const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
   const img = cut.querySelector('img');
@@ -2852,6 +2946,41 @@ function niraItemWidget(c) {
   }).join('')}</div>`;
 }
 
+/** P4 §3.3 — แผ่นรายละเอียดพลัง · เปิดทับกล่องที่เปิดอยู่ (โต๊ะนิรา/ทีมชายแดน) เป็นชั้นเล็ก ๆ ไม่แทนกล่อง จึงกลับมาที่เดิมเสมอ
+ *  ไม่มีกล่องเปิดอยู่ (โปรไฟล์/แท็บ/แผงข้อมูล) → ใช้ modal() ปกติ */
+let afterPowerSheet = null;
+function openPowerSheet(k) {
+  const html = powerSheetHtml(g, k);
+  if (!html) return;
+  const bind = (root, close) => {
+    root.querySelectorAll('[data-power-close]').forEach(b => b.onclick = close);
+    const done = ok => { close(); if (ok) { sfx('coin'); afterPowerSheet?.(); refresh(); } };
+    root.querySelectorAll('[data-power-hire]').forEach(b => b.onclick = () => done(b.dataset.powerHire === 'guard' ? g.hireGuard() : g.hire(b.dataset.powerHire)));
+    root.querySelectorAll('[data-power-party]').forEach(b => b.onclick = () => { const ok = g.toggleParty(b.dataset.powerParty); if (ok) sfx('crack'); done(ok); });
+    root.querySelector('button:not(:disabled)')?.focus();
+  };
+  if (dlg.open) {
+    dlg.querySelector('.power-sheet-layer')?.remove();
+    const layer = document.createElement('div'); layer.className = 'power-sheet-layer'; layer.innerHTML = html;
+    const close = () => { layer.remove(); };
+    layer.addEventListener('click', e => { if (e.target === layer) close(); });
+    layer.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(); } });
+    dlg.append(layer); bind(layer, close);
+  } else modal(`<div class="power-sheet-wrap">${html}</div>`, d => bind(d, () => d.close()), 'power-dialog');
+}
+// ป้ายไอคอนพลังอยู่ในปุ่ม/การ์ดหลายแบบ — ดักตอน capture เพื่อไม่ให้ปุ่มแม่ (เลือกเข้าทีมชายแดน ฯลฯ) ทำงานไปด้วย
+document.addEventListener('click', e => {
+  const b = e.target.closest?.('[data-power]');
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const b = e.target.closest?.('[data-power]');
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
+}, true);
+
 function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
@@ -2863,6 +2992,7 @@ function openNiraOffice() {
     return;
   }
   pauseForDlg();
+  const niraGreet = greetLine({ kind: 'nira', name: g.crewOf('nira')?.name || 'นิรา' });   // P4: บรรทัดทักจากชุดบทของ Rae (ไม่มีผลต่อเกม)
   const paint = () => {
     const final = g.finalTeamSelection(), max = final ? g.teamLimits.finalTeamMax : g.teamLimits.normalTeamMax;
     const party = (final ? g.party?.finalMembers : g.party?.members) || [];
@@ -2878,7 +3008,7 @@ function openNiraOffice() {
       const c = final ? def : g.crew.find(x => x.k === def.k), key = c && (final ? c.id : c.k), on = c && party.includes(key);
       const why = final ? g.finalTeamWhy(c) : '';
       const rank = final ? 0 : hireRank(def.k);
-      return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><img src="${crewArt(c || def, '-profile')}" alt="">
+      return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><span class="pw-av"><img src="${crewArt(c || def, '-profile')}" alt="">${powerBadgeHtml(def.k, { zone: g.zone, actor: c })}</span>
           <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
@@ -2890,16 +3020,16 @@ function openNiraOffice() {
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — การ์ดยักษ์ทวารบาลในหน้าต่างเดียวกับยมทูต แทนย่อหน้ายาวด้านล่างเดิม
     // (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน)
     cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
-        <img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">
+        <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
         <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
         ${hireTag('guard', !!g.guard)}
-        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.battleCd} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
+        <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
           ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${final ? '' : niraGreet}
       <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
@@ -2916,6 +3046,7 @@ function openNiraOffice() {
   };
   paint(); openDlg('nira-office');
   const generation = dlgGen;
+  afterPowerSheet = () => { if (dlg.open && dlgGen === generation) paint(); };
   const restState = () => Object.values(g.roster).map(c => `${c.id}:${c.teaRest?.phase || ''}`).join(',');
   let paintedRestState = restState();
   const restTimer = setInterval(() => {
@@ -2934,9 +3065,12 @@ function openNiraOffice() {
 function openMerchant() {
   if (!g.zoneCaptivesFree()) return;
   pauseForDlg();
+  const stock0 = merchantStock(g.zone);
+  const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
+      ${merchantGreet}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -3066,7 +3200,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
             const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
             return `<button data-frontier-crew="${c.k}" class="frontier-card${on ? ' selected' : ''}" ${full ? 'disabled' : ''}>
-              <img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">
+              <span class="pw-av"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span>
               <span><b>${esc(c.name)}</b><small>แรง ${c.raeng} · กำลังใจ ${Math.round(c.morale)}</small></span>
               <i>${on ? '✓ เข้าทีม' : 'เลือก'}</i></button>`;
           }).join('') : '<div class="hint">ยังไม่มียมทูตสายต่อสู้ — จ้างได้ที่นิรา</div>'}</div>
@@ -4152,11 +4286,11 @@ function openBattle(after) {
       if(button){button.disabled=!!phase||!!g.battle?.over||!!g.crewHelpWhy(c);button.title=g.crewHelpWhy(c)||crewAbility(c);
         const note=button.querySelector('i');if(note)note.textContent=g.crewHelpWhy(c) ? `${g.crewHelpWhy(c)} / Cooldown or low morale` : 'ท่าพิเศษ / Special';}
     }
-    // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.battleCd) แยกจากยมทูต
+    // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.helpCdMs · ค่าที่ battleAct ตั้งจริง) แยกจากยมทูต
     if (g.guard) {
-      const remaining=g.guardCooldown(), progress=100*(1-remaining/GUARD.battleCd);
+      const cdSec=GUARD.helpCdMs/1000, remaining=g.guardCooldown(), progress=100*(1-remaining/cdSec);
       const ready=dlg.querySelector('[data-crew-ready="guard"] .battle-meter');
-      if(ready){ready.setAttribute('aria-valuenow',Math.round(GUARD.battleCd-remaining));ready.querySelector('i').style.width=progress+'%';}
+      if(ready){ready.setAttribute('aria-valuenow',Math.round(cdSec-remaining));ready.querySelector('i').style.width=progress+'%';}
       const bar=dlg.querySelector('[data-cooldown="guard"]');
       if(bar){bar.setAttribute('aria-valuenow',Math.round(progress));bar.querySelector('i').style.width=progress+'%';}
       const label=dlg.querySelector('[data-cooldown-label="guard"]');
@@ -4631,11 +4765,12 @@ function drawHeroProfile() {
     <div class="profile-stars" aria-label="${esc(t('profile.rank'))}">${'★'.repeat(g.level)}${'☆'.repeat(Math.max(0, LEVELS.length - g.level))}</div>
     <strong>${esc(t('profile.rank'))} ${g.level}/${LEVELS.length} - ${esc(LEVELS[g.level - 1].name)}</strong>
     <p>${esc(t('profile.story'))}${esc(g.zoneDef().name)}</p><p>${esc(t('profile.duty'))}</p>`;
-  const row = (img, value, label, extra = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span></div>`;
+  // help = ชื่อแถบที่ explainBar() รู้จัก → ปุ่ม "?" ท้ายแถว (P4: บารมีเปิดกล่องอธิบายที่ P8 แก้ข้อความแล้ว)
+  const row = (img, value, label, extra = '', help = '') => `<div class="hero-profile-row">${img.startsWith('<') ? img : `<img src="${img}" alt="">`}<span class="profile-row-text"><b>${esc(value)}</b><small>${esc(label)}</small>${extra}</span>${help ? `<button type="button" class="profile-help" data-profile-help="${help}" aria-label="${esc(t('profile.help.' + help))}" title="${esc(t('profile.help.' + help))}">?</button>` : ''}</div>`;
   const hpBar = `<span class="hero-profile-hp"><i style="width:${Math.max(0, Math.min(100, 100 * g.hp / g.hpMax))}%"></i></span>`;
   // P1: ยังไม่มีศาลาน้ำชา = ยังไม่มีที่นอน — บอกทางไปที่นอนตรงบรรทัดบารมี (หายเองเมื่อสร้างเสร็จ หรือเมื่อบารมีเต็ม)
   const sleepHint = !g.teaBedReady() && g.hp < g.hpMax ? `<small class="profile-hint">${esc(t('sleep.needTea'))}</small>` : '';
-  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint)
+  const status = row('<span class="profile-emoji">❤️</span>', `${Math.round(g.hp)}/${g.hpMax}`, t('profile.hp'), hpBar + sleepHint, 'hp')
     + row('<span class="profile-emoji">🔹</span>', `${Math.round(g.mp)}/${g.mpMax}`, t('battle.mp'), `<span class="hero-profile-hp profile-mp"><i style="width:${Math.max(0, Math.min(100, 100 * g.mp / g.mpMax))}%"></i></span>`)
     + row('img/ui/icon-coin.png', Math.round(g.coin), t('profile.coin'))
     + row('img/item-food.png', Math.round(g.food), t('profile.food'))
@@ -4658,8 +4793,8 @@ function drawHeroProfile() {
     + POWERS.filter(p => !g.powerLocked(p)).map(p => row(powerIcon[p.k], p.name, t('profile.power.' + p.k))).join('');
   const carried = Object.entries(g.inventory || {}).filter(([k, n]) => n > 0 && ITEMS[k]);
   const bag = carried.length ? carried.map(([k, n]) => row(itemImg(k), `×${n}`, itemName(k))).join('') : `<small>${esc(t('profile.emptyBag'))}</small>`;
-  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt=""><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
-  const guard = `<div class="hero-profile-row crew"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt=""><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
+  const crew = g.crew.map(c => `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl(`crew-${c.k}-profile`) || artUrl(`crew-${c.k}`)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span><span class="profile-row-text"><b>${esc(crewName(c, g.zone))}</b><small>${esc(crewAbility(c))}</small>${c.k === 'plerng' ? `<small>${esc(t('g5.level'))} ${g.fireControlState(c).level}/3</small>` : ''}<small>${esc(t('profile.wage'))} ${c.pay} · ${esc(t('profile.order'))} ${c.reader ? g.allyStats(c).order : c.rabiab} · ${esc(t('profile.training'))} ${g.allyStats(c).level}</small></span></div>`).join('');
+  const guard = `<div class="hero-profile-row crew"><span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span><span class="profile-row-text"><b>${esc(GUARD.name)}</b><small>${esc(t('profile.guardTeam'))}</small><small>${esc(t('profile.attack'))} ${g.allyStats(g.guard || 'guard').dmg} · ${esc(t('profile.wage'))} ${GUARD.pay}</small></span></div>`;
   $('#hero-profile-columns').innerHTML = [
     [t('profile.status'), status], [t('profile.powers'), powers],
     [t('profile.bag'), bag], [t('profile.crew'), crew + guard]
@@ -4670,6 +4805,8 @@ function drawHeroProfile() {
     tabs.innerHTML = PROFILE_SECTIONS.map(key => `<button id="profile-tab-${key}" role="tab" data-menu-tab="${key}" aria-controls="profile-panel-${key}" aria-selected="${key === profileSection}" tabindex="${key === profileSection ? 0 : -1}">${esc(t('profile.' + key))}</button>`).join('');
     bindMenuTabs(tabs, '[data-menu-tab]', selectProfileSection);
   }
+  // กล่องอธิบายเป็น <dialog> โมดัล → ขึ้นทับโปรไฟล์ได้เสมอ ปิดแล้วกลับมาที่โปรไฟล์เดิม (ไม่ต้องปิดโปรไฟล์ก่อน จึงไม่ค้าง)
+  heroProfile.querySelectorAll('[data-profile-help]').forEach(b => b.onclick = () => explainBar(b.dataset.profileHelp));
   applyI18n(heroProfile);
 }
 function openHeroProfile() { drawHeroProfile(); heroProfile.hidden = false; heroProfile.querySelector('[aria-selected=true]').focus(); }
@@ -4748,6 +4885,7 @@ cv.onclick = e => {
 
 /** คลิกโซนบนฉาก — ใช้ร่วมกันทั้งสองมุมมอง */
 function onSceneClick(sx, sy) {
+  pendingTalk = null;                         // แตะที่อื่น = ยกเลิกการเดินเข้าหาตัวละครที่จะคุย
   if (hitFrontier(g, sx, sy)) {
     const near = Math.hypot(g.player.x - FRONTIER.x, g.player.y - FRONTIER.y) <= FRONTIER.reach;
     if (near) return openFrontier();
@@ -4818,7 +4956,11 @@ function onSceneClick(sx, sy) {
       if (c && Math.hypot(g.player.x - c.x, g.player.y - c.y) <= INTERACTION_REACH) return openNiraOffice();
       if (c) { g.walkTo(c.x, c.y); return; }
     }
+    if (a.kind === 'worker') { talkTo(`worker:${a.key}`); return; }   // P4: คนงานคลิกได้แล้ว (เดิมไม่มี hit-test)
     select(a);
+    if (a.kind === 'crew') talkTo(`crew:${a.key}`);
+    else if (a.kind === 'guard') talkTo('guard:0');
+    else if (a.kind === 'soul') talkTo(`soul:${a.key}`);     // หัวคิว (กำลังไต่สวน) ไม่อยู่ในรายการคุย → talkTo คืน false เฉย ๆ
     if (a.kind === 'mob') tryFight();      // เปรตนอกจากดูข้อมูลแล้วก็เข้าต่อสู้เลย
     refresh();
     return;
@@ -4847,13 +4989,17 @@ function onSceneClick(sx, sy) {
 const KEY = {};
 addEventListener('keydown', e => {
   if (dlg.open || !heroProfile.hidden || /input|textarea|select/i.test(e.target.tagName)) return;
+  if (talkSess && !e.repeat) {                       // P4: บับเบิลคุยเปิดอยู่ — Esc ปิด · Enter/E บทถัดไป
+    if (e.key === 'Escape') { closeTalk(); e.preventDefault(); return; }
+    if (e.key === 'Enter' || e.key.toLowerCase() === 'e') { advanceTalk(); e.preventDefault(); return; }
+  }
   if (e.key.toLowerCase() === 'e' && isTownZone(g.zone)) {
     if (!e.repeat) activateTownAction();
     e.preventDefault(); return;
   }
   KEY[e.key.toLowerCase()] = true;
   if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
-  if (e.key === ' ' && !g.over) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
+  if (e.key === ' ' && !g.over && !document.querySelector('#mg-ov:not([hidden]), .st-diag:not([hidden])')) { tryFight(); }        // เว้นวรรค = สู้กับเปรตตนที่ใกล้ที่สุด
 });
 addEventListener('keyup', e => { KEY[e.key.toLowerCase()] = false; });
 addEventListener('blur', () => { for (const key in KEY) KEY[key] = false; });
@@ -4867,6 +5013,7 @@ function keyWalk(dt) {
   if (KEY.w || KEY.arrowup) dy -= 1;
   if (KEY.s || KEY.arrowdown) dy += 1;
   if (!dx && !dy) return;
+  pendingTalk = null;                              // เดินเอง = ยกเลิกการเดินเข้าหาตัวละครที่จะคุย
   const d = Math.hypot(dx, dy);
   stepTo(P, dx / d * sp, dy / d * sp, true);    // ลาวา/แม่น้ำ/ตัวยมทูตที่ยืนอยู่กันไว้ ชนแล้วไถลไปตามขอบ
   P.tx = null; P.path = null; g.huntMob = false; // กดปุ่มแล้วยกเลิกจุดหมายที่คลิกไว้ (รวมคำสั่งไล่เปรต)
@@ -4902,6 +5049,7 @@ function openStation(k, emergency = false) {
   let myGen = -1;                       // รุ่นของกล่องที่หน้านี้เป็นเจ้าของ (ตั้งค่าหลัง openDlg)
   let R = null;                         // ตัวคุมฉากในห้อง (src/room.js)
   let trainingQuit = null, minigameQuit = null, mirrorCharge = null;
+  let diag = null;                      // P4: ใบวินิจฉัยวิญญาณ (เฉพาะตะราง/ประตูสวรรค์) — mountDiagnosis() ตอนสร้างห้องเสร็จ
   let mgOpen = false;                   // มินิเกม "เร่งการทำงาน" กำลังเปิดอยู่ไหม (ชุดที่ 9)
   let drawerMode = null;                // 29C: หน้าต่างรายชื่อ/ตรวจกรรมไม่ขึ้นเองตอนเข้าห้อง — ขึ้นเมื่อกดปุ่มเท่านั้น
                                          // กัน panels() ที่วาดใหม่ทุก 900ms เปิดปุ่มซ้ำจนเปิดเกมซ้อนกัน
@@ -4922,6 +5070,9 @@ function openStation(k, emergency = false) {
     const L = dlg.querySelector('#st-left'), Rg = dlg.querySelector('#st-right'),
           A = dlg.querySelector('#st-actions'), AL = dlg.querySelector('#st-alert');
     const row = (label, btn) => `<div class="st-row"><span>${label}</span>${btn}</div>`;
+    // P4: แถวรายชื่อตะราง/ประตูสวรรค์ — กดชื่อหรือปุ่ม "วินิจฉัย" เปิดใบวินิจฉัย · ปุ่มเดิม (ตรวจ/ส่ง) อยู่ข้างกัน
+    const drow = (key, name, label, btn) => `<div class="st-row"><span class="st-row-name" role="button" tabindex="0" data-diag="${key}">${label}</span>
+      <span class="st-row-diag"><button type="button" class="btn-diag" data-diag="${key}" aria-label="${esc(t('diag.openAria', { name }))}">🔍 ${esc(t('diag.open'))}</button>${btn}</span></div>`;
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
     // 29M: ปุ่มซ่อมย้ายไปอยู่บนแผนที่ทุกสถานที่แล้ว (รวมตะราง/ประตูสวรรค์) — ในห้องเหลือแค่ปุ่มเยี่ยมนิรา
@@ -4952,13 +5103,13 @@ function openStation(k, emergency = false) {
         const status = x.inspected ? t(x.repentant ? 'room.repentant' : 'room.notRepentant')
           : ready ? '' : t('room.wait').replace('{n}', (x.readyAt ?? x.until) - g.tick);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name}${status ? ` · ${esc(status)}` : ''}${needSawan ? ` · ${esc(t('room.needSawan'))}${g.buildLocked('sawan') ? ` (${esc(t('unlock.lockedAt', { n: g.buildUnlockLv('sawan') }))})` : ''}` : ''}`;
-        return row(label, x.inspected
+        return drow(`prison:${x.soul.id}`, name, label, x.inspected
           ? `<button class="btn-gold" data-prison-send="${x.soul.id}" ${!R?.prisonEscorting(x.soul.id) && (!x.repentant || !needSawan) ? '' : 'disabled'}>${esc(t(x.repentant ? 'room.toGate' : 'room.toQueue'))}</button>`
           : `<button class="btn-gold" data-prison-check="${x.soul.id}" ${ready ? '' : 'disabled'}>${esc(t('room.niraCheck'))}</button>`);
       }).join('');
       const heldHtml = g.held.length
         ? `<div class="st-pane-title">${esc(t('room.heldTitle').replace('{n}', g.held.length))}</div>`
-          + g.held.map(h => row(esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
+          + g.held.map(h => drow(`held:${h.id}`, esc(h.name || h.who), esc(h.who), `<button class="btn-gold" data-rel="${h.id}">${esc(t('room.release'))}</button>`)).join('')
         : '';
       // 29C: ปุ่ม "ตรวจความเข็ดหลาบ" ถูกตัด — งานตรวจ/ส่งไปประตูสวรรค์ย้ายมารวมในหน้าต่างเดียวกับรายชื่อ
       drawer = `<div class="st-pane" data-pane="roster">
@@ -4974,7 +5125,7 @@ function openStation(k, emergency = false) {
       const rows = arrivals.map(x => {
         const name = esc(x.soul.name || x.soul.who);
         const label = `#${String(x.soul.id).padStart(3, '0')} ${name} · ${esc(x.checked ? t('room.karmaLeft').replace('{n}', x.karmaLeft) : t('room.gateWait'))}`;
-        return row(label, x.checked
+        return drow(`gate:${x.soul.id}`, name, label, x.checked
           ? `<button class="btn-gold" data-gate-send="${x.soul.id}">${esc(t(x.karmaLeft > 0 ? 'room.toReborn' : 'room.toSky'))}</button>`
           : `<button class="btn-gold" data-gate-check="${x.soul.id}">${esc(t('room.gateCheck'))}</button>`);
       }).join('');
@@ -5082,7 +5233,13 @@ function openStation(k, emergency = false) {
         const [ax, ay] = R.anchor(...boonAt, R.crewHeight + 0.025);
         tags.push({ id:'lotus', ax, ay, pos:'above', label:t('room.lotus'), hint:t('room.lotusWhy'), keep:true, karma:Math.round(g.karma*10)/10, disabled:!!why });
       }
-      put(N, tags.map(x => `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
+      // P4: ปุ่ม "ใบวินิจฉัย" ลอยเหนือหัววิญญาณที่ยืนรออยู่บนจอ (สูงสุด 3 ดวง — เกินนั้นใช้แผงรายชื่อ)
+      if (diag) for (const sub of diagnosisSubjects(g, k)) {
+        const at = R.soulAnchor(sub.soul.id);
+        if (at) tags.push({ diag: subjectKey(sub), name: sub.soul.name || sub.soul.who, ax: at[0], ay: at[1] });
+      }
+      put(N, tags.map(x => x.diag ? `<div class="st-npc-tag above" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%"><button type="button" class="btn-diag" data-diag="${x.diag}" aria-label="${esc(t('diag.openAria', { name: x.name }))}">🔍 ${esc(t('diag.openTag'))}</button></div>`
+        : `<div class="st-npc-tag ${x.pos}" style="left:${x.ax.toFixed(2)}%;top:${x.ay.toFixed(2)}%">
           <button class="btn-gold" type="button" data-npc="${x.id}" ${x.disabled ? 'disabled' : ''} ${x.pressed ? 'aria-pressed="true"' : ''}>${esc(x.label)}</button>
           ${x.hint ? `<small class="${[x.disabled && x.id !== 'lotus' ? 'reason' : '', x.keep ? 'keep' : ''].join(' ').trim()}">${esc(x.hint)}</small>` : ''}${x.karma !== undefined ? `<small class="gate-total-karma keep" role="status">${esc(t('h4.yamaKarma').replace('{n}',x.karma))}</small>` : ''}</div>`).join(''));
       const swordTrainingBtn = N.querySelector('[data-npc="sword-training"]');
@@ -5096,6 +5253,11 @@ function openStation(k, emergency = false) {
       };
     }
     dlg.querySelectorAll('[data-drawer-close]').forEach(b => b.onclick = () => { drawerMode = null; panels(); });
+    dlg.querySelectorAll('[data-diag]').forEach(el => {
+      const open = () => diag?.show(el.dataset.diag, el);
+      el.onclick = open;
+      if (el.getAttribute('role') === 'button') el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
+    });
     const on = (id, fn) => { const b = dlg.querySelector(id); if (b) b.onclick = fn; };
     dlg.querySelectorAll('[data-rel]').forEach(b => b.onclick = () => {
       if (g.release(+b.dataset.rel)) { sfx('stamp'); panels(); refresh(); }
@@ -5342,6 +5504,7 @@ function openStation(k, emergency = false) {
     <div class="hud st-hud zone1-room" data-room="${k}">
       <div class="st-room"><canvas id="st-cv" width="900" height="620"></canvas>
         <div class="st-arch" id="st-arch" hidden></div>
+        <div class="st-diag" id="st-diag" hidden></div>
         <div class="mg-ov" id="mg-ov" hidden></div>
         <div class="st-npc" id="st-npc"></div>${k === 'krata' ? '<div id="st-actions"></div>' : ''}</div>
       <div class="st-card" id="st-left"></div>
@@ -5383,6 +5546,46 @@ function openStation(k, emergency = false) {
     panels();           // เว้นวรรคในห้องเปิดข้อมูลล่าสุด; การส่งวิญญาณต้องกดเลือกชื่อ
   };
   R.onCollect = () => { panels(); refresh(); };
+  if (k === 'tarang' || k === 'sawan') {
+    // P4 ใบวินิจฉัยวิญญาณ — ปุ่มหลักเรียกฟังก์ชันเดิมทั้งหมด (release / inspectPrison / moveFromPrison / inspectGate / resolveGate)
+    // พร้อมแอนิเมชันห้องเดิม · เปิดใบ = พักเกม (ปล่อยคืนตอนปิดใบ ผ่าน userPaused เหมือนกล่องอื่น)
+    const sheet = dlg.querySelector('#st-diag'), hud = dlg.querySelector('.st-hud');
+    const covered = () => dlg.querySelectorAll('#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls');
+    const after = ok => { if (ok) { sfx('stamp'); if (mine()) panels(); refresh(); } return ok; };
+    diag = mountDiagnosis({
+      g, roomK: k, box: sheet,
+      portrait: m => artUrl(soulKey(m.sp || 7)) || 'img/spirit7.png',
+      escorting: id => !!R?.prisonEscorting(id),
+      onOpen: () => { pauseForDlg(); hud?.classList.add('diag-open'); R.lock(true); covered().forEach(el => el.inert = true); },
+      onClose: () => {
+        hud?.classList.remove('diag-open'); covered().forEach(el => el.inert = false);
+        if (mine()) { R.lock(false); panels(); }
+        if (!userPaused && !g.bossWalk && !g.over) { g.paused = false; updatePlay(); }
+      },
+      onAct: (m, api) => {
+        const id = m.id;
+        switch (m.action.kind) {
+          case 'release': return g.release(id) ? (after(true), { result: 'close', next: 'now' }) : null;
+          case 'inspectPrison': return after(g.inspectPrison(id)) ? { result: 'stay' } : null;
+          case 'moveFromPrison':
+            return R.prisonEscort(id, () => { after(g.moveFromPrison(id)); api.openNext(); }) ? (panels(), { result: 'close', next: 'manual' }) : null;
+          case 'inspectGate':
+            if (!g.inspectGate(id)) return null;
+            R.gateEffect(id, 'scan'); sfx('gateScan'); panels(); refresh(); return { result: 'stay' };
+          case 'resolveGate': {
+            const entry = g.sentenceOf(id, 'gate'); if (!entry?.checked) return null;
+            const kind = gateKarma(entry) > 0 ? 'reborn' : 'sky'; R.gateEffect(id, kind);
+            if (!g.resolveGate(id)) return null;
+            sfx(kind === 'sky' ? 'gateSky' : 'gateReborn'); panels(); refresh();
+            const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            return { result: 'close', next: reduced ? GATE_EFFECT_REDUCED_MS : GATE_EFFECT_MS[kind] };
+          }
+        }
+        return null;
+      },
+    });
+    onDlgClose(() => diag?.close(true));
+  }
   if (emergency) R.setSleep(true);
   let wasNear = null, wasTrainingNear = null, wasSitting = false, wasSleeping = R.sleeping();
   const exit = roomExit(k, g.zone, room);
@@ -6242,6 +6445,11 @@ function openIntro(fromTitle = false) {
 
 
 window.G = g;
+window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก → พิกัดหน้าจอ (ตรงข้ามกับ toScene)
+  const v = mapCam.viewport, r = cv.getBoundingClientRect();
+  return v?.sx ? [r.left + (x * v.sx + v.tx) / v.width * r.width, r.top + (y * v.sy + v.ty) / v.height * r.height]
+    : [r.left + x / SCENE.w * r.width, r.top + y / SCENE.h * r.height];
+};
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.

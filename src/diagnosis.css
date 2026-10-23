@@ -1,0 +1,129 @@
+/* ใบวินิจฉัยวิญญาณ (P4) — ชั้นทับในห้องตะราง/ประตูสวรรค์ · พลัมเข้ม + ทอง · มือถือ 390 คอลัมน์เดียว */
+.st-hud.diag-open{container-type:normal!important;overflow:visible!important}
+.st-hud.diag-open .st-room{overflow:visible!important}
+.st-hud.diag-open :is(#st-left,#st-actions,#st-alert,#st-npc,#st-right,.st-bottom-left,.st-controls,#st-exit){visibility:hidden}
+.st-hud .st-diag{position:fixed;inset:0;z-index:170;display:flex;align-items:stretch;justify-content:center;padding:8px;background:rgba(10,5,8,.82);
+  padding-top:max(8px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.st-hud .st-diag[hidden]{display:none}
+.diag{--d-bg:#27171f;--d-bg2:#1d1016;--d-line:#5a3d2c;display:flex;flex-direction:column;width:100%;max-width:1180px;min-height:0;
+  background:linear-gradient(160deg,var(--d-bg),var(--d-bg2));border:1px solid #b98e50;border-radius:12px;color:var(--foreground,#f2e6dd);
+  font-size:14px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.diag button{font:inherit}
+.diag-head{flex:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--d-line);min-height:56px}
+.diag-title{font-family:var(--font-display,serif);color:var(--gold,#d4a355);font-size:18px}
+.diag-chip{padding:2px 10px;border:1px solid #b98e50;border-radius:99px;font-size:13px;color:#ffe1a1;white-space:nowrap}
+.diag-id{color:var(--muted-foreground,#b09a92);font-size:13px;font-variant-numeric:tabular-nums}
+.diag-nav{margin-left:auto;display:flex;align-items:center;gap:4px}
+.diag-nav button,.diag-x{min-width:44px;min-height:44px;border-radius:10px;border:1px solid #6b4a37;background:#3a2230;color:#ffe1a1;cursor:pointer;font-size:20px;line-height:1}
+.diag-nav button:disabled{opacity:.35;cursor:not-allowed}
+.diag-pos{min-width:3em;text-align:center;font-variant-numeric:tabular-nums;font-size:13px}
+.diag-body{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:12px;display:grid;gap:10px;
+  grid-template-columns:1fr;align-content:start}
+.diag-who{display:grid;grid-template-columns:96px 1fr;gap:4px 12px;align-items:center}
+.diag-portrait{grid-row:1/span 3;width:96px;height:132px;display:flex;align-items:flex-end;justify-content:center;
+  background:radial-gradient(ellipse at 50% 92%,rgba(212,163,85,.45),transparent 70%)}
+.diag-portrait img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:pixelated}
+.diag-who h2{margin:0;font-size:20px;color:#ffe1a1;font-family:var(--font-display,serif);line-height:1.4}
+.diag-job{margin:0;color:var(--muted-foreground,#b09a92);font-size:13px}
+.diag-banner{grid-column:2;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;border:1px solid #6b4a37;background:#2f1c26;font-weight:600;font-size:14px}
+.diag-banner img{flex:none}
+.diag-mark{flex:none;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#4a3040;font-size:16px}
+.diag-banner.tone-good{border-color:#4a9d6a;background:#1e3328}.diag-banner.tone-good .diag-mark{background:#2d6b46}
+.diag-banner.tone-bad{border-color:#e04a2f;background:#3a1f1d}.diag-banner.tone-bad .diag-mark{background:#8a2f21}
+.diag-banner.tone-info{border-color:#5d8fc7;background:#1e2a3d}.diag-banner.tone-info .diag-mark{background:#3a5f8f}
+.diag-sec,.diag-side-a,.diag-side-b{background:rgba(20,10,14,.55);border:1px solid var(--d-line);border-radius:10px;padding:0}
+.diag-sec>summary{list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;padding:6px 12px;color:var(--gold,#d4a355);font-weight:600;font-size:14px}
+.diag-sec>summary::-webkit-details-marker{display:none}
+.diag-sec>summary::before{content:'▸';display:inline-block;width:1.2em;transition:transform .12s}
+.diag-sec[open]>summary::before{transform:rotate(90deg)}
+.diag-sec-body,.diag-side-a,.diag-side-b{padding:0 12px 12px}
+.diag-side-a,.diag-side-b{padding-top:10px}
+.diag-side-a h3,.diag-side-b h3{margin:0 0 6px;font-size:14px;color:var(--gold,#d4a355)}
+.diag-sec-body p{margin:4px 0}
+.diag-face{color:#f2e6dd;margin:0 0 8px!important}
+.diag-empty,.diag-nodata{color:var(--muted-foreground,#b09a92);font-size:13px}
+.diag-deed,.diag-merit{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px solid rgba(255,255,255,.06)}
+.diag-deed:first-of-type,.diag-merit:first-of-type{border-top:0}
+.diag-sin{padding:1px 8px;border-radius:99px;border:1px solid var(--sin,#999);color:var(--sin,#ddd);font-size:12px;white-space:nowrap}
+.diag-deed.hid .diag-deed-t{border-bottom:1px dashed #b09a92}
+.diag-deed-t small,.diag-merit-t small{display:block;color:var(--muted-foreground,#b09a92);font-size:12px;line-height:1.4}
+.diag-w{display:flex;align-items:center;gap:2px}
+.diag-w i{width:9px;height:14px;border-radius:2px;background:#3a2a31}
+.diag-w i.on.sin{background:#e0623a}.diag-w i.on.rel{background:#e0a132}
+.diag-w b{margin-left:6px;min-width:1.6em;text-align:right;font-variant-numeric:tabular-nums}
+.diag-deed.relief .diag-w b{color:#f2d36b}
+.diag-merit.fake .diag-merit-t{text-decoration:line-through;text-decoration-color:#e04a2f}
+.diag-merit b{color:#62d891;font-variant-numeric:tabular-nums}
+.diag-tier{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.diag-dots{display:inline-flex;align-items:center;gap:5px}.diag-dots i{display:block;width:14px;height:14px;border-radius:50%;border:2px solid #6b4a37;background:transparent;box-sizing:border-box}
+.diag-dots i.on{background:#d4a355;border-color:#d4a355}.diag-dots i.fit{outline:2px solid #62d891;outline-offset:2px}
+.diag .ok{color:#62d891}.diag .bad{color:#ff7385}.diag .warn{color:#f2d36b}
+.diag-served{color:var(--muted-foreground,#b09a92);font-size:13px}
+.diag-boss,.diag-said{font-style:italic;color:#ffe9c4}
+.diag-meter{margin-top:8px}
+.diag-meter-head{display:flex;align-items:center;gap:8px}
+.diag-meter b{font-size:14px}
+.diag-num{margin-left:auto;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:#ffe1a1}
+.diag-state{font-size:13px}.diag-meter.ok .diag-state{color:#62d891}.diag-meter.bad .diag-state{color:#ff7385}
+.diag-fear{font-size:13px;color:#ffa460}
+.diag-state{margin-left:0}.diag-lock{margin-left:auto;color:var(--muted-foreground,#b09a92);font-size:13px}
+.diag-meter.locked .diag-meter-head b{color:var(--muted-foreground,#b09a92)}
+.diag-bar{position:relative;display:block;height:10px;background:#3a2a31;border-radius:99px;overflow:hidden;margin:2px 0 4px}
+.diag-bar i{display:block;height:100%;background:var(--gold,#d4a355);border-radius:99px}
+.diag-bar.ok i{background:#4a9d6a}.diag-bar.bad i{background:#e04a2f}.diag-bar.ked i{background:#e0a132}.diag-bar.paid i{background:#62d891}
+.diag-bar.with-line::after{content:'';position:absolute;left:var(--line);top:-2px;bottom:-2px;width:2px;background:#fff}
+.diag-side-a small,.diag-side-b small{display:block;color:var(--muted-foreground,#b09a92);font-size:12px;line-height:1.5}
+.diag-parts{margin-top:8px;padding:8px 10px;border:1px dashed var(--d-line);border-radius:8px}
+.diag-parts h4{margin:0 0 4px;font-size:13px;color:#ffe1a1}
+.diag-part{display:grid;grid-template-columns:7em 1fr auto;gap:2px 8px;align-items:center;padding:3px 0}
+.diag-part small{grid-column:1/-1;margin-top:-2px}
+.diag-part b{font-size:12px;font-variant-numeric:tabular-nums}
+.diag-karma-big{display:flex;align-items:baseline;gap:10px}
+.diag-karma-big b{font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+.diag-karma-big.heaven b{color:#62d891}.diag-karma-big.reborn b{color:#8fb8ef}
+.diag-fall-list{margin:6px 0}
+.diag-fall{display:flex;justify-content:space-between;gap:8px;padding:2px 0;font-size:13px;border-bottom:1px dotted rgba(255,255,255,.08)}
+.diag-fall.left{font-weight:700;border-bottom:0;color:#ffe1a1}
+.diag-fall.sin b{color:#ff9a7a}.diag-fall.rel b{color:#f2d36b}.diag-fall.mer b,.diag-fall.lot b{color:#62d891}.diag-fall.int b{color:#8fb8ef}
+.diag-foot{flex:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--d-line)}
+.diag-foot-note:empty{display:none}
+.diag-foot-note{margin-right:auto;color:var(--muted-foreground,#b09a92);font-size:13px;min-width:0;flex:1 1 140px}
+.diag-close-btn{min-height:48px;padding:6px 16px;border-radius:10px;border:1px solid #6b4a37;background:#3a2230;color:#f2e6dd;cursor:pointer}
+.diag-main{min-height:48px;padding:6px 20px;border-radius:10px;font-weight:700;flex:1 1 200px;max-width:100%}
+.diag-main:disabled{opacity:.5;cursor:not-allowed}
+.diag button:focus-visible,.diag summary:focus-visible{outline:2px solid #ffe1a1;outline-offset:2px}
+/* เดสก์ท็อป: 3 คอลัมน์ (รูป | ทำอะไรมา+บุญ+คำตัดสิน+พูด | ตัวชี้วัด+กรรม) */
+@media(min-width:900px){
+  .st-hud .st-diag{padding:16px}
+  .diag-body{grid-template-columns:300px minmax(0,1fr) 380px;column-gap:14px;grid-auto-rows:min-content}
+  .diag-who{grid-column:1;grid-row:1/span 4;grid-template-columns:1fr;justify-items:center;text-align:center;align-self:start}
+  .diag-portrait{grid-row:auto;width:220px;height:320px}
+  .diag-banner{grid-column:1;width:100%}
+  .diag-sec[data-sec=deeds]{grid-column:2;grid-row:1}.diag-sec[data-sec=merits]{grid-column:2;grid-row:2}
+  .diag-sec[data-sec=order]{grid-column:2;grid-row:3}.diag-sec[data-sec=said]{grid-column:2;grid-row:4}
+  .diag-side-a{grid-column:3;grid-row:1/span 2}.diag-side-b{grid-column:3;grid-row:3/span 2}
+}
+/* จอเตี้ย (มือถือแนวนอน 844×390): ย่อเป็น 2 คอลัมน์ */
+@media(max-height:480px) and (min-width:560px) and (max-width:899px){
+  .diag-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .diag-who{grid-column:1/-1}
+  .diag-head{min-height:48px;padding:4px 10px}
+}
+@media(max-width:480px){
+  .st-hud .st-diag{padding:4px}
+  .diag-head{gap:4px 6px;padding:6px 8px}.diag-title{font-size:15px}.diag-chip{font-size:12px;padding:1px 8px}
+  .diag-nav{gap:3px}.diag-pos{min-width:2.6em}
+  .diag-body{padding:8px}
+  .diag-who{grid-template-columns:84px 1fr}.diag-portrait{width:84px;height:116px}
+  .diag-part{grid-template-columns:6em 1fr auto}
+  .diag-foot{padding-left:8px;padding-right:8px}
+}
+@media(prefers-reduced-motion:reduce){.diag-sec>summary::before{transition:none}}
+
+/* ปุ่มเปิดใบ: แถวรายชื่อ + ป้ายลอยเหนือหัววิญญาณ */
+.st-row-diag{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.st-row-name{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;flex:1 1 auto;min-width:0}
+.st-row-name:hover{text-decoration:underline}
+.btn-diag{min-width:44px;min-height:44px;padding:4px 10px;border-radius:10px;border:1px solid #b98e50;background:#3a2230;color:#ffe1a1;cursor:pointer;font:inherit;white-space:nowrap}
+.btn-diag:hover{background:#4b2d3d}
+.st-npc-tag .btn-diag{pointer-events:auto;min-height:36px;min-width:36px;font-size:13px;padding:2px 8px;box-shadow:0 2px 8px rgba(0,0,0,.6)}

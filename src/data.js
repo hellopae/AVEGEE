@@ -380,15 +380,39 @@ export const crewName = (c, zone = 'th') => c?.names?.[zone] || c?.name || '—'
 // trainDmg = ดาเมจที่เพิ่มต่อขั้นฝึก "แรง" (upgradeCrew ใน game.js, c.upLv) — ระบบฝึกเดิมยังอยู่
 // แค่ต่อยอดบนฐานใหม่แทนสูตรเดิมที่ผูกกับ raeng ตรง ๆ
 export const CREW_POWER = {
-  nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี' },
-  taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง' },
-  plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ' },
-  dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย' },
+  nira:   { dmg:30, trainDmg:2, heal:32, desc:'แสงฟื้นบารมี',
+            name:'แสงฟื้นบารมี', icon:'img/ui/power-heal-light.webp', jobIcon:'img/ui/job-scroll.webp', tint:'#e8c870', kind:'heal' },
+  taan:   { dmg: 35, trainDmg: 2, desc: 'ฟาดกระบอง',
+            name:'กระบองทัณฑ์', icon:'img/ui/power-club.webp', jobIcon:'img/ui/job-order.webp', tint:'#e0623a', kind:'strike' },
+  plerng: { dmg: 40, trainDmg: 2, desc: 'ปล่อยไฟ',
+            name:'เพลิงพิพากษา', icon:'img/ui/power-fire.webp', jobIcon:'img/ui/job-subdue.webp', tint:'#e8832e', kind:'fire' },
+  dam:    { dmg: 35, trainDmg: 2, desc: 'โจมตีช่วย',
+            name:'คมดาบ', icon:'img/ui/power-blade.webp', jobIcon:'img/ui/job-crowd.webp', tint:'#6f93b5', kind:'strike' },
   // สะกดจิต — ไม่ได้ทำดาเมจตรง แต่ทำให้ศัตรูมึน 1 เทิร์น (ฟาดใส่ตัวเองแทนฟาดยมบาทน้อย)
-  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น' },
-  boon:   { heal: 50, desc: 'ฟื้นบารมี' },
-  guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง' },
+  kan:    { confuse: 1, desc: 'สะกดจิต — มึน 1 เทิร์น',
+            name:'พลังสะกดจิต', icon:'img/ui/power-hypno.webp', jobIcon:'img/ui/job-reveal.webp', tint:'#8a5fc7', kind:'hypno' },
+  boon:   { heal: 50, desc: 'ฟื้นบารมี',
+            name:'พลังฟื้นฟู', icon:'img/ui/power-heal-lotus.webp', jobIcon:'img/ui/job-cleanse.webp', tint:'#4fae78', kind:'heal' },
+  guard:  { dmg: 60, trainDmg: 2, desc: 'ฟาดแรง',
+            name:'กระบองพิทักษ์', icon:'img/ui/power-heavy.webp', tint:'#d4a355', kind:'strike' },
 };
+// P4 (คุณเป้ 23 ต.ค. 2569 · D1): ความสำนึกของวิญญาณ 0–100 "คำนวณตายตัว" ไม่สุ่ม — ค่าน้ำหนักทั้งหมดอยู่ที่นี่ที่เดียว (สูตรอยู่ remorse.js)
+//   total = keeper + intensity + trait  (เต็ม weights.* รวม 100) · ผ่านเมื่อ total >= pass = เข็ดแล้ว
+//   keeper    = weights.keeper × ( keeperFit×(1−stationShare) + ความตรงสถานี(tham/100)×stationShare )
+//               keeperFit: ผู้คุมที่ผูกกับสีนิสัย (กานต์=ม่วง เพลิง=แดง บุญ=เขียว) ตรงสี=match · คนละสี=mismatch · ทัณฑ์/ดำ=neutral
+//   intensity = weights.intensity × max(0, 1 − เบาไป×shortPenalty − หนักเกิน×overPenalty)   (เบาไป/เกิน = วาระที่สมควร เทียบวาระที่ให้ เหมือน judge())
+//   trait     = weights.trait × trait[traitKey]   (traitKey จาก interrogation.js — สีของวิญญาณที่เกมมีอยู่แล้ว)
+// จูนด้วย tests/p4-remorse.test.mjs จำลองคดีใน cases.js ทุกคดี × ผู้คุม 5 × วาระ 1–5: ตรงวาระผ่าน ~100% · เบาไปผ่าน ~30% (เดิม 30%) · หนักเกินผ่าน ~29% (เดิม 100%)
+export const REMORSE = Object.freeze({
+  pass: 60,
+  weights: Object.freeze({ keeper: 25, intensity: 45, trait: 30 }),
+  keeperFit: Object.freeze({ match: 1, neutral: 0.6, mismatch: 0.15 }),
+  stationShare: 0.3,
+  shortPenalty: 0.25,
+  overPenalty: 0.45,
+  trait: Object.freeze({ accepting: 1, concealing: 0.6, resisting: 0.35 }),
+});
+export const REMORSE_PASS = REMORSE.pass;
 
 
 // ---------- คำแก้ตัว (วิญญาณพูดเองตอนขึ้นแท่น — โกหกได้) ----------
@@ -694,6 +718,9 @@ export const MOB = {
 export const GUARD = {
   k:'guard', name:'ยักษ์ทวารบาล', img:'crew-guard', h:104,
   hire: 420, pay: 22, battleAtk: CREW_POWER.guard.dmg, battleCd:120,
+  // ค่าที่ battleAct('guard') ใช้จริง (ย้ายจากเลขลอยใน game.js มาไว้ที่นี่ — ค่าเดิมทุกตัว): คูลดาวน์ 20 วินาที · กำลังใจ −8 ต่อครั้ง · ต้องมีกำลังใจ ≥ 8
+  // (battleCd:120 ข้างบนเป็นค่าเก่า ไม่ได้ใช้ตั้งคูลดาวน์จริง — เหลือไว้เพราะเทสต์ combat-power ยังอ้าง · การ์ด แถบ และแผ่นพลังอ่าน helpCdMs)
+  helpCdMs:20000, helpMorale:8,
   line:'"ข้าเฝ้าประตูนี้มาก่อนที่ท่านจะเกิด ปล่อยเรื่องพวกเปรตให้ข้า"',
   desc:'ไล่ปราบเปรตให้เอง ไม่ต้องเดินไปเอง แต่กินค่าแรงทุกงวด · เข้าช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ',
 };

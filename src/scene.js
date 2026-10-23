@@ -975,18 +975,24 @@ export function hitActor(g, sx, sy) {
     const [bx, by] = badgePos(st.def);
     if (Math.hypot(bx - sx, by - sy) < BADGE_R + 8) return { kind: 'station', key: st.def.k };
   }
+  // P4: ตัวละครที่ซ้อนกัน (วิญญาณในคิว · วิญญาณที่กำลังเดิน · ยมทูต · ยักษ์ · คนงาน) → เลือกตัวที่ "ใกล้จุดแตะที่สุด"
+  // แทนลำดับตายตัว (เดิมวิญญาณชนะยมทูตเสมอ) · เปรต/เป้าต่อสู้/พ่อค้า/บอสด้านบนยังมาก่อนเหมือนเดิม · คนงานคลิกได้แล้ว (kind 'worker')
+  const cand = [];
+  const consider = (hit, x, y, r) => { if (near(x, y, r)) cand.push({ hit, d: Math.hypot(x - sx, y - sy) }); };
   for (let i = 0; i < g.queue.length; i++) {
     const p = QUEUE_LINE[i];
-    if (p && near(p[0], p[1], radius(34))) return { kind: 'soul', key: g.queue[i].id };
+    if (p) consider({ kind: 'soul', key: g.queue[i].id }, p[0], p[1], radius(34));
   }
   for (const walk of g.afterlifeWalks || []) {
     if (walk.zone !== g.zone) continue;
     const [x, y] = afterlifeWalkPosition(walk);
-    if (near(x, y, radius(34))) return { kind:'soul', key:walk.soul.id };
+    consider({ kind:'soul', key:walk.soul.id }, x, y, radius(34));
   }
   for (const c of g.crew)
-    if (actorStanding(c) && c.x != null && near(c.x, c.y)) return { kind: 'crew', key: c.k };
-  if (actorStanding(g.guard) && near(g.guard.x, g.guard.y)) return { kind: 'guard', key: 0 };
+    if (actorStanding(c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
+  if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
+  for (const w of zoneWorkers(g)) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
+  if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
 }

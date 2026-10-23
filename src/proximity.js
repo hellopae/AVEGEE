@@ -74,3 +74,11 @@ export function mapInteractions(g, merchant) {
   }
   return targets;
 }
+
+/** P4 §4.2 — ปุ่ม 💬 / ปุ่ม E คุยตัวละคร (kind 'talk') · ระยะเอื้อมคุย TALK_REACH (70) เล็กกว่า INTERACTION_REACH
+ *  ผู้เรียกต้องเลือก "เฉพาะตอนไม่มี interaction อื่นในระยะ" (สถานี/นิรา/พ่อค้า/ซ่อม/ท่าเรือมีสิทธิ์เหนือกว่า) — ดู currentMapInteraction ใน ui.js
+ *  @param {Array} targets  จาก talk.js talkTargets() · @param {number} headH ความสูงตัวละครบนฉาก (px ฉาก) */
+export function talkInteractions(targets, headH) {
+  return targets.map(tg => ({ id:`talk:${tg.id}`, key:tg.id, kind:'talk', x:tg.x, y:tg.y,
+    bx:tg.x, by:tg.y - headH * tg.top - 6, anchor:'top', label:t('talk.with', { name:tg.name }) }));
+}

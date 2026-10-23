@@ -24,6 +24,7 @@ import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
 import { buildVerdictScene } from './verdict-scene.js';
+import { calcRemorse, remorseOf, isRepentant } from './remorse.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
 import { SINS, DEEDS, MERITS, WHO, STATIONS, CREW, BAL, EVENTS, SCENE, SPOTS, QUEUE_LINE, GUARD_POST,
@@ -123,6 +124,7 @@ export function createGame() {
     mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [], courtArrivals: [],
     workerState:normalizeWorkers(),
     interrogationSupport:{version:1,kanReadyAt:{},insights:0},teamReports:[],nextTeamReportId:1,
+    talk: { seen: {} },        // P4: ธงว่าเคยคุยบท "ครั้งแรก" ของตัวละครแล้ว (บรรยากาศล้วน ไม่มีผลต่อเกม)
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
     // เดินวาระตั้งแต่เข้าเกม (8 ก.ย. 2569) — เดิมเป็น true แล้วไม่มีอะไรปลดให้เลย
@@ -1057,7 +1059,7 @@ const API = {
     let arriveAt = now;
     if (route?.length) {
       const outbound = [QUEUE_LINE[0], ...route];
-      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name});
+      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name,intensity});
       if(delivered){const walk=this.afterlifeWalks.findLast(w=>w.destination==='station'&&w.soul.id===soul.id);arriveAt=now+(walk?.duration||0);}
       else if (!c.self && !st.slots.length) {
         const from = [c.x ?? c.hx, c.y ?? c.hy];
@@ -1424,11 +1426,15 @@ const API = {
       this.log(`↩️ ${soul.who}ยังมีกรรม — ประตูสวรรค์ส่งกลับเข้าคิวให้ตัดสินใหม่`, 'bad');
     } else if (st.def.heaven) {
       this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
-        stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right });
+        stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right,
+        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need, servedAt:this.tick });
       this.log(`🕊️ ${soul.who}ถึงประตูสวรรค์ — รอให้บุญตรวจกรรมคงเหลือ`, 'act');
     } else {
+      // P4: เก็บสถานี/ผู้คุม/วาระเต็ม/ความสำนึกไว้ให้ใบวินิจฉัย · remorse คำนวณตายตัวตรงนี้ครั้งเดียว (ดู remorse.js · น้ำหนักที่ data.js REMORSE)
       const entry = { soul, verdict:r, intensity:slot.intensity,
-        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone };
+        stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone,
+        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null,
+        need:slot.need, servedAt:this.tick, remorse:calcRemorse({ soul, keeperK:st.crewK, intensity:slot.intensity, verdict:r }) };
       const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
       // 29C: ออกเดินหลังปลดผู้คุมออกจากเวร (ด้านล่าง) เพื่อให้รู้ว่ายมทูตคนนั้นว่างไปส่งได้ไหม
       toPrison = prison ? { soul, entry, from:[st.def.x, st.def.y], to:[prison.def.x, prison.def.y] } : null;
@@ -1462,7 +1468,9 @@ const API = {
     if (!x || this.tick < x.readyAt) return false;
     if (x.inspected) return true;
     x.inspected = true;
-    x.repentant = x.verdict.short <= 0 || Math.random() > RETURN.chance;
+    // P4: ตัดสินจากตัวเลขความสำนึกที่สุ่มไว้ตอนจบทัณฑ์ · เซฟเก่าที่ไม่มี remorse ใช้การสุ่มแบบเดิม
+    const rem = remorseOf(x);
+    x.repentant = rem !== undefined ? isRepentant(rem) : x.verdict.short <= 0 || Math.random() > RETURN.chance;
     this.log(`📋 นิราตรวจ ${x.soul.who} — ${x.repentant ? 'สำนึกแล้ว ส่งไปประตูสวรรค์ได้' : 'ยังไม่เข็ด ต้องกลับเข้าคิว'}`, x.repentant ? 'good' : 'bad');
     this.onChange();
     return true;
@@ -3236,7 +3244,7 @@ const API = {
   },
   guardHelpWhy() {
     if (!this.guardActive() || (this.battle?.absentActors || []).includes(this.guard.id)) return 'พักฟื้น / Recovering';
-    if (this.guard.morale < 8) return 'กำลังใจไม่พอ / Low morale';
+    if (this.guard.morale < GUARD.helpMorale) return 'กำลังใจไม่พอ / Low morale';
     const remaining = this.guardCooldown();
     if (remaining) return `รออีก ${remaining} วินาที`;
     return '';
@@ -3435,8 +3443,8 @@ const API = {
     } else if (what === 'guard') {
       // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
       if (this.guardHelpWhy()) return false;
-      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = 20000;
-      this.guard.morale = Math.max(0, this.guard.morale - 8);
+      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = GUARD.helpCdMs;
+      this.guard.morale = Math.max(0, this.guard.morale - GUARD.helpMorale);
       if (!this.guard.morale) this.downActor(this.guard);
       B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
       dmg = this.allyStats(this.guard).dmg;
@@ -4545,20 +4553,6 @@ const API = {
     this.log('🪞 แสงสะท้อนถึงกระจกวิเศษ — เติมพลัง +1','good');
     this.save(); this.onChange(); return true;
   },
-  talkKan() {
-    const st = this.stations.find(s => s.def.k === 'krajok');
-    if (!st || st.build) return false;
-    if (this.tick < (st.kanCd || 0)) return false;
-    const p = this.powerOf('mirror');
-    if (this.powerLocked(p) || p.ammo >= p.max) return false;
-    this.discover('item', 'mirror');
-    p.ammo = Math.min(p.max, p.ammo + 1);
-    st.kanCd = this.tick + KRAJOK.kanCool;
-    this.log('🪞 กานต์: "ส่องดูเถอะครับ เดี๋ยวผมมีให้อีก" — ได้กระจกวิเศษมาหนึ่งบาน', 'good');
-    this.save(); this.onChange();
-    return true;
-  },
-
   /** ข้อ A-3 คุณเป้ 24 ก.ย. 2569 — ซื้อของจากบุญในห้องประตูสวรรค์ (ตอนนี้มีแต่วงสะกดจิต)
    *  ต้องยืนใกล้บุญในห้องก่อน (ui.js เช็ค inside ก่อนโชว์ปุ่ม) · กลไกซื้อเหมือน buyMerchant ทุกอย่าง
    *  ต่างแค่คนละสต็อก/คนละที่ยืน — ของเข้ากระเป๋าเหมือนกัน ใช้ทีหลังผ่าน useBag() */
@@ -4818,6 +4812,7 @@ API.snapshot = function (withEntry = true) {
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       slots: st.slots,
     })),
+    talk: { seen: this.talk?.seen || {} },
     queue: this.queue, held: this.held, sentences:this.sentences,
     afterlifeWalks:this.afterlifeWalks, courtArrivals:this.courtArrivals, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
@@ -4973,6 +4968,7 @@ API.restore = function (d) {
   this.queue = (d.queue || []).filter(dropRetired);
   this.held = (d.held || []).filter(dropRetired);
   this.sentences = d.sentences || [];
+  this.talk = { seen: { ...(d.talk?.seen || {}) } };
   this.reborn = d.reborn || 0;
   this.ascended = d.ascended || 0;
   this.items = d.items || [];

@@ -183,7 +183,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
   const P = { x: room.me[0], y: room.me[1], tx: null, ty: null, face: 1 };
   const mirrorRoom = !!room.mirror;       // 29M: ภาพศาลาไทยใหม่ไม่ต้องกลับซ้ายขวาแล้ว (บันไดอยู่ล่างขวาในไฟล์)
   const KEY = {};
-  const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map();
+  const gateEffects = new Map(), visibleGateSlots = new Map(), prisonEscorts = new Map(), waitSlots = new Map();   // waitSlots: id วิญญาณที่ยืนรอในตะราง/ประตู → ช่องที่วาด (ให้ปุ่มใบวินิจฉัยลอยเหนือหัว)
   let raf = 0, last = performance.now(), dead = false;
   let box = { ox: 0, oy: 0, w: 1, h: 1 };     // กรอบที่ภาพฉากถูกวางจริงบน canvas
 
@@ -505,6 +505,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const occupied = st?.slots.length || 0;
       const freeSlots=room.souls.slice(occupied).filter(at=>![...gateEffects.values()].some(fx=>(fx.kind==='reborn'||fx.kind==='sky') && !gateEffectPose(fx.kind,t-fx.start,fx.reduced).done && fx.at[0]===at[0] && fx.at[1]===at[1]));
       if(def.k === 'sawan')visibleGateSlots.clear();
+      waitSlots.clear();
       const waiting = [
         ...(def.k === 'tarang' ? (g.held || []).map(soul => ({ soul })) : []),
         ...(g.sentences || []).filter(x => x.zone === g.zone && x.stage === stage),
@@ -513,6 +514,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         if(prisonEscorts.has(entry.soul.id)) return;
         const a = freeSlots[i];
         if(def.k === 'sawan')visibleGateSlots.set(entry.soul.id,a);
+        waitSlots.set(entry.soul.id,a);
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
           drawSoul(ctx, x, y, U * SOUL_H, t + entry.soul.id * 200,
@@ -774,6 +776,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const w = cv.width || 1, h = cv.height || 1;
       return [px(u) / w * 100, (py(v) - up * unit()) / h * 100];
     },
+    /** P4 — จุดเหนือหัววิญญาณที่ยืนรอ (เปอร์เซ็นต์ของ canvas) · ไม่ได้ยืนรออยู่บนจอ (เกิน 3 ดวง/กำลังเดินไปส่ง) → null */
+    soulAnchor(id) { const a = waitSlots.get(id); return a ? api.anchor(a[0], a[1], SOUL_H + 0.035) : null; },
     crewHeight: CREW_H,
     canSit,                 // มีจุดนั่งพักไหม — เฉพาะศาลาน้ำชา (ข้อ A 24 ก.ย. 2569)
     sitting: () => sitting,
