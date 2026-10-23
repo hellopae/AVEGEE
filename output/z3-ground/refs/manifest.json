@@ -1,0 +1,107 @@
+{
+  "ref-q-ne-guide.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "afd986c542ebeedacc060a28e54a12b16b482658140faf7559af0e0eb0390de6"
+  },
+  "ref-q-ne-layout.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "c3680ec6c670a1a3369f48d483d852e7f23e17fbe9ff430a4af1a7dbd6ca0821"
+  },
+  "ref-q-ne-walk.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "db3ab15dace6d223fe9c824b37028f270c895205e0479f7fe5229dca0c6e6ca5"
+  },
+  "ref-q-nw-guide.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "ca38a8574a82c235020333af15f435a3bd3bc5338c8c08a3e85e7c2e382ffcb0"
+  },
+  "ref-q-nw-layout.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "d305797c5f3a6e9be300b1edb8e1461a4208ccd67e183a696ef98624da80f387"
+  },
+  "ref-q-nw-walk.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "2bd4033801102f63ef1c9822fa558e86dfb47c0a10ec9d1e3ca74b88fb90d7e2"
+  },
+  "ref-q-se-guide.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "653f57b0fba71b3bd5ed13095f6aaf62e24505cdbacf63c9307292892d306549"
+  },
+  "ref-q-se-layout.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "fdf839f614fb1b0cb83aa547257a6a72eba45bf478ba0465d0a7fe346d68ac0c"
+  },
+  "ref-q-se-walk.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "99d9c7aee8694a3883c50233b9f7f32225ab6fa6a2949e99a8e125fdab0f2182"
+  },
+  "ref-q-sw-guide.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "aeeeb50dffb3ed28c1bfd8634efcb44201b70a4a0e3ff2b0fd6929e2196f56bb"
+  },
+  "ref-q-sw-layout.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "4a000b27a87516ebab0f4dffef2bb2df27c3ccc91caeaa0fcd5648768b3991b9"
+  },
+  "ref-q-sw-walk.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "54a8b53a7a9c888ec360b9f500a3cd1af39197ab6e3fb78c20a53861db14a711"
+  },
+  "seed-q-ne.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "af49dae1d4ecb6d26b01cfc25079525263f3aa42e3505b51ee395b312caba59d"
+  },
+  "seed-q-se.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "167b9f26cb6efdbb6be067fac4f65088f25c4c9f342869494c43804ecb9f7899"
+  },
+  "seed-q-sw.png": {
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "10a6b048d44c4d8b19d31740b44ee1313185b849108c1021e880b0af0606312e"
+  }
+}

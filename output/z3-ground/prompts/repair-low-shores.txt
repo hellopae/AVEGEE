@@ -1,0 +1,7 @@
+Use case: precise-object-edit. Edit this 1536x1024 game terrain crop in place. Keep camera, all geometry, bridge, single pier at right, stairs, plazas, stone pattern, snow, firs, water and colors unchanged EXCEPT three small north riverbank segments. The north bank of the wide horizontal river must have THREE gently sloping, flat snowy cobblestone shore landings that are flush with the water, WITHOUT cliff walls, boulders, balustrades, steps or protruding piers.
+Positions IN THIS IMAGE:
+1 x92–246 at y453, just below the left small platform.
+2 x937–1090 at y453, immediately left of the tall straight main bridge.
+3 x1275–1390 at y453, immediately right of the main bridge and LEFT of the existing real pier. Preserve the existing pier exactly.
+At these three spans replace vertical rock faces at y450–500 with continuous flat low cobblestone slope and thin snow-edged shore meeting water, like a shallow beach/ramp. Preserve north shoreline at roughly y453: do NOT extend land far into river. Remove rocks/bushes at their water edges only so the three landings have clear access inland. Each landing must be broad and flat with no height drop or stair. Continue same blue-grey cobblestones and painterly winter palette. Don't add stone posts. Everything outside these 3 tiny segments identical.
+Negative: new pier, new bridge, extra stairs, cliffs or raised rock walls at those three landings, text, cross, religious symbols, people, boats, blur, layout changes, relocated bank, altered main bridge, altered real pier.

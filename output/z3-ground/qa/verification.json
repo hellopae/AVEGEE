@@ -1,0 +1,238 @@
+{
+  "scope": "structural asset checks only; visual acceptance remains owner review",
+  "quadrants": {
+    "nw": [
+      1536,
+      1024
+    ],
+    "ne": [
+      1536,
+      1024
+    ],
+    "sw": [
+      1536,
+      1024
+    ],
+    "se": [
+      1536,
+      1024
+    ]
+  },
+  "full": [
+    4915,
+    3277
+  ],
+  "preview": [
+    1536,
+    1024
+  ],
+  "chunk_count": 20,
+  "full_equals_repo_stitch": true,
+  "mask_different_pixels_asia_west": 0,
+  "walkable_preview_pixels": 354590,
+  "chunks": {
+    "r1-c1.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "f12fa8bd79dfd3aa3cd56418102277d4bfb631b5b93fa355d60b7fab338c982f",
+      "rgb_mae_vs_full": 2.067
+    },
+    "r1-c2.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "b66080ea9481fdde084b69df2df3942edacaa254e3307e92722eb7473ae0b0cb",
+      "rgb_mae_vs_full": 2.034
+    },
+    "r1-c3.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "96f72f652c5cca84ca684567c95d178c94303a62c31ba9986c675297b12cec00",
+      "rgb_mae_vs_full": 1.944
+    },
+    "r1-c4.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "76aaa27caf051e4a4bd75cb3069cb9e8e858a7256e312dd2980f5e550d55208a",
+      "rgb_mae_vs_full": 2.013
+    },
+    "r1-c5.webp": {
+      "size": [
+        819,
+        1024
+      ],
+      "sha256": "7ac971f31aac4630a413fa2bf26971b72d5a249180a42547a7b1e719dd2c7c4e",
+      "rgb_mae_vs_full": 2.074
+    },
+    "r2-c1.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "9f4b3eff89b0ea2d26c406838132bebf8abb3925c9781e5cb1cbb41d1ac901c6",
+      "rgb_mae_vs_full": 1.922
+    },
+    "r2-c2.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "6ac26583eb1c6ca068445f297d252e1bf6a2a3133e3027c69056859449088c1b",
+      "rgb_mae_vs_full": 2.003
+    },
+    "r2-c3.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "ebf58ba7a1306b64f9f9a7b6c389d0254639838a2c1cb12a95dc3c5cb40a0e84",
+      "rgb_mae_vs_full": 1.855
+    },
+    "r2-c4.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "ca8cc8a894e7902943fedabfa61c44cfd18724a5460c722bf62bb3ab567518df",
+      "rgb_mae_vs_full": 2.038
+    },
+    "r2-c5.webp": {
+      "size": [
+        819,
+        1024
+      ],
+      "sha256": "3441ab36d65aa9194d968618234523cdf62bf3cac40bbab535d1195c5ec74f47",
+      "rgb_mae_vs_full": 2.025
+    },
+    "r3-c1.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "bcc49a84117eb6692073ca7866899a612a9d39324b7710b8d2901935c5c66d2e",
+      "rgb_mae_vs_full": 1.957
+    },
+    "r3-c2.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "e14a85d88230c31d14b11b5d7b58b41be7a7c237adb17014fa6ef272ff66795e",
+      "rgb_mae_vs_full": 1.91
+    },
+    "r3-c3.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "90efe020535dbfd759757f04b268fd8802508464f0277b65bae131464b0d1f95",
+      "rgb_mae_vs_full": 1.776
+    },
+    "r3-c4.webp": {
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "67c4aa97d6a428774aaaea40e885c43b44c4b8f4167a7bf7555c4458c90090c0",
+      "rgb_mae_vs_full": 1.894
+    },
+    "r3-c5.webp": {
+      "size": [
+        819,
+        1024
+      ],
+      "sha256": "77a4d10fbe2749ef6c8c67aaf5132fc8a6cc76e66fdb8cb327dbbb724b616add",
+      "rgb_mae_vs_full": 1.914
+    },
+    "r4-c1.webp": {
+      "size": [
+        1024,
+        205
+      ],
+      "sha256": "febe795a4773cbe33cf0d4e3f3dffc360c68ffa691a4e35330d75af6e9390c08",
+      "rgb_mae_vs_full": 1.975
+    },
+    "r4-c2.webp": {
+      "size": [
+        1024,
+        205
+      ],
+      "sha256": "bfc88e055758cc24837526a953298a3b5211be45125a072b12cac158e1a63054",
+      "rgb_mae_vs_full": 1.788
+    },
+    "r4-c3.webp": {
+      "size": [
+        1024,
+        205
+      ],
+      "sha256": "cf9c99337fcf75202eb2acf7659eee28aa80b1ab095cf7491fa919b7a0a100f9",
+      "rgb_mae_vs_full": 1.747
+    },
+    "r4-c4.webp": {
+      "size": [
+        1024,
+        205
+      ],
+      "sha256": "95b72753f1bc634fb7b7a01e4107bbbc782843067daa5acdab494b37116ca8e3",
+      "rgb_mae_vs_full": 1.915
+    },
+    "r4-c5.webp": {
+      "size": [
+        819,
+        205
+      ],
+      "sha256": "083f402119a1abc382eab653693083c36aa0bd89c4c25f8490690fb57e1a5316",
+      "rgb_mae_vs_full": 1.966
+    }
+  },
+  "overlaps": {
+    "nw-ne": {
+      "box_preview": [
+        672,
+        0,
+        864,
+        576
+      ],
+      "rgb_mae": 15.41
+    },
+    "nw-sw": {
+      "box_preview": [
+        0,
+        448,
+        864,
+        576
+      ],
+      "rgb_mae": 53.822
+    },
+    "ne-se": {
+      "box_preview": [
+        672,
+        448,
+        1536,
+        576
+      ],
+      "rgb_mae": 40.588
+    },
+    "sw-se": {
+      "box_preview": [
+        672,
+        448,
+        864,
+        1024
+      ],
+      "rgb_mae": 28.331
+    }
+  },
+  "limitations": [
+    "RGB MAE is not geometric displacement.",
+    "No automated semantic edge-to-mask certification.",
+    "No game runtime test; no source code changed."
+  ]
+}
