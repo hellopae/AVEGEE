@@ -133,14 +133,16 @@ test('town layout per zone: overrides apply in place and Zone 1 comes back exact
   assert.equal(L.TOWN_PROP_SITES.length, props); assert.equal(L.TOWN_DAIS.w, 307);
 });
 
-test('generated zone masks start as null (= inherit Zone 1) and the default table keeps Zone 1 patches on', () => {
-  for (const z of ['asia','west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].walkRuns, null);
-  for (const z of ['asia','west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].patches, true);
+test('undrawn zones inherit Zone 1; Asia owner mask disables patches', () => {
+  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].walkRuns, null);
+  assert.ok(L.TOWN_ZONE_LAYOUT.asia.walkRuns.length>0);
+  assert.equal(L.TOWN_ZONE_LAYOUT.asia.patches,false);
+  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].patches, true);
   const base = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();
   L.applyTownZoneLayout('asia', L.TOWN_ZONE_LAYOUT, true);
   const asia = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();
   L.applyTownZoneLayout('th', L.TOWN_ZONE_LAYOUT, true);
-  assert.equal(asia, base, 'zone 2 with no mask drawn walks exactly like Zone 1');
+  assert.notEqual(asia, base, 'zone 2 owner mask replaces the temporary floor');
 });
 
 test('light emitters: Zone 1 fire reader unchanged; ice / cyan / violet need their hue range', () => {
