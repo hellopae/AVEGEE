@@ -1,0 +1,74 @@
+{
+  "shore_generated_trim": [
+    0,
+    116,
+    2170,
+    604
+  ],
+  "shore_mask_preview_boxes": [
+    [
+      202,
+      654,
+      296,
+      721
+    ],
+    [
+      635,
+      657,
+      733,
+      736
+    ]
+  ],
+  "feather_canvas_px": 7,
+  "seam_preview_box": [
+    934,
+    448,
+    1246,
+    595
+  ],
+  "seam_mask_rectangle": [
+    945,
+    451,
+    1235,
+    584
+  ],
+  "seam_feather_canvas_px": 8,
+  "pier_preview_box": [
+    812,
+    625,
+    956,
+    755
+  ],
+  "pier_mask_rectangle": [
+    818,
+    651,
+    938,
+    733
+  ],
+  "pier_feather_canvas_px": 6,
+  "pier_mesh": {
+    "source_back_left": [
+      547,
+      455
+    ],
+    "source_back_right": [
+      855,
+      455
+    ],
+    "source_front_left": [
+      543,
+      805
+    ],
+    "source_front_right": [
+      865,
+      805
+    ],
+    "target_rail_x_preview": [
+      873,
+      921
+    ],
+    "source_y455_maps_preview_y": 670,
+    "preview_y_per_source_pixel": 0.112,
+    "row_mesh_canvas_height": 2
+  }
+}

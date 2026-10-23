@@ -1,0 +1,62 @@
+{
+  "shore-sw": {
+    "quadrant": "sw",
+    "preview_box": [
+      180,
+      620,
+      738,
+      746
+    ],
+    "canvas_box": [
+      320,
+      306,
+      1312,
+      530
+    ]
+  },
+  "pier-se": {
+    "quadrant": "se",
+    "preview_box": [
+      812,
+      625,
+      956,
+      755
+    ],
+    "canvas_box": [
+      249,
+      315,
+      505,
+      546
+    ]
+  },
+  "seam-ne": {
+    "quadrant": "ne",
+    "preview_box": [
+      934,
+      440,
+      1246,
+      576
+    ],
+    "canvas_box": [
+      466,
+      782,
+      1020,
+      1024
+    ]
+  },
+  "seam-se": {
+    "quadrant": "se",
+    "preview_box": [
+      934,
+      448,
+      1246,
+      595
+    ],
+    "canvas_box": [
+      466,
+      0,
+      1020,
+      261
+    ]
+  }
+}

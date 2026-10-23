@@ -1,0 +1,365 @@
+{
+  "decision": "submitted_for_review_not_accepted",
+  "source": "/Users/agapae/agapae-work/.codex-worktrees/20261023T054046Z-d88c803d/output/m3/review/quadrants",
+  "quadrants": {
+    "nw": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_present": true,
+      "changed_pixels": 0,
+      "changed_bbox_canvas": null,
+      "sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+      "source_sha256": "11416075d63ab92e79f083eefb5738f0e157313fe1a7f65b3584e6ebc6115108",
+      "icc_name": "sRGB built-in"
+    },
+    "ne": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_present": true,
+      "changed_pixels": 125217,
+      "changed_bbox_canvas": [
+        466,
+        796,
+        1020,
+        1024
+      ],
+      "sha256": "13f036b73e125071c0d24f323d3c38f4e309d6bdc466e8e7d6860c5dd343b773",
+      "source_sha256": "6c872acec73aa881183f05642a8191d3e62f3876aba81261c79035e5811061ef",
+      "icc_name": "sRGB built-in"
+    },
+    "sw": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_present": true,
+      "changed_pixels": 75673,
+      "changed_bbox_canvas": [
+        341,
+        347,
+        1536,
+        530
+      ],
+      "sha256": "d099be063f8ad74be101e4ae74a4d9c57ef7d0a701dc9bb3c01c55e3d4698292",
+      "source_sha256": "2d13e7f75ae175f6b63cf402cda2ee7350b4826b056aa83f6480e894139a9a90",
+      "icc_name": "sRGB built-in"
+    },
+    "se": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "icc_present": true,
+      "changed_pixels": 202456,
+      "changed_bbox_canvas": [
+        0,
+        0,
+        1020,
+        530
+      ],
+      "sha256": "a05927ca37cd69c67aeb46b4f7324c41f0deb9afb5ee8f36fa3cd1fdd4d933f6",
+      "source_sha256": "d881bc466962c11a7810b1942d03a1c738ac1ef818fbf650a0360514ed86fe8d",
+      "icc_name": "sRGB built-in"
+    }
+  },
+  "regions": {
+    "shore-left": {
+      "preview_box": [
+        190,
+        630,
+        310,
+        742
+      ],
+      "native_box": [
+        608,
+        2016,
+        992,
+        2375
+      ],
+      "changed_pixels": 92987,
+      "max_channel_difference": 255
+    },
+    "extra-pier-shore-middle": {
+      "preview_box": [
+        625,
+        640,
+        740,
+        746
+      ],
+      "native_box": [
+        2000,
+        2048,
+        2368,
+        2387
+      ],
+      "changed_pixels": 105813,
+      "max_channel_difference": 253
+    },
+    "shore-right-real-pier": {
+      "preview_box": [
+        812,
+        640,
+        950,
+        744
+      ],
+      "native_box": [
+        2598,
+        2048,
+        3040,
+        2381
+      ],
+      "changed_pixels": 131931,
+      "max_channel_difference": 255
+    },
+    "ne-se-seam": {
+      "preview_box": [
+        930,
+        435,
+        1250,
+        602
+      ],
+      "native_box": [
+        2976,
+        1392,
+        4000,
+        1927
+      ],
+      "changed_pixels": 468871,
+      "max_channel_difference": 255
+    },
+    "central-road": {
+      "preview_box": [
+        742,
+        580,
+        798,
+        790
+      ],
+      "native_box": [
+        2374,
+        1856,
+        2553,
+        2528
+      ],
+      "changed_pixels": 0,
+      "max_channel_difference": 0
+    },
+    "south-plaza": {
+      "preview_box": [
+        615,
+        787,
+        925,
+        930
+      ],
+      "native_box": [
+        1968,
+        2519,
+        2960,
+        2976
+      ],
+      "changed_pixels": 0,
+      "max_channel_difference": 0
+    },
+    "krajok": {
+      "preview_box": [
+        1340,
+        525,
+        1460,
+        680
+      ],
+      "native_box": [
+        4288,
+        1680,
+        4672,
+        2176
+      ],
+      "changed_pixels": 0,
+      "max_channel_difference": 0
+    },
+    "lava-bridge-north": {
+      "preview_box": [
+        310,
+        225,
+        425,
+        290
+      ],
+      "native_box": [
+        992,
+        720,
+        1360,
+        928
+      ],
+      "changed_pixels": 0,
+      "max_channel_difference": 0
+    },
+    "lava-bridge-south": {
+      "preview_box": [
+        310,
+        350,
+        425,
+        420
+      ],
+      "native_box": [
+        992,
+        1120,
+        1360,
+        1344
+      ],
+      "changed_pixels": 0,
+      "max_channel_difference": 0
+    }
+  },
+  "limitations": [
+    "No full-boundary certification of guide/mask \u00b116 preview px.",
+    "No full-length seam certification \u226412 canvas px; selected shared-patch windows only.",
+    "Low shore visual review still required, especially middle bank y\u2248690 rather than nominal 676.",
+    "Post heights require independent visual acceptance; gold caps are now four.",
+    "No runtime code edits or gameplay/browser testing; drawing-only scope."
+  ],
+  "pier_rail_measurements": [
+    {
+      "expected_axis_preview_x": 873,
+      "samples": 74,
+      "angle_from_vertical_degrees": 0.1600713910921193,
+      "fit_x_preview_at_y690": 873.4521821051923,
+      "method": "gold pixel row centroids, y681\u2013704, x expected axis \u00b13 preview px, least-squares line"
+    },
+    {
+      "expected_axis_preview_x": 921,
+      "samples": 74,
+      "angle_from_vertical_degrees": -0.4810950536030959,
+      "fit_x_preview_at_y690": 920.9035043228403,
+      "method": "gold pixel row centroids, y681\u2013704, x expected axis \u00b13 preview px, least-squares line"
+    }
+  ],
+  "pier_deck_landmarks_preview": {
+    "left_edge": 875,
+    "right_edge": 919,
+    "top": 697,
+    "front_edge": 718,
+    "method": "manual trace of registered patch; uncertainty \u00b12 preview px",
+    "walkable_required": [
+      875.2,
+      916.8,
+      718.4
+    ],
+    "status": "right edge +2.2 px beyond walk mask; within general \u00b116, exact interior still needs reviewer"
+  },
+  "seam_selected_windows": [
+    {
+      "preview_box": [
+        990,
+        490,
+        1040,
+        530
+      ],
+      "best_shift_preview": [
+        0,
+        0
+      ],
+      "shift_canvas_px": 0.0,
+      "mean_absolute_rgb_residual": 8.662
+    },
+    {
+      "preview_box": [
+        1120,
+        490,
+        1170,
+        530
+      ],
+      "best_shift_preview": [
+        0,
+        0
+      ],
+      "shift_canvas_px": 0.0,
+      "mean_absolute_rgb_residual": 6.689166666666667
+    }
+  ],
+  "stitch": {
+    "zone": "asia",
+    "sheet": [
+      4915,
+      3277
+    ],
+    "chunks": 20,
+    "preview": "zone2-terrain-v1-preview.webp",
+    "quadrants": {
+      "nw": [
+        1536,
+        1024
+      ],
+      "ne": [
+        1536,
+        1024
+      ],
+      "sw": [
+        1536,
+        1024
+      ],
+      "se": [
+        1536,
+        1024
+      ]
+    },
+    "upscale": {
+      "nw": 1.8,
+      "ne": 1.8,
+      "sw": 1.8,
+      "se": 1.8
+    },
+    "sha256": {
+      "r1-c1.webp": "2c7be20d411e1373",
+      "r1-c2.webp": "799b6e81b082661d",
+      "r1-c3.webp": "52158b76406fe30c",
+      "r1-c4.webp": "22606eedcb7bc4d0",
+      "r1-c5.webp": "eff817c6766c9c6a",
+      "r2-c1.webp": "3fd9ca874021a20b",
+      "r2-c2.webp": "d00f4cff4f81d09e",
+      "r2-c3.webp": "374532bb27d063e9",
+      "r2-c4.webp": "841f2abbb442412b",
+      "r2-c5.webp": "b91bc3fe29efffc0",
+      "r3-c1.webp": "c09f0adef0f85c30",
+      "r3-c2.webp": "540f658296916ba3",
+      "r3-c3.webp": "170bb6d57f9c2939",
+      "r3-c4.webp": "16d659bce22f302a",
+      "r3-c5.webp": "b1f69eb3d26ac200",
+      "r4-c1.webp": "15ee4c148841fb92",
+      "r4-c2.webp": "75716472216a182b",
+      "r4-c3.webp": "4e9625b4ddc5aae4",
+      "r4-c4.webp": "705af040d60886b3",
+      "r4-c5.webp": "c3e715be4dc82311"
+    }
+  },
+  "mechanical_checks": {
+    "four_RGB_sRGB_1536x1024": true,
+    "NW_byte_identical": true,
+    "20_tiles": true,
+    "guard_regions_pixel_identical": true,
+    "rail_line_fit_abs_degrees_at_most_2": true,
+    "not_art_acceptance": true
+  },
+  "mask_cross_sections": {
+    "y700_central_road_walk_x": [
+      746,
+      793
+    ],
+    "y852_south_plaza_walk_x": [
+      611,
+      924
+    ],
+    "method": "alpha==0 in supplied M3 reference mask; these are mask extents only, not automatic art boundary matches"
+  },
+  "source_files_unchanged_at_finish": {
+    "nw": true,
+    "ne": true,
+    "sw": true,
+    "se": true
+  }
+}
