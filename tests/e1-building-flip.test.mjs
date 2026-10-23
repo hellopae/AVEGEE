@@ -32,13 +32,13 @@ test('E1: one final flip table toggles exactly the eight requested rendered orie
 });
 
 test('E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch', () => {
-  syncSceneZone('asia');
+  syncSceneZone('west');
   const d=station('krajok');
   const geometry=()=>({bx:d.bx,by:d.by,bw:d.bw,x:d.x,y:d.y,hit:[...d.hit],mapScale:d.mapScale});
   const branches=Object.fromEntries(['asia','west','th','unknown'].map(zone => {
     syncSceneZone(zone); return [zone,geometry()];
   }));
-  syncSceneZone('asia');
+  syncSceneZone('west');
   const im={naturalWidth:1240,naturalHeight:1240};
   const old=reviewStationBox({...d,bx:1360,by:650},im,'cyberhell');
   syncSceneZone('cyberhell');

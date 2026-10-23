@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -50,7 +51,7 @@ function setup(zone){
 function bodyPoints(d,zone='th'){
   const rects=art.blockRectsOf(d),foot=art.footOf(d);
   // K1d: in the painted city only the lower 40% of a silhouette is solid (Yama may walk behind roofs and spires).
-  const all=art.blockOf(d),cut=zone==='th'?all[1]+(all[3]-all[1])*.6:-Infinity;
+  const all=art.blockOf(d),cut=isTownZone(zone)?all[1]+(all[3]-all[1])*.6:-Infinity;
   const holes=[d.x-16,d.y-16,d.x+16,Math.max(d.y+16,foot[3]+26)];
   const pts=[];
   for(const r of rects){
@@ -101,9 +102,9 @@ test('H2: the service door of every building stays walkable and reachable on eve
       const path=walk.findPath(SPOTS.bench.x,SPOTS.bench.y,d.x,d.y),end=path?.at(-1);
       assert.ok(end && Math.hypot(end[0]-d.x,end[1]-d.y)<=100,`${zone}/${d.k}: reachable ${JSON.stringify(end)}`);
     }
-    if(zone==='th')for(const p of QUEUE_LINE)assert.equal(walk.canWalk(...p),true,'queue avoids complete building silhouettes');
+    if(isTownZone(zone))for(const p of QUEUE_LINE)assert.equal(walk.canWalk(...p),true,'queue avoids complete building silhouettes');
     // the judge's platform, the bridge stairs and the queue line must remain open
-    for(const [x,y] of (zone==='th'?[[1860,1090],[1920,1544],[1920,1700],[1920,1944]]:[[836,447],[835,560],[835,670],[880,440]]))assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
+    for(const [x,y] of (isTownZone(zone)?[[1860,1090],[1920,1544],[1920,1700],[1920,1944]]:[[836,447],[835,560],[835,670],[880,440]]))assert.equal(walk.canWalk(x,y),true,`${zone}: open ground ${x},${y}`);
   }
   syncSceneZone('th');
 });

@@ -1,3 +1,4 @@
+import { isTownZone } from '../src/zone-skin.js';
 import { clearedDungeonTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -37,7 +38,7 @@ function withImageCanvas(run) {
 }
 const buildMask = z => {
   resetWalk(); setBlocks([], []);
-  if(z.k==='th') return; // City navigation uses declared streets, not the legacy color mask.
+  if(isTownZone(z.k)) return; // City navigation uses declared streets, not the legacy color mask.
   const bg = image(z.scene);
   assert.equal(buildWalk(bg,z.k==='west'?image('scene-v2-opt'):bg),true,z.k);
 };
@@ -52,7 +53,7 @@ test('จุดเกิด/ปลายทางตอนเข้าโซน 
   for (const z of ZONES) {
     g.zone = z.k; syncSceneZone(z.k);
     buildMask(z);
-    if(z.k==='th')assert.deepEqual(ZONE_ENTRY,TOWN_ENTRY,'city arrivals use the new gate and plaza');
+    if(isTownZone(z.k))assert.deepEqual(ZONE_ENTRY,TOWN_ENTRY,'city arrivals use the new gate and plaza');
     // ประตูชายแดน · จุดของนิรา · แท่นตัดสิน ต้องเหยียบได้จริง ไม่ใช่ลอยในช่องที่อ่านสีแล้วเป็นลาวา/หน้าผา
     for (const [name, p] of Object.entries(ZONE_ENTRY)) assert.equal(canWalk(p[0], p[1]), true, `${z.k}: ZONE_ENTRY.${name} ${p}`);
     const points = [

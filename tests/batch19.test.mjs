@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { isTownZone } from '../src/zone-skin.js';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
 import { GUARD_POST, MOB, STATIONS, ZONES, syncSceneZone } from '../src/data.js';
@@ -122,7 +123,7 @@ test('without guard player combat remains available and mobs spawn on reachable 
     g.spawnMob();
     const mob = g.mobs[0];
     assert.ok(mob, zone.k);
-    if (zone.k === 'th') {
+    if (isTownZone(zone.k)) {
       assert.ok(mob.y >= TOWN_RIVER_Y-100 && mob.y <= TOWN_RIVER_Y, zone.k);
     } else assert.ok(mob.y >= 650 && mob.y <= 700, zone.k);
     assert.equal(canWalk(mob.x, mob.y), true, zone.k);

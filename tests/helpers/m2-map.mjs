@@ -1,3 +1,4 @@
+import { isTownZone } from '../../src/zone-skin.js';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -46,9 +47,9 @@ export function setup(zone) {
   // Rounding a legal foot position down can put the sampled pixel outside a
   // slanted corridor. Test the exact coordinate against its floor authority.
   // Legacy zones retain a terrain-only raster captured before building blocks.
-  const terrain=zone==='th'?null:new Uint8Array(terrainWidth*terrainHeight);
+  const terrain=isTownZone(zone)?null:new Uint8Array(terrainWidth*terrainHeight);
   if(terrain)for(let y=0;y<terrainHeight;y++)for(let x=0;x<terrainWidth;x++)terrain[y*terrainWidth+x]=walk.canWalk(x,y)?1:0;
-  const terrainContains=zone==='th'?townContains:(x,y)=>Number.isFinite(x)&&Number.isFinite(y)
+  const terrainContains=isTownZone(zone)?townContains:(x,y)=>Number.isFinite(x)&&Number.isFinite(y)
     &&x>=0&&y>=0&&x<terrainWidth&&y<terrainHeight
     &&terrain[Math.floor(y)*terrainWidth+Math.floor(x)]===1;
   const spawn=[g.player.x,g.player.y];
