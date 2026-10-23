@@ -1,0 +1,65 @@
+[
+  {
+    "path": "img/frontier-route/zone1-2-v3.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 804072
+  },
+  {
+    "path": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Toby/2026-10-23-avegee-m0-map-survey/route-guide.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 3531088
+  },
+  {
+    "path": "img/map-zone1/dungeon-asia-west-chain-pass-v1.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 779778
+  },
+  {
+    "path": "img/map-zone1/dungeon-asia-west-ruined-fort-v1.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 824754
+  },
+  {
+    "path": "img/map-zone1/dungeon-asia-west-western-gate-v1.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 797786
+  },
+  {
+    "path": "img/theme-v4/map-asia.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "bytes": 677498
+  },
+  {
+    "path": "img/theme-v4/map-west.webp",
+    "size": [
+      1678,
+      937
+    ],
+    "mode": "RGB",
+    "bytes": 650472
+  }
+]

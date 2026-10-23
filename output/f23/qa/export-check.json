@@ -1,0 +1,17 @@
+{
+  "source_png": "/Users/agapae/.codex/generated_images/01a1684c-3ddb-7d61-b9a4-20095935d183/exec-2bf5f221-a7e8-4523-a1e9-924ab7957c6b.png",
+  "source_size": [
+    1671,
+    941
+  ],
+  "final_size": [
+    1672,
+    941
+  ],
+  "mode": "RGB",
+  "webp_quality": 96,
+  "method": 6,
+  "bytes": 754408,
+  "export_psnr_db": 37.46,
+  "note": "PSNR measures export loss only; centers are manual visual estimates, checked again after cleanup."
+}
