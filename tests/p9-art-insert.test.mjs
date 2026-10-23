@@ -111,3 +111,17 @@ test('P9 Trojan horse: cyberhell boss-frontier atlas reads the v2 file (same geo
 test('P9 manifest fetch carries a new cache key in all three readers, so returning players do not keep the old atlas path',()=>{
   for(const f of ['src/ui.js','src/battle-fx.js','src/combat-sprites.js'])assert.match(readFileSync(f,'utf8'),/combat-animation-v1\/manifest\.json\?v=night-v1-p9'?/,f);
 });
+
+import {VERDICT_ART,verdictSceneImage} from '../src/verdict-scene.js';
+function pngSize(file){const b=readFileSync(file);assert.equal(b.toString('latin1',1,4),'PNG');return [b.readUInt32BE(16),b.readUInt32BE(20)];}
+
+test('P9 verdict scene: every zone draws its own praise/scold pair (1672x941 PNG); the scene kind `blame` points at the `scold` file; no placeholder left',()=>{
+  const manifest=JSON.stringify(JSON.parse(readFileSync("img/manifest.json","utf8")));
+  for(const z of ZONES) {
+    assert.equal(VERDICT_ART[z].praise,`img/head-${z}-praise-cutscene-v1.png`);
+    assert.equal(VERDICT_ART[z].blame,`img/head-${z}-scold-cutscene-v1.png`);
+    for(const k of ['praise','blame']) { const f=verdictSceneImage(z,k);assert.deepEqual(pngSize(f),[1672,941],f);assert.ok(manifest.includes(f.replace('img/','')),f+' listed in img/manifest.json'); }
+  }
+  assert.ok(Object.values(VERDICT_ART).every(v=>!/intro-head|punish/.test(v.praise+v.blame)),'no temporary intro portrait / punishment still wired in');
+  assert.match(html,/"\.\/src\/verdict-scene\.js": "\.\/src\/verdict-scene\.js\?v=p9"/);
+});
