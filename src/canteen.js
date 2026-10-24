@@ -11,14 +11,15 @@ export function mealRecipients(g){return [...g.crew.filter(c=>!c.reader&&!c.self
 export const needsMeal=c=>!c.supplyRest&&(c.stamina!=null?((c.hunger??100)<80||c.stamina<65||(c.morale??100)<55):actorStanding(c)&&((c.hunger??100)<80||(c.morale??100)<55||(c.hp!=null&&c.hp<c.hpMax*.8)));
 export const mealRecipient=(g,id)=>mealRecipients(g).find(c=>c.id===id);
 export function prepareCooks(g){
- const at=canteenPoint(g),active=canteenActive(g);
- for(const c of g.crew)if(['dam','plerng'].includes(c.k)){
+ const staff=g.crew.filter(c=>['dam','plerng'].includes(c.k));if(!staff.length)return;
+ const active=canteenActive(g),at=active?canteenPoint(g):[0,0];
+ for(const c of staff){
   c.cook=active&&actorStanding(c)&&!c.at&&!c.escort&&!c.buildK&&!c.teaRest;
   if(c.cook){c.cookX=at[0]+(c.k==='dam'?-22:22);c.cookY=at[1];}
  }
 }
 export function stepCanteen(g,dt){
- if(!canteenActive(g)||g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return;
+ if(!g.crew.some(c=>c.cook)||!canteenActive(g)||g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return;
  const s=canteenState(g),at=canteenPoint(g),cooks=g.crew.filter(c=>c.cook&&actorStanding(c)&&Math.hypot((c.x??c.hx)-at[0],(c.y??c.hy)-at[1])<65);
  if(!cooks.length)return;
  s.cookedMs=Math.min(3000,(s.cookedMs||0)+Math.min(120,dt)*cooks.length);

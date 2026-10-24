@@ -64,3 +64,10 @@ test('empty supplies seat workers and require a player rice gift or tea-rest ord
  g.food=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(g.restWorkerAtTea(w.id),false);const def=STATIONS.find(d=>d.k==='tea');g.stations.push({def,build:0,repair:0,slots:[]});assert.equal(g.restWorkerAtTea(w.id),true);
  place(w,nearestWalk(def.x-80,def.y+110));advanceWorkers(g,120);assert.equal(w.sitting,true);g.food=20;for(let i=0;i<6;i++)stepWorkers(g);assert.equal(w.supplyRest,false);assert.equal(w.mode,'gather');
 });
+
+test('a keeper collects successive judged souls one journey at a time and a cook can leave for an assigned case',()=>{
+ const g=game(),w=g.hireWorker();g.queue.forEach(s=>s.courtDisembarked=true);const first=g.queue[0];assert.equal(g.assign(first.id,'krata','taan',3),true);const a=g.afterlifeWalks.find(v=>v.destination==='station');assert.equal(a.escort.k,'taan');
+ g.spawnSoul();const second=g.queue[0];g.cancelCourtArrival(second.id);second.courtDisembarked=true;assert.equal(g.assign(second.id,'krata','taan',3),true);const b=g.afterlifeWalks.find(v=>v.soul.id===second.id);assert.equal(b.awaitKeeper,true);g.advanceAfterlife(120);assert.equal(b.elapsed,0);
+ g.advanceAfterlife(a.duration);g.advanceAfterlife(120);assert.equal(b.awaitKeeper,false);assert.equal(b.escort.k,'taan');assert.ok(b.elapsed>0);assert.equal(w.job,null);
+ const g2=game();g2.hireWorker();g2.hire('dam');prepareCooks(g2);assert.equal(g2.crewOf('dam').cook,true);const soul=g2.queue[0];soul.courtDisembarked=true;assert.equal(g2.assign(soul.id,'krata','dam',3),true);assert.equal(g2.crewOf('dam').cook,false);assert.equal(g2.afterlifeWalks.find(v=>v.destination==='station').escort.k,'dam');
+});

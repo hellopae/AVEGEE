@@ -2087,6 +2087,15 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
  .st-hud[data-room="krata"] .btn-gold{font-size:14px;padding:9px 12px}
 }
 
+
+/* WFT worker controls remain usable on narrow screens. */
+.worker-card .worker-actions{display:grid;gap:5px;max-width:130px}
+@media(max-width:600px){
+ .worker-card{grid-template-columns:54px minmax(0,1fr)!important}
+ .worker-card>span[role="img"]{width:54px!important;height:54px!important}
+ .worker-card .worker-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;max-width:none}
+ .worker-card .worker-actions button{flex:1 1 90px;white-space:normal}
+}
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=h2-j1-battle-anchor-20261012-m1">
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b">
@@ -2363,7 +2372,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/preload.js": "./src/preload.js?v=20261021-m2-interrogation-roles-p2-z2-art-b3-z3-west-wft",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/battle-result.js": "./src/battle-result.js?v=20261024-b3",
-    "./src/ui.js": "./src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-p8-p4-o2-wft",
+    "./src/ui.js": "./src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-o2",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft",
@@ -2392,7 +2401,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/verdict-scene.js": "./src/verdict-scene.js?v=p9",
     "./src/boss-guides.js": "./src/boss-guides.js?v=20261020-border-party-o1",
     "./src/boss-justice.js": "./src/boss-justice.js?v=20261021-resume-loading",
-    "./src/workers.js": "./src/workers.js?v=20261021-worker-supplies-p5b-p5c-p9-wft",
+    "./src/workers.js": "./src/workers.js?v=20261021-worker-supplies-p5b-p5c-wft-p9",
     "./src/worker-ui.js": "./src/worker-ui.js?v=20261021-worker-supplies-p1-wft",
     "./src/story.js": "./src/story.js?v=20261016-boss-justice-workers-v1-p5b",
     "./src/weapons.js": "./src/weapons.js?v=20261022-p5b",
@@ -2411,8 +2420,8 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
   }
 }
 </script>
-<script type="module" src="src/preload.js?v=20261021-m2-interrogation-roles-p2-z2-art-b3-z3-west"></script>
+<script type="module" src="src/preload.js?v=20261021-m2-interrogation-roles-p2-z2-art-b3-z3-west-wft"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-p8-p4-o2-wft"></script>
+<script type="module" src="src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-o2"></script>
 </body>
 </html>

@@ -1053,6 +1053,7 @@ const API = {
     const useK = st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK;
     const c = this.crewOf(useK);
     const soul = this.queue.splice(si, 1)[0];
+    c.cook=false;
     const work={...keeperWorkPlan(soul,useK),keeperId:c.id||c.k,keeperName:c.name,assistedTicks:0};
     this.food-=work.foodCost;
     // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
@@ -1293,6 +1294,7 @@ const API = {
   startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null, courier = null) {
     // Optional harbour/site deliveries cannot start without an assistant.
     // Check before grid pathfinding, especially during new-game creation.
+    if(destination==='station'&&!zoneWorkers(this).length)return false;
     if(destination==='arrival'&&!zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0))return false;
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
@@ -1308,7 +1310,7 @@ const API = {
     const walk = { soul, destination, entry, path, elapsed:0,
       duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
-    else if(destination==='station'){this.assignEscort(walk,keeperK);}
+    else if(destination==='station'){walk.keeperK=keeperK;if(!this.assignEscort(walk,keeperK))walk.awaitKeeper=true;}
     else if (['gate','queue','arrival'].includes(destination)) {
       // Assistants can cover Nira's other delivery routes too. Preserve the
       // existing courier if none is free; do not pull keepers off their posts.
@@ -1377,11 +1379,17 @@ const API = {
   },
 
   advanceAfterlife(dt) {
+    if(this.mapTravel)return;
     if (bossJusticeActive(this)) return;
     if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
     this.advanceCourtArrivals(dt);
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
+      if(walk.awaitKeeper){
+        const st=this.stations.find(s=>s.def.k===walk.entry?.station),slot=st?.slots.find(s=>s.soul.id===walk.soul.id);
+        if(!this.assignEscort(walk,walk.keeperK)){if(slot)slot.pendingUntil=Date.now()+walk.duration;continue;}
+        walk.awaitKeeper=false;if(slot)slot.pendingUntil=Date.now()+walk.duration;
+      }
       walk.elapsed += dt;
       if (walk.elapsed < walk.duration) {
         advanceWorkerEscort(this,walk);
