@@ -9,6 +9,7 @@ import { TOWN_OWNER_WALK_RUNS } from './town-owner-walkmask.js';
 import { TOWN_OWNER_WALK_RUNS as ASIA_WALK_RUNS } from './town-owner-walkmask-asia.js';
 import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-west.js';
 import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
+import { ASIA_TREE_POINTS } from './town-asia-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -208,9 +209,20 @@ export function townContains(x,y) {
 //   dais     : { x, y, w }
 //   houses   : [{key,x,y,w,flip}, ...]                        replaces the whole house list
 //   props    : [...]                                          replaces the whole decoration list (same shape as TOWN_PROP_SITES)
+// Preserve all non-tree decorations (including the 34 lamps/torches) at Zone 1 feet.
+const ASIA_TREE_KEYS = {green:'town-tree-th', red:'town-tree-red-th', white:'town-tree-sakura', teal:'town-tree-willow'};
+const ASIA_TREE_FALLBACK = {white:'town-tree-snow-th', teal:'town-tree-th'};
+const ASIA_PROPS = [
+  ...TOWN_PROP_SITES.filter(p=>p.kind!=='tree'&&p.kind!=='palm'),
+  ...ASIA_TREE_POINTS.map((p,i)=>({
+    ...deco(`asia-tree-${i}`, 'tree', p.x*TOWN_SIZE.w, p.y*TOWN_SIZE.h,
+      160*(p.big?1.4:1), 'city', 16, 11, ASIA_TREE_KEYS[p.kind]),
+    treeKind:p.kind, big:!!p.big, on_walk:p.on_walk, fallbackKey:ASIA_TREE_FALLBACK[p.kind],
+  })),
+];
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
-  asia:      { walkRuns:ASIA_WALK_RUNS,      patches:ASIA_WALK_RUNS?false:true },
+  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
   west:      { walkRuns:WEST_WALK_RUNS,      patches:WEST_WALK_RUNS?false:true },
   cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
 };
@@ -224,6 +236,8 @@ const layoutListeners = new Set();
 export const onTownLayoutChange = fn => { layoutListeners.add(fn); return () => layoutListeners.delete(fn); };
 let appliedZone = 'th';
 export const townLayoutZone = () => appliedZone;
+// Owner-painted Asia bridges need the full 8-unit mask resolution; other zones retain 16.
+export const townPathCell = () => TOWN_ZONE_LAYOUT[appliedZone]?.pathCell || 16;
 export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = false) {
   const L = table[zone] || {};
   // Same zone again: nothing to do (syncSceneZone runs on every zone change).

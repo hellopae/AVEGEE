@@ -59,22 +59,22 @@ test('disabled zones retain the old map system, no skin, no town', () => {
 test('switching a skin on is data: `use` lists the finished groups, the rest falls back to Zone 1', () => {
   reset();
   const P = PLANNED_ART('asia', 'map-zone2');
-  assert.equal(P.judgment['town-judgment-th'], 'img/theme-v4/town-judgment-asia-v2.webp');
-  assert.equal(P.torch['town-prop-torch-pillar'], 'img/map-zone2/torch-pillar-v1.webp');
-  assert.equal(P.houses['town-residence-left-two'], 'img/town-district/house-left-two-asia-v1.webp');
+  assert.equal(P.judgment['town-judgment-th'], 'img/theme-v4/town-judgment-asia-v3.webp');
+  assert.equal(P.torch['town-prop-torch-pillar'], 'img/map-zone2/torch-pillar-v3.webp');
+  assert.equal(P.houses['town-residence-left-two'], 'img/town-district/house-left-two-asia-v3.webp');
   assert.equal(P.trees['town-tree-red-th'], 'img/theme-v4/town-tree-b-asia-v1.webp');
   enableTownSkin('asia', { use:['judgment','houses'], terrain:{dir:'img/map-zone2/v1/',preview:'img/map-zone2/v1/zone2-terrain-v1-preview.webp',fullPx:{w:4915,h:3277},chunk:1024,repairs:false} });
   try {
     assert.equal(isTownZone('asia'), true);
-    assert.equal(themeArt('town-judgment-th', 'asia'), 'img/theme-v4/town-judgment-asia-v2.webp');
-    assert.equal(themeArt('town-residence-front-one', 'asia'), 'img/town-district/house-front-one-asia-v1.webp');
+    assert.equal(themeArt('town-judgment-th', 'asia'), 'img/theme-v4/town-judgment-asia-v3.webp');
+    assert.equal(themeArt('town-residence-front-one', 'asia'), 'img/town-district/house-front-one-asia-v3.webp');
     assert.equal(themeArt('town-tree-th', 'asia'), 'img/theme-v4/town-tree-th-v1.webp', 'tree group not listed -> Zone 1 tree');
     assert.equal(themeArt('town-judgment-th', 'th'), 'img/theme-v4/town-judgment-th-v2.webp', 'Zone 1 untouched');
     assert.equal(townSkinArt('west', 'town-judgment-th'), null);
     assert.equal(townChunkUrl(2, 2, 'asia'), 'img/map-zone2/v1/r2-c2.webp');
     assert.equal(ZONE_SKIN.asia.terrain.preview, 'img/map-zone2/v1/zone2-terrain-v1-preview.webp');
-    // zone-1 facades are NOT borrowed: sala of zone 2 is st-sala-asia.webp, with the facade box limits of a town zone
-    assert.equal(mapReviewArt('st-sala', 'asia'), 'img/map-v5/st-sala-asia.webp');
+    // zone-1 facades are NOT borrowed: sala of zone 2 is st-sala-asia-v3.webp, with the facade box limits of a town zone
+    assert.equal(mapReviewArt('st-sala', 'asia'), 'img/map-v5/st-sala-asia-v3.webp');
     const box = reviewStationBox({ k:'sala', bx:0, by:0, mapScale:1 }, { naturalWidth:1200, naturalHeight:1200 }, 'asia');
     assert.ok(Math.abs(box.w - 280) < 1e-9 || box.w < 280.0001, 'limited by the town facade box [280,330]');
     // a zone's own tree art turns the shared-tree darkening off; the borrowed Zone 1 tree keeps it
@@ -133,14 +133,16 @@ test('town layout per zone: overrides apply in place and Zone 1 comes back exact
   assert.equal(L.TOWN_PROP_SITES.length, props); assert.equal(L.TOWN_DAIS.w, 307);
 });
 
-test('generated zone masks start as null (= inherit Zone 1) and the default table keeps Zone 1 patches on', () => {
-  for (const z of ['asia','west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].walkRuns, null);
-  for (const z of ['asia','west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].patches, true);
+test('undrawn zones inherit Zone 1; Asia owner mask disables patches', () => {
+  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].walkRuns, null);
+  assert.ok(L.TOWN_ZONE_LAYOUT.asia.walkRuns.length>0);
+  assert.equal(L.TOWN_ZONE_LAYOUT.asia.patches,false);
+  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].patches, true);
   const base = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();
   L.applyTownZoneLayout('asia', L.TOWN_ZONE_LAYOUT, true);
   const asia = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();
   L.applyTownZoneLayout('th', L.TOWN_ZONE_LAYOUT, true);
-  assert.equal(asia, base, 'zone 2 with no mask drawn walks exactly like Zone 1');
+  assert.notEqual(asia, base, 'zone 2 owner mask replaces the temporary floor');
 });
 
 test('light emitters: Zone 1 fire reader unchanged; ice / cyan / violet need their hue range', () => {

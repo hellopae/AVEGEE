@@ -1,4 +1,4 @@
-import { TOWN_SIZE, townContains } from './town-layout.js?v=k1d';
+import { TOWN_SIZE, townContains, townPathCell } from './town-layout.js?v=k1d';
 // walk.js — พื้นที่ที่เดินได้ (6 ก.ย. 2569)
 // เดิมยมบาทเดินทะลุลาวากับแม่น้ำวิญญาณได้ ทำให้ฉากเสียความหมาย
 //
@@ -18,7 +18,7 @@ let maskImage = null;
 /** ล้างตารางภาพ/เส้นทางของโซนเดิมก่อนใช้ขนาดและภาพฉากใหม่ */
 export function resetWalk() {
   version++; blocksSig = null;
-  CELL = SCENE.w === TOWN_SIZE.w ? 16 : 8;
+  CELL = SCENE.w === TOWN_SIZE.w ? townPathCell() : 8;
   COLS = Math.ceil(SCENE.w / CELL);
   ROWS = Math.ceil(SCENE.h / CELL);
   mask = null;
