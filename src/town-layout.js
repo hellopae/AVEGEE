@@ -65,7 +65,7 @@ const fillMask = runs => {
 fillMask(TOWN_OWNER_WALK_RUNS);
 // Zone-1 hand patches (stairs, lava road, cauldron court) were added on top of the owner's mask. A zone whose mask the
 // owner drew from the full overlay (which already contains them) switches them off: townZoneLayout({patches:false}).
-let usePatches = true;
+let usePatches = true, ownerFloorOnly = false;
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
@@ -86,6 +86,8 @@ export const TOWN_CAULDRON_COURT = [[582,412],[686,412],[696,444],[696,492],[712
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  // An owner-complete floor must never be reopened by legacy door/UI pads.
+  if(ownerFloorOnly)return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
   // Keep feet on the pier top; edge tolerance must never open its front face or water.
   if(x>=2150&&x<2350&&y>=1700&&y<1860
     &&(x<2188||x>2292||y>1796))return false;
@@ -232,7 +234,7 @@ const WEST_PROPS = [
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
-  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, crew:{boon:[2460,468]} },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{y:1532}}, crew:{boon:[2460,468]} },
   cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
 };
 const clone = v => structuredClone(v);
@@ -255,6 +257,7 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   // mask + patches
   fillMask(L.walkRuns || BASE.runs);
   usePatches = L.patches !== false;
+  ownerFloorOnly = L.strictFloor === true;
   // stations: back to Zone 1, then this zone's patches
   for (const k of Object.keys(TOWN_STATION_SITES)) Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
   for (const [k, patch] of Object.entries(L.stations || {})) if (TOWN_STATION_SITES[k]) Object.assign(TOWN_STATION_SITES[k], clone(patch));

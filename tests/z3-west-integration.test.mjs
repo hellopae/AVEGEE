@@ -29,8 +29,9 @@ test('Z3: owner grid preserves28586 cells, one component, small blocked reserves
  const start=data.findIndex(x=>x),seen=new Set([start]),q=[start];
  for(let h=0;h<q.length;h++){const c=q[h],x=c%cols,y=c/cols|0;for(const n of [x?c-1:-1,x+1<cols?c+1:-1,y?c-cols:-1,y+1<rows?c+cols:-1])if(n>=0&&data[n]&&!seen.has(n)){seen.add(n);q.push(n);}}
  assert.equal(seen.size,28586);
+ for(let y=4;y<2560;y+=8)for(let x=4;x<3840;x+=8)assert.equal(L.townFloorAt(x,y),data[(y/8|0)*cols+(x/8|0)]===1,'runtime floor must equal owner mask, with no reopened red cells');
  const points=JSON.parse(readFileSync(new URL('./fixtures/z3-owner-floor-points.json',import.meta.url)));
- for(const p of points){const [x,y]=p.preview_xy.map(v=>v*2.5);assert.equal(data[(y/8|0)*cols+(x/8|0)]===1,p.expected_walkable,p.point);}
+ for(const p of points){const [x,y]=p.preview_xy.map(v=>v*2.5);assert.equal(data[(y/8|0)*cols+(x/8|0)]===1,p.expected_walkable,p.point);assert.equal(L.townFloorAt(x,y),p.expected_walkable,p.point+' runtime');}
 });
 
 test('Z3: all28 owner trunk feet are unchanged, with real solid roots and suitable west sprites',()=>{
@@ -60,7 +61,7 @@ test('Z3: NPC avoidance takes a valid detour on the entry plaza',()=>{
 
 test('Z3: leaving west restores Zone1/Asia geometry and original house/lamp/torch feet',()=>{
  const snap=()=>JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES]);setup('th');const th=snap();const buildings=JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);
- setup('asia');const asia=snap();setup('west');assert.equal(JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]),buildings);
+ setup('asia');const asia=snap();setup('west');const westExpected=JSON.parse(buildings);westExpected[0].ngiw.y=1532;assert.equal(L.TOWN_STATION_SITES.ngiw.y,1532);assert.equal(JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]),JSON.stringify(westExpected));
  setup('th');assert.equal(L.TOWN_CREW.boon[1],470);assert.equal(snap(),th);assert.equal(L.townPathCell(),16);setup('asia');assert.equal(snap(),asia);setup('th');
 });
 
