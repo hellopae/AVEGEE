@@ -371,7 +371,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const x=SPOTS.ferry.from[0]+(i%3-1)*24,y=SPOTS.ferry.from[1]-Math.floor(i/3)*22;
     const qh=SOUL_H*.9;spot_(x,y,qh);
     shade(x,y,qh,c=>drawSoul(c,x,y,qh,soulTime+s.id*300,'#d9eaff',s.sp||7));
-    tag(ctx,x,y-SOUL_H-10,t,['⛵ รอคนงานที่ท่าเรือ','#f7c371']);
+    tag(ctx,x,y-SOUL_H-10,t,[zoneWorkers(g).length?'⛵ รอคนงานที่ท่าเรือ':'⛵ รอนิราที่ท่าเรือ','#f7c371']);
   });
   (rescue ? [] : g.queue).forEach((s, i) => {
     if(arriving.has(s.id))return;
