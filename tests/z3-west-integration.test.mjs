@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import {setup,walk} from './helpers/m2-map.mjs';
 import * as L from '../src/town-layout.js?v=k1d';
+import {townPropArtKey} from '../src/town-scenery.js?v=k1d';
 import {WEST_TREE_POINTS} from '../src/town-west-trees.js';
 import {TOWN_OWNER_MASK_META} from '../src/town-owner-walkmask-west.js';
 import {ZONE_SKIN,PLANNED_ART,isTownZone} from '../src/zone-skin.js';
@@ -38,7 +39,7 @@ test('Z3: all28 owner trunk feet are unchanged, with real solid roots and suitab
  for(const [i,p]of trees.entries()){
   const owner=WEST_TREE_POINTS[i];assert.deepEqual([p.x,p.y],[owner.x*3840,owner.y*2560]);
   assert.equal(owner.moved,false);assert.equal(p.ownerFoot,true);assert.equal(walk.canWalk(p.x,p.y),false);
-  assert.ok(existsSync(ZONE_SKIN.west.art[p.key]));
+  assert.equal(townPropArtKey(p),p.key,'renderer must preserve the selected species');assert.ok(existsSync(ZONE_SKIN.west.art[p.key]));
   if(owner.kind==='cyan')assert.equal(p.species,'blackthorn');if(owner.kind==='white')assert.equal(p.species,'silver-fir');
  }
 });

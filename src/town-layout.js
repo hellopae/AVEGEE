@@ -225,7 +225,7 @@ const WEST_PROPS = [
   ...TOWN_PROP_SITES.filter(p=>p.kind!=='tree'&&p.kind!=='palm'),
   ...WEST_TREE_POINTS.map((p,i)=>({
     ...deco(`west-tree-${i}`, 'tree', p.x*TOWN_SIZE.w, p.y*TOWN_SIZE.h,
-      160, 'ice', 16, 11, p.key),
+      160, 'city', 16, 11, p.key),
     treeKind:p.kind, species:p.species, ownerFoot:true,
   })),
 ];
