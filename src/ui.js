@@ -2803,7 +2803,7 @@ function openTrial(initialError = '') {
 
     // Keep flying lists inside the interrogation half, including narrow portrait screens.
     requestAnimationFrame(()=>{
-      const stage=dlg.querySelector('.trial-comment8 .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
+      const stage=dlg.querySelector('.trial-comment8 .hud-body > .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
       if(!stage?.isConnected||!pane)return;
       const command=menu.querySelector(`[data-court-panel="${pane.dataset.courtOptions}"]`);
       const gap=-12+command.offsetLeft;
