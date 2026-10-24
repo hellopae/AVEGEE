@@ -5,7 +5,7 @@ import {SPOTS,STATIONS} from '../src/data.js';
 import {resetWalk,setBlocks,setNpcDiscs,nearestWalk} from '../src/walk.js?v=k1d';
 import {stepWorkers,advanceWorkers} from '../src/workers.js';
 import {initializeBossGuides,recordBossGuideWin,completeBossGuideStory} from '../src/boss-guides.js';
-const setup=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;resetWalk();setBlocks([],[]);setNpcDiscs([]);return g;};
+const setup=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;resetWalk();setBlocks([],[]);setNpcDiscs([]);return g;};
 test('worker delivers harbour arrivals immediately available for trial, then hands the judged soul to its keeper',()=>{
  const g=setup(),w=g.hireWorker();g.setWorkerMode(w.id,'escort');const soul=g.queue[0];
  assert.equal(g.startCourtArrival(soul),true);assert.equal(g.queue[0].id,soul.id);
@@ -15,7 +15,7 @@ test('worker delivers harbour arrivals immediately available for trial, then han
  assert.equal(g.afterlifeWalks[0].escort.workerId,w.id);
  assert.equal(g.assign(soul.id,'krata','taan',3),true);
  assert.equal(g.afterlifeWalks.some(w=>w.destination==='arrival'),false);
- const walk=g.afterlifeWalks.find(w=>w.destination==='station');assert.ok(walk);assert.equal(walk.escort.workerId,w.id);
+ const walk=g.afterlifeWalks.find(w=>w.destination==='station');assert.ok(walk);assert.equal(walk.escort.k,'taan');assert.equal(walk.escort.workerId,undefined);
  assert.equal(g.crewOf('taan').at,'krata');g.advanceAfterlife(1e7);assert.equal(w.job,null);
  assert.equal(g.queue.some(s=>s.id===soul.id),false);
 });
@@ -43,7 +43,7 @@ test('saving an inbound or escorted ferry case never restores the soul on the da
  }
 });
 test('gatherers physically visit the resource site and merchant before income is paid',()=>{
- const g=setup(),w=g.hireWorker();g.setWorkerMode(w.id,'gather');stepWorkers(g);
+ const g=setup(),w=g.hireWorker();g.setWorkerMode(w.id,'gather');if(!g.stations.some(s=>s.def.k==='ngiw'))g.stations.push({def:STATIONS.find(d=>d.k==='ngiw'),build:0,repair:0,slots:[],fire:0});stepWorkers(g);
  const before=g.coin;assert.equal(w.job.phase,'collect');assert.equal(g.workerState.ledger.sales,0);
  for(let i=0;i<20000&&!g.workerState.ledger.sales;i++){if(i%50===0)stepWorkers(g);advanceWorkers(g,120);}
  assert.equal(g.workerState.ledger.sales,1);assert.ok(g.workerState.ledger.income>0);assert.ok(g.coin>before-30);

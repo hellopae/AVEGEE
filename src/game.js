@@ -1,6 +1,7 @@
+import {canteenState,prepareCooks,stepCanteen} from './canteen.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
-import {normalizeWorkers,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
+import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
 import {initializeBossGuides,bossGuideWaiting,bossGuideFollowing,bossGuideDismissed,bossGuideCombatant,recordBossGuideWin,queueBossGuideStory,completeBossGuideStory} from './boss-guides.js';
 import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
@@ -485,7 +486,7 @@ const API = {
    *    · คดีปกติต้องมีสถานีที่รับชนิดกรรมของเขาอยู่แล้วอย่างน้อยหนึ่งหลัง
    *    · คดีคนบริสุทธิ์/เทวดา ส่งมาก็ต่อเมื่อสร้างประตูสวรรค์แล้วเท่านั้น */
   /** ประตูสวรรค์ที่สร้างเสร็จแล้ว (นั่งร้านยังอยู่ = ยังไม่นับ) */
-  gateBuilt() { return this.has('sawan') && !this.stations.some(st => st.def.k === 'sawan' && st.build); },
+  gateBuilt() { return this.has('sawan') && !this.stations.some(st => st.def.k === 'sawan' && (st.build||st.repair)); },
   /** HOTFIX 22 ต.ค. 2569 — คดีขอทานในวัด (เทวดา) ยังค้างส่งอยู่ไหม: คดีที่ 5 ขึ้นไป ยังไม่เคยตัดสิน และด่านเทวดายังไม่เริ่ม
    *  เดิมเช็คแค่ zoneCases.th === 4 แล้วบังคับเข้าคิวแม้ไม่มีประตูสวรรค์ (ขั้น 3) → ผู้เล่นใหม่เจอคดีที่ตัดสินถูกไม่ได้ */
   devaCaseOwed() {
@@ -1052,6 +1053,7 @@ const API = {
     const useK = st.slots.length && actorStanding(this.crewOf(st.crewK)) ? st.crewK : crewK;
     const c = this.crewOf(useK);
     const soul = this.queue.splice(si, 1)[0];
+    c.cook=false;
     const work={...keeperWorkPlan(soul,useK),keeperId:c.id||c.k,keeperName:c.name,assistedTicks:0};
     this.food-=work.foodCost;
     // หลังออกหมาย วิญญาณยังยืนรอที่แท่น: ผู้คุมเดินมารับก่อน แล้วค่อยเดินคู่กันไปสถานี
@@ -1061,7 +1063,7 @@ const API = {
     let arriveAt = now;
     if (route?.length) {
       const outbound = [QUEUE_LINE[0], ...route];
-      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name,intensity});
+      const delivered=this.startAfterlifeWalk(soul,QUEUE_LINE[0],[st.def.x,st.def.y],'station',{station:st.def.k,name:st.def.name,intensity},useK);
       if(delivered){const walk=this.afterlifeWalks.findLast(w=>w.destination==='station'&&w.soul.id===soul.id);arriveAt=now+(walk?.duration||0);}
       else if (!c.self && !st.slots.length) {
         const from = [c.x ?? c.hx, c.y ?? c.hy];
@@ -1292,7 +1294,8 @@ const API = {
   startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null, courier = null) {
     // Optional harbour/site deliveries cannot start without an assistant.
     // Check before grid pathfinding, especially during new-game creation.
-    if(['arrival','station'].includes(destination)&&!zoneWorkers(this).some(w=>['auto','escort'].includes(w.mode)&&!w.recovering&&w.stamina>0))return false;
+    if(destination==='station'&&!zoneWorkers(this).length)return false;
+    if(destination==='arrival'&&!zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0))return false;
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -1307,13 +1310,14 @@ const API = {
     const walk = { soul, destination, entry, path, elapsed:0,
       duration:Math.max(1100, length / 0.09), zone:this.zone, ...(courier ? {courier} : {}) };
     if (destination === 'prison') this.assignEscort(walk, keeperK);
-    else if (['gate','queue','arrival','station'].includes(destination)) {
+    else if(destination==='station'){walk.keeperK=keeperK;if(!this.assignEscort(walk,keeperK))walk.awaitKeeper=true;}
+    else if (['gate','queue','arrival'].includes(destination)) {
       // Assistants can cover Nira's other delivery routes too. Preserve the
       // existing courier if none is free; do not pull keepers off their posts.
       const fallbackCourier=walk.courier;
       delete walk.courier;
       const assigned=assignWorkerEscort(this,walk);
-      if(!assigned&&['arrival','station'].includes(destination))return false;
+      if(!assigned&&destination==='arrival')return false;
       if(!assigned&&fallbackCourier)walk.courier=fallbackCourier;
     }
     this.afterlifeWalks.push(walk);
@@ -1325,12 +1329,13 @@ const API = {
    *  ไม่มีใครว่างเลย → วิญญาณเดินคนเดียวเหมือนเดิม · ท่านเอง (self) กับนิรา (reader) ไม่ถูกเรียกใช้
    *  ตำแหน่งยมทูตขยับใน advanceAfterlife · ส่งเสร็จปล่อยตัว (releaseEscort) ให้ระบบเดินปกติพากลับไปทำงานเอง */
   assignEscort(walk, keeperK = null) {
-    if (assignWorkerEscort(this,walk)) return true;
+    if (walk.destination!=='station'&&assignWorkerEscort(this,walk)) return true;
     const start = walk.path[0];
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
-    const free = this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && !c.at);
+    const free = this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
     for (const c of ranked) {
+      if(walk.destination==='station'&&c.k!==keeperK)continue;
       const cx = c.x ?? c.hx, cy = c.y ?? c.hy;
       let pickup = [[cx, cy]];
       if (dist(c) > 6) {
@@ -1374,11 +1379,17 @@ const API = {
   },
 
   advanceAfterlife(dt) {
+    if(this.mapTravel)return;
     if (bossJusticeActive(this)) return;
     if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
     this.advanceCourtArrivals(dt);
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
+      if(walk.awaitKeeper){
+        const st=this.stations.find(s=>s.def.k===walk.entry?.station),slot=st?.slots.find(s=>s.soul.id===walk.soul.id);
+        if(!this.assignEscort(walk,walk.keeperK)){if(slot)slot.pendingUntil=Date.now()+walk.duration;continue;}
+        walk.awaitKeeper=false;if(slot)slot.pendingUntil=Date.now()+walk.duration;
+      }
       walk.elapsed += dt;
       if (walk.elapsed < walk.duration) {
         advanceWorkerEscort(this,walk);
@@ -1565,6 +1576,7 @@ const API = {
 
   // ---------- หนึ่งวาระ ----------
   step() {
+    if(this.mapTravel)return;
     this.updateActorRecovery();
     if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
     this.tick++;
@@ -1607,7 +1619,7 @@ const API = {
     // อิ่ม (เสบียงพอ) = ทำงานไวขึ้น (foodFullMul) · หิว (เสบียงหมด) = ทำงานช้าลง (foodHungryMul) แต่ไม่หยุดสนิท
     const workingCrew = new Set();
     for (const st of this.stations) {
-      if (st.build || !st.slots.length || st.fire >= MOB.burnMax) continue;
+      if (st.build || st.repair || !st.slots.length || st.fire >= MOB.burnMax) continue;
       const c = this.crewOf(st.crewK);
       if (!actorStanding(c) || c.self || c.escort) continue;
       const activeSlots = st.slots.filter(slot => !slot.pendingUntil || Date.now() >= slot.pendingUntil);
@@ -1641,7 +1653,7 @@ const API = {
     let hasSala = false;
     for (const st of this.stations) {
       if (st.def.k === 'sala' && !st.build && !st.repair && st.fire < MOB.burnMax) hasSala = true;
-      if (st.build || !st.slots.length) continue;
+      if (st.build || st.repair || !st.slots.length) continue;
       if (st.fire >= MOB.burnMax) continue;       // ไหม้จนใช้การไม่ได้ ทัณฑ์หยุดหมด
       const c = this.crewOf(st.crewK);
       if (!actorStanding(c)) continue;
@@ -1878,6 +1890,7 @@ const API = {
   // ---------- โลกที่เดินได้ ----------
   /** เดินตัวละครทุกตัว เก็บของ ชนเปรต — เดินตามเวลาจริง ไม่ผูกกับวาระ */
   stepWorld(dt) {
+    if(this.mapTravel)return;
     if(bossJusticeActive(this)){advanceBossJustice(this,dt);return;}
     this.updateActorRecovery();
     if (this.paused || this.over) return;
@@ -1935,6 +1948,8 @@ const API = {
       return;
     }
 
+    prepareCooks(this);stepCanteen(this,dt);
+    this.restoreBuilders();
     advanceWorkers(this,dt);
     this.advanceWestDeva(dt);
 
@@ -1948,7 +1963,7 @@ const API = {
       if (!actorStanding(c)) continue;
       const building = c.buildK ? STATIONS.find(d => d.k === c.buildK) : null;
       const rest = c.k === 'nira' && this.niraRest;
-      const post = rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
+      const post = c.cook ? {x:c.cookX,y:c.cookY} : rest ? this.stations.find(s => s.def.k === 'tea' && !s.build)?.def || STATIONS.find(d => d.k === 'sala')
         : building || (c.at ? STATIONS.find(d => d.k === c.at) : null);
       let hx = post ? post.x : c.hx, hy = post ? post.y : c.hy;
       // จุดประจำบางจุดวางไว้ตั้งแต่ก่อนที่ตัวอาคารจะกันทางเดิน — ตกอยู่ใต้ชายคาพอดี
@@ -1988,7 +2003,11 @@ const API = {
       // ทัณฑ์ต้องเดินมาถึงพื้นที่ก่อน เวลา BUILD_TIME จึงเริ่มนับจริง
       if (building && Math.hypot(hx - c.x, hy - c.y) < 42) {
         const st = this.stations.find(x => x.def.k === building.k);
-        if (st?.buildWait) {
+        if(st?.workerWork){
+          if(!st.workerWork.ready&&!zoneWorkers(this).length)st.workerWork.remaining=Math.max(0,st.workerWork.remaining-Math.min(dt,120));
+          if(st.workerWork.remaining<=0)st.workerWork.ready=true;
+          if(st.workerWork.ready&&c.k==='taan'){st.workerWork.inspected=true;st[st.workerWork.kind+'Wait']=false;st[st.workerWork.kind]=Date.now()-1;this.log(`${c.name}ตรวจรับ${building.name}แล้ว`, 'good');}
+        } else if (st?.buildWait) {
           st.buildWait = false; st.build = Date.now() + BUILD_TIME;
           c.wait = 900;
           // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" ตรงนี้คือชื่อตัวละคร ไม่ใช่คำว่า "การลงทัณฑ์"
@@ -2088,7 +2107,7 @@ const API = {
     // ---- นั่งร้านถอดออกเมื่อครบเวลา ----
     for (const st of this.stations) {
       if (!st.build || st.buildWait || Date.now() < st.build) continue;
-      st.build = 0;
+      st.build = 0;st.workerWork=null;
       const builder = this.crew.find(c => c.buildK === st.def.k);
       if (builder) { builder.buildK = null; builder.wait = 0; builder.path = null; }
       const extra = st.buildExtra ?? (this.buildExtra && this.buildExtra.k === st.def.k ? this.buildExtra.text : '');
@@ -2099,7 +2118,7 @@ const API = {
 
     for (const st of this.stations) {
       if (!st.repair || st.repairWait || Date.now() < st.repair) continue;
-      st.repair = 0; st.fire = 0;
+      st.repair = 0; st.fire = 0;st.workerWork=null;
       const builder = this.crew.find(c => c.buildK === st.def.k);
       if (builder) { builder.buildK = null; builder.wait = 0; builder.path = null; }
       this.log(`🔧 ซ่อม${st.def.name}เสร็จแล้ว`, 'good');
@@ -2399,6 +2418,7 @@ const API = {
 
   /** สั่งเดินไปที่จุดหนึ่ง — วางเส้นทางอ้อมลาวา/แม่น้ำให้เอง */
   walkTo(x, y, hunt = false) {
+    if(this.mapTravel)return false;
     if (!hunt) this.huntMob = false;
     const P = this.player;
     const t = canWalkAvoid(x, y) ? [x, y] : nearestWalk(x, y, undefined, true);   // 30D: ไม่ทับตัวยมทูตที่ยืนอยู่
@@ -4313,7 +4333,7 @@ const API = {
         k: st.def.k, bossCourtTemporary:!!st.bossCourtTemporary, bossCourtConstruction:st.bossCourtConstruction, crewK: st.crewK, intensity: st.intensity, fire: st.fire,
         visitCd: st.visitCd || 0, kanCd: st.kanCd || 0, build: 0, slots: st.slots,
         repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
-        repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
+        repairWait:!!st.repairWait, workerWork:st.workerWork?{...st.workerWork}:null, arrivalElapsed:st.arrivalElapsed || 0,
         speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       })),
       queue: this.queue, held: this.held, items: this.items, courtArrivals:this.courtArrivals,
@@ -4343,7 +4363,7 @@ const API = {
         if (!st.def) return null;
         Object.assign(st, { crewK: sv.crewK, intensity: sv.intensity ?? 3, fire: sv.fire || 0,
                             visitCd: sv.visitCd || 0, kanCd: sv.kanCd || 0, build: 0, slots: sv.slots || [],
-                            repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait, arrivalElapsed:sv.arrivalElapsed || 0,
+                            repair: sv.repair ? Date.now() + sv.repair : 0, repairWait:!!sv.repairWait, workerWork:sv.workerWork?{...sv.workerWork}:null, arrivalElapsed:sv.arrivalElapsed || 0,
                             speedLv:sv.speedLv || 0, capLv:sv.capLv || 0, fuelLv:sv.fuelLv || 0, mgCd:sv.mgCd || 0, documentCd:sv.documentCd || 0 });
         return st;
       }).filter(Boolean);
@@ -4692,20 +4712,22 @@ const API = {
     if (this.stations.some(s => s.def.k === k)) return false;
     if (this.buildLocked(k)) return false;            // P1: ยังไม่ถึงขั้นปลดล็อก
     const before = this.activeTags();
-    const worker = this.availableBuilder();
-    if (!worker) return false;
+    const helpers=zoneWorkers(this).length>0;
+    const worker = helpers?null:this.availableBuilder();
+    if (!helpers&&!worker) return false;
     this.coin -= def.cost;
     const st = mkStation(k, Date.now() + BUILD_TIME);
     st.buildWait = true;
     this.stations.push(st);
-    worker.at = null; worker.buildK = k; worker.path = null; worker.workTarget = null;
+    if(helpers)st.workerWork={kind:'build',remaining:BUILD_TIME,ready:false,inspected:false};
+    else {worker.at = null; worker.buildK = k; worker.path = null; worker.workTarget = null;}
     const opened = def.tags.filter(t => !before.includes(t)).map(t => SINS[t].name);
     const extra = k === 'tarang' ? ` — คิวรับได้ถึง ${this.queueCap()} ดวงแล้วระเบียบถึงจะเริ่มตก`
                 : k === 'krajok' ? ` — จะเติมพลังให้เองทุก ${KRAJOK.every} วาระ`
                 : opened.length  ? ` — ต่อจากนี้จะมีสำนวน "${opened.join(' · ')}" ส่งเข้าคิวด้วย` : '';
     st.buildExtra = extra;                    // แต่ละไซต์เก็บข้อความของตัวเองเมื่อสร้างพร้อมกัน
     // ใช้ชื่อช่างที่รับงานจริง ซึ่งเปลี่ยนตามโซน
-    this.log(`🏗️ สั่งสร้าง${def.name} — ${worker.name}กำลังเดินไปเริ่มงาน`, 'act');
+    this.log(`🏗️ สั่งสร้าง${def.name} — ${helpers?'คนงานเริ่มก่อสร้าง แล้วรอทัณฑ์ตรวจรับ':worker.name+'กำลังเดินไปเริ่มงาน'}`, 'act');
     return true;
   },
 
@@ -4713,10 +4735,12 @@ const API = {
   workerHireWhy() { return workerHireWhy(this); },
   hireWorker() { const result=hireWorker(this);if(result){this.save();this.onChange();}return result; },
   setWorkerMode(id,mode) { const ok=setWorkerMode(this,id,mode);if(ok){this.save();this.onChange();}return ok; },
+  feedWorker(id) {const ok=feedWorker(this,id);if(ok){this.save();this.onChange();}return ok;},
+  restWorkerAtTea(id) {const ok=restWorkerAtTea(this,id);if(ok){this.save();this.onChange();}return ok;},
   dismissWorker(id) { const ok=dismissWorker(this,id);if(ok){this.save();this.onChange();}return ok; },
 
   builders() {
-    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam'));
+    return this.crew.filter(c => actorStanding(c) && (c.k === 'taan' || c.k === 'dam') && !c.cook);
   },
 
   availableBuilder() {
@@ -4727,7 +4751,8 @@ const API = {
   restoreBuilders() {
     for (const st of this.stations.filter(s => s.build || s.repair)) {
       if (this.crew.some(c => c.buildK === st.def.k)) continue;
-      const worker = this.availableBuilder();
+      if(st.workerWork&&!st.workerWork.ready&&zoneWorkers(this).length)continue;
+      const worker = st.workerWork?this.builders().find(c=>c.k==='taan'&&!c.buildK&&!c.at&&!c.escort):this.availableBuilder();
       if (worker) worker.buildK = st.def.k;
     }
   },
@@ -4735,17 +4760,19 @@ const API = {
   canRepair(k) {
     const st = this.stations.find(s => s.def.k === k);
     return !!(st && !st.build && st.fire > 0 && !st.repair && !this.mobs.length &&
-              this.availableBuilder());
+              (zoneWorkers(this).length||this.availableBuilder()));
   },
 
   repairStation(k) {
     if (!this.canRepair(k)) return false;
     const st = this.stations.find(s => s.def.k === k);
-    const worker = this.availableBuilder();
+    const helpers=zoneWorkers(this).length>0;
+    const worker = helpers?null:this.availableBuilder();
     st.repair = Date.now() + REPAIR_TIME;
     st.repairWait = true; st.arrivalElapsed = 0;
-    worker.buildK = k; worker.path = null; worker.workTarget = null;
-    this.log(`🔧 เรียก${worker.name}มาซ่อม${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
+    if(helpers)st.workerWork={kind:'repair',remaining:REPAIR_TIME,ready:false,inspected:false};
+    else {worker.buildK = k; worker.path = null; worker.workTarget = null;}
+    this.log(`🔧 เรียก${helpers?'คนงานเริ่มซ่อม แล้วรอทัณฑ์ตรวจรับ':worker.name+'มาซ่อม'}${st.def.name} — ฟรี ใช้เวลา ${REPAIR_TIME / 1000} วินาทีหลังถึงไซต์`, 'act');
     this.onChange();
     return true;
   },
@@ -4783,7 +4810,7 @@ API.snapshot = function (withEntry = true) {
     v: 4, bossJustice:structuredClone(this.bossJustice || {version:1,active:null,ledger:{}}), fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
-    workerState:normalizeWorkers(this.workerState),
+    workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
     interrogationSupport:structuredClone(this.interrogationSupport),
     teamReports:structuredClone(this.teamReports), nextTeamReportId:this.nextTeamReportId,
     tick: this.tick, courtClosed: this.courtClosed, coin: this.coin, food: this.food, order: this.order,
@@ -4810,7 +4837,7 @@ API.snapshot = function (withEntry = true) {
       k: st.def.k, crewK: st.crewK, intensity: st.intensity, fire: st.fire, visitCd: st.visitCd || 0,
       build: st.buildWait ? BUILD_TIME : st.build ? Math.max(1, st.build - Date.now()) : 0, buildWait:!!st.buildWait, buildExtra:st.buildExtra || '',
       repair: st.repairWait ? REPAIR_TIME : st.repair ? Math.max(1, st.repair - Date.now()) : 0,
-      repairWait:!!st.repairWait, arrivalElapsed:st.arrivalElapsed || 0,
+      repairWait:!!st.repairWait, workerWork:st.workerWork?{...st.workerWork}:null, arrivalElapsed:st.arrivalElapsed || 0,
       speedLv:st.speedLv || 0, capLv:st.capLv || 0, fuelLv:st.fuelLv || 0, mgCd:st.mgCd || 0, documentCd:st.documentCd || 0,
       slots: st.slots,
     })),
@@ -4896,7 +4923,7 @@ API.restore = function (d) {
   if (d.discoveryQueue) d.discoveryQueue = [...new Set(d.discoveryQueue.map(legacyDiscovery))];
   this.roster = Object.fromEntries(Object.entries(d.roster).map(([id, sv]) => [id, actorFromLegacy(sv, sv.homeZone, sv.kind)]));
   this.training = normalizeTraining(d.training);
-  this.workerState = normalizeWorkers(d.workerState);
+  this.workerState = normalizeWorkers(d.workerState);this.canteenState={};for(const z of ['th','asia','west','cyberhell']){const v=d.canteenState?.[z];if(v)this.canteenState[z]={meals:Math.max(0,Math.min(6,Number(v.meals)||0)),cookedMs:0,served:Math.max(0,Number(v.served)||0)};}
   const support=d.interrogationSupport||{};
   this.interrogationSupport={version:1,
     insights:Number.isFinite(support.insights)?Math.max(0,Math.min(3,Math.floor(support.insights))):0,
@@ -4977,6 +5004,7 @@ API.restore = function (d) {
     st.buildExtra = sv.buildExtra;
     st.repair = sv.repair ? Date.now() + sv.repair : 0;
     st.repairWait = !!sv.repairWait;
+    st.workerWork=sv.workerWork&&['build','repair'].includes(sv.workerWork.kind)?{kind:sv.workerWork.kind,remaining:Math.max(0,Math.min(sv.workerWork.kind==='build'?BUILD_TIME:REPAIR_TIME,Number(sv.workerWork.remaining)||0)),ready:!!sv.workerWork.ready,inspected:false}:null;
     st.arrivalElapsed = sv.arrivalElapsed || 0;
     st.speedLv = sv.speedLv || 0; st.capLv = sv.capLv || 0; st.fuelLv = sv.fuelLv || 0;
     st.documentCd = sv.documentCd || 0;

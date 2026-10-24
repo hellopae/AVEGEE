@@ -1,3 +1,5 @@
+import {drawMapTravel} from './map-travel.js';
+import {canteenActive,canteenSite,drawCanteen} from './canteen.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
 import {zoneWorkers,drawWorker} from './workers.js';
 import {bossGuideDismissed} from './boss-guides.js';
@@ -308,7 +310,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const eased=progress*progress*(3-2*progress);
     const fx=f.to[0]+(f.from[0]-f.to[0])*eased;
     const riders=ferry&&!rescue?Math.min(2,(g.courtArrivals||[]).filter(a=>a.zone===g.zone&&a.phase==='ferry').length):0;
-    drawBoat(ctx,fx,f.from[1]+120,soulTime,riders,true);
+    if(!g.mapTravel)drawBoat(ctx,fx,f.from[1]+120,soulTime,riders,true);
     if (bg && !isTownZone(g.zone)) {
       ctx.save(); ctx.beginPath();
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
@@ -335,7 +337,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const spot_ = (x, y, h) => { if (town) actorSpots.push([x, y, h]); };
   const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
-    at(townHouseDepth(site), () => drawTownHouse(ctx, img(townHouseKey(index)) || archiveHouse, site));
+    at(townHouseDepth(site), () => {if(index===2&&canteenActive(g)){drawCanteen(ctx,g,t);mapName(ctx,'🍲 โรงอาหาร',site.x,site.y+14,'#ffe7c4');}else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
+  if(!town&&canteenActive(g))at(canteenSite(g).y,()=>drawCanteen(ctx,g,t));
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
@@ -439,7 +442,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     spot_(worker.x,worker.y,CREW_H*.85);
-    at(worker.y+1,()=>shade(worker.x,worker.y,CREW_H*.85,c=>drawWorker(c,worker,t,CREW_H*.85)));
+    at(worker.y+1,()=>{shade(worker.x,worker.y,CREW_H*.85,c=>drawWorker(c,worker,t,CREW_H*.85));if(worker.meal)label(ctx,'🍲',worker.x+16,worker.y-24,14);});
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -598,6 +601,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of (rescue ? [] : g.crew)) {
+    if(g.mapTravel&&['nira','kan'].includes(c.k))continue;
     if(justice && (c.k===justice.pick?.crew || c.k==='nira' && ['dais','trial'].includes(justice.phase)))continue;
     if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
     if (c.x == null || c.escort) continue;
@@ -611,7 +615,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       // (ก่อนถึงไซต์ยังเดินอยู่ ไม่เข้าเงื่อนไขนี้ เพราะ st จะยังเป็น buildWait:true)
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
-      const working = c.at || (buildingHere && Math.floor(t / 500) % 2 === 0);
+      const working = c.at || c.cook || (buildingHere && Math.floor(t / 500) % 2 === 0);
       shade(c.x, c.y, CREW_H, cx => {
         const animated = !buildingHere && motion.moving &&
           drawCrewWalk(cx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
@@ -619,6 +623,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         if (!animated&&!idleNira) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
           c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
+      if(c.cook)label(ctx,'🍲',c.x,c.y-CREW_H-8,14);
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
     });
@@ -670,7 +675,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // ตัวเราวาดท้ายสุดเสมอ — เจ้าของสั่ง 10 ก.ย. 2569 ว่าเดินไปตรงไหนก็ต้องเห็นตัวเอง
   // (บันไดกับพญานาคของหอทะเบียนกินพื้นที่ลงมาเยอะ ยืนตรงนั้นแล้วหายไปทั้งตัว)
   // ตัวละครอื่นกับอาคารยังเรียงตามพิกัด y กันเองเหมือนเดิม
-  at(isTownZone(g.zone) ? P.y : Infinity, () => {
+  if(!g.mapTravel)at(isTownZone(g.zone) ? P.y : Infinity, () => {
     if (sel && sel.kind === 'me') ring(ctx, P.x, P.y, t, 32);
     const swinging = g.swingUntil && Date.now() < g.swingUntil;
     const walking = t < heroMovingUntil;
@@ -682,6 +687,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   });
   spot_(P.x, P.y, HERO_H);
 
+  if(g.mapTravel)at(g.mapTravel.waterY+20,()=>drawMapTravel(ctx,g,t,HERO_H));
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
@@ -737,7 +743,7 @@ function drawStationAO(ctx, def) {
 function drawStation(ctx, g, st, t) {
   const d = st.def;
   if (st.build) {                                   // กำลังก่อสร้าง — นั่งร้าน + แถบเวลา
-    const left = Math.max(0, st.build - Date.now());
+    const left = st.workerWork?st.workerWork.remaining:Math.max(0, st.build - Date.now());
     const p = 1 - left / BUILD_TIME;
     const bw = d.bw || 200, im = img('st-building');
     if (im) {
@@ -751,7 +757,7 @@ function drawStation(ctx, g, st, t) {
     // ข้อ G คุณเป้เจอ 25 ก.ย. 2569 — "ทัณฑ์" เป็นชื่อตัวละคร หาตัวจริงที่กำลังสร้างหลังนี้อยู่
     // (buildK ตรงกับ d.k) แล้วใช้ชื่อของเขา (ตามโซนผ่าน crewName แล้ว) แทนพิมพ์ "ทัณฑ์" ตรง ๆ
     const builder = g.crew.find(c => c.buildK === d.k);
-    label(ctx, st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
+    label(ctx, st.workerWork?(st.workerWork.ready?'✅ สร้างเสร็จ · รอทัณฑ์ตรวจรับ':`🏗️ คนงานกำลังสร้าง ${Math.round(p*100)}%`):st.buildWait ? `🔨 รอ${builder?.name || 'ทัณฑ์'}เดินมาเริ่มงาน` : `🏗️ กำลังก่อสร้าง ${Math.round(Math.max(0, p) * 100)}%`, d.bx, by - 12, 14, '#ffe7c4');
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
@@ -763,7 +769,7 @@ function drawStation(ctx, g, st, t) {
   }
   if (st.repair) {
     const builder = g.crew.find(c => c.buildK === d.k);
-    label(ctx, st.repairWait ? `🔧 รอ${builder?.name || 'ทัณฑ์'}เดินมาซ่อม`
+    label(ctx, st.workerWork?(st.workerWork.ready?'✅ ซ่อมเสร็จ · รอทัณฑ์ตรวจรับ':`🔧 คนงานกำลังซ่อม ${Math.round((1-st.workerWork.remaining/REPAIR_TIME)*100)}%`):st.repairWait ? `🔧 รอ${builder?.name || 'ทัณฑ์'}เดินมาซ่อม`
       : `🔧 กำลังซ่อม ${Math.round(Math.max(0, 1 - (st.repair - Date.now()) / REPAIR_TIME) * 100)}%`,
       d.bx, d.by + 34, 14, '#ffe7c4');
   }

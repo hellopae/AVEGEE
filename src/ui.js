@@ -1,3 +1,5 @@
+import {canteenActive,canteenPoint} from './canteen.js';
+import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedLivingFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
@@ -203,7 +205,7 @@ function updateMapCamera(now) {
   mapCam.z += (target - mapCam.z) * blend;
   // ซูมออกเต็มที่แล้ว (1×) กล้องกลับกลางภาพ · ซูมเข้า = ตามยมบาท
   const court=bossJusticeCase(g),escortView=court&&['escort','punishment','return','sentenceScene'].includes(court.phase)?bossJusticeActors(g).find(a=>a.id==='justice-boss'):null;
-  const focus=escortView||g.player;
+  const focus=g.mapTravel?.focus||escortView||g.player;
   const wantX = mapCam.level > 0 ? focus.x : SCENE.w / 2, wantY = mapCam.level > 0 ? focus.y : SCENE.h / 2;
   mapCam.x += (wantX - mapCam.x) * blend; mapCam.y += (wantY - mapCam.y) * blend;
   if (Math.abs(mapCam.z - 1) < 0.002 && target === 1) mapCam.z = 1;
@@ -590,7 +592,7 @@ function drawTab() {
            ตอนนี้โซนนี้รับได้: ${g.activeTags().map(t => `<span class="tag" style="background:${SINS[t].color}22;color:${SINS[t].color}">${SINS[t].name}</span>`).join(' ') || 'ยังไม่มีเลย'}</div>`
       + [...STATIONS.filter(s => s.cost > 0)].sort((a, b) => g.buildUnlockLv(a.k) - g.buildUnlockLv(b.k) || BUILD_PLAN.findIndex(p => p.k === a.k) - BUILD_PLAN.findIndex(p => p.k === b.k)).map(s => {
         const built = g.stations.some(x => x.def.k === s.k);
-        const bt = g.availableBuilder(), builderBusy = !bt;
+        const bt = g.availableBuilder(), builderBusy = !bt&&!g.workers().length;
         const lockedS = !built && g.buildLocked(s.k), recS = !built && g.recommendedBuild() === s.k;
         const open = s.tags.filter(t => !g.activeTags().includes(t)).map(t => SINS[t].name);
         return `<div class="shop${lockedS ? ' build-locked' : ''}${recS ? ' build-recommended' : ''}" ${lockedS ? 'style="opacity:.62"' : ''}><span class="g">${s.glyph}</span>
@@ -1378,8 +1380,8 @@ function updateFrontierFab() {
  *  P4: ปุ่มคุยตัวละคร (kind 'talk') มีสิทธิ์ต่ำสุด — โผล่เมื่อไม่มี interaction อื่นในระยะ และไม่ได้ยืนที่จุดสร้าง/ประตูชายแดน */
 function baseMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
-  const point=g.harbourPoint();
-  return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
+  const point=g.harbourPoint(),mealPoint=canteenPoint(g);
+  return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),...(canteenActive(g)?[{id:'canteen',kind:'canteen',x:mealPoint[0],y:mealPoint[1],bx:mealPoint[0],by:mealPoint[1]+25,label:'โรงอาหาร · จัดอาหารและคนงาน'}]:[]),
     // N1 (คุณเป้ 16 ต.ค. ภาพ 7 ลูกศรชี้ไปที่เท้ายมบาทปลายท่า): ปุ่มกึ่งกลางอยู่ที่ปลายท่าใต้เท้า (หน้าหินหัวท่า) ไม่ลอยกลางน้ำ
     // และไม่ทับป้ายบอสที่อยู่เหนือท่า (ท่าอยู่ห่างบอสแค่ ~100 หน่วย — วางเหนือหัวแล้วปุ่มสองอันซ้อนกันบนจอแคบ)
     {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y+26,label:'ท่าเรือ · Fast Travel'}]);
@@ -1396,6 +1398,7 @@ function activateMapInteraction(now) {
       if (now.kind === 'repair') {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'harbour') openHarbour();
+      else if(now.kind==='canteen')modal('<h2>🍲 โรงอาหาร</h2>'+workersPanelHtml(g),d=>{d.querySelector('[data-hire-worker]')?.remove();bindWorkersPanel(d,g,()=>{dlg.close();activateMapInteraction(now);});});
       else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
@@ -2986,6 +2989,7 @@ document.addEventListener('click', e => {
   e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
 }, true);
 document.addEventListener('keydown', e => {
+  if(g.mapTravel)return;
   if (e.key !== 'Enter' && e.key !== ' ') return;
   const b = e.target.closest?.('[data-power]');
   if (!b) return;
@@ -3020,7 +3024,7 @@ function openNiraOffice() {
       const why = final ? g.finalTeamWhy(c) : '';
       const rank = final ? 0 : hireRank(def.k);
       return { rank, html: `<article class="shop-card${!final && !c && nextHire === def.k ? ' hire-recommended' : ''}"><span class="pw-av"><img src="${crewArt(c || def, '-profile')}" alt="">${powerBadgeHtml(def.k, { zone: g.zone, actor: c })}</span>
-          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
+          <span><b>${esc(c?.name || crewName(def, g.zone))}</b><small>${esc(c?.cook?'พ่อครัวโรงอาหาร · ทำอาหารให้ทุกคน':def.duty)}</small>${final ? `<small>${esc(ZONES.find(z => z.k === c.homeZone)?.name || c.homeZone)} · กำลังใจ ${Math.round(c.morale)}</small><small>${esc(why)}</small>` : ''}
           ${!final ? hireTag(def.k, !!c) : ''}
           ${c ? `<small>แรง ${c.raeng} · ระเบียบ ${c.rabiab}</small><small>ท่าสู้: ${crewAbility(c)} · คูลดาวน์ ${BATTLE.crewCd} วินาที</small>` : `<small>ค่าจ้าง ${def.hire} เบี้ยกรรม · ท่าสู้: ${crewAbility(def.k)}</small>`}
           ${c ? niraItemWidget(c) + guardRestWidget(c) : ''}</span>
@@ -4493,7 +4497,7 @@ function openDungeon() {
       },
       onArrival:to=>{
         destroy?.();destroy=null;
-        const arrive=()=>{if(g.moveZone(to)){dlg.close();g.save();refresh();}else openDungeon();};
+        const arrive=()=>startMapJourney(to,'dungeon');
         if(g.bossGuideFollowing?.())runBossGuideStory('farewell',arrive);
         else if(g.bossGuideWaiting?.()){
           const place=routeBossCave(dungeonStatus(g)?.route.id)?'ถ้ำ':'ทางเข้าเส้นทางชายแดน';
@@ -4521,25 +4525,32 @@ function openHarbour() {
       d.querySelectorAll('[data-sail]').forEach(btn=>btn.onclick=()=>sailTo(btn.dataset.sail));
     });
 }
-function sailTo(to) {
-  if(!g.atHarbour()||!harbourDestinations(g).includes(to))return;
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let frame=0,departed=false;
-  modal(`<h2>เรือสู่อเวจี · ${esc(ZONES.find(z=>z.k===to).name)}</h2><canvas id="sailing" width="960" height="360" style="width:100%;border-radius:12px" aria-label="Yama และ Nira กำลังเดินทางโดยเรือ"></canvas><p>Yama · Nira</p><button id="sail-skip">ข้ามฉากเดินเรือ</button>`,d=>{
-    const canvas=d.querySelector('canvas'),c=canvas.getContext('2d'),start=performance.now();
-    const arrive=()=>{if(departed)return;departed=true;cancelAnimationFrame(frame);if(g.moveZone(to)){dlg.close();g.save();refresh();}};
-    d.querySelector('#sail-skip').onclick=arrive;
-    const draw=now=>{if(!d.open||departed)return;const p=Math.min(1,(now-start)/(reduced?1:2600));
-      c.fillStyle='#252038';c.fillRect(0,0,960,360);
-      const bg=img('theme-map-'+g.zone);if(bg)c.drawImage(bg,0,bg.naturalHeight*.72,bg.naturalWidth,bg.naturalHeight*.25,0,0,960,360);
-      const x=160+p*640,y=260;
-      drawStandee(c,'hero-yama',x-12,y-48,62,now);drawStandee(c,'crew-nira',x+22,y-48,60,now);
-      drawBoat(c,x,y,now,0,false);
-      if(p>=1)arrive();else frame=requestAnimationFrame(draw);
-    };frame=requestAnimationFrame(draw);
-    const generation=dlgGen;
-    const close=()=>{if(d.open&&generation===dlgGen)return;cancelAnimationFrame(frame);d.removeEventListener('close',close);};d.addEventListener('close',close);
-  },'boat-dialog');
+function sailTo(to) { startMapJourney(to,'boat'); }
+async function startMapJourney(to,mode='boat') {
+ if(g.mapTravel||g.travelLoading)return;
+ const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,g.outfit||to);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
+ if(!dlg.open||travelGeneration!==dlgGen)return;
+ if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}))return;
+ dlg.close();g.paused=false;setMapZoom(Math.min(1,MAP_ZOOM_LEVELS.length-1));
+ const panel=document.createElement('section');panel.id='map-travel-panel';panel.setAttribute('role','status');
+ panel.style='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:10010;width:min(560px,92vw);box-sizing:border-box;background:var(--panel,#281d22);color:var(--text,#ffe7c4);border:1px solid var(--gold,#d4a355);border-radius:12px;padding:12px;text-align:center;line-height:1.65';
+ const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');document.body.append(blocker);
+ const text=document.createElement('p');text.style.margin='0 0 8px';panel.append(text);
+ const skip=document.createElement('button');skip.textContent='ข้ามฉากเดินทาง';panel.append(skip);
+ const cancel=document.createElement('button');cancel.textContent='ยกเลิก';panel.append(cancel);document.body.append(panel);
+ let last=performance.now(),frame=0,done=false;
+ const keyguard=e=>{if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(!g.mapTravel?.committed&&cancelMapTravel(g))close();}else if(e.key!=='Tab'&&!panel.contains(document.activeElement)){e.preventDefault();e.stopImmediatePropagation();}};document.addEventListener('keydown',keyguard,true);skip.focus();
+ const close=()=>{if(done)return;done=true;cancelAnimationFrame(frame);panel.remove();blocker.remove();document.removeEventListener('keydown',keyguard,true);refresh();g.onChange();};
+ skip.onclick=()=>{if(finishMapTravel(g))close();else{close();g.log('เดินทางไม่ได้ กรุณาลองใหม่','bad');}};
+ cancel.onclick=()=>{if(cancelMapTravel(g))close();};
+ const animate=now=>{
+  if(done)return;
+  if(!g.mapTravel){close();return;}
+  advanceMapTravel(g,now-last);last=now;
+  const a=g.mapTravel;if(!a){close();return;}
+  const phase={approach:mode==='boat'?'เรือกำลังเข้าเทียบท่า · นิราและกาญกำลังเดินมา':'กาญกำลังมาส่งที่ชายแดน',handoff:KAN_HANDOFF,board:'ยามาและนิรากำลังขึ้นเรือ',depart:'ออกเดินทางไปทางขวา',arrive:'ถึงปลายทาง · เรือเข้าจากแม่น้ำทางซ้าย',land:'ยามาและนิราขึ้นท่าเรือ'};
+  text.textContent=phase[a.phase];cancel.hidden=a.committed;frame=requestAnimationFrame(animate);
+ };frame=requestAnimationFrame(animate);
 }
 
 function openOutfit() {
@@ -5144,6 +5155,7 @@ function onSceneClick(sx, sy) {
 // เดินด้วยคีย์บอร์ดด้วยก็ได้
 const KEY = {};
 addEventListener('keydown', e => {
+  if(g.mapTravel)return;
   if (dlg.open || !heroProfile.hidden || /input|textarea|select/i.test(e.target.tagName)) return;
   if (talkSess && !e.repeat) {                       // P4: บับเบิลคุยเปิดอยู่ — Esc ปิด · Enter/E บทถัดไป
     if (e.key === 'Escape') { closeTalk(); e.preventDefault(); return; }
@@ -6115,6 +6127,7 @@ function openDefeatRecovery() {
 
 // ---------- เหตุการณ์เด้ง ----------
 g.onChange = () => {
+  if(g.mapTravel)return;
   if (g.assetsLoading) return;
   // Hold the world before story/boss handlers can show any art from the new branch.
   if (g.pendingZone) {

@@ -71,5 +71,5 @@ export function hireDone(g, plan) {
 
 /** ตัวถัดไปที่แนะนำให้จ้าง (id) หรือ null เมื่อจ้างครบลำดับแล้ว */
 export function recommendedHire(g) {
-  return HIRE_PLAN.find(p => !hireDone(g, p))?.id ?? null;
+  return HIRE_PLAN.find(p => !hireDone(g, p) && (p.id!=='worker'||g.zoneEvents?.th?.frontierBreach==='cleared'||g.bossCleared?.th))?.id ?? null;
 }

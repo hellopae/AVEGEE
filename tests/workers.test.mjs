@@ -9,7 +9,7 @@ import {WORKER_RULES,normalizeWorkers,stepWorkers,advanceWorkers,workerSupervisi
 import {workersPanelHtml} from '../src/worker-ui.js';
 globalThis.Image??=class {};
 function game() {
-  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;g.nextArrive=g.nextEvent=g.nextPay=g.nextKpi=10000;
+  const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;g.nextArrive=g.nextEvent=g.nextPay=g.nextKpi=10000;
   resetWalk();setBlocks([],[]);setNpcDiscs([]);return g;
 }
 function station(g,repair=false) {
@@ -42,32 +42,19 @@ test('hiring fails without funds or available Nira, without spending coins or ID
   g.niraRest=null;g.crewOf('nira').morale=0;assert.equal(g.hireWorker(),false);
 });
 
-test('supervisors walk to the site and increase real station progress, with at most two per station',()=>{
-  const baseline=game(),plain=station(baseline);baseline.step();const ordinary=plain.slots[0].progress;
-  const g=game(),st=station(g);const workers=[g.hireWorker(),g.hireWorker(),g.hireWorker()];
-  for(const w of workers)g.setWorkerMode(w.id,'supervise');
-  stepWorkers(g);
-  assert.equal(workerSupervisionMultiplier(g,st),1,'no bonus before physical arrival');
-  for(const w of workers.filter(w=>w.job))arrive(g,w);
-  assert.equal(workers.filter(w=>w.job).length,2);
-  assert.equal(workerSupervisionMultiplier(g,st),1.4);
-  g.step();assert.ok(Math.abs(st.slots[0].progress-ordinary*1.4)<1e-8,'the normal gameplay step consumes the multiplier');
-  assert.ok(g.workerState.ledger.supervisionTicks>0);
-  g.setWorkerMode(workers[0].id,'rest');assert.equal(workerSupervisionMultiplier(g,st),1.2);
+test('old specialized worker modes migrate to logistics and no longer add a passive supervision bonus',()=>{
+ const g=game(),st=station(g),w=g.hireWorker();
+ for(const mode of ['supervise','build','repair','escort']){assert.equal(g.setWorkerMode(w.id,mode),true);assert.equal(w.mode,'auto');}
+ assert.equal(workerSupervisionMultiplier(g,st),1);
+});
+test('repair helpers start independent work after physical arrival without a stationed builder',()=>{
+ const g=game(),st=station(g,true),w=g.hireWorker();st.workerWork={kind:'repair',remaining:60000,ready:false};st.repairWait=true;g.crewOf('taan').buildK=null;
+ stepWorkers(g);assert.equal(w.job.kind,'repair');const before=st.workerWork.remaining;advanceWorkers(g,120);assert.equal(st.workerWork.remaining,before);
+ arrive(g,w);advanceWorkers(g,100);assert.ok(st.workerWork.remaining<before);assert.ok(g.workerState.ledger.repairMs>0);
 });
 
-test('repair helpers accelerate the actual countdown only after Taan arrives and never start a repair alone',()=>{
-  const g=game(),st=station(g,true),w=g.hireWorker();g.setWorkerMode(w.id,'repair');
-  st.repairWait=true;stepWorkers(g);arrive(g,w);
-  const waiting=st.repair;advanceWorkers(g,120);assert.equal(st.repair,waiting);
-  st.repairWait=false;const now=Date.now();st.repair=now+60000;
-  advanceWorkers(g,100,now);assert.equal(st.repair,now+59980);assert.equal(g.workerState.ledger.repairMs,20);
-  g.crewOf('taan').buildK=null;const stopped=st.repair;advanceWorkers(g,100,now);assert.equal(st.repair,stopped);
-  stepWorkers(g);assert.equal(w.job,null);
-});
-
-for(const kind of ['build','repair','supervise'])test(`auto gatherer sells its cargo before taking newly available ${kind} work`,()=>{
-  const g=game();g.stations=[];
+for(const kind of ['build','repair'])test(`auto gatherer sells its cargo before taking newly available ${kind} work`,()=>{
+  const g=game();g.stations=[{def:STATIONS.find(d=>d.k==='ngiw'),build:0,repair:0}];
   const w=g.hireWorker();stepWorkers(g);
   assert.equal(w.job.kind,'gather');
   for(let i=0;i<20000&&!w.cargo;i++)advanceWorkers(g,120);
@@ -122,10 +109,10 @@ test('stopping an escort or dismissing a worker preserves the soul journey and p
 });
 
 test('active wages, food and fatigue pause bonuses; rest recovers workers without charging resources',()=>{
-  const g=game(),st=station(g),w=g.hireWorker();g.setWorkerMode(w.id,'supervise');stepWorkers(g);arrive(g,w);
+  const g=game(),st=station(g,true),w=g.hireWorker();g.setWorkerMode(w.id,'repair');stepWorkers(g);arrive(g,w);
   w.workTicks=30;const before=g.coin;stepWorkers(g);assert.equal(before-g.coin,2);assert.equal(g.workerState.ledger.wagesPaid,2);
   g.food=0;stepWorkers(g);assert.equal(w.funded,false);assert.equal(workerSupervisionMultiplier(g,st),1);
-  g.food=100;g.coin=0;w.workTicks=30;stepWorkers(g);assert.equal(w.funded,false);assert.equal(w.reason,'รอค่าจ้าง');
+  g.food=100;g.inventory.food=1;g.feedWorker(w.id);g.coin=0;w.workTicks=30;stepWorkers(g);assert.equal(w.funded,false);assert.equal(w.reason,'รอค่าจ้าง');
   g.setWorkerMode(w.id,'rest');w.stamina=0;const food=g.food;stepWorkers(g);assert.equal(w.stamina,4);assert.equal(g.food,food);
 });
 
@@ -133,7 +120,7 @@ test('workers and ledger survive normal game save/restore; old saves initialize 
   const g=game(),w=g.hireWorker();g.setWorkerMode(w.id,'repair');w.stamina=63;
   g.workerState.ledger.wagesPaid=12;
   const saved=JSON.parse(JSON.stringify(g.snapshot()));const loaded=game();assert.equal(loaded.restore(saved),true);
-  assert.equal(loaded.workers().length,1);assert.equal(loaded.workers()[0].id,w.id);assert.equal(loaded.workers()[0].mode,'repair');
+  assert.equal(loaded.workers().length,1);assert.equal(loaded.workers()[0].id,w.id);assert.equal(loaded.workers()[0].mode,'auto');
   assert.equal(loaded.workers()[0].stamina,63);assert.equal(loaded.workerState.ledger.wagesPaid,12);
   delete saved.workerState;const old=game();old.restore(saved);assert.deepEqual(old.workers(),[]);
   const invalid=normalizeWorkers({workers:[{id:'worker:9',homeZone:'th',stamina:-5},{id:'worker:9',homeZone:'th'},{id:'bad',homeZone:'none'}]});

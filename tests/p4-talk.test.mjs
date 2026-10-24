@@ -8,7 +8,7 @@ import {hitActor,afterlifeWalkPosition} from '../src/scene.js';
 import {talkInteractions,nearestInteraction,INTERACTION_REACH} from '../src/proximity.js';
 import {QUEUE_LINE,BAL} from '../src/data.js';
 
-const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=99999;return g;};
+const game=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=99999;return g;};
 const reload=g=>{const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);return h;};
 const helpers={walkPosition:w=>[w.path[0][0],w.path[0][1]]};
 const soul=(id,extra={})=>({id,who:'ชาวบ้าน',name:'สมชาย',sex:'m',sp:1,deeds:[],merits:[],waited:0,said:[],...extra});
@@ -105,7 +105,7 @@ test('TALK = ATMOSPHERE ONLY (D8): talking never changes any resource, state or 
   assert.doesNotMatch(src,/\bg\.(coin|food|karma|order|hp|mp|exp|level|inventory|queue|sentences|party)\s*([+\-*]?=)(?!=)/,'talk.js never assigns game resources');
 });
 
-test('lines: every one of Rae\'s 174 lines fills with no leftover token, Thai-only voice words are resolved, and length stays readable',()=>{
+test('lines: every one of Rae\'s 174 original lines and 2 canteen delivery lines fills with no leftover token, Thai-only voice words are resolved, and length stays readable',()=>{
   const vars={name:'ทัณฑ์',me:'ยามา',title:'ยมบาทน้อย',zone:'สุวรรณภูมิ',soul:'ลุงมี มั่นคง',station:'กระทะทองแดง',sentence:'ปานกลาง',sentenceN:3,progress:100,queueRank:7,queueLen:12,wait:120,back:'หนัก',hunger:100,morale:100,food:80};
   let n=0;const long=[];
   const walk=(o,path)=>{for(const [k,v] of Object.entries(o)){
@@ -113,7 +113,7 @@ test('lines: every one of Rae\'s 174 lines fills with no leftover token, Thai-on
       if(sex==='f'&&out.length>60)long.push(`${path}.${k}[${i}] (${out.length}) ${out}`);}});
     else walk(v,`${path}.${k}`);}};
   walk(TALK_LINES,'TALK_LINES');
-  assert.equal(n,174);
+  assert.equal(n,176);
   console.log(`\nlines over 60 chars after fill (worst case, long names): ${long.length}\n`+long.join('\n'));
   assert.ok(long.every(l=>Number(l.match(/\((\d+)\)/)[1])<=90),'nothing absurdly long');
 });

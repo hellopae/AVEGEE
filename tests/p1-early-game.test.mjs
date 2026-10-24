@@ -106,7 +106,7 @@ test('hiring order: dam -> helper -> plerng -> guard -> boon -> kan, recommendat
   assert.deepEqual(HIRE_PLAN.map(p => p.id), ['dam', 'worker', 'plerng', 'guard', 'boon', 'kan']);
   for (const p of HIRE_PLAN.filter(p => p.kind === 'crew')) assert.ok(CREW.some(c => c.k === p.k && c.hire > 0), p.k);
   assert.equal(hireRank('dam'), 1); assert.equal(hireRank('guard'), 4); assert.equal(hireRank('taan'), 0);
-  const g = game();
+  const g = game();(g.zoneEvents.th||={}).frontierBreach='cleared';
   const walk = [];
   for (let i = 0; i < 8; i++) {
     const id = recommendedHire(g); walk.push(id);
