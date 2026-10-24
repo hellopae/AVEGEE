@@ -6,7 +6,7 @@ const safeColor=color=>/^#[\da-f]{3,8}$/i.test(color||'')?color:'#d4a355';
 export function mountInterrogationStyles(){
   if(typeof document==='undefined'||document.getElementById('interrogation-role-styles'))return;
   const link=document.createElement('link');link.id='interrogation-role-styles';link.rel='stylesheet';
-  link.href=new URL('./interrogation-ui.css?v=20261022-p2',import.meta.url).href;document.head.appendChild(link);
+  link.href=new URL('./interrogation-ui.css?v=20261022-p2-team',import.meta.url).href;document.head.appendChild(link);
 }
 
 /** P2: the trait lives on the spirit's name tag — icon first (never colour alone), colour second. */
@@ -63,10 +63,10 @@ export function kanOrbHtml(game,soul,src='',result=''){
   const why=game.kanClueWhy(soul),cost=game.kanClueCost?.()||{mp:4,morale:4,cooldownSeconds:30};
   const price=fill(cost.insight?KAN_BUTTON_COPY.tipPriceInsight:KAN_BUTTON_COPY.tipPriceMp,cost);
   return `<div class="kan-orb${why?' is-off':''}" data-kan-orb>
-    <button type="button" class="kan-orb-btn" data-kan-clue ${why?'disabled':''} aria-label="${esc(KAN_BUTTON_COPY.ariaLabel)}" aria-describedby="kan-orb-tip" title="${esc(KAN_BUTTON_COPY.tipLine1+'\n'+price)}">${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:'🧿'}</button>
+    <button type="button" class="kan-orb-btn" data-kan-clue ${why?'disabled':''} aria-label="${esc(KAN_BUTTON_COPY.ariaLabel+(why?' · '+why:''))}" aria-describedby="kan-orb-tip" title="${esc(KAN_BUTTON_COPY.tipLine1+'\n'+price+(why?'\n'+why:''))}">${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:'🧿'}</button>
     <b class="kan-orb-label">${esc(KAN_BUTTON_COPY.label)}</b>
     <small class="keeper-role-why kan-orb-why" data-kan-clue-why ${why?'':'hidden'}>${esc(why)}</small>
-    <span class="kan-orb-tip" id="kan-orb-tip" role="tooltip">${esc(KAN_BUTTON_COPY.tipLine1)}<br>${esc(price)}</span>
+    <span class="kan-orb-tip" id="kan-orb-tip" role="tooltip">${esc(KAN_BUTTON_COPY.tipLine1)}<br>${esc(price)}${why?`<br>${esc(why)}`:''}</span>
     ${result?`<span class="sr-only" role="status">${esc(result)}</span>`:''}</div>`;
 }
 
@@ -100,4 +100,10 @@ export function bindTeamReports(root,game,onChange){
 export function onceFeedbackDismiss(onDismiss){
   let done=false;
   return ()=>{if(done)return false;done=true;onDismiss();return true;};
+}
+
+export function pressReaction(game,soul,line){
+ if(!line||line.used||line.kind==='solid'||soul.presses<=0)return null;
+ const revealed=(game.pressDeeds(soul,line)||[]).filter(d=>!d.known);
+ return revealed.some(d=>d.w<0)&&!revealed.some(d=>d.w>0)?'relief':'fear';
 }

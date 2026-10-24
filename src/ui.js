@@ -1,3 +1,5 @@
+import {traitForKeeper} from './interrogation.js';
+import {teamHudHtml,teamManageHtml} from './team-hud.js';
 import {canteenActive,canteenPoint} from './canteen.js';
 import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedLivingFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
@@ -6,7 +8,7 @@ import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js'
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
-import {mountInterrogationStyles,spiritNameHtml,keeperBarHtml,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
+import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
@@ -306,6 +308,7 @@ setInterval(() => {
       Math.hypot(g.player.x-WEST_RESCUE.x,g.player.y-WEST_RESCUE.y) <= INTERACTION_REACH) {
     if (g.startZoneEvent('westHypnotized')) openBattle(afterBreachBattle);
   }
+  drawTeamHud();
   updatePrisonFab();
   updateBreachFab();
   updateDevaFab();
@@ -363,13 +366,11 @@ function bar(v, cls = '') { return `<span class="bar ${cls}"><i style="width:${M
 function drawRes() {
   $('#res').innerHTML = `
     <span class="chip tap" data-ex="coin"><img src="img/ui/icon-coin.png" alt=""><b>${Math.round(g.coin)}</b></span>
-    <span class="chip tap" data-ex="food"><img src="img/item-food.png" alt=""><b>${Math.round(g.food)}</b></span>
     <span class="chip tap" data-ex="order"><img src="img/ui/icon-justice.png" alt=""><b>${Math.round(g.order)}</b></span>
     <span class="chip tap" data-ex="karma"><img src="img/ui/icon-skull.png" alt=""><b>${g.karma.toFixed(1)}</b></span>
-    ${workerSupplyBlocked(g) ? '<button class="chip tap" data-worker-supply-alert style="color:#ffb3a8">คนงานหยุด · เติมเสบียง</button>' : ''}
     ${g.mobs.length ? `<span class="chip mob-warn">👹 <b>${g.mobs.length}</b></span>` : ''}`;
   $('#res').querySelectorAll('[data-ex]').forEach(el => el.onclick = () => explainBar(el.dataset.ex));
-  $('#res').querySelector('[data-worker-supply-alert]')?.addEventListener('click',()=>explainBar('food'));
+  drawTeamHud();
   $('#tickinfo').textContent = `วาระที่ ${g.tick} · ตรวจการรอบหน้าอีก ${g.nextKpi} วาระ · ผ่านแล้ว ${g.kpiPassed}/${BAL.kpiWin}`;
 }
 
@@ -378,6 +379,32 @@ function drawRes() {
  *  "เวลาพ่อเลื่อนขั้นให้ ก็จะ 1 ดาว" — ดวงเต็ม = ถึงขั้นนั้นแล้ว (ฝึกหัด 1 · ประจำโซน 2 · ผู้ตัดสิน 3)
  *  ขั้นสูงกว่า 3 (เจ้าโซนขึ้นไป) ยังโชว์เต็มสามดวงเท่าเดิม (ม็อกอัปมีแค่สามช่อง) · star5 (จำนวนคำตัดสิน
  *  5 ดาวสะสม) ยังนับอยู่เหมือนเดิม ไปโผล่ที่แท็บข้อมูลยมทูต/แฟ้มแทน (ดู stat cards ที่อื่นในไฟล์นี้) */
+function drawTeamHud(){
+  const root=$('#team-hud');if(!root)return;
+  const html=teamHudHtml(g,c=>crewArt(c,'-profile'));
+  if(root._teamHtml===html||root.matches(':active'))return;
+  const focused=root.contains(document.activeElement)?document.activeElement?.dataset.teamActor:null;
+  root._teamHtml=html;root.innerHTML=html;
+  if(focused)root.querySelector(`[data-team-actor="${CSS.escape(focused)}"]`)?.focus({preventScroll:true});
+  root.querySelector('[data-team-food]')?.addEventListener('click',()=>explainBar('food'));
+  root.querySelectorAll('[data-team-manage]').forEach(b=>b.onclick=()=>openTeamManage());
+  root.querySelectorAll('[data-team-actor]').forEach(b=>b.onclick=()=>openTeamManage(b.dataset.teamActor));
+}
+function openTeamManage(selected=''){
+  pauseForDlg();
+  const paint=()=>{
+    const scroll=dlg.scrollTop;dlg.innerHTML=teamManageHtml(g,c=>crewArt(c,'-profile'),selected);dlg.scrollTop=scroll;
+    const worker=id=>g.workers().some(w=>w.id===id);
+    const done=ok=>{if(ok){sfx('coin');paint();refresh();}};
+    dlg.querySelectorAll('[data-team-feed]').forEach(b=>b.onclick=()=>done(worker(b.dataset.teamFeed)?g.feedWorker(b.dataset.teamFeed):g.giveCrewItem(b.dataset.food,b.dataset.teamFeed)));
+    dlg.querySelectorAll('[data-team-rest]').forEach(b=>b.onclick=()=>done(worker(b.dataset.teamRest)?g.restWorkerAtTea(b.dataset.teamRest):g.restActor(b.dataset.teamRest)));
+    dlg.querySelectorAll('[data-team-party]').forEach(b=>b.onclick=()=>done(g.toggleParty(b.dataset.teamParty)));
+    dlg.querySelectorAll('[data-team-mode]').forEach(b=>b.onchange=()=>done(g.setWorkerMode(b.dataset.teamMode,b.value)));
+  };
+  paint();openDlg('team-manage');
+  if(selected)dlg.querySelector(`[data-team-card="${CSS.escape(selected)}"]`)?.scrollIntoView({block:'nearest'});
+}
+
 function drawHudAvatar() {
   const stars = $('#hud-rank-stars');
   if (stars) {
@@ -2547,7 +2574,8 @@ function openTrial(initialError = '') {
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
-  let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false;
+  let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false, reaction = 'fear', trialClosed = false;
+  const reactionTimers=[];
   // P2: the three-page "read the name colour" lesson, once per save (after the first-warrant lesson)
   const traitLessonHtml = page => {
     const n = firstInterrogationLesson.length, step = firstInterrogationLesson[page];
@@ -2633,18 +2661,20 @@ function openTrial(initialError = '') {
         ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
     }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`) + (answer?.station && !dests.some(x => x.def.k === answer.station.k && !x.build)
       ? `<span class="idle trial-empty-hint trial-revealed-destination">✓ ${esc(t('trial.revealedWhere'))}: ${esc(answer.station.name)}</span>` : '');
-    const shownCrew = answer?.crew && !available.some(c => c.k === answer.crew.k)
-      ? [...available, answer.crew] : available;
+    const candidates=g.crew.filter(c=>!c.reader);
+    const shownCrew = answer?.crew&&!candidates.some(c=>c.k===answer.crew.k)?[...candidates,answer.crew]:candidates;
     const crewChoices = shownCrew.length ? shownCrew.map(c => {
       const revealed = !!answer?.crew && c.k === answer.crew.k;
       const role=g.keeperTrialInfo?.(s,c,pick.st);
       const unavailable = revealed && (answer.unavailable || !available.some(x => x.k === c.k) && { key:'chooseRevealedStation' })
         || role?.available===false&&{text:role.why||'ยังรับหมายนี้ไม่ได้'};
-      const why = unavailable ? blockText(unavailable) : '';
-      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${unavailable ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
+      const blockedCrew=unavailable||(!available.some(x=>x.k===c.k)&&{text:keeperCurrentJob(g,c)});
+      const why = blockedCrew ? blockText(blockedCrew) : '';
+      const suit=traitForKeeper(c.k);
+      return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${suit?`style="--trait-color:${suit.color}"`:''} ${blockedCrew ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
         title="${esc(c.name + ' · กำลังทำงาน ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta + (role?' · '+role.benefit+' · ภาระ: '+role.cost:'') + (revealed ? ' · ' + t('trial.revealedCrew') : '') + (why ? ' · ' + why : ''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${esc(c.name)}</b><small>${unavailable ? esc(t('trial.unavailable') + ' · ' + why) : `กำลังทำงาน ${c.raeng} · ระเบียบ ${c.rabiab}`}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        <b>${suit?`<span class="keeper-suit" aria-hidden="true">${suit.icon}</span> `:''}${esc(c.name)}</b><small>${why?esc(why):esc(keeperCurrentJob(g,c))}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
@@ -2669,7 +2699,7 @@ function openTrial(initialError = '') {
     const courtGroups = [
       {id:'power',label:'พลัง / Power',choices:powerChoices},
       {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
-      {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
+      {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices+`<details class="keeper-menu-info"><summary>พลังและต้นทุนผู้คุม</summary>${shownCrew.map(c=>{const r=g.keeperTrialInfo?.(s,c,pick.st);return `<p><b>${esc(c.name)}</b><br>${esc(r?.benefit||'')}<br>ภาระ: ${esc(r?.cost||'ไม่มี')}</p>`;}).join('')}</details>`,selected:pick.cr},
       {id:'force',label:'ระดับทัณฑ์ / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
     ];
     // L2: what is chosen under Where / Keeper / Intensity shows as a thumbnail + name to the right of that command until it changes or the warrant goes out
@@ -2706,9 +2736,10 @@ function openTrial(initialError = '') {
         <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
-        <div class="fig foe${Date.now() < fearUntil ? ' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+        <div class="fig foe${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
                onerror="this.onerror=null;this.src='img/spirit7.png'">
           ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
+          <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div><span class="relief-label" role="status">น้ำตาแห่งความโล่งใจ · มีผู้รับฟังความจริงแล้ว</span>
           <div class="soul-fear" aria-hidden="true"><i class="fear-gloom"></i><i class="fear-burst"></i><i class="fear-sweat s1"></i><i class="fear-sweat s2"></i><i class="fear-sweat s3"></i><i class="fear-tremble l"></i><i class="fear-tremble r"></i></div></div>
       </div></div>
       <div class="hud-scrim"></div>
@@ -2725,7 +2756,6 @@ function openTrial(initialError = '') {
       <div class="hud-body">
         <div class="hud-stage">
           <span class="trial-case-no">${esc(t('trial.caseNo'))} : ${String(s.id).padStart(3, '0')}</span>
-          ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}
           ${trialWheel}
         </div>
 
@@ -2741,7 +2771,6 @@ function openTrial(initialError = '') {
           </div>
 
           <div class="hud-card hud-opt">${opt}</div>
-          ${keeperBarHtml(g,s,crewNow,pick.st,c=>artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`))}
 
           <div class="hud-card">
             <h4>${esc(t('trial.saveRecord'))}</h4>
@@ -2753,6 +2782,7 @@ function openTrial(initialError = '') {
       </div>
 
       <div class="hud-bottom">
+        ${kanOrbHtml(g, s, artUrl('crew-kan-profile'), kanClueResult)}
         <div class="port you">
           <img src="${artUrl('hero-yama-profile') || artUrl('hero-yama')}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
@@ -2773,7 +2803,7 @@ function openTrial(initialError = '') {
 
     // Keep flying lists inside the interrogation half, including narrow portrait screens.
     requestAnimationFrame(()=>{
-      const stage=dlg.querySelector('.trial-comment8 .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
+      const stage=dlg.querySelector('.trial-comment8 .hud-body > .hud-stage'),menu=stage?.querySelector('.comment8-menu'),pane=menu?.querySelector('.court-options.is-open');
       if(!stage?.isConnected||!pane)return;
       const command=menu.querySelector(`[data-court-panel="${pane.dataset.courtOptions}"]`);
       const gap=-12+command.offsetLeft;
@@ -2782,7 +2812,7 @@ function openTrial(initialError = '') {
       pane.style.top=`${command.offsetTop}px`;
       const initialTop=pane.offsetTop;
       const remaining=Math.max(90,stage.clientHeight-menu.offsetTop-initialTop-18);
-      pane.style.maxHeight=`${Math.min(pane.offsetHeight,remaining)}px`;
+      pane.style.maxHeight=`${Math.max(90,Math.min(remaining,dlg.getBoundingClientRect().bottom-pane.getBoundingClientRect().top-18))}px`;
     });
 
     bindCommandPress(dlg.querySelector('.trial-comment8'));
@@ -2826,6 +2856,7 @@ function openTrial(initialError = '') {
     dlg.querySelectorAll('[data-line]').forEach(el => el.onclick = () => {
       if (fearBusy) return;
       const hit = s.lines[+el.dataset.line]?.kind !== 'solid';   // the ✓ lines: deny / boast / plea — a "solid" line is the wrong one to press
+      reaction=pressReaction(g,s,s.lines[+el.dataset.line])||'fear';
       const r = g.press(s, +el.dataset.line);
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
@@ -2836,12 +2867,12 @@ function openTrial(initialError = '') {
       // portrait: the ✓ lines sit below the fold, so bring the stage into view for the beat and put the reader back afterwards
       const backTo = dlg.scrollTop; if (backTo > 40) dlg.scrollTo({ top:0, behavior:'smooth' });
       const hud = dlg.querySelector('.trial-comment8');
-      hud?.classList.add('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.add('is-frightened');
+      hud?.classList.add('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.add(reaction==='relief'?'is-relieved':'is-frightened');
       camera.cue('interrogate-reveal', { targets:'suspect' });
-      setTimeout(() => { fearBusy = false; if (!dlg.open || !dlg.querySelector('.trial-hud')) return; paint(); refresh(); }, FEAR_BEAT_MS);
-      setTimeout(() => { if (!dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0;
-        dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened');
-        if (backTo > 40) dlg.scrollTo({ top:backTo, behavior:'smooth' }); }, FEAR_BEAT_MS + FEAR_AFTER_MS);
+      reactionTimers.push(setTimeout(() => { if (trialClosed || !dlg.open || !dlg.querySelector('.trial-hud')) return; paint(); refresh(); }, FEAR_BEAT_MS));
+      reactionTimers.push(setTimeout(() => { if (trialClosed || !dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0; fearBusy=false;
+        dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened','is-relieved');
+        if (backTo > 40) dlg.scrollTo({ top:backTo, behavior:'smooth' }); }, FEAR_BEAT_MS + FEAR_AFTER_MS));
     });
     // M2: a repaint replaces the stage — keep an effect that is still playing (interrogation hypnosis / mirror) on the new one
     if (!fxIdle()) attachBattleFx(dlg.querySelector('.hud-stage'));
@@ -2912,7 +2943,7 @@ function openTrial(initialError = '') {
     if (badge) badge.textContent = ok ? '✓' : fmtCountdown(g.powerOf('roar').readyAt);
     b.title = ok ? 'ตวาดข่มขู่ — พร้อมใช้ — ไม่ต้องใช้ item' : `ตวาดข่มขู่ — รออีก ${fmtCountdown(g.powerOf('roar').readyAt)}`;
   }, 1000);
-  onDlgClose(() => { clearInterval(roarTick); camera.detach(); bgm('bgm-zone'); refresh(); });
+  onDlgClose(() => { trialClosed=true;reactionTimers.forEach(clearTimeout);clearInterval(roarTick); camera.detach(); bgm('bgm-zone'); refresh(); });
 }
 
 /** M1: bind the camera to the interrogation scene. The world is the whole .trial-comment8 (behind the panels); the two figures live in a
