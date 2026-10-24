@@ -75,3 +75,5 @@
 /* Keep the support portrait outside the command hit area. */
 .trial-comment8 .hud-bottom{display:block}.trial-comment8 .hud-bottom .kan-orb{position:absolute;left:auto;right:calc(100% + 10px);top:0;bottom:auto}
 @media(max-width:700px){.trial-comment8 .hud-bottom{left:80px}.trial-comment8 .hud-bottom .kan-orb{right:calc(100% + 8px)}}
+
+.trial-comment8 .hud-bottom .kan-orb-why{display:none}

@@ -63,10 +63,10 @@ export function kanOrbHtml(game,soul,src='',result=''){
   const why=game.kanClueWhy(soul),cost=game.kanClueCost?.()||{mp:4,morale:4,cooldownSeconds:30};
   const price=fill(cost.insight?KAN_BUTTON_COPY.tipPriceInsight:KAN_BUTTON_COPY.tipPriceMp,cost);
   return `<div class="kan-orb${why?' is-off':''}" data-kan-orb>
-    <button type="button" class="kan-orb-btn" data-kan-clue ${why?'disabled':''} aria-label="${esc(KAN_BUTTON_COPY.ariaLabel)}" aria-describedby="kan-orb-tip" title="${esc(KAN_BUTTON_COPY.tipLine1+'\n'+price)}">${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:'🧿'}</button>
+    <button type="button" class="kan-orb-btn" data-kan-clue ${why?'disabled':''} aria-label="${esc(KAN_BUTTON_COPY.ariaLabel+(why?' · '+why:''))}" aria-describedby="kan-orb-tip" title="${esc(KAN_BUTTON_COPY.tipLine1+'\n'+price+(why?'\n'+why:''))}">${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:'🧿'}</button>
     <b class="kan-orb-label">${esc(KAN_BUTTON_COPY.label)}</b>
     <small class="keeper-role-why kan-orb-why" data-kan-clue-why ${why?'':'hidden'}>${esc(why)}</small>
-    <span class="kan-orb-tip" id="kan-orb-tip" role="tooltip">${esc(KAN_BUTTON_COPY.tipLine1)}<br>${esc(price)}</span>
+    <span class="kan-orb-tip" id="kan-orb-tip" role="tooltip">${esc(KAN_BUTTON_COPY.tipLine1)}<br>${esc(price)}${why?`<br>${esc(why)}`:''}</span>
     ${result?`<span class="sr-only" role="status">${esc(result)}</span>`:''}</div>`;
 }
 
