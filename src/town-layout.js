@@ -232,12 +232,12 @@ const WEST_PROPS = [
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
-  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8 },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, crew:{boon:[2460,468]} },
   cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
 };
 const clone = v => structuredClone(v);
 const BASE = {
-  runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS},
+  runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS}, crew:clone(TOWN_CREW),
   houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})),
 };
 const layoutListeners = new Set();
@@ -245,7 +245,7 @@ const layoutListeners = new Set();
 export const onTownLayoutChange = fn => { layoutListeners.add(fn); return () => layoutListeners.delete(fn); };
 let appliedZone = 'th';
 export const townLayoutZone = () => appliedZone;
-// Owner-painted Asia bridges need the full 8-unit mask resolution; other zones retain 16.
+// Owner-painted Asia and west bridges need the full 8-unit mask resolution; other zones retain16.
 export const townPathCell = () => TOWN_ZONE_LAYOUT[appliedZone]?.pathCell || 16;
 export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = false) {
   const L = table[zone] || {};
@@ -261,6 +261,8 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   for (const k of Object.keys(TOWN_SPOTS)) Object.assign(TOWN_SPOTS[k], clone(BASE.spots[k]));
   for (const [k, patch] of Object.entries(L.spots || {})) if (TOWN_SPOTS[k]) Object.assign(TOWN_SPOTS[k], clone(patch));
   Object.assign(TOWN_DAIS, BASE.dais, L.dais || {});
+  // Zone-specific homes keep NPC feet clear of the owner mask's cliff edge.
+  for (const [key,home] of Object.entries(BASE.crew)) TOWN_CREW[key].splice(0,2,...(L.crew?.[key] || home));
   // houses / props: lists keep their identity
   const houses = (L.houses || BASE.houses).map(h => ({...h, h:h.w*HOUSE_RATIO[h.key]}));
   TOWN_HOUSE_SITES.splice(0, TOWN_HOUSE_SITES.length, ...houses);

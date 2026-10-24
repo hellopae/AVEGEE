@@ -48,7 +48,7 @@ function continuous(spawn,path,key){assert.ok(path?.length,key);let from=spawn;f
 test('Z3: actual paths reach all10 built station doors, entry, harbour and civic anchors',()=>{
  const {spawn}=setup('west');const targets=[...Object.entries(L.TOWN_ENTRY),['harbour',L.TOWN_SPOTS.ferry.from],['guard',L.TOWN_GUARD_POST],['challenge',L.TOWN_CHALLENGE],['merchant',[L.TOWN_MERCHANT.x,L.TOWN_MERCHANT.y]],...Object.entries(L.TOWN_STATION_SITES).map(([k,p])=>[k,[p.x,p.y]])];
  for(const [key,to]of targets){const path=walk.findPath(...spawn,...to);assert.deepEqual(path?.at(-1),to,key+' exact arrival');continuous(spawn,path,key);}
- for(const [key,to]of Object.entries(L.TOWN_CREW)){const path=walk.findPath(...spawn,...to);continuous(spawn,path,key);const end=path.at(-1);assert.ok(Math.hypot(end[0]-to[0],end[1]-to[1])<=3,key+' reachable approach');}
+ for(const [key,to]of Object.entries(L.TOWN_CREW)){const path=walk.findPath(...spawn,...to);continuous(spawn,path,key);const end=path.at(-1);assert.deepEqual(end,to,key+' exact NPC home');}
 });
 
 test('Z3: NPC avoidance takes a valid detour on the entry plaza',()=>{
@@ -61,7 +61,7 @@ test('Z3: NPC avoidance takes a valid detour on the entry plaza',()=>{
 test('Z3: leaving west restores Zone1/Asia geometry and original house/lamp/torch feet',()=>{
  const snap=()=>JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES]);setup('th');const th=snap();const buildings=JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);
  setup('asia');const asia=snap();setup('west');assert.equal(JSON.stringify([L.TOWN_STATION_SITES,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]),buildings);
- setup('th');assert.equal(snap(),th);assert.equal(L.townPathCell(),16);setup('asia');assert.equal(snap(),asia);setup('th');
+ setup('th');assert.equal(L.TOWN_CREW.boon[1],470);assert.equal(snap(),th);assert.equal(L.townPathCell(),16);setup('asia');assert.equal(snap(),asia);setup('th');
 });
 
 test('Z3: old western saves migrate exactly once and keep rewards/progress',()=>{

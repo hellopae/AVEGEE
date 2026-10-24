@@ -18,7 +18,8 @@ test('town action preserves NPC/event priority, construction access, and frontie
  g.player.y+=10;assert.equal(townNearbyAction(g,null,null),null);
  for(const flag of ['battle','over']) {g[flag]=true;assert.equal(townNearbyAction(g,npc,plot),null);g[flag]=false;}
  g.zone='asia';assert.equal(townNearbyAction(g,npc,plot).target,npc);
- g.zone='west';assert.equal(townNearbyAction(g,npc,plot),null);
+ g.zone='west';assert.equal(townNearbyAction(g,npc,plot).target,npc);
+ g.zone='cyberhell';assert.equal(townNearbyAction(g,npc,plot),null);
 });
 test('minimap reads current construction status without changing world or saves',()=>{
  const g=createGame(),plot=STATIONS.find(d=>d.cost>0 && !g.stations.some(s=>s.def.k===d.k));
