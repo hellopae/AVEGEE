@@ -1,0 +1,242 @@
+[
+  {
+    "point": "entry",
+    "preview_xy": [
+      770,
+      1000
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "entry circular plaza",
+    "preview_xy": [
+      770,
+      870
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "central stair",
+    "preview_xy": [
+      743,
+      470
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "central plaza",
+    "preview_xy": [
+      740,
+      380
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "left top bridge",
+    "preview_xy": [
+      350,
+      250
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "left middle bridge",
+    "preview_xy": [
+      350,
+      382
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "upper middle stair",
+    "preview_xy": [
+      700,
+      230
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "upper right bridge",
+    "preview_xy": [
+      1190,
+      161
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "right descending stair",
+    "preview_xy": [
+      1399,
+      265
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "right lower bridge",
+    "preview_xy": [
+      1270,
+      628
+    ],
+    "expected_walkable": true,
+    "actual_walkable": true,
+    "pass": true
+  },
+  {
+    "point": "left top building reserve",
+    "preview_xy": [
+      180,
+      195
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "left middle building reserve",
+    "preview_xy": [
+      190,
+      390
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "left lower building reserve",
+    "preview_xy": [
+      220,
+      575
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "upper middle building reserve",
+    "preview_xy": [
+      655,
+      155
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "upper right building reserve",
+    "preview_xy": [
+      1010,
+      145
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "right upper building reserve",
+    "preview_xy": [
+      1410,
+      190
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "right middle building reserve",
+    "preview_xy": [
+      1290,
+      340
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "right lower building reserve",
+    "preview_xy": [
+      1390,
+      585
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "central small left reserve",
+    "preview_xy": [
+      710,
+      405
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "central small right reserve",
+    "preview_xy": [
+      775,
+      405
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "central thin reserve",
+    "preview_xy": [
+      740,
+      358
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "small right upper reserve",
+    "preview_xy": [
+      1352,
+      215
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "bottom left small reserve",
+    "preview_xy": [
+      715,
+      657
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  },
+  {
+    "point": "water",
+    "preview_xy": [
+      1100,
+      840
+    ],
+    "expected_walkable": false,
+    "actual_walkable": false,
+    "pass": true
+  }
+]

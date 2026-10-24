@@ -10,6 +10,7 @@ import { TOWN_OWNER_WALK_RUNS as ASIA_WALK_RUNS } from './town-owner-walkmask-as
 import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-west.js';
 import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
 import { ASIA_TREE_POINTS } from './town-asia-trees.js';
+import { WEST_TREE_POINTS } from './town-west-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -64,7 +65,7 @@ const fillMask = runs => {
 fillMask(TOWN_OWNER_WALK_RUNS);
 // Zone-1 hand patches (stairs, lava road, cauldron court) were added on top of the owner's mask. A zone whose mask the
 // owner drew from the full overlay (which already contains them) switches them off: townZoneLayout({patches:false}).
-let usePatches = true;
+let usePatches = true, ownerFloorOnly = false;
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
@@ -85,6 +86,8 @@ export const TOWN_CAULDRON_COURT = [[582,412],[686,412],[696,444],[696,492],[712
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  // An owner-complete floor must never be reopened by legacy door/UI pads.
+  if(ownerFloorOnly)return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
   // Keep feet on the pier top; edge tolerance must never open its front face or water.
   if(x>=2150&&x<2350&&y>=1700&&y<1860
     &&(x<2188||x>2292||y>1796))return false;
@@ -220,15 +223,23 @@ const ASIA_PROPS = [
     treeKind:p.kind, big:!!p.big, on_walk:p.on_walk, fallbackKey:ASIA_TREE_FALLBACK[p.kind],
   })),
 ];
+const WEST_PROPS = [
+  ...TOWN_PROP_SITES.filter(p=>p.kind!=='tree'&&p.kind!=='palm'),
+  ...WEST_TREE_POINTS.map((p,i)=>({
+    ...deco(`west-tree-${i}`, 'tree', p.x*TOWN_SIZE.w, p.y*TOWN_SIZE.h,
+      160, 'city', 16, 11, p.key),
+    treeKind:p.kind, species:p.species, ownerFoot:true,
+  })),
+];
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
-  west:      { walkRuns:WEST_WALK_RUNS,      patches:WEST_WALK_RUNS?false:true },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{y:1532}}, crew:{boon:[2460,468]} },
   cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
 };
 const clone = v => structuredClone(v);
 const BASE = {
-  runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS},
+  runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS}, crew:clone(TOWN_CREW),
   houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})),
 };
 const layoutListeners = new Set();
@@ -236,7 +247,7 @@ const layoutListeners = new Set();
 export const onTownLayoutChange = fn => { layoutListeners.add(fn); return () => layoutListeners.delete(fn); };
 let appliedZone = 'th';
 export const townLayoutZone = () => appliedZone;
-// Owner-painted Asia bridges need the full 8-unit mask resolution; other zones retain 16.
+// Owner-painted Asia and west bridges need the full 8-unit mask resolution; other zones retain16.
 export const townPathCell = () => TOWN_ZONE_LAYOUT[appliedZone]?.pathCell || 16;
 export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = false) {
   const L = table[zone] || {};
@@ -246,12 +257,15 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   // mask + patches
   fillMask(L.walkRuns || BASE.runs);
   usePatches = L.patches !== false;
+  ownerFloorOnly = L.strictFloor === true;
   // stations: back to Zone 1, then this zone's patches
   for (const k of Object.keys(TOWN_STATION_SITES)) Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
   for (const [k, patch] of Object.entries(L.stations || {})) if (TOWN_STATION_SITES[k]) Object.assign(TOWN_STATION_SITES[k], clone(patch));
   for (const k of Object.keys(TOWN_SPOTS)) Object.assign(TOWN_SPOTS[k], clone(BASE.spots[k]));
   for (const [k, patch] of Object.entries(L.spots || {})) if (TOWN_SPOTS[k]) Object.assign(TOWN_SPOTS[k], clone(patch));
   Object.assign(TOWN_DAIS, BASE.dais, L.dais || {});
+  // Zone-specific homes keep NPC feet clear of the owner mask's cliff edge.
+  for (const [key,home] of Object.entries(BASE.crew)) TOWN_CREW[key].splice(0,2,...(L.crew?.[key] || home));
   // houses / props: lists keep their identity
   const houses = (L.houses || BASE.houses).map(h => ({...h, h:h.w*HOUSE_RATIO[h.key]}));
   TOWN_HOUSE_SITES.splice(0, TOWN_HOUSE_SITES.length, ...houses);

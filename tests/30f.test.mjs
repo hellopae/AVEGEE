@@ -33,13 +33,17 @@ const {STATIONS,ZONES,ZONE_ENTRY,syncSceneZone} = await import('../src/data.js')
 const {createGame} = await import('../src/game.js');
 const art = await import('../src/art.js');
 const walk = await import('../src/walk.js?v=k1d');
-const {isTownZone} = await import('../src/zone-skin.js');
+const {isTownZone,enableTownSkin,disableTownSkin} = await import('../src/zone-skin.js');
 const {STORY} = await import('../src/story.js');
 await new Promise(resolve=>setImmediate(resolve));
 const fields=['bx','by','x','y','sx','sy','hit'];
 const sites=()=>Object.fromEntries(STATIONS.map(d=>[d.k,Object.fromEntries(fields.filter(k=>d[k]!=null).map(k=>[k,Array.isArray(d[k])?[...d[k]]:d[k]]))]));
-syncSceneZone('west'); // legacy regional geometry, independent of the enabled Asia town skin
+// Capture the legacy regional baseline explicitly, independent of shipped town skins.
+const westWasEnabled=isTownZone('west');
+if(westWasEnabled)disableTownSkin('west');
+syncSceneZone('west');
 const original=sites();
+if(westWasEnabled)enableTownSkin('west');
 const branchSites = Object.fromEntries(['th','asia','west','unknown'].map(zone => {
   syncSceneZone(zone); return [zone,sites()];
 }));

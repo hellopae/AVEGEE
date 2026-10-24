@@ -39,7 +39,7 @@ test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or 
     assert.equal(townSkinArt('asia',key),path);
     if (!['town-tree-sakura','town-tree-willow'].includes(key)) assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   }
-  assert.equal(ZONE_SKIN.west.enabled, false);
+  assert.equal(ZONE_SKIN.west.enabled, true);
   assert.equal(ZONE_SKIN.cyberhell.enabled, false);
 });
 
