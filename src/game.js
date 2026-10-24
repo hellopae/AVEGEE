@@ -590,7 +590,7 @@ const API = {
    *  ระหว่างเดิน/พัก actorStanding=false → ไม่ร่วมต่อสู้ (ยังอยู่ในรายชื่อทีม) แล้วกลับจุดทำงานเองตอนเต็ม */
   restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
-    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 100 || this.battle) return false;
+    if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 100 && (c.hunger??100) >= 100 || this.battle) return false;
     const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
@@ -622,7 +622,7 @@ const API = {
       if (!rest.path.length) { rest.phase='rest'; rest.startedAt=now-distance/.075; rest.until=rest.startedAt+(c.k === 'guard' ? 120000 : 60000); changed=true; }
     }
     if (rest.phase === 'rest' && now >= rest.until) {
-      c.morale=100; [c.x,c.y]=rest.returnAt; c.path=null; c.target=null; c.teaRest=null;
+      c.morale=100; c.hunger=100; [c.x,c.y]=rest.returnAt; c.path=null; c.target=null; c.teaRest=null;
       return true;
     }
     return changed;

@@ -2102,7 +2102,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <link rel="stylesheet" href="src/minigames/training/training.css">
 <link rel="stylesheet" href="src/compact-ui.css?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g5-h4-sword-schools-i1a-minigame-review-20261011-fire-theme-v2-layered-battle9-20261015-r1-p6">
 <link rel="stylesheet" href="src/menu-ui.css?v=20261012-menu-01-l2-p4"><link rel="stylesheet" href="src/diagnosis.css?v=20261023-p4"><link rel="stylesheet" href="src/crew-power.css?v=20261023-p4">
-<link rel="stylesheet" href="src/dungeon-view.css?v=20261022-p5"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-boss-justice-workers-v1-m1-r6-b1"><link rel="stylesheet" href="src/battle-result.css?v=20261024-b3"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
+<link rel="stylesheet" href="src/team-hud.css?v=20261025-team"><link rel="stylesheet" href="src/dungeon-view.css?v=20261022-p5"><link rel="stylesheet" href="src/battle-turns.css?v=20261016-boss-justice-workers-v1-m1-r6-b1"><link rel="stylesheet" href="src/battle-result.css?v=20261024-b3"><link rel="stylesheet" href="src/battle-camera.css?v=20261016-m1"><link rel="stylesheet" href="src/trial-comment8.css?v=20261021-interrogation-roles"><link rel="stylesheet" href="src/town-map.css?v=20261015-town-layered-r1-n1-p3">
 </head>
 <body>
 <!-- กั้นจอไว้จนภาพชุดแรกมาครบ — ดู src/preload.js -->
@@ -2199,6 +2199,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     <!-- ================= ข้อ D ชุด 15 — HUD ใหม่ตามม็อกอัป UI2-th/eng.jpg ================= -->
     <!-- มุมซ้ายบน: เหรียญ/ข้าวปั้น/ระเบียบ(ตาชั่ง)/กรรมท่าน(กะโหลก) — แทนที่ .res เดิม (D.2) -->
     <div class="hud-res" id="res"></div>
+    <aside id="team-hud" class="team-hud" aria-label="บุคลากรและเสบียง"></aside>
 
     <!-- มุมขวาบน: หยุด + ตั้งค่า (D.3) -->
     <div class="hud-top-right">
@@ -2320,6 +2321,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 <script type="importmap">
 {
   "imports": {
+    "./src/team-hud.js": "./src/team-hud.js?v=20261025-team",
     "./src/zone-skin.js": "./src/zone-skin.js?v=m2-m3b-asia-z2-code-z2-art-z3-west",
     "./src/dungeon-navigation.js": "./src/dungeon-navigation.js?v=m2-f12-20261023",
     "./src/frontier-walkmask-th-asia.js": "./src/frontier-walkmask-th-asia.js?v=m2-f12-20261023",
@@ -2363,19 +2365,19 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/town-scenery.js": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code",
     "./src/town-night-effects.js": "./src/town-night-effects.js?v=20261016-m2-boss-justice-workers-v1-r6",
     "./src/interrogation.js": "./src/interrogation.js?v=20261022-p2",
-    "./src/interrogation-ui.js": "./src/interrogation-ui.js?v=20261022-p2",
+    "./src/interrogation-ui.js": "./src/interrogation-ui.js?v=20261022-p2-team",
     "./src/sentencing-guide.js": "./src/sentencing-guide.js?v=20261022-p2-p7-p8",
     "./src/sentence-colors.js": "./src/sentence-colors.js?v=20261022-p2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc",
+    "./src/game.js": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc-team",
     "./src/preload.js": "./src/preload.js?v=20261021-m2-interrogation-roles-p2-z2-art-b3-z3-west-wft",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/battle-result.js": "./src/battle-result.js?v=20261024-b3",
-    "./src/ui.js": "./src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-o2",
+    "./src/ui.js": "./src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-team-o2",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261016-boss-justice-workers-v1-r6",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc-team",
     "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-m2-worker-supplies-o1-p1-p4-wft-ndc",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261016-m2-boss-justice-workers-v1-r6",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code",
@@ -2422,6 +2424,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </script>
 <script type="module" src="src/preload.js?v=20261021-m2-interrogation-roles-p2-z2-art-b3-z3-west-wft"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-o2"></script>
+<script type="module" src="src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-p8-p4-team-o2"></script>
 </body>
 </html>

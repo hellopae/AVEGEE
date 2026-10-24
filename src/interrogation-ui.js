@@ -6,7 +6,7 @@ const safeColor=color=>/^#[\da-f]{3,8}$/i.test(color||'')?color:'#d4a355';
 export function mountInterrogationStyles(){
   if(typeof document==='undefined'||document.getElementById('interrogation-role-styles'))return;
   const link=document.createElement('link');link.id='interrogation-role-styles';link.rel='stylesheet';
-  link.href=new URL('./interrogation-ui.css?v=20261022-p2',import.meta.url).href;document.head.appendChild(link);
+  link.href=new URL('./interrogation-ui.css?v=20261022-p2-team',import.meta.url).href;document.head.appendChild(link);
 }
 
 /** P2: the trait lives on the spirit's name tag — icon first (never colour alone), colour second. */
@@ -100,4 +100,10 @@ export function bindTeamReports(root,game,onChange){
 export function onceFeedbackDismiss(onDismiss){
   let done=false;
   return ()=>{if(done)return false;done=true;onDismiss();return true;};
+}
+
+export function pressReaction(game,soul,line){
+ if(!line||line.used||line.kind==='solid'||soul.presses<=0)return null;
+ const revealed=(game.pressDeeds(soul,line)||[]).filter(d=>!d.known);
+ return revealed.some(d=>d.w<0)&&!revealed.some(d=>d.w>0)?'relief':'fear';
 }
