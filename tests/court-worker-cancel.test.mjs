@@ -5,7 +5,7 @@ import {escortCrewPosition} from '../src/escort.js';
 import {resetWalk,setBlocks,setNpcDiscs} from '../src/walk.js?v=k1d';
 
 const setup=()=>{
-  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;
+  const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.food=100;
   resetWalk();setBlocks([],[]);setNpcDiscs([]);return g;
 };
 
@@ -20,11 +20,11 @@ for(const phase of ['pickup','lead'])test(`early trial preserves the worker's ${
   assert.ok(Math.hypot(worker.x-expected.x,worker.y-expected.y)<.001,'cancelling the inbound walk must not teleport its worker');
   assert.equal(g.afterlifeWalks.some(w=>w.destination==='arrival'),false);
   const delivery=g.afterlifeWalks.find(w=>w.destination==='station');assert.ok(delivery);
-  assert.equal(delivery.escort.workerId,worker.id);
-  assert.deepEqual(delivery.escort.pickup[0],[expected.x,expected.y],'new route starts at the worker visible position');
+  assert.equal(delivery.escort.k,'taan');assert.equal(delivery.escort.workerId,undefined);
+  assert.deepEqual([worker.x,worker.y],[expected.x,expected.y],'cancelled pickup leaves worker at visible position');
   assert.equal(g.workerState.ledger.escortsDone,0,'interrupted arrival is not counted as a completed delivery');
   g.advanceAfterlife(delivery.duration);
-  assert.deepEqual([worker.x,worker.y],delivery.path.at(-1),'completed delivery still releases at its destination');
-  assert.equal(worker.job,null);assert.equal(g.workerState.ledger.escortsDone,1);
-  g.advanceAfterlife(delivery.duration);assert.equal(g.workerState.ledger.escortsDone,1);
+  assert.deepEqual([worker.x,worker.y],[expected.x,expected.y],'keeper delivery does not teleport a worker');
+  assert.equal(worker.job,null);assert.equal(g.workerState.ledger.escortsDone,0);
+  g.advanceAfterlife(delivery.duration);assert.equal(g.workerState.ledger.escortsDone,0);
 });

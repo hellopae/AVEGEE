@@ -4,7 +4,7 @@ import {initializeBossGuides,completeBossGuideStory} from '../src/boss-guides.js
 import {dungeonEnemyPositions,dungeonWalkable,dungeonPoint} from '../src/dungeon-view.js';
 import {DUNGEON_PATROLS} from '../src/zone-travel.js';
 import {workersPanelHtml} from '../src/worker-ui.js';
-const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;return g;};
+const game=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=10000;return g;};
 const win=g=>{const b=g.battle;b.foes.forEach(f=>{f.hp=1;f.atk=[0,0];});assert.equal(g.battleAct('atk'),true);assert.equal(b.over,'win');g.endBattle();return b;};
 test('ordinary frontier reward keeps its frontier backdrop and selected office team',()=>{
  const g=game();g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.startFrontierBattle();
@@ -30,5 +30,5 @@ test('worker office explains empty supplies and offers actual paid or inventory 
  const g=game();g.food=0;g.inventory.food=1;const w=g.hireWorker();g.setWorkerMode(w.id,'escort');
  const html=workersPanelHtml(g);assert.match(html,/เสบียงกลางหมด/);assert.match(html,/data-worker-buy-food/);assert.match(html,/data-worker-share-food/);assert.match(html,/รอเสบียง/);
  const coin=g.coin;assert.equal(g.buy('food',1),true);assert.equal(g.food,10);assert.equal(g.coin,coin-10);assert.equal(g.giveOnigiriNira(),true);assert.equal(g.food,22);assert.equal(g.inventory.food,undefined);
- assert.doesNotMatch(workersPanelHtml(g),/เสบียงกลางหมด/);assert.match(workersPanelHtml(g),/รอวิญญาณที่ท่าเรือหรือปลายทาง/);
+ assert.doesNotMatch(workersPanelHtml(g),/เสบียงกลางหมด/);assert.match(workersPanelHtml(g),/รอวิญญาณหรืองานสร้าง/);
 });

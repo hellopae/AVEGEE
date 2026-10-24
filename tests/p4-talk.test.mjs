@@ -8,7 +8,7 @@ import {hitActor,afterlifeWalkPosition} from '../src/scene.js';
 import {talkInteractions,nearestInteraction,INTERACTION_REACH} from '../src/proximity.js';
 import {QUEUE_LINE,BAL} from '../src/data.js';
 
-const game=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=99999;return g;};
+const game=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=99999;return g;};
 const reload=g=>{const h=game();assert.equal(h.restore(JSON.parse(JSON.stringify(g.snapshot()))),true);return h;};
 const helpers={walkPosition:w=>[w.path[0][0],w.path[0][1]]};
 const soul=(id,extra={})=>({id,who:'ชาวบ้าน',name:'สมชาย',sex:'m',sp:1,deeds:[],merits:[],waited:0,said:[],...extra});

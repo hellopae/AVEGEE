@@ -13,7 +13,7 @@ globalThis.Image??=class {};
 const zones=['th','asia','west','cyberhell'];
 function fixture(zone){
   const nativeNow=Date.now;let now=nativeNow(),frame=0;Date.now=()=>now;
-  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=100000;g.food=3000;g.level=5;
+  const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.save=()=>true;g.onChange=()=>{};g.coin=100000;g.food=3000;g.level=5;
   g.bossCleared={th:true,asia:true,west:true};
   for(const [key,events]of Object.entries(ZONE_EVENTS))g.zoneEvents[key]=Object.fromEntries(events.map(ev=>[ev.k,'cleared']));
   if(zone!=='th')assert.equal(harbourTravel(g,zone),true);
@@ -64,10 +64,10 @@ for(const zone of zones){
       f.until(()=>!g.afterlifeWalks.some(w=>w.destination==='arrival'),'worker reaches the court',{management:false});
       const atCourt=[worker.x,worker.y];assert.equal(g.workerState.ledger.escortsDone,1);assert.equal(g.startCourtArrival(subject),false);
       assert.equal(g.assign(subject.id,'krata','taan',4),true);const delivery=g.afterlifeWalks.find(w=>w.destination==='station');assert.ok(delivery);
-      assert.equal(delivery.escort.workerId,worker.id);assert.deepEqual(delivery.escort.pickup[0],atCourt);
-      assert.equal(g.crewOf('taan').at,'krata');assert.equal(worker.job.kind,'escort');
+      assert.equal(delivery.escort.k,'taan');assert.equal(delivery.escort.workerId,undefined);assert.deepEqual([worker.x,worker.y],atCourt);
+      assert.equal(g.crewOf('taan').at,'krata');assert.notEqual(worker.job?.kind,'escort');
       f.until(()=>!g.afterlifeWalks.some(w=>w.destination==='station'),'worker hands soul to the keeper',{management:false});
-      assert.equal(worker.job,null);assert.equal(g.workerState.ledger.escortsDone,2);
+      assert.notEqual(worker.job?.kind,'escort');assert.equal(g.workerState.ledger.escortsDone,1);
       const station=g.stations.find(st=>st.def.k==='krata'),slot=station.slots[0];assert.ok(slot);
       f.until(()=>!station.slots.length,'keeper completes actual sentence progress');
       const prisonWalk=g.afterlifeWalks.find(w=>w.destination==='prison');assert.ok(prisonWalk);assert.equal(prisonWalk.escort.workerId,worker.id);
@@ -77,37 +77,23 @@ for(const zone of zones){
       assert.equal(g.moveFromPrison(subject.id),true);const heaven=g.afterlifeWalks.find(w=>w.destination==='gate');assert.ok(heaven);assert.equal(heaven.escort.workerId,worker.id);
       f.until(()=>!!g.sentenceOf(subject.id,'gate'),'worker reaches heaven',{management:false});
       assert.equal(g.inspectGate(subject.id),true);const outcomes=g.ascended+g.reborn;assert.equal(g.resolveGate(subject.id),true);assert.equal(g.ascended+g.reborn,outcomes+1);
-      assert.equal(g.workerState.ledger.escortsDone,4);assert.equal(worker.job,null);
+      assert.equal(g.workerState.ledger.escortsDone,3);assert.notEqual(worker.job?.kind,'escort');
       const coin=g.coin,reports=g.teamReports.length;g.finish(station,slot);assert.equal(g.coin,coin);assert.equal(g.teamReports.length,reports);
       assert.equal(g.closed.filter(c=>c.soul.id===subject.id).length,1);
     }finally{f.restore();}
   });
 
-  test(`${zone}: construction, repair and supervision helpers require arrival and keep exclusive jobs`,()=>{
+  test(`${zone}: workers build and repair before Taan inspection; jobs remain exclusive`,()=>{
     const f=fixture(zone),{g}=f;try{
-      const worker=g.hireWorker();g.setWorkerMode(worker.id,'build');assert.equal(g.build('lan'),true);
+      const worker=g.hireWorker(),taan=g.crewOf('taan');taan.at='krata';assert.equal(g.build('lan'),true);
       const site=g.stations.find(st=>st.def.k==='lan');stepWorkers(g);
-      f.until(()=>!site.buildWait,'builder reaches site',{management:false});site.build=Date.now()+120000;
-      assert.equal(worker.job.kind,'build');assert.equal(workerSupervisionMultiplier(g,site),1);
-      f.until(()=>!site.buildWait&&worker.arrived,'builder and helper reach actual work points',{management:false});
-      const initialBuild=g.workerState.ledger.buildMs;f.step({management:false});assert.ok(g.workerState.ledger.buildMs>initialBuild);
-      const subject=soul(zone),point=[worker.x,worker.y];
-      assert.equal(g.startAfterlifeWalk(subject,point,point,'prison',{soul:subject,zone,stage:'prison'}),true);
-      assert.notEqual(g.afterlifeWalks[0]?.escort?.workerId,worker.id,'build helper cannot escort simultaneously');
-      g.afterlifeWalks=[];f.until(()=>site.build===0,'construction completes',{management:false});
-      assert.equal(g.crewOf('taan').buildK,null);
-      site.fire=100;g.setWorkerMode(worker.id,'repair');assert.equal(g.repairStation('lan'),true);stepWorkers(g);
-      f.until(()=>!site.repairWait,'repairer reaches site',{management:false});site.repair=Date.now()+120000;
-      f.until(()=>!site.repairWait&&worker.arrived,'repair helper reaches site',{management:false});
-      const initialRepair=g.workerState.ledger.repairMs;f.step({management:false});assert.ok(g.workerState.ledger.repairMs>initialRepair);
-      f.until(()=>site.repair===0,'repair completes',{management:false});assert.equal(site.fire,0);
-      g.setWorkerMode(worker.id,'supervise');subject.id++;subject.courtDisembarked=true;g.queue=[subject];assert.equal(g.assign(subject.id,'krata','taan',4),true);
-      const station=g.stations.find(st=>st.def.k==='krata');
-      f.until(()=>worker.arrived&&worker.job?.kind==='supervise','helper reaches an active supervision post',{management:false});
-      assert.equal(workerSupervisionMultiplier(g,station),1.2);assert.equal(worker.job.kind,'supervise');assert.equal(worker.cargo||null,null);
-      const buildMs=g.workerState.ledger.buildMs,repairMs=g.workerState.ledger.repairMs;
-      f.step({management:false});assert.equal(g.workerState.ledger.buildMs,buildMs);assert.equal(g.workerState.ledger.repairMs,repairMs);
-      g.setWorkerMode(worker.id,'rest');assert.equal(workerSupervisionMultiplier(g,station),1);assert.equal(worker.job,null);
+      f.until(()=>site.workerWork.ready,'workers finish construction while Taan is busy',{management:false});
+      assert.ok(site.build);assert.equal(site.buildWait,true);assert.ok(g.workerState.ledger.buildMs>0);
+      taan.at=null;f.until(()=>!site.build,'Taan reaches and inspects the completed site',{management:false});
+      assert.equal(taan.buildK,null);site.fire=100;taan.at='krata';assert.equal(g.repairStation('lan'),true);stepWorkers(g);
+      f.until(()=>site.workerWork.ready,'workers finish repair before inspection',{management:false});assert.equal(site.fire,100);
+      taan.at=null;f.until(()=>!site.repair,'Taan inspects repair',{management:false});assert.equal(site.fire,0);
+      assert.equal(workerSupervisionMultiplier(g,site),1);
     }finally{f.restore();}
   });
 

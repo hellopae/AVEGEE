@@ -10,7 +10,7 @@ const readySet = new Set();
 const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url), 3, readySet);
 // เบื้องหลัง: ดึงไฟล์ลงแคชโดยไม่ถอดรหัสภาพ · 2 เลนเพื่อไม่แย่งแบนด์วิดท์กับเกม
 const bgQueue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : warmImage(url), 2, readySet);
-const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-j2-layered-battle9-20261015-r1-yama-live-hell1-k1e-l4a-l4b-night-city-v1-map-polish-v1-border-nira-v2-boss-justice-workers-v1-r6-gifts-frontier-scale-terrain-repair-flames-upper-ground-webp-final-court-v2-z2-art-b3-z3-west';
+const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-j2-layered-battle9-20261015-r1-yama-live-hell1-k1e-l4a-l4b-night-city-v1-map-polish-v1-border-nira-v2-boss-justice-workers-v1-r6-gifts-frontier-scale-terrain-repair-flames-upper-ground-webp-final-court-v2-z2-art-b3-z3-west-wft';
 if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
 const LABELS = { th:'สุวรรณภูมิ', asia:'บูรพา', west:'ปัจฉิม', cyberhell:'นรกเครือข่าย' };
@@ -94,7 +94,7 @@ async function tiersFor(zone, outfit, opts) {
     t.background = t.background.filter(u => !own.includes(u)); t.late = t.late.filter(u => !own.includes(u));
     for (const url of own) if (!t.critical.includes(url)) t.critical.push(url);
   }
-  const background = ['audio:bgm-zone', ...t.background];
+  const background = ['audio:bgm-zone', 'img/workers/canteen-v1.webp', `img/workers/worker-${zone}-rest-v1.webp`, ...t.background];
   background.splice(Math.min(25, background.length), 0, 'audio:bgm-battle');
   return { critical:[...t.critical, 'audio:bgm-title'], background, late:t.late };
 }

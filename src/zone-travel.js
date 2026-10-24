@@ -23,7 +23,7 @@ const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
 // A route with a boss cave opens early once that zone's breach is cleared or its cave boss is waiting (Zone 1-2 only).
 const routeAvailable = (g,r) => { const cave = routeBossCave(r.id); return !!g.bossCleared?.[r.from] || !!cave && (g.zoneEvents?.[cave.zone]?.[cave.breachKey]==='cleared' || ['pending','active'].includes(g.zoneEvents?.[cave.zone]?.[cave.eventKey])); };
-const busy = g => !!(g.battle || g.over || g.pendingRecovery);
+const busy = g => !!(g.battle || g.over || g.pendingRecovery || g.mapTravel&&!g.mapTravel.committing);
 const state = g => g.zoneTravel || initializeZoneTravel(g);
 
 /** Call on new game / restore. Only legacy saves inherit already visited ports. */

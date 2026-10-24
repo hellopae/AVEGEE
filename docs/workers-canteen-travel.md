@@ -1,0 +1,17 @@
+# Workers, canteen and on-map travel — WFT,24Oct2026
+
+Owner request: frontier invasion victory unlocks new hires. Existing worker rosters remain; legacy supervise/build/repair/escort modes become logistics (`auto`). Visible choices: logistics/construction, gather/sell, food delivery, rest. No passive supervision multiplier. Gathering requires a built ngiw/dab station; only a physical sale pays. No offline minted material income.
+
+Workers can start construction/repair while Taan is occupied. Up to two physically arrived workers progress a site. `workerWork` keeps its kind, remaining active milliseconds and ready flag in whole-game and branch snapshots. Build/repair markers stay present and the building stays closed until an available Taan walks to the finished site and inspects it. With no workers, existing builder flow remains available; if workers are dismissed midway Taan can finish that project. Existing legacy construction owners/timers remain supported. Punishment work pauses during repairs.
+
+A vacant house footprint (house site2, unchanged collision) becomes the free canteen after worker unlock, avoiding new map-mask edits. Idle Dam/Plerng cook there; assigned/escorting/building/resting actors retain their duties. Two cooks produce one portion per1.5s after reaching the counter, stock capped6. Each batch adds2 shared supplies up to100 (never reduces larger existing stores); no invented fees. A courier must collect a portion and reach an actual hungry/low-morale crew member, guard or worker before applying food. Paid manual rice/inventory paths remain.
+
+Latest owner steering: shared supplies empty sets worker hunger0, cancels work and latches `supplyRest`. Workers walk to rest seats and sit. Kitchen refill alone does not resume them. Player must give an actual inventory rice ball (consumes1, adds existing ITEMS.food.food supplies) or order a physical tea-pavilion rest; at the pavilion they recover hunger and resume only when supplies are present. `feedWorker` and `restWorkerAtTea` are shared APIs for the forthcoming bottom-right team HUD. Workers' morale/stamina/hunger and rest latch persist. Morale exhaustion otherwise uses automatic seated recovery.
+
+Judgment→punishment uses the selected keeper, while workers handle dock→court and post-punishment/prison/heaven logistics. Existing soul identity, arrival gating and exactly-once settlement are preserved.
+
+Travel uses the normal map renderer, not a cropped modal canvas: approach, Kan handoff, jump aboard, right departure, left entry, jump ashore. Nira/Kan approach along map paths. Destination art loads before the sequence. Map input and management pause while its controller runs; UI and game-side guards reject duplicates. Only one guarded `moveZone` call occurs. Cancel is allowed before commitment; skip finishes one journey; reduced motion retains the readable handoff with immediate visual transitions. The controller is transient, not saved: underlying actors remain at safe floor points and branch snapshots use existing arrival contracts. No fare or new route unlock.
+
+New art: one transparent canteen and four regional seated workers; prompts/raw/final PNG and browser QA remain outside the game in AGAPAE Output/Codex/2026-10-24-avegee-workers-travel-review. No owner map mask or disabled route changed.
+
+Queued separately by owner: bottom-right team profiles/supplies/team controls, keeper picker inside “ใครคุม”, Kan beside Yama, and relief tears when structured mitigating evidence is uncovered. These are not claimed implemented by this WFT change.
