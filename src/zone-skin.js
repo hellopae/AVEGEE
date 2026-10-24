@@ -115,11 +115,16 @@ export const ZONE_SKIN = {
     light: { emit:[FIRE], flame:FLAME_FIRE },
   },
   west: {
-    enabled: false,
+    enabled: true,
     terrain: terrain('map-zone3', 'zone3'),
     flowUrl: null,
-    use: [],
-    stations: { suffix:'west', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
+    use: ['judgment','houses','trees','lamp','torch','rock'],
+    stations: { suffix:'west', facade:{
+      sala:'img/map-v5/st-sala-west-v2.webp',
+      tea:'img/theme-v4/st-tea-west-v2.webp',
+      sawan:'img/map-v5/st-sawan-west-v2.webp',
+      krajok:'img/map-v5/st-krajok-west-v2.webp',
+    }, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
     // Mind M1 section 6: ice / glacier glows pale blue; real fire (braziers, torches) stays warm orange.
     light: { emit:[FIRE, ICE], flame:FLAME_FIRE,

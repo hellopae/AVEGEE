@@ -24,7 +24,7 @@ test('Zone 1 skin resolves to exactly the files the hard-coded keys used to', ()
   };
   for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, 'th'), file, key);
   // zones that still use the old map system get the Zone 1 file for these keys, as before
-  for (const z of ['west','cyberhell']) for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, z), file, z + ' ' + key);
+  for (const z of ['cyberhell']) for (const [key, file] of Object.entries(legacy)) assert.equal(themeArt(key, z), file, z + ' ' + key);
   assert.equal(ZONE_SKIN.th.art['town-prop-torch-pillar'], 'img/map-zone1/torch-pillar-v1.webp');
   assert.equal(TOWN_TERRAIN_DIR, 'img/map-zone1/v5/');
   assert.equal(TOWN_TERRAIN_PREVIEW, 'img/map-zone1/v5/zone1-terrain-v5-preview.webp');
@@ -133,11 +133,13 @@ test('town layout per zone: overrides apply in place and Zone 1 comes back exact
   assert.equal(L.TOWN_PROP_SITES.length, props); assert.equal(L.TOWN_DAIS.w, 307);
 });
 
-test('undrawn zones inherit Zone 1; Asia owner mask disables patches', () => {
-  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].walkRuns, null);
+test('undrawn zones inherit Zone 1; Asia and west owner masks disable patches', () => {
+  assert.equal(L.TOWN_ZONE_LAYOUT.cyberhell.walkRuns, null);
+  assert.ok(L.TOWN_ZONE_LAYOUT.west.walkRuns.length>0);
+  assert.equal(L.TOWN_ZONE_LAYOUT.west.patches,false);
   assert.ok(L.TOWN_ZONE_LAYOUT.asia.walkRuns.length>0);
   assert.equal(L.TOWN_ZONE_LAYOUT.asia.patches,false);
-  for (const z of ['west','cyberhell']) assert.equal(L.TOWN_ZONE_LAYOUT[z].patches, true);
+  assert.equal(L.TOWN_ZONE_LAYOUT.cyberhell.patches, true);
   const base = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();
   L.applyTownZoneLayout('asia', L.TOWN_ZONE_LAYOUT, true);
   const asia = (() => { let h = 0; for (let y = 0; y < 2560; y += 40) for (let x = 0; x < 3840; x += 40) h = (h * 31 + (L.townContains(x, y) ? 1 : 0)) >>> 0; return h; })();

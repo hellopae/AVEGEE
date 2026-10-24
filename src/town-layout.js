@@ -10,6 +10,7 @@ import { TOWN_OWNER_WALK_RUNS as ASIA_WALK_RUNS } from './town-owner-walkmask-as
 import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-west.js';
 import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
 import { ASIA_TREE_POINTS } from './town-asia-trees.js';
+import { WEST_TREE_POINTS } from './town-west-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
@@ -220,10 +221,18 @@ const ASIA_PROPS = [
     treeKind:p.kind, big:!!p.big, on_walk:p.on_walk, fallbackKey:ASIA_TREE_FALLBACK[p.kind],
   })),
 ];
+const WEST_PROPS = [
+  ...TOWN_PROP_SITES.filter(p=>p.kind!=='tree'&&p.kind!=='palm'),
+  ...WEST_TREE_POINTS.map((p,i)=>({
+    ...deco(`west-tree-${i}`, 'tree', p.x*TOWN_SIZE.w, p.y*TOWN_SIZE.h,
+      160, 'ice', 16, 11, p.key),
+    treeKind:p.kind, species:p.species, ownerFoot:true,
+  })),
+];
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
-  west:      { walkRuns:WEST_WALK_RUNS,      patches:WEST_WALK_RUNS?false:true },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8 },
   cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
 };
 const clone = v => structuredClone(v);
