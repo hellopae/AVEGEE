@@ -181,7 +181,9 @@
     "img/zone-world-map.webp",
     "img/ui/icon-defend-shield.png",
     "img/ui/alert-mark.png",
-    "img/frontier-route/zone1-2-v4.webp"
+    "img/frontier-route/zone1-2-v4.webp",
+    "img/ui/result-banner-v1.webp",
+    "img/ui/result-glow-v1.webp"
   ],
   "zones": {
     "th": [

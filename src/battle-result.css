@@ -1,0 +1,31 @@
+/* B3: receipt presentation; scroll only the content, keeping the action in view. */
+dialog.battle-reward[open]{width:min(900px,calc(100vw - 24px));max-width:900px;padding:0;overflow:hidden;background:#160e16}
+dialog.battle-reward.reward-world[open]{padding:16px}
+.battle-reward .reward-world-panel{width:min(860px,100%);margin-inline:auto;max-height:calc(100dvh - 40px);padding:16px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;gap:12px;position:relative;isolation:isolate;box-sizing:border-box}
+.reward-heading{display:block;text-align:center;position:relative;isolation:isolate;min-width:0}
+.reward-title{position:relative;width:min(512px,100%);margin:auto;min-height:100px;display:grid;place-items:center;border:1px solid #ae884c;border-radius:8px;background:#291b25}
+.reward-title:has(.reward-banner){border-color:transparent;background:transparent}
+.reward-banner{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:-1}
+.reward-glow{position:absolute;left:50%;top:50%;width:200px;height:200px;transform:translate(-50%,-50%);opacity:.23;pointer-events:none;z-index:-2}
+.reward-title h2{font-size:clamp(18px,2.2vw,26px);line-height:1.35;color:#ffe5ac;margin:0;padding:22px 15%;overflow-wrap:anywhere;text-wrap:balance}
+.reward-heading .reward-who{margin:5px 0 0}.reward-description{font-size:13px;margin:6px 0 0;color:#dfd1c0;overflow-wrap:anywhere}
+.reward-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.reward-content section{min-width:0}.reward-content h3{font-size:14px;color:#daba7e;margin:0 0 8px}
+.battle-reward .reward-list{margin:0}.battle-reward .reward-row{min-width:0;margin:0 0 7px;grid-template-columns:44px minmax(0,1fr) auto}
+.reward-totals .reward-row{padding:12px 10px}.reward-totals .amt{font-size:clamp(20px,2.6vw,30px);font-variant-numeric:tabular-nums}
+.reward-actions{display:flex;justify-content:flex-end;border-top:1px solid #7a603a;padding-top:12px}.reward-actions button{min-width:180px;min-height:44px}
+.b3-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.arena.combat-arena .fig.foe.is-target{outline:2px solid #ffe3a0!important;outline-offset:4px;border-radius:10px;box-shadow:0 0 0 3px #1b101ddd}
+.arena.combat-arena .fig.foe.down{outline:none!important;box-shadow:none}
+.battle-state-tags{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);display:flex;justify-content:center;flex-wrap:wrap;gap:3px;width:max-content;max-width:150px;pointer-events:none;z-index:13}
+.fig.foe.is-target .battle-state-tags{bottom:calc(100% + 22px)}
+.battle-state-tags em{font-style:normal;font-size:11px;line-height:1.3;color:#fff0d2;background:#271728ed;border:1px solid #a488b5;border-radius:5px;padding:2px 5px;text-shadow:0 1px 2px #000}
+.battle-move-name{position:absolute;z-index:24;left:50%;top:24%;transform:translateX(-50%);max-width:76%;padding:8px 25px;background:linear-gradient(90deg,#291727e6,#352232f5,#291727e6);border-block:1px solid #d6ac69;color:#ffe5ac;font:700 clamp(14px,2vw,22px)/1.4 var(--font-display);text-align:center;pointer-events:none;overflow-wrap:anywhere;animation:b3NameIn .16s ease-out}
+@keyframes b3NameIn{from{opacity:0;translate:0 -5px}to{opacity:1;translate:0 0}}
+@media(max-width:600px){dialog.battle-reward.reward-world[open]{padding:10px}.battle-reward .reward-world-panel{padding:12px;max-height:calc(100dvh - 24px);gap:9px}.reward-title{min-height:84px}.reward-title h2{padding:18px 14%;font-size:18px}.reward-content{grid-template-columns:minmax(0,1fr);gap:10px}.reward-totals .reward-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.reward-totals .reward-row{grid-template-columns:30px minmax(0,1fr);padding:7px;gap:5px}.reward-totals .reward-row>.amt{grid-column:1/-1;text-align:center;font-size:24px}.reward-totals .reward-row img,.reward-totals .reward-row .badge{width:30px;height:30px}.reward-totals b{font-size:12px}.reward-actions button{width:100%;min-width:0}.battle-state-tags{max-width:104px}.battle-state-tags em{font-size:9px;padding:2px 3px}.battle-move-name{top:27%;max-width:84%;padding:6px 12px;font-size:14px}}
+@media(max-height:500px){.reward-title{min-height:64px}.reward-title h2{padding-block:12px;font-size:18px}.reward-heading .reward-who{margin:2px}.battle-reward .reward-world-panel{gap:6px;padding:8px}.reward-actions{padding-top:6px}}
+@media(prefers-reduced-motion:reduce){.battle-move-name{animation:none}.reward-glow{display:none}}
+
+@media(max-width:600px){.reward-totals .reward-list:has(>.reward-row:only-child){grid-template-columns:minmax(0,1fr)}}
+
+.reward-totals .reward-list>.reward-none{grid-column:1/-1}
