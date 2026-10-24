@@ -4,8 +4,8 @@ import {createGame} from '../src/game.js';
 import {stepWorkers,advanceWorkers} from '../src/workers.js';
 import {workerSupplyBlocked} from '../src/worker-ui.js';
 const game=()=>{const g=createGame();(g.zoneEvents.th||={}).frontierBreach='cleared';g.coin=10000;g.food=100;g.save=()=>true;g.onChange=()=>{};g.paused=false;g.mobs=[];return g;};
-test('closing intake does not strand already disembarked souls waiting for a newly hired worker',()=>{
- const g=game(),s=g.queue[0];g.cancelCourtArrival(s.id);g.courtArrivals=[{soulId:s.id,phase:'dock',zone:g.zone,elapsed:3600,duration:3600}];g.courtClosed=true;
+test('closing intake with busy Nira does not strand docked souls when a worker is hired',()=>{
+ const g=game(),s=g.queue[0];g.cancelCourtArrival(s.id);g.courtArrivals=[{soulId:s.id,phase:'dock',zone:g.zone,elapsed:3600,duration:3600}];g.courtClosed=true;g.crewOf('nira').escort=999;
  g.advanceCourtArrivals(120);assert.equal(g.courtArrivals[0].phase,'dock');const w=g.hireWorker();g.setWorkerMode(w.id,'escort');
  g.advanceCourtArrivals(120);assert.equal(g.courtArrivals[0].phase,'escort');assert.equal(g.afterlifeWalks[0].escort.workerId,w.id);
  g.advanceAfterlife(1e7);assert.equal(g.courtArrivals.length,0);assert.equal(g.workerState.ledger.escortsDone,1);assert.equal(w.job,null);

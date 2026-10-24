@@ -440,6 +440,11 @@ const API = {
     if(!this.courtClosed)this.startCourtArrival(s);
   },
 
+  niraCourtCourier() {
+    const c=this.crewOf('nira');
+    return !zoneWorkers(this).length&&actorStanding(c)&&!this.niraRest&&!c.teaRest&&!c.escort&&!c.buildK&&!c.at&&!this.mapTravel?c:null;
+  },
+
   startCourtArrival(soul) {
     if(!soul||soul.courtDisembarked||this.courtArrivals.some(a=>a.soulId===soul.id)||this.afterlifeWalks.some(w=>w.destination==='arrival'&&w.soul.id===soul.id))return false;
     const phase=this.courtArrivals.some(a=>a.phase==='ferry')?'queued':'ferry';
@@ -1292,10 +1297,10 @@ const API = {
 
   /** Keep a soul outside the destination roster until its map walk is complete. */
   startAfterlifeWalk(soul, from, to, destination, entry = null, keeperK = null, courier = null) {
-    // Optional harbour/site deliveries cannot start without an assistant.
-    // Check before grid pathfinding, especially during new-game creation.
+    // Before hiring unlocks, Nira covers dock pickup. Once workers exist, their
+    // normal role/supply availability applies; Nira must not bypass a stopped workforce.
     if(destination==='station'&&!zoneWorkers(this).length)return false;
-    if(destination==='arrival'&&!zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0))return false;
+    if(destination==='arrival'&&!(zoneWorkers(this).length?zoneWorkers(this).some(w=>w.mode==='auto'&&!w.recovering&&w.stamina>0):this.niraCourtCourier()))return false;
     const start = nearestWalk(from[0], from[1]);
     const end = nearestWalk(to[0], to[1]);
     const route = start && end && findPath(start[0], start[1], end[0], end[1]);
@@ -1316,7 +1321,7 @@ const API = {
       // existing courier if none is free; do not pull keepers off their posts.
       const fallbackCourier=walk.courier;
       delete walk.courier;
-      const assigned=assignWorkerEscort(this,walk);
+      const assigned=assignWorkerEscort(this,walk)||(destination==='arrival'&&this.assignEscort(walk,'nira'));
       if(!assigned&&destination==='arrival')return false;
       if(!assigned&&fallbackCourier)walk.courier=fallbackCourier;
     }
@@ -1332,7 +1337,9 @@ const API = {
     if (walk.destination!=='station'&&assignWorkerEscort(this,walk)) return true;
     const start = walk.path[0];
     const dist = c => Math.hypot((c.x ?? c.hx) - start[0], (c.y ?? c.hy) - start[1]);
-    const free = this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
+    const reader=walk.destination==='arrival'?this.niraCourtCourier():null;
+    if(walk.destination==='arrival'&&!reader)return false;
+    const free = reader?[reader]:this.crew.filter(c => actorStanding(c) && !c.self && !c.reader && !c.escort && !c.buildK && (!c.at||walk.destination==='station'&&c.k===keeperK&&c.at===walk.entry?.station) && !c.cook);
     const ranked = [...free.filter(c => c.k === keeperK), ...free.filter(c => c.k !== keeperK).sort((a, b) => dist(a) - dist(b))];
     for (const c of ranked) {
       if(walk.destination==='station'&&c.k!==keeperK)continue;
@@ -1347,7 +1354,7 @@ const API = {
       const delay = Math.round(pathLength(pickup) / ESCORT_PICKUP_SPEED);
       walk.delay = delay;
       walk.duration += delay;
-      walk.escort = { k:c.k, pickup };
+      walk.escort = { k:c.k, pickup, ...(reader?{courtCourier:true}:{}) };
       c.escort = walk.soul.id; c.path = null; c.x = cx; c.y = cy;
       return true;
     }
@@ -1359,6 +1366,11 @@ const API = {
     if (releaseWorkerEscort(this,walk)) return;
     const c = walk.escort && this.crewOf(walk.escort.k);
     if (!actorStanding(c) || c.self) return;
+    if(walk.escort.courtCourier){
+      if(c.escort!==walk.soul.id)return;
+      const end=walk.elapsed>=walk.duration?walk.path.at(-1):null,pos=end?{x:end[0],y:end[1]}:escortCrewPosition(walk);
+      c.escort=null;if(pos){c.x=pos.x;c.y=pos.y;}c.path=null;c.wait=0;return;
+    }
     if (c.escort === walk.soul.id) c.escort = null;
     const end = walk.path.at(-1);
     c.x = end[0]; c.y = end[1]; c.path = null; c.wait = 0;

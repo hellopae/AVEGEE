@@ -20,7 +20,7 @@ test('worker delivers harbour arrivals immediately available for trial, then han
  assert.equal(g.queue.some(s=>s.id===soul.id),false);
 });
 test('court ferry waits for an open court and leaves a soul at the harbour when no worker is free',()=>{
- const g=setup(),soul=g.queue[0];g.courtClosed=true;
+ const g=setup(),soul=g.queue[0];g.courtClosed=true;g.crewOf('nira').escort=999;
  assert.equal(g.startCourtArrival(soul),true);g.advanceAfterlife(5000);
  assert.equal(g.courtArrivals[0].phase,'ferry');assert.equal(g.courtArrivals[0].elapsed,0);
  assert.equal(g.caseReady(soul),false);
