@@ -2506,7 +2506,7 @@ function actionCutsceneSrc(k) {
 /** Crew and Guard use their branch's action art, regardless of Yama's outfit. */
 function crewCutsceneSrc(k) {
   if(k==='guide')return null;
-  const actor = g.roster[k], kind = actor?.kind || k, zone = actor?.homeZone || g.zone;
+  const actor = g.roster[k] || (k === 'guard' ? g.guard : null), kind = actor?.kind || k, zone = actor?.homeZone || g.zone;
   const scene = regionalCrewCutscene(kind, zone);
   return { src:scene.src, fallback:scene.regional ? artUrl(`crew-${kind}`, 'png', zone) : null };
 }
@@ -2538,7 +2538,7 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   // ถูกตัดเหลือแถบกลางภาพ (ตัวละครอยู่ล่างภาพจึงเห็นแต่ส่วนบนของหัวกับพื้นดำ) → ให้เห็นทั้งภาพ (contain) เฉพาะคัตซีนของยมทูต
   if (crewKey) cut.classList.add('crew-cut');
   if (!ultimate && ACTION_CUTSCENE_PRESENTATION[src]?.flip === false) cut.classList.add('right-facing');
-  const actorName = crewKey ? (g.roster[crewKey]?.name || CREW[crewKey]?.name || 'ยมทูต') : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
+  const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
   cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
@@ -3669,13 +3669,15 @@ function openBattle(after) {
     if (g.battle !== b || !dlg.open) { b.commandBusy = false; dash = null; phase = null; return; }
     const reduced = !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     const delta = source && target && !reduced ? planDash(source, target) : { x:0, y:0 };
-    const timing = dashTiming({ contact, pose, reduced });
     const depths = (await Promise.all([
       ...g.battleActors().map(a => ({ side:'you', key:keyOfActor(a.id), image:allyImg(keyOfActor(a.id)) })),
       ...b.foes.map(f => ({ side:'foe', key:f.id, image:foeImg(f.id) }))
     ].map(async item => { const rect = await measureDash(item.image); return rect ? { ...item, image:undefined, foot:rect.b } : null; }))).filter(Boolean);
     dash = { side, key, depths, actor:side === 'you' ? g.battleActors().find(a => keyOfActor(a.id) === key) : null, source:source || { b:0 }, position:{ x:0, y:0 }, posed:false, hit:false };
     fxNow = null; fxHandled = true; b.dmg = {}; b.mid = null; b.helper = null; paint();
+    // Guard also takes the melee path: show his own cutscene before launching, then pay/hit only at contact.
+    const leadIn = side === 'you' && action === 'guard' && playActionCutscene('guard') ? ACTION_CUT_MS : 0;
+    const timing = dashTiming({ contact, pose, reduced, leadIn });
     let clockAt = performance.now(), elapsed = 0;
     const advance = createDashSequence({ timing, delta,
       onPosition:position => { dash.position = position; applyDashPosition(); },
