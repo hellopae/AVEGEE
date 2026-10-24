@@ -1,0 +1,55 @@
+{
+ "zone": "west",
+ "sheet": [
+  4915,
+  3277
+ ],
+ "chunks": 20,
+ "preview": "zone3-terrain-v1-preview.webp",
+ "quadrants": {
+  "nw": [
+   1536,
+   1024
+  ],
+  "ne": [
+   1536,
+   1024
+  ],
+  "sw": [
+   1536,
+   1024
+  ],
+  "se": [
+   1536,
+   1024
+  ]
+ },
+ "upscale": {
+  "nw": 1.8,
+  "ne": 1.8,
+  "sw": 1.8,
+  "se": 1.8
+ },
+ "sha256": {
+  "r1-c1.webp": "f12fa8bd79dfd3aa",
+  "r1-c2.webp": "b66080ea9481fdde",
+  "r1-c3.webp": "96f72f652c5cca84",
+  "r1-c4.webp": "76aaa27caf051e4a",
+  "r1-c5.webp": "7ac971f31aac4630",
+  "r2-c1.webp": "9f4b3eff89b0ea2d",
+  "r2-c2.webp": "6ac26583eb1c6ca0",
+  "r2-c3.webp": "ebf58ba7a1306b64",
+  "r2-c4.webp": "ca8cc8a894e79029",
+  "r2-c5.webp": "3441ab36d65aa919",
+  "r3-c1.webp": "bcc49a84117eb669",
+  "r3-c2.webp": "e14a85d88230c31d",
+  "r3-c3.webp": "90efe020535dbfd7",
+  "r3-c4.webp": "67c4aa97d6a42877",
+  "r3-c5.webp": "77a4d10fbe2749ef",
+  "r4-c1.webp": "febe795a4773cbe3",
+  "r4-c2.webp": "bfc88e055758cc24",
+  "r4-c3.webp": "cf9c99337fcf7520",
+  "r4-c4.webp": "95b72753f1bc634f",
+  "r4-c5.webp": "083f402119a1abc3"
+ }
+}
