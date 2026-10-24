@@ -2662,7 +2662,7 @@ function openTrial(initialError = '') {
     }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`) + (answer?.station && !dests.some(x => x.def.k === answer.station.k && !x.build)
       ? `<span class="idle trial-empty-hint trial-revealed-destination">✓ ${esc(t('trial.revealedWhere'))}: ${esc(answer.station.name)}</span>` : '');
     const candidates=g.crew.filter(c=>!c.reader);
-    const shownCrew=answer?.crew&&!candidates.some(c=>c.k===answer.crew.k)?[...candidates,answer.crew]:candidates;
+    const shownCrew = answer?.crew&&!candidates.some(c=>c.k===answer.crew.k)?[...candidates,answer.crew]:candidates;
     const crewChoices = shownCrew.length ? shownCrew.map(c => {
       const revealed = !!answer?.crew && c.k === answer.crew.k;
       const role=g.keeperTrialInfo?.(s,c,pick.st);

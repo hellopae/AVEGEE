@@ -5,6 +5,8 @@ import vm from 'node:vm';
 import { createGame, primarySinOf } from '../src/game.js';
 import { ALL_CASES, isPure } from '../src/cases.js';
 import { SINS, STATIONS, INTENSITY_NAME as INTENSITY } from '../src/data.js';
+import {traitForKeeper} from '../src/interrogation.js';
+import {keeperCurrentJob} from '../src/interrogation-ui.js';
 import { t } from '../src/i18n.js';
 
 globalThis.Image = class {};
@@ -13,7 +15,7 @@ const css = readFileSync(new URL('../src/command-wheel.css', import.meta.url), '
 const renderSource = ui.slice(ui.indexOf('    const destinationChoices ='), ui.indexOf('    const crewNow ='));
 const renderChoices = (g,s) => vm.runInNewContext(`${renderSource}\n({destinationChoices,crewChoices,forceChoices});`, {
   g,s,dests:g.trialDestinations(),answer:g.trialAnswer(s),available:g.freeCrew(),pick:{},heaven:false,
-  t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,
+  traitForKeeper,keeperCurrentJob,t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,
 });
 function courtSoul(g, sin = 'kong') {
   const s = g.queue[0];
