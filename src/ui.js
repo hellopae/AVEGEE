@@ -1,3 +1,4 @@
+import { rewardView, startRewardCount, selectedLivingFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
@@ -16,7 +17,7 @@ import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, town
 import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';
 import { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';
 import { mountDiagnosis } from './diagnosis-ui.js';
-import { powerBadgeHtml, powerSheetHtml } from './crew-power-ui.js';
+import { powerBadgeHtml, powerSheetHtml, powerName } from './crew-power-ui.js';
 import { diagnosisSubjects, subjectKey } from './diagnosis.js';
 import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';
 import { westRescuePending, WEST_RESCUE } from './west-events.js';
@@ -2338,7 +2339,12 @@ function defendShieldHtml() {
 }
 { const im = new Image(); im.onload = () => document.documentElement.classList.add('defend-shield-art'); im.src = 'img/ui/icon-defend-shield.png'; }
 
+function battleStatusHtml(actor, options = {}) {
+  const states = battleStatuses(actor, options);
+  return states.length ? `<span class="battle-state-tags">${states.map(s => `<em data-battle-status="${s.key}">${esc(t('battle.status.' + s.key, {n:s.n}))}</em>`).join('')}</span>` : '';
+}
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
+  const selectedId = selectedLivingFoeId(hp);
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
@@ -2405,11 +2411,11 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       <span class="plate"><b>${esc(helper.name)}</b><span class="sub">เข้ามาช่วย</span></span>
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
-      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
+      <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id]})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
         c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.helpCdMs / 1000) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
-      ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}
+      ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}${hp ? battleStatusHtml({hp:hp.youHp}, {defending:hp.defending?.you,rage:hp.rageTurns}) : ''}
       <img src="${youImg}" class="${teamFaceClass(youImg)}" alt="" onerror="this.onerror=null;this.src='${showRage ? (ragePoseSrc(g.outfit || g.zone) || heroAtk()) : (artUrl('hero-yama-profile') || artUrl('hero-yama'))}'">
       <span class="plate"><b>${esc(HERO_NAME)}</b><span class="sub">${esc(HERO_TITLE)} · ประจำ${esc(g.zoneDef().name)}</span>
         ${bar(hp ? hp.youHp : 0, hp ? hp.youMax : 1, '', 'บารมี')}</span>
@@ -2421,19 +2427,19 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       const hit = act?.struck === 'foe' && (hits ? damage > 0 :
         (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id));
       const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
-      return `<button type="button" class="fig foe${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${hp.selectedFoeId === f.id ? ' selected' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
-        data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
+      return `<button type="button" class="fig foe${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${selectedId === f.id ? ' selected is-target' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
+        data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-current="${selectedId === f.id}" aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
-        ${hp.selectedFoeId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
+        ${selectedId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
         <img src="${esc(src)}" class="${foeFaceClass(src)}" alt="" onerror="this.onerror=null;this.src='${f.boss ? bossFallback : 'img/spirit7.png'}'">
-        <span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
+        ${battleStatusHtml(f)}<span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
           ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
       </button>`;
-    }).join('')}</div>` : `<div ${hp ? `data-foe-id="${esc(hp.foes?.[0]?.id)}" role="button" tabindex="0"` : ''} class="fig foe${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}">
-      ${hp && hp.foes?.[0]?.hp > 0 ? '<span class="target-arrow">▼ เป้าหมาย / Target</span>' : ''}
+    }).join('')}</div>` : `<div ${hp ? `data-foe-id="${esc(hp.foes?.[0]?.id)}" role="button" tabindex="0" aria-current="${!!selectedId}"` : ''} class="fig foe${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}${selectedId ? ' selected is-target' : ''}">
+      ${selectedId ? `<span class="target-arrow">▼ ${esc(t('event.prisonBreak.target'))}</span>` : ''}
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
       <img src="${foeSrc}" class="${foeFaceClass(foeSrc)}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
-      <span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
+      ${hp ? battleStatusHtml(hp.foes?.[0]) : ''}<span class="plate"><b>${esc(foe.name)}</b><span class="sub">${esc(foe.sub || '')}</span>
         ${bar(hp ? hp.foes?.[0]?.hp : 0, hp ? hp.foes?.[0]?.maxHp : 1, 'foe', 'กำลังใจ')}</span>
     </div>`}
     ${hp ? '</div>' : ''}
@@ -3400,6 +3406,24 @@ function openBattle(after) {
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
   let dash = null;
+  let moveName = null, moveNameTimer = 0;
+  const clearMoveName = () => { clearTimeout(moveNameTimer); moveName = null; dlg.querySelectorAll('.battle-move-name').forEach(el => el.remove()); };
+  const renderMoveName = () => {
+    dlg.querySelectorAll('.battle-move-name').forEach(el => el.remove());
+    if (!moveName || !phase || Date.now() >= moveName.until) return;
+    const stage = dlg.querySelector('.combat-arena');
+    if (!stage) return;
+    const el = document.createElement('div'); el.className = 'battle-move-name'; el.setAttribute('role','status'); el.textContent = moveName.label; stage.append(el);
+  };
+  const setMoveName = (action, ultimate = null, cutMs = 0) => {
+    clearMoveName();
+    const key = specialMoveKey(action, ultimate); if (!key) return;
+    const crew = key.startsWith('crew:') ? key.slice(5) : key === 'guard' ? 'guard' : null;
+    const label = crew ? powerName(crew) : key === 'enemy' ? t('battle.move.enemy', {name:ultimate.name || ''}) : t('battle.move.' + key);
+    moveName = {label, until:Date.now() + cutMs + 1200}; renderMoveName();
+    moveNameTimer = setTimeout(clearMoveName, cutMs + 1200);
+  };
+
   let commandPanel = null, commandPanelActor = null;
   let commandMenuOpen = true, authorityAttackScheduled = false, enemyScheduled = false;
   let fleeConfirm = false;      // L2: "หนีจากการต่อสู้" confirmation layer is showing
@@ -3528,11 +3552,16 @@ function openBattle(after) {
   };
   /** start the action choreography for the phase that was just entered (called right after paint(), once per phase) */
   let cueImpactAtMs = null;   // M-merge: wall-clock time (performance.now) the running action cue's impact lands — M2's canvas effect starts so its own hit moment meets it
-  const cue = (kind, ctx) => { const c = camera.cue(kind, ctx); cueImpactAtMs = performance.now() + (c.impactAt || 0) / (camera.timeScale || 1); return c; };
+  const cue = (kind, ctx) => {
+    const d = g.battle?.dmg;
+    if (moveName && (d?.foe > 0 || d?.you > 0 || d?.crew > 0)) ctx = {...ctx, flash:{alpha:.3}};
+    const c = camera.cue(kind, ctx); cueImpactAtMs = performance.now() + (c.impactAt || 0) / (camera.timeScale || 1); return c;
+  };
   const startActionCue = (cutMs = 0) => {
     const b = g.battle;
     cueImpactAtMs = null;
     if (!b || !camera.stageEl()) return;
+    setMoveName(phase === 'you' ? fxNow?.action : null, phase === 'foe' ? b.ultimate : null, cutMs);
     if (phase === 'you') {
       const a = fxNow?.action || '', userKey = actorKeyById(b.actorId || 'you');
       if (fxNow?.key === 'defend') return;
@@ -3587,6 +3616,7 @@ function openBattle(after) {
     const b = g.battle, stage = dlg.querySelector('.combat-arena');
     if (!b || !stage) return;
     phase = side; phaseAt = Date.now(); commandMenuOpen = false;
+    setMoveName(side === 'you' ? action : null, side === 'foe' ? b.ultimate : null);
     // Lock synchronously before the asynchronous opaque-bound measurement.
     b.commandBusy = true;
     dash = { side, key, source:{ b:0 }, depths:[], position:{ x:0, y:0 }, posed:false, hit:false };
@@ -3622,19 +3652,20 @@ function openBattle(after) {
       },
       onHit:() => {
         dash.hit = true; phaseAt = Date.now(); b.commandBusy = false;
-        if (!onHit()) { dash = null; phase = null; fxNow = null; commandMenuOpen = true; paint(); return false; }
+        if (!onHit()) { clearMoveName(); dash = null; phase = null; fxNow = null; commandMenuOpen = true; paint(); return false; }
         // Asia's deva interlude removes the battle at contact; close this UI before returning to the story.
         if (g.battle !== b) { b.commandBusy = false; dash = null; phase = null; fxNow = null; finish(); return false; }
         powerSound(side === 'you' ? action : 'foe');
         paint();
         // Use the actual contact instant; the recipe's own delay must not add a second hit delay.
         cueImpactAtMs = performance.now();
+        if (moveName && b.dmg?.foe > 0) camera.flash({alpha:.3});
         startMoveFx(side, action, 0, 0);
       },
       onReturn:() => { if (dash) { dash.returning = true; applyDashPosition(); } },
       onFinish:() => {
         dash = null; phase = null; fxNow = null;
-        onFinish(); g.finishBattleCommand(); commandMenuOpen = true;
+        clearMoveName(); onFinish(); g.finishBattleCommand(); commandMenuOpen = true;
         // Preserve the original boss-finale flow after the attacker has returned home.
         if (b.storyFinale) { sfx('win'); finish(); return; }
         if (g.battle) { finishWaveAfterDash(); paint(); if (b.over) sfx(b.over === 'win' ? 'win' : 'lose'); }
@@ -3845,6 +3876,7 @@ function openBattle(after) {
     const stage = dlg.querySelector('.combat-arena');
     camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
     applyDashPosition();
+    if (!phase) clearMoveName(); else renderMoveName();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
     stage.insertAdjacentHTML('beforeend', acts);
     swordImage(g.outfit || g.zone, g.weapons?.equipped);
@@ -4325,6 +4357,7 @@ function openBattle(after) {
   function finish() {
     if (finished) return;
     finished = true;
+    clearMoveName();
     camera.detach();
     battleUI = null;
     lastBattleEnd = Date.now();
@@ -5909,30 +5942,38 @@ function afterReward(fn) { if (g.pendingReward || rewardOpen) rewardAfter = fn; 
 function openBattleReward() {
   const r = g.pendingReward;
   if (!r || rewardOpen || dlg.open) return;
-  rewardOpen = true;
-  sfx('star');
-  const rows = [];
-  if (r.coin > 0) rows.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt">+${Math.round(r.coin)}</span></div>`);
-  if (r.exp > 0) rows.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt">+${r.exp}</span></div>`);
-  for (const it of r.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
-  for (const id of r.weapons || []) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
-  for (const k of r.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
-  if (!r.guideZone && !r.items.length && !r.abilities.length && !(r.weapons || []).length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
-  modal(`${r.background?`<img class="reward-world-image" src="${esc(r.background)}" alt="บริเวณที่ต่อสู้"><section class="reward-world-panel">`:''}<h2>${esc(r.title || t('reward.title'))}</h2>
-    <p class="reward-who">${esc(r.who || '')}</p>${r.description?`<p>${esc(r.description)}</p>`:''}
-    <div class="reward-list">${rows.join('')}</div>
-    <div class="row"><button class="gold" data-close>${esc(t('reward.claim'))}</button></div>${r.background?'</section>':''}`, null, r.background?'battle-reward reward-world':'battle-reward');
-  // ระวัง: event 'close' ของฉากต่อสู้ที่เพิ่งปิด (dlg.close() ใน finish) มาถึง "หลัง" กล่องนี้เปิดแล้ว (ยิงแบบ async)
-  // onDlgClose ธรรมดาจึงตีความว่ากล่องรางวัลปิดทันที — ต้องข้ามเมื่อกล่องยังเปิดอยู่และเป็นรุ่นเดียวกัน (เหมือน showPendingStory)
-  const gen = dlgGen;
+  rewardOpen = true; sfx('star');
+  const model = rewardView(r), totals = [], rows = [];
+  if (model.coin > 0) totals.push(`<div class="reward-row"><img src="img/ui/icon-coin.png" alt=""><span><b>${esc(t('reward.coin'))}</b></span><span class="amt" aria-hidden="true" data-reward-coin>+${model.coin}</span></div>`);
+  if (model.exp > 0) totals.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt" aria-hidden="true" data-reward-exp>+${model.exp}</span></div>`);
+  for (const it of model.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
+  for (const id of model.weapons) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
+  for (const k of model.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
+  if (!r.guideZone && !rows.length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
+  modal(`${r.background ? `<img class="reward-world-image" src="${esc(r.background)}" alt="${esc(t('reward.background'))}">` : ''}<section class="reward-world-panel">
+    <header class="reward-heading"><img class="reward-glow" src="img/ui/result-glow-v1.webp" alt="" aria-hidden="true" onerror="this.remove()"><div class="reward-title"><img class="reward-banner" src="img/ui/result-banner-v1.webp" alt="" aria-hidden="true" onerror="this.remove()"><h2>${esc(r.title || t('reward.title'))}</h2></div>
+    <p class="reward-who">${esc(r.who || '')}</p>${r.description ? `<p class="reward-description">${esc(r.description)}</p>` : ''}</header>
+    <div class="reward-content"><section class="reward-totals"><h3>${esc(t('reward.summary'))}</h3><div class="reward-list">${totals.join('') || `<p class="reward-none">${esc(t('reward.noGain'))}</p>`}</div></section>
+      <section class="reward-loot"><h3>${esc(t('reward.loot'))}</h3><div class="reward-list">${rows.join('')}</div></section></div>
+    <p class="b3-sr-only" role="status" aria-live="polite" aria-atomic="true" data-reward-live></p>
+    <footer class="reward-actions"><button type="button" class="gold" data-reward-next>${esc(t('reward.showTotals'))}</button></footer></section>`, null, r.background ? 'battle-reward reward-world' : 'battle-reward');
+  const gen = dlgGen, button = dlg.querySelector('[data-reward-next]');
+  const counter = startRewardCount({ ...model, reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,
+    isCurrent:() => dlg.open && gen === dlgGen && g.pendingReward === r,
+    onUpdate:values => { for (const key of ['coin','exp']) { const el = dlg.querySelector(`[data-reward-${key}]`); if (el) el.textContent = '+' + values[key]; } },
+    onDone:values => { button.textContent = t('reward.continue'); dlg.querySelector('[data-reward-live]').textContent = t('reward.totalsAnnounce', values); }
+  });
+  button.onclick = () => { if (!counter.skip()) dlg.close(); };
+  // Ignore the asynchronous close event of the preceding battle while this generation is open.
   const closed = () => {
     if (dlg.open && gen === dlgGen) return;
-    dlg.removeEventListener('close', closed);
-    rewardOpen = false;
+    counter.cancel(); dlg.removeEventListener('close', closed); rewardOpen = false;
+    // A replacement receipt owns its own acknowledgement and must not be cleared by this close.
+    if (g.pendingReward !== r) { g.onChange(); return; }
     if (r.encounter) { if (!g.acknowledgeFinalReward()) { g.onChange(); return; } }
-    else {if(r.guideZone){acknowledgeBossGuideGrant(g,r.guideZone);g.save();}g.pendingReward = null;}
+    else { if (r.guideZone) { acknowledgeBossGuideGrant(g,r.guideZone); g.save(); } g.pendingReward = null; }
     const next = rewardAfter; rewardAfter = null;
-    g.onChange();                                   // ปล่อยหน้าต่างถัดไปในคิว (เลื่อนขั้น/โซน/...)
+    g.onChange();
     if (next) { if (dlg.open) onDlgClose(next); else next(); }
   };
   dlg.addEventListener('close', closed);
