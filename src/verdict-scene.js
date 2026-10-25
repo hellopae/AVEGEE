@@ -1,4 +1,4 @@
-// P3 — the zone head's reaction after a verdict: praise on five stars, rebuke on every red verdict
+// P3/A5 — every verdict has an authority scene; five-star praise and red-streak rebukes retain their original lines
 // (the same condition that counts toward DAD.redsToCome, so a rebuke scene always precedes the escalating punishment).
 // Pure data/logic: no DOM. The scene object is built once in game.applyVerdict and saved, so a reload shows the same words.
 import { VERDICT_LINES, authorityOf } from './data.js';
@@ -42,4 +42,22 @@ export function buildVerdictScene({ kind, zone, step = 1, who = '', station = ''
     reward:kind === 'praise' && reward ? fill(L.reward, vars) : null,
     stars, score, tham, ked,
   };
+}
+
+/** Fill the ordinary grades P3 did not cover. Presentation only: all effects
+ * have already been applied by game.applyVerdict. No red-streak escalation. */
+export function buildVerdictReview({zone,verdict:v,who='',station='',id=null}) {
+  const critical=['cruel','bad','terrible'].includes(v.boss);
+  const lines={
+    great:'"เจ้าพิจารณาได้ดีแล้ว รักษาความรอบคอบนี้ไว้ในคดีต่อไป"',
+    ok:'"พอใช้ได้ แต่ยังต้องชั่งกรรมให้รอบคอบกว่านี้"',
+    cruel:'"เจ้าให้ทัณฑ์เกินกรรม ส่วนเกินนั้นตกอยู่ที่ตัวเจ้าเอง"',
+    bad:'"กลับไปอ่านสำนวนให้ครบ ก่อนประทับตราคดีต่อไป"',
+    terrible:'"คำตัดสินนี้ทำให้ผู้ที่เจ็บมาแล้วต้องเจ็บซ้ำ"',
+  };
+  return {kind:critical?'blame':'praise',zone,step:0,id,
+    title:`${authorityOf(zone).title}ให้ความเห็น`,speaker:authorityOf(zone).title,
+    line:lines[v.boss]||lines.ok,reason:v.reason||null,
+    reward:v.stars===4?'ได้รับ เบี้ยกรรม +25':null,
+    stars:v.stars,score:v.score,tham:v.tham,ked:v.ked};
 }

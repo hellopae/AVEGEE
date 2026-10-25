@@ -123,5 +123,5 @@ test('P9 verdict scene: every zone draws its own praise/scold pair (1672x941 PNG
     for(const k of ['praise','blame']) { const f=verdictSceneImage(z,k);assert.deepEqual(pngSize(f),[1672,941],f);assert.ok(manifest.includes(f.replace('img/','')),f+' listed in img/manifest.json'); }
   }
   assert.ok(Object.values(VERDICT_ART).every(v=>!/intro-head|punish/.test(v.praise+v.blame)),'no temporary intro portrait / punishment still wired in');
-  assert.match(html,/"\.\/src\/verdict-scene\.js": "\.\/src\/verdict-scene\.js\?v=p9"/);
+  assert.match(html,/"\.\/src\/verdict-scene\.js": "\.\/src\/verdict-scene\.js\?v=p9(?:-[^"]+)?"/);
 });

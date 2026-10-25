@@ -27,7 +27,7 @@ import { ROSTER_VERSION, TEAM_LIMITS, ROSTER_BACKUP_KEY, rosterId, actorFromLega
 import { mirrorBeam } from './mirror-charge.js';
 import { buildLocked, buildUnlockLv, recommendedBuild, unlockedAtLevel } from './unlocks.js';
 import { authorityPunishmentCutscene } from './narrative-cutscenes.js';
-import { buildVerdictScene } from './verdict-scene.js';
+import { buildVerdictScene, buildVerdictReview } from './verdict-scene.js';
 import { calcRemorse, remorseOf, isRepentant } from './remorse.js';
 import { meleeSwing, capWithRage, weaponOnHit } from './weapons.js';
 // game.js — สถานะเกม · วาระ (tick) · สูตรตัดสิน
@@ -1277,7 +1277,12 @@ const API = {
       this.devaVisits.th = { phase:'intro', right:!!r.right };
       this.queueStory(r.right ? 'deva-th-praise' : 'deva-th-warning');
     }
-    this.pendingVerdict = { ...r, who: soul.who, id: soul.id };
+    // A5: ordinary grades and non-red over-punishment also receive a head's
+    // comment. Existing praise/rebuke scenes keep their tier and granted reward.
+    if (!this.pendingVerdictScene || this.pendingVerdictScene.id !== soul.id)
+      this.pendingVerdictScene = buildVerdictReview({zone:this.zone,verdict:r,who:soul.who,station:stationName,id:soul.id});
+    this.pendingVerdictScene.reason = r.reason || null;
+    this.pendingVerdict = { ...r, who: soul.who, id: soul.id, scene:true };
     this.checkEnd();
   },
 
@@ -5062,6 +5067,7 @@ API.restore = function (d) {
   this.pendingRecovery = d.pendingRecovery || null;
   this.pendingWarn = d.pendingWarn || null;
   this.pendingVerdictScene = d.pendingVerdictScene || null;
+  this.pendingVerdict = null; // Saved scenes own feedback; discard a stale in-memory map badge.
   this.dadFight = d.dadFight || false;
   this.pendingDadPunish = d.pendingDadPunish || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';

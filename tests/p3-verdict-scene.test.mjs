@@ -15,13 +15,13 @@ const verdict=(g,score,over={})=>{
   return g.pendingVerdictScene;
 };
 
-test('praise only on five stars; the in-between and low stars are not praised',()=>{
+test('five stars keep special praise; ordinary grades now receive an A5 review',()=>{
   const g=game();
   assert.equal(verdict(g,95)?.kind,'praise');
   assert.equal(verdict(game(),90)?.kind,'praise','90 is the five-star line');
-  assert.equal(verdict(game(),89),null,'four stars: normal badge, no scene');
-  assert.equal(verdict(game(),60),null);
-  assert.equal(verdict(game(),50),null,'50 is not red');
+  assert.equal(verdict(game(),89).step,0,'four stars: ordinary head review');
+  assert.equal(verdict(game(),60).step,0);
+  assert.equal(verdict(game(),50).step,0,'50 has a review without red escalation');
 });
 
 test('rebuke exactly where DAD.redsToCome counts red (score < 50), not by star count',()=>{
@@ -29,7 +29,7 @@ test('rebuke exactly where DAD.redsToCome counts red (score < 50), not by star c
   assert.equal(verdict(game(),49)?.kind,'blame');
   assert.equal(verdict(game(),45)?.kind,'blame');
   assert.equal(verdict(game(),10)?.kind,'blame');
-  assert.equal(verdict(game(),50),null);
+  assert.equal(verdict(game(),50).step,0);
   const g=game();g.reds=0;verdict(g,45);assert.equal(g.reds,1,'the same verdict is the one counted red');
 });
 
@@ -57,10 +57,10 @@ test('rebuke scene shows the same stars the verdict got (30 points = 1 star, not
   assert.equal(verdict(game(),30).stars,1);assert.equal(verdict(game(),45).stars,2);assert.equal(verdict(game(),10).stars,0);
 });
 
-test('a middle verdict on a soul without an id neither builds a scene nor throws',()=>{
+test('a middle verdict without a soul id still builds a review without throwing',()=>{
   const g=game();g.pendingVerdictScene=null;
   g.applyVerdict({score:60,stars:3,tham:60,ked:50,karma:0,right:true},{who:'x'},'y');
-  assert.equal(g.pendingVerdictScene,null);
+  assert.equal(g.pendingVerdictScene.step,0);assert.equal(g.pendingVerdictScene.score,60);
 });
 
 test('praise reports the reward the game already granted and changes no numbers',()=>{

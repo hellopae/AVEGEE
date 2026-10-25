@@ -1957,7 +1957,7 @@ function openZoneArrival(z) {
 function showVerdict(v) {
   g.pendingVerdict = null;
   sfx(v.stars >= 5 ? 'star' : v.stars <= 1 ? 'hurt' : 'gong');
-  fx = { ...v, line: verdictComment(v), quiet: !!g.pendingVerdictScene };
+  fx = { ...v, line: verdictComment(v), quiet: !!g.pendingVerdictScene || !!v.scene };
   g.bossUntil = performance.now() + 7000;      // พ่อมานั่งบัลลังก์ให้เห็นชั่วครู่
   clearTimeout(showVerdict.t);
   const current=fx;
@@ -2112,13 +2112,14 @@ function openAuthorityWarning() {
   onDlgClose(()=>g.onChange());
 }
 
-/** P3 — the zone head reacts to the verdict: praise (five stars, shows what was granted) or rebuke (red verdict).
+/** P3/A5 — every verdict receives the zone head's comment; the scene only reports effects already applied.
  *  Queued ahead of the red-streak warning / Yama fight so the words come first; skippable; consumed on open (nothing is granted here). */
 function openVerdictScene() {
   const sc = g.pendingVerdictScene; if (!sc) return;
+  if (g.pendingVerdict?.id === sc.id) g.pendingVerdict = null;
   g.pendingVerdictScene = null; g.save();
   pauseForDlg();
-  const col = sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
+  const col = sc.kind === 'blame' ? 'var(--destructive)' : sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
   const stars = '★'.repeat(sc.stars) + '☆'.repeat(Math.max(0, 5 - sc.stars));
   dlg.innerHTML = `<div class="intro-comic zone-arrival verdict-scene is-${sc.kind}" role="region" aria-label="${esc(sc.title)}">
     <div class="intro-comic-frame">
@@ -2128,6 +2129,7 @@ function openVerdictScene() {
     <div class="zone-arrival-band">
       <div class="intro-comic-caption"><h2>${esc(sc.speaker)}</h2><p class="verdict-line">${esc(sc.line)}</p>
         <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)} · เข็ด ${esc(sc.ked)}</small></div>
+        ${sc.reason ? `<p class="verdict-reason">${esc(sc.reason)}</p>` : ''}
         ${sc.reward ? `<div class="verdict-reward">${esc(sc.reward)}</div>` : ''}</div>
       <div class="intro-comic-controls"><button class="gold" data-verdict-scene-done>รับทราบ · ข้าม</button></div>
     </div>
