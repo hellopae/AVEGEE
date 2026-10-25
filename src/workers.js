@@ -216,7 +216,13 @@ export function assignWorkerEscort(g,walk) {
 }
 export function advanceWorkerEscort(g,walk) {
   const w=zoneWorkers(g).find(w=>w.id===walk.escort?.workerId);if(!w)return;
-  const pos=escortCrewPosition(walk);if(pos){w.x=pos.x;w.y=pos.y;w.face=pos.face;w.moving=true;}
+  const pos=escortCrewPosition(walk);
+  if(pos){
+    const dx=pos.x-w.x,dy=pos.y-w.y;
+    w.moving=Math.hypot(dx,dy)>.01;
+    if(w.moving)w.heading=workerHeading(dx,dy);
+    w.x=pos.x;w.y=pos.y;w.face=pos.face;
+  } else w.moving=false;
 }
 export function releaseWorkerEscort(g,walk) {
   const w=state(g).workers.find(w=>w.id===walk.escort?.workerId);if(!w)return false;
@@ -269,11 +275,11 @@ export const workerSheetV2=zone=>WORKER_SHEETS_V2[zone]?`img/workers/worker-${zo
 export const WORKER_ROW_V2=Object.freeze({idle:0,walk:1,build:2,escort:3,down:4,up:5,chopThorns:6,collectShards:7,repair:8,supervise:9,carryThorns:10,carryShards:11});
 /** Screen heading of a step: vertical only when clearly more vertical than horizontal, otherwise the side-view row (flipped by face). */
 export const workerHeading=(dx,dy)=>Math.abs(dy)>Math.abs(dx)*1.2?(dy>0?'down':'up'):'side';
-/** Which row of the sheet a worker draws. v1 sheets (4 rows) keep the original choice; v2 chooses by what the worker is really doing. */
+/** Which row of the sheet a worker draws. v1 sheets use side walking; v2 also follows the actual heading and work. */
 export function workerRow(w,v2=false) {
-  if(!v2)return w.job?.kind==='escort'?3:w.moving?1:w.arrived&&['build','repair','gather'].includes(w.job?.kind)?2:0;
+  if(!v2)return w.moving?1:w.arrived&&['build','repair','gather'].includes(w.job?.kind)?2:0;
   const R=WORKER_ROW_V2;
-  if(w.job?.kind==='escort')return R.escort;
+  // Escort is a duty, not a permanent outstretched-arm pose. Walk and stop like other workers.
   if(w.moving) {
     if(w.cargo==='ngiwWood')return R.carryThorns;
     if(w.cargo==='dabShards')return R.carryShards;
