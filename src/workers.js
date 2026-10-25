@@ -1,3 +1,4 @@
+import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenActive,canteenPoint,canteenState,mealRecipients,needsMeal,mealRecipient,serveMeal} from './canteen.js';
 import {canWalk,nearestWalk,findPath,stepTo} from './walk.js?v=k1d';
 import {SPOTS,MOB,MERCHANT,ITEMS} from './data.js';
@@ -17,7 +18,7 @@ export function normalizeWorkers(value) {
     seen.add(raw.id);
     const serial=Number(raw.id.split(':').at(-1));if(Number.isSafeInteger(serial))out.nextId=Math.max(out.nextId,serial+1);
     out.workers.push({id:raw.id,homeZone:raw.homeZone,name:String(raw.name||names[raw.homeZone]).slice(0,60),
-      mode:Object.hasOwn(WORKER_MODES,raw.mode)?raw.mode:'auto',morale:Math.max(0,Math.min(100,number(raw.morale,number(raw.stamina,100)))),meal:!!raw.meal,hunger:Math.max(0,Math.min(100,number(raw.hunger,100))),supplyRest:!!raw.supplyRest,teaRest:!!raw.teaRest,resumeMode:raw.resumeMode==='gather'||raw.resumeMode==='food'?raw.resumeMode:'auto',x:number(raw.x,SPOTS.bench.x),y:number(raw.y,SPOTS.bench.y),face:raw.face===-1?-1:1,
+      mode:Object.hasOwn(WORKER_MODES,raw.mode)?raw.mode:'auto',morale:Math.max(0,Math.min(100,number(raw.morale,number(raw.stamina,100)))),meal:!!raw.meal,hunger:Math.max(0,Math.min(100,number(raw.hunger,100))),supplyRest:!!raw.supplyRest,teaRest:raw.teaRest && typeof raw.teaRest==='object'?structuredClone(raw.teaRest):!!raw.teaRest,resumeMode:raw.resumeMode==='gather'||raw.resumeMode==='food'?raw.resumeMode:'auto',x:number(raw.x,SPOTS.bench.x),y:number(raw.y,SPOTS.bench.y),face:raw.face===-1?-1:1,
       stamina:Math.max(0,Math.min(100,number(raw.stamina,100))),recovering:!!raw.recovering,
       workTicks:Math.max(0,Math.min(WORKER_RULES.wageEvery,Math.floor(number(raw.workTicks)))),funded:false,
       cargo:raw.cargo==='ngiwWood'||raw.cargo==='dabShards'?raw.cargo:null,
@@ -53,7 +54,7 @@ export function setWorkerMode(g,id,mode) {
   if(['escort','build','repair','supervise'].includes(mode))mode='auto';
   const w=zoneWorkers(g).find(w=>w.id===id);
   if(!w||!Object.hasOwn(WORKER_MODES,mode))return false;
-  cancelJob(g,w);w.mode=mode;return true;
+  cancelJob(g,w);w.teaRest=null;w.mode=mode;return true;
 }
 export function feedWorker(g,id){
  const w=zoneWorkers(g).find(w=>w.id===id);if(!w||g.battle||!(g.inventory?.food>0))return false;
@@ -61,10 +62,15 @@ export function feedWorker(g,id){
  if(--g.inventory.food<=0)delete g.inventory.food;
  w.hunger=Math.min(100,(w.hunger??0)+40);w.stamina=Math.min(100,w.stamina+35);w.morale=Math.min(100,(w.morale??0)+35);w.supplyRest=false;w.reason='';g.food+=ITEMS.food.food;return true;
 }
-export function restWorkerAtTea(g,id){
+export function restWorkerAtTea(g,id,now=Date.now()){
  const w=zoneWorkers(g).find(w=>w.id===id),tea=g.stations.find(s=>s.def.k==='tea'&&!s.build&&!s.repair);
- if(!w||!tea||g.battle)return false;
- const previous=w.mode;cancelJob(g,w);w.resumeMode=previous==='rest'?'auto':previous;w.mode='rest';w.teaRest=true;w.path=null;return true;
+ if(!w||!tea||g.battle||w.teaRest)return false;
+ const dest=nearestWalk(tea.def.sx??tea.def.x,tea.def.sy??tea.def.y);if(!dest)return false;
+ const path=findPath(w.x,w.y,...dest);
+ if(!path?.length&&Math.hypot(w.x-dest[0],w.y-dest[1])>6)return false;
+ if(path?.length&&Math.hypot(path.at(-1)[0]-dest[0],path.at(-1)[1]-dest[1])>100)return false;
+ const rest=startTeaRest(g,w,g.zone,path?.at(-1)||dest,path,now);if(!rest)return false;
+ const previous=w.mode;cancelJob(g,w);w.resumeMode=previous==='rest'?(w.resumeMode||'auto'):previous;w.mode='rest';w.teaRest=rest;w.path=null;return true;
 }
 export function dismissWorker(g,id) {
   const w=zoneWorkers(g).find(w=>w.id===id);if(!w)return false;
@@ -115,12 +121,13 @@ export function stepWorkers(g) {
   s.lastAt=now;
   for(const w of zoneWorkers(g)) {
     w.funded=false;w.resting=false;
+    if(w.teaRest){w.resting=true;continue;}
     if(g.food<WORKER_RULES.food&&!w.teaRest){w.supplyRest=true;w.hunger=0;}
     if(w.supplyRest&&!w.teaRest){if(w.job)cancelJob(g,w);w.resting=true;w.reason='เสบียงหมด · รอข้าวปั้นหรือพักที่ศาลาน้ำชา';continue;}
     if(w.mode==='rest'||w.recovering||w.stamina<=0||(w.morale??100)<=0) {
       if(w.job)cancelJob(g,w);
       w.recovering=w.mode!=='rest'&&(w.recovering||w.stamina<=0||(w.morale??100)<=0);
-      w.stamina=Math.min(100,w.stamina+4);w.morale=Math.min(100,(w.morale??100)+4);if(w.stamina>=40&&w.morale>=40)w.recovering=false;w.resting=true;if(w.teaRest&&w.sitting&&g.food>0){w.hunger=Math.min(100,(w.hunger??0)+8);if(w.hunger>=40&&w.stamina>=40&&w.morale>=40){w.supplyRest=false;w.teaRest=false;w.mode=w.resumeMode||'auto';w.reason='';}}continue;
+      w.stamina=Math.min(100,w.stamina+4);w.morale=Math.min(100,(w.morale??100)+4);if(w.stamina>=40&&w.morale>=40)w.recovering=false;w.resting=true;continue;
     }
     if(!jobValid(g,w))cancelJob(g,w);
     // Reconsider auto work between gathering trips. Finish collecting/selling
@@ -158,6 +165,8 @@ export function advanceWorkers(g,dt,now=Date.now()) {
   if(g.paused||g.over||g.battle||g.finalEventOnMap?.()||!Number.isFinite(dt)||dt<=0)return;
   for(const w of zoneWorkers(g)) {
     w.moving=false;w.sitting=false;
+    if(w.teaRest===true){w.teaRest=null;restWorkerAtTea(g,w.id,now);} // legacy boolean order: travel, then a full minute
+    if(w.teaRest){advanceTeaRest(g,w,now);w.moving=w.teaRest?.phase==='travel';w.sitting=w.teaRest?.phase==='rest';continue;}
     if(!canWalk(w.x,w.y)){const safe=nearestWalk(w.x,w.y);if(safe){[w.x,w.y]=safe;w.path=null;}}
     if((!w.funded||!w.job||w.job.kind==='escort')&&!w.resting&&w.mode!=='rest')continue;
     const goal=target(g,w);if(!goal)continue;

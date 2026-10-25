@@ -29,18 +29,18 @@ test('J3 fallen guard stays out of current battle, returns to map/reload at HP 1
  g.battle.over='win';g.endBattle();assert.equal(g.guard.morale,1);assert.ok(g.guardActive());
  const copy=reload(g);copy.updateActorRecovery(Date.now()+300000);assert.equal(copy.guard.morale,1);assert.ok(copy.guardActive());
 });
-test('J3 guard travels on map, rests exactly 120 s across saves, resumes original post and automatic combat slot',()=>{
+test('J3 guard travels on map, rests exactly 60 s across saves, resumes original post and automatic combat slot',()=>{
  const g=game();tea(g);g.guard.morale=99;g.guard.at='patrol';g.guard.path=[[1,2]];g.guard.target=[1,2];
  const now=Date.now(), original=[g.guard.x,g.guard.y];assert.ok(g.restGuard(undefined,now));
  assert.equal(g.guard.at,null);assert.equal(g.guard.path,null);assert.equal(g.guard.target,null);assert.ok(g.guard.teaRest.path.length);
  assert.equal(g.restGuard(),false);assert.equal(g.guardActive(),false);assert.equal(actorStanding(g.guard),false);
  g.updateActorRecovery(now+1000);assert.notDeepEqual([g.guard.x,g.guard.y],original);
- let copy=reload(g);copy.updateActorRecovery(now+30000);const rest=copy.guard.teaRest;assert.equal(rest.phase,'rest');assert.equal(rest.until-rest.startedAt,120000);
+ let copy=reload(g);copy.updateActorRecovery(now+30000);const rest=copy.guard.teaRest;assert.equal(rest.phase,'rest');assert.equal(rest.until-rest.startedAt,60000);
  assert.deepEqual([copy.guard.x,copy.guard.y],rest.dest);const started=rest.startedAt;
- copy=reload(copy);copy.updateActorRecovery(started+119999);assert.equal(copy.guard.morale,99);assert.equal(copy.guardActive(),false);
+ copy=reload(copy);copy.updateActorRecovery(started+59999);assert.equal(copy.guard.morale,99);assert.equal(copy.guardActive(),false);
  copy.inventory.health=1;assert.equal(copy.giveCrewItem('health',copy.guard.id),false);
  copy.startBattle({id:100,who:'next',deserved:4,resist:true});assert.equal(copy.enemyGuard(),null);assert.equal(copy.battleActors().some(c=>c.id===copy.guard.id),false);
- copy.battle=null;copy.updateActorRecovery(started+120000);assert.equal(copy.guard.morale,100);assert.equal(copy.guard.teaRest,null);assert.deepEqual([copy.guard.x,copy.guard.y],original);assert.ok(copy.guardActive());
+ copy.battle=null;copy.updateActorRecovery(started+60000);assert.equal(copy.guard.morale,100);assert.equal(copy.guard.teaRest,null);assert.deepEqual([copy.guard.x,copy.guard.y],original);assert.ok(copy.guardActive());
  copy.startBattle({id:101,who:'after',deserved:4,resist:true});assert.equal(copy.enemyGuard(),copy.guard);
  const offline=reload(g);offline.updateActorRecovery(now+300000);assert.equal(offline.guard.morale,100);assert.equal(offline.guard.teaRest,null);
 });

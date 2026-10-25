@@ -1,0 +1,537 @@
+{
+  "source": "exec-aa56b623-a2d9-4c96-99f4-dff1393627db.png",
+  "cells": [
+    {
+      "path": "crew-taan-th-sit-v1.webp",
+      "size": [
+        180,
+        207
+      ],
+      "cell": [
+        0,
+        0,
+        237,
+        237
+      ],
+      "crop": [
+        29,
+        30,
+        209,
+        237
+      ]
+    },
+    {
+      "path": "crew-plerng-th-sit-v1.webp",
+      "size": [
+        131,
+        217
+      ],
+      "cell": [
+        237,
+        0,
+        474,
+        237
+      ],
+      "crop": [
+        52,
+        20,
+        183,
+        237
+      ]
+    },
+    {
+      "path": "crew-boon-th-sit-v1.webp",
+      "size": [
+        137,
+        182
+      ],
+      "cell": [
+        474,
+        0,
+        711,
+        237
+      ],
+      "crop": [
+        51,
+        55,
+        188,
+        237
+      ]
+    },
+    {
+      "path": "crew-dam-th-sit-v1.webp",
+      "size": [
+        189,
+        184
+      ],
+      "cell": [
+        711,
+        0,
+        948,
+        237
+      ],
+      "crop": [
+        32,
+        53,
+        221,
+        237
+      ]
+    },
+    {
+      "path": "crew-kan-th-sit-v1.webp",
+      "size": [
+        143,
+        200
+      ],
+      "cell": [
+        948,
+        0,
+        1185,
+        237
+      ],
+      "crop": [
+        48,
+        37,
+        191,
+        237
+      ]
+    },
+    {
+      "path": "crew-guard-th-sit-v1.webp",
+      "size": [
+        143,
+        206
+      ],
+      "cell": [
+        1185,
+        0,
+        1422,
+        237
+      ],
+      "crop": [
+        47,
+        31,
+        190,
+        237
+      ]
+    },
+    {
+      "path": "crew-nira-th-sit-v1.webp",
+      "size": [
+        129,
+        197
+      ],
+      "cell": [
+        1422,
+        0,
+        1659,
+        237
+      ],
+      "crop": [
+        56,
+        40,
+        185,
+        237
+      ]
+    },
+    {
+      "path": "crew-taan-asia-sit-v1.webp",
+      "size": [
+        177,
+        229
+      ],
+      "cell": [
+        0,
+        237,
+        237,
+        474
+      ],
+      "crop": [
+        28,
+        0,
+        205,
+        229
+      ]
+    },
+    {
+      "path": "crew-plerng-asia-sit-v1.webp",
+      "size": [
+        178,
+        229
+      ],
+      "cell": [
+        237,
+        237,
+        474,
+        474
+      ],
+      "crop": [
+        30,
+        0,
+        208,
+        229
+      ]
+    },
+    {
+      "path": "crew-boon-asia-sit-v1.webp",
+      "size": [
+        157,
+        229
+      ],
+      "cell": [
+        474,
+        237,
+        711,
+        474
+      ],
+      "crop": [
+        41,
+        0,
+        198,
+        229
+      ]
+    },
+    {
+      "path": "crew-dam-asia-sit-v1.webp",
+      "size": [
+        163,
+        230
+      ],
+      "cell": [
+        711,
+        237,
+        948,
+        474
+      ],
+      "crop": [
+        28,
+        0,
+        191,
+        230
+      ]
+    },
+    {
+      "path": "crew-kan-asia-sit-v1.webp",
+      "size": [
+        140,
+        228
+      ],
+      "cell": [
+        948,
+        237,
+        1185,
+        474
+      ],
+      "crop": [
+        40,
+        0,
+        180,
+        228
+      ]
+    },
+    {
+      "path": "crew-guard-asia-sit-v1.webp",
+      "size": [
+        170,
+        229
+      ],
+      "cell": [
+        1185,
+        237,
+        1422,
+        474
+      ],
+      "crop": [
+        29,
+        0,
+        199,
+        229
+      ]
+    },
+    {
+      "path": "crew-nira-asia-sit-v1.webp",
+      "size": [
+        150,
+        227
+      ],
+      "cell": [
+        1422,
+        237,
+        1659,
+        474
+      ],
+      "crop": [
+        49,
+        0,
+        199,
+        227
+      ]
+    },
+    {
+      "path": "crew-taan-west-sit-v1.webp",
+      "size": [
+        189,
+        203
+      ],
+      "cell": [
+        0,
+        474,
+        237,
+        711
+      ],
+      "crop": [
+        29,
+        22,
+        218,
+        225
+      ]
+    },
+    {
+      "path": "crew-plerng-west-sit-v1.webp",
+      "size": [
+        169,
+        204
+      ],
+      "cell": [
+        237,
+        474,
+        474,
+        711
+      ],
+      "crop": [
+        32,
+        21,
+        201,
+        225
+      ]
+    },
+    {
+      "path": "crew-boon-west-sit-v1.webp",
+      "size": [
+        171,
+        202
+      ],
+      "cell": [
+        474,
+        474,
+        711,
+        711
+      ],
+      "crop": [
+        36,
+        27,
+        207,
+        229
+      ]
+    },
+    {
+      "path": "crew-dam-west-sit-v1.webp",
+      "size": [
+        183,
+        191
+      ],
+      "cell": [
+        711,
+        474,
+        948,
+        711
+      ],
+      "crop": [
+        30,
+        39,
+        213,
+        230
+      ]
+    },
+    {
+      "path": "crew-kan-west-sit-v1.webp",
+      "size": [
+        163,
+        201
+      ],
+      "cell": [
+        948,
+        474,
+        1185,
+        711
+      ],
+      "crop": [
+        35,
+        26,
+        198,
+        227
+      ]
+    },
+    {
+      "path": "crew-guard-west-sit-v1.webp",
+      "size": [
+        221,
+        206
+      ],
+      "cell": [
+        1185,
+        474,
+        1422,
+        711
+      ],
+      "crop": [
+        11,
+        22,
+        232,
+        228
+      ]
+    },
+    {
+      "path": "crew-nira-west-sit-v1.webp",
+      "size": [
+        161,
+        211
+      ],
+      "cell": [
+        1422,
+        474,
+        1659,
+        711
+      ],
+      "crop": [
+        39,
+        19,
+        200,
+        230
+      ]
+    },
+    {
+      "path": "crew-taan-cyberhell-sit-v1.webp",
+      "size": [
+        183,
+        217
+      ],
+      "cell": [
+        0,
+        711,
+        237,
+        948
+      ],
+      "crop": [
+        28,
+        5,
+        211,
+        222
+      ]
+    },
+    {
+      "path": "crew-plerng-cyberhell-sit-v1.webp",
+      "size": [
+        146,
+        220
+      ],
+      "cell": [
+        237,
+        711,
+        474,
+        948
+      ],
+      "crop": [
+        39,
+        1,
+        185,
+        221
+      ]
+    },
+    {
+      "path": "crew-boon-cyberhell-sit-v1.webp",
+      "size": [
+        155,
+        206
+      ],
+      "cell": [
+        474,
+        711,
+        711,
+        948
+      ],
+      "crop": [
+        41,
+        15,
+        196,
+        221
+      ]
+    },
+    {
+      "path": "crew-dam-cyberhell-sit-v1.webp",
+      "size": [
+        191,
+        215
+      ],
+      "cell": [
+        711,
+        711,
+        948,
+        948
+      ],
+      "crop": [
+        30,
+        7,
+        221,
+        222
+      ]
+    },
+    {
+      "path": "crew-kan-cyberhell-sit-v1.webp",
+      "size": [
+        147,
+        211
+      ],
+      "cell": [
+        948,
+        711,
+        1185,
+        948
+      ],
+      "crop": [
+        42,
+        10,
+        189,
+        221
+      ]
+    },
+    {
+      "path": "crew-guard-cyberhell-sit-v1.webp",
+      "size": [
+        177,
+        219
+      ],
+      "cell": [
+        1185,
+        711,
+        1422,
+        948
+      ],
+      "crop": [
+        27,
+        3,
+        204,
+        222
+      ]
+    },
+    {
+      "path": "crew-nira-cyberhell-sit-v1.webp",
+      "size": [
+        140,
+        207
+      ],
+      "cell": [
+        1422,
+        711,
+        1659,
+        948
+      ],
+      "crop": [
+        46,
+        14,
+        186,
+        221
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen} from './canteen.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
@@ -591,7 +592,7 @@ const API = {
   restActor(id = this.guard?.id, now = Date.now()) {
     const c = this.roster[id];
     if (!c || c.reader || c.self || c.homeZone !== this.zone || !actorStanding(c) || c.morale >= 100 && (c.hunger??100) >= 100 || this.battle) return false;
-    const tea = this.stations.find(st => st.def.k === 'tea' && !st.build);
+    const tea = this.stations.find(st => st.def.k === 'tea' && !st.build && !st.repair);
     if (!tea) return false;
     if (c.x == null) { c.x = c.hx; c.y = c.hy; }   // ยมทูตที่ยังไม่เคยถูกวางลงแผนที่ — เริ่มจากจุดประจำ
     if (c.x == null) return false;
@@ -601,31 +602,15 @@ const API = {
     if (!path?.length && Math.hypot(c.x-requested[0],c.y-requested[1]) > 6) return false;
     const dest = path?.at(-1) || requested;
     if (Math.hypot(dest[0]-requested[0],dest[1]-requested[1]) > 100) return false;
-    c.teaRest = { phase:'travel', zone:this.zone, dest, path:path || [], movedAt:now, returnAt:[c.x,c.y] };
+    c.teaRest = startTeaRest(this,c,this.zone,dest,path,now);
+    if(!c.teaRest)return false;
     c.path = null; c.target = null;
     this.releaseActorFromWork(c);
     this.save(); this.onChange(); return true;
   },
   restGuard(id = this.guard?.id, now = Date.now()) { return this.restActor(id, now); },
   updateGuardRest(c, now) {
-    const rest = c.teaRest;
-    if (!rest) return false;
-    let changed = false;
-    if (rest.phase === 'travel') {
-      let distance = Math.max(0, now-rest.movedAt) * .075;
-      rest.movedAt = now;
-      while (rest.path.length) {
-        const [x,y] = rest.path[0], d = Math.hypot(x-c.x,y-c.y);
-        if (d > distance) { c.x += (x-c.x)*distance/d; c.y += (y-c.y)*distance/d; break; }
-        c.x=x; c.y=y; distance-=d; rest.path.shift();
-      }
-      if (!rest.path.length) { rest.phase='rest'; rest.startedAt=now-distance/.075; rest.until=rest.startedAt+(c.k === 'guard' ? 120000 : 60000); changed=true; }
-    }
-    if (rest.phase === 'rest' && now >= rest.until) {
-      c.morale=100; c.hunger=100; [c.x,c.y]=rest.returnAt; c.path=null; c.target=null; c.teaRest=null;
-      return true;
-    }
-    return changed;
+    return advanceTeaRest(this,c,now);
   },
   updateActorRecovery(now = Date.now()) {
     syncRoster(this);
@@ -640,6 +625,7 @@ const API = {
         changed = recoverActor(actor, now, point || GUARD_POST) || changed;
       }
     }
+    for(const worker of this.workerState?.workers || []) if(worker.teaRest && typeof worker.teaRest==='object') changed=advanceTeaRest(this,worker,now)||changed;
     if (changed) this.save();
   },
   advanceBattleTime(dt, active = !this.paused) {
