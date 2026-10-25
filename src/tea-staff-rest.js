@@ -1,5 +1,5 @@
-// One occupied cushion per person; the minute starts on arrival, not on request.
-export const STAFF_TEA_REST_MS = 60000;
+// One occupied cushion per person; the two-minute rest starts on arrival, not on request.
+export const STAFF_TEA_REST_MS = 120000;
 export const TEA_SEAT_COUNT = 15;
 export const teaSeatPoint = seat => [.36 + (seat % 6) * .09, .57 + Math.floor(seat / 6) * .11];
 export const teaStaff = g => [...Object.values(g.roster || {}), ...(g.workerState?.workers || [])];
@@ -16,7 +16,7 @@ export function advanceTeaRest(g,c,now) {
   const rest=c.teaRest;if(!rest||typeof rest!=='object')return false;
   let changed=false;
   if(!Number.isInteger(rest.seat)||rest.seat<0||rest.seat>=TEA_SEAT_COUNT){rest.seat=reserveTeaSeat(g,rest.zone,c);changed=true;}
-  // Existing saves used 120 seconds for Guard. Preserve elapsed time under the new minute rule.
+  // Recompute from the original arrival: saves made under the one-minute rule keep elapsed time.
   if(rest.phase==='rest')rest.until=rest.startedAt+STAFF_TEA_REST_MS;
   if(rest.phase==='travel'){
     const speed=rest.speed||.075;let distance=Math.max(0,now-rest.movedAt)*speed;rest.movedAt=now;

@@ -1,4 +1,4 @@
-import {teaStaff} from './tea-staff-rest.js';
+import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
 import {canteenActive,canteenPoint} from './canteen.js';
@@ -5411,7 +5411,7 @@ function openStation(k, emergency = false) {
     const restPanel = dlg.querySelector('[data-tea-rest-panel]');
     if (restPanel) {
       const resters=teaStaff(g).filter(c => c.teaRest?.zone === g.zone), expanded=!!restPanel.querySelector('details')?.open;
-      restPanel.innerHTML = resters.length ? `<details class="tea-rest-list" ${expanded?'open':''}><summary>พักศาลาน้ำชา ${resters.length} คน · คนละ 1 นาที</summary><div>${resters.map(c => guardRestWidget(c, true)).join('')}</div></details>` : '';
+      restPanel.innerHTML = resters.length ? `<details class="tea-rest-list" ${expanded?'open':''}><summary>พักศาลาน้ำชา ${resters.length} คน · คนละ ${STAFF_TEA_REST_MS/60000} นาที</summary><div>${resters.map(c => guardRestWidget(c, true)).join('')}</div></details>` : '';
     }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {

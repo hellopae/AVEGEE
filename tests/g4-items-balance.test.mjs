@@ -125,7 +125,7 @@ test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama /
 
 // ---------------------------------------------------------------- 3. every reaper can rest
 const tea = g => g.stations.push({ def:STATIONS.find(s => s.k === 'tea'), build:0, slots:[], fire:0 });
-test('G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 60 s rest, save/load, full HP, back to post', () => {
+test('G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 120 s rest, save/load, full HP, back to post', () => {
   const g = game(); g.hire('taan'); g.hire('dam');
   const taan = g.crewOf('taan'); taan.morale = 30;
   assert.equal(g.restActor(taan.id), false, 'no pavilion');
@@ -148,9 +148,9 @@ test('G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; tr
   const t2 = clone.crewOf('taan'); assert.deepEqual(t2.teaRest, taan.teaRest);
   clone.updateActorRecovery(now + 60000);
   assert.equal(t2.teaRest.phase, 'rest');
-  const started = t2.teaRest.startedAt; assert.equal(t2.teaRest.until - started, 60000);
-  clone.updateActorRecovery(started + 59999); assert.equal(t2.morale, 30); assert.equal(actorStanding(t2), false);
-  clone.updateActorRecovery(started + 60000);
+  const started = t2.teaRest.startedAt; assert.equal(t2.teaRest.until - started, 120000);
+  clone.updateActorRecovery(started + 119999); assert.equal(t2.morale, 30); assert.equal(actorStanding(t2), false);
+  clone.updateActorRecovery(started + 120000);
   assert.equal(t2.morale, 100); assert.equal(t2.teaRest, null); assert.ok(actorStanding(t2));
   assert.deepEqual([t2.x, t2.y], original);
   // a reaper that was never placed on the map yet starts from the post
