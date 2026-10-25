@@ -19,6 +19,15 @@ const patrolsOf = routeId => Object.freeze(routeRow(routeId).patrolProgress.map(
 const PATROLS = Object.fromEntries(Object.keys(ROUTE_GEOMETRY).map(id => [id, patrolsOf(id)]));
 export const DUNGEON_PATROLS = PATROLS['th:asia'];
 export const dungeonPatrols = routeId => isWildernessRoute(routeId)?PATROLS[routeId]:[];
+// Version only changed routes: legacy vertical coordinates must not be interpreted on a new picture.
+const routePlacement = (routeId, active) => {
+  const row=routeRow(routeId);
+  if(!row?.geometryVersion)return {};
+  if(active?.geometryVersion===row.geometryVersion)return {geometryVersion:row.geometryVersion};
+  const vertex=active?.checkpoint>0?row.checkpointVertex[Math.min(active.checkpoint,3)-1]:0;
+  const [x,y]=row.corridor[vertex];
+  return {geometryVersion:row.geometryVersion,position:{x,y},guidePosition:null};
+};
 const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
 // A route with a boss cave opens early once that zone's breach is cleared or its cave boss is waiting (Zone 1-2 only).
@@ -49,7 +58,7 @@ export function initializeZoneTravel(g, saved = g.zoneTravel) {
       guidePosition:a.guidePosition&&Number.isFinite(a.guidePosition.x)&&Number.isFinite(a.guidePosition.y)?{x:a.guidePosition.x,y:a.guidePosition.y}:null,
       position:a.position&&Number.isFinite(a.position.x)&&Number.isFinite(a.position.y)?{x:a.position.x,y:a.position.y}:null,
       roamTime:Number.isFinite(a.roamTime)&&a.roamTime>=0?a.roamTime:0,
-      attempt:Number.isSafeInteger(a.attempt) && a.attempt >= 0 ? a.attempt : 0, pending:null };
+      attempt:Number.isSafeInteger(a.attempt) && a.attempt >= 0 ? a.attempt : 0, pending:null, ...routePlacement(r.id,a) };
     // Do not resurrect a battle token: combat itself is not persisted by game.snapshot.
   }
   g.zoneTravel = result;
@@ -65,6 +74,7 @@ export function beginDungeon(g, to) {
   const saved=docket?.suspendedRoute;
   const valid=saved&&Number.isInteger(saved.checkpoint)&&saved.checkpoint>=0&&saved.checkpoint<=r.checkpoints.length&&Array.isArray(saved.cleared)&&saved.cleared.length===saved.checkpoint&&saved.cleared.every((id,i)=>r.checkpoints[i]?.id===id);
   s.active=valid?{...structuredClone(saved),position:null,guidePosition:null,pending:null,pendingIndex:null,pendingPatrol:null}:{route:r.id,checkpoint:0,cleared:[],defeated:[],patrolDefeated:[],attempt:0,pending:null};
+  Object.assign(s.active,routePlacement(r.id,s.active));
   if(valid)docket.routeRestored=true;
   return true;
 }
