@@ -50,7 +50,7 @@ test('A5 real scene consumes and skips once, leaving red warning effects untouch
  g.save=()=>{saved=JSON.parse(JSON.stringify(g.snapshot()));return true;};g.onChange=()=>changed++;
  const ctx=vm.createContext({g,dlg,pauseForDlg(){},openDlg(){},prepareComicImages(){},esc:v=>String(v??''),verdictSceneImage,artUrl:()=>'',onDlgClose:fn=>{ctx.closeHandler=fn;}});
  vm.runInContext(ui.slice(ui.indexOf('function openVerdictScene()'),ui.indexOf('\nfunction openDadPunish')),ctx);
- ctx.openVerdictScene();assert.equal(g.pendingVerdictScene,null);assert.equal(g.pendingVerdict,null);assert.equal(saved.pendingVerdictScene,null);assert.match(dlg.innerHTML,/verdict-reason/);assert.match(dlg.innerHTML,/data-verdict-scene-done/);
+ ctx.openVerdictScene();assert.equal(g.pendingVerdictScene,null);assert.equal(g.pendingVerdict,null);assert.equal(saved.pendingVerdictScene,null);assert.match(dlg.innerHTML,/verdict-reason/);assert.match(dlg.innerHTML,/style="color:var\(--destructive\)"/);assert.match(dlg.innerHTML,/data-verdict-scene-done/);
  done();ctx.closeHandler();ctx.openVerdictScene();assert.equal(closed,1);assert.equal(changed,1);assert.deepEqual(g.pendingWarn,warning);
  assert.deepEqual({coin:g.coin,hp:g.hp,karma:g.karma,cases:g.casesDone,reds:g.reds},before);
  const h=createGame();h.save=()=>true;h.onChange=()=>{};assert.ok(h.restore(saved));assert.equal(h.pendingVerdictScene,null);assert.equal(h.hp,before.hp);assert.equal(h.coin,before.coin);assert.deepEqual(h.pendingWarn,warning);

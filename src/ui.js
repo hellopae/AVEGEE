@@ -2119,7 +2119,7 @@ function openVerdictScene() {
   if (g.pendingVerdict?.id === sc.id) g.pendingVerdict = null;
   g.pendingVerdictScene = null; g.save();
   pauseForDlg();
-  const col = sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
+  const col = sc.kind === 'blame' ? 'var(--destructive)' : sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
   const stars = '★'.repeat(sc.stars) + '☆'.repeat(Math.max(0, 5 - sc.stars));
   dlg.innerHTML = `<div class="intro-comic zone-arrival verdict-scene is-${sc.kind}" role="region" aria-label="${esc(sc.title)}">
     <div class="intro-comic-frame">
