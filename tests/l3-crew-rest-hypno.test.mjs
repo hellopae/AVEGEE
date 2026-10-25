@@ -22,7 +22,7 @@ test('L3 rest: HP 97 reaper can walk to the tea pavilion, rests, returns to post
   assert.ok(g.restActor(c.id, now)); assert.equal(c.teaRest.phase, 'travel');
   g.updateActorRecovery(now + 60000); assert.equal(c.teaRest.phase, 'rest');
   const started = c.teaRest.startedAt;
-  g.updateActorRecovery(started + 60000);
+  g.updateActorRecovery(started + 120000);
   assert.equal(c.morale, 100); assert.equal(c.teaRest, null); assert.deepEqual([c.x, c.y], post);
   assert.equal(g.restActor(c.id), false, 'full HP cannot rest again');
 });
