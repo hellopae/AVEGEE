@@ -1426,7 +1426,7 @@ function activateMapInteraction(now) {
       if (now.kind === 'repair') {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'harbour') openHarbour();
-      else if(now.kind==='canteen')modal('<h2>🍲 โรงอาหาร</h2>'+workersPanelHtml(g),d=>{d.querySelector('[data-hire-worker]')?.remove();bindWorkersPanel(d,g,()=>{dlg.close();activateMapInteraction(now);});});
+      else if(now.kind==='canteen')modal('<h2>🍲 โรงอาหาร</h2>'+workersPanelHtml(g,{allowHire:false}),d=>{bindWorkersPanel(d,g,()=>{dlg.close();activateMapInteraction(now);});});
       else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
@@ -3082,10 +3082,8 @@ function openNiraOffice() {
       <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
-      ${teamReportsHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
-    bindTeamReports(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-nira-item]').forEach(b => b.onclick = () => { if (g.giveCrewItem(b.dataset.niraItem, b.dataset.actorId)) { sfx('coin'); paint(); refresh(); } });
