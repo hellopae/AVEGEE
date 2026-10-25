@@ -67,9 +67,9 @@ test('P5b worker sheet v2: 1280x3840, v1 stays for every zone and for thumbnails
   assert.match(html,/src\/ui\.js\?v=[^"]*p5b(-[a-z0-9]+)*-o2"/,'ui.js suffix still ends -o2');
 });
 
-test('P5b worker rows follow what the worker is doing (v2) and stay the old 4-row logic on v1',()=>{
+test('P5b worker rows follow what the worker is doing (v2) with natural escort walking on both atlas versions',()=>{
   const R=WORKER_ROW_V2,w=o=>({job:null,moving:false,arrived:false,cargo:null,heading:'side',...o});
-  assert.equal(workerRow(w({job:{kind:'escort'},moving:true}),true),R.escort);
+  assert.equal(workerRow(w({job:{kind:'escort'},moving:true}),true),R.walk);
   assert.equal(workerRow(w({}),true),R.idle);
   assert.equal(workerRow(w({moving:true,job:{kind:'build'}}),true),R.walk);
   assert.equal(workerRow(w({moving:true,heading:'down',job:{kind:'build'}}),true),R.down);
@@ -83,8 +83,8 @@ test('P5b worker rows follow what the worker is doing (v2) and stay the old 4-ro
   assert.equal(workerRow(w({moving:true,cargo:'ngiwWood',heading:'down',job:{kind:'gather',phase:'sell'}}),true),R.carryThorns,'cargo shows the load, even walking vertically');
   assert.equal(workerRow(w({moving:true,cargo:'dabShards',job:{kind:'gather',phase:'sell'}}),true),R.carryShards);
   assert.equal(workerRow(w({arrived:true,cargo:'dabShards',job:{kind:'gather',phase:'sell'}}),true),R.idle,'waiting at the merchant never plays a walk cycle in place');
-  // v1 sheets: identical to the pre-P5b choice
-  assert.equal(workerRow(w({job:{kind:'escort'}})),3);assert.equal(workerRow(w({moving:true})),1);
+  // v1 fallback also uses ordinary walking for escort duty.
+  assert.equal(workerRow(w({job:{kind:'escort'}})),0);assert.equal(workerRow(w({moving:true})),1);
   assert.equal(workerRow(w({arrived:true,job:{kind:'supervise'}})),0);assert.equal(workerRow(w({arrived:true,job:{kind:'gather'}})),2);
   assert.equal(workerHeading(1,10),'down');assert.equal(workerHeading(1,-10),'up');assert.equal(workerHeading(10,3),'side');assert.equal(workerHeading(-5,5),'side');
 });
