@@ -52,11 +52,12 @@ export function escortCrewPosition(walk) {
     const ahead = pointAtDistance(e.pickup, total * Math.min(1, walk.elapsed / delay) + 6);
     return { x:at[0], y:at[1], phase:'pickup', face:ahead[0] < at[0] ? -1 : 1 };
   }
-  const total = pathLength(walk.path);
-  const d = soulProgress(walk) * total;
-  const at = pointAtDistance(walk.path, Math.min(total, d + ESCORT_LEAD));
-  const ahead = pointAtDistance(walk.path, Math.min(total, d + ESCORT_LEAD + 6));
-  const prev = pointAtDistance(walk.path, Math.max(0, d + ESCORT_LEAD - 6));
+  const workerPath=e.workerId&&e.workerPath?.length?e.workerPath:null;
+  const path=workerPath||walk.path,total=pathLength(path);
+  const d=workerPath?e.leadAt+(total-e.leadAt)*soulProgress(walk):Math.min(total,soulProgress(walk)*total+ESCORT_LEAD);
+  const at = pointAtDistance(path,d);
+  const ahead = pointAtDistance(path,Math.min(total,d+6));
+  const prev = pointAtDistance(path,Math.max(0,d-6));
   const dx = ahead[0] - prev[0];
   return { x:at[0], y:at[1], phase:'lead', face:Math.abs(dx) < 0.01 ? (e.face || 1) : dx < 0 ? -1 : 1 };
 }

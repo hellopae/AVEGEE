@@ -1,3 +1,4 @@
+import {planWorkerEscort,workerDropoff} from './worker-escort-spacing.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenActive,canteenPoint,canteenState,mealRecipients,needsMeal,mealRecipient,serveMeal} from './canteen.js';
 import {canWalk,nearestWalk,findPath,stepTo} from './walk.js?v=k1d';
@@ -205,11 +206,10 @@ export function assignWorkerEscort(g,walk) {
   const candidates=zoneWorkers(g).filter(w=>w.mode==='auto'&&(!w.job||w.mode==='auto'&&['supervise','gather'].includes(w.job.kind))&&!w.recovering&&!w.supplyRest&&w.stamina>0&&(w.workTicks<WORKER_RULES.wageEvery||g.coin>=WORKER_RULES.wage))
     .sort((a,b)=>Math.hypot(a.x-start[0],a.y-start[1])-Math.hypot(b.x-start[0],b.y-start[1])||a.id.localeCompare(b.id));
   for(const w of candidates) {
-    const route=findPath(w.x,w.y,...start);
-    if(!route?.length||Math.hypot(route.at(-1)[0]-start[0],route.at(-1)[1]-start[1])>18)continue;
+    const plan=planWorkerEscort(g,w,walk);if(!plan)continue;
     cancelJob(g,w);
-    const pickup=[[w.x,w.y],...route],delay=Math.round(pathLength(pickup)/ESCORT_PICKUP_SPEED);
-    walk.delay=delay;walk.duration+=delay;walk.escort={k:w.id,workerId:w.id,pickup};
+    const delay=Math.round(pathLength(plan.pickup)/ESCORT_PICKUP_SPEED);
+    walk.delay=delay;walk.duration+=delay;walk.escort={k:w.id,workerId:w.id,...plan};
     w.job={kind:'escort',soulId:walk.soul.id};w.path=null;w.funded=true;return true;
   }
   return false;
@@ -226,11 +226,12 @@ export function advanceWorkerEscort(g,walk) {
 }
 export function releaseWorkerEscort(g,walk) {
   const w=state(g).workers.find(w=>w.id===walk.escort?.workerId);if(!w)return false;
+  if(w.job?.kind!=='escort'||w.job.soulId!==walk.soul?.id)return false;
   const completed=walk.elapsed>=walk.duration;
   // Starting a trial can cancel the harbour walk before the worker reaches it.
   // Release at the visible position so the next delivery begins there, rather
   // than teleporting the assistant to the judgment dais.
-  if(completed){const end=walk.path.at(-1);if(end)[w.x,w.y]=end;}
+  if(completed){const end=workerDropoff(g,w,walk);if(end)[w.x,w.y]=end;}
   else {const pos=escortCrewPosition(walk);if(pos){w.x=pos.x;w.y=pos.y;w.face=pos.face;}}
   w.job=null;w.path=null;w.moving=false;w.arrived=false;w.target=null;w.reason='';
   if(completed)state(g).ledger.escortsDone++;
