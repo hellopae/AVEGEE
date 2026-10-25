@@ -294,6 +294,7 @@ export function makeFrontierWalk(cv, g, opts) {
     cameraTime = t;
     if (bgRec.ok) drawFrontierAtmosphere(ctx,g.zone,box,t,!!reducedMotion?.matches);
     const U = unit();
+    const nameSize = Math.max(10*dpr, Math.min(14*dpr, U*.014));
     // P5: ลูกศรทางออกบนพื้น (ไม่มีปุ่ม) — ประตูบนชี้ขึ้น · ทางล่างชี้ลง · ทางล่างจางกว่าถ้าเส้นทางนอกชายแดนยังไม่เปิด
     const reduced = !!reducedMotion?.matches, r = FRONTIER_EXIT_TRIGGER;
     drawExitMarker(ctx, px(GATE[0]), py(GATE[1]), { rx: r * box.w, ry: r * box.h, dir: [0, -1], u: U, t, label: opts.gateLabel || '', alpha: 0.9, reduced });
@@ -310,18 +311,18 @@ export function makeFrontierWalk(cv, g, opts) {
           ctx.lineWidth = 2.5;
           ctx.beginPath(); ctx.ellipse(x, y, U * 0.05, U * 0.02, 0, 0, 7); ctx.stroke();
         }
-        label(ctx, en.name || `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, U * 0.024,
+        label(ctx, en.name || `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, nameSize,
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
     if(guideBoss)acts.push({y:guideBoss.y,fn:()=>{drawStandee(ctx,'zone-boss',px(guideBoss.x),py(guideBoss.y),U*BOSS_H,t,'👑',1,false,g.zone);}});
     if(releasedBoss)acts.push({y:releasedBoss.y,fn:()=>{
       drawStandee(ctx,releasedBoss.art,px(releasedBoss.x),py(releasedBoss.y),U*BOSS_H,t,'👹',1,false,releasedBoss.sourceZone);
-      label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,U*.024,'#c0e6ba');
+      label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,nameSize,'#c0e6ba');
     }});
     if (challengeBoss && !releasedBoss) acts.push({ y:challengeBoss.y, fn:() => {
       drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * BOSS_H, t, '👹');
-      label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, U * .024, '#ffd27a');
+      label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, nameSize, '#ffd27a');
     } });
     acts.push({ y: P.y, fn: () => {
       const moving = simClock - movedSim < WALK_GRACE_MS;

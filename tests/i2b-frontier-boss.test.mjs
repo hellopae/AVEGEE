@@ -16,8 +16,8 @@ globalThis.removeEventListener=()=>{};
 let frame;
 globalThis.requestAnimationFrame=fn=>{frame=fn;return 1;};
 globalThis.cancelAnimationFrame=()=>{};
-const labels=[];
-const ctx=new Proxy({fillText(text){labels.push(text);},createRadialGradient:()=>({addColorStop(){}})},
+const labels=[],nameFonts=[];
+const ctx=new Proxy({fillText(text){labels.push(text);nameFonts.push({text,font:this.font});},createRadialGradient:()=>({addColorStop(){}})},
   {get:(o,k)=>o[k] ?? (()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const canvas=()=>({width:1678,height:937,getContext:()=>ctx,
   getBoundingClientRect:()=>({left:0,top:0,width:1678,height:937}),
@@ -89,3 +89,18 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
     } finally {fw.destroy();}
   });
 }
+
+// Capture the actual production canvas font rather than matching stylesheet/source strings.
+test('B5a: invasion enemy names stay readable and compact in all four zones',async()=>{
+ for(const dpr of [1,2])for(const zone of Object.keys(BOSS_NAMES)){
+  globalThis.devicePixelRatio=dpr;
+  clearFrontierSession();labels.length=0;nameFonts.length=0;
+  const g=createGame();g.zone=zone;
+  const fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,fab:button(),challenge:button(),invasionKey:CHALLENGE_STORY_KEY[zone]});
+  try{await Promise.resolve();fw.start();frame(performance.now()+50);const names=nameFonts.filter(v=>v.text===BOSS_NAMES[zone].frontier||String(v.text).includes('ปีศาจบุก'));
+   assert.ok(names.some(v=>v.text===BOSS_NAMES[zone].frontier),zone+' actual boss label');
+   for(const v of names){const px=Number(v.font.match(/([0-9.]+)px/)[1])/dpr;assert.ok(px>=10&&px<=14,zone+': '+v.font);}
+   assert.equal(fw.enemyCount(),3,'only visual labels changed');
+  }finally{fw.destroy();}
+ }
+});
