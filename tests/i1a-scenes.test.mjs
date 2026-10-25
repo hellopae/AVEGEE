@@ -52,10 +52,10 @@ test('I1-A depth key: every spot in front of the stand foot is drawn over it, ev
  }
  assert.ok(front>50&&behind>50);
 });
-test('I1-A adjusting panel switches Yama to the atk pose facing the mirror; closing returns the standing pose',async()=>{
+test('A6 mirror adjustment and closed panel both draw normal Yama without a combat fireball',async()=>{
  const open=await krajok([.66,.66],{placed:true,angle:0,adjusting:true});
- assert.ok(open.includes(ragePoseSrc('th')),'atk pose file of the worn outfit is drawn');
- assert.ok(!open.some(u=>/hero-yama\.png|hero-yama-th\.png/.test(u)),'standing pose not drawn while adjusting');
+ assert.ok(!open.includes(ragePoseSrc('th')),'combat pose is not drawn while adjusting');
+ assert.ok(open.some(u=>HERO_DRAW.test(u)),'normal hero art is drawn while adjusting');
  const closed=await krajok([.66,.66],{placed:true,angle:0,adjusting:false});
  assert.ok(!closed.includes(ragePoseSrc('th')));assert.ok(closed.some(u=>HERO_DRAW.test(u)));
  for(const style of ['th','asia','west','cyberhell'])assert.match(ragePoseSrc(style),/atk/,style+' has an atk pose');
