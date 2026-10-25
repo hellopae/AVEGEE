@@ -24,7 +24,6 @@ import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CAT
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
 import { t as tr } from './i18n.js';
-import { ragePoseSrc } from './battle-facing.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
 
@@ -635,16 +634,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
 
     acts.push({ y: def.k === 'krajok' ? mirrorHeroSortY(P.x, P.y) : P.y, fn: () => {
-      // I1-A: เปิดแผงปรับองศากระจก = ยมบาทเปลี่ยนเป็นท่า atk (ยกมือชี้) ของชุดที่สวมอยู่ หันไปทางกระจก · ปิดแผง = กลับท่ายืน
+      // A6: mirror adjustment uses the outfit's ordinary idle, facing the
+      // apparatus. Combat art can contain a painted fireball and is not a room gesture.
       if (def.k === 'krajok' && api.mirrorState?.().adjusting && !(simClock - movedSim < WALK_GRACE_MS)) {
-        const atk = poseImg(ragePoseSrc(g.outfit || g.zone));
-        if (atk) {
-          const h = U * HERO_H, x = px(P.x), y = py(P.y), flip = px(MIRROR_ROOM_LAYOUT.pivot[0]) < x;
-          drawContactShadow(ctx, x, y, h);
-          if (flip) { ctx.save(); ctx.translate(x, 0); ctx.scale(-1, 1); ctx.drawImage(atk, -h / 2, y - h, h, h); ctx.restore(); }
-          else ctx.drawImage(atk, x - h / 2, y - h, h, h);
-          return;
-        }
+        const dx = px(MIRROR_ROOM_LAYOUT.pivot[0]) - px(P.x), dy = py(MIRROR_ROOM_LAYOUT.pivot[1]) - py(P.y);
+        if (Math.abs(dx) > .15) P.face = dx < 0 ? -1 : 1;
+        direction = walkDirection(dx, dy, direction);
       }
       // นั่งพักอยู่ — ใช้ภาพดื่มชาที่ตัดเสื่อออกแล้ว เพื่อวางบนเบาะจริงในฉาก
       // กำลังลงทัณฑ์อยู่ = สลับไปท่าฟาด (เจ้าของวาดมาให้ 10 ก.ย. 2569)
@@ -662,7 +657,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         }
         return;
       }
-      const swinging = !sitting && g.swingUntil && Date.now() < g.swingUntil;
+      const swinging = !sitting && def.k !== 'krajok' && g.swingUntil && Date.now() < g.swingUntil;
       const sitKey = 'hero-yama-tea-clean';
       const haveSitArt = !!img('hero-yama-tea-clean');
       const key = sitting ? (haveSitArt ? sitKey : 'hero-yama')
