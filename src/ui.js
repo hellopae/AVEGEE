@@ -934,7 +934,7 @@ function guardRestWidget(c, showName = false) {
   const rest = c.teaRest, ready = g.stations.some(st => st.def.k === 'tea' && !st.build);
   const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/(rest.until-rest.startedAt))) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
-    ${showName ? `<b class="rest-name">${esc(c.name || c.k)}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
+    ${showName ? `<b class="rest-name">${esc(c.name || (c.k === 'guard' ? GUARD.name : c.k))}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
     ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
       : (() => {
         // L3: ปุ่มพักมีทุกคนที่ไม่ใช่ผู้อ่าน — จางพร้อมบอกเหตุผลเมื่อ HP เต็ม / ยังไม่มีศาลาน้ำชา / ล้มอยู่ / อยู่ในศึก
@@ -5410,7 +5410,8 @@ function openStation(k, emergency = false) {
     // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
     const restPanel = dlg.querySelector('[data-tea-rest-panel]');
     if (restPanel) {
-      restPanel.innerHTML = teaStaff(g).filter(c => c.teaRest?.zone === g.zone).map(c => guardRestWidget(c, true)).join('');
+      const resters=teaStaff(g).filter(c => c.teaRest?.zone === g.zone), expanded=!!restPanel.querySelector('details')?.open;
+      restPanel.innerHTML = resters.length ? `<details class="tea-rest-list" ${expanded?'open':''}><summary>พักศาลาน้ำชา ${resters.length} คน · คนละ 1 นาที</summary><div>${resters.map(c => guardRestWidget(c, true)).join('')}</div></details>` : '';
     }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {

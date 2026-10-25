@@ -1,7 +1,7 @@
 // One occupied cushion per person; the minute starts on arrival, not on request.
 export const STAFF_TEA_REST_MS = 60000;
 export const TEA_SEAT_COUNT = 15;
-export const teaSeatPoint = seat => [.29 + (seat % 5) * .12, .64 + Math.floor(seat / 5) * .11];
+export const teaSeatPoint = seat => [.36 + (seat % 6) * .09, .61 + Math.floor(seat / 6) * .105];
 export const teaStaff = g => [...Object.values(g.roster || {}), ...(g.workerState?.workers || [])];
 export function reserveTeaSeat(g, zone, except) {
   const occupied = new Set(teaStaff(g).filter(c => c !== except && c.teaRest?.zone === zone).map(c => c.teaRest.seat));
