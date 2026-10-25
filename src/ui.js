@@ -1,3 +1,4 @@
+import {teaStaff} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
 import {canteenActive,canteenPoint} from './canteen.js';
@@ -5409,7 +5410,7 @@ function openStation(k, emergency = false) {
     // ตำแหน่งคิดจากจุดยืนของตัวละครในฉากจริง (R.anchor) จึงตามไปทุกขนาดจอ · วางในชั้น .st-npc ที่ทับบน canvas
     const restPanel = dlg.querySelector('[data-tea-rest-panel]');
     if (restPanel) {
-      restPanel.innerHTML = Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone).map(c => guardRestWidget(c, true)).join('');
+      restPanel.innerHTML = teaStaff(g).filter(c => c.teaRest?.zone === g.zone).map(c => guardRestWidget(c, true)).join('');
     }
     const N = dlg.querySelector('#st-npc');
     if (N && R) {

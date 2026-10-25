@@ -62,7 +62,7 @@ test('empty supplies seat workers and require a player rice gift or tea-rest ord
  g.food=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(w.hunger,0);assert.equal(w.funded,false);g.food=30;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(w.job,null);
  assert.equal(g.feedWorker(w.id),false);g.inventory.food=1;assert.equal(g.feedWorker(w.id),true);assert.equal(g.inventory.food,undefined);assert.equal(w.supplyRest,false);stepWorkers(g);assert.equal(w.funded,true);
  g.food=0;stepWorkers(g);assert.equal(w.supplyRest,true);assert.equal(g.restWorkerAtTea(w.id),false);const def=STATIONS.find(d=>d.k==='tea');g.stations.push({def,build:0,repair:0,slots:[]});assert.equal(g.restWorkerAtTea(w.id),true);
- place(w,nearestWalk(def.x-80,def.y+110));advanceWorkers(g,120);assert.equal(w.sitting,true);g.food=20;for(let i=0;i<6;i++)stepWorkers(g);assert.equal(w.supplyRest,false);assert.equal(w.mode,'gather');
+ place(w,w.teaRest.dest);w.teaRest.path=[];advanceWorkers(g,120);assert.equal(w.sitting,true);const started=w.teaRest.startedAt;g.food=20;for(let i=0;i<6;i++)stepWorkers(g);assert.equal(w.supplyRest,true);g.updateActorRecovery(started+59999);assert.equal(w.mode,'rest');g.updateActorRecovery(started+60000);assert.equal(w.supplyRest,false);assert.equal(w.mode,'gather');
 });
 
 test('a keeper collects successive judged souls one journey at a time and a cook can leave for an assigned case',()=>{

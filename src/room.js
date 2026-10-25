@@ -1,3 +1,4 @@
+import {teaRoomStaff,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
 import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
@@ -530,13 +531,14 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
     if (def.k === 'tea') {
-      for (const c of Object.values(g.roster).filter(c => c.teaRest?.zone === g.zone && c.teaRest.phase === 'rest')) {
-        const elapsed = Math.max(0, Date.now()-c.teaRest.startedAt), phase = (elapsed % 8000)/8000;
-        const x = .30 + .40*(phase < .5 ? phase*2 : (1-phase)*2), y = .72;
-        acts.push({y, fn:() => {
-          const h = U*CREW_H, key = 'crew-'+c.k;
-          if (!drawCrewWalk(ctx,key,px(x),py(y),h,elapsed*.04,phase < .5 ? 1 : -1))
-            drawStandee(ctx,key,px(x),py(y),h,t,c.glyph);
+      for (const {actor:c,point:[x,y]} of teaRoomStaff(g)) {
+        acts.push({y,fn:()=>{
+          const h=U*.105,atX=px(x),atY=py(y),sprite=poseImg(teaRestSprite(c,g.zone));
+          // Low floor cushion; feet and crossed legs stay fixed on its centre.
+          ctx.save();ctx.fillStyle='#842e36';ctx.strokeStyle='#c99a50';ctx.lineWidth=Math.max(1,U*.002);
+          ctx.beginPath();ctx.ellipse(atX,atY,h*.53,h*.19,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+          if(sprite){const width=h*sprite.naturalWidth/sprite.naturalHeight;ctx.drawImage(sprite,atX-width/2,atY-h*.94,width,h);}
+          ctx.restore();
         }});
       }
     }
@@ -734,6 +736,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (!alive()) { api.destroy(); return; }
     // F1 — ไล่เวลาจริงให้ครบ (เพดาน 250ms) หั่นเป็นก้อนเล็ก ไม่ตัดที่ 50ms เหมือนเดิม ความเร็วไม่ตกตามเฟรมเรต
     const dt = Math.min(WALK_MAX_CATCHUP_MS, now - last); last = now;
+    if(def.k==='tea')g.updateActorRecovery();
     step(dt);
     if (api.onFrame) api.onFrame(inReach());
     draw(now, api.st);

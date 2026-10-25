@@ -441,6 +441,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     }));
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
+    if(worker.teaRest?.phase==='rest')continue;
     spot_(worker.x,worker.y,CREW_H*.85);
     at(worker.y+1,()=>{shade(worker.x,worker.y,CREW_H*.85,c=>drawWorker(c,worker,t,CREW_H*.85));if(worker.meal)label(ctx,'🍲',worker.x+16,worker.y-24,14);});
   }
@@ -998,7 +999,7 @@ export function hitActor(g, sx, sy) {
   for (const c of g.crew)
     if (actorStanding(c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
   if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
-  for (const w of zoneWorkers(g)) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
+  for (const w of zoneWorkers(g).filter(w=>w.teaRest?.phase!=='rest')) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
   if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
   if (near(g.player.x, g.player.y)) return { kind: 'me', key: 0 };
   return null;
