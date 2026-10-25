@@ -1,3 +1,4 @@
+import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
 // Production exports of the reviewed ear-v6 / zone outfit animation library.
 const DIRECTIONS = ['down', 'left', 'right', 'up'];
@@ -23,9 +24,10 @@ export function drawYamaBook(ctx,style,x,y,h,distance,direction,moving,now=perfo
   const mode=moving?'book-walk':'book-idle',im=loaded(yamaAnimationSrc(style,mode));
   if (!im) return false;
   const frame=moving?Math.floor(Math.max(0,distance)/7)%8:animationFrame(now,durations.book);
-  const row=Math.max(0,DIRECTIONS.indexOf(direction)),scale=h/320;
+  const row=Math.max(0,DIRECTIONS.indexOf(direction)),fit=yamaFit(style).book[row],scale=h/fit.height;
   drawContactShadow(ctx,x,y,h);
-  ctx.drawImage(im,frame*320,row*480,320,480,x-160*scale,y-440*scale,320*scale,480*scale);
+  const footX=moving?fit.walkFootX:fit.footX,footY=moving?fit.walkFootY:fit.footY;
+  ctx.drawImage(im,frame*320,row*480,320,480,x-footX*scale,y-footY*scale,320*scale,480*scale);
   if(ctx.canvas?.dataset)Object.assign(ctx.canvas.dataset,{yamaAnimation:mode,yamaFrame:String(frame+1),yamaDirection:DIRECTIONS[row],yamaStyle:yamaAnimationStyle(style)});
   return true;
 }
@@ -33,8 +35,8 @@ export function drawYamaBook(ctx,style,x,y,h,distance,direction,moving,now=perfo
 export function drawYamaSwordIdle(ctx,style,x,y,h,elapsed=performance.now(),face=1) {
   style=yamaAnimationStyle(style);
   const im=loaded(yamaAnimationSrc(style,'sword-idle'));if(!im)return false;
-  const scale=h/(style==='th'?354:420),frame=animationFrame(elapsed,durations.sword);
+  const fit=yamaFit(style).sword,scale=h/fit.height,frame=animationFrame(elapsed,durations.sword);
   ctx.save();ctx.translate(x,y);ctx.scale(face<0?-1:1,1);
-  ctx.drawImage(im,frame*640,0,640,640,-240*scale,-570*scale,640*scale,640*scale);ctx.restore();
+  ctx.drawImage(im,frame*640,0,640,640,-fit.footX*scale,-fit.footY*scale,640*scale,640*scale);ctx.restore();
   return true;
 }

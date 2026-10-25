@@ -1,3 +1,4 @@
+import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
 import { yamaDownImage } from './tea-recovery.js';
 import { themeArt } from './theme-assets.js';
@@ -457,6 +458,12 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
   drawContactShadow(ctx, x, y, h);
   const im = img(key, sourceZone);
   if (im) {
+    if (key === 'hero-yama') {
+      const fit=yamaFit(sourceZone || heroStyleOf() || zoneOf()).standing,scale=h/fit.height;
+      ctx.save();ctx.translate(x,y+bob);
+      if(walking){ctx.rotate((gait?1:-1)*face*.035);ctx.scale(face*(gait ? .965 : 1.045),gait?1.045:.965);}else ctx.scale(face,1);
+      ctx.drawImage(im,-fit.footX*scale,-fit.footY*scale,im.naturalWidth*scale,im.naturalHeight*scale);ctx.restore();return;
+    }
     if (walking) {
       // จังหวะสองเฟรมแบบ Office Agent: เด้ง สลับยืด/หด และเอียงตามก้าว
       const sx = gait ? 0.965 : 1.045, sy = gait ? 1.045 : 0.965;
@@ -496,14 +503,15 @@ export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face 
   if (!im || !im.naturalWidth || !im.naturalHeight) return false;
   const frameW = im.naturalWidth / 4;
   const frame = Math.floor(distance / HERO_WALK_STRIDE) % 4;
-  const drawW = h * frameW / im.naturalHeight;
+  const fit=yamaFit(heroStyleOf() || zoneOf()).legacyWalk,scale=h/fit.height,drawH=im.naturalHeight*scale;
+  const drawW = frameW*scale;
   drawContactShadow(ctx, x, y, h);
   ctx.save();
   ctx.translate(x, y);
   // สไปรท์เดินทั้ง 4 ชุดวาดหันซ้าย (ต่างจากท่ายืนที่หันขวา) จึงกลับเครื่องหมาย: face>0 = ไปขวา ต้องพลิก
   ctx.scale(-face, 1);
   ctx.drawImage(im, frame * frameW, 0, frameW, im.naturalHeight,
-                -drawW / 2, -h + 2, drawW, h);
+                -fit.footX*scale, -fit.footY*scale, drawW, drawH);
   ctx.restore();
   return true;
 }
