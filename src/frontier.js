@@ -310,18 +310,18 @@ export function makeFrontierWalk(cv, g, opts) {
           ctx.lineWidth = 2.5;
           ctx.beginPath(); ctx.ellipse(x, y, U * 0.05, U * 0.02, 0, 0, 7); ctx.stroke();
         }
-        label(ctx, en.name || `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, U * 0.024,
+        label(ctx, en.name || `${kd.name} · ระดับ ${en.level}`, x, y + U * 0.032, Math.min(14, U * 0.014),
               inReach ? '#ffd27a' : 'rgba(255,225,195,.8)');
       } });
     }
     if(guideBoss)acts.push({y:guideBoss.y,fn:()=>{drawStandee(ctx,'zone-boss',px(guideBoss.x),py(guideBoss.y),U*BOSS_H,t,'👑',1,false,g.zone);}});
     if(releasedBoss)acts.push({y:releasedBoss.y,fn:()=>{
       drawStandee(ctx,releasedBoss.art,px(releasedBoss.x),py(releasedBoss.y),U*BOSS_H,t,'👹',1,false,releasedBoss.sourceZone);
-      label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,U*.024,'#c0e6ba');
+      label(ctx,`${releasedBoss.name} · รับทัณฑ์ครบแล้ว`,px(releasedBoss.x),py(releasedBoss.y)+U*.032,Math.min(14,U*.014),'#c0e6ba');
     }});
     if (challengeBoss && !releasedBoss) acts.push({ y:challengeBoss.y, fn:() => {
       drawStandee(ctx, g.zone === 'th' ? 'boss-frontier-th' : 'boss-frontier', px(challengeBoss.x), py(challengeBoss.y), U * BOSS_H, t, '👹');
-      label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, U * .024, '#ffd27a');
+      label(ctx, BOSS_NAMES[g.zone].frontier, px(challengeBoss.x), py(challengeBoss.y) + U * .032, Math.min(14, U * .014), '#ffd27a');
     } });
     acts.push({ y: P.y, fn: () => {
       const moving = simClock - movedSim < WALK_GRACE_MS;
