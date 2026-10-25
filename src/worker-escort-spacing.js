@@ -44,7 +44,7 @@ export function planWorkerEscort(g,w,walk){
   ...(g.afterlifeWalks||[]).filter(a=>a!==walk&&a.escort?.dropoff).map(a=>a.escort.dropoff),
   ...(g.queue||[]).slice(0,QUEUE_LINE.length).map((s,i)=>QUEUE_LINE[i])];
  const free=at=>canWalk(...at)&&distance(at,end)>=WORKER_HANDOFF_GAP&&distance(at,start)>=WORKER_PICKUP_GAP&&peers.every(p=>distance(at,p)>=48);
- for(const radius of [80,104,136])for(const offset of [0,Math.PI/4,-Math.PI/4,Math.PI/2,-Math.PI/2,3*Math.PI/4,-3*Math.PI/4,Math.PI]){
+ for(const radius of [80,104,136])for(const offset of [Math.PI/2,-Math.PI/2,Math.PI/4,-Math.PI/4,0,3*Math.PI/4,-3*Math.PI/4,Math.PI]){
   const at=[end[0]+Math.cos(angle+offset)*radius,end[1]+Math.sin(angle+offset)*radius];if(!free(at))continue;
   const exit=route(end,at);if(!exit||pathLength(exit)>radius*2+32||!free(exit.at(-1)))continue;
   const workerPath=[...path,...exit.slice(1)],length=pathLength(workerPath);
