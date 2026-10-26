@@ -29,40 +29,28 @@ test('Zone 1-2 preserves story anchors and uses owner mask/tree layout', () => {
   assert.equal(dungeonWalkable([.12,.22], 'th:asia'), true); assert.equal(dungeonWalkable([.53,.78], 'th:asia'), true); assert.equal(dungeonWalkable([.5,.1], 'th:asia'), false);
 });
 
-test('routes 2-3 and 3-4 are off: old vertical corridor, no patrols, no cave (nothing changes for them)', () => {
-  for (const id of ['asia:west','west:cyberhell']) {
-    assert.equal(isWildernessRoute(id), false); assert.equal(routeBossCave(id), null);
-    assert.deepEqual(dungeonPatrols(id), []);
-    assert.deepEqual(dungeonCheckpointProgress(id), [.25,.52,.79]);
-    assert.deepEqual(dungeonPoint(0, id), [.5,.925]);
-  }
-  assert.equal(dungeonBackground('asia', 'asia:west', 0), 'img/map-zone1/dungeon-asia-west-chain-pass-v1.webp');
-  assert.equal(dungeonBackground('west', 'west:cyberhell', 2), 'img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp');
+test('route 3-4 stays on the legacy corridor until its owner mask arrives', () => {
+  const id='west:cyberhell';
+  assert.equal(isWildernessRoute(id), false); assert.equal(routeBossCave(id), null);
+  assert.deepEqual(dungeonPatrols(id), []);
+  assert.deepEqual(dungeonCheckpointProgress(id), [.25,.52,.79]);
+  assert.deepEqual(dungeonPoint(0,id), [.5,.925]);
+  assert.equal(dungeonBackground('west',id,2),'img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp');
 });
 
-test('switching route 2-3 on is data: original trail, pads and checkpoint vertices, six patrols, own picture, NO boss cave', () => {
-  enableRoute('asia:west');
-  try {
-    assert.equal(isWildernessRoute('asia:west'), true); assert.equal(routeBossCave('asia:west'), null);
-    assert.equal(dungeonBackground('asia', 'asia:west', 1), 'img/frontier-route/zone2-3-v1.webp');
-    assert.deepEqual(dungeonCheckpointProgress('asia:west'), [.2384894694625893,.5179136387786373,.7394968166019052]);
-    assert.ok(Math.abs(dungeonRouteTotal('asia:west') - 1.7019399196563785) < 1e-12);
-    assert.deepEqual(dungeonPoint(1, 'asia:west'), [.91,.79]);
-    const p = dungeonPatrols('asia:west');
-    assert.deepEqual(p.map(x => [x.id, x.progress, x.foe]), [0,1,2,3,4,5].map(i => [`asia:west:patrol:${i}`, [.08,.19,.32,.48,.66,.90][i], [6,7,6,9,7,9][i]]));
-    assert.equal(dungeonWalkable([.53,.78], 'asia:west'), true);
-    // the third checkpoint is an ordinary fight (no cave boss), and is not gated behind checkpoint 2
-    const g = game(); g.zone = 'asia'; g.bossCleared.asia = true; assert.equal(beginDungeon(g, 'west'), true);
-    const wins = []; for (let i = 0; i < 3; i++) { const e = nextDungeonEncounter(g); wins.push([e.kindIdx, e.boss]); assert.equal(resolveDungeonEncounter(g, e.token, true), true); }
-    assert.deepEqual(wins, [[6,false],[7,false],[9,false]]);
-    assert.equal(dungeonStatus(g).ready, true);
-    // guide waits at the start of the trail (no cave), not at checkpoint 2
-    const anchor = dungeonGuideAnchor(g); assert.ok(Math.abs(anchor[0] - (.12 + .045)) < 1e-9 && Math.abs(anchor[1] - (.22 - .006)) < 1e-9);
-    // the enemies of a fresh run: 3 checkpoints + 6 patrols, none boss, none locked
-    const g2 = game(); g2.zone = 'asia'; g2.bossCleared.asia = true; beginDungeon(g2, 'west');
-    const en = dungeonEnemyPositions(g2, 0); assert.equal(en.length, 9); assert.equal(en.some(e => e.boss || e.locked), false);
-  } finally { disableRoute('asia:west'); }
-  assert.deepEqual(dungeonPatrols('asia:west'), []);
+test('owner-fitted route 2-3 has its own picture and patrols, with ordinary checkpoint fights', () => {
+  const id='asia:west', r=ROUTE_GEOMETRY[id];
+  assert.equal(isWildernessRoute(id),true); assert.equal(routeBossCave(id),null);
+  assert.equal(dungeonBackground('asia',id,1),'img/frontier-route/zone2-3-v2-stairs.png');
+  assert.deepEqual(dungeonPoint(0,id),r.corridor[0]);
+  assert.ok(dungeonPoint(1,id).every((n,i)=>Math.abs(n-r.corridor.at(-1)[i])<1e-12));
+  const p=dungeonPatrols(id);
+  assert.deepEqual(p.map(x=>[x.id,x.progress,x.foe]),[0,1,2,3,4,5].map(i=>[`asia:west:patrol:${i}`,[.08,.19,.32,.48,.66,.90][i],[6,7,6,9,7,9][i]]));
+  const g=game();g.zone='asia';g.bossCleared.asia=true;assert.equal(beginDungeon(g,'west'),true);
+  const wins=[];for(let i=0;i<3;i++){const e=nextDungeonEncounter(g);wins.push([e.kindIdx,e.boss]);assert.equal(resolveDungeonEncounter(g,e.token,true),true);}
+  assert.deepEqual(wins,[[6,false],[7,false],[9,false]]);assert.equal(dungeonStatus(g).ready,true);
+  const g2=game();g2.zone='asia';g2.bossCleared.asia=true;beginDungeon(g2,'west');
+  const en=dungeonEnemyPositions(g2,0);assert.equal(en.length,9);assert.equal(en.some(e=>e.boss||e.locked),false);
 });
 
 test('Zone 1-2 cave rules still come from its row: boss at checkpoint 2, locked until checkpoint 1 is won and the boss event is pending', () => {
