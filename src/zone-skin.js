@@ -47,7 +47,7 @@ export const ASIA_TOWN_SPRITES = {
   trees: {
     'town-tree-th':'img/theme-v4/town-tree-asia-v1.webp',
     'town-tree-red-th':'img/theme-v4/town-tree-b-asia-v1.webp',
-    'town-tree-snow-th':'img/theme-v4/town-tree-c-asia-v1.webp',
+    'town-tree-snow-th':'img/theme-v4/town-tree-c-west-v1.webp',
     'town-prop-palm':'img/theme-v4/town-landmark-asia-v1.webp',
     'town-tree-sakura':'img/theme-v4/town-tree-sakura-asia-v1.webp',
     'town-tree-willow':'img/theme-v4/town-tree-willow-asia-v1.webp',
