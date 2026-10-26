@@ -213,7 +213,7 @@ export function townContains(x,y) {
 //   houses   : [{key,x,y,w,flip}, ...]                        replaces the whole house list
 //   props    : [...]                                          replaces the whole decoration list (same shape as TOWN_PROP_SITES)
 // Preserve all non-tree decorations (including the 34 lamps/torches) at Zone 1 feet.
-const ASIA_TREE_KEYS = {green:'town-tree-th', red:'town-tree-red-th', white:'town-tree-sakura', teal:'town-tree-willow'};
+const ASIA_TREE_KEYS = {green:'town-tree-th', red:'town-tree-red-th', white:'town-tree-snow-th', teal:'town-tree-willow'};
 const ASIA_TREE_FALLBACK = {white:'town-tree-snow-th', teal:'town-tree-th'};
 const ASIA_PROPS = [
   ...TOWN_PROP_SITES.filter(p=>p.kind!=='tree'&&p.kind!=='palm'),

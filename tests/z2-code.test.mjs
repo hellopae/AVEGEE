@@ -36,7 +36,7 @@ test('Z2: exactly 29 owner tree feet, kinds, big scale and solid roots; no inher
   const trees=L.TOWN_PROP_SITES.filter(p=>p.kind==='tree');
   assert.equal(trees.length,29);assert.equal(source.length,29);
   assert.deepEqual(trees.reduce((m,p)=>(m[p.treeKind]=(m[p.treeKind]||0)+1,m),{}),{green:17,red:9,white:2,teal:1});
-  const keys={green:'town-tree-th',red:'town-tree-red-th',white:'town-tree-sakura',teal:'town-tree-willow'};
+  const keys={green:'town-tree-th',red:'town-tree-red-th',white:'town-tree-snow-th',teal:'town-tree-willow'};
   for(const [i,p] of trees.entries()){
     assert.deepEqual([p.x,p.y],[source[i].x*3840,source[i].y*2560],p.id);
     assert.equal(p.treeKind,source[i].kind);assert.equal(p.key,keys[source[i].kind]);
@@ -48,7 +48,7 @@ test('Z2: exactly 29 owner tree feet, kinds, big scale and solid roots; no inher
   assert.deepEqual(depths,L.TOWN_PROP_SITES.map(p=>p.y),'every tree uses its actual foot in the shared depth queue');
 });
 
-test('Z2: missing sakura/willow files fall back through the actual image loader; ready primary wins',()=>{
+test('Z2: optional willow files fall back; cold pine primary through the actual image loader; ready primary wins',()=>{
   setup('asia');art.bindZone(()=> 'asia');
   for(const kind of ['white','teal']){
     const p=L.TOWN_PROP_SITES.find(p=>p.treeKind===kind);
