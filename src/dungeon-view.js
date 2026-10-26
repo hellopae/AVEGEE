@@ -198,7 +198,12 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),loading=root.querySelector('.dungeon-load');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const treeImages={};
-  for(const [kind,file] of Object.entries({red:'town-tree-red-th-v1',green:'town-tree-asia-v1',lightgreen:'town-tree-c-asia-v1'})){treeImages[kind]=new Image();treeImages[kind].src=`img/theme-v4/${file}.webp`;}
+  const legacyTreeArt={red:'img/theme-v4/town-tree-red-th-v1.webp',green:'img/theme-v4/town-tree-asia-v1.webp',lightgreen:'img/theme-v4/town-tree-c-asia-v1.webp'};
+  // Dedicated route palette; a failed replacement keeps its original species and foot.
+  if(routeRow(routeId).ambient.trees.length)for(const [kind,file] of Object.entries(routeRow(routeId).ambient.treeArt||legacyTreeArt)){
+    const image=treeImages[kind]=new Image();image.frontierAnchor=routeRow(routeId).ambient.treeAnchors?.[kind];
+    image.onerror=()=>{image.onerror=null;image.frontierAnchor=undefined;image.src=legacyTreeArt[kind];};image.src=file;
+  }
   const nav=dungeonNavigation(routeId);
   const miniMask=document.createElement('canvas');miniMask.width=nav.cols;miniMask.height=nav.rows;
   const maskCtx=miniMask.getContext('2d');maskCtx.fillStyle='#ffd27a88';
@@ -335,7 +340,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
-      if(a.kind==='tree'){drawFrontierTree(ctx,a.tree,{x:p[0],y:p[1],height:w.h*cam.scale,image:treeImages[a.tree.kind]});return;}
+      if(a.kind==='tree'){drawFrontierTree(ctx,a.tree,{x:p[0],y:p[1],height:w.h*cam.scale,image:treeImages[a.tree.kind],anchor:treeImages[a.tree.kind]?.frontierAnchor});return;}
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',a.following?guideMotion.face:face,!!a.following&&guideMotion.moving,g.zone);return;}
       if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
