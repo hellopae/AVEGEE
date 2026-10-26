@@ -46,7 +46,7 @@ export const ROUTE_GEOMETRY = {
     corridor:DUNGEON_CORRIDOR,
     walkMask:{cols:FRONTIER_WALK_COLS,rows:FRONTIER_WALK_ROWS,runs:FRONTIER_WALK_RUNS},
     enabled:true, background:'img/frontier-route/zone1-2-v4.webp', patrolFoe:[2,3,2,5,3,5],
-    ambient:{ trees:TREES, waterfalls:WATERFALLS },
+    ambient:{ trees:TREES, waterfalls:WATERFALLS, treeArt:{red:'img/frontier-route/tree-maple-v2.png',green:'img/frontier-route/tree-pine-v2.png',lightgreen:'img/frontier-route/tree-bamboo-v2.png'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
     // Checkpoint 2 is Zone 1's boss cave: locked until checkpoint 1 is done, the guide waits there, the zone event fights.
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },
   }),

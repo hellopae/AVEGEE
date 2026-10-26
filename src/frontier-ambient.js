@@ -7,7 +7,11 @@ export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=n
   ctx.save();ctx.translate(x,y);ctx.scale(w,h);
   for(const item of trees){
     const [tx,ty]=Array.isArray(item)?item:[item.x,item.y];
-    ctx.fillStyle='rgba(10,16,17,.24)';ctx.beginPath();ctx.ellipse(tx+.009,ty+.006,.014,.004,-.3,0,Math.PI*2);ctx.fill();
+    const size=item.big?1.4:1;
+    // Quiet ground shadow follows the map's upper-left light. Contact stays at the
+    // authored root: the old offset ellipse left a visible gap under small trees.
+    ctx.fillStyle='rgba(24,31,33,.10)';ctx.beginPath();ctx.ellipse(tx+.005*size,ty+.003*size,.011*size,.003*size,.3,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(18,26,27,.18)';ctx.beginPath();ctx.ellipse(tx,ty,.0048*size,.0018*size,0,0,Math.PI*2);ctx.fill();
     if(tree?.complete&&tree.naturalWidth){const th=.052,tw=th*tree.naturalWidth/tree.naturalHeight*h/w;ctx.drawImage(tree,tx-tw/2,ty-th,tw,th);}
   }
   if(!reduced){
@@ -20,8 +24,8 @@ export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=n
 }
 
 /** Tree roots share the actor depth sort; size is measured against background height. */
-export function drawFrontierTree(ctx,tree,{x,y,height,image}) {
+export function drawFrontierTree(ctx,tree,{x,y,height,image,anchor=[.5,1]}) {
   if(!image?.complete||!image.naturalWidth)return;
   const h=height*.052*(tree.big?1.4:1),w=h*image.naturalWidth/image.naturalHeight;
-  ctx.drawImage(image,x-w/2,y-h,w,h);
+  ctx.drawImage(image,x-w*anchor[0],y-h*anchor[1],w,h);
 }

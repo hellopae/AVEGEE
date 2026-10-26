@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
-globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;queueMicrotask(()=>this.onload?.());}get src(){return this._src;}};
+let failReplacement=false;
+globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;queueMicrotask(()=>failReplacement&&v.startsWith('img/frontier-route/tree-')?this.onerror?.():this.onload?.());}get src(){return this._src;}};
 const drawn=[];let captureDraw=false;
 const ctx=new Proxy({drawImage(...args){if(captureDraw)drawn.push(args);},createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})}, {get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const node=()=>({getContext:()=>ctx,handlers:{},addEventListener(k,f){this.handlers[k]=f;},removeEventListener(){},focus(){},setPointerCapture(){},remove(){}});
@@ -61,7 +62,20 @@ test('F12 rendering: trees and Yama share root-y draw ordering at an occlusion p
  const tree=ROUTE_GEOMETRY['th:asia'].ambient.trees.find(t=>view.dungeonWalkable([t.x,t.y-.018]));assert.ok(tree);
  const g=game();g.zoneTravel.active.position={x:tree.x,y:tree.y-.018};const destroy=view.mountDungeonView({append(){}},g);drawn.length=0;captureDraw=true;tick();captureDraw=false;
  const cam=frontierCameraTarget(size,800,pos(g)),ty=cam.y+tree.y*941*cam.scale;
- const treeDraw=drawn.findIndex(a=>a[0]?.src?.includes(`town-tree-${{red:'red-th',green:'asia',lightgreen:'c-asia'}[tree.kind]}-v1`)&&Math.abs(a[2]+a[4]-ty)<.01);
+ const treeDraw=drawn.findIndex(a=>a[0]?.src===ROUTE_GEOMETRY['th:asia'].ambient.treeArt[tree.kind]&&Math.abs(a[2]+a[4]*ROUTE_GEOMETRY['th:asia'].ambient.treeAnchors[tree.kind][1]-ty)<.01);
  const heroDraw=drawn.findIndex(a=>/hero-yama|yama.*walk|hero.*walk/.test(a[0]?.src||''));
  assert.ok(treeDraw>=0,'overlapping tree was drawn');assert.ok(heroDraw>=0,'Yama was drawn');assert.ok(heroDraw<treeDraw,'tree crown drawn over Yama behind root');destroy();
+});
+
+test('C1 renderer: unavailable replacement falls back to the original tree at its authored root',async()=>{
+ const {ROUTE_GEOMETRY}=await import('../src/route-geometry.js');
+ const tree=ROUTE_GEOMETRY['th:asia'].ambient.trees.find(t=>view.dungeonWalkable([t.x,t.y-.018]));
+ const g=game();g.zoneTravel.active.position={x:tree.x,y:tree.y-.018};failReplacement=true;
+ const destroy=view.mountDungeonView({append(){}},g);await new Promise(r=>setImmediate(r));
+ try{
+  drawn.length=0;captureDraw=true;tick();captureDraw=false;
+  const cam=frontierCameraTarget(size,800,pos(g)),ty=cam.y+tree.y*941*cam.scale;
+  const fallback=drawn.find(a=>a[0]?.src===`img/theme-v4/${{red:'town-tree-red-th-v1',green:'town-tree-asia-v1',lightgreen:'town-tree-c-asia-v1'}[tree.kind]}.webp`&&Math.abs(a[2]+a[4]-ty)<.01);
+  assert.ok(fallback,'original tree stays on its unadjusted legacy image foot');
+ }finally{captureDraw=false;failReplacement=false;destroy();}
 });
