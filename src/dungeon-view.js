@@ -1,7 +1,7 @@
 import {createFrontierNavigation} from './dungeon-navigation.js';
 import {drawFrontierAmbient,drawFrontierTree} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
-import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint,bossGuideDismissed} from './boss-guides.js';
+import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
 import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave } from './route-geometry.js';
 import { themeBackground } from './theme-assets.js';
@@ -265,7 +265,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
   // The cave talk button exists only while the boss is really drawn there (no invisible hit spot).
-  const cave0=routeBossCave(routeId),challengeStandeeShown=()=>!!cave0&&!bossGuideWaiting(g)&&!bossGuideDismissed(g)&&!!g.challengeUnlocked?.()&&!g.bossCleared?.[cave0.zone];
+  const cave0=routeBossCave(routeId),challengeStandeeShown=()=>!!cave0&&!bossGuideWaiting(g)&&!g.bossJustice?.active&&!!g.challengeUnlocked?.();
   function update(dt) {
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
