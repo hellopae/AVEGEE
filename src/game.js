@@ -2910,9 +2910,9 @@ const API = {
   },
   challengeDone(zone = this.zone) { return (this.challenge[zone]?.wins || 0) > 0; },
   challengeCanTalk(frontierPlayer) {
-    // O1 (Kittanate 22 Oct): after the farewell the boss stays at the frontier stand (every zone, zone 1 included)
-    // and is gone from the outer route; before it, zone 1 keeps the cave talk spot.
-    if(this.zone==='th'&&!bossGuideDismissed(this)) {
+    // B5b: the captain remains at the approved Zone 1 cave after the guide farewell.
+    if(this.zone==='th') {
+      if(frontierPlayer || bossJusticeActive(this))return false;
       const status=dungeonStatus(this),p=this.zoneTravel?.active?.position,bossCave=routeBossCave(status?.route.id);
       const cave=dungeonPoint(DUNGEON_PROGRESS[bossCave?.checkpoint??2],status?.route.id);
       return !!(!this.battle&&!this.over&&!this.pendingRecovery&&this.challengeUnlocked()&&bossCave?.zone===this.zone&&p&&Math.hypot(p.x-cave[0],p.y-cave[1])<=(bossCave.interactReach??.065));

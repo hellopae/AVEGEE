@@ -143,7 +143,7 @@ test('farewell dismisses the guide from the city pier (talk spot, rematch menu, 
   }
 });
 
-test('after the farewell the boss stays at the frontier stand (visible + talkable, every zone) and has no hidden spot on the route',async()=>{
+test('after the farewell zone 1 captain stays in its cave; other frontier stands remain usable',async()=>{
   const {frontierSession}=await import('../src/frontier.js');
   for(const zone of ['th','asia','west','cyberhell']){
     for(const mode of zone==='cyberhell'?['none']:['following','farewell']){
@@ -153,7 +153,7 @@ test('after the farewell the boss stays at the frontier stand (visible + talkabl
       const challenge={hidden:true,style:{},dataset:{}},fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,challenge});
       try{
         await Promise.resolve();fw.start();
-        const stands=mode==='farewell'||mode==='none'||zone!=='th'&&mode==='following';
+        const stands=zone!=='th';
         assert.equal(labels.includes(BOSS_NAMES[zone].frontier),stands,`${zone}/${mode}: boss drawn at the stand`);
         assert.equal(fw.canTalkChallenge(),stands,`${zone}/${mode}: talk spot exists exactly when the boss is drawn`);
         assert.equal(challenge.hidden,!stands);
@@ -162,10 +162,10 @@ test('after the farewell the boss stays at the frontier stand (visible + talkabl
       }finally{fw.destroy();}
     }
   }
-  // Outer route: no hidden hit spot. A talk button may exist only while the boss is drawn there (never after the farewell).
+  // The cave captain remains visible and talkable after the guide has left.
   const after=game('th','farewell');toGate(after);const cave=view.dungeonPoint(view.DUNGEON_PROGRESS[2]);
   after.zoneTravel.active.position={x:cave[0],y:cave[1]};
-  assert.equal(after.challengeCanTalk(),false,'cave spot gone after the farewell');
+  assert.equal(after.challengeCanTalk(),true,'captain remains at the cave after the farewell');
   const js=read('../src/dungeon-view.js');
   assert.match(js,/\.dungeon-challenge'\)\.hidden=!challengeStandeeShown\(\)/,'cave button is tied to the drawn standee');
   assert.match(js,/else if\(challengeStandeeShown\(\)\)\{/,'and the same predicate draws the boss');
@@ -196,3 +196,14 @@ test('an old save that already said farewell never shows the guide again and kee
   const legacy={zone:'asia',bossCleared:{th:true,asia:true},zoneTravel:{visited:{th:true,asia:true}}};initializeBossGuides(legacy);
   assert.equal(bossGuideDismissed(legacy,'th'),true);assert.equal(bossGuideDismissed(legacy,'asia'),false);
 });
+
+ test('B5b: cave replay survives saved farewell and released court without duplicate grants',()=>{
+ const g=game('th','farewell');toGate(g);const cave=view.dungeonPoint(view.DUNGEON_PROGRESS[2]);g.zoneTravel.active.position={x:cave[0],y:cave[1]};
+ g.bossJustice={version:1,active:null,ledger:{captain:{id:'captain',zone:'th',phase:'released',frontierBoss:true,art:'boss-frontier-th',name:'หัวหน้าชายแดน'}}};
+ const money=g.coin,h=newGame();h.restore(g.snapshot());
+ assert.equal(h.challengeCanTalk(),true);assert.equal(h.challengeCanTalk(CHALLENGE_STAND.th),false,'no invisible frontier interaction');
+ assert.equal(h.coin,money);assert.equal(h.bossJustice.ledger.captain.phase,'released');
+ clearFrontierSession();const fw=makeFrontierWalk(canvas(),h,{bg:'',kinds:[],wave:1,alive:()=>true,challenge:{hidden:true,style:{},dataset:{}}});
+ try{assert.equal(fw.releasedBoss(),null,'returned captain is not duplicated at frontier');}finally{fw.destroy();}
+ h.bossJustice.active='captain';h.bossJustice.ledger.captain.phase='trial';assert.equal(h.challengeCanTalk(),false,'court blocks replay');
+ });
