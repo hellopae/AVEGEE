@@ -167,5 +167,5 @@ test('building shadow: only buildings use the contour; trees/rocks keep the trun
   const src=strip(read('../src/town-shade.js'));
   assert.match(src,/TOWN_HOUSE_SITES\.forEach[\s\S]{0,200}spriteCaster\(art, s\.x, s\.y, s\.w, s\.h, !!s\.flip, 1, true\)/);
   assert.match(src,/spriteCaster\(b\.im,b\.x\+b\.w\/2,b\.y\+b\.h,b\.w,b\.h,!!b\.flip,\.92,true\)/);
-  assert.match(src,/spriteCaster\(art, p\.x, p\.y, p\.w, h, false, 1\)\)/,'trees keep the single root');
+  assert.match(src,/spriteCaster\(art, foot\.x, foot\.y, p\.w, h, false, 1\)\)/,'trees keep the single root');
 });
