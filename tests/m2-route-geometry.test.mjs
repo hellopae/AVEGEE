@@ -41,7 +41,7 @@ test('route 3-4 stays on the legacy corridor until its owner mask arrives', () =
 test('owner-fitted route 2-3 has its own picture and patrols, with ordinary checkpoint fights', () => {
   const id='asia:west', r=ROUTE_GEOMETRY[id];
   assert.equal(isWildernessRoute(id),true); assert.equal(routeBossCave(id),null);
-  assert.equal(dungeonBackground('asia',id,1),'img/frontier-route/zone2-3-v2-stairs.png');
+  assert.equal(dungeonBackground('asia',id,1),'img/frontier-route/zone2-3-v3-cave.png');
   assert.deepEqual(dungeonPoint(0,id),r.corridor[0]);
   assert.ok(dungeonPoint(1,id).every((n,i)=>Math.abs(n-r.corridor.at(-1)[i])<1e-12));
   const p=dungeonPatrols(id);

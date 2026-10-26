@@ -177,7 +177,7 @@ test('zone 1 challenge boss waits by the cave, other zones keep their town stand
 });
 
 test('บอสประลองย้ายออกจากแผนที่โซนทั้ง 4 และคุยได้จากตำแหน่งผู้เล่นในฉากชายแดนเท่านั้น', () => {
-  for (const zone of ZONE_IDS.filter(z=>z!=='th')) {
+  for (const zone of ZONE_IDS.filter(z=>!['th','asia'].includes(z))) {
     const g = unlocked(zone), {x,y} = CHALLENGE_STAND[zone];
     assert.ok(!standPoints(g).some(([sx,sy]) => sx === x && sy === y));
     assert.ok(!mapInteractions(g, MERCHANT).some(a => a.kind === 'challenge'));

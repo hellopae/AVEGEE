@@ -1,5 +1,5 @@
 /** Persisted travel rules; rendering and combat remain owned by the game. */
-import { ROUTE_GEOMETRY, routeRow, isWildernessRoute, routeBossCave } from './route-geometry.js';
+import { ROUTE_GEOMETRY, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
 export const TRAVEL_VERSION = 1;
 export const TRAVEL_ZONES = Object.freeze(['th', 'asia', 'west', 'cyberhell']);
 const route = (from, to, name, checkpoints, foes) => Object.freeze({
@@ -30,8 +30,12 @@ const routePlacement = (routeId, active) => {
 };
 const known = k => TRAVEL_ZONES.includes(k);
 const definition = id => DUNGEON_ROUTES.find(r => r.id === id);
-// A route with a boss cave opens early once that zone's breach is cleared or its cave boss is waiting (Zone 1-2 only).
-const routeAvailable = (g,r) => { const cave = routeBossCave(r.id); return !!g.bossCleared?.[r.from] || !!cave && (g.zoneEvents?.[cave.zone]?.[cave.breachKey]==='cleared' || ['pending','active'].includes(g.zoneEvents?.[cave.zone]?.[cave.eventKey])); };
+// Approved cave routes open after the invasion; destination entry still requires the ruler victory.
+const routeAvailable = (g,r) => {
+  const cave=routeBossCave(r.id),captain=routeCaptainCave(r.id);
+  return !!g.bossCleared?.[r.from] || !!captain&&g.zoneEvents?.[r.from]?.[captain.breachKey]==='cleared' ||
+    !!cave&&(g.zoneEvents?.[cave.zone]?.[cave.breachKey]==='cleared'||['pending','active'].includes(g.zoneEvents?.[cave.zone]?.[cave.eventKey]));
+};
 const busy = g => !!(g.battle || g.over || g.pendingRecovery || g.mapTravel&&!g.mapTravel.committing);
 const state = g => g.zoneTravel || initializeZoneTravel(g);
 

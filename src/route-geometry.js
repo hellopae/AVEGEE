@@ -36,7 +36,7 @@ const row = (id, o) => ({
   walkMask:fallbackMask,
   patrolProgress:PATROL_PROGRESS, patrolFoe:null,
   ambient:{ trees:[], waterfalls:[] },
-  bossCave:null,
+  bossCave:null, captainCave:null,
   ...o,
 });
 /** The table.  `foes` = the foe kinds of the route's three checkpoints (zone-travel.js DUNGEON_ROUTES). */
@@ -51,7 +51,8 @@ export const ROUTE_GEOMETRY = {
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },
   }),
   'asia:west': row('asia:west', {
-    enabled:true, geometryVersion:1, background:'img/frontier-route/zone2-3-v2-stairs.png', foes:[6,7,9],
+    enabled:true, geometryVersion:1, background:'img/frontier-route/zone2-3-v3-cave.png', foes:[6,7,9],
+    captainCave:{zone:'asia',breachKey:'asiaRageBreach',position:[.55,.72],interactReach:.055},
     corridor:BORDER23_CORRIDOR, checkpointVertex:BORDER23_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER23_MASK,
   }),
   'west:cyberhell': row('west:cyberhell', {
@@ -69,3 +70,7 @@ export const routeBossCave = routeId => (isWildernessRoute(routeId) ? ROUTE_GEOM
 /** Dev / test hook: switch a route on at run time. */
 export function enableRoute(routeId) { ROUTE_GEOMETRY[routeId].enabled = true; }
 export function disableRoute(routeId) { if (routeId === 'th:asia') throw new Error('reference route'); ROUTE_GEOMETRY[routeId].enabled = false; }
+
+/** Post-invasion captain refuge; separate from the ruler's story encounter. */
+export const routeCaptainCave = routeId => isWildernessRoute(routeId)?routeRow(routeId)?.captainCave:null;
+export const captainCaveForZone = zone => Object.values(ROUTE_GEOMETRY).find(r=>r.enabled&&r.captainCave?.zone===zone)?.captainCave||null;
