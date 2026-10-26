@@ -79,3 +79,10 @@ test('C1 renderer: unavailable replacement falls back to the original tree at it
   assert.ok(fallback,'original tree stays on its unadjusted legacy image foot');
  }finally{captureDraw=false;failReplacement=false;destroy();}
 });
+test('B5b: actual route view retains cave position after all checkpoints before ruler victory',()=>{
+ size=1280;const g={zone:'asia',bossCleared:{},zoneEvents:{asia:{asiaRageBreach:'cleared'}},save(){},challengeUnlocked:()=>true,challengeCanTalk:()=>true};
+ travel.initializeZoneTravel(g);assert.ok(travel.beginDungeon(g,'west'));
+ for(let i=0;i<3;i++){const e=travel.nextDungeonEncounter(g);assert.ok(travel.resolveDungeonEncounter(g,e.token,true));}
+ g.zoneTravel.active.patrolDefeated=travel.dungeonPatrols('asia:west').map(p=>p.id);g.zoneTravel.active.position={x:.55,y:.72};
+ const destroy=view.mountDungeonView({append(){}},g);try{tick();assert.ok(distance(pos(g),[.55,.72])<.001,'completed trail must not snap back to entry while ruler is locked');assert.equal(root.querySelector('.dungeon-challenge').hidden,false);assert.equal(travel.dungeonStatus(g).ready,false);}finally{destroy();}
+});

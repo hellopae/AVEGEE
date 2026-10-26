@@ -216,7 +216,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   let joystick=null,pointerStart=null;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
-  const limit=()=>{const s=dungeonStatus(g);return s?.ready?1:points[s?.checkpoint||0]-.018;};
+  const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-.018;};
   const saved=g.zoneTravel.active.position;
   position=dungeonSnap(saved?[saved.x,saved.y]:point(0),routeId,limit());
   follower=[...position];
