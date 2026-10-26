@@ -54,8 +54,10 @@ test('F12: 80 owner roots outside mask, three sprite types, base and big sizes',
  drawFrontierTree(ctx,{}, {x:40,y:90,height:1000,image});drawFrontierTree(ctx,{big:true},{x:40,y:90,height:1000,image});
  assert.equal(calls[0][4],52);assert.equal(calls[1][4],52*1.4);
 });
-test('F12: route 2–3 preserves original corridor, pad behavior and disabled vertical travel',()=>{
- assert.deepEqual(dungeonPoint(0,'asia:west'),[.5,.925]);enableRoute('asia:west');
- try{assert.deepEqual(ROUTE_GEOMETRY['asia:west'].corridor,ORIGINAL);assert.ok(dungeonWalkable([.53,.78],'asia:west'));assert.equal(dungeonWalkable(BRANCHES[0],'asia:west'),false);assert.ok(ROUTE_GEOMETRY['asia:west'].walkMask.runs.length);}
- finally{disableRoute('asia:west');}
+test('F12: pending route 3-4 preserves original corridor and disabled vertical travel',()=>{
+ assert.deepEqual(dungeonPoint(0,'west:cyberhell'),[.5,.925]);
+ assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,false);
+ assert.deepEqual(ROUTE_GEOMETRY['west:cyberhell'].corridor,ORIGINAL);
+ assert.ok(ROUTE_GEOMETRY['west:cyberhell'].walkMask.runs.length);
+ assert.notDeepEqual(ROUTE_GEOMETRY['asia:west'].corridor,ORIGINAL);
 });

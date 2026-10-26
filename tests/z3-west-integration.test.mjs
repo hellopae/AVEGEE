@@ -11,14 +11,15 @@ import {ROUTE_GEOMETRY} from '../src/route-geometry.js';
 import {createGame} from '../src/game.js';
 import {harbourTravel} from './helpers/travel.mjs';
 
-test('Z3: production west skin has all16 sprites/preloads and20 chunks; pending borders stay closed',()=>{
+test('Z3: production west skin has all16 sprites/preloads and20 chunks; only the pending border 3-4 stays closed',()=>{
  assert.equal(isTownZone('west'),true);assert.equal(ZONE_SKIN.cyberhell.enabled,false);
  const skin=ZONE_SKIN.west,catalog=JSON.parse(readFileSync('img/preload-catalog.json'));
  assert.equal(skin.flowUrl,null);assert.equal(skin.terrain.repairs,false);assert.equal(skin.treeTint,false);
  const files=[...Object.values(skin.art),...Object.values(skin.stations.facade)];assert.equal(files.length,16);
  for(const f of files){assert.ok(existsSync(f),f);assert.ok(catalog.zones.west.includes(f),f+' preload');}
  for(let r=1;r<=4;r++)for(let c=1;c<=5;c++)assert.ok(existsSync(`img/map-zone3/v1/r${r}-c${c}.webp`));
- for(const k of ['asia:west','west:cyberhell'])assert.equal(ROUTE_GEOMETRY[k].enabled,false,k);
+ assert.equal(ROUTE_GEOMETRY['asia:west'].enabled,true);
+ assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,false);
 });
 
 test('Z3: owner grid preserves28586 cells, one component, small blocked reserves and no dilation',()=>{
