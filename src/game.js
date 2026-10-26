@@ -8,7 +8,7 @@ import {dungeonBackground} from './dungeon-art.js';
 import {themeBackground} from './theme-assets.js';
 import {dungeonAtCheckpoint,dungeonAtPatrol,dungeonAtExit,dungeonChaseReach,dungeonPoint,DUNGEON_PROGRESS,DUNGEON_TOTAL,dungeonRouteTotal,dungeonCheckpointProgress} from './dungeon-view.js?v=l5';
 import {retreatS} from './dungeon-chase.js?v=l5';
-import { routeBossCave } from './route-geometry.js';
+import { routeBossCave, routeCaptainCave, captainCaveForZone } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
 import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
@@ -2911,6 +2911,10 @@ const API = {
   challengeDone(zone = this.zone) { return (this.challenge[zone]?.wins || 0) > 0; },
   challengeCanTalk(frontierPlayer) {
     // B5b: the captain remains at the approved Zone 1 cave after the guide farewell.
+    if(captainCaveForZone(this.zone)){
+      const cave=routeCaptainCave(dungeonStatus(this)?.route.id),p=this.zoneTravel?.active?.position;
+      return !!(!frontierPlayer&&!this.battle&&!this.over&&!this.pendingRecovery&&!bossJusticeActive(this)&&this.challengeUnlocked()&&cave?.zone===this.zone&&p&&Math.hypot(p.x-cave.position[0],p.y-cave.position[1])<=cave.interactReach);
+    }
     if(this.zone==='th') {
       if(frontierPlayer || bossJusticeActive(this))return false;
       const status=dungeonStatus(this),p=this.zoneTravel?.active?.position,bossCave=routeBossCave(status?.route.id);

@@ -50,6 +50,12 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
         assert.equal(g.battleActors().some(a=>a.k==='nira'),false,'ordinary cave replay keeps the selected team');
         return;
       }
+      if(zone==='asia'){
+        assert.ok(!labels.includes(BOSS_NAMES.asia.frontier),'captain moved to route cave');
+        const travel=await import('../src/zone-travel.js');travel.initializeZoneTravel(g);assert.ok(travel.beginDungeon(g,'west'));
+        g.zoneTravel.active.position={x:.55,y:.72};assert.ok(g.challengeCanTalk());assert.equal(g.challengeCanTalk(CHALLENGE_STAND.asia),false);
+        assert.equal(g.startChallenge()?.challenge,true);return;
+      }
       assert.ok(labels.includes(BOSS_NAMES[zone].frontier),'boss rendered in frontier');
       const {x,y}=CHALLENGE_STAND[zone];
       cv.pointerdown({clientX:(x-.06)*1678,clientY:y*937});

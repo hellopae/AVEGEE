@@ -1,3 +1,4 @@
+import {captainCaveForZone} from './route-geometry.js';
 import {bossGuideWaiting} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
 import { breachApproachActors } from './breach-approach.js';
@@ -120,8 +121,8 @@ export function makeFrontierWalk(cv, g, opts) {
   // Replay boss is an NPC: keep spawned enemy counts, drops and waves unchanged.
   const guideBoss=!invasion.length&&bossGuideWaiting(g)?CHALLENGE_STAND[g.zone]:null;
   // Zone 1's captain stays at the cave after the invasion, including after the guide farewell.
-  const challengeBoss = !guideBoss&&g.zone!=='th' && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
-  const releasedBoss=g.zone==='th'?null:releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
+  const challengeBoss = !guideBoss&&g.zone!=='th'&&!captainCaveForZone(g.zone) && !invasion.length && g.challengeUnlocked?.() ? CHALLENGE_STAND[g.zone] : null;
+  const releasedBoss=g.zone==='th'||captainCaveForZone(g.zone)?null:releasedFrontierBoss(g,{guide:!!guideBoss,invasion:!!invasion.length});
   const P = sess.player;
   if (!frontierWalkable(g.zone, P.x, P.y)) { P.x = .485; P.y = .35; }
   let route = P.tx == null ? [] : frontierPath(g.zone,[P.x,P.y],[P.tx,P.ty]);

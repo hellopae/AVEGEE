@@ -3,7 +3,7 @@ import {drawFrontierAmbient,drawFrontierTree} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
-import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave } from './route-geometry.js';
+import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
 import { themeBackground } from './theme-assets.js';
 import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
@@ -265,7 +265,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
   // The cave talk button exists only while the boss is really drawn there (no invisible hit spot).
-  const cave0=routeBossCave(routeId),challengeStandeeShown=()=>!!cave0&&!bossGuideWaiting(g)&&!g.bossJustice?.active&&!!g.challengeUnlocked?.();
+  const cave0=routeBossCave(routeId),captainCave=routeCaptainCave(routeId),challengeStandeeShown=()=>!!(captainCave||cave0)&&(!!captainCave||!bossGuideWaiting(g))&&!g.bossJustice?.active&&!!g.challengeUnlocked?.();
   function update(dt) {
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
@@ -336,14 +336,14 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'},...routeRow(routeId).ambient.trees.map(tree=>({p:[tree.x,tree.y],kind:'tree',tree}))];
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
     if(bossGuideWaiting(g)){actors.push({p:dungeonGuideAnchor(g),kind:'guide'});}
-    else if(challengeStandeeShown()){actors.push({p:dungeonGuideAnchor(g),kind:'challenge'});}
+    if(challengeStandeeShown()){actors.push({p:captainCave?.position||dungeonGuideAnchor(g),kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
       const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
       if(a.kind==='tree'){drawFrontierTree(ctx,a.tree,{x:p[0],y:p[1],height:w.h*cam.scale,image:treeImages[a.tree.kind],anchor:treeImages[a.tree.kind]?.frontierAnchor});return;}
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',a.following?guideMotion.face:face,!!a.following&&guideMotion.moving,g.zone);return;}
-      if(a.kind==='challenge'){drawStandee(ctx,'boss-frontier-th',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
+      if(a.kind==='challenge'){drawStandee(ctx,g.zone==='th'?'boss-frontier-th':'boss-frontier',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
       if(a.kind==='enemy'){
         const foe=MOB.kinds[a.enemy.kindIdx]||MOB,boss=a.enemy.boss;
         const next=dungeonEnemyPositions(g,enemyTime+100).find(e=>e.id===a.enemy.id),facing=next&&next.position[0]<a.p[0]?-1:1;

@@ -153,7 +153,7 @@ test('after the farewell zone 1 captain stays in its cave; other frontier stands
       const challenge={hidden:true,style:{},dataset:{}},fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,challenge});
       try{
         await Promise.resolve();fw.start();
-        const stands=zone!=='th';
+        const stands=!['th','asia'].includes(zone);
         assert.equal(labels.includes(BOSS_NAMES[zone].frontier),stands,`${zone}/${mode}: boss drawn at the stand`);
         assert.equal(fw.canTalkChallenge(),stands,`${zone}/${mode}: talk spot exists exactly when the boss is drawn`);
         assert.equal(challenge.hidden,!stands);
@@ -168,7 +168,7 @@ test('after the farewell zone 1 captain stays in its cave; other frontier stands
   assert.equal(after.challengeCanTalk(),true,'captain remains at the cave after the farewell');
   const js=read('../src/dungeon-view.js');
   assert.match(js,/\.dungeon-challenge'\)\.hidden=!challengeStandeeShown\(\)/,'cave button is tied to the drawn standee');
-  assert.match(js,/else if\(challengeStandeeShown\(\)\)\{/,'and the same predicate draws the boss');
+  assert.match(js,/if\(challengeStandeeShown\(\)\)\{/,'and the same predicate draws the boss');
 });
 
 test('route again after the farewell: Yama + Nira only (no hired keepers, guard or guide); first escort keeps the guide',()=>{
