@@ -1,7 +1,7 @@
 // Every scenery object has its own sprite, ground shadow and collision root.
 // Ground painting contains no object silhouettes; foot depth governs occlusion.
 import { TOWN_HOUSE_SITES, TOWN_PROP_SITES, onTownLayoutChange } from './town-layout.js?v=k1d';
-import { activeTownSkin, activeTownZone, ZONE1_TOWN_ART } from './zone-skin.js';
+import { activeTownSkin, activeTownZone, ZONE1_TOWN_ART, townArtFoot } from './zone-skin.js';
 import { drawLocalLight } from './scene-style.js';
 import { drawContactAO, visibleBase } from './town-shade.js?v=l1';
 
@@ -63,7 +63,8 @@ function sprite(ctx,image,x,y,w) {
   if(!image)return;
   const h=w*(image.naturalHeight||image.height)/(image.naturalWidth||image.width);
   ctx.save();ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
-  ctx.drawImage(image,x-w/2,y-h,w,h);ctx.restore();
+  const foot=townArtFoot(image,x,y,w,h);
+  ctx.drawImage(image,foot.x-w/2,foot.y-h,w,h);ctx.restore();
 }
 export function drawTownCastShadow(ctx,image,x,y,w) {
   if(!image)return;
@@ -115,7 +116,8 @@ export const townPropArt = (p,tree,waterfall,resolveArt) =>
 // L1: soft contact shade (AO) under the base so nothing floats; the cast shadow itself comes from town-shade.js.
 function contactShadow(ctx,p,art) {
   if(art){
-    const b=visibleBase(art,p.x,p.y,p.w,p.w*(art.naturalHeight||art.height)/(art.naturalWidth||art.width));
+    const h=p.w*(art.naturalHeight||art.height)/(art.naturalWidth||art.width),foot=townArtFoot(art,p.x,p.y,p.w,h);
+    const b=visibleBase(art,foot.x,foot.y,p.w,h);
     const rx=Math.max(b.w*.7,p.rx*1.4);
     drawContactAO(ctx,b.x+3,b.y-1,rx,Math.max(p.ry,rx*.38),1);
   }else drawContactAO(ctx,p.x+3,p.y-1,p.kind==='palm'?p.w*.16:p.rx*1.6,p.ry*1.1,.9);

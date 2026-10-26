@@ -1,0 +1,39 @@
+{
+  "sheet": [
+    4915,
+    3277
+  ],
+  "chunks": 20,
+  "quadrantSize": [
+    1536,
+    1024
+  ],
+  "nativeDetailScalePerPreview": 1.7777777777777777,
+  "containerResamplingScale": 1.8,
+  "coverage": 0.9991708293351951,
+  "fallbackFraction": 0.0008291706648048872,
+  "note": "Fresh painted quadrant detail; registration and container resampling. Does not complete C4 native4K/all zones.",
+  "files": {
+    "r2-c3.webp": "40509471568e8818cae69e5f5b3740778aacd1d41402003e44d203b92cbf274c",
+    "r1-c5.webp": "0ac2ed956ee9e072899f2a33eb378e1dfade6039c747a2e7116a03bd6f95dc80",
+    "r3-c2.webp": "5ee384cad84f21a3725d2f0d12c4958324a0bfb596998e6d39ecf1b74af4d992",
+    "r3-c3.webp": "5a0219541aa870e3c3c04b84875527b7cd3e7f7d4371bfcaea9929feacae1bad",
+    "r1-c4.webp": "d568780c5beed0285bb590c318811d28399767a9338fd1bf9f5e8ebf1cd32e9f",
+    "r2-c2.webp": "22c4cf84ba3451b55fbdae7391cc7bca74a19f80bd9954455f08643368cd064a",
+    "r2-c5.webp": "5e6180b243ec1da6f6b49e1015bb068b876107443ef75011cf2fecf1df43d3da",
+    "r1-c3.webp": "e5a7718fbb4a99403c79127a6d11eb5ded652982779f05905541826a15bf23f5",
+    "r3-c4.webp": "219394bd0635d7beaf76e7fb68354590afa211a605110b6b8fc0f07dcf0db9f4",
+    "r4-c1.webp": "6f48f2a62ee5309aa556cbb24ae88739c3dc830e599a892df53c74f715a1d93f",
+    "r3-c5.webp": "e17d8558f9109f2cff5c9da54d8a1a792e0e72d9d46b0fe4d59c4ee8af6f67e6",
+    "r1-c2.webp": "4e88366b574edccd26f4af9d083719e47e6eaa04de1bbfcb6476cbe3bed90395",
+    "r2-c4.webp": "88c5c4ece431f20108b80a669c7938b4e178317201cc600733052cc6451dc6e8",
+    "r4-c2.webp": "b84e71ff7a3f00ea1a9e3557392e642b8cdfc717c0719baaf5e7dbfb8a2aff82",
+    "r1-c1.webp": "f765aca6d8e3cd3a2d5c2e8ef3644ec64677ab3ec1df32902c9d6905823e00f7",
+    "r4-c3.webp": "8e76b5cef08c0c47084053d9d10e95e15ff3189aa8502ae181182133e391b93a",
+    "r4-c4.webp": "d40ed27303a73685a6d555578a1b4ad0c5464cd503f3d3f620bb11e42a4dc65a",
+    "r2-c1.webp": "26e39f39a9b380c1771d5107fc97fdffd8ca0c4ca3a2c9c601250cd01558ed38",
+    "zone2-terrain-v2-preview.webp": "e38b5c67f25285ec419481b4f016612b9e86254e62baaf33f1d9650843a2d54e",
+    "r3-c1.webp": "3937f0f05f0ca38e20d739538195a02dc2b1e2f874733e3c3d3884014224881e",
+    "r4-c5.webp": "b12f5649d63ce4a1ef9dbba5f7a726ac1d3296d706196e3d8d0a8c87bdc6eb84"
+  }
+}

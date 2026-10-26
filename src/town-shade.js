@@ -12,7 +12,7 @@
 // torch pillars it lights are casters here too (their sprite comes from the same resolver the scenery draws with).
 import { stationBox } from './art.js';
 import { TOWN_PROP_SITES, TOWN_HOUSE_SITES, TOWN_DAIS, TOWN_SIZE, onTownLayoutChange } from './town-layout.js?v=k1d';
-import { activeTownZone } from './zone-skin.js';
+import { activeTownZone, townArtFoot } from './zone-skin.js';
 
 // Shadow offset per unit of height. A point H above the foot lands (KX*H, KY*H) right/below the foot.
 export const SUN = { kx:.42, ky:.3 };
@@ -171,7 +171,8 @@ export function listCasters(resolve, houseKey, stations, propArt) {
     const art = treeArt(p, resolve, propArt);
     if (art) {
       const h = p.w * (art.naturalHeight || art.height) / (art.naturalWidth || art.width);
-      out.push(spriteCaster(art, p.x, p.y, p.w, h, false, 1));
+      const foot=townArtFoot(art,p.x,p.y,p.w,h);
+      out.push(spriteCaster(art, foot.x, foot.y, p.w, h, false, 1));
     } else if (p.kind === 'lamp' || p.kind === 'torch' || p.kind === 'palm') {
       out.push({ kind:'post', x:p.x, y:p.y, h:p.h || 72, crown:p.kind === 'palm' ? p.w * .5 : 0 });
     } else if (p.kind === 'rock') {

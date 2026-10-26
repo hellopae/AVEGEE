@@ -62,7 +62,7 @@ test('switching a skin on is data: `use` lists the finished groups, the rest fal
   assert.equal(P.judgment['town-judgment-th'], 'img/theme-v4/town-judgment-asia-v3.webp');
   assert.equal(P.torch['town-prop-torch-pillar'], 'img/map-zone2/torch-pillar-v3.webp');
   assert.equal(P.houses['town-residence-left-two'], 'img/town-district/house-left-two-asia-v3.webp');
-  assert.equal(P.trees['town-tree-red-th'], 'img/theme-v4/town-tree-b-asia-v1.webp');
+  assert.equal(P.trees['town-tree-red-th'], 'img/frontier-route/tree-maple-v2.png');
   enableTownSkin('asia', { use:['judgment','houses'], terrain:{dir:'img/map-zone2/v1/',preview:'img/map-zone2/v1/zone2-terrain-v1-preview.webp',fullPx:{w:4915,h:3277},chunk:1024,repairs:false} });
   try {
     assert.equal(isTownZone('asia'), true);
@@ -81,7 +81,7 @@ test('switching a skin on is data: `use` lists the finished groups, the rest fal
     assert.equal(ZONE_SKIN.asia.treeTint, true, 'no own tree art yet -> the borrowed Zone 1 tree keeps its darkening');
     disableTownSkin('asia'); enableTownSkin('asia', { use:['trees'] });
     assert.equal(ZONE_SKIN.asia.treeTint, false, 'own tree art -> no darkening in code');
-    assert.equal(themeArt('town-tree-th', 'asia'), 'img/theme-v4/town-tree-asia-v1.webp');
+    assert.equal(themeArt('town-tree-th', 'asia'), 'img/frontier-route/tree-pine-v2.png');
   } finally { reset(); }
   assert.equal(ZONE_SKIN.th.treeTint, true);
 });

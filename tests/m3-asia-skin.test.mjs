@@ -18,7 +18,7 @@ test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or 
   assert.deepEqual(s.use, ['judgment','houses','trees','lamp','torch','rock']);
   assert.equal(s.treeTint, false);
   assert.deepEqual(s.terrain, {
-    dir:'img/map-zone2/v1/', preview:'img/map-zone2/v1/zone2-terrain-v1-preview.webp',
+    dir:'img/map-zone2/v2/', preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp',
     fullPx:{w:4915,h:3277}, chunk:1024, repairs:false,
   });
   assert.equal(s.flowUrl, null, 'no stale Zone 1 particles on the new ground');
@@ -27,7 +27,7 @@ test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or 
   assert.deepEqual([grid.cols,grid.rows],[5,4]);
   for (let r=1;r<=grid.rows;r++) for (let c=1;c<=grid.cols;c++) {
     const url=townChunkUrl(r,c,'asia');
-    assert.equal(url,`img/map-zone2/v1/r${r}-c${c}.webp`);
+    assert.equal(url,`img/map-zone2/v2/r${r}-c${c}.webp`);
     assert.ok(existsSync(new URL('../'+url,import.meta.url)),url);
   }
   assert.equal(ZONE_SKIN.th.terrain.dir,'img/map-zone1/v5/');
