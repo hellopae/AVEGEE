@@ -118,7 +118,7 @@ export const ZONE_SKIN = {
   west: {
     enabled: true,
     terrain: terrain('map-zone3', 'zone3'),
-    flowUrl: null,
+    flowUrl: 'img/map-zone3/v1/flow-v1.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
     stations: { suffix:'west', facade:{
       sala:'img/map-v5/st-sala-west-v2.webp',

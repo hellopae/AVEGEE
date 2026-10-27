@@ -32,6 +32,7 @@ export function drawTownClouds(ctx,time,reduced=false){
  ctx.restore();
 }
 export function drawTownNightEffects(ctx,time,reduced=false){
+ const zone=activeTownZone(),warmBiomes=zone==='th'||zone==='asia';
  const v=view(ctx),inside=(x,y,p=25)=>x>v.x-p&&x<v.x+v.w+p&&y>v.y-p&&y<v.y+v.h+p;
  ctx.save();ctx.globalCompositeOperation='screen';
  // Window/door halos pulse independently, not in synchrony with all the torches.
@@ -43,14 +44,14 @@ export function drawTownNightEffects(ctx,time,reduced=false){
  ctx.restore();if(reduced)return;
  const t=time/1000;ctx.save();
  // Snow is confined to the ice plateau, with world-space drift and a shared camera transform.
- for(let i=0;i<105;i++){
+ for(let i=0;warmBiomes&&i<105;i++){
   const x=2900+mod(seed(i+31)*940+t*(8+seed(i+12)*9),940),y=mod(seed(i+51)*1140+t*(15+seed(i+72)*18),1140);
   if(!inside(x,y))continue;ctx.globalAlpha=.35+seed(i+4)*.4;ctx.fillStyle='#e4f5ff';
   ctx.beginPath();ctx.arc(x,y,1.1+seed(i+20)*1.6,0,Math.PI*2);ctx.fill();
  }
  // Leaves fall beneath the real tree canopies (not across buildings, river or icy courtyard).
  for(const [j,p]of TOWN_PROP_SITES.entries()){
-  if(p.kind!=='tree'||p.biome==='ice'||!inside(p.x,p.y,p.w))continue;
+  if(!warmBiomes||p.kind!=='tree'||p.biome==='ice'||!inside(p.x,p.y,p.w))continue;
   for(let i=0;i<2;i++){
    const age=mod(t*.12+seed(j*3+i),1),x=p.x+(seed(j+i+4)-.5)*p.w*.7+Math.sin(age*6+j)*12,y=p.y-p.w*.8+age*p.w*.8;
    ctx.save();ctx.translate(x,y);ctx.rotate(t*.7+j+i);ctx.globalAlpha=Math.sin(age*Math.PI)*.75;

@@ -188,3 +188,23 @@ test('L3: Asia repaint flow excludes walkable floor and bridges, with bounded pa
     assert.ok(e.particles().length>20,'Asia flow actually emits');
   }finally{applyTownZoneLayout('th');}
 });
+
+test('L3: West flow follows cold water only, excluding snow roads and bridge tops',()=>{
+ const p=readPng('img/map-zone3/v1/flow-v1.png'),f=decodeFlow(p.rgba,p.w,p.h);
+ let water=0,falls=0;
+ for(let i=0;i<f.kind.length;i++){
+  const k=f.kind[i];if(!k)continue;assert.ok(k===4||k===5,'frozen realm has no lava particles');
+  if(k===4)water++;else{falls++;assert.equal(f.dx[i],0);assert.equal(f.dy[i],127);}
+ }
+ assert.ok(water>10000&&falls>2000);
+ for(const [x,y]of [[375,250],[360,390],[1170,165],[980,394],[1285,625],[768,740]])assert.equal(f.kind[y*f.w+x],0,`bridge ${x},${y}`);
+ applyTownZoneLayout('west');
+ try{
+  for(let y=0;y<f.h;y+=2)for(let x=0;x<f.w;x+=2)if(f.kind[y*f.w+x])
+   assert.equal(townFloorAt((x+.5)*f.unitX,(y+.5)*f.unitY),false,'snowy road stays dry');
+  seedFlow(7);const e=createFlowEngine(f),all={x0:0,y0:0,x1:TOWN_SIZE.w,y1:TOWN_SIZE.h};
+  for(let n=0;n<90;n++){e.update(1/60,all);assert.ok(e.particles().length<=FLOW_MAX_PARTICLES);
+   for(const q of e.particles())if(q.type!==4)assert.ok(e.kindAt(q.x,q.y)>0);}
+  assert.ok(e.particles().length>20);
+ }finally{applyTownZoneLayout('th');}
+});
