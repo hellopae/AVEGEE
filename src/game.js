@@ -345,7 +345,7 @@ function mkLines(soul, g) {
     const deny = known.length && [
       `เรื่อง${known[0].t} {i}ไม่ได้ทำอย่างที่สำนวนเขียน{p}`,
       `เรื่อง${known[0].t} {i}เลิกมานานแล้ว{p} ท่านไปถามคนที่บ้านก็ได้`,
-      `เรื่อง${known[0].t} {i}แค่ทำตามคนอื่น{p} ไม่ใช่ความผิดของ{i}`,
+      `เรื่อง${known[0].t} {i}โดนใส่ความ{p} คนอื่นเป็นคนทำ`,
     ];
     if (deny) out.push({ kind: 'deny', t: voice(Array.isArray(deny) ? pickFresh(deny, recent) : deny, soul.sex), sin: known[0].s, deedIndex:soul.deeds.indexOf(known[0]) });
   }

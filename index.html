@@ -1706,7 +1706,6 @@ dialog.intro-comic-dialog.verdict-dialog{width:min(96vw,1000px,max(420px,calc((9
   filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));transition:transform .15s}
 .hud-icon-btn:hover img{transform:scale(1.08)}
 .hud-icon-btn--lg{width:clamp(48px,6.6vw,64px);height:clamp(48px,6.6vw,64px)}
-#hud-zone[hidden]{display:none}
 
 .hud-bottom-left{position:absolute;left:3%;bottom:calc(env(safe-area-inset-bottom) + 2.6%);z-index:6;
   display:flex;align-items:flex-end;gap:10px}
@@ -2232,8 +2231,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
         <img src="img/ui/icon-book.png" alt=""></button>
       <button id="hud-bag" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.bag">
         <img src="img/ui/icon-bag.png" alt=""></button>
-      <button id="hud-zone" class="hud-icon-btn hud-icon-btn--lg" data-t-aria="hud.zone" hidden>
-        <img src="img/ui/icon-door.png" alt=""></button>
     </div>
 
 
@@ -2379,14 +2376,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/sentence-colors.js": "./src/sentence-colors.js?v=20261022-p2",
     "./src/soul-portraits.js": "./src/soul-portraits.js?v=20261022-p2",
     "./src/yama-trial-idle.js?v=n2": "./src/yama-trial-idle.js?v=20261022-p2",
-    "./src/game.js": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc-team-a2-a5-b5b-z2",
+    "./src/game.js": "./src/game.js?v=20261028-m2-denial",
     "./src/preload.js": "./src/preload.js?v=20261027-m2-startup-ready",
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261027-startup-ready",
     "./src/battle-result.js": "./src/battle-result.js?v=20261024-b3",
-    "./src/ui.js": "./src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-team-a1-a2-120s-a5-b2-p8-p4-o2",
+    "./src/ui.js": "./src/ui.js?v=20261028-m2-hud-denial",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261027-startup-ready",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-o2",
-    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261021-m2-worker-supplies-o1-p2-p1-hf1-p3-p4-wft-ndc-team-a2-a5-b5b-z2",
+    "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261028-m2-denial",
     "./src/scene.js?v=mapfx-m1-l1": "./src/scene.js?v=20261021-m2-worker-supplies-o1-p1-p4-wft-ndc-a2",
     "./src/town-night-effects.js?v=night-v1": "./src/town-night-effects.js?v=20261027-m2-biome-weather",
     "./src/town-scenery.js?v=l1": "./src/town-scenery.js?v=20261021-m2-flames-ground-r2-z2-code-c3",
@@ -2433,6 +2430,6 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 </script>
 <script type="module" src="src/preload.js?v=20261027-m2-startup-ready"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261021-m2-m3b-worker-supplies-p2-p5-p1-p3-p5b-p7-b1-b3-wft-team-a1-a2-120s-a5-b2-p8-p4-o2"></script>
+<script type="module" src="src/ui.js?v=20261028-m2-hud-denial"></script>
 </body>
 </html>

@@ -4892,10 +4892,6 @@ function updatePlay() {
     z.hidden = !g.zonesOpen().length;
     z.textContent = `🗺️ ย้ายโซน (${g.zoneDef().name})`;
   }
-  const hudZone = $('#hud-zone');
-  hudZone.hidden = !g.zonesOpen().length;
-  hudZone.setAttribute('aria-label', t('hud.zone'));
-  hudZone.title = t('hud.zone');
   const outfit = $('#outfit');
   if (outfit) outfit.hidden = g.outfitsOpen().length < 2;
   const bag = $('#bag');
@@ -4938,7 +4934,6 @@ $('#hud-pause').onclick = openPause;
 $('#hud-settings').onclick = () => openSettings();
 $('#hud-book').onclick = () => openHelp();
 $('#hud-bag').onclick = () => openBag();
-$('#hud-zone').onclick = openZone;
 $('#hud-open-court').onclick = toggleCourt;
 $('#hud-trial').onclick = goTrial;
 
