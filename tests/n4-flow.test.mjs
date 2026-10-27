@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 import { decodeFlow, createFlowEngine, seedFlow, FLOW_W, FLOW_H, FLOW_KIND, FLOW_MAX_PARTICLES, drawTownFlow } from '../src/town-flow.js';
-import { townFloorAt, TOWN_SIZE } from '../src/town-layout.js';
+import { townFloorAt, TOWN_SIZE, applyTownZoneLayout } from '../src/town-layout.js';
 
 // Minimal PNG reader (8-bit RGB, non-interlaced) so the baked asset can be checked without a browser.
 function readPng(file) {
@@ -159,4 +159,32 @@ test('N4: scene.js hands the town ground to town-flow and the old colour-guess a
   assertModuleRelease('src/town-flow.js',readReleaseFile('index.html'),'src/scene.js');
   assert.doesNotMatch(flow, /TMPDEBUG|globalThis\.__(?:dens|fp|noFlow)/, 'release has no debug flow controls');
   assert(readdirSync('img/map-zone1/v4').includes('flow-v4.png'));
+});
+
+test('L3: Asia repaint flow excludes walkable floor and bridges, with bounded particles', () => {
+  const p=readPng('img/map-zone2/v2/flow-v2.png'),f=decodeFlow(p.rgba,p.w,p.h);
+  assert.equal(f.w,FLOW_W);assert.equal(f.h,FLOW_H);
+  const count={2:0,3:0,4:0,5:0};
+  for(let i=0;i<f.kind.length;i++){
+    const k=f.kind[i];if(!k)continue;assert.ok(k in count);count[k]++;
+    assert.ok(Math.abs(Math.hypot(f.dx[i],f.dy[i])/127-1)<.06,'unit flow direction');
+    if(k===3||k===5){assert.equal(f.dx[i],0);assert.equal(f.dy[i],127);}
+  }
+  for(const k of [2,3,4,5])assert.ok(count[k]>2000,`surface ${k} present`);
+  for(const [x,y]of [[375,250],[360,390],[1170,165],[980,394],[1285,625],[768,740]])
+    assert.equal(f.kind[y*f.w+x],0,`bridge ${x},${y} stays dry`);
+  applyTownZoneLayout('asia');
+  try{
+    for(let y=0;y<f.h;y+=2)for(let x=0;x<f.w;x+=2){
+      if(f.kind[y*f.w+x])assert.equal(townFloorAt((x+.5)*f.unitX,(y+.5)*f.unitY),false,'no effects on walkable floor');
+    }
+    seedFlow(7);const e=createFlowEngine(f);
+    const all={x0:0,y0:0,x1:TOWN_SIZE.w,y1:TOWN_SIZE.h};
+    for(let n=0;n<90;n++){
+      e.update(1/60,all);
+      assert.ok(e.particles().length<=FLOW_MAX_PARTICLES);
+      for(const q of e.particles())if(q.type!==4)assert.ok(e.kindAt(q.x,q.y)>0,'stays on a painted surface '+JSON.stringify(q));
+    }
+    assert.ok(e.particles().length>20,'Asia flow actually emits');
+  }finally{applyTownZoneLayout('th');}
 });

@@ -105,10 +105,10 @@ export const ZONE_SKIN = {
   },
   asia: {
     enabled: true,
-    // C3: registered East Asian repaint; keep Zone 1 repairs and flow off this ground.
+    // C3/L3: registered repaint with a separately traced, walk-floor-excluding flow field.
     terrain: {...terrain('map-zone2','zone2'),dir:'img/map-zone2/v2/',preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp'},
     rootAnchors:{'tree-pine-v2.png':[.567556297,.958841463],'tree-maple-v2.png':[.569224354,.987804878]},
-    flowUrl: null, // Optional effects wait for a profile traced against the new water/lava.
+    flowUrl: 'img/map-zone2/v2/flow-v2.png',
     use: ['judgment','houses','trees','lamp','torch','rock'],
     // Own Asia tree sprites disable TREE_TINT through finalize().
     stations: { suffix:'asia', facade:{...ASIA_TOWN_SPRITES.stations}, facadeSizes:{ ...FACADE_SIZES } },

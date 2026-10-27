@@ -197,6 +197,13 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
         if (t !== T_BUBBLE) {
           x += field.dx[c] / 127 * spd[i] * dt; y += field.dy[c] / 127 * spd[i] * dt;
         }
+        // A narrow painted channel can end inside this step. Reject the new
+        // position immediately, before a streak is drawn on the bank for one frame.
+        // Match the Float32 position buffers: rounding can otherwise put a
+        // checked double just across the next cell boundary when it is stored.
+        x = Math.fround(x); y = Math.fround(y);
+        const nextKind = kindAt(x, y);
+        if (!nextKind || family(nextKind) !== family(kind[i])) { alive[i] = 0; continue; }
         if (onFloor(x, y)) { alive[i] = 0; continue; }
       }
       // Left the (padded) camera: come back somewhere visible instead of drifting on unseen.

@@ -12,7 +12,7 @@ import { t, setLang } from '../src/i18n.js';
 import { harbourTravel } from './helpers/travel.mjs';
 globalThis.Image = class {};
 
-test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or tree tint', () => {
+test('M3b: Asia ships its own terrain and flow without Zone 1 repairs or tree tint', () => {
   const s=ZONE_SKIN.asia;
   assert.equal(isTownZone('asia'), true);
   assert.deepEqual(s.use, ['judgment','houses','trees','lamp','torch','rock']);
@@ -21,7 +21,8 @@ test('M3b: Asia ships Q5 terrain and S2b houses without Zone 1 repairs, flow or 
     dir:'img/map-zone2/v2/', preview:'img/map-zone2/v2/zone2-terrain-v2-preview.webp',
     fullPx:{w:4915,h:3277}, chunk:1024, repairs:false,
   });
-  assert.equal(s.flowUrl, null, 'no stale Zone 1 particles on the new ground');
+  assert.equal(s.flowUrl, 'img/map-zone2/v2/flow-v2.png', 'flow belongs to the registered Asia repaint');
+  assert.ok(existsSync(new URL('../'+s.flowUrl,import.meta.url)));
   assert.ok(existsSync(new URL('../'+s.terrain.preview,import.meta.url)));
   const grid=townTerrainGrid('asia');
   assert.deepEqual([grid.cols,grid.rows],[5,4]);
