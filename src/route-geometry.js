@@ -56,8 +56,8 @@ export const ROUTE_GEOMETRY = {
     corridor:BORDER23_CORRIDOR, checkpointVertex:BORDER23_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER23_MASK,
     // L3: authored falls and weather regions on the cave repaint. The road/mask
     // stays unchanged; warm leaves stay west of the snow-covered mountains.
-    ambient:{trees:[],waterfalls:[[.066,.53,.08],[.192,.477,.09],[.264,.61,.10],
-      [.305,.705,.11],[.244,.833,.08],[.601,.478,.095],[.608,.81,.08],[.79,.775,.06]],
+    ambient:{trees:[],waterfalls:[[.066,.53,.08],[.264,.61,.10],
+      [.621,.472,.08],[.615,.82,.07]],
       leafArea:[0,0,.44,1],snowArea:[.48,0,1,1]},
   }),
   'west:cyberhell': row('west:cyberhell', {

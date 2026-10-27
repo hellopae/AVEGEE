@@ -11,7 +11,7 @@ Use the existing procedural pipeline. No Shado replacement was selected.
 - Frozen/cyber towns no longer run the warm-canopy leaf pass or the extra
   hardcoded Zone1 eastern snow-plateau pass. Their existing sky weather remains.
   Zones1/2 retain their original local leaves and eastern snow.
-- Border2–3 has8 authored waterfall strokes,26 drifting leaves confined to
+- Border2–3 has4 authored waterfall anchors,26 drifting leaves confined to
   the warm left44%, and48 snowflakes in the cold right52%. The intermediate
   transition strip is clear. Reduced motion skips these moving accents.
 - Border1–2 keeps its prior data/renderer defaults; route geometry, walk masks,
