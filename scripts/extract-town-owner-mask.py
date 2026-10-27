@@ -24,6 +24,8 @@ parser.add_argument('--out', type=Path, default=None)
 parser.add_argument('--dilate', type=int, default=None)
 parser.add_argument('--threshold', type=int, default=64)
 parser.add_argument('--write', action='store_true')
+parser.add_argument('--largest-component', action='store_true', help='Discard disconnected walkable pockets; never dilate owner markings')
+parser.add_argument('--reference-sha256', default=None, help='SHA-256 of the original annotated reference')
 args = parser.parse_args()
 PREVIEW = {'th':'img/map-zone1/v5/zone1-terrain-v5-preview.webp','asia':'img/map-zone2/v1/zone2-terrain-v1-preview.webp',
            'west':'img/map-zone3/v1/zone3-terrain-v1-preview.webp','cyberhell':'img/map-zone4/v1/zone4-terrain-v1-preview.webp'}
@@ -53,8 +55,18 @@ if args.layer is not None:
     removed = int(sum(stats[i, cv2.CC_STAT_AREA] for i in tiny))
     if tiny:
         cells[np.isin(labels, tiny)] = False
+    disconnected = 0
+    if args.largest_component:
+        count2, labels2, stats2, _ = cv2.connectedComponentsWithStats(cells.astype(np.uint8), connectivity=4)
+        if count2 > 1:
+            largest = 1 + int(np.argmax(stats2[1:, cv2.CC_STAT_AREA]))
+            connected = labels2 == largest
+            disconnected = int(cells.sum() - connected.sum())
+            cells = connected
     metadata = {'removed_island_cells': removed, 'source_sha256': hashlib.sha256(args.layer.read_bytes()).hexdigest(), 'mode': 'layer', 'threshold': args.threshold, 'dilate': dil,
                 'walkable_cells': int(cells.sum()), 'total_cells': int(cells.size)}
+    if args.largest_component: metadata['removed_disconnected_cells'] = disconnected
+    if args.reference_sha256: metadata['reference_sha256'] = args.reference_sha256
     runs, last, count = [], False, 0
     for value in cells.flat:
         if value == last: count += 1
@@ -64,7 +76,7 @@ if args.layer is not None:
     if args.write:
         dest = args.out or (root/OUT[args.zone])
         dest.write_text('// Navigation data from the owner-painted red layer for zone %s; not a rendered image.\n' % args.zone +
-            '// Regenerate with python3 scripts/extract-town-owner-mask.py --zone %s --layer <layer.png> --write\n' % args.zone +
+            '// Regenerate with python3 scripts/extract-town-owner-mask.py --zone %s --layer <layer.png>%s --write\n' % (args.zone, ' --largest-component' if args.largest_component else '') +
             'export const TOWN_OWNER_MASK_META='+json.dumps(metadata,separators=(',',':'))+';\n'
             'export const TOWN_OWNER_WALK_RUNS='+json.dumps(runs,separators=(',',':'))+';\n')
         print('wrote', dest)
