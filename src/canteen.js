@@ -1,3 +1,4 @@
+import { startupImage } from './town-startup.js';
 import {SPOTS} from './data.js';
 import {TOWN_HOUSE_SITES} from './town-layout.js?v=k1d';
 import {isTownZone} from './zone-skin.js';
@@ -34,7 +35,7 @@ export function serveMeal(g,w){
 const pictures=new Map();
 export function drawCanteen(ctx,g,t){
  if(!canteenActive(g))return;
- const s=canteenSite(g),url='img/workers/canteen-v1.webp';let im=pictures.get(url);
+ const s=canteenSite(g),url='img/workers/canteen-v1.webp';let im=startupImage(url)||pictures.get(url);
  if(!im&&typeof Image!=='undefined'){im=new Image();im.src=url;pictures.set(url,im);}
  if(im?.complete&&im.naturalWidth){const h=s.w*im.naturalHeight/im.naturalWidth;ctx.drawImage(im,s.x-s.w/2,s.y-h,s.w,h);}
 }

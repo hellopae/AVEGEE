@@ -1,3 +1,4 @@
+import { townStartupAssets, withTownStartupAssets, retainStartupImage } from './town-startup.js';
 import {preloadTownTerrainPreview,TOWN_TERRAIN_PREVIEW} from './town-terrain.js?v=k1d';
 import { townSkinOf, isTownZone } from './zone-skin.js';
 import { createAssetQueue, loadImage, warmImage, zoneTiers, fetchWithTimeout, useImageCacheVersion } from './asset-preload.js?v=yama-live-20261015';
@@ -6,10 +7,14 @@ import { getLang } from './i18n.js';
 
 // H1 (10 ต.ค. 2569) — หน้าโหลดรอเฉพาะ "ชั้น critical" (ดู zoneTiers ใน asset-preload.js)
 // ที่เหลือของโซนโหลดเงียบๆ ตอนเครื่องว่างหลังเข้าเกม · ภาพที่ยังมาไม่ถึงไม่ทำให้เกม error
-const readySet = new Set();
-const queue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : loadImage(url), 3, readySet);
+const readySet = new Set(), startupUrls = new Set();
+const queue = createAssetQueue(async url => {
+  if (url.startsWith('audio:')) return preloadBgm(url.slice(6));
+  const image = await loadImage(url);
+  if (startupUrls.has(url)) retainStartupImage(url, image);
+}, 3, readySet);
 // เบื้องหลัง: ดึงไฟล์ลงแคชโดยไม่ถอดรหัสภาพ · 2 เลนเพื่อไม่แย่งแบนด์วิดท์กับเกม
-const bgQueue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : warmImage(url), 2, readySet);
+const bgQueue = createAssetQueue(url => url.startsWith('audio:') ? preloadBgm(url.slice(6)) : warmImage(url), 2);
 const CATALOG_VERSION = '20261008-zone3-hypnosis-ui-mirror-charge-20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-g2-intro-cover-v2-g3ca-g2b-cover-v5-h1-g5-g3cb-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-j2-layered-battle9-20261015-r1-yama-live-hell1-k1e-l4a-l4b-night-city-v1-map-polish-v1-border-nira-v2-boss-justice-workers-v1-r6-gifts-frontier-scale-terrain-repair-flames-upper-ground-webp-final-court-v2-z2-art-b3-z3-west-wft';
 if (typeof window !== 'undefined') useImageCacheVersion(CATALOG_VERSION);
 let catalogPromise, active = null;
@@ -89,14 +94,13 @@ async function tiersFor(zone, outfit, opts) {
   // generated catalog says, so switching a zone's skin on is data only.
   const skin = townSkinOf(zone);
   if (skin && !t.critical.includes(skin.terrain.preview)) t.critical.unshift(skin.terrain.preview);
-  if (skin && zone !== 'th') {   // Zone 1's tiers stay exactly as the catalog gives them
-    const own = Object.values(skin.art);
-    t.background = t.background.filter(u => !own.includes(u)); t.late = t.late.filter(u => !own.includes(u));
-    for (const url of own) if (!t.critical.includes(url)) t.critical.push(url);
-  }
-  const background = ['audio:bgm-zone', 'img/workers/canteen-v1.webp', `img/workers/worker-${zone}-rest-v1.webp`, ...t.background];
+  // Resolve the same exterior URLs as the renderer, including revised facades
+  // and fallback props absent from a stale generated catalog.
+  for (const url of townStartupAssets(zone)) startupUrls.add(url);
+  const startup = withTownStartupAssets(t, zone);
+  const background = ['audio:bgm-zone', 'img/workers/canteen-v1.webp', `img/workers/worker-${zone}-rest-v1.webp`, ...startup.background];
   background.splice(Math.min(25, background.length), 0, 'audio:bgm-battle');
-  return { critical:[...t.critical, 'audio:bgm-title'], background, late:t.late };
+  return { critical:[...startup.critical, 'audio:bgm-title'], background:[...new Set(background)].filter(u => !startup.critical.includes(u)), late:startup.late };
 }
 
 // ---------- โหลดเบื้องหลังตอนว่าง ----------

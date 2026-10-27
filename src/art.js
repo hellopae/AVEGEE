@@ -1,3 +1,4 @@
+import { startupImage } from './town-startup.js';
 import {yamaFit} from './yama-fit.js';
 import { drawContactShadow } from './scene-style.js';
 import { yamaDownImage } from './tea-recovery.js';
@@ -33,14 +34,18 @@ export const artEpoch = () => epoch;
 /** ให้ art.js รู้ว่าตอนนี้อยู่โซนไหน — ui.js ผูกกับ g.zone ครั้งเดียวตอนเริ่ม */
 export function bindZone(fn) { zoneOf = fn; }
 export function bindHeroStyle(fn) { heroStyleOf = fn; }
-/** เริ่มโหลดรูปทั้งชุดของโซนนี้ล่วงหน้า — เรียกซ้ำได้ ทำจริงครั้งเดียวต่อโซน
- *  (ไม่งั้นย้ายโซนแล้วอาคารเป็นกล่องเปล่าอยู่ครู่หนึ่งระหว่างรอไฟล์) */
+/** Warm only the visible cast. The bounded preload queues own the rest of
+ * the zone; eagerly decoding every pose/cutscene here causes an arrival burst. */
 export function warmZone(z = zoneOf()) {
   // Let the bounded preload queue own the connection while its screen is open.
   if (typeof document !== 'undefined' && document.querySelector?.('#boot, .asset-loading')) return;
   if (warmed.has(z) || !ZMAP[z]) return;
   warmed.add(z);
-  for (const p of Object.values(ZMAP[z])) if (!p.includes('/BG-') && !p.includes('/spirit-')) load('img/' + p); // Soul art loads on demand; do not fetch the whole cast on arrival.
+  for (const key of ['hero-yama','hero-yama-walk-4dir','hero-boss',
+    ...['nira','taan','boon','plerng','kan','dam','guard'].flatMap(k => [`crew-${k}`,`crew-${k}-walk`])]) {
+    const url = artUrl(key, 'png', z);
+    if (url) load(url);
+  }
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
 fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2', { cache: 'no-cache' })
@@ -112,6 +117,14 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
 }
 
 function load(src) {
+  const ready = startupImage(src);
+  if (ready) {
+    const old = CACHE.get(src);
+    if (old?.el === ready) return old;
+    const rec = { el:ready, ok:true, failedAt:0 };
+    CACHE.set(src, rec);
+    return rec;
+  }
   const old = CACHE.get(src);
   if (old && (!old.failedAt || Date.now() - old.failedAt < 10000)) return old;
   const el = new Image();

@@ -183,7 +183,7 @@ function decodeImage(url, timeoutMs) {
     function finish(error) {
       if (ended) return;
       ended = true; clearTimeout(timer); im.onload = im.onerror = null;
-      if (error) { im.src = ''; reject(error); } else resolve();
+      if (error) { im.src = ''; reject(error); } else resolve(im);
     }
     im.onerror = () => finish(new Error('image unavailable'));
     im.onload = async () => {
