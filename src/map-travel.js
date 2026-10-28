@@ -14,7 +14,7 @@ export function beginMapTravel(g,to,{mode='boat',reduced=false}={}){
  if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;
  const pier=mode==='boat'?g.harbourPoint():{x:g.player.x,y:g.player.y};
  const nira=mode==='boat'?pathTo(g.crewOf('nira'),pier):[];
- g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'handoff',elapsed:0,pier,waterY:pier.y+120,niraPath:nira,approachMs:Math.max(1800,length(nira)/TRAVEL_WALK_SPEED),committed:false,focus:{...pier}};
+ g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:pier.y+120,niraPath:nira,approachMs:Math.max(1800,length(nira)/TRAVEL_WALK_SPEED),committed:false,focus:{...pier}};
  return true;
 }
 export function cancelMapTravel(g){const a=g.mapTravel;if(!a||a.committed)return false;g.mapTravel=null;return true;}

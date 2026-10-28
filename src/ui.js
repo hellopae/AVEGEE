@@ -3342,7 +3342,7 @@ function openFrontierWalk(invasionKey = null) {
       const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);openFrontierWalk();};dlg.addEventListener('close',back);
       return;
     }
-    if(dungeonStatus(g)||g.beginBorderDungeon(route.to)){FW.destroy();openDungeon();}
+    FW.destroy();startBorderExpedition(route.to);
   };
   FW = makeFrontierWalk(cv2, g, { bg: frontierBg, kinds, wave, alive: mine, fab, nira, challenge, guide, invasionKey,
     onGate: leaveToZone, onExit: leaveToRoute, gateLabel: `กลับเข้า${gateName}`, exitLabel, exitOpen: routeOpen });
@@ -3361,7 +3361,7 @@ function openFrontierWalk(invasionKey = null) {
   const guidedDeparture=()=>{
     const route=openDungeonRoutes(g)[0];
     if(!route){openFrontierWalk();return;}
-    runBossGuideStory('welcome',()=>{if(dungeonStatus(g)||g.beginBorderDungeon(route.to))openDungeon();else openFrontierWalk();});
+    runBossGuideStory('welcome',()=>startBorderExpedition(route.to));
   };
   const askGuide=()=>{
     FW.destroy();
@@ -4560,6 +4560,23 @@ function openHarbour() {
     });
 }
 function sailTo(to) { startMapJourney(to,'boat'); }
+function kanTravelPortrait() {
+ return `<img src="${esc(crewArt(g.crewOf('kan')||{k:'kan'},'-profile'))}" alt="กาญ" style="width:72px;height:88px;object-fit:contain;flex:none"><div style="min-width:0;overflow-wrap:anywhere;font-size:15px;line-height:1.65"><b>กาญ</b><p style="margin:4px 0 0">${esc(KAN_HANDOFF)}</p></div>`;
+}
+function startBorderExpedition(to) {
+ // The caretaker speaks at the source gate, before a route is created.
+ // A separate top-layer dialog preserves the painted frontier beneath it.
+ const prompt=document.createElement('dialog');prompt.setAttribute('aria-label','กาญดูแลโซนระหว่างเดินทาง');
+ prompt.style='width:min(560px,92vw);max-width:560px;box-sizing:border-box;line-height:1.65';
+ prompt.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">${kanTravelPortrait()}</div><div class="row"><button class="gold" data-border-go>ออกเดินทาง</button><button data-border-stay>ไว้ก่อน</button></div>`;
+ let settled=false;
+ const finish=go=>{if(settled)return;settled=true;prompt.close();prompt.remove();
+   if(go&&(dungeonStatus(g)||g.beginBorderDungeon(to)))openDungeon();else openFrontierWalk();};
+ prompt.querySelector('[data-border-go]').onclick=()=>finish(true);
+ prompt.querySelector('[data-border-stay]').onclick=()=>finish(false);
+ prompt.addEventListener('cancel',e=>{e.preventDefault();finish(false);});
+ document.body.append(prompt);prompt.showModal();
+}
 async function startMapJourney(to,mode='boat') {
  if(g.mapTravel||g.travelLoading)return;
  const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,g.outfit||to);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
@@ -4574,7 +4591,7 @@ async function startMapJourney(to,mode='boat') {
  const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');const host=keepBorder?dlg:document.body;host.append(blocker);
  const speech=document.createElement('div');speech.hidden=true;
  speech.style='display:flex;align-items:center;gap:12px;text-align:left;margin-bottom:8px';
- speech.innerHTML=`<img src="${esc(crewArt(g.crewOf('kan')||{k:'kan'},'-profile'))}" alt="กาญ" style="width:72px;height:88px;object-fit:contain;flex:none"><div style="min-width:0;overflow-wrap:anywhere;font-size:15px;line-height:1.65"><b>กาญ</b><p style="margin:4px 0 0">${esc(KAN_HANDOFF)}</p></div>`;
+ speech.innerHTML=kanTravelPortrait();
  panel.append(speech);
  const text=document.createElement('p');text.style.margin='0 0 8px';panel.append(text);
  const skip=document.createElement('button');skip.textContent='ข้ามฉากเดินทาง';panel.append(skip);
