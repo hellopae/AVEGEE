@@ -4565,16 +4565,23 @@ async function startMapJourney(to,mode='boat') {
  const travelGeneration=dlgGen;g.travelLoading=true;try{await preloadZone(to,g.outfit||to);}catch{g.log('โหลดภาพปลายทางไม่สำเร็จ กรุณาลองใหม่','bad');return;}finally{g.travelLoading=false;}
  if(!dlg.open||travelGeneration!==dlgGen)return;
  if(!beginMapTravel(g,to,{mode,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}))return;
- dlg.close();g.paused=false;setMapZoom(Math.min(1,MAP_ZOOM_LEVELS.length-1));
+ const fromZone=g.zone,keepBorder=mode!=='boat';
+ // Keep the border backdrop in its top-layer dialog until the zone commits.
+ if(!keepBorder)dlg.close();g.paused=false;
+ if(!keepBorder)setMapZoom(Math.min(1,MAP_ZOOM_LEVELS.length-1));
  const panel=document.createElement('section');panel.id='map-travel-panel';panel.setAttribute('role','status');
  panel.style='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:10010;width:min(560px,92vw);box-sizing:border-box;background:var(--panel,#281d22);color:var(--text,#ffe7c4);border:1px solid var(--gold,#d4a355);border-radius:12px;padding:12px;text-align:center;line-height:1.65';
- const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');document.body.append(blocker);
+ const blocker=document.createElement('div');blocker.style='position:fixed;inset:0;z-index:10000';blocker.setAttribute('aria-label','กำลังเดินทาง');const host=keepBorder?dlg:document.body;host.append(blocker);
+ const speech=document.createElement('div');speech.hidden=true;
+ speech.style='display:flex;align-items:center;gap:12px;text-align:left;margin-bottom:8px';
+ speech.innerHTML=`<img src="${esc(crewArt(g.crewOf('kan')||{k:'kan'},'-profile'))}" alt="กาญ" style="width:72px;height:88px;object-fit:contain;flex:none"><div style="min-width:0;overflow-wrap:anywhere;font-size:15px;line-height:1.65"><b>กาญ</b><p style="margin:4px 0 0">${esc(KAN_HANDOFF)}</p></div>`;
+ panel.append(speech);
  const text=document.createElement('p');text.style.margin='0 0 8px';panel.append(text);
  const skip=document.createElement('button');skip.textContent='ข้ามฉากเดินทาง';panel.append(skip);
- const cancel=document.createElement('button');cancel.textContent='ยกเลิก';panel.append(cancel);document.body.append(panel);
+ const cancel=document.createElement('button');cancel.textContent='ยกเลิก';panel.append(cancel);host.append(panel);
  let last=performance.now(),frame=0,done=false;
  const keyguard=e=>{if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(!g.mapTravel?.committed&&cancelMapTravel(g))close();}else if(e.key!=='Tab'&&!panel.contains(document.activeElement)){e.preventDefault();e.stopImmediatePropagation();}};document.addEventListener('keydown',keyguard,true);skip.focus();
- const close=()=>{if(done)return;done=true;cancelAnimationFrame(frame);panel.remove();blocker.remove();document.removeEventListener('keydown',keyguard,true);refresh();g.onChange();};
+ const close=()=>{if(done)return;done=true;cancelAnimationFrame(frame);panel.remove();blocker.remove();document.removeEventListener('keydown',keyguard,true);if(keepBorder){if(g.zone!==fromZone){if(dlg.open)dlg.close();}else openDungeon();}g.paused=dlg.open;refresh();g.onChange();};
  skip.onclick=()=>{if(finishMapTravel(g))close();else{close();g.log('เดินทางไม่ได้ กรุณาลองใหม่','bad');}};
  cancel.onclick=()=>{if(cancelMapTravel(g))close();};
  const animate=now=>{
@@ -4582,8 +4589,9 @@ async function startMapJourney(to,mode='boat') {
   if(!g.mapTravel){close();return;}
   advanceMapTravel(g,now-last);last=now;
   const a=g.mapTravel;if(!a){close();return;}
-  const phase={approach:mode==='boat'?'เรือกำลังเข้าเทียบท่า · นิราและกาญกำลังเดินมา':'กาญกำลังมาส่งที่ชายแดน',handoff:KAN_HANDOFF,board:'ยามาและนิรากำลังขึ้นเรือ',depart:'ออกเดินทางไปทางขวา',arrive:'ถึงปลายทาง · เรือเข้าจากแม่น้ำทางซ้าย',land:'ยามาและนิราขึ้นท่าเรือ'};
-  text.textContent=phase[a.phase];cancel.hidden=a.committed;frame=requestAnimationFrame(animate);
+  const phase={approach:'เรือกำลังเข้าเทียบท่า · นิรากำลังเดินมา',board:'ยามาและนิรากำลังขึ้นเรือ',depart:mode==='boat'?'ออกเดินทางไปทางขวา':'กำลังข้ามชายแดน',arrive:'ถึงปลายทาง · เรือเข้าจากแม่น้ำทางซ้าย',land:'ยามาและนิราขึ้นท่าเรือ'};
+  speech.hidden=a.phase!=='handoff';speech.style.display=speech.hidden?'none':'flex';
+  text.hidden=a.phase==='handoff';text.textContent=phase[a.phase]||'';cancel.hidden=a.committed;frame=requestAnimationFrame(animate);
  };frame=requestAnimationFrame(animate);
 }
 

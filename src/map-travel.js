@@ -2,7 +2,8 @@ import {SPOTS} from './data.js';
 import {harbourDestinations,dungeonStatus} from './zone-travel.js';
 import {findPath,nearestWalk} from './walk.js?v=k1d';
 import {drawBoat,drawStandee,drawCrewWalk} from './art.js';
-export const KAN_HANDOFF='เดี๋ยวข้าดูแลโซนนี้ต่อเอง ไม่ต้องห่วง';
+export const KAN_HANDOFF='ข้าจะดูแลโซนนี้ให้ ไม่ต้องห่วง';
+export const TRAVEL_WALK_SPEED=0.11;
 const lerp=(a,b,p)=>a+(b-a)*p;
 const duration={approach:1800,handoff:3600,board:1000,depart:2400,arrive:2400,land:1000};
 function pathTo(c,p){const start=nearestWalk(c?.x??c?.hx??p.x,c?.y??c?.hy??p.y)||[p.x,p.y],end=nearestWalk(p.x,p.y)||[p.x,p.y];return [start,...(findPath(...start,...end)||[end])];}
@@ -12,8 +13,8 @@ export function beginMapTravel(g,to,{mode='boat',reduced=false}={}){
  if(g.mapTravel||g.battle||g.over)return false;
  if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;
  const pier=mode==='boat'?g.harbourPoint():{x:g.player.x,y:g.player.y};
- const nira=pathTo(g.crewOf('nira'),pier),kan=pathTo(g.crewOf('kan'),{x:pier.x+34,y:pier.y-40});
- g.mapTravel={from:g.zone,to,mode,reduced,phase:'approach',elapsed:0,pier,waterY:pier.y+120,niraPath:nira,kanPath:kan,approachMs:Math.max(1800,length(nira)/.5,length(kan)/.5),committed:false,focus:{...pier}};
+ const nira=mode==='boat'?pathTo(g.crewOf('nira'),pier):[];
+ g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'handoff',elapsed:0,pier,waterY:pier.y+120,niraPath:nira,approachMs:Math.max(1800,length(nira)/TRAVEL_WALK_SPEED),committed:false,focus:{...pier}};
  return true;
 }
 export function cancelMapTravel(g){const a=g.mapTravel;if(!a||a.committed)return false;g.mapTravel=null;return true;}
@@ -40,7 +41,7 @@ export function advanceMapTravel(g,dt){
  a.phase=next;a.elapsed=0;a.progress=0;return true;
 }
 export function drawMapTravel(ctx,g,t,height=48){
- const a=g.mapTravel;if(!a)return;
+ const a=g.mapTravel;if(!a||a.mode!=='boat')return;
  const p=a.progress||0,at=a.pier,boatY=a.waterY;
  const moving=['approach','handoff'].includes(a.phase),onboard=['depart','arrive'].includes(a.phase);
  let boatX=at.x;if(a.phase==='approach')boatX=lerp(at.x-650,at.x,p);
@@ -56,5 +57,5 @@ export function drawMapTravel(ctx,g,t,height=48){
  }
  drawStandee(ctx,'hero-yama',hero.x,hero.y,height,t,'👑',1);
  if(!(moving&&a.phase==='approach'&&drawCrewWalk(ctx,'crew-nira',reader.x,reader.y,height,t*.1,1)))drawStandee(ctx,'crew-nira',reader.x,reader.y,height,t,'📜',1);
- if(!a.committed){const kan=along(a.kanPath,a.phase==='approach'?p:1);if(a.phase!=='approach'||!drawCrewWalk(ctx,'crew-kan',kan.x,kan.y,height,t*.13,1))drawStandee(ctx,'crew-kan',kan.x,kan.y,height,t,'💬',1);if(a.phase==='handoff'){ctx.save();ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(40,25,34,.95)';ctx.fillRect(kan.x-120,kan.y-height-62,240,48);ctx.strokeStyle='#d4a355';ctx.strokeRect(kan.x-120,kan.y-height-62,240,48);ctx.fillStyle='#ffe7c4';ctx.fillText('เดี๋ยวข้าดูแลโซนนี้ต่อเอง',kan.x,kan.y-height-42);ctx.fillText('ไม่ต้องห่วง',kan.x,kan.y-height-22);ctx.restore();}}
+
 }

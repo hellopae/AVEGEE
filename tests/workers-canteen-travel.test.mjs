@@ -51,7 +51,7 @@ function boat(){const g=game();g.zoneTravel.visited.asia=true;g.zoneTravel.ports
 test('on-map journey includes handoff, boarding, right departure, left arrival and commits zone exactly once',()=>{
  const g=boat();let moves=0;const move=g.moveZone.bind(g);g.moveZone=k=>{moves++;return move(k);};assert.equal(beginMapTravel(g,'asia'),true);assert.equal(beginMapTravel(g,'asia'),false);assert.equal(g.walkTo(10,10),false);
  const phases=new Set();for(let i=0;i<2000&&g.mapTravel;i++){phases.add(g.mapTravel.phase);advanceMapTravel(g,120);}
- assert.equal(g.mapTravel,null);assert.equal(g.zone,'asia');assert.equal(moves,1);assert.deepEqual([...phases],['approach','handoff','board','depart','arrive','land']);assert.equal(KAN_HANDOFF,'เดี๋ยวข้าดูแลโซนนี้ต่อเอง ไม่ต้องห่วง');assert.equal(finishMapTravel(g),false);
+ assert.equal(g.mapTravel,null);assert.equal(g.zone,'asia');assert.equal(moves,1);assert.deepEqual([...phases],['approach','handoff','board','depart','arrive','land']);assert.equal(KAN_HANDOFF,'ข้าจะดูแลโซนนี้ให้ ไม่ต้องห่วง');assert.equal(finishMapTravel(g),false);
 });
 test('cancel before departure preserves source, skip travels once, reduced motion keeps readable handoff',()=>{
  const g=boat();beginMapTravel(g,'asia');assert.equal(cancelMapTravel(g),true);assert.equal(g.zone,'th');beginMapTravel(g,'asia',{reduced:true});advanceMapTravel(g,120);assert.equal(g.mapTravel.phase,'handoff');advanceMapTravel(g,120);assert.equal(g.mapTravel.phase,'handoff');assert.equal(finishMapTravel(g),true);assert.equal(g.zone,'asia');assert.equal(finishMapTravel(g),false);
