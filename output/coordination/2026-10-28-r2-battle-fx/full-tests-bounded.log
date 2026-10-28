@@ -1,0 +1,1710 @@
+(node:75227) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30A: every story page puts caption and controls after the image; navigation finishes once (11.574177ms)
+✔ 30A: back navigation retains the separate caption (0.998114ms)
+✔ 30A: zones 2–4 choose real arrival scenes even with a loaded boss profile; zone 1 keeps resolver behavior (4.045479ms)
+✔ 30A: opening intro and both regional arrival pages keep text below the frame (3.436073ms)
+✔ 30A: crop geometry removes letterbox rows without horizontal cropping in the story frame (44.953765ms)
+✔ 30A: crop updates cached, newly loaded and fallback images; thumbnail stays square (1.198462ms)
+✔ 30A: ending popup uses a clipped cover thumbnail, with crop preparation (2.026977ms)
+✔ 30A: only the two requested action sources opt out of mirroring; runtime adds right-facing class (2.469857ms)
+(node:75228) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30B-2: spriteKey ตัด path/นามสกุล/-v2/query (4.201424ms)
+✔ 30B-2: ทีมโซน 3 หันขวามาแล้ว; เทอร์โบโซน 4 ต้องพลิกตามภาพจริง J1 (0.909975ms)
+✔ 30B-2: ศัตรูที่วาดหันขวา (กากิ) ถูกพลิก ตัวอื่นแสดงตามต้นฉบับ (0.508676ms)
+✔ 30B-2: mirrorBox สลับขอบซ้ายตามการพลิก และพลิกซ้ำคืนค่าเดิม (2.444902ms)
+✔ 30B-4: ท่า Rage ของทุกชุดชี้ไฟล์ที่มีจริง (โซน 3-4 ใช้ atk-R ที่หันขวา) (1.027941ms)
+✔ 30B-4: Rage ยังเพิ่มดาเมจ 3 ครั้งเหมือนเดิม และตัวมันเองไม่ทำดาเมจ (22.269537ms)
+✔ 30B-4: ui.js — Rage แสดงฝั่งเรา ไม่ขึ้นที่ศัตรู และไม่ทำให้ศัตรูสะดุ้ง (6.541367ms)
+✔ 30B-5: regenMp เติมเป็นจำนวนเต็ม ไม่เกิน mpMax และเก็บเศษข้ามเฟรม (0.801998ms)
+✔ 30B-5: เซฟเก่าที่ MP เป็นทศนิยมโหลดแล้วเป็นจำนวนเต็ม + ui ปัดตัวเลขทุกจุด (30.288154ms)
+✔ 30B-6/7: ปุ่ม "รับรางวัล" / "ฟังคำตัดสิน" มี TH+EN และไม่มีข้อความเก่าเหลือ (4.874929ms)
+✔ 30B-7: โปรไฟล์หัวหน้าโซน 3 ต่อโค้ดไว้ มีไฟล์เมื่อไหร่ใช้เมื่อนั้น ไม่มีก็ใช้ภาพเดิม (4.683576ms)
+✔ 30B-8: หัวใจสำรองไม่ใช้ภาพกล่องยาแล้ว (ชี้ item-heart + glyph ❤️) และยังชุบชีวิตเหมือนเดิม (0.517204ms)
+✔ 30B-9: บุญและนิราเติมบารมีมีแสง 0.6–1 วิ และเคารพ reduced-motion (5.227425ms)
+✔ 30B-9: บุญเติมบารมีจริงตามเดิม (ตัวเลขสมดุลไม่ถูกแตะ) (4.171856ms)
+✔ 30B-10: คัตซีนยมทูต เต็มกรอบเมื่อจอกว้าง · แถบดำหายไป · จอแนวตั้งถอยไป contain ไม่ตัดหน้าตัวละคร (0.798747ms)
+(node:75229) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pause is idempotent and restores map after one resume (7.530572ms)
+✔ pause is idempotent and restores battle after one resume (2.951789ms)
+✔ pause is idempotent and restores popup after one resume (2.926642ms)
+✔ pause is idempotent and restores cutscene after one resume (2.878883ms)
+✔ stale native close event cannot consume new dialog close handler (3.075003ms)
+✔ all new zones clear previous bridge and walk commands; first souls are new (857.861413ms)
+✔ delayed returns stay in original zone, including legacy saves (154.974429ms)
+✔ a soul actually punished in its branch can still return (191.591827ms)
+✔ voice fraud uses existing kong category and generates contradictory claim (3.34312ms)
+(node:75230) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 1. น้ำสองข้างสะพาน/เกาะหน้าประตูชายแดนเหยียบไม่ได้ · สะพาน เกาะ ประตู จุดเฝ้ายักษ์ยังเดินได้ (4.93428ms)
+✔ 1. คลิกในน้ำข้างประตู → ไปยืนบนเกาะที่ใกล้ที่สุด ไม่ลงน้ำ (56.414649ms)
+✔ 2. กล่องอาคารที่ส่งเข้า setBlocks กันเดินทับทั้งหลัง แต่ช่องประจำของผู้คุม (holes) ยังเดินเข้าถึงได้ (42.127316ms)
+✔ 2. วงรอบตัวละครที่ยืนอยู่: เส้นทางของยมบาทอ้อมวง · ก้าวทับไม่ได้ · ตัวละครอื่น (ไม่ avoid) ไม่เห็นวง (96.189192ms)
+✔ 2. ยมบาทที่ถูกยมทูตเดินมายืนทับ ออกจากวงได้ทุกทิศ (ไม่ติดค้าง) (19.297369ms)
+✔ 2. standPoints รวมทุกตัวที่ยืนบนแผนที่: ยมทูต พ่อค้า ยักษ์ บอสที่ท่าเรือ ผู้ท้าทายที่รอ · ข้ามตัวที่ถูกพาไปกับวิญญาณ (3.244714ms)
+✔ 2. ฉากชายแดน: เส้นทางอ้อมศัตรูที่ยืนอยู่ · คลิกบนตัวศัตรู → ไปจุดใกล้ที่สุดนอกวง (1687.287109ms)
+✔ 3. ปุ่มของอาคารอยู่บนหลังคา (F2 ข้อ 8: ลงมา 48% ของความสูงตัวอาคาร) ไม่ขึ้นกับ bw · x = กึ่งกลางตัวอาคาร · รูปยังไม่มา = สูตรเดิม (2.999293ms)
+✔ 3. mapInteractions ส่งตำแหน่งปุ่มของสถานีผ่าน stationButtonPos (ไม่มีภาพใน node → สูตรเดิม anchor center) (3.264994ms)
+✔ 4. ฉากชายแดน: P5 — ไม่มีปุ่ม #frw-gate / #frw-exit แล้ว เดินถึงวงบนพื้นแล้วออกเอง (วงเดิมของปุ่มยังเป็นจุดเดียวกัน) (11.229976ms)
+✔ 5. ป้ายอีเวนต์ชายแดนโซน 2-4 เลือกรูปบอสปีศาจท้ายระลอก · อีเวนต์ kind ใช้รูป mob ของ kind นั้น ไม่ตกไป spirit7 (4.166298ms)
+✔ 6. ความสูงตัวจริงของยมทูตทุกตัวทุกโซน (ท่าเดิน) อยู่ใน ±15% ของกันและกัน · ซิสอ็อปโซน 4 ไม่เตี้ยกว่าเพื่อน (1.336163ms)
+✔ 6. ท่ายืน: ขยายเฉพาะทัณฑ์โซน 4 (ทุกท่า) ให้ 0.871 × fit ≈ 1 · โซนอื่น/ตัวอื่นไม่เปลี่ยน (0.571208ms)
+✔ E1 supersedes 30D orientations; zone round trips restore geometry (15.98977ms)
+(node:75237) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30E: regional prison row stays on the landing, separated from Nira and the guard at both requested sizes (5.454239ms)
+✔ 30E: long Thai/English names fit without splitting combining marks; short names stay intact (44.346613ms)
+✔ 30E: real manifest resolves every popup to its own zone image and anchors, including fallback (25.496311ms)
+✔ 30E: renderer uses bounded nameplates for both occupied and waiting prison slots (359.083685ms)
+✔ 30E: all new popup strings are present in Thai and English (2.477877ms)
+(node:75239) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30F: CyberHell translations move hits and worker/service points together and restore on every branch change (19.000351ms)
+✔ 30F: selected story image is 16:9; selected regional map sprites have alpha and are registered (554.034439ms)
+✔ 30F: real alpha footprints and lava mask allow paths to every station with all buildings present; old saves restore (4316.588262ms)
+✔ 30F review: new Rage image is full-bleed, so the old letterbox crop is gone from cutscene-presentation (4.465403ms)
+✔ themed sprites keep every zone station reachable with its terrain or town street layout (13503.946675ms)
+(node:75249) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ roar points to an unexamined evidence claim in every authored case, without RNG (20.870424ms)
+✔ discovery queue covers pickups, shops, levels, abilities and survives save; legacy saves seed owned items (30.788979ms)
+✔ discovery modal waits for reward and existing dialogs, shows one entry, and acknowledges only on close (7.111481ms)
+✔ all item icons have files or usable error fallback; sword shares the helper and lotus name has no duplicated emoji (7.402274ms)
+✔ outfit cards use the same ownership rule as equipping, show a visible lock reason and enable owned outfits (6.276574ms)
+✔ ordinary close dispatch preserves reward and level priority before explanations (6.269293ms)
+✔ roar handles generated cases and exhausted interrogation attempts without inventing evidence (83.584126ms)
+(node:75259) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ นิราตรวจหลังครบวาระ แล้วบุญแยกเกิดใหม่กับขึ้นสวรรค์ (421.398681ms)
+✔ คนไม่เข็ดกลับคิว และผลตรวจไม่สุ่มซ้ำ (166.398772ms)
+✔ ประตูสวรรค์ปฏิเสธคนที่ส่งผิด และตะรางรอสร้างประตูให้เสร็จ (224.59892ms)
+✔ ครบวาระทัณฑ์เข้าตะราง ส่วนดวงบริสุทธิ์รอบุญที่ประตู (576.382882ms)
+✔ เดินตามทางจากสถานีไปตะราง แล้วตะรางไปประตู ก่อนเปลี่ยนรายชื่อ (615.99598ms)
+✔ เส้นทางคำนวณจากตำแหน่งสถานีปัจจุบันทุกโซน (1435.3065ms)
+✔ เซฟระหว่างเดินแล้วโหลดส่งถึงปลายทางหนึ่งครั้ง; เซฟเก่ายังโหลดได้ (383.993976ms)
+✔ ไมเกรตเซฟเก่า: bossArriveSeen ที่ติดธงมาก่อนแพตช์ต้องรีเซ็ตเฉพาะโซนที่ยังไม่ชนะบอส (10.107486ms)
+(node:75262) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ice deals immediate damage to all living foes and suppresses exactly one counter turn (29.203046ms)
+✔ wind damages every foe once, charges MP once, and does not freeze them (4.097024ms)
+✔ hypnosis makes every foe attack a different foe in the same enemy phase (4.75772ms)
+✔ area kills finish battle; hypnosis handles simultaneous kills and a single survivor (14.453ms)
+✔ Valkyrie spear hits every living target at the original damage, MP cost and cooldown (4.300385ms)
+✔ spear area kills all targets and single-target sword/fire stay unchanged (9.659947ms)
+(node:75270) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 28D revisions and MP icon exist and are preloaded by their consumers (3.672159ms)
+✔ ruler lookup selects v2 in both zones, with an old-manifest fallback (45.168387ms)
+✔ prep-art preserves story letterboxing, revision names and real asset formats (560.769001ms)
+✔ L4a: all regional sword variants ship in manifest and zone preload (12.692331ms)
+✔ L4a: cold/failed images are safe; warm images retain original tips and angles without filters (1.908123ms)
+✔ zone bundle covers rooms, intro and chosen outfit without downloading every branch (27.736779ms)
+✔ bounded concurrency, retries, failed URLs retried on next run, successes reused (18.552434ms)
+✔ image gate waits for decoding and rejects missing/stalled images (10.667699ms)
+✔ zone transition pauses before opening arrival and repeated change events do not duplicate loading (15.218338ms)
+✔ image cache name follows catalog version and older avegee-images caches are deleted (2.54461ms)
+✔ เข้า-ออกฉากต่อสู้ซ้ำ 10 ครั้ง: 1 AudioContext, <audio> ต่อเพลงตัวเดียว, ไม่สลับ src, ไม่ซ้อนเกินสองเพลง, ผลรวมไม่เกิน bgm (14.477035ms)
+✔ crossfade มี fade จริง: ไม่มีขั้นความดังกระโดดเกินหนึ่งก้าวของ ticker (0.76437ms)
+✔ สลับรัวในมิลลิวินาทีเดียวกัน 40 ครั้ง: ไม่ซ้อน ไม่เกิน bgm ไม่ขว้าง RangeError (1.969982ms)
+✔ ค่า bgm เสียหายใน localStorage (เกิน 1 / NaN) ไม่ทำให้พัง (3.032052ms)
+✔ ปิดเสียง (AUDIO.on=false): เพลงความดัง 0 ทุก element (0.569087ms)
+✔ ทุกท่าไม้ตายในฉากต่อสู้และพลังในวงไต่สวนมีเสียงของตัวเองที่มีจริงในตาราง (0.983791ms)
+✔ เสียงใหม่ทุกเสียงดังขึ้นจริง สั้นไม่เกิน ~1 วิ และผลรวมชั้นที่ซ้อนกันไม่เกิน 0.8 (ไม่กลบเพลง/ไม่ล้น) (12.17484ms)
+✔ ปิดเสียง effect แล้วเงียบ: AUDIO.on=false หรือสไลเดอร์ sfx=0 ไม่สร้างโหนดเสียงเลย (2.423915ms)
+✔ preloading downloads whole music once, reuses track, and does not autoplay (3.337503ms)
+(node:75363) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B1 measured endpoint leaves a sprite-width-aware gap in either direction and aligns feet (2.982655ms)
+✔ B1 outbound, contact hold, return and exact home position (2.456999ms)
+✔ B1 real command damages exactly once at contact and holds the turn until home (reduced=false) (25.616021ms)
+✔ B1 real command damages exactly once at contact and holds the turn until home (reduced=true) (4.465647ms)
+✔ B1 a delayed tick still dispatches pose, one hit, return then finish in order (0.83635ms)
+✔ B1 only physical melee recipes opt in; ranged, magic, healing and items stay on their existing path (0.60798ms)
+(node:75370) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B1 IDs are unique across all kinds/zones; Nira has one global identity (17.42556ms)
+✔ B1 actual v3 branch topology loads all owned actors and preserves every value (32.263747ms)
+✔ B1 migration is idempotent including zero morale, entry snapshots and invalid team keys (45.575719ms)
+✔ B1 dormant actors share roster state; moveZone round trip preserves stats and ownership (47.505123ms)
+✔ B1 backup precedes migration, remains unchanged on repeat, and failed backup stops restore (21.539635ms)
+✔ B1 new hires and guards get IDs immediately; normal party remains limited to two (4.118069ms)
+✔ B1 migration supplies missing hunger, keeps guard morale/training/CD and supports v2 (22.600305ms)
+(node:75379) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B2 Nira selects six IDs across zones, duplicate kinds, no truncation; Guard is separate (65.667131ms)
+✔ B2 zero morale, resting and locked branches cannot join; removal remains possible (9.650847ms)
+✔ B2 map rests apply ID team edits and keep six into the next encounter (26.13771ms)
+✔ B2 town keeps two local helpers while ordinary frontier retains the selected local team (13.375963ms)
+✔ B2 helper morale, cooldown and trained damage belong to the source ID after battle/save (29.958891ms)
+✔ B2 art uses source zone for both standee/profile and keeps default lookup (21.355573ms)
+✔ B2 returning to a repair branch keeps its original builder even when sv aliases actor (29.274423ms)
+(node:75390) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ four minion waves pay coin and an item exactly once; wave 4 reward precedes cutscene then map (113.602941ms)
+✔ fixed ruler order, individual persisted wins, boss gate, ending only after boss (185.328463ms)
+✔ defeat and reload retry the same ruler without clearing earlier victories (12.893082ms)
+✔ active encounter round trips turn, targets, foes, HP, status and one-use flags (6.73264ms)
+✔ confusion victory also records a single receipt (3.837719ms)
+✔ map preparation remains accessible between every fight and management is suspended (313.601511ms)
+✔ legacy migration is idempotent and keeps the closest explicit Wave x/8 progress without retroactive loot (10.880573ms)
+✔ failed storage blocks acknowledgement and the next encounter; retry does not double pay (4.589784ms)
+✔ map boss stands with the zone-boss standee art, not the battle-only sprite key (7.410405ms)
+✔ B3 battle helper buttons, cooldown title and final-team cards pass the actor object to crewAbility (4.898798ms)
+(node:75404) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B3 zone tables and actual damage/heal match the displayed ability at every training level (195.056085ms)
+✔ B3 paid discipline/intelligence/mercy upgrades do not add attack; strength does (3.07876ms)
+✔ B3 training follows roster IDs and home zone, with shared Yama/Nira and EXP-derived caps (1.958176ms)
+✔ B3 Yama training scales only normal attack, before critical, leaving MP powers unchanged (7.185308ms)
+✔ B3 Kan scales enemy self damage but player hypnosis resets the source multiplier (7.393707ms)
+✔ B3 medicine price/effect table and all three use paths agree for every zone item (73.123681ms)
+✔ B3 medicines retain old-zone effects, cap gains, and do not consume when full or preparation is closed (3.15845ms)
+✔ B3 legacy upLv migration keeps active/dormant crew and Guard bonuses across repeated save/load (22.474909ms)
+✔ B3 all eight training stations are declared without wiring training into minigames (2.642122ms)
+✔ B3 Nira order and active registry recovery use shared training; construction and recovery disable it (14.706213ms)
+(node:75418) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B3 receipt view combines duplicate drops without modifying a paid receipt (4.048408ms)
+✔ B3 display reaches the exact totals within 800ms and announces only once (1.498016ms)
+✔ B3 deadline finishes without animation frames and is cancelled with the dialog (0.652078ms)
+✔ B3 skip finishes once; reduced motion and zero totals do not queue frames (0.631044ms)
+✔ B3 cancellation and receipt identity prevent writes from an old animation (0.834523ms)
+✔ B3 target and status presentation follows live state, deaths and replacement waves (0.747752ms)
+✔ B3 only special moves get a name; ordinary attacks and consumables stay ordinary (0.409888ms)
+✔ B3 real paid mob receipt: opening, skipping, repeated clicking and closing never grant again (30.232772ms)
+✔ B3 close during counting cancels pending frames and cannot clear a replacement receipt (2.719115ms)
+✔ B3 guide and final receipts retain titles, descriptions and exactly one acknowledgement (5.634321ms)
+✔ B3 empty and long loot receipts preserve static quantities and do not invent EXP rows (3.610362ms)
+✔ B3 new UI keys resolve in both languages, including status labels and special names (3.357212ms)
+(node:75421) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ I2-C: both surfaces share icon markup; empty base items and owned higher tiers remain visible (21.793175ms)
+✔ I2-C: bag clicks consume once, fill caps HP using existing item rates, and exhausted/full actions do nothing (5.982572ms)
+✔ I2-C: prep clicks consume once, fill caps HP using existing item rates, and exhausted/full actions do nothing (7.260062ms)
+✔ I2-C: fill stops when HP supplies run out; higher-tier HP supplies still work (4.985925ms)
+✔ I2-C: frontier rest uses the same handlers; entering the next wave prevents further preparation use (7.658664ms)
+✔ I2-C: no inventory disables all three icons and the fill action (4.940257ms)
+(node:75429) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B4 EXP thresholds, caps, zone IDs and global hero identity (24.849583ms)
+✔ B4 lan rewards only the selected trainee; station speed remains unchanged (4.88231ms)
+✔ B4 cancel, interruption, wrong ID and duplicate callbacks cannot reward (27.373162ms)
+✔ B4 successful result only pays once and survives JSON save/load (8.510978ms)
+✔ B4 Guard shares lan/lokan cooldown and two attempts per 100 ticks (2.99947ms)
+✔ B4 no quota before start; unavailable station/actor, pause, and storage failure block start (2.943747ms)
+✔ B4 failed result save rolls back and retry pays exactly once (3.037459ms)
+✔ B4 sword affects actual normal battle attack only; MP abilities/items unchanged (25.764361ms)
+✔ B4 selected helper damage uses its progression, not another branch (2.123543ms)
+✔ B4 original station acceleration still works independently (2.966286ms)
+✔ B4 stone mechanics shared, sword note timing, fire clock finishes at 30 seconds (3.641469ms)
+✔ B4 cancellation input never changes sword/fire score or heat (0.759474ms)
+✔ B4 host freezes timers/input on pause/hidden, abandons and cancels frame/listeners (5.007364ms)
+✔ B4 paused fire host preserves heat and stops exactly once after 30 active seconds (4.781193ms)
+✔ B4 actual helper combat reads only selected actor progression including Guard (10.104914ms)
+✔ B4 finished sessions feed the real B3 power: hero normal attack and selected ally stats rise (2.959297ms)
+✔ B4 in-progress session survives snapshot (needed to report the result) and is cleared on load (10.072517ms)
+(node:75430) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ weights are exactly Guard 3 / Yama 2 / each crew 1; recovery cannot be targeted (7.233108ms)
+✔ actual counters hit crew and Guard, down excludes actions; crew disappears until recovery, guard retains 1 map HP (34.356945ms)
+✔ crew recovers after 60 real seconds including reload; fallen guard retains 1 HP without regeneration (30.700222ms)
+✔ Yama loss stages persist through return, sleep, Nira wake; spare heart precedes loss (20.008128ms)
+✔ six final actors retain distinct HP and CD; cooldown stops paused/hidden and survives reload (27.306882ms)
+✔ down worker stops station progress and movement; last special action still resolves at zero morale (158.066005ms)
+(node:75437) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B5b zone2: refuge is on connected owner floor and keeps all checkpoints and ruler encounter separate (119.269122ms)
+✔ B5b zone2: cleared invasion permits visiting captain but cannot bypass the ruler or enter zone3 (43.967086ms)
+✔ B5b zone2: no refuge talk before unlock, at a distance, during battle or sentencing (4.003556ms)
+(node:75446) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ selection/cancel do not spend turns; selected actor attacks and duplicate confirmation is locked (25.933075ms)
+✔ items reach chosen crew/Guard/Yama; full and MP-ineligible recipients cost nothing (5.962501ms)
+✔ Boon heals chosen friend; special cooldown blocks repetition, ordinary crew attack is removed (4.766322ms)
+✔ one successful command schedules exactly one enemy counter (3.757516ms)
+✔ data-driven petals carry actor identity; court retains old four segments and warrant (3.558788ms)
+✔ actor ownership is rechecked; down recipient and actor cannot execute (4.33041ms)
+✔ Kan applies hypnosis to the selected enemy (4.10166ms)
+✔ final battle exposes eight actors and dispatches to the selected cross-zone twin (30.226272ms)
+(node:75451) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B7 uses top/right/bottom Yama petals and top/right crew or Guard petals (5.007406ms)
+✔ B7 petal files are registered manually in the manifest (2.572347ms)
+(node:75454) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B8 krajok: every level is solvable (brute-force solver), starts unsolved, and the planted solution works (318.03521ms)
+✔ B8 krajok: solving needs the 2 s hold; moving away resets it; score by solve time (3.474747ms)
+✔ B8 krajok: rotate snaps to 15°, wraps, ignores bad input, cancel/strings do nothing (0.883899ms)
+✔ B8 krajok: host runs the real mirror UI, freezes on pause/hidden, abandons and cleans up (12.059235ms)
+✔ B8 krajok: host reports one result when solved (planted answer, real UI path) (3.108864ms)
+✔ B8 krajok → kan: EXP reaches only the selected Kan; cancel, wrong id, repeat give nothing (18.826506ms)
+✔ B8 sawan: 8 breaths fit exactly in 32 s and perfect timing scores 100 (13.956914ms)
+✔ B8 sawan: tolerance edges, accuracy-based score, 6 of 8 needed (29.904802ms)
+✔ B8 sawan: stray presses, repeats, cancel and unreleased holds never score (6.086672ms)
+✔ B8 sawan: host buttons, pause freezes and cancels the hold, abandon cleans up (3.342266ms)
+✔ B8 sawan: host plays a perfect session through pointer events and reports once (13.583878ms)
+✔ B8 sawan → boon: EXP reaches only the selected Boon; cancel gives nothing; heal follows the real progression (4.8375ms)
+✔ B8 sala: every board is solvable by adjacent swaps, starts unsorted, 3–6 swaps, numbers/categories valid (36.631015ms)
+✔ B8 sala: engine rules — select, deselect, reselect, non-adjacent, swaps counted, 2 sets then done, perfect = 100 (1.658075ms)
+✔ B8 sala: wasted swaps lower the score (5% each, floor 70% of a set); partial/unsolved never completes (1.763104ms)
+✔ B8 sala: host UI — buttons ≥6, pause blocks taps, solve through real clicks reports once (2.729956ms)
+✔ B8 sala → nira: EXP reaches global Nira from any zone, nobody else; order/regeneration follow her level (4.079937ms)
+✔ B8 ngiw: schedule — 12 slots in 30 s, 6 thorn slots, thorn never on the mark, no repeated mark cell (10.318222ms)
+✔ B8 ngiw: perfect run = 12 cuts, score 100; 8 cuts completes; 7 does not; thorns cost half a mark (19.052021ms)
+✔ B8 ngiw: only the visible spot counts — late, early, duplicate, wrong slot/kind and pause-cancel taps do nothing (2.823253ms)
+✔ B8 ngiw: host — spots are real ≥ buttons, pointer + click both work once, pause blocks, abandon cleans up (7.83696ms)
+✔ Sword schools share Yama progress, cooldown and quota without increasing Dam or station speed (5.578012ms)
+✔ B8 all 8 training stations are playable: registry, kinds, seconds, trainee kinds and mobile-safe durations (28.388288ms)
+✔ B8 every new game: closing mid-play leaves no frame/listener behind and an old save loads without B8 data (20.538236ms)
+(node:75459) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approved balance constants (3.497718ms)
+✔ every dossier deserves 1–5 terms and Thai level-five share falls (3.284627ms)
+✔ over by two costs 56 ked points (16.068153ms)
+✔ matching primary sin pays a separate bonus of about 30 percent (3.633369ms)
+✔ case completion pays the total once and names the bonus in the log (721.601519ms)
+✔ hammer and healer earn fairness for their actual positive sin (3.18584ms)
+✔ pending saved cases adopt the simple rule while assigned sentences retain their verdict (21.910688ms)
+(node:75466) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ FOE_SCALE: โซน 1 = ค่าเดิม · โซน 2 < 3 < 4 ทั้ง HP และ ATK ของศัตรูทั่วไป (ชุด 28E: อีเวนต์คูณ HP แล้ว) (6.585438ms)
+✔ ศัตรูที่สร้างจริงใช้ตัวคูณโซน: ผีบนแผนที่ · ชายแดน · วิญญาณขัดขืน โซน 2 < 3 < 4 (47.250541ms)
+✔ บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน (14.261228ms)
+✔ G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable (901.320512ms)
+✔ G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity (545.236147ms)
+✔ น้ำมนต์: พ่อค้านรกขาย · ราคา/ปริมาณสมเหตุสมผลเทียบหีบยา · ใช้เติม MP ได้จริงจากกระเป๋า (2.672768ms)
+✔ น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก (9.15267ms)
+✔ สรุปรางวัล: ชนะผีบนแผนที่ → เบี้ยกรรม · EXP · ของที่ตก ตรงกับที่ได้จริง (3.384055ms)
+✔ สรุปรางวัล: แพ้ไม่มี · วิญญาณขัดขืนในห้องไต่สวนไม่เด้ง · บอสที่ปลดพลังใหม่มีพลังในสรุป และคิวเรื่องราวพลังเดิมยังอยู่ (ui เรียงต่อกัน) (6.986833ms)
+✔ สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป (3.095877ms)
+✔ ข้อความหน้าต่างรางวัล/น้ำมนต์/ชื่อพลังมีทั้งไทยและอังกฤษ (1.492659ms)
+✔ น้ำมนต์ดื่มได้กลางศึกทุกประเภท: ผีบนแผนที่ · ชายแดน · อีเวนต์หลายระลอก · บอสโซน · ศึกสุดท้าย · วิญญาณขัดขืน (12.653367ms)
+✔ น้ำมนต์ในวงคำสั่งต่อสู้: มีใน BATTLE.items · ไม่มีอีโมจิ · ค่า MP อ่านจาก ITEMS ที่เดียว (0.421817ms)
+✔ วิญญาณขัดขืนบนแท่นไต่สวน: ชนะแล้วไม่มีสรุปรางวัล และไม่เด้งหน้าต่างรางวัล (คงเดิมตามคุณเป้ 28E) (1.825662ms)
+(node:75479) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ราคาห่อเสบียงลดครึ่งทั้งร้านและแท็บก่อสร้าง (2.405563ms)
+✔ ครบ KPI หรือบอสสาขาเก่ายังไม่จบเกมก่อนศึกสุดท้าย รวมเซฟ v3 ที่เคยติดฉากจบ (34.963999ms)
+✔ ท่าไม้ตายออกครั้งแรกหลังเลือดต่ำกว่าครึ่ง แล้วเว้นอย่างน้อย 4 เทิร์น (0.845603ms)
+✔ ทีมยมบาทน้อย ทัณฑ์ เพลิง ใช้ MP และยาจากกระเป๋าชนะบอสทั้ง 4 โซน (39.535939ms)
+✔ ยมบาทเริ่มที่ประตูบน และเปิดหน้าจัดทีมแล้วเซสชันชายแดนคงศัตรูเดิม (0.979367ms)
+✔ ผู้สร้างอยู่ข้างไซต์จนงานเสร็จ และเซฟเดิมที่ทำ buildK หายกู้กลับได้ (268.399105ms)
+(node:75492) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ กระจกในกระเป๋าไม่ถูกใช้บนแผนที่ แต่พลังในห้องสอบสวนยังทำงาน (18.637109ms)
+✔ อาคารถูกเผาอยู่รอซ่อม และทัณฑ์ติดงานหรือมีเปรตสั่งซ่อมไม่ได้ (4.32997ms)
+✔ ทัณฑ์เดินถึงก่อนเริ่มซ่อม เซฟ/โหลดระหว่างรอและระหว่างซ่อม แล้วกลับจุดประจำ (290.402452ms)
+(node:75502) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ปีศาจบนแผนที่ไม่เสียเลือดหรือกระสุนจากการฟาด/ขว้างหรือเดินถึง (370.037301ms)
+✔ ยักษ์ทวารบาลยังปราบปีศาจบนแผนที่ได้ (4.59639ms)
+✔ เซฟเก่าทิ้งปีศาจชนิดที่ถอดออกและเลื่อน index ชนิดอื่นเพียงครั้งเดียว (28.678813ms)
+✔ ทุกโซนคิวอยู่แนวสะพานและท่าเรือกับจุดคุยบอสเดินถึงได้ (832.759223ms)
+✔ CyberHell มีสิทธิ์เปิดหลังชนะบอสโซน 3 และเดินเรือกลับได้เมื่อค้นพบท่าแล้ว โดยไม่ต้องรอระดับ 5 (30.292549ms)
+(node:75506) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ closed court finishes punishment and afterlife walk without advancing punitive clocks (728.965309ms)
+✔ an escort already dispatched keeps delivering souls while court is closed (515.224975ms)
+✔ closed court admits a returning case without spawning a new soul (2.922424ms)
+✔ hired guard crosses the city waterfront route and defeats a mob without player combat (2539.305027ms)
+✔ without guard player combat remains available and mobs spawn on reachable lower shore in every zone (1730.389256ms)
+✔ older saves without court status restore with an open court (21.332291ms)
+(node:75507) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 27C: เรียกยมทูตช่วยในฉากสู้ได้ตั้งแต่เลเวล 1 และหน้าต่างเลื่อนขั้นไม่มีข้อเรียกยมทูต (14.651429ms)
+✔ 27C: ตวาดข่มขู่ใช้ไอคอนเขี้ยวและไม่มี cutscene ลูกไฟ (5.695355ms)
+✔ 27C: บทสอนไม่อ้างแถบแดง และไม่อ้าง emoji ⏭️/🔒 ที่เปลี่ยนเป็นไอคอนใหม่ (0.571479ms)
+✔ 27C: frontierBreach โซน 1 มี 2 ระลอก และข้อความไทย/อังกฤษไม่บอกว่า 3 (1.490201ms)
+✔ 27C: key i18n ใหม่มีทั้งไทยและอังกฤษ (4.930956ms)
+✔ Thai map fights select biome at the encounter location (3.192595ms)
+✔ route encounters use new wilderness and cave art while other realms keep their own art (0.802108ms)
+(node:75521) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M1 clampCenter keeps the view inside the world (no edge ever shows) (4.001461ms)
+✔ M1 viewTransform: the focus point lands in the middle of the stage, edges stay covered (0.857963ms)
+✔ M1 planCamera lowers the zoom (never below 1) so every keepVisible rect stays on screen (1.594959ms)
+✔ M1 click after transform: mapRect / unmapRect are exact inverses (hit points still land on the sprite) (0.512109ms)
+✔ M1 shake: 2–4 px per axis, 150–250 ms, decays to zero (3.409138ms)
+✔ M1 timing contract: values in the brief (zoom 1.08–1.12 select, 1.2–1.3 skill, dim 35–50 %, hit-stop 60–90 ms) (0.571277ms)
+✔ M1 camera zooms and re-centres, flags busy while moving, and lands exactly on the plan (75.149302ms)
+✔ M1 reduced-motion: no zoom, no pan, no shake — events still fire on schedule, dim still works (403.609511ms)
+✔ M1 settings toggle: off = same as reduced motion, persisted in localStorage; on again restores moves (17.740638ms)
+✔ M1 single speed knob: timeScale shortens every camera duration (116.147831ms)
+✔ M1 cue emits impact exactly once even when a newer cue replaces it mid-way (595.065663ms)
+✔ M1 wiring: only .cam-world is transformed; HUD stays outside; release module and stylesheet identities agree in both entry pages (285.672305ms)
+✔ M1 strikeTime: contact frame of a drawn attack (Codex combat-animation-v1) and camera impact retimed to it (906.031575ms)
+✔ normal party feet form a diagonal with room to step toward foes (3.974952ms)
+✔ eight-member party has two distinct diagonal files and stable back-to-front slots (0.615177ms)
+✔ Yama and companions in two/three-member parties stay within a compact shared file (2.097904ms)
+✔ มีภาพยมทูต/ยักษ์ให้ตรวจครบทุกโซน (3.452174ms)
+✔ ทุกโซน ทุกยมทูต (รวมยักษ์ทวารบาล): ความสูงตัวจริงใกล้เคียงยมบาทน้อยในขนาดจอเดสก์ท็อปและมือถือ (938.601383ms)
+✔ ภาพยมทูตที่กรอบตัวจริงเตี้ย/แคบต่างกัน ได้ความสูงตัวจริงเท่ากันหมด (ไม่ใช่ความสูงกล่องภาพ) (1.889706ms)
+✔ คัตซีนยมทูต/ยักษ์ทวารบาลทุกใบทุกโซน: ส่วนที่มีภาพจริงอยู่ในฉากครบและเต็มอย่างน้อยหนึ่งแกน (1342.360746ms)
+✔ menu anchor excludes transparent pixels and follows the displayed mirrored sprite (5.731721ms)
+(node:75669) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ remembered enemy stays unmarked at rest; attacks and AOE ask for confirmation, heals and cancellation do not mark foes (33.345643ms)
+✔ weapon HUD collapses to sword + effect icon; actual cooldown and notes remain available on request (3.511169ms)
+✔ weapon details retain translated names and quantities (1.22582ms)
+(node:75679) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ each living ally and enemy gets a distinct turn; commands cannot bypass the active unit (35.891172ms)
+✔ dead foes drop out and every remaining enemy acts once per round (6.015741ms)
+✔ defense lasts through enemy turns, reduces damage and expires on actor next action (3.47193ms)
+✔ queue survives JSON save shape and a new wave starts a fresh round (4.283438ms)
+✔ queued hypnosis redirects each enemy on its own turn, and burns tick only on that enemy turn (40.787008ms)
+✔ retreat cannot skip a dungeon checkpoint or bypass a story boss (4.010362ms)
+(node:75683) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ battle HUD labels exist in Thai and English (3.442176ms)
+✔ frontier breach wave count comes from event data, not a hardcoded 3 (19.098484ms)
+(node:75689) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary frontier reward keeps its frontier backdrop and selected office team (33.691264ms)
+✔ accepted guide journey starts with three actual combatants and preserves outside-map reward scene (59.901886ms)
+✔ enemy patrols travel smoothly along the road without snapping back to an anchor (88.660203ms)
+✔ worker office explains empty supplies and offers actual paid or inventory refill paths (9.226849ms)
+(node:75691) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ first boss victory praises once, invitation follows, farewell dismisses once (6.70469ms)
+✔ each guide farewell uses dedicated money and outfit handover artwork (1.665709ms)
+✔ migration skips past praise and completed journeys without deleting unfinished invitations (1.304854ms)
+✔ captured bosses cannot guide until their sentencing has finished (0.576633ms)
+✔ follow positions stay on recorded bends instead of cutting across a ravine (2.161258ms)
+✔ guide state and acknowledged cutscenes survive real game snapshot/restore (33.738332ms)
+✔ acknowledged guide stories repair a partial guide save instead of locking the gate (0.674147ms)
+✔ th farewell grants 500 once on acknowledgment, with a persistent receipt (1.052724ms)
+✔ asia farewell grants 800 once on acknowledgment, with a persistent receipt (0.732676ms)
+✔ west farewell grants 1200 once on acknowledgment, with a persistent receipt (1.346293ms)
+✔ legacy acknowledged farewells and repaired partial saves never retroactively grant money (0.841307ms)
+✔ a real reload before farewell acknowledgment pays exactly once and saves the unpaid receipt (17.033ms)
+✔ a restored active asia route can meet its waiting guide and finish the journey (240.524552ms)
+✔ a restored active west route can meet its waiting guide and finish the journey (106.761816ms)
+✔ th actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (29.574227ms)
+✔ asia actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (36.262064ms)
+✔ west actual snapshots preserve welcome, farewell payment and acknowledged receipt boundaries (34.088407ms)
+✔ หัวหน้ากับบอสของทุกโซนเป็นคนละไฟล์ ไฟล์มีจริงและอยู่ใน manifest (32.998302ms)
+✔ บอสโซน 2-4 ที่ใช้ในเกม = Boss Zone<N> ที่คุณเป้ยืนยัน (ภาพเดียวกัน) (5.858526ms)
+✔ ภาพ "บอสมาถึง" โซน 2-4 เป็นภาพบอส ไม่ใช่หัวหน้า (profile ของบอสโซน 2 ต้องมี ไม่ตกไปใช้ฉากรวม) (0.825584ms)
+✔ ทุกจุดในโค้ดเรียกหัวหน้าด้วยคีย์ hero-boss และบอสด้วย zone-boss (ไม่สลับกัน) (10.630218ms)
+(node:75718) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ captured zone boss is tried, escorted along map route, punished and released exactly once (715.200374ms)
+✔ final boss requires asked dossier, mandatory mirror and all correct maximum choices before ending02 (89.71461ms)
+✔ saved escort and sentence choices resume without receiving another battle reward (406.404062ms)
+✔ lost battles and ordinary mobs never start a boss docket (2.384006ms)
+✔ all four frontier bosses receive one persistent docket and rematches do not repeat sentencing (888.889007ms)
+✔ partial saves with no station or keeper requisition court resources and can finish finale (25.843726ms)
+✔ interrupted final sentencing does not auto-complete or skip back to ending02 on load (8.683052ms)
+✔ actual stepWorld drives court escort, punishment and release; dialog pause release resumes it (607.661461ms)
+✔ released frontier NPC selects newest returned captain without duplicating a ruler guide or active invasion (3.423968ms)
+✔ final world sentencing keeps ending02 locked until mirror, actual punishment and sentencing cutscene acknowledgement (38.089732ms)
+✔ actual completed tenth-wave frontier challenges enter court in every zone; unfinished wave does not (24.489565ms)
+✔ a replayed final capture acknowledgement cannot rewind an already sentenced boss after reload (26.83168ms)
+✔ th court resumes every saved phase without duplicate docket, money or temporary chamber (751.836012ms)
+✔ asia court resumes every saved phase without duplicate docket, money or temporary chamber (673.668888ms)
+✔ west court resumes every saved phase without duplicate docket, money or temporary chamber (564.582591ms)
+✔ cyberhell court resumes every saved phase without duplicate docket, money or temporary chamber (109.701293ms)
+✔ a requisitioned construction site resumes its original build state after a saved court sentence (520.29535ms)
+✔ final court survives capture, mirror, escort and sentencing saves before one ending acknowledgement (106.626984ms)
+(node:75720) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ เข้าบอส — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติถ้าภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก (21.977468ms)
+✔ ไม่มี b.prepUsed / โหมด crew/power เดิมอีกต่อไป — prepareBoss() ถูกถอดออกแล้ว (3.063788ms)
+✔ กินหีบยาเติมบารมีระหว่างเตรียมศึก — ใช้ของจากกระเป๋าจริง กินซ้ำได้หลายครั้งถ้ามีของพอ (4.255242ms)
+✔ ไม่มีหีบยา หรือบารมีเต็มแล้ว — กินไม่ได้ คืน false (3.681801ms)
+✔ กดเข้าสู้แล้ว กินหีบยาเพิ่มไม่ได้ (พ้นช่วงเตรียมศึกแล้ว) (3.619961ms)
+✔ พ่อค้านรกขายของฟื้นฟูและเสบียง ไม่ขายพลังโจมตี (4.581805ms)
+(node:75743) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1 finale triggers even on a lethal hit, injures the hero and awards flame charge once (55.786561ms)
+✔ Zone 2 finale saves Nira, unlocks Rage and allows a visit during three turns of rest (614.727839ms)
+✔ Zone 3 wins grant ice and queue its two story panels (5.536072ms)
+✔ Rage requires 60 active seconds and three boosted attacks before reuse (5.030755ms)
+✔ old saves keep earned powers and derive the revised milestone rewards (7.046189ms)
+(node:75804) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ event ชายแดนบุก: แจ้งเตือน → รับทราบ → ต้องเดินไปถึงชายแดน → สู้ → จบ (state machine) (6582.449403ms)
+✔ ระลอกชายแดนของโซน 2–4: ใช้ flow เดียวกัน · ไม่มีปีศาจ event บนแผนที่ · ทีมที่เลือกที่ชายแดนถูกใช้ในศึก (1630.003069ms)
+✔ เซฟเก่าที่มีปีศาจ event ชายแดนค้างบนแผนที่ ถูกเก็บทิ้ง (418.876859ms)
+✔ frontier tree contact remains at the authored root, under the canopy at every world scale (7.944727ms)
+✔ only the approved 1-2 route selects transparent replacement trees; other areas keep their own art (10.379362ms)
+✔ C3 actual scenery and shadow caster use the same drawn box and keep visible roots at owner feet (19.067125ms)
+✔ C3 anchor compensation stays local to Asia and preserves legacy art elsewhere (2.206101ms)
+✔ registered owner floor is one connected surface and every route segment stays inside it (255.517308ms)
+✔ stair passage connects southwest and northeast road mouths without cliff shortcuts (0.744485ms)
+✔ checkpoints and moving patrols stay on owner floor; an uncompleted checkpoint limits movement (44.059286ms)
+✔ old vertical-route saves migrate at the last cleared checkpoint without losing progress or restoring a battle (2.057478ms)
+(node:75876) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ clock is a reusable item, works with zero MP, persists unlock and cannot be consumed from map bag (47.096476ms)
+✔ clock cannot refresh between ordinary event waves (6.562252ms)
+✔ finale clock shared by all minions, then all four rulers, then final boss, including save/load (117.561835ms)
+✔ handbook worked example agrees with actual punishment calculation (0.478697ms)
+(node:75933) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ตารางค่าพลัง B — ทัณฑ์/เพลิง/ดำ/ยักษ์ ดาเมจตรงเป๊ะ ไม่สุ่ม (34.693244ms)
+✔ คูลดาวน์ B5 — ยมทูตและยักษ์ 120 วิ ของเวลาศึก (3.949121ms)
+✔ ลูกไฟ 40 คงที่ · น้ำแข็ง 30 + ศัตรูข้าม 1 ตา — ไม่สุ่มอีกต่อไป (5.73028ms)
+✔ บุญเติมบารมี 50 (ไม่เกินเพดาน) — ค่าฐานตรงตาราง B (3.515145ms)
+✔ กานต์สะกดจิต — เทิร์นถัดไปของศัตรู มึน ฟาดใส่ตัวเองแทนยมบาทน้อย (7.517271ms)
+✔ ระบบฝึก "แรง" (upgradeCrew) ยังเพิ่มดาเมจต่อยอดบนฐานใหม่ได้ตามเดิม (3.027826ms)
+✔ สะกดจิตฆ่าศัตรูตายพอดี — ประกาศชนะทันทีในคอลเดียวกัน ไม่ต้องรอกดโจมตีอีกครั้ง (4.448809ms)
+✔ each fighting crew/guard has attack and hurt art; Nira is non-combat (2.628957ms)
+✔ frame timing holds recovery at end of hit/attack and loops idle naturally (0.981505ms)
+✔ every crop fits the declared atlas and source ships with fixed feet geometry (2.245496ms)
+✔ boss lookup keeps home identity including possessed rulers and excludes minions (0.98481ms)
+✔ the cliff stays solid outside the new painted stairs (0.94977ms)
+✔ new lava stairs and lower landing are continuously walkable, without walking through an overlay tree (2.737244ms)
+
+Interrupted while running:
+
+⚠ tests/construction-arrival.test.mjs (tests/construction-arrival.test.mjs:1:1)
+⚠ tests/construction-art.test.mjs (tests/construction-art.test.mjs:1:1)
+⚠ tests/construction-workers.test.mjs (tests/construction-workers.test.mjs:1:1)
+⚠ tests/court-worker-cancel.test.mjs (tests/court-worker-cancel.test.mjs:1:1)
+⚠ tests/crew-names-west-cyberhell.test.mjs (tests/crew-names-west-cyberhell.test.mjs:1:1)
+⚠ tests/crew-walking.test.mjs (tests/crew-walking.test.mjs:1:1)
+⚠ tests/cutscene-fit.test.mjs (tests/cutscene-fit.test.mjs:1:1)
+⚠ tests/detail-update.test.mjs (tests/detail-update.test.mjs:1:1)
+⚠ tests/deva-test.test.mjs (tests/deva-test.test.mjs:1:1)
+⚠ tests/document-puzzle.test.mjs (tests/document-puzzle.test.mjs:1:1)
+⚠ tests/dungeon-art.test.mjs (tests/dungeon-art.test.mjs:1:1)
+⚠ tests/dungeon-patrols.test.mjs (tests/dungeon-patrols.test.mjs:1:1)
+⚠ tests/dungeon-view.test.mjs (tests/dungeon-view.test.mjs:1:1)
+⚠ tests/e1-building-flip.test.mjs (tests/e1-building-flip.test.mjs:1:1)
+⚠ tests/e2-frontier-nav.test.mjs (tests/e2-frontier-nav.test.mjs:1:1)
+⚠ tests/e3-events-z1z2.test.mjs (tests/e3-events-z1z2.test.mjs:1:1)
+⚠ tests/e4-events-z3.test.mjs (tests/e4-events-z3.test.mjs:1:1)
+⚠ tests/e5-events-z4.test.mjs (tests/e5-events-z4.test.mjs:1:1)
+⚠ tests/e6-name-labels.test.mjs (tests/e6-name-labels.test.mjs:1:1)
+⚠ tests/ending-video.test.mjs (tests/ending-video.test.mjs:1:1)
+⚠ tests/escort29c.test.mjs (tests/escort29c.test.mjs:1:1)
+⚠ tests/event-progression.test.mjs (tests/event-progression.test.mjs:1:1)
+⚠ tests/expedition-party.test.mjs (tests/expedition-party.test.mjs:1:1)
+⚠ tests/f1-walk.test.mjs (tests/f1-walk.test.mjs:1:1)
+⚠ tests/f12-input.test.mjs (tests/f12-input.test.mjs:1:1)
+⚠ tests/f12-mask.test.mjs (tests/f12-mask.test.mjs:1:1)
+⚠ tests/f2-ui.test.mjs (tests/f2-ui.test.mjs:1:1)
+⚠ tests/ferry-geometry.test.mjs (tests/ferry-geometry.test.mjs:1:1)
+⚠ tests/final-court-view.test.mjs (tests/final-court-view.test.mjs:1:1)
+⚠ tests/final-gauntlet.test.mjs (tests/final-gauntlet.test.mjs:1:1)
+⚠ tests/frontier-breach.test.mjs (tests/frontier-breach.test.mjs:1:1)
+⚠ tests/frontier-cave-progression.test.mjs (tests/frontier-cave-progression.test.mjs:1:1)
+⚠ tests/frontier-navigation.test.mjs (tests/frontier-navigation.test.mjs:1:1)
+⚠ tests/frontier-view-metrics.test.mjs (tests/frontier-view-metrics.test.mjs:1:1)
+⚠ tests/g1-items-guard-rest.test.mjs (tests/g1-items-guard-rest.test.mjs:1:1)
+⚠ tests/g2-intro-art.test.mjs (tests/g2-intro-art.test.mjs:1:1)
+⚠ tests/g3b-frontier-challenge.test.mjs (tests/g3b-frontier-challenge.test.mjs:1:1)
+⚠ tests/g4-items-balance.test.mjs (tests/g4-items-balance.test.mjs:1:1)
+⚠ tests/g5-krata-minigames.test.mjs (tests/g5-krata-minigames.test.mjs:1:1)
+⚠ tests/guard-cutscene.test.mjs (tests/guard-cutscene.test.mjs:1:1)
+⚠ tests/h1-preload-tiers.test.mjs (tests/h1-preload-tiers.test.mjs:1:1)
+⚠ tests/h2-building-block.test.mjs (tests/h2-building-block.test.mjs:1:1)
+⚠ tests/h2-fixes.test.mjs (tests/h2-fixes.test.mjs:1:1)
+⚠ tests/h3-map-ambience.test.mjs (tests/h3-map-ambience.test.mjs:1:1)
+⚠ tests/h4-location-ui.test.mjs (tests/h4-location-ui.test.mjs:1:1)
+⚠ tests/h5a-cover-video.test.mjs (tests/h5a-cover-video.test.mjs:1:1)
+(node:75942) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ tests/construction-arrival.test.mjs (91012.96996ms)
+✔ construction poses resolve to all eight zone-specific transparent PNG assets (3.454577ms)
+(node:75953) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ dam builds while taan is on duty, escorting, or building; busy crew cannot take another job (25.145635ms)
+✔ two simultaneous builds preserve their owners on reload and release each worker independently (185.084973ms)
+✔ dam repairs independently while taan builds, keeping ownership through walking, reload and completion (551.112762ms)
+✔ repair never interrupts an escort and still requires enemies to be cleared (3.937961ms)
+✔ loading a dam-owned repair does not assign taan to the same site (9.072648ms)
+✔ two repair jobs keep separate owners when leaving and returning to a branch (250.799351ms)
+✔ a builder stopped 45 units from lan approaches instead of roaming forever, with a mob present (206.430271ms)
+(node:75995) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ early trial preserves the worker's pickup position before station delivery (805.706758ms)
+✔ early trial preserves the worker's lead position before station delivery (597.130683ms)
+(node:76002) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ crewName() คืนชื่อ west/cyberhell ตามตารางที่คุณเป้อนุมัติ (3.533609ms)
+✔ crewName() โซนไทย (th) ยังใช้ชื่อเดิม ไม่หลุดไปใช้ชื่อ west/cyberhell (2.530839ms)
+✔ g.crew[].name อัปเดตเป็นชื่อโซน west/cyberhell จริงตอนจ้างใหม่ในโซนนั้น (ไม่ใช่แค่ crewName เฉย ๆ) (233.108682ms)
+(node:76022) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all 28 native PNG sheets exist and every crop stays inside its image (60.28993ms)
+✔ all seven crew walk assets resolve the current zone before manifest loads (2.823572ms)
+✔ four crop frames retain the foot anchor, mirror right-facing art and use distance phase (7.941824ms)
+✔ crew and Guard movement advances only with displacement, preserves direction and stops at rest (0.666959ms)
+✔ escort travel reads its actual timeline position without changing game coordinates (0.52834ms)
+✔ all cutscene and story assets preserve proportions and keep visible content inside varied viewports (6.365259ms)
+✖ cutscene CSS cannot crop or zoom beyond the frame; every battle cutscene uses fitted layout (13.528747ms)
+(node:76048) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mirrors unlock only after beating zone-one tester and preserve the reward through save/restore (43.868264ms)
+✔ young conscript and graduate keep young identities in courtroom, battle and old saves (8.185446ms)
+✔ boss pier edges have return paths and a delayed frame cannot overshoot a waypoint (1470.739678ms)
+(node:76093) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the zone-one border boss waits for deva and frontier events (28.381794ms)
+✔ a failed deva test can be retried, and an active save restarts the test (23.788194ms)
+✔ case five schedules deva after prison; case eight schedules frontier after deva (6.412626ms)
+✔ a pre-event save already at the boss keeps its old access; a new save does not (15.579896ms)
+(node:76100) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 300 seeded boards have no initial matches, always have a legal swap, and are reproducible (477.191194ms)
+✔ only adjacent matching swaps count as moves; invalid and no-match swaps preserve state (4.306428ms)
+✔ crossing and long runs count once per connected category, with no wrapped row matches (1.17864ms)
+✔ cascades expose each matched frame, count groups rather than books, and preserve gravity order (7.2964ms)
+✔ blue can be matched despite its zero goal and winning requires the other three categories (285.090544ms)
+✔ dead boards and impossible color distributions recover to a stable playable board (43.632788ms)
+✔ sala win awards order once, caps at 100, persists cooldown, does not award speed (31.255718ms)
+✔ sala floor reaches entrance and document desk while excluding furniture and side walls (1.64124ms)
+✔ failed reward save leaves order and cooldown unchanged and permits retry (5.777261ms)
+✔ owner-approved routes 1-2 and 2-3 use continuous maps; pending 3-4 keeps checkpoint environments (3.166998ms)
+✔ arrival keeps the final gate backdrop and malformed/legacy routes safely fall back (0.640024ms)
+(node:76118) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ six extra patrols move only on the walkable road and proximity chooses their real encounter (154.083178ms)
+✔ patrols cannot start remotely or via forged ids and stale results cannot grant victory (3.039044ms)
+✔ patrol victories persist but never impersonate story checkpoints, including after the cave (4.329785ms)
+✔ restore clears interrupted patrol tokens for retry and rejects unknown saved patrol evidence (1.687466ms)
+✔ Nira stays visible beside Yama even when both enter at progress zero (3.42222ms)
+✔ corridor click routing stays on its finite connected path at every point (7.924435ms)
+✔ clicks beyond an uncleared checkpoint stop at the current route gate (0.813554ms)
+✔ checkpoint battle requires real persisted position at the CURRENT checkpoint (2.972223ms)
+✔ exit requires all victories AND physical exit proximity (0.931145ms)
+✔ E1: one final flip table toggles exactly the eight requested rendered orientations (16.037639ms)
+✔ E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch (13.784765ms)
+(node:76145) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: runtime start, NPC feet, top gate and bottom spawn connect (99.231225ms)
+✔ th: sampled runtime enemy destinations connect from the spawn stairs (5943.541621ms)
+✔ th: source-mask discrepancy remains below 3% (3.247971ms)
+✔ asia: runtime start, NPC feet, top gate and bottom spawn connect (347.666215ms)
+✔ asia: sampled runtime enemy destinations connect from the spawn stairs (21697.94999ms)
+✔ asia: source-mask discrepancy remains below 3% (5.893455ms)
+✔ west: runtime start, NPC feet, top gate and bottom spawn connect (367.535248ms)
+✔ west: sampled runtime enemy destinations connect from the spawn stairs (28712.906918ms)
+✔ west: source-mask discrepancy remains below 3% (3.197305ms)
+✔ cyberhell: runtime start, NPC feet, top gate and bottom spawn connect (251.481539ms)
+✔ cyberhell: sampled runtime enemy destinations connect from the spawn stairs (20225.68063ms)
+✔ cyberhell: source-mask discrepancy remains below 3% (1.370039ms)
+(node:76147) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case five monk → praise → test → mirror once (636.968591ms)
+✔ case five monk → warning → test → mirror once (731.694466ms)
+✔ Asia: two kills → saved descent → intro → deva defeats third → waiting actor → test → disappears (126.064694ms)
+✔ legacy active fire restarts safely, cleared fire waits, completed tester never repeats (48.941091ms)
+✔ breaches keep thresholds, waves, bosses and saved marching state (34.097443ms)
+✔ area damage and self-hit still leave the third spirit to the deva (15.894724ms)
+✔ case five cannot be deferred or replaced; old case-four saves receive the monk (8.360565ms)
+✔ breach actors stand on navigable ground with a reachable boss; UI waits for approach (523.219195ms)
+✔ both deva intro images preload only in their zones and cache version changed (2.386098ms)
+✔ temple beggar deity stays separate from the abbot and old saves load (1252.952491ms)
+✔ legacy case-five monk is refreshed as the innocent temple beggar without changing soul id (17.104778ms)
+(node:76308) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ arrival: only rescue actors/interactions; yama + Taan; unchanged stats/reward; building unlocks (708.16738ms)
+✔ case 3 freezes all walkers and management until vampire win; thaw resumes elapsed position (1713.25594ms)
+✔ vampire approach uses zone art and existing intro; two minion waves, hypnotized party wave, then vampire reward (1.076571ms)
+✔ case 7: run from bottom → saved intro with five bilingual lines → move right → wait → fight → spear once (1130.260682ms)
+✔ old cleared rescue save is never replayed; interrupted deva battle retries on map (898.452075ms)
+✔ west intro preloads in west only; new cache token and rescue proximity UI are wired (8.50636ms)
+✔ frozen transit deadlines resume from same point and vampire loss leaves spirits frozen (630.858511ms)
+✔ deva defeat returns to waiting actor and permits another challenge without replaying intro (624.648836ms)
+(node:76479) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ E5 a→e: warp before approach/preparation, four waves, reinforcement map, control, four rulers, duel and ending exactly once (634.846511ms)
+✔ E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win (52.308503ms)
+✔ E5 cyber breach uses walk-to-boss before existing intro; four waves and spare heart unchanged (6.579811ms)
+✔ E5 three preparation destinations produce reachable paths to merchant, Nira and existing tea pavilion/fallback (490.240812ms)
+✔ E5 every legacy final phase normalizes to a resumable map, reward, story or ending without changing ledger (273.88147ms)
+✔ E5 interrupted presentation reloads each cutscene and map/preparation without repeating rewards (106.913751ms)
+✔ E5 runtime intro is preloaded only in CyberHell, cache bumped, canvas lightning stops with release (1.65559ms)
+✔ E5 old nonempty rewards acknowledge once; serialized battles resume; seen reinforcement saves cannot lock the gate (114.359522ms)
+✔ E5 restore outside Zone 4 must queue Lumen intro on later arrival, and preserve cleared rescue on return (115.052664ms)
+(node:76547) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ map names and bubble share one size; all name drawing sites use mapName (37.496751ms)
+✔ crew names and Nira recovery use dialogue size in all four map zones (234.904388ms)
+✔ final wave, reinforcement, ruler and warp boss names use the same map style (45.485652ms)
+✔ map status tags use compact map type while deva skill prompts keep their own size (0.546057ms)
+(node:76562) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ending plays panorama then father acceptance, using shipped media and posters (26.972191ms)
+✔ ending video navigation pauses outgoing clips, keeps manual completion, and falls back on failure (8.280418ms)
+✔ only the post-zone4 ending uses video; boss and deva stories have shipped stills (2.118688ms)
+(node:76591) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ยมทูตที่คุมการลงทัณฑ์นำวิญญาณไปตะราง วิญญาณตามติด ส่งเสร็จแล้วปล่อยให้เดินกลับเอง (15508.480283ms)
+✔ ยมทูตผู้คุมยังมีดวงอื่นในสถานี → ใช้ยมทูตว่างที่ใกล้จุดรับที่สุด · ผู้คุมไม่ถูกดึงไป (1852.267013ms)
+✔ ไม่มียมทูตว่างเลย → วิญญาณเดินเข้าตะรางเองเหมือนเดิม (1388.500915ms)
+✔ ย้ายโซน / เซฟ-โหลดระหว่างนำทาง ไม่ทิ้งยมทูตค้างสถานะ escort และวิญญาณไม่หาย (2190.181308ms)
+(node:77556) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1 case 10 boss with two demons awards flame charge and opens Zone 2 (91.607199ms)
+✔ Zone 2 fire, deva, and three waves unlock wind fan and reserve Rage for the zone boss (39.069476ms)
+✔ Zone 3 blocks building until hypnotized spirits are freed, then awards hypnosis and spear (2153.839555ms)
+✔ Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retries from wave one (18.776156ms)
+(node:77729) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary border patrol keeps the selected keepers and hired guard even while a guide is available (76.318139ms)
+✔ a dungeon before the guiding journey retains its selected team (17.132088ms)
+✔ th guide joins Yama and Nira as a real combatant only on the journey (64.673404ms)
+✔ asia guide joins Yama and Nira as a real combatant only on the journey (51.829948ms)
+✔ west guide joins Yama and Nira as a real combatant only on the journey (22.955171ms)
+✔ guide cannot attack while down and no office replacement is added; farewell removes the guest and the route stays Yama + Nira (19.233186ms)
+✔ the guide receives a selectable turn and Nira can heal the guide (113.729168ms)
+(node:77773) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ speed is hero-heights/second whatever the frame length (19.697896ms)
+✔ long frames are consumed in small slices, never clamped to 50ms (4.459094ms)
+✔ walk phase follows distance in hero heights and matches the art.js frame counter (1.161065ms)
+✔ room: same distance walked at 60fps, 12fps and 4fps; speed = 2.5 hero heights/s (68.852686ms)
+✔ frontier: speed and walk frames independent of frame rate; background resampled once; always walk frames while moving (110.950632ms)
+✔ frontier: scene image is resampled once, then blitted from a cached canvas every frame (28.835809ms)
+✔ F12 input 1280: real view click handler reaches six branches, key and joystick use 2D positions (2294.973666ms)
+✔ F12 input 390: real view click handler reaches six branches, key and joystick use 2D positions (1710.237254ms)
+✔ F12 input: held directional keys can traverse all six branch paths (16001.299347ms)
+✔ F12 input: mount migrates old save to allowed cell; click and held key cannot bypass first checkpoint (460.886632ms)
+✔ F12 rendering: trees and Yama share root-y draw ordering at an occlusion position (76.113264ms)
+✔ C1 renderer: unavailable replacement falls back to the original tree at its authored root (85.412768ms)
+✔ B5b: actual route view retains cave position after all checkpoints before ruler victory (203.821064ms)
+✔ F12: exact source dimensions, connected white surface, every cell gets finite geodesic progress (65.634503ms)
+✔ F12: every corrected vertex and every segment stays within owner mask (3.477282ms)
+✔ F12: red ground rejects clicks and movement never tunnels through a cliff (17.843119ms)
+✔ F12: all six branch endpoints have click paths and keyboard-sized steps reach them (368.966797ms)
+✔ F12: checkpoint locks apply to every surface cell including branches and cannot be clicked around (242.095365ms)
+✔ F12: old saves snap to closest allowed pixel and valid branch positions survive unchanged (252.615943ms)
+✔ F12: 80 owner roots outside mask, three sprite types, base and big sizes (1.243023ms)
+✔ F12: pending route 3-4 preserves original corridor and disabled vertical travel (22.177851ms)
+(node:77910) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 1. ไม่มีปุ่มฝึกตัวละครในการ์ดห้องแล้ว แต่จุดฝึกบนพื้น → openTraining ยังอยู่ (ระบบฝึกเบื้องหลังไม่ถูกลบ) (22.139244ms)
+✔ 2. ท่ายืนของยมบาททั้ง 4 ชุดไม่ถูกพลิกจนหันซ้าย: ภาพที่วาดหันขวา (บูรพา/ปัจฉิม/นรกเครือข่าย) ขึ้นทะเบียนไม่พลิก · ภาพโซน 1 วาดหันซ้าย → พลิก (2.465347ms)
+✔ 2. corrected sword atlases draw actual frames 0–7 for every outfit; timing remains 580ms (24.992908ms)
+✔ 3. ข้อความ "เพื่อลดกรรม" / "to reduce karma" มี TH+EN และถูกวางใต้ปุ่มมอบดอกบัว (แสดงทุกขนาดจอ) (14.278401ms)
+✔ 3. ป้ายชื่อวิญญาณใต้ตัว (soulLabel) เล็กกว่าเดิม U*0.025 และใช้ในห้องประตูสวรรค์/สถานีลงทัณฑ์ (1.773415ms)
+✔ 4. หนังสือคู่มือ: หน้านาฬิกาย้อนเวลามีรูปไอเท็ม และการ์ดยมทูตทุกคนมีรูปประจำตัวที่มีไฟล์จริง (12.794408ms)
+✔ 5. กระทะทองแดงทั้ง 4 โซนมีพิกัดปากกระทะ 3 ใบเรียงซ้าย→ขวาในกรอบภาพ และ potLayout อ่านโซนจากชื่อไฟล์ฉาก (1.248281ms)
+✔ 5. drawPotSoul: วาดไฟหลังตัว → ตัววิญญาณ (ตัดในปากกระทะ) → แสงกองไฟ ด้วย canvas ล้วน ไม่แตะรูป และเรียกวาดตัววิญญาณเดิมหนึ่งครั้งต่อกระทะ (3.688941ms)
+✔ 6. เสียงท่าไม้ตาย: ชาร์จสั้น → ระเบิด/กระแทก รวม ~1.0–1.5 วิ ผลรวมความดังตอนกระแทกไม่เกิน 0.8 (73.110611ms)
+✔ 6. เคารพปุ่มปิดเสียง (สวิตช์รวม และ สวิตช์เสียงเอฟเฟกต์) · มี hook เสียงพากย์: เติมหนึ่งบรรทัดใน VOICE_LINES แล้วเล่นตามหลังจังหวะกระแทก (2129.522393ms)
+✔ 6. ui.js ใช้เสียงใหม่เฉพาะท่าไม้ตายที่ขึ้นคัตซีนจริง ที่ทั้งฉากต่อสู้และวงไต่สวน · ท่าอื่นใช้เสียงสั้นเดิม (3.881162ms)
+✔ 7. ไอคอนปิดเสียงอยู่ใน img/ui และลง manifest + preload catalog ด้วยมือ (5.524667ms)
+✔ 7. สวิตช์เสียงเพลง/เอฟเฟกต์แยกกัน: เซฟเก่าไม่มีคีย์ = เปิด · ปิดเพลง = ความดังเพลงเป็น 0 · ปิดเอฟเฟกต์ = sfx() เงียบ แต่เพลงยังดัง (3.818152ms)
+✔ 8. ปุ่ม "เข้าไป" เลื่อนลงจากยอดแหลมมาอยู่บนหลังคา (48% ของความสูงอาคาร) และไม่ใช้ class anchor-top (2.54941ms)
+✔ ไม่แตะ walk*/room walking และมินิเกมกระจก (ใบ F1/F3) · เวอร์ชัน cache-bust ขยับแล้ว (4.179183ms)
+(node:77985) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: reviewed berth is close to the quay and bridge clips only river crossings (29.123862ms)
+✔ asia: reviewed berth is close to the quay and bridge clips only river crossings (0.607665ms)
+✔ west: reviewed berth is close to the quay and bridge clips only river crossings (0.569157ms)
+✔ boarding and landing meet the same bobbing deck used while sailing (9.643088ms)
+✔ landing uses the destination quay, never the previous branch pickup path (0.637717ms)
+✔ bridge clipping restores canvas state even if a vessel draw fails (2.070494ms)
+✔ committing between town and legacy ports resets berth and boarding height to destination geometry (870.358797ms)
+(node:78021) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ final docket renders the normal illustrated interrogation arena with bound sprite and four command panels (42.180602ms)
+✔ mandatory mirror reveals selectable answers without auto-selecting or spending the ordinary inventory (338.975574ms)
+✔ saved partially selected final court resumes its revealed answers without queue or coin changes (53.604286ms)
+✔ docket names are escaped and the final UI does not mount for ordinary court cases (4.0731ms)
+✔ bound boss asset is shipped and all entry aliases resolve the new court and shared trial styles (92.047108ms)
+(node:78050) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case ten runs four minion fights, four fixed rulers, then final boss with map rests (472.481197ms)
+(node:78086) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case eight waits for deva test before frontier breach (76.862008ms)
+✔ two waves keep one battle, heal at transition, and reward after both (30.228156ms)
+✔ loss leaves one authority and retry starts at wave one; active save restores pending (72.438574ms)
+✔ cleared deva save at case eight schedules the breach on load (18.909953ms)
+✔ frontier crew and hired guard use the existing combat powers (19.887407ms)
+✔ battle hypnosis makes the target strike itself, unlike ice stun (4.652654ms)
+✔ a confused foe dying to its own counter queues the next wave (13.769825ms)
+(node:78188) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ outer trail opens after border defense; the cave boss still gates zone 2 (12.042099ms)
+✔ cave victory returns to court, then guide invitation and farewell unlock the next city (2980.855868ms)
+✔ free movement supports broad clearings, blocks ravines, and routes around the painted bends (250.778995ms)
+✔ several enemies roam; proximity starts an available encounter once and future victories persist (15.058198ms)
+✔ th: bottom entrance reaches top gate without crossing obstacles (375.145229ms)
+✔ asia: bottom entrance reaches top gate without crossing obstacles (404.865852ms)
+✔ west: bottom entrance reaches top gate without crossing obstacles (405.231961ms)
+✔ cyberhell: bottom entrance reaches top gate without crossing obstacles (251.506248ms)
+✔ Thai annotated fences and tower block walking; clicks route around the tower (134.184852ms)
+✔ Zone-specific water, buildings and machinery block movement and destination clicks (21.795717ms)
+✔ approved cyber frontier mask blocks structures and connects side floor, gate and stairs (32.353309ms)
+✔ frontier follow camera keeps native texture scale on phone and laptop, and scales up (never letterboxes) on a large display (33.273647ms)
+✔ overview contains the complete map and scales every actor with the terrain (0.754292ms)
+✔ frontier decoration trunks stay outside the walkable road (476.705273ms)
+(node:78472) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G1 all four item families restore only the specified resource, round and cap by maximum (61.038325ms)
+✔ G1 rice balls and medicine feed/heal real crew and Guard at Nira; hunger and stock remain correct (5.229449ms)
+✔ G1 battle recipient commands heal crew/Guard, also feed hunger, never give MP to crew (54.010689ms)
+✔ G1 Guard rest requires built pavilion, HP below full and available actor (1808.315094ms)
+✔ G1 travel, save/load, 120-second rest, inactivity, full HP and original post survive real serialization (1395.817413ms)
+✔ G1 old saves load without rest fields; offline completion and dormant branch rest remain valid (1465.016742ms)
+✔ G1 translated controls, bag targets, HP/progress widgets and animated pavilion use real shared state (22.608112ms)
+✔ new-game and menu intro navigation render all five shipped G2 panels (54.4505ms)
+✔ cover selects the v4 art before fallbacks and no cover video layer exists (15.041227ms)
+(node:78504) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ตารางประลอง: ทุกโซนมี 10 wave · wave 10 = บอสชายแดนตัวเดียว · ศัตรูเป็นของโซนนั้น · จุดพัก wave 5 (8.311818ms)
+✔ ตัวเลขสมดุลของอีเวนต์เนื้อเรื่องเดิมไม่ถูกแตะ (เพิ่มแค่รายการท้ายสุดของแต่ละโซน) (13.107054ms)
+✔ refreshZoneEvents ไม่เปิดการประลองเป็นอีเวนต์เนื้อเรื่อง และไม่ขวางประตูบอสโซน (43.311237ms)
+✔ ชื่ออาวุธ 4 ชื่อไม่ชนชื่อเดิมในเกม และไม่ใช้คำต้องห้าม (Dracula) (96.269702ms)
+✔ บทพูดบอส 4 สถานการณ์ × 4 โซน มีทั้งไทยและอังกฤษ (talk/invite/lose/win) (43.124818ms)
+✔ รายชื่อไฟล์ภาพที่ต้องวาด: 16 สไปรท์ฟัน (4 อาวุธ × 4 ชุด) + 4 ไอคอน + 4 คัตซีน ชื่อไม่ซ้ำ (0.648536ms)
+✔ ต้องชนะบอสชายแดนในเนื้อเรื่องก่อน: ก่อนหน้านั้นไม่เริ่ม ไม่ยืนที่ประตู · หลังนั้นเริ่มได้ (26.253793ms)
+✔ zone 1 challenge boss waits by the cave, other zones keep their town stand (31.159543ms)
+✔ บอสประลองย้ายออกจากแผนที่โซนทั้ง 4 และคุยได้จากตำแหน่งผู้เล่นในฉากชายแดนเท่านั้น (46.306705ms)
+✔ รอบแรก: 10 wave → จุดพัก wave 5 บันทึก → แพ้ wave 7 → กลับมาเริ่ม wave 6 → ชนะครบได้อาวุธ (61.862568ms)
+✔ ประลองซ้ำหลังได้อาวุธ: ไม่ได้อาวุธซ้ำ · เบี้ยกรรมครึ่งหนึ่ง + วัตถุดิบชายแดน · ไม่มี EXP/คัตซีนซ้ำ (15.574746ms)
+✔ แพ้ตอนประลองซ้ำ: อาวุธไม่หาย · ไม่เสียความคืบหน้า (3.697114ms)
+✔ สวม/ถอดอาวุธ: สวมได้เฉพาะที่มี · ทีละเล่ม · ถอดแล้วกลับดาบเดิม (14.071666ms)
+✔ ไม่ถืออาวุธ = ฟาดปกติเท่าเดิมทุกประการ (ลำดับสุ่มเท่าเดิม) (30.921488ms)
+✔ ดาบเขี้ยวทัณฑสูร: ฟาดแรงขึ้น +20% · ติดไฟ 15% = 5% ของ HP สูงสุด ต่อเทิร์น 2 เทิร์น (เพดาน 8) · ไม่ลวกในตาที่เพิ่งติด (13.285978ms)
+✔ ไฟลวกฆ่าศัตรูที่ไม่ใช่เป้าได้ และเลือกเป้าใหม่ไม่ค้างที่ตัวที่ตายแล้ว (2.527918ms)
+✔ ดาบโซ่ขาดอากุระ: +25% และคริ +7 จุด% (ฟาดเดียวกันที่ r=0.22 คริเฉพาะเมื่อถือ) (31.575437ms)
+✔ ดาบไม้เท้าราตรี: ดูดเลือด 8% ของดาเมจจริง เพดาน 4 ต่อครั้ง ไม่เกินบารมีสูงสุด (22.967919ms)
+✔ ดาบท้องม้าโทรจัน: +30% · ฟันซ้ำ 10% ด้วยแรง 50% ของครั้งแรก · ไม่ซ้อนตัวเอง (8.846621ms)
+✔ อาวุธมีผลเฉพาะฟาดปกติ: ลูกไฟ/พุ่งชนเพลิง/ผนึกน้ำแข็ง ไม่ผ่านอาวุธ (56.190893ms)
+✔ เพดานรวมเมื่อซ้อนคริ + rage: ไม่เกิน 130% ของฟาดสูงสุดที่ไม่ถืออาวุธ (ในสภาพ rage เดียวกัน) (19.746199ms)
+✔ คัตซีน/ไอคอน/สไปรท์: ไม่มีไฟล์ = ใช้ดาบเดิมของชุด ไม่ error (fallback) (1.367224ms)
+✔ เซฟ/โหลด: อาวุธ ความคืบหน้าจุดพัก ชัยชนะ — โหลดซ้ำแล้วเหมือนเดิม (65.787681ms)
+✔ เซฟเก่า (ก่อน G3b) โหลดได้ · ค่าแปลกถูกกรอง · อาวุธที่สวมต้องมีจริง (58.919023ms)
+✔ ศึกประลองไม่ปนกับระบบเดิม: ไม่ตั้ง pending/active ให้อีเวนต์เนื้อเรื่อง และไม่เปลี่ยนสถานะบอสโซน (24.158596ms)
+✔ จุดยืนส่วนล่างทั้ง 4: เดินไปคุยถึง และบอสไม่ขวางแนวเดินจากบันไดล่างถึงประตูบน (2256.168658ms)
+(node:78602) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G4 item ids: zone variants are gone; every zone shelf sells the same four ids (4.703644ms)
+✔ G4 names: Thai and English names are identical across zones (4 names), from one source (3.827708ms)
+✔ G4 old saves: zone-variant ids merge into the new items, counts add up, nothing lost (inventory, map drops, codex) (75.900831ms)
+✔ G4 Large items: restore 100%, zone 2+ shelf only, ~1.8x price (1.275748ms)
+✔ G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama / reaper / Guard / in battle (66.323705ms)
+✔ G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 120 s rest, save/load, full HP, back to post (3169.26543ms)
+✔ G4 tea rest: Guard keeps working through the same method (restGuard alias) and the dialog lists regular reapers too (1326.134969ms)
+✔ G4 enemy atk: cyber breach and the final-line waves hit harder than before G4 (1.129012ms)
+✔ G4 weapon cooldown: drain triggers, then rests 3 turns, strike bonus never stops; new battle starts ready (57.432508ms)
+✔ G4 weapon cooldown: nothing happens (and nothing is rolled) while resting, for burn / crit / replay (5.689782ms)
+✔ G4 weapon cooldown is shown on screen: HUD badge + attack button, TH and EN text, effect line mentions it (15.588643ms)
+(node:78622) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G5 walk: bright courtyard and carpet; blocks pot plinth, rail, stairs, jars and right stove (12 points) (7.811692ms)
+✖ tests/g5-krata-minigames.test.mjs (14370.158599ms)
+(node:78801) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=false) (87.748768ms)
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=true) (7.008259ms)
+✖ A1 absent cutscene has no blank delay; other melee paths do not acquire a new cutscene (23.230726ms)
+✖ A1 closing/replacing the battle during the introduction does not pay or hit a new battle (19.966349ms)
+✔ A1 actual Guard identity determines branch cutscene independently of Yama outfit (22.809126ms)
+✔ H1: three tiers partition the full zone bundle exactly (nothing dropped, nothing duplicated) (358.676868ms)
+✔ H1: critical tier holds the first-screen art and is far smaller than the whole zone (30.015773ms)
+✔ H1: intro panels gate only the first run; panel 1 is always ready; zone arrival gates the zone introduction (4.997678ms)
+✔ H1: loading screen rotates several TH+EN notes and only one preload instance owns the gate (3.902538ms)
+(node:79017) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ tests/h2-building-block.test.mjs (5943.886971ms)
+(node:79036) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ H2-3: tea pavilion seat and bed sit on the cushion / mattress and stay within reach of the walkable floor in all 4 zones (34.080629ms)
+✔ H2-4: sala "sort documents" button moved up (1.268925ms)
+✔ H2-5: frontier win button keeps its own class (not the bottom .pad) (15.09514ms)
+✔ H2-6: Yama moves left in portrait and the portrait wheel rules stay (23.053778ms)
+✔ H2-7: asia and cyberhell standing art is mirrored like zone 1 so it faces right after the slash; west stays native (1.686159ms)
+✔ H2-2: town zoom/follow control retains the smooth frontier formula (130ms) (10.321119ms)
+✔ H2-3: standing up from the cushion puts Yama back inside the walkable floor in every zone (manual and MP-full stand-up) (151.491746ms)
+✔ H3 spatial masks include painted channels and exclude orange buildings and paths (19.68334ms)
+✔ H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mist with changing frames (47.011562ms)
+✔ reduced motion skips mask allocation and all H3 drawing (1.205035ms)
+✔ mask readback and allocation are cached; both surfaces composite before scaling to scene size (210.698749ms)
+✔ ground effects remain below depth sorted buildings and actors in existing scene renderer (2.16498ms)
+✔ strict sampling rejects an entire cell when even one painted pixel is a rock (4.200098ms)
+✔ map fx visibility floors: zones 1-2 must stay at least as lively as the generic zone 3-4 path (west/cyberhell) (0.861504ms)
+✔ lava glints run down the channel and drop, sideways along the pool and river (0.415842ms)
+✔ lantern glow is additive, flickers between frames, and is skipped for zones without a lamp list or without a sprite (1.817413ms)
+(node:79121) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ archive cards expose portrait, name, stars, score, deserved/given, verdict and escaped deed summary (18.258821ms)
+✔ real-room mirror beam, slider, drag and reward at viewport 844x390 (simulated DOM) (139.840108ms)
+✔ real-room mirror beam, slider, drag and reward at viewport 390x844 (simulated DOM) (35.484154ms)
+✔ mirror stand blocks real pointer movement (before and after placing) and can be approached (276.922418ms)
+✔ scan, rebirth, sky and floating −N draw on canvas; departures fade and sky rises (13.982847ms)
+✔ new rainbow asset exists, is background-only, replaces every rendered gold book, and UI strings have TH+EN (6.556411ms)
+✔ gate sound companions create distinct soft WebAudio tones and obey mute (8.085116ms)
+✔ ledger keeps card identity and complete deeds after closed-case history rolls off and saving (125.834757ms)
+✖ tests/h5a-cover-video.test.mjs (433.988222ms)
+✖ tests/h5b-cover-fx.test.mjs
+✖ tests/hero-walking.test.mjs
+✖ tests/hf-deva-heaven.test.mjs
+✖ tests/hunger.test.mjs
+✖ tests/i1a-gate.test.mjs
+✖ tests/i1a-scenes.test.mjs
+✖ tests/i1b-battle-ui.test.mjs
+✖ tests/i1b-mute.test.mjs
+✖ tests/i1b-yama-facing.test.mjs
+✖ tests/i2b-frontier-boss.test.mjs
+✖ tests/interrogation-integration.test.mjs
+✖ tests/interrogation-picker.test.mjs
+✖ tests/interrogation-rules.test.mjs
+✖ tests/interrogation-ui.test.mjs
+✖ tests/j1-battle.test.mjs
+✖ tests/j3-nira-guard.test.mjs
+✖ tests/j4-rooms-colors.test.mjs
+✖ tests/k1d-terrain.test.mjs
+✖ tests/k1e-sprites.test.mjs
+✖ tests/k2-menu.test.mjs
+✖ tests/k3-perf.test.mjs
+✖ tests/k5-battle-layout.test.mjs
+✖ tests/l1-town-depth.test.mjs
+✖ tests/l2-battle-trial-pause.test.mjs
+✖ tests/l3-biome-weather.test.mjs
+✖ tests/l3-crew-rest-hypno.test.mjs
+✖ tests/l4b-outfit-assets.test.mjs
+✖ tests/l5-auto-encounter.test.mjs
+✖ tests/m1-map-zoom.test.mjs
+✖ tests/m2-battle-fx.test.mjs
+✖ tests/m2-map-access.test.mjs
+✖ tests/m2-route-geometry.test.mjs
+✖ tests/m2-skin-migration.test.mjs
+✖ tests/m2-zone-skin.test.mjs
+✖ tests/m3-asia-skin.test.mjs
+✖ tests/m5-cutscene-fx.test.mjs
+✖ tests/map-ambient.test.mjs
+✖ tests/map-travel-handoff.test.mjs
+✖ tests/menu-ui.test.mjs
+✖ tests/minigame.test.mjs
+✖ tests/mirror-art-puzzle.test.mjs
+✖ tests/mirror-charge-f3.test.mjs
+✖ tests/mirror-pose-a6.test.mjs
+✖ tests/n1-harbour-krajok.test.mjs
+✖ tests/n2-sprite-bleed.test.mjs
+✖ tests/n3b-merit.test.mjs
+✖ tests/n4-flow.test.mjs
+✖ tests/narrative-cutscenes.test.mjs
+✖ tests/new-battle-abilities.test.mjs
+✖ tests/nira-combat.test.mjs
+✖ tests/nira-court-courier.test.mjs
+✖ tests/nira-office-cards.test.mjs
+✖ tests/o1-frontier-fullscreen.test.mjs
+✖ tests/o2-battle-audit.test.mjs
+✖ tests/p1-early-game.test.mjs
+✖ tests/p2-interrogation.test.mjs
+✖ tests/p3-verdict-scene.test.mjs
+✖ tests/p4-diagnosis.test.mjs
+✖ tests/p4-power-ui.test.mjs
+✖ tests/p4-remorse.test.mjs
+✖ tests/p4-talk.test.mjs
+✖ tests/p5-map-exits.test.mjs
+✖ tests/p5b-art-insert.test.mjs
+✖ tests/p5c-worker-scale.test.mjs
+✖ tests/p6-cauldron-fireball.test.mjs
+✖ tests/p7-copy-apply.test.mjs
+✖ tests/p8-copy.test.mjs
+✖ tests/p9-art-insert.test.mjs
+✖ tests/playtest21.test.mjs
+✖ tests/power-cutscene-assets.test.mjs
+✖ tests/prison-break.test.mjs
+✖ tests/progression-mp-outfit.test.mjs
+✖ tests/proximity29b.test.mjs
+✖ tests/prune-catalogs.test.mjs
+✖ tests/r2-battle-fx.test.mjs
+✖ tests/regional-spirit-art.test.mjs
+✖ tests/regional-story-acceptance.test.mjs
+✖ tests/release-20261019.test.mjs
+✖ tests/room-asia29g.test.mjs
+✖ tests/room-cutscene29f.test.mjs
+✖ tests/room-ui4.test.mjs
+✖ tests/s-fixes.test.mjs
+✖ tests/scene-style.test.mjs
+✖ tests/scene-zones.test.mjs
+✖ tests/skill-atk.test.mjs
+✖ tests/soul-battle-sp.test.mjs
+✖ tests/soul-portraits.test.mjs
+✖ tests/story-art.test.mjs
+✖ tests/sword-schools.test.mjs
+✖ tests/system-review-20261007.test.mjs
+✖ tests/tea-entry-walk.test.mjs
+✖ tests/tea-recovery.test.mjs
+✖ tests/tea-staff-rest.test.mjs
+✖ tests/team-hud-interrogation.test.mjs
+✖ tests/terrain-loading-recovery.test.mjs
+✖ tests/theme-v4.test.mjs
+✖ tests/torch-flames.test.mjs
+✖ tests/town-layout.test.mjs
+✖ tests/town-lighting.test.mjs
+✖ tests/town-map.test.mjs
+✖ tests/town-navigation.test.mjs
+✖ tests/town-props.test.mjs
+✖ tests/town-scenery.test.mjs
+✖ tests/town-startup.test.mjs
+✖ tests/town-world.test.mjs
+✖ tests/trial-destinations29c.test.mjs
+✖ tests/trial-reveal.test.mjs
+✖ tests/trial29h.test.mjs
+✖ tests/ui27d-map-items.test.mjs
+✖ tests/ui27e-events.test.mjs
+✖ tests/ui28a.test.mjs
+✖ tests/ui29e.test.mjs
+✖ tests/verdict-comments-a5.test.mjs
+✖ tests/walk-edges.test.mjs
+✖ tests/west-hit-facing.test.mjs
+✖ tests/wide-station-rooms.test.mjs
+✖ tests/worker-dock-resume.test.mjs
+✖ tests/worker-regional-acceptance.test.mjs
+✖ tests/worker-spacing-a4.test.mjs
+✖ tests/worker-walk-a3.test.mjs
+✖ tests/workers-canteen-travel.test.mjs
+✖ tests/workers.test.mjs
+✖ tests/yama-animation-live.test.mjs
+✖ tests/yama-size-a7.test.mjs
+✖ tests/yama-sword.test.mjs
+✖ tests/z2-code.test.mjs
+✖ tests/z3-new-mask-regression.test.mjs
+✖ tests/z3-west-integration.test.mjs
+✖ tests/zone-entry29c.test.mjs
+✖ tests/zone-introductions.test.mjs
+✖ tests/zone-map.test.mjs
+✖ tests/zone-travel-game.test.mjs
+✖ tests/zone-travel.test.mjs
+✖ tests/zone1-map-review.test.mjs
+✖ tests/zone3-refinements.test.mjs
+ℹ tests 776
+ℹ suites 0
+ℹ pass 632
+ℹ fail 5
+ℹ cancelled 139
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110671.265253
+
+✖ failing tests:
+
+test at tests/construction-arrival.test.mjs:1:1
+✖ tests/construction-arrival.test.mjs (91012.96996ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/cutscene-fit.test.mjs:28:1
+✖ cutscene CSS cannot crop or zoom beyond the frame; every battle cutscene uses fitted layout (13.528747ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\n  fitCutsceneImage\(cut, img\)/. Input:
+  
+  "import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';\n" +
+    "import {traitForKeeper} from './interrogation.js';\n" +
+    "import {teamHudHtml,teamManageHtml} from './team-hud.js';\n" +
+    "import {canteenActive,canteenPoint} from './canteen.js';\n" +
+    "import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';\n" +
+    "import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';\n" +
+    "import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';\n" +
+    "import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';\n" +
+    "import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';\n" +
+    "import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';\n" +
+    "import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';\n" +
+    "import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';\n" +
+    'mountInterrogationStyles();\n' +
+    "import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';\n" +
+    "import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';\n" +
+    "import { bindCommandPress } from './command-press.js?v=20261015-k2';\n" +
+    "import { drawTownTerrain } from './town-terrain.js?v=k1d';\n" +
+    "import {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';\n" +
+    "import {routeBossCave} from './route-geometry.js';\n" +
+    "import {mountDungeonView} from './dungeon-view.js?v=l5';\n" +
+    "import { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';\n" +
+    "import { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';\n" +
+    "import { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';\n" +
+    "import { mountDiagnosis } from './diagnosis-ui.js';\n" +
+    "import { powerBadgeHtml, powerSheetHtml, powerName } from './crew-power-ui.js';\n" +
+    "import { diagnosisSubjects, subjectKey } from './diagnosis.js';\n" +
+    "import { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';\n" +
+    "import { westRescuePending, WEST_RESCUE } from './west-events.js';\n" +
+    "import { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';\n" +
+    "import { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';\n" +
+    "import { themeBackground } from './theme-assets.js';\n" +
+    "import { battleBackground } from './battle-background.js';\n" +
+    "import { sentenceColor } from './sentence-colors.js';\n" +
+    "import { authorityPunishmentCutscene } from './narrative-cutscenes.js';\n" +
+    "import { sentencingChapters, clockGuide, firstTrialLesson, firstInterrogationLesson } from './sentencing-guide.js';\n" +
+    "import { actorStanding, specialCooldown } from './actor-recovery.js';\n" +
+    "import { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-review-20261011';\n" +
+    "import { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011-fire-theme-v2';\n" +
+    "import { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';\n" +
+    "import { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';\n" +
+    "import { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';\n" +
+    "import { punishmentScene } from './punishment-scene.js';\n" +
+    "import { merchantStock, medicineResult, medicineHp } from './progression.js';\n" +
+    "import { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';\n" +
+    "import { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';\n" +
+    "import { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';\n" +
+    "import { exitStep } from './exit-marker.js';\n" +
+    "import { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';\n" +
+    "import { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';\n" +
+    "import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';\n" +
+    "import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';\n" +
+    'setBattleRectMapper((el, mode) => camera.rectOf(el, mode));\n' +
+    "import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';\n" +
+    "import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual } from './battle-fx-map.js?v=m2';\n" +
+    "import { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';\n" +
+    "setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash\n" +
+    "import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';\n" +
+    "import { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';\n" +
+    "import { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';\n" +
+    "import { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';\n" +
+    '// ui.js — แผงควบคุม · โมดัล · ลูปวาด\n' +
+    'import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,\n' +
+    '         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,\n' +
+    '         KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,\n' +
+    '         ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,\n' +
+    "         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';\n" +
+    "import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';\n" +
+    "import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';\n" +
+    "import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';\n" +
+    "import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';\n" +
+    "import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';\n" +
+    "import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';\n" +
+    "import { makeRoom } from './room.js?v=minigame-review-20261011';\n" +
+    "import { stepTo, nearestWalk } from './walk.js?v=k1d';\n" +
+    "import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';\n" +
+    `import { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569\n` +
+    "import { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14\n" +
+    "import { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG\n" +
+    "import { ZONE_MAP, zoneMapRoute } from './zone-map.js';\n" +
+    "import { STORY, ABILITY_REWARDS, storyOf } from './story.js';\n" +
+    "import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';\n" +
+    "import { walkDirection } from './walk-direction.js';\n" +
+    "import { powerCutsceneImage } from './power-cutscene-assets.js';\n" +
+    "import { mountNiraCombatSprite, playNiraHealingCutscene, niraHealingCutscene } from './nira-combat.js';\n" +
+    "import { mountFinalBossCourt } from './boss-court-view.js';\n" +
+    "import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION, createCutsceneReadiness } from './cutscene-presentation.js';\n" +
+    "import { frontierIntroduction } from './narrative-cutscenes.js';\n" +
+    "import { verdictSceneImage } from './verdict-scene.js';\n" +
+    '\n' +
+    'const $ = s => document.querySelector(s);\n' +
+    `const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));\n` +
+    '/** ชื่อตัวผู้เล่น — "Yama" คือชื่อฝรั่งของพญายมซึ่งเป็น "พ่อ" ของเรา ไม่ใช่ตัวเรา\n' +
+    ' *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมบาทน้อย" ให้ต่างจากพ่อชัด ๆ\n' +
+    ' *  (เจ้าของถามว่าเขียนไทยว่าอะไรดี 8 ก.ย. 2569 — เปลี่ยนที่นี่ที่เดียวได้ทั้งเกม) */\n' +
+    "const HERO_NAME = 'ยามา';\n" +
+    "const HERO_TITLE = 'ยมบาทน้อย';\n" +
+    'let storyPlaying = false, storyScheduled = false;\n' +
+    '\n' +
+    '/** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม\n' +
+    ' *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)\n' +
+    ' *  ทุก path ของรูปตัวละครใน ui.js ผ่าน artUrl() — อยู่โซนไหนได้รูปของโซนนั้นก่อน (art.js) */\n' +
+    "const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero-yama');\n" +
+    "{ const im = new Image(); im.onload = () => { heroFace.ok = true; }; im.src = 'img/hero-yama-side.png'; }\n" +
+    '\n' +
+    '/** ท่าลงทัณฑ์บนเวทีต่อสู้ (ข้อ 5 ของเจ้าของ 11 ก.ย. 2569)\n' +
+    ' *  จังหวะที่ท่านลงมือใส่คู่กรณี ให้เปลี่ยนเป็น hero-yama-atk · จังหวะอื่นกลับไปท่ายืนเดิม\n' +
+    ' *  artUrl คืน null = "โซนนี้มียมบาทแล้วแต่ยังไม่มีท่าฟาด" → ใช้ท่ายืนของโซน ไม่หยิบท่าโซน 1 มาปน\n' +
+    ' *  (โซนปัจฉิมยังไม่มี hero-yama-west-atk — ตอนนี้จึงยืนนิ่งตอนฟาด ไม่ใช่หน้าเปลี่ยนเป็นคนละคน)\n' +
+    ' *  โหลดไฟล์ไว้ล่วงหน้า ไม่งั้นเฟรมแรกที่สลับท่าจะว่างวูบหนึ่งระหว่างรอไฟล์ */\n' +
+    "const heroAtk = () => artUrl('hero-yama-atk') || heroFace();\n" +
+    '\n' +
+    '/** ชุด 30B ข้อ 7 — โปรไฟล์ครึ่งตัวของหัวหน้าโซน 3 ("ศึกพ่อ" โซน 3) แทนภาพตัวเต็มนั่งบัลลังก์ในกล่อง HUD ล่างขวา\n' +
+    ' *  ไฟล์ต้องผ่าน prep() ใน scripts/prep-art.py ก่อน (img/West/hero-boss-west-profile.webp) — ยังไม่มีไฟล์ = ใช้ภาพเ'... 439364 more characters
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/cutscene-fit.test.mjs:35:9)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';\nimport {traitForKeeper} from './interrogation.js';\nimport {teamHudHtml,teamManageHtml} from './team-hud.js';\nimport {canteenActive,canteenPoint} from './canteen.js';\nimport {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';\nimport { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';\nimport { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';\nimport {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';\nimport {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';\nimport {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';\nimport {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';\nimport {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';\nmountInterrogationStyles();\nimport { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';\nimport { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';\nimport { bindCommandPress } from './command-press.js?v=20261015-k2';\nimport { drawTownTerrain } from './town-terrain.js?v=k1d';\nimport {openDungeonRoutes,dungeonStatus,harbourDestinations} from './zone-travel.js';\nimport {routeBossCave} from './route-geometry.js';\nimport {mountDungeonView} from './dungeon-view.js?v=l5';\nimport { isTownZone, townZoomLevels, townDefaultZoom, townTitle, townSites, townNearbyAction } from './town-map.js?v=l1';\nimport { runKrataQte } from './minigames/krata-qte.js?v=minigame-review-20261011-fire-theme-v2';\nimport { gateKarma, archiveRecord, archiveCard, GATE_EFFECT_MS, GATE_EFFECT_REDUCED_MS } from './h4-location-ui.js';\nimport { mountDiagnosis } from './diagnosis-ui.js';\nimport { powerBadgeHtml, powerSheetHtml, powerName } from './crew-power-ui.js';\nimport { diagnosisSubjects, subjectKey } from './diagnosis.js';\nimport { mountMirrorCharge, MIRROR_ROOM_LAYOUT, nearMirror } from './mirror-charge.js?v=minigame-review-20261011-j4';\nimport { westRescuePending, WEST_RESCUE } from './west-events.js';\nimport { wideStationRoom } from './room-art-assets.js?v=minigame-review-20261011-j4-n1';\nimport { isYamaSwordAttack, mountBattleSword, mountBattleSwordIdle, swordImage, SWORD_FRAME_MS, SWORD_DURATION_MS } from './yama-sword.js?v=20261009-f2-merge-f3-f4-sala-books-mirror-art-book-art-oriverse-25d-g1-g3b';\nimport { themeBackground } from './theme-assets.js';\nimport { battleBackground } from './battle-background.js';\nimport { sentenceColor } from './sentence-colors.js';\nimport { authorityPunishmentCutscene } from './narrative-cutscenes.js';\nimport { sentencingChapters, clockGuide, firstTrialLesson, firstInterrogationLesson } from './sentencing-guide.js';\nimport { actorStanding, specialCooldown } from './actor-recovery.js';\nimport { trainingProgress, HERO_TRAINING_ID } from './training.js?v=minigame-review-20261011';\nimport { TRAINING_GAMES } from './minigames/training/index.js?v=minigame-review-20261011-fire-theme-v2';\nimport { runTraining } from './minigames/training/host.js?v=minigame-review-20261011-fire-theme-v2';\nimport { devaMapActors, DEVA_DESCENT_MS, DEVA_MAP } from './deva-map.js';\nimport { nextFinalEncounter, finalEventActors, finalPreparationTargets } from './final-event.js';\nimport { punishmentScene } from './punishment-scene.js';\nimport { merchantStock, medicineResult, medicineHp } from './progression.js';\nimport { DEFEAT_SCENE_MS, teaBackground, teaRoom, yamaDownImage } from './tea-recovery.js';\nimport { INTERACTION_REACH, ROOM_EXIT_REACH, nearestInteraction, mapInteractions, roomExit, nearRoomExit, talkInteractions } from './proximity.js';\nimport { talkTargets, findTalkTarget, talkDistance, pickTalk, TALK_REACH, TALK_DISMISS, TALK_MS, TALK_MAX_LINES } from './talk.js';\nimport { exitStep } from './exit-marker.js';\nimport { commandWheel, bindCommandWheel, crewAbility as describeCrewAbility, crewCooldown, cooldownText } from './command-wheel.js';\nimport { vitalsOf, vitalGains, healFxHtml } from './heal-fx.js?v=20261015-l2';\nimport { camera, strikeTime } from './battle-camera.js?v=20261016-m1';\nimport { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';\nsetBattleRectMapper((el, mode) => camera.rectOf(el, mode));\nimport { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';\nimport { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual } from './battle-fx-map.js?v=m2';\nimport { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';\nsetBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash\nimport { planPlacement } from './battle-menu-layout.js?v=20261015-k5';\nimport { placeWheel, placeFinButton, WHEEL_ART } from './wheel-place.js?v=battle-anchor-20261012';\nimport { yamaSkillRemaining, immediateSelfSkill } from './yama-cooldown.js?v=j1';\nimport { teamFaceClass, foeFaceClass, ragePoseSrc, rageArtSrc, figYouAtkClass } from './battle-facing.js?v=i1b-westhit-skillatk-j1';\n// ui.js — แผงควบคุม · โมดัล · ลูปวาด\nimport { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,\n         GUARD, LEVELS, MOB, TUTOR, ORDER_TIERS, KARMA_TIERS, ITEMS,\n         KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,\n         ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,\n         CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';\nimport { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';\nimport { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';\nimport { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';\nimport { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';\nimport { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';\nimport { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';\nimport { makeRoom } from './room.js?v=minigame-review-20261011';\nimport { stepTo, nearestWalk } from './walk.js?v=k1d';\nimport { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';\nimport { MINIGAMES } from './minigames/index.js?v=20261009-book-art-g5-h4';   // มินิเกม "เร่งการทำงาน" — ชุดที่ 9 คุณเป้ 24 ก.ย. 2569\nimport { makeFrontierWalk, maxOnScreen, removeSessionEnemy } from './frontier.js';   // แผนที่ชายแดน — ข้อ A ชุด 14\nimport { t, getLang, setLang, onLangChange, applyI18n } from './i18n.js';   // ข้อ C ชุด 15 — ชั้นแปล TH/ENG\nimport { ZONE_MAP, zoneMapRoute } from './zone-map.js';\nimport { STORY, ABILITY_REWARDS, storyOf } from './story.js';\nimport { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';\nimport { walkDirection } from './walk-direction.js';\nimport { powerCutsceneImage } from './power-cutscene-assets.js';\nimport { mountNiraCombatSprite, playNiraHealingCutscene, niraHealingCutscene } from './nira-combat.js';\nimport { mountFinalBossCourt } from './boss-court-view.js';\nimport { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION, createCutsceneReadiness } from './cutscene-presentation.js';\nimport { frontierIntroduction } from './narrative-cutscenes.js';\nimport { verdictSceneImage } from './verdict-scene.js';\n\nconst $ = s => document.querySelector(s);\nconst esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));\n/** ชื่อตัวผู้เล่น — "Yama" คือชื่อฝรั่งของพญายมซึ่งเป็น "พ่อ" ของเรา ไม่ใช่ตัวเรา\n *  ตัวเราคือยมบาทมือใหม่ ลูกของท่าน จึงใช้ "ยมบาทน้อย" ให้ต่างจากพ่อชัด ๆ\n *  (เจ้าของถามว่าเขียนไทยว่าอะไรดี 8 ก.ย. 2569 — เปลี่ยนที่นี่ที่เดียวได้ทั้งเกม) */\nconst HERO_NAME = 'ยามา';\nconst HERO_TITLE = 'ยมบาทน้อย';\nlet storyPlaying = false, storyScheduled = false;\n\n/** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม\n *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)\n *  ทุก path ของรูปตัวละครใน ui.js ผ่าน artUrl() — อยู่โซนไหนได้รูปของโซนนั้นก่อน (art.js) */\nconst heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero-yama');\n{ const im = new Image(); im.onload = () => { heroFace.ok = true; }; im.src = 'img/hero-yama-side.png'; }\n\n/** ท่าลงทัณฑ์บนเวทีต่อสู้ (ข้อ 5 ของเจ้าของ 11 ก.ย. 2569)\n *  จังหวะที่ท่านลงมือใส่คู่กรณี ให้เปลี่ยนเป็น hero-yama-atk · จังหวะอื่นกลับไปท่ายืนเดิม\n *  artUrl คืน null = "โซนนี้มียมบาทแล้วแต่ยังไม่มีท่าฟาด" → ใช้ท่ายืนของโซน ไม่หยิบท่าโซน 1 มาปน\n *  (โซนปัจฉิมยังไม่มี hero-yama-west-atk — ตอนนี้จึงยืนนิ่งตอนฟาด ไม่ใช่หน้าเปลี่ยนเป็นคนละคน)\n *  โหลดไฟล์ไว้ล่วงหน้า ไม่งั้นเฟรมแรกที่สลับท่าจะว่างวูบหนึ่งระหว่างรอไฟล์ */\nconst heroAtk = () => artUrl('hero-yama-atk') || heroFace();\n\n/** ชุด 30B ข้อ 7 — โปรไฟล์ครึ่งตัวของหัวหน้าโซน 3 ("ศึกพ่อ" โซน 3) แทนภาพตัวเต็มนั่งบัลลังก์ในกล่อง HUD ล่างขวา\n *  ไฟล์ต้องผ่าน prep() ใน scripts/prep-art.py ก่อน (img/West/hero-boss-west-profile.webp) — ยังไม่มีไฟล์ = ใช้ภาพเ`... 439364 more characters,
+    expected: /\n  fitCutsceneImage\(cut, img\)/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests/g5-krata-minigames.test.mjs:1:1
+✖ tests/g5-krata-minigames.test.mjs (14370.158599ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/guard-cutscene.test.mjs:36:35
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=false) (87.748768ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:37:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/guard-cutscene.test.mjs:36:35
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=true) (7.008259ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:37:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/guard-cutscene.test.mjs:46:1
+✖ A1 absent cutscene has no blank delay; other melee paths do not acquire a new cutscene (23.230726ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:47:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/guard-cutscene.test.mjs:50:1
+✖ A1 closing/replacing the battle during the introduction does not pay or hit a new battle (19.966349ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:51:49)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/h2-building-block.test.mjs:1:1
+✖ tests/h2-building-block.test.mjs (5943.886971ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/h5a-cover-video.test.mjs:1:1
+✖ tests/h5a-cover-video.test.mjs (433.988222ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/h5b-cover-fx.test.mjs:1:1
+✖ tests/h5b-cover-fx.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/hero-walking.test.mjs:1:1
+✖ tests/hero-walking.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/hf-deva-heaven.test.mjs:1:1
+✖ tests/hf-deva-heaven.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/hunger.test.mjs:1:1
+✖ tests/hunger.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i1a-gate.test.mjs:1:1
+✖ tests/i1a-gate.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i1a-scenes.test.mjs:1:1
+✖ tests/i1a-scenes.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i1b-battle-ui.test.mjs:1:1
+✖ tests/i1b-battle-ui.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i1b-mute.test.mjs:1:1
+✖ tests/i1b-mute.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i1b-yama-facing.test.mjs:1:1
+✖ tests/i1b-yama-facing.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/i2b-frontier-boss.test.mjs:1:1
+✖ tests/i2b-frontier-boss.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/interrogation-integration.test.mjs:1:1
+✖ tests/interrogation-integration.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/interrogation-picker.test.mjs:1:1
+✖ tests/interrogation-picker.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/interrogation-rules.test.mjs:1:1
+✖ tests/interrogation-rules.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/interrogation-ui.test.mjs:1:1
+✖ tests/interrogation-ui.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/j1-battle.test.mjs:1:1
+✖ tests/j1-battle.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/j3-nira-guard.test.mjs:1:1
+✖ tests/j3-nira-guard.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/j4-rooms-colors.test.mjs:1:1
+✖ tests/j4-rooms-colors.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/k1d-terrain.test.mjs:1:1
+✖ tests/k1d-terrain.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/k1e-sprites.test.mjs:1:1
+✖ tests/k1e-sprites.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/k2-menu.test.mjs:1:1
+✖ tests/k2-menu.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/k3-perf.test.mjs:1:1
+✖ tests/k3-perf.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/k5-battle-layout.test.mjs:1:1
+✖ tests/k5-battle-layout.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l1-town-depth.test.mjs:1:1
+✖ tests/l1-town-depth.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l2-battle-trial-pause.test.mjs:1:1
+✖ tests/l2-battle-trial-pause.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l3-biome-weather.test.mjs:1:1
+✖ tests/l3-biome-weather.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l3-crew-rest-hypno.test.mjs:1:1
+✖ tests/l3-crew-rest-hypno.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l4b-outfit-assets.test.mjs:1:1
+✖ tests/l4b-outfit-assets.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/l5-auto-encounter.test.mjs:1:1
+✖ tests/l5-auto-encounter.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m1-map-zoom.test.mjs:1:1
+✖ tests/m1-map-zoom.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m2-battle-fx.test.mjs:1:1
+✖ tests/m2-battle-fx.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m2-map-access.test.mjs:1:1
+✖ tests/m2-map-access.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m2-route-geometry.test.mjs:1:1
+✖ tests/m2-route-geometry.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m2-skin-migration.test.mjs:1:1
+✖ tests/m2-skin-migration.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m2-zone-skin.test.mjs:1:1
+✖ tests/m2-zone-skin.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m3-asia-skin.test.mjs:1:1
+✖ tests/m3-asia-skin.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/m5-cutscene-fx.test.mjs:1:1
+✖ tests/m5-cutscene-fx.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/map-ambient.test.mjs:1:1
+✖ tests/map-ambient.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/map-travel-handoff.test.mjs:1:1
+✖ tests/map-travel-handoff.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/menu-ui.test.mjs:1:1
+✖ tests/menu-ui.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/minigame.test.mjs:1:1
+✖ tests/minigame.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/mirror-art-puzzle.test.mjs:1:1
+✖ tests/mirror-art-puzzle.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/mirror-charge-f3.test.mjs:1:1
+✖ tests/mirror-charge-f3.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/mirror-pose-a6.test.mjs:1:1
+✖ tests/mirror-pose-a6.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/n1-harbour-krajok.test.mjs:1:1
+✖ tests/n1-harbour-krajok.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/n2-sprite-bleed.test.mjs:1:1
+✖ tests/n2-sprite-bleed.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/n3b-merit.test.mjs:1:1
+✖ tests/n3b-merit.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/n4-flow.test.mjs:1:1
+✖ tests/n4-flow.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/narrative-cutscenes.test.mjs:1:1
+✖ tests/narrative-cutscenes.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/new-battle-abilities.test.mjs:1:1
+✖ tests/new-battle-abilities.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/nira-combat.test.mjs:1:1
+✖ tests/nira-combat.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/nira-court-courier.test.mjs:1:1
+✖ tests/nira-court-courier.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/nira-office-cards.test.mjs:1:1
+✖ tests/nira-office-cards.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/o1-frontier-fullscreen.test.mjs:1:1
+✖ tests/o1-frontier-fullscreen.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/o2-battle-audit.test.mjs:1:1
+✖ tests/o2-battle-audit.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p1-early-game.test.mjs:1:1
+✖ tests/p1-early-game.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p2-interrogation.test.mjs:1:1
+✖ tests/p2-interrogation.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p3-verdict-scene.test.mjs:1:1
+✖ tests/p3-verdict-scene.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p4-diagnosis.test.mjs:1:1
+✖ tests/p4-diagnosis.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p4-power-ui.test.mjs:1:1
+✖ tests/p4-power-ui.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p4-remorse.test.mjs:1:1
+✖ tests/p4-remorse.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p4-talk.test.mjs:1:1
+✖ tests/p4-talk.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p5-map-exits.test.mjs:1:1
+✖ tests/p5-map-exits.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p5b-art-insert.test.mjs:1:1
+✖ tests/p5b-art-insert.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p5c-worker-scale.test.mjs:1:1
+✖ tests/p5c-worker-scale.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p6-cauldron-fireball.test.mjs:1:1
+✖ tests/p6-cauldron-fireball.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p7-copy-apply.test.mjs:1:1
+✖ tests/p7-copy-apply.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p8-copy.test.mjs:1:1
+✖ tests/p8-copy.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/p9-art-insert.test.mjs:1:1
+✖ tests/p9-art-insert.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/playtest21.test.mjs:1:1
+✖ tests/playtest21.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/power-cutscene-assets.test.mjs:1:1
+✖ tests/power-cutscene-assets.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/prison-break.test.mjs:1:1
+✖ tests/prison-break.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/progression-mp-outfit.test.mjs:1:1
+✖ tests/progression-mp-outfit.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/proximity29b.test.mjs:1:1
+✖ tests/proximity29b.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/prune-catalogs.test.mjs:1:1
+✖ tests/prune-catalogs.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/r2-battle-fx.test.mjs:1:1
+✖ tests/r2-battle-fx.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/regional-spirit-art.test.mjs:1:1
+✖ tests/regional-spirit-art.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/regional-story-acceptance.test.mjs:1:1
+✖ tests/regional-story-acceptance.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/release-20261019.test.mjs:1:1
+✖ tests/release-20261019.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/room-asia29g.test.mjs:1:1
+✖ tests/room-asia29g.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/room-cutscene29f.test.mjs:1:1
+✖ tests/room-cutscene29f.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/room-ui4.test.mjs:1:1
+✖ tests/room-ui4.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/s-fixes.test.mjs:1:1
+✖ tests/s-fixes.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/scene-style.test.mjs:1:1
+✖ tests/scene-style.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/scene-zones.test.mjs:1:1
+✖ tests/scene-zones.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/skill-atk.test.mjs:1:1
+✖ tests/skill-atk.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/soul-battle-sp.test.mjs:1:1
+✖ tests/soul-battle-sp.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/soul-portraits.test.mjs:1:1
+✖ tests/soul-portraits.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/story-art.test.mjs:1:1
+✖ tests/story-art.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/sword-schools.test.mjs:1:1
+✖ tests/sword-schools.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/system-review-20261007.test.mjs:1:1
+✖ tests/system-review-20261007.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/tea-entry-walk.test.mjs:1:1
+✖ tests/tea-entry-walk.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/tea-recovery.test.mjs:1:1
+✖ tests/tea-recovery.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/tea-staff-rest.test.mjs:1:1
+✖ tests/tea-staff-rest.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/team-hud-interrogation.test.mjs:1:1
+✖ tests/team-hud-interrogation.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/terrain-loading-recovery.test.mjs:1:1
+✖ tests/terrain-loading-recovery.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/theme-v4.test.mjs:1:1
+✖ tests/theme-v4.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/torch-flames.test.mjs:1:1
+✖ tests/torch-flames.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-layout.test.mjs:1:1
+✖ tests/town-layout.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-lighting.test.mjs:1:1
+✖ tests/town-lighting.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-map.test.mjs:1:1
+✖ tests/town-map.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-navigation.test.mjs:1:1
+✖ tests/town-navigation.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-props.test.mjs:1:1
+✖ tests/town-props.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-scenery.test.mjs:1:1
+✖ tests/town-scenery.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-startup.test.mjs:1:1
+✖ tests/town-startup.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/town-world.test.mjs:1:1
+✖ tests/town-world.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/trial-destinations29c.test.mjs:1:1
+✖ tests/trial-destinations29c.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/trial-reveal.test.mjs:1:1
+✖ tests/trial-reveal.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/trial29h.test.mjs:1:1
+✖ tests/trial29h.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/ui27d-map-items.test.mjs:1:1
+✖ tests/ui27d-map-items.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/ui27e-events.test.mjs:1:1
+✖ tests/ui27e-events.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/ui28a.test.mjs:1:1
+✖ tests/ui28a.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/ui29e.test.mjs:1:1
+✖ tests/ui29e.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/verdict-comments-a5.test.mjs:1:1
+✖ tests/verdict-comments-a5.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/walk-edges.test.mjs:1:1
+✖ tests/walk-edges.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/west-hit-facing.test.mjs:1:1
+✖ tests/west-hit-facing.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/wide-station-rooms.test.mjs:1:1
+✖ tests/wide-station-rooms.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/worker-dock-resume.test.mjs:1:1
+✖ tests/worker-dock-resume.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/worker-regional-acceptance.test.mjs:1:1
+✖ tests/worker-regional-acceptance.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/worker-spacing-a4.test.mjs:1:1
+✖ tests/worker-spacing-a4.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/worker-walk-a3.test.mjs:1:1
+✖ tests/worker-walk-a3.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/workers-canteen-travel.test.mjs:1:1
+✖ tests/workers-canteen-travel.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/workers.test.mjs:1:1
+✖ tests/workers.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/yama-animation-live.test.mjs:1:1
+✖ tests/yama-animation-live.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/yama-size-a7.test.mjs:1:1
+✖ tests/yama-size-a7.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/yama-sword.test.mjs:1:1
+✖ tests/yama-sword.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/z2-code.test.mjs:1:1
+✖ tests/z2-code.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/z3-new-mask-regression.test.mjs:1:1
+✖ tests/z3-new-mask-regression.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/z3-west-integration.test.mjs:1:1
+✖ tests/z3-west-integration.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone-entry29c.test.mjs:1:1
+✖ tests/zone-entry29c.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone-introductions.test.mjs:1:1
+✖ tests/zone-introductions.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone-map.test.mjs:1:1
+✖ tests/zone-map.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone-travel-game.test.mjs:1:1
+✖ tests/zone-travel-game.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone-travel.test.mjs:1:1
+✖ tests/zone-travel.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone1-map-review.test.mjs:1:1
+✖ tests/zone1-map-review.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at tests/zone3-refinements.test.mjs:1:1
+✖ tests/zone3-refinements.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'

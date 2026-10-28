@@ -1,0 +1,215 @@
+{
+  "kind": "Node readiness simulation; no browser rendering or network throttle",
+  "measurements": [
+    {
+      "trial": 1,
+      "action": "ice",
+      "condition": "simulated decode delay",
+      "waitMs": 25.76,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/ice.png",
+          "requestedAt": 556.04889,
+          "loadedAt": 556.895741,
+          "decodedAt": 578.065965,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "action": "fire",
+      "condition": "simulated decode delay",
+      "waitMs": 26.11,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/fire.png",
+          "requestedAt": 591.381455,
+          "loadedAt": 591.473528,
+          "decodedAt": 617.020704,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "action": "hypno",
+      "condition": "simulated decode delay",
+      "waitMs": 30.79,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/hypno.png",
+          "requestedAt": 625.522836,
+          "loadedAt": 625.603935,
+          "decodedAt": 655.982696,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "action": "ice",
+      "condition": "simulated decode delay",
+      "waitMs": 36.61,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/ice.png",
+          "requestedAt": 661.44434,
+          "loadedAt": 661.503267,
+          "decodedAt": 697.583312,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "action": "fire",
+      "condition": "simulated decode delay",
+      "waitMs": 42.85,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/fire.png",
+          "requestedAt": 705.195514,
+          "loadedAt": 705.298456,
+          "decodedAt": 747.494434,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "action": "hypno",
+      "condition": "simulated decode delay",
+      "waitMs": 46.04,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/hypno.png",
+          "requestedAt": 754.629677,
+          "loadedAt": 754.696595,
+          "decodedAt": 800.262273,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 7,
+      "action": "ice",
+      "condition": "simulated decode delay",
+      "waitMs": 51.67,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/ice.png",
+          "requestedAt": 807.230289,
+          "loadedAt": 807.283998,
+          "decodedAt": 858.268884,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 8,
+      "action": "fire",
+      "condition": "simulated decode delay",
+      "waitMs": 54.75,
+      "image": "decoded",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/fire.png",
+          "requestedAt": 866.981737,
+          "loadedAt": 867.042469,
+          "decodedAt": 921.334283,
+          "error": null,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "action": "hypno",
+      "condition": "decode never resolves",
+      "waitMs": 301.65,
+      "image": "title-only",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/hypno.png",
+          "requestedAt": 927.778246,
+          "loadedAt": 927.867524,
+          "decodedAt": null,
+          "error": null,
+          "ready": false
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "action": "ice",
+      "condition": "decode never resolves",
+      "waitMs": 301.78,
+      "image": "title-only",
+      "finished": true,
+      "mpMatches": true,
+      "damageMatches": true,
+      "turnMatches": true,
+      "timings": [
+        {
+          "src": "img/ice.png",
+          "requestedAt": 1237.140762,
+          "loadedAt": 1237.241194,
+          "decodedAt": null,
+          "error": null,
+          "ready": false
+        }
+      ]
+    }
+  ]
+}

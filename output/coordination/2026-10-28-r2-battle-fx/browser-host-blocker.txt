@@ -1,0 +1,9 @@
+CUA createBrowserTab("iab", "http://127.0.0.1:8779/", { visible: true })
+Result: The browser access host is unavailable.
+
+Playwright Chromium launch failed before any page was created. See browser-blocker.log:
+bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer: Permission denied (1100)
+
+No real-renderer screenshots or actual browser cold-cache/network-throttle timings were produced.
+source-cast-art.png is a contact sheet of shipped source assets, not a renderer capture.
+simulated-readiness.json is a Node simulation, not browser/network evidence.

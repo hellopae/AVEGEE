@@ -51,7 +51,7 @@ import { camera, strikeTime } from './battle-camera.js?v=20261016-m1';
 import { fitBattleSprites, fitCutsceneImage, battleSpriteRect, setBattleRectMapper } from './battle-scale.js?v=battle-anchor-20261012-k2-l2';
 setBattleRectMapper((el, mode) => camera.rectOf(el, mode));
 import { attachBattleFx, playBattleFx, stopBattleFx, fxIdle, hasBattleCamera, cameraRectOf, poseDurations, setBattleCamera } from './battle-fx.js?v=m2';
-import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs } from './battle-fx-map.js?v=m2';
+import { recipeFor, foeTier, cueKindFor, cueImpactAt, poseContactMs, swordContactMs, leadInMs, powerVisual } from './battle-fx-map.js?v=m2';
 import { actionCutsceneLabel } from './action-cutscene-fx.js?v=m5';
 setBattleCamera(camera);   // M2: effects draw in the camera's fx layer and let its cues own shake/dim/flash
 import { planPlacement } from './battle-menu-layout.js?v=20261015-k5';
@@ -81,9 +81,9 @@ import { STORY, ABILITY_REWARDS, storyOf } from './story.js';
 import { zoneIntroduction, regionalCrewCutscene, travelPath } from './zone-introductions.js';
 import { walkDirection } from './walk-direction.js';
 import { powerCutsceneImage } from './power-cutscene-assets.js';
-import { mountNiraCombatSprite, playNiraHealingCutscene } from './nira-combat.js';
+import { mountNiraCombatSprite, playNiraHealingCutscene, niraHealingCutscene } from './nira-combat.js';
 import { mountFinalBossCourt } from './boss-court-view.js';
-import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION } from './cutscene-presentation.js';
+import { prepareComicImages, bossArrivalScene, ACTION_CUTSCENE_PRESENTATION, createCutsceneReadiness } from './cutscene-presentation.js';
 import { frontierIntroduction } from './narrative-cutscenes.js';
 import { verdictSceneImage } from './verdict-scene.js';
 
@@ -2412,7 +2412,8 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // I1-B ข้อ 3 — ต้นเหตุ "ยมฯ หันซ้ายหลังโจมตีธรรมดา": class .atk ตัดการพลิก scaleX(-1) ของท่ายืน (index.html: .fig.you.atk img{transform:scaleX(1)})
   // ซึ่งตั้งไว้สำหรับรูปท่าฟาด hero-yama-atk ที่วาดหันขวา — แต่ตอนฟันดาบธรรมดา youImg คือ "ท่ายืน" (แอนิเมชันดาบวาดบน canvas ทับ 580ms)
   // พอ canvas หายท่ายืนโผล่กลับมาโดยไม่ถูกพลิกค้างจนจบเทิร์น (~2 วิ) = หันซ้าย · ฟันดาบธรรมดาจึงห้ามใส่ .atk (ดู tests/i1b-yama-facing.test.mjs)
-  const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) ? heroFace() : heroAtk())
+  const neutralCast = usingAtk && powerVisual(fx?.action || fx?.key)?.cast === 'neutral';
+  const youImg = hurtNow ? heroCry() : usingAtk ? (isYamaSwordAttack(fx) || neutralCast ? heroFace() : heroAtk())
     : showRage ? (rageArtSrc(g.outfit || g.zone) || ragePoseSrc(g.outfit || g.zone) || heroAtk()) : heroFace();
   const foeSrc = storyFoeArt(foe.sp);
   const bossFallback = artUrl(MOB.kinds[0].img);
@@ -2524,8 +2525,13 @@ function powerSound(k) {
   if (isUltimatePower(k) && actionCutsceneSrc(k)) playUltimate(k);
   else sfx(powerSfx(k, g.abilities));
 }
+let battleCutscenes = createCutsceneReadiness();
+function cutsceneSource(k, ultimate = null) {
+  const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
+  if (crewKey === 'nira') return niraHealingCutscene(g.zone);
+  return ultimate?.image || (crewKey ? crewCutsceneSrc(crewKey)?.src : actionCutsceneSrc(k));
+}
 function playActionCutscene(k, ultimate = null) {   // M1: returns true when a full-screen cutscene was mounted (undefined/false otherwise)
-  if (k === 'rage') return;
   // ข้อ A ชุด 13 — 'crew:<k>' และ 'guard' ขึ้นคัตซีนของยมทูต/ยักษ์เอง ไม่ใช่ของยมบาทน้อย
   const crewKey = k.startsWith('crew:') ? k.slice(5) : k === 'guard' ? 'guard' : null;
   const cs = crewKey ? crewCutsceneSrc(crewKey) : null;
@@ -2544,18 +2550,18 @@ function playActionCutscene(k, ultimate = null) {   // M1: returns true when a f
   const actorName = crewKey ? (g.roster[crewKey]?.name || (crewKey === 'guard' ? GUARD.name : CREW[crewKey]?.name || 'ยมทูต')) : ultimate ? 'ศัตรู' : 'ยมบาทน้อย';
   const crewMove = crewKey && crewKey !== 'nira' ? CREW_POWER[crewKey]?.name : undefined;   // P4: ชื่อท่าอยู่ที่ CREW_POWER ที่เดียว
   const moveName = ultimate?.name || crewMove || actionCutsceneLabel(k, ultimate);
-  cut.innerHTML = `<img src="${src}" alt="ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม"><strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
-  const img = cut.querySelector('img');
-  const fallback = cs && cs.fallback;
-  img.onerror = () => {
-    if (fallback) { img.onerror = () => cut.remove(); img.src = fallback; }
-    else cut.remove();
-  };
+  cut.innerHTML = `<strong class="cutscene-title"><small>${esc(actorName)}</small>${esc(moveName)}</strong>`;
+  const img = battleCutscenes.image(src) || (!g.battle ? document.createElement('img') : null);
+  if (img) { if (!img.src) img.src = src; img.onerror = () => img.remove(); img.alt = 'ภาพคั่นท่าพิเศษ — แตะเพื่อข้าม'; cut.prepend(img); }
+  else { cut.dataset.imageState = 'unavailable'; void battleCutscenes.warm([src]); }
   let done = false;
-  const finish = () => { if (done) return; done = true; cut.remove(); camera.cue('idle'); };
+  const finish = () => { if (done) return; done = true; const mounted = cut.isConnected; cut.remove(); if (mounted) camera.cue('idle'); };
   cut.onclick = finish;              // กดข้ามได้ทันที (ข้อ E)
   dlg.appendChild(cut);
-  fitCutsceneImage(cut, img); // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
+  if (img) {
+    for (const animation of img.getAnimations?.() || []) { animation.currentTime = 0; animation.play(); }
+    fitCutsceneImage(cut, img);
+  } // ทุกภาพรักษาสัดส่วน และแสดงกรอบส่วนที่มีภาพครบ
   setTimeout(finish, ACTION_CUT_MS);
   return true;
 }
@@ -3435,6 +3441,14 @@ function afterBreachBattle(_, done) {
 function openBattle(after) {
   const B = g.battle;
   if (!B) return;
+  battleCutscenes = createCutsceneReadiness();
+  const warmBattleCutscenes = () => {
+    const sources = g.battleActors().flatMap(actor => actor.id === 'you'
+      ? ['fire',...POWERS.filter(p => ['ice','hypno'].includes(p.k) && !g.powerLocked(p)).map(p => p.k),...['flameCharge','windFan','rage','valkyrieSpear','cooldownClock'].filter(k => g.abilities?.[k])].map(k => actionCutsceneSrc(k))
+      : [actor.k === 'nira' ? niraHealingCutscene(g.zone) : crewCutsceneSrc(crewBattleKey(actor))?.src]);
+    void battleCutscenes.warm(sources);
+  };
+  warmBattleCutscenes();
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
   // เพลง bgm-yama ไม่เคยมีไฟล์จริงเลย (audio/ มีแค่ bgm-title, bgm-zone) — ยิง HEAD 404 สามนามสกุล
   // ทุกครั้งที่สู้บอส/พ่อ ไม่มีประโยชน์ ใช้ bgm-battle ทุกฉากต่อสู้เหมือนกันหมด (คุณเป้สั่ง 17 ก.ย. 2569)
@@ -3680,6 +3694,8 @@ function openBattle(after) {
     dash = { side, key, depths, actor:side === 'you' ? g.battleActors().find(a => keyOfActor(a.id) === key) : null, source:source || { b:0 }, position:{ x:0, y:0 }, posed:false, hit:false };
     fxNow = null; fxHandled = true; b.dmg = {}; b.mid = null; b.helper = null; paint();
     // Guard also takes the melee path: show his own cutscene before launching, then pay/hit only at contact.
+    if (side === 'you' && action === 'guard') await battleCutscenes.wait(cutsceneSource('guard'));
+    if (g.battle !== b || !dlg.open) return;
     const leadIn = side === 'you' && action === 'guard' && playActionCutscene('guard') ? ACTION_CUT_MS : 0;
     const timing = dashTiming({ contact, pose, reduced, leadIn });
     let clockAt = performance.now(), elapsed = 0;
@@ -3729,6 +3745,7 @@ function openBattle(after) {
   const paint = () => {
     const b = g.battle;
     if (!b || storyActive) return;
+    warmBattleCutscenes();
     if (b.storyInterlude) {
       const key = b.storyInterlude;
       storyActive = true;
@@ -4267,7 +4284,7 @@ function openBattle(after) {
       if (phase || !g.fleeBattle()) { paint(); return; }
       sfx('step'); clearTimeout(phaseTimer); finish();
     };
-    const executeCommand = (action, recipient = 'you') => {
+    const executeCommand = async (action, recipient = 'you') => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
       fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
@@ -4287,6 +4304,11 @@ function openBattle(after) {
           onFinish:() => showHeals(vitalsBefore, 0) });
         return;
       }
+      const waitingBattle = g.battle;
+      phase = 'preparing'; phaseAt = Date.now();
+      await battleCutscenes.wait(waitingBattle.kind === 'dad' ? waitingBattle.ultimate?.image : cutsceneSource(action));
+      if (g.battle !== waitingBattle || !dlg.open) { phase = null; return; }
+      phase = null;
       if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
       if (!g.battle && g.devaVisits?.asia?.phase === 'descending') { finish(); return; }
       commandMenuOpen = false;
@@ -4323,7 +4345,7 @@ function openBattle(after) {
       fxHandled = true;                         // M2: the canvas effect owns the numbers + old static image from this paint on
       paint();
       let cutMs = 0;
-      if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS,()=>camera.cue('idle')); cutMs = ACTION_CUT_MS; }
+      if (k === 'crew:nira') { playNiraHealingCutscene(dlg,g.zone,artUrl('crew-nira','png',g.zone),ACTION_CUT_MS,()=>camera.cue('idle'),battleCutscenes.image(niraHealingCutscene(g.zone))); cutMs = ACTION_CUT_MS; }
       else cutMs = playActionCutscene(action) ? ACTION_CUT_MS : 0;
       startActionCue(cutMs); startMoveFx('you', k, cutMs ? ACTION_CUT_MS - 120 : 0, cutMs);
 
@@ -4338,8 +4360,10 @@ function openBattle(after) {
         // ข้อ C คุณเป้ 24 ก.ย. 2569 — เดิมตีสวนต่อทันทีที่อนิเมชันเราเล่นจบ (780ms) รู้สึกโดนตีสวนทันที
         // หน่วงเพิ่มอีก ~2 วิ ก่อนเริ่มจังหวะเขาสวนกลับ ผู้เล่นต้องเห็นดาเมจ/แถบเลือดของตัวเองนิ่งอยู่ก่อน
         // phase ยังเป็น 'you' ต่อระหว่างรอ (ปุ่มล็อกอยู่ผ่าน busy:!!phase) กันกดโจมตีซ้อนจนพัง
-        phaseTimer = setTimeout(() => {
+        phaseTimer = setTimeout(async () => {
           if (!g.battle) return;
+          await battleCutscenes.wait(nb.ultimate?.image);
+          if (g.battle !== nb || !dlg.open) return;
           // ---- จังหวะที่ 2: เขาสวนกลับ (หรือถูกสะกดจิตแล้วฟาดใส่ตัวเอง) ----
           phase = 'foe'; phaseAt = Date.now();
           fxNow = nb.dmg && nb.dmg.confuseSelf > 0 ? { key: 'atk', side: 'foe' } : { key: 'foe', side: 'you' };
@@ -4359,7 +4383,7 @@ function openBattle(after) {
     if (fin) fin.onclick = () => { if (!phase) finish(); };
     if(currentTurn?.side==='foe'&&!phase&&!b.over&&!b.commandBusy&&!enemyScheduled&&!userPaused&&!pauseDlg.open){
       enemyScheduled=true;
-      phaseTimer=setTimeout(()=>{
+      phaseTimer=setTimeout(async ()=>{
         enemyScheduled=false;
         if(g.battle!==b||phase||userPaused||pauseDlg.open||!dlg.open)return;
         const attacker = b.foes.find(f => f.id === currentTurn.id);
@@ -4376,6 +4400,9 @@ function openBattle(after) {
         phase='foe';phaseAt=Date.now();
         const vitalsBeforeFoe=vitalsOf(g);
         if(!g.runEnemyTurn()){phase=null;paint();return;}
+        await battleCutscenes.wait(b.ultimate?.image);
+        if(g.battle!==b||!dlg.open)return;
+        phaseAt=Date.now();
         showHeals(vitalsBeforeFoe,400);   // L2: e.g. a spare heart bringing Yama back
         fxNow=b.dmg?.confuseSelf?{key:'atk',side:'foe'}:{key:'foe',side:'you'};
         fxHandled=true;

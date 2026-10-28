@@ -1,0 +1,28 @@
+(node:78037) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30A: every story page puts caption and controls after the image; navigation finishes once (68.612296ms)
+✔ 30A: back navigation retains the separate caption (1.064598ms)
+✔ 30A: zones 2–4 choose real arrival scenes even with a loaded boss profile; zone 1 keeps resolver behavior (4.013352ms)
+✔ 30A: opening intro and both regional arrival pages keep text below the frame (4.370024ms)
+✔ 30A: crop geometry removes letterbox rows without horizontal cropping in the story frame (56.162223ms)
+✔ 30A: crop updates cached, newly loaded and fallback images; thumbnail stays square (1.495124ms)
+✔ 30A: ending popup uses a clipped cover thumbnail, with crop preparation (3.409613ms)
+✔ 30A: only the two requested action sources opt out of mirroring; runtime adds right-facing class (2.731538ms)
+(node:78038) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all elemental powers have shipped textures and only fire powers select fire art (16.81172ms)
+✔ cutscene readiness waits for decode, deduplicates and mounts the retained element (351.35661ms)
+✔ timeout never cancels late decode; replay becomes ready without another fetch (21.356438ms)
+✔ missing, rejected decode and hung images resolve safely; ceiling is capped at 300 ms (302.117933ms)
+✔ warming one team does not warm bench members or leak readiness to a new battle (2.834666ms)
+✔ edited production modules share canonical release versions (25.828917ms)
+✔ real command handler: ten cold readiness cycles finish once and preserve MP, damage and turn order (785.660369ms)
+✔ leaving the battle during decode cannot confirm a stale command (4.49933ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2657.213424
