@@ -29,13 +29,12 @@ test('Zone 1-2 preserves story anchors and uses owner mask/tree layout', () => {
   assert.equal(dungeonWalkable([.12,.22], 'th:asia'), true); assert.equal(dungeonWalkable([.53,.78], 'th:asia'), true); assert.equal(dungeonWalkable([.5,.1], 'th:asia'), false);
 });
 
-test('route 3-4 stays on the legacy corridor until its owner mask arrives', () => {
-  const id='west:cyberhell';
-  assert.equal(isWildernessRoute(id), false); assert.equal(routeBossCave(id), null);
-  assert.deepEqual(dungeonPatrols(id), []);
-  assert.deepEqual(dungeonCheckpointProgress(id), [.25,.52,.79]);
-  assert.deepEqual(dungeonPoint(0,id), [.5,.925]);
-  assert.equal(dungeonBackground('west',id,2),'img/map-zone1/dungeon-west-cyber-cyber-gate-v1.webp');
+test('route 3-4 uses its independent owner floor and ordinary checkpoints', () => {
+  const id='west:cyberhell',r=ROUTE_GEOMETRY[id];
+  assert.equal(isWildernessRoute(id),true);assert.equal(routeBossCave(id),null);assert.equal(r.captainCave,null);
+  assert.equal(dungeonPatrols(id).length,6);
+  assert.deepEqual(dungeonPoint(0,id),r.corridor[0]);
+  assert.equal(dungeonBackground('west',id,2),'img/frontier-route/zone3-4-v1.webp');
 });
 
 test('owner-fitted route 2-3 has its own picture and patrols, with ordinary checkpoint fights', () => {
