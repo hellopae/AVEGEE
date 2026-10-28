@@ -935,7 +935,7 @@ function guardRestWidget(c, showName = false) {
   const progress = rest?.phase === 'rest' ? Math.max(0, Math.min(100, 100*(Date.now()-rest.startedAt)/(rest.until-rest.startedAt))) : 0;
   return `<div class="hunger-line" data-guard-status="${esc(c.id)}">
     ${showName ? `<b class="rest-name">${esc(c.name || (c.k === 'guard' ? GUARD.name : c.k))}</b>` : ''}<span class="bar hp"><i style="width:${Math.max(0,c.morale)}%"></i></span><small>HP ${Math.round(c.morale)}/100</small>
-    ${rest ? `<small>${esc(t(rest.phase === 'travel' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
+    ${rest ? `<small>${esc(t(rest.phase !== 'rest' ? 'g1.travel' : 'g1.resting'))}</small><span class="bar"><i style="width:${progress}%"></i></span><small>${rest.phase === 'rest' ? esc(t('g1.seconds', {n:Math.max(0,Math.ceil((rest.until-Date.now())/1000))})) : ''}</small>`
       : (() => {
         // L3: ปุ่มพักมีทุกคนที่ไม่ใช่ผู้อ่าน — จางพร้อมบอกเหตุผลเมื่อ HP เต็ม / ยังไม่มีศาลาน้ำชา / ล้มอยู่ / อยู่ในศึก
         const full = c.morale >= 100, why = full ? t('g1.full') : !ready ? t('g1.needTea') : g.battle ? t('g1.inBattle') : !actorStanding(c) ? t('g1.down') : '';

@@ -1,4 +1,4 @@
-import {teaRoomStaff,teaRestSprite} from './tea-staff-rest.js';
+import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
 import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
 import { gateArrivals, gateKarma, GATE_EFFECT_MS, gateEffectPose, drawGateEffect } from './h4-location-ui.js';
@@ -23,6 +23,7 @@ import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
+import {drawWorker} from './workers.js';
 import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
@@ -530,13 +531,19 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
     if (def.k === 'tea') {
+      for (const {actor:c,point:[x,y],face,distance} of teaRoomArrivals(g)) {
+        acts.push({y,fn:()=>{
+          const h=U*.105,atX=px(x),atY=py(y);
+          if(c.id.startsWith('worker:'))drawWorker(ctx,{...c,x:atX,y:atY,sitting:false,moving:true,face},distance*8000,h);
+          else if(!drawCrewWalk(ctx,'crew-'+c.k,atX,atY,h,distance*U,face))drawStandee(ctx,'crew-'+c.k,atX,atY,h,t,'',face);
+        }});
+      }
       for (const {actor:c,point:[x,y]} of teaRoomStaff(g)) {
         acts.push({y,fn:()=>{
           const h=U*.105,atX=px(x),atY=py(y),sprite=poseImg(teaRestSprite(c,g.zone));
-          // Low floor cushion; feet and crossed legs stay fixed on its centre.
-          ctx.save();ctx.fillStyle='#842e36';ctx.strokeStyle='#c99a50';ctx.lineWidth=Math.max(1,U*.002);
-          ctx.beginPath();ctx.ellipse(atX,atY,h*.53,h*.19,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-          if(sprite){const width=h*sprite.naturalWidth/sprite.naturalHeight;ctx.drawImage(sprite,atX-width/2,atY-h*.94,width,h);}
+          // A soft contact shadow keeps the seated sprite grounded without a ring.
+          ctx.save();drawContactShadow(ctx,atX,atY,h);
+          if(sprite){const width=h*sprite.naturalWidth/sprite.naturalHeight;ctx.drawImage(sprite,atX-width/2,atY-h,width,h);}
           ctx.restore();
         }});
       }

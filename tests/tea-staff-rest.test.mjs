@@ -40,3 +40,14 @@ test('A2 every regional seated identity and worker rest sprite exists; cushions 
  for(const zone of ['th','asia','west','cyberhell'])assert.ok(existsSync(new URL('../'+teaRestSprite({id:'worker:1',homeZone:zone},zone),import.meta.url)));
  assert.equal(TEA_SEAT_COUNT,15);
 });
+test('tea room entry survives real JSON snapshot/restore for Guard and worker before rest begins',()=>{
+ const g=game('th'),w=g.hireWorker(),now=Date.now();g.guard.morale=20;
+ assert.ok(g.restActor(g.guard.id,now));assert.ok(g.restWorkerAtTea(w.id,now));
+ for(const c of [g.guard,w]){[c.x,c.y]=c.teaRest.dest;c.teaRest.path=[];g.updateGuardRest(c,now);assert.equal(c.teaRest.phase,'enter');}
+ const copy=createGame();copy.save=()=>true;copy.onChange=()=>{};assert.ok(copy.restore(JSON.parse(JSON.stringify(g.snapshot()))));
+ for(const c of [copy.guard,copy.workerState.workers[0]]){
+  assert.equal(c.teaRest.phase,'enter');const end=c.teaRest.enteredAt+c.teaRest.entryMs;
+  copy.updateGuardRest(c,end-1);assert.equal(c.teaRest.phase,'enter');
+  copy.updateGuardRest(c,end);assert.equal(c.teaRest.phase,'rest');assert.equal(c.teaRest.until,end+120000);
+ }
+});
