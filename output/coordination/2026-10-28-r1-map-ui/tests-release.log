@@ -1,0 +1,18 @@
+(node:72327) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ worker delivers harbour arrivals immediately available for trial, then hands the judged soul to its keeper (848.884991ms)
+✔ court ferry waits for an open court and leaves a soul at the harbour when no worker is free (263.175237ms)
+✔ saving an inbound or escorted ferry case never restores the soul on the dais stairs (287.395805ms)
+✔ gatherers physically visit the resource site and merchant before income is paid (549.210769ms)
+✔ build helpers only accelerate a real Taan construction after physical arrival (66.827535ms)
+✔ each farewell grants next-zone outfit once, with no money replay during old-save migration (1.879554ms)
+✔ renderer preload retains the decoded image and retries a broken browser response (64.045406ms)
+✔ delivered court souls remain ashore across reopening and save restore (549.11268ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3173.587788

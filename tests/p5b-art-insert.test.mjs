@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // P5b — Codex art inserted: zone-3 boss hands the weapon sheathed (cane v2), pier repair r3-c3, zone-1 worker sheet v2
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -30,9 +31,10 @@ test('P5b boss zone 3: cane cutscene points at the v2 art, other zones unchanged
   assert.deepEqual(jpegSize('img/weapons/weapon-cutscene-cane-v2.jpeg'),[1375,768]);
   assert.ok(existsSync('img/weapons/weapon-cutscene-cane.jpeg'),'v1 file stays (nothing overwritten)');
   assert.ok(allCatalogFiles.includes('img/weapons/weapon-cutscene-cane-v2.jpeg'),'preloaded');
-  assert.match(html,/"\.\/src\/weapons\.js": "\.\/src\/weapons\.js\?v=[^"]*p5b"/);
-  assert.match(html,/"\.\/src\/weapons\.js\?v=i1b": "\.\/src\/weapons\.js\?v=[^"]*p5b"/);
-  assert.match(html,/"\.\/src\/story\.js": "\.\/src\/story\.js\?v=[^"]*p5b"/);
+  assertVersionedImports(html, ['weapons.js']);
+  const imports = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
+  assert.equal(imports['./src/weapons.js?v=i1b'], imports['./src/weapons.js']);
+  assertVersionedImports(html, ['story.js']);
 });
 
 test('P5b pier: r3-c3 repair registered once, box covers the pier plus feather, file is a full 1024 chunk',()=>{
@@ -44,7 +46,7 @@ test('P5b pier: r3-c3 repair registered once, box covers the pier plus feather, 
   assert.ok(x0+42<=712&&x1-42>=941&&y0+42<=92&&y1-42>=308,'feather lands on untouched water/rock, not on the pier');
   assert.equal(TOWN_TERRAIN_REPAIRS.length,3,'r2-c3 and r1-c3 repairs kept');
   assert.ok(allCatalogFiles.includes(d[0].url));
-  assert.match(html,/"\.\/src\/town-terrain-repair\.js": "\.\/src\/town-terrain-repair\.js\?v=[^"]*p5b"/);
+  assertVersionedImports(html, ['town-terrain-repair.js']);
 });
 
 test('P5b walk mask is untouched: pier floor strip still walkable, water beside it not',async()=>{
@@ -63,8 +65,8 @@ test('P5b worker sheet v2: 1280x3840, v1 stays for every zone and for thumbnails
   assert.equal(WORKER_SHEETS_V2.th.insets.length,48);
   assert.deepEqual(workerFrameRect('th',3,0,WORKER_SHEETS_V2.th.insets),{left:0,top:0,right:0,bottom:0,x:0,y:3,w:1,h:1});
   assert.ok(allCatalogFiles.includes('img/workers/worker-th-sheet-v2.webp'));
-  assert.match(html,/"\.\/src\/workers\.js": "\.\/src\/workers\.js\?v=[^"]*p5b[^"]*"/);
-  assert.match(html,/src\/ui\.js\?v=[^"]*p5b(-[a-z0-9]+)*-o2"/,'ui.js suffix still ends -o2');
+  assertVersionedImports(html, ['workers.js']);
+  assertVersionedImports(html, ['ui.js']);
 });
 
 test('P5b worker rows follow what the worker is doing (v2) with natural escort walking on both atlas versions',()=>{

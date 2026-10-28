@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // M2 round 0: zone skin table, per-zone town layout, light emitters. Zone 1 must be byte-for-byte what it was.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -165,13 +166,12 @@ test('light emitters: Zone 1 fire reader unchanged; ice / cyan / violet need the
   assert.equal(ZONE_SKIN.th.light.flame, 'img/fx/fx-fire-flame-{k}.webp');
 });
 
-test('index.html: M2 modules are pinned in the import map and the touched ones carry the m2 cache-bust token', async () => {
+test('index.html: M2 modules have versioned imports matching the entry script', async () => {
   const { readFileSync } = await import('node:fs');
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   for (const f of ['zone-skin.js', 'route-geometry.js', 'town-owner-walkmask-asia.js', 'town-owner-walkmask-west.js', 'town-owner-walkmask-cyberhell.js'])
-    assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}": "\\./src/${f.replace('.', '\\.')}\\?v=m2(?:-[^" ]+)?"`), f);
-  // inserted after the date (not appended): older tests pin the leading date and the endings -o2 / -p8 / -p4
+    assertVersionedImports(html, [f]);
   for (const f of ['town-layout.js', 'town-terrain.js', 'town-scenery.js', 'town-lighting.js', 'town-shade.js', 'town-flow.js', 'scene.js', 'data.js', 'game.js', 'ui.js', 'dungeon-view.js', 'zone-travel.js', 'theme-assets.js'])
-    assert.match(html, new RegExp(`"\\./src/${f.replace('.', '\\.')}": "\\./src/${f.replace('.', '\\.')}\\?v=(?:m2-|\\d{8}-m2-)`), f);
-  assert.match(html, /src\/ui\.js\?v=\d{8}-m2-[^"]*-o2"><\/script>/);
+    assertVersionedImports(html, [f]);
+  assertVersionedImports(html, ['ui.js']);
 });

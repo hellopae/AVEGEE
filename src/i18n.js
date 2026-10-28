@@ -153,6 +153,9 @@ const TH = {
   'settings.camera': 'เอฟเฟกต์กล้อง',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'ซูมเข้า-ออกตัวละคร สั่นจอ และหรี่ฉากหลังตอนโจมตี ปิดได้ถ้าเวียนหัว',
 
+  'hud.heroName': 'ยามา',
+  'hud.mute': 'ปิดเสียง',
+  'hud.unmute': 'เปิดเสียง',
   'hud.pause': 'หยุด',
   'hud.settings': 'ตั้งค่า',
   'hud.book': 'คู่มือ',
@@ -797,6 +800,9 @@ const EN = {
   'settings.camera': 'CAMERA EFFECTS',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'Zoom, screen shake and background dimming during attacks. Turn off if it feels dizzy.',
 
+  'hud.heroName': 'Yama',
+  'hud.mute': 'Mute',
+  'hud.unmute': 'Unmute',
   'hud.pause': 'Pause',
   'hud.settings': 'Settings',
   'hud.book': 'Guide',

@@ -3316,9 +3316,9 @@ function openFrontierWalk(invasionKey = null) {
       </div>
       <div class="frw-bottom">
         <div class="frw-avatar"><div><img src="${artUrl('hero-yama-profile') || heroFace()}" alt="${esc(HERO_NAME)}"><span>${[1,2,3].map(l=>`<i class="${g.level>=l?'on':''}">★</i>`).join('')}</span></div>
-          <span class="hud-hpbar"><i style="width:${Math.max(0,Math.min(100,g.hp/g.hpMax*100))}%"></i></span><b>YAMA</b></div>
-        <button id="frw-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>GUIDE<br>BOOK</span></button>
-        <button id="frw-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>BAG</span></button>
+          <span class="hud-hpbar"><i style="width:${Math.max(0,Math.min(100,g.hp/g.hpMax*100))}%"></i></span><b>${esc(t('hud.heroName'))}</b></div>
+        <button id="frw-book" class="st-hud-item" aria-label="${esc(t('room.hud.book'))}"><img src="img/ui/icon-book.png" alt=""><span>${esc(t('room.hud.book'))}</span></button>
+        <button id="frw-bag" class="st-hud-item" aria-label="${esc(t('hud.bag'))}"><img src="img/ui/icon-bag.png" alt=""><span>${esc(t('hud.bag'))}</span></button>
       </div>
       <small class="frw-status">ระลอก ${wave} · ศัตรู <b id="frw-count">0</b>/${maxOnScreen(wave)}</small>
     </div>`;
@@ -5076,7 +5076,7 @@ function drawMute() {
   const img = b.querySelector('img');
   if (img) img.src = `img/ui/${off ? 'icon-sound-close' : 'icon-sound'}.png`;
   b.setAttribute('aria-pressed', String(off));
-  const label = off ? 'เปิดเสียง / Unmute' : 'ปิดเสียง / Mute';
+  const label = t(off ? 'hud.unmute' : 'hud.mute');
   b.title = label; b.setAttribute('aria-label', label);
 }
 $('#mute').onclick = () => {

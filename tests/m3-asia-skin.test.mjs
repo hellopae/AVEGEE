@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // M3's shipped configuration is tested before the M2 dev-hook tests mutate their own process.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -83,7 +84,7 @@ test('M3: title uses existing town copy in Zone 1 and the legacy Asia label with
   }
   setLang('th');
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(html,/zone-skin\.js\?v=m2-m3b-asia/);
-  assert.match(html,/town-map\.js\?v=20261022-m2-m3b-/);
-  assert.match(html,/ui\.js\?v=20261021-m2-m3b-/);
+  assertVersionedImports(html, ['zone-skin.js']);
+  assertVersionedImports(html, ['town-map.js']);
+  assertVersionedImports(html, ['ui.js']);
 });

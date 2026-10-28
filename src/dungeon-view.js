@@ -184,7 +184,7 @@ export function dungeonStartDeparture(g,latched,{cut=0,destroyed=false}={}) {
 /** Ground arrow at the route start (dir = backwards along the road). */
 function drawStartMarker(ctx,routeId,screen,reach,w,cam,t,reduced){
   const {corridor}=geometry(routeId),a=corridor[0],b=corridor[1],p=screen(a);
-  drawExitMarker(ctx,p[0],p[1],{rx:reach*w.w*cam.scale,ry:reach*w.h*cam.scale,dir:[a[0]-b[0],a[1]-b[1]],u:Math.min(w.w,w.h)*cam.scale,t,label:'กลับด่านชายแดน',alpha:.9,reduced});
+  drawExitMarker(ctx,p[0],p[1],{rx:reach*w.w*cam.scale,ry:reach*w.h*cam.scale,dir:[a[0]-b[0],a[1]-b[1]],u:Math.min(w.w,w.h)*cam.scale,t,alpha:.9,reduced});
 }
 /** Mount inside a dialog/panel. All city player coordinates remain untouched. */
 function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{},onGuide=()=>{}}={}) {
@@ -536,7 +536,6 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);
     });
-    const exit=screenPoint(dungeonPoint(1));ctx.fillStyle=status.ready?'#d8ffbc':'#d4b688';ctx.fillText(status.ready?'ประตูเมือง — เดินเข้ามาใกล้':'ประตูเมืองยังปิด',exit[0],exit[1]-14);
     if(cut>0){const k=Math.min(1,cut/CHASE.transitionMs);ctx.fillStyle=`rgba(20,6,10,${(k*.92).toFixed(3)})`;ctx.fillRect(0,0,width,height);if(!reduced.matches&&k<.35){ctx.fillStyle=`rgba(255,236,200,${((.35-k)*1.4).toFixed(3)})`;ctx.fillRect(0,0,width,height);}}
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
     mc.strokeStyle='#ffd27a';mc.lineWidth=2;mc.beginPath();DUNGEON_CORRIDOR.forEach((p,i)=>i?mc.lineTo(p[0]*180,p[1]*110):mc.moveTo(p[0]*180,p[1]*110));mc.stroke();

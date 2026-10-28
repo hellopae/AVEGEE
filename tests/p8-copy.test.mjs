@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -59,8 +60,8 @@ test('P8 lock badges go through i18n (rank in EN)',()=>{
   assert.match(read('src/town-map.js'),/import \{ t \} from '\.\/i18n\.js'/);
 });
 
-test('P8 index.html cache-bust carries -p8 on every touched file',()=>{
+test('P8 index.html versions every touched file and matches the entry script',()=>{
   const h=read('index.html');
   for(const f of ['data.js','ui.js','i18n.js','town-map.js','minigames/krata-qte.js','sentencing-guide.js'])
-    assert.match(h,new RegExp(`src/${f.replace(/[./]/g,m=>'\\'+m)}\\?v=[^"]*-p8(-p4)?(-o2)?"`),f);
+    assertVersionedImports(h, [f]);
 });

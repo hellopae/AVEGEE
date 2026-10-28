@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -133,7 +134,6 @@ test('small items: kan clue text says พลังเวท, not MP; cache-bust 
   const gs=read('src/game.js');
   assert.doesNotMatch(gs,/ต้องใช้ MP|`MP −/);
   const html=read('index.html');
-  assert.match(html,/\.\/src\/ui\.js\?v=[^"]*-p3[^"]*-o2"/);
-  assert.match(html,/src\/ui\.js\?v=[^"]*-o2"><\/script>/);
-  assert.match(html,/town-map\.css\?v=[^"]*-p3"/);
+  assertVersionedImports(html, ['ui.js']);
+  assert.match(html, /town-map\.css\?v=[^"]+"/);
 });

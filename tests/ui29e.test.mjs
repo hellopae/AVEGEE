@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { createGame } from '../src/game.js';
-import { STATIONS, isTrialDestination } from '../src/data.js';
+import { STATIONS, SINS, isTrialDestination } from '../src/data.js';
 import { nearBuild } from '../src/scene.js';
 import { setLang, t } from '../src/i18n.js';
 
@@ -16,7 +16,7 @@ const esc = value => String(value).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&
 const choicesSource = ui.slice(ui.indexOf('    const destinationChoices ='), ui.indexOf('    const shownCrew ='));
 const renderChoices = g => vm.runInNewContext(`${choicesSource}\ndestinationChoices;`, {
   g, dests:g.trialDestinations(), s:g.queue[0], pick:{}, answer:null,
-  t, esc, blockText:() => '', stBg:() => '', orbImg:() => '',
+  t, esc, SINS, blockText:() => '', stBg:() => '', orbImg:() => '',
 });
 
 test('29E: fresh zone shows TH/EN next steps; build and manual jail hold are real actions', () => {

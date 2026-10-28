@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // P6 — กระทะทองแดง: วิญญาณโดนไฟ (ไฟหน้า/หลัง · แดงกะพริบ · เหงื่อ · reduced-motion) + มินิเกมฝึกลูกไฟกดติดทุก input
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -70,10 +71,10 @@ test('P6 cauldron: wired into the room, no per-frame ctx.filter, assets present,
   assert.ok(!/\.filter\s*=/.test(pot));
   for (const f of ['fx-soul-sweat-drops', 'fx-fire-flame-a', 'fx-fire-flame-b', 'fx-fire-flame-c', 'fx-fire-embers']) assert.ok(existsSync(new URL(`../img/fx/${f}.webp`, import.meta.url)), f);
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  assert.match(html, /src\/room\.js\?v=[^"]*-p6(-[a-z0-9]+)*"/);
-  assert.match(html, /src\/pot-souls\.js\?v=[^"]*-p6"/);
-  assert.match(html, /src\/minigames\/krata-qte\.js\?v=[^"]*-p6(-[a-z0-9]+)*"/);
-  assert.match(html, /src\/ui\.js\?v=[^"]*-o2"/, 'ui.js keeps the -o2 ending');
+  assertVersionedImports(html, ['room.js']);
+  assertVersionedImports(html, ['pot-souls.js']);
+  assertVersionedImports(html, ['minigames/krata-qte.js']);
+  assertVersionedImports(html, ['ui.js']);
 });
 
 // ---------- มินิเกมฝึกลูกไฟ ----------

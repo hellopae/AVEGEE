@@ -514,27 +514,18 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
     shade(m.x, m.y, MOB.h * CHAR_SCALE_MAP, c => mapStandee(c, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹'));
-    // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
-    // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
-    if (d <= MOB.fabReach || actorStanding(g.guard)) return;
-    tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
-        ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
   if (!(g.zone==='th'&&g.bossCleared?.th) && !bossGuideDismissed(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
-    const cleared = !walk && g.bossCleared?.[g.zone];
     const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
     const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
     spot_(x, y, HERO_H * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       shade(x, y, HERO_H * 1.12, c => drawStandee(c, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1));
-      // N1 (คุณเป้ 16 ต.ค.): ชนะแล้ว = ไม่มีป้ายดำ "คุยกับ…" บนหัว — ปุ่มเหลือง 💬 (ui.js updateBossFab) วางบนหัวแทนตอนเดินเข้าใกล้
-      if (!cleared) tag(ctx, x, y - HERO_H * 1.12 - 15, t,
-          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
 
@@ -545,7 +536,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   });
 
   // ชุด 29C ข้อ 9 — event ปีศาจชายแดนบุก (รับทราบแล้ว รอให้ยมบาทเดินไป): เครื่องหมายเรืองแสงที่ประตูชายแดน
-  // ลูกศรชี้ลงเด้งอยู่เหนือซุ้มประตู + ป้ายชื่อ + วงแหวนแดงที่พื้น · หายไปเมื่อสู้เริ่มหรือ event จบ
+  // ลูกศรชี้ลงเด้งอยู่เหนือซุ้มประตู + วงแหวนแดงที่พื้น · หายไปเมื่อสู้เริ่มหรือ event จบ
   if (g.breachMarch?.()) {
     const gx = FRONTIER.x, gy = FRONTIER.y;
     at(1e5 + gy, () => {
@@ -554,11 +545,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       ctx.strokeStyle = `rgba(255,96,72,${0.55 + q * 0.4})`; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.ellipse(gx, gy, 70 + q * 8, 24 + q * 3, 0, 0, 7); ctx.stroke();
       const bob = Math.sin(t / 200) * 8, ay = gy - 150 + bob;
-      ctx.fillStyle = '#ff6a4a'; ctx.strokeStyle = '#2a0c08'; ctx.lineWidth = 4;
-      ctx.beginPath(); ctx.moveTo(gx - 20, ay - 24); ctx.lineTo(gx + 20, ay - 24); ctx.lineTo(gx, ay + 10); ctx.closePath();
+      ctx.fillStyle = '#ff6a4a'; ctx.strokeStyle = '#2a0c08'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(gx - 11, ay - 13.2); ctx.lineTo(gx + 11, ay - 13.2); ctx.lineTo(gx, ay + 5.5); ctx.closePath();
       ctx.stroke(); ctx.fill();
       ctx.restore();
-      tag(ctx, gx, ay - 48, t, ['⚠️ ' + tr('event.frontierBreach.marker'), '#ff9a7a']);
     });
   }
 

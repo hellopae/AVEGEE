@@ -56,7 +56,7 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
         g.zoneTravel.active.position={x:.55,y:.72};assert.ok(g.challengeCanTalk());assert.equal(g.challengeCanTalk(CHALLENGE_STAND.asia),false);
         assert.equal(g.startChallenge()?.challenge,true);return;
       }
-      assert.ok(labels.includes(BOSS_NAMES[zone].frontier),'boss rendered in frontier');
+      assert.ok(!labels.includes(BOSS_NAMES[zone].frontier),'boss nameplate removed from frontier');
       const {x,y}=CHALLENGE_STAND[zone];
       cv.pointerdown({clientX:(x-.06)*1678,clientY:y*937});
       let now=performance.now();
@@ -97,15 +97,15 @@ for (const zone of Object.keys(CHALLENGE_STAND)) {
 }
 
 // Capture the actual production canvas font rather than matching stylesheet/source strings.
-test('B5a: invasion enemy names stay readable and compact in all four zones',async()=>{
+test('R1: invasion enemies have no map nameplates in all four zones',async()=>{
  for(const dpr of [1,2])for(const zone of Object.keys(BOSS_NAMES)){
   globalThis.devicePixelRatio=dpr;
   clearFrontierSession();labels.length=0;nameFonts.length=0;
   const g=createGame();g.zone=zone;
   const fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,fab:button(),challenge:button(),invasionKey:CHALLENGE_STORY_KEY[zone]});
   try{await Promise.resolve();fw.start();frame(performance.now()+50);const names=nameFonts.filter(v=>v.text===BOSS_NAMES[zone].frontier||String(v.text).includes('ปีศาจบุก'));
-   assert.ok(names.some(v=>v.text===BOSS_NAMES[zone].frontier),zone+' actual boss label');
-   for(const v of names){const px=Number(v.font.match(/([0-9.]+)px/)[1])/dpr;assert.ok(px>=10&&px<=14,zone+': '+v.font);}
+   assert.deepEqual(names, [], zone+' has no enemy nameplates');
+   assert.ok(!labels.some(text=>/ระดับ|Lv/.test(String(text))), 'no level labels');
    assert.equal(fw.enemyCount(),3,'only visual labels changed');
   }finally{fw.destroy();}
  }

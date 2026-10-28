@@ -1,3 +1,4 @@
+import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -72,7 +73,7 @@ test('O2 K: Yama overlay canvases use a device-resolution backing store',()=>{
   assert.equal((s.match(/canvasScale\(\)/g)||[]).length,2);
   assert.equal((s.match(/imageSmoothingQuality = 'high'|imageSmoothingQuality='high'/g)||[]).length,2);
 });
-test('O2: touched modules carry the -o2 cache-bust suffix',()=>{
+test('O2: touched modules have versioned imports matching the entry script',()=>{
   const h=read('index.html');
-  for(const f of ['ui.js','nira-combat.js','combat-sprites.js','yama-sword.js','battle-scale.js'])assert.match(h,new RegExp(`src/${f.replace('.','\\.')}\\?v=[^"]*-o2(?:-p9)?"`));
+  assertVersionedImports(h, ['ui.js','nira-combat.js','combat-sprites.js','yama-sword.js','battle-scale.js']);
 });
