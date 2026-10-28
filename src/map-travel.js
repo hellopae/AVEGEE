@@ -1,4 +1,4 @@
-import {SPOTS} from './data.js';
+import {ferryBerth,withFerryOcclusion} from './ferry-geometry.js';
 import {harbourDestinations,dungeonStatus} from './zone-travel.js';
 import {findPath,nearestWalk} from './walk.js?v=k1d';
 import {drawBoat,drawStandee,drawCrewWalk} from './art.js';
@@ -14,7 +14,7 @@ export function beginMapTravel(g,to,{mode='boat',reduced=false}={}){
  if(mode==='boat'?(!g.atHarbour()||!harbourDestinations(g).includes(to)):(!dungeonStatus(g)?.ready||dungeonStatus(g)?.route.to!==to))return false;
  const pier=mode==='boat'?g.harbourPoint():{x:g.player.x,y:g.player.y};
  const nira=mode==='boat'?pathTo(g.crewOf('nira'),pier):[];
- g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:pier.y+120,niraPath:nira,approachMs:Math.max(1800,length(nira)/TRAVEL_WALK_SPEED),committed:false,focus:{...pier}};
+ g.mapTravel={from:g.zone,to,mode,reduced,phase:mode==='boat'?'approach':'depart',elapsed:0,pier,waterY:ferryBerth(g.zone,pier).y,niraPath:nira,boardingHop:ferryBerth(g.zone,pier).hop,approachMs:Math.max(1800,length(nira)/TRAVEL_WALK_SPEED),committed:false,focus:{...pier}};
  return true;
 }
 export function cancelMapTravel(g){const a=g.mapTravel;if(!a||a.committed)return false;g.mapTravel=null;return true;}
@@ -22,7 +22,7 @@ function commit(g,a){
  if(a.committed)return true;
  a.committing=true;const ok=g.moveZone(a.to);a.committing=false;
  if(!ok){g.mapTravel=null;return false;}
- a.committed=true;a.pier=g.harbourPoint();a.waterY=a.pier.y+120;return true;
+ a.committed=true;a.pier=g.harbourPoint();a.waterY=ferryBerth(g.zone,a.pier).y;a.boardingHop=ferryBerth(g.zone,a.pier).hop;return true;
 }
 export function finishMapTravel(g){const a=g.mapTravel;if(!a)return false;if(!commit(g,a))return false;g.mapTravel=null;g.save?.();return true;}
 export function advanceMapTravel(g,dt){
@@ -40,22 +40,38 @@ export function advanceMapTravel(g,dt){
  if(!next){finishMapTravel(g);return false;}
  a.phase=next;a.elapsed=0;a.progress=0;return true;
 }
-export function drawMapTravel(ctx,g,t,height=48){
- const a=g.mapTravel;if(!a||a.mode!=='boat')return;
+/** Shared geometry keeps boarding/landing continuous with the deck and bob. */
+export function mapTravelPose(a,t=0){
+ if(!a||a.mode!=='boat')return null;
  const p=a.progress||0,at=a.pier,boatY=a.waterY;
  const moving=['approach','handoff'].includes(a.phase),onboard=['depart','arrive'].includes(a.phase);
  let boatX=at.x;if(a.phase==='approach')boatX=lerp(at.x-650,at.x,p);
  if(a.phase==='depart')boatX=lerp(at.x,at.x+900,p);
  if(a.phase==='arrive')boatX=lerp(at.x-900,at.x,p);
- if(a.mode==='boat')drawBoat(ctx,boatX,boatY,a.reduced?0:t,0,true);
- const nira=moving?along(a.niraPath,a.phase==='approach'?p:1):{x:at.x+26,y:at.y};
+ const bob=a.reduced?0:Math.sin(t/620)*5;
+ const nira=moving||a.phase==='board'?along(a.niraPath,a.phase==='approach'?p:1):{x:at.x+22,y:at.y};
  let hero={x:at.x-14,y:at.y},reader=nira;
- if(a.mode==='boat'&&onboard){const bob=a.reduced?0:Math.sin(t/620)*5;hero={x:boatX-8,y:boatY+4+bob};reader={x:boatX+24,y:boatY-4+bob};}
- if(a.mode==='boat'&&['board','land'].includes(a.phase)){
-  const q=a.phase==='board'?p:1-p,jump=a.reduced?0:Math.sin(q*Math.PI)*40;
-  hero={x:lerp(at.x-14,at.x-8,q),y:lerp(at.y,boatY+4,q)-jump};reader={x:lerp(at.x+22,at.x+24,q),y:lerp(at.y,boatY-4,q)-jump};
+ const deckHero={x:boatX-8,y:boatY-10+bob},deckReader={x:boatX+24,y:boatY-18+bob};
+ if(onboard){hero=deckHero;reader=deckReader;}
+ if(['board','land'].includes(a.phase)){
+  const q=a.phase==='board'?p:1-p,hop=a.reduced?0:Math.sin(q*Math.PI)*(a.boardingHop??40);
+  hero={x:lerp(at.x-14,deckHero.x,q),y:lerp(at.y,deckHero.y,q)-hop};
+  reader={x:lerp(nira.x,deckReader.x,q),y:lerp(nira.y,deckReader.y,q)-hop};
  }
- drawStandee(ctx,'hero-yama',hero.x,hero.y,height,t,'👑',1);
- if(!(moving&&a.phase==='approach'&&drawCrewWalk(ctx,'crew-nira',reader.x,reader.y,height,t*.1,1)))drawStandee(ctx,'crew-nira',reader.x,reader.y,height,t,'📜',1);
-
+ return {boat:{x:boatX,y:boatY},hero,reader,onboard,walking:a.phase==='approach'};
+}
+export function drawMapTravel(ctx,g,t,height=48){
+ const a=g.mapTravel,pose=mapTravelPose(a,t);if(!pose)return;
+ const {boat,hero,reader,onboard,walking}=pose;
+ const actors=()=>{
+  drawStandee(ctx,'hero-yama',hero.x,hero.y,height,t,'👑',1);
+  if(!(walking&&drawCrewWalk(ctx,'crew-nira',reader.x,reader.y,height,t*.1,1)))drawStandee(ctx,'crew-nira',reader.x,reader.y,height,t,'📜',1);
+ };
+ withFerryOcclusion(ctx,g.zone,()=>{
+  drawBoat(ctx,boat.x,boat.y,a.reduced?0:t,0,true);
+  if(onboard)actors();
+ });
+ // Feet on the quay are in front of its rail; only waterborne actors go under
+ // the bridge with the vessel.
+ if(!onboard)actors();
 }
