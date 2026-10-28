@@ -10,7 +10,7 @@ assert phase in ('before','after')
 source_cache={}
 def source(path):
     if path not in source_cache:
-        source_cache[path]=(subprocess.check_output(['git','show',f'HEAD:{path}']).decode() if phase=='before' else (ROOT/path).read_text())
+        source_cache[path]=(subprocess.check_output(['git','show',f'9c93fa0:{path}']).decode() if phase=='before' else (ROOT/path).read_text())
     return source_cache[path]
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*a): pass
@@ -36,7 +36,10 @@ with sync_playwright() as p:
         page.evaluate("""async()=>{const m=await import(document.querySelector('script[src^=\"src/ui.js?\"]').src);m.startPlay(false);G.save=()=>true;G.paused=true;G.mobs=[];G.queue=[];G.breachMarch=()=>true;__r1.setMapZoom(0);}""")
         for zone in ['th','asia','west','cyberhell']:
             page.evaluate("async z=>{G.zone=z;const d=await import('/src/data.js');d.syncSceneZone(z);__r1.refresh();}",zone)
-            page.wait_for_timeout(1400)
+            page.wait_for_timeout(16000)
+            for _ in range(3):
+                page.evaluate("()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close())")
+                page.wait_for_timeout(700)
             page.screenshot(path=str(OUT/f'{phase}-town-{zone}-{size[0]}.png'))
         page.evaluate("()=>{G.zone='th';G.breachMarch=()=>false;__r1.openFrontierWalk('frontierBreach');}")
         page.wait_for_timeout(1700)

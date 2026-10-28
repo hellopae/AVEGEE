@@ -514,18 +514,27 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       ctx.beginPath(); ctx.ellipse(m.x, m.y, 34, 12, 0, 0, 7); ctx.stroke();
     }
     shade(m.x, m.y, MOB.h * CHAR_SCALE_MAP, c => mapStandee(c, m.eventArt || (MOB.kinds[m.kind ?? 0] || MOB).img, m.x, m.y, MOB.h, t, '👹'));
+    // เข้าระยะปุ่มสู้แล้ว ui.js วางปุ่มจริงไว้ตรงนี้ทับอยู่ — วาดป้ายซ้ำจะได้ข้อความซ้อนกันสองชั้น
+    // จ้างยักษ์ทวารบาลแล้ว ปีศาจเป็นงานของยักษ์ ไม่มีป้ายชวนให้ผู้เล่นเข้าสู้
+    if (d <= MOB.fabReach || actorStanding(g.guard)) return;
+    tag(ctx, m.x, m.y - MOB.h * CHAR_SCALE_MAP - 8, t,
+        ['⚔️ กดเพื่อเข้าสู้', '#c8b0a8']);
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
   if (!(g.zone==='th'&&g.bossCleared?.th) && !bossGuideDismissed(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
+    const cleared = !walk && g.bossCleared?.[g.zone];
     const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
     const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
     spot_(x, y, HERO_H * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
       shade(x, y, HERO_H * 1.12, c => drawStandee(c, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1));
+      // N1 (คุณเป้ 16 ต.ค.): ชนะแล้ว = ไม่มีป้ายดำ "คุยกับ…" บนหัว — ปุ่มเหลือง 💬 (ui.js updateBossFab) วางบนหัวแทนตอนเดินเข้าใกล้
+      if (!cleared) tag(ctx, x, y - HERO_H * 1.12 - 15, t,
+          [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
 

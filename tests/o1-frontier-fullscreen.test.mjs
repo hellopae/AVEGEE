@@ -15,8 +15,8 @@ globalThis.addEventListener=()=>{};
 globalThis.removeEventListener=()=>{};
 globalThis.requestAnimationFrame=()=>1;
 globalThis.cancelAnimationFrame=()=>{};
-const labels=[];
-const ctx=new Proxy({fillText(text){labels.push(text);},createRadialGradient:()=>({addColorStop(){}})},
+const labels=[],images=[];
+const ctx=new Proxy({fillText(text){labels.push(text);},drawImage(im){images.push(String(im?._src||''));},createRadialGradient:()=>({addColorStop(){}})},
   {get:(o,k)=>o[k] ?? (()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const canvas=()=>({width:1678,height:937,getContext:()=>ctx,
   getBoundingClientRect:()=>({left:0,top:0,width:1678,height:937}),
@@ -147,14 +147,15 @@ test('after the farewell zone 1 captain stays in its cave; other frontier stands
   const {frontierSession}=await import('../src/frontier.js');
   for(const zone of ['th','asia','west','cyberhell']){
     for(const mode of zone==='cyberhell'?['none']:['following','farewell']){
-      clearFrontierSession();labels.length=0;
+      clearFrontierSession();labels.length=0;images.length=0;
       const g=mode==='none'?(()=>{const x=newGame();x.zone=zone;x.zoneEvents[zone]={[CHALLENGE_STORY_KEY[zone]]:'cleared'};return x;})():game(zone,mode);
       const {x,y}=CHALLENGE_STAND[zone],P=frontierSession(zone).player;P.x=x-.06;P.y=y;
       const challenge={hidden:true,style:{},dataset:{}},fw=makeFrontierWalk(canvas(),g,{bg:`img/theme-v4/frontier-${zone}.webp`,kinds:[],wave:1,alive:()=>true,challenge});
       try{
         await Promise.resolve();fw.start();
         const stands=!['th','asia'].includes(zone);
-        assert.equal(labels.includes(BOSS_NAMES[zone].frontier),stands,`${zone}/${mode}: boss drawn at the stand`);
+        // R1: the frontier boss no longer carries a name plate - detect the boss standee (glyph fallback or boss art) instead
+        assert.equal(labels.includes('👹')||images.some(s=>/boss/i.test(s)),stands,`${zone}/${mode}: boss drawn at the stand`);
         assert.equal(fw.canTalkChallenge(),stands,`${zone}/${mode}: talk spot exists exactly when the boss is drawn`);
         assert.equal(challenge.hidden,!stands);
         assert.equal(g.challengeCanTalk(P),stands);
