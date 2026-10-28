@@ -60,3 +60,6 @@ export const SPECIAL_MOVES = Object.freeze(['fire','flameCharge','windFan','rage
 export function specialMoveKey(action, ultimate = null) {
   return ultimate ? 'enemy' : SPECIAL_MOVES.includes(action) ? action : null;
 }
+
+/** A remembered target is visible only while an enemy command awaits confirmation. */
+export const selectedVisibleFoeId = battle => battle?.choosingTarget ? selectedLivingFoeId(battle) : null;

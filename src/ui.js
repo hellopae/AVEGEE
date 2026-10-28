@@ -3,7 +3,7 @@ import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
 import {canteenActive,canteenPoint} from './canteen.js';
 import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
-import { rewardView, startRewardCount, selectedLivingFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
+import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
 import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
@@ -64,7 +64,7 @@ import { SINS, STATIONS, CREW, BAL, POWERS, SCENE, SPOTS, QUEUE_LINE,
          KARMA_RELIEF, BATTLE, ZONES, ZONE_EVENTS, TARANG, FX_OF, ROOMS, ROOM_DEFAULT,
          ORDER_WARN, crewName, FRONTIER, returnsToFrontier, MERCHANT, BOON_SHOP, UPGRADES, INTENSITY_NAME,
          CREW_HELP_LV, authorityOf, WEAPONS, BOSS_NAMES, CHALLENGE_STAND, CHALLENGE_REST_WAVE, CREW_POWER, REMORSE_PASS } from './data.js';
-import { weaponEffectLines, weaponNoteText, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
+import { weaponEffectLines, battleWeaponHudHtml, weaponIconSrc, weaponCooldownState, baseSwordIconSrc, baseSwordAttack } from './weapons.js?v=i1b';
 import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bindMenuTabs } from './menu-ui.js';
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
@@ -2377,7 +2377,7 @@ function battleStatusHtml(actor, options = {}) {
   return states.length ? `<span class="battle-state-tags">${states.map(s => `<em data-battle-status="${s.key}">${esc(t('battle.status.' + s.key, {n:s.n}))}</em>`).join('')}</span>` : '';
 }
 function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad = []) {
-  const selectedId = selectedLivingFoeId(hp);
+  const selectedId = selectedVisibleFoeId(hp);
   // act = { lunge:'you'|'foe', struck:'you'|'foe' } — ใครพุ่ง ใครโดน ในจังหวะนี้
   const cls = side => (act && act.lunge === side ? ' lunge' : '') + (act && act.struck === side ? ' struck' : '');
   // fx = { key, side } เอฟเฟกต์ตอนลงมือ · hp.dmg = เลขความเสียหายรอบล่าสุด
@@ -3903,13 +3903,11 @@ function openBattle(after) {
           : b.kind === 'prisonBreak' ? t('event.prisonBreak.title')
           : b.kind === 'mob'   ? 'ผีบุกเข้าโซน'
                                : 'วิญญาณขัดขืน',
-            { name: b.who, sub: b.sub, sp: b.sp }, view, act, false, fxNow,
+            { name: b.who, sub: b.sub, sp: b.sp }, {...view,choosingTarget}, act, false, fxNow,
             b.helper && Date.now() - b.helper.at < 1400 ? b.helper : null,
             '', squadMembers) +
       `<div class="pad">
         ${b.rageTurns > 0 ? `<div class="battle-buff" role="status">🔥 พลังบ้าคลั่ง · โจมตีแรงขึ้นอีก ${b.rageTurns} ครั้ง</div>` : ''}
-        ${b.weaponNote && !b.over ? `<div class="battle-buff weapon-note" role="status">${esc(weaponNoteText(b.weaponNote))}</div>` : ''}
-        ${weaponCd && !b.over ? `<div class="battle-buff weapon-cd${weaponCd.cd ? ' cooling' : ''}" role="status" data-weapon-cd="${weaponCd.cd}"><span class="wcd-ico">${weaponImg(weaponCd.id)}${weaponCd.cd ? `<em>${weaponCd.cd}</em>` : ''}</span>${esc(weaponCd.cd ? t('battle.weapon.cooling', { name:t(`weapon.${weaponCd.id}.name`), n:weaponCd.cd }) : t('battle.weapon.ready', { name:t(`weapon.${weaponCd.id}.name`) }))}</div>` : ''}
         ${phase ? `<div class="turnhint">${phase === 'you' ? (fxNow?.key === 'defend' ? '🛡️ ' + t('battle.defend.on') : '⚔️ ตาของท่าน') : '↩️ เขาสวนกลับ'}</div>` : ''}
         ${done}
       </div>${prep}${prepLayer}${fleeLayer}`;
@@ -3931,6 +3929,7 @@ function openBattle(after) {
     const team = squadMembers;
     stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class="battle-pause" data-battle-pause aria-label="${esc(t('battle.pause'))}"><img src="img/ui/icon-pause.png" alt=""></button>`}
       ${battleTurnOrderHtml(b)}
+      ${battleWeaponHudHtml(b,g.weapons?.equipped)}
       <div class="battle-team-hud">
         ${team.map(c => {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
@@ -4096,7 +4095,7 @@ function openBattle(after) {
     });
     dlg.querySelectorAll('[data-foe-id]').forEach(el => {
       const foe = b.foes.find(f => f.id === el.dataset.foeId);
-      const available = !!(foe && foe.hp > 0 && !b.over && !phase);
+      const available = !!(choosingTarget && foe && foe.hp > 0 && !b.over && !phase);
       el.classList.toggle('choose-target', choosingTarget && available);
       el.setAttribute('aria-disabled', String(!available));
       if (choosingTarget && available) {

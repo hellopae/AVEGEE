@@ -2,7 +2,7 @@
 // ส่วนนี้เป็นฟังก์ชันล้วน ไม่แตะสถานะเกม: ตารางชื่อไฟล์ภาพ · สูตรฟาดปกติเมื่อถืออาวุธ · ผลพิเศษหลังฟาด
 // game.js เรียกใช้ตอน battleAct('atk') เท่านั้น — ลูกไฟ/ผนึกน้ำแข็ง/พุ่งชนเพลิง/ท่ายมทูตไม่ผ่านที่นี่
 import { WEAPONS, WEAPON_STACK_CAP, WEAPON_EFFECT_COOLDOWN, BATTLE } from './data.js';
-import { t } from './i18n.js';
+import { t, getLang } from './i18n.js';
 
 export const WEAPON_IDS = Object.keys(WEAPONS);
 export const OUTFIT_IDS = ['th', 'asia', 'west', 'cyberhell'];
@@ -92,3 +92,17 @@ export function weaponNoteText(note) {
 /** สถานะคูลดาวน์ผลพิเศษของอาวุธที่ถืออยู่ในศึกนี้ — null = ไม่ได้ถืออาวุธ · cd = เทิร์นที่ยังต้องรอ (0 = พร้อม) */
 export const weaponCooldownState = (battle, equippedId) =>
   battle && equippedId && WEAPONS[equippedId] ? { id:equippedId, cd:Math.max(0, battle.weaponCd || 0), max:WEAPON_EFFECT_COOLDOWN } : null;
+
+const escapeHud=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/** Collapsed sword + effect glyphs. Full, current descriptions are available on demand. */
+export function battleWeaponHudHtml(battle,id){
+  if(!battle||battle.over)return '';
+  const weapon=WEAPONS[id],state=weaponCooldownState(battle,id),en=getLang()==='en';
+  const name=weapon?t(`weapon.${id}.name`):t('weapon.base');
+  const status=state?t(state.cd?'battle.weapon.cooling':'battle.weapon.ready',{name,n:state.cd}):name;
+  const note=battle.weaponNote?weaponNoteText(battle.weaponNote):'';
+  const text=[status,...weaponEffectLines(id),note].filter(Boolean).join(' · ');
+  const icon=weapon?weaponIconSrc(id):baseSwordIconSrc;
+  const glyph={burn:'🔥',crit:'✦',drain:'🩸',replay:'↻'}[weapon?.effect.type];
+  return `<details class="battle-weapon-hud${state?.cd?' cooling':''}"${state?` data-weapon-cd="${state.cd}"`:''}><summary title="${escapeHud(text)}" aria-label="${escapeHud(text)}"><img src="${icon}" alt="">${glyph?`<span class="weapon-effect-icon" aria-hidden="true">${glyph}</span>`:''}${state?.cd?`<em aria-hidden="true">${state.cd}</em>`:''}</summary><div class="weapon-hud-details"><b>${escapeHud(name)}</b><p>${escapeHud(status)}</p>${weaponEffectLines(id).map(line=>`<p>${escapeHud(line)}</p>`).join('')}${note?`<p role="status">${escapeHud(note)}</p>`:''}${!weapon?`<p>${en?'No special weapon effect':'ไม่มีผลพิเศษของอาวุธ'}</p>`:''}</div></details>`;
+}

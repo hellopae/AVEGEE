@@ -252,6 +252,6 @@ test('G4 weapon cooldown is shown on screen: HUD badge + attack button, TH and E
   const en = new Set(englishKeys());
   for (const key of ['battle.weapon.cooling', 'battle.weapon.ready', 'weapon.effect.cooldown', 'g1.healthLarge.name', 'g1.holyWaterLarge.name', 'g1.healthLarge.desc', 'g1.holyWaterLarge.desc']) assert.ok(en.has(key), key);
   const ui = readFileSync(new URL('../src/ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /weapon-cd\$\{weaponCd\.cd \? ' cooling' : ''\}/);
+  assert.match(ui, /battleWeaponHudHtml\(b,g\.weapons\?\.equipped\)/);
   assert.match(ui, /class="wcd-ico"><img src="img\/fx-slash\.png" alt=""><em>\$\{weaponCd\.cd\}<\/em>/);
 });

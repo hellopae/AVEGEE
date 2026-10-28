@@ -29,3 +29,16 @@ dialog.battle-reward.reward-world[open]{padding:16px}
 @media(max-width:600px){.reward-totals .reward-list:has(>.reward-row:only-child){grid-template-columns:minmax(0,1fr)}}
 
 .reward-totals .reward-list>.reward-none{grid-column:1/-1}
+
+/* Weapon information stays collapsed to a borderless sword and a small effect glyph. */
+.arena.combat-arena>.battle-weapon-hud{display:block;position:absolute;left:2%;top:2%;z-index:55;margin:0;background:none;border:0;padding:0;vertical-align:middle;text-align:left}
+.battle-weapon-hud summary{position:relative;display:block;list-style:none;cursor:pointer;width:44px;height:44px;background:none;border:0;padding:0}
+.battle-weapon-hud summary::-webkit-details-marker{display:none}
+.battle-weapon-hud summary>img{display:block;width:44px;height:44px;object-fit:contain;border:0;background:none}
+.battle-weapon-hud .weapon-effect-icon{position:absolute;right:-6px;bottom:0;font-size:17px;line-height:1;text-shadow:0 1px 3px #000}
+.battle-weapon-hud summary>em{position:absolute;right:-5px;top:0;font:700 12px sans-serif;color:#ffe4ac;text-shadow:0 1px 3px #000}
+.battle-weapon-hud.cooling .weapon-effect-icon{opacity:.45;filter:grayscale(1)}
+.battle-weapon-hud summary:focus-visible{outline:2px solid #ffe4ac;outline-offset:3px}
+.weapon-hud-details{position:absolute;top:calc(100% + 8px);left:0;z-index:55;width:min(280px,65vw);padding:12px;background:#251420f5;border:1px solid #cfae70;border-radius:8px;color:#fff1d2;font-size:12px;line-height:1.5;box-sizing:border-box}
+.weapon-hud-details p{margin:5px 0}
+.arena.combat-arena .fig.foe.choose-target.is-target{border-radius:0}
