@@ -6,7 +6,7 @@ const safeColor=color=>/^#[\da-f]{3,8}$/i.test(color||'')?color:'#d4a355';
 export function mountInterrogationStyles(){
   if(typeof document==='undefined'||document.getElementById('interrogation-role-styles'))return;
   const link=document.createElement('link');link.id='interrogation-role-styles';link.rel='stylesheet';
-  link.href=new URL('./interrogation-ui.css?v=20261022-p2-team-b1',import.meta.url).href;document.head.appendChild(link);
+  link.href=new URL('./interrogation-ui.css?v=20261028-keeper-picker',import.meta.url).href;document.head.appendChild(link);
 }
 
 /** P2: the trait lives on the spirit's name tag — icon first (never colour alone), colour second. */
@@ -22,6 +22,18 @@ export function keeperCurrentJob(game,keeper){
   if(keeper.buildK){const station=game.stations?.find(st=>st.def.k===keeper.buildK);return `${station?.repair?'กำลังซ่อม':'กำลังสร้าง'} ${station?.def.name||'อาคาร'}`;}
   if(keeper.at){const station=game.stations?.find(st=>st.def.k===keeper.at);return `ประจำ ${station?.def.name||'สถานี'}`;}
   return 'ว่าง · รอรับเวร';
+}
+
+/** Public suitability only: colour describes behaviour, never guilt. */
+export function keeperSuitText(keeper){
+  const suit=traitForKeeper(keeper.k),color={concealing:'ม่วง',resisting:'แดง',accepting:'เขียว'}[suit?.key];
+  return color?`วิญญาณสี${color}`:'ไม่ผูกกับสีวิญญาณ';
+}
+export function keeperCaseGuideHtml(game,soul,stationKey,actors){
+  return `<section class="guide-card keeper-case-guide"><h3>พลังและต้นทุนผู้คุม</h3>${actors.map(c=>{
+    const role=game.keeperTrialInfo?.(soul,c,stationKey);
+    return `<article><h4>${esc(c.name||c.k)}</h4><p>${esc(keeperSuitText(c))}<br>แรง ${esc(c.raeng)} · ระเบียบ ${esc(c.rabiab)} · ปัญญา ${esc(c.panya)} · เมตตา ${esc(c.metta)}</p><p>ผลดี: ${esc(role?.benefit||'คุมงานตามปกติ')}<br>ต้นทุน: ${esc(role?.cost||'ไม่มี')}</p></article>`;
+  }).join('')}</section>`;
 }
 
 /** Compact keeper picker for the interrogation page (the long explanations live in the handbook: keeperTeamGuide). */

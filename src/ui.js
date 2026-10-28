@@ -9,7 +9,7 @@ import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js'
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
-import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
+import {mountInterrogationStyles,spiritNameHtml,keeperCurrentJob,keeperSuitText,keeperCaseGuideHtml,pressReaction,kanOrbHtml,bindKanClue,teamReportsHtml,bindTeamReports,onceFeedbackDismiss} from './interrogation-ui.js';
 mountInterrogationStyles();
 import { mountCombatSprites, bossSpriteKey } from './combat-sprites.js?v=night-v1';
 import { mountYamaTrialIdle } from './yama-trial-idle.js?v=n2';
@@ -2659,9 +2659,10 @@ function openTrial(initialError = '') {
         : g.stFree(x) <= 0 ? { key:'stationFull' } : null;
       const busy = !!block, bg = stBg(x.def.k), why = blockText(block);
       const revealed = x.def.k === answer?.station?.k;
+      const karma=x.def.tags.length?x.def.tags.map(k=>SINS[k]?.name||k).join(' / '):'ไม่ใช้ลงทัณฑ์';
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-k="${x.def.k}" data-pickkey="st" ${busy ? 'disabled' : ''}
-        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + (revealed ? ' · ' + t('trial.revealedWhere') : '') + (why ? ' · ' + why : ''))}">
-        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
+        ${x.def.k === pick.st ? 'aria-pressed="true"' : ''} title="${esc(x.def.name + ' · ' + karma + (revealed ? ' · ' + t('trial.revealedWhere') : '') + (why ? ' · ' + why : ''))}">
+        ${orbImg(bg, x.def.name)}<b>${esc(x.def.name)}</b><small class="station-karma">${esc(karma)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : why ? `<small>${esc(why)}</small>` : ''}</button>`;
     }).join('') : `<span class="idle trial-empty-hint">${esc(t('trial.noDestinations'))}</span>`) + (answer?.station && !dests.some(x => x.def.k === answer.station.k && !x.build)
       ? `<span class="idle trial-empty-hint trial-revealed-destination">✓ ${esc(t('trial.revealedWhere'))}: ${esc(answer.station.name)}</span>` : '');
     const candidates=g.crew.filter(c=>!c.reader);
@@ -2675,9 +2676,9 @@ function openTrial(initialError = '') {
       const why = blockedCrew ? blockText(blockedCrew) : '';
       const suit=traitForKeeper(c.k);
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}${role?.matching?' is-trait-match':''}" data-k="${c.k}" data-pickkey="cr" ${suit?`style="--trait-color:${suit.color}"`:''} ${blockedCrew ? 'disabled' : ''} ${c.k === pick.cr ? 'aria-pressed="true"' : ''}
-        title="${esc(c.name + ' · กำลังทำงาน ' + c.raeng + ' · ระเบียบ ' + c.rabiab + ' · ปัญญา ' + c.panya + ' · เมตตา ' + c.metta + (role?' · '+role.benefit+' · ภาระ: '+role.cost:'') + (revealed ? ' · ' + t('trial.revealedCrew') : '') + (why ? ' · ' + why : ''))}">
+        title="${esc(c.name+' · '+keeperSuitText(c)+' · '+(blockedCrew?'ไม่ว่าง':'ว่าง')+(why?' · '+why:''))}">
         ${orbImg(artUrl(c.self ? 'hero-yama-profile' : `crew-${c.k}-profile`) || artUrl(c.self ? 'hero-yama' : `crew-${c.k}`), c.name)}
-        <b>${suit?`<span class="keeper-suit" aria-hidden="true">${suit.icon}</span> `:''}${esc(c.name)}</b><small>${why?esc(why):esc(keeperCurrentJob(g,c))}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        <b>${esc(c.name)}</b><small>${esc(keeperSuitText(c))}<br>${blockedCrew?'ไม่ว่าง':'ว่าง'}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('') : '<span class="idle">ไม่มีใครว่าง</span>';
     // ไอคอนวงกลม 5 สีจาก img/raw/icon.jpeg (ข้อ B.4 คุณเป้ 24 ก.ย. 2569) — ตัดเฉพาะวงกลมด้วย
     // scripts อ่านที่ AGAPAE Agent/Output/Toby/ ไม่มีตัวหนังสือฝังในรูป ใช้ป้ายชื่อ HTML เดิม (<b>) ต่อท้าย
@@ -2702,7 +2703,7 @@ function openTrial(initialError = '') {
     const courtGroups = [
       {id:'power',label:'พลัง / Power',choices:powerChoices},
       {id:'where',label:'ที่ไหน / Where',choices:destinationChoices,selected:pick.st},
-      {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices+`<details class="keeper-menu-info"><summary>พลังและต้นทุนผู้คุม</summary>${shownCrew.map(c=>{const r=g.keeperTrialInfo?.(s,c,pick.st);return `<p><b>${esc(c.name)}</b><br>${esc(r?.benefit||'')}<br>ภาระ: ${esc(r?.cost||'ไม่มี')}</p>`;}).join('')}</details>`,selected:pick.cr},
+      {id:'keeper',label:'ใครคุม / Keeper',choices:crewChoices,selected:pick.cr},
       {id:'force',label:'ระดับทัณฑ์ / Intensity',choices:forceChoices,selected:pick.inten||heaven,disabled:heaven},
     ];
     // L2: what is chosen under Where / Keeper / Intensity shows as a thumbnail + name to the right of that command until it changes or the warrant goes out
@@ -2810,7 +2811,7 @@ function openTrial(initialError = '') {
       if(!stage?.isConnected||!pane)return;
       const command=menu.querySelector(`[data-court-panel="${pane.dataset.courtOptions}"]`);
       const gap=-12+command.offsetLeft;
-      const left=Math.max(0,Math.min(menu.offsetWidth+gap,stage.clientWidth-menu.offsetLeft-pane.offsetWidth-8));
+      const left=Math.max(-menu.offsetLeft,Math.min(menu.offsetWidth+gap,stage.clientWidth-menu.offsetLeft-pane.offsetWidth-8));
       pane.style.left=`${left}px`;
       pane.style.top=`${command.offsetTop}px`;
       const initialTop=pane.offsetTop;
@@ -2841,6 +2842,7 @@ function openTrial(initialError = '') {
         <div class="guide-card-grid">${sentencingChapters.map(guideCards).join('')}</div>
         <table><thead><tr><th>กรรม</th><th>สถานที่</th></tr></thead><tbody>${STATIONS.filter(x=>x.tags.length).map(x=>`<tr><td>${x.tags.map(k=>SINS[k]?.name||k).join(' / ')}</td><td>${x.name}</td></tr>`).join('')}</tbody></table>
         <div class="guide-card-grid">${guideCards(clockGuide)}</div>
+        ${keeperCaseGuideHtml(g,s,pick.st,shownCrew)}
         ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
       dlg.append(guide); guide.showModal();
@@ -2853,6 +2855,7 @@ function openTrial(initialError = '') {
         const station = g.stations.find(x => x.def.k === pick.st);
         pick.cr = station?.slots.length ? station.crewK : null;
       }
+      courtPanel = null;
       trialError = '';
       paint();
     });

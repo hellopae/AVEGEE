@@ -58,9 +58,9 @@
 @media(max-width:520px){.guide-keeper{grid-template-columns:64px minmax(0,1fr);column-gap:10px}}
 
 /* Team queue: keeper information belongs to the Keeper flyout, Kan beside Yama's portrait. */
-.trial-comment8 .court-options[data-court-options=keeper]{width:clamp(225px,20vw,320px);padding:4px;}
-.trial-comment8 .court-options[data-court-options=keeper] .orb-choice{height:auto!important;min-height:95px!important;grid-template-columns:38px minmax(0,1fr)!important;grid-template-rows:auto auto;column-gap:7px;padding:7px!important;transform:none!important;margin-left:0;width:100%!important;border-color:var(--trait-color,var(--gold))!important;line-height:1.6}
-.trial-comment8 .court-options[data-court-options=keeper] .orb-choice>img{position:static!important;width:38px!important;height:38px!important;aspect-ratio:1;object-fit:cover!important;border-radius:50%!important;transform:none!important;grid-area:1/1/3/2;opacity:1;z-index:0}
+.trial-comment8 .court-options[data-court-options=keeper]{width:clamp(260px,23vw,340px);padding:4px;}
+.trial-comment8 .court-options[data-court-options=keeper] .orb-choice{height:auto!important;min-height:95px!important;grid-template-columns:72px minmax(0,1fr)!important;grid-template-rows:auto auto;column-gap:7px;padding:7px!important;transform:none!important;margin-left:0;width:100%!important;border-color:var(--trait-color,var(--gold))!important;line-height:1.6}
+.trial-comment8 .court-options[data-court-options=keeper] .orb-choice>img{position:static!important;width:72px!important;height:72px!important;aspect-ratio:1;object-fit:contain!important;border-radius:4px!important;transform:none!important;grid-area:1/1/3/2;opacity:1;z-index:0}
 .trial-comment8 .court-options[data-court-options=keeper] .orb-choice b{grid-area:1/2;transform:none;white-space:normal;color:var(--trait-color,var(--foreground));line-height:1.6;text-shadow:none!important}
 .trial-comment8 .court-options[data-court-options=keeper] .orb-choice small{display:block;grid-area:2/2;transform:none;line-height:1.6;font-size:11px;color:var(--foreground)}
 .trial-comment8 .hud-bottom{display:flex;align-items:flex-start;gap:12px}
@@ -70,7 +70,7 @@
 .relief-tear{position:absolute;top:25%;width:6%;height:12%;border-radius:65% 35% 60% 40%;background:var(--info,#8ecff0);box-shadow:0 0 4px var(--foreground);animation:reliefTear 1.1s ease-in infinite}.relief-tear.left{left:35%}.relief-tear.right{right:34%;animation-delay:.2s}.is-relieved>img{filter:drop-shadow(0 0 9px var(--success));animation:none!important;transform:none!important}
 @keyframes reliefTear{from{opacity:.2;translate:0 0}35%{opacity:1}to{opacity:.1;translate:0 16px}}
 @media(prefers-reduced-motion:reduce){.relief-tear{animation:none;opacity:1}}
-@media(max-width:700px){.trial-comment8 .court-options[data-court-options=keeper]{width:min(210px,54vw)}.trial-comment8 .court-options[data-court-options=keeper] .orb-choice{grid-template-columns:26px minmax(0,1fr)!important;padding:5px!important}.trial-comment8 .court-options[data-court-options=keeper] .orb-choice>img{width:26px!important;height:26px!important}.trial-comment8 .hud-bottom{gap:8px;left:12px}.trial-comment8 .hud-bottom .kan-orb{width:60px}.trial-comment8 .hud-bottom .kan-orb-btn{width:44px;height:44px}.trial-comment8 .hud-bottom .kan-orb-label{font-size:10px}.trial-comment8 .is-relieved .relief-label{max-width:145px;font-size:10px}}
+@media(max-width:700px){.trial-comment8 .court-options[data-court-options=keeper]{width:min(260px,70vw)}.trial-comment8 .court-options[data-court-options=keeper] .orb-choice{grid-template-columns:64px minmax(0,1fr)!important;padding:5px!important}.trial-comment8 .court-options[data-court-options=keeper] .orb-choice>img{width:64px!important;height:64px!important}.trial-comment8 .hud-bottom{gap:8px;left:12px}.trial-comment8 .hud-bottom .kan-orb{width:60px}.trial-comment8 .hud-bottom .kan-orb-btn{width:44px;height:44px}.trial-comment8 .hud-bottom .kan-orb-label{font-size:10px}.trial-comment8 .is-relieved .relief-label{max-width:145px;font-size:10px}}
 
 .trial-comment8 .court-options[data-court-options=keeper]{overflow-y:auto!important;box-sizing:border-box}.trial-comment8 .court-options[data-court-options=keeper] .orb-choice{min-height:72px!important}.keeper-menu-info{width:100%;flex:none;background:var(--card);padding:8px;font-size:11px;line-height:1.6}.keeper-menu-info summary{cursor:pointer;color:var(--gold)}.keeper-menu-info p{margin:8px 0;border-top:1px solid var(--border);padding-top:7px}
 
@@ -79,3 +79,17 @@
 @media(max-width:700px){.trial-comment8 .hud-bottom{left:80px}.trial-comment8 .hud-bottom .kan-orb{right:calc(100% + 8px)}}
 
 .trial-comment8 .hud-bottom .kan-orb-why{display:none}
+
+/* Destination art fills the card; centred labels stay legible over the scene. */
+.trial-comment8 .court-options[data-court-options=where]{width:clamp(260px,23vw,350px);box-sizing:border-box}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice{isolation:isolate;overflow:hidden;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto auto;min-height:88px!important;align-content:center;justify-items:center;gap:3px;flex:none!important;text-align:center;transform:none!important;padding:10px!important}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice>img{position:absolute!important;inset:0!important;grid-area:auto!important;width:100%!important;height:100%!important;object-fit:cover!important;border:0!important;border-radius:0!important;transform:none!important;z-index:-2;opacity:1}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice::before{content:"";position:absolute;inset:0;background:linear-gradient(#12090e55,#12090eb8);z-index:-1;pointer-events:none}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice>b{grid-area:auto;white-space:normal!important;min-width:0;transform:none!important;color:#fff1d2!important;text-shadow:0 1px 3px #000!important}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice>small{display:block!important;grid-column:1;white-space:normal;overflow-wrap:anywhere;font-size:11px;line-height:1.5;transform:none!important;color:#fff1d2!important;text-shadow:0 1px 3px #000}
+.trial-comment8 .court-options[data-court-options=where] .orb-choice[aria-pressed=true]{box-shadow:inset 0 0 0 2px #ffe4a6!important}
+.keeper-case-guide article{padding:8px 0;border-top:1px solid var(--border)}
+@media(max-width:700px){.trial-comment8 .court-options[data-court-options=where]{width:min(260px,70vw)}}
+/* An open list must cover the portrait HUD rather than sit underneath it. */
+.trial-comment8 .comment8-menu:has(.court-options.is-open){z-index:50}
+.trial-comment8 .hud-body:has(.court-options.is-open){z-index:13}
