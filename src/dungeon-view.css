@@ -30,3 +30,15 @@ dialog.dungeon-dialog{width:100vw;max-width:none;height:100dvh;max-height:none;m
 dialog.dungeon-dialog #dungeon-root{height:100%}.dungeon-dialog .dungeon-view{height:100%;min-height:0;border:0;border-radius:0}.dungeon-dialog .dungeon-stage{flex:1;height:auto;min-height:0}.dungeon-view [hidden]{display:none!important}
 /* O1: the round back arrow is the single way out; the generic gold corner X would sit on the minimap (same rule as the frontier walk). */
 dialog#dlg.dungeon-dialog>.modal-corner-close{display:none!important}
+/* B12: same minimap control row as town; HUD remains in DOM above all FX. */
+.b12-fx .dungeon-menu{display:none}
+.b12-fx .dungeon-zoom{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 122px);width:180px;margin:0;z-index:3;display:grid;grid-template-columns:44px minmax(0,1fr) 44px}
+.b12-fx .dungeon-zoom button{min-width:44px;min-height:44px;padding:3px 6px}
+.b12-fx .dungeon-zoom [data-zoom=overview]{min-width:0;font-size:12px;white-space:nowrap}
+.b12-fx .dungeon-status{top:calc(env(safe-area-inset-top,0px) + 174px)}
+.b12-fx .dungeon-hud-left,.b12-fx .dungeon-hud-right{position:absolute;display:flex;gap:6px;z-index:3}
+.b12-fx .dungeon-hud-left{left:calc(env(safe-area-inset-left,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+.b12-fx .dungeon-hud-right{right:calc(env(safe-area-inset-right,0px) + 196px);top:calc(env(safe-area-inset-top,0px) + 8px)}
+.b12-fx [data-hud]{width:44px;height:44px;padding:5px;background:#160e18df}
+.b12-fx [data-hud] img{width:100%;height:100%;object-fit:contain}
+@media(max-width:600px){.b12-fx .dungeon-zoom{top:calc(env(safe-area-inset-top,0px) + 86px);width:160px}.b12-fx .dungeon-minimap{width:160px;height:74px}.b12-fx .dungeon-status{top:calc(env(safe-area-inset-top,0px) + 138px);width:160px}.b12-fx .dungeon-hud-right{right:calc(env(safe-area-inset-right,0px) + 176px)}.b12-fx .dungeon-actions{bottom:calc(env(safe-area-inset-bottom,0px) + 64px)}}

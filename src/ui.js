@@ -1,3 +1,4 @@
+import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { CHARACTER_HISTORY, FAMILY_HISTORY } from './e1-content.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
@@ -186,16 +187,9 @@ fitSceneBox();
 let cameraZone = g.zone;
 let MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
 const mapCam = { level: townDefaultZoom(g.zone), z: 1, x: SCENE.w / 2, y: SCENE.h / 2, at: performance.now(), init: false };
-function setMapZoom(level) {
-  mapCam.level = Math.max(0, Math.min(MAP_ZOOM_LEVELS.length - 1, level));
-  const less=document.getElementById('town-zoom-less'),more=document.getElementById('town-zoom-more');
-  if(less)less.disabled=mapCam.level===0;
-  if(more)more.disabled=mapCam.level===MAP_ZOOM_LEVELS.length-1;
-}
-setMapZoom(mapCam.level);
-document.getElementById('town-zoom-less')?.addEventListener('click',()=>setMapZoom(mapCam.level-1));
-document.getElementById('town-zoom-more')?.addEventListener('click',()=>setMapZoom(mapCam.level+1));
-document.getElementById('town-overview')?.addEventListener('click',()=>setMapZoom(0));
+const townZoomControl=bindMapZoom({less:document.getElementById('town-zoom-less'),more:document.getElementById('town-zoom-more'),overview:document.getElementById('town-overview'),
+  levels:()=>MAP_ZOOM_LEVELS,level:mapCam.level,onChange:level=>{mapCam.level=level;}});
+function setMapZoom(level){townZoomControl.set(level);}
 function updateMapCamera(now) {
   if (cameraZone !== g.zone) {
     cameraZone = g.zone; MAP_ZOOM_LEVELS = townZoomLevels(g.zone);
@@ -4748,6 +4742,26 @@ function openDungeon() {
         else arrive();
       },
       onLeave:()=>{destroy?.();destroy=null;if(g.leaveBorderDungeon())openFrontierWalk();},
+      isPaused:()=>dungeonStatus(g)?.route.id==='th:asia'&&(pauseDlg.open||userPaused||autoPausePending),
+      onHud:function borderHud(action){
+        if(action==='pause'){
+          openPause(true);
+          // The pause menu replaces the same dialog as the border. Return via
+          // the border HUD so its renderer is destroyed and mounted again.
+          pauseDlg.querySelector('#pause-settings').onclick=()=>{finishPause();borderHud('settings');};
+          pauseDlg.querySelector('#pause-more').onclick=()=>{finishPause();borderHud('manual');};
+          return;
+        }
+        if(action==='profile'){
+          destroy?.();destroy=null;dlg.close();openHeroProfile();
+          const back=()=>{if(!heroProfile.hidden||dlg.open)return;observer.disconnect();dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
+          const observer=new MutationObserver(back);dlg.addEventListener('close',back);
+          observer.observe(heroProfile,{attributes:true,attributeFilter:['hidden']});return;
+        }
+        destroy?.();destroy=null;({settings:openSettings,manual:openHelp,bag:openBag})[action]?.();
+        const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
+        dlg.addEventListener('close',back);
+      },
       onMenu:()=>{destroy?.();destroy=null;openBag();
         const back=()=>{if(dlg.open)return;dlg.removeEventListener('close',back);if(dungeonStatus(g)&&!g.battle&&!g.pendingRecovery)openDungeon();};
         dlg.addEventListener('close',back);

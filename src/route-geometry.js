@@ -1,11 +1,11 @@
-import {BORDER12_MASK,BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';
+import {BORDER12_MASK} from './frontier-walkmask-th-asia-b12.js';
 import {BORDER34_MASK,BORDER34_CORRIDOR,BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
 import {BORDER23_MASK,BORDER23_CORRIDOR,BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
 import {FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
 // M2 R1 — ROUTE GEOMETRY: one row per frontier route (the walk between two cities).
 //
 // Route 'th:asia' (Zone 1-2) is the reference: a 31-point trail on one full-screen picture, three checkpoints on trail
-// vertices 7 / 15 / 23, six optional patrols, hand-placed trees and waterfalls over the picture, and a boss cave at
+// vertices 7 / 15 / 23, six optional patrols, surface FX registered to the painting, and a boss cave at
 // checkpoint 2 (Zone 1's inspector). Zones 2-3 and 3-4 have independent owner masks and centerlines.
 //
 // A route with `enabled:false` keeps the OLD system (a straight vertical corridor over three pictures, one per
@@ -26,10 +26,6 @@ const PATROL_PROGRESS = Object.freeze([.08,.19,.32,.48,.66,.90]);
 // Which checkpoint's foe each patrol borrows (Zone 1-2: checkpoint foes 2,3,5 -> patrol foes 2,3,2,5,3,5).
 const PATROL_FROM_CHECKPOINT = Object.freeze([0,1,0,2,1,2]);
 
-// Hand-placed overlay on the Zone 1-2 picture (0-1 of the picture).
-const TREES = BORDER12_TREES;
-const WATERFALLS = Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.46,.065],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]].map(Object.freeze));
-
 const fallbackMask=FRONTIER_CORRIDOR_MASK;
 const row = (id, o) => ({
   id, enabled:false,
@@ -47,7 +43,7 @@ export const ROUTE_GEOMETRY = {
     corridor:DUNGEON_CORRIDOR,
     walkMask:BORDER12_MASK,
     enabled:true, geometryVersion:2, background:'img/frontier-route/zone1-2-v6.webp', patrolFoe:[2,3,2,5,3,5],
-    ambient:{ trees:TREES, waterfalls:WATERFALLS, treeArt:{red:'img/frontier-route/tree-maple-v2.png',green:'img/frontier-route/tree-pine-v2.png',lightgreen:'img/frontier-route/tree-bamboo-v2.png'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
+    ambient:{ trees:[], waterfalls:[], leafArea:null, flowUrl:'img/frontier-route/zone1-2-v6-flow.png', treeArt:{red:'img/frontier-route/tree-maple-v2.png',green:'img/frontier-route/tree-pine-v2.png',lightgreen:'img/frontier-route/tree-bamboo-v2.png'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
     // Checkpoint 2 is Zone 1's boss cave: locked until checkpoint 1 is done, the guide waits there, the zone event fights.
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },
   }),

@@ -1,3 +1,5 @@
+import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
+import {createRouteFlow} from './route-flow.js?v=20261030-b12-fx';
 import {mapActorHeight,routeCharacterScale} from './character-scale.js';
 import {ROUTE_FOREGROUND,drawRouteForeground} from './route-occlusion.js';
 import {createFrontierNavigation} from './dungeon-navigation.js';
@@ -191,13 +193,18 @@ function drawStartMarker(ctx,routeId,screen,reach,w,cam,t,reduced){
   drawExitMarker(ctx,p[0],p[1],{rx:reach*w.w*cam.scale,ry:reach*w.h*cam.scale,dir:[a[0]-b[0],a[1]-b[1]],u:Math.min(w.w,w.h)*cam.scale,t,alpha:.9,reduced});
 }
 /** Mount inside a dialog/panel. All city player coordinates remain untouched. */
-function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{},onGuide=()=>{}}={}) {
+function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},onLeave=()=>{},onMenu=()=>{},onChallenge=()=>{},onGuide=()=>{},onHud=()=>{},isPaused=()=>false}={}) {
   if(!dungeonStatus(g)) throw new Error('An unlocked active dungeon route is required');
   const routeId=dungeonStatus(g).route.id,points=dungeonCheckpointProgress(routeId);
   const point=v=>dungeonPoint(v,routeId);
   const root=document.createElement('section'); root.className='dungeon-view';
   root.innerHTML=dungeonShell('คุยกับผู้ตรวจการ · ออกเดินทาง');
   container.append(root);
+  const enhanced=routeId==='th:asia';
+  if(enhanced){
+    root.classList.add('b12-fx');
+    root.querySelector('.dungeon-stage').insertAdjacentHTML('beforeend',`<div class="dungeon-zoom town-camera-controls"><button type="button" data-zoom="less" aria-label="ซูมออก / Zoom out">−</button><button type="button" data-zoom="overview">ทั้งแผนที่</button><button type="button" data-zoom="more" aria-label="ซูมเข้า / Zoom in">+</button></div><nav class="dungeon-hud-left" aria-label="ผู้เล่น"><button type="button" data-hud="profile" aria-label="โปรไฟล์"><img src="img/hero-yama-profile.png" alt=""></button><button type="button" data-hud="manual" aria-label="คู่มือ"><img src="img/ui/icon-book.png" alt=""></button><button type="button" data-hud="bag" aria-label="กระเป๋า"><img src="img/ui/icon-bag.png" alt=""></button></nav><nav class="dungeon-hud-right" aria-label="เมนู"><button type="button" data-hud="pause" aria-label="พัก"><img src="img/ui/icon-pause.png" alt=""></button><button type="button" data-hud="settings" aria-label="ตั้งค่า"><img src="img/ui/icon-setting2.png" alt=""></button></nav>`);
+  }
   const canvas=root.querySelector('.dungeon-stage > canvas'),mini=root.querySelector('.dungeon-minimap');
   const ctx=canvas.getContext('2d'),mc=mini.getContext('2d'),info=root.querySelector('.dungeon-status'),loading=root.querySelector('.dungeon-load');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -214,12 +221,15 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   for(let y=0;y<nav.rows;y++){for(let x=0;x<nav.cols;){if(!nav.cells[y*nav.cols+x]){x++;continue;}const start=x;while(x<nav.cols&&nav.cells[y*nav.cols+x])x++;maskCtx.fillRect(start,y,x-start,1);}}
   let image=new Image(),backgroundSrc=null;
   const backgrounds=new Map();
-  let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0;
+  let destroyed=false,frame=0,last=0,target=null,position=null,follower=null,trail=[],guidePosition=null,enemyTime=Number.isFinite(g.zoneTravel.active.roamTime)?g.zoneTravel.active.roamTime:0,encounterDispatch=false,width=800,height=460,face=1,direction='up',walkDistance=0,moving=false,wasMoving=false,dirty=false,cam={x:0,y:0,scale:1},saveClock=0,fxTime=0;
   let encounterCooldown=g.dungeonChaseCooldown?CHASE.cooldownMs:0;g.dungeonChaseCooldown=false;
   const niraMotion={face:1,moving:false,distance:0},guideMotion={face:1,moving:false,distance:0};
-  let joystick=null,pointerStart=null;
+  let joystick=null,pointerStart=null,pinching=false;
+  const flow=enhanced?createRouteFlow(routeRow(routeId).ambient.flowUrl):null;
   const keys=new Set(),handlers=[];
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
+  const zoom=enhanced?bindMapZoom({less:root.querySelector('[data-zoom="less"]'),more:root.querySelector('[data-zoom="more"]'),overview:root.querySelector('[data-zoom="overview"]'),surface:canvas,levels:[0,1,1.5,2],level:1,gestures:true,onGestureEnd:()=>{pinching=false;},onGesture:()=>{pinching=true;pointerStart=null;joystick=null;target=null;keys.clear();}}):null;
+  if(enhanced)root.querySelectorAll('[data-hud]').forEach(button=>listen(button,'click',()=>{target=null;keys.clear();pointerStart=null;joystick=null;save();onHud(button.dataset.hud);}));
   const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-.018;};
   const saved=g.zoneTravel.active.position;
   position=dungeonSnap(saved?[saved.x,saved.y]:point(0),routeId,limit());
@@ -264,7 +274,10 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   observer?.observe(canvas.parentElement);listen(window,'resize',resize);resize();
   const world=()=>FRONTIER_WORLD;
   function camera(dt) {
-    const {x,y,scale}=frontierCameraTarget(width,height,position);
+    const base=frontierCameraTarget(width,height,position,zoom?.level===0);
+    const scale=base.scale*(zoom?.level? [0,1,1.5,2][zoom.level]:1);
+    const x=zoom?.level?clamp(width/2-position[0]*FRONTIER_WORLD.w*scale,width-FRONTIER_WORLD.w*scale,0):base.x;
+    const y=zoom?.level?clamp(height*.6-position[1]*FRONTIER_WORLD.h*scale,height-FRONTIER_WORLD.h*scale,0):base.y;
     const f=reduced.matches?1:1-Math.exp(-dt/110);cam.x+=(x-cam.x)*f;cam.y+=(y-cam.y)*f;cam.scale+=(scale-cam.scale)*f;
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
@@ -273,6 +286,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   function update(dt) {
     const status=dungeonStatus(g);if(!status)return;
     syncBackground(status);
+    if(isPaused())return;
     enemyTime+=dt;
     const old=[...position],oldFollower=[...follower],oldGuide=[...guidePosition];
     if(g.battle||g.pendingRecovery||status.pending){target=null;keys.clear();joystick=null;pointerStart=null;}
@@ -330,6 +344,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   function render(t) {
     ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
+    flow?.draw(ctx,{time:t,reduced:reduced.matches,paused:isPaused(),x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,width,height});
     if(isWildernessRoute(routeId)&&routeRow(routeId).ambient.trees.length+routeRow(routeId).ambient.waterfalls.length)drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,...routeRow(routeId).ambient,trees:[]});
     const status=dungeonStatus(g);if(!status)return;
     drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
@@ -357,20 +372,21 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
         drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',facing,false,g.zone);ctx.restore();return;
       }
       if(a.kind==='nira') {if(niraMotion.moving&&!reduced.matches&&drawCrewWalk(ctx,'crew-nira',p[0],p[1],h,niraMotion.distance,niraMotion.face))return;drawStandee(ctx,'crew-nira',p[0],p[1],h,animationTime,'📋',niraMotion.face,false,g.zone);return;}
-      if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
+      if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction,moving,enhanced?t:undefined))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);
     });
-    drawFrontierWeather(ctx,{routeId,time:t,paused:g.paused,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});
+    drawFrontierWeather(ctx,{routeId,time:t,paused:enhanced?isPaused():g.paused,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
     mc.drawImage(miniMask,0,0,180,110);
     mc.fillStyle='#fff';mc.beginPath();mc.arc(hero[0]*180,hero[1]*110,3,0,Math.PI*2);mc.fill();
     points.forEach((v,i)=>{const p=point(v);mc.fillStyle=status.defeated.includes(status.route.checkpoints[i].id)?'#8cffad':'#ff7b71';mc.fillRect(p[0]*180-2,p[1]*110-2,4,4);});
     mc.strokeStyle='#fff9';mc.lineWidth=1;mc.strokeRect((-cam.x)/(w.w*cam.scale)*180,(-cam.y)/(w.h*cam.scale)*110,width/(w.w*cam.scale)*180,height/(w.h*cam.scale)*110);
   }
-  const tick=t=>{if(destroyed)return;const dt=last?Math.min(50,t-last):16;last=t;update(dt);if(destroyed)return;camera(dt);render(t);frame=requestAnimationFrame(tick);};
+  const tick=t=>{if(destroyed)return;const dt=last?Math.min(50,t-last):16;last=t;update(dt);if(destroyed)return;if(!isPaused()){camera(dt);fxTime+=dt;}render(enhanced?fxTime:t);frame=requestAnimationFrame(tick);};
   const pointerPoint=e=>{const r=canvas.getBoundingClientRect(),w=world();return [(e.clientX-r.left-cam.x)/(w.w*cam.scale),(e.clientY-r.top-cam.y)/(w.h*cam.scale)];};
   listen(canvas,'pointerdown',e=>{
     if(g.battle||g.pendingRecovery||dungeonStatus(g)?.pending)return;
+    if(pinching)return;
     canvas.focus();canvas.setPointerCapture?.(e.pointerId);
     pointerStart={x:e.clientX,y:e.clientY,id:e.pointerId,dragged:false};
   });
@@ -381,6 +397,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     else if(pointerStart.dragged)joystick=null;
   });
   listen(canvas,'pointerup',e=>{
+    if(pinching){pointerStart=null;joystick=null;return;}
     if(!pointerStart||e.pointerId!==pointerStart.id)return;
     if(!pointerStart.dragged)target=dungeonPath(position,pointerPoint(e),routeId,limit());
     pointerStart=null;joystick=null;
@@ -393,7 +410,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   listen(root.querySelector('.dungeon-challenge'),'click',()=>{if(!g.challengeCanTalk?.())return;target=null;keys.clear();save();onChallenge();});
   listen(root.querySelector('[data-action="menu"]'),'click',()=>{save();onMenu();});
   remember();frame=requestAnimationFrame(tick);canvas.focus();
-  return function destroy(){if(destroyed)return;destroyed=true;save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
+  return function destroy(){if(destroyed)return;destroyed=true;zoom?.destroy();flow?.destroy();save();cancelAnimationFrame(frame);observer?.disconnect();handlers.forEach(fn=>fn());backgrounds.forEach(scene=>{scene.onload=scene.onerror=null;});root.remove();};
 }
 
 /** Old active journeys can meet the newly migrated guide without leaving the route. */

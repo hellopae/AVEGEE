@@ -1,0 +1,77 @@
+{
+  "method": "Actual mountDungeonView on @napi-rs/canvas with minimal DOM adapter. No browser, CSS, real pointer hardware, GPU or rAF timing. Before reconstructs 80 old overlay trees on current renderer with FX off; not a baseline browser screenshot.",
+  "profiles": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "before": {
+        "median": 5.48858200000177,
+        "p95": 6.757535999997344,
+        "n": 80
+      },
+      "after": {
+        "median": 6.8146210000049905,
+        "p95": 8.707041000001482,
+        "n": 80
+      },
+      "wholeSceneReducedIdentical": false,
+      "positionAfterPinch": {
+        "x": 0.2,
+        "y": 0.27
+      },
+      "pauseFreezesScene": true,
+      "pairedCurrentFx": {
+        "off": {
+          "median": 5.48829499999556,
+          "p95": 6.991644999994605,
+          "n": 12
+        },
+        "on": {
+          "median": 7.002993000001879,
+          "p95": 8.6601210000008,
+          "n": 12
+        }
+      },
+      "medianDelta": 1.3260390000032203
+    },
+    {
+      "name": "390",
+      "width": 390,
+      "height": 844,
+      "before": {
+        "median": 5.348476999992272,
+        "p95": 6.533341999995173,
+        "n": 80
+      },
+      "after": {
+        "median": 7.8347499999945285,
+        "p95": 11.309957999998005,
+        "n": 80
+      },
+      "wholeSceneReducedIdentical": false,
+      "positionAfterPinch": {
+        "x": 0.2,
+        "y": 0.27
+      },
+      "pauseFreezesScene": true,
+      "pairedCurrentFx": {
+        "off": {
+          "median": 4.667216000001645,
+          "p95": 8.992113999993308,
+          "n": 12
+        },
+        "on": {
+          "median": 6.56950000001234,
+          "p95": 7.455861000009463,
+          "n": 12
+        }
+      },
+      "medianDelta": 2.4862730000022566
+    }
+  ],
+  "missing": [],
+  "reducedFxIdentical": true,
+  "animatedFxChanges": true,
+  "toggleClearsFx": true
+}

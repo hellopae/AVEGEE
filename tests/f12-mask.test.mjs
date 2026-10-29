@@ -48,10 +48,8 @@ test('F12: old saves snap to closest allowed pixel and valid branch positions su
  for(let i=0;i<nav.cells.length;i++)if(nav.cells[i])assert.ok(distance(nav.point(i))>=distance(p)-1e-8);
  assert.deepEqual(dungeonSnap(BRANCHES[0]),BRANCHES[0]);
 });
-test('F12: 80 owner roots outside mask, three sprite types, base and big sizes',()=>{
- const trees=ROUTE_GEOMETRY['th:asia'].ambient.trees;assert.equal(trees.length,80);
- assert.deepEqual([...new Set(trees.map(t=>t.kind))].sort(),['green','lightgreen','red']);
- for(const t of trees)assert.equal(dungeonWalkable([t.x,t.y]),false);
+test('B12 FX: no overlay trees on v6; shared tree renderer retains base and big sizes for other routes',()=>{
+ assert.deepEqual(ROUTE_GEOMETRY['th:asia'].ambient.trees,[]);
  const calls=[],ctx={drawImage(...args){calls.push(args);}},image={complete:true,naturalWidth:200,naturalHeight:400};
  drawFrontierTree(ctx,{}, {x:40,y:90,height:1000,image});drawFrontierTree(ctx,{big:true},{x:40,y:90,height:1000,image});
  assert.equal(calls[0][4],52);assert.equal(calls[1][4],52*1.4);
