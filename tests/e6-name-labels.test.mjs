@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { createGame } from '../src/game.js';
-import { render, UI_SCALE_MAP } from '../src/scene.js';
+import { render, UI_SCALE_MAP, CHAR_SCALE_MAP } from '../src/scene.js';
 import { finalGame } from './final-event-helpers.mjs';
 import { finalEventActors } from '../src/final-event.js';
 import { setLang } from '../src/i18n.js';
@@ -73,7 +73,7 @@ test('final wave, reinforcement, ruler and warp boss names use the same map styl
       const text=`${a.name}${a.reinforcement||!a.enabled?'':' · พร้อมสู้'}`;
       const call=calls.find(c=>c.text===text); nameStyle(call);
       const above=!a.reinforcement&&Math.round((a.x-1110)/80)%2===1;
-      assert.equal(call.y,above?a.y-78*.8-6:a.y+10);
+      assert.equal(call.y,above?a.y-78*CHAR_SCALE_MAP-6:a.y+10);
     }
     if(stage==='reinforcementMap') {
       const camp=calls.find(c=>c.text==='ค่ายพัก · นอนฟื้นบารมี');

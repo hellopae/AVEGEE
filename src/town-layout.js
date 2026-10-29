@@ -10,11 +10,12 @@ import { TOWN_OWNER_WALK_RUNS as ASIA_WALK_RUNS } from './town-owner-walkmask-as
 import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-west.js';
 import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
 import { ASIA_TREE_POINTS } from './town-asia-trees.js';
+import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { WEST_TREE_POINTS } from './town-west-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
-export const TOWN_RIVER_Y = 1740;
+export let TOWN_RIVER_Y = 1740;
 // Invaders land on the north bank, just above the water. These are open stretches of ground at y = TOWN_RIVER_Y-50.
 export const TOWN_SHORE_SPANS = [[520,720],[1620,1820],[2060,2250]];
 export const TOWN_PLAZA = [1860,1090];
@@ -236,11 +237,12 @@ export const TOWN_ZONE_LAYOUT = {
   th:        {},
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
   west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]} },
-  cyberhell: { walkRuns:CYBERHELL_WALK_RUNS, patches:CYBERHELL_WALK_RUNS?false:true },
+  cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);
 const BASE = {
   runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS}, crew:clone(TOWN_CREW),
+  merchant:clone(TOWN_MERCHANT),guard:clone(TOWN_GUARD_POST),challenge:clone(TOWN_CHALLENGE),frontier:clone(TOWN_FRONTIER),queue:clone(TOWN_QUEUE),entry:clone(TOWN_ENTRY),riverY:TOWN_RIVER_Y,crewStage:clone(TOWN_CREW_STAGE),
   houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})),
 };
 const layoutListeners = new Set();
@@ -260,11 +262,22 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   usePatches = L.patches !== false;
   ownerFloorOnly = L.strictFloor === true;
   // stations: back to Zone 1, then this zone's patches
-  for (const k of Object.keys(TOWN_STATION_SITES)) Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
-  for (const [k, patch] of Object.entries(L.stations || {})) if (TOWN_STATION_SITES[k]) Object.assign(TOWN_STATION_SITES[k], clone(patch));
+  for (const k of Object.keys(TOWN_STATION_SITES)) {
+    if(BASE.stations[k])Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
+    else delete TOWN_STATION_SITES[k];
+  }
+  for (const [k, patch] of Object.entries(L.stations || {})) Object.assign(TOWN_STATION_SITES[k] ||= {}, clone(patch));
   for (const k of Object.keys(TOWN_SPOTS)) Object.assign(TOWN_SPOTS[k], clone(BASE.spots[k]));
   for (const [k, patch] of Object.entries(L.spots || {})) if (TOWN_SPOTS[k]) Object.assign(TOWN_SPOTS[k], clone(patch));
   Object.assign(TOWN_DAIS, BASE.dais, L.dais || {});
+  for(const [target,key] of [[TOWN_MERCHANT,'merchant'],[TOWN_FRONTIER,'frontier'],[TOWN_ENTRY,'entry']]) {
+    for(const field of Object.keys(target))delete target[field];
+    Object.assign(target,clone(BASE[key]),clone(L[key]||{}));
+  }
+  for(const [target,key] of [[TOWN_GUARD_POST,'guard'],[TOWN_CHALLENGE,'challenge'],[TOWN_QUEUE,'queue']])target.splice(0,target.length,...clone(L[key]||BASE[key]));
+  TOWN_RIVER_Y=L.riverY??BASE.riverY;
+  for(const key of Object.keys(TOWN_CREW_STAGE))delete TOWN_CREW_STAGE[key];
+  Object.assign(TOWN_CREW_STAGE,clone(L.crewStage||BASE.crewStage));
   // Zone-specific homes keep NPC feet clear of the owner mask's cliff edge.
   for (const [key,home] of Object.entries(BASE.crew)) TOWN_CREW[key].splice(0,2,...(L.crew?.[key] || home));
   // houses / props: lists keep their identity

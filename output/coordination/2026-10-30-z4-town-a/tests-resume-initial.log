@@ -1,0 +1,98 @@
+(node:98249) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ E5 a→e: warp before approach/preparation, four waves, reinforcement map, control, four rulers, duel and ending exactly once (66.460722ms)
+✔ E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win (19.277644ms)
+✔ E5 cyber breach uses walk-to-boss before existing intro; four waves and spare heart unchanged (5.327884ms)
+✔ E5 three preparation destinations produce reachable paths to merchant, Nira and existing tea pavilion/fallback (161.24881ms)
+✔ E5 every legacy final phase normalizes to a resumable map, reward, story or ending without changing ledger (104.902978ms)
+✔ E5 interrupted presentation reloads each cutscene and map/preparation without repeating rewards (34.103315ms)
+✔ E5 runtime intro is preloaded only in CyberHell, cache bumped, canvas lightning stops with release (3.115851ms)
+✔ E5 old nonempty rewards acknowledge once; serialized battles resume; seen reinforcement saves cannot lock the gate (34.737074ms)
+✔ E5 restore outside Zone 4 must queue Lumen intro on later arrival, and preserve cleared rescue on return (57.403668ms)
+✔ MAP-Z4 v3: enabled town uses owner mask and a 3:2 world (10.241572ms)
+✔ MAP-Z4: tiles exactly cover the new 3:2 world; production files exist (2.238999ms)
+✔ MAP-Z4: three load lanes, complete-camera switch, same tile destinations for clipped ferry redraw (3.252228ms)
+✔ MAP-Z4: failed and stalled loads retry with backoff; late decode cannot publish expired pixels (2.886302ms)
+✔ MAP-Z4: overview uses painting without allocations; panning keeps at most twelve images (4.892718ms)
+✔ MAP-Z4: delivered tile dimensions and mobile allocation budget match the Zone 2 size class (18.22204ms)
+✔ MAP-Z4: unchanged fallback and routes retain their baseline, allowing the B12 reference row (22.035818ms)
+(node:98251) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new game starts in the large city with city station and NPC anchors (216.73994ms)
+✔ old city save preserves progress and migrates positions only once (17.16785ms)
+✔ travel restores legacy branch geometry and returns to the city without moving other zones (55.301164ms)
+✔ loading an old save in another branch migrates its stored city without relocating the active branch (32.403781ms)
+✔ city routes reach every plot, built doorway, merchant and frontier through walkable ground (470.059337ms)
+✔ city exploration retains previous-boss gates for zone travel (1.602834ms)
+(node:98252) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ Z4-TOWN-A: all destinations reachable with initial buildings (3799.364168ms)
+✖ Z4-TOWN-A: all destinations reachable with all buildings (261.60245ms)
+✔ Z4-TOWN-A: owner mask source authenticated and no dilation/disconnected islands (1.673592ms)
+✔ Z4-TOWN-A: v2 old save repaired on restore and remains stable after reload (21.612242ms)
+✔ Z4-TOWN-A: v3 old save repaired on restore and remains stable after reload (13.054312ms)
+✔ Z4-TOWN-A: v4 old save repaired on restore and remains stable after reload (14.941521ms)
+✔ Z4-TOWN-A: inactive parked save and retry snapshot use zone 4 geometry while another town is open (3597.765643ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 26
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8117.761749
+
+✖ failing tests:
+
+test at tests/e5-events-z4.test.mjs:25:1
+✖ E5 a→e: warp before approach/preparation, four waves, reinforcement map, control, four rulers, duel and ending exactly once (66.460722ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(finalEventActors(g).filter(a=>!a.reinforcement).every(a=>a.x>g.player.x))
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T225212Z-3dc9e937/tests/e5-events-z4.test.mjs:44:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/z4-town-a.test.mjs:27:36
+✖ Z4-TOWN-A: all destinations reachable with initial buildings (3799.364168ms)
+  AssertionError [ERR_ASSERTION]: reinforcement:2: inside owner mask
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T225212Z-3dc9e937/tests/z4-town-a.test.mjs:36:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/z4-town-a.test.mjs:27:36
+✖ Z4-TOWN-A: all destinations reachable with all buildings (261.60245ms)
+  AssertionError [ERR_ASSERTION]: reinforcement:2: inside owner mask
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T225212Z-3dc9e937/tests/z4-town-a.test.mjs:36:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

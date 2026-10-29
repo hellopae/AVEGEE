@@ -132,10 +132,10 @@ export const ZONE_SKIN = {
              night:{ tint:'#16254F', highlight:'#9CC8FF' } },   // data only: no grade formula yet (needs Mind's multipliers)
   },
   cyberhell: {
-    enabled: false,
-    terrain: terrain('map-zone4', 'zone4'),
+    enabled: true,
+    terrain: {...terrain('map-zone4','zone4'),dir:'img/map-zone4/v3/',preview:'img/map-zone4/v3/zone4-terrain-v3-preview.webp'},
     flowUrl: null,
-    use: [],
+    use: ['judgment'],
     stations: { suffix:'cyberhell', facade:{}, facadeSizes:{ ...FACADE_SIZES } },
     stationFlip: null,
     // Mind M1 section 6: cyan energy + violet crystal glow; lava / orange fire stays; torch flame is cyan.

@@ -1,6 +1,7 @@
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
 import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, crewName } from './data.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
+import { isTownZone } from './zone-skin.js';
 const sideRules = [
  ['sqNira','th','nira','swapdoc','cyberBreach'],['sqTaan','asia','taan','chainhand','cyberBreach'],
  ['sqPlerng','west','plerng','hirefire','cyberBreach'],['sqKan','asia','kan','silentman','cyberBreach'],
@@ -148,7 +149,10 @@ export function merchantAvailable(g){
 }
 export function merchantRun(g){
   const s=g.merchantJourney?.[g.zone];if(!s?.running)return null;
-  const start=g.zone==='asia'?ZONE_ENTRY.gate:g.zone==='west'?[230,500]:[1038,350];
+  const cyberTown=g.zone==='cyberhell'&&isTownZone(g.zone);
+  // An interrupted arrival may have serialized a route on the retired map.
+  if(cyberTown&&s.z4TownVersion!==3){delete s.path;s.z4TownVersion=3;}
+  const start=g.zone==='asia'||cyberTown?ZONE_ENTRY.gate:g.zone==='west'?[230,500]:[1038,350];
   const from=nearestWalk(...start)||start,to=nearestWalk(MERCHANT.x,MERCHANT.y)||[MERCHANT.x,MERCHANT.y];
   const path=s.path ||= [from,...(findPath(...from,...to)||[]),to];
   const lengths=path.slice(1).map((v,i)=>Math.hypot(v[0]-path[i][0],v[1]-path[i][1]));

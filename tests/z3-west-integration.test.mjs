@@ -12,7 +12,7 @@ import {createGame} from '../src/game.js';
 import {harbourTravel} from './helpers/travel.mjs';
 
 test('Z3: production west skin has all16 sprites/preloads and20 chunks; border 3-4 uses its owner route',()=>{
- assert.equal(isTownZone('west'),true);assert.equal(ZONE_SKIN.cyberhell.enabled,false);
+ assert.equal(isTownZone('west'),true);assert.equal(ZONE_SKIN.cyberhell.enabled,true);
  const skin=ZONE_SKIN.west,catalog=JSON.parse(readFileSync('img/preload-catalog.json'));
  assert.equal(skin.flowUrl,'img/map-zone3/v1/flow-v1.png');assert.equal(skin.terrain.repairs,false);assert.equal(skin.treeTint,false);
  const files=[...Object.values(skin.art),...Object.values(skin.stations.facade)];assert.equal(files.length,16);

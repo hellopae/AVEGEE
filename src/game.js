@@ -1,3 +1,4 @@
+import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
 import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
@@ -3144,7 +3145,7 @@ const API = {
     if (s.minionsCleared === 0 && !s.approachSeen) {
       s.presentation = 'warp'; s.warpElapsed = 0;
       // A fixed walkable staging spot puts the appearing army in front of Yama.
-      Object.assign(this.player, { x:1010, y:580, tx:null, path:null });
+      Object.assign(this.player, { x:1700, y:980, tx:null, ty:null, path:null });
     } else if (s.minionsCleared === 4 && !s.reinforcementsSeen) {
       s.phase = 'reinforcementCutscene'; s.presentation = 'reinforcementIntro';
       this.queueStory('cyber-reinforcements');
@@ -4972,7 +4973,7 @@ API.snapshot = function (withEntry = true) {
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneIntroSeen: this.zoneIntroSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
-    townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),
+    townMapVersion:2, z4TownVersion:3, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
     townSkinMigrated: { ...this.townSkinMigrated },   // M2 T3 — zones whose painted-town skin already moved the save's positions
@@ -4990,15 +4991,18 @@ API.save = function () {
 
 /** M2 T3 — one-off position move for a zone whose painted-town skin is now on (see restore()). Exported for tests. */
 export function migrateTownSkinZone(g, k) {
-  const spawn = [TOWN_SPOTS.bench.x + 60, TOWN_SPOTS.bench.y];
+  const layout=k==='cyberhell'?CYBERHELL_LAYOUT:null;
+  const spots=layout?.spots||TOWN_SPOTS,crew=layout?.crew||TOWN_CREW;
+  const guard=layout?.guard||TOWN_GUARD_POST;
+  const spawn = [spots.bench.x + 60, spots.bench.y];
   const settle = state => {
     if (!state) return;
     if (state.player) Object.assign(state.player, { x:spawn[0], y:spawn[1], tx:null, ty:null, path:null });
     for (const it of state.items || []) [it.x, it.y] = spawn;
-    if (state.guard) Object.assign(state.guard, { x:TOWN_GUARD_POST[0], y:TOWN_GUARD_POST[1], path:null, target:null });
-    for (const m of state.mobs || []) { m.x = 1920; m.y = TOWN_RIVER_Y - 50; m.path = null; }
+    if (state.guard) Object.assign(state.guard, { x:guard[0], y:guard[1], path:null, target:null });
+    for (const m of state.mobs || []) { m.x = layout?spawn[0]:1920; m.y = layout?spawn[1]:TOWN_RIVER_Y-50; m.path = null; }
     for (const c of state.crew || []) {
-      const home = TOWN_CREW[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }
+      const home = crew[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }
       c.x = null; c.y = null; c.path = null;
     }
   };
@@ -5006,9 +5010,9 @@ export function migrateTownSkinZone(g, k) {
   settle(g.zoneSave?.[k]);
   if (g.zoneEntry?.zone === k) settle(g.zoneEntry);
   for (const actor of Object.values(g.roster || {})) if (actor.homeZone === k) {
-    const home = TOWN_CREW[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }
+    const home = crew[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }
     actor.x = null; actor.y = null; actor.path = null;
-    if (actor.kind === 'guard') { actor.x = TOWN_GUARD_POST[0]; actor.y = TOWN_GUARD_POST[1]; }
+    if (actor.kind === 'guard') { actor.x = guard[0]; actor.y = guard[1]; }
   }
   g.blockSig = null;
 }
@@ -5455,9 +5459,24 @@ API.restore = function (d) {
   // items carried, stations and crew levels are untouched — only where things stand. Nothing runs while a zone is off.
   this.townSkinMigrated = { ...(d.townSkinMigrated || {}) };
   for (const k of TOWN_SKIN_ZONES) {
-    if (k === 'th' || !isTownZone(k) || this.townSkinMigrated[k]) continue;
+    if (k === 'th' || k === 'cyberhell' || !isTownZone(k) || this.townSkinMigrated[k]) continue;
     migrateTownSkinZone(this, k);
     this.townSkinMigrated[k] = true;
+  }
+  // Z4-TOWN-A: repair active and parked saves even if an earlier skin migration
+  // marker exists. The geometry is selected by zone, not the currently open town.
+  if(isTownZone('cyberhell')) {
+    if(d.z4TownVersion!==3) migrateTownSkinZone(this,'cyberhell');
+    this.townSkinMigrated.cyberhell = true;
+  }
+  if(this.zone==='cyberhell'&&isTownZone(this.zone)) {
+    // Pure save restores also run without a browser. Sprite collisions become
+    // available in the renderer; the owner floor still repairs positions here.
+    if(typeof Image!=='undefined')this.syncBlocks(true);
+    if(!canWalk(this.player.x,this.player.y)) {
+      const p=nearestWalk(this.player.x,this.player.y)||[CYBERHELL_LAYOUT.spots.bench.x+60,CYBERHELL_LAYOUT.spots.bench.y];
+      Object.assign(this.player,{x:p[0],y:p[1],tx:null,ty:null,path:null});
+    }
   }
   initializeZoneTravel(this,d.zoneTravel);
   migrateSignal(this,d);

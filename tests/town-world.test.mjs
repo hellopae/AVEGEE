@@ -1,3 +1,4 @@
+import {enableTownSkin,disableTownSkin} from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,7 +14,7 @@ Object.defineProperty(globalThis,'localStorage',{ configurable:true,value:{
 } });
 
 const { createGame } = await import('../src/game.js');
-const { SCENE,SPOTS,STATIONS,CREW,FRONTIER,MERCHANT,GUARD_POST,ZONES,MAP_BUILDING_SCALE } = await import('../src/data.js');
+const { SCENE,SPOTS,STATIONS,CREW,FRONTIER,MERCHANT,GUARD_POST,ZONES,MAP_BUILDING_SCALE,syncSceneZone } = await import('../src/data.js');
 const { TOWN_SIZE,TOWN_STATION_SITES,TOWN_SPOTS,TOWN_CREW,TOWN_HOUSES } = await import('../src/town-layout.js?v=k1d');
 const { canWalk,findPath,resetWalk,setBlocks,setNpcDiscs } = await import('../src/walk.js?v=k1d');
 const clone = value => structuredClone(value);
@@ -73,7 +74,8 @@ test('old city save preserves progress and migrates positions only once',()=>{
   assert.deepEqual(again.inventory,old.inventory);
 });
 
-test('travel restores legacy branch geometry and returns to the city without moving other zones',()=>{
+test('travel restores legacy branch geometry and returns to the city without moving other zones',t=>{
+  disableTownSkin('cyberhell');t.after(()=>{enableTownSkin('cyberhell');syncSceneZone('th');});
   const g=createGame();
   for(const z of ZONES)g.bossCleared[z.k]=true;
   const cityBuildings=g.stations.map(s=>s.def.k);
@@ -104,7 +106,8 @@ test('travel restores legacy branch geometry and returns to the city without mov
   }
 });
 
-test('loading an old save in another branch migrates its stored city without relocating the active branch',()=>{
+test('loading an old save in another branch migrates its stored city without relocating the active branch',t=>{
+  disableTownSkin('cyberhell');t.after(()=>{enableTownSkin('cyberhell');syncSceneZone('th');});
   const source=createGame();source.bossCleared.th=true;
   source.zoneEvents.th={thBorderBoss:'cleared'};
   const cityBuildings=source.stations.map(s=>s.def.k);

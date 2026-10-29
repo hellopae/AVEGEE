@@ -2,7 +2,7 @@ import { westDevaPosition } from './west-events.js';
 import { t } from './i18n.js';
 // Reusable deva actors: register another zone here; event keys stay in zoneEvents.
 export const DEVA_MAP = {
-  cyberhell:{ key:'cyberRescue', prerequisite:null, x:880, y:480 },
+  cyberhell:{ key:'cyberRescue', prerequisite:null, x:1500, y:1287.5 },
   west:{ key:'westDevaTest', prerequisite:'westVampireBreach', x:1160, y:400 },
   asia:{ key:'asiaDevaTest', prerequisite:'asiaPrisonFire', x:1120, y:400 },
 };

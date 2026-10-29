@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { STATIONS, STATION_FLIP, syncSceneZone, MAP_BUILDING_SCALE } from '../src/data.js';
 import { reviewStationBox, MAP_REVIEW_SIZES } from '../src/map-art-v5.js';
+import {disableTownSkin,enableTownSkin} from '../src/zone-skin.js';
 
 const expected = { th:['krata','dab','tarang','lokan'], asia:['krata'], west:['krata','tea'], cyberhell:['krata'] };
 // Effective pre-E1 draw flags: map-v5 ignored def.flip, while lokan/tea used the legacy renderer.
@@ -31,7 +32,8 @@ test('E1: one final flip table toggles exactly the eight requested rendered orie
   syncSceneZone('th');
 });
 
-test('E1: CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch', () => {
+test('E1: disabled legacy CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch', t => {
+  disableTownSkin('cyberhell');t.after(()=>{enableTownSkin('cyberhell');syncSceneZone('th');});
   syncSceneZone('west');
   const d=station('krajok');
   const geometry=()=>({bx:d.bx,by:d.by,bw:d.bw,x:d.x,y:d.y,hit:[...d.hit],mapScale:d.mapScale});

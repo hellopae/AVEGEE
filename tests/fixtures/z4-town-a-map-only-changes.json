@@ -1,0 +1,54 @@
+{
+  "game": [
+    {
+      "before": "",
+      "after": "import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';\n"
+    },
+    {
+      "before": "      Object.assign(this.player, { x:1010, y:580, tx:null, path:null });\n",
+      "after": "      Object.assign(this.player, { x:1700, y:980, tx:null, ty:null, path:null });\n"
+    },
+    {
+      "before": "    townMapVersion:2, zoneTravel:structuredClone(this.zoneTravel),\n",
+      "after": "    townMapVersion:2, z4TownVersion:3, zoneTravel:structuredClone(this.zoneTravel),\n"
+    },
+    {
+      "before": "  const spawn = [TOWN_SPOTS.bench.x + 60, TOWN_SPOTS.bench.y];\n",
+      "after": "  const layout=k==='cyberhell'?CYBERHELL_LAYOUT:null;\n  const spots=layout?.spots||TOWN_SPOTS,crew=layout?.crew||TOWN_CREW;\n  const guard=layout?.guard||TOWN_GUARD_POST;\n  const spawn = [spots.bench.x + 60, spots.bench.y];\n"
+    },
+    {
+      "before": "    if (state.guard) Object.assign(state.guard, { x:TOWN_GUARD_POST[0], y:TOWN_GUARD_POST[1], path:null, target:null });\n    for (const m of state.mobs || []) { m.x = 1920; m.y = TOWN_RIVER_Y - 50; m.path = null; }\n",
+      "after": "    if (state.guard) Object.assign(state.guard, { x:guard[0], y:guard[1], path:null, target:null });\n    for (const m of state.mobs || []) { m.x = layout?spawn[0]:1920; m.y = layout?spawn[1]:TOWN_RIVER_Y-50; m.path = null; }\n"
+    },
+    {
+      "before": "      const home = TOWN_CREW[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }\n",
+      "after": "      const home = crew[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; }\n"
+    },
+    {
+      "before": "    const home = TOWN_CREW[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }\n",
+      "after": "    const home = crew[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; }\n"
+    },
+    {
+      "before": "    if (actor.kind === 'guard') { actor.x = TOWN_GUARD_POST[0]; actor.y = TOWN_GUARD_POST[1]; }\n",
+      "after": "    if (actor.kind === 'guard') { actor.x = guard[0]; actor.y = guard[1]; }\n"
+    },
+    {
+      "before": "    if (k === 'th' || !isTownZone(k) || this.townSkinMigrated[k]) continue;\n",
+      "after": "    if (k === 'th' || k === 'cyberhell' || !isTownZone(k) || this.townSkinMigrated[k]) continue;\n"
+    },
+    {
+      "before": "",
+      "after": "  // Z4-TOWN-A: repair active and parked saves even if an earlier skin migration\n  // marker exists. The geometry is selected by zone, not the currently open town.\n  if(isTownZone('cyberhell')) {\n    if(d.z4TownVersion!==3) migrateTownSkinZone(this,'cyberhell');\n    this.townSkinMigrated.cyberhell = true;\n  }\n  if(this.zone==='cyberhell'&&isTownZone(this.zone)) {\n    // Pure save restores also run without a browser. Sprite collisions become\n    // available in the renderer; the owner floor still repairs positions here.\n    if(typeof Image!=='undefined')this.syncBlocks(true);\n    if(!canWalk(this.player.x,this.player.y)) {\n      const p=nearestWalk(this.player.x,this.player.y)||[CYBERHELL_LAYOUT.spots.bench.x+60,CYBERHELL_LAYOUT.spots.bench.y];\n      Object.assign(this.player,{x:p[0],y:p[1],tx:null,ty:null,path:null});\n    }\n  }\n"
+    }
+  ],
+  "data": [
+    {
+      "before": "  if(town)Object.assign(STATIONS.find(s=>s.k==='canteen'),{bx:foodSite.x,by:foodSite.y,bw:foodSite.w,x:foodSite.x,y:foodSite.y+38,hit:[foodSite.x-foodSite.w*.44,foodSite.y-33,foodSite.x+foodSite.w*.44,foodSite.y]});\n",
+      "after": "  if(town&&!TOWN_STATION_SITES.canteen)Object.assign(STATIONS.find(s=>s.k==='canteen'),{bx:foodSite.x,by:foodSite.y,bw:foodSite.w,x:foodSite.x,y:foodSite.y+38,hit:[foodSite.x-foodSite.w*.44,foodSite.y-33,foodSite.x+foodSite.w*.44,foodSite.y]});\n"
+    },
+    {
+      "before": "  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],\n  restPosition:[700,600],\n  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],\n",
+      "after": "  enemyPositions:[[1760,930],[1840,950],[2000,950],[2080,960],[1862.5,865]],\n  restPosition:[1550,1442.5],\n  reinforcementPositions:[[1570,930],[1600,990],[1680,1000],[1650,950]],\n"
+    }
+  ]
+}

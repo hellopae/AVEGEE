@@ -1,0 +1,88 @@
+(node:10876) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors (16.814707ms)
+✔ BALANCE-2 tutor keeps the exact approved sentence; intro and help disclose back-line support (0.779403ms)
+✔ BALANCE-2 every new move renders an unclipped-name row, ultimate chip short name and full tooltip/manual (3.742357ms)
+✔ BALANCE-2 enemy scaling freezes the initial party count and does not rescale an ongoing/restored wave (6.189902ms)
+✔ BALANCE-2 changed runtime modules share release identities; stylesheet is versioned (13.028501ms)
+✔ BALANCE-2 Western hypnosis uses the initial party size for its solo-Yama enemy group (2.063509ms)
+✔ BALANCE-2 evidence covers 200 paired trials per case and stays tied to the runtime under test (552.366184ms)
+✔ E1: one final flip table toggles exactly the eight requested rendered orientations (12.395184ms)
+✔ E1: disabled legacy CyberHell tower moves right, scales 1.3 versus regional art, updates service/hit, and restores every branch (11.995796ms)
+(node:10878) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ SIG opens at seven CYBER cases, cross-zone visits cannot accelerate it; final waits for all three captains and close acknowledgement (64.038805ms)
+✔ SIG victims never queue a repeat trial; friendly post remains in its ledger and returns after invasion (2.698521ms)
+✔ SIG choice survives defeat/reload; call stuns the returning boss, rush pays 25 percent exactly once (23.91277ms)
+✔ eight quest cases have unique ids, correct zones, and never enter named random pools even at Asia recycle (7.929548ms)
+✔ all eight side quests: real enqueue/verdict, branch 0, save/reload and single claim (124.718068ms)
+✔ all eight side quests: real enqueue/verdict, branch 1, save/reload and single claim (96.700872ms)
+✔ Dam wrong verdict closes only the failure route with 30 coin and no item reward (2.444741ms)
+✔ quests pause during finale; completed state resumes walking, boat travel and quests without replaying finale (98.802115ms)
+✔ legacy empty, pending finale, interrupted SIG and completed saves migrate without duplicate rewards (14.659014ms)
+✔ private information costs six additional karma only once with mirror/hypno, ordinary questioning is free (12.771222ms)
+✔ W3: all eight kin journeys advance through actual zones, choices and one reward after reload (119.679623ms)
+✔ merchant arrives exactly 90 seconds after Asia arrival, pauses/out-of-zone preserve timer; hostages stay in west/cyber (7.573936ms)
+✔ cross-zone dialogue needs both meetings and plays each direction once, including saved state (5.111997ms)
+✔ authored assets exist, history opens with full S0 and Grace is female; history is reachable from both manuals (3.528178ms)
+✔ stale pending final gates cannot bypass SIG through the map, either entry API, or save reload (6.414664ms)
+✔ each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement (12.940772ms)
+✔ legacy finals already fought retain progress and ledger without paying SIG rewards (16.976698ms)
+✔ W2 exact branch rewards, including optional helper EXP replaced by two food only when awarded (43.681329ms)
+✔ W3 kin choices pay exact rewards through real harbour travel, persist, and stay open during finale (1007.081211ms)
+✔ W3 all 34 cross-zone lines need their meetings and play only once across reload (132.920366ms)
+✔ W3 merchant has actual story dialogue and a walkable route; legacy arrivals stay silent (78.277181ms)
+✔ SIG battle and frontier consume the supplied signal boss art, CyberHell keeps mint overlay (3.260613ms)
+✔ ordinary questioning that already opened private facts adds no later privacy surcharge (2.327364ms)
+✔ Asia shop opens at 90 seconds from actual arrival without requiring a first case (71.467335ms)
+✔ completed finale can resume real world walking after restore without opening the finale again (23.387396ms)
+✔ quest conversation shows the selected branch only and mothers message at the selected time (3.509038ms)
+✔ legacy final court is proof of a fought finale even when older saves lack wave counters (5.002275ms)
+(node:10879) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ map names and bubble share one size; all name drawing sites use mapName (3.969165ms)
+✔ crew names and Nira recovery use dialogue size in all four map zones (51.640259ms)
+✖ final wave, reinforcement, ruler and warp boss names use the same map style (12.782505ms)
+✔ map status tags use compact map type while deva skill prompts keep their own size (0.341295ms)
+(node:10883) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L1: actors shrink on enabled town maps, and come back elsewhere (1.591704ms)
+✔ L1: one sun - shadows fall to the lower right for every caster (0.190148ms)
+✔ L1: withTownShade is a plain pass-through while no shadow field is baked (no DOM, battle/rooms untouched) (0.498922ms)
+✔ L1: scene.js keeps drawStandee untouched and shades actors via callbacks (no ctx.filter / shadowBlur per frame) (1.222368ms)
+✔ L1: Nira lives on the dais, away from the throne, the stairs, the queue and the player entry goal (2.013526ms)
+✔ L1: Nira strolls slowly but only inside her stage (simulated 5 minutes) (2107.100542ms)
+✔ first painted frame gates the exact current facades, trees, houses and canteen even with an empty catalog (3.92461ms)
+✔ startup promotion partitions tiers without duplication or dropping old assets (21.384727ms)
+✔ decoded first-frame image stays usable by its renderer after the gate resolves (4.857561ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 48
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30467.012026
+
+✖ failing tests:
+
+test at tests/e6-name-labels.test.mjs:63:1
+✖ final wave, reinforcement, ruler and warp boss names use the same map style (12.782505ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  812.2 !== 796.6
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T225212Z-3dc9e937/tests/e6-name-labels.test.mjs:76:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 812.2,
+    expected: 796.6,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

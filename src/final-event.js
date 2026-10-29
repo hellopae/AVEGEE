@@ -79,10 +79,11 @@ export function finalEventActors(g) {
     name:t('final.reinforcement.' + zone), reinforcement:true })) : [];
   if (s.minionsCleared < 4 || ['reinforcementIntro','reinforcementMap','reinforcementAdvance'].includes(s.presentation)) {
     const entry = waves[Math.min(3,s.minionsCleared)][0], [x,y] = FINAL_EVENT.enemyPositions[0];
-    return [{ id:'boss', x:1390, y:615, art:'zone-boss', name:waves[8][0].name, enabled:false },
+    const boss=FINAL_EVENT.enemyPositions[4];
+    return [{ id:'boss', x:boss[0], y:boss[1], art:'zone-boss', name:waves[8][0].name, enabled:false },
       { id:s.minionsCleared < 4 ? `minion:${s.minionsCleared + 1}` : 'army:front', x,y, art:MOB.kinds[entry.kind].img,
         name:s.minionsCleared < 4 ? `ลูกน้องระลอก ${s.minionsCleared + 1}/4` : '', enabled:!!next && !s.presentation },
-      ...[0,1].map(i => ({ id:`army:${i}`, x:1190+i*80, y:540+i*30, art:MOB.kinds[entry.kind].img, name:'', enabled:false })),
+      ...[0,1].map(i => ({ id:`army:${i}`, x:FINAL_EVENT.enemyPositions[i+1][0], y:FINAL_EVENT.enemyPositions[i+1][1], art:MOB.kinds[entry.kind].img, name:'', enabled:false })),
       ...reinforcements];
   }
   if (!s.reinforcementsSeen) return [];
