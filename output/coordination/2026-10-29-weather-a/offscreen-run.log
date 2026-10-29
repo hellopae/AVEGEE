@@ -1,0 +1,206 @@
+{
+  "method": "Node native canvas real town render; CPU elapsed, 4 interleaved pairs, no rAF/GPU/CDP. Effect-off/on in current renderer, not HEAD before/after. Not comparable to LOAD-01b.",
+  "profiles": [
+    {
+      "zone": "th",
+      "profile": "desktop",
+      "before": {
+        "median": 1211.3242839999984,
+        "p95": 1218.8401639999975,
+        "n": 4
+      },
+      "after": {
+        "median": 1206.8188230000014,
+        "p95": 1207.8703659999992,
+        "n": 4
+      },
+      "medianDelta": -4.5054609999970126
+    },
+    {
+      "zone": "th",
+      "profile": "390",
+      "before": {
+        "median": 1196.4726779999983,
+        "p95": 1208.2581840000057,
+        "n": 4
+      },
+      "after": {
+        "median": 1208.4409809999997,
+        "p95": 1211.9278129999948,
+        "n": 4
+      },
+      "medianDelta": 11.96830300000147
+    },
+    {
+      "zone": "asia",
+      "profile": "desktop",
+      "before": {
+        "median": 869.7623209999947,
+        "p95": 877.206929,
+        "n": 4
+      },
+      "after": {
+        "median": 876.9238889999979,
+        "p95": 880.9380079999974,
+        "n": 4
+      },
+      "medianDelta": 7.161568000003172
+    },
+    {
+      "zone": "asia",
+      "profile": "390",
+      "before": {
+        "median": 852.0290349999996,
+        "p95": 866.7017150000029,
+        "n": 4
+      },
+      "after": {
+        "median": 852.3750589999981,
+        "p95": 853.308720999994,
+        "n": 4
+      },
+      "medianDelta": 0.3460239999985788
+    },
+    {
+      "zone": "west",
+      "profile": "desktop",
+      "before": {
+        "median": 1093.201613000012,
+        "p95": 1122.6660039999988,
+        "n": 4
+      },
+      "after": {
+        "median": 1095.3788170000043,
+        "p95": 1143.7573469999916,
+        "n": 4
+      },
+      "medianDelta": 2.1772039999923436
+    },
+    {
+      "zone": "west",
+      "profile": "390",
+      "before": {
+        "median": 1084.3162069999962,
+        "p95": 1110.273371999996,
+        "n": 4
+      },
+      "after": {
+        "median": 1110.461571000007,
+        "p95": 1111.566221999994,
+        "n": 4
+      },
+      "medianDelta": 26.145364000010886
+    },
+    {
+      "zone": "cyberhell",
+      "profile": "desktop",
+      "before": {
+        "median": 341.7474050000019,
+        "p95": 345.93995499999437,
+        "n": 4
+      },
+      "after": {
+        "median": 333.35352999999304,
+        "p95": 355.79678600000625,
+        "n": 4
+      },
+      "medianDelta": -8.393875000008848
+    },
+    {
+      "zone": "cyberhell",
+      "profile": "390",
+      "before": {
+        "median": 287.87616899999557,
+        "p95": 309.3519760000054,
+        "n": 4
+      },
+      "after": {
+        "median": 287.61619300000893,
+        "p95": 297.2074220000068,
+        "n": 4
+      },
+      "medianDelta": -0.25997599998663645
+    }
+  ],
+  "reduced": [
+    {
+      "zone": "th",
+      "profile": "desktop",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "th",
+      "profile": "390",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "asia",
+      "profile": "desktop",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "asia",
+      "profile": "390",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "west",
+      "profile": "desktop",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "west",
+      "profile": "390",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "cyberhell",
+      "profile": "desktop",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    },
+    {
+      "zone": "cyberhell",
+      "profile": "390",
+      "identical": false,
+      "note": "Whole-scene hash may differ because unrelated actor/light animations use Date.now."
+    }
+  ],
+  "missingAssets": [],
+  "pixelChecks": [
+    {
+      "zone": "th",
+      "reducedIdentical": true,
+      "movingActorPixels": 3055,
+      "movingGroundPixels": 105439,
+      "changedLabelPixels": 0
+    },
+    {
+      "zone": "asia",
+      "reducedIdentical": true,
+      "movingActorPixels": 3710,
+      "movingGroundPixels": 88678,
+      "changedLabelPixels": 0
+    },
+    {
+      "zone": "west",
+      "reducedIdentical": true,
+      "movingActorPixels": 3880,
+      "movingGroundPixels": 82673,
+      "changedLabelPixels": 0
+    },
+    {
+      "zone": "cyberhell",
+      "reducedIdentical": true,
+      "movingActorPixels": 3265,
+      "movingGroundPixels": 114637,
+      "changedLabelPixels": 0
+    }
+  ]
+}

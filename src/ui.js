@@ -1,3 +1,4 @@
+import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
 import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
@@ -6618,6 +6619,10 @@ function openSettings() {
       <input type="checkbox" id="s-cam" ${camera.enabled ? 'checked' : ''}>
     </label>
     <div class="hint" data-t="settings.cameraHint"></div>
+    <label class="settings-row cam-row" for="s-weather">
+      <span data-t="settings.weather"></span>
+      <input type="checkbox" id="s-weather" ${weatherEnabled() ? 'checked' : ''}>
+    </label>
 
     <div class="settings-lang">
       <label data-t="settings.language"></label>
@@ -6657,6 +6662,7 @@ function openSettings() {
           if (!off && key === 'sfxOn') { unlock(); sfx('stamp'); }
         };
       };
+      d.querySelector('#s-weather').onchange=e=>setWeatherEnabled(e.currentTarget.checked);
       d.querySelector('#s-cam').onchange = e => { camera.setEnabled(e.currentTarget.checked); sfx('stamp'); };   // M1: battle / interrogation camera effects
       bindToggle('#s-bgm-toggle', 'bgmOn', 'icon-music', 'icon-music-close');
       bindToggle('#s-sfx-toggle', 'sfxOn', 'icon-sound', 'icon-sound-close');

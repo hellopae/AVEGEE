@@ -1,0 +1,19 @@
+✔ border23 weather respects the warm/cold boundary and reduced motion (4.316406ms)
+✔ frozen town keeps its existing snow sky and no longer sheds warm canopy leaves (7.31232ms)
+✔ map masks select lava and water, avoiding snow, bridges and red ground (1.658628ms)
+✔ all four zone effects move deterministically, stay bounded, and use small particle budgets (2.681601ms)
+✔ sky renders different frames and reduced motion avoids all drawing and mask work (2.949799ms)
+✔ weather cap follows CSS viewport and DPR, never world size, and reduced motion disables particles (3.968718ms)
+✔ reduced motion is identical across time, has no smoke/dust, and settings disable every new draw (1.746627ms)
+✔ pause holds the last weather phase; labels are unioned and clipped before weather (1.592203ms)
+✔ frontiers clip weather to the authored biome halves, retain cold snow, and invent no fire anchors (3.293087ms)
+✔ scene schedules weather after actors, before dialogue/badges; cache aliases share settings instance (11.137013ms)
+✔ settings preference persists and restores, and blocked storage never breaks rendering (3.27005ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 215.977651

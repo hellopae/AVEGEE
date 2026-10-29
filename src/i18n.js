@@ -150,6 +150,7 @@ const TH = {
   'settings.close': 'ปิด',
   'settings.saved': 'บันทึกแล้ว',
   'settings.audioHint': 'ปรับระดับเสียงเพลงและเอฟเฟกต์แยกกัน หรือปิดเสียงทั้งหมดได้',
+  'settings.weather': 'เงาเมฆ ควัน และลำแสง',
   'settings.camera': 'เอฟเฟกต์กล้อง',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'ซูมเข้า-ออกตัวละคร สั่นจอ และหรี่ฉากหลังตอนโจมตี ปิดได้ถ้าเวียนหัว',
 
@@ -797,6 +798,7 @@ const EN = {
   'settings.close': 'Close',
   'settings.saved': 'Saved',
   'settings.audioHint': 'Adjust music and sound effects separately, or mute all audio.',
+  'settings.weather': 'Cloud shadows, smoke and light rays',
   'settings.camera': 'CAMERA EFFECTS',            // M1 placeholder copy — Rae to review
   'settings.cameraHint': 'Zoom, screen shake and background dimming during attacks. Turn off if it feels dizzy.',
 
