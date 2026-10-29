@@ -1,0 +1,174 @@
+{
+  "task": "C2-ART-A",
+  "zone": "th",
+  "generator": "built-in image_gen",
+  "generation_calls": 11,
+  "encoding": "Pillow WebP quality=95 method=6; exact-size LANCZOS resampling, no cropping",
+  "runtime_integration": "Deferred to C1; img/manifest.json unchanged",
+  "assets": [
+    {
+      "file": "img/skills-v1/th/plerng-copperInferno-cut-01.webp",
+      "move": "เพลิงอาญาทองแดง: รวมไฟ",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-plerng-cutscene.jpeg",
+        "img/crew-combat-v1/th/plerng.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1678,
+        937
+      ],
+      "sha256": "f5d70143cceb1fe1a2038c78c5ae964fe3d146189208dea7855bcc62d3f7fd5e"
+    },
+    {
+      "file": "img/skills-v1/th/plerng-copperInferno-cut-02.webp",
+      "move": "เพลิงอาญาทองแดง: ปล่อยไฟ",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-plerng-cutscene.jpeg",
+        "img/crew-combat-v1/th/plerng.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1677,
+        938
+      ],
+      "sha256": "f8656b4868a19984c6739c7358ba09e9ecc741d7128d9051921265689c811842"
+    },
+    {
+      "file": "img/skills-v1/th/nira-mercySeal-cut-01.webp",
+      "move": "ตราเมตตาพิทักษ์",
+      "width": 1672,
+      "height": 941,
+      "format": "WEBP",
+      "references": [
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1672,
+        941
+      ],
+      "sha256": "8dcd3a34aaff3890c5322ff3a337eb5f5a60c626287dfa13965205995af6474d"
+    },
+    {
+      "file": "img/skills-v1/th/boon-lotusSanctuary-cut-01.webp",
+      "move": "บัวบุญคุ้มชีพ",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-boon-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1678,
+        937
+      ],
+      "sha256": "fe23f3b6edf7c55e88f45c72b68384b4e454c583b96a64f023b4baeb97f592c0"
+    },
+    {
+      "file": "img/skills-v1/th/taan-laborJudgment-cut-01.webp",
+      "move": "กระบองพิพากษาหินผา",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-taan-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1677,
+        938
+      ],
+      "sha256": "d6995354f3820f6d99c9d6d687d2d70e11efec2727b3e653a85baaef221d44d2"
+    },
+    {
+      "file": "img/skills-v1/th/dam-shadowCleaver-cut-01.webp",
+      "move": "คมเงาทลายตรวน",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-dam-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1678,
+        937
+      ],
+      "sha256": "c10be3af7d05ac3f873f9dc0e2331f143e280feb518d4942cd501df98cd93950"
+    },
+    {
+      "file": "img/skills-v1/th/guard-abyssGatebreaker-cut-01.webp",
+      "move": "ทวารบาลทลายโลกันต์",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-guard-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1677,
+        938
+      ],
+      "sha256": "07bf9b2e95dc2bc98b93283d7ffa7a1f9265ef61d6cb607fb7957eae9119c17e"
+    },
+    {
+      "file": "img/skills-v1/th/kan-karmaFracture-cut-01.webp",
+      "move": "กระจกกรรมสะท้อนคม",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/crew-kan-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1678,
+        937
+      ],
+      "sha256": "e9daf26c5ddee754ac52e7ba40c354ea67e3c1c43844bfaf2a911cf31e94a3f6"
+    },
+    {
+      "file": "img/skills-v1/th/yama-teamJudgment-cut-01.webp",
+      "move": "บัญชาการยมทูตประสานพิพากษา: สั่งทีม",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/hero-yama-th-atk-cutscene-v3.png",
+        "art-src/yama-sword-v2/hero-yama-th-sword.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1677,
+        938
+      ],
+      "sha256": "50a11e333c8eb39a9fd4ef76442e1d19270b52694aa80ec4a4d8f6e2d9bbef40"
+    },
+    {
+      "file": "img/skills-v1/th/yama-teamJudgment-cut-02.webp",
+      "move": "บัญชาการยมทูตประสานพิพากษา: ฟันปิดท้าย",
+      "width": 1375,
+      "height": 768,
+      "format": "WEBP",
+      "references": [
+        "img/hero-yama-th-atk-cutscene-v3.png",
+        "art-src/yama-sword-v2/hero-yama-th-sword.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "generation_source_size": [
+        1677,
+        938
+      ],
+      "sha256": "bc526d6976601ae2f617532430af3cfd3eaaa610288cb88d38e7eef51c8d02bd"
+    }
+  ],
+  "pending": []
+}

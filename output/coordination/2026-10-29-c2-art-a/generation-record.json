@@ -1,0 +1,153 @@
+{
+  "tool": "built-in image_gen",
+  "generations": 11,
+  "entries": [
+    {
+      "file": "plerng-copperInferno-cut-01.webp",
+      "move": "เพลิงอาญาทองแดง: รวมไฟ",
+      "refs": [
+        "img/crew-plerng-cutscene.jpeg",
+        "img/crew-combat-v1/th/plerng.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Plerng: orange skin, pointed ears, upright yellow-orange flame hair, amber eyes, molten gold cracks on bare arms, dark burgundy one-shoulder tunic with gold edging and sash, dark baggy trousers. CHARGE phase: crouched firm stance, both palms cupping a dense white-hot copper-orange fire sphere in front of chest on right; several thick copper flame coils spiral inward, ground lifting in heat. This advanced inferno must look far stronger and more concentrated than the small original fireball. Do not release yet.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-ccd211fd-536c-4293-9f84-00b0a5c6517f.png"
+    },
+    {
+      "file": "plerng-copperInferno-cut-02.webp",
+      "move": "เพลิงอาญาทองแดง: ปล่อยไฟ",
+      "refs": [
+        "img/crew-plerng-cutscene.jpeg",
+        "img/crew-combat-v1/th/plerng.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Plerng: orange skin, pointed ears, upright yellow-orange flame hair, amber eyes, molten gold cracks on bare arms, dark burgundy one-shoulder tunic with gold edging and sash, dark baggy trousers. RELEASE phase: powerful forward lunge, both palms thrust RIGHT, launching a huge white-hot copper fireball with expanding spiral flame rings and broad copper-orange wake filling right half, scorched ground and heat shockwave. Visibly far larger and stronger than original fireball; face and hands unobscured.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-cd072d32-68da-4752-81f2-7afffb7546f8.png"
+    },
+    {
+      "file": "nira-mercySeal-cut-01.webp",
+      "move": "ตราเมตตาพิทักษ์",
+      "refs": [
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Nira is the exact lavender-skinned horned girl in the reference, purple bun with gold pin, amber eyes, black gold-edged tunic and red trousers. New MERCY SEAL pose: upright wide stance, one hand raised presenting a luminous geometric lotus medallion without writing; other palm extended RIGHT. Three visibly distinct integrated effects: green-gold healing ribbons, a large translucent faceted golden shield in front on right, and ascending golden blade-shaped rays signifying attack blessing. More powerful and protective than her old stream of healing lotuses. No actual sword held.\nTarget delivery dimensions: 1672x941 pixels.",
+      "size": [
+        1672,
+        941
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-07775dea-2d68-49dc-96c2-bf301766a93d.png"
+    },
+    {
+      "file": "boon-lotusSanctuary-cut-01.webp",
+      "move": "บัวบุญคุ้มชีพ",
+      "refs": [
+        "img/crew-boon-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Boon is the exact serene green-skinned bald small-horned pointed-ear monk with saffron-orange one-shoulder robe, eyes softly closed. Three-quarter facing RIGHT, palms together at chest around a pink lotus. A gigantic translucent pink-and-gold lotus sanctuary blooms to his RIGHT, layered petals curving upward into a protective dome, green healing light flowing inside and gold blessing motes rising. Clearly a stronger heal plus lotus shield, rather than the tiny old flower. Show his original robe and calm face.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-fefaa1a4-f911-45b5-8465-d812f0fd467f.png"
+    },
+    {
+      "file": "taan-laborJudgment-cut-01.webp",
+      "move": "กระบองพิพากษาหินผา",
+      "refs": [
+        "img/crew-taan-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Taan is the exact stocky muscular dark-red-skinned adult ogre with gray-white topknot, heavy white brows, orange eyes, tusks, one bronze shoulder plate and dark trousers. Face RIGHT in a forceful two-handed overhead-to-downward club strike toward right foreground. Preserve his enormous dark iron studded club, now surrounded by jagged floating rock slabs and earth-gold cracks; the club breaks a stone ridge with a broad angular ground shockwave. No opponent. Stronger mass and rock impact than old fiery horizontal swing.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-d96137ae-9bab-4ed9-931b-939264e5f8a6.png"
+    },
+    {
+      "file": "dam-shadowCleaver-cut-01.webp",
+      "move": "คมเงาทลายตรวน",
+      "refs": [
+        "img/crew-dam-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Dam is the exact gray-brown furred bat demon with enormous pointed ears, pig-like snout, amber eyes, fangs, dark leathery bat wings, clawed hands and ragged gray trousers. Do not turn him into a human. Face RIGHT in a low lunging cleave with one dark short sword held in clawed hand. Two intersecting deep-violet blade trails cleave thick spectral iron chains on the RIGHT, broken links flying through shadow mist. Face, ears, wings and outfit fully identifiable. More powerful and distinct than old unarmed claw swipe.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-430a4ace-931c-4a18-a6ea-9d221fc075a8.png"
+    },
+    {
+      "file": "guard-abyssGatebreaker-cut-01.webp",
+      "move": "ทวารบาลทลายโลกันต์",
+      "refs": [
+        "img/crew-guard-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: The guard is the exact massive adult green Thai yaksha with white tusks, pointed ears, tall tiered gold headdress, black lamellar armor with red lacing and gold borders, red sash. Face RIGHT, two hands driving his original huge black-and-gold long mace down into a collapsing empty obsidian abyss gate at right. Vast gold-orange shock ring and black masonry chunks erupt from impact, lava behind the shattered gateway. Monumental heavy strike much stronger than old horizontal mace pose. Keep original face, crown and armor.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-3925c62c-3c4f-4dac-824f-09fe85845c3f.png"
+    },
+    {
+      "file": "kan-karmaFracture-cut-01.webp",
+      "move": "กระจกกรรมสะท้อนคม",
+      "refs": [
+        "img/crew-kan-cutscene.jpeg",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Kan is the exact blue-indigo-skinned pointed-ear scholar demon with purple topknot, round spectacles, heavy brows and black-purple robe richly edged in gold. Face RIGHT, one hand controls a floating circular mirror with a clean silver reflective center, other hand thrust toward RIGHT launching a fan of sharp luminous violet mirror shards. The mirror fractures at rim into controlled angular blades and reflected purple light. Offensive direct cutting magic, clearly distinct from the old round hypnotic spiral. No eye symbol, no hypnosis spiral, no writing.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-136c32b1-e195-48c1-bcd0-8c873eb92a21.png"
+    },
+    {
+      "file": "yama-teamJudgment-cut-01.webp",
+      "move": "บัญชาการยมทูตประสานพิพากษา: สั่งทีม",
+      "refs": [
+        "img/hero-yama-th-atk-cutscene-v3.png",
+        "art-src/yama-sword-v2/hero-yama-th-sword.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Yama is the exact SMALL CHILD red-skinned horned chibi boy with black short hair, amber eyes, ornate tall pointed gold Thai crown, black gold-edged long coat, red sash and dark trousers from reference. Preserve child proportions and very short stature, NOT an adult. Face RIGHT, feet planted, raise original golden sword overhead as a clear commanding signal, free hand points RIGHT. Gold light arcs rally outward across the empty right side and flutter his coat, no fireball. Exactly Yama alone: NO teammates, no silhouettes, portraits, summons, ghosts or other people. Sword is the reference's golden straight Thai blade.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-305ab1d4-d375-48fb-add0-03b9e668ff68.png"
+    },
+    {
+      "file": "yama-teamJudgment-cut-02.webp",
+      "move": "บัญชาการยมทูตประสานพิพากษา: ฟันปิดท้าย",
+      "refs": [
+        "img/hero-yama-th-atk-cutscene-v3.png",
+        "art-src/yama-sword-v2/hero-yama-th-sword.webp",
+        "img/nira-combat/nira-th-heal-cutscene-v1.webp"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: AVEGEE Thai-zone combat cutscene, single standalone wide 16:9 illustration, not a sheet. Input image 1 is the exact character identity reference; last input is Nira's cutscene, composition/environment reference ONLY: do not copy Nira into the scene. Match the character's original face, species, skin, hairstyle, outfit design and colors precisely. Match the Nira cutscene's polished outlined chibi anime rendering, dramatic light, Thai stone temple ruins and lava backdrop. Character on left facing RIGHT in readable three-quarter side view, action and magic extending right. Keep face clear, hands anatomically readable, entire key weapon/action in frame, safe margins. Exactly one character. No text, letters, digits, runes, captions, UI, watermarks or logos. Full painted background.\nPrimary request: Yama is the exact SMALL CHILD red-skinned horned chibi boy with black short hair, amber eyes, ornate tall pointed gold Thai crown, black gold-edged long coat, red sash and dark trousers from reference. Preserve child proportions and very short stature, NOT an adult. Face RIGHT in a low explosive two-handed golden sword finishing slash down toward right foreground; a huge bright gold crescent cuts through empty air and creates a concentrated gold ground impact with flying stone, much stronger than normal attack. Show sword and child face clearly. Exactly Yama alone: NO teammates, silhouettes, portraits, summons, ghosts or other people. Golden straight Thai sword from reference, no fireball.\nTarget delivery dimensions: 1375x768 pixels.",
+      "size": [
+        1375,
+        768
+      ],
+      "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-a2bdeff6-516b-4785-8595-0f977d7ad5d3.png"
+    }
+  ],
+  "guardCorrection": {
+    "prompt": "Use case: precise-object-edit. Edit target: the provided guard cutscene. Change ONLY the carvings on the large dark gate pillar in the upper-right background: remove ALL rune-like marks, letters, symbols and inscriptions and replace them with plain rough unmarked cracked obsidian masonry. Keep the identical green guard's face, crown, armor, pose, hands, mace, impact, lighting, colors, composition and every other element unchanged. No text, digits, runes, glyphs or watermark anywhere. Full wide cutscene.",
+    "source": "/Users/agapae/.codex/generated_images/01a185ba-7174-7142-84b3-4450403c38f1/exec-4fd78907-2c62-45b0-81a5-1bbd5e56acd0.png"
+  }
+}

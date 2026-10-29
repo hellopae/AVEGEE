@@ -1,0 +1,111 @@
+{
+  "asset_checks": [
+    {
+      "file": "img/skills-v1/th/plerng-copperInferno-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 427910
+    },
+    {
+      "file": "img/skills-v1/th/plerng-copperInferno-cut-02.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 423506
+    },
+    {
+      "file": "img/skills-v1/th/nira-mercySeal-cut-01.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 559290
+    },
+    {
+      "file": "img/skills-v1/th/boon-lotusSanctuary-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 396580
+    },
+    {
+      "file": "img/skills-v1/th/taan-laborJudgment-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 459960
+    },
+    {
+      "file": "img/skills-v1/th/dam-shadowCleaver-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 380906
+    },
+    {
+      "file": "img/skills-v1/th/guard-abyssGatebreaker-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 507586
+    },
+    {
+      "file": "img/skills-v1/th/kan-karmaFracture-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 407510
+    },
+    {
+      "file": "img/skills-v1/th/yama-teamJudgment-cut-01.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 426346
+    },
+    {
+      "file": "img/skills-v1/th/yama-teamJudgment-cut-02.webp",
+      "dimensions": [
+        1375,
+        768
+      ],
+      "decode": "ok",
+      "sha256": "matches",
+      "bytes": 402522
+    }
+  ],
+  "file_count": 10,
+  "contact_sheets_decoded": 2,
+  "img_manifest_equals_HEAD": true,
+  "changed_paths_within_scope": true,
+  "tracked_files_modified": [],
+  "full_node_test_suite": "not run: art-only brief",
+  "visual_review": "Generated images and final WebP comparison contact sheets inspected; no game integration/play test performed."
+}
