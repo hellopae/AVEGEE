@@ -1,0 +1,34 @@
+{
+  "before": {
+    "path": "img/Asia/hero-yama-asia-atk.png",
+    "canvas": [
+      512,
+      512
+    ],
+    "alpha_bbox_exclusive": [
+      48,
+      0,
+      464,
+      512
+    ],
+    "baseline_y_inclusive": 511,
+    "character_top_y": 60,
+    "character_height_px": 452
+  },
+  "after": {
+    "path": "img/Asia/hero-yama-asia-atk-v2.png",
+    "canvas": [
+      512,
+      512
+    ],
+    "alpha_bbox_exclusive": [
+      48,
+      60,
+      392,
+      512
+    ],
+    "baseline_y_inclusive": 511,
+    "character_top_y": 60,
+    "character_height_px": 452
+  }
+}

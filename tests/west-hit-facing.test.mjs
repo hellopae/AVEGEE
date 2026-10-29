@@ -10,7 +10,7 @@ import { figYouAtkClass, heroPoseFacesRight, teamNeedsMirror, TEAM_DRAWN_FACING_
 const read = readReleaseFile;
 const STYLES = {
   th:        { stand:'img/hero-yama.png',                        atk:'img/hero-yama-atk.png',                         cry:'img/hero-yama-cry.png' },
-  asia:      { stand:'img/Asia/hero-yama-asia.png',              atk:'img/Asia/hero-yama-asia-atk.png',               cry:'img/Asia/hero-yama-asia-cry.png' },
+  asia:      { stand:'img/Asia/hero-yama-asia.png',              atk:'img/Asia/hero-yama-asia-atk-v2.png',               cry:'img/Asia/hero-yama-asia-cry.png' },
   west:      { stand:'img/West/hero-yama-west.png',              atk:'img/West/hero-yama-west-atk-R.png',             cry:'img/West/hero-yama-west-cry.png' },
   cyberhell: { stand:'img/CyberHell/hero-yama-cyberhell.png',    atk:'img/CyberHell/hero-yama-cyberhell-atk-R.png',   cry:'img/CyberHell/hero-yama-cyberhell-cry.png' },
 };
