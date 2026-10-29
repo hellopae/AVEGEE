@@ -4,7 +4,7 @@ import {BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';
 // M2 R1: the Zone 1-2 trees / waterfalls are the ambient column of its ROUTE_GEOMETRY row; kept exported for tests and as the defaults.
 export const FRONTIER_TREES=BORDER12_TREES;
 export const FRONTIER_WATERFALLS=Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.46,.065],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]]);
-export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=null,trees=FRONTIER_TREES,waterfalls=FRONTIER_WATERFALLS,leafArea=[0,0,1,1],snowArea=null,rainArea=null}) {
+export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=null,trees=FRONTIER_TREES,waterfalls=FRONTIER_WATERFALLS,leafArea=[0,0,1,1],snowArea=null,rainArea=null,leafRegions=null}) {
   const budget=weatherBudget({...weatherViewport(ctx),reduced});
   ctx.save();ctx.translate(x,y);ctx.scale(w,h);
   for(const item of trees){
@@ -30,9 +30,9 @@ export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=n
         ctx.beginPath();ctx.ellipse(wx,wy+length,.002+u*.006,.001+u*.002,0,0,Math.PI*2);ctx.stroke();
       }
     }
-    if(leafArea)for(let i=0;i<Math.min(26,budget);i++){
-      const [x0,y0,x1,y1]=leafArea,px=x0+((i*.173+time*.000009)%1)*(x1-x0),py=y0+((i*.109+time*.000021)%1)*(y1-y0);
-      ctx.save();ctx.translate(px,py);ctx.rotate(time/900+i);ctx.fillStyle=i%2?'rgba(223,153,58,.65)':'rgba(135,176,100,.55)';ctx.beginPath();ctx.moveTo(-.002,0);ctx.quadraticCurveTo(0,-.003,.003,0);ctx.quadraticCurveTo(0,.002,-.002,0);ctx.fill();ctx.restore();
+    for(const region of leafRegions||(leafArea?[{area:leafArea,colors:['rgba(223,153,58,.65)','rgba(135,176,100,.55)']}]:[]))for(let i=0;i<Math.min(26,Math.ceil(budget/(leafRegions?.length||1)));i++){
+      const [x0,y0,x1,y1]=region.area,px=x0+((i*.173+time*.000009)%1)*(x1-x0),py=y0+((i*.109+time*.000021)%1)*(y1-y0);
+      ctx.save();ctx.translate(px,py);ctx.rotate(time/900+i);ctx.fillStyle=region.colors[i%region.colors.length];ctx.beginPath();ctx.moveTo(-.002,0);ctx.quadraticCurveTo(0,region.slender?-.001:-.003,region.slender?.005:.003,0);ctx.quadraticCurveTo(0,region.slender?.0008:.002,-.002,0);ctx.fill();ctx.restore();
     }
 
   }
@@ -56,6 +56,10 @@ export function drawFrontierWeather(ctx,{routeId,time,reduced,x,y,w,h,viewport,e
   const regions=routeId==='th:asia'?[{zone:'th',from:0,to:.48},{zone:'asia',from:.48,to:1}]:
     routeId==='asia:west'?[{zone:'asia',from:0,to:.44},{zone:'west',from:.48,to:1}]:null;
   if(!regions)return;
+  if(routeId==='th:asia'&&enabled!==false)drawFrontierAmbient(ctx,{time, reduced,x,y,w,h,trees:[],waterfalls:[],leafArea:null,leafRegions:[
+    {area:[0,0,.46,1],colors:['rgba(210,64,34,.7)','rgba(239,184,48,.7)']},
+    {area:[.48,0,1,1],slender:true,colors:['rgba(74,147,61,.65)','rgba(135,181,72,.65)']},
+  ]});
   // Frontier 1–2 has no authored flame anchors; never invent fires on its road.
   drawMapWeather(ctx,{time,paused,reduced,x,y,W:w,H:h,viewport,regions,enabled});
 }

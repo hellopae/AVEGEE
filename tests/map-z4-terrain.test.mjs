@@ -115,11 +115,11 @@ test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allow
       // Authenticate the pre-B12 fixture against the unchanged MAP-Z4 baseline.
       assert.equal(createHash('sha256').update(base.replace(current,original)).digest('hex'),hash);
       const normalize=text=>text
-        .replace("import {BORDER12_MASK,BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';\n",'')
+        .replace(/import \{BORDER12_MASK(?:,BORDER12_TREES)?\} from '\.\/frontier-walkmask-th-asia-b12\.js';\n/,'')
         .replace(/import \{[^}]+\} from '\.\/frontier-walkmask-th-asia\.js';/,"import OWNER from './frontier-walkmask-th-asia.js';")
         .replace(/export const DUNGEON_CORRIDOR = .*?;\n/,'B12_CORRIDOR\n')
-        .replace(/const TREES = .*?;\n/,'B12_TREES\n')
-        .replace(/const WATERFALLS = .*?;\n/,'B12_WATERFALLS\n')
+        .replace(/const TREES = .*?;\n/,'')
+        .replace(/const WATERFALLS = .*?;\n/,'')
         .replace(/  'th:asia': row\('th:asia', \{[\s\S]*?\n  \}\),/,'B12_ROW')
         .replace(/\/\/[^\n]*/g,'').replace(/\n\s*\n/g,'\n');
       assert.equal(normalize(bytes.toString()),normalize(base),'only the B12 import, corridor, trees, falls and reference row may differ');

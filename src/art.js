@@ -508,8 +508,8 @@ export function drawStandee(ctx, key, x, y, h, t, glyph = '❓', face = 1, walki
 }
 
 /** Eight drawn walk poses or animated book idle; retain legacy art while a sheet loads. */
-export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face < 0 ? 'left' : 'right', moving = distance > 0) {
-  if (drawYamaBook(ctx, heroStyleOf() || zoneOf(), x, y, h, distance, direction, moving)) {
+export function drawHeroWalk(ctx, x, y, h, distance, face = 1, direction = face < 0 ? 'left' : 'right', moving = distance > 0, now = undefined) {
+  if (drawYamaBook(ctx, heroStyleOf() || zoneOf(), x, y, h, distance, direction, moving, now)) {
     return true;
   }
   const sheet = heroWalkSheet(heroStyleOf() || zoneOf());
