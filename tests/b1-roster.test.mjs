@@ -15,7 +15,7 @@ test('B1 IDs are unique across all kinds/zones; Nira has one global identity', (
   assert.equal(new Set(ZONES.map(z => rosterId(z.k,'nira'))).size, 1);
   const g = createGame();
   assert.equal(g.crewOf('taan').id, 'th:taan');
-  assert.deepEqual(g.teamLimits, { normalTeamMax:2, finalTeamMax:6 });
+  assert.deepEqual(g.teamLimits, { normalTeamMax:6, finalTeamMax:6 });
 });
 
 test('B1 actual v3 branch topology loads all owned actors and preserves every value', () => {
@@ -108,8 +108,8 @@ test('B1 backup precedes migration, remains unchanged on repeat, and failed back
   }
 });
 
-test('B1 new hires and guards get IDs immediately; normal party remains limited to two', () => {
-  const g = createGame(); g.coin = 10000;
+test('B1 new hires and guards get IDs immediately; party counts the purchased guard in its unlocked cap', () => {
+  const g = createGame(); g.coin = 10000; g.party.members = []; g.zoneEvents.th = {frontierBreach:'cleared'};
   g.hire('kan'); g.hire('boon'); g.hireGuard();
   assert.equal(g.roster['th:kan'],g.crewOf('kan'));
   assert.equal(g.guard.morale,100);

@@ -1,3 +1,4 @@
+import { SKILL_FX } from './combat-skill-assets.js';
 // M2: battle effect engine — one canvas over the arena, a pooled particle system and a recipe per move (see battle-fx-map.js).
 // Performance rules: single canvas, no ctx.filter / shadowBlur, <= MAX_PARTICLES live particles, requestAnimationFrame only while
 // something is playing. Camera: shake/dim/focus go through the adapter below (M1 camera plugs in with setBattleCamera()).
@@ -567,7 +568,23 @@ export function playBattleFx(spec) {
   E.stats.plays++; (E.stats.log ||= []).push(recipe); if (E.stats.log.length > 60) E.stats.log.shift();
   const go = () => {
     preloadTex(WARM.filter(k => k.startsWith('fx-common')));
-    const dur = run(X);
+    const art = SKILL_FX[X.opts.skill];
+    // New ranged moves have one 250 ms flight; don't also emit the old slash/fire recipe.
+    const ranged = !!art?.projectile;
+    const dur = ranged ? 900 : run(X);
+    if (art) {
+      const impact = ranged ? (E.reduce ? 0 : 250) : (X.hit || 110);
+      const texture = key => art.shared ? key : `fx-c1-${key.toLowerCase()}`;
+      preloadTex([art.impact,art.projectile].filter(Boolean).map(texture));
+      for (const t of tg) {
+        if (art.projectile && !E.reduce) {
+          const hand = { x:src.x+dir*src.w*.4, y:src.y-src.h*.12 };
+          spr(texture(art.projectile), { x:k=>lerp(hand.x,t.x,k), y:k=>lerp(hand.y,t.y,k), w:src.h*.4, h:src.h*.4, dur:250, a:1 });
+        }
+        spr(texture(art.impact), { x:t.x, y:t.y, w:t.h*1.4, h:t.h*1.4, dur:650, delay:impact, a:kf([[0,0],[.15,1],[.8,.8],[1,0]]) });
+      }
+      X.hit = impact;
+    }
     if (spec.numbers !== false) tg.forEach((t, i) => { if (t.dmg > 0) numberAt(t, t.dmg > 900 ? '∞' : t.dmg, spec.side === 'you' ? { c0:'#ffe0d6', c1:'#ff7a62', edge:'#c42a2a', label:t.label, delay:(spec.numberDelay ?? X.hit ?? 200) + 120 + i * 60 } : { label:t.label, delay:(spec.numberDelay ?? X.hit ?? 170) + i * 60, ...(t.label ? { labelColor:'#ffd6ee' } : {}) }); });
     return dur;
   };

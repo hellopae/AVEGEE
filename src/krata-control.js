@@ -1,3 +1,5 @@
+import { skillUnlocked } from './combat-skills.js';
+import { finishPersonalSkillTraining } from './training.js';
 // G5: real-time cooldowns; game ticks are work periods, not calendar days.
 export const STOKE_COOLDOWN = 20_000;
 export const TRAIN_COOLDOWN = 300_000;
@@ -55,7 +57,7 @@ export const krataMethods = {
     const id = this.fireActorId(actor);
     if (!id || (actor !== 'yama' && !this.crew.includes(actor))) return 'g5.unavailable';
     const state = this.fireControlState(actor);
-    return state.level >= 3 ? 'g5.max' : state.readyAt > now ? 'g5.trainWait' : '';
+    return state.level >= 3 && (actor === 'yama' || skillUnlocked(this, actor)) ? 'g5.max' : state.readyAt > now ? 'g5.trainWait' : '';
   },
   beginFireTraining(actor, now = Date.now()) {
     if (this.fireTrainingWhy(actor,now) || this._krataSession) return null;
@@ -65,6 +67,7 @@ export const krataMethods = {
   attemptFireTraining(session, hit, now = Date.now()) {
     if (!session || this._krataSession !== session || session.kind !== 'training' || session.zone !== this.zone) return null;
     if (session.actor !== 'yama' && !this.crew.includes(session.actor)) { this._krataSession=null; return null; }
+    const before = { fireControl:structuredClone(this.fireControl), training:structuredClone(this.training), session:{...session} };
     Object.assign(session,trainingAttempt(session,hit));
     if (session.done) {
       this._krataSession = null;
@@ -72,7 +75,11 @@ export const krataMethods = {
         this.fireControl = normalizeFireControl(this.fireControl);
         const state = this.fireControlState(session.actor);
         this.fireControl.actors[session.id] = {level:Math.min(3,state.level+1),readyAt:now+TRAIN_COOLDOWN};
-        this.save();
+        if (session.actor !== 'yama') session.unlockedSkill = finishPersonalSkillTraining(this, session.actor, 'krata', Math.round(100 * session.hits / (session.hits + session.misses)));
+        if (!this.save()) {
+          this.fireControl = before.fireControl; this.training = before.training;
+          Object.assign(session,before.session); this._krataSession = session; return null;
+        }
       }
     }
     return session;

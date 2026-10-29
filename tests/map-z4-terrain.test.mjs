@@ -84,8 +84,25 @@ test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Z
   assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
 });
 
-test('MAP-Z4: navigation, site geometry and original fallback images are byte-identical to the recorded baseline',async()=>{
+test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance data',async()=>{
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
-  for(const [path,hash]of Object.entries(baseline))if(path!=='note')assert.equal(createHash('sha256').update(readFileSync(path)).digest('hex'),hash,path);
+  for(const [path,hash]of Object.entries(baseline))if(path!=='note'){
+    let bytes=readFileSync(path);
+    if(path==='src/data.js'){
+      // Keep the original baseline. C1 changes three non-geometry values in this shared file;
+      // normalize exactly those edits so every other byte (including all geometry) is still checked.
+      let text=bytes.toString();
+      for(const [current,original]of [
+        ["lan:{ actors:['taan','guard','dam']","lan:{ actors:['taan','guard']"],
+        ["sawan:{ actors:['boon','nira']","sawan:{ actors:['boon']"],
+        ['boss:2.25,','boss:3.25,'],
+      ]){
+        assert.ok(text.includes(current),current);
+        text=text.replace(current,original);
+      }
+      bytes=Buffer.from(text);
+    }
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),hash,path);
+  }
 });

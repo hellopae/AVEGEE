@@ -5,7 +5,7 @@ import {initializeBossGuides,bossGuideCombatant,completeBossGuideStory} from '..
 import {isFrontierDuoBattle} from '../src/nira-combat.js';
 const setup=(zone='th')=>{
  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
- g.hire('taan');g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.party.members=['taan','boon'];
+ g.zoneEvents.th={frontierBreach:'cleared'};g.hire('taan');g.hire('boon');g.hireGuard();g.frontierOf().team=['taan','boon'];g.party.members=['taan','boon'];
  g.zone=zone;g.frontierOf().team=['taan','boon'];g.snapshot();return g;
 };
 const journey=g=>{g.bossCleared[g.zone]=true;initializeBossGuides(g);completeBossGuideStory(g,`boss-guide-${g.zone}-welcome`);};

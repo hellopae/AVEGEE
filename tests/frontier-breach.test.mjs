@@ -7,7 +7,7 @@ const ready = () => {
   const g = createGame();
   g.zoneCases.th = 8;
   g.zoneEvents.th = { prisonBreak:'cleared', devaTest:'cleared', frontierBreach:'pending' };
-  g.setFrontierTeam('taan');
+  g.frontierOf().team = []; g.setFrontierTeam('taan');
   return g;
 };
 

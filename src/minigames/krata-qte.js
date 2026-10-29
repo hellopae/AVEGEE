@@ -44,7 +44,7 @@ export function runKrataQte(host, {g, st, room, training=false, alive, onClose})
         body.querySelector('.g5-green').classList.remove('fire-ready');
         body.querySelector('.g5-white').style.transform=`translate(-50%,-50%) scale(${trainingRadius(0)})`;
         flash(body.querySelector('.g5-closeup'),hit?'g5-hit':'g5-miss');
-        if (state.done) finish(state.won);
+        if (state.done) { finish(state.won); if (state.unlockedSkill) body.querySelector('.g5-result').textContent += ' · '+t('g5.infernoUnlocked'); }
       } else {
         g.finishStoke(session,hit); room.stokeEffect(hit); finish(hit);
       }

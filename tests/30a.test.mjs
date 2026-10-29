@@ -100,6 +100,16 @@ test('30A: opening intro and both regional arrival pages keep text below the fra
 test('30A: crop geometry removes letterbox rows without horizontal cropping in the story frame', () => {
   for (const story of Object.values(STORY)) for (const panel of story.pages) {
     const png = readFileSync(new URL(`../${panel.image}`, import.meta.url));
+    if (/\.jpe?g$/.test(panel.image)) {
+      // C1 reuses Guard's JPEG cutscene. JPEG dimensions live in the SOF segment, not PNG IHDR.
+      let size;
+      for (let at=2; at<png.length; at+=2+png.readUInt16BE(at+2)) {
+        if ([0xc0,0xc1,0xc2].includes(png[at+1])) { size={width:png.readUInt16BE(at+7),height:png.readUInt16BE(at+5)};break; }
+      }
+      assert.ok(size?.width>0&&size?.height>0);
+      assert.deepEqual(comicImageLayout(panel.image,size.width,size.height),{aspect:size.width/size.height,top:0,height:100});
+      continue;
+    }
     // PNG: IHDR size; lossy WebP: VP8 keyframe header (14-bit width/height at byte 26/28).
     const isWebp = panel.image.endsWith('.webp');
     const width = isWebp ? png.readUInt16LE(26) & 0x3fff : png.readUInt32BE(16), height = isWebp ? png.readUInt16LE(28) & 0x3fff : png.readUInt32BE(20);

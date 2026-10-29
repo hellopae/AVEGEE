@@ -193,7 +193,7 @@ test('B4 paused fire host preserves heat and stops exactly once after 30 active 
 
 test('B4 actual helper combat reads only selected actor progression including Guard', () => {
   for (const [kind, action, base] of [['taan','crew:taan',35], ['plerng','crew:plerng',40], ['guard','guard',60]]) {
-    const g = game();
+    const g = game(); g.zoneEvents.th = {frontierBreach:'cleared'};
     const id = `th:${kind}`;
     g.training = normalizeTraining({ zones:{ th:{ [id]:{ exp:60 } }, west:{ [`west:${kind}`]:{ exp:420 } } } });
     g.startBattle({ id:7, who:'test', deserved:50, sp:6 }); g.battle.team = ['taan','plerng'];

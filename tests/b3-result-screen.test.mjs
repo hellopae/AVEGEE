@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import {rewardView,startRewardCount,selectedLivingFoeId,battleStatuses,specialMoveKey} from '../src/battle-result.js';
 import {createGame} from '../src/game.js';
 import {win} from './final-event-helpers.mjs';
+import {COMBAT_SKILLS} from '../src/combat-skills.js';
 globalThis.Image ??= class {};
 
 function clock() {
@@ -62,7 +63,7 @@ function rewardHarness(g,{reduced=false}={}) {
   const el=()=>({textContent:'',onclick:null});
   const dlg={open:false,querySelector:s=>elements.get(s)||null,addEventListener:(n,fn)=>events.add(fn),removeEventListener:(n,fn)=>events.delete(fn),
     close(){this.open=false;closes++;[...events].forEach(fn=>fn());}};
-  const ctx={g,dlg,dlgGen:0,rewardOpen:false,rewardAfter:null,rewardView,
+  const ctx={g,dlg,dlgGen:0,rewardOpen:false,rewardAfter:null,rewardView,COMBAT_SKILLS,
     startRewardCount:opts=>startRewardCount({...opts,...c}),matchMedia:()=>({matches:reduced}),sfx(){},
     t:(k,p)=>p?k+' '+JSON.stringify(p):k,esc:v=>String(v),ITEMS:{lotus:{},tea:{}},itemName:k=>k,itemImg:()=>'<img>',weaponImg:()=>'<img>',ABILITY_FX:{},
     acknowledgeBossGuideGrant(){ctx.guideAcks++;},guideAcks:0,onDlgClose:fn=>fn(),

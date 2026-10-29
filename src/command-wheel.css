@@ -492,3 +492,10 @@ dialog.help-modal[open]{box-sizing:border-box;width:min(78vw,1050px);max-width:1
   .arena.combat-arena .actor-wheel,.arena.combat-arena .actor-wheel.ally-wheel{width:110px}
   .arena.combat-arena .actor-wheel .command-label,.arena.combat-arena .actor-wheel .command-center-label{font-size:10px}
 }
+
+/* C1: the owner-turn ultimate meter and temporary support effects live with HP/MP. */
+.battle-team-ultimate{margin-top:3px;color:#ffe2a0}
+.battle-team-ultimate small,.battle-protection{display:block;font-size:9px;line-height:1.25}
+.battle-protection{color:#b9f5f1}
+.skill-casting{filter:drop-shadow(0 0 9px #ffe5a0)}
+@media(max-width:700px){.battle-team-ultimate small{font-size:8px}}

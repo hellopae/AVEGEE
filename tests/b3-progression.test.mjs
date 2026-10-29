@@ -175,7 +175,7 @@ test('B3 legacy upLv migration keeps active/dormant crew and Guard bonuses acros
 
 test('B3 all eight training stations are declared without wiring training into minigames', () => {
   assert.deepEqual(Object.keys(TRAINING_STATIONS),['dab','lan','krata','krajok','sawan','sala','ngiw','lokan']);
-  assert.deepEqual(TRAINING_STATIONS.lan.actors,['taan','guard']);
+  assert.deepEqual(TRAINING_STATIONS.lan.actors,['taan','guard','dam']);
   assert.equal(TRAINING_STATIONS.lan.game,TRAINING_STATIONS.lokan.game);
 });
 

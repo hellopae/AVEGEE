@@ -12,6 +12,7 @@ const soul = (id, deserved = 10) => ({
 /** เกมใหม่ + จ้าง/จัดทีมยมทูตที่ระบุ (สูงสุด 2 คนต่อทีม ตามกติกาเกม) แล้วเปิดฉากต่อสู้พร้อมใช้ */
 const battleWith = (members) => {
   const g = createGame();
+  g.party.members = [];
   members.forEach(k => { if (k !== 'taan' && k !== 'nira') g.hire(k); });
   members.slice(0, 2).forEach(k => g.toggleParty(k));
   g.startBattle(soul(1));

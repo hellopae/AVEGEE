@@ -4,6 +4,7 @@ import {createGame} from '../../src/game.js';
 import {FX_OF,ITEMS,CREW_POWER,CREW} from '../../src/data.js';
 import {createCutsceneReadiness} from '../../src/cutscene-presentation.js';
 import {isMeleeAction} from '../../src/battle-dash.js';
+import {COMBAT_SKILLS} from '../../src/combat-skills.js';
 const ui=readFileSync(new URL('../../src/ui.js',import.meta.url),'utf8');
 const command=ui.slice(ui.indexOf('    const executeCommand = async '),ui.indexOf("    dlg.querySelectorAll('[data-execute]')"));
 const cutStart=ui.indexOf('function playActionCutscene(');
@@ -18,7 +19,7 @@ export function commandHarness(loader) {
   const g=battleGame(),timers=new Map(),mounted=[];let id=0;
   const cache=createCutsceneReadiness(loader);
   const dlg={open:true,querySelector:()=>null,appendChild:node=>{node.isConnected=true;mounted.push(node);}};
-  const ctx=vm.createContext({g,dlg,battleCutscenes:cache,Date,ITEMS,FX_OF,CREW_POWER,CREW,isMeleeAction,
+  const ctx=vm.createContext({g,dlg,battleCutscenes:cache,Date,ITEMS,FX_OF,CREW_POWER,CREW,isMeleeAction,COMBAT_SKILLS,
     ACTION_CUT_MS:1300,COUNTER_WAIT_MS:2000,DEFEND_STANCE_MS:700,ACTION_CUTSCENE_PRESENTATION:{},
     esc:String,crewCutsceneSrc:()=>null,actionCutsceneSrc:k=>`img/${k}.png`,cutsceneSource:k=>`img/${k}.png`,
     actionCutsceneLabel:k=>k,fitCutsceneImage(){},vitalsOf:()=>({}),showHeals(){},powerSound(){},refresh(){},paint(){},

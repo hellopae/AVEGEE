@@ -5,6 +5,7 @@ import { BATTLE } from '../src/data.js';
 
 function battle() {
   const g = createGame();
+  g.enemyTarget = () => ({id:'you'}); // Keep these Yama counter/revival checks deterministic with the starter team.
   g.startBattle({ id:701, name:'คู่ซ้อม', who:'คู่ซ้อม', sp:1, deserved:20 });
   g.battle.foeHp = 1000;
   g.mp = 100;

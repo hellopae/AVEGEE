@@ -1,0 +1,52 @@
+(node:52020) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ice deals immediate damage to all living foes and suppresses exactly one counter turn (10.263177ms)
+✔ wind damages every foe once, charges MP once, and does not freeze them (1.463863ms)
+✔ hypnosis makes every foe attack a different foe in the same enemy phase (1.379667ms)
+✔ area kills finish battle; hypnosis handles simultaneous kills and a single survivor (5.682279ms)
+✔ Valkyrie spear hits every living target at the original damage, MP cost and cooldown (1.758478ms)
+✔ spear area kills all targets and single-target sword/fire stay unchanged (2.398396ms)
+(node:52021) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ตารางประลอง: ทุกโซนมี 10 wave · wave 10 = บอสชายแดนตัวเดียว · ศัตรูเป็นของโซนนั้น · จุดพัก wave 5 (2.120571ms)
+✔ ตัวเลขสมดุลของอีเวนต์เนื้อเรื่องเดิมไม่ถูกแตะ (เพิ่มแค่รายการท้ายสุดของแต่ละโซน) (0.229137ms)
+✔ refreshZoneEvents ไม่เปิดการประลองเป็นอีเวนต์เนื้อเรื่อง และไม่ขวางประตูบอสโซน (5.42588ms)
+✔ ชื่ออาวุธ 4 ชื่อไม่ชนชื่อเดิมในเกม และไม่ใช้คำต้องห้าม (Dracula) (18.24212ms)
+✔ บทพูดบอส 4 สถานการณ์ × 4 โซน มีทั้งไทยและอังกฤษ (talk/invite/lose/win) (1.491182ms)
+✔ รายชื่อไฟล์ภาพที่ต้องวาด: 16 สไปรท์ฟัน (4 อาวุธ × 4 ชุด) + 4 ไอคอน + 4 คัตซีน ชื่อไม่ซ้ำ (0.250299ms)
+✔ ต้องชนะบอสชายแดนในเนื้อเรื่องก่อน: ก่อนหน้านั้นไม่เริ่ม ไม่ยืนที่ประตู · หลังนั้นเริ่มได้ (3.99ms)
+✔ zone 1 challenge boss waits by the cave, other zones keep their town stand (6.404772ms)
+✔ บอสประลองย้ายออกจากแผนที่โซนทั้ง 4 และคุยได้จากตำแหน่งผู้เล่นในฉากชายแดนเท่านั้น (3.152275ms)
+✔ รอบแรก: 10 wave → จุดพัก wave 5 บันทึก → แพ้ wave 7 → กลับมาเริ่ม wave 6 → ชนะครบได้อาวุธ (8.640063ms)
+✔ ประลองซ้ำหลังได้อาวุธ: ไม่ได้อาวุธซ้ำ · เบี้ยกรรมครึ่งหนึ่ง + วัตถุดิบชายแดน · ไม่มี EXP/คัตซีนซ้ำ (3.425288ms)
+✔ แพ้ตอนประลองซ้ำ: อาวุธไม่หาย · ไม่เสียความคืบหน้า (1.421283ms)
+✔ สวม/ถอดอาวุธ: สวมได้เฉพาะที่มี · ทีละเล่ม · ถอดแล้วกลับดาบเดิม (0.982126ms)
+✔ ไม่ถืออาวุธ = ฟาดปกติเท่าเดิมทุกประการ (ลำดับสุ่มเท่าเดิม) (5.029054ms)
+✔ ดาบเขี้ยวทัณฑสูร: ฟาดแรงขึ้น +20% · ติดไฟ 15% = 5% ของ HP สูงสุด ต่อเทิร์น 2 เทิร์น (เพดาน 8) · ไม่ลวกในตาที่เพิ่งติด (3.889493ms)
+✔ ไฟลวกฆ่าศัตรูที่ไม่ใช่เป้าได้ และเลือกเป้าใหม่ไม่ค้างที่ตัวที่ตายแล้ว (0.815207ms)
+✔ ดาบโซ่ขาดอากุระ: +25% และคริ +7 จุด% (ฟาดเดียวกันที่ r=0.22 คริเฉพาะเมื่อถือ) (2.499479ms)
+✔ ดาบไม้เท้าราตรี: ดูดเลือด 8% ของดาเมจจริง เพดาน 4 ต่อครั้ง ไม่เกินบารมีสูงสุด (1.745208ms)
+✔ ดาบท้องม้าโทรจัน: +30% · ฟันซ้ำ 10% ด้วยแรง 50% ของครั้งแรก · ไม่ซ้อนตัวเอง (2.213627ms)
+✔ อาวุธมีผลเฉพาะฟาดปกติ: ลูกไฟ/พุ่งชนเพลิง/ผนึกน้ำแข็ง ไม่ผ่านอาวุธ (6.763847ms)
+✔ เพดานรวมเมื่อซ้อนคริ + rage: ไม่เกิน 130% ของฟาดสูงสุดที่ไม่ถืออาวุธ (ในสภาพ rage เดียวกัน) (2.349361ms)
+✔ คัตซีน/ไอคอน/สไปรท์: ไม่มีไฟล์ = ใช้ดาบเดิมของชุด ไม่ error (fallback) (0.435943ms)
+✔ เซฟ/โหลด: อาวุธ ความคืบหน้าจุดพัก ชัยชนะ — โหลดซ้ำแล้วเหมือนเดิม (7.307596ms)
+✔ เซฟเก่า (ก่อน G3b) โหลดได้ · ค่าแปลกถูกกรอง · อาวุธที่สวมต้องมีจริง (5.093349ms)
+✔ ศึกประลองไม่ปนกับระบบเดิม: ไม่ตั้ง pending/active ให้อีเวนต์เนื้อเรื่อง และไม่เปลี่ยนสถานะบอสโซน (1.973271ms)
+✔ จุดยืนส่วนล่างทั้ง 4: เดินไปคุยถึง และบอสไม่ขวางแนวเดินจากบันไดล่างถึงประตูบน (256.223255ms)
+(node:52022) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary combat owns HP in one foe and keeps the old result (9.342982ms)
+✔ ordinary encounters keep one foe; Zone 2 boss arrives with two demons (6.748436ms)
+✔ case three schedules prison break once and active restore becomes pending (12.595297ms)
+✔ three foes take selected damage, counter in order, and win only when all fall (3.934887ms)
+✔ loss applies the event penalty and allows a fresh retry (1.76035ms)
+✔ ice hits every foe, spends its stun on the counter turn, then the next counter is normal (2.617025ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 589.053997

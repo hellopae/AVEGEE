@@ -1,0 +1,78 @@
+(node:51947) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ event ชายแดนบุก: แจ้งเตือน → รับทราบ → ต้องเดินไปถึงชายแดน → สู้ → จบ (state machine) (711.491737ms)
+✔ ระลอกชายแดนของโซน 2–4: ใช้ flow เดียวกัน · ไม่มีปีศาจ event บนแผนที่ · ทีมที่เลือกที่ชายแดนถูกใช้ในศึก (520.366517ms)
+✔ เซฟเก่าที่มีปีศาจ event ชายแดนค้างบนแผนที่ ถูกเก็บทิ้ง (9.996114ms)
+(node:51948) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ C1 personal training unlocks each of seven moves once, persists by ID, and requires 60/80 evidence (41.615098ms)
+✔ C1 capped old saves can train only for a missing skill; failed saves roll back skill and session together (1.482116ms)
+✔ C1 acceleration and old fire-control levels do not fabricate personal scores; fire QTE unlocks once (3.87686ms)
+✔ C1 damage/heal formula uses existing effective stats and fire bonus exactly once; base specials share CD (13.3111ms)
+✔ C1 support skills target full HP, shield takes post-defend damage, stronger effects replace rather than add (1.952597ms)
+✔ C1 self protection lasts through two subsequent owner turns; non-damaging commands do not consume attack charges (1.249693ms)
+✔ C1 combo snapshots 2 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (3) (2.490585ms)
+✔ C1 combo snapshots 4 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (5) (15.500179ms)
+✔ C1 combo snapshots 6 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (7) (1.984292ms)
+✔ C1 combo retargets deterministically without spill and omits fallen/absent/guest actors (1.249071ms)
+✔ C1 total party cap grows 3/4/5/6/7 without creating actors or deleting excess saved selections (7.103577ms)
+✔ C1 victory grants teamJudgment and Guard once; old cleared saves infer only Yama entitlement (5.946984ms)
+✔ C1 final save/load retains cooldown, protection and already-applied hits; next encounter keeps remaining owner turns (5.207046ms)
+✔ C1 encounter scaling is frozen at creation, handles teams 3–7, and does not increase enemy ATK (0.667982ms)
+✔ C1 regional art uses explicit Thai fallbacks and all referenced scenes/icons exist (1.29727ms)
+✔ C1 skip/duplicate animation completion cannot apply combat damage or rewards twice (actual UI executeSkill) (259.066592ms)
+(node:51949) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the zone-one border boss waits for deva and frontier events (12.610656ms)
+✔ a failed deva test can be retried, and an active save restarts the test (11.456799ms)
+✔ case five schedules deva after prison; case eight schedules frontier after deva (3.233168ms)
+✔ a pre-event save already at the boss keeps its old access; a new save does not (6.242008ms)
+(node:51950) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: replay boss uses its current frontier or cave location (20.932341ms)
+✔ th: invasion boss uses lower position and talk label, without a duplicate replay boss (4.970189ms)
+✔ asia: replay boss uses its current frontier or cave location (2.246705ms)
+✔ asia: invasion boss uses lower position and talk label, without a duplicate replay boss (2.037543ms)
+✔ west: replay boss uses its current frontier or cave location (80.545817ms)
+✔ west: invasion boss uses lower position and talk label, without a duplicate replay boss (1.629985ms)
+✔ cyberhell: replay boss uses its current frontier or cave location (45.316509ms)
+✔ cyberhell: invasion boss uses lower position and talk label, without a duplicate replay boss (1.372778ms)
+✔ R1: invasion enemies have no map nameplates in all four zones (5.910226ms)
+(node:51951) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new powers require their event unlock and enough MP (9.842602ms)
+✔ wind fan damages every foe and allows the ordinary counter (2.595127ms)
+✔ Rage boosts exactly three damaging actions (2.085618ms)
+✔ Valkyrie spear is a strong MP attack (1.314095ms)
+✔ clock resets helper cooldowns once per battle (1.653095ms)
+✔ event hypnosis can be used before the old level gate (1.457229ms)
+✔ event boss stronger counter exposes its cutscene metadata (3.183633ms)
+✔ spare heart revives Yama once when a counterattack would defeat him (1.031079ms)
+(node:51952) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all elemental powers have shipped textures and only fire powers select fire art (1.813848ms)
+✔ cutscene readiness waits for decode, deduplicates and mounts the retained element (55.960729ms)
+✔ timeout never cancels late decode; replay becomes ready without another fetch (20.349858ms)
+✔ missing, rejected decode and hung images resolve safely; ceiling is capped at 300 ms (302.1552ms)
+✔ warming one team does not warm bench members or leak readiness to a new battle (1.232106ms)
+✔ edited production modules share canonical release versions (10.561528ms)
+✔ real command handler: ten cold readiness cycles finish once and preserve MP, damage and turn order (719.048341ms)
+✔ leaving the battle during decode cannot confirm a stale command (2.305305ms)
+✔ production ice and hypno recipes emit moving elemental projectiles from the caster (5.042664ms)
+(node:51953) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ red warnings escalate per regional authority, persist, and end in cauldron/tea recovery (49.992291ms)
+✔ every regional boss ultimate hits Yama, both companions and Guard; ordinary counter hits one (9.010967ms)
+✔ zone-one event boss uses its own cutscene rather than frontier artwork (1.494193ms)
+✔ confession stays tied to temple-land/drug claim and does not reveal unrelated supplement fraud (1.743946ms)
+✔ five intensity colors map consistently; mitigating deeds subtract from the sentence (0.463804ms)
+✔ procedural claims keep both visible and hidden deeds interrogatable without changing subjects (3.303871ms)
+✔ special cooldown remains locked until exactly two minutes of battle time (1.720986ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1479.707394

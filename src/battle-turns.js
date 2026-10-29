@@ -30,6 +30,13 @@ export function completeCombatTurn(game,turn) {
   if(!q||!turn)return false;
   const i=q.remaining.findIndex(u=>u.id===turn.id&&u.side===turn.side);
   if(i<0)return false;
+  if (turn.side === 'ally') {
+    const b = game.battle;
+    (b.actorTurns ||= {})[turn.id] = (b.actorTurns?.[turn.id] || 0) + 1;
+    const protection = b.protection?.[turn.id];
+    if (protection && b.actorTurns[turn.id] >= protection.expires) delete b.protection[turn.id];
+    if (turn.id === 'you' && game.isFinalBattle?.()) game.finalEventState().teamCooldownTurns = game.teamJudgmentRemaining();
+  }
   q.remaining.splice(i,1);ensureTurnQueue(game);return true;
 }
 export function combatTimeline(game) {

@@ -16,6 +16,7 @@ const weaponStory = id => ({ get title() { return t('weapon.cutscene.title'); },
 }] });
 export const WEAPON_STORY = Object.fromEntries(Object.keys(WEAPONS).map(id => [`weapon-${id}`, weaponStory(id)]));
 export const STORY = {
+  'c1-guard-arrival': { title:'ยักษ์ทวารบาลเข้าร่วมทีม', pages:[{ image:'img/crew-guard-cutscene.jpeg', title:'ทีม 4 คน', line:'ยักษ์ทวารบาลเข้าช่วยทีมแล้ว ปลดล็อกบัญชาการยมทูตประสานพิพากษา' }] },
   'deva-th-praise':devaPanel('th', 'deva.th.praise'),
   'deva-th-warning':devaPanel('th', 'deva.th.warning'),
   'deva-west':devaPanel('west', 'deva.west.arrival'),
@@ -69,6 +70,7 @@ export const STORY = {
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
 export const storyOf = key => STORY[key] || WEAPON_STORY[key] || bossGuideStory(key);
 export const ABILITY_REWARDS = {
+  teamJudgment:{ name:'บัญชาการยมทูตประสานพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },
   flameCharge:{ howTo:'ในฉากต่อสู้ กดพุ่งชนเพลิงบนวงคำสั่ง ใช้พลังเวท', name:'พุ่งชนเพลิง', image:'img/fx-flame-charge.png', text:`ห่อหุ้มตัวด้วยไฟแล้วพุ่งชนศัตรู · ใช้พลังเวท ${BATTLE.mpCost.charge} · ความเสียหายเริ่มต้น 65 หน่วย` },
   rage:{ howTo:'ในฉากต่อสู้ กดบ้าคลั่งบนวงคำสั่ง ใช้พลังเวท', name:'พลังบ้าคลั่ง', image:'img/fx-rage.png', text:`เพิ่มความเสียหาย 50% สำหรับการโจมตี 3 ครั้ง · คูลดาวน์ 3 เทิร์น · ใช้พลังเวท ${BATTLE.mpCost.rage} · นิราจะพักที่ศาลาน้ำชา 3 วาระ` },
@@ -79,5 +81,5 @@ Object.assign(ABILITY_REWARDS, {
  windFan:{name:'พัดสายลม', image:'img/fx-fan-wind.png', text:'โจมตีศัตรูทุกคนด้วยลม', howTo:'ในฉากต่อสู้ กดพัดสายลมบนวงคำสั่ง ใช้พลังเวท'},
  hypno:{name:'สะกดจิต', image:'img/fx-hypno.png', text:'ควบคุมศัตรูทุกคนให้โจมตีกันเอง 1 เทิร์น', howTo:'ในฉากต่อสู้ กดสะกดจิตบนวงคำสั่ง ใช้พลังเวท'},
  valkyrieSpear:{name:'หอกวาลคีรี', image:'img/fx-valkyrie-spear.png', text:'กวาดแทงศัตรูทุกคนด้วยหอก ความเสียหายต่อคนเท่าเดิม', howTo:'ในฉากต่อสู้ กดหอกวาลคีรีบนวงคำสั่ง ใช้พลังเวท'},
- cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
+ cooldownClock:{name:'นาฬิกาย้อนเวลา', image:'img/fx-clock-reset.png', text:'คืนคูลดาวน์ให้ทีม ยกเว้นประสานพิพากษา', howTo:'ในฉากต่อสู้ เลือกไอเท็ม → นาฬิกาย้อนเวลา ไม่ใช้พลังเวท · ใช้ได้ครั้งเดียวต่อชุดการต่อสู้'},
 });

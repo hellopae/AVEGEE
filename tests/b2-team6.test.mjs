@@ -6,7 +6,7 @@ import { createGame } from '../src/game.js';
 import { win } from './final-event-helpers.mjs';
 import { ALLY_ZONE_SCALE, BATTLE, CREW_POWER } from '../src/data.js';
 
-const ids = ['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
+const ids = ['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan'];
 function finalGame() {
   const g = createGame();
   assert.equal(g.restore(JSON.parse(readFileSync(new URL('./fixtures/b1-v3.json', import.meta.url)))), true);
@@ -16,9 +16,9 @@ function finalGame() {
   return g;
 }
 
-test('B2 Nira selects six IDs across zones, duplicate kinds, no truncation; Guard is separate', () => {
+test('B2 Nira selects five IDs across zones and Guard fit the seven-person cap', () => {
   const g = finalGame();
-  assert.equal(g.finalTeamCandidates().length, 20);
+  assert.equal(g.finalTeamCandidates().length, 21);
   for (const id of ids) assert.equal(g.toggleParty(id), true, id);
   assert.equal(g.toggleParty('asia:kan'), false);
   assert.deepEqual(g.party.finalMembers, ids);
@@ -29,7 +29,7 @@ test('B2 Nira selects six IDs across zones, duplicate kinds, no truncation; Guar
   assert.deepEqual(new Set(h.battleCrew().map(c => c.id)), new Set(ids));
   assert.equal(h.battleCrew().filter(c => c.k === 'taan').length, 4);
   assert.ok(h.guard);
-  assert.equal(h.battleCrew().length + 1 + 1, 8);
+  assert.equal(h.battleActors().length, 7);
 });
 
 test('B2 zero morale, resting and locked branches cannot join; removal remains possible', () => {
@@ -46,32 +46,31 @@ test('B2 zero morale, resting and locked branches cannot join; removal remains p
   assert.deepEqual(g.startZoneEvent('cyberFinal').team, []);
 });
 
-test('B2 map rests apply ID team edits and keep six into the next encounter', () => {
+test('B2 map rests apply ID team edits and keep five into the next encounter', () => {
   const g = finalGame(); for (const id of ids) g.toggleParty(id);
   const b = g.startZoneEvent('cyberFinal');
   win(g); g.endBattle(); assert.equal(g.acknowledgeFinalReward(),true);
   assert.equal(g.toggleParty('west:taan'), true);
   assert.equal(g.toggleParty('asia:kan'), true);
-  assert.equal(g.finalPartyCrew().length, 6);
+  assert.equal(g.finalPartyCrew().length, 5);
   assert.ok(g.finalPartyCrew().includes(g.roster['asia:kan']));
   assert.ok(!g.finalPartyCrew().includes(g.roster['west:taan']));
   assert.ok(g.startFinalEncounter('minion:2'));
-  assert.equal(g.battleCrew().length, 6);
+  assert.equal(g.battleCrew().length, 5);
 });
 
-test('B2 town keeps two local helpers while ordinary frontier retains the selected local team', () => {
-  const g = finalGame(); for (const id of ids) g.toggleParty(id);
+test('B2 ordinary frontier uses the unlocked cap and admits the owned global Nira', () => {
+  const g = finalGame();
   g.zoneEvents.cyberhell.cyberFinal = 'locked'; g.party.members = []; g.frontierOf().team = [];
-  assert.equal(g.toggleParty('taan'), true); assert.equal(g.toggleParty('kan'), true);
-  assert.equal(g.toggleParty('boon'), false); assert.equal(g.toggleParty('th:taan'), false);
-  g.party.members.push('boon'); assert.equal(g.battleCrew().length, 2);
-  assert.equal(g.setFrontierTeam('taan'), true); assert.equal(g.setFrontierTeam('kan'), true);
-  assert.equal(g.setFrontierTeam('boon'), false);
-  assert.deepEqual(g.startFrontierBattle().team, ['taan','kan']);
-  assert.deepEqual(g.battleCrew().map(actor => actor.k), ['taan','kan']);
-  assert.ok(g.battleActors().some(actor=>actor.k==='taan'));
-  assert.equal(g.battleActors().some(actor=>actor.k==='nira'),false);
-  assert.equal(g.guardActive(), !!g.guard && g.guard.morale>0, 'ordinary border retains its guard');
+  for (const k of ['taan','kan','boon','dam','nira']) {
+    assert.equal(g.toggleParty(k),true); assert.equal(g.setFrontierTeam(k),true);
+  }
+  assert.equal(g.toggleParty('plerng'),false);
+  assert.equal(g.setFrontierTeam('plerng'),false);
+  assert.equal(g.battleCrew().length,5);
+  assert.equal(g.startFrontierBattle().team.length,5);
+  assert.equal(g.battleActors().length,7);
+  assert.ok(g.battleActors().some(actor=>actor.k==='nira'));
 });
 
 test('B2 helper morale, cooldown and trained damage belong to the source ID after battle/save', () => {

@@ -10,12 +10,12 @@ globalThis.Image = class {};
 
 test('all story and deva panels exist in the project and preload manifest', () => {
   const panels = Object.values(STORY).flatMap(s => s.pages);
-  assert.equal(panels.length, 27);
+  assert.equal(panels.length, 28);
   const catalog=JSON.parse(readFileSync(new URL('../img/preload-catalog.json', import.meta.url), 'utf8'));
   for (const p of panels) {
     assert.ok(existsSync(new URL('../' + p.image, import.meta.url)), p.image);
     if (p.image.startsWith('img/deva-intro/')) assert.ok(Object.values(catalog.zones).flat().includes(p.image),p.image);
-    else assert.ok(manifest.rest.includes(p.image.slice(4)), p.image);
+    else assert.ok([...manifest.critical,...manifest.rest].includes(p.image.slice(4)), p.image);
   }
 });
 

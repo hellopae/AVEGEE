@@ -2312,10 +2312,10 @@ export const TRAINING_RULES = {
 };
 export const TRAINING_STATIONS = {
   dab:{ actors:['yama'], game:'rhythm', seconds:34 },
-  lan:{ actors:['taan','guard'], game:'stone', seconds:30 },
+  lan:{ actors:['taan','guard','dam'], game:'stone', seconds:30 },
   krata:{ actors:['plerng'], game:'fire', seconds:30 },
   krajok:{ actors:['kan'], game:'mirror', seconds:45 },
-  sawan:{ actors:['boon'], game:'breath', seconds:32 },
+  sawan:{ actors:['boon','nira'], game:'breath', seconds:32 },
   sala:{ actors:['nira'], game:'documents', seconds:45 },
   ngiw:{ actors:['yama'], game:'slicing', seconds:30 },
   lokan:{ actors:['guard'], game:'stone', seconds:30 },
@@ -2386,7 +2386,7 @@ for (const [k,def] of Object.entries(ITEMS)) if (def.consumable) {
 // ลำดับค้นหา key: encounter (เช่น ruler:west) → eventKey (เช่น cyberBreach) → kind (zoneBoss/zoneEvent/...) → default
 export const TEAM_PRESSURE = {
   share:{ default:0.75, 'ruler:west':0.55, 'ruler:cyberhell':0.6 },
-  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:3.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
+  max:{ default:2, 'ruler:th':3.75, 'ruler:asia':3.75, 'ruler:west':3.25, 'ruler:cyberhell':3.25, boss:2.25, 'minion:1':3.25, 'minion:2':3.25, 'minion:3':3.25, 'minion:4':3.25 },
 };
 // B2b: encounter additions and receipts, without changing existing enemy stats.
 export const FINAL_EVENT = {

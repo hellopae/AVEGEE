@@ -96,7 +96,7 @@ test('Zone 4 rescue releases Taan, clock, and four-wave heart reward; loss retri
   assert.equal(g.abilities.cooldownClock, true);
   g.zoneCases.cyberhell = 5; g.refreshZoneEvents();
   g.startZoneEvent('cyberBreach');
-  g.battle.youHp = 1;
+  g.battle.youHp = 1; g.enemyTarget=()=>({id:'you'});
   g.battleAct('atk');
   assert.equal(g.battle.over, 'lose');
   assert.equal(g.hp, 1);

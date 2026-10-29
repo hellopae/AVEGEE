@@ -1,0 +1,26 @@
+(node:50860) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ C1 personal training unlocks each of seven moves once, persists by ID, and requires 60/80 evidence (35.148533ms)
+✔ C1 capped old saves can train only for a missing skill; failed saves roll back skill and session together (1.484562ms)
+✔ C1 acceleration and old fire-control levels do not fabricate personal scores; fire QTE unlocks once (3.724378ms)
+✔ C1 damage/heal formula uses existing effective stats and fire bonus exactly once; base specials share CD (12.382676ms)
+✔ C1 support skills target full HP, shield takes post-defend damage, stronger effects replace rather than add (1.530956ms)
+✔ C1 self protection lasts through two subsequent owner turns; non-damaging commands do not consume attack charges (0.888173ms)
+✔ C1 combo snapshots 2 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (3) (3.174582ms)
+✔ C1 combo snapshots 4 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (5) (39.915246ms)
+✔ C1 combo snapshots 6 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (7) (1.481287ms)
+✔ C1 combo retargets deterministically without spill and omits fallen/absent/guest actors (1.191042ms)
+✔ C1 total party cap grows 3/4/5/6/7 without creating actors or deleting excess saved selections (7.031118ms)
+✔ C1 victory grants teamJudgment and Guard once; old cleared saves infer only Yama entitlement (4.920774ms)
+✔ C1 final save/load retains cooldown, protection and already-applied hits; next encounter keeps remaining owner turns (4.515396ms)
+✔ C1 encounter scaling is frozen at creation, handles teams 3–7, and does not increase enemy ATK (0.576571ms)
+✔ C1 regional art uses explicit Thai fallbacks and all referenced scenes/icons exist (1.39353ms)
+✔ C1 skip/duplicate animation completion cannot apply combat damage or rewards twice (actual UI executeSkill) (258.854398ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 687.401619

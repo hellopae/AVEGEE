@@ -65,16 +65,20 @@ test('every texture key used by a recipe is declared, with a valid blend and atl
     assert.match(k, /^fx-[a-z0-9]+(-[a-z0-9]+)+$/); assert.ok(['lighter', 'source-over'].includes(blendOf(k)));
     assert.ok(Number.isInteger(cellsOf(k)) && TEX[k].w % cellsOf(k) === 0, `${k} cells divide width`);
   }
-  assert.equal(TEX_KEYS.length, 62, 'matches the 62-file art spec');
+  assert.equal(TEX_KEYS.filter(k=>!TEX[k].path).length, 62, 'original 62-file art spec remains');
+  assert.equal(TEX_KEYS.filter(k=>TEX[k].path).length,8,'C1 adds eight shipped textures');
 });
 
 test('every texture has a stand-in generator so the game looks right before real art arrives', () => {
-  for (const k of TEX_KEYS) assert.ok(texSrc.includes(`GEN['${k}']`), `${k} has GEN`);
+  for (const k of TEX_KEYS) {
+    if (TEX[k].path) assert.ok(existsSync(new URL('../'+TEX[k].path,import.meta.url)),`${k} ships real art`);
+    else assert.ok(texSrc.includes(`GEN['${k}']`), `${k} has GEN`);
+  }
 });
 
 test('ui.js attaches the canvas, starts the move effect at all three phase starts, stops on finish, and shares the release module identity', () => {
   assertModuleRelease('src/battle-fx.js',read('index.html'),'src/ui.js');
-  assert.equal((ui.match(/startMoveFx\('(you|foe)'/g) || []).length, 3);
+  assert.equal((ui.match(/startMoveFx\('(you|foe)'/g) || []).length, 4);
   assert.match(ui, /attachBattleFx\(stage\)/); assert.match(ui, /stopBattleFx\(\)/); assert.match(ui, /playHealBattleFx\(gains, delayMs\)/);
   for (const f of ['index.html', 'output/game-review/index.html']) assertModuleRelease('src/ui.js',read(f),null,{entry:true});
 });

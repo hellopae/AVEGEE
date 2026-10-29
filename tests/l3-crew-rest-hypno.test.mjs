@@ -29,7 +29,7 @@ test('L3 rest: HP 97 reaper can walk to the tea pavilion, rests, returns to post
 
 test('L3 rest: crew in the battle team may rest; he sits out while resting but stays on the team', () => {
   const g = game(); g.hire('taan'); g.stations.push({ def:STATIONS.find(s => s.k === 'tea'), build:0, slots:[], fire:0 });
-  g.toggleParty('taan'); const c = g.crewOf('taan'); c.morale = 80; c.x = c.hx; c.y = c.hy;
+  g.party.members=['taan']; const c = g.crewOf('taan'); c.morale = 80; c.x = c.hx; c.y = c.hy;
   assert.ok(g.party.members.includes('taan'));
   assert.ok(g.restActor(c.id));
   assert.ok(g.party.members.includes('taan'), 'still on team');

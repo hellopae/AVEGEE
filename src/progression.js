@@ -18,7 +18,8 @@ export function trainingLevel(exp, zone = 'th', shared = false) {
 }
 const record = (value, zone, shared) => ({ exp:count(value?.exp),
   level:trainingLevel(value?.exp, zone, shared), readyAtTick:count(value?.readyAtTick),
-  attempts:{ ...(value?.attempts || {}) } });
+  attempts:{ ...(value?.attempts || {}) },
+  moves:Object.fromEntries(Object.entries(value?.moves || {}).map(([k,v]) => [k, { successes:Math.min(2,count(v?.successes)), high:v?.high === true, unlocked:v?.unlocked === true && count(v?.successes) >= 2 && v?.high === true }])) });
 export function normalizeTraining(value = {}) {
   value ||= {};
   return { version:1,

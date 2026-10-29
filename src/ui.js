@@ -1,3 +1,5 @@
+import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
+import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
@@ -2467,7 +2469,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
   // ลงให้พอ 3 คนไม่ล้น แล้วให้ยักษ์ตัวใหญ่กว่ายมทูตสองคนนั้นนิดหน่อยตามที่ขอ (ดู .battle-squad .guard
   // ใน command-wheel.css)
   // M1: in a fight the background + sprites live in .cam-world (the only thing the camera zooms); HUD / menus stay outside it
-  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
+  return `<div class="arena${hp ? ' combat-arena battle9-arena' : ''}${g.isFinalBattle(hp) || squad.length > 3 ? ' final-team' : ''}"${hp ? '' : ` style="background-image:url('${esc(bg)}')"`}>
     <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
     <span class="corner-tick bl"></span><span class="corner-tick br"></span>
     ${closable ? '<button class="x" data-close title="ปิดห้องสอบสวน">✕</button>' : ''}
@@ -2482,7 +2484,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
     </div>` : ''}
     ${squad.length ? `<div class="battle-squad${squad.some(c => c.k === 'guard') ? ' trio' : ''}">${squad.map(c => `<span${c.k === 'guard' ? ' class="guard"' : ''} role="button" tabindex="0" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="เลือก / Select ${esc(c.name)}" style="${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? 'filter:brightness(1.5);outline:3px solid #ff8050' : ''}">
       <img src="${crewArt(c)}" class="${teamFaceClass(crewArt(c))}" alt="${esc(c.name)}"><b>${esc(c.name)}</b>${shieldAt(c.id)}${battleStatusHtml(c, {defending:hp?.defending?.[c.id]})}${(hp?.dmg?.enemyHits?.some(h => h.id === c.id) || hp?.dmg?.targetActorId === c.id) ? `<span style="color:#ff8050">▼ −${hp.dmg.crew} HP${hp.dmg.enemyHits?.find(h => h.id === c.id)?.reduced ? ' 🛡️' : ''}</span>` : ''}${
-        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), GUARD.helpCdMs / 1000) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
+        c.k === 'guard' ? crewCooldown(c, g.guardCooldown(), specialCooldown(c)) : crewCooldown({ ...c, k:crewBattleKey(c) }, g.crewCooldown(c), specialCooldown(c))
       }</span>`).join('')}</div>` : ''}
     <div ${hp ? 'data-crew-pick="you" role="button" tabindex="0"' : ''} class="fig you${cls('you')}${figYouAtkClass({ usingAtk, sword:isYamaSwordAttack(fx), showRage, standing:youImg === heroFace() }) ? ' atk' : ''}${raging ? ' raging' : ''}">
       ${fxAt('you')}${dmgAt('you', hp && hp.dmg ? hp.dmg.you : 0)}${shieldAt('you')}${hp ? battleStatusHtml({hp:hp.youHp}, {defending:hp.defending?.you,rage:hp.rageTurns}) : ''}
@@ -3099,9 +3101,9 @@ function openNiraOffice() {
   pauseForDlg();
   const niraGreet = greetLine({ kind: 'nira', name: g.crewOf('nira')?.name || 'นิรา' });   // P4: บรรทัดทักจากชุดบทของ Rae (ไม่มีผลต่อเกม)
   const paint = () => {
-    const final = g.finalTeamSelection(), max = final ? g.teamLimits.finalTeamMax : g.teamLimits.normalTeamMax;
+    const final = g.finalTeamSelection(), max = g.partyMax();
     const party = (final ? g.party?.finalMembers : g.party?.members) || [];
-    const candidates = final ? g.finalTeamCandidates() : CREW.filter(c => !c.reader);
+    const candidates = final ? g.finalTeamCandidates() : CREW;
     // P1: การ์ดเรียงตามลำดับแนะนำจ้าง (unlocks.js HIRE_PLAN) — ป้าย "ลำดับจ้าง N" + "★ แนะนำ" ที่ตัวถัดไป
     // ลำดับ 0 (ทัณฑ์ที่มีตั้งแต่เริ่ม / ทีมศึกสุดท้าย) ขึ้นก่อน · sort เสถียร จึงไม่สลับกันเอง
     const nextHire = recommendedHire(g);
@@ -3126,16 +3128,16 @@ function openNiraOffice() {
     // (ยักษ์ไม่ต้องจัดเข้าทีม 2 คน แต่ยังอยากเห็นแรง/ท่าสู้/คูลดาวน์/สถานะแบบเดียวกัน)
     cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
         <span class="pw-av"><img src="${artUrl('crew-guard-profile') || artUrl('crew-guard')}" alt="">${powerBadgeHtml('guard', { zone: g.zone, actor: g.guard })}</span>
-        <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — ไม่ต้องจัดเข้าทีม</small>
+        <span><b>${esc(GUARD.name)}</b><small>ยามประจำโซน — นับรวมในทีม</small>
         ${hireTag('guard', !!g.guard)}
         <small>ท่าสู้: ${crewAbility('guard')} · คูลดาวน์ ${GUARD.helpCdMs / 1000} วินาที</small>${g.guard ? niraItemWidget(g.guard) : ''}${guardRestWidget(g.guard)}</span>
         ${g.guard
-          ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อไม่ได้เดินไปพักหรือพักฟื้น ไม่กินโควตาทีม ${max} คนของยมทูต">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(ไม่นับโควตา ${max} คน)</small></button>`
+          ? `<button class="sm" disabled title="พร้อมช่วยรบอัตโนมัติเมื่อทีมปลดช่องที่ 4">${g.guardActive() ? '✓ พร้อมช่วยรบ' : 'พักฟื้น — ไม่ร่วมต่อสู้'}<small>(นับรวมยามาและยักษ์ ${g.partyCap()} คน)</small></button>`
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
     dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${final ? '' : niraGreet}
-      <p class="hint">เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
+      <p class="hint">ทีมรวมสูงสุด ${g.partyCap()} คน (รวมยามาและยักษ์) ${party.length > max ? 'ทีมเดิมเกินช่อง: เก็บรายชื่อไว้ครบ แต่ใช้เฉพาะลำดับแรก กรุณาจัดทีมใหม่ · ' : ''}เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
@@ -3288,7 +3290,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       <div class="frontier-shade"></div>
       <button class="x" ${fromWalk ? 'data-frontier-back title="กลับชายแดน"' : 'data-close title="กลับแผนที่"'}>✕</button>
       <header><small>${breach ? `ระลอก 1/${waveN}` : 'กิจกรรมต่อสู้ประจำโซน'}</small><h2>🏯 ${breach ? esc(breachTitle) : esc(FRONTIER.name)}</h2>
-        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${FRONTIER.teamMax} คน แล้วต้านพวกมันเป็นระลอก`}</p></header>
+        <p>${breach ? esc(breachText) : `ผีและปีศาจกำลังรวมตัวหลังประตู จัดทีมยมทูตไม่เกิน ${g.partyMax()} คน แล้วต้านพวกมันเป็นระลอก`}</p></header>
       <div class="frontier-party">
         <div class="frontier-hero"><img src="${heroFace()}" alt=""><b>${esc(HERO_NAME)}</b></div>
         ${chosen.map(k => {
@@ -3299,9 +3301,9 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
       <section class="frontier-panel">
         <div class="frontier-head"><span><b>${breach ? `ระลอก 1/${waveN}` : `ระลอกที่ ${wave}`}</b><small>${breach ? esc(g.zoneDef().name) : `${esc(g.zoneDef().name)} · ผ่านแล้ว ${state.clears || 0} ระลอก`}</small></span>
           <span class="frontier-loot">${breach ? esc(breachLoot) : 'รางวัล: เบี้ยกรรม + ของสนามรบ'}</span></div>
-        <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${FRONTIER.teamMax}</small></h3>
+        <div class="frontier-team"><h3>จัดทีมยมทูต <small>${chosen.length}/${g.partyMax()}</small></h3>
           <div class="frontier-cards">${helpers.length ? helpers.map(c => {
-            const on = chosen.includes(c.k), full = !on && chosen.length >= FRONTIER.teamMax;
+            const on = chosen.includes(c.k), full = !on && chosen.length >= g.partyMax();
             return `<button data-frontier-crew="${c.k}" class="frontier-card${on ? ' selected' : ''}" ${full ? 'disabled' : ''}>
               <span class="pw-av"><img src="${artUrl('crew-' + c.k + '-profile') || artUrl('crew-' + c.k)}" alt="">${powerBadgeHtml(c.k, { zone: g.zone, actor: c })}</span>
               <span><b>${esc(c.name)}</b><small>แรง ${c.raeng} · กำลังใจ ${Math.round(c.morale)}</small></span>
@@ -3493,7 +3495,7 @@ function openBattle(after) {
     const sources = g.battleActors().flatMap(actor => actor.id === 'you'
       ? ['fire',...POWERS.filter(p => ['ice','hypno'].includes(p.k) && !g.powerLocked(p)).map(p => p.k),...['flameCharge','windFan','rage','valkyrieSpear','cooldownClock'].filter(k => g.abilities?.[k])].map(k => actionCutsceneSrc(k))
       : [actor.k === 'nira' ? niraHealingCutscene(g.zone) : crewCutsceneSrc(crewBattleKey(actor))?.src]);
-    void battleCutscenes.warm(sources);
+    void battleCutscenes.warm([...sources, ...g.battleActors().flatMap(a => skillScenes(skillForActor(a), a.homeZone === 'global' ? g.zone : a.homeZone || g.zone))]);
   };
   warmBattleCutscenes();
   pauseForDlg();     // ฉากต่อสู้ก็คือกล่องใบหนึ่ง — คืนค่าพักตอนปิดเหมือนกล่องอื่นทุกใบ
@@ -3505,7 +3507,7 @@ function openBattle(after) {
   // phase = null (นิ่ง) · 'you' (ตาเรา) · 'foe' (ตาเขา) — ระหว่างเล่นจังหวะ ปุ่มถูกล็อก
   // phaseAt = เวลาที่เริ่มจังหวะ ใช้กู้เมื่อจังหวะค้าง (ดู phaseGuard ท้ายฟังก์ชัน)
   let phase = null, fxNow = null, phaseTimer = 0, phaseAt = 0, storyActive = false;
-  let dash = null;
+  let dash = null, skillView = null;
   let moveName = null, moveNameTimer = 0;
   const clearMoveName = () => { clearTimeout(moveNameTimer); moveName = null; dlg.querySelectorAll('.battle-move-name').forEach(el => el.remove()); };
   const renderMoveName = () => {
@@ -3556,7 +3558,13 @@ function openBattle(after) {
         const replay = b.weaponNote?.k === 'replay' ? b.weaponNote.n : 0;
         const recipe = recipeFor(k, { dmg:d.foe, crit:d.crit, replay });
         if (!recipe) { stopFxHandled(); return; }
-        if (recipe === 'heal') return;      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
+        if (recipe === 'heal') {
+          if (COMBAT_SKILLS[k]) {
+            const rect = await fxRect(allyImg(keyOfActor(fxNow?.recipient || 'you')));
+            if (rect) playBattleFx({ recipe:'heal', src:rect, targets:[{rect,dmg:0}], opts:{skill:k}, numbers:false });
+          }
+          return;
+        }      // heals are drawn from showHeals (knows who gained what); fxHandled stays on so the old static heal image stays hidden
         const src = await fxRect(allyImg(dash?.side === 'you' ? dash.key : keyOfActor(b.actorId || 'you')));
         const self = ['rage', 'clock', 'mirror'].includes(recipe);
         const hits = self ? [] : (d.foeHits?.length ? d.foeHits : [{ id:d.foeId, damage:d.foe }]);
@@ -3567,7 +3575,7 @@ function openBattle(after) {
         const contact = !actor || actor.id === 'you' ? (isYamaSwordAttack({ action:k }) ? swordContactMs(SWORD_FRAME_MS) : 0)
           : poseContactMs(poseDurations(`crew:${actor.homeZone || g.zone}:${actor.k}`));
         const hitDelay = leadInMs(recipe, contact);
-        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit }, ...(dash ? {numberDelay:0} : {}), delay:dash ? 0 : extraDelay + hitDelay, impactAt:impactIn(cueKindFor('you', k)) });
+        plays.push({ recipe, src, targets, side:'foe', opts:{ weapon:k === 'atk' ? g.weapons?.equipped : null, crit:d.crit, skill:COMBAT_SKILLS[k] ? k : null }, ...(dash ? {numberDelay:0} : {}), delay:dash || COMBAT_SKILLS[k] ? 0 : extraDelay + hitDelay, impactAt:COMBAT_SKILLS[k] ? null : impactIn(cueKindFor('you', k)) });
       } else {
         const delay = extraDelay;
         if (d.confuseSelf > 0 || (d.burnSelf > 0 && !(d.you > 0 || d.crew > 0))) {
@@ -3712,7 +3720,7 @@ function openBattle(after) {
     }
     root.style.setProperty('z-index', depth(dash.source.b + dash.position.y), 'important');
   };
-  const runDash = async ({ side = 'you', key, targetImage, contact, pose, onHit, onFinish, action, crew }) => {
+  const runDash = async ({ side = 'you', key, targetImage, contact, pose, onHit, onFinish, action, crew, displayOnly = false, visualSkill = null }) => {
     const b = g.battle, stage = dlg.querySelector('.combat-arena');
     if (!b || !stage) return;
     phase = side; phaseAt = Date.now(); commandMenuOpen = false;
@@ -3739,11 +3747,11 @@ function openBattle(after) {
       ...b.foes.map(f => ({ side:'foe', key:f.id, image:foeImg(f.id) }))
     ].map(async item => { const rect = await measureDash(item.image); return rect ? { ...item, image:undefined, foot:rect.b } : null; }))).filter(Boolean);
     dash = { side, key, depths, actor:side === 'you' ? g.battleActors().find(a => keyOfActor(a.id) === key) : null, source:source || { b:0 }, position:{ x:0, y:0 }, posed:false, hit:false };
-    fxNow = null; fxHandled = true; b.dmg = {}; b.mid = null; b.helper = null; paint();
+    fxNow = null; fxHandled = true; if (!displayOnly) { b.dmg = {}; b.mid = null; b.helper = null; } paint();
     // Guard also takes the melee path: show his own cutscene before launching, then pay/hit only at contact.
-    if (side === 'you' && action === 'guard') await battleCutscenes.wait(cutsceneSource('guard'));
+    if (!displayOnly && side === 'you' && action === 'guard') await battleCutscenes.wait(cutsceneSource('guard'));
     if (g.battle !== b || !dlg.open) return;
-    const leadIn = side === 'you' && action === 'guard' && playActionCutscene('guard') ? ACTION_CUT_MS : 0;
+    const leadIn = !displayOnly && side === 'you' && action === 'guard' && playActionCutscene('guard') ? ACTION_CUT_MS : 0;
     const timing = dashTiming({ contact, pose, reduced, leadIn });
     let clockAt = performance.now(), elapsed = 0;
     const advance = createDashSequence({ timing, delta,
@@ -3755,7 +3763,7 @@ function openBattle(after) {
         paint();
       },
       onHit:() => {
-        dash.hit = true; phaseAt = Date.now(); b.commandBusy = false;
+        dash.hit = true; phaseAt = Date.now(); if (!displayOnly) b.commandBusy = false;
         if (!onHit()) { clearMoveName(); dash = null; phase = null; fxNow = null; commandMenuOpen = true; paint(); return false; }
         // Asia's deva interlude removes the battle at contact; close this UI before returning to the story.
         if (g.battle !== b) { b.commandBusy = false; dash = null; phase = null; fxNow = null; finish(); return false; }
@@ -3764,12 +3772,12 @@ function openBattle(after) {
         // Use the actual contact instant; the recipe's own delay must not add a second hit delay.
         cueImpactAtMs = performance.now();
         if (moveName && b.dmg?.foe > 0) camera.flash({alpha:.3});
-        startMoveFx(side, action, 0, 0);
+        startMoveFx(side, visualSkill || action, 0, 0);
       },
       onReturn:() => { if (dash) { dash.returning = true; applyDashPosition(); } },
       onFinish:() => {
-        dash = null; phase = null; fxNow = null;
-        clearMoveName(); onFinish(); g.finishBattleCommand(); commandMenuOpen = true;
+        dash = null; phase = displayOnly ? 'you' : null; fxNow = null;
+        clearMoveName(); onFinish(); if (displayOnly) return; g.finishBattleCommand(); commandMenuOpen = true;
         // Preserve the original boss-finale flow after the attacker has returned home.
         if (b.storyFinale) { sfx('win'); finish(); return; }
         if (g.battle) { finishWaveAfterDash(); paint(); if (b.over) sfx(b.over === 'win' ? 'win' : 'lose'); }
@@ -3808,7 +3816,7 @@ function openBattle(after) {
     // ไม่ใช่พุ่งเข้าใส่ยมบาทน้อย ต้อง flash ที่ตัวศัตรูเอง ไม่ใช่ที่ยมบาทน้อย (ดู B.dmg.confuseSelf ใน game.js)
     const confuseHit = !!(b.dmg && (b.dmg.confuseSelf > 0 || b.dmg.burnSelf > 0 && !(b.dmg.you > 0 || b.dmg.crew > 0)));
     // ระหว่างจังหวะ "ตาเรา" ให้โชว์ภาพนิ่งตอนที่เขายังไม่สวน เลือดฝั่งเราจึงยังไม่ลด
-    const view = phase === 'you' && b.mid
+    const view = skillView ? { ...b, ...skillView, over:null } : phase === 'you' && b.mid
         ? { ...b, foes:b.mid.foes, selectedFoeId:b.mid.selectedFoeId,
             youHp: b.mid.youHp, talk: b.mid.talk,
             dmg: { foe: b.dmg ? b.dmg.foe : 0, you: 0, foeId: b.dmg?.foeId, foeHits:b.dmg?.foeHits } }
@@ -3881,7 +3889,7 @@ function openBattle(after) {
       return battleChoice(k, icon, (consumable ? itemName(k) : (it?.name || k)) + (['ice','hypno'].includes(k)?' · ทุกเป้าหมาย':''), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
-    const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
+    const powerChoices = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24 · 5 เทิร์นยามา`) + battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม · ทุกเป้าหมาย', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
       + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `${t('battle.mp')} ${BATTLE.mpCost.rage}`) : '')
@@ -3895,16 +3903,18 @@ function openBattle(after) {
     const itemChoices = [...new Set(['tea','health','holyWater','food', ...Object.keys(g.inventory).filter(k => ITEMS[k]?.consumable)])].map(k =>
       battleChoice(k, itemImg(k), k === 'food' ? 'ข้าวปั้น / Rice Ball' : itemName(k), g.inventory[k] > 0,
         g.inventory[k] > 0 ? `×${g.inventory[k]}` : 'ไม่มีของ / No stock')).join('')
-      + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : `1 ครั้งต่อชุด · ไม่ใช้${t('battle.mp')}`) : '');
+      + (g.abilities.cooldownClock || g.inventory.cooldownClock ? battleChoice('cooldownClock', 'img/fx-clock-reset.png', 'นาฬิกาย้อนเวลา', !b.clockUsed, b.clockUsed ? 'ใช้แล้ว · รอชุดการต่อสู้ใหม่' : `1 ครั้งต่อชุด · ไม่ใช้${t('battle.mp')} · ไม่รีเซ็ตไม้ตายทีม`) : '');
     const special = actor.k === 'guard' ? 'guard' : `crew:${crewBattleKey(actor)}`;
     const why = isYama ? '' : actor.k === 'guard' ? g.guardHelpWhy() : g.crewHelpWhy(actor);
     const weaponCd = weaponCooldownState(b, g.weapons?.equipped);
     const attackIcon = weaponCd?.cd ? `<span class="wcd-ico"><img src="img/fx-slash.png" alt=""><em>${weaponCd.cd}</em></span>` : 'img/fx-slash.png';
-    const specialChoice = battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
+    const unlockedSkill = skillForActor(actor);
+    const newSkillChoice = unlockedSkill && g.skillUnlocked(actor, unlockedSkill) ? battleChoice(unlockedSkill, SKILL_ICONS[unlockedSkill], COMBAT_SKILLS[unlockedSkill].name, !g.skillWhy(unlockedSkill, actor), g.skillWhy(unlockedSkill, actor) || `กำลังใจ ${COMBAT_SKILLS[unlockedSkill].morale} · 120 วินาที`) : '';
+    const specialChoice = newSkillChoice + battleChoice(special, crewArt(actor, '-profile'), actor.k === 'nira' ? `แสงฟื้นบารมี / Healing light +${g.allyStats(actor).heal}` : crewAbility(actor), !why, why ? `${why} / Cooldown or low morale` : 'ท่าพิเศษ / Special').replace('<button', `<button data-crew-action="${esc(crewBattleKey(actor))}"`);
     const attacks = isYama ? battleChoice('atk', attackIcon, 'ฟันดาบ / Sword slash', true, g.weapons?.equipped ? t(`weapon.${g.weapons.equipped}.name`) + (weaponCd?.cd ? ` · ⏳${weaponCd.cd}` : '') : '')
       : battleChoice('strike', 'img/fx-slash.png', 'โจมตี / Attack', true) + (actor.k === 'nira' ? '' : specialChoice);
     const pending = b.command;
-    const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && pending === special));
+    const needsReceiver = pending && (pending === 'food' || ITEMS[pending]?.consumable || (!isYama && ['boon','nira'].includes(actor.k) && (pending === special || pending === unlockedSkill)));
     const selfCommand=['defend','flee','rage','cooldownClock'].includes(pending);
     const choosingTarget = !!(pending && !selfCommand && !needsReceiver && !phase && !b.over);
     // L2: choosing a target — enemy OR teammate (items / healing powers) — shows no text box at all.
@@ -3999,7 +4009,7 @@ function openBattle(after) {
           const remaining = c.k === 'guard' ? g.guardCooldown() : g.crewCooldown(c);
           const duration = specialCooldown(c);
           return `<button class="battle-portrait${view.defending?.[c.id] ? ' is-defending' : ''}" data-crew-pick="${esc(crewBattleKey(c))}" aria-label="${esc(c.name)}">
-            ${view.defending?.[c.id] ? defendShieldHtml() : ''}<img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
+            ${b.protection?.[c.id] ? `<small class="battle-protection">โล่ ${b.protection[c.id].shield} · +${Math.round(b.protection[c.id].buff * 100)}%</small>` : ''}${view.defending?.[c.id] ? defendShieldHtml() : ''}<img src="${esc(crewArt(c, '-profile'))}" alt=""><b>${esc(c.name)}</b>
             <div class="battle-numbered-meter">${meter(c.morale, 100, 'health', t('battle.hp'))}<small>${Math.round(c.morale)}/100</small></div><span data-crew-ready="${esc(crewBattleKey(c))}">${meter(duration - remaining, duration, 'ready', c.name)}</span>${g.isFinalBattle() && c.k !== 'guard' ? `<small>กำลังใจ ${Math.round(c.morale)} · ฝึก ${c.upLv || 0}</small>` : ''}
           </button>`;
         }).join('')}
@@ -4009,6 +4019,8 @@ function openBattle(after) {
         <button class="battle-portrait hero${view.defending?.you ? ' is-defending' : ''}" data-crew-pick="you">${view.defending?.you ? defendShieldHtml() : ''}<img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
           <div class="battle-numbered-meter">${meter(view.youHp, view.youMax, 'health', t('battle.hp'))}<small>${Math.round(view.youHp)}/${view.youMax}</small></div>
           <div class="battle-numbered-meter">${meter(mp, g.mpMax, 'mana', t('battle.mp'))}<small>${Math.round(mp)}/${g.mpMax}</small></div>
+          <div class="battle-team-ultimate">${meter(g.abilities.teamJudgment ? 5 - g.teamJudgmentRemaining() : 0, 5, 'ready', COMBAT_SKILLS.teamJudgment.name)}<small>${!g.abilities.teamJudgment ? 'ล็อก · ชนะฝ่าชายแดนไทย' : g.teamJudgmentRemaining() ? `อีก ${g.teamJudgmentRemaining()} เทิร์นยามา` : 'ประสานพิพากษา · พร้อม'}</small></div>
+          ${b.protection?.you ? `<small>โล่ ${b.protection.you.shield} · โจมตี +${Math.round(b.protection.you.buff * 100)}% (${b.protection.you.attacks})</small>` : ''}
         </button>
         </div>
       </div>
@@ -4102,7 +4114,7 @@ function openBattle(after) {
       for(const c of poseActors){
         if(c.id==='you'||c.k==='nira')continue;
         const key=crewBattleKey(c),root=stage.querySelector(`.battle-squad [data-crew-pick="${key}"], .fig.helper[data-crew-pick="${key}"]`);
-        const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id)&&fxNow?.key!=='defend';
+        const attacking=(!dash||dash.posed)&&phase==='you'&&fxNow?.crew===c.k&&(b.actorId===c.id||b.helper?.id===c.id||dash?.actor?.id===c.id)&&fxNow?.key!=='defend';
         const mode=phase==='foe'&&hits.has(c.id)?'hurt':attacking?'attack':'idle';
         entries.push({root,key:c.guestGuide?`boss:${c.homeZone}:zone-boss`:`crew:${c.homeZone||g.zone}:${c.k}`,face:c.guestGuide?-1:1,mode,startedAt:mode==='idle'?key.length*271:mode==='hurt'?hurtStart():(dash?.poseAt||phaseAt)});
       }
@@ -4146,7 +4158,7 @@ function openBattle(after) {
         const key = el.dataset.crewPick;
         const chosen = g.battleActors().find(c => c.id === key || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === key);
         if (needsReceiver && chosen) {
-          const reason = pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
+          const reason = pending === unlockedSkill ? '' : pending === special ? ((chosen.id === 'you' ? b.youHp >= b.youMax : chosen.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, chosen.id);
           if (!reason) {b.commandRecipient=chosen.id;executeCommand(pending,chosen.id);}
           return;
         }
@@ -4154,7 +4166,7 @@ function openBattle(after) {
       };
       // L2: only teammates who can actually receive it light up (same "เลือกเป้าหมาย" tag as the enemy side); the others dim
       const recipient = needsReceiver && !phase ? g.battleActors().find(c => c.id === el.dataset.crewPick || (c.k === 'guard' ? 'guard' : crewBattleKey(c)) === el.dataset.crewPick) : null;
-      const why = recipient ? (pending === special ? ((recipient.id === 'you' ? b.youHp >= b.youMax : recipient.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, recipient.id)) : '';
+      const why = recipient ? (pending === unlockedSkill ? '' : pending === special ? ((recipient.id === 'you' ? b.youHp >= b.youMax : recipient.morale >= 100) ? 'Full' : '') : g.battleRecipientWhy(pending, recipient.id)) : '';
       el.classList.toggle('choose-recipient', !!recipient && !why);
       el.classList.toggle('recipient-off', !!recipient && !!why);
       if (recipient && !why && !el.classList.contains('battle-portrait')) el.insertAdjacentHTML('beforeend', `<span class="target-prompt">${getLang() === 'en' ? 'Choose target' : 'เลือกเป้าหมาย'}</span>`);
@@ -4335,8 +4347,74 @@ function openBattle(after) {
       if (phase || !g.fleeBattle()) { paint(); return; }
       sfx('step'); clearTimeout(phaseTimer); finish();
     };
+    const playSkillScene = async (skill, sources, duration) => {
+      if (!sources.length || !dlg.open) return;
+      await Promise.all(sources.map(src => battleCutscenes.wait(src)));
+      if (!dlg.open || !g.battle) return;
+      await new Promise(resolve => {
+        const cut = document.createElement('div'); cut.className = 'action-cutscene right-facing crew-cut';
+        cut.style.animationDuration = `${duration}ms`;
+        const label = document.createElement('strong'); label.textContent = COMBAT_SKILLS[skill].name; cut.append(label);
+        let frame = 0, done = false, timer;
+        const show = () => {
+          cut.querySelector('img')?.remove();
+          const img = battleCutscenes.image(sources[frame]);
+          if (img) { cut.prepend(img); fitCutsceneImage(cut,img); }
+        };
+        const finishScene = () => { if (done) return; done = true; clearInterval(timer); cut.remove(); resolve(); };
+        cut.onclick = finishScene; dlg.append(cut); show();
+        timer = setInterval(() => { frame++; if (frame >= sources.length) finishScene(); else show(); }, duration / sources.length);
+      });
+    };
+    const executeSkill = async (action, recipient) => {
+      const b = g.battle, who = g.battleActors().find(a => a.id === (b.actorId || 'you'));
+      const before = vitalsOf(g), initialFoes = b.foes.map(f => ({...f}));
+      if (!g.confirmBattleCommand(action, recipient)) { paint(); return; }
+      commandMenuOpen = false; phase = 'you'; phaseAt = Date.now();
+      skillView = { foes:initialFoes, selectedFoeId:b.selectedFoeId, youHp:before.you?.hp ?? b.youHp, talk:COMBAT_SKILLS[action].name };
+      const allDamage = b.dmg, allMid = b.mid;
+      b.dmg = {};
+      const reduced = !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const scenes = skillScenes(action, who.homeZone === 'global' ? g.zone : who.homeZone || g.zone);
+      paint();
+      if (!reduced) {
+        const root = allyImg(keyOfActor(who.id))?.closest('[data-crew-pick]'); root?.classList.add('skill-casting');
+        await new Promise(resolve => setTimeout(resolve,SKILL_CAST_MS[action])); root?.classList.remove('skill-casting');
+      }
+      await playSkillScene(action, action === 'teamJudgment' ? scenes.slice(0,1) : scenes, action === 'copperInferno' ? 900 : ['laborJudgment','shadowCleaver'].includes(action) ? 700 : 800);
+      if (g.battle !== b || !dlg.open) return;
+      const hits = action === 'teamJudgment' ? b.comboHits : [{ actorId:who.id, kind:who.k, foeId:allDamage.foeId, dealt:allDamage.foe }];
+      for (const hit of hits) {
+        if (g.battle !== b || !dlg.open) return;
+        if (action === 'teamJudgment' && !hit.foeId) continue;
+        if (action === 'teamJudgment' && hit.actorId === 'you' && !reduced) await playSkillScene(action,scenes.slice(1),700);
+        let impacted = false;
+        const impact = () => {
+          if (impacted) return true;
+          impacted = true;
+          const visible = skillView.foes.find(f => f.id === hit.foeId);
+          if (visible) visible.hp = Math.max(0,visible.hp - hit.dealt);
+          skillView.youHp = b.youHp;
+          b.dmg = { foe:hit.dealt, foeId:hit.foeId, foeHits:hit.foeId ? [{id:hit.foeId,damage:hit.dealt}] : [] };
+          b.helper = hit.actorId === 'you' ? null : {...g.battleActors().find(a => a.id === hit.actorId), at:Date.now()};
+          return true;
+        };
+        if (!reduced && (action === 'teamJudgment' || ['laborJudgment','shadowCleaver','abyssGatebreaker'].includes(action))) {
+          await new Promise(resolve => { void runDash({ key:keyOfActor(hit.actorId), targetImage:foeImg(hit.foeId), contact:220, pose:480, action:action === 'teamJudgment' ? (hit.actorId === 'you' ? 'atk' : 'strike') : action, crew:hit.actorId === 'you' ? null : hit.kind, displayOnly:true, visualSkill:action, onHit:impact, onFinish:resolve }); });
+        } else {
+          impact(); phase = 'you'; phaseAt = Date.now(); fxNow = {key:COMBAT_SKILLS[action].heal ? 'health' : 'atk', action, side:COMBAT_SKILLS[action].heal ? 'you' : 'foe',crew:who.id === 'you' ? null : who.k,recipient}; paint();
+          await startMoveFx('you', action); if (!reduced) await new Promise(resolve => setTimeout(resolve,350));
+        }
+      }
+      if (g.battle !== b) return;
+      b.dmg = allDamage; b.mid = allMid; skillView = null; phase = null; fxNow = null;
+      showHeals(before,0); g.finishBattleCommand(); commandMenuOpen = true;
+      if (b.storyFinale) { finish(); return; }
+      finishWave(); paint(); refresh();
+    };
     const executeCommand = async (action, recipient = 'you') => {
       if (phase) return;                       // กำลังเล่นจังหวะอยู่ ห้ามกดซ้อน
+      if (COMBAT_SKILLS[action]) { await executeSkill(action,recipient); return; }
       fxHandled = false;
       const actor = action.startsWith('crew:') ? g.battleCrew().find(c => crewBattleKey(c) === action.slice(5)) : null;
       const k = actor ? 'crew:' + actor.k : action;
@@ -4526,7 +4604,7 @@ function openBattle(after) {
   // (ยกจาก 4000 → 6000ms ข้อ C 24 ก.ย. 2569 — จังหวะ 'you' ตอนนี้กินเวลาเองถึง 780+COUNTER_WAIT_MS
   //  ก่อนสลับเป็น 'foe' ต้องเผื่อระยะปลอดภัยไม่ให้ guard ตัดตอนกลางจังหวะที่ตั้งใจหน่วงไว้)
   const phaseGuard = setInterval(() => {
-    if (dash || storyActive || !phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
+    if (dash || skillView || storyActive || !phase || Date.now() - phaseAt < PHASE_GUARD_MS) return;
     clearTimeout(phaseTimer);
     phase = null; fxNow = null; g.finishBattleCommand();
     if (g.battle) { if (g.battle.pendingWave) {
@@ -4541,6 +4619,8 @@ function openBattle(after) {
     g.advanceBattleTime(elapsed <= 1500 ? elapsed : 0, !userPaused && !pauseDlg.open && !storyActive && dlg.open);
     g.updateActorRecovery();
     dlg.querySelectorAll('[data-act][data-base-ready]').forEach(button => {
+      const skill = COMBAT_SKILLS[button.dataset.act];
+      if (skill) { button.disabled = !!phase || !!g.battle?.over || !!g.skillWhy(button.dataset.act); return; }
       const remaining = yamaSkillRemaining(g.battle, button.dataset.act);
       button.disabled = !!phase || !!g.battle?.over || button.dataset.baseReady !== 'true' || !!remaining;
       let badge = button.querySelector('.skill-cooldown');
@@ -4562,7 +4642,7 @@ function openBattle(after) {
     }
     // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลมีคูลดาวน์ของตัวเอง (GUARD.helpCdMs · ค่าที่ battleAct ตั้งจริง) แยกจากยมทูต
     if (g.guard) {
-      const cdSec=GUARD.helpCdMs/1000, remaining=g.guardCooldown(), progress=100*(1-remaining/cdSec);
+      const cdSec=specialCooldown(g.guard), remaining=g.guardCooldown(), progress=100*(1-remaining/cdSec);
       const ready=dlg.querySelector('[data-crew-ready="guard"] .battle-meter');
       if(ready){ready.setAttribute('aria-valuenow',Math.round(cdSec-remaining));ready.querySelector('i').style.width=progress+'%';}
       const bar=dlg.querySelector('[data-cooldown="guard"]');
@@ -5720,7 +5800,7 @@ function openStation(k, emergency = false) {
             if (!receipt) { teardown(); return; }
             session = null;
             const next = receipt.next == null ? 'MAX' : receipt.next;
-            stage.textContent = `${receipt.score} / 100 · EXP +${receipt.exp} (${receipt.total}/${next}) · Lv ${receipt.before} → ${receipt.level} · พลัง / Power ×${receipt.multiplierBefore.toFixed(2)} → ×${receipt.multiplierAfter.toFixed(2)}`;
+            stage.textContent = `${receipt.unlockedSkill ? 'ปลดล็อก ' + COMBAT_SKILLS[receipt.unlockedSkill].name + ' · ' : ''}${receipt.score} / 100 · EXP +${receipt.exp} (${receipt.total}/${next}) · Lv ${receipt.before} → ${receipt.level} · พลัง / Power ×${receipt.multiplierBefore.toFixed(2)} → ×${receipt.multiplierAfter.toFixed(2)}`;
             refresh();
           } });
       } catch (error) { teardown(); throw error; }
@@ -6110,7 +6190,7 @@ function openBattleReward() {
   if (model.exp > 0) totals.push(`<div class="reward-row"><span class="badge">EXP</span><span><b>${esc(t('reward.exp'))}</b></span><span class="amt" aria-hidden="true" data-reward-exp>+${model.exp}</span></div>`);
   for (const it of model.items) if (ITEMS[it.k]) rows.push(`<div class="reward-row">${itemImg(it.k)}<span><b>${esc(itemName(it.k))}</b></span><span class="amt">×${it.n}</span></div>`);
   for (const id of model.weapons) rows.push(`<div class="reward-row power">${weaponImg(id)}<span><b>${esc(t(`weapon.${id}.name`))}</b><small>${esc(t('weapon.reward.hint'))}</small></span></div>`);
-  for (const k of model.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
+  for (const k of model.abilities) rows.push(`<div class="reward-row power">${ABILITY_FX[k] ? `<img src="${ABILITY_FX[k]}" alt="">` : '<span class="badge">+</span>'}<span><b>${esc(COMBAT_SKILLS[k]?.name || t('power.' + k))}</b><small>${esc(t('reward.power'))}</small></span></div>`);
   if (!r.guideZone && !rows.length) rows.push(`<div class="reward-none">${esc(t('reward.noDrop'))}</div>`);
   modal(`${r.background ? `<img class="reward-world-image" src="${esc(r.background)}" alt="${esc(t('reward.background'))}">` : ''}<section class="reward-world-panel">
     <header class="reward-heading"><img class="reward-glow" src="img/ui/result-glow-v1.webp" alt="" aria-hidden="true" onerror="this.remove()"><div class="reward-title"><img class="reward-banner" src="img/ui/result-banner-v1.webp" alt="" aria-hidden="true" onerror="this.remove()"><h2>${esc(r.title || t('reward.title'))}</h2></div>

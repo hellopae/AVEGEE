@@ -100,6 +100,7 @@ test('three foes take selected damage, counter in order, and win only when all f
 
 test('loss applies the event penalty and allows a fresh retry', () => {
   const g = pendingGame();
+  g.enemyTarget = () => ({id:'you'});
   g.startPrisonBreak();
   const b = g.battle, hp = g.hp, order = g.order, coin = g.coin;
   b.youHp = 1;
@@ -115,6 +116,7 @@ test('loss applies the event penalty and allows a fresh retry', () => {
 
 test('ice hits every foe, spends its stun on the counter turn, then the next counter is normal', () => {
   const g = pendingGame();
+  g.enemyTarget = () => ({id:'you'});
   g.level = 3;
   const ice = g.powerOf('ice');
   ice.ammo = ice.max;

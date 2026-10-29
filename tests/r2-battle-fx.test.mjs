@@ -91,7 +91,8 @@ test('production ice and hypno recipes emit moving elemental projectiles from th
   const mapping=await import('../src/battle-fx-map.js');
   const source=readFileSync('src/battle-fx.js','utf8')
     .replace(/^import .*;$/gm,'').replace(/^export \{.*\};$/gm,'').replace(/\bexport /g,'');
-  const context=vm.createContext({...mapping,TEX_KEYS:[],preloadTex(){},performance,
+  const {SKILL_FX}=await import('../src/combat-skill-assets.js');
+  const context=vm.createContext({...mapping,SKILL_FX,TEX_KEYS:[],preloadTex(){},performance,
     requestAnimationFrame:()=>1,cancelAnimationFrame(){}});
   vm.runInContext(source+`\nE.canvas={};E.stage={style:{}};E.w=900;E.h=500;
     globalThis.run=action=>{stopBattleFx();playBattleFx({action,numbers:false,
