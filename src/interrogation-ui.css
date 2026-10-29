@@ -93,3 +93,7 @@
 /* An open list must cover the portrait HUD rather than sit underneath it. */
 .trial-comment8 .comment8-menu:has(.court-options.is-open){z-index:50}
 .trial-comment8 .hud-body:has(.court-options.is-open){z-index:13}
+
+/* S1: emotion belongs to the replacement drawing; suppress the old overlays and shake. */
+.fig.foe.has-soul-pose .soul-fear,.fig.foe.has-soul-pose .soul-relief,.fig.foe.has-soul-pose .relief-label{display:none!important}
+.fig.foe.has-soul-pose>img{animation:none!important;transform:none!important}

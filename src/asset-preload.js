@@ -1,3 +1,4 @@
+import { soulPoseAssets } from './soul-poses.js';
 // Shared bounded queue. Successful URLs are remembered; failures remain retryable.
 export async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
   const controller = new AbortController();
@@ -16,7 +17,7 @@ export function zoneAssets(catalog, zone = 'th', outfit = zone) {
   const fallback = zone === 'th' ? [] : (catalog.zones.th || []).filter(p => !/BG-|scene|intro|cutscene|rooms-wide|tea-/.test(p) && !p.startsWith('img/map-zone1/'));
   const firstFrame = p => /scene|\/st-|profile|walk/.test(p) ? 1 : 0;
   // Warm map/sprites last, so small mobile image caches retain the first visible scene.
-  return [...new Set([...catalog.shared, ...own, ...hero, ...fallback])]
+  return [...new Set([...catalog.shared, ...own, ...[...catalog.shared, ...own, ...fallback].flatMap(soulPoseAssets), ...hero, ...fallback])]
     .sort((a,b) => firstFrame(a) - firstFrame(b));
 }
 
