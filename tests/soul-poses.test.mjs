@@ -32,13 +32,13 @@ test('only unexposed fake boasts use the caught lie drawing',()=>{
  s.merits[0].exposed=true;assert.equal(soulPoseForPress(g,s,l,base),null);
  s.merits[0].exposed=false;s.merits[0].fake=false;assert.equal(soulPoseForPress(g,s,l,base),null);
 });
-test('no substitution for a solid line, exhausted press, return, random case, necessity or another regional image',()=>{
+test('no substitution for a solid line, exhausted press, return, random case or another regional image',()=>{
  const g=createGame(),s=soulFor('pol');
  assert.equal(soulPoseForPress(g,s,s.lines.find(l=>l.kind==='solid'),base),null);
  for(const change of [{presses:0},{back:{}},{case:undefined},{case:'nurse'},{case:'sergeant'}])assert.equal(soulPoseForPress(g,{...s,...change},s.lines[0],base),null);
  assert.equal(soulPoseForPress(g,s,s.lines[0],'img/Asia/spirit-officer-asia.png'),null);
  const recruit=soulFor('recruit');
- assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/Thai/spirit-recruit-th-v3.png'),null,'missing necessity art retains existing effects');
+ assert.equal(soulPoseForPress(g,recruit,recruit.lines[0],'img/Asia/spirit-worker-asia-v2.png'),null,'regional costume must match');
 });
 test('registered assets exist, preserve canvas size and transparent PNG format',()=>{
  for(const [original, variants] of Object.entries(SOUL_POSE_ASSETS)) for(const path of Object.values(variants)){
@@ -55,4 +55,38 @@ test('preloading includes the pose alongside its original, including shared and 
   assert.ok(list.includes(base));assert.equal(list.filter(x=>x===pose).length,1);
  }
  assert.deepEqual(soulPoseAssets('unknown'),[]);
+});
+
+const necessityPairs = [
+ ['recruit','recruit','v3'], ['girl','girl','v2'], ['boy','boy','v2'],
+ ['sergeant','officer','v2'], ['hammer','elder-woman','v2'], ['healer','worker','v2'],
+];
+test('all six necessity cases select only an unused plea revealing unknown mitigation',()=>{
+ for(const [key,name,version] of necessityPairs){
+  const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='plea');
+  const original=`img/Thai/spirit-${name}-th-${version}.png`;
+  const expected=`img/soul-poses/${name}-th-necessity-v1.png`;
+  const before=structuredClone(s);
+  assert.equal(soulPoseForPress(g,s,l,original),expected,key);
+  assert.deepEqual(s,before,'selection must not change evidence or justice');
+  for(const change of [{presses:0},{back:{}},{case:'nurse'},{case:undefined}])
+   assert.equal(soulPoseForPress(g,{...s,...change},l,original),null,key);
+  assert.equal(soulPoseForPress(g,s,{...l,used:true},original),null,key);
+  assert.equal(soulPoseForPress(g,s,{...l,kind:'deny'},original),null,key);
+  const out=g.press(s,l.i);
+  assert.ok(out.some(x=>x.kind==='truth'||x.kind==='confession'),key);
+  assert.equal(soulPoseForPress(g,s,l,original),null,'used plea');
+  const known=soulFor(key); known.deeds.forEach(d=>{d.known=true;});
+  assert.equal(soulPoseForPress(g,known,known.lines.find(l=>l.kind==='plea'),original),null,'already known mitigation');
+ }
+});
+test('every necessity drawing preloads exactly once for shared, own and regional fallback catalogs',()=>{
+ for(const [,name,version] of necessityPairs){
+  const original=`img/Thai/spirit-${name}-th-${version}.png`;
+  const expected=`img/soul-poses/${name}-th-necessity-v1.png`;
+  for(const catalog of [{shared:[original],zones:{th:[]}},{shared:[],zones:{th:[original,original]}},{shared:[],zones:{th:[original],asia:[]}}]){
+   const list=zoneAssets(catalog,'asia');
+   assert.equal(list.filter(x=>x===expected).length,1,expected);
+  }
+ }
 });
