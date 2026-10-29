@@ -1,3 +1,4 @@
+import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
 import {canteenActive,canteenSite,drawCanteen} from './canteen.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
@@ -126,7 +127,11 @@ const groundCache = new WeakMap();
 /** Map ground at the exact device size. Per-frame 'high' quality resampling of a 1678px image to a 2x
  *  display is ~7x slower than a 1:1 blit, so resample once per (bg, size) and copy pixels afterwards.
  *  Falls back to a direct draw when the transform is not a plain scale+translate. */
-function drawMapGround(ctx, bg) {
+function drawMapGround(ctx, bg, zone) {
+  if (zone === 'cyberhell') {
+    if (!drawCyberhellTerrain(ctx)) ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h);
+    return; // Keep loading fallback viewport-clipped; no full-world cache canvas.
+  }
   const m = ctx.getTransform ? ctx.getTransform() : null;
   if (!m || m.b || m.c || m.a <= 0 || m.d <= 0) { ctx.drawImage(bg, 0, 0, SCENE.w, SCENE.h); return; }
   const w = Math.max(1, Math.round(SCENE.w * m.a)), h = Math.max(1, Math.round(SCENE.h * m.d));
@@ -233,7 +238,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownTerrain(ctx,img,t,!!reducedMotion?.matches);
   } else if (bg) {
     // Resample the original decoded map once per output size (high quality), then blit 1:1 each frame.
-    drawMapGround(ctx, bg);
+    drawMapGround(ctx, bg, g.zone);
     // โซนปัจฉิมเป็นธารน้ำแข็งสีฟ้า ผังเดียวกับโซน 1: ใช้ mask ลาวาโซน 1 กันข้ามธาร
     // Painted gold and glowing details are decorative; navigation uses the original terrain mask.
     const maskBg = g.zone === 'west' ? img('scene-v2-opt') : legacyBg;
@@ -316,7 +321,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const bridge = [[770,620],[904,620],[904,757],[943,790],[943,880],
         [988,937],[676,937],[704,872],[704,790],[770,755]];
       bridge.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
-      ctx.closePath(); ctx.clip(); drawMapGround(ctx, bg); ctx.restore();
+      ctx.closePath(); ctx.clip(); drawMapGround(ctx, bg, g.zone); ctx.restore();
     }
   }
 

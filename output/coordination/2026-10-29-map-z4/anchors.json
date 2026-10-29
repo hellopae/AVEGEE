@@ -1,0 +1,148 @@
+{
+  "world": {
+    "w": 1678,
+    "h": 937
+  },
+  "points": [
+    {
+      "role": "building",
+      "key": "sala",
+      "x": 1477,
+      "y": 309
+    },
+    {
+      "role": "building",
+      "key": "krata",
+      "x": 1443,
+      "y": 545
+    },
+    {
+      "role": "building",
+      "key": "dab",
+      "x": 265,
+      "y": 475
+    },
+    {
+      "role": "building",
+      "key": "lokan",
+      "x": 335,
+      "y": 315
+    },
+    {
+      "role": "building",
+      "key": "ngiw",
+      "x": 1268,
+      "y": 654
+    },
+    {
+      "role": "building",
+      "key": "lan",
+      "x": 460,
+      "y": 590
+    },
+    {
+      "role": "building",
+      "key": "tea",
+      "x": 218,
+      "y": 674
+    },
+    {
+      "role": "building",
+      "key": "tarang",
+      "x": 1007,
+      "y": 295
+    },
+    {
+      "role": "building",
+      "key": "krajok",
+      "x": 1540,
+      "y": 675
+    },
+    {
+      "role": "building",
+      "key": "sawan",
+      "x": 752,
+      "y": 336
+    },
+    {
+      "role": "crew-home",
+      "key": "taan",
+      "x": 463,
+      "y": 443
+    },
+    {
+      "role": "crew-home",
+      "key": "nira",
+      "x": 730,
+      "y": 465
+    },
+    {
+      "role": "crew-home",
+      "key": "plerng",
+      "x": 1420,
+      "y": 517
+    },
+    {
+      "role": "crew-home",
+      "key": "kan",
+      "x": 1350,
+      "y": 336
+    },
+    {
+      "role": "crew-home",
+      "key": "boon",
+      "x": 420,
+      "y": 620
+    },
+    {
+      "role": "crew-home",
+      "key": "dam",
+      "x": 300,
+      "y": 380
+    },
+    {
+      "role": "exit",
+      "key": "frontier",
+      "x": 835,
+      "y": 840
+    }
+  ],
+  "spots": {
+    "bench": {
+      "x": 820,
+      "y": 455
+    },
+    "throne": {
+      "x": 836,
+      "y": 447
+    },
+    "bossPier": {
+      "x": 1390,
+      "y": 690
+    },
+    "ferry": {
+      "from": [
+        470,
+        682
+      ],
+      "to": [
+        1380,
+        682
+      ]
+    }
+  },
+  "entry": {
+    "gate": [
+      835,
+      840
+    ],
+    "nira": [
+      801,
+      832
+    ],
+    "goal": [
+      880,
+      455
+    ]
+  }
+}

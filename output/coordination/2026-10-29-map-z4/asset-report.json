@@ -1,0 +1,114 @@
+{
+  "source": "img/theme-v4/map-cyberhell.webp",
+  "generator": "built-in image_gen",
+  "quadrants": {
+    "nw": {
+      "native": [
+        1678,
+        937
+      ],
+      "referenceBox": [
+        0,
+        0,
+        944,
+        527
+      ],
+      "inputSHA256": "161e183449e9614f3bee53bce0ae486de3b8911bc42edd71b44b470ea5e049c3"
+    },
+    "ne": {
+      "native": [
+        1679,
+        937
+      ],
+      "referenceBox": [
+        734,
+        0,
+        1678,
+        527
+      ],
+      "inputSHA256": "9554f5dfcf564275931d0a315eac78f75b5764081de734da4020e3313a754e58"
+    },
+    "sw": {
+      "native": [
+        1678,
+        937
+      ],
+      "referenceBox": [
+        0,
+        410,
+        944,
+        937
+      ],
+      "inputSHA256": "265541ebdf7fc676c1c6b207a9747e6cd93bbef492b1e4c4b5943e456ca6e347"
+    },
+    "se": {
+      "native": [
+        1678,
+        937
+      ],
+      "referenceBox": [
+        734,
+        410,
+        1678,
+        937
+      ],
+      "inputSHA256": "b56d977bbb1a48d28508bac2785403ce99edf2c02b8fdf6e4470fdfecde4a9ee"
+    }
+  },
+  "edgeRegistration": {
+    "coordinateSpace": "original 1678x937 world pixels",
+    "sourceEdgePixels": 217408,
+    "within2pxFraction": 0.9833676773623786,
+    "p50Px": 0.0,
+    "p95Px": 1.0,
+    "maxPx": 12.206555366516113,
+    "note": "Nearest delivered edge distance; not a semantic landmark proof. Inspect overlay and browser review."
+  },
+  "sheet": [
+    4915,
+    3277
+  ],
+  "chunks": 20,
+  "surfaceDetailFraction": 0.31997922572037113,
+  "comparison": {
+    "map-zone2/v2": {
+      "tiles": 20,
+      "encodedBytes": 4625162,
+      "decodedRGBABytes": 64425820
+    },
+    "map-zone4/v2": {
+      "tiles": 20,
+      "encodedBytes": 2790216,
+      "decodedRGBABytes": 64425820
+    }
+  },
+  "mobile": {
+    "maxConcurrentLoads": 3,
+    "maxDecodedAndLoadingTiles": 12,
+    "upperBoundTileRGBABytes": 50331648,
+    "note": "Static allocation bound only. No mobile browser timing or device measurement in sandbox."
+  },
+  "files": {
+    "r1-c1.webp": "c5df4b13029405c739bd536d8c48296a40f1c3f6dbefa11bdfe040cd6567d5b8",
+    "r1-c2.webp": "aafc8d436a239c201380996d655a5bd625067055ae0fb484be24fe60e1d32a15",
+    "r1-c3.webp": "18c7a2bcdfed382fbdf2a1827e4288e851d19a3daf99f1b42c84bcf58867fa55",
+    "r1-c4.webp": "a6a727b8e1461b3d93eb4b5fba59faf09301e71b9218e789b1fb8134f88077ab",
+    "r1-c5.webp": "2d6ddfd3132b04e19906f46864b4f93a907e0aa446120578bed5654fbe91f15c",
+    "r2-c1.webp": "7282c881a09d5fec648c2aa7a44720f59fc9974293925b39b9034409095950c9",
+    "r2-c2.webp": "245291cc2969c6c821b754f2281e140c07df4245828efe4e6b6ca793d65d3c4d",
+    "r2-c3.webp": "c341db440107e7a55237bd01be7a7cbadfe9959aa86b6e0f7091d2efb52248f9",
+    "r2-c4.webp": "02eddf3a841647b376205916d72dc63dbb0e3e0c7451b0c79dca73b6078cb470",
+    "r2-c5.webp": "61417c46a3c8255498279bffd4795c3f779b37ecb8398908f99c45b290ef803e",
+    "r3-c1.webp": "865844fa27be8e0317412d59558daf645391f8f36d59b6cf072703ca5f018580",
+    "r3-c2.webp": "2aa3eecc2c8a016821a040278494591a08695478d2e200c36807ce593557f5b4",
+    "r3-c3.webp": "d18e9a6a0d2229ab399e4c5d00c6fe93d3d5143fc26302a51ed933960be885b0",
+    "r3-c4.webp": "b3df47d261949615e341cea3677af873bdc32fac7da6db2996e519d36dc7632c",
+    "r3-c5.webp": "9b4d0e345cdb736c239e6578c6f7a93a0849365ed45e3ca7c31b483a595b7f89",
+    "r4-c1.webp": "100f03422ee991a1b1bd6798f08a7e6672caf714a622d2337a91a1be63420bb5",
+    "r4-c2.webp": "4e5873f7b9c0fbbe9c381ffa3ee710c9bdc66e577a53a3ac036243a4ec8f9fef",
+    "r4-c3.webp": "11dbe43cac04872826438b43558e3cefe072215383cb41ea49472860569d374d",
+    "r4-c4.webp": "5956bdd248baa2e0e6accb74c266e48e7ccdb08c344ed02565338aed77e99b1d",
+    "r4-c5.webp": "b86a7fb390fb4be4496fff8eff6a537bedfa5c079c0bce31ed1279a9028c7dc7",
+    "zone4-terrain-v2-preview.webp": "5e3d8f1fe5626260fa951269fb1528570236f720f4e99e1e4858c286533645a5"
+  }
+}

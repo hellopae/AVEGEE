@@ -1,0 +1,14 @@
+{
+  "command": "node --test tests/*.test.mjs",
+  "fullSuiteInvocations": 1,
+  "exitCode": 0,
+  "tests": 1619,
+  "pass": 1619,
+  "fail": 0,
+  "skipped": 0,
+  "durationMs": 194596.646271,
+  "browserRun": false,
+  "mobileMeasured": false,
+  "acceptance1": "not established: max nearest-edge distance exceeds 2px; offline comparisons and overlay supplied",
+  "acceptance2": "tile size/memory bounds and automated suite checked; physical mobile profiling pending"
+}
