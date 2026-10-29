@@ -199,7 +199,7 @@ export function stormFlash(time, reduced = false) {
   return phase < 100 ? .055 * (1 - phase / 100) : 0;
 }
 export function ambientParticles(zone, time, W, H, limit = null) {
-  const base = zone === 'west' ? 160 : zone === 'cyberhell' ? 130 : zone === 'asia' ? 20 : 30;
+  const base = zone === 'west' ? 160 : zone === 'cyberhell' ? 200 : zone === 'asia' ? 20 : 30;
   // `limit` is a particle count, or a CSS viewport {width,height,dpr} (WEATHER-A) that caps the count by screen size.
   const count = typeof limit === 'number' ? limit : limit ? Math.min(base, weatherBudget(limit) * 2) : base;
   const t=time/1000;
@@ -208,7 +208,7 @@ export function ambientParticles(zone, time, W, H, limit = null) {
     const speed=rain?360+seed(i+4)*160:zone==='west'?24+seed(i+4)*32:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
     return {x:mod(seed(i+4)*W+t*(rain?-75:zone==='west'?19:11),W),
       y:mod(seed(i+80)*H+t*speed,H),size:zone==='west'?1+seed(i+16)*2.4:1.5+seed(i+16)*2,
-      alpha:rain?.12+seed(i+30)*.12:.18+seed(i+30)*.32,angle:t*.7+i};
+      alpha:rain?.45+seed(i+30)*.3:.18+seed(i+30)*.32,angle:t*.7+i};
   });
 }
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds. */
@@ -216,12 +216,12 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
-  const count=biomeBudget(ctx,W,H,zone==='west'?160:zone==='cyberhell'?130:zone==='asia'?20:30);
+  const count=biomeBudget(ctx,W,H,zone==='west'?160:zone==='cyberhell'?200:zone==='asia'?20:30);
   for(const p of ambientParticles(zone,time,aw,ah,count)){
     ctx.globalAlpha=p.alpha;ctx.fillStyle=zoneStyle(zone).particle;
     if(zone==='cyberhell'){
-      ctx.strokeStyle='rgba(173,211,240,.55)';ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-3,p.y+13);ctx.stroke();
+      ctx.strokeStyle='rgba(190,222,248,.8)';ctx.lineWidth=1.4;
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-4,p.y+17);ctx.stroke();
     }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
   }
   ctx.globalAlpha=1;
