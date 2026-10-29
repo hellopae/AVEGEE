@@ -9,6 +9,12 @@ export const CASE_POSE_TYPES = Object.freeze(Object.fromEntries([
 ]));
 // Reuse once per original image. No cross-region costume substitution.
 export const SOUL_POSE_ASSETS = Object.freeze({
+  'img/Asia/spirit-cleric-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/cleric-asia-caught-lie-v1.png' }),
+  'img/Asia/spirit-worker-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/worker-asia-caught-lie-v1.png' }),
+  'img/Asia/spirit-officer-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/officer-asia-caught-lie-v1.png' }),
+  'img/Asia/spirit-executive-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/executive-asia-caught-lie-v1.png' }),
+  'img/Asia/spirit-woman-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/woman-asia-caught-lie-v1.png' }),
+  'img/Asia/spirit-business-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/business-asia-caught-lie-v1.png' }),
   'img/Thai/spirit-officer-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/officer-th-caught-lie-v1.png', necessity:'img/soul-poses/officer-th-necessity-v1.png' }),
   'img/Thai/spirit-recruit-th-v3.png': Object.freeze({ necessity:'img/soul-poses/recruit-th-necessity-v1.png' }),
   'img/Thai/spirit-girl-th-v2.png': Object.freeze({ necessity:'img/soul-poses/girl-th-necessity-v1.png' }),
