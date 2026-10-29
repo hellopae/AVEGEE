@@ -1,0 +1,18 @@
+(node:24582) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ no implicit kitchen after worker unlock; construction charges once and entry waits for completion (14.480188ms)
+✔ legacy implicit kitchens migrate visited branches once; new saves keep unbuilt kitchens absent (12.542331ms)
+✔ paid FIFO batches wait for arrival, reject duplicates, pause and cancel/refund only unfinished portions (1.976107ms)
+✔ keeper conflicts, invalid quantities and insufficient resources cannot create an order (139.427562ms)
+✔ save/load mid-batch and after completion never replays portions or currency; cooks return to posts (71.021792ms)
+✔ zone changes freeze source orders and resume them once on return (63.461808ms)
+✔ kitchen footprints and entry are finite in every zone and repeat without drift (2.409985ms)
+✔ both cooks physically walk back to ngiw/krata after their ordered batch (270.770829ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 832.082892

@@ -1,7 +1,6 @@
 import {mapActorHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
-import {canteenActive,canteenSite,drawCanteen} from './canteen.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
 import {zoneWorkers,drawWorker} from './workers.js';
 import {bossGuideDismissed} from './boss-guides.js';
@@ -343,8 +342,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const spot_ = (x, y, h) => { if (town) actorSpots.push([x, y, h]); };
   const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
-    at(townHouseDepth(site), () => {if(index===2&&canteenActive(g)){drawCanteen(ctx,g,t);mapName(ctx,'🍲 โรงอาหาร',site.x,site.y+14,'#ffe7c4');}else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
-  if(!town&&canteenActive(g))at(canteenSite(g).y,()=>drawCanteen(ctx,g,t));
+    at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
@@ -779,6 +777,7 @@ function drawStation(ctx, g, st, t) {
     return;
   }
   drawBuilding(ctx, d, t, UI_SCALE_MAP);
+  if(d.k==='canteen')mapName(ctx,'🍙 โรงอาหาร',d.bx,d.by+14,'#ffe7c4');
   if (d.k === 'tarang' && prisonEventBurning(g)) {
     // flames climb from the base to the roofline (smaller sprites so the building stays readable)
     const bw = d.bw || 180, top = topOf(d) ?? d.by - bw, mid = (d.by + top) / 2;

@@ -16,6 +16,7 @@ export const BUILD_PLAN = Object.freeze([
   { k:'lan',    lv:4 },   // ลานตรากตรำ — เบียดเบียน
   { k:'lokan',  lv:5 },   // โลกันตนรก — อกตัญญู
   { k:'krajok', lv:5 },   // หอส่องกรรม — เติมกระจกวิเศษ
+  { k:'canteen',lv:1 },   // โรงอาหาร — สั่งข้าวปั้นที่เคาน์เตอร์
 ]);
 
 const LV = Object.fromEntries(BUILD_PLAN.map(p => [p.k, p.lv]));

@@ -1,0 +1,47 @@
+(node:24103) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ no implicit kitchen after worker unlock; construction charges once and entry waits for completion (13.179858ms)
+✔ legacy implicit kitchens migrate visited branches once; new saves keep unbuilt kitchens absent (16.22762ms)
+✔ paid FIFO batches wait for arrival, reject duplicates, pause and cancel/refund only unfinished portions (3.815053ms)
+✔ keeper conflicts, invalid quantities and insufficient resources cannot create an order (156.901852ms)
+✔ save/load mid-batch and after completion never replays portions or currency; cooks return to posts (75.876728ms)
+✔ zone changes freeze source orders and resume them once on return (65.122821ms)
+✔ kitchen footprints and entry are finite in every zone and repeat without drift (2.600335ms)
+(node:24104) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ unlock table: tea Lv1 -> dab Lv2 -> sawan Lv3 -> ngiw/lan Lv4 -> lokan/krajok Lv5, every plan entry is a real buildable station (2.027573ms)
+✔ g.build refuses a locked station without charging, and accepts it the moment the level is reached (7.175796ms)
+✔ old saves: buildings already standing stay usable even when the level is below their unlock level (9.235356ms)
+✔ recommended build follows tea -> dab -> sawan, never recommends a locked station, and starts with krata in a new zone (1.913502ms)
+✔ level-up that unlocks a station logs it once (1.526671ms)
+✔ sleep needs a finished tea pavilion, not a bought bed (2.473071ms)
+✔ named cases never surface when their worst sin has no place to go yet (locked stations stay out of the queue) (56.58302ms)
+✔ hiring order: dam -> helper -> plerng -> guard -> boon -> kan, recommendation moves to the next un-hired entry (2.313835ms)
+✔ profile page has no management shortcut; the pause menu still reaches the management drawer (3.691034ms)
+(node:24105) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ทุกห้องมี ui4: crop ตรงสัดส่วนกรอบแบบ · พื้นที่เดิน · ปุ่มครบ (1.520343ms)
+✔ ยมบาทเริ่มและจุดลงมือของทุกห้องอยู่ในพื้นที่เดินได้ (ไม่งั้นเดินไปกดไม่ถึง) (0.862461ms)
+✔ หนึ่งเฟรมเดินข้ามแถบห้ามเดินที่คั่นระหว่างจุดเริ่มและปลายไม่ได้ (0.246512ms)
+✔ ข้อความของห้องมีทั้งไทยและอังกฤษ และตัวเลขความจุไม่ถูกฝังในข้อความ (15.929483ms)
+(node:24106) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new hiring is gated by the invading demon victory, existing workers survive legacy mode migration (8.990564ms)
+✔ workers build without Taan and cannot open the building before physical inspection (216.444038ms)
+✔ workers repair without Taan and cannot open the building before physical inspection (88.952701ms)
+✔ when no worker is hired Taan still builds and repairs normally (1.036957ms)
+✔ gathering requires a real built resource station and sells exactly the collected load at merchant (1.484966ms)
+✔ cooks physically reach canteen, make food, courier picks up and delivers it without consuming inventory rice (2.026962ms)
+✔ worker with zero morale walks to rest seats, sits and recovers; seated art exists for all zones (1.089432ms)
+✔ on-map journey includes handoff, boarding, right departure, left arrival and commits zone exactly once (104.678031ms)
+✔ cancel before departure preserves source, skip travels once, reduced motion keeps readable handoff (98.965732ms)
+✔ empty supplies seat workers and require a player rice gift or tea-rest order even after kitchen refills (77.987496ms)
+✔ a keeper collects successive judged souls one journey at a time and idle Dam remains available for an assigned case (234.369003ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1082.315379
