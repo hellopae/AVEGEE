@@ -1,0 +1,26 @@
+(node:83780) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ map names and bubble share one size; all name drawing sites use mapName (4.257591ms)
+✔ crew names and Nira recovery use dialogue size in all four map zones (37.594681ms)
+✔ final wave, reinforcement, ruler and warp boss names use the same map style (11.456412ms)
+✔ map status tags use compact map type while deva skill prompts keep their own size (0.451893ms)
+✔ border23 weather respects the warm/cold boundary and reduced motion (4.685212ms)
+✔ frozen town keeps its existing snow sky and no longer sheds warm canopy leaves (5.73799ms)
+✔ map masks select lava and water, avoiding snow, bridges and red ground (2.049852ms)
+✔ all four zone effects move deterministically, stay bounded, and use small particle budgets (3.642662ms)
+✔ sky renders different frames and reduced motion avoids all drawing and mask work (1.737435ms)
+✔ weather cap follows CSS viewport and DPR, never world size, and reduced motion disables particles (4.263988ms)
+✔ reduced motion is identical across time, has no smoke/dust, and settings disable every new draw (1.824155ms)
+✔ pause holds the last weather phase; labels are unioned and clipped before weather (1.685393ms)
+✔ frontiers clip weather to the authored biome halves, retain cold snow, and invent no fire anchors (2.384066ms)
+✔ scene schedules weather after actors, before dialogue/badges; cache aliases share settings instance (11.324273ms)
+✔ settings preference persists and restores, and blocked storage never breaks rendering (2.900816ms)
+✔ unsupported canvas skips weather safely and can retry after a usable context is available (2.739743ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30403.055935

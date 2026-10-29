@@ -7,7 +7,7 @@ import {bossGuideDismissed} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { activeTownZone } from './zone-skin.js';
-import { TOWN_DAIS } from './town-layout.js?v=k1d';
+import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
@@ -18,7 +18,7 @@ import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-e
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
-import { drawMapAmbientGround, drawMapAmbientSky } from './map-ambient.js?v=mapfx-k1d';
+import { drawMapAmbientGround, drawMapAmbientSky, drawMapWeather } from './map-ambient.js?v=mapfx-k1d';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
@@ -54,6 +54,7 @@ let lastHeroActor = null, lastHeroZone = null;
 const crewWalkTracks = new WeakMap();
 const reducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
 let ambientTime = 0;
+const weatherLabels=[];
 const mapViews = new WeakMap();
 export const setMapViewport = (cv, view) => mapViews.set(cv, view);
 
@@ -190,6 +191,7 @@ function tag(ctx, x, y, t, [text, color], small=false) {
   ctx.font = `600 ${fontSize}px "IBM Plex Sans Thai", system-ui, sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   const w = ctx.measureText(text).width + 10 * UI_SCALE_MAP, h = fontSize * 1.6, yy = y + bob;
+  weatherLabels.push([x-w/2-3,yy-h/2-3,w+6,h+6]);
   ctx.fillStyle = 'rgba(20,10,14,.88)';
   rr(ctx, x - w / 2, yy - h / 2, w, h, 7 * UI_SCALE_MAP); ctx.fill();
   ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
@@ -246,6 +248,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
+  weatherLabels.length=0;
   ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
   if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
@@ -701,12 +704,6 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
   if(town)drawTownNightEffects(ctx,t,reduced);
 
-  // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
-  // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
-  for (const c of (rescue ? [] : g.crew))
-    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 54 : 48), c.k === 'nira' ? .74 : 1);
-
-
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
   if (!rescue && g.bossUntil && t < g.bossUntil) {
     if (g.zone === 'west' && town) {
@@ -721,6 +718,24 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       }
     } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, 92 * CHAR_SCALE_MAP * 1.2, t, '👹');
   }
+
+  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, reduced);
+  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,
+    labels:weatherLabels,sources:town&&g.zone==='th' ? [
+      ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>
+        [st.def.bx,st.def.by-st.def.bw*.45]),
+      ...TOWN_PROP_SITES.filter(p=>p.kind==='torch').map(p=>{
+        const art=townPropArt(p,sceneryTree,sceneryWaterfall,img);
+        const h=art?p.w*art.naturalHeight/art.naturalWidth:(p.h||p.w);
+        return [p.x,p.y-h*.85+9];
+      }),
+    ]:[]});
+
+  // บทพูดวาดทีหลังทั้งหมด จะได้ไม่โดนตัวละครตัวอื่นทับ
+  // ยกสูงกว่าหัวพอสมควร เพราะช่วง y-CH-8 เป็นที่ของหมุด 📜 (ชั้น HTML ใน ui.js)
+  for (const c of (rescue ? [] : g.crew))
+    if (c.x != null && c.say && now0 < c.sayUntil) bubble(ctx, `${c.name}: ${c.say}`, c.x, c.y - CREW_H - (c.k === 'nira' ? 54 : 48), c.k === 'nira' ? .74 : 1);
+
 
   // ---- ลูกไฟที่เพิ่งฟาด ----
   const now = Date.now();
@@ -744,7 +759,6 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (spot) buildPrompt(ctx, spot, t, g);
 
   if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
-  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
@@ -941,6 +955,8 @@ function mapName(ctx, text, x, y, color) {
 function label(ctx, text, x, y, size, color = '#fff', outline = 6) {
   ctx.font = `600 ${size * UI_SCALE_MAP}px "IBM Plex Sans Thai","Apple Color Emoji",sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const tw=ctx.measureText(text).width+outline*2+4,th=size*UI_SCALE_MAP*1.8+outline*2;
+  weatherLabels.push([x-tw/2,y-th/2,tw,th]);
   ctx.lineWidth = outline; ctx.strokeStyle = 'rgba(0,0,0,.75)';
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color; ctx.fillText(text, x, y);

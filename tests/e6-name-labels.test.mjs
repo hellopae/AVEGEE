@@ -34,7 +34,7 @@ test('map names and bubble share one size; all name drawing sites use mapName',(
   assert.match(source,/const MAP_NAME_SIZE = 8;/);
   const helpers = source.slice(source.indexOf('function bubble('),source.indexOf('/** แปลงพิกัดเมาส์'));
   const ctx=context();
-  runInNewContext(`const MAP_NAME_SIZE=8, UI_SCALE_MAP=1.2, SCENE={w:1678}; ${helpers};
+  runInNewContext(`const weatherLabels=[], MAP_NAME_SIZE=8, UI_SCALE_MAP=1.2, SCENE={w:1678}; ${helpers};
     mapName(ctx,'name',50,100); bubble(ctx,'dialogue',50,30);`,{ctx,rr(){}});
   nameStyle(ctx.calls[0]);
   assert.equal(ctx.calls[0].font.match(/[\d.]+px/)[0],ctx.calls[1].font.match(/[\d.]+px/)[0]);

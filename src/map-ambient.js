@@ -176,8 +176,9 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
   ctx.restore();
 }
 
-export function ambientParticles(zone, time, W, H) {
-  const t=time/1000, count=zone==='west'?90:zone==='asia'?20:zone==='th'?30:26;
+export function ambientParticles(zone, time, W, H, viewport = null) {
+  const t=time/1000, base=zone==='west'?90:zone==='asia'?20:zone==='th'?30:26;
+  const count=viewport?Math.min(base,weatherBudget(viewport)*2):base;
   return Array.from({length:count},(_,i)=>{
     const speed=zone==='west'?12+seed(i+4)*25:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
     const drift=zone==='west'?14:zone==='asia'?11:3;
@@ -191,7 +192,7 @@ export function ambientParticles(zone, time, W, H) {
 export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
   if(reduced)return;
   ctx.save();
-  for(const p of ambientParticles(zone,time,W,H)){
+  for(const p of ambientParticles(zone,time,W,H,weatherViewport(ctx))){
     ctx.globalAlpha=p.alpha;
     ctx.fillStyle=zoneStyle(zone).particle;
     ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
@@ -212,6 +213,113 @@ export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
       ctx.strokeStyle=`rgba(174,229,255,${.55*(1-phase/.18)})`;ctx.lineWidth=1.6;
       ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+5,y-8);ctx.lineTo(x+9,y-3);ctx.lineTo(x+15,y-15);ctx.stroke();
     }
+  }
+  ctx.restore();
+}
+
+// WEATHER-A extends the shared map pass. Sprites are baked once, never filtered or
+// read back per frame. This pass belongs after actors and before canvas/DOM HUD.
+export const WEATHER_ZONES = Object.freeze({
+  th:{shade:.085,speed:5}, asia:{shade:.065,speed:3.4},
+  west:{shade:.075,speed:2.4}, cyberhell:{shade:.10,speed:6},
+});
+let weatherOn=true;
+try { if(typeof window!=='undefined')weatherOn=window.localStorage?.getItem('avegee.weather')!=='off'; } catch {}
+export const weatherEnabled=()=>weatherOn;
+export function setWeatherEnabled(value){
+  weatherOn=!!value;
+  try { if(typeof window!=='undefined')window.localStorage?.setItem('avegee.weather',weatherOn?'on':'off'); } catch {}
+}
+export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
+  if(reduced)return 0;
+  // CSS viewport area, with a further high-DPR reduction. World size/zoom must
+  // never multiply this budget. One budget is shared by both frontier halves.
+  return Math.max(6,Math.min(36,Math.floor(36*Math.min(1,width*height/(1440*900))/Math.max(1,dpr/1.5))));
+}
+let weatherSprites;
+const weatherClocks=new WeakMap();
+function weatherArt(){
+  if(weatherSprites)return weatherSprites;
+  if(typeof document==='undefined')return null;
+  const make=rgb=>{
+    const c=document.createElement('canvas');c.width=c.height=128;
+    const p=c.getContext('2d'),g=p?.createRadialGradient?.(64,64,0,64,64,64);
+    if(typeof g?.addColorStop!=='function')return null;
+    g.addColorStop(0,`rgba(${rgb},1)`);g.addColorStop(.45,`rgba(${rgb},.6)`);g.addColorStop(1,`rgba(${rgb},0)`);
+    p.fillStyle=g;p.fillRect(0,0,128,128);return c;
+  };
+  const cloud=make('16,22,32'),smoke=make('135,125,120');
+  return cloud&&smoke ? (weatherSprites={cloud,smoke}) : null;
+}
+export function weatherViewport(ctx){
+  const dpr=globalThis.devicePixelRatio||1;
+  return {width:ctx.canvas?.clientWidth||ctx.canvas?.width/dpr||1440,
+    height:ctx.canvas?.clientHeight||ctx.canvas?.height/dpr||900,dpr};
+}
+/** Rectangular exclusions are unioned so overlapping labels cannot punch back
+ * through an even-odd clip. All coordinates are in the caller's world space. */
+export function weatherLabelBounds(rects){
+  const out=[];
+  for(const input of rects){
+    let r=[...input],changed=true;
+    while(changed){changed=false;
+      for(let i=out.length-1;i>=0;i--){const b=out[i];
+        if(r[0]<=b[0]+b[2]&&r[0]+r[2]>=b[0]&&r[1]<=b[1]+b[3]&&r[1]+r[3]>=b[1]){
+          const x=Math.min(r[0],b[0]),y=Math.min(r[1],b[1]);
+          r=[x,y,Math.max(r[0]+r[2],b[0]+b[2])-x,Math.max(r[1]+r[3],b[1]+b[3])-y];out.splice(i,1);changed=true;
+        }
+      }
+    }out.push(r);
+  }return out;
+}
+export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled()}={}) {
+  if(!enabled||!(W>0&&H>0))return;
+  const art=weatherArt();if(!art)return;
+  let clock=weatherClocks.get(ctx);
+  if(!clock){clock={raw:time,elapsed:time};weatherClocks.set(ctx,clock);}
+  if(!paused)clock.elapsed+=Math.max(0,time-clock.raw);
+  clock.raw=time;
+  const t=reduced?0:clock.elapsed/1000,budget=weatherBudget({...viewport,reduced});
+  ctx.save();
+  ctx.beginPath();ctx.rect(x,y,W,H);
+  for(const r of weatherLabelBounds(labels))ctx.rect(...r);
+  ctx.clip('evenodd');ctx.translate(x,y);
+  const halves=regions||[{zone,from:0,to:1}];
+  for(const region of halves){
+    const style=WEATHER_ZONES[region.zone];if(!style)continue;
+    const left=region.from*W,rw=(region.to-region.from)*W;
+    ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
+    // Three broad feathered shadows, max combined opacity under 20%. Shared
+    // world coordinates shade the painted floor and actor pixels together.
+    for(let i=0;i<3;i++){
+      const cw=W*.56,ch=H*.42,cx=mod(W*(i*.37+.13)+t*style.speed,W+cw)-cw/2;
+      const cy=H*(.23+i*.27)+Math.sin(t*.025+i)*H*.025;
+      ctx.globalAlpha=style.shade*.66;ctx.drawImage(art.cloud,cx-cw/2,cy-ch/2,cw,ch);
+    }
+    if(region.zone==='asia'){
+      ctx.globalAlpha=1;
+      // Soft graded wedges; no full-screen flash or bright opaque beam core.
+      for(let i=0;i<3;i++){
+        const bx=left+rw*(.12+i*.31),by=H*.07,bw=rw*.15;
+        const g=ctx.createLinearGradient(bx,by,bx+bw,H*.88);
+        g.addColorStop(0,'rgba(255,241,190,0)');g.addColorStop(.3,'rgba(255,241,190,.045)');g.addColorStop(1,'rgba(255,241,190,0)');
+        ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw*2,H*.88);ctx.lineTo(bx+bw*.6,H*.88);ctx.closePath();ctx.fill();
+      }
+      for(let i=0;i<Math.floor(budget/halves.length);i++){
+        const px=left+mod(seed(i+51)*rw+t*3,rw),py=mod(seed(i+91)*H-t*5,H);
+        ctx.globalAlpha=.12+seed(i+18)*.13;ctx.fillStyle='#fff1bd';ctx.beginPath();ctx.arc(px,py,1+seed(i+3),0,Math.PI*2);ctx.fill();
+      }
+    }
+    if(region.zone==='th'&&budget&&sources.length){
+      for(let i=0;i<Math.floor(budget/halves.length);i++){
+        const p=sources[i%sources.length],age=mod(t*.16+seed(i+12),1);
+        const sx=p[0]+Math.sin(age*3+i)*W*.003+age*W*.008,sy=p[1]-age*H*.065,r=W*(.004+age*.009);
+        ctx.globalAlpha=Math.sin(age*Math.PI)*.12;
+        ctx.drawImage(art.smoke,sx-r,sy-r*1.4,r*2,r*2.8);
+      }
+    }
+    ctx.restore();
   }
   ctx.restore();
 }

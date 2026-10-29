@@ -1,7 +1,7 @@
 import {mapActorHeight,routeCharacterScale} from './character-scale.js';
 import {ROUTE_FOREGROUND,drawRouteForeground} from './route-occlusion.js';
 import {createFrontierNavigation} from './dungeon-navigation.js';
-import {drawFrontierAmbient,drawFrontierTree} from './frontier-ambient.js';
+import {drawFrontierAmbient,drawFrontierTree,drawFrontierWeather} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
@@ -358,6 +358,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       if(!reduced.matches&&drawHeroWalk(ctx,p[0],p[1],h,moving?walkDistance:0,face,direction))return;
       drawStandee(ctx,'hero-yama',p[0],p[1],h,animationTime,'👑',face,false,g.zone);
     });
+    drawFrontierWeather(ctx,{routeId,time:t,paused:g.paused,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});
     mc.clearRect(0,0,180,110);if(image.complete&&image.naturalWidth)mc.drawImage(image,0,0,180,110);
     mc.drawImage(miniMask,0,0,180,110);
     mc.fillStyle='#fff';mc.beginPath();mc.arc(hero[0]*180,hero[1]*110,3,0,Math.PI*2);mc.fill();
