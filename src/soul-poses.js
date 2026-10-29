@@ -9,6 +9,7 @@ export const CASE_POSE_TYPES = Object.freeze(Object.fromEntries([
 ]));
 // Reuse once per original image. No cross-region costume substitution.
 export const SOUL_POSE_ASSETS = Object.freeze({
+  'img/Asia/spirit-clerk-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/clerk-asia-caught-lie-v1.png' }),
   'img/Asia/spirit-cleric-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/cleric-asia-caught-lie-v1.png' }),
   'img/Asia/spirit-worker-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/worker-asia-caught-lie-v1.png' }),
   'img/Asia/spirit-officer-asia-v2.png': Object.freeze({ caught_lie:'img/soul-poses/officer-asia-caught-lie-v1.png' }),

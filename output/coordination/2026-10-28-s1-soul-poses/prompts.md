@@ -1,5 +1,17 @@
 # Artwork provenance and pending prompts
 
+## S1-ART5 actual prompt — 29 October 2026
+
+Built-in image_gen only; one call, no retries. Original supplied as referenced_image_paths with transparent_background: true. Output copied byte-for-byte without resampling, compositing or alpha edits. A16 uses the new clerk drawing. A10/A14/A17/A18/A20 reuse ART4 business, A12 reuses ART4 woman, A15 reuses ART4 executive; their actual prompts are recorded below. No additional generations for shared original/type pairs. ART4 registry, six files and recorded prompts were already complete.
+
+Reference: `img/Asia/spirit-clerk-asia-v2.png`
+
+Saved: `img/soul-poses/clerk-asia-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image preserving this EXACT same fictional young female clerk, feminine facial identity, dark grey elaborate updo with red ribbon and jade gold hairpin and red tassels, pale blue ghost skin, cream hanfu with rust-red and teal gold-patterned trim, jade belt ornaments, book held at chest and brush held in her other hand, original palette, pixel-painted chibi linework and pixel density. Change ONLY facial expression: startled at being caught lying, very wide eyes retaining original dark pupils, raised eyebrows, small open shocked mouth, clearly visible sweat droplets at temples and cheeks drawn into the sprite. Sweat is not tears; no crying. Keep hands, outfit, objects, tail, full-body silhouette, character scale, orientation, framing and margins in their existing positions. Keep canvas exactly 1254 by 1254 pixels and bottom ghost-tail anchor aligned with reference. Actual transparent RGBA background. No scene, text, new objects, extra people, UI or watermark. One image only.
+```
+
 ## S1-ART4 actual prompts — 29 October 2026
 
 Built-in image_gen only; six calls, one per original/type pair, no retries. Every call used the original as referenced_image_paths and transparent_background: true. Outputs copied byte-for-byte without resampling or alpha edits. A1/A7 share cleric; A4/A6 share executive. All eight requested cases covered. Other cases sharing these original/type pairs also resolve through the existing registry; no case classification or narrative was changed.

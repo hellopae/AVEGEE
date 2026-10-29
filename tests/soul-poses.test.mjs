@@ -73,8 +73,12 @@ const art4Pairs = [
  ['A1','cleric'], ['A2','worker'], ['A3','officer'], ['A4','executive'],
  ['A6','executive'], ['A7','cleric'], ['A8','woman'], ['A9','business'],
 ];
-test('ART4 Asia cases select their regional drawing and preload it once without mutating evidence',()=>{
- for(const [key,name] of art4Pairs){
+const art5Pairs = [
+ ['A10','business'], ['A12','woman'], ['A14','business'], ['A15','executive'],
+ ['A16','clerk'], ['A17','business'], ['A18','business'], ['A20','business'],
+];
+test('ART4 and ART5 Asia cases select their regional drawing and preload it once without mutating evidence',()=>{
+ for(const [key,name] of [...art4Pairs,...art5Pairs]){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
   const original=`img/Asia/spirit-${name}-asia-v2.png`;
   const expected=`img/soul-poses/${name}-asia-caught-lie-v1.png`;
@@ -91,7 +95,7 @@ test('ART4 Asia cases select their regional drawing and preload it once without 
  }
  for(const key of ['A5','A11','A13','A19']){
   const s=soulFor(key),l=s.lines[0];
-  for(const [,name] of art4Pairs)
+  for(const [,name] of [...art4Pairs,...art5Pairs])
    assert.equal(soulPoseForPress(createGame(),s,l,`img/Asia/spirit-${name}-asia-v2.png`),null,key);
  }
 });
