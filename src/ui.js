@@ -2239,7 +2239,7 @@ function openHelp() {
       <b>กดที่แถบไหนก็ได้บนหัวเรื่อง</b> เพื่อดูว่ามันขึ้นลงเพราะอะไร และหมดแล้วเกิดอะไร</div></div>
 
     <ol style="line-height:var(--leading-body);font-size:var(--text-sm);padding-left:1.2em">
-      <li><b>ทีมของท่าน</b> — <b>นิรา</b> อ่านสำนวนให้ฟังอย่างเดียว (ไม่รับเวรลงทัณฑ์) ·
+      <li><b>ทีมของท่าน</b> — <b>นิรา</b> จะอ่านสำนวนให้ท่าน และแค่คอยช่วยอยู่ด้านหลัง (ไม่รับเวรลงทัณฑ์) ·
           <b>ทัณฑ์</b> คือผู้คุมคนเดียวที่มีตอนเริ่ม · ถ้าคนไม่พอให้จ้างยมทูตเพิ่ม</li>
       <li><b>เดิน</b> — คลิกที่พื้น หรือกด WASD / ลูกศร ·
           ลงธารลาวาหรือแม่น้ำวิญญาณไม่ได้</li>
@@ -3916,11 +3916,15 @@ function openBattle(after) {
     const prep = prepHidden && prepOn ? `<div class="boss-prep-actions"><button data-prep-show>${esc(t('battle.prep.show'))}</button>
       <button class="gold" data-prep-go>⚔️ ${esc(goLabel)}</button></div>` : '';
     const battleChoice = (k, icon, label, ok, note = '') => {
+      const skill = COMBAT_SKILLS[k];
+      const fullLabel = skill?.name || label;
+      label = skill?.shortName || label;
+      const chipLabel = skill?.chipParts ? skill.chipParts.map(part => `<span>${esc(part)}</span>`).join('<wbr>') : esc(label);
       const remaining = yamaSkillRemaining(b, k);
       const baseReady = ok;
       ok = ok && !remaining;
-      return `<button class="orb-choice" data-base-ready="${baseReady}" data-act="${k}" ${ok ? '' : 'disabled'}
-      title="${esc(label + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${esc(label)}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
+      return `<button class="orb-choice${skill ? ' combat-skill-choice' : ''}" data-base-ready="${baseReady}" data-act="${k}" ${ok ? '' : 'disabled'}
+      title="${esc(fullLabel + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${chipLabel}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
     };
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
@@ -6875,7 +6879,7 @@ function openIntro(fromTitle = false) {
   const pages = [
     { title:'สามร้อยปีที่ไม่มีใครอยากพูดถึง', art:'scene', line:'โซนสุวรรณภูมิเคยมีผู้คุมสิบสองคน ตอนนี้เหลือสองคน และสำนวนที่ยังไม่มีใครกล้าเปิดอ่าน' },
     { title:'งานแรกของลูกพญายม', art:'hero-boss', line:'“เจ้าจะไม่ตัดสินจากหน้าตา จากคำร่ำลือ หรือจากความโกรธของตัวเอง” พ่อวางตรายมบาทลงในมือยมบาทน้อย' },
-    { title:'แฟ้มเล่มแรก', art:'crew-nira', line:'นิราอ่านเพียงสิ่งที่คนบนโลกเห็น บางวิญญาณดูดี บางวิญญาณดูร้าย แต่สิ่งที่ซ่อนอยู่จะปรากฏก็ต่อเมื่อเจ้าสอบสวน' },
+    { title:'แฟ้มเล่มแรก', art:'crew-nira', line:'“นิราจะอ่านสำนวนให้ท่าน และแค่คอยช่วยอยู่ด้านหลัง” พ่อแนะนำก่อนให้นิราเปิดแฟ้ม นิราอ่านเพียงสิ่งที่คนบนโลกเห็น บางวิญญาณดูดี บางวิญญาณดูร้าย แต่สิ่งที่ซ่อนอยู่จะปรากฏก็ต่อเมื่อเจ้าสอบสวน' },
     { title:'คำตัดสินเดินได้', art:'hero-yama', line:'เมื่อออกหมาย ยมทูตจะพาวิญญาณไปยังสถานที่ที่เจ้าสร้างไว้ ตัดสินให้ตรงกรรมและตรงวาระ เพราะทุกคำสั่งมีผลตามมา' },
     { title:'กฎข้อเดียวที่ห้ามลืม', art:'hero-boss', line:`“ทัณฑ์ที่เกินกรรมไม่ได้หายไปไหน มันกลับมาอยู่ในบัญชีของผู้ตัดสิน” พ่อให้ ${BAL.startCoin} เบี้ยกรรม แล้วปล่อยให้เจ้ารับสำนวนแรก` },
   ];

@@ -1,0 +1,23 @@
+{
+  "zone": "cyberhell",
+  "size": 3,
+  "kind": "final",
+  "encounter": "minion:3",
+  "params": {
+    "hp": 1.2,
+    "atk": 0.86,
+    "atkLow": 0.01,
+    "atkHigh": 2.31
+  },
+  "stats": [
+    {
+      "rate": 0.79,
+      "rounds": 4.443037974683544
+    },
+    {
+      "rate": 0.895,
+      "rounds": 3.4916201117318435
+    }
+  ],
+  "loss": 0
+}

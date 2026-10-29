@@ -1,0 +1,63 @@
+(node:76626) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ เข้าบอส — แฟ้มหลักฐานเป็นโบนัสอัตโนมัติถ้าภารกิจสาขาสำเร็จ ไม่ต้องกดปุ่มเลือก (51.551229ms)
+✔ ไม่มี b.prepUsed / โหมด crew/power เดิมอีกต่อไป — prepareBoss() ถูกถอดออกแล้ว (3.370562ms)
+✔ กินหีบยาเติมบารมีระหว่างเตรียมศึก — ใช้ของจากกระเป๋าจริง กินซ้ำได้หลายครั้งถ้ามีของพอ (13.910384ms)
+✔ ไม่มีหีบยา หรือบารมีเต็มแล้ว — กินไม่ได้ คืน false (4.25794ms)
+✔ กดเข้าสู้แล้ว กินหีบยาเพิ่มไม่ได้ (พ้นช่วงเตรียมศึกแล้ว) (6.998743ms)
+✔ พ่อค้านรกขายของฟื้นฟูและเสบียง ไม่ขายพลังโจมตี (5.205213ms)
+(node:76627) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1 finale triggers even on a lethal hit, injures the hero and awards flame charge once (129.462049ms)
+✔ Zone 2 finale saves Nira, unlocks Rage and allows a visit during three turns of rest (806.843508ms)
+✔ Zone 3 wins grant ice and queue its two story panels (6.839213ms)
+✔ Rage requires 60 active seconds and three boosted attacks before reuse (6.206262ms)
+✔ old saves keep earned powers and derive the revised milestone rewards (8.108328ms)
+(node:76628) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: replay boss uses its current frontier or cave location (99.397359ms)
+✔ th: invasion boss uses lower position and talk label, without a duplicate replay boss (21.636164ms)
+✔ asia: replay boss uses its current frontier or cave location (14.436178ms)
+✔ asia: invasion boss uses lower position and talk label, without a duplicate replay boss (5.960577ms)
+✔ west: replay boss uses its current frontier or cave location (317.832217ms)
+✔ west: invasion boss uses lower position and talk label, without a duplicate replay boss (4.329962ms)
+✔ cyberhell: replay boss uses its current frontier or cave location (133.361132ms)
+✔ cyberhell: invasion boss uses lower position and talk label, without a duplicate replay boss (4.17596ms)
+✔ R1: invasion enemies have no map nameplates in all four zones (19.838488ms)
+(node:76629) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new powers require their event unlock and enough MP (55.819396ms)
+✔ wind fan damages every foe and allows the ordinary counter (16.851841ms)
+✔ Rage boosts exactly three damaging actions (12.899052ms)
+✔ Valkyrie spear is a strong MP attack (5.179478ms)
+✔ clock resets helper cooldowns once per battle (12.820104ms)
+✔ event hypnosis can be used before the old level gate (7.581136ms)
+✔ event boss stronger counter exposes its cutscene metadata (4.371596ms)
+✔ spare heart revives Yama once when a counterattack would defeat him (2.575135ms)
+(node:76630) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ outside frontier fights use only Yama and Nira despite the selected party and hired guard (67.110455ms)
+✔ Nira gets a distinct turn and normal attack without spending healing cooldown (15.620926ms)
+✔ ordinary border with no hired office helper or selected team keeps Yama alone (5.734586ms)
+✔ Nira heals Yama or herself with capped HP, animation metadata and cooldown (18.777721ms)
+✔ full recipient and excluded party targets cannot consume Nira healing (5.256565ms)
+✔ downed Nira leaves the queue without admitting another companion (5.376511ms)
+✔ combat art uses all four regional sheets and the four animation rows (2.04725ms)
+✔ healing cutscene has an accessible fallback, visible title and immediate skip (3.148389ms)
+(node:76631) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ red warnings escalate per regional authority, persist, and end in cauldron/tea recovery (231.279419ms)
+✔ every regional boss ultimate hits Yama, both companions and Guard; ordinary counter hits one (22.916343ms)
+✔ zone-one event boss uses its own cutscene rather than frontier artwork (3.656922ms)
+✔ confession stays tied to temple-land/drug claim and does not reveal unrelated supplement fraud (3.06842ms)
+✔ five intensity colors map consistently; mitigating deeds subtract from the sentence (0.872394ms)
+✔ procedural claims keep both visible and hidden deeds interrogatable without changing subjects (8.681679ms)
+✔ special cooldown remains locked until exactly two minutes of battle time (4.58667ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1844.669683

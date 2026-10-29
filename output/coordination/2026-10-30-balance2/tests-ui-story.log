@@ -1,0 +1,46 @@
+(node:63074) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 30A: every story page puts caption and controls after the image; navigation finishes once (17.837621ms)
+✔ 30A: back navigation retains the separate caption (1.087926ms)
+✔ 30A: zones 2–4 choose real arrival scenes even with a loaded boss profile; zone 1 keeps resolver behavior (3.592055ms)
+✔ 30A: opening intro and both regional arrival pages keep text below the frame (7.035165ms)
+✔ 30A: crop geometry removes letterbox rows without horizontal cropping in the story frame (56.282157ms)
+✔ 30A: crop updates cached, newly loaded and fallback images; thumbnail stays square (0.990098ms)
+✔ 30A: ending popup uses a clipped cover thumbnail, with crop preparation (3.658711ms)
+✔ 30A: only the two requested action sources opt out of mirroring; runtime adds right-facing class (3.037191ms)
+(node:63075) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors (27.018953ms)
+✔ BALANCE-2 tutor keeps the exact approved sentence; intro and help disclose back-line support (1.738372ms)
+✔ BALANCE-2 every new move renders an unclipped-name row, ultimate chip short name and full tooltip/manual (3.913032ms)
+✔ BALANCE-2 enemy scaling freezes the initial party count and does not rescale an ongoing/restored wave (0.414564ms)
+✔ BALANCE-2 changed runtime modules share release identities; stylesheet is versioned (22.795912ms)
+(node:63076) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ remembered enemy stays unmarked at rest; attacks and AOE ask for confirmation, heals and cancellation do not mark foes (64.515925ms)
+✔ weapon HUD collapses to sword + effect icon; actual cooldown and notes remain available on request (3.829984ms)
+✔ weapon details retain translated names and quantities (1.179544ms)
+✔ UI-JW renders the sword details beside Yama inside his team card, outside companion scrolling (5.973132ms)
+✔ new-game and menu intro navigation render all five shipped G2 panels (29.468498ms)
+✔ cover selects the v4 art before fallbacks and no cover video layer exists (5.238519ms)
+✔ K2 interactive rows keep a stationary hit area through pointerdown and click (3.689612ms)
+✔ K2 normal formation keeps allies closer on both diagonal axes (1.534235ms)
+✔ K2 changed entry URLs match, including review imports (263.772971ms)
+✔ K2 pointerdown captures primary input, leaves activation to one native click (3.357857ms)
+✔ K2 review: hint box cannot swallow enemy clicks and flyout names are not width-capped (1.116583ms)
+✔ K5 flyout stays beside its tab when nothing is in the way (3.249414ms)
+✔ K5 flyout never lands on an enemy HP bar: it moves below the enemy row (0.696912ms)
+✔ K5 flyout opens to the other side when the near side is blocked and moving costs more (0.980501ms)
+✔ K5 a covered enemy costs more than covering an ally or the talk box (0.86389ms)
+✔ K5 a tall flyout is shortened (it scrolls) instead of running off the stage (0.494856ms)
+✔ K5 candidates outside the stage or with no usable height are skipped (0.408269ms)
+✔ K5 safety margin: a box that only touches the padded enemy rect still counts as a hit (0.468764ms)
+✔ K5 wiring: ui.js measures enemies, hint strip is thin, release entries stay consistent in both entry pages (268.712897ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 656.709128

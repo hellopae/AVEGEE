@@ -199,3 +199,10 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
  .arena.combat-arena.battle9-arena .battle-boss-hud>img{grid-row:auto;width:54px;height:54px}
  .arena.combat-arena.battle9-arena .battle-boss-status{grid-row:2;min-width:0;width:100%;overflow-wrap:anywhere}
 }
+
+/* BALANCE-2: give every new move its natural Thai line breaks and a growing row.
+   Keep the note on its own row, including the narrow 390px menu. */
+.battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice{height:auto!important;min-height:52px!important;grid-template-rows:auto auto}
+.battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice b{grid-column:2/-1;white-space:normal;overflow:visible;text-overflow:clip;word-break:normal;overflow-wrap:normal}
+.battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice i{grid-column:2/-1;grid-row:2;max-width:none;white-space:normal;overflow:visible;text-overflow:clip}
+.battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice b>span{display:inline-block;white-space:nowrap}

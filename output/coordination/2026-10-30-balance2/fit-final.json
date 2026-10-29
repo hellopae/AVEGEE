@@ -1,0 +1,1661 @@
+[
+  {
+    "zone": "th",
+    "size": 3,
+    "kind": "frontier",
+    "params": {
+      "hp": 3.6,
+      "atk": 2.91
+    },
+    "stats": [
+      {
+        "rate": 0.76,
+        "rounds": 5.980263157894737
+      },
+      {
+        "rate": 0.85,
+        "rounds": 5.382352941176471
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 3,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.59
+    },
+    "stats": [
+      {
+        "rate": 0.7,
+        "rounds": 3.857142857142857
+      },
+      {
+        "rate": 0.865,
+        "rounds": 2.23121387283237
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 4,
+    "kind": "breach",
+    "params": {
+      "hp": 3,
+      "atk": 1.71
+    },
+    "stats": [
+      {
+        "rate": 0.51,
+        "rounds": 6.676470588235294
+      },
+      {
+        "rate": 0.82,
+        "rounds": 5.884146341463414
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 5,
+    "kind": "boss",
+    "params": {
+      "hp": 1.65,
+      "atk": 0.96
+    },
+    "stats": [
+      {
+        "rate": 0.33,
+        "rounds": 5.242424242424242
+      },
+      {
+        "rate": 0.8,
+        "rounds": 4.15
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 4,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.53
+    },
+    "stats": [
+      {
+        "rate": 0.78,
+        "rounds": 2.1858974358974357
+      },
+      {
+        "rate": 0.875,
+        "rounds": 1.4685714285714286
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 5,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 1.43
+    },
+    "stats": [
+      {
+        "rate": 0.305,
+        "rounds": 5.934426229508197
+      },
+      {
+        "rate": 0.82,
+        "rounds": 4.920731707317073
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 6,
+    "kind": "boss",
+    "params": {
+      "hp": 1.27,
+      "atk": 0.84
+    },
+    "stats": [
+      {
+        "rate": 0.555,
+        "rounds": 5.873873873873874
+      },
+      {
+        "rate": 0.895,
+        "rounds": 5.06145251396648
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "minion:2",
+    "params": {
+      "hp": 2,
+      "atk": 1.02,
+      "atkLow": 0.15,
+      "atkHigh": 1.83
+    },
+    "stats": [
+      {
+        "rate": 0.715,
+        "rounds": 6.062937062937063
+      },
+      {
+        "rate": 0.9,
+        "rounds": 4.555555555555555
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "ruler:asia",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.04
+    },
+    "stats": [
+      {
+        "rate": 0.755,
+        "rounds": 6.324503311258278
+      },
+      {
+        "rate": 0.995,
+        "rounds": 5.015075376884422
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.53
+    },
+    "stats": [
+      {
+        "rate": 0.775,
+        "rounds": 2.193548387096774
+      },
+      {
+        "rate": 0.875,
+        "rounds": 1.4857142857142858
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "minion:3",
+    "params": {
+      "hp": 2,
+      "atk": 1.08
+    },
+    "stats": [
+      {
+        "rate": 0.71,
+        "rounds": 5.267605633802817
+      },
+      {
+        "rate": 0.895,
+        "rounds": 3.441340782122905
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "ruler:west",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.29,
+        "rounds": 6.241379310344827
+      },
+      {
+        "rate": 0.755,
+        "rounds": 5.655629139072848
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.79
+    },
+    "stats": [
+      {
+        "rate": 0.095,
+        "rounds": 4.578947368421052
+      },
+      {
+        "rate": 0.82,
+        "rounds": 4.176829268292683
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "minion:4",
+    "params": {
+      "hp": 2,
+      "atk": 1.29
+    },
+    "stats": [
+      {
+        "rate": 0.85,
+        "rounds": 4.882352941176471
+      },
+      {
+        "rate": 0.885,
+        "rounds": 3.9661016949152543
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "ruler:cyberhell",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.45,
+        "rounds": 6.288888888888889
+      },
+      {
+        "rate": 0.755,
+        "rounds": 5.112582781456954
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "minion:1",
+    "params": {
+      "hp": 3,
+      "atk": 1.63
+    },
+    "stats": [
+      {
+        "rate": 0.755,
+        "rounds": 4.754966887417218
+      },
+      {
+        "rate": 0.855,
+        "rounds": 3.2865497076023393
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "ruler:th",
+    "params": {
+      "hp": 3.16,
+      "atk": 1.08
+    },
+    "stats": [
+      {
+        "rate": 0.78,
+        "rounds": 5.794871794871795
+      },
+      {
+        "rate": 0.935,
+        "rounds": 4.165775401069519
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "boss",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.63
+    },
+    "stats": [
+      {
+        "rate": 0.505,
+        "rounds": 6.920792079207921
+      },
+      {
+        "rate": 0.945,
+        "rounds": 5.492063492063492
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "minion:2",
+    "params": {
+      "hp": 2,
+      "atk": 1.75
+    },
+    "stats": [
+      {
+        "rate": 0.71,
+        "rounds": 2.619718309859155
+      },
+      {
+        "rate": 0.87,
+        "rounds": 1
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "ruler:asia",
+    "params": {
+      "hp": 3.16,
+      "atk": 1.4
+    },
+    "stats": [
+      {
+        "rate": 0.11,
+        "rounds": 6.136363636363637
+      },
+      {
+        "rate": 0.745,
+        "rounds": 4.8120805369127515
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "th",
+    "size": 3,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.8
+    },
+    "stats": [
+      {
+        "rate": 0.585,
+        "rounds": 5.7094017094017095
+      },
+      {
+        "rate": 0.89,
+        "rounds": 5.162921348314606
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 3,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 1.89
+    },
+    "stats": [
+      {
+        "rate": 0.42,
+        "rounds": 6.130952380952381
+      },
+      {
+        "rate": 0.855,
+        "rounds": 5.3274853801169595
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 4,
+    "kind": "boss",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.05
+    },
+    "stats": [
+      {
+        "rate": 0.43,
+        "rounds": 5.255813953488372
+      },
+      {
+        "rate": 0.985,
+        "rounds": 4.050761421319797
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 3,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.53
+    },
+    "stats": [
+      {
+        "rate": 0.715,
+        "rounds": 4.055944055944056
+      },
+      {
+        "rate": 0.885,
+        "rounds": 2.214689265536723
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 4,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 1.98
+    },
+    "stats": [
+      {
+        "rate": 0.655,
+        "rounds": 4.877862595419847
+      },
+      {
+        "rate": 0.855,
+        "rounds": 4.695906432748538
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 5,
+    "kind": "boss",
+    "params": {
+      "hp": 1,
+      "atk": 0.93
+    },
+    "stats": [
+      {
+        "rate": 0.18,
+        "rounds": 6.166666666666667
+      },
+      {
+        "rate": 0.915,
+        "rounds": 4.355191256830601
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.53
+    },
+    "stats": [
+      {
+        "rate": 0.705,
+        "rounds": 4.0638297872340425
+      },
+      {
+        "rate": 0.86,
+        "rounds": 2.13953488372093
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "minion:3",
+    "params": {
+      "hp": 1.2,
+      "atk": 0.86,
+      "atkLow": 0.01,
+      "atkHigh": 2.31
+    },
+    "stats": [
+      {
+        "rate": 0.79,
+        "rounds": 4.443037974683544
+      },
+      {
+        "rate": 0.895,
+        "rounds": 3.4916201117318435
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "ruler:west",
+    "params": {
+      "hp": 1,
+      "atk": 1.17
+    },
+    "stats": [
+      {
+        "rate": 0.145,
+        "rounds": 6.551724137931035
+      },
+      {
+        "rate": 0.795,
+        "rounds": 5.0251572327044025
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.6
+    },
+    "stats": [
+      {
+        "rate": 0.6,
+        "rounds": 5.441666666666666
+      },
+      {
+        "rate": 0.815,
+        "rounds": 4.680981595092025
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "minion:4",
+    "params": {
+      "hp": 2,
+      "atk": 0.86,
+      "atkLow": 0.13,
+      "atkHigh": 1.55
+    },
+    "stats": [
+      {
+        "rate": 0.7,
+        "rounds": 5.7
+      },
+      {
+        "rate": 0.88,
+        "rounds": 4.113636363636363
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "ruler:cyberhell",
+    "params": {
+      "hp": 1,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.45,
+        "rounds": 5.833333333333333
+      },
+      {
+        "rate": 0.81,
+        "rounds": 4.765432098765432
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "minion:1",
+    "params": {
+      "hp": 2,
+      "atk": 1.91
+    },
+    "stats": [
+      {
+        "rate": 0.73,
+        "rounds": 4.438356164383562
+      },
+      {
+        "rate": 0.84,
+        "rounds": 1.75
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "ruler:th",
+    "params": {
+      "hp": 2.75,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.72,
+        "rounds": 6.541666666666667
+      },
+      {
+        "rate": 0.92,
+        "rounds": 4.864130434782608
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "boss",
+    "params": {
+      "hp": 1.03,
+      "atk": 0.73
+    },
+    "stats": [
+      {
+        "rate": 0.415,
+        "rounds": 6.156626506024097
+      },
+      {
+        "rate": 0.83,
+        "rounds": 5.216867469879518
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "minion:2",
+    "params": {
+      "hp": 2,
+      "atk": 1.75
+    },
+    "stats": [
+      {
+        "rate": 0.72,
+        "rounds": 3.1180555555555554
+      },
+      {
+        "rate": 0.86,
+        "rounds": 1.4244186046511629
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "ruler:asia",
+    "params": {
+      "hp": 2.75,
+      "atk": 1.24
+    },
+    "stats": [
+      {
+        "rate": 0.42,
+        "rounds": 6.142857142857143
+      },
+      {
+        "rate": 0.835,
+        "rounds": 4.197604790419161
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "frontier",
+    "params": {
+      "hp": 2.5,
+      "atk": 2.64
+    },
+    "stats": [
+      {
+        "rate": 0.745,
+        "rounds": 5.6375838926174495
+      },
+      {
+        "rate": 0.89,
+        "rounds": 4.410112359550562
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "minion:3",
+    "params": {
+      "hp": 2,
+      "atk": 1.67
+    },
+    "stats": [
+      {
+        "rate": 0.705,
+        "rounds": 3.049645390070922
+      },
+      {
+        "rate": 0.88,
+        "rounds": 1.3863636363636365
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "ruler:west",
+    "params": {
+      "hp": 2,
+      "atk": 1.35
+    },
+    "stats": [
+      {
+        "rate": 0.355,
+        "rounds": 6.957746478873239
+      },
+      {
+        "rate": 0.605,
+        "rounds": 5.446280991735537
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "th",
+    "size": 3,
+    "kind": "boss",
+    "params": {
+      "hp": 0.55,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.66,
+        "rounds": 5.424242424242424
+      },
+      {
+        "rate": 0.835,
+        "rounds": 4.089820359281437
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 3,
+    "kind": "boss",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.87
+    },
+    "stats": [
+      {
+        "rate": 0.16,
+        "rounds": 6.8125
+      },
+      {
+        "rate": 0.74,
+        "rounds": 5.358108108108108
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 5,
+    "kind": "frontier",
+    "params": {
+      "hp": 3.4,
+      "atk": 2.45
+    },
+    "stats": [
+      {
+        "rate": 0.71,
+        "rounds": 5.725352112676056
+      },
+      {
+        "rate": 0.88,
+        "rounds": 5.0852272727272725
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 3,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.98
+    },
+    "stats": [
+      {
+        "rate": 0.625,
+        "rounds": 4.896
+      },
+      {
+        "rate": 0.825,
+        "rounds": 4.7696969696969695
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 4,
+    "kind": "boss",
+    "params": {
+      "hp": 1,
+      "atk": 1.05
+    },
+    "stats": [
+      {
+        "rate": 0.35,
+        "rounds": 6.057142857142857
+      },
+      {
+        "rate": 0.815,
+        "rounds": 4.607361963190184
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 6,
+    "kind": "frontier",
+    "params": {
+      "hp": 2.5,
+      "atk": 3.83
+    },
+    "stats": [
+      {
+        "rate": 0.795,
+        "rounds": 4.289308176100629
+      },
+      {
+        "rate": 0.835,
+        "rounds": 2.8982035928143715
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.14
+    },
+    "stats": [
+      {
+        "rate": 0.445,
+        "rounds": 6.280898876404494
+      },
+      {
+        "rate": 0.78,
+        "rounds": 4.006410256410256
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "minion:4",
+    "params": {
+      "hp": 3.95,
+      "atk": 0.42,
+      "atkLow": 0.06,
+      "atkHigh": 0.78
+    },
+    "stats": [
+      {
+        "rate": 0.715,
+        "rounds": 11.643356643356643
+      },
+      {
+        "rate": 0.885,
+        "rounds": 9.790960451977401
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "ruler:cyberhell",
+    "params": {
+      "hp": 1,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.135,
+        "rounds": 6.925925925925926
+      },
+      {
+        "rate": 0.71,
+        "rounds": 5.309859154929577
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "minion:1",
+    "params": {
+      "hp": 1.53,
+      "atk": 1.91
+    },
+    "stats": [
+      {
+        "rate": 0.735,
+        "rounds": 4.537414965986395
+      },
+      {
+        "rate": 0.845,
+        "rounds": 3.396449704142012
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "ruler:th",
+    "params": {
+      "hp": 2,
+      "atk": 1.35
+    },
+    "stats": [
+      {
+        "rate": 0.145,
+        "rounds": 6.517241379310345
+      },
+      {
+        "rate": 0.755,
+        "rounds": 5.23841059602649
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "boss",
+    "params": {
+      "hp": 1,
+      "atk": 0.75
+    },
+    "stats": [
+      {
+        "rate": 0.225,
+        "rounds": 6.4
+      },
+      {
+        "rate": 0.79,
+        "rounds": 5.829113924050633
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "minion:2",
+    "params": {
+      "hp": 2,
+      "atk": 1.91
+    },
+    "stats": [
+      {
+        "rate": 0.71,
+        "rounds": 4.830985915492958
+      },
+      {
+        "rate": 0.78,
+        "rounds": 1.7307692307692308
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "ruler:asia",
+    "params": {
+      "hp": 2,
+      "atk": 1.35
+    },
+    "stats": [
+      {
+        "rate": 0.435,
+        "rounds": 5.9655172413793105
+      },
+      {
+        "rate": 0.75,
+        "rounds": 4.266666666666667
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "frontier",
+    "params": {
+      "hp": 1.53,
+      "atk": 4.34
+    },
+    "stats": [
+      {
+        "rate": 0.71,
+        "rounds": 2.408450704225352
+      },
+      {
+        "rate": 0.895,
+        "rounds": 1.011173184357542
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "minion:3",
+    "params": {
+      "hp": 2,
+      "atk": 1.6
+    },
+    "stats": [
+      {
+        "rate": 0.745,
+        "rounds": 3.9328859060402683
+      },
+      {
+        "rate": 0.895,
+        "rounds": 1.8044692737430168
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "ruler:west",
+    "params": {
+      "hp": 2,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.57,
+        "rounds": 6.131578947368421
+      },
+      {
+        "rate": 0.8,
+        "rounds": 5.04375
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "breach",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.88
+    },
+    "stats": [
+      {
+        "rate": 0.145,
+        "rounds": 6.206896551724138
+      },
+      {
+        "rate": 0.74,
+        "rounds": 4.75
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "minion:4",
+    "params": {
+      "hp": 3,
+      "atk": 1.29
+    },
+    "stats": [
+      {
+        "rate": 0.83,
+        "rounds": 5.409638554216867
+      },
+      {
+        "rate": 0.895,
+        "rounds": 3.7541899441340782
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "ruler:cyberhell",
+    "params": {
+      "hp": 2,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.655,
+        "rounds": 6.3816793893129775
+      },
+      {
+        "rate": 0.865,
+        "rounds": 5.109826589595376
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "th",
+    "size": 4,
+    "kind": "boss",
+    "params": {
+      "hp": 1,
+      "atk": 1.04
+    },
+    "stats": [
+      {
+        "rate": 0.19,
+        "rounds": 6.657894736842105
+      },
+      {
+        "rate": 0.87,
+        "rounds": 5.7011494252873565
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 4,
+    "kind": "frontier",
+    "params": {
+      "hp": 2,
+      "atk": 4.53
+    },
+    "stats": [
+      {
+        "rate": 0.78,
+        "rounds": 2.1153846153846154
+      },
+      {
+        "rate": 0.87,
+        "rounds": 1
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "asia",
+    "size": 5,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 1.52
+    },
+    "stats": [
+      {
+        "rate": 0.5,
+        "rounds": 5.79
+      },
+      {
+        "rate": 0.86,
+        "rounds": 4.674418604651163
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 3,
+    "kind": "boss",
+    "params": {
+      "hp": 0.65,
+      "atk": 1.17
+    },
+    "stats": [
+      {
+        "rate": 0.355,
+        "rounds": 5.47887323943662
+      },
+      {
+        "rate": 0.835,
+        "rounds": 4.191616766467066
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 5,
+    "kind": "frontier",
+    "params": {
+      "hp": 2.5,
+      "atk": 2.15,
+      "atkLow": 0.32,
+      "atkHigh": 3.87
+    },
+    "stats": [
+      {
+        "rate": 0.775,
+        "rounds": 4.84516129032258
+      },
+      {
+        "rate": 0.85,
+        "rounds": 3.5058823529411764
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "west",
+    "size": 6,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 1.71
+    },
+    "stats": [
+      {
+        "rate": 0.165,
+        "rounds": 5.787878787878788
+      },
+      {
+        "rate": 0.805,
+        "rounds": 4.354037267080745
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "minion:1",
+    "params": {
+      "hp": 1.8,
+      "atk": 1.51
+    },
+    "stats": [
+      {
+        "rate": 0.795,
+        "rounds": 5.364779874213837
+      },
+      {
+        "rate": 0.855,
+        "rounds": 4.409356725146199
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "ruler:th",
+    "params": {
+      "hp": 1.7,
+      "atk": 1.23
+    },
+    "stats": [
+      {
+        "rate": 0.38,
+        "rounds": 6.592105263157895
+      },
+      {
+        "rate": 0.935,
+        "rounds": 5.304812834224599
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 3,
+    "kind": "final",
+    "encounter": "boss",
+    "params": {
+      "hp": 0.65,
+      "atk": 0.81
+    },
+    "stats": [
+      {
+        "rate": 0.185,
+        "rounds": 5.864864864864865
+      },
+      {
+        "rate": 0.775,
+        "rounds": 4.458064516129032
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "minion:2",
+    "params": {
+      "hp": 2,
+      "atk": 1.06,
+      "atkLow": 0.16,
+      "atkHigh": 1.9
+    },
+    "stats": [
+      {
+        "rate": 0.725,
+        "rounds": 4.834482758620689
+      },
+      {
+        "rate": 0.865,
+        "rounds": 3.3294797687861273
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 4,
+    "kind": "final",
+    "encounter": "ruler:asia",
+    "params": {
+      "hp": 2,
+      "atk": 1.24
+    },
+    "stats": [
+      {
+        "rate": 0.145,
+        "rounds": 6.931034482758621
+      },
+      {
+        "rate": 0.755,
+        "rounds": 5.2781456953642385
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "frontier",
+    "params": {
+      "hp": 2.5,
+      "atk": 2.15,
+      "atkLow": 0.32,
+      "atkHigh": 3.87
+    },
+    "stats": [
+      {
+        "rate": 0.715,
+        "rounds": 4.972027972027972
+      },
+      {
+        "rate": 0.84,
+        "rounds": 3.5595238095238093
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "minion:3",
+    "params": {
+      "hp": 2,
+      "atk": 1.6
+    },
+    "stats": [
+      {
+        "rate": 0.765,
+        "rounds": 5.091503267973856
+      },
+      {
+        "rate": 0.875,
+        "rounds": 2.394285714285714
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 5,
+    "kind": "final",
+    "encounter": "ruler:west",
+    "params": {
+      "hp": 1.5,
+      "atk": 1.11
+    },
+    "stats": [
+      {
+        "rate": 0.745,
+        "rounds": 5.899328859060403
+      },
+      {
+        "rate": 0.88,
+        "rounds": 4.534090909090909
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "breach",
+    "params": {
+      "hp": 2,
+      "atk": 0.79
+    },
+    "stats": [
+      {
+        "rate": 0.165,
+        "rounds": 5.454545454545454
+      },
+      {
+        "rate": 0.715,
+        "rounds": 4.783216783216783
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "minion:4",
+    "params": {
+      "hp": 4,
+      "atk": 0.89
+    },
+    "stats": [
+      {
+        "rate": 0.825,
+        "rounds": 5.733333333333333
+      },
+      {
+        "rate": 0.865,
+        "rounds": 4.393063583815029
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 6,
+    "kind": "final",
+    "encounter": "ruler:cyberhell",
+    "params": {
+      "hp": 2,
+      "atk": 0.99
+    },
+    "stats": [
+      {
+        "rate": 0.53,
+        "rounds": 6.4245283018867925
+      },
+      {
+        "rate": 0.82,
+        "rounds": 5.103658536585366
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "minion:1",
+    "params": {
+      "hp": 3,
+      "atk": 1.66
+    },
+    "stats": [
+      {
+        "rate": 0.79,
+        "rounds": 4.012658227848101
+      },
+      {
+        "rate": 0.87,
+        "rounds": 2.8045977011494254
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "ruler:th",
+    "params": {
+      "hp": 2.75,
+      "atk": 1.23
+    },
+    "stats": [
+      {
+        "rate": 0.87,
+        "rounds": 4.7701149425287355
+      },
+      {
+        "rate": 0.915,
+        "rounds": 4.054644808743169
+      }
+    ],
+    "loss": 0
+  },
+  {
+    "zone": "cyberhell",
+    "size": 7,
+    "kind": "final",
+    "encounter": "boss",
+    "params": {
+      "hp": 1.5,
+      "atk": 0.69
+    },
+    "stats": [
+      {
+        "rate": 0.48,
+        "rounds": 6.677083333333333
+      },
+      {
+        "rate": 0.95,
+        "rounds": 5.38421052631579
+      }
+    ],
+    "loss": 0
+  }
+]

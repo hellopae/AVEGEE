@@ -1,3 +1,4 @@
+import { ENCOUNTER_BALANCE, encounterBalanceKey } from './encounter-balance.js';
 // C1: caps refer to the whole team, including Yama and the automatic Guard.
 export function partyCap(game) {
   const zones = ['th','asia','west','cyberhell'];
@@ -28,5 +29,15 @@ export function scaleEncounter(battle, count) {
   // Breach additions belong only to its boss wave; preserve earlier story waves.
   const adds = profile.kind === 'breach' && !boss ? 0 : profile.adds;
   if (source) for (let i=0;i<adds;i++) battle.foes.push({ ...source, id:`c1-${wave}-${i}`, stun:0, confuse:0, speed:Math.min(8,source.speed || 8) });
+  // Keep approach waves intact; hypnosis is its own solo-Yama enemy group.
+  const tuning = ENCOUNTER_BALANCE[encounterBalanceKey(battle, profile)]?.[count];
+  if (tuning) for (const foe of battle.foes) {
+    // Preserve existing pre-damage (e.g. evidence prep) while tuning full HP.
+    const preparedDamage = foe.maxHp - foe.hp;
+    foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp));
+    foe.hp = Math.max(1, foe.maxHp - preparedDamage);
+    const attackRange = [tuning.atkLow ?? tuning.atk, tuning.atkHigh ?? tuning.atk];
+    foe.atk = foe.atk.map((value, index) => Math.max(1, Math.round(value * attackRange[index])));
+  }
   battle.balance = { version:1, wave, partySize:count, ...profile, adds };
 }

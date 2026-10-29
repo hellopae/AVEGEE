@@ -1,0 +1,109 @@
+(node:66058) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B2 Nira selects five IDs across zones and Guard fit the seven-person cap (221.956505ms)
+✔ B2 zero morale, resting and locked branches cannot join; removal remains possible (31.277375ms)
+✔ B2 map rests apply ID team edits and keep five into the next encounter (102.25723ms)
+✔ B2 ordinary frontier uses the unlocked cap and admits the owned global Nira (34.344809ms)
+✔ B2 helper morale, cooldown and trained damage belong to the source ID after battle/save (80.470172ms)
+✔ B2 art uses source zone for both standee/profile and keeps default lookup (102.692447ms)
+✔ B2 returning to a repair branch keeps its original builder even when sv aliases actor (72.801033ms)
+(node:66059) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B3 zone tables and actual damage/heal match the displayed ability at every training level (628.726559ms)
+✔ B3 paid discipline/intelligence/mercy upgrades do not add attack; strength does (3.806798ms)
+✔ B3 training follows roster IDs and home zone, with shared Yama/Nira and EXP-derived caps (15.12493ms)
+✔ B3 Yama training scales only normal attack, before critical, leaving MP powers unchanged (24.605642ms)
+✔ B3 Kan scales enemy self damage but player hypnosis resets the source multiplier (20.706667ms)
+✔ B3 medicine price/effect table and all three use paths agree for every zone item (212.769451ms)
+✔ B3 medicines retain old-zone effects, cap gains, and do not consume when full or preparation is closed (3.614886ms)
+✔ B3 legacy upLv migration keeps active/dormant crew and Guard bonuses across repeated save/load (67.364115ms)
+✔ B3 all eight training stations are declared without wiring training into minigames (4.12639ms)
+✔ B3 Nira order and active registry recovery use shared training; construction and recovery disable it (52.210359ms)
+(node:66060) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors (77.638349ms)
+✔ BALANCE-2 tutor keeps the exact approved sentence; intro and help disclose back-line support (1.453319ms)
+✔ BALANCE-2 every new move renders an unclipped-name row, ultimate chip short name and full tooltip/manual (32.010536ms)
+✔ BALANCE-2 enemy scaling freezes the initial party count and does not rescale an ongoing/restored wave (30.368178ms)
+✔ BALANCE-2 changed runtime modules share release identities; stylesheet is versioned (34.669066ms)
+(node:66062) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ FOE_SCALE: โซน 1 = ค่าเดิม · โซน 2 < 3 < 4 ทั้ง HP และ ATK ของศัตรูทั่วไป (ชุด 28E: อีเวนต์คูณ HP แล้ว) (6.306591ms)
+✔ ศัตรูที่สร้างจริงใช้ตัวคูณโซน: ผีบนแผนที่ · ชายแดน · วิญญาณขัดขืน โซน 2 < 3 < 4 (175.731688ms)
+✖ บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน (42.233302ms)
+✔ G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable (3026.234199ms)
+✔ G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity (1960.739957ms)
+✔ น้ำมนต์: พ่อค้านรกขาย · ราคา/ปริมาณสมเหตุสมผลเทียบหีบยา · ใช้เติม MP ได้จริงจากกระเป๋า (6.344401ms)
+✔ น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก (16.114891ms)
+✔ สรุปรางวัล: ชนะผีบนแผนที่ → เบี้ยกรรม · EXP · ของที่ตก ตรงกับที่ได้จริง (10.925029ms)
+✔ สรุปรางวัล: แพ้ไม่มี · วิญญาณขัดขืนในห้องไต่สวนไม่เด้ง · บอสที่ปลดพลังใหม่มีพลังในสรุป และคิวเรื่องราวพลังเดิมยังอยู่ (ui เรียงต่อกัน) (40.756165ms)
+✔ สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป (6.542545ms)
+✔ ข้อความหน้าต่างรางวัล/น้ำมนต์/ชื่อพลังมีทั้งไทยและอังกฤษ (12.144436ms)
+✔ น้ำมนต์ดื่มได้กลางศึกทุกประเภท: ผีบนแผนที่ · ชายแดน · อีเวนต์หลายระลอก · บอสโซน · ศึกสุดท้าย · วิญญาณขัดขืน (39.513368ms)
+✔ น้ำมนต์ในวงคำสั่งต่อสู้: มีใน BATTLE.items · ไม่มีอีโมจิ · ค่า MP อ่านจาก ITEMS ที่เดียว (0.719671ms)
+✔ วิญญาณขัดขืนบนแท่นไต่สวน: ชนะแล้วไม่มีสรุปรางวัล และไม่เด้งหน้าต่างรางวัล (คงเดิมตามคุณเป้ 28E) (3.089117ms)
+(node:66063) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ C1 personal training unlocks each of seven moves once, persists by ID, and requires 60/80 evidence (315.310393ms)
+✔ C1 capped old saves can train only for a missing skill; failed saves roll back skill and session together (23.482992ms)
+✔ C1 acceleration and old fire-control levels do not fabricate personal scores; fire QTE unlocks once (23.763066ms)
+✔ C1 damage/heal formula uses existing effective stats and fire bonus exactly once; base specials share CD (94.974117ms)
+✔ C1 support skills target full HP, shield takes post-defend damage, stronger effects replace rather than add (18.371654ms)
+✔ C1 self protection lasts through two subsequent owner turns; non-damaging commands do not consume attack charges (4.339119ms)
+✔ C1 combo snapshots 2 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (3) (9.866175ms)
+✔ C1 combo snapshots 4 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (5) (126.423916ms)
+✔ C1 combo snapshots 6 actual teammates, charges once, ignores rage/buff/weapon, and T1 becomes ready on T6 (7) (5.235662ms)
+✔ C1 combo retargets deterministically without spill and omits fallen/absent/guest actors (6.315228ms)
+✔ C1 total party cap grows 3/4/5/6/7 without creating actors or deleting excess saved selections (57.617762ms)
+✔ C1 victory grants teamJudgment and Guard once; old cleared saves infer only Yama entitlement (36.765057ms)
+✔ C1 final save/load retains cooldown, protection and already-applied hits; next encounter keeps remaining owner turns (29.007002ms)
+✔ C1 encounter scaling is frozen at creation, handles teams 3–7, and does not increase enemy ATK (20.930997ms)
+✔ C1 regional art uses explicit Thai fallbacks and all referenced scenes/icons exist (3.226377ms)
+✔ C1 skip/duplicate animation completion applies once, reduced motion=false (actual UI executeSkill) (270.356954ms)
+✔ C1 skip/duplicate animation completion applies once, reduced motion=true (actual UI executeSkill) (10.673796ms)
+✔ C1 wave transition keeps owner-turn cooldown and encounter party size after a teammate falls (3.910694ms)
+✔ C1 loading a final command before animation completes settles its turn once without replaying costs or damage (20.103871ms)
+✔ C1 imported release aliases and review entry share the changed modules and stylesheet (536.269508ms)
+✔ C1 ranged FX fly once for 250 ms in either direction; reduced motion keeps only the impact (12.293365ms)
+(node:66064) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ th: replay boss uses its current frontier or cave location (115.280569ms)
+✔ th: invasion boss uses lower position and talk label, without a duplicate replay boss (18.609156ms)
+✔ asia: replay boss uses its current frontier or cave location (5.823247ms)
+✔ asia: invasion boss uses lower position and talk label, without a duplicate replay boss (20.627814ms)
+✔ west: replay boss uses its current frontier or cave location (560.19669ms)
+✔ west: invasion boss uses lower position and talk label, without a duplicate replay boss (18.556846ms)
+✔ cyberhell: replay boss uses its current frontier or cave location (317.530635ms)
+✔ cyberhell: invasion boss uses lower position and talk label, without a duplicate replay boss (26.449107ms)
+✔ R1: invasion enemies have no map nameplates in all four zones (41.989579ms)
+ℹ tests 66
+ℹ suites 0
+ℹ pass 65
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7154.611486
+
+✖ failing tests:
+
+test at tests/balance28b.test.mjs:64:1
+✖ บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน (42.233302ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  552 !== 368
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T180811Z-34ba1b0c/tests/balance28b.test.mjs:86:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 552,
+    expected: 368,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
