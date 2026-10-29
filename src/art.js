@@ -49,7 +49,7 @@ export function warmZone(z = zoneOf()) {
   }
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261030-e1-v2', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2-art-atk2-leader-art-v2-enemy-art-grace-f-e1-v2', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
