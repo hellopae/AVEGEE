@@ -1,12 +1,11 @@
+import {BORDER34_MASK,BORDER34_CORRIDOR,BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
 import {BORDER23_MASK,BORDER23_CORRIDOR,BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
 import {FRONTIER_WALK_COLS,FRONTIER_WALK_ROWS,FRONTIER_WALK_RUNS,FRONTIER_OWNER_TREES,FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
 // M2 R1 — ROUTE GEOMETRY: one row per frontier route (the walk between two cities).
 //
 // Route 'th:asia' (Zone 1-2) is the reference: a 31-point trail on one full-screen picture, three checkpoints on trail
 // vertices 7 / 15 / 23, six optional patrols, hand-placed trees and waterfalls over the picture, and a boss cave at
-// checkpoint 2 (Zone 1's inspector).  Routes 'asia:west' (2-3) and 'west:cyberhell' (3-4) are built on the SAME trail
-// and the same walkable pads by default. Zone 2-3 now has its own registered owner mask and repaired staircase;
-// Zone 3-4 remains on the legacy system until its owner mask arrives.
+// checkpoint 2 (Zone 1's inspector). Zones 2-3 and 3-4 have independent owner masks and centerlines.
 //
 // A route with `enabled:false` keeps the OLD system (a straight vertical corridor over three pictures, one per
 // checkpoint, no patrols).  Switching a route on is data only:
@@ -61,7 +60,11 @@ export const ROUTE_GEOMETRY = {
       leafArea:[0,0,.44,1],snowArea:[.48,0,1,1]},
   }),
   'west:cyberhell': row('west:cyberhell', {
-    enabled:false, background:'img/frontier-route/zone3-4-v1.webp', foes:[10,11,12],
+    enabled:true, geometryVersion:1, background:'img/frontier-route/zone3-4-v1.webp', foes:[10,11,12],
+    corridor:BORDER34_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_MASK,
+    ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,
+      treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.png',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
+      treeAnchors:{white:[.569224354,.987804878],teal:[.567556297,.958841463],purple:[.5,.987804878]}},
   }),
 };
 for (const r of Object.values(ROUTE_GEOMETRY)) if (!r.patrolFoe) r.patrolFoe = PATROL_FROM_CHECKPOINT.map(i => r.foes[i]);

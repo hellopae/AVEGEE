@@ -44,5 +44,5 @@ test('old vertical-route saves migrate at the last cleared checkpoint without lo
     assert.deepEqual([a.position.x,a.position.y],row.corridor[checkpoint?row.checkpointVertex[checkpoint-1]:0]);
     const current={x:a.position.x+.001,y:a.position.y};a.position=current;initializeZoneTravel(g);assert.deepEqual(g.zoneTravel.active.position,current,'new-format saves preserve their position');
   }
-  const locked=game();locked.bossCleared.asia=false;initializeZoneTravel(locked);assert.equal(beginDungeon(locked,'west'),false);assert.equal(isWildernessRoute('west:cyberhell'),false);
+  const locked=game();locked.bossCleared.asia=false;initializeZoneTravel(locked);assert.equal(beginDungeon(locked,'west'),false);assert.equal(isWildernessRoute('west:cyberhell'),true);
 });

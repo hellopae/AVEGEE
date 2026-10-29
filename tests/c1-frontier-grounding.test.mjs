@@ -18,7 +18,7 @@ test('frontier tree contact remains at the authored root, under the canopy at ev
     const [,x,y,width,height]=images[0];assert.ok(Math.abs(y+height*anchor[1]-(-17+tree.y*h))<1e-9);assert.ok(Math.abs(x+width*anchor[0]-(31+tree.x*w))<1e-9);
   }
 });
-test('only the approved 1-2 route selects transparent replacement trees; other areas keep their own art',()=>{
+test('approved 1-2 and 3-4 routes select their own tree art',()=>{
   const art=ROUTE_GEOMETRY['th:asia'].ambient.treeArt;
   assert.deepEqual(Object.keys(art).sort(),['green','lightgreen','red']);
   for(const file of Object.values(art)){
@@ -26,5 +26,5 @@ test('only the approved 1-2 route selects transparent replacement trees; other a
     assert.equal(png.toString('hex',0,8),'89504e470d0a1a0a');assert.equal(png[25],6,'PNG keeps RGBA transparency');
   }
   assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.treeArt,undefined);
-  assert.equal(ROUTE_GEOMETRY['west:cyberhell'].ambient.treeArt,undefined);
+  assert.deepEqual(Object.keys(ROUTE_GEOMETRY['west:cyberhell'].ambient.treeArt).sort(),['purple','teal','white']);
 });
