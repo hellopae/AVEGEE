@@ -1,0 +1,23 @@
+{
+  "artSize": [
+    3344,
+    1882
+  ],
+  "overlaySize": [
+    3344,
+    1882
+  ],
+  "widthThresholdsMet": true,
+  "targetedTestExit": 0,
+  "visualReview": "Inspected stitched image, final overlay and native bridge crop; no browser/owner QA performed",
+  "limitations": [
+    "Native tile detail is approximately 1.87x before assembly into 2x canvas",
+    "Minimum main-path width is 26.83px; p10/median thresholds do not guarantee every point >=40px",
+    "Gameplay-line clearance p10 is 29.53px; some preserved story anchors lie near road edge"
+  ],
+  "fullTestCommand": "node --test --test-concurrency=4 tests/*.test.mjs",
+  "fullTestExit": 0,
+  "fullTests": 1687,
+  "fullTestFailures": 0,
+  "initialFullTestFailures": 4
+}

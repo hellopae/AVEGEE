@@ -1,6 +1,7 @@
+import {BORDER12_MASK,BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';
 import {BORDER34_MASK,BORDER34_CORRIDOR,BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
 import {BORDER23_MASK,BORDER23_CORRIDOR,BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
-import {FRONTIER_WALK_COLS,FRONTIER_WALK_ROWS,FRONTIER_WALK_RUNS,FRONTIER_OWNER_TREES,FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
+import {FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
 // M2 R1 — ROUTE GEOMETRY: one row per frontier route (the walk between two cities).
 //
 // Route 'th:asia' (Zone 1-2) is the reference: a 31-point trail on one full-screen picture, three checkpoints on trail
@@ -9,11 +10,12 @@ import {FRONTIER_WALK_COLS,FRONTIER_WALK_ROWS,FRONTIER_WALK_RUNS,FRONTIER_OWNER_
 //
 // A route with `enabled:false` keeps the OLD system (a straight vertical corridor over three pictures, one per
 // checkpoint, no patrols).  Switching a route on is data only:
-//   1. put the picture in place (`background`, 1672x941 RGB, the trail must follow `corridor`)
+//   1. put the picture in place (`background`, 16:9 RGB at 1672x941 or 3344x1882, the trail must follow `corridor`)
 //   2. set `enabled: true`
 export const FALLBACK_CORRIDOR = Object.freeze([[.12,.22],[.19,.25],[.21,.28],[.20,.31],[.26,.33],[.32,.38],[.37,.43],[.42,.43],[.47,.40],[.48,.36],[.54,.35],[.59,.34],[.63,.39],[.69,.43],[.74,.47],[.79,.51],[.77,.55],[.74,.58],[.72,.62],[.67,.63],[.63,.64],[.60,.68],[.58,.72],[.53,.75],[.62,.77],[.67,.80],[.72,.85],[.78,.87],[.84,.85],[.88,.80],[.91,.79]].map(Object.freeze));
-// Owner-fitted reference for Zone 1-2. Zone 2-3 has independent owner-fitted geometry.
-export const DUNGEON_CORRIDOR = Object.freeze([[0.12,0.22],[0.19,0.25],[0.21,0.28],[0.1995997,0.3138409],[0.259462,0.3352336],[0.3209046,0.3770783],[0.3706797,0.4278192],[0.4204958,0.4323339],[0.4704112,0.4019354],[0.48,0.36],[0.54,0.35],[0.5921537,0.3354136],[0.6324162,0.3816239],[0.691737,0.4223149],[0.7412542,0.4652813],[0.791388,0.5047959],[0.7700559,0.5502091],[0.7400217,0.5800813],[0.72,0.62],[0.67,0.63],[0.6314375,0.6443486],[0.6017651,0.6853705],[0.58,0.72],[0.53,0.75],[0.62,0.77],[0.67,0.8],[0.72,0.85],[0.78,0.87],[0.8460416,0.8568359],[0.8870761,0.8079557],[0.91,0.79]].map(Object.freeze));
+// B12 v3: non-checkpoint vertices fitted to the broad repainted stair/rail interiors.
+// Entry, exit and all three checkpoint vertices retain their owner positions.
+export const DUNGEON_CORRIDOR = Object.freeze([[0.12,0.22],[0.1794258,0.2369819],[0.2093301,0.272051],[0.2314593,0.325186],[0.2703349,0.3411265],[0.3289474,0.3878852],[0.3767943,0.4112646],[0.4204958,0.4323339],[0.4665072,0.4102019],[0.4886364,0.3793836],[0.5406699,0.360255],[0.5938995,0.3390011],[0.632177,0.381509],[0.6889952,0.4218916],[0.7416268,0.4675877],[0.791388,0.5047959],[0.8313397,0.5494155],[0.7811005,0.5951116],[0.729067,0.6365569],[0.6836124,0.6546227],[0.6537081,0.685441],[0.617823,0.7088204],[0.5855263,0.7332625],[0.53,0.75],[0.6196172,0.7630181],[0.6698565,0.8182784],[0.7200957,0.8618491],[0.7799043,0.8777896],[0.8438995,0.8607864],[0.8869617,0.8182784],[0.91,0.79]].map(Object.freeze));
 export const LEGACY_CORRIDOR = Object.freeze([[.5,.925],[.5,.78],[.43,.65],[.53,.49],[.48,.35],[.5,.19]].map(Object.freeze));
 export const LEGACY_CHECKPOINT_PROGRESS = Object.freeze([.25,.52,.79]);
 
@@ -25,8 +27,8 @@ const PATROL_PROGRESS = Object.freeze([.08,.19,.32,.48,.66,.90]);
 const PATROL_FROM_CHECKPOINT = Object.freeze([0,1,0,2,1,2]);
 
 // Hand-placed overlay on the Zone 1-2 picture (0-1 of the picture).
-const TREES = FRONTIER_OWNER_TREES;
-const WATERFALLS = Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.43,.075],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]].map(Object.freeze));
+const TREES = BORDER12_TREES;
+const WATERFALLS = Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.46,.065],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]].map(Object.freeze));
 
 const fallbackMask=FRONTIER_CORRIDOR_MASK;
 const row = (id, o) => ({
@@ -41,10 +43,10 @@ const row = (id, o) => ({
 /** The table.  `foes` = the foe kinds of the route's three checkpoints (zone-travel.js DUNGEON_ROUTES). */
 export const ROUTE_GEOMETRY = {
   'th:asia': row('th:asia', {
-    // F12: minimally fitted centerline; all segments stay inside the owner mask (see output/f12-code.md).
+    // B12 pilot: retain story anchors; use the floor traced on the wider repaint.
     corridor:DUNGEON_CORRIDOR,
-    walkMask:{cols:FRONTIER_WALK_COLS,rows:FRONTIER_WALK_ROWS,runs:FRONTIER_WALK_RUNS},
-    enabled:true, background:'img/frontier-route/zone1-2-v4.webp', patrolFoe:[2,3,2,5,3,5],
+    walkMask:BORDER12_MASK,
+    enabled:true, geometryVersion:2, background:'img/frontier-route/zone1-2-v6.webp', patrolFoe:[2,3,2,5,3,5],
     ambient:{ trees:TREES, waterfalls:WATERFALLS, treeArt:{red:'img/frontier-route/tree-maple-v2.png',green:'img/frontier-route/tree-pine-v2.png',lightgreen:'img/frontier-route/tree-bamboo-v2.png'}, treeAnchors:{"green":[0.567556297,0.958841463],"red":[0.569224354,0.987804878],"lightgreen":[0.510842369,0.971036585]} },
     // Checkpoint 2 is Zone 1's boss cave: locked until checkpoint 1 is done, the guide waits there, the zone event fights.
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },

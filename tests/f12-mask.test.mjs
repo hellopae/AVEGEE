@@ -4,9 +4,9 @@ import {ROUTE_GEOMETRY,FALLBACK_CORRIDOR as ORIGINAL,enableRoute,disableRoute} f
 import {dungeonNavigation,dungeonWalkable,dungeonMove,dungeonPath,dungeonSegmentClear,dungeonSnap,dungeonCellProgress,dungeonPoint,dungeonCheckpointProgress,DUNGEON_CORRIDOR} from '../src/dungeon-view.js';
 import {drawFrontierTree} from '../src/frontier-ambient.js';
 const nav=dungeonNavigation(),start=DUNGEON_CORRIDOR[0];
-// Owner-painted terminal clearings: left water, north, east after bridge,
-// south stairs from cave yard, west cave spur, short central waterfall spur.
-export const BRANCHES=[[.357,.636],[.58,.247],[.889,.596],[.565,.946],[.424,.751],[.451,.471]];
+// B12 repainted terminal floors: left water, north, east after bridge,
+// south stairs from cave yard, west plaza edge, central stair spur.
+export const BRANCHES=[[.357,.636],[.59,.247],[.889,.596],[.575,.946],[.435,.735],[.512,.525]];
 test('F12: exact source dimensions, connected white surface, every cell gets finite geodesic progress',()=>{
  assert.deepEqual([nav.cols,nav.rows],[1672,941]);assert.equal(nav.cells.length,1672*941);
  let count=0;for(let i=0;i<nav.cells.length;i++)if(nav.cells[i]){count++;assert.ok(Number.isFinite(nav.cellProgress[i]));}
@@ -18,7 +18,9 @@ test('F12: every corrected vertex and every segment stays within owner mask',()=
 });
 test('F12: red ground rejects clicks and movement never tunnels through a cliff',()=>{
  for(const p of [[.05,.5],[.65,.53],[.5,.1],[.93,.3]]){assert.equal(dungeonWalkable(p),false);assert.deepEqual(dungeonPath(start,p),[]);}
- const moved=dungeonMove(start,[.65,.53]);assert.ok(dungeonWalkable(moved));assert.ok(dungeonSegmentClear(start,moved)||Math.hypot(moved[0]-start[0],moved[1]-start[1])<.2);
+ const moved=dungeonMove(start,[.65,.53]);assert.ok(dungeonWalkable(moved));assert.ok(dungeonPath(start,moved).length,'long input can slide around a bend on connected floor');
+ const bank=[.53,.35],stopped=dungeonMove(bank,[.53,.55]);
+ assert.ok(dungeonSegmentClear(bank,stopped));assert.ok(stopped[1]<.4,'straight input stops before crossing the central cliff');
 });
 test('F12: all six branch endpoints have click paths and keyboard-sized steps reach them',()=>{
  for(const goal of BRANCHES){

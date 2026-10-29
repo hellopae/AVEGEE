@@ -1,0 +1,15 @@
+(node:73026) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Nira stays visible beside Yama even when both enter at progress zero (5.705785ms)
+✔ corridor click routing stays on its finite connected path at every point (9.903709ms)
+✔ clicks beyond an uncleared checkpoint project onto the allowed route before its gate (1.236802ms)
+✔ checkpoint battle requires real persisted position at the CURRENT checkpoint (4.345094ms)
+✔ exit requires all victories AND physical exit proximity (0.888033ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 541.55497

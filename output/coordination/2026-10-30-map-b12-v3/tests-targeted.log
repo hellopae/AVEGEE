@@ -1,0 +1,46 @@
+(node:64984) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B12: the entire floor is one four-neighbor component reachable from entry (97.877815ms)
+✔ B12: actual navigation walks entry, all three checkpoints including cave, and exit (122.426737ms)
+✔ B12: wider floor cannot bypass any checkpoint lock, and a removed rock spur rejects input (0.94934ms)
+✔ B12: repaint migration keeps cleared checkpoints and current-format positions (4.226731ms)
+(node:64985) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ordinary frontier reward keeps its frontier backdrop and selected office team (44.807147ms)
+✔ accepted guide journey starts with three actual combatants and preserves outside-map reward scene (125.044591ms)
+✔ enemy patrols travel smoothly along the road without snapping back to an anchor (123.48706ms)
+✔ worker office explains empty supplies and offers actual paid or inventory refill paths (8.852474ms)
+(node:64986) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ F12 input 1280: real view click handler reaches six branches, key and joystick use 2D positions (1095.919032ms)
+✔ F12 input 390: real view click handler reaches six branches, key and joystick use 2D positions (616.25134ms)
+✔ F12 input: held directional keys can traverse all six branch paths (6676.600943ms)
+✔ F12 input: mount migrates old save to allowed cell; click and held key cannot bypass first checkpoint (221.708118ms)
+✔ F12 rendering: trees and Yama share root-y draw ordering at an occlusion position (26.800419ms)
+✔ C1 renderer: unavailable replacement falls back to the original tree at its authored root (38.315928ms)
+✔ B5b: actual route view retains cave position after all checkpoints before ruler victory (71.506776ms)
+✔ B12 v3: 3344x1882 background draws in the same normalized navigation world (292.804932ms)
+(node:64987) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ F12: exact source dimensions, connected white surface, every cell gets finite geodesic progress (24.921525ms)
+✔ F12: every corrected vertex and every segment stays within owner mask (3.294168ms)
+✔ F12: red ground rejects clicks and movement never tunnels through a cliff (8.023934ms)
+✔ F12: all six branch endpoints have click paths and keyboard-sized steps reach them (221.029616ms)
+✔ F12: checkpoint locks apply to every surface cell including branches and cannot be clicked around (107.672343ms)
+✔ F12: old saves snap to closest allowed pixel and valid branch positions survive unchanged (132.230193ms)
+✔ F12: 80 owner roots outside mask, three sprite types, base and big sizes (0.904236ms)
+✔ F12: owner route 3-4 has an independent enabled corridor (0.830193ms)
+(node:64988) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Zone 1-2 preserves story anchors and uses owner mask/tree layout (110.669168ms)
+✔ route 3-4 uses its independent owner floor and ordinary checkpoints (0.738401ms)
+✔ owner-fitted route 2-3 has its own picture and patrols, with ordinary checkpoint fights (69.7491ms)
+✔ Zone 1-2 cave rules still come from its row: boss at checkpoint 2, locked until checkpoint 1 is won and the boss event is pending (1.574874ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9533.324742

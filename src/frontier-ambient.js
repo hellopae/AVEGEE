@@ -1,9 +1,9 @@
 import {drawBiomeWeather,drawMapWeather,weatherBudget,weatherEnabled,weatherViewport} from './map-ambient.js?v=mapfx-k1d';
-import {FRONTIER_OWNER_TREES} from './frontier-walkmask-th-asia.js';
+import {BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';
 // Small world-space props and animation over the painted frontier road.
 // M2 R1: the Zone 1-2 trees / waterfalls are the ambient column of its ROUTE_GEOMETRY row; kept exported for tests and as the defaults.
-export const FRONTIER_TREES=FRONTIER_OWNER_TREES;
-export const FRONTIER_WATERFALLS=Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.43,.075],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]]);
+export const FRONTIER_TREES=BORDER12_TREES;
+export const FRONTIER_WATERFALLS=Object.freeze([[.435,.215,.08],[.423,.34,.045],[.37,.46,.065],[.35,.565,.07],[.32,.69,.065],[.94,.86,.10]]);
 export function drawFrontierAmbient(ctx,{time=0,reduced=false,x=0,y=0,w,h,tree=null,trees=FRONTIER_TREES,waterfalls=FRONTIER_WATERFALLS,leafArea=[0,0,1,1],snowArea=null,rainArea=null}) {
   const budget=weatherBudget({...weatherViewport(ctx),reduced});
   ctx.save();ctx.translate(x,y);ctx.scale(w,h);

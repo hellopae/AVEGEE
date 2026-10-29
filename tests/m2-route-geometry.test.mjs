@@ -19,7 +19,7 @@ test('Zone 1-2 preserves story anchors and uses owner mask/tree layout', () => {
   assert.deepEqual(DUNGEON_PATROLS.map(p => [p.id, p.progress, p.foe, p.level, p.name]),
     [0,1,2,3,4,5].map(i => [`th:asia:patrol:${i}`, [.08,.19,.32,.48,.66,.90][i], [2,3,2,5,3,5][i], 1 + Math.floor(i / 2), 'ปีศาจลาดตระเวน']));
   assert.deepEqual(dungeonPatrols('th:asia'), DUNGEON_PATROLS);
-  assert.equal(dungeonBackground('th', 'th:asia', 1), 'img/frontier-route/zone1-2-v4.webp');
+  assert.equal(dungeonBackground('th', 'th:asia', 1), 'img/frontier-route/zone1-2-v6.webp');
   assert.equal(r.ambient.trees.length, 80); assert.equal(r.ambient.waterfalls.length, 6);
   // checkpoints sit on the trail at vertices 7 / 15 / 23 (the cave is the third)
   assert.deepEqual(DUNGEON_CHECKPOINTS.map(p => p.map(v => +v.toFixed(2))), [[.42,.43],[.79,.50],[.53,.75]]);
