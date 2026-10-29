@@ -3,12 +3,13 @@
 // The current actor steps forward for its turn; final parties use two diagonal files.
 // No sprite pixels are altered. Legacy row/cutscene planners remain exported.
 
+import { characterScale, fitAllySizes } from './character-scale.js';
 import { mirrorBox } from './battle-facing.js';
 import { planBattleFormation } from './battle-formation.js?v=20261015-k2';
 import { planTurnStep } from './battle-turn-step.js?v=20261015-l2';
 
-/** ความสูงตัวจริงของยมทูตเทียบยมบาทน้อย — 1 = เท่ากัน · ยมบาทน้อยเป็นตัวเอกยังต้องเด่นกว่าเล็กน้อย */
-export const CREW_SCALE_TARGET = 0.96;
+/** Legacy row planner reference; arena sizes use CHARACTER_SCALE by actor identity. */
+export const CREW_SCALE_TARGET = characterScale('adult')/characterScale('yama');
 const MIN_FIT = 0.8;           // แถวแคบเกินจริง ๆ ยอมย่อได้ไม่เกินนี้ของเป้า (ไม่ทับยมบาทน้อยกับขอบจอ)
 
 const boxes = new Map();       // src → { l, t, w, h } เศษส่วนของภาพ (0-1) · null = วัดไม่ได้
@@ -76,7 +77,7 @@ export async function battleSpriteRect(img, mode = 'layout') {
  *  crew = [{ box:{l,t,w,h}, aspect }] · คืน { items:[{boxW,boxH,left}], fit } (left = x ของกล่องภาพ) */
 export function planSquad(hero, crew, { stageLeft = 0, pad = 4, gap = 18 } = {}) {
   const sizeAt = k => crew.map(c => {
-    const visH = hero.visH * CREW_SCALE_TARGET * k;
+    const visH = hero.visH * characterScale(c.key)/characterScale('yama') * k;
     const boxH = visH / (c.box?.h || 1);
     return { boxH, boxW:boxH * (c.aspect || 1), oW:(c.box?.w || 1) * boxH * (c.aspect || 1) };
   });
@@ -126,6 +127,7 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
     }
     const heroVis = { visH:hd.h * hb.h, oLeft:hd.left + hb.l * hd.w, base:hd.top + (hb.t + hb.h) * hd.h };
     const local = { visH:heroVis.visH, oLeft:heroVis.oLeft - sr.left, base:heroVis.base - sr.top };
+    let allyUnitHeight=local.visH/characterScale('yama');
     if (stage.classList.contains('combat-arena') && crewBoxes.every(Boolean)) {
       const put = (el, props) => { for (const [k,v] of Object.entries(props)) el.style.setProperty(k,v,'important'); };
       const heroBox = hero.classList.contains('face-native') ? hb : mirrorBox(hb);
@@ -138,10 +140,14 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       if (!stage.isConnected || stage._fitSeq !== seq) return false;
       if(squad) put(squad,{position:'absolute',left:'0',top:'0',bottom:'auto',width:'100%',height:'100%',
         'max-width':'none',transform:'none',display:'block',overflow:'visible','z-index':'auto','pointer-events':'none'});
+      // Retain the pre-fit reference across repeated fits and proportional viewport resizes.
+      hero._sizeReference ??= {height:local.visH, stageHeight:sr.height};
+      const reference=hero._sizeReference.height*sr.height/hero._sizeReference.stageHeight;
+      const fitted=fitAllySizes(reference, images.map((image,i)=>({key:image===hero?'yama':image.closest('[data-crew-pick]').dataset.crewPick,box:actorBoxes[i],aspect:image===hero?refImg.naturalWidth/refImg.naturalHeight:image.naturalWidth/image.naturalHeight})),plan,sr);
+      allyUnitHeight=fitted.at(-1).h*actorBoxes.at(-1).h/(characterScale('yama')*plan.at(-1).scale);
       const sizes = images.map((image,i) => {
         const box=actorBoxes[i], slot=plan[i];
-        const h=local.visH * slot.scale * (image===hero?1:CREW_SCALE_TARGET)/box.h;
-        const w=h*(image===hero?refImg.naturalWidth/refImg.naturalHeight:image.naturalWidth/image.naturalHeight);
+        const {h,w}=fitted[i];
         return { w, h, bounds:{ l:slot.x, r:slot.x + box.w*w, b:slot.y, t:slot.y - box.h*h } };
       });
       const stepRight = foeBounds.length ? Math.min(...foeBounds.map(r => r.l)) - 8 : sr.width * .7;
@@ -170,7 +176,8 @@ export function fitBattleSprites(stage, heroRefSrc = null, tries = 0, motion = {
       stage.dataset.formation='perspective';
     }
     if (helperImg && helperBox) {       // ยมทูตที่กระโดดเข้าช่วยโจมตีก็ต้องสูงเท่ากัน
-      const boxH = local.visH * CREW_SCALE_TARGET / helperBox.h;
+      const helperKey=helperImg.closest('[data-crew-pick]')?.dataset.crewPick || 'adult';
+      const boxH = allyUnitHeight * characterScale(helperKey) / helperBox.h;
       helperImg.style.setProperty('height', `${boxH}px`, 'important');
       helperImg.style.setProperty('max-height', 'none', 'important');
     }

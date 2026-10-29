@@ -1,0 +1,1487 @@
+{
+  "note": "Calculated from source alpha and pure layout functions; browser screen measurements remain pending.",
+  "rows": [
+    {
+      "zone": "th",
+      "key": "yama",
+      "path": "img/hero-yama.png",
+      "box": {
+        "l": 0.314453125,
+        "t": 0.001953125,
+        "w": 0.37109375,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 55.199999999999996,
+      "mapAfter": 39.36000000000001,
+      "walkBefore": 55.199999999999996,
+      "walkAfter": 39.36000000000001
+    },
+    {
+      "zone": "th",
+      "key": "nira",
+      "path": "img/crew-nira.png",
+      "box": {
+        "l": 0.251953125,
+        "t": 0.001953125,
+        "w": 0.49609375,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 46.557421874999996,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 46.739999999999995
+    },
+    {
+      "zone": "th",
+      "key": "taan",
+      "path": "img/crew-taan.png",
+      "box": {
+        "l": 0.109375,
+        "t": 0.001953125,
+        "w": 0.78125,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 48.831184407796094,
+      "walkAfter": 48.831184407796094
+    },
+    {
+      "zone": "th",
+      "key": "plerng",
+      "path": "img/crew-plerng.png",
+      "box": {
+        "l": 0.275390625,
+        "t": 0.001953125,
+        "w": 0.451171875,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 49.13011363636363,
+      "walkAfter": 49.13011363636363
+    },
+    {
+      "zone": "th",
+      "key": "kan",
+      "path": "img/crew-kan.png",
+      "box": {
+        "l": 0.25,
+        "t": 0.001953125,
+        "w": 0.501953125,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "th",
+      "key": "boon",
+      "path": "img/crew-boon.png",
+      "box": {
+        "l": 0.248046875,
+        "t": 0.001953125,
+        "w": 0.50390625,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "th",
+      "key": "dam",
+      "path": "img/crew-dam.png",
+      "box": {
+        "l": 0.119140625,
+        "t": 0,
+        "w": 0.76171875,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 49.199999999999996,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "th",
+      "key": "guard",
+      "path": "img/crew-guard-v2.png",
+      "box": {
+        "l": 0.1722488038277512,
+        "t": 0.006379585326953748,
+        "w": 0.6379585326953748,
+        "h": 0.9904306220095693,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 61.80287081339713,
+      "mapAfter": 60.911483253588514,
+      "walkBefore": 61.456812378223496,
+      "walkAfter": 60.57041604584528
+    },
+    {
+      "zone": "th",
+      "key": "worker",
+      "path": "img/workers/worker-th-sheet-v2.webp",
+      "box": {
+        "l": 0.35,
+        "t": 0.0375,
+        "w": 0.65,
+        "h": 0.9625,
+        "aspect": 1,
+        "walkH": 1
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 40.25175,
+      "mapAfter": 47.355,
+      "walkBefore": 41.82,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "asia",
+      "key": "yama",
+      "path": "img/Asia/hero-yama-asia.png",
+      "box": {
+        "l": 0.271484375,
+        "t": 0,
+        "w": 0.458984375,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 55.199999999999996,
+      "mapAfter": 39.36000000000001,
+      "walkBefore": 55.199999999999996,
+      "walkAfter": 39.36000000000001
+    },
+    {
+      "zone": "asia",
+      "key": "nira",
+      "path": "img/Asia/crew-nira-asia.png",
+      "box": {
+        "l": 0.244140625,
+        "t": 0,
+        "w": 0.509765625,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 46.739999999999995,
+      "walkBefore": 49.130801687763714,
+      "walkAfter": 46.67426160337553
+    },
+    {
+      "zone": "asia",
+      "key": "taan",
+      "path": "img/Asia/crew-taan-asia.png",
+      "box": {
+        "l": 0.060546875,
+        "t": 0,
+        "w": 0.876953125,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 49.199999999999996,
+      "walkBefore": 48.03596214511041,
+      "walkAfter": 48.03596214511041
+    },
+    {
+      "zone": "asia",
+      "key": "plerng",
+      "path": "img/Asia/crew-plerng-asia.png",
+      "box": {
+        "l": 0.09375,
+        "t": 0,
+        "w": 0.8125,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 49.199999999999996,
+      "walkBefore": 49.126676602086434,
+      "walkAfter": 49.126676602086434
+    },
+    {
+      "zone": "asia",
+      "key": "kan",
+      "path": "img/Asia/crew-kan-asia.png",
+      "box": {
+        "l": 0.236328125,
+        "t": 0.001953125,
+        "w": 0.525390625,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 48.622026431718055,
+      "walkAfter": 48.622026431718055
+    },
+    {
+      "zone": "asia",
+      "key": "boon",
+      "path": "img/Asia/crew-boon-asia.png",
+      "box": {
+        "l": 0.1484375,
+        "t": 0,
+        "w": 0.701171875,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 49.199999999999996,
+      "walkBefore": 48.274608150470215,
+      "walkAfter": 48.274608150470215
+    },
+    {
+      "zone": "asia",
+      "key": "dam",
+      "path": "img/Asia/crew-dam-asia.png",
+      "box": {
+        "l": 0.109375,
+        "t": 0.001953125,
+        "w": 0.78125,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.11986970684038,
+      "walkAfter": 49.11986970684038
+    },
+    {
+      "zone": "asia",
+      "key": "guard",
+      "path": "img/Asia/crew-guard-asia-v2.png",
+      "box": {
+        "l": 0.2025518341307815,
+        "t": 0,
+        "w": 0.6251993620414673,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 62.4,
+      "mapAfter": 61.5,
+      "walkBefore": 61.86514285714286,
+      "walkAfter": 60.972857142857144
+    },
+    {
+      "zone": "asia",
+      "key": "worker",
+      "path": "img/workers/worker-asia-sheet-v2.webp",
+      "box": {
+        "l": 0.221875,
+        "t": 0.053125,
+        "w": 0.709375,
+        "h": 0.946875,
+        "aspect": 1,
+        "walkH": 1
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 39.5983125,
+      "mapAfter": 46.58625,
+      "walkBefore": 41.82,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "west",
+      "key": "yama",
+      "path": "img/West/hero-yama-west.png",
+      "box": {
+        "l": 0.2890625,
+        "t": 0.001953125,
+        "w": 0.419921875,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 55.199999999999996,
+      "mapAfter": 39.36000000000001,
+      "walkBefore": 55.199999999999996,
+      "walkAfter": 39.36000000000001
+    },
+    {
+      "zone": "west",
+      "key": "nira",
+      "path": "img/West/crew-nira-west.png",
+      "box": {
+        "l": 0.220703125,
+        "t": 0,
+        "w": 0.556640625,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 46.739999999999995,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 46.739999999999995
+    },
+    {
+      "zone": "west",
+      "key": "taan",
+      "path": "img/West/crew-taan-west.png",
+      "box": {
+        "l": 0.150390625,
+        "t": 0.001953125,
+        "w": 0.697265625,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 48.9045045045045,
+      "walkAfter": 48.9045045045045
+    },
+    {
+      "zone": "west",
+      "key": "plerng",
+      "path": "img/West/crew-plerng-west.png",
+      "box": {
+        "l": 0.115234375,
+        "t": 0,
+        "w": 0.765625,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "west",
+      "key": "kan",
+      "path": "img/West/crew-kan-west.png",
+      "box": {
+        "l": 0.232421875,
+        "t": 0.001953125,
+        "w": 0.53515625,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "west",
+      "key": "boon",
+      "path": "img/West/crew-boon-west.png",
+      "box": {
+        "l": 0.205078125,
+        "t": 0.001953125,
+        "w": 0.587890625,
+        "h": 0.99609375,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.00781249999999,
+      "mapAfter": 49.00781249999999,
+      "walkBefore": 49.199999999999996,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "west",
+      "key": "dam",
+      "path": "img/West/crew-dam-west.png",
+      "box": {
+        "l": 0.146484375,
+        "t": 0,
+        "w": 0.705078125,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.125454545454545,
+      "walkAfter": 49.125454545454545
+    },
+    {
+      "zone": "west",
+      "key": "guard",
+      "path": "img/West/crew-guard-west.png",
+      "box": {
+        "l": 0.12109375,
+        "t": 0,
+        "w": 0.7578125,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 62.4,
+      "mapAfter": 61.5,
+      "walkBefore": 62.03668122270742,
+      "walkAfter": 61.14192139737991
+    },
+    {
+      "zone": "west",
+      "key": "worker",
+      "path": "img/workers/worker-west-sheet-v2.webp",
+      "box": {
+        "l": 0.25625,
+        "t": 0.040625,
+        "w": 0.6625,
+        "h": 0.959375,
+        "aspect": 1,
+        "walkH": 1
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 40.1210625,
+      "mapAfter": 47.201249999999995,
+      "walkBefore": 41.82,
+      "walkAfter": 49.199999999999996
+    },
+    {
+      "zone": "cyberhell",
+      "key": "yama",
+      "path": "img/CyberHell/hero-yama-cyberhell.png",
+      "box": {
+        "l": 0.28125,
+        "t": 0.001953125,
+        "w": 0.43359375,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 55.199999999999996,
+      "mapAfter": 39.36000000000001,
+      "walkBefore": 55.199999999999996,
+      "walkAfter": 39.36000000000001
+    },
+    {
+      "zone": "cyberhell",
+      "key": "nira",
+      "path": "img/CyberHell/crew-nira-cyberhell.png",
+      "box": {
+        "l": 0.251953125,
+        "t": 0.001953125,
+        "w": 0.49609375,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 46.64871093749999,
+      "walkBefore": 49.12869565217391,
+      "walkAfter": 46.672260869565214
+    },
+    {
+      "zone": "cyberhell",
+      "key": "taan",
+      "path": "img/CyberHell/crew-taan-cyberhell.png",
+      "box": {
+        "l": 0.001953125,
+        "t": 0.12890625,
+        "w": 0.998046875,
+        "h": 0.869140625,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.09045312499999,
+      "mapAfter": 49.09045312499999,
+      "walkBefore": 48.63771428571428,
+      "walkAfter": 48.63771428571428
+    },
+    {
+      "zone": "cyberhell",
+      "key": "plerng",
+      "path": "img/CyberHell/crew-plerng-cyberhell.png",
+      "box": {
+        "l": 0.263671875,
+        "t": 0,
+        "w": 0.47265625,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.05718432510885,
+      "walkAfter": 49.05718432510885
+    },
+    {
+      "zone": "cyberhell",
+      "key": "kan",
+      "path": "img/CyberHell/crew-kan-cyberhell.png",
+      "box": {
+        "l": 0.25,
+        "t": 0,
+        "w": 0.5,
+        "h": 1,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.199999999999996,
+      "mapAfter": 49.199999999999996,
+      "walkBefore": 48.76331360946745,
+      "walkAfter": 48.76331360946745
+    },
+    {
+      "zone": "cyberhell",
+      "key": "boon",
+      "path": "img/CyberHell/crew-boon-cyberhell.png",
+      "box": {
+        "l": 0.248046875,
+        "t": 0.001953125,
+        "w": 0.50390625,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 49.12678571428571,
+      "walkAfter": 49.12678571428571
+    },
+    {
+      "zone": "cyberhell",
+      "key": "dam",
+      "path": "img/CyberHell/crew-dam-cyberhell.png",
+      "box": {
+        "l": 0.126953125,
+        "t": 0.001953125,
+        "w": 0.744140625,
+        "h": 0.998046875,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 49.103906249999994,
+      "mapAfter": 49.103906249999994,
+      "walkBefore": 48.90626865671641,
+      "walkAfter": 48.90626865671641
+    },
+    {
+      "zone": "cyberhell",
+      "key": "guard",
+      "path": "img/CyberHell/crew-guard-cyberhell-v2.png",
+      "box": {
+        "l": 0.11004784688995216,
+        "t": 0.017543859649122806,
+        "w": 0.773524720893142,
+        "h": 0.9776714513556619,
+        "aspect": 1,
+        "walkH": null
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 61.0066985645933,
+      "mapAfter": 60.12679425837321,
+      "walkBefore": 61.267257571214394,
+      "walkAfter": 60.3835952023988
+    },
+    {
+      "zone": "cyberhell",
+      "key": "worker",
+      "path": "img/workers/worker-cyberhell-sheet-v2.webp",
+      "box": {
+        "l": 0.246875,
+        "t": 0.03125,
+        "w": 0.709375,
+        "h": 0.953125,
+        "aspect": 1,
+        "walkH": 0.978125
+      },
+      "reference": "town world units; scale=.8*.75; alpha>40; idle t=0/x=0",
+      "mapBefore": 39.8596875,
+      "mapAfter": 46.89375,
+      "walkBefore": 40.905187500000004,
+      "walkAfter": 48.123749999999994
+    }
+  ],
+  "battles": [
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "guard",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 194.01599999999996,
+      "foot": 490.50000000000006
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "boon",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 510.9000000000001
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "kan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 531.3000000000001
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "nira",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 206.4,
+      "after": 156.86400000000003,
+      "foot": 551.7
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "taan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 155.21280000000002,
+      "foot": 603
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "plerng",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 623.4000000000001
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "dam",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 643.8000000000001
+    },
+    {
+      "zone": "th",
+      "viewport": "desktop",
+      "key": "yama",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 215,
+      "after": 132.096,
+      "foot": 664.2
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "guard",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 71.2896,
+      "foot": 459.98
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "boon",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.24512000000001,
+      "foot": 479.11066666666676
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "kan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 498.2413333333334
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "nira",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 75.84,
+      "after": 57.638400000000004,
+      "foot": 517.372
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "taan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 57.031679999999994,
+      "foot": 565.48
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "plerng",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.24512000000001,
+      "foot": 584.6106666666667
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "dam",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 603.7413333333334
+    },
+    {
+      "zone": "th",
+      "viewport": "mobile",
+      "key": "yama",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 79,
+      "after": 48.537600000000005,
+      "foot": 622.872
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "guard",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 194.016,
+      "foot": 490.50000000000006
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "boon",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 510.9000000000001
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "kan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 531.3000000000001
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "nira",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 206.4,
+      "after": 156.864,
+      "foot": 551.7
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "taan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 155.2128,
+      "foot": 603
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "plerng",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 623.4000000000001
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "dam",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 643.8000000000001
+    },
+    {
+      "zone": "asia",
+      "viewport": "desktop",
+      "key": "yama",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 215,
+      "after": 132.096,
+      "foot": 664.2
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "guard",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 71.2896,
+      "foot": 459.98
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "boon",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.24512000000001,
+      "foot": 479.11066666666676
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "kan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 498.2413333333334
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "nira",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 75.84,
+      "after": 57.6384,
+      "foot": 517.372
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "taan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 57.031679999999994,
+      "foot": 565.48
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "plerng",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.24512000000001,
+      "foot": 584.6106666666667
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "dam",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 603.7413333333334
+    },
+    {
+      "zone": "asia",
+      "viewport": "mobile",
+      "key": "yama",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 79,
+      "after": 48.537600000000005,
+      "foot": 622.872
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "guard",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 194.016,
+      "foot": 490.50000000000006
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "boon",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 510.9000000000001
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "kan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 531.3000000000001
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "nira",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 206.4,
+      "after": 156.864,
+      "foot": 551.7
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "taan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 155.21280000000002,
+      "foot": 603
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "plerng",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 623.4000000000001
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "dam",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 643.8000000000001
+    },
+    {
+      "zone": "west",
+      "viewport": "desktop",
+      "key": "yama",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 215,
+      "after": 132.096,
+      "foot": 664.2
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "guard",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 71.2896,
+      "foot": 459.98
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "boon",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.24512000000001,
+      "foot": 479.11066666666676
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "kan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 498.2413333333334
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "nira",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 75.84,
+      "after": 57.6384,
+      "foot": 517.372
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "taan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 57.031679999999994,
+      "foot": 565.48
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "plerng",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.245120000000014,
+      "foot": 584.6106666666667
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "dam",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 603.7413333333334
+    },
+    {
+      "zone": "west",
+      "viewport": "mobile",
+      "key": "yama",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 79,
+      "after": 48.537600000000005,
+      "foot": 622.872
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "guard",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 194.016,
+      "foot": 490.50000000000006
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "boon",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 510.9000000000001
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "kan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 531.3000000000001
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "nira",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 206.4,
+      "after": 156.864,
+      "foot": 551.7
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "taan",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 194.016,
+      "after": 155.21280000000002,
+      "foot": 603
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "plerng",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 198.144,
+      "after": 158.51520000000002,
+      "foot": 623.4000000000001
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "dam",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 202.272,
+      "after": 161.8176,
+      "foot": 643.8000000000001
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "desktop",
+      "key": "yama",
+      "reference": 215,
+      "stage": [
+        1440,
+        900
+      ],
+      "before": 215,
+      "after": 132.096,
+      "foot": 664.2
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "guard",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 71.28960000000001,
+      "foot": 459.98
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "boon",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.245120000000014,
+      "foot": 479.11066666666676
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "kan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 498.2413333333334
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "nira",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 75.84,
+      "after": 57.63839999999999,
+      "foot": 517.372
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "taan",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 71.2896,
+      "after": 57.031679999999994,
+      "foot": 565.48
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "plerng",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 72.8064,
+      "after": 58.245120000000014,
+      "foot": 584.6106666666667
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "dam",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 74.3232,
+      "after": 59.458560000000006,
+      "foot": 603.7413333333334
+    },
+    {
+      "zone": "cyberhell",
+      "viewport": "mobile",
+      "key": "yama",
+      "reference": 79,
+      "stage": [
+        390,
+        844
+      ],
+      "before": 79,
+      "after": 48.537600000000005,
+      "foot": 622.872
+    }
+  ]
+}

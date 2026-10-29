@@ -1,0 +1,62 @@
+(node:14413) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ L2 turn step: the stepping sprite ends clear of every teammate and enemy (bounds, not a fixed offset) (4.949746ms)
+✔ L2 turn step: no room at all returns the least-bad spot and says it is not clear (0.482212ms)
+✔ L2 defend: the defender takes DEFEND_DAMAGE_RATIO of the hit, others take it in full, and the log says so (26.067658ms)
+✔ L2 defend: the stance ends when that actor’s next turn begins, not before (4.063738ms)
+✔ L2 defend and flee are not attacks: no damage dealt, no enemy HP lost (1.734496ms)
+✔ L2 flee: plain fights can be fled (no reward, battle over); boss/event fights refuse (4.719254ms)
+✔ L2 wiring: defend/flee never fall into the attack animation; flee asks first; target hint box is gone (7.083132ms)
+✔ L2 wiring: Where/Keeper/Intensity picks render as thumbnail + name beside their command (4.592356ms)
+✔ L2 pause buttons: no gold border and no gold focus ring, hover/focus is a lighter fill (1.324757ms)
+✔ L2 wording: Thai UI says พลังเวท where it said MP, English keeps MP (11.742064ms)
+✔ L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list lives in game.js) (4.668562ms)
+✔ L2 heal fx: item on a teammate, holy water on Yama and a boon heal each produce one gain entry; nothing else does (26.455526ms)
+✔ L2 heal fx: several heals at once all get an entry; losses never do (0.448722ms)
+✔ L2 heal fx markup: ring + glow + sparkles + number(s), MP uses its own theme, never an <img> (3.398932ms)
+✔ L2 heal fx wiring/CSS: every command snapshots vitals, all healed actors are drawn, CSS animates transform/opacity only (4.011932ms)
+✔ L2 receiver picking: no hint box at all, eligible teammates get the same tag as enemies, others dim, cancel like the attack side (3.871812ms)
+(node:14417) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ border arrival skips caretaker speech and boarding, committing only once (240.685862ms)
+✔ border handoff can cancel without discovering destination; incomplete exits cannot start it (2.23352ms)
+✔ boat approach gives Nira ordinary walk speed instead of a rush to the dock (131.578096ms)
+✔ border transition keeps its backdrop without replaying the portrait; cancel reconstructs its view (3.810082ms)
+✔ border skip closes the old backdrop only after successful commit (1.70854ms)
+✔ source-gate portrait starts the route only on confirmation, once (1.729145ms)
+✔ cancelling source-gate portrait leaves no route and returns to frontier (1.504952ms)
+✔ P5c every measured v2 row ends at v1 height +-2% and feet on the cell centre (4.581126ms)
+✔ P5c rows without an entry, and zones without a table, are not compensated (0.570939ms)
+✔ P5c drawWorker applies the row fit: bigger, feet shifted, baseline unchanged; v1 sheets and fit-less rows untouched (1.699838ms)
+✔ P5c cache-bust: workers.js ends -p5c, nothing else of the importmap touched by this round (0.70076ms)
+✔ P9 Nira: all four zones draw the v2 sheet (1280x1280, 4x4); v1 files stay on disk untouched (11.620648ms)
+✔ P9 Nira: v2 faces right in every pose so nothing is mirrored by the squad; a v1 sheet keeps the old rule (0.897594ms)
+✔ P9 cache-bust: nira-combat.js ends -p9 (0.693309ms)
+✔ P9 workers: asia/west/cyberhell draw the 12-row v2 sheet (1280x3840); th unchanged; v1 files stay (10.53604ms)
+✔ P9 workers: upright rows end within 2 % of the zone own v1 standing height; crouch/lean rows 6-8 are deliberately not scaled (0.79733ms)
+✔ P9 drawWorker: asia/west/cyberhell read v2 rows by what the worker does (repair=8, carry shards=11) and apply their scale about the foot baseline (1.248186ms)
+✔ P9 cache-bust: workers.js ends -p9 (0.46152ms)
+✔ P9 Trojan horse: cyberhell boss-frontier atlas reads the v2 file (same geometry, only attack f6/f7 redrawn), v1 stays; every other zone untouched (3.920585ms)
+✔ P9 manifest fetch carries a new cache key in all three readers, so returning players do not keep the old atlas path (3.305569ms)
+✔ P9 verdict scene: every zone draws its own praise/scold pair (1672x941 PNG); the scene kind `blame` points at the `scold` file; no placeholder left (14.493734ms)
+✔ R3 all regional crew identities share the child/adult/guard hierarchy (2.913344ms)
+✔ R3 every route scales friends and enemies equally, independently of the camera (0.665171ms)
+✔ R3 real alpha/aspect variation cannot invert arena order; original slot feet are retained (4.375413ms)
+✔ R3 production fitter remains stable on repeat and moves selection roots with unchanged slot feet (8.264223ms)
+✔ R3 foreground reuses background pixels under a camera-transformed clip, sorted by ground foot (1.038735ms)
+/Users/agapae/agapae-work/.codex-worktrees/20261029T090612Z-4bf3c8dd/scripts/art/measure-yama-fit.py:15: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  band=alpha.crop((0,max(0,b[3]-8),w,b[3]));pixels=list(band.getdata());xx=[i%w+.5 for i,v in enumerate(pixels) if v];xs.append(sum(xx)/len(xx))
+<string>:9: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+✔ A7 generated body fits still match all 236 shipped alpha frames and source hashes (2743.864495ms)
+✔ A7 production book renderer makes actual idle silhouettes equally high with the same foot baseline (2925.213647ms)
+✔ A7 walking retains native eight poses and one unchanged scale/anchor shared with standing idle (4.263603ms)
+✔ A7 sword idle fits a constant body height while retaining the same six-frame timing (1115.443372ms)
+✔ A7 production standing fallback aligns every outfit silhouette to requested height and foot (160.730844ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7209.069121

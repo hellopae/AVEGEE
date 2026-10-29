@@ -27,7 +27,7 @@ test('N1-2 Fast Travel button sits at the pier standing point (below the feet), 
 
 test('N1-3 cleared zone boss: no black "คุยกับ…" tag; the yellow button is anchored over the head', () => {
   const scene = read('src/scene.js'), ui = read('src/ui.js');
-  assert.match(scene, /if \(!cleared\) tag\(ctx, x, y - HERO_H \* 1\.12 - 15, t,/);
+  assert.match(scene, /if \(!cleared\) tag\(ctx, x, y - 92 \* CHAR_SCALE_MAP \* 1\.12 - 15, t,/);
   assert.doesNotMatch(scene, /cleared \? `คุยกับ/);
   assert.match(ui, /f\.dataset\.sy = SPOTS\.bossPier\.y - 92 \* 1\.12 \* CHAR_SCALE_MAP - 12;/);
 });

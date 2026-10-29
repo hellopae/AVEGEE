@@ -32,11 +32,11 @@ test('มีภาพยมทูต/ยักษ์ให้ตรวจคร�
   assert.ok(crewFiles.filter(p => /crew-guard/.test(p)).length >= 4, 'ยักษ์ทวารบาลทุกโซน');
 });
 
-test('ทุกโซน ทุกยมทูต (รวมยักษ์ทวารบาล): ความสูงตัวจริงใกล้เคียงยมบาทน้อยในขนาดจอเดสก์ท็อปและมือถือ', () => {
+test('ทุกโซน ทุกยมทูต (รวมยักษ์ทวารบาล): ความสูงตัวจริงมากกว่ายามาเด็กในขนาดจอเดสก์ท็อปและมือถือ', () => {
   const boxes = boxesOf(crewFiles);
   const cases = [
     // [ชื่อ, ความสูงตัวจริงของยมบาทน้อยบนจอ, ขอบซ้ายตัวจริง, ซ้ายสุดของฉาก]
-    ['desktop 1440', 215, 515, 0.92], ['laptop 1024', 150, 330, 0.92], ['mobile 390', 79, 210, 0.85],
+    ['desktop 1440', 172, 515, 1.0], ['laptop 1024', 120, 330, 1.0], ['mobile 390', 63.2, 210, 1.0],
   ];
   for (const [name, visH, oLeft, minRatio] of cases) {
     {
@@ -48,7 +48,7 @@ test('ทุกโซน ทุกยมทูต (รวมยักษ์ท�
         plan.items.forEach((it, i) => {
           const vis = it.boxH * crew[i].box.h;
           const ratio = vis / visH;
-          assert.ok(ratio >= minRatio && ratio <= 1.0, `${name} ${zone || 'th'} ${pick[i].split('/').pop()}: สูงตัวจริง ${vis.toFixed(1)} / ยมบาท ${visH} = ${ratio.toFixed(2)}`);
+          assert.ok(ratio >= minRatio && ratio <= 1.25, `${name} ${zone || 'th'} ${pick[i].split('/').pop()}: สูงตัวจริง ${vis.toFixed(1)} / ยมบาท ${visH} = ${ratio.toFixed(2)}`);
           const oL = it.left + crew[i].box.l * it.boxW;
           assert.ok(oL >= 4 - 0.5, `${name}: ตัวซ้ายสุดไม่หลุดขอบ ${oL.toFixed(1)}`);
         });
@@ -57,12 +57,12 @@ test('ทุกโซน ทุกยมทูต (รวมยักษ์ท�
       }
     }
   }
-  assert.ok(CREW_SCALE_TARGET >= 0.9 && CREW_SCALE_TARGET <= 1);
+  assert.ok(CREW_SCALE_TARGET === 1.25);
 });
 
-test('ภาพยมทูตที่กรอบตัวจริงเตี้ย/แคบต่างกัน ได้ความสูงตัวจริงเท่ากันหมด (ไม่ใช่ความสูงกล่องภาพ)', () => {
+test('ภาพผู้ใหญ่ที่กรอบตัวจริงเตี้ย/แคบต่างกัน ได้ความสูงตัวจริงเท่ากันหมด (ไม่ใช่ความสูงกล่องภาพ)', () => {
   const crew = [{ box:{ l:.2, t:.05, w:.4, h:.9 }, aspect:1 }, { box:{ l:.1, t:.2, w:.7, h:.75 }, aspect:1 }, { box:{ l:0, t:0, w:1, h:1 }, aspect:1.5 }];
-  const plan = planSquad({ visH:200, oLeft:600, base:0 }, crew);
+  const plan = planSquad({ visH:200, oLeft:1000, base:0 }, crew);
   const vis = plan.items.map((it, i) => it.boxH * crew[i].box.h);
   vis.forEach(v => assert.ok(Math.abs(v - 200 * CREW_SCALE_TARGET) < 0.01, `${v}`));
 });

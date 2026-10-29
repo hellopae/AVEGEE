@@ -1,8 +1,9 @@
+import {mapActorHeight,routeCharacterScale} from './character-scale.js';
 // Match the authored map and the town's .8 * .75 actor scale, independently of viewport size.
 export const FRONTIER_WORLD = Object.freeze({w:1672,h:941});
-export function frontierActorHeight(kind,scale=1) {
-  const base=kind==='yama'?92*1.12:kind==='nira'?82:kind==='enemy'?78:92;
-  return base*.8*.75*scale;
+export function frontierActorHeight(kind,scale=1,route='th:asia') {
+  const base=kind==='enemy'?78:kind==='guide'||kind==='challenge'?92:mapActorHeight(kind);
+  return base*.8*.75*routeCharacterScale(route)*scale;
 }
 export function frontierCameraTarget(width,height,position,overview=false) {
   const {w,h}=FRONTIER_WORLD;

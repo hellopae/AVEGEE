@@ -1,3 +1,4 @@
+import {mapActorHeight,characterScale} from './character-scale.js';
 import {drawMapTravel} from './map-travel.js';
 import {canteenActive,canteenSite,drawCanteen} from './canteen.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
@@ -38,12 +39,12 @@ const CHAR_SCALE_BASE = 0.8;
 // Town zone only; other maps keep 0.8.
 export const TOWN_CHAR_K = 0.75;
 export let CHAR_SCALE_MAP = CHAR_SCALE_BASE;   // live binding: ui.js hit padding / pins read the current value
-let CREW_H = 82 * CHAR_SCALE_MAP, HERO_H = 92 * CHAR_SCALE_MAP, SOUL_H = 64 * CHAR_SCALE_MAP;
+let CREW_H = 82 * CHAR_SCALE_MAP, HERO_H = mapActorHeight('yama') * CHAR_SCALE_MAP, SOUL_H = 64 * CHAR_SCALE_MAP;
 /** Relative actor size of the zone being drawn (1 everywhere except the Zone 1 town). */
 export const mapCharK = () => CHAR_SCALE_MAP / CHAR_SCALE_BASE;
 export function setMapCharScale(zone) {
   CHAR_SCALE_MAP = CHAR_SCALE_BASE * (isTownZone(zone) ? TOWN_CHAR_K : 1);
-  CREW_H = 82 * CHAR_SCALE_MAP; HERO_H = 92 * CHAR_SCALE_MAP; SOUL_H = 64 * CHAR_SCALE_MAP;
+  CREW_H = 82 * CHAR_SCALE_MAP; HERO_H = mapActorHeight('yama') * CHAR_SCALE_MAP; SOUL_H = 64 * CHAR_SCALE_MAP;
 }
 const CHAR_HIT_PAD_MAP = 12; // touch padding around the smaller standees
 const mapStandee = (ctx, key, x, y, h, t, ...rest) =>
@@ -414,8 +415,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       at(crewAt[1] + 1, () => {
         const key = `crew-${v.crew}`;
         shade(position[0], position[1], CREW_H, c => {
-          if (motion.moving && drawCrewWalk(c, key, position[0], position[1], CREW_H, motion.distance, motion.face)) return;
-          drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), position[0], position[1], CREW_H, t,
+          if (motion.moving && drawCrewWalk(c, key, position[0], position[1], CREW_H*characterScale(key), motion.distance, motion.face)) return;
+          drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), position[0], position[1], CREW_H*characterScale(key), t,
             v.crewGlyph || '👹', motion.face, motion.moving);
         });
       });
@@ -442,8 +443,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     if(worker.teaRest&&worker.teaRest.phase!=='travel')continue;
-    spot_(worker.x,worker.y,CREW_H*.85);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,CREW_H*.85,c=>drawWorker(c,worker,t,CREW_H*.85));if(worker.meal)label(ctx,'🍲',worker.x+16,worker.y-24,14);});
+    spot_(worker.x,worker.y,mapActorHeight('worker')*CHAR_SCALE_MAP);
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapActorHeight('worker')*CHAR_SCALE_MAP,c=>drawWorker(c,worker,t,mapActorHeight('worker')*CHAR_SCALE_MAP));if(worker.meal)label(ctx,'🍲',worker.x+16,worker.y-24,14);});
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -478,12 +479,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const crew = walk.courier ? {k:walk.courier,glyph:'🦇'} : g.crewOf(walk.escort.k);
       if (pos && crew) {
         const motion = actorWalkMotion(walk, t, g.zone, [pos.x, pos.y]);
-        spot_(pos.x, pos.y, CREW_H);
+        spot_(pos.x, pos.y, (CREW_H*characterScale(crew.k)));
         at(pos.y + 1, () => {
           const key = `crew-${crew.k}`;
-          shade(pos.x, pos.y, CREW_H, c => {
-            if (motion.moving && drawCrewWalk(c, key, pos.x, pos.y, CREW_H, motion.distance, motion.face)) return;
-            drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), pos.x, pos.y, CREW_H, t,
+          shade(pos.x, pos.y, (CREW_H*characterScale(crew.k)), c => {
+            if (motion.moving && drawCrewWalk(c, key, pos.x, pos.y, (CREW_H*characterScale(crew.k)), motion.distance, motion.face)) return;
+            drawStandee(c, motion.moving ? key : poseOr(`${key}-work`, key), pos.x, pos.y, (CREW_H*characterScale(crew.k)), t,
               crew.glyph || '👹', motion.moving ? motion.face : pos.face, motion.moving);
           });
         });
@@ -528,12 +529,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const cleared = !walk && g.bossCleared?.[g.zone];
     const x = walk ? walk.from[0] + (walk.to[0] - walk.from[0]) * progress : SPOTS.bossPier.x;
     const y = walk ? walk.from[1] + (walk.to[1] - walk.from[1]) * progress : SPOTS.bossPier.y;
-    spot_(x, y, HERO_H * 1.12);
+    spot_(x, y, 92 * CHAR_SCALE_MAP * 1.12);
     at(1e5 + y, () => {
       ring(ctx, x, y, t, 32);
-      shade(x, y, HERO_H * 1.12, c => drawStandee(c, 'zone-boss', x, y, HERO_H * 1.12, t, '👑', 1, !!walk && progress < 1));
+      shade(x, y, 92 * CHAR_SCALE_MAP * 1.12, c => drawStandee(c, 'zone-boss', x, y, 92 * CHAR_SCALE_MAP * 1.12, t, '👑', 1, !!walk && progress < 1));
       // N1 (คุณเป้ 16 ต.ค.): ชนะแล้ว = ไม่มีป้ายดำ "คุยกับ…" บนหัว — ปุ่มเหลือง 💬 (ui.js updateBossFab) วางบนหัวแทนตอนเดินเข้าใกล้
-      if (!cleared) tag(ctx, x, y - HERO_H * 1.12 - 15, t,
+      if (!cleared) tag(ctx, x, y - 92 * CHAR_SCALE_MAP * 1.12 - 15, t,
           [walk ? `${g.zoneDef().bossName}เดินมาท้าสู้` : `${g.zoneDef().bossName}เฝ้าสะพาน`, '#f7c371']);
     });
   }
@@ -586,13 +587,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // ไล่ปราบเปรตแถวหัวสะพานเองเสมอ (g.guard.x/y จาก stepWorld) ไม่มีโหมดตามผู้เล่นอีกต่อไปแล้ว
   if (!rescue && (actorStanding(g.guard) || g.guard?.teaRest?.phase === 'travel')) {
     const motion = actorWalkMotion(g.guard, t, g.zone);
-    spot_(g.guard.x, g.guard.y, GUARD.h * CHAR_SCALE_MAP);
+    spot_(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP);
     at(g.guard.y, () => {
       if (sel && sel.kind === 'guard') ring(ctx, g.guard.x, g.guard.y, t, 34);
-      shade(g.guard.x, g.guard.y, GUARD.h * CHAR_SCALE_MAP, c => {
+      shade(g.guard.x, g.guard.y, mapActorHeight('guard') * CHAR_SCALE_MAP, c => {
         if (motion.moving && drawCrewWalk(c, GUARD.img, g.guard.x, g.guard.y,
-            GUARD.h * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
-        mapStandee(c, GUARD.img, g.guard.x, g.guard.y, GUARD.h, t, '🛡️', motion.face, motion.moving);
+            mapActorHeight('guard') * CHAR_SCALE_MAP, motion.distance, motion.face)) return;
+        mapStandee(c, GUARD.img, g.guard.x, g.guard.y, mapActorHeight('guard'), t, '🛡️', motion.face, motion.moving);
       });
     });
   }
@@ -605,8 +606,9 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     if(justice && (c.k===justice.pick?.crew || c.k==='nira' && ['dais','trial'].includes(justice.phase)))continue;
     if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
     if (c.x == null || c.escort) continue;
+    const crewHeight=CREW_H*characterScale(c.k);
     const motion = actorWalkMotion(c, t, g.zone);
-    spot_(c.x, c.y, CREW_H);
+    spot_(c.x, c.y, crewHeight);
     at(c.y, () => {
       const base = 'crew-' + c.k;
       if (sel && sel.kind === 'crew' && sel.key === c.k) ring(ctx, c.x, c.y, t);
@@ -616,16 +618,16 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       const buildingHere = c.buildK && g.stations.some(st => st.def.k === c.buildK &&
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || c.cook || (buildingHere && Math.floor(t / 500) % 2 === 0);
-      shade(c.x, c.y, CREW_H, cx => {
+      shade(c.x, c.y, crewHeight, cx => {
         const animated = !buildingHere && motion.moving &&
-          drawCrewWalk(cx, base, c.x, c.y, CREW_H, motion.distance, motion.face);
-        const idleNira=c.k==='nira'&&!working&&!motion.moving&&drawAnimatedSprite(cx,'nira:'+g.zone,'idle',c.x,c.y,CREW_H,t,motion.face);
+          drawCrewWalk(cx, base, c.x, c.y, crewHeight, motion.distance, motion.face);
+        const idleNira=c.k==='nira'&&!working&&!motion.moving&&drawAnimatedSprite(cx,'nira:'+g.zone,'idle',c.x,c.y,crewHeight,t,motion.face);
         if (!animated&&!idleNira) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
-          c.x, c.y, CREW_H, t, c.glyph, motion.face, motion.moving && !buildingHere);
+          c.x, c.y, crewHeight, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
-      if(c.cook)label(ctx,'🍲',c.x,c.y-CREW_H-8,14);
+      if(c.cook)label(ctx,'🍲',c.x,c.y-crewHeight-8,14);
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
-      if (c.morale < 35) label(ctx, '💤', c.x + CREW_H * 0.32, c.y - CREW_H + 6, 16);
+      if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
     });
   }
   const camp = finalRestSpot(g);
@@ -687,7 +689,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   });
   spot_(P.x, P.y, HERO_H);
 
-  if(g.mapTravel)at(g.mapTravel.waterY+20,()=>drawMapTravel(ctx,g,t,HERO_H));
+  if(g.mapTravel)at(g.mapTravel.waterY+20,()=>drawMapTravel(ctx,g,t,CREW_H));
   // วาดทั้งชั้นเรียงจากหลังมาหน้า — ฐานอยู่สูงกว่า (y น้อยกว่า) คืออยู่ไกลกว่า วาดก่อน
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
@@ -712,7 +714,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         const seatY = TOWN_DAIS.y - daisH * .61;
         ctx.drawImage(ruler, TOWN_DAIS.x - h / 2, seatY - h * .70, h, h);
       }
-    } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.2, t, '👹');
+    } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, 92 * CHAR_SCALE_MAP * 1.2, t, '👹');
   }
 
   // ---- ลูกไฟที่เพิ่งฟาด ----

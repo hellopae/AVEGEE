@@ -1,3 +1,5 @@
+import {mapActorHeight,routeCharacterScale} from './character-scale.js';
+import {ROUTE_FOREGROUND,drawRouteForeground} from './route-occlusion.js';
 import {createFrontierNavigation} from './dungeon-navigation.js';
 import {drawFrontierAmbient,drawFrontierTree} from './frontier-ambient.js';
 import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
@@ -334,12 +336,14 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     // the playfield clear of geographic captions and use the footer/minimap for progress.
     const hero=position,nira=follower;
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'},...routeRow(routeId).ambient.trees.map(tree=>({p:[tree.x,tree.y],kind:'tree',tree}))];
+    for(const foreground of ROUTE_FOREGROUND[routeId]||[])actors.push({p:[0,foreground.depth],kind:'foreground',foreground});
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
     if(bossGuideWaiting(g)){actors.push({p:dungeonGuideAnchor(g),kind:'guide'});}
     if(challengeStandeeShown()){actors.push({p:captainCave?.position||dungeonGuideAnchor(g),kind:'challenge'});}
     if(bossGuideFollowing(g))actors.push({p:guidePosition,kind:'guide',following:true});
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
-      const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale),animationTime=reduced.matches?0:t;
+      if(a.kind==='foreground'){drawRouteForeground(ctx,image,a.foreground,{x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale});return;}
+      const p=screenPoint(a.p),h=frontierActorHeight(a.kind,cam.scale,routeId),animationTime=reduced.matches?0:t;
       if(a.kind==='tree'){drawFrontierTree(ctx,a.tree,{x:p[0],y:p[1],height:w.h*cam.scale,image:treeImages[a.tree.kind],anchor:treeImages[a.tree.kind]?.frontierAnchor});return;}
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',a.following?guideMotion.face:face,!!a.following&&guideMotion.moving,g.zone);return;}
@@ -526,7 +530,7 @@ function mountLegacyDungeonView(container,g,{onEncounter=()=>{},onArrival=()=>{}
     if(bossGuideFollowing(g))actors.push({p:dungeonPoint(Math.max(0,progress-.09)),kind:'guide',following:true});
     if(!status.ready){const at=dungeonPoint(chase?chase.s/total:DUNGEON_PROGRESS[status.checkpoint]);actors.push({p:[at[0]-.028,at[1]],kind:'enemy'});}
     actors.sort((a,b)=>a.p[1]-b.p[1]).forEach(a=>{
-      const p=screenPoint(a.p),h=w.h*cam.scale*.092,animationTime=reduced.matches?0:t;
+      const p=screenPoint(a.p),h=w.h*cam.scale*.092*routeCharacterScale(routeId)*(a.kind==='yama'||a.kind==='nira'?mapActorHeight(a.kind)/82:1),animationTime=reduced.matches?0:t;
       ctx.fillStyle='rgba(10,8,14,.28)';ctx.beginPath();ctx.ellipse(p[0],p[1]-h*.025,h*.22,h*.065,0,0,Math.PI*2);ctx.fill();
       if(a.kind==='guide'){drawStandee(ctx,'zone-boss',p[0],p[1],h*1.15,animationTime,'👑',face,!!a.following&&moving,g.zone);if(!a.following){ctx.fillStyle='#ffe2a0';ctx.fillText('ผู้ตรวจการ · คุยเพื่อออกเดินทาง',p[0],p[1]+21);}return;}
       if(a.kind==='enemy'){const foe=MOB.kinds[status.location.foe]||MOB;drawStandee(ctx,foe.img,p[0],p[1],h*1.15,animationTime,'👹',1,false,g.zone);
