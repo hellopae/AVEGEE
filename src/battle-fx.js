@@ -580,7 +580,7 @@ let poseCatalog = null, poseRequested = false;
 export function loadPoseCatalog() {
   if (!poseRequested && typeof fetch === 'function') {
     poseRequested = true;
-    fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9').then(r => r.ok ? r.json() : null).then(j => { poseCatalog = j?.sprites || null; }).catch(() => {});
+    fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9-grace-f').then(r => r.ok ? r.json() : null).then(j => { poseCatalog = j?.sprites || null; }).catch(() => {});
   }
   return poseCatalog;
 }

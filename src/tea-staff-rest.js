@@ -58,5 +58,6 @@ export function teaRoomArrivals(g,now=Date.now()){
     .map(c=>({actor:c,...teaEntryPose(c.teaRest,now)}));
 }
 export function teaRestSprite(c,zone){
+  if (!c.id.startsWith('worker:') && c.k === 'boon' && (c.homeZone === 'global' ? zone : c.homeZone) === 'west') return 'img/tea-rest/crew-boon-west-sit-v1-f.webp';
   return c.id.startsWith('worker:')?`img/workers/worker-${c.homeZone}-rest-v1.webp`:`img/tea-rest/crew-${c.k}-${c.homeZone==='global'?zone:c.homeZone}-sit-v1.webp`;
 }

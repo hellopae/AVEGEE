@@ -3,7 +3,7 @@ import {battleSpriteRect} from './battle-scale.js?v=battle-anchor-20261012-k2-l2
 let catalog=null,catalogRequest=null,catalogFailedAt=0;
 const images=new Map();
 function metadata(){
- if(!catalogRequest&&Date.now()-catalogFailedAt>10000&&typeof fetch==='function')catalogRequest=fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9').then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).then(j=>{catalog=j.sprites;}).catch(()=>{catalogRequest=null;catalogFailedAt=Date.now();});
+ if(!catalogRequest&&Date.now()-catalogFailedAt>10000&&typeof fetch==='function')catalogRequest=fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9-grace-f').then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).then(j=>{catalog=j.sprites;}).catch(()=>{catalogRequest=null;catalogFailedAt=Date.now();});
  return catalog;
 }
 function imageFor(src){

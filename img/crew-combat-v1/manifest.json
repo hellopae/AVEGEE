@@ -1191,7 +1191,7 @@
     }
   },
   "crew:west:boon:idle": {
-    "src": "img/crew-combat-v1/west/boon-idle.webp",
+    "src": "img/crew-combat-v1/west/boon-idle-f.webp",
     "frameWidth": 256,
     "frameHeight": 384,
     "cols": 4,

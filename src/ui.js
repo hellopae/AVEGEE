@@ -3638,7 +3638,7 @@ function openBattle(after) {
   // The camera never changes game rules or timers: it only reacts to the same phase changes the fight already has.
   // Codex's drawn combat animations (img/combat-animation-v1): read-only — only used to time the camera impact to the attack's contact frame.
   let animSprites = null;
-  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
+  if (typeof fetch === 'function') fetch('img/combat-animation-v1/manifest.json?v=night-v1-p9-grace-f').then(r => r.ok ? r.json() : null).then(j => { animSprites = j?.sprites || null; }).catch(() => {});
   const strikeOf = key => { const rec = animSprites && key && (animSprites[`${key}:attack`] || animSprites[key]); return strikeTime(rec?.modes?.attack?.durations); };
   const impactLead = key => { const t = strikeOf(key); return t == null ? undefined : Math.max(150, t - (Date.now() - phaseAt)); };
   const actorKeyOf = a => !a ? 'you' : a.id === 'you' ? 'you' : crewBattleKey(a);
