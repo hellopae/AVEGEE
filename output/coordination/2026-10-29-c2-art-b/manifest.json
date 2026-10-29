@@ -1,0 +1,511 @@
+{
+  "schema": "avegee-art-handoff-v1",
+  "generator": "built-in image_gen",
+  "generation_calls": 27,
+  "icons": 8,
+  "fx": 9,
+  "assets": [
+    {
+      "id": "copperInferno",
+      "path": "img/skills-v1/icons/copperInferno.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 19800,
+      "partial_alpha_pixels": 45184,
+      "alpha_bbox": [
+        6,
+        7,
+        250,
+        250
+      ],
+      "bytes": 41758,
+      "sha256": "cc927656fda69c268599c0428fa2d7c46872e055a7e2cc02a2d378ffd224d7fd",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "ada0f274b7e9894a8dce12eba9df864dead4dda9fc335b34fd2cbc0a03b06322"
+    },
+    {
+      "id": "mercySeal",
+      "path": "img/skills-v1/icons/mercySeal.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 20493,
+      "partial_alpha_pixels": 44483,
+      "alpha_bbox": [
+        6,
+        7,
+        249,
+        249
+      ],
+      "bytes": 41490,
+      "sha256": "7d06faf91aa3bbca71419969fc6db93447029bf66f8cc12710f155c167d3fdf1",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "8ec735dc7a3e1591f06d2bc0cc4dbb33561d44f572e3e5c27820c7db99850595"
+    },
+    {
+      "id": "lotusSanctuary",
+      "path": "img/skills-v1/icons/lotusSanctuary.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 20600,
+      "partial_alpha_pixels": 44416,
+      "alpha_bbox": [
+        7,
+        8,
+        250,
+        249
+      ],
+      "bytes": 60226,
+      "sha256": "79aa651a2d850086f0809fe573d391069e8a13336d81f66a329e070d0f029a8a",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "8bb949373e62e227035ee5eb571e05cda397645ad9ee2205681c510fb70d44e9"
+    },
+    {
+      "id": "laborJudgment",
+      "path": "img/skills-v1/icons/laborJudgment.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 21378,
+      "partial_alpha_pixels": 43619,
+      "alpha_bbox": [
+        7,
+        9,
+        248,
+        248
+      ],
+      "bytes": 36700,
+      "sha256": "cbaca7d4d953f4216dc58dea895a2356e06527c61b1ac139c2cebf2386916e58",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "e81a5f90cf68ec51bf9aad178c061efad5be7606b6cd29eb6cabf053b6325fb4"
+    },
+    {
+      "id": "shadowCleaver",
+      "path": "img/skills-v1/icons/shadowCleaver.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 23051,
+      "partial_alpha_pixels": 41953,
+      "alpha_bbox": [
+        10,
+        12,
+        246,
+        248
+      ],
+      "bytes": 43558,
+      "sha256": "86433ef145d476221f5e8c6a6efd17a57b8b33b962c6b61c19ce8ec0f3b3fce0",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "a909955bc7bd85f517562c7532af300728c401ce705fa2b34f6422bc4b1f03c6"
+    },
+    {
+      "id": "abyssGatebreaker",
+      "path": "img/skills-v1/icons/abyssGatebreaker.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 20168,
+      "partial_alpha_pixels": 44809,
+      "alpha_bbox": [
+        6,
+        7,
+        250,
+        249
+      ],
+      "bytes": 46264,
+      "sha256": "30f65c9dc240a126d3bef43c50d5465929e2514ef5ea6064c3d16a93af0a3353",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "4ed2c604de4c9af9676d51866416f6d71f4a60039553758a39b2ae78a4a9b5a6"
+    },
+    {
+      "id": "karmaFracture",
+      "path": "img/skills-v1/icons/karmaFracture.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 21825,
+      "partial_alpha_pixels": 43160,
+      "alpha_bbox": [
+        8,
+        10,
+        248,
+        247
+      ],
+      "bytes": 34252,
+      "sha256": "2d5f8f37ffc92929d33ade29c2562cf7ce0bcc7d7b08c7468f1c48f1b0cdb728",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "d9c40ba0db9cfcd6c221868012f33955600aa5761d1e44704d0513b42e835caf"
+    },
+    {
+      "id": "teamJudgment",
+      "path": "img/skills-v1/icons/teamJudgment.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 22271,
+      "partial_alpha_pixels": 42725,
+      "alpha_bbox": [
+        9,
+        11,
+        247,
+        247
+      ],
+      "bytes": 37864,
+      "sha256": "4538e4f72384b208f59b3e80a10365640c9983842c965eac8d02d82fa9648c22",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "b6baf8e6abb338bdcb1ca56630ebd42f1b231ca153a31aa5b524ccdcac6ea0ef"
+    },
+    {
+      "id": "mercySeal-shield-512",
+      "path": "img/skills-v1/fx/mercySeal-shield-512.webp",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 149970,
+      "partial_alpha_pixels": 112132,
+      "alpha_bbox": [
+        41,
+        41,
+        471,
+        471
+      ],
+      "bytes": 214192,
+      "sha256": "108eed6e58472847ffdd53a0455d00a6c6ea0b75a192e1f2a3bab070eb0a6087",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "695b42c733f075c933b234d88c9a05668a74fdd18e35c03f1c7e256d7bee80ab"
+    },
+    {
+      "id": "lotus-shield-512",
+      "path": "img/skills-v1/fx/lotus-shield-512.webp",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 153079,
+      "partial_alpha_pixels": 108595,
+      "alpha_bbox": [
+        41,
+        44,
+        471,
+        471
+      ],
+      "bytes": 220970,
+      "sha256": "dd63e32efde679dd5a25b7cbc67ce7b914d4cf5e46c3306dffea51cf1e2b0b49",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "9d850d7a835be17fb4c9bea563f9611d1ddca446716401ae8f036e7143c40d35"
+    },
+    {
+      "id": "taan-shockwave-768",
+      "path": "img/skills-v1/fx/taan-shockwave-768.webp",
+      "width": 768,
+      "height": 768,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 433385,
+      "partial_alpha_pixels": 156385,
+      "alpha_bbox": [
+        61,
+        70,
+        707,
+        702
+      ],
+      "bytes": 332356,
+      "sha256": "63111c0f320efefab99e437ba781ae4c5f83c3089a2408e01b416d5d53787fc0",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "cd394b8de2f05358a96445d315c38cd10439c0cd2cf74de98625fb152985b6f1"
+    },
+    {
+      "id": "dam-slash-512",
+      "path": "img/skills-v1/fx/dam-slash-512.webp",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 167508,
+      "partial_alpha_pixels": 94113,
+      "alpha_bbox": [
+        41,
+        43,
+        468,
+        471
+      ],
+      "bytes": 197216,
+      "sha256": "fc1fa9ddd8640d55f2494b1de96cfb23578d9afa82efe0f1f72b5f5d8b923cee",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "2e8685e7b3b0ac9a6664ec613c7b64f5be4ba9d5d8bde1344268f89fffd32446"
+    },
+    {
+      "id": "guard-impact-768",
+      "path": "img/skills-v1/fx/guard-impact-768.webp",
+      "width": 768,
+      "height": 768,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 377855,
+      "partial_alpha_pixels": 211655,
+      "alpha_bbox": [
+        61,
+        66,
+        707,
+        707
+      ],
+      "bytes": 443272,
+      "sha256": "67fdee937222745680376008ad98c1a17d248badbeb9fff7720e47028d7a7301",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "c377c837f5f0fd49e730e6c71c4935ea3e6d931fa5dd0dbb6bc5119bbe7a6912"
+    },
+    {
+      "id": "kan-mirror-shard-256",
+      "path": "img/skills-v1/fx/kan-mirror-shard-256.webp",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 49706,
+      "partial_alpha_pixels": 15648,
+      "alpha_bbox": [
+        23,
+        23,
+        233,
+        226
+      ],
+      "bytes": 37094,
+      "sha256": "00dce35ca8e7fe192209e56407fb2270fff38e3f046affb669952cb70b1b60eb",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "upper-right",
+      "source_sha256": "b8ea4b9d08e3fe2eb9416e9b34a7a6a910c06db6efb442907a454daa6a2c87d2"
+    },
+    {
+      "id": "kan-impact-512",
+      "path": "img/skills-v1/fx/kan-impact-512.webp",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 145792,
+      "partial_alpha_pixels": 115823,
+      "alpha_bbox": [
+        41,
+        41,
+        471,
+        467
+      ],
+      "bytes": 237908,
+      "sha256": "05b487b5d2effa20ad9f567845fc04fb372fb8ea31294325a9d1800ae5ddbd81",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "d015a1e42e1f788e277d642c208544657d8b0952c7289f891739aa3fe4509067"
+    },
+    {
+      "id": "yama-dash-trail-256x512",
+      "path": "img/skills-v1/fx/yama-dash-trail-256x512.webp",
+      "width": 256,
+      "height": 512,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 102498,
+      "partial_alpha_pixels": 28503,
+      "alpha_bbox": [
+        32,
+        49,
+        200,
+        472
+      ],
+      "bytes": 69388,
+      "sha256": "c9392c5b09d07978fc0817823388e62065e110b63e0eeff2e3e63d98bafa2064",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "up; rotate at integration",
+      "source_sha256": "d07de2a5c63e0ca541c2cc939c9aafa28f99da54b6826bc64532d74a40c07f54"
+    },
+    {
+      "id": "yama-impact-768",
+      "path": "img/skills-v1/fx/yama-impact-768.webp",
+      "width": 768,
+      "height": 768,
+      "mode": "RGBA",
+      "format": "WEBP",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 310110,
+      "partial_alpha_pixels": 279554,
+      "alpha_bbox": [
+        61,
+        61,
+        707,
+        707
+      ],
+      "bytes": 513982,
+      "sha256": "84ce756cba7e69332eb19b22de7c06ce44cd36b88d09acd705c506a81d9728bb",
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "mirror_safe": true,
+      "direction": "centered",
+      "source_sha256": "0bbdb92d7f0207aec264ab73228cd3023dec6b7002a6072159035a58bedf928e"
+    }
+  ],
+  "review_sheets": [
+    "icons-comparison-256.png",
+    "icons-comparison-44.png",
+    "fx-dark.png",
+    "fx-light.png"
+  ],
+  "compositing": "straight RGBA alpha; normal source-over; no baked background",
+  "integration": "art only; runtime manifest unchanged; anchors are canvas centers, tune with actors during integration",
+  "verification": "17 decoded WebP files checked for exact dimensions, RGBA, alpha 0..255, clear corners and padding; no in-game QA performed"
+}
