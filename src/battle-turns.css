@@ -192,3 +192,10 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
  .arena.combat-arena .formation-member.attack-lunge{animation:none!important}
 }
 .arena.combat-arena:has(.battle-dashing) .foe-group{z-index:auto}
+
+/* Stack boss portrait and status on narrow screens so neither crosses the other. */
+@media(max-width:700px){
+ .arena.combat-arena.battle9-arena .battle-boss-hud{grid-template-columns:minmax(0,1fr);gap:4px;justify-items:end}
+ .arena.combat-arena.battle9-arena .battle-boss-hud>img{grid-row:auto;width:54px;height:54px}
+ .arena.combat-arena.battle9-arena .battle-boss-status{grid-row:2;min-width:0;width:100%;overflow-wrap:anywhere}
+}
