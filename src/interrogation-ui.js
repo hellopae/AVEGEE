@@ -6,7 +6,7 @@ const safeColor=color=>/^#[\da-f]{3,8}$/i.test(color||'')?color:'#d4a355';
 export function mountInterrogationStyles(){
   if(typeof document==='undefined'||document.getElementById('interrogation-role-styles'))return;
   const link=document.createElement('link');link.id='interrogation-role-styles';link.rel='stylesheet';
-  link.href=new URL('./interrogation-ui.css?v=20261028-keeper-picker',import.meta.url).href;document.head.appendChild(link);
+  link.href=new URL('./interrogation-ui.css?v=20261029-s1-soul-poses',import.meta.url).href;document.head.appendChild(link);
 }
 
 /** P2: the trait lives on the spirit's name tag — icon first (never colour alone), colour second. */

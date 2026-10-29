@@ -1,0 +1,28 @@
+S1-ART1 asset inspection: original and generated PNGs read without modification.
+Visible bounds use alpha >= 128; canvas placement preserved; bottom edge differences are 1–2 pixels.
+No browser/renderer execution performed.
+
+img/soul-poses/recruit-th-necessity-v1.png
+  canvas: (1254, 1254); original: (1254, 1254); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (337, 13, 981, 1241); visible pose: (335, 12, 982, 1242)
+  sha256: e400c21201fb6f4e3d069b9c9cdf190fc4b9b8df46724241e0493e2493f0a6ba
+img/soul-poses/girl-th-necessity-v1.png
+  canvas: (1254, 1254); original: (1254, 1254); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (307, 30, 954, 1234); visible pose: (305, 31, 956, 1235)
+  sha256: 8187fef216cf7403e3fc62ba6440d131a69735025a523f63e6335b927c6c747c
+img/soul-poses/boy-th-necessity-v1.png
+  canvas: (1254, 1254); original: (1254, 1254); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (356, 2, 961, 1228); visible pose: (355, 3, 963, 1230)
+  sha256: c532d5ff4052f80f40a0ac128f9a4d992b5f8deab08323f71c446356569ce9fb
+img/soul-poses/officer-th-necessity-v1.png
+  canvas: (1254, 1254); original: (1254, 1254); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (276, 2, 988, 1239); visible pose: (276, 10, 989, 1240)
+  sha256: 12262e808df91cf87de05f48f391fcb1ed9aa95803a75709cc34249d594f1a2f
+img/soul-poses/elder-woman-th-necessity-v1.png
+  canvas: (1145, 1374); original: (1145, 1374); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (245, 59, 873, 1304); visible pose: (246, 58, 876, 1305)
+  sha256: 69124407904c43e3c9d58af1a6c98ac604eb84d1ef70b7bd95cf2e30346a9c2c
+img/soul-poses/worker-th-necessity-v1.png
+  canvas: (1254, 1254); original: (1254, 1254); mode: RGBA; alpha extrema: (0, 255)
+  visible original: (291, 9, 1011, 1235); visible pose: (290, 8, 1012, 1236)
+  sha256: aed5e49433eaa123b9ae6f62fe0cc1e01af8d140f6ac6d620482a7d4a75616dc

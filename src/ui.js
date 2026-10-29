@@ -1,3 +1,4 @@
+import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
@@ -2621,6 +2622,9 @@ function openTrial(initialError = '') {
   trialCmd = 'ask';
   let trialError = initialError, courtPanel = null, kanClueResult = '', traitLessonPage = 0, fearUntil = 0, fearBusy = false, reaction = 'fear', trialClosed = false;
   const reactionTimers=[];
+  let activeSoulPose = null;
+  const baseSoulSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+  soulPoseAssets(baseSoulSrc).forEach(src => { const im = new Image(); im.src = src; });
   // P2: the three-page "read the name colour" lesson, once per save (after the first-warrant lesson)
   const traitLessonHtml = page => {
     const n = firstInterrogationLesson.length, step = firstInterrogationLesson[page];
@@ -2773,7 +2777,7 @@ function openTrial(initialError = '') {
         >${roarHint === l.i && !l.used ? '💢 ' : ''}${l.used ? (l.kind === 'solid' ? '✗ ' : '✓ ') : ''}“${esc(l.t)}”</button>`;
     }).join('');
 
-    const foeSrc = typeof s.sp === 'string' ? artUrl(s.sp) || `img/${s.sp}.png` : `img/spirit${s.sp || 7}.png`;
+    const foeSrc = Date.now() < fearUntil && activeSoulPose || baseSoulSrc;
     // P2: a menu click repaints the whole room — carry Yama's live idle <img> across so the sprite never falls back to the painting
     const keepYama = dlg.querySelector('.trial-hud .hud-stage .fig.you img[data-yama-idle]');
     dlg.innerHTML = `
@@ -2782,7 +2786,7 @@ function openTrial(initialError = '') {
         <div class="fig you" data-cam="you"><img src="${heroFace()}" alt=""
                onerror="this.onerror=null;this.src='${artUrl('hero-yama')}'">
           <span class="nm">${esc(HERO_NAME)}</span></div>
-        <div class="fig foe${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
+        <div class="fig foe${activeSoulPose && Date.now() < fearUntil ? ' has-soul-pose' : ''}${Date.now() < fearUntil ? reaction==='relief'?' is-relieved':' is-frightened' : ''}" data-cam="suspect"><img src="${esc(foeSrc)}" alt=""
                onerror="this.onerror=null;this.src='img/spirit7.png'">
           ${spiritNameHtml(g.spiritTrait?.(s), s.name || s.who)}
           <div class="soul-relief" aria-hidden="true"><i class="relief-tear left"></i><i class="relief-tear right"></i></div><span class="relief-label" role="status">น้ำตาแห่งความโล่งใจ · มีผู้รับฟังความจริงแล้ว</span>
@@ -2905,6 +2909,7 @@ function openTrial(initialError = '') {
       if (fearBusy) return;
       const hit = s.lines[+el.dataset.line]?.kind !== 'solid';   // the ✓ lines: deny / boast / plea — a "solid" line is the wrong one to press
       reaction=pressReaction(g,s,s.lines[+el.dataset.line])||'fear';
+      const nextSoulPose = soulPoseForPress(g, s, s.lines[+el.dataset.line], baseSoulSrc);
       const r = g.press(s, +el.dataset.line);
       const revealed = !!r?.some(x => x.kind === 'truth' || x.kind === 'confess');
       if (r) sfx(revealed ? 'crack' : 'deny');
@@ -2912,13 +2917,20 @@ function openTrial(initialError = '') {
       if (!hit) { paint(); refresh(); return; }   // a wrong press never moves the camera
       // P2: a correct press = camera closes in on the SPIRIT (Yama steps out of frame), the spirit panics, then the confession appears and the camera relaxes
       fearBusy = true; fearUntil = Date.now() + FEAR_BEAT_MS + FEAR_AFTER_MS;
+      activeSoulPose = revealed ? nextSoulPose : null;
+      const soulFig = dlg.querySelector('.fig.foe');
+      soulFig?.classList.toggle('has-soul-pose', !!activeSoulPose);
+      if (activeSoulPose && soulFig) soulFig.querySelector('img').src = activeSoulPose;
       // portrait: the ✓ lines sit below the fold, so bring the stage into view for the beat and put the reader back afterwards
       const backTo = dlg.scrollTop; if (backTo > 40) dlg.scrollTo({ top:0, behavior:'smooth' });
       const hud = dlg.querySelector('.trial-comment8');
       hud?.classList.add('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.add(reaction==='relief'?'is-relieved':'is-frightened');
       camera.cue('interrogate-reveal', { targets:'suspect' });
       reactionTimers.push(setTimeout(() => { if (trialClosed || !dlg.open || !dlg.querySelector('.trial-hud')) return; paint(); refresh(); }, FEAR_BEAT_MS));
-      reactionTimers.push(setTimeout(() => { if (trialClosed || !dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0; fearBusy=false;
+      reactionTimers.push(setTimeout(() => { if (trialClosed || !dlg.open || !dlg.querySelector('.trial-hud')) return; camera.cue('idle'); fearUntil = 0; fearBusy=false; activeSoulPose=null;
+        const soulFig = dlg.querySelector('.fig.foe');
+        soulFig?.classList.remove('has-soul-pose');
+        if (soulFig) soulFig.querySelector('img').src = baseSoulSrc;
         dlg.querySelector('.trial-comment8')?.classList.remove('is-fear-zoom'); dlg.querySelector('.fig.foe')?.classList.remove('is-frightened','is-relieved');
         if (backTo > 40) dlg.scrollTo({ top:backTo, behavior:'smooth' }); }, FEAR_BEAT_MS + FEAR_AFTER_MS));
     });
