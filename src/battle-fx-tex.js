@@ -65,12 +65,14 @@ export const TEX = {
   'fx-heal-ring-floor-blue': { w:512, h:160, blend:'lighter' },
   'fx-heal-petals': { w:256, h:64, cells:4, blend:'lighter' },
   'fx-heal-flower': { w:256, h:256, blend:'lighter' },
-  'fx-foe-claw-triple': { w:384, h:384, blend:'lighter' },
-  'fx-foe-impact-red': { w:384, h:384, blend:'lighter' },
-  'fx-foe-dark-orb': { w:256, h:256, blend:'lighter' },
-  'fx-aura-rage': { w:384, h:512, blend:'lighter' },
-  'fx-clock-ring': { w:512, h:512, blend:'lighter' },
-  'fx-mirror-glint': { w:512, h:128, blend:'lighter' },
+  // procOnly: no img/fx file exists for these keys yet, so skip the request (it 404'd on every battle) and draw the gradient stand-in.
+  // Remove procOnly from a key once its .webp is added to img/fx/.
+  'fx-foe-claw-triple': { w:384, h:384, procOnly:true, blend:'lighter' },
+  'fx-foe-impact-red': { w:384, h:384, procOnly:true, blend:'lighter' },
+  'fx-foe-dark-orb': { w:256, h:256, procOnly:true, blend:'lighter' },
+  'fx-aura-rage': { w:384, h:512, procOnly:true, blend:'lighter' },
+  'fx-clock-ring': { w:512, h:512, procOnly:true, blend:'lighter' },
+  'fx-mirror-glint': { w:512, h:128, procOnly:true, blend:'lighter' },
 };
 export const TEX_KEYS = Object.freeze(Object.keys(TEX));
 export const blendOf = key => TEX[key]?.blend || 'lighter';
@@ -426,7 +428,7 @@ function record(key) {
   if (r) return r;
   r = { key, im:null, ok:false, failed:false, procCanvas:null };
   records.set(key, r);
-  if (typeof Image === 'function') {
+  if (typeof Image === 'function' && !TEX[key]?.procOnly) {
     r.im = new Image();
     r.im.onload = () => { if (r.im.naturalWidth > 0) {r.realCanvas=transparentLightTexture(r.im,key);r.ok = true;} };
     r.im.onerror = () => { r.failed = true; };
