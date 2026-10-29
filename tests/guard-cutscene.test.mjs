@@ -23,6 +23,7 @@ async function harness({reduced=false,mounted=true,action='guard'}={}){
   setMoveName(){},clearMoveName(){},dashRoot:()=>null,allyImg:()=>image,foeImg:()=>image,
   fxRect:async()=>({l:100,r:150,t:100,b:200}),cameraRectOf:()=>({l:100,r:150,t:100,b:200}),
   planDash,dashTiming,createDashSequence,ACTION_CUT_MS:1300,
+  battleCutscenes:{wait:async()=>null},cutsceneSource:key=>key,
   keyOfActor:id=>id===g.guard.id?'guard':id,paint(){},applyDashPosition(){positions.push({...deps.dash.position});},
   playActionCutscene:key=>{cuts.push({key,at:now,hp:b.foes[0].hp});return mounted;},
   camera:{flash(){}},moveName:null,powerSound(){},startMoveFx(){},finish(){},finishWaveAfterDash(){},sfx(){},

@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { runInNewContext } from 'node:vm';
 import { assetTier, zoneTiers } from '../src/asset-preload.js';
+import {powerVisual} from '../src/battle-fx-map.js';
 import { figYouAtkClass, heroPoseFacesRight, POSE_DRAWN_FACING_RIGHT } from '../src/battle-facing.js';
 
 const read = readReleaseFile;
@@ -46,7 +47,7 @@ test('skill atk: manifest, catalog and preload tier cover all four outfits', () 
   }
 });
 
-test('skill atk: real artUrl and heroAtk select the outfit pose and face right during a non-sword skill', async () => {
+test('skill atk: real artUrl and heroAtk select the outfit pose and face right during a fire skill', async () => {
   const previousFetch = globalThis.fetch, previousImage = globalThis.Image;
   globalThis.fetch = async () => ({ ok: true, json: async () => manifest });
   globalThis.Image = class {};
@@ -71,7 +72,14 @@ test('skill atk: real artUrl and heroAtk select the outfit pose and face right d
       art.bindHeroStyle(() => style);
       assert.equal(heroAtk(), path);
     }
-    assert.match(read('src/ui.js'), /usingAtk \? \(isYamaSwordAttack\(fx\) \? heroFace\(\) : heroAtk\(\)\)/);
+    const selector = read('src/ui.js').match(/  const neutralCast = [^\n]+;\n  const youImg =[\s\S]*?;/)[0];
+    for (const action of ['fire','flameCharge','ice','hypno','windFan','valkyrieSpear','cooldownClock','mirror']) {
+      const selected = runInNewContext(selector+'\nyouImg;', {
+        powerVisual, fx:{action,key:'atk'}, usingAtk:true, hurtNow:false,
+        isYamaSwordAttack:()=>false, heroFace:()=> 'standing', heroAtk:()=> 'fire-pose',
+      });
+      assert.equal(selected, ['fire','flameCharge'].includes(action) ? 'fire-pose' : 'standing',action);
+    }
   } finally {
     globalThis.fetch = previousFetch;
     globalThis.Image = previousImage;

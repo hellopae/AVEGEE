@@ -126,3 +126,18 @@ export function leadInMs(recipe, contactMs, fallbackMelee = 110) {
   if (MELEE_RECIPES.has(recipe)) return contactMs > 0 ? Math.max(0, contactMs - hit) : fallbackMelee;
   return contactMs > 0 ? Math.round(contactMs * .5) : 0;
 }
+
+/** Cast and flight use the same elemental texture; utility powers stay on the caster. */
+export const POWER_VISUALS = Object.freeze({
+  fire:{ projectile:'fx-fire-orb', hand:'fx-fire-orb', impact:'fx-fire-explosion', cast:'fire' },
+  flameCharge:{ projectile:'fx-fire-orb', hand:'fx-fire-orb', impact:'fx-fire-explosion', cast:'fire' },
+  ice:{ projectile:'fx-ice-crystal-a', hand:'fx-ice-glow-core', impact:'fx-ice-crystal-cluster', cast:'neutral' },
+  windFan:{ projectile:'fx-wind-blade', hand:'fx-wind-vortex', impact:'fx-wind-vortex', cast:'neutral' },
+  hypno:{ projectile:'fx-hypno-spiral', hand:'fx-hypno-spiral', impact:'fx-hypno-eye', cast:'neutral' },
+  valkyrieSpear:{ projectile:'fx-spear-lance', hand:'fx-common-flash-star-white', impact:'fx-spear-pierce-cone', cast:'neutral' },
+  rage:{ projectile:null, hand:'fx-aura-rage', impact:'fx-aura-rage', cast:'fire' },
+  cooldownClock:{ projectile:null, hand:'fx-clock-ring', impact:'fx-clock-ring', cast:'neutral' },
+  mirror:{ projectile:null, hand:'fx-mirror-glint', impact:'fx-mirror-glint', cast:'neutral' },
+  roar:{ projectile:null, hand:null, impact:null, cast:'neutral' },
+});
+export const powerVisual = action => POWER_VISUALS[({ wind:'windFan', clockReset:'cooldownClock', clock:'cooldownClock', spear:'valkyrieSpear', fire_s:'fire', fire_m:'fire', fire_l:'fire', fire_charge:'flameCharge' })[action] || action] || null;

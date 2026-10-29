@@ -126,21 +126,22 @@ export function mountNiraCombatSprite(stage, zone, battle, phase, refit, holdUnt
   });
 }
 
-export function playNiraHealingCutscene(dialog, zone, fallback, duration = 1300, onDone = null) {
+export function playNiraHealingCutscene(dialog, zone, fallback, duration = 1300, onDone = null, decodedImage = undefined) {
   if (!dialog?.open) return;
   dialog.querySelector('.action-cutscene')?.remove();
   const overlay = document.createElement('div');
   overlay.className = 'action-cutscene right-facing nira-healing-cutscene';
   overlay.setAttribute('role','status'); overlay.setAttribute('aria-label','นิรา — แสงฟื้นบารมี');
   Object.assign(overlay.style,{display:'grid',placeItems:'center',background:'#10151a'});
-  const image = document.createElement('img'); image.src = niraHealingCutscene(zone); image.alt = 'นิราร่ายแสงฟื้นบารมี';
+  const image = decodedImage || document.createElement('img'); if (decodedImage === undefined) image.src = niraHealingCutscene(zone); image.alt = 'นิราร่ายแสงฟื้นบารมี';
   image.onerror = () => { image.onerror = null; image.src = fallback; };
   Object.assign(image.style,{position:'absolute',inset:'0',width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',transform:'none',animation:'none'});
   const title = document.createElement('strong'); title.textContent = 'นิรา · แสงฟื้นบารมี';
   Object.assign(title.style,{position:'absolute',bottom:'12%',color:'#f5ffdb',fontSize:'clamp(20px,3vw,40px)',textShadow:'0 2px 12px #0b3221',zIndex:'3'});
   const skip = document.createElement('button'); skip.type='button';skip.textContent='ข้าม / Skip';
   Object.assign(skip.style,{position:'absolute',right:'5%',bottom:'5%',zIndex:'4'});
-  overlay.append(image,title,skip); dialog.appendChild(overlay);
+  if (decodedImage !== null) overlay.append(image); else overlay.dataset.imageState = 'unavailable';
+  overlay.append(title,skip); dialog.appendChild(overlay);
   let timer,done=false;const finish=()=>{if(done)return;done=true;clearTimeout(timer);overlay.remove();onDone?.();};
   overlay.onclick=finish; timer=setTimeout(finish,duration);
   // Keep the full cutscene artwork. Replacing it with a square sprite frame
