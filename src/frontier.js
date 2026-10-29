@@ -1,3 +1,4 @@
+import {characterScale} from './character-scale.js';
 import {captainCaveForZone} from './route-geometry.js';
 import {bossGuideWaiting} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
@@ -28,7 +29,8 @@ import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS } from './wal
 import { frontierWalkable, frontierPath, frontierSegmentClear, liveBlockers } from './frontier-navigation.js';
 
 // ทางเดินและสิ่งกีดขวางแต่ละโซนอยู่ใน frontier-navigation.js
-const HERO_H = 0.085;
+const ADULT_H = 0.085;
+const HERO_H = ADULT_H * characterScale('yama');
 const MOB_H = 0.088;
 const BOSS_H = 0.1725; // authored/boss scale stays at the former 0.115 * 1.5
 const REACH = 0.09;                 // ระยะเดินเข้าใกล้ศัตรูแล้วปุ่ม "เริ่มต่อสู้" โผล่เหนือหัวตัวนั้น
@@ -191,8 +193,8 @@ export function makeFrontierWalk(cv, g, opts) {
   function step(dt) {
     const beforeX = P.x, beforeY = P.y;
     simClock += dt;
-    // ความเร็ว = ความสูงตัวละคร/วินาที (walk-motion.js) แปลงเป็นหน่วยของด้านสูงฉาก — เท่ากับในห้องและบนแผนที่โซน
-    const sp = walkStridePx(unit() * HERO_H, dt) / box.h;
+    // Keep the pre-R3 adult stride reference; visual height does not change walking speed.
+    const sp = walkStridePx(unit() * ADULT_H, dt) / box.h;
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -325,8 +327,8 @@ export function makeFrontierWalk(cv, g, opts) {
       if (!drawHeroWalk(ctx, px(P.x), py(P.y), U * HERO_H, moving ? walkDrawDistance(walkDistance, U * HERO_H) : 0, P.face, direction))
         drawStandee(ctx, 'hero-yama', px(P.x), py(P.y), U * HERO_H, t, '👑', P.face, moving);
     } });
-    if(actorStanding(g.guard)) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * .10, t, '🛡️') });
-    acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * HERO_H, t, '📋') });
+    if(actorStanding(g.guard)) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * ADULT_H * characterScale('guard'), t, '🛡️') });
+    acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * ADULT_H * characterScale('nira'), t, '📋') });
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
 
     // ปุ่ม "เริ่มต่อสู้" ลอย — DOM element ที่ ui.js ส่งเข้ามา ไฟล์นี้แค่โชว์/ซ่อน/จัดตำแหน่งเป็น %
@@ -359,7 +361,7 @@ export function makeFrontierWalk(cv, g, opts) {
       nira.hidden = !shown;
       if (shown) {
         nira.style.left = `${px(NIRA[0]) / W * 100}%`;
-        nira.style.top = `${(py(NIRA[1]) - U * HERO_H) / H * 100}%`;
+        nira.style.top = `${(py(NIRA[1]) - U * ADULT_H * characterScale('nira')) / H * 100}%`;
       }
     }
 

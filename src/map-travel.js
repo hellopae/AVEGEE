@@ -1,3 +1,4 @@
+import {characterScale} from './character-scale.js';
 import {ferryBerth,withFerryOcclusion} from './ferry-geometry.js';
 import {harbourDestinations,dungeonStatus} from './zone-travel.js';
 import {findPath,nearestWalk} from './walk.js?v=k1d';
@@ -64,8 +65,8 @@ export function drawMapTravel(ctx,g,t,height=48){
  const a=g.mapTravel,pose=mapTravelPose(a,t);if(!pose)return;
  const {boat,hero,reader,onboard,walking}=pose;
  const actors=()=>{
-  drawStandee(ctx,'hero-yama',hero.x,hero.y,height,t,'👑',1);
-  if(!(walking&&drawCrewWalk(ctx,'crew-nira',reader.x,reader.y,height,t*.1,1)))drawStandee(ctx,'crew-nira',reader.x,reader.y,height,t,'📜',1);
+  drawStandee(ctx,'hero-yama',hero.x,hero.y,height*characterScale('yama'),t,'👑',1);
+  if(!(walking&&drawCrewWalk(ctx,'crew-nira',reader.x,reader.y,height*characterScale('nira'),t*.1,1)))drawStandee(ctx,'crew-nira',reader.x,reader.y,height*characterScale('nira'),t,'📜',1);
  };
  withFerryOcclusion(ctx,g.zone,()=>{
   drawBoat(ctx,boat.x,boat.y,a.reduced?0:t,0,true);

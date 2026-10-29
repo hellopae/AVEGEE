@@ -1,3 +1,4 @@
+import {characterScale} from './character-scale.js';
 import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
 import { mirrorObstacle, mirrorClearPosition, MIRROR_FOOT, MIRROR_SORT_Y, mirrorHeroSortY, MIRROR_ROOM_LAYOUT } from './mirror-charge.js?v=minigame-review-20261011';
@@ -28,7 +29,7 @@ import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
 
-const HERO_H = 0.15;      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
+const HERO_H = 0.13 * characterScale('yama');      // ความสูงตัวละครเทียบกับด้านสั้นของกรอบภาพ
 const CREW_H = 0.13;
 const SOUL_H = 0.085;     // วิญญาณเล็กกว่าคนเป็น — ต้องพอดีปากกระทะ ไม่ใช่ล้นออกมา
 const MAGIC_MIRROR_W = 0.07;   // N1/N1b: กระจกวิเศษภาพจริงบนฐานดอกบัว (แยกจากฉากหลัง เพื่อให้ปรากฏหลังผู้เล่นวางกระจกเท่านั้น)
@@ -340,8 +341,8 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
   function walkStep(dt) {
     simClock += dt;
-    // ความเร็วเดิน = ความสูงตัวละคร/วินาที (walk-motion.js) แปลงเป็นหน่วยของด้านสูงภาพฉาก — เท่ากันทุกจอ ทุกเฟรมเรต
-    const sp = walkStridePx(unit() * HERO_H, dt) / box.h;
+    // Keep the pre-R3 stride reference so a visual scale change does not change walking speed.
+    const sp = walkStridePx(unit() * .15, dt) / box.h;
     let dx = 0, dy = 0;
     if (KEY.a || KEY.arrowleft) dx -= 1;
     if (KEY.d || KEY.arrowright) dx += 1;
@@ -533,7 +534,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     if (def.k === 'tea') {
       for (const {actor:c,point:[x,y],face,distance} of teaRoomArrivals(g)) {
         acts.push({y,fn:()=>{
-          const h=U*.105,atX=px(x),atY=py(y);
+          const h=U*CREW_H*characterScale(c.k||'worker'),atX=px(x),atY=py(y);
           if(c.id.startsWith('worker:'))drawWorker(ctx,{...c,x:atX,y:atY,sitting:false,moving:true,face},distance*8000,h);
           else if(!drawCrewWalk(ctx,'crew-'+c.k,atX,atY,h,distance*U,face))drawStandee(ctx,'crew-'+c.k,atX,atY,h,t,'',face);
         }});
@@ -567,7 +568,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         const a = room.crew || [0.30,0.80];
         acts.push({ y:a[1], fn:() => {
           const x = px(a[0]), y = py(a[1]);
-          drawStandee(ctx, 'crew-' + key, x, y, U * CREW_H, t, name);
+          drawStandee(ctx, 'crew-' + key, x, y, U * CREW_H * characterScale(key), t, name);
         } });
       }
     }
@@ -577,7 +578,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const guard = def.k === 'krata' && c?.k !== 'plerng' ? [.42,.74] : room.guard || [room.crew[0] + (['sawan','tarang','ngiw','dab'].includes(def.k) ? 0.13 : 0), room.crew[1]];
       if (actorStanding(c) && !c.self) acts.push({ y: guard[1], fn: () => {
         const x = px(guard[0]), y = py(guard[1]);
-        drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H, t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
+        drawStandee(ctx, 'crew-' + c.k, x, y, U * CREW_H * characterScale(c.k), t, c.glyph, room.crew[0] < room.act[0] ? 1 : -1);
       } });
     }
 

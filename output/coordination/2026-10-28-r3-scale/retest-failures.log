@@ -1,0 +1,37 @@
+✔ N1-1 dock: feet cannot leave the painted pier (front face, right post and open water are blocked) (1.991053ms)
+✔ N1-2 Fast Travel button sits at the pier standing point (below the feet), not floating over the water (2.240497ms)
+✔ N1-3 cleared zone boss: no black "คุยกับ…" tag; the yellow button is anchored over the head (1.723323ms)
+✔ N1-root counter-scaled map buttons scale around their anchor (0 0) — otherwise they drift ~(1-1/zoom)*w/2 from it (0.303187ms)
+✔ N1-4 krajok room: the floor "จุดฝึก" ring/label is gone and cannot come back (1.65755ms)
+✔ N1-5 krajok room: adjustable-mirror stand is always in the room; magic mirror appears only after "วางกระจก" (1.404734ms)
+✔ N1 release entries, module aliases and direct imports use coherent versioned URLs (91.979893ms)
+(node:20590) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Nira hires multiple unique regional assistants, charges escalating cost and enforces capacity (7.759893ms)
+✔ hiring fails without funds or available Nira, without spending coins or IDs (1.538092ms)
+✔ old specialized worker modes migrate to logistics and no longer add a passive supervision bonus (1.381831ms)
+✔ repair helpers start independent work after physical arrival without a stationed builder (38.105439ms)
+✔ auto gatherer sells its cargo before taking newly available build work (127.271872ms)
+✔ auto gatherer sells its cargo before taking newly available repair work (84.203581ms)
+✔ auto priority changes never pull a worker away from its soul escort (10.282259ms)
+✔ assistants pick up and escort a real afterlife walk, release it once and keep souls out of the roster until arrival (8.88131ms)
+✔ stopping an escort or dismissing a worker preserves the soul journey and prevents duplicate assignment (7.353912ms)
+✔ active wages, food and fatigue pause bonuses; rest recovers workers without charging resources (7.432245ms)
+✔ workers and ledger survive normal game save/restore; old saves initialize empty and damaged data is bounded (8.445912ms)
+✔ worker collision and Nira management controls expose real hire, task, rest and dismissal actions (1.532088ms)
+✔ a saved worker escort settles exactly once on reload and releases the assistant (11.743835ms)
+✔ frame-local atlas guards remove edge bleed without clipping the character or held tool in all 64 source cells (6387.185434ms)
+✔ workers escort legitimate gate deliveries, retaining the soul until exact-once arrival (10.047395ms)
+✔ saving a gate worker delivery settles once on reload without stranding the assistant (18.640869ms)
+✔ workers escort legitimate queue deliveries, retaining the soul until exact-once arrival (9.888002ms)
+✔ saving a queue worker delivery settles once on reload without stranding the assistant (13.633863ms)
+✔ non-prison deliveries preserve the legacy courier when no worker is available without borrowing a keeper (23.47758ms)
+✔ real prison release dispatches workers to heaven or back to the queue instead of the fallback courier (114.979632ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7111.91897
