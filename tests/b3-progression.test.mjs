@@ -126,7 +126,7 @@ test('B3 medicine price/effect table and all three use paths agree for every zon
       const item=stock.find(s => s.k.startsWith(family)), k=item.k;
       assert.equal(item.cost,cost); assert.equal(ITEMS[k].hp || 0,gainHp); assert.equal(ITEMS[k].mp || 0,gainMp);
       for (const context of ['bag','battle','prep']) {
-        const [g]=game(zone); g.zoneEvents.cyberhell={cyberRescue:'cleared'};
+        const [g]=game(zone); g.zoneEvents.cyberhell={cyberRescue:'cleared'};g.zoneEvents.west={westHypnotized:'cleared'};g.merchantJourney.asia={arrived:true};
         const coins=g.coin; assert.equal(g.buyMerchant(k),true); assert.equal(g.coin,coins-cost);
         g.hpMax=g.mpMax=1000; g.hp=g.mp=10;
         if (context === 'battle') { battle(g); g.battle.youHp=10; }

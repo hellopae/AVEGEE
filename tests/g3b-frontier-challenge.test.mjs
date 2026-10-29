@@ -83,12 +83,12 @@ test('ตารางประลอง: ทุกโซนมี 10 wave · wav
 });
 
 test('ตัวเลขสมดุลของอีเวนต์เนื้อเรื่องเดิมไม่ถูกแตะ (เพิ่มแค่รายการท้ายสุดของแต่ละโซน)', () => {
-  const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge).map(e => e.k);
+  const keys = z => ZONE_EVENTS[z].filter(e => !e.challenge && !e.signal).map(e => e.k);
   assert.deepEqual(keys('th'), ['prisonBreak', 'frontierBreach', 'devaTest', 'thBorderBoss']);
   assert.deepEqual(keys('asia'), ['asiaPrisonFire', 'asiaDevaTest', 'asiaRageBreach']);
   assert.deepEqual(keys('west'), ['westHypnotized', 'westVampireBreach', 'westDevaTest']);
   assert.deepEqual(keys('cyberhell'), ['cyberRescue', 'cyberBreach', 'cyberFinal']);
-  for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].at(-1).challenge, true);
+  for (const z of ZONE_IDS) assert.equal(ZONE_EVENTS[z].filter(e=>!e.signal).at(-1).challenge, true);
   assert.equal(ZONE_EVENTS.th[1].waves[1][1].hp, 90);       // บอสชายแดนเนื้อเรื่อง th ยังเป็น 90
   assert.equal(ZONE_EVENTS.th[1].betweenWaveHeal, 20);
   assert.equal(ZONE_EVENTS.cyberhell[1].betweenWaveHeal, 25);

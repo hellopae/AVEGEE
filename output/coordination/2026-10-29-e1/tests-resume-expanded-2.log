@@ -1,0 +1,66 @@
+(node:38587) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ SIG opens at seven CYBER cases, cross-zone visits cannot accelerate it; final waits for all three captains and close acknowledgement (50.088116ms)
+✔ SIG victims never queue a repeat trial; friendly post remains in its ledger and returns after invasion (2.087421ms)
+✔ SIG choice survives defeat/reload; call stuns the returning boss, rush pays 25 percent exactly once (18.403074ms)
+✔ eight quest cases have unique ids, correct zones, and never enter named random pools even at Asia recycle (4.753832ms)
+✔ all eight side quests: real enqueue/verdict, branch 0, save/reload and single claim (92.871451ms)
+✔ all eight side quests: real enqueue/verdict, branch 1, save/reload and single claim (86.934827ms)
+✔ Dam wrong verdict closes only the failure route with 30 coin and no item reward (2.079363ms)
+✔ quests pause during finale; completed state resumes walking, boat travel and quests without replaying finale (92.255558ms)
+✔ legacy empty, pending finale, interrupted SIG and completed saves migrate without duplicate rewards (9.291925ms)
+✔ private information costs six additional karma only once with mirror/hypno, ordinary questioning is free (7.79559ms)
+✔ W3: all eight kin journeys advance through actual zones, choices and one reward after reload (72.405973ms)
+✔ merchant arrives exactly 90 seconds after Asia arrival, pauses/out-of-zone preserve timer; hostages stay in west/cyber (6.135117ms)
+✔ cross-zone dialogue needs both meetings and plays each direction once, including saved state (3.724443ms)
+✔ authored assets exist, history opens with full S0 and Grace is female; history is reachable from both manuals (3.725611ms)
+✔ stale pending final gates cannot bypass SIG through the map, either entry API, or save reload (5.116537ms)
+✖ each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement (5.414981ms)
+✖ legacy finals already fought retain progress and ledger without paying SIG rewards (11.015157ms)
+✔ W2 exact branch rewards, including optional helper EXP replaced by two food only when awarded (36.042641ms)
+✔ W3 kin choices pay exact rewards through real harbour travel, persist, and stay open during finale (1029.83698ms)
+✔ W3 all 34 cross-zone lines need their meetings and play only once across reload (123.742998ms)
+✔ W3 merchant has actual story dialogue and a walkable route; legacy arrivals stay silent (109.007837ms)
+✔ SIG battle and frontier consume the supplied signal boss art, CyberHell keeps mint overlay (3.001368ms)
+✔ ordinary questioning that already opened private facts adds no later privacy surcharge (1.529808ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 21
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2112.733991
+
+✖ failing tests:
+
+test at tests/e1-signal-quests.test.mjs:159:1
+✖ each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement (5.414981ms)
+  TypeError: Cannot set properties of undefined (setting 'signalTh')
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:169:72)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/e1-signal-quests.test.mjs:176:1
+✖ legacy finals already fought retain progress and ledger without paying SIG rewards (11.015157ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  'locked'
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:188:69)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'locked',
+    expected: 'locked',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }

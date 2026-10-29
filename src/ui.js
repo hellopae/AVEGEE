@@ -1,3 +1,6 @@
+import { CHARACTER_HISTORY, FAMILY_HISTORY } from './e1-content.js';
+import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
+import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
@@ -1311,6 +1314,12 @@ function drawOverlay() {
   for (const f of keepZoneEventFabs) ov.appendChild(f);
   if (keepTalk) ov.appendChild(keepTalk);
   if (g.over) return;
+  const questPins=new Map();
+  for(const p of questMarkers(g)){const group=questPins.get(p.npc)||[];group.push(p);questPins.set(p.npc,group);}
+  for(const group of questPins.values()){
+    const p=group[0],pin=mark('quest',p.x,p.y-85,'📜',`<b>${esc(p.name)}</b><p>${group.map(q=>esc(q.title)).join(' · ')}</p><button data-quest-open>คุย · ภารกิจ</button>`);
+    pin.querySelector('button').onclick=()=>{const q=QUESTS.find(q=>q.id===p.id);if(!questNear(g,q)){g.walkTo(p.x,p.y);return;}openQuests(group.length===1?p.id:null);};
+  }
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
   if (fx && !fx.quiet) {     // P3: praise/rebuke verdicts show their stars and score inside the head's scene instead
@@ -1571,7 +1580,7 @@ function openEventAlert(key, title, description, art, action, start, raider = fa
     }
   };
   const prep = prepCardHtml;
-  const merchantOpen = g.zoneCaptivesFree();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
+  const merchantOpen = g.zoneCaptivesFree() && g.merchantAvailable();   // พ่อค้าโซน 4 ยังถูกขังจนกว่าจะช่วย (cyberRescue)
   modal(`${eventAlertMainHtml(title, description, art,
     `${ackOnly ? '' : `<button data-close>${esc(t('common.close'))}</button>`}
       <button class="gold event-alert-go" data-event-go${ackOnly ? ' data-close' : ''}>${esc(action)}</button>`)}
@@ -1723,7 +1732,7 @@ function storyFoeArt(sp) {
   return artUrl(sp) || `img/${sp}.png`;
 }
 function pendingZoneEvents() {
-  return (ZONE_EVENTS[g.zone] || []).filter(ev => !LEGACY_ZONE_EVENTS.has(ev.k) &&
+  return (ZONE_EVENTS[g.zone] || []).filter(ev => ev.mode !== 'story' && !LEGACY_ZONE_EVENTS.has(ev.k) &&
     g.zoneEventStatus?.(ev.k) === 'pending' && ev.k !== DEVA_MAP[g.zone]?.key).sort((a, b) => a.atCases - b.atCases);
 }
 function zoneEventText(value) { return value?.[getLang()] || value?.th || ''; }
@@ -2015,7 +2024,7 @@ function openEnding(o) {
         <button id="final-new">เริ่มเกมใหม่</button></div>`, d => {
       prepareComicImages(d);
       d.querySelector('#final-continue').onclick = () => {
-        g.over = null;
+        g.continueAfterEnding();
         userPaused = false;
         d.close();
         setTimeout(() => { releaseDlgPause(); g.save(); refresh(); }, 0);
@@ -2284,7 +2293,7 @@ function openHelp() {
         ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
       const reader = d.querySelector('.help-reader');
       reader.innerHTML = `${intro}<div class="guide-card-grid">${items.map((html, i) =>
-        guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>`;
+        guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>${historyHtml()}`;
     }, 'help-modal');
 }
 
@@ -2497,7 +2506,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
       const hit = act?.struck === 'foe' && (hits ? damage > 0 :
         (hp.dmg?.confuseSelf > 0 ? hp.dmg?.counterFoeId === f.id : hp.dmg?.foeId === f.id));
       const counterHit = hp.dmg?.counterFoeId === f.id && act?.lunge === 'foe';
-      return `<button type="button" class="fig foe${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${selectedId === f.id ? ' selected is-target' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
+      return `<button type="button" class="fig foe${f.hypno ? ' signal-controlled' : ''}${f.boss ? ' boss-foe' : ''}${f.hp <= 0 ? ' down' : ''}${selectedId === f.id ? ' selected is-target' : ''}${hit ? ' struck' : ''}${counterHit ? ' lunge' : ''}"
         data-foe-id="${esc(f.id)}" ${f.hp <= 0 ? 'disabled' : ''} aria-current="${selectedId === f.id}" aria-label="${esc(f.who)} ${Math.round(f.hp)}/${f.maxHp}">
         ${hit ? fxAt('foe') + dmgAt('foe', damage ?? hp.dmg?.confuseSelf ?? hp.dmg?.foe ?? 0) : ''}
         ${selectedId === f.id && f.hp > 0 ? `<span class="target-arrow">▼ ${t('event.prisonBreak.target')}</span>` : ''}
@@ -2505,7 +2514,7 @@ function arena(title, foe, hp, act, closable, fx, helper, controls = '', squad =
         ${battleStatusHtml(f)}<span class="plate"><b>${esc(f.who)}</b><span class="sub">${f.hp <= 0 ? t('event.prisonBreak.down') : esc(f.sub || '')}</span>
           ${bar(f.hp, f.maxHp, 'foe', 'กำลังใจ')}</span>
       </button>`;
-    }).join('')}</div>` : `<div ${hp ? `data-foe-id="${esc(hp.foes?.[0]?.id)}" role="button" tabindex="0" aria-current="${!!selectedId}"` : ''} class="fig foe${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}${selectedId ? ' selected is-target' : ''}">
+    }).join('')}</div>` : `<div ${hp ? `data-foe-id="${esc(hp.foes?.[0]?.id)}" role="button" tabindex="0" aria-current="${!!selectedId}"` : ''} class="fig foe${hp?.foes?.[0]?.hypno ? ' signal-controlled' : ''}${hp?.foes?.[0]?.boss ? ' boss-foe' : ''}${cls('foe')}${selectedId ? ' selected is-target' : ''}">
       ${selectedId ? `<span class="target-arrow">▼ ${esc(t('event.prisonBreak.target'))}</span>` : ''}
       ${fxAt('foe')}${dmgAt('foe', hp && hp.dmg ? hp.dmg.foe : 0)}
       <img src="${foeSrc}" class="${foeFaceClass(foeSrc)}" alt="" onerror="this.onerror=null;this.src='${hp?.foes?.[0]?.boss ? bossFallback : 'img/spirit7.png'}'">
@@ -2890,6 +2899,7 @@ function openTrial(initialError = '') {
         ${keeperCaseGuideHtml(g,s,pick.st,shownCrew)}
         ${CREW.filter(c=>!c.reader).map(c=>`<section class="guide-card guide-crew"><img class="guide-portrait" src="${esc(crewArt(c))}" alt="" loading="lazy" onerror="this.remove()"><div><h3>${esc(crewName(c, g.zone))}</h3><p> — ${c.duty}<br>แรง ${c.raeng} · ระเบียบ ${c.rabiab} · ปัญญา ${c.panya} · เมตตา ${c.metta}<br>ในสนามรบ: ${crewAbility(c.k)}</p></div></section>`).join('')}
         <h3>ทีมต่อสู้</h3><p>จัดทีมยมทูตได้ 2 คนก่อนเข้าสู้ ใช้ความสามารถของแต่ละคนผ่านเมนูยมทูต คูลดาวน์คนละ ${BATTLE.crewCd} วินาที และใช้กำลังใจ ${BATTLE.crewMorale} หน่วย แถบสีเหลืองเต็มจึงพร้อมใช้ใหม่</p>`;
+      guide.insertAdjacentHTML('beforeend',historyHtml());
       dlg.append(guide); guide.showModal();
       guide.querySelector('button').onclick=()=>guide.close();
       guide.addEventListener('close',()=>guide.remove());
@@ -3086,6 +3096,39 @@ document.addEventListener('keydown', e => {
   e.preventDefault(); e.stopPropagation(); openPowerSheet(b.dataset.power);
 }, true);
 
+const plainQuest = text => String(text || '').replace(/\*\*|`/g,'').replace(/\*\([^)]*\)\*/g,'').replace(/ · ผล:.*/g,'');
+function historyHtml(){
+  return `<section class="character-history"><h2>ประวัติตัวละคร</h2><div class="guide-card-grid">${CHARACTER_HISTORY.map(p=>`<article class="guide-card"><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></article>`).join('')}</div><h3>วงศ์เดียวกัน คนละยุค เวลาในนรกไม่เรียงตามปี</h3><p>ยมทูตแต่ละโซนเป็นคนละคน พ่อค้าควันทองเป็นคนเดียวกันทุกโซน</p>${FAMILY_HISTORY.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`;
+}
+function openQuests(id = null){
+  const q=QUESTS.find(q=>q.id===id),s=q&&questState(g,id),p=q&&questTarget(g,q),blocked=(!q||!q.kin)&&questsPaused(g);
+  const zoneName=z=>ZONES.find(x=>x.k===z)?.name||z;
+  if(!q){
+    modal(`<h2>นิรา · ภารกิจ</h2><p>เลือกเรื่องที่ยังค้าง แล้วไปคุยที่จุดนัด · เล่นต่อได้หลังจบเกม</p>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':''}${QUESTS.map(q=>{const s=questState(g,q.id),p=questTarget(g,q);return `<article class="guide-card"><h3>${esc(q.title)}</h3><p>${s.done?'✓ จบแล้ว':questUnlocked(g,q)?`${esc(p.name)} · ${esc(zoneName(p.zone))} · ขั้น ${s.step+1}`:'รอช่วยตัวประกันหรือผ่านศึกชายแดนโซน 4'}</p><button data-quest="${q.id}" ${!questUnlocked(g,q)?'disabled':''}>${s.done?'อ่านบันทึก':'ดูภารกิจ'}</button></article>`;}).join('')}<button data-close>ปิด</button>`,d=>d.querySelectorAll('[data-quest]').forEach(b=>b.onclick=()=>openQuests(b.dataset.quest)),'quest-journal');return;
+  }
+  const waiting=!q.kin&&s.step===2;
+  const choiceAt=q.kin?(q.id==='kinGuard'?2:1):q.id==='sqBoon'?1:3;
+  const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right);
+  const lines=questDialogue(g,q);
+  const art=p.art||artUrl('crew-'+p.npc,'png',p.zone);
+  modal(`<h2>${esc(q.title)}</h2><p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?'<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>':g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):'<button data-quest-next>คุย · ดำเนินภารกิจ</button>'}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
+    d.querySelector('[data-quest-list]').onclick=()=>openQuests();
+    d.querySelector('[data-walk-quest]')?.addEventListener('click',()=>{d.close();g.walkTo(p.x,p.y);});
+    const act=c=>{const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(g.advanceQuest(id,c)){refresh();openQuests(id);}};
+    d.querySelector('[data-quest-next]')?.addEventListener('click',()=>act(null));
+    d.querySelectorAll('[data-quest-choice]').forEach(b=>b.onclick=()=>act(Number(b.dataset.questChoice)));
+  },'quest-journal');
+}
+function openSignalChoice(ev){
+  const key=signalStory(ev.k,'open');
+  if(!g.storySeen[key]){
+    g.queueStory(key);g.save();dlg.close();
+    const wait=()=>{if(g.zoneEventStatus(ev.k)!=='pending')return;if(g.storySeen[key]&&!storyPlaying&&!dlg.open)show();else setTimeout(wait,200);};setTimeout(wait,200);return;
+  }
+  show();
+  function show(){modal(`<h2>${esc(ev.title.th)}</h2><p>เสียงเดิมของเขายังอยู่ข้างใน เป็นแต่คำสั่งทับอยู่ข้างบน</p><div class="row"><button data-signal="call">เรียกคำฝาก · บอสข้ามเทิร์นแรก</button><button data-signal="rush">บุกทันที · เบี้ยรางวัล +25%</button><button data-close>เตรียมตัวต่อ</button></div>`,d=>d.querySelectorAll('[data-signal]').forEach(b=>b.onclick=()=>{if(g.startZoneEvent(ev.k,b.dataset.signal))openBattle(afterBreachBattle);}));}
+}
+
 function openNiraOffice() {
   if (g.niraRest) {
     const site = STATIONS.find(d => d.k === (g.stations.some(st => st.def.k === 'tea' && !st.build) ? 'tea' : 'sala'));
@@ -3134,11 +3177,12 @@ function openNiraOffice() {
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${final ? '' : niraGreet}
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2><button data-quests>ภารกิจ · เรื่องที่ยังค้าง</button>${final ? '' : niraGreet}
       <p class="hint">ทีมรวมสูงสุด ${g.partyCap()} คน (รวมยามาและยักษ์) ${party.length > max ? 'ทีมเดิมเกินช่อง: เก็บรายชื่อไว้ครบ แต่ใช้เฉพาะลำดับแรก กรุณาจัดทีมใหม่ · ' : ''}เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
+    dlg.querySelector('[data-quests]').onclick=()=>openQuests();
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
@@ -3166,14 +3210,14 @@ function openNiraOffice() {
 }
 
 function openMerchant() {
-  if (!g.zoneCaptivesFree()) return;
+  if (!g.zoneCaptivesFree() || !g.merchantAvailable()) return;
   pauseForDlg();
   const stock0 = merchantStock(g.zone);
   const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
-      ${merchantGreet}
+      ${merchantGreet}<button data-quests>ภารกิจ · จดหมายฝาก</button>
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -3187,6 +3231,7 @@ function openMerchant() {
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
+    dlg.querySelector('[data-quests]').onclick=()=>openQuests();
   };
   paint(); openDlg('merchant');
 }
@@ -3246,10 +3291,10 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
   const breachKey = fromWalk ? null : (typeof breachArg === 'string' ? breachArg : g.breachMarch()?.key || null);
   const bev = breachKey ? (ZONE_EVENTS[g.zone] || []).find(e => e.k === breachKey) : null;
   const breach = !!bev, thBreach = breachKey === 'frontierBreach';
-  if (['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach'].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
+  if (['frontierBreach','asiaRageBreach','westVampireBreach','cyberBreach',...Object.values(SIGNAL_KEYS)].includes(breachKey) && !approachReached) { openFrontierWalk(breachKey); return; }
   // An invasion requires walking to the boss in the frontier scene. He speaks on arrival,
   // before team preparation; acknowledging this scene never starts a fight.
-  const intro = breach && !introSeen && frontierIntroduction(g.zone, getLang());
+  const intro = breach && !bev?.signal && !introSeen && frontierIntroduction(g.zone, getLang());
   if (intro) {
     const zone = g.zone;
     const proceed = () => {
@@ -3322,6 +3367,7 @@ function openFrontier(fromWalk = false, breachArg = null, introSeen = false, app
     // ข้อ A ชุด 14 คุณเป้ 26 ก.ย. 2569 — เดิมกดปุ่มนี้แล้วตัดเข้าฉากสู้ทันที (สุ่มศัตรู)
     // ตอนนี้เข้า "แผนที่ชายแดน" ก่อน ให้เดินเลือกเองว่าจะสู้กับตัวไหน (src/frontier.js)
     if (start) start.onclick = () => {
+      if(bev?.signal){openSignalChoice(bev);return;}
       if (thBreach) {
         if (g.startFrontierBreach()) { breachTried = true; openBattle(afterBreachBattle); }
         return;

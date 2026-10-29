@@ -1,0 +1,120 @@
+(node:37840) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ SIG opens at seven CYBER cases, cross-zone visits cannot accelerate it; final waits for all three captains and close acknowledgement (60.314849ms)
+✔ SIG victims never queue a repeat trial; friendly post remains in its ledger and returns after invasion (3.045537ms)
+✔ SIG choice survives defeat/reload; call stuns the returning boss, rush pays 25 percent exactly once (21.452073ms)
+✔ eight quest cases have unique ids, correct zones, and never enter named random pools even at Asia recycle (5.844843ms)
+✔ all eight side quests: real enqueue/verdict, branch 0, save/reload and single claim (115.303041ms)
+✔ all eight side quests: real enqueue/verdict, branch 1, save/reload and single claim (106.822265ms)
+✔ Dam wrong verdict closes only the failure route with 30 coin and no item reward (2.684416ms)
+✔ quests pause during finale; completed state resumes walking, boat travel and quests without replaying finale (112.118459ms)
+✔ legacy empty, pending finale, interrupted SIG and completed saves migrate without duplicate rewards (8.056262ms)
+✔ private information costs six additional karma only once with mirror/hypno, ordinary questioning is free (11.547991ms)
+✔ W3: all eight kin journeys advance through actual zones, choices and one reward after reload (94.571896ms)
+✔ merchant arrives exactly 90 seconds after Asia arrival, pauses/out-of-zone preserve timer; hostages stay in west/cyber (7.551979ms)
+✔ cross-zone dialogue needs both meetings and plays each direction once, including saved state (4.745002ms)
+✔ authored assets exist, history opens with full S0 and Grace is female; history is reachable from both manuals (5.122323ms)
+✖ stale pending final gates cannot bypass SIG through the map, either entry API, or save reload (2.847865ms)
+✖ each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement (1.39637ms)
+✖ legacy finals already fought retain progress and ledger without paying SIG rewards (2.554685ms)
+✔ W2 exact branch rewards, including optional helper EXP replaced by two food only when awarded (41.482028ms)
+✖ W3 kin choices pay exact rewards through real harbour travel, persist, and stay open during finale (69.00896ms)
+✔ W3 all 34 cross-zone lines need their meetings and play only once across reload (146.140986ms)
+✖ W3 merchant has actual story dialogue and a walkable route; legacy arrivals stay silent (129.567964ms)
+✔ SIG battle and frontier consume the supplied signal boss art, CyberHell keeps mint overlay (2.857599ms)
+✔ ordinary questioning that already opened private facts adds no later privacy surcharge (1.923565ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 18
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1364.006679
+
+✖ failing tests:
+
+test at tests/e1-signal-quests.test.mjs:139:1
+✖ stale pending final gates cannot bypass SIG through the map, either entry API, or save reload (2.847865ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'ready' !== 'locked'
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:142:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ready',
+    expected: 'locked',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/e1-signal-quests.test.mjs:159:1
+✖ each cross-zone prerequisite is enforced, including stale pending SIG and close acknowledgement (1.39637ms)
+  TypeError: Cannot set properties of undefined (setting 'cyberSignal')
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:165:39)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/e1-signal-quests.test.mjs:176:1
+✖ legacy finals already fought retain progress and ledger without paying SIG rewards (2.554685ms)
+  TypeError: Cannot convert undefined or null to object
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:182:77)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/e1-signal-quests.test.mjs:215:1
+✖ W3 kin choices pay exact rewards through real harbour travel, persist, and stay open during finale (69.00896ms)
+  AssertionError [ERR_ASSERTION]: kinTaan
+  + actual - expected
+  
+    {
+  +   cooldownClock: 1,
+      food: 2
+    }
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:228:40)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { food: 2, cooldownClock: 1 },
+    expected: { food: 2 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/e1-signal-quests.test.mjs:250:1
+✖ W3 merchant has actual story dialogue and a walkable route; legacy arrivals stay silent (129.567964ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T175008Z-2da7c89d/tests/e1-signal-quests.test.mjs:259:106)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

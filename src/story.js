@@ -1,3 +1,4 @@
+import { SIGNAL_STORIES, MERCHANT_STORIES } from './e1-content.js';
 import {bossGuideStory} from './boss-guides.js';
 import { t } from './i18n.js';
 import { BATTLE, WEAPONS } from './data.js';
@@ -68,7 +69,7 @@ export const STORY = {
   ]},
 };
 /** เรื่อง/คัตซีนตามคีย์ — STORY หลักก่อน แล้วคัตซีนอาวุธ */
-export const storyOf = key => STORY[key] || WEAPON_STORY[key] || bossGuideStory(key);
+export const storyOf = key => STORY[key] || SIGNAL_STORIES[key] || (key.startsWith('mrun-') && MERCHANT_STORIES[key.slice(5)] ? {title:'พ่อค้าควันทองตามมาถึงแล้ว',pages:[{image:'img/merchant.png',title:'พ่อค้าควันทอง',line:MERCHANT_STORIES[key.slice(5)]}]} : null) || WEAPON_STORY[key] || bossGuideStory(key);
 export const ABILITY_REWARDS = {
   teamJudgment:{ name:'บัญชาการยมทูตประสานพิพากษา', image:'img/skills-v1/icons/teamJudgment.webp', text:'เพื่อนร่วมทีมพุ่งทีละคน แล้วยามาปิดท้าย · พลังเวท 24 · คูลดาวน์ 5 เทิร์นยามา', howTo:'พลัง → ประสานพิพากษา → เลือกศัตรู · นาฬิกาไม่รีเซ็ตท่านี้' },
   bigFire:{ howTo:'ในฉากต่อสู้ กดลูกไฟ (แรงขึ้นอัตโนมัติ) บนวงคำสั่ง ใช้พลังเวท', name:'ลูกไฟใหญ่', image:'img/fx-fireball-big.png', text:'พลังลูกไฟแรงขึ้น 20 หน่วย · ได้จากการชนะศึกชายแดนโซน 1 ครบ 2 ระลอกหลังคดี 8' },

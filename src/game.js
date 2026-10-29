@@ -1,3 +1,5 @@
+import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
+import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
 import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
@@ -102,7 +104,7 @@ function prepareBattle(b, hp, maxHp = hp) {
   });
   return b;
 }
-const soulFitsZone = (s, zone) => zone !== 'asia' || /^A(?:[1-9]|1\d|20)$/.test(s && s.case || '');
+const soulFitsZone = (s, zone) => zone !== 'asia' || (/^A(?:[1-9]|1\d|20)$/.test(s && s.case || '') || ALL_CASES.some(c=>c.quest&&c.k===s?.case&&c.zone===zone));
 
 export function createGame() {
   syncFrontierPos('th'); // Set the city before crew/station instances capture their home geometry.
@@ -190,6 +192,7 @@ export function createGame() {
   // UI.toggleCourt() then dispatches the real ferry instead of showing the soul on the dais stairs.
   g.courtArrivals=[];
   initializeZoneTravel(g);
+  initializeQuests(g);
   return g;
 }
 
@@ -519,16 +522,30 @@ const API = {
       if (!this.usedCases.includes('devaMonk')) this.usedCases.push('devaMonk');
     }
   },
+  advanceQuest(id, choice = null) { return advanceQuest(this,id,choice); },
+  merchantAvailable() { return merchantAvailable(this); },
+  continueAfterEnding() {
+    if (!this.gameCompleted || this.finalEventState().phase !== 'completed') return false;
+    this.over = null; this.paused = false; unlockQuestPorts(this); this.save(); this.onChange(); return true;
+  },
+  enqueueQuestCase(id) {
+    const c=ALL_CASES.find(c=>c.k===id&&c.quest&&c.zone===this.zone);
+    if(!c || this.queue.length>=14 || this.queue.some(s=>s.case===id) || this.usedCases.includes(id)) return false;
+    const soul=mkCaseSoul(c);
+    if(c.k==='hospice'&&this.sideQuests.sqBoon?.choice===0)soul.remorseBonus=15;
+    applySoulPortrait(soul,this.zone);this.queue.push(soul);this.usedCases.push(id);
+    if(!this.courtClosed)this.startCourtArrival(soul);return true;
+  },
   nextNamedCase(tags) {
     if (this.casesDone < 1) return null;
     if (this.zone === 'th' && this.spawns % CASE_EVERY !== 0) return null;
     const pool = CASES_BY_ZONE[this.zone] || [];
-    let left = pool.filter(c => c.k !== 'devaMonk' && !this.usedCases.includes(c.k));
+    let left = pool.filter(c => c.k !== 'devaMonk' && !c.quest && !this.usedCases.includes(c.k));
     // บูรพาไม่ถอยกลับไปสุ่มสำนวนไทยเมื่อ A1-A20 ครบชุด — ล้างรอบแล้วคละใหม่
     if (!left.length && this.zone === 'asia' && pool.length) {
-      const keys = new Set(pool.map(c => c.k));
+      const keys = new Set(pool.filter(c=>!c.quest).map(c => c.k));
       this.usedCases = this.usedCases.filter(k => !keys.has(k));
-      left = [...pool];
+      left = pool.filter(c=>!c.quest);
     }
     if (!left.length) return null;
     const ok = left.filter(c => {
@@ -868,6 +885,11 @@ const API = {
     this.karma = clamp(this.karma + p.karma, 0, 100);
 
     const hidden = soul.deeds.filter(d => !d.known);
+    if (['mirror','hypno'].includes(k) && soul.deeds.some(d=>d.private && (!d.known || d.visible===false)) && !soul.privateOpened) {
+      // Mirror exposes the full answer; hypnosis exposes the deed itself. Charge once for either route.
+      soul.privateOpened=true; this.karma=clamp(this.karma+6,0,100);
+      soul.said.push({kind:'truth',text:'ซาโตริ: เรื่องนี้เขายังไม่ได้อนุญาตให้ใครรู้ · กรรมท่าน +6'});
+    }
     const fakes = soul.merits.filter(m => m.fake && !m.exposed);
     let out = [];
     const sealed = soul.deeds.filter(d => d.known && d.visible === false);
@@ -1182,6 +1204,7 @@ const API = {
 
   /** ผลของคำตัดสิน — คะแนน กรรม บารมี และเสียงจากพ่อ (เกิดทันทีที่ออกหมาย) */
   applyVerdict(r, soul, stationName = '') {
+    recordQuestVerdict(this,soul,r);
     if (Number.isFinite(r.karma)) this.karma = clamp(this.karma + r.karma, 0, 100);
     if (Number.isFinite(r.score)) this.order = clamp(this.order + (r.score - 55) / 12, 0, 100);
     this.casesDone++; if (Number.isFinite(r.score)) this.scoreSum += r.score;
@@ -1919,6 +1942,8 @@ const API = {
     if(bossJusticeActive(this)){advanceBossJustice(this,dt);return;}
     this.updateActorRecovery();
     if (this.paused || this.over) return;
+    advanceMerchant(this,dt);
+    refreshSignalClose(this);
     this.syncBlocks();                 // อาคารที่สร้างเสร็จ/ถูกเผาพัง กันทางเดินให้ตรงเสมอ
     // เดินได้เฉพาะพื้นที่เหยียบได้ — ลาวากับแม่น้ำวิญญาณกันไว้ที่ src/walk.js
     const P = this.player, SP = 0.19 * dt;
@@ -2154,11 +2179,11 @@ const API = {
     // เดิมมันเดินสุ่มไปมาเฉย ๆ แล้วเกมตัดเข้าฉากต่อสู้ให้ทันทีที่โผล่
     // ตอนนี้มันมีเป้าหมายจริง: อาคารที่ใกล้ที่สุด ปล่อยไว้ก็ไหม้จนพัง
     // 29C: event ชายแดนบุกไม่มีตัวปีศาจเดินบนแผนที่แล้ว (ปีศาจรออยู่ที่ชายแดน) · ของที่ค้างมากับเซฟเก่าเก็บทิ้ง
-    this.mobs = this.mobs.filter(m => !m.eventKey || (this.zoneEventStatus(m.eventKey) === 'pending' && !isFrontierBreachEvent(this.zone, m.eventKey)));
+    this.mobs = this.mobs.filter(m => !m.eventKey || (this.zoneEventStatus(m.eventKey) === 'pending' && !Object.values(SIGNAL_KEYS).includes(m.eventKey) && !isFrontierBreachEvent(this.zone, m.eventKey)));
     for (const [tag, closed] of Object.entries(this.eventMapClosed)) {
       if (!closed) continue;
       const [zone, key] = tag.split(':');
-      if (key === 'cyberFinal' || isFrontierBreachEvent(zone, key)) continue;
+      if (key === 'cyberFinal' || Object.values(SIGNAL_KEYS).includes(key) || isFrontierBreachEvent(zone, key)) continue;
       if (zone === this.zone && (key === 'prisonBreak' || key === 'frontierBreach' ||
           (ZONE_EVENTS[zone] || []).some(ev => ev.k === key &&
             (ev.mode === 'waves' || /prison/i.test(ev.k)))))
@@ -2655,7 +2680,7 @@ const API = {
   zoneEventGateReady() {
     if (this.zone === 'th' && this.legacyBossGate) return true;
     return (ZONE_EVENTS[this.zone] || []).every(ev =>
-      ev.atCases > 9 || this.zoneEventStatus(ev.k) === 'cleared');
+      ev.signal || ev.atCases > 9 || this.zoneEventStatus(ev.k) === 'cleared');
   },
 
   bossCanChallenge() {
@@ -2843,11 +2868,15 @@ const API = {
   },
   refreshZoneEvents(zone = this.zone) {
     const states = this.zoneEvents[zone] ||= {};
+    if(zone==='cyberhell' && states.cyberFinal==='pending' && !signalReady(this)) {
+      delete states.cyberFinal;
+      if(this.finalEvent?.phase==='ready')this.finalEvent.phase='locked';
+    }
     for (const ev of ZONE_EVENTS[zone] || []) {
       if (states[ev.k] || (this.zoneCases[zone] || 0) < ev.atCases) continue;
       // ด่านเทวดาโซนไทยเริ่มหลังตัดสินคดีขอทานในวัดแล้วเท่านั้น (คดีนั้นรอประตูสวรรค์ — applyVerdict เป็นคนเปิดด่าน)
       if (zone === 'th' && ev.k === 'devaTest' && !this.devaVisits.th) continue;
-      if ((ev.requires || []).every(key => states[key] === 'cleared')) {
+      if (signalRequirements(this,ev,zone)) {
         states[ev.k] = 'pending';
         if (zone === this.zone && ev.k === 'asiaPrisonFire') {
           const st = this.stations.find(s => s.def.k === 'tarang' && !s.build);
@@ -2864,6 +2893,8 @@ const API = {
       const visit = this.devaVisits.cyberhell ||= { phase:this.storySeen['deva-cyberhell'] ? 'waiting' : 'intro' };
       if (zone === this.zone && visit.phase === 'intro') this.queueStory('deva-cyberhell');
     }
+    unlockQuestPorts(this);
+    if(zone===this.zone)refreshSignalClose(this);
     return states;
   },
   zoneEventFoes(ev, wave = 1) {
@@ -2883,15 +2914,17 @@ const API = {
       const hp = scaleFoeHp(zone, entry.hp, kindOf);
       return { id:`${ev.k}-${wave}-${group}-${i}`, who:entry.sp === 'boss-tester-cyberhell' ? `ลูเมน-${String(i + 1).padStart(2,'0')}` : entry.name || (mob.nameKey ? t(mob.nameKey) : mob.name),
         sub:ev.mode === 'waves' ? `ระลอก ${wave}/${ev.waves.length}` : '',
-        sp:entry.sp || mob.img, boss:!!entry.boss,
-        hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:0, confuse:0 };
+        sp:entry.sp || mob.img, boss:!!entry.boss, hypno:!!entry.hypno,
+        hp, maxHp:hp, atk:scaleFoeAtk(zone, entry.atk, kindOf), stun:ev.signal && entry.boss && this.signalChoices[ev.k]==='call' ? 1 : 0, confuse:0 };
     }));
   },
-  startZoneEvent(key) {
+  startZoneEvent(key, signalChoice = null) {
     if (bossJusticeActive(this)) return null;
     const ev = (ZONE_EVENTS[this.zone] || []).find(e => e.k === key);
     if (key === 'cyberFinal') return this.startFinalEncounter();
     if (!ev || this.battle || this.over || this.zoneEventStatus(key) !== 'pending') return null;
+    if(ev.signal && (ev.mode==='story' || !signalRequirements(this,ev) || !this.storySeen[signalStory(key,'open')] || !['call','rush'].includes(signalChoice || this.signalChoices[key]))) return null;
+    if(ev.signal)this.signalChoices[key]=signalChoice || this.signalChoices[key];
     if (key === 'westVampireBreach' && !this.crewHelpers().length && !this.guardActive()) return null;
     const foes = this.zoneEventFoes(ev, 1);
     if (!foes.length) return null;
@@ -2914,6 +2947,7 @@ const API = {
     }
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
+    if(ev.signal)this.battle.signalChoice=this.signalChoices[key];
     this.prepareEncounter(); this.save(); this.onChange(); return this.battle;
   },
   // ---------- G3b · ประลองปีศาจชายแดน 10 wave + อาวุธประจำโซน ----------
@@ -3037,7 +3071,11 @@ const API = {
   },
   finalEventState() {
     this.finalEvent ||= migrateFinalEvent(this);
-    if (this.finalEvent.phase === 'locked' && ['pending','active'].includes(this.zoneEventStatus('cyberFinal')))
+    if(!signalReady(this) && ['locked','ready'].includes(this.finalEvent.phase) && !this.gameCompleted && !this.battle && !this.finalEvent.minionsCleared &&
+        !this.finalEvent.rulersCleared?.length) {
+      this.finalEvent.phase='locked';this.finalEvent.presentation=null;
+    }
+    if (signalReady(this) && this.finalEvent.phase === 'locked' && ['pending','active'].includes(this.zoneEventStatus('cyberFinal')))
       this.finalEvent.phase = 'ready';
     return this.finalEvent;
   },
@@ -3052,7 +3090,7 @@ const API = {
   },
   startFinalEncounter(id = null) {
     if (bossJusticeActive(this)) return null;
-    if (this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || this.pendingRecovery) return null;
+    if (!signalReady(this) || this.gameCompleted || this.zone !== 'cyberhell' || this.battle || this.over || this.pendingReward || this.pendingRecovery) return null;
     const s = this.finalEventState(), next = nextFinalEncounter(s);
     if (s.presentation || !next || (id && id !== next) || !this.persistFinalEvent()) return null;
     id = next;
@@ -3727,7 +3765,12 @@ const API = {
         const ev = ZONE_EVENTS[B.zone]?.find(e => e.k === B.eventKey);
         this.zoneEvents[B.zone][B.eventKey] = 'cleared';
         if (B.eventKey === 'westVampireBreach') this.thawWestSpirits();
-        if (ev?.reward?.coin) this.coin += ev.reward.coin;
+        if (ev?.reward?.coin) this.coin += Math.round(ev.reward.coin * (ev.signal && B.signalChoice==='rush' ? 1.25 : 1));
+        if(ev?.signal) {
+          for(const [k,n]of Object.entries(ev.reward.items||{}))this.inventory[k]=(this.inventory[k]||0)+n;
+          this.order=clamp(this.order+(ev.reward.order||0),0,100);
+          this.queueStory(signalStory(ev.k,'win'));
+        }
         if (ev?.reward?.ability) this.abilities[ev.reward.ability] = true;
         if (ev?.reward?.item) this.inventory[ev.reward.item] = (this.inventory[ev.reward.item] || 0) + 1;
         if (ev?.reward?.unlockZone) {
@@ -3785,7 +3828,7 @@ const API = {
       }
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
-      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? 60 : B.kind === 'prisonBreak' ? 40 : 20;
+      const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : 20;
       // หน้าต่างรางวัลหลังชนะปีศาจ/บอส (ชุด 28B) — วิญญาณขัดขืนในห้องไต่สวน (kind:'soul') ไม่เด้ง เพราะต้องไปต่อที่คำตัดสินทันที
       // คิดก่อน gainExp เพราะการเลื่อนขั้นเติมเบี้ยกรรมโบนัสเอง (เป็นหน้าต่างเลื่อนขั้นของมันต่างหาก)
       if (B.kind !== 'soul') {
@@ -4260,6 +4303,7 @@ const API = {
   completeStory() {
     const next = this.storyQueue.shift();
     if (next) this.storySeen[next.key] = true;
+    finishSignalStory(this,next?.key);
     completeBossGuideStory(this,next?.key);
     completeBossJusticeStory(this,next?.key);
     if (next?.key === 'deva-west' && this.devaVisits.west?.phase === 'intro')
@@ -4578,7 +4622,7 @@ const API = {
   /** ซื้อขายกับพ่อค้า — ของทุกชิ้นเข้ากระเป๋า ไม่ใช้ทันที */
   sellMaterial(k, all = false) {
     const def = ITEMS[k], have = this.inventory[k] || 0;
-    if (!this.zoneCaptivesFree() || !def?.material || have < 1) return false;
+    if (!this.zoneCaptivesFree() || !merchantAvailable(this) || !def?.material || have < 1) return false;
     const n = all ? have : 1;
     this.inventory[k] -= n; this.coin += def.sell * n;
     this.log(`🧳 ขาย${def.name} ×${n} — +${def.sell * n} เบี้ยกรรม`, 'good');
@@ -4586,6 +4630,7 @@ const API = {
   },
 
   buyMerchant(k) {
+    if(!merchantAvailable(this))return false;
     const stock = merchantStock(this.zone).find(x => x.k === k), def = ITEMS[k];
     if (!this.zoneCaptivesFree() || !stock || !def || k === 'mirror' && this.devaTestStatus('th') !== 'cleared' || this.level < (stock.lv || 1) || this.coin < stock.cost) return false;
     this.discover('item', k);
@@ -4919,6 +4964,8 @@ API.snapshot = function (withEntry = true) {
     zone: this.zone, outfit: this.outfit || this.zone, zoneSave: this.zoneSave || {},
     zoneCases: this.zoneCases, zoneEvents: this.zoneEvents, eventMapClosed:this.eventMapClosed, legacyBossGate:this.legacyBossGate,
     gameCompleted: !!this.gameCompleted,
+    e1Version:1, sideQuests:structuredClone(this.sideQuests),
+    merchantJourney:structuredClone(this.merchantJourney),questPortsOpened:!!this.questPortsOpened,signalChoices:{...this.signalChoices},
     teaBeds:this.teaBeds, pendingRecovery:this.pendingRecovery,
     bossCleared: this.bossCleared, bossRetryAt: this.bossRetryAt,
     miniGoals: this.miniGoals, frontier, party:{ ...this.party, members:teamIds(this.party?.members, this.roster, this.zone) }, upgrades:this.upgrades,
@@ -5413,6 +5460,9 @@ API.restore = function (d) {
     this.townSkinMigrated[k] = true;
   }
   initializeZoneTravel(this,d.zoneTravel);
+  migrateSignal(this,d);
+  initializeQuests(this,d);
+  for(const zone of Object.keys(ZONE_EVENTS))this.refreshZoneEvents(zone);
   initializeBossGuides(this,d.bossGuides);
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;

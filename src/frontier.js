@@ -308,6 +308,11 @@ export function makeFrontierWalk(cv, g, opts) {
         const inReach = en.id === nearId;
         const kd = MOB.kinds[en.kindIdx] || MOB;
         drawStandee(ctx, en.art || kd.img, x, y, U * (en.boss ? BOSS_H : MOB_H), t, '👹', en.x < P.x ? 1 : -1, !en.arrived);
+        if(en.hypno){
+          ctx.save();ctx.strokeStyle='#a1ffe1';ctx.globalAlpha=.7;ctx.lineWidth=2;
+          for(let k=0;k<7;k++){const sy=y-U*BOSS_H+(k/7+(t%700)/4900)*U*BOSS_H;ctx.beginPath();ctx.moveTo(x-U*.035,sy);ctx.lineTo(x+U*.035,sy);ctx.stroke();}
+          ctx.restore();
+        }
         if (inReach) {
           ctx.strokeStyle = `rgba(255,205,120,${0.55 + 0.35 * Math.sin(t / 260)})`;
           ctx.lineWidth = 2.5;

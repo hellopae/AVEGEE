@@ -80,7 +80,7 @@ test('E5 cyber breach uses walk-to-boss before existing intro; four waves and sp
   assert.equal(breachApproachActors('cyberhell','cyberBreach')[0].art,'boss-frontier');
   assert.equal(frontierIntroduction('cyberhell','en').image,'img/frontier-cyberhell-intro-v1.png');
   const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
-  assert.ok(ui.includes("'westVampireBreach','cyberBreach'].includes(breachKey) && !approachReached"));
+  assert.ok(ui.includes("'westVampireBreach','cyberBreach',...Object.values(SIGNAL_KEYS)].includes(breachKey) && !approachReached"));
 });
 test('E5 three preparation destinations produce reachable paths to merchant, Nira and existing tea pavilion/fallback',()=>{
   const g=finalGame();g.stepWorld(16);

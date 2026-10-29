@@ -11,7 +11,7 @@ function finalGame() {
   const g = createGame();
   assert.equal(g.restore(JSON.parse(readFileSync(new URL('./fixtures/b1-v3.json', import.meta.url)))), true);
   g.bossCleared = { th:true, asia:true, west:true };
-  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberFinal:'pending' };
+  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared', cyberFinal:'pending' };
   for (const c of Object.values(g.roster)) { c.morale = 92; c.recoverUntil = 0; c.helpReadyAt = 0; }
   return g;
 }

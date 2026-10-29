@@ -64,7 +64,7 @@ test('ศัตรูที่สร้างจริงใช้ตัวค�
 test('บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน', () => {
   const g = createGame();
   g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
-  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
+  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared' };
   g.refreshZoneEvents();
   g.startZoneEvent('cyberFinal');
   const ev = ZONE_EVENTS.cyberhell.find(e => e.k === 'cyberFinal');
@@ -246,7 +246,7 @@ test('น้ำมนต์: พ่อค้านรกขาย · ราค�
 test('น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก', () => {
   const g = createGame();
   g.zone = 'cyberhell'; g.zoneCases.cyberhell = 10;
-  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
+  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared' };
   g.refreshZoneEvents(); g.startZoneEvent('cyberFinal');
   g.inventory.holyWater = 2; g.mp = 10;
   assert.equal(g.useHolyWater(), false, 'กลางศึก (ไม่ใช่จุดพัก) ใช้ไม่ได้');
@@ -403,7 +403,7 @@ test('น้ำมนต์ดื่มได้กลางศึกทุก�
   bs.startZoneBoss(); bs.startBossFight(); huge(bs);
   drinkChecks(bs, 'zoneBoss');
   const fin = createGame(); fin.zone = 'cyberhell'; fin.zoneCases.cyberhell = 10;
-  fin.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', cyberFinal:'pending' };
+  fin.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared', cyberFinal:'pending' };
   fin.startZoneEvent('cyberFinal'); huge(fin);
   drinkChecks(fin, 'cyberFinal');
   const soul = createGame(); soul.startBattle({ id:3, who:'x', deserved:3, resist:true }); huge(soul);

@@ -1,3 +1,4 @@
+import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
@@ -1966,7 +1967,7 @@ export const ZONE_EVENTS = {
         [{ kind:13, count:2, hp:70, atk:[18,27] }], [{ name:'แม่ทัพปีศาจ', sp:'boss-frontier-cyberhell', count:1, hp:180, atk:[23,35], boss:true }]],
       // ชุด 28B: 15 → 25 ชดเชยบอสอึดขึ้น (HP บอส ×1.25) — ดูตารางจำลองศึกใน Output/Toby/2026-10-02-avegee-28b.md
       betweenWaveHeal:25, reward:{ coin:200, item:'spareHeart' } },
-    { k:'cyberFinal', atCases:10, requires:['cyberBreach'], mode:'waves',
+    { k:'cyberFinal', atCases:10, requires:['cyberBreach','signalClose'], mode:'waves',
       title:{ th:'ปลดปล่อยหัวหน้าทั้งสี่', en:'Free the four branch rulers' },
       alert:{ th:'ชนะลูกน้อง 4 ระลอก แล้วช่วยหัวหน้าโซน 1 → 2 → 3 → 4 ทีละคน ก่อนสู้บอส',
         en:'Defeat four minion waves, then rulers 1 → 2 → 3 → 4, then the final boss. Rest on the map between fights.' },
@@ -1988,6 +1989,8 @@ export const ZONE_EVENTS = {
     challengeEvent('cyberhell', { betweenWaveHeal:28, waveCoin:[12,12,14,14,16,16,18,18,20,0], reward:{ coin:240, weapon:'trojan' } }),
   ],
 };
+for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);
+ZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);
 
 // TODO: รอ Rae ตั้งชื่อจริง
 export const BOSS_ULTIMATE = {
@@ -2222,7 +2225,7 @@ export const fmtAuthority = (text, zone) =>
 /** event "ปีศาจชายแดนบุก" — th.frontierBreach และ event ระลอกชายแดนของโซน 2–4 (team:'frontier')
  *  ชุด 29C ข้อ 9: ผู้เล่นต้องเดินไปที่ชายแดนเองก่อน ถึงจะเปิดหน้าต่างเตรียมทีมและสู้ได้ (ไม่ตัดเข้าหน้าต่างทันที) */
 export const isFrontierBreachEvent = (zone, key) =>
-  (ZONE_EVENTS[zone] || []).some(ev => ev.k === key && ev.team === 'frontier');
+  (ZONE_EVENTS[zone] || []).some(ev => ev.k === key && ev.team === 'frontier' && !ev.signal);
 
 export function returnsToFrontier(done) {
   if (!done || done.over !== 'win') return false;

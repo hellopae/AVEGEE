@@ -1,3 +1,4 @@
+import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
@@ -582,12 +583,25 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
       drawCaptiveLightning(ctx, t);
       tag(ctx, 1002, 256, t, ['🔒 ช่วยทัณฑ์และพ่อค้า', '#f7c371']);
     });
-  } else if (!rescue) {
+  } else if (!rescue && merchantAvailable(g) && !merchantRun(g)) {
     spot_(MERCHANT.x, MERCHANT.y, MERCHANT.h * CHAR_SCALE_MAP);
     at(1e5 + MERCHANT.y, () => {
       shade(MERCHANT.x, MERCHANT.y, MERCHANT.h * CHAR_SCALE_MAP, c => mapStandee(c, MERCHANT.img, MERCHANT.x, MERCHANT.y, MERCHANT.h, t, MERCHANT.glyph));
     });
   }
+
+  const runningMerchant=merchantRun(g);
+  if(g.zone==='asia'&&!merchantAvailable(g))at(MERCHANT.y,()=>{
+    ctx.save();ctx.fillStyle='#675c72';ctx.beginPath();
+    ctx.moveTo(MERCHANT.x-40,MERCHANT.y-45);ctx.lineTo(MERCHANT.x+40,MERCHANT.y-45);
+    ctx.lineTo(MERCHANT.x+48,MERCHANT.y);ctx.lineTo(MERCHANT.x-48,MERCHANT.y);ctx.closePath();ctx.fill();ctx.restore();
+    tag(ctx,MERCHANT.x,MERCHANT.y-65,t,['แผงปิด · รอพ่อค้าควันทอง','#d8c9b8']);
+  });
+  if(runningMerchant)at(runningMerchant.y,()=>mapStandee(ctx,'merchant',runningMerchant.x,runningMerchant.y,MERCHANT.h,t,'🧳',1,true));
+  const questNpcs=new Map(questMarkers(g).map(p=>[p.npc,p]));
+  for(const p of questNpcs.values())if(!['nira','merchant'].includes(p.npc)&&!(p.npc==='guard'?g.guard:g.crew.some(c=>c.k===p.npc)))at(p.y,()=>{
+    mapStandee(ctx,'crew-'+p.npc,p.x,p.y,72,t,'💬');
+  });
 
   // ---- ยักษ์ทวารบาล (ถ้าจ้างไว้) ----
   // ชุดที่ 10 (ข้อ C1) — ตัดฟีเจอร์ "พายักษ์มาเดินตาม" ออก (คุณเป้สั่ง 25 ก.ย. 2569) ยักษ์ยืน/เดิน
@@ -1003,7 +1017,7 @@ export function hitActor(g, sx, sy) {
   for (const ev of waitingEvents(g)) if (near(ev.x, ev.y, radius(70))) return { kind:'zoneEvent', key:ev.key };
   if (g.bossGuarding?.[g.zone] && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(75)))
     return { kind:'bossPending', key:g.zone };
-  if (!westRescuePending(g) && g.zoneCaptivesFree() && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
+  if (!westRescuePending(g) && g.zoneCaptivesFree() && merchantAvailable(g) && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
   if (westRescueActors(g).some(a => near(a.x,a.y,radius(60))))
     return { kind:'zoneEvent', key:'westHypnotized' };
   if (g.zone!=='th' && g.bossCleared?.[g.zone] && !bossGuideDismissed(g) && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };

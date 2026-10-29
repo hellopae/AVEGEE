@@ -90,7 +90,7 @@ test('event ชายแดนบุก: แจ้งเตือน → รั�
 
 test('ระลอกชายแดนของโซน 2–4: ใช้ flow เดียวกัน · ไม่มีปีศาจ event บนแผนที่ · ทีมที่เลือกที่ชายแดนถูกใช้ในศึก', () => {
   const found = [];
-  for (const z of Object.keys(ZONE_EVENTS)) for (const ev of ZONE_EVENTS[z]) if (ev.team === 'frontier') found.push([z, ev.k]);
+  for (const z of Object.keys(ZONE_EVENTS)) for (const ev of ZONE_EVENTS[z]) if (ev.team === 'frontier' && !ev.signal) found.push([z, ev.k]);
   assert.deepEqual(found.map(f => f[1]).sort(), ['asiaRageBreach', 'cyberBreach', 'frontierBreach', 'westVampireBreach']);
   for (const [z, k] of found) assert.equal(isFrontierBreachEvent(z, k), true);
   assert.equal(isFrontierBreachEvent('cyberhell', 'cyberFinal'), false, 'ศึกสุดท้ายไม่เปลี่ยน flow');

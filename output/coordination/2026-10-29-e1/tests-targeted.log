@@ -1,0 +1,11 @@
+(node:87938) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ four minion waves pay coin and an item exactly once; wave 4 reward precedes cutscene then map (73.039974ms)
+✔ fixed ruler order, individual persisted wins, boss gate, ending only after boss (107.749357ms)
+✔ defeat and reload retry the same ruler without clearing earlier victories (5.738477ms)
+✔ active encounter round trips turn, targets, foes, HP, status and one-use flags (3.734936ms)
+✔ confusion victory also records a single receipt (2.029958ms)
+✔ map preparation remains accessible between every fight and management is suspended (153.878548ms)
+✔ legacy migration is idempotent and keeps the closest explicit Wave x/8 progress without retroactive loot (5.298968ms)
+✔ failed storage blocks acknowledgement and the next encounter; retry does not double pay (2.545467ms)
+✔ map boss stands with the zone-boss standee art, not the battle-only sprite key (3.403571ms)

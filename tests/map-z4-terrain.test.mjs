@@ -84,19 +84,23 @@ test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Z
   assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
 });
 
-test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance and WEATHER-B ambient data',async()=>{
+test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing C1, WEATHER-B and E1 narrative data only',async()=>{
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'){
     let bytes=readFileSync(path);
     if(path==='src/data.js'){
-      // Keep the original baseline. C1 changes three non-geometry values in this shared file;
+      // Keep the original baseline. C1 and E1 change explicit non-geometry values in this shared file;
       // normalize exactly those edits so every other byte (including all geometry) is still checked.
       let text=bytes.toString();
       for(const [current,original]of [
         ["lan:{ actors:['taan','guard','dam']","lan:{ actors:['taan','guard']"],
         ["sawan:{ actors:['boon','nira']","sawan:{ actors:['boon']"],
         ['boss:2.25,','boss:3.25,'],
+        ["import { SIGNAL_EVENTS, SIGNAL_CLOSE } from './signal-arc.js';\n",''],
+        ["requires:['cyberBreach','signalClose']","requires:['cyberBreach']"],
+        ["for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);\nZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);\n",''],
+        ["ev.team === 'frontier' && !ev.signal","ev.team === 'frontier'"],
       ]){
         assert.ok(text.includes(current),current);
         text=text.replace(current,original);

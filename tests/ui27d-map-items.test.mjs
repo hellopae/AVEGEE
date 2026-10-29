@@ -1,3 +1,4 @@
+import {signalStory} from '../src/signal-arc.js';
 import { isTownZone } from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 // Town avenues and legacy branch bridges remain traversable; throne and reward rules stay intact.
@@ -266,11 +267,14 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       g.setFrontierTeam?.('taan');
       g.zoneEvents[zone] = g.zoneEvents[zone] || {};
       g.zoneEvents[zone][ev.k] = 'pending';
+      for(const key of ev.requires||[])g.zoneEvents[zone][key]='cleared';
+      for(const [z,keys]of Object.entries(ev.requiresZone||{}))for(const key of keys)(g.zoneEvents[z] ||= {})[key]='cleared';
+      if(ev.signal)g.storySeen[signalStory(ev.k,'open')]=true;
       let b;
       if (ev.k === 'prisonBreak') b = g.startPrisonBreak();
       else if (ev.k === 'devaTest') b = (g.zoneEvents.th.prisonBreak = 'cleared', g.startDevaTest());
       else if (ev.k === 'frontierBreach') b = (g.zoneEvents.th.devaTest = 'cleared', g.startFrontierBreach());
-      else b = g.startZoneEvent(ev.k);
+      else b = g.startZoneEvent(ev.k,ev.signal?'call':null);
       assert.ok(b, `${zone}/${ev.k} starts`);
       const exp0 = g.exp, lvl0 = g.level;
       const itemsBefore = total(g);
@@ -282,7 +286,7 @@ test('ศึกบอส/เทวดา/อีเวนต์ทุกตัว
       seen.push(`${zone}/${ev.k}`);
     }
   }
-  assert.ok(seen.length === 13, seen.join());
+  assert.ok(seen.length === 17, seen.join());
 });
 
 test('บอสโซน (zoneBoss) ได้ EXP 100 ไม่ได้ winLoot', () => {

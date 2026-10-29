@@ -28,7 +28,7 @@ export function calcRemorse({ soul, keeperK, intensity, verdict }) {
   const inten = W.intensity * clamp(1 - short * REMORSE.shortPenalty - over * REMORSE.overPenalty, 0, 1);
   const trait = W.trait * (REMORSE.trait[traitKey] ?? REMORSE.trait.accepting);
   const parts = { keeper: round1(keeper), intensity: round1(inten), trait: round1(trait) };
-  return { total: clamp(Math.round(keeper + inten + trait), 0, 100), parts,
+  return { total: clamp(Math.round(keeper + inten + trait + (soul?.remorseBonus || 0)), 0, 100), parts,
     detail: { traitKey, keeperFit, stationFit, short, over } };
 }
 
