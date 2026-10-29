@@ -2,6 +2,7 @@ import {townSkinOf} from './zone-skin.js';
 // World-space silhouettes of the painted central river bridge, including its
 // parapets/front face. These hide vessels only; they never alter walk masks.
 const TOWN_BRIDGES={
+ cyberhell:[[1835,1460],[2000,1460],[2000,1910],[2035,2000],[1805,2000],[1835,1910]],
  th:[[1842,1460],[2012,1460],[2012,1870],[2040,1980],[1805,1980],[1835,1880]],
  asia:[[1830,1432],[2014,1432],[2014,1915],[2030,2010],[1810,2010],[1830,1915]],
  west:[[1830,1432],[2014,1432],[2014,1915],[2030,2010],[1810,2010],[1830,1915]],

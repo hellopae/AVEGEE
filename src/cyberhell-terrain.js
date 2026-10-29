@@ -1,7 +1,6 @@
-// MAP-Z4: stream detailed ground in the existing 1678x937 world. Navigation still
-// samples scene-cyberhell-v2; enabling the unrelated town skin would move sites.
+// Z4-TOWN-A: detailed owner terrain, shared with the enabled town skin.
 export const CYBERHELL_TERRAIN = Object.freeze({
-  dir:'img/map-zone4/v2/', full:{w:4915,h:3277}, world:{w:1678,h:937}, chunk:1024,
+  dir:'img/map-zone4/v3/', full:{w:4915,h:3277}, world:{w:3840,h:2560}, chunk:1024,
 });
 const entries = new Map();
 const MAX_LOADING=3, MAX_IMAGES=12, TIMEOUT=15000;
@@ -41,7 +40,7 @@ export function drawCyberhellTerrain(ctx) {
   const m=ctx.getTransform?.();
   if(!m||m.b||m.c||m.a<=0||m.d<=0)return false;
   const {full,world}=CYBERHELL_TERRAIN;
-  if(m.a*world.w<=1678&&m.d*world.h<=937)return false;
+  if(m.a*world.w<=1536&&m.d*world.h<=1024)return false;
   const bounds={x0:Math.max(0,-m.e/m.a),y0:Math.max(0,-m.f/m.d),
     x1:Math.min(world.w,(ctx.canvas.width-m.e)/m.a),y1:Math.min(world.h,(ctx.canvas.height-m.f)/m.d)};
   const visible=[];

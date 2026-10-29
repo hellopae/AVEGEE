@@ -42,7 +42,7 @@ test('M3b: Asia ships its own terrain and flow without Zone 1 repairs or tree ti
     if (!['town-tree-sakura','town-tree-willow'].includes(key)) assert.ok(existsSync(new URL('../'+path,import.meta.url)),path);
   }
   assert.equal(ZONE_SKIN.west.enabled, true);
-  assert.equal(ZONE_SKIN.cyberhell.enabled, false);
+  assert.equal(ZONE_SKIN.cyberhell.enabled, true);
 });
 
 test('M3: Asia uses owner floor and leaving restores Zone 1 station geometry', () => {

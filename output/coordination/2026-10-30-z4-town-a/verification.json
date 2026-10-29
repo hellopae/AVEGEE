@@ -1,0 +1,205 @@
+{
+  "method": "Offline composition from runtime stationBox and path test JSON; no browser rendering asserted",
+  "world": {
+    "w": 3840,
+    "h": 2560
+  },
+  "targets": 48,
+  "ownerMaskSHA256": "2826a02481b13130379f9f5077b02b1f60ac6d0e90a3ea02baf9563492004592",
+  "cellCentreSamplesMatchOwnerMask": true,
+  "allTargetFeetInSourceWhiteMask": true,
+  "structuralLandmarks": [
+    {
+      "key": "judgment-circle",
+      "source": [
+        740,
+        386
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9805243611335754
+    },
+    {
+      "key": "entry-circle",
+      "source": [
+        768,
+        860
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9841870069503784
+    },
+    {
+      "key": "dock",
+      "source": [
+        898,
+        713
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9915919303894043
+    },
+    {
+      "key": "north-central-stairs",
+      "source": [
+        746,
+        304
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9890886545181274
+    },
+    {
+      "key": "south-central-stairs",
+      "source": [
+        746,
+        478
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9886307120323181
+    },
+    {
+      "key": "river-bridge-north",
+      "source": [
+        770,
+        620
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9969233274459839
+    },
+    {
+      "key": "river-bridge-south",
+      "source": [
+        770,
+        782
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9972922801971436
+    },
+    {
+      "key": "west-lava-link",
+      "source": [
+        380,
+        277
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9967630505561829
+    },
+    {
+      "key": "west-central-link",
+      "source": [
+        439,
+        400
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9877458810806274
+    },
+    {
+      "key": "east-central-link",
+      "source": [
+        1010,
+        402
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9960969090461731
+    },
+    {
+      "key": "east-river-link",
+      "source": [
+        1193,
+        182
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9963014721870422
+    },
+    {
+      "key": "top-west-stairs",
+      "source": [
+        664,
+        236
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9920426607131958
+    },
+    {
+      "key": "top-east-stairs",
+      "source": [
+        1002,
+        257
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9926438927650452
+    },
+    {
+      "key": "bottom-exit",
+      "source": [
+        768,
+        961
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "correlation": 0.9932912588119507
+    }
+  ],
+  "maxMeasuredLandmarkOffsetSourcePx": 0,
+  "registrationLimit": "Local translation checks at 14 named structural landmarks; not a pixelwise semantic proof of every edge",
+  "reservedCentralHolesSourcePx": [
+    [
+      710,
+      356,
+      70,
+      6
+    ],
+    [
+      695,
+      399,
+      32,
+      14
+    ],
+    [
+      761,
+      399,
+      32,
+      14
+    ]
+  ],
+  "placementLimit": "Central stripe and two small holes cannot contain eleven full station footprints. Dais uses central circle; stations use other existing reserved courts. Unassigned holes stay blocked; no invented buildings.",
+  "browser": "Not run: sandbox browser unavailable per brief"
+}

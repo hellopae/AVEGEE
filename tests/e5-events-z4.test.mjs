@@ -5,11 +5,11 @@ import { readFileSync, existsSync } from 'node:fs';
 import { createGame } from '../src/game.js';
 import { finalGame, win, roundTrip, finishBossJustice } from './final-event-helpers.mjs';
 import { finalEventActors, finalPreparationTargets, migrateFinalEvent } from '../src/final-event.js';
-import { devaMapActors } from '../src/deva-map.js';
+import { devaMapActors, DEVA_MAP } from '../src/deva-map.js';
 import { breachApproachActors } from '../src/breach-approach.js';
 import { frontierIntroduction } from '../src/narrative-cutscenes.js';
 import { STORY } from '../src/story.js';
-import { ZONE_EVENTS, MERCHANT, STATIONS } from '../src/data.js';
+import { ZONE_EVENTS, MERCHANT, STATIONS, SPOTS, syncSceneZone } from '../src/data.js';
 import { setLang } from '../src/i18n.js';
 import { mapInteractions } from '../src/proximity.js';
 globalThis.Image ??= class {};
@@ -55,14 +55,14 @@ test('E5 a→e: warp before approach/preparation, four waves, reinforcement map,
   assert.equal(new Set(images).size,images.length);assert.equal(g.gameCompleted,true);
 });
 test('E5 rescue: deva at throne, saved three-line bilingual intro, unchanged foes/reward, loss retry and captives released on win',()=>{
-  let g=createGame();g.zone='cyberhell';g.refreshZoneEvents();
+  let g=createGame();g.zone='cyberhell';syncSceneZone(g.zone);g.refreshZoneEvents();
   assert.equal(g.zoneCaptivesFree(),false);assert.equal(g.devaVisits.cyberhell.phase,'intro');
-  const a=devaMapActors(g)[0];assert.deepEqual([a.x,a.y,a.art],[880,480,'boss-tester']);
+  const a=devaMapActors(g)[0];assert.deepEqual([a.x,a.y,a.art],[DEVA_MAP.cyberhell.x,DEVA_MAP.cyberhell.y,'boss-tester']);
   assert.equal(a.enabled,false);g=roundTrip(g);
   for(const lang of ['th','en']) {setLang(lang);assert.equal(STORY['deva-cyberhell'].pages[0].line.split('\n').length,3);}
-  setLang('th');Object.assign(g.player,{x:880,y:455});story(g,'deva-cyberhell',[]);assert.equal(devaMapActors(g)[0].enabled,true);
+  setLang('th');Object.assign(g.player,{x:DEVA_MAP.cyberhell.x,y:DEVA_MAP.cyberhell.y-25});story(g,'deva-cyberhell',[]);assert.equal(devaMapActors(g)[0].enabled,true);
   // Arrival ends on the throne spot: Yama must not stand on top of Lumen (Dale fix).
-  assert.ok(Math.hypot(g.player.x-880,g.player.y-480)>=90);
+  assert.ok(Math.hypot(g.player.x-DEVA_MAP.cyberhell.x,g.player.y-DEVA_MAP.cyberhell.y)>=90);
   assert.ok(mapInteractions(g,MERCHANT).some(a=>a.key==='cyberRescue'));
   const ev=ZONE_EVENTS.cyberhell[0];assert.equal(ev.foes[0].count,2);assert.equal(ev.foes[0].hp,105);
   g.startZoneEvent('cyberRescue');assert.equal(g.devaVisits.cyberhell.phase,'fighting');
@@ -91,8 +91,8 @@ test('E5 three preparation destinations produce reachable paths to merchant, Nir
     assert.deepEqual(targets.nira,{x:g.crewOf('nira').x,y:g.crewOf('nira').y});
     if(built) assert.deepEqual(targets.tea,{x:STATIONS.find(s=>s.k==='tea').x,y:STATIONS.find(s=>s.k==='tea').y});
     for(const [key,p] of Object.entries(targets)) {
-      Object.assign(g.player,{x:880,y:550});assert.equal(g.walkTo(p.x,p.y),true,key);
-      for(let n=0;g.player.path?.length&&n<500;n++)g.stepWorld(100);
+      Object.assign(g.player,SPOTS.bench);assert.equal(g.walkTo(p.x,p.y),true,key);
+      for(let n=0;g.player.path?.length&&n<2000;n++)g.stepWorld(100);
       assert.ok(Math.hypot(g.player.x-p.x,g.player.y-p.y)<100,key);
     }
   }

@@ -16,6 +16,8 @@ test('L1: actors shrink on enabled town maps, and come back elsewhere', () => {
   setMapCharScale('west');
   assert.ok(Math.abs(mapCharK() - TOWN_CHAR_K) < 1e-9);
   setMapCharScale('cyberhell');
+  assert.ok(Math.abs(mapCharK() - TOWN_CHAR_K) < 1e-9);
+  setMapCharScale('unknown');
   assert.ok(Math.abs(mapCharK() - 1) < 1e-9);
 });
 

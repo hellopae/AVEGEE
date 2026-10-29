@@ -48,7 +48,8 @@ const branchSites = Object.fromEntries(['th','asia','west','unknown'].map(zone =
   syncSceneZone(zone); return [zone,sites()];
 }));
 const offsets={lokan:[73,41],krajok:[90,37],dab:[65,5],krata:[0,42]};
-test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',()=>{
+test('30F: CyberHell translations move hits and worker/service points together and restore on every branch change',t=>{
+  disableTownSkin('cyberhell');t.after(()=>{enableTownSkin('cyberhell');syncSceneZone('th');});
   for (const destination of ['th','asia','west','unknown']) {
     syncSceneZone('cyberhell');
     const once=sites(); syncSceneZone('cyberhell'); assert.deepEqual(sites(),once,'no accumulated offsets');
@@ -90,12 +91,12 @@ test('30F: real alpha footprints and lava mask allow paths to every station with
   const g=createGame();g.zone='cyberhell';syncSceneZone(g.zone);art.bindZone(()=>g.zone);
   g.stations=STATIONS.map(def=>({def,slots:[],build:0,fire:0,intensity:3}));
   walk.resetWalk();walk.setBlocks([],[]);
-  assert.equal(walk.buildWalk({src:'img/scene-cyberhell-v2.png',naturalWidth:1678,naturalHeight:937}),true);
+  assert.equal(walk.buildWalk({src:'img/scene-cyberhell-v2.png',naturalWidth:1678,naturalHeight:937}),false);
   g.syncBlocks(true);
   for(const d of STATIONS) {
     const foot=art.footOf(d);
     assert.ok(foot,d.k+': loaded footprint');
-    const path=walk.findPath(835,680,d.x,d.y);
+    const path=walk.findPath(...ZONE_ENTRY.gate,d.x,d.y);
     assert.equal(walk.canWalk(d.x,d.y),true,d.k+': entry on reachable ground');
     // 30D blocks whole buildings, so the walk may stop beside the door; the "enter" button reach (INTERACTION_REACH = 100) is what matters
     const end=path.at(-1);

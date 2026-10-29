@@ -61,7 +61,7 @@ test('enabled towns use large city geometry and legacy zones retain their geomet
     assert.ok(manifest.rest.includes(`${z.scene}.png`));
     if (isTownZone(z.k)) {
       assert.deepEqual(size(),[TOWN_SIZE.w,TOWN_SIZE.h]);
-      assert.deepEqual(grid(),['asia','west'].includes(z.k)?[480,320]:[240,160]); // Z2: asia paths on an 8-unit grid (narrow bridges in the owner mask)
+      assert.deepEqual(grid(),['asia','west','cyberhell'].includes(z.k)?[480,320]:[240,160]); // Z2: asia paths on an 8-unit grid (narrow bridges in the owner mask)
       for (const [key,d] of Object.entries(TOWN_STATION_SITES)) {
         const actual=STATIONS.find(s=>s.k===key);
         assert.deepEqual([actual.x,actual.y,actual.bx,actual.by],[d.x,d.y,d.bx,d.by],key);
@@ -227,8 +227,8 @@ test('ยักษ์ snap จุดแวะขณะไล่ปีศาจ�
 
 test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล่น ของตก ยมทูต และยักษ์ครั้งเดียว', t => {
   // Legacy migration fixture; production-enabled skin migration is covered in m3-asia-skin.
-  disableTownSkin('asia');disableTownSkin('west');
-  t.after(()=>{enableTownSkin('asia');enableTownSkin('west');syncSceneZone('th');});
+  disableTownSkin('asia');disableTownSkin('west');disableTownSkin('cyberhell');
+  t.after(()=>{enableTownSkin('asia');enableTownSkin('west');enableTownSkin('cyberhell');syncSceneZone('th');});
   for (const zone of ['asia', 'west', 'cyberhell']) {
     const saved = createGame().snapshot();
     saved.zone = zone; saved.level = 5;
@@ -260,8 +260,8 @@ test('เซฟผังเก่าโซน 2–4 ย้ายผู้เล�
 
 test('เซฟที่ยักษ์ยืนจุดเฝ้าเก่าย้ายมาจุดใหม่ทุกโซน', t => {
   // Legacy migration fixture; production-enabled skin migration is covered in m3-asia-skin.
-  disableTownSkin('asia');disableTownSkin('west');
-  t.after(()=>{enableTownSkin('asia');enableTownSkin('west');syncSceneZone('th');});
+  disableTownSkin('asia');disableTownSkin('west');disableTownSkin('cyberhell');
+  t.after(()=>{enableTownSkin('asia');enableTownSkin('west');enableTownSkin('cyberhell');syncSceneZone('th');});
   const saved = createGame().snapshot();
   saved.guard = { x:895, y:795 };
   saved.zoneSave = { asia:{ guard:{ x:895, y:795 } } };

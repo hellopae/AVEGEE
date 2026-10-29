@@ -2190,7 +2190,7 @@ export function syncSceneZone(zone) {
     RIVER_Y=TOWN_RIVER_Y;NO_WALK.splice(0,NO_WALK.length,[0,0,SCENE.w,100],[0,0,100,SCENE.h],[SCENE.w-100,0,SCENE.w,SCENE.h],[0,RIVER_Y,SCENE.w,SCENE.h]);
   }
   const foodSite=TOWN_HOUSE_SITES[3]||{x:1536,y:960,w:98};
-  if(town)Object.assign(STATIONS.find(s=>s.k==='canteen'),{bx:foodSite.x,by:foodSite.y,bw:foodSite.w,x:foodSite.x,y:foodSite.y+38,hit:[foodSite.x-foodSite.w*.44,foodSite.y-33,foodSite.x+foodSite.w*.44,foodSite.y]});
+  if(town&&!TOWN_STATION_SITES.canteen)Object.assign(STATIONS.find(s=>s.k==='canteen'),{bx:foodSite.x,by:foodSite.y,bw:foodSite.w,x:foodSite.x,y:foodSite.y+38,hit:[foodSite.x-foodSite.w*.44,foodSite.y-33,foodSite.x+foodSite.w*.44,foodSite.y]});
   for (const s of STATIONS) {
     s.flip = (skin?.stationFlip || STATION_FLIP[z.k]).includes(s.k);
     if(!town) {
@@ -2397,9 +2397,9 @@ export const FINAL_EVENT = {
   rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
   rulerAdds:[1,1,2,2], bossAdds:3,
   add:{ kind:14, hp:60, atk:[10,16] },
-  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],
-  restPosition:[700,600],
-  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],
+  enemyPositions:[[1760,930],[1840,950],[2000,950],[2080,960],[1862.5,865]],
+  restPosition:[1550,1442.5],
+  reinforcementPositions:[[1570,930],[1600,990],[1680,1000],[1650,950]],
 };
 
 // Names are presentation only: event/save IDs and combat stats remain stable.
