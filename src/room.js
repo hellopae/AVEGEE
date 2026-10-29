@@ -23,7 +23,7 @@ import { walkDirection } from './walk-direction.js';
 import { walkStridePx, walkSlices, walkDrawDistance, WALK_GRACE_MS, WALK_MAX_CATCHUP_MS } from './walk-motion.js';
 import { ITEMS, BAL } from './data.js';
 import { drawStandee, drawCrewWalk, drawHeroWalk, drawSoul, drawFire, img, rr } from './art.js';
-import {drawWorker} from './workers.js';
+import {drawWorker,assignWorkerEscort,releaseWorkerEscort,zoneWorkers} from './workers.js';
 import { t as tr } from './i18n.js';
 import { drawContactShadow } from './scene-style.js';
 import { drawExitMarker } from './exit-marker.js';
@@ -692,10 +692,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
 
     for(const [id,fx] of prisonEscorts) {
       const progress=Math.min(1,(t-fx.start)/2400);
-      if(progress>=1){prisonEscorts.delete(id);fx.done();continue;}
+      if(progress>=1){prisonEscorts.delete(id);if(fx.walk)releaseWorkerEscort(g,fx.walk);fx.done();continue;}
       const x=fx.at[0]+(.5-fx.at[0])*progress, y=fx.at[1]+(.96-fx.at[1])*progress;
       acts.push({y,fn:()=>{
-        if(!drawCrewWalk(ctx,'crew-dam',px(x),py(y),U*CREW_H,progress*240, x>=fx.at[0]?1:-1))
+        if(fx.worker?.job?.roomEscort && fx.worker.job.soulId===id)
+          drawWorker(ctx,{...fx.worker,x:px(x),y:py(y),sitting:false,moving:true,heading:'down',face:x>=fx.at[0]?1:-1},progress*240,U*CREW_H);
+        else if(!fx.walk && !drawCrewWalk(ctx,'crew-dam',px(x),py(y),U*CREW_H,progress*240,x>=fx.at[0]?1:-1))
           drawStandee(ctx,'crew-dam',px(x),py(y),U*CREW_H,t,'🦇');
         drawSoul(ctx,px(x-.035),py(y-.025),U*SOUL_H,t,'#ffd9c0',fx.soul.sp||7);
       }});
@@ -765,7 +767,12 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       const index=entries.findIndex(x=>x.soul.id===id), entry=entries[index];
       const at=room.souls[Math.min(room.souls.length-1,index+(api.st?.slots.length||0))];
       if(!entry || !at)return false;
-      prisonEscorts.set(id,{soul:entry.soul,at:[...at],start:performance.now(),done});return true;
+      if(!entry.repentant){prisonEscorts.set(id,{soul:entry.soul,at:[...at],start:performance.now(),done});return true;}
+      const walk={soul:entry.soul,destination:'gate',roomEscort:true,path:[[def.x,def.y]],duration:2400,elapsed:0};
+      // Use the existing workforce and availability rules; no crew fallback or new hire.
+      assignWorkerEscort(g,walk);
+      const worker=zoneWorkers(g).find(w=>w.id===walk.escort?.workerId);
+      prisonEscorts.set(id,{soul:entry.soul,worker,walk,at:[...at],start:performance.now(),done});return true;
     },
     gateEffect(id,kind,cut=0) {
       if(def.k !== 'sawan' || !GATE_EFFECT_MS[kind])return false;
@@ -808,7 +815,7 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
     destroy() {
       const pending=[...prisonEscorts.values()];
       prisonEscorts.clear();
-      for(const fx of pending) fx.done();
+      for(const fx of pending) {if(fx.walk)releaseWorkerEscort(g,fx.walk);fx.done();}
       dead = true;
       cancelAnimationFrame(raf);
       removeEventListener('keydown', onKey);

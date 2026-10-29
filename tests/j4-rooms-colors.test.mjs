@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
+import {normalizeWorkers,stepWorkers} from '../src/workers.js';
 import { sentenceColor } from '../src/sentence-colors.js';
 import { MERITS, STATIONS } from '../src/data.js';
 import { wideStationRoom } from '../src/room-art-assets.js';
@@ -42,7 +43,7 @@ test('J4 gate souls shift onto raised platforms and training is removed only the
 });
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
-globalThis.Image=class {naturalWidth=1717;naturalHeight=916;set src(v){this.url=v;queueMicrotask(()=>this.onload?.());}};
+globalThis.Image=class {complete=true;naturalWidth=1717;naturalHeight=916;set src(v){this.url=v;queueMicrotask(()=>this.onload?.());}};
 globalThis.devicePixelRatio=1;
 globalThis.addEventListener=globalThis.removeEventListener=()=>{};
 globalThis.requestAnimationFrame=()=>1;globalThis.cancelAnimationFrame=()=>{};
@@ -52,16 +53,32 @@ test('J4 prison escort keeps soul until walking completes, rejects duplicate and
  const calls=[];
  const ctx=new Proxy({measureText:()=>({width:20})},{get:(o,k)=>k in o?o[k]:(...args)=>calls.push([k,...args])});
  const cv={width:844,height:450,getContext:()=>ctx,getBoundingClientRect:()=>({left:0,top:0,width:844,height:450}),addEventListener:()=>{},removeEventListener:()=>{}};
- const soul={id:42,who:'Soul',sp:7};const g={zone:'th',items:[],held:[],sentences:[{zone:'th',stage:'prison',soul}]};
+ const soul={id:42,who:'Soul',sp:7};const prison=STATIONS.find(s=>s.k==='tarang');
+ const g={zone:'th',items:[],held:[],food:100,coin:1000,stations:[],sentences:[{zone:'th',stage:'prison',repentant:true,soul}],workerState:normalizeWorkers({workers:[{id:'worker:1',homeZone:'th',x:prison.x-120,y:prison.y,stamina:100}]})};
+ const worker=g.workerState.workers[0];
  const config=wideStationRoom('th','tarang');const room=makeRoom(cv,g,STATIONS.find(s=>s.k==='tarang'),config,config.image,null);room.start();await new Promise(r=>setImmediate(r));
  let transfers=0;
  assert.equal(room.prisonEscort(42,()=>transfers++),true);
  assert.equal(room.prisonEscort(42,()=>transfers++),false);
  clock=1300;room.tick(0);await new Promise(r=>setImmediate(r));room.tick(0);
- assert.ok(calls.some(([op,im])=>op==='drawImage' && /crew-dam/.test(im?.url)),'Dam is actually painted on the room canvas');
+ assert.ok(calls.some(([op,im])=>op==='drawImage' && /workers\/worker-th/.test(im?.src||im?.url)),'existing worker sprite is painted on the room canvas');
+ assert.ok(!calls.some(([op,im])=>op==='drawImage' && /crew-dam/.test(im?.url)));
+ assert.equal(worker.job?.roomEscort,true);stepWorkers(g);assert.equal(worker.job?.roomEscort,true);
+ assert.equal(g.workerState.workers.length,1);
  assert.equal(transfers,0);assert.equal(room.prisonEscorting(42),true);
  clock=2600;room.tick(0);assert.equal(transfers,1);assert.equal(room.prisonEscorting(42),false);
- room.destroy();assert.equal(transfers,1);
+ assert.equal(worker.job,null);
+ // A resting workforce keeps the ordinary solo walk and creates no worker.
+ worker.mode='rest';assert.equal(room.prisonEscort(42,()=>transfers++),true);
+ assert.equal(room.prisonEscorting(42),true);assert.equal(worker.job,null);
+ calls.length=0;clock=3800;room.tick(0);
+ assert.ok(!calls.some(([op,im])=>op==='drawImage' && /crew-dam|workers\/worker-th/.test(im?.url)));
+ clock=5100;room.tick(0);assert.equal(transfers,2);
+ assert.equal(room.prisonEscorting(42),false);assert.equal(g.workerState.workers.length,1);
+ worker.mode='auto';assert.equal(room.prisonEscort(42,()=>transfers++),true);
+ assert.equal(worker.job?.roomEscort,true);
+ room.destroy();assert.equal(transfers,3);assert.equal(worker.job,null);
+ room.destroy();assert.equal(transfers,3);
 });
 test('J4 prison controls have no proximity gate and handbook renders all chapters together',()=>{
  const prison=ui.slice(ui.indexOf("if (k === 'tarang') {",ui.indexOf('function openStation')),ui.indexOf("if (k === 'sawan') {",ui.indexOf('function openStation')));
@@ -71,14 +88,14 @@ test('J4 prison controls have no proximity gate and handbook renders all chapter
 });
 const {createGame}=await import('../src/game.js');
 const {escortCrewPosition,soulWalkPosition}=await import('../src/escort.js');
-test('J4 both prison outcomes carry Dam along the map route, arriving only after the walk',()=>{
+test('UI-JW heaven has no crew fallback; queue keeps its existing courier and both arrive after walking',()=>{
  for(const repentant of [true,false]){
   const g=createGame();g.save=()=>{};g.onChange=()=>{};
   for(const key of ['tarang','sawan']) g.stations.push({def:STATIONS.find(x=>x.k===key),build:0,slots:[]});
   const soul={id:987,who:'ทดสอบ',sp:7,sex:'m',deeds:[{s:'kong',t:'กรรม',w:3,known:true}],merits:[]};
   g.sentences.push({soul,zone:g.zone,stage:'prison',inspected:true,repentant,intensity:3,verdict:{short:0,right:true}});
   assert.equal(g.moveFromPrison(soul.id),true);
-  const walk=g.afterlifeWalks.at(-1);assert.ok(walk);assert.equal(walk.courier,'dam');
+  const walk=g.afterlifeWalks.at(-1);assert.ok(walk);assert.equal(walk.courier,repentant?undefined:'dam');assert.equal(walk.escort,undefined);
   assert.equal(walk.destination,repentant?'gate':'queue');
   assert.equal(g.sentences.some(x=>x.stage==='gate'&&x.soul.id===soul.id),false);
   walk.elapsed=walk.duration/2;

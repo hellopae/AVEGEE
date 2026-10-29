@@ -87,7 +87,7 @@ function superviseReady(g,st) {
 }
 function jobValid(g,w) {
   if(!w.job)return false;
-  if(w.job.kind==='escort')return (g.afterlifeWalks||[]).some(walk=>walk.escort?.workerId===w.id);
+  if(w.job.kind==='escort')return w.job.roomEscort===true||(g.afterlifeWalks||[]).some(walk=>walk.escort?.workerId===w.id);
   if(w.job.kind==='food')return !!mealRecipient(g,w.job.recipient)&&canteenActive(g);
   if(w.job.kind==='gather')return w.cargo||g.stations.some(st=>st.def.k===(w.job.material==='dabShards'?'dab':'ngiw')&&!st.build&&!st.repair);
   const st=stationOf(g,w);return w.job.kind==='repair'?repairReady(g,st):w.job.kind==='build'?buildReady(g,st):superviseReady(g,st);
@@ -210,7 +210,7 @@ export function assignWorkerEscort(g,walk) {
     cancelJob(g,w);
     const delay=Math.round(pathLength(plan.pickup)/ESCORT_PICKUP_SPEED);
     walk.delay=delay;walk.duration+=delay;walk.escort={k:w.id,workerId:w.id,...plan};
-    w.job={kind:'escort',soulId:walk.soul.id};w.path=null;w.funded=true;return true;
+    w.job={kind:'escort',soulId:walk.soul.id,...(walk.roomEscort?{roomEscort:true}:{})};w.path=null;w.funded=true;return true;
   }
   return false;
 }
