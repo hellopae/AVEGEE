@@ -1,0 +1,14 @@
+[
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/border34/border34-walkmask.png",
+    "fixture": "tests/fixtures/border34-owner-mask.png",
+    "sha256": "4d3a558c66017d871859cc8ce8e94947e149d5bcfb3c8f63fc9dad103da10ea9",
+    "identical": true
+  },
+  {
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Claudy/border34/border34-trees.json",
+    "fixture": "tests/fixtures/border34-owner-trees.json",
+    "sha256": "395fc33e3ea891ac073f5040e5d663dbe5b008f1b22d0eecab9311c717fae895",
+    "identical": true
+  }
+]
