@@ -22,7 +22,7 @@ test('BALANCE-2 new-game office buttons really remove and restore taan+nira with
   const positions=g.crew.map(({id,x,y,follow})=>({id,x,y,follow}));
   let buttons=[];
   const dlg={open:true,html:'',set innerHTML(html){this.html=html;buttons=[...html.matchAll(/<button data-party="([^"]+)"([^>]*)>/g)].map(([,key,attrs])=>({dataset:{party:key},disabled:/disabled/.test(attrs)}));},get innerHTML(){return this.html;},
-    querySelectorAll(selector){return selector==='[data-party]'?buttons:[];},querySelector(){return null;}};
+    querySelectorAll(selector){return selector==='[data-party]'?buttons:[];},querySelector(selector){return selector==='[data-quests]'?{}:null;}};
   const context=vm.createContext({g,dlg,CREW,GUARD,BATTLE,ZONES,dlgGen:1,afterPowerSheet:null,
     artUrl:()=>'',pauseForDlg:noOp,greetLine:()=>'',esc:String,crewArt:()=>'',powerBadgeHtml:()=>'',crewName:d=>d.name,
     recommendedHire,hireRank,t:()=>'',crewAbility:()=>'',niraItemWidget:()=>'',guardRestWidget:()=>'',

@@ -37,7 +37,9 @@ export function scaleEncounter(battle, count) {
     foe.maxHp = Math.max(1, Math.round(foe.maxHp * tuning.hp));
     foe.hp = Math.max(1, foe.maxHp - preparedDamage);
     const attackRange = [tuning.atkLow ?? tuning.atk, tuning.atkHigh ?? tuning.atk];
-    foe.atk = foe.atk.map((value, index) => Math.max(1, Math.round(value * attackRange[index])));
+    // Zone-boss rematch foes carry no atk of their own (game.js falls back to [14, 22 + zoneIndex*3]); scale that same base.
+    const baseAtk = foe.atk || (battle.kind === 'zoneBoss' ? [14, 22 + ['th','asia','west','cyberhell'].indexOf(battle.zone) * 3] : battle.foeAtk);
+    if (baseAtk) foe.atk = baseAtk.map((value, index) => Math.max(1, Math.round(value * attackRange[index])));
   }
   battle.balance = { version:1, wave, partySize:count, ...profile, adds };
 }

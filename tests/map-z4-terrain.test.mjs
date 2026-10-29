@@ -90,7 +90,7 @@ test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allow
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'){
     let bytes=readFileSync(path);
     if(path==='src/data.js'){
-      // Keep the original baseline. C1 and E1 change explicit non-geometry values in this shared file;
+      // Keep the original baseline. C1, E1 and BALANCE-2 (Nira tutor line) change explicit non-geometry values in this shared file;
       // normalize exactly those edits so every other byte (including all geometry) is still checked.
       let text=bytes.toString();
       for(const [current,original]of [
@@ -101,6 +101,7 @@ test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allow
         ["requires:['cyberBreach','signalClose']","requires:['cyberBreach']"],
         ["for (const [zone, ev] of Object.entries(SIGNAL_EVENTS)) ZONE_EVENTS[zone].push(ev);\nZONE_EVENTS.cyberhell.push(SIGNAL_CLOSE);\n",''],
         ["ev.team === 'frontier' && !ev.signal","ev.team === 'frontier'"],
+        ['อ่านสำนวนให้เจ้าฟัง และคอยช่วยอยู่ด้านหลังเวลาออกศึก เธอ','อ่านสำนวนให้เจ้าฟัง เธอ'],
       ]){
         assert.ok(text.includes(current),current);
         text=text.replace(current,original);

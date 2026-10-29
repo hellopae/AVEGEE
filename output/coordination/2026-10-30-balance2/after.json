@@ -1,0 +1,5952 @@
+{
+  "label": "after",
+  "count": 200,
+  "seedStart": 30000,
+  "teamOrder": [
+    "taan",
+    "nira",
+    "guard",
+    "dam",
+    "plerng",
+    "boon"
+  ],
+  "runtimeHashes": {
+    "game": "6017b97ef682b015414b93168a6ff231edbc9aa82cbcd11c7fa94c6532ac2800",
+    "data": "71cb01463d0308458ca35d1bfe682ce7f792f182e92a15e513543d96bd3ed389",
+    "combat-skills": "1b8b88b627cbcb6647dc3cee72074414928555f0a53eee42ff56231a74313b3c",
+    "party-balance": "9e5e3a2201c15e079decc180d016f73cb6352332a06a428470ff538b27c9e3ff",
+    "encounter-balance": "2d7e89b730e52ae1e15f612d9867ad261a162a89709d9b14a444737886667986"
+  },
+  "rows": [
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 152,
+      "winRate": 76,
+      "rounds": 5.73,
+      "winRounds": 5.98,
+      "bossRounds": 5.73,
+      "winBossRounds": 5.98,
+      "timeouts": 0,
+      "healing": 32,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 281,
+          "atk": [
+            23,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 170,
+      "winRate": 85,
+      "rounds": 5.32,
+      "winRounds": 5.38,
+      "bossRounds": 5.32,
+      "winBossRounds": 5.38,
+      "timeouts": 0,
+      "healing": 46.77,
+      "absorbed": 10.8,
+      "initial": [
+        {
+          "hp": 281,
+          "atk": [
+            23,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 117,
+      "winRate": 58.5,
+      "rounds": 6.14,
+      "winRounds": 6.71,
+      "bossRounds": 5.14,
+      "winBossRounds": 5.71,
+      "timeouts": 0,
+      "healing": 31.07,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 55,
+          "atk": [
+            6,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 178,
+      "winRate": 89,
+      "rounds": 6.07,
+      "winRounds": 6.16,
+      "bossRounds": 5.07,
+      "winBossRounds": 5.16,
+      "timeouts": 0,
+      "healing": 38.94,
+      "absorbed": 17.01,
+      "initial": [
+        {
+          "hp": 55,
+          "atk": [
+            6,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 132,
+      "winRate": 66,
+      "rounds": 5.25,
+      "winRounds": 5.42,
+      "bossRounds": 5.25,
+      "winBossRounds": 5.42,
+      "timeouts": 0,
+      "healing": 30.68,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 373,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": true
+        },
+        {
+          "hp": 29,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 29,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 3,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 167,
+      "winRate": 83.5,
+      "rounds": 4.07,
+      "winRounds": 4.09,
+      "bossRounds": 4.07,
+      "winBossRounds": 4.09,
+      "timeouts": 0,
+      "healing": 37.26,
+      "absorbed": 17.07,
+      "initial": [
+        {
+          "hp": 373,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": true
+        },
+        {
+          "hp": 29,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 29,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 4,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 38,
+      "winRate": 19,
+      "rounds": 6.28,
+      "winRounds": 6.66,
+      "bossRounds": 6.28,
+      "winBossRounds": 6.66,
+      "timeouts": 0,
+      "healing": 29.36,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 764,
+          "atk": [
+            12,
+            20
+          ],
+          "boss": true
+        },
+        {
+          "hp": 52,
+          "atk": [
+            7,
+            12
+          ],
+          "boss": false
+        },
+        {
+          "hp": 52,
+          "atk": [
+            7,
+            12
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "th",
+      "size": 4,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 174,
+      "winRate": 87,
+      "rounds": 5.6,
+      "winRounds": 5.7,
+      "bossRounds": 5.6,
+      "winBossRounds": 5.7,
+      "timeouts": 0,
+      "healing": 33.23,
+      "absorbed": 14.78,
+      "initial": [
+        {
+          "hp": 764,
+          "atk": [
+            12,
+            20
+          ],
+          "boss": true
+        },
+        {
+          "hp": 52,
+          "atk": [
+            7,
+            12
+          ],
+          "boss": false
+        },
+        {
+          "hp": 52,
+          "atk": [
+            7,
+            12
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 140,
+      "winRate": 70,
+      "rounds": 3.21,
+      "winRounds": 3.86,
+      "bossRounds": 3.21,
+      "winBossRounds": 3.86,
+      "timeouts": 0,
+      "healing": 12.44,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 180,
+          "atk": [
+            41,
+            78
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 173,
+      "winRate": 86.5,
+      "rounds": 2.08,
+      "winRounds": 2.23,
+      "bossRounds": 2.08,
+      "winBossRounds": 2.23,
+      "timeouts": 0,
+      "healing": 8.31,
+      "absorbed": 1.54,
+      "initial": [
+        {
+          "hp": 180,
+          "atk": [
+            41,
+            78
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 84,
+      "winRate": 42,
+      "rounds": 9.63,
+      "winRounds": 10.15,
+      "bossRounds": 5.53,
+      "winBossRounds": 6.13,
+      "timeouts": 0,
+      "healing": 29.91,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 171,
+      "winRate": 85.5,
+      "rounds": 8.45,
+      "winRounds": 8.5,
+      "bossRounds": 5.24,
+      "winBossRounds": 5.33,
+      "timeouts": 0,
+      "healing": 29.56,
+      "absorbed": 11.76,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 32,
+      "winRate": 16,
+      "rounds": 6.07,
+      "winRounds": 6.81,
+      "bossRounds": 6.07,
+      "winBossRounds": 6.81,
+      "timeouts": 0,
+      "healing": 35.26,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 552,
+          "atk": [
+            14,
+            22
+          ],
+          "boss": true
+        },
+        {
+          "hp": 84,
+          "atk": [
+            8,
+            12
+          ],
+          "boss": false
+        },
+        {
+          "hp": 84,
+          "atk": [
+            8,
+            12
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 3,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 148,
+      "winRate": 74,
+      "rounds": 5.25,
+      "winRounds": 5.36,
+      "bossRounds": 5.25,
+      "winBossRounds": 5.36,
+      "timeouts": 0,
+      "healing": 39.28,
+      "absorbed": 20.8,
+      "initial": [
+        {
+          "hp": 552,
+          "atk": [
+            14,
+            22
+          ],
+          "boss": true
+        },
+        {
+          "hp": 84,
+          "atk": [
+            8,
+            12
+          ],
+          "boss": false
+        },
+        {
+          "hp": 84,
+          "atk": [
+            8,
+            12
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 156,
+      "winRate": 78,
+      "rounds": 1.94,
+      "winRounds": 2.12,
+      "bossRounds": 1.94,
+      "winBossRounds": 2.12,
+      "timeouts": 0,
+      "healing": 3.77,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 180,
+          "atk": [
+            41,
+            77
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 174,
+      "winRate": 87,
+      "rounds": 1,
+      "winRounds": 1,
+      "bossRounds": 1,
+      "winBossRounds": 1,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 180,
+          "atk": [
+            41,
+            77
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 102,
+      "winRate": 51,
+      "rounds": 9.15,
+      "winRounds": 9.44,
+      "bossRounds": 6.33,
+      "winBossRounds": 6.68,
+      "timeouts": 0,
+      "healing": 28.92,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 164,
+      "winRate": 82,
+      "rounds": 7.93,
+      "winRounds": 7.92,
+      "bossRounds": 5.86,
+      "winBossRounds": 5.88,
+      "timeouts": 0,
+      "healing": 29.73,
+      "absorbed": 14.38,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 86,
+      "winRate": 43,
+      "rounds": 5.04,
+      "winRounds": 5.26,
+      "bossRounds": 5.04,
+      "winBossRounds": 5.26,
+      "timeouts": 0,
+      "healing": 32.26,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 648,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 84,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 84,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 4,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 197,
+      "winRate": 98.5,
+      "rounds": 4.04,
+      "winRounds": 4.05,
+      "bossRounds": 4.04,
+      "winBossRounds": 4.05,
+      "timeouts": 0,
+      "healing": 34.47,
+      "absorbed": 21.67,
+      "initial": [
+        {
+          "hp": 648,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 84,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 84,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 5.08,
+      "winRounds": 5.73,
+      "bossRounds": 5.08,
+      "winBossRounds": 5.73,
+      "timeouts": 0,
+      "healing": 30.55,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 306,
+          "atk": [
+            22,
+            42
+          ],
+          "boss": false
+        },
+        {
+          "hp": 306,
+          "atk": [
+            22,
+            42
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 176,
+      "winRate": 88,
+      "rounds": 4.68,
+      "winRounds": 5.09,
+      "bossRounds": 4.68,
+      "winBossRounds": 5.09,
+      "timeouts": 0,
+      "healing": 35.18,
+      "absorbed": 5.28,
+      "initial": [
+        {
+          "hp": 306,
+          "atk": [
+            22,
+            42
+          ],
+          "boss": false
+        },
+        {
+          "hp": 306,
+          "atk": [
+            22,
+            42
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 100,
+      "winRate": 50,
+      "rounds": 7.48,
+      "winRounds": 7.88,
+      "bossRounds": 5.39,
+      "winBossRounds": 5.79,
+      "timeouts": 0,
+      "healing": 33.09,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 172,
+      "winRate": 86,
+      "rounds": 6.57,
+      "winRounds": 6.67,
+      "bossRounds": 4.57,
+      "winBossRounds": 4.67,
+      "timeouts": 0,
+      "healing": 31.23,
+      "absorbed": 18.37,
+      "initial": [
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 58,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 66,
+      "winRate": 33,
+      "rounds": 5.11,
+      "winRounds": 5.24,
+      "bossRounds": 5.11,
+      "winBossRounds": 5.24,
+      "timeouts": 0,
+      "healing": 32.24,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 820,
+          "atk": [
+            15,
+            24
+          ],
+          "boss": true
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "asia",
+      "size": 5,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 160,
+      "winRate": 80,
+      "rounds": 4.09,
+      "winRounds": 4.15,
+      "bossRounds": 4.09,
+      "winBossRounds": 4.15,
+      "timeouts": 0,
+      "healing": 33.54,
+      "absorbed": 22,
+      "initial": [
+        {
+          "hp": 820,
+          "atk": [
+            15,
+            24
+          ],
+          "boss": true
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 92,
+          "atk": [
+            9,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 143,
+      "winRate": 71.5,
+      "rounds": 3.41,
+      "winRounds": 4.06,
+      "bossRounds": 3.41,
+      "winBossRounds": 4.06,
+      "timeouts": 0,
+      "healing": 13.12,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 202,
+          "atk": [
+            45,
+            82
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 177,
+      "winRate": 88.5,
+      "rounds": 2.09,
+      "winRounds": 2.21,
+      "bossRounds": 2.09,
+      "winBossRounds": 2.21,
+      "timeouts": 0,
+      "healing": 8.91,
+      "absorbed": 1.88,
+      "initial": [
+        {
+          "hp": 202,
+          "atk": [
+            45,
+            82
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 125,
+      "winRate": 62.5,
+      "rounds": 12.54,
+      "winRounds": 12.82,
+      "bossRounds": 4.54,
+      "winBossRounds": 4.9,
+      "timeouts": 0,
+      "healing": 30.41,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 165,
+      "winRate": 82.5,
+      "rounds": 10.66,
+      "winRounds": 10.9,
+      "bossRounds": 4.59,
+      "winBossRounds": 4.77,
+      "timeouts": 0,
+      "healing": 31.8,
+      "absorbed": 13.52,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 71,
+      "winRate": 35.5,
+      "rounds": 4.67,
+      "winRounds": 5.48,
+      "bossRounds": 4.67,
+      "winBossRounds": 5.48,
+      "timeouts": 0,
+      "healing": 34.96,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 231,
+          "atk": [
+            21,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 42,
+          "atk": [
+            13,
+            20
+          ],
+          "boss": false
+        },
+        {
+          "hp": 42,
+          "atk": [
+            13,
+            20
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 3,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 167,
+      "winRate": 83.5,
+      "rounds": 4.07,
+      "winRounds": 4.19,
+      "bossRounds": 4.07,
+      "winBossRounds": 4.19,
+      "timeouts": 0,
+      "healing": 48.11,
+      "absorbed": 20.59,
+      "initial": [
+        {
+          "hp": 231,
+          "atk": [
+            21,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 42,
+          "atk": [
+            13,
+            20
+          ],
+          "boss": false
+        },
+        {
+          "hp": 42,
+          "atk": [
+            13,
+            20
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 156,
+      "winRate": 78,
+      "rounds": 2,
+      "winRounds": 2.19,
+      "bossRounds": 2,
+      "winBossRounds": 2.19,
+      "timeouts": 0,
+      "healing": 3.1,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 202,
+          "atk": [
+            45,
+            82
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 175,
+      "winRate": 87.5,
+      "rounds": 1.41,
+      "winRounds": 1.47,
+      "bossRounds": 1.41,
+      "winBossRounds": 1.47,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 202,
+          "atk": [
+            45,
+            82
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 131,
+      "winRate": 65.5,
+      "rounds": 11.74,
+      "winRounds": 11.72,
+      "bossRounds": 4.81,
+      "winBossRounds": 4.88,
+      "timeouts": 0,
+      "healing": 36.83,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 171,
+      "winRate": 85.5,
+      "rounds": 10.54,
+      "winRounds": 10.59,
+      "bossRounds": 4.62,
+      "winBossRounds": 4.7,
+      "timeouts": 0,
+      "healing": 32.78,
+      "absorbed": 15.62,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 70,
+      "winRate": 35,
+      "rounds": 5.32,
+      "winRounds": 6.06,
+      "bossRounds": 5.32,
+      "winBossRounds": 6.06,
+      "timeouts": 0,
+      "healing": 37.12,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 417,
+          "atk": [
+            19,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 64,
+          "atk": [
+            12,
+            18
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            12,
+            18
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 4,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 163,
+      "winRate": 81.5,
+      "rounds": 4.52,
+      "winRounds": 4.61,
+      "bossRounds": 4.52,
+      "winBossRounds": 4.61,
+      "timeouts": 0,
+      "healing": 40.19,
+      "absorbed": 23.23,
+      "initial": [
+        {
+          "hp": 417,
+          "atk": [
+            19,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 64,
+          "atk": [
+            12,
+            18
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            12,
+            18
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 155,
+      "winRate": 77.5,
+      "rounds": 4.29,
+      "winRounds": 4.85,
+      "bossRounds": 4.29,
+      "winBossRounds": 4.85,
+      "timeouts": 0,
+      "healing": 23.05,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 253,
+          "atk": [
+            3,
+            70
+          ],
+          "boss": false
+        },
+        {
+          "hp": 253,
+          "atk": [
+            3,
+            70
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 170,
+      "winRate": 85,
+      "rounds": 3.23,
+      "winRounds": 3.51,
+      "bossRounds": 3.23,
+      "winBossRounds": 3.51,
+      "timeouts": 0,
+      "healing": 17.85,
+      "absorbed": 5.86,
+      "initial": [
+        {
+          "hp": 253,
+          "atk": [
+            3,
+            70
+          ],
+          "boss": false
+        },
+        {
+          "hp": 253,
+          "atk": [
+            3,
+            70
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 61,
+      "winRate": 30.5,
+      "rounds": 13.14,
+      "winRounds": 13.84,
+      "bossRounds": 5.04,
+      "winBossRounds": 5.93,
+      "timeouts": 0,
+      "healing": 32.69,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 164,
+      "winRate": 82,
+      "rounds": 12.63,
+      "winRounds": 12.73,
+      "bossRounds": 4.8,
+      "winBossRounds": 4.92,
+      "timeouts": 0,
+      "healing": 35.52,
+      "absorbed": 17.88,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 36,
+      "winRate": 18,
+      "rounds": 4.75,
+      "winRounds": 6.17,
+      "bossRounds": 4.75,
+      "winBossRounds": 6.17,
+      "timeouts": 0,
+      "healing": 34.91,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 479,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 5,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 183,
+      "winRate": 91.5,
+      "rounds": 4.34,
+      "winRounds": 4.36,
+      "bossRounds": 4.34,
+      "winBossRounds": 4.36,
+      "timeouts": 0,
+      "healing": 36.89,
+      "absorbed": 23.5,
+      "initial": [
+        {
+          "hp": 479,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 64,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 159,
+      "winRate": 79.5,
+      "rounds": 3.85,
+      "winRounds": 4.29,
+      "bossRounds": 3.85,
+      "winBossRounds": 4.29,
+      "timeouts": 0,
+      "healing": 19.16,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 253,
+          "atk": [
+            38,
+            69
+          ],
+          "boss": false
+        },
+        {
+          "hp": 253,
+          "atk": [
+            38,
+            69
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 167,
+      "winRate": 83.5,
+      "rounds": 2.63,
+      "winRounds": 2.9,
+      "bossRounds": 2.63,
+      "winBossRounds": 2.9,
+      "timeouts": 0,
+      "healing": 12.39,
+      "absorbed": 2.63,
+      "initial": [
+        {
+          "hp": 253,
+          "atk": [
+            38,
+            69
+          ],
+          "boss": false
+        },
+        {
+          "hp": 253,
+          "atk": [
+            38,
+            69
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 33,
+      "winRate": 16.5,
+      "rounds": 13.77,
+      "winRounds": 14.61,
+      "bossRounds": 4.42,
+      "winBossRounds": 5.79,
+      "timeouts": 0,
+      "healing": 32.66,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 161,
+      "winRate": 80.5,
+      "rounds": 14.29,
+      "winRounds": 14.34,
+      "bossRounds": 4.17,
+      "winBossRounds": 4.35,
+      "timeouts": 0,
+      "healing": 37.59,
+      "absorbed": 20.13,
+      "initial": [
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 77,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 111,
+      "winRate": 55.5,
+      "rounds": 5.46,
+      "winRounds": 5.87,
+      "bossRounds": 5.46,
+      "winBossRounds": 5.87,
+      "timeouts": 0,
+      "healing": 33.79,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 687,
+          "atk": [
+            15,
+            24
+          ],
+          "boss": true
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "size": 6,
+      "kind": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 4.96,
+      "winRounds": 5.06,
+      "bossRounds": 4.96,
+      "winBossRounds": 5.06,
+      "timeouts": 0,
+      "healing": 35.98,
+      "absorbed": 25,
+      "initial": [
+        {
+          "hp": 687,
+          "atk": [
+            15,
+            24
+          ],
+          "boss": true
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 81,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 141,
+      "winRate": 70.5,
+      "rounds": 3.38,
+      "winRounds": 4.06,
+      "bossRounds": 3.38,
+      "winBossRounds": 4.06,
+      "timeouts": 0,
+      "healing": 13.16,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 226,
+          "atk": [
+            45,
+            91
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 172,
+      "winRate": 86,
+      "rounds": 2.01,
+      "winRounds": 2.14,
+      "bossRounds": 2.01,
+      "winBossRounds": 2.14,
+      "timeouts": 0,
+      "healing": 6.46,
+      "absorbed": 1.16,
+      "initial": [
+        {
+          "hp": 226,
+          "atk": [
+            45,
+            91
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 89,
+      "winRate": 44.5,
+      "rounds": 11.8,
+      "winRounds": 15.78,
+      "bossRounds": 4.35,
+      "winBossRounds": 6.28,
+      "timeouts": 0,
+      "healing": 44.87,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 156,
+      "winRate": 78,
+      "rounds": 11.19,
+      "winRounds": 12.01,
+      "bossRounds": 3.77,
+      "winBossRounds": 4.01,
+      "timeouts": 0,
+      "healing": 43.15,
+      "absorbed": 16.82,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": false,
+      "samples": 200,
+      "wins": 159,
+      "winRate": 79.5,
+      "rounds": 4.93,
+      "winRounds": 5.36,
+      "bossRounds": 4.93,
+      "winBossRounds": 5.36,
+      "timeouts": 0,
+      "healing": 38.14,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 173,
+          "atk": [
+            27,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 173,
+          "atk": [
+            27,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": true,
+      "samples": 200,
+      "wins": 171,
+      "winRate": 85.5,
+      "rounds": 4.18,
+      "winRounds": 4.41,
+      "bossRounds": 4.18,
+      "winBossRounds": 4.41,
+      "timeouts": 0,
+      "healing": 46.66,
+      "absorbed": 12.9,
+      "initial": [
+        {
+          "hp": 173,
+          "atk": [
+            27,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 173,
+          "atk": [
+            27,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": false,
+      "samples": 200,
+      "wins": 143,
+      "winRate": 71.5,
+      "rounds": 5.39,
+      "winRounds": 6.06,
+      "bossRounds": 5.39,
+      "winBossRounds": 6.06,
+      "timeouts": 0,
+      "healing": 32.59,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": true,
+      "samples": 200,
+      "wins": 180,
+      "winRate": 90,
+      "rounds": 4.34,
+      "winRounds": 4.56,
+      "bossRounds": 4.34,
+      "winBossRounds": 4.56,
+      "timeouts": 0,
+      "healing": 35.93,
+      "absorbed": 12.89,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": false,
+      "samples": 200,
+      "wins": 158,
+      "winRate": 79,
+      "rounds": 3.9,
+      "winRounds": 4.44,
+      "bossRounds": 3.9,
+      "winBossRounds": 4.44,
+      "timeouts": 0,
+      "healing": 19.89,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 134,
+          "atk": [
+            1,
+            72
+          ],
+          "boss": false
+        },
+        {
+          "hp": 134,
+          "atk": [
+            1,
+            72
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 3.25,
+      "winRounds": 3.49,
+      "bossRounds": 3.25,
+      "winBossRounds": 3.49,
+      "timeouts": 0,
+      "healing": 18.94,
+      "absorbed": 7.53,
+      "initial": [
+        {
+          "hp": 134,
+          "atk": [
+            1,
+            72
+          ],
+          "boss": false
+        },
+        {
+          "hp": 134,
+          "atk": [
+            1,
+            72
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": false,
+      "samples": 200,
+      "wins": 143,
+      "winRate": 71.5,
+      "rounds": 11.06,
+      "winRounds": 11.64,
+      "bossRounds": 11.06,
+      "winBossRounds": 11.64,
+      "timeouts": 0,
+      "healing": 36.77,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 474,
+          "atk": [
+            1,
+            27
+          ],
+          "boss": false
+        },
+        {
+          "hp": 474,
+          "atk": [
+            1,
+            27
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": true,
+      "samples": 200,
+      "wins": 177,
+      "winRate": 88.5,
+      "rounds": 9.61,
+      "winRounds": 9.79,
+      "bossRounds": 9.61,
+      "winBossRounds": 9.79,
+      "timeouts": 0,
+      "healing": 36.27,
+      "absorbed": 19.91,
+      "initial": [
+        {
+          "hp": 474,
+          "atk": [
+            1,
+            27
+          ],
+          "boss": false
+        },
+        {
+          "hp": 474,
+          "atk": [
+            1,
+            27
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": false,
+      "samples": 200,
+      "wins": 76,
+      "winRate": 38,
+      "rounds": 6.01,
+      "winRounds": 6.59,
+      "bossRounds": 6.01,
+      "winBossRounds": 6.59,
+      "timeouts": 0,
+      "healing": 40.15,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 308,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 163,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": true,
+      "samples": 200,
+      "wins": 187,
+      "winRate": 93.5,
+      "rounds": 5.25,
+      "winRounds": 5.3,
+      "bossRounds": 5.25,
+      "winBossRounds": 5.3,
+      "timeouts": 0,
+      "healing": 42.55,
+      "absorbed": 26.37,
+      "initial": [
+        {
+          "hp": 308,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 163,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": false,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 6.11,
+      "winRounds": 6.32,
+      "bossRounds": 6.11,
+      "winBossRounds": 6.32,
+      "timeouts": 0,
+      "healing": 39.73,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 300,
+          "atk": [
+            20,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            22
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": true,
+      "samples": 200,
+      "wins": 199,
+      "winRate": 99.5,
+      "rounds": 5.01,
+      "winRounds": 5.02,
+      "bossRounds": 5.01,
+      "winBossRounds": 5.02,
+      "timeouts": 0,
+      "healing": 39.73,
+      "absorbed": 26.37,
+      "initial": [
+        {
+          "hp": 300,
+          "atk": [
+            20,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            22
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": false,
+      "samples": 200,
+      "wins": 29,
+      "winRate": 14.5,
+      "rounds": 5.04,
+      "winRounds": 6.55,
+      "bossRounds": 5.04,
+      "winBossRounds": 6.55,
+      "timeouts": 0,
+      "healing": 36.81,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 219,
+          "atk": [
+            23,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            15,
+            25
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            15,
+            25
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": true,
+      "samples": 200,
+      "wins": 159,
+      "winRate": 79.5,
+      "rounds": 4.83,
+      "winRounds": 5.03,
+      "bossRounds": 4.83,
+      "winBossRounds": 5.03,
+      "timeouts": 0,
+      "healing": 51.83,
+      "absorbed": 22.43,
+      "initial": [
+        {
+          "hp": 219,
+          "atk": [
+            23,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            15,
+            25
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            15,
+            25
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": false,
+      "samples": 200,
+      "wins": 27,
+      "winRate": 13.5,
+      "rounds": 5.07,
+      "winRounds": 6.93,
+      "bossRounds": 5.07,
+      "winBossRounds": 6.93,
+      "timeouts": 0,
+      "healing": 37.2,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 238,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": true,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 4.99,
+      "winRounds": 5.31,
+      "bossRounds": 4.99,
+      "winBossRounds": 5.31,
+      "timeouts": 0,
+      "healing": 51.7,
+      "absorbed": 23.57,
+      "initial": [
+        {
+          "hp": 238,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 37,
+      "winRate": 18.5,
+      "rounds": 4.74,
+      "winRounds": 5.86,
+      "bossRounds": 4.74,
+      "winBossRounds": 5.86,
+      "timeouts": 0,
+      "healing": 41.97,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 179,
+          "atk": [
+            19,
+            28
+          ],
+          "boss": true
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 3,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 155,
+      "winRate": 77.5,
+      "rounds": 4.28,
+      "winRounds": 4.46,
+      "bossRounds": 4.28,
+      "winBossRounds": 4.46,
+      "timeouts": 0,
+      "healing": 45.19,
+      "absorbed": 27.08,
+      "initial": [
+        {
+          "hp": 179,
+          "atk": [
+            19,
+            28
+          ],
+          "boss": true
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        },
+        {
+          "hp": 62,
+          "atk": [
+            11,
+            17
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 155,
+      "winRate": 77.5,
+      "rounds": 2,
+      "winRounds": 2.19,
+      "bossRounds": 2,
+      "winBossRounds": 2.19,
+      "timeouts": 0,
+      "healing": 3.21,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 226,
+          "atk": [
+            45,
+            91
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 175,
+      "winRate": 87.5,
+      "rounds": 1.43,
+      "winRounds": 1.49,
+      "bossRounds": 1.43,
+      "winBossRounds": 1.49,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 226,
+          "atk": [
+            45,
+            91
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 120,
+      "winRate": 60,
+      "rounds": 10.98,
+      "winRounds": 11.43,
+      "bossRounds": 5,
+      "winBossRounds": 5.44,
+      "timeouts": 0,
+      "healing": 47.13,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 163,
+      "winRate": 81.5,
+      "rounds": 10.15,
+      "winRounds": 10.42,
+      "bossRounds": 4.46,
+      "winBossRounds": 4.68,
+      "timeouts": 0,
+      "healing": 50.98,
+      "absorbed": 15.66,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": false,
+      "samples": 200,
+      "wins": 147,
+      "winRate": 73.5,
+      "rounds": 3.83,
+      "winRounds": 4.54,
+      "bossRounds": 3.83,
+      "winBossRounds": 4.54,
+      "timeouts": 0,
+      "healing": 19.45,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 147,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 147,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": true,
+      "samples": 200,
+      "wins": 169,
+      "winRate": 84.5,
+      "rounds": 3.05,
+      "winRounds": 3.4,
+      "bossRounds": 3.05,
+      "winBossRounds": 3.4,
+      "timeouts": 0,
+      "healing": 10.53,
+      "absorbed": 4.06,
+      "initial": [
+        {
+          "hp": 147,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 147,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": false,
+      "samples": 200,
+      "wins": 145,
+      "winRate": 72.5,
+      "rounds": 4.21,
+      "winRounds": 4.83,
+      "bossRounds": 4.21,
+      "winBossRounds": 4.83,
+      "timeouts": 0,
+      "healing": 23.57,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            57
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            57
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": true,
+      "samples": 200,
+      "wins": 173,
+      "winRate": 86.5,
+      "rounds": 3.05,
+      "winRounds": 3.33,
+      "bossRounds": 3.05,
+      "winBossRounds": 3.33,
+      "timeouts": 0,
+      "healing": 19.2,
+      "absorbed": 5.67,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            57
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            3,
+            57
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": false,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 4.45,
+      "winRounds": 5.27,
+      "bossRounds": 4.45,
+      "winBossRounds": 5.27,
+      "timeouts": 0,
+      "healing": 34.28,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            23,
+            33
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            23,
+            33
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 3.24,
+      "winRounds": 3.44,
+      "bossRounds": 3.24,
+      "winBossRounds": 3.44,
+      "timeouts": 0,
+      "healing": 15.98,
+      "absorbed": 6.53,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            23,
+            33
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            23,
+            33
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": false,
+      "samples": 200,
+      "wins": 140,
+      "winRate": 70,
+      "rounds": 4.92,
+      "winRounds": 5.7,
+      "bossRounds": 4.92,
+      "winBossRounds": 5.7,
+      "timeouts": 0,
+      "healing": 25.26,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 240,
+          "atk": [
+            3,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 240,
+          "atk": [
+            3,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": true,
+      "samples": 200,
+      "wins": 176,
+      "winRate": 88,
+      "rounds": 3.81,
+      "winRounds": 4.11,
+      "bossRounds": 3.81,
+      "winBossRounds": 4.11,
+      "timeouts": 0,
+      "healing": 28.1,
+      "absorbed": 9.7,
+      "initial": [
+        {
+          "hp": 240,
+          "atk": [
+            3,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 240,
+          "atk": [
+            3,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": false,
+      "samples": 200,
+      "wins": 29,
+      "winRate": 14.5,
+      "rounds": 4.8,
+      "winRounds": 6.52,
+      "bossRounds": 4.8,
+      "winBossRounds": 6.52,
+      "timeouts": 0,
+      "healing": 36.59,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 362,
+          "atk": [
+            24,
+            36
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": true,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 4.77,
+      "winRounds": 5.24,
+      "bossRounds": 4.77,
+      "winBossRounds": 5.24,
+      "timeouts": 0,
+      "healing": 40.49,
+      "absorbed": 17.96,
+      "initial": [
+        {
+          "hp": 362,
+          "atk": [
+            24,
+            36
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": false,
+      "samples": 200,
+      "wins": 29,
+      "winRate": 14.5,
+      "rounds": 4.96,
+      "winRounds": 6.93,
+      "bossRounds": 4.96,
+      "winBossRounds": 6.93,
+      "timeouts": 0,
+      "healing": 38.48,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 400,
+          "atk": [
+            24,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": true,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 4.82,
+      "winRounds": 5.28,
+      "bossRounds": 4.82,
+      "winBossRounds": 5.28,
+      "timeouts": 0,
+      "healing": 43.16,
+      "absorbed": 18.5,
+      "initial": [
+        {
+          "hp": 400,
+          "atk": [
+            24,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": false,
+      "samples": 200,
+      "wins": 58,
+      "winRate": 29,
+      "rounds": 5.13,
+      "winRounds": 6.24,
+      "bossRounds": 5.13,
+      "winBossRounds": 6.24,
+      "timeouts": 0,
+      "healing": 37.87,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 329,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": true,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 5.38,
+      "winRounds": 5.66,
+      "bossRounds": 5.38,
+      "winBossRounds": 5.66,
+      "timeouts": 0,
+      "healing": 39.81,
+      "absorbed": 24.75,
+      "initial": [
+        {
+          "hp": 329,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": false,
+      "samples": 200,
+      "wins": 90,
+      "winRate": 45,
+      "rounds": 4.96,
+      "winRounds": 5.83,
+      "bossRounds": 4.96,
+      "winBossRounds": 5.83,
+      "timeouts": 0,
+      "healing": 38.51,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 238,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": true,
+      "samples": 200,
+      "wins": 162,
+      "winRate": 81,
+      "rounds": 4.47,
+      "winRounds": 4.77,
+      "bossRounds": 4.47,
+      "winBossRounds": 4.77,
+      "timeouts": 0,
+      "healing": 45.52,
+      "absorbed": 18.77,
+      "initial": [
+        {
+          "hp": 238,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 45,
+      "winRate": 22.5,
+      "rounds": 4.91,
+      "winRounds": 6.4,
+      "bossRounds": 4.91,
+      "winBossRounds": 6.4,
+      "timeouts": 0,
+      "healing": 36.41,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 344,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 4,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 158,
+      "winRate": 79,
+      "rounds": 5.69,
+      "winRounds": 5.83,
+      "bossRounds": 5.69,
+      "winBossRounds": 5.83,
+      "timeouts": 0,
+      "healing": 41.49,
+      "absorbed": 27.66,
+      "initial": [
+        {
+          "hp": 344,
+          "atk": [
+            17,
+            26
+          ],
+          "boss": true
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            10,
+            16
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 143,
+      "winRate": 71.5,
+      "rounds": 4.32,
+      "winRounds": 4.97,
+      "bossRounds": 4.32,
+      "winBossRounds": 4.97,
+      "timeouts": 0,
+      "healing": 21.55,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 283,
+          "atk": [
+            3,
+            77
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            3,
+            77
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 168,
+      "winRate": 84,
+      "rounds": 3.24,
+      "winRounds": 3.56,
+      "bossRounds": 3.24,
+      "winBossRounds": 3.56,
+      "timeouts": 0,
+      "healing": 16.75,
+      "absorbed": 5.92,
+      "initial": [
+        {
+          "hp": 283,
+          "atk": [
+            3,
+            77
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            3,
+            77
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 19,
+      "winRate": 9.5,
+      "rounds": 8.98,
+      "winRounds": 9.74,
+      "bossRounds": 3.6,
+      "winBossRounds": 4.58,
+      "timeouts": 0,
+      "healing": 45.84,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 164,
+      "winRate": 82,
+      "rounds": 8.12,
+      "winRounds": 8.3,
+      "bossRounds": 3.99,
+      "winBossRounds": 4.18,
+      "timeouts": 0,
+      "healing": 52.78,
+      "absorbed": 27.41,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": false,
+      "samples": 200,
+      "wins": 146,
+      "winRate": 73,
+      "rounds": 3.52,
+      "winRounds": 4.44,
+      "bossRounds": 3.52,
+      "winBossRounds": 4.44,
+      "timeouts": 0,
+      "healing": 9.06,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 192,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": true,
+      "samples": 200,
+      "wins": 168,
+      "winRate": 84,
+      "rounds": 1.63,
+      "winRounds": 1.75,
+      "bossRounds": 1.63,
+      "winBossRounds": 1.75,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 192,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            34,
+            55
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": false,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 3.74,
+      "winRounds": 4.83,
+      "bossRounds": 3.74,
+      "winBossRounds": 4.83,
+      "timeouts": 0,
+      "healing": 11.15,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            38,
+            57
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            38,
+            57
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": true,
+      "samples": 200,
+      "wins": 156,
+      "winRate": 78,
+      "rounds": 1.57,
+      "winRounds": 1.73,
+      "bossRounds": 1.57,
+      "winBossRounds": 1.73,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            38,
+            57
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            38,
+            57
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": false,
+      "samples": 200,
+      "wins": 153,
+      "winRate": 76.5,
+      "rounds": 4.2,
+      "winRounds": 5.09,
+      "bossRounds": 4.2,
+      "winBossRounds": 5.09,
+      "timeouts": 0,
+      "healing": 10.28,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": true,
+      "samples": 200,
+      "wins": 175,
+      "winRate": 87.5,
+      "rounds": 2.22,
+      "winRounds": 2.39,
+      "bossRounds": 2.22,
+      "winBossRounds": 2.39,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": false,
+      "samples": 200,
+      "wins": 170,
+      "winRate": 85,
+      "rounds": 4.45,
+      "winRounds": 4.88,
+      "bossRounds": 4.45,
+      "winBossRounds": 4.88,
+      "timeouts": 0,
+      "healing": 13.8,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 240,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 240,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": true,
+      "samples": 200,
+      "wins": 177,
+      "winRate": 88.5,
+      "rounds": 3.63,
+      "winRounds": 3.97,
+      "bossRounds": 3.63,
+      "winBossRounds": 3.97,
+      "timeouts": 0,
+      "healing": 12.96,
+      "absorbed": 5.8,
+      "initial": [
+        {
+          "hp": 240,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 240,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": false,
+      "samples": 200,
+      "wins": 144,
+      "winRate": 72,
+      "rounds": 5.92,
+      "winRounds": 6.54,
+      "bossRounds": 5.92,
+      "winBossRounds": 6.54,
+      "timeouts": 0,
+      "healing": 37.92,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 498,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": true,
+      "samples": 200,
+      "wins": 184,
+      "winRate": 92,
+      "rounds": 4.71,
+      "winRounds": 4.86,
+      "bossRounds": 4.71,
+      "winBossRounds": 4.86,
+      "timeouts": 0,
+      "healing": 39.9,
+      "absorbed": 17.24,
+      "initial": [
+        {
+          "hp": 498,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": false,
+      "samples": 200,
+      "wins": 87,
+      "winRate": 43.5,
+      "rounds": 4.82,
+      "winRounds": 5.97,
+      "bossRounds": 4.82,
+      "winBossRounds": 5.97,
+      "timeouts": 0,
+      "healing": 31.84,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 400,
+          "atk": [
+            26,
+            38
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": true,
+      "samples": 200,
+      "wins": 150,
+      "winRate": 75,
+      "rounds": 3.85,
+      "winRounds": 4.27,
+      "bossRounds": 3.85,
+      "winBossRounds": 4.27,
+      "timeouts": 0,
+      "healing": 47.31,
+      "absorbed": 12.47,
+      "initial": [
+        {
+          "hp": 400,
+          "atk": [
+            26,
+            38
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": false,
+      "samples": 200,
+      "wins": 149,
+      "winRate": 74.5,
+      "rounds": 5.46,
+      "winRounds": 5.9,
+      "bossRounds": 5.46,
+      "winBossRounds": 5.9,
+      "timeouts": 0,
+      "healing": 36.48,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 329,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": true,
+      "samples": 200,
+      "wins": 176,
+      "winRate": 88,
+      "rounds": 4.32,
+      "winRounds": 4.53,
+      "bossRounds": 4.32,
+      "winBossRounds": 4.53,
+      "timeouts": 0,
+      "healing": 44.9,
+      "absorbed": 15.61,
+      "initial": [
+        {
+          "hp": 329,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": false,
+      "samples": 200,
+      "wins": 90,
+      "winRate": 45,
+      "rounds": 5.29,
+      "winRounds": 6.29,
+      "bossRounds": 5.29,
+      "winBossRounds": 6.29,
+      "timeouts": 0,
+      "healing": 35.71,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 357,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": true,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 4.71,
+      "winRounds": 5.11,
+      "bossRounds": 4.71,
+      "winBossRounds": 5.11,
+      "timeouts": 0,
+      "healing": 46.3,
+      "absorbed": 18.34,
+      "initial": [
+        {
+          "hp": 357,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 83,
+      "winRate": 41.5,
+      "rounds": 5.63,
+      "winRounds": 6.16,
+      "bossRounds": 5.63,
+      "winBossRounds": 6.16,
+      "timeouts": 0,
+      "healing": 36.26,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 425,
+          "atk": [
+            17,
+            25
+          ],
+          "boss": true
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 5,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 166,
+      "winRate": 83,
+      "rounds": 5.21,
+      "winRounds": 5.22,
+      "bossRounds": 5.21,
+      "winBossRounds": 5.22,
+      "timeouts": 0,
+      "healing": 39.76,
+      "absorbed": 29,
+      "initial": [
+        {
+          "hp": 425,
+          "atk": [
+            17,
+            25
+          ],
+          "boss": true
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        },
+        {
+          "hp": 99,
+          "atk": [
+            9,
+            15
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 2.08,
+      "winRounds": 2.41,
+      "bossRounds": 2.08,
+      "winBossRounds": 2.41,
+      "timeouts": 0,
+      "healing": 4.86,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 173,
+          "atk": [
+            43,
+            87
+          ],
+          "boss": false
+        },
+        {
+          "hp": 173,
+          "atk": [
+            43,
+            87
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 1.01,
+      "winRounds": 1.01,
+      "bossRounds": 1.01,
+      "winBossRounds": 1.01,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 173,
+          "atk": [
+            43,
+            87
+          ],
+          "boss": false
+        },
+        {
+          "hp": 173,
+          "atk": [
+            43,
+            87
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 33,
+      "winRate": 16.5,
+      "rounds": 9.42,
+      "winRounds": 10.39,
+      "bossRounds": 4.46,
+      "winBossRounds": 5.45,
+      "timeouts": 0,
+      "healing": 46.46,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 143,
+      "winRate": 71.5,
+      "rounds": 8.57,
+      "winRounds": 8.77,
+      "bossRounds": 4.58,
+      "winBossRounds": 4.78,
+      "timeouts": 0,
+      "healing": 52.67,
+      "absorbed": 27.98,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": false,
+      "samples": 200,
+      "wins": 151,
+      "winRate": 75.5,
+      "rounds": 3.95,
+      "winRounds": 4.75,
+      "bossRounds": 3.95,
+      "winBossRounds": 4.75,
+      "timeouts": 0,
+      "healing": 11.39,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 288,
+          "atk": [
+            29,
+            47
+          ],
+          "boss": false
+        },
+        {
+          "hp": 288,
+          "atk": [
+            29,
+            47
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": true,
+      "samples": 200,
+      "wins": 171,
+      "winRate": 85.5,
+      "rounds": 2.98,
+      "winRounds": 3.29,
+      "bossRounds": 2.98,
+      "winBossRounds": 3.29,
+      "timeouts": 0,
+      "healing": 12.35,
+      "absorbed": 3.19,
+      "initial": [
+        {
+          "hp": 288,
+          "atk": [
+            29,
+            47
+          ],
+          "boss": false
+        },
+        {
+          "hp": 288,
+          "atk": [
+            29,
+            47
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": false,
+      "samples": 200,
+      "wins": 144,
+      "winRate": 72,
+      "rounds": 2.57,
+      "winRounds": 3.12,
+      "bossRounds": 2.57,
+      "winBossRounds": 3.12,
+      "timeouts": 0,
+      "healing": 7.57,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": true,
+      "samples": 200,
+      "wins": 172,
+      "winRate": 86,
+      "rounds": 1.36,
+      "winRounds": 1.42,
+      "bossRounds": 1.36,
+      "winBossRounds": 1.42,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": false,
+      "samples": 200,
+      "wins": 149,
+      "winRate": 74.5,
+      "rounds": 3.23,
+      "winRounds": 3.93,
+      "bossRounds": 3.23,
+      "winBossRounds": 3.93,
+      "timeouts": 0,
+      "healing": 8.58,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 1.72,
+      "winRounds": 1.8,
+      "bossRounds": 1.72,
+      "winBossRounds": 1.8,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            34,
+            50
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": false,
+      "samples": 200,
+      "wins": 165,
+      "winRate": 82.5,
+      "rounds": 5.22,
+      "winRounds": 5.73,
+      "bossRounds": 5.22,
+      "winBossRounds": 5.73,
+      "timeouts": 0,
+      "healing": 34.7,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 480,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": false
+        },
+        {
+          "hp": 480,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": true,
+      "samples": 200,
+      "wins": 173,
+      "winRate": 86.5,
+      "rounds": 4.08,
+      "winRounds": 4.39,
+      "bossRounds": 4.08,
+      "winBossRounds": 4.39,
+      "timeouts": 0,
+      "healing": 26.61,
+      "absorbed": 9.43,
+      "initial": [
+        {
+          "hp": 480,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": false
+        },
+        {
+          "hp": 480,
+          "atk": [
+            20,
+            30
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": false,
+      "samples": 200,
+      "wins": 156,
+      "winRate": 78,
+      "rounds": 5.42,
+      "winRounds": 5.79,
+      "bossRounds": 5.42,
+      "winBossRounds": 5.79,
+      "timeouts": 0,
+      "healing": 34.98,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 572,
+          "atk": [
+            19,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 303,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": true,
+      "samples": 200,
+      "wins": 187,
+      "winRate": 93.5,
+      "rounds": 4,
+      "winRounds": 4.17,
+      "bossRounds": 4,
+      "winBossRounds": 4.17,
+      "timeouts": 0,
+      "healing": 35.27,
+      "absorbed": 15.08,
+      "initial": [
+        {
+          "hp": 572,
+          "atk": [
+            19,
+            29
+          ],
+          "boss": true
+        },
+        {
+          "hp": 303,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": false,
+      "samples": 200,
+      "wins": 84,
+      "winRate": 42,
+      "rounds": 5.13,
+      "winRounds": 6.14,
+      "bossRounds": 5.13,
+      "winBossRounds": 6.14,
+      "timeouts": 0,
+      "healing": 32.09,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 550,
+          "atk": [
+            24,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": true,
+      "samples": 200,
+      "wins": 167,
+      "winRate": 83.5,
+      "rounds": 3.92,
+      "winRounds": 4.2,
+      "bossRounds": 3.92,
+      "winBossRounds": 4.2,
+      "timeouts": 0,
+      "healing": 31.37,
+      "absorbed": 15.22,
+      "initial": [
+        {
+          "hp": 550,
+          "atk": [
+            24,
+            35
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": false,
+      "samples": 200,
+      "wins": 114,
+      "winRate": 57,
+      "rounds": 5.27,
+      "winRounds": 6.13,
+      "bossRounds": 5.27,
+      "winBossRounds": 6.13,
+      "timeouts": 0,
+      "healing": 36.73,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 438,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": true,
+      "samples": 200,
+      "wins": 160,
+      "winRate": 80,
+      "rounds": 4.66,
+      "winRounds": 5.04,
+      "bossRounds": 4.66,
+      "winBossRounds": 5.04,
+      "timeouts": 0,
+      "healing": 43.59,
+      "absorbed": 15.32,
+      "initial": [
+        {
+          "hp": 438,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": false,
+      "samples": 200,
+      "wins": 106,
+      "winRate": 53,
+      "rounds": 5.36,
+      "winRounds": 6.42,
+      "bossRounds": 5.36,
+      "winBossRounds": 6.42,
+      "timeouts": 0,
+      "healing": 36.58,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 476,
+          "atk": [
+            22,
+            31
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": true,
+      "samples": 200,
+      "wins": 164,
+      "winRate": 82,
+      "rounds": 4.79,
+      "winRounds": 5.1,
+      "bossRounds": 4.79,
+      "winBossRounds": 5.1,
+      "timeouts": 0,
+      "healing": 43.09,
+      "absorbed": 16.47,
+      "initial": [
+        {
+          "hp": 476,
+          "atk": [
+            22,
+            31
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            13,
+            21
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 101,
+      "winRate": 50.5,
+      "rounds": 6.18,
+      "winRounds": 6.92,
+      "bossRounds": 6.18,
+      "winBossRounds": 6.92,
+      "timeouts": 0,
+      "healing": 35.16,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 722,
+          "atk": [
+            14,
+            21
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 6,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 189,
+      "winRate": 94.5,
+      "rounds": 5.42,
+      "winRounds": 5.49,
+      "bossRounds": 5.42,
+      "winBossRounds": 5.49,
+      "timeouts": 0,
+      "healing": 36.16,
+      "absorbed": 28.78,
+      "initial": [
+        {
+          "hp": 722,
+          "atk": [
+            14,
+            21
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            8,
+            13
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "frontier",
+      "moves": false,
+      "samples": 200,
+      "wins": 149,
+      "winRate": 74.5,
+      "rounds": 5.1,
+      "winRounds": 5.64,
+      "bossRounds": 5.1,
+      "winBossRounds": 5.64,
+      "timeouts": 0,
+      "healing": 69.22,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "frontier",
+      "moves": true,
+      "samples": 200,
+      "wins": 178,
+      "winRate": 89,
+      "rounds": 4.13,
+      "winRounds": 4.41,
+      "bossRounds": 4.13,
+      "winBossRounds": 4.41,
+      "timeouts": 0,
+      "healing": 57.91,
+      "absorbed": 11.38,
+      "initial": [
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 283,
+          "atk": [
+            26,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "breach",
+      "moves": false,
+      "samples": 200,
+      "wins": 29,
+      "winRate": 14.5,
+      "rounds": 8.6,
+      "winRounds": 10.55,
+      "bossRounds": 4.06,
+      "winBossRounds": 6.21,
+      "timeouts": 0,
+      "healing": 99.77,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "breach",
+      "moves": true,
+      "samples": 200,
+      "wins": 148,
+      "winRate": 74,
+      "rounds": 7.63,
+      "winRounds": 7.8,
+      "bossRounds": 4.56,
+      "winBossRounds": 4.75,
+      "timeouts": 0,
+      "healing": 116.97,
+      "absorbed": 45.83,
+      "initial": [
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        },
+        {
+          "hp": 96,
+          "atk": [
+            20,
+            31
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": false,
+      "samples": 200,
+      "wins": 158,
+      "winRate": 79,
+      "rounds": 3.46,
+      "winRounds": 4.01,
+      "bossRounds": 3.46,
+      "winBossRounds": 4.01,
+      "timeouts": 0,
+      "healing": 9.29,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 288,
+          "atk": [
+            30,
+            48
+          ],
+          "boss": false
+        },
+        {
+          "hp": 288,
+          "atk": [
+            30,
+            48
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:1",
+      "moves": true,
+      "samples": 200,
+      "wins": 174,
+      "winRate": 87,
+      "rounds": 2.58,
+      "winRounds": 2.8,
+      "bossRounds": 2.58,
+      "winBossRounds": 2.8,
+      "timeouts": 0,
+      "healing": 9.18,
+      "absorbed": 1.59,
+      "initial": [
+        {
+          "hp": 288,
+          "atk": [
+            30,
+            48
+          ],
+          "boss": false
+        },
+        {
+          "hp": 288,
+          "atk": [
+            30,
+            48
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": false,
+      "samples": 200,
+      "wins": 142,
+      "winRate": 71,
+      "rounds": 2.22,
+      "winRounds": 2.62,
+      "bossRounds": 2.22,
+      "winBossRounds": 2.62,
+      "timeouts": 0,
+      "healing": 5.14,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:2",
+      "moves": true,
+      "samples": 200,
+      "wins": 174,
+      "winRate": 87,
+      "rounds": 1,
+      "winRounds": 1,
+      "bossRounds": 1,
+      "winBossRounds": 1,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        },
+        {
+          "hp": 208,
+          "atk": [
+            35,
+            53
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": false,
+      "samples": 200,
+      "wins": 141,
+      "winRate": 70.5,
+      "rounds": 2.54,
+      "winRounds": 3.05,
+      "bossRounds": 2.54,
+      "winBossRounds": 3.05,
+      "timeouts": 0,
+      "healing": 7.26,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            35,
+            52
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            35,
+            52
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:3",
+      "moves": true,
+      "samples": 200,
+      "wins": 176,
+      "winRate": 88,
+      "rounds": 1.34,
+      "winRounds": 1.39,
+      "bossRounds": 1.34,
+      "winBossRounds": 1.39,
+      "timeouts": 0,
+      "healing": 0,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 224,
+          "atk": [
+            35,
+            52
+          ],
+          "boss": false
+        },
+        {
+          "hp": 224,
+          "atk": [
+            35,
+            52
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": false,
+      "samples": 200,
+      "wins": 166,
+      "winRate": 83,
+      "rounds": 4.77,
+      "winRounds": 5.41,
+      "bossRounds": 4.77,
+      "winBossRounds": 5.41,
+      "timeouts": 0,
+      "healing": 24.42,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 360,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 360,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "minion:4",
+      "moves": true,
+      "samples": 200,
+      "wins": 179,
+      "winRate": 89.5,
+      "rounds": 3.48,
+      "winRounds": 3.75,
+      "bossRounds": 3.48,
+      "winBossRounds": 3.75,
+      "timeouts": 0,
+      "healing": 14.91,
+      "absorbed": 4.06,
+      "initial": [
+        {
+          "hp": 360,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        },
+        {
+          "hp": 360,
+          "atk": [
+            30,
+            44
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": false,
+      "samples": 200,
+      "wins": 174,
+      "winRate": 87,
+      "rounds": 4.47,
+      "winRounds": 4.77,
+      "bossRounds": 4.47,
+      "winBossRounds": 4.77,
+      "timeouts": 0,
+      "healing": 72.84,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 498,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:th",
+      "moves": true,
+      "samples": 200,
+      "wins": 183,
+      "winRate": 91.5,
+      "rounds": 3.84,
+      "winRounds": 4.05,
+      "bossRounds": 3.84,
+      "winBossRounds": 4.05,
+      "timeouts": 0,
+      "healing": 89.49,
+      "absorbed": 15.73,
+      "initial": [
+        {
+          "hp": 498,
+          "atk": [
+            22,
+            33
+          ],
+          "boss": true
+        },
+        {
+          "hp": 264,
+          "atk": [
+            16,
+            26
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": false,
+      "samples": 200,
+      "wins": 22,
+      "winRate": 11,
+      "rounds": 5,
+      "winRounds": 6.14,
+      "bossRounds": 5,
+      "winBossRounds": 6.14,
+      "timeouts": 0,
+      "healing": 64.25,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 632,
+          "atk": [
+            27,
+            39
+          ],
+          "boss": true
+        },
+        {
+          "hp": 303,
+          "atk": [
+            18,
+            29
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:asia",
+      "moves": true,
+      "samples": 200,
+      "wins": 149,
+      "winRate": 74.5,
+      "rounds": 4.25,
+      "winRounds": 4.81,
+      "bossRounds": 4.25,
+      "winBossRounds": 4.81,
+      "timeouts": 0,
+      "healing": 64.77,
+      "absorbed": 16.89,
+      "initial": [
+        {
+          "hp": 632,
+          "atk": [
+            27,
+            39
+          ],
+          "boss": true
+        },
+        {
+          "hp": 303,
+          "atk": [
+            18,
+            29
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": false,
+      "samples": 200,
+      "wins": 71,
+      "winRate": 35.5,
+      "rounds": 5.31,
+      "winRounds": 6.96,
+      "bossRounds": 5.31,
+      "winBossRounds": 6.96,
+      "timeouts": 0,
+      "healing": 57.24,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 438,
+          "atk": [
+            27,
+            41
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:west",
+      "moves": true,
+      "samples": 200,
+      "wins": 121,
+      "winRate": 60.5,
+      "rounds": 4.42,
+      "winRounds": 5.45,
+      "bossRounds": 4.42,
+      "winBossRounds": 5.45,
+      "timeouts": 0,
+      "healing": 82.08,
+      "absorbed": 21.11,
+      "initial": [
+        {
+          "hp": 438,
+          "atk": [
+            27,
+            41
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            18,
+            28
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": false,
+      "samples": 200,
+      "wins": 131,
+      "winRate": 65.5,
+      "rounds": 5.47,
+      "winRounds": 6.38,
+      "bossRounds": 5.47,
+      "winBossRounds": 6.38,
+      "timeouts": 0,
+      "healing": 68.1,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 476,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "ruler:cyberhell",
+      "moves": true,
+      "samples": 200,
+      "wins": 173,
+      "winRate": 86.5,
+      "rounds": 4.76,
+      "winRounds": 5.11,
+      "bossRounds": 4.76,
+      "winBossRounds": 5.11,
+      "timeouts": 0,
+      "healing": 94.39,
+      "absorbed": 22.22,
+      "initial": [
+        {
+          "hp": 476,
+          "atk": [
+            24,
+            34
+          ],
+          "boss": true
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        },
+        {
+          "hp": 192,
+          "atk": [
+            14,
+            23
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": false,
+      "samples": 200,
+      "wins": 96,
+      "winRate": 48,
+      "rounds": 6.06,
+      "winRounds": 6.68,
+      "bossRounds": 6.06,
+      "winBossRounds": 6.68,
+      "timeouts": 0,
+      "healing": 91.77,
+      "absorbed": 0,
+      "initial": [
+        {
+          "hp": 825,
+          "atk": [
+            16,
+            23
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    },
+    {
+      "zone": "cyberhell",
+      "size": 7,
+      "kind": "final",
+      "encounter": "boss",
+      "moves": true,
+      "samples": 200,
+      "wins": 190,
+      "winRate": 95,
+      "rounds": 5.37,
+      "winRounds": 5.38,
+      "bossRounds": 5.37,
+      "winBossRounds": 5.38,
+      "timeouts": 0,
+      "healing": 103.98,
+      "absorbed": 42.16,
+      "initial": [
+        {
+          "hp": 825,
+          "atk": [
+            16,
+            23
+          ],
+          "boss": true
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        },
+        {
+          "hp": 144,
+          "atk": [
+            9,
+            14
+          ],
+          "boss": false
+        }
+      ]
+    }
+  ]
+}
