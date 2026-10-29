@@ -701,8 +701,19 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
 
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
-  if (!rescue && g.bossUntil && t < g.bossUntil)
-    drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.2, t, '👹');
+  if (!rescue && g.bossUntil && t < g.bossUntil) {
+    if (g.zone === 'west' && town) {
+      const ruler = img('hero-boss-seated'), dais = img('town-judgment-th');
+      if (ruler && dais) {
+        // Seat at 39% of the dais canvas; sprite hips at 70% of its canvas.
+        // Keep a seated ruler fixed to the stone seat (no standee bob or floor shadow).
+        const h = TOWN_DAIS.w * .2085;
+        const daisH = TOWN_DAIS.w * dais.naturalHeight / dais.naturalWidth;
+        const seatY = TOWN_DAIS.y - daisH * .61;
+        ctx.drawImage(ruler, TOWN_DAIS.x - h / 2, seatY - h * .70, h, h);
+      }
+    } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, HERO_H * 1.2, t, '👹');
+  }
 
   // ---- ลูกไฟที่เพิ่งฟาด ----
   const now = Date.now();
