@@ -1,0 +1,416 @@
+[
+  {
+    "action": "fire",
+    "recipe": "fire_s",
+    "projectile": "fx-fire-orb",
+    "hand": "fx-fire-orb",
+    "impact": "fx-fire-explosion",
+    "cast": "fire",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-th-fire-cutscene-v3.png",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/hero-yama-asia-fire-cutscene-v3.png",
+        "exists": true
+      },
+      "west": {
+        "src": "img/hero-yama-west-fire-cutscene-v3.png",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/hero-yama-cyberhell-fire-cutscene-v3.png",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "flameCharge",
+    "recipe": "fire_charge",
+    "projectile": "fx-fire-orb",
+    "hand": "fx-fire-orb",
+    "impact": "fx-fire-explosion",
+    "cast": "fire",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-flame-charge-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/hero-yama-asia-flame-charge-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/hero-yama-west-flame-charge-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/hero-yama-cyberhell-flame-charge-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "ice",
+    "recipe": "ice",
+    "projectile": "fx-ice-crystal-a",
+    "hand": "fx-ice-glow-core",
+    "impact": "fx-ice-crystal-cluster",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-th-ice-cutscene-v2.png",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/hero-yama-asia-ice-cutscene-v2.png",
+        "exists": true
+      },
+      "west": {
+        "src": "img/hero-yama-west-ice-cutscene-v2.png",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/hero-yama-cyberhell-ice-cutscene-v2.png",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "windFan",
+    "recipe": "wind",
+    "projectile": "fx-wind-blade",
+    "hand": "fx-wind-vortex",
+    "impact": "fx-wind-vortex",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-wind-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/hero-yama-asia-wind-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/hero-yama-west-wind-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/hero-yama-cyberhell-wind-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "hypno",
+    "recipe": "hypno",
+    "projectile": "fx-hypno-spiral",
+    "hand": "fx-hypno-spiral",
+    "impact": "fx-hypno-eye",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-th-hypno-cutscene-v3.png",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/hero-yama-asia-hypno-cutscene-v3.png",
+        "exists": true
+      },
+      "west": {
+        "src": "img/hero-yama-west-hypno-cutscene-v3.png",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/hero-yama-cyberhell-hypno-cutscene-v3.png",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "valkyrieSpear",
+    "recipe": "spear",
+    "projectile": "fx-spear-lance",
+    "hand": "fx-common-flash-star-white",
+    "impact": "fx-spear-pierce-cone",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-valkyrie-spear-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/hero-yama-asia-valkyrie-spear-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/hero-yama-west-valkyrie-spear-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/hero-yama-cyberhell-valkyrie-spear-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "rage",
+    "recipe": "rage",
+    "projectile": null,
+    "hand": "fx-aura-rage",
+    "impact": "fx-aura-rage",
+    "cast": "fire",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-rage-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/hero-yama-asia-rage-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/hero-yama-west-rage-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/hero-yama-cyberhell-rage-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "cooldownClock",
+    "recipe": "clock",
+    "projectile": null,
+    "hand": "fx-clock-ring",
+    "impact": "fx-clock-ring",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-clock-reset-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/hero-yama-asia-clock-reset-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/hero-yama-west-clock-reset-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/hero-yama-cyberhell-clock-reset-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "mirror",
+    "recipe": "mirror",
+    "projectile": null,
+    "hand": "fx-mirror-glint",
+    "impact": "fx-mirror-glint",
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-th-mirror-cutscene-v3.png",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/hero-yama-asia-mirror-cutscene-v3.png",
+        "exists": true
+      },
+      "west": {
+        "src": "img/hero-yama-west-mirror-cutscene-v3.png",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/hero-yama-cyberhell-mirror-cutscene-v3.png",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "roar",
+    "recipe": "slash",
+    "projectile": null,
+    "hand": null,
+    "impact": null,
+    "cast": "neutral",
+    "cutscenes": {
+      "th": {
+        "src": "img/hero-yama-th-roar-cutscene-v4.png",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/hero-yama-asia-roar-cutscene-v4.png",
+        "exists": true
+      },
+      "west": {
+        "src": "img/hero-yama-west-roar-cutscene-v4.png",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/hero-yama-cyberhell-roar-cutscene-v4.png",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:taan",
+    "recipe": "club",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-taan-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-taan-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-taan-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-taan-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "guard",
+    "recipe": "club_big",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-guard-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-guard-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-guard-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-guard-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:plerng",
+    "recipe": "fire_s",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-plerng-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-plerng-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-plerng-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-plerng-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:dam",
+    "recipe": "slash_multi",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-dam-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-dam-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-dam-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-dam-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:kan",
+    "recipe": "hypno",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-kan-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-kan-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-kan-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-kan-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:boon",
+    "recipe": "heal",
+    "cutscenes": {
+      "th": {
+        "src": "img/crew-boon-cutscene.jpeg",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/Asia/crew-boon-asia-cutscene.jpeg",
+        "exists": true
+      },
+      "west": {
+        "src": "img/West/crew-boon-west-cutscene.jpeg",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/CyberHell/crew-boon-cyberhell-cutscene.jpeg",
+        "exists": true
+      }
+    }
+  },
+  {
+    "action": "crew:nira",
+    "recipe": "slash",
+    "cutscenes": {
+      "th": {
+        "src": "img/nira-combat/nira-th-heal-cutscene-v1.webp",
+        "exists": true
+      },
+      "asia": {
+        "src": "img/nira-combat/nira-asia-heal-cutscene-v1.webp",
+        "exists": true
+      },
+      "west": {
+        "src": "img/nira-combat/nira-west-heal-cutscene-v1.webp",
+        "exists": true
+      },
+      "cyberhell": {
+        "src": "img/nira-combat/nira-cyberhell-heal-cutscene-v1.webp",
+        "exists": true
+      }
+    }
+  }
+]

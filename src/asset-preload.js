@@ -142,7 +142,7 @@ export async function warmImage(url, timeoutMs = 45000) {
     try { await cache?.put(url, copy); } catch {}
   } finally { fetched.release(); }
 }
-export async function loadImage(url, timeoutMs = 30000) {
+export async function loadImage(url, timeoutMs = 30000, onLoaded = null) {
   let cachedUrl, cache;
   // Unsupported/disabled storage falls back to normal HTTP image caching.
   if (typeof window !== 'undefined' && globalThis.caches && /^img\//.test(url)) {
@@ -160,7 +160,7 @@ export async function loadImage(url, timeoutMs = 30000) {
       cachedUrl = URL.createObjectURL(await response.blob());
     } catch { cache = null; }
   }
-  try { return await decodeImage(cachedUrl || url, timeoutMs); }
+  try { return await decodeImage(cachedUrl || url, timeoutMs, onLoaded); }
   catch (error) {
     // A truncated response can survive both the HTTP cache and Cache Storage.
     // Evict it, then make one real network request with a cache-busting query and
@@ -169,13 +169,13 @@ export async function loadImage(url, timeoutMs = 30000) {
     try { await cache?.delete(url); } catch {}
     if (cachedUrl && /^img\//.test(url)) {
       const retry = `${url}${url.includes('?') ? '&' : '?'}recover=${Date.now()}`;
-      return decodeImage(retry, timeoutMs);
+      return decodeImage(retry, timeoutMs, onLoaded);
     }
     throw error;
   }
   finally { if (cachedUrl) URL.revokeObjectURL(cachedUrl); }
 }
-function decodeImage(url, timeoutMs) {
+function decodeImage(url, timeoutMs, onLoaded) {
   return new Promise((resolve, reject) => {
     const im = new Image();
     const timer = setTimeout(() => finish(new Error('image timeout')), timeoutMs);
@@ -187,7 +187,7 @@ function decodeImage(url, timeoutMs) {
     }
     im.onerror = () => finish(new Error('image unavailable'));
     im.onload = async () => {
-      try { if (im.decode) await im.decode(); finish(); }
+      try { onLoaded?.(); if (im.decode) await im.decode(); finish(); }
       catch (error) { finish(error); }
     };
     im.src = url;

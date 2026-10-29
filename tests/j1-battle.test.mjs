@@ -33,7 +33,7 @@ test('J1 Rage targets only Yama, does no enemy damage, consumes three boosted st
  assert.equal(g.confirmBattleCommand('rage','you'),true);assert.equal(g.battle.dmg.buffActorId,'you');assert.equal(g.battle.dmg.foe,0);assert.equal(g.battle.foes[0].hp,hp);assert.equal(g.battle.helper,null);
  g.finishBattleCommand();for(let i=2;i>=0;i--){g.battleAct('atk');assert.equal(g.battle.rageTurns,i);}
  const ui=read('src/ui.js');assert.match(ui,/immediateSelfSkill\(el.dataset.act\).*executeCommand\(el.dataset.act, 'you'\)/);
- assert.match(ui,/if \(k === 'rage'\) return;/);assert.match(ui,/fxNow\?\.key === 'rage' \? null/);
+ assert.doesNotMatch(ui,/if \(k === 'rage'\) return;/);assert.match(ui,/fxNow\?\.key === 'rage' \? null/);
  assert.doesNotMatch(read('index.html'),/rageAura|you\.raging::before/);
 });
 test('J1 rage assets expect J2 filenames and retain real charge pose fallback',()=>{

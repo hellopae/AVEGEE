@@ -32,5 +32,5 @@ test('cutscene CSS cannot crop or zoom beyond the frame; every battle cutscene u
  for(const [,n]of animations.matchAll(/scale\(([.\d]+)\)/g))assert.ok(Number(n)<=1.04,'M5 Ken Burns stays subtle');
  for(const [,n]of animations.matchAll(/translateX\((-?[.\d]+)%\)/g))assert.ok(Math.abs(Number(n))<=3,'M5 pan stays inside the fitted frame');
  const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
- assert.match(ui,/\n  fitCutsceneImage\(cut, img\)/);
+ assert.match(ui,/\n\s+fitCutsceneImage\(cut, img\)/);
 });

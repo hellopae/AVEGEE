@@ -1,0 +1,53 @@
+(node:81845) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=false) (65.534487ms)
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=true) (20.467271ms)
+✖ A1 absent cutscene has no blank delay; other melee paths do not acquire a new cutscene (18.240499ms)
+✖ A1 closing/replacing the battle during the introduction does not pay or hit a new battle (15.83502ms)
+✔ A1 actual Guard identity determines branch cutscene independently of Yama outfit (60.698719ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 1
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1604.576753
+
+✖ failing tests:
+
+test at tests/guard-cutscene.test.mjs:36:35
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=false) (65.534487ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:37:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/guard-cutscene.test.mjs:36:35
+✖ A1 Guard cutscene precedes one real contact and keeps its turn until return (reduced=true) (20.467271ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:37:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/guard-cutscene.test.mjs:46:1
+✖ A1 absent cutscene has no blank delay; other melee paths do not acquire a new cutscene (18.240499ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:47:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests/guard-cutscene.test.mjs:50:1
+✖ A1 closing/replacing the battle during the introduction does not pay or hit a new battle (15.83502ms)
+  ReferenceError: battleCutscenes is not defined
+      at runDash (evalmachine.<anonymous>:30:47)
+      at async harness (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:32:2)
+      at async TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261028T163139Z-9e572efc/tests/guard-cutscene.test.mjs:51:49)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

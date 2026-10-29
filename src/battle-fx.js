@@ -2,7 +2,7 @@
 // Performance rules: single canvas, no ctx.filter / shadowBlur, <= MAX_PARTICLES live particles, requestAnimationFrame only while
 // something is playing. Camera: shake/dim/focus go through the adapter below (M1 camera plugs in with setBattleCamera()).
 import { texCell, preloadTex, setTexSuffix, TEX_KEYS } from './battle-fx-tex.js?v=m2';
-import { recipeFor, slashColorOf, RECIPE_IDS, RECIPE_META } from './battle-fx-map.js?v=m2';
+import { recipeFor, slashColorOf, RECIPE_IDS, RECIPE_META, powerVisual } from './battle-fx-map.js?v=m2';
 
 export const MAX_PARTICLES = 300;
 /** quality knobs (tests / low-end tuning): canvas pixel-ratio cap, built-in shake and dim fallbacks */
@@ -326,6 +326,7 @@ const fireFlight = (X, t, size, d, travel) => {
   for (let i = 0; i < Math.round(travel / 45); i++) at(d + i * 45, () => { const k = i * 45 / travel; sparks('fx-fire-embers', lerp(s.x, t.x, k), lerp(s.y, t.y, k), 1, { v:[20, 90], s:[10, 18], g:60, spread:orb * .2, life:[300, 500] }); });
 };
 R.fire = (X, tier) => {
+  elementalCast(X, 'fire');
   const size = tier === 'l' ? 1.15 : tier === 'm' ? .85 : .6, blast = tier === 'l' ? 2.2 : tier === 'm' ? 1.5 : 1.05, travel = tier === 'l' ? 340 : tier === 'm' ? 280 : 230;
   const charge = tier === 'l' ? 260 : tier === 'm' ? 120 : 0;
   if (charge) {
@@ -363,9 +364,27 @@ R.fire_charge = X => {
   return 1500;
 };
 
+// Existing transparent textures supply the shard/spiral/blade; no generic fire fallback.
+function elementalCast(X, action, travel = 220) {
+  const visual = powerVisual(action), s = X.src;
+  if (!visual?.hand) return;
+  const x = s.x + X.dir * s.w * .4, y = s.y - s.h * .12;
+  spr(visual.hand, { x, y, w:s.h * .85, h:s.h * .85, dur:180,
+    a:kf([[0,0],[.25,.95],[1,0]]), sx:[.3,1,'out'], sy:[.3,1,'out'] });
+  if (!['ice','hypno'].includes(action)) return; // These recipes already fly.
+  X.tg.forEach((t,i) => {
+    const angle = Math.atan2(t.y-y,t.x-x);
+    spr(visual.projectile, { x:k=>lerp(x,t.x,k), y:k=>lerp(y,t.y,k),
+      w:t.h * .65, h:t.h * (action === 'ice' ? 1.3 : .65),
+      rot:action === 'ice' ? angle + Math.PI/2 : k=>k*6,
+      dur:travel, delay:i*40, a:kf([[0,0],[.12,1],[1,1]]) });
+  });
+}
+
 R.ice = X => {
+  elementalCast(X, 'ice');
   X.tg.forEach((t, i) => {
-    const d = i * 80, ch = t.h;
+    const d = 220 + i * 80, ch = t.h;
     spr('fx-ice-frost-ground', { x:t.x, y:t.feet, w:ch * 3.2, h:ch * 1, dur:900, delay:d, a:kf([[0, 0], [.12, 1], [.75, .8], [1, 0]]), sx:[.3, 1, 'out'], sy:[.3, 1, 'out'] });
     spr('fx-ice-glow-core', { x:t.x, y:t.y, w:ch * 2.4, h:ch * 2.4, dur:880, delay:d + 60, a:kf([[0, 0], [.2, .9], [.7, .7], [1, 0]]), sx:[.4, 1, 'out'], sy:[.4, 1, 'out'] });
     spr('fx-ice-crystal-cluster', { x:t.x, y:t.feet + ch * .05, w:ch * 2.0, h:ch * 2.0 * 0.7, ax:.5, ay:1, dur:860, delay:d + 40, sy:kf([[0, .05], [.22, 1.06], [.3, 1], [1, 1]]), a:kf([[0, 0], [.04, 1], [.78, 1], [1, 0]]) });
@@ -386,6 +405,7 @@ R.ice = X => {
 };
 
 R.wind = X => {
+  elementalCast(X, 'windFan');
   const s = X.src;
   X.tg.forEach((t, i) => {
     const d = i * 60;
@@ -407,6 +427,7 @@ R.wind = X => {
 };
 
 R.hypno = X => {
+  elementalCast(X, 'hypno');
   X.tg.forEach((t, i) => {
     const d = i * 90, ch = t.h;
     spr('fx-hypno-circle', { x:t.x, y:t.feet - ch * .02, w:ch * 3, h:ch * 3, rot:k => k * 5, dur:1250, delay:d, a:kf([[0, 0], [.14, 1], [.8, .9], [1, 0]]), sx:kf([[0, .3], [.25, 1], [1, 1.05]]), sy:kf([[0, .3], [.25, 1], [1, 1.05]]), sq:kf([[0, .2], [.25, .34], [1, .36]]) });
@@ -422,6 +443,7 @@ R.hypno = X => {
 };
 
 R.spear = X => {
+  elementalCast(X, 'valkyrieSpear');
   const s = X.src;
   for (let n = 0; n < 6; n++) emit({ tex:'fx-spear-feathers', cell:n % 4, x:s.x, y:s.y, vx:-X.dir * rnd(40, 160), vy:rnd(-120, 40), ay:140, drag:1, s0:s.h * .5, s1:s.h * .35, life:rnd(500, 800), vr:rnd(-3, 3), a:1, delay:rnd(0, 140) });
   spr('fx-common-flash-star-white', { x:s.x + X.dir * s.w * .4, y:s.y, w:s.h * 1.3, h:s.h * 1.3, dur:240, a:kf([[0, 0], [.4, 1], [1, 0]]) });
@@ -473,6 +495,7 @@ R.rage = X => {
 };
 
 R.clock = X => {
+  elementalCast(X, 'cooldownClock');
   const s = X.src;
   spr('fx-clock-ring', { x:s.x, y:s.y, w:s.h * 2.6, h:s.h * 2.6, rot:k => -k * 5.2, dur:1000, a:kf([[0, 0], [.15, 1], [.8, .9], [1, 0]]), sx:[.5, 1.1, 'out'], sy:[.5, 1.1, 'out'] });
   spr('fx-common-ring-gold', { x:s.x, y:s.y, w:s.h * 3.2, h:s.h * 3.2, dur:700, delay:200, a:kf([[0, 0], [.15, 1], [1, 0]]), sx:[1.1, .3, 'in'], sy:[1.1, .3, 'in'] });
@@ -482,6 +505,7 @@ R.clock = X => {
 };
 
 R.mirror = X => {
+  elementalCast(X, 'mirror');
   const s = X.src;
   spr('fx-mirror-glint', { x:k => lerp(s.x - s.h * 1.2, s.x + s.h * 1.2, k), y:s.y, w:s.h * 2.4, h:s.h * .6, dur:520, a:kf([[0, 0], [.2, 1], [.8, 1], [1, 0]]) });
   spr('fx-common-ring-blue', { x:s.x, y:s.y, w:s.h * 2.4, h:s.h * 2.4, dur:620, delay:120, a:kf([[0, 0], [.15, 1], [1, 0]]), sx:[.2, 1, 'out'], sy:[.2, 1, 'out'] });

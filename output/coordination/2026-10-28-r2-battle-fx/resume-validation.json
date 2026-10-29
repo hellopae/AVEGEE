@@ -1,0 +1,28 @@
+{
+  "fullSuite": {
+    "command": "node --test tests/*.test.mjs",
+    "runs": 1,
+    "tests": 1590,
+    "passed": 1586,
+    "failed": 4,
+    "cancelled": 0,
+    "durationMs": 272138.318937,
+    "exitCode": 1,
+    "snapshot": "before final assertion/release fixes"
+  },
+  "affectedAfterFixes": {
+    "tests": 70,
+    "passed": 70,
+    "failed": 0,
+    "exitCode": 0
+  },
+  "finalFullSuiteZeroFailuresVerified": false,
+  "browserExecuted": false,
+  "acceptance": {
+    "1": "pending real renderer screenshots",
+    "2": "mapping documented; live visuals pending",
+    "3": "pending actual throttled browser trials",
+    "4": "affected tests verified; final full suite not rerun per instruction",
+    "5": "evidence saved"
+  }
+}

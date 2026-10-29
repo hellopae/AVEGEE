@@ -1,3 +1,5 @@
+import { loadImage } from './asset-preload.js';
+
 // Display-only crops: remove painted letterboxes without changing shared assets.
 // Bounds were measured from the shipped images; keep the full content width.
 const CONTENT_ROWS = {
@@ -57,3 +59,34 @@ export const ACTION_CUTSCENE_PRESENTATION = {
   'img/West/crew-guard-west-cutscene.jpeg':{ flip:false },
   'img/CyberHell/crew-plerng-cyberhell-cutscene.jpeg':{ flip:false },
 };
+
+/** Retain the decoded element actually mounted by the renderer (not just HTTP bytes).
+ * Per-battle instances release old teams; failures resolve to null and can never block a turn. */
+export function createCutsceneReadiness(loader = loadImage, now = () => performance.now()) {
+  const records = new Map();
+  function request(src) {
+    if (!src) return null;
+    if (records.has(src)) return records.get(src);
+    const rec = { src, requestedAt:now(), loadedAt:null, decodedAt:null, error:null, image:null };
+    records.set(src, rec);
+    rec.promise = Promise.resolve().then(() => loader(src, 30000, () => { rec.loadedAt = now(); })).then(image => {
+      rec.loadedAt ??= now();
+      return Promise.resolve(image.decode?.()).then(() => {
+        rec.image = image; rec.decodedAt = now(); return image;
+      });
+    }).catch(error => { rec.error = String(error?.message || error); return null; });
+    return rec;
+  }
+  return {
+    warm(sources) { return Promise.all([...new Set(sources.filter(Boolean))].map(src => request(src).promise)); },
+    image(src) { return records.get(src)?.image || null; },
+    async wait(src, ceiling = 300) {
+      const rec = request(src);
+      if (!rec || rec.image) return rec?.image || null;
+      let timer;
+      try { return await Promise.race([rec.promise, new Promise(resolve => { timer = setTimeout(() => resolve(null), Math.min(300, Math.max(0, ceiling))); })]); }
+      finally { clearTimeout(timer); }
+    },
+    timings() { return [...records.values()].map(({promise,image,...timing}) => ({...timing, ready:!!image})); },
+  };
+}
