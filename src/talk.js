@@ -1,3 +1,4 @@
+import { crossZoneTalk } from './side-quests.js';
 // talk.js — กดคุยตัวละครบนแผนที่ (P4 §4) · ตรรกะล้วน ไม่แตะ DOM — ui.js เป็นคนวางบับเบิล/ปุ่ม
 // หลักการ (คุณเป้ D8): คุยเป็นบรรยากาศล้วน — ไม่ให้ทรัพยากร ไม่ให้เบาะแส ไม่เปลี่ยนผลตัดสิน
 //   ฟังก์ชันในไฟล์นี้ "อ่าน" สถานะของเกมอย่างเดียว · ที่เดียวที่เขียนคือ g.talk.seen (ธงว่าเคยคุยครั้งแรกแล้ว) กับ g.talk.recent (กันบทซ้ำ ไม่เซฟ)
@@ -99,6 +100,8 @@ export function pickTalk(g, target, { rng = Math.random, heroName = 'ยาม�
   const L = TALK_LINES, vars = { me: heroName, title: heroTitle, zone: g.zoneDef?.().name || '', hunger: '', morale: '', food: Math.round(g.food ?? 0) };
   let group = null, list = null, who = target.name || '', sex = 'm', first = false, id = target.id;
 
+  const regional=crossZoneTalk(g,target.kind==='crew'?target.key:target.kind);
+  if(regional)return {who,text:regional,group:'cross-zone',first:true};
   if (target.kind === 'crew') {
     const c = g.crewOf(target.key); if (!c) return null;
     const state = crewTalkState(g, c);

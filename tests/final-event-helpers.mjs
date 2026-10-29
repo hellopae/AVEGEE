@@ -11,7 +11,7 @@ export function finalGame() {
     const home=CREW.find(d=>d.k===c.k);
     if(home)Object.assign(c,{hx:home.hx,hy:home.hy,x:null,y:null});
   }
-  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared' };
+  g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared' };
   g.refreshZoneEvents(); return g;
 }
 export function win(g) {

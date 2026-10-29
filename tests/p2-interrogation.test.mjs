@@ -14,8 +14,8 @@ const tally=()=>({concealing:0,resisting:0,accepting:0});
 function namedSouls(){
  const g=game(),out=[];
  for(const c of ALL_CASES){
-  g.zone=c.zone==='asia'?'asia':'th';g.casesDone=1;g.spawns=3;g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
-  let s;if(c.k==='devaMonk'){g.queue=[];g.zoneCases.th=4;g.ensureDevaCase();s=g.queue[0];}else s=g.nextNamedCase([]);
+  g.zone=c.zone||'th';g.casesDone=1;g.spawns=3;g.usedCases=ALL_CASES.map(x=>x.k).filter(k=>k!==c.k);
+  let s;if(c.k==='devaMonk'){g.queue=[];g.zoneCases.th=4;g.ensureDevaCase();s=g.queue[0];}else if(c.quest){g.queue=[];assert.ok(g.enqueueQuestCase(c.k));s=g.queue[0];}else s=g.nextNamedCase([]);
   assert.equal(s.case,c.k);out.push(s);
  }
  return out;

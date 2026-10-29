@@ -13,6 +13,7 @@
 //
 // ⚠️ ตัวละครทุกตัวเป็นเรื่องแต่ง — เป็น "แบบฉบับ" ของคดีที่คนไทยคุ้นเคย
 //    ไม่ได้อ้างอิงบุคคลจริงคนใดคนหนึ่ง และไม่ใช้ชื่อจริงของใคร
+import { QUEST_CASES } from './quest-cases.js';
 import { ASIA_CASES } from './cases-asia.js';
 
 /** kind ของคดี
@@ -716,8 +717,9 @@ export const CASES = [
   },
 ];
 
-export const CASES_BY_ZONE = { th: CASES, asia: ASIA_CASES, west: [] };
-export const ALL_CASES = [...CASES, ...ASIA_CASES];
+export const CASES_BY_ZONE = Object.fromEntries(['th','asia','west'].map(zone => [zone,
+  [...({th:CASES,asia:ASIA_CASES,west:[]}[zone]), ...QUEST_CASES.filter(c=>c.zone===zone)]]));
+export const ALL_CASES = [...CASES, ...ASIA_CASES, ...QUEST_CASES];
 
 /** วิญญาณที่ "ไม่ควรลงทัณฑ์" — ต้องส่งประตูสวรรค์เท่านั้น */
 export const PURE_KINDS = ['innocent', 'deva'];

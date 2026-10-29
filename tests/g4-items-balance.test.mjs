@@ -94,7 +94,7 @@ test('G4 Large items: restore 100%, zone 2+ shelf only, ~1.8x price', () => {
 test('G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama / reaper / Guard / in battle', () => {
   const th = game(); th.zone = 'th';
   assert.equal(th.buyMerchant('healthLarge'), false); assert.equal(th.buyMerchant('holyWaterLarge'), false);
-  const g = game(); g.zone = 'asia';
+  const g = game(); g.zone = 'asia'; g.merchantJourney.asia={arrived:true};
   g.zoneCaptivesFree = () => true;
   const price = merchantStock('asia').find(s => s.k === 'healthLarge').cost, coin = g.coin;
   assert.equal(g.buyMerchant('healthLarge'), true); assert.equal(g.coin, coin - price);

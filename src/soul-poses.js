@@ -3,7 +3,10 @@
 const caught = ['pol','gen','nun','star','lord','monk','orchard','trader','sister','novice','inspector','hunter','gadget','accountant','prophet','heir',
   'A1','A2','A3','A4','A6','A7','A8','A9','A10','A12','A14','A15','A16','A17','A18','A20'];
 const necessity = ['recruit','girl','boy','sergeant','hammer','healer'];
-const other = ['nurse','devaMonk','scapegoat','A5','A11','A13','A19'];
+const other = ['nurse','devaMonk','scapegoat','A5','A11','A13','A19','campelder','silentman'];
+// W2 quest cases: denial/fake boast, plea with mitigation, or a truthful/innocent account.
+caught.push('swapdoc','chainhand','hospice','smokeheir');
+necessity.push('feudgran','hirefire');
 export const CASE_POSE_TYPES = Object.freeze(Object.fromEntries([
   ...caught.map(k => [k, 'caught_lie']), ...necessity.map(k => [k, 'necessity']), ...other.map(k => [k, 'other']),
 ]));

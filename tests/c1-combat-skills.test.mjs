@@ -169,7 +169,7 @@ test('C1 victory grants teamJudgment and Guard once; old cleared saves infer onl
 
 test('C1 final save/load retains cooldown, protection and already-applied hits; next encounter keeps remaining owner turns',()=>{
   const g=game('cyberhell',['taan','guard']);g.abilities.teamJudgment=true;const b=battle(g);
-  Object.assign(b,{kind:'zoneEvent',eventKey:'cyberFinal',encounter:'minion:1'});g.zoneEvents.cyberhell={cyberFinal:'active'};
+  Object.assign(b,{kind:'zoneEvent',eventKey:'cyberFinal',encounter:'minion:1'});g.zoneEvents.cyberhell={cyberBreach:'cleared',signalClose:'cleared',cyberFinal:'active'};
   g.finalEventState().activeEncounter='minion:1';g.finalEventState().phase='minions';grantProtection(b,'you',{shield:24,buff:.2});
   command(g,'teamJudgment');assert.equal(g.finalEventState().teamCooldownTurns,4);
   const snap=JSON.parse(JSON.stringify(g.snapshot())),h=createGame();assert.ok(h.restore(snap));

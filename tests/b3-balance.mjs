@@ -89,7 +89,7 @@ function winRate([name, zone, level, ab, chests, start], runs, seed) {
 
 SCEN.push(['cyber FINAL', 'cyberhell', 5, 8, 5, g => {
  g.zoneCases.cyberhell = 10;
- g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', cyberFinal:'pending' };
+ g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'cleared', signalClose:'cleared', cyberFinal:'pending' };
  return g.startZoneEvent('cyberFinal');
 }]);
 const results = SCEN.map(([name, zone, level, ab, chests, start]) => withSeed(28, () => {
