@@ -25,7 +25,7 @@ test('splash ships intro-opening-v3.mp4: faststart H.264, 1300x708, ~19 s, <= 6 
 test('still cover is cover-v4 everywhere (css note, probe order, critical preload) and cover-v5 is not the cover', () => {
   assert.ok(existsSync('img/cover-v4.webp'));
   const probe = ui.match(/\}\)\(\[('img\/cover[^\]]*)\]\)/)[1].split(',').map(s => s.trim().replace(/'/g, ''));
-  assert.deepEqual(probe, ['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);
+  assert.deepEqual(probe, ['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp']);
   assert.doesNotMatch(html, /cover-v5\.webp/);
   assert.doesNotMatch(ui, /cover-v5\.webp/);
 });
