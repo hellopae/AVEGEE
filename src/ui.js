@@ -97,11 +97,8 @@ const HERO_NAME = 'ยามา';
 const HERO_TITLE = 'ยมบาทน้อย';
 let storyPlaying = false, storyScheduled = false;
 
-/** รูปยมบาทบนเวที — ใช้ท่าเฉียง img/hero-yama-side.png ถ้ามีไฟล์ ไม่มีก็ท่ายืนตรงตามเดิม
- *  (ท่ายืนตรงหันหน้าเข้ากล้อง จึงไม่มีทางหันเข้าหาคู่กรณีได้จนกว่าจะมีรูปท่าเฉียง)
- *  ทุก path ของรูปตัวละครใน ui.js ผ่าน artUrl() — อยู่โซนไหนได้รูปของโซนนั้นก่อน (art.js) */
-const heroFace = () => (heroFace.ok && artUrl('hero-yama-side')) || artUrl('hero-yama');
-{ const im = new Image(); im.onload = () => { heroFace.ok = true; }; im.src = 'img/hero-yama-side.png'; }
+/** รูปยมบาทบนเวที */
+const heroFace = () => artUrl('hero-yama');
 
 /** ท่าลงทัณฑ์บนเวทีต่อสู้ (ข้อ 5 ของเจ้าของ 11 ก.ย. 2569)
  *  จังหวะที่ท่านลงมือใส่คู่กรณี ให้เปลี่ยนเป็น hero-yama-atk · จังหวะอื่นกลับไปท่ายืนเดิม
@@ -6544,7 +6541,7 @@ function buildTitle() {
     probe.onload = () => { art.style.backgroundImage = `url('${url}')`; art.classList.add('has'); };
     probe.onerror = () => probeCover(rest);
     probe.src = url;
-  })(['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp', 'img/cover.png']);   // v4 = ยมฯ หันหลัง ตรงกับเฟรมสุดท้ายของ intro-opening-v3 (cover-v5 ยมฯ หันหน้า ไม่ใช้แล้ว)
+  })(['img/cover-v4.webp', 'img/cover-v3.webp', 'img/cover.webp']);   // v4 = ยมฯ หันหลัง ตรงกับเฟรมสุดท้ายของ intro-opening-v3 (cover-v5 ยมฯ หันหน้า ไม่ใช้แล้ว)
 
   // โลโก้/ปุ่ม เปลี่ยนภาษาทันทีไม่ต้องรีโหลด (ข้อ C1) — สลับจริงทำที่หน้าตั้งค่า (ข้อ B)
   applyTitleLang();

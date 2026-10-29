@@ -189,13 +189,12 @@ export function sfx(name) {
 }
 
 // ---------- เพลง ----------
-// ไฟล์อยู่ที่ audio/<key>.<ext> — ยังไม่มีไฟล์ = เงียบเฉย ๆ ไม่ขึ้น error ให้ผู้เล่นเห็น
-//
-// รับได้ทั้ง mp3 และ ogg (แก้ 8 ก.ย. 2569) — เดิมบังคับ .ogg อย่างเดียว
-// แล้วเจ้าของต้องไปแปลงไฟล์ที่ Suno ส่งมาเองทุกครั้ง ซึ่งไม่จำเป็น:
-// mp3 เล่นได้ทุกเบราว์เซอร์ และไฟล์ใหญ่กว่า ogg ไม่กี่สิบเปอร์เซ็นต์เท่านั้น
-// ลองไล่ทีละนามสกุล ตัวไหนเล่นได้ก็ใช้ตัวนั้น
-const EXT = ['ogg', 'mp3', 'm4a'];
+// รายการไฟล์เพลงที่จัดส่งพร้อมเกม; เพลงอื่นใช้ fallback โดยไม่ขอไฟล์ที่ไม่มี
+const BGM_FILES = Object.freeze({
+  'bgm-title': 'audio/bgm-title.mp3',
+  'bgm-zone': 'audio/bgm-zone.mp3',
+  'bgm-battle': 'audio/bgm-battle.mp3',
+});
 let cur = null, pendingBgm = null;   // cur = key เพลงที่ขอล่าสุด
 // เพลงทุกเพลงมี <audio> ของตัวเอง "สร้างครั้งเดียว ตั้ง src ครั้งเดียว" (url → track) แล้วสลับด้วยการ fade
 // ไม่สลับ src บน element เดียวอีก — ดูสาเหตุเสียงแตกที่ 28C ในคอมเมนต์เหนือ switchTo()
@@ -204,23 +203,9 @@ let curUrl = null;                 // url ของเพลงที่คว�
 const srcCache = new Map();       // key → path ที่มีจริง (หรือ null ถ้าไม่มีสักนามสกุล)
 const mediaSources = new Map();  // complete downloaded music, including on iOS which ignores preload=auto
 
-/** หาไฟล์ที่มีอยู่จริง — ถามเซิร์ฟเวอร์ตรง ๆ ด้วย HEAD
- *  เดิมอาศัย el.onerror ของ <audio> ไล่ทีละนามสกุล ซึ่งพึ่งไม่ได้:
- *  เบราว์เซอร์เลื่อนการโหลดสื่อในแท็บที่ไม่ได้อยู่หน้าจอ error เลยไม่ยิงสักที
- *  แล้วเพลงก็ค้างอยู่ที่นามสกุลแรกที่ไม่มีไฟล์ (เจอ 8 ก.ย. 2569) */
 async function findSrc(key) {
-  if (srcCache.has(key)) return srcCache.get(key);
-  let found = null;
-  for (const ext of EXT) {
-    const url = `audio/${key}.${ext}`;
-    try {
-      const { response:r, release } = await fetchWithTimeout(url, { method:'HEAD', cache:'force-cache' }, 15000);
-      release();
-      if (r.ok) { found = url; break; }
-    } catch { /* ออฟไลน์หรือ HEAD ไม่ผ่าน — ลองนามสกุลถัดไป */ }
-  }
-  srcCache.set(key, found);
-  return found;
+  if (!srcCache.has(key)) srcCache.set(key, BGM_FILES[key] || null);
+  return srcCache.get(key);
 }
 
 /** ถามหาไฟล์ล่วงหน้าตั้งแต่หน้าเว็บโหลด — **นี่คือหัวใจที่ทำให้เพลงเล่นติด**
