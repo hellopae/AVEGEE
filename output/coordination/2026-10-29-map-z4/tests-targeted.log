@@ -1,0 +1,25 @@
+(node:18382) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ M1: camera edges and pointer round trips at both zoom levels, with letterboxing (1.654166ms)
+✔ M1: backing follows viewport and capped DPR; redraw does not resize; smoothing stays high (0.505478ms)
+✔ M1: UI camera keeps DOM anchors and pointers aligned through town follow zoom and overview (21.955303ms)
+✔ M1: downscaled sprites are resampled once per device size, then blitted from the cache (0.789444ms)
+✔ MAP-Z4: retains the live legacy world and navigation source; both ground and ferry occlusion use detail (4.322514ms)
+✔ MAP-Z4: tiles exactly cover the unchanged world; production files exist (1.172651ms)
+✔ MAP-Z4: three load lanes, complete-camera switch, same tile destinations for clipped ferry redraw (2.68873ms)
+✔ MAP-Z4: failed and stalled loads retry with backoff; late decode cannot publish expired pixels (1.609802ms)
+✔ MAP-Z4: overview uses painting without allocations; panning keeps at most twelve images (3.018408ms)
+✔ MAP-Z4: delivered tile dimensions and mobile allocation budget match the Zone 2 size class (4.652603ms)
+✔ MAP-Z4: navigation, site geometry and original fallback images are byte-identical to the recorded baseline (11.874037ms)
+✔ a failed sharp tile retries after backoff with a fresh URL while the decoded overview remains available (37.597149ms)
+✔ stalled requests release all three loading lanes and ignore late callbacks from the expired generation (3.079447ms)
+✔ a decode that finishes after timeout cannot overwrite its successful replacement (2.662014ms)
+✔ optional terrain repair composition and decoding finish before the sharp tile becomes ready (2.939838ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 248.362736
