@@ -84,7 +84,7 @@ test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Z
   assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
 });
 
-test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing C1, WEATHER-B and E1 narrative data only',async()=>{
+test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing C1, WEATHER-B, E1 narrative data and the B12 reference row',async()=>{
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'){
@@ -110,8 +110,20 @@ test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allow
     if(path==='src/route-geometry.js'){
       const current='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],';
       const original='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,';
-      const text=bytes.toString();assert.ok(text.includes(current),'only the authored weather areas are allowed');
-      bytes=Buffer.from(text.replace(current,original));
+      const base=readFileSync(new URL('./fixtures/b12-base-route-geometry.txt',import.meta.url),'utf8');
+      // Authenticate the pre-B12 fixture against the unchanged MAP-Z4 baseline.
+      assert.equal(createHash('sha256').update(base.replace(current,original)).digest('hex'),hash);
+      const normalize=text=>text
+        .replace("import {BORDER12_MASK,BORDER12_TREES} from './frontier-walkmask-th-asia-b12.js';\n",'')
+        .replace(/import \{[^}]+\} from '\.\/frontier-walkmask-th-asia\.js';/,"import OWNER from './frontier-walkmask-th-asia.js';")
+        .replace(/export const DUNGEON_CORRIDOR = .*?;\n/,'B12_CORRIDOR\n')
+        .replace(/const TREES = .*?;\n/,'B12_TREES\n')
+        .replace(/const WATERFALLS = .*?;\n/,'B12_WATERFALLS\n')
+        .replace(/  'th:asia': row\('th:asia', \{[\s\S]*?\n  \}\),/,'B12_ROW')
+        .replace(/\/\/[^\n]*/g,'').replace(/\n\s*\n/g,'\n');
+      assert.equal(normalize(bytes.toString()),normalize(base),'only the B12 import, corridor, trees, falls and reference row may differ');
+      // Other routes and fallback runtime bytes remain protected by the original fixture hash.
+      bytes=Buffer.from(base.replace(current,original));
     }
     assert.equal(createHash('sha256').update(bytes).digest('hex'),hash,path);
   }

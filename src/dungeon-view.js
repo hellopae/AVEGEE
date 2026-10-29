@@ -151,7 +151,9 @@ export function dungeonAutoEncounter(g,position,time=0) {
 // Give Nira a lateral lane even at the entry, where follow progress is clamped to zero.
 export function dungeonCompanionPoint(progress,routeId='th:asia') {
   const p=dungeonPoint(Math.max(0,progress-.055),routeId);
-  return [p[0]-.038,Math.min(.96,p[1]+.007)];
+  const lane=[p[0]-.038,Math.min(.96,p[1]+.007)],hero=dungeonPoint(progress,routeId);
+  // A switchback can bring the trailing lane back onto the leader.
+  return Math.hypot(hero[0]-lane[0],hero[1]-lane[1])>.03?lane:[hero[0]-.038,Math.min(.96,hero[1]+.007)];
 }
 
 export function dungeonChaseReach(g) {

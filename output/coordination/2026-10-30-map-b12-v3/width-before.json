@@ -1,0 +1,24 @@
+{
+  "method": "2 * scipy.ndimage.distance_transform_edt on medial ridge of connected normal cross-sections at ~1px arc-length samples; 1672x941 scale, no endpoint trimming; gameplay clearance reported separately",
+  "main": {
+    "gameplayClearanceP10": 12.082762530298218,
+    "samples": 2436,
+    "p10": 18.867962264113206,
+    "median": 34.0,
+    "minimum": 8.94427190999916,
+    "offFloor": 0
+  },
+  "west": {
+    "gameplayClearanceP10": 4.47213595499958,
+    "samples": 395,
+    "p10": 11.661903789690601,
+    "median": 15.231546211727817,
+    "minimum": 0.0,
+    "offFloor": 3
+  },
+  "thresholds": {
+    "p10": 40,
+    "median": 48
+  },
+  "meetsWidthThresholds": false
+}

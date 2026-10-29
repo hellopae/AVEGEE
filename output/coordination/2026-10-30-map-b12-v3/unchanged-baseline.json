@@ -1,0 +1,18 @@
+{
+  "src/frontier-walkmask-th-asia.js": {
+    "unchangedFromHEAD": true,
+    "sha256": "1a6bd2ecaa5515ef556160305febe9f7eecee2bb5b5ead57626a50ad3e1395f2"
+  },
+  "img/frontier-route/zone1-2-v4.webp": {
+    "unchangedFromHEAD": true,
+    "sha256": "6ff89dbda98720f9fa37e7984ad198262a835b7089f3ddc4550470c0088b19d9"
+  },
+  "src/frontier-walkmask-asia-west.js": {
+    "unchangedFromHEAD": true,
+    "sha256": "82b0b1894c962b5b5d547cce96645d9bc1bbd8ef4f3960f7590a5fc77b88ba52"
+  },
+  "src/frontier-walkmask-west-cyberhell.js": {
+    "unchangedFromHEAD": true,
+    "sha256": "7c606bbad6748c3164d5df206ec1c5801d8991b674510079131bb99c85e35b0a"
+  }
+}

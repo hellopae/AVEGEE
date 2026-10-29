@@ -15,8 +15,10 @@ test('corridor click routing stays on its finite connected path at every point',
  for(let n=0;n<=100;n++) {const progress=n/100,p=dungeonPoint(progress),projected=dungeonProjection(p);assert.ok(Math.abs(progress-projected.progress)<1e-9);assert.ok(projected.distance<1e-9);}
  assert.deepEqual(dungeonPoint(-1),DUNGEON_CORRIDOR[0]);assert.deepEqual(dungeonPoint(2),DUNGEON_EXIT);
 });
-test('clicks beyond an uncleared checkpoint stop at the current route gate',()=>{
- const clipped=dungeonProjection(DUNGEON_EXIT,.262);assert.ok(clipped.progress<=.262);assert.deepEqual(clipped.point,dungeonPoint(.262));
+test('clicks beyond an uncleared checkpoint project onto the allowed route before its gate',()=>{
+ const clipped=dungeonProjection(DUNGEON_EXIT,.262);assert.ok(clipped.progress<=.262);assert.ok(Math.hypot(...clipped.point.map((v,i)=>v-dungeonPoint(clipped.progress)[i]))<1e-12);
+ // A repainted switchback may have a nearer allowed vertex before the gate.
+ assert.ok(clipped.distance<=Math.hypot(...DUNGEON_EXIT.map((v,i)=>v-dungeonPoint(.262)[i]))+1e-12);
  assert.equal(dungeonProjection([NaN,1]).progress,0);assert.equal(dungeonProjection(null).distance,Infinity);
 });
 test('checkpoint battle requires real persisted position at the CURRENT checkpoint',()=>{
