@@ -246,7 +246,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   }
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
-  ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
+  if(!g.paused)ambientTime = t;
   if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
   const sceneryHouse = town ? img('town-house-th') : null;
@@ -261,7 +261,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
-  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced);   // N4: lava / rivers / falls flow over the painted ground
+  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
+  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
   drawTownGround(ctx, g, t);
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
@@ -742,7 +743,6 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (spot) buildPrompt(ctx, spot, t, g);
 
   if (bg && isTownZone(g.zone)) drawTownForeground(ctx,bg,!!archiveHouse);
-  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   drawVignette(ctx, SCENE.w, SCENE.h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }

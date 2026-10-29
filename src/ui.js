@@ -1,3 +1,4 @@
+import {weatherEnabled,setWeatherEnabled} from './map-ambient.js?v=mapfx-k1d';
 import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
 import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
@@ -6699,6 +6700,10 @@ function openSettings() {
     </label>
     <div class="hint" data-t="settings.cameraHint"></div>
 
+    <label class="settings-row cam-row" for="s-weather">
+      <span>${getLang() === 'en' ? 'Weather and surface motion' : 'สภาพอากาศและผิวน้ำเคลื่อนไหว'}</span>
+      <input type="checkbox" id="s-weather" ${weatherEnabled() ? 'checked' : ''}>
+    </label>
     <div class="settings-lang">
       <label data-t="settings.language"></label>
       <button id="s-lang-toggle" class="lang-toggle" aria-label="เปลี่ยนภาษา / change language">
@@ -6725,6 +6730,7 @@ function openSettings() {
         r.oninput = () => { AUDIO[key] = r.value / 100; d.querySelector(id + '-value').textContent = r.value + '%'; syncBgm(); };
         r.onchange = () => { saveAudio(); if (key === 'sfx') sfx('stamp'); };
       };
+      d.querySelector('#s-weather').onchange = e => setWeatherEnabled(e.currentTarget.checked);
       bind('#s-bgm', 'bgm'); bind('#s-sfx', 'sfx');
       // F2 ข้อ 7 — ไอคอนหน้าแถบเลื่อนเป็นปุ่มปิด/เปิดเสียงเพลงและเสียงเอฟเฟกต์แยกกัน (เก็บใน AUDIO → localStorage 'avegee.audio')
       const bindToggle = (id, key, onIcon, offIcon) => {

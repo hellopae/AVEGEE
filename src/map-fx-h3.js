@@ -36,7 +36,7 @@ const frac=n=>n-Math.floor(n);
 const seed=n=>frac(Math.sin(n*127.1+311.7)*43758.5453);
 /** Budgets raised in the map-fx pass so zones 1-2 read as alive as zones 3-4 (west / cyberhell). Everything is still clipped to the strict H3 surface mask. */
 export const H3_BUDGET = Object.freeze({edgeGlow:44,lavaFlow:72,bubbles:52,sparks:36,lavaFalls:34,
-  waves:96,foam:24,waterFalls:30,mist:20,blobs:10,twinkles:30});
+  waves:96,foam:24,waterFalls:30,mist:20,blobs:10,twinkles:0});
 /** Lava heat that never changes: the heat range the test guards (cyberhell uses .08-.19); the H3 whisper was .035-.08. */
 export const H3_LAVA_FILL = Object.freeze({base:.07,pulse:.09,shimmer:.04});
 /** Painted lanterns / torch posts (normalised map coordinates, checked on top of the art). They get a flickering additive glow. */
@@ -100,9 +100,10 @@ export function drawH3Surfaces(c,zone,kind,time,W,H,tracks) {
       if(vert)stroke(c,u*W+Math.sin(t*.7+i)*3,v*H+run,0,len);
       else stroke(c,u*W+run,v*H+Math.sin(t+i)*2,len,3);
     }else{
-      c.lineWidth=2.4;
-      c.strokeStyle=`rgba(${zone==='th'?'226,200,255':'196,250,255'},${.20+.38*Math.sin(phase*Math.PI)})`;
-      stroke(c,u*W+(phase-.5)*64,v*H+Math.sin(t*1.3+i)*5,14+seed(i+15)*40,0);
+      c.lineWidth=7;
+      c.strokeStyle=`rgba(${zone==='th'?'226,200,255':'196,250,255'},${.10+.14*Math.sin(phase*Math.PI)})`;
+      const x=u*W+(phase-.5)*64,y=v*H;
+      c.beginPath();c.ellipse(x,y,10+seed(i+15)*13,3,0,0,Math.PI*1.6);c.stroke();
     }
   }
   if(lava){

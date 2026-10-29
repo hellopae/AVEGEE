@@ -1,3 +1,4 @@
+import {weatherEnabled,weatherBudget} from './map-ambient.js?v=mapfx-k1d';
 // N4: lava, rivers and waterfalls of the painted Zone 1 ground (img/map-zone1/v4) look like they flow.
 //
 // Where water/lava is and which way it runs comes from one baked file, img/map-zone1/v4/flow-v4.png
@@ -35,10 +36,10 @@ const COLOR = [null, [218, 196, 255], [255, 222, 112], [255, 238, 168], [214, 24
 const SPEED = [null, [13, 9], [16, 14], [105, 60], [30, 16], [110, 70]];
 // [type, cumulative probability] per surface kind.
 const MIX = [null,
-  [[T_STREAK, .45], [T_WAVE, .62], [T_SPARK, 1]],
+  [[T_STREAK, .35], [T_WAVE, 1]],
   [[T_STREAK, .43], [T_GLOW, .69], [T_BUBBLE, 1]],
   [[T_STREAK, 1]],
-  [[T_STREAK, .6], [T_WAVE, .72], [T_SPARK, 1]],
+  [[T_STREAK, .35], [T_WAVE, 1]],
   [[T_STREAK, 1]],
 ];
 
@@ -73,6 +74,16 @@ export function buildFlowSprites() {
   });
   return {
     streak: COLOR.map(c => c ? streak(c.join(',')) : null),
+    water: paint(64, 32, c => {
+      // A broad trough and one broken foam crest; no additive glint or comb of bright lines.
+      c.fillStyle='rgba(29,103,136,.12)';c.beginPath();c.ellipse(32,17,26,11,-.1,0,Math.PI*2);c.fill();
+      c.strokeStyle='rgba(206,236,239,.36)';c.lineWidth=3;
+      c.beginPath();c.ellipse(30,15,16,10,-.1,-1.3,1.2);c.stroke();
+      c.fillStyle='rgba(222,243,243,.32)';
+      for(const [x,y,r] of [[33,7,1.8],[42,17,2.4],[35,25,1.5]]){
+        c.beginPath();c.ellipse(x,y,r*1.5,r,0,0,Math.PI*2);c.fill();
+      }
+    }),
     spark: paint(16, 16, c => { c.strokeStyle = '#fff'; c.lineWidth = 2; c.beginPath(); c.moveTo(1, 8); c.lineTo(15, 8); c.moveTo(8, 1); c.lineTo(8, 15); c.stroke(); }),
     ring: paint(40, 24, c => {
       c.strokeStyle = '#ffec96'; c.lineWidth = 2.2;c.beginPath();c.ellipse(20,13,15,6.5,-.08,.15,5.9);c.stroke();
@@ -167,11 +178,11 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
   }
 
   /** Advance particles by dt seconds inside `view` (world rectangle). */
-  function update(dt, view) {
+  function update(dt, view, budget = N) {
     const pad = 40;
     scan(view, pad);
     // Target population: a particle per ~28 surface cells in view, never more than the pool.
-    const target = Math.min(N, Math.round(surfaceCells / FLOW_CELLS_PER_PARTICLE));
+    const target = Math.min(N, budget, Math.round(surfaceCells / FLOW_CELLS_PER_PARTICLE));
     // Mist is an accent at the foot of a fall, never the whole population in a
     // small camera view.
     const sprayMax = nBase ? Math.min(40, target >> 3) : 0;
@@ -214,6 +225,16 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
     return on;
   }
 
+  function safeWater(x,y,rx,ry,k) {
+    const x0=Math.floor((x-rx)/unitX),x1=Math.ceil((x+rx)/unitX);
+    const y0=Math.floor((y-ry)/unitY),y1=Math.ceil((y+ry)/unitY);
+    if(x0<0||y0<0||x1>=FW||y1>=FH)return false;
+    for(let yy=y0;yy<=y1;yy++)for(let xx=x0;xx<=x1;xx++){
+      if(family(field.kind[yy*FW+xx])!==family(k)||onFloor((xx+.5)*unitX,(yy+.5)*unitY))return false;
+    }
+    return true;
+  }
+
   const rawDraw = typeof CanvasRenderingContext2D !== 'undefined' ? CanvasRenderingContext2D.prototype.drawImage : null;
   /** Draw the visible particles. `scale` = device px per world unit, `t` = ms. */
   function draw(ctx, scale, t) {
@@ -227,22 +248,27 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
     // The scene wraps ctx.drawImage with a resampling cache; these 4-6 px sprites never need it.
     const put = rawDraw ? (img, x, y, w, h) => rawDraw.call(ctx, img, x, y, w, h) : (img, x, y, w, h) => ctx.drawImage(img, x, y, w, h);
     ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalCompositeOperation = 'source-over';
     for (let i = 0; i < N; i++) {
       if (!alive[i]) continue;
-      const ty = type[i], k = kind[i];
+      const ty = type[i], k = kind[i], water = k === 1 || k === 4 || k === 5;
+      ctx.globalCompositeOperation = water ? 'source-over' : 'lighter';
       const f = age[i] / life[i], env = Math.sin(Math.PI * f);
       if (ty === T_STREAK || ty === T_WAVE) {
         if (env < .1 || !sp.streak[k]) continue;
         const c = cellAt(px[i], py[i]);
         const ux = field.dx[c] / 127, uy = field.dy[c] / 127, fall = k === 3 || k === 5;
-        const len = Math.max(ty === T_WAVE ? size[i] : size[i] * (.55 + .45 * env), minLen * (fall ? 2 : 1));
-        const kk = kindAt(px[i] - ux * len, py[i] - uy * len);       // tail must still be on the surface
-        if (!kk || family(kk) !== family(k)) continue;
-        const w = fall ? lw * 1.2 : ty === T_WAVE ? lw * 1.6 : lw, sx = len / 64, sy = w / 4;
-        ctx.globalAlpha = (ty === T_WAVE ? .26 : fall ? .6 : .55) * env * (.7 + .3 * ((bucket[i] + 1) / 3));
+        const len = water ? (fall ? 26 : 18) : Math.max(ty === T_WAVE ? size[i] : size[i] * (.55 + .45 * env), minLen * (fall ? 2 : 1));
+        const width = water ? (fall ? 8 : 14) : fall ? lw * 1.2 : ty === T_WAVE ? lw * 1.6 : lw;
+        // Check the complete rotated footprint, including intermediate cells: no bank/bridge overshoot.
+        const rx=Math.abs(ux)*len/2+Math.abs(uy)*width/2, ry=Math.abs(uy)*len/2+Math.abs(ux)*width/2;
+        if(water && !safeWater(px[i],py[i],rx,ry,k))continue;
+        const kk = kindAt(px[i] - ux * len, py[i] - uy * len);
+        if (!water && (!kk || family(kk) !== family(k))) continue;
+        const sx=len/64, sy=width/(water?32:4);
+        ctx.globalAlpha = (water ? (fall ? .42 : .46) : .55) * env;
         ctx.setTransform(ma * ux * sx, md * uy * sx, -ma * uy * sy, md * ux * sy, ma * px[i] + me, md * py[i] + mf);
-        put(sp.streak[k], -64, -2, 64, 4);
+        put(water ? sp.water || sp.streak[k] : sp.streak[k], water ? -32 : -64, water ? -16 : -2, 64, water ? 32 : 4);
       } else if (ty === T_SPARK) {
         const tw = Math.sin(time * 3.1 + ph[i]), q = tw * tw;
         if (q < .2 || !sp.spark) continue;
@@ -267,6 +293,7 @@ export function createFlowEngine(field, { maxParticles = FLOW_MAX_PARTICLES, flo
         const img = k === 3 ? sp.glow : sp.mist;
         if (!img) continue;
         const sz = size[i] * (1.2 + 3 * f) * 2.4;
+        if(water && !safeWater(px[i],py[i],sz/2,sz/2,k))continue;
         ctx.globalAlpha = (1 - f) * (k === 3 ? .5 : .42);
         ctx.setTransform(ma, 0, 0, md, me, mf);
         put(img, px[i] - sz / 2, py[i] - sz / 2, sz, sz);
@@ -305,7 +332,7 @@ export const townFlowEngine = () => slot(activeTownZone()).engine;
 
 /** Call once per frame with the world transform active (after the terrain, before characters). */
 export function drawTownFlow(ctx, time, reduced = false) {
-  if (reduced) return;
+  if (reduced || !weatherEnabled()) return;
   const url = activeTownSkin().flowUrl;
   if (!url) return;
   load(activeTownZone(), url);
@@ -320,6 +347,6 @@ export function drawTownFlow(ctx, time, reduced = false) {
   }
   const dt = lastT ? Math.max(0, Math.min(.05, (time - lastT) / 1000)) : .016;
   lastT = time;
-  engine.update(dt, view);
+  engine.update(dt, view, weatherBudget(ctx,TOWN_SIZE.w,TOWN_SIZE.h,FLOW_MAX_PARTICLES));
   engine.draw(ctx, scale, time);
 }

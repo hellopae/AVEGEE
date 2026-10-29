@@ -84,7 +84,7 @@ test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Z
   assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
 });
 
-test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance data',async()=>{
+test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance and WEATHER-B ambient data',async()=>{
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'){
@@ -102,6 +102,12 @@ test('MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allow
         text=text.replace(current,original);
       }
       bytes=Buffer.from(text);
+    }
+    if(path==='src/route-geometry.js'){
+      const current='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],';
+      const original='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,';
+      const text=bytes.toString();assert.ok(text.includes(current),'only the authored weather areas are allowed');
+      bytes=Buffer.from(text.replace(current,original));
     }
     assert.equal(createHash('sha256').update(bytes).digest('hex'),hash,path);
   }

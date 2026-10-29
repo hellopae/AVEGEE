@@ -1,0 +1,250 @@
+TAP version 13
+# (node:80737) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: frontier tree contact remains at the authored root, under the canopy at every world scale
+ok 1 - frontier tree contact remains at the authored root, under the canopy at every world scale
+  ---
+  duration_ms: 4.877441
+  type: 'test'
+  ...
+# Subtest: approved 1-2 and 3-4 routes select their own tree art
+ok 2 - approved 1-2 and 3-4 routes select their own tree art
+  ---
+  duration_ms: 48.496041
+  type: 'test'
+  ...
+# (node:80738) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: H3 spatial masks include painted channels and exclude orange buildings and paths
+ok 3 - H3 spatial masks include painted channels and exclude orange buildings and paths
+  ---
+  duration_ms: 4.172413
+  type: 'test'
+  ...
+# Subtest: H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mist with changing frames
+ok 4 - H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mist with changing frames
+  ---
+  duration_ms: 57.401537
+  type: 'test'
+  ...
+# Subtest: reduced motion skips mask allocation and all H3 drawing
+ok 5 - reduced motion skips mask allocation and all H3 drawing
+  ---
+  duration_ms: 2.649013
+  type: 'test'
+  ...
+# Subtest: mask readback and allocation are cached; both surfaces composite before scaling to scene size
+ok 6 - mask readback and allocation are cached; both surfaces composite before scaling to scene size
+  ---
+  duration_ms: 48.543873
+  type: 'test'
+  ...
+# Subtest: ground effects remain below depth sorted buildings and actors in existing scene renderer
+ok 7 - ground effects remain below depth sorted buildings and actors in existing scene renderer
+  ---
+  duration_ms: 1.600565
+  type: 'test'
+  ...
+# Subtest: strict sampling rejects an entire cell when even one painted pixel is a rock
+ok 8 - strict sampling rejects an entire cell when even one painted pixel is a rock
+  ---
+  duration_ms: 2.41429
+  type: 'test'
+  ...
+# Subtest: map fx visibility floors: zones 1-2 must stay at least as lively as the generic zone 3-4 path (west/cyberhell)
+ok 9 - map fx visibility floors: zones 1-2 must stay at least as lively as the generic zone 3-4 path (west/cyberhell)
+  ---
+  duration_ms: 0.339956
+  type: 'test'
+  ...
+# Subtest: lava glints run down the channel and drop, sideways along the pool and river
+ok 10 - lava glints run down the channel and drop, sideways along the pool and river
+  ---
+  duration_ms: 0.174292
+  type: 'test'
+  ...
+# Subtest: lantern glow is additive, flickers between frames, and is skipped for zones without a lamp list or without a sprite
+ok 11 - lantern glow is additive, flickers between frames, and is skipped for zones without a lamp list or without a sprite
+  ---
+  duration_ms: 1.02119
+  type: 'test'
+  ...
+# (node:80739) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: border23 weather respects the warm/cold boundary and reduced motion
+ok 12 - border23 weather respects the warm/cold boundary and reduced motion
+  ---
+  duration_ms: 22.341659
+  type: 'test'
+  ...
+# Subtest: frozen town keeps its existing snow sky and no longer sheds warm canopy leaves
+ok 13 - frozen town keeps its existing snow sky and no longer sheds warm canopy leaves
+  ---
+  duration_ms: 19.759263
+  type: 'test'
+  ...
+# (node:80740) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: map masks select lava and water, avoiding snow, bridges and red ground
+ok 14 - map masks select lava and water, avoiding snow, bridges and red ground
+  ---
+  duration_ms: 2.889503
+  type: 'test'
+  ...
+# Subtest: all four zone effects move deterministically, stay bounded, and use small particle budgets
+ok 15 - all four zone effects move deterministically, stay bounded, and use small particle budgets
+  ---
+  duration_ms: 14.199954
+  type: 'test'
+  ...
+# Subtest: sky renders different frames and reduced motion avoids all drawing and mask work
+ok 16 - sky renders different frames and reduced motion avoids all drawing and mask work
+  ---
+  duration_ms: 16.056073
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: retains the live legacy world and navigation source; both ground and ferry occlusion use detail
+ok 17 - MAP-Z4: retains the live legacy world and navigation source; both ground and ferry occlusion use detail
+  ---
+  duration_ms: 16.756298
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: tiles exactly cover the unchanged world; production files exist
+ok 18 - MAP-Z4: tiles exactly cover the unchanged world; production files exist
+  ---
+  duration_ms: 5.235902
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: three load lanes, complete-camera switch, same tile destinations for clipped ferry redraw
+ok 19 - MAP-Z4: three load lanes, complete-camera switch, same tile destinations for clipped ferry redraw
+  ---
+  duration_ms: 7.487053
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: failed and stalled loads retry with backoff; late decode cannot publish expired pixels
+ok 20 - MAP-Z4: failed and stalled loads retry with backoff; late decode cannot publish expired pixels
+  ---
+  duration_ms: 3.425024
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: overview uses painting without allocations; panning keeps at most twelve images
+ok 21 - MAP-Z4: overview uses painting without allocations; panning keeps at most twelve images
+  ---
+  duration_ms: 6.414219
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: delivered tile dimensions and mobile allocation budget match the Zone 2 size class
+ok 22 - MAP-Z4: delivered tile dimensions and mobile allocation budget match the Zone 2 size class
+  ---
+  duration_ms: 16.442969
+  type: 'test'
+  ...
+# Subtest: MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance and WEATHER-B ambient data
+ok 23 - MAP-Z4: navigation, geometry and fallback bytes retain the baseline, allowing only C1 training/balance and WEATHER-B ambient data
+  ---
+  duration_ms: 20.197898
+  type: 'test'
+  ...
+# (node:80742) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: N4: baked flow map has every surface kind in the right part of the painting
+ok 24 - N4: baked flow map has every surface kind in the right part of the painting
+  ---
+  duration_ms: 142.39102
+  type: 'test'
+  ...
+# Subtest: N4: flow directions are unit vectors, river runs left to right, falls point down
+ok 25 - N4: flow directions are unit vectors, river runs left to right, falls point down
+  ---
+  duration_ms: 84.569416
+  type: 'test'
+  ...
+# Subtest: N4: the baked surfaces keep off bridges, stairs and the dock (walkable floor)
+ok 26 - N4: the baked surfaces keep off bridges, stairs and the dock (walkable floor)
+  ---
+  duration_ms: 87.929597
+  type: 'test'
+  ...
+# Subtest: N4: particles stay on their painted surface and follow its flow
+ok 27 - N4: particles stay on their painted surface and follow its flow
+  ---
+  duration_ms: 12.237952
+  type: 'test'
+  ...
+# Subtest: N4: nothing is simulated when the camera sees no water, and walkable floor kills particles
+ok 28 - N4: nothing is simulated when the camera sees no water, and walkable floor kills particles
+  ---
+  duration_ms: 3.332986
+  type: 'test'
+  ...
+# Subtest: N4: drawing is plain sprite quads (no ctx.filter / shadowBlur) and reduced motion draws nothing
+ok 29 - N4: drawing is plain sprite quads (no ctx.filter / shadowBlur) and reduced motion draws nothing
+  ---
+  duration_ms: 3.85471
+  type: 'test'
+  ...
+# Subtest: N4: scene.js hands the town ground to town-flow and the old colour-guess ambience is off for the town
+ok 30 - N4: scene.js hands the town ground to town-flow and the old colour-guess ambience is off for the town
+  ---
+  duration_ms: 11.997068
+  type: 'test'
+  ...
+# Subtest: L3: Asia repaint flow excludes walkable floor and bridges, with bounded particles
+ok 31 - L3: Asia repaint flow excludes walkable floor and bridges, with bounded particles
+  ---
+  duration_ms: 129.478318
+  type: 'test'
+  ...
+# Subtest: L3: West flow follows cold water only, excluding snow roads and bridge tops
+ok 32 - L3: West flow follows cold water only, excluding snow roads and bridge tops
+  ---
+  duration_ms: 112.696114
+  type: 'test'
+  ...
+# (node:80743) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: WEATHER-B flash has one short monotonic pulse per nine seconds; no flash under reduced motion
+ok 33 - WEATHER-B flash has one short monotonic pulse per nine seconds; no flash under reduced motion
+  ---
+  duration_ms: 52.262953
+  type: 'test'
+  ...
+# Subtest: WEATHER-B budgets shrink with viewport/DPR; settings and reduced motion stop all weather
+ok 34 - WEATHER-B budgets shrink with viewport/DPR; settings and reduced motion stop all weather
+  ---
+  duration_ms: 1.029507
+  type: 'test'
+  ...
+# Subtest: WEATHER-B border 3–4 clips snow west and storm east, leaving the transition clear
+ok 35 - WEATHER-B border 3–4 clips snow west and storm east, leaving the transition clear
+  ---
+  duration_ms: 5.102512
+  type: 'test'
+  ...
+# Subtest: WEATHER-B weather renders before actors/labels; settings checkbox is bound
+ok 36 - WEATHER-B weather renders before actors/labels; settings checkbox is bound
+  ---
+  duration_ms: 6.210532
+  type: 'test'
+  ...
+# Subtest: WATER-01 water emits crests rather than sparks and rejects sprite footprints crossing a dry hole
+ok 37 - WATER-01 water emits crests rather than sparks and rejects sprite footprints crossing a dry hole
+  ---
+  duration_ms: 16.899125
+  type: 'test'
+  ...
+# Subtest: WEATHER-B changed renderer imports share canonical release identities
+ok 38 - WEATHER-B changed renderer imports share canonical release identities
+  ---
+  duration_ms: 30.568076
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 946.146031
