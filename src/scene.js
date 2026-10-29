@@ -447,7 +447,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const worker of (rescue ? [] : zoneWorkers(g))) {
     if(worker.teaRest&&worker.teaRest.phase!=='travel')continue;
     spot_(worker.x,worker.y,mapActorHeight('worker')*CHAR_SCALE_MAP);
-    at(worker.y+1,()=>{shade(worker.x,worker.y,mapActorHeight('worker')*CHAR_SCALE_MAP,c=>drawWorker(c,worker,t,mapActorHeight('worker')*CHAR_SCALE_MAP));if(worker.meal)label(ctx,'🍲',worker.x+16,worker.y-24,14);});
+    at(worker.y+1,()=>{shade(worker.x,worker.y,mapActorHeight('worker')*CHAR_SCALE_MAP,c=>{const h=mapActorHeight('worker')*CHAR_SCALE_MAP;if(worker.meal&&worker.homeZone==='th'&&img('worker-rice'))drawStandee(c,'worker-rice',worker.x,worker.y,h,t,'🍙',worker.face||1,true);else drawWorker(c,worker,t,h);});if(worker.meal&&worker.homeZone!=='th')label(ctx,'🍙',worker.x+16,worker.y-24,14);});
   }
 
   // The destination roster is filled only after the walk completes in game.js.
@@ -622,13 +622,15 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
         (st.build && !st.buildWait || st.repair && !st.repairWait));
       const working = c.at || c.cook || (buildingHere && Math.floor(t / 500) % 2 === 0);
       shade(c.x, c.y, crewHeight, cx => {
+        const cookingPose = c.cook && !motion.moving && g.zone==='th' && img(base+'-cook');
+        if (cookingPose) { drawStandee(cx, base+'-cook', c.x, c.y, crewHeight, t, c.glyph, motion.face); return; }
         const animated = !buildingHere && motion.moving &&
           drawCrewWalk(cx, base, c.x, c.y, crewHeight, motion.distance, motion.face);
         const idleNira=c.k==='nira'&&!working&&!motion.moving&&drawAnimatedSprite(cx,'nira:'+g.zone,'idle',c.x,c.y,crewHeight,t,motion.face);
         if (!animated&&!idleNira) drawStandee(cx, working && !motion.moving ? poseOr(base + (buildingHere ? '-build-work' : '-work'), base) : base,
           c.x, c.y, crewHeight, t, c.glyph, motion.face, motion.moving && !buildingHere);
       });
-      if(c.cook)label(ctx,'🍲',c.x,c.y-crewHeight-8,14);
+      if(c.cook && (g.zone!=='th'||motion.moving))label(ctx,'🍙',c.x,c.y-crewHeight-8,14);
       mapName(ctx, c.k === 'nira' && g.niraRest ? `${c.name} · 🩹 พักฟื้น ${g.niraRest.remaining}` : c.name, c.x, c.y + 10, 'rgba(255,225,195,.72)');
       if (c.morale < 35) label(ctx, '💤', c.x + crewHeight * 0.32, c.y - crewHeight + 6, 16);
     });
