@@ -98,7 +98,7 @@ async function tiersFor(zone, outfit, opts) {
   // and fallback props absent from a stale generated catalog.
   for (const url of townStartupAssets(zone)) startupUrls.add(url);
   const startup = withTownStartupAssets(t, zone);
-  const background = ['audio:bgm-zone', 'img/workers/canteen-v1.webp', `img/workers/worker-${zone}-rest-v1.webp`, ...startup.background];
+  const background = ['audio:bgm-zone', `img/food-art/canteen-${zone}.webp`, `img/workers/worker-${zone}-rest-v1.webp`, ...startup.background];
   background.splice(Math.min(25, background.length), 0, 'audio:bgm-battle');
   return { critical:[...startup.critical, 'audio:bgm-title'], background:[...new Set(background)].filter(u => !startup.critical.includes(u)), late:startup.late };
 }

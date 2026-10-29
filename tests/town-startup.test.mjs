@@ -10,7 +10,7 @@ test('first painted frame gates the exact current facades, trees, houses and can
  for(const zone of ['th','asia','west']){
   const urls=townStartupAssets(zone),t=withTownStartupAssets({critical:[],background:[],late:[]},zone);
   assert(urls.length<40,'only exterior bundle, not full cast');
-  for(const url of [...Object.values(ZONE_SKIN[zone].art),...THEME_STATIONS.map(k=>themeArt(`st-${k}`,zone)),'img/workers/canteen-v1.webp'])assert(t.critical.includes(url),`${zone}: ${url}`);
+  for(const url of [...Object.values(ZONE_SKIN[zone].art),...THEME_STATIONS.map(k=>themeArt(`st-${k}`,zone)),`img/food-art/canteen-${zone}.webp`])assert(t.critical.includes(url),`${zone}: ${url}`);
   assert(urls.every(p=>existsSync(p)),zone);
   assert(!urls.some(p=>/cutscene|rooms-wide|\/r\d+-c\d+/.test(p)));
  }

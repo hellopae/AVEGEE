@@ -10,7 +10,7 @@ export function townStartupAssets(zone) {
     ...Object.values({...ZONE1_TOWN_ART, ...skin.art}),
     ...THEME_STATIONS.map(k => themeArt(`st-${k}`, zone)),
     themeArt('town-house-th', zone), themeArt('town-waterfall-th', zone),
-    'img/workers/canteen-v1.webp',
+    `img/food-art/canteen-${zone}.webp`,
   ].filter(Boolean))];
 }
 export const startupImage = url => decoded.get(url) || null;
