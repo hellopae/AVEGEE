@@ -12,8 +12,8 @@ const game = () => { const g = createGame(); g.save = () => true; g.onChange = (
 const finish = (g, k) => { const st = g.stations.at(-1); assert.equal(st.def.k, k); st.build = 0; st.buildWait = false; g.crewOf('taan').buildK = null; g.crewOf('dam') && (g.crewOf('dam').buildK = null); };
 
 test('unlock table: tea Lv1 -> dab Lv2 -> sawan Lv3 -> ngiw/lan Lv4 -> lokan/krajok Lv5, every plan entry is a real buildable station', () => {
-  assert.deepEqual(BUILD_PLAN.map(p => p.k), ['krata', 'tea', 'dab', 'sawan', 'ngiw', 'lan', 'lokan', 'krajok']);
-  assert.deepEqual(BUILD_PLAN.map(p => p.lv), [1, 1, 2, 3, 4, 4, 5, 5]);
+  assert.deepEqual(BUILD_PLAN.map(p => p.k), ['krata', 'tea', 'dab', 'sawan', 'ngiw', 'lan', 'lokan', 'krajok', 'canteen']);
+  assert.deepEqual(BUILD_PLAN.map(p => p.lv), [1, 1, 2, 3, 4, 4, 5, 5, 1]);
   for (const p of BUILD_PLAN) assert.ok(STATIONS.find(s => s.k === p.k && s.cost > 0), p.k);
   // every buildable station is covered by the plan (nothing silently unlocked at Lv1)
   assert.deepEqual(STATIONS.filter(s => s.cost > 0).map(s => s.k).sort(), BUILD_PLAN.map(p => p.k).sort());

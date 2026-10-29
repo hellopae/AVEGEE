@@ -88,6 +88,7 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
+  if(key==='st-canteen')return 'img/workers/canteen-v1.webp';
   if (key === 'soul-deva') return 'img/soul-deva.png'; // เทวดาปลอมเป็นขอทาน ใช้รูปที่เจ้าของระบุ
   const z = sourceZone || (key.startsWith('hero-yama') ? (heroStyleOf() || zoneOf()) : zoneOf());
   if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.png';
@@ -207,6 +208,7 @@ export function stationBox(def) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
+  if(def.k==='canteen')return {im,x:def.bx-def.bw/2,y:def.by-def.bw*im.naturalHeight/im.naturalWidth,w:def.bw,h:def.bw*im.naturalHeight/im.naturalWidth,flip:['th','asia'].includes(zoneOf())};
   if (artUrl(key).includes('/map-v5/')) return reviewStationBox(def, im, zoneOf());
   if (def.k === 'frontier')
     return { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };

@@ -2,7 +2,7 @@ import { soulPoseForPress, soulPoseAssets } from './soul-poses.js';
 import {teaStaff,STAFF_TEA_REST_MS} from './tea-staff-rest.js';
 import {traitForKeeper} from './interrogation.js';
 import {teamHudHtml,teamManageHtml} from './team-hud.js';
-import {canteenActive,canteenPoint} from './canteen.js';
+import {canteenState} from './canteen.js';
 import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
@@ -1438,8 +1438,8 @@ function updateFrontierFab() {
  *  P4: ปุ่มคุยตัวละคร (kind 'talk') มีสิทธิ์ต่ำสุด — โผล่เมื่อไม่มี interaction อื่นในระยะ และไม่ได้ยืนที่จุดสร้าง/ประตูชายแดน */
 function baseMapInteraction() {
   if (g.over || g.battle || dlg.open) return null;
-  const point=g.harbourPoint(),mealPoint=canteenPoint(g);
-  return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),...(canteenActive(g)?[{id:'canteen',kind:'canteen',x:mealPoint[0],y:mealPoint[1],bx:mealPoint[0],by:mealPoint[1]+25,label:'โรงอาหาร · จัดอาหารและคนงาน'}]:[]),
+  const point=g.harbourPoint();
+  return nearestInteraction(g.player,[...mapInteractions(g, MERCHANT),
     // N1 (คุณเป้ 16 ต.ค. ภาพ 7 ลูกศรชี้ไปที่เท้ายมบาทปลายท่า): ปุ่มกึ่งกลางอยู่ที่ปลายท่าใต้เท้า (หน้าหินหัวท่า) ไม่ลอยกลางน้ำ
     // และไม่ทับป้ายบอสที่อยู่เหนือท่า (ท่าอยู่ห่างบอสแค่ ~100 หน่วย — วางเหนือหัวแล้วปุ่มสองอันซ้อนกันบนจอแคบ)
     {id:'harbour',kind:'harbour',x:point.x,y:point.y,bx:point.x,by:point.y+26,label:'ท่าเรือ · Fast Travel'}]);
@@ -1456,7 +1456,6 @@ function activateMapInteraction(now) {
       if (now.kind === 'repair') {
         if (g.repairStation(now.key)) { sfx('crack'); refresh(); }
       } else if (now.kind === 'harbour') openHarbour();
-      else if(now.kind==='canteen')modal('<h2>🍲 โรงอาหาร</h2>'+workersPanelHtml(g,{allowHire:false}),d=>{bindWorkersPanel(d,g,()=>{dlg.close();activateMapInteraction(now);});});
       else if (now.kind === 'talk') talkTo(now.key, true);
       else if (now.kind === 'nira') openNiraOffice();
       else if (now.kind === 'merchant') openMerchant();
@@ -5327,11 +5326,12 @@ function keyWalk(dt) {
  *  เจ้าของสั่ง: กดสถานีแล้วต้องเห็น "ฉากของหลังนั้น" พร้อมรายละเอียดว่ามันมีไว้ทำอะไร
  *  และมีอะไรให้กดจริง ๆ ตรงนั้น — ไม่ใช่กล่องข้อความสองบรรทัดเหมือนเดิม
  *  ฉากหลังคือ img/BG-<ชื่อคีย์>.jpeg ที่เจ้าของวาดมาเอง ไม่มีไฟล์ก็ถอยไปใช้เวทีกลาง */
-const stBg = k => k === 'tea' ? teaBackground(g.zone) : wideStationRoom(g.zone, k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
+const stBg = k => ['canteen','tea'].includes(k) ? teaBackground(g.zone) : wideStationRoom(g.zone, k)?.image || artUrl(`BG-${k[0].toUpperCase()}${k.slice(1)}`, 'webp');   // โซนอื่นมีฉากห้องของตัวเองได้
 
 /** จุดยึดของห้อง — ฉากห้องของโซนที่องค์ประกอบต่างจากโซน 1 มีชุดจุดยึดของตัวเองใน ROOMS[k].zones
  *  ใช้เฉพาะตอนที่ฉากของโซนนั้นมีจริง (ยังไม่มีไฟล์ = ใช้ฉากโซน 1 ก็ต้องใช้จุดยึดโซน 1) */
 function roomFor(k) {
+  if(k==='canteen')return {...ROOM_DEFAULT,souls:[],crew:null,me:[.5,.9],walk:[.2,.65,.8,.94],act:[.5,.7]};
   if (k === 'tea') return teaRoom(g.zone);
   const wide = wideStationRoom(g.zone, k);
   if (wide) return wide;
@@ -5344,6 +5344,7 @@ function roomFor(k) {
 
 function openStation(k, emergency = false) {
   const def = STATIONS.find(d => d.k === k);
+  if(k==='canteen'&&!g.stations.some(st=>st.def.k===k&&!st.build&&!st.repair&&!st.fire))return;
   const room = roomFor(k);
   // Only krajok gains access to the new stand; other rooms keep their paths.
   if(k === 'krajok')room.walk=[{poly:[[.17,.51],[.81,.51],[.81,.81],[.68,.81],[.68,.83],[.59,.83],[.59,1],[.41,1],[.41,.83],[.23,.83],[.17,.72]]}];
@@ -5377,6 +5378,19 @@ function openStation(k, emergency = false) {
     const drow = (key, name, label, btn) => `<div class="st-row"><span class="st-row-name" role="button" tabindex="0" data-diag="${key}">${label}</span>
       <span class="st-row-diag"><button type="button" class="btn-diag" data-diag="${key}" aria-label="${esc(t('diag.openAria', { name }))}">🔍 ${esc(t('diag.open'))}</button>${btn}</span></div>`;
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
+
+    if(k==='canteen'){
+      const state=canteenState(g);
+      put(L, '<h3>🍙 โรงอาหาร</h3><p>เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>');
+      put(A, `<div class="st-pane"><p>พร้อมแจก ${state.meals}/6 · ${state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว'}</p>
+        <label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
+        <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" style="width:60px"></label>
+        <button id="rice-order" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
+        ${state.orders.map(o=>`<button data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}<small id="rice-error" role="status"></small></div>`);
+      A.querySelector('#rice-order').onclick=()=>{if(!R?.inReach())return;const ok=g.orderRice(A.querySelector('#rice-cook').value,A.querySelector('#rice-count').value);if(ok)panels();else A.querySelector('#rice-error').textContent='สั่งไม่ได้: ตรวจคนว่าง เบี้ยกรรม จำนวน และพื้นที่เก็บ';};
+      A.querySelectorAll('[data-rice-cancel]').forEach(b=>b.onclick=()=>{if(R?.inReach()){g.cancelRice(b.dataset.riceCancel);panels();}});
+      if(Rg)Rg.hidden=true;return;
+    }
 
     // 29M: ปุ่มซ่อมย้ายไปอยู่บนแผนที่ทุกสถานที่แล้ว (รวมตะราง/ประตูสวรรค์) — ในห้องเหลือแค่ปุ่มเยี่ยมนิรา
     if (AL) {

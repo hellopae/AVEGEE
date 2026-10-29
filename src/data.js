@@ -1,4 +1,4 @@
-import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
+import { TOWN_SIZE, TOWN_RIVER_Y, TOWN_HOUSE_SITES, TOWN_STATION_SITES, TOWN_SPOTS, TOWN_CREW, TOWN_FRONTIER, TOWN_MERCHANT, TOWN_GUARD_POST, TOWN_CHALLENGE, TOWN_QUEUE, TOWN_ENTRY, applyTownZoneLayout } from './town-layout.js?v=k1d';
 import { isTownZone, townSkinOf, setActiveTownZone } from './zone-skin.js';
 // data.js — ค่าสมดุลทั้งหมดของเกมอยู่ในไฟล์นี้ไฟล์เดียว
 // แก้ตัวเลขที่นี่ ไม่ต้องแตะ game.js
@@ -209,6 +209,7 @@ export function spiritFor(who, sex) {
 // isLava เดียวกับ walk.js) ยกเว้น lan ที่ย้ายเข้าไปในช่องว่างกลางธารลาวาที่ภาพใหม่วาดไว้ (ดูคอมเมนต์ที่ lan)
 // ตารางพิกัดเดิม→ใหม่เต็มอยู่ในรายงาน Output/Toby/2026-09-28-avegee-batch15b-map-stars.md
 export const STATIONS = [
+  {k:'canteen',name:'โรงอาหาร',glyph:'🍙',tags:[],cost:120,pow:0,bx:720,by:400,bw:150,x:720,y:438,hit:[650,360,790,400],desc:'สั่งทำข้าวปั้นและให้คนงานนำไปแจก',use:'เดินไปเคาน์เตอร์ เลือกผู้ปรุงและจำนวนข้าวปั้น · 2 เบี้ยกรรมต่อชิ้น'},
   { k:'sala',  name:'หอทะเบียนกรรม', glyph:'📜', tags:[],              cost:0,   pow:2,
     bx:1477, by:309, bw:196, x:1477, y:299, hit:[1379,117,1575,309],
     desc:'ที่เก็บสำนวนทั้งโซน เดินเอกสารเร็วขึ้น ระเบียบขึ้นเอง',
@@ -2185,6 +2186,8 @@ export function syncSceneZone(zone) {
     Object.assign(ZONE_ENTRY,structuredClone(TOWN_ENTRY));
     RIVER_Y=TOWN_RIVER_Y;NO_WALK.splice(0,NO_WALK.length,[0,0,SCENE.w,100],[0,0,100,SCENE.h],[SCENE.w-100,0,SCENE.w,SCENE.h],[0,RIVER_Y,SCENE.w,SCENE.h]);
   }
+  const foodSite=TOWN_HOUSE_SITES[3]||{x:1536,y:960,w:98};
+  if(town)Object.assign(STATIONS.find(s=>s.k==='canteen'),{bx:foodSite.x,by:foodSite.y,bw:foodSite.w,x:foodSite.x,y:foodSite.y+38,hit:[foodSite.x-foodSite.w*.44,foodSite.y-33,foodSite.x+foodSite.w*.44,foodSite.y]});
   for (const s of STATIONS) {
     s.flip = (skin?.stationFlip || STATION_FLIP[z.k]).includes(s.k);
     if(!town) {

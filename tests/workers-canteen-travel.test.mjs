@@ -36,9 +36,9 @@ test('gathering requires a real built resource station and sells exactly the col
  place(w,nearestWalk(MERCHANT.x,MERCHANT.y));for(let i=0;i<20&&!g.workerState.ledger.sales;i++)advanceWorkers(g,120);assert.equal(g.coin,coin+5);assert.equal(w.cargo,null);assert.equal(g.workerState.ledger.sales,1);
 });
 test('cooks physically reach canteen, make food, courier picks up and delivers it without consuming inventory rice',()=>{
- const g=game(),w=g.hireWorker();g.hire('dam');g.hire('plerng');g.inventory.food=9;g.food=0;prepareCooks(g);const at=canteenPoint(g);
+ const g=game(),w=g.hireWorker();g.hire('dam');g.hire('plerng');g.inventory.food=9;g.stations.push({def:STATIONS.find(d=>d.k==='canteen'),build:0,slots:[]});assert.equal(g.orderRice('dam',1),true);prepareCooks(g);const at=canteenPoint(g);
  for(const c of g.crew.filter(c=>c.cook))place(c,[at[0],at[1]]);
- for(let i=0;i<30;i++)stepCanteen(g,120);assert.ok(g.food>0);assert.ok(canteenState(g).meals>0);
+ for(let i=0;i<30;i++)stepCanteen(g,120);assert.equal(canteenState(g).meals,1);
  const taan=g.crewOf('taan');taan.hunger=15;taan.morale=35;g.setWorkerMode(w.id,'food');stepWorkers(g);assert.equal(w.job.kind,'food');assert.equal(taan.hunger,15);
  place(w,at);advanceWorkers(g,120);assert.equal(w.meal,true);assert.equal(taan.hunger,15);
  place(w,nearestWalk(taan.x??taan.hx,taan.y??taan.hy));advanceWorkers(g,120);assert.equal(taan.hunger,55);assert.equal(taan.morale,55);assert.equal(w.meal,false);assert.equal(g.inventory.food,9);assert.equal(canteenState(g).served,1);
@@ -65,9 +65,9 @@ test('empty supplies seat workers and require a player rice gift or tea-rest ord
  place(w,w.teaRest.dest);w.teaRest.path=[];advanceWorkers(g,120);assert.equal(w.teaRest.phase,'enter');assert.equal(w.sitting,false);advanceWorkers(g,120,w.teaRest.enteredAt+w.teaRest.entryMs);assert.equal(w.sitting,true);const started=w.teaRest.startedAt;g.food=20;for(let i=0;i<6;i++)stepWorkers(g);assert.equal(w.supplyRest,true);g.updateActorRecovery(started+119999);assert.equal(w.mode,'rest');g.updateActorRecovery(started+120000);assert.equal(w.supplyRest,false);assert.equal(w.mode,'gather');
 });
 
-test('a keeper collects successive judged souls one journey at a time and a cook can leave for an assigned case',()=>{
+test('a keeper collects successive judged souls one journey at a time and idle Dam remains available for an assigned case',()=>{
  const g=game(),w=g.hireWorker();g.queue.forEach(s=>s.courtDisembarked=true);const first=g.queue[0];assert.equal(g.assign(first.id,'krata','taan',3),true);const a=g.afterlifeWalks.find(v=>v.destination==='station');assert.equal(a.escort.k,'taan');
  g.spawnSoul();const second=g.queue[0];g.cancelCourtArrival(second.id);second.courtDisembarked=true;assert.equal(g.assign(second.id,'krata','taan',3),true);const b=g.afterlifeWalks.find(v=>v.soul.id===second.id);assert.equal(b.awaitKeeper,true);g.advanceAfterlife(120);assert.equal(b.elapsed,0);
  g.advanceAfterlife(a.duration);g.advanceAfterlife(120);assert.equal(b.awaitKeeper,false);assert.equal(b.escort.k,'taan');assert.ok(b.elapsed>0);assert.equal(w.job,null);
- const g2=game();g2.hireWorker();g2.hire('dam');prepareCooks(g2);assert.equal(g2.crewOf('dam').cook,true);const soul=g2.queue[0];soul.courtDisembarked=true;assert.equal(g2.assign(soul.id,'krata','dam',3),true);assert.equal(g2.crewOf('dam').cook,false);assert.equal(g2.afterlifeWalks.find(v=>v.destination==='station').escort.k,'dam');
+ const g2=game();g2.hireWorker();g2.hire('dam');prepareCooks(g2);assert.equal(g2.crewOf('dam').cook,false);const soul=g2.queue[0];soul.courtDisembarked=true;assert.equal(g2.assign(soul.id,'krata','dam',3),true);assert.equal(g2.crewOf('dam').cook,false);assert.equal(g2.afterlifeWalks.find(v=>v.destination==='station').escort.k,'dam');
 });

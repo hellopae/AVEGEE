@@ -128,7 +128,7 @@ const houseRect = h=>{
   const band=Math.min(46,h.h*.34);
   return [h.x-h.w/2+h.w*.06,h.y-band,h.x+h.w/2-h.w*.06,h.y];
 };
-export const TOWN_HOUSES = TOWN_HOUSE_SITES.map(houseRect);
+export const TOWN_HOUSES = TOWN_HOUSE_SITES.filter((_,i)=>i!==3).map(houseRect);
 
 // ---- decorations (the owner's marks): each owns one foot point, art width and a small ground root ----
 // kind: tree | rock | palm | lamp | torch. biome picks the baked tint (lava = red leaves, ice = snow).
@@ -270,7 +270,7 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   // houses / props: lists keep their identity
   const houses = (L.houses || BASE.houses).map(h => ({...h, h:h.w*HOUSE_RATIO[h.key]}));
   TOWN_HOUSE_SITES.splice(0, TOWN_HOUSE_SITES.length, ...houses);
-  TOWN_HOUSES.splice(0, TOWN_HOUSES.length, ...TOWN_HOUSE_SITES.map(houseRect));
+  TOWN_HOUSES.splice(0, TOWN_HOUSES.length, ...TOWN_HOUSE_SITES.filter((_,i)=>i!==3).map(houseRect));
   TOWN_PROP_SITES.splice(0, TOWN_PROP_SITES.length, ...(L.props || BASE.props).map(p => ({...p})));
   TOWN_PROP_COLLIDERS.splice(0, TOWN_PROP_COLLIDERS.length, ...TOWN_PROP_SITES.map(propCollider));
   interactionPads.splice(0, interactionPads.length,

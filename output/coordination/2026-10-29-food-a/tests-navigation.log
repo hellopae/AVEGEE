@@ -1,0 +1,21 @@
+(node:24370) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ no implicit kitchen after worker unlock; construction charges once and entry waits for completion (13.859927ms)
+✔ legacy implicit kitchens migrate visited branches once; new saves keep unbuilt kitchens absent (14.041499ms)
+✔ paid FIFO batches wait for arrival, reject duplicates, pause and cancel/refund only unfinished portions (2.522881ms)
+✔ keeper conflicts, invalid quantities and insufficient resources cannot create an order (138.705449ms)
+✔ save/load mid-batch and after completion never replays portions or currency; cooks return to posts (68.568395ms)
+✔ zone changes freeze source orders and resume them once on return (65.327918ms)
+✔ kitchen footprints and entry are finite in every zone and repeat without drift (2.59215ms)
+(node:24371) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ zone1 town plaza reaches every entrance with initial buildings (912.851041ms)
+✔ zone1 town plaza reaches every entrance with all buildings built (1695.931011ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2830.752583

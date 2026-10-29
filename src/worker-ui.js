@@ -24,7 +24,7 @@ export function workersPanelHtml(game,{allowHire=true}={}) {
     <p class="worker-office-jobs">ช่วยยมทูต: ขนส่งวิญญาณ สร้าง/ซ่อม และแจกอาหาร<br>เก็บขาย: กิ่งงิ้วและเศษดาบ</p>
     <p class="worker-office-cost">ค่าจ้าง ${WORKER_RULES.wage} เบี้ยกรรม / ${WORKER_RULES.wageEvery} วาระทำงาน · เสบียง ${WORKER_RULES.food} ห่อ / วาระ</p>
     ${workerSuppliesHtml(game,{hire:allowHire})}
-    ${canteenActive(game)?`<div class="worker-canteen-summary"><b>🍲 โรงอาหาร</b><span>ดำและเพลิงทำอาหารเมื่อว่าง · พร้อมแจก ${canteenState(game).meals}/6 ชุด</span></div>`:''}
+    ${canteenActive(game)?`<div class="worker-canteen-summary"><b>🍲 โรงอาหาร</b><span>สั่งข้าวปั้นที่เคาน์เตอร์ · พร้อมแจก ${canteenState(game).meals}/6 ชุด</span></div>`:''}
     <div class="market-grid">${list.map(w=>{
       const station=game.stations.find(st=>st.def.k===w.job?.station);
       const thumb=workerFrameRect(w.homeZone,0,1);
