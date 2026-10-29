@@ -24,6 +24,7 @@ const farAway = g => { g.player.x = 880; g.player.y = 455; };
 
 test('event ชายแดนบุก: แจ้งเตือน → รับทราบ → ต้องเดินไปถึงชายแดน → สู้ → จบ (state machine)', () => {
   const g = thGame();
+  g.frontierOf().team = []; // C1 starts with a team; explicitly exercise the empty selection.
   farAway(g);
   assert.equal(g.breachMarch(), null, 'ยังไม่รับทราบ = ยังเป็นช่วงแจ้งเตือน ไม่ใช่ช่วงเดิน');
   assert.equal(g.startFrontierBreach(), null, 'ยังไม่มีทีม สู้ไม่ได้');

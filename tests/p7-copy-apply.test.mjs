@@ -33,7 +33,7 @@ test('P7 ui.js: verdict card no longer shows rab; crewNote and the self-speed he
 test('P7 krata-qte: no Thai string literals left in code (comments aside); every g5 key exists in TH and EN',()=>{
   const code=read('src/minigames/krata-qte.js').split('\n').map(l=>l.replace(/\/\/.*$/,'')).join('\n');
   assert.doesNotMatch(code,/[ก-๙]/);
-  for(const k of ['hintIdle','wait','passed','hit','missEarly','missLate','btnWait','btnGo']){
+  for(const k of ['hintIdle','wait','passed','hit','missEarly','missLate','btnWait','btnGo','infernoUnlocked']){
     setLang('th');const th=t('g5.'+k);setLang('en');const en=t('g5.'+k);
     assert.notEqual(th,'g5.'+k);assert.notEqual(en,'g5.'+k);assert.notEqual(th,en,k);
   }

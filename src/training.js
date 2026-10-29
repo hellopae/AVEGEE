@@ -1,3 +1,4 @@
+import { trainingSkill, skillUnlocked, recordSkillTraining } from './combat-skills.js';
 // B4 — training sessions on top of the B3 progression state (src/progression.js).
 // B3 owns the numbers (EXP table, zone caps, multipliers) and already feeds them into combat
 // through g.allyStats()/g.normalAttack(); this module only awards EXP into that same state, so
@@ -56,7 +57,7 @@ export function trainingWhy(g, station, actorId) {
   const actor = trainingTargets(g, station).find(a => a.id === actorId);
   if (!actor) return 'เลือกผู้ฝึกในโซนนี้ / Select a trainee in this zone';
   const rec = peek(g, actor), home = homeOf(g, actor);
-  if (levelOf(g, actor) >= capLevel(actor, home)) return 'ถึงเพดานโซน / Zone level cap reached';
+  if (levelOf(g, actor) >= capLevel(actor, home) && (!trainingSkill(actor, station) || skillUnlocked(g, actor))) return 'ถึงเพดานโซน / Zone level cap reached';
   if (g.tick < rec.readyAtTick) return `รอ ${rec.readyAtTick - g.tick} วาระ / ticks`;
   if (rec.attempts?.window === Math.floor(g.tick / TRAINING_RULES.windowTicks) && rec.attempts.count >= TRAINING_RULES.attemptsPerWindow)
     return `ครบ ${TRAINING_RULES.attemptsPerWindow} ครั้งในช่วง ${TRAINING_RULES.windowTicks} วาระ / Attempt limit`;
@@ -86,10 +87,16 @@ export function finishTraining(g, result) {
   const rec = ref(g, actor), home = homeOf(g, actor), before = levelOf(g, actor);
   const earned = result.completed === true && g.zone === session.zone ? scoreExp(result.score) : 0;
   const gained = Math.max(0, Math.min(capExp(actor, home), rec.exp + earned) - rec.exp);
+  const unlockedSkill = earned ? recordSkillTraining(rec, actor, session.station, result.score) : null;
   rec.exp += gained;
   rec.level = levelOf(g, actor);
   const cap = capLevel(actor, home);
-  return { actorId:actor.id, score:result.score, exp:gained, before, level:rec.level,
+  return { actorId:actor.id, unlockedSkill, score:result.score, exp:gained, before, level:rec.level,
     total:rec.exp, next:rec.level >= cap ? null : TRAINING_RULES.exp[rec.level],
     multiplierBefore:powerMultiplier(actor, before), multiplierAfter:powerMultiplier(actor, rec.level) };
+}
+
+// Used by the existing personal fire-control QTE; station stoking never calls this.
+export function finishPersonalSkillTraining(g, actor, station, score) {
+  return recordSkillTraining(ref(g, actor), actor, station, score);
 }

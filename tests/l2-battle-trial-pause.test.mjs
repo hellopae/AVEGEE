@@ -5,7 +5,7 @@ import {createGame,DEFEND_DAMAGE_RATIO} from '../src/game.js';
 import {planTurnStep} from '../src/battle-turn-step.js';
 import {TH_DICT,EN_DICT} from './helpers/i18n-dicts.mjs';
 const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
-const mk=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
+const mk=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;g.party.members=[];
  g.startBattle({id:99,who:'test',deserved:4,resist:true});
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[10,10];});g.beginBattleTurns();return g;};   // the battle UI opens the turn queue on first paint
 const rect=(l,t,w,h)=>({l,t,r:l+w,b:t+h});
@@ -132,7 +132,7 @@ test('L2 flee API: fleeWhy / fleeBattle are the single entry points (kinds list 
 // ---------- L2 round 2: receiver picking without a text box + heal effect ----------
 import {vitalsOf,vitalGains,healFxHtml,HEAL_FX_MS} from '../src/heal-fx.js';
 const party=()=>{const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
- g.hire('boon');g.hire('plerng');g.party.members=['boon','plerng'];g.hireGuard();
+ g.zoneEvents.th={frontierBreach:'cleared'};g.hire('boon');g.hire('plerng');g.party.members=['boon','plerng'];g.hireGuard();
  g.startBattle({id:99,who:'t',deserved:4,resist:true});g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[0,0];});g.beginBattleTurns();return g;};
 
 test('L2 heal fx: item on a teammate, holy water on Yama and a boon heal each produce one gain entry; nothing else does',()=>{

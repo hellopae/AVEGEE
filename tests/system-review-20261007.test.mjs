@@ -23,7 +23,7 @@ test('red warnings escalate per regional authority, persist, and end in cauldron
 });
 test('every regional boss ultimate hits Yama, both companions and Guard; ordinary counter hits one',()=>{
  for(const zone of zones){
-  const g=game();g.zone=zone;g.coin=10000;g.hire('boon');g.party.members=['taan','boon'];g.hireGuard();
+  const g=game();g.zone=zone;g.zoneEvents.th={frontierBreach:'cleared'};g.coin=10000;g.hire('boon');g.party.members=['taan','boon'];g.hireGuard();
   g.startBattle({id:99,who:'boss test',deserved:4});const B=g.battle;
   B.kind='zoneBoss';B.zone=zone;B.foes=[{id:'boss',who:'boss',sp:'zone-boss',boss:true,hp:400,maxHp:1000,atk:[10,10],stun:0,confuse:0}];B.selectedFoeId='boss';
   const actors=g.battleActors();assert.equal(actors.length,4);const before=new Map(actors.map(a=>[a.id,a.morale]));

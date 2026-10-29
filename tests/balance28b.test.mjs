@@ -294,7 +294,7 @@ test('สรุปรางวัล: ชนะผีบนแผนที่ �
 });
 
 test('สรุปรางวัล: แพ้ไม่มี · วิญญาณขัดขืนในห้องไต่สวนไม่เด้ง · บอสที่ปลดพลังใหม่มีพลังในสรุป และคิวเรื่องราวพลังเดิมยังอยู่ (ui เรียงต่อกัน)', () => {
-  const lose = createGame();
+  const lose = createGame(); lose.party.members = [];   // C1: new games start with a taan+nira party; this case is Yama alone
   lose.mobs.push({ id:1, kind:0 }); lose.startMobBattle(0);
   lose.battle.youHp = 1;
   while (!lose.battle.over) lose.battleAct('atk');
@@ -326,7 +326,7 @@ test('สรุปรางวัล: แพ้ไม่มี · วิญญ�
 });
 
 test('สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป', () => {
-  const g = createGame();
+  const g = createGame(); g.party.members = [];   // C1: keep the 4-wave drill deterministic (Yama alone, as before)
   g.zone = 'cyberhell'; g.zoneCases.cyberhell = 5;
   g.zoneEvents.cyberhell = { cyberRescue:'cleared', cyberBreach:'pending' };
   g.startZoneEvent('cyberBreach');

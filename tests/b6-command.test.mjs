@@ -5,7 +5,7 @@ import { createGame } from '../src/game.js';
 import { commandWheel } from '../src/command-wheel.js';
 const setup = () => {
  const g=createGame();g.save=()=>true;g.onChange=()=>{};g.coin=10000;
- g.hire('taan');g.hire('boon');g.party.members=['taan','boon'];g.hireGuard();
+ g.zoneEvents.th = {frontierBreach:'cleared'}; g.hire('taan');g.hire('boon');g.party.members=['taan','boon'];g.hireGuard();
  g.startBattle({id:99,who:'test',deserved:4,resist:true});
  g.battle.foes.forEach(f=>{f.hp=f.maxHp=10000;f.atk=[0,0];});return g;
 };
@@ -70,15 +70,15 @@ test('Kan applies hypnosis to the selected enemy',()=>{
  assert.equal(g.battle.foes[0].confuse,0);
 });
 
-test('final battle exposes eight actors and dispatches to the selected cross-zone twin',()=>{
+test('final battle exposes seven actors and dispatches to the selected cross-zone twin',()=>{
  const g=setup();g.restore(JSON.parse(readFileSync(new URL('./fixtures/b1-v3.json',import.meta.url))));
  const ids=['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
  g.zone='cyberhell';g.guard={id:'cyberhell:guard',k:'guard',homeZone:'cyberhell',morale:100};
  for(const id of ids){g.roster[id].morale=92;g.roster[id].recoverUntil=0;g.roster[id].helpRemainingMs=0;}
  g.battle={kind:'zoneEvent',eventKey:'cyberFinal',encounter:'ruler:th',team:ids,
   foes:[{id:'foe',hp:10000,maxHp:10000,atk:[0,0]}],selectedFoeId:'foe',youHp:100,youMax:100,turn:1,log:[]};
- assert.equal(g.battleActors().length,8);g.selectBattleActor('west:taan');
+ assert.equal(g.battleActors().length,7);g.selectBattleActor('west:taan');
  assert.equal(g.confirmBattleCommand('crew:west:taan'),true);assert.equal(g.battle.helper.id,'west:taan');
  assert.equal(g.roster['west:taan'].morale,86);assert.equal(g.roster['th:taan'].morale,92);
- assert.equal(g.battleActors().length,8);
+ assert.equal(g.battleActors().length,7);
 });

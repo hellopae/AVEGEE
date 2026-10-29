@@ -272,6 +272,7 @@ test('ประลองซ้ำหลังได้อาวุธ: ไม่
 
 test('แพ้ตอนประลองซ้ำ: อาวุธไม่หาย · ไม่เสียความคืบหน้า', () => {
   const g = unlocked('west');
+  g.enemyTarget = () => ({id:'you'});
   g.weapons.owned.cane = true; g.weapons.equipped = 'cane'; g.challenge.west = { checkpoint:0, paidWave:10, wins:1 };
   g.startChallenge();
   g.battle.youHp = 1; for (const f of g.battle.foes) f.atk = [50, 50];

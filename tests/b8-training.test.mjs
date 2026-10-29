@@ -237,7 +237,7 @@ test('B8 sawan: host plays a perfect session through pointer events and reports 
 
 test('B8 sawan → boon: EXP reaches only the selected Boon; cancel gives nothing; heal follows the real progression', () => {
   const g = game();
-  assert.deepEqual(g.trainingTargets('sawan').map(a => a.id), ['th:boon']);
+  assert.deepEqual(g.trainingTargets('sawan').map(a => a.id), ['th:boon','global:nira']);
   const healBefore = g.allyStats(g.roster['th:boon']).heal;
   const s = g.startTraining('sawan', 'th:boon');
   assert.equal(g.cancelTraining(s.id).exp, 0); assert.equal(rec(g, 'th:boon').exp, 0);

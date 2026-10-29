@@ -1,3 +1,4 @@
+import { SKILL_FX } from './combat-skill-assets.js';
 // M2: texture manager for battle effects.
 // Real art lives in img/fx/<key>.webp (spec: Output/Toby/2026-10-16-avegee-m2-art-spec.md). Until a file exists (or if it fails to
 // load) the SAME key resolves to a texture drawn here with plain gradients/paths — so Kittanate/Codex dropping a file over the name
@@ -74,6 +75,11 @@ export const TEX = {
   'fx-clock-ring': { w:512, h:512, procOnly:true, blend:'lighter' },
   'fx-mirror-glint': { w:512, h:128, procOnly:true, blend:'lighter' },
 };
+for (const effect of Object.values(SKILL_FX)) {
+  if (effect.shared) continue;
+  for (const [part,size] of [[effect.impact,effect.size],[effect.projectile,256]]) if (part)
+    TEX[`fx-c1-${part.toLowerCase()}`] = { w:size, h:size, blend:'source-over', path:`img/skills-v1/fx/${part}.webp` };
+}
 export const TEX_KEYS = Object.freeze(Object.keys(TEX));
 export const blendOf = key => TEX[key]?.blend || 'lighter';
 export const cellsOf = key => TEX[key]?.cells || 1;
@@ -432,7 +438,7 @@ function record(key) {
     r.im = new Image();
     r.im.onload = () => { if (r.im.naturalWidth > 0) {r.realCanvas=transparentLightTexture(r.im,key);r.ok = true;} };
     r.im.onerror = () => { r.failed = true; };
-    r.im.src = `${FX_DIR}${key}.webp${suffix}`;
+    r.im.src = `${TEX[key]?.path || `${FX_DIR}${key}.webp`}${suffix}`;
   }
   return r;
 }

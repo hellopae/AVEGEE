@@ -4,7 +4,7 @@ import { migrateStatTraining } from './progression.js';
 import { CREW, crewName } from './data.js';
 
 export const ROSTER_VERSION = 1;
-export const TEAM_LIMITS = Object.freeze({ normalTeamMax: 2, finalTeamMax: 6 });
+export const TEAM_LIMITS = Object.freeze({ normalTeamMax: 6, finalTeamMax: 6 });
 export const ROSTER_BACKUP_KEY = 'avegee.save.v2.before-roster-v1';
 export const rosterId = (zone, kind) => kind === 'nira' ? 'global:nira' : `${zone}:${kind}`;
 export const findActor = (roster, id) => roster?.[id];
@@ -22,7 +22,7 @@ export function actorFromLegacy(sv, zone, kind = sv.k) {
 }
 
 const STATE_FIELDS = ['id', 'kind', 'homeZone', 'k', 'morale', 'hunger', 'upLv',
-  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt', 'helpRemainingMs',
+  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt', 'helpRemainingMs', 'helpCooldownSeconds',
   'teaRest', 'at', 'tired', 'x', 'y', 'buildK'];
 export function snapshotRoster(roster) {
   return Object.fromEntries(listActors(roster).map(a => [a.id,
@@ -31,10 +31,10 @@ export function snapshotRoster(roster) {
 
 export function teamIds(keys, roster, zone) {
   return [...new Set((keys || []).map(k => roster[k] ? k : rosterId(zone, k)))]
-    .filter(id => roster[id] && roster[id].kind !== 'nira' && roster[id].kind !== 'guard');
+    .filter(id => roster[id] && roster[id].kind !== 'guard');
 }
 export function teamKeys(ids, roster, zone) {
-  return teamIds(ids, roster, zone).filter(id => roster[id].homeZone === zone).map(id => roster[id].kind);
+  return teamIds(ids, roster, zone).filter(id => (roster[id].homeZone === zone || roster[id].kind === 'nira')).map(id => roster[id].kind);
 }
 
 // Pure conversion: active branch wins over its stale zoneSave copy; Nira is global.

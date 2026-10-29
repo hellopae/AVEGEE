@@ -1,0 +1,58 @@
+[
+  {
+    "path": "src/data.js",
+    "recorded": "62c0bc7af70ad6e976ffd71d86791b6a9fb2c0f2922f0015671f2db52d41ded0",
+    "head": "62c0bc7af70ad6e976ffd71d86791b6a9fb2c0f2922f0015671f2db52d41ded0",
+    "current": "1f2f71028a1b24bc58ddfc2e0c96722790e3a7f50c95d22e8606a0ac0c2680d6",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": true
+  },
+  {
+    "path": "src/walk.js",
+    "recorded": "1c7d7988284d9ff2ad7ba7ccc7625c54452dd22636937b5d80031db6b4607c2b",
+    "head": "1c7d7988284d9ff2ad7ba7ccc7625c54452dd22636937b5d80031db6b4607c2b",
+    "current": "1c7d7988284d9ff2ad7ba7ccc7625c54452dd22636937b5d80031db6b4607c2b",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  },
+  {
+    "path": "src/town-owner-walkmask-cyberhell.js",
+    "recorded": "697f2b20a904a086c622e42370519540f31043df0dcf18b759f2f3f8b92a0371",
+    "head": "697f2b20a904a086c622e42370519540f31043df0dcf18b759f2f3f8b92a0371",
+    "current": "697f2b20a904a086c622e42370519540f31043df0dcf18b759f2f3f8b92a0371",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  },
+  {
+    "path": "src/town-layout.js",
+    "recorded": "5f144ebf27dd4bb015d1821f2074101e3ac603210990b71796e5ae15dcd6a711",
+    "head": "5f144ebf27dd4bb015d1821f2074101e3ac603210990b71796e5ae15dcd6a711",
+    "current": "5f144ebf27dd4bb015d1821f2074101e3ac603210990b71796e5ae15dcd6a711",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  },
+  {
+    "path": "src/route-geometry.js",
+    "recorded": "6e6b97d5d80f8a8e907a8f36bb0f4ef77d2fce12835886d50f92297c611b8c3e",
+    "head": "6e6b97d5d80f8a8e907a8f36bb0f4ef77d2fce12835886d50f92297c611b8c3e",
+    "current": "6e6b97d5d80f8a8e907a8f36bb0f4ef77d2fce12835886d50f92297c611b8c3e",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  },
+  {
+    "path": "img/theme-v4/map-cyberhell.webp",
+    "recorded": "bce86ad26704b395ac2c9ecc60c3df5655a6f5250bfad44e7a204e56c0dd36cb",
+    "head": "bce86ad26704b395ac2c9ecc60c3df5655a6f5250bfad44e7a204e56c0dd36cb",
+    "current": "bce86ad26704b395ac2c9ecc60c3df5655a6f5250bfad44e7a204e56c0dd36cb",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  },
+  {
+    "path": "img/scene-cyberhell-v2.png",
+    "recorded": "450a0d28329ebc1ddec814ba3d53fd0fcf76f6978d1a4069a398dedbe3022708",
+    "head": "450a0d28329ebc1ddec814ba3d53fd0fcf76f6978d1a4069a398dedbe3022708",
+    "current": "450a0d28329ebc1ddec814ba3d53fd0fcf76f6978d1a4069a398dedbe3022708",
+    "already_mismatched_at_HEAD": false,
+    "changed_by_c1": false
+  }
+]

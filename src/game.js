@@ -1,3 +1,5 @@
+import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
+import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
@@ -151,8 +153,8 @@ export function createGame() {
     gameCompleted: false, teaBeds: {}, pendingRecovery:null,
     miniGoals: {}, offlineGrant: 0,
     bossGuides:{version:1,zones:{}}, bossGuarding: {}, bossWalk: null, zoneEntry: null,
-    frontier: { zones: {} },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
-    party: { members: [], guard: false },
+    frontier: { zones: { th:{ clears:0, team:['taan','nira'] } } },           // ระลอกชายแดนแยกตามโซน ไม่ทับความคืบหน้ากัน
+    party: { members: ['taan','nira'], guard: false },
     upgrades: { powers: {} },
     abilities: {},
     discoverySeen: {}, discoveryQueue: [],
@@ -551,6 +553,26 @@ const API = {
   stFront(st) { return st && st.slots.length ? st.slots[0] : null; },
 
   actorStanding(actor) { return actorStanding(actor); },
+  partyCap() { return partyCap(this); },
+  partyMax() { return selectablePartyMax(this); },
+  prepareEncounter() {
+    const b = this.battle; if (!b || b.over) return;
+    if (b.balance?.wave !== (b.wave || 0)) scaleEncounter(b, b.balance?.partySize ?? this.battleActors().filter(a => !a.guestGuide).length);
+  },
+  skillUnlocked(actor, skill) { return skillUnlocked(this, actor, skill); },
+  skillWhy(skill, actor = this.battleActors().find(a => a.id === this.battle?.actorId)) {
+    const def = COMBAT_SKILLS[skill], b = this.battle;
+    if (!def || !b || !actor || !this.battleActors().some(a => a.id === actor.id)) return 'ไม่อยู่ในสนาม';
+    if (skill === 'teamJudgment') {
+      if (actor.id !== 'you' || !this.abilities.teamJudgment) return 'ชนะฝ่าชายแดนไทยเพื่อปลดล็อก';
+      if (this.teamJudgmentRemaining()) return `อีก ${this.teamJudgmentRemaining()} เทิร์นยามา`;
+      return this.mp < def.mp ? 'พลังเวทไม่พอ' : '';
+    }
+    if (def.actor !== actor.k || !skillUnlocked(this, actor, skill)) return 'ฝึกเฉพาะตัว 2 ครั้ง ≥60 และมีครั้ง ≥80';
+    if ((actor.morale || 0) < def.morale) return 'กำลังใจไม่พอ';
+    return actor.k === 'guard' ? this.guardHelpWhy() : this.crewHelpWhy(actor);
+  },
+  teamJudgmentRemaining() { const b = this.battle; return Math.max(0, (b?.teamReadyTurn || 0) - (b?.actorTurns?.you || 0)); },
   guardActive() { return !isFrontierDuoBattle(this.battle) && this.battle?.eventKey !== 'westHypnotized' && actorStanding(this.guard) && !(this.battle?.absentActors || []).includes(this.guard.id); },
   enemyGuard() {
     const b = this.battle;
@@ -659,8 +681,8 @@ const API = {
   },
   finalTeamCandidates() {
     syncRoster(this);
-    return Object.values(this.roster).filter(c => !c.reader && !c.self &&
-      c.kind !== 'nira' && c.kind !== 'guard' && (c.homeZone === this.zone || this.canMoveZone(c.homeZone)));
+    return Object.values(this.roster).filter(c => !c.self &&
+      c.kind !== 'guard' && (c.kind === 'nira' || c.homeZone === this.zone || this.canMoveZone(c.homeZone)));
   },
   finalTeamWhy(c, now = Date.now()) {
     if (!c || !this.finalTeamCandidates().includes(c)) return 'ยังไม่ปลดล็อกสาขา';
@@ -687,25 +709,25 @@ const API = {
       const team = this.party.finalMembers, i = team.indexOf(c.id);
       if (i >= 0) team.splice(i, 1);
       else {
-        if (team.length >= this.teamLimits.finalTeamMax || this.finalTeamWhy(c)) return false;
+        if (team.length >= this.partyMax() || this.finalTeamWhy(c)) return false;
         team.push(c.id);
       }
       // Legacy kind callers still refer to the local person; IDs remain canonical.
       if (!k.includes(':')) {
         const local = this.party.members.indexOf(k);
         if (i >= 0 && local >= 0) this.party.members.splice(local, 1);
-        else if (i < 0 && local < 0 && this.party.members.length < this.teamLimits.normalTeamMax) this.party.members.push(k);
+        else if (i < 0 && local < 0 && this.party.members.length < this.partyMax()) this.party.members.push(k);
       }
       if (this.isFinalBattle() && this.zoneEventRestReady())
         this.battle.team = this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id);
       this.save(); this.onChange(); return true;
     }
-    const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
+    const c = this.crew.find(x => x.k === k && !x.self);
     if (!c) return false;
     this.party ||= { members:[], guard:false };
     const i = this.party.members.indexOf(k);
     if (i >= 0) this.party.members.splice(i, 1);
-    else { if (this.party.members.length >= this.teamLimits.normalTeamMax) return false; this.party.members.push(k); }
+    else { if (this.party.members.length >= this.partyMax()) return false; this.party.members.push(k); }
     // ทีมต่อสู้เป็นเพียงรายชื่อเรียกเข้าฉากสู้ งานและตำแหน่งบนแผนที่ไม่เปลี่ยน
     this.save(); this.onChange(); return true;
   },
@@ -2576,14 +2598,14 @@ const API = {
 
   /** เลือกยมทูตเข้าทีมชายแดน (สูงสุดสองคน) */
   setFrontierTeam(k) {
-    const c = this.crew.find(x => x.k === k && !x.reader && !x.self);
+    const c = this.crew.find(x => x.k === k && !x.self);
     if (!c) return false;
     const state = this.frontierOf();
     const team = state.team;
     const i = team.indexOf(k);
     if (i >= 0) team.splice(i, 1);
     else {
-      if (team.length >= FRONTIER.teamMax) return false;
+      if (team.length >= this.partyMax()) return false;
       team.push(k);
     }
     this.save(); this.onChange();
@@ -2618,7 +2640,7 @@ const API = {
       talk:`${kind.name}ฝ่าประตูชายแดนเข้ามา ${kind.line || ''}`.trim(),
     };
     prepareBattle(this.battle, hp);
-    this.onChange();
+    this.prepareEncounter(); this.onChange();
     return this.battle;
   },
 
@@ -2687,7 +2709,7 @@ const API = {
     }
     prepareBattle(this.battle, hp - (this.miniGoals[z.k]?.earned ? 24 : 0), hp);
     this.battle.foes[0].boss = true;
-    this.onChange();
+    this.prepareEncounter(); this.onChange();
     return this.battle;
   },
 
@@ -2773,7 +2795,7 @@ const API = {
       dmg: null,
     };
     prepareBattle(this.battle, YAMA_FIGHT.hp);
-    this.onChange();
+    this.prepareEncounter(); this.onChange();
     return this.battle;
   },
 
@@ -2892,7 +2914,7 @@ const API = {
     }
     if (key === 'cyberRescue') (this.devaVisits.cyberhell ||= {}).phase = 'fighting';
     if (key === 'westDevaTest') (this.devaVisits.west ||= {}).phase = 'fighting';
-    this.save(); this.onChange(); return this.battle;
+    this.prepareEncounter(); this.save(); this.onChange(); return this.battle;
   },
   // ---------- G3b · ประลองปีศาจชายแดน 10 wave + อาวุธประจำโซน ----------
   // หลังชนะบอสชายแดนในเนื้อเรื่อง บอสโซนนั้นไปยืนในฉากชายแดน (CHALLENGE_STAND) คุยได้ · ชนะครบ 10 wave ได้อาวุธประจำโซน
@@ -2944,7 +2966,7 @@ const API = {
       wave, startWave:wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sub:foes[0].sub, sp:foes[0].sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:t(`challenge.${zone}.invite`), waveGain:{ coin:0, items:{} } });
-    this.save(); this.onChange();
+    this.prepareEncounter(); this.save(); this.onChange();
     return this.battle;
   },
   /** จบหนึ่ง wave ของการประลอง (เรียกตอนตั้ง pendingWave) — จ่ายรางวัลรายระลอกครั้งแรกเท่านั้น · จุดพักบันทึกถาวร */
@@ -3045,13 +3067,14 @@ const API = {
     const clockGroup = id.startsWith('minion:') ? 'minions' : id.startsWith('ruler:') ? 'rulers' : 'boss';
     this.battle = prepareBattle({ kind:'zoneEvent', eventKey:'cyberFinal', encounter:id, zone:this.zone,
       clockUsed:!!s.clockUsedByGroup?.[clockGroup],
+      teamReadyTurn:s.teamCooldownTurns || 0,
       team:this.finalPartyCrew().filter(c => !this.finalTeamWhy(c)).map(c => c.id).slice(0,this.teamLimits.finalTeamMax),
       wave, pendingWave:null, foes, selectedFoeId:foes[0].id, who:foes[0].who, sp:foes[0].sp,
       sub:id.startsWith('minion:') ? `ระลอก ${wave}/4` : '', youHp:Math.max(1,Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:ev.alert.th,
       // API callers and old battles retain their interlude; map choreography marks it seen first.
       storyInterlude:wave === 1 && !s.approachSeen ? 'cyber-approach' : id === 'boss' && !s.duelSeen ? 'cyber-duel' : null });
-    this.persistFinalEvent(); this.onChange(); return this.battle;
+    this.prepareEncounter(); this.persistFinalEvent(); this.onChange(); return this.battle;
   },
   acknowledgeFinalReward() {
     if (this.battle) return false;
@@ -3164,7 +3187,7 @@ const API = {
       who:foe.who, sub:foe.sub, sp:foe.sp,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:t('event.devaTest.alert') });
-    this.save(); this.onChange();
+    this.prepareEncounter(); this.save(); this.onChange();
     return this.battle;
   },
   frontierBreachFoes(wave) {
@@ -3192,7 +3215,7 @@ const API = {
       who:foes[0].who, sp:foes[0].sp, sub:foes[0].sub,
       youHp:Math.max(28, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], dmg:null, talk:t('event.frontierBreach.alert') });
-    this.save(); this.onChange();
+    this.prepareEncounter(); this.save(); this.onChange();
     return this.battle;
   },
   advanceFrontierBreachWave() {
@@ -3227,7 +3250,7 @@ const API = {
     this.battle = prepareBattle({ kind:'prisonBreak', foes, selectedFoeId:foes[0].id,
       who:t('event.prisonBreak.foe'), youHp:Math.max(24, Math.round(this.hp)), youMax:this.hpMax,
       turn:1, over:null, log:[], talk:t('event.prisonBreak.alert'), dmg:null });
-    this.save(); this.onChange();
+    this.prepareEncounter(); this.save(); this.onChange();
     return this.battle;
   },
   selectFoe(id) {
@@ -3242,7 +3265,7 @@ const API = {
   /** ยมทูตที่เรียกมาช่วยในฉากต่อสู้ได้ — คืนทุกคนเสมอ (ยังไม่ปลดล็อกก็โชว์ปุ่มไว้ให้เห็น
    *  ว่ามีของแบบนี้อยู่ · เจ้าของ 10 ก.ย. 2569 นึกว่าไม่มีปุ่มนี้ในฉากสู้กับวิญญาณ) */
   crewHelpers() {
-    return this.crew.filter(c => !c.reader && !c.self && actorStanding(c));
+    return this.crew.filter(c => !c.self && actorStanding(c));
   },
   battleCrew() {
     if (isFrontierDuoBattle(this.battle)) {
@@ -3251,8 +3274,8 @@ const API = {
     }
     const keys = this.battle?.team || this.party?.members || [];
     if (this.isFinalBattle()) return teamIds(keys, this.roster, this.zone)
-      .map(id => this.roster[id]).filter(c => actorStanding(c) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.teamLimits.finalTeamMax);
-    return this.crewHelpers().filter(c => keys.includes(c.k) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.teamLimits.normalTeamMax);
+      .map(id => this.roster[id]).filter(c => actorStanding(c) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.partyMax());
+    return this.crewHelpers().filter(c => keys.includes(c.k) && !(this.battle?.absentActors || []).includes(c.id)).slice(0, this.partyMax());
   },
   crewCooldown(c, now = Date.now()) {
     return Math.ceil((c?.helpRemainingMs || 0) / 1000);
@@ -3286,6 +3309,7 @@ const API = {
   battleTimeline() { return combatTimeline(this); },
   currentBattleTurn() { return activeCombatUnit(this); },
   beginBattleTurns() {
+    this.prepareEncounter();
     const turn=activeCombatUnit(this);
     if(turn?.side==='ally'&&!this.battle.commandBusy&&!this.battle.turnAction) {
       this.battle.actorId=turn.id;
@@ -3345,12 +3369,12 @@ const API = {
     let ok;try {ok=this.battleAct(what, { actorId, recipientId });} finally {delete b.initiativeAction;}
     if(!ok)return false;
     if(turn)b.turnAction={...turn};
-    b.commandBusy = true; b.command = null; return true;
+    b.commandBusy = true; b.command = null; if (this.isFinalBattle(b)) this.save(); return true;
   },
   finishBattleCommand() {
     if (this.battle) {
       const b=this.battle;b.commandBusy=false;
-      if(b.turnAction){completeCombatTurn(this,b.turnAction);delete b.turnAction;}
+      if(b.turnAction){completeCombatTurn(this,b.turnAction);delete b.turnAction; if (this.isFinalBattle(b)) this.save();}
       if(b.turnQueue)this.beginBattleTurns();
     }
   },
@@ -3365,10 +3389,13 @@ const API = {
     const actor = command && this.battleActors().find(c => c.id === command.actorId);
     const recipient = command && this.battleActors().find(c => c.id === command.recipientId);
     if (command && !actor && !enemyOnly) return false;
+    const newSkill = COMBAT_SKILLS[what];
+    const skillActor = actor || (what === 'teamJudgment' ? this.battleActors()[0] : this.battleActors().find(a => a.k === newSkill?.actor));
+    if (newSkill && this.skillWhy(what, skillActor)) return false;
     const itemCommand = command && (what === 'food' || ITEMS[what]?.consumable);
     if (itemCommand && this.battleRecipientWhy(what, command.recipientId)) return false;
     if (command && !enemyOnly && actor.id === 'you' && (what === 'guard' || what.startsWith('crew:'))) return false;
-    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
+    if (command && !enemyOnly && actor.id !== 'you' && !itemCommand && what !== 'cooldownClock' && what !== 'defend' && what !== 'flee' && what !== 'strike' && what !== 'atk' && !newSkill && what !== (actor.k === 'guard' ? 'guard' : 'crew:' + (this.isFinalBattle() ? actor.id : actor.k))) return false;
     if (command && what === 'atk' && actor.id !== 'you') return false;
     if (command && !enemyOnly && ['boon','nira'].includes(actor.k) && what.startsWith('crew:') && (!recipient || (recipient.id === 'you' ? B.youHp >= B.youMax : recipient.morale >= 100))) return false;
     if (yamaSkillRemaining(B, what)) return false;
@@ -3413,7 +3440,30 @@ const API = {
     let affected=[];
     if(!enemyOnly) {
     if(what==='flee') {B.over='flee';B.talk='ทีมถอนตัวกลับไปตั้งหลัก';this.onChange();return true;}
-    if (what === 'defend' && actor) {
+    if (what === 'teamJudgment') {
+      this.mp -= newSkill.mp;
+      B.teamReadyTurn = (B.actorTurns?.you || 0) + newSkill.turns;
+      B.comboHits = applyCombo(B, teamCombo(this));
+      B.dmg.comboHits = B.comboHits;
+      B.talk = newSkill.name;
+    } else if (newSkill) {
+      const c = skillActor, effect = skillEffect(this, c, what);
+      const receiver = recipient || { id:'you' };
+      if (newSkill.heal && !this.battleActors().some(a => a.id === receiver.id)) return false;
+      c.helpReadyAt = 0; c.helpRemainingMs = 120000; c.helpCooldownSeconds = 120;
+      c.morale = Math.max(0, c.morale - newSkill.morale);
+      B.helper = { ...c, at:Date.now(), lunge:!!newSkill.damage && c.k !== 'plerng', pose:newSkill.heal ? 'heal' : undefined };
+      if (newSkill.heal) {
+        const heal = Math.max(0, Math.min(effect.heal, receiver.id === 'you' ? B.youMax - B.youHp : 100 - receiver.morale));
+        if (receiver.id === 'you') B.youHp += heal; else receiver.morale += heal;
+        grantProtection(B, receiver.id, effect);
+        if (receiver.id === c.id) B.protection[receiver.id].expires++;
+        B.dmg.healActorId = receiver.id; B.dmg.healAmount = heal;
+      } else dmg = c.k === 'plerng' ? this.controlledFireDamage(effect.damage, c) : effect.damage;
+      B.talk = newSkill.name;
+      if (!c.morale) this.downActor(c);
+      this.save();
+    } else if (what === 'defend' && actor) {
       (B.defending ||= {})[actor.id]=true;
       B.talk=`${actor.name || 'ยมบาทน้อย'}ตั้งรับ — ลดความเสียหายจนถึงเทิร์นถัดไป`;
     } else if (what === 'strike' && actor && actor.id!=='you') {
@@ -3472,7 +3522,7 @@ const API = {
     } else if (what === 'guard') {
       // ข้อ C คุณเป้ 25 ก.ย. 2569 — ยักษ์ทวารบาลเข้าช่วยตีได้เองถ้าจ้างไว้แล้ว ไม่กินโควตาทีมยมทูต
       if (this.guardHelpWhy()) return false;
-      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = GUARD.helpCdMs;
+      this.guard.helpReadyAt = 0; this.guard.helpRemainingMs = GUARD.helpCdMs; this.guard.helpCooldownSeconds = GUARD.helpCdMs / 1000;
       this.guard.morale = Math.max(0, this.guard.morale - GUARD.helpMorale);
       if (!this.guard.morale) this.downActor(this.guard);
       B.helper = { k: 'guard', name: GUARD.name, at: Date.now(), lunge: true };
@@ -3570,6 +3620,7 @@ const API = {
 
       say(`🔥 พลังบ้าคลั่งเพิ่มความเสียหายเป็น ${dmg} หน่วย (เหลือ ${B.rageTurns} ครั้ง)`);
     }
+    if (dmg > 0) dmg = attackBuff(B, (actor || skillActor)?.id || 'you', dmg);
     // G3b — เพดานรวมเมื่อซ้อนคริ/rage แล้วค่อยคิดผลพิเศษจากดาเมจจริงที่เข้าเป้า
     let hit = null;
     if (swing && what === 'atk' && this.weapons?.equipped) {
@@ -3590,7 +3641,7 @@ const API = {
       }
     }
     // ไฟที่ติดมาจากตาก่อนหน้าลวกต่อ (ตาที่เพิ่งติดไฟยังไม่ลวกในตานี้) · ติดไฟใหม่จากฟาดนี้
-    const burns = B.initiativeAction ? [] : this.tickFoeBurn(B, target, hit?.burn || null);
+    const burns = B.initiativeAction || what === 'teamJudgment' ? [] : this.tickFoeBurn(B, target, hit?.burn || null);
     if(B.initiativeAction&&hit?.burn&&target.hp>0)target.burn={...hit.burn};
     if (burns.length) B.weaponNote = { k:'burn', n:burns.reduce((a, x) => a + x.damage, 0), hits:burns };
     if (hit?.burn && target.hp > 0) B.weaponNote = { k:'ignite', n:hit.burn.dmg, turns:hit.burn.turns };
@@ -3598,12 +3649,12 @@ const API = {
       B.youHp += hit.heal; B.weaponNote = { k:'drain', n:hit.heal };
       say(`🩸 ดาบดูดเลือด — ฟื้นบารมี ${hit.heal}`);
     }
-    B.weaponCd = weaponProc ? WEAPON_EFFECT_COOLDOWN : Math.max(0, weaponCdStart - 1);
+    B.weaponCd = what === 'teamJudgment' ? weaponCdStart : weaponProc ? WEAPON_EFFECT_COOLDOWN : Math.max(0, weaponCdStart - 1);
     B.dmg.area=areaAttack;
-    B.dmg.foe = dmg;
+    B.dmg.foe = what === 'teamJudgment' ? B.comboHits.reduce((n,h) => n + h.dealt,0) : dmg;
     B.dmg.crit = !!(swing && what === 'atk' && swing.crit);   // M2: display only — picks the cross-slash + CRITICAL label
     B.dmg.foeId = target.id;
-    B.dmg.foeHits = affected.map(f => ({ id:f.id, damage:dmg }));
+    B.dmg.foeHits = what === 'teamJudgment' ? B.comboHits.filter(h => h.foeId).map(h => ({ id:h.foeId, damage:h.dealt })) : affected.map(f => ({ id:f.id, damage:dmg }));
     if (dmg > 0) talk(dmg >= 26 ? 'crit' : target.hp <= target.maxHp * 0.3 ? 'low' : 'hurt');
     // ภาพนิ่งของ "ตอนจบตาเรา แต่เขายังไม่สวน" — ui เอาไปเล่นเป็นจังหวะแรก
     // เดิมเลือดสองฝั่งลดพร้อมกันในเฟรมเดียว เจ้าของบอกว่าดูแปลก (8 ก.ย. 2569)
@@ -3646,6 +3697,12 @@ const API = {
       } else if (B.kind === 'frontierBreach') {
         const event = ZONE_EVENTS.th[1];
         this.zoneEvents.th.frontierBreach = 'cleared';
+        this.abilities.teamJudgment = true;
+        if (!this.guard) {
+          this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'th', 'guard');
+          syncRoster(this);
+        }
+        this.queueStory('c1-guard-arrival');
         this.abilities.bigFire = true;
         this.queueStory('frontier-power', 'bigFire');
         const item = pick(FRONTIER.drops);
@@ -3925,8 +3982,9 @@ const API = {
       B.dmg.hitActors = [];
       for (const victim of victims) {
         const guarded=!!B.defending?.[victim.id];
-        const damage=guarded?Math.max(1,Math.round(d*DEFEND_DAMAGE_RATIO)):d;
-        B.dmg.enemyHits.push({id:victim.id,damage,...(guarded?{reduced:true,before:d}:{})});
+        const afterDefend=guarded?Math.max(1,Math.round(d*DEFEND_DAMAGE_RATIO)):d;
+        const { damage, absorbed } = absorbShield(B, victim.id, afterDefend);
+        B.dmg.enemyHits.push({id:victim.id,damage,absorbed,...(guarded?{reduced:true,before:d}:{})});
         if(guarded){B.dmg.guarded=true;say(`🛡️ ${victim.actor?.name||'ยมบาทน้อย'}ตั้งรับไว้ — ความเสียหายลดจาก ${d} เหลือ ${damage}`);}
         if (victim.actor) B.dmg.hitActors.push({...victim.actor});
         if (victim.id === 'you') { B.youHp = Math.max(0, B.youHp - damage); B.dmg.you = damage; }
@@ -5082,7 +5140,7 @@ API.restore = function (d) {
   this.dadFight = d.dadFight || false;
   this.pendingDadPunish = d.pendingDadPunish || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
-  if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.bigFire = true;
+  if (this.zoneEvents.th?.frontierBreach === 'cleared') { this.abilities.bigFire = true; this.abilities.teamJudgment = true; }
   if (legacyBossGate) {
     Object.assign((this.zoneEvents.th ||= {}),
       { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });
@@ -5115,7 +5173,7 @@ API.restore = function (d) {
   if (!this.frontier.zones) this.frontier = { zones:{ th:{ clears:this.frontier.clears || 0, team:this.frontier.team || [] } } };
   this.party = d.party || { members:[], guard:false };
   this.party.members = teamKeys(this.party.members, this.roster, this.zone);
-  this.party.finalMembers = teamIds(this.party.finalMembers, this.roster, this.zone).slice(0, this.teamLimits.finalTeamMax);
+  this.party.finalMembers = teamIds(this.party.finalMembers, this.roster, this.zone);
   for (const [zone, state] of Object.entries(this.frontier.zones)) state.team = teamKeys(state.team, this.roster, zone);
   // ชุดที่ 10 (ข้อ C1) — party.guard (โหมด "ยักษ์เดินตาม") ถูกตัดออกแล้ว เหลือ field ไว้เฉย ๆ
   // กันเซฟเก่าพัง (ไม่มีใครอ่านค่านี้อีกต่อไป) บังคับเป็น false เสมอไม่ให้มีทางเหลือค้างจากเซฟเก่า
@@ -5250,7 +5308,11 @@ API.restore = function (d) {
   initializeBossJustice(this,d.bossJustice);
   this.finalEvent = migrateFinalEvent(d);
   this.pendingReward = this.finalEvent.pendingReward;
+  if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.teamJudgment = true;
   this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
+  if (this.battle && !this.battle.balance) this.battle.balance = { wave:this.battle.wave || 0, partySize:this.battleActors().length, migrated:true };
+  if (this.battle?.turnAction) this.finishBattleCommand();
+  else if (this.battle) this.battle.commandBusy = false;
   if (this.battle?.clockUsed && this.battle.encounter) {
     const id = this.battle.encounter;
     const group = id.startsWith('minion:') ? 'minions' : id.startsWith('ruler:') ? 'rulers' : 'boss';

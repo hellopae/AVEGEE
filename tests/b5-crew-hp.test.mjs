@@ -51,13 +51,13 @@ test('Yama loss stages persist through return, sleep, Nira wake; spare heart pre
  const h=battle();h.inventory.spareHeart=1;h.battle.youHp=1;const old=Math.random;Math.random=()=>0;
  try{h.battleAct('atk');}finally{Math.random=old;}assert.equal(h.battle.over,null);assert.ok(h.battle.youHp>0);assert.equal(h.inventory.spareHeart,undefined);
 });
-test('six final actors retain distinct HP and CD; cooldown stops paused/hidden and survives reload',()=>{
+test('five selected final helpers retain distinct HP and CD; cooldown stops paused/hidden and survives reload',()=>{
  const g=game();g.restore(JSON.parse(readFileSync(new URL('./fixtures/b1-v3.json',import.meta.url))));
  const ids=['th:taan','asia:taan','west:taan','cyberhell:taan','th:kan','west:boon'];
  g.zone='cyberhell';g.party.finalMembers=ids;
  g.battle={kind:'zoneEvent',eventKey:'cyberFinal',encounter:'ruler:th',team:ids};
  for(const id of ids){g.roster[id].morale=92;g.roster[id].recoverUntil=0;g.roster[id].helpRemainingMs=15000;}
- assert.equal(g.battleCrew().length,6);g.paused=true;g.advanceBattleTime(3000);assert.equal(g.roster[ids[0]].helpRemainingMs,15000);
+ assert.equal(g.battleCrew().length,5);g.paused=true;g.advanceBattleTime(3000);assert.equal(g.roster[ids[0]].helpRemainingMs,15000);
  g.paused=false;g.advanceBattleTime(3000);assert.equal(g.roster[ids[0]].helpRemainingMs,12000);
  const prev=globalThis.document;globalThis.document={hidden:true};try{g.advanceBattleTime(3000);}finally{globalThis.document=prev;}
  assert.equal(g.roster[ids[0]].helpRemainingMs,12000);

@@ -4,6 +4,7 @@ import {createGame} from '../src/game.js';
 import {BATTLE} from '../src/data.js';
 function fight(hp=100) {
  const g=createGame();g.save=()=>true;g.onChange=()=>{};
+ g.enemyTarget=()=>({id:'you'}); // Counter tests observe Yama even with C1's default companions.
  g.startBattle({id:700,name:'คู่ซ้อม',who:'คู่ซ้อม',sp:1,deserved:20});
  g.battle.foes=[0,1,2].map(i=>({id:`foe-${i}`,hp,maxHp:hp,atk:[7+i,7+i],stun:0,confuse:0,who:`คู่ซ้อม ${i}`,sp:1}));
  g.battle.selectedFoeId='foe-1';g.battle.counterIndex=0;

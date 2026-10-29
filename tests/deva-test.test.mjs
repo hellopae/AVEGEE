@@ -36,6 +36,7 @@ test('the zone-one border boss waits for deva and frontier events', () => {
 test('a failed deva test can be retried, and an active save restarts the test', () => {
   const g = ready();
   g.startDevaTest().youHp = 1;
+  g.enemyTarget = () => ({id:'you'});
   g.battleAct('atk');
   assert.equal(g.battle.over, 'lose');
   assert.equal(g.hp, 1);

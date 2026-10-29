@@ -6,13 +6,15 @@ import {selectedVisibleFoeId} from '../src/battle-result.js';
 import {battleWeaponHudHtml} from '../src/weapons.js';
 import {ITEMS} from '../src/data.js';
 import {setLang} from '../src/i18n.js';
+import {COMBAT_SKILLS,skillForActor} from '../src/combat-skills.js';
 const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const block=ui.slice(ui.indexOf('    const pending = b.command;'),ui.indexOf("    const selection = '';",ui.indexOf('    const pending = b.command;')));
-const active=(command,{k='you',phase=null,over=false}={})=>vm.runInNewContext(block+'\n({choosingTarget,needsReceiver});',{b:{command,over},actor:{k},isYama:k==='you',special:k==='guard'?'guard':`crew:${k}`,phase,ITEMS});
+const active=(command,{k='you',phase=null,over=false}={})=>vm.runInNewContext(block+'\n({choosingTarget,needsReceiver});',{b:{command,over},actor:{k},isYama:k==='you',special:k==='guard'?'guard':`crew:${k}`,unlockedSkill:skillForActor({k}),phase,ITEMS});
 test('remembered enemy stays unmarked at rest; attacks and AOE ask for confirmation, heals and cancellation do not mark foes',()=>{
  for(const command of [null,'defend','flee','rage','cooldownClock','food','health'])assert.equal(active(command).choosingTarget,false,command);
  for(const command of ['atk','fire','ice','hypno','strike','crew:taan','guard'])assert.equal(active(command).choosingTarget,true,command);
  for(const k of ['boon','nira']){assert.equal(active(`crew:${k}`,{k}).choosingTarget,false);assert.equal(active(`crew:${k}`,{k}).needsReceiver,true);}
+ for(const k of ['boon','nira']){const skill=skillForActor({k});assert.equal(active(skill,{k}).choosingTarget,false);assert.equal(active(skill,{k}).needsReceiver,true);}
  assert.equal(active('atk',{phase:'you'}).choosingTarget,false);assert.equal(active('atk',{over:'win'}).choosingTarget,false);
  const b={selectedFoeId:'a',foes:[{id:'a',hp:0},{id:'b',hp:12}]},before=JSON.stringify(b);
  assert.equal(selectedVisibleFoeId(b),null);assert.equal(selectedVisibleFoeId({...b,choosingTarget:true}),'b');assert.equal(JSON.stringify(b),before);
@@ -38,7 +40,7 @@ test('UI-JW renders the sword details beside Yama inside his team card, outside 
  let html='';
  vm.runInNewContext(ui.slice(start,end),{
   stage:{insertAdjacentHTML:(_,value)=>{html=value;}},b:{},view:{youHp:80,youMax:100,foes:[]},
-  g:{weapons:{equipped:'fang'},mpMax:20},mp:10,team:[],HERO_NAME:'Yama',
+  g:{weapons:{equipped:'fang'},mpMax:20,abilities:{},teamJudgmentRemaining:()=>0},mp:10,team:[],HERO_NAME:'Yama',COMBAT_SKILLS,
   battleTurnOrderHtml:()=>'',battleWeaponHudHtml,esc:String,t:String,artUrl:()=>'',meter:()=>'',
  });
  const stack=[];let parent=null,yamaParent=null;
