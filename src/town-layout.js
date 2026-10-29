@@ -82,6 +82,8 @@ export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,117
 // Only the pavement is opened: the west edge stays 12 units clear of the cauldron's masked footprint (x <= 570), the cauldron
 // body itself is still solid through the station blocks, and torch/prop colliders still apply.
 export const TOWN_CAULDRON_COURT = [[582,412],[686,412],[696,444],[696,492],[712,502],[712,596],[516,596],[516,560],[582,556]];
+const PATCH_POLYS=[TOWN_UPPER_BRIDGE_STAIRS,TOWN_UPPER_BRIDGE_LANDING,TOWN_LAVA_STAIRS,TOWN_LAVA_STAIR_LANDING,TOWN_LAVA_LOWER_ROAD,TOWN_CAULDRON_COURT]
+  .map(points=>({points,x1:Math.min(...points.map(p=>p[0])),y1:Math.min(...points.map(p=>p[1])),x2:Math.max(...points.map(p=>p[0])),y2:Math.max(...points.map(p=>p[1]))}));
 // Rebuilt by applyTownZoneLayout when a zone moves a station / spot (the array itself is never replaced).
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
@@ -97,9 +99,8 @@ export const townFloorAt = (x,y) => {
   // in the reference screenshot; it is UI, not a terrain barrier.
   if(x>=1620&&x<=1730&&y>=1508&&y<=1560)return true;
   if(interactionPads.some(s=>(x-s.x)**2+(y-s.y)**2<48**2))return true;
-  if(usePatches&&(townInPolygon(x,y,TOWN_UPPER_BRIDGE_STAIRS)||townInPolygon(x,y,TOWN_UPPER_BRIDGE_LANDING)
-    ||townInPolygon(x,y,TOWN_LAVA_STAIRS)||townInPolygon(x,y,TOWN_LAVA_STAIR_LANDING)
-    ||townInPolygon(x,y,TOWN_LAVA_LOWER_ROAD)||townInPolygon(x,y,TOWN_CAULDRON_COURT)))return true;
+  // LOAD-01b: a point outside a polygon's bounding box can be neither inside nor on its edge, so skip the exact test there.
+  if(usePatches&&PATCH_POLYS.some(q=>x>=q.x1&&x<=q.x2&&y>=q.y1&&y<=q.y2&&townInPolygon(x,y,q.points)))return true;
   return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
 };
 // Landmarks that must stay connected to the plaza (stairs, bridges, dock); checked by tests.
