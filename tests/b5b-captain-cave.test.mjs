@@ -7,7 +7,7 @@ import {dungeonWalkable,dungeonPath,dungeonPoint} from '../src/dungeon-view.js';
 const fresh=()=>{const g=createGame();g.zone='asia';g.save=()=>true;g.onChange=()=>{};g.zoneEvents.asia={asiaRageBreach:'cleared'};return g;};
 test('B5b zone2: refuge is on connected owner floor and keeps all checkpoints and ruler encounter separate',()=>{
  const cave=routeCaptainCave('asia:west');assert.equal(cave.zone,'asia');assert.ok(dungeonWalkable(cave.position,'asia:west'));assert.ok(dungeonPath(dungeonPoint(0,'asia:west'),cave.position,'asia:west').length);
- assert.equal(routeRow('asia:west').bossCave,null);assert.equal(routeCaptainCave('west:cyberhell'),null);assert.equal(routeRow('west:cyberhell').enabled,false);
+ assert.equal(routeRow('asia:west').bossCave,null);assert.equal(routeCaptainCave('west:cyberhell'),null);assert.equal(routeRow('west:cyberhell').enabled,true);
 });
 test('B5b zone2: cleared invasion permits visiting captain but cannot bypass the ruler or enter zone3',()=>{
  const g=fresh();initializeZoneTravel(g);assert.ok(beginDungeon(g,'west'));

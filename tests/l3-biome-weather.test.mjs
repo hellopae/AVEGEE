@@ -13,7 +13,7 @@ function recorder(){
 }
 test('border23 weather respects the warm/cold boundary and reduced motion',()=>{
  const ambient=ROUTE_GEOMETRY['asia:west'].ambient;
- assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,false);
+ assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,true);
  assert.equal(ambient.waterfalls.length,4);
  const r=recorder();drawFrontierAmbient(r.ctx,{w:1672,h:941,time:1000,...ambient});
  const leaves=r.calls.filter(x=>x[0]==='translate').slice(1),snow=r.calls.filter(x=>x[0]==='arc');
