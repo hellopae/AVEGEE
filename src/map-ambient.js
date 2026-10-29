@@ -178,11 +178,12 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
 
 // Shared town/frontier weather. Stored independently of game saves, like audio preferences.
 let weatherOn = true;
-try { weatherOn = globalThis.localStorage?.getItem('avegee.weather') !== 'off'; } catch {}
+const weatherStore = () => globalThis.window?.localStorage ?? globalThis.localStorage;
+try { weatherOn = weatherStore()?.getItem('avegee.weather') !== 'off'; } catch {}
 export const weatherEnabled = () => weatherOn;
 export function setWeatherEnabled(on) {
   weatherOn = !!on;
-  try { globalThis.localStorage?.setItem('avegee.weather', on ? 'on' : 'off'); } catch {}
+  try { weatherStore()?.setItem('avegee.weather', on ? 'on' : 'off'); } catch {}
 }
 export function biomeBudget(ctx, W, H, maximum = 160) {
   const canvas = ctx?.canvas;
@@ -197,7 +198,10 @@ export function stormFlash(time, reduced = false) {
   const phase = mod(time, 9000);
   return phase < 100 ? .055 * (1 - phase / 100) : 0;
 }
-export function ambientParticles(zone, time, W, H, count = zone === 'west' ? 160 : zone === 'cyberhell' ? 130 : zone === 'asia' ? 20 : 30) {
+export function ambientParticles(zone, time, W, H, limit = null) {
+  const base = zone === 'west' ? 160 : zone === 'cyberhell' ? 130 : zone === 'asia' ? 20 : 30;
+  // `limit` is a particle count, or a CSS viewport {width,height,dpr} (WEATHER-A) that caps the count by screen size.
+  const count = typeof limit === 'number' ? limit : limit ? Math.min(base, weatherBudget(limit) * 2) : base;
   const t=time/1000;
   return Array.from({length:count},(_,i)=>{
     const rain=zone==='cyberhell';

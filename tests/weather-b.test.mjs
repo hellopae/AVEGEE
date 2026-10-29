@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {stormFlash,weatherBudget,drawBiomeWeather,setWeatherEnabled,weatherEnabled} from '../src/map-ambient.js';
+import {stormFlash,biomeBudget,drawBiomeWeather,setWeatherEnabled,weatherEnabled} from '../src/map-ambient.js';
 import {drawFrontierAmbient} from '../src/frontier-ambient.js';
 import {ROUTE_GEOMETRY} from '../src/route-geometry.js';
 import {createFlowEngine,seedFlow} from '../src/town-flow.js';
@@ -21,8 +21,8 @@ test('WEATHER-B flash has one short monotonic pulse per nine seconds; no flash u
 test('WEATHER-B budgets shrink with viewport/DPR; settings and reduced motion stop all weather',()=>{
  const old=globalThis.devicePixelRatio;
  try{
-  globalThis.devicePixelRatio=1;const desktop=weatherBudget({canvas:{width:1440,height:900}},3840,2560);
-  globalThis.devicePixelRatio=2;const mobile=weatherBudget({canvas:{width:780,height:1688}},3840,2560);
+  globalThis.devicePixelRatio=1;const desktop=biomeBudget({canvas:{width:1440,height:900}},3840,2560);
+  globalThis.devicePixelRatio=2;const mobile=biomeBudget({canvas:{width:780,height:1688}},3840,2560);
   assert.ok(mobile<desktop&&mobile<=50);assert.equal(desktop,160);
   for(const zone of ['west','cyberhell']){
    const a=record();drawBiomeWeather(a.ctx,zone,9000,1678,937,true);assert.equal(a.calls.length,0);
