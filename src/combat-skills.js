@@ -3,14 +3,14 @@ import { actorTraining, effectiveAllyStats } from './progression.js';
 
 // C1: identity is the roster ID, never a localized name or a kind shared by branches.
 export const COMBAT_SKILLS = Object.freeze({
-  copperInferno:{ actor:'plerng', station:'krata', name:'เพลิงอาญาทองแดง', damage:1.4, morale:6 },
-  mercySeal:{ actor:'nira', station:'sawan', name:'ตราเมตตาพิทักษ์', heal:1.5, shield:18, cap:36, buff:.15, morale:6 },
-  lotusSanctuary:{ actor:'boon', station:'sawan', name:'บัวบุญคุ้มชีพ', heal:1.3, shield:24, cap:48, buff:.2, morale:6 },
-  laborJudgment:{ actor:'taan', station:'lan', name:'กระบองพิพากษาหินผา', damage:1.45, morale:6 },
-  shadowCleaver:{ actor:'dam', station:'lan', name:'คมเงาทลายตรวน', damage:1.45, morale:6 },
-  abyssGatebreaker:{ actor:'guard', station:'lokan', name:'ทวารบาลทลายโลกันต์', damage:1.3, morale:8 },
-  karmaFracture:{ actor:'kan', station:'krajok', name:'กระจกกรรมสะท้อนคม', base:28, morale:6 },
-  teamJudgment:{ actor:'yama', name:'บัญชาการยมทูตประสานพิพากษา', mp:24, turns:5 },
+  copperInferno:{ chipParts:['เพลิงอาญา','ทองแดง'], actor:'plerng', station:'krata', name:'เพลิงอาญาทองแดง', damage:1.4, morale:6 },
+  mercySeal:{ chipParts:['ตราเมตตา','พิทักษ์'], actor:'nira', station:'sawan', name:'ตราเมตตาพิทักษ์', heal:1.5, shield:18, cap:36, buff:.15, morale:6 },
+  lotusSanctuary:{ chipParts:['บัวบุญ','คุ้มชีพ'], actor:'boon', station:'sawan', name:'บัวบุญคุ้มชีพ', heal:1.3, shield:24, cap:48, buff:.2, morale:6 },
+  laborJudgment:{ chipParts:['กระบอง','พิพากษา','หินผา'], actor:'taan', station:'lan', name:'กระบองพิพากษาหินผา', damage:1.45, morale:6 },
+  shadowCleaver:{ chipParts:['คมเงา','ทลายตรวน'], actor:'dam', station:'lan', name:'คมเงาทลายตรวน', damage:1.45, morale:6 },
+  abyssGatebreaker:{ chipParts:['ทวารบาล','ทลาย','โลกันต์'], actor:'guard', station:'lokan', name:'ทวารบาลทลายโลกันต์', damage:1.3, morale:8 },
+  karmaFracture:{ chipParts:['กระจกกรรม','สะท้อนคม'], actor:'kan', station:'krajok', name:'กระจกกรรมสะท้อนคม', base:28, morale:6 },
+  teamJudgment:{ chipParts:['ประสาน','พิพากษา'], actor:'yama', name:'บัญชาการยมทูตประสานพิพากษา', shortName:'ประสานพิพากษา', mp:24, turns:5 },
 });
 export const skillForActor = actor => Object.keys(COMBAT_SKILLS).find(k => COMBAT_SKILLS[k].actor === (actor?.kind || actor?.k));
 export const skillUnlocked = (game, actor, skill = skillForActor(actor)) => !!skill && !!actorTraining(game.training, actor, game.zone).moves?.[skill]?.unlocked;

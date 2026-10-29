@@ -1,0 +1,57 @@
+(node:62515) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors (22.591126ms)
+✔ BALANCE-2 tutor keeps the exact approved sentence; intro and help disclose back-line support (1.335246ms)
+✖ BALANCE-2 every new move renders an unclipped-name row, ultimate chip short name and full tooltip/manual (3.919027ms)
+✔ BALANCE-2 enemy scaling freezes the initial party count and does not rescale an ongoing/restored wave (0.553017ms)
+✔ BALANCE-2 changed runtime modules share release identities; stylesheet is versioned (21.216966ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 499.174901
+
+✖ failing tests:
+
+test at tests/balance2.test.mjs:19:1
+✖ BALANCE-2 new-game office buttons really remove and restore taan+nira without moving map actors (22.591126ms)
+  evalmachine.<anonymous>:39
+      cardList.push({ rank: hireRank('guard'), html: `<article class="shop-card${nextHire === 'guard' ? ' hire-recommended' : ''}">
+                                                                                          ^
+  
+  ReferenceError: artUrl is not defined
+      at paint (evalmachine.<anonymous>:39:89)
+      at openNiraOffice (evalmachine.<anonymous>:62:3)
+      at evalmachine.<anonymous>:79:1
+      at Script.runInContext (node:vm:150:12)
+      at Object.runInContext (node:vm:302:6)
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T180811Z-34ba1b0c/tests/balance2.test.mjs:31:6)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests/balance2.test.mjs:46:1
+✖ BALANCE-2 every new move renders an unclipped-name row, ultimate chip short name and full tooltip/manual (3.919027ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /[.…]/. Input:
+  
+  '<button class="orb-choice combat-skill-choice" data-base-ready="true" data-act="copperInferno" \n' +
+    '      title="เพลิงอาญาทองแดง · ready"><img src="img/icon.png" alt=""><b>เพลิงอาญาทองแดง</b><i>ready</i></button>'
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T180811Z-34ba1b0c/tests/balance2.test.mjs:53:68)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '<button class="orb-choice combat-skill-choice" data-base-ready="true" data-act="copperInferno" \n      title="เพลิงอาญาทองแดง · ready"><img src="img/icon.png" alt=""><b>เพลิงอาญาทองแดง</b><i>ready</i></button>',
+    expected: /[.…]/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

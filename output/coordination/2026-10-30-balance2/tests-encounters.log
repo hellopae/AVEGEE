@@ -1,0 +1,90 @@
+(node:67102) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B7 uses top/right/bottom Yama petals and top/right crew or Guard petals (14.549615ms)
+✔ B7 petal files are registered manually in the manifest (1.727825ms)
+(node:67103) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approved balance constants (3.460172ms)
+✔ every dossier deserves 1–5 terms and Thai level-five share falls (3.043297ms)
+✔ over by two costs 56 ked points (33.403249ms)
+✔ matching primary sin pays a separate bonus of about 30 percent (6.346235ms)
+✔ case completion pays the total once and names the bonus in the log (876.036146ms)
+✔ hammer and healer earn fairness for their actual positive sin (5.490131ms)
+✔ pending saved cases adopt the simple rule while assigned sentences retain their verdict (37.706211ms)
+(node:67104) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ FOE_SCALE: โซน 1 = ค่าเดิม · โซน 2 < 3 < 4 ทั้ง HP และ ATK ของศัตรูทั่วไป (ชุด 28E: อีเวนต์คูณ HP แล้ว) (6.966771ms)
+✔ ศัตรูที่สร้างจริงใช้ตัวคูณโซน: ผีบนแผนที่ · ชายแดน · วิญญาณขัดขืน โซน 2 < 3 < 4 (91.617179ms)
+✖ บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน (102.667434ms)
+✔ G1 recovery items: prepared parties still win events/bosses; breach benchmark remains winnable (1528.97255ms)
+✔ G1 recovery items: legacy eight-wave benchmark retains preparation sensitivity (892.306688ms)
+✔ น้ำมนต์: พ่อค้านรกขาย · ราคา/ปริมาณสมเหตุสมผลเทียบหีบยา · ใช้เติม MP ได้จริงจากกระเป๋า (4.180954ms)
+✔ น้ำมนต์: ดื่มผ่านกระเป๋าบนแผนที่ระหว่างศึกสุดท้ายและเตรียมศึกบอส แต่ไม่ใช่กลางศึก (23.533769ms)
+✔ สรุปรางวัล: ชนะผีบนแผนที่ → เบี้ยกรรม · EXP · ของที่ตก ตรงกับที่ได้จริง (5.08695ms)
+✔ สรุปรางวัล: แพ้ไม่มี · วิญญาณขัดขืนในห้องไต่สวนไม่เด้ง · บอสที่ปลดพลังใหม่มีพลังในสรุป และคิวเรื่องราวพลังเดิมยังอยู่ (ui เรียงต่อกัน) (12.164365ms)
+✔ สรุปรางวัล: ศึกหลายระลอกสรุปครั้งเดียวตอนจบศึก · ของจากรางวัลอีเวนต์ (หัวใจสำรอง) อยู่ในสรุป (3.940683ms)
+✔ ข้อความหน้าต่างรางวัล/น้ำมนต์/ชื่อพลังมีทั้งไทยและอังกฤษ (1.763307ms)
+✔ น้ำมนต์ดื่มได้กลางศึกทุกประเภท: ผีบนแผนที่ · ชายแดน · อีเวนต์หลายระลอก · บอสโซน · ศึกสุดท้าย · วิญญาณขัดขืน (21.351322ms)
+✔ น้ำมนต์ในวงคำสั่งต่อสู้: มีใน BATTLE.items · ไม่มีอีโมจิ · ค่า MP อ่านจาก ITEMS ที่เดียว (0.486581ms)
+✔ วิญญาณขัดขืนบนแท่นไต่สวน: ชนะแล้วไม่มีสรุปรางวัล และไม่เด้งหน้าต่างรางวัล (คงเดิมตามคุณเป้ 28E) (2.410628ms)
+(node:67105) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ each living ally and enemy gets a distinct turn; commands cannot bypass the active unit (96.27021ms)
+✔ dead foes drop out and every remaining enemy acts once per round (6.163764ms)
+✔ defense lasts through enemy turns, reduces damage and expires on actor next action (7.413286ms)
+✔ queue survives JSON save shape and a new wave starts a fresh round (4.246844ms)
+✔ queued hypnosis redirects each enemy on its own turn, and burns tick only on that enemy turn (117.081313ms)
+✔ retreat cannot skip a dungeon checkpoint or bypass a story boss (3.572675ms)
+(node:67106) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ case eight waits for deva test before frontier breach (59.25032ms)
+✔ two waves keep one battle, heal at transition, and reward after both (44.099881ms)
+✔ loss leaves one authority and retry starts at wave one; active save restores pending (72.932064ms)
+✔ cleared deva save at case eight schedules the breach on load (25.262072ms)
+✔ frontier crew and hired guard use the existing combat powers (6.66839ms)
+✔ battle hypnosis makes the target strike itself, unlike ice stun (27.717584ms)
+✔ a confused foe dying to its own counter queues the next wave (4.475126ms)
+(node:67107) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ G4 item ids: zone variants are gone; every zone shelf sells the same four ids (5.513766ms)
+✔ G4 names: Thai and English names are identical across zones (4 names), from one source (3.643066ms)
+✔ G4 old saves: zone-variant ids merge into the new items, counts add up, nothing lost (inventory, map drops, codex) (100.344068ms)
+✔ G4 Large items: restore 100%, zone 2+ shelf only, ~1.8x price (1.292868ms)
+✔ G4 Large items: buy in zone 2+, refused in the Thai zone, usable by Yama / reaper / Guard / in battle (58.380706ms)
+✔ G4 tea rest for a regular reaper: needs pavilion + HP < 100 + standing; travel, 120 s rest, save/load, full HP, back to post (1087.290409ms)
+✔ G4 tea rest: Guard keeps working through the same method (restGuard alias) and the dialog lists regular reapers too (348.572027ms)
+✔ G4 enemy atk: cyber breach and the final-line waves hit harder than before G4 (1.147371ms)
+✔ G4 weapon cooldown: drain triggers, then rests 3 turns, strike bonus never stops; new battle starts ready (33.171633ms)
+✔ G4 weapon cooldown: nothing happens (and nothing is rolled) while resting, for burn / crit / replay (5.306217ms)
+✔ G4 weapon cooldown is shown on screen: HUD badge + attack button, TH and EN text, effect line mentions it (6.865876ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 46
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3882.745034
+
+✖ failing tests:
+
+test at tests/balance28b.test.mjs:65:1
+✖ บอสทุกตัว HP มากกว่าเดิม · ศัตรูธรรมดาในอีเวนต์ HP ตามตัวคูณโซน (102.667434ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(b.foes[0].maxHp > 200 + n * 35)
+  
+      at TestContext.<anonymous> (file:///Users/agapae/agapae-work/.codex-worktrees/20261029T180811Z-34ba1b0c/tests/balance28b.test.mjs:89:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
