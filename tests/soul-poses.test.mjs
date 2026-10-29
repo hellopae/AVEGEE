@@ -61,6 +61,25 @@ const necessityPairs = [
  ['recruit','recruit','v3'], ['girl','girl','v2'], ['boy','boy','v2'],
  ['sergeant','officer','v2'], ['hammer','elder-woman','v2'], ['healer','worker','v2'],
 ];
+const art2Pairs = [
+ ['pol','officer'], ['gen','officer'], ['nun','woman'], ['novice','woman'],
+ ['star','worker'], ['lord','business'], ['monk','cleric'], ['prophet','cleric'],
+];
+test('ART2 caught lie cases select their original-specific drawing without changing evidence',()=>{
+ for(const [key,name] of art2Pairs){
+  const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
+  const original=`img/Thai/spirit-${name}-th-v2.png`;
+  const expected=`img/soul-poses/${name}-th-caught-lie-v1.png`;
+  const before=structuredClone(s);
+  assert.ok(l,key);
+  assert.equal(soulPoseForPress(g,s,l,original),expected,key);
+  assert.deepEqual(s,before,'selection preserves evidence and justice');
+  assert.equal(soulPoseForPress(g,s,{...l,used:true},original),null,key);
+  assert.equal(soulPoseForPress(g,s,l,original.replace('/Thai/','/Asia/')),null,key);
+  for(const catalog of [{shared:[original],zones:{th:[]}},{shared:[],zones:{th:[original,original]}},{shared:[],zones:{th:[original],asia:[]}}])
+   assert.equal(zoneAssets(catalog,'asia').filter(src=>src===expected).length,1,key);
+ }
+});
 test('all six necessity cases select only an unused plea revealing unknown mitigation',()=>{
  for(const [key,name,version] of necessityPairs){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='plea');

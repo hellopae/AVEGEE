@@ -14,7 +14,10 @@ export const SOUL_POSE_ASSETS = Object.freeze({
   'img/Thai/spirit-girl-th-v2.png': Object.freeze({ necessity:'img/soul-poses/girl-th-necessity-v1.png' }),
   'img/Thai/spirit-boy-th-v2.png': Object.freeze({ necessity:'img/soul-poses/boy-th-necessity-v1.png' }),
   'img/Thai/spirit-elder-woman-th-v2.png': Object.freeze({ necessity:'img/soul-poses/elder-woman-th-necessity-v1.png' }),
-  'img/Thai/spirit-worker-th-v2.png': Object.freeze({ necessity:'img/soul-poses/worker-th-necessity-v1.png' }),
+  'img/Thai/spirit-worker-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/worker-th-caught-lie-v1.png', necessity:'img/soul-poses/worker-th-necessity-v1.png' }),
+  'img/Thai/spirit-woman-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/woman-th-caught-lie-v1.png' }),
+  'img/Thai/spirit-business-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/business-th-caught-lie-v1.png' }),
+  'img/Thai/spirit-cleric-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/cleric-th-caught-lie-v1.png' }),
 });
 export function soulPoseForPress(game, soul, line, baseSrc) {
   if (!soul || !line || line.used || soul.presses <= 0 || soul.back) return null;

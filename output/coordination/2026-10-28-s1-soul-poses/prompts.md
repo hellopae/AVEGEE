@@ -1,5 +1,51 @@
 # Artwork provenance and pending prompts
 
+
+## S1-ART2 actual prompts — 29 October 2026
+
+Built-in `image_gen` only; 4 calls, one per distinct original, no retries, CLI or Shado. Each call supplied the original through `referenced_image_paths` with `transparent_background: true`. Outputs copied byte-for-byte; no resampling, compositing or alpha edits. pol/gen reuse the existing officer drawing. New drawings cover nun/novice, star, lord, monk/prophet. Registry reuse also makes the same original/type available for orchard and hunter/gadget; no additional images generated for those cases.
+
+### woman / caught_lie
+
+Reference: `img/Thai/spirit-woman-th-v2.png`
+
+Saved: `img/soul-poses/woman-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, facial identity, age, hairstyle, costume, accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY facial expression to startled at being caught lying: very wide eyes, raised eyebrows, open shocked mouth, and clearly visible sweat drops at temples and cheeks drawn into the sprite. Sweat is NOT tears; no crying. Keep original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions and bottom ghost-tail anchor exactly aligned with the reference. Keep hands, outfit, objects and tail in their existing positions. Actual transparent RGBA background. No scene, text, new objects, extra people, UI or watermark. One image only. Subject: Thai woman with grey swept updo, gold floral hair ornament and gold earrings, white traditional jacket with gold buttons and belt, grey-gold patterned skirt, dark book held in her hand. Preserve exact feminine face and tail curling right. Canvas 1254 by 1254 pixels.
+```
+
+### worker / caught_lie
+
+Reference: `img/Thai/spirit-worker-th-v2.png`
+
+Saved: `img/soul-poses/worker-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, facial identity, age, hairstyle, costume, accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY facial expression to startled at being caught lying: very wide eyes, raised eyebrows, open shocked mouth, and clearly visible sweat drops at temples and cheeks drawn into the sprite. Sweat is NOT tears; no crying. Keep original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions and bottom ghost-tail anchor exactly aligned with the reference. Keep hands, outfit, objects and tail in their existing positions. Actual transparent RGBA background. No scene, text, new objects, extra people, UI or watermark. One image only. Subject: Older Thai man with swept silver hair, white standing-collar jacket with gold buttons, grey-gold patterned wrapped trousers, dark walking cane with gold fittings. Preserve elderly face, cane and tail curling right. Canvas 1254 by 1254 pixels.
+```
+
+### business / caught_lie
+
+Reference: `img/Thai/spirit-business-th-v2.png`
+
+Saved: `img/soul-poses/business-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, facial identity, age, hairstyle, costume, accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY facial expression to startled at being caught lying: very wide eyes, raised eyebrows, open shocked mouth, and clearly visible sweat drops at temples and cheeks drawn into the sprite. Sweat is NOT tears; no crying. Keep original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions and bottom ghost-tail anchor exactly aligned with the reference. Keep hands, outfit, objects and tail in their existing positions. Actual transparent RGBA background. No scene, text, new objects, extra people, UI or watermark. One image only. Subject: Heavyset Thai man with swept dark hair, thick eyebrows, small moustache, glowing white ghost eyes, white traditional suit, gold chain with amulet, rings and watch, patterned wrapped trousers. Preserve round heavy face, white eyes without new pupils, all jewelry, hands and tail. Canvas 1199 by 1312 pixels.
+```
+
+### cleric / caught_lie
+
+Reference: `img/Thai/spirit-cleric-th-v2.png`
+
+Saved: `img/soul-poses/cleric-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, facial identity, age, hairstyle, costume, accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY facial expression to startled at being caught lying: very wide eyes, raised eyebrows, open shocked mouth, and clearly visible sweat drops at temples and cheeks drawn into the sprite. Sweat is NOT tears; no crying. Keep original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions and bottom ghost-tail anchor exactly aligned with the reference. Keep hands, outfit, objects and tail in their existing positions. Actual transparent RGBA background. No scene, text, new objects, extra people, UI or watermark. One image only. Subject: Elderly bald Thai monk, deeply lined face, grey eyebrows, saffron orange robe, rolled scripture held at left, gold prayer beads in other hand. Preserve elderly identity, robe folds, scripture, beads and existing tail. Canvas 1145 by 1374 pixels.
+```
+
+
 Recovered from run 20261028T164249Z-a6fd375e diff.patch:
 - originals/spirit-officer-th-v2.png (1254×1254 RGBA)
 - originals/spirit-recruit-th-v3.png
