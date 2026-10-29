@@ -69,6 +69,36 @@ const art3Pairs = [
  ['orchard','woman'], ['trader','executive'], ['sister','clerk'],
  ['hunter','business'], ['gadget','business'], ['accountant','executive'], ['heir','executive'],
 ];
+const art4Pairs = [
+ ['A1','cleric'], ['A2','worker'], ['A3','officer'], ['A4','executive'],
+ ['A6','executive'], ['A7','cleric'], ['A8','woman'], ['A9','business'],
+];
+const art5Pairs = [
+ ['A10','business'], ['A12','woman'], ['A14','business'], ['A15','executive'],
+ ['A16','clerk'], ['A17','business'], ['A18','business'], ['A20','business'],
+];
+test('ART4 and ART5 Asia cases select their regional drawing and preload it once without mutating evidence',()=>{
+ for(const [key,name] of [...art4Pairs,...art5Pairs]){
+  const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
+  const original=`img/Asia/spirit-${name}-asia-v2.png`;
+  const expected=`img/soul-poses/${name}-asia-caught-lie-v1.png`;
+  const before=structuredClone(s);
+  assert.ok(l,key);
+  assert.equal(soulPoseForPress(g,s,l,original),expected,key);
+  assert.deepEqual(s,before,'selection preserves evidence and justice');
+  assert.equal(soulPoseForPress(g,s,{...l,used:true},original),null,key);
+  assert.equal(soulPoseForPress(g,{...s,presses:0},l,original),null,key);
+  assert.equal(soulPoseForPress(g,{...s,back:{}},l,original),null,key);
+  assert.equal(soulPoseForPress(g,s,l,original.replace('/Asia/','/West/')),null,key);
+  for(const catalog of [{shared:[original],zones:{asia:[]}},{shared:[],zones:{asia:[original,original]}},{shared:[],zones:{th:[original],asia:[]}}])
+   assert.equal(zoneAssets(catalog,'asia').filter(src=>src===expected).length,1,key);
+ }
+ for(const key of ['A5','A11','A13','A19']){
+  const s=soulFor(key),l=s.lines[0];
+  for(const [,name] of [...art4Pairs,...art5Pairs])
+   assert.equal(soulPoseForPress(createGame(),s,l,`img/Asia/spirit-${name}-asia-v2.png`),null,key);
+ }
+});
 test('ART2 and ART3 caught lie cases select their original-specific drawing without changing evidence',()=>{
  for(const [key,name] of [...art2Pairs,...art3Pairs]){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
