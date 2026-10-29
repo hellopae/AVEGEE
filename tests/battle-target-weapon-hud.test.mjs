@@ -31,3 +31,32 @@ test('weapon details retain translated names and quantities',()=>{
  const oldDocument=globalThis.document;globalThis.document={documentElement:{}};
  try{setLang('en');const html=battleWeaponHudHtml({weaponCd:2,weaponNote:{k:'drain',n:4}},'cane');assert.match(html,/Cane|cane/);assert.match(html,/2/);assert.match(html,/4/);}finally{setLang('th');globalThis.document=oldDocument;}
 });
+
+test('UI-JW renders the sword details beside Yama inside his team card, outside companion scrolling',()=>{
+ const start=ui.indexOf("    stage.insertAdjacentHTML('beforeend', `${b.over ? '' : `<button class=\"battle-pause\"");
+ const end=ui.indexOf('    if (view.foes?.length > 1)',start);
+ let html='';
+ vm.runInNewContext(ui.slice(start,end),{
+  stage:{insertAdjacentHTML:(_,value)=>{html=value;}},b:{},view:{youHp:80,youMax:100,foes:[]},
+  g:{weapons:{equipped:'fang'},mpMax:20},mp:10,team:[],HERO_NAME:'Yama',
+  battleTurnOrderHtml:()=>'',battleWeaponHudHtml,esc:String,t:String,artUrl:()=>'',meter:()=>'',
+ });
+ const stack=[];let parent=null,yamaParent=null;
+ for(const token of html.matchAll(/<(\/?)([a-z][\w-]*)([^>]*)>/gi)){
+  const [,closing,tag,attrs]=token;
+  if(closing){assert.equal(stack.pop()?.tag,tag);continue;}
+  if(tag==='details')parent=stack.map(n=>n.attrs).join(' ');
+  if(/data-crew-pick="you"/.test(attrs))yamaParent=stack.at(-1)?.attrs;
+  if(!['img','br','input','hr'].includes(tag))stack.push({tag,attrs});
+ }
+ assert.equal(stack.length,0);
+ assert.match(parent,/battle-team-hud/);assert.match(parent,/battle-yama-card/);
+ assert.doesNotMatch(parent,/battle-team-roster|<button/);
+ assert.match(yamaParent,/battle-yama-card/);
+ assert.match(html,/weapon-effect-icon/);assert.match(html,/<summary title=/);
+ const css=readFileSync(new URL('../src/battle-result.css',import.meta.url),'utf8');
+ assert.match(css,/summary\{[^}]*width:44px;height:44px/);
+ assert.match(css,/\.weapon-hud-details\{[^}]*bottom:calc\(100% \+ 8px\)/);
+ assert.match(css,/\.battle-team-roster\{[^}]*min-width:0[^}]*overflow-x:auto/);
+ assert.doesNotMatch(css,/\.combat-arena>\.battle-weapon-hud/);
+});

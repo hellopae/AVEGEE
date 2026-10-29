@@ -1503,7 +1503,7 @@ const API = {
       const prison = this.stations.find(st => st.def.k === 'tarang');
       const gate = this.stations.find(st => st.def.k === 'sawan' && !st.build);
       if (prison && !prison.build) this.startAfterlifeWalk(x.soul,
-        [prison.def.x, prison.def.y], [gate.def.x, gate.def.y], 'gate', x, null, 'dam');
+        [prison.def.x, prison.def.y], [gate.def.x, gate.def.y], 'gate', x);
       else this.sentences.push(x);
       this.log(`🕊️ ส่ง${x.soul.who}จากตะรางไปประตูสวรรค์ ให้บุญตรวจกรรม`, 'act');
     } else {
