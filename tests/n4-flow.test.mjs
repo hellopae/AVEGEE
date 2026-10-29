@@ -153,7 +153,7 @@ test('N4: drawing is plain sprite quads (no ctx.filter / shadowBlur) and reduced
 test('N4: scene.js hands the town ground to town-flow and the old colour-guess ambience is off for the town', () => {
   const scene = readFileSync('src/scene.js', 'utf8');
   const flow = readFileSync('src/town-flow.js', 'utf8');
-  assert.match(scene, /drawTownFlow\(ctx,t,reduced\)/);
+  assert.match(scene, /drawTownFlow\(ctx,t,reduced \|\| !!g.paused\)/);
   assert.doesNotMatch(scene, /drawMapAmbientGround\(ctx,townTerrainImage\(\),'town-th'/);
   assertModuleRelease('src/scene.js',readReleaseFile('index.html'),'src/ui.js');
   assertModuleRelease('src/town-flow.js',readReleaseFile('index.html'),'src/scene.js');

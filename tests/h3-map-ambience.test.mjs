@@ -43,7 +43,7 @@ test('H3 bounded tracks contain flow, bubbles, sparks, edge pulse, falls and mis
   assert.notEqual(JSON.stringify(c.calls),first);
   assert.ok(c.calls.filter(a=>['stroke','fill','fillRect'].includes(a[0])).length<=(kind==='lava'?420:330));
  }
- assert.equal(Object.values(H3_BUDGET).reduce((a,b)=>a+b),448);
+ assert.equal(Object.values(H3_BUDGET).reduce((a,b)=>a+b),418);
 });
 test('reduced motion skips mask allocation and all H3 drawing',()=>{
  const prev=globalThis.document;

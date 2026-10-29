@@ -16,7 +16,7 @@ test('all four zone effects move deterministically, stay bounded, and use small 
  for(const z of ['th','asia','west','cyberhell']){
   const a=ambientParticles(z,1000,1678,937),b=ambientParticles(z,2500,1678,937);
   assert.deepEqual(a,ambientParticles(z,1000,1678,937));assert.notDeepEqual(a,b);
-  assert.ok(a.length<=90 && a.length>=20);
+  assert.ok(a.length<=160 && a.length>=20);
   for(const p of [...a,...b])assert.ok(p.x>=0&&p.x<1678&&p.y>=0&&p.y<937&&p.alpha<=.5);
  }
 });

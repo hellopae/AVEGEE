@@ -115,7 +115,7 @@ function masked(ctx, masks, kind, W, H, draw) {
 
 /** Paint before actors and buildings, so glints never cover a character or pier. */
 export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false) {
-  if (reduced) return;
+  if (reduced || !weatherEnabled()) return;
   const masks=masksFor(bg,zone);if(!masks)return;
   if(zone==='th'||zone==='asia'){
     ctx.save();
@@ -126,13 +126,13 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
   const t=time/1000;
   ctx.save();
   masked(ctx,masks,'water',W,H,c=>{
-    c.lineWidth=2;c.lineCap='round';
+    c.lineWidth=5;c.lineCap='round';
     for(let i=0;i<100;i++){
       const x=mod(seed(i+9)*W+t*(18+seed(i+60)*16),W+70)-35;
       const y=(zone==='west'?.15:.745)*H+seed(i+40)*(zone==='west'?.85:.25)*H+Math.sin(t*1.5+i)*3;
       const size=12+seed(i+80)*26;
-      c.strokeStyle=`rgba(${zone==='th'?'202,185,233':'139,241,255'},${.24+seed(i+5)*.22})`;
-      c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x+size*.5,y-4,x+size,y);c.stroke();
+      c.strokeStyle=`rgba(${zone==='th'?'202,185,233':'139,241,255'},${.10+seed(i+5)*.10})`;
+      c.beginPath();c.ellipse(x,y,size*.5,3,0,0,Math.PI*1.6);c.stroke();
     }
     if(zone==='west'){
       // Waterfall at the frozen upper channel and its lower drop.
@@ -176,42 +176,66 @@ export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false)
   ctx.restore();
 }
 
-export function ambientParticles(zone, time, W, H, viewport = null) {
-  const t=time/1000, base=zone==='west'?90:zone==='asia'?20:zone==='th'?30:26;
-  const count=viewport?Math.min(base,weatherBudget(viewport)*2):base;
+// Shared town/frontier weather. Stored independently of game saves, like audio preferences.
+let weatherOn = true;
+try { weatherOn = globalThis.localStorage?.getItem('avegee.weather') !== 'off'; } catch {}
+export const weatherEnabled = () => weatherOn;
+export function setWeatherEnabled(on) {
+  weatherOn = !!on;
+  try { globalThis.localStorage?.setItem('avegee.weather', on ? 'on' : 'off'); } catch {}
+}
+export function biomeBudget(ctx, W, H, maximum = 160) {
+  const canvas = ctx?.canvas;
+  const dpr = Math.max(1, globalThis.devicePixelRatio || 1);
+  const width = canvas?.clientWidth || (canvas?.width ? canvas.width / dpr : W);
+  const height = canvas?.clientHeight || (canvas?.height ? canvas.height / dpr : H);
+  return Math.max(24, Math.round(maximum * Math.min(1, width * height / (1100 * 700)) / Math.sqrt(dpr)));
+}
+// A single monotonic 100 ms pulse per 9 seconds; no independent overlapping flashes.
+export function stormFlash(time, reduced = false) {
+  if (reduced || !weatherOn) return 0;
+  const phase = mod(time, 9000);
+  return phase < 100 ? .055 * (1 - phase / 100) : 0;
+}
+export function ambientParticles(zone, time, W, H, count = zone === 'west' ? 160 : zone === 'cyberhell' ? 130 : zone === 'asia' ? 20 : 30) {
+  const t=time/1000;
   return Array.from({length:count},(_,i)=>{
-    const speed=zone==='west'?12+seed(i+4)*25:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
-    const drift=zone==='west'?14:zone==='asia'?11:3;
-    return {x:mod(seed(i+4)*W+t*drift+Math.sin(t*.5+i)*12,W),
+    const rain=zone==='cyberhell';
+    const speed=rain?360+seed(i+4)*160:zone==='west'?24+seed(i+4)*32:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
+    return {x:mod(seed(i+4)*W+t*(rain?-75:zone==='west'?19:11),W),
       y:mod(seed(i+80)*H+t*speed,H),size:zone==='west'?1+seed(i+16)*2.4:1.5+seed(i+16)*2,
-      alpha:.18+seed(i+30)*.32,angle:t*.7+i};
+      alpha:rain?.12+seed(i+30)*.12:.18+seed(i+30)*.32,angle:t*.7+i};
   });
 }
-
-/** Sparse snow, petals, ash and occasional server sparks; bounded work each frame. */
-export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
-  if(reduced)return;
-  ctx.save();
-  for(const p of ambientParticles(zone,time,W,H,weatherViewport(ctx))){
-    ctx.globalAlpha=p.alpha;
-    ctx.fillStyle=zoneStyle(zone).particle;
-    ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
+/** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds. */
+export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1]) {
+  if(reduced || !weatherOn)return;
+  const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
+  ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
+  const count=biomeBudget(ctx,W,H,zone==='west'?160:zone==='cyberhell'?130:zone==='asia'?20:30);
+  for(const p of ambientParticles(zone,time,aw,ah,count)){
+    ctx.globalAlpha=p.alpha;ctx.fillStyle=zoneStyle(zone).particle;
+    if(zone==='cyberhell'){
+      ctx.strokeStyle='rgba(173,211,240,.55)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-3,p.y+13);ctx.stroke();
+    }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
   }
   ctx.globalAlpha=1;
   if(zone==='west'){
-    ctx.fillStyle='rgba(161,191,211,.035)';
-    for(let i=0;i<3;i++){
-      const x=mod(time*.012+i*W/3,W),y=H*(.44+i*.13);
-      ctx.beginPath();ctx.ellipse(x,y,W*.17,H*.025,0,0,Math.PI*2);ctx.fill();
+    // Broad, feathered low fog; cached sprite rather than per-frame blur/filter.
+    const fog=fogSprite();
+    if(fog)for(let i=0;i<5;i++){
+      const x=mod(time*.009+i*aw/4,aw+aw*.5)-aw*.25,y=ah*(.48+i*.095);
+      ctx.globalAlpha=.17;ctx.drawImage(fog,x-aw*.22,y-ah*.035,aw*.44,ah*.07);
     }
   }
   if(zone==='cyberhell'){
-    const t=time/1000;
-    for(const [i,point] of [[.09,.24],[.23,.19],[.72,.25],[.79,.31],[.86,.59],[.06,.51]].entries()){
-      const phase=mod(t+i*.71,4.5);if(phase>.18)continue;
-      const x=point[0]*W,y=point[1]*H;
-      ctx.strokeStyle=`rgba(174,229,255,${.55*(1-phase/.18)})`;ctx.lineWidth=1.6;
-      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+5,y-8);ctx.lineTo(x+9,y-3);ctx.lineTo(x+15,y-15);ctx.stroke();
+    const flash=stormFlash(time);
+    if(flash){
+      ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(0,0,aw,ah);
+      ctx.globalAlpha=flash*7;ctx.strokeStyle='#d3edff';ctx.lineWidth=2;
+      const x=aw*(.2+seed(Math.floor(time/9000))*.6);
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-12,ah*.09);ctx.lineTo(x+4,ah*.08);ctx.lineTo(x-18,ah*.2);ctx.stroke();
     }
   }
   ctx.restore();
@@ -223,13 +247,6 @@ export const WEATHER_ZONES = Object.freeze({
   th:{shade:.085,speed:5}, asia:{shade:.065,speed:3.4},
   west:{shade:.075,speed:2.4}, cyberhell:{shade:.10,speed:6},
 });
-let weatherOn=true;
-try { if(typeof window!=='undefined')weatherOn=window.localStorage?.getItem('avegee.weather')!=='off'; } catch {}
-export const weatherEnabled=()=>weatherOn;
-export function setWeatherEnabled(value){
-  weatherOn=!!value;
-  try { if(typeof window!=='undefined')window.localStorage?.setItem('avegee.weather',weatherOn?'on':'off'); } catch {}
-}
 export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
   if(reduced)return 0;
   // CSS viewport area, with a further high-DPR reduction. World size/zoom must
@@ -322,4 +339,18 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
     ctx.restore();
   }
   ctx.restore();
+}
+let fogCache;
+function fogSprite() {
+  if(fogCache!==undefined)return fogCache;
+  fogCache=null;
+  if(typeof document==='undefined')return null;
+  const cv=document.createElement('canvas');cv.width=128;cv.height=32;
+  const c=cv.getContext('2d'),g=c?.createRadialGradient?.(64,64,0,64,64,64);
+  if(typeof g?.addColorStop!=='function')return null;
+  g.addColorStop(0,'rgba(201,226,241,.8)');g.addColorStop(1,'rgba(201,226,241,0)');
+  c.scale(1,.25);c.fillStyle=g;c.fillRect(0,0,128,128);return fogCache=cv;
+}
+export function drawMapAmbientSky(ctx, zone, time, W, H, reduced = false) {
+  drawBiomeWeather(ctx,zone,time,W,H,reduced);
 }

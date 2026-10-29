@@ -249,7 +249,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   else drawFallbackGround(ctx, SCENE.w, SCENE.h, STATIONS, g);
 
   weatherLabels.length=0;
-  ambientTime = t; // Decorative motion continues behind dialogue and pause panels.
+  if(!g.paused)ambientTime = t;
   if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
   const sceneryHouse = town ? img('town-house-th') : null;
@@ -264,7 +264,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownShadows(ctx);
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
-  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced);   // N4: lava / rivers / falls flow over the painted ground
+  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
+  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
   drawTownGround(ctx, g, t);
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
@@ -719,7 +720,6 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, 92 * CHAR_SCALE_MAP * 1.2, t, '👹');
   }
 
-  drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, reduced);
   drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,
     labels:weatherLabels,sources:town&&g.zone==='th' ? [
       ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>

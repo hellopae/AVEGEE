@@ -62,7 +62,7 @@ export const ROUTE_GEOMETRY = {
   'west:cyberhell': row('west:cyberhell', {
     enabled:true, geometryVersion:1, background:'img/frontier-route/zone3-4-v1.webp', foes:[10,11,12],
     corridor:BORDER34_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_MASK,
-    ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,
+    ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
       treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.png',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
       treeAnchors:{white:[.569224354,.987804878],teal:[.567556297,.958841463],purple:[.5,.987804878]}},
   }),
