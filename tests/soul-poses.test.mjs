@@ -65,8 +65,12 @@ const art2Pairs = [
  ['pol','officer'], ['gen','officer'], ['nun','woman'], ['novice','woman'],
  ['star','worker'], ['lord','business'], ['monk','cleric'], ['prophet','cleric'],
 ];
-test('ART2 caught lie cases select their original-specific drawing without changing evidence',()=>{
- for(const [key,name] of art2Pairs){
+const art3Pairs = [
+ ['orchard','woman'], ['trader','executive'], ['sister','clerk'],
+ ['hunter','business'], ['gadget','business'], ['accountant','executive'], ['heir','executive'],
+];
+test('ART2 and ART3 caught lie cases select their original-specific drawing without changing evidence',()=>{
+ for(const [key,name] of [...art2Pairs,...art3Pairs]){
   const g=createGame(),s=soulFor(key),l=s.lines.find(l=>l.kind==='deny');
   const original=`img/Thai/spirit-${name}-th-v2.png`;
   const expected=`img/soul-poses/${name}-th-caught-lie-v1.png`;

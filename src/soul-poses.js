@@ -18,6 +18,8 @@ export const SOUL_POSE_ASSETS = Object.freeze({
   'img/Thai/spirit-woman-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/woman-th-caught-lie-v1.png' }),
   'img/Thai/spirit-business-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/business-th-caught-lie-v1.png' }),
   'img/Thai/spirit-cleric-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/cleric-th-caught-lie-v1.png' }),
+  'img/Thai/spirit-executive-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/executive-th-caught-lie-v1.png' }),
+  'img/Thai/spirit-clerk-th-v2.png': Object.freeze({ caught_lie:'img/soul-poses/clerk-th-caught-lie-v1.png' }),
 });
 export function soulPoseForPress(game, soul, line, baseSrc) {
   if (!soul || !line || line.used || soul.presses <= 0 || soul.back) return null;

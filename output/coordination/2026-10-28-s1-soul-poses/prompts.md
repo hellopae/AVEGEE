@@ -125,3 +125,27 @@ Saved: `img/soul-poses/worker-th-necessity-v1.png`
 ```text
 Use case: identity-preserve. Asset type: interrogation game sprite, necessity reaction. Edit the reference image, preserving this EXACT same fictional character, face identity, age, hairstyle, costume and accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change only the expression to visibly crying with grief: inner eyebrows raised, sorrowful downturned mouth, clear tears flowing from BOTH eyes onto cheeks, head slightly bowed and shoulders subtly slumped. Tears must be drawn into the sprite. Keep the original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions and bottom ghost-tail anchor exactly aligned with the reference; keep hands, outfit and tail in their existing positions. Actual transparent RGBA background. No scene, text, extra objects, characters, sweat, UI or watermark. This is sadness, not startled surprise. Subject: older Thai man with swept silver hair, white traditional standing-collar jacket with gold buttons, grey-gold patterned wrapped trousers, dark walking cane with gold fittings in his hand. Keep same youthful-chibi proportions, elderly identity, cane and ghost tail. One image only.
 ```
+
+## S1-ART3 actual prompts — 29 October 2026
+
+Built-in image_gen only, two calls, no retries. Originals used as edit references every time. Outputs copied byte-for-byte; no resampling or alpha edits. orchard reuses woman; hunter/gadget reuse business from ART2 (actual prompts above), no duplicate generation.
+
+### trader / accountant / heir
+
+Reference: `img/Thai/spirit-executive-th-v2.png`
+
+Saved: `img/soul-poses/executive-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, face identity, age, hairstyle, costume and accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY the facial expression: startled at being caught lying, eyebrows raised, eyes visibly widened, small open shocked mouth, clearly visible sweat droplets on the temples and cheeks drawn into the sprite. Not tears or crying. Keep the original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions 1254 by 1254 pixels and bottom ghost-tail anchor exactly aligned with the reference; keep hands, outfit, accessories and tail in their existing positions. Actual transparent RGBA background. No scene, text, extra objects, characters, UI or watermark. One image only. Subject: elderly Thai male executive with swept silver hair, thick grey eyebrows and fine moustache, cream standing-collar jacket with gold buttons and insignia, gold rings and brown gold-trimmed walking cane. Preserve his elderly facial features and cane.
+```
+
+### sister
+
+Reference: `img/Thai/spirit-clerk-th-v2.png`
+
+Saved: `img/soul-poses/clerk-th-caught-lie-v1.png`
+
+```text
+Use case: identity-preserve. Asset type: interrogation game sprite, caught_lie reaction. Edit the reference image, preserving this EXACT same fictional character, face identity, age, hairstyle, costume and accessories, pale ghost skin, original palette, pixel-painted chibi linework and pixel density. Change ONLY the facial expression: startled at being caught lying, eyebrows raised, eyes visibly widened, small open shocked mouth, clearly visible sweat droplets on the temples and cheeks drawn into the sprite. Not tears or crying. Keep the original full-body silhouette, character scale, orientation, framing, margins, canvas dimensions 1254 by 1254 pixels and bottom ghost-tail anchor exactly aligned with the reference; keep hands, outfit, accessories and tail in their existing positions. Actual transparent RGBA background. No scene, text, extra objects, characters, UI or watermark. One image only. Subject: Thai female clerk with dark grey updo, gold floral hair ornament, cream standing-collar blouse with gold buttons and nameplate, grey-gold patterned Thai skirt, holding a grey folder against her chest. Preserve her exact youthful face, folder, hairstyle and tail.
+```
