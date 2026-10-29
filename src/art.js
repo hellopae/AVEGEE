@@ -4,6 +4,7 @@ import { drawContactShadow } from './scene-style.js';
 import { yamaDownImage } from './tea-recovery.js';
 import { themeArt } from './theme-assets.js';
 import { reviewStationBox } from './map-art-v5.js';
+import { enemyArt } from './enemy-art.js';
 // art.js — ชั้นวาดภาพทั้งหมด
 // กฎ: ทุกชิ้นต้องมี placeholder ที่โค้ดวาดเองได้ ถ้ามีไฟล์ img/<key>.png ให้ใช้ไฟล์แทนอัตโนมัติ
 // => ดรอปรูปจริงลง img/ แล้วเกมเปลี่ยนหน้าตาทันที โดยไม่ต้องแตะโค้ดสักบรรทัด
@@ -48,7 +49,7 @@ export function warmZone(z = zoneOf()) {
   }
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2-art-atk2-leader-art-v2', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2-art-atk2-leader-art-v2-enemy-art', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -92,6 +93,8 @@ export function artUrl(key, ext = 'png', sourceZone = null) {
   if (key === 'hero-boss-seated' && z === 'west') return 'img/West/hero-boss-west-seated-v2.png';
   const themed = themeArt(key, z);
   if (themed) return themed;
+  const enemy = enemyArt(key, z);
+  if (enemy !== undefined) return enemy;
   const map = ZMAP[z];
   if (key.replace(POSE, '') === 'spirit-recruit') return key === 'spirit-recruit' ? 'img/Thai/spirit-recruit-th-v3.png' : null;
   if (key.replace(POSE, '') === 'spirit-graduate') return key === 'spirit-graduate' ? 'img/West/spirit-graduate-west-v3.png' : null;

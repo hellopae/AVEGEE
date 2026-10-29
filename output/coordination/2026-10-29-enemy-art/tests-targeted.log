@@ -1,0 +1,11 @@
+✔ every data enemy resolves for maps, battle portraits and turn icons (unavailable manifest) (16.786255ms)
+✔ every data enemy resolves for maps, battle portraits and turn icons (loaded manifest) (9.875522ms)
+✔ new fallback sprites are transparent 512px PNGs and existing regional identity stays intact (1.367962ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 150.8022
