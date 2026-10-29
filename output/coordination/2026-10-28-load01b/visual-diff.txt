@@ -1,0 +1,27 @@
+== noise floor: main vs main (two separate runs, same state, reduced motion, frozen clock)
+battle-mobile.png                differing px  1.026%  >8:  0.846%  max 250  mean 0.4463
+border-1-2-mobile.png            differing px  0.304%  >8:  0.135%  max  96  mean 0.0262
+town-asia-a-mobile.png           differing px  0.935%  >8:  0.552%  max 213  mean 0.2491
+town-asia-b-mobile.png           differing px  1.257%  >8:  0.874%  max 221  mean 0.4216
+town-cyberhell-a-mobile.png      differing px  2.560%  >8:  1.018%  max 206  mean 0.5873
+town-cyberhell-b-mobile.png      differing px  2.594%  >8:  1.057%  max 211  mean 0.5971
+town-th-a-mobile.png             differing px  2.695%  >8:  1.106%  max 200  mean 0.5240
+town-th-b-mobile.png             differing px  0.572%  >8:  0.489%  max 211  mean 0.1611
+town-west-a-mobile.png           differing px  0.766%  >8:  0.430%  max 222  mean 0.2149
+town-west-b-mobile.png           differing px  1.240%  >8:  0.848%  max 226  mean 0.4296
+trial-mobile.png                 differing px 74.568%  >8: 47.736%  max 255  mean 20.7720
+
+== main vs LOAD-01b
+battle-mobile.png                differing px  0.917%  >8:  0.685%  max 246  mean 0.3077
+border-1-2-mobile.png            differing px  0.253%  >8:  0.020%  max  22  mean 0.0067
+town-asia-a-mobile.png           differing px  2.259%  >8:  0.714%  max 220  mean 0.3355
+town-asia-b-mobile.png           differing px  2.209%  >8:  0.643%  max 213  mean 0.2920
+town-cyberhell-a-mobile.png      differing px  2.573%  >8:  1.020%  max 207  mean 0.5869
+town-cyberhell-b-mobile.png      differing px  1.108%  >8:  0.413%  max 188  mean 0.2607
+town-th-a-mobile.png             differing px  4.202%  >8:  1.597%  max 201  mean 0.7323
+town-th-b-mobile.png             differing px  1.503%  >8:  0.384%  max 146  mean 0.1100
+town-west-a-mobile.png           differing px  2.089%  >8:  0.613%  max 220  mean 0.3456
+town-west-b-mobile.png           differing px  2.447%  >8:  0.819%  max 228  mean 0.4108
+trial-mobile.png                 differing px 73.084%  >8: 40.499%  max 251  mean 16.3701
+
+Differences in both tables come from moving NPCs (e.g. Nira's speech marker follows her), random trial soul, souls queue; they are the same size in both tables.

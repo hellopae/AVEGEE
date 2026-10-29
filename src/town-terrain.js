@@ -4,7 +4,7 @@ import {repairTownTerrain} from './town-terrain-repair.js';
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
 // not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
-import {drawHellTerrain} from './town-lighting.js?v=fire-v2';
+import {drawHellTerrain,prepareTownLighting} from './town-lighting.js?v=fire-v2';
 import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
 
 // Zone 1 constants stay exported (preload, tests); every function below reads the ACTIVE zone skin (zone-skin.js)
@@ -50,7 +50,7 @@ export function preloadTownTerrainPreview(timeoutMs=30000,zone=activeTownZone())
     function finish(error,image){if(ended)return;ended=true;clearTimeout(timer);if(active)active.onload=active.onerror=null;if(error){st.preview=null;reject(error);}else{st.preview={image,ready:true};resolve(image);}}
     function attempt(fresh){
       const image=new Image();active=image;st.preview={image,ready:false};image.decoding='async';
-      image.onload=async()=>{try{if(image.decode)await image.decode();finish(null,repairs?await repairTownTerrain(image):image);}catch(error){if(!fresh)attempt(true);else finish(error);}};
+      image.onload=async()=>{try{if(image.decode)await image.decode();const ready=repairs?await repairTownTerrain(image):image;await prepareTownLighting(ready,[0,0,TOWN_SIZE.w,TOWN_SIZE.h]);finish(null,ready);}catch(error){if(!fresh)attempt(true);else finish(error);}};
       image.onerror=()=>{if(!fresh)attempt(true);else finish(new Error('town preview unavailable'));};
       image.src=url+(fresh?'?recover='+Date.now():'');
     }
@@ -83,7 +83,12 @@ function request(row,col) {
     try {
       if(image.decode)await image.decode();
       if(!current())return;
-      done(true,(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs?await repairTownTerrain(image,{row,col}):image);
+      const ready=(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs?await repairTownTerrain(image,{row,col}):image;
+      // LOAD-01b: grade the chunk in small slices before it counts as ready, so the first drawn frame never pays for it.
+      const r=townChunkRect(row,col,zone);
+      await prepareTownLighting(ready,[r.x,r.y,r.w,r.h]);
+      if(!current())return;
+      done(true,ready);
     } catch {done(false);}
   };
   image.onerror = () => done(false);

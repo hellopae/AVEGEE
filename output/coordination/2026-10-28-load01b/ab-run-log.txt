@@ -1,0 +1,193 @@
+== battle rep 1 base
+battle mobile x4 {"n":270,"median":50,"p95":183.3,"p99":216.5,"max":233.4,"mean":60.99} long>50: 77 LoAF 41 extra {"attackClicks":28} err 0
+LOAD { 17.23 45.77 44.21 }
+== battle rep 1 new
+battle mobile x4 {"n":530,"median":16.7,"p95":133.3,"p99":166.6,"max":216.7,"mean":31.04} long>50: 64 LoAF 51 extra {"attackClicks":29} err 0
+LOAD { 14.41 41.06 42.56 }
+== battle rep 2 base
+battle mobile x4 {"n":250,"median":50,"p95":200,"p99":233.3,"max":250,"mean":66.33} long>50: 90 LoAF 43 extra {"attackClicks":28} err 0
+LOAD { 12.79 36.54 40.80 }
+== battle rep 2 new
+battle mobile x4 {"n":598,"median":16.7,"p95":116.6,"p99":133.4,"max":183.3,"mean":27.67} long>50: 49 LoAF 47 extra {"attackClicks":30} err 0
+LOAD { 10.80 32.38 39.02 }
+== battle rep 3 base
+battle mobile x4 {"n":398,"median":33.3,"p95":116.7,"p99":149.9,"max":183.4,"mean":40.79} long>50: 65 LoAF 32 extra {"attackClicks":30} err 0
+LOAD { 9.70 29.09 37.46 }
+== battle rep 3 new
+battle mobile x4 {"n":557,"median":16.7,"p95":100,"p99":150,"max":299.9,"mean":29.2} long>50: 53 LoAF 47 extra {"attackClicks":29} err 0
+LOAD { 8.78 26.44 36.11 }
+== battle desktop base
+battle desktop x1 {"n":842,"median":16.7,"p95":33.4,"p99":66.6,"max":83.4,"mean":19} long>50: 10 LoAF 17 extra {"attackClicks":34} err 0
+LOAD { 7.04 23.53 34.54 }
+== battle desktop new
+battle desktop x1 {"n":885,"median":16.7,"p95":33.3,"p99":50,"max":66.7,"mean":18.55} long>50: 8 LoAF 14 extra {"attackClicks":35} err 0
+LOAD { 7.75 21.46 33.21 }
+== town-th rep 1 base
+town-th mobile x4 {"n":447,"median":33.3,"p95":50,"p99":516.7,"max":3816.5,"mean":47.95} long>50: 8 LoAF 11 extra {"walkedPx":2416} err 0
+LOAD { 7.85 19.61 31.93 }
+== town-th rep 1 new
+town-th mobile x4 {"n":631,"median":33.3,"p95":50,"p99":316.7,"max":550.1,"mean":34.6} long>50: 11 LoAF 15 extra {"walkedPx":3084} err 0
+LOAD { 8.25 18.16 30.76 }
+== town-th rep 2 base
+town-th mobile x4 {"n":671,"median":33.2,"p95":33.4,"p99":333.3,"max":2949.9,"mean":34.42} long>50: 5 LoAF 10 extra {"walkedPx":3028} err 0
+LOAD { 7.15 16.50 29.50 }
+== town-th rep 2 new
+town-th mobile x4 {"n":910,"median":16.7,"p95":33.4,"p99":100,"max":366.7,"mean":23.42} long>50: 6 LoAF 12 extra {"walkedPx":3341} err 0
+LOAD { 6.11 14.99 28.28 }
+== town-th rep 3 base
+town-th mobile x4 {"n":859,"median":16.7,"p95":33.4,"p99":83.4,"max":1999.9,"mean":25.07} long>50: 6 LoAF 10 extra {"walkedPx":2794} err 0
+LOAD { 4.95 13.59 27.16 }
+== town-th rep 3 new
+town-th mobile x4 {"n":194,"median":66.7,"p95":300,"p99":833.4,"max":1366.6,"mean":108.84} long>50: 125 LoAF 98 extra {"walkedPx":2144} err 0
+LOAD { 20.94 16.41 27.48 }
+== town-th desktop base
+town-th desktop x1 {"n":1056,"median":16.7,"p95":16.8,"p99":116.6,"max":650,"mean":19.52} long>50: 9 LoAF 15 extra {"walkedPx":3062} err 0
+LOAD { 19.60 17.25 27.19 }
+== town-th desktop new
+town-th desktop x1 {"n":1173,"median":16.7,"p95":16.8,"p99":33.3,"max":116.7,"mean":17.26} long>50: 4 LoAF 10 extra {"walkedPx":3362} err 0
+LOAD { 16.38 16.76 26.50 }
+== town-west rep 1 base
+town-west mobile x4 {"n":680,"median":16.7,"p95":33.4,"p99":166.7,"max":2899.9,"mean":30.15} long>50: 8 LoAF 11 extra {"walkedPx":2311} err 0
+LOAD { 9.94 14.87 25.18 }
+== town-west rep 1 new
+town-west mobile x4 {"n":1034,"median":16.7,"p95":33.4,"p99":49.9,"max":383.4,"mean":20.42} long>50: 4 LoAF 9 extra {"walkedPx":2778} err 0
+LOAD { 6.34 13.05 23.86 }
+== town-west rep 2 base
+town-west mobile x4 {"n":714,"median":16.7,"p95":33.4,"p99":166.6,"max":2833.2,"mean":28.31} long>50: 8 LoAF 12 extra {"walkedPx":2301} err 0
+LOAD { 5.19 11.68 22.73 }
+== town-west rep 2 new
+town-west mobile x4 {"n":1056,"median":16.7,"p95":33.3,"p99":50,"max":333.3,"mean":19.9} long>50: 5 LoAF 10 extra {"walkedPx":2794} err 0
+LOAD { 4.10 10.37 21.61 }
+== town-west rep 3 base
+town-west mobile x4 {"n":896,"median":16.7,"p95":33.4,"p99":116.7,"max":1783.2,"mean":23.72} long>50: 8 LoAF 13 extra {"walkedPx":2716} err 0
+LOAD { 4.40 9.48 20.64 }
+== town-west rep 3 new
+town-west mobile x4 {"n":1045,"median":16.7,"p95":33.4,"p99":66.6,"max":300,"mean":20.05} long>50: 6 LoAF 11 extra {"walkedPx":2783} err 0
+LOAD { 4.04 8.59 19.67 }
+== town-west desktop base
+town-west desktop x1 {"n":1165,"median":16.7,"p95":16.8,"p99":16.8,"max":400,"mean":17.5} long>50: 3 LoAF 6 extra {"walkedPx":2667} err 0
+LOAD { 4.16 7.92 18.79 }
+== town-west desktop new
+town-west desktop x1 {"n":1193,"median":16.7,"p95":16.7,"p99":16.8,"max":66.7,"mean":16.85} long>50: 1 LoAF 4 extra {"walkedPx":2745} err 0
+LOAD { 3.68 7.27 17.93 }
+== town-asia rep 1 base
+town-asia mobile x4 {"n":882,"median":16.7,"p95":33.4,"p99":83.4,"max":1950,"mean":26.26} long>50: 6 LoAF 11 extra {"walkedPx":2856} err 0
+LOAD { 3.97 6.79 17.14 }
+== town-asia rep 1 new
+town-asia mobile x4 {"n":965,"median":16.7,"p95":33.4,"p99":50.1,"max":383.3,"mean":21.99} long>50: 6 LoAF 10 extra {"walkedPx":2863} err 0
+LOAD { 3.60 6.26 16.36 }
+== town-asia rep 2 base
+town-asia mobile x4 {"n":882,"median":16.7,"p95":33.4,"p99":83.3,"max":1966.6,"mean":26.21} long>50: 6 LoAF 11 extra {"walkedPx":2868} err 0
+LOAD { 4.20 6.02 15.69 }
+== town-asia rep 2 new
+town-asia mobile x4 {"n":959,"median":16.7,"p95":33.4,"p99":33.5,"max":350,"mean":22.07} long>50: 4 LoAF 8 extra {"walkedPx":2865} err 0
+LOAD { 3.94 5.66 15.00 }
+== town-asia rep 3 base
+town-asia mobile x4 {"n":882,"median":16.7,"p95":33.4,"p99":83.4,"max":1983.2,"mean":26.25} long>50: 6 LoAF 12 extra {"walkedPx":2859} err 0
+LOAD { 4.07 5.45 14.39 }
+== town-asia rep 3 new
+town-asia mobile x4 {"n":887,"median":16.7,"p95":33.4,"p99":83.4,"max":366.6,"mean":23.9} long>50: 23 LoAF 23 extra {"walkedPx":2879} err 0
+LOAD { 11.98 6.89 14.38 }
+== town-asia desktop base
+town-asia desktop x1 {"n":1111,"median":16.7,"p95":16.8,"p99":16.8,"max":566.7,"mean":18.24} long>50: 4 LoAF 8 extra {"walkedPx":2724} err 0
+LOAD { 21.29 11.90 15.80 }
+== town-asia desktop new
+town-asia desktop x1 {"n":1192,"median":16.7,"p95":16.7,"p99":16.8,"max":83.3,"mean":16.88} long>50: 1 LoAF 4 extra {"walkedPx":2843} err 0
+LOAD { 11.54 10.67 15.12 }
+== town-cyberhell rep 1 base
+town-cyberhell mobile x4 {"n":1100,"median":16.7,"p95":16.8,"p99":33.4,"max":550,"mean":18.42} long>50: 8 LoAF 10 extra {"walkedPx":2701} err 0
+LOAD { 7.23 9.67 14.52 }
+== town-cyberhell rep 1 new
+town-cyberhell mobile x4 {"n":1116,"median":16.7,"p95":16.8,"p99":33.3,"max":566.7,"mean":18.26} long>50: 7 LoAF 8 extra {"walkedPx":2718} err 0
+LOAD { 5.37 8.83 13.96 }
+== town-cyberhell rep 2 base
+town-cyberhell mobile x4 {"n":1090,"median":16.7,"p95":16.8,"p99":33.4,"max":466.6,"mean":18.53} long>50: 9 LoAF 9 extra {"walkedPx":2701} err 0
+LOAD { 4.13 8.03 13.40 }
+== town-cyberhell rep 2 new
+town-cyberhell mobile x4 {"n":1109,"median":16.7,"p95":16.8,"p99":33.4,"max":566.7,"mean":18.2} long>50: 7 LoAF 8 extra {"walkedPx":2703} err 0
+LOAD { 3.47 7.31 12.85 }
+== town-cyberhell rep 3 base
+town-cyberhell mobile x4 {"n":1108,"median":16.7,"p95":16.8,"p99":33.4,"max":566.7,"mean":18.58} long>50: 8 LoAF 9 extra {"walkedPx":2718} err 0
+LOAD { 3.95 6.90 12.42 }
+== town-cyberhell rep 3 new
+town-cyberhell mobile x4 {"n":1128,"median":16.7,"p95":16.8,"p99":33.3,"max":400,"mean":18.11} long>50: 7 LoAF 8 extra {"walkedPx":2720} err 0
+LOAD { 3.69 6.44 11.96 }
+== town-cyberhell desktop base
+town-cyberhell desktop x1 {"n":1368,"median":16.7,"p95":16.8,"p99":16.8,"max":66.7,"mean":16.96} long>50: 7 LoAF 5 extra {"walkedPx":3130} err 0
+LOAD { 2.95 5.89 11.47 }
+== town-cyberhell desktop new
+town-cyberhell desktop x1 {"n":1369,"median":16.7,"p95":16.8,"p99":16.8,"max":66.7,"mean":16.98} long>50: 7 LoAF 8 extra {"walkedPx":3133} err 0
+LOAD { 2.55 5.37 10.96 }
+== border-1-2 rep 1 base
+border-1-2 mobile x4 {"n":633,"median":16.7,"p95":33.4,"p99":50,"max":266.6,"mean":22.98} long>50: 5 LoAF 2 extra undefined err 0
+LOAD { 3.47 5.29 10.71 }
+== border-1-2 rep 1 new
+border-1-2 mobile x4 {"n":820,"median":16.7,"p95":16.8,"p99":33.3,"max":266.7,"mean":17.21} long>50: 4 LoAF 2 extra undefined err 0
+LOAD { 3.30 5.05 10.40 }
+== border-1-2 rep 2 base
+border-1-2 mobile x4 {"n":611,"median":16.7,"p95":33.4,"p99":66.6,"max":266.6,"mean":23.81} long>50: 7 LoAF 6 extra undefined err 0
+LOAD { 5.02 5.37 10.31 }
+== border-1-2 rep 2 new
+border-1-2 mobile x4 {"n":824,"median":16.7,"p95":16.8,"p99":16.8,"max":266.6,"mean":17.19} long>50: 4 LoAF 3 extra undefined err 1
+LOAD { 4.14 5.09 10.01 }
+== border-1-2 rep 3 base
+border-1-2 mobile x4 {"n":604,"median":16.7,"p95":33.4,"p99":50,"max":266.7,"mean":24.2} long>50: 6 LoAF 4 extra undefined err 0
+LOAD { 3.84 4.92 9.72 }
+== border-1-2 rep 3 new
+border-1-2 mobile x4 {"n":820,"median":16.7,"p95":16.8,"p99":16.8,"max":266.7,"mean":17.19} long>50: 4 LoAF 2 extra undefined err 0
+LOAD { 3.83 4.80 9.48 }
+== border-1-2 desktop base
+border-1-2 desktop x1 {"n":841,"median":16.7,"p95":16.7,"p99":16.8,"max":50.1,"mean":16.73} long>50: 1 LoAF 1 extra undefined err 0
+LOAD { 4.49 4.86 9.31 }
+== border-1-2 desktop new
+border-1-2 desktop x1 {"n":841,"median":16.7,"p95":16.7,"p99":16.8,"max":49.9,"mean":16.71} long>50: 1 LoAF 1 extra undefined err 0
+LOAD { 3.82 4.69 9.07 }
+== border-2-3 rep 1 base
+border-2-3 mobile x4 {"n":593,"median":16.7,"p95":33.4,"p99":50.1,"max":383.3,"mean":24.65} long>50: 6 LoAF 2 extra undefined err 0
+LOAD { 4.21 4.65 8.83 }
+== border-2-3 rep 1 new
+border-2-3 mobile x4 {"n":716,"median":16.7,"p95":33.4,"p99":50,"max":616.7,"mean":20.23} long>50: 4 LoAF 1 extra undefined err 0
+LOAD { 5.56 4.96 8.70 }
+== border-2-3 rep 2 base
+border-2-3 mobile x4 {"n":235,"median":66.6,"p95":83.4,"p99":216.7,"max":750,"mean":65.81} long>50: 208 LoAF 78 extra undefined err 0
+LOAD { 6.41 5.41 8.62 }
+== border-2-3 rep 2 new
+border-2-3 mobile x4 {"n":434,"median":33.2,"p95":66.7,"p99":99.9,"max":916.6,"mean":33.91} long>50: 85 LoAF 20 extra undefined err 0
+LOAD { 8.59 6.25 8.70 }
+== border-2-3 rep 3 base
+border-2-3 mobile x4 {"n":180,"median":83.3,"p95":116.6,"p99":316.7,"max":1066.6,"mean":88.51} long>50: 180 LoAF 172 extra undefined err 0
+LOAD { 9.53 6.98 8.76 }
+== border-2-3 rep 3 new
+border-2-3 mobile x4 {"n":468,"median":16.7,"p95":66.7,"p99":100.1,"max":816.7,"mean":31.55} long>50: 65 LoAF 16 extra undefined err 0
+LOAD { 7.73 7.09 8.67 }
+== border-2-3 desktop base
+border-2-3 desktop x1 {"n":732,"median":16.7,"p95":33.4,"p99":33.4,"max":166.6,"mean":19.28} long>50: 1 LoAF 0 extra undefined err 0
+LOAD { 8.64 7.53 8.72 }
+== border-2-3 desktop new
+border-2-3 desktop x1 {"n":726,"median":16.7,"p95":33.4,"p99":50,"max":166.7,"mean":19.47} long>50: 1 LoAF 6 extra undefined err 0
+LOAD { 7.23 7.41 8.58 }
+== trial rep 1 base
+trial mobile x4 {"n":347,"median":33.3,"p95":50,"p99":83.4,"max":166.6,"mean":32.18} long>50: 16 LoAF 7 extra undefined err 0
+LOAD { 6.25 7.11 8.41 }
+== trial rep 1 new
+trial mobile x4 {"n":648,"median":16.7,"p95":16.7,"p99":16.8,"max":50,"mean":16.77} long>50: 0 LoAF 1 extra undefined err 0
+LOAD { 5.37 6.79 8.23 }
+== trial rep 2 base
+trial mobile x4 {"n":496,"median":16.7,"p95":33.4,"p99":49.9,"max":99.9,"mean":22.04} long>50: 2 LoAF 3 extra undefined err 0
+LOAD { 5.41 6.65 8.12 }
+== trial rep 2 new
+trial mobile x4 {"n":652,"median":16.7,"p95":16.7,"p99":16.8,"max":33.4,"mean":16.69} long>50: 0 LoAF 1 extra undefined err 0
+LOAD { 5.04 6.43 7.98 }
+== trial rep 3 base
+trial mobile x4 {"n":489,"median":16.7,"p95":33.4,"p99":49.9,"max":83.3,"mean":22.39} long>50: 0 LoAF 1 extra undefined err 0
+LOAD { 4.60 6.19 7.83 }
+== trial rep 3 new
+trial mobile x4 {"n":648,"median":16.7,"p95":16.8,"p99":16.8,"max":33.4,"mean":16.74} long>50: 0 LoAF 0 extra undefined err 1
+LOAD { 4.17 5.90 7.65 }
+== trial desktop base
+trial desktop x1 {"n":651,"median":16.7,"p95":16.7,"p99":16.8,"max":16.8,"mean":16.67} long>50: 0 LoAF 0 extra undefined err 0
+LOAD { 4.22 5.68 7.50 }
+== trial desktop new
+trial desktop x1 {"n":650,"median":16.7,"p95":16.7,"p99":16.8,"max":16.8,"mean":16.67} long>50: 0 LoAF 0 extra undefined err 0
+LOAD { 3.74 5.41 7.33 }
+AB-DONE

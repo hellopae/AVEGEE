@@ -69,7 +69,7 @@ import { BAG_SECTIONS, PROFILE_SECTIONS, carriedItems, weaponBonusComparison, bi
 import { AUDIO, saveAudio, unlock, sfx, powerSfx, isUltimatePower, playUltimate, bgm, syncBgm, primeAudio } from './sfx.js';
 import { preloadZone } from './preload.js?v=h1-g5-h4-h5b-cane-trojan-zoom-intro-v3-sword-schools-skillatk-minigame-review-20261011-m2-layered-battle9-20261015-r1-k3m';
 import { createGame, loadSave, clearSave, sameLabel } from './game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5';
-import { setMapViewport, mapViewport, render, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
+import { setMapViewport, mapViewport, render as renderMap, toScene, hitStation, hitActor, afterlifeWalkPosition, nearBuild, hitFrontier, hitBuildPrompt, CHAR_SCALE_MAP, mapCharK } from './scene.js?v=mapfx-m1-l1';
 import { makeRoom } from './room.js?v=minigame-review-20261011';
 import { stepTo, nearestWalk } from './walk.js?v=k1d';
 import { soulKey, artUrl, img, zoneImg, bindZone, bindHeroStyle, warmZone, drawCrewWalk, drawStandee, drawHeroWalk, drawBoat } from './art.js';
@@ -327,6 +327,35 @@ setInterval(() => {
 
 // ---------- ลูป ----------
 let saveAt = 0;
+
+/** LOAD-01b: แผนที่ที่อยู่ใต้กล่องเต็มจอ (ต่อสู้ · สอบสวน · ชายแดน) ยังถูกวาดทุกเฟรมทั้งที่มองไม่เห็น —
+ *  บนมือถือกินราว 20 ms ต่อเฟรมแบบไม่มีใครได้เห็น · กล่องที่ทึบและคลุมแคนวาสเกือบทั้งใบ (>= 95% ของพื้นที่)
+ *  จึงวาดแผนที่แค่ ~6 ครั้งต่อวินาที (แถบขอบที่โผล่ใต้ฉากมืดยังขยับอยู่) · กล่องอื่นทุกแบบวาดทุกเฟรมเหมือนเดิม
+ *  เช็คความคลุมทุก 250 ms เท่านั้น ไม่อ่าน layout ทุกเฟรม */
+const OCCLUDED_DRAW_MS = 160, OCCLUDE_CHECK_MS = 250;
+let mapOccluded = false, mapOccludeCheckAt = 0, mapDrawnAt = 0;
+function dlgHidesMap() {
+  if (!dlg.open) return false;
+  const d = dlg.getBoundingClientRect(), c = cv.getBoundingClientRect();
+  if (!d.width || !c.width || !c.height) return false;
+  const w = Math.min(d.right, c.right) - Math.max(d.left, c.left), h = Math.min(d.bottom, c.bottom) - Math.max(d.top, c.top);
+  if (w <= 0 || h <= 0 || w * h < c.width * c.height * 0.95) return false;
+  const bg = getComputedStyle(dlg).backgroundColor, m = /^rgba?\(([^)]*)\)$/.exec(bg);
+  if (!m) return false;
+  const parts = m[1].split(/[ ,/]+/).filter(Boolean);
+  return parts.length < 4 || Number(parts[3]) >= 1;     // ทึบเท่านั้น — กล่องโปร่งแสงยังต้องเห็นแผนที่ขยับ
+}
+function mapDrawDue(now) {
+  if (!dlg.open) { mapOccluded = false; mapOccludeCheckAt = 0; mapDrawnAt = now; return true; }
+  if (now >= mapOccludeCheckAt) { mapOccludeCheckAt = now + OCCLUDE_CHECK_MS; mapOccluded = dlgHidesMap(); }
+  if (mapOccluded && now - mapDrawnAt < OCCLUDED_DRAW_MS) return false;
+  mapDrawnAt = now;
+  return true;
+}
+
+/** scene.js render(), but skipped while a full-bleed opaque dialog hides the map (see mapDrawDue) */
+function render(c, game, now, ...rest) { if (mapDrawDue(now)) renderMap(c, game, now, ...rest); }
+
 function frame(now) {
   const dt = Math.min(120, now - last); last = now;
   if (!g.paused && !g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
@@ -1513,11 +1542,18 @@ function updateRepairFabs() {
       };
       ov.appendChild(f);
     }
-    if(target.kind==='talk')f.innerHTML=`<img class="talk-ico" src="img/ui/icon-talk.webp" alt="" width="20" height="20">${esc(target.label)}`;else f.textContent=target.label;
+    // LOAD-01b: this runs every frame — rewriting the label and re-clamping read layout each time (forced reflow).
+    // Only touch the DOM when the label or the on-screen position inputs actually changed.
+    const labelKey=`${target.kind}|${target.label}`;
+    if(f.__labelKey!==labelKey){
+      f.__labelKey=labelKey;
+      if(target.kind==='talk')f.innerHTML=`<img class="talk-ico" src="img/ui/icon-talk.webp" alt="" width="20" height="20">${esc(target.label)}`;else f.textContent=target.label;
+    }
     f.disabled=target.kind==='repair'&&!g.canRepair(target.key);
     f.dataset.sx=target.bx;f.dataset.sy=target.by;f.classList.toggle('anchor-top', target.anchor === 'top');
-    place(f);
     const v=mapCam.viewport;
+    const placeKey=`${labelKey}|${target.bx}|${target.by}|${target.anchor}|${v?.tx}|${v?.ty}|${v?.sx}|${v?.sy}|${v?.width}|${v?.height}|${innerWidth}|${innerHeight}`;
+    if(f.__placeKey!==placeKey){f.__placeKey=placeKey;place(f);}
     if(v?.sx&&v?.sy){const x=target.bx*v.sx+v.tx,y=target.by*v.sy+v.ty;f.hidden=x<0||x>v.width||y<0||y>v.height;}
   }
 }

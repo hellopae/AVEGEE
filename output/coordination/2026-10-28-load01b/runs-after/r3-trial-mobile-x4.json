@@ -1,0 +1,1 @@
+{"name": "trial", "throttle": 4, "wallMs": 10861, "frames": {"n": 648, "median": 16.7, "p95": 16.8, "p99": 16.8, "max": 33.4, "mean": 16.74}, "longTasks": {"count": 0, "over50": 0, "maxMs": 0}, "loafCount": 0, "loafTop": [], "loafOver100": 0, "loafTotalBlockMs": 0, "errors": ["console:Failed to load resource: net::ERR_CONNECTION_RESET @Thai/spirit-woman-th-v2.png"], "dpr": 2}
