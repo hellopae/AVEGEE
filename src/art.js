@@ -48,7 +48,7 @@ export function warmZone(z = zoneOf()) {
   }
 }
 // ใส่รุ่นใน URL เพราะ GitHub Pages เคยค้าง manifest เก่าที่ไม่มีรายการโซน แม้ไฟล์ภาพใหม่ขึ้นแล้ว
-fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2', { cache: 'no-cache' })
+fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-g5-g3cb-h4-zoom-intro-v3-skillatk-j2-art-atk2', { cache: 'no-cache' })
   .then(r => r.ok ? r.json() : null)
   .then(m => {
     for (const [z, list] of Object.entries((m && m.zones) || {})) {
@@ -59,6 +59,9 @@ fetch('img/manifest.json?v=20261009-f2-merge-f3-f4-sala-books-g3ca-g2b-cover-v5-
       for (const [key, path] of Object.entries(regionalSpiritAliases(mapZone))) {
         if (list.includes(path)) ZMAP[z][key] = path;
       }
+      // ART-ATK2: preserve the semantic attack key while keeping the original PNG archived.
+      if (z === 'asia' && ZMAP[z]['hero-yama-asia-atk-v2'])
+        ZMAP[z]['hero-yama-asia-atk'] = ZMAP[z]['hero-yama-asia-atk-v2'];
       const guard = `crew-guard-${z}`;
       if (ZMAP[z][`${guard}-v2`]) ZMAP[z][guard] = ZMAP[z][`${guard}-v2`];
       // 28D: use the compact ruler revision for every existing hero-boss caller.

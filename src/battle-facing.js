@@ -51,7 +51,7 @@ export function rageArtSrc(style) {
 export function ragePoseSrc(style) {
   switch (style) {
     case 'th': return 'img/hero-yama-atk.png';
-    case 'asia': return 'img/Asia/hero-yama-asia-atk.png';
+    case 'asia': return 'img/Asia/hero-yama-asia-atk-v2.png';
     case 'west': return 'img/West/hero-yama-west-atk-R.png';
     case 'cyberhell': return 'img/CyberHell/hero-yama-cyberhell-atk-R.png';
     default: return null;

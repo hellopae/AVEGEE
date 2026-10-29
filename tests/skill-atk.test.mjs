@@ -5,14 +5,14 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { runInNewContext } from 'node:vm';
 import { assetTier, zoneTiers } from '../src/asset-preload.js';
-import { figYouAtkClass, heroPoseFacesRight, POSE_DRAWN_FACING_RIGHT } from '../src/battle-facing.js';
+import { figYouAtkClass, heroPoseFacesRight, POSE_DRAWN_FACING_RIGHT, spriteKey } from '../src/battle-facing.js';
 
 const read = readReleaseFile;
 const manifest = JSON.parse(read('img/manifest.json'));
 const catalog = JSON.parse(read('img/preload-catalog.json'));
 const poses = {
   th: 'img/hero-yama-atk.png',
-  asia: 'img/Asia/hero-yama-asia-atk.png',
+  asia: 'img/Asia/hero-yama-asia-atk-v2.png',
   west: 'img/West/hero-yama-west-atk.png',
   cyberhell: 'img/CyberHell/hero-yama-cyberhell-atk.png',
 };
@@ -46,6 +46,25 @@ test('skill atk: manifest, catalog and preload tier cover all four outfits', () 
   }
 });
 
+test('ART-ATK2: Asia revision preserves canvas, character height and foot baseline', () => {
+  execFileSync('python3', ['-c', `
+from PIL import Image
+old = Image.open('img/Asia/hero-yama-asia-atk.png').convert('RGBA')
+new = Image.open('${poses.asia}')
+assert new.size == old.size == (512, 512)
+assert new.mode == 'RGBA'
+alpha = new.getchannel('A')
+# The fire occupied y=0; the unchanged hat starts at y=60 in the left part.
+hat_top = old.getchannel('A').crop((0, 0, 220, 512)).getbbox()[1]
+assert hat_top == 60
+assert alpha.getbbox()[1] == hat_top
+assert alpha.getbbox()[3] == old.getchannel('A').getbbox()[3] == 512
+assert alpha.getextrema() == (0, 255)
+assert all(alpha.getpixel(p) == 0 for p in [(0,0),(511,0),(0,511),(511,511)])
+assert alpha.crop((0, 0, 512, hat_top)).getbbox() is None
+`], { cwd: new URL('..', import.meta.url), stdio: 'pipe' });
+});
+
 test('skill atk: real artUrl and heroAtk select the outfit pose and face right during a non-sword skill', async () => {
   const previousFetch = globalThis.fetch, previousImage = globalThis.Image;
   globalThis.fetch = async () => ({ ok: true, json: async () => manifest });
@@ -64,7 +83,7 @@ test('skill atk: real artUrl and heroAtk select the outfit pose and face right d
       assert.equal(heroAtk(), path);
       const atkClass = figYouAtkClass({ usingAtk: true, sword: false, showRage: false, standing: false });
       assert.equal(atkClass, true);
-      assert.ok(POSE_DRAWN_FACING_RIGHT.has(path.split('/').pop().slice(0, -4)));
+      assert.ok(POSE_DRAWN_FACING_RIGHT.has(spriteKey(path)));
       assert.equal(heroPoseFacesRight(heroAtk(), { atkClass }), true);
       // Outfit selection must still win over the current map zone.
       art.bindZone(() => 'th');
