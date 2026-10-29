@@ -1,0 +1,1 @@
+{"name": "trial", "throttle": 1, "wallMs": 10849, "frames": {"n": 650, "median": 16.7, "p95": 16.7, "p99": 16.8, "max": 16.8, "mean": 16.67}, "longTasks": {"count": 0, "over50": 0, "maxMs": 0}, "loafCount": 0, "loafTop": [], "loafOver100": 0, "loafTotalBlockMs": 0, "errors": [], "dpr": 1}

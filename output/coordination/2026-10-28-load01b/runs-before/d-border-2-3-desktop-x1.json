@@ -1,0 +1,1 @@
+{"name": "border-2-3", "throttle": 1, "wallMs": 14134, "frames": {"n": 732, "median": 16.7, "p95": 33.4, "p99": 33.4, "max": 166.6, "mean": 19.28}, "longTasks": {"count": 2, "over50": 1, "maxMs": 163}, "loafCount": 0, "loafTop": [], "loafOver100": 0, "loafTotalBlockMs": 0, "errors": [], "dpr": 1}

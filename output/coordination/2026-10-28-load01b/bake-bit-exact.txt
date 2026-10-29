@@ -1,0 +1,5 @@
+Original synchronous layers() (verbatim copy of main) vs prepareTownLighting + drawHellTerrain, reduced=true, same rect.
+th        chunks r2c2 r3c3 r1c1: differingChannels 0, maxDelta 0 (1,048,576 px each)
+asia      chunks r2c2 r3c3 r1c1: differingChannels 0, maxDelta 0
+west      chunks r2c2 r3c3 r1c1: differingChannels 0, maxDelta 0  (generic emitAt path)
+cyberhell chunks r2c2 r3c3 r1c1: differingChannels 0, maxDelta 0  (generic emitAt path)
