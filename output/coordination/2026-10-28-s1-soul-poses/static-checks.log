@@ -1,8 +1,0 @@
-Recovered drawing and runtime asset are byte-identical.
-SHA256 28cd6e093de3abe637b7c86ebb41aa1498b9c0ee8e45ca547e0d21aa550e426f
-img/Thai/spirit-officer-th-v2.png: (1254, 1254), RGBA, alpha range (0, 255), alpha bounds (0, 0, 1218, 1242)
-img/soul-poses/officer-th-caught-lie-v1.png: (1254, 1254), RGBA, alpha range (0, 255), alpha bounds (0, 0, 1226, 1254)
-node --check: src/soul-poses.js, src/ui.js, src/asset-preload.js, scripts/s1-soul-pose-evidence.mjs: exit 0.
-Python ast.parse(capture.py): succeeded.
-git diff --check: exit 0.
-Visual framing and browser console: unverified (browser launch denied).

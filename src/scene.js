@@ -19,7 +19,8 @@ import { westRescuePending, westRescueActors, westSpiritsFrozen } from './west-e
 import { actorStanding } from './actor-recovery.js';
 import { devaMapActors, prisonEventBurning } from './deva-map.js';
 import { finalEventActors, finalRestSpot } from './final-event.js';
-import { drawMapAmbientGround, drawMapAmbientSky, drawMapWeather } from './map-ambient.js?v=mapfx-k1d';
+import { drawMapAmbientGround, drawMapAmbientSky, drawMapWeather, weatherEnabled, weatherViewport } from './map-ambient.js?v=mapfx-k1d';
+import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 // Zone 1 uses tiled terrain and independent depth-sorted props; other realms retain paintings.
 // ระบบพิกัดเดียวกับที่เป้วาดฉากมา (SCENE.w x SCENE.h) — โค้ดย่อให้พอดี canvas ตอนวาด
 
@@ -349,6 +350,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
   if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
+  if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
   // ใช้เรียงแล้วคนที่ยืนบนลานหน้าอาคารจะถูกวาดก่อนอาคารเสมอ = หายไปทั้งตัว

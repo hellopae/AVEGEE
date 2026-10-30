@@ -1,4 +1,0 @@
-mob-skeleton.png: 512x512 RGBA; alpha=0..255; bounds=(10, 10, 505, 501)
-mob-bot.png: 512x512 RGBA; alpha=0..255; bounds=(9, 7, 508, 506)
-mob-bug.png: 512x512 RGBA; alpha=0..255; bounds=(0, 10, 512, 506)
-mob-worm.png: 512x512 RGBA; alpha=0..255; bounds=(0, 7, 505, 506)

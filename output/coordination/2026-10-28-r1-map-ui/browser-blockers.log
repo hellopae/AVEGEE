@@ -1,7 +1,0 @@
-Real-browser capture attempts on 2026-10-28:
-1. Python Playwright chromium.launch(): TargetClosedError.
-   Chromium fatal: bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer: Permission denied (1100).
-2. cua.createBrowserTab('iab', 'http://127.0.0.1:8947', {visible:false}):
-   The browser access host is unavailable.
-No browser screenshots were created. Browser console and visual readability remain unverified.
-The capture.py runner is prepared for a browser-capable environment, but has not completed a browser run here.
