@@ -124,7 +124,7 @@ test('Z4-TOWN-A: FOOD-A kitchen remains a plot until constructed, then uses the 
  st.build=0;g.syncBlocks(true);
  assert.equal(townSites(g).find(s=>s.key==='canteen').state,'built');assert.equal(canteenActive(g),true);
  assert.deepEqual(canteenPoint(g),[d.x,d.y]);
- assert.deepEqual([d.bx,d.by,d.bw],[1965,815,125]);
+ assert.deepEqual([d.bx,d.by,d.bw],[1845,440,187.5]);   // Z4-TOWN-B: moved to the upper-left court, buildings x1.5
  syncSceneZone('th');
 });
 
