@@ -12,7 +12,7 @@ const mod = (n, d) => ((n % d) + d) % d;
  *  at any zoom, window or phone width. Particle maxima go through `biomeBudget` (screen area / DPR). */
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
-    peak: .55,                      // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
+    peak: .45,                      // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
     cell: [.62, .46],                // lattice cell, fraction of visible width / height
     size: [.92, .7],                 // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range

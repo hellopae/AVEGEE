@@ -17,7 +17,7 @@ export const CYBERHELL_LAYOUT = {
     lan:site(1294,360,94,1300,389,1.35), krajok:site(1398,599,62,1395,614,.73),
     tea:site(614,554,56*1.5,620,577,.56*1.5),   // Q4-6: tea pavilion x1.5 about its foot (owner 31 Oct); door and foot stay where they were sala:site(902,550,60,890,565,.54),
     // Q4-8 (owner arrow, 16.08.28): the kitchen moved from beside the upper castle down to the plaza below the stairs (world ~1600,680; floor y 640-715).
-    canteen:site(640,268,50,640,278,.5),
+    canteen:site(636,276,50,640,278,.5),
   },
   spots:{plaza:spot(740,440),bench:spot(740,440),throne:spot(742,380),
     bossPier:spot(898,713),ferry:{from:point(898,713),to:point(1040,713)}},

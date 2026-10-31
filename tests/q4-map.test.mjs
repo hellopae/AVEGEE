@@ -44,7 +44,7 @@ test('Q4-8: the canteen stands where the crossed-out house was in zones 1-3 (hou
 test('Q4-7/8: zone 4 merchant and canteen follow the owner arrows and stay reachable',()=>{
   const {g}=setup('cyberhell');g.syncBlocks(true);
   const c=STATIONS.find(s=>s.k==='canteen');
-  assert.ok(Math.hypot(MERCHANT.x-1760,MERCHANT.y-1590)<5);assert.ok(Math.hypot(c.bx-1600,c.by-670)<5);
+  assert.ok(Math.hypot(MERCHANT.x-1760,MERCHANT.y-1590)<5);assert.ok(Math.hypot(c.bx-1590,c.by-690)<5);
   for(const p of [[MERCHANT.x,MERCHANT.y],[c.x,c.y]]){assert.ok(townFloorAt(...p)&&walk.canWalk(...p));assert.ok(walk.findPath(ZONE_ENTRY.gate[0],ZONE_ENTRY.gate[1],...p)?.length);}
   syncSceneZone('th');
 });

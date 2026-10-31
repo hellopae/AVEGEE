@@ -6,8 +6,8 @@ export function planDash(source, target, gap = 8) {
   return { x:right ? target.l - gap - source.r : target.r + gap - source.l,
     y:target.b - source.b, face:right ? 1 : -1 };
 }
-export function dashTiming({ contact = 260, pose = 580, reduced = false, leadIn = 0 } = {}) {
-  const launch = Math.max(0, leadIn) + (reduced ? 0 : 60), travel = reduced ? 0 : 170;
+export function dashTiming({ contact = 260, pose = 580, reduced = false, leadIn = 0, travel: travelMs = 170 } = {}) {
+  const launch = Math.max(0, leadIn) + (reduced ? 0 : 60), travel = reduced ? 0 : travelMs;
   const arrive = launch + travel, hit = arrive + contact;
   const returning = arrive + Math.max(pose, contact + 100);
   return { launch, arrive, hit, returning, end:returning + travel, reduced };
