@@ -12,13 +12,13 @@ const mod = (n, d) => ((n % d) + d) % d;
  *  at any zoom, window or phone width. Particle maxima go through `biomeBudget` (screen area / DPR). */
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
-    peak: .5,                       // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
-    cell: [.96, .68],                // lattice cell, fraction of visible width / height
-    size: [1.15, .85],               // patch size, fraction of visible width / height
+    peak: .55,                      // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
+    cell: [.62, .46],                // lattice cell, fraction of visible width / height
+    size: [.92, .7],                 // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range
     jitter: .2,                     // per-patch placement jitter, fraction of a cell
-    oddFill: .12,                   // chance an off-checker cell also holds a patch
-    drift: [.034, .008],            // cells per second (x, y): one pass takes ~45 s
+    oddFill: .4,                    // chance an off-checker cell also holds a patch
+    drift: [.075, .018],            // cells per second (x, y): one pass takes ~20 s
     breathe: .06,                   // slow size/opacity breathing
     tint: Object.freeze({ th:'20,8,16', asia:'8,14,26', west:'8,16,40', cyberhell:'14,6,36' }),
     fallbackTint: '12,16,34',
