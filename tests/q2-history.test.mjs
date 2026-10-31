@@ -192,3 +192,17 @@ test('Q2 Rae Q1 text: Valkyrie spelling, beggar line, no leftover misspelling', 
   assert.equal((west.match(/วาลคีรี:/g) || []).length, 3);
   assert.equal(CHARACTER_HISTORY.find(c => c.id === 'deva:west').text.startsWith('เอียร์ลินเป็นเทวดาตำแหน่งวาลคีรี ผู้ถือหอกประจำปัจฉิม'), true);
 });
+
+test('Q2 rescuing Taan in zones 3 and 4 opens his card without talking', () => {
+  const g = createGame();
+  assert.ok(!ids(g).includes('crew:taan@west') && !ids(g).includes('crew:taan@cyberhell'));
+  g.zoneEvents.west = { ...(g.zoneEvents.west || {}), westHypnotized: 'cleared' };
+  assert.ok(ids(g).includes('crew:taan@west'));
+  assert.ok(!ids(g).includes('crew:taan@cyberhell'), 'zone 4 stays hidden until its own rescue');
+  g.zoneEvents.cyberhell = { ...(g.zoneEvents.cyberhell || {}), cyberRescue: 'cleared' };
+  assert.ok(ids(reload(g)).includes('crew:taan@cyberhell'));
+});
+
+test('Q2 deva.west.arrival spells vampire with the thanthakhat', () => {
+  assert.match(t('deva.west.arrival'), /ปีศาจแวมไพร์ หายไปไหนแล้ว/);
+});

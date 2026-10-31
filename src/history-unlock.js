@@ -51,6 +51,9 @@ export function derivedUnlocks(g, legacy = false) {
     const hired = !!roster[`${z}:${k}`] && (legacy || !HIRE0.has(k));
     if (met || hired) open.add(`crew:${k}@${z}`);
   }
+  // ทัณฑ์โซน 3-4: ช่วยสำเร็จ (ฉากสะกดจิต / ช่วยนรกไซเบอร์) = ได้เจอทัณฑ์แล้ว แม้ไม่ได้กดคุย
+  if (ev.west?.westHypnotized === 'cleared') open.add('crew:taan@west');
+  if (ev.cyberhell?.cyberRescue === 'cleared') open.add('crew:taan@cyberhell');
   // ยักษ์: คุยแล้วหรือจ้างแล้ว
   for (const z of HISTORY_ZONES) if (seen[`met:guard@${z}`] || roster[`${z}:guard`]) open.add(`guard@${z}`);
 
