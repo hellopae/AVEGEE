@@ -31,8 +31,13 @@ for(const width of [1280,390])test(`B34 native view handlers ${width}: traverse 
   let encounter=null;const destroy=view.mountDungeonView({append(){}},g,{onEncounter:e=>{encounter=e;}});
   tick();const goal=view.dungeonPoint(view.dungeonCheckpointProgress(id)[cp],id);
   click(g,view.dungeonSnap(goal,id,view.dungeonCheckpointProgress(id)[cp]-.018));
-  for(let i=0;i<2000&&!encounter;i++){tick(50);assert.ok(view.dungeonWalkable(pos(g),id));if(i%10===0)await new Promise(r=>setImmediate(r));}
-  assert.ok(encounter,`checkpoint ${cp} must trigger through native view: ${pos(g)}`);
+  let still=0,last=pos(g),pressed=false;
+  for(let i=0;i<2000&&!encounter;i++){
+   // Q4-3: enemies stroll and never start a fight with a standing Yama; once her route has ended at the road limit the player keeps pressing toward the enemy.
+   const p=pos(g);still=distance(p,last)<1e-9?still+1:0;last=p;
+   if(still>=10&&!pressed){pressed=true;const dx=goal[0]-p[0],dy=goal[1]-p[1];for(const key of [dx<0?'a':'d',dy<0?'w':'s'])root.main.handlers.keydown({key,preventDefault(){}});}
+   tick(50);assert.ok(view.dungeonWalkable(pos(g),id));if(i%10===0)await new Promise(r=>setImmediate(r));}
+  assert.ok(encounter,`checkpoint ${cp} must trigger through native view: ${pos(g)} goal ${goal} enemies ${JSON.stringify(view.dungeonEnemyPositions(g,g.zoneTravel.active.roamTime).filter(e=>e.checkpoint===cp).map(e=>[e.anchor,e.position]))} keys`);
   assert.equal(encounter.checkpoint,cp);assert.ok(view.dungeonAtCheckpoint(g,cp));
   destroy();const e=travel.nextDungeonEncounter(g,cp);assert.equal(e.kindIdx,10+cp);assert.ok(travel.resolveDungeonEncounter(g,e.token,true));
  }

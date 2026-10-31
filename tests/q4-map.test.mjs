@@ -44,3 +44,33 @@ test('Q4-8: zones 2-3 canteen stands on the upper-left plaza (house removed), zo
   }
   syncSceneZone('th');
 });
+
+import {dungeonEnemyPositions,dungeonAutoEncounter,dungeonRoamPoint,DUNGEON_ROAM_REACH} from '../src/dungeon-view.js';
+import {initializeZoneTravel,beginDungeon} from '../src/zone-travel.js';
+function routeGame(from,to){const g=createGame();g.save=()=>{};g.onChange=()=>{};g.bossCleared[from]=true;initializeZoneTravel(g);g.zone=from;initializeZoneTravel(g);assert.ok(beginDungeon(g,to));return g;}
+test('Q4-3: route enemies stroll on the road in every route, smoothly, and cover a visible stretch',()=>{
+  for(const [from,to,id] of [['th','asia','th:asia'],['asia','west','asia:west'],['west','cyberhell','west:cyberhell']]){
+    const g=routeGame(from,to);let prev=null,travel=new Map();
+    for(let t=0;t<=40000;t+=64){
+      const list=dungeonEnemyPositions(g,t);
+      list.forEach((e,i)=>{
+        assert.ok(dungeonWalkable(e.position,id),`${id} ${e.id} @${t} on the road`);
+        assert.ok(Math.hypot(e.position[0]-e.anchor[0],e.position[1]-e.anchor[1])<=DUNGEON_ROAM_REACH+1e-9,'stays near its post');
+        if(prev)assert.ok(Math.hypot(e.position[0]-prev[i].position[0],e.position[1]-prev[i].position[1])<.0015,`${id} ${e.id} smooth`);
+        travel.set(e.id,Math.max(travel.get(e.id)||0,Math.hypot(e.position[0]-list[i].anchor[0],e.position[1]-list[i].anchor[1])));
+      });
+      prev=list;
+    }
+    const moving=[...travel.values()].filter(v=>v>.01).length;
+    // a few posts sit on a one-lane stair/bridge where the road leaves no room to stroll; they keep their post
+    assert.ok(moving>=travel.size-3,`${id}: most enemies visibly stroll (${moving}/${travel.size})`);
+  }
+});
+test('Q4-3: an enemy never starts a battle with a standing Yama; walking toward it (or pressing toward it) does',()=>{
+  const g=routeGame('th','asia');const e=dungeonEnemyPositions(g,5000).find(x=>x.patrol&&!x.locked);
+  const at=[e.position[0]-.01,e.position[1]];
+  assert.equal(dungeonAutoEncounter(g,at,5000,{from:at,heading:null}),null,'standing still: no battle');
+  assert.equal(dungeonAutoEncounter(g,at,5000,{from:[at[0]-.01,at[1]],heading:null})?.id,e.id,'closing the distance: battle');
+  assert.equal(dungeonAutoEncounter(g,at,5000,{from:at,heading:[1,0]})?.id,e.id,'pressing toward it: battle');
+  assert.equal(dungeonAutoEncounter(g,at,5000,{from:[at[0]+.01,at[1]],heading:[-1,0]}),null,'walking away: no battle');
+});
