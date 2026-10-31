@@ -13,6 +13,7 @@ import { dungeonBackground } from './dungeon-art.js';
 import { drawHeroWalk, drawCrewWalk, drawStandee } from './art.js';
 import { exitStep, drawExitMarker } from './exit-marker.js';
 import { MOB } from './data.js';
+import { enemyWalkReady } from './enemy-walk-assets.js';
 import { CHASE, newChase, stepChase, chaseAlerted, chaseInReach } from './dungeon-chase.js?v=l5';
 
 // M2 R1: trails, checkpoint vertices, pads and boss caves are rows of ROUTE_GEOMETRY (route-geometry.js); a route whose row is
@@ -77,7 +78,7 @@ export const DUNGEON_EXIT = Object.freeze(dungeonPoint(1));
 const activePosition = g => {const p=g.zoneTravel?.active?.position;return p&&Number.isFinite(p.x)&&Number.isFinite(p.y)?[p.x,p.y]:null;};
 export function dungeonAtCheckpoint(g,checkpoint=null) {
   const s=dungeonStatus(g),p=activePosition(g),at=s&&!s.ready?dungeonPoint(dungeonCheckpointProgress(s.route.id)[checkpoint??s.checkpoint],s.route.id):null;
-  return !!(s&&!s.ready&&p&&at&&Math.hypot(p[0]-at[0],p[1]-at[1])<=.045);
+  return !!(s&&!s.ready&&p&&at&&Math.hypot(p[0]-at[0],p[1]-at[1])<=.045+DUNGEON_ROAM_REACH);   // Q4-3: the enemy strolls around its post
 }
 export function dungeonAtExit(g) {
   const s=dungeonStatus(g),p=activePosition(g);
@@ -120,36 +121,102 @@ export function dungeonPath(from,to,routeId='th:asia',limit=1) {
   for(let i=0;i<raw.length;){let j=i;while(j+1<raw.length&&dungeonSegmentClear(at,raw[j+1],routeId))j++;if(!dungeonSegmentClear(at,raw[j],routeId))return [];path.push(raw[j]);at=raw[j];i=j+1;}
   return path;
 }
+// Q4-3: route enemies stroll around their post instead of standing still. Pure function of time (no state), kept on the
+// owner's walk mask: the stroll is shrunk toward the post until the whole stretch to it, and a small margin around the feet, is road.
+/** Q4-2: how far (in route progress) Yama's road stops before the next story enemy's post. It was .018 (about .031 map units): the wall stood
+ *  beyond arm's reach of the enemy (no fight, no way on) and cut off patrol 3 of Zone 1-2, which stands just before the post on the golden bridge. */
+export const DUNGEON_GATE_GAP=.006;
+export const DUNGEON_ROAM_RADIUS=.03;
+/** Largest distance an enemy can be from its post (x/y offsets are each within ROAM_RADIUS). */
+export const DUNGEON_ROAM_REACH=DUNGEON_ROAM_RADIUS*Math.SQRT2;
+const ROAM_MARGIN=[[.007,0],[-.007,0],[0,.011],[0,-.011]];
+const roamShapeCache=new Map(),ROAM_DIRS=32;
+/** How far an enemy may stroll from its post in each of 16 directions (0..ROAM_RADIUS): marched out along the road, margins as at the post,
+ *  then blurred so the shape (and so the stroll) has no kinks. Fixed per post — it never depends on time. */
+function roamShape(anchor,routeId){
+  const key=routeId+':'+anchor[0].toFixed(5)+','+anchor[1].toFixed(5);
+  if(roamShapeCache.has(key))return roamShapeCache.get(key);
+  const margins=ROAM_MARGIN.filter(m=>dungeonWalkable([anchor[0]+m[0],anchor[1]+m[1]],routeId));
+  const ok=(dx,dy)=>{const p=[anchor[0]+dx,anchor[1]+dy];return dungeonSegmentClear(anchor,p,routeId)&&margins.every(m=>dungeonWalkable([p[0]+m[0],p[1]+m[1]],routeId));};
+  let r=[];
+  for(let k=0;k<ROAM_DIRS;k++){
+    const c=Math.cos(k*2*Math.PI/ROAM_DIRS),s=Math.sin(k*2*Math.PI/ROAM_DIRS);let good=0;
+    for(let n=1;n<=12;n++){if(ok(c*DUNGEON_ROAM_RADIUS*n/12,s*DUNGEON_ROAM_RADIUS*n/12))good=n/12;else break;}
+    r.push(good*DUNGEON_ROAM_RADIUS);
+  }
+  // erode (a wall between two sampled directions is respected), then blur so the shape has no kinks
+  r=r.map((v,k)=>Math.min(v,r[(k+ROAM_DIRS-1)%ROAM_DIRS],r[(k+1)%ROAM_DIRS])*.92);
+  for(let pass=0;pass<2;pass++)r=r.map((v,k)=>Math.min(v,(r[(k+ROAM_DIRS-1)%ROAM_DIRS]+2*v+r[(k+1)%ROAM_DIRS])/4+1e-9));
+  roamShapeCache.set(key,r);return r;
+}
+export function dungeonRoamPoint(anchor,seed,time,routeId='th:asia'){
+  const t=Number.isFinite(time)?time:0,r=roamShape(anchor,routeId),k=seed*2.399;
+  const theta=t/9000+k+.5*Math.sin(t/3000+k*1.7),rho=.55+.45*Math.sin(t/3300+k*1.3);
+  const f=((theta/(2*Math.PI))%1+1)%1*ROAM_DIRS,i=Math.floor(f)%ROAM_DIRS,u=f-Math.floor(f);
+  const reach=(r[i]*(1-u)+r[(i+1)%ROAM_DIRS]*u)*rho;
+  return [anchor[0]+Math.cos(theta)*reach,anchor[1]+Math.sin(theta)*reach];
+}
 export function dungeonEnemyPositions(g,time=0) {
   const s=dungeonStatus(g);if(!s)return [];
   const checkpoints=s.ready?[]:s.route.checkpoints.flatMap((location,index)=>{
     if(s.defeated.includes(location.id))return [];
-    const progress=dungeonCheckpointProgress(s.route.id)[index],phase=(Number.isFinite(time)?time:0)/6500+index*2;
-    const anchor=dungeonPoint(progress,s.route.id),p=dungeonPoint(progress+Math.sin(phase)*.008,s.route.id);
+    const progress=dungeonCheckpointProgress(s.route.id)[index];
+    const anchor=dungeonPoint(progress,s.route.id);
     const cave=routeBossCave(s.route.id),atCave=!!cave&&index===cave.checkpoint;
     const boss=atCave&&!g.bossCleared?.[cave.zone];
     const locked=atCave&&(s.checkpoint<cave.checkpoint||boss&&g.zoneEvents?.[cave.zone]?.[cave.eventKey]!=='pending');
-    return [{id:location.id,checkpoint:index,kindIdx:location.foe,boss,locked,position:dungeonWalkable(p,s.route.id)?p:anchor}];
+    // The boss at the cave mouth keeps his post; the guide and the captain stand there too.
+    const position=boss?anchor:dungeonRoamPoint(anchor,index,time,s.route.id);
+    return [{id:location.id,checkpoint:index,kindIdx:location.foe,boss,locked,anchor,position}];
   });
-  const patrols=dungeonPatrols(s.route.id).filter(p=>!(g.zoneTravel.active.patrolDefeated||[]).includes(p.id)).map((p,i)=>({
-    id:p.id,patrol:p.id,kindIdx:p.foe,boss:false,locked:false,
-    position:dungeonPoint(p.progress+Math.sin((Number.isFinite(time)?time:0)/8000+i*1.7)*.007,s.route.id),
-  }));
+  const patrols=dungeonPatrols(s.route.id).filter(p=>!(g.zoneTravel.active.patrolDefeated||[]).includes(p.id)).map((p,i)=>{
+    const anchor=dungeonPoint(p.progress,s.route.id);
+    return {id:p.id,patrol:p.id,kindIdx:p.foe,boss:false,locked:false,anchor,position:dungeonRoamPoint(anchor,i+3,time,s.route.id)};
+  });
   return [...checkpoints,...patrols];
 }
 export function dungeonAtPatrol(g,id,position=null){
   const s=dungeonStatus(g),p=position||activePosition(g),patrol=s&&dungeonPatrols(s.route.id).find(a=>a.id===id);
   if(!p||!patrol||(g.zoneTravel.active.patrolDefeated||[]).includes(id))return false;
-  // Match the entire short roaming lane, not an untrusted supplied enemy position.
-  const projected=dungeonProjection(p,1,s.route.id);
-  return projected.distance<=.026&&Math.abs(dungeonCellProgress(p,s.route.id)-patrol.progress)*geometry(s.route.id).total<=.045;
+  // Q4-3: the enemy strolls around its post, so the whole stroll area (not an untrusted supplied enemy position) is the reach.
+  const anchor=dungeonPoint(patrol.progress,s.route.id);
+  return Math.hypot(p[0]-anchor[0],p[1]-anchor[1])<=DUNGEON_ROAM_REACH+.032+.006&&dungeonWalkable(p,s.route.id);
 }
-export function dungeonAutoEncounter(g,position,time=0) {
+/** Auto-fight only when Yama walks INTO an enemy. `motion` = {from:where Yama stood a moment ago, heading:[dx,dy] of the held input / tapped route}:
+ *  a battle needs Yama to have closed the distance this frame, or to be pressing toward the enemy (a held key against the road limit counts).
+ *  An enemy that strolls up to a standing Yama never starts a battle by itself. No `motion` = old proximity rule (tests, forged calls). */
+export function dungeonAutoEncounter(g,position,time=0,motion=null) {
   const s=dungeonStatus(g);
   if(!s||s.pending||g.battle||g.pendingRecovery||g.dungeonChaseCooldown)return null;
-  return dungeonEnemyPositions(g,time).find(enemy=>!enemy.locked&&Math.hypot(position[0]-enemy.position[0],position[1]-enemy.position[1])<=.032&&(enemy.patrol?dungeonAtPatrol(g,enemy.patrol,position):Math.hypot(position[0]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[0],position[1]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[1])<=.045))||null;
+  const reach=enemy=>enemy.patrol?dungeonAtPatrol(g,enemy.patrol,position):Math.hypot(position[0]-enemy.anchor[0],position[1]-enemy.anchor[1])<=.045+DUNGEON_ROAM_REACH;
+  return dungeonEnemyPositions(g,time).find(enemy=>{
+    if(enemy.locked)return false;
+    const vx=enemy.position[0]-position[0],vy=enemy.position[1]-position[1],d=Math.hypot(vx,vy);
+    const story=!enemy.patrol;   // a story gate enemy may stand just past the end of Yama's road: pressing toward it from the road end is enough
+    if(d>(motion?.heading&&story?.06:.032)||!reach(enemy))return false;
+    if(!motion)return d<=.032;
+    const closed=motion.from&&d<Math.hypot(motion.from[0]-enemy.position[0],motion.from[1]-enemy.position[1])-1e-7;
+    const pressing=motion.heading&&(motion.heading[0]*vx+motion.heading[1]*vy)>0;
+    return !!(closed||pressing);
+  })||null;
 }
 
+/** Q4-1: where Nira stands when the route view is (re)mounted. While walking she trails Yama by FOLLOW_GAP along her trail;
+ *  a fresh mount has no trail, so rebuild that spot on the road behind Yama (falls back to the side lane at the route start). */
+export const DUNGEON_FOLLOW_GAP=.025;
+export function dungeonFollowerRest(position,routeId='th:asia',limit=1){
+  const total=geometry(routeId).total,here=dungeonProjection(position,limit,routeId);
+  const ok=p=>!!p&&dungeonWalkable(p,routeId,limit)&&Math.hypot(p[0]-position[0],p[1]-position[1])>=DUNGEON_FOLLOW_GAP*.8;
+  for(const gap of [DUNGEON_FOLLOW_GAP,DUNGEON_FOLLOW_GAP*1.4]){
+    const back=dungeonPoint(Math.max(0,here.progress-gap/total),routeId);
+    if(ok(back))return back;
+  }
+  for(const side of [[-.038,.007],[.038,.007],[-.038,-.007],[.038,-.007],[0,.03]]){
+    const lane=[position[0]+side[0],Math.min(.96,position[1]+side[1])];
+    if(ok(lane))return lane;
+  }
+  return dungeonSnap([position[0]-DUNGEON_FOLLOW_GAP,position[1]+.01],routeId,limit);
+}
 // Give Nira a lateral lane even at the entry, where follow progress is clamped to zero.
 export function dungeonCompanionPoint(progress,routeId='th:asia') {
   const p=dungeonPoint(Math.max(0,progress-.055),routeId);
@@ -230,10 +297,11 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
   const zoom=enhanced?bindMapZoom({less:root.querySelector('[data-zoom="less"]'),more:root.querySelector('[data-zoom="more"]'),overview:root.querySelector('[data-zoom="overview"]'),surface:canvas,levels:[0,1,1.5,2],level:1,gestures:true,onGestureEnd:()=>{pinching=false;},onGesture:()=>{pinching=true;pointerStart=null;joystick=null;target=null;keys.clear();}}):null;
   if(enhanced)root.querySelectorAll('[data-hud]').forEach(button=>listen(button,'click',()=>{target=null;keys.clear();pointerStart=null;joystick=null;save();onHud(button.dataset.hud);}));
-  const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-.018;};
+  const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-DUNGEON_GATE_GAP;};
   const saved=g.zoneTravel.active.position;
   position=dungeonSnap(saved?[saved.x,saved.y]:point(0),routeId,limit());
-  follower=[...position];
+  // Q4-1: remount (after a battle, a menu, a reload) must not stack Nira on Yama; she stands at her normal walking gap.
+  follower=dungeonFollowerRest(position,routeId,limit());trail=[[...follower]];
   guidePosition=g.zoneTravel.active.guidePosition?[g.zoneTravel.active.guidePosition.x,g.zoneTravel.active.guidePosition.y]:[position[0]+.04,position[1]+.014];
   if(Math.hypot(guidePosition[0]-position[0],guidePosition[1]-position[1])>.12)guidePosition=[position[0]-.025,position[1]+.012];
   if(!dungeonWalkable(guidePosition,routeId,limit()))guidePosition=dungeonSnap(guidePosition,routeId,limit());
@@ -289,6 +357,12 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(isPaused())return;
     enemyTime+=dt;
     const old=[...position],oldFollower=[...follower],oldGuide=[...guidePosition];
+    // Q4-3: which way Yama is pushing (held key / drag / next waypoint of a tapped route) — an enemy only starts a fight when she walks toward it.
+    const heading=(()=>{
+      if(g.battle||g.pendingRecovery||status.pending)return null;
+      if(keys.size||joystick)return [joystick?.[0]??((keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0)),joystick?.[1]??((keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0))];
+      return target?.length?[target[0][0]-position[0],target[0][1]-position[1]]:null;
+    })();
     if(g.battle||g.pendingRecovery||status.pending){target=null;keys.clear();joystick=null;pointerStart=null;}
     else if(keys.size||joystick){
       target=null;
@@ -326,7 +400,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(wasMoving&&!moving)save();wasMoving=moving;
     saveClock+=dt;if(dirty&&saveClock>2500){save();saveClock=0;}
     encounterCooldown=Math.max(0,encounterCooldown-dt);
-    const nearby=encounterCooldown?null:dungeonAutoEncounter(g,position,enemyTime);
+    const nearby=encounterCooldown?null:dungeonAutoEncounter(g,position,enemyTime,{from:old,heading});   // Q4-3: only when Yama walked toward an enemy
     if(!encounterDispatch&&nearby){
       encounterDispatch=true;target=null;keys.clear();save();queueMicrotask(()=>{if(!destroyed)onEncounter(nearby.patrol?{patrol:nearby.patrol}:{...status.route.checkpoints[nearby.checkpoint],checkpoint:nearby.checkpoint});});
     }
@@ -354,6 +428,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     const hero=position,nira=follower;
     const actors=[{p:hero,kind:'yama'},{p:nira,kind:'nira'},...routeRow(routeId).ambient.trees.map(tree=>({p:[tree.x,tree.y],kind:'tree',tree}))];
     for(const foreground of ROUTE_FOREGROUND[routeId]||[])actors.push({p:[0,foreground.depth],kind:'foreground',foreground});
+    const nextEnemies=new Map(dungeonEnemyPositions(g,enemyTime+100).map(e=>[e.id,e]));
     for(const enemy of dungeonEnemyPositions(g,enemyTime))actors.push({p:enemy.position,kind:'enemy',enemy});
     if(bossGuideWaiting(g)){actors.push({p:dungeonGuideAnchor(g),kind:'guide'});}
     if(challengeStandeeShown()){actors.push({p:captainCave?.position||dungeonGuideAnchor(g),kind:'challenge'});}
@@ -367,7 +442,10 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
       if(a.kind==='challenge'){drawStandee(ctx,g.zone==='th'?'boss-frontier-th':'boss-frontier',p[0],p[1],h*1.15,animationTime,'👹',-1,false,g.zone);return;}
       if(a.kind==='enemy'){
         const foe=MOB.kinds[a.enemy.kindIdx]||MOB,boss=a.enemy.boss;
-        const next=dungeonEnemyPositions(g,enemyTime+100).find(e=>e.id===a.enemy.id),facing=next&&next.position[0]<a.p[0]?-1:1;
+        const next=nextEnemies.get(a.enemy.id),dx=next?next.position[0]-a.p[0]:0,dy=next?next.position[1]-a.p[1]:0,facing=dx<0?-1:1;
+        const strolling=!boss&&Math.hypot(dx,dy)>1e-6;
+        // Q4-3 slot: when Codex draws img/<mob>-walk.png (4 frames) and lists it in enemy-walk-assets.js, strolling enemies use it; until then the standing sprite bobs as before.
+        if(strolling&&!reduced.matches&&enemyWalkReady(foe.img)&&drawCrewWalk(ctx,foe.img,p[0],p[1],h,animationTime*.05,facing))return;
         ctx.save();if(!reduced.matches&&!boss)ctx.translate(0,Math.sin(animationTime/180)*h*.012);
         drawStandee(ctx,boss?'zone-boss':foe.img,p[0],p[1],boss?h*1.75:h,animationTime,'👹',facing,false,g.zone);ctx.restore();return;
       }

@@ -13,7 +13,7 @@ import {canteenState} from './canteen.js';
 import {beginMapTravel,advanceMapTravel,finishMapTravel,cancelMapTravel,KAN_HANDOFF} from './map-travel.js';
 import { rewardView, startRewardCount, selectedVisibleFoeId, battleStatuses, specialMoveKey } from './battle-result.js';
 import { isMeleeAction, planDash, dashTiming, createDashSequence } from './battle-dash.js';
-import {pendingBossGuideGrant,acknowledgeBossGuideGrant} from './boss-guides.js';
+import {pendingBossGuideGrant,acknowledgeBossGuideGrant,bossPierRetired} from './boss-guides.js';
 import {bossJusticeCase,bossJusticeActors,bossJusticeActive,bossJusticeStations,bossJusticeCrew,bossJusticeAnswer,interrogateBoss,mirrorBoss,sentenceBoss,releaseBoss} from './boss-justice.js';
 import {workersPanelHtml,workerSuppliesHtml,workerSupplyBlocked,bindWorkersPanel} from './worker-ui.js';
 import {BUILD_PLAN,hireRank,recommendedHire,unlockedAtLevel} from './unlocks.js';
@@ -1404,7 +1404,7 @@ function updateMobFab() {
 /** บอสที่แพ้แล้วเฝ้าสะพาน ไม่กลับมาเองตามวาระ — เดินเข้าไปใกล้จึงเลือกท้าสู้ได้ */
 function updateBossFab() {
   const gone = () => { const e = ov.querySelector('.bossfab'); if (e) e.remove(); };
-  const pier = g.bossPierCanTalk();
+  const pier = g.bossPierCanTalk() && !bossPierRetired(g);
   if (g.zone==='th'&&g.bossCleared.th || g.over || g.battle || dlg.open || (!g.bossCanChallenge() && !pier)) return gone();
   let f = ov.querySelector('.bossfab');
   if (!f) {

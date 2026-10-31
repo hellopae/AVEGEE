@@ -118,9 +118,13 @@ export const TOWN_STAIRS = [
 // ---- houses: small dark houses placed by the owner. Foot-centre, drawn width, sprite and facing ----
 const HOUSE_RATIO = {'front-one':1122/1402,'right-one':1094/1438,'left-two':1518/1036,'right-two':1518/1036};
 const house = (key,x,y,w,flip=false) => ({key,x,y,w,flip,h:w*HOUSE_RATIO[key]});
+// Index 3 is the CANTEEN SLOT (no house is drawn there; data.js builds the canteen on it).
+// Q4-8 (owner arrows 31 Oct, same spot in every zone): the canteen moved from beside the dais to where the house at (1551,655) stood
+// (upper-left, just under the Tarang plaza; (1572,646) is the nearest spot whose door is owner floor in all three masks), and that house is gone. The slot keeps index 3 so the code that skips it is unchanged.
 export const TOWN_HOUSE_SITES = [
-  house('front-one',1551,655,142), house('left-two',1945,699,119), house('front-one',2118,766,129),
-  house('left-two',1536,960,98,true), house('front-one',1546,1073,129), house('right-one',2239,1014,147,true),
+  house('left-two',1945,699,119), house('front-one',2118,766,129), house('front-one',1546,1073,129),
+  house('front-one',1572,646,118),
+  house('right-one',2239,1014,147,true),
   house('front-one',2010,1294,138), house('right-two',1551,1661,120,true), house('right-two',2283,1588,114,true),
   house('front-one',639,751,142),  house('right-one',710,1204,149),
 ];

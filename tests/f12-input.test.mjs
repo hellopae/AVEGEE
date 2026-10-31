@@ -53,7 +53,7 @@ test('F12 input: held directional keys can traverse all six branch paths',()=>{
  }
 });
 test('F12 input: mount migrates old save to allowed cell; click and held key cannot bypass first checkpoint',()=>{
- const g=game(false);g.zoneTravel.active.position={x:.79,y:.51};const destroy=view.mountDungeonView({append(){}},g),limit=view.dungeonCheckpointProgress('th:asia')[0]-.018;
+ const g=game(false);g.zoneTravel.active.position={x:.79,y:.51};const destroy=view.mountDungeonView({append(){}},g),limit=view.dungeonCheckpointProgress('th:asia')[0]-view.DUNGEON_GATE_GAP;   // Q4-2: the road ends .006 before the gate
  assert.ok(view.dungeonCellProgress(pos(g))<=limit);tick();click(g,[.575,.946]);for(let i=0;i<50;i++)tick();
  root.main.handlers.keydown({key:'d',preventDefault(){}});for(let i=0;i<300;i++){tick();assert.ok(view.dungeonCellProgress(pos(g))<=limit);}windowHandlers.keyup({key:'d'});destroy();
 });
