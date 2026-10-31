@@ -7,6 +7,47 @@ const frac = n => n - Math.floor(n);
 const seed = n => frac(Math.sin(n * 127.1 + 311.7) * 43758.5453);
 const mod = (n, d) => ((n % d) + d) % d;
 
+/** Q5 FX: every tunable of the cloud shadow / snow / fog / rain / lightning layers lives here.
+ *  Sizes of shadow patches and fog banks are fractions of the VISIBLE map area, so they read the same
+ *  at any zoom, window or phone width. Particle maxima go through `biomeBudget` (screen area / DPR). */
+export const MAP_FX = Object.freeze({
+  cloud: Object.freeze({
+    peak: .5,                       // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
+    cell: [.95, .66],                // lattice cell, fraction of visible width / height
+    size: [1.25, .9],                // patch size, fraction of visible width / height
+    spread: [.85, 1.15],            // per-patch size factor range
+    jitter: .2,                     // per-patch placement jitter, fraction of a cell
+    oddFill: .12,                   // chance an off-checker cell also holds a patch
+    drift: [.034, .008],            // cells per second (x, y): one pass takes ~45 s
+    breathe: .06,                   // slow size/opacity breathing
+    tint: Object.freeze({ th:'34,14,18', asia:'12,20,30', west:'10,20,44', cyberhell:'18,8,40' }),
+    fallbackTint: '12,16,34',
+  }),
+  snow: Object.freeze({
+    max: 720,                       // particle ceiling before biomeBudget scales it by screen area and DPR
+    speed: [38, 92], drift: 16,     // CSS px per second
+    size: [1.6, 4.2],               // CSS px
+    alpha: [.5, .95], color: '#f1f8ff',
+  }),
+  fog: Object.freeze({
+    peak: .5, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .5,
+    drift: [.045, .004], breathe: .1, tint: '214,230,244',
+  }),
+  rain: Object.freeze({
+    max: 600, speed: [560, 820], slant: -110, length: [14, 24], width: 1.4,
+    alpha: [.32, .62], color: 'rgba(196,226,252,1)',
+  }),
+  storm: Object.freeze({
+    period: 4000, jitter: 1200,     // one strike per slot, started somewhere in the first `jitter` ms
+    flash: .22,                     // hard ceiling of the whole-screen flash opacity (brief: <= .25)
+    pulses: Object.freeze([[0, 90, 1], [150, 260, .55]]),   // [start ms, end ms, share of flash]; at most 2 flashes per strike
+    boltMs: 320,
+  }),
+  shadowEdge: Object.freeze([[0,1],[.66,1],[.8,.8],[.92,.34],[1,0]]),   // radial profile of one shadow blob: flat core, soft shoulder
+  // th / asia embers and dust keep their original world-space behaviour (not part of Q5)
+  legacyBase: Object.freeze({ th: 30, asia: 20 }),
+});
+
 export function ambientPixelKind(r, g, b, y, zone, x = .5) {
   if (zone==='town-th') {
     if(townContains(x*TOWN_SIZE.w,y*TOWN_SIZE.h)) return null;
@@ -247,10 +288,7 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
 
 // WEATHER-A extends the shared map pass. Sprites are baked once, never filtered or
 // read back per frame. This pass belongs after actors and before canvas/DOM HUD.
-export const WEATHER_ZONES = Object.freeze({
-  th:{shade:.085,speed:5}, asia:{shade:.065,speed:3.4},
-  west:{shade:.075,speed:2.4}, cyberhell:{shade:.10,speed:6},
-});
+export const WEATHER_ZONES = Object.freeze(Object.fromEntries(Object.keys(MAP_FX.cloud.tint).map(zone=>[zone,Object.freeze({tint:MAP_FX.cloud.tint[zone]})])));
 export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
   if(reduced)return 0;
   // CSS viewport area, with a further high-DPR reduction. World size/zoom must
@@ -259,18 +297,81 @@ export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
 }
 let weatherSprites;
 const weatherClocks=new WeakMap();
+const driftClocks=new WeakMap();
+/** Soft "cloud" blobs, baked once per tint: unions of feathered ellipses, opaque in the core and fading to nothing
+ *  well inside the canvas edge. Normalised [cx,cy,rx,ry]; three shapes so neighbouring patches differ. */
+const SHADOW_SHAPES=[
+  [[.50,.50,.50,.50],[.30,.56,.34,.42],[.72,.48,.34,.44],[.52,.30,.36,.34],[.46,.74,.36,.30]],
+  [[.48,.52,.50,.48],[.72,.58,.34,.40],[.26,.46,.34,.42],[.60,.30,.34,.32],[.38,.74,.34,.30]],
+  [[.52,.50,.48,.50],[.28,.52,.34,.40],[.76,.56,.32,.42],[.42,.28,.34,.32],[.62,.74,.34,.30]],
+];
+const sprites=new Map();
+function blobSprites(rgb,kind='shadow'){
+  const key=kind+'|'+rgb;
+  if(sprites.has(key))return sprites.get(key);
+  sprites.set(key,null);
+  if(typeof document==='undefined')return null;
+  const out=[];
+  for(const shape of SHADOW_SHAPES){
+    const c=document.createElement('canvas');c.width=256;c.height=160;
+    const p=c.getContext('2d');if(!p||typeof p.createRadialGradient!=='function')return null;
+    for(const [cx,cy,rx0,ry0] of shape){
+      // Keep every feathered ellipse strictly inside the sprite so no blob is ever cut into a hard rectangular edge.
+      const rx=Math.min(rx0,cx,1-cx),ry=Math.min(ry0,cy,1-cy),r=rx*256,g=p.createRadialGradient(0,0,0,0,0,r);
+      if(typeof g?.addColorStop!=='function')return null;
+      for(const [at,a] of MAP_FX.shadowEdge)g.addColorStop(at,`rgba(${rgb},${a})`);
+      p.save();p.translate(cx*256,cy*160);p.scale(1,ry*160/r);p.fillStyle=g;p.fillRect(-r,-r,r*2,r*2);p.restore();
+    }
+    out.push(c);
+  }
+  sprites.set(key,out);return out;
+}
 function weatherArt(){
   if(weatherSprites)return weatherSprites;
   if(typeof document==='undefined')return null;
-  const make=rgb=>{
-    const c=document.createElement('canvas');c.width=c.height=128;
-    const p=c.getContext('2d'),g=p?.createRadialGradient?.(64,64,0,64,64,64);
-    if(typeof g?.addColorStop!=='function')return null;
-    g.addColorStop(0,`rgba(${rgb},1)`);g.addColorStop(.45,`rgba(${rgb},.6)`);g.addColorStop(1,`rgba(${rgb},0)`);
-    p.fillStyle=g;p.fillRect(0,0,128,128);return c;
-  };
-  const cloud=make('16,22,32'),smoke=make('135,125,120');
-  return cloud&&smoke ? (weatherSprites={cloud,smoke}) : null;
+  const c=document.createElement('canvas');c.width=c.height=128;
+  const p=c.getContext('2d'),g=p?.createRadialGradient?.(64,64,0,64,64,64);
+  if(typeof g?.addColorStop!=='function')return null;
+  g.addColorStop(0,'rgba(135,125,120,1)');g.addColorStop(.45,'rgba(135,125,120,.6)');g.addColorStop(1,'rgba(135,125,120,0)');
+  p.fillStyle=g;p.fillRect(0,0,128,128);
+  return weatherSprites={smoke:c};
+}
+/** Visible part of the current drawing space [0,aw]x[0,ah], in that space's units, plus `u` = units per CSS pixel.
+ *  Falls back to the whole area when the canvas gives no usable transform (tests, headless stubs). */
+export function viewMetrics(ctx,aw,ah){
+  const m=typeof ctx.getTransform==='function'?ctx.getTransform():null,cv=ctx.canvas;
+  if(!m||typeof m!=='object'||!(m.a>0)||!(m.d>0)||!(cv?.width>0)||!(cv?.height>0))return {x:0,y:0,w:aw,h:ah,u:1};
+  const x0=Math.max(0,-m.e/m.a),y0=Math.max(0,-m.f/m.d),x1=Math.min(aw,(cv.width-m.e)/m.a),y1=Math.min(ah,(cv.height-m.f)/m.d);
+  if(!(x1>x0&&y1>y0))return null;
+  const css=cv.clientWidth||cv.width/(globalThis.devicePixelRatio||1);
+  return {x:x0,y:y0,w:x1-x0,h:y1-y0,u:(cv.width/css)/m.a};
+}
+/** Wind offset of a drifting field, integrated per canvas so pausing holds it and zooming never makes it jump. */
+function driftOffset(ctx,key,time,rate,advance){
+  let all=driftClocks.get(ctx);if(!all){all=Object.create(null);driftClocks.set(ctx,all);}
+  const c=all[key]||(all[key]={last:time,x:0,y:0});
+  const dt=Math.min(250,Math.max(0,time-c.last));c.last=time;
+  if(advance){c.x+=rate[0]*dt/1000;c.y+=rate[1]*dt/1000;}
+  return c;
+}
+const cellHash=(i,j,k)=>seed(i*73.13+j*191.7+k*17.31+.5);
+/** A drifting lattice of soft patches: a checkerboard of cells (so some patch is always in view) plus rare extras,
+ *  each jittered and sized per cell. World-anchored: patches stay on the ground when the camera pans. */
+function drawPatchField(ctx,view,spec,off,t,bankAt){
+  const cw=view.w*spec.cell[0],ch=view.h*spec.cell[1];
+  const i0=Math.floor((view.x-off.x)/cw)-1,i1=Math.ceil((view.x+view.w-off.x)/cw)+1;
+  const j0=Math.floor((view.y-off.y)/ch)-1,j1=Math.ceil((view.y+view.h-off.y)/ch)+1;
+  for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){
+    if(mod(i+j,2)&&cellHash(i,j,1)>spec.oddFill)continue;
+    const bank=bankAt((i+.5)*cw+off.x),sprite=bank?.[Math.floor(cellHash(i,j,2)*3)%3];
+    if(!sprite)continue;
+    const cx=off.x+(i+.5+(cellHash(i,j,3)-.5)*2*spec.jitter)*cw,cy=off.y+(j+.5+(cellHash(i,j,4)-.5)*2*spec.jitter)*ch;
+    const f=spec.spread[0]+cellHash(i,j,5)*(spec.spread[1]-spec.spread[0]),breath=1+spec.breathe*Math.sin(t*.07+cellHash(i,j,6)*6.28);
+    const pw=view.w*spec.size[0]*f*breath,ph=view.h*spec.size[1]*(spec.spread[0]+cellHash(i,j,7)*(spec.spread[1]-spec.spread[0]))*breath;
+    if(cx+pw/2<view.x||cx-pw/2>view.x+view.w||cy+ph/2<view.y||cy-ph/2>view.y+view.h)continue;
+    ctx.globalAlpha=spec.peak*(.88+.12*cellHash(i,j,8));
+    ctx.drawImage(sprite,cx-pw/2,cy-ph/2,pw,ph);
+  }
 }
 export function weatherViewport(ctx){
   const dpr=globalThis.devicePixelRatio||1;
@@ -307,17 +408,19 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   for(const r of weatherLabelBounds(labels))ctx.rect(...r);
   ctx.clip('evenodd');ctx.translate(x,y);
   const halves=regions||[{zone,from:0,to:1}];
+  // Cloud shadows come last in the actor pass, so floor, buildings and characters darken together;
+  // labels are clipped out above and HUD buttons are DOM layers on top of this canvas.
+  const view=viewMetrics(ctx,W,H),cloud=MAP_FX.cloud;
+  if(view){
+    const off=driftOffset(ctx,'cloud',time,[cloud.drift[0]*view.w*cloud.cell[0],cloud.drift[1]*view.h*cloud.cell[1]],!reduced&&!paused);
+    const bankAt=cx=>blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
+    drawPatchField(ctx,view,cloud,off,t,bankAt);
+    ctx.globalAlpha=1;
+  }
   for(const region of halves){
     const style=WEATHER_ZONES[region.zone];if(!style)continue;
     const left=region.from*W,rw=(region.to-region.from)*W;
     ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
-    // Three broad feathered shadows, max combined opacity under 20%. Shared
-    // world coordinates shade the painted floor and actor pixels together.
-    for(let i=0;i<3;i++){
-      const cw=W*.56,ch=H*.42,cx=mod(W*(i*.37+.13)+t*style.speed,W+cw)-cw/2;
-      const cy=H*(.23+i*.27)+Math.sin(t*.025+i)*H*.025;
-      ctx.globalAlpha=style.shade*.66;ctx.drawImage(art.cloud,cx-cw/2,cy-ch/2,cw,ch);
-    }
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
       // Soft graded wedges; no full-screen flash or bright opaque beam core.
