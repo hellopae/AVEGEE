@@ -39,6 +39,34 @@
     {
       "before": "",
       "after": "  // Z4-TOWN-A: repair active and parked saves even if an earlier skin migration\n  // marker exists. The geometry is selected by zone, not the currently open town.\n  if(isTownZone('cyberhell')) {\n    if(d.z4TownVersion!==3) migrateTownSkinZone(this,'cyberhell');\n    this.townSkinMigrated.cyberhell = true;\n  }\n  if(this.zone==='cyberhell'&&isTownZone(this.zone)) {\n    // Pure save restores also run without a browser. Sprite collisions become\n    // available in the renderer; the owner floor still repairs positions here.\n    if(typeof Image!=='undefined')this.syncBlocks(true);\n    if(!canWalk(this.player.x,this.player.y)) {\n      const p=nearestWalk(this.player.x,this.player.y)||[CYBERHELL_LAYOUT.spots.bench.x+60,CYBERHELL_LAYOUT.spots.bench.y];\n      Object.assign(this.player,{x:p[0],y:p[1],tx:null,ty:null,path:null});\n    }\n  }\n"
+    },
+    {
+      "before": "",
+      "after": "import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';\n"
+    },
+    {
+      "before": "",
+      "after": "    historySeen: {},           // Q2: การ์ดคู่มือประวัติตัวละครที่เปิดแล้ว (เก็บใน save ไม่ถอยกลับ) — ดู history-unlock.js\n"
+    },
+    {
+      "before": "",
+      "after": "    if(this.battle)noteBattleHistory(this);   // Q2: เจอบอส/เทวดา/หัวหน้าในฉากต่อสู้ = เปิดการ์ดคู่มือ\n"
+    },
+    {
+      "before": "",
+      "after": "  syncHistory(this);\n"
+    },
+    {
+      "before": "",
+      "after": "    historyV: HISTORY_VERSION, historySeen: { ...this.historySeen },\n"
+    },
+    {
+      "before": "",
+      "after": "/** Q2: เรียกจากจุดที่ผู้เล่นเห็นตัวละครจริง — เปิดการ์ดคู่มือ (ซ้ำได้ ไม่ย้อนกลับ) */\nAPI.markHistory = function (id) {\n  if (!id) return false;\n  const seen = this.historySeen ||= {};\n  if (seen[id]) return false;\n  seen[id] = true; return true;\n};\n/** Q2: เห็นหัวหน้าสาขาของโซนนั้น (โซน 1 = พ่อ) */\nAPI.markHistoryHead = function (zone) { return this.markHistory(headId(zone)); };\n\n"
+    },
+    {
+      "before": "",
+      "after": "  // Q2: คู่มือประวัติ — เซฟที่ยังไม่มี historyV ถูก migrate ครั้งเดียวให้เปิดการ์ดตามความคืบหน้าที่มี\n  this.historySeen = { ...(d.historySeen || {}) };\n  syncHistory(this, { legacy: d.historyV !== HISTORY_VERSION });\n"
     }
   ],
   "data": [
@@ -49,6 +77,10 @@
     {
       "before": "  enemyPositions:[[1110,465],[1190,485],[1270,505],[1350,525],[1390,615]],\n  restPosition:[700,600],\n  reinforcementPositions:[[570,490],[640,510],[570,565],[640,585]],\n",
       "after": "  enemyPositions:[[1760,930],[1840,950],[2000,950],[2080,960],[1862.5,865]],\n  restPosition:[1550,1442.5],\n  reinforcementPositions:[[1570,930],[1600,990],[1680,1000],[1650,950]],\n"
+    },
+    {
+      "before": "foe:{ name:'เทวดาหอกวาคิวรี',",
+      "after": "foe:{ name:'เทวดาหอกวาลคีรี',"
     }
   ]
 }

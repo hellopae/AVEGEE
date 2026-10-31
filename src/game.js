@@ -5,6 +5,7 @@ import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtecti
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
 import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
+import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
 import {spiritTrait,lockSoulTrait,keeperRole,hiddenIssues,revealOneIssue,justiceCorrect,keeperWorkPlan,KAN_SUPPORT} from './interrogation.js';
 import {normalizeWorkers,feedWorker,restWorkerAtTea,zoneWorkers,workerHireWhy,hireWorker,setWorkerMode,dismissWorker,stepWorkers,advanceWorkers,workerSupervisionMultiplier,assignWorkerEscort,advanceWorkerEscort,releaseWorkerEscort,workerDiscs} from './workers.js';
@@ -133,6 +134,7 @@ export function createGame() {
     mobs: [], guard: null, fxHits: [], transits: [], afterlifeWalks: [], courtArrivals: [],
     workerState:normalizeWorkers(),
     interrogationSupport:{version:1,kanReadyAt:{},insights:0},teamReports:[],nextTeamReportId:1,
+    historySeen: {},           // Q2: การ์ดคู่มือประวัติตัวละครที่เปิดแล้ว (เก็บใน save ไม่ถอยกลับ) — ดู history-unlock.js
     talk: { seen: {} },        // P4: ธงว่าเคยคุยบท "ครั้งแรก" ของตัวละครแล้ว (บรรยากาศล้วน ไม่มีผลต่อเกม)
     queue: [], held: [], sentences: [], reborn: 0, ascended: 0, logs: [], closed: [], over: null,
     recentLines: [],                  // บรรทัดคำให้การ 30 บรรทัดหลังสุด — กันวิญญาณติดกันพูดซ้ำ (17 ก.ย. 2569)
@@ -1625,6 +1627,7 @@ const API = {
 
   // ---------- หนึ่งวาระ ----------
   step() {
+    if(this.battle)noteBattleHistory(this);   // Q2: เจอบอส/เทวดา/หัวหน้าในฉากต่อสู้ = เปิดการ์ดคู่มือ
     if(this.mapTravel)return;
     this.updateActorRecovery();
     if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
@@ -4916,6 +4919,7 @@ const SAVE_KEY = 'avegee.save.v2';
 API.snapshot = function (withEntry = true) {
   this.syncDiscoveries();
   syncRoster(this);
+  syncHistory(this);
   this.training = normalizeTraining(this.training);
   const frontier = JSON.parse(JSON.stringify(this.frontier));
   for (const [zone, state] of Object.entries(frontier.zones || {})) state.team = teamIds(state.team, this.roster, zone);
@@ -4955,6 +4959,7 @@ API.snapshot = function (withEntry = true) {
       slots: st.slots,
     })),
     talk: { seen: this.talk?.seen || {} },
+    historyV: HISTORY_VERSION, historySeen: { ...this.historySeen },
     queue: this.queue, held: this.held, sentences:this.sentences,
     afterlifeWalks:this.afterlifeWalks, courtArrivals:this.courtArrivals, reborn:this.reborn, ascended:this.ascended,
     items: this.items, inventory: this.inventory, mobs: this.mobs,
@@ -4983,6 +4988,16 @@ API.snapshot = function (withEntry = true) {
     logs: this.logs.slice(0, 40),
   };
 };
+
+/** Q2: เรียกจากจุดที่ผู้เล่นเห็นตัวละครจริง — เปิดการ์ดคู่มือ (ซ้ำได้ ไม่ย้อนกลับ) */
+API.markHistory = function (id) {
+  if (!id) return false;
+  const seen = this.historySeen ||= {};
+  if (seen[id]) return false;
+  seen[id] = true; return true;
+};
+/** Q2: เห็นหัวหน้าสาขาของโซนนั้น (โซน 1 = พ่อ) */
+API.markHistoryHead = function (zone) { return this.markHistory(headId(zone)); };
 
 API.save = function () {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.snapshot())); return true; }
@@ -5483,6 +5498,9 @@ API.restore = function (d) {
   initializeQuests(this,d);
   for(const zone of Object.keys(ZONE_EVENTS))this.refreshZoneEvents(zone);
   initializeBossGuides(this,d.bossGuides);
+  // Q2: คู่มือประวัติ — เซฟที่ยังไม่มี historyV ถูก migrate ครั้งเดียวให้เปิดการ์ดตามความคืบหน้าที่มี
+  this.historySeen = { ...(d.historySeen || {}) };
+  syncHistory(this, { legacy: d.historyV !== HISTORY_VERSION });
   this.log(`💾 โหลดเกมที่บันทึกไว้ — วาระที่ ${this.tick} · ปิดคดีแล้ว ${this.casesDone}`, 'event');
   return true;
 };

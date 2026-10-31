@@ -1,5 +1,5 @@
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
-import { CHARACTER_HISTORY, FAMILY_HISTORY } from './e1-content.js';
+import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
@@ -1987,7 +1987,7 @@ function openZoneArrival(z) {
       </div>
     </div>`;
     prepareComicImages(dlg);
-    dlg.querySelector('[data-arrival-next]').onclick = () => { if (++page < pages.length) paint(); else { g.zoneIntroSeen[z.k] = true; g.save(); dlg.close(); } };
+    dlg.querySelector('[data-arrival-next]').onclick = () => { if (++page < pages.length) paint(); else { g.zoneIntroSeen[z.k] = true; g.markHistoryHead(z.k); g.save(); dlg.close(); } };
   };
   openDlg('intro-comic-dialog');
   paint();
@@ -2137,7 +2137,7 @@ function bossModal(title, text, btn = 'รับทราบ') {
  *  แค่โชว์ภาพลงทัณฑ์ + บอกให้ไปพักที่ศาลาน้ำชา แล้วปล่อยเล่นต่อทันที ไม่รีเซ็ตโซน */
 function openAuthorityWarning() {
   const w=g.pendingWarn; if(!w)return;
-  g.pendingWarn=null; g.save();
+  g.pendingWarn=null; g.markHistoryHead(g.zone); g.save();
   const auth=authorityOf(g.zone);
   bossModal(`คำตัดสินแดง ${w.n}/${w.of} · ${auth.full}`,
     `${w.text ? `${w.text}\n\n` : ''}${w.n===w.of ? 'หัวหน้าจะตรวจและลงโทษท่านด้วยตนเอง' : `อีก ${w.of-w.n} คำตัดสินแดงติดกัน หัวหน้าจะลงมาด้วยตนเอง`}\nตัดสินได้สีเขียวจะล้างคำตัดสินแดงที่สะสม`, 'รับทราบ');
@@ -2156,7 +2156,7 @@ function openAuthorityWarning() {
 function openVerdictScene() {
   const sc = g.pendingVerdictScene; if (!sc) return;
   if (g.pendingVerdict?.id === sc.id) g.pendingVerdict = null;
-  g.pendingVerdictScene = null; g.save();
+  g.markHistoryHead(sc.zone); g.pendingVerdictScene = null; g.save();   // Q2: เห็นหัวหน้าสาขาในฉากคำตัดสิน = เปิดการ์ดคู่มือ
   pauseForDlg();
   const col = sc.kind === 'blame' ? 'var(--destructive)' : sc.score >= 78 ? 'var(--success)' : sc.score >= 50 ? 'var(--gold)' : 'var(--destructive)';
   const stars = '★'.repeat(sc.stars) + '☆'.repeat(Math.max(0, 5 - sc.stars));
@@ -3092,7 +3092,9 @@ document.addEventListener('keydown', e => {
 
 const plainQuest = text => String(text || '').replace(/\*\*|`/g,'').replace(/\*\([^)]*\)\*/g,'').replace(/ · ผล:.*/g,'');
 function historyHtml(){
-  return `<section class="character-history"><h2>ประวัติตัวละคร</h2><div class="guide-card-grid">${CHARACTER_HISTORY.map(p=>`<article class="guide-card"><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></article>`).join('')}</div><h3>วงศ์เดียวกัน คนละยุค เวลาในนรกไม่เรียงตามปี</h3><p>ยมทูตแต่ละโซนเป็นคนละคน พ่อค้าควันทองเป็นคนเดียวกันทุกโซน</p>${FAMILY_HISTORY.map(t=>`<p>${esc(t)}</p>`).join('')}</section>`;
+  const cards=openHistoryCards(g);
+  const note=showFamilyNote(g)?'<h3>วงศ์เดียวกัน คนละยุค เวลาในนรกไม่เรียงตามปี</h3><p>ยมทูตแต่ละโซนเป็นคนละคน พ่อค้าควันทองเป็นคนเดียวกันทุกโซน</p>':'';
+  return `<section class="character-history"><h2>ประวัติตัวละคร</h2><div class="guide-card-grid">${cards.map(p=>`<article class="guide-card" data-history="${esc(p.id)}"><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></article>`).join('')}</div>${note}</section>`;
 }
 function openQuests(id = null){
   const q=QUESTS.find(q=>q.id===id),s=q&&questState(g,id),p=q&&questTarget(g,q),blocked=(!q||!q.kin)&&questsPaused(g);
@@ -3205,6 +3207,7 @@ function openNiraOffice() {
 
 function openMerchant() {
   if (!g.zoneCaptivesFree() || !g.merchantAvailable()) return;
+  g.markHistory('merchant');   // Q2: เปิดร้านพ่อค้า = เปิดการ์ดคู่มือ
   pauseForDlg();
   const stock0 = merchantStock(g.zone);
   const merchantGreet = greetLine({ kind: 'merchant', name: MERCHANT.name }, { merchant: { poor: g.coin < Math.min(...stock0.map(x => x.cost)), anyLocked: stock0.some(x => g.level < x.lv) } });

@@ -1950,7 +1950,7 @@ export const ZONE_EVENTS = {
     { k:'westDevaTest', atCases:7, requires:['westVampireBreach'], mode:'single',
       title:{ th:'เทวดาแห่งปัจฉิมทดสอบ', en:'Western deva test' },
       alert:{ th:'เทวดามาปราบแวมไพร แต่ยมบาทน้อยปราบไปแล้ว จึงขอทดสอบฝีมือ', en:'The deva arrives too late for the vampire and tests Yama instead.' },
-      foe:{ name:'เทวดาหอกวาคิวรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },
+      foe:{ name:'เทวดาหอกวาลคีรี', sp:'boss-tester-west', hp:165, atk:[14,21], boss:true },
       reward:{ coin:130, ability:'valkyrieSpear' } },
     challengeEvent('west', { betweenWaveHeal:18, waveCoin:[10,10,12,12,14,14,16,16,18,0], reward:{ coin:200, weapon:'cane' } }),
   ],
