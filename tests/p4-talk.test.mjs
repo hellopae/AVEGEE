@@ -97,7 +97,8 @@ test('TALK = ATMOSPHERE ONLY (D8): talking never changes any resource, state or 
   g.crew.forEach((c,i)=>{c.x=300+i*40;c.y=500;});g.guard.x=800;g.guard.y=900;
   g.queue=[soul(1),soul(2,{waited:60}),soul(3,{back:{gave:3}})];
   g.afterlifeWalks=[{soul:soul(9),destination:'gate',zone:g.zone,path:[[700,700]],elapsed:0,duration:5000}];
-  const strip=x=>{const s=JSON.parse(JSON.stringify(x.snapshot()));delete s.talk;delete s.at;return s;};
+  // Q2: meeting someone opens a guide card (historySeen) — a guide flag, never a resource
+  const strip=x=>{const s=JSON.parse(JSON.stringify(x.snapshot()));delete s.talk;delete s.historySeen;delete s.at;return s;};
   const before=JSON.stringify(strip(g));
   for(let round=0;round<30;round++)for(const t of talkTargets(g,helpers))pickTalk(g,t,{rng:Math.random});
   assert.equal(JSON.stringify(strip(g)),before,'only g.talk (first-line flags) may change');

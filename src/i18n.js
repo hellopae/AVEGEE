@@ -1059,12 +1059,12 @@ Object.assign(TH, {
   'deva.map.test':'ทดสอบฝีมือ',
   'deva.intro.title':'เทวดาเผยกาย',
   'deva.th.praise':'ท่านพิจารณาด้วยความเป็นธรรม สมควรแก่หน้าที่ผู้คุม ขอให้ข้าทดสอบฝีมือท่านสักครู่',
-  'deva.th.warning':'ข้าเพียงจำวัด มิได้ทำบาป โปรดพิจารณาให้รอบคอบกว่านี้ ขอให้ข้าทดสอบฝีมือท่านสักครู่',
-  'deva.west.arrival':`วาคิวรี: ไม่ต้องห่วงเจ้าตัวเล็ก ข้ามาช่วยเจ้าแล้ว
+  'deva.th.warning':'ข้าเป็นเพียงขอทานในวัด แบ่งอาหารที่ได้มาให้ผู้หิวโหย มิได้ทำบาป โปรดพิจารณาให้รอบคอบกว่านี้ ขอให้ข้าทดสอบฝีมือท่านสักครู่',
+  'deva.west.arrival':`วาลคีรี: ไม่ต้องห่วงเจ้าตัวเล็ก ข้ามาช่วยเจ้าแล้ว
 yama: .......
-วาคิวรี: อ้าว! ปีศาจแวมไพร หายไปไหนแล้ว..
+วาลคีรี: อ้าว! ปีศาจแวมไพร หายไปไหนแล้ว..
 yama: !!-"-"
-วาคิวรี: ..... เจ้าตัวเล็ก ฝีมือไม่ธรรมดานิ`,
+วาลคีรี: ..... เจ้าตัวเล็ก ฝีมือไม่ธรรมดานิ`,
   'west.rescue.approach':'เดินเข้าไปช่วยทัณฑ์และพ่อค้านรก',
   'deva.cyberhell.arrival':`ลูเมน: นายเองสินะ ที่กล้าจะมาคุมดินแดนนี้ ที่นี่ไม่ง่ายเหมือนที่อื่นๆหรอกนะ
 yama: นายเป็นใคร
@@ -1085,7 +1085,7 @@ Object.assign(EN, {
   'deva.map.test':'Test your skill',
   'deva.intro.title':'The deva reveals himself',
   'deva.th.praise':'You have judged fairly and honoured your duty. Please allow me to test your skill.',
-  'deva.th.warning':'I only rested and committed no sin. Please judge more carefully. Allow me to test your skill.',
+  'deva.th.warning':'I am only a beggar in the temple, sharing what I am given with the hungry. I committed no sin. Please judge more carefully. Allow me to test your skill.',
   'deva.west.arrival':`Valkyrie: Fear not, little one. I have come to help you.
 Yama: .......
 Valkyrie: Oh! Where has the vampire demon gone?
