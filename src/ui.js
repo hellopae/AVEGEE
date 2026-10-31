@@ -3920,8 +3920,10 @@ function openBattle(after) {
       const remaining = yamaSkillRemaining(b, k);
       const baseReady = ok;
       ok = ok && !remaining;
+      // Q3: ท่าที่ชื่อเต็มอยู่บนปุ่มแล้ว (chipParts) ไม่ใช้ title — tooltip ของเบราว์เซอร์เคยทับรายการพลัง · ใช้ aria-label แทน
+      const nameAttr = skill?.chipParts ? `aria-label="${esc(fullLabel + (note ? ' · ' + note : ''))}"` : `title="${esc(fullLabel + (note ? ' · ' + note : ''))}"`;
       return `<button class="orb-choice${skill ? ' combat-skill-choice' : ''}" data-base-ready="${baseReady}" data-act="${k}" ${ok ? '' : 'disabled'}
-      title="${esc(fullLabel + (note ? ' · ' + note : ''))}">${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${chipLabel}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
+      ${nameAttr}>${icon.startsWith('<') ? icon : `<img src="${icon}" alt="">`}<b>${chipLabel}</b>${note ? `<i>${esc(note)}</i>` : ''}${remaining ? `<em class="skill-cooldown" role="status">${remaining}s</em>` : ''}</button>`;
     };
     const battleItem = k => BATTLE.items.find(x => x.k === k);
     const itemChoice = (k, icon) => {
@@ -3934,13 +3936,16 @@ function openBattle(after) {
       return battleChoice(k, icon, (consumable ? itemName(k) : (it?.name || k)) + (['ice','hypno'].includes(k)?' · ทุกเป้าหมาย':''), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
-    const powerChoices = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24 · 5 เทิร์นยามา`) + battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
+    const teamJudgmentChoice = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24 · 5 เทิร์นยามา`);
+    // Q3: ท่าไม้ตายอยู่ล่างสุดของรายการพลัง (ใต้สะกดจิต)
+    const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
       + (g.abilities?.windFan ? battleChoice('windFan', 'img/fx-fan-wind.png', 'พัดสายลม · ทุกเป้าหมาย', mp >= BATTLE.mpCost.wind, `${t('battle.mp')} ${BATTLE.mpCost.wind}`) : '')
       + (g.abilities?.rage ? battleChoice('rage', 'img/fx-rage.png', 'พลังบ้าคลั่ง', mp >= BATTLE.mpCost.rage && !b.rageTurns, `${t('battle.mp')} ${BATTLE.mpCost.rage}`) : '')
       + (g.abilities?.valkyrieSpear ? battleChoice('valkyrieSpear', 'img/fx-valkyrie-spear.png', 'หอกวาลคีรี · ทุกเป้าหมาย', mp >= BATTLE.mpCost.spear, `${t('battle.mp')} ${BATTLE.mpCost.spear}`) : '')
       + (g.abilities?.ice ? itemChoice('ice', 'img/fx-ice.png') : '')
-      + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '');
+      + (g.abilities?.hypno ? itemChoice('hypno', 'img/fx-hypno.png') : '')
+      + teamJudgmentChoice;
     const currentTurn = !prepOn ? g.beginBattleTurns() : null;
     const actor = g.battleActors().find(c => c.id === (b.actorId || 'you')) || g.battleActors()[0];
     if (!phase && b.actorId && b.actorId !== actor.id) { b.actorId = actor.id; b.command = null; }
@@ -4064,7 +4069,7 @@ function openBattle(after) {
         <button class="battle-portrait hero${view.defending?.you ? ' is-defending' : ''}" data-crew-pick="you">${view.defending?.you ? defendShieldHtml() : ''}<img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
           <div class="battle-numbered-meter">${meter(view.youHp, view.youMax, 'health', t('battle.hp'))}<small>${Math.round(view.youHp)}/${view.youMax}</small></div>
           <div class="battle-numbered-meter">${meter(mp, g.mpMax, 'mana', t('battle.mp'))}<small>${Math.round(mp)}/${g.mpMax}</small></div>
-          <div class="battle-team-ultimate">${meter(g.abilities.teamJudgment ? 5 - g.teamJudgmentRemaining() : 0, 5, 'ready', COMBAT_SKILLS.teamJudgment.name)}<small>${!g.abilities.teamJudgment ? 'ล็อก · ชนะฝ่าชายแดนไทย' : g.teamJudgmentRemaining() ? `อีก ${g.teamJudgmentRemaining()} เทิร์นยามา` : 'ประสานพิพากษา · พร้อม'}</small></div>
+          <div class="battle-team-ultimate">${meter(g.abilities.teamJudgment ? 5 - g.teamJudgmentRemaining() : 0, 5, 'ready', COMBAT_SKILLS.teamJudgment.name)}<small>${!g.abilities.teamJudgment ? 'ล็อก · ชนะฝ่าชายแดนไทย' : g.teamJudgmentRemaining() ? `อีก ${g.teamJudgmentRemaining()} เทิร์นยามา` : ''}</small></div>
           ${b.protection?.you ? `<small>โล่ ${b.protection.you.shield} · โจมตี +${Math.round(b.protection.you.buff * 100)}% (${b.protection.you.attacks})</small>` : ''}
         </button>
         </div>
@@ -5525,15 +5530,21 @@ function openStation(k, emergency = false) {
     const note = txt => `<div class="st-pane-note">${esc(txt)}</div>`;
 
     if(k==='canteen'){
+      // Q3: ฟอร์มสั่งข้าวปั้นอยู่ในการ์ดซ้ายบน (.st-card) แถวเรียงในกรอบ — เดิมวางใน #st-actions (inset:0 + pointer-events:none) ทับการ์ดและกดไม่ได้
       const state=canteenState(g);
-      put(L, '<h3>🍙 โรงอาหาร</h3><p>เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>');
-      put(A, `<div class="st-pane"><p>พร้อมแจก ${state.meals}/6 · ${state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว'}</p>
-        <label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
-        <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" style="width:60px"></label>
-        <button id="rice-order" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
-        ${state.orders.map(o=>`<button data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}<small id="rice-error" role="status"></small></div>`);
-      A.querySelector('#rice-order').onclick=()=>{if(!R?.inReach())return;const ok=g.orderRice(A.querySelector('#rice-cook').value,A.querySelector('#rice-count').value);if(ok)panels();else A.querySelector('#rice-error').textContent='สั่งไม่ได้: ตรวจคนว่าง เบี้ยกรรม จำนวน และพื้นที่เก็บ';};
-      A.querySelectorAll('[data-rice-cancel]').forEach(b=>b.onclick=()=>{if(R?.inReach()){g.cancelRice(b.dataset.riceCancel);panels();}});
+      const keepCook=L.querySelector('#rice-cook')?.value, keepCount=L.querySelector('#rice-count')?.value;   // วาดซ้ำทุกครั้งที่คิวเปลี่ยน — อย่าให้ค่าที่ผู้เล่นเลือกค้างไว้เด้งกลับ
+      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
+      put(L, `<h2>🍙 โรงอาหาร</h2><p>เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
+        <div class="canteen-panel"><p class="canteen-status">พร้อมแจก ${state.meals}/6 · ${queue}</p>
+        <div class="canteen-form"><label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
+        <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" inputmode="numeric"></label></div>
+        <div class="canteen-buttons"><button id="rice-order" class="btn-gold" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
+        ${state.orders.map(o=>`<button class="btn-gold" data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}</div><small id="rice-error" role="status"></small></div>`);
+      if(keepCook&&[...L.querySelector('#rice-cook').options].some(o=>o.value===keepCook))L.querySelector('#rice-cook').value=keepCook;
+      if(keepCount)L.querySelector('#rice-count').value=keepCount;
+      put(A,'');
+      L.querySelector('#rice-order').onclick=()=>{if(!R?.inReach())return;const ok=g.orderRice(L.querySelector('#rice-cook').value,L.querySelector('#rice-count').value);if(ok)panels();else L.querySelector('#rice-error').textContent='สั่งไม่ได้: ตรวจคนว่าง เบี้ยกรรม จำนวน และพื้นที่เก็บ';};
+      L.querySelectorAll('[data-rice-cancel]').forEach(b=>b.onclick=()=>{if(R?.inReach()){g.cancelRice(b.dataset.riceCancel);panels();}});
       if(Rg)Rg.hidden=true;return;
     }
 

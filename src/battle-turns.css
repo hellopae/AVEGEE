@@ -206,3 +206,5 @@ html.defend-shield-art .defend-shield::before,html.defend-shield-art .defend-shi
 .battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice b{grid-column:2/-1;white-space:normal;overflow:visible;text-overflow:clip;word-break:normal;overflow-wrap:normal}
 .battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice i{grid-column:2/-1;grid-row:2;max-width:none;white-space:normal;overflow:visible;text-overflow:clip}
 .battle9-arena .battle9-menu .command-options .orb-choice.combat-skill-choice b>span{display:inline-block;white-space:nowrap}
+/* Q3: ท่าไม้ตายย้ายมาอยู่ล่างสุดของรายการพลัง — ให้รายการสูงพอจะเห็นครบ 8 แถว (ui.js ย่อให้พอดีกรอบฉากเองถ้าไม่พอ) */
+.battle9-arena .battle9-menu .command-options[data-options="power"]{max-height:64vh}

@@ -52,7 +52,8 @@ test('BALANCE-2 every new move renders an unclipped-name row, ultimate chip shor
     const text=html.match(/<b>(.*?)<\/b>/)[1].replace(/<[^>]+>/g,'');
     assert.equal(text,def.shortName||def.name);assert.equal(def.chipParts.join(''),text);
     assert.ok(html.includes('<wbr>'));
-    assert.ok(html.includes(`title="${def.name} · ready"`));assert.doesNotMatch(html.match(/<b>(.*?)<\/b>/)[1],/…|\.\.\./);
+    // Q3: combat skills expose the full name via aria-label, not a native title tooltip (the tooltip covered the power list)
+    assert.ok(html.includes(`aria-label="${def.name} · ready"`));assert.doesNotMatch(html,/ title=/);assert.doesNotMatch(html.match(/<b>(.*?)<\/b>/)[1],/…|\.\.\./);
   }
   assert.equal(COMBAT_SKILLS.teamJudgment.shortName,'ประสานพิพากษา');
   assert.equal(ABILITY_REWARDS.teamJudgment.name,COMBAT_SKILLS.teamJudgment.name);
