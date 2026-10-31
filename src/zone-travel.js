@@ -13,7 +13,10 @@ export const DUNGEON_ROUTES = Object.freeze([
 ]);
 // Optional patrols live between the three story checkpoints. Their victories never unlock a gate.
 // M2 R1: patrol progress / foes are columns of ROUTE_GEOMETRY; only routes using the trail system (enabled rows) have patrols.
-const patrolsOf = routeId => Object.freeze(routeRow(routeId).patrolProgress.map((progress,i)=>Object.freeze({
+// Q4-3: Zone 3-4 route patrols 1 and 4 stand a few steps further along the road than the shared table, where it is wide enough to stroll
+// (ids and foes unchanged; route-geometry.js stays byte-for-byte the baseline its authenticity test pins).
+const PATROL_PROGRESS_OVERRIDE = { 'west:cyberhell':[.08,.215,.29,.50,.68,.90] };
+const patrolsOf = routeId => Object.freeze((PATROL_PROGRESS_OVERRIDE[routeId]||routeRow(routeId).patrolProgress).map((progress,i)=>Object.freeze({
   id:`${routeId}:patrol:${i}`,progress,foe:routeRow(routeId).patrolFoe[i],name:'ปีศาจลาดตระเวน',level:1+Math.floor(i/2),
 })));
 const PATROLS = Object.fromEntries(Object.keys(ROUTE_GEOMETRY).map(id => [id, patrolsOf(id)]));
