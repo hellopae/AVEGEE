@@ -13,14 +13,14 @@ const mod = (n, d) => ((n % d) + d) % d;
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
     peak: .5,                       // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
-    cell: [1.0, .7],                  // lattice cell, fraction of visible width / height
-    size: [1.25, .9],                // patch size, fraction of visible width / height
+    cell: [.96, .68],                // lattice cell, fraction of visible width / height
+    size: [1.15, .85],               // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range
     jitter: .2,                     // per-patch placement jitter, fraction of a cell
     oddFill: .12,                   // chance an off-checker cell also holds a patch
     drift: [.034, .008],            // cells per second (x, y): one pass takes ~45 s
     breathe: .06,                   // slow size/opacity breathing
-    tint: Object.freeze({ th:'34,14,18', asia:'12,20,30', west:'10,20,44', cyberhell:'18,8,40' }),
+    tint: Object.freeze({ th:'20,8,16', asia:'8,14,26', west:'8,16,40', cyberhell:'14,6,36' }),
     fallbackTint: '12,16,34',
   }),
   snow: Object.freeze({
@@ -44,7 +44,7 @@ export const MAP_FX = Object.freeze({
     pulses: Object.freeze([[0, 90, 1], [150, 260, .55]]),   // [start ms, end ms, share of flash]; at most 2 flashes per strike
     boltMs: 320,
   }),
-  shadowEdge: Object.freeze([[0,1],[.66,1],[.8,.8],[.92,.34],[1,0]]),   // radial profile of one shadow blob: flat core, soft shoulder
+  shadowEdge: Object.freeze([[0,1],[.76,1],[.88,.62],[.96,.2],[1,0]]),   // radial profile of one shadow blob: flat core, soft shoulder
   // th / asia embers and dust keep their original world-space behaviour (not part of Q5)
   legacyBase: Object.freeze({ th: 30, asia: 20 }),
 });

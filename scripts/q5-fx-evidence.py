@@ -53,7 +53,7 @@ def open_frontier(pg):
 
 def open_route(pg):
     """Hold Down toward the exit arrow (wiggle sideways if an enemy blocks the lane) until the departure prompt shows."""
-    for attempt in range(12):
+    for attempt in range(16):
         pg.keyboard.down('ArrowDown')
         for _ in range(10):
             pg.wait_for_timeout(500)
@@ -62,8 +62,8 @@ def open_route(pg):
         pg.keyboard.up('ArrowDown')
         if pg.query_selector('[data-border-go]'):
             break
-        k = 'ArrowRight' if attempt % 2 == 0 else 'ArrowLeft'
-        pg.keyboard.down(k); pg.wait_for_timeout(1200); pg.keyboard.up(k)
+        for k, ms in (('ArrowUp', 900), ('ArrowRight' if attempt % 2 == 0 else 'ArrowLeft', 1400)):
+            pg.keyboard.down(k); pg.wait_for_timeout(ms); pg.keyboard.up(k)
     pg.click('[data-border-go]', timeout=5000); pg.wait_for_timeout(3000)
 
 
@@ -82,11 +82,20 @@ def cmd_shots(out, phase='after', zones=None):
                 pg.screenshot(path=f'{out}/{phase}-town-{z}.png')
                 pg.click('#town-overview'); pg.wait_for_timeout(2500); pg.screenshot(path=f'{out}/{phase}-overview-{z}.png')
                 open_frontier(pg); pg.screenshot(path=f'{out}/{phase}-frontier-{z}.png')
-                if z != 'cyberhell':
-                    open_route(pg); pg.wait_for_timeout(2500); pg.screenshot(path=f'{out}/{phase}-route-{z}.png')
                 print(z, 'errors:', errs, flush=True)
             finally:
                 browser.close()
+            if z == 'cyberhell':
+                continue
+            for attempt in range(4):   # an enemy standing in the exit lane can stall the walk: retry from a fresh boot
+                browser, pg, errs = boot(p)
+                try:
+                    goto_zone(pg, z); open_frontier(pg); open_route(pg); pg.wait_for_timeout(2500)
+                    pg.screenshot(path=f'{out}/{phase}-route-{z}.png'); break
+                except Exception as e:
+                    print(z, 'route attempt', attempt + 1, 'failed:', str(e)[:80], flush=True)
+                finally:
+                    browser.close()
 
 
 def cmd_clouds(out, zone='th'):
