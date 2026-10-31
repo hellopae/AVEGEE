@@ -1,0 +1,11 @@
+town-th darker>15%: 0.28 darker>30%: 0.23 core ratio (2nd percentile): 0.59
+frontier-th darker>15%: 0.48 darker>30%: 0.43 core ratio (2nd percentile): 0.55
+route-th darker>15%: 0.48 darker>30%: 0.42 core ratio (2nd percentile): 0.56
+town-asia darker>15%: 0.3 darker>30%: 0.22 core ratio (2nd percentile): 0.6
+frontier-asia darker>15%: 0.48 darker>30%: 0.41 core ratio (2nd percentile): 0.55
+route-asia darker>15%: 0.48 darker>30%: 0.39 core ratio (2nd percentile): 0.57
+town-west darker>15%: 0.3 darker>30%: 0.23 core ratio (2nd percentile): 0.59
+frontier-west darker>15%: 0.49 darker>30%: 0.44 core ratio (2nd percentile): 0.54
+route-west darker>15%: 0.51 darker>30%: 0.42 core ratio (2nd percentile): 0.57
+town-cyberhell darker>15%: 0.3 darker>30%: 0.25 core ratio (2nd percentile): 0.58
+frontier-cyberhell darker>15%: 0.48 darker>30%: 0.43 core ratio (2nd percentile): 0.54

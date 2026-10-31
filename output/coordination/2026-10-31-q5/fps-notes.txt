@@ -1,0 +1,5 @@
+FPS check (Chromium via Playwright, CPU throttle 4x, zone 3 maps, 3 reps x 8 s, real GPU = Intel UHD 630 / ANGLE Metal):
+  frontier  main 60.03 fps -> Q5 59.93 fps
+  town      main 54.50 fps -> Q5 54.27 fps
+SwiftShader software rasterizer (no GPU), CPU throttle 6x, zone 3 frontier: main 34.0 -> Q5 ~26.9 fps (-21%); zone 4 frontier 39.0 -> 27.9 (-29%).
+Software raster is dominated by the big alpha blits and the flake/rain paths; real browsers/phones rasterise on the GPU.
