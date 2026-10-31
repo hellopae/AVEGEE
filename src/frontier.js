@@ -2,6 +2,7 @@ import {characterScale} from './character-scale.js';
 import {captainCaveForZone} from './route-geometry.js';
 import {bossGuideWaiting} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
+import { drawFrontierPostWeather } from './frontier-ambient.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
 import { exitStep, drawExitMarker } from './exit-marker.js';
@@ -335,6 +336,8 @@ export function makeFrontierWalk(cv, g, opts) {
     if(actorStanding(g.guard)) acts.push({ y: GUARD[1], fn: () => drawStandee(ctx, 'crew-guard', px(GUARD[0]), py(GUARD[1]), U * ADULT_H * characterScale('guard'), t, '🛡️') });
     acts.push({ y: NIRA[1], fn: () => drawStandee(ctx, 'crew-nira', px(NIRA[0]), py(NIRA[1]), U * ADULT_H * characterScale('nira'), t, '📋') });
     acts.sort((a, b) => a.y - b.y).forEach(o => o.fn());
+    // Q5: cloud shadows fall over the floor and every actor; DOM buttons and labels sit above this canvas.
+    if (bgRec.ok) drawFrontierPostWeather(ctx, { zone: g.zone, time: t, reduced, x: box.ox, y: box.oy, w: box.w, h: box.h });
 
     // ปุ่ม "เริ่มต่อสู้" ลอย — DOM element ที่ ui.js ส่งเข้ามา ไฟล์นี้แค่โชว์/ซ่อน/จัดตำแหน่งเป็น %
     // (ใช้ % แทนพิกเซลจริง กันปัญหาขนาด canvas จริง (backing store) กับขนาด CSS ไม่ตรงกันตอน dpr>1)

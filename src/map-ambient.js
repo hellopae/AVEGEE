@@ -13,7 +13,7 @@ const mod = (n, d) => ((n % d) + d) % d;
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
     peak: .5,                       // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
-    cell: [.95, .66],                // lattice cell, fraction of visible width / height
+    cell: [1.0, .7],                  // lattice cell, fraction of visible width / height
     size: [1.25, .9],                // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range
     jitter: .2,                     // per-patch placement jitter, fraction of a cell

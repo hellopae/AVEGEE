@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {drawMapWeather,weatherBudget,weatherLabelBounds,WEATHER_ZONES,setWeatherEnabled,weatherEnabled,ambientParticles,MAP_FX} from '../src/map-ambient.js';
-import {drawFrontierWeather,drawFrontierAmbient} from '../src/frontier-ambient.js';
+import {drawFrontierWeather,drawFrontierAmbient,drawFrontierPostWeather} from '../src/frontier-ambient.js';
 const viewport={width:1440,height:900,dpr:1};
 const MAX_PATCHES=10;   // cloud shadow patches are sized from the visible area, so only a handful can intersect it
 const gradient={addColorStop(){}};
@@ -110,4 +110,20 @@ test('Q5 cloud shadows drift slowly and hold still when paused',()=>{
  for(let i=1;i<xs.length;i++){const a=xs[i-1],b=xs[i];if(a.length&&b.length&&a.length===b.length)for(let k=0;k<a.length;k++)assert.ok(Math.abs(b[k]-a[k])<60,'no sudden jumps');}
  r.calls.length=0;drawMapWeather(r.ctx,{...opts,time:41000,paused:true});const held=r.calls.filter(c=>c[0]==='drawImage').map(c=>c[2]);
  r.calls.length=0;drawMapWeather(r.ctx,{...opts,time:99000,paused:true});assert.deepEqual(r.calls.filter(c=>c[0]==='drawImage').map(c=>c[2]),held);
+});
+
+test('Q5 cloud shadows cover every map type: all three border routes and the frontier post of every zone',async()=>{
+ const {setWeatherEnabled:setReleaseWeather}=await import('../src/map-ambient.js?v=mapfx-k1d');   // the module instance frontier-ambient.js imports
+ for(const routeId of ['th:asia','asia:west','west:cyberhell']){
+  const r=record();drawFrontierWeather(r.ctx,{routeId,time:3000,w:1672,h:941,x:0,y:0,viewport});
+  assert.ok(r.calls.some(c=>c[0]==='drawImage'),routeId+' has cloud shadows');
+ }
+ for(const zone of Object.keys(WEATHER_ZONES)){
+  const r=record();drawFrontierPostWeather(r.ctx,{zone,time:3000,w:1672,h:941,x:0,y:0});
+  assert.ok(r.calls.some(c=>c[0]==='drawImage'),zone+' frontier post has cloud shadows');
+  const off=record();setReleaseWeather(false);drawFrontierPostWeather(off.ctx,{zone,time:3000,w:1672,h:941});setReleaseWeather(true);
+  assert.equal(off.calls.length,0,'settings switch silences the frontier post too');
+ }
+ const frontier=readFileSync('src/frontier.js','utf8');
+ assert.ok(frontier.indexOf('drawFrontierPostWeather(ctx')>frontier.indexOf('acts.sort('),'frontier shadows fall over its actors');
 });
