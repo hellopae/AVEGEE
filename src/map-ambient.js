@@ -488,7 +488,8 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
       // Soft graded wedges; no full-screen flash or bright opaque beam core.
       for(let i=0;i<3;i++){
         const bx=left+rw*(.12+i*.31),by=H*.07,bw=rw*.15;
-        const g=ctx.createLinearGradient(bx,by,bx+bw,H*.88);
+        const g=ctx.createLinearGradient?.(bx,by,bx+bw,H*.88);
+        if(typeof g?.addColorStop!=='function')continue;   // canvas stubs without gradients simply skip the soft beams
         g.addColorStop(0,'rgba(255,241,190,0)');g.addColorStop(.3,'rgba(255,241,190,.045)');g.addColorStop(1,'rgba(255,241,190,0)');
         ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw*2,H*.88);ctx.lineTo(bx+bw*.6,H*.88);ctx.closePath();ctx.fill();
       }
