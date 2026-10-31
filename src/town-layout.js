@@ -233,10 +233,14 @@ const WEST_PROPS = [
     treeKind:p.kind, species:p.species, ownerFoot:true,
   })),
 ];
+// Q4-8 (owner, 31 Oct): zones 2-3 move the canteen (slot = index 3) to the east end of the upper-left (Krata) plaza, where the owner crossed out a house,
+// and that house (index 9) is removed. (680,540) is floor in both masks and walkable to Ngiw/Krata. Zone 1 keeps its old slot: its mask has a prop root
+// across the narrow strip south of Krata, so cooks standing on that plaza's east end cannot walk down to the stairs (reported, mask/props untouched).
+const CANTEEN_UPPER_LEFT_HOUSES = TOWN_HOUSE_SITES.filter((_,i)=>i!==9).map((h,i)=>i===3?house('front-one',680,540,118):{...h});
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
-  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
-  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]} },
+  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8, houses:CANTEEN_UPPER_LEFT_HOUSES },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]}, houses:CANTEEN_UPPER_LEFT_HOUSES },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);

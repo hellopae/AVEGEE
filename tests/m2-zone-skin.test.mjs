@@ -90,7 +90,8 @@ test('switching a skin on is data: `use` lists the finished groups, the rest fal
 test('syncSceneZone puts a skin-enabled zone on the 3840x2560 city, same station sites as Zone 1, then restores', () => {
   reset();
   syncSceneZone('th');
-  const snap = () => JSON.stringify([STATIONS.map(d => [d.k, d.bx, d.by, d.bw, d.mapScale, d.x, d.y, d.hit]), SPOTS]);
+  // Q4-8: Zone 2-3 move the canteen to the upper-left plaza on purpose, so it is compared separately; every other station site must still match Zone 1.
+  const snap = () => JSON.stringify([STATIONS.filter(d => d.k !== 'canteen').map(d => [d.k, d.bx, d.by, d.bw, d.mapScale, d.x, d.y, d.hit]), SPOTS]);
   const zone1 = snap();
   enableTownSkin('asia', {}, { fake:true });
   try {
