@@ -30,7 +30,7 @@ export const MAP_FX = Object.freeze({
     alpha: [.6, 1], color: '#f4faff',
   }),
   fog: Object.freeze({
-    peak: .58, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .5,
+    peak: .58, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .3,
     drift: [.045, .004], breathe: .1, tint: '214,230,244',
   }),
   rain: Object.freeze({
@@ -306,8 +306,9 @@ function drawSnowAndFog(ctx,view,time,W,H){
     ctx.globalAlpha=lo+span*(b+.5)/BINS;ctx.beginPath();
     for(const p of list){
       if(Math.min(BINS-1,Math.floor((p.alpha-lo)/span*BINS))!==b)continue;
-      const r=p.size*.5*view.u,px=view.x+p.x*view.u,py=view.y+p.y*view.u;
-      ctx.moveTo(px+r,py);ctx.arc(px,py,r,0,Math.PI*2);
+      // Square flakes: one cheap rect each (the game's pixel-art look, and far cheaper than arcs on a software rasterizer).
+      const side=p.size*view.u;
+      ctx.rect(view.x+p.x*view.u-side/2,view.y+p.y*view.u-side/2,side,side);
     }
     ctx.fill();
   }
@@ -318,7 +319,7 @@ function drawSnowAndFog(ctx,view,time,W,H){
 function drawRainAndStorm(ctx,view,time,W,H){
   const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,biomeBudget(ctx,W,H,R.max));
   const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
-  ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;ctx.lineCap='round';
+  ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;
   for(let b=0;b<BINS;b++){
     ctx.globalAlpha=lo+span*(b+.5)/BINS;ctx.beginPath();
     for(const p of list){

@@ -53,7 +53,7 @@ test('frontiers clip weather to the authored biome halves, retain cold snow, and
  }
  const r=record();r.ctx.canvas={width:780,height:1688,clientWidth:390,clientHeight:844};
  drawFrontierAmbient(r.ctx,{w:1672,h:941,snowArea:[.48,0,1,1],trees:[],waterfalls:[]});
- const flakes=r.calls.filter(c=>c[0]==='arc').length;
+ const flakes=r.calls.filter(c=>c[0]==='rect'&&c[3]<8).length;   // snow flakes are small square rects; clip rects are map-sized
  assert.ok(flakes<=MAP_FX.snow.max&&flakes>=24,'phone-sized canvas keeps snow inside the biomeBudget ceiling');
 });
 test('scene schedules weather after actors, before dialogue/badges; cache aliases share settings instance',()=>{

@@ -38,7 +38,7 @@ test('WEATHER-B budgets shrink with viewport/DPR; settings and reduced motion st
 test('WEATHER-B border 3–4 clips snow west and storm east, leaving the transition clear',()=>{
  const {ctx,calls}=record();const ambient=ROUTE_GEOMETRY['west:cyberhell'].ambient;
  drawFrontierAmbient(ctx,{w:1600,h:900,time:9050,...ambient,trees:[]});
- assert.deepEqual(calls.filter(c=>c[0]==='rect'),[['rect',0,0,736,900],['rect',864,0,736,900]]);
+ assert.deepEqual(calls.filter(c=>c[0]==='rect'&&c[3]>=100),[['rect',0,0,736,900],['rect',864,0,736,900]],'only the two biome clips are map-sized; the rest are flakes');
  assert.ok(calls.some(c=>c[0]==='lineTo'),'rain/lightning actually drawn');
 });
 test('WEATHER-B weather renders before actors/labels; settings checkbox is bound',()=>{
@@ -77,7 +77,7 @@ test('Q5 zone 3 snowfall is at least 3x the old ceiling on a desktop canvas, shr
  try{
   globalThis.devicePixelRatio=1;
   const desktop=record();drawBiomeWeather(desktop.ctx,'west',5000,3840,2560);
-  const flakes=c=>c.calls.filter(x=>x[0]==='arc').length;
+  const flakes=c=>c.calls.filter(x=>x[0]==='rect'&&x[3]<8).length;   // flakes are small square rects; the clip rect is map-sized
   assert.ok(flakes(desktop)>=3*OLD_SNOW_CEILING,'snow >= 3x the old 160');
   assert.ok(desktop.calls.some(x=>x[0]==='drawImage'),'fog banks drawn');
   globalThis.devicePixelRatio=3;
@@ -88,7 +88,7 @@ test('Q5 zone 3 snowfall is at least 3x the old ceiling on a desktop canvas, shr
   // View-relative: zoomed in, the same number of flakes lands on the visible rectangle.
   const zoom=record();zoom.ctx.getTransform=()=>({a:.5,d:.5,e:-700,f:-100});zoom.ctx.canvas={width:390,height:844};
   globalThis.devicePixelRatio=1;drawBiomeWeather(zoom.ctx,'west',5000,3840,2560);
-  const moves=zoom.calls.filter(x=>x[0]==='moveTo');
+  const moves=zoom.calls.filter(x=>x[0]==='rect'&&x[3]<8);
   assert.ok(moves.length>0&&moves.every(([,x,y])=>x>=1400-6&&x<=2180+6&&y>=200-6&&y<=1888+6),'flakes stay inside the visible part of the map');
  }finally{globalThis.devicePixelRatio=old;globalThis.document=oldDoc;}
 });
