@@ -65,9 +65,7 @@ test('Z2: buildings, all 11 house placements (four types), lamps and torches ret
   setup('th');
   const snap=()=>structuredClone([L.TOWN_STATION_SITES,L.TOWN_DAIS,L.TOWN_HOUSE_SITES,L.TOWN_PROP_SITES.filter(p=>['lamp','torch'].includes(p.kind))]);
   const baseline=snap();
-  // Q4-8: Zones 2-3 move the canteen slot (house index 3) to the upper-left plaza and drop the crossed-out house (index 9); everything else is Zone 1's.
-  const expectedAsia=structuredClone(baseline);expectedAsia[2]=expectedAsia[2].filter((_,i)=>i!==9).map((h,i)=>i===3?{key:'front-one',x:680,y:540,w:118,flip:false,h:118*1122/1402}:h);
-  setup('asia');assert.deepEqual(snap(),expectedAsia);assert.equal(L.townPathCell(),8);
+  setup('asia');assert.deepEqual(snap(),baseline);assert.equal(L.townPathCell(),8);
   setup('th');assert.deepEqual(snap(),baseline);assert.equal(L.townPathCell(),16);
 });
 

@@ -118,9 +118,13 @@ export const TOWN_STAIRS = [
 // ---- houses: small dark houses placed by the owner. Foot-centre, drawn width, sprite and facing ----
 const HOUSE_RATIO = {'front-one':1122/1402,'right-one':1094/1438,'left-two':1518/1036,'right-two':1518/1036};
 const house = (key,x,y,w,flip=false) => ({key,x,y,w,flip,h:w*HOUSE_RATIO[key]});
+// Index 3 is the CANTEEN SLOT (no house is drawn there; data.js builds the canteen on it).
+// Q4-8 (owner arrows 31 Oct, same spot in every zone): the canteen moved from beside the dais to where the house at (1551,655) stood
+// (upper-left, just under the Tarang plaza; (1572,646) is the nearest spot whose door is owner floor in all three masks), and that house is gone. The slot keeps index 3 so the code that skips it is unchanged.
 export const TOWN_HOUSE_SITES = [
-  house('front-one',1551,655,142), house('left-two',1945,699,119), house('front-one',2118,766,129),
-  house('left-two',1536,960,98,true), house('front-one',1546,1073,129), house('right-one',2239,1014,147,true),
+  house('left-two',1945,699,119), house('front-one',2118,766,129), house('front-one',1546,1073,129),
+  house('front-one',1572,646,118),
+  house('right-one',2239,1014,147,true),
   house('front-one',2010,1294,138), house('right-two',1551,1661,120,true), house('right-two',2283,1588,114,true),
   house('front-one',639,751,142),  house('right-one',710,1204,149),
 ];
@@ -233,14 +237,10 @@ const WEST_PROPS = [
     treeKind:p.kind, species:p.species, ownerFoot:true,
   })),
 ];
-// Q4-8 (owner, 31 Oct): zones 2-3 move the canteen (slot = index 3) to the east end of the upper-left (Krata) plaza, where the owner crossed out a house,
-// and that house (index 9) is removed. (680,540) is floor in both masks and walkable to Ngiw/Krata. Zone 1 keeps its old slot: its mask has a prop root
-// across the narrow strip south of Krata, so cooks standing on that plaza's east end cannot walk down to the stairs (reported, mask/props untouched).
-const CANTEEN_UPPER_LEFT_HOUSES = TOWN_HOUSE_SITES.filter((_,i)=>i!==9).map((h,i)=>i===3?house('front-one',680,540,118):{...h});
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
-  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8, houses:CANTEEN_UPPER_LEFT_HOUSES },
-  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]}, houses:CANTEEN_UPPER_LEFT_HOUSES },
+  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
+  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]} },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);

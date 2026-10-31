@@ -16,9 +16,8 @@ export const CYBERHELL_LAYOUT = {
     sawan:site(1015,160,62,1010,180,.70), lokan:site(1414,201,65,1410,224,.65),
     lan:site(1294,360,94,1300,389,1.35), krajok:site(1398,599,62,1395,614,.73),
     tea:site(614,554,56*1.5,620,577,.56*1.5),   // Q4-6: tea pavilion x1.5 about its foot (owner 31 Oct); door and foot stay where they were sala:site(902,550,60,890,565,.54),
-    // Q4-8: owner arrow (31 Oct) moved the kitchen from the upper court down to the lower-left plaza (the small platform below Ngiw's stairs).
-    // It takes the west end; the merchant (Q4-7) stands at the east end of the same plaza so the two never overlap.
-    canteen:site(200,666,50,202,674,.5),
+    // Q4-8 (owner arrow, 16.08.28): the kitchen moved from beside the upper castle down to the plaza below the stairs (world ~1600,680; floor y 640-715).
+    canteen:site(640,268,50,640,278,.5),
   },
   spots:{plaza:spot(740,440),bench:spot(740,440),throne:spot(742,380),
     bossPier:spot(898,713),ferry:{from:point(898,713),to:point(1040,713)}},
@@ -27,7 +26,8 @@ export const CYBERHELL_LAYOUT = {
   crew:{nira:point(764,396),taan:point(1280,382),dam:point(210,441),
     plerng:point(235,230),kan:point(850,565),boon:point(1040,190)},
   crewStage:{nira:[758*2.5,390*2.5,772*2.5,402*2.5]},
-  merchant:spot(280,672),guard:point(745,848),challenge:point(810,857),
+  merchant:spot(704,636),   // Q4-7 (owner arrow, 16.09.28): from beside the library to the lower-left plaza west of the central stairs (world ~1760,1590)
+  guard:point(745,848),challenge:point(810,857),
   frontier:{...site(768,1018,60,768,986,.8),reach:105},
   queue:[[740,452],[742,472],[743,487],[750,510],[760,542],[770,573],[770,606]].map(p=>point(...p)),
   entry:{gate:point(768,890),nira:point(790,885),goal:point(740,440),niraGoal:point(764,396)},

@@ -25,23 +25,27 @@ test('Q4-5: zone 4 boss leaves the pier once beaten (retired flag); other zones 
   assert.equal(bossPierRetired(g),false,'zone 3 keeps the pier guide until the farewell');
 });
 
-import {STATIONS,syncSceneZone} from '../src/data.js';
+import {STATIONS,MERCHANT,ZONE_ENTRY,syncSceneZone} from '../src/data.js';
 import {TOWN_HOUSE_SITES,TOWN_HOUSES,townFloorAt} from '../src/town-layout.js?v=k1d';
 import {setup,walk} from './helpers/m2-map.mjs';
-test('Q4-8: zones 2-3 canteen stands on the upper-left plaza (house removed), zone 1 keeps its slot; door is walkable and reaches Ngiw/Krata',()=>{
-  const slot=(z)=>{syncSceneZone(z);return STATIONS.find(s=>s.k==='canteen');};
-  const th=slot('th'),thHouses=TOWN_HOUSE_SITES.length;
-  assert.deepEqual([th.bx,th.by],[1536,960],'zone 1 unchanged');
-  for(const z of ['asia','west']){
+test('Q4-8: the canteen stands where the crossed-out house was in zones 1-3 (house removed); its door is walkable and cooks reach Ngiw/Krata',()=>{
+  for(const z of ['th','asia','west']){
     const {g}=setup(z);g.syncBlocks(true);
     const c=STATIONS.find(s=>s.k==='canteen');
-    assert.deepEqual([c.bx,c.by],[680,540],z+': canteen on the upper-left plaza');
-    assert.equal(TOWN_HOUSE_SITES.length,thHouses-1,z+': the crossed-out house is gone');
-    assert.equal(TOWN_HOUSES.length,thHouses-2);
-    assert.ok(!TOWN_HOUSE_SITES.some(h=>h.x===639&&h.y===751),z+': no house left at the old spot');
+    assert.deepEqual([c.bx,c.by],[1572,646],z+': canteen at the old upper-left house spot');
+    assert.equal(TOWN_HOUSE_SITES.length,10,z+': the crossed-out house is gone');
+    assert.equal(TOWN_HOUSES.length,9);
+    assert.ok(!TOWN_HOUSE_SITES.some(h=>h.x===1551&&h.y===655),z+': no house left at the old spot');
     assert.ok(townFloorAt(c.x,c.y)&&walk.canWalk(c.x,c.y),z+': door on walkable floor');
     for(const post of ['ngiw','krata']){const t=STATIONS.find(s=>s.k===post);assert.ok(walk.findPath(c.x,c.y,t.x,t.y)?.length,z+': door -> '+post);}
   }
+  syncSceneZone('th');
+});
+test('Q4-7/8: zone 4 merchant and canteen follow the owner arrows and stay reachable',()=>{
+  const {g}=setup('cyberhell');g.syncBlocks(true);
+  const c=STATIONS.find(s=>s.k==='canteen');
+  assert.ok(Math.hypot(MERCHANT.x-1760,MERCHANT.y-1590)<5);assert.ok(Math.hypot(c.bx-1600,c.by-670)<5);
+  for(const p of [[MERCHANT.x,MERCHANT.y],[c.x,c.y]]){assert.ok(townFloorAt(...p)&&walk.canWalk(...p));assert.ok(walk.findPath(ZONE_ENTRY.gate[0],ZONE_ENTRY.gate[1],...p)?.length);}
   syncSceneZone('th');
 });
 
