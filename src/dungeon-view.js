@@ -150,6 +150,22 @@ export function dungeonAutoEncounter(g,position,time=0) {
   return dungeonEnemyPositions(g,time).find(enemy=>!enemy.locked&&Math.hypot(position[0]-enemy.position[0],position[1]-enemy.position[1])<=.032&&(enemy.patrol?dungeonAtPatrol(g,enemy.patrol,position):Math.hypot(position[0]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[0],position[1]-dungeonPoint(dungeonCheckpointProgress(s.route.id)[enemy.checkpoint],s.route.id)[1])<=.045))||null;
 }
 
+/** Q4-1: where Nira stands when the route view is (re)mounted. While walking she trails Yama by FOLLOW_GAP along her trail;
+ *  a fresh mount has no trail, so rebuild that spot on the road behind Yama (falls back to the side lane at the route start). */
+export const DUNGEON_FOLLOW_GAP=.025;
+export function dungeonFollowerRest(position,routeId='th:asia',limit=1){
+  const total=geometry(routeId).total,here=dungeonProjection(position,limit,routeId);
+  const ok=p=>!!p&&dungeonWalkable(p,routeId,limit)&&Math.hypot(p[0]-position[0],p[1]-position[1])>=DUNGEON_FOLLOW_GAP*.8;
+  for(const gap of [DUNGEON_FOLLOW_GAP,DUNGEON_FOLLOW_GAP*1.4]){
+    const back=dungeonPoint(Math.max(0,here.progress-gap/total),routeId);
+    if(ok(back))return back;
+  }
+  for(const side of [[-.038,.007],[.038,.007],[-.038,-.007],[.038,-.007],[0,.03]]){
+    const lane=[position[0]+side[0],Math.min(.96,position[1]+side[1])];
+    if(ok(lane))return lane;
+  }
+  return dungeonSnap([position[0]-DUNGEON_FOLLOW_GAP,position[1]+.01],routeId,limit);
+}
 // Give Nira a lateral lane even at the entry, where follow progress is clamped to zero.
 export function dungeonCompanionPoint(progress,routeId='th:asia') {
   const p=dungeonPoint(Math.max(0,progress-.055),routeId);
@@ -233,7 +249,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-.018;};
   const saved=g.zoneTravel.active.position;
   position=dungeonSnap(saved?[saved.x,saved.y]:point(0),routeId,limit());
-  follower=[...position];
+  // Q4-1: remount (after a battle, a menu, a reload) must not stack Nira on Yama; she stands at her normal walking gap.
+  follower=dungeonFollowerRest(position,routeId,limit());trail=[[...follower]];
   guidePosition=g.zoneTravel.active.guidePosition?[g.zoneTravel.active.guidePosition.x,g.zoneTravel.active.guidePosition.y]:[position[0]+.04,position[1]+.014];
   if(Math.hypot(guidePosition[0]-position[0],guidePosition[1]-position[1])>.12)guidePosition=[position[0]-.025,position[1]+.012];
   if(!dungeonWalkable(guidePosition,routeId,limit()))guidePosition=dungeonSnap(guidePosition,routeId,limit());
