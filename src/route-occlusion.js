@@ -1,14 +1,15 @@
 // Foreground already painted into the route raster. Reuse its pixels, never its walk mask.
-// Coordinates are fractions of zone3-4-v1.webp (1672 x 941), at the lower plaza lip.
-export const ROUTE_FOREGROUND = Object.freeze({
-  'west:cyberhell': Object.freeze([
-    Object.freeze({depth:790/941, polygon:Object.freeze([
-      [730/1672,759/941],[744/1672,742/941],[750/1672,718/941],
-      [760/1672,749/941],[771/1672,731/941],[783/1672,765/941],
-      [808/1672,779/941],[796/1672,790/941],[745/1672,784/941],
-    ].map(Object.freeze))}),
-  ]),
-});
+// Each map lists its pieces (polygon + baseline) in src/route-occlusion-data/<map>.js; this file
+// turns them into fractions of the route image so the renderer is size-independent.
+import thAsia from './route-occlusion-data/th-asia.js';
+import westCyberhell from './route-occlusion-data/west-cyberhell.js';
+
+const frozen=v=>Object.freeze(v.map(Object.freeze));
+export function routeForegroundFrom(map) {
+  const [W,H]=map.size;
+  return Object.freeze(map.pieces.map(p=>Object.freeze({id:p.id,depth:p.baseline/H,polygon:frozen(p.polygon.map(([x,y])=>[x/W,y/H]))})));
+}
+export const ROUTE_FOREGROUND = Object.freeze(Object.fromEntries([thAsia,westCyberhell].map(m=>[m.routeId,routeForegroundFrom(m)])));
 export function drawRouteForeground(ctx,image,foreground,{x,y,w,h}) {
   if(!image?.complete||!image.naturalWidth)return;
   ctx.save();ctx.beginPath();
