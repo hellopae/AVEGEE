@@ -12,3 +12,16 @@ test('Q4-1: Nira rests at her walking gap behind Yama on every route and never o
     }
   }
 });
+
+import {createGame} from '../src/game.js';
+import {bossGuideDismissed} from '../src/boss-guides.js';
+test('Q4-5: zone 4 boss leaves the pier once beaten (no standee, no talk button); other zones keep their guide rules',()=>{
+  const g=createGame();g.save=()=>{};g.onChange=()=>{};
+  g.zone='cyberhell';g.bossGuarding={...g.bossGuarding,cyberhell:true};
+  assert.equal(bossGuideDismissed(g),false,'still guarding the bridge before the win');
+  g.bossCleared.cyberhell=true;
+  assert.equal(bossGuideDismissed(g),true);
+  assert.equal(g.bossPierCanTalk(),false);
+  g.zone='west';g.bossCleared.west=true;
+  assert.equal(bossGuideDismissed(g),false,'zone 3 keeps the pier guide until the farewell');
+});
