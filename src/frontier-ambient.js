@@ -54,7 +54,8 @@ export function drawFrontierTree(ctx,tree,{x,y,height,image,anchor=[.5,1]}) {
 /** Post-actor weather uses the same camera as the existing frontier scenery. */
 export function drawFrontierWeather(ctx,{routeId,time,reduced,x,y,w,h,viewport,enabled,paused=false}) {
   const regions=routeId==='th:asia'?[{zone:'th',from:0,to:.48},{zone:'asia',from:.48,to:1}]:
-    routeId==='asia:west'?[{zone:'asia',from:0,to:.44},{zone:'west',from:.48,to:1}]:null;
+    routeId==='asia:west'?[{zone:'asia',from:0,to:.44},{zone:'west',from:.48,to:1}]:
+    routeId==='west:cyberhell'?[{zone:'west',from:0,to:.5},{zone:'cyberhell',from:.5,to:1}]:null;
   if(!regions)return;
   if(routeId==='th:asia'&&enabled!==false)drawFrontierAmbient(ctx,{time, reduced,x,y,w,h,trees:[],waterfalls:[],leafArea:null,leafRegions:[
     {area:[0,0,.46,1],colors:['rgba(210,64,34,.7)','rgba(239,184,48,.7)']},
@@ -62,4 +63,17 @@ export function drawFrontierWeather(ctx,{routeId,time,reduced,x,y,w,h,viewport,e
   ]});
   // Frontier 1–2 has no authored flame anchors; never invent fires on its road.
   drawMapWeather(ctx,{time,paused,reduced,x,y,W:w,H:h,viewport,regions,enabled});
+}
+
+/** Frontier post (one biome): cloud shadows over everything already drawn, same layer order as the town map. */
+export function drawFrontierPostWeather(ctx,{zone,time,reduced,x,y,w,h}) {
+  drawMapWeather(ctx,{zone,time,reduced,x,y,W:w,H:h});
+}
+
+/** Frontier post of zone 3 / 4: the biome's own weather (snow + fog / rain + lightning), drawn behind the actors. */
+export function drawFrontierBiome(ctx,{zone,time,reduced,x,y,w,h}) {
+  const full=[0,0,1,1];
+  if(zone!=='west'&&zone!=='cyberhell')return;
+  drawFrontierAmbient(ctx,{time,reduced,x,y,w,h,trees:[],waterfalls:[],leafArea:null,
+    snowArea:zone==='west'?full:null,rainArea:zone==='cyberhell'?full:null});
 }
