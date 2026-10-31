@@ -8,6 +8,10 @@ export function characterScale(key='adult') {
 export const ROUTE_CHARACTER_SCALE = Object.freeze({'th:asia':.80,'asia:west':.80,'west:cyberhell':.75});
 export const routeCharacterScale = route => ROUTE_CHARACTER_SCALE[route] ?? .80;
 export const mapActorHeight = (key, adultHeight=82) => adultHeight*characterScale(key);
+/** Q3: คนงานบนแผนที่ต้องสูง (ที่ตามองเห็น) เท่ายามา — ภาพคนงานเต็มช่อง ~95% ของความสูงช่อง (วัดจาก alpha ของ sheet ทั้ง 4 โซน)
+ *  ส่วนยามาถูก fit ให้ความสูงที่เห็น = ความสูงที่วาดพอดี · CHARACTER_SCALE.worker ไม่แตะ (ใช้ลำดับขนาดของทีม/ห้อง) */
+export const WORKER_MAP_FILL = .95;
+export const mapWorkerHeight = (adultHeight=82) => mapActorHeight('yama', adultHeight)/WORKER_MAP_FILL;
 
 /** One uniform fit preserves hierarchy and the existing perspective formation's envelope.
  * The previous largest companion was .96 of the hero reference. Never enlarge that
