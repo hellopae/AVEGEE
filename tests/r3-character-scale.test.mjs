@@ -73,11 +73,27 @@ test('R3 production fitter remains stable on repeat and moves selection roots wi
 });
 test('R3 foreground reuses background pixels under a camera-transformed clip, sorted by ground foot',()=>{
   const calls=[],ctx=new Proxy({},{get:(_,key)=>(...args)=>calls.push([key,...args])});
-  const item=ROUTE_FOREGROUND['west:cyberhell'][0],image={complete:true,naturalWidth:1672};
+  const item=ROUTE_FOREGROUND['west:cyberhell'][0],image={complete:true,naturalWidth:1672,naturalHeight:941};
   drawRouteForeground(ctx,image,item,{x:-100,y:-200,w:3344,h:1882});
   assert.deepEqual(calls[2],['moveTo',-100+730*2,-200+759*2]);
   assert.ok(calls.findIndex(c=>c[0]==='clip')<calls.findIndex(c=>c[0]==='drawImage'));
-  assert.deepEqual(calls.at(-2),['drawImage',image,-100,-200,3344,1882]);
+  // only the polygon's bounding box is repainted, at the same scale as the full map would be
+  const [,img,sx,sy,sw,sh,dx,dy,dw,dh]=calls.find(c=>c[0]==='drawImage');
+  assert.equal(img,image);assert.ok(sw<1672*.2&&sh<941*.2);
+  assert.ok(Math.abs(dw/sw-3344/1672)<1e-9&&Math.abs(dh/sh-1882/941)<1e-9);
+  assert.ok(Math.abs(dx-(-100+sx*2))<1e-9&&Math.abs(dy-(-200+sy*2))<1e-9);
   const order=[{kind:'actor',foot:item.depth-.01},{kind:'foreground',foot:item.depth},{kind:'actor',foot:item.depth+.01}].sort((a,b)=>a.foot-b.foot);
   assert.equal(order[1].kind,'foreground');
+});
+test('Q6 occlusion data: every th:asia piece is a closed polygon inside the map, with its baseline at the foot of the polygon',async()=>{
+  const {default:map}=await import('../src/route-occlusion-data/th-asia.js');
+  const [W,H]=map.size;assert.deepEqual([W,H],[3344,1882]);assert.ok(map.pieces.length>=2);
+  const ids=new Set();
+  for(const p of map.pieces){
+    assert.ok(!ids.has(p.id));ids.add(p.id);assert.ok(p.polygon.length>=8);
+    for(const [x,y] of p.polygon)assert.ok(x>=0&&x<=W&&y>=0&&y<=H);
+    assert.ok(Math.abs(Math.max(...p.polygon.map(q=>q[1]))-p.baseline)<=2);
+  }
+  assert.deepEqual(ROUTE_FOREGROUND['th:asia'].map(p=>p.id),map.pieces.map(p=>p.id));
+  for(const p of ROUTE_FOREGROUND['th:asia'])assert.ok(p.depth>0&&p.depth<1&&Object.isFrozen(p.polygon));
 });
