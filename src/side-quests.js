@@ -158,7 +158,7 @@ export function merchantRun(g){
   const lengths=path.slice(1).map((v,i)=>Math.hypot(v[0]-path[i][0],v[1]-path[i][1]));
   let left=lengths.reduce((sum,n)=>sum+n,0)*Math.min(1,s.runMs/6000);
   for(let i=0;i<lengths.length;i++){
-    if(left<=lengths[i]&&lengths[i]>0){const t=left/lengths[i];return {x:path[i][0]+(path[i+1][0]-path[i][0])*t,y:path[i][1]+(path[i+1][1]-path[i][1])*t};}
+    if(left<=lengths[i]&&lengths[i]>0){const t=left/lengths[i];if(t>=1-1e-9)return {x:path[i+1][0],y:path[i+1][1]};return {x:path[i][0]+(path[i+1][0]-path[i][0])*t,y:path[i][1]+(path[i+1][1]-path[i][1])*t};}
     left-=lengths[i];
   }
   return {x:to[0],y:to[1]};
