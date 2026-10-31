@@ -78,3 +78,17 @@ test('Q4-3: an enemy never starts a battle with a standing Yama; walking toward 
   assert.equal(dungeonAutoEncounter(g,at,5000,{from:at,heading:[1,0]})?.id,e.id,'pressing toward it: battle');
   assert.equal(dungeonAutoEncounter(g,at,5000,{from:[at[0]+.01,at[1]],heading:[-1,0]}),null,'walking away: no battle');
 });
+
+import {dungeonNavigation,dungeonCheckpointProgress,DUNGEON_GATE_GAP} from '../src/dungeon-view.js';
+import {dungeonPatrols} from '../src/zone-travel.js';
+test('Q4-2: every patrol stands on road Yama can reach before the next story gate (none hidden behind the gate wall), in every route',()=>{
+  for(const id of ['th:asia','asia:west','west:cyberhell']){
+    const nav=dungeonNavigation(id),cps=dungeonCheckpointProgress(id);
+    for(const p of dungeonPatrols(id)){
+      const gate=cps.findIndex(v=>v>p.progress);          // the first story gate beyond this patrol
+      const limit=gate<0?1:cps[gate]-DUNGEON_GATE_GAP;      // how far the road reaches while that gate still stands
+      assert.ok(p.progress<=limit,`${id} ${p.id} (${p.progress}) lies before the gate wall (${limit.toFixed(3)})`);
+      assert.ok(nav.walkable(dungeonPoint(p.progress,id),limit),`${id} ${p.id} post is on reachable road`);
+    }
+  }
+});

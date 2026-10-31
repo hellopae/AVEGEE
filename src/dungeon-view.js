@@ -123,6 +123,9 @@ export function dungeonPath(from,to,routeId='th:asia',limit=1) {
 }
 // Q4-3: route enemies stroll around their post instead of standing still. Pure function of time (no state), kept on the
 // owner's walk mask: the stroll is shrunk toward the post until the whole stretch to it, and a small margin around the feet, is road.
+/** Q4-2: how far (in route progress) Yama's road stops before the next story enemy's post. It was .018 (about .031 map units): the wall stood
+ *  beyond arm's reach of the enemy (no fight, no way on) and cut off patrol 3 of Zone 1-2, which stands just before the post on the golden bridge. */
+export const DUNGEON_GATE_GAP=.006;
 export const DUNGEON_ROAM_RADIUS=.03;
 /** Largest distance an enemy can be from its post (x/y offsets are each within ROAM_RADIUS). */
 export const DUNGEON_ROAM_REACH=DUNGEON_ROAM_RADIUS*Math.SQRT2;
@@ -189,8 +192,9 @@ export function dungeonAutoEncounter(g,position,time=0,motion=null) {
   return dungeonEnemyPositions(g,time).find(enemy=>{
     if(enemy.locked)return false;
     const vx=enemy.position[0]-position[0],vy=enemy.position[1]-position[1],d=Math.hypot(vx,vy);
-    if(d>.032||!reach(enemy))return false;
-    if(!motion)return true;
+    const story=!enemy.patrol;   // a story gate enemy may stand just past the end of Yama's road: pressing toward it from the road end is enough
+    if(d>(motion?.heading&&story?.06:.032)||!reach(enemy))return false;
+    if(!motion)return d<=.032;
     const closed=motion.from&&d<Math.hypot(motion.from[0]-enemy.position[0],motion.from[1]-enemy.position[1])-1e-7;
     const pressing=motion.heading&&(motion.heading[0]*vx+motion.heading[1]*vy)>0;
     return !!(closed||pressing);
@@ -293,7 +297,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const listen=(node,name,fn,options)=>{node.addEventListener(name,fn,options);handlers.push(()=>node.removeEventListener(name,fn,options));};
   const zoom=enhanced?bindMapZoom({less:root.querySelector('[data-zoom="less"]'),more:root.querySelector('[data-zoom="more"]'),overview:root.querySelector('[data-zoom="overview"]'),surface:canvas,levels:[0,1,1.5,2],level:1,gestures:true,onGestureEnd:()=>{pinching=false;},onGesture:()=>{pinching=true;pointerStart=null;joystick=null;target=null;keys.clear();}}):null;
   if(enhanced)root.querySelectorAll('[data-hud]').forEach(button=>listen(button,'click',()=>{target=null;keys.clear();pointerStart=null;joystick=null;save();onHud(button.dataset.hud);}));
-  const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-.018;};
+  const limit=()=>{const s=dungeonStatus(g);return s?.ready||s?.checkpoint>=points.length?1:points[s?.checkpoint||0]-DUNGEON_GATE_GAP;};
   const saved=g.zoneTravel.active.position;
   position=dungeonSnap(saved?[saved.x,saved.y]:point(0),routeId,limit());
   // Q4-1: remount (after a battle, a menu, a reload) must not stack Nira on Yama; she stands at her normal walking gap.
