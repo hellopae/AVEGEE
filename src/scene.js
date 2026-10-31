@@ -4,7 +4,7 @@ import {drawCyberhellTerrain} from './cyberhell-terrain.js';
 import {drawMapTravel} from './map-travel.js';
 import {bossJusticeCase,bossJusticeActors} from './boss-justice.js';
 import {zoneWorkers,drawWorker} from './workers.js';
-import {bossGuideDismissed} from './boss-guides.js';
+import {bossGuideDismissed,bossPierRetired} from './boss-guides.js';
 import { drawAnimatedSprite } from './combat-sprites.js?v=night-v1';
 import { drawLocalLight } from './scene-style.js';
 import { activeTownZone } from './zone-skin.js';
@@ -533,7 +533,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   })));
 
   // บอสเดินมาท้าสู้; แพ้แล้วเฝ้าสะพาน ชนะแล้วไปยืนที่ท่าเรือให้รีแมตช์/เปลี่ยนโซน
-  if (!(g.zone==='th'&&g.bossCleared?.th) && !bossGuideDismissed(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
+  if (!(g.zone==='th'&&g.bossCleared?.th) && !bossGuideDismissed(g) && !bossPierRetired(g) && !(justice?.art?.startsWith('zone-boss')) && (g.bossWalk || g.bossGuarding?.[g.zone] || g.bossCleared?.[g.zone])) {
     const walk = g.bossWalk;
     const progress = walk ? Math.min(1, Math.max(0, (Date.now() - walk.started) / walk.duration)) : 0;
     const cleared = !walk && g.bossCleared?.[g.zone];
@@ -1022,7 +1022,7 @@ export function hitActor(g, sx, sy) {
   if (!westRescuePending(g) && g.zoneCaptivesFree() && merchantAvailable(g) && near(MERCHANT.x, MERCHANT.y, radius(54))) return { kind:'merchant', key:0 };
   if (westRescueActors(g).some(a => near(a.x,a.y,radius(60))))
     return { kind:'zoneEvent', key:'westHypnotized' };
-  if (g.zone!=='th' && g.bossCleared?.[g.zone] && !bossGuideDismissed(g) && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
+  if (g.zone!=='th' && g.bossCleared?.[g.zone] && !bossGuideDismissed(g) && !bossPierRetired(g) && near(SPOTS.bossPier.x, SPOTS.bossPier.y, radius(54))) return { kind:'boss', key:g.zone };
   if (westRescuePending(g)) return null;
   for (let i = 0; i < g.mobs.length; i++)
     if (near(g.mobs[i].x, g.mobs[i].y)) return g.mobs[i].eventKey
