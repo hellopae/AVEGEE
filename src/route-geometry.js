@@ -59,6 +59,8 @@ export const ROUTE_GEOMETRY = {
   }),
   'west:cyberhell': row('west:cyberhell', {
     enabled:true, geometryVersion:1, background:'img/frontier-route/zone3-4-v1.webp', foes:[10,11,12],
+    // Q4-3: patrols 1 and 4 moved a few steps along the road to where it is wide enough to stroll (they sat on one-lane stretches); ids and foes unchanged.
+    patrolProgress:[.08,.215,.29,.50,.68,.90],
     corridor:BORDER34_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_MASK,
     ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
       treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.png',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
