@@ -69,3 +69,11 @@ export function drawFrontierWeather(ctx,{routeId,time,reduced,x,y,w,h,viewport,e
 export function drawFrontierPostWeather(ctx,{zone,time,reduced,x,y,w,h}) {
   drawMapWeather(ctx,{zone,time,reduced,x,y,W:w,H:h});
 }
+
+/** Frontier post of zone 3 / 4: the biome's own weather (snow + fog / rain + lightning), drawn behind the actors. */
+export function drawFrontierBiome(ctx,{zone,time,reduced,x,y,w,h}) {
+  const full=[0,0,1,1];
+  if(zone!=='west'&&zone!=='cyberhell')return;
+  drawFrontierAmbient(ctx,{time,reduced,x,y,w,h,trees:[],waterfalls:[],leafArea:null,
+    snowArea:zone==='west'?full:null,rainArea:zone==='cyberhell'?full:null});
+}

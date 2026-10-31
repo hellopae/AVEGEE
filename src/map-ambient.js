@@ -24,24 +24,14 @@ export const MAP_FX = Object.freeze({
     fallbackTint: '12,16,34',
   }),
   snow: Object.freeze({
-    max: 720,                       // particle ceiling before biomeBudget scales it by screen area and DPR
-    speed: [38, 92], drift: 16,     // CSS px per second
-    size: [1.6, 4.2],               // CSS px
-    alpha: [.5, .95], color: '#f1f8ff',
+    max: 1100,                      // particle ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
+    speed: [45, 110], drift: 18,    // CSS px per second
+    size: [2.2, 6],                 // CSS px
+    alpha: [.6, 1], color: '#f4faff',
   }),
   fog: Object.freeze({
-    peak: .5, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .5,
+    peak: .58, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .5,
     drift: [.045, .004], breathe: .1, tint: '214,230,244',
-  }),
-  rain: Object.freeze({
-    max: 600, speed: [560, 820], slant: -110, length: [14, 24], width: 1.4,
-    alpha: [.32, .62], color: 'rgba(196,226,252,1)',
-  }),
-  storm: Object.freeze({
-    period: 4000, jitter: 1200,     // one strike per slot, started somewhere in the first `jitter` ms
-    flash: .22,                     // hard ceiling of the whole-screen flash opacity (brief: <= .25)
-    pulses: Object.freeze([[0, 90, 1], [150, 260, .55]]),   // [start ms, end ms, share of flash]; at most 2 flashes per strike
-    boltMs: 320,
   }),
   shadowEdge: Object.freeze([[0,1],[.66,1],[.8,.8],[.92,.34],[1,0]]),   // radial profile of one shadow blob: flat core, soft shoulder
   // th / asia embers and dust keep their original world-space behaviour (not part of Q5)
@@ -240,24 +230,33 @@ export function stormFlash(time, reduced = false) {
   return phase < 100 ? .055 * (1 - phase / 100) : 0;
 }
 export function ambientParticles(zone, time, W, H, limit = null) {
-  const base = zone === 'west' ? 160 : zone === 'cyberhell' ? 160 : zone === 'asia' ? 20 : 30;
+  const base = zone === 'west' ? MAP_FX.snow.max : zone === 'cyberhell' ? 160 : MAP_FX.legacyBase[zone] ?? MAP_FX.legacyBase.th;
   // `limit` is a particle count, or a CSS viewport {width,height,dpr} (WEATHER-A) that caps the count by screen size.
   const count = typeof limit === 'number' ? limit : limit ? Math.min(base, weatherBudget(limit) * 2) : base;
-  const t=time/1000;
+  const t=time/1000, snow=MAP_FX.snow, lerp=(range,k)=>range[0]+k*(range[1]-range[0]);
   return Array.from({length:count},(_,i)=>{
+    if(zone==='west')return {
+      x:mod(seed(i+4)*W+t*snow.drift*(.5+seed(i+9))+Math.sin(t*.8+i*1.7)*10,W),
+      y:mod(seed(i+80)*H+t*lerp(snow.speed,seed(i+4)),H),
+      size:lerp(snow.size,seed(i+16)),alpha:lerp(snow.alpha,seed(i+30)),angle:t*.7+i};
     const rain=zone==='cyberhell';
-    const speed=rain?360+seed(i+4)*160:zone==='west'?24+seed(i+4)*32:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
-    return {x:mod(seed(i+4)*W+t*(rain?-75:zone==='west'?19:11),W),
-      y:mod(seed(i+80)*H+t*speed,H),size:zone==='west'?1+seed(i+16)*2.4:1.5+seed(i+16)*2,
+    const speed=rain?360+seed(i+4)*160:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
+    return {x:mod(seed(i+4)*W+t*(rain?-75:11),W),
+      y:mod(seed(i+80)*H+t*speed,H),size:1.5+seed(i+16)*2,
       alpha:rain?.3+seed(i+30)*.2:.18+seed(i+30)*.32,angle:t*.7+i};
   });
 }
-/** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds. */
+/** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
+ *  Snow (zone 3) is laid out over the VISIBLE part of the area in CSS pixels, so its density and flake size are the
+ *  same at any zoom; the embers and dust of zones 1-2 keep their original world-space layout. */
 export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1]) {
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
-  const count=biomeBudget(ctx,W,H,zone==='west'?160:zone==='cyberhell'?160:zone==='asia'?20:30);
+  const view=zone==='west'||zone==='cyberhell'?viewMetrics(ctx,aw,ah):null;
+  if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H);
+  else{
+  const count=biomeBudget(ctx,W,H,zone==='cyberhell'?160:MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
   for(const p of ambientParticles(zone,time,aw,ah,count)){
     ctx.globalAlpha=p.alpha;ctx.fillStyle=zoneStyle(zone).particle;
     if(zone==='cyberhell'){
@@ -266,14 +265,6 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
     }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
   }
   ctx.globalAlpha=1;
-  if(zone==='west'){
-    // Broad, feathered low fog; cached sprite rather than per-frame blur/filter.
-    const fog=fogSprite();
-    if(fog)for(let i=0;i<5;i++){
-      const x=mod(time*.009+i*aw/4,aw+aw*.5)-aw*.25,y=ah*(.48+i*.095);
-      ctx.globalAlpha=.17;ctx.drawImage(fog,x-aw*.22,y-ah*.035,aw*.44,ah*.07);
-    }
-  }
   if(zone==='cyberhell'){
     const flash=stormFlash(time);
     if(flash){
@@ -283,7 +274,29 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
       ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-12,ah*.09);ctx.lineTo(x+4,ah*.08);ctx.lineTo(x-18,ah*.2);ctx.stroke();
     }
   }
+  }
   ctx.restore();
+}
+/** Zone 3: drifting low fog banks, then a dense snowfall. Both are sized from the visible area. */
+function drawSnowAndFog(ctx,view,time,W,H){
+  const fog=MAP_FX.fog,bank=blobSprites(fog.tint,'fog');
+  if(bank){
+    const off=driftOffset(ctx,'fog',time,[fog.drift[0]*view.w*fog.cell[0],fog.drift[1]*view.h*fog.cell[1]],true);
+    drawPatchField(ctx,view,fog,off,time/1000,()=>bank);
+  }
+  const snow=MAP_FX.snow,list=ambientParticles('west',time,view.w/view.u,view.h/view.u,biomeBudget(ctx,W,H,snow.max));
+  const lo=snow.alpha[0],span=snow.alpha[1]-lo,BINS=4;
+  ctx.fillStyle=snow.color;
+  for(let b=0;b<BINS;b++){
+    ctx.globalAlpha=lo+span*(b+.5)/BINS;ctx.beginPath();
+    for(const p of list){
+      if(Math.min(BINS-1,Math.floor((p.alpha-lo)/span*BINS))!==b)continue;
+      const r=p.size*.5*view.u,px=view.x+p.x*view.u,py=view.y+p.y*view.u;
+      ctx.moveTo(px+r,py);ctx.arc(px,py,r,0,Math.PI*2);
+    }
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
 }
 
 // WEATHER-A extends the shared map pass. Sprites are baked once, never filtered or

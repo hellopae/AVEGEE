@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {stormFlash,biomeBudget,drawBiomeWeather,setWeatherEnabled,weatherEnabled} from '../src/map-ambient.js';
+import {stormFlash,biomeBudget,drawBiomeWeather,setWeatherEnabled,weatherEnabled,MAP_FX} from '../src/map-ambient.js';
 import {drawFrontierAmbient} from '../src/frontier-ambient.js';
 import {ROUTE_GEOMETRY} from '../src/route-geometry.js';
 import {createFlowEngine,seedFlow} from '../src/town-flow.js';
@@ -63,4 +63,27 @@ test('WEATHER-B changed renderer imports share canonical release identities',asy
  const {assertModuleRelease,readReleaseFile}=await import('./helpers/release-imports.mjs');
  const html=readReleaseFile('index.html');
  for(const [file,importer]of [['map-ambient','scene'],['map-ambient','frontier-ambient'],['map-ambient','town-flow'],['map-ambient','ui'],['map-fx-h3','map-ambient'],['town-flow','scene'],['frontier-ambient','dungeon-view'],['route-geometry','dungeon-view']])assertModuleRelease(`src/${file}.js`,html,`src/${importer}.js`);
+});
+
+test('Q5 zone 3 snowfall is at least 3x the old ceiling on a desktop canvas, shrinks by the screen budget on phones, and brings visible fog',()=>{
+ const old=globalThis.devicePixelRatio,OLD_SNOW_CEILING=160;
+ const oldDoc=globalThis.document,gradient={addColorStop(){}};
+ globalThis.document={createElement:()=>({getContext:()=>new Proxy({canvas:{width:256,height:160},createRadialGradient:()=>gradient},{get:(o,k)=>k in o?o[k]:()=>{},set:(o,k,v)=>(o[k]=v,true)})})};
+ try{
+  globalThis.devicePixelRatio=1;
+  const desktop=record();drawBiomeWeather(desktop.ctx,'west',5000,3840,2560);
+  const flakes=c=>c.calls.filter(x=>x[0]==='arc').length;
+  assert.ok(flakes(desktop)>=3*OLD_SNOW_CEILING,'snow >= 3x the old 160');
+  assert.ok(desktop.calls.some(x=>x[0]==='drawImage'),'fog banks drawn');
+  globalThis.devicePixelRatio=3;
+  const phone=record();phone.ctx.canvas={width:1170,height:2532,clientWidth:390,clientHeight:844};
+  drawBiomeWeather(phone.ctx,'west',5000,3840,2560);
+  assert.ok(flakes(phone)<flakes(desktop)&&flakes(phone)>=24,'phones draw fewer flakes (biomeBudget), never fewer than the floor');
+  assert.equal(flakes(phone),biomeBudget(phone.ctx,3840,2560,MAP_FX.snow.max));
+  // View-relative: zoomed in, the same number of flakes lands on the visible rectangle.
+  const zoom=record();zoom.ctx.getTransform=()=>({a:.5,d:.5,e:-700,f:-100});zoom.ctx.canvas={width:390,height:844};
+  globalThis.devicePixelRatio=1;drawBiomeWeather(zoom.ctx,'west',5000,3840,2560);
+  const moves=zoom.calls.filter(x=>x[0]==='moveTo');
+  assert.ok(moves.length>0&&moves.every(([,x,y])=>x>=1400-6&&x<=2180+6&&y>=200-6&&y<=1888+6),'flakes stay inside the visible part of the map');
+ }finally{globalThis.devicePixelRatio=old;globalThis.document=oldDoc;}
 });

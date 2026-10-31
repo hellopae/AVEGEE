@@ -16,8 +16,8 @@ test('border23 weather respects the warm/cold boundary and reduced motion',()=>{
  assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,true);
  assert.equal(ambient.waterfalls.length,4);
  const r=recorder();drawFrontierAmbient(r.ctx,{w:1672,h:941,time:1000,...ambient});
- const leaves=r.calls.filter(x=>x[0]==='rotate'),snow=r.calls.filter(x=>x[0]==='fillRect'&&x[3]<6);
- assert.equal(leaves.length,26);assert.ok(snow.length>48,'denser cold-side snow');
+ const leaves=r.calls.filter(x=>x[0]==='rotate'),snow=r.calls.filter(x=>x[0]==='arc');
+ assert.equal(leaves.length,26);assert.ok(snow.length>=3*160,'Q5: cold-side snow is at least 3x the old 160-flake ceiling');
  assert.ok(r.calls.some(x=>x[0]==='rect'&&x[1]===.48*1672&&x[3]===.52*1672),'cold weather clipped to authored east side');
  const still=recorder();drawFrontierAmbient(still.ctx,{w:1672,h:941,time:1000,...ambient,reduced:true});
  assert.equal(still.calls.filter(x=>['arc','quadraticCurveTo','stroke'].includes(x[0])).length,0);

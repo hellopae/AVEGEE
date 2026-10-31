@@ -2,7 +2,7 @@ import {characterScale} from './character-scale.js';
 import {captainCaveForZone} from './route-geometry.js';
 import {bossGuideWaiting} from './boss-guides.js';
 import { followCamera, drawFrontierAtmosphere } from './scene-style.js';
-import { drawFrontierPostWeather } from './frontier-ambient.js';
+import { drawFrontierPostWeather, drawFrontierBiome } from './frontier-ambient.js';
 import { breachApproachActors } from './breach-approach.js';
 import { actorStanding } from './actor-recovery.js';
 import { exitStep, drawExitMarker } from './exit-marker.js';
@@ -297,6 +297,7 @@ export function makeFrontierWalk(cv, g, opts) {
 
     cameraTime = t;
     if (bgRec.ok) drawFrontierAtmosphere(ctx,g.zone,box,t,!!reducedMotion?.matches);
+    if (bgRec.ok) drawFrontierBiome(ctx, { zone: g.zone, time: t, reduced: !!reducedMotion?.matches, x: box.ox, y: box.oy, w: box.w, h: box.h });   // Q5: snow + fog (zone 3), rain + lightning (zone 4)
     const U = unit();
     // P5: ลูกศรทางออกบนพื้น (ไม่มีปุ่ม) — ประตูบนชี้ขึ้น · ทางล่างชี้ลง · ทางล่างจางกว่าถ้าเส้นทางนอกชายแดนยังไม่เปิด
     const reduced = !!reducedMotion?.matches, r = FRONTIER_EXIT_TRIGGER;
