@@ -213,7 +213,7 @@ export function stationBox(def) {
   if (def.bx == null) return null;
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
-  if(def.k==='canteen')return {im,x:def.bx-def.bw/2,y:def.by-def.bw*im.naturalHeight/im.naturalWidth,w:def.bw,h:def.bw*im.naturalHeight/im.naturalWidth,flip:['th','asia'].includes(zoneOf())};
+  if(def.k==='canteen')return {im,x:def.bx-def.bw/2,y:def.by-def.bw*im.naturalHeight/im.naturalWidth,w:def.bw,h:def.bw*im.naturalHeight/im.naturalWidth,flip:['th','asia','cyberhell'].includes(zoneOf())};
   if (artUrl(key).includes('/map-v5/')) return reviewStationBox(def, im, zoneOf());
   if (def.k === 'frontier')
     return { im, x: def.bx - def.bw / 2, y: def.by - def.bw, w: def.bw, h: def.bw };

@@ -3761,7 +3761,7 @@ function openBattle(after) {
     }
     root.style.setProperty('z-index', depth(dash.source.b + dash.position.y), 'important');
   };
-  const runDash = async ({ side = 'you', key, targetImage, contact, pose, onHit, onFinish, action, crew, displayOnly = false, visualSkill = null }) => {
+  const runDash = async ({ side = 'you', key, targetImage, contact, pose, travel, onHit, onFinish, action, crew, displayOnly = false, visualSkill = null }) => {
     const b = g.battle, stage = dlg.querySelector('.combat-arena');
     if (!b || !stage) return;
     phase = side; phaseAt = Date.now(); commandMenuOpen = false;
@@ -3793,7 +3793,7 @@ function openBattle(after) {
     if (!displayOnly && side === 'you' && action === 'guard') await battleCutscenes.wait(cutsceneSource('guard'));
     if (g.battle !== b || !dlg.open) return;
     const leadIn = !displayOnly && side === 'you' && action === 'guard' && playActionCutscene('guard') ? ACTION_CUT_MS : 0;
-    const timing = dashTiming({ contact, pose, reduced, leadIn });
+    const timing = dashTiming({ contact, pose, reduced, leadIn, travel });
     let clockAt = performance.now(), elapsed = 0;
     const advance = createDashSequence({ timing, delta,
       onPosition:position => { dash.position = position; applyDashPosition(); },
@@ -3936,7 +3936,7 @@ function openBattle(after) {
       return battleChoice(k, icon, (consumable ? itemName(k) : (it?.name || k)) + (['ice','hypno'].includes(k)?' · ทุกเป้าหมาย':''), ok, note);
     };
     const bigFire = !!g.abilities?.bigFire;
-    const teamJudgmentChoice = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24 · 5 เทิร์นยามา`);
+    const teamJudgmentChoice = battleChoice('teamJudgment', SKILL_ICONS.teamJudgment, COMBAT_SKILLS.teamJudgment.name, !g.skillWhy('teamJudgment', {id:'you'}), g.skillWhy('teamJudgment', {id:'you'}) || `${t('battle.mp')} 24`);
     // Q3: ท่าไม้ตายอยู่ล่างสุดของรายการพลัง (ใต้สะกดจิต)
     const powerChoices = battleChoice('fire', bigFire ? 'img/fx-fireball-big.png' : 'img/fx-fireball.png', bigFire ? 'ลูกไฟใหญ่' : 'ลูกไฟ', mp >= BATTLE.mpCost.fire, `${t('battle.mp')} ${BATTLE.mpCost.fire}`)
       + (g.abilities?.flameCharge ? battleChoice('flameCharge', 'img/fx-flame-charge.png', 'พุ่งชนเพลิง', mp >= BATTLE.mpCost.charge, `${t('battle.mp')} ${BATTLE.mpCost.charge}`) : '')
@@ -4450,7 +4450,7 @@ function openBattle(after) {
           return true;
         };
         if (!reduced && (action === 'teamJudgment' || ['laborJudgment','shadowCleaver','abyssGatebreaker'].includes(action))) {
-          await new Promise(resolve => { void runDash({ key:keyOfActor(hit.actorId), targetImage:foeImg(hit.foeId), contact:220, pose:480, action:action === 'teamJudgment' ? (hit.actorId === 'you' ? 'atk' : 'strike') : action, crew:hit.actorId === 'you' ? null : hit.kind, displayOnly:true, visualSkill:action, onHit:impact, onFinish:resolve }); });
+          await new Promise(resolve => { void runDash({ key:keyOfActor(hit.actorId), targetImage:foeImg(hit.foeId), contact:action === 'teamJudgment' ? 300 : 220, pose:action === 'teamJudgment' ? 640 : 480, travel:action === 'teamJudgment' ? 340 : undefined, action:action === 'teamJudgment' ? (hit.actorId === 'you' ? 'atk' : 'strike') : action, crew:hit.actorId === 'you' ? null : hit.kind, displayOnly:true, visualSkill:action, onHit:impact, onFinish:resolve }); });
         } else {
           impact(); phase = 'you'; phaseAt = Date.now(); fxNow = {key:COMBAT_SKILLS[action].heal ? 'health' : 'atk', action, side:COMBAT_SKILLS[action].heal ? 'you' : 'foe',crew:who.id === 'you' ? null : who.k,recipient}; paint();
           await startMoveFx('you', action); if (!reduced) await new Promise(resolve => setTimeout(resolve,350));
