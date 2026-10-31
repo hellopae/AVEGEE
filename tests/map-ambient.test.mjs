@@ -16,8 +16,8 @@ test('all four zone effects move deterministically, stay bounded, and use small 
  for(const z of ['th','asia','west','cyberhell']){
   const a=ambientParticles(z,1000,1678,937),b=ambientParticles(z,2500,1678,937);
   assert.deepEqual(a,ambientParticles(z,1000,1678,937));assert.notDeepEqual(a,b);
-  assert.ok(a.length<=MAP_FX.snow.max && a.length>=20);
-  for(const p of [...a,...b])assert.ok(p.x>=0&&p.x<1678&&p.y>=0&&p.y<937&&p.alpha<=(z==='west'?MAP_FX.snow.alpha[1]:.5));
+  assert.ok(a.length<=Math.max(MAP_FX.snow.max,MAP_FX.rain.max) && a.length>=20);
+  for(const p of [...a,...b])assert.ok(p.x>=0&&p.x<1678&&p.y>=0&&p.y<937&&p.alpha<=(z==='west'?MAP_FX.snow.alpha[1]:z==='cyberhell'?MAP_FX.rain.alpha[1]:.5));
  }
 });
 test('sky renders different frames and reduced motion avoids all drawing and mask work',()=>{

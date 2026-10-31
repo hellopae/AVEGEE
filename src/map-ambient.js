@@ -33,6 +33,17 @@ export const MAP_FX = Object.freeze({
     peak: .58, cell: [.8, .42], size: [1.05, .4], spread: [.8, 1.25], jitter: .18, oddFill: .5,
     drift: [.045, .004], breathe: .1, tint: '214,230,244',
   }),
+  rain: Object.freeze({
+    max: 1000,   // ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
+    speed: [560, 820], slant: -110, length: [14, 24], width: 1.4,
+    alpha: [.4, .75], color: 'rgba(204,230,252,1)',
+  }),
+  storm: Object.freeze({
+    period: 4000, jitter: 1200,     // one strike per slot, started somewhere in the first `jitter` ms
+    flash: .22,                     // hard ceiling of the whole-screen flash opacity (brief: <= .25)
+    pulses: Object.freeze([[0, 90, 1], [150, 260, .55]]),   // [start ms, end ms, share of flash]; at most 2 flashes per strike
+    boltMs: 320,
+  }),
   shadowEdge: Object.freeze([[0,1],[.66,1],[.8,.8],[.92,.34],[1,0]]),   // radial profile of one shadow blob: flat core, soft shoulder
   // th / asia embers and dust keep their original world-space behaviour (not part of Q5)
   legacyBase: Object.freeze({ th: 30, asia: 20 }),
@@ -223,14 +234,24 @@ export function biomeBudget(ctx, W, H, maximum = 160) {
   const height = canvas?.clientHeight || (canvas?.height ? canvas.height / dpr : H);
   return Math.max(24, Math.round(maximum * Math.min(1, width * height / (1100 * 700)) / Math.sqrt(dpr)));
 }
-// A single monotonic 100 ms pulse per 9 seconds; no independent overlapping flashes.
+/** One lightning strike per slot of `storm.period` ms, started somewhere in the first `storm.jitter` ms of the slot.
+ *  A strike has at most two flash pulses, so the screen never flashes more than twice in a row, and strikes are
+ *  always >= period-jitter apart (2.8 s): far below the 3 flashes per second photosensitivity limit. */
+export function stormStrike(time) {
+  const S = MAP_FX.storm, n = Math.floor(time / S.period), start = n * S.period + seed(n + .5) * S.jitter, age = time - start;
+  return age >= 0 ? { n, start, age, x: .15 + .7 * seed(n + 9.3) } : null;
+}
+/** Whole-screen flash opacity at `time`: never above MAP_FX.storm.flash (.22 <= the brief's .25). */
 export function stormFlash(time, reduced = false) {
   if (reduced || !weatherOn) return 0;
-  const phase = mod(time, 9000);
-  return phase < 100 ? .055 * (1 - phase / 100) : 0;
+  const strike = stormStrike(time), S = MAP_FX.storm;
+  if (!strike) return 0;
+  let flash = 0;
+  for (const [from, to, share] of S.pulses) if (strike.age >= from && strike.age < to) flash = Math.max(flash, S.flash * share * (1 - (strike.age - from) / (to - from)));
+  return flash;
 }
 export function ambientParticles(zone, time, W, H, limit = null) {
-  const base = zone === 'west' ? MAP_FX.snow.max : zone === 'cyberhell' ? 160 : MAP_FX.legacyBase[zone] ?? MAP_FX.legacyBase.th;
+  const base = zone === 'west' ? MAP_FX.snow.max : zone === 'cyberhell' ? MAP_FX.rain.max : MAP_FX.legacyBase[zone] ?? MAP_FX.legacyBase.th;
   // `limit` is a particle count, or a CSS viewport {width,height,dpr} (WEATHER-A) that caps the count by screen size.
   const count = typeof limit === 'number' ? limit : limit ? Math.min(base, weatherBudget(limit) * 2) : base;
   const t=time/1000, snow=MAP_FX.snow, lerp=(range,k)=>range[0]+k*(range[1]-range[0]);
@@ -239,11 +260,15 @@ export function ambientParticles(zone, time, W, H, limit = null) {
       x:mod(seed(i+4)*W+t*snow.drift*(.5+seed(i+9))+Math.sin(t*.8+i*1.7)*10,W),
       y:mod(seed(i+80)*H+t*lerp(snow.speed,seed(i+4)),H),
       size:lerp(snow.size,seed(i+16)),alpha:lerp(snow.alpha,seed(i+30)),angle:t*.7+i};
-    const rain=zone==='cyberhell';
-    const speed=rain?360+seed(i+4)*160:zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
-    return {x:mod(seed(i+4)*W+t*(rain?-75:11),W),
+    if(zone==='cyberhell'){
+      const R=MAP_FX.rain,speed=lerp(R.speed,seed(i+4));
+      return {x:mod(seed(i+4)*W+t*R.slant,W),y:mod(seed(i+80)*H+t*speed,H),size:lerp(R.length,seed(i+16)),
+        dx:R.slant/speed,alpha:lerp(R.alpha,seed(i+30)),angle:0};
+    }
+    const speed=zone==='asia'?9+seed(i+4)*13:-10-seed(i+4)*18;
+    return {x:mod(seed(i+4)*W+t*11,W),
       y:mod(seed(i+80)*H+t*speed,H),size:1.5+seed(i+16)*2,
-      alpha:rain?.3+seed(i+30)*.2:.18+seed(i+30)*.32,angle:t*.7+i};
+      alpha:.18+seed(i+30)*.32,angle:t*.7+i};
   });
 }
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
@@ -253,27 +278,17 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
-  const view=zone==='west'||zone==='cyberhell'?viewMetrics(ctx,aw,ah):null;
-  if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H);
-  else{
-  const count=biomeBudget(ctx,W,H,zone==='cyberhell'?160:MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
-  for(const p of ambientParticles(zone,time,aw,ah,count)){
-    ctx.globalAlpha=p.alpha;ctx.fillStyle=zoneStyle(zone).particle;
-    if(zone==='cyberhell'){
-      ctx.strokeStyle='rgba(190,222,248,.8)';ctx.lineWidth=1.4;
-      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-4,p.y+17);ctx.stroke();
-    }else ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
-  }
-  ctx.globalAlpha=1;
-  if(zone==='cyberhell'){
-    const flash=stormFlash(time);
-    if(flash){
-      ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(0,0,aw,ah);
-      ctx.globalAlpha=flash*7;ctx.strokeStyle='#d3edff';ctx.lineWidth=2;
-      const x=aw*(.2+seed(Math.floor(time/9000))*.6);
-      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-12,ah*.09);ctx.lineTo(x+4,ah*.08);ctx.lineTo(x-18,ah*.2);ctx.stroke();
+  const viewZone=zone==='west'||zone==='cyberhell',view=viewZone?viewMetrics(ctx,aw,ah):null;
+  if(viewZone){
+    if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H);
+    else if(view)drawRainAndStorm(ctx,view,time,W,H);
+  }else{
+    const count=biomeBudget(ctx,W,H,MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
+    for(const p of ambientParticles(zone,time,aw,ah,count)){
+      ctx.globalAlpha=p.alpha;ctx.fillStyle=zoneStyle(zone).particle;
+      ctx.fillRect(p.x,p.y,p.size*1.5,p.size*1.5);
     }
-  }
+    ctx.globalAlpha=1;
   }
   ctx.restore();
 }
@@ -295,6 +310,39 @@ function drawSnowAndFog(ctx,view,time,W,H){
       ctx.moveTo(px+r,py);ctx.arc(px,py,r,0,Math.PI*2);
     }
     ctx.fill();
+  }
+  ctx.globalAlpha=1;
+}
+
+/** Zone 4: heavy slanted rain over the visible area, plus lightning: a jagged bolt and a faint whole-screen flash. */
+function drawRainAndStorm(ctx,view,time,W,H){
+  const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,biomeBudget(ctx,W,H,R.max));
+  const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
+  ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;ctx.lineCap='round';
+  for(let b=0;b<BINS;b++){
+    ctx.globalAlpha=lo+span*(b+.5)/BINS;ctx.beginPath();
+    for(const p of list){
+      if(Math.min(BINS-1,Math.floor((p.alpha-lo)/span*BINS))!==b)continue;
+      const px=view.x+p.x*u,py=view.y+p.y*u;
+      ctx.moveTo(px,py);ctx.lineTo(px+p.dx*p.size*u,py+p.size*u);
+    }
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+  const strike=stormStrike(time),flash=stormFlash(time);
+  if(flash){ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(view.x,view.y,view.w,view.h);}
+  if(strike&&strike.age<MAP_FX.storm.boltMs){
+    const fade=1-strike.age/MAP_FX.storm.boltMs,bx=view.x+view.w*strike.x,steps=9,bottom=view.y+view.h*(.5+.25*seed(strike.n+3.1));
+    const pts=[[bx,view.y]];
+    for(let i=1;i<=steps;i++)pts.push([bx+(seed(strike.n*13+i)-.5)*view.w*.16*(i<steps?1:.5),view.y+(bottom-view.y)*i/steps]);
+    const branchAt=3+Math.floor(seed(strike.n+7.7)*3),branch=[pts[branchAt]];
+    for(let i=1;i<=4;i++)branch.push([branch[0][0]+(seed(strike.n*17+i)+.15)*view.w*.05*i*(seed(strike.n+1.9)<.5?-1:1),branch[0][1]+(bottom-view.y)*.07*i]);
+    ctx.lineJoin='round';
+    for(const [path,widthScale] of [[pts,1],[branch,.55]]){
+      ctx.beginPath();ctx.moveTo(...path[0]);for(const p of path.slice(1))ctx.lineTo(...p);
+      ctx.globalAlpha=.3*fade;ctx.strokeStyle='#8fbfff';ctx.lineWidth=10*u*widthScale;ctx.stroke();
+      ctx.globalAlpha=fade;ctx.strokeStyle='#f4f9ff';ctx.lineWidth=2.6*u*widthScale;ctx.stroke();
+    }
   }
   ctx.globalAlpha=1;
 }
