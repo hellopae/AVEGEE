@@ -14,7 +14,7 @@ function recorder(){
 test('border23 weather respects the warm/cold boundary and reduced motion',()=>{
  const ambient=ROUTE_GEOMETRY['asia:west'].ambient;
  assert.equal(ROUTE_GEOMETRY['west:cyberhell'].enabled,true);
- assert.equal(ambient.waterfalls.length,4);
+ assert.equal(ambient.waterfallAnchors.length,4);assert.equal(ambient.waterfalls.length,0,'new material flow replaces hardcoded fall rectangles');assert.equal(ambient.flowUrl,'img/frontier-route/zone2-3-v4-flow.png');
  const r=recorder();drawFrontierAmbient(r.ctx,{w:1672,h:941,time:1000,...ambient});
  const leaves=r.calls.filter(x=>x[0]==='rotate'),snow=r.calls.filter(x=>x[0]==='rect'&&x[3]<8);   // Q5: snow flakes are small square rects
  assert.equal(leaves.length,26);assert.ok(snow.length>=3*160,'Q5: cold-side snow is at least 3x the old 160-flake ceiling');

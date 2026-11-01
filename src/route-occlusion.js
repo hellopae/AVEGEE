@@ -1,6 +1,7 @@
 // Foreground already painted into the route raster. Reuse its pixels, never its walk mask.
 // Each map lists its pieces (polygon + baseline) in src/route-occlusion-data/<map>.js; this file
 // turns them into fractions of the route image so the renderer is size-independent.
+import asiaWest from './route-occlusion-data/asia-west-redraw.js';
 import thAsia from './route-occlusion-data/th-asia.js';
 import westCyberhell from './route-occlusion-data/west-cyberhell.js';
 
@@ -9,7 +10,7 @@ export function routeForegroundFrom(map) {
   const [W,H]=map.size;
   return Object.freeze(map.pieces.map(p=>Object.freeze({id:p.id,depth:p.baseline/H,polygon:frozen(p.polygon.map(([x,y])=>[x/W,y/H]))})));
 }
-export const ROUTE_FOREGROUND = Object.freeze(Object.fromEntries([thAsia,westCyberhell].map(m=>[m.routeId,routeForegroundFrom(m)])));
+export const ROUTE_FOREGROUND = Object.freeze(Object.fromEntries([thAsia,asiaWest,westCyberhell].map(m=>[m.routeId,routeForegroundFrom(m)])));
 // Only the piece's bounding box of the route image is repainted (clip keeps it to the polygon), so a piece
 // costs a few hundred pixels per frame instead of a full-map blit.
 export function drawRouteForeground(ctx,image,foreground,{x,y,w,h}) {
