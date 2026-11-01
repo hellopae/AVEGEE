@@ -75,3 +75,12 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - ยังรอตรวจรับภาพใน browser และ FPS มือถือจริง; ไม่อ้างผ่าน Reese/Chris
 - ไม่มี commit/push/merge และไม่ได้แตะ status.json, worklog.json หรือ work-mode.json
 - B23/B34 แยก branch/worktree; คุณเป้ย้ำให้รายงานและคอนเฟิร์มก่อน merge งานอื่นใน queue ยังไม่เริ่ม
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน 3–4 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-west-cyber`, ฐาน local main `6f2328b8`; ยังไม่ commit/push/merge
+- ครบ7key skeleton/bot/bug/worm/cyber-guard/cyber-lancer/cyber-brute; PNG2048×512 สี่เฟรมหันขวา ใช้สเกลเดียวต่อชุด/ฐานคงที่; ไม่มีขาเพิ่มให้หนอน
+- แพ็กจากตัวละครทั้งตัว ไม่ตัดอาวุธตามเส้นช่อง; อสูรค้อนแก้กรอบด้วยimage_genก่อนเลือกไฟล์สุดท้าย
+- Nativeตัววาดเกมตรวจครบ28 crop phases; เทสต์เฉพาะ8/8; full1794/1794,0fail; syntax/diff-checkผ่าน
+- รายงาน/ภาพ/ลูป/ผลทดสอบ: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-west-cyber/README.md`
+- ART-MOB-WALK ครบ17ตัวใน3branchแล้ว ยังไม่รวมregistryทั้งหมดหรือmergeงานใหม่; รอเจ้าของตรวจ ไม่อ้างReese/Chris
