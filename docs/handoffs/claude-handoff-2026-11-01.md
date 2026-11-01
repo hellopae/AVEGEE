@@ -147,3 +147,10 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - Nativeตัววาดเกมตรวจครบ28 crop phases; เทสต์เฉพาะ8/8; full1794/1794,0fail; syntax/diff-checkผ่าน
 - รายงาน/ภาพ/ลูป/ผลทดสอบ: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-west-cyber/README.md`
 - ART-MOB-WALK ครบ17ตัวใน3branchแล้ว ยังไม่รวมregistryทั้งหมดหรือmergeงานใหม่; รอเจ้าของตรวจ ไม่อ้างReese/Chris
+
+## Codex 1 พ.ย. 2569 — รวมงานอาร์ตตามอนุมัติล่าสุด
+
+- คุณเป้สั่ง “งานที่ทำแล้ว merge ได้เลย” จึงรวม ART-CANTEEN, ART-DAIS2, ART-ULT-ICON และ ART-MOB-WALK ทั้ง3ชุด ครบ17key
+- รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
+- Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
+- W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
