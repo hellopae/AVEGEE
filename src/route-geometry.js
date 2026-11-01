@@ -1,6 +1,7 @@
+import {BORDER34_REDRAW_MASK,BORDER34_REDRAW_CORRIDOR} from './frontier-walkmask-west-cyberhell-redraw.js';
 import {BORDER23_REDRAW_MASK,BORDER23_REDRAW_CORRIDOR} from './frontier-walkmask-asia-west-redraw.js';
 import {BORDER12_MASK} from './frontier-walkmask-th-asia-b12.js';
-import {BORDER34_MASK,BORDER34_CORRIDOR,BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
+import {BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
 import {BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
 import {FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
 // M2 R1 — ROUTE GEOMETRY: one row per frontier route (the walk between two cities).
@@ -59,9 +60,9 @@ export const ROUTE_GEOMETRY = {
       leafArea:[0,0,.44,1],snowArea:[.48,0,1,1]},
   }),
   'west:cyberhell': row('west:cyberhell', {
-    enabled:true, geometryVersion:1, background:'img/frontier-route/zone3-4-v1.webp', foes:[10,11,12],
-    corridor:BORDER34_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_MASK,
-    ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
+    enabled:true, geometryVersion:2, background:'img/frontier-route/zone3-4-v2.webp', foes:[10,11,12],
+    corridor:BORDER34_REDRAW_CORRIDOR, checkpointVertex:BORDER34_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER34_REDRAW_MASK,
+    ambient:{trees:[],bakedTrees:BORDER34_TREES,waterfalls:[],flowUrl:'img/frontier-route/zone3-4-v2-flow.png',leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],
       treeArt:{white:'img/theme-v4/town-tree-snow-th-v1.webp',teal:'img/frontier-route/tree-pine-v2.png',purple:'img/theme-v4/town-tree-cyberhell-v1.webp'},
       treeAnchors:{white:[.569224354,.987804878],teal:[.567556297,.958841463],purple:[.5,.987804878]}},
   }),

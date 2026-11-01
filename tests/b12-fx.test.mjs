@@ -32,7 +32,7 @@ test('B12 removes overlay trees/falls and pins new flow to v6 without changing o
  const trace=JSON.parse(readFileSync('output/coordination/2026-10-30-b12-fx/flow-trace.json'));
  assert.equal(trace.sha256,createHash('sha256').update(readFileSync(trace.source)).digest('hex'),'flow trace belongs to the shipped painting');
  for(const k of [2,3,4,5])assert.ok(trace.kindCells[k]>100,`surface ${k} exists`);
- assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.waterfallAnchors.length,4);assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.waterfalls.length,0);assert.ok(ROUTE_GEOMETRY['west:cyberhell'].ambient.trees.length);
+ assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.waterfallAnchors.length,4);assert.equal(ROUTE_GEOMETRY['asia:west'].ambient.waterfalls.length,0);assert.equal(ROUTE_GEOMETRY['west:cyberhell'].ambient.trees.length,0);assert.equal(ROUTE_GEOMETRY['west:cyberhell'].ambient.bakedTrees.length,28);
 });
 
 test('B12 pause settings/manual destroy the old renderer and return to the border on close',()=>{

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {inflateSync} from 'node:zlib';
+import {BORDER34_MASK} from '../src/frontier-walkmask-west-cyberhell.js';
 import {routeRow,routeBossCave,routeCaptainCave} from '../src/route-geometry.js';
 import {dungeonNavigation,dungeonPoint,dungeonCheckpointProgress,dungeonEnemyPositions,dungeonAtExit} from '../src/dungeon-view.js';
 import {initializeZoneTravel,beginDungeon,nextDungeonEncounter,resolveDungeonEncounter,dungeonStatus} from '../src/zone-travel.js';
@@ -19,11 +20,11 @@ function ownerPixels(){
   out[i]=(raw[k++]+[0,a,b,Math.floor((a+b)/2),pa<=pb&&pa<=pc?a:pb<=pc?b:c][f])&255;
  }}return out.map(v=>v?1:0);
 }
-test('B34: RLE equals every source pixel; 107353 pixels form one four-connected surface',()=>{
- assert.deepEqual(nav.cells,ownerPixels());assert.equal(nav.cells.reduce((s,v)=>s+v,0),107353);
+test('B34: original owner source is retained; repaint floor forms one four-connected surface',()=>{
+ const original=new Uint8Array(1672*941);let o=0,v=0;for(const n of BORDER34_MASK.runs){original.fill(v,o,o+n);o+=n;v=1-v;}assert.deepEqual(original,ownerPixels(),'historical owner fixture is unchanged');assert.equal(nav.cells.reduce((s,v)=>s+v,0),162033);
  const seen=new Set(),queue=[nav.index(row.corridor[0])];seen.add(queue[0]);
  for(let k=0;k<queue.length;k++){const i=queue[k],x=i%nav.cols;for(const j of [x?i-1:-1,x<nav.cols-1?i+1:-1,i-nav.cols,i+nav.cols])if(nav.cells[j]&&!seen.has(j)){seen.add(j);queue.push(j);}}
- assert.equal(seen.size,107353);assert.equal(nav.cellProgress.filter(Number.isFinite).length,107353);
+ assert.equal(seen.size,162033);assert.equal(nav.cellProgress.filter(Number.isFinite).length,162033);
  for(let i=1;i<row.corridor.length;i++)assert.ok(nav.clear(row.corridor[i-1],row.corridor[i]),`segment ${i}`);
 });
 export const blockedBanks=[[.12,.14],[.22,.22],[.4,.47],[.58,.29],[.81,.6],[.67,.78]];
@@ -50,15 +51,15 @@ test('B34: native navigation reaches three checkpoint approaches and the exit wi
 });
 test('B34: 28 owner roots retain preview positions and stay outside floor, including moved roots 11/25',()=>{
  const source=JSON.parse(readFileSync(new URL('./fixtures/border34-owner-trees.json',import.meta.url)));
- assert.deepEqual(row.ambient.trees,source.map(({id,kind,x,y})=>({id,kind,x,y})));
+ assert.deepEqual(row.ambient.bakedTrees,source.map(({id,kind,x,y})=>({id,kind,x,y})));
  assert.deepEqual(source.reduce((n,t)=>(n[t.kind]=(n[t.kind]||0)+1,n),{}),{teal:11,purple:1,white:16});
- for(const t of row.ambient.trees)assert.equal(nav.walkable([t.x,t.y]),false,`tree ${t.id}`);
+ assert.deepEqual(row.ambient.trees,[]);for(const t of row.ambient.bakedTrees)assert.equal(nav.walkable([t.x,t.y]),false,`tree ${t.id}`);
 });
 test('B34: legacy saves migrate to last completed checkpoint without adding caves or losing wins',()=>{
  for(let checkpoint=0;checkpoint<=3;checkpoint++){
   const g=game(),cleared=Array.from({length:checkpoint},(_,i)=>`${id}:${i}`);
   initializeZoneTravel(g,{version:1,visited:{west:true},ports:{west:true},active:{route:id,checkpoint,cleared,position:{x:.5,y:.925},pending:'old',attempt:4}});
-  const a=g.zoneTravel.active;assert.equal(a.pending,null);assert.equal(a.geometryVersion,1);assert.equal(a.checkpoint,checkpoint);assert.deepEqual(a.cleared,cleared);
+  const a=g.zoneTravel.active;assert.equal(a.pending,null);assert.equal(a.geometryVersion,row.geometryVersion);assert.equal(a.checkpoint,checkpoint);assert.deepEqual(a.cleared,cleared);
   assert.deepEqual([a.position.x,a.position.y],row.corridor[checkpoint?row.checkpointVertex[checkpoint-1]:0]);
  }
 });

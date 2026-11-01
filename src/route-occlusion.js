@@ -3,7 +3,7 @@
 // turns them into fractions of the route image so the renderer is size-independent.
 import asiaWest from './route-occlusion-data/asia-west-redraw.js';
 import thAsia from './route-occlusion-data/th-asia.js';
-import westCyberhell from './route-occlusion-data/west-cyberhell.js';
+import westCyberhell from './route-occlusion-data/west-cyberhell-redraw.js';
 
 const frozen=v=>Object.freeze(v.map(Object.freeze));
 export function routeForegroundFrom(map) {

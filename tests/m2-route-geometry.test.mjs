@@ -35,7 +35,7 @@ test('route 3-4 uses its independent owner floor and ordinary checkpoints', () =
   assert.equal(isWildernessRoute(id),true);assert.equal(routeBossCave(id),null);assert.equal(r.captainCave,null);
   assert.equal(dungeonPatrols(id).length,6);
   assert.deepEqual(dungeonPoint(0,id),r.corridor[0]);
-  assert.equal(dungeonBackground('west',id,2),'img/frontier-route/zone3-4-v1.webp');
+  assert.equal(dungeonBackground('west',id,2),'img/frontier-route/zone3-4-v2.webp');
 });
 
 test('owner-fitted route 2-3 has its own picture and patrols, with ordinary checkpoint fights', () => {
