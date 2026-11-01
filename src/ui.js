@@ -1,3 +1,4 @@
+import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishment.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
@@ -730,18 +731,14 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
-  const diff = intensity - soul.deserved;
-  const judgement = diff === 0 ? '<b style="color:var(--success)">พอดีกรรมเป๊ะ</b>'
-    : diff > 0 ? `<b style="color:var(--destructive)">หนักเกินไป ${diff} วาระ</b> — ส่วนเกินกลายเป็นกรรมของท่าน +${r.karma}`
-               : `<b style="color:var(--warning)">เบาไป ${-diff} วาระ</b> — เขายังไม่สำนึก`;
 
   return `<div class="sec">ความจริงทั้งหมด (ตอนนี้เห็นได้แล้ว)</div>${truth}
     <div class="sec">บุญที่อ้าง</div>${merit}
     <div class="sec">${closed ? 'ท่านตัดสินไปว่า' : 'ท่านสั่งไปว่า'}</div>
     <div class="row-truth">ส่ง<b>${esc(st?.name ?? '—')}</b> ${hit ? '<span style="color:var(--success)">ตรงชนิดกรรม</span>' : '<span style="color:var(--destructive)">ไม่ตรงชนิดกรรม</span>'}
       · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? crewName(CREW.find(c => c.k === crewK), g.zone))}</div>
-    <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · สมควรได้รับ <b>${soul.deserved}</b> → ${judgement}</div>
-    ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `รวม ${r.score}`,
+    <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · ระยะเวลา <b>${punishmentTimeLabel(intensity)}</b></div>
+    ${kv([`ธรรม ${r.tham}`, `รวม ${r.score}`,
           '★'.repeat(r.stars ?? 0) + '☆'.repeat(5 - (r.stars ?? 0))])}`;
 }
 
@@ -1323,7 +1320,7 @@ function drawOverlay() {
     d.dataset.sx = SPOTS.bench.x; d.dataset.sy = SPOTS.bench.y - 104;
     const st = '★'.repeat(fx.stars) + '☆'.repeat(5 - fx.stars);
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
-      `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
+      `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham}</small>`;
     ov.appendChild(d); place(d);
     const feedback=mark('boss speech-side', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
       `<span class="who">${esc(authorityOf(g.zone).title)}</span>${esc(fx.line)}<button type="button" class="verdict-dismiss" data-dismiss-verdict>รับทราบ · ข้ามข้อความ</button>`, true);
@@ -2167,7 +2164,7 @@ function openVerdictScene() {
     </div>
     <div class="zone-arrival-band">
       <div class="intro-comic-caption"><h2>${esc(sc.speaker)}</h2><p class="verdict-line">${esc(sc.line)}</p>
-        <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)} · เข็ด ${esc(sc.ked)}</small></div>
+        <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)}</small></div>
         ${sc.reason ? `<p class="verdict-reason">${esc(sc.reason)}</p>` : ''}
         ${sc.reward ? `<div class="verdict-reward">${esc(sc.reward)}</div>` : ''}</div>
       <div class="intro-comic-controls"><button class="gold" data-verdict-scene-done>รับทราบ · ข้าม</button></div>
@@ -2736,7 +2733,7 @@ function openTrial(initialError = '') {
       : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
       const revealed = i === answer?.intensity;
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
-        title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b><small style="color:${punishmentLevel(i).color}">${punishmentTimeLabel(i)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('');
     const crewNow = pick.cr && g.crewOf(pick.cr);
     const selected = [

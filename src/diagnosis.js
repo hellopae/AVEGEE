@@ -56,7 +56,7 @@ export function diagnosisModel(g, subject) {
     stationK: stK, stationName: stK ? STATIONS.find(d => d.k === stK)?.name || null : null,
     keeperK: entry.keeperK || null, keeperName: keeperNameOf(g, entry),
     intensity: entry.intensity, intensityName: INTENSITY_NAME[entry.intensity] || '',
-    deserved: soul.deserved ?? null, diff: Number.isFinite(soul.deserved) ? entry.intensity - soul.deserved : null,
+    deserved: null, diff: null, durationMs:entry.durationMs??null,
     need: entry.need ?? null, stars: v?.stars ?? null, score: v?.score ?? null,
     boss: v?.boss ?? null, legacy: !stK,
     // ส่งตรงประตูสวรรค์ (ผู้บริสุทธิ์ที่ตัดสินถูก) = ไม่มีทัณฑ์จริง — entry.intensity ถูก clamp ≥ 1 จึงห้ามเอาไปเทียบ "หนักเกิน"

@@ -39,7 +39,7 @@ test('prison soul before inspection (D2): remorse locked, no number and no break
   assert.equal(m.deeds.length,4,'closed case: everything shown, including hidden deeds');assert.ok(m.deeds.some(d=>d.hidden));
   assert.equal(m.merits.length,3);
   assert.equal(m.ked.value,80);assert.equal(m.banner.id,'prisonInspect');assert.equal(m.action.kind,'inspectPrison');assert.equal(m.closing,'tarangPending');
-  assert.equal(m.order.stationK,'krata');assert.equal(m.order.keeperName,'บุญ');assert.equal(m.order.diff,0);
+  assert.equal(m.order.stationK,'krata');assert.equal(m.order.keeperName,'บุญ');assert.equal(m.order.diff,null);assert.equal(m.order.deserved,null);
 });
 
 test('prison soul: countdown, then after inspection the number + 3-part breakdown appear and banner follows repentant',()=>{

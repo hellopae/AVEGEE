@@ -154,3 +154,14 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
 - Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
 - W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
+
+## Codex 1 พ.ย. 2569 — เวลา/สีทัณฑ์และการแยกความแรงจากคะแนน
+
+- Branch codex/2026-11-01-punishment-duration; ฐานmain df42fb1b
+- 10/30/60/120/240วินาทีตามระดับ1–5, สีฟ้า/เขียว/เหลือง/ส้ม/แดง; คุณเป้ยืนยันเบา30วินาที
+- เวลาทำงานจริง เริ่มหลังถึงสถานี,พัก/ขนส่ง/ซ่อม/ผู้คุมไม่พร้อมไม่เดินเวลา; saveเก่าคงสัดส่วน progress ไม่มีofflinecatchup; ไม่มีนับframe+managementซ้ำ
+- ความแรงไม่เปลี่ยนคะแนน/บาปจากความพอดี; mirrorไม่แนะนำforceที่ได้คะแนน; remorseเลือกforceต่างกันผลเท่ากัน
+- สไปรต์ห้องย้อมจริงผ่านแคช256px/สูงสุด6สีต่อภาพ; ไม่ย้อมฉาก
+- Full1821/1821,0fail; syntax162; Chromiumภาพจริง5สีผ่านไม่มีpageErrors; ก่อนแก้มีtestlegacyที่คาดคะแนนความแรงและaliasเก่า แก้ตามสเปกใหม่แล้ว
+- รายงานภายนอก `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-punishment-duration/README.md`; native fallbackdiagnosticไม่นับเป็นภาพจริง
+- รวมsnippetsfixture punishment-noncombat-changes.jsonกับHOMEfixtureในBALANCE-2ก่อนตรวจชุดรวม ห้ามแก้หลักฐาน32kเดิม

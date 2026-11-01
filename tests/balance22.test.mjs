@@ -37,11 +37,11 @@ test('every dossier deserves 1–5 terms and Thai level-five share falls', () =>
   assert.ok(thai.filter(c => deservedOf(soulOf(c)) === 5).length < thai.filter(c => old(c) === 5).length);
 });
 
-test('over by two costs 56 ked points', () => {
+test('force does not add appropriateness or karma penalties', () => {
   const soul = { deeds:[{ s:'kong', w:5 }], merits:[], deserved:1, pure:false };
   const r = createGame().judge(station('krata'), { soul, intensity:3 });
-  assert.equal(r.over, 2);
-  assert.equal(r.ked, 44);
+  assert.equal(r.over, 0);
+  assert.equal(r.ked, 100);
 });
 
 test('matching primary sin pays a separate bonus of about 30 percent', () => {

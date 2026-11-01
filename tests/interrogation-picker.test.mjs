@@ -1,3 +1,4 @@
+import {punishmentLevel,punishmentTimeLabel} from '../src/punishment.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -12,7 +13,7 @@ function choices(){
  const g={crew:actors,keeperTrialInfo:()=>({available:true,benefit:'ผลดีเฉพาะคดี',cost:'เสบียง 2 ห่อ'}),assignBlock:()=>null,stFree:()=>3,stations:[]};
  const dests=['krata','ngiw','tarang','sawan'].map(k=>({def:STATIONS.find(x=>x.k===k),slots:[]}));
  return vm.runInNewContext(render+'\n({crewChoices,destinationChoices});',{g,s:{id:1},dests,answer:null,pick:{cr:'kan'},available:actors.filter(c=>c.k!=='dam'),heaven:false,
-  keeperCurrentJob,keeperSuitText,traitForKeeper,SINS,INTENSITY:{},t:x=>x,esc:x=>String(x??''),blockText:b=>b?.text||'',stBg:()=>'/station.webp',artUrl:()=>'/profile.webp',orbImg:(src,alt)=>`<img src="${src}" alt="${alt}">`});
+  keeperCurrentJob,keeperSuitText,traitForKeeper,SINS,INTENSITY:{},punishmentLevel,punishmentTimeLabel,t:x=>x,esc:x=>String(x??''),blockText:b=>b?.text||'',stBg:()=>'/station.webp',artUrl:()=>'/profile.webp',orbImg:(src,alt)=>`<img src="${src}" alt="${alt}">`});
 }
 test('keeper choices show complete profile sources, suitability and availability without stats or costs',()=>{
  const {crewChoices:html}=choices();

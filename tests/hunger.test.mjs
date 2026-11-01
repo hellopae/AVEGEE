@@ -73,7 +73,7 @@ test('เซฟเก่าก่อนชุด 13 (ไม่มี hunger ใ�
   assert.equal(g.feedCrew('taan'), true, 'ป้อนข้าวปั้นได้ตามปกติทันทีหลังโหลดเซฟเก่า');
 });
 
-test('หมดแถบหิว (0) ทำงานช้าลงจริง (hungerPenalty) เทียบกับตอนอิ่ม', () => {
+test('เวลาทัณฑ์คงที่ตามระดับ ไม่เปลี่ยนตามความหิวของผู้คุม', () => {
   const gFull = createGame();
   gFull.stations.push(station('krata'));
   const stFull = gFull.stations.find(x => x.def.k === 'krata');
@@ -94,6 +94,6 @@ test('หมดแถบหิว (0) ทำงานช้าลงจริง
   gHungry.step();
   const progressHungry = stHungry.slots[0].progress;
 
-  assert.ok(progressHungry < progressFull, 'หมดแถบหิวต้องทำงานได้ความคืบหน้าน้อยกว่าตอนอิ่ม');
-  assert.ok(Math.abs(progressHungry / progressFull - BAL.hungerPenalty) < 0.01);
+  assert.ok(progressFull>0);assert.equal(progressHungry,progressFull,'active sentence seconds stay fixed');
+  assert.equal(progressHungry / progressFull,1);
 });
