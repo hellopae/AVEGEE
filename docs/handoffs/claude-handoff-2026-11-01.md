@@ -104,3 +104,12 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - food-a/z4-town-a 19/19; full suite 1786/1786,0fail
 - หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-canteen/README.md`
 - ยังไม่commit/push/merge; รอเจ้าของกลับมาตรวจ; คิวถัดไป ART-DAIS2
+
+## Codex 1 พ.ย. 2569 — ART-DAIS2 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-dais2` จาก `6f2328b8`; วาดแท่นเอเชียเป็นมุมตรงสมมาตร บันไดกลาง ธีมหลังคาหยก/เสาแดงเดิม
+- ไฟล์ชื่อเดิม1536×1024; ฐานแท่นและคิวเดิม; ปรับเฉพาะเอเชีย throne [1862,944], นิรา home [1938,968] stage [1914,956,1956,982] ตามพื้นภาพใหม่
+- เทียบ4โซนและก่อน–หลังด้วย native scene.render พร้อมพญายม/นิรา; ไม่ใช่ screenshot browser
+- targeted120/120; full1786/1786,0fail; ไม่อ้าง Reese/Chris
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-dais2/README.md`
+- ยังไม่commit/push/merge; ART-ULT-ICON และเฟรมเดินศัตรูโซน1กำลังทำ

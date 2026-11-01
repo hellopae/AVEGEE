@@ -239,7 +239,10 @@ const WEST_PROPS = [
 ];
 export const TOWN_ZONE_LAYOUT = {
   th:        {},
-  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8 },
+  // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
+  // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
+  asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
+    spots:{throne:{x:1862,y:944}},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982]} },
   west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]} },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
