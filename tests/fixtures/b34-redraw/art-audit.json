@@ -1,0 +1,10 @@
+{
+  "asset": "img/frontier-route/zone3-4-v2.webp",
+  "size": [
+    3344,
+    1882
+  ],
+  "sha256": "37028d62b6b2ff86a942540514d7b3aed4121df1be63c08d68ce6299129fc137",
+  "maskSHA256": "a8d692e3de8679a74f7289d4e6d04bc83bae1a1b677fb0f68a80572e60cb0413",
+  "occluders": 13
+}

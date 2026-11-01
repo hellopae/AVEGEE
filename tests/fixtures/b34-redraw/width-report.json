@@ -1,0 +1,60 @@
+{
+  "method": "B12 medial-ridge Euclidean distance-transform diameter, connected perpendicular sections, ~1px arc sampling; all values in 1672x941 world px; no endpoint trimming",
+  "floorPixels": 162033,
+  "components": 1,
+  "main": {
+    "gameplayClearanceP10": 17.08800749063506,
+    "samples": 2443,
+    "p10": 44.27188724235731,
+    "median": 61.741396161732524,
+    "minimum": 40.496913462633174,
+    "offFloor": 0
+  },
+  "before": {
+    "gameplayClearanceP10": 20.591260281974,
+    "samples": 2451,
+    "p10": 24.0,
+    "median": 32.31098884280702,
+    "minimum": 15.620499351813308,
+    "offFloor": 0
+  },
+  "sections": [
+    {
+      "section": 1,
+      "gameplayClearanceP10": 17.88854381999832,
+      "samples": 248,
+      "p10": 45.60701700396552,
+      "median": 49.03060268852505,
+      "minimum": 44.94441010848846,
+      "offFloor": 0
+    },
+    {
+      "section": 2,
+      "gameplayClearanceP10": 27.202941017470888,
+      "samples": 995,
+      "p10": 42.941821107167776,
+      "median": 50.99019513592785,
+      "minimum": 40.496913462633174,
+      "offFloor": 0
+    },
+    {
+      "section": 3,
+      "gameplayClearanceP10": 18.867962264113206,
+      "samples": 509,
+      "p10": 47.53945729601885,
+      "median": 61.35144660071187,
+      "minimum": 45.60701700396552,
+      "offFloor": 0
+    },
+    {
+      "section": 4,
+      "gameplayClearanceP10": 7.211102550927978,
+      "samples": 691,
+      "p10": 60.0,
+      "median": 67.05221845696084,
+      "minimum": 54.037024344425184,
+      "offFloor": 0
+    }
+  ],
+  "meetsWidthThresholds": true
+}

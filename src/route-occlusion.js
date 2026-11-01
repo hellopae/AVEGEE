@@ -2,7 +2,7 @@
 // Each map lists its pieces (polygon + baseline) in src/route-occlusion-data/<map>.js; this file
 // turns them into fractions of the route image so the renderer is size-independent.
 import thAsia from './route-occlusion-data/th-asia.js';
-import westCyberhell from './route-occlusion-data/west-cyberhell.js';
+import westCyberhell from './route-occlusion-data/west-cyberhell-redraw.js';
 
 const frozen=v=>Object.freeze(v.map(Object.freeze));
 export function routeForegroundFrom(map) {

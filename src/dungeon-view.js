@@ -267,7 +267,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   const root=document.createElement('section'); root.className='dungeon-view';
   root.innerHTML=dungeonShell('คุยกับผู้ตรวจการ · ออกเดินทาง');
   container.append(root);
-  const enhanced=routeId==='th:asia';
+  // A repainted route opts into the shared B12 zoom/HUD/flow implementation.
+  const enhanced=!!routeRow(routeId).ambient.flowUrl;
   if(enhanced){
     root.classList.add('b12-fx');
     root.querySelector('.dungeon-stage').insertAdjacentHTML('beforeend',`<div class="dungeon-zoom town-camera-controls"><button type="button" data-zoom="less" aria-label="ซูมออก / Zoom out">−</button><button type="button" data-zoom="overview">ทั้งแผนที่</button><button type="button" data-zoom="more" aria-label="ซูมเข้า / Zoom in">+</button></div><nav class="dungeon-hud-left" aria-label="ผู้เล่น"><button type="button" data-hud="profile" aria-label="โปรไฟล์"><img src="img/hero-yama-profile.png" alt=""></button><button type="button" data-hud="manual" aria-label="คู่มือ"><img src="img/ui/icon-book.png" alt=""></button><button type="button" data-hud="bag" aria-label="กระเป๋า"><img src="img/ui/icon-bag.png" alt=""></button></nav><nav class="dungeon-hud-right" aria-label="เมนู"><button type="button" data-hud="pause" aria-label="พัก"><img src="img/ui/icon-pause.png" alt=""></button><button type="button" data-hud="settings" aria-label="ตั้งค่า"><img src="img/ui/icon-setting2.png" alt=""></button></nav>`);
@@ -419,7 +420,7 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const w=world();
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     flow?.draw(ctx,{time:t,reduced:reduced.matches,paused:isPaused(),x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,width,height});
-    if(isWildernessRoute(routeId)&&routeRow(routeId).ambient.trees.length+routeRow(routeId).ambient.waterfalls.length)drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,...routeRow(routeId).ambient,trees:[]});
+    if(isWildernessRoute(routeId))drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,...routeRow(routeId).ambient,trees:[]});
     const status=dungeonStatus(g);if(!status)return;
     drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';

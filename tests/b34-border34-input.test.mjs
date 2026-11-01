@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {ROUTE_FOREGROUND} from '../src/route-occlusion.js';
 const manifest=JSON.parse(readFileSync(new URL('../img/manifest.json',import.meta.url)));
 globalThis.fetch=async()=>({ok:true,json:async()=>manifest});
 let failReplacement=false;
 globalThis.Image=class {complete=true;naturalWidth=512;naturalHeight=1024;set src(v){this._src=v;queueMicrotask(()=>failReplacement&&v.startsWith('img/frontier-route/tree-')?this.onerror?.():this.onload?.());}get src(){return this._src;}};
 const drawn=[];let captureDraw=false;
-const ctx=new Proxy({drawImage(...args){if(captureDraw)drawn.push(args);},createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})}, {get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
+const ctx=new Proxy({drawImage(...args){if(captureDraw)drawn.push(args);},getImageData:()=>({data:new Uint8ClampedArray(512*1024*4)}),createRadialGradient:()=>({addColorStop(){}}),createLinearGradient:()=>({addColorStop(){}})}, {get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const node=()=>({getContext:()=>ctx,handlers:{},addEventListener(k,f){this.handlers[k]=f;},removeEventListener(){},focus(){},setPointerCapture(){},remove(){}});
 let frame,clock=1000,size=1280,stageHeight=800;
 const windowHandlers={};
@@ -14,8 +15,10 @@ globalThis.window={matchMedia:()=>({matches:true}),devicePixelRatio:1,addEventLi
 globalThis.requestAnimationFrame=f=>{frame=f;return 1;};globalThis.cancelAnimationFrame=()=>{};
 let root;
 globalThis.document={documentElement:{},createElement(tag){if(tag==='canvas')return node();const main=node(),mini=node(),status=node(),loading=node(),guide=node(),challenge=node(),menu=node();
+ const hud=['profile','manual','bag','pause','settings'].map(k=>Object.assign(node(),{dataset:{hud:k}}));
+ const stage={insertAdjacentHTML(){}},controls=Object.fromEntries(['less','more','overview'].map(k=>[k,node()]));
  main.parentElement={getBoundingClientRect:()=>({width:size,height:stageHeight})};main.getBoundingClientRect=()=>({left:0,top:0,width:size,height:stageHeight});
- root={...node(),main,mini,querySelector:s=>({' .unused':null,'.dungeon-stage > canvas':main,'.dungeon-minimap':mini,'.dungeon-status':status,'.dungeon-load':loading,'.dungeon-guide':guide,'.dungeon-challenge':challenge,'[data-action="menu"]':menu})[s]};return root;}};
+ root={...node(),classList:{add(){}},querySelectorAll:()=>hud,controls,hud,main,mini,querySelector:s=>s==='.dungeon-stage'?stage:s.startsWith('[data-zoom=')?controls[s.match(/"(.*?)"/)[1]]:({' .unused':null,'.dungeon-stage > canvas':main,'.dungeon-minimap':mini,'.dungeon-status':status,'.dungeon-load':loading,'.dungeon-guide':guide,'.dungeon-challenge':challenge,'[data-action="menu"]':menu})[s]};return root;}};
 const view=await import('../src/dungeon-view.js');const travel=await import('../src/zone-travel.js');const {frontierCameraTarget}=await import('../src/frontier-view-metrics.js');
 await new Promise(r=>setImmediate(r));
 const tick=(ms=16)=>{clock+=ms;frame(clock);};
@@ -45,26 +48,14 @@ for(const width of [1280,390])test(`B34 native view handlers ${width}: traverse 
  for(let i=0;i<2000&&!view.dungeonAtExit(g);i++){tick(50);assert.ok(view.dungeonWalkable(pos(g),id));}
  assert.ok(view.dungeonAtExit(g));await new Promise(r=>setImmediate(r));assert.ok(arrived);destroy();
 });
-test('B34 renderer: all 28 trees draw at their root; Yama is sorted on both sides of tree 25',()=>{
- size=1280,stageHeight=800;const nav=view.dungeonNavigation(id),tree=row.ambient.trees.find(t=>t.id===25);
- for(const side of [-1,1]){
-  const g=game();for(let i=0;i<3;i++){const e=travel.nextDungeonEncounter(g);travel.resolveDungeonEncounter(g,e.token,true);}
-  // Find floor behind/in front of the root while staying close enough for overlap.
-  let p=null;
-  for(let dy=1;dy<70&&!p;dy++)for(let dx=-35;dx<=35;dx++){
-   const q=[tree.x+dx/1672,tree.y+side*dy/941];if(nav.walkable(q)){p=q;break;}
-  }
-  assert.ok(p);g.zoneTravel.active.position={x:p[0],y:p[1]};
-  const destroy=view.mountDungeonView({append(){}},g);drawn.length=0;captureDraw=true;tick();captureDraw=false;
-  const cam=frontierCameraTarget(size,stageHeight,pos(g));
-  for(const t of row.ambient.trees){const anchor=row.ambient.treeAnchors[t.kind],x=cam.x+t.x*1672*cam.scale,y=cam.y+t.y*941*cam.scale;
-   assert.ok(drawn.some(a=>a[0]?.src===row.ambient.treeArt[t.kind]&&Math.abs(a[1]+a[3]*anchor[0]-x)<.01&&Math.abs(a[2]+a[4]*anchor[1]-y)<.01),`root ${t.id}`);
-  }
-  const anchor=row.ambient.treeAnchors[tree.kind],ty=cam.y+tree.y*941*cam.scale;
-  const ti=drawn.findIndex(a=>a[0]?.src===row.ambient.treeArt[tree.kind]&&Math.abs(a[2]+a[4]*anchor[1]-ty)<.01);
-  const hi=drawn.findIndex(a=>/hero-yama|yama.*walk|hero.*walk/.test(a[0]?.src||''));
-  assert.ok(ti>=0&&hi>=0);assert.equal(hi<ti,side<0);destroy();
- }
+test('B34 renderer reuses painted foreground and never draws the removed tree sprites',()=>{
+ size=1280;stageHeight=800;const g=game();
+ const destroy=view.mountDungeonView({append(){}},g);drawn.length=0;captureDraw=true;tick();captureDraw=false;
+ assert.deepEqual(row.ambient.trees,[]);assert.equal(row.ambient.bakedTrees.length,28);
+ assert.ok(ROUTE_FOREGROUND[id].length>=3);
+ assert.ok(drawn.filter(a=>a.length===9&&a[0]?.src===row.background).length>=ROUTE_FOREGROUND[id].length,'cropped foreground comes from the new route image');
+ assert.equal(drawn.some(a=>Object.values(row.ambient.treeArt).includes(a[0]?.src)),false);
+ destroy();
 });
 test('B34 native input handlers: six blocked banks reject clicks and held keys, including northern branch',()=>{
  size=1280;stageHeight=800;const nav=view.dungeonNavigation(id);
@@ -79,5 +70,18 @@ test('B34 native input handlers: six blocked banks reject clicks and held keys, 
   for(let i=0;i<80;i++){tick(50);assert.ok(nav.walkable(pos(g)),`held input at ${bank}`);}
   for(const key of keys)windowHandlers.keyup({key});
   assert.notDeepEqual(pos(g),bank);destroy();
+ }
+});
+
+test('redraw native renderer: zoom buttons and five HUD actions work at 390 and desktop',()=>{
+ for(const w of [390,1280]){
+  size=w;stageHeight=w===390?844:800;const g=game(),actions=[];
+  const destroy=view.mountDungeonView({append(){}},g,{onHud:a=>actions.push(a)});
+  const imageWidth=()=>{drawn.length=0;captureDraw=true;tick();captureDraw=false;return drawn.find(a=>a.length===5&&a[0]?.src===row.background)?.[3];};
+  const ordinary=imageWidth();assert.ok(ordinary>0);
+  root.controls.more.handlers.click();assert.ok(imageWidth()>ordinary);
+  root.controls.overview.handlers.click();assert.ok(imageWidth()<=size+1e-7);
+  for(const button of root.hud)button.handlers.click();assert.deepEqual(actions,['profile','manual','bag','pause','settings']);
+  destroy();
  }
 });

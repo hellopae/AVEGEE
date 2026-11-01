@@ -75,7 +75,7 @@ test('R3 foreground reuses background pixels under a camera-transformed clip, so
   const calls=[],ctx=new Proxy({},{get:(_,key)=>(...args)=>calls.push([key,...args])});
   const item=ROUTE_FOREGROUND['west:cyberhell'][0],image={complete:true,naturalWidth:1672,naturalHeight:941};
   drawRouteForeground(ctx,image,item,{x:-100,y:-200,w:3344,h:1882});
-  assert.deepEqual(calls[2],['moveTo',-100+730*2,-200+759*2]);
+  assert.deepEqual(calls[2],['moveTo',-100+item.polygon[0][0]*3344,-200+item.polygon[0][1]*1882]);
   assert.ok(calls.findIndex(c=>c[0]==='clip')<calls.findIndex(c=>c[0]==='drawImage'));
   // only the polygon's bounding box is repainted, at the same scale as the full map would be
   const [,img,sx,sy,sw,sh,dx,dy,dw,dh]=calls.find(c=>c[0]==='drawImage');
