@@ -95,3 +95,62 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - Full suite ของต้นไม้รวม1790/1790,0fail; syntax160/160 และ diff-checkผ่าน
 - หลักฐาน integrationอยู่ `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-b34-redraw/tests-merged-b23-b34.log`; ผลpush/Pagesและcommitสุดท้ายให้ดู MERGE-LOG.md ใน Output/Codex
 - งานอาร์ตอื่นที่ทำตามคิวยังคงแยกbranchรอตรวจ; ไม่ได้รวมในแพตช์แผนที่นี้ รายงานคิวอยู่ `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/QUEUE-PROGRESS-2026-11-01.md`
+
+## Codex 1 พ.ย. 2569 — ART-CANTEEN (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-canteen` จาก `6f2328b8`; วาดโรงอาหารโปร่งใสใหม่ครบ4โซน ชื่อเดิม 768×640
+- ภาพใหญ่ขึ้น8% โดยฐาน/ประตู/พ่อค้า/collision layout เดิม; วัด alpha foot ให้ฐานอาคารติดจุดเดิม; zone4 ยังกลับด้าน
+- ภาพก่อน–หลังจาก scene.render จริงครบ4โซน (native canvas ไม่ใช่ browser); โรงอาหารและพ่อค้าเดินถึงหลังโหลดภาพจริง
+- food-a/z4-town-a 19/19; full suite 1786/1786,0fail
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-canteen/README.md`
+- ยังไม่commit/push/merge; รอเจ้าของกลับมาตรวจ; คิวถัดไป ART-DAIS2
+
+## Codex 1 พ.ย. 2569 — ART-DAIS2 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-dais2` จาก `6f2328b8`; วาดแท่นเอเชียเป็นมุมตรงสมมาตร บันไดกลาง ธีมหลังคาหยก/เสาแดงเดิม
+- ไฟล์ชื่อเดิม1536×1024; ฐานแท่นและคิวเดิม; ปรับเฉพาะเอเชีย throne [1862,944], นิรา home [1938,968] stage [1914,956,1956,982] ตามพื้นภาพใหม่
+- เทียบ4โซนและก่อน–หลังด้วย native scene.render พร้อมพญายม/นิรา; ไม่ใช่ screenshot browser
+- targeted120/120; full1786/1786,0fail; ไม่อ้าง Reese/Chris
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-dais2/README.md`
+- ยังไม่commit/push/merge; ART-ULT-ICON และเฟรมเดินศัตรูโซน1กำลังทำ
+
+## Codex 1 พ.ย. 2569 — ART-ULT-ICON (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-ult-icon`; วาดประสานพิพากษาเป็นยามาสั่ง/เพื่อน3คนพุ่ง/ดาบปิดท้าย ชื่อเดิม256×256 โปร่งใสนอกวงกลมแดง ไม่มีตัวอักษร
+- เทียบไอคอนข้างเคียงที่40/32px; ไม่แก้โค้ดหรือstory
+- Full1786/1786,0fail; ไม่อ้าง Reese/Chris; ยังไม่commit/push/merge
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-ult-icon/README.md`
+- เฟรมเดินศัตรูโซน1กำลังทดสอบท้ายงาน คิวโซน2ต่อ
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน1 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-th`; วาดครบ6ตัว pret/pret2/werewolf/krahang/pop/tanee
+- PNG2048×512,4เฟรม×512,โปร่งใส,หันขวา,ฐานล่างคงเดิม; กระหัง/ตานีลอยโยก; ลงENEMY_WALK_ARTแล้ว
+- ตรวจโหลดPNGจริงผ่านdrawCrewWalk24crop phasesและpivot; pixel tests7/7, native/Q4/scale18/18, full1793/1793,0fail
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-th/README.md`
+- ไม่อ้างReese/Chris/มือถือจริง; ยังไม่commit/push/merge; ชุดเอเชีย4ตัวกำลังทำต่อ
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน 2 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-asia`, ฐาน local main `6f2328b8`; ยังไม่ commit/push/merge
+- วาด walk strip ใหม่ครบ 4 key: mob-gaki, mob-kasha, mob-nukekubi, mob-hitodama; 2048×512 RGBA, สี่เฟรมหันขวา; ตัวลอยไม่เพิ่มร่างกาย/ขา
+- เปิด key และ cache version ของ registry; native ตัววาดเกมตรวจครบ 16 crop phases และฐานคงที่
+- เทสต์เฉพาะ 5/5; full หลังแพ็กสุดท้าย 1791/1791, 0 fail; syntax/diff-check ผ่าน
+- รายงาน/ภาพก่อนหลัง/ลูป/สคริปต์/ผลทดสอบ: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-asia/README.md`
+- รอเจ้าของตรวจในเกมจริง ไม่อ้างผล Reese/Chris; ไม่แตะ status.json/worklog.json/work-mode.json
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน 3–4 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-west-cyber`, ฐาน local main `6f2328b8`; ยังไม่ commit/push/merge
+- ครบ7key skeleton/bot/bug/worm/cyber-guard/cyber-lancer/cyber-brute; PNG2048×512 สี่เฟรมหันขวา ใช้สเกลเดียวต่อชุด/ฐานคงที่; ไม่มีขาเพิ่มให้หนอน
+- แพ็กจากตัวละครทั้งตัว ไม่ตัดอาวุธตามเส้นช่อง; อสูรค้อนแก้กรอบด้วยimage_genก่อนเลือกไฟล์สุดท้าย
+- Nativeตัววาดเกมตรวจครบ28 crop phases; เทสต์เฉพาะ8/8; full1794/1794,0fail; syntax/diff-checkผ่าน
+- รายงาน/ภาพ/ลูป/ผลทดสอบ: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-west-cyber/README.md`
+- ART-MOB-WALK ครบ17ตัวใน3branchแล้ว ยังไม่รวมregistryทั้งหมดหรือmergeงานใหม่; รอเจ้าของตรวจ ไม่อ้างReese/Chris
+
+## Codex 1 พ.ย. 2569 — รวมงานอาร์ตตามอนุมัติล่าสุด
+
+- คุณเป้สั่ง “งานที่ทำแล้ว merge ได้เลย” จึงรวม ART-CANTEEN, ART-DAIS2, ART-ULT-ICON และ ART-MOB-WALK ทั้ง3ชุด ครบ17key
+- รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
+- Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
+- W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
