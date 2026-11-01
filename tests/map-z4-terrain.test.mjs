@@ -83,7 +83,7 @@ test('MAP-Z4: delivered tile dimensions and mobile allocation budget match the Z
   assert.equal(report.mobile.upperBoundTileRGBABytes,12*1024*1024*4);
 });
 
-test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 and the authorized B34 redraw',async()=>{
+test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 and the authorized B23/B34 redraws',async()=>{
   const {createHash}=await import('node:crypto');
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'&&!['src/data.js','src/town-layout.js','src/town-owner-walkmask-cyberhell.js','src/zone-skin.js'].includes(path)){
@@ -101,11 +101,14 @@ test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 
         .replace(/const TREES = .*?;\n/,'')
         .replace(/const WATERFALLS = .*?;\n/,'')
         .replace(/  'th:asia': row\('th:asia', \{[\s\S]*?\n  \}\),/,'B12_ROW')
+        .replace(/import \{BORDER23_REDRAW_MASK,BORDER23_REDRAW_CORRIDOR\} from '\.\/frontier-walkmask-asia-west-redraw\.js';\n/,'')
+        .replace(/import \{[^}]+\} from '\.\/frontier-walkmask-asia-west\.js';/,"import {BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';")
+        .replace(/  'asia:west': row\('asia:west', \{[\s\S]*?\n  \}\),/,'B23_ROW')
         .replace(/import \{BORDER34_REDRAW_MASK,BORDER34_REDRAW_CORRIDOR\} from '\.\/frontier-walkmask-west-cyberhell-redraw\.js';\n/,'')
         .replace(/import \{[^}]+\} from '\.\/frontier-walkmask-west-cyberhell\.js';/,"import {BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';")
         .replace(/  'west:cyberhell': row\('west:cyberhell', \{[\s\S]*?\n  \}\),/,'B34_ROW')
         .replace(/\/\/[^\n]*/g,'').replace(/\n\s*\n/g,'\n');
-      assert.equal(normalize(bytes.toString()),normalize(base),'only B12 plus the authorized B34 imports/row may differ; repaint anchors are checked independently');
+      assert.equal(normalize(bytes.toString()),normalize(base),'only B12 plus the authorized B23/B34 imports/rows may differ; repaint anchors are checked independently');
       // Other routes and fallback runtime bytes remain protected by the original fixture hash.
       bytes=Buffer.from(base.replace(current,original));
     }

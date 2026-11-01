@@ -1,7 +1,8 @@
 import {BORDER34_REDRAW_MASK,BORDER34_REDRAW_CORRIDOR} from './frontier-walkmask-west-cyberhell-redraw.js';
+import {BORDER23_REDRAW_MASK,BORDER23_REDRAW_CORRIDOR} from './frontier-walkmask-asia-west-redraw.js';
 import {BORDER12_MASK} from './frontier-walkmask-th-asia-b12.js';
 import {BORDER34_CHECKPOINT_VERTEX,BORDER34_TREES} from './frontier-walkmask-west-cyberhell.js';
-import {BORDER23_MASK,BORDER23_CORRIDOR,BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
+import {BORDER23_CHECKPOINT_VERTEX} from './frontier-walkmask-asia-west.js';
 import {FRONTIER_CORRIDOR_MASK} from './frontier-walkmask-th-asia.js';
 // M2 R1 — ROUTE GEOMETRY: one row per frontier route (the walk between two cities).
 //
@@ -49,12 +50,12 @@ export const ROUTE_GEOMETRY = {
     bossCave:{ zone:'th', checkpoint:2, eventKey:'thBorderBoss', breachKey:'frontierBreach', guide:[.055,.01], interactReach:.065 },
   }),
   'asia:west': row('asia:west', {
-    enabled:true, geometryVersion:1, background:'img/frontier-route/zone2-3-v3-cave.png', foes:[6,7,9],
+    enabled:true, geometryVersion:2, background:'img/frontier-route/zone2-3-v4.webp', foes:[6,7,9],
     captainCave:{zone:'asia',breachKey:'asiaRageBreach',position:[.55,.72],interactReach:.055},
-    corridor:BORDER23_CORRIDOR, checkpointVertex:BORDER23_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER23_MASK,
-    // L3: authored falls and weather regions on the cave repaint. The road/mask
-    // stays unchanged; warm leaves stay west of the snow-covered mountains.
-    ambient:{trees:[],waterfalls:[[.066,.53,.08],[.264,.61,.10],
+    corridor:BORDER23_REDRAW_CORRIDOR, checkpointVertex:BORDER23_CHECKPOINT_VERTEX, pads:[], walkMask:BORDER23_REDRAW_MASK,
+    // B23-REDRAW: water flow is traced on v4; retain original falls as author anchors.
+    // Autumn leaves stay west of the snow-covered mountains.
+    ambient:{trees:[],waterfalls:[],flowUrl:'img/frontier-route/zone2-3-v4-flow.png',waterfallAnchors:[[.066,.53,.08],[.264,.61,.10],
       [.621,.472,.08],[.615,.82,.07]],
       leafArea:[0,0,.44,1],snowArea:[.48,0,1,1]},
   }),

@@ -10,8 +10,8 @@ const game=()=>({zone:'asia',bossCleared:{asia:true},zoneSave:{},zoneEvents:{}})
 test('registered owner floor is one connected surface and every route segment stays inside it',()=>{
   assert.equal(createHash('sha256').update(readFileSync(new URL('./fixtures/border23-owner-mask.png',import.meta.url))).digest('hex'),'52c3ff4b7b32bff1ff2410e8b8a00e1d531211734b9ea46351405d4010933b1c');
   assert.deepEqual([nav.cols,nav.rows],[1672,941]);
-  assert.equal(nav.cells.reduce((n,v)=>n+v,0),171611);
-  assert.equal(nav.cellProgress.filter(Number.isFinite).length,171611,'all floor is reachable from the trail');
+  assert.equal(nav.cells.reduce((n,v)=>n+v,0),194976);
+  assert.equal(nav.cellProgress.filter(Number.isFinite).length,194976,'all floor is reachable from the trail');
   for(let i=1;i<row.corridor.length;i++)assert.ok(nav.clear(row.corridor[i-1],row.corridor[i]),`segment ${i}`);
   const start=row.corridor[0],end=row.corridor.at(-1),path=nav.path(start,end);
   assert.ok(path.length>1);let p=start;for(const q of path){assert.ok(nav.clear(p,q));p=nav.move(p,q);assert.deepEqual(p,q);}assert.deepEqual(p,end);
@@ -40,7 +40,7 @@ test('old vertical-route saves migrate at the last cleared checkpoint without lo
   for(let checkpoint=0;checkpoint<=3;checkpoint++){
     const g=game(),cleared=Array.from({length:checkpoint},(_,i)=>`${id}:${i}`);
     initializeZoneTravel(g,{version:1,visited:{asia:true},ports:{asia:true},active:{route:id,checkpoint,cleared,position:{x:.5,y:.925},guidePosition:{x:.5,y:.8},attempt:7,pending:'old-token'}});
-    const a=g.zoneTravel.active;assert.ok(a);assert.deepEqual(a.cleared,cleared);assert.equal(a.checkpoint,checkpoint);assert.equal(a.attempt,7);assert.equal(a.pending,null);assert.equal(a.geometryVersion,1);assert.equal(a.guidePosition,null);
+    const a=g.zoneTravel.active;assert.ok(a);assert.deepEqual(a.cleared,cleared);assert.equal(a.checkpoint,checkpoint);assert.equal(a.attempt,7);assert.equal(a.pending,null);assert.equal(a.geometryVersion,row.geometryVersion);assert.equal(a.guidePosition,null);
     assert.deepEqual([a.position.x,a.position.y],row.corridor[checkpoint?row.checkpointVertex[checkpoint-1]:0]);
     const current={x:a.position.x+.001,y:a.position.y};a.position=current;initializeZoneTravel(g);assert.deepEqual(g.zoneTravel.active.position,current,'new-format saves preserve their position');
   }
