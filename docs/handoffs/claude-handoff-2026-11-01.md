@@ -95,3 +95,12 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - Full suite ของต้นไม้รวม1790/1790,0fail; syntax160/160 และ diff-checkผ่าน
 - หลักฐาน integrationอยู่ `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-b34-redraw/tests-merged-b23-b34.log`; ผลpush/Pagesและcommitสุดท้ายให้ดู MERGE-LOG.md ใน Output/Codex
 - งานอาร์ตอื่นที่ทำตามคิวยังคงแยกbranchรอตรวจ; ไม่ได้รวมในแพตช์แผนที่นี้ รายงานคิวอยู่ `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/QUEUE-PROGRESS-2026-11-01.md`
+
+## Codex 1 พ.ย. 2569 — ART-CANTEEN (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-canteen` จาก `6f2328b8`; วาดโรงอาหารโปร่งใสใหม่ครบ4โซน ชื่อเดิม 768×640
+- ภาพใหญ่ขึ้น8% โดยฐาน/ประตู/พ่อค้า/collision layout เดิม; วัด alpha foot ให้ฐานอาคารติดจุดเดิม; zone4 ยังกลับด้าน
+- ภาพก่อน–หลังจาก scene.render จริงครบ4โซน (native canvas ไม่ใช่ browser); โรงอาหารและพ่อค้าเดินถึงหลังโหลดภาพจริง
+- food-a/z4-town-a 19/19; full suite 1786/1786,0fail
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-canteen/README.md`
+- ยังไม่commit/push/merge; รอเจ้าของกลับมาตรวจ; คิวถัดไป ART-DAIS2
