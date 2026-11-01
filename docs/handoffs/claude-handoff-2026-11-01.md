@@ -129,3 +129,12 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - ตรวจโหลดPNGจริงผ่านdrawCrewWalk24crop phasesและpivot; pixel tests7/7, native/Q4/scale18/18, full1793/1793,0fail
 - หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-th/README.md`
 - ไม่อ้างReese/Chris/มือถือจริง; ยังไม่commit/push/merge; ชุดเอเชีย4ตัวกำลังทำต่อ
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน 2 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-asia`, ฐาน local main `6f2328b8`; ยังไม่ commit/push/merge
+- วาด walk strip ใหม่ครบ 4 key: mob-gaki, mob-kasha, mob-nukekubi, mob-hitodama; 2048×512 RGBA, สี่เฟรมหันขวา; ตัวลอยไม่เพิ่มร่างกาย/ขา
+- เปิด key และ cache version ของ registry; native ตัววาดเกมตรวจครบ 16 crop phases และฐานคงที่
+- เทสต์เฉพาะ 5/5; full หลังแพ็กสุดท้าย 1791/1791, 0 fail; syntax/diff-check ผ่าน
+- รายงาน/ภาพก่อนหลัง/ลูป/สคริปต์/ผลทดสอบ: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-asia/README.md`
+- รอเจ้าของตรวจในเกมจริง ไม่อ้างผล Reese/Chris; ไม่แตะ status.json/worklog.json/work-mode.json
