@@ -63,3 +63,15 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 
 ## branch เก่าที่ไม่ต้องสนใจ
 `codex/20261028T163139Z-9e572efc` `20261028T164031Z-262e083a` `20261029T023509Z-020aec7e` `20261029T034756Z-bcc51097` ไม่อยู่บน main แต่งานถูกทำซ้ำรอบ v2 และรวมแล้ว **อย่า merge**
+
+## Codex 1 พ.ย. 2569 — B23-REDRAW (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-b23-redraw` · worktree `/Users/agapae/agapae-work/AVEGEE/.codex-worktrees/2026-11-01-b23-redraw` · ฐาน `a2cd7069`
+- ภาพใหม่ 3344×1882 + walk mask ที่เป็นผืนเดียว + zoom/HUD เดิม + flow trace ตามภาพ + foreground จากภาพจริง
+- รักษาถ้ำหัวหน้าโซน 2 ที่ [.55,.72] และ owner stair connection; น้ำตก 4 จุดเก็บเป็น author anchors แล้วใช้ flow ตามวัสดุบนภาพใหม่แทนแถบสี่เหลี่ยมเดิม
+- ความกว้างรวม p10 58.14, median 74.97 px; ทุกช่วงผ่านเกณฑ์ 40/48 และ off-floor 0
+- Full suite 1786/1786 ผ่าน, 0 fail; native input/zoom/HUD ที่ 390/1280 ผ่าน
+- รายละเอียด/ภาพก่อน–หลัง/overlay/log/prompt: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-b23-redraw/README.md`
+- ยังรอตรวจรับภาพใน browser และ FPS มือถือจริง; ไม่อ้างผ่าน Reese/Chris
+- ไม่มี commit/push/merge และไม่ได้แตะ status.json, worklog.json หรือ work-mode.json
+- B23/B34 แยก branch/worktree; คุณเป้ย้ำให้รายงานและคอนเฟิร์มก่อน merge งานอื่นใน queue ยังไม่เริ่ม

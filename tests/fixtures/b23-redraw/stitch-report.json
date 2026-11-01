@@ -1,0 +1,131 @@
+{
+  "sheet": [
+    3344,
+    1882
+  ],
+  "tiles": [
+    {
+      "tile": "nw",
+      "nativeSize": [
+        1642,
+        958
+      ],
+      "destinationSize": [
+        1752,
+        1022
+      ],
+      "nativeDetailScale": [
+        1.8744292237442923,
+        1.8747553816046967
+      ],
+      "registration": [
+        [
+          0.9997516128497752,
+          -1.5922048750521406e-05,
+          0.5709382030538096
+        ],
+        [
+          1.5922048750521406e-05,
+          0.9997516128497752,
+          0.5038403446828571
+        ]
+      ],
+      "matches": 1555,
+      "inliers": 1505,
+      "sha256": "1db0cec89774d52ac0e9b1c0953625c605de3b5e6724d400942f041ce6b976b2"
+    },
+    {
+      "tile": "ne",
+      "nativeSize": [
+        1641,
+        958
+      ],
+      "destinationSize": [
+        1752,
+        1022
+      ],
+      "nativeDetailScale": [
+        1.8732876712328768,
+        1.8747553816046967
+      ],
+      "registration": [
+        [
+          1.0002072138808993,
+          -2.213264307819689e-05,
+          -0.3675736163393205
+        ],
+        [
+          2.213264307819689e-05,
+          1.0002072138808993,
+          0.15954647087544177
+        ]
+      ],
+      "matches": 2085,
+      "inliers": 2022,
+      "sha256": "aab6525f621ea8ea047a52da62d0617d9f4139cf6df7319bdfd5c7de48bf8f34"
+    },
+    {
+      "tile": "sw",
+      "nativeSize": [
+        1643,
+        957
+      ],
+      "destinationSize": [
+        1752,
+        1020
+      ],
+      "nativeDetailScale": [
+        1.8755707762557077,
+        1.8764705882352941
+      ],
+      "registration": [
+        [
+          1.0003333082008907,
+          1.8196390811863956e-05,
+          -0.6062002717338737
+        ],
+        [
+          -1.8196390811863956e-05,
+          1.0003333082008907,
+          -0.15833753365369144
+        ]
+      ],
+      "matches": 1770,
+      "inliers": 1717,
+      "sha256": "be831beff939e3271d26f7c7cd2511f54607e4bc3469c9e1021297495d5ecb00"
+    },
+    {
+      "tile": "se",
+      "nativeSize": [
+        1643,
+        957
+      ],
+      "destinationSize": [
+        1752,
+        1020
+      ],
+      "nativeDetailScale": [
+        1.8755707762557077,
+        1.8764705882352941
+      ],
+      "registration": [
+        [
+          1.000266022720672,
+          -2.9309612597503662e-05,
+          -0.2629445639979894
+        ],
+        [
+          2.9309612597503662e-05,
+          1.000266022720672,
+          -0.020069745589291504
+        ]
+      ],
+      "matches": 2405,
+      "inliers": 2317,
+      "sha256": "8b5a1afb44f256208315fc4ee5a795c64cedde00f2b4b4c6a7c9893ec4275b59"
+    }
+  ],
+  "fallbackFraction": 0.0,
+  "note": "New image_gen tile detail, affine registration and container resampling; not a simple 2x upscale of the original map. Native tile scales are recorded explicitly.",
+  "assetSHA256": "8d765d621746e6a5d161451c8527db9bcfabfdf4126f6cc93738a4db7400b6b6"
+}
