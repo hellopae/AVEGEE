@@ -75,3 +75,12 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - ยังรอตรวจรับภาพใน browser และ FPS มือถือจริง; ไม่อ้างผ่าน Reese/Chris
 - ไม่มี commit/push/merge และไม่ได้แตะ status.json, worklog.json หรือ work-mode.json
 - B23/B34 แยก branch/worktree; คุณเป้ย้ำให้รายงานและคอนเฟิร์มก่อน merge งานอื่นใน queue ยังไม่เริ่ม
+
+## Codex 1 พ.ย. 2569 — ART-CANTEEN (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-canteen` จาก `6f2328b8`; วาดโรงอาหารโปร่งใสใหม่ครบ4โซน ชื่อเดิม 768×640
+- ภาพใหญ่ขึ้น8% โดยฐาน/ประตู/พ่อค้า/collision layout เดิม; วัด alpha foot ให้ฐานอาคารติดจุดเดิม; zone4 ยังกลับด้าน
+- ภาพก่อน–หลังจาก scene.render จริงครบ4โซน (native canvas ไม่ใช่ browser); โรงอาหารและพ่อค้าเดินถึงหลังโหลดภาพจริง
+- food-a/z4-town-a 19/19; full suite 1786/1786,0fail
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-canteen/README.md`
+- ยังไม่commit/push/merge; รอเจ้าของกลับมาตรวจ; คิวถัดไป ART-DAIS2
