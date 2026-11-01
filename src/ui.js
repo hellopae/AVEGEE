@@ -1,3 +1,5 @@
+import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
+import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
@@ -147,8 +149,8 @@ const HEAL_GLOW_MS = 1000;   // L2: เอฟเฟกต์ได้เติ�
 const PHASE_GUARD_MS = 3000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS(800) + 780(อนิเมชันเขา) ≈2360 พอมีระยะปลอดภัย
 
 const g = createGame();
-const SAVED = loadSave();
-if (SAVED) g.restore(SAVED);
+g.saveSlot = null; // Home/settings must never save a fresh game over an unselected slot.
+const slotMigration = migrateLegacySave();
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
 bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
 const cv = $('#cv'), ctx = cv.getContext('2d');
@@ -355,7 +357,9 @@ function mapDrawDue(now) {
 function render(c, game, now, ...rest) { if (mapDrawDue(now)) renderMap(c, game, now, ...rest); }
 
 function frame(now) {
-  const dt = Math.min(120, now - last); last = now;
+  const elapsed = Math.max(0, now - last);
+  const dt = Math.min(120, elapsed); last = now;
+  g.recordPlayTime(elapsed, started && !document.hidden && !userPaused && !g.over);
   if (!g.paused && !g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
   if (!g.paused && !g.over) g.advanceAfterlife(dt);
   if (now > saveAt) { saveAt = now + 4000; g.save(); }
@@ -2102,7 +2106,8 @@ function openLedger(o) {
 
 /** เริ่มใหม่จริง ๆ — หยุดบันทึกอัตโนมัติก่อน ไม่งั้นลูปเฟรมอาจเขียนเซฟทับตอนกำลังรีโหลด */
 function restart() {
-  saveAt = Infinity; clearSave();
+  if (!clearSave(g.saveSlot)) return showSaveSlotError();
+  saveAt = Infinity; g.saveSlot = null;
   sessionStorage.setItem('avegee.fresh', '1');   // เริ่มใหม่แล้วเข้าเกมเลย ไม่ต้องผ่านหน้าปกอีกรอบ
   location.reload();
 }
@@ -2110,9 +2115,11 @@ function restart() {
 function restartCurrentZone() {
   if (g.zone === 'th' || !g.zoneEntry) return restart();
   const entry = JSON.parse(JSON.stringify(g.zoneEntry));
+  const played = {playTimeMs:g.playTimeMs,playTimePartial:g.playTimePartial};
   saveAt = Infinity;
   if (!g.restore(entry)) { saveAt = 0; return; }
   g.zoneEntry = entry;
+  Object.assign(g,played);
   g.hp = g.hpMax; g.order = Math.max(72, g.order);
   g.reds = 0; g.yamaDone = false; g.over = null;
   if (!g.save()) { saveAt = 0; return; }
@@ -6706,30 +6713,39 @@ function buildTitle() {
   applyTitleLang();
   applyI18n(titleEl);
 
-  const rs = $('#t-resume');
-  if (SAVED) {
-    rs.hidden = false;
-    const lv = LEVELS[Math.max(0, (SAVED.level || 1) - 1)];
-    const z = ZONES.find(x => x.k === (SAVED.zone || 'th')) || ZONES[0];
-    $('#t-resume-info').textContent =
-      `${z.name} · วาระที่ ${SAVED.tick || 0} · ปิดคดีแล้ว ${SAVED.casesDone || 0} · ${lv.name} ⭐${SAVED.star5 || 0}`;
-    rs.onclick = () => { sfx('gong'); startPlay(false); };
-  }
-  $('#t-new').onclick = () => {
-    unlock(); sfx('gong');
-    if (!SAVED) return startPlay(true);
-    modal(`<h2>${esc(t('title.confirmNewGame.title'))}</h2>
-      <p style="line-height:var(--leading-body);font-size:var(--text-sm)">${esc(t('title.confirmNewGame.body'))}</p>
-      <div class="row"><button data-close>${esc(t('title.confirmNewGame.cancel'))}</button>
-        <button class="gold" id="ngo">${esc(t('title.confirmNewGame.ok'))}</button></div>`,
-      d => d.querySelector('#ngo').onclick = () => {
-        clearSave();
-        sessionStorage.setItem('avegee.fresh', '1');   // โหลดใหม่แล้วข้ามหน้าปกไปเลย
-        location.reload();
-      });
-  };
+  $('#t-start').onclick = () => { unlock(); sfx('gong'); openSaveSlots(); };
   $('#t-intro')?.closest('.title-secondary')?.remove();
   $('#t-set').onclick = () => { unlock(); openSettings(); };
+}
+
+function showSaveSlotError() {
+  modal(`<h2>${getLang()==='en'?'Save unavailable':'บันทึกไม่ได้'}</h2><p>${esc(slotMenuError(getLang()))}</p><button data-close>${getLang()==='en'?'Close':'ปิด'}</button>`);
+}
+function enterSaveSlot(id) {
+  if (started || !validSlot(id)) return false;
+  const slot=readSaveSlot(id);
+  if (!['empty','occupied'].includes(slot.status)) return false;
+  try {
+    const fresh=slot.status==='empty';
+    if (!g.restore(fresh?createGame().snapshot():slot.data)) return false;
+    if (!selectSaveSlot(id)) return false;
+    g.saveSlot=id;
+    if (!g.save()) {g.saveSlot=null;return false;}
+    if (dlg.open) dlg.close();
+    startPlay(fresh);
+    return true;
+  } catch {g.saveSlot=null;return false;}
+}
+function openSaveSlots(message='') {
+  const migrationNote=!slotMigration.ok?(getLang()==='en'?'Existing save data could not be read. It has not been overwritten.':'อ่านข้อมูลเซฟเดิมไม่ได้ ข้อมูลยังเก็บไว้และไม่ถูกเขียนทับ'):'';
+  modal(saveSlotMenuHtml(listSaveSlots(),{lang:getLang(),message:message||migrationNote}),d=>{
+    d.querySelector('[data-slot-back]').onclick=()=>d.close();
+    d.querySelectorAll('[data-save-slot]').forEach(button=>button.onclick=()=>{
+      if(!enterSaveSlot(Number(button.dataset.saveSlot))){
+        d.querySelector('.save-slot-message').textContent=slotMenuError(getLang());
+      }
+    });
+  },'save-slots-modal');
 }
 
 // ---------- ตั้งค่า ----------
@@ -6791,7 +6807,7 @@ function openSettings() {
           <img src="img/ui/icon-home.png" alt=""></button><small data-t="settings.home"></small></div>
         <div class="settings-action-wrap"><button id="s-restart" class="settings-square" data-t-title="settings.restart" data-t-aria="settings.restart" aria-label="restart">
           <img src="img/ui/icon-restart.png" alt=""></button><small data-t="settings.restart"></small></div>` : ''}
-      <div class="settings-action-wrap"><button id="s-save" class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
+      <div class="settings-action-wrap"><button id="s-save" ${inGame?'':'disabled'} class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
         <img id="s-save-img" src="img/ui/icon-save-th.png" alt="">
       </button><small data-t="settings.save"></small></div>
     </div>
@@ -6830,8 +6846,8 @@ function openSettings() {
 
       const savedHint = d.querySelector('#s-saved-hint');
       d.querySelector('#s-save').onclick = () => {
-        g.save(); sfx('stamp');
-        savedHint.textContent = t('settings.saved');
+        if (!started || !g.save()) {savedHint.textContent=slotMenuError(getLang());return;}
+        sfx('stamp'); savedHint.textContent = t('settings.saved');
       };
 
       if (inGame) {
@@ -6843,7 +6859,8 @@ function openSettings() {
             <div class="row"><button data-close>${esc(t('settings.restart.confirmCancel'))}</button>
               <button class="gold" id="rgo" style="border-color:var(--destructive);background:var(--destructive)">${esc(t('settings.restart.confirmOk'))}</button></div>`,
             d2 => d2.querySelector('#rgo').onclick = () => {
-              clearSave();
+              if (!clearSave(g.saveSlot)) return showSaveSlotError();
+              saveAt=Infinity;g.saveSlot=null;
               sessionStorage.setItem('avegee.fresh', '1');
               location.reload();
             });
@@ -6892,14 +6909,15 @@ async function afterBoot() {
 if (document.documentElement.dataset.bootReady === 'true' || !$('#boot')) afterBoot();
 else addEventListener('avegee:boot-ready', afterBoot, { once:true });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) pauseWhenLeaving();
+  if (document.hidden) {pauseWhenLeaving();if(started)g.save();}
   if (!document.hidden) setTimeout(showAutoPause, 0);
 });
 updatePlay();
 buildTitle();
 applyI18n(document);                     // ข้อ C1 — ทา i18n ทั้งจอครั้งแรกตอนบูต (HUD/แผงต่างๆ)
-if (FRESH) startPlay(true);              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
+if (FRESH && !enterSaveSlot(readActiveSlot())) revealTitle();              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
 else refresh();                          // วาดแผงไว้ใต้หน้าปก จะได้ไม่กระพริบตอนกดเริ่ม
+addEventListener('pagehide',()=>{if(started)g.save();});
 
 /** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
  *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
