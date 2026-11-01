@@ -11,5 +11,12 @@ export const ENEMY_WALK_ART = new Set([
   'mob-kasha',
   'mob-nukekubi',
   'mob-hitodama',
+  'mob-skeleton',
+  'mob-bot',
+  'mob-bug',
+  'mob-worm',
+  'mob-cyber-guard',
+  'mob-cyber-lancer',
+  'mob-cyber-brute',
 ]);
 export const enemyWalkReady = key => ENEMY_WALK_ART.has(key);
