@@ -75,3 +75,11 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - ยังรอตรวจรับภาพใน browser และ FPS มือถือจริง; ไม่อ้างผ่าน Reese/Chris
 - ไม่มี commit/push/merge และไม่ได้แตะ status.json, worklog.json หรือ work-mode.json
 - B23/B34 แยก branch/worktree; คุณเป้ย้ำให้รายงานและคอนเฟิร์มก่อน merge งานอื่นใน queue ยังไม่เริ่ม
+
+## Codex 1 พ.ย. 2569 — ART-MOB-WALK โซน1 (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-art-mob-walk-th`; วาดครบ6ตัว pret/pret2/werewolf/krahang/pop/tanee
+- PNG2048×512,4เฟรม×512,โปร่งใส,หันขวา,ฐานล่างคงเดิม; กระหัง/ตานีลอยโยก; ลงENEMY_WALK_ARTแล้ว
+- ตรวจโหลดPNGจริงผ่านdrawCrewWalk24crop phasesและpivot; pixel tests7/7, native/Q4/scale18/18, full1793/1793,0fail
+- หลักฐาน `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-art-mob-walk-th/README.md`
+- ไม่อ้างReese/Chris/มือถือจริง; ยังไม่commit/push/merge; ชุดเอเชีย4ตัวกำลังทำต่อ
