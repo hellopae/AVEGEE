@@ -1,3 +1,4 @@
+import {actorStanding} from './actor-recovery.js';
 import { SIDE_CONTENT, KIN_CONTENT, CROSS_ZONE_LINES } from './e1-content.js';
 import { CREW, MERCHANT, GUARD_POST, STATIONS, ZONE_ENTRY, crewName } from './data.js';
 import { nearestWalk, findPath } from './walk.js?v=k1d';
@@ -73,15 +74,21 @@ export function questsPaused(g){
   return !g.gameCompleted && ((phase&&!['locked','completed'].includes(phase))||['pending','active'].includes(g.zoneEvents?.cyberhell?.cyberFinal));
 }
 export function questTarget(g,q){
-  const s=questState(g,q.id),zone=q.kin?(s.step===1?q.to:q.from):(s.step===0?'cyberhell':s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);
-  const npc=!q.kin&&s.step===0?(q.id==='sqNira'?'nira':'merchant'):q.npc;
+  const s=questState(g,q.id),zone=q.kin?(s.step===1?q.to:q.from):(s.step>=4&&['sqPlerng','sqBoon'].includes(q.id)?'th':q.zone);
+  const npc=q.npc;
   const actor=npc==='guard'?g.guard:(g.crew||[]).find(c=>c.k===npc);
   const def=CREW.find(c=>c.k===npc);
   let point=npc==='merchant'?[MERCHANT.x,MERCHANT.y]:npc==='guard'?GUARD_POST:
     npc==='nira'?[STATIONS.find(st=>st.k==='sala').x,STATIONS.find(st=>st.k==='sala').y]:[def?.hx||300,def?.hy||380];
-  if(zone===g.zone&&actor&&npc!=='nira')point=[actor.x??actor.hx??point[0],actor.y??actor.hy??point[1]];
+  if(zone===g.zone&&actor&&(npc!=='nira'||actorStanding(actor)&&!g.niraRest&&Number.isFinite(actor.x)&&Number.isFinite(actor.y)))point=[actor.x??actor.hx??point[0],actor.y??actor.hy??point[1]];
   if(zone===g.zone)point=nearestWalk(...point)||point;
   return {zone,npc,x:point[0],y:point[1],name:npc==='merchant'?'พ่อค้าควันทอง':npc==='guard'?'ยักษ์ทวารบาล':npc==='nira'?'นิรา':crewName(def,zone),art:npc==='merchant'?'img/merchant.png':null};
+}
+// Current target ownership includes later cross-zone replies; paused quests remain readable.
+export function questsForActor(g,npc,zone=g.zone){
+  return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done).filter(q=>{
+    const target=questTarget(g,q);return target.npc===npc&&target.zone===zone;
+  });
 }
 export const questNear=(g,q)=>{const p=questTarget(g,q);return g.zone===p.zone&&(p.npc!=='merchant'||merchantAvailable(g))&&Math.hypot(g.player.x-p.x,g.player.y-p.y)<=150;};
 export function questMarkers(g){return QUESTS.filter(q=>questUnlocked(g,q)&&!questState(g,q.id).done&&!(q.caseId&&questState(g,q.id).step===2)).map(q=>({...questTarget(g,q),id:q.id,title:q.title})).filter(p=>p.zone===g.zone);}
@@ -114,6 +121,7 @@ function award(g,q,s){
 export function advanceQuest(g,id,choice=null){
   const q=QUESTS.find(q=>q.id===id);if(!questUnlocked(g,q)||(!q.kin&&questsPaused(g))||g.battle||g.over||!questNear(g,q))return false;
   const s=g.sideQuests[id] ||= {step:0,choice:null,done:false};if(s.done)return false;
+  const accepting=s.step===0;
   const validChoice=[0,1].includes(choice);
   if(q.kin){
     const needsChoice=q.choices.length>0&&s.step===(id==='kinGuard'?2:1);
@@ -136,6 +144,7 @@ export function advanceQuest(g,id,choice=null){
       s.step=4;
     }
   }else if(s.step===4){s.step=5;award(g,q,s);}
+  if(accepting)g.log(`รับภารกิจ: ${q.title}`,'act');
   g.save();g.onChange();return true;
 }
 export function recordQuestVerdict(g,soul,r){

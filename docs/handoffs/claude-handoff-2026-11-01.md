@@ -249,3 +249,19 @@ External evidence/harness/screens: `/Users/agapae/Documents/Work PAE/Claude/AGAP
 - Chromiumจริง:9บริบทช่องเซฟ+2cropGuardผ่าน, รูปทั้งหมดdecode/ข้อมูลเซฟไม่เปลี่ยน;16บริบทสอบสวน/ต่อสู้ไม่มีเสาไฟเพิ่มและ0error; instrumentdrawImageบนแผนที่จริงครบ4โซนยืนยันalpha.2และhashเงาเปลี่ยนตามเวลา
 - Full1852/1852,0fail,0cancel โดยจำกัดconcurrency4; syntax193/193; รอบแรกdefaultconcurrencyชนtimeout30sในเทสต์Pythonรูปคนงานเดิม ตรวจเดี่ยว20/20ผ่าน ไม่ได้แก้timeoutหรือข้ามเทสต์
 - คิวแทรกบันทึกในdocs/queues/2026-11-02-active-queue.md ก่อนQUEST-OWNER; หลักฐานภายนอกOutput/Codex/2026-11-02-cloud-rays และ2026-11-02-save-visual; ไม่อ้างFPSมือถือจริงหรือReese/Chris
+
+## Codex — QUEST-OWNER engine (2026-11-02)
+
+Branch `codex/2026-11-02-quest-engine`, base `cfe04ef5`. No merge/push. Engine/data helpers only; parent owns UI/index/manual/tracker wiring. No game.js changes or new save fields.
+
+Non-kin step0 now targets `q.zone + q.npc` instead of the generic Cyber merchant. Dedicated sqMerchant remains its actual Asia merchant. Existing later TH reply routes (Plerng/Boon), kin from→to→from routes, unlock gates, final-arc pause semantics, case/verdict progression, choices and rewards remain unchanged. Available current-zone Nira uses her actual map feet for questNear; resting/unplaced/off-zone Nira retains the prior stable fallback. Each successful step0→1 logs `รับภารกิจ: <title>` once through existing saved logs. Acceptance still requires actual target zone/proximity; parent UI must offer actions only from current owner's conversation.
+
+APIs:
+- `questsForActor(g,npc,zone=g.zone)` exported from side-quests.js returns unlocked unfinished QUEST objects whose current questTarget matches actor kind and zone. Paused side missions remain readable; advanceQuest still blocks their actions. Kin intentionally remains available during finale, matching previous behavior.
+- `activeQuestEntries(g)` exported from quest-journal.js returns pure derived entries for step>0&&!done: `{id,title,zone,npc,name,x,y,objective,paused}`. Objectives name the actual pending case and required action, later reply target, or kin delivery/return. No state initialization/mutation; no duplicate persistence model. `paused` is questsPaused(g)&&!q.kin.
+
+Acceptance copy changes only replace merchant delivery framing with the owner handing over the existing letter (Taan/Plerng/Dam), let Guard tell his existing joke directly, and adjust Nira's arrival wording. Original authored letters remain byte-for-byte strings; every later dialogue, choice/response, case fact, kin/cross-zone/SIG narrative and award function was compared to base and remained unchanged.
+
+Validation: focused49/49 (27 existing E1/SIG/kin/reward tests +22 new owner/journal/proximity/save tests), syntax for three changed/new modules and whitespace clean. All16 quest owner/regional-denial/title-once cases covered; generic Cyber merchant denial, pending verdict stage2, old-save active state, locks, pure helper reads, final pause behavior, kin route, later TH reply routing, Nira map position, real reload and existing once-only branch rewards pass. An old post-finale travel test assumed acceptance happened in Cyber; its roundtrip now travels Cyber→TH after Nira's TH acceptance. No browser or full-suite claim in this engine-only task; parent owns integrated UI/browser/full checks.
+
+Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-content.js. External evidence and16quest routing/objective matrix: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-quest-engine/`.
