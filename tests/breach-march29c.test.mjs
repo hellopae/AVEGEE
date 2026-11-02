@@ -2,6 +2,7 @@ import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../src/game.js';
+import { RECOVERY_MS } from '../src/actor-recovery.js';
 import { FRONTIER, ZONES, ZONE_EVENTS, isFrontierBreachEvent } from '../src/data.js';
 import { resetWalk } from '../src/walk.js?v=k1d';
 
@@ -79,7 +80,7 @@ test('event ชายแดนบุก: แจ้งเตือน → รั�
   assert.equal(g.breachMarch()?.key, 'frontierBreach', 'แพ้แล้วยังท้าใหม่ได้ ต้องกลับไปชายแดน');
 
   // B5: a crew casualty cannot immediately fight again; simulate the real tea rest before the rematch.
-  g.updateActorRecovery(Date.now() + 60000);
+  g.updateActorRecovery(Date.now() + RECOVERY_MS + 1);
   const won = fight(B => { B.foes.forEach(f => { f.hp = 1; }); B.youHp = B.youMax = 99999; });
   if (won.over === 'win' && won.pendingWave) { g.advanceFrontierBreachWave(); g.battle.foes.forEach(f => { f.hp = 1; }); for (let i = 0; i < 30 && !g.battle.over; i++) g.battleAct('atk'); }
   assert.equal(g.battle.over, 'win');

@@ -36,13 +36,14 @@ test('reduced motion is identical across time, has no smoke/dust, and settings d
  }
  setWeatherEnabled(false);assert.equal(weatherEnabled(),false);const r=record();drawMapWeather(r.ctx,{W:3840,H:2560});assert.equal(r.calls.length,0);setWeatherEnabled(true);
 });
-test('pause holds the last weather phase; labels are unioned and clipped before weather',()=>{
+test('pause holds the last weather phase; text bounds never cut rectangular holes in atmosphere',()=>{
  const r=record(),opts={zone:'asia',W:3840,H:2560,viewport};
  drawMapWeather(r.ctx,{...opts,time:1000});const before=r.calls.slice();r.calls.length=0;
  drawMapWeather(r.ctx,{...opts,time:7000,paused:true});assert.deepEqual(r.calls,before);
  assert.deepEqual(weatherLabelBounds([[1,1,20,10],[10,5,20,10],[100,100,5,5]]),[[1,1,29,14],[100,100,5,5]]);
  const a=record();drawMapWeather(a.ctx,{...opts,labels:[[100,100,50,20]]});
- assert.deepEqual(a.calls.slice(0,5),[['save'],['beginPath'],['rect',0,0,3840,2560],['rect',100,100,50,20],['clip','evenodd']]);
+ assert.deepEqual(a.calls.slice(0,4),[['save'],['beginPath'],['rect',0,0,3840,2560],['clip']]);
+ assert.equal(a.calls.some(c=>c[0]==='rect'&&c[1]===100&&c[2]===100),false,'no bright rectangular text cutout');
 });
 test('frontiers clip weather to the authored biome halves, retain cold snow, and invent no fire anchors',()=>{
  for(const routeId of ['th:asia','asia:west']){
