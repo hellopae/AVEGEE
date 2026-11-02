@@ -1,0 +1,16 @@
+{
+  "game": [
+    {
+      "before": "import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';\n",
+      "after": "import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';\n"
+    },
+    {
+      "before": "",
+      "after": "    if (!fallenGuard && actor.k !== 'guard') {\n      actor.recoveryVersion = 2;\n      actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);\n    }\n"
+    },
+    {
+      "before": "      if (actor.teaRest) { changed = this.updateGuardRest(actor, now) || changed; continue; }\n",
+      "after": "      if (actor.recoverUntil && actor.k !== 'guard' && !actor.teaRest) {\n        actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);\n        changed = true;\n      }\n      if (actor.teaRest) {\n        if (actor.teaRest.recovery && this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);\n        changed = this.updateGuardRest(actor, now) || changed; continue;\n      }\n"
+    }
+  ]
+}
