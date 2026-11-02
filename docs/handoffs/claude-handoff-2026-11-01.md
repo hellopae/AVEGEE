@@ -154,3 +154,17 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
 - Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
 - W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
+
+## Codex — ONBOARD-FOOD (2026-11-02)
+
+Branch `codex/2026-11-02-onboard-food`, base `df42fb1b`. No merge/push. Ownership: new `src/onboarding.js`, narrow UI court/merchant/canteen hooks, `src/canteen.js`, indoor cook rendering in `src/room.js`, outdoor cook visibility/hit filtering in `src/scene.js`, and regression tests. No game.js, sentencing guide, quest/story event, or index changes.
+
+Explicit New Game records onboarding and removes the formerly free cauldron so the first build lesson is real. Instructions explain opening court, receiving the ferry's soul, and choosing consideration/investigation. First investigation prompts walking to the upper copper-cauldron build point; it waits for a completed usable destination. Existing/continued saves are not initialized or stripped of buildings. The hook in startPlay(fresh) is idempotent.
+
+HOME integration: after `g.saveSlot=id;` in enterSaveSlot, add `if(fresh)beginCourtOnboarding(g);` before the first `g.save()`; keep startPlay's idempotent fallback. This ordering was checked in a detached bf021975 preview plus this feature. The very first selected-slot write already omits free krata, other slots remain untouched, and continued existing slots retain krata. Import-only merge conflicts preserve both sides (punishment/FX/HOME imports plus new onboarding/canteen imports). Existing UI export list gains openMerchant/openStation; do not add duplicate export declarations.
+
+Merchant and reachable canteen both sell ten pooled food packs through existing g.buy('food',1), independently of Nira. Existing stock/inventory consumables and worker meal ordering/delivery remain separate, clearly labeled. Cook reaches outdoor entrance, walks up the actual canteen interior stairs to the counter, and cooks inside. Room-local walk progress persists; legacy already-cooking saves remain inside. Outdoor sprite and hit target disappear during the inside phase, then existing return-to-post movement resumes after final portion/cancellation. Existing paid portions/3-second preparation timing are preserved.
+
+Validation: focused onboarding/food/travel/BALANCE-2 tests 29/29; syntax checks for five changed runtime modules and whitespace checks clean. Real clean-profile Chromium proof covers New Game instructions, actual first-investigation build prompt/walk action, merchant food purchase, and indoor cook at1280x800 and390x844, with no page errors. HOME preview additionally covers selected-slot first-write timing and Continue preserving old buildings. Parent owns final integrated full suite; no separate full claimed.
+
+Cache/import-map filenames for parent: onboarding.js(new),canteen.js,scene.js,room.js,ui.js. Evidence and browser harness: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-onboard-food/`.

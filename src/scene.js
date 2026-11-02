@@ -1,3 +1,4 @@
+import {canteenCookPose} from './canteen.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
@@ -625,6 +626,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // เดิมโค้ดขยับ c.x/c.y อยู่ใน stepWorld แต่ไม่มีใครวาด ทีมเลยหายไปทั้งโซน
   const now0 = Date.now();
   for (const c of (rescue ? [] : g.crew)) {
+    if(canteenCookPose(g,c))continue;
     if(g.mapTravel&&['nira','kan'].includes(c.k))continue;
     if(justice && (c.k===justice.pick?.crew || c.k==='nira' && ['dais','trial'].includes(justice.phase)))continue;
     if (!actorStanding(c) && c.teaRest?.phase !== 'travel') continue;   // G4: เดินไปศาลาน้ำชายังเห็นบนแผนที่ (พักในห้องแล้วค่อยหาย)
@@ -1047,7 +1049,7 @@ export function hitActor(g, sx, sy) {
     consider({ kind:'soul', key:walk.soul.id }, x, y, radius(34));
   }
   for (const c of g.crew)
-    if (actorStanding(c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
+    if (actorStanding(c) && !canteenCookPose(g,c) && c.x != null) consider({ kind: 'crew', key: c.k }, c.x, c.y, radius(44));
   if (actorStanding(g.guard)) consider({ kind: 'guard', key: 0 }, g.guard.x, g.guard.y, radius(44));
   for (const w of zoneWorkers(g).filter(w=>!w.teaRest||w.teaRest.phase==='travel')) consider({ kind: 'worker', key: w.id }, w.x, w.y, radius(34));
   if (cand.length) return cand.reduce((best, c) => c.d < best.d ? c : best).hit;
