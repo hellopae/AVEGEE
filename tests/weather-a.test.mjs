@@ -99,7 +99,7 @@ test('Q5 cloud shadows are sized from the visible map area, always present, and 
   for(const [,,x,y,w,h] of imgs){assert.ok(w>=view.w*cloud.size[0]*cloud.spread[0]*(1-cloud.breathe)*.99&&w<=view.w*cloud.size[0]*cloud.spread[1]*(1+cloud.breathe)*1.01,'patch width follows the visible width');assert.ok(h<=view.h*cloud.size[1]*cloud.spread[1]*(1+cloud.breathe)*1.01);}
   let alpha=1;for(const c of r.calls){if(c[0]==='set'&&c[1]==='globalAlpha')alpha=c[2];if(c[0]==='drawImage')assert.ok(alpha>0&&alpha<=cloud.peak+1e-9,'each patch is at most the peak opacity');}
  }
- assert.ok(cloud.peak>=.35&&cloud.peak<=.55,'shadow darkens the ground by roughly 35-45%');
+ assert.equal(cloud.peak,.20,'owner requested20percent cloud shadows');
 });
 test('Q5 cloud shadows drift slowly and hold still when paused',()=>{
  const r=record();r.ctx.canvas={width:390,height:844};r.ctx.getTransform=(...x)=>(r.calls.push(['getTransform',...x]),{a:.5,d:.5,e:-700,f:-100});

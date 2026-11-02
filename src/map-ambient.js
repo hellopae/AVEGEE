@@ -1,3 +1,4 @@
+import {drawAsiaSunRays} from './sun-shafts.js';
 import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js?v=mapfx';
 import { zoneStyle } from './scene-style.js';
 import { TOWN_SIZE, TOWN_RIVER_Y, townContains } from './town-layout.js?v=k1d';
@@ -12,17 +13,17 @@ const mod = (n, d) => ((n % d) + d) % d;
  *  at any zoom, window or phone width. Particle maxima go through `biomeBudget` (screen area / DPR). */
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
-    peak: .45,                      // shadow darkening at the core of a patch (brief: 35-45% darker ground, measured in the evidence)
-    cell: [.62, .46],                // lattice cell, fraction of visible width / height
-    size: [.92, .7],                 // patch size, fraction of visible width / height
+    peak: .20,                      // Owner: cloud shadows stay at20% in every zone/context
+    cell: [.72, .62],                // lattice cell, fraction of visible width / height
+    size: [.78, .58],                 // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range
     jitter: .2,                     // per-patch placement jitter, fraction of a cell
-    oddFill: .4,                    // chance an off-checker cell also holds a patch
-    drift: [.075, .018],            // cells per second (x, y): one pass takes ~20 s
+    oddFill: .15,                    // chance an off-checker cell also holds a patch
+    drift: [.11, .027],            // cells per second (x, y): one pass takes ~20 s
     breathe: .06,                   // slow size/opacity breathing
-    tint: Object.freeze({ th:'20,8,16', asia:'8,14,26', west:'8,16,40', cyberhell:'14,6,36' }),
-    fallbackTint: '12,16,34',
-    peakByZone:Object.freeze({th:.20,asia:.20,west:.45,cyberhell:.45}),
+    tint: Object.freeze({ th:'0,0,0', asia:'0,0,0', west:'0,0,0', cyberhell:'0,0,0' }),
+    fallbackTint: '0,0,0',
+    peakByZone:Object.freeze({th:.20,asia:.20,west:.20,cyberhell:.20}),
   }),
   snow: Object.freeze({
     max: 1100,                      // particle ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
@@ -513,14 +514,9 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
     if(cloudLayer&&view){ctx.globalAlpha=cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
-      // Soft graded wedges; no full-screen flash or bright opaque beam core.
-      for(let i=0;i<3;i++){
-        const bx=left+rw*(.12+i*.31),by=H*.07,bw=rw*.15;
-        const g=ctx.createLinearGradient?.(bx,by,bx+bw,H*.88);
-        if(typeof g?.addColorStop!=='function')continue;   // canvas stubs without gradients simply skip the soft beams
-        g.addColorStop(0,'rgba(255,241,190,0)');g.addColorStop(.3,'rgba(255,241,190,.085)');g.addColorStop(1,'rgba(255,241,190,0)');
-        ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw*2,H*.88);ctx.lineTo(bx+bw*.6,H*.88);ctx.closePath();ctx.fill();
-      }
+      // Soft textured shafts follow visible scene coordinates and remain clipped to this biome.
+      if(view){const rayX=Math.max(left,view.x),rayRight=Math.min(left+rw,view.x+view.w);
+        drawAsiaSunRays(ctx,{x:rayX,y:view.y,w:rayRight-rayX,h:view.h},clock.elapsed,{reduced});}
       // Zone2 has slender jade/gold leaves, distinct from Thai embers and fire-pillar light.
       for(let i=0;i<Math.min(36,Math.ceil(budget/halves.length));i++){
         const px=left+mod(seed(i+390)*rw+t*(8+seed(i+42)*5),rw),py=mod(seed(i+89)*H+t*(10+seed(i+24)*9),H),size=Math.max(3,Math.min(11,W*.007));
