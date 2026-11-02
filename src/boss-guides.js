@@ -1,3 +1,4 @@
+import {storyEncounterRole} from './story-progression.js';
 import {ZONES} from './data.js';
 export const BOSS_GUIDE_ZONES=Object.freeze(['th','asia','west']);
 export const BOSS_GUIDE_GRANTS=Object.freeze({th:500,asia:800,west:1200});
@@ -48,7 +49,7 @@ export function bossGuideState(g,zone=g.zone){
 }
 export function recordBossGuideWin(g,battle){
   const zone=battle?.zone||g.zone;
-  if(battle?.over!=='win'||!BOSS_GUIDE_ZONES.includes(zone)||!(battle.kind==='zoneBoss'||battle.kind==='zoneEvent'&&battle.eventKey==='thBorderBoss'))return false;
+  if(battle?.over!=='win'||!BOSS_GUIDE_ZONES.includes(zone)||storyEncounterRole(battle)!=='ruler')return false;
   const state=bossGuideState(g,zone);if(state.won)return false;
   state.won=true;g.queueStory?.(`boss-guide-${zone}-praise`);return true;
 }

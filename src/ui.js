@@ -1,3 +1,4 @@
+import {storyPowerHint} from './story-progression.js';
 import {questOwnerButtonHtml,questTrackerHtml,questJournalHtml,createQuestAction} from './quest-panels.js';
 import {mountSceneAtmosphere} from './scene-atmosphere.js';
 import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
@@ -538,7 +539,7 @@ function deedLine(d) {
 /** สิ่งที่นิราอ่านได้ก่อนสอบสวน: ภาพลักษณ์ + บุญที่อ้างเท่านั้น
  *  ไม่ติดป้ายว่าบุญไหนจริง/ปลอม เพราะนั่นคือคำตอบของคดี */
 function publicMeritLine(m, cls = 'deed') {
-  return `<div class="${cls}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}`
+  return `<div class="${cls}" style="color:var(--success)">🪷 ${esc(m.t)}`
     + (m.note ? ` <i style="color:var(--warning)">— ${esc(m.note)}</i>` : '') + '</div>';
 }
 function publicDossier(s, cls = 'deed') {
@@ -735,7 +736,7 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     || '<div class="row-truth">สำนวนว่างเปล่า</div>';
   const shownMerits = closed ? soul.merits : soul.merits.filter(m => !m.fake || m.exposed);
   const merit = shownMerits.map(m =>
-    `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
+    `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:var(--success)">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
 
@@ -791,7 +792,7 @@ function sideBody() {
     const pw = POWERS.map(p => {
       const q = g.powerOf(p.k), ready = g.powerReady(p.k);
       const ammo = q.ammo + (p.k === 'mirror' ? g.inventory.mirror || 0 : 0);
-      const state = g.powerLocked(p) ? (p.k === 'hypno' ? 'ล็อก (ชนะบอสชายแดนโซน 3)' : `ล็อก (ขั้น ${p.lv})`)
+      const state = g.powerLocked(p) ? (storyPowerHint(p) ? `ล็อก (${storyPowerHint(p)})` : `ล็อก (ขั้น ${p.lv})`)
                   : p.realtime ? (ready ? 'พร้อม — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(q.readyAt)}`)
                   : ammo <= 0 ? 'หมด' : q.cd > 0 ? `รอ ${q.cd} คดี` : `พร้อม ×${ammo}`;
       return `<div class="row-truth">${p.glyph.startsWith('img/') ? `<img class="power-glyph" src="${p.glyph}" alt="">` : esc(p.glyph)} <b>${esc(p.name)}</b> — ${esc(p.desc)} <span style="color:var(--gold)">[${state}]</span></div>`;
@@ -2732,7 +2733,7 @@ function openTrial(initialError = '') {
       const outOfAmmoHint = p.k === 'mirror' ? 'หมดแล้ว — เลื่อนขั้นแล้วได้เติมให้ หรือเติมที่หอส่องกรรม (ขั้น 5)'
                            : 'หมดแล้ว';
       const mpPower = p.k === 'hypno' || p.k === 'ice';
-      const why = noIssue || (locked ? (p.k === 'hypno' ? 'ล็อก · ชนะบอสชายแดนโซน 3 ก่อน' : `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`)
+      const why = noIssue || (locked ? (storyPowerHint(p) ? `ล็อก · ${storyPowerHint(p)}ก่อน` : `ล็อก · ต้องเป็น${LEVELS[p.lv - 1].name}ก่อน`)
                 : p.realtime ? (ok ? 'พร้อมใช้ — ไม่ต้องใช้ item' : `รออีก ${fmtCountdown(pw.readyAt)}`)
                 : mpPower && g.mp < BATTLE.mpCost[p.k] ? `${t('battle.mp')}ไม่พอ · ใช้ ${BATTLE.mpCost[p.k]}`
                 : !mpPower && ammo <= 0 ? outOfAmmoHint
@@ -4132,7 +4133,7 @@ function openBattle(after) {
         <button class="battle-portrait hero${view.defending?.you ? ' is-defending' : ''}" data-crew-pick="you">${view.defending?.you ? defendShieldHtml() : ''}<img src="${esc(artUrl('hero-yama-profile') || artUrl('hero-yama'))}" alt=""><b>${esc(HERO_NAME)}</b>
           <div class="battle-numbered-meter">${meter(view.youHp, view.youMax, 'health', t('battle.hp'))}<small>${Math.round(view.youHp)}/${view.youMax}</small></div>
           <div class="battle-numbered-meter">${meter(mp, g.mpMax, 'mana', t('battle.mp'))}<small>${Math.round(mp)}/${g.mpMax}</small></div>
-          <div class="battle-team-ultimate">${meter(g.abilities.teamJudgment ? 5 - g.teamJudgmentRemaining() : 0, 5, 'ready', COMBAT_SKILLS.teamJudgment.name)}<small>${!g.abilities.teamJudgment ? 'ล็อก · ชนะฝ่าชายแดนไทย' : g.teamJudgmentRemaining() ? `อีก ${g.teamJudgmentRemaining()} เทิร์นยามา` : ''}</small></div>
+          ${g.abilities.teamJudgment ? `<div class="battle-team-ultimate">${meter(5 - g.teamJudgmentRemaining(), 5, 'ready', COMBAT_SKILLS.teamJudgment.name)}<small>${g.teamJudgmentRemaining() ? `อีก ${g.teamJudgmentRemaining()} เทิร์นยามา` : ''}</small></div>` : ''}
           ${b.protection?.you ? `<small>โล่ ${b.protection.you.shield} · โจมตี +${Math.round(b.protection.you.buff * 100)}% (${b.protection.you.attacks})</small>` : ''}
         </button>
         </div>

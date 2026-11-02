@@ -11,17 +11,17 @@ const ui=readFileSync(new URL('../src/ui.js',import.meta.url),'utf8');
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 const context=vm.createContext({sentenceColor,esc:escape,SINS:{kong:{name:'ฉ้อโกง',color:'#ff0000'}}});
 vm.runInContext(ui.slice(ui.indexOf('function deedLine('),ui.indexOf('function publicDossier(')),context);
-test('J4 real dossier renderers use numeric colours for merits, karma and relief, including blood donation',()=>{
+test('W4 public merits use green; karma and relief keep numeric colours, including blood donation',()=>{
  const blood=MERITS.find(m=>m.t==='บริจาคเลือดครบ 40 ครั้ง');
  assert.equal(blood.v,1);
- assert.ok(context.publicMeritLine(blood).includes(`color:${sentenceColor(1).color}`));
+ assert.ok(context.publicMeritLine(blood).includes('color:var(--success)'));
  for(let value=0;value<=5;value++){
-  assert.ok(context.publicMeritLine({t:'<บุญ>',v:value}).includes(`color:${sentenceColor(value).color}`));
+  assert.ok(context.publicMeritLine({t:'<บุญ>',v:value}).includes('color:var(--success)'));
   assert.ok(context.deedLine({s:'kong',t:'กรรม',w:value}).includes(`<span style="color:${sentenceColor(value).color}">`));
   assert.ok(context.deedLine({s:'kong',t:'บรรเทา',w:-value}).includes(`<span style="color:${sentenceColor(value).color}">`));
  }
  assert.ok(context.publicMeritLine({t:'<บุญ>',v:1}).includes('&lt;บุญ&gt;'));
- assert.ok(ui.includes("claimed.map(m => publicMeritLine(m, 'deed merit'))"),'trial uses the tested numeric renderer');
+ assert.ok(ui.includes("claimed.map(m => publicMeritLine(m, 'deed merit'))"),'trial uses the tested public merit renderer');
 });
 test('J4 mirror only blocks its foot, with reachable front and back depth ordering',()=>{
  const [x,y]=MIRROR_FOOT;

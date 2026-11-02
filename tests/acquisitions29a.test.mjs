@@ -58,6 +58,7 @@ test('discovery queue covers pickups, shops, levels, abilities and survives save
   g.checkLevel(); g.checkLevel(); g.checkLevel();
   assert.equal(g.level,4); g.inventory.lotus=1;
   for (const k of Object.keys(ABILITY_REWARDS)) g.abilities[k]=true;
+  g.bossCleared.west=true; // W4: this all-earned fixture has completed the Ice story victory.
   g.syncDiscoveries();
   const queue=[...g.discoveryQueue];
   assert.equal(new Set(queue).size,queue.length);

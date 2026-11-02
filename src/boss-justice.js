@@ -1,3 +1,4 @@
+import {storyEncounterRole} from './story-progression.js';
 /** Captured bosses have a separate docket: ordinary spirit queues and rewards are untouched. */
 import { STATIONS, SPOTS, FRONTIER, CREW, ZONE_EVENTS, isFrontierBreachEvent } from './data.js';
 import { findPath, nearestWalk } from './walk.js?v=k1d';
@@ -6,6 +7,7 @@ export const JUSTICE_PHASES = ['capture','dais','trial','escort','punishment','s
 export function initializeBossJustice(g, saved = g.bossJustice) {
   const state = saved?.version === 1 ? structuredClone(saved) : {version:1, active:null, ledger:{}};
   state.ledger ||= {};
+  for(const entry of Object.values(state.ledger))entry.encounterRole ||= entry.final?'final':entry.frontierBoss?'frontier':String(entry.art).startsWith('zone-boss')?'ruler':'ordinary';
   if (!state.ledger[state.active] || !JUSTICE_PHASES.includes(state.ledger[state.active].phase)) state.active=null;
   g.bossJustice=state;
   // Station snapshots omit court-only flags. Keep requisitions on the persisted
@@ -29,10 +31,10 @@ export function queueBossJustice(g,b,{final=false}={}) {
   const zone=b.zone||g.zone, challenge=b.kind==='zoneEvent'&&b.challenge&&(ZONE_EVENTS[zone]||[]).some(ev=>ev.k===b.eventKey&&ev.challenge),
     frontier=b.kind==='frontierBreach'||b.kind==='zoneEvent'&&isFrontierBreachEvent(zone,b.eventKey)||challenge;
   if(b.over!=='win'||(!final&&b.kind!=='zoneBoss'&&b.eventKey!=='thBorderBoss'&&!frontier))return false;
-  const state=g.bossJustice||initializeBossJustice(g), base=final?'final:cyberhell':`${zone}:${b.eventKey==='thBorderBoss'?'frontier':b.kind==='zoneBoss'?'ruler':b.eventKey||'frontierBreach'}`;
+  const state=g.bossJustice||initializeBossJustice(g),role=storyEncounterRole(b),base=final?'final:cyberhell':`${zone}:${role==='ruler'?'ruler':b.eventKey||'frontierBreach'}`;
   // A named boss answers to the court once. Rematches may still be fought,
   // but a fresh battle object must not bypass the persistent court ledger.
-  if(state.active || b.justiceDocket || state.ledger[base])return false;
+  if(state.active || b.justiceDocket || state.ledger[base] || role==='ruler'&&zone==='th'&&state.ledger['th:frontier']?.encounterRole==='ruler')return false;
   let id=base,attempt=1;while(state.ledger[id])id=`${base}:${++attempt}`;
   b.justiceDocket=id;
   const boss=b.foes?.find(f=>f.boss)||b.foes?.find(f=>String(f.sp).includes('boss-frontier'));
@@ -46,7 +48,7 @@ export function queueBossJustice(g,b,{final=false}={}) {
     }
   }
   const throne=SPOTS.throne;
-  const c={id, frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, phase:final?'capture':'dais', elapsed:0,
+  const c={id, encounterRole:final?'final':storyEncounterRole(b), frontierBoss:!!frontier, zone:b.zone||g.zone, name:boss?.who||boss?.name||b.who, art:boss?.sp||b.sp||'zone-boss', final, phase:final?'capture':'dais', elapsed:0,
     asked:false, mirror:false, pick:{station:null,crew:null,intensity:null}, courtResources,
     dais:[throne.x,throne.y+55], suspendedRoute:g.zoneTravel?.active?structuredClone(g.zoneTravel.active):null};
   state.ledger[id]=c;state.active=id;

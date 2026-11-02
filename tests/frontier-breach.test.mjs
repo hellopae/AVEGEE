@@ -53,7 +53,8 @@ test('two waves keep one battle, heal at transition, and reward after both', () 
   assert.equal(b.pendingWave, null);
   g.battleAct('atk');
   assert.equal(b.over, 'win');
-  assert.equal(g.abilities.bigFire, true);
+  assert.equal(g.abilities.teamJudgment, true);
+  assert.equal(!!g.abilities.bigFire, false);
   assert.equal(!!g.abilities.flameCharge, false);
   assert.equal(g.frontierBreachStatus(), 'cleared');
   assert.equal(g.coin - beforeCoin, ZONE_EVENTS.th[1].reward.coin);

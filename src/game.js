@@ -1,3 +1,4 @@
+import {storyPowerLocked,grantStoryBattleAbilities,restoreStoryAbilities} from './story-progression.js';
 import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recordPlayTime} from './save-slots.js';
 import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
@@ -1945,9 +1946,8 @@ const API = {
 
   /** พลังนี้ปลดล็อกแล้วหรือยัง — ใช้ที่เดียวทั้งเกม (เดิมเช็คจำนวนคดีกระจายอยู่สี่จุด) */
   powerLocked(p) {
-    // L3 (คุณเป้ 15 ต.ค. 2569): สะกดจิตได้จากการชนะบอสชายแดนโซน 3 (westVampireBreach → abilities.hypno) เท่านั้น ไม่ผูกกับเลเวล
-    if (p?.k === 'hypno') return !this.abilities.hypno;
-    return !p || this.level < (p.lv || 1) || p.k === 'mirror' && this.devaTestStatus('th') !== 'cleared';
+    const storyLock=storyPowerLocked(this,p);
+    return storyLock ?? (!p || this.level < (p.lv || 1));
   },
   /** เรียกยมทูตมาช่วยในฉากต่อสู้ได้หรือยัง */
   canCallCrew() { return this.level >= CREW_HELP_LV; },
@@ -3752,18 +3752,15 @@ const API = {
       } else if (B.kind === 'frontierBreach') {
         const event = ZONE_EVENTS.th[1];
         this.zoneEvents.th.frontierBreach = 'cleared';
-        this.abilities.teamJudgment = true;
         if (!this.guard) {
           this.guard = actorFromLegacy({ x:GUARD_POST[0], y:GUARD_POST[1] }, 'th', 'guard');
           syncRoster(this);
         }
-        this.queueStory('c1-guard-arrival');
-        this.abilities.bigFire = true;
-        this.queueStory('frontier-power', 'bigFire');
+        this.queueStory('c1-guard-arrival', 'teamJudgment');
         const item = pick(FRONTIER.drops);
         this.coin += event.reward.coin;
         this.inventory[item] = (this.inventory[item] || 0) + event.reward.drop;
-        B.reward = { coin:event.reward.coin, item, ability:'bigFire' };
+        B.reward = { coin:event.reward.coin, item, ability:'teamJudgment' };
         B.loot = this.winLoot();             // ชนะทั้งศึกครั้งเดียว (declareWin ถูกเรียกตอนจบระลอกสุดท้ายเท่านั้น)
         B.talk = t('event.frontierBreach.win') + B.loot;
         say(B.talk);
@@ -3788,7 +3785,6 @@ const API = {
           this.order=clamp(this.order+(ev.reward.order||0),0,100);
           this.queueStory(signalStory(ev.k,'win'));
         }
-        if (ev?.reward?.ability) this.abilities[ev.reward.ability] = true;
         if (ev?.reward?.item) this.inventory[ev.reward.item] = (this.inventory[ev.reward.item] || 0) + 1;
         if (ev?.reward?.unlockZone) {
           this.bossCleared[B.zone] = true;
@@ -3828,9 +3824,6 @@ const API = {
       } else if (B.kind === 'zoneBoss') {
         const firstWin = !this.bossCleared[B.zone];
         this.bossCleared[B.zone] = true;
-        if (B.zone === 'th') this.abilities.flameCharge = true;
-        if (B.zone === 'asia') this.abilities.rage = true;
-        if (B.zone === 'west') this.abilities.ice = true;
         if (firstWin && ['th','asia','west'].includes(B.zone)) this.queueStory(B.zone, STORY[B.zone].reward);
         this.bossRetryAt[B.zone] = 0;
         this.bossGuarding[B.zone] = false;
@@ -3843,6 +3836,7 @@ const API = {
         B.loot = this.winLoot();
         say(`เขาทรุดลงกับพื้นแล้วไม่ลุกอีก — +${BATTLE.winCoin} เบี้ยกรรม · ออกหมายได้แล้ว${B.loot}`);
       }
+      grantStoryBattleAbilities(this,B);
       if (B.kind !== 'prisonBreak' && B.kind !== 'frontierBreach' && B.kind !== 'devaTest' && B.kind !== 'zoneEvent') talk('lose');
       this.hp = clamp(B.youHp, 1, this.hpMax);
       const expGain = this.isFinalBattle(B) ? (B.reward?.exp || 0) : B.challenge ? (B.rematch ? CHALLENGE_REPLAY.exp : CHALLENGE_EXP) : B.kind === 'zoneBoss' ? 100 : B.kind === 'frontierBreach' ? 65 : B.kind === 'devaTest' ? 60 : B.kind === 'zoneEvent' ? ((ZONE_EVENTS[B.zone]||[]).find(e=>e.k===B.eventKey)?.reward?.exp ?? 60) : B.kind === 'prisonBreak' ? 40 : 20;
@@ -5228,7 +5222,6 @@ API.restore = function (d) {
   this.dadFight = d.dadFight || false;
   this.pendingDadPunish = d.pendingDadPunish || null;
   this.gameCompleted = !!d.gameCompleted || this.zoneEvents.cyberhell?.cyberFinal === 'cleared';
-  if (this.zoneEvents.th?.frontierBreach === 'cleared') { this.abilities.bigFire = true; this.abilities.teamJudgment = true; }
   if (legacyBossGate) {
     Object.assign((this.zoneEvents.th ||= {}),
       { prisonBreak:'cleared', frontierBreach:'cleared', devaTest:'cleared', thBorderBoss:'cleared' });
@@ -5242,18 +5235,9 @@ API.restore = function (d) {
     if (visit.phase === 'intro') this.queueStory('deva-cyberhell');
   }
   if (d.bossCleared?.th) (this.zoneEvents.th ||= {}).thBorderBoss ||= 'cleared';
-  if (this.zoneEvents.th?.thBorderBoss === 'cleared') this.abilities.flameCharge = true;
-  if (d.bossCleared?.asia) this.abilities.rage = true;
-  if (d.bossCleared?.west) this.abilities.ice = true;
   for (const zone of Object.keys(ZONE_EVENTS)) this.refreshZoneEvents(zone);
-  for (const [zone, events] of Object.entries(this.zoneEvents)) {
-    for (const ev of ZONE_EVENTS[zone] || []) {
-      if (events[ev.k] === 'cleared' && ev.reward?.ability) this.abilities[ev.reward.ability] = true;
-    }
-  }
   // L3: สะกดจิตได้เฉพาะเซฟที่ชนะแวมไพร์โซน 3 แล้ว (abilities.hypno จากเซฟ / ZONE_EVENTS cleared ด้านบน) — เซฟเก่าที่ปลดด้วยเลเวลถูกริบ
   // ล้างสถานะ 'เคยเห็น popup สะกดจิต' ที่ได้จากเลเวล เพื่อให้ได้ popup ตอนชนะบอสจริง
-  if (!this.abilities.hypno) { delete this.discoverySeen['power:hypno']; this.discoveryQueue = this.discoveryQueue.filter(id => id !== 'power:hypno'); }
   // เซฟก่อนชุด event ที่ไปถึงบอสแล้วคงสิทธิ์เดิม ไม่บังคับให้ย้อนกลับมาทำสามเหตุการณ์
   this.legacyBossGate = legacyBossGate;
   this.miniGoals = d.miniGoals || {};
@@ -5396,7 +5380,8 @@ API.restore = function (d) {
   initializeBossJustice(this,d.bossJustice);
   this.finalEvent = migrateFinalEvent(d);
   this.pendingReward = this.finalEvent.pendingReward;
-  if (this.zoneEvents.th?.frontierBreach === 'cleared') this.abilities.teamJudgment = true;
+  restoreStoryAbilities(this);
+  if (!this.abilities.hypno) { delete this.discoverySeen['power:hypno']; this.discoveryQueue = this.discoveryQueue.filter(id => id !== 'power:hypno'); }
   this.battle = d.finalBattle?.eventKey === 'cyberFinal' ? prepareBattle(structuredClone(d.finalBattle)) : null;
   if (this.battle && !this.battle.balance) this.battle.balance = { wave:this.battle.wave || 0, partySize:this.battleActors().length, migrated:true };
   if (this.battle?.turnAction) this.finishBattleCommand();
