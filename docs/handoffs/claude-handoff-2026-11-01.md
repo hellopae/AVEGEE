@@ -165,3 +165,14 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - RealChromium cleanprofile1280×800/390×844ผ่านSTART/3cards/newslot2/reloadcontinue/legacycopy/summary25crew/no-horizontal-overflow; pageErrors=[]
 - รายงาน ภาพจริง สคริปต์browser และlog: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-home-save-slots/README.md`
 - ไม่แตะpunishment/effectsหรือstatus.json/worklog.json/work-mode.json; ไม่อ้างReese/Chrisตรวจ
+
+## Codex 1 พ.ย. 2569 — เวลา/สีทัณฑ์และการแยกความแรงจากคะแนน
+
+- Branch codex/2026-11-01-punishment-duration; ฐานmain df42fb1b
+- 10/30/60/120/240วินาทีตามระดับ1–5, สีฟ้า/เขียว/เหลือง/ส้ม/แดง; คุณเป้ยืนยันเบา30วินาที
+- เวลาทำงานจริง เริ่มหลังถึงสถานี,พัก/ขนส่ง/ซ่อม/ผู้คุมไม่พร้อมไม่เดินเวลา; saveเก่าคงสัดส่วน progress ไม่มีofflinecatchup; ไม่มีนับframe+managementซ้ำ
+- ความแรงไม่เปลี่ยนคะแนน/บาปจากความพอดี; mirrorไม่แนะนำforceที่ได้คะแนน; remorseเลือกforceต่างกันผลเท่ากัน
+- สไปรต์ห้องย้อมจริงผ่านแคช256px/สูงสุด6สีต่อภาพ; ไม่ย้อมฉาก
+- Full1821/1821,0fail; syntax162; Chromiumภาพจริง5สีผ่านไม่มีpageErrors; ก่อนแก้มีtestlegacyที่คาดคะแนนความแรงและaliasเก่า แก้ตามสเปกใหม่แล้ว
+- รายงานภายนอก `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-punishment-duration/README.md`; native fallbackdiagnosticไม่นับเป็นภาพจริง
+- รวมsnippetsfixture punishment-noncombat-changes.jsonกับHOMEfixtureในBALANCE-2ก่อนตรวจชุดรวม ห้ามแก้หลักฐาน32kเดิม

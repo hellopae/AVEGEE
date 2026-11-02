@@ -1,3 +1,4 @@
+import {punishmentLevel,punishmentRemaining} from './punishment.js';
 import {characterScale} from './character-scale.js';
 import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
@@ -487,15 +488,17 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
         // F2 ข้อ 5: กระทะทองแดง — วิญญาณยืนในกระทะ มีไฟลุกใต้ตัว (src/pot-souls.js) · แท่นเดิมเหลือไว้เป็นจุดวางชื่อ/หลอดความคืบหน้า
         drawSchoolProps(ctx,def.k,x,y,U,g.zone);
         const pot = def.k === 'krata' ? potLayout(bgSrc) : null;
-        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t, reduced:prefersReducedMotion() }, (sx, sy, c = ctx) => drawSoul(c, sx, sy, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7));
-        else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, '#ffd9c0', sl.soul.sp || 7);
+        if (pot) drawPotSoul(ctx, pot, i, { px, py, U, t, reduced:prefersReducedMotion() }, (sx, sy, c = ctx) => drawSoul(c, sx, sy, U * SOUL_H, t + sl.soul.id * 200, punishmentLevel(sl.intensity).color, sl.soul.sp || 7));
+        else drawSoul(ctx, x, y, U * SOUL_H, t + sl.soul.id * 200, punishmentLevel(sl.intensity).color, sl.soul.sp || 7);
         chains(x,y);
         const p = Math.min(1, sl.progress / sl.need);
         const bw = U * 0.09, bh2 = Math.max(4, U * 0.011);
         ctx.fillStyle = 'rgba(0,0,0,.72)'; rr(ctx, x - bw / 2, y + U * 0.012, bw, bh2, bh2 / 2); ctx.fill();
-        ctx.fillStyle = def.fx === 'fx-ice' ? '#8fd8ff' : '#ff9d3a';
+        ctx.fillStyle = punishmentLevel(sl.intensity).color;
         rr(ctx, x - bw / 2, y + U * 0.012, bw * p, bh2, bh2 / 2); ctx.fill();
         // ชื่อสลับสูง-ต่ำทีละดวง + ตัดให้สั้น ไม่งั้นสามดวงที่ยืนใกล้กันป้ายทับกันจนอ่านไม่ออก
+        const seconds=punishmentRemaining(sl);
+        soulLabel(ctx,`${punishmentLevel(sl.intensity).name} · ${seconds} วิ`,x,y-U*SOUL_H-U*.014,U);
         const nm = sl.soul.who.length > 9 ? sl.soul.who.slice(0, 8) + '…' : sl.soul.who;
         if (def.k === 'tarang') soulNameplate(ctx, sl.soul.name || sl.soul.who, x, y, U, soulNameplateWidth(room.souls, i, box.w, U));
         else soulLabel(ctx, nm, x, y + U * 0.033 + (i % 2) * U * 0.024, U);

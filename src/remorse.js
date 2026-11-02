@@ -21,11 +21,11 @@ export function calcRemorse({ soul, keeperK, intensity, verdict }) {
   const W = REMORSE.weights;
   const traitKey = spiritTrait(soul).key;
   const deserved = soul?.deserved ?? 0;
-  const short = Math.max(0, deserved - intensity), over = Math.max(0, intensity - deserved);
+  const short = 0, over = 0; // Force selects time/colour, not a hidden appropriateness grade.
   const keeperFit = keeperFitOf(keeperK, traitKey);
   const stationFit = clamp((Number.isFinite(verdict?.tham) ? verdict.tham : 0) / 100, 0, 1);
   const keeper = W.keeper * (REMORSE.keeperFit[keeperFit] * (1 - REMORSE.stationShare) + stationFit * REMORSE.stationShare);
-  const inten = W.intensity * clamp(1 - short * REMORSE.shortPenalty - over * REMORSE.overPenalty, 0, 1);
+  const inten = soul?.pure ? 0 : W.intensity; // Legacy field now records completing the sentence, equally at every force.
   const trait = W.trait * (REMORSE.trait[traitKey] ?? REMORSE.trait.accepting);
   const parts = { keeper: round1(keeper), intensity: round1(inten), trait: round1(trait) };
   return { total: clamp(Math.round(keeper + inten + trait + (soul?.remorseBonus || 0)), 0, 100), parts,

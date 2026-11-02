@@ -581,6 +581,13 @@ export const SPIRIT_KINDS = 10;
 export const soulKey = (sp = 7) =>
   typeof sp === 'string' ? sp : 'spirit' + ((sp - 1) % SPIRIT_KINDS + 1);
 
+const soulTintCache=new WeakMap();
+function tintedSoul(im,tint){
+ if(tint==='#bfe9ff'||tint==='#d9eaff'||tint==='#ffd9c0')return im;
+ let variants=soulTintCache.get(im);if(!variants){variants=new Map();soulTintCache.set(im,variants);}
+ if(variants.has(tint))return variants.get(tint);
+ const c=document.createElement('canvas'),fit=Math.min(1,256/Math.max(im.naturalWidth,im.naturalHeight));c.width=Math.max(1,Math.round(im.naturalWidth*fit));c.height=Math.max(1,Math.round(im.naturalHeight*fit));const p=c.getContext('2d');p.drawImage(im,0,0,c.width,c.height);p.globalCompositeOperation='source-atop';p.globalAlpha=.62;p.fillStyle=tint;p.fillRect(0,0,c.width,c.height);if(variants.size>=6)variants.delete(variants.keys().next().value);variants.set(tint,c);return c;
+}
 export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   const bob = Math.sin(t / 520 + x) * (h * 0.05);
   // ยังไม่มีไฟล์ของสำนวนที่มีชื่อ ก็ถอยไปใช้ผีสามัญ ไม่ปล่อยให้เป็นช่องว่าง
@@ -590,7 +597,7 @@ export function drawSoul(ctx, x, y, h, t, tint = '#bfe9ff', sp = 7) {
   if (im) {
     ctx.save();
     ctx.globalAlpha *= 0.93;
-    ctx.drawImage(im, x - h / 2, y - h + bob, h, h);
+    ctx.drawImage(tintedSoul(im,tint), x - h / 2, y - h + bob, h, h);
     ctx.restore();
     if (tint !== '#bfe9ff') {          // รอนานแล้ว — ย้อมแดงเตือน
       ctx.save(); ctx.globalAlpha = 0.28; ctx.globalCompositeOperation = 'source-atop';

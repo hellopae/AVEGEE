@@ -46,5 +46,5 @@ test('slot cards show all requested fields and owned crew across branches, with 
 });
 test('Home exposes one START action and cache aliases retain a single refreshed game module',()=>{
  const html=readFileSync('index.html','utf8'),home=html.slice(html.indexOf('<div id="title">'),html.indexOf('<div class="wrap">'));assert.ok(home.includes('id="t-start"'));assert.equal(home.includes('id="t-new"'),false);assert.equal(home.includes('id="t-resume"'),false);
- const map=JSON.parse(html.match(/<script type="importmap">\s*([\s\S]*?)\s*<\/script>/)[1]).imports;const ui=readFileSync('src/ui.js','utf8');const source=ui.match(/import \{ createGame, loadSave, clearSave, sameLabel \} from '([^']+)'/)[1];assert.equal(map[source.replace('./game.js','./src/game.js')],map['./src/game.js']);assert.ok(map['./src/game.js'].includes('home-slots'));assert.ok(html.includes('src="src/ui.js?v=20261101-tweak-home-slots"'));
+ const map=JSON.parse(html.match(/<script type="importmap">\s*([\s\S]*?)\s*<\/script>/)[1]).imports;const ui=readFileSync('src/ui.js','utf8');const source=ui.match(/import \{ createGame, loadSave, clearSave, sameLabel \} from '([^']+)'/)[1];assert.equal(map[source.replace('./game.js','./src/game.js')],map['./src/game.js']);assert.ok(map['./src/game.js'].includes('home-slots'));assert.ok(html.includes('src="'+map['./src/ui.js'].replace('./src/','src/')+'"'));
 });

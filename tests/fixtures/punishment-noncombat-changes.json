@@ -1,0 +1,52 @@
+{
+  "game": [
+    {
+      "before": "",
+      "after": "import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';\n"
+    },
+    {
+      "before": "    const answer = { station, intensity: soul.revealed.mirror ? soul.deserved : null, crew: null, unavailable: null };\n",
+      "after": "    const answer = { station, intensity: soul.pure ? 0 : null, crew: null, unavailable: null };\n"
+    },
+    {
+      "before": "",
+      "after": "    if(!st.def.heaven){slot.sentenceClock=1;slot.elapsedMs=0;slot.durationMs=punishmentLevel(slot.intensity).seconds*1000;slot.need=slot.durationMs;}\n"
+    },
+    {
+      "before": "    const short = Math.max(0, soul.deserved - slot.intensity);\n    const over = Math.max(0, slot.intensity - soul.deserved);\n    // เบาไปกับหนักเกิน ต้องเจ็บพอ ๆ กัน ไม่งั้นซัดวาระ 5 ทุกคดีจะเป็นวิธีเล่นที่ดีที่สุด\n    // ซึ่งขัดกับแกนของเกมทั้งเกม\n    const ked = clamp(100 - short * 26 - over * 28, 0, 100);\n",
+      "after": "    const short = 0, over = 0;\n    const ked = 100; // Legacy result field: force no longer changes appropriateness.\n"
+    },
+    {
+      "before": "      over?`ลงทัณฑ์เกินกรรม ${over} ระดับ${soul.deeds.some(d=>d.w<0)?' · ต้องคำนึงถึงเหตุบรรเทาโทษด้วย':''}`:null,\n      short?`ระดับทัณฑ์เบากว่ากรรม ${short} ระดับ`:null,\n      destinationCorrect&&!short&&!over?'เลือกสถานที่และระดับทัณฑ์ตรงกรรม':null,\n",
+      "after": "      destinationCorrect?'เลือกสถานที่ตรงกรรม · ความแรงกำหนดเวลาและสีเท่านั้น':null,\n"
+    },
+    {
+      "before": "",
+      "after": "    advancePunishments(this,dt);this._punishmentFrameAdvanced=true;\n"
+    },
+    {
+      "before": "        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need, servedAt:this.tick });\n",
+      "after": "        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need,...(slot.sentenceClock===1?{durationMs:slot.durationMs}:{}), servedAt:this.tick });\n"
+    },
+    {
+      "before": "        need:slot.need, servedAt:this.tick, remorse:calcRemorse({ soul, keeperK:st.crewK, intensity:slot.intensity, verdict:r }) };\n",
+      "after": "        need:slot.need,...(slot.sentenceClock===1?{durationMs:slot.durationMs}:{}), servedAt:this.tick, remorse:calcRemorse({ soul, keeperK:st.crewK, intensity:slot.intensity, verdict:r }) };\n"
+    },
+    {
+      "before": "",
+      "after": "    if(!this._punishmentFrameAdvanced)advancePunishments(this,BAL.tickMs);\n    this._punishmentFrameAdvanced=false;\n"
+    },
+    {
+      "before": "          slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);\n",
+      "after": "          if(st.def.heaven)slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);\n"
+    },
+    {
+      "before": "        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * assisted * roleSpeed * crowdMul;\n",
+      "after": "        if(st.def.heaven)slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * assisted * roleSpeed * crowdMul;\n"
+    },
+    {
+      "before": "",
+      "after": "    if(!st.def.heaven)st.slots.forEach(normalizePunishment);\n"
+    }
+  ]
+}

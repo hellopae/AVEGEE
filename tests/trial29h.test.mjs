@@ -1,3 +1,4 @@
+import {punishmentLevel,punishmentTimeLabel} from '../src/punishment.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -15,7 +16,7 @@ const css = readFileSync(new URL('../src/command-wheel.css', import.meta.url), '
 const renderSource = ui.slice(ui.indexOf('    const destinationChoices ='), ui.indexOf('    const crewNow ='));
 const renderChoices = (g,s) => vm.runInNewContext(`${renderSource}\n({destinationChoices,crewChoices,forceChoices});`, {
   g,s,dests:g.trialDestinations(),answer:g.trialAnswer(s),available:g.freeCrew(),pick:{},heaven:false,
-  traitForKeeper,keeperCurrentJob,keeperSuitText,SINS,t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,
+  traitForKeeper,keeperCurrentJob,keeperSuitText,SINS,t,esc:String,blockText:b=>b?.key || '',stBg:()=>'',orbImg:()=>'',artUrl:()=>'',INTENSITY,punishmentLevel,punishmentTimeLabel,
 });
 function courtSoul(g, sin = 'kong') {
   const s = g.queue[0];
@@ -102,10 +103,10 @@ test('29H: mirror renders station, force and keeper, and marks the primary issue
     if(!built)g.stations=g.stations.filter(st=>st.def.k!=='krata');
     assert.ok(g.usePower('mirror',s));
     const answer=g.trialAnswer(s),rendered=renderChoices(g,s);
-    assert.equal(answer.station.k,'krata');assert.equal(answer.intensity,4);assert.ok(answer.crew);
+    assert.equal(answer.station.k,'krata');assert.equal(answer.intensity,null);assert.ok(answer.crew);
     assert.match(rendered.destinationChoices,built?/is-revealed.*data-k="krata"/s:/trial-revealed-destination/);
     assert.match(rendered.crewChoices,new RegExp(`is-revealed.*data-k="${answer.crew.k}"`,'s'));
-    assert.match(rendered.forceChoices,/is-revealed.*data-v="4"/s);
+    assert.doesNotMatch(rendered.forceChoices,/is-revealed/);assert.match(rendered.forceChoices,/30 วินาที/);
     assert.equal(s.roarHint,2);assert.ok(s.said.some(x=>x.text.includes('ข้อ 3')));
     if(!built)assert.equal(answer.unavailable.key,'stationMissing');
     g.press(s,2);assert.equal(s.deeds[1].known,true);

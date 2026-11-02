@@ -1,4 +1,5 @@
 import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recordPlayTime} from './save-slots.js';
+import {punishmentLevel,normalizePunishment,advancePunishments} from './punishment.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
@@ -1051,7 +1052,7 @@ const API = {
   trialAnswer(soul) {
     if (!soul?.revealed?.mirror && !soul?.revealed?.hypno) return null;
     const station = STATIONS.find(st => soul.pure ? st.heaven : st.tags.includes(primarySinOf(soul))) || null;
-    const answer = { station, intensity: soul.revealed.mirror ? soul.deserved : null, crew: null, unavailable: null };
+    const answer = { station, intensity: soul.pure ? 0 : null, crew: null, unavailable: null };
     if (!soul.revealed.mirror || !station) return answer;
     const st = this.stations.find(x => x.def.k === station.k) || mkStation(station.k);
     // สถานีที่มีดวงอยู่แล้วเปลี่ยนผู้คุมไม่ได้ จึงพิจารณาเฉพาะผู้คุมประจำ
@@ -1134,6 +1135,7 @@ const API = {
       verdict: null, pendingUntil: arriveAt, work,
       resistanceTicks:work.trait==='resisting'&&!work.resistanceControl?2:0 };
     slot.need = 18 + soul.deserved * 8 + slot.intensity * 7;
+    if(!st.def.heaven){slot.sentenceClock=1;slot.elapsedMs=0;slot.durationMs=punishmentLevel(slot.intensity).seconds*1000;slot.need=slot.durationMs;}
     st.slots.push(slot);
     st.crewK = useK;
     st.intensity = slot.intensity;
@@ -1176,11 +1178,8 @@ const API = {
       : !Number.isFinite(totalW) || !Number.isFinite(hitW) ? 0
       : clamp(Math.round(100 * hitW / totalW), 0, 100);
 
-    const short = Math.max(0, soul.deserved - slot.intensity);
-    const over = Math.max(0, slot.intensity - soul.deserved);
-    // เบาไปกับหนักเกิน ต้องเจ็บพอ ๆ กัน ไม่งั้นซัดวาระ 5 ทุกคดีจะเป็นวิธีเล่นที่ดีที่สุด
-    // ซึ่งขัดกับแกนของเกมทั้งเกม
-    const ked = clamp(100 - short * 26 - over * 28, 0, 100);
+    const short = 0, over = 0;
+    const ked = 100; // Legacy result field: force no longer changes appropriateness.
     const rab = clamp(48 + c.rabiab * 5 - this.queue.length * 4, 0, 100);
 
     const destinationCorrect=tags.includes(primarySinOf(soul));
@@ -1200,9 +1199,7 @@ const API = {
     const bonus = baseCoin > 0 && tags.includes(primarySinOf(soul))
       ? Math.round(baseCoin * BAL.matchBonus) : 0;
     const reason=[!destinationCorrect?'สถานที่ไม่ตรงกรรมหลัก':null,
-      over?`ลงทัณฑ์เกินกรรม ${over} ระดับ${soul.deeds.some(d=>d.w<0)?' · ต้องคำนึงถึงเหตุบรรเทาโทษด้วย':''}`:null,
-      short?`ระดับทัณฑ์เบากว่ากรรม ${short} ระดับ`:null,
-      destinationCorrect&&!short&&!over?'เลือกสถานที่และระดับทัณฑ์ตรงกรรม':null,
+      destinationCorrect?'เลือกสถานที่ตรงกรรม · ความแรงกำหนดเวลาและสีเท่านั้น':null,
       soul.merits?.some(m=>m.fake&&m.exposed)?'เปิดโปงคำอ้างบุญปลอมแล้ว':null].filter(Boolean).join(' · ');
     return { tham, ked, rab, score, karma, coin: baseCoin + bonus, bonus, short, over,destinationCorrect,reason };
   },
@@ -1435,6 +1432,7 @@ const API = {
     if(this.mapTravel)return;
     if (bossJusticeActive(this)) return;
     if (this.paused || this.over || westSpiritsFrozen(this) || !Number.isFinite(dt) || dt <= 0) return;
+    advancePunishments(this,dt);this._punishmentFrameAdvanced=true;
     this.advanceCourtArrivals(dt);
     for (let i = this.afterlifeWalks.length - 1; i >= 0; i--) {
       const walk = this.afterlifeWalks[i];
@@ -1493,14 +1491,14 @@ const API = {
     } else if (st.def.heaven) {
       this.sentences.push({ soul, verdict:r, intensity:slot.intensity,
         stage:'gate', checked:false, zone:this.zone, rewardEligible:!!r.right,
-        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need, servedAt:this.tick });
+        stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null, need:slot.need,...(slot.sentenceClock===1?{durationMs:slot.durationMs}:{}), servedAt:this.tick });
       this.log(`🕊️ ${soul.who}ถึงประตูสวรรค์ — รอให้บุญตรวจกรรมคงเหลือ`, 'act');
     } else {
       // P4: เก็บสถานี/ผู้คุม/วาระเต็ม/ความสำนึกไว้ให้ใบวินิจฉัย · remorse คำนวณตายตัวตรงนี้ครั้งเดียว (ดู remorse.js · น้ำหนักที่ data.js REMORSE)
       const entry = { soul, verdict:r, intensity:slot.intensity,
         stage:'prison', readyAt:this.tick + 6, inspected:false, repentant:null, zone:this.zone,
         stationK:st.def.k, keeperK:st.crewK || null, keeperName:c?.name || work?.keeperName || null,
-        need:slot.need, servedAt:this.tick, remorse:calcRemorse({ soul, keeperK:st.crewK, intensity:slot.intensity, verdict:r }) };
+        need:slot.need,...(slot.sentenceClock===1?{durationMs:slot.durationMs}:{}), servedAt:this.tick, remorse:calcRemorse({ soul, keeperK:st.crewK, intensity:slot.intensity, verdict:r }) };
       const prison = this.stations.find(x => x.def.k === 'tarang' && !x.build);
       // 29C: ออกเดินหลังปลดผู้คุมออกจากเวร (ด้านล่าง) เพื่อให้รู้ว่ายมทูตคนนั้นว่างไปส่งได้ไหม
       toPrison = prison ? { soul, entry, from:[st.def.x, st.def.y], to:[prison.def.x, prison.def.y] } : null;
@@ -1633,6 +1631,8 @@ const API = {
     if(this.mapTravel)return;
     this.updateActorRecovery();
     if (this.paused || this.over || bossJusticeActive(this) || this.finalEventOnMap() || westSpiritsFrozen(this)) return;
+    if(!this._punishmentFrameAdvanced)advancePunishments(this,BAL.tickMs);
+    this._punishmentFrameAdvanced=false;
     this.tick++;
     stepWorkers(this);
     if (this.niraRest && --this.niraRest.remaining <= 0) {
@@ -1726,7 +1726,7 @@ const API = {
           continue;
         }
         for (const slot of [...activeSlots]) {
-          slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);
+          if(st.def.heaven)slot.progress += st.def.pow * 0.7 * share * (1 + (st.speedLv || 0) * .12);
           if (slot.progress >= slot.need) this.finish(st, slot);
         }
         continue;
@@ -1742,7 +1742,7 @@ const API = {
         const roleSpeed=sameKeeper?work.speedMultiplier:1;
         // Dam coordinates the same exclusive, physically arrived workers; no second passive workforce.
         const crowdMul=crowd?1.25:1;
-        slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * assisted * roleSpeed * crowdMul;
+        if(st.def.heaven)slot.progress += (c.raeng * 0.55 + st.def.pow * 0.9) * mf * share * (1 + (st.speedLv || 0) * .12) * foodMul * hungerMul * assisted * roleSpeed * crowdMul;
         if (slot.progress >= slot.need) this.finish(st, slot);
       }
       c.morale = Math.max(0, c.morale - BAL.moraleDrain * this.orderTier().morale);
@@ -5161,6 +5161,7 @@ API.restore = function (d) {
     st.slots = sv.slots || (sv.soul ? [{ soul: sv.soul, intensity: sv.intensity ?? 3,
                                          progress: sv.progress || 0, need: sv.need || 60,
                                          verdict: sv.verdict || null }] : []);
+    if(!st.def.heaven)st.slots.forEach(normalizePunishment);
     return st;
   }).filter(Boolean);
   this.ensureTarang();                 // ชุด 27D — ตะรางมีให้ฟรีทุกเซฟ (เซฟเก่าที่ยังไม่เคยสร้างได้รับตอนโหลด)
