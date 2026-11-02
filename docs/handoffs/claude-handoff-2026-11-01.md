@@ -291,3 +291,12 @@ Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-con
 - รายงานBALANCE-2เดิมและตัวเลข32kไม่เปลี่ยน. tests/fixtures/w4-story-progression-changes.jsonย้อนเฉพาะsnippetgame/dataที่reviewแล้วเพื่อauthenticateinputhashเก่า; 200trialsmallteamเดิมยังตรง. ไม่อ้างว่าเป็นBALANCE-W4รอบใหม่
 - ยังไม่แก้threshold/ระลอก/PHANTOM/ฉากใหม่/บอสTHหน้าถ้ำในชุดfoundationนี้: คิวถัดไปW4-THแล้วทีละโซน,CAVE-12/OCCLUSION/BALANCEตามคิว. ไม่แต่งเพิ่มความสัมพันธ์พ่อ/พี่ที่ต้นฉบับขัดกัน
 - หลักฐานภายนอกOutput/Codex/2026-11-02-w4-foundation;ไม่อ้างphysicaldeviceFPS/Reese/Chris;ไม่แก้status.json/worklog.json/work-mode.json
+
+
+## 2 Nov — MAP-UI-REVIEW ชุดแรก
+
+รวมคอมเมนต์ภาพ1–13/m0–m3/boat1/boat2ไว้ที่docs/queues/2026-11-02-map-ui-review.md และแทรกก่อนW4-TH โดยเก็บคิวเดิมทั้งหมด. คำย้ำล่าสุด: เสาไฟฟ้าCyberยังเก่าต้องวาดใหม่ในชุดรั้ว/อาคาร.
+
+แก้lower-road polygonข้ามลาวาTHใต้สะพาน (900..1080,1150) ให้เหลือเฉพาะeastlanding; เลิกตัดweatherเป็นกรอบรอบข้อความ; ลดข้อความซ่อมเป็นMAP_NAME_SIZE; START76%/ตัวอักษรเล็กลง; Pauseglowonly; ซ่อนtown-actionharbourซ้ำโดยเก็บcontextual/E. Cacheversionsตรงกัน. Full1888/1888,syntax171ไฟล์top-level,Chromium3ขนาดไม่มีpageerror; blockedlavaprobes/oldpositionrecovery/routeclearผ่าน. Fixturebreachrematchต้องรอRECOVERY_MS120sแทน60s.
+
+งานรั้วทุกแผนที่/แท่นcollisionและขนาด/อาคาร/เสาไฟใหม่/FXความชัดและน้ำไหล/ตัวละคร/questportraits/rewardsยังไม่ถือว่าเสร็จ รายละเอียดตามคิวใหม่.

@@ -1,5 +1,7 @@
 # AVEGEE — คิวรวม 2 พฤศจิกายน 2569
 
+คิวแทรกล่าสุด: [ตรวจแผนที่/UI จากภาพ1–13, m0–m3 และboat](2026-11-02-map-ui-review.md) — NAV-REVIEW → MAP-UI-REVIEW → ACTOR-REVIEW → ATMOS-REVIEW → INTERIOR-REVIEW/CYBER-SCALE → QUEST-PRESENTATION ก่อนกลับ W4-TH; คิวเก่ายังคงทั้งหมด.
+
 ## คิวแทรกตามรูป1–3 และวิดีโอ f1 (2 พ.ย.)
 
 | ลำดับก่อนคิวภารกิจ | งาน | หน้าที่ | สถานะ |
@@ -23,7 +25,7 @@
 | 4 | ONBOARD-FOOD | Codex gameplay/UI | สอนเปิดศาล/สร้างกระทะก่อนสอบสวน; ซื้อข้าวปั้นที่พ่อค้าหรือโรงอาหาร; พ่อครัวเข้าไปด้านใน | เสร็จ · Chromium1280+390/เซฟใหม่และContinueผ่าน |
 | 5 | QUEST-OWNER | Codex quests/UI | ย้ายรับภารกิจจากพ่อค้าไปเจ้าของยมทูต; แจ้งชื่อภารกิจ, ติดตามใต้แผนที่, แท็บภารกิจในคู่มือ | เสร็จ · full1880/1880/Chromium3ขนาด/โหลดเซฟผ่าน |
 | 6 | W4-FOUNDATION | Codex story/runtime | แยกบอสชายแดน/บอสใหญ่, eventต่อโซน, rewardตามstoryไม่ใช่level; ลบข้อความท่าไม้ตายที่ยังล็อก; ข้อความบุญไม่แดง | เสร็จ · full1887/1887/Chromium3ขนาด/เซฟเก่าผ่าน |
-| 7 | W4-TH | Codex story + art | โซน1 milestones 3/5/6/9/12/15 ตามตารางด้านล่าง | คิวถัดไป |
+| 7 | W4-TH | Codex story + art | โซน1 milestones 3/5/6/9/12/15 ตามตารางด้านล่าง | รอหลังคิวบั๊กแผนที่/UIล่าสุด |
 | 8 | W4-ASIA | Codex story + art | โซน2 milestones 3/7/11/13/15 | รอ |
 | 9 | W4-WEST | Codex story + art | โซน3 milestones 0/5/10/12/15; ห้ามได้น้ำแข็งก่อนจบบอสโซน3 | รอ |
 | 10 | W4-CYBER | Codex story + art | โซน4 milestones 0/4/7/8/9/10/15; final chain+ending | รอ |

@@ -71,12 +71,13 @@ export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:T
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
 export const TOWN_UPPER_BRIDGE_LANDING = [[1380,480],[1510,490],[1510,550],[1380,550]];
-// The two west-city links are visibly paved in the production painting.  Keep their complete
-// lanes open rather than trying to infer cliff colour from the bitmap (the orange flowers were
-// previously read as rock and cut both routes in half).
+// Keep the painted west-city stair flight and its landing open. The lower east-bank landing
+// is separate; an earlier broad patch incorrectly connected it across the lava.
 export const TOWN_LAVA_STAIRS = [[1018,954],[1095,950],[1500,995],[1505,1072],[1434,1092],[1120,1142],[1044,1115],[1004,1018]];
 export const TOWN_LAVA_STAIR_LANDING = [[1018,954],[1095,955],[1156,1010],[1112,1095],[1042,1082],[1004,1018]];
-export const TOWN_LAVA_LOWER_ROAD = [[690,1130],[790,1108],[1092,1110],[1265,1178],[1432,1160],[1480,1218],[1250,1250],[1060,1196],[790,1196],[700,1172]];
+// MAP-REVIEW (1-2): the old west-to-east patch crossed the lava waterfall below the bridge.
+// Only open the cobbled landing on the east bank; the bridge/stair route above remains the crossing.
+export const TOWN_LAVA_LOWER_ROAD = [[1320,1175],[1432,1160],[1480,1218],[1380,1230],[1320,1200]];
 // P5: the cobbled east half of the cauldron (krata) courtyard.  The owner-reference mask (town-owner-walkmask.js) paints it
 // blocked as one big lobe between the cauldron's own footprint and the torch ring, so Yama stopped dead at the torch line and the
 // east bridge could not be entered from the plaza (owner image 10, 22 Oct).  The painting shows plain open pavement there.

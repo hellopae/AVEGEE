@@ -100,10 +100,10 @@ test('L2 wiring: Where/Keeper/Intensity picks render as thumbnail + name beside 
  assert.match(css,/\.court-picked\{/);
  assert.match(css,/\.port\.you \.who2 :is\(b,small\)\{color:#fff;text-shadow/,'name/authority/MP under the portrait are white with a dark edge');
 });
-test('L2 pause buttons: no gold border and no gold focus ring, hover/focus is a lighter fill',()=>{
+test('L2 pause buttons: no gold border and no gold focus ring, hover/focus glows without a filled rollover tile',()=>{
  const css=read('src/menu-ui.css');
  assert.match(css,/\.pause-actions button\{border:0;/);
- assert.match(css,/\.pause-actions button:hover,\.pause-actions button:focus-visible[^{]*\{outline:none;background:#4b2f3e\}/);
+ assert.match(css,/\.pause-actions button:hover,\.pause-actions button:focus-visible[^{]*\{outline:none;background:transparent;color:#[0-9a-f]+;text-shadow:[^}]+\}/);
 });
 test('L2 wording: Thai UI says พลังเวท where it said MP, English keeps MP',()=>{
  assert.equal(TH_DICT['battle.mp'],'พลังเวท');assert.equal(EN_DICT['battle.mp'],'MP');

@@ -23,16 +23,22 @@ test('owner map review: the upper bridge landing no longer has blocking tree roo
   }
 });
 
-test('owner map review: both west-city paved routes are walkable across their full width',()=>{
+test('owner map review: west-city bridge stairs and east-bank paving stay open without bridging lava',()=>{
   for(const poly of [TOWN_LAVA_STAIRS,TOWN_LAVA_LOWER_ROAD]){
     const cx=poly.reduce((n,p)=>n+p[0],0)/poly.length,cy=poly.reduce((n,p)=>n+p[1],0)/poly.length;
     assert.equal(townInPolygon(cx,cy,poly),true);
     assert.equal(townFloorAt(cx,cy),true,`${cx},${cy}`);
   }
-  for(const [x,y]of [[1050,1000],[1100,1020],[1250,1035],[1445,1040],[720,1150],[900,1150],[1080,1155],[1240,1200],[1410,1190]]) {
+  for(const [x,y]of [[1050,1000],[1100,1020],[1250,1035],[1445,1040],[1360,1190],[1410,1190]]) {
     assert.equal(townFloorAt(x,y),true,`visible paving ${x},${y}`);
     assert.equal(townContains(x,y),true,`visible paving has no hidden blocker ${x},${y}`);
   }
+});
+
+test('latest owner lava screenshot: the old lower-road patch cannot open the waterfall',()=>{
+  syncSceneZone('th');
+  for(const [x,y] of [[900,1150],[950,1150],[1000,1150],[1080,1155]])
+    assert.equal(townContains(x,y),false,`lava below bridge ${x},${y}`);
 });
 
 test('owner arrows flip the requested Zone 1 facades and reserve the waterfall event clearing',()=>{

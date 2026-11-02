@@ -493,11 +493,11 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   const t=reduced?0:clock.elapsed/1000,budget=weatherBudget({...viewport,reduced});
   ctx.save();
   ctx.beginPath();ctx.rect(x,y,W,H);
-  for(const r of weatherLabelBounds(labels))ctx.rect(...r);
-  ctx.clip('evenodd');ctx.translate(x,y);
+  // Keep atmosphere continuous: rectangular text holes exposed bright terrain as white boxes.
+  ctx.clip();ctx.translate(x,y);
   const halves=regions||[{zone,from:0,to:1}];
   // Cloud shadows come last in the actor pass, so floor, buildings and characters darken together;
-  // labels are clipped out above and HUD buttons are DOM layers on top of this canvas.
+  // Text retains its dark outline; HUD buttons are DOM layers above this canvas.
   const view=viewMetrics(ctx,W,H),cloud=MAP_FX.cloud;
   let cloudLayer=null;
   if(view){

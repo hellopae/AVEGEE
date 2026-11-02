@@ -1524,7 +1524,7 @@ function updateTownHud(now) {
   const summary=townPanel.querySelector('summary');
   if (summary.textContent!==title) summary.textContent=title;
   const action=show ? currentTownAction() : null;
-  townActionButton.hidden=!action;
+  townActionButton.hidden=!action || action.kind==='interaction' && action.target.kind==='harbour';
   if (action) {
     const label=action.kind==='build' ? (g.buildLocked(action.target.k) ? `🔒 ${action.target.name} · ${t('unlock.lockedAt',{n:g.buildUnlockLv(action.target.k)})}` : `${g.recommendedBuild()===action.target.k ? '★ ' : ''}${t('town.build')} · ${action.target.name}`)
       : action.kind==='frontier' ? t('town.frontier')

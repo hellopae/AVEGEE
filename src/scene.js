@@ -833,7 +833,7 @@ function drawStation(ctx, g, st, t) {
     const builder = g.crew.find(c => c.buildK === d.k);
     label(ctx, st.workerWork?(st.workerWork.ready?'✅ ซ่อมเสร็จ · รอทัณฑ์ตรวจรับ':`🔧 คนงานกำลังซ่อม ${Math.round((1-st.workerWork.remaining/REPAIR_TIME)*100)}%`):st.repairWait ? `🔧 รอ${builder?.name || 'ทัณฑ์'}เดินมาซ่อม`
       : `🔧 กำลังซ่อม ${Math.round(Math.max(0, 1 - (st.repair - Date.now()) / REPAIR_TIME) * 100)}%`,
-      d.bx, d.by + 34, 14, '#ffe7c4');
+      d.bx, d.by + 34, MAP_NAME_SIZE, '#ffe7c4', 3);
   }
   if (st.fire > 0) {                                // ผีกำลังเผาอยู่ — ไฟไต่ขึ้นตามความเสียหาย
     const bw = d.bw || 180;
