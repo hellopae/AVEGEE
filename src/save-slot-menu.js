@@ -7,16 +7,30 @@ export function formatPlayTime(ms) {
 }
 const labels = en => en?{title:'SELECT SLOT',back:'Back',time:'Play time',money:'Coins',order:'Order',karma:'Karma',zone:'Zone',crew:'Crew',continue:'Continue',partial:'Since update',invalid:'Save unavailable — data retained',none:'None',error:'Unable to save. Your existing data has been retained.'}:{title:'เลือกช่องบันทึก',back:'กลับ',time:'เวลาเล่น',money:'เบี้ยกรรม',order:'ระเบียบ',karma:'บาป',zone:'โซน',crew:'ยมทูต',continue:'เล่นต่อ',partial:'เริ่มนับหลังอัปเดต',invalid:'เปิดข้อมูลไม่ได้ — เก็บข้อมูลเดิมไว้',none:'ยังไม่มี',error:'บันทึกไม่ได้ ข้อมูลเดิมยังเก็บไว้ครบ'};
 export function slotMenuError(lang='th'){return labels(lang==='en').error;}
+// Explicit existing assets keep menu portraits independent of the active game's art zone.
+export function slotPortraitArt(kind,zone) {
+  if(zone==='th')return {src:`img/crew-${kind}-profile.png`,crop:false};
+  const root={asia:'Asia',west:'West',cyberhell:'CyberHell'}[zone]||'Asia';
+  if(kind==='guard'&&zone!=='asia')return {src:`img/${root}/crew-guard-${zone}-cutscene.jpeg`,crop:true};
+  const fixed=kind==='boon'&&zone==='west'?'-f':'';
+  return {src:`img/${root}/crew-${kind}-${zone}-profile${fixed}.png`,crop:false};
+}
 export function saveSlotMenuHtml(slots,{lang='th',message=''}={}) {
   const en=lang==='en',l=labels(en),zoneName=k=>ZONES.find(z=>z.k===k)?.name||k;
   return `<header class="save-slot-head"><h2>${l.title}</h2><button type="button" data-slot-back aria-label="${l.back}">✕</button></header>
   <p class="save-slot-message" role="status" aria-live="polite">${esc(message)}</p><div class="save-slot-list">${slots.map(slot=>{
     const summary=saveSlotSummary(slot.data),disabled=!['empty','occupied'].includes(slot.status);
     if(!summary)return `<button type="button" class="save-slot-card is-empty" data-save-slot="${slot.id}" ${disabled?'disabled':''}><span class="save-slot-number">SLOT ${slot.id}</span><strong>${disabled?l.invalid:'New Game'}</strong>${disabled?'':`<span class="save-slot-arrow" aria-hidden="true">▶</span>`}</button>`;
-    const crew=summary.actors.map(a=>{const def=CREW.find(c=>c.k===a.kind);const name=a.kind==='guard'?({th:'กุมภัณฑ์',asia:'เมซุ',west:'มูนิน',cyberhell:'ไฟร์วอลล์'}[a.zone]||'ยักษ์ทวารบาล'):def?crewName(def,a.zone==='global'?summary.zone:a.zone):a.kind;return name+(a.zone!=='global'&&a.zone!==summary.zone?` (${zoneName(a.zone)})`:'');});
-    const field=(name,value)=>`<span class="save-slot-stat"><small>${name}</small><b>${esc(value)}</b></span>`;
+    const crew=summary.actors.filter(a=>a.zone===summary.zone||a.kind==='nira'&&a.zone==='global').map(a=>{
+      const zone=a.zone==='global'?summary.zone:a.zone,def=CREW.find(c=>c.k===a.kind);
+      const name=a.kind==='guard'?({th:'กุมภัณฑ์',asia:'เมซุ',west:'มูนิน',cyberhell:'ไฟร์วอลล์'}[zone]||'ยักษ์ทวารบาล'):def?crewName(def,zone):a.kind;
+      const art=slotPortraitArt(a.kind,zone);
+      return `<span class="save-slot-portrait${art.crop?' is-scene-crop':''}" title="${esc(name)}"><img src="${esc(art.src)}" alt="${esc(name)}" data-crew-id="${esc(a.id)}" data-crew-zone="${esc(zone)}" decoding="sync"></span>`;
+    });
+    const icons={[l.money]:'coin',[l.order]:'justice',[l.karma]:'skull'};
+    const field=(name,value)=>`<span class="save-slot-stat${icons[name]?' has-icon':''}"${icons[name]?` title="${esc(name)}"`:''}>${icons[name]?`<img src="img/ui/icon-${icons[name]}.png" alt="${esc(name)}">`:`<small>${name}</small>`}<b>${esc(value)}</b></span>`;
     return `<button type="button" class="save-slot-card" data-save-slot="${slot.id}"><span class="save-slot-card-top"><span class="save-slot-number">SLOT ${slot.id}</span><strong>${l.continue}</strong><span class="save-slot-arrow" aria-hidden="true">▶</span></span>
-      <span class="save-slot-stats">${field(l.time,formatPlayTime(summary.playTimeMs))}${field(l.money,Math.floor(summary.coin).toLocaleString(en?'en-US':'th-TH'))}${field(l.order,Math.round(summary.order))}${field(l.karma,Math.round(summary.karma))}${field(l.zone,zoneName(summary.zone))}</span>
-      ${summary.playTimePartial?`<small class="save-slot-partial">${l.partial}</small>`:''}<span class="save-slot-crew"><small>${l.crew}</small><span>${esc(crew.join(' · ')||l.none)}</span></span></button>`;
+      <span class="save-slot-stats">${field(l.time,formatPlayTime(summary.playTimeMs))}${field(l.zone,zoneName(summary.zone))}${field(l.money,Math.floor(summary.coin).toLocaleString(en?'en-US':'th-TH'))}${field(l.order,Math.round(summary.order))}${field(l.karma,Math.round(summary.karma))}</span>
+      ${summary.playTimePartial?`<small class="save-slot-partial">${l.partial}</small>`:''}<span class="save-slot-crew"><small>${l.crew}</small><span class="save-slot-portraits">${crew.join('')||`<span>${l.none}</span>`}</span></span></button>`;
   }).join('')}</div>`;
 }

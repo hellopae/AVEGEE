@@ -49,15 +49,12 @@ export function drawSceneAtmosphere(ctx,zone,time,W,H,{reduced=false,enabled=wea
  }
  if(zone==='th')drawThaiLeaves(ctx,time,W,H,reduced);
  drawBiomeWeather(ctx,zone,time,W,H,reduced,[0,0,1,1],cap);
- return {particles:reduced?0:Math.min(cap,zone==='west'||zone==='cyberhell'?cap:weatherBudget({width:W,height:H,dpr})),cloudPeak:zone==='th'||zone==='asia'?.2:.45};
+ return {particles:reduced?0:Math.min(cap,zone==='west'||zone==='cyberhell'?cap:weatherBudget({width:W,height:H,dpr})),cloudPeak:.2};
 }
 let styles=false;
 function mountStyles(){if(styles)return;styles=true;const sheet=document.createElement('style');sheet.textContent=`
 .scene-atmosphere{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:6;pointer-events:none!important;contain:strict}
 .scene-atmosphere-ground{z-index:0!important}
-.scene-atmosphere-props{position:absolute;inset:0;z-index:1;pointer-events:none!important;overflow:hidden}
-.scene-atmosphere-props img{position:absolute;bottom:8%;height:45%;width:auto;max-width:14%;object-fit:contain;opacity:.92;pointer-events:none!important}
-.scene-atmosphere-props img:first-child{left:5%}.scene-atmosphere-props img:last-child{right:5%}
 .arena>.cam-world{isolation:isolate}.arena>.battle-team-hud,.arena>.battle-boss-hud,.arena>.battle-scene-talk,.arena>.battle-timeline{z-index:10}
 `;document.head.append(sheet);}
 /** Mount inside the same camera world as the art. HUD is a sibling; effects never intercept input. */
@@ -65,7 +62,6 @@ export function mountSceneAtmosphere(stage,{zone='th',context='battle',paused=()
  const world=stage?.querySelector(':scope > .cam-world');if(!world)return null;
  if(active.has(world))return active.get(world);mountStyles();
  const canvas=document.createElement('canvas');canvas.className='scene-atmosphere';canvas.dataset.zone=zone;canvas.dataset.context=context;canvas.setAttribute('aria-hidden','true');world.append(canvas);
- let props=null;if(zone==='th'){props=document.createElement('div');props.className='scene-atmosphere-props';props.setAttribute('aria-hidden','true');for(let i=0;i<2;i++){const image=document.createElement('img');image.src=TH_LAMP_ART;image.alt='';props.append(image);} (context==='trial'?world.querySelector('.cam-stage-box')||world:world).prepend(props);}
  const effects=SCENE_EFFECTS[zone]||SCENE_EFFECTS.th;canvas.dataset.effects=effects.join(',');
  const ground=effects.includes('lava')?document.createElement('canvas'):null;
  if(ground){ground.className='scene-atmosphere scene-atmosphere-ground';ground.setAttribute('aria-hidden','true');world.prepend(ground);}
@@ -73,7 +69,7 @@ export function mountSceneAtmosphere(stage,{zone='th',context='battle',paused=()
  const ctx=canvas.getContext('2d'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let width=1,height=1,dpr=1,frame=0,last=0,elapsed=0,drawAt=-Infinity,disposed=false;
  function resize(){width=Math.max(1,world.clientWidth);height=Math.max(1,world.clientHeight);dpr=Math.min(globalThis.devicePixelRatio||1,1.5,Math.sqrt(ATMOSPHERE.maxCanvasPixels/(width*height*(ground?2:1))));canvas.width=Math.max(1,Math.floor(width*dpr));canvas.height=Math.max(1,Math.floor(height*dpr));if(ground){ground.width=canvas.width;ground.height=canvas.height;}canvas.dataset.pixelBudget=String(canvas.width*canvas.height*(ground?2:1));}
  const observer=typeof ResizeObserver!=='undefined'?new ResizeObserver(resize):null;observer?.observe(world);resize();
- function destroy(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer?.disconnect();canvas.remove();ground?.remove();props?.remove();active.delete(world);}
+ function destroy(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer?.disconnect();canvas.remove();ground?.remove();active.delete(world);}
  const state={canvas,ground,destroy,stats:()=>({elapsed,width,height,pixels:canvas.width*canvas.height*(ground?2:1),disposed})};active.set(world,state);
  function tick(now){if(disposed)return;const dialog=stage.closest('dialog');if(!world.isConnected||(dialog&&!dialog.open)){destroy();return;}const hold=paused()||document.hidden;const dt=last?Math.min(120,Math.max(0,now-last)):0;last=now;if(!hold&&!reduced.matches)elapsed+=dt;
   if(now-drawAt>=ATMOSPHERE.frameMs){drawAt=now;

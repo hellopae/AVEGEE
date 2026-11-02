@@ -38,7 +38,7 @@ test('playtime survives real snapshot/restore, excludes inactive gaps and does n
  const copy=createGame();assert.ok(copy.restore(g.snapshot()));assert.equal(copy.playTimeMs,65000);assert.equal(copy.playTimePartial,false);copy.recordPlayTime(4000);assert.equal(copy.playTimeMs,66000,'long frame is bounded rather than counting offline time');
  const old=g.snapshot();delete old.playTimeMs;delete old.playTimePartial;assert.ok(copy.restore(old));assert.equal(copy.playTimeMs,0);assert.equal(copy.playTimePartial,true);assert.equal(saveSlotSummary(old).playTimePartial,true);
 });
-test('slot cards show all requested fields and owned crew across branches, with exactly three choices',()=>{
+test('slot cards show requested fields and regional crew portraits, with exactly three choices',()=>{
  const data=JSON.parse(readFileSync(new URL('./fixtures/b1-v3.json',import.meta.url)));data.playTimeMs=3723000;data.coin=12345;data.order=87;data.karma=22;
  const s=memory();writeSaveSlot(1,data,s);const html=saveSlotMenuHtml(listSaveSlots(s));assert.equal((html.match(/data-save-slot=/g)||[]).length,3);assert.equal((html.match(/New Game/g)||[]).length,2);
  for(const text of ['01:02:03','12,345','87','22','เวลาเล่น','เบี้ยกรรม','ระเบียบ','บาป','ยมทูต'])assert.ok(html.includes(text),text);
