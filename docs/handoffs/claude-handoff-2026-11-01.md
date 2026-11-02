@@ -154,3 +154,69 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
 - Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
 - W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
+
+## Codex 1 พ.ย. 2569 — HOME START + เซฟ3ช่อง (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-home-save-slots`, ฐาน `f9a4edd3`; ไม่merge/push
+- Homeปุ่มหลักSTARTหนึ่งปุ่ม เปิดselector3ช่อง ช่องว่างNew Game ช่องเดิมแสดงเวลาเล่น เงิน ระเบียบ บาป โซน และcrewที่เป็นเจ้าของทุกสาขา; ใช้ปก/โลโก้AVEGEEเดิม
+- Copy-only migrationจากavegee.save.v2ไปslot1 ไม่ลบต้นฉบับ/ไม่ทับslotที่มีข้อมูล; guardก่อนเลือกslotและข้อมูลผิดรูป/storageเต็ม; restartล้างเฉพาะslotที่ยืนยัน ไม่ฟื้นlegacyกลับมา
+- เวลาเล่นforegroundจริง ไม่รวมพักเอง/ออกแท็บ/ปิดเกม; legacyที่ไม่มีเวลาระบุเริ่มนับหลังอัปเดต ไม่เดาเวลาเก่า
+- Full1798/1798,0fail; syntax162/162; targeted20/20และHOME+BALANCE-2 15/15; fixture7snippetpersistence-onlyย้อนกลับได้game.jsเดิมทุกbyteก่อนhashcombat ไม่แตะsimulation32k
+- RealChromium cleanprofile1280×800/390×844ผ่านSTART/3cards/newslot2/reloadcontinue/legacycopy/summary25crew/no-horizontal-overflow; pageErrors=[]
+- รายงาน ภาพจริง สคริปต์browser และlog: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-home-save-slots/README.md`
+- ไม่แตะpunishment/effectsหรือstatus.json/worklog.json/work-mode.json; ไม่อ้างReese/Chrisตรวจ
+
+## Codex 1 พ.ย. 2569 — เวลา/สีทัณฑ์และการแยกความแรงจากคะแนน
+
+- Branch codex/2026-11-01-punishment-duration; ฐานmain df42fb1b
+- 10/30/60/120/240วินาทีตามระดับ1–5, สีฟ้า/เขียว/เหลือง/ส้ม/แดง; คุณเป้ยืนยันเบา30วินาที
+- เวลาทำงานจริง เริ่มหลังถึงสถานี,พัก/ขนส่ง/ซ่อม/ผู้คุมไม่พร้อมไม่เดินเวลา; saveเก่าคงสัดส่วน progress ไม่มีofflinecatchup; ไม่มีนับframe+managementซ้ำ
+- ความแรงไม่เปลี่ยนคะแนน/บาปจากความพอดี; mirrorไม่แนะนำforceที่ได้คะแนน; remorseเลือกforceต่างกันผลเท่ากัน
+- สไปรต์ห้องย้อมจริงผ่านแคช256px/สูงสุด6สีต่อภาพ; ไม่ย้อมฉาก
+- Full1821/1821,0fail; syntax162; Chromiumภาพจริง5สีผ่านไม่มีpageErrors; ก่อนแก้มีtestlegacyที่คาดคะแนนความแรงและaliasเก่า แก้ตามสเปกใหม่แล้ว
+- รายงานภายนอก `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-punishment-duration/README.md`; native fallbackdiagnosticไม่นับเป็นภาพจริง
+- รวมsnippetsfixture punishment-noncombat-changes.jsonกับHOMEfixtureในBALANCE-2ก่อนตรวจชุดรวม ห้ามแก้หลักฐาน32kเดิม
+
+## Codex 2 พ.ย. 2569 — ZONE-ATMOS
+
+- เพิ่ม shared atmosphere ในสอบสวน/ต่อสู้ทุกโซน, TH/Asia เมฆประกอบชั้นแล้วจำกัด20%, THโคมไฟเดิม/Asiaใบไม้และแสง, Westพื้นหิมะ/รอยเท้าจำกัด96จุด อายุ6วินาที
+- ชายแดนใช้projectionร่วม1.12×/follow180ms; ภาพ ตัวละคร pointer และforegroundใช้transformเดียวกัน
+- targeted weather/camera/footprint45/45ผ่าน; fullและbrowserรวมตรวจต่อบนgameplay-updateก่อนเผยแพร่ ยังไม่อ้างตรวจผ่านมือถือจริง
+
+## Codex — RECOVERY-120 (2026-11-02)
+
+Branch: `codex/2026-11-02-recovery-120`, base `df42fb1b`. No merge or push by this task.
+
+Downed crew now disappear from combat/map availability and occupy a real tea-room cushion for 120 wall-clock seconds. Their persistent `teaRest.recovery` record uses the existing room renderer and seat reservations. At the original deadline they return with the existing 50-morale recovery behavior. `battle.absentActors` keeps them excluded from the encounter in which they fell. Guard's battle 1-HP rule and the Yama return/sleep/wake story remain unchanged.
+
+All roster entries, including dormant home zones, advance recovery. JSON saves preserve seat, zone, deadline, and return point. Legacy one-minute recovery deadlines receive a one-time 60-second extension, preserving elapsed time; `recoveryVersion:2` prevents repeated extensions. A full pavilion uses a non-overlapping waiting record until a cushion opens, while retaining the original recovery deadline. Existing voluntary rest remains two minutes from seated arrival and restores 100 morale.
+
+Integration: parent must version canonical import-map destinations for `actor-recovery.js`, `tea-staff-rest.js`, `roster.js`, and `game.js`. This task intentionally does not edit index/UI. The exact `tests/fixtures/recovery-120-runtime-changes.json` snippets normalize only the three reviewed game hooks before authenticating the original combat runtime hash. Combine its normalization with HOME/punishment fixtures when integrating; do not relabel the historical 32,000-trial reports.
+
+Validation: existing recovery/tea/BALANCE-2 targeted 28/28, new recovery cases 4/4, revised roster migration 7/7. First full suite1813/1814: sole old B1 one-minute expectation was corrected and its7 focused tests passed. Parent requested stopping redundant full rerun; final integrated full verification belongs to parent. Interrupted rerun1808pass/0fail/1cancelled is not claimed green. Full logs recorded in external task evidence. `node --check` for four changed runtime modules and `git diff --check` passed. No browser or physical-device performance claim in this task; parent owns integrated browser review.
+
+Evidence: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-recovery-120/`.
+
+## Codex — ONBOARD-FOOD (2026-11-02)
+
+Branch `codex/2026-11-02-onboard-food`, base `df42fb1b`. No merge/push. Ownership: new `src/onboarding.js`, narrow UI court/merchant/canteen hooks, `src/canteen.js`, indoor cook rendering in `src/room.js`, outdoor cook visibility/hit filtering in `src/scene.js`, and regression tests. No game.js, sentencing guide, quest/story event, or index changes.
+
+Explicit New Game records onboarding and removes the formerly free cauldron so the first build lesson is real. Instructions explain opening court, receiving the ferry's soul, and choosing consideration/investigation. First investigation prompts walking to the upper copper-cauldron build point; it waits for a completed usable destination. Existing/continued saves are not initialized or stripped of buildings. The hook in startPlay(fresh) is idempotent.
+
+HOME integration: after `g.saveSlot=id;` in enterSaveSlot, add `if(fresh)beginCourtOnboarding(g);` before the first `g.save()`; keep startPlay's idempotent fallback. This ordering was checked in a detached bf021975 preview plus this feature. The very first selected-slot write already omits free krata, other slots remain untouched, and continued existing slots retain krata. Import-only merge conflicts preserve both sides (punishment/FX/HOME imports plus new onboarding/canteen imports). Existing UI export list gains openMerchant/openStation; do not add duplicate export declarations.
+
+Merchant and reachable canteen both sell ten pooled food packs through existing g.buy('food',1), independently of Nira. Existing stock/inventory consumables and worker meal ordering/delivery remain separate, clearly labeled. Cook reaches outdoor entrance, walks up the actual canteen interior stairs to the counter, and cooks inside. Room-local walk progress persists; legacy already-cooking saves remain inside. Outdoor sprite and hit target disappear during the inside phase, then existing return-to-post movement resumes after final portion/cancellation. Existing paid portions/3-second preparation timing are preserved.
+
+Validation: focused onboarding/food/travel/BALANCE-2 tests 29/29; syntax checks for five changed runtime modules and whitespace checks clean. Real clean-profile Chromium proof covers New Game instructions, actual first-investigation build prompt/walk action, merchant food purchase, and indoor cook at1280x800 and390x844, with no page errors. HOME preview additionally covers selected-slot first-write timing and Continue preserving old buildings. Parent owns final integrated full suite; no separate full claimed.
+
+Cache/import-map filenames for parent: onboarding.js(new),canteen.js,scene.js,room.js,ui.js. Evidence and browser harness: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-onboard-food/`.
+
+## Codex 2 พ.ย. 2569 — ชุดรวม START / ทัณฑ์ / อากาศ / พักฟื้น / สอนเล่น
+
+- รวมHOME-SLOTS, PUNISHMENT-DURATION, ZONE-ATMOS, RECOVERY-120, ONBOARD-FOOD พร้อมรักษาcacheทุกaliasและอาร์ตเดิมบนmain
+- ความแรง10/30/60/120/240วินาที+สีฟ้า/เขียว/เหลือง/ส้ม/แดง; คู่มือและบทสอนเลิกสอนสูตรให้คะแนนความแรงเดิม
+- เกมใหม่เริ่มสอนสร้างกระทะก่อนสอบสวนและบันทึกลงslotที่เลือกตั้งแต่ครั้งแรก; Continueไม่ลบอาคาร
+- ซื้อเสบียงที่พ่อค้า/โรงอาหารได้ พ่อครัวเข้าไปทำงานในห้อง; ยมทูตล้มพักศาลา120วินาที มีsnapshot/legacy migrationและไม่กลับศึกเดิม
+- Full1844/1844,0fail,0cancel; syntax192ไฟล์ผ่าน; ChromiumจริงตรวจHOME1280/390,8ฉากสอบสวน/ต่อสู้,20%เมฆ,pause/weather-off,ห้องพักฟื้น,สอนเล่น/ซื้อข้าว/พ่อครัวครบ
+- หลักฐานอยู่นอกrepo Output/Codex/2026-11-02-gameplay-release; ยังไม่อ้างFPSมือถือจริงหรือผ่านReese/Chris
+- คิวและข้อความคอมเมนต์ต้นฉบับอยู่docs/queues/2026-11-02-active-queue.md; คิวถัดไปQUEST-OWNER แล้วW4-FOUNDATION/ทีละโซน/CAVE-12/OCCLUSION/BALANCE-W4

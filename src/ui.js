@@ -1,3 +1,8 @@
+import {mountSceneAtmosphere} from './scene-atmosphere.js';
+import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
+import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
+import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishment.js';
+import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
@@ -147,8 +152,8 @@ const HEAL_GLOW_MS = 1000;   // L2: เอฟเฟกต์ได้เติ�
 const PHASE_GUARD_MS = 3000; // ต้องมากกว่า 780(อนิเมชันเรา) + COUNTER_WAIT_MS(800) + 780(อนิเมชันเขา) ≈2360 พอมีระยะปลอดภัย
 
 const g = createGame();
-const SAVED = loadSave();
-if (SAVED) g.restore(SAVED);
+g.saveSlot = null; // Home/settings must never save a fresh game over an unselected slot.
+const slotMigration = migrateLegacySave();
 bindZone(() => g.zone);          // รูปประจำโซน — art.js ต้องรู้ก่อนวาดเฟรมแรก
 bindHeroStyle(() => g.outfit || g.zone); // ชุด Yama เป็นรางวัลสะสม เลือกข้ามโซนได้
 const cv = $('#cv'), ctx = cv.getContext('2d');
@@ -355,7 +360,9 @@ function mapDrawDue(now) {
 function render(c, game, now, ...rest) { if (mapDrawDue(now)) renderMap(c, game, now, ...rest); }
 
 function frame(now) {
-  const dt = Math.min(120, now - last); last = now;
+  const elapsed = Math.max(0, now - last);
+  const dt = Math.min(120, elapsed); last = now;
+  g.recordPlayTime(elapsed, started && !document.hidden && !userPaused && !g.over);
   if (!g.paused && !g.over) { keyWalk(dt); g.stepWorld(dt); }   // ตัวละครเดินตามเวลาจริง ไม่ผูกกับวาระ
   if (!g.paused && !g.over) g.advanceAfterlife(dt);
   if (now > saveAt) { saveAt = now + 4000; g.save(); }
@@ -730,18 +737,14 @@ function verdictCard(soul, r, stK, crewK, intensity, closed) {
     `<div class="row-truth ${m.fake ? 'fake' : ''}" style="color:${sentenceColor(m.v).color}">🪷 ${esc(m.t)}${m.fake ? ' ← บุญปลอม เขากุขึ้นเอง' : ` (ลด ${m.v} วาระ)`}</div>`).join('')
     || '<div class="row-truth">ไม่มีบุญถ่วงเลย</div>';
 
-  const diff = intensity - soul.deserved;
-  const judgement = diff === 0 ? '<b style="color:var(--success)">พอดีกรรมเป๊ะ</b>'
-    : diff > 0 ? `<b style="color:var(--destructive)">หนักเกินไป ${diff} วาระ</b> — ส่วนเกินกลายเป็นกรรมของท่าน +${r.karma}`
-               : `<b style="color:var(--warning)">เบาไป ${-diff} วาระ</b> — เขายังไม่สำนึก`;
 
   return `<div class="sec">ความจริงทั้งหมด (ตอนนี้เห็นได้แล้ว)</div>${truth}
     <div class="sec">บุญที่อ้าง</div>${merit}
     <div class="sec">${closed ? 'ท่านตัดสินไปว่า' : 'ท่านสั่งไปว่า'}</div>
     <div class="row-truth">ส่ง<b>${esc(st?.name ?? '—')}</b> ${hit ? '<span style="color:var(--success)">ตรงชนิดกรรม</span>' : '<span style="color:var(--destructive)">ไม่ตรงชนิดกรรม</span>'}
       · ผู้คุม ${esc(g.crewOf(crewK)?.name ?? crewName(CREW.find(c => c.k === crewK), g.zone))}</div>
-    <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · สมควรได้รับ <b>${soul.deserved}</b> → ${judgement}</div>
-    ${kv([`ธรรม ${r.tham}`, `เข็ด ${r.ked}`, `รวม ${r.score}`,
+    <div class="row-truth">ระดับวาระ <b>${intensity} ${INTENSITY[intensity]}</b> · ระยะเวลา <b>${punishmentTimeLabel(intensity)}</b></div>
+    ${kv([`ธรรม ${r.tham}`, `รวม ${r.score}`,
           '★'.repeat(r.stars ?? 0) + '☆'.repeat(5 - (r.stars ?? 0))])}`;
 }
 
@@ -1323,7 +1326,7 @@ function drawOverlay() {
     d.dataset.sx = SPOTS.bench.x; d.dataset.sy = SPOTS.bench.y - 104;
     const st = '★'.repeat(fx.stars) + '☆'.repeat(5 - fx.stars);
     d.innerHTML = `<span style="color:${col};font-size:2rem;letter-spacing:2px">${st}</span>` +
-      `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham} · เข็ด ${fx.ked}</small>`;
+      `<small style="color:${col}">${fx.score} คะแนน · ธรรม ${fx.tham}</small>`;
     ov.appendChild(d); place(d);
     const feedback=mark('boss speech-side', SPOTS.throne.x, SPOTS.throne.y - charH() - 8, '👑',
       `<span class="who">${esc(authorityOf(g.zone).title)}</span>${esc(fx.line)}<button type="button" class="verdict-dismiss" data-dismiss-verdict>รับทราบ · ข้ามข้อความ</button>`, true);
@@ -2102,7 +2105,8 @@ function openLedger(o) {
 
 /** เริ่มใหม่จริง ๆ — หยุดบันทึกอัตโนมัติก่อน ไม่งั้นลูปเฟรมอาจเขียนเซฟทับตอนกำลังรีโหลด */
 function restart() {
-  saveAt = Infinity; clearSave();
+  if (!clearSave(g.saveSlot)) return showSaveSlotError();
+  saveAt = Infinity; g.saveSlot = null;
   sessionStorage.setItem('avegee.fresh', '1');   // เริ่มใหม่แล้วเข้าเกมเลย ไม่ต้องผ่านหน้าปกอีกรอบ
   location.reload();
 }
@@ -2110,9 +2114,11 @@ function restart() {
 function restartCurrentZone() {
   if (g.zone === 'th' || !g.zoneEntry) return restart();
   const entry = JSON.parse(JSON.stringify(g.zoneEntry));
+  const played = {playTimeMs:g.playTimeMs,playTimePartial:g.playTimePartial};
   saveAt = Infinity;
   if (!g.restore(entry)) { saveAt = 0; return; }
   g.zoneEntry = entry;
+  Object.assign(g,played);
   g.hp = g.hpMax; g.order = Math.max(72, g.order);
   g.reds = 0; g.yamaDone = false; g.over = null;
   if (!g.save()) { saveAt = 0; return; }
@@ -2167,7 +2173,7 @@ function openVerdictScene() {
     </div>
     <div class="zone-arrival-band">
       <div class="intro-comic-caption"><h2>${esc(sc.speaker)}</h2><p class="verdict-line">${esc(sc.line)}</p>
-        <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)} · เข็ด ${esc(sc.ked)}</small></div>
+        <div class="verdict-stats" style="color:${col}"><span class="verdict-stars">${stars}</span><small>${esc(sc.score)} คะแนน · ธรรม ${esc(sc.tham)}</small></div>
         ${sc.reason ? `<p class="verdict-reason">${esc(sc.reason)}</p>` : ''}
         ${sc.reward ? `<div class="verdict-reward">${esc(sc.reward)}</div>` : ''}</div>
       <div class="intro-comic-controls"><button class="gold" data-verdict-scene-done>รับทราบ · ข้าม</button></div>
@@ -2619,6 +2625,12 @@ function openTrial(initialError = '') {
   if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s || !g.caseReady(s)) return;
+  if(needsFirstDestination(g)){
+    const cauldron=STATIONS.find(d=>d.k==='krata'),building=g.stations.find(st=>st.def.k==='krata');
+    modal(`<h2>เตรียมกระทะทองแดงก่อนสอบสวน</h2><p>เดินขึ้นไปที่จุดสร้างกระทะทองแดงด้านบน แล้วกดสร้าง เพื่อให้มีสถานที่ลงทัณฑ์รองรับคำตัดสินแรก${building?.build?' · ช่างกำลังก่อสร้าง รอจนเสร็จก่อนพิจารณาคดี':''}</p><button class="gold" data-walk-cauldron>เดินไปจุดสร้างกระทะทองแดง</button><button data-close>กลับแผนที่</button>`,d=>{
+      d.querySelector('[data-walk-cauldron]').onclick=()=>{dlg.close();g.walkTo(cauldron.x,cauldron.y);refresh();};
+    });return;
+  }
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
@@ -2736,7 +2748,7 @@ function openTrial(initialError = '') {
       : heaven ? '' : [1, 2, 3, 4, 5].map(i => {
       const revealed = i === answer?.intensity;
       return `<button class="orb-choice${revealed ? ' is-revealed' : ''}" data-v="${i}" data-pickkey="inten" ${i === pick.inten ? 'aria-pressed="true"' : ''}
-        title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
+        title="ระดับ ${i} ${esc(INTENSITY[i])}${revealed ? ' · ' + esc(t('trial.revealedForce')) : ''}">${orbImg(forceIcon(i), INTENSITY[i])}<b>${esc(INTENSITY[i])}</b><small style="color:${punishmentLevel(i).color}">${punishmentTimeLabel(i)}</small>${revealed ? '<span class="reveal-mark" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('');
     const crewNow = pick.cr && g.crewOf(pick.cr);
     const selected = [
@@ -3028,6 +3040,7 @@ function trialCameraAttach() {
     box.style.setProperty('min-height', '0', 'important');
   };
   camera.attach(hud);
+  mountSceneAtmosphere(hud,{zone:g.zone,context:'trial',paused:()=>userPaused||document.hidden});
   place(); requestAnimationFrame(place);
   if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (hud.isConnected) place(); else ro.disconnect(); }); ro.observe(hud); ro.observe(real); }
 }
@@ -3205,6 +3218,13 @@ function openNiraOffice() {
   }, 250);
 }
 
+function foodSupplyCard(disabled=false) {
+  return `<article class="shop-card" style="grid-template-columns:42px minmax(0,1fr)">${itemImg('food','class="shop-item-img"')}<span><b>ข้าวปั้นเข้าคลังเสบียง ×10</b><small>${BAL.foodPrice*10} เบี้ยกรรม · ใช้ป้อนยมทูต · เหลือ ${Math.round(g.food)} ห่อ</small></span><button class="gold" style="grid-column:1/-1" data-buy-supply ${disabled||g.coin<BAL.foodPrice*10?'disabled':''}>ซื้อข้าวปั้น</button></article>`;
+}
+function bindFoodSupply(root,after,allowed=()=>true){
+  root.querySelector('[data-buy-supply]')?.addEventListener('click',()=>{if(allowed()&&g.buy('food',1)){g.save();sfx('coin');after();refresh();}});
+}
+
 function openMerchant() {
   if (!g.zoneCaptivesFree() || !g.merchantAvailable()) return;
   g.markHistory('merchant');   // Q2: เปิดร้านพ่อค้า = เปิดการ์ดคู่มือ
@@ -3215,6 +3235,7 @@ function openMerchant() {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       ${merchantGreet}<button data-quests>ภารกิจ · จดหมายฝาก</button>
+      <h3>เสบียงสำหรับยมทูต</h3>${foodSupplyCard()}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -3229,6 +3250,7 @@ function openMerchant() {
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelector('[data-quests]').onclick=()=>openQuests();
+    bindFoodSupply(dlg,paint);
   };
   paint(); openDlg('merchant');
 }
@@ -4037,7 +4059,8 @@ function openBattle(after) {
       </div>${prep}${prepLayer}${fleeLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
-    camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
+    camera.attach(stage);
+    mountSceneAtmosphere(stage,{zone:g.zone,context:'battle',paused:()=>userPaused||document.hidden});          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
     applyDashPosition();
     if (!phase) clearMoveName(); else renderMoveName();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);
@@ -5064,6 +5087,10 @@ function drawCoach() {
   if (g.battle) { coachEl.hidden = true; return; }
   if (g.over) { coachEl.hidden = true; return; }
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
+  if(firstCourtJob(g)&&!g.taught.includes('court-first-steps')){
+    g.taught.push('court-first-steps');g.save();coachEl.hidden=true;
+    bossModal('รับสำนวนแรก',COURT_FIRST_STEPS,'รับทราบ');return;
+  }
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
   const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
 
@@ -5533,13 +5560,14 @@ function openStation(k, emergency = false) {
       // Q3: ฟอร์มสั่งข้าวปั้นอยู่ในการ์ดซ้ายบน (.st-card) แถวเรียงในกรอบ — เดิมวางใน #st-actions (inset:0 + pointer-events:none) ทับการ์ดและกดไม่ได้
       const state=canteenState(g);
       const keepCook=L.querySelector('#rice-cook')?.value, keepCount=L.querySelector('#rice-count')?.value;   // วาดซ้ำทุกครั้งที่คิวเปลี่ยน — อย่าให้ค่าที่ผู้เล่นเลือกค้างไว้เด้งกลับ
-      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
-      put(L, `<h2>🍙 โรงอาหาร</h2><p>เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
+      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',entering:'เดินเข้าโรงอาหาร',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
+      put(L, `<h2>🍙 โรงอาหาร</h2>${foodSupplyCard(!inside)}<p>ครัวทำอาหารสำหรับคนงานแจกให้ทีม (แยกจากคลังเสบียง) · เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
         <div class="canteen-panel"><p class="canteen-status">พร้อมแจก ${state.meals}/6 · ${queue}</p>
         <div class="canteen-form"><label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
         <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" inputmode="numeric"></label></div>
         <div class="canteen-buttons"><button id="rice-order" class="btn-gold" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
         ${state.orders.map(o=>`<button class="btn-gold" data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}</div><small id="rice-error" role="status"></small></div>`);
+      bindFoodSupply(L,panels,()=>!!R?.inReach());
       if(keepCook&&[...L.querySelector('#rice-cook').options].some(o=>o.value===keepCook))L.querySelector('#rice-cook').value=keepCook;
       if(keepCount)L.querySelector('#rice-count').value=keepCount;
       put(A,'');
@@ -6649,6 +6677,7 @@ function startPlay(fresh) {
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
+  if(fresh)beginCourtOnboarding(g);
   if(fresh&&g.queue[0])g.startCourtArrival(g.queue[0]); // เรือรออยู่นอกฉากจนกดเปิดศาล
   updatePlay();
   if (fresh) {
@@ -6706,30 +6735,40 @@ function buildTitle() {
   applyTitleLang();
   applyI18n(titleEl);
 
-  const rs = $('#t-resume');
-  if (SAVED) {
-    rs.hidden = false;
-    const lv = LEVELS[Math.max(0, (SAVED.level || 1) - 1)];
-    const z = ZONES.find(x => x.k === (SAVED.zone || 'th')) || ZONES[0];
-    $('#t-resume-info').textContent =
-      `${z.name} · วาระที่ ${SAVED.tick || 0} · ปิดคดีแล้ว ${SAVED.casesDone || 0} · ${lv.name} ⭐${SAVED.star5 || 0}`;
-    rs.onclick = () => { sfx('gong'); startPlay(false); };
-  }
-  $('#t-new').onclick = () => {
-    unlock(); sfx('gong');
-    if (!SAVED) return startPlay(true);
-    modal(`<h2>${esc(t('title.confirmNewGame.title'))}</h2>
-      <p style="line-height:var(--leading-body);font-size:var(--text-sm)">${esc(t('title.confirmNewGame.body'))}</p>
-      <div class="row"><button data-close>${esc(t('title.confirmNewGame.cancel'))}</button>
-        <button class="gold" id="ngo">${esc(t('title.confirmNewGame.ok'))}</button></div>`,
-      d => d.querySelector('#ngo').onclick = () => {
-        clearSave();
-        sessionStorage.setItem('avegee.fresh', '1');   // โหลดใหม่แล้วข้ามหน้าปกไปเลย
-        location.reload();
-      });
-  };
+  $('#t-start').onclick = () => { unlock(); sfx('gong'); openSaveSlots(); };
   $('#t-intro')?.closest('.title-secondary')?.remove();
   $('#t-set').onclick = () => { unlock(); openSettings(); };
+}
+
+function showSaveSlotError() {
+  modal(`<h2>${getLang()==='en'?'Save unavailable':'บันทึกไม่ได้'}</h2><p>${esc(slotMenuError(getLang()))}</p><button data-close>${getLang()==='en'?'Close':'ปิด'}</button>`);
+}
+function enterSaveSlot(id) {
+  if (started || !validSlot(id)) return false;
+  const slot=readSaveSlot(id);
+  if (!['empty','occupied'].includes(slot.status)) return false;
+  try {
+    const fresh=slot.status==='empty';
+    if (!g.restore(fresh?createGame().snapshot():slot.data)) return false;
+    if (!selectSaveSlot(id)) return false;
+    g.saveSlot=id;
+    if(fresh)beginCourtOnboarding(g);
+    if (!g.save()) {g.saveSlot=null;return false;}
+    if (dlg.open) dlg.close();
+    startPlay(fresh);
+    return true;
+  } catch {g.saveSlot=null;return false;}
+}
+function openSaveSlots(message='') {
+  const migrationNote=!slotMigration.ok?(getLang()==='en'?'Existing save data could not be read. It has not been overwritten.':'อ่านข้อมูลเซฟเดิมไม่ได้ ข้อมูลยังเก็บไว้และไม่ถูกเขียนทับ'):'';
+  modal(saveSlotMenuHtml(listSaveSlots(),{lang:getLang(),message:message||migrationNote}),d=>{
+    d.querySelector('[data-slot-back]').onclick=()=>d.close();
+    d.querySelectorAll('[data-save-slot]').forEach(button=>button.onclick=()=>{
+      if(!enterSaveSlot(Number(button.dataset.saveSlot))){
+        d.querySelector('.save-slot-message').textContent=slotMenuError(getLang());
+      }
+    });
+  },'save-slots-modal');
 }
 
 // ---------- ตั้งค่า ----------
@@ -6791,7 +6830,7 @@ function openSettings() {
           <img src="img/ui/icon-home.png" alt=""></button><small data-t="settings.home"></small></div>
         <div class="settings-action-wrap"><button id="s-restart" class="settings-square" data-t-title="settings.restart" data-t-aria="settings.restart" aria-label="restart">
           <img src="img/ui/icon-restart.png" alt=""></button><small data-t="settings.restart"></small></div>` : ''}
-      <div class="settings-action-wrap"><button id="s-save" class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
+      <div class="settings-action-wrap"><button id="s-save" ${inGame?'':'disabled'} class="settings-square settings-square--save" data-t-aria="settings.save" aria-label="save">
         <img id="s-save-img" src="img/ui/icon-save-th.png" alt="">
       </button><small data-t="settings.save"></small></div>
     </div>
@@ -6830,8 +6869,8 @@ function openSettings() {
 
       const savedHint = d.querySelector('#s-saved-hint');
       d.querySelector('#s-save').onclick = () => {
-        g.save(); sfx('stamp');
-        savedHint.textContent = t('settings.saved');
+        if (!started || !g.save()) {savedHint.textContent=slotMenuError(getLang());return;}
+        sfx('stamp'); savedHint.textContent = t('settings.saved');
       };
 
       if (inGame) {
@@ -6843,7 +6882,8 @@ function openSettings() {
             <div class="row"><button data-close>${esc(t('settings.restart.confirmCancel'))}</button>
               <button class="gold" id="rgo" style="border-color:var(--destructive);background:var(--destructive)">${esc(t('settings.restart.confirmOk'))}</button></div>`,
             d2 => d2.querySelector('#rgo').onclick = () => {
-              clearSave();
+              if (!clearSave(g.saveSlot)) return showSaveSlotError();
+              saveAt=Infinity;g.saveSlot=null;
               sessionStorage.setItem('avegee.fresh', '1');
               location.reload();
             });
@@ -6892,14 +6932,15 @@ async function afterBoot() {
 if (document.documentElement.dataset.bootReady === 'true' || !$('#boot')) afterBoot();
 else addEventListener('avegee:boot-ready', afterBoot, { once:true });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) pauseWhenLeaving();
+  if (document.hidden) {pauseWhenLeaving();if(started)g.save();}
   if (!document.hidden) setTimeout(showAutoPause, 0);
 });
 updatePlay();
 buildTitle();
 applyI18n(document);                     // ข้อ C1 — ทา i18n ทั้งจอครั้งแรกตอนบูต (HUD/แผงต่างๆ)
-if (FRESH) startPlay(true);              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
+if (FRESH && !enterSaveSlot(readActiveSlot())) revealTitle();              // เพิ่งกด "เริ่มใหม่" มา ไม่ต้องกลับไปหน้าปกอีกรอบ
 else refresh();                          // วาดแผงไว้ใต้หน้าปก จะได้ไม่กระพริบตอนกดเริ่ม
+addEventListener('pagehide',()=>{if(started)g.save();});
 
 /** ฉากเปิด — พญายมมาบ่น มอบหมายงาน แนะนำคนสองคนที่เหลือ แล้วยัดเบี้ยกรรมให้ก้อนหนึ่ง
  *  โผล่เฉพาะเกมใหม่ ไม่ใช่ทุกครั้งที่เปิดหน้าเว็บ (เดิมเด้งทุกครั้งแม้โหลดเซฟเก่า) */
@@ -6941,4 +6982,4 @@ window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก �
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay};
+export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay,openMerchant,openStation};

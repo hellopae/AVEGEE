@@ -113,9 +113,12 @@ test('BALANCE-2 evidence covers 200 paired trials per case and stays tied to the
   // simulation input. Every other byte (including all combat code) stays hashed;
   // do not relabel or overwrite the 32,000-trial BALANCE-2 evidence as a new run.
   const mapOnly=JSON.parse(readFileSync(new URL('./fixtures/z4-town-a-map-only-changes.json',import.meta.url)));
+  const saveOnly=JSON.parse(readFileSync(new URL('./fixtures/home-save-slots-runtime-changes.json',import.meta.url)));
+  const recoveryOnly=JSON.parse(readFileSync(new URL('./fixtures/recovery-120-runtime-changes.json',import.meta.url)));
+  const sentenceOnly=JSON.parse(readFileSync(new URL('./fixtures/punishment-noncombat-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

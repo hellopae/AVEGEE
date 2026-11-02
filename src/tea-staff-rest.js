@@ -25,9 +25,24 @@ export function startTeaRest(g, c, zone, dest, path, now) {
   const seat=reserveTeaSeat(g,zone,c); if(seat==null)return null;
   return {phase:'travel',zone,seat,dest,path:path||[],movedAt:now,returnAt:[c.x,c.y],speed:c.id.startsWith('worker:')?.11:.075};
 }
+// Knocked-out crew are carried straight inside; a full pavilion keeps them in a
+// non-overlapping waiting state until a cushion frees up. Recovery time still runs.
+export function startRecoveryTeaRest(g,c,zone,now) {
+  const seat=reserveTeaSeat(g,zone,c);
+  return {phase:seat==null?'recovery-wait':'rest',recovery:true,zone,seat,
+    startedAt:c.recoverUntil-STAFF_TEA_REST_MS,until:c.recoverUntil,
+    returnAt:[c.hx??c.x??0,c.hy??c.y??0]};
+}
 export function advanceTeaRest(g,c,now) {
   const rest=c.teaRest;if(!rest||typeof rest!=='object')return false;
   let changed=false;
+  if(rest.recovery){
+    if(now>=rest.until){
+      c.morale=50;c.recoverUntil=0;[c.x,c.y]=rest.returnAt;c.path=null;c.target=null;c.teaRest=null;return true;
+    }
+    if(rest.seat==null){const seat=reserveTeaSeat(g,rest.zone,c);if(seat!=null){rest.seat=seat;rest.phase='rest';return true;}}
+    return false;
+  }
   if(!Number.isInteger(rest.seat)||rest.seat<0||rest.seat>=TEA_SEAT_COUNT){rest.seat=reserveTeaSeat(g,rest.zone,c);changed=true;}
   // Recompute from the original arrival: saves made under the one-minute rule keep elapsed time.
   if(rest.phase==='rest')rest.until=rest.startedAt+STAFF_TEA_REST_MS;

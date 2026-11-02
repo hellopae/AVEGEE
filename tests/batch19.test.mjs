@@ -31,7 +31,7 @@ test('closed court finishes punishment and afterlife walk without advancing puni
   g.step();
   assert.equal(slot.progress, pausedProgress);
   g.paused = false;
-  for (let i = 0; i < 10 && st.slots.length; i++) g.step();
+  for (let i = 0; i < 100 && st.slots.length; i++) g.step();
   assert.equal(st.slots.length, 0);
   assert.equal(g.afterlifeWalks[0]?.destination, 'prison');
   g.advanceAfterlife(100000);

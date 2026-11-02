@@ -35,7 +35,7 @@ test('mirror reveals the bonus station, deserved intensity and operationally rec
   assert.ok(g.usePower('mirror', soul));
   const answer = g.trialAnswer(soul);
   assert.equal(answer.station.k, 'krata');
-  assert.equal(answer.intensity, soul.deserved);
+  assert.equal(answer.intensity, null);
   const station = g.stations.find(st => st.def.k === answer.station.k);
   const scores = ['taan', 'kan'].map(k => ({ k, score:g.judge({ ...station, crewK:k }, { soul, intensity:soul.deserved }).score }));
   assert.equal(scores[0].score, scores[1].score, 'keeper skill does not change justice');
@@ -48,7 +48,7 @@ test('mirror reveals the bonus station, deserved intensity and operationally rec
   const restored = createGame();
   assert.equal(restored.restore(g.snapshot()), true);
   assert.equal(restored.trialAnswer(restored.queue[0]).station.k, 'krata');
-  assert.equal(restored.trialAnswer(restored.queue[0]).intensity, deservedOf(restored.queue[0]));
+  assert.equal(restored.trialAnswer(restored.queue[0]).intensity, null);
   restored.spawnSoul();
   assert.equal(restored.defer(), true);
   assert.equal(restored.trialAnswer(restored.queue[0]), null);

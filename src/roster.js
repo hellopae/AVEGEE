@@ -1,4 +1,4 @@
-import { specialCooldown } from './actor-recovery.js';
+import { specialCooldown, migrateActorRecovery } from './actor-recovery.js';
 import { migrateStatTraining } from './progression.js';
 // Owned actors only: hiring a kind in another branch creates a different person.
 import { CREW, crewName } from './data.js';
@@ -22,7 +22,7 @@ export function actorFromLegacy(sv, zone, kind = sv.k) {
 }
 
 const STATE_FIELDS = ['id', 'kind', 'homeZone', 'k', 'morale', 'hunger', 'upLv',
-  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'helpReadyAt', 'helpRemainingMs', 'helpCooldownSeconds',
+  'statTraining', 'raeng', 'rabiab', 'panya', 'metta', 'recoverUntil', 'recoveryVersion', 'helpReadyAt', 'helpRemainingMs', 'helpCooldownSeconds',
   'teaRest', 'at', 'tired', 'x', 'y', 'buildK'];
 export function snapshotRoster(roster) {
   return Object.fromEntries(listActors(roster).map(a => [a.id,
@@ -62,8 +62,9 @@ export function migrateRosterSave(input, now = Date.now()) {
   for (const [home, branch] of Object.entries(d.zoneSave || {})) if (home !== zone) absorb(branch, home);
   absorb(d, zone);
   if (d.rosterVersion !== ROSTER_VERSION) {
-    for (const a of Object.values(roster)) if (a.morale === 0 && !a.recoverUntil) a.recoverUntil = now + 60000;
+    for (const a of Object.values(roster)) if (a.k === 'guard' && a.morale === 0 && !a.recoverUntil) a.recoverUntil = now + 60000;
   }
+  for (const a of Object.values(roster)) migrateActorRecovery(a, now);
   d.roster = snapshotRoster(roster);
   d.rosterVersion = ROSTER_VERSION;
   d.teamLimits = { ...TEAM_LIMITS };

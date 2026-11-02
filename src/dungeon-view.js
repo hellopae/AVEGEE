@@ -1,10 +1,13 @@
+import {drawSnowGround} from './scene-atmosphere.js';
+import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
+import {weatherEnabled} from './map-ambient.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import {createRouteFlow} from './route-flow.js?v=20261030-b12-fx';
 import {mapActorHeight,routeCharacterScale} from './character-scale.js';
 import {ROUTE_FOREGROUND,drawRouteForeground} from './route-occlusion.js';
 import {createFrontierNavigation} from './dungeon-navigation.js';
 import {drawFrontierAmbient,drawFrontierTree,drawFrontierWeather} from './frontier-ambient.js';
-import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget} from './frontier-view-metrics.js';
+import {FRONTIER_WORLD,frontierActorHeight,frontierCameraTarget,FRONTIER_CINEMATIC} from './frontier-view-metrics.js';
 import {bossGuideWaiting,bossGuideFollowing,bossGuideFollowPoint} from './boss-guides.js';
 import { dungeonStatus, dungeonPatrols } from './zone-travel.js';
 import { LEGACY_CORRIDOR, LEGACY_CHECKPOINT_PROGRESS, routeRow, isWildernessRoute, routeBossCave, routeCaptainCave } from './route-geometry.js';
@@ -343,11 +346,8 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
   observer?.observe(canvas.parentElement);listen(window,'resize',resize);resize();
   const world=()=>FRONTIER_WORLD;
   function camera(dt) {
-    const base=frontierCameraTarget(width,height,position,zoom?.level===0);
-    const scale=base.scale*(zoom?.level? [0,1,1.5,2][zoom.level]:1);
-    const x=zoom?.level?clamp(width/2-position[0]*FRONTIER_WORLD.w*scale,width-FRONTIER_WORLD.w*scale,0):base.x;
-    const y=zoom?.level?clamp(height*.6-position[1]*FRONTIER_WORLD.h*scale,height-FRONTIER_WORLD.h*scale,0):base.y;
-    const f=reduced.matches?1:1-Math.exp(-dt/110);cam.x+=(x-cam.x)*f;cam.y+=(y-cam.y)*f;cam.scale+=(scale-cam.scale)*f;
+    const base=frontierCameraTarget(width,height,position,zoom?.level===0,zoom?.level?[0,1,1.5,2][zoom.level]:1);
+    const f=reduced.matches?1:1-Math.exp(-dt/FRONTIER_CINEMATIC.smoothingMs);cam.x+=(base.x-cam.x)*f;cam.y+=(base.y-cam.y)*f;cam.scale+=(base.scale-cam.scale)*f;
   }
   const screenPoint=p=>{const w=world();return [cam.x+p[0]*w.w*cam.scale,cam.y+p[1]*w.h*cam.scale];};
   // The cave talk button exists only while the boss is really drawn there (no invisible hit spot).
@@ -421,6 +421,10 @@ function mountWildernessView(container,g,{onEncounter=()=>{},onArrival=()=>{},on
     if(image.complete&&image.naturalWidth) ctx.drawImage(image,cam.x,cam.y,w.w*cam.scale,w.h*cam.scale);
     flow?.draw(ctx,{time:t,reduced:reduced.matches,paused:isPaused(),x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,width,height});
     if(isWildernessRoute(routeId))drawFrontierAmbient(ctx,{time:t,reduced:reduced.matches,x:cam.x,y:cam.y,w:w.w*cam.scale,h:w.h*cam.scale,...routeRow(routeId).ambient,trees:[]});
+    const snowArea=routeId==='asia:west'?[.48,0,1,1]:routeId==='west:cyberhell'?[0,0,.5,1]:null;
+    const floor=(x,y)=>!!snowArea&&x/w.w>=snowArea[0]&&x/w.w<=snowArea[2]&&nav.walkable([x/w.w,y/w.h]);
+    const snow=updateSnowTracks(root,[{id:'you',x:position[0]*w.w,y:position[1]*w.h},{id:'nira',x:follower[0]*w.w,y:follower[1]*w.h}],t,{active:!!snowArea&&weatherEnabled()&&!reduced.matches,paused:isPaused(),validAt:floor});
+    if(snowArea&&weatherEnabled()){ctx.save();ctx.translate(cam.x,cam.y);ctx.scale(cam.scale,cam.scale);drawSnowGround(ctx,w.w,w.h,{validAt:floor,area:snowArea,strength:.3});if(!reduced.matches)drawSnowTracks(ctx,snow);ctx.restore();}
     const status=dungeonStatus(g);if(!status)return;
     drawStartMarker(ctx,routeId,screenPoint,DUNGEON_START_REACH,w,cam,t,reduced.matches);
     ctx.font='bold 13px sans-serif';ctx.textAlign='center';

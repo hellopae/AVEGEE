@@ -65,39 +65,11 @@ test('keeper fit: matching colour > neutral (taan/dam) > mismatching colour',()=
   assert.ok(tot('plerng')>tot('taan')&&tot('taan')>tot('boon'));
 });
 
-test('intensity fit: exact beats short beats nothing; cruel (over) is never high',()=>{
-  const s=soul(3),t=i=>calcRemorse({soul:s,keeperK:'boon',intensity:i,verdict:{tham:100}});
-  assert.ok(t(2).parts.intensity>t(1).parts.intensity&&t(1).parts.intensity>t(3).parts.intensity,'exact > short1 ; short1 > over1 in points');
-  assert.ok(t(5).parts.intensity<=REMORSE.weights.intensity*.0+1e-9||t(5).parts.intensity<t(3).parts.intensity);
-  // the best possible cruel sentence (over 1, best keeper, accepting soul) is well under a perfect 100
-  assert.ok(t(3).total<t(2).total);
-  // sentencing an innocent (deserved 0) at any intensity is "over" — remorse cannot be perfect
-  const pure=soul(4,{pure:true,deserved:0});
-  assert.ok(calcRemorse({soul:pure,keeperK:'boon',intensity:3,verdict:{tham:0}}).total<REMORSE_PASS);
-});
-
-test('pass rates over every case × keeper × intensity vs the old rule (printed table)',()=>{
-  const rows=simulate(),exact=rows.filter(r=>!r.short&&!r.over),over=rows.filter(r=>r.over),short=rows.filter(r=>r.short);
-  const pct=x=>(100*x).toFixed(1).padStart(5)+'%';
-  const lines=[
-    `cases=${new Set(rows.map(r=>r.case)).size} (non-pure) combos=${rows.length}`,
-    `group            n   old    new`,
-    `exact sentence ${String(exact.length).padStart(4)}  100.0% ${pct(rate(exact))}`,
-    `short (เบาไป)   ${String(short.length).padStart(4)}   30.0% ${pct(rate(short))}`,
-    `over (หนักเกิน) ${String(over.length).padStart(4)}  100.0% ${pct(rate(over))}`,
-    ...[1,2,3,4].map(n=>`  short ${n}        ${String(short.filter(r=>r.short===n).length).padStart(4)}   30.0% ${pct(rate(short.filter(r=>r.short===n)))}`),
-    ...[1,2,3,4].map(n=>`  over  ${n}        ${String(over.filter(r=>r.over===n).length).padStart(4)}  100.0% ${pct(rate(over.filter(r=>r.over===n)))}`),
-    ...['accepting','concealing','resisting'].map(k=>`  exact · ${k.padEnd(10)} ${String(exact.filter(r=>r.traitKey===k).length).padStart(3)}  100.0% ${pct(rate(exact.filter(r=>r.traitKey===k)))}`),
-    ...KEEPERS.map(k=>`  exact · keeper ${k.padEnd(6)} ${String(exact.filter(r=>r.keeperK===k).length).padStart(3)}  100.0% ${pct(rate(exact.filter(r=>r.keeperK===k)))}`),
-  ];
-  console.log('\n'+lines.join('\n'));
-  assert.ok(rate(exact)>=.95,'short<=0 and not cruel: nearly everyone passes');
-  assert.ok(Math.abs(rate(short)-.30)<=.05,`short>0 pass rate stays near the old 30%: ${rate(short)}`);
-  assert.ok(rate(over)<=.40,'cruel sentences do not earn high remorse');
-  assert.equal(rate(short.filter(r=>r.short>=3)),0);
-  assert.ok(rate(over.filter(r=>r.over>=2))<=rate(over.filter(r=>r.over===1)),'crueller is never more remorseful');
-  // wrong destination lowers it but exact-sentence rate stays high
-  assert.ok(rate(simulate(0).filter(r=>!r.short&&!r.over))<=rate(exact));
+test('force changes neither remorse credit nor outcome for every case and keeper',()=>{
+ const rows=simulate();const groups=new Map();
+ for(const row of rows){const key=row.case+':'+row.keeperK;const first=groups.get(key);if(first){assert.equal(row.total,first.total);assert.equal(row.pass,first.pass);}else groups.set(key,row);assert.equal(row.short,0);assert.equal(row.over,0);}
+ assert.ok(groups.size>100);
+ assert.ok(rate(simulate(0))<=rate(rows),'destination remains relevant');
 });
 
 test('finish() stores station/keeper/need/servedAt and the computed remorse; inspect reads it; reload keeps it',()=>{
@@ -155,17 +127,6 @@ test('CREW_POWER job icons ship for every keeper (nira + taan/plerng/kan/boon/da
   assert.equal(CREW_POWER.guard.jobIcon,undefined);
 });
 
-test('innocents wrongly sentenced (Reese N1): sentence tier 1 CAN pass for neutral/matching keepers; tier 2+ never does — table printed',()=>{
-  const rows=simulatePure();
-  assert.ok(rows.length>0,'there are innocent/deva cases');
-  const pct=x=>(100*x).toFixed(1)+'%';
-  const lines=[`innocent cases=${new Set(rows.map(r=>r.case)).size} combos=${rows.length} (tham 0)`,'tier (=over)  n   pass',
-    ...[1,2,3,4,5].map(i=>{const a=rows.filter(r=>r.intensity===i);return `  ${i}          ${String(a.length).padStart(3)}  ${pct(rate(a))}`;}),
-    'by keeper at tier 1: '+KEEPERS.map(k=>`${k} ${pct(rate(rows.filter(r=>r.intensity===1&&r.keeperK===k)))}`).join(' · '),
-    'by trait at tier 1: '+[...new Set(rows.map(r=>r.traitKey))].map(t=>`${t} ${pct(rate(rows.filter(r=>r.intensity===1&&r.traitKey===t)))}`).join(' · ')];
-  console.log('\n'+lines.join('\n'));
-  assert.ok(rate(rows.filter(r=>r.intensity===1))>0,'tier 1 passes for some combinations (documented, owner accepted)');
-  assert.ok(rows.filter(r=>r.intensity===1&&r.keeperK==='boon'&&r.traitKey==='accepting').every(r=>r.pass),'accepting soul + Boon at tier 1 = 72 -> passes');
-  assert.ok(rows.filter(r=>r.intensity>=2).every(r=>!r.pass),'tier 2 and above never pass');
-  assert.ok(rows.filter(r=>r.intensity===1&&['plerng','kan'].includes(r.keeperK)&&r.traitKey==='accepting').every(r=>!r.pass),'a mismatching-colour keeper at tier 1 does not');
+test('innocents cannot be treated as having earned repentance by selecting any force',()=>{
+ const rows=simulatePure();assert.ok(rows.length>0);assert.ok(rows.every(r=>!r.pass));
 });

@@ -31,8 +31,10 @@ export function stepCanteen(g,dt){
  if(!canteenActive(g)||g.paused||g.over||g.battle||!Number.isFinite(dt)||dt<=0)return;
  const s=canteenState(g),o=s.orders[0];if(!o)return;
  const c=g.crew.find(c=>c.k===o.cook);if(cookBusy(g,c))return;
+ if(o.walkMs==null&&o.phase==='cooking')o.walkMs=1000; // old saved cooks are already inside
  o.phase='walking';const at=canteenPoint(g);if(!c.cook||Math.hypot((c.x??c.hx)-at[0],(c.y??c.hy)-at[1])>35)return;
- o.phase='cooking';o.ms+=Math.min(120,dt);
+ o.walkMs=Math.min(1000,(o.walkMs||0)+Math.min(120,dt));
+ o.phase=o.walkMs<1000?'entering':'cooking';o.ms+=Math.min(120,dt);
  if(o.ms>=3000){o.ms-=3000;o.remaining--;s.meals++;if(!o.remaining){s.orders.shift();prepareCooks(g);}g.save();}
 }
 export function serveMeal(g,w){
@@ -40,4 +42,12 @@ export function serveMeal(g,w){
  if(c.stamina!=null){c.stamina=Math.min(100,c.stamina+35);c.morale=Math.min(100,(c.morale??100)+35);c.hunger=Math.min(100,(c.hunger??100)+40);}
  else {c.hunger=Math.min(100,(c.hunger??100)+40);c.morale=Math.min(100,(c.morale??100)+20);if(c.hp!=null&&c.hpMax)c.hp=Math.min(c.hpMax,c.hp+Math.ceil(c.hpMax*.2));}
  w.meal=false;canteenState(g).served++;return true;
+}
+
+// Room-local feet coordinates: enter from the staircase, then approach the counter.
+export function canteenCookPose(g,c) {
+ const o=canteenState(g).orders[0];
+ if(!canteenActive(g)||o?.cook!==c?.k||!['entering','cooking'].includes(o.phase)||cookBusy(g,c))return null;
+ const progress=Math.min(1,(o.walkMs??1000)/1000);
+ return {point:[.80-.19*progress,.80-.21*progress],moving:progress<1,distance:progress*.283,face:-1};
 }
