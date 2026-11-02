@@ -48,7 +48,7 @@ test('L3 hypnosis: level 4 in zone 1 no longer unlocks it (no power, no discover
   g.mp = 100; assert.equal(g.powerReady('hypno'), false);
   g.syncDiscoveries();
   assert.ok(!g.discoveryQueue.includes('power:hypno') && !g.discoveryQueue.includes('ability:hypno'));
-  assert.equal(g.powerLocked(g.powerOf('ice')), false, 'other powers keep their level unlock');
+  assert.equal(g.powerLocked(g.powerOf('ice')), true, 'W4: Ice also waits for its own story victory');
 });
 
 test('L3 hypnosis: unlocked after winning the zone-3 frontier boss, announced once', () => {

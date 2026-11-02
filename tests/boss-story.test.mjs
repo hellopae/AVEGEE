@@ -89,7 +89,8 @@ test('Rage requires 60 active seconds and three boosted attacks before reuse', (
 test('old saves keep earned powers and derive the revised milestone rewards', () => {
   const g = createGame(); const saved = g.snapshot();
   saved.zoneEvents.th = {frontierBreach:'cleared'}; saved.abilities = {};
-  g.restore(saved); assert.equal(g.abilities.bigFire,true); assert.equal(!!g.abilities.flameCharge,false);
+  g.restore(saved); assert.equal(g.abilities.teamJudgment,true); assert.equal(!!g.abilities.bigFire,false); assert.equal(!!g.abilities.flameCharge,false);
+  saved.zoneEvents.asia={asiaRageBreach:'cleared'};g.restore(saved);assert.equal(g.abilities.bigFire,true);
   saved.zoneEvents.th.thBorderBoss = 'cleared'; saved.bossCleared.asia = true;
   g.restore(saved); assert.equal(g.abilities.flameCharge,true); assert.equal(g.abilities.rage,true);
 });

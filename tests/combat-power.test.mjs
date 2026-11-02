@@ -64,7 +64,7 @@ test('ลูกไฟ 40 คงที่ · น้ำแข็ง 30 + ศัต
 
   const g2 = createGame();
   g2.startBattle(soul(1));
-  g2.level = 3;                       // ปลดล็อกคัมภีร์น้ำแข็ง (POWERS.ice.lv = 3)
+  g2.level = 3; g2.abilities.ice = true; // ได้จากชัยชนะบอสใหญ่ West แล้ว
   const p = g2.powerOf('ice');
   p.ammo = p.max;
   const youHpBefore = g2.battle.youHp;

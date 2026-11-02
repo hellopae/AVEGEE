@@ -277,3 +277,17 @@ Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-con
 - แก้bubbleยาวตกขอบจอแนวนอน โดยจำกัดความสูง/เลื่อนภายในและขยับตามขอบจอ; ไม่แก้กล้องหรือwalkmask
 - Full1880/1880,0fail/0cancel/0skip (--test-concurrency=4), focused94/94, syntax195/195, diffcheckผ่าน. Fullรอบแรกมี2failureเฉพาะtest harnessที่ดึงfunctionเดี่ยว:เติมimporthelperจริงในofficeVMและปรับค้นsignatureopenHelpที่รับพารามิเตอร์; assertionsเดิมคงอยู่ จากนั้นรันfullใหม่ผ่านทั้งหมด
 - หลักฐาน/browser harness/screens/logsภายนอก: Output/Codex/2026-11-02-quest-owner; engine matrixที่2026-11-02-quest-engine. ไม่อ้างphysicaldeviceFPSหรือReese/Chris. คิวถัดไปW4-FOUNDATION; งานเนื้อเรื่อง/ถ้ำ/occlusion/balanceยังไม่เสร็จ
+
+## Codex — W4-FOUNDATION integrated release (2 Nov 2026)
+
+- เพิ่มstory-progression.js: ตารางevent/sourceแยกTH/Asia/West/Cyber และชนิดfrontier/ruler/tester/challenge/final; grantพลังเฉพาะชัยชนะsourceที่ตรง ไม่อิงlevelหรือboss sprite; rematchchallengeไม่รับพลังruler/คำชมguide
+- Iceทั้งสอบสวนและต่อสู้ใช้abilities.iceจากชัยชนะบอสใหญ่West, hypnoจากชายแดนWest,mirrorจากเทวดาTH; levelเพิ่มstat/coinตามเดิม. แก้hintให้บอกเหตุการณ์จริง
+- THfrontierให้teamJudgmentพร้อมGuard, Asiafrontierให้bigFire; sourceเดียวใช้ทั้งgrantและrestore. สิทธิ์bigFireที่เซฟเก่าบันทึกไว้จากศึกเดิมคงเดิม;ไม่deriveใหม่จากTH. คำอธิบายรางวัลลูกไฟใหญ่แก้เป็นโซน2
+- restoreทำหลังโหลดbossCleared/finalreceiptแล้ว;Iceที่เคยปลดจากlevelแต่ไม่มีชัยชนะWestถูกล้างflag/discovery/storyrewardเกินสิทธิ์,สิทธิ์ที่ชนะจริงและเซฟซ้ำยังอยู่
+- courtเก็บencounterRoleแยกบอสชายแดนกับruler;THrulerใหม่ใช้th:ruler. ledgerเก่าth:frontierที่เป็นrulerเก็บID/phaseเดิมและบล็อกลงทัณฑ์ซ้ำ. ไม่มีrename/deleteประวัติ
+- ไม่แสดงmeter/ข้อความล็อกท่าประสานใต้portraitจนกว่าจะได้จริง;publicMeritLineใช้สีเขียวทุกweightและทั้งจริง/ปลอม (ไม่เฉลยคำตอบ);sin/reliefยังสีตัวเลขเดิม
+- ตรวจChromiumจริง1280×800/390×844/844×390: migrationIce/noqueuednotice,lockedmeterหาย/earnedmeterปรากฏ,สอบสวนบุญจริงและอ้างบุญปลอมเป็นสีเดียวrgb(74,157,106);0pageerrors,ตรวจภาพไม่มีtutorialบัง
+- Full1887/1887,0fail/0cancel/0skip (--test-concurrency=4),syntax196/196,diffcheckผ่าน. Fullรอบแรก1883/1887มี4expectationsเก่าที่ถูกแทนตามคำสั่งใหม่ (Iceจากlevel/fixtureall-earnedไม่มีproof,THbigFire,บุญสีnumeric);ปรับfixture/expectationsแต่เก็บdamage/stun/loot/save/karma/relief assertions แล้วรันfullใหม่ผ่านทั้งหมด
+- รายงานBALANCE-2เดิมและตัวเลข32kไม่เปลี่ยน. tests/fixtures/w4-story-progression-changes.jsonย้อนเฉพาะsnippetgame/dataที่reviewแล้วเพื่อauthenticateinputhashเก่า; 200trialsmallteamเดิมยังตรง. ไม่อ้างว่าเป็นBALANCE-W4รอบใหม่
+- ยังไม่แก้threshold/ระลอก/PHANTOM/ฉากใหม่/บอสTHหน้าถ้ำในชุดfoundationนี้: คิวถัดไปW4-THแล้วทีละโซน,CAVE-12/OCCLUSION/BALANCEตามคิว. ไม่แต่งเพิ่มความสัมพันธ์พ่อ/พี่ที่ต้นฉบับขัดกัน
+- หลักฐานภายนอกOutput/Codex/2026-11-02-w4-foundation;ไม่อ้างphysicaldeviceFPS/Reese/Chris;ไม่แก้status.json/worklog.json/work-mode.json

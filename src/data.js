@@ -1902,7 +1902,7 @@ export const ZONE_EVENTS = {
       en:'Demons have breached the frontier. Assemble the crew and stop both waves.' },
     waves:[[{ kind:0, count:1, hp:55, atk:MOB.fightAtk }],
       [{ kind:0, count:1, hp:40, atk:MOB.fightAtk }, { name:'บอสชายแดน', sp:'boss-frontier-th', boss:true, count:1, hp:90, atk:[10,16] }]],
-    betweenWaveHeal:20, reward:{ coin:120, drop:1, ability:'bigFire' }, lose:{ hp:8 } },
+    betweenWaveHeal:20, reward:{ coin:120, drop:1, ability:'teamJudgment' }, lose:{ hp:8 } },
   { k:'devaTest', atCases:5, requires:['prisonBreak'], mode:'single',
     title:{ th:'เทวดามาทดสอบ', en:'A deva comes to test you' },
     alert:{ th:'เทวดาได้ข่าวว่าโซนนี้มีผู้คุมคนใหม่ จึงลงมาทดสอบยมบาทน้อย',
@@ -1932,7 +1932,7 @@ export const ZONE_EVENTS = {
       alert:{ th:'ปีศาจบุกชายแดนสามระลอก', en:'Demons cross the frontier in three waves.' },
       waves:[[{ kind:6, count:2, hp:48, atk:[8,13] }], [{ kind:7, count:2, hp:56, atk:[9,14] }],
         [{ name:'ปีศาจคลุ้มคลั่ง', sp:'boss-frontier-asia', count:1, hp:125, atk:[12,19], boss:true }]],
-      betweenWaveHeal:18, reward:{ coin:150 } },
+      betweenWaveHeal:18, reward:{ coin:150, ability:'bigFire' } },
     challengeEvent('asia', { betweenWaveHeal:18, waveCoin:[8,8,10,10,12,12,14,14,16,0], reward:{ coin:180, weapon:'chain' } }),
   ],
   west:[

@@ -94,7 +94,7 @@ test('BALANCE-2 Western hypnosis uses the initial party size for its solo-Yama e
   assert.deepEqual(g.battle.foes[0].atk,[12,18].map(v=>Math.max(1,Math.round(v*tuning.atk))));
 });
 
-test('BALANCE-2 evidence covers 200 paired trials per case and stays tied to the runtime under test',async()=>{
+test('BALANCE-2 historical evidence retains its original input hashes; W4 progression requires its own balance run',async()=>{
   const {createHash}=await import('node:crypto');
   const {scenarios,simulate,outDir}=await import('../scripts/sim-balance2.mjs');
   const before=JSON.parse(readFileSync(outDir+'before.json')),after=JSON.parse(readFileSync(outDir+'after.json'));
@@ -117,9 +117,12 @@ test('BALANCE-2 evidence covers 200 paired trials per case and stays tied to the
   const saveOnly=JSON.parse(readFileSync(new URL('./fixtures/home-save-slots-runtime-changes.json',import.meta.url)));
   const recoveryOnly=JSON.parse(readFileSync(new URL('./fixtures/recovery-120-runtime-changes.json',import.meta.url)));
   const sentenceOnly=JSON.parse(readFileSync(new URL('./fixtures/punishment-noncombat-changes.json',import.meta.url)));
+  // W4 changes only unlock sources/reward timing here, not damage math. Authenticate
+  // historical inputs after undoing these exact reviewed snippets; BALANCE-W4 remains pending.
+  const storyOnly=JSON.parse(readFileSync(new URL('./fixtures/w4-story-progression-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

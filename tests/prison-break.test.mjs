@@ -117,7 +117,7 @@ test('loss applies the event penalty and allows a fresh retry', () => {
 test('ice hits every foe, spends its stun on the counter turn, then the next counter is normal', () => {
   const g = pendingGame();
   g.enemyTarget = () => ({id:'you'});
-  g.level = 3;
+  g.level = 3;g.abilities.ice=true; // W4: test the earned power's damage and stun.
   const ice = g.powerOf('ice');
   ice.ammo = ice.max;
   g.startPrisonBreak();
