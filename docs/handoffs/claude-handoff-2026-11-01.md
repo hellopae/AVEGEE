@@ -220,3 +220,11 @@ Cache/import-map filenames for parent: onboarding.js(new),canteen.js,scene.js,ro
 - Full1844/1844,0fail,0cancel; syntax192ไฟล์ผ่าน; ChromiumจริงตรวจHOME1280/390,8ฉากสอบสวน/ต่อสู้,20%เมฆ,pause/weather-off,ห้องพักฟื้น,สอนเล่น/ซื้อข้าว/พ่อครัวครบ
 - หลักฐานอยู่นอกrepo Output/Codex/2026-11-02-gameplay-release; ยังไม่อ้างFPSมือถือจริงหรือผ่านReese/Chris
 - คิวและข้อความคอมเมนต์ต้นฉบับอยู่docs/queues/2026-11-02-active-queue.md; คิวถัดไปQUEST-OWNER แล้วW4-FOUNDATION/ทีละโซน/CAVE-12/OCCLUSION/BALANCE-W4
+
+## Codex 2 พ.ย. 2569 — เอฟเฟกต์สอบสวนและต่อสู้เพิ่มเติม
+
+- ตามคำย้ำล่าสุด เพิ่มใบไม้ไทยและลาวาเคลื่อนไหวตามmaskสีในภาพฉากจริง แยกชั้นพื้นใต้ตัวละครและตรงCSScover/background-position; เมฆTH/Asiaยัง20%
+- สอบสวนและต่อสู้ใช้profileเดียวกัน: THเมฆ/ใบไม้/ลาวา, Asiaเมฆ/ใบไม้/แสง/ลาวาที่มีในภาพ, Westเมฆ/หมอก/หิมะ, Cyberเมฆ/ฝน/ฟ้าผ่า
+- สองcanvasรวมไม่เกิน900000pixels; ไม่รับpointer; pause/weather-off/reduced-motion/teardownคงอยู่
+- Full1847/1847,0fail,0cancel; focused32/32; Chromiumจริง16บริบท(2หน้า×4โซน×1280/390),0pageerror พร้อมตรวจลาวามีพิกเซลจริง/เมฆ.2/หยุดเวลา/ปิดอากาศ
+- หลักฐานนอกrepo Output/Codex/2026-11-02-dialog-effects; ไม่อ้างFPSมือถือจริงหรือReese/Chris

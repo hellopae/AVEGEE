@@ -156,6 +156,13 @@ function masked(ctx, masks, kind, W, H, draw) {
   c.globalCompositeOperation='source-over';ctx.drawImage(masks.fx,0,0,W,H);
 }
 
+/** Reuse the material mask from the actual dialog backdrop; never wash the whole floor orange. */
+export function drawSceneLava(ctx,bg,zone,time,W,H,reduced=false){
+  if(reduced||!weatherEnabled()||!['th','asia'].includes(zone))return false;
+  const masks=masksFor(bg,zone);if(!masks)return false;
+  ctx.save();masked(ctx,masks,'lava',W,H,c=>drawH3Surfaces(c,zone,'lava',time,W,H,masks.tracks.lava));ctx.restore();return true;
+}
+
 /** Paint before actors and buildings, so glints never cover a character or pier. */
 export function drawMapAmbientGround(ctx, bg, zone, time, W, H, reduced = false) {
   if (reduced || !weatherEnabled()) return;

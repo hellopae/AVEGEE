@@ -21,3 +21,18 @@ test('teleports, biome changes and disabled effects never leave a long trail',()
 test('requested TH lamp bases stay on existing blocked margins, not on walkable routes',()=>{assert.equal(TH_ATMOS_LAMPS.length,2);for(const p of TH_ATMOS_LAMPS){assert.equal(townFloorAt(p.x,p.y),false);assert.ok(p.w>20&&p.w<70);}});
 test('cinematic camera shares one invertible projection with raster, actors and pointer at all zoom levels',()=>{for(const [W,H]of [[390,844],[1280,720],[2560,1440]])for(const zoom of [1,1.5,2]){const p=[.54,.61],c=frontierCameraTarget(W,H,p,false,zoom),sx=c.x+p[0]*FRONTIER_WORLD.w*c.scale,sy=c.y+p[1]*FRONTIER_WORLD.h*c.scale;assert.ok(Math.abs((sx-c.x)/(FRONTIER_WORLD.w*c.scale)-p[0])<1e-10);assert.ok(Math.abs((sy-c.y)/(FRONTIER_WORLD.h*c.scale)-p[1])<1e-10);assert.ok(c.scale>=FRONTIER_CINEMATIC.scale);assert.ok(c.x+FRONTIER_WORLD.w*c.scale>=W-1e-6);}});
 test('both actual scene builders mount the shared effect and foreground route data stays enabled',async()=>{const ui=readFileSync('src/ui.js','utf8');assert.match(ui,/mountSceneAtmosphere\(hud,\{zone:g.zone,context:'trial'/);assert.match(ui,/mountSceneAtmosphere\(stage,\{zone:g.zone,context:'battle'/);const {ROUTE_FOREGROUND}=await import('../src/route-occlusion.js');for(const route of ['asia:west','west:cyberhell'])assert.ok(ROUTE_FOREGROUND[route].length>0);});
+
+test('dialog profiles retain zone3 fog/snow and zone4 rain/lightning in both mounted contexts',async()=>{
+ const {SCENE_EFFECTS}=await import('../src/scene-atmosphere.js');
+ assert.deepEqual(SCENE_EFFECTS.west,['cloud','fog','snow']);assert.deepEqual(SCENE_EFFECTS.cyberhell,['cloud','rain','lightning']);
+ for(const z of ['th','asia'])for(const effect of ['cloud','leaves','lava'])assert.ok(SCENE_EFFECTS[z].includes(effect));
+});
+test('lava projection matches centered cover and the42percent trial background anchor',async()=>{
+ const {sceneBackgroundBox}=await import('../src/scene-atmosphere.js');
+ const box=sceneBackgroundBox(800,800,1600,900,'50% 42%');assert.equal(box.h,800);assert.equal(box.x,(800-box.w)*.5);assert.equal(box.y,0);
+ const tall=sceneBackgroundBox(1200,600,900,1600,'50% 42%');assert.equal(tall.w,1200);assert.equal(tall.y,(600-tall.h)*.42);
+});
+test('Thai leaf motion is bounded and reduced motion creates no particles',async()=>{
+ const {drawThaiLeaves}=await import('../src/scene-atmosphere.js');const points=[];const ctx=new Proxy({translate:(x,y)=>points.push([x,y])},{get:(o,k)=>k in o?o[k]:()=>{},set:(o,k,v)=>(o[k]=v,true)});
+ assert.equal(drawThaiLeaves(ctx,1000,390,844),12);assert.equal(points.length,12);assert.ok(points.every(([x,y])=>x>=0&&x<390&&y>=0&&y<844));const before=JSON.stringify(points);points.length=0;drawThaiLeaves(ctx,2000,390,844);assert.notEqual(JSON.stringify(points),before);points.length=0;assert.equal(drawThaiLeaves(ctx,3000,390,844,true),0);assert.equal(points.length,0);
+});
