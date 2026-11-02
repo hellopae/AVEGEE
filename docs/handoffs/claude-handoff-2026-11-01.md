@@ -300,3 +300,13 @@ Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-con
 แก้lower-road polygonข้ามลาวาTHใต้สะพาน (900..1080,1150) ให้เหลือเฉพาะeastlanding; เลิกตัดweatherเป็นกรอบรอบข้อความ; ลดข้อความซ่อมเป็นMAP_NAME_SIZE; START76%/ตัวอักษรเล็กลง; Pauseglowonly; ซ่อนtown-actionharbourซ้ำโดยเก็บcontextual/E. Cacheversionsตรงกัน. Full1888/1888,syntax171ไฟล์top-level,Chromium3ขนาดไม่มีpageerror; blockedlavaprobes/oldpositionrecovery/routeclearผ่าน. Fixturebreachrematchต้องรอRECOVERY_MS120sแทน60s.
 
 งานรั้วทุกแผนที่/แท่นcollisionและขนาด/อาคาร/เสาไฟใหม่/FXความชัดและน้ำไหล/ตัวละคร/questportraits/rewardsยังไม่ถือว่าเสร็จ รายละเอียดตามคิวใหม่.
+
+
+## Codex — DAIS-NAVIGATION (3 Nov 2026)
+
+- town-dais-geometry.js traces foot-level fence, seat/column bases and front stair floor on all four current judgement sprites; blockers run before owner-mask/interaction pads. No art regenerated.
+- Cyber dais width245→307 at fixed foot1855,1062.5. Asia/West/Cyber ruler/Nira anchors shifted onto clear platform floor; FINAL_EVENT first enemy moved1760,930→1760,965 outside enlarged rail.
+- walk.clearLine samples each world unit only around dais bounds, preventing smoothing across tiny stair/mask seams. Boat approach duration rounds upward to whole milliseconds, keeping Nira at or below0.11world units/ms.
+- Historical BALANCE-2 source authentication undoes the exact noncombat spawn-coordinate snippet via fixture; original simulation evidence is unchanged and BALANCE-W4 remains pending.
+- Focused36/36 and Chromium all4town zones passed (front-stair arrival, allrail midpoints blocked, no page errors). Final full suite1894/1894 passed; baseline7/7, syntax/diff checks passed.
+- Remaining queue: all-map bridge railing art/foreground, Cyber prison/canteen/zoom/pole redraw, Grace walking, Guard timeline portrait, punishment tint timing, boat deck feet, atmosphere/interiors, quest portraits/rewards, W4 zone events. Continue docs/queues/2026-11-02-map-ui-review.md in priority order.

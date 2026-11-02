@@ -88,6 +88,17 @@ test('MAP-Z4: unchanged fallback and routes retain their baseline, allowing B12 
   const baseline=JSON.parse(readFileSync('output/coordination/2026-10-29-map-z4/baseline.json'));
   for(const [path,hash]of Object.entries(baseline))if(path!=='note'&&!['src/data.js','src/town-layout.js','src/town-owner-walkmask-cyberhell.js','src/zone-skin.js'].includes(path)){
     let bytes=readFileSync(path);
+    if(path==='src/walk.js'){
+      // Undo only the reviewed town-dais clearance change. Legacy terrain and
+      // all other navigation bytes still authenticate against the original baseline.
+      let source=bytes.toString();
+      const changes=JSON.parse(readFileSync(new URL('./fixtures/dais-navigation-walk-changes.json',import.meta.url)));
+      for(const change of changes.reverse()){
+        assert.equal(source.split(change.after).length,2,'dais snippet occurs exactly once');
+        source=source.replace(change.after,()=>change.before);
+      }
+      bytes=Buffer.from(source);
+    }
     if(path==='src/route-geometry.js'){
       const current='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,snowArea:[0,0,.46,1],rainArea:[.54,0,1,1],';
       const original='ambient:{trees:BORDER34_TREES,waterfalls:[],leafArea:null,';

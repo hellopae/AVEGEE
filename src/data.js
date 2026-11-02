@@ -2397,7 +2397,7 @@ export const FINAL_EVENT = {
   rulerReward:{ coin:10, exp:5 }, bossReward:{ coin:40, exp:20 },
   rulerAdds:[1,1,2,2], bossAdds:3,
   add:{ kind:14, hp:60, atk:[10,16] },
-  enemyPositions:[[1760,930],[1840,950],[2000,950],[2080,960],[1862.5,865]],
+  enemyPositions:[[1760,965],[1840,950],[2000,950],[2080,960],[1862.5,865]],
   restPosition:[1550,1442.5],
   reinforcementPositions:[[1570,930],[1600,990],[1680,1000],[1650,950]],
 };
