@@ -95,7 +95,7 @@ test('quests pause during finale; completed state resumes walking, boat travel a
  g.gameCompleted=true;g.finalEvent.phase='completed';g.zoneEvents.cyberhell.cyberFinal='cleared';g.over={k:'finalWin'};
  assert.equal(g.continueAfterEnding(),true);assert.equal(questsPaused(g),false);assert.equal(advanceQuest(g,q.id),true);
  assert.equal(g.startFinalEncounter(),null);g=reload(g);assert.equal(g.over,null);g.paused=false;g.storyQueue=[];
- assert.equal(harbourTravel(g,'th'),true);g.pendingZone=null;assert.equal(harbourTravel(g,'cyberhell'),true);g.pendingZone=null;assert.equal(g.startFinalEncounter(),null);
+ assert.equal(harbourTravel(g,'cyberhell'),true);g.pendingZone=null;assert.equal(harbourTravel(g,'th'),true);g.pendingZone=null;assert.equal(g.startFinalEncounter(),null);
 });
 test('legacy empty, pending finale, interrupted SIG and completed saves migrate without duplicate rewards',()=>{
  const old=createGame().snapshot();delete old.e1Version;delete old.sideQuests;delete old.merchantJourney;

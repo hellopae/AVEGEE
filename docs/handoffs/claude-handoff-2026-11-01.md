@@ -249,3 +249,31 @@ External evidence/harness/screens: `/Users/agapae/Documents/Work PAE/Claude/AGAP
 - Chromiumจริง:9บริบทช่องเซฟ+2cropGuardผ่าน, รูปทั้งหมดdecode/ข้อมูลเซฟไม่เปลี่ยน;16บริบทสอบสวน/ต่อสู้ไม่มีเสาไฟเพิ่มและ0error; instrumentdrawImageบนแผนที่จริงครบ4โซนยืนยันalpha.2และhashเงาเปลี่ยนตามเวลา
 - Full1852/1852,0fail,0cancel โดยจำกัดconcurrency4; syntax193/193; รอบแรกdefaultconcurrencyชนtimeout30sในเทสต์Pythonรูปคนงานเดิม ตรวจเดี่ยว20/20ผ่าน ไม่ได้แก้timeoutหรือข้ามเทสต์
 - คิวแทรกบันทึกในdocs/queues/2026-11-02-active-queue.md ก่อนQUEST-OWNER; หลักฐานภายนอกOutput/Codex/2026-11-02-cloud-rays และ2026-11-02-save-visual; ไม่อ้างFPSมือถือจริงหรือReese/Chris
+
+## Codex — QUEST-OWNER engine (2026-11-02)
+
+Branch `codex/2026-11-02-quest-engine`, base `cfe04ef5`. No merge/push. Engine/data helpers only; parent owns UI/index/manual/tracker wiring. No game.js changes or new save fields.
+
+Non-kin step0 now targets `q.zone + q.npc` instead of the generic Cyber merchant. Dedicated sqMerchant remains its actual Asia merchant. Existing later TH reply routes (Plerng/Boon), kin from→to→from routes, unlock gates, final-arc pause semantics, case/verdict progression, choices and rewards remain unchanged. Available current-zone Nira uses her actual map feet for questNear; resting/unplaced/off-zone Nira retains the prior stable fallback. Each successful step0→1 logs `รับภารกิจ: <title>` once through existing saved logs. Acceptance still requires actual target zone/proximity; parent UI must offer actions only from current owner's conversation.
+
+APIs:
+- `questsForActor(g,npc,zone=g.zone)` exported from side-quests.js returns unlocked unfinished QUEST objects whose current questTarget matches actor kind and zone. Paused side missions remain readable; advanceQuest still blocks their actions. Kin intentionally remains available during finale, matching previous behavior.
+- `activeQuestEntries(g)` exported from quest-journal.js returns pure derived entries for step>0&&!done: `{id,title,zone,npc,name,x,y,objective,paused}`. Objectives name the actual pending case and required action, later reply target, or kin delivery/return. No state initialization/mutation; no duplicate persistence model. `paused` is questsPaused(g)&&!q.kin.
+
+Acceptance copy changes only replace merchant delivery framing with the owner handing over the existing letter (Taan/Plerng/Dam), let Guard tell his existing joke directly, and adjust Nira's arrival wording. Original authored letters remain byte-for-byte strings; every later dialogue, choice/response, case fact, kin/cross-zone/SIG narrative and award function was compared to base and remained unchanged.
+
+Validation: focused49/49 (27 existing E1/SIG/kin/reward tests +22 new owner/journal/proximity/save tests), syntax for three changed/new modules and whitespace clean. All16 quest owner/regional-denial/title-once cases covered; generic Cyber merchant denial, pending verdict stage2, old-save active state, locks, pure helper reads, final pause behavior, kin route, later TH reply routing, Nira map position, real reload and existing once-only branch rewards pass. An old post-finale travel test assumed acceptance happened in Cyber; its roundtrip now travels Cyber→TH after Nira's TH acceptance. No browser or full-suite claim in this engine-only task; parent owns integrated UI/browser/full checks.
+
+Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-content.js. External evidence and16quest routing/objective matrix: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-quest-engine/`.
+
+## Codex — QUEST-OWNER integrated UI/release (2 Nov 2026)
+
+- รับ16ภารกิจที่เจ้าของจริงในโซนของเขา พ่อค้ามีเฉพาะภารกิจของตัวเอง; บับเบิลคุย/โต๊ะนิรา/หมุดนัดแสดงงานของเจ้าของปัจจุบันเท่านั้น
+- กดรับแล้วแจ้งชื่อเรื่องและบันทึกชื่อครั้งเดียว; ป้องกันcallbackของปุ่มเดิม/กดซ้ำข้ามstep; ถ้าไกลเกินไปยังลองใหม่หลังเดินถึงได้
+- เพิ่มตัวติดตามชื่อ/สิ่งที่ต้องทำ/โซนและเจ้าของใต้minimap; จอเตี้ยใช้แผงย่อซ้ายบน; ไม่แสดงในศึก/เดินทาง
+- คู่มือมีแท็บวิธีเล่นและภารกิจ (กำลังทำ/พร้อมให้ไปคุย/เสร็จแล้ว), keyboard arrows/Home/End; ดูรายละเอียดและเลือกติดตามได้ การอ่านไม่รับงานหรือรับรางวัลเอง
+- ใช้sideQuestsเดิมต่อจากเซฟเก่า ไม่เพิ่มsave fields; คงunlock/kin routes/คำตัดสิน/ข้อความหลักและรางวัลเดิม; งานที่เสร็จหายจากtrackerและอ่านในbookได้
+- Chromiumจริง1280×800/390×844/844×390 ผ่านคุยNPC→รับ→ชื่อยืนยัน→เรียกclickปุ่มเดิมอีกครั้งไม่ข้ามstep→tracker→book→พ่อค้าเฉพาะงานตัวเอง→ปฏิเสธรับระยะไกล→reload;0page errors ตรวจภาพด้วยตา
+- แก้bubbleยาวตกขอบจอแนวนอน โดยจำกัดความสูง/เลื่อนภายในและขยับตามขอบจอ; ไม่แก้กล้องหรือwalkmask
+- Full1880/1880,0fail/0cancel/0skip (--test-concurrency=4), focused94/94, syntax195/195, diffcheckผ่าน. Fullรอบแรกมี2failureเฉพาะtest harnessที่ดึงfunctionเดี่ยว:เติมimporthelperจริงในofficeVMและปรับค้นsignatureopenHelpที่รับพารามิเตอร์; assertionsเดิมคงอยู่ จากนั้นรันfullใหม่ผ่านทั้งหมด
+- หลักฐาน/browser harness/screens/logsภายนอก: Output/Codex/2026-11-02-quest-owner; engine matrixที่2026-11-02-quest-engine. ไม่อ้างphysicaldeviceFPSหรือReese/Chris. คิวถัดไปW4-FOUNDATION; งานเนื้อเรื่อง/ถ้ำ/occlusion/balanceยังไม่เสร็จ
