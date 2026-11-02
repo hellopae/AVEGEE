@@ -2,6 +2,7 @@ import {mountSceneAtmosphere} from './scene-atmosphere.js';
 import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
 import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
 import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishment.js';
+import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
 import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
@@ -2624,6 +2625,12 @@ function openTrial(initialError = '') {
   if (g.over || g.battle) return;
   const s = g.queue[0];
   if (!s || !g.caseReady(s)) return;
+  if(needsFirstDestination(g)){
+    const cauldron=STATIONS.find(d=>d.k==='krata'),building=g.stations.find(st=>st.def.k==='krata');
+    modal(`<h2>เตรียมกระทะทองแดงก่อนสอบสวน</h2><p>เดินขึ้นไปที่จุดสร้างกระทะทองแดงด้านบน แล้วกดสร้าง เพื่อให้มีสถานที่ลงทัณฑ์รองรับคำตัดสินแรก${building?.build?' · ช่างกำลังก่อสร้าง รอจนเสร็จก่อนพิจารณาคดี':''}</p><button class="gold" data-walk-cauldron>เดินไปจุดสร้างกระทะทองแดง</button><button data-close>กลับแผนที่</button>`,d=>{
+      d.querySelector('[data-walk-cauldron]').onclick=()=>{dlg.close();g.walkTo(cauldron.x,cauldron.y);refresh();};
+    });return;
+  }
   pauseForDlg();
   bgm('bgm-trial');
   trialCmd = 'ask';
@@ -3211,6 +3218,13 @@ function openNiraOffice() {
   }, 250);
 }
 
+function foodSupplyCard(disabled=false) {
+  return `<article class="shop-card" style="grid-template-columns:42px minmax(0,1fr)">${itemImg('food','class="shop-item-img"')}<span><b>ข้าวปั้นเข้าคลังเสบียง ×10</b><small>${BAL.foodPrice*10} เบี้ยกรรม · ใช้ป้อนยมทูต · เหลือ ${Math.round(g.food)} ห่อ</small></span><button class="gold" style="grid-column:1/-1" data-buy-supply ${disabled||g.coin<BAL.foodPrice*10?'disabled':''}>ซื้อข้าวปั้น</button></article>`;
+}
+function bindFoodSupply(root,after,allowed=()=>true){
+  root.querySelector('[data-buy-supply]')?.addEventListener('click',()=>{if(allowed()&&g.buy('food',1)){g.save();sfx('coin');after();refresh();}});
+}
+
 function openMerchant() {
   if (!g.zoneCaptivesFree() || !g.merchantAvailable()) return;
   g.markHistory('merchant');   // Q2: เปิดร้านพ่อค้า = เปิดการ์ดคู่มือ
@@ -3221,6 +3235,7 @@ function openMerchant() {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
       ${merchantGreet}<button data-quests>ภารกิจ · จดหมายฝาก</button>
+      <h3>เสบียงสำหรับยมทูต</h3>${foodSupplyCard()}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
           <button data-sell="${k}">ขาย 1</button><button data-sell-all="${k}" class="gold">ขายทั้งหมด</button></article>`;
@@ -3235,6 +3250,7 @@ function openMerchant() {
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelector('[data-quests]').onclick=()=>openQuests();
+    bindFoodSupply(dlg,paint);
   };
   paint(); openDlg('merchant');
 }
@@ -5071,6 +5087,10 @@ function drawCoach() {
   if (g.battle) { coachEl.hidden = true; return; }
   if (g.over) { coachEl.hidden = true; return; }
   if (dlg.open) return;              // มีโมดัลค้างอยู่ — รอปิดก่อน (dlg.showModal ซ้อนกันไม่ได้)
+  if(firstCourtJob(g)&&!g.taught.includes('court-first-steps')){
+    g.taught.push('court-first-steps');g.save();coachEl.hidden=true;
+    bossModal('รับสำนวนแรก',COURT_FIRST_STEPS,'รับทราบ');return;
+  }
   if (!coachStep) coachStep = TUTOR.find(t => !g.taught.includes(t.k) && t.when(g)) || null;
   const available = TUTOR.filter(st => g.taught.includes(st.k) || (!st.boss && st.when(g)));
 
@@ -5540,13 +5560,14 @@ function openStation(k, emergency = false) {
       // Q3: ฟอร์มสั่งข้าวปั้นอยู่ในการ์ดซ้ายบน (.st-card) แถวเรียงในกรอบ — เดิมวางใน #st-actions (inset:0 + pointer-events:none) ทับการ์ดและกดไม่ได้
       const state=canteenState(g);
       const keepCook=L.querySelector('#rice-cook')?.value, keepCount=L.querySelector('#rice-count')?.value;   // วาดซ้ำทุกครั้งที่คิวเปลี่ยน — อย่าให้ค่าที่ผู้เล่นเลือกค้างไว้เด้งกลับ
-      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
-      put(L, `<h2>🍙 โรงอาหาร</h2><p>เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
+      const queue=state.orders.map(o=>`${esc(g.crewOf(o.cook)?.name||o.cook)}: ${o.remaining} (${({accepted:'รับคำสั่ง',walking:'เดินมาครัว',entering:'เดินเข้าโรงอาหาร',cooking:'กำลังปรุง'})[o.phase]||'รอคิว'})`).join(' · ')||'ไม่มีคิว';
+      put(L, `<h2>🍙 โรงอาหาร</h2>${foodSupplyCard(!inside)}<p>ครัวทำอาหารสำหรับคนงานแจกให้ทีม (แยกจากคลังเสบียง) · เดินไปเคาน์เตอร์เพื่อสั่งข้าวปั้น · 2 เบี้ยกรรม/ชิ้น · เก็บรวมคิวได้ 6 ชิ้น</p>
         <div class="canteen-panel"><p class="canteen-status">พร้อมแจก ${state.meals}/6 · ${queue}</p>
         <div class="canteen-form"><label>ผู้ปรุง <select id="rice-cook">${g.crew.filter(c=>['dam','plerng'].includes(c.k)).map(c=>`<option value="${c.k}">${esc(c.name)}</option>`).join('')}</select></label>
         <label>จำนวน <input id="rice-count" type="number" min="1" max="6" value="1" inputmode="numeric"></label></div>
         <div class="canteen-buttons"><button id="rice-order" class="btn-gold" ${inside?'':'disabled'}>สั่งทำข้าวปั้น</button>
         ${state.orders.map(o=>`<button class="btn-gold" data-rice-cancel="${o.cook}" ${inside?'':'disabled'}>ยกเลิก ${esc(g.crewOf(o.cook)?.name||o.cook)}</button>`).join('')}</div><small id="rice-error" role="status"></small></div>`);
+      bindFoodSupply(L,panels,()=>!!R?.inReach());
       if(keepCook&&[...L.querySelector('#rice-cook').options].some(o=>o.value===keepCook))L.querySelector('#rice-cook').value=keepCook;
       if(keepCount)L.querySelector('#rice-count').value=keepCount;
       put(A,'');
@@ -6656,6 +6677,7 @@ function startPlay(fresh) {
   titleEl.classList.add('gone');
   resume();                                  // ต้องมาก่อนกล่องฉากเปิด — ดูหมายเหตุที่ resume()
   g.courtClosed = true;                     // เมื่อเข้าแผนที่ครั้งแรก ให้ผู้เล่นกดเปิดศาลเอง
+  if(fresh)beginCourtOnboarding(g);
   if(fresh&&g.queue[0])g.startCourtArrival(g.queue[0]); // เรือรออยู่นอกฉากจนกดเปิดศาล
   updatePlay();
   if (fresh) {
@@ -6730,6 +6752,7 @@ function enterSaveSlot(id) {
     if (!g.restore(fresh?createGame().snapshot():slot.data)) return false;
     if (!selectSaveSlot(id)) return false;
     g.saveSlot=id;
+    if(fresh)beginCourtOnboarding(g);
     if (!g.save()) {g.saveSlot=null;return false;}
     if (dlg.open) dlg.close();
     startPlay(fresh);
@@ -6959,4 +6982,4 @@ window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก �
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay};
+export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay,openMerchant,openStation};

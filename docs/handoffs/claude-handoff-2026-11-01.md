@@ -196,3 +196,27 @@ Integration: parent must version canonical import-map destinations for `actor-re
 Validation: existing recovery/tea/BALANCE-2 targeted 28/28, new recovery cases 4/4, revised roster migration 7/7. First full suite1813/1814: sole old B1 one-minute expectation was corrected and its7 focused tests passed. Parent requested stopping redundant full rerun; final integrated full verification belongs to parent. Interrupted rerun1808pass/0fail/1cancelled is not claimed green. Full logs recorded in external task evidence. `node --check` for four changed runtime modules and `git diff --check` passed. No browser or physical-device performance claim in this task; parent owns integrated browser review.
 
 Evidence: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-recovery-120/`.
+
+## Codex — ONBOARD-FOOD (2026-11-02)
+
+Branch `codex/2026-11-02-onboard-food`, base `df42fb1b`. No merge/push. Ownership: new `src/onboarding.js`, narrow UI court/merchant/canteen hooks, `src/canteen.js`, indoor cook rendering in `src/room.js`, outdoor cook visibility/hit filtering in `src/scene.js`, and regression tests. No game.js, sentencing guide, quest/story event, or index changes.
+
+Explicit New Game records onboarding and removes the formerly free cauldron so the first build lesson is real. Instructions explain opening court, receiving the ferry's soul, and choosing consideration/investigation. First investigation prompts walking to the upper copper-cauldron build point; it waits for a completed usable destination. Existing/continued saves are not initialized or stripped of buildings. The hook in startPlay(fresh) is idempotent.
+
+HOME integration: after `g.saveSlot=id;` in enterSaveSlot, add `if(fresh)beginCourtOnboarding(g);` before the first `g.save()`; keep startPlay's idempotent fallback. This ordering was checked in a detached bf021975 preview plus this feature. The very first selected-slot write already omits free krata, other slots remain untouched, and continued existing slots retain krata. Import-only merge conflicts preserve both sides (punishment/FX/HOME imports plus new onboarding/canteen imports). Existing UI export list gains openMerchant/openStation; do not add duplicate export declarations.
+
+Merchant and reachable canteen both sell ten pooled food packs through existing g.buy('food',1), independently of Nira. Existing stock/inventory consumables and worker meal ordering/delivery remain separate, clearly labeled. Cook reaches outdoor entrance, walks up the actual canteen interior stairs to the counter, and cooks inside. Room-local walk progress persists; legacy already-cooking saves remain inside. Outdoor sprite and hit target disappear during the inside phase, then existing return-to-post movement resumes after final portion/cancellation. Existing paid portions/3-second preparation timing are preserved.
+
+Validation: focused onboarding/food/travel/BALANCE-2 tests 29/29; syntax checks for five changed runtime modules and whitespace checks clean. Real clean-profile Chromium proof covers New Game instructions, actual first-investigation build prompt/walk action, merchant food purchase, and indoor cook at1280x800 and390x844, with no page errors. HOME preview additionally covers selected-slot first-write timing and Continue preserving old buildings. Parent owns final integrated full suite; no separate full claimed.
+
+Cache/import-map filenames for parent: onboarding.js(new),canteen.js,scene.js,room.js,ui.js. Evidence and browser harness: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-onboard-food/`.
+
+## Codex 2 พ.ย. 2569 — ชุดรวม START / ทัณฑ์ / อากาศ / พักฟื้น / สอนเล่น
+
+- รวมHOME-SLOTS, PUNISHMENT-DURATION, ZONE-ATMOS, RECOVERY-120, ONBOARD-FOOD พร้อมรักษาcacheทุกaliasและอาร์ตเดิมบนmain
+- ความแรง10/30/60/120/240วินาที+สีฟ้า/เขียว/เหลือง/ส้ม/แดง; คู่มือและบทสอนเลิกสอนสูตรให้คะแนนความแรงเดิม
+- เกมใหม่เริ่มสอนสร้างกระทะก่อนสอบสวนและบันทึกลงslotที่เลือกตั้งแต่ครั้งแรก; Continueไม่ลบอาคาร
+- ซื้อเสบียงที่พ่อค้า/โรงอาหารได้ พ่อครัวเข้าไปทำงานในห้อง; ยมทูตล้มพักศาลา120วินาที มีsnapshot/legacy migrationและไม่กลับศึกเดิม
+- Full1844/1844,0fail,0cancel; syntax192ไฟล์ผ่าน; ChromiumจริงตรวจHOME1280/390,8ฉากสอบสวน/ต่อสู้,20%เมฆ,pause/weather-off,ห้องพักฟื้น,สอนเล่น/ซื้อข้าว/พ่อครัวครบ
+- หลักฐานอยู่นอกrepo Output/Codex/2026-11-02-gameplay-release; ยังไม่อ้างFPSมือถือจริงหรือผ่านReese/Chris
+- คิวและข้อความคอมเมนต์ต้นฉบับอยู่docs/queues/2026-11-02-active-queue.md; คิวถัดไปQUEST-OWNER แล้วW4-FOUNDATION/ทีละโซน/CAVE-12/OCCLUSION/BALANCE-W4

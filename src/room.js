@@ -1,4 +1,5 @@
 import {punishmentLevel,punishmentRemaining} from './punishment.js';
+import {canteenCookPose} from './canteen.js';
 import {characterScale} from './character-scale.js';
 import {teaRoomStaff,teaRoomArrivals,teaRestSprite} from './tea-staff-rest.js';
 import { drawSchoolProps } from './sword-school-props.js?v=minigame-review-20261011-j2-l4a';
@@ -534,6 +535,16 @@ export function makeRoom(cv, g, def, room, bgSrc, bgFallback, alive = () => true
       });
     }
     // (ชุด 27A: ตัดป้ายชื่อใต้ NPC/ผู้คุม/ของในฉากออก — แบบ UI4 ไม่มีตัวหนังสือบนฉาก)
+    if (def.k === 'canteen') {
+      for(const c of g.crew){
+        const pose=canteenCookPose(g,c);if(!pose)continue;
+        const [x,y]=pose.point;acts.push({y,fn:()=>{
+          const h=U*CREW_H*characterScale(c.k),base='crew-'+c.k;
+          if(pose.moving){if(!drawCrewWalk(ctx,base,px(x),py(y),h,pose.distance*U,pose.face))drawStandee(ctx,base,px(x),py(y),h,t,'',pose.face);}
+          else drawStandee(ctx,g.zone==='th'&&img(base+'-cook')?base+'-cook':base,px(x),py(y),h,t,'',pose.face);
+        }});
+      }
+    }
     if (def.k === 'tea') {
       for (const {actor:c,point:[x,y],face,distance} of teaRoomArrivals(g)) {
         acts.push({y,fn:()=>{
