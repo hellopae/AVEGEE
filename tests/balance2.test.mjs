@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {createGame} from '../src/game.js';
+import {questOwnerButtonHtml} from '../src/quest-panels.js';
 import {CREW, GUARD, BATTLE, ZONES, TUTOR} from '../src/data.js';
 import {COMBAT_SKILLS} from '../src/combat-skills.js';
 import {recommendedHire, hireRank} from '../src/unlocks.js';
@@ -26,7 +27,7 @@ test('BALANCE-2 new-game office buttons really remove and restore taan+nira with
   const context=vm.createContext({g,dlg,CREW,GUARD,BATTLE,ZONES,dlgGen:1,afterPowerSheet:null,
     artUrl:()=>'',pauseForDlg:noOp,greetLine:()=>'',esc:String,crewArt:()=>'',powerBadgeHtml:()=>'',crewName:d=>d.name,
     recommendedHire,hireRank,t:()=>'',crewAbility:()=>'',niraItemWidget:()=>'',guardRestWidget:()=>'',
-    workersPanelHtml:()=>'',bindWorkersPanel:noOp,bindHungerWidgets:noOp,refresh:noOp,sfx:noOp,openDlg:noOp,
+    workersPanelHtml:()=>'',bindWorkersPanel:noOp,bindHungerWidgets:noOp,questOwnerButtonHtml,bindOwnerQuestButtons:noOp,refresh:noOp,sfx:noOp,openDlg:noOp,
     setInterval:()=>1,clearInterval:noOp});
   vm.runInContext(functionSource('openNiraOffice')+'\nopenNiraOffice();',context);
   for(const kind of ['taan','nira']) {

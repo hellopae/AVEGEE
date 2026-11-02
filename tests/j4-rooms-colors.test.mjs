@@ -83,7 +83,7 @@ test('J4 prison escort keeps soul until walking completes, rejects duplicate and
 test('J4 prison controls have no proximity gate and handbook renders all chapters together',()=>{
  const prison=ui.slice(ui.indexOf("if (k === 'tarang') {",ui.indexOf('function openStation')),ui.indexOf("if (k === 'sawan') {",ui.indexOf('function openStation')));
  assert.ok(!prison.includes('inside &&'));assert.ok(!prison.includes("note(t('room.nearNira'))"));
- const help=ui.slice(ui.indexOf('function openHelp()'),ui.indexOf('// ---------- Phase 3'));
+ const help=ui.slice(ui.indexOf('function openHelp('),ui.indexOf('// ---------- Phase 3'));
  assert.ok(help.includes('items.map((html, i)'));assert.ok(help.includes('guideCards('));assert.ok(!help.includes('data-help-next'));
 });
 const {createGame}=await import('../src/game.js');

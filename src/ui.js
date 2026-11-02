@@ -1,3 +1,4 @@
+import {questOwnerButtonHtml,questTrackerHtml,questJournalHtml,createQuestAction} from './quest-panels.js';
 import {mountSceneAtmosphere} from './scene-atmosphere.js';
 import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
 import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
@@ -5,7 +6,7 @@ import {punishmentLevel,punishmentTimeLabel,punishmentRemaining} from './punishm
 import {firstCourtJob,needsFirstDestination,COURT_FIRST_STEPS,beginCourtOnboarding} from './onboarding.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
 import { openHistoryCards, showFamilyNote } from './history-unlock.js';
-import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk } from './side-quests.js';
+import { QUESTS, questState, questUnlocked, questTarget, questNear, questMarkers, questDialogue, questsPaused, crossZoneTalk, questsForActor } from './side-quests.js';
 import { SIGNAL_KEYS, signalStory } from './signal-arc.js';
 import { COMBAT_SKILLS, skillForActor } from './combat-skills.js';
 import { SKILL_ICONS, skillScenes, SKILL_CAST_MS } from './combat-skill-assets.js';
@@ -506,7 +507,7 @@ function explainBar(k) {
       ? (g.fed ? ' · <span style="color:var(--success)">อิ่ม ทำงานไว</span>' : ' · <span style="color:var(--destructive)">หิว ทำงานช้า</span>') : ''}</h2>
     <p style="font-size:var(--text-sm);line-height:var(--leading-body)">
       ค่าจ้างยมทูต — ไม่ใช่ของสถานีอีกต่อไป <b>ยมทูตที่กำลังคุมสถานี/ออกรับดวง</b>กินเสบียงทุกวาระเหมือนกันหมด</p>
-    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ในโต๊ะนิรา</div></div>
+    <div class="tline bad"><b>ถ้าหมด</b><div>ยมทูตที่กำลังทำงานอยู่<b>ทำงานช้าลง</b> ส่วน<b>คนงานหยุดรอเสบียง</b> รวมถึงการไปรับวิญญาณที่ท่าเรือ · เติมเสบียงได้ที่พ่อค้าหรือโรงอาหาร</div></div>
     <div class="tline good"><b>ถ้ามีพอ</b><div>ยมทูตที่กำลังทำงานอยู่ทำงาน<b>ไวขึ้น</b></div></div>
     <div class="tline"><b>เติมยังไง</b><div>${getLang() === 'en' ? `Buy 10 food packs in Build for ${BAL.foodPrice * 10} coins, or win food packs as random loot from defeated ghosts and foes` : `ซื้อที่แท็บก่อสร้าง (${BAL.foodPrice * 10} เบี้ย/10 ห่อ) หรือรับ<b>ห่อเสบียง</b>ที่สุ่มได้เป็นของรางวัลเมื่อปราบเปรตหรือศัตรู`}</div></div>
     ${workerSuppliesHtml(g)}
@@ -1049,7 +1050,7 @@ function drawAtk() {
   fab.classList.remove('gold');
 }
 
-function refresh() { drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); if (!$('#hero-profile').hidden) drawHeroProfile(); syncAva(); syncTitle(); updatePlay(); }
+function refresh() { updateQuestTracker(performance.now(),true);drawRes(); drawHudAvatar(); drawTabHeads(); drawTab(); drawSide(); drawOverlay(); drawDeck(); drawAtk(); drawCoach(); if (!$('#hero-profile').hidden) drawHeroProfile(); syncAva(); syncTitle(); updatePlay(); }
 
 function miniGoalText() {
   const goal = g.miniGoals[g.zone] || { truth:0, earned:false };
@@ -1207,16 +1208,20 @@ const talkHelpers = { walkPosition: afterlifeWalkPosition };
 let talkSess = null;        // { id, n, until } บับเบิลที่เปิดอยู่
 let pendingTalk = null;     // { id, at } แตะตัวละครไกล → เดินเข้าหา แล้วเปิดเองเมื่อถึง (D9) · ผู้เล่นเดินเอง/แตะที่อื่น = ยกเลิก
 function closeTalk() { ov.querySelectorAll('.mark.talk').forEach(e => e.remove()); talkSess = null; }
+function bindOwnerQuestButtons(root){root.querySelectorAll('[data-quest-owner]').forEach(button=>button.onclick=event=>{event.stopPropagation();closeTalk();openOwnerQuests(button.dataset.questOwner);});}
 function showTalkLine() {
   const tg = talkSess && findTalkTarget(g, talkSess.id, talkHelpers);
   const line = tg && pickTalk(g, tg, { heroName: HERO_NAME, heroTitle: HERO_TITLE });
   if (!line) return closeTalk();
   talkSess.n++; talkSess.until = Date.now() + TALK_MS;
   const more = talkSess.n < TALK_MAX_LINES;
+  const owner=tg.kind==='crew'?tg.key:tg.kind==='guard'?'guard':null;
+  const questAction=owner?questOwnerButtonHtml(g,owner):'';
   ov.querySelectorAll('.mark.talk').forEach(e => e.remove());
   const pin = line.first ? 'pin-talk-new' : more ? 'pin-talk-more' : 'pin-talk';
   const el = mark('talk', tg.x, tg.y - charH() * tg.top - 8, `<img class="talk-pin" src="img/ui/${pin}.webp" alt="" width="32" height="32">`,
-    `<span class="who">${esc(line.who)}</span><span class="talk-text" role="status">${esc(line.text)}</span><button type="button" class="talk-next">${esc(t(more ? 'talk.next' : 'talk.close'))}</button>`, true);
+    `<span class="who">${esc(line.who)}</span><span class="talk-text" role="status">${esc(line.text)}</span><button type="button" class="talk-next">${esc(t(more ? 'talk.next' : 'talk.close'))}</button>${questAction}`, true);
+  bindOwnerQuestButtons(el);
   el.dataset.talkId = tg.id;
   clampTalk(el);
   const next = ev => { ev.stopPropagation(); if (more) showTalkLine(); else closeTalk(); };
@@ -1231,9 +1236,15 @@ function clampTalk(d) {
   const left = r.left - shift, right = r.right - shift;
   const next = left < m ? m - left : right > innerWidth - m ? innerWidth - m - right : 0;
   if (Math.abs(next - shift) > .5) d.style.setProperty('--bshift', `${next}px`);
-  const flipped = d.classList.contains('below'), pinTop = d.getBoundingClientRect().top;
-  const needH = bub.offsetHeight + 46;
-  d.classList.toggle('below', flipped ? pinTop - needH - 0 < 84 + 40 : pinTop - needH < 84);
+  // Long owner actions must remain reachable on short landscape screens too.
+  bub.style.translate='none';
+  const scale=r.height/bub.offsetHeight||1,limit=Math.max(80,innerHeight-100);
+  bub.style.maxHeight=(limit/scale)+'px';bub.style.overflowY='auto';
+  const pin=d.getBoundingClientRect(),height=bub.getBoundingClientRect().height;
+  const above=pin.top-84,below=innerHeight-pin.bottom-8;
+  d.classList.toggle('below',above<height+40&&below>above);
+  const placed=bub.getBoundingClientRect(),dy=placed.top<84?84-placed.top:placed.bottom>innerHeight-8?innerHeight-8-placed.bottom:0;
+  if(Math.abs(dy)>.5)bub.style.translate=`0 ${dy/scale}px`;
 }
 function advanceTalk() {
   if (!talkSess) return;
@@ -1315,7 +1326,7 @@ function drawOverlay() {
   for(const p of questMarkers(g)){const group=questPins.get(p.npc)||[];group.push(p);questPins.set(p.npc,group);}
   for(const group of questPins.values()){
     const p=group[0],pin=mark('quest',p.x,p.y-85,'📜',`<b>${esc(p.name)}</b><p>${group.map(q=>esc(q.title)).join(' · ')}</p><button data-quest-open>คุย · ภารกิจ</button>`);
-    pin.querySelector('button').onclick=()=>{const q=QUESTS.find(q=>q.id===p.id);if(!questNear(g,q)){g.walkTo(p.x,p.y);return;}openQuests(group.length===1?p.id:null);};
+    pin.querySelector('button').onclick=()=>{const q=QUESTS.find(q=>q.id===p.id);if(!questNear(g,q)){g.walkTo(p.x,p.y);return;}if(group.length===1)openQuests(p.id,{owner:p.npc});else openOwnerQuests(p.npc);};
   }
   const s = g.caseReady(g.queue[0]) ? g.queue[0] : null;
 
@@ -1493,9 +1504,21 @@ function activateTownAction() {
   else activateMapInteraction(action.target);
 }
 townActionButton.onclick = activateTownAction;
+let trackedQuestId='',questTrackerSignature='',questTrackerAt=-Infinity;
+function updateQuestTracker(now=performance.now(),force=false){
+ if(!force&&now-questTrackerAt<150)return;questTrackerAt=now;
+ const tracker=$('#quest-tracker');if(!tracker)return;
+ const html=questTrackerHtml(g,trackedQuestId),show=started&&!g.over&&!g.battle&&!g.mapTravel&&!!html;
+ tracker.hidden=!show;if(!show)return;
+ if(html!==questTrackerSignature){questTrackerSignature=html;tracker.innerHTML=html;tracker.querySelector('[data-tracker-entry]').onclick=event=>openQuests(event.currentTarget.dataset.trackerEntry);tracker.querySelector('[data-tracker-journal]').onclick=()=>openHelp('quests');}
+ const panel=$('#town-map-panel'),top=panel.offsetTop+panel.offsetHeight+8;
+ const stage=document.querySelector('.stage'),compact=top+165>stage.clientHeight;
+ tracker.classList.toggle('is-compact',compact);tracker.style.top=(compact?88:top)+'px';tracker.style.right=compact?'auto':getComputedStyle(panel).right;tracker.style.left=compact?'10px':'auto';tracker.style.width=Math.min(panel.offsetWidth,stage.clientWidth-20)+'px';
+}
 function updateTownHud(now) {
   const show=started && isTownZone(g.zone) && !g.over && !g.battle;
   townPanel.hidden=!show;
+  updateQuestTracker(now);
   const title=townTitle(g.zone, g.zoneDef().name);
   const summary=townPanel.querySelector('summary');
   if (summary.textContent!==title) summary.textContent=title;
@@ -2225,7 +2248,7 @@ function guideCards(html) {
   const content = template.innerHTML;
   return `<section class="guide-card"><h3>${esc(heading)}</h3>${content}</section>`;
 }
-function openHelp() {
+function openHelp(initialTab = 'guide') {
   modal(`<div class="help-source" hidden><h2>วิธีเล่น</h2>
     <p style="line-height:var(--leading-body);font-size:var(--text-sm)">
     ท่านคือยมบาทมือใหม่ที่พ่อส่งมาคุมนรกโซนไทย งานคือ <b>พิพากษาให้ตรงกรรม</b> ไม่ใช่ลงโทษให้แรงที่สุด<br>
@@ -2251,11 +2274,11 @@ function openHelp() {
       <li><b>กระจกวิเศษมีจำนวนจำกัด</b> — ใช้แล้วหมดไป ชนะเทวดาทดสอบได้เพิ่ม 1 บาน เลื่อนขั้นแล้วมีเติมให้ (ตั้งแต่ขั้น 5 เติมเต็ม)
           และเติมเพิ่มได้ที่<b>หอส่องกรรม</b> (สร้างได้เมื่อถึงขั้น 5) ด้วยมินิเกมสะท้อนแสง: วางกระจกแล้วหมุนองศาให้แสงไปถึงกระจกวิเศษบนแท่น
           ค้างไว้จนได้ครั้งละ 1 บาน ต้องรอ 5 วาระก่อนเติมครั้งถัดไป ไม่ใช่เติมได้ไม่จำกัด</li>
-      <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ตัดสินเบาไป เขาไม่เข็ด ปล่อยไปแล้วไปก่อเรื่องต่อ
+      <li><b>คำตัดสินไม่จบที่คดีนั้น</b> — ส่งไปสถานที่ไม่ตรงกรรม เขาอาจยังไม่สำนึกและกลับไปก่อเรื่องต่อ
           แล้ว<b>กลับมายืนหน้าแท่นอีกครั้ง</b>พร้อมสำนวนที่หนากว่าเดิม (มีป้าย ↩️ ในคิว)</li>
       <li>จบเกมแล้วนิราจะวาง<b>แฟ้มชื่อของท่านเอง</b>ไว้ — เปิดอ่านได้จริง
-          ข้างในคือทุกคดีที่ท่านลงเกินกรรม และทุกคนที่กลับมาเพราะท่านปล่อยเบา</li>
-      <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระดับวาระให้พอดี</b> แล้วออกหมาย</li>
+          ข้างในคือทุกคำตัดสินที่ผิดพลาดและวิญญาณที่กลับมาอีกครั้ง</li>
+      <li>เลือก <b>สถานีที่ตรงชนิดกรรม</b> + <b>ระยะเวลาลงทัณฑ์</b> แล้วออกหมาย</li>
       <li><b>สถานีที่มี = สำนวนที่จะได้รับ</b> — โซนนี้รับได้เฉพาะกรรมที่ท่านมีที่ลง
           มีแต่กระทะทองแดง ก็มีแต่คดีฉ้อโกงกับมัวเมา · สร้างป่าดาบเพิ่ม คดีฆ่า/ทำร้ายกับวจีทุจริตถึงจะเริ่มเข้าคิว
           · ที่ลงใหม่<b>ปลดล็อกทีละขั้น</b> แนะนำเริ่มจากศาลาน้ำชา → ป่าดาบ (ขั้น 2) → ประตูสวรรค์ (ขั้น 3) ·
@@ -2263,8 +2286,7 @@ function openHelp() {
           (แท็บ <b>ก่อสร้าง</b> บอกไว้ทุกหลังว่าสร้างแล้วเปิดแนวไหน)</li>
       <li><b>เลื่อนขั้นด้วย EXP</b> — พญายมให้ดาว 0–5 ดวงทุกคดี ทุกคำตัดสินได้ EXP ตามคะแนน
           ทุกศึกที่ชนะก็ได้ EXP สะสมถึงเกณฑ์แล้วเลื่อนขั้น · ห้าดาวยัง<b>ลดกรรมของท่าน</b>ให้ด้วยครั้งละ ${KARMA_RELIEF.star5}</li>
-      <li><b>ลงทัณฑ์เกินกรรม = โดนลูกไฟ</b> — เกินตั้งแต่สองระดับขึ้นไปทั้งที่คะแนนรวมยังไม่ต่ำกว่า 50 บารมีหาย 1 ใน 5
-          (ถ้าคะแนนต่ำกว่า 50 จะนับเป็นคำตัดสินแดงแทน) · บารมีหมดแล้วพญายมลงมาเอง
+      <li><b>ตัดสินผิด = พญายมเตือน</b> — คะแนนต่ำกว่า 50 นับเป็นคำตัดสินแดง ความแรงมีผลต่อเวลาและสีของวิญญาณ · บารมีหมดแล้วพญายมลงมาเอง
           ส่งท่านลงกระทะทองแดง กลับมาด้วยบารมี 1 (ไม่จบเกม) ·
           เติมบารมีด้วย<b>กล่องยา</b>ที่ซื้อได้จากพ่อค้านรก หรือนอนพักที่ศาลาน้ำชา</li>
       <li><b>กรรมท่านลดได้</b> — ห้าดาว · มอบ<b>ดอกบัว</b>ให้บุญที่ประตูสวรรค์
@@ -2282,7 +2304,7 @@ function openHelp() {
       <li><b>ยมทูตแต่ละคนหิวได้</b> (แถบ 🍙 แยกจากเสบียงกองกลาง) ดูและป้อนข้าวปั้นได้ 3 ทาง:
           ที่<b>โต๊ะนิรา</b> · ที่<b>หน้าต่างสถานี</b>ที่เขาประจำอยู่ · หรือกด<b>ตัวเขาบนแผนที่</b>โดยตรง
           หิวจนหมดแถบ (0) จะ<b>ทำงานช้าลงอีกชั้นหนึ่ง</b> — ป้อนข้าวปั้นหักจากเสบียงกองกลางครั้งละ 1 ห่อ
-          ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ต้องซื้อเพิ่มที่แท็บก่อสร้างก่อน</li>
+          ไม่มีเสบียงเหลือก็ป้อนไม่ได้ ซื้อเพิ่มได้ที่พ่อค้าหรือโรงอาหาร</li>
       ${sentencingChapters.map(ch => `<li>${ch}</li>`).join('')}<li>${clockGuide}</li>
     </ol>
     <p style="font-size:var(--text-xs);color:var(--muted-foreground)">เกมบันทึกเองอัตโนมัติทุกไม่กี่วินาที ปิดแล้วเปิดใหม่เล่นต่อได้</p></div>
@@ -2292,8 +2314,14 @@ function openHelp() {
       const intro = `<h2>วิธีเล่น</h2>${source.querySelector('h2 + p').outerHTML}
         ${source.querySelector('.tline').outerHTML}${source.querySelector('ol + p').outerHTML}`;
       const reader = d.querySelector('.help-reader');
-      reader.innerHTML = `${intro}<div class="guide-card-grid">${items.map((html, i) =>
+      const guideHtml = `${intro}<div class="guide-card-grid">${items.map((html, i) =>
         guideCards(`<h3>${i + 1}. ${html.includes('<h3>') ? html.match(/<h3>(.*?)<\/h3>/s)[1].replace(/^\d+\.\s*/, '') : (html.match(/<b>(.*?)<\/b>/s)?.[1] || 'วิธีเล่น')}</h3>${html.replace(/<h3>.*?<\/h3>/s, '')}`)).join('')}</div>${historyHtml()}`;
+      reader.innerHTML = `<div class="quest-help-tabs" role="tablist" aria-label="หนังสือคู่มือ"><button type="button" id="help-guide-tab" role="tab" aria-controls="help-guide-panel" data-help-tab="guide">วิธีเล่น</button><button type="button" id="help-quests-tab" role="tab" aria-controls="help-quests-panel" data-help-tab="quests">ภารกิจ</button></div><section id="help-guide-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-guide-tab">${guideHtml}</section><section id="help-quests-panel" class="quest-help-panel" role="tabpanel" aria-labelledby="help-quests-tab">${questJournalHtml(g,trackedQuestId)}</section>`;
+      const select=tab=>{for(const button of reader.querySelectorAll('[data-help-tab]')){const on=button.dataset.helpTab===tab;button.setAttribute('aria-selected',String(on));button.tabIndex=on?0:-1;reader.querySelector('#help-'+button.dataset.helpTab+'-panel').hidden=!on;}};
+      reader.querySelectorAll('[data-help-tab]').forEach(button=>{button.onclick=()=>select(button.dataset.helpTab);button.onkeydown=event=>{const tabs=[...reader.querySelectorAll('[data-help-tab]')],index=tabs.indexOf(button);let next=null;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;if(next!==null){event.preventDefault();select(tabs[next].dataset.helpTab);tabs[next].focus();}};});
+      select(initialTab==='quests'?'quests':'guide');
+      reader.querySelectorAll('[data-journal-quest]').forEach(button=>button.onclick=()=>openQuests(button.dataset.journalQuest));
+      reader.querySelectorAll('[data-track-quest]').forEach(button=>button.onclick=()=>{trackedQuestId=button.dataset.trackQuest;updateQuestTracker();openHelp('quests');});
     }, 'help-modal');
 }
 
@@ -3109,21 +3137,33 @@ function historyHtml(){
   const note=showFamilyNote(g)?'<h3>วงศ์เดียวกัน คนละยุค เวลาในนรกไม่เรียงตามปี</h3><p>ยมทูตแต่ละโซนเป็นคนละคน พ่อค้าควันทองเป็นคนเดียวกันทุกโซน</p>':'';
   return `<section class="character-history"><h2>ประวัติตัวละคร</h2><div class="guide-card-grid">${cards.map(p=>`<article class="guide-card" data-history="${esc(p.id)}"><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></article>`).join('')}</div>${note}</section>`;
 }
-function openQuests(id = null){
+function openOwnerQuests(npc){
+  const quests=questsForActor(g,npc);if(!quests.length)return;
+  if(quests.length===1){openQuests(quests[0].id,{owner:npc});return;}
+  const person=questTarget(g,quests[0]);
+  modal(`<h2>ภารกิจของ${esc(person.name)}</h2>${quests.map(q=>`<article class="quest-journal-card"><h3>${esc(q.title)}</h3><button type="button" data-owner-quest="${esc(q.id)}">${questState(g,q.id).step===0?'คุยเพื่อรับเรื่อง':'คุยเรื่องที่รับไว้'}</button></article>`).join('')}<button data-close>ปิด</button>`,d=>d.querySelectorAll('[data-owner-quest]').forEach(button=>button.onclick=()=>openQuests(button.dataset.ownerQuest,{owner:npc})),'quest-journal');
+}
+function openQuests(id = null,{owner=null,notice=''}={}){
   const q=QUESTS.find(q=>q.id===id),s=q&&questState(g,id),p=q&&questTarget(g,q),blocked=(!q||!q.kin)&&questsPaused(g);
   const zoneName=z=>ZONES.find(x=>x.k===z)?.name||z;
-  if(!q){
-    modal(`<h2>นิรา · ภารกิจ</h2><p>เลือกเรื่องที่ยังค้าง แล้วไปคุยที่จุดนัด · เล่นต่อได้หลังจบเกม</p>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':''}${QUESTS.map(q=>{const s=questState(g,q.id),p=questTarget(g,q);return `<article class="guide-card"><h3>${esc(q.title)}</h3><p>${s.done?'✓ จบแล้ว':questUnlocked(g,q)?`${esc(p.name)} · ${esc(zoneName(p.zone))} · ขั้น ${s.step+1}`:'รอช่วยตัวประกันหรือผ่านศึกชายแดนโซน 4'}</p><button data-quest="${q.id}" ${!questUnlocked(g,q)?'disabled':''}>${s.done?'อ่านบันทึก':'ดูภารกิจ'}</button></article>`;}).join('')}<button data-close>ปิด</button>`,d=>d.querySelectorAll('[data-quest]').forEach(b=>b.onclick=()=>openQuests(b.dataset.quest)),'quest-journal');return;
-  }
+  if(!q){openHelp('quests');return;}
   const waiting=!q.kin&&s.step===2;
   const choiceAt=q.kin?(q.id==='kinGuard'?2:1):q.id==='sqBoon'?1:3;
   const choices=q.choices.length>0&&s.step===choiceAt&&!(q.id==='sqDam'&&s.verdict&&!s.verdict.right);
   const lines=questDialogue(g,q);
+  const ownerConversation=owner===p.npc&&g.zone===p.zone;
+  const acceptanceNeedsTalk=s.step===0&&!ownerConversation;
   const art=p.art||artUrl('crew-'+p.npc,'png',p.zone);
-  modal(`<h2>${esc(q.title)}</h2><p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?'<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>':g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):'<button data-quest-next>คุย · ดำเนินภารกิจ</button>'}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
-    d.querySelector('[data-quest-list]').onclick=()=>openQuests();
+  modal(`<h2>${esc(q.title)}</h2>${notice?`<p class="quest-accepted" role="status">${esc(notice)}</p>`:''}<p>${esc(p.name)} · ${esc(zoneName(p.zone))}</p><img src="${esc(art)}" alt="${esc(p.name)}" style="max-height:160px;max-width:160px;object-fit:contain"><div>${(lines||[]).map(l=>`<p>${esc(plainQuest(l))}</p>`).join('')}</div>${blocked?'<p>ไว้หลังเรื่องนี้จบ</p>':waiting?'<p>รอตัดสินสำนวนที่เรียกไว้แล้ว · กลับไปที่ห้องพิพากษา</p>':s.done?'<p>✓ ปิดภารกิจแล้ว · รางวัลรับไปแล้วครั้งเดียว</p>':g.zone!==p.zone?`<p>ไปทางเรือสู่${esc(zoneName(p.zone))} แล้วกลับมาเปิดภารกิจนี้</p>`:!questNear(g,q)?'<button data-walk-quest>เดินไปจุดนัด</button>':acceptanceNeedsTalk?`<button type="button" data-quest-talk>คุยกับ${esc(p.name)}เพื่อรับภารกิจ</button>`:choices?q.choices.map((c,i)=>`<button data-quest-choice="${i}" ${q.id==='sqMerchant'&&i===1&&g.coin<60?'disabled':''}>${esc(c)}</button>`).join(''):`<button data-quest-next>${s.step===0?'รับภารกิจ':'คุย · ดำเนินภารกิจ'}</button>`}<div class="row"><button data-quest-list>รายการภารกิจ</button><button data-close>ปิด</button></div>`,d=>{
+    d.querySelector('[data-quest-list]').onclick=()=>openHelp('quests');
+    d.querySelector('[data-quest-talk]')?.addEventListener('click',()=>{if(questNear(g,q))openOwnerQuests(p.npc);});
     d.querySelector('[data-walk-quest]')?.addEventListener('click',()=>{d.close();g.walkTo(p.x,p.y);});
-    const act=c=>{const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(g.advanceQuest(id,c)){refresh();openQuests(id);}};
+    const renderedStep=s.step,advanceOnce=createQuestAction(g,id,renderedStep);
+    const act=c=>{if(renderedStep===0&&!ownerConversation||questState(g,id).step!==renderedStep)return;const accepting=renderedStep===0;
+      const buttons=[...d.querySelectorAll('[data-quest-next],[data-quest-choice]')],disabled=buttons.map(b=>b.disabled);buttons.forEach(b=>b.disabled=true);
+      if(!advanceOnce(c)){buttons.forEach((b,i)=>b.disabled=disabled[i]);return;}
+      const line=crossZoneTalk(g,p.npc);if(line)g.log(`${p.name}: ${line}`);if(accepting)trackedQuestId=id;refresh();openQuests(id,{owner,notice:accepting?'รับภารกิจ “'+q.title+'” แล้ว':''});
+    };
     d.querySelector('[data-quest-next]')?.addEventListener('click',()=>act(null));
     d.querySelectorAll('[data-quest-choice]').forEach(b=>b.onclick=()=>act(Number(b.dataset.questChoice)));
   },'quest-journal');
@@ -3186,12 +3226,12 @@ function openNiraOffice() {
           : `<button data-hire-guard class="sm gold" ${g.coin < GUARD.hire ? 'disabled' : ''} title="จ้างแล้วช่วยรบทุกฉากต่อสู้ให้เองอัตโนมัติ ไม่ต้องจัดเข้าทีม">จ้าง ${GUARD.hire}</button>`}
       </article>` });
     const cards = cardList.map((x, i) => ({ ...x, i })).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.html);
-    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2><button data-quests>ภารกิจ · เรื่องที่ยังค้าง</button>${final ? '' : niraGreet}
+    dlg.innerHTML = `<h2>📋 โต๊ะนิรา — บุคลากรและทีมต่อสู้</h2>${questOwnerButtonHtml(g,'nira')}${final ? '' : niraGreet}
       <p class="hint">ทีมรวมสูงสุด ${g.partyCap()} คน (รวมยามาและยักษ์) ${party.length > max ? 'ทีมเดิมเกินช่อง: เก็บรายชื่อไว้ครบ แต่ใช้เฉพาะลำดับแรก กรุณาจัดทีมใหม่ · ' : ''}เลือกยมทูตเข้าทีม${final ? 'ศึกสุดท้ายข้ามโซน' : 'ต่อสู้'}ได้ ${max} คน เมื่อเข้าสนามรบจะมาช่วยยมบาทน้อย ${final ? 'ช่วงศึกสุดท้ายงานประจำหยุดพัก เตรียมทีมได้เต็มที่' : 'ระหว่างอยู่บนแผนที่ยังทำงานประจำต่อ ไม่ต้องเดินตาม'}</p>
       <div class="market-grid">${cards.join('')}</div>
       ${workersPanelHtml(g)}
       <div class="row"><button class="gold" data-close>เสร็จแล้ว</button></div>`;
-    dlg.querySelector('[data-quests]').onclick=()=>openQuests();
+    bindOwnerQuestButtons(dlg);
     bindWorkersPanel(dlg,g,() => { paint();refresh(); });
     dlg.querySelectorAll('[data-hire]').forEach(b => b.onclick = () => { if (g.hire(b.dataset.hire)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-party]').forEach(b => b.onclick = () => { if (g.toggleParty(b.dataset.party)) { sfx('crack'); paint(); refresh(); } });
@@ -3234,7 +3274,7 @@ function openMerchant() {
   const paint = () => {
     const mats = Object.entries(g.inventory || {}).filter(([k,n]) => n > 0 && ITEMS[k]?.material);
     dlg.innerHTML = `<div class="merchant-heading"><img src="img/merchant-profile.jpeg" alt="พ่อค้าควันทอง"><div><h2>🧳 ${esc(MERCHANT.name)}</h2><p class="hint">${esc(MERCHANT.line)} · มี ${Math.round(g.coin)} เบี้ยกรรม</p></div></div>
-      ${merchantGreet}<button data-quests>ภารกิจ · จดหมายฝาก</button>
+      ${merchantGreet}${questOwnerButtonHtml(g,'merchant')}
       <h3>เสบียงสำหรับยมทูต</h3>${foodSupplyCard()}
       <h3>ขายของจากชายแดน</h3><div class="market-grid">${mats.length ? mats.map(([k,n]) => {
         const d = ITEMS[k]; return `<article class="shop-card">${itemImg(k, 'class="shop-item-img"')}<span><b>${esc(d.name)} ×${n}</b><small>${d.sell} เบี้ยกรรมต่อชิ้น</small></span>
@@ -3249,7 +3289,7 @@ function openMerchant() {
     dlg.querySelectorAll('[data-sell]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sell)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-sell-all]').forEach(b => b.onclick = () => { if (g.sellMaterial(b.dataset.sellAll, true)) { sfx('coin'); paint(); refresh(); } });
     dlg.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => { if (g.buyMerchant(b.dataset.buy)) { sfx('coin'); paint(); refresh(); } });
-    dlg.querySelector('[data-quests]').onclick=()=>openQuests();
+    bindOwnerQuestButtons(dlg);
     bindFoodSupply(dlg,paint);
   };
   paint(); openDlg('merchant');
@@ -6982,4 +7022,4 @@ window.__sceneToClient = (x, y) => {   // Playwright: จุดบนฉาก �
 window.__camera = camera;     // M1: debug / Playwright handle (like window.G)
 
 // Review pages use the same production dialogs with isolated in-memory saves.
-export {openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay,openMerchant,openStation};
+export {openHelp,openQuests,openOwnerQuests,talkTo,openBattle,openDungeon,openHarbour,openBorder,openTrial,openNiraOffice,startPlay,openMerchant,openStation};

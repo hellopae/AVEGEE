@@ -2118,6 +2118,15 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
 
 .tea-rest-list summary{cursor:pointer;line-height:1.6}.tea-rest-list>div{max-height:150px;overflow:auto;font-size:.85em}.tea-rest-list .hunger-line{margin:6px 0}
 .signal-controlled{position:relative}.signal-controlled::after{content:'';position:absolute;z-index:4;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 11px,#a1ffe155 12px 14px);mix-blend-mode:screen}
+
+/* Quest journal: one compact objective below the existing minimap; no world input overlay. */
+.quest-tracker{position:absolute;z-index:8;box-sizing:border-box;max-height:165px;overflow:auto;padding:10px;border:1px solid #b98e4988;border-radius:10px;background:#21131bea;color:#f8ead7;font-size:12px;line-height:1.5}
+.quest-tracker[hidden],.quest-help-panel[hidden]{display:none!important}
+.quest-tracker-heading{display:flex;justify-content:space-between;gap:8px;color:#efd29c}.quest-tracker button{display:block;width:100%;padding:5px 0;background:transparent;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer}.quest-tracker button strong,.quest-tracker button span,.quest-tracker button small{display:block}.quest-tracker button strong{color:#ffe2a4}.quest-tracker button small{color:#c7b298}.quest-tracker.is-compact [data-tracker-entry]>span,.quest-tracker.is-compact [data-tracker-entry]>small{display:none}.quest-tracker [data-tracker-journal]{border-top:1px solid #b98e4944;color:#eac77c}
+.quest-help-tabs{display:flex;gap:8px;position:sticky;top:0;background:#21131b;z-index:2;padding:8px 0;margin-bottom:16px}.quest-help-tabs button{min-height:44px;padding:8px 18px}.quest-help-tabs [aria-selected="true"]{border-color:#efd29c;color:#ffe2a4;background:#513826}
+.quest-journal-card{padding:14px;border:1px solid #b98e4955;border-radius:10px;background:#2b1b23;margin:10px 0;overflow-wrap:anywhere}.quest-journal-card h3{margin:0 0 8px;color:#f4d39b}.quest-journal-card p{line-height:1.6}.quest-owner-button{margin-top:8px;max-width:100%;white-space:normal}.quest-accepted{padding:12px;border:1px solid #7ab58c;border-radius:8px;color:#a7e2b5;background:#20382a}
+@media(max-width:600px){.quest-tracker{font-size:10px;padding:7px;max-height:145px}.quest-tracker button span{max-height:3em;overflow:hidden}.quest-help-tabs{position:static}.quest-help-tabs button{flex:1;padding:8px}.quest-journal-card{padding:10px}}
+
 </style>
 <link rel="stylesheet" href="src/command-wheel.css?v=20261029-c1-v2-q3">
 <link rel="stylesheet" href="src/flow29c.css?v=20261009-f2-merge-f3-f4-sala-books-h2-i1b-q3">
@@ -2194,6 +2203,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
       </div>
       <small data-t="town.hint">WASD / ลูกศร เดิน · E สร้างหรือเข้า · คลิกพื้นเพื่อเดิน</small>
     </details>
+    <aside id="quest-tracker" class="quest-tracker" aria-label="ภารกิจที่กำลังทำ" hidden></aside>
     <button id="town-action" class="town-action" hidden></button>
     <div class="scene-box">
       <canvas id="cv" width="1527" height="704"></canvas>
@@ -2397,7 +2407,7 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/asset-preload.js": "./src/asset-preload.js?v=20261029-r2-battle-fx-s1-soul-poses-art-atk2",
     "./src/battle-result.js": "./src/battle-result.js?v=20261028-target-weapon",
     "./src/sfx.js": "./src/sfx.js?v=20261029-clean-404",
-    "./src/ui.js": "./src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food",
+    "./src/ui.js": "./src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food-quest-owner",
     "./src/asset-preload.js?v=yama-live-20261015": "./src/asset-preload.js?v=20261029-r2-battle-fx-s1-soul-poses-art-atk2",
     "./src/combat-sprites.js?v=night-v1": "./src/combat-sprites.js?v=20261020-border-party-grace-f",
     "./src/game.js?v=minigame-review-20261011-j-k1d-l3-l1-l2-l5-team": "./src/game.js?v=20261031-q2-hist-home-slots-sentence-time-recovery-120",
@@ -2463,10 +2473,10 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/encounter-balance.js": "./src/encounter-balance.js?v=20261030-balance2",
     "./src/party-balance.js": "./src/party-balance.js?v=20261030-balance2",
     "./src/breach-approach.js": "./src/breach-approach.js?v=20261030-e1-v2",
-    "./src/e1-content.js": "./src/e1-content.js?v=20261031-q2-hist",
+    "./src/e1-content.js": "./src/e1-content.js?v=20261031-q2-hist-quest-owner",
     "./src/quest-cases.js": "./src/quest-cases.js?v=20261030-e1-v2",
     "./src/remorse.js": "./src/remorse.js?v=20261030-e1-v2-sentence-time",
-    "./src/side-quests.js": "./src/side-quests.js?v=20261030-z4-town-a",
+    "./src/side-quests.js": "./src/side-quests.js?v=20261030-z4-town-a-quest-owner",
     "./src/signal-arc.js": "./src/signal-arc.js?v=20261030-e1-v2",
     "./src/talk.js": "./src/talk.js?v=20261030-e1-v2",
     "./src/history-unlock.js": "./src/history-unlock.js?v=20261031-q2-hist",
@@ -2478,12 +2488,14 @@ dialog.frontier[open]{width:min(1120px,calc(100% - 24px));max-width:1120px;paddi
     "./src/scene-atmosphere.js": "./src/scene-atmosphere.js?v=20261101-zone-atmosphere-dialog-lava-cloud-rays",
     "./src/snow-footprints.js": "./src/snow-footprints.js?v=20261101-zone-atmosphere",
     "./src/onboarding.js": "./src/onboarding.js?v=20261102-onboard-food",
-    "./src/sun-shafts.js": "./src/sun-shafts.js?v=20261102-cloud-rays"
+    "./src/sun-shafts.js": "./src/sun-shafts.js?v=20261102-cloud-rays",
+    "./src/quest-journal.js": "./src/quest-journal.js?v=20261102-quest-owner",
+    "./src/quest-panels.js": "./src/quest-panels.js?v=20261102-quest-owner"
   }
 }
 </script>
 <script type="module" src="src/preload.js?v=20261027-m2-startup-ready-art-atk2-leader-art-food-art-grace-f"></script>
 <script type="module" src="src/cover-fx-h5b.js?v=h5b-intro-v3-coverfx-i2a"></script>
-<script type="module" src="src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food"></script>
+<script type="module" src="src/ui.js?v=20261101-tweak-home-slots-sentence-time-zone-atmosphere-onboard-food-quest-owner"></script>
 </body>
 </html>
