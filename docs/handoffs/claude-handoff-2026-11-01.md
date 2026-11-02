@@ -228,3 +228,24 @@ Cache/import-map filenames for parent: onboarding.js(new),canteen.js,scene.js,ro
 - สองcanvasรวมไม่เกิน900000pixels; ไม่รับpointer; pause/weather-off/reduced-motion/teardownคงอยู่
 - Full1847/1847,0fail,0cancel; focused32/32; Chromiumจริง16บริบท(2หน้า×4โซน×1280/390),0pageerror พร้อมตรวจลาวามีพิกเซลจริง/เมฆ.2/หยุดเวลา/ปิดอากาศ
 - หลักฐานนอกrepo Output/Codex/2026-11-02-dialog-effects; ไม่อ้างFPSมือถือจริงหรือReese/Chris
+
+## Codex — SAVE-VISUAL (2026-11-02)
+
+Branch `codex/2026-11-02-save-visual`, base `27fb00a7`. No merge/push. Only save-slot renderer, save-slot CSS, its cache destination, and tests changed (plus this handoff).
+
+Cards keep time/zone and exactly three choices; empty slots still say New Game. Money/order/karma use the same existing HUD icon images (`icon-coin`, `icon-justice`, `icon-skull`) in a single row, with accessible alt labels and values. Owned crew render as portraits for only the saved current zone plus global Nira, with names in alt/title. Filtering happens after saveSlotSummary: no storage, save schema, summary actors, crew ownership, or progress is removed/rewritten. Images resolve directly to existing region-specific portraits, including fixed West Boon art. West/Cyber Guard has no dedicated profile, so existing correct-region cutscenes are framed as head portraits using CSS; no new art. Seven small portrait images request synchronous decoding to avoid transient blank first paint. The custom accessible back button remains; only the duplicate auto-injected corner close is hidden within save-slots-modal.
+
+Cache identity: `save-slot-menu.js?v=20261102-save-visual`; no other import-map aliases changed. Parent may combine index CSS/import destination with its own map changes.
+
+Validation: focused HOME/storage/menu/regional art tests 12/12, syntax and whitespace clean. Real installed clean-profile Chromium: all four zones at390x844 and1280x800, plus TH3840x2160 (9 contexts), no page errors, all portrait/icon decodes succeed, current-region IDs only, one visible close, exactly three slots/two New Game choices, no horizontal overflow, and raw occupied save string unchanged. Screenshot review corrected close CSS specificity and awaited image decode to distinguish pending raster paint from missing art. Final Cyber Guard framing was additionally checked at390/1280 after its CSS crop adjustment. No full suite rerun here; parent owns final integrated run.
+
+External evidence/harness/screens: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-save-visual/`; final Cyber screenshots under `guard-crop/`. No physical-device FPS claim.
+
+## Codex 2 พ.ย. 2569 — รวม SAVE-VISUAL / CLOUD-RAYS ตามรูป1–3
+
+- ช่องเซฟใช้ไอคอนHUDเงิน/ระเบียบ/บาป และรูปยมทูตเฉพาะโซนของเซฟ+นิรา; ไม่ลบactorโซนอื่นจากข้อมูล; ปุ่มปิดไม่ซ้อน
+- เอาเสาไฟที่เพิ่มในห้องสอบสวน/ต่อสู้ออก (เสาไฟของแผนที่คงเดิม); เงาเมฆดำเป็นปื้นแยกมีช่องสว่าง ความเข้มสูงสุด20%ทุกโซน/ทุกบริบท
+- แสงโซน2เปลี่ยนจากpolygonสามเหลี่ยมเป็นtextureลำแสงGaussianขอบฟุ้ง+ชั้นหมอก/แสงพื้น ขยับนุ่ม อ้างอิงDesktop/Exam/f1.mp4; อบภาพครั้งเดียว384×512 วาด2blit ไม่อ่านpixelsทุกframe
+- Chromiumจริง:9บริบทช่องเซฟ+2cropGuardผ่าน, รูปทั้งหมดdecode/ข้อมูลเซฟไม่เปลี่ยน;16บริบทสอบสวน/ต่อสู้ไม่มีเสาไฟเพิ่มและ0error; instrumentdrawImageบนแผนที่จริงครบ4โซนยืนยันalpha.2และhashเงาเปลี่ยนตามเวลา
+- Full1852/1852,0fail,0cancel โดยจำกัดconcurrency4; syntax193/193; รอบแรกdefaultconcurrencyชนtimeout30sในเทสต์Pythonรูปคนงานเดิม ตรวจเดี่ยว20/20ผ่าน ไม่ได้แก้timeoutหรือข้ามเทสต์
+- คิวแทรกบันทึกในdocs/queues/2026-11-02-active-queue.md ก่อนQUEST-OWNER; หลักฐานภายนอกOutput/Codex/2026-11-02-cloud-rays และ2026-11-02-save-visual; ไม่อ้างFPSมือถือจริงหรือReese/Chris
