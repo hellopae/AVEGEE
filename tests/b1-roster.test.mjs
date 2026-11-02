@@ -48,7 +48,7 @@ test('B1 migration is idempotent including zero morale, entry snapshots and inva
   d.zoneEntry = fixture();
   const first = migrateRosterSave(d,1000), second = migrateRosterSave(first,5000);
   assert.deepEqual(second,first);
-  assert.equal(first.roster['cyberhell:taan'].recoverUntil,61000);
+  assert.equal(first.roster['cyberhell:taan'].recoverUntil,121000);
   assert.equal(first.roster['cyberhell:taan'].morale,0);
   assert.deepEqual(first.party.members,['cyberhell:taan','cyberhell:kan']);
   assert.equal(first.zoneEntry.rosterVersion,1);

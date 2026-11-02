@@ -182,3 +182,17 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - เพิ่ม shared atmosphere ในสอบสวน/ต่อสู้ทุกโซน, TH/Asia เมฆประกอบชั้นแล้วจำกัด20%, THโคมไฟเดิม/Asiaใบไม้และแสง, Westพื้นหิมะ/รอยเท้าจำกัด96จุด อายุ6วินาที
 - ชายแดนใช้projectionร่วม1.12×/follow180ms; ภาพ ตัวละคร pointer และforegroundใช้transformเดียวกัน
 - targeted weather/camera/footprint45/45ผ่าน; fullและbrowserรวมตรวจต่อบนgameplay-updateก่อนเผยแพร่ ยังไม่อ้างตรวจผ่านมือถือจริง
+
+## Codex — RECOVERY-120 (2026-11-02)
+
+Branch: `codex/2026-11-02-recovery-120`, base `df42fb1b`. No merge or push by this task.
+
+Downed crew now disappear from combat/map availability and occupy a real tea-room cushion for 120 wall-clock seconds. Their persistent `teaRest.recovery` record uses the existing room renderer and seat reservations. At the original deadline they return with the existing 50-morale recovery behavior. `battle.absentActors` keeps them excluded from the encounter in which they fell. Guard's battle 1-HP rule and the Yama return/sleep/wake story remain unchanged.
+
+All roster entries, including dormant home zones, advance recovery. JSON saves preserve seat, zone, deadline, and return point. Legacy one-minute recovery deadlines receive a one-time 60-second extension, preserving elapsed time; `recoveryVersion:2` prevents repeated extensions. A full pavilion uses a non-overlapping waiting record until a cushion opens, while retaining the original recovery deadline. Existing voluntary rest remains two minutes from seated arrival and restores 100 morale.
+
+Integration: parent must version canonical import-map destinations for `actor-recovery.js`, `tea-staff-rest.js`, `roster.js`, and `game.js`. This task intentionally does not edit index/UI. The exact `tests/fixtures/recovery-120-runtime-changes.json` snippets normalize only the three reviewed game hooks before authenticating the original combat runtime hash. Combine its normalization with HOME/punishment fixtures when integrating; do not relabel the historical 32,000-trial reports.
+
+Validation: existing recovery/tea/BALANCE-2 targeted 28/28, new recovery cases 4/4, revised roster migration 7/7. First full suite1813/1814: sole old B1 one-minute expectation was corrected and its7 focused tests passed. Parent requested stopping redundant full rerun; final integrated full verification belongs to parent. Interrupted rerun1808pass/0fail/1cancelled is not claimed green. Full logs recorded in external task evidence. `node --check` for four changed runtime modules and `git diff --check` passed. No browser or physical-device performance claim in this task; parent owns integrated browser review.
+
+Evidence: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-02-recovery-120/`.

@@ -29,20 +29,20 @@ test('actual counters hit crew and Guard, down excludes actions; crew disappears
  actor.x=500;actor.y=800;if (key !== 'guard') assert.notDeepEqual(hitActor(g,500,800),{kind:key==='guard'?'guard':'crew',key:key==='guard'?0:key});
  }
 });
-test('crew recovers after 60 real seconds including reload; fallen guard retains 1 HP without regeneration',()=>{
+test('crew recovers after 120 real seconds including reload; fallen guard retains 1 HP without regeneration',()=>{
  const g=battle(), c=g.crewOf('taan');const now=Date.now();g.downActor(c,now);g.food=10;
  const copy=game();copy.restore(g.snapshot());const actor=copy.roster[c.id];
- copy.updateActorRecovery(now+59999);assert.equal(actor.morale,0);assert.equal(copy.feedCrew('taan'),false);
+ copy.updateActorRecovery(now+119999);assert.equal(actor.morale,0);assert.equal(copy.feedCrew('taan'),false);
  copy.step();assert.equal(actor.morale,0);
- copy.updateActorRecovery(now+60000);assert.equal(actor.morale,50);assert.equal(actor.recoverUntil,0);
- actor.morale=49;copy.updateActorRecovery(now+90000);assert.equal(actor.morale,49);
+ copy.updateActorRecovery(now+120000);assert.equal(actor.morale,50);assert.equal(actor.recoverUntil,0);
+ actor.morale=49;copy.updateActorRecovery(now+150000);assert.equal(actor.morale,49);
  // Battle itself is deliberately not persisted by the existing save schema.
- g.updateActorRecovery(now+60000);assert.equal(c.morale,50);assert.ok(!g.battleCrew().includes(c));
+ g.updateActorRecovery(now+120000);assert.equal(c.morale,50);assert.ok(!g.battleCrew().includes(c));
  g.battle=null;g.startBattle({id:100,who:'next',deserved:4,resist:true});assert.ok(g.battleCrew().includes(c));
  const guard=g.guard;g.downActor(guard,now);const saved=game();saved.restore(g.snapshot());
- saved.updateActorRecovery(now+59999);assert.equal(saved.guard.morale,1);assert.equal(saved.hireGuard(),false);
- saved.updateActorRecovery(now+60000);assert.equal(saved.guard.morale,1);
- saved.guard.morale=47;saved.updateActorRecovery(now+90000);assert.equal(saved.guard.morale,47);
+ saved.updateActorRecovery(now+119999);assert.equal(saved.guard.morale,1);assert.equal(saved.hireGuard(),false);
+ saved.updateActorRecovery(now+120000);assert.equal(saved.guard.morale,1);
+ saved.guard.morale=47;saved.updateActorRecovery(now+150000);assert.equal(saved.guard.morale,47);
 });
 test('Yama loss stages persist through return, sleep, Nira wake; spare heart precedes loss',()=>{
  const g=battle();g.battle.over='lose';g.battle.youHp=0;g.endBattle();

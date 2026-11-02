@@ -5,7 +5,7 @@ import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSigna
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
 import { COMBAT_SKILLS, skillForActor, skillUnlocked, skillEffect, grantProtection, absorbShield, attackBuff, teamCombo, applyCombo } from './combat-skills.js';
 import { partyCap, selectablePartyMax, scaleEncounter } from './party-balance.js';
-import {startTeaRest,advanceTeaRest} from './tea-staff-rest.js';
+import {startTeaRest,advanceTeaRest,startRecoveryTeaRest} from './tea-staff-rest.js';
 import {canteenState,prepareCooks,stepCanteen,orderRice,cancelRice} from './canteen.js';
 import {HISTORY_VERSION,syncHistory,noteBattleHistory,headId} from './history-unlock.js';
 import {initializeBossJustice,queueBossJustice,bossJusticeCase,bossJusticeActive,completeBossJusticeStory,advanceBossJustice} from './boss-justice.js';
@@ -614,6 +614,10 @@ const API = {
     actor.morale = fallenGuard ? 1 : 0; actor.recoverUntil = fallenGuard ? 0 : now + RECOVERY_MS;
     if (this.battle) (this.battle.absentActors ||= []).push(actor.id);
     this.releaseActorFromWork(actor);
+    if (!fallenGuard && actor.k !== 'guard') {
+      actor.recoveryVersion = 2;
+      actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+    }
     return true;
   },
   /** ปล่อยตัวละครออกจากงานที่ทำอยู่ (สถานี/พาวิญญาณ/ก่อสร้าง) — ใช้ทั้งตอนล้มและตอนไปพักศาลา */
@@ -661,7 +665,14 @@ const API = {
     syncRoster(this);
     let changed = false;
     for (const actor of Object.values(this.roster)) {
-      if (actor.teaRest) { changed = this.updateGuardRest(actor, now) || changed; continue; }
+      if (actor.recoverUntil && actor.k !== 'guard' && !actor.teaRest) {
+        actor.teaRest = startRecoveryTeaRest(this,actor,actor.homeZone === 'global' ? this.zone : actor.homeZone || this.zone,now);
+        changed = true;
+      }
+      if (actor.teaRest) {
+        if (actor.teaRest.recovery && this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
+        changed = this.updateGuardRest(actor, now) || changed; continue;
+      }
       if (actor.morale <= 0 && !actor.recoverUntil) changed = this.downActor(actor, now) || changed;
       if (actor.recoverUntil && now >= actor.recoverUntil) {
         if (this.battle && !(this.battle.absentActors || []).includes(actor.id)) (this.battle.absentActors ||= []).push(actor.id);
