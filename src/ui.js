@@ -1,3 +1,4 @@
+import {mountSceneAtmosphere} from './scene-atmosphere.js';
 import {migrateLegacySave,listSaveSlots,readSaveSlot,readActiveSlot,selectSaveSlot,validSlot} from './save-slots.js';
 import {saveSlotMenuHtml,slotMenuError} from './save-slot-menu.js';
 import {bindMapZoom} from './map-zoom-controls.js?v=20261030-b12-fx';
@@ -3035,6 +3036,7 @@ function trialCameraAttach() {
     box.style.setProperty('min-height', '0', 'important');
   };
   camera.attach(hud);
+  mountSceneAtmosphere(hud,{zone:g.zone,context:'trial',paused:()=>userPaused||document.hidden});
   place(); requestAnimationFrame(place);
   if (typeof ResizeObserver === 'function') { const ro = new ResizeObserver(() => { if (hud.isConnected) place(); else ro.disconnect(); }); ro.observe(hud); ro.observe(real); }
 }
@@ -4044,7 +4046,8 @@ function openBattle(after) {
       </div>${prep}${prepLayer}${fleeLayer}`;
 
     const stage = dlg.querySelector('.combat-arena');
-    camera.attach(stage);          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
+    camera.attach(stage);
+    mountSceneAtmosphere(stage,{zone:g.zone,context:'battle',paused:()=>userPaused||document.hidden});          // M1: the camera keeps its own state across repaints; re-bind it to the fresh scene before anything measures (camera first, then the fx canvas)
     applyDashPosition();
     if (!phase) clearMoveName(); else renderMoveName();
     attachBattleFx(stage); stage.classList.toggle('fx-handled', fxHandled && !!phase);

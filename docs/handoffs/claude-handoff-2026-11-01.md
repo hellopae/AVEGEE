@@ -106,3 +106,9 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - RealChromium cleanprofile1280×800/390×844ผ่านSTART/3cards/newslot2/reloadcontinue/legacycopy/summary25crew/no-horizontal-overflow; pageErrors=[]
 - รายงาน ภาพจริง สคริปต์browser และlog: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-home-save-slots/README.md`
 - ไม่แตะpunishment/effectsหรือstatus.json/worklog.json/work-mode.json; ไม่อ้างReese/Chrisตรวจ
+
+## Codex 2 พ.ย. 2569 — ZONE-ATMOS
+
+- เพิ่ม shared atmosphere ในสอบสวน/ต่อสู้ทุกโซน, TH/Asia เมฆประกอบชั้นแล้วจำกัด20%, THโคมไฟเดิม/Asiaใบไม้และแสง, Westพื้นหิมะ/รอยเท้าจำกัด96จุด อายุ6วินาที
+- ชายแดนใช้projectionร่วม1.12×/follow180ms; ภาพ ตัวละคร pointer และforegroundใช้transformเดียวกัน
+- targeted weather/camera/footprint45/45ผ่าน; fullและbrowserรวมตรวจต่อบนgameplay-updateก่อนเผยแพร่ ยังไม่อ้างตรวจผ่านมือถือจริง

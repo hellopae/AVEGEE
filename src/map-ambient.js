@@ -22,6 +22,7 @@ export const MAP_FX = Object.freeze({
     breathe: .06,                   // slow size/opacity breathing
     tint: Object.freeze({ th:'20,8,16', asia:'8,14,26', west:'8,16,40', cyberhell:'14,6,36' }),
     fallbackTint: '12,16,34',
+    peakByZone:Object.freeze({th:.20,asia:.20,west:.45,cyberhell:.45}),
   }),
   snow: Object.freeze({
     max: 1100,                      // particle ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
@@ -274,14 +275,14 @@ export function ambientParticles(zone, time, W, H, limit = null) {
 /** World layer only: caller paints actors, signs and UI afterwards. Areas are biome bounds.
  *  Snow (zone 3) is laid out over the VISIBLE part of the area in CSS pixels, so its density and flake size are the
  *  same at any zoom; the embers and dust of zones 1-2 keep their original world-space layout. */
-export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1]) {
+export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = [0,0,1,1], maxParticles = null) {
   if(reduced || !weatherOn)return;
   const [x0,y0,x1,y1]=area, aw=(x1-x0)*W, ah=(y1-y0)*H;
   ctx.save();ctx.beginPath();ctx.rect(x0*W,y0*H,aw,ah);ctx.clip();ctx.translate(x0*W,y0*H);
   const viewZone=zone==='west'||zone==='cyberhell',view=viewZone?viewMetrics(ctx,aw,ah):null;
   if(viewZone){
-    if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H);
-    else if(view)drawRainAndStorm(ctx,view,time,W,H);
+    if(view&&zone==='west')drawSnowAndFog(ctx,view,time,W,H,maxParticles);
+    else if(view)drawRainAndStorm(ctx,view,time,W,H,maxParticles);
   }else{
     const count=biomeBudget(ctx,W,H,MAP_FX.legacyBase[zone]??MAP_FX.legacyBase.th);
     for(const p of ambientParticles(zone,time,aw,ah,count)){
@@ -293,13 +294,13 @@ export function drawBiomeWeather(ctx, zone, time, W, H, reduced = false, area = 
   ctx.restore();
 }
 /** Zone 3: drifting low fog banks, then a dense snowfall. Both are sized from the visible area. */
-function drawSnowAndFog(ctx,view,time,W,H){
+function drawSnowAndFog(ctx,view,time,W,H,maxParticles=null){
   const fog=MAP_FX.fog,bank=blobSprites(fog.tint,'fog');
   if(bank){
     const off=driftOffset(ctx,'fog',time,[fog.drift[0]*view.w*fog.cell[0],fog.drift[1]*view.h*fog.cell[1]],true);
-    drawPatchField(ctx,view,fog,off,time/1000,()=>bank);
+    drawPatchField(ctx,view,maxParticles!==null?{...fog,peak:.14}:fog,off,time/1000,()=>bank);
   }
-  const snow=MAP_FX.snow,list=ambientParticles('west',time,view.w/view.u,view.h/view.u,biomeBudget(ctx,W,H,snow.max));
+  const snow=MAP_FX.snow,list=ambientParticles('west',time,view.w/view.u,view.h/view.u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,snow.max)));
   const lo=snow.alpha[0],span=snow.alpha[1]-lo,BINS=4;
   ctx.fillStyle=snow.color;
   for(let b=0;b<BINS;b++){
@@ -316,8 +317,8 @@ function drawSnowAndFog(ctx,view,time,W,H){
 }
 
 /** Zone 4: heavy slanted rain over the visible area, plus lightning: a jagged bolt and a faint whole-screen flash. */
-function drawRainAndStorm(ctx,view,time,W,H){
-  const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,biomeBudget(ctx,W,H,R.max));
+function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
+  const R=MAP_FX.rain,u=view.u,list=ambientParticles('cyberhell',time,view.w/u,view.h/u,Math.min(maxParticles??Infinity,biomeBudget(ctx,W,H,R.max)));
   const lo=R.alpha[0],span=R.alpha[1]-lo,BINS=4;
   ctx.strokeStyle=R.color;ctx.lineWidth=R.width*u;
   for(let b=0;b<BINS;b++){
@@ -358,6 +359,8 @@ export function weatherBudget({width=1440,height=900,dpr=1,reduced=false}={}) {
   return Math.max(6,Math.min(36,Math.floor(36*Math.min(1,width*height/(1440*900))/Math.max(1,dpr/1.5))));
 }
 let weatherSprites;
+const cloudLayers=new WeakMap();
+export const cloudOpacityForZone=zone=>MAP_FX.cloud.peakByZone[zone]??MAP_FX.cloud.peak;
 const weatherClocks=new WeakMap();
 const driftClocks=new WeakMap();
 /** Soft "cloud" blobs, baked once per tint: unions of feathered ellipses, opaque in the core and fading to nothing
@@ -435,6 +438,21 @@ function drawPatchField(ctx,view,spec,off,t,bankAt){
     ctx.drawImage(sprite,cx-pw/2,cy-ph/2,pw,ph);
   }
 }
+/** Compose all overlapping patches once, then apply the biome opacity exactly once.
+ *  Thus TH/Asia can never exceed20% shadow even where cloud blobs overlap. */
+function composedClouds(ctx,view,cloud,off,t,bankAt){
+ let layer=cloudLayers.get(ctx);
+ if(!layer){
+  const canvas=typeof document!=='undefined'?document.createElement('canvas'):null,c=canvas?.getContext?.('2d');
+  // Minimal canvas shims can still use the direct-patch fallback.
+  if(!c||c.canvas!==canvas)return null;
+  layer={canvas,ctx:c};cloudLayers.set(ctx,layer);
+ }
+ const cssW=view.w/view.u,cssH=view.h/view.u,k=Math.min(1,900/Math.max(cssW,cssH)),pw=Math.max(1,Math.round(cssW*k)),ph=Math.max(1,Math.round(cssH*k));
+ if(layer.canvas.width!==pw)layer.canvas.width=pw;if(layer.canvas.height!==ph)layer.canvas.height=ph;
+ const c=layer.ctx;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pw,ph);c.setTransform(pw/view.w,0,0,ph/view.h,-view.x*pw/view.w,-view.y*ph/view.h);
+ drawPatchField(c,view,{...cloud,peak:1},off,t,bankAt);return layer.canvas;
+}
 export function weatherViewport(ctx){
   const dpr=globalThis.devicePixelRatio||1;
   return {width:ctx.canvas?.clientWidth||ctx.canvas?.width/dpr||1440,
@@ -473,16 +491,19 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   // Cloud shadows come last in the actor pass, so floor, buildings and characters darken together;
   // labels are clipped out above and HUD buttons are DOM layers on top of this canvas.
   const view=viewMetrics(ctx,W,H),cloud=MAP_FX.cloud;
+  let cloudLayer=null;
   if(view){
     const off=driftOffset(ctx,'cloud',time,[cloud.drift[0]*view.w*cloud.cell[0],cloud.drift[1]*view.h*cloud.cell[1]],!reduced&&!paused);
     const bankAt=cx=>blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
-    drawPatchField(ctx,view,cloud,off,t,bankAt);
+    cloudLayer=composedClouds(ctx,view,cloud,off,t,bankAt);
+    if(!cloudLayer)drawPatchField(ctx,view,{...cloud,peak:Math.min(...halves.map(r=>cloudOpacityForZone(r.zone)))},off,t,bankAt);
     ctx.globalAlpha=1;
   }
   for(const region of halves){
     const style=WEATHER_ZONES[region.zone];if(!style)continue;
     const left=region.from*W,rw=(region.to-region.from)*W;
     ctx.save();ctx.beginPath();ctx.rect(left,0,rw,H);ctx.clip();
+    if(cloudLayer&&view){ctx.globalAlpha=cloudOpacityForZone(region.zone);ctx.drawImage(cloudLayer,view.x,view.y,view.w,view.h);ctx.globalAlpha=1;}
     if(region.zone==='asia'){
       ctx.globalAlpha=1;
       // Soft graded wedges; no full-screen flash or bright opaque beam core.
@@ -490,8 +511,13 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
         const bx=left+rw*(.12+i*.31),by=H*.07,bw=rw*.15;
         const g=ctx.createLinearGradient?.(bx,by,bx+bw,H*.88);
         if(typeof g?.addColorStop!=='function')continue;   // canvas stubs without gradients simply skip the soft beams
-        g.addColorStop(0,'rgba(255,241,190,0)');g.addColorStop(.3,'rgba(255,241,190,.045)');g.addColorStop(1,'rgba(255,241,190,0)');
+        g.addColorStop(0,'rgba(255,241,190,0)');g.addColorStop(.3,'rgba(255,241,190,.085)');g.addColorStop(1,'rgba(255,241,190,0)');
         ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw*2,H*.88);ctx.lineTo(bx+bw*.6,H*.88);ctx.closePath();ctx.fill();
+      }
+      // Zone2 has slender jade/gold leaves, distinct from Thai embers and fire-pillar light.
+      for(let i=0;i<Math.min(36,Math.ceil(budget/halves.length));i++){
+        const px=left+mod(seed(i+390)*rw+t*(8+seed(i+42)*5),rw),py=mod(seed(i+89)*H+t*(10+seed(i+24)*9),H),size=Math.max(3,Math.min(11,W*.007));
+        ctx.save();ctx.translate(px,py);ctx.rotate(t*.7+i);ctx.globalAlpha=.4+seed(i+18)*.25;ctx.fillStyle=i%3?'#95b86b':'#e4c474';ctx.beginPath();ctx.moveTo(-size,0);ctx.quadraticCurveTo(0,-size*.45,size,0);ctx.quadraticCurveTo(0,size*.4,-size,0);ctx.fill();ctx.restore();
       }
       for(let i=0;i<Math.floor(budget/halves.length);i++){
         const px=left+mod(seed(i+51)*rw+t*3,rw),py=mod(seed(i+91)*H-t*5,H);
