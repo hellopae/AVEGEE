@@ -1,3 +1,5 @@
+import {drawSnowGround,TH_ATMOS_LAMPS,TH_LAMP_ART} from './scene-atmosphere.js';
+import {updateSnowTracks,drawSnowTracks} from './snow-footprints.js';
 import { questMarkers, merchantRun, merchantAvailable } from './side-quests.js';
 import {mapActorHeight,mapWorkerHeight,characterScale} from './character-scale.js';
 import {drawCyberhellTerrain} from './cyberhell-terrain.js';
@@ -27,7 +29,7 @@ import { addZ4PoleLayers } from './z4-poles.js?v=z4-poles';
 import { SCENE, STATIONS, SPOTS, QUEUE_LINE, ITEMS, MOB, GUARD, BUILD_TIME, REPAIR_TIME, FRONTIER, MERCHANT, ZONE_EVENTS } from './data.js';
 import { img, zoneImg, drawFallbackGround, drawStandee, drawHeroWalk, drawCrewWalk, drawBuilding, drawSoul, drawBoat,
          drawFire, drawVignette, drawStationShadow, footOf, rr, topOf, depthOf, bodyBoxOf, soulKey } from './art.js';
-import { buildWalk } from './walk.js?v=k1d';
+import { buildWalk,canWalk } from './walk.js?v=k1d';
 import { walkDirection } from './walk-direction.js';
 import { escortCrewPosition, soulWalkPosition } from './escort.js';
 import { t as tr } from './i18n.js';
@@ -254,6 +256,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if(!g.paused)ambientTime = t;
   if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
+  const snowActive=g.zone==='west'&&weatherEnabled()&&!reduced;
+  const snow=updateSnowTracks(g,[{id:'you',...g.player},...g.crew.map(c=>({id:c.id||c.k,x:c.x,y:c.y})),...(g.guard?[{id:'guard',x:g.guard.x,y:g.guard.y}]:[])],t,{active:snowActive,paused:g.paused,validAt:canWalk});
   const sceneryHouse = town ? img('town-house-th') : null;
   const sceneryTree = town ? img('town-tree-th') : null;
   const sceneryWaterfall = town ? img('town-waterfall-th') : null;
@@ -269,6 +273,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
   if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
   drawTownGround(ctx, g, t);
+  if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
   if (isTownZone(g.zone)) {
     const newDais=img('town-judgment-th');
     const dais=newDais||img('prop-throne-platform-v1');
@@ -341,6 +346,12 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
+  if(town&&g.zone==='th'){
+    const lamp=img('town-prop-lamp-gold');
+    if(lamp?.naturalWidth)for(const site of TH_ATMOS_LAMPS)at(site.y,()=>{
+      const h=site.w*lamp.naturalHeight/lamp.naturalWidth;ctx.save();ctx.fillStyle='rgba(22,10,14,.2)';ctx.beginPath();ctx.ellipse(site.x,site.y-2,site.w*.24,4,0,0,Math.PI*2);ctx.fill();ctx.drawImage(lamp,site.x-site.w/2,site.y-h,site.w,h);ctx.restore();drawLocalLight(ctx,'th',site.x,site.y-h*.73,site.w*.55,t,reduced||g.paused);
+    });
+  }
   // L1: actors on the Zone 1 map get a cast shadow on the ground and go darker inside building / tree shadows.
   const justice=bossJusticeCase(g);
   const actorSpots = [];

@@ -40,7 +40,7 @@ test('finale clock shared by all minions, then all four rulers, then final boss,
  }
  g.startFinalEncounter('boss');assert.equal(useClock(g),true);assert.equal(useClock(g),false);
 });
-test('handbook worked example agrees with actual punishment calculation',()=>{
+test('handbook explains duration-only severity while legacy deserved calculation remains available',()=>{
  assert.equal(deservedOf({deeds:[{w:4},{w:2}],merits:[{v:1},{v:4,fake:true}]}),3);
- assert.ok(sentencingChapters[1].includes('4 − 1'));
+ assert.ok(sentencingChapters[1].includes('เบา 30 วินาที'));assert.ok(sentencingChapters[1].includes('ไม่ใช้ให้คะแนน'));assert.ok(!sentencingChapters[1].includes('4 − 1'));
 });

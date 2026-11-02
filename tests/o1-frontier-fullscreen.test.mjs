@@ -77,8 +77,8 @@ test('camera: the map always covers the viewport (portrait, landscape, laptop, l
       assert.ok(c.x<=1e-9&&c.y<=1e-9,`${vw}x${vh}@${at} left/top edge is covered`);
       assert.ok(c.x+w*c.scale>=vw-1e-9&&c.y+h*c.scale>=vh-1e-9,`${vw}x${vh}@${at} right/bottom edge is covered`);
     }
-  assert.equal(frontierCameraTarget(390,844,[.5,.5]).scale,1,'phones keep native texture scale');
-  assert.equal(frontierCameraTarget(1440,900,[.5,.5]).scale,1);
+  assert.equal(frontierCameraTarget(390,844,[.5,.5]).scale,1.12,'phones use approved cinematic close framing');
+  assert.equal(frontierCameraTarget(1440,900,[.5,.5]).scale,1.12);
 });
 
 test('gate: reaching the exit enters automatically, once, and only after stepping out of range again',()=>{

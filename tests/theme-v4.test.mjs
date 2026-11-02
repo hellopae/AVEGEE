@@ -21,7 +21,7 @@ test('simple sentence ignores other guilt weights and fake merit, and clamps to 
  assert.equal(deservedOf(soul),3);assert.equal(deservedOf({...soul,deeds:[{w:4}]}),3);
  assert.equal(deservedOf({...soul,merits:[{v:20}]}),1);
  assert.equal(deservedOf({...soul,deeds:[{w:9}],merits:[]}),5);
- for(const html of [firstTrialLesson,sentencingChapters[1]]){assert.ok(html.includes('4 − 1'));assert.ok(!/0\.7|0\.3/.test(html));}
+ for(const html of [firstTrialLesson,sentencingChapters[1]]){assert.ok(html.includes('เบา 30 วินาที'));assert.ok(html.includes('สีเขียว'));assert.ok(!/0\.7|0\.3/.test(html));}
 });
 test('pending cases update across saved zones without changing handed-down punishments',()=>{
  const g=createGame();const s={id:777,deeds:[{w:4},{w:2}],merits:[{v:1}],deserved:2};

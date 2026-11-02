@@ -18,7 +18,7 @@ test('P7 handbook: removed claims are gone (wisdom +6, rab in score, metta karma
 test('P7 handbook: chapters 1, 3, 4 carry the code-true numbers (77 cap, 14/8 karma, 60/40, stars, 3 reds)',()=>{
   assert.match(chapter(1),/ไม่เกิน 77/);assert.match(chapter(1),/เพิ่ม 14/);assert.match(chapter(1),/เพิ่ม 8/);
   assert.match(chapter(3),/จะเป็นผู้คุมเดิมเสมอ/);assert.match(chapter(3),/ไม่เปลี่ยนคะแนน/);
-  const c4=chapter(4);assert.match(c4,/ประมาณ 60%/);assert.match(c4,/ประมาณ 40%/);assert.match(c4,/ไม่เกิน 77/);assert.match(c4,/แดงติดกัน 3 ครั้ง/);
+  const c4=chapter(4);assert.match(c4,/ความแรงกำหนดเวลาและสี/);assert.doesNotMatch(c4,/เบาไปหนึ่งระดับ|หนักเกินหนึ่งระดับ|ประมาณ 40%/);assert.match(c4,/ไม่เกิน 77/);assert.match(c4,/แดงติดกัน 3 ครั้ง/);
   assert.match(soulTraitGuide,/แค่ปฏิเสธเสียงแข็ง จะเป็นสีม่วง/);
 });
 

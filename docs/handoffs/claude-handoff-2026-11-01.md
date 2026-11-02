@@ -176,3 +176,9 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - Full1821/1821,0fail; syntax162; Chromiumภาพจริง5สีผ่านไม่มีpageErrors; ก่อนแก้มีtestlegacyที่คาดคะแนนความแรงและaliasเก่า แก้ตามสเปกใหม่แล้ว
 - รายงานภายนอก `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-punishment-duration/README.md`; native fallbackdiagnosticไม่นับเป็นภาพจริง
 - รวมsnippetsfixture punishment-noncombat-changes.jsonกับHOMEfixtureในBALANCE-2ก่อนตรวจชุดรวม ห้ามแก้หลักฐาน32kเดิม
+
+## Codex 2 พ.ย. 2569 — ZONE-ATMOS
+
+- เพิ่ม shared atmosphere ในสอบสวน/ต่อสู้ทุกโซน, TH/Asia เมฆประกอบชั้นแล้วจำกัด20%, THโคมไฟเดิม/Asiaใบไม้และแสง, Westพื้นหิมะ/รอยเท้าจำกัด96จุด อายุ6วินาที
+- ชายแดนใช้projectionร่วม1.12×/follow180ms; ภาพ ตัวละคร pointer และforegroundใช้transformเดียวกัน
+- targeted weather/camera/footprint45/45ผ่าน; fullและbrowserรวมตรวจต่อบนgameplay-updateก่อนเผยแพร่ ยังไม่อ้างตรวจผ่านมือถือจริง
