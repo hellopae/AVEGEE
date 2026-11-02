@@ -120,9 +120,10 @@ test('BALANCE-2 historical evidence retains its original input hashes; W4 progre
   // W4 changes only unlock sources/reward timing here, not damage math. Authenticate
   // historical inputs after undoing these exact reviewed snippets; BALANCE-W4 remains pending.
   const storyOnly=JSON.parse(readFileSync(new URL('./fixtures/w4-story-progression-changes.json',import.meta.url)));
+  const daisOnly=JSON.parse(readFileSync(new URL('./fixtures/dais-navigation-noncombat-changes.json',import.meta.url)));
   for(const [name,hash]of Object.entries(after.runtimeHashes)){
     let source=readFileSync(new URL(`../src/${name}.js`,import.meta.url),'utf8');
-    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[])].reverse()){
+    for(const change of [...(mapOnly[name]||[]),...(saveOnly[name]||[]),...(sentenceOnly[name]||[]),...(recoveryOnly[name]||[]),...(storyOnly[name]||[]),...(daisOnly[name]||[])].reverse()){
       assert.ok(change.after.length>0,name+': explicit map snippet');
       assert.equal(source.split(change.after).length,2,name+': map snippet occurs exactly once');
       source=source.replace(change.after,()=>change.before);

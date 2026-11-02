@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import {setup,walk} from './helpers/m2-map.mjs';
 import * as L from '../src/town-layout.js?v=k1d';
+import {daisBlocks,daisFloorAt} from '../src/town-dais-geometry.js';
 import {townPropArtKey} from '../src/town-scenery.js?v=k1d';
 import {WEST_TREE_POINTS} from '../src/town-west-trees.js';
 import {TOWN_OWNER_MASK_META} from '../src/town-owner-walkmask-west.js';
@@ -30,9 +31,10 @@ test('Z3: owner grid preserves27328 cells, one component, small blocked reserves
  const start=data.findIndex(x=>x),seen=new Set([start]),q=[start];
  for(let h=0;h<q.length;h++){const c=q[h],x=c%cols,y=c/cols|0;for(const n of [x?c-1:-1,x+1<cols?c+1:-1,y?c-cols:-1,y+1<rows?c+cols:-1])if(n>=0&&data[n]&&!seen.has(n)){seen.add(n);q.push(n);}}
  assert.equal(seen.size,27328);
- for(let y=4;y<2560;y+=8)for(let x=4;x<3840;x+=8)assert.equal(L.townFloorAt(x,y),data[(y/8|0)*cols+(x/8|0)]===1,'runtime floor must equal owner mask, with no reopened red cells');
+ const runtimeFloor=(x,y)=>!daisBlocks(x,y,'west',L.TOWN_DAIS)&&(daisFloorAt(x,y,'west',L.TOWN_DAIS)||data[(y/8|0)*cols+(x/8|0)]===1);
+ for(let y=4;y<2560;y+=8)for(let x=4;x<3840;x+=8)assert.equal(L.townFloorAt(x,y),runtimeFloor(x,y),'owner mask stays authoritative outside the judgement sprite floor/rails');
  const points=JSON.parse(readFileSync(new URL('./fixtures/z3-owner-floor-points.json',import.meta.url)));
- for(const p of points){const [x,y]=p.preview_xy.map(v=>v*2.5);assert.equal(data[(y/8|0)*cols+(x/8|0)]===1,p.expected_walkable,p.point);assert.equal(L.townFloorAt(x,y),p.expected_walkable,p.point+' runtime');}
+ for(const p of points){const [x,y]=p.preview_xy.map(v=>v*2.5);assert.equal(data[(y/8|0)*cols+(x/8|0)]===1,p.expected_walkable,p.point);assert.equal(L.townFloorAt(x,y),runtimeFloor(x,y),p.point+' runtime');}
 });
 
 test('Z3: all28 owner trunk feet are unchanged, with real solid roots and suitable west sprites',()=>{
@@ -72,3 +74,8 @@ test('Z3: old western saves migrate exactly once and keep rewards/progress',()=>
  assert.equal(restored.zone,'west');assert.equal(restored.coin,777);assert.equal(restored.townSkinMigrated.west,true);assert.notDeepEqual([restored.player.x,restored.player.y],[1200,600]);assert.equal(L.townContains(restored.player.x,restored.player.y),true);
  const again=createGame();assert.equal(again.restore(JSON.parse(JSON.stringify(restored.snapshot()))),true);assert.deepEqual([again.player.x,again.player.y],[restored.player.x,restored.player.y]);setup('th');
 });
+
+ test('Z3: smoothing cannot skip the narrow painted-floor seam beside the dais stairs',()=>{
+ setup('west');assert.equal(walk.canWalk(1924,1031),false);
+ assert.equal(walk.clearLine([1924,1036],[1924,988]),false);
+ });

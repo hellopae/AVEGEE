@@ -1,4 +1,4 @@
-import { TOWN_SIZE, townContains, townPathCell } from './town-layout.js?v=k1d';
+import { TOWN_SIZE, TOWN_DAIS, townContains, townPathCell } from './town-layout.js?v=k1d';
 // walk.js — พื้นที่ที่เดินได้ (6 ก.ย. 2569)
 // เดิมยมบาทเดินทะลุลาวากับแม่น้ำวิญญาณได้ ทำให้ฉากเสียความหมาย
 //
@@ -130,7 +130,14 @@ function grid() {
 /** เดินเส้นตรงจาก a ไป b ได้ตลอดสายไหม — ใช้ดัดเส้นทางให้ไม่หักซิกแซก */
 export function clearLine(a, b, walkable = canWalk) {
   const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy);
-  const n = Math.ceil(len / Math.min(4, CELL / 2));
+  // Sprite floor overrides meet the painted grid at the front steps. Check each
+  // world unit near the dais so smoothing cannot skip a narrow blocked seam.
+  const nearDais = SCENE.w === TOWN_SIZE.w
+    && Math.max(a[0], b[0]) >= TOWN_DAIS.x - TOWN_DAIS.w / 2
+    && Math.min(a[0], b[0]) <= TOWN_DAIS.x + TOWN_DAIS.w / 2
+    && Math.max(a[1], b[1]) >= TOWN_DAIS.y - TOWN_DAIS.w * 2 / 3
+    && Math.min(a[1], b[1]) <= TOWN_DAIS.y + 8;
+  const n = Math.ceil(len / Math.min(nearDais ? 1 : 4, CELL / 2));
   // K1d: the painted city's walkable ground has stair-stepped diagonal edges (bridges, stairs). A sight line that
   // grazes such an edge would pass the check yet leave the character stuck on a notch, so the town also
   // requires a 3-unit margin on both sides of the line.

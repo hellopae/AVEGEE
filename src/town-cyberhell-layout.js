@@ -19,17 +19,17 @@ export const CYBERHELL_LAYOUT = {
     // Q4-8 (owner arrow, 16.08.28): the kitchen moved from beside the upper castle down to the plaza below the stairs (world ~1600,680; floor y 640-715).
     canteen:site(636,276,50,640,278,.5),
   },
-  spots:{plaza:spot(740,440),bench:spot(740,440),throne:spot(742,380),
+  spots:{plaza:spot(740,440),bench:spot(740,440),throne:spot(742,381),
     bossPier:spot(898,713),ferry:{from:point(898,713),to:point(1040,713)}},
   // The central reserved stripe is only 70x6 source pixels; see placement report.
-  dais:{...spot(742,425),w:245},   // centre of the big judgement circle
-  crew:{nira:point(764,396),taan:point(1280,382),dam:point(210,441),
+  dais:{...spot(742,425),w:307},   // centre of the big judgement circle
+  crew:{nira:point(772.4,382.2),taan:point(1280,382),dam:point(210,441),
     plerng:point(235,230),kan:point(850,565),boon:point(1040,190)},
-  crewStage:{nira:[758*2.5,390*2.5,772*2.5,402*2.5]},
+  crewStage:{nira:[1915,948,1945,974]},
   merchant:spot(704,636),   // Q4-7 (owner arrow, 16.09.28): from beside the library to the lower-left plaza west of the central stairs (world ~1760,1590)
   guard:point(745,848),challenge:point(810,857),
   frontier:{...site(768,1018,60,768,986,.8),reach:105},
   queue:[[740,452],[742,472],[743,487],[750,510],[760,542],[770,573],[770,606]].map(p=>point(...p)),
-  entry:{gate:point(768,890),nira:point(790,885),goal:point(740,440),niraGoal:point(764,396)},
+  entry:{gate:point(768,890),nira:point(790,885),goal:point(740,440),niraGoal:point(772.4,382.2)},
   riverY:1740,
 };

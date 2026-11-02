@@ -11,6 +11,7 @@ import { TOWN_OWNER_WALK_RUNS as WEST_WALK_RUNS } from './town-owner-walkmask-we
 import { TOWN_OWNER_WALK_RUNS as CYBERHELL_WALK_RUNS } from './town-owner-walkmask-cyberhell.js';
 import { ASIA_TREE_POINTS } from './town-asia-trees.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
+import { daisBlocks, daisFloorAt } from './town-dais-geometry.js';
 import { WEST_TREE_POINTS } from './town-west-trees.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
@@ -90,6 +91,8 @@ const PATCH_POLYS=[TOWN_UPPER_BRIDGE_STAIRS,TOWN_UPPER_BRIDGE_LANDING,TOWN_LAVA_
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
+  if(daisBlocks(x,y,appliedZone,TOWN_DAIS))return false;
+  if(daisFloorAt(x,y,appliedZone,TOWN_DAIS))return true;
   // An owner-complete floor must never be reopened by legacy door/UI pads.
   if(ownerFloorOnly)return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
   // Keep feet on the pier top; edge tolerance must never open its front face or water.
@@ -243,8 +246,8 @@ export const TOWN_ZONE_LAYOUT = {
   // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
   // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
-    spots:{throne:{x:1862,y:944}},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982]} },
-  west:      { walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}}, crew:{boon:[2460,468]} },
+    spots:{throne:{x:1862,y:966}},entry:{niraGoal:[1938,968]},crew:{nira:[1938,968]},crewStage:{nira:[1914,956,1956,982]} },
+  west:      { spots:{throne:{x:1862,y:970}}, entry:{niraGoal:[1938,974]}, crewStage:{nira:[1914,964,1950,982]}, crew:{nira:[1938,974],boon:[2460,468]}, walkRuns:WEST_WALK_RUNS, patches:WEST_WALK_RUNS?false:true, props:WEST_PROPS, pathCell:8, strictFloor:true, stations:{ngiw:{x:532,y:1508}} },
   cyberhell: { ...CYBERHELL_LAYOUT, walkRuns:CYBERHELL_WALK_RUNS },
 };
 const clone = v => structuredClone(v);

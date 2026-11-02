@@ -99,7 +99,7 @@ test('syncSceneZone puts a skin-enabled zone on the 3840x2560 city, same station
     assert.equal(activeTownZone(), 'asia');
     const [stations,spots]=JSON.parse(snap()),[baseStations,baseSpots]=JSON.parse(zone1);
     assert.deepEqual(stations,baseStations,'ART-DAIS2 changes no station sites');
-    assert.deepEqual(spots,{...baseSpots,throne:{x:1862,y:944}},'only Asia throne follows the repainted seat');
+    assert.deepEqual(spots,{...baseSpots,throne:{x:1862,y:966}},'Asia interaction anchor stays in front of the solid seat');
     assert.deepEqual(L.TOWN_CREW.nira,[1938,968]);
     assert.deepEqual(L.TOWN_CREW_STAGE.nira,[1914,956,1956,982]);
     for(const [x,y] of [[1914,956],[1914,982],[1956,956],[1956,982]])assert.ok(L.townContains(x,y),'Nira floor remains walkable');

@@ -1,0 +1,10 @@
+[
+  {
+    "before": "import { TOWN_SIZE, townContains, townPathCell } from './town-layout.js?v=k1d';",
+    "after": "import { TOWN_SIZE, TOWN_DAIS, townContains, townPathCell } from './town-layout.js?v=k1d';"
+  },
+  {
+    "before": "  const n = Math.ceil(len / Math.min(4, CELL / 2));",
+    "after": "  // Sprite floor overrides meet the painted grid at the front steps. Check each\n  // world unit near the dais so smoothing cannot skip a narrow blocked seam.\n  const nearDais = SCENE.w === TOWN_SIZE.w\n    && Math.max(a[0], b[0]) >= TOWN_DAIS.x - TOWN_DAIS.w / 2\n    && Math.min(a[0], b[0]) <= TOWN_DAIS.x + TOWN_DAIS.w / 2\n    && Math.max(a[1], b[1]) >= TOWN_DAIS.y - TOWN_DAIS.w * 2 / 3\n    && Math.min(a[1], b[1]) <= TOWN_DAIS.y + 8;\n  const n = Math.ceil(len / Math.min(nearDais ? 1 : 4, CELL / 2));"
+  }
+]
