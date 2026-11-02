@@ -1,0 +1,32 @@
+{
+  "game": [
+    {
+      "before": "",
+      "after": "import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recordPlayTime} from './save-slots.js';\n"
+    },
+    {
+      "before": "",
+      "after": "    playTimeMs: 0, playTimePartial: false,\n"
+    },
+    {
+      "before": "const SAVE_KEY = 'avegee.save.v2';",
+      "after": "const SAVE_KEY = LEGACY_SAVE_KEY;"
+    },
+    {
+      "before": "",
+      "after": "    playTimeMs:Math.max(0,Number(this.playTimeMs)||0),playTimePartial:!!this.playTimePartial,\n"
+    },
+    {
+      "before": "API.save = function () {\n  try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.snapshot())); return true; }\n  catch { return false; }\n};",
+      "after": "API.recordPlayTime = function (elapsed, active = true) { recordPlayTime(this,elapsed,active); };\nAPI.save = function () {\n  // UI-created games are locked until a slot is selected. Existing API consumers retain the legacy key.\n  if (this.saveSlot === null) return false;\n  if (validSlot(this.saveSlot)) return writeSaveSlot(this.saveSlot,this.snapshot());\n  if (this.saveSlot !== undefined) return false;\n  try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.snapshot())); return true; }\n  catch { return false; }\n};"
+    },
+    {
+      "before": "",
+      "after": "  this.playTimeMs=Number.isFinite(d.playTimeMs)?Math.max(0,d.playTimeMs):0;\n  this.playTimePartial=!Number.isFinite(d.playTimeMs)||!!d.playTimePartial;\n"
+    },
+    {
+      "before": "export function loadSave() {\n  try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }\n}\nexport function clearSave() {\n  try { localStorage.removeItem(SAVE_KEY); } catch {}\n}",
+      "after": "export function loadSave(slot) {\n  if (validSlot(slot)) return readSaveSlot(slot).data;\n  if (slot !== undefined) return null;\n  try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }\n}\nexport function clearSave(slot) {\n  if (validSlot(slot)) return clearSaveSlot(slot);\n  if (slot !== undefined) return false;\n  try { localStorage.removeItem(SAVE_KEY); return true; } catch { return false; }\n}"
+    }
+  ]
+}

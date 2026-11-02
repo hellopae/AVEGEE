@@ -154,3 +154,14 @@ repo AVEGEE ไม่มี `AGENTS.md` กติกาทั้งหมดจ�
 - รักษา B23/B34 ที่เผยแพร่แล้ว รวม handoff ทุกงาน และต่อcache suffix; registryเก็บทุกkeyของทั้ง3โซน ไม่มีkeyหาย
 - Candidate codex/2026-11-01-approved-art-merge ผ่านfull1810/1810,0fail และsyntax161/161; logภายนอก Output/Codex/tests-approved-art-merged-2026-11-01.log
 - W4ยังเป็นอาร์ตรอตรวจภายนอกและร่างบท ไม่ได้ผูกเข้าระบบเนื้อเรื่องที่ยังรอReese
+
+## Codex 1 พ.ย. 2569 — HOME START + เซฟ3ช่อง (รอตรวจรับ)
+
+- Branch `codex/2026-11-01-home-save-slots`, ฐาน `f9a4edd3`; ไม่merge/push
+- Homeปุ่มหลักSTARTหนึ่งปุ่ม เปิดselector3ช่อง ช่องว่างNew Game ช่องเดิมแสดงเวลาเล่น เงิน ระเบียบ บาป โซน และcrewที่เป็นเจ้าของทุกสาขา; ใช้ปก/โลโก้AVEGEEเดิม
+- Copy-only migrationจากavegee.save.v2ไปslot1 ไม่ลบต้นฉบับ/ไม่ทับslotที่มีข้อมูล; guardก่อนเลือกslotและข้อมูลผิดรูป/storageเต็ม; restartล้างเฉพาะslotที่ยืนยัน ไม่ฟื้นlegacyกลับมา
+- เวลาเล่นforegroundจริง ไม่รวมพักเอง/ออกแท็บ/ปิดเกม; legacyที่ไม่มีเวลาระบุเริ่มนับหลังอัปเดต ไม่เดาเวลาเก่า
+- Full1798/1798,0fail; syntax162/162; targeted20/20และHOME+BALANCE-2 15/15; fixture7snippetpersistence-onlyย้อนกลับได้game.jsเดิมทุกbyteก่อนhashcombat ไม่แตะsimulation32k
+- RealChromium cleanprofile1280×800/390×844ผ่านSTART/3cards/newslot2/reloadcontinue/legacycopy/summary25crew/no-horizontal-overflow; pageErrors=[]
+- รายงาน ภาพจริง สคริปต์browser และlog: `/Users/agapae/Documents/Work PAE/Claude/AGAPAE Agent/Output/Codex/2026-11-01-home-save-slots/README.md`
+- ไม่แตะpunishment/effectsหรือstatus.json/worklog.json/work-mode.json; ไม่อ้างReese/Chrisตรวจ

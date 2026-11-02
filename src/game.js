@@ -1,3 +1,4 @@
+import {LEGACY_SAVE_KEY,validSlot,writeSaveSlot,readSaveSlot,clearSaveSlot,recordPlayTime} from './save-slots.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { SIGNAL_KEYS, signalStory, signalReady, signalRequirements, refreshSignalClose, finishSignalStory, migrateSignal } from './signal-arc.js';
 import { initializeQuests, unlockQuestPorts, advanceQuest, recordQuestVerdict, merchantAvailable, advanceMerchant } from './side-quests.js';
@@ -113,6 +114,7 @@ export function createGame() {
   const g = {
     training: normalizeTraining(),
     tick: 0, coin: BAL.startCoin, food: BAL.startFood,
+    playTimeMs: 0, playTimePartial: false,
     // ข้อ A คุณเป้ 24 ก.ย. 2569 (ชุดที่ 8) — สถานะอิ่ม/หิวของยมทูตที่ "กำลังทำงาน" อยู่ตอนนี้
     // คำนวณใหม่ทุกวาระใน step() · fed/workingCrew ใช้แสดงผลบนจอเท่านั้น ไม่ต้องเซฟ (คิดใหม่ได้ทุกครั้ง)
     fed: true, workingCrew: new Set(),
@@ -4914,7 +4916,7 @@ const API = {
 // 9 ก.ย. 2569: โครงสถานีเปลี่ยนเป็น slots (รับได้ 3 ดวง) เนื้อในเลยเป็น v3 แล้ว
 // แต่ **ใช้ชื่อช่องเดิม** ตั้งใจ — restore() ยกเซฟ v2 ขึ้นเป็น v3 ให้เอง
 // เจ้าของกำลังเล่นค้างอยู่ ไม่ควรล้างความคืบหน้าเพราะเราเปลี่ยนโครงข้างใน
-const SAVE_KEY = 'avegee.save.v2';
+const SAVE_KEY = LEGACY_SAVE_KEY;
 
 API.snapshot = function (withEntry = true) {
   this.syncDiscoveries();
@@ -4927,6 +4929,7 @@ API.snapshot = function (withEntry = true) {
     v: 4, bossJustice:structuredClone(this.bossJustice || {version:1,active:null,ledger:{}}), fireControl:normalizeFireControl(this.fireControl), training: structuredClone(this.training), finalEvent:structuredClone(this.finalEventState()),
     finalBattle:this.isFinalBattle() ? structuredClone(this.battle) : null, rosterVersion: ROSTER_VERSION, roster: snapshotRoster(this.roster),
     teamLimits: { ...TEAM_LIMITS }, at: Date.now(),
+    playTimeMs:Math.max(0,Number(this.playTimeMs)||0),playTimePartial:!!this.playTimePartial,
     canteenVersion:1,workerState:normalizeWorkers(this.workerState),canteenState:structuredClone(this.canteenState||{}),
     interrogationSupport:structuredClone(this.interrogationSupport),
     teamReports:structuredClone(this.teamReports), nextTeamReportId:this.nextTeamReportId,
@@ -4999,7 +5002,12 @@ API.markHistory = function (id) {
 /** Q2: เห็นหัวหน้าสาขาของโซนนั้น (โซน 1 = พ่อ) */
 API.markHistoryHead = function (zone) { return this.markHistory(headId(zone)); };
 
+API.recordPlayTime = function (elapsed, active = true) { recordPlayTime(this,elapsed,active); };
 API.save = function () {
+  // UI-created games are locked until a slot is selected. Existing API consumers retain the legacy key.
+  if (this.saveSlot === null) return false;
+  if (validSlot(this.saveSlot)) return writeSaveSlot(this.saveSlot,this.snapshot());
+  if (this.saveSlot !== undefined) return false;
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.snapshot())); return true; }
   catch { return false; }
 };
@@ -5045,6 +5053,8 @@ API.restore = function (d) {
     this.saveBeforeRosterMigration = original;
   }
   d = migrateRosterSave(structuredClone(d));
+  this.playTimeMs=Number.isFinite(d.playTimeMs)?Math.max(0,d.playTimeMs):0;
+  this.playTimePartial=!Number.isFinite(d.playTimeMs)||!!d.playTimePartial;
   // G4 — ไอเท็มฟื้นฟูรุ่นโซน (healthZ2, teaZ4 ฯลฯ) รวมเป็นชื่อเดียวทุกโซน: ยกจำนวนไปรวมกับไอเท็มชื่อใหม่ ไม่ให้หาย
   if (d.inventory) for (const [old, to] of Object.entries(LEGACY_ITEM_IDS)) if (d.inventory[old] != null) {
     d.inventory[to] = (d.inventory[to] || 0) + d.inventory[old];
@@ -5505,11 +5515,15 @@ API.restore = function (d) {
   return true;
 };
 
-export function loadSave() {
+export function loadSave(slot) {
+  if (validSlot(slot)) return readSaveSlot(slot).data;
+  if (slot !== undefined) return null;
   try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }
 }
-export function clearSave() {
-  try { localStorage.removeItem(SAVE_KEY); } catch {}
+export function clearSave(slot) {
+  if (validSlot(slot)) return clearSaveSlot(slot);
+  if (slot !== undefined) return false;
+  try { localStorage.removeItem(SAVE_KEY); return true; } catch { return false; }
 }
 
 export { SINS, clamp };
