@@ -103,3 +103,16 @@
 - Chromiumเรนเดอร์จริง4ชุดตัวละครประจำโซน×desktop1280/mobile390 ไม่มีpageerror; ภาพขยายdeckและผลbrowserอยู่ Output/Codex/2026-11-03-boat-deck-fit
 - ไม่พบboat1.movที่pathแนบเดิมในเครื่องรอบนี้ จึงตรวจจากtextureเรือจริงและrendererเกมโดยตรง
 - งานnative detail4โซนยังรอแก้ผัง/รอยต่อของภาพร่างก่อนติดตั้ง; Graceเดิน รั้ว และคิวอื่นคงอยู่
+
+## LAYERED-MAP / SURFACE-SPRITES — 3 พฤศจิกายน 2569
+
+- ฐาน812152d2; ทำในสำเนา `AVEGEE/layered-map-work` branch `codex/2026-11-03-layered-map-pilot`. ไม่ติดตั้ง runtime/ไม่push.
+- เจ้าของเปลี่ยนแนวเป็นแยกพื้น, เสา/ราว, ธรรมชาติคงที่, หน้ากากผิวน้ำ/ลาวา และอนิเมชัน; ห้ามเลื่อนหิน/ต้นไม้/ตลิ่งตามน้ำ. ยืนยันให้ทุกโซนและชายแดนใช้แนวเดียวกัน.
+- ใช้ImageGenตามสิทธิ์3+24=27ครั้งครบแล้ว; อยู่ระหว่างรอคำตอบเพิ่มเพดานรวม33สำหรับชั้นเสา/ราวอีก6แผนที่. ห้ามเริ่มgenerationเพิ่มก่อนมีคำตอบ. Shadoมีport busyและเจ้าของเลือกวิธีเดิมแล้ว.
+- ภาพพื้นและnature/scenery cutoutมีครบ7ฉาก; น้ำ/ลาวาSpriteSheet4×2รวม8เฟรมต่อชนิด, water8fps/lava6fpsในหน้าทดลอง. เป็นภาพร่าง ไม่ใช่native-detail80tilesและไม่ปิดMAP-DETAIL-4.
+- B12แยกfloor/rails/nature/liquid+foliageatlasแล้ว. จุดf2จำนวน21จุดเป็นmanual draftจากภาพแนบ เพราะไฟล์Desktopf1/f2/m1/m2ไม่พบในfilesystem ไม่อ้างพิกัดยืนยันต้นฉบับ.
+- ต้นแบบเสา/ราวใช้silhouetteสำหรับบังและfootprintสำหรับห้ามเดินแยกกัน; B12ผ่านเส้นทางentry/checkpoints3/exitหลังเพิ่มblockers. ยังไม่ติดตั้งในเกมและยังไม่ผ่านตรวจทุกเสา/ราว.
+- Browserตรวจต้นแบบB12และgallery6ฉากที่desktop1280/mobile390ไม่มีpageerror/overflow,ปุ่มpauseตอบสนอง. Sampleopaqueธรรมชาติ320934pixelsไม่มีpixelเปลี่ยนเกิน2ระดับขณะของเหลวเปลี่ยนเฟรม (max1); ไม่ใช่physicalmobile/FPS.
+- Alpha coverage ณ cellพื้นเดิม:โซน1 .9903/2 .9930/3 .9960/4 .9976,B23 .9891,B34หลังrepair .9679 (ก่อน .9611). เป็นเพียงcoverage ไม่รับรองว่าเป็นพื้นเดินจริง; B34ยังไม่ผ่านการจัดตำแหน่ง ต้องแก้แบบพื้นที่ย่อยก่อนติดตั้ง. ไม่ขยายcollisionให้ตรงภาพโดยเดา.
+- ภาพธรรมชาติยังต้องแบ่งชิ้นและกำหนดbaselineเพื่อเรียงกับactor. อาคาร/treeobjectsเดิมยังคงpipelineเดิม; เมฆ/หมอก/ฝน/หิมะใช้ระบบแยกเดิมเมื่อintegrate. ภาพต้นฉบับรองในviewerเป็นfallbackชั่วคราว ไม่อ้างว่าแยกเมฆเดิมครบแล้ว.
+- หลักฐาน/manifest/provenance/หน้าตรวจ: `docs/art-reviews/2026-11-03-layered-map/README.md`, `index.html`, `maps.html`, `asset-manifest.json`, `generation-ledger.json`. งานคิวGrace/รั้ว/ภารกิจ/เนื้อเรื่องเดิมยังค้าง ไม่ได้ปิด.

@@ -1,0 +1,26 @@
+{
+  "paths": [
+    {
+      "index": 7,
+      "reachable": true,
+      "walkable": true
+    },
+    {
+      "index": 15,
+      "reachable": true,
+      "walkable": true
+    },
+    {
+      "index": 23,
+      "reachable": true,
+      "walkable": true
+    },
+    {
+      "index": 30,
+      "reachable": true,
+      "walkable": true
+    }
+  ],
+  "blockedPixels": 14648,
+  "basis": "Observed Chromium navigation check in this session; graph paths, not full gameplay or physical mobile"
+}

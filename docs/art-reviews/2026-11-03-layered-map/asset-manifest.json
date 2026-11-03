@@ -1,0 +1,492 @@
+{
+  "sprites": {
+    "water": {
+      "src": "water-loop-sheet.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 8,
+      "inset": 2
+    },
+    "lava": {
+      "src": "lava-loop-sheet.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 6,
+      "inset": 2
+    }
+  },
+  "base": "812152d2",
+  "status": "art studies, not installed; native-detail, object-depth and registration review pending",
+  "maps": {
+    "zone1": {
+      "reference": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+      "floor": "zone1-floor-study.png",
+      "nature": "zone1-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "flow": "img/map-zone1/v4/flow-v4.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9903358003547618
+    },
+    "zone2": {
+      "reference": "img/map-zone2/v2/zone2-terrain-v2-preview.webp",
+      "floor": "zone2-floor-study.png",
+      "nature": "zone2-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "flow": "img/map-zone2/v2/flow-v2.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9930483142161974
+    },
+    "zone3": {
+      "reference": "img/map-zone3/v1/zone3-terrain-v1-preview.webp",
+      "floor": "zone3-floor-study.png",
+      "nature": "zone3-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "flow": "img/map-zone3/v1/flow-v1.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9959748243559718
+    },
+    "zone4": {
+      "reference": "img/map-zone4/v3/zone4-terrain-v3-preview.webp",
+      "floor": "zone4-floor-study.png",
+      "nature": "zone4-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "liquid": "zone4-liquid-study.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9976048723739136
+    },
+    "border23": {
+      "reference": "img/frontier-route/zone2-3-v4.webp",
+      "floor": "border23-floor-study.png",
+      "nature": "border23-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "flow": "img/frontier-route/zone2-3-v4-flow.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9890909650418513
+    },
+    "border34": {
+      "reference": "img/frontier-route/zone3-4-v2.webp",
+      "floor": "border34-floor-v2-study.png",
+      "nature": "border34-nature-study.png",
+      "status": "needs per-object depth, rail and collision review",
+      "flow": "img/frontier-route/zone3-4-v2-flow.png",
+      "filesPresent": true,
+      "opaqueCoverageAtOwnerFloorCells": 0.9678522276326428
+    },
+    "border12": {
+      "reference": "img/frontier-route/zone1-2-v6.webp",
+      "floor": "floor-study.png",
+      "nature": "nature-study.png",
+      "liquid": "liquid-study.png",
+      "rails": "rails-study.png",
+      "status": "working preview; visual roots, object depth, seams and physical-mobile performance pending"
+    }
+  },
+  "assets": {
+    "b34-floor-guide.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "L",
+      "bytes": 7491,
+      "sha256": "a8d692e3de8679a74f7289d4e6d04bc83bae1a1b677fb0f68a80572e60cb0413"
+    },
+    "background-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "bytes": 3965767,
+      "sha256": "35f27ad220c756623971a0c668640c0d765d4e3b479fb23c63a6e28111805174"
+    },
+    "border23-composite.png": {
+      "size": [
+        1232,
+        694
+      ],
+      "mode": "RGB",
+      "bytes": 1921543,
+      "sha256": "829c53f52e72a2766c2ecd10df8e7956c6be0c1573aa54c3043e3211be1f8bd0"
+    },
+    "border23-floor-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 1602282,
+      "sha256": "c4bbb9c423e28b7561c9eeb33fd9c7d4ea8f59892bfcced50929e8c7c174c1d1",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border23-nature-study.png": {
+      "size": [
+        1671,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 3169153,
+      "sha256": "abfa9d6f2672d13bb6f41f677baa7c896cac484d4749413888474c640fda32e1",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border34-composite.png": {
+      "size": [
+        1232,
+        694
+      ],
+      "mode": "RGB",
+      "bytes": 1909569,
+      "sha256": "37d80be2a746c9aa6c033a1a5a8e9d3a948fdd197a207a0f9c196d0c8332a2e8"
+    },
+    "border34-floor-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 1701287,
+      "sha256": "4926413a58aebe30beaaaf0b69739b468a4a1fde10af435de2a101bb603a005d",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border34-floor-v2-study.png": {
+      "size": [
+        1671,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 1711462,
+      "sha256": "ddb25cebd574234a623c87024cfdcbc9516a2ef500e83931b73b310a3afa28f8",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border34-nature-study.png": {
+      "size": [
+        1671,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 3364695,
+      "sha256": "37dc0a44acbb13893a152e243b1a0e003f7d48d950db39e1eae1955e3596d8eb",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "floor-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 1822243,
+      "sha256": "879525113b871558be4b5307509901151293b7c6b09743bc00ae97ca5665e168",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "foliage-atlas-rejected.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2583042,
+      "sha256": "066d55d2e99f5eeca42a4e7a557fa31b9fc8608140e73c0b12eb61d0fef398aa",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "foliage-atlas.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2583042,
+      "sha256": "066d55d2e99f5eeca42a4e7a557fa31b9fc8608140e73c0b12eb61d0fef398aa",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "lava-loop-sheet.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "bytes": 2754543,
+      "sha256": "60b7ffb84dcd83c96b8e2b477d0d5f082d16672a73de14cbe121094032d47d0e"
+    },
+    "liquid-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 976240,
+      "sha256": "2315a74bd7c24d11fa0514daa1ba4436379d24b74611f806315ce10396f8f95b",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "material-atlas.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "bytes": 2826692,
+      "sha256": "a7429266aa0fe05d868e23309e6a7c63e65cc40db2b450c4ae77e74907f59fe2"
+    },
+    "nature-study.png": {
+      "size": [
+        1671,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 3000584,
+      "sha256": "ba00cda155e3ef4c7bc8da4438ebd9168f999818ce2a5b00b363ceef4bf68685",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "rails-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 1066593,
+      "sha256": "4ddc5b3bcee36d747dcc2a2578453bba8f2d94e13410150c98e2708edd73d6bc",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "terrain-study.png": {
+      "size": [
+        1709,
+        920
+      ],
+      "mode": "RGBA",
+      "bytes": 2063076,
+      "sha256": "45b44e0cda5580e66a395b18d90df4a6b9aefeb6805ae281ca8b1adf3de426e5",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "terrain-v2.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 2120127,
+      "sha256": "a0cdba6822ad28711593e506e42ca035279893bd7236b272be44cb4e41694560",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "water-loop-sheet.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "bytes": 2282310,
+      "sha256": "5c8168abdd3a6af3025c26d34f0379f2d9e014f8f395a8351531d60e04e3d3dd"
+    },
+    "zone1-background-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 4151524,
+      "sha256": "373779b3e783915677fbd984f6ff3cea4b38c3249f23edbd19b04421d15453c6"
+    },
+    "zone1-composite.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2169075,
+      "sha256": "ab71c50e2771b43ab9503fc8a812102464a350f55b2c68f7e7390c69849ebf49"
+    },
+    "zone1-floor-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 3103674,
+      "sha256": "802d0d99ba5a0a4ebec5d67bafb1455875beacdf01bff4103632c6750cc8cb1e",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone1-nature-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 3062925,
+      "sha256": "2e5501de8189c58acc9e68907e8d515158b62b46dd8df395563507eb56b9f4c1",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone2-background-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 4354380,
+      "sha256": "ceeb792ce447d575d98c9222e404e31ecf0dcbdbf69cbdb8ef40d98e4c0fea9a"
+    },
+    "zone2-composite.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2152868,
+      "sha256": "045e0475b4e17ec4b1b3590229474cfbcea7c61ff55eae3a427e8341585984e6"
+    },
+    "zone2-floor-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2716947,
+      "sha256": "cb5e8056fb4c6156d6c11b852ca758dcd78ec88dae79aac06da88340ea9c1f79",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone2-nature-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 3348027,
+      "sha256": "f0c1f31b955b8bd20a1676381f6bf58b563c39b7afd3994c88fb30d2eb97c775",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone3-composite.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2252683,
+      "sha256": "cfa73deec970c65c6dbf0b4cdda0a649a29f2fd9dc839e12c01082b87e38c207"
+    },
+    "zone3-floor-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2486649,
+      "sha256": "01d5217b21b5326662ae31ddc1c3238a89091c7e1b43d991a08ed082475d079e",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone3-nature-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 3682171,
+      "sha256": "d159526232545916db8cb70e48befd3325424083813fdd86478a9d0bdfdf631e",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone4-composite.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2074992,
+      "sha256": "5f7a74d05ae31b983d5e0ea09a900f6b6cd0cd289c479b445aaee1a35dbfca5e"
+    },
+    "zone4-floor-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2889769,
+      "sha256": "107725303c488902ac7f3cdbf7b394bfdae5889c8b68c710764290b76819b4f2",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone4-liquid-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1644691,
+      "sha256": "e3411f5624f6e5c48b0efaf3ec7363189f38f3c471dec0a1cbf5b0134332953d",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone4-nature-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2968674,
+      "sha256": "d337bb5759f436361e47d1288002b2e59b3bf892bc732df665d84b1954979a31",
+      "alphaRange": [
+        0,
+        254
+      ]
+    }
+  },
+  "coverageLimitation": "Opaque coverage can include a cliff or object; not a floor-alignment acceptance test."
+}

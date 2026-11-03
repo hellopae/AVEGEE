@@ -1,0 +1,13 @@
+{
+  "referenceSize": [
+    1672,
+    941
+  ],
+  "generatedSize": [
+    1672,
+    941
+  ],
+  "ownerFloorPixels": 275543,
+  "floorCoveredByOpaqueTerrainFraction": 0.9987914771923075,
+  "limit": "Alpha coverage is a necessary check only; cliffs and rails may be opaque, so this does not certify floor alignment or navigation."
+}

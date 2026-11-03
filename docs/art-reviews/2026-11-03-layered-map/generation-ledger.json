@@ -1,0 +1,174 @@
+{
+  "date": "2026-11-03",
+  "tool": "built-in image_gen",
+  "model": "tool default; no model override",
+  "approvedInitial": 3,
+  "approvedAdditional": 24,
+  "approvedTotal": 27,
+  "generationsUsed": 27,
+  "pendingRequest": "Increase total cap to33 for rail/post layers in remaining6maps; no answer received at time of ledger creation",
+  "calls": [
+    {
+      "number": 1,
+      "asset": "terrain-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-64fc61ed-8b01-416a-a64a-9854bda6c4ce.png",
+      "saved": true
+    },
+    {
+      "number": 2,
+      "asset": "material-atlas.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-ba0545a7-dc8b-4792-9b4d-e9737189261b.png",
+      "saved": true
+    },
+    {
+      "number": 3,
+      "asset": "foliage-atlas.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-b1adf2dc-7487-4127-965a-36b476f08718.png",
+      "saved": true
+    },
+    {
+      "number": 4,
+      "asset": "terrain-v2.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f216ffb0-a2da-4981-98ae-c3d2728031d0.png",
+      "saved": true
+    },
+    {
+      "number": 5,
+      "asset": "background-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-ce911795-608e-4050-9305-0853afa80beb.png",
+      "saved": true
+    },
+    {
+      "number": 6,
+      "asset": "rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f4e19535-4efa-4d34-b441-981450622a9c.png",
+      "saved": true
+    },
+    {
+      "number": 7,
+      "asset": "floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-5d6b44b5-7f1f-4b67-9328-bfec2f38d4cc.png",
+      "saved": true
+    },
+    {
+      "number": 8,
+      "asset": "zone1-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-24c8650b-4405-4b39-a4b2-62a5fef82cea.png",
+      "saved": true
+    },
+    {
+      "number": 9,
+      "asset": "zone1-background-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-c35fb84e-7b25-46a2-acfb-a29d871f33a5.png",
+      "saved": true
+    },
+    {
+      "number": 10,
+      "asset": "zone2-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-84986924-205d-4d1d-83d4-4fdb86f4baad.png",
+      "saved": true
+    },
+    {
+      "number": 11,
+      "asset": "zone2-background-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-cc7e1591-7251-4a4b-a9bb-14f9d406c4a5.png",
+      "saved": true
+    },
+    {
+      "number": 12,
+      "asset": "nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-5f3e840f-fcb2-42ad-970c-702814b8b62d.png",
+      "saved": true
+    },
+    {
+      "number": 13,
+      "asset": "liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-79b58cec-d35a-44d3-ad7b-9d36492e6fc2.png",
+      "saved": true
+    },
+    {
+      "number": 14,
+      "asset": "zone1-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-6fef48e4-9bc6-480c-a504-87d479892813.png",
+      "saved": true
+    },
+    {
+      "number": 15,
+      "asset": "zone2-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f8024b72-1046-4ad5-acd0-dc6c899a488a.png",
+      "saved": true
+    },
+    {
+      "number": 16,
+      "asset": "zone3-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-b9b85d3b-db61-4354-b0d6-2a5fc731290b.png",
+      "saved": true
+    },
+    {
+      "number": 17,
+      "asset": "zone3-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-937c8cd2-7bec-4482-8f74-1967e3afed56.png",
+      "saved": true
+    },
+    {
+      "number": 18,
+      "asset": "zone4-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-3b9023f1-5bfc-4379-98c0-3a0a5ea22091.png",
+      "saved": true
+    },
+    {
+      "number": 19,
+      "asset": "zone4-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-e8abece1-73fc-44bc-96e7-7346afb7206c.png",
+      "saved": true
+    },
+    {
+      "number": 20,
+      "asset": "border23-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-e02acd46-f31d-461f-9162-0e5e9ee4c291.png",
+      "saved": true
+    },
+    {
+      "number": 21,
+      "asset": "border23-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f50028d8-45eb-404c-bbd5-6201c071c229.png",
+      "saved": true
+    },
+    {
+      "number": 22,
+      "asset": "border34-floor-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-c9ca641a-f677-4860-8924-a93b1c9c8caf.png",
+      "saved": true
+    },
+    {
+      "number": 23,
+      "asset": "border34-nature-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-1c5eb372-687e-434d-a4a6-31dc85815621.png",
+      "saved": true
+    },
+    {
+      "number": 24,
+      "asset": "water-loop-sheet.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-29e3fa26-92fb-4940-b813-784a459c339e.png",
+      "saved": true
+    },
+    {
+      "number": 25,
+      "asset": "lava-loop-sheet.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-ee72b80a-1fdb-4bcb-990f-2e423838d161.png",
+      "saved": true
+    },
+    {
+      "number": 26,
+      "asset": "zone4-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-5b4166ff-8eb9-43c0-85c9-c8902789aad3.png",
+      "saved": true
+    },
+    {
+      "number": 27,
+      "asset": "border34-floor-v2-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-695f7b71-c3b2-4f0d-bbf5-4f1f03166a33.png",
+      "saved": true
+    }
+  ]
+}
