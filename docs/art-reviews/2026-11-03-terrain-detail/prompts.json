@@ -1,0 +1,114 @@
+{
+  "method": "built-in image_gen",
+  "status": "DRAFT: not referenced by runtime; geometry and seams need correction",
+  "jobs": [
+    {
+      "z": 1,
+      "r": 2,
+      "c": 3,
+      "prompt": "Edit the attached original game map tile IN PLACE, same exact square composition. This is extremely conservative microdetail cleanup, NOT a redesign, NO reframing or zoom. Trace every existing contour exactly. The circular courtyard center MUST remain x=0.25,y=0.215; its lower stair entrance remains x=0.31,y=0.43; the middle stair flight remains x=0.31,y=0.48; right flight remains x=0.70,y=0.45; bottom stair remains x=0.47,y=0.94. Preserve the exact sizes and locations of every stone terrace edge, road, staircase, rock, tree and bush. Preserve original outer 5% border unchanged for seamless adjacency. Only clean the blurry paver joints and leaf shapes into finer hand-painted details, retain the original warm ochre palette and contrast. Remove obvious rectangular blurry patch seams by matching surrounding stone detail. No new decorations, plants, extra outlines, text, symbols, people or clouds. Native square terrain texture only.",
+      "status": "draft-not-installed",
+      "review": "zone1-r2-c3-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "source": "img/map-zone1/v5/r2-c3.webp"
+    },
+    {
+      "z": 2,
+      "r": 2,
+      "c": 3,
+      "prompt": "Use case: precise-object-edit. Restore this EXACT square isometric game terrain tile with crisp newly painted microdetails at native resolution. Theme: East Asian mountain underworld, cool grey stone, red maple and pink cherry foliage. Keep composition, crop, all stair flights, terraces, courtyard outlines, roads, waterbanks and rock/plant silhouettes at EXACTLY their existing positions and sizes. Do not zoom, reframe, redesign or add objects. Draw finer stone joints, chipped edges and distinct small foliage/material details inside the original forms, correcting softness. Match original lighting, palette, contrast and hand-painted fantasy game style. Outer 5% border must remain aligned with original for adjacent tiles. No characters, labels, UI, clouds or atmospheric shadows. Output square 1024x1024 or higher. Image is the edit target, not loose inspiration.",
+      "status": "draft-not-installed",
+      "review": "zone2-r2-c3-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "source": "img/map-zone2/v2/r2-c3.webp"
+    },
+    {
+      "z": 3,
+      "r": 2,
+      "c": 3,
+      "prompt": "Use case: precise-object-edit. Restore this EXACT square isometric game terrain tile with crisp newly painted microdetails at native resolution. Theme: frozen western underworld, blue-grey stone, white snow, icy cyan waterfalls, snow-laden conifers. Keep composition, crop, all stair flights, terraces, courtyard outlines, roads, waterbanks and rock/plant silhouettes at EXACTLY their existing positions and sizes. Do not zoom, reframe, redesign or add objects. Draw finer stone joints, chipped edges and distinct small foliage/material details inside the original forms, correcting softness. Match original lighting, palette, contrast and hand-painted fantasy game style. Outer 5% border must remain aligned with original for adjacent tiles. No characters, labels, UI, clouds or atmospheric shadows. Output square 1024x1024 or higher. Image is the edit target, not loose inspiration.",
+      "status": "draft-not-installed",
+      "review": "zone3-r2-c3-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "source": "img/map-zone3/v1/r2-c3.webp"
+    },
+    {
+      "z": 4,
+      "r": 2,
+      "c": 3,
+      "prompt": "Use case: precise-object-edit. Restore this EXACT square isometric game terrain tile with crisp newly painted microdetails at native resolution. Theme: cyber underworld, dark basalt slabs, gold circuit inlays, violet crystals and cyan electrical channels. Keep composition, crop, all stair flights, terraces, courtyard outlines, roads, waterbanks and rock/plant silhouettes at EXACTLY their existing positions and sizes. Do not zoom, reframe, redesign or add objects. Draw finer stone joints, chipped edges and distinct small foliage/material details inside the original forms, correcting softness. Match original lighting, palette, contrast and hand-painted fantasy game style. Outer 5% border must remain aligned with original for adjacent tiles. No characters, labels, UI, clouds or atmospheric shadows. Output square 1024x1024 or higher. Image is the edit target, not loose inspiration.",
+      "status": "draft-not-installed",
+      "review": "zone4-r2-c3-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "source": "img/map-zone4/v3/r2-c3.webp"
+    },
+    {
+      "z": 1,
+      "v": 5,
+      "r": 1,
+      "c": 1,
+      "source": "img/map-zone1/v5/r1-c1.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: original AVEGEE zone 1 terrain tile. Repaint microdetails to make this exact image crisp at zoom: stone paving joints, rock strata, individual foliage, snow/ice or crystal details where already present. Preserve hand-painted game style, exact palette, lighting and contrast. STRICTLY match original crop, view, relative sizes and exact positions of ALL paths, stair flights, terraces, bridges, shores and cliffs. Trace the original contours, do NOT redesign or enlarge the courtyard. Preserve the outer 5 percent border exactly for adjacent tiles. No added/removed architecture, foliage groups, roads or rocks. No people, text, clouds, UI or vignette. Output same aspect ratio and exact composition, high detail.",
+      "status": "draft-not-installed",
+      "review": "zone1-r1-c1-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "z": 2,
+      "v": 2,
+      "r": 1,
+      "c": 1,
+      "source": "img/map-zone2/v2/r1-c1.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: original AVEGEE zone 2 terrain tile. Repaint microdetails to make this exact image crisp at zoom: stone paving joints, rock strata, individual foliage, snow/ice or crystal details where already present. Preserve hand-painted game style, exact palette, lighting and contrast. STRICTLY match original crop, view, relative sizes and exact positions of ALL paths, stair flights, terraces, bridges, shores and cliffs. Trace the original contours, do NOT redesign or enlarge the courtyard. Preserve the outer 5 percent border exactly for adjacent tiles. No added/removed architecture, foliage groups, roads or rocks. No people, text, clouds, UI or vignette. Output same aspect ratio and exact composition, high detail.",
+      "status": "draft-not-installed",
+      "review": "zone2-r1-c1-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "z": 3,
+      "v": 1,
+      "r": 1,
+      "c": 1,
+      "source": "img/map-zone3/v1/r1-c1.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: original AVEGEE zone 3 terrain tile. Repaint microdetails to make this exact image crisp at zoom: stone paving joints, rock strata, individual foliage, snow/ice or crystal details where already present. Preserve hand-painted game style, exact palette, lighting and contrast. STRICTLY match original crop, view, relative sizes and exact positions of ALL paths, stair flights, terraces, bridges, shores and cliffs. Trace the original contours, do NOT redesign or enlarge the courtyard. Preserve the outer 5 percent border exactly for adjacent tiles. No added/removed architecture, foliage groups, roads or rocks. No people, text, clouds, UI or vignette. Output same aspect ratio and exact composition, high detail.",
+      "status": "draft-not-installed",
+      "review": "zone3-r1-c1-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "z": 4,
+      "v": 3,
+      "r": 1,
+      "c": 1,
+      "source": "img/map-zone4/v3/r1-c1.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: original AVEGEE zone 4 terrain tile. Repaint microdetails to make this exact image crisp at zoom: stone paving joints, rock strata, individual foliage, snow/ice or crystal details where already present. Preserve hand-painted game style, exact palette, lighting and contrast. STRICTLY match original crop, view, relative sizes and exact positions of ALL paths, stair flights, terraces, bridges, shores and cliffs. Trace the original contours, do NOT redesign or enlarge the courtyard. Preserve the outer 5 percent border exactly for adjacent tiles. No added/removed architecture, foliage groups, roads or rocks. No people, text, clouds, UI or vignette. Output same aspect ratio and exact composition, high detail.",
+      "status": "draft-not-installed",
+      "review": "zone4-r1-c1-draft.webp",
+      "pixels": [
+        1254,
+        1254
+      ]
+    }
+  ]
+}
