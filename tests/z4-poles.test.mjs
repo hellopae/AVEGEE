@@ -11,6 +11,7 @@ function mockCtx(view=[0,0,3840,2560]){
  const ctx=new Proxy({canvas:{width:view[2]-view[0],height:view[3]-view[1]},
   getTransform:()=>({a:1,b:0,c:0,d:1,e:-view[0],f:-view[1]}),
   drawImage:(_i,x,y,w,h)=>sizes.push([w,h]),
+  createLinearGradient:()=>({addColorStop(){}}),
   createRadialGradient:()=>({addColorStop(){}})},
   {get:(t,k)=>k in t?t[k]:(...a)=>{calls.push([k,a]);},set:()=>true});
  return {ctx,calls,sizes};

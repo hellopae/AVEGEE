@@ -1,3 +1,4 @@
+import {dischargePath,dischargeBranches,drawDischarge} from './electric-fx.js';
 import {drawAsiaSunRays} from './sun-shafts.js';
 import { drawH3Lanterns, drawH3Surfaces, h3SurfaceContains, prepareH3SurfaceTracks } from './map-fx-h3.js?v=mapfx';
 import { zoneStyle } from './scene-style.js';
@@ -342,17 +343,10 @@ function drawRainAndStorm(ctx,view,time,W,H,maxParticles=null){
   const strike=stormStrike(time),flash=stormFlash(time);
   if(flash){ctx.globalAlpha=flash;ctx.fillStyle='#d7eaff';ctx.fillRect(view.x,view.y,view.w,view.h);}
   if(strike&&strike.age<MAP_FX.storm.boltMs){
-    const fade=1-strike.age/MAP_FX.storm.boltMs,bx=view.x+view.w*strike.x,steps=9,bottom=view.y+view.h*(.5+.25*seed(strike.n+3.1));
-    const pts=[[bx,view.y]];
-    for(let i=1;i<=steps;i++)pts.push([bx+(seed(strike.n*13+i)-.5)*view.w*.16*(i<steps?1:.5),view.y+(bottom-view.y)*i/steps]);
-    const branchAt=3+Math.floor(seed(strike.n+7.7)*3),branch=[pts[branchAt]];
-    for(let i=1;i<=4;i++)branch.push([branch[0][0]+(seed(strike.n*17+i)+.15)*view.w*.05*i*(seed(strike.n+1.9)<.5?-1:1),branch[0][1]+(bottom-view.y)*.07*i]);
-    ctx.lineJoin='round';
-    for(const [path,widthScale] of [[pts,1],[branch,.55]]){
-      ctx.beginPath();ctx.moveTo(...path[0]);for(const p of path.slice(1))ctx.lineTo(...p);
-      ctx.globalAlpha=.3*fade;ctx.strokeStyle='#8fbfff';ctx.lineWidth=10*u*widthScale;ctx.stroke();
-      ctx.globalAlpha=fade;ctx.strokeStyle='#f4f9ff';ctx.lineWidth=2.6*u*widthScale;ctx.stroke();
-    }
+    const bx=view.x+view.w*strike.x,bottom=view.y+view.h*(.5+.25*seed(strike.n+3.1));
+    const end=[bx+(seed(strike.n+2.2)-.5)*view.w*.13,bottom];
+    const pts=dischargePath([bx,view.y-12*u],end,strike.n,view.w*.026,24);
+    drawDischarge(ctx,pts,dischargeBranches(pts,strike.n,view.w*.016),strike.age/MAP_FX.storm.boltMs,u*1.5);
   }
   ctx.globalAlpha=1;
 }

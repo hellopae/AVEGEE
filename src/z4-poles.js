@@ -1,3 +1,4 @@
+import {dischargePath,dischargeBranches,drawDischarge} from './electric-fx.js';
 import {startupImage} from './town-startup.js';
 import {Z4_POLE_ART,z4PoleArtRect} from './z4-pole-art.js';
 import {Z4_POLES,Z4_WIRES} from './z4-poles-data.js?v=z4-poles';
@@ -39,7 +40,7 @@ export function z4ElectricBudget({width = 1440, height = 900, dpr = 1, reduced =
   const area = Math.min(1, width * height / (1440 * 900));
   return {runners:Math.max(2, Math.round(10 * area / Math.max(1, dpr / 1.5))), bolts:true, slotMs:width * height < 600000 ? 600 : 400};
 }
-const BOLT_LIFE = 140;   // ms a bolt is visible; one bolt per slot, slot >= 400 ms => <= 2.5 flashes/s
+const BOLT_LIFE = 240;   // ms a bolt is visible; one bolt per slot, slot >= 400 ms => <= 2.5 flashes/s
 /** Which sparks/bolts are active at `time`. Pure + deterministic. visiblePoles/visibleWires are index lists. */
 export function z4Electric(time, {reduced = false, enabled = true, viewport = {}, visibleWires = [], visiblePoles = []} = {}) {
   const none = {runners:[], bolt:null};
@@ -147,47 +148,48 @@ export function drawZ4Pole(ctx, pole, time = 0, still = false) {
 }
 // Thin lines vanish when the camera is zoomed out (phones): widen them so they stay >= ~1.2 device px.
 const lineScale = ctx => { const a = ctx.getTransform?.()?.a; return a > 0 ? Math.min(3, Math.max(1, 1.2 / a)) : 1; };
-function drawWire(ctx, w, still, k = 1) {
-  ctx.beginPath(); ctx.moveTo(w.x0, w.y0); ctx.quadraticCurveTo(w.cx, w.cy, w.x1, w.y1);
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = `rgba(70,170,255,${still ? .26 : .2})`; ctx.lineWidth = 5 * k; ctx.stroke();
-  ctx.strokeStyle = 'rgba(8,8,22,.95)'; ctx.lineWidth = 2 * k; ctx.stroke();
-  if (k > 1.5) return;   // zoomed out (phones): glow + dark core only, one stroke less per wire
-  ctx.strokeStyle = `rgba(140,225,255,${still ? .55 : .42})`; ctx.lineWidth = 1 * k; ctx.stroke();
+export function drawWire(ctx, w, still, k = 1) {
+  ctx.save();ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(w.x0,w.y0);ctx.quadraticCurveTo(w.cx,w.cy,w.x1,w.y1);
+  // Dark insulated cable with a restrained cool reflection, not a neon outline.
+  ctx.strokeStyle='rgba(0,0,8,.42)';ctx.lineWidth=3.6*k;ctx.stroke();
+  ctx.strokeStyle='#131724';ctx.lineWidth=2.1*k;ctx.stroke();
+  const g=ctx.createLinearGradient(w.x0,w.y0,w.x1,w.y1);
+  g.addColorStop(0,'#8c998f');g.addColorStop(.18,'#45677a');g.addColorStop(.52,'#293a52');g.addColorStop(.84,'#527787');g.addColorStop(1,'#a1ada0');
+  ctx.strokeStyle=g;ctx.lineWidth=.7*k;ctx.stroke();
+  // Small bronze sockets connect each span to the painted ceramic insulator.
+  ctx.fillStyle='#a99a70';
+  for(const [x,y]of [[w.x0,w.y0],[w.x1,w.y1]]){ctx.beginPath();ctx.arc(x,y,1.05*k,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
 }
-function drawRunner(ctx, w, u) {
-  ctx.save(); ctx.globalCompositeOperation = 'lighter';
-  for (let i = 0; i < 4; i++) {
-    const t = Math.max(0, u - i * .035), [x, y] = z4WirePoint(w, t);
-    halo(ctx, x, y, (10 - i * 1.7) * Math.sqrt(lineScale(ctx)), (1 - i * .22) * .85);
-    ctx.fillStyle = `rgba(235,252,255,${1 - i * .25})`; ctx.fillRect(x - 1, y - 1, 2, 2);
+export function drawRunner(ctx, w, u) {
+  const k=lineScale(ctx),fade=Math.min(1,u*12,(1-u)*12);
+  if(fade<=0)return;
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
+  // A tapered stream follows the actual sag curve; the head is a round ion glow.
+  for(let i=7;i>0;i--){
+    const a=z4WirePoint(w,Math.max(0,u-i*.009)),b=z4WirePoint(w,Math.max(0,u-(i-1)*.009));
+    ctx.globalAlpha=fade*(1-i/8)*.8;ctx.strokeStyle=i<3?'#ecfcff':'#64b9f7';ctx.lineWidth=(.7+(1-i/8)*1.1)*k;
+    ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();
+  }
+  const [x,y]=z4WirePoint(w,u);halo(ctx,x,y,7*Math.sqrt(k),fade*.52);
+  ctx.globalAlpha=fade;ctx.fillStyle='#edfdff';ctx.beginPath();ctx.arc(x,y,.95*k,0,Math.PI*2);ctx.fill();
+  // Tiny forked corona beside the head, with no rectangular spark pixels.
+  const tangent=z4WirePoint(w,Math.min(1,u+.005)),angle=Math.atan2(tangent[1]-y,tangent[0]-x),j=Math.floor(u*26);
+  for(let side of [-1,1]){
+    const length=(2+hash(j+side+w.i)*3)*Math.sqrt(k),nx=Math.cos(angle+side*1.25),ny=Math.sin(angle+side*1.25);
+    ctx.strokeStyle='#9ddfff';ctx.globalAlpha=fade*.65;ctx.lineWidth=.5*k;
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+nx*length*.45-ny,y+ny*length*.45+nx);ctx.lineTo(x+nx*length,y+ny*length);ctx.stroke();
   }
   ctx.restore();
 }
-/** Short forked bolt from a pole's insulator. Local to the pole: never a full-screen flash. */
+/** Local insulator discharge with pinned origin and feathered branching tips. */
 export function drawZ4Bolt(ctx, pole, age, seed, k = 1) {
-  const s = seed * 13.7, fade = age < .5 ? 1 : 1 - (age - .5) * 2;
-  const side = hash(s) < .5 ? -1 : 1, sx = pole.x + side * pole.arm, sy = pole.top + pole.h * .12 - Math.max(4, pole.h * .12);
-  const len = (34 + hash(s + 1) * 30) * Math.sqrt(k), segs = 6;
-  const path = [[sx, sy]];
-  let px = sx, py = sy, ang = -Math.PI / 2 + side * (.3 + hash(s + 2) * .9);
-  for (let i = 1; i <= segs; i++) {
-    ang += (hash(s + 10 + i) - .5) * 1.5;
-    px += Math.cos(ang) * len / segs; py += Math.sin(ang) * len / segs; path.push([px, py]);
-  }
-  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineJoin = 'round';
-  halo(ctx, sx, sy, 24 * Math.sqrt(k), .5 * fade);
-  const stroke = pts => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke(); };
-  const branches = [];
-  for (let b = 0; b < 2; b++) {
-    const at = path[2 + b], a = ang + (b ? 1 : -1) * (.6 + hash(s + 30 + b) * .6);
-    branches.push([at, [at[0] + Math.cos(a) * len * .35, at[1] + Math.sin(a) * len * .35 + 4], [at[0] + Math.cos(a + .6) * len * .5, at[1] + Math.sin(a + .6) * len * .45 + 7]]);
-  }
-  ctx.strokeStyle = `rgba(150,110,255,${.55 * fade})`; ctx.lineWidth = 6 * k; stroke(path); for (const br of branches) stroke(br);
-  ctx.strokeStyle = `rgba(190,240,255,${.95 * fade})`; ctx.lineWidth = 2.2 * k; stroke(path);
-  ctx.lineWidth = 1.3 * k; for (const br of branches) stroke(br);
-  ctx.strokeStyle = `rgba(255,255,255,${fade})`; ctx.lineWidth = 1 * k; stroke(path);
-  ctx.restore();
+  const side=hash(seed*13.7)<.5?-1:1,sx=pole.x+side*pole.arm,sy=pole.top+pole.h*.12-Math.max(4,pole.h*.12)*.65;
+  const length=(25+hash(seed+1)*20)*Math.sqrt(k),end=[sx+side*length*.55,sy-length*.78];
+  const path=dischargePath([sx,sy],end,seed,5*Math.sqrt(k));
+  drawDischarge(ctx,path,dischargeBranches(path,seed,3*Math.sqrt(k)),age,k);
+  ctx.save();ctx.globalCompositeOperation='lighter';halo(ctx,sx,sy,14*Math.sqrt(k),.4*Math.pow(Math.max(0,1-age),2));ctx.restore();
 }
 
 function viewRect(ctx) {

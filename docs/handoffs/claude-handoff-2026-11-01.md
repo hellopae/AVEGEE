@@ -330,3 +330,13 @@ Latest user steering: continue original drawing workflow; defer Shado trial. Use
 - Evidence source/prompt/screens/logs in Output/Codex/2026-11-03-cyber-pole-art. All-map bridge railing/foreground, Cyber prison/canteen/zoom, Grace walk, boat, atmosphere/interiors, quest presentation and W4 remain queued.
 
 ผลตรวจชุดเสาไฟ: full1901/1901 ผ่าน,0fail/0cancel/0skip; syntax/diffcheckผ่าน.
+
+
+## CYBER-ELECTRIC-POLISH — 3 พฤศจิกายน 2569 (ภาพ12:38)
+
+- คงภาพเสาไฟที่ผู้ใช้ชอบ; สายไฟเปลี่ยนเป็นฉนวนเข้ม มีแสงสะท้อนตามแนวโค้งและข้อต่อสีทอง ลดขอบนีออนหนาเดิม
+- กระแสไฟวิ่งเป็นหางแสงเรียวตามsagจริง หัวกลมและcoronaเส้นเล็กแทนสี่เหลี่ยมแสง; fadeเข้า/ออกที่ปลายสาย
+- electric-fx.js สร้างฟ้าผ่าเส้นหลัก+3แขนง ปลายเรียว เรขาคณิตคงเดิมระหว่างfade ใช้ร่วมทั้งประกายเสาและพายุCyberในแผนที่/สอบสวน/ต่อสู้; ประกายเสามีcooling tail240ms
+- คงจำนวน293สาย/287เสา ตำแหน่ง/ชั้นdepth/culling และงบมือถือ/reduced-motion/weather-off; ไม่มีcanvas blurหรือภาพเพิ่ม
+- Full1903/1903; focused40/40; syntax/diffcheckผ่าน. Chromiumจริง1280×800และ390×844ไม่มีpageerror ตรวจภาพและคลิปmotion พร้อมภาพแยกเอฟเฟกต์
+- หลักฐานภายนอก Output/Codex/2026-11-03-electric-polish. คิวราวสะพาน/อาคาร/Grace/เรือ/บรรยากาศส่วนอื่น/ภารกิจ/เนื้อเรื่องยังคงเดิม
