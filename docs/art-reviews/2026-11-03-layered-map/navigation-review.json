@@ -21,6 +21,6 @@
       "walkable": true
     }
   ],
-  "blockedPixels": 14648,
-  "basis": "Observed Chromium navigation check in this session; graph paths, not full gameplay or physical mobile"
+  "blockedPixels": 21453,
+  "basis": "Repeated Chromium navigation check after grouped rail feet; graph paths, not full gameplay or physical mobile"
 }

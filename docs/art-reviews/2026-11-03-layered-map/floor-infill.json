@@ -1,0 +1,9 @@
+{
+  "border34": {
+    "src": "b34-upper-patch.png",
+    "sourceRect": [800, 400, 128, 80],
+    "scale": 0.36076662908680945,
+    "maxPixels": 1024,
+    "basis": "Opaque painted paving sample from the generated upper repair. Only residual missing pixels inside the unchanged owner floor can receive it; large mismatches require a local art patch first."
+  }
+}

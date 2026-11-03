@@ -1,43 +1,47 @@
-(node:13784) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(node:15996) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ B12: the entire floor is one four-neighbor component reachable from entry (41.800035ms)
-✔ B12: actual navigation walks entry, all three checkpoints including cave, and exit (32.805005ms)
-✔ B12: wider floor cannot bypass any checkpoint lock, and a removed rock spur rejects input (0.30436ms)
-✔ B12: repaint migration keeps cleared checkpoints and current-format positions (1.337136ms)
-✔ B12 shared town control: buttons clamp, overview, wheel, pinch cancel and cleanup (2.587733ms)
-✔ B12 zoom fits complete image at desktop/390 and max camera keeps hero in view (0.464029ms)
-✔ B12 removes overlay trees/falls and pins new flow to v6 without changing other route FX (12.592718ms)
-✔ B12 pause settings/manual destroy the old renderer and return to the border on close (6.863808ms)
-✔ shared town zoom follows zone-dependent levels after switching cities (0.279818ms)
-(node:13786) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ B12: the entire floor is one four-neighbor component reachable from entry (28.274577ms)
+✔ B12: actual navigation walks entry, all three checkpoints including cave, and exit (32.008831ms)
+✔ B12: wider floor cannot bypass any checkpoint lock, and a removed rock spur rejects input (0.30602ms)
+✔ B12: repaint migration keeps cleared checkpoints and current-format positions (1.427405ms)
+✔ B12 shared town control: buttons clamp, overview, wheel, pinch cancel and cleanup (3.195253ms)
+✔ B12 zoom fits complete image at desktop/390 and max camera keeps hero in view (0.422907ms)
+✔ B12 removes overlay trees/falls and pins new flow to v6 without changing other route FX (10.998517ms)
+✔ B12 pause settings/manual destroy the old renderer and return to the border on close (4.894687ms)
+✔ shared town zoom follows zone-dependent levels after switching cities (0.281211ms)
+(node:15998) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ B23 native view handlers 1280: traverse three gated fights and reach snow exit (268.863434ms)
-✔ B23 native view handlers 390: traverse three gated fights and reach snow exit (179.093041ms)
-✔ B23 renderer reuses painted foreground and never draws the removed tree sprites (5.479223ms)
-✔ B23 native input handlers: six blocked banks reject clicks and held keys, including northern branch (167.89438ms)
-✔ redraw native renderer: zoom buttons and five HUD actions work at 390 and desktop (9.019988ms)
-(node:13787) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ B23 native view handlers 1280: traverse three gated fights and reach snow exit (245.778906ms)
+✔ B23 native view handlers 390: traverse three gated fights and reach snow exit (210.936694ms)
+✔ B23 renderer reuses painted foreground and never draws the removed tree sprites (6.024441ms)
+✔ B23 native input handlers: six blocked banks reject clicks and held keys, including northern branch (139.486932ms)
+✔ redraw native renderer: zoom buttons and five HUD actions work at 390 and desktop (8.707618ms)
+(node:15999) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ B34 native view handlers 1280: traverse three gated fights and reach cyber exit (336.182802ms)
-✔ B34 native view handlers 390: traverse three gated fights and reach cyber exit (256.002334ms)
-✔ B34 renderer reuses painted foreground and never draws the removed tree sprites (5.781944ms)
-✔ B34 native input handlers: six blocked banks reject clicks and held keys, including northern branch (161.474276ms)
-✔ redraw native renderer: zoom buttons and five HUD actions work at 390 and desktop (9.366737ms)
-✔ floor stays registered to actors; only distant scenery uses parallax (2.42832ms)
-✔ water texture scrolls under fixed banks, freezes when paused or reduced (0.806023ms)
-✔ loads sequentially, reports missing layers, and releases late loads after destroy (1.278673ms)
-✔ post silhouette occludes actors, but only its foot blocks the floor (1.692737ms)
-✔ faint fringes and one-pixel noise cannot block walking (0.25807ms)
-✔ structure feet subtract physical blockers without reopening the owner floor (1.803774ms)
-✔ moving materials select river/lava colors and preserve alpha, leaving paving and vegetation fixed (2.056811ms)
-✔ authored flow masks select only their encoded material, never color-match rocks (0.511711ms)
-✔ sprite frames wrap exactly without moving the bank mask (1.792259ms)
-✔ faint blue/orange extraction halos do not become moving water beyond a bank (0.205622ms)
-ℹ tests 29
+✔ B34 native view handlers 1280: traverse three gated fights and reach cyber exit (319.635045ms)
+✔ B34 native view handlers 390: traverse three gated fights and reach cyber exit (227.581721ms)
+✔ B34 renderer reuses painted foreground and never draws the removed tree sprites (5.117873ms)
+✔ B34 native input handlers: six blocked banks reject clicks and held keys, including northern branch (151.22145ms)
+✔ redraw native renderer: zoom buttons and five HUD actions work at 390 and desktop (8.574666ms)
+✔ local floor patch fills missing owner-floor pixels without painting solid existing art or off-floor objects (1.86746ms)
+✔ residual material fill rejects a large geometry mismatch instead of hiding it (0.802465ms)
+✔ floor stays registered to actors; only distant scenery uses parallax (2.38458ms)
+✔ water texture scrolls under fixed banks, freezes when paused or reduced (0.793284ms)
+✔ loads sequentially, reports missing layers, and releases late loads after destroy (1.519152ms)
+✔ post silhouette occludes actors, but only its foot blocks the floor (1.763866ms)
+✔ faint fringes and one-pixel noise cannot block walking (0.234937ms)
+✔ structure feet subtract physical blockers without reopening the owner floor (3.408678ms)
+✔ a tower window is grouped with its support, not added as an aerial collision foot (0.315959ms)
+✔ high-resolution structure feet sample into the owner grid without changing the owner mask (0.48766ms)
+✔ moving materials select river/lava colors and preserve alpha, leaving paving and vegetation fixed (2.417346ms)
+✔ authored flow masks select only their encoded material, never color-match rocks (0.634537ms)
+✔ sprite frames wrap exactly without moving the bank mask (1.955074ms)
+✔ faint blue/orange extraction halos do not become moving water beyond a bank (0.245631ms)
+ℹ tests 33
 ℹ suites 0
-ℹ pass 29
+ℹ pass 33
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 980.353448
+ℹ duration_ms 902.729328

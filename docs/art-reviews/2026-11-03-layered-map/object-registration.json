@@ -1,0 +1,69 @@
+{
+  "zone3": {
+    "size": [
+      1536,
+      1024
+    ],
+    "basis": "Lower supports of the upper flight of the left-lower stair, measured against the original terrain preview. Generated vertical posts were left at their cap coordinates and crossed the landing. No owner floor is opened.",
+    "moves": [
+      {
+        "source": [
+          160,
+          430,
+          20,
+          59
+        ],
+        "offset": [
+          17,
+          -11
+        ],
+        "id": "left-lower-stair upper-flight left support",
+        "generatedFoot": [
+          170,
+          487
+        ],
+        "referenceFoot": [
+          187,
+          476
+        ]
+      },
+      {
+        "source": [
+          211,
+          430,
+          21,
+          58
+        ],
+        "offset": [
+          14,
+          -11
+        ],
+        "id": "left-lower-stair upper-flight right support",
+        "generatedFoot": [
+          221,
+          486
+        ],
+        "referenceFoot": [
+          235,
+          475
+        ]
+      }
+    ]
+  },
+  "border34": {
+    "size": [
+      1672,
+      941
+    ],
+    "basis": "Exclude a disconnected decorative ruin at left-middle that was wrongly retained as a gold railing; the actual gray ruin is already in the stationary scenery layer. Keep the road and its railings unchanged.",
+    "moves": [],
+    "exclude": [
+      [
+        150,
+        500,
+        530,
+        250
+      ]
+    ]
+  }
+}

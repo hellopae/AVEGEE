@@ -1,0 +1,19 @@
+{
+  "matches": 11,
+  "inliers": 3,
+  "matrix": [
+    [
+      0.0,
+      -0.0,
+      620.8220825195312
+    ],
+    [
+      0.0,
+      0.0,
+      354.67889404296875
+    ]
+  ],
+  "purpose": "diagnostic registration only; no final image edited",
+  "floorCoverageAfterAffine": 0.0,
+  "medianError": 0.0
+}

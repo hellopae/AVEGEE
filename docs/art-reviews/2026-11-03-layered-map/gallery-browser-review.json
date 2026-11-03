@@ -2,42 +2,42 @@
   "scenes": [
     {
       "map": "zone1",
-      "status": "พื้น 1536×1024 · ฉากหลัง 1536×1024 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone2",
-      "status": "พื้น 1536×1024 · ฉากหลัง 1536×1024 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone3",
-      "status": "พื้น 1536×1024 · ฉากหลัง 1536×1024 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone4",
-      "status": "พื้น 1536×1024 · ฉากหลัง 1536×1024 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "border23",
-      "status": "พื้น 1672×941 · ฉากหลัง 3344×1882 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "border34",
-      "status": "พื้น 1672×941 · ฉากหลัง 3344×1882 · ภาพร่าง รอตรวจพิกัด/รอยต่อ",
+      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true

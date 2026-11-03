@@ -1,0 +1,38 @@
+{
+  "tool": "built-in image_gen",
+  "mode": "edit, transparent_background=true",
+  "note": "Normalized prompt specifications for the latest liquid extraction calls; historical generation provenance is in generation-ledger.json.",
+  "shared": "Use case: background-extraction. Extract only visible liquid surfaces and waterfalls at exact reference positions/silhouettes and original framing. All land, paving, bridges, rails, trees, mountain, rock, shrubs, buildings, skeletons, sky and fog become actual alpha holes. Do not invent channels or fill former ground/islands. Static solids remain on a separate nature layer; animate only liquid pixels. No black matte or background haze.",
+  "calls": [
+    {
+      "number": 36,
+      "asset": "zone1-liquid-study.png",
+      "editTarget": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+      "constraints": "Orange lava left, turquoise water right, purple river below."
+    },
+    {
+      "number": 37,
+      "asset": "zone2-liquid-study.png",
+      "editTarget": "img/map-zone2/v2/zone2-terrain-v2-preview.webp",
+      "constraints": "Orange lava left, turquoise water right and below; remove giant skeleton bones."
+    },
+    {
+      "number": 38,
+      "asset": "zone3-liquid-study.png",
+      "editTarget": "img/map-zone3/v1/zone3-terrain-v1-preview.webp",
+      "constraints": "Blue river and waterfalls, no lava. Remove solid ice/snow and skeleton bones."
+    },
+    {
+      "number": 39,
+      "asset": "border23-liquid-study.png",
+      "editTarget": "docs/art-reviews/2026-11-03-layered-map/b23-reference.webp",
+      "constraints": "Blue/turquoise rivers, pools and falls, autumn to snow. No lava."
+    },
+    {
+      "number": 40,
+      "asset": "border34-liquid-study.png",
+      "editTarget": "docs/art-reviews/2026-11-03-layered-map/b34-reference.webp",
+      "constraints": "Blue water and actual orange lava lower far-right. Remove cyan neon tubes, machinery, lights and crystals: these are static, not water."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "repair": {
+    "before": {
+      "floor": 162033,
+      "covered": 156826,
+      "fraction": 0.9678645707973067
+    },
+    "afterPatches": {
+      "floor": 162033,
+      "covered": 161116,
+      "fraction": 0.9943406590015614
+    },
+    "after": {
+      "floor": 162033,
+      "covered": 162033,
+      "fraction": 1
+    },
+    "infillPixels": 917,
+    "repairedPixels": 5207
+  },
+  "errors": []
+}

@@ -20,3 +20,12 @@ test('structure feet subtract physical blockers without reopening the owner floo
  assert.deepEqual(mask.runs,[1,5,2]);
  assert.throws(()=>maskWithoutStructureFeet(mask,{width:2,height:4,blocked}),/same grid/);
 });
+test('a tower window is grouped with its support, not added as an aerial collision foot',()=>{
+ const rgba=new Uint8Array(4*30*4);for(const [from,to]of [[2,9],[13,22]])for(let y=from;y<to;y++)rgba[(y*4+1)*4+3]=255;
+ const s=traceStructureRuns(rgba,4,30,{mergeGap:5});assert.equal(s.pieces.length,2);assert.equal(s.pieces[0].depth,22/30);
+ assert.equal(structureFootBlocked(s,[.3,8/30]),false);assert.equal(structureFootBlocked(s,[.3,21/30]),true);
+});
+test('high-resolution structure feet sample into the owner grid without changing the owner mask',async()=>{
+ const {structureFootGrid}=await import('../src/map-structures.js');const b=new Uint8Array(8*8);b[5*8+3]=1;
+ const s=structureFootGrid({width:8,height:8,blocked:b},4,4);assert.equal(s.width,4);assert.equal(s.blocked[2*4+1],1);assert.equal(s.blocked.reduce((a,b)=>a+b),1);
+});

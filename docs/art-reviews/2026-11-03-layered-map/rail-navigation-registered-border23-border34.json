@@ -1,0 +1,147 @@
+{
+  "maps": [
+    {
+      "rails": true,
+      "baseCells": 194976,
+      "newCells": 193348,
+      "removed": 1628,
+      "blockedFeetReject": true,
+      "blockedTarget": [
+        0.09778708133971292,
+        0.17268862911795962
+      ],
+      "paths": [
+        {
+          "goal": [
+            0.269437799,
+            0.329968119
+          ],
+          "approach": [
+            0.269437799,
+            0.329968119
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.810705742,
+            0.529755579
+          ],
+          "approach": [
+            0.810705742,
+            0.529755579
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.511662679,
+            0.732731137
+          ],
+          "approach": [
+            0.511662679,
+            0.732731137
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.903409091,
+            0.793304995
+          ],
+          "approach": [
+            0.903409091,
+            0.793304995
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        }
+      ],
+      "hero": [
+        0.13187799,
+        0.215196599
+      ],
+      "blockedClickKeepsHero": false,
+      "map": "border23"
+    },
+    {
+      "rails": true,
+      "baseCells": 162033,
+      "newCells": 159799,
+      "removed": 2234,
+      "blockedFeetReject": true,
+      "blockedTarget": [
+        0.19467703349282298,
+        0.29596174282678
+      ],
+      "paths": [
+        {
+          "goal": [
+            0.24551435406698566,
+            0.3193411264612115
+          ],
+          "approach": [
+            0.24551435406698566,
+            0.3193411264612115
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.7867822966507177,
+            0.5425079702444209
+          ],
+          "approach": [
+            0.7867822966507177,
+            0.5425079702444209
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.5086722488038278,
+            0.7337938363443146
+          ],
+          "approach": [
+            0.5086722488038278,
+            0.7337938363443146
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        },
+        {
+          "goal": [
+            0.9034090909090909,
+            0.8400637619553666
+          ],
+          "approach": [
+            0.9034090909090909,
+            0.8400637619553666
+          ],
+          "approachShiftWorld": 0,
+          "reachable": true,
+          "originalPointBlocked": false
+        }
+      ],
+      "hero": [
+        0.11991626794258373,
+        0.20244420828905418
+      ],
+      "blockedClickKeepsHero": true,
+      "map": "border34"
+    }
+  ],
+  "errors": []
+}

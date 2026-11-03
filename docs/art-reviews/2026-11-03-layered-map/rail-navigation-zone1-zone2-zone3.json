@@ -1,0 +1,350 @@
+{
+  "maps": [
+    {
+      "rails": true,
+      "baseCells": 32698,
+      "newCells": 32634,
+      "removed": 64,
+      "blockedFeetReject": true,
+      "blockedTarget": [
+        0.7760416666666666,
+        0.1640625
+      ],
+      "paths": [
+        {
+          "goal": [
+            0.13020833333333334,
+            0.1765625
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.440625,
+            0.1671875
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.6635416666666667,
+            0.1546875
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.91,
+            0.21
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.128125,
+            0.4015625
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.12,
+            0.563
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.853,
+            0.352
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.924,
+            0.542
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.482,
+            0.381
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.552
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.845
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.5846,
+            0.6787
+          ],
+          "reachable": true,
+          "blocked": false
+        }
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "blockedClickKeepsHero": true,
+      "map": "zone1"
+    },
+    {
+      "rails": true,
+      "baseCells": 28770,
+      "newCells": 28652,
+      "removed": 118,
+      "blockedFeetReject": true,
+      "blockedTarget": [
+        0.7385416666666667,
+        0.1796875
+      ],
+      "paths": [
+        {
+          "goal": [
+            0.13020833333333334,
+            0.1734375
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.43645833333333334,
+            0.1328125
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.659375,
+            0.1578125
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.91,
+            0.21
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.13020833333333334,
+            0.4046875
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.11770833333333333,
+            0.5609375
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.853,
+            0.352
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.924,
+            0.542
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.482,
+            0.381
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.552
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.845
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.5846,
+            0.6787
+          ],
+          "reachable": true,
+          "blocked": false
+        }
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "blockedClickKeepsHero": true,
+      "map": "zone2"
+    },
+    {
+      "rails": true,
+      "baseCells": 27328,
+      "newCells": 27203,
+      "removed": 125,
+      "blockedFeetReject": true,
+      "blockedTarget": [
+        0.36770833333333336,
+        0.1859375
+      ],
+      "paths": [
+        {
+          "goal": [
+            0.13020833333333334,
+            0.1734375
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.43645833333333334,
+            0.1328125
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.6635416666666667,
+            0.1609375
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.91,
+            0.21
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.128125,
+            0.4078125
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.11770833333333333,
+            0.5640625
+          ],
+          "reachable": false,
+          "blocked": true
+        },
+        {
+          "goal": [
+            0.853125,
+            0.3546875
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.924,
+            0.542
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.482,
+            0.381
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.552
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.488,
+            0.845
+          ],
+          "reachable": true,
+          "blocked": false
+        },
+        {
+          "goal": [
+            0.5846,
+            0.6787
+          ],
+          "reachable": true,
+          "blocked": false
+        }
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "blockedClickKeepsHero": true,
+      "map": "zone3"
+    }
+  ],
+  "errors": []
+}

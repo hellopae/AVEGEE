@@ -24,7 +24,9 @@
       "reference": "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
       "floor": "zone1-floor-study.png",
       "nature": "zone1-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "zone1-rails-study.png",
+      "liquid": "zone1-liquid-study.png",
       "flow": "img/map-zone1/v4/flow-v4.png",
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9903358003547618
@@ -33,7 +35,9 @@
       "reference": "img/map-zone2/v2/zone2-terrain-v2-preview.webp",
       "floor": "zone2-floor-study.png",
       "nature": "zone2-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "zone2-rails-study.png",
+      "liquid": "zone2-liquid-study.png",
       "flow": "img/map-zone2/v2/flow-v2.png",
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9930483142161974
@@ -42,8 +46,61 @@
       "reference": "img/map-zone3/v1/zone3-terrain-v1-preview.webp",
       "floor": "zone3-floor-study.png",
       "nature": "zone3-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "zone3-rails-study.png",
+      "liquid": "zone3-liquid-study.png",
       "flow": "img/map-zone3/v1/flow-v1.png",
+      "railsRegistration": {
+        "size": [
+          1536,
+          1024
+        ],
+        "basis": "Lower supports of the upper flight of the left-lower stair, measured against the original terrain preview. Generated vertical posts were left at their cap coordinates and crossed the landing. No owner floor is opened.",
+        "moves": [
+          {
+            "source": [
+              160,
+              430,
+              20,
+              59
+            ],
+            "offset": [
+              17,
+              -11
+            ],
+            "id": "left-lower-stair upper-flight left support",
+            "generatedFoot": [
+              170,
+              487
+            ],
+            "referenceFoot": [
+              187,
+              476
+            ]
+          },
+          {
+            "source": [
+              211,
+              430,
+              21,
+              58
+            ],
+            "offset": [
+              14,
+              -11
+            ],
+            "id": "left-lower-stair upper-flight right support",
+            "generatedFoot": [
+              221,
+              486
+            ],
+            "referenceFoot": [
+              235,
+              475
+            ]
+          }
+        ]
+      },
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9959748243559718
     },
@@ -51,7 +108,8 @@
       "reference": "img/map-zone4/v3/zone4-terrain-v3-preview.webp",
       "floor": "zone4-floor-study.png",
       "nature": "zone4-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "zone4-rails-study.png",
       "liquid": "zone4-liquid-study.png",
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9976048723739136
@@ -60,7 +118,9 @@
       "reference": "img/frontier-route/zone2-3-v4.webp",
       "floor": "border23-floor-study.png",
       "nature": "border23-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "border23-rails-study.png",
+      "liquid": "border23-liquid-study.png",
       "flow": "img/frontier-route/zone2-3-v4-flow.png",
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9890909650418513
@@ -69,10 +129,79 @@
       "reference": "img/frontier-route/zone3-4-v2.webp",
       "floor": "border34-floor-v2-study.png",
       "nature": "border34-nature-study.png",
-      "status": "needs per-object depth, rail and collision review",
+      "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
+      "rails": "border34-rails-study.png",
+      "liquid": "border34-liquid-study.png",
       "flow": "img/frontier-route/zone3-4-v2-flow.png",
+      "floorPatches": [
+        {
+          "src": "b34-upper-patch.png",
+          "rect": [
+            440,
+            240,
+            640,
+            320
+          ]
+        },
+        {
+          "src": "b34-lower-patch.png",
+          "rect": [
+            840,
+            530,
+            640,
+            320
+          ]
+        }
+      ],
+      "floorInfill": {
+        "src": "b34-upper-patch.png",
+        "sourceRect": [
+          800,
+          400,
+          128,
+          80
+        ],
+        "scale": 0.36076662908680945,
+        "maxPixels": 1024,
+        "basis": "Opaque painted paving sample from the generated upper repair. Only residual missing pixels inside the unchanged owner floor can receive it; large mismatches require a local art patch first."
+      },
+      "railsRegistration": {
+        "size": [
+          1672,
+          941
+        ],
+        "basis": "Exclude a disconnected decorative ruin at left-middle that was wrongly retained as a gold railing; the actual gray ruin is already in the stationary scenery layer. Keep the road and its railings unchanged.",
+        "moves": [],
+        "exclude": [
+          [
+            150,
+            500,
+            530,
+            250
+          ]
+        ]
+      },
       "filesPresent": true,
-      "opaqueCoverageAtOwnerFloorCells": 0.9678522276326428
+      "opaqueCoverageAtOwnerFloorCells": 0.9678522276326428,
+      "composedFloorRepair": {
+        "before": {
+          "floor": 162033,
+          "covered": 156826,
+          "fraction": 0.9678645707973067
+        },
+        "afterPatches": {
+          "floor": 162033,
+          "covered": 161116,
+          "fraction": 0.9943406590015614
+        },
+        "after": {
+          "floor": 162033,
+          "covered": 162033,
+          "fraction": 1
+        },
+        "infillPixels": 917,
+        "repairedPixels": 5207
+      }
     },
     "border12": {
       "reference": "img/frontier-route/zone1-2-v6.webp",
@@ -93,6 +222,110 @@
       "bytes": 7491,
       "sha256": "a8d692e3de8679a74f7289d4e6d04bc83bae1a1b677fb0f68a80572e60cb0413"
     },
+    "b34-lower-patch-guide.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 408677,
+      "sha256": "2157114f3ac70e4c62a414c0fcc82d5e466215aee748dc8374925ec9e9bc4eee",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b34-lower-patch-reference.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 534854,
+      "sha256": "2788eb1419f83058f10ab28368b6e6cac5e6917e0565344efd70dbee32ccd107",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b34-lower-patch-target.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 411418,
+      "sha256": "104023b1c4caaa1863fc40b404a911c90db9a96f8febd7a204b65dc1847f12a0",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b34-lower-patch.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "bytes": 2424237,
+      "sha256": "71026505cca636bc9a2150c9957df00a358731f688b0b578fe409103418bded7",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "b34-upper-patch-guide.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 283652,
+      "sha256": "dd846cec89ec8f41231212aee5a8056cf563f8311ecf1112e8ec1bb194530a0e",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b34-upper-patch-reference.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 543292,
+      "sha256": "617d5fe0140ad144016d45432580e9fa3e02f7c6ee48418114ce3c813be7ad4a",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b34-upper-patch-target.png": {
+      "size": [
+        640,
+        320
+      ],
+      "mode": "RGBA",
+      "bytes": 286013,
+      "sha256": "c566762fb1de7976edd08cc0cf0d7be027713efcffaea8d946e920f506b48d49",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b34-upper-patch.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "bytes": 1749807,
+      "sha256": "bb81ad6aa78f06b5533998aa4f4dbf27944edea954aa0095837d4a17fdae91f7",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
     "background-study.png": {
       "size": [
         1672,
@@ -105,11 +338,11 @@
     "border23-composite.png": {
       "size": [
         1232,
-        694
+        693
       ],
       "mode": "RGB",
-      "bytes": 1921543,
-      "sha256": "829c53f52e72a2766c2ecd10df8e7956c6be0c1573aa54c3043e3211be1f8bd0"
+      "bytes": 1748913,
+      "sha256": "0ec474c4ad698b359d62dc54d96a3a3fd185dae019482690d00f17a92693e7d7"
     },
     "border23-floor-study.png": {
       "size": [
@@ -122,6 +355,19 @@
       "alphaRange": [
         0,
         255
+      ]
+    },
+    "border23-liquid-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 933137,
+      "sha256": "b7701979f6875fd200d6b76e485df4202b3e86516ecd50b91f9194b0b8fa9c49",
+      "alphaRange": [
+        0,
+        254
       ]
     },
     "border23-nature-study.png": {
@@ -137,14 +383,36 @@
         255
       ]
     },
+    "border23-rails-study.png": {
+      "size": [
+        1671,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 706334,
+      "sha256": "4b0e0ae70b8bd4bbd2fd0a1c267a5b209e01f2baca9a24a42e5fed1bb2ea4108",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border23-with-rails.png": {
+      "size": [
+        1232,
+        693
+      ],
+      "mode": "RGB",
+      "bytes": 1931644,
+      "sha256": "79d3941b7db6d95d452732466ff70f8758188bfd1272e929baa2c443ffe60c21"
+    },
     "border34-composite.png": {
       "size": [
         1232,
-        694
+        693
       ],
       "mode": "RGB",
-      "bytes": 1909569,
-      "sha256": "37d80be2a746c9aa6c033a1a5a8e9d3a948fdd197a207a0f9c196d0c8332a2e8"
+      "bytes": 1750313,
+      "sha256": "394849eee0c2ca10530b2b38586e677dfe231b23a08819cd8e1a2f4a470c80ee"
     },
     "border34-floor-study.png": {
       "size": [
@@ -172,6 +440,19 @@
         255
       ]
     },
+    "border34-liquid-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 692462,
+      "sha256": "8261ba25adac1a061647dff3967ece4c1e300375df8e31bacee99e62a758b3a2",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
     "border34-nature-study.png": {
       "size": [
         1671,
@@ -184,6 +465,37 @@
         0,
         255
       ]
+    },
+    "border34-rails-study.png": {
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGBA",
+      "bytes": 952569,
+      "sha256": "574b88e4d018eae9ff69d6ca3a7a950daf661e906e33a4f41309341b6e1db9c2",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "border34-repaired-composite.png": {
+      "size": [
+        1232,
+        693
+      ],
+      "mode": "RGB",
+      "bytes": 1910108,
+      "sha256": "12bfa2a1568a27215f986c818d6ff50ed000a5e59a114dbbb791ba02918d2863"
+    },
+    "border34-with-rails.png": {
+      "size": [
+        1232,
+        693
+      ],
+      "mode": "RGB",
+      "bytes": 1910127,
+      "sha256": "683eae2bf47c9c8fb731abcc2f240c8e4d3a3b885036214a3b06e65ac810f8bc"
     },
     "floor-study.png": {
       "size": [
@@ -331,8 +643,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2169075,
-      "sha256": "ab71c50e2771b43ab9503fc8a812102464a350f55b2c68f7e7390c69849ebf49"
+      "bytes": 2084120,
+      "sha256": "76c8a0ae028512e8b20d24591004aabb7cc6caf69b653e700e92c82e62c27b59"
     },
     "zone1-floor-study.png": {
       "size": [
@@ -342,6 +654,19 @@
       "mode": "RGBA",
       "bytes": 3103674,
       "sha256": "802d0d99ba5a0a4ebec5d67bafb1455875beacdf01bff4103632c6750cc8cb1e",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone1-liquid-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1805114,
+      "sha256": "2074de086a4dc6433e6c65a0f020964f5f0425ac8d76d6eda2395143a0f56393",
       "alphaRange": [
         0,
         254
@@ -360,6 +685,28 @@
         254
       ]
     },
+    "zone1-rails-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1361827,
+      "sha256": "0905bb6a2e16d28254b26d3841f295da7b8a7c920af98070b7983c775ce3704c",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone1-with-rails.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2167678,
+      "sha256": "c73e9892d23d9dd68fde93f8c8cf9b560124d4b938e22bf12127a3aeeccd257d"
+    },
     "zone2-background-study.png": {
       "size": [
         1536,
@@ -375,8 +722,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2152868,
-      "sha256": "045e0475b4e17ec4b1b3590229474cfbcea7c61ff55eae3a427e8341585984e6"
+      "bytes": 1995010,
+      "sha256": "e166deb3f1e5f83f0da1da1ab7b57f67a0c7d1bb07758c1f2d1ad987d6dd2ad5"
     },
     "zone2-floor-study.png": {
       "size": [
@@ -386,6 +733,19 @@
       "mode": "RGBA",
       "bytes": 2716947,
       "sha256": "cb5e8056fb4c6156d6c11b852ca758dcd78ec88dae79aac06da88340ea9c1f79",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone2-liquid-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1754276,
+      "sha256": "6bc5c503d25e697a5d9c93664e82ba96b3d2b948da6b3b54ac62fbaaae2b0ac9",
       "alphaRange": [
         0,
         254
@@ -404,14 +764,36 @@
         254
       ]
     },
+    "zone2-rails-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1213664,
+      "sha256": "a0b8a68a46da497b21598fbad6084696304eee29bf5fd1b4453cccc475530419",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone2-with-rails.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2156171,
+      "sha256": "03a1c82707213509621eff4c3ce7a9f8208bf39625e9ce5e705fa2b1c9d2dff9"
+    },
     "zone3-composite.png": {
       "size": [
         1232,
         822
       ],
       "mode": "RGB",
-      "bytes": 2252683,
-      "sha256": "cfa73deec970c65c6dbf0b4cdda0a649a29f2fd9dc839e12c01082b87e38c207"
+      "bytes": 2046185,
+      "sha256": "854d770c0c332d2aa2d619714a1294a4845084f716170a3806e38dd48433492b"
     },
     "zone3-floor-study.png": {
       "size": [
@@ -424,6 +806,19 @@
       "alphaRange": [
         0,
         254
+      ]
+    },
+    "zone3-liquid-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1829030,
+      "sha256": "b3f484f72a7f75e50a9c13e1b4da858932a157090d96f1293d8821fbec2a83be",
+      "alphaRange": [
+        0,
+        253
       ]
     },
     "zone3-nature-study.png": {
@@ -439,14 +834,36 @@
         254
       ]
     },
+    "zone3-rails-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1515301,
+      "sha256": "1644f8fcafda5022fbad64bc257d5116699c112ba9b918447a911043e9c73fca",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone3-with-rails.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2254105,
+      "sha256": "e17517ff4e21d7db2e44b18098789d35814fa02aa8f282e566804cce08d50888"
+    },
     "zone4-composite.png": {
       "size": [
         1232,
         822
       ],
       "mode": "RGB",
-      "bytes": 2074992,
-      "sha256": "5f7a74d05ae31b983d5e0ea09a900f6b6cd0cd289c479b445aaee1a35dbfca5e"
+      "bytes": 2042262,
+      "sha256": "0e50ad0d106f7cc133fc5b5cbcee96f62575e0674582943fb289ea3c5c95f803"
     },
     "zone4-floor-study.png": {
       "size": [
@@ -486,6 +903,28 @@
         0,
         254
       ]
+    },
+    "zone4-rails-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2404993,
+      "sha256": "336210bce9d9a505b127cd5f7bf31a4f397f41a0e9771ba35fa9c8ebfe7fbb68",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    "zone4-with-rails.png": {
+      "size": [
+        1232,
+        822
+      ],
+      "mode": "RGB",
+      "bytes": 2131933,
+      "sha256": "9ed10a5b561610af42238160aa59e9542060e4b92f6ab1369c1f9a0b593ea4e1"
     }
   },
   "coverageLimitation": "Opaque coverage can include a cliff or object; not a floor-alignment acceptance test."

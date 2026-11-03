@@ -4,9 +4,9 @@
   "model": "tool default; no model override",
   "approvedInitial": 3,
   "approvedAdditional": 24,
-  "approvedTotal": 27,
-  "generationsUsed": 27,
-  "pendingRequest": "Increase total cap to33 for rail/post layers in remaining6maps; no answer received at time of ledger creation",
+  "approvedTotal": null,
+  "generationsUsed": 40,
+  "pendingRequest": null,
   "calls": [
     {
       "number": 1,
@@ -169,6 +169,87 @@
       "asset": "border34-floor-v2-study.png",
       "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-695f7b71-c3b2-4f0d-bbf5-4f1f03166a33.png",
       "saved": true
+    },
+    {
+      "number": 28,
+      "asset": "zone1-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-a3c373e0-13a9-48f5-b39c-50ef5d7401b1.png",
+      "saved": true
+    },
+    {
+      "number": 29,
+      "asset": "zone2-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-702c4752-2758-451b-b470-2f40d75bcfb8.png",
+      "saved": true
+    },
+    {
+      "number": 30,
+      "asset": "zone3-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-761eedae-bf73-4412-a85e-94b02014f3a8.png",
+      "saved": true
+    },
+    {
+      "number": 31,
+      "asset": "zone4-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-cea679a0-34c6-4ac7-a2a5-f1394ffb095e.png",
+      "saved": true
+    },
+    {
+      "number": 32,
+      "asset": "border23-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-89ed7d54-a6e3-4a92-9c53-33fb329fcf97.png",
+      "saved": true
+    },
+    {
+      "number": 33,
+      "asset": "border34-rails-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-02be815e-1f9f-4e20-bf23-ff61a1fe9b01.png",
+      "saved": true
+    },
+    {
+      "number": 34,
+      "asset": "b34-upper-patch.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-18985a03-7053-4464-8181-5e868dea9183.png",
+      "saved": true
+    },
+    {
+      "number": 35,
+      "asset": "b34-lower-patch.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-21025a13-bab0-4f03-a5eb-c7d658333190.png",
+      "saved": true
+    },
+    {
+      "number": 36,
+      "asset": "zone1-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f271dc59-b499-4ccb-8008-02ed53ccc820.png",
+      "saved": true
+    },
+    {
+      "number": 37,
+      "asset": "zone2-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-0f180f35-4dfb-4c2e-bf0d-83af814d0729.png",
+      "saved": true
+    },
+    {
+      "number": 38,
+      "asset": "zone3-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-7bd38f54-7879-4b8d-b19c-3913bd7e1a4c.png",
+      "saved": true
+    },
+    {
+      "number": 39,
+      "asset": "border23-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-1831599e-deb7-4395-8d71-e32338bb9852.png",
+      "saved": true
+    },
+    {
+      "number": 40,
+      "asset": "border34-liquid-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-17ddf771-52c6-49ff-92e7-beed5366e811.png",
+      "saved": true
     }
-  ]
+  ],
+  "historicalApprovedTotal": 27,
+  "authorization": "User explicitly allowed expansion as appropriate on continuation; generate sequentially and only as needed.",
+  "currentPlannedTotal": 40
 }

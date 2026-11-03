@@ -1,0 +1,54 @@
+{
+  "maps": [
+    {
+      "natureSamples": 207211,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 28208,
+      "pausedWithWeatherIsStable": true,
+      "map": "zone1"
+    },
+    {
+      "natureSamples": 254576,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 39086,
+      "pausedWithWeatherIsStable": true,
+      "map": "zone2"
+    },
+    {
+      "natureSamples": 210746,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 67467,
+      "pausedWithWeatherIsStable": true,
+      "map": "zone3"
+    },
+    {
+      "natureSamples": 229631,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 41327,
+      "pausedWithWeatherIsStable": true,
+      "map": "zone4"
+    },
+    {
+      "natureSamples": 282626,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 32307,
+      "pausedWithWeatherIsStable": true,
+      "map": "border23"
+    },
+    {
+      "natureSamples": 324043,
+      "naturePixelsChangedOver2": 0,
+      "natureMaxChannelDelta": 1,
+      "scenePixelsChangedOver2": 28983,
+      "pausedWithWeatherIsStable": true,
+      "map": "border34"
+    }
+  ],
+  "errors": [],
+  "measurement": "Weather disabled during liquid-only motion comparison; weather enabled for pause stability."
+}
