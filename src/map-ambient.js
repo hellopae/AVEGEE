@@ -365,12 +365,18 @@ const cloudLayers=new WeakMap();
 export const cloudOpacityForZone=zone=>MAP_FX.cloud.peakByZone[zone]??MAP_FX.cloud.peak;
 const weatherClocks=new WeakMap();
 const driftClocks=new WeakMap();
-/** Soft "cloud" blobs, baked once per tint: unions of feathered ellipses, opaque in the core and fading to nothing
- *  well inside the canvas edge. Normalised [cx,cy,rx,ry]; three shapes so neighbouring patches differ. */
-const SHADOW_SHAPES=[
+/** Shadow banks have unequal lobes, narrow wisps and open notches. No large
+ * central disc: that made every bank read as a round spotlight on the ground.
+ * Fog retains its existing soft envelope. These sprites are baked once. */
+const FOG_SHAPES=[
   [[.50,.50,.50,.50],[.30,.56,.34,.42],[.72,.48,.34,.44],[.52,.30,.36,.34],[.46,.74,.36,.30]],
   [[.48,.52,.50,.48],[.72,.58,.34,.40],[.26,.46,.34,.42],[.60,.30,.34,.32],[.38,.74,.34,.30]],
   [[.52,.50,.48,.50],[.28,.52,.34,.40],[.76,.56,.32,.42],[.42,.28,.34,.32],[.62,.74,.34,.30]],
+];
+const SHADOW_SHAPES=[
+  [[.13,.61,.12,.12],[.25,.57,.18,.19],[.39,.48,.19,.25],[.53,.59,.16,.18],[.65,.44,.22,.25],[.80,.49,.15,.16],[.92,.43,.07,.08],[.37,.76,.13,.09],[.69,.20,.10,.09]],
+  [[.10,.40,.09,.08],[.24,.45,.18,.17],[.38,.35,.18,.22],[.50,.48,.18,.19],[.66,.61,.23,.25],[.82,.59,.14,.16],[.91,.70,.07,.08],[.56,.79,.12,.10],[.30,.16,.10,.07]],
+  [[.10,.67,.09,.08],[.24,.62,.17,.16],[.39,.65,.20,.23],[.50,.48,.18,.18],[.63,.34,.20,.24],[.78,.37,.16,.16],[.91,.29,.08,.07],[.34,.85,.11,.08],[.66,.12,.11,.07]],
 ];
 const sprites=new Map();
 function blobSprites(rgb,kind='shadow'){
@@ -379,14 +385,14 @@ function blobSprites(rgb,kind='shadow'){
   sprites.set(key,null);
   if(typeof document==='undefined')return null;
   const out=[];
-  for(const shape of SHADOW_SHAPES){
+  for(const shape of kind==='fog'?FOG_SHAPES:SHADOW_SHAPES){
     const c=document.createElement('canvas');c.width=256;c.height=160;
     const p=c.getContext('2d');if(!p||typeof p.createRadialGradient!=='function')return null;
     for(const [cx,cy,rx0,ry0] of shape){
       // Keep every feathered ellipse strictly inside the sprite so no blob is ever cut into a hard rectangular edge.
       const rx=Math.min(rx0,cx,1-cx),ry=Math.min(ry0,cy,1-cy),r=rx*256,g=p.createRadialGradient(0,0,0,0,0,r);
       if(typeof g?.addColorStop!=='function')return null;
-      for(const [at,a] of MAP_FX.shadowEdge)g.addColorStop(at,`rgba(${rgb},${a})`);
+      for(const [at,a] of kind==='fog'?MAP_FX.shadowEdge:[[0,1],[.45,1],[.70,.86],[.87,.40],[1,0]])g.addColorStop(at,`rgba(${rgb},${a})`);
       p.save();p.translate(cx*256,cy*160);p.scale(1,ry*160/r);p.fillStyle=g;p.fillRect(-r,-r,r*2,r*2);p.restore();
     }
     out.push(c);

@@ -355,3 +355,10 @@ Latest user steering: continue original drawing workflow; defer Shado trial. Use
 พบและแก้เกณฑ์detail switch:.7→.38devicepx/worldunitตามpreview1536/3840=.4; มือถือสูงสุดเดิมไม่ขอtileเลย ตอนนี้โหลดและวาด6visibletilesจริงทุกโซน. ตัวตรวจเฟรมไม่นับminimapทับกล้อง. Focused36/36ผ่าน.
 
 ผลตรวจสุดท้ายruntime/cloud:Full1905/1905,focused36/36,Chromium8ฉากdetailจริง/0pageerrors;cacheอยู่ใน16Mpixel. งานnative-detail redrawทั้ง4โซนยังเปิด.
+
+
+## 3พ.ย. CLOUD-ORGANIC และเริ่ม MAP-DETAIL-4
+
+เงาเมฆเปลี่ยนจากแกนวงรีใหญ่เป็น9ลอนต่างขนาด+ริ้วหาง3แบบ; TH32%/อื่น20%เหมือนเดิม หมอกไม่เปลี่ยน. Full1905/1905 focused30/30,Chromium8ฉาก0errors. หลักฐาน Output/Codex/2026-11-03-cloud-organic-detail.
+
+ภาพรายละเอียดใหม่สร้างจริงด้วยbuilt-in imagegenครบ4ธีม รวม8ภาพร่าง (ลานกลางr2-c3/NW r1-c1) เก็บ docs/art-reviews/2026-11-03-terrain-detail พร้อมREADMEและprompts.json. **ไม่ติดตั้งในruntimeและไม่ปิดMAP-DETAIL-4**:ผัง/รอยต่อยังคลาด โซน2r1-c1เพิ่มวัตถุที่ต้องลบ; ผ่านติดตั้ง0/80. ให้แก้กลุ่มลานกลางและรอยต่อให้ตรงก่อนทำbatchใหญ่ แล้วต่อครบ20tiles/โซนและตรวจwalkmask. ไม่ใช้Shadoตามคำสั่งผู้ใช้. คิวนี้อันดับแรกก่อนรั้วและคิวเก่าทั้งหมด.
