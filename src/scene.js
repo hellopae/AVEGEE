@@ -404,7 +404,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     const qh = i === 0 ? SOUL_H * 1.12 : SOUL_H;
     spot_(p[0], p[1], qh);
     shade(p[0], p[1], qh, c => drawSoul(c, p[0], p[1], qh, soulTime + s.id * 300,
-             s.waited > 40 ? '#ffb0b0' : '#bfe9ff', s.sp || 7));
+             '#bfe9ff', s.sp || 7));
+    if(s.waited > 40) tag(ctx,p[0],p[1]-qh-10,t,['⏳ รอสอบสวน','#f7c371']);
     if (frozen) tag(ctx, p[0], p[1]-SOUL_H-16, 0, ['!!!','#ff9a7a']);
   });
 

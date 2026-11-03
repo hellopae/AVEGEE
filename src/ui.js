@@ -2403,7 +2403,7 @@ function battleTurnOrderHtml(b) {
   const units=g.battleTimeline(),currentRound=b.turnQueue.round;
   const portrait = u => {
     const c=g.battleActors().find(a=>a.id===u.id);
-    return u.side==='foe' ? (bossProfileOverride(u.k,g.zone)||storyFoeArt(u.k)) : u.id==='you'?artUrl('hero-yama-profile'):u.k==='guard'?artUrl('crew-guard-profile'):crewArt(c,'-profile');
+    return u.side==='foe' ? (bossProfileOverride(u.k,g.zone)||storyFoeArt(u.k)) : u.id==='you'?artUrl('hero-yama-profile'):crewArt(c || {k:u.k},'-profile');
   };
   const render=(list,next)=>`<section class="${next?'timeline-next':'timeline-active'}"><small>${next?'ลำดับถัดไป / Next':'รอบ '+currentRound+' / Turn'}</small><ol class="battle-turn-queue" aria-label="${next?'ลำดับถัดไป':'ผู้ที่กำลังลงมือ'}">${list.map(u=>`<li class="${u.side} ${next?'':'current'}" title="${esc(u.name)}"><img src="${esc(portrait(u))}" alt="${esc(u.name)}"><b>${esc(u.name)}</b></li>`).join('')}</ol></section>`;
   return `<div class="battle-timeline">${render(units.slice(0,1),false)}${render(units.slice(1,6),true)}</div>`;

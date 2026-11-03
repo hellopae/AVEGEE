@@ -310,3 +310,13 @@ Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-con
 - Historical BALANCE-2 source authentication undoes the exact noncombat spawn-coordinate snippet via fixture; original simulation evidence is unchanged and BALANCE-W4 remains pending.
 - Focused36/36 and Chromium all4town zones passed (front-stair arrival, allrail midpoints blocked, no page errors). Final full suite1894/1894 passed; baseline7/7, syntax/diff checks passed.
 - Remaining queue: all-map bridge railing art/foreground, Cyber prison/canteen/zoom/pole redraw, Grace walking, Guard timeline portrait, punishment tint timing, boat deck feet, atmosphere/interiors, quest portraits/rewards, W4 zone events. Continue docs/queues/2026-11-02-map-ui-review.md in priority order.
+
+
+## Codex — ACTOR-REVIEW queue portraits/wait tint (3 Nov 2026)
+
+- battleTurnOrderHtml delegates all ally portraits to crewArt with each actor.homeZone; profiles missing on West/Cyber Guard fall back to the existing regional full sprite, rather than src=null.
+- Map queue souls no longer turn red after40wait ticks; show a small waiting label instead. Punishment-room level colors and gameplay timers are unchanged.
+- Focused27/27 and Chromium four-zone real battle image loading passed. Full suite1898/1898 passed.
+- Shado desktop now connects (Pro), but every AI provider is ready:false and defaults empty. No generation attempted. User advised to configure Settings→AI generation. Keep original painted AVEGEE style; trial1pole sprite when ready. Existing Grace walk sheet visually confirmed male; female walk redraw, boat alignment and fence/pole art remain pending.
+
+Latest user steering: continue original drawing workflow; defer Shado trial. Use imagegen for pending art, keeping existing painted style.
