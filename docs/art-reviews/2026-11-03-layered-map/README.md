@@ -72,3 +72,15 @@ python3 -m http.server 8873 --bind 127.0.0.1
 5. ทดสอบเกมจริง การเดิน/occlusion/seams และประสิทธิภาพอุปกรณ์จริง ก่อนติดตั้ง runtime.
 
 ไฟล์Desktop f1/f2/m1/m2ไม่พบในfilesystemรอบนี้. จุดต้นไม้21จุดใน `foreground-anchors.json` ถอดด้วยตาจากภาพแนบ จึงยังต้องตรวจราก/ขนาดและไม่อ้างว่าพิกัดแม่นยำจากไฟล์ต้นฉบับ. คิวGrace/ภารกิจ/เนื้อเรื่องและงานอื่นไม่ได้ปิดจากงานชุดนี้.
+
+## อัปเดตต่อเนื่อง: วัตถุ ฉากไกล และพื้นชายแดน
+
+ใช้ImageGenรวม46ครั้ง (ฉากไกล4ภาพและlocalrepairB12/B23เพิ่ม2ภาพ). ไม่มีgenerationค้าง. `object-depth.json` แยกประตู/ปากถ้ำ/เสาประดับ15ชิ้นทั้ง3ชายแดน; `map-object-depth.js` คงช่องเปิดประตูและแยกfootprintจากsilhouette. เพิ่มสไปรท์ต้นไม้/หิน/บ้าน/สถานี/แท่นเดิม176ชิ้นทั้ง4เมืองด้วยพิกัดเดิม (`town-object-plan.json`), decodeเฉพาะฉากที่เลือกและย่อแต่ละspriteไม่เกิน512px. วัดเฉพาะspritebitmapประมาณ11.6–19.1MiBต่อฉาก ไม่ใช่หน่วยความจำรวมทั้งbrowser.
+
+Native recompositionก่อนlocalrepairล่าสุดตรงทุกopaque pixel; draw-order probes191ชิ้นผ่านทั้งหมด (`object-depth-review.json`). ประตูสถานี/ทางออก48จุดมีจุดยืนเข้าถึงภายใน105world units; จุดหมายเมือง48จุดเข้าถึงได้ใกล้พิกัดเดิม0–16unitsหลังเพิ่มฐานวัตถุ (ค่าshift0ก่อนเพิ่มอาคารเป็นผลเก่า). ช่องประตูไม่ถูกทำเป็นกำแพงจากยอดarch.
+
+`border-floor-repair-review.json`: B12ซ่อม836pixels/เติมเศษ327, B23ซ่อม2126/เติมเศษ731, B34ซ่อม5207/เติมเศษ917; alpha coverageเซลล์พื้นเดิมครบ100%ทั้ง3ชายแดน. เป็นความทึบเท่านั้น ยังไม่ใช่การรับรองลวดลาย/registrationหรือnative-detail.
+
+Focused40/40ผ่าน. Browser7ฉาก desktop/mobileviewportไม่มีpageerror/overflow; ของเหลวขยับโดยopaqueธรรมชาติคงที่และpauseตรึงweather. ยังไม่รันfullsuite1906ซ้ำ.
+
+**ข้อกำหนดล่าสุดที่กำลังทำ:** กล้องตามYamaแบบวิดีโอf1.mp4, ซูมเพียง2ระดับโดยไม่เห็นแผนที่เต็ม, โหลดเฉพาะviewport+ขอบเผื่อและคืนภาพไกล, DOFฉากหลัง/ฉากหน้าและparallaxเฉพาะฉากไกล. หน้าตรวจเดิมยังโหลดsourceplateเต็มเพื่อexport/ตรวจregistration; จะมีหน้าทดลองstreamingแยกที่ไม่เรียกภาพแผนที่เต็ม. Native-detail80tiles,การตรวจรับเชิงภาพและphysical-mobileยังค้าง.

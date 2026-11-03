@@ -3,12 +3,12 @@
     {
       "rails": true,
       "baseCells": 194976,
-      "newCells": 193348,
-      "removed": 1628,
+      "newCells": 191652,
+      "removed": 3324,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.09778708133971292,
-        0.17268862911795962
+        0.08343301435406698,
+        0.17375132837407015
       ],
       "paths": [
         {
@@ -68,18 +68,25 @@
         0.13187799,
         0.215196599
       ],
-      "blockedClickKeepsHero": false,
+      "blockedClickKeepsHero": true,
+      "actualClick": {
+        "point": [
+          0.08279220779220779,
+          0.17316017316017315
+        ],
+        "walkable": false
+      },
       "map": "border23"
     },
     {
       "rails": true,
       "baseCells": 162033,
-      "newCells": 159799,
-      "removed": 2234,
+      "newCells": 157690,
+      "removed": 4343,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.19467703349282298,
-        0.29596174282678
+        0.11034688995215311,
+        0.1822529224229543
       ],
       "paths": [
         {
@@ -140,6 +147,13 @@
         0.20244420828905418
       ],
       "blockedClickKeepsHero": true,
+      "actualClick": {
+        "point": [
+          0.10957792207792208,
+          0.18181818181818182
+        ],
+        "walkable": false
+      },
       "map": "border34"
     }
   ],

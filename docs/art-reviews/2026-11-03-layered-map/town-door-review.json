@@ -1,0 +1,697 @@
+{
+  "maps": [
+    {
+      "map": "zone1",
+      "doors": [
+        {
+          "id": "station-krata",
+          "door": [
+            0.12239583333333333,
+            0.225390625
+          ],
+          "stand": [
+            0.12395833333333334,
+            0.2265625
+          ],
+          "approachShiftWorld": 6.708203932499385,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-dab",
+          "door": [
+            0.12109375,
+            0.42265625
+          ],
+          "stand": [
+            0.12109375,
+            0.42265625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-ngiw",
+          "door": [
+            0.14348958333333334,
+            0.6015625
+          ],
+          "stand": [
+            0.14348958333333334,
+            0.6015625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tarang",
+          "door": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "stand": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sawan",
+          "door": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "stand": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lokan",
+          "door": [
+            0.9203125,
+            0.215234375
+          ],
+          "stand": [
+            0.9203125,
+            0.215234375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lan",
+          "door": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "stand": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-krajok",
+          "door": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "stand": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tea",
+          "door": [
+            0.39765625,
+            0.5515625
+          ],
+          "stand": [
+            0.39765625,
+            0.5515625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sala",
+          "door": [
+            0.584375,
+            0.55390625
+          ],
+          "stand": [
+            0.5822916666666667,
+            0.5546875
+          ],
+          "approachShiftWorld": 8.246211251235266,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-canteen",
+          "door": [
+            0.409375,
+            0.2671875
+          ],
+          "stand": [
+            0.409375,
+            0.2671875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-frontier",
+          "door": [
+            0.49921875,
+            0.859375
+          ],
+          "stand": [
+            0.49921875,
+            0.859375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "map": "zone2",
+      "doors": [
+        {
+          "id": "station-krata",
+          "door": [
+            0.12239583333333333,
+            0.225390625
+          ],
+          "stand": [
+            0.12239583333333333,
+            0.225390625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-dab",
+          "door": [
+            0.12109375,
+            0.42265625
+          ],
+          "stand": [
+            0.12109375,
+            0.42265625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-ngiw",
+          "door": [
+            0.14348958333333334,
+            0.6015625
+          ],
+          "stand": [
+            0.14270833333333333,
+            0.5984375
+          ],
+          "approachShiftWorld": 8.544003745317651,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tarang",
+          "door": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "stand": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sawan",
+          "door": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "stand": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lokan",
+          "door": [
+            0.9203125,
+            0.215234375
+          ],
+          "stand": [
+            0.9203125,
+            0.215234375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lan",
+          "door": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "stand": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-krajok",
+          "door": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "stand": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tea",
+          "door": [
+            0.39765625,
+            0.5515625
+          ],
+          "stand": [
+            0.39765625,
+            0.5515625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sala",
+          "door": [
+            0.584375,
+            0.55390625
+          ],
+          "stand": [
+            0.584375,
+            0.55390625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-canteen",
+          "door": [
+            0.409375,
+            0.2671875
+          ],
+          "stand": [
+            0.409375,
+            0.2671875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-frontier",
+          "door": [
+            0.49921875,
+            0.859375
+          ],
+          "stand": [
+            0.49921875,
+            0.859375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "map": "zone3",
+      "doors": [
+        {
+          "id": "station-krata",
+          "door": [
+            0.12239583333333333,
+            0.225390625
+          ],
+          "stand": [
+            0.12239583333333333,
+            0.225390625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-dab",
+          "door": [
+            0.12109375,
+            0.42265625
+          ],
+          "stand": [
+            0.12109375,
+            0.42265625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-ngiw",
+          "door": [
+            0.13854166666666667,
+            0.5890625
+          ],
+          "stand": [
+            0.13854166666666667,
+            0.5890625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tarang",
+          "door": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "stand": [
+            0.43411458333333336,
+            0.192578125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sawan",
+          "door": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "stand": [
+            0.6604166666666667,
+            0.178125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lokan",
+          "door": [
+            0.9203125,
+            0.215234375
+          ],
+          "stand": [
+            0.9203125,
+            0.215234375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lan",
+          "door": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "stand": [
+            0.8416666666666667,
+            0.3734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-krajok",
+          "door": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "stand": [
+            0.9067708333333333,
+            0.602734375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tea",
+          "door": [
+            0.39765625,
+            0.5515625
+          ],
+          "stand": [
+            0.39765625,
+            0.5515625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sala",
+          "door": [
+            0.584375,
+            0.55390625
+          ],
+          "stand": [
+            0.584375,
+            0.55390625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-canteen",
+          "door": [
+            0.409375,
+            0.2671875
+          ],
+          "stand": [
+            0.409375,
+            0.2671875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-frontier",
+          "door": [
+            0.49921875,
+            0.859375
+          ],
+          "stand": [
+            0.49921875,
+            0.859375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "map": "zone4",
+      "doors": [
+        {
+          "id": "station-krata",
+          "door": [
+            0.13020833333333334,
+            0.2294921875
+          ],
+          "stand": [
+            0.13020833333333334,
+            0.2294921875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-dab",
+          "door": [
+            0.126953125,
+            0.421875
+          ],
+          "stand": [
+            0.126953125,
+            0.421875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-ngiw",
+          "door": [
+            0.16276041666666666,
+            0.5966796875
+          ],
+          "stand": [
+            0.16276041666666666,
+            0.5966796875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tarang",
+          "door": [
+            0.4427083333333333,
+            0.1875
+          ],
+          "stand": [
+            0.4427083333333333,
+            0.1875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sawan",
+          "door": [
+            0.6575520833333334,
+            0.17578125
+          ],
+          "stand": [
+            0.6575520833333334,
+            0.17578125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lokan",
+          "door": [
+            0.91796875,
+            0.21875
+          ],
+          "stand": [
+            0.91796875,
+            0.21875
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-lan",
+          "door": [
+            0.8463541666666666,
+            0.3798828125
+          ],
+          "stand": [
+            0.8463541666666666,
+            0.3798828125
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-krajok",
+          "door": [
+            0.908203125,
+            0.599609375
+          ],
+          "stand": [
+            0.908203125,
+            0.599609375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-tea",
+          "door": [
+            0.4036458333333333,
+            0.5634765625
+          ],
+          "stand": [
+            0.4036458333333333,
+            0.5634765625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-sala",
+          "door": [
+            0.584375,
+            0.55390625
+          ],
+          "stand": [
+            0.584375,
+            0.55390625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-canteen",
+          "door": [
+            0.4166666666666667,
+            0.271484375
+          ],
+          "stand": [
+            0.4166666666666667,
+            0.271484375
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        },
+        {
+          "id": "station-frontier",
+          "door": [
+            0.5,
+            0.962890625
+          ],
+          "stand": [
+            0.5,
+            0.962890625
+          ],
+          "approachShiftWorld": 0,
+          "within105": true,
+          "reachable": true
+        }
+      ]
+    }
+  ],
+  "basis": "Existing runtime door coordinates, nearest stand on owner floor minus rail/object feet; within105-world-unit preview approach, not full interaction gameplay."
+}

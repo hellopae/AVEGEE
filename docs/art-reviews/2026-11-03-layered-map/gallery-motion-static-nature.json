@@ -4,7 +4,7 @@
       "natureSamples": 207211,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 28208,
+      "scenePixelsChangedOver2": 27967,
       "pausedWithWeatherIsStable": true,
       "map": "zone1"
     },
@@ -12,7 +12,7 @@
       "natureSamples": 254576,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 39086,
+      "scenePixelsChangedOver2": 40653,
       "pausedWithWeatherIsStable": true,
       "map": "zone2"
     },
@@ -20,7 +20,7 @@
       "natureSamples": 210746,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 67467,
+      "scenePixelsChangedOver2": 62278,
       "pausedWithWeatherIsStable": true,
       "map": "zone3"
     },
@@ -28,7 +28,7 @@
       "natureSamples": 229631,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 41327,
+      "scenePixelsChangedOver2": 40873,
       "pausedWithWeatherIsStable": true,
       "map": "zone4"
     },
@@ -36,7 +36,7 @@
       "natureSamples": 282626,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 32307,
+      "scenePixelsChangedOver2": 29632,
       "pausedWithWeatherIsStable": true,
       "map": "border23"
     },
@@ -44,7 +44,7 @@
       "natureSamples": 324043,
       "naturePixelsChangedOver2": 0,
       "natureMaxChannelDelta": 1,
-      "scenePixelsChangedOver2": 28983,
+      "scenePixelsChangedOver2": 27217,
       "pausedWithWeatherIsStable": true,
       "map": "border34"
     }

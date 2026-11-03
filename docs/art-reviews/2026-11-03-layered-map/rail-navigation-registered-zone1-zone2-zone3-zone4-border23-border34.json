@@ -3,12 +3,12 @@
     {
       "rails": true,
       "baseCells": 32698,
-      "newCells": 32634,
-      "removed": 64,
+      "newCells": 31505,
+      "removed": 1193,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.7760416666666666,
-        0.1640625
+        0.6427083333333333,
+        0.1515625
       ],
       "paths": [
         {
@@ -31,11 +31,11 @@
           ],
           "approach": [
             0.440625,
-            0.1671875
+            0.1734375
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 16.000000000000014,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -44,11 +44,11 @@
           ],
           "approach": [
             0.6635416666666667,
-            0.1546875
+            0.1609375
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 16.000000000000014,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -70,11 +70,11 @@
           ],
           "approach": [
             0.128125,
-            0.4015625
+            0.4046875
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 7.999999999999972,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -95,12 +95,12 @@
             0.352
           ],
           "approach": [
-            0.853,
-            0.352
+            0.853125,
+            0.3578125
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 14.887739922499991,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -175,8 +175,8 @@
       "blockedClickKeepsHero": true,
       "actualClick": {
         "point": [
-          0.775974025974026,
-          0.16315038523732522
+          0.6420454545454546,
+          0.15097498335394274
         ],
         "walkable": false
       },
@@ -185,12 +185,12 @@
     {
       "rails": true,
       "baseCells": 28770,
-      "newCells": 28652,
-      "removed": 118,
+      "newCells": 27650,
+      "removed": 1120,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.48020833333333335,
-        0.7796875
+        0.684375,
+        0.1484375
       ],
       "paths": [
         {
@@ -226,11 +226,11 @@
           ],
           "approach": [
             0.659375,
-            0.1578125
+            0.1609375
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 8.000000000000043,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -277,12 +277,12 @@
             0.352
           ],
           "approach": [
-            0.853,
-            0.352
+            0.853125,
+            0.3578125
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 14.887739922499991,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -357,8 +357,8 @@
       "blockedClickKeepsHero": true,
       "actualClick": {
         "point": [
-          0.4797077922077922,
-          0.7792257205364786
+          0.6842532467532467,
+          0.147322362788928
         ],
         "walkable": false
       },
@@ -367,12 +367,12 @@
     {
       "rails": true,
       "baseCells": 27328,
-      "newCells": 27206,
-      "removed": 122,
+      "newCells": 26179,
+      "removed": 1149,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.5552083333333333,
-        0.6046875
+        0.46770833333333334,
+        0.1578125
       ],
       "paths": [
         {
@@ -447,11 +447,11 @@
           ],
           "approach": [
             0.11770833333333333,
-            0.5640625
+            0.5609375
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 8.000000000000114,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -460,11 +460,11 @@
           ],
           "approach": [
             0.853125,
-            0.3546875
+            0.3578125
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 7.999999999999972,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -539,8 +539,8 @@
       "blockedClickKeepsHero": true,
       "actualClick": {
         "point": [
-          0.5551948051948052,
-          0.603899933415771
+          0.4675324675324675,
+          0.15706268429563397
         ],
         "walkable": false
       },
@@ -549,12 +549,12 @@
     {
       "rails": true,
       "baseCells": 29226,
-      "newCells": 28787,
-      "removed": 439,
+      "newCells": 28411,
+      "removed": 815,
       "blockedFeetReject": true,
       "blockedTarget": [
-        0.5385416666666667,
-        0.3421875
+        0.6802083333333333,
+        0.1265625
       ],
       "paths": [
         {
@@ -628,12 +628,12 @@
             0.5609375
           ],
           "approach": [
-            0.11979166666666667,
+            0.11770833333333333,
             0.5609375
           ],
-          "approachShiftWorld": 0,
+          "approachShiftWorld": 8.000000000000025,
           "reachable": true,
-          "originalPointBlocked": false
+          "originalPointBlocked": true
         },
         {
           "goal": [
@@ -721,8 +721,8 @@
       "blockedClickKeepsHero": true,
       "actualClick": {
         "point": [
-          0.5381493506493507,
-          0.3409112527347094
+          0.6801948051948052,
+          0.12540663939883953
         ],
         "walkable": false
       },

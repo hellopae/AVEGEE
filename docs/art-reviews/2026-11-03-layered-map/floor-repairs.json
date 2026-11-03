@@ -18,5 +18,27 @@
         320
       ]
     }
+  ],
+  "border12": [
+    {
+      "src": "b12-upper-repair.png",
+      "rect": [
+        830,
+        0,
+        340,
+        180
+      ]
+    }
+  ],
+  "border23": [
+    {
+      "src": "b23-curve-repair.png",
+      "rect": [
+        550,
+        265,
+        400,
+        200
+      ]
+    }
   ]
 }

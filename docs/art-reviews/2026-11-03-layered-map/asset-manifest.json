@@ -28,6 +28,9 @@
       "rails": "zone1-rails-study.png",
       "liquid": "zone1-liquid-study.png",
       "flow": "img/map-zone1/v4/flow-v4.png",
+      "distance": [
+        "zone1-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9903358003547618
     },
@@ -39,6 +42,9 @@
       "rails": "zone2-rails-study.png",
       "liquid": "zone2-liquid-study.png",
       "flow": "img/map-zone2/v2/flow-v2.png",
+      "distance": [
+        "zone2-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9930483142161974
     },
@@ -101,6 +107,9 @@
           }
         ]
       },
+      "distance": [
+        "zone3-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9959748243559718
     },
@@ -111,6 +120,9 @@
       "status": "layer prototype; rail feet/navigation checked; per-object depth and visual acceptance pending",
       "rails": "zone4-rails-study.png",
       "liquid": "zone4-liquid-study.png",
+      "distance": [
+        "zone4-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9976048723739136
     },
@@ -122,6 +134,33 @@
       "rails": "border23-rails-study.png",
       "liquid": "border23-liquid-study.png",
       "flow": "img/frontier-route/zone2-3-v4-flow.png",
+      "floorPatches": [
+        {
+          "src": "b23-curve-repair.png",
+          "rect": [
+            550,
+            265,
+            400,
+            200
+          ]
+        }
+      ],
+      "floorInfill": {
+        "src": "b23-curve-repair.png",
+        "sourceRect": [
+          380,
+          680,
+          160,
+          80
+        ],
+        "scale": 0.2254791431792559,
+        "maxPixels": 1024,
+        "basis": "Residual only after targeted generated repair; opaque paving sample from the same local patch."
+      },
+      "distance": [
+        "zone2-distance-study.png",
+        "zone3-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9890909650418513
     },
@@ -181,6 +220,10 @@
           ]
         ]
       },
+      "distance": [
+        "zone3-distance-study.png",
+        "zone4-distance-study.png"
+      ],
       "filesPresent": true,
       "opaqueCoverageAtOwnerFloorCells": 0.9678522276326428,
       "composedFloorRepair": {
@@ -209,10 +252,118 @@
       "nature": "nature-study.png",
       "liquid": "liquid-study.png",
       "rails": "rails-study.png",
+      "distance": [
+        "zone1-distance-study.png",
+        "zone2-distance-study.png"
+      ],
       "status": "working preview; visual roots, object depth, seams and physical-mobile performance pending"
     }
   },
   "assets": {
+    "b12-upper-repair-guide.png": {
+      "size": [
+        340,
+        180
+      ],
+      "mode": "RGBA",
+      "bytes": 83208,
+      "sha256": "4d440ae924256f77d19bddb933308bd8c08611ae4119051a726a532009b731d6",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b12-upper-repair-reference.png": {
+      "size": [
+        340,
+        180
+      ],
+      "mode": "RGBA",
+      "bytes": 164287,
+      "sha256": "25972a6fdadeb1ec557ef3e872e6487cc58376895bba7d2612df17bd0c4312ec",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b12-upper-repair-target.png": {
+      "size": [
+        340,
+        180
+      ],
+      "mode": "RGBA",
+      "bytes": 86252,
+      "sha256": "81583ef22771f070d682d12572b052ef7c4ac5cd9a4a06bb2dc0f3fde9005917",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b12-upper-repair.png": {
+      "size": [
+        1723,
+        913
+      ],
+      "mode": "RGBA",
+      "bytes": 1587544,
+      "sha256": "c0678a0df23ce9a59bf645eefd7d21d495119b90d0713e63f87628b8b4c7c6e7",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b23-curve-repair-guide.png": {
+      "size": [
+        400,
+        200
+      ],
+      "mode": "RGBA",
+      "bytes": 128808,
+      "sha256": "264c54886aae4f721e73d640fcee8a1212f7b72618e15e4aad3e7b283f01338b",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b23-curve-repair-reference.png": {
+      "size": [
+        400,
+        200
+      ],
+      "mode": "RGBA",
+      "bytes": 215018,
+      "sha256": "e8e3522c5f2a14945744daef23b492ebbfebc43f7403cdc6e6cd2493bd1fdea7",
+      "alphaRange": [
+        255,
+        255
+      ]
+    },
+    "b23-curve-repair-target.png": {
+      "size": [
+        400,
+        200
+      ],
+      "mode": "RGBA",
+      "bytes": 136915,
+      "sha256": "331bb853bf024b8a1f91168a753ec2966c735f145a8dbb35413b87986bf23aa0",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    "b23-curve-repair.png": {
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "bytes": 2033942,
+      "sha256": "d8556716e9141446ebd11b2576081e70544a1dfabbee6db6991ad7e49f3186e7",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
     "b34-floor-guide.png": {
       "size": [
         1672,
@@ -341,8 +492,8 @@
         693
       ],
       "mode": "RGB",
-      "bytes": 1748913,
-      "sha256": "0ec474c4ad698b359d62dc54d96a3a3fd185dae019482690d00f17a92693e7d7"
+      "bytes": 1786839,
+      "sha256": "75edd03ad2fb373d73cf6b8d3a2db8feac733d10378581c09712ba180a528b05"
     },
     "border23-floor-study.png": {
       "size": [
@@ -402,8 +553,8 @@
         693
       ],
       "mode": "RGB",
-      "bytes": 1931644,
-      "sha256": "79d3941b7db6d95d452732466ff70f8758188bfd1272e929baa2c443ffe60c21"
+      "bytes": 1792884,
+      "sha256": "0e3c0dbd811d2c9140b1b4f581988138c93ee75ba5b96fc6840540aa3fa76e2d"
     },
     "border34-composite.png": {
       "size": [
@@ -411,8 +562,8 @@
         693
       ],
       "mode": "RGB",
-      "bytes": 1750313,
-      "sha256": "394849eee0c2ca10530b2b38586e677dfe231b23a08819cd8e1a2f4a470c80ee"
+      "bytes": 1783963,
+      "sha256": "8e4d98996f4e526f2066dfcac6771b34decf43039228370582ab9ff913f53d38"
     },
     "border34-floor-study.png": {
       "size": [
@@ -494,8 +645,8 @@
         693
       ],
       "mode": "RGB",
-      "bytes": 1910127,
-      "sha256": "683eae2bf47c9c8fb731abcc2f240c8e4d3a3b885036214a3b06e65ac810f8bc"
+      "bytes": 1787754,
+      "sha256": "07634ccaebc84086ddebc8f39292b7c79f571fc6d89f70b5673a292889a499de"
     },
     "floor-study.png": {
       "size": [
@@ -643,8 +794,17 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2084120,
-      "sha256": "76c8a0ae028512e8b20d24591004aabb7cc6caf69b653e700e92c82e62c27b59"
+      "bytes": 2181182,
+      "sha256": "89264d0b9e295b217489ef7e7c43734473ba4da8666ca193e1592e0a866b60f0"
+    },
+    "zone1-distance-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1674488,
+      "sha256": "e51758893e2251b7d146cd5544cca5109eaacb99a02d4a6b9dcd3a023f6542af"
     },
     "zone1-floor-study.png": {
       "size": [
@@ -704,8 +864,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2167678,
-      "sha256": "c73e9892d23d9dd68fde93f8c8cf9b560124d4b938e22bf12127a3aeeccd257d"
+      "bytes": 2132240,
+      "sha256": "127300bd818128f38dd55811dce9d5981c7bb6c50cbf3c688e61984d2ff1e8b5"
     },
     "zone2-background-study.png": {
       "size": [
@@ -722,8 +882,17 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 1995010,
-      "sha256": "e166deb3f1e5f83f0da1da1ab7b57f67a0c7d1bb07758c1f2d1ad987d6dd2ad5"
+      "bytes": 2128289,
+      "sha256": "9b0f781259fafb321e05fbc37461ab16467ec88e62f92f34819f303e7a1f5650"
+    },
+    "zone2-distance-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1773310,
+      "sha256": "c40c0574204e87931a1f1d14c67a93efbee3e49f1af1805a0fb63e03dc5e1b69"
     },
     "zone2-floor-study.png": {
       "size": [
@@ -783,8 +952,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2156171,
-      "sha256": "03a1c82707213509621eff4c3ce7a9f8208bf39625e9ce5e705fa2b1c9d2dff9"
+      "bytes": 2055597,
+      "sha256": "b1cc6fd9cd94afb8f78e9f844b1cf829f8d6c7700fd2ea06ca2a563a5c432f2f"
     },
     "zone3-composite.png": {
       "size": [
@@ -792,8 +961,17 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2046185,
-      "sha256": "854d770c0c332d2aa2d619714a1294a4845084f716170a3806e38dd48433492b"
+      "bytes": 2148125,
+      "sha256": "072d0b1d7a6cbec89234d09123d071dcc4c3a39917ddaa899ffffb6f0c9997c2"
+    },
+    "zone3-distance-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1584729,
+      "sha256": "94b783a7d48195d365d9e61216ba1a0da309c4434e125de0e6dd215a7446c170"
     },
     "zone3-floor-study.png": {
       "size": [
@@ -853,8 +1031,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2254105,
-      "sha256": "e17517ff4e21d7db2e44b18098789d35814fa02aa8f282e566804cce08d50888"
+      "bytes": 2110230,
+      "sha256": "5041f1c8791d48619bdf5cc2afb3296398f0f4b03d3e9bb658f940f58fd28e22"
     },
     "zone4-composite.png": {
       "size": [
@@ -862,8 +1040,17 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2042262,
-      "sha256": "0e50ad0d106f7cc133fc5b5cbcee96f62575e0674582943fb289ea3c5c95f803"
+      "bytes": 2108216,
+      "sha256": "95af0e130589129737afa1b2af8b68882387b8e7d1290a7ca5fe825e028a746f"
+    },
+    "zone4-distance-study.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1705066,
+      "sha256": "3627bc04f41be0618bdbe2b6b0829e725de3ef3c5568703c352bbe2e2bc11a5e"
     },
     "zone4-floor-study.png": {
       "size": [
@@ -923,8 +1110,8 @@
         822
       ],
       "mode": "RGB",
-      "bytes": 2131933,
-      "sha256": "9ed10a5b561610af42238160aa59e9542060e4b92f6ab1369c1f9a0b593ea4e1"
+      "bytes": 2069482,
+      "sha256": "33df053023c1cc269ce501eafdb4bd8cc7ee913ede76c816d9fef4e3303c0925"
     }
   },
   "coverageLimitation": "Opaque coverage can include a cliff or object; not a floor-alignment acceptance test."

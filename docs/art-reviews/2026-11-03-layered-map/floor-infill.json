@@ -1,9 +1,38 @@
 {
   "border34": {
     "src": "b34-upper-patch.png",
-    "sourceRect": [800, 400, 128, 80],
+    "sourceRect": [
+      800,
+      400,
+      128,
+      80
+    ],
     "scale": 0.36076662908680945,
     "maxPixels": 1024,
     "basis": "Opaque painted paving sample from the generated upper repair. Only residual missing pixels inside the unchanged owner floor can receive it; large mismatches require a local art patch first."
+  },
+  "border12": {
+    "src": "b12-upper-repair.png",
+    "sourceRect": [
+      200,
+      80,
+      160,
+      80
+    ],
+    "scale": 0.19733023795705165,
+    "maxPixels": 1024,
+    "basis": "Residual only after targeted generated repair; opaque paving sample from the same local patch."
+  },
+  "border23": {
+    "src": "b23-curve-repair.png",
+    "sourceRect": [
+      380,
+      680,
+      160,
+      80
+    ],
+    "scale": 0.2254791431792559,
+    "maxPixels": 1024,
+    "basis": "Residual only after targeted generated repair; opaque paving sample from the same local patch."
   }
 }

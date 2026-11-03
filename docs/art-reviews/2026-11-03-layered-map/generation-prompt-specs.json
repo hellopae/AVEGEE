@@ -34,5 +34,32 @@
       "editTarget": "docs/art-reviews/2026-11-03-layered-map/b34-reference.webp",
       "constraints": "Blue water and actual orange lava lower far-right. Remove cyan neon tubes, machinery, lights and crystals: these are static, not water."
     }
-  ]
+  ],
+  "distance": {
+    "calls": [
+      41,
+      42,
+      43,
+      44
+    ],
+    "references": [
+      "img/map-zone1/v5/zone1-terrain-v5-preview.webp",
+      "img/map-zone2/v2/zone2-terrain-v2-preview.webp",
+      "img/map-zone3/v1/zone3-terrain-v1-preview.webp",
+      "img/map-zone4/v3/zone4-terrain-v3-preview.webp"
+    ],
+    "prompt": "Independent full opaque distant background, reference supplies style/palette only. Upper20% far horizon/peaks, lower80% low-contrast fog/cloud sea. No foreground terrain, walking floor, props, architecture, rivers/lava, characters or UI. Zone1 warm Thai-to-jade-to-snow, zone2 jade/autumn-to-snow, zone3 icy snow, zone4 lavender/cyan storm haze."
+  },
+  "borderFloorRepairs": {
+    "calls": [
+      45,
+      46
+    ],
+    "editTargets": [
+      "b12-upper-repair-target.png",
+      "b23-curve-repair-target.png"
+    ],
+    "guideRole": "Cyan is missing owner-floor pavement; not output color. Original cropped reference supplies layout.",
+    "prompt": "Restore all cyan missing pavement to matching opaque stone, preserve exact crop registration, framing, stairs and curve. No rails/posts/trees/sky/water. Real alpha outside floor/cliff. Engine clips generated patch to previously missing owner-floor pixels only; owner mask remains unchanged."
+  }
 }

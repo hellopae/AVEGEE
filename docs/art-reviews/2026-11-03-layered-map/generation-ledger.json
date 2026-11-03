@@ -5,7 +5,7 @@
   "approvedInitial": 3,
   "approvedAdditional": 24,
   "approvedTotal": null,
-  "generationsUsed": 40,
+  "generationsUsed": 46,
   "pendingRequest": null,
   "calls": [
     {
@@ -247,9 +247,45 @@
       "asset": "border34-liquid-study.png",
       "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-17ddf771-52c6-49ff-92e7-beed5366e811.png",
       "saved": true
+    },
+    {
+      "number": 41,
+      "asset": "zone1-distance-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-32cac759-34d0-4a7a-a6f9-2bd0da51c1b1.png",
+      "saved": true
+    },
+    {
+      "number": 42,
+      "asset": "zone2-distance-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-f8f6eff0-41d6-4ea9-9c1f-f32da8ff47ae.png",
+      "saved": true
+    },
+    {
+      "number": 43,
+      "asset": "zone3-distance-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-42dd0d8e-bc42-4cb2-8d10-0b58b023e546.png",
+      "saved": true
+    },
+    {
+      "number": 44,
+      "asset": "zone4-distance-study.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-495ed8bb-a16d-43c7-9dfc-9432d347c109.png",
+      "saved": true
+    },
+    {
+      "number": 45,
+      "asset": "b12-upper-repair.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-6e5f375c-ad01-4f6f-bc95-4bdcf31db16b.png",
+      "saved": true
+    },
+    {
+      "number": 46,
+      "asset": "b23-curve-repair.png",
+      "original": "/Users/agapae/.codex/generated_images/01a1a103-0a33-7ef3-b933-1eccd3391116/exec-9b58c08b-ff3c-4f51-acc8-74af188b4cc0.png",
+      "saved": true
     }
   ],
   "historicalApprovedTotal": 27,
   "authorization": "User explicitly allowed expansion as appropriate on continuation; generate sequentially and only as needed.",
-  "currentPlannedTotal": 40
+  "currentPlannedTotal": 46
 }

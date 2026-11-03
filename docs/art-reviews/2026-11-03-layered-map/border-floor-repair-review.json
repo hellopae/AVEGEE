@@ -1,0 +1,63 @@
+{
+  "maps": {
+    "border12": {
+      "before": {
+        "floor": 275543,
+        "covered": 274707,
+        "fraction": 0.9969659907890964
+      },
+      "afterPatches": {
+        "floor": 275543,
+        "covered": 275216,
+        "fraction": 0.9988132523780318
+      },
+      "after": {
+        "floor": 275543,
+        "covered": 275543,
+        "fraction": 1
+      },
+      "infillPixels": 327,
+      "repairedPixels": 836
+    },
+    "border23": {
+      "before": {
+        "floor": 194976,
+        "covered": 192850,
+        "fraction": 0.989096093878221
+      },
+      "afterPatches": {
+        "floor": 194976,
+        "covered": 194245,
+        "fraction": 0.9962508206138191
+      },
+      "after": {
+        "floor": 194976,
+        "covered": 194976,
+        "fraction": 1
+      },
+      "infillPixels": 731,
+      "repairedPixels": 2126
+    },
+    "border34": {
+      "before": {
+        "floor": 162033,
+        "covered": 156826,
+        "fraction": 0.9678645707973067
+      },
+      "afterPatches": {
+        "floor": 162033,
+        "covered": 161116,
+        "fraction": 0.9943406590015614
+      },
+      "after": {
+        "floor": 162033,
+        "covered": 162033,
+        "fraction": 1
+      },
+      "infillPixels": 917,
+      "repairedPixels": 5207
+    }
+  },
+  "errors": [],
+  "limitation": "Coverage is opacity at owner floor cells, not semantic paving or visual registration acceptance."
+}

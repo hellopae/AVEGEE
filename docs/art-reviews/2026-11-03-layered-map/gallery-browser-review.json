@@ -2,42 +2,42 @@
   "scenes": [
     {
       "map": "zone1",
-      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · วัตถุ 0 + สไปรท์ 54 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone2",
-      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · วัตถุ 0 + สไปรท์ 55 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone3",
-      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · วัตถุ 0 + สไปรท์ 54 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "zone4",
-      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1536×1024 · เสา/ราวแยกแล้ว · วัตถุ 0 + สไปรท์ 13 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "border23",
-      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · วัตถุ 3 + สไปรท์ 0 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true
     },
     {
       "map": "border34",
-      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
+      "status": "พื้น 1672×941 · เสา/ราวแยกแล้ว · วัตถุ 3 + สไปรท์ 0 · ภาพร่างสำหรับตรวจตำแหน่งเท้า",
       "mobileOverflow": false,
       "pauseResponds": true,
       "animationEnabled": true

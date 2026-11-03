@@ -1,0 +1,4383 @@
+{
+  "basis": "Current game layout/skin; read only. Houses, trees, rocks, stations and dais, excluding lamps/torch FX and Cyber electric poles.",
+  "maps": {
+    "zone1": {
+      "zone": "th",
+      "world": [
+        3840,
+        2560
+      ],
+      "objects": [
+        {
+          "id": "tree-0",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1738,
+          "y": 835,
+          "w": 156,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1738,
+            "y": 835,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-1",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2060,
+          "y": 743,
+          "w": 136,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2060,
+            "y": 743,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-2",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1757,
+          "y": 1133,
+          "w": 159,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1757,
+            "y": 1133,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-3",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1962,
+          "y": 1137,
+          "w": 159,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1962,
+            "y": 1137,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-4",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2185,
+          "y": 977,
+          "w": 136,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2185,
+            "y": 977,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-5",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2945,
+          "y": 1146,
+          "w": 202,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2945,
+            "y": 1146,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-6",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1413,
+          "y": 1457,
+          "w": 175,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1413,
+            "y": 1457,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-7",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1818,
+          "y": 1478,
+          "w": 161,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1818,
+            "y": 1478,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-8",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2016,
+          "y": 1478,
+          "w": 161,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2016,
+            "y": 1478,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-9",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2314,
+          "y": 1453,
+          "w": 161,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2314,
+            "y": 1453,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-10",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2346,
+          "y": 1678,
+          "w": 159,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2346,
+            "y": 1678,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-11",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 3231,
+          "y": 1453,
+          "w": 198,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3231,
+            "y": 1453,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-12",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 3567,
+          "y": 1632,
+          "w": 200,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3567,
+            "y": 1632,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-13",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1805,
+          "y": 493,
+          "w": 106,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1805,
+            "y": 493,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-14",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1837,
+          "y": 499,
+          "w": 106,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1837,
+            "y": 499,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "tree-15",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 1939,
+          "y": 470,
+          "w": 115,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1939,
+            "y": 470,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-0",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 298,
+          "y": 950,
+          "w": 144,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 298,
+            "y": 950,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-1",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 355,
+          "y": 1096,
+          "w": 150,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 355,
+            "y": 1096,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-2",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 693,
+          "y": 879,
+          "w": 156,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 693,
+            "y": 879,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-3",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 674,
+          "y": 1102,
+          "w": 161,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 674,
+            "y": 1102,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-4",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 749,
+          "y": 1336,
+          "w": 156,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 749,
+            "y": 1336,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-5",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 365,
+          "y": 1498,
+          "w": 152,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 365,
+            "y": 1498,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-6",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 388,
+          "y": 1557,
+          "w": 152,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 388,
+            "y": 1557,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "lava-tree-7",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-red-th-v1.webp",
+          "x": 803,
+          "y": 1534,
+          "w": 144,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 803,
+            "y": 1534,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "snow-tree-0",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-snow-th-v1.webp",
+          "x": 3375,
+          "y": 545,
+          "w": 131,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3375,
+            "y": 545,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "snow-tree-1",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-snow-th-v1.webp",
+          "x": 3677,
+          "y": 586,
+          "w": 140,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3677,
+            "y": 586,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "palm",
+          "kind": "palm",
+          "src": "img/theme-v4/town-palm-th-v1.webp",
+          "x": 1780,
+          "y": 1663,
+          "w": 132,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1780,
+            "y": 1663,
+            "rx": 14,
+            "ry": 10
+          }
+        },
+        {
+          "id": "banyan",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-th-v1.webp",
+          "x": 2068,
+          "y": 1663,
+          "w": 167,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2068,
+            "y": 1663,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "rock-0",
+          "kind": "rock",
+          "src": "img/map-zone1/prop-rock-v1.webp",
+          "x": 3014,
+          "y": 868,
+          "w": 77,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3014,
+            "y": 868,
+            "rx": 26.180000000000003,
+            "ry": 10.780000000000001
+          }
+        },
+        {
+          "id": "rock-1",
+          "kind": "rock",
+          "src": "img/map-zone1/prop-rock-v1.webp",
+          "x": 3496,
+          "y": 887,
+          "w": 119,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3496,
+            "y": 887,
+            "rx": 40.46,
+            "ry": 16.66
+          }
+        },
+        {
+          "id": "rock-2",
+          "kind": "rock",
+          "src": "img/map-zone1/prop-rock-v1.webp",
+          "x": 3312,
+          "y": 981,
+          "w": 79,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3312,
+            "y": 981,
+            "rx": 26.860000000000003,
+            "ry": 11.06
+          }
+        },
+        {
+          "id": "rock-3",
+          "kind": "rock",
+          "src": "img/map-zone1/prop-rock-v1.webp",
+          "x": 3241,
+          "y": 996,
+          "w": 52,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3241,
+            "y": 996,
+            "rx": 17.68,
+            "ry": 7.280000000000001
+          }
+        },
+        {
+          "id": "house-0",
+          "kind": "house",
+          "src": "img/town-district/house-left-two-v1.webp",
+          "x": 1945,
+          "y": 699,
+          "w": 119,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1892.64,
+              653,
+              1997.36,
+              699
+            ]
+          }
+        },
+        {
+          "id": "house-1",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-v1.webp",
+          "x": 2118,
+          "y": 766,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2061.24,
+              730.8994864479315,
+              2174.76,
+              766
+            ]
+          }
+        },
+        {
+          "id": "house-2",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-v1.webp",
+          "x": 1546,
+          "y": 1073,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1489.24,
+              1037.8994864479316,
+              1602.76,
+              1073
+            ]
+          }
+        },
+        {
+          "id": "house-4",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-v1.webp",
+          "x": 2239,
+          "y": 1014,
+          "w": 147,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2174.32,
+              975.9762726008345,
+              2303.68,
+              1014
+            ]
+          }
+        },
+        {
+          "id": "house-5",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-v1.webp",
+          "x": 2010,
+          "y": 1294,
+          "w": 138,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1949.28,
+              1256.4506134094152,
+              2070.72,
+              1294
+            ]
+          }
+        },
+        {
+          "id": "house-6",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-v1.webp",
+          "x": 1551,
+          "y": 1661,
+          "w": 120,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1498.2,
+              1615,
+              1603.8,
+              1661
+            ]
+          }
+        },
+        {
+          "id": "house-7",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-v1.webp",
+          "x": 2283,
+          "y": 1588,
+          "w": 114,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2232.84,
+              1542,
+              2333.16,
+              1588
+            ]
+          }
+        },
+        {
+          "id": "house-8",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-v1.webp",
+          "x": 639,
+          "y": 751,
+          "w": 142,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              576.52,
+              712.3622253922968,
+              701.48,
+              751
+            ]
+          }
+        },
+        {
+          "id": "house-9",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-v1.webp",
+          "x": 710,
+          "y": 1204,
+          "w": 149,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              644.44,
+              1165.458942976356,
+              775.56,
+              1204
+            ]
+          }
+        },
+        {
+          "id": "station-krata",
+          "kind": "station",
+          "key": "krata",
+          "src": "img/map-v5/st-krata-th.webp",
+          "site": {
+            "x": 470,
+            "y": 577,
+            "bx": 470,
+            "by": 565,
+            "bw": 258,
+            "mapScale": 1.32,
+            "sx": 470,
+            "sy": 495,
+            "hit": [
+              341,
+              332.79999999999995,
+              599,
+              565
+            ],
+            "k": "krata",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-dab",
+          "kind": "station",
+          "key": "dab",
+          "src": "img/map-v5/st-dab-th.webp",
+          "site": {
+            "x": 465,
+            "y": 1082,
+            "bx": 465,
+            "by": 1038,
+            "bw": 255,
+            "mapScale": 1.43,
+            "sx": 465,
+            "sy": 968,
+            "hit": [
+              337.5,
+              808.5,
+              592.5,
+              1038
+            ],
+            "k": "dab",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-ngiw",
+          "kind": "station",
+          "key": "ngiw",
+          "src": "img/map-v5/st-ngiw-th.webp",
+          "site": {
+            "x": 551,
+            "y": 1540,
+            "bx": 551,
+            "by": 1496,
+            "bw": 286,
+            "mapScale": 1.46,
+            "sx": 551,
+            "sy": 1426,
+            "hit": [
+              408,
+              1238.6,
+              694,
+              1496
+            ],
+            "k": "ngiw",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tarang",
+          "kind": "station",
+          "key": "tarang",
+          "src": "img/map-v5/st-tarang-th.webp",
+          "site": {
+            "x": 1667,
+            "y": 493,
+            "bx": 1651,
+            "by": 449,
+            "bw": 292,
+            "mapScale": 1.7,
+            "sx": 1667,
+            "sy": 379,
+            "hit": [
+              1505,
+              186.2,
+              1797,
+              449
+            ],
+            "k": "tarang",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sawan",
+          "kind": "station",
+          "key": "sawan",
+          "src": "img/map-v5/st-sawan-th-v2.webp",
+          "site": {
+            "x": 2536,
+            "y": 456,
+            "bx": 2536,
+            "by": 412,
+            "bw": 237,
+            "mapScale": 0.89,
+            "sx": 2536,
+            "sy": 342,
+            "hit": [
+              2417.5,
+              198.7,
+              2654.5,
+              412
+            ],
+            "k": "sawan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lokan",
+          "kind": "station",
+          "key": "lokan",
+          "src": "img/theme-v4/st-lokan-th.webp",
+          "site": {
+            "x": 3534,
+            "y": 551,
+            "bx": 3534,
+            "by": 507,
+            "bw": 267,
+            "mapScale": 1,
+            "sx": 3534,
+            "sy": 437,
+            "hit": [
+              3400.5,
+              266.7,
+              3667.5,
+              507
+            ],
+            "k": "lokan",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lan",
+          "kind": "station",
+          "key": "lan",
+          "src": "img/map-v5/st-lan-th.webp",
+          "site": {
+            "x": 3232,
+            "y": 956,
+            "bx": 3232,
+            "by": 912,
+            "bw": 283,
+            "mapScale": 2.26,
+            "sx": 3232,
+            "sy": 842,
+            "hit": [
+              3090.5,
+              657.3,
+              3373.5,
+              912
+            ],
+            "k": "lan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-krajok",
+          "kind": "station",
+          "key": "krajok",
+          "src": "img/map-v5/st-krajok-th-v2.webp",
+          "site": {
+            "x": 3482,
+            "y": 1543,
+            "bx": 3482,
+            "by": 1499,
+            "bw": 255,
+            "mapScale": 0.86,
+            "sx": 3482,
+            "sy": 1429,
+            "hit": [
+              3354.5,
+              1269.5,
+              3609.5,
+              1499
+            ],
+            "k": "krajok",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tea",
+          "kind": "station",
+          "key": "tea",
+          "src": "img/map-v5/st-tea-th-v2.webp",
+          "site": {
+            "x": 1527,
+            "y": 1412,
+            "bx": 1527,
+            "by": 1398,
+            "bw": 215,
+            "mapScale": 0.86,
+            "sx": 1527,
+            "sy": 1328,
+            "hit": [
+              1419.5,
+              1204.5,
+              1634.5,
+              1398
+            ],
+            "k": "tea",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sala",
+          "kind": "station",
+          "key": "sala",
+          "src": "img/map-v5/st-sala-th-v2.webp",
+          "site": {
+            "x": 2244,
+            "y": 1418,
+            "bx": 2252,
+            "by": 1382,
+            "bw": 209,
+            "mapScale": 0.68,
+            "sx": 2244,
+            "sy": 1312,
+            "hit": [
+              2147.5,
+              1193.9,
+              2356.5,
+              1382
+            ],
+            "k": "sala",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-canteen",
+          "kind": "station",
+          "key": "canteen",
+          "src": "img/food-art/canteen-th.webp",
+          "site": {
+            "bx": 1572,
+            "by": 646,
+            "bw": 118,
+            "k": "canteen",
+            "flip": false
+          },
+          "boxMode": "canteen",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-frontier",
+          "kind": "station",
+          "key": "frontier",
+          "src": "img/map-v5/st-frontier-th.webp",
+          "site": {
+            "x": 1917,
+            "y": 2200,
+            "bx": 1917,
+            "by": 2510,
+            "bw": 292,
+            "mapScale": 1.82,
+            "sx": 1917,
+            "sy": 2330,
+            "hit": [
+              1771,
+              2230,
+              2063,
+              2510
+            ],
+            "reach": 105,
+            "k": "frontier",
+            "flip": false
+          },
+          "boxMode": "frontier",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "judgment-dais",
+          "kind": "dais",
+          "src": "img/theme-v4/town-judgment-th-v2.webp",
+          "x": 1862,
+          "y": 1057,
+          "w": 307,
+          "collider": {
+            "kind": "dais",
+            "zone": "th",
+            "dais": {
+              "x": 1862,
+              "y": 1057,
+              "w": 307
+            }
+          }
+        }
+      ],
+      "reviewSpriteRgbaBytes": 19865964
+    },
+    "zone2": {
+      "zone": "asia",
+      "world": [
+        3840,
+        2560
+      ],
+      "objects": [
+        {
+          "id": "rock-0",
+          "kind": "rock",
+          "src": "img/map-zone2/prop-rock-v1.webp",
+          "x": 3014,
+          "y": 868,
+          "w": 77,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3014,
+            "y": 868,
+            "rx": 26.180000000000003,
+            "ry": 10.780000000000001
+          }
+        },
+        {
+          "id": "rock-1",
+          "kind": "rock",
+          "src": "img/map-zone2/prop-rock-v1.webp",
+          "x": 3496,
+          "y": 887,
+          "w": 119,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3496,
+            "y": 887,
+            "rx": 40.46,
+            "ry": 16.66
+          }
+        },
+        {
+          "id": "rock-2",
+          "kind": "rock",
+          "src": "img/map-zone2/prop-rock-v1.webp",
+          "x": 3312,
+          "y": 981,
+          "w": 79,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3312,
+            "y": 981,
+            "rx": 26.860000000000003,
+            "ry": 11.06
+          }
+        },
+        {
+          "id": "rock-3",
+          "kind": "rock",
+          "src": "img/map-zone2/prop-rock-v1.webp",
+          "x": 3241,
+          "y": 996,
+          "w": 52,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3241,
+            "y": 996,
+            "rx": 17.68,
+            "ry": 7.280000000000001
+          }
+        },
+        {
+          "id": "asia-tree-0",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1967.616,
+          "y": 730.8799999999999,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1967.616,
+            "y": 730.8799999999999,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-1",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 658.944,
+          "y": 1096.704,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 658.944,
+            "y": 1096.704,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-2",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2369.6639999999998,
+          "y": 1418.752,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2369.6639999999998,
+            "y": 1418.752,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-3",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1481.088,
+          "y": 1475.584,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1481.088,
+            "y": 1475.584,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-4",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1820.1599999999999,
+          "y": 1495.808,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1820.1599999999999,
+            "y": 1495.808,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-5",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 3574.272,
+          "y": 1611.0079999999998,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3574.272,
+            "y": 1611.0079999999998,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-6",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1458.048,
+          "y": 1102.336,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1458.048,
+            "y": 1102.336,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-7",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2002.9439999999997,
+          "y": 1140.7359999999999,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2002.9439999999997,
+            "y": 1140.7359999999999,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-8",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1451.904,
+          "y": 688.6400000000001,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1451.904,
+            "y": 688.6400000000001,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-9",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1768.3200000000002,
+          "y": 1135.104,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1768.3200000000002,
+            "y": 1135.104,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-10",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2906.496,
+          "y": 1166.336,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2906.496,
+            "y": 1166.336,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-11",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2245.248,
+          "y": 1054.72,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2245.248,
+            "y": 1054.72,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-12",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3639.9359999999997,
+          "y": 597.248,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3639.9359999999997,
+            "y": 597.248,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-13",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2363.52,
+          "y": 1640.192,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2363.52,
+            "y": 1640.192,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-14",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 2055.168,
+          "y": 1501.1840000000002,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2055.168,
+            "y": 1501.1840000000002,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-15",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3412.992,
+          "y": 589.824,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3412.992,
+            "y": 589.824,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-16",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-willow-asia-v1.webp",
+          "x": 3283.968,
+          "y": 1449.984,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3283.968,
+            "y": 1449.984,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-17",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 628.2239999999999,
+          "y": 924.672,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 628.2239999999999,
+            "y": 924.672,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-18",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 529.9200000000001,
+          "y": 1530.368,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 529.9200000000001,
+            "y": 1530.368,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-19",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 405.504,
+          "y": 1096.704,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 405.504,
+            "y": 1096.704,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-20",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 804.48,
+          "y": 1495.808,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 804.48,
+            "y": 1495.808,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-21",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1967.616,
+          "y": 493.056,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1967.616,
+            "y": 493.056,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-22",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 463.872,
+          "y": 1691.3919999999998,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 463.872,
+            "y": 1691.3919999999998,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-23",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1797.5040000000001,
+          "y": 412.416,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1797.5040000000001,
+            "y": 412.416,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-24",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 773.76,
+          "y": 1367.5520000000001,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 773.76,
+            "y": 1367.5520000000001,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-25",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 339.84,
+          "y": 976.1279999999999,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 339.84,
+            "y": 976.1279999999999,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-26",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-maple-v2.png",
+          "x": 440.832,
+          "y": 1460.992,
+          "w": 160,
+          "anchor": [
+            0.569224354,
+            0.987804878
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 440.832,
+            "y": 1460.992,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-27",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 1869.3120000000001,
+          "y": 518.656,
+          "w": 160,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1869.3120000000001,
+            "y": 518.656,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "asia-tree-28",
+          "kind": "tree",
+          "src": "img/frontier-route/tree-pine-v2.png",
+          "x": 3401.856,
+          "y": 1965.824,
+          "w": 224,
+          "anchor": [
+            0.567556297,
+            0.958841463
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3401.856,
+            "y": 1965.824,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "house-0",
+          "kind": "house",
+          "src": "img/town-district/house-left-two-asia-v3.webp",
+          "x": 1945,
+          "y": 699,
+          "w": 119,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1892.64,
+              653,
+              1997.36,
+              699
+            ]
+          }
+        },
+        {
+          "id": "house-1",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-asia-v3.webp",
+          "x": 2118,
+          "y": 766,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2061.24,
+              730.8994864479315,
+              2174.76,
+              766
+            ]
+          }
+        },
+        {
+          "id": "house-2",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-asia-v3.webp",
+          "x": 1546,
+          "y": 1073,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1489.24,
+              1037.8994864479316,
+              1602.76,
+              1073
+            ]
+          }
+        },
+        {
+          "id": "house-4",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-asia-v3.webp",
+          "x": 2239,
+          "y": 1014,
+          "w": 147,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2174.32,
+              975.9762726008345,
+              2303.68,
+              1014
+            ]
+          }
+        },
+        {
+          "id": "house-5",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-asia-v3.webp",
+          "x": 2010,
+          "y": 1294,
+          "w": 138,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1949.28,
+              1256.4506134094152,
+              2070.72,
+              1294
+            ]
+          }
+        },
+        {
+          "id": "house-6",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-asia-v3.webp",
+          "x": 1551,
+          "y": 1661,
+          "w": 120,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1498.2,
+              1615,
+              1603.8,
+              1661
+            ]
+          }
+        },
+        {
+          "id": "house-7",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-asia-v3.webp",
+          "x": 2283,
+          "y": 1588,
+          "w": 114,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2232.84,
+              1542,
+              2333.16,
+              1588
+            ]
+          }
+        },
+        {
+          "id": "house-8",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-asia-v3.webp",
+          "x": 639,
+          "y": 751,
+          "w": 142,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              576.52,
+              712.3622253922968,
+              701.48,
+              751
+            ]
+          }
+        },
+        {
+          "id": "house-9",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-asia-v3.webp",
+          "x": 710,
+          "y": 1204,
+          "w": 149,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              644.44,
+              1165.458942976356,
+              775.56,
+              1204
+            ]
+          }
+        },
+        {
+          "id": "station-krata",
+          "kind": "station",
+          "key": "krata",
+          "src": "img/map-v5/st-krata-asia.webp",
+          "site": {
+            "x": 470,
+            "y": 577,
+            "bx": 470,
+            "by": 565,
+            "bw": 258,
+            "mapScale": 1.32,
+            "sx": 470,
+            "sy": 495,
+            "hit": [
+              341,
+              332.79999999999995,
+              599,
+              565
+            ],
+            "k": "krata",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-dab",
+          "kind": "station",
+          "key": "dab",
+          "src": "img/map-v5/st-dab-asia.webp",
+          "site": {
+            "x": 465,
+            "y": 1082,
+            "bx": 465,
+            "by": 1038,
+            "bw": 255,
+            "mapScale": 1.43,
+            "sx": 465,
+            "sy": 968,
+            "hit": [
+              337.5,
+              808.5,
+              592.5,
+              1038
+            ],
+            "k": "dab",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-ngiw",
+          "kind": "station",
+          "key": "ngiw",
+          "src": "img/map-v5/st-ngiw-asia.webp",
+          "site": {
+            "x": 551,
+            "y": 1540,
+            "bx": 551,
+            "by": 1496,
+            "bw": 286,
+            "mapScale": 1.46,
+            "sx": 551,
+            "sy": 1426,
+            "hit": [
+              408,
+              1238.6,
+              694,
+              1496
+            ],
+            "k": "ngiw",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tarang",
+          "kind": "station",
+          "key": "tarang",
+          "src": "img/map-v5/st-tarang-asia.webp",
+          "site": {
+            "x": 1667,
+            "y": 493,
+            "bx": 1651,
+            "by": 449,
+            "bw": 292,
+            "mapScale": 1.7,
+            "sx": 1667,
+            "sy": 379,
+            "hit": [
+              1505,
+              186.2,
+              1797,
+              449
+            ],
+            "k": "tarang",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sawan",
+          "kind": "station",
+          "key": "sawan",
+          "src": "img/map-v5/st-sawan-asia-v3.webp",
+          "site": {
+            "x": 2536,
+            "y": 456,
+            "bx": 2536,
+            "by": 412,
+            "bw": 237,
+            "mapScale": 0.89,
+            "sx": 2536,
+            "sy": 342,
+            "hit": [
+              2417.5,
+              198.7,
+              2654.5,
+              412
+            ],
+            "k": "sawan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lokan",
+          "kind": "station",
+          "key": "lokan",
+          "src": "img/theme-v4/st-lokan-asia.webp",
+          "site": {
+            "x": 3534,
+            "y": 551,
+            "bx": 3534,
+            "by": 507,
+            "bw": 267,
+            "mapScale": 1,
+            "sx": 3534,
+            "sy": 437,
+            "hit": [
+              3400.5,
+              266.7,
+              3667.5,
+              507
+            ],
+            "k": "lokan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lan",
+          "kind": "station",
+          "key": "lan",
+          "src": "img/map-v5/st-lan-asia.webp",
+          "site": {
+            "x": 3232,
+            "y": 956,
+            "bx": 3232,
+            "by": 912,
+            "bw": 283,
+            "mapScale": 2.26,
+            "sx": 3232,
+            "sy": 842,
+            "hit": [
+              3090.5,
+              657.3,
+              3373.5,
+              912
+            ],
+            "k": "lan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-krajok",
+          "kind": "station",
+          "key": "krajok",
+          "src": "img/map-v5/st-krajok-asia-v3.webp",
+          "site": {
+            "x": 3482,
+            "y": 1543,
+            "bx": 3482,
+            "by": 1499,
+            "bw": 255,
+            "mapScale": 0.86,
+            "sx": 3482,
+            "sy": 1429,
+            "hit": [
+              3354.5,
+              1269.5,
+              3609.5,
+              1499
+            ],
+            "k": "krajok",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tea",
+          "kind": "station",
+          "key": "tea",
+          "src": "img/theme-v4/st-tea-asia-v3.webp",
+          "site": {
+            "x": 1527,
+            "y": 1412,
+            "bx": 1527,
+            "by": 1398,
+            "bw": 215,
+            "mapScale": 0.86,
+            "sx": 1527,
+            "sy": 1328,
+            "hit": [
+              1419.5,
+              1204.5,
+              1634.5,
+              1398
+            ],
+            "k": "tea",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sala",
+          "kind": "station",
+          "key": "sala",
+          "src": "img/map-v5/st-sala-asia-v3.webp",
+          "site": {
+            "x": 2244,
+            "y": 1418,
+            "bx": 2252,
+            "by": 1382,
+            "bw": 209,
+            "mapScale": 0.68,
+            "sx": 2244,
+            "sy": 1312,
+            "hit": [
+              2147.5,
+              1193.9,
+              2356.5,
+              1382
+            ],
+            "k": "sala",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-canteen",
+          "kind": "station",
+          "key": "canteen",
+          "src": "img/food-art/canteen-asia.webp",
+          "site": {
+            "bx": 1572,
+            "by": 646,
+            "bw": 118,
+            "k": "canteen",
+            "flip": false
+          },
+          "boxMode": "canteen",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-frontier",
+          "kind": "station",
+          "key": "frontier",
+          "src": "img/map-v5/st-frontier-asia.webp",
+          "site": {
+            "x": 1917,
+            "y": 2200,
+            "bx": 1917,
+            "by": 2510,
+            "bw": 292,
+            "mapScale": 1.82,
+            "sx": 1917,
+            "sy": 2330,
+            "hit": [
+              1771,
+              2230,
+              2063,
+              2510
+            ],
+            "reach": 105,
+            "k": "frontier",
+            "flip": false
+          },
+          "boxMode": "frontier",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "judgment-dais",
+          "kind": "dais",
+          "src": "img/theme-v4/town-judgment-asia-v3.webp",
+          "x": 1862,
+          "y": 1057,
+          "w": 307,
+          "collider": {
+            "kind": "dais",
+            "zone": "asia",
+            "dais": {
+              "x": 1862,
+              "y": 1057,
+              "w": 307
+            }
+          }
+        }
+      ],
+      "reviewSpriteRgbaBytes": 20007204
+    },
+    "zone3": {
+      "zone": "west",
+      "world": [
+        3840,
+        2560
+      ],
+      "objects": [
+        {
+          "id": "rock-0",
+          "kind": "rock",
+          "src": "img/map-zone3/prop-rock-v1.webp",
+          "x": 3014,
+          "y": 868,
+          "w": 77,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3014,
+            "y": 868,
+            "rx": 26.180000000000003,
+            "ry": 10.780000000000001
+          }
+        },
+        {
+          "id": "rock-1",
+          "kind": "rock",
+          "src": "img/map-zone3/prop-rock-v1.webp",
+          "x": 3496,
+          "y": 887,
+          "w": 119,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3496,
+            "y": 887,
+            "rx": 40.46,
+            "ry": 16.66
+          }
+        },
+        {
+          "id": "rock-2",
+          "kind": "rock",
+          "src": "img/map-zone3/prop-rock-v1.webp",
+          "x": 3312,
+          "y": 981,
+          "w": 79,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3312,
+            "y": 981,
+            "rx": 26.860000000000003,
+            "ry": 11.06
+          }
+        },
+        {
+          "id": "rock-3",
+          "kind": "rock",
+          "src": "img/map-zone3/prop-rock-v1.webp",
+          "x": 3241,
+          "y": 996,
+          "w": 52,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3241,
+            "y": 996,
+            "rx": 17.68,
+            "ry": 7.280000000000001
+          }
+        },
+        {
+          "id": "west-tree-0",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1794.5836800000002,
+          "y": 404.014848,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1794.5836800000002,
+            "y": 404.014848,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-1",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1862.154624,
+          "y": 500.763648,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1862.154624,
+            "y": 500.763648,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-2",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1959.6714240000001,
+          "y": 476.192512,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1959.6714240000001,
+            "y": 476.192512,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-3",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1442.141952,
+          "y": 672.7618560000001,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1442.141952,
+            "y": 672.7618560000001,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-4",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1961.207424,
+          "y": 715.761152,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1961.207424,
+            "y": 715.761152,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-5",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 2242.240512,
+          "y": 1041.328896,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2242.240512,
+            "y": 1041.328896,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-6",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1448.285568,
+          "y": 1088.93568,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1448.285568,
+            "y": 1088.93568,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-7",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1760.0317440000001,
+          "y": 1121.18528,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1760.0317440000001,
+            "y": 1121.18528,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-8",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1997.2968959999998,
+          "y": 1127.328,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1997.2968959999998,
+            "y": 1127.328,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-9",
+          "kind": "tree",
+          "src": "img/theme-v4/town-landmark-west-v1.webp",
+          "x": 2366.632704,
+          "y": 1406.824448,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2366.632704,
+            "y": 1406.824448,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-10",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1471.321344,
+          "y": 1463.645696,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1471.321344,
+            "y": 1463.645696,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-11",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 1812.246144,
+          "y": 1483.609856,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 1812.246144,
+            "y": 1483.609856,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-12",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-west-v1.webp",
+          "x": 2050.2792959999997,
+          "y": 1489.75232,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2050.2792959999997,
+            "y": 1489.75232,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-13",
+          "kind": "tree",
+          "src": "img/theme-v4/town-landmark-west-v1.webp",
+          "x": 2358.954624,
+          "y": 1627.964928,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2358.954624,
+            "y": 1627.964928,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-14",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 336.440448,
+          "y": 969.151744,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 336.440448,
+            "y": 969.151744,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-15",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 624.383616,
+          "y": 918.473728,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 624.383616,
+            "y": 918.473728,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-16",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 386.350848,
+          "y": 1082.793472,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 386.350848,
+            "y": 1082.793472,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-17",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 643.58016,
+          "y": 1082.793216,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 643.58016,
+            "y": 1082.793216,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-18",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 762.59712,
+          "y": 1365.361408,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 762.59712,
+            "y": 1365.361408,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-19",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 787.936512,
+          "y": 1483.610112,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 787.936512,
+            "y": 1483.610112,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-20",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 437.029632,
+          "y": 1454.4319999999998,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 437.029632,
+            "y": 1454.4319999999998,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-21",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 513.046656,
+          "y": 1525.07392,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 513.046656,
+            "y": 1525.07392,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-22",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-b-west-v1.webp",
+          "x": 446.244096,
+          "y": 1680.1792,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 446.244096,
+            "y": 1680.1792,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-23",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3402.45888,
+          "y": 576.012288,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3402.45888,
+            "y": 576.012288,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-24",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3648.170496,
+          "y": 580.6192639999999,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3648.170496,
+            "y": 580.6192639999999,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-25",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 2905.661952,
+          "y": 1153.4343680000002,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 2905.661952,
+            "y": 1153.4343680000002,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-26",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3270.390144,
+          "y": 1442.14528,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3270.390144,
+            "y": 1442.14528,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "west-tree-27",
+          "kind": "tree",
+          "src": "img/theme-v4/town-tree-c-west-v1.webp",
+          "x": 3611.3153279999997,
+          "y": 1600.321792,
+          "w": 160,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "collider": {
+            "kind": "ellipse",
+            "x": 3611.3153279999997,
+            "y": 1600.321792,
+            "rx": 16,
+            "ry": 11
+          }
+        },
+        {
+          "id": "house-0",
+          "kind": "house",
+          "src": "img/town-district/house-left-two-west-v1.webp",
+          "x": 1945,
+          "y": 699,
+          "w": 119,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1892.64,
+              653,
+              1997.36,
+              699
+            ]
+          }
+        },
+        {
+          "id": "house-1",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-west-v1.webp",
+          "x": 2118,
+          "y": 766,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2061.24,
+              730.8994864479315,
+              2174.76,
+              766
+            ]
+          }
+        },
+        {
+          "id": "house-2",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-west-v1.webp",
+          "x": 1546,
+          "y": 1073,
+          "w": 129,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1489.24,
+              1037.8994864479316,
+              1602.76,
+              1073
+            ]
+          }
+        },
+        {
+          "id": "house-4",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-west-v1.webp",
+          "x": 2239,
+          "y": 1014,
+          "w": 147,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2174.32,
+              975.9762726008345,
+              2303.68,
+              1014
+            ]
+          }
+        },
+        {
+          "id": "house-5",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-west-v1.webp",
+          "x": 2010,
+          "y": 1294,
+          "w": 138,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1949.28,
+              1256.4506134094152,
+              2070.72,
+              1294
+            ]
+          }
+        },
+        {
+          "id": "house-6",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-west-v1.webp",
+          "x": 1551,
+          "y": 1661,
+          "w": 120,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              1498.2,
+              1615,
+              1603.8,
+              1661
+            ]
+          }
+        },
+        {
+          "id": "house-7",
+          "kind": "house",
+          "src": "img/town-district/house-right-two-west-v1.webp",
+          "x": 2283,
+          "y": 1588,
+          "w": 114,
+          "flip": true,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              2232.84,
+              1542,
+              2333.16,
+              1588
+            ]
+          }
+        },
+        {
+          "id": "house-8",
+          "kind": "house",
+          "src": "img/town-district/house-front-one-west-v1.webp",
+          "x": 639,
+          "y": 751,
+          "w": 142,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              576.52,
+              712.3622253922968,
+              701.48,
+              751
+            ]
+          }
+        },
+        {
+          "id": "house-9",
+          "kind": "house",
+          "src": "img/town-district/house-right-one-west-v1.webp",
+          "x": 710,
+          "y": 1204,
+          "w": 149,
+          "flip": false,
+          "collider": {
+            "kind": "rect",
+            "rect": [
+              644.44,
+              1165.458942976356,
+              775.56,
+              1204
+            ]
+          }
+        },
+        {
+          "id": "station-krata",
+          "kind": "station",
+          "key": "krata",
+          "src": "img/map-v5/st-krata-west.webp",
+          "site": {
+            "x": 470,
+            "y": 577,
+            "bx": 470,
+            "by": 565,
+            "bw": 258,
+            "mapScale": 1.32,
+            "sx": 470,
+            "sy": 495,
+            "hit": [
+              341,
+              332.79999999999995,
+              599,
+              565
+            ],
+            "k": "krata",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-dab",
+          "kind": "station",
+          "key": "dab",
+          "src": "img/map-v5/st-dab-west.webp",
+          "site": {
+            "x": 465,
+            "y": 1082,
+            "bx": 465,
+            "by": 1038,
+            "bw": 255,
+            "mapScale": 1.43,
+            "sx": 465,
+            "sy": 968,
+            "hit": [
+              337.5,
+              808.5,
+              592.5,
+              1038
+            ],
+            "k": "dab",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-ngiw",
+          "kind": "station",
+          "key": "ngiw",
+          "src": "img/map-v5/st-ngiw-west.webp",
+          "site": {
+            "x": 532,
+            "y": 1508,
+            "bx": 551,
+            "by": 1496,
+            "bw": 286,
+            "mapScale": 1.46,
+            "sx": 551,
+            "sy": 1426,
+            "hit": [
+              408,
+              1238.6,
+              694,
+              1496
+            ],
+            "k": "ngiw",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tarang",
+          "kind": "station",
+          "key": "tarang",
+          "src": "img/map-v5/st-tarang-west.webp",
+          "site": {
+            "x": 1667,
+            "y": 493,
+            "bx": 1651,
+            "by": 449,
+            "bw": 292,
+            "mapScale": 1.7,
+            "sx": 1667,
+            "sy": 379,
+            "hit": [
+              1505,
+              186.2,
+              1797,
+              449
+            ],
+            "k": "tarang",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sawan",
+          "kind": "station",
+          "key": "sawan",
+          "src": "img/map-v5/st-sawan-west-v2.webp",
+          "site": {
+            "x": 2536,
+            "y": 456,
+            "bx": 2536,
+            "by": 412,
+            "bw": 237,
+            "mapScale": 0.89,
+            "sx": 2536,
+            "sy": 342,
+            "hit": [
+              2417.5,
+              198.7,
+              2654.5,
+              412
+            ],
+            "k": "sawan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lokan",
+          "kind": "station",
+          "key": "lokan",
+          "src": "img/theme-v4/st-lokan-west.webp",
+          "site": {
+            "x": 3534,
+            "y": 551,
+            "bx": 3534,
+            "by": 507,
+            "bw": 267,
+            "mapScale": 1,
+            "sx": 3534,
+            "sy": 437,
+            "hit": [
+              3400.5,
+              266.7,
+              3667.5,
+              507
+            ],
+            "k": "lokan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lan",
+          "kind": "station",
+          "key": "lan",
+          "src": "img/map-v5/st-lan-west.webp",
+          "site": {
+            "x": 3232,
+            "y": 956,
+            "bx": 3232,
+            "by": 912,
+            "bw": 283,
+            "mapScale": 2.26,
+            "sx": 3232,
+            "sy": 842,
+            "hit": [
+              3090.5,
+              657.3,
+              3373.5,
+              912
+            ],
+            "k": "lan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-krajok",
+          "kind": "station",
+          "key": "krajok",
+          "src": "img/map-v5/st-krajok-west-v2.webp",
+          "site": {
+            "x": 3482,
+            "y": 1543,
+            "bx": 3482,
+            "by": 1499,
+            "bw": 255,
+            "mapScale": 0.86,
+            "sx": 3482,
+            "sy": 1429,
+            "hit": [
+              3354.5,
+              1269.5,
+              3609.5,
+              1499
+            ],
+            "k": "krajok",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tea",
+          "kind": "station",
+          "key": "tea",
+          "src": "img/theme-v4/st-tea-west-v2.webp",
+          "site": {
+            "x": 1527,
+            "y": 1412,
+            "bx": 1527,
+            "by": 1398,
+            "bw": 215,
+            "mapScale": 0.86,
+            "sx": 1527,
+            "sy": 1328,
+            "hit": [
+              1419.5,
+              1204.5,
+              1634.5,
+              1398
+            ],
+            "k": "tea",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sala",
+          "kind": "station",
+          "key": "sala",
+          "src": "img/map-v5/st-sala-west-v2.webp",
+          "site": {
+            "x": 2244,
+            "y": 1418,
+            "bx": 2252,
+            "by": 1382,
+            "bw": 209,
+            "mapScale": 0.68,
+            "sx": 2244,
+            "sy": 1312,
+            "hit": [
+              2147.5,
+              1193.9,
+              2356.5,
+              1382
+            ],
+            "k": "sala",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-canteen",
+          "kind": "station",
+          "key": "canteen",
+          "src": "img/food-art/canteen-west.webp",
+          "site": {
+            "bx": 1572,
+            "by": 646,
+            "bw": 118,
+            "k": "canteen",
+            "flip": false
+          },
+          "boxMode": "canteen",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-frontier",
+          "kind": "station",
+          "key": "frontier",
+          "src": "img/map-v5/st-frontier-west.webp",
+          "site": {
+            "x": 1917,
+            "y": 2200,
+            "bx": 1917,
+            "by": 2510,
+            "bw": 292,
+            "mapScale": 1.82,
+            "sx": 1917,
+            "sy": 2330,
+            "hit": [
+              1771,
+              2230,
+              2063,
+              2510
+            ],
+            "reach": 105,
+            "k": "frontier",
+            "flip": false
+          },
+          "boxMode": "frontier",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "judgment-dais",
+          "kind": "dais",
+          "src": "img/theme-v4/town-judgment-west-v2.webp",
+          "x": 1862,
+          "y": 1057,
+          "w": 307,
+          "collider": {
+            "kind": "dais",
+            "zone": "west",
+            "dais": {
+              "x": 1862,
+              "y": 1057,
+              "w": 307
+            }
+          }
+        }
+      ],
+      "reviewSpriteRgbaBytes": 19878768
+    },
+    "zone4": {
+      "zone": "cyberhell",
+      "world": [
+        3840,
+        2560
+      ],
+      "objects": [
+        {
+          "id": "station-krata",
+          "kind": "station",
+          "key": "krata",
+          "src": "img/map-v5/st-krata-cyberhell.webp",
+          "site": {
+            "x": 500,
+            "y": 587.5,
+            "bx": 467.5,
+            "by": 527.5,
+            "bw": 285,
+            "mapScale": 1.1400000000000001,
+            "sx": 500,
+            "sy": 587.5,
+            "hit": [
+              325,
+              482.5,
+              610,
+              527.5
+            ],
+            "k": "krata",
+            "flip": true
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-dab",
+          "kind": "station",
+          "key": "dab",
+          "src": "img/map-v5/st-dab-cyberhell.webp",
+          "site": {
+            "x": 487.5,
+            "y": 1080,
+            "bx": 470,
+            "by": 1025,
+            "bw": 285,
+            "mapScale": 1.35,
+            "sx": 487.5,
+            "sy": 1080,
+            "hit": [
+              327.5,
+              980,
+              612.5,
+              1025
+            ],
+            "k": "dab",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-ngiw",
+          "kind": "station",
+          "key": "ngiw",
+          "src": "img/map-v5/st-ngiw-cyberhell.webp",
+          "site": {
+            "x": 625,
+            "y": 1527.5,
+            "bx": 572.5,
+            "by": 1475,
+            "bw": 285,
+            "mapScale": 1.35,
+            "sx": 625,
+            "sy": 1527.5,
+            "hit": [
+              430,
+              1430,
+              715,
+              1475
+            ],
+            "k": "ngiw",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tarang",
+          "kind": "station",
+          "key": "tarang",
+          "src": "img/map-v5/st-tarang-cyberhell.webp",
+          "site": {
+            "x": 1700,
+            "y": 480,
+            "bx": 1660,
+            "by": 432.5,
+            "bw": 285,
+            "mapScale": 1.185,
+            "sx": 1700,
+            "sy": 480,
+            "hit": [
+              1517.5,
+              387.5,
+              1802.5,
+              432.5
+            ],
+            "k": "tarang",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sawan",
+          "kind": "station",
+          "key": "sawan",
+          "src": "img/map-v5/st-sawan-cyberhell.webp",
+          "site": {
+            "x": 2525,
+            "y": 450,
+            "bx": 2537.5,
+            "by": 400,
+            "bw": 232.5,
+            "mapScale": 1.0499999999999998,
+            "sx": 2525,
+            "sy": 450,
+            "hit": [
+              2421.25,
+              355,
+              2653.75,
+              400
+            ],
+            "k": "sawan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lokan",
+          "kind": "station",
+          "key": "lokan",
+          "src": "img/theme-v4/st-lokan-cyberhell.webp",
+          "site": {
+            "x": 3525,
+            "y": 560,
+            "bx": 3535,
+            "by": 502.5,
+            "bw": 243.75,
+            "mapScale": 0.9750000000000001,
+            "sx": 3525,
+            "sy": 560,
+            "hit": [
+              3413.125,
+              457.5,
+              3656.875,
+              502.5
+            ],
+            "k": "lokan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-lan",
+          "kind": "station",
+          "key": "lan",
+          "src": "img/map-v5/st-lan-cyberhell.webp",
+          "site": {
+            "x": 3250,
+            "y": 972.5,
+            "bx": 3235,
+            "by": 900,
+            "bw": 352.5,
+            "mapScale": 2.0250000000000004,
+            "sx": 3250,
+            "sy": 972.5,
+            "hit": [
+              3058.75,
+              855,
+              3411.25,
+              900
+            ],
+            "k": "lan",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-krajok",
+          "kind": "station",
+          "key": "krajok",
+          "src": "img/map-v5/st-krajok-cyberhell.webp",
+          "site": {
+            "x": 3487.5,
+            "y": 1535,
+            "bx": 3495,
+            "by": 1497.5,
+            "bw": 232.5,
+            "mapScale": 1.095,
+            "sx": 3487.5,
+            "sy": 1535,
+            "hit": [
+              3378.75,
+              1452.5,
+              3611.25,
+              1497.5
+            ],
+            "k": "krajok",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-tea",
+          "kind": "station",
+          "key": "tea",
+          "src": "img/theme-v4/st-tea-cyberhell.webp",
+          "site": {
+            "x": 1550,
+            "y": 1442.5,
+            "bx": 1535,
+            "by": 1385,
+            "bw": 315,
+            "mapScale": 1.2600000000000002,
+            "sx": 1550,
+            "sy": 1442.5,
+            "hit": [
+              1377.5,
+              1340,
+              1692.5,
+              1385
+            ],
+            "k": "tea",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-sala",
+          "kind": "station",
+          "key": "sala",
+          "src": "img/map-v5/st-sala-cyberhell.webp",
+          "site": {
+            "x": 2244,
+            "y": 1418,
+            "bx": 2252,
+            "by": 1382,
+            "bw": 209,
+            "mapScale": 0.68,
+            "sx": 2244,
+            "sy": 1312,
+            "hit": [
+              2147.5,
+              1193.9,
+              2356.5,
+              1382
+            ],
+            "k": "sala",
+            "flip": false
+          },
+          "boxMode": "station",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-canteen",
+          "kind": "station",
+          "key": "canteen",
+          "src": "img/food-art/canteen-cyberhell.webp",
+          "site": {
+            "x": 1600,
+            "y": 695,
+            "bx": 1590,
+            "by": 690,
+            "bw": 187.5,
+            "mapScale": 0.75,
+            "sx": 1600,
+            "sy": 695,
+            "hit": [
+              1496.25,
+              645,
+              1683.75,
+              690
+            ],
+            "k": "canteen",
+            "flip": false
+          },
+          "boxMode": "canteen",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "station-frontier",
+          "kind": "station",
+          "key": "frontier",
+          "src": "img/map-v5/st-frontier-cyberhell.webp",
+          "site": {
+            "x": 1920,
+            "y": 2465,
+            "bx": 1920,
+            "by": 2545,
+            "bw": 225,
+            "mapScale": 1.2000000000000002,
+            "sx": 1920,
+            "sy": 2465,
+            "hit": [
+              1807.5,
+              2500,
+              2032.5,
+              2545
+            ],
+            "reach": 105,
+            "k": "frontier",
+            "flip": false
+          },
+          "boxMode": "frontier",
+          "collider": {
+            "kind": "sprite-foot"
+          }
+        },
+        {
+          "id": "judgment-dais",
+          "kind": "dais",
+          "src": "img/theme-v4/town-judgment-cyberhell-v2.webp",
+          "x": 1855,
+          "y": 1062.5,
+          "w": 307,
+          "collider": {
+            "kind": "dais",
+            "zone": "cyberhell",
+            "dais": {
+              "x": 1855,
+              "y": 1062.5,
+              "w": 307
+            }
+          }
+        }
+      ],
+      "reviewSpriteRgbaBytes": 12142496
+    }
+  },
+  "assets": {
+    "img/theme-v4/town-tree-th-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 682446
+    },
+    "img/theme-v4/town-tree-red-th-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 787556
+    },
+    "img/theme-v4/town-tree-snow-th-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 826338
+    },
+    "img/theme-v4/town-palm-th-v1.webp": {
+      "size": [
+        1024,
+        1328
+      ],
+      "mode": "RGBA",
+      "bytes": 582562
+    },
+    "img/map-zone1/prop-rock-v1.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 461262
+    },
+    "img/town-district/house-left-two-v1.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 407034
+    },
+    "img/town-district/house-front-one-v1.webp": {
+      "size": [
+        1402,
+        1122
+      ],
+      "mode": "RGBA",
+      "bytes": 358122
+    },
+    "img/town-district/house-right-one-v1.webp": {
+      "size": [
+        1438,
+        1094
+      ],
+      "mode": "RGBA",
+      "bytes": 438282
+    },
+    "img/town-district/house-right-two-v1.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 422130
+    },
+    "img/map-v5/st-krata-th.webp": {
+      "size": [
+        1241,
+        1233
+      ],
+      "mode": "RGBA",
+      "bytes": 1693412
+    },
+    "img/map-v5/st-dab-th.webp": {
+      "size": [
+        1244,
+        1248
+      ],
+      "mode": "RGBA",
+      "bytes": 1914170
+    },
+    "img/map-v5/st-ngiw-th.webp": {
+      "size": [
+        1197,
+        1207
+      ],
+      "mode": "RGBA",
+      "bytes": 1486420
+    },
+    "img/map-v5/st-tarang-th.webp": {
+      "size": [
+        1254,
+        1250
+      ],
+      "mode": "RGBA",
+      "bytes": 1790204
+    },
+    "img/map-v5/st-sawan-th-v2.webp": {
+      "size": [
+        1108,
+        1419
+      ],
+      "mode": "RGBA",
+      "bytes": 501172
+    },
+    "img/theme-v4/st-lokan-th.webp": {
+      "size": [
+        391,
+        397
+      ],
+      "mode": "RGBA",
+      "bytes": 71434
+    },
+    "img/map-v5/st-lan-th.webp": {
+      "size": [
+        1240,
+        1194
+      ],
+      "mode": "RGBA",
+      "bytes": 1646706
+    },
+    "img/map-v5/st-krajok-th-v2.webp": {
+      "size": [
+        1157,
+        1360
+      ],
+      "mode": "RGBA",
+      "bytes": 474014
+    },
+    "img/map-v5/st-tea-th-v2.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 413364
+    },
+    "img/map-v5/st-sala-th-v2.webp": {
+      "size": [
+        1156,
+        1360
+      ],
+      "mode": "RGBA",
+      "bytes": 614256
+    },
+    "img/food-art/canteen-th.webp": {
+      "size": [
+        768,
+        640
+      ],
+      "mode": "RGBA",
+      "bytes": 550996
+    },
+    "img/map-v5/st-frontier-th.webp": {
+      "size": [
+        1238,
+        1250
+      ],
+      "mode": "RGBA",
+      "bytes": 1702112
+    },
+    "img/theme-v4/town-judgment-th-v2.webp": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 425982
+    },
+    "img/map-zone2/prop-rock-v1.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1407386
+    },
+    "img/frontier-route/tree-pine-v2.png": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 2300384
+    },
+    "img/frontier-route/tree-maple-v2.png": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 2202455
+    },
+    "img/theme-v4/town-tree-c-west-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 451764
+    },
+    "img/theme-v4/town-tree-willow-asia-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 2112824
+    },
+    "img/town-district/house-left-two-asia-v3.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 841548
+    },
+    "img/town-district/house-front-one-asia-v3.webp": {
+      "size": [
+        1402,
+        1122
+      ],
+      "mode": "RGBA",
+      "bytes": 1709300
+    },
+    "img/town-district/house-right-one-asia-v3.webp": {
+      "size": [
+        1438,
+        1094
+      ],
+      "mode": "RGBA",
+      "bytes": 949020
+    },
+    "img/town-district/house-right-two-asia-v3.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 1144616
+    },
+    "img/map-v5/st-krata-asia.webp": {
+      "size": [
+        1254,
+        1219
+      ],
+      "mode": "RGBA",
+      "bytes": 1823860
+    },
+    "img/map-v5/st-dab-asia.webp": {
+      "size": [
+        1253,
+        1242
+      ],
+      "mode": "RGBA",
+      "bytes": 2011372
+    },
+    "img/map-v5/st-ngiw-asia.webp": {
+      "size": [
+        1248,
+        1253
+      ],
+      "mode": "RGBA",
+      "bytes": 1847954
+    },
+    "img/map-v5/st-tarang-asia.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1942214
+    },
+    "img/map-v5/st-sawan-asia-v3.webp": {
+      "size": [
+        1240,
+        1249
+      ],
+      "mode": "RGBA",
+      "bytes": 1907768
+    },
+    "img/theme-v4/st-lokan-asia.webp": {
+      "size": [
+        386,
+        399
+      ],
+      "mode": "RGBA",
+      "bytes": 75382
+    },
+    "img/map-v5/st-lan-asia.webp": {
+      "size": [
+        1254,
+        1219
+      ],
+      "mode": "RGBA",
+      "bytes": 1748400
+    },
+    "img/map-v5/st-krajok-asia-v3.webp": {
+      "size": [
+        1187,
+        1216
+      ],
+      "mode": "RGBA",
+      "bytes": 1215448
+    },
+    "img/theme-v4/st-tea-asia-v3.webp": {
+      "size": [
+        365,
+        375
+      ],
+      "mode": "RGBA",
+      "bytes": 154390
+    },
+    "img/map-v5/st-sala-asia-v3.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1310984
+    },
+    "img/food-art/canteen-asia.webp": {
+      "size": [
+        768,
+        640
+      ],
+      "mode": "RGBA",
+      "bytes": 496578
+    },
+    "img/map-v5/st-frontier-asia.webp": {
+      "size": [
+        1224,
+        1240
+      ],
+      "mode": "RGBA",
+      "bytes": 1602806
+    },
+    "img/theme-v4/town-judgment-asia-v3.webp": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1617366
+    },
+    "img/map-zone3/prop-rock-v1.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 256958
+    },
+    "img/theme-v4/town-tree-west-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 580460
+    },
+    "img/theme-v4/town-landmark-west-v1.webp": {
+      "size": [
+        1024,
+        1328
+      ],
+      "mode": "RGBA",
+      "bytes": 547974
+    },
+    "img/theme-v4/town-tree-b-west-v1.webp": {
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "bytes": 605472
+    },
+    "img/town-district/house-left-two-west-v1.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 451358
+    },
+    "img/town-district/house-front-one-west-v1.webp": {
+      "size": [
+        1402,
+        1122
+      ],
+      "mode": "RGBA",
+      "bytes": 420852
+    },
+    "img/town-district/house-right-one-west-v1.webp": {
+      "size": [
+        1438,
+        1094
+      ],
+      "mode": "RGBA",
+      "bytes": 451822
+    },
+    "img/town-district/house-right-two-west-v1.webp": {
+      "size": [
+        1036,
+        1518
+      ],
+      "mode": "RGBA",
+      "bytes": 421380
+    },
+    "img/map-v5/st-krata-west.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1968266
+    },
+    "img/map-v5/st-dab-west.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 2179614
+    },
+    "img/map-v5/st-ngiw-west.webp": {
+      "size": [
+        1241,
+        1252
+      ],
+      "mode": "RGBA",
+      "bytes": 1837166
+    },
+    "img/map-v5/st-tarang-west.webp": {
+      "size": [
+        1254,
+        1222
+      ],
+      "mode": "RGBA",
+      "bytes": 2042268
+    },
+    "img/map-v5/st-sawan-west-v2.webp": {
+      "size": [
+        1108,
+        1419
+      ],
+      "mode": "RGBA",
+      "bytes": 438980
+    },
+    "img/theme-v4/st-lokan-west.webp": {
+      "size": [
+        406,
+        394
+      ],
+      "mode": "RGBA",
+      "bytes": 78876
+    },
+    "img/map-v5/st-lan-west.webp": {
+      "size": [
+        1242,
+        1210
+      ],
+      "mode": "RGBA",
+      "bytes": 1942784
+    },
+    "img/map-v5/st-krajok-west-v2.webp": {
+      "size": [
+        1157,
+        1360
+      ],
+      "mode": "RGBA",
+      "bytes": 332648
+    },
+    "img/theme-v4/st-tea-west-v2.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 451908
+    },
+    "img/map-v5/st-sala-west-v2.webp": {
+      "size": [
+        1156,
+        1360
+      ],
+      "mode": "RGBA",
+      "bytes": 518982
+    },
+    "img/food-art/canteen-west.webp": {
+      "size": [
+        768,
+        640
+      ],
+      "mode": "RGBA",
+      "bytes": 529758
+    },
+    "img/map-v5/st-frontier-west.webp": {
+      "size": [
+        1239,
+        1219
+      ],
+      "mode": "RGBA",
+      "bytes": 1658064
+    },
+    "img/theme-v4/town-judgment-west-v2.webp": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 481088
+    },
+    "img/map-v5/st-krata-cyberhell.webp": {
+      "size": [
+        1248,
+        1235
+      ],
+      "mode": "RGBA",
+      "bytes": 1914114
+    },
+    "img/map-v5/st-dab-cyberhell.webp": {
+      "size": [
+        1243,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1992434
+    },
+    "img/map-v5/st-ngiw-cyberhell.webp": {
+      "size": [
+        1254,
+        1247
+      ],
+      "mode": "RGBA",
+      "bytes": 1917050
+    },
+    "img/map-v5/st-tarang-cyberhell.webp": {
+      "size": [
+        1254,
+        1245
+      ],
+      "mode": "RGBA",
+      "bytes": 1857602
+    },
+    "img/map-v5/st-sawan-cyberhell.webp": {
+      "size": [
+        1244,
+        1237
+      ],
+      "mode": "RGBA",
+      "bytes": 2079002
+    },
+    "img/theme-v4/st-lokan-cyberhell.webp": {
+      "size": [
+        392,
+        407
+      ],
+      "mode": "RGBA",
+      "bytes": 75218
+    },
+    "img/map-v5/st-lan-cyberhell.webp": {
+      "size": [
+        1254,
+        1242
+      ],
+      "mode": "RGBA",
+      "bytes": 1823644
+    },
+    "img/map-v5/st-krajok-cyberhell.webp": {
+      "size": [
+        1244,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1857414
+    },
+    "img/theme-v4/st-tea-cyberhell.webp": {
+      "size": [
+        396,
+        356
+      ],
+      "mode": "RGBA",
+      "bytes": 71576
+    },
+    "img/map-v5/st-sala-cyberhell.webp": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1965392
+    },
+    "img/food-art/canteen-cyberhell.webp": {
+      "size": [
+        768,
+        640
+      ],
+      "mode": "RGBA",
+      "bytes": 590290
+    },
+    "img/map-v5/st-frontier-cyberhell.webp": {
+      "size": [
+        1239,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1704660
+    },
+    "img/theme-v4/town-judgment-cyberhell-v2.webp": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 410838
+    }
+  }
+}

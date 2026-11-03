@@ -1,0 +1,2008 @@
+{
+  "maps": [
+    {
+      "width": 1672,
+      "height": 941,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 9,
+      "townObjects": 0,
+      "townSpriteRGBABytes": 0,
+      "probes": [
+        {
+          "id": "cave-left-lantern",
+          "pixels": 2285,
+          "sample": [
+            746,
+            667
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "cave-right-lantern",
+          "pixels": 2274,
+          "sample": [
+            970,
+            678
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "start-arch",
+          "pixels": 7346,
+          "sample": [
+            140,
+            173
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "start-left-guardian",
+          "pixels": 4772,
+          "sample": [
+            100,
+            190
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "start-right-guardian",
+          "pixels": 3230,
+          "sample": [
+            225,
+            177
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "cave-rim",
+          "pixels": 20346,
+          "sample": [
+            846,
+            656
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "end-arch",
+          "pixels": 9564,
+          "sample": [
+            1544,
+            750
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "end-left-pagoda-guardian",
+          "pixels": 6926,
+          "sample": [
+            1445,
+            744
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "end-right-pagoda-guardian",
+          "pixels": 9659,
+          "sample": [
+            1653,
+            792
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "border12"
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 0,
+      "townObjects": 54,
+      "townSpriteRGBABytes": 19865964,
+      "probes": [
+        {
+          "id": "tree-0",
+          "pixels": null,
+          "sample": [
+            683,
+            329
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-1",
+          "pixels": null,
+          "sample": [
+            812,
+            293
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-2",
+          "pixels": null,
+          "sample": [
+            690,
+            449
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-3",
+          "pixels": null,
+          "sample": [
+            770,
+            450
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-4",
+          "pixels": null,
+          "sample": [
+            862,
+            386
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-5",
+          "pixels": null,
+          "sample": [
+            1182,
+            454
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-6",
+          "pixels": null,
+          "sample": [
+            551,
+            578
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-7",
+          "pixels": null,
+          "sample": [
+            714,
+            586
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-8",
+          "pixels": null,
+          "sample": [
+            793,
+            586
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-9",
+          "pixels": null,
+          "sample": [
+            912,
+            576
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-10",
+          "pixels": null,
+          "sample": [
+            925,
+            667
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-11",
+          "pixels": null,
+          "sample": [
+            1280,
+            577
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-12",
+          "pixels": null,
+          "sample": [
+            1410,
+            648
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-13",
+          "pixels": null,
+          "sample": [
+            713,
+            193
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-14",
+          "pixels": null,
+          "sample": [
+            726,
+            195
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "tree-15",
+          "pixels": null,
+          "sample": [
+            766,
+            183
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-0",
+          "pixels": null,
+          "sample": [
+            107,
+            375
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-1",
+          "pixels": null,
+          "sample": [
+            134,
+            434
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-2",
+          "pixels": null,
+          "sample": [
+            268,
+            347
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-3",
+          "pixels": null,
+          "sample": [
+            260,
+            436
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-4",
+          "pixels": null,
+          "sample": [
+            290,
+            530
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-5",
+          "pixels": null,
+          "sample": [
+            137,
+            595
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-6",
+          "pixels": null,
+          "sample": [
+            141,
+            618
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "lava-tree-7",
+          "pixels": null,
+          "sample": [
+            309,
+            609
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "snow-tree-0",
+          "pixels": null,
+          "sample": [
+            1342,
+            213
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "snow-tree-1",
+          "pixels": null,
+          "sample": [
+            1467,
+            230
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "palm",
+          "pixels": null,
+          "sample": [
+            716,
+            660
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "banyan",
+          "pixels": null,
+          "sample": [
+            814,
+            661
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-0",
+          "pixels": null,
+          "sample": [
+            1202,
+            342
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-1",
+          "pixels": null,
+          "sample": [
+            1391,
+            347
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-2",
+          "pixels": null,
+          "sample": [
+            1322,
+            387
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-3",
+          "pixels": null,
+          "sample": [
+            1293,
+            394
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-0",
+          "pixels": null,
+          "sample": [
+            777,
+            275
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-1",
+          "pixels": null,
+          "sample": [
+            826,
+            302
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-2",
+          "pixels": null,
+          "sample": [
+            610,
+            425
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-4",
+          "pixels": null,
+          "sample": [
+            874,
+            401
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-5",
+          "pixels": null,
+          "sample": [
+            781,
+            513
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-6",
+          "pixels": null,
+          "sample": [
+            600,
+            660
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-7",
+          "pixels": null,
+          "sample": [
+            894,
+            631
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-8",
+          "pixels": null,
+          "sample": [
+            258,
+            296
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-9",
+          "pixels": null,
+          "sample": [
+            264,
+            477
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krata",
+          "pixels": null,
+          "sample": [
+            184,
+            217
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-dab",
+          "pixels": null,
+          "sample": [
+            164,
+            411
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-ngiw",
+          "pixels": null,
+          "sample": [
+            196,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tarang",
+          "pixels": null,
+          "sample": [
+            646,
+            175
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sawan",
+          "pixels": null,
+          "sample": [
+            1020,
+            160
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lokan",
+          "pixels": null,
+          "sample": [
+            1406,
+            198
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lan",
+          "pixels": null,
+          "sample": [
+            1275,
+            360
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krajok",
+          "pixels": null,
+          "sample": [
+            1385,
+            595
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tea",
+          "pixels": null,
+          "sample": [
+            630,
+            553
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sala",
+          "pixels": null,
+          "sample": [
+            877,
+            548
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-canteen",
+          "pixels": null,
+          "sample": [
+            618,
+            254
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-frontier",
+          "pixels": null,
+          "sample": [
+            759,
+            998
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "judgment-dais",
+          "pixels": null,
+          "sample": [
+            724,
+            418
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "zone1"
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 0,
+      "townObjects": 55,
+      "townSpriteRGBABytes": 20007204,
+      "probes": [
+        {
+          "id": "rock-0",
+          "pixels": null,
+          "sample": [
+            1197,
+            343
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-1",
+          "pixels": null,
+          "sample": [
+            1386,
+            350
+          ],
+          "behindIsCovered": false,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-2",
+          "pixels": null,
+          "sample": [
+            1317,
+            388
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-3",
+          "pixels": null,
+          "sample": [
+            1290,
+            394
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-0",
+          "pixels": null,
+          "sample": [
+            781,
+            288
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-1",
+          "pixels": null,
+          "sample": [
+            257,
+            434
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-2",
+          "pixels": null,
+          "sample": [
+            942,
+            563
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-3",
+          "pixels": null,
+          "sample": [
+            587,
+            586
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-4",
+          "pixels": null,
+          "sample": [
+            722,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-5",
+          "pixels": null,
+          "sample": [
+            1424,
+            640
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-6",
+          "pixels": null,
+          "sample": [
+            577,
+            436
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-7",
+          "pixels": null,
+          "sample": [
+            795,
+            452
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-8",
+          "pixels": null,
+          "sample": [
+            575,
+            271
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-9",
+          "pixels": null,
+          "sample": [
+            703,
+            450
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-10",
+          "pixels": null,
+          "sample": [
+            1157,
+            462
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-11",
+          "pixels": null,
+          "sample": [
+            892,
+            417
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-12",
+          "pixels": null,
+          "sample": [
+            1453,
+            234
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-13",
+          "pixels": null,
+          "sample": [
+            941,
+            652
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-14",
+          "pixels": null,
+          "sample": [
+            816,
+            596
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-15",
+          "pixels": null,
+          "sample": [
+            1363,
+            231
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-16",
+          "pixels": null,
+          "sample": [
+            1310,
+            575
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-17",
+          "pixels": null,
+          "sample": [
+            244,
+            365
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-18",
+          "pixels": null,
+          "sample": [
+            205,
+            608
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-19",
+          "pixels": null,
+          "sample": [
+            155,
+            434
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-20",
+          "pixels": null,
+          "sample": [
+            315,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-21",
+          "pixels": null,
+          "sample": [
+            781,
+            193
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-22",
+          "pixels": null,
+          "sample": [
+            179,
+            672
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-23",
+          "pixels": null,
+          "sample": [
+            713,
+            160
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-24",
+          "pixels": null,
+          "sample": [
+            303,
+            543
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-25",
+          "pixels": null,
+          "sample": [
+            129,
+            386
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-26",
+          "pixels": null,
+          "sample": [
+            169,
+            580
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-27",
+          "pixels": null,
+          "sample": [
+            742,
+            203
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "asia-tree-28",
+          "pixels": null,
+          "sample": [
+            1354,
+            782
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-0",
+          "pixels": null,
+          "sample": [
+            786,
+            275
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-1",
+          "pixels": null,
+          "sample": [
+            824,
+            302
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-2",
+          "pixels": null,
+          "sample": [
+            594,
+            425
+          ],
+          "behindIsCovered": false,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-4",
+          "pixels": null,
+          "sample": [
+            898,
+            401
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-5",
+          "pixels": null,
+          "sample": [
+            779,
+            513
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-6",
+          "pixels": null,
+          "sample": [
+            622,
+            660
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-7",
+          "pixels": null,
+          "sample": [
+            914,
+            631
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-8",
+          "pixels": null,
+          "sample": [
+            230,
+            296
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-9",
+          "pixels": null,
+          "sample": [
+            267,
+            477
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krata",
+          "pixels": null,
+          "sample": [
+            196,
+            220
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-dab",
+          "pixels": null,
+          "sample": [
+            160,
+            411
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-ngiw",
+          "pixels": null,
+          "sample": [
+            211,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tarang",
+          "pixels": null,
+          "sample": [
+            651,
+            174
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sawan",
+          "pixels": null,
+          "sample": [
+            1011,
+            160
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lokan",
+          "pixels": null,
+          "sample": [
+            1390,
+            198
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lan",
+          "pixels": null,
+          "sample": [
+            1292,
+            360
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krajok",
+          "pixels": null,
+          "sample": [
+            1391,
+            595
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tea",
+          "pixels": null,
+          "sample": [
+            610,
+            555
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sala",
+          "pixels": null,
+          "sample": [
+            911,
+            548
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-canteen",
+          "pixels": null,
+          "sample": [
+            619,
+            254
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-frontier",
+          "pixels": null,
+          "sample": [
+            737,
+            999
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "judgment-dais",
+          "pixels": null,
+          "sample": [
+            722,
+            418
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "zone2"
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 0,
+      "townObjects": 54,
+      "townSpriteRGBABytes": 19878768,
+      "probes": [
+        {
+          "id": "rock-0",
+          "pixels": null,
+          "sample": [
+            1199,
+            342
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-1",
+          "pixels": null,
+          "sample": [
+            1385,
+            347
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-2",
+          "pixels": null,
+          "sample": [
+            1314,
+            386
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "rock-3",
+          "pixels": null,
+          "sample": [
+            1290,
+            394
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-0",
+          "pixels": null,
+          "sample": [
+            719,
+            157
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-1",
+          "pixels": null,
+          "sample": [
+            746,
+            196
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-2",
+          "pixels": null,
+          "sample": [
+            785,
+            186
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-3",
+          "pixels": null,
+          "sample": [
+            578,
+            265
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-4",
+          "pixels": null,
+          "sample": [
+            786,
+            282
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-5",
+          "pixels": null,
+          "sample": [
+            898,
+            412
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-6",
+          "pixels": null,
+          "sample": [
+            581,
+            431
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-7",
+          "pixels": null,
+          "sample": [
+            706,
+            444
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-8",
+          "pixels": null,
+          "sample": [
+            800,
+            446
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-9",
+          "pixels": null,
+          "sample": [
+            951,
+            558
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-10",
+          "pixels": null,
+          "sample": [
+            590,
+            581
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-11",
+          "pixels": null,
+          "sample": [
+            726,
+            589
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-12",
+          "pixels": null,
+          "sample": [
+            822,
+            591
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-13",
+          "pixels": null,
+          "sample": [
+            948,
+            647
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-14",
+          "pixels": null,
+          "sample": [
+            130,
+            383
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-15",
+          "pixels": null,
+          "sample": [
+            245,
+            363
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-16",
+          "pixels": null,
+          "sample": [
+            150,
+            429
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-17",
+          "pixels": null,
+          "sample": [
+            253,
+            429
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-18",
+          "pixels": null,
+          "sample": [
+            301,
+            542
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-19",
+          "pixels": null,
+          "sample": [
+            311,
+            589
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-20",
+          "pixels": null,
+          "sample": [
+            170,
+            577
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-21",
+          "pixels": null,
+          "sample": [
+            212,
+            606
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-22",
+          "pixels": null,
+          "sample": [
+            174,
+            668
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-23",
+          "pixels": null,
+          "sample": [
+            1358,
+            226
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-24",
+          "pixels": null,
+          "sample": [
+            1457,
+            228
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-25",
+          "pixels": null,
+          "sample": [
+            1160,
+            457
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-26",
+          "pixels": null,
+          "sample": [
+            1306,
+            572
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-tree-27",
+          "pixels": null,
+          "sample": [
+            1442,
+            636
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-0",
+          "pixels": null,
+          "sample": [
+            775,
+            275
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-1",
+          "pixels": null,
+          "sample": [
+            841,
+            302
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-2",
+          "pixels": null,
+          "sample": [
+            614,
+            425
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-4",
+          "pixels": null,
+          "sample": [
+            881,
+            401
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-5",
+          "pixels": null,
+          "sample": [
+            798,
+            513
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-6",
+          "pixels": null,
+          "sample": [
+            610,
+            660
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-7",
+          "pixels": null,
+          "sample": [
+            903,
+            631
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-8",
+          "pixels": null,
+          "sample": [
+            252,
+            296
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "house-9",
+          "pixels": null,
+          "sample": [
+            286,
+            477
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krata",
+          "pixels": null,
+          "sample": [
+            181,
+            221
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-dab",
+          "pixels": null,
+          "sample": [
+            166,
+            411
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-ngiw",
+          "pixels": null,
+          "sample": [
+            210,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tarang",
+          "pixels": null,
+          "sample": [
+            618,
+            175
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sawan",
+          "pixels": null,
+          "sample": [
+            1019,
+            160
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lokan",
+          "pixels": null,
+          "sample": [
+            1423,
+            197
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lan",
+          "pixels": null,
+          "sample": [
+            1284,
+            360
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krajok",
+          "pixels": null,
+          "sample": [
+            1393,
+            595
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tea",
+          "pixels": null,
+          "sample": [
+            609,
+            555
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sala",
+          "pixels": null,
+          "sample": [
+            889,
+            548
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-canteen",
+          "pixels": null,
+          "sample": [
+            624,
+            254
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-frontier",
+          "pixels": null,
+          "sample": [
+            724,
+            999
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "judgment-dais",
+          "pixels": null,
+          "sample": [
+            744,
+            417
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "zone3"
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 0,
+      "townObjects": 13,
+      "townSpriteRGBABytes": 12142496,
+      "probes": [
+        {
+          "id": "station-krata",
+          "pixels": null,
+          "sample": [
+            181,
+            205
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-dab",
+          "pixels": null,
+          "sample": [
+            167,
+            405
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-ngiw",
+          "pixels": null,
+          "sample": [
+            204,
+            585
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tarang",
+          "pixels": null,
+          "sample": [
+            660,
+            168
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sawan",
+          "pixels": null,
+          "sample": [
+            981,
+            155
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lokan",
+          "pixels": null,
+          "sample": [
+            1399,
+            196
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-lan",
+          "pixels": null,
+          "sample": [
+            1278,
+            355
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-krajok",
+          "pixels": null,
+          "sample": [
+            1402,
+            594
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-tea",
+          "pixels": null,
+          "sample": [
+            589,
+            547
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-sala",
+          "pixels": null,
+          "sample": [
+            885,
+            548
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-canteen",
+          "pixels": null,
+          "sample": [
+            617,
+            271
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "station-frontier",
+          "pixels": null,
+          "sample": [
+            750,
+            1013
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "judgment-dais",
+          "pixels": null,
+          "sample": [
+            740,
+            420
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "zone4"
+    },
+    {
+      "width": 1672,
+      "height": 941,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 3,
+      "townObjects": 0,
+      "townSpriteRGBABytes": 0,
+      "probes": [
+        {
+          "id": "asia-gateway",
+          "pixels": 16254,
+          "sample": [
+            105,
+            179
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "snow-cave-rim",
+          "pixels": 14393,
+          "sample": [
+            820,
+            651
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "west-gateway",
+          "pixels": 22918,
+          "sample": [
+            1476,
+            722
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "border23"
+    },
+    {
+      "width": 1672,
+      "height": 941,
+      "alphaMax": 0,
+      "opaqueMax": 0,
+      "opaqueOver2": 0,
+      "cutouts": 3,
+      "townObjects": 0,
+      "townSpriteRGBABytes": 0,
+      "probes": [
+        {
+          "id": "west-gateway",
+          "pixels": 16376,
+          "sample": [
+            102,
+            179
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "cyber-cave-gate",
+          "pixels": 7750,
+          "sample": [
+            790,
+            653
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        },
+        {
+          "id": "cyber-gateway",
+          "pixels": 32657,
+          "sample": [
+            1600,
+            772
+          ],
+          "behindIsCovered": true,
+          "frontIsVisible": true
+        }
+      ],
+      "map": "border34"
+    }
+  ],
+  "errors": [],
+  "basis": "Native recomposition of floor+nature, and synthetic draw-order probes at authored feet; not semantic art approval or physical phone measurement.",
+  "diagnosticOnly": "Earlier probe sampled a rounded sprite crop, not the native fractional draw location. Superseded by corrected raster-aligned object-depth-review.json; no acceptance claim."
+}

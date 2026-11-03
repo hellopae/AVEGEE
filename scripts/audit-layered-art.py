@@ -8,6 +8,20 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'docs/art-reviews/2026-11-03-layered-map'
 SOURCES={'zone1':'img/map-zone1/v5/zone1-terrain-v5-preview.webp','zone2':'img/map-zone2/v2/zone2-terrain-v2-preview.webp','zone3':'img/map-zone3/v1/zone3-terrain-v1-preview.webp','zone4':'img/map-zone4/v3/zone4-terrain-v3-preview.webp','border23':'img/frontier-route/zone2-3-v4.webp','border34':'img/frontier-route/zone3-4-v2.webp'}
 manifest={'sprites':{'water':{'src':'water-loop-sheet.png','cols':4,'rows':2,'frames':8,'fps':8,'inset':2},'lava':{'src':'lava-loop-sheet.png','cols':4,'rows':2,'frames':8,'fps':6,'inset':2}},'base':'812152d2','status':'art studies, not installed; native-detail, object-depth and registration review pending','maps':{},'assets':{}}
+plan_path=OUT/'town-object-plan.json'
+if plan_path.exists():
+ plan=json.loads(plan_path.read_text());plan['assets']={}
+ for row in plan['maps'].values():
+  for obj in row['objects']:
+   src=obj['src']
+   if src not in plan['assets']:
+    with Image.open(ROOT/src) as im:plan['assets'][src]={'size':list(im.size),'mode':im.mode,'bytes':(ROOT/src).stat().st_size}
+ for row in plan['maps'].values():
+  pixels=0
+  for src in {obj['src'] for obj in row['objects']}:
+   w,h=plan['assets'][src]['size'];scale=min(1,512/max(w,h));pixels+=max(1,round(w*scale))*max(1,round(h*scale))
+  row['reviewSpriteRgbaBytes']=pixels*4
+ plan_path.write_text(json.dumps(plan,ensure_ascii=False,indent=2)+'\n')
 for p in sorted(OUT.glob('*.png')):
  if p.name.startswith('review-'):continue
  with Image.open(p) as im:
@@ -27,9 +41,11 @@ for key,reference in SOURCES.items():
  if infill.exists() and key in json.loads(infill.read_text()):row['floorInfill']=json.loads(infill.read_text())[key]
  registration=OUT/'object-registration.json'
  if registration.exists() and key in json.loads(registration.read_text()):row['railsRegistration']=json.loads(registration.read_text())[key]
+ distance={'zone1':[1],'zone2':[2],'zone3':[3],'zone4':[4],'border23':[2,3],'border34':[3,4]}[key]
+ row['distance']=[f'zone{z}-distance-study.png' for z in distance if (OUT/f'zone{z}-distance-study.png').exists()]
  row['filesPresent']=all((OUT/row[k]).exists() for k in ['floor','nature'])
  manifest['maps'][key]=row
-manifest['maps']['border12']={'reference':'img/frontier-route/zone1-2-v6.webp','floor':'floor-study.png','nature':'nature-study.png','liquid':'liquid-study.png','rails':'rails-study.png','status':'working preview; visual roots, object depth, seams and physical-mobile performance pending'}
+manifest['maps']['border12']={'reference':'img/frontier-route/zone1-2-v6.webp','floor':'floor-study.png','nature':'nature-study.png','liquid':'liquid-study.png','rails':'rails-study.png','distance':['zone1-distance-study.png','zone2-distance-study.png'],'status':'working preview; visual roots, object depth, seams and physical-mobile performance pending'}
 # Source metadata only; coverage is a necessary condition, not proof of floor semantics.
 for z,mod in [(1,'town-owner-walkmask'),(2,'town-owner-walkmask-asia'),(3,'town-owner-walkmask-west'),(4,'town-owner-walkmask-cyberhell')]:
  image=OUT/f'zone{z}-floor-study.png'
