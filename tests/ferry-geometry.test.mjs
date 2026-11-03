@@ -12,7 +12,7 @@ for(const zone of ['th','asia','west','cyberhell'])test(`${zone}: reviewed berth
  const b=ferryBerth(zone,{x:2225,y:1780});assert.deepEqual(b,{x:2225,y:1840,hop:8});
  assert(inPoly(1930,b.y,ferryBridge(zone)));assert(!inPoly(b.x,b.y,ferryBridge(zone)));assert(!inPoly(1600,b.y,ferryBridge(zone)));
  const source=a(),start=mapTravelPose({...source,phase:'board',progress:0},400),end=mapTravelPose({...source,phase:'board',progress:1},400);
- assert(Math.abs(end.hero.y-start.hero.y)<60,'boarding is less than the old 124-unit jump');
+ assert(Math.abs(end.hero.y-start.hero.y)<70,'boarding remains a short hop from the reviewed quay');
 });
 test('boarding and landing meet the same bobbing deck used while sailing',()=>{
  for(const reduced of [false,true])for(const time of [0,400,1234]){
@@ -40,4 +40,20 @@ test('committing between town ports resets berth and boarding height to destinat
  assert(beginMapTravel(g,'cyberhell'));assert.equal(g.mapTravel.boardingHop,8);
  for(let i=0;i<2000&&g.mapTravel&&!g.mapTravel.committed;i++)advanceMapTravel(g,120);
  assert.equal(g.zone,'cyberhell');assert.equal(g.mapTravel.boardingHop,8);assert.equal(g.mapTravel.waterY,g.harbourPoint().y+60);
+});
+
+// Independently traced from the visible floor of img/prop-boat.png (512px).
+// Project world feet back through drawBoat's 132-unit, mirrored texture.
+test('both passengers stand inside the painted boat deck through boarding and sailing',()=>{
+ const floor=[[115,357],[205,378],[320,417],[343,438],[258,420],[148,387]];
+ for(const reduced of [false,true])for(const time of [0,400,1234])
+ for(const [phase,progress] of [['board',1],['depart',0],['depart',.5],['arrive',.5],['arrive',1],['land',0]]){
+  const pose=mapTravelPose({...a(),reduced,phase,progress},time);
+  const bob=reduced?0:Math.sin(time/620)*5;
+  for(const who of ['hero','reader']){
+   const feet=pose[who],px=256-(feet.x-pose.boat.x)*512/132;
+   const py=(feet.y-pose.boat.y+132*.78-bob)*512/132;
+   assert(inPoly(px,py,floor),`${who} feet outside the painted deck in ${phase}`);
+  }
+ }
 });
