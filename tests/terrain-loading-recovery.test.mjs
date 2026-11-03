@@ -24,7 +24,7 @@ async function fixture(options={}) {
   globalThis.document={createElement:()=>({width:4,height:4,getContext:()=>canvasContext,toDataURL:()=> 'data:image/png;base64,AA=='})};
   const module=await import(`../src/town-terrain.js?loading-audit=${++serial}`);
   const context={canvas:{width:options.w??700,height:options.h??500},save(){},restore(){},drawImage(){},
-    getTransform:()=>({a:1,d:1,b:0,c:0,e:options.x?-options.x:0,f:options.y?-options.y:0})};
+    getTransform:()=>({a:options.scale??1,d:options.scale??1,b:0,c:0,e:options.x?-options.x:0,f:options.y?-options.y:0})};
   return {module,images,draw:()=>module.drawTownTerrain(context,null,0,true),chunks:()=>images.filter(im=>/\/r\d-c\d\.webp/.test(im.src)),
     async advance(ms){const end=time+ms;while(true){const due=[...timers].filter(([,t])=>t.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!due)break;time=due[1].at;timers.delete(due[0]);due[1].fn();await flush();}time=end;await flush();},
     restore(){for(const [key,value]of Object.entries(original)){if(key==='now')Date.now=value;else if(value===undefined)delete globalThis[key];else globalThis[key]=value;}}
@@ -74,4 +74,9 @@ test('optional terrain repair composition and decoding finish before the sharp t
     assert.equal(typeof finishRepair,'function');assert.equal(f.module.townTerrainStats().ready,0);
     finishRepair();await pending;assert.equal(f.module.townTerrainStats().ready,1);assert.equal(f.module.townTerrainStats().loading,0);
   }finally{f.restore();}
+});
+
+
+test('phone follow zoom loads sharp tiles before the1536px overview is magnified',async()=>{
+ const f=await fixture({scale:.49,w:374,h:828});try{f.draw();assert.ok(f.chunks().length>0);assert.equal(f.module.townTerrainViewStats().mode,'loading-detail');}finally{f.restore();}
 });

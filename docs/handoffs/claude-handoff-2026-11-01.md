@@ -340,3 +340,18 @@ Latest user steering: continue original drawing workflow; defer Shado trial. Use
 - คงจำนวน293สาย/287เสา ตำแหน่ง/ชั้นdepth/culling และงบมือถือ/reduced-motion/weather-off; ไม่มีcanvas blurหรือภาพเพิ่ม
 - Full1903/1903; focused40/40; syntax/diffcheckผ่าน. Chromiumจริง1280×800และ390×844ไม่มีpageerror ตรวจภาพและคลิปmotion พร้อมภาพแยกเอฟเฟกต์
 - หลักฐานภายนอก Output/Codex/2026-11-03-electric-polish. คิวราวสะพาน/อาคาร/Grace/เรือ/บรรยากาศส่วนอื่น/ภารกิจ/เนื้อเรื่องยังคงเดิม
+
+
+## MAP-DETAIL-4 / TH-CLOUD-VISIBILITY ชุด runtime — 3 พฤศจิกายน 2569
+
+- ยกปัญหาซูมทั้ง4โซนและเมฆTHก่อนคิวรั้ว; เดิมคิวภาพแตกเจาะจงCyber ตอนนี้ขยายครบ4โซนตามคำย้ำผู้ใช้
+- Chromiumdesktopตรวจซูมสูงสุดครบ4โซน:ภาพchunkโหลดได้; จากนั้นพบmobile374pxที่maxzoomยังใช้overviewเพราะthreshold.7สูงกว่าpreviewdensity.4. แก้thresholdเป็น.38แล้ว ตอนนี้desktop/mobileครบ8ฉากเป็นdetailจริง ไม่มีpageerror. แหล่งภาพWest/Cyberบางส่วนเป็นquadrant1536×1024ที่ขยายประมาณ1.8×ก่อนตัดเป็นแผนที่4915×3277; ไฟล์ใหญ่ไม่ได้หมายถึงnative detailเพิ่ม
+- เปลี่ยนresampleพื้น/แสงเป็นhigh qualityครั้งเดียวต่อขนาดdevice แล้วblitแคช; terrain-detail.jsจำกัด16M pixelsรวม/3Mต่อtile ไม่สร้างfull-worldcanvasตอนzoom และไม่ลดระดับzoomเดิม
+- THcloud20→32%ตามคำย้ำให้เห็นชัด; กลุ่มเงาเล็กลง(.56,.40)เกิดช่องแสงเทียบกลุ่มเก่า(.78,.58)ที่บังเกือบเต็มจอ; Asia/West/Cyberยัง20%. ใช้passร่วมแผนที่/ชายแดน/สอบสวน/ต่อสู้;ไม่มีกรอบเจาะข้อความ
+- Probeพื้นขาว1000×600:เงาTHmin179/max255,พื้นที่มืดกว่า220=18.2%,พื้นที่สว่างกว่า245=80.5%; ตรวจภาพจริงแล้วเงาแยกเป็นกลุ่มชัด
+- **ยังไม่ปิด MAP-DETAIL-4:** งานนี้ปรับการแสดงผล ไม่ได้สร้างรายละเอียดใหม่ที่ต้นฉบับไม่มี ต้องทำhigh-detail art tilesครบ4โซนต่อ และทดสอบตำแหน่งรอยต่อ/walkmaskเทียบต้นฉบับ ห้ามอ้างว่าแก้แตกครบแล้ว
+- หลักฐานภายนอก Output/Codex/2026-11-03-map-detail-cloud;มีbefore/after4โซน, audit/verify scripts และcloudprobe
+
+พบและแก้เกณฑ์detail switch:.7→.38devicepx/worldunitตามpreview1536/3840=.4; มือถือสูงสุดเดิมไม่ขอtileเลย ตอนนี้โหลดและวาด6visibletilesจริงทุกโซน. ตัวตรวจเฟรมไม่นับminimapทับกล้อง. Focused36/36ผ่าน.
+
+ผลตรวจสุดท้ายruntime/cloud:Full1905/1905,focused36/36,Chromium8ฉากdetailจริง/0pageerrors;cacheอยู่ใน16Mpixel. งานnative-detail redrawทั้ง4โซนยังเปิด.

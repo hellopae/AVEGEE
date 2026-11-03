@@ -2,7 +2,7 @@ import {repairTownTerrain} from './town-terrain-repair.js';
 // Zone 1 ground = the painted map img/map-zone1/v5 (4915x3277 px for the 3840x2560 world, 1.28 px per unit),
 // cut into 20 webp chunks (1024 px; last column 819, last row 205) plus a 1536x1024 preview.
 // Only chunks that touch the camera are fetched and decoded; the preview stands in for chunks that are
-// not ready yet and serves the overview (<0.7 device px per unit) and the minimap on its own.
+// not ready yet and serves the overview (<0.38 device px per unit) and the minimap on its own.
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain,prepareTownLighting} from './town-lighting.js?v=fire-v2';
 import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
@@ -27,7 +27,7 @@ export function townChunkRect(row,col,zone=activeTownZone()) {
   return {x:x0*G.unitX, y:y0*G.unitY, w:(x1-x0)*G.unitX, h:(y1-y0)*G.unitY};
 }
 export const townChunkUrl = (row,col,zone=activeTownZone()) => `${(townSkinOf(zone)||ZONE_SKIN.th).terrain.dir}r${row}-c${col}.webp`;
-const DETAIL_FROM = 0.7;          // device px per world unit; below this the preview is as sharp as the chunks
+const DETAIL_FROM = 0.38;         // preview density is1536/3840=.4px/unit; switch before it magnifies
 const MAX_LOADING = 3;
 const CHUNK_TIMEOUT_MS = 15000, RETRY_BASE_MS = 1000, RETRY_MAX_MS = 30000;
 export const townTerrainImage = () => store().preview?.ready ? store().preview.image : null;
@@ -36,7 +36,7 @@ export const townTerrainImage = () => store().preview?.ready ? store().preview.i
 const stores = new Map();
 const store = (zone=activeTownZone()) => {
   let st = stores.get(zone);
-  if (!st) { st = {chunks:new Map(), preview:null, previewWait:null}; stores.set(zone,st); }
+  if (!st) { st = {chunks:new Map(), preview:null, previewWait:null,view:{mode:'pending',visible:0}}; stores.set(zone,st); }
   return st;
 };
 let loading = 0, frame = 0;
@@ -96,6 +96,8 @@ function request(row,col) {
   return c;
 }
 /** Test / tool hook: how many chunks are decoded or on their way. */
+export const townTerrainViewStats = () => ({...store().view});
+const recordView=(ctx,view)=>{if(ctx.canvas.width>=300)store().view=view;}; // minimap must not overwrite camera diagnostics
 export const townTerrainStats = () => {
   const s = {idle:0, loading:0, ready:0, error:0};
   for (const c of store().chunks.values()) s[c.state]++;
@@ -115,10 +117,11 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
     vx1 = Math.min(TOWN_SIZE.w, (ctx.canvas.width - m.e)/m.a); vy1 = Math.min(TOWN_SIZE.h, (ctx.canvas.height - m.f)/m.d);
   }
   ctx.save();
-  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'low';
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
   const pv = store().preview?.ready ? store().preview.image : null;
   const G = grid();
   if (scale < DETAIL_FROM) {
+    recordView(ctx,{mode:'overview',visible:0});
     if (pv) drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
     ctx.restore();
     return;
@@ -135,10 +138,12 @@ export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
   // The preview is a complete clean painting, so keep it until every visible chunk is ready,
   // then switch the whole camera footprint to sharp art at once.
   if(!visible.every(v=>v.c.state==='ready')) {
+    recordView(ctx,{mode:'loading-detail',visible:visible.length});
     if(pv)drawHellTerrain(ctx,pv,time,reduced,0,0,TOWN_SIZE.w,TOWN_SIZE.h);
     ctx.restore();
     return;
   }
+  recordView(ctx,{mode:'detail',visible:visible.length});
   // 1 device px of overlap hides hairline seams between neighbouring chunks at fractional scales.
   const eps = 1/scale;
   for (const {row,col,r,c} of visible) {

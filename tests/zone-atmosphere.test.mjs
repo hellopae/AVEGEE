@@ -4,7 +4,7 @@ import {ATMOSPHERE,atmosphereBudget,TH_ATMOS_LAMPS} from '../src/scene-atmospher
 import {cloudOpacityForZone,MAP_FX,drawBiomeWeather,setWeatherEnabled} from '../src/map-ambient.js';
 import {FRONTIER_WORLD,FRONTIER_CINEMATIC,frontierCameraTarget} from '../src/frontier-view-metrics.js';
 import {townFloorAt} from '../src/town-layout.js';
-test('all four cloud caps are20% with independent biome weather',()=>{assert.equal(cloudOpacityForZone('th'),.2);assert.equal(cloudOpacityForZone('asia'),.2);assert.equal(cloudOpacityForZone('west'),.2);assert.equal(cloudOpacityForZone('cyberhell'),.2);assert.ok(MAP_FX.cloud.peakByZone!==undefined);});
+test('Thai cloud cap follows the November3 visibility review; other biome caps remain20%',()=>{assert.equal(cloudOpacityForZone('th'),.32);assert.equal(cloudOpacityForZone('asia'),.2);assert.equal(cloudOpacityForZone('west'),.2);assert.equal(cloudOpacityForZone('cyberhell'),.2);assert.ok(MAP_FX.cloud.peakByZone!==undefined);});
 test('dialog weather particle and canvas budgets stay bounded on desktop and phone',()=>{assert.ok(atmosphereBudget(3840,2160)<=160);assert.ok(atmosphereBudget(390,844,3)<atmosphereBudget(1280,800,1));assert.ok(ATMOSPHERE.maxCanvasPixels<=1000000);
  const rects=[],ctx=new Proxy({canvas:{width:1280,height:800},createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(...a)=>{if(k==='rect')rects.push(a);},set:(o,k,v)=>(o[k]=v,true)});
  drawBiomeWeather(ctx,'west',1000,1280,800,false,[0,0,1,1],40);assert.ok(rects.length<=41,'at most40snowflakes plusoneclip');setWeatherEnabled(false);const before=rects.length;drawBiomeWeather(ctx,'west',1000,1280,800,false,[0,0,1,1],40);assert.equal(rects.length,before);setWeatherEnabled(true);
@@ -37,7 +37,7 @@ test('Thai leaf motion is bounded and reduced motion creates no particles',async
  assert.equal(drawThaiLeaves(ctx,1000,390,844),12);assert.equal(points.length,12);assert.ok(points.every(([x,y])=>x>=0&&x<390&&y>=0&&y<844));const before=JSON.stringify(points);points.length=0;drawThaiLeaves(ctx,2000,390,844);assert.notEqual(JSON.stringify(points),before);points.length=0;assert.equal(drawThaiLeaves(ctx,3000,390,844,true),0);assert.equal(points.length,0);
 });
 
-test('cloud shadows have20percent maximum in every zone and dialog lamps are absent',()=>{
- for(const z of ['th','asia','west','cyberhell'])assert.equal(cloudOpacityForZone(z),.2);
+test('cloud shadows use their regional cap and dialog lamps are absent',()=>{
+ for(const z of ['th','asia','west','cyberhell'])assert.equal(cloudOpacityForZone(z),z==='th'?.32:.2);
  const source=readFileSync('src/scene-atmosphere.js','utf8');assert.doesNotMatch(source,/props=document.createElement|className='scene-atmosphere-props'/);
 });
