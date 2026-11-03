@@ -1,0 +1,15 @@
+{
+  "map": "border34",
+  "stats": {
+    "bytes": 24757648,
+    "peakBytes": 24757648,
+    "loaded": 70,
+    "evictions": 0,
+    "ready": 70,
+    "pending": 0,
+    "errors": [],
+    "maxBytes": 50331648,
+    "effectBytes": 1385280
+  },
+  "errors": []
+}

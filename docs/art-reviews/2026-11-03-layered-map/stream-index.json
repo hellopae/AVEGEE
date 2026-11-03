@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "maps": {
+    "border12": {
+      "src": "stream/border12/manifest.json"
+    },
+    "zone1": {
+      "src": "stream/zone1/manifest.json"
+    },
+    "zone2": {
+      "src": "stream/zone2/manifest.json"
+    },
+    "zone3": {
+      "src": "stream/zone3/manifest.json"
+    },
+    "zone4": {
+      "src": "stream/zone4/manifest.json"
+    },
+    "border23": {
+      "src": "stream/border23/manifest.json"
+    },
+    "border34": {
+      "src": "stream/border34/manifest.json"
+    }
+  }
+}

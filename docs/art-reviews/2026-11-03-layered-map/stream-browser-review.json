@@ -1,0 +1,57 @@
+{
+  "initial": {
+    "map": "border12",
+    "view": {
+      "x": 0,
+      "y": 0,
+      "w": 0.5,
+      "h": 0.49973432518597233
+    },
+    "hero": [
+      0.12,
+      0.22
+    ],
+    "stats": {
+      "bytes": 16088508,
+      "peakBytes": 16088508,
+      "loaded": 42,
+      "evictions": 0,
+      "ready": 42,
+      "pending": 36,
+      "errors": [],
+      "maxBytes": 50331648,
+      "effectBytes": 3787712
+    },
+    "totalTiles": 139,
+    "wanted": 78
+  },
+  "afterWalk": {
+    "view": {
+      "x": 0.12737289870070695,
+      "y": 0.11201683734541085,
+      "w": 0.4999999999999999,
+      "h": 0.49973432518597216
+    },
+    "hero": [
+      0.38229291335062277,
+      0.4053392867191482
+    ],
+    "stats": {
+      "bytes": 32834564,
+      "peakBytes": 32834564,
+      "loaded": 121,
+      "evictions": 27,
+      "ready": 94,
+      "pending": 1,
+      "errors": [],
+      "maxBytes": 50331648,
+      "effectBytes": 11407728
+    },
+    "ready": true
+  },
+  "pathStarted": true,
+  "mobileOverflow": false,
+  "forbiddenFullMapRequests": [],
+  "imageRequests": 123,
+  "errors": []
+}

@@ -1,0 +1,662 @@
+{
+  "maps": [
+    {
+      "map": "border12",
+      "totalTiles": 139,
+      "loaded": 78,
+      "stats": {
+        "bytes": 29028812,
+        "peakBytes": 29028812,
+        "loaded": 78,
+        "evictions": 0,
+        "ready": 78,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 3787712
+      },
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 0.5,
+        "h": 0.49973432518597233
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.12,
+        0.22
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 39750,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0,
+        "y": 0,
+        "w": 0.38654614553768846,
+        "h": 0.3863407543870308
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "zone1",
+      "totalTiles": 123,
+      "loaded": 57,
+      "stats": {
+        "bytes": 24328288,
+        "peakBytes": 24328288,
+        "loaded": 57,
+        "evictions": 0,
+        "ready": 57,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 2523744
+      },
+      "view": {
+        "x": 0.3076923076923077,
+        "y": 0.6517788461538461,
+        "w": 0.3846153846153846,
+        "h": 0.3245192307692308
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "goals": [
+        {
+          "approach": 6.708203932499385,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 8.246211251235266,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 38380,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0.3523046742938381,
+        "y": 0.6954431999650941,
+        "w": 0.2953906514123238,
+        "h": 0.24923586212914817
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "zone2",
+      "totalTiles": 120,
+      "loaded": 54,
+      "stats": {
+        "bytes": 22976512,
+        "peakBytes": 22976512,
+        "loaded": 54,
+        "evictions": 0,
+        "ready": 54,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 2519456
+      },
+      "view": {
+        "x": 0.3076923076923077,
+        "y": 0.6517788461538461,
+        "w": 0.3846153846153846,
+        "h": 0.3245192307692308
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 8.544003745317651,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 34553,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0.35240184535023705,
+        "y": 0.6955383061365445,
+        "w": 0.2951963092995259,
+        "h": 0.24907188597147495
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "zone3",
+      "totalTiles": 118,
+      "loaded": 52,
+      "stats": {
+        "bytes": 22718336,
+        "peakBytes": 22718336,
+        "loaded": 52,
+        "evictions": 0,
+        "ready": 52,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 2517312
+      },
+      "view": {
+        "x": 0.3076923076923077,
+        "y": 0.6517788461538461,
+        "w": 0.3846153846153846,
+        "h": 0.3245192307692308
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 38261,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0.3523040347142385,
+        "y": 0.695442573976561,
+        "w": 0.295391930571523,
+        "h": 0.24923694141972252
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "zone4",
+      "totalTiles": 123,
+      "loaded": 55,
+      "stats": {
+        "bytes": 22114464,
+        "peakBytes": 22114464,
+        "loaded": 55,
+        "evictions": 0,
+        "ready": 55,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 2573344
+      },
+      "view": {
+        "x": 0.3076923076923077,
+        "y": 0.6517788461538461,
+        "w": 0.3846153846153846,
+        "h": 0.3245192307692308
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.5,
+        0.84
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 10756,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0.3523040347142385,
+        "y": 0.695442573976561,
+        "w": 0.295391930571523,
+        "h": 0.24923694141972252
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "border23",
+      "totalTiles": 132,
+      "loaded": 66,
+      "stats": {
+        "bytes": 23722332,
+        "peakBytes": 23722332,
+        "loaded": 66,
+        "evictions": 0,
+        "ready": 66,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 1385280
+      },
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 0.5,
+        "h": 0.49973432518597233
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.13187799,
+        0.215196599
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 16229,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0,
+        "y": 0,
+        "w": 0.3859973316338874,
+        "h": 0.38579223209529334
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    },
+    {
+      "map": "border34",
+      "totalTiles": 136,
+      "loaded": 70,
+      "stats": {
+        "bytes": 24757648,
+        "peakBytes": 24757648,
+        "loaded": 70,
+        "evictions": 0,
+        "ready": 70,
+        "pending": 0,
+        "errors": [],
+        "maxBytes": 50331648,
+        "effectBytes": 1385280
+      },
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 0.5,
+        "h": 0.49973432518597233
+      },
+      "canvas": [
+        1200,
+        675
+      ],
+      "hero": [
+        0.11991626794258373,
+        0.20244420828905418
+      ],
+      "goals": [
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        },
+        {
+          "approach": 0,
+          "reachable": true,
+          "within105": true
+        }
+      ],
+      "actorRows": true,
+      "dof": {
+        "pixelsChangedOver2": 22244,
+        "focusUnchanged": true
+      },
+      "pauseStable": true,
+      "closeView": {
+        "x": 0,
+        "y": 0,
+        "w": 0.38654614553768846,
+        "h": 0.3863407543870308
+      },
+      "mobileOverflow": false,
+      "mobileBacking": [
+        390,
+        219
+      ],
+      "forbiddenFullImages": [],
+      "errors": []
+    }
+  ],
+  "basis": "Sequential Chromium contexts, selected map only; mobile viewport is not a physical phone."
+}

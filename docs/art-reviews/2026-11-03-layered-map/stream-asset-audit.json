@@ -1,0 +1,97 @@
+{
+  "maps": [
+    {
+      "map": "border12",
+      "tiles": 139,
+      "objects": 30,
+      "referencedImages": 163,
+      "compressedBytes": 7115028,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2,
+        2.6
+      ]
+    },
+    {
+      "map": "zone1",
+      "tiles": 123,
+      "objects": 54,
+      "referencedImages": 157,
+      "compressedBytes": 12618222,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2.6,
+        3.4
+      ]
+    },
+    {
+      "map": "zone2",
+      "tiles": 120,
+      "objects": 55,
+      "referencedImages": 154,
+      "compressedBytes": 11744462,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2.6,
+        3.4
+      ]
+    },
+    {
+      "map": "zone3",
+      "tiles": 118,
+      "objects": 54,
+      "referencedImages": 152,
+      "compressedBytes": 12251634,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2.6,
+        3.4
+      ]
+    },
+    {
+      "map": "zone4",
+      "tiles": 123,
+      "objects": 13,
+      "referencedImages": 148,
+      "compressedBytes": 11414214,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2.6,
+        3.4
+      ]
+    },
+    {
+      "map": "border23",
+      "tiles": 132,
+      "objects": 3,
+      "referencedImages": 147,
+      "compressedBytes": 6152822,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2,
+        2.6
+      ]
+    },
+    {
+      "map": "border34",
+      "tiles": 136,
+      "objects": 3,
+      "referencedImages": 151,
+      "compressedBytes": 6427602,
+      "largestDecodedBitmapBytes": 1327104,
+      "ownerCellsAdded": 0,
+      "cameraLevels": [
+        2,
+        2.6
+      ]
+    }
+  ],
+  "uniqueImages": 1048,
+  "method": "Sequential image headers and RLE geometry audit; not a full-browser memory or physical-phone performance measurement."
+}

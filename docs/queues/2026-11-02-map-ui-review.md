@@ -115,3 +115,13 @@
 - Focused33/33ผ่าน. Chromium7ฉากdesktop1280/mobileviewport390ไม่มีpageerror/overflow. วัดopaqueธรรมชาติขณะไหลทั้ง7ฉาก:เปลี่ยนเกิน2ระดับ0pixels/max1. Gallerypauseพร้อมweatherภาพคงเดิม. ไม่ใช่physicalphone/FPS และไม่ได้รันfull1906ซ้ำ.
 - ยังต้องเก็บขอบ/registration แบ่งnatureเป็นชิ้นพร้อมbaselineและฐานกั้น ตรวจทิศน้ำตก/loop ทำnative-detail80tiles และทดสอบเกม/อุปกรณ์จริงก่อนติดตั้ง. ไม่ปิดMAP-DETAIL-4หรือคิวGrace/ภารกิจ/เนื้อเรื่อง.
 - หลักฐานและขั้นตอนต่อ: `docs/art-reviews/2026-11-03-layered-map/README.md`, manifest, ledger, repair/navigation/motion reports และ verification scripts. เก็บภาพเก่า/diagnosticไว้ครบ ไม่ลบ/ย้อนcommit.
+
+## FOLLOW-CAMERA / STREAMING / DOF — 4 พฤศจิกายน 2569
+
+- เจ้าของส่งf1.mp4และขอเห็นเฉพาะบริเวณใกล้ตัวละคร, กล้องเพียง2ระดับ, โหลดชิ้นภาพตามทางเดิน+ขอบเผื่อ, foreground/midground/background, DOFและparallaxฉากไกล. จัดต้นแบบตามนี้ใน `docs/art-reviews/2026-11-03-layered-map/play.html` ครบ7ฉากแล้ว; ยังไม่ติดตั้ง/merge/pushเกมออนไลน์.
+- ระยะกล้องชายแดน2.0/2.6, เมือง2.6/3.4; ตัวละครประมาณ10%/13%ของจอ16:9. พื้น/ราก/เสา/ราวคงworld lock, ภาพไกลเคลื่อนช้ากว่ากล้องและเบลอ. Cacheblurไม่ทำซ้ำเต็มภาพทุกเฟรม.
+- ส่งออกtiles256px+gutter2, เรียกเฉพาะviewport+buffer96art px, decodeไม่เกิน2พร้อมกัน, คืนImageBitmapนอกบริเวณและยกเลิกfetchเมื่อเปลี่ยนฉาก. ไม่มีrequestrawmapหรือชีตYamaเต็มในe2eทั้ง7ฉาก. ท่าถือหนังสือ/เดินใช้แถวแอนิเมชันเดิมพร้อมyama-fit.
+- Snapshotbitmap21–28MiB/ฉาก; ทดสอบเดินสูงสุดประมาณ31.6MiBและมีevictionจริง. Budgetbitmap48MiB+blur12MiB ไม่ใช่RAMรวมbrowser/GPUหรือผลFPSมือถือจริง.
+- Focused46/46ผ่าน; ทั้ง7ฉากสองระดับ, DOFไม่เปลี่ยนจุดfocusบนตัวละคร, pause, navigationและmobileviewportผ่าน. Auditcollisionเพิ่มowner floor0cells. ไม่รันfull1906ซ้ำ.
+- ImageGenรวม46ครั้ง; เพิ่มฉากไกล4และrepairB12/B23อีก2ตั้งแต่สิทธิ์ขยาย. Borderfloorหลังpatchครบ100%alphaทั้ง3ฉาก เป็นเพียงcoverageไม่ใช่semantic/art acceptance. ไม่มีAIgenerationเพิ่มสำหรับtile export.
+- วิดีโอตัวอย่าง `camera-follow-demo.mp4`; ขั้นตอน/หลักฐานทั้งหมดในREADMEเดียวกันและstream-*reports. ยังเหลือnative-detail80tiles, การเก็บรอยต่อ/registration, physicalmobile และintegrationruntime. คิวGrace/ภารกิจ/เนื้อเรื่องยังคงอยู่.

@@ -1,0 +1,21 @@
+{
+  "source": "/Users/agapae/Desktop/Exam/f1.mp4",
+  "metadata": {
+    "width": 1080,
+    "height": 2340,
+    "durationSeconds": 23.170967,
+    "fps": 120,
+    "bytes": 36334091
+  },
+  "inspection": "Only metadata and two reduced frames (6s and15s), not the whole video/image history. Active landscape gameplay is approximately16:9 within a portrait recording.",
+  "design": {
+    "cameraPresets": 2,
+    "nearHeroHeightFraction": 0.1,
+    "closeHeroHeightFraction": 0.13,
+    "followFootScreenY": 0.58,
+    "visibleAndPrefetchOnly": true,
+    "parallax": "far scenery only; world roots and collision do not drift",
+    "dof": "2D layered approximation, sharp floor/actor, cached far and near-scenery blur"
+  },
+  "dofReference": "https://en.wikipedia.org/wiki/Depth_of_field"
+}
