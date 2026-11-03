@@ -1,8 +1,9 @@
+import {startupImage} from './town-startup.js';
+import {Z4_POLE_ART,z4PoleArtRect} from './z4-pole-art.js';
 import {Z4_POLES,Z4_WIRES} from './z4-poles-data.js?v=z4-poles';
 // Z4-POLES: electric poles, drooping wires and blue lightning over the Zone 4 town.
-// Poles are painted in code (drawZ4Pole). To swap in real art later, replace ONLY drawZ4Pole's body
-// (it gets x/y of the pole foot, its height in world px and the variant 0/1); layout, depth sorting and
-// lightning do not change. Wires/lightning are drawn in the same depth-sorted layer pass as the actors.
+// Painted pole sprites share the original foot/cable anchors. Wires, lightning
+// and actors keep their existing depth-sorted geometry; code art is a loading/error fallback.
 export const Z4_WORLD = Object.freeze({w:3840,h:2560});
 export const Z4_POLE_COUNT = Z4_POLES.length, Z4_WIRE_COUNT = Z4_WIRES.length;
 const frac = n => n - Math.floor(n);
@@ -121,12 +122,25 @@ function bodySprite(pole) {
   c.scale(BAKE, BAKE); paintPoleBody(c, proto, padX, up + hb, .8);
   return bodies.set(key, e = {cv, padX, up, w:padX * 2, h:hb + up + down, hb}).get(key);
 }
+let paintedPole=null,retryArtAt=0;
+function poleArt(){
+ const ready=startupImage(Z4_POLE_ART);if(ready)return ready;
+ if(paintedPole)return paintedPole.complete&&paintedPole.naturalWidth>0?paintedPole:null;
+ if(typeof Image==='undefined'||Date.now()<retryArtAt)return null;
+ const im=new Image();paintedPole=im;
+ im.onerror=()=>{if(paintedPole===im)paintedPole=null;retryArtAt=Date.now()+10000;};
+ im.src=Z4_POLE_ART;return im.complete&&im.naturalWidth>0?im:null;
+}
 export function drawZ4Pole(ctx, pole, time = 0, still = false) {
   const {x, y, h, top, arm, variant} = pole;
   const pulse = still ? .75 : .72 + .25 * Math.sin(time / 520 + pole.i * 1.7);
-  const sp = bodySprite(pole);
-  if (sp) ctx.drawImage(sp.cv, x - sp.padX, y - sp.hb - sp.up, sp.w, sp.h);
-  else { ctx.save(); paintPoleBody(ctx, pole, x, y, .8); ctx.restore(); }
+  const painted=poleArt();
+  if(painted){const r=z4PoleArtRect(pole);ctx.drawImage(painted,r.x,r.y,r.w,r.h);}
+  else {
+    const sp = bodySprite(pole);
+    if (sp) ctx.drawImage(sp.cv, x - sp.padX, y - sp.hb - sp.up, sp.w, sp.h);
+    else { ctx.save(); paintPoleBody(ctx, pole, x, y, .8); ctx.restore(); }
+  }
   const gr = Math.max(8, h * .3), barY = top + h * .12, ih = Math.max(4, h * .12);
   for (const sd of [-1, 1]) halo(ctx, x + sd * arm, barY - ih * .5, gr, .3 * pulse);
   if (variant === 1) halo(ctx, x, top - h * .18, gr * .8, .32 * pulse);

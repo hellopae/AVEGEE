@@ -1,3 +1,4 @@
+import {Z4_POLE_ART} from './z4-pole-art.js';
 // Small first-frame bundle shared by the preload gate and canvas renderers.
 // Keep decoded exterior sprites, not rooms, cutscenes or terrain chunks.
 import { townSkinOf, ZONE1_TOWN_ART } from './zone-skin.js';
@@ -7,6 +8,7 @@ export function townStartupAssets(zone) {
   const skin = townSkinOf(zone);
   if (!skin) return [];
   return [...new Set([
+    ...(zone==='cyberhell'?[Z4_POLE_ART]:[]),
     ...Object.values({...ZONE1_TOWN_ART, ...skin.art}),
     ...THEME_STATIONS.map(k => themeArt(`st-${k}`, zone)),
     themeArt('town-house-th', zone), themeArt('town-waterfall-th', zone),
