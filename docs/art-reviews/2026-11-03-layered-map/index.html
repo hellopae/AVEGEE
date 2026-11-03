@@ -44,7 +44,7 @@ function render(time){
  if($('mask').checked)ctx.drawImage(floor,0,0,1280,720);
  const actors=[...anchors.points.map(a=>({...a,type:'tree'})),{x:hero[0],y:hero[1],type:'hero'}].sort((a,b)=>a.y-b.y);let depth=-Infinity;
  for(const a of actors){if($('rails').checked)drawStructureDepth(ctx,rails,structure,{x:0,y:0,w:1280,h:720,after:depth,through:a.y});depth=a.y;if(a.type==='hero'){const h=38,w=h*heroImage.naturalWidth/heroImage.naturalHeight;ctx.drawImage(heroImage,a.x*1280-w/2,a.y*720-h*.98,w,h);continue;}
- 
+
   const x=a.x*1280,y=a.y*720;
   if($('trees').checked){const col=a.kind==='red'?0:a.kind==='gold'?1:2,cw=trees.naturalWidth/3,ch=trees.naturalHeight/2,h=80*Number($('size').value),w=h*cw/ch;ctx.drawImage(trees,col*cw,0,cw,ch,x-w/2,y-h*.87,w,h);}
   if($('roots').checked){ctx.strokeStyle='#ff68df';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.moveTo(x,y-5);ctx.lineTo(x,y+5);ctx.stroke();}
