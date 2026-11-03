@@ -320,3 +320,13 @@ Cache/module filenames for parent: side-quests.js, quest-journal.js(new), e1-con
 - Shado desktop now connects (Pro), but every AI provider is ready:false and defaults empty. No generation attempted. User advised to configure Settings→AI generation. Keep original painted AVEGEE style; trial1pole sprite when ready. Existing Grace walk sheet visually confirmed male; female walk redraw, boat alignment and fence/pole art remain pending.
 
 Latest user steering: continue original drawing workflow; defer Shado trial. Use imagegen for pending art, keeping existing painted style.
+
+
+## Codex — painted Cyber poles (3 Nov 2026)
+
+- Replaced procedural pole bodies with original-style generated painted art, town-pole-cyberhell-v1.webp (512×768,46,410bytes,true alpha). Built-in imagegen; user deferred Shado.
+- z4-pole-art.js maps measured foot/crossbar anchors to all287existing poles.293wire layout/depth/effects unchanged. Critical Cyber startup retains decoded image; renderer reuses it, with existing procedural fallback.
+- Chromium1280×800/390×844 screenshots inspected; startup image ready and direct renderer blit passed, zero page errors. Geometry checks cover every pole.
+- Evidence source/prompt/screens/logs in Output/Codex/2026-11-03-cyber-pole-art. All-map bridge railing/foreground, Cyber prison/canteen/zoom, Grace walk, boat, atmosphere/interiors, quest presentation and W4 remain queued.
+
+ผลตรวจชุดเสาไฟ: full1901/1901 ผ่าน,0fail/0cancel/0skip; syntax/diffcheckผ่าน.
