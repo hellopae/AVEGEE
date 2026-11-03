@@ -14,9 +14,9 @@ const mod = (n, d) => ((n % d) + d) % d;
  *  at any zoom, window or phone width. Particle maxima go through `biomeBudget` (screen area / DPR). */
 export const MAP_FX = Object.freeze({
   cloud: Object.freeze({
-    peak: .20,                      // Owner: cloud shadows stay at20% in every zone/context
+    peak: .32,                      // Nov3 review: Thai shadows must visibly read over warm terrain
     cell: [.72, .62],                // lattice cell, fraction of visible width / height
-    size: [.78, .58],                 // patch size, fraction of visible width / height
+    size: [.56, .40],                 // patch size, fraction of visible width / height
     spread: [.85, 1.15],            // per-patch size factor range
     jitter: .2,                     // per-patch placement jitter, fraction of a cell
     oddFill: .15,                    // chance an off-checker cell also holds a patch
@@ -24,7 +24,7 @@ export const MAP_FX = Object.freeze({
     breathe: .06,                   // slow size/opacity breathing
     tint: Object.freeze({ th:'0,0,0', asia:'0,0,0', west:'0,0,0', cyberhell:'0,0,0' }),
     fallbackTint: '0,0,0',
-    peakByZone:Object.freeze({th:.20,asia:.20,west:.20,cyberhell:.20}),
+    peakByZone:Object.freeze({th:.32,asia:.20,west:.20,cyberhell:.20}),
   }),
   snow: Object.freeze({
     max: 1100,                      // particle ceiling before biomeBudget scales it by screen area and DPR (old ceiling: 160)
@@ -441,7 +441,7 @@ function drawPatchField(ctx,view,spec,off,t,bankAt){
   }
 }
 /** Compose all overlapping patches once, then apply the biome opacity exactly once.
- *  Thus TH/Asia can never exceed20% shadow even where cloud blobs overlap. */
+ *  Apply each biome cap only once, including the stronger Thai shadow cap. */
 function composedClouds(ctx,view,cloud,off,t,bankAt){
  let layer=cloudLayers.get(ctx);
  if(!layer){

@@ -1,3 +1,4 @@
+import {drawTerrainDetail} from './terrain-detail.js';
 // Clear night: neutral ambient light matching placed scenery, warm pools around actual town fixtures, emissive lava.
 // Pixel grading and fixture falloff are cached; animation only blits two layers.
 import {TOWN_PROP_SITES,TOWN_HOUSE_SITES,TOWN_STATION_SITES,TOWN_DAIS,TOWN_SIZE,onTownLayoutChange} from './town-layout.js?v=k1d';
@@ -120,7 +121,7 @@ export async function prepareTownLighting(image,rect,budgetMs=4){
  pending.delete(image);cache.set(image,job.finish());
 }
 export function drawHellTerrain(ctx,image,time,reduced,...rect){
- const art=layers(image,rect);ctx.drawImage(art.ground,...rect);
+ const art=layers(image,rect);drawTerrainDetail(ctx,art.ground,rect);
  ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=reduced?.10:.13+.035*Math.sin(time/510)+.015*Math.sin(time/173);
- ctx.drawImage(art.fire,...rect);ctx.restore();
+ drawTerrainDetail(ctx,art.fire,rect);ctx.restore();
 }

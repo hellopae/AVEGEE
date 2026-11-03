@@ -1,5 +1,7 @@
 # AVEGEE — คิวรวม 2 พฤศจิกายน 2569
 
+คิวเร่งด่วน3พ.ย.: **MAP-DETAIL-4 (ภาพซูมทุกโซน) / TH-CLOUD-VISIBILITY** ก่อนรั้วและงานอื่น; runtime/cloudปรับแล้ว แต่ภาพnative detailใหม่ยังไม่เสร็จ
+
 คิวแทรกล่าสุด: [ตรวจแผนที่/UI จากภาพ1–13, m0–m3 และboat](2026-11-02-map-ui-review.md) — NAV-REVIEW → MAP-UI-REVIEW → ACTOR-REVIEW → ATMOS-REVIEW → INTERIOR-REVIEW/CYBER-SCALE → QUEST-PRESENTATION ก่อนกลับ W4-TH; คิวเก่ายังคงทั้งหมด.
 
 ## คิวแทรกตามรูป1–3 และวิดีโอ f1 (2 พ.ย.)
