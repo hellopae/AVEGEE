@@ -52,7 +52,9 @@ export function mapTravelPose(a,t=0){
  const bob=a.reduced?0:Math.sin(t/620)*5;
  const nira=moving||a.phase==='board'?along(a.niraPath,a.phase==='approach'?p:1):{x:at.x+22,y:at.y};
  let hero={x:at.x-14,y:at.y},reader=nira;
- const deckHero={x:boatX-8,y:boatY-10+bob},deckReader={x:boatX+24,y:boatY-18+bob};
+ // Feet follow the painted deck, below the square texture midpoint. The
+ // old anchors placed both riders above the far gunwale in transparent space.
+ const deckHero={x:boatX-8,y:boatY+3+bob},deckReader={x:boatX+24,y:boatY-5+bob};
  if(onboard){hero=deckHero;reader=deckReader;}
  if(['board','land'].includes(a.phase)){
   const q=a.phase==='board'?p:1-p,hop=a.reduced?0:Math.sin(q*Math.PI)*(a.boardingHop??40);
