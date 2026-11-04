@@ -1,0 +1,2354 @@
+{
+  "world": [
+    2304,
+    1536
+  ],
+  "status": "PROPOSAL — ให้คุณเป้ปรับ; ไม่ใช่ผังเกมหรือ border topology สุดท้าย",
+  "coordinates": "x/y top-left in atlas pixels, w/h display size; foot local PNG pixels; anchor world contact point",
+  "reference": "Map-Zone2-1.jpg / Map-Zone2-2.jpg / Map Zone2.ai page 1 only",
+  "gateUncertainty": "หน้า 1 ระบุแนวใต้เพียงแนวเดียว ไม่พบจุดทางออก 2–3 แยก จึงวาง 2 ประตูบนแนวใต้เดิมเพื่อเสนอเท่านั้น ห้ามนำไปใช้เป็นทางเชื่อมจริงจนเจ้าของกำหนด",
+  "objects": [
+    {
+      "id": "krata",
+      "sprite": "objects/krata.png",
+      "preview": "objects/krata.webp",
+      "x": 210.0,
+      "y": 68.61,
+      "w": 200,
+      "h": 209.78,
+      "flipX": false,
+      "foot": [
+        204.5,
+        411.84
+      ],
+      "anchor": [
+        310,
+        270
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "dab",
+      "sprite": "objects/dab.png",
+      "preview": "objects/dab.webp",
+      "x": 190.5,
+      "y": 355.05,
+      "w": 205,
+      "h": 215.57,
+      "flipX": false,
+      "foot": [
+        223.0,
+        450.24
+      ],
+      "anchor": [
+        293,
+        562
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "ngiw",
+      "sprite": "objects/ngiw.png",
+      "preview": "objects/ngiw.webp",
+      "x": 255.0,
+      "y": 571.58,
+      "w": 220,
+      "h": 211.9,
+      "flipX": false,
+      "foot": [
+        231.0,
+        427.2
+      ],
+      "anchor": [
+        365,
+        775
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "tarang",
+      "sprite": "objects/tarang.png",
+      "preview": "objects/tarang.webp",
+      "x": 883.9,
+      "y": 12.6,
+      "w": 270,
+      "h": 210.0,
+      "flipX": false,
+      "foot": [
+        309.6,
+        526.4
+      ],
+      "anchor": [
+        1000,
+        210
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "sawan",
+      "sprite": "objects/sawan.png",
+      "preview": "objects/sawan.webp",
+      "x": 1465.0,
+      "y": 80.87,
+      "w": 150,
+      "h": 176.18,
+      "flipX": false,
+      "foot": [
+        306.5,
+        691.2
+      ],
+      "anchor": [
+        1540,
+        250
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "lokan",
+      "sprite": "objects/lokan.png",
+      "preview": "objects/lokan.webp",
+      "x": 1967.5,
+      "y": 140.11,
+      "w": 205,
+      "h": 208.22,
+      "flipX": false,
+      "foot": [
+        223.0,
+        434.88
+      ],
+      "anchor": [
+        2070,
+        340
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "lan",
+      "sprite": "objects/lan.png",
+      "preview": "objects/lan.webp",
+      "x": 1872.5,
+      "y": 346.77,
+      "w": 215,
+      "h": 216.91,
+      "flipX": false,
+      "foot": [
+        225.5,
+        436.8
+      ],
+      "anchor": [
+        1980,
+        555
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "krajok",
+      "sprite": "objects/krajok.png",
+      "preview": "objects/krajok.webp",
+      "x": 1873.65,
+      "y": 527.42,
+      "w": 205,
+      "h": 190.19,
+      "flipX": false,
+      "foot": [
+        338.4,
+        641.28
+      ],
+      "anchor": [
+        1970,
+        710
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "tea",
+      "sprite": "objects/tea.png",
+      "preview": "objects/tea.webp",
+      "x": 817.5,
+      "y": 643.97,
+      "w": 165,
+      "h": 188.57,
+      "flipX": false,
+      "foot": [
+        315.0,
+        691.2
+      ],
+      "anchor": [
+        900,
+        825
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "sala",
+      "sprite": "objects/sala.png",
+      "preview": "objects/sala.webp",
+      "x": 1259.0,
+      "y": 659.4,
+      "w": 180,
+      "h": 172.5,
+      "flipX": false,
+      "foot": [
+        324.0,
+        662.4
+      ],
+      "anchor": [
+        1340,
+        825
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "canteen",
+      "sprite": "objects/canteen.png",
+      "preview": "objects/canteen.webp",
+      "x": 664.0,
+      "y": 718.15,
+      "w": 142,
+      "h": 123.8,
+      "flipX": false,
+      "foot": [
+        238.0,
+        398.4
+      ],
+      "anchor": [
+        735,
+        837
+      ],
+      "layer": "mid",
+      "category": "station"
+    },
+    {
+      "id": "judgment",
+      "sprite": "objects/judgment.png",
+      "preview": "objects/judgment.webp",
+      "x": 965.25,
+      "y": 379.84,
+      "w": 255,
+      "h": 203.29,
+      "flipX": false,
+      "foot": [
+        324.0,
+        551.04
+      ],
+      "anchor": [
+        1080,
+        575
+      ],
+      "layer": "mid",
+      "category": "judgment"
+    },
+    {
+      "id": "house-front-one",
+      "sprite": "objects/house-front-one.png",
+      "preview": "objects/house-front-one.webp",
+      "x": 802.5,
+      "y": 440.47,
+      "w": 135,
+      "h": 119.3,
+      "flipX": false,
+      "foot": [
+        266.5,
+        452.16
+      ],
+      "anchor": [
+        870,
+        555
+      ],
+      "layer": "mid",
+      "category": "house"
+    },
+    {
+      "id": "house-right-one",
+      "sprite": "objects/house-right-one.png",
+      "preview": "objects/house-right-one.webp",
+      "x": 1227.5,
+      "y": 425.29,
+      "w": 145,
+      "h": 129.91,
+      "flipX": false,
+      "foot": [
+        259.5,
+        446.4
+      ],
+      "anchor": [
+        1300,
+        550
+      ],
+      "layer": "mid",
+      "category": "house"
+    },
+    {
+      "id": "house-left-two",
+      "sprite": "objects/house-left-two.png",
+      "preview": "objects/house-left-two.webp",
+      "x": 652.5,
+      "y": 1279.19,
+      "w": 175,
+      "h": 167.51,
+      "flipX": false,
+      "foot": [
+        257.0,
+        472.32
+      ],
+      "anchor": [
+        740,
+        1440
+      ],
+      "layer": "mid",
+      "category": "house"
+    },
+    {
+      "id": "house-right-two",
+      "sprite": "objects/house-right-two.png",
+      "preview": "objects/house-right-two.webp",
+      "x": 1442.5,
+      "y": 1287.7,
+      "w": 175,
+      "h": 163.85,
+      "flipX": false,
+      "foot": [
+        259.0,
+        465.6
+      ],
+      "anchor": [
+        1530,
+        1445
+      ],
+      "layer": "mid",
+      "category": "house"
+    },
+    {
+      "id": "gate-entry",
+      "sprite": "objects/gate-entry.png",
+      "preview": "objects/gate-entry.webp",
+      "x": 915.0,
+      "y": 1269.46,
+      "w": 390,
+      "h": 242.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        425.6
+      ],
+      "anchor": [
+        1110,
+        1500
+      ],
+      "layer": "mid",
+      "category": "gate",
+      "note": "แนวใต้เดิม; ข้อเสนอทางเข้า 1–2 ยังไม่ใช่ border anchor ในเกม"
+    },
+    {
+      "id": "gate-exit",
+      "sprite": "objects/gate-exit.png",
+      "preview": "objects/gate-exit.webp",
+      "x": 975.0,
+      "y": 1041.94,
+      "w": 270,
+      "h": 213.75,
+      "flipX": false,
+      "foot": [
+        360.0,
+        541.5
+      ],
+      "anchor": [
+        1110,
+        1245
+      ],
+      "layer": "mid",
+      "category": "gate",
+      "note": "แนวใต้เดิม; หน้า 1 ไม่ระบุทางออก 2–3 แยก ต้องให้เจ้าของยืนยันปลายทาง"
+    },
+    {
+      "id": "tree-red-01",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 12.5,
+      "y": 84.36,
+      "w": 165,
+      "h": 151.71,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        95,
+        230
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-02",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 399.0,
+      "y": 104.35,
+      "w": 182,
+      "h": 167.34,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        490,
+        265
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-03",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 11.5,
+      "y": 269.35,
+      "w": 199,
+      "h": 182.97,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        111,
+        445
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-04",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 327.5,
+      "y": 319.36,
+      "w": 165,
+      "h": 151.71,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        410,
+        465
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-05",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 26.0,
+      "y": 399.35,
+      "w": 182,
+      "h": 167.34,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        117,
+        560
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-06",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 365.5,
+      "y": 444.35,
+      "w": 199,
+      "h": 182.97,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        465,
+        620
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-07",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 117.5,
+      "y": 586.36,
+      "w": 165,
+      "h": 151.71,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        200,
+        732
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-08",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 434.0,
+      "y": 629.35,
+      "w": 182,
+      "h": 167.34,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        525,
+        790
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-09",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 145.5,
+      "y": 679.35,
+      "w": 199,
+      "h": 182.97,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        245,
+        855
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-10",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 27.5,
+      "y": 779.36,
+      "w": 165,
+      "h": 151.71,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        110,
+        925
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-11",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 389.0,
+      "y": 744.35,
+      "w": 182,
+      "h": 167.34,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        480,
+        905
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-12",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 460.5,
+      "y": 782.35,
+      "w": 199,
+      "h": 182.97,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        560,
+        958
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-13",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 42.5,
+      "y": 1159.05,
+      "w": 205,
+      "h": 188.49,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        145,
+        1340
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-14",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 193.5,
+      "y": 1243.16,
+      "w": 223,
+      "h": 205.04,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        305,
+        1440
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-15",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 319.5,
+      "y": 1147.27,
+      "w": 241,
+      "h": 221.59,
+      "flipX": false,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        440,
+        1360
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-red-16",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "x": 517.5,
+      "y": 1329.05,
+      "w": 205,
+      "h": 188.49,
+      "flipX": true,
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "anchor": [
+        620,
+        1510
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-01",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 657.5,
+      "y": 107.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        740,
+        220
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-02",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1109.0,
+      "y": 80.76,
+      "w": 182,
+      "h": 129.42,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1200,
+        205
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-03",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1200.5,
+      "y": 99.15,
+      "w": 199,
+      "h": 141.51,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1300,
+        235
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-04",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 637.5,
+      "y": 334.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        720,
+        447
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-05",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1309.0,
+      "y": 295.76,
+      "w": 182,
+      "h": 129.42,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1400,
+        420
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-06",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 650.5,
+      "y": 486.15,
+      "w": 199,
+      "h": 141.51,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        750,
+        622
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-07",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1352.5,
+      "y": 497.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1435,
+        610
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-08",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 639.0,
+      "y": 625.76,
+      "w": 182,
+      "h": 129.42,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        730,
+        750
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-09",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1400.5,
+      "y": 649.15,
+      "w": 199,
+      "h": 141.51,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1500,
+        785
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-10",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 747.5,
+      "y": 807.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        830,
+        920
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-11",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1129.0,
+      "y": 800.76,
+      "w": 182,
+      "h": 129.42,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1220,
+        925
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-12",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1410.5,
+      "y": 789.15,
+      "w": 199,
+      "h": 141.51,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1510,
+        925
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-13",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1737.5,
+      "y": 567.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1820,
+        680
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-14",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 2109.0,
+      "y": 765.76,
+      "w": 182,
+      "h": 129.42,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        2200,
+        890
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-15",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1680.5,
+      "y": 804.15,
+      "w": 199,
+      "h": 141.51,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1780,
+        940
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-16",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1801.5,
+      "y": 845.36,
+      "w": 165,
+      "h": 117.33,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1884,
+        958
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-17",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1528.5,
+      "y": 1207.76,
+      "w": 223,
+      "h": 158.58,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1640,
+        1360
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-18",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1709.5,
+      "y": 1305.48,
+      "w": 241,
+      "h": 171.38,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1830,
+        1470
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-19",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1907.5,
+      "y": 1205.05,
+      "w": 205,
+      "h": 145.78,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        2010,
+        1345
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-20",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 2070.5,
+      "y": 1357.76,
+      "w": 223,
+      "h": 158.58,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        2182,
+        1510
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-21",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 359.5,
+      "y": 1330.48,
+      "w": 241,
+      "h": 171.38,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        480,
+        1495
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-22",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 762.5,
+      "y": 1375.05,
+      "w": 205,
+      "h": 145.78,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        865,
+        1515
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-23",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 1248.5,
+      "y": 1347.76,
+      "w": 223,
+      "h": 158.58,
+      "flipX": false,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        1360,
+        1500
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-green-24",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "x": 2053.5,
+      "y": 1025.48,
+      "w": 241,
+      "h": 171.38,
+      "flipX": true,
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "anchor": [
+        2174,
+        1190
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-white-01",
+      "sprite": "objects/tree-white.png",
+      "preview": "objects/tree-white.webp",
+      "x": 2150.0,
+      "y": 123.15,
+      "w": 120,
+      "h": 184.22,
+      "flipX": false,
+      "foot": [
+        234.5,
+        691.2
+      ],
+      "anchor": [
+        2210,
+        300
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-white-02",
+      "sprite": "objects/tree-white.png",
+      "preview": "objects/tree-white.webp",
+      "x": 1882.0,
+      "y": 67.47,
+      "w": 132,
+      "h": 202.64,
+      "flipX": true,
+      "foot": [
+        234.5,
+        691.2
+      ],
+      "anchor": [
+        1948,
+        262
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-white-03",
+      "sprite": "objects/tree-white.png",
+      "preview": "objects/tree-white.webp",
+      "x": 2170.0,
+      "y": 338.15,
+      "w": 120,
+      "h": 184.22,
+      "flipX": false,
+      "foot": [
+        234.5,
+        691.2
+      ],
+      "anchor": [
+        2230,
+        515
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "tree-white-04",
+      "sprite": "objects/tree-white.png",
+      "preview": "objects/tree-white.webp",
+      "x": 2060.0,
+      "y": 62.1,
+      "w": 80,
+      "h": 122.81,
+      "flipX": true,
+      "foot": [
+        234.5,
+        691.2
+      ],
+      "anchor": [
+        2100,
+        180
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "shrub-red-01",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 50.0,
+      "y": 318.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        80,
+        350
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-red-02",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 464.0,
+      "y": 544.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        494,
+        576
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-red-03",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 91.0,
+      "y": 782.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        121,
+        814
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-red-04",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 400.0,
+      "y": 929.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        430,
+        961
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-red-05",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 260.0,
+      "y": 1184.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        290,
+        1216
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-red-06",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "x": 510.0,
+      "y": 1383.64,
+      "w": 60,
+      "h": 32.67,
+      "flipX": false,
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "anchor": [
+        540,
+        1415
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-01",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 640.0,
+      "y": 248.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        670,
+        280
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-02",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1350.0,
+      "y": 338.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1380,
+        370
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-03",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 745.0,
+      "y": 648.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        775,
+        680
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-04",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1450.0,
+      "y": 668.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1480,
+        700
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-05",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1560.0,
+      "y": 848.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1590,
+        880
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-06",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1760.0,
+      "y": 868.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1790,
+        900
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-07",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1646.0,
+      "y": 1230.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1676,
+        1262
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-08",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 2130.0,
+      "y": 1368.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        2160,
+        1400
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-green-09",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "x": 1320.0,
+      "y": 1348.48,
+      "w": 60,
+      "h": 32.83,
+      "flipX": false,
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "anchor": [
+        1350,
+        1380
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-white-01",
+      "sprite": "objects/shrub-white.png",
+      "preview": "objects/shrub-white.webp",
+      "x": 2160.0,
+      "y": 363.52,
+      "w": 60,
+      "h": 27.58,
+      "flipX": false,
+      "foot": [
+        360.0,
+        317.76
+      ],
+      "anchor": [
+        2190,
+        390
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-white-02",
+      "sprite": "objects/shrub-white.png",
+      "preview": "objects/shrub-white.webp",
+      "x": 1916.0,
+      "y": 191.52,
+      "w": 60,
+      "h": 27.58,
+      "flipX": false,
+      "foot": [
+        360.0,
+        317.76
+      ],
+      "anchor": [
+        1946,
+        218
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "shrub-white-03",
+      "sprite": "objects/shrub-white.png",
+      "preview": "objects/shrub-white.webp",
+      "x": 2236.0,
+      "y": 643.52,
+      "w": 60,
+      "h": 27.58,
+      "flipX": false,
+      "foot": [
+        360.0,
+        317.76
+      ],
+      "anchor": [
+        2266,
+        670
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "rock-red-01",
+      "sprite": "objects/rock-red.png",
+      "preview": "objects/rock-red.webp",
+      "x": 16.0,
+      "y": 567.3,
+      "w": 72,
+      "h": 67.4,
+      "flipX": false,
+      "foot": [
+        360.0,
+        647.04
+      ],
+      "anchor": [
+        52,
+        632
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-red-02",
+      "sprite": "objects/rock-red.png",
+      "preview": "objects/rock-red.webp",
+      "x": 539.0,
+      "y": 885.3,
+      "w": 72,
+      "h": 67.4,
+      "flipX": false,
+      "foot": [
+        360.0,
+        647.04
+      ],
+      "anchor": [
+        575,
+        950
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-red-03",
+      "sprite": "objects/rock-red.png",
+      "preview": "objects/rock-red.webp",
+      "x": 124.0,
+      "y": 1405.3,
+      "w": 72,
+      "h": 67.4,
+      "flipX": false,
+      "foot": [
+        360.0,
+        647.04
+      ],
+      "anchor": [
+        160,
+        1470
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-green-01",
+      "sprite": "objects/rock-green.png",
+      "preview": "objects/rock-green.webp",
+      "x": 654.0,
+      "y": 889.41,
+      "w": 72,
+      "h": 52.7,
+      "flipX": false,
+      "foot": [
+        360.0,
+        505.92
+      ],
+      "anchor": [
+        690,
+        940
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-green-02",
+      "sprite": "objects/rock-green.png",
+      "preview": "objects/rock-green.webp",
+      "x": 1600.0,
+      "y": 893.41,
+      "w": 72,
+      "h": 52.7,
+      "flipX": false,
+      "foot": [
+        360.0,
+        505.92
+      ],
+      "anchor": [
+        1636,
+        944
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-green-03",
+      "sprite": "objects/rock-green.png",
+      "preview": "objects/rock-green.webp",
+      "x": 2024.0,
+      "y": 1379.41,
+      "w": 72,
+      "h": 52.7,
+      "flipX": false,
+      "foot": [
+        360.0,
+        505.92
+      ],
+      "anchor": [
+        2060,
+        1430
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-white-01",
+      "sprite": "objects/rock-white.png",
+      "preview": "objects/rock-white.webp",
+      "x": 2224.0,
+      "y": 135.87,
+      "w": 72,
+      "h": 66.8,
+      "flipX": false,
+      "foot": [
+        360.0,
+        641.28
+      ],
+      "anchor": [
+        2260,
+        200
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "rock-white-02",
+      "sprite": "objects/rock-white.png",
+      "preview": "objects/rock-white.webp",
+      "x": 2134.0,
+      "y": 555.87,
+      "w": 72,
+      "h": 66.8,
+      "flipX": false,
+      "foot": [
+        360.0,
+        641.28
+      ],
+      "anchor": [
+        2170,
+        620
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "lamp-01",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 833.0,
+      "y": 161.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        850,
+        250
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-02",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1143.0,
+      "y": 161.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1160,
+        250
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-03",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 793.0,
+      "y": 501.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        810,
+        590
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-04",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1343.0,
+      "y": 501.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1360,
+        590
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-05",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 998.0,
+      "y": 556.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1015,
+        645
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-06",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1168.0,
+      "y": 556.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1185,
+        645
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-07",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 793.0,
+      "y": 756.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        810,
+        845
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-08",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1413.0,
+      "y": 756.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1430,
+        845
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-09",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 998.0,
+      "y": 786.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1015,
+        875
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-10",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1173.0,
+      "y": 786.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1190,
+        875
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-11",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1008.0,
+      "y": 1091.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1025,
+        1180
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-12",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1193.0,
+      "y": 1091.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1210,
+        1180
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-13",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 948.0,
+      "y": 1191.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        965,
+        1280
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-14",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1233.0,
+      "y": 1191.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1250,
+        1280
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-15",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 2033.0,
+      "y": 501.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        2050,
+        590
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "lamp-16",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "x": 1593.0,
+      "y": 161.13,
+      "w": 34,
+      "h": 92.57,
+      "flipX": false,
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "anchor": [
+        1610,
+        250
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "rail-back-1",
+      "sprite": "objects/rail-back.png",
+      "preview": "objects/rail-back.webp",
+      "x": 1721.0,
+      "y": 202.96,
+      "w": 178,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        230.4
+      ],
+      "anchor": [
+        1810,
+        250
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "rail-front-1",
+      "sprite": "objects/rail-front.png",
+      "preview": "objects/rail-front.webp",
+      "x": 1721.0,
+      "y": 230.96,
+      "w": 178,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        236.16
+      ],
+      "anchor": [
+        1810,
+        278
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "rail-back-2",
+      "sprite": "objects/rail-back.png",
+      "preview": "objects/rail-back.webp",
+      "x": 1424.0,
+      "y": 481.96,
+      "w": 172,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        230.4
+      ],
+      "anchor": [
+        1510,
+        529
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "rail-front-2",
+      "sprite": "objects/rail-front.png",
+      "preview": "objects/rail-front.webp",
+      "x": 1424.0,
+      "y": 509.96,
+      "w": 172,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        236.16
+      ],
+      "anchor": [
+        1510,
+        557
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "rail-back-3",
+      "sprite": "objects/rail-back.png",
+      "preview": "objects/rail-back.webp",
+      "x": 2000.0,
+      "y": 716.96,
+      "w": 180,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        230.4
+      ],
+      "anchor": [
+        2090,
+        764
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "rail-front-3",
+      "sprite": "objects/rail-front.png",
+      "preview": "objects/rail-front.webp",
+      "x": 2000.0,
+      "y": 744.96,
+      "w": 180,
+      "h": 49,
+      "flipX": false,
+      "foot": [
+        242.5,
+        236.16
+      ],
+      "anchor": [
+        2090,
+        792
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "post-back-1",
+      "sprite": "objects/post-back.png",
+      "preview": "objects/post-back.webp",
+      "x": 1018.5,
+      "y": 852.29,
+      "w": 23,
+      "h": 47.61,
+      "flipX": false,
+      "foot": [
+        93.0,
+        369.6
+      ],
+      "anchor": [
+        1030,
+        898
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "post-front-2",
+      "sprite": "objects/post-front.png",
+      "preview": "objects/post-front.webp",
+      "x": 1178.5,
+      "y": 852.66,
+      "w": 23,
+      "h": 47.23,
+      "flipX": false,
+      "foot": [
+        93.5,
+        368.64
+      ],
+      "anchor": [
+        1190,
+        898
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "post-back-3",
+      "sprite": "objects/post-back.png",
+      "preview": "objects/post-back.webp",
+      "x": 1028.5,
+      "y": 1064.29,
+      "w": 23,
+      "h": 47.61,
+      "flipX": false,
+      "foot": [
+        93.0,
+        369.6
+      ],
+      "anchor": [
+        1040,
+        1110
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "post-front-4",
+      "sprite": "objects/post-front.png",
+      "preview": "objects/post-front.webp",
+      "x": 1168.5,
+      "y": 1064.66,
+      "w": 23,
+      "h": 47.23,
+      "flipX": false,
+      "foot": [
+        93.5,
+        368.64
+      ],
+      "anchor": [
+        1180,
+        1110
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "post-back-5",
+      "sprite": "objects/post-back.png",
+      "preview": "objects/post-back.webp",
+      "x": 1338.5,
+      "y": 893.29,
+      "w": 23,
+      "h": 47.61,
+      "flipX": false,
+      "foot": [
+        93.0,
+        369.6
+      ],
+      "anchor": [
+        1350,
+        939
+      ],
+      "layer": "back",
+      "category": "bridge"
+    },
+    {
+      "id": "post-front-6",
+      "sprite": "objects/post-front.png",
+      "preview": "objects/post-front.webp",
+      "x": 1443.5,
+      "y": 893.66,
+      "w": 23,
+      "h": 47.23,
+      "flipX": false,
+      "foot": [
+        93.5,
+        368.64
+      ],
+      "anchor": [
+        1455,
+        939
+      ],
+      "layer": "front",
+      "category": "bridge"
+    },
+    {
+      "id": "dock-canopy",
+      "sprite": "objects/dock-canopy.png",
+      "preview": "objects/dock-canopy.webp",
+      "x": 1335.0,
+      "y": 812.14,
+      "w": 130,
+      "h": 126.73,
+      "flipX": false,
+      "foot": [
+        238.5,
+        432.45
+      ],
+      "anchor": [
+        1400,
+        930
+      ],
+      "layer": "mid",
+      "category": "dock"
+    }
+  ]
+}

@@ -1,0 +1,434 @@
+[
+  {
+    "file": "flows/lava-00.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-00.webp",
+    "sha256": "1b8a4270a8ccd745396bbc138a266fcf74e9160417c9da187c139854b581c30d",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-01.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-01.webp",
+    "sha256": "a62910d7ea8658d1f9398bba589434f97815258eafc4c72890ec183ab1f83034",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-02.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-02.webp",
+    "sha256": "9e125dbdfa9486b3a9f6716c5d7f209a669130d9808134b4bb36a840e315f51d",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-03.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-03.webp",
+    "sha256": "e6b181e08ca37d5e4cd51cf5b1a4e2ddf986b0bebf99fb6c5a86c1203ec8e9ef",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-04.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-04.webp",
+    "sha256": "6165c1eda5ffa57f6080ebdf8c3842f1bc19e35927ffdda45a2ffde0f610d878",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-05.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-05.webp",
+    "sha256": "c074964f308c312853b248041ce7e06532a651236852f68d88805eba5e61b16d",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-06.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-06.webp",
+    "sha256": "c2b95c09daeee0ada216da215bd3184cce9a12bab6df6f7cd680c71eaaeb2b37",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-07.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-07.webp",
+    "sha256": "f123512aa094a1bf8048f871c256ac5da564e2ceb50a368f732b2076efd154f7",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-08.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-08.webp",
+    "sha256": "c7bed1110db5f6894c7860c4d2879b30e958946cb0425c0e35cc153aecd56e5f",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-09.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-09.webp",
+    "sha256": "1e02cbd265cbf3b40b9d86528abf226e8f7f90abc9ff044fd70976d5954b4446",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-10.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-10.webp",
+    "sha256": "ca31339f54685d4435017f5cba4bab5aa4c380bbf05f5a39a72e26601f1621d2",
+    "equal": true
+  },
+  {
+    "file": "flows/lava-11.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/lava-11.webp",
+    "sha256": "878e95fbf61aea93135a3653122661c0aa1cc5d2f6885ce51468228a646c6e7b",
+    "equal": true
+  },
+  {
+    "file": "flows/river-00.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-00.webp",
+    "sha256": "50d9a50694a6c00793aec1c5b98410db30abe8bd6105bff3d50d9eb65d0f68fd",
+    "equal": true
+  },
+  {
+    "file": "flows/river-01.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-01.webp",
+    "sha256": "755a4503c5e3271133b08509e8614266f959581ff6cb1e714db2d83843c30301",
+    "equal": true
+  },
+  {
+    "file": "flows/river-02.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-02.webp",
+    "sha256": "7fa4bd9458a5a6a06f2411a6059a308898ca11f89dcfd4ed3c019f23199987e9",
+    "equal": true
+  },
+  {
+    "file": "flows/river-03.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-03.webp",
+    "sha256": "e1ea13dcc085774da3aa5a0a6d108536857d66d62482a78949adcbf3b4f86045",
+    "equal": true
+  },
+  {
+    "file": "flows/river-04.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-04.webp",
+    "sha256": "a8a66128e0717f6bad296118130942aff24e255cd6e12196eb4d9c256db34bd0",
+    "equal": true
+  },
+  {
+    "file": "flows/river-05.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-05.webp",
+    "sha256": "5045706ff9d37c1ea8aa0074aecb165e601ecdd1d394e53b3aa315d28d03b03e",
+    "equal": true
+  },
+  {
+    "file": "flows/river-06.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-06.webp",
+    "sha256": "0c2298ed5d02ece610399f8ebdae67417b6b6bf505061f6b29276008c17c0aef",
+    "equal": true
+  },
+  {
+    "file": "flows/river-07.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-07.webp",
+    "sha256": "51800ad3f782fa2c3e77dd8b2c444dac6fa6906ad32407dc9e39fbd3359a3103",
+    "equal": true
+  },
+  {
+    "file": "flows/river-08.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-08.webp",
+    "sha256": "e969cb3ef50cb09f1e76a24b87be2c718791f8cd271c73f10a87a425eb0d2b78",
+    "equal": true
+  },
+  {
+    "file": "flows/river-09.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-09.webp",
+    "sha256": "b268af397d18de2594e70eb41c8ce138073be18578242eb495a22c17621e2488",
+    "equal": true
+  },
+  {
+    "file": "flows/river-10.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-10.webp",
+    "sha256": "82c5d579d95e4e32f6348d9ff54c724f48f3d1e7b0485ace05547070bfa61983",
+    "equal": true
+  },
+  {
+    "file": "flows/river-11.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/river-11.webp",
+    "sha256": "dae4c6c13e3b0cfad30ef440d1220fb501a7b760bc8e145dafbfc43fb03e0447",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-00.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-00.webp",
+    "sha256": "df8d419299a2edb933b7533745a7692833e6ef8a362520026fefa628ec97bf91",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-01.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-01.webp",
+    "sha256": "f3abe858cddb1d673f504efcf0fa4988a8891994a0d4036df9d73b1b33b9667b",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-02.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-02.webp",
+    "sha256": "4092b1e1ba4fda5f816ed1af951e8d19dad34ba0ad2ecfd0623cdeeb6db2c302",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-03.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-03.webp",
+    "sha256": "82b926073c5a6f198d9fa09086e7303091ea7e991614cf72ecaaa19fbc41b141",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-04.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-04.webp",
+    "sha256": "11b6b387a11cc1d3e86feadae1f0c4ef237b08919310cb16e4125f024a914227",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-05.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-05.webp",
+    "sha256": "bd02f73128a3db877dc2b44a7a5de3efb6a77a44065366e81085258ea5d419ed",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-06.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-06.webp",
+    "sha256": "4a5bfb1d06b477b5f827a6a06b502b72775188403876100afa946b6b1e815681",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-07.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-07.webp",
+    "sha256": "517d5837ad827930b7311dff9caf4f43e8e757794e61fe0a793d3d794703a9aa",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-08.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-08.webp",
+    "sha256": "37e86c7efa706590b6393ba8a3aae4e9def48397c7614902cae0b00bcd4b7709",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-09.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-09.webp",
+    "sha256": "f81d50ec6c337253c2a3ee0cb2f656cb4fcad8559d7b9fdcc5b05bff68bed07c",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-10.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-10.webp",
+    "sha256": "8a7ec9cc1cfd4c2e48fa1cea3c945eaf3d48ded70925b4c690d364f97b816467",
+    "equal": true
+  },
+  {
+    "file": "flows/waterfall-11.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/flows/waterfall-11.webp",
+    "sha256": "414266087bf958c83c0af8210281eec14610b5c74910a9c019bb03e213278388",
+    "equal": true
+  },
+  {
+    "file": "fluid-master.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/fluid-master.png",
+    "sha256": "eab6f63c07280aebb9b954e6376d7023574acb510732bbf6262bd852094f6929",
+    "equal": true
+  },
+  {
+    "file": "layers/lava.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/layers/lava.png",
+    "sha256": "3179d46e807f602a35edcbe7820aad01fc3c6f36fb5e4b32bc6b04b9cb957dd0",
+    "equal": true
+  },
+  {
+    "file": "layers/river.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/layers/river.png",
+    "sha256": "c272b00b801b8df6a469cedef0be9e83a5fe3f151a0dc9c9ec9d53ca678f90e8",
+    "equal": true
+  },
+  {
+    "file": "layers/waterfall.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/layers/waterfall.png",
+    "sha256": "fe2b1c45034fc21564f8f164eb4accf2cab5c78b83443ed50a0e3b2aa966bd68",
+    "equal": true
+  },
+  {
+    "file": "terrain-alpha-preview.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-alpha-preview.png",
+    "sha256": "62181122098ae9f84e6d16ab92ac639fc9ab41f7f38e1105c9befb0dcb348f4b",
+    "equal": true
+  },
+  {
+    "file": "terrain-atlas.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-atlas.png",
+    "sha256": "5f109e56749bb245b2acdc8d193ec39f64ef52ce1f1ba63409035ba0f80b0d9d",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/0-0.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/0-0.png",
+    "sha256": "c65c011f736cbedaedd5cb8ef9058267d5e04dac35ef87f2b4f0e502208642d2",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/0-1.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/0-1.png",
+    "sha256": "14fff073fbedaad05a477b933385c2bbbf1d1a02041765fad59f29ebfe533516",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/0-2.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/0-2.png",
+    "sha256": "9fdbfce5c005b6e7511b23b0bc4aa24ef63dd9a61d70973af12cbeb7ddbc3f20",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/1-0.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/1-0.png",
+    "sha256": "0d0a0bf4f2f649257544fa7128cd79c481ce1c10145a349c8e10c1f8cbd54a80",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/1-1.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/1-1.png",
+    "sha256": "f2208b2982c66819729c1f1b765ebc8eeda9e9fe82969fd3243a61a87d8cfb4a",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/1-2.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/1-2.png",
+    "sha256": "288564833608bd3d2009680d5fa329b55c1aad8a82312b5bae416617ed60ba3b",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/2-0.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/2-0.png",
+    "sha256": "9b750116d3ff40519d03ef553f74ef9613c8ea162d39dc05beb429ac7d5b8e51",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/2-1.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/2-1.png",
+    "sha256": "696aaa1e627023affb51836bae2b3dd319fc90eddddede6774ea4a9ad302dda1",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/2-2.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/2-2.png",
+    "sha256": "82d0ee872198d5234e9435c8e7f41193e376b985ccd60cdcefb2f85b6d7e2544",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/3-0.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/3-0.png",
+    "sha256": "9fdce4295a86fb684a9649ded804a0921cfb43c0b3eafab5be33a7ebedcf9a90",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/3-1.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/3-1.png",
+    "sha256": "10693f35f78a3eedcf64cb736896cba71a6680a810918400133d71a5f91c0fa6",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/3-2.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/3-2.png",
+    "sha256": "10d23f5bd588eb2c3949f0262142a15739677e806b33ba0eef102422d0bcb97a",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/4-0.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/4-0.png",
+    "sha256": "4a983e038bd48a8c9f3ce5a11680a0bdd2f12a8c6af0369eb9da8e1043dd6f32",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/4-1.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/4-1.png",
+    "sha256": "9eac696a700ab81308062fed899600e9cb312ebfa01c6ce30ae7df25c8616440",
+    "equal": true
+  },
+  {
+    "file": "terrain-png/4-2.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-png/4-2.png",
+    "sha256": "3a7668c134d0ef8686abddb943493939d0d05686d122e635bbea706c8ed81222",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/0-0.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/0-0.webp",
+    "sha256": "d2286fa4ced14e8a2cb8bf97a8aff8a90cdd7b100ba0148b7ca3cbcd11204c6c",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/0-1.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/0-1.webp",
+    "sha256": "b6609374c88fda144edcd0051e9a4e717a059a02f59196358d1ef51b2a99d5dc",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/0-2.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/0-2.webp",
+    "sha256": "4c472a4ab330167a43cab5456e3dd59dc9f1d191998e4a3e976ad7712fc1e6c6",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/1-0.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/1-0.webp",
+    "sha256": "0f44b6cc53d314a6139956a01bf556dc9a4cf3a254ff68b04316b146c24bed25",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/1-1.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/1-1.webp",
+    "sha256": "c757e6974051ac3df9a19c4b973403d3424c7c92c5ac2ec3a6eb238a66a7da47",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/1-2.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/1-2.webp",
+    "sha256": "1fc4645140085f95aa72b275bc9afa2f660bbb2fb76e684f89f719bd0fdaf7a1",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/2-0.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/2-0.webp",
+    "sha256": "17ec3a6badde7b3baf1eb68ba8417001a90f0fd591e6b7aae140a25c46ab3c38",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/2-1.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/2-1.webp",
+    "sha256": "6c04d659b1bedeb45e03f0a9ef02a85fedd354979f68fd026b92b8f1958628b3",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/2-2.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/2-2.webp",
+    "sha256": "1629f93b1e4224bea1af7bc7dea1dd48d6de45e492723d06b80f490fefe8296a",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/3-0.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/3-0.webp",
+    "sha256": "e0f1a8ec40c1c1009b794422063f65a96c86d836d9733a5936e6e187637198f0",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/3-1.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/3-1.webp",
+    "sha256": "61728a537d064d491561e43df17c705dcb181f828c63daa4c0d06a67c54d15ba",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/3-2.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/3-2.webp",
+    "sha256": "db2c0624a410453417160d482b24b0af3cb930763d8e3ca41172a6c6443f7f10",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/4-0.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/4-0.webp",
+    "sha256": "a982cbab4609361f44a49213261c0545fbaabc815fd3e6af3bcc25ec22b3bdd2",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/4-1.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/4-1.webp",
+    "sha256": "82b73008d02f6f511622ae3054131440a0a0aa9ec68d475de364b2cd55470ef5",
+    "equal": true
+  },
+  {
+    "file": "terrain-webp/4-2.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/terrain-webp/4-2.webp",
+    "sha256": "f081a360d311d8434fa1d15e772e1f8dd188b7fef9779958edbf60f1312a834c",
+    "equal": true
+  }
+]

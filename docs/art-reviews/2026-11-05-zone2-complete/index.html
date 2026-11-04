@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVEGEE · เมืองบูรพา โซน 2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#211c20;color:#eddec7;font:15px system-ui,sans-serif}main{max-width:1280px;margin:auto}header,footer{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:14px}h1{font-size:18px;margin:0 auto 0 0}button,select{font:inherit;color:inherit;background:#3d302c;border:1px solid #937554;border-radius:6px;padding:8px 11px}button[aria-pressed=true]{background:#d0ad76;color:#211b19}button:focus-visible,a:focus-visible{outline:3px solid #e8bc72;outline-offset:3px}label{display:flex;align-items:center;gap:5px}canvas{display:block;width:100%;aspect-ratio:16/9;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}.frame{position:relative;background:#614e58}#status{position:absolute;bottom:8px;left:8px;padding:5px 8px;background:#241a20dc;border-radius:5px;font-size:12px;pointer-events:none}#overview{display:none;width:100%;height:auto}p{margin:0;padding:10px 14px;line-height:1.7;color:#c9b8a4}a{color:#f0c78e}.links{display:flex;gap:18px;flex-wrap:wrap;padding:12px 14px} @media(max-width:600px){header,footer{gap:8px;padding:9px}h1{width:100%}button,select{font-size:13px;padding:7px}footer{font-size:13px}}
+</style></head><body><main>
+<header><h1>AVEGEE · เมืองบูรพา โซน 2</h1><button id="near" aria-pressed="true">ใกล้</button><button id="closer" aria-pressed="false">ใกล้มาก</button>
+<select id="location" aria-label="บริเวณตรวจภาพ"><option value="center">ลานตัดสิน</option><option value="north">ลานบน</option><option value="left">ฝั่งลาวา</option><option value="right">ฝั่งน้ำแข็ง</option><option value="south">ประตูและบ้านพัก</option><option value="dock">ท่าเรือ</option></select>
+<button id="play" aria-pressed="false">เล่นน้ำ / ลาวา</button><button id="overviewButton" aria-pressed="false">ภาพรวมย่อ</button></header>
+<div class="frame"><canvas id="scene" aria-label="ผังเสนอเมืองโซน 2 ลากเพื่อเลื่อนภาพ"></canvas><img id="overview" alt="ภาพประกอบเมืองโซน 2 ครบทุกชั้น"><span id="status" role="status">กำลังโหลด…</span></div>
+<footer>
+<label><input id="sky" type="checkbox" checked>ท้องฟ้า</label><label><input id="mountains" type="checkbox" checked>ภูเขา</label><label><input id="fluid" type="checkbox" checked>น้ำ / ลาวา</label><label><input id="terrain" type="checkbox" checked>พื้น</label><label><input id="buildings" type="checkbox" checked>อาคาร / สถานี</label><label><input id="scenery" type="checkbox" checked>ต้นไม้ / ของตกแต่ง</label><label><input id="bridges" type="checkbox" checked>ราว / เสาสะพาน</label><label><input id="blur" type="checkbox">เบลอฉากไกล</label><label><input id="labels" type="checkbox">ชื่อ / จุดฐาน</label>
+</footer>
+<p>ผังเสนอให้คุณเป้ลากปรับต่อใน Illustrator · ลากภาพเพื่อเลื่อนและซูมได้ 2 ระดับ · ประตูทั้งสองอยู่บนแนวทางใต้เดิม ส่วนปลายทางเข้า–ออกต้องให้เจ้าของกำหนด · ยังไม่ประกอบในเกม</p>
+<nav class="links"><a href="zone2-layered-layout.svg">SVG จัดวางแยกชิ้น</a><a href="kit-contact-sheet.jpg">ดูชุดวัตถุ 33 ชิ้น</a><a href="style-compare.jpg">เทียบสไตล์โซน 1</a><a href="README.md">รายการไฟล์และผลตรวจ</a></nav>
+</main><script type="module" src="scripts/preview.mjs"></script></body></html>

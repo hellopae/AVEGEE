@@ -1,0 +1,1393 @@
+{
+  "scope": "art artifact checks; not gameplay QA or owner approval",
+  "imagegenCalls": 12,
+  "assets": 33,
+  "placements": 117,
+  "sourceFilesIdentical": 72,
+  "tileReconstruction": [
+    {
+      "format": "png",
+      "tiles": 15,
+      "exactPixelMatch": true
+    },
+    {
+      "format": "webp",
+      "tiles": 15,
+      "exactPixelMatch": true
+    }
+  ],
+  "groundedAnchorChecks": [
+    {
+      "id": "krata",
+      "anchor": [
+        310,
+        270
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "dab",
+      "anchor": [
+        293,
+        562
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "ngiw",
+      "anchor": [
+        365,
+        775
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tarang",
+      "anchor": [
+        1000,
+        210
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "sawan",
+      "anchor": [
+        1540,
+        250
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lokan",
+      "anchor": [
+        2070,
+        340
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lan",
+      "anchor": [
+        1980,
+        555
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "krajok",
+      "anchor": [
+        1970,
+        710
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tea",
+      "anchor": [
+        900,
+        825
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "sala",
+      "anchor": [
+        1340,
+        825
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "canteen",
+      "anchor": [
+        735,
+        837
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "judgment",
+      "anchor": [
+        1080,
+        575
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "house-front-one",
+      "anchor": [
+        870,
+        555
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "house-right-one",
+      "anchor": [
+        1300,
+        550
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "house-left-two",
+      "anchor": [
+        740,
+        1440
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "house-right-two",
+      "anchor": [
+        1530,
+        1445
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "gate-entry",
+      "anchor": [
+        1110,
+        1500
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "gate-exit",
+      "anchor": [
+        1110,
+        1245
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-01",
+      "anchor": [
+        95,
+        230
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-02",
+      "anchor": [
+        490,
+        265
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-03",
+      "anchor": [
+        111,
+        445
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-04",
+      "anchor": [
+        410,
+        465
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-05",
+      "anchor": [
+        117,
+        560
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "tree-red-06",
+      "anchor": [
+        465,
+        620
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-07",
+      "anchor": [
+        200,
+        732
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-08",
+      "anchor": [
+        525,
+        790
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-09",
+      "anchor": [
+        245,
+        855
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-10",
+      "anchor": [
+        110,
+        925
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-11",
+      "anchor": [
+        480,
+        905
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-12",
+      "anchor": [
+        560,
+        958
+      ],
+      "terrainAlpha": 249
+    },
+    {
+      "id": "tree-red-13",
+      "anchor": [
+        145,
+        1340
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-14",
+      "anchor": [
+        305,
+        1440
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "tree-red-15",
+      "anchor": [
+        440,
+        1360
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-red-16",
+      "anchor": [
+        620,
+        1510
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-01",
+      "anchor": [
+        740,
+        220
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-02",
+      "anchor": [
+        1200,
+        205
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-03",
+      "anchor": [
+        1300,
+        235
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-04",
+      "anchor": [
+        720,
+        447
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-05",
+      "anchor": [
+        1400,
+        420
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-06",
+      "anchor": [
+        750,
+        622
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-07",
+      "anchor": [
+        1435,
+        610
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-08",
+      "anchor": [
+        730,
+        750
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-09",
+      "anchor": [
+        1500,
+        785
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-10",
+      "anchor": [
+        830,
+        920
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-11",
+      "anchor": [
+        1220,
+        925
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-12",
+      "anchor": [
+        1510,
+        925
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "tree-green-13",
+      "anchor": [
+        1820,
+        680
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-14",
+      "anchor": [
+        2200,
+        890
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-15",
+      "anchor": [
+        1780,
+        940
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "tree-green-16",
+      "anchor": [
+        1884,
+        958
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "tree-green-17",
+      "anchor": [
+        1640,
+        1360
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-18",
+      "anchor": [
+        1830,
+        1470
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-19",
+      "anchor": [
+        2010,
+        1345
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-20",
+      "anchor": [
+        2182,
+        1510
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-21",
+      "anchor": [
+        480,
+        1495
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-22",
+      "anchor": [
+        865,
+        1515
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-23",
+      "anchor": [
+        1360,
+        1500
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-green-24",
+      "anchor": [
+        2174,
+        1190
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-white-01",
+      "anchor": [
+        2210,
+        300
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-white-02",
+      "anchor": [
+        1948,
+        262
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-white-03",
+      "anchor": [
+        2230,
+        515
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "tree-white-04",
+      "anchor": [
+        2100,
+        180
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "shrub-red-01",
+      "anchor": [
+        80,
+        350
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-red-02",
+      "anchor": [
+        494,
+        576
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-red-03",
+      "anchor": [
+        121,
+        814
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "shrub-red-04",
+      "anchor": [
+        430,
+        961
+      ],
+      "terrainAlpha": 248
+    },
+    {
+      "id": "shrub-red-05",
+      "anchor": [
+        290,
+        1216
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "shrub-red-06",
+      "anchor": [
+        540,
+        1415
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-01",
+      "anchor": [
+        670,
+        280
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-02",
+      "anchor": [
+        1380,
+        370
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-03",
+      "anchor": [
+        775,
+        680
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-04",
+      "anchor": [
+        1480,
+        700
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-05",
+      "anchor": [
+        1590,
+        880
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-06",
+      "anchor": [
+        1790,
+        900
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-07",
+      "anchor": [
+        1676,
+        1262
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "shrub-green-08",
+      "anchor": [
+        2160,
+        1400
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-green-09",
+      "anchor": [
+        1350,
+        1380
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-white-01",
+      "anchor": [
+        2190,
+        390
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-white-02",
+      "anchor": [
+        1946,
+        218
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "shrub-white-03",
+      "anchor": [
+        2266,
+        670
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rock-red-01",
+      "anchor": [
+        52,
+        632
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "rock-red-02",
+      "anchor": [
+        575,
+        950
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rock-red-03",
+      "anchor": [
+        160,
+        1470
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rock-green-01",
+      "anchor": [
+        690,
+        940
+      ],
+      "terrainAlpha": 245
+    },
+    {
+      "id": "rock-green-02",
+      "anchor": [
+        1636,
+        944
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "rock-green-03",
+      "anchor": [
+        2060,
+        1430
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rock-white-01",
+      "anchor": [
+        2260,
+        200
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rock-white-02",
+      "anchor": [
+        2170,
+        620
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-01",
+      "anchor": [
+        850,
+        250
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-02",
+      "anchor": [
+        1160,
+        250
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-03",
+      "anchor": [
+        810,
+        590
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-04",
+      "anchor": [
+        1360,
+        590
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-05",
+      "anchor": [
+        1015,
+        645
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-06",
+      "anchor": [
+        1185,
+        645
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-07",
+      "anchor": [
+        810,
+        845
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-08",
+      "anchor": [
+        1430,
+        845
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-09",
+      "anchor": [
+        1015,
+        875
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-10",
+      "anchor": [
+        1190,
+        875
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-11",
+      "anchor": [
+        1025,
+        1180
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-12",
+      "anchor": [
+        1210,
+        1180
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-13",
+      "anchor": [
+        965,
+        1280
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-14",
+      "anchor": [
+        1250,
+        1280
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-15",
+      "anchor": [
+        2050,
+        590
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "lamp-16",
+      "anchor": [
+        1610,
+        250
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rail-back-1",
+      "anchor": [
+        1810,
+        250
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "rail-front-1",
+      "anchor": [
+        1810,
+        278
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "rail-back-2",
+      "anchor": [
+        1510,
+        529
+      ],
+      "terrainAlpha": 252
+    },
+    {
+      "id": "rail-front-2",
+      "anchor": [
+        1510,
+        557
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "rail-back-3",
+      "anchor": [
+        2090,
+        764
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "rail-front-3",
+      "anchor": [
+        2090,
+        792
+      ],
+      "terrainAlpha": 251
+    },
+    {
+      "id": "post-back-1",
+      "anchor": [
+        1030,
+        898
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "post-front-2",
+      "anchor": [
+        1190,
+        898
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "post-back-3",
+      "anchor": [
+        1040,
+        1110
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "post-front-4",
+      "anchor": [
+        1180,
+        1110
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "post-back-5",
+      "anchor": [
+        1350,
+        939
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "post-front-6",
+      "anchor": [
+        1455,
+        939
+      ],
+      "terrainAlpha": 253
+    },
+    {
+      "id": "dock-canopy",
+      "anchor": [
+        1400,
+        930
+      ],
+      "terrainAlpha": 253
+    }
+  ],
+  "baseRouteClearance": [
+    {
+      "id": "krata",
+      "minimum": 127.23,
+      "required": 48.0
+    },
+    {
+      "id": "dab",
+      "minimum": 146.88,
+      "required": 48.6
+    },
+    {
+      "id": "ngiw",
+      "minimum": 228.13,
+      "required": 50.4
+    },
+    {
+      "id": "tarang",
+      "minimum": 108.47,
+      "required": 56.4
+    },
+    {
+      "id": "sawan",
+      "minimum": 153.04,
+      "required": 42.0
+    },
+    {
+      "id": "lokan",
+      "minimum": 131.34,
+      "required": 48.6
+    },
+    {
+      "id": "lan",
+      "minimum": 223.94,
+      "required": 49.8
+    },
+    {
+      "id": "krajok",
+      "minimum": 73.5,
+      "required": 48.6
+    },
+    {
+      "id": "tea",
+      "minimum": 177.95,
+      "required": 43.8
+    },
+    {
+      "id": "sala",
+      "minimum": 60.7,
+      "required": 45.6
+    },
+    {
+      "id": "canteen",
+      "minimum": 258.2,
+      "required": 41.04
+    },
+    {
+      "id": "house-front-one",
+      "minimum": 76.66,
+      "required": 40.2
+    },
+    {
+      "id": "house-right-one",
+      "minimum": 78.27,
+      "required": 41.4
+    },
+    {
+      "id": "house-left-two",
+      "minimum": 355.45,
+      "required": 45.0
+    },
+    {
+      "id": "house-right-two",
+      "minimum": 434.55,
+      "required": 45.0
+    },
+    {
+      "id": "tree-red-01",
+      "minimum": 324.66,
+      "required": 43.8
+    },
+    {
+      "id": "tree-red-02",
+      "minimum": 80.79,
+      "required": 45.84
+    },
+    {
+      "id": "tree-red-03",
+      "minimum": 286.25,
+      "required": 47.88
+    },
+    {
+      "id": "tree-red-04",
+      "minimum": 96.75,
+      "required": 43.8
+    },
+    {
+      "id": "tree-red-05",
+      "minimum": 322.85,
+      "required": 45.84
+    },
+    {
+      "id": "tree-red-06",
+      "minimum": 65.23,
+      "required": 47.88
+    },
+    {
+      "id": "tree-red-07",
+      "minimum": 295.44,
+      "required": 43.8
+    },
+    {
+      "id": "tree-red-08",
+      "minimum": 245.37,
+      "required": 45.84
+    },
+    {
+      "id": "tree-red-09",
+      "minimum": 353.96,
+      "required": 47.88
+    },
+    {
+      "id": "tree-red-10",
+      "minimum": 492.34,
+      "required": 43.8
+    },
+    {
+      "id": "tree-red-11",
+      "minimum": 347.83,
+      "required": 45.84
+    },
+    {
+      "id": "tree-red-12",
+      "minimum": 402.7,
+      "required": 47.88
+    },
+    {
+      "id": "tree-red-13",
+      "minimum": 834.34,
+      "required": 48.6
+    },
+    {
+      "id": "tree-red-14",
+      "minimum": 790.45,
+      "required": 50.76
+    },
+    {
+      "id": "tree-red-15",
+      "minimum": 655.45,
+      "required": 52.92
+    },
+    {
+      "id": "tree-red-16",
+      "minimum": 475.45,
+      "required": 48.6
+    },
+    {
+      "id": "tree-green-01",
+      "minimum": 181.11,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-02",
+      "minimum": 164.49,
+      "required": 45.84
+    },
+    {
+      "id": "tree-green-03",
+      "minimum": 244.12,
+      "required": 47.88
+    },
+    {
+      "id": "tree-green-04",
+      "minimum": 44.44,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-05",
+      "minimum": 125.15,
+      "required": 45.84
+    },
+    {
+      "id": "tree-green-06",
+      "minimum": 49.08,
+      "required": 47.88
+    },
+    {
+      "id": "tree-green-07",
+      "minimum": 66.79,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-08",
+      "minimum": 171.26,
+      "required": 45.84
+    },
+    {
+      "id": "tree-green-09",
+      "minimum": 134.93,
+      "required": 47.88
+    },
+    {
+      "id": "tree-green-10",
+      "minimum": 259.16,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-11",
+      "minimum": 130.84,
+      "required": 45.84
+    },
+    {
+      "id": "tree-green-12",
+      "minimum": 117.24,
+      "required": 47.88
+    },
+    {
+      "id": "tree-green-13",
+      "minimum": 179.25,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-14",
+      "minimum": 90.07,
+      "required": 45.84
+    },
+    {
+      "id": "tree-green-15",
+      "minimum": 240.59,
+      "required": 47.88
+    },
+    {
+      "id": "tree-green-16",
+      "minimum": 190.15,
+      "required": 43.8
+    },
+    {
+      "id": "tree-green-17",
+      "minimum": 504.72,
+      "required": 50.76
+    },
+    {
+      "id": "tree-green-18",
+      "minimum": 697.32,
+      "required": 52.92
+    },
+    {
+      "id": "tree-green-19",
+      "minimum": 561.02,
+      "required": 48.6
+    },
+    {
+      "id": "tree-green-20",
+      "minimum": 707.43,
+      "required": 50.76
+    },
+    {
+      "id": "tree-green-21",
+      "minimum": 615.45,
+      "required": 52.92
+    },
+    {
+      "id": "tree-green-22",
+      "minimum": 230.45,
+      "required": 48.6
+    },
+    {
+      "id": "tree-green-23",
+      "minimum": 264.55,
+      "required": 50.76
+    },
+    {
+      "id": "tree-green-24",
+      "minimum": 387.45,
+      "required": 52.92
+    },
+    {
+      "id": "tree-white-01",
+      "minimum": 266.29,
+      "required": 38.4
+    },
+    {
+      "id": "tree-white-02",
+      "minimum": 40.97,
+      "required": 39.84
+    },
+    {
+      "id": "tree-white-03",
+      "minimum": 290.58,
+      "required": 38.4
+    },
+    {
+      "id": "tree-white-04",
+      "minimum": 199.39,
+      "required": 33.6
+    },
+    {
+      "id": "shrub-red-01",
+      "minimum": 308.2,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-red-02",
+      "minimum": 31.78,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-red-03",
+      "minimum": 407.97,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-red-04",
+      "minimum": 401.62,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-red-05",
+      "minimum": 673.39,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-red-06",
+      "minimum": 555.45,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-01",
+      "minimum": 106.66,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-02",
+      "minimum": 176.39,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-03",
+      "minimum": 110.73,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-04",
+      "minimum": 153.96,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-05",
+      "minimum": 199.47,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-06",
+      "minimum": 208.69,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-07",
+      "minimum": 444.05,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-08",
+      "minimum": 597.71,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-green-09",
+      "minimum": 254.55,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-white-01",
+      "minimum": 260.9,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-white-02",
+      "minimum": 81.95,
+      "required": 31.2
+    },
+    {
+      "id": "shrub-white-03",
+      "minimum": 158.94,
+      "required": 31.2
+    },
+    {
+      "id": "rock-red-01",
+      "minimum": 394.57,
+      "required": 32.64
+    },
+    {
+      "id": "rock-red-02",
+      "minimum": 391.01,
+      "required": 32.64
+    },
+    {
+      "id": "rock-red-03",
+      "minimum": 935.45,
+      "required": 32.64
+    },
+    {
+      "id": "rock-green-01",
+      "minimum": 359.9,
+      "required": 32.64
+    },
+    {
+      "id": "rock-green-02",
+      "minimum": 244.32,
+      "required": 32.64
+    },
+    {
+      "id": "rock-green-03",
+      "minimum": 638.48,
+      "required": 32.64
+    },
+    {
+      "id": "rock-white-01",
+      "minimum": 332.88,
+      "required": 32.64
+    },
+    {
+      "id": "rock-white-02",
+      "minimum": 173.01,
+      "required": 32.64
+    }
+  ],
+  "relativeSvgImageLinks": 137,
+  "httpResourcesChecked": 142,
+  "outputBytesAtCheck": 59552485,
+  "limitations": [
+    "Browser UI not inspected: browser access host is unavailable",
+    "Foot support is terrain-alpha sampling, not walkmask/collision testing",
+    "Separate border 2–3 exit anchor is not specified on reference page 1",
+    "Final style/scale approval belongs to owner"
+  ]
+}

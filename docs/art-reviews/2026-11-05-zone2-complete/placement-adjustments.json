@@ -1,0 +1,242 @@
+[
+  {
+    "id": "tree-red-03",
+    "from": [
+      95,
+      445
+    ],
+    "to": [
+      111,
+      445
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-red-05",
+    "from": [
+      105,
+      588
+    ],
+    "to": [
+      117,
+      560
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-red-07",
+    "from": [
+      180,
+      720
+    ],
+    "to": [
+      200,
+      732
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-red-12",
+    "from": [
+      560,
+      1010
+    ],
+    "to": [
+      560,
+      958
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-green-04",
+    "from": [
+      720,
+      435
+    ],
+    "to": [
+      720,
+      447
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-green-06",
+    "from": [
+      750,
+      610
+    ],
+    "to": [
+      750,
+      622
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-green-16",
+    "from": [
+      1900,
+      1010
+    ],
+    "to": [
+      1884,
+      958
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-green-20",
+    "from": [
+      2190,
+      1510
+    ],
+    "to": [
+      2182,
+      1510
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-green-24",
+    "from": [
+      2250,
+      1130
+    ],
+    "to": [
+      2174,
+      1190
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "tree-white-02",
+    "from": [
+      1940,
+      290
+    ],
+    "to": [
+      1948,
+      262
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-red-02",
+    "from": [
+      490,
+      560
+    ],
+    "to": [
+      494,
+      576
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-red-03",
+    "from": [
+      125,
+      810
+    ],
+    "to": [
+      121,
+      814
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-red-04",
+    "from": [
+      430,
+      965
+    ],
+    "to": [
+      430,
+      961
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-red-05",
+    "from": [
+      290,
+      1200
+    ],
+    "to": [
+      290,
+      1216
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-green-07",
+    "from": [
+      1680,
+      1250
+    ],
+    "to": [
+      1676,
+      1262
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-white-02",
+    "from": [
+      1910,
+      190
+    ],
+    "to": [
+      1946,
+      218
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "shrub-white-03",
+    "from": [
+      2270,
+      670
+    ],
+    "to": [
+      2266,
+      670
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "rock-red-01",
+    "from": [
+      60,
+      640
+    ],
+    "to": [
+      52,
+      632
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "rock-green-01",
+    "from": [
+      690,
+      1000
+    ],
+    "to": [
+      690,
+      940
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  },
+  {
+    "id": "rock-green-02",
+    "from": [
+      1620,
+      980
+    ],
+    "to": [
+      1636,
+      944
+    ],
+    "reason": "original terrain alpha >= 240 at root support samples, inside atlas and clear of original path centerlines"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "world": [
+    2304,
+    1536
+  ],
+  "tileSize": 512,
+  "gutter": 2,
+  "atlasSha256": "5f109e56749bb245b2acdc8d193ec39f64ef52ce1f1ba63409035ba0f80b0d9d",
+  "reconstruction": [
+    {
+      "format": "png",
+      "tiles": 15,
+      "exactPixelMatch": true
+    },
+    {
+      "format": "webp",
+      "tiles": 15,
+      "exactPixelMatch": true
+    }
+  ]
+}

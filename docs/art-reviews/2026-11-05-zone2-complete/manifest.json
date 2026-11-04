@@ -1,0 +1,793 @@
+{
+  "world": [
+    2304,
+    1536
+  ],
+  "tiles": [
+    {
+      "id": "0-0",
+      "png": "terrain-png/0-0.png",
+      "src": "terrain-webp/0-0.webp",
+      "rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        514
+      ],
+      "decodedBytes": 1056784,
+      "fileBytes": 316722
+    },
+    {
+      "id": "1-0",
+      "png": "terrain-png/1-0.png",
+      "src": "terrain-webp/1-0.webp",
+      "rect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 276336
+    },
+    {
+      "id": "2-0",
+      "png": "terrain-png/2-0.png",
+      "src": "terrain-webp/2-0.webp",
+      "rect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 280876
+    },
+    {
+      "id": "3-0",
+      "png": "terrain-png/3-0.png",
+      "src": "terrain-webp/3-0.webp",
+      "rect": [
+        1536,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 219688
+    },
+    {
+      "id": "4-0",
+      "png": "terrain-png/4-0.png",
+      "src": "terrain-webp/4-0.webp",
+      "rect": [
+        2048,
+        0,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        514
+      ],
+      "decodedBytes": 530448,
+      "fileBytes": 169122
+    },
+    {
+      "id": "0-1",
+      "png": "terrain-png/0-1.png",
+      "src": "terrain-webp/0-1.webp",
+      "rect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        516
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 307774
+    },
+    {
+      "id": "1-1",
+      "png": "terrain-png/1-1.png",
+      "src": "terrain-webp/1-1.webp",
+      "rect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 295322
+    },
+    {
+      "id": "2-1",
+      "png": "terrain-png/2-1.png",
+      "src": "terrain-webp/2-1.webp",
+      "rect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 306578
+    },
+    {
+      "id": "3-1",
+      "png": "terrain-png/3-1.png",
+      "src": "terrain-webp/3-1.webp",
+      "rect": [
+        1536,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 301566
+    },
+    {
+      "id": "4-1",
+      "png": "terrain-png/4-1.png",
+      "src": "terrain-webp/4-1.webp",
+      "rect": [
+        2048,
+        512,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        516
+      ],
+      "decodedBytes": 532512,
+      "fileBytes": 148136
+    },
+    {
+      "id": "0-2",
+      "png": "terrain-png/0-2.png",
+      "src": "terrain-webp/0-2.webp",
+      "rect": [
+        0,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        514
+      ],
+      "decodedBytes": 1056784,
+      "fileBytes": 238116
+    },
+    {
+      "id": "1-2",
+      "png": "terrain-png/1-2.png",
+      "src": "terrain-webp/1-2.webp",
+      "rect": [
+        512,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 290556
+    },
+    {
+      "id": "2-2",
+      "png": "terrain-png/2-2.png",
+      "src": "terrain-webp/2-2.webp",
+      "rect": [
+        1024,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 294766
+    },
+    {
+      "id": "3-2",
+      "png": "terrain-png/3-2.png",
+      "src": "terrain-webp/3-2.webp",
+      "rect": [
+        1536,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 227900
+    },
+    {
+      "id": "4-2",
+      "png": "terrain-png/4-2.png",
+      "src": "terrain-webp/4-2.webp",
+      "rect": [
+        2048,
+        1024,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        514
+      ],
+      "decodedBytes": 530448,
+      "fileBytes": 145026
+    }
+  ],
+  "tileSize": 512,
+  "gutter": 2,
+  "sourceGuideSize": [
+    1536,
+    1024
+  ],
+  "terrainMaster": "terrain-atlas.png",
+  "background": null,
+  "liquids": [
+    {
+      "id": "river",
+      "rect": [
+        0,
+        829,
+        2304,
+        707
+      ],
+      "png": "layers/river.png",
+      "frames": [
+        {
+          "src": "flows/river-00.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-01.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-02.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-03.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-04.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-05.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-06.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-07.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-08.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-09.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-10.webp",
+          "size": [
+            1152,
+            354
+          ]
+        },
+        {
+          "src": "flows/river-11.webp",
+          "size": [
+            1152,
+            354
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "source": "fluid-master.png",
+      "sharedSourceUV": true
+    },
+    {
+      "id": "lava",
+      "rect": [
+        0,
+        0,
+        922,
+        1044
+      ],
+      "png": "layers/lava.png",
+      "frames": [
+        {
+          "src": "flows/lava-00.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-01.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-02.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-03.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-04.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-05.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-06.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-07.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-08.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-09.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-10.webp",
+          "size": [
+            420,
+            476
+          ]
+        },
+        {
+          "src": "flows/lava-11.webp",
+          "size": [
+            420,
+            476
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "source": "fluid-master.png",
+      "sharedSourceUV": true
+    },
+    {
+      "id": "waterfall",
+      "rect": [
+        1290,
+        0,
+        1014,
+        1044
+      ],
+      "png": "layers/waterfall.png",
+      "frames": [
+        {
+          "src": "flows/waterfall-00.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-01.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-02.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-03.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-04.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-05.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-06.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-07.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-08.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-09.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-10.webp",
+          "size": [
+            460,
+            474
+          ]
+        },
+        {
+          "src": "flows/waterfall-11.webp",
+          "size": [
+            460,
+            474
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "source": "fluid-master.png",
+      "sharedSourceUV": true
+    }
+  ],
+  "sky": {
+    "png": "layers/sky.png",
+    "src": "layers/sky-preview.webp",
+    "size": [
+      896,
+      597
+    ],
+    "rect": [
+      0,
+      0,
+      2304,
+      1536
+    ],
+    "generation": 12
+  },
+  "mountains": {
+    "png": "layers/mountains.png",
+    "src": "layers/mountains-preview.webp",
+    "size": [
+      1024,
+      341
+    ],
+    "rect": [
+      0,
+      0,
+      2304,
+      500
+    ],
+    "generation": 1
+  },
+  "layerOrder": [
+    "sky",
+    "mountains",
+    "river",
+    "lava",
+    "waterfall",
+    "terrain",
+    "objects-back",
+    "objects-mid",
+    "objects-front"
+  ],
+  "label": "AVEGEE · โซน 2 เมืองบูรพา — ผังเสนอ",
+  "preview": "composite-preview.jpg",
+  "objects": "layout.json",
+  "layers": [
+    {
+      "id": "sky",
+      "png": "layers/sky.png",
+      "src": "layers/sky-preview.webp",
+      "size": [
+        896,
+        597
+      ],
+      "rect": [
+        0,
+        0,
+        2304,
+        1536
+      ],
+      "generation": 12
+    },
+    {
+      "id": "mountains",
+      "png": "layers/mountains.png",
+      "src": "layers/mountains-preview.webp",
+      "size": [
+        1024,
+        341
+      ],
+      "rect": [
+        0,
+        0,
+        2304,
+        500
+      ],
+      "generation": 1
+    },
+    {
+      "id": "river",
+      "png": "layers/river.png",
+      "rect": [
+        0,
+        829,
+        2304,
+        707
+      ]
+    },
+    {
+      "id": "lava",
+      "png": "layers/lava.png",
+      "rect": [
+        0,
+        0,
+        922,
+        1044
+      ]
+    },
+    {
+      "id": "waterfall",
+      "png": "layers/waterfall.png",
+      "rect": [
+        1290,
+        0,
+        1014,
+        1044
+      ]
+    },
+    {
+      "id": "terrain",
+      "png": "terrain-atlas.png",
+      "rect": [
+        0,
+        0,
+        2304,
+        1536
+      ]
+    },
+    {
+      "id": "objects-back",
+      "layout": "layout.json",
+      "filterLayer": "back"
+    },
+    {
+      "id": "objects-mid",
+      "layout": "layout.json",
+      "filterLayer": "mid"
+    },
+    {
+      "id": "objects-front",
+      "layout": "layout.json",
+      "filterLayer": "front"
+    }
+  ]
+}

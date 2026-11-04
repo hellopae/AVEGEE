@@ -1,0 +1,993 @@
+{
+  "assets": [
+    {
+      "id": "tea",
+      "label": "ศาลาน้ำชา",
+      "sprite": "objects/tea.png",
+      "preview": "objects/tea.webp",
+      "size": [
+        630,
+        720
+      ],
+      "foot": [
+        315.0,
+        691.2
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 2
+      },
+      "sourceRect": [
+        0,
+        0,
+        1312,
+        1199
+      ],
+      "trim": [
+        162,
+        21,
+        1147,
+        1146
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "sala",
+      "label": "หอทะเบียนกรรม",
+      "sprite": "objects/sala.png",
+      "preview": "objects/sala.webp",
+      "size": [
+        720,
+        690
+      ],
+      "foot": [
+        324.0,
+        662.4
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 3
+      },
+      "sourceRect": [
+        0,
+        0,
+        1417,
+        1110
+      ],
+      "trim": [
+        184,
+        53,
+        1226,
+        1052
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "tarang",
+      "label": "ตะราง",
+      "sprite": "objects/tarang.png",
+      "preview": "objects/tarang.webp",
+      "size": [
+        720,
+        560
+      ],
+      "foot": [
+        309.6,
+        526.4
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 4
+      },
+      "sourceRect": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "trim": [
+        220,
+        71,
+        1321,
+        927
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "krajok",
+      "label": "กระจกส่องกรรม",
+      "sprite": "objects/krajok.png",
+      "preview": "objects/krajok.webp",
+      "size": [
+        720,
+        668
+      ],
+      "foot": [
+        338.4,
+        641.28
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 5
+      },
+      "sourceRect": [
+        0,
+        0,
+        1448,
+        1086
+      ],
+      "trim": [
+        181,
+        0,
+        1306,
+        1043
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "sawan",
+      "label": "ประตูสวรรค์",
+      "sprite": "objects/sawan.png",
+      "preview": "objects/sawan.webp",
+      "size": [
+        613,
+        720
+      ],
+      "foot": [
+        306.5,
+        691.2
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 6
+      },
+      "sourceRect": [
+        0,
+        0,
+        1312,
+        1199
+      ],
+      "trim": [
+        215,
+        60,
+        1094,
+        1093
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "krata",
+      "label": "กระทะทองแดง",
+      "sprite": "objects/krata.png",
+      "preview": "objects/krata.webp",
+      "size": [
+        409,
+        429
+      ],
+      "foot": [
+        204.5,
+        411.84
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "trim": [
+        46,
+        29,
+        455,
+        458
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "ngiw",
+      "label": "ต้นงิ้ว",
+      "sprite": "objects/ngiw.png",
+      "preview": "objects/ngiw.webp",
+      "size": [
+        462,
+        445
+      ],
+      "foot": [
+        231.0,
+        427.2
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "trim": [
+        23,
+        13,
+        485,
+        458
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "dab",
+      "label": "ป่าดาบอสิปัตตะ",
+      "sprite": "objects/dab.png",
+      "preview": "objects/dab.webp",
+      "size": [
+        446,
+        469
+      ],
+      "foot": [
+        223.0,
+        450.24
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "trim": [
+        35,
+        2,
+        481,
+        471
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "lokan",
+      "label": "โลกันตนรก",
+      "sprite": "objects/lokan.png",
+      "preview": "objects/lokan.webp",
+      "size": [
+        446,
+        453
+      ],
+      "foot": [
+        223.0,
+        434.88
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "trim": [
+        30,
+        1,
+        476,
+        454
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "lan",
+      "label": "แท่นลงทัณฑ์ lan",
+      "sprite": "objects/lan.png",
+      "preview": "objects/lan.webp",
+      "size": [
+        451,
+        455
+      ],
+      "foot": [
+        225.5,
+        436.8
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "trim": [
+        24,
+        0,
+        475,
+        455
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "canteen",
+      "label": "โรงอาหาร",
+      "sprite": "objects/canteen.png",
+      "preview": "objects/canteen.webp",
+      "size": [
+        476,
+        415
+      ],
+      "foot": [
+        238.0,
+        398.4
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 7
+      },
+      "sourceRect": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "trim": [
+        16,
+        28,
+        492,
+        443
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "judgment",
+      "label": "แท่นตัดสิน",
+      "sprite": "objects/judgment.png",
+      "preview": "objects/judgment.webp",
+      "size": [
+        720,
+        574
+      ],
+      "foot": [
+        324.0,
+        551.04
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 8
+      },
+      "sourceRect": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "trim": [
+        151,
+        4,
+        1371,
+        977
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "house-front-one",
+      "label": "บ้านพัก 1",
+      "sprite": "objects/house-front-one.png",
+      "preview": "objects/house-front-one.webp",
+      "size": [
+        533,
+        471
+      ],
+      "foot": [
+        266.5,
+        452.16
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 9
+      },
+      "sourceRect": [
+        0,
+        0,
+        748,
+        526
+      ],
+      "trim": [
+        133,
+        55,
+        666,
+        526
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "house-right-one",
+      "label": "บ้านพัก 2",
+      "sprite": "objects/house-right-one.png",
+      "preview": "objects/house-right-one.webp",
+      "size": [
+        519,
+        465
+      ],
+      "foot": [
+        259.5,
+        446.4
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 9
+      },
+      "sourceRect": [
+        748,
+        0,
+        1495,
+        526
+      ],
+      "trim": [
+        121,
+        61,
+        640,
+        526
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "house-left-two",
+      "label": "บ้านพัก 3",
+      "sprite": "objects/house-left-two.png",
+      "preview": "objects/house-left-two.webp",
+      "size": [
+        514,
+        492
+      ],
+      "foot": [
+        257.0,
+        472.32
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 9
+      },
+      "sourceRect": [
+        0,
+        526,
+        748,
+        1052
+      ],
+      "trim": [
+        145,
+        0,
+        659,
+        492
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "house-right-two",
+      "label": "บ้านพัก 4",
+      "sprite": "objects/house-right-two.png",
+      "preview": "objects/house-right-two.webp",
+      "size": [
+        518,
+        485
+      ],
+      "foot": [
+        259.0,
+        465.6
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 9
+      },
+      "sourceRect": [
+        748,
+        526,
+        1495,
+        1052
+      ],
+      "trim": [
+        113,
+        0,
+        631,
+        485
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "gate-entry",
+      "label": "ประตูเข้า 1–2",
+      "sprite": "objects/gate-entry.png",
+      "preview": "objects/gate-entry.webp",
+      "size": [
+        720,
+        448
+      ],
+      "foot": [
+        360.0,
+        425.6
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 10
+      },
+      "sourceRect": [
+        0,
+        0,
+        1162,
+        724
+      ],
+      "trim": [
+        34,
+        9,
+        1121,
+        686
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "gate-exit",
+      "label": "ประตูออก 2–3",
+      "sprite": "objects/gate-exit.png",
+      "preview": "objects/gate-exit.webp",
+      "size": [
+        720,
+        570
+      ],
+      "foot": [
+        360.0,
+        541.5
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 10
+      },
+      "sourceRect": [
+        1162,
+        0,
+        2172,
+        724
+      ],
+      "trim": [
+        149,
+        31,
+        976,
+        686
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "rail-front",
+      "label": "ราวสะพานหน้า",
+      "sprite": "objects/rail-front.png",
+      "preview": "objects/rail-front.webp",
+      "size": [
+        485,
+        246
+      ],
+      "foot": [
+        242.5,
+        236.16
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "trim": [
+        27,
+        157,
+        512,
+        403
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "rail-back",
+      "label": "ราวสะพานหลัง",
+      "sprite": "objects/rail-back.png",
+      "preview": "objects/rail-back.webp",
+      "size": [
+        485,
+        240
+      ],
+      "foot": [
+        242.5,
+        230.4
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "trim": [
+        27,
+        156,
+        512,
+        396
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "lamp",
+      "label": "เสาไฟ",
+      "sprite": "objects/lamp.png",
+      "preview": "objects/lamp.webp",
+      "size": [
+        173,
+        471
+      ],
+      "foot": [
+        86.5,
+        452.16
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "trim": [
+        174,
+        15,
+        347,
+        486
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "post-front",
+      "label": "เสาสะพานหน้า",
+      "sprite": "objects/post-front.png",
+      "preview": "objects/post-front.webp",
+      "size": [
+        187,
+        384
+      ],
+      "foot": [
+        93.5,
+        368.64
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "trim": [
+        173,
+        68,
+        360,
+        452
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "post-back",
+      "label": "เสาสะพานหลัง",
+      "sprite": "objects/post-back.png",
+      "preview": "objects/post-back.webp",
+      "size": [
+        186,
+        385
+      ],
+      "foot": [
+        93.0,
+        369.6
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "trim": [
+        160,
+        66,
+        346,
+        451
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "dock-canopy",
+      "label": "หลังคาท่าเรือ",
+      "sprite": "objects/dock-canopy.png",
+      "preview": "objects/dock-canopy.webp",
+      "size": [
+        477,
+        465
+      ],
+      "foot": [
+        238.5,
+        432.45
+      ],
+      "provenance": {
+        "kind": "built-in ImageGen",
+        "call": 11
+      },
+      "sourceRect": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "trim": [
+        19,
+        20,
+        496,
+        485
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "tree-red",
+      "label": "เมเปิลแดง",
+      "sprite": "objects/tree-red.png",
+      "preview": "objects/tree-red.webp",
+      "size": [
+        720,
+        662
+      ],
+      "foot": [
+        360.0,
+        635.52
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/volcanic-tree.png",
+        "sha256": "fc87c0727f0c23fa1840e053d75ba07a28a7ca5640c389fb9e43f6ce2a556755"
+      },
+      "sourceRect": null,
+      "trim": [
+        51,
+        14,
+        1289,
+        1152
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "tree-green",
+      "label": "สนเอเชีย",
+      "sprite": "objects/tree-green.png",
+      "preview": "objects/tree-green.webp",
+      "size": [
+        720,
+        512
+      ],
+      "foot": [
+        360.0,
+        491.52
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/forest-pine.png",
+        "sha256": "ecbd6c8ecd7225a63008d6746a831540c164d54689c02e1f1a81b6ffefbadedf"
+      },
+      "sourceRect": null,
+      "trim": [
+        48,
+        0,
+        1487,
+        1024
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "tree-white",
+      "label": "สนหิมะ",
+      "sprite": "objects/tree-white.png",
+      "preview": "objects/tree-white.webp",
+      "size": [
+        469,
+        720
+      ],
+      "foot": [
+        234.5,
+        691.2
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/ice-pine.png",
+        "sha256": "42cfd7e9654e744f1f48c1edc854a573ea55904d54b961ec0a4067a7f805f1c2"
+      },
+      "sourceRect": null,
+      "trim": [
+        9,
+        0,
+        987,
+        1500
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "shrub-green",
+      "label": "shrub-green",
+      "sprite": "objects/shrub-green.png",
+      "preview": "objects/shrub-green.webp",
+      "size": [
+        720,
+        394
+      ],
+      "foot": [
+        360.0,
+        378.24
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/forest-shrub.png",
+        "sha256": "c345119181eccdc6b5b5297bde988056d2cc3f2c73253a2c379d8aa84030a59f"
+      },
+      "sourceRect": null,
+      "trim": [
+        147,
+        42,
+        1617,
+        847
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "shrub-red",
+      "label": "shrub-red",
+      "sprite": "objects/shrub-red.png",
+      "preview": "objects/shrub-red.webp",
+      "size": [
+        720,
+        392
+      ],
+      "foot": [
+        360.0,
+        376.32
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/volcanic-shrub.png",
+        "sha256": "0c0adbd85c674961f2f27a78de3f10bc8efd5758c1ce5290dd2a44085326f1e4"
+      },
+      "sourceRect": null,
+      "trim": [
+        64,
+        125,
+        1466,
+        888
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "shrub-white",
+      "label": "shrub-white",
+      "sprite": "objects/shrub-white.png",
+      "preview": "objects/shrub-white.webp",
+      "size": [
+        720,
+        331
+      ],
+      "foot": [
+        360.0,
+        317.76
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/ice-shrub.png",
+        "sha256": "036f49726699c03ec1335ec3c511db3fec148edf35b54671af4edeec8d4ecd7d"
+      },
+      "sourceRect": null,
+      "trim": [
+        23,
+        27,
+        1743,
+        817
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "rock-green",
+      "label": "rock-green",
+      "sprite": "objects/rock-green.png",
+      "preview": "objects/rock-green.webp",
+      "size": [
+        720,
+        527
+      ],
+      "foot": [
+        360.0,
+        505.92
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/forest-boulder.png",
+        "sha256": "aa92800a550ddc9fac4aaf5ffb5a927e9b2699584f20043b4e1180f1bc9242c7"
+      },
+      "sourceRect": null,
+      "trim": [
+        264,
+        131,
+        1261,
+        861
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "rock-red",
+      "label": "rock-red",
+      "sprite": "objects/rock-red.png",
+      "preview": "objects/rock-red.webp",
+      "size": [
+        720,
+        674
+      ],
+      "foot": [
+        360.0,
+        647.04
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/volcanic-boulder.png",
+        "sha256": "32006a199fa54370f9652fb21af8ec5453d27f37b6a0e8722fea90270b90605e"
+      },
+      "sourceRect": null,
+      "trim": [
+        237,
+        100,
+        1205,
+        1006
+      ],
+      "visualReview": "inspected; owner approval pending"
+    },
+    {
+      "id": "rock-white",
+      "label": "rock-white",
+      "sprite": "objects/rock-white.png",
+      "preview": "objects/rock-white.webp",
+      "size": [
+        720,
+        668
+      ],
+      "foot": [
+        360.0,
+        641.28
+      ],
+      "provenance": {
+        "kind": "reused approved zone1 kit",
+        "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/ice-boulder.png",
+        "sha256": "04b25d4d081f370219c11026d1c7cc6b29c7678260088ce217277e1327540bf8"
+      },
+      "sourceRect": null,
+      "trim": [
+        306,
+        81,
+        1214,
+        924
+      ],
+      "visualReview": "inspected; owner approval pending"
+    }
+  ],
+  "footUnits": "source PNG local pixels",
+  "alpha": "RGBA; gutters cropped, no painted pixel retouch"
+}

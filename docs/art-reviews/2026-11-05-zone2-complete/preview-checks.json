@@ -1,0 +1,51 @@
+{
+  "method": "Node DOM/Canvas simulation + actual local HTTP fetch; NOT real-browser visual QA",
+  "checks": [
+    "Initial viewport loads only nearby terrain tiles and objects from actual HTTP files",
+    "Both zoom levels update view and pressed state",
+    "All six focus locations load within the decoded cache budget",
+    "All seven layer controls remove their resources and restore them",
+    "Water clock advances when playing and freezes when paused",
+    "Pointer drag changes camera",
+    "Returning to the same camera produces identical draw calls while paused",
+    "390px simulated viewport executes without runtime errors",
+    "Overview uses the final composite and releases the streamed cache",
+    "Page cleanup closes all bitmap resources"
+  ],
+  "focusVisits": [
+    {
+      "focus": "north",
+      "decodedBytes": 18773904,
+      "requestedFiles": 26
+    },
+    {
+      "focus": "left",
+      "decodedBytes": 19493488,
+      "requestedFiles": 27
+    },
+    {
+      "focus": "right",
+      "decodedBytes": 14804144,
+      "requestedFiles": 24
+    },
+    {
+      "focus": "south",
+      "decodedBytes": 20621408,
+      "requestedFiles": 28
+    },
+    {
+      "focus": "dock",
+      "decodedBytes": 19739488,
+      "requestedFiles": 25
+    },
+    {
+      "focus": "center",
+      "decodedBytes": 21618528,
+      "requestedFiles": 31
+    }
+  ],
+  "peakCacheDecodedBytes": 21618528,
+  "peakInFlightAndCacheDecodedBytes": 21618528,
+  "errors": [],
+  "browserInspection": "blocked: browser access host is unavailable"
+}

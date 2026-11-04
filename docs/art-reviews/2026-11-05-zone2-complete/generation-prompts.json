@@ -1,0 +1,161 @@
+{
+  "calls": [
+    {
+      "n": 1,
+      "id": "mountains",
+      "prompt": "Create one production background layer for an East Asian underworld game map. Reference image 1 is the approved ART STYLE: detailed traditional hand-painted fantasy map, visible fine brushwork, weathered stone, subdued orange-pink sunset upper-left light, deep cool shadows, no smooth 3D render or plastic. Reference image 2 is the LOCKED terrain composition, for alignment only; do NOT reproduce or repaint its floors. Paint ONLY distant misty Chinese karst mountain ranges spanning a wide horizontal panorama, volcano on far left with narrow lava descending, pale icy mountain and distant cascades far right, layered purple-blue peaks and drifting mist in middle. No terrain platforms, no buildings, no trees in foreground, no sky background, no river. Transparent RGBA ABOVE silhouette and BELOW lower mist edge, isolated panorama. Broad landscape 3:1 composition, range concentrated upper half, fine atmospheric painterly textures as approved reference. This is mountains layer only.",
+      "references": [
+        "style-reference.jpg",
+        "terrain-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-cf3e0c84-8d38-46ec-b486-e68091e619a8.png"
+    },
+    {
+      "n": 2,
+      "id": "tea",
+      "prompt": "Production isolated game-map building sprite: a small East Asian underworld TEA PAVILION, open octagonal wooden teahouse with curved muted jade tiled roof, red columns, bronze finials, tea table and ceramic teapot inside, stone steps. ONE building only, no ground tile, no scenery, no lettering, no characters. Transparent RGBA, whole silhouette with generous transparent margin, short restrained contact shadow only. Match reference 1 EXACTLY as ART STYLE and camera: finely hand-painted detailed fantasy town map, weathered natural stone and wood, brush-textured tiled roof, subdued sunset upper-left pink-gold light and cooler lower-right shadows, elevated three-quarter view showing front and right side, NOT 3D render, NOT plastic, NOT candy orange. Building occupies 80% of canvas, compact footprint, comparable to small pavilion in approved zone1 map. Ref1 style authority; do not copy Thai architecture, replace with Chinese curved roof. Ref2 shapes/function only if supplied.",
+      "references": [
+        "style-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-d2dea0df-abf3-451c-bcff-f7cd8491b3e7.png"
+    },
+    {
+      "n": 3,
+      "id": "sala",
+      "prompt": "Create ONE isolated East Asian KARMA REGISTRY HALL map sprite, transparent RGBA. Two-level compact Chinese judicial archive, charcoal-jade curved clay roof tiles, vermilion aged timber columns, bronze details, open front desk with rolled registers and abacus, two warm paper lanterns. No text or people. Low stone threshold and short steps, no broad ground tile. Camera elevated 3/4 fantasy town map, front and right visible, orthographic, no perspective horizon. ART STYLE reference1 is mandatory: mimic its HAND PAINTED brush strokes and matte gouache texture, restrained muted gold, dusty red, soft indigo shadows, detailed but illustrative like a classical game background painting; do not make a 3D model/render, no shiny plastic, no orange filter. Light from upper left sunset, short shadow to lower right. Reference2 is functionality shapes only (sala second item in top row), must be repainted in reference1 style, not its glossy style. Single complete building centered, margin on all sides, no terrain/scenery.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-8a2aadd9-af73-4769-9999-be083cd3088f.png"
+    },
+    {
+      "n": 4,
+      "id": "tarang",
+      "prompt": "ONE transparent isolated map sprite: TARANG, East Asian underworld spirit prison. Compact stone prison hall with two small watch pavilions, heavy visible iron-barred cells, muted jade Chinese upturned tiled roofs, aged red pillars, bronze fittings, a few subdued lanterns. Empty cells, no beings, no gore. Reference1 STYLE authority: hand-painted classic fantasy map illustration with matte visible brushwork, weathered stone, subdued terracotta, slate green and brown-gold, upper-left pink golden sunset light, cool shadow right. Match elevated 3/4 camera of reference1, front and right visible, not low eye-level, not 3D render or glossy product. Reference2 function only: prison at top-right, simplify to small game-map scale, NOT its saturated glossy look. Whole architecture with short threshold steps, transparent openings in bars, generous transparent margin, no island/ground tile, no landscape, no text.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-7a95ffea-b569-4056-a2f0-0713f6211d51.png"
+    },
+    {
+      "n": 5,
+      "id": "krajok",
+      "prompt": "ONE isolated transparent RGBA game-map sprite: KARMA MIRROR SHRINE, East Asian underworld. A broad upright round bronze mirror in an aged bronze dragon frame, mirror surface pale silver-blue with subtle cloudy reflection, small open red wooden pavilion over it, curved slate-jade tiled Chinese roof and weathered stone threshold, short steps, restrained warm lanterns. Reference1 is ART STYLE authority: detailed hand-painted town-map illustration, visible matte brushwork, warm upper-left sunset, cool shadows cast lower right, dusty vermilion and subdued ochre, no 3D render, no plastic, no orange filter. Camera elevated 3/4 orthographic like approved map, see roof and floor/front and right side. Reference2 only identifies mirror function, leftmost item second row; do not copy glossy aesthetic. Whole sprite fully within canvas with transparent margin, NO atmospheric halo around sprite, NO ground tile or scenery, NO text, NO people, no extras.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-652debf1-63c1-478d-a51c-69f760b55553.png"
+    },
+    {
+      "n": 6,
+      "id": "sawan",
+      "prompt": "One isolated transparent RGBA map sprite: SAWAN HEAVEN PORTAL, East Asian afterlife. Elegant narrow ceremonial Chinese paifang shrine arch on shallow stone steps, two tall aged red columns with bronze scrollwork, curved jade roof, luminous pale gold doorway framed by muted golden dragons. Opening tall enough for a person. No opaque backdrop through open spaces except subtle gold portal surface. Reference1 is mandatory painterly STYLE, elevated 3/4 overhead map camera, upper-left warm pink sunset and cool lower-right shadows. Hand-painted matte textured stone, wood and tiles, small ornate architecture comparable to zone1 heaven gate at top right of main hill. Do not render glossy plastic or oversaturated orange. Reference2 only shows function (gold portal bottom row), not style. No huge island, ground tile or landscape, no people, no text, no detached aura/background halo. Whole object fully inside canvas with margins.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-3567ca63-2d69-4dc1-b4c1-ba84cf3d77ef.png"
+    },
+    {
+      "n": 7,
+      "id": "station-props",
+      "prompt": "PRODUCTION SPRITE SHEET on genuine transparent RGBA, exactly 3 equal columns x 2 equal rows, six isolated East Asian underworld map props, NO labels or grid lines. Each sprite fully contained inside its own cell with wide transparent gutters, all bases aligned within cells. Reading left to right: TOP LEFT KRATA bronze boiling cauldron, red-bronze ornate round vat with orange liquid and small hearth on low stone plinth; TOP MIDDLE NGIW compact thorn tree grove, 3 twisted dark leafless trees with long red thorns rooted in small rocky patch; TOP RIGHT DAB sword grove, upright slender oversized steel blades of different heights set amongst dark stone and a few red prayer ribbons, NO humans. BOTTOM LEFT LOKAN ice hell small roofless icy shrine with tall blue-white crystalline ice enclosing a Chinese stone altar; BOTTOM MIDDLE LAN execution press, Chinese timber gantry carrying suspended square stone weight over a stone block, small jade curved roof over machinery, NO humans; BOTTOM RIGHT CANTEEN small open food stall with jade curved roof, red posts, large rice pot, bowls and serving counter. One object per cell, no shared ground or scenery. Reference1 is mandatory STYLE: fine HAND PAINTED MATTE fantasy map, visible brush texture, muted colors, sunset upper left, cool lower-right shadows, elevated 3/4 orthographic camera see tops/front and right side. NO 3D render, no glossy plastic, no thick cartoon outline, no orange filter, no background halos. Reference2 is functional shape reference only. WIDE landscape sheet 3:2, six similarly sized sprites, do not repeat or omit any. No text. These are small station objects not full town buildings.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "grid": [
+        3,
+        2
+      ],
+      "cells": [
+        "krata",
+        "ngiw",
+        "dab",
+        "lokan",
+        "lan",
+        "canteen"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-21ec0347-633b-4dae-8e9a-7b2b5a7bc9c6.png"
+    },
+    {
+      "n": 8,
+      "id": "judgment",
+      "prompt": "ONE isolated transparent RGBA East Asian underworld JUDGMENT DAIS for an elevated 3/4 fantasy town map. Broad low rectangular stone platform with short central steps, open front, red timber rear canopy with muted jade curved tiled roof, central carved bronze magistrate chair and small judgment desk, low carved stone side balustrades, restrained paper lanterns. Reference1 dictates hand-painted painterly map art: fine dry brush detail, natural aged matte materials, muted green-red-bronze, sunset upper-left highlights, cool shadow lower right. Reference2 last item bottom is function/shape only, not style. Camera overhead three-quarter orthographic looking down enough to see broad floor, not frontal elevation. No person, no text. Isolate cleanly with alpha, NO diffuse glow or colored haze outside silhouette, short contact shadow only, no surrounding terrain, no ground tile. Whole platform and canopy inside image, comfortable transparent margins.",
+      "references": [
+        "style-reference.jpg",
+        "shapes-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-2195b1a5-fc0c-4300-8258-27badb30f99e.png"
+    },
+    {
+      "n": 9,
+      "id": "houses",
+      "prompt": "Production sprite sheet exactly 2 columns x 2 rows, four separate SMALL EAST ASIAN RESIDENCE map sprites on genuine transparent RGBA, no background, no text, no grid lines. Each house centered within its own quadrant with generous empty gutters, no overlap. TOP LEFT one-story red timber cottage, muted jade curved clay-tile roof, porch and two paper lanterns, front-right view; TOP RIGHT one-story narrower stone-and-wood cottage with side annex and jade curved tile roof, front-left view; BOTTOM LEFT modest two-story timber dwelling with open upper balcony and weathered jade double-eaved roof, front-right view; BOTTOM RIGHT two-story stone base residence with small enclosed side balcony, front-left view. All aged red wood, bronze fittings, weathered grey stone steps, subtly different silhouettes. Reference is absolute STYLE and elevated 3/4 overhead orthographic map camera: finely hand-painted classic fantasy map, MATTE brush texture, subdued dusty vermilion, grey-green, bronze, warm sunset light from upper left, cool shadow lower right. No 3D render, no plastic, no saturated orange filter, no tall ground islands. Whole separate buildings with short thresholds and transparent margins. Four compact dwellings not giant temples, consistent inhabitant scale.",
+      "references": [
+        "style-reference.jpg"
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cells": [
+        "house-front-one",
+        "house-right-one",
+        "house-left-two",
+        "house-right-two"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-0fc3c549-9835-4ff9-89d0-316c2bd78567.png"
+    },
+    {
+      "n": 10,
+      "id": "gates",
+      "prompt": "Production transparent RGBA game-map sprite sheet with TWO separate East Asian city gateways side by side, each occupying its own half with a large empty gutter. LEFT entrance from border 1-2: broad low weathered grey-stone gate with open arch, aged red wooden tiered canopy of muted jade curved tiles, two small side wall wings and bronze lanterns. RIGHT exit to border 2-3: slightly narrower stone paifang gateway, two tall red columns, cool grey-jade tiled curved roof, bronze lotus caps and two short wall wings. Both openings transparent (NO glowing portal); same inhabitable door scale. Match reference exactly for finely hand-painted painterly fantasy MAP art, dusty natural colors and MATTE brush texture, weathered detailed materials, elevated 3/4 orthographic camera showing roof and front/right. Sunset light upper left, cool shadow lower right. NO glossy 3D render, no orange filter, no landscape or ground tile, no characters, no signs/text. Whole gateways fully in image with margins, NOT cropped; same style as all approved map buildings.",
+      "references": [
+        "style-reference.jpg"
+      ],
+      "grid": [
+        2,
+        1
+      ],
+      "cells": [
+        "gate-entry",
+        "gate-exit"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-e2776fa4-23d7-4188-8bcb-d2ab5c1b39b9.png"
+    },
+    {
+      "n": 11,
+      "id": "bridge-props",
+      "prompt": "Production SPRITE SHEET exactly 3 equal columns x 2 equal rows on genuinely transparent RGBA. Six separate small EAST ASIAN MAP PROPS, each inside own cell with broad transparent gutters, NO text/grid. TOP LEFT front bridge railing segment, low red curved timber balustrade with aged bronze finials and TWO small stone end posts, horizontal long segment at elevated 3/4 camera, closer/front face visible. TOP MIDDLE matching rear/back bridge railing segment, same length and shallow arch and materials, seen from other side, no floor or bridge deck. TOP RIGHT freestanding slender aged red-and-bronze lantern street lamp with one warm ivory paper lantern under tiny curved jade roof, tall slender lamp on small stone foot. BOTTOM LEFT one isolated FRONT bridge post grey weathered stone with bronze lotus cap, no lamp. BOTTOM MIDDLE matching BACK bridge post seen reverse angle, grey stone bronze lotus cap. BOTTOM RIGHT small open DOCK CANOPY of two red posts with muted jade tiled roof and hanging rope/coiled mooring rope, NO wood or stone deck, to place over existing stone pier. Reference mandatory STYLE: fine hand-painted matte classic fantasy map brush textures, subdued natural palette, warm upper-left sunset highlights, cool lower-right shadows, elevated 3/4 orthographic camera. NO 3D render, glossy plastic, background halo or huge glow; no surrounding land, no extra buildings. Keep all six complete isolated silhouettes.",
+      "references": [
+        "style-reference.jpg"
+      ],
+      "grid": [
+        3,
+        2
+      ],
+      "cells": [
+        "rail-front",
+        "rail-back",
+        "lamp",
+        "post-front",
+        "post-back",
+        "dock-canopy"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-9ef76a4d-ca7c-46e0-b54a-9636fd30453d.png"
+    },
+    {
+      "n": 12,
+      "id": "sky",
+      "prompt": "Create a sky-only background layer for the attached approved hand-painted fantasy map. Reference image is mandatory STYLE and LIGHTING authority. Wide landscape view 3:2, painterly orange-pink sunset sky, muted rose upper sky, warm peach-gold horizon, a few small finely brushed cream-gold cumulus clouds across upper quarter, delicate lavender undersides. Match the restrained paint texture and romantic warm dusk of the approved map, NOT photorealistic or 3D render, no saturated orange wash, no lens effects. Important: SKY AND CLOUDS ONLY, no terrain, no mountains, no buildings, no ground, no water, no text, no sun disc. Opaque sky background, separate layer which will go behind an existing transparent karst mountain panorama and locked foreground terrain. Let clouds sit near top edge so they remain visible behind tall foreground cliffs.",
+      "references": [
+        "style-reference.jpg"
+      ],
+      "original": "/Users/agapae/.codex/generated_images/01a1a7ee-5b26-74c2-b839-549b08aac656/exec-a2723749-7ff6-4f36-b51c-598a8b71f90f.png"
+    }
+  ]
+}
