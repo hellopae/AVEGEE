@@ -1,0 +1,22 @@
+{
+  "provider": "built-in ImageGen",
+  "count": 2,
+  "generations": [
+    {
+      "file": "terrain-draft.png",
+      "prompt": "Use case: stylized-concept. Create a game terrain atlas base, using the first image as the exact layout reference and second as the painterly style and sunset lighting reference. Preserve left entrance, lower terrace, central terrace, upper terrace, right exit, broad connected stairs and arched stone bridges with landings. Warm volcanic rock left transitions to gray Asian mountain rock right. 3/4 overhead camera, detailed hand-painted stone, character-scale broad paths. Terrain only: no trees, buildings, gates, cave object, lamps, vegetation, characters, water or lava. Transparent background and transparent openings under bridges and outside terrain, real alpha. Do not add text.",
+      "references": [
+        "ChatGPT Image Nov 4, 2026, 07_19_44 PM.png",
+        "New-Map-Zone1-ok.jpg"
+      ]
+    },
+    {
+      "file": "cave-draft.png",
+      "prompt": "Use case: stylized-concept. A single isolated game object sprite of the guardian-faced cave entrance in the first reference, matching the painterly stone, warm sunset light and 3/4 overhead game camera of the second reference. The guardian's horned stone face frames a dark recessed interior, with a distinct flat stone threshold at the bottom. Full silhouette, no clipping, no environment, no terrain, no trees, no characters, no text. Transparent background, real alpha. Maintain usable grounded base for placement on a stone plaza.",
+      "references": [
+        "ChatGPT Image Nov 4, 2026, 08_19_40 PM.png",
+        "New-Map-Zone1-ok.jpg"
+      ]
+    }
+  ]
+}
