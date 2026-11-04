@@ -89,6 +89,7 @@ const zoneStem = (key, z) => { const m = key.match(POSE); return m ? `${key.slic
  *  (กันหน้าไม่ตรง: ยมทูตโซน 2 ยังไม่มีท่าทำงาน ถ้าหยิบท่าทำงานโซน 1 มาจะกลายเป็นคนละตัว
  *   — Mind ชี้ไว้ 10 ก.ย. 2569 · ใช้กับ -profile -work -atk -side -walk เหมือนกันหมด) */
 export function artUrl(key, ext = 'png', sourceZone = null) {
+  if (key.startsWith('v6:')) return key.slice(3);   // Z1 layered map (town-v6.js): the key is the file path itself
   const signal = key.match(/^boss-frontier-(th|asia|west)-signal(-profile)?$/);
   if (signal) return signal[2] ? null : `img/story-sig/boss-frontier-${signal[1]}-signal-v1.webp`;
   if(key==='st-canteen')return `img/food-art/canteen-${sourceZone || zoneOf()}.webp`;
@@ -148,6 +149,16 @@ function load(src) {
   el.src = src;
   CACHE.set(src, rec);
   return rec;
+}
+
+/** Promise that resolves when the file is decoded (boot preload of the layered Zone 1 map). */
+export function artPromise(src) {
+  const r = load(src);
+  if (r.ok) return Promise.resolve(r.el);
+  return new Promise((resolve, reject) => {
+    r.el.addEventListener('load', () => resolve(r.el), { once: true });
+    r.el.addEventListener('error', () => reject(new Error('image failed: ' + src)), { once: true });
+  });
 }
 
 /** ขอรูปจริง คืน null ถ้ายังไม่มีไฟล์ (แล้วผู้เรียกวาด placeholder เอง) */
@@ -212,6 +223,10 @@ export function drawFallbackGround(ctx, w, h, stations, g) {
 const TALLER = 1.5;
 export function stationBox(def) {
   if (def.bx == null) return null;
+  if (def.v6) {                                     // Zone 1 layered map: the sprite sits exactly where layout.json put it
+    const v = def.v6, vim = img('v6:' + v.src);
+    return vim ? { im: vim, x: v.x, y: v.y, w: v.w, h: v.h, flip: !!v.flip } : null;
+  }
   const key = 'st-' + def.k, im = img(key);
   if (!im) return null;
   if(def.k==='canteen'){
@@ -379,6 +394,7 @@ export function blockOf(def) {
  *  → ถูกวาดก่อนอาคาร → จมหายไปทั้งตัว (เจ้าของทักซ้ำ 12 ก.ย. 2569: บุญที่ศาลาน้ำชา · กานต์ที่หอทะเบียน)
  *  วัดจากพิกเซลจริง รูปเปลี่ยนแล้วขยับตามเอง — ไม่ใช่การกรอกพิกัดใหม่ด้วยมือ */
 export function depthOf(def) {
+  if (def.v6) return def.v6.depth;
   const r = footOf(def);
   return r ? r[1] : (def.by ?? def.y);
 }
@@ -440,6 +456,7 @@ export function drawStationShadow(ctx, def) {
  *  ไม่มีไฟล์ก็ไม่วาดอะไร (ฉากรุ่นเก่ามีอาคารวาดติดมาอยู่แล้ว) */
 export function drawBuilding(ctx, def, t, uiScale = 1) {
   if (def.bx == null) return;
+  if (def.v6) return;                               // drawn by the map's own depth queue (town-v6.js)
   const b = stationBox(def);
   if (b) {
     ctx.save();

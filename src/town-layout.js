@@ -13,12 +13,16 @@ import { ASIA_TREE_POINTS } from './town-asia-trees.js';
 import { CYBERHELL_LAYOUT } from './town-cyberhell-layout.js';
 import { daisBlocks, daisFloorAt } from './town-dais-geometry.js';
 import { WEST_TREE_POINTS } from './town-west-trees.js';
+// Z1-LAYOUT-B1: Zone 1 now stands on the owner's layered map (img/map-zone1/v6). Generated files, see scripts/build-zone1-v6.py.
+import { TOWN_V6 } from './town-v6-data.js';
+import { TOWN_V6_WALK_RUNS } from './town-owner-walkmask-th6.js';
 export const TOWN_MAP_VERSION = 3;
 export const TOWN_SIZE = { w:3840, h:2560 };
 // First water row of the soul river on the painting (y 1740..1990); used for invader spawn height.
 export let TOWN_RIVER_Y = 1740;
 // Invaders land on the north bank, just above the water. These are open stretches of ground at y = TOWN_RIVER_Y-50.
 export const TOWN_SHORE_SPANS = [[520,720],[1620,1820],[2060,2250]];
+const SHORE_ZONE1_LEGACY = TOWN_SHORE_SPANS.map(s => [...s]);
 export const TOWN_PLAZA = [1860,1090];
 // Foot (x,by) is the bottom-centre of the painted building; (x,y) is the door / working point
 // in front of it. mapScale resizes the existing sprite so its painted footprint matches the drawing.
@@ -67,7 +71,9 @@ const fillMask = runs => {
 fillMask(TOWN_OWNER_WALK_RUNS);
 // Zone-1 hand patches (stairs, lava road, cauldron court) were added on top of the owner's mask. A zone whose mask the
 // owner drew from the full overlay (which already contains them) switches them off: townZoneLayout({patches:false}).
-let usePatches = true, ownerFloorOnly = false;
+let usePatches = true, ownerFloorOnly = false, layoutV6 = false;
+/** True while the Zone 1 layered map (v6) is the applied layout. */
+export const townLayoutIsV6 = () => layoutV6;
 export const TOWN_WALK_MASK = { cell:TOWN_WALK_CELL, cols:TOWN_WALK_COLS, rows:TOWN_WALK_ROWS, data:mask };
 // Upper bridge-to-city flight, painted in the v5 r1-c2 terrain tile.
 export const TOWN_UPPER_BRIDGE_STAIRS = [[1050,675],[1130,743],[1485,505],[1420,455]];
@@ -91,8 +97,10 @@ const PATCH_POLYS=[TOWN_UPPER_BRIDGE_STAIRS,TOWN_UPPER_BRIDGE_LANDING,TOWN_LAVA_
 const interactionPads=[...Object.values(TOWN_STATION_SITES),...Object.values(TOWN_SPOTS)].filter(s=>typeof s.x==='number');
 export const townFloorAt = (x,y) => {
   if(!(x>=0&&y>=0&&x<TOWN_SIZE.w&&y<TOWN_SIZE.h))return false;
-  if(daisBlocks(x,y,appliedZone,TOWN_DAIS))return false;
-  if(daisFloorAt(x,y,appliedZone,TOWN_DAIS))return true;
+  if(!layoutV6){
+    if(daisBlocks(x,y,appliedZone,TOWN_DAIS))return false;
+    if(daisFloorAt(x,y,appliedZone,TOWN_DAIS))return true;
+  }
   // An owner-complete floor must never be reopened by legacy door/UI pads.
   if(ownerFloorOnly)return mask[((y/TOWN_WALK_CELL)|0)*TOWN_WALK_COLS+((x/TOWN_WALK_CELL)|0)]===1;
   // Keep feet on the pier top; edge tolerance must never open its front face or water.
@@ -241,8 +249,20 @@ const WEST_PROPS = [
     treeKind:p.kind, species:p.species, ownerFoot:true,
   })),
 ];
+// Zone 1 on the layered map. Zones 2-4 keep inheriting the legacy Zone 1 numbers captured in BASE below.
+const V6_LAYOUT = {
+  v6:true, walkRuns:TOWN_V6_WALK_RUNS, patches:false, strictFloor:true, pathCell:8, props:[], houses:[],
+  stations:Object.fromEntries(Object.entries(TOWN_V6.stations).map(([k,v])=>[k,{...v}])),
+  spots:{plaza:{x:TOWN_V6.spots.plaza[0],y:TOWN_V6.spots.plaza[1]},bench:{x:TOWN_V6.spots.bench[0],y:TOWN_V6.spots.bench[1]},
+    throne:{x:TOWN_V6.spots.throne[0],y:TOWN_V6.spots.throne[1]},bossPier:{x:TOWN_V6.spots.bossPier[0],y:TOWN_V6.spots.bossPier[1]},ferry:TOWN_V6.ferry},
+  dais:TOWN_V6.dais, crew:TOWN_V6.crew, crewStage:{nira:TOWN_V6.niraStage},
+  merchant:{x:TOWN_V6.spots.merchant[0],y:TOWN_V6.spots.merchant[1]}, guard:TOWN_V6.spots.guard, challenge:TOWN_V6.spots.challenge,
+  frontier:TOWN_V6.frontier, queue:TOWN_V6.queue, riverY:TOWN_V6.riverY, shore:TOWN_V6.shoreSpans,
+  entry:{gate:TOWN_V6.spots.gateDoor,nira:TOWN_V6.spots.entryNira,goal:TOWN_V6.spots.plaza,niraGoal:TOWN_V6.crew.nira},
+};
+// Tests of the old painting's Zone 1 geometry import tests/_legacy-zone1.mjs first, which sets globalThis.__TOWN_ZONE1_LAYOUT__ = 'legacy'.
 export const TOWN_ZONE_LAYOUT = {
-  th:        {},
+  th:        globalThis.__TOWN_ZONE1_LAYOUT__ === 'legacy' ? {} : V6_LAYOUT,
   // ART-DAIS2: front-facing repaint; throne seat ~[768,458], clear right-hand floor ~[1030..1270,520..650].
   // Keep the platform/queue fixed and fit only the ruler point and Nira's floor/home to the new painting.
   asia:      { walkRuns:ASIA_WALK_RUNS, patches:ASIA_WALK_RUNS?false:true, props:ASIA_PROPS, pathCell:8,
@@ -254,7 +274,7 @@ const clone = v => structuredClone(v);
 const BASE = {
   runs:TOWN_OWNER_WALK_RUNS, stations:clone(TOWN_STATION_SITES), spots:clone(TOWN_SPOTS), dais:{...TOWN_DAIS}, crew:clone(TOWN_CREW),
   merchant:clone(TOWN_MERCHANT),guard:clone(TOWN_GUARD_POST),challenge:clone(TOWN_CHALLENGE),frontier:clone(TOWN_FRONTIER),queue:clone(TOWN_QUEUE),entry:clone(TOWN_ENTRY),riverY:TOWN_RIVER_Y,crewStage:clone(TOWN_CREW_STAGE),
-  houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})),
+  houses:TOWN_HOUSE_SITES.map(h=>({...h})), props:TOWN_PROP_SITES.map(p=>({...p})), shore:SHORE_ZONE1_LEGACY,
 };
 const layoutListeners = new Set();
 /** Call fn() after a zone layout was applied (light field, shadow field, ...). */
@@ -272,9 +292,11 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   fillMask(L.walkRuns || BASE.runs);
   usePatches = L.patches !== false;
   ownerFloorOnly = L.strictFloor === true;
+  layoutV6 = L.v6 === true;
+  TOWN_SHORE_SPANS.splice(0,TOWN_SHORE_SPANS.length,...clone(L.shore||BASE.shore));
   // stations: back to Zone 1, then this zone's patches
   for (const k of Object.keys(TOWN_STATION_SITES)) {
-    if(BASE.stations[k])Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));
+    if(BASE.stations[k]){for(const f of Object.keys(TOWN_STATION_SITES[k]))delete TOWN_STATION_SITES[k][f];Object.assign(TOWN_STATION_SITES[k], clone(BASE.stations[k]));}
     else delete TOWN_STATION_SITES[k];
   }
   for (const [k, patch] of Object.entries(L.stations || {})) Object.assign(TOWN_STATION_SITES[k] ||= {}, clone(patch));
@@ -302,3 +324,5 @@ export function applyTownZoneLayout(zone, table = TOWN_ZONE_LAYOUT, force = fals
   for (const fn of layoutListeners) fn(zone);
   return true;
 }
+// The module's first applied layout is Zone 1 (v6). BASE above still holds the legacy Zone 1 numbers for zones 2-4.
+applyTownZoneLayout('th', TOWN_ZONE_LAYOUT, true);

@@ -67,7 +67,7 @@ export function drawTownGround(ctx,g,now=Date.now()) {
   // Vacant construction pads help the player discover destinations before approaching.
   const rec = g.recommendedBuild?.();
   for(const site of townSites(g)) {
-    if(site.state!=='plot' || site.def.cost<=0) continue;
+    if(site.state!=='plot' || site.def.cost<=0 || site.def.v6absent) continue;   // v6absent: station not on the layered map yet (no plot ring on a guessed spot)
     const d=site.def, locked=!!g.buildLocked?.(d.k), isRec=!locked && rec===d.k;
     const rx=Math.min(62,d.bw*.32), cy=d.by-14, q=.5+.5*Math.sin(now/420);
     ctx.save();

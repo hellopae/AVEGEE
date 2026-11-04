@@ -13,6 +13,7 @@ import { drawLocalLight } from './scene-style.js';
 import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
+import { townV6Zone, addTownV6ObjectLayers, drawTownV6FxOver } from './town-v6.js';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
@@ -257,12 +258,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   if(!g.paused)ambientTime = t;
   if (bg && !isTownZone(g.zone)) drawMapAmbientGround(ctx, bg, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches);
   const town = isTownZone(g.zone), reduced = !!reducedMotion?.matches;
+  const v6 = town && townV6Zone(g.zone);          // Z1-LAYOUT-B1: Zone 1 stands on the layered map; old scenery / shade / flow / dais painting are not used there
   const snowActive=g.zone==='west'&&weatherEnabled()&&!reduced;
   const snow=updateSnowTracks(g,[{id:'you',...g.player},...g.crew.map(c=>({id:c.id||c.k,x:c.x,y:c.y})),...(g.guard?[{id:'guard',x:g.guard.x,y:g.guard.y}]:[])],t,{active:snowActive,paused:g.paused,validAt:canWalk});
   const sceneryHouse = town ? img('town-house-th') : null;
   const sceneryTree = town ? img('town-tree-th') : null;
   const sceneryWaterfall = town ? img('town-waterfall-th') : null;
-  if(town) {
+  if(town&&!v6) {
     drawTownClouds(ctx,t,reduced);
     drawTownDistantScenery(ctx,sceneryHouse,sceneryTree,cameraView,reduced,img);
     // L1: one sun for the whole town. Casters = props + houses + built stations + gate + dais (baked once).
@@ -272,10 +274,10 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     drawTownSceneryShadows(ctx,sceneryHouse,sceneryTree,sceneryWaterfall,cameraView,reduced,img);
   }
   drawMapAmbientSky(ctx, g.zone, ambientTime, SCENE.w, SCENE.h, !!reducedMotion?.matches || !!g.paused);
-  if(town&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
+  if(town&&!v6&&townTerrainImage())drawTownFlow(ctx,t,reduced || !!g.paused);   // N4: lava / rivers / falls flow over the painted ground
   drawTownGround(ctx, g, t);
   if(g.zone==='west'&&weatherEnabled()){drawSnowGround(ctx,SCENE.w,SCENE.h,{validAt:canWalk});if(!reduced)drawSnowTracks(ctx,snow);}
-  if (isTownZone(g.zone)) {
+  if (isTownZone(g.zone) && !v6) {
     const newDais=img('town-judgment-th');
     const dais=newDais||img('prop-throne-platform-v1');
     if(dais) {
@@ -347,7 +349,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // (เจ้าของสั่ง 9 ก.ย. 2569: เดินไปหลังอาคารแล้วอาคารต้องบังตัวเรา ไม่ใช่เดินทับ)
   const layer = [];
   const at = (y, fn) => layer.push({ y, fn });
-  if(town&&g.zone==='th'){
+  if(town&&g.zone==='th'&&!v6){
     const lamp=img('town-prop-lamp-gold');
     if(lamp?.naturalWidth)for(const site of TH_ATMOS_LAMPS)at(site.y,()=>{
       const h=site.w*lamp.naturalHeight/lamp.naturalWidth;ctx.save();ctx.fillStyle='rgba(22,10,14,.2)';ctx.beginPath();ctx.ellipse(site.x,site.y-2,site.w*.24,4,0,0,Math.PI*2);ctx.fill();ctx.drawImage(lamp,site.x-site.w/2,site.y-h,site.w,h);ctx.restore();drawLocalLight(ctx,'th',site.x,site.y-h*.73,site.w*.55,t,reduced||g.paused);
@@ -356,12 +358,13 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   // L1: actors on the Zone 1 map get a cast shadow on the ground and go darker inside building / tree shadows.
   const justice=bossJusticeCase(g);
   const actorSpots = [];
-  const shade = (x, y, h, fn) => town ? withTownShade(ctx, x, y, h, fn) : fn(ctx);
+  const shade = (x, y, h, fn) => town && !v6 ? withTownShade(ctx, x, y, h, fn) : fn(ctx);
   const spot_ = (x, y, h) => { if (town) actorSpots.push([x, y, h]); };
-  const archiveHouse = isTownZone(g.zone) ? img('town-house-th') : null;
+  const archiveHouse = isTownZone(g.zone) && !v6 ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
-  if(town)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
+  if(v6)addTownV6ObjectLayers(at,ctx);
+  if(town&&!v6)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
   // เหตุผลเต็มอยู่ที่ depthOf ใน art.js — โดยย่อ: by คือขอบหน้าสุดของสไปรท์
@@ -733,7 +736,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
-  if(town)drawTownNightEffects(ctx,t,reduced);
+  if(v6)drawTownV6FxOver(ctx,t,reduced);
+  if(town&&!v6)drawTownNightEffects(ctx,t,reduced);
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
   if (!rescue && g.bossUntil && t < g.bossUntil) {

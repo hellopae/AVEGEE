@@ -2123,11 +2123,11 @@ const originalTownGeometry = {
 function resetRegionalGeometry() {
   for(const site of originalTownGeometry.stations) {
     const d=STATIONS.find(d=>d.k===site.k);
-    delete d.sx;delete d.sy;delete d.mapScale;delete d.blockScale;delete d.interactionReach;Object.assign(d,structuredClone(site));
+    delete d.sx;delete d.sy;delete d.mapScale;delete d.blockScale;delete d.interactionReach;delete d.v6;delete d.v6absent;Object.assign(d,structuredClone(site));
   }
   for(const key of Object.keys(SPOTS)) delete SPOTS[key];Object.assign(SPOTS,structuredClone(originalTownGeometry.spots));
   for(const c of CREW) Object.assign(c,originalTownGeometry.crew.find(d=>d.k===c.k));
-  delete FRONTIER.sx;delete FRONTIER.sy;delete FRONTIER.mapScale;
+  delete FRONTIER.sx;delete FRONTIER.sy;delete FRONTIER.mapScale;delete FRONTIER.v6;
   Object.assign(FRONTIER,structuredClone(originalTownGeometry.frontier));
   Object.assign(MERCHANT,originalTownGeometry.merchant);Object.assign(CHALLENGE_STAND,originalTownGeometry.challenge);
   GUARD_POST.splice(0,GUARD_POST.length,...originalTownGeometry.guard);

@@ -6,6 +6,7 @@ import {repairTownTerrain} from './town-terrain-repair.js';
 import {TOWN_SIZE} from './town-layout.js?v=k1d';
 import {drawHellTerrain,prepareTownLighting} from './town-lighting.js?v=fire-v2';
 import {activeTownSkin,activeTownZone,townSkinOf,ZONE_SKIN} from './zone-skin.js';
+import {townV6Zone,preloadTownV6,drawTownV6Terrain} from './town-v6.js';   // Z1-LAYOUT-B1: Zone 1 now draws the owner's layered map
 
 // Zone 1 constants stay exported (preload, tests); every function below reads the ACTIVE zone skin (zone-skin.js)
 // so a zone with its own painted ground reuses the same chunk loader.
@@ -41,6 +42,7 @@ const store = (zone=activeTownZone()) => {
 };
 let loading = 0, frame = 0;
 export function preloadTownTerrainPreview(timeoutMs=30000,zone=activeTownZone()) {
+  if(townV6Zone(zone))return preloadTownV6(timeoutMs);
   const st = store(zone), url = (townSkinOf(zone)||ZONE_SKIN.th).terrain.preview, repairs = !!(townSkinOf(zone)||ZONE_SKIN.th).terrain.repairs;
   if(st.preview?.ready)return Promise.resolve(st.preview.image);
   if(st.previewWait)return st.previewWait;
@@ -106,6 +108,7 @@ export const townTerrainStats = () => {
 
 /** Draw the visible part of the painted ground. `resolve` and `time` are accepted for the old call sites. */
 export function drawTownTerrain(ctx,resolve,time=0,reduced=true) {
+  if(townV6Zone(activeTownZone()))return drawTownV6Terrain(ctx,time,reduced);
   ensurePreview();
   const m = ctx.getTransform ? ctx.getTransform() : null;
   const scale = m && Number.isFinite(m.a) && m.a > 0 ? m.a : 1;

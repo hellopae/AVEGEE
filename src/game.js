@@ -20,7 +20,8 @@ import {retreatS} from './dungeon-chase.js?v=l5';
 import { routeBossCave, routeCaptainCave, captainCaveForZone } from './route-geometry.js';
 import {initializeZoneTravel,openDungeonRoutes,beginDungeon,dungeonStatus,nextDungeonEncounter,resolveDungeonEncounter,leaveDungeon,activateHarbour,harbourDestinations,canTravelZone,finishZoneArrival,dungeonPatrols} from './zone-travel.js';
 import {ensureTurnQueue,activeCombatUnit,completeCombatTurn,combatTimeline} from './battle-turns.js';
-import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';
+import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS, TOWN_ZONE_LAYOUT } from './town-layout.js?v=k1d';
+import { TOWN_V6 } from './town-v6-data.js';
 import { isTownZone, TOWN_SKIN_ZONES } from './zone-skin.js';
 import { gateKarma, gateTotalKarma, relieveGateKarma } from './h4-location-ui.js';
 import { krataMethods, normalizeFireControl } from './krata-control.js';
@@ -4986,7 +4987,7 @@ API.snapshot = function (withEntry = true) {
     bossGuarding: this.bossGuarding, bossArriveSeen: this.bossArriveSeen || {},
     zoneIntroSeen: this.zoneIntroSeen || {},
     bossArriveFixV10: true,  // Dale ตรวจชุดที่ 10 — marker กันไมเกรต bossArriveSeen ซ้ำ (ดู restore())
-    townMapVersion:2, z4TownVersion:3, zoneTravel:structuredClone(this.zoneTravel),
+    townMapVersion:2, z4TownVersion:3, z1MapVersion:6, zoneTravel:structuredClone(this.zoneTravel),
     mapV2FixTh: true,        // ชุดที่ 15b — marker กันรีเซ็ตตำแหน่งบนแผนที่โซน 1 ใหม่ซ้ำ (ดู restore())
     mapV3FixBranches: true,  // ชุดที่ 18D — พิกัดโซน 2–4 ใช้ผังเดียวกับโซน 1
     townSkinMigrated: { ...this.townSkinMigrated },   // M2 T3 — zones whose painted-town skin already moved the save's positions
@@ -5475,6 +5476,24 @@ API.restore = function (d) {
     }
     for(const [actor,position] of activeFollowers) Object.assign(actor,position);
     this.blockSig=null;
+  }
+  // Z1-LAYOUT-B1: Zone 1 stands on the layered map (img/map-zone1/v6). A save made on the old painting keeps its old coordinates:
+  // move Yama, the crew homes, the guard and the invaders to the new spawn ONCE. Progress, stations and items are untouched.
+  if (TOWN_ZONE_LAYOUT.th.v6 && (d.z1MapVersion || 0) < 6) {
+    const move = state => {
+      if (!state) return;
+      if (state.player) Object.assign(state.player, {x:TOWN_V6.spots.plaza[0], y:TOWN_V6.spots.plaza[1], tx:null, ty:null, path:null});
+      for (const c of state.crew || []) { const home = TOWN_V6.crew[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; c.x = null; c.y = null; c.path = null; } }
+      if (state.guard) Object.assign(state.guard, {x:TOWN_V6.spots.guard[0], y:TOWN_V6.spots.guard[1], path:null, target:null});
+      for (const m of state.mobs || []) { m.x = TOWN_V6.shoreSpans[0][0] + 40; m.y = TOWN_V6.riverY - 50; m.path = null; }
+    };
+    if (this.zone === 'th') move(this);
+    move(this.zoneSave?.th);
+    for (const actor of Object.values(this.roster || {})) if (actor.homeZone === 'th' && !(this.zone !== 'th' && CREW.find(c => c.k === (actor.k || actor.kind))?.follow)) {
+      const home = TOWN_V6.crew[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; actor.x = null; actor.y = null; actor.path = null; }
+      if (actor.kind === 'guard') { actor.x = TOWN_V6.spots.guard[0]; actor.y = TOWN_V6.spots.guard[1]; }
+    }
+    this.blockSig = null;
   }
   // M2 T3 — a zone whose painted-town skin was switched on after the save was made keeps coordinates of its old
   // 1678x937 map. Move them to the town spawn ONCE per zone (same idea as mapV2FixTh / townMapVersion<2). Progress,
