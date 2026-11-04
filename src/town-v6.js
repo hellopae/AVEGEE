@@ -2,10 +2,11 @@
 // World = ok.jpg px * 1.536 (same 3840x2560 world as every other town zone), so collision, saves and cameras keep their units.
 // Render order: sky -> clouds -> mountains -> river -> lava -> waterfall -> [fx: liquid] -> terrain tiles -> [fx: ground]
 //   then the scene's shared depth queue: every map object, station, NPC and actor sorted by foot y -> [fx: over].
-// The [fx ...] slots are the B2 hooks for the animated liquid / fog / cloud / leaf sprites (see setTownV6Fx). They do nothing without data.
+// The [fx ...] slots are B2: animated liquid / mist / cloud / leaf sprites, DOF and grade, all in town-v6-fx.js (data: town-v6-fx-data.js).
 import { TOWN_V6 as D } from './town-v6-data.js';
 import { img, artPromise } from './art.js';
 import { townLayoutIsV6 } from './town-layout.js?v=k1d';
+import { drawSkyBase, drawSkyClouds, mountainShift, drawFxLiquid, drawFxGround, drawFxOver, drawFxDof, fxBootUrls, frontBlurAmount, drawObjectBlurred, fxObjBlurEnabled } from './town-v6-fx.js';
 
 /** Zone 1 uses the layered map while its v6 layout is the applied one (tests of the old painting switch it off, see town-layout.js). */
 export const townV6Zone = zone => zone === 'th' && townLayoutIsV6();
@@ -17,7 +18,7 @@ let frame = 0, lastStats = { mode: 'pending', tilesVisible: 0, tilesReady: 0, ob
 
 /** Boot preload: the whole-world preview + the five base layers (small). Tiles and sprites stream in around the camera. */
 export function preloadTownV6(timeoutMs = 30000) {
-  const urls = [D.preview, ...D.layers.map(l => l.src), ...D.clouds.map(c => c.src)];
+  const urls = [D.preview, ...D.layers.map(l => l.src), ...D.clouds.map(c => c.src), ...fxBootUrls()];
   const all = Promise.all(urls.map(u => artPromise(u).then(async im => { try { await im.decode?.(); } catch {} return im; })));
   return Promise.race([all, new Promise((_, rej) => setTimeout(() => rej(new Error('town v6 preload timeout')), timeoutMs))]);
 }
@@ -29,24 +30,15 @@ function visibleRect(ctx) {
 }
 const hit = (r, x, y, w, h, pad = 0) => !(x > r.x1 + pad || x + w < r.x0 - pad || y > r.y1 + pad || y + h < r.y0 - pad);
 
-// ---------------- B2 hooks: animated fx sprites. fx-manifest entry: {id, sheet, frameW, frameH, frames, fps, loop, tileable, blend, placement} ----------------
-let fx = null;
-/** Install the fx manifest (B2). `phase` of an entry (placement.phase): liquid | ground | over | sky. Without it nothing is drawn. */
-export function setTownV6Fx(manifest) { fx = manifest && Array.isArray(manifest.entries || manifest) ? (manifest.entries || manifest) : null; }
-function drawFx(ctx, phase, time, reduced, view) {
-  if (!fx) return;
-  for (const e of fx) {
-    if ((e.placement?.phase || 'over') !== phase) continue;
-    const im = img(key(e.sheet)); if (!im) continue;
-    const [x, y, w, h] = e.placement.rect || [0, 0, D.world.w, D.world.h];
-    if (!hit(view, x, y, w, h)) continue;
-    const f = reduced || !e.fps ? 0 : Math.floor(time / 1000 * e.fps) % Math.max(1, e.frames || 1);
-    ctx.save(); ctx.globalAlpha = e.placement.alpha ?? 1; if (e.blend) ctx.globalCompositeOperation = e.blend;
-    ctx.drawImage(im, f * e.frameW, 0, e.frameW, e.frameH, x, y, w, h); ctx.restore();
-  }
+// ---------------- B2: fx slots (town-v6-fx.js). The minimap (small canvas) never draws them. ----------------
+/** Draw the fx slot that sits above the depth queue (leaves, flames, light shafts, cloud shadows, grade), then the tilt-shift DOF + bloom.
+ *  `focus` = the character ({x, y}); the sharp band follows it. */
+export function drawTownV6FxOver(ctx, time, reduced, focus = null) {
+  const m = ctx.getTransform ? ctx.getTransform() : null;
+  if (!(ctx.canvas?.width >= 300) || !m || !(m.a > 0) || !Number.isFinite(m.f)) return;     // minimap / headless stand-ins draw no atmosphere
+  drawFxOver(ctx, visibleRect(ctx));
+  drawFxDof(ctx, focus ? m.f + m.d * focus.y : ctx.canvas.height * .55);
 }
-/** Draw the fx slot that sits above the depth queue (leaves, high fog, cloud shadows). */
-export function drawTownV6FxOver(ctx, time, reduced) { if (fx) drawFx(ctx, 'over', time, reduced, visibleRect(ctx)); }
 
 // ---------------- base: sky .. terrain ----------------
 function blit(ctx, im, [x, y, w, h]) { ctx.drawImage(im, x, y, w, h); }
@@ -69,11 +61,13 @@ export function drawTownV6Terrain(ctx, time = 0, reduced = true) {
     ctx.restore(); return;
   }
   const by = Object.fromEntries(base.map(([id, l, im]) => [id, [l, im]]));
-  blit(ctx, by.sky[1], by.sky[0].rect);
-  for (const c of D.clouds) { const im = img(key(c.src)); if (im) { ctx.save(); ctx.transform(c.m[0], c.m[3], c.m[1], c.m[4], c.m[2], c.m[5]); ctx.drawImage(im, 0, 0); ctx.restore(); } }
-  drawFx(ctx, 'sky', time, reduced, view);
-  for (const id of ['mountains', 'river', 'lava', 'waterfall']) blit(ctx, by[id][1], by[id][0].rect);
-  drawFx(ctx, 'liquid', time, reduced, view);
+  const fxOn = record;                                              // the minimap draws the plain layers
+  if (fxOn) drawSkyBase(ctx, by.sky[1], by.sky[0].rect, view); else blit(ctx, by.sky[1], by.sky[0].rect);
+  if (fxOn) drawSkyClouds(ctx, view);
+  else for (const c of D.clouds) { const im = img(key(c.src)); if (im) { ctx.save(); ctx.transform(c.m[0], c.m[3], c.m[1], c.m[4], c.m[2], c.m[5]); ctx.drawImage(im, 0, 0); ctx.restore(); } }
+  if (fxOn) { const dx = mountainShift(view), r = by.mountains[0].rect; ctx.drawImage(by.mountains[1], r[0] + dx, r[1], r[2], r[3]); } else blit(ctx, by.mountains[1], by.mountains[0].rect);
+  for (const id of ['river', 'lava', 'waterfall']) blit(ctx, by[id][1], by[id][0].rect);
+  if (fxOn) drawFxLiquid(ctx, view);
   // terrain tiles: the tile when decoded, otherwise that tile's piece of the preview (never both)
   const eps = 1 / scale + .25;
   let vis = 0, ready = 0;
@@ -90,7 +84,7 @@ export function drawTownV6Terrain(ctx, time = 0, reduced = true) {
       const k = 1 / 3; ctx.drawImage(preview, x * k, y * k, w * k, h * k, x, y, w, h);
     }
   }
-  drawFx(ctx, 'ground', time, reduced, view);
+  if (fxOn) drawFxGround(ctx, view);
   if (record) lastStats = { ...lastStats, mode: 'detail', tilesVisible: vis, tilesReady: ready };
   ctx.restore();
 }
@@ -98,8 +92,8 @@ export function drawTownV6Terrain(ctx, time = 0, reduced = true) {
 // ---------------- objects: one entry per map object in the shared depth queue ----------------
 /** Queue every map object (trees, houses, gates, fences, lamps, the dais, built or not stations' art ...) by its foot y.
  *  Station and frontier art is drawn here too (as map art); the station pipeline in art.js draws nothing for them. */
-export function addTownV6ObjectLayers(at, ctx) {
-  const view = visibleRect(ctx); let drawn = 0, ready = 0, total = 0;
+export function addTownV6ObjectLayers(at, ctx, focus = null) {
+  const view = visibleRect(ctx), blurOn = ctx.canvas.width >= 300 && fxObjBlurEnabled() && !!focus, focusY = focus ? focus.y : 0; let drawn = 0, ready = 0, total = 0;
   for (const o of D.objects) {
     const [x, y, w, h] = o.box;
     if (!hit(view, x, y, w, h, PREFETCH)) continue;
@@ -110,6 +104,8 @@ export function addTownV6ObjectLayers(at, ctx) {
     drawn++;
     at(o.depth, () => {
       const i = img(key(o.src)); if (!i) return;
+      const amt = blurOn ? frontBlurAmount(o.depth, focusY) : 0;      // nearer the camera than the character: out of focus
+      if (amt > .02 && drawObjectBlurred(ctx, o, i, amt)) return;
       ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
       ctx.transform(o.m[0], o.m[3], o.m[1], o.m[4], o.m[2], o.m[5]);
       ctx.drawImage(i, 0, 0); ctx.restore();

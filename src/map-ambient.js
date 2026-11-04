@@ -483,7 +483,7 @@ export function weatherLabelBounds(rects){
   }return out;
 }
 export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
-  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled()}={}) {
+  viewport=weatherViewport(ctx),sources=[],regions=null,labels=[],paused=false,enabled=weatherEnabled(),clouds=true}={}) {
   if(!enabled||!(W>0&&H>0))return;
   const art=weatherArt();if(!art)return;
   let clock=weatherClocks.get(ctx);
@@ -500,7 +500,7 @@ export function drawMapWeather(ctx,{zone='th',time=0,W,H,x=0,y=0,reduced=false,
   // Text retains its dark outline; HUD buttons are DOM layers above this canvas.
   const view=viewMetrics(ctx,W,H),cloud=MAP_FX.cloud;
   let cloudLayer=null;
-  if(view){
+  if(view&&clouds){      // clouds=false: Zone 1's layered map (town-v6-fx.js) casts its own cloud shadows from the sky clouds
     const off=driftOffset(ctx,'cloud',time,[cloud.drift[0]*view.w*cloud.cell[0],cloud.drift[1]*view.h*cloud.cell[1]],!reduced&&!paused);
     const bankAt=cx=>blobSprites((WEATHER_ZONES[(halves.find(r=>cx>=r.from*W&&cx<r.to*W)||halves[0]).zone]||{tint:cloud.fallbackTint}).tint);
     cloudLayer=composedClouds(ctx,view,cloud,off,t,bankAt);

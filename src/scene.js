@@ -14,6 +14,7 @@ import { activeTownZone } from './zone-skin.js';
 import { TOWN_DAIS, TOWN_PROP_SITES } from './town-layout.js?v=k1d';
 import { drawTownTerrain, townTerrainImage } from './town-terrain.js?v=k1d';
 import { townV6Zone, addTownV6ObjectLayers, drawTownV6FxOver } from './town-v6.js';
+import { tickTownV6Fx } from './town-v6-fx.js';
 import { drawTownFlow } from './town-flow.js?v=n4';
 import { drawTownNightEffects, drawTownClouds } from './town-night-effects.js?v=night-v1';
 import { drawTownGround, isTownZone, drawTownBackdrop, drawTownFloor, drawTownForeground, drawTownHouse, townHouseDepth, townHouseSites, townHouseKey } from './town-map.js?v=l1';
@@ -243,6 +244,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const legacyBg = (g.zone === 'west' ? img('scene-west-dusk-v3') : null) || img(zk) || zoneImg('scene') || img('scene');
   const bg = img('theme-map-' + g.zone) || legacyBg;
   if (isTownZone(g.zone)) {
+    if (townV6Zone(g.zone)) tickTownV6Fx(t, !!g.paused, !!reducedMotion?.matches);   // B2: the fx clock stops with pause / hidden tab / reduced motion
     drawTownTerrain(ctx,img,t,!!reducedMotion?.matches);
   } else if (bg) {
     // Resample the original decoded map once per output size (high quality), then blit 1:1 each frame.
@@ -363,7 +365,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   const archiveHouse = isTownZone(g.zone) && !v6 ? img('town-house-th') : null;
   if (archiveHouse) for (const [index,site] of townHouseSites().entries())
     at(townHouseDepth(site), () => {if(index===3)return;else drawTownHouse(ctx,img(townHouseKey(index))||archiveHouse,site);});
-  if(v6)addTownV6ObjectLayers(at,ctx);
+  if(v6)addTownV6ObjectLayers(at,ctx,g.player);
   if(town&&!v6)addTownSceneryLayers(at,ctx,archiveHouse,sceneryTree,sceneryWaterfall,g,t,cameraView,reduced,img);
   if(town&&g.zone==='cyberhell')addZ4PoleLayers(at,ctx,ambientTime,{reduced,enabled:weatherEnabled(),viewport:weatherViewport(ctx)});   // Z4-POLES
   // ความลึกของอาคารใช้ depthOf (ขอบหลังของแถบฐานที่วัดจากพิกเซลจริง) ไม่ใช่ def.by
@@ -736,7 +738,7 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
   for (const [ax, ay, ah] of actorSpots) drawActorShadow(ctx, ax, ay, ah);
   layer.sort((a, b) => a.y - b.y).forEach(o => o.fn());
   if(town&&archiveHouse)drawTownHouseLights(ctx,t,reduced);
-  if(v6)drawTownV6FxOver(ctx,t,reduced);
+  if(v6)drawTownV6FxOver(ctx,t,reduced,g.player);
   if(town&&!v6)drawTownNightEffects(ctx,t,reduced);
 
   // ---- พญายมมาปรากฏบนบัลลังก์ตอนออกความเห็น ----
@@ -754,8 +756,8 @@ export function render(ctx, g, t, hover, sel, cameraView = null) {
     } else drawStandee(ctx, 'hero-boss', SPOTS.throne.x, SPOTS.throne.y, 92 * CHAR_SCALE_MAP * 1.2, t, '👹');
   }
 
-  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,
-    labels:weatherLabels,sources:town&&g.zone==='th' ? [
+  drawMapWeather(ctx,{zone:g.zone,time:ambientTime,paused:g.paused,W:SCENE.w,H:SCENE.h,reduced,clouds:!v6,
+    labels:weatherLabels,sources:town&&g.zone==='th'&&!v6 ? [
       ...g.stations.filter(st=>st.def.k==='krata'&&!st.build).map(st=>
         [st.def.bx,st.def.by-st.def.bw*.45]),
       ...TOWN_PROP_SITES.filter(p=>p.kind==='torch').map(p=>{
