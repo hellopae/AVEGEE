@@ -1,0 +1,14 @@
+{
+  "status": "not performed",
+  "attemptedUrl": "http://127.0.0.1:8879/docs/art-reviews/2026-11-05-border12-redraw/index.html",
+  "tool": "cua.createBrowserTab(iab)",
+  "error": "The browser access host is unavailable",
+  "fallbackEvidence": "preview-code-review.json (actual viewer JS in mocked DOM/canvas; not a browser test)",
+  "visualImagesInspected": [
+    "terrain-alpha-preview.png",
+    "composite-preview.jpg",
+    "style-compare.jpg",
+    "connection-overlay.png"
+  ],
+  "gameIntegrated": false
+}

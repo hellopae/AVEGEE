@@ -1,0 +1,20 @@
+{
+  "scope": "B12-REDRAW-2 task only; global project lifetime count not inferred",
+  "entries": [
+    {
+      "run": "99b10fff",
+      "calls": 2,
+      "status": "drafts referenced only; not shipped"
+    },
+    {
+      "run": "e0c3e1e8",
+      "calls": 5,
+      "tool": "built-in image_gen.imagegen",
+      "status": "final pack plus reusable generated sources"
+    }
+  ],
+  "currentRunCalls": 5,
+  "taskCumulativeCalls": 7,
+  "noShado": true,
+  "noApiFallback": true
+}

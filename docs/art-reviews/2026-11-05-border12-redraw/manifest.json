@@ -1,0 +1,814 @@
+{
+  "world": [
+    2304,
+    1800
+  ],
+  "tiles": [
+    {
+      "id": "0-0",
+      "png": "terrain-png/0-0.png",
+      "src": "terrain-webp/0-0.webp",
+      "rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        514
+      ],
+      "decodedBytes": 1056784,
+      "fileBytes": 34292
+    },
+    {
+      "id": "1-0",
+      "png": "terrain-png/1-0.png",
+      "src": "terrain-webp/1-0.webp",
+      "rect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 141856
+    },
+    {
+      "id": "2-0",
+      "png": "terrain-png/2-0.png",
+      "src": "terrain-webp/2-0.webp",
+      "rect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 111286
+    },
+    {
+      "id": "3-0",
+      "png": "terrain-png/3-0.png",
+      "src": "terrain-webp/3-0.webp",
+      "rect": [
+        1536,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        514
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 124220
+    },
+    {
+      "id": "4-0",
+      "png": "terrain-png/4-0.png",
+      "src": "terrain-webp/4-0.webp",
+      "rect": [
+        2048,
+        0,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        0,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        514
+      ],
+      "decodedBytes": 530448,
+      "fileBytes": 6350
+    },
+    {
+      "id": "0-1",
+      "png": "terrain-png/0-1.png",
+      "src": "terrain-webp/0-1.webp",
+      "rect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        516
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 303790
+    },
+    {
+      "id": "1-1",
+      "png": "terrain-png/1-1.png",
+      "src": "terrain-webp/1-1.webp",
+      "rect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 365696
+    },
+    {
+      "id": "2-1",
+      "png": "terrain-png/2-1.png",
+      "src": "terrain-webp/2-1.webp",
+      "rect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 335912
+    },
+    {
+      "id": "3-1",
+      "png": "terrain-png/3-1.png",
+      "src": "terrain-webp/3-1.webp",
+      "rect": [
+        1536,
+        512,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 317694
+    },
+    {
+      "id": "4-1",
+      "png": "terrain-png/4-1.png",
+      "src": "terrain-webp/4-1.webp",
+      "rect": [
+        2048,
+        512,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        516
+      ],
+      "decodedBytes": 532512,
+      "fileBytes": 134732
+    },
+    {
+      "id": "0-2",
+      "png": "terrain-png/0-2.png",
+      "src": "terrain-webp/0-2.webp",
+      "rect": [
+        0,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        0,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        514,
+        516
+      ],
+      "decodedBytes": 1060896,
+      "fileBytes": 291660
+    },
+    {
+      "id": "1-2",
+      "png": "terrain-png/1-2.png",
+      "src": "terrain-webp/1-2.webp",
+      "rect": [
+        512,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 353972
+    },
+    {
+      "id": "2-2",
+      "png": "terrain-png/2-2.png",
+      "src": "terrain-webp/2-2.webp",
+      "rect": [
+        1024,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 307860
+    },
+    {
+      "id": "3-2",
+      "png": "terrain-png/3-2.png",
+      "src": "terrain-webp/3-2.webp",
+      "rect": [
+        1536,
+        1024,
+        512,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "size": [
+        516,
+        516
+      ],
+      "decodedBytes": 1065024,
+      "fileBytes": 198892
+    },
+    {
+      "id": "4-2",
+      "png": "terrain-png/4-2.png",
+      "src": "terrain-webp/4-2.webp",
+      "rect": [
+        2048,
+        1024,
+        256,
+        512
+      ],
+      "crop": [
+        2,
+        2,
+        256,
+        512
+      ],
+      "size": [
+        258,
+        516
+      ],
+      "decodedBytes": 532512,
+      "fileBytes": 8122
+    },
+    {
+      "id": "0-3",
+      "png": "terrain-png/0-3.png",
+      "src": "terrain-webp/0-3.webp",
+      "rect": [
+        0,
+        1536,
+        512,
+        264
+      ],
+      "crop": [
+        0,
+        2,
+        512,
+        264
+      ],
+      "size": [
+        514,
+        266
+      ],
+      "decodedBytes": 546896,
+      "fileBytes": 101888
+    },
+    {
+      "id": "1-3",
+      "png": "terrain-png/1-3.png",
+      "src": "terrain-webp/1-3.webp",
+      "rect": [
+        512,
+        1536,
+        512,
+        264
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        264
+      ],
+      "size": [
+        516,
+        266
+      ],
+      "decodedBytes": 549024,
+      "fileBytes": 174790
+    },
+    {
+      "id": "2-3",
+      "png": "terrain-png/2-3.png",
+      "src": "terrain-webp/2-3.webp",
+      "rect": [
+        1024,
+        1536,
+        512,
+        264
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        264
+      ],
+      "size": [
+        516,
+        266
+      ],
+      "decodedBytes": 549024,
+      "fileBytes": 49306
+    },
+    {
+      "id": "3-3",
+      "png": "terrain-png/3-3.png",
+      "src": "terrain-webp/3-3.webp",
+      "rect": [
+        1536,
+        1536,
+        512,
+        264
+      ],
+      "crop": [
+        2,
+        2,
+        512,
+        264
+      ],
+      "size": [
+        516,
+        266
+      ],
+      "decodedBytes": 549024,
+      "fileBytes": 19154
+    }
+  ],
+  "tileSize": 512,
+  "gutter": 2,
+  "sourceGuideSize": [
+    1536,
+    1200
+  ],
+  "terrainMaster": "terrain-atlas.png",
+  "background": null,
+  "liquids": [
+    {
+      "id": "lava",
+      "rect": [
+        3,
+        275,
+        850,
+        962
+      ],
+      "png": "layers/lava.png",
+      "frames": [
+        {
+          "src": "flows/lava-00.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-01.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-02.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-03.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-04.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-05.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-06.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-07.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-08.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-09.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-10.webp",
+          "size": [
+            650,
+            736
+          ]
+        },
+        {
+          "src": "flows/lava-11.webp",
+          "size": [
+            650,
+            736
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "reviewLoops": 3,
+      "flowDirection": [
+        -4,
+        18
+      ],
+      "alphaFixed": true
+    },
+    {
+      "id": "water",
+      "rect": [
+        0,
+        843,
+        2304,
+        957
+      ],
+      "png": "layers/water.png",
+      "frames": [
+        {
+          "src": "flows/water-00.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-01.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-02.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-03.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-04.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-05.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-06.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-07.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-08.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-09.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-10.webp",
+          "size": [
+            650,
+            270
+          ]
+        },
+        {
+          "src": "flows/water-11.webp",
+          "size": [
+            650,
+            270
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "reviewLoops": 3,
+      "flowDirection": [
+        -12,
+        18
+      ],
+      "alphaFixed": true
+    },
+    {
+      "id": "waterfall",
+      "rect": [
+        1779,
+        850,
+        343,
+        441
+      ],
+      "png": "layers/waterfall.png",
+      "frames": [
+        {
+          "src": "flows/waterfall-00.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-01.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-02.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-03.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-04.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-05.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-06.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-07.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-08.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-09.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-10.webp",
+          "size": [
+            343,
+            441
+          ]
+        },
+        {
+          "src": "flows/waterfall-11.webp",
+          "size": [
+            343,
+            441
+          ]
+        }
+      ],
+      "cycleSeconds": 4,
+      "reviewLoops": 3,
+      "flowDirection": [
+        -3,
+        30
+      ],
+      "alphaFixed": true
+    }
+  ],
+  "layers": [
+    {
+      "id": "sky",
+      "src": "layers/sky.webp",
+      "rect": [
+        0,
+        0,
+        2304,
+        1800
+      ],
+      "parallax": 0.08
+    },
+    {
+      "id": "mountains-volcano",
+      "src": "layers/mountains-volcano.png",
+      "rect": [
+        -80,
+        -40,
+        1450,
+        680
+      ],
+      "parallax": 0.18
+    },
+    {
+      "id": "mountains-asia",
+      "src": "layers/mountains-asia.png",
+      "rect": [
+        840,
+        -150,
+        1550,
+        1033
+      ],
+      "parallax": 0.14
+    }
+  ],
+  "layout": "layout.json",
+  "layerOrder": [
+    "sky",
+    "mountains-volcano",
+    "mountains-asia",
+    "lava",
+    "water",
+    "waterfall",
+    "terrain",
+    "objects-back",
+    "objects-mid",
+    "objects-front"
+  ],
+  "label": "AVEGEE · นอกเขตชายแดน 1–2",
+  "preview": "composite-preview.jpg"
+}

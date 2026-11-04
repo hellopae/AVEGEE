@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVEGEE · ชายแดน 1–2 · ตรวจชั้นภาพ</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#1e2026;color:#ece5dc;font:14px/1.5 system-ui,sans-serif}header{padding:12px 16px;background:#292b33;border-bottom:1px solid #49424a}h1{font-size:18px;margin:0 0 6px}button,a{color:inherit}button{background:#3d3f48;border:1px solid #67616c;padding:7px 12px;border-radius:5px;cursor:pointer}button[aria-pressed=true]{background:#73564e;border-color:#c58b69}nav,.layers{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}label{white-space:nowrap}a{margin-left:6px}#viewport{height:calc(100dvh - 204px);min-height:300px;position:relative;overflow:hidden;background:#29232e}canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}#status{padding:6px 16px;color:#c7bdba;font-size:12px}#error{color:#ffad94}small{color:#c6b9b3}@media(max-width:600px){header{padding:8px}h1{font-size:16px}#viewport{height:calc(100dvh - 260px)}button{padding:5px 9px}.layers{font-size:12px;gap:6px}}
+</style>
+<header><h1>นอกเขตชายแดน 1–2</h1><small>ชุดตรวจภาพ · ลากเพื่อเลื่อนกล้อง · ยังไม่ประกอบในเกม</small>
+<nav><button id="wide" aria-pressed="true">ภาพรวม</button><button id="near" aria-pressed="false">กล้องใกล้</button><button id="play">เล่นน้ำ 3 รอบ</button><button id="reset">คืนตำแหน่ง</button><a href="style-compare.jpg">เทียบสไตล์</a><a href="README.md">ผลตรวจ / ข้อจำกัด</a></nav>
+<div class="layers"><label><input type="checkbox" data-layer="sky" checked>ท้องฟ้า</label><label><input type="checkbox" data-layer="mountains" checked>ภูเขา</label><label><input type="checkbox" data-layer="fluids" checked>ของเหลว</label><label><input type="checkbox" data-layer="terrain" checked>พื้น</label><label><input type="checkbox" data-layer="objects" checked>วัตถุ</label><label><input type="checkbox" data-layer="feet">จุดเท้า</label></div></header>
+<div id="viewport"><canvas aria-label="ภาพแผนที่แยกชั้น ใช้ปุ่มซูมและลากเพื่อเลื่อนกล้อง"></canvas></div><div id="status" role="status">กำลังอ่านข้อมูล…</div><div id="error" role="alert"></div>
+<script type="module">
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),status=document.querySelector('#status');
+const [manifest,layout]=await Promise.all(['manifest.json','layout.json'].map(async u=>{const r=await fetch(u);if(!r.ok)throw Error(u+': '+r.status);return r.json()}));
+const [W,H]=manifest.world,camera={x:W/2,y:H/2},enabled={sky:true,mountains:true,fluids:true,terrain:true,objects:true,feet:false};
+let level=1,scale=1,cw=1,ch=1,dirty=true,playing=false,started=0,frame=0,loops=0,drag=null;
+const cache=new Map(),pending=new Map(),failed=new Set(),CACHE_LIMIT=40*1024*1024;let bytes=0,requests=0,visibleTiles=0;
+window.borderReview={camera,enabled,cache,metrics:()=>({bytes,requests,visibleTiles,pending:pending.size,level,frame,loops,playing,failed:[...failed]})};
+function trim(){while(bytes>CACHE_LIMIT&&cache.size){const [key,item]=cache.entries().next().value;cache.delete(key);bytes-=item.bytes;item.image.close()}}
+function get(src){if(cache.has(src)){const item=cache.get(src);cache.delete(src);cache.set(src,item);return item.image}if(!pending.has(src)&&!failed.has(src)){requests++;const task=fetch(src).then(r=>{if(!r.ok)throw Error(src+': '+r.status);return r.blob()}).then(createImageBitmap).then(image=>{const count=image.width*image.height*4;cache.set(src,{image,bytes:count});bytes+=count;trim();dirty=true}).catch(e=>{failed.add(src);document.querySelector('#error').textContent=String(e)}).finally(()=>pending.delete(src));pending.set(src,task)}return null}
+function rectVisible([x,y,w,h]){const hw=cw/(2*scale),hh=ch/(2*scale);return x+w>=camera.x-hw&&x<=camera.x+hw&&y+h>=camera.y-hh&&y<=camera.y+hh}
+function image(src,rect,crop=null,flip=false){if(!rectVisible(rect))return;const im=get(src);if(!im)return;const [x,y,w,h]=rect;if(flip){ctx.save();ctx.translate(x+w,y);ctx.scale(-1,1);ctx.drawImage(im,0,0,w,h);ctx.restore()}else if(crop){ctx.drawImage(im,...crop,x,y,w,h)}else ctx.drawImage(im,x,y,w,h)}
+function resize(){const b=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);cw=b.width;ch=b.height;canvas.width=Math.round(cw*dpr);canvas.height=Math.round(ch*dpr);scale=Math.min(cw/W,ch/H)*(level===1?1:2.5);dirty=true}
+function draw(){const dpr=Math.min(devicePixelRatio||1,2);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#29232e';ctx.fillRect(0,0,cw,ch);ctx.translate(cw/2,ch/2);ctx.scale(scale,scale);ctx.translate(-camera.x,-camera.y);
+ for(const layer of manifest.layers){const group=layer.id==='sky'?'sky':'mountains';if(enabled[group])image(layer.src,layer.rect)}
+ if(enabled.fluids)for(const liquid of manifest.liquids)image(liquid.frames[frame].src,liquid.rect);
+ visibleTiles=0;if(enabled.terrain)for(const tile of manifest.tiles){if(rectVisible(tile.rect)){visibleTiles++;image(tile.src,tile.rect,tile.crop)}}
+ if(enabled.objects)for(const layer of ['back','mid','front'])for(const o of layout.objects.filter(o=>o.layer===layer).sort((a,b)=>a.footWorld[1]-b.footWorld[1]))image(o.preview||o.sprite,[o.x,o.y,o.w,o.h],null,o.flipX);
+ if(enabled.feet){ctx.font='18px system-ui';for(const o of layout.objects){const [x,y]=o.footWorld;ctx.fillStyle='#70ffc3';ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();ctx.fillText(o.id,x+7,y)}}
+ ctx.setTransform(dpr,0,0,dpr,0,0);status.textContent=`${W} × ${H} · ซูม ${level}/2 · tile ในกล้อง ${visibleTiles}/${manifest.tiles.length} · cache ${(bytes/1048576).toFixed(1)} MiB · ของเหลวเฟรม ${frame+1}/12 · รอบ ${loops}/3`;
+}
+function zoom(next){level=next;document.querySelector('#wide').setAttribute('aria-pressed',String(level===1));document.querySelector('#near').setAttribute('aria-pressed',String(level===2));resize()}
+document.querySelector('#wide').onclick=()=>zoom(1);document.querySelector('#near').onclick=()=>zoom(2);
+document.querySelector('#reset').onclick=()=>{camera.x=W/2;camera.y=H/2;zoom(1)};
+document.querySelector('#play').onclick=()=>{playing=!playing;if(playing){started=performance.now();frame=0;loops=0}document.querySelector('#play').textContent=playing?'หยุดน้ำ':'เล่นน้ำ 3 รอบ';dirty=true};
+for(const input of document.querySelectorAll('[data-layer]'))input.onchange=()=>{enabled[input.dataset.layer]=input.checked;dirty=true};
+canvas.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY,cx:camera.x,cy:camera.y};canvas.setPointerCapture(e.pointerId)};
+canvas.onpointermove=e=>{if(!drag)return;camera.x=Math.max(0,Math.min(W,drag.cx-(e.clientX-drag.x)/scale));camera.y=Math.max(0,Math.min(H,drag.cy-(e.clientY-drag.y)/scale));dirty=true};
+canvas.onpointerup=canvas.onpointercancel=()=>drag=null;
+canvas.onwheel=e=>{e.preventDefault();zoom(e.deltaY<0?2:1)};new ResizeObserver(resize).observe(canvas);
+function tick(now){if(playing){const step=Math.floor((now-started)/(4000/12));if(step>=36){playing=false;loops=3;dirty=true;document.querySelector('#play').textContent='เล่นน้ำ 3 รอบ'}else{const next=step%12;loops=Math.floor(step/12);if(next!==frame){frame=next;dirty=true}}}if(dirty){dirty=false;draw()}requestAnimationFrame(tick)}resize();requestAnimationFrame(tick);
+</script>
+</html>

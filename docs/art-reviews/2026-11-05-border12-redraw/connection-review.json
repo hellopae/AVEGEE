@@ -1,0 +1,94 @@
+{
+  "alphaThreshold": 250,
+  "method": "all route segments sampled <=1px arc length; exact Euclidean distance transform; all corridor pixels checked",
+  "anchors": [
+    "entrance-thai",
+    "lower terrace",
+    "lower stair",
+    "middle terrace",
+    "cave threshold",
+    "upper stair",
+    "upper terrace",
+    "exit-asia",
+    "both bridge landings"
+  ],
+  "routes": [
+    {
+      "id": "main",
+      "sampleCount": 2570,
+      "spacingPxMax": 1.42,
+      "minAlpha": 255,
+      "pixelsBelow250": 0,
+      "minDistanceToAlphaEdge": 64.8459701538086,
+      "minAlphaDiameter": 129.6919403076172,
+      "worstPoint": [
+        178,
+        984
+      ],
+      "corridorWidth": 80,
+      "corridorPixels": 208502,
+      "corridorMinAlpha": 255,
+      "corridorBadAlphaPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "cave",
+      "sampleCount": 208,
+      "spacingPxMax": 1.42,
+      "minAlpha": 255,
+      "pixelsBelow250": 0,
+      "minDistanceToAlphaEdge": 265.04718017578125,
+      "minAlphaDiameter": 530.0943603515625,
+      "worstPoint": [
+        1125,
+        954
+      ],
+      "corridorWidth": 80,
+      "corridorPixels": 21517,
+      "corridorMinAlpha": 255,
+      "corridorBadAlphaPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "bridge-lower",
+      "sampleCount": 954,
+      "spacingPxMax": 1.42,
+      "minAlpha": 255,
+      "pixelsBelow250": 0,
+      "minDistanceToAlphaEdge": 45.880279541015625,
+      "minAlphaDiameter": 91.76055908203125,
+      "worstPoint": [
+        1441,
+        1296
+      ],
+      "corridorWidth": 80,
+      "corridorPixels": 80621,
+      "corridorMinAlpha": 255,
+      "corridorBadAlphaPixels": 0,
+      "passed": true
+    },
+    {
+      "id": "bridge-upper",
+      "sampleCount": 733,
+      "spacingPxMax": 1.42,
+      "minAlpha": 255,
+      "pixelsBelow250": 0,
+      "minDistanceToAlphaEdge": 63.5688591003418,
+      "minAlphaDiameter": 127.1377182006836,
+      "worstPoint": [
+        1824,
+        795
+      ],
+      "corridorWidth": 80,
+      "corridorPixels": 63072,
+      "corridorMinAlpha": 255,
+      "corridorBadAlphaPixels": 0,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "actorDiameterAssumption": 36,
+  "corridorWidthAssumption": 80,
+  "scope": "art alpha continuity and clearance only; cliff faces also have alpha. Hand-traced route overlay requires engine walkmask/collision review.",
+  "gameIntegrated": false
+}

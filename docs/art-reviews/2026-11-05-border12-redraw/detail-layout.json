@@ -1,0 +1,51 @@
+{
+  "finalSize": [
+    2304,
+    1800
+  ],
+  "masterSize": [
+    1536,
+    1200
+  ],
+  "referenceSize": [
+    1536,
+    1200
+  ],
+  "crops": {
+    "west": [
+      0,
+      296,
+      950,
+      1200
+    ],
+    "east": [
+      700,
+      176,
+      1536,
+      1016
+    ]
+  },
+  "protectRects": [
+    [
+      475,
+      704,
+      715,
+      824
+    ],
+    [
+      900,
+      411,
+      1150,
+      541
+    ]
+  ],
+  "protectPolys": [],
+  "method": "Shared base with normalized opaque interior alpha; overlapping registered RGB detail; protect stairs and silhouette.",
+  "sourceToAtlas": {
+    "scale": 1.5,
+    "offset": [
+      0,
+      264
+    ]
+  }
+}

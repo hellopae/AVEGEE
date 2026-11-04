@@ -1,0 +1,21 @@
+{
+  "method": "actual shipped JS executed in mocked DOM/canvas with real file reads; no browser rendering",
+  "syntaxAndExecution": true,
+  "cameraZoomLevels": 2,
+  "visibleTilesWide": 19,
+  "visibleTilesNear": 8,
+  "panChangesCamera": true,
+  "allFiveLayerToggles": true,
+  "playPause": true,
+  "stopsAfterThreeLoops": true,
+  "mobileViewport": [
+    390,
+    500
+  ],
+  "maxCacheLimitBytes": 41943040,
+  "finalCacheBytes": 40540532,
+  "missingFiles": [],
+  "fullTerrainAtlasRequested": false,
+  "nativeObjectPngRequested": false,
+  "realBrowserTest": "blocked: browser access host unavailable"
+}

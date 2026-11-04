@@ -1,0 +1,24 @@
+{
+  "atlas": [
+    2304,
+    1800
+  ],
+  "tileFormatsPixelExact": true,
+  "gutterPixelExact": true,
+  "alphaPreserved": true,
+  "connectionAlphaAndCorridors": true,
+  "objectInstances": 22,
+  "uniqueObjectSprites": 10,
+  "objectFootSchemaValid": true,
+  "liquids": 3,
+  "framesPerLiquid": 12,
+  "reviewCycles": 3,
+  "caveDisjointAndPixelExact": true,
+  "flowReviewAnimationFrames": 36,
+  "allReferencedFilesExist": true,
+  "unusedTiles": [],
+  "outputBytesAtVerification": 53169125,
+  "limitBytes": 80000000,
+  "ownerStyleApproval": "pending",
+  "gameIntegrated": false
+}

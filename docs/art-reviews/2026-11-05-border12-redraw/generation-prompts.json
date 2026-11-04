@@ -1,0 +1,57 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "newCalls": 5,
+  "previousRunCalls": 2,
+  "previousRun": "99b10fff (drafts only; not shipped)",
+  "calls": [
+    {
+      "id": 1,
+      "purpose": "terrain base painterly repaint",
+      "prompt": "Use case: style-transfer. Production terrain-only RGBA atlas for AVEGEE 2D RPG. Image 1 (terrain draft) is the exact composition/silhouette guide; Image 2 New-Map-Zone1-ok is the mandatory STYLE reference. Repaint image 1 in image 2's detailed hand painted painterly fantasy illustration, visible tiny chisel strokes, worn fractured crags, irregular rock strata, weathered muted warm earth and ash gray, faint moss in cracks, restrained warm pink-orange sunset light from upper left. NOT smooth plastic 3D render, NOT glossy beveled toy stones, NOT saturated orange outlines. Preserve the three broad stepped terraces, both wide staircases with joined landings, two stone arch bridges on right, curved west entrance at far left lower-middle and east exit at far right upper terrace, exact overhead three-quarter camera and overall outline. Wide continuous two-way walk paths. Remove nothing structural, add no trees, shrubs, buildings, cave, lamps, gates, railings, water, lava, sky or distant mountains. Arch openings and lava channels actual transparent alpha, outside silhouette truly transparent. Tiny low stone curb integral to terrain only. Full subject framed without clipping except entrance/exit paths at left/right edges. Dense natural painted texture matching reference. Landscape 1536x1024 or larger.",
+      "inputs": [
+        "previous-run/terrain-draft.png",
+        "source-images/zone1-style.jpg"
+      ],
+      "savedOutput": "source-images/terrain-base.png"
+    },
+    {
+      "id": 2,
+      "purpose": "west detail",
+      "prompt": "Use case: style-transfer. Image 1 is an exact crop of our common terrain atlas, edit target. Image 2 is New-Map-Zone1-ok style reference. Repaint ONLY surface texture, in a genuinely hand-painted 2D fantasy background style matching image 2: organic irregular worn earth stones, fissures, natural dense dry-brush rock grain and tiny moss in recesses. Much less regular geometric brick grid on plazas, less 3D smooth voxel bevel; muted dusty earthy browns and mauve gray, warm pink-orange sunset highlights. Keep every staircase, every curb, every coastline, every bridge and opening and landing in EXACT same place and perspective, no geometry changes. Do not pan or zoom. No added objects, trees, gates, lamps, railings, water, lava, sky, text. Keep true transparent background. This will be registered back into the shared atlas and only fine paint texture used. Draw high-resolution small brush details, not enlarged pixels.",
+      "inputs": [
+        "terrain-base crop [0,120,950,1024]",
+        "source-images/zone1-style.jpg"
+      ],
+      "savedOutput": "detail-masters/west.webp"
+    },
+    {
+      "id": 3,
+      "purpose": "east detail",
+      "prompt": "Use case: style-transfer. Image 1 is the EAST detail crop of a common terrain atlas, edit target. Image 2 is New-Map-Zone1-ok, mandatory hand painted 2D fantasy STYLE reference. Repaint surface textures only in its detailed painterly dry brush style, muted warm gray and mauve stone with weathered cracks, gray stratified cliffs with tiny moss accents. Replace the unnaturally uniform plaza brick grid with organic worn irregular broad stone slabs. Preserve exactly the silhouettes, stair and bridge locations, low curbs and openings, camera, scale and framing from image 1. Do not enlarge/move geometry. Eastern cliffs progressively cooler ash gray than western warm earth, restrained pink-orange sunset upper left; no glossy plastic beveled 3D look, no saturated orange edges. No trees, objects, gates, cave, lamps, water, sky or text. Outside terrain and arch openings truly transparent. This fine texture will be registered into a shared master with locked alpha.",
+      "inputs": [
+        "terrain-base crop [700,0,1536,840]",
+        "source-images/zone1-style.jpg"
+      ],
+      "savedOutput": "detail-masters/east.webp"
+    },
+    {
+      "id": 4,
+      "purpose": "Asian misty mountain layer",
+      "prompt": "Use case: stylized-concept. Image 1 is New-Map-Zone1-ok, mandatory STYLE reference only. Create ONE distant Asian mountain range cutout layer for this same painted fantasy RPG world. Broad horizontal panorama landscape 3:2. Misty Chinese karst and layered forested gray-lavender mountains on right with low pale mauve receding ridges toward left. No volcano (separate left volcano layer exists), no buildings, trees in foreground, terrain platforms, water or sky. Hand painted detailed textured illustration, delicate drybrush rock faces and subtle atmospheric mist, restrained pink-orange sunset highlights from upper left, cool desaturated blue-gray shadows. Match reference painterly medium, not plastic 3D render. Range silhouette floats isolated on TRUE TRANSPARENT background with clean transparent top and softly transparent bottom fading into mist, entire mountain range centered with generous transparent margin all sides. No text.",
+      "inputs": [
+        "source-images/zone1-style.jpg"
+      ],
+      "savedOutput": "source-images/mountains-asia.webp"
+    },
+    {
+      "id": 5,
+      "purpose": "painterly guardian cave",
+      "prompt": "Use case: style-transfer. Image 1 is the guardian cave sprite draft, edit target. Image 2 New-Map-Zone1-ok is the mandatory style reference. Repaint the cave in reference's DETAILED HAND PAINTED FANTASY RPG medium: organic rough weathered gray-brown stone, fine fractured rock grain and chisel marks, tiny moss crevices, warm muted pink-orange sunset upper left, soft mauve shadows. Reduce bright orange gold outlines and saturated specular plastic bevels. Preserve the exact guardian face with horns, arch opening silhouette, black deep interior with receding side walls and stone floor, both braziers and threshold, entire silhouette and overhead three-quarter camera. No characters, no trees, no text. Transparent background, whole cave isolated fully within frame. Cave must remain readable at small game scale, darkest interior behind walk-in threshold. Final used as two occlusion layers so arch silhouette must be clean. Keep the entire image composition unchanged.",
+      "inputs": [
+        "previous-run/cave-draft.png",
+        "source-images/zone1-style.jpg"
+      ],
+      "savedOutput": "source-images/cave-master.webp"
+    }
+  ]
+}

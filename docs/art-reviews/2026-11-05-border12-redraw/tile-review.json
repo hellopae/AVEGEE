@@ -1,0 +1,29 @@
+{
+  "atlasSize": [
+    2304,
+    1800
+  ],
+  "tileCount": 19,
+  "gutter": 2,
+  "pngReassemblyPixelExact": true,
+  "webpReassemblyPixelExact": true,
+  "formatDetails": {
+    "png": {
+      "pixelExact": true,
+      "differentPixels": 0,
+      "maxChannelDelta": 0
+    },
+    "src": {
+      "pixelExact": true,
+      "differentPixels": 0,
+      "maxChannelDelta": 0
+    }
+  },
+  "guttersPixelExact": {
+    "png": true,
+    "src": true
+  },
+  "alphaUnchangedFromSharedGuide": true,
+  "atlasSha256": "e6691a47fb820f6d244118b15eca29e3a9bf401e5cf05f25a2b3713d52d674aa",
+  "independentTileGenerations": false
+}

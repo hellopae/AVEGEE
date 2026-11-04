@@ -1,0 +1,17 @@
+{
+  "disjointPixelOwnership": true,
+  "reassemblyPixelExact": true,
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "crop": [
+    54,
+    16,
+    1481,
+    972
+  ],
+  "front": "guardian arch, jambs, braziers",
+  "back": "receding dark interior, rear rock walls, threshold",
+  "occlusionInGame": "not integrated; sort character between back and front"
+}

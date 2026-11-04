@@ -1,0 +1,7 @@
+{
+  "scope": "loopback HTTP file serving only; no browser rendering",
+  "checkedFiles": 105,
+  "allHttp200": true,
+  "allResponseByteCountsMatchDisk": true,
+  "pythonScriptsParse": 3
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "crop": "west",
+    "sourceRectangle": [
+      0,
+      296,
+      950,
+      1200
+    ],
+    "inliers": 142,
+    "registrationMatrix": [
+      [
+        0.9783990557321991,
+        0.0007522963826635757,
+        -1.753800183759461
+      ],
+      [
+        -0.0007522963826635757,
+        0.9783990557321991,
+        0.5575001042319822
+      ]
+    ],
+    "generatedSize": [
+      1286,
+      1223
+    ],
+    "fallback": null,
+    "alphaSource": "common terrain master, never independent detail alpha"
+  },
+  {
+    "crop": "east",
+    "sourceRectangle": [
+      700,
+      176,
+      1536,
+      1016
+    ],
+    "inliers": 150,
+    "registrationMatrix": [
+      [
+        1.0006355188079687,
+        -0.001367617664415576,
+        1.8690143671355093
+      ],
+      [
+        0.001367617664415576,
+        1.0006355188079687,
+        -1.197076779153961
+      ]
+    ],
+    "generatedSize": [
+      1254,
+      1254
+    ],
+    "fallback": null,
+    "alphaSource": "common terrain master, never independent detail alpha"
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "output": "layers/sky.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-terrain-seamless/layers/sky.png"
+  },
+  {
+    "output": "layers/mountains-volcano.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-terrain-seamless/layers/mountains.png",
+    "sourceCrop": [
+      0,
+      0,
+      1150,
+      724
+    ]
+  },
+  {
+    "output": "source-images/lava-texture.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/registered-layout/left-lava-master.png",
+    "kind": "whole pure-fluid study; channel geometry authored separately"
+  },
+  {
+    "output": "source-images/water-texture.webp",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-05-zone2-terrain/fluid-master.png",
+    "sourceCrop": [
+      800,
+      100,
+      1500,
+      800
+    ]
+  },
+  {
+    "output": "objects/thai-gate.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/heaven-gate.png"
+  },
+  {
+    "output": "objects/asia-gate.png",
+    "source": "/Users/agapae/agapae-work/.codex-worktrees/20261104T184313Z-e0c3e1e8/img/map-v5/st-frontier-asia.webp"
+  },
+  {
+    "output": "objects/red-maple.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/volcanic-tree.png"
+  },
+  {
+    "output": "objects/pine.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/forest-pine.png"
+  },
+  {
+    "output": "objects/gold-tree.png",
+    "source": "/Users/agapae/agapae-work/.codex-worktrees/20261104T184313Z-e0c3e1e8/img/theme-v4/town-landmark-asia-v1.webp"
+  },
+  {
+    "output": "objects/basalt.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/volcanic-boulder.png"
+  },
+  {
+    "output": "objects/moss-rock.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/forest-boulder.png"
+  },
+  {
+    "output": "objects/lamp.png",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-zone1-modular/world-kit/assets/thai-street-lamp.png"
+  }
+]

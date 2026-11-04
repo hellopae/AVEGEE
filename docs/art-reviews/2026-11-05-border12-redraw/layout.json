@@ -1,0 +1,456 @@
+{
+  "world": [
+    2304,
+    1800
+  ],
+  "footConvention": "local placed rectangle pixels; add x,y for atlas foot",
+  "guideTransform": {
+    "scale": 1.5,
+    "offset": [
+      0,
+      264
+    ]
+  },
+  "objects": [
+    {
+      "id": "entrance-thai",
+      "sprite": "objects/thai-gate.png",
+      "x": 66,
+      "y": 735,
+      "w": 192,
+      "h": 248,
+      "flipX": false,
+      "foot": [
+        96,
+        246
+      ],
+      "layer": "mid",
+      "category": "entrance",
+      "footWorld": [
+        162,
+        981
+      ],
+      "preview": "objects-preview/thai-gate.webp"
+    },
+    {
+      "id": "exit-asia",
+      "sprite": "objects/asia-gate.png",
+      "x": 2060,
+      "y": 479,
+      "w": 200,
+      "h": 210,
+      "flipX": false,
+      "foot": [
+        100,
+        208
+      ],
+      "layer": "mid",
+      "category": "exit",
+      "footWorld": [
+        2160,
+        687
+      ],
+      "preview": "objects-preview/asia-gate.webp"
+    },
+    {
+      "id": "guardian-cave-back",
+      "sprite": "objects/cave-back.png",
+      "x": 735,
+      "y": 379,
+      "w": 600,
+      "h": 400,
+      "flipX": false,
+      "foot": [
+        300,
+        398
+      ],
+      "layer": "back",
+      "category": "cave",
+      "footWorld": [
+        1035,
+        777
+      ],
+      "preview": "objects-preview/cave-back.webp"
+    },
+    {
+      "id": "guardian-cave-front",
+      "sprite": "objects/cave-front.png",
+      "x": 735,
+      "y": 379,
+      "w": 600,
+      "h": 400,
+      "flipX": false,
+      "foot": [
+        300,
+        398
+      ],
+      "layer": "front",
+      "category": "cave",
+      "footWorld": [
+        1035,
+        777
+      ],
+      "preview": "objects-preview/cave-front.webp"
+    },
+    {
+      "id": "maple-0",
+      "sprite": "objects/red-maple.png",
+      "x": 76,
+      "y": 1046,
+      "w": 225,
+      "h": 270,
+      "flipX": false,
+      "foot": [
+        112,
+        268
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        188,
+        1314
+      ],
+      "preview": "objects-preview/red-maple.webp"
+    },
+    {
+      "id": "maple-1",
+      "sprite": "objects/red-maple.png",
+      "x": 202,
+      "y": 1241,
+      "w": 255,
+      "h": 285,
+      "flipX": true,
+      "foot": [
+        128,
+        283
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        330,
+        1524
+      ],
+      "preview": "objects-preview/red-maple.webp"
+    },
+    {
+      "id": "maple-2",
+      "sprite": "objects/red-maple.png",
+      "x": 469,
+      "y": 1376,
+      "w": 218,
+      "h": 262,
+      "flipX": false,
+      "foot": [
+        109,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        578,
+        1636
+      ],
+      "preview": "objects-preview/red-maple.webp"
+    },
+    {
+      "id": "maple-3",
+      "sprite": "objects/red-maple.png",
+      "x": 281,
+      "y": 529,
+      "w": 218,
+      "h": 262,
+      "flipX": true,
+      "foot": [
+        109,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        390,
+        789
+      ],
+      "preview": "objects-preview/red-maple.webp"
+    },
+    {
+      "id": "maple-4",
+      "sprite": "objects/red-maple.png",
+      "x": 495,
+      "y": 296,
+      "w": 210,
+      "h": 255,
+      "flipX": false,
+      "foot": [
+        105,
+        253
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        600,
+        549
+      ],
+      "preview": "objects-preview/red-maple.webp"
+    },
+    {
+      "id": "transition-gold",
+      "sprite": "objects/gold-tree.png",
+      "x": 1189,
+      "y": 296,
+      "w": 202,
+      "h": 262,
+      "flipX": false,
+      "foot": [
+        101,
+        260
+      ],
+      "layer": "back",
+      "category": "tree",
+      "footWorld": [
+        1290,
+        556
+      ],
+      "preview": "objects-preview/gold-tree.webp"
+    },
+    {
+      "id": "pine-0",
+      "sprite": "objects/pine.png",
+      "x": 1267,
+      "y": 724,
+      "w": 255,
+      "h": 262,
+      "flipX": true,
+      "foot": [
+        128,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        1395,
+        984
+      ],
+      "preview": "objects-preview/pine.webp"
+    },
+    {
+      "id": "pine-1",
+      "sprite": "objects/pine.png",
+      "x": 1747,
+      "y": 214,
+      "w": 255,
+      "h": 262,
+      "flipX": false,
+      "foot": [
+        128,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        1875,
+        474
+      ],
+      "preview": "objects-preview/pine.webp"
+    },
+    {
+      "id": "pine-2",
+      "sprite": "objects/pine.png",
+      "x": 1860,
+      "y": 304,
+      "w": 255,
+      "h": 262,
+      "flipX": true,
+      "foot": [
+        128,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        1988,
+        564
+      ],
+      "preview": "objects-preview/pine.webp"
+    },
+    {
+      "id": "pine-3",
+      "sprite": "objects/pine.png",
+      "x": 1597,
+      "y": 177,
+      "w": 255,
+      "h": 262,
+      "flipX": false,
+      "foot": [
+        128,
+        260
+      ],
+      "layer": "mid",
+      "category": "tree",
+      "footWorld": [
+        1725,
+        437
+      ],
+      "preview": "objects-preview/pine.webp"
+    },
+    {
+      "id": "lamp-0",
+      "sprite": "objects/lamp.png",
+      "x": 234,
+      "y": 896,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        255,
+        1029
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "lamp-1",
+      "sprite": "objects/lamp.png",
+      "x": 684,
+      "y": 1301,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        705,
+        1434
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "lamp-2",
+      "sprite": "objects/lamp.png",
+      "x": 894,
+      "y": 761,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        915,
+        894
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "lamp-3",
+      "sprite": "objects/lamp.png",
+      "x": 1239,
+      "y": 813,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        1260,
+        946
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "lamp-4",
+      "sprite": "objects/lamp.png",
+      "x": 1824,
+      "y": 513,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        1845,
+        646
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "lamp-5",
+      "sprite": "objects/lamp.png",
+      "x": 2214,
+      "y": 596,
+      "w": 42,
+      "h": 135,
+      "flipX": false,
+      "foot": [
+        21,
+        133
+      ],
+      "layer": "mid",
+      "category": "lamp",
+      "footWorld": [
+        2235,
+        729
+      ],
+      "preview": "objects-preview/lamp.webp"
+    },
+    {
+      "id": "basalt-west",
+      "sprite": "objects/basalt.png",
+      "x": 416,
+      "y": 1263,
+      "w": 98,
+      "h": 68,
+      "flipX": false,
+      "foot": [
+        49,
+        66
+      ],
+      "layer": "mid",
+      "category": "rock",
+      "footWorld": [
+        465,
+        1329
+      ],
+      "preview": "objects-preview/basalt.webp"
+    },
+    {
+      "id": "moss-east",
+      "sprite": "objects/moss-rock.png",
+      "x": 1748,
+      "y": 788,
+      "w": 105,
+      "h": 63,
+      "flipX": false,
+      "foot": [
+        52,
+        61
+      ],
+      "layer": "mid",
+      "category": "rock",
+      "footWorld": [
+        1800,
+        849
+      ],
+      "preview": "objects-preview/moss-rock.webp"
+    }
+  ]
+}
