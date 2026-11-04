@@ -1,0 +1,150 @@
+{
+ "viewport": [
+  1280,
+  800
+ ],
+ "legs": [
+  {
+   "name": "plaza",
+   "target": [
+    1900,
+    1468
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 0.0,
+   "seconds": 0.2,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "dais-top",
+   "target": [
+    1996,
+    1284
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 35.0,
+   "seconds": 1.8,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "upper-platform-tarang",
+   "target": [
+    1548,
+    740
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 0.0,
+   "seconds": 4.2,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "heaven-gate-sawan",
+   "target": [
+    2292,
+    732
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 4.2,
+   "seconds": 5.8,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "plaza-again",
+   "target": [
+    1900,
+    1468
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 26.7,
+   "seconds": 3.8,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "lava-krata",
+   "target": [
+    540,
+    1164
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 0.0,
+   "seconds": 6.2,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "plaza-from-lava",
+   "target": [
+    1900,
+    1468
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 2.0,
+   "seconds": 6.2,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "ice-lokan",
+   "target": [
+    3660,
+    940
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 12.9,
+   "seconds": 8.2,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "ice-krajok",
+   "target": [
+    3628,
+    1460
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 27.0,
+   "seconds": 3.8,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "pier",
+   "target": [
+    1580,
+    1740
+   ],
+   "walkToReturned": true,
+   "arrived": true,
+   "finalDistance": 14.9,
+   "seconds": 9.0,
+   "offFloorSamples": 0
+  },
+  {
+   "name": "gate",
+   "target": [
+    1756,
+    2452
+   ],
+   "walkToReturned": true,
+   "arrived": false,
+   "finalDistance": 103.8,
+   "seconds": 60.0,
+   "offFloorSamples": 0
+  }
+ ],
+ "errors": [],
+ "v6": {
+  "mode": "detail",
+  "tilesVisible": 4,
+  "tilesReady": 4,
+  "objects": 12,
+  "objectsDrawn": 4,
+  "objectsReady": 4,
+  "frame": 4667
+ }
+}

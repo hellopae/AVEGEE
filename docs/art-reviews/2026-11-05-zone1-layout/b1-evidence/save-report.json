@@ -1,0 +1,60 @@
+{
+ "paused": {
+  "zone": "th",
+  "x": 1960,
+  "y": 1452,
+  "paused": true
+ },
+ "resumed": {
+  "zone": "th",
+  "x": 1960,
+  "y": 1452,
+  "paused": false
+ },
+ "saved": {
+  "ok": true,
+  "x": 2075,
+  "y": 1281,
+  "keys": [
+   "avegee.save.active-slot.v1",
+   "avegee.save.slot.1.v1"
+  ]
+ },
+ "slotCards": [
+  "SLOT 1 \u0e40\u0e25\u0e48\u0e19\u0e15\u0e48\u0e2d \u25b6 \u0e40\u0e27\u0e25\u0e32\u0e40\u0e25\u0e48\u0e19 00:00:13 \u0e42\u0e0b\u0e19 \u0e42\u0e0b\u0e19\u0e2a\u0e38\u0e27\u0e23\u0e23\u0e13\u0e20\u0e39\u0e21\u0e34 900 72 ",
+  "SLOT 2 New Game \u25b6",
+  "SLOT 3 New Game \u25b6"
+ ],
+ "loaded": {
+  "zone": "th",
+  "x": 2075,
+  "y": 1281,
+  "paused": false
+ },
+ "v6": {
+  "mode": "detail",
+  "tilesVisible": 6,
+  "tilesReady": 6,
+  "objects": 46,
+  "objectsDrawn": 30,
+  "objectsReady": 30,
+  "frame": 603
+ },
+ "asia": {
+  "zone": "asia",
+  "x": 2225,
+  "y": 1780,
+  "paused": true
+ },
+ "backToTh": {
+  "zone": "th",
+  "x": 1580,
+  "y": 1748,
+  "paused": false
+ },
+ "backToThWalkable": {
+  "walkable": true,
+  "v6": true
+ },
+ "errors": []
+}

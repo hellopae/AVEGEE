@@ -1,0 +1,216 @@
+{
+ "errors": [],
+ "cases": [
+  {
+   "case": "plaza south cliff / soul river",
+   "key": "ArrowDown",
+   "start": [
+    2304,
+    1526
+   ],
+   "end": [
+    2304,
+    1606
+   ],
+   "movedUnits": 80,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "plaza east cliff",
+   "key": "ArrowRight",
+   "start": [
+    2273,
+    1211
+   ],
+   "end": [
+    2316,
+    1211
+   ],
+   "movedUnits": 43,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "plaza west cliff (lava side)",
+   "key": "ArrowLeft",
+   "start": [
+    1075,
+    1288
+   ],
+   "end": [
+    931,
+    1288
+   ],
+   "movedUnits": 144,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "upper platform north rim",
+   "key": "ArrowUp",
+   "start": [
+    1536,
+    658
+   ],
+   "end": [
+    1536,
+    589
+   ],
+   "movedUnits": 69,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "right bridge deck, off the rail",
+   "key": "ArrowDown",
+   "start": [
+    2842,
+    1380
+   ],
+   "end": [
+    2842,
+    1428
+   ],
+   "movedUnits": 48,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "left bridge deck, off the rail",
+   "key": "ArrowDown",
+   "start": [
+    922,
+    1396
+   ],
+   "end": [
+    922,
+    1412
+   ],
+   "movedUnits": 16,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "S bridge into the river (left)",
+   "key": "ArrowLeft",
+   "start": [
+    1812,
+    1903
+   ],
+   "end": [
+    1781,
+    1903
+   ],
+   "movedUnits": 32,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "S bridge into the river (right)",
+   "key": "ArrowRight",
+   "start": [
+    1866,
+    1903
+   ],
+   "end": [
+    1920,
+    1903
+   ],
+   "movedUnits": 53,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "pine trunk z1-029 from the north",
+   "key": "ArrowDown",
+   "start": [
+    1745,
+    1165
+   ],
+   "end": [
+    1745,
+    1229
+   ],
+   "movedUnits": 64,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "pine trunk z1-028 from the north",
+   "key": "ArrowDown",
+   "start": [
+    2075,
+    1165
+   ],
+   "end": [
+    2075,
+    1224
+   ],
+   "movedUnits": 59,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "lava terrace edge (krata)",
+   "start": [
+    507,
+    1173
+   ],
+   "skipped": "start point not on floor"
+  },
+  {
+   "case": "ice terrace south edge",
+   "key": "ArrowDown",
+   "start": [
+    3533,
+    1211
+   ],
+   "end": [
+    3533,
+    1227
+   ],
+   "movedUnits": 16,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "dais wall from the plaza side",
+   "key": "ArrowUp",
+   "start": [
+    1782,
+    1442
+   ],
+   "end": [
+    1782,
+    1388
+   ],
+   "movedUnits": 53,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "pier end into the water",
+   "key": "ArrowDown",
+   "start": [
+    1584,
+    1726
+   ],
+   "end": [
+    1584,
+    1763
+   ],
+   "movedUnits": 37,
+   "samples": 24,
+   "offFloorSamples": 0
+  },
+  {
+   "case": "lower gate wall foot",
+   "start": [
+    1459,
+    2456
+   ],
+   "skipped": "start point not on floor"
+  }
+ ]
+}

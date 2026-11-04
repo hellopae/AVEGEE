@@ -1,0 +1,21 @@
+{
+ "note": "390x844, reduced motion. before = commit d55d08ac (round A, no src changes), after = this branch. Zones 2-4 must match; zone 1 is the layered map.",
+ "zones": {
+  "th": {
+   "meanAbsDiffPerChannel": 41.911,
+   "pixelsDiffMoreThan30Pct": 55.937
+  },
+  "asia": {
+   "meanAbsDiffPerChannel": 0.019,
+   "pixelsDiffMoreThan30Pct": 0.0
+  },
+  "west": {
+   "meanAbsDiffPerChannel": 0.012,
+   "pixelsDiffMoreThan30Pct": 0.0
+  },
+  "cyberhell": {
+   "meanAbsDiffPerChannel": 0.375,
+   "pixelsDiffMoreThan30Pct": 0.325
+  }
+ }
+}

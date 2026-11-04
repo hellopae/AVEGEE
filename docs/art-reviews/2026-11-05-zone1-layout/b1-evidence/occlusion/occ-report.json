@@ -1,0 +1,135 @@
+{
+ "errors": [],
+ "points": [
+  {
+   "pair": "pine-plaza-east",
+   "tag": "behind",
+   "ok_px": [
+    1351,
+    872
+   ],
+   "world": [
+    2075,
+    1199
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "pine-plaza-east",
+   "tag": "front",
+   "ok_px": [
+    1351,
+    925
+   ],
+   "world": [
+    2075,
+    1281
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "pine-plaza-south",
+   "tag": "behind",
+   "ok_px": [
+    1369,
+    1085
+   ],
+   "world": [
+    2103,
+    1526
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "pine-plaza-south",
+   "tag": "front",
+   "ok_px": [
+    1369,
+    1128
+   ],
+   "world": [
+    2103,
+    1592
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "upper-gate-wall",
+   "tag": "behind",
+   "ok_px": [
+    880,
+    575
+   ],
+   "world": [
+    1352,
+    743
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "upper-gate-wall",
+   "tag": "front",
+   "ok_px": [
+    880,
+    650
+   ],
+   "world": [
+    1352,
+    858
+   ],
+   "walkable": false
+  },
+  {
+   "pair": "upper-gate-arch-vs-wall",
+   "tag": "behind",
+   "ok_px": [
+    1000,
+    585
+   ],
+   "world": [
+    1536,
+    758
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "upper-gate-arch-vs-wall",
+   "tag": "front",
+   "ok_px": [
+    1000,
+    640
+   ],
+   "world": [
+    1536,
+    843
+   ],
+   "walkable": true
+  },
+  {
+   "pair": "dais",
+   "tag": "behind",
+   "ok_px": [
+    1236,
+    880
+   ],
+   "world": [
+    1898,
+    1211
+   ],
+   "walkable": false
+  },
+  {
+   "pair": "dais",
+   "tag": "front",
+   "ok_px": [
+    1236,
+    1030
+   ],
+   "world": [
+    1898,
+    1442
+   ],
+   "walkable": true
+  }
+ ]
+}
