@@ -1,0 +1,160 @@
+{
+  "alphaThreshold": 250,
+  "points": [
+    [
+      "south-threshold",
+      [
+        0.52665,
+        0.98898
+      ]
+    ],
+    [
+      "lower-apron",
+      [
+        0.52665,
+        0.86
+      ]
+    ],
+    [
+      "main-courtyard",
+      [
+        0.53,
+        0.68
+      ]
+    ],
+    [
+      "stair-bottom",
+      [
+        0.53,
+        0.515
+      ]
+    ],
+    [
+      "stair-top",
+      [
+        0.53,
+        0.438
+      ]
+    ],
+    [
+      "upper-courtyard",
+      [
+        0.54,
+        0.34
+      ]
+    ],
+    [
+      "north-threshold",
+      [
+        0.563,
+        0.28723
+      ]
+    ]
+  ],
+  "segments": [
+    {
+      "start": "south-threshold",
+      "end": "lower-apron",
+      "fromPx": [
+        1211,
+        2496
+      ],
+      "toPx": [
+        1211,
+        2171
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 20864,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    },
+    {
+      "start": "lower-apron",
+      "end": "main-courtyard",
+      "fromPx": [
+        1211,
+        2171
+      ],
+      "toPx": [
+        1219,
+        1716
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 29138,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    },
+    {
+      "start": "main-courtyard",
+      "end": "stair-bottom",
+      "fromPx": [
+        1219,
+        1716
+      ],
+      "toPx": [
+        1219,
+        1300
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 26688,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    },
+    {
+      "start": "stair-bottom",
+      "end": "stair-top",
+      "fromPx": [
+        1219,
+        1300
+      ],
+      "toPx": [
+        1219,
+        1106
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 12480,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    },
+    {
+      "start": "stair-top",
+      "end": "upper-courtyard",
+      "fromPx": [
+        1219,
+        1106
+      ],
+      "toPx": [
+        1242,
+        858
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 16013,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    },
+    {
+      "start": "upper-courtyard",
+      "end": "north-threshold",
+      "fromPx": [
+        1242,
+        858
+      ],
+      "toPx": [
+        1295,
+        725
+      ],
+      "corridorWidthPx": 64,
+      "samplePixels": 9223,
+      "minAlpha": 255,
+      "below250": 0,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitation": "Alpha continuity only; not a game walkmask, slope or collision test."
+}

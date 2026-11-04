@@ -1,0 +1,27 @@
+{
+  "loops": [
+    {
+      "id": "river",
+      "frames": 12,
+      "reviewFrames": 36,
+      "cycles": 3,
+      "meanAdjacentRGBDelta": [
+        0.7159625315357931,
+        0.6168667218543047,
+        0.6020175516398613,
+        0.5607017206717124,
+        0.5376539833648691,
+        0.5384633199306212,
+        0.5215766418322296,
+        0.5350946566540523,
+        0.5574490992589088,
+        0.6000672599337749,
+        0.6177154781614632,
+        0.7441619362976979
+      ],
+      "wrapToMedianRatio": 1.2821878405288254
+    }
+  ],
+  "noNewLiquidGeneration": true,
+  "contentReview": "Reused liquid-only river; no rocks, vegetation or buildings added."
+}

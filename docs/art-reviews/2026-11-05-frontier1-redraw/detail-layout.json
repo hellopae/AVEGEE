@@ -1,0 +1,55 @@
+{
+  "finalSize": [
+    2300,
+    2524
+  ],
+  "masterSize": [
+    1197,
+    1314
+  ],
+  "referenceSize": [
+    1197,
+    1314
+  ],
+  "crops": {
+    "upper": [
+      0,
+      300,
+      1197,
+      900
+    ],
+    "lower": [
+      0,
+      710,
+      1197,
+      1314
+    ]
+  },
+  "protectRects": [
+    [
+      466.83000000000004,
+      565.02,
+      825.93,
+      683.28
+    ],
+    [
+      191.52,
+      998.64,
+      383.04,
+      1103.76
+    ],
+    [
+      837.9,
+      998.64,
+      1017.4499999999999,
+      1103.76
+    ]
+  ],
+  "protectPolys": [],
+  "protectCoarseEdges": true,
+  "baseRegistration": {
+    "topLandingTargetY": 0.272,
+    "bottomEntranceHorizontalScale": 0.6,
+    "reason": "owner guide top landing and lower apron"
+  }
+}

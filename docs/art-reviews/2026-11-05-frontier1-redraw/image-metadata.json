@@ -1,0 +1,166 @@
+{
+  "flows/river-00.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-01.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-02.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-03.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-04.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-05.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-06.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-07.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-08.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-09.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-10.webp": [
+    1280,
+    1057
+  ],
+  "flows/river-11.webp": [
+    1280,
+    1057
+  ],
+  "layers/mountains-preview.webp": [
+    1280,
+    427
+  ],
+  "layers/sky-preview.webp": [
+    1279,
+    720
+  ],
+  "objects/ice-pine.png": [
+    400,
+    600
+  ],
+  "objects/ice-shrub.png": [
+    600,
+    298
+  ],
+  "objects/thai-gate-back.png": [
+    1000,
+    562
+  ],
+  "objects/thai-gate-front.png": [
+    1000,
+    562
+  ],
+  "objects/thai-street-lamp.png": [
+    389,
+    600
+  ],
+  "objects/volcanic-boulder.png": [
+    600,
+    447
+  ],
+  "objects/volcanic-tree.png": [
+    600,
+    548
+  ],
+  "terrain-webp/0-1.webp": [
+    514,
+    516
+  ],
+  "terrain-webp/0-2.webp": [
+    514,
+    516
+  ],
+  "terrain-webp/0-3.webp": [
+    514,
+    516
+  ],
+  "terrain-webp/0-4.webp": [
+    514,
+    478
+  ],
+  "terrain-webp/1-1.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/1-2.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/1-3.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/1-4.webp": [
+    516,
+    478
+  ],
+  "terrain-webp/2-1.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/2-2.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/2-3.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/2-4.webp": [
+    516,
+    478
+  ],
+  "terrain-webp/3-1.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/3-2.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/3-3.webp": [
+    516,
+    516
+  ],
+  "terrain-webp/3-4.webp": [
+    516,
+    478
+  ],
+  "terrain-webp/4-1.webp": [
+    254,
+    516
+  ],
+  "terrain-webp/4-2.webp": [
+    254,
+    516
+  ],
+  "terrain-webp/4-3.webp": [
+    254,
+    516
+  ],
+  "terrain-webp/4-4.webp": [
+    254,
+    478
+  ]
+}

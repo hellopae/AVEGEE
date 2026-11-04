@@ -1,0 +1,22 @@
+[
+  {
+    "id": "sky",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-terrain-seamless/layers/sky.png",
+    "operation": "unchanged source; scaled at render"
+  },
+  {
+    "id": "mountains",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-terrain-seamless/layers/mountains.png",
+    "operation": "unchanged source; scaled at render"
+  },
+  {
+    "id": "river",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE/layered-map-work/docs/art-reviews/2026-11-04-terrain-seamless/layers/river.png",
+    "operation": "reuse all 12 frames, overlapping vertical repeats and top alpha fade beneath banks"
+  },
+  {
+    "id": "thai-gate",
+    "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Pic Map Zone1/ChatGPT Image Nov 4, 2026, 11_29_05 AM.png",
+    "operation": "alpha bbox crop; reduce to 1000px; partition front/back with disjoint masks"
+  }
+]

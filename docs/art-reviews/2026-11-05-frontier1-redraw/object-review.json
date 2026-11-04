@@ -1,0 +1,109 @@
+{
+  "count": 10,
+  "objects": [
+    {
+      "id": "north-gate-back",
+      "worldFoot": [
+        1294,
+        724
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "north-gate-front",
+      "worldFoot": [
+        1294,
+        724
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "south-gate-back",
+      "worldFoot": [
+        1211,
+        2496
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "south-gate-front",
+      "worldFoot": [
+        1211,
+        2496
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "volcanic-tree-0",
+      "worldFoot": [
+        414,
+        1615
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "ice-pine-1",
+      "worldFoot": [
+        1955,
+        1641
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "volcanic-boulder-2",
+      "worldFoot": [
+        667,
+        1817
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "ice-shrub-3",
+      "worldFoot": [
+        1770,
+        1817
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "thai-street-lamp-4",
+      "worldFoot": [
+        851,
+        1514
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    },
+    {
+      "id": "thai-street-lamp-5",
+      "worldFoot": [
+        1679,
+        1514
+      ],
+      "minAlpha7x7": 255,
+      "onOpaqueGround": true,
+      "onMainCorridor": false
+    }
+  ],
+  "allFeetOnGround": true,
+  "decorationsOutsideCorridor": true,
+  "gatePartsDisjoint": true,
+  "gatePartReconstructionPixelExact": true
+}

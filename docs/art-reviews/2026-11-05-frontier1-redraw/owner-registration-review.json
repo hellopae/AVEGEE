@@ -1,0 +1,43 @@
+{
+  "matches": 138,
+  "inliers": 94,
+  "measurementSize": [
+    800,
+    878
+  ],
+  "affineMatrixAtMeasurementSize": [
+    [
+      1.0040336496636169,
+      0.0005209180801999199,
+      -0.1832239666657469
+    ],
+    [
+      -0.0005209180801999199,
+      1.0040336496636169,
+      -3.01477224043589
+    ]
+  ],
+  "medianInlierErrorAtlasPx": 2.8349809646606445,
+  "maxInlierErrorAtlasPx": 6.875753879547119,
+  "gateBoundingBoxes": [
+    {
+      "id": "north",
+      "rectDeviationPx": {
+        "x": 0.4500000000000455,
+        "y": 0.22399999999998954,
+        "w": 0.10000000000002274,
+        "h": 0.47399999999998954
+      }
+    },
+    {
+      "id": "south",
+      "rectDeviationPx": {
+        "x": 0.2300000000000182,
+        "y": 0.0003999999998995918,
+        "w": 0.12999999999999545,
+        "h": 0.052399999999977354
+      }
+    }
+  ],
+  "limitation": "Feature correspondences and gate rectangles do not prove exact cliff silhouettes or visual style."
+}

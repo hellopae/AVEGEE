@@ -1,0 +1,13 @@
+{
+  "atlasSize": [
+    2300,
+    2524
+  ],
+  "tileCount": 20,
+  "pngReassemblyPixelExact": true,
+  "webpReassemblyPixelExact": true,
+  "maxDecodedTileBytes": 1065024,
+  "webpTotalFileBytes": 4305238,
+  "alphaUnchangedFromSharedGuide": true,
+  "independentTileGenerations": false
+}

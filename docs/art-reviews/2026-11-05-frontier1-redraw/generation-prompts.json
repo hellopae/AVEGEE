@@ -1,0 +1,19 @@
+{
+  "tool": "built-in image_gen",
+  "count": 3,
+  "priorRunGenerations": 1,
+  "entries": [
+    {
+      "id": 1,
+      "prompt": "Use case: precise-object-edit. Asset type: AVEGEE terrain-only game atlas. Input 1 is the edit target / composition guide (frontier draft), input 2 is the owner's exact layout, input 3 is painterly style reference only. Edit the draft into a TERRAIN ONLY asset on flat pure chroma green #00FF00 background. Remove ALL sky, mountains, purple water, gates, trees, buildings and loose decorations. Keep only connected brown stone ground, cliffs, stairs and their landings. Preserve the owner's exact portrait framing, same canvas aspect 1600:1756, fixed three-quarter elevated camera and sunset lighting. Important alignment corrections: follow the owner's asymmetrical outer cliff silhouette exactly, especially right edge of main courtyard; lower entrance must be a broad connected stone apron at x .35-.69 and y .84-1.0, with the large gate omitted. Top gateway landing at x .47-.65 y .27, connected ramp down into upper courtyard, broad central staircase at x .39-.68 y .44-.51, massive main courtyard y .51-.80, small stairs at x .17-.30 and .73-.84 y .77-.83. Do not invent separate islands or gaps across the main center route x .53 from y .27 to 1.0. Ground must be opaque, green only outside the outer cliff perimeter. No green on ground. Keep original rock shapes and fine painterly cracked stone texture, not a top-down map. Extend lower stone entrance all the way to bottom canvas edge, as in the owner layout. Output only one clean terrain base, preferably at 1536x1680 or larger, without changing composition. No text, no watermark."
+    },
+    {
+      "id": 2,
+      "prompt": "Use case: precise-object-edit. Asset type: high-resolution registered terrain detail crop UPPER. The reference is an exact cropped portion of an existing connected game terrain atlas. Redraw ONLY fine surface detail with richer tiny rock strata, chipped stone edges and cracks, preserving every feature at the EXACT same normalized coordinates and camera. Keep the outer silhouette, all river channels, the top landing, main broad stairs, rock formations and all floor elevation boundaries pixel-aligned with reference; do not move or add geometry. Keep the same warm orange sunset lighting and detailed painterly AVEGEE style. Do not add trees, bushes, gates, buildings, loose rocks, railings, mountains, water or sky. Outside land must remain pure flat #00FF00. This will be registered over a common base; composition invariance is crucial. Output landscape 2048x1024 or larger, same ~2:1 crop framing, without padding or crop changes. One image only; no text or labels."
+    },
+    {
+      "id": 3,
+      "prompt": "Use case: precise-object-edit. Asset type: high-resolution registered terrain detail crop LOWER. The reference is an exact cropped portion of an existing connected game terrain atlas. Redraw ONLY fine surface detail with richer tiny rock strata and cracks, preserving every feature at EXACT normalized coordinates and the same three-quarter elevated camera. Keep the tapered bottom entrance apron reaching the lower canvas edge, both small stairs at the same positions, broad main courtyard, cliff edges and landings unchanged. Keep same warm sunset light and detailed painterly AVEGEE stone texture. Do not add trees, bushes, gates, buildings, loose rocks, railings, mountains, water or sky. Replace the transparent exterior with pure flat #00FF00, keeping same silhouette. This will be registered on a shared base, so do not move geometry or change composition. Output landscape 2048x1024 or larger with the same ~2:1 crop framing, no padding or crop change. One image only, no text or labels."
+    }
+  ]
+}

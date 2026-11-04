@@ -1,0 +1,3 @@
+{"date":"2026-11-05","run":"3408c210","tool":"built-in image_gen","call":1,"kind":"terrain-only-base","inputs":["input/reference-0.jpg","input/reference-1.jpg","input/reference-2.jpg"],"output":"input/terrain-base-green.png","promptId":1}
+{"date":"2026-11-05","run":"3408c210","tool":"built-in image_gen","call":2,"kind":"registered-upper-detail","inputs":["input/upper-review.png"],"output":"detail-masters/upper.png","promptId":2}
+{"date":"2026-11-05","run":"3408c210","tool":"built-in image_gen","call":3,"kind":"registered-lower-detail","inputs":["input/lower-review.png"],"output":"detail-masters/lower.png","promptId":3,"runTotal":3,"priorRunCalls":1,"shadoCalls":0}

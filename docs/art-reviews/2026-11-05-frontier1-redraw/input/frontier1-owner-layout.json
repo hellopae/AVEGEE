@@ -1,0 +1,106 @@
+{
+ "source": "/Users/agapae/Documents/Work PAE/Claude/AVEGEE-reference/files/UI New map/New Map Zone f1-2.ai",
+ "artboardPt": [
+  1935.4,
+  2123.95
+ ],
+ "note": "x,y,w,h = fraction of artboard (top-left origin); drawn in this order",
+ "placements": [
+  {
+   "id": "/Im0",
+   "px": [
+    971,
+    1619
+   ],
+   "x": 0.0,
+   "y": 0.2733,
+   "w": 0.3541,
+   "h": 0.7267,
+   "flipX": false
+  },
+  {
+   "id": "/Im1",
+   "px": [
+    971,
+    1619
+   ],
+   "x": 0.6068,
+   "y": 0.2733,
+   "w": 0.3932,
+   "h": 0.7267,
+   "flipX": true
+  },
+  {
+   "id": "/Im2",
+   "px": [
+    1672,
+    941
+   ],
+   "x": -0.0,
+   "y": -0.0559,
+   "w": 0.5,
+   "h": 0.2955,
+   "flipX": false
+  },
+  {
+   "id": "/Im3",
+   "px": [
+    1672,
+    941
+   ],
+   "x": 0.5,
+   "y": -0.0559,
+   "w": 0.5,
+   "h": 0.2955,
+   "flipX": true
+  },
+  {
+   "id": "/Im4",
+   "px": [
+    2172,
+    724
+   ],
+   "x": 0.0019,
+   "y": 0.083,
+   "w": 0.9986,
+   "h": 0.3033,
+   "flipX": false
+  },
+  {
+   "id": "/Im5",
+   "px": [
+    1536,
+    1024
+   ],
+   "x": -0.0138,
+   "y": 0.2733,
+   "w": 1.1962,
+   "h": 0.7267,
+   "flipX": false
+  },
+  {
+   "id": "/Im6",
+   "px": [
+    1672,
+    941
+   ],
+   "x": 0.4515,
+   "y": 0.176,
+   "w": 0.223,
+   "h": 0.1135,
+   "flipX": false
+  },
+  {
+   "id": "/Im7",
+   "px": [
+    1672,
+    941
+   ],
+   "x": 0.3301,
+   "y": 0.8229,
+   "w": 0.3931,
+   "h": 0.2001,
+   "flipX": false
+  }
+ ]
+}

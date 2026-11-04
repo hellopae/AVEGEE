@@ -1,0 +1,18 @@
+{
+  "world": [
+    2300,
+    2524
+  ],
+  "tiles": 20,
+  "differingPixels": {
+    "png": 0,
+    "webp": 0
+  },
+  "guttersPixelExact": true,
+  "alphaLocked": true,
+  "connectionPassed": true,
+  "allObjectFeetOnGround": true,
+  "outputBytes": 58928421,
+  "outputLimitBytes": 80000000,
+  "withinOutputLimit": true
+}

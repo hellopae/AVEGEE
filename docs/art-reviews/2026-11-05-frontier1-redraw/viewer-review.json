@@ -1,0 +1,120 @@
+{
+  "mode": "Node VM with mocked DOM/canvas and image decoding",
+  "browserTested": false,
+  "browserBlockers": [
+    "Headless Chromium launch denied by sandbox MachPort permission",
+    "Connected browser access host unavailable"
+  ],
+  "focusZoomChecks": [
+    {
+      "focus": "center",
+      "level": "near",
+      "bytes": 25805184,
+      "view": [
+        707.8888888888889,
+        1277.3244444444445,
+        1022.2222222222222,
+        575.1111111111111
+      ]
+    },
+    {
+      "focus": "center",
+      "level": "closer",
+      "bytes": 24017184,
+      "view": [
+        865.1538461538462,
+        1365.8030769230768,
+        707.6923076923077,
+        398.1538461538462
+      ]
+    },
+    {
+      "focus": "left",
+      "level": "near",
+      "bytes": 26396928,
+      "view": [
+        0,
+        1226.8444444444444,
+        1022.2222222222222,
+        575.1111111111111
+      ]
+    },
+    {
+      "focus": "left",
+      "level": "closer",
+      "bytes": 24266880,
+      "view": [
+        157.26495726495722,
+        1315.3230769230768,
+        707.6923076923077,
+        398.1538461538462
+      ]
+    },
+    {
+      "focus": "right",
+      "level": "near",
+      "bytes": 24610848,
+      "view": [
+        1277.7777777777778,
+        1226.8444444444444,
+        1022.2222222222222,
+        575.1111111111111
+      ]
+    },
+    {
+      "focus": "right",
+      "level": "closer",
+      "bytes": 23895648,
+      "view": [
+        1435.042735042735,
+        1315.3230769230768,
+        707.6923076923077,
+        398.1538461538462
+      ]
+    },
+    {
+      "focus": "south",
+      "level": "near",
+      "bytes": 27344288,
+      "view": [
+        707.8888888888889,
+        1948.8888888888887,
+        1022.2222222222222,
+        575.1111111111111
+      ]
+    },
+    {
+      "focus": "south",
+      "level": "closer",
+      "bytes": 27344288,
+      "view": [
+        865.1538461538462,
+        2037.3675213675212,
+        707.6923076923077,
+        398.1538461538462
+      ]
+    }
+  ],
+  "layerToggles": 5,
+  "animationSeconds": 13.76000000000001,
+  "pauseStable": true,
+  "overview": true,
+  "maxConcurrentDecodes": 2,
+  "framesSimulated": 950,
+  "drawCalls": 11227,
+  "finalCache": {
+    "bytes": 27344288,
+    "peakBytes": 27344288,
+    "loaded": 96,
+    "evictions": 84,
+    "ready": 12,
+    "pending": 0,
+    "errors": [],
+    "maxBytes": 41943040
+  },
+  "limitations": [
+    "No browser screenshots or responsive-layout verification",
+    "No actual browser image decoding",
+    "Not in-game testing"
+  ]
+}

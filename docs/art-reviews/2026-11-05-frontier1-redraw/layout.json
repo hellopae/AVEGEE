@@ -1,0 +1,168 @@
+{
+  "world": [
+    2300,
+    2524
+  ],
+  "footUnits": "normalized within sprite rectangle",
+  "footWorldFormula": "[x + foot[0]*w, y + foot[1]*h]",
+  "objects": [
+    {
+      "id": "north-gate-back",
+      "sprite": "objects/thai-gate-back.png",
+      "x": 1038,
+      "y": 444,
+      "w": 513,
+      "h": 286,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.98
+      ],
+      "footNote": "visible passage threshold; south wall continues beyond owner artboard",
+      "layer": "back",
+      "category": "gate",
+      "group": "north-gate"
+    },
+    {
+      "id": "north-gate-front",
+      "sprite": "objects/thai-gate-front.png",
+      "x": 1038,
+      "y": 444,
+      "w": 513,
+      "h": 286,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.98
+      ],
+      "footNote": "visible passage threshold; south wall continues beyond owner artboard",
+      "layer": "front",
+      "category": "gate",
+      "group": "north-gate"
+    },
+    {
+      "id": "south-gate-back",
+      "sprite": "objects/thai-gate-back.png",
+      "x": 759,
+      "y": 2077,
+      "w": 904,
+      "h": 505,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.83
+      ],
+      "footNote": "visible passage threshold; south wall continues beyond owner artboard",
+      "layer": "back",
+      "category": "gate",
+      "group": "south-gate"
+    },
+    {
+      "id": "south-gate-front",
+      "sprite": "objects/thai-gate-front.png",
+      "x": 759,
+      "y": 2077,
+      "w": 904,
+      "h": 505,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.83
+      ],
+      "footNote": "visible passage threshold; south wall continues beyond owner artboard",
+      "layer": "front",
+      "category": "gate",
+      "group": "south-gate"
+    },
+    {
+      "id": "volcanic-tree-0",
+      "sprite": "objects/volcanic-tree.png",
+      "x": 310,
+      "y": 1433,
+      "w": 208,
+      "h": 190,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "ice-pine-1",
+      "sprite": "objects/ice-pine.png",
+      "x": 1885,
+      "y": 1439,
+      "w": 140,
+      "h": 210,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "tree"
+    },
+    {
+      "id": "volcanic-boulder-2",
+      "sprite": "objects/volcanic-boulder.png",
+      "x": 620,
+      "y": 1750,
+      "w": 94,
+      "h": 70,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "rock"
+    },
+    {
+      "id": "ice-shrub-3",
+      "sprite": "objects/ice-shrub.png",
+      "x": 1726,
+      "y": 1775,
+      "w": 89,
+      "h": 44,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "shrub"
+    },
+    {
+      "id": "thai-street-lamp-4",
+      "sprite": "objects/thai-street-lamp.png",
+      "x": 812,
+      "y": 1399,
+      "w": 78,
+      "h": 120,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    },
+    {
+      "id": "thai-street-lamp-5",
+      "sprite": "objects/thai-street-lamp.png",
+      "x": 1640,
+      "y": 1399,
+      "w": 78,
+      "h": 120,
+      "flipX": false,
+      "foot": [
+        0.5,
+        0.96
+      ],
+      "layer": "mid",
+      "category": "lamp"
+    }
+  ]
+}

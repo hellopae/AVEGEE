@@ -1,0 +1,14 @@
+{
+  "reviewMethod": "Manual thumbnails, one at a time; final composite and 50-percent owner overlay",
+  "terrainHasBakedObjects": false,
+  "liquidHasAddedRocksOrObjects": false,
+  "composition": "Both gate rectangles follow owner placements; broad central stairs, main courtyard, two lower side stairs and connected bottom apron retained",
+  "criterion1FullySatisfied": false,
+  "remainingDifference": "Some cliff silhouettes still ghost in the owner overlay, especially lower left; feature registration does not validate every cliff edge",
+  "styleReference": "input/reference-2.jpg, thumbnail of New-Map-Zone1-ok.jpg",
+  "drawnAndExported": true,
+  "imagesInspected": true,
+  "browserAppearanceVerified": false,
+  "integratedInGame": false,
+  "inGameDepthSortingVerified": false
+}
