@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import {enableTownSkin,disableTownSkin} from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';
 import test from 'node:test';

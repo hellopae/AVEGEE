@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // P5b — Codex art inserted: zone-3 boss hands the weapon sheathed (cane v2), pier repair r3-c3, zone-1 worker sheet v2
 import test from 'node:test';

@@ -1,0 +1,26 @@
+{
+ "data": [
+  {
+   "before": "delete d.interactionReach;",
+   "after": "delete d.interactionReach;delete d.v6;delete d.v6absent;"
+  },
+  {
+   "before": "delete FRONTIER.mapScale;",
+   "after": "delete FRONTIER.mapScale;delete FRONTIER.v6;"
+  }
+ ],
+ "game": [
+  {
+   "before": "import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS } from './town-layout.js?v=k1d';\n",
+   "after": "import { TOWN_CREW, TOWN_CREW_STAGE, TOWN_GUARD_POST, TOWN_SPOTS, TOWN_RIVER_Y, TOWN_SHORE_SPANS, TOWN_ZONE_LAYOUT } from './town-layout.js?v=k1d';\nimport { TOWN_V6 } from './town-v6-data.js';\n"
+  },
+  {
+   "before": "    townMapVersion:2, z4TownVersion:3, zoneTravel:structuredClone(this.zoneTravel),\n",
+   "after": "    townMapVersion:2, z4TownVersion:3, z1MapVersion:6, zoneTravel:structuredClone(this.zoneTravel),\n"
+  },
+  {
+   "before": "",
+   "after": "  // Z1-LAYOUT-B1: Zone 1 stands on the layered map (img/map-zone1/v6). A save made on the old painting keeps its old coordinates:\n  // move Yama, the crew homes, the guard and the invaders to the new spawn ONCE. Progress, stations and items are untouched.\n  if (TOWN_ZONE_LAYOUT.th.v6 && (d.z1MapVersion || 0) < 6) {\n    const move = state => {\n      if (!state) return;\n      if (state.player) Object.assign(state.player, {x:TOWN_V6.spots.plaza[0], y:TOWN_V6.spots.plaza[1], tx:null, ty:null, path:null});\n      for (const c of state.crew || []) { const home = TOWN_V6.crew[c.k]; if (home) { c.hx = home[0]; c.hy = home[1]; c.x = null; c.y = null; c.path = null; } }\n      if (state.guard) Object.assign(state.guard, {x:TOWN_V6.spots.guard[0], y:TOWN_V6.spots.guard[1], path:null, target:null});\n      for (const m of state.mobs || []) { m.x = TOWN_V6.shoreSpans[0][0] + 40; m.y = TOWN_V6.riverY - 50; m.path = null; }\n    };\n    if (this.zone === 'th') move(this);\n    move(this.zoneSave?.th);\n    for (const actor of Object.values(this.roster || {})) if (actor.homeZone === 'th' && !(this.zone !== 'th' && CREW.find(c => c.k === (actor.k || actor.kind))?.follow)) {\n      const home = TOWN_V6.crew[actor.k || actor.kind]; if (home) { actor.hx = home[0]; actor.hy = home[1]; actor.x = null; actor.y = null; actor.path = null; }\n      if (actor.kind === 'guard') { actor.x = TOWN_V6.spots.guard[0]; actor.y = TOWN_V6.spots.guard[1]; }\n    }\n    this.blockSig = null;\n  }\n"
+  }
+ ]
+}

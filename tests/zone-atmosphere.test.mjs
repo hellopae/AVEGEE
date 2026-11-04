@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
 import {SNOW_TRACKS,updateSnowTracks,snowTrackAlpha} from '../src/snow-footprints.js';
 import {ATMOSPHERE,atmosphereBudget,TH_ATMOS_LAMPS} from '../src/scene-atmosphere.js';

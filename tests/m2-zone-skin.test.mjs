@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import { assertVersionedImports } from './helpers/versioned-imports.mjs';
 // M2 round 0: zone skin table, per-zone town layout, light emitters. Zone 1 must be byte-for-byte what it was.
 import test from 'node:test';

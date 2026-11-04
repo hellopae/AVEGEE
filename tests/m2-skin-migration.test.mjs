@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 // M2 T3: a zone whose painted-town skin is switched on after a save was made gets its positions moved ONCE; progress is untouched.
 import test from 'node:test';
 import assert from 'node:assert/strict';

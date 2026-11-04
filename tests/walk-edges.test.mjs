@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createGame} from '../src/game.js';import {canWalk,findPath,resetWalk,setBlocks} from '../src/walk.js?v=k1d';
 import {TOWN_PROP_SITES} from '../src/town-layout.js?v=k1d';

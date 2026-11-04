@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import { isTownZone } from '../src/zone-skin.js';
 // L1: Zone 1 map depth - actor scale is town-only, the shadow module passes draws through when nothing is baked,
 // and the shadow direction is one shared constant (lower right).

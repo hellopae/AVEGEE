@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import {signalStory} from '../src/signal-arc.js';
 import { isTownZone } from '../src/zone-skin.js';
 import { harbourTravel } from './helpers/travel.mjs';

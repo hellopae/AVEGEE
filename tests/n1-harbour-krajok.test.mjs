@@ -1,3 +1,4 @@
+import './_legacy-zone1.mjs';   // Zone 1 on the old painting (layered map = tests/town-v6-zone1.test.mjs)
 import {readReleaseFile,assertModuleRelease,assertStylesheetRelease} from './helpers/release-imports.mjs';
 // N1 — ท่าเรือ (ขอบเดิน/ปุ่ม Fast Travel/ป้ายบอส) + หอส่องกรรม (จุดฝึก/กระจก) · ใบงาน Output/Claudy/briefs/2026-10-16-avegee-n1-harbour-krajok.md
 import test from 'node:test';
