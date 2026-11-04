@@ -1,0 +1,238 @@
+{
+ "source": "New Map Zone1-3.ai",
+ "note": "NOT objects. Owner base images from 3.ai for reference only (Im7 = guide picture, no original PNG).",
+ "layers": [
+  {
+   "image": "Im0",
+   "size": [
+    1672,
+    941
+   ],
+   "boxOk": [
+    0.0,
+    0.6,
+    1251.2,
+    704.3
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_29_20 AM.png",
+   "match": {
+    "rgbDiff": 4.88,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 89.75
+   }
+  },
+  {
+   "image": "Im1",
+   "size": [
+    1672,
+    941
+   ],
+   "boxOk": [
+    1251.2,
+    -0.3,
+    1251.2,
+    704.3
+   ],
+   "flipX": true,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_29_20 AM.png",
+   "match": {
+    "rgbDiff": 4.88,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 89.75
+   }
+  },
+  {
+   "image": "Im2",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    -1.2,
+    122.2,
+    2503.6,
+    834.7
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_38_02 PM.png",
+   "match": {
+    "rgbDiff": 2.42,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 53.18
+   }
+  },
+  {
+   "image": "Im3",
+   "size": [
+    971,
+    1619
+   ],
+   "boxOk": [
+    0.0,
+    480.7,
+    691.1,
+    1152.5
+   ],
+   "flipX": false,
+   "originalFile": null,
+   "match": {
+    "rgbDiff": 22.92,
+    "alphaDiff": 0.0,
+    "candidates": 3,
+    "runnerUp": 58.67,
+    "reason": "best thumbnail diff 22.9 > 20.0"
+   }
+  },
+  {
+   "image": "Im4",
+   "size": [
+    971,
+    1619
+   ],
+   "boxOk": [
+    1679.3,
+    371.2,
+    823.1,
+    1372.6
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 06_51_50 PM.png",
+   "match": {
+    "rgbDiff": 12.6,
+    "alphaDiff": 0.0,
+    "candidates": 3,
+    "runnerUp": 67.1
+   }
+  },
+  {
+   "image": "Im5",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    -1.2,
+    1150.7,
+    1182.7,
+    394.3
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 05_07_21 PM.png",
+   "match": {
+    "rgbDiff": 15.63,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 46.13
+   }
+  },
+  {
+   "image": "Im6",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    1207.3,
+    1150.7,
+    1295.1,
+    431.8
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 05_07_21 PM.png",
+   "match": {
+    "rgbDiff": 15.63,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 46.13
+   }
+  },
+  {
+   "image": "Im7",
+   "size": [
+    1495,
+    1052
+   ],
+   "boxOk": [
+    0.0,
+    0.6,
+    2502.3,
+    1761.2
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_19_18 PM.png",
+   "match": {
+    "rgbDiff": 4.65,
+    "alphaDiff": 0.0,
+    "candidates": 3,
+    "runnerUp": 94.88
+   }
+  },
+  {
+   "image": "Im8",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    97.3,
+    22.8,
+    765.8,
+    255.3
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "match": {
+    "rgbDiff": 0.65,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 54.55
+   }
+  },
+  {
+   "image": "Im9",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    691.1,
+    141.6,
+    559.3,
+    186.5
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "match": {
+    "rgbDiff": 0.65,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 54.55
+   }
+  },
+  {
+   "image": "Im10",
+   "size": [
+    2172,
+    724
+   ],
+   "boxOk": [
+    1337.8,
+    8.8,
+    1034.0,
+    344.7
+   ],
+   "flipX": false,
+   "originalFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "match": {
+    "rgbDiff": 0.65,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 54.55
+   }
+  }
+ ]
+}

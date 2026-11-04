@@ -1,0 +1,114 @@
+{
+ "threshold": 24.0,
+ "note": "smoothed (sigma 6) mean |RGB| diff vs ok.jpg above threshold, closed 21px, area>=2500. Colour-grade noise on objects is ~9-13.",
+ "regions": [
+  {
+   "n": 1,
+   "bbox": [
+    1469,
+    109,
+    1031,
+    587
+   ],
+   "areaPx": 214917,
+   "meanSmoothedDiff": 48.9,
+   "crop": "gap-crops/gap-01-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 2,
+   "bbox": [
+    0,
+    187,
+    1060,
+    324
+   ],
+   "areaPx": 112632,
+   "meanSmoothedDiff": 47.0,
+   "crop": "gap-crops/gap-02-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 3,
+   "bbox": [
+    350,
+    1028,
+    321,
+    140
+   ],
+   "areaPx": 22892,
+   "meanSmoothedDiff": 47.8,
+   "crop": "gap-crops/gap-03-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 4,
+   "bbox": [
+    1707,
+    1041,
+    266,
+    110
+   ],
+   "areaPx": 17638,
+   "meanSmoothedDiff": 35.0,
+   "crop": "gap-crops/gap-04-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 5,
+   "bbox": [
+    57,
+    670,
+    158,
+    174
+   ],
+   "areaPx": 11487,
+   "meanSmoothedDiff": 37.7,
+   "crop": "gap-crops/gap-05-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 6,
+   "bbox": [
+    0,
+    0,
+    1258,
+    10
+   ],
+   "areaPx": 7013,
+   "meanSmoothedDiff": 31.3,
+   "crop": "gap-crops/gap-06-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 7,
+   "bbox": [
+    2253,
+    1533,
+    138,
+    91
+   ],
+   "areaPx": 3327,
+   "meanSmoothedDiff": 24.2,
+   "crop": "gap-crops/gap-07-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 8,
+   "bbox": [
+    81,
+    890,
+    132,
+    83
+   ],
+   "areaPx": 3235,
+   "meanSmoothedDiff": 30.9,
+   "crop": "gap-crops/gap-08-ok-left-proof-right.jpg"
+  },
+  {
+   "n": 9,
+   "bbox": [
+    1870,
+    0,
+    630,
+    6
+   ],
+   "areaPx": 2967,
+   "meanSmoothedDiff": 28.3,
+   "crop": "gap-crops/gap-09-ok-left-proof-right.jpg"
+  }
+ ]
+}

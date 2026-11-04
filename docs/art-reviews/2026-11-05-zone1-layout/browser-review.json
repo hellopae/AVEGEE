@@ -1,0 +1,44 @@
+{
+ "desktop": {
+  "scrollWidthOK": true,
+  "count": "93 วัตถุ · 43 sprite",
+  "viewport": {
+   "width": 1280,
+   "height": 900
+  },
+  "pickedId": "z1-021",
+  "expectedId": "z1-021",
+  "infoText": "×\nz1-021 · fortress / castle (building / upper)\nพิกัด ok-space: x 1005.4 y 330.4 w 230.5 h 232.5\nfootY 562.1 · authorOrder 20 · flipX false · หมุน 0°\nที่มา: Zone1-3 Im41 · ต้นฉบับ ChatGPT Image Nov 4, 2026, 11_23_56 AM.png\nsprite 8a956edd23",
+  "treeToggleChangesPixels": true,
+  "treeToggleRoundTrip": true,
+  "okModeSceneHidden": true,
+  "sliderClip": "inset(0px 0px 0px 40%)",
+  "zoomWorks": true,
+  "scrollWidthAfterZoomOK": true,
+  "minButtonPx": 44,
+  "pageErrors": [],
+  "consoleErrorsOrWarnings": [],
+  "http4xx": []
+ },
+ "mobile390": {
+  "scrollWidthOK": true,
+  "count": "93 วัตถุ · 43 sprite",
+  "viewport": {
+   "width": 390,
+   "height": 844
+  },
+  "pickedId": "z1-021",
+  "expectedId": "z1-021",
+  "infoText": "×\nz1-021 · fortress / castle (building / upper)\nพิกัด ok-space: x 1005.4 y 330.4 w 230.5 h 232.5\nfootY 562.1 · authorOrder 20 · flipX false · หมุน 0°\nที่มา: Zone1-3 Im41 · ต้นฉบับ ChatGPT Image Nov 4, 2026, 11_23_56 AM.png\nsprite 8a956edd23",
+  "treeToggleChangesPixels": true,
+  "treeToggleRoundTrip": true,
+  "okModeSceneHidden": true,
+  "sliderClip": "inset(0px 0px 0px 40%)",
+  "zoomWorks": true,
+  "scrollWidthAfterZoomOK": true,
+  "minButtonPx": 44,
+  "pageErrors": [],
+  "consoleErrorsOrWarnings": [],
+  "http4xx": []
+ }
+}

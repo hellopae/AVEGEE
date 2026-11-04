@@ -1,0 +1,29 @@
+{
+ "note": "Residual between the Im7-normalised AI placement and ok.jpg, measured by masked template matching (check-zone1-objects.py --fit). Applied by extract-zone1-ok-layout.py as x'=(1+xScale)*x+dx, y'=(1+yScale)*y+dy per source file. ok.jpg is the source of truth (it was flattened from a Photoshop file in which the owner pasted the AI exports; 5.ai was pasted 2497px wide).",
+ "files": {
+  "New Map Zone1-3.ai": {
+   "dx": 0.025,
+   "xScale": 0.000932,
+   "dy": 0.603,
+   "yScale": 0.001118,
+   "objectsUsed": 33,
+   "objectsCandidates": 33
+  },
+  "New Map Zone1-4.ai": {
+   "dx": 0.327,
+   "xScale": -0.000174,
+   "dy": 1.894,
+   "yScale": -0.000182,
+   "objectsUsed": 23,
+   "objectsCandidates": 23
+  },
+  "New Map Zone1-5.ai": {
+   "dx": 0.959,
+   "xScale": -0.001389,
+   "dy": 0.418,
+   "yScale": -0.000313,
+   "objectsUsed": 15,
+   "objectsCandidates": 15
+  }
+ }
+}

@@ -1,0 +1,5151 @@
+{
+ "frame": [
+  2500,
+  1758
+ ],
+ "note": "coordinates are ok.jpg pixels (2500x1758). matrix = sprite px -> ok px (2x3 row-major). flipX/rotationDeg are informative; matrix already contains them.",
+ "sources": [
+  "New Map Zone1-3.ai",
+  "New Map Zone1-4.ai",
+  "New Map Zone1-5.ai",
+  "New-Map-Zone1.psd (layers 3-5 lamp posts)"
+ ],
+ "perFile": {
+  "New Map Zone1-3.ai": 36,
+  "New Map Zone1-4.ai": 35,
+  "New Map Zone1-5.ai": 19,
+  "New-Map-Zone1.psd": 3
+ },
+ "excludedNotInOk": [
+  {
+   "file": "New Map Zone1-4.ai",
+   "image": "Im20",
+   "reason": "stale copy: the same tree (hash 55a2979764) was moved in New Map Zone1-5.ai (Im17 at 1708,1316); ok.jpg shows no tree at the 4.ai position (mean diff 46, best local match 52 px away)"
+  },
+  {
+   "file": "New Map Zone1-4.ai",
+   "image": "Im21",
+   "reason": "stale copy: bush/rock piece (hash 65c3331f96) re-placed in New Map Zone1-5.ai (Im19/Im21); ok.jpg shows nothing at the 4.ai position (mean diff 51, best local match 22 px away)"
+  }
+ ],
+ "exactDuplicatesDropped": [
+  {
+   "dropped": "New Map Zone1-3.ai:Im14",
+   "sameAs": "New Map Zone1-4.ai:Im11"
+  },
+  {
+   "dropped": "New Map Zone1-3.ai:Im15",
+   "sameAs": "New Map Zone1-4.ai:Im35"
+  },
+  {
+   "dropped": "New Map Zone1-3.ai:Im17",
+   "sameAs": "New Map Zone1-5.ai:Im11"
+  },
+  {
+   "dropped": "New Map Zone1-3.ai:Im26",
+   "sameAs": "New Map Zone1-5.ai:Im12"
+  },
+  {
+   "dropped": "New Map Zone1-3.ai:Im27",
+   "sameAs": "New Map Zone1-5.ai:Im13"
+  },
+  {
+   "dropped": "New Map Zone1-5.ai:Im20",
+   "sameAs": "New Map Zone1-3.ai:Im55"
+  },
+  {
+   "dropped": "New Map Zone1-3.ai:Im29",
+   "sameAs": "New Map Zone1-5.ai:Im27"
+  }
+ ],
+ "sprites": {
+  "20ec7fdff9": {
+   "file": "sprites/spr-20ec7fdff9.webp",
+   "size": [
+    2003,
+    369
+   ],
+   "scale": 0.9522,
+   "crop": [
+    33,
+    161,
+    2136,
+    549
+   ],
+   "sourceSize": [
+    2172,
+    724
+   ],
+   "sourceBytesHash": "20ec7fdff9",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 0.65,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 54.55,
+    "alpha": "original alpha"
+   }
+  },
+  "11a67992b9": {
+   "file": "sprites/spr-11a67992b9.webp",
+   "size": [
+    392,
+    434
+   ],
+   "scale": 0.3744,
+   "crop": [
+    153,
+    6,
+    1199,
+    1164
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "11a67992b9",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_28 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 7.52,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 60.79,
+    "alpha": "original alpha"
+   }
+  },
+  "42289178cb": {
+   "file": "sprites/spr-42289178cb.webp",
+   "size": [
+    380,
+    326
+   ],
+   "scale": 0.3256,
+   "crop": [
+    196,
+    11,
+    1362,
+    1011
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "42289178cb",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_16 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.27,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 41.55,
+    "alpha": "original alpha"
+   }
+  },
+  "3d882e7929": {
+   "file": "sprites/spr-3d882e7929.webp",
+   "size": [
+    412,
+    287
+   ],
+   "scale": 0.2915,
+   "crop": [
+    69,
+    7,
+    1483,
+    990
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "3d882e7929",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_32 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.34,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 47.95,
+    "alpha": "original alpha"
+   }
+  },
+  "a55f0f0223": {
+   "file": "sprites/spr-a55f0f0223.webp",
+   "size": [
+    197,
+    233
+   ],
+   "scale": 0.2125,
+   "crop": [
+    163,
+    105,
+    1089,
+    1202
+   ],
+   "sourceSize": [
+    1254,
+    1254
+   ],
+   "sourceBytesHash": "a55f0f0223",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 01_10_45 PM.png",
+   "sourceMatch": {
+    "rgbDiff": 3.28,
+    "alphaDiff": 0.0,
+    "candidates": 7,
+    "runnerUp": 51.04,
+    "alpha": "original alpha"
+   }
+  },
+  "5f8a8232a3": {
+   "file": "sprites/spr-5f8a8232a3.webp",
+   "size": [
+    403,
+    363
+   ],
+   "scale": 0.3108,
+   "crop": [
+    8,
+    0,
+    1305,
+    1167
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "5f8a8232a3",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 9.01,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 53.82,
+    "alpha": "original alpha"
+   }
+  },
+  "c85351e870": {
+   "file": "sprites/spr-c85351e870.webp",
+   "size": [
+    239,
+    343
+   ],
+   "scale": 0.2752,
+   "crop": [
+    156,
+    14,
+    1025,
+    1260
+   ],
+   "sourceSize": [
+    1179,
+    1334
+   ],
+   "sourceBytesHash": "c85351e870",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_04 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.29,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "6c4fdf2a25": {
+   "file": "sprites/spr-6c4fdf2a25.webp",
+   "size": [
+    324,
+    604
+   ],
+   "scale": 0.3995,
+   "crop": [
+    106,
+    12,
+    918,
+    1524
+   ],
+   "sourceSize": [
+    1024,
+    1536
+   ],
+   "sourceBytesHash": "6c4fdf2a25",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_33 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 4.14,
+    "alphaDiff": 0.0,
+    "candidates": 7,
+    "runnerUp": 43.3,
+    "alpha": "original alpha"
+   }
+  },
+  "55a2979764": {
+   "file": "sprites/spr-55a2979764.webp",
+   "size": [
+    873,
+    623
+   ],
+   "scale": 0.6129,
+   "crop": [
+    54,
+    0,
+    1479,
+    1017
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "55a2979764",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.98,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 58.91,
+    "alpha": "original alpha"
+   }
+  },
+  "55a2979764-cb16976": {
+   "file": "sprites/spr-55a2979764-cb16976.webp",
+   "size": [
+    914,
+    543
+   ],
+   "scale": 0.6413,
+   "crop": [
+    54,
+    0,
+    1479,
+    847
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "55a2979764",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.98,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 58.91,
+    "alpha": "original alpha"
+   }
+  },
+  "55a2979764-cc16564": {
+   "file": "sprites/spr-55a2979764-cc16564.webp",
+   "size": [
+    879,
+    333
+   ],
+   "scale": 0.6947,
+   "crop": [
+    157,
+    0,
+    1422,
+    480
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "55a2979764",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.98,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 58.91,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381": {
+   "file": "sprites/spr-cc97fd8381.webp",
+   "size": [
+    761,
+    699
+   ],
+   "scale": 0.6222,
+   "crop": [
+    58,
+    20,
+    1281,
+    1144
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381-cad3455": {
+   "file": "sprites/spr-cc97fd8381-cad3455.webp",
+   "size": [
+    273,
+    333
+   ],
+   "scale": 0.2958,
+   "crop": [
+    58,
+    20,
+    980,
+    1144
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381-ceb0c1f": {
+   "file": "sprites/spr-cc97fd8381-ceb0c1f.webp",
+   "size": [
+    251,
+    347
+   ],
+   "scale": 0.3089,
+   "crop": [
+    469,
+    20,
+    1281,
+    1144
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381-c2bebb7": {
+   "file": "sprites/spr-cc97fd8381-c2bebb7.webp",
+   "size": [
+    251,
+    331
+   ],
+   "scale": 0.2947,
+   "crop": [
+    58,
+    20,
+    911,
+    1144
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381-c42044b": {
+   "file": "sprites/spr-cc97fd8381-c42044b.webp",
+   "size": [
+    362,
+    379
+   ],
+   "scale": 0.337,
+   "crop": [
+    208,
+    20,
+    1281,
+    1144
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "cc97fd8381-c5bb4fd": {
+   "file": "sprites/spr-cc97fd8381-c5bb4fd.webp",
+   "size": [
+    837,
+    397
+   ],
+   "scale": 0.6842,
+   "crop": [
+    58,
+    20,
+    1281,
+    600
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "cc97fd8381",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.85,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 49.38,
+    "alpha": "original alpha"
+   }
+  },
+  "801157b547": {
+   "file": "sprites/spr-801157b547.webp",
+   "size": [
+    597,
+    698
+   ],
+   "scale": 0.5215,
+   "crop": [
+    5,
+    0,
+    1150,
+    1338
+   ],
+   "sourceSize": [
+    1154,
+    1363
+   ],
+   "sourceBytesHash": "801157b547",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 8.91,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "e6a661d1a4": {
+   "file": "sprites/spr-e6a661d1a4.webp",
+   "size": [
+    1543,
+    862
+   ],
+   "scale": 1.0,
+   "crop": [
+    70,
+    8,
+    1613,
+    870
+   ],
+   "sourceSize": [
+    1672,
+    941
+   ],
+   "sourceBytesHash": "e6a661d1a4",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_05 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.13,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 60.19,
+    "alpha": "original alpha"
+   }
+  },
+  "5f009bc6ce": {
+   "file": "sprites/spr-5f009bc6ce.webp",
+   "size": [
+    359,
+    414
+   ],
+   "scale": 0.3336,
+   "crop": [
+    116,
+    7,
+    1191,
+    1247
+   ],
+   "sourceSize": [
+    1254,
+    1254
+   ],
+   "sourceBytesHash": "5f009bc6ce",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_47 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 9.63,
+    "alphaDiff": 0.0,
+    "candidates": 7,
+    "runnerUp": 48.76,
+    "alpha": "original alpha"
+   }
+  },
+  "d4d0211ba8": {
+   "file": "sprites/spr-d4d0211ba8.webp",
+   "size": [
+    420,
+    386
+   ],
+   "scale": 0.3446,
+   "crop": [
+    24,
+    18,
+    1244,
+    1139
+   ],
+   "sourceSize": [
+    1254,
+    1254
+   ],
+   "sourceBytesHash": "d4d0211ba8",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_52 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 8.84,
+    "alphaDiff": 0.0,
+    "candidates": 7,
+    "runnerUp": 49.88,
+    "alpha": "original alpha"
+   }
+  },
+  "74727d909a": {
+   "file": "sprites/spr-74727d909a.webp",
+   "size": [
+    397,
+    350
+   ],
+   "scale": 0.3606,
+   "crop": [
+    206,
+    15,
+    1308,
+    987
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "74727d909a",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_46 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.57,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 37.32,
+    "alpha": "original alpha"
+   }
+  },
+  "a60a79f477": {
+   "file": "sprites/spr-a60a79f477.webp",
+   "size": [
+    399,
+    215
+   ],
+   "scale": 0.2877,
+   "crop": [
+    72,
+    132,
+    1458,
+    880
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "a60a79f477",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.97,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 32.15,
+    "alpha": "original alpha"
+   }
+  },
+  "a60a79f477-c10f82c": {
+   "file": "sprites/spr-a60a79f477-c10f82c.webp",
+   "size": [
+    391,
+    215
+   ],
+   "scale": 0.2877,
+   "crop": [
+    100,
+    132,
+    1458,
+    880
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "a60a79f477",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.97,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 32.15,
+    "alpha": "original alpha"
+   }
+  },
+  "8a956edd23": {
+   "file": "sprites/spr-8a956edd23.webp",
+   "size": [
+    461,
+    465
+   ],
+   "scale": 0.4111,
+   "crop": [
+    120,
+    7,
+    1241,
+    1137
+   ],
+   "sourceSize": [
+    1316,
+    1195
+   ],
+   "sourceBytesHash": "8a956edd23",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_56 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.03,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "904eff4f12": {
+   "file": "sprites/spr-904eff4f12.webp",
+   "size": [
+    287,
+    159
+   ],
+   "scale": 0.2068,
+   "crop": [
+    141,
+    87,
+    1530,
+    854
+   ],
+   "sourceSize": [
+    1672,
+    941
+   ],
+   "sourceBytesHash": "904eff4f12",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_59 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 3.46,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 61.55,
+    "alpha": "original alpha"
+   }
+  },
+  "3aab9a2941": {
+   "file": "sprites/spr-3aab9a2941.webp",
+   "size": [
+    460,
+    327
+   ],
+   "scale": 0.3336,
+   "crop": [
+    89,
+    8,
+    1469,
+    989
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "3aab9a2941",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_40 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 8.99,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 36.58,
+    "alpha": "original alpha"
+   }
+  },
+  "c93e849251": {
+   "file": "sprites/spr-c93e849251.webp",
+   "size": [
+    449,
+    332
+   ],
+   "scale": 0.3359,
+   "crop": [
+    73,
+    12,
+    1409,
+    1000
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "c93e849251",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_58 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 6.49,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 42.18,
+    "alpha": "original alpha"
+   }
+  },
+  "65c3331f96": {
+   "file": "sprites/spr-65c3331f96.webp",
+   "size": [
+    329,
+    178
+   ],
+   "scale": 0.2258,
+   "crop": [
+    153,
+    49,
+    1610,
+    839
+   ],
+   "sourceSize": [
+    1774,
+    887
+   ],
+   "sourceBytesHash": "65c3331f96",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 7.39,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 43.65,
+    "alpha": "original alpha"
+   }
+  },
+  "65c3331f96-c05bf81": {
+   "file": "sprites/spr-65c3331f96-c05bf81.webp",
+   "size": [
+    387,
+    170
+   ],
+   "scale": 0.2659,
+   "crop": [
+    153,
+    49,
+    1610,
+    687
+   ],
+   "sourceSize": [
+    1774,
+    887
+   ],
+   "sourceBytesHash": "65c3331f96",
+   "clipBaked": true,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 7.39,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 43.65,
+    "alpha": "original alpha"
+   }
+  },
+  "f89c6a6fe9": {
+   "file": "sprites/spr-f89c6a6fe9.webp",
+   "size": [
+    268,
+    143
+   ],
+   "scale": 0.1873,
+   "crop": [
+    173,
+    51,
+    1603,
+    812
+   ],
+   "sourceSize": [
+    1774,
+    887
+   ],
+   "sourceBytesHash": "f89c6a6fe9",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_32 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 4.22,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 37.99,
+    "alpha": "original alpha"
+   }
+  },
+  "70114addc5": {
+   "file": "sprites/spr-70114addc5.webp",
+   "size": [
+    342,
+    403
+   ],
+   "scale": 0.3057,
+   "crop": [
+    27,
+    8,
+    1147,
+    1326
+   ],
+   "sourceSize": [
+    1159,
+    1356
+   ],
+   "sourceBytesHash": "70114addc5",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_26 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.05,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "791056d272": {
+   "file": "sprites/spr-791056d272.webp",
+   "size": [
+    381,
+    323
+   ],
+   "scale": 0.3355,
+   "crop": [
+    194,
+    16,
+    1330,
+    978
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "791056d272",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_22 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 7.69,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 36.79,
+    "alpha": "original alpha"
+   }
+  },
+  "5988815911": {
+   "file": "sprites/spr-5988815911.webp",
+   "size": [
+    247,
+    382
+   ],
+   "scale": 0.2569,
+   "crop": [
+    16,
+    6,
+    979,
+    1492
+   ],
+   "sourceSize": [
+    1024,
+    1536
+   ],
+   "sourceBytesHash": "5988815911",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 3.88,
+    "alphaDiff": 0.0,
+    "candidates": 7,
+    "runnerUp": 58.93,
+    "alpha": "original alpha"
+   }
+  },
+  "ec1e329b6f": {
+   "file": "sprites/spr-ec1e329b6f.webp",
+   "size": [
+    364,
+    334
+   ],
+   "scale": 0.288,
+   "crop": [
+    23,
+    13,
+    1286,
+    1172
+   ],
+   "sourceSize": [
+    1312,
+    1199
+   ],
+   "sourceBytesHash": "ec1e329b6f",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_36 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 3.42,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 54.06,
+    "alpha": "original alpha"
+   }
+  },
+  "8fb3351b38": {
+   "file": "sprites/spr-8fb3351b38.webp",
+   "size": [
+    296,
+    135
+   ],
+   "scale": 0.1735,
+   "crop": [
+    30,
+    34,
+    1737,
+    811
+   ],
+   "sourceSize": [
+    1774,
+    887
+   ],
+   "sourceBytesHash": "8fb3351b38",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_58 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 4.47,
+    "alphaDiff": 0.0,
+    "candidates": 4,
+    "runnerUp": 48.02,
+    "alpha": "original alpha"
+   }
+  },
+  "ba31127909": {
+   "file": "sprites/spr-ba31127909.webp",
+   "size": [
+    290,
+    392
+   ],
+   "scale": 0.3039,
+   "crop": [
+    119,
+    9,
+    1074,
+    1300
+   ],
+   "sourceSize": [
+    1169,
+    1346
+   ],
+   "sourceBytesHash": "ba31127909",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_48 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 8.3,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "3f20bf8ca7": {
+   "file": "sprites/spr-3f20bf8ca7.webp",
+   "size": [
+    100,
+    73
+   ],
+   "scale": 0.1018,
+   "crop": [
+    271,
+    138,
+    1254,
+    853
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "3f20bf8ca7",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_05 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 3.25,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 35.45,
+    "alpha": "original alpha"
+   }
+  },
+  "5f42b90dc6": {
+   "file": "sprites/spr-5f42b90dc6.webp",
+   "size": [
+    112,
+    105
+   ],
+   "scale": 0.1168,
+   "crop": [
+    244,
+    106,
+    1199,
+    1002
+   ],
+   "sourceSize": [
+    1448,
+    1086
+   ],
+   "sourceBytesHash": "5f42b90dc6",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 5.57,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "6f3416bbad": {
+   "file": "sprites/spr-6f3416bbad.webp",
+   "size": [
+    121,
+    112
+   ],
+   "scale": 0.1358,
+   "crop": [
+    314,
+    88,
+    1206,
+    916
+   ],
+   "sourceSize": [
+    1536,
+    1024
+   ],
+   "sourceBytesHash": "6f3416bbad",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_18 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 1.68,
+    "alphaDiff": 0.0,
+    "candidates": 13,
+    "runnerUp": 38.11,
+    "alpha": "original alpha"
+   }
+  },
+  "c455496495": {
+   "file": "sprites/spr-c455496495.webp",
+   "size": [
+    427,
+    394
+   ],
+   "scale": 0.3355,
+   "crop": [
+    19,
+    14,
+    1291,
+    1188
+   ],
+   "sourceSize": [
+    1313,
+    1198
+   ],
+   "sourceBytesHash": "c455496495",
+   "clipBaked": false,
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_05 AM.png",
+   "sourceMatch": {
+    "rgbDiff": 4.97,
+    "alphaDiff": 0.0,
+    "candidates": 1,
+    "runnerUp": null,
+    "alpha": "original alpha"
+   }
+  },
+  "25d3bc9171": {
+   "file": "sprites/spr-25d3bc9171.webp",
+   "size": [
+    45,
+    151
+   ],
+   "scale": 1.0,
+   "crop": [
+    0,
+    0,
+    45,
+    151
+   ],
+   "sourceSize": [
+    51,
+    151
+   ],
+   "sourceBytesHash": "25d3bc9171",
+   "clipBaked": false,
+   "sourceFile": null,
+   "sourceMatch": {
+    "reason": "pixels come from the PSD layer itself (no separate original PNG)"
+   }
+  },
+  "f34645c3e6": {
+   "file": "sprites/spr-f34645c3e6.webp",
+   "size": [
+    42,
+    145
+   ],
+   "scale": 1.0,
+   "crop": [
+    0,
+    0,
+    42,
+    145
+   ],
+   "sourceSize": [
+    48,
+    145
+   ],
+   "sourceBytesHash": "f34645c3e6",
+   "clipBaked": false,
+   "sourceFile": null,
+   "sourceMatch": {
+    "reason": "pixels come from the PSD layer itself (no separate original PNG)"
+   }
+  }
+ },
+ "objects": [
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im11"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_28 AM.png",
+   "sprite": "11a67992b9",
+   "matrix": [
+    -0.5,
+    0.0,
+    1036.4841,
+    0.0,
+    0.5001,
+    907.6162
+   ],
+   "x": 840.5,
+   "y": 907.6,
+   "w": 196.0,
+   "h": 217.0,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1123.9,
+   "clip": null,
+   "authorOrder": 0,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    819.5,
+    906.5,
+    245.6,
+    224.5
+   ],
+   "id": "z1-001",
+   "category": "building",
+   "label": "red-roof dining pavilion",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im19"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+   "sprite": "5f8a8232a3",
+   "matrix": [
+    -0.3594,
+    0.0,
+    1471.3034,
+    0.0,
+    0.3595,
+    346.2431
+   ],
+   "x": 1326.4,
+   "y": 346.2,
+   "w": 144.9,
+   "h": 130.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 476.4,
+   "clip": null,
+   "authorOrder": 1,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1325.6,
+    346.2,
+    146.6,
+    134.0
+   ],
+   "id": "z1-002",
+   "category": "tree",
+   "label": "golden banyan",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im20"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_04 AM.png",
+   "sprite": "c85351e870",
+   "matrix": [
+    -0.5,
+    0.0,
+    1553.4443,
+    0.0,
+    0.5001,
+    345.9912
+   ],
+   "x": 1433.9,
+   "y": 346.0,
+   "w": 119.5,
+   "h": 171.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 517.1,
+   "clip": null,
+   "authorOrder": 2,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1412.7,
+    344.1,
+    162.2,
+    183.6
+   ],
+   "id": "z1-003",
+   "category": "station",
+   "label": "golden portal shrine",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im21"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+   "sprite": "5f8a8232a3",
+   "matrix": [
+    0.4999,
+    0.0,
+    1415.6531,
+    0.0,
+    0.5,
+    660.382
+   ],
+   "x": 1415.7,
+   "y": 660.4,
+   "w": 201.5,
+   "h": 181.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 841.4,
+   "clip": null,
+   "authorOrder": 3,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1414.4,
+    660.4,
+    203.9,
+    186.3
+   ],
+   "id": "z1-004",
+   "category": "tree",
+   "label": "golden banyan",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im22"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+   "sprite": "5f8a8232a3",
+   "matrix": [
+    -0.3401,
+    0.0,
+    1704.4753,
+    0.0,
+    0.3402,
+    421.4794
+   ],
+   "x": 1567.4,
+   "y": 421.5,
+   "w": 137.1,
+   "h": 123.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 544.7,
+   "clip": null,
+   "authorOrder": 4,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1566.6,
+    421.5,
+    138.7,
+    126.8
+   ],
+   "id": "z1-005",
+   "category": "tree",
+   "label": "golden banyan",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im23"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_39 AM.png",
+   "sprite": "5f8a8232a3",
+   "matrix": [
+    0.337,
+    0.0,
+    1637.4582,
+    0.0,
+    0.337,
+    482.0835
+   ],
+   "x": 1637.5,
+   "y": 482.1,
+   "w": 135.8,
+   "h": 122.3,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 604.1,
+   "clip": null,
+   "authorOrder": 5,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1636.6,
+    482.1,
+    137.4,
+    125.6
+   ],
+   "id": "z1-006",
+   "category": "tree",
+   "label": "golden banyan",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im24"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_33 AM.png",
+   "sprite": "6c4fdf2a25",
+   "matrix": [
+    0.3158,
+    0.0,
+    851.5262,
+    0.0,
+    0.3158,
+    945.6588
+   ],
+   "x": 851.5,
+   "y": 945.7,
+   "w": 102.3,
+   "h": 190.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1136.1,
+   "clip": null,
+   "authorOrder": 6,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    838.2,
+    944.1,
+    129.2,
+    193.8
+   ],
+   "id": "z1-007",
+   "category": "tree",
+   "label": "palm",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im25"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    0.2922,
+    0.0,
+    582.0575,
+    0.0,
+    0.2923,
+    621.1361
+   ],
+   "x": 582.1,
+   "y": 621.1,
+   "w": 255.1,
+   "h": 182.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 803.1,
+   "clip": null,
+   "authorOrder": 7,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    572.4,
+    621.1,
+    275.1,
+    183.4
+   ],
+   "id": "z1-008",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im28"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2642,
+    0.0,
+    1159.5157,
+    0.0,
+    0.2642,
+    333.0313
+   ],
+   "x": 1159.5,
+   "y": 333.0,
+   "w": 157.7,
+   "h": 184.4,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 517.1,
+   "clip": null,
+   "authorOrder": 8,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1158.8,
+    333.0,
+    159.0,
+    187.8
+   ],
+   "id": "z1-009",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im30"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_47 AM.png",
+   "sprite": "5f009bc6ce",
+   "matrix": [
+    0.5,
+    0.0,
+    1474.2676,
+    0.0,
+    0.5001,
+    675.1172
+   ],
+   "x": 1474.3,
+   "y": 675.1,
+   "w": 179.5,
+   "h": 207.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 881.7,
+   "clip": null,
+   "authorOrder": 9,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1454.9,
+    673.9,
+    209.2,
+    209.2
+   ],
+   "id": "z1-010",
+   "category": "building",
+   "label": "two-storey red wooden house",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im31"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_52 AM.png",
+   "sprite": "d4d0211ba8",
+   "matrix": [
+    0.4999,
+    0.0,
+    1533.1754,
+    0.0,
+    0.5,
+    760.7589
+   ],
+   "x": 1533.2,
+   "y": 760.8,
+   "w": 210.0,
+   "h": 193.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 953.4,
+   "clip": null,
+   "authorOrder": 10,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1529.0,
+    757.7,
+    216.0,
+    216.1
+   ],
+   "id": "z1-011",
+   "category": "building",
+   "label": "library/study hall",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im32"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_33 AM.png",
+   "sprite": "6c4fdf2a25",
+   "matrix": [
+    0.3158,
+    0.0,
+    768.3015,
+    0.0,
+    0.3158,
+    623.3013
+   ],
+   "x": 768.3,
+   "y": 623.3,
+   "w": 102.3,
+   "h": 190.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 813.7,
+   "clip": null,
+   "authorOrder": 11,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    754.9,
+    621.8,
+    129.2,
+    193.8
+   ],
+   "id": "z1-012",
+   "category": "tree",
+   "label": "palm",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im33"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_33 AM.png",
+   "sprite": "6c4fdf2a25",
+   "matrix": [
+    0.3158,
+    0.0,
+    1049.3583,
+    0.0,
+    0.3158,
+    618.5567
+   ],
+   "x": 1049.4,
+   "y": 618.6,
+   "w": 102.3,
+   "h": 190.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 809.0,
+   "clip": null,
+   "authorOrder": 12,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1036.0,
+    617.0,
+    129.2,
+    193.8
+   ],
+   "id": "z1-013",
+   "category": "tree",
+   "label": "palm",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im34"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_46 AM.png",
+   "sprite": "74727d909a",
+   "matrix": [
+    -0.4999,
+    0.0,
+    891.1738,
+    0.0,
+    0.5,
+    746.998
+   ],
+   "x": 692.7,
+   "y": 747.0,
+   "w": 198.5,
+   "h": 175.0,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 921.9,
+   "clip": null,
+   "authorOrder": 13,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    651.4,
+    744.3,
+    276.9,
+    184.6
+   ],
+   "id": "z1-014",
+   "category": "building",
+   "label": "open-front shop pavilion",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im35"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    -0.3049,
+    0.0,
+    770.2151,
+    0.0,
+    0.3049,
+    746.4541
+   ],
+   "x": 538.2,
+   "y": 746.5,
+   "w": 232.0,
+   "h": 213.1,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 959.5,
+   "clip": null,
+   "authorOrder": 14,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    532.4,
+    742.7,
+    248.9,
+    227.5
+   ],
+   "id": "z1-015",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im36"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    -0.2565,
+    0.0,
+    1071.6308,
+    0.0,
+    0.2565,
+    364.6264
+   ],
+   "x": 876.5,
+   "y": 364.6,
+   "w": 195.2,
+   "h": 179.3,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 543.8,
+   "clip": null,
+   "authorOrder": 15,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    871.5,
+    361.4,
+    209.3,
+    191.4
+   ],
+   "id": "z1-016",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im37"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.2565,
+    0.0,
+    1234.2601,
+    0.0,
+    0.2565,
+    367.3495
+   ],
+   "x": 1234.3,
+   "y": 367.3,
+   "w": 195.2,
+   "h": 179.3,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 546.6,
+   "clip": null,
+   "authorOrder": 16,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1225.0,
+    364.2,
+    209.3,
+    191.4
+   ],
+   "id": "z1-017",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im38"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.3505,
+    0.0,
+    642.2273,
+    0.0,
+    0.3506,
+    897.9029
+   ],
+   "x": 642.2,
+   "y": 897.9,
+   "w": 139.9,
+   "h": 75.4,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 973.2,
+   "clip": null,
+   "authorOrder": 17,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    635.0,
+    884.6,
+    154.9,
+    103.3
+   ],
+   "id": "z1-018",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im39"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2556,
+    0.0,
+    775.1255,
+    0.0,
+    0.2557,
+    379.5228
+   ],
+   "x": 775.1,
+   "y": 379.5,
+   "w": 152.6,
+   "h": 178.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 557.7,
+   "clip": null,
+   "authorOrder": 18,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    774.5,
+    379.5,
+    153.9,
+    181.7
+   ],
+   "id": "z1-019",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im40"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    -0.2489,
+    0.0,
+    847.5324,
+    0.0,
+    0.2489,
+    404.8911
+   ],
+   "x": 658.1,
+   "y": 404.9,
+   "w": 189.4,
+   "h": 174.0,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 578.8,
+   "clip": null,
+   "authorOrder": 19,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    653.3,
+    401.8,
+    203.2,
+    185.7
+   ],
+   "id": "z1-020",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im41"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_56 AM.png",
+   "sprite": "8a956edd23",
+   "matrix": [
+    0.4999,
+    0.0,
+    1005.3884,
+    0.0,
+    0.5,
+    330.4272
+   ],
+   "x": 1005.4,
+   "y": 330.4,
+   "w": 230.5,
+   "h": 232.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 562.1,
+   "clip": null,
+   "authorOrder": 20,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    980.7,
+    329.0,
+    270.5,
+    245.6
+   ],
+   "id": "z1-021",
+   "category": "building",
+   "label": "fortress / castle",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im42"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_59 AM.png",
+   "sprite": "904eff4f12",
+   "matrix": [
+    0.4997,
+    0.0125,
+    731.3893,
+    -0.0125,
+    0.4998,
+    536.7908
+   ],
+   "x": 731.4,
+   "y": 533.2,
+   "w": 145.4,
+   "h": 83.1,
+   "flipX": false,
+   "rotationDeg": -1.43,
+   "footY": 614.0,
+   "clip": null,
+   "authorOrder": 21,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    716.6,
+    523.8,
+    175.2,
+    101.6
+   ],
+   "id": "z1-022",
+   "category": "fence",
+   "label": "stone balustrade",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im43"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_05 AM.png",
+   "sprite": "e6a661d1a4",
+   "matrix": [
+    0.2766,
+    0.0,
+    789.0487,
+    0.0,
+    0.2767,
+    381.7365
+   ],
+   "x": 789.0,
+   "y": 381.7,
+   "w": 426.8,
+   "h": 238.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 619.4,
+   "clip": null,
+   "authorOrder": 22,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    769.7,
+    379.5,
+    462.5,
+    260.3
+   ],
+   "id": "z1-023",
+   "category": "gate",
+   "label": "large stone gate (with tiled roof)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im44"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_40 AM.png",
+   "sprite": "3aab9a2941",
+   "matrix": [
+    0.5,
+    0.0,
+    1099.6216,
+    0.0,
+    0.5001,
+    663.2993
+   ],
+   "x": 1099.6,
+   "y": 663.3,
+   "w": 230.0,
+   "h": 163.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 826.8,
+   "clip": null,
+   "authorOrder": 23,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1084.8,
+    662.0,
+    256.2,
+    170.8
+   ],
+   "id": "z1-024",
+   "category": "building",
+   "label": "red wooden hall (golden eaves)",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im45"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2642,
+    0.0,
+    1323.6249,
+    0.0,
+    0.2642,
+    379.2257
+   ],
+   "x": 1323.6,
+   "y": 379.2,
+   "w": 157.7,
+   "h": 184.4,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 563.3,
+   "clip": null,
+   "authorOrder": 24,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1322.9,
+    379.2,
+    159.0,
+    187.8
+   ],
+   "id": "z1-025",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im46"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.2916,
+    0.0,
+    1272.9984,
+    0.0,
+    0.2917,
+    524.7119
+   ],
+   "x": 1273.0,
+   "y": 524.7,
+   "w": 116.4,
+   "h": 62.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 587.4,
+   "clip": null,
+   "authorOrder": 25,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1267.0,
+    513.6,
+    128.9,
+    85.9
+   ],
+   "id": "z1-026",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im47"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_59 AM.png",
+   "sprite": "904eff4f12",
+   "matrix": [
+    0.4997,
+    0.0125,
+    1199.4351,
+    -0.0125,
+    0.4998,
+    545.72
+   ],
+   "x": 1199.4,
+   "y": 542.1,
+   "w": 145.4,
+   "h": 83.1,
+   "flipX": false,
+   "rotationDeg": -1.43,
+   "footY": 622.9,
+   "clip": null,
+   "authorOrder": 26,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1184.6,
+    532.8,
+    175.2,
+    101.6
+   ],
+   "id": "z1-027",
+   "category": "fence",
+   "label": "stone balustrade",
+   "area": "upper"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im48"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    0.2789,
+    0.0,
+    1237.8187,
+    0.0,
+    0.2789,
+    728.0675
+   ],
+   "x": 1237.8,
+   "y": 728.1,
+   "w": 243.4,
+   "h": 173.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 901.7,
+   "clip": null,
+   "authorOrder": 27,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1228.6,
+    728.1,
+    262.5,
+    175.0
+   ],
+   "id": "z1-028",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im49"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    -0.2586,
+    0.0,
+    1241.8468,
+    0.0,
+    0.2587,
+    742.6595
+   ],
+   "x": 1016.1,
+   "y": 742.7,
+   "w": 225.8,
+   "h": 161.1,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 903.7,
+   "clip": null,
+   "authorOrder": 28,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1006.9,
+    742.7,
+    243.5,
+    162.3
+   ],
+   "id": "z1-029",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im50"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_58 AM.png",
+   "sprite": "c93e849251",
+   "matrix": [
+    0.5,
+    0.0,
+    1126.2193,
+    0.0,
+    0.5001,
+    848.737
+   ],
+   "x": 1126.2,
+   "y": 848.7,
+   "w": 224.5,
+   "h": 166.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1014.5,
+   "clip": null,
+   "authorOrder": 29,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1114.0,
+    846.7,
+    258.0,
+    172.0
+   ],
+   "id": "z1-030",
+   "category": "station",
+   "label": "central dais / stage",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im51"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    0.2922,
+    0.0,
+    1250.91,
+    0.0,
+    0.2923,
+    927.0226
+   ],
+   "x": 1250.9,
+   "y": 927.0,
+   "w": 255.1,
+   "h": 182.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1109.0,
+   "clip": null,
+   "authorOrder": 30,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1241.2,
+    927.0,
+    275.1,
+    183.4
+   ],
+   "id": "z1-031",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im52"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    -0.2922,
+    0.0,
+    1265.4366,
+    0.0,
+    0.2923,
+    960.7423
+   ],
+   "x": 1010.3,
+   "y": 960.7,
+   "w": 255.1,
+   "h": 182.1,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1142.7,
+   "clip": null,
+   "authorOrder": 31,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1000.0,
+    960.7,
+    275.1,
+    183.4
+   ],
+   "id": "z1-032",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im53"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    -0.2762,
+    0.0,
+    1895.4541,
+    0.0,
+    0.2763,
+    795.5716
+   ],
+   "x": 1654.3,
+   "y": 795.6,
+   "w": 241.2,
+   "h": 172.1,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 967.6,
+   "clip": null,
+   "authorOrder": 32,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1644.5,
+    795.6,
+    260.1,
+    173.4
+   ],
+   "id": "z1-033",
+   "category": "tree",
+   "label": "pine",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im54"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sprite": "65c3331f96",
+   "matrix": [
+    0.4218,
+    0.0,
+    1158.1606,
+    0.0,
+    0.4218,
+    1072.8826
+   ],
+   "x": 1158.2,
+   "y": 1072.9,
+   "w": 138.8,
+   "h": 75.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1148.0,
+   "clip": null,
+   "authorOrder": 33,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1143.6,
+    1068.2,
+    168.9,
+    84.5
+   ],
+   "id": "z1-034",
+   "category": "shrub",
+   "label": "green bush",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": {
+    "kept": 18.92,
+    "dropped": 29.41
+   },
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im55"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_32 AM.png",
+   "sprite": "f89c6a6fe9",
+   "matrix": [
+    0.4991,
+    0.0291,
+    1081.5765,
+    -0.0291,
+    0.4992,
+    1091.9765
+   ],
+   "x": 1081.6,
+   "y": 1084.2,
+   "w": 137.9,
+   "h": 79.2,
+   "flipX": false,
+   "rotationDeg": -3.34,
+   "footY": 1158.9,
+   "clip": null,
+   "authorOrder": 34,
+   "dedupedFrom": [
+    "New Map Zone1-5.ai:Im20"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    1065.1,
+    1078.5,
+    170.7,
+    92.6
+   ],
+   "id": "z1-035",
+   "category": "fence",
+   "label": "wooden fence",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im56"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sprite": "65c3331f96",
+   "matrix": [
+    0.4218,
+    0.0,
+    1624.551,
+    0.0,
+    0.4218,
+    921.5321
+   ],
+   "x": 1624.6,
+   "y": 921.5,
+   "w": 138.8,
+   "h": 75.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 996.7,
+   "clip": null,
+   "authorOrder": 35,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1610.0,
+    916.9,
+    168.9,
+    84.5
+   ],
+   "id": "z1-036",
+   "category": "shrub",
+   "label": "green bush",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": {
+    "kept": 22.93,
+    "dropped": 34.9
+   },
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im11"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_16 AM.png",
+   "sprite": "42289178cb",
+   "matrix": [
+    0.5153,
+    0.0,
+    2293.0158,
+    0.0,
+    0.4853,
+    535.1074
+   ],
+   "x": 2293.0,
+   "y": 535.1,
+   "w": 195.8,
+   "h": 158.2,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 692.9,
+   "clip": null,
+   "authorOrder": 36,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im14"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    2260.1,
+    533.4,
+    257.7,
+    161.8
+   ],
+   "id": "z1-037",
+   "category": "station",
+   "label": "ice cave entrance",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im12"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2639,
+    0.0,
+    288.0692,
+    0.0,
+    0.2639,
+    413.357
+   ],
+   "x": 288.1,
+   "y": 413.4,
+   "w": 157.5,
+   "h": 184.2,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 597.2,
+   "clip": null,
+   "authorOrder": 37,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    287.4,
+    413.4,
+    158.8,
+    187.6
+   ],
+   "id": "z1-038",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im13"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381-cad3455",
+   "matrix": [
+    -0.5001,
+    0.0,
+    135.9284,
+    0.0,
+    0.5001,
+    334.1264
+   ],
+   "x": -0.6,
+   "y": 334.1,
+   "w": 136.5,
+   "h": 166.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 500.2,
+   "clip": [
+    [
+     [
+      -0.2,
+      508.5
+     ],
+     [
+      144.5,
+      508.5
+     ],
+     [
+      144.5,
+      331.2
+     ],
+     [
+      -0.2,
+      331.2
+     ]
+    ]
+   ],
+   "authorOrder": 38,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    -49.6,
+    331.2,
+    194.1,
+    177.4
+   ],
+   "id": "z1-039",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im14"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.2377,
+    0.0,
+    120.7247,
+    0.0,
+    0.2377,
+    336.5531
+   ],
+   "x": 120.7,
+   "y": 336.6,
+   "w": 180.9,
+   "h": 166.2,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 502.7,
+   "clip": null,
+   "authorOrder": 39,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    112.1,
+    333.6,
+    194.1,
+    177.4
+   ],
+   "id": "z1-040",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im15"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381-ceb0c1f",
+   "matrix": [
+    0.5001,
+    0.0,
+    -0.2279,
+    0.0,
+    0.5001,
+    569.5619
+   ],
+   "x": -0.2,
+   "y": 569.6,
+   "w": 125.5,
+   "h": 173.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 743.0,
+   "clip": [
+    [
+     [
+      -0.2,
+      751.7
+     ],
+     [
+      130.0,
+      751.7
+     ],
+     [
+      130.0,
+      566.5
+     ],
+     [
+      -0.2,
+      566.5
+     ]
+    ]
+   ],
+   "authorOrder": 40,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    -72.7,
+    566.5,
+    202.7,
+    185.2
+   ],
+   "id": "z1-041",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im16"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.2562,
+    0.0,
+    154.8744,
+    0.0,
+    0.2562,
+    626.6416
+   ],
+   "x": 154.9,
+   "y": 626.6,
+   "w": 194.9,
+   "h": 179.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 805.6,
+   "clip": null,
+   "authorOrder": 41,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    145.6,
+    623.5,
+    209.1,
+    191.1
+   ],
+   "id": "z1-042",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im17"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.2562,
+    0.0,
+    379.7064,
+    0.0,
+    0.2562,
+    436.4274
+   ],
+   "x": 379.7,
+   "y": 436.4,
+   "w": 194.9,
+   "h": 179.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 615.4,
+   "clip": null,
+   "authorOrder": 42,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    370.5,
+    433.2,
+    209.1,
+    191.1
+   ],
+   "id": "z1-043",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im18"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2701,
+    0.0,
+    417.9909,
+    0.0,
+    0.2701,
+    566.4727
+   ],
+   "x": 418.0,
+   "y": 566.5,
+   "w": 161.2,
+   "h": 188.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 754.7,
+   "clip": null,
+   "authorOrder": 43,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    417.3,
+    566.5,
+    162.5,
+    192.0
+   ],
+   "id": "z1-044",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im19"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2963,
+    0.0,
+    244.9753,
+    0.0,
+    0.2963,
+    957.3584
+   ],
+   "x": 245.0,
+   "y": 957.4,
+   "w": 176.9,
+   "h": 206.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1163.8,
+   "clip": null,
+   "authorOrder": 44,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    244.2,
+    957.4,
+    178.3,
+    210.6
+   ],
+   "id": "z1-045",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im22"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_26 AM.png",
+   "sprite": "70114addc5",
+   "matrix": [
+    0.5,
+    0.0,
+    58.4271,
+    0.0,
+    0.5,
+    326.4808
+   ],
+   "x": 58.4,
+   "y": 326.5,
+   "w": 171.0,
+   "h": 201.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 527.5,
+   "clip": null,
+   "authorOrder": 45,
+   "dedupedFrom": null,
+   "conflictResolved": [
+    {
+     "dropped": "New Map Zone1-3.ai:Im18",
+     "droppedBox": [
+      34.2,
+      317.8,
+      177.3,
+      207.5
+     ],
+     "scoreKept": 18.36,
+     "scoreDropped": 40.51,
+     "rule": "kept the placement closer to ok.jpg"
+    }
+   ],
+   "sourceBox": [
+    54.3,
+    325.3,
+    177.2,
+    207.3
+   ],
+   "id": "z1-046",
+   "category": "tree",
+   "label": "small red sapling",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im23"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381-c2bebb7",
+   "matrix": [
+    -0.5,
+    0.0,
+    125.3331,
+    0.0,
+    0.5,
+    395.6765
+   ],
+   "x": -0.2,
+   "y": 395.7,
+   "w": 125.5,
+   "h": 165.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 561.1,
+   "clip": [
+    [
+     [
+      -0.2,
+      569.4
+     ],
+     [
+      133.9,
+      569.4
+     ],
+     [
+      133.9,
+      392.7
+     ],
+     [
+      -0.2,
+      392.7
+     ]
+    ]
+   ],
+   "authorOrder": 46,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    -59.4,
+    392.7,
+    193.3,
+    176.7
+   ],
+   "id": "z1-047",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im24"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.2836,
+    0.0,
+    16.8206,
+    0.0,
+    0.2836,
+    513.822
+   ],
+   "x": 16.8,
+   "y": 513.8,
+   "w": 113.2,
+   "h": 61.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 574.8,
+   "clip": null,
+   "authorOrder": 47,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    10.9,
+    503.1,
+    125.3,
+    83.5
+   ],
+   "id": "z1-048",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im25"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.2836,
+    0.0,
+    480.3503,
+    0.0,
+    0.2836,
+    722.8616
+   ],
+   "x": 480.4,
+   "y": 722.9,
+   "w": 113.2,
+   "h": 61.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 783.8,
+   "clip": null,
+   "authorOrder": 48,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    474.5,
+    712.1,
+    125.3,
+    83.5
+   ],
+   "id": "z1-049",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im26"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.3141,
+    0.0,
+    237.957,
+    0.0,
+    0.336,
+    1113.7393
+   ],
+   "x": 238.0,
+   "y": 1113.7,
+   "w": 125.3,
+   "h": 72.2,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1186.0,
+   "clip": null,
+   "authorOrder": 49,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    231.5,
+    1101.0,
+    138.8,
+    99.0
+   ],
+   "id": "z1-050",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im27"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_22 AM.png",
+   "sprite": "791056d272",
+   "matrix": [
+    -0.5001,
+    0.0,
+    448.5178,
+    0.0,
+    0.5001,
+    681.7666
+   ],
+   "x": 258.0,
+   "y": 681.8,
+   "w": 190.5,
+   "h": 161.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 843.0,
+   "clip": null,
+   "authorOrder": 50,
+   "dedupedFrom": null,
+   "conflictResolved": [
+    {
+     "dropped": "New Map Zone1-3.ai:Im12",
+     "droppedBox": [
+      201.0,
+      674.9,
+      258.0,
+      172.0
+     ],
+     "scoreKept": 20.34,
+     "scoreDropped": 43.61,
+     "rule": "kept the placement closer to ok.jpg"
+    }
+   ],
+   "sourceBox": [
+    223.4,
+    679.1,
+    257.7,
+    171.8
+   ],
+   "id": "z1-051",
+   "category": "station",
+   "label": "bronze cauldron altar",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im28"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sprite": "5988815911",
+   "matrix": [
+    0.5,
+    0.0,
+    2351.642,
+    0.0,
+    0.4999,
+    620.4482
+   ],
+   "x": 2351.6,
+   "y": 620.4,
+   "w": 123.5,
+   "h": 191.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 811.2,
+   "clip": null,
+   "authorOrder": 51,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2349.6,
+    619.7,
+    131.5,
+    197.3
+   ],
+   "id": "z1-052",
+   "category": "tree",
+   "label": "snow-covered fir",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im29"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_36 AM.png",
+   "sprite": "ec1e329b6f",
+   "matrix": [
+    -0.4342,
+    0.0,
+    2295.0848,
+    0.0,
+    0.4342,
+    429.0569
+   ],
+   "x": 2137.0,
+   "y": 429.1,
+   "w": 158.1,
+   "h": 145.0,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 573.6,
+   "clip": null,
+   "authorOrder": 52,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2133.9,
+    427.4,
+    164.1,
+    149.9
+   ],
+   "id": "z1-053",
+   "category": "tree",
+   "label": "teal crystal tree",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im30"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_58 AM.png",
+   "sprite": "8fb3351b38",
+   "matrix": [
+    -0.4999,
+    0.0,
+    2489.6789,
+    0.0,
+    0.4999,
+    793.0232
+   ],
+   "x": 2341.7,
+   "y": 793.0,
+   "w": 148.0,
+   "h": 67.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 860.2,
+   "clip": null,
+   "authorOrder": 53,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2338.4,
+    790.1,
+    153.9,
+    76.9
+   ],
+   "id": "z1-054",
+   "category": "shrub",
+   "label": "snow bush",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im31"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_58 AM.png",
+   "sprite": "8fb3351b38",
+   "matrix": [
+    -0.4619,
+    0.0,
+    2210.9754,
+    0.0,
+    0.4619,
+    486.5515
+   ],
+   "x": 2074.3,
+   "y": 486.6,
+   "w": 136.7,
+   "h": 62.4,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 548.6,
+   "clip": null,
+   "authorOrder": 54,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2071.2,
+    483.8,
+    142.2,
+    71.1
+   ],
+   "id": "z1-055",
+   "category": "shrub",
+   "label": "snow bush",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im32"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_23_48 AM.png",
+   "sprite": "ba31127909",
+   "matrix": [
+    0.5,
+    0.0,
+    2298.472,
+    0.0,
+    0.5,
+    842.0691
+   ],
+   "x": 2298.5,
+   "y": 842.1,
+   "w": 145.0,
+   "h": 196.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1037.9,
+   "clip": null,
+   "authorOrder": 55,
+   "dedupedFrom": null,
+   "conflictResolved": [
+    {
+     "dropped": "New Map Zone1-3.ai:Im16",
+     "droppedBox": [
+      2282.6,
+      839.9,
+      171.1,
+      197.1
+     ],
+     "scoreKept": 23.32,
+     "scoreDropped": 43.61,
+     "rule": "kept the placement closer to ok.jpg"
+    }
+   ],
+   "sourceBox": [
+    2280.4,
+    840.7,
+    177.6,
+    204.5
+   ],
+   "id": "z1-056",
+   "category": "station",
+   "label": "mirror shrine (red-gold)",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im33"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sprite": "5988815911",
+   "matrix": [
+    0.4144,
+    0.0,
+    2103.889,
+    0.0,
+    0.4144,
+    405.4224
+   ],
+   "x": 2103.9,
+   "y": 405.4,
+   "w": 102.4,
+   "h": 158.3,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 563.5,
+   "clip": null,
+   "authorOrder": 56,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2102.2,
+    404.8,
+    109.0,
+    163.5
+   ],
+   "id": "z1-057",
+   "category": "tree",
+   "label": "snow-covered fir",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im34"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sprite": "5988815911",
+   "matrix": [
+    0.4144,
+    0.0,
+    2304.4757,
+    0.0,
+    0.4144,
+    346.307
+   ],
+   "x": 2304.5,
+   "y": 346.3,
+   "w": 102.4,
+   "h": 158.3,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 504.4,
+   "clip": null,
+   "authorOrder": 57,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2302.8,
+    345.7,
+    109.0,
+    163.5
+   ],
+   "id": "z1-058",
+   "category": "tree",
+   "label": "snow-covered fir",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": {
+    "kept": 17.39,
+    "dropped": 25.22
+   },
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im35"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_32 AM.png",
+   "sprite": "3d882e7929",
+   "matrix": [
+    -0.5,
+    0.0,
+    2100.3899,
+    0.0,
+    0.5,
+    620.6978
+   ],
+   "x": 1894.4,
+   "y": 620.7,
+   "w": 206.0,
+   "h": 143.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 763.7,
+   "clip": null,
+   "authorOrder": 58,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im15"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    1886.6,
+    619.7,
+    223.9,
+    149.2
+   ],
+   "id": "z1-059",
+   "category": "station",
+   "label": "swing frame on stone platform",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im36"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_36 AM.png",
+   "sprite": "ec1e329b6f",
+   "matrix": [
+    0.5,
+    0.0,
+    2054.288,
+    0.0,
+    0.5,
+    555.0667
+   ],
+   "x": 2054.3,
+   "y": 555.1,
+   "w": 182.0,
+   "h": 167.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 721.5,
+   "clip": null,
+   "authorOrder": 59,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2051.0,
+    553.2,
+    188.9,
+    172.7
+   ],
+   "id": "z1-060",
+   "category": "tree",
+   "label": "teal crystal tree",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im37"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sprite": "5988815911",
+   "matrix": [
+    0.5,
+    0.0,
+    2147.4989,
+    0.0,
+    0.4999,
+    606.4459
+   ],
+   "x": 2147.5,
+   "y": 606.4,
+   "w": 123.5,
+   "h": 191.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 797.2,
+   "clip": null,
+   "authorOrder": 60,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2145.4,
+    605.7,
+    131.5,
+    197.3
+   ],
+   "id": "z1-061",
+   "category": "tree",
+   "label": "snow-covered fir",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im38"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_29 AM.png",
+   "sprite": "5988815911",
+   "matrix": [
+    0.5,
+    0.0,
+    2046.741,
+    0.0,
+    0.4999,
+    692.2057
+   ],
+   "x": 2046.7,
+   "y": 692.2,
+   "w": 123.5,
+   "h": 191.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 882.9,
+   "clip": null,
+   "authorOrder": 61,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2044.7,
+    691.4,
+    131.5,
+    197.3
+   ],
+   "id": "z1-062",
+   "category": "tree",
+   "label": "snow-covered fir",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im39"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    0.254,
+    0.0,
+    2126.0293,
+    0.0,
+    0.254,
+    898.8831
+   ],
+   "x": 2126.0,
+   "y": 898.9,
+   "w": 221.8,
+   "h": 158.3,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1057.1,
+   "clip": null,
+   "authorOrder": 62,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2117.6,
+    898.9,
+    239.1,
+    159.4
+   ],
+   "id": "z1-063",
+   "category": "tree",
+   "label": "pine",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im40"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_05 AM.png",
+   "sprite": "3f20bf8ca7",
+   "matrix": [
+    -0.5,
+    0.0,
+    253.9989,
+    0.0,
+    0.5,
+    470.7402
+   ],
+   "x": 204.0,
+   "y": 470.7,
+   "w": 50.0,
+   "h": 36.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 507.1,
+   "clip": null,
+   "authorOrder": 63,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    189.6,
+    463.7,
+    78.2,
+    52.1
+   ],
+   "id": "z1-064",
+   "category": "other",
+   "label": "boulder (light)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im41"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+   "sprite": "5f42b90dc6",
+   "matrix": [
+    0.5002,
+    0.0,
+    197.0761,
+    0.0,
+    0.5002,
+    769.8298
+   ],
+   "x": 197.1,
+   "y": 769.8,
+   "w": 56.0,
+   "h": 52.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 821.9,
+   "clip": null,
+   "authorOrder": 64,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    182.8,
+    763.6,
+    84.6,
+    63.4
+   ],
+   "id": "z1-065",
+   "category": "other",
+   "label": "boulder (dark)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im42"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_12 AM.png",
+   "sprite": "5f42b90dc6",
+   "matrix": [
+    -0.5002,
+    0.0,
+    565.1769,
+    0.0,
+    0.5002,
+    754.8615
+   ],
+   "x": 509.2,
+   "y": 754.9,
+   "w": 56.0,
+   "h": 52.5,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 806.9,
+   "clip": null,
+   "authorOrder": 65,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    494.8,
+    748.7,
+    84.6,
+    63.4
+   ],
+   "id": "z1-066",
+   "category": "other",
+   "label": "boulder (dark)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im43"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_25_18 AM.png",
+   "sprite": "6f3416bbad",
+   "matrix": [
+    0.5001,
+    0.0,
+    2129.5969,
+    0.0,
+    0.5001,
+    838.7541
+   ],
+   "x": 2129.6,
+   "y": 838.8,
+   "w": 60.5,
+   "h": 56.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 894.9,
+   "clip": null,
+   "authorOrder": 66,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2108.3,
+    832.8,
+    104.3,
+    69.5
+   ],
+   "id": "z1-067",
+   "category": "other",
+   "label": "ice rock",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im44"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.2963,
+    0.0,
+    134.9976,
+    0.0,
+    0.2963,
+    795.3588
+   ],
+   "x": 135.0,
+   "y": 795.4,
+   "w": 176.9,
+   "h": 206.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1001.8,
+   "clip": null,
+   "authorOrder": 67,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    134.2,
+    795.4,
+    178.3,
+    210.6
+   ],
+   "id": "z1-068",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im45"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    -0.2708,
+    0.0,
+    254.0372,
+    0.0,
+    0.2708,
+    941.323
+   ],
+   "x": 47.9,
+   "y": 941.3,
+   "w": 206.1,
+   "h": 189.3,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1130.6,
+   "clip": null,
+   "authorOrder": 68,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    42.7,
+    938.0,
+    221.1,
+    202.1
+   ],
+   "id": "z1-069",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im46"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381-c42044b",
+   "matrix": [
+    0.5001,
+    0.0,
+    -0.2581,
+    0.0,
+    0.5,
+    976.4482
+   ],
+   "x": -0.3,
+   "y": 976.4,
+   "w": 181.0,
+   "h": 189.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1165.7,
+   "clip": [
+    [
+     [
+      -0.2,
+      1175.1
+     ],
+     [
+      185.8,
+      1175.1
+     ],
+     [
+      185.8,
+      973.1
+     ],
+     [
+      -0.2,
+      973.1
+     ]
+    ]
+   ],
+   "authorOrder": 69,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    -35.3,
+    973.1,
+    221.1,
+    202.1
+   ],
+   "id": "z1-070",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-4.ai",
+    "image": "Im47"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_05 AM.png",
+   "sprite": "c455496495",
+   "matrix": [
+    0.5001,
+    0.0,
+    61.9238,
+    0.0,
+    0.5001,
+    1002.8336
+   ],
+   "x": 61.9,
+   "y": 1002.8,
+   "w": 213.5,
+   "h": 197.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1199.3,
+   "clip": null,
+   "authorOrder": 70,
+   "dedupedFrom": null,
+   "conflictResolved": [
+    {
+     "dropped": "New Map Zone1-3.ai:Im13",
+     "droppedBox": [
+      33.1,
+      982.4,
+      220.5,
+      201.2
+     ],
+     "scoreKept": 16.94,
+     "scoreDropped": 49.61,
+     "rule": "kept the placement closer to ok.jpg"
+    }
+   ],
+   "sourceBox": [
+    58.7,
+    1000.5,
+    220.3,
+    201.0
+   ],
+   "id": "z1-071",
+   "category": "tree",
+   "label": "golden willow",
+   "area": "lava"
+  },
+  {
+   "dedupeScores": {
+    "kept": 12.18,
+    "dropped": 21.32
+   },
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im11"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 01_10_45 PM.png",
+   "sprite": "a55f0f0223",
+   "matrix": [
+    0.4998,
+    0.0,
+    979.2795,
+    0.0,
+    0.5003,
+    1153.5228
+   ],
+   "x": 979.3,
+   "y": 1153.5,
+   "w": 98.5,
+   "h": 116.6,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1269.5,
+   "clip": null,
+   "authorOrder": 71,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im17"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    962.0,
+    1142.4,
+    133.2,
+    133.3
+   ],
+   "id": "z1-072",
+   "category": "dock",
+   "label": "wooden pier",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": {
+    "kept": 27.52,
+    "dropped": 34.93
+   },
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im12"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.4884,
+    0.0,
+    1188.3147,
+    0.0,
+    0.4889,
+    1208.8615
+   ],
+   "x": 1188.3,
+   "y": 1208.9,
+   "w": 371.6,
+   "h": 341.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1550.5,
+   "clip": null,
+   "authorOrder": 72,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im26"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    1170.7,
+    1202.8,
+    398.7,
+    364.7
+   ],
+   "id": "z1-073",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": {
+    "kept": 23.13,
+    "dropped": 32.06
+   },
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im13"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.4859,
+    0.0,
+    744.6987,
+    0.0,
+    0.4864,
+    1191.5588
+   ],
+   "x": 744.7,
+   "y": 1191.6,
+   "w": 290.1,
+   "h": 339.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1530.4,
+   "clip": null,
+   "authorOrder": 73,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im27"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    743.4,
+    1191.6,
+    292.4,
+    345.7
+   ],
+   "id": "z1-074",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im14"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.4997,
+    0.0,
+    168.8639,
+    0.0,
+    0.5003,
+    1293.1331
+   ],
+   "x": 168.9,
+   "y": 1293.1,
+   "w": 380.3,
+   "h": 349.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1642.7,
+   "clip": null,
+   "authorOrder": 74,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    150.8,
+    1286.9,
+    407.9,
+    373.2
+   ],
+   "id": "z1-075",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im15"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477-c10f82c",
+   "matrix": [
+    0.4998,
+    0.0,
+    0.9756,
+    0.0,
+    0.5003,
+    1624.1698
+   ],
+   "x": 1.0,
+   "y": 1624.2,
+   "w": 195.4,
+   "h": 107.6,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1731.7,
+   "clip": [
+    [
+     [
+      0.9,
+      1752.6
+     ],
+     [
+      207.5,
+      1752.6
+     ],
+     [
+      207.5,
+      1605.2
+     ],
+     [
+      0.9,
+      1605.2
+     ]
+    ]
+   ],
+   "authorOrder": 75,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    -13.4,
+    1605.2,
+    220.9,
+    147.4
+   ],
+   "id": "z1-076",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im16"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.4998,
+    0.0,
+    476.0457,
+    0.0,
+    0.5003,
+    1468.403
+   ],
+   "x": 476.0,
+   "y": 1468.4,
+   "w": 199.4,
+   "h": 107.6,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1575.9,
+   "clip": null,
+   "authorOrder": 76,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    465.7,
+    1449.4,
+    220.9,
+    147.4
+   ],
+   "id": "z1-077",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im17"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    0.4997,
+    0.0,
+    1707.9964,
+    0.0,
+    0.5003,
+    1316.5154
+   ],
+   "x": 1708.0,
+   "y": 1316.5,
+   "w": 436.3,
+   "h": 311.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1628.0,
+   "clip": null,
+   "authorOrder": 77,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1691.5,
+    1316.5,
+    470.5,
+    314.0
+   ],
+   "id": "z1-078",
+   "category": "tree",
+   "label": "pine",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im18"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764",
+   "matrix": [
+    -0.4968,
+    0.0,
+    2479.3294,
+    0.0,
+    0.4974,
+    1381.2068
+   ],
+   "x": 2045.6,
+   "y": 1381.2,
+   "w": 433.7,
+   "h": 309.9,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1690.9,
+   "clip": null,
+   "authorOrder": 78,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    2028.0,
+    1381.2,
+    467.7,
+    312.2
+   ],
+   "id": "z1-079",
+   "category": "tree",
+   "label": "pine",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im19"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sprite": "65c3331f96",
+   "matrix": [
+    0.4998,
+    0.0,
+    1939.0783,
+    0.0,
+    0.5004,
+    1548.1345
+   ],
+   "x": 1939.1,
+   "y": 1548.1,
+   "w": 164.4,
+   "h": 89.1,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1637.3,
+   "clip": null,
+   "authorOrder": 79,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1921.8,
+    1542.6,
+    200.2,
+    100.2
+   ],
+   "id": "z1-080",
+   "category": "shrub",
+   "label": "green bush",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im21"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_43 AM.png",
+   "sprite": "65c3331f96-c05bf81",
+   "matrix": [
+    0.4997,
+    0.0,
+    1775.8266,
+    0.0,
+    0.5002,
+    1674.3579
+   ],
+   "x": 1775.8,
+   "y": 1674.4,
+   "w": 193.4,
+   "h": 85.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1759.2,
+   "clip": [
+    [
+     [
+      1755.5,
+      1759.1
+     ],
+     [
+      1991.2,
+      1759.1
+     ],
+     [
+      1991.2,
+      1667.8
+     ],
+     [
+      1755.5,
+      1667.8
+     ]
+    ]
+   ],
+   "authorOrder": 80,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1755.5,
+    1667.8,
+    235.7,
+    118.0
+   ],
+   "id": "z1-081",
+   "category": "shrub",
+   "label": "green bush",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im22"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_27_33 AM.png",
+   "sprite": "6c4fdf2a25",
+   "matrix": [
+    -0.494,
+    0.0,
+    1921.3876,
+    0.0,
+    0.5061,
+    1340.3333
+   ],
+   "x": 1761.3,
+   "y": 1340.3,
+   "w": 160.0,
+   "h": 305.7,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1645.4,
+   "clip": null,
+   "authorOrder": 81,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1740.2,
+    1337.9,
+    202.1,
+    310.5
+   ],
+   "id": "z1-082",
+   "category": "tree",
+   "label": "palm",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im23"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    -0.479,
+    0.0,
+    1747.5662,
+    0.0,
+    0.4795,
+    1307.0143
+   ],
+   "x": 1383.1,
+   "y": 1307.0,
+   "w": 364.5,
+   "h": 335.1,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1642.0,
+   "clip": null,
+   "authorOrder": 82,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1373.9,
+    1301.0,
+    391.0,
+    357.7
+   ],
+   "id": "z1-083",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im24"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764-cb16976",
+   "matrix": [
+    -0.4997,
+    0.0,
+    1973.2506,
+    0.0,
+    0.5003,
+    1487.6067
+   ],
+   "x": 1516.5,
+   "y": 1487.6,
+   "w": 456.8,
+   "h": 271.6,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1759.3,
+   "clip": [
+    [
+     [
+      1498.3,
+      1759.1
+     ],
+     [
+      1990.6,
+      1759.1
+     ],
+     [
+      1990.6,
+      1487.6
+     ],
+     [
+      1498.3,
+      1487.6
+     ]
+    ]
+   ],
+   "authorOrder": 83,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1498.3,
+    1487.6,
+    492.3,
+    328.5
+   ],
+   "id": "z1-084",
+   "category": "tree",
+   "label": "pine",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im25"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381",
+   "matrix": [
+    0.4884,
+    0.0,
+    508.7477,
+    0.0,
+    0.4889,
+    1258.0282
+   ],
+   "x": 508.7,
+   "y": 1258.0,
+   "w": 371.6,
+   "h": 341.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1599.6,
+   "clip": null,
+   "authorOrder": 84,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    491.1,
+    1251.9,
+    398.7,
+    364.7
+   ],
+   "id": "z1-085",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im26"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_51 AM.png",
+   "sprite": "a60a79f477",
+   "matrix": [
+    0.4816,
+    0.0,
+    577.328,
+    0.0,
+    0.4821,
+    1559.053
+   ],
+   "x": 577.3,
+   "y": 1559.1,
+   "w": 192.2,
+   "h": 103.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1662.7,
+   "clip": null,
+   "authorOrder": 85,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    567.4,
+    1540.7,
+    212.8,
+    142.0
+   ],
+   "id": "z1-086",
+   "category": "shrub",
+   "label": "red maple bush",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": {
+    "kept": 14.39,
+    "dropped": 33.49
+   },
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im27"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_05 AM.png",
+   "sprite": "e6a661d1a4",
+   "matrix": [
+    0.5433,
+    0.0,
+    721.8817,
+    0.0,
+    0.5439,
+    1278.4085
+   ],
+   "x": 721.9,
+   "y": 1278.4,
+   "w": 838.3,
+   "h": 468.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1745.6,
+   "clip": null,
+   "authorOrder": 86,
+   "dedupedFrom": [
+    "New Map Zone1-3.ai:Im29"
+   ],
+   "conflictResolved": null,
+   "sourceBox": [
+    683.9,
+    1274.1,
+    908.3,
+    511.8
+   ],
+   "id": "z1-087",
+   "category": "gate",
+   "label": "large stone gate (with tiled roof)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im28"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_28_53 AM.png",
+   "sprite": "801157b547",
+   "matrix": [
+    0.4808,
+    0.0,
+    57.9382,
+    0.0,
+    0.5201,
+    1389.3696
+   ],
+   "x": 57.9,
+   "y": 1389.4,
+   "w": 287.0,
+   "h": 363.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1751.7,
+   "clip": null,
+   "authorOrder": 87,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    56.7,
+    1389.4,
+    289.3,
+    369.7
+   ],
+   "id": "z1-088",
+   "category": "tree",
+   "label": "red maple (small)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im29"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_20 AM.png",
+   "sprite": "cc97fd8381-c5bb4fd",
+   "matrix": [
+    -0.4998,
+    0.0,
+    734.2811,
+    0.0,
+    0.5003,
+    1560.7033
+   ],
+   "x": 316.0,
+   "y": 1560.7,
+   "w": 418.3,
+   "h": 198.6,
+   "flipX": true,
+   "rotationDeg": -0.0,
+   "footY": 1759.2,
+   "clip": [
+    [
+     [
+      305.5,
+      1759.1
+     ],
+     [
+      754.1,
+      1759.1
+     ],
+     [
+      754.1,
+      1553.9
+     ],
+     [
+      305.5,
+      1553.9
+     ]
+    ]
+   ],
+   "authorOrder": 88,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    305.5,
+    1553.9,
+    448.6,
+    410.4
+   ],
+   "id": "z1-089",
+   "category": "tree",
+   "label": "red maple (large)",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-5.ai",
+    "image": "Im30"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_24_11 AM.png",
+   "sprite": "55a2979764-cc16564",
+   "matrix": [
+    0.4997,
+    0.0,
+    2052.7119,
+    0.0,
+    0.5003,
+    1592.7058
+   ],
+   "x": 2052.7,
+   "y": 1592.7,
+   "w": 439.3,
+   "h": 166.6,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1759.5,
+   "clip": [
+    [
+     [
+      1998.2,
+      1759.1
+     ],
+     [
+      2497.5,
+      1759.1
+     ],
+     [
+      2497.5,
+      1592.7
+     ],
+     [
+      1998.2,
+      1592.7
+     ]
+    ]
+   ],
+   "authorOrder": 89,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1998.2,
+    1592.7,
+    533.3,
+    355.9
+   ],
+   "id": "z1-090",
+   "category": "tree",
+   "label": "pine",
+   "area": "bottom"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New-Map-Zone1.psd",
+    "image": "layer3"
+   },
+   "sourceFile": null,
+   "sprite": "25d3bc9171",
+   "matrix": [
+    1.0,
+    0.0,
+    1499.0,
+    0.0,
+    1.0,
+    977.0
+   ],
+   "x": 1499.0,
+   "y": 977.0,
+   "w": 45.0,
+   "h": 151.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1128.0,
+   "clip": null,
+   "authorOrder": 90,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": null,
+   "id": "z1-091",
+   "category": "lamp",
+   "label": "street lamp",
+   "area": "plaza"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New-Map-Zone1.psd",
+    "image": "layer4"
+   },
+   "sourceFile": null,
+   "sprite": "f34645c3e6",
+   "matrix": [
+    1.0,
+    0.0,
+    2110.0,
+    0.0,
+    1.0,
+    925.0
+   ],
+   "x": 2110.0,
+   "y": 925.0,
+   "w": 42.0,
+   "h": 145.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1069.0,
+   "clip": null,
+   "authorOrder": 91,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": null,
+   "id": "z1-092",
+   "category": "lamp",
+   "label": "street lamp (right bank, PSD)",
+   "area": "ice"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New-Map-Zone1.psd",
+    "image": "layer5"
+   },
+   "sourceFile": null,
+   "sprite": "25d3bc9171",
+   "matrix": [
+    1.0,
+    0.0,
+    1301.0,
+    0.0,
+    1.0,
+    975.0
+   ],
+   "x": 1301.0,
+   "y": 975.0,
+   "w": 45.0,
+   "h": 151.0,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 1126.0,
+   "clip": null,
+   "authorOrder": 92,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": null,
+   "id": "z1-093",
+   "category": "lamp",
+   "label": "street lamp",
+   "area": "plaza"
+  }
+ ],
+ "baseLayerExtras": [
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im8"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "sprite": "20ec7fdff9",
+   "matrix": [
+    0.3703,
+    0.0,
+    108.9303,
+    0.0,
+    0.3704,
+    79.5636
+   ],
+   "x": 108.9,
+   "y": 79.6,
+   "w": 741.7,
+   "h": 136.7,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 214.6,
+   "clip": null,
+   "authorOrder": null,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    97.3,
+    22.8,
+    765.8,
+    255.3
+   ],
+   "id": "z1-cloud-1",
+   "category": "cloud",
+   "area": "sky"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im9"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "sprite": "20ec7fdff9",
+   "matrix": [
+    0.2704,
+    0.0,
+    699.6241,
+    0.0,
+    0.2705,
+    183.0865
+   ],
+   "x": 699.6,
+   "y": 183.1,
+   "w": 541.7,
+   "h": 99.8,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 281.7,
+   "clip": null,
+   "authorOrder": null,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    691.1,
+    141.6,
+    559.3,
+    186.5
+   ],
+   "id": "z1-cloud-2",
+   "category": "cloud",
+   "area": "sky"
+  },
+  {
+   "dedupeScores": null,
+   "source": {
+    "file": "New Map Zone1-3.ai",
+    "image": "Im10"
+   },
+   "sourceFile": "ChatGPT Image Nov 4, 2026, 11_29_26 AM.png",
+   "sprite": "20ec7fdff9",
+   "matrix": [
+    0.5,
+    0.0,
+    1353.5134,
+    0.0,
+    0.5001,
+    85.4271
+   ],
+   "x": 1353.5,
+   "y": 85.4,
+   "w": 1001.5,
+   "h": 184.5,
+   "flipX": false,
+   "rotationDeg": 0.0,
+   "footY": 267.8,
+   "clip": null,
+   "authorOrder": null,
+   "dedupedFrom": null,
+   "conflictResolved": null,
+   "sourceBox": [
+    1337.8,
+    8.8,
+    1034.0,
+    344.7
+   ],
+   "id": "z1-cloud-3",
+   "category": "cloud",
+   "area": "sky"
+  }
+ ]
+}

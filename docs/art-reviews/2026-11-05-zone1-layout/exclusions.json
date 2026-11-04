@@ -1,0 +1,12 @@
+[
+ {
+  "file": "New Map Zone1-4.ai",
+  "image": "Im20",
+  "reason": "stale copy: the same tree (hash 55a2979764) was moved in New Map Zone1-5.ai (Im17 at 1708,1316); ok.jpg shows no tree at the 4.ai position (mean diff 46, best local match 52 px away)"
+ },
+ {
+  "file": "New Map Zone1-4.ai",
+  "image": "Im21",
+  "reason": "stale copy: bush/rock piece (hash 65c3331f96) re-placed in New Map Zone1-5.ai (Im19/Im21); ok.jpg shows nothing at the 4.ai position (mean diff 51, best local match 22 px away)"
+ }
+]

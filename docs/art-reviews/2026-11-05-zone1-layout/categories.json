@@ -1,0 +1,138 @@
+{
+ "11a67992b9": {
+  "category": "building",
+  "label": "red-roof dining pavilion"
+ },
+ "3aab9a2941": {
+  "category": "building",
+  "label": "red wooden hall (golden eaves)"
+ },
+ "5f009bc6ce": {
+  "category": "building",
+  "label": "two-storey red wooden house"
+ },
+ "74727d909a": {
+  "category": "building",
+  "label": "open-front shop pavilion"
+ },
+ "d4d0211ba8": {
+  "category": "building",
+  "label": "library/study hall"
+ },
+ "8a956edd23": {
+  "category": "building",
+  "label": "fortress / castle"
+ },
+ "3d882e7929": {
+  "category": "station",
+  "label": "swing frame on stone platform"
+ },
+ "42289178cb": {
+  "category": "station",
+  "label": "ice cave entrance"
+ },
+ "791056d272": {
+  "category": "station",
+  "label": "bronze cauldron altar"
+ },
+ "c85351e870": {
+  "category": "station",
+  "label": "golden portal shrine"
+ },
+ "c93e849251": {
+  "category": "station",
+  "label": "central dais / stage"
+ },
+ "ba31127909": {
+  "category": "station",
+  "label": "mirror shrine (red-gold)"
+ },
+ "55a2979764": {
+  "category": "tree",
+  "label": "pine"
+ },
+ "5988815911": {
+  "category": "tree",
+  "label": "snow-covered fir"
+ },
+ "5f8a8232a3": {
+  "category": "tree",
+  "label": "golden banyan"
+ },
+ "6c4fdf2a25": {
+  "category": "tree",
+  "label": "palm"
+ },
+ "70114addc5": {
+  "category": "tree",
+  "label": "small red sapling"
+ },
+ "801157b547": {
+  "category": "tree",
+  "label": "red maple (small)"
+ },
+ "c455496495": {
+  "category": "tree",
+  "label": "golden willow"
+ },
+ "cc97fd8381": {
+  "category": "tree",
+  "label": "red maple (large)"
+ },
+ "ec1e329b6f": {
+  "category": "tree",
+  "label": "teal crystal tree"
+ },
+ "65c3331f96": {
+  "category": "shrub",
+  "label": "green bush"
+ },
+ "8fb3351b38": {
+  "category": "shrub",
+  "label": "snow bush"
+ },
+ "a60a79f477": {
+  "category": "shrub",
+  "label": "red maple bush"
+ },
+ "3f20bf8ca7": {
+  "category": "other",
+  "label": "boulder (light)"
+ },
+ "5f42b90dc6": {
+  "category": "other",
+  "label": "boulder (dark)"
+ },
+ "6f3416bbad": {
+  "category": "other",
+  "label": "ice rock"
+ },
+ "904eff4f12": {
+  "category": "fence",
+  "label": "stone balustrade"
+ },
+ "f89c6a6fe9": {
+  "category": "fence",
+  "label": "wooden fence"
+ },
+ "a55f0f0223": {
+  "category": "dock",
+  "label": "wooden pier"
+ },
+ "e6a661d1a4": {
+  "category": "gate",
+  "label": "large stone gate (with tiled roof)"
+ },
+ "25d3bc9171": {
+  "category": "lamp",
+  "label": "street lamp"
+ },
+ "f34645c3e6": {
+  "category": "lamp",
+  "label": "street lamp (right bank, PSD)"
+ },
+ "20ec7fdff9": {
+  "category": "cloud",
+  "label": "cloud"
+ }
+}

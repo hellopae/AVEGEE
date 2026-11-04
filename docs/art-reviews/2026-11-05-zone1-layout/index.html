@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AVEGEE โซน 1 · ตรวจตำแหน่งวัตถุ (Z1-LAYOUT-A)</title>
+<style>
+:root{--bg:#14110f;--panel:#201b18;--line:#3a312b;--fg:#f2e8dc;--dim:#a99a8a;--acc:#e8a33d;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.35 system-ui,-apple-system,"Segoe UI","Sarabun",sans-serif;overscroll-behavior:none}
+body{display:flex;flex-direction:column}
+header{padding:calc(6px + var(--safe-t)) 12px 6px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid var(--line);flex:0 0 auto}
+header h1{font-size:14px;margin:0;font-weight:600}
+header span{color:var(--dim);font-size:12px}
+#view{flex:1 1 auto;overflow:auto;position:relative;touch-action:pan-x pan-y pinch-zoom;background:#0b0908;-webkit-overflow-scrolling:touch}
+#stage{position:relative;transform-origin:0 0}
+#stage>*{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+#ok{user-select:none;-webkit-user-drag:none}
+#hud{pointer-events:none}
+#info{position:fixed;left:8px;right:8px;bottom:calc(var(--dock-h,64px) + 6px);background:var(--panel);border:1px solid var(--acc);border-radius:10px;padding:8px 10px;font-size:12px;display:none;z-index:6;max-height:34vh;overflow:auto}
+#info b{color:var(--acc)} #info code{color:#cfe3ff}
+#info .x{float:right;background:none;border:0;color:var(--dim);font-size:18px;min-width:44px;min-height:32px}
+#dock{flex:0 0 auto;background:var(--panel);border-top:1px solid var(--line);padding:6px 8px calc(6px + var(--safe-b));display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:5}
+button{font:inherit;color:var(--fg);background:#2d2621;border:1px solid var(--line);border-radius:8px;min-height:44px;min-width:44px;padding:0 10px}
+button[aria-pressed=true]{background:var(--acc);color:#1b1208;border-color:var(--acc);font-weight:600}
+#modes{display:flex;gap:6px;flex:1 1 100%}
+#dock>button{flex:1 1 0}
+#modes button{flex:1 1 0;padding:0 4px}
+#slider{width:100%;display:none;accent-color:var(--acc);height:36px}
+#sheet{position:fixed;left:0;right:0;bottom:var(--dock-h,60px);background:var(--panel);border-top:1px solid var(--acc);padding:8px 10px;display:none;z-index:7;max-height:48vh;overflow:auto}
+#sheet.open{display:block}
+#sheet h2{font-size:12px;color:var(--dim);margin:8px 0 4px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:0 10px;min-height:44px;background:#2d2621}
+.chips input{width:18px;height:18px;accent-color:var(--acc)}
+.chips small{color:var(--dim)}
+#status{position:absolute;right:8px;top:8px;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:6px;font-size:11px;pointer-events:none;z-index:2}
+@media (min-width:900px){#dock{justify-content:center}#dock>button{flex:0 0 auto}#modes{flex:0 0 auto}#modes button{min-width:150px}#slider{width:320px}#info{left:auto;right:12px;width:360px}}
+</style>
+</head>
+<body>
+<header><h1>AVEGEE · โซน 1 · ตรวจตำแหน่งวัตถุ</h1><span id="count">กำลังโหลด…</span></header>
+<div id="view"><div id="status"></div><div id="stage"><img id="ok" src="ok.jpg" alt="ok.jpg" draggable="false"><canvas id="scene" width="2500" height="1758"></canvas><canvas id="hud" width="2500" height="1758"></canvas></div></div>
+<div id="info" role="status"></div>
+<div id="sheet" aria-label="เลเยอร์"></div>
+<div id="dock">
+  <div id="modes"><button data-mode="ok" aria-pressed="false">ภาพ ok.jpg</button><button data-mode="scene" aria-pressed="true">ฉากประกอบ</button><button data-mode="slider" aria-pressed="false">ซ้อนทับ</button></div>
+  <input id="slider" type="range" min="0" max="100" value="50" aria-label="เลื่อนเทียบ ok.jpg กับฉากประกอบ">
+  <button id="btnLayers" aria-expanded="false">เลเยอร์</button>
+  <button id="zOut" aria-label="ซูมออก">−</button><button id="zFit" aria-label="พอดีจอ">พอดี</button><button id="zIn" aria-label="ซูมเข้า">+</button>
+</div>
+<script>
+'use strict';
+const W=2500,H=1758;
+const $=s=>document.querySelector(s);
+const view=$('#view'),stage=$('#stage'),okImg=$('#ok'),scene=$('#scene'),hud=$('#hud'),ctx=scene.getContext('2d'),hctx=hud.getContext('2d');
+const state={mode:'scene',zoom:1,fit:true,layers:{sky:true,mountains:true,cloud:true,liquid:true,terrain:true},cats:{},outline:false,sel:null};
+let layout,tman,reg,sprites={},tiles={},layerImgs={},alphaCache={};
+const log=(...a)=>console.log('[z1]',...a);
+const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('load '+src));i.src=src});
+
+async function boot(){
+  [layout,tman,reg]=await Promise.all(['layout.json','terrain/terrain-manifest.json','terrain-registration.json'].map(u=>fetch(u).then(r=>{if(!r.ok)throw new Error(u+' '+r.status);return r.json()})));
+  const sk=Object.keys(layout.sprites);
+  await Promise.all([
+    ...sk.map(async k=>{sprites[k]=await loadImg(layout.sprites[k].file)}),
+    ...tman.tiles.map(async t=>{tiles[t.id]=await loadImg('terrain/'+t.src)}),
+    ...Object.entries(tman.layers).map(async([k,v])=>{layerImgs[k]=await loadImg('terrain/'+v.src)}),
+  ]);
+  const cats=[...new Set(layout.objects.map(o=>o.category))];
+  cats.forEach(c=>state.cats[c]=true);
+  buildSheet(cats);
+  $('#count').textContent=layout.objects.length+' วัตถุ · '+sk.length+' sprite';
+  fit();draw();
+  window.__z1ready=true;log('ready',layout.objects.length,'objects');
+}
+
+function m(a){return a} // matrix row-major [a,b,tx,c,d,ty]
+function setM(c,M){c.setTransform(M[0],M[3],M[1],M[4],M[2],M[5])}
+function worldM(rect,iw,ih){ // image px -> ok px through registration
+  const R=reg.matrix,[x,y,w,h]=rect,sx=w/iw,sy=h/ih;
+  // world = [sx 0 x; 0 sy y] ; ok = R * world
+  return [R[0]*sx,R[1]*sy,R[0]*x+R[1]*y+R[2], R[3]*sx,R[4]*sy,R[3]*x+R[4]*y+R[5]];
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  const L=tman.layers;
+  const lay=(k)=>{const im=layerImgs[k];ctx.save();setM(ctx,worldM(L[k].rect,im.naturalWidth,im.naturalHeight));ctx.drawImage(im,0,0);ctx.restore()};
+  if(state.layers.sky)lay('sky');
+  if(state.layers.mountains)lay('mountains');
+  if(state.layers.cloud&&state.cats.cloud!==false)for(const e of layout.baseLayerExtras||[])drawObj(e);
+  if(state.layers.liquid)['river','lava','waterfall'].forEach(lay);
+  if(state.layers.terrain){
+    for(const t of tman.tiles){const im=tiles[t.id],[cx,cy,cw,ch]=t.crop,[rx,ry,rw,rh]=t.rect;
+      ctx.save();setM(ctx,worldM([rx,ry,rw,rh],cw,ch));ctx.drawImage(im,cx,cy,cw,ch,0,0,cw,ch);ctx.restore();}
+  }
+  const objs=[...layout.objects].sort((a,b)=>a.authorOrder-b.authorOrder);
+  for(const o of objs){if(state.cats[o.category]===false)continue;drawObj(o)}
+  drawHud();
+}
+function drawObj(o){ctx.save();setM(ctx,o.matrix);ctx.drawImage(sprites[o.sprite],0,0);ctx.restore()}
+function quad(o){const M=o.matrix,[w,h]=layout.sprites[o.sprite].size;return [[0,0],[w,0],[w,h],[0,h]].map(([x,y])=>[M[0]*x+M[1]*y+M[2],M[3]*x+M[4]*y+M[5]])}
+function drawHud(){
+  hctx.clearRect(0,0,W,H);hctx.lineJoin='round';
+  const draw1=(o,col,lw)=>{const q=quad(o);hctx.strokeStyle=col;hctx.lineWidth=lw;hctx.beginPath();q.forEach((p,i)=>i?hctx.lineTo(...p):hctx.moveTo(...p));hctx.closePath();hctx.stroke()};
+  if(state.outline)for(const o of layout.objects)if(state.cats[o.category]!==false)draw1(o,'rgba(120,220,255,.85)',2/Math.max(state.zoom,.3));
+  if(state.sel){const o=state.sel;draw1(o,'#ffd34d',3/Math.max(state.zoom,.3));
+    const cx=o.x+o.w/2;hctx.strokeStyle='#ff4d6d';hctx.lineWidth=2/Math.max(state.zoom,.3);hctx.beginPath();hctx.moveTo(o.x,o.footY);hctx.lineTo(o.x+o.w,o.footY);hctx.stroke();
+    hctx.fillStyle='#ff4d6d';hctx.beginPath();hctx.arc(cx,o.footY,5/Math.max(state.zoom,.3),0,7);hctx.fill()}
+}
+function alphaAt(o,px,py){ // px,py in ok space -> alpha of sprite pixel under it
+  const M=o.matrix,det=M[0]*M[4]-M[1]*M[3];if(!det)return 0;
+  const dx=px-M[2],dy=py-M[5];const u=(M[4]*dx-M[1]*dy)/det,v=(-M[3]*dx+M[0]*dy)/det;
+  const [w,h]=layout.sprites[o.sprite].size;if(u<0||v<0||u>=w||v>=h)return 0;
+  let c=alphaCache[o.sprite];if(!c){const cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d',{willReadFrequently:true});g.drawImage(sprites[o.sprite],0,0);c=alphaCache[o.sprite]=g}
+  return c.getImageData(Math.floor(u),Math.floor(v),1,1).data[3];
+}
+function pick(px,py){
+  const objs=[...layout.objects].filter(o=>state.cats[o.category]!==false).sort((a,b)=>b.authorOrder-a.authorOrder);
+  for(const o of objs)if(alphaAt(o,px,py)>=128)return o;
+  for(const o of objs){const q=quad(o);if(inQuad(q,px,py))return o}
+  return null;
+}
+function inQuad(q,x,y){let c=false;for(let i=0,j=3;i<4;j=i++){const[a,b]=q[i],[p,r]=q[j];if(((b>y)!=(r>y))&&(x<(p-a)*(y-b)/(r-b)+a))c=!c}return c}
+function showInfo(o){
+  const el=$('#info');if(!o){el.style.display='none';state.sel=null;drawHud();return}
+  state.sel=o;
+  const f=o.source.file.replace('New Map ','').replace('.ai','');
+  el.innerHTML=`<button class="x" aria-label="ปิด">×</button><b>${o.id}</b> · ${o.label} <small>(${o.category} / ${o.area})</small><br>
+  พิกัด ok-space: x <code>${o.x}</code> y <code>${o.y}</code> w <code>${o.w}</code> h <code>${o.h}</code><br>
+  footY <code>${o.footY}</code> · authorOrder <code>${o.authorOrder}</code> · flipX <code>${o.flipX}</code> · หมุน <code>${o.rotationDeg}°</code><br>
+  ที่มา: <code>${f}</code> ${o.source.image} · ต้นฉบับ <code>${o.sourceFile||'—'}</code><br>sprite <code>${o.sprite}</code>${o.clip?' · ถูกตัดขอบ (clip)':''}${o.dedupedFrom?' · ซ้ำจาก '+o.dedupedFrom.length+' ไฟล์':''}`;
+  el.style.display='block';el.querySelector('.x').onclick=()=>showInfo(null);drawHud();
+}
+view.addEventListener('click',e=>{
+  if(state.mode==='ok'){return}
+  const r=stage.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,py=(e.clientY-r.top)/r.height*H;
+  showInfo(pick(px,py));
+  $('#status').textContent='x '+Math.round(px)+' · y '+Math.round(py);
+});
+function buildSheet(cats){
+  const counts={};layout.objects.forEach(o=>counts[o.category]=(counts[o.category]||0)+1);
+  const mk=(id,label,checked,sub='')=>`<label><input type="checkbox" data-k="${id}" ${checked?'checked':''}>${label}${sub?` <small>${sub}</small>`:''}</label>`;
+  $('#sheet').innerHTML=`<h2>ชั้นฉาก</h2><div class="chips">${[['sky','ท้องฟ้า'],['mountains','ภูเขา'],['cloud','เมฆ'],['liquid','ลาวา/น้ำ'],['terrain','พื้น']].map(([k,l])=>mk('L:'+k,l,true)).join('')}</div>
+  <h2>กลุ่มวัตถุ</h2><div class="chips">${cats.map(c=>mk('C:'+c,c,true,counts[c])).join('')}</div>
+  <h2>อื่น ๆ</h2><div class="chips">${mk('outline','กรอบวัตถุทั้งหมด',false)}</div>`;
+  $('#sheet').addEventListener('change',e=>{const k=e.target.dataset.k,v=e.target.checked;
+    if(k.startsWith('L:'))state.layers[k.slice(2)]=v;else if(k.startsWith('C:'))state.cats[k.slice(2)]=v;else if(k==='outline')state.outline=v;
+    if(state.sel&&state.cats[state.sel.category]===false)showInfo(null);draw()});
+}
+function setMode(m){state.mode=m;document.querySelectorAll('#modes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
+  okImg.style.display=(m==='scene')?'none':'block';scene.style.display=(m==='ok')?'none':'block';hud.style.display=(m==='ok')?'none':'block';
+  $('#slider').style.display=(m==='slider')?'block':'none';applySlider();}
+function applySlider(){scene.style.clipPath=state.mode==='slider'?`inset(0 0 0 ${$('#slider').value}%)`:'none'}
+function applyZoom(){stage.style.width=W*state.zoom+'px';stage.style.height=H*state.zoom+'px';drawHud()}
+function fit(){state.fit=true;state.zoom=view.clientWidth/W;applyZoom();view.scrollLeft=0;view.scrollTop=0}
+function zoomBy(f){const cx=(view.scrollLeft+view.clientWidth/2)/state.zoom,cy=(view.scrollTop+view.clientHeight/2)/state.zoom;
+  state.fit=false;state.zoom=Math.min(2,Math.max(view.clientWidth/W*0.9,state.zoom*f));applyZoom();view.scrollLeft=cx*state.zoom-view.clientWidth/2;view.scrollTop=cy*state.zoom-view.clientHeight/2}
+document.querySelectorAll('#modes button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('#slider').oninput=applySlider;
+$('#zIn').onclick=()=>zoomBy(1.5);$('#zOut').onclick=()=>zoomBy(1/1.5);$('#zFit').onclick=fit;
+$('#btnLayers').onclick=e=>{const o=$('#sheet').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o)};
+addEventListener('resize',()=>{if(state.fit)fit()});
+new ResizeObserver(()=>document.documentElement.style.setProperty('--dock-h',$('#dock').offsetHeight+'px')).observe($('#dock'));
+boot().then(()=>setMode('scene')).catch(e=>{console.error(e);$('#count').textContent='โหลดไม่สำเร็จ: '+e.message});
+</script>
+</body>
+</html>
